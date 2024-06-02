@@ -45,6 +45,7 @@ function PlayerForge() constructor{
 // Function creates a new struct planet feature of a  specified type
 function NewPlanetFeature(feature_type, other_data={}) constructor{
 	f_type = feature_type;
+	player_hidden=false;
 	static reveal_to_player = function(){
 		if (player_hidden == 1){
 			player_hidden = 0;
@@ -54,7 +55,7 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 	case P_features.Gene_Stealer_Cult:
 		PDF_control = 0;
 		sealed = 0;
-		player_hidden = true;
+		player_hidden = false;
 		hive_summoned=false;
 		planet_display = "Genestealer Cult";
 		cult_age = 0;
@@ -251,13 +252,30 @@ function delete_features(planet, del_feature){
 
 // returns 1 if an awake necron tomb iin system
 function awake_necron_Star(star){
-		for(var i = 1; i <= star.planets; i++){
+	for(var i = 1; i <= star.planets; i++){
 		if(awake_tomb_world(star.p_feature[i]) == 1)
 			{
 				return i;
 			}
 		}
 		return 0
+}
+
+function planet_player_hidden_feature(planet){
+	for (var i=0;i<array_length(planet);i++){
+		if (is_struct(planet[i])){
+			if (planet[i].player_hidden) then return true;
+		}
+	}
+	return false;
+}
+
+function system_player_hidden_feature(system){
+	for (var i=1;i<=system.planets;i++){
+		if (planet_hidden_feature(system.p_feature[i])) then return true;
+	}
+
+	return false;
 }
 
 
