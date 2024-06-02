@@ -306,11 +306,13 @@ if (hp>0) and (instance_exists(obj_p_ship)){
             
             
             if ((string_count("Claws",wep)=1) or (string_count("endrils",wep)=1)) and (ok=3){
-                if (target.shields<=0) then target.hp-=weapon_dam[wep];
-                if (target.shields>0) then target.shields-=weapon_dam[wep];
+                if (target.shields<=0) then target.hp-=weapon_dam[gg];
+                if (target.shields>0) then target.shields-=weapon_dam[gg];
             }
             if ((string_count("Interceptor",wep)=1) or (string_count("ommerz",wep)=1) or (string_count("Manta",wep)=1) or (string_count("Glands",wep)=1) or (string_count("Eldar Launch",wep)=1)) and (ok=3){
-                bull=instance_create(x,y+lengthdir_y(-30,direction+90),obj_en_in);bull.direction=self.direction;bull.owner=self.owner;
+                bull=instance_create(x,y+lengthdir_y(-30,direction+90),obj_en_in);
+                bull.direction=self.direction;
+                bull.owner=self.owner;
             }
         }
     }

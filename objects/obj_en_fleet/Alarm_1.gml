@@ -841,7 +841,8 @@ if (action=="" && _is_orbiting){
     
     if (owner == eFACTION.Tyranids) {// Juggle bio-resources
         if (capital_number*2>frigate_number){
-            capital_number-=1;frigate_number+=2;
+            capital_number-=1;
+            frigate_number+=2;
         }
         
         if (capital_number*4>escort_number){
@@ -854,9 +855,10 @@ if (action=="" && _is_orbiting){
         
         if (capital_number>0){
             var capitals_engaged=0;
+            var caps = capital_number;
             with (orbiting){
             	for (var i=1;i<planets;i++){
-            		if (capitals_engaged=capital_number) then break;
+            		if (capitals_engaged=caps) then break;
             		if (p_type[i]!="Dead"){
             			p_tyranids[4]=5;
             			capitals_engaged+=1;
@@ -890,7 +892,7 @@ if (action=="" && _is_orbiting){
                     good = !array_contains(plin.p_type, "dead");
 
                     if (good=1) and (n=5){
-                        if (!instance_exists(plin2)) then exit;
+                        if (!instance_exists(plin2)) then break;
                         if (!array_contains(plin.p_type, "dead")) then good++
                         
                         var new_fleet;
