@@ -288,6 +288,60 @@ function scr_enemy_ai_b() {
                     scr_alert("red", "owner", $"Massive heretic uprising on {n_name}.", x, y);
                     scr_event_log("purple", $"Massive heretic uprising on {n_name}.", name);
                 } // Huge uprising
+		}
+		// Genestealer cults grow in number
+		if (planet_feature_bool(p_feature[i], P_features.Gene_Stealer_Cult)){
+			var cult = return_planet_features(p_feature[i], P_features.Gene_Stealer_Cult)[0];
+			cult.cult_age++;
+			adjust_influence(eFACTION.Tyranids, cult.cult_age/100, i)
+			var planet_garrison = system_garrison[i-1];
+			if (cult.hiding){
+				var find_nid_chance = 50 - planet_garrison.total_garrison;
+				if (p_influence[i][eFACTION.Tyranids]>50){
+					var find_cult_chance = irandom(50);
+					var alert_text = $"A hidden Genestealer Cult in {name} Has suddenly burst forth from hiding!"
+					if (planet_garrison.garrison_force){
+						var alert_text = $"A hidden Genestealer Cult in {name} Has been discovered by marine garrison!"
+						find_cult_chance-=25;
+					}
+					if(find_cult_chance<1){
+						cult.hiding=false;
+	                    scr_popup("System Lost",alert_text,"Genestealer Cult","");
+	                    owner = eFACTION.Tyranids;
+	                    scr_event_log("red",$"A hidden Genestealer Cult in {name} {i} has Started a revolt.", name);		
+	                    p_tyranids[i]+=1;				
+					}
+				}
+			}
+		    if (!cult.hiding) and (p_tyranids[i]<=3) and (p_type[i]!="Space Hulk") && (p_influence[i][eFACTION.Tyranids]>10){
+		        var spread=0;
+		        rando=irandom(150);
+		      	rando-=p_influence[i][eFACTION.Tyranids];
+		        if (rando<=15) then spread=1;
+		      
+		        if (p_type[i]="Lava") and (p_tyranids[i]=2) then spread=0;
+		        if ((p_type[i]="Ice") or (p_type[i]="Desert")) and (p_tyranids[i]=3) then spread=0;
+		      
+		        if (spread=1) then p_tyranids[i]+=1;
+		    }
+		    if (p_influence[i][eFACTION.Tyranids]>55){
+		    	p_owner[i] = eFACTION.Tyranids;
+		    }
+		    if (p_influence[i][eFACTION.Tyranids]>90){
+		    	if (!cult.hive_summoned){
+		    		if (obj_controller.turn>30){
+		    			if (irandom(20)==0){
+		    				summon_new_hive_fleet();
+		    			}
+		    		}
+		    	}
+		    }
+		} else if (p_influence[i][eFACTION.Tyranids]>5){
+			adjust_influence(eFACTION.Tyranids, -1, i);
+			if ((irandom(200)+(p_influence[i][eFACTION.Tyranids]/10)) > 195){
+				array_push(p_feature[i], new new_planet_feature(P_features.Gene_Stealer_Cult));
+			}
+		}
 
                 if ((rando >= 100) && (p_traitors[i] < 5)) {
                     p_traitors[i] = 6;
