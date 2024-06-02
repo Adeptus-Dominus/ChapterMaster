@@ -54,19 +54,108 @@ function summon_new_hive_fleet(){
 	}
 
 	fleet=instance_create(start_coords[0],start_coords[1],obj_en_fleet);
-    fleet.owner = eFACTION.Tyranids;
-    fleet.sprite_index=spr_fleet_tyranid;
-    fleet.image_index=1;
-    fleet.capital_number=5;
-    fleet.action_x=x;
-    fleet.action_y=y;
-    fleet.action="";
+	fleet.action_x=x;
+	fleet.action_y=y;
     with (fleet){
+	    owner = eFACTION.Tyranids;
+	    sprite_index=spr_fleet_tyranid;
+	    image_index=1;
+	    capital_number=5;
+	    action="";    	
+    	action_spd = 10;
     	set_fleet_movement();
     }
 }
 
+function organise_tyranid_fleet_bio(){
+	if (capital_number*2>frigate_number){
+            capital_number-=1;
+            frigate_number+=2;
+        }
+        
+        if (capital_number*4>escort_number){
+            var rand=choose(1,2,3,4);
+            if (rand=4) then escort_number+=1;
+        }
+        
+        
+        
+        if (capital_number>0){
+            var capitals_engaged=0;
+            var caps = capital_number;
+            with (orbiting){
+            	for (var i=1;i<planets;i++){
+            		if (capitals_engaged=caps) then break;
+            		if (p_type[i]!="Dead"){
+            			p_tyranids[4]=5;
+            			capitals_engaged+=1;
+            		}
+            	}
+            }
+        }
+        
+        
 
+        var n=false;
+        with (orbiting){
+        	n = is_dead_star();
+        }
+        
+        if (n){
+            var xx,yy,good, plin, plin2;
+            xx=0;yy=0;good=0;plin=0;plin2=0;
+            
+            if (capital_number>5) then n=5;
+            
+            instance_deactivate_object(orbiting);
+            
+            repeat(100){
+                if (good!=5){
+                    xx=self.x+random_range(-300,300);
+                    yy=self.y+random_range(-300,300);
+                    if (good=0) then plin=instance_nearest(xx,yy,obj_star);
+                    if (good=1) and (n=5) then plin2=instance_nearest(xx,yy,obj_star);
+                    
+                    good = !array_contains(plin.p_type, "dead");
+
+                    if (good=1) and (n=5){
+                        if (!instance_exists(plin2)) then break;
+                        if (!array_contains(plin.p_type, "dead")) then good++
+                        
+                        var new_fleet;
+                        new_fleet=instance_create(x,y,obj_en_fleet);
+                        new_fleet.capital_number=floor(capital_number*0.4);
+                        new_fleet.frigate_number=floor(frigate_number*0.4);
+                        new_fleet.escort_number=floor(escort_number*0.4);
+                        
+                        capital_number-=new_fleet.capital_number;
+                        frigate_number-=new_fleet.frigate_number;
+                        escort_number-=new_fleet.escort_number;
+                        
+                        new_fleet.owner=eFACTION.Tyranids;
+                        new_fleet.sprite_index=spr_fleet_tyranid;
+                        new_fleet.image_index=1;
+                        
+                        /*with(new_fleet){
+                            var ii;ii=0;ii+=capital_number;ii+=round((frigate_number/2));ii+=round((escort_number/4));
+                            if (ii<=1) then ii=1;image_index=ii;
+                        }*/
+                        
+                        new_fleet.action_x=plin2.x;
+                        new_fleet.action_y=plin2.y;
+                       with (new_fleet){
+					    	set_fleet_movement();
+					    }
+                        break;
+                    }
+                    
+                    
+                    if (good=1) and (instance_exists(plin)){action_x=plin.x;action_y=plin.y;alarm[4]=1;if (n!=5) then good=5;}
+                }
+            }
+            instance_activate_object(obj_star);
+        }
+    }
 
 function nid_ship_weapons_set(weapon,slot){
 	var weapons = {
@@ -221,20 +310,18 @@ function set_nid_ships(){
 
 
 
-	if (owner = eFACTION.Tyranids){
-	    var i=0;
-	    repeat(2){
-	        i+=1;
-	        if (obj_fleet.en_mutation[i]="Spore Clouds") then shields=shields+100;
-	        if (obj_fleet.en_mutation[i]="Health"){
-	        	hp=floor(hp*1.1);
-	            maxhp=hp;
-	        }
-	        if (obj_fleet.en_mutation[i]="Armour") then armour_front+=1;
-	        if (obj_fleet.en_mutation[i]="Speed") then speed_bonus=speed_bonus*1.1;
-	        if (obj_fleet.en_mutation[i]="Turn") then turn_bonus=1.2;
-	        if (obj_fleet.en_mutation[i]="Turret") then turrets+=1;
-	    }
-	}
+    var i=0;
+    repeat(2){
+        i+=1;
+        if (obj_fleet.en_mutation[i]=="Spore Clouds") then shields=shields+100;
+        if (obj_fleet.en_mutation[i]=="Health"){
+        	hp=floor(hp*1.1);
+            maxhp=hp;
+        }
+        if (obj_fleet.en_mutation[i]=="Armour") then armour_front+=1;
+        if (obj_fleet.en_mutation[i]=="Speed") then speed_bonus=speed_bonus*1.1;
+        if (obj_fleet.en_mutation[i]=="Turn") then turn_bonus=1.2;
+        if (obj_fleet.en_mutation[i]=="Turret") then turrets+=1;
+    }
 
 }
