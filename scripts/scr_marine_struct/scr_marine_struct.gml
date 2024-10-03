@@ -1247,8 +1247,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 				_wep1.owner_data("chapter");
 				_wep2.owner_data("chapter");
 			}
-			var primary_weapon= new EquipmentStruct({},"");
-			var secondary_weapon= new EquipmentStruct({},"");
+			ranged_att += get_weapon_stat_bonus(_wep1) + get_weapon_stat_bonus(_wep2);
+			var primary_weapon= new equipment_struct({},"");
+			var secondary_weapon= new equipment_struct({},"");
 			if (carry_data[0]>carry_data[1]){
 				encumbered_ranged=true;					
 				ranged_att*=0.6;
@@ -1409,11 +1410,11 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		}		
 		static melee_attack = function(weapon_slot=0){
 			encumbered_melee=false;
-			melee_att = 100*(((weapon_skill/100) * (strength/20)) + (experience/1000)+0.1);
-			var explanation_string = string_concat("#Stats: ", format_number_with_sign(round(((melee_att/100)-1)*100)), "%#");
-			explanation_string += "  Base: +10%#";
-			explanation_string += string_concat("  WSxSTR: ", format_number_with_sign(round((((weapon_skill/100)*(strength/20))-1)*100)), "%#");
-			explanation_string += string_concat("  EXP: ", format_number_with_sign(round((experience/1000)*100)), "%#");
+			melee_att = 100*(((weapon_skill/100) * (strength/20)) + (experience()/1000)+0.1);
+			var explanation_string = "1";
+			// explanation_string += "  Base: +10%#";
+			// explanation_string += string_concat("  WSxSTR: ", format_number_with_sign(round((((weapon_skill/100)*(strength/20))-1)*100)), "%#");
+			// explanation_string += string_concat("  EXP: ", format_number_with_sign(round((experience()/1000)*100)), "%#");
 
 			melee_carrying = melee_hands_limit();
 			var _wep1 = get_weapon_one_data();
@@ -1424,6 +1425,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 				_wep1.owner_data("chapter");
 				_wep2.owner_data("chapter");
 			}
+
+			melee_att += get_weapon_stat_bonus(_wep1) + get_weapon_stat_bonus(_wep2);
+
 			var primary_weapon;
 			var secondary_weapon="none";
 			if (weapon_slot==0){
@@ -1534,6 +1538,21 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			melee_damage_data=[final_attack,explanation_string,melee_carrying,primary_weapon, secondary_weapon];
 			return melee_damage_data;
 		};
+
+		static get_weapon_stat_bonus = function(_weapon) {
+			var _total_bonus = 0;
+			if (_weapon.stat_scaling != 0) {
+				var _stats = struct_get_names(_weapon.stat_scaling);
+				for (var i = 0; i < array_length(stats); i++) {
+					var _stat_name = stats[i];
+					var _stat_value = variable_struct_get(self, stat_name);
+					if (stat_value != 0) {
+						_total_bonus += variable_struct_get(_weapon.stat_scaling, stat_name) * stat_value;
+					}
+				}
+			}
+			return _total_bonus;
+		}
 
 		//TODO just did this so that we're not loosing featuring but this porbably needs a rethink
 		static hammer_of_wrath =  function(){
