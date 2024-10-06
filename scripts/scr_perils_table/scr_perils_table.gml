@@ -108,7 +108,7 @@ function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id,
 		        return flavour_text2;
 		}],	
 		[79, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
-			obj_ncombat.global_perils+=25;
+			obj_ncombat.global_perils+=5;
 			var flavour_text2="Wind shrieks and blood pours from the sky!  The warp feels unstable.";
 			return flavour_text2;
 		}],	
