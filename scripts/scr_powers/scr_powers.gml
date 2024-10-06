@@ -176,19 +176,19 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 	        if (onc=2) then power_name="Insect Swarm";
 	        if (onc=3) then power_name="Blood Dementia";
 	    }
-	    if (book_powers="nu_daemon"){onc=choose(1,2,3,4);tome_bad=2;
+	    if (book_powers="nu_daemon"){onc=choose(1,2,3,4);tome_bad=3;
 	        if (onc=1) then power_name="Wave of Entropy";
 	        if (onc=2) then power_name="Insect Swarm";
 	        if (onc=3) then power_name="Blood Dementia";
 	        if (onc=4) then power_name="Putrid Vomit";
 	    }
-	    if (book_powers="tz_daemon"){onc=choose(1,2,3,4);tome_bad=2;
+	    if (book_powers="tz_daemon"){onc=choose(1,2,3,4);tome_bad=3;
 	        if (onc=1) then power_name="Wave of Change";
 	        if (onc=2) then power_name="Warp Bolts";
 	        if (onc=3) then power_name="Warp Beam";
 	        if (onc=4) then power_name="Iron Arm";
 	    }
-	    if (book_powers="sl_daemon"){onc=choose(1,2,3,4);tome_bad=2;
+	    if (book_powers="sl_daemon"){onc=choose(1,2,3,4);tome_bad=3;
 	        if (onc=1) then power_name="Warp Bolts";
 	        if (onc=2) then power_name="Rainbow Beam";
 	        if (onc=3) then power_name="Hysterical Frenzy";
@@ -519,87 +519,87 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 
 
 
-	// determine target here
-	var good=0,good2=0,peril1=0,peril2=0,perils=0;
-	var heh=choose(0,0,0,2);
+	var good = 0,
+		good2 = 0,
+		perils_chance = 15,
+		perils_roll = 0,
+		perils_strength = 0;
 
-	peril1=(marine_exp[unit_id]*-0.03)+9;
-	// peril1+=30;
-	if (string_count("Hood",marine_gear[unit_id])>0) then peril1-=5;
-	if (peril1<1) then peril1=1;
-	if (scr_has_disadv("Warp Touched")) then peril1+=2;
-	if (marine_type[unit_id]="Chapter Master") and (peril1>1) then peril1=round(peril1/2);
-	if (scr_has_disadv("Shitty Luck")) then peril1+=3;
+	if (scr_has_disadv("Warp Touched")) then perils_chance += 1.5;
+	if (scr_has_disadv("Shitty")) then perils_chance += 2;
+	if (book_powers != "") then perils_chance += tome_bad;
+	perils_chance += obj_ncombat.global_perils;
+	perils_chance -= (marine_exp[unit_id] * 0.05);
+	if (string_count("Hood", marine_gear[unit_id]) > 0) then perils_chance *= 0.75;
 
-	if (book_powers!="") then peril1+=tome_bad;
-	if (string_count("daemon",book_powers)>0) then peril1+=3;
+	perils_roll = floor(random(100));
+	perils_strength = floor(random(100));
 
-	peril1+=obj_ncombat.global_perils;
-	peril2=floor(random(100))+1;
-	peril3=floor(random(100))+1;
+	if (binders = true) { // I hope you like demons
+		perils_chance -= 25
+		perils_strength += 40;
+		if (perils_strength <= 47) then perils_strength = 48;
+	}
 
-	if (binders=true){heh=choose(0,0,0,0,0,2);peril3+=40;if (peril3<=47) then peril3=48;}// I hope you like demons
+	// show_message("Peril of the Warp Chance: "+string(perils_chance)+"#Roll: "+string(perils_roll));
+	// perils_roll=1;perils_strength=88;
+	perils_chance = max(perils_chance, 1);
 
+	if (perils_roll <= perils_chance) {
+		if (obj_ncombat.sorcery_seen = 1) then obj_ncombat.sorcery_seen = 0;
+		p_type = "perils";
+		flavour_text3 = "";
+		if (array_contains(obj_ini.dis, "Warp Touched")) then perils_strength += 20;
+		if (array_contains(obj_ini.dis, "Shitty Luck")) then perils_strength += 25;
+		if (book_powers != "") then perils_strength += (tome_bad * 10);
+		if (marine_type[unit_id] == "Chapter Master") then perils_strength *= 0.5;
+		flavour_text1 = $"{unit.name_role()} suffers Perils of the Warp!  ";
+		flavour_text2 = scr_perils_table(perils_strength, unit, psy_discipline, power_name, unit_id, book_powers);
 
+		if (unit.hp() < 0) {
+			//TODO create is_dead function to remove repeats of this log
+			if (marine_dead[unit_id] == 0) {
+				marine_dead[unit_id] = 1;
+				obj_ncombat.player_forces -= 1;
+			}
+		
+			// Track the lost unit
+			var existing_index = array_get_index(lost, marine_type[unit_id]);
+			if (existing_index != -1) {
+				lost_num[existing_index] += 1;
+			} else {
+				array_push(lost, marine_type[unit_id]);
+				array_push(lost_num, 1);
+			}
+		
+			// Update unit counts
+			var armour_data = unit.get_armour_data();
+			var is_dread = false;
+			if (is_struct(armour_data)) {
+				is_dread = armour_data.has_tag("dreadnought");
+			}
+			if (is_dread) {
+				dreads -= 1;
+			} else {
+				men -= 1;
+			}
+		
+			// Trigger red thirst
+			if (obj_ncombat.red_thirst == 1 && marine_type[unit_id] != "Death Company") {
+				obj_ncombat.red_thirst = 2;
+			}
+		}
 
-	// show_message("Peril of the Warp Chance: "+string(peril1)+"#Roll: "+string(peril2));
-	// peril2=1;peril3=88;
-	if (peril2<=peril1) and (heh=2){
-	    if (obj_ncombat.sorcery_seen=1) then obj_ncombat.sorcery_seen=0;
-
-	    p_type="perils";
-	    flavour_text3="";
-	    if (scr_has_disadv("Warp Touched")) then peril3+=20;
-	    if (scr_has_disadv("Shitty Luck")) then peril3+=25;
-
-	    if (string_count("daemon",book_powers)>0) then peril1+=25;
-
-
-	    flavour_text1=$"{unit.name_role()} suffers Perils of the Warp!  ";
-	    flavour_text2=scr_perils_table(peril3, unit, psy_discipline, power_name,unit_id, book_powers);
-    
-        if (unit.hp() < 0){//TODO create is_dead function to remove repeats of this log
-            if (marine_dead[unit_id] == 0) {
-                marine_dead[unit_id] = 1;
-                obj_ncombat.player_forces -= 1;
-            }
-            
-            // Track the lost unit
-            var existing_index = array_get_index(lost, marine_type[unit_id]);
-            if (existing_index != -1) {
-                lost_num[existing_index] += 1;
-            } else {
-                array_push(lost, marine_type[unit_id]);
-                array_push(lost_num, 1);
-            }
-
-            // Update unit counts
-            var armour_data = unit.get_armour_data();
-            var is_dread = false;
-            if (is_struct(armour_data)){
-                 is_dread = armour_data.has_tag("dreadnought");
-            }
-            if (is_dread) {
-                dreads -= 1;
-            } else {
-                men -= 1;
-            }
-
-            // Trigger red thirst
-            if (obj_ncombat.red_thirst == 1 && marine_type[unit_id] != "Death Company") {
-                obj_ncombat.red_thirst = 2;
-            }
-
-	    }
-    
-	    obj_ncombat.messages+=1;
-	    obj_ncombat.message[obj_ncombat.messages]=flavour_text1+flavour_text2+flavour_text3;
-	    // if (enemy5.dudes_vehicle[targeh]=1) then obj_ncombat.message_sz[obj_ncombat.messages]=(casualties*10)+(0.5-(obj_ncombat.messages/100));
-	    obj_ncombat.message_sz[obj_ncombat.messages]=999+(0.5-(obj_ncombat.messages/100));
-	    obj_ncombat.message_priority[obj_ncombat.messages]=0;
+		obj_ncombat.messages += 1;
+		obj_ncombat.message[obj_ncombat.messages] = flavour_text1 + flavour_text2 + flavour_text3;
+		// if (enemy5.dudes_vehicle[targeh]=1) then obj_ncombat.message_sz[obj_ncombat.messages]=(casualties*10)+(0.5-(obj_ncombat.messages/100));
+		obj_ncombat.message_sz[obj_ncombat.messages] = 999 + (0.5 - (obj_ncombat.messages / 100));
+		obj_ncombat.message_priority[obj_ncombat.messages] = 0;
 	}
 
 	if (obj_ncombat.sorcery_seen=1) then obj_ncombat.sorcery_seen=2;
+
+	// determine target here
 
 	if (p_type="buff") or (power_name="gather_energy"){
 		var marine_index;
