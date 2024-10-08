@@ -68,13 +68,14 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 	var weapon_two = unit.get_weapon_two_data()
 	target_unit = enemy_target;
 	power_index = power_count;
-	psy_discipline = power_set;
+	psy_discipline = convert_power_letter(power_set);
 	var flavour_text1 = "",
 		flavour_text2 = "",
 		flavour_text3 = "",
 		flavour_text_4 = "";
 	binders_adv = scr_has_adv("Daemon Binders");
 	var has_hood = (string_count("Hood", marine_gear[unit_id]) > 0);
+	var using_tome = false;
 	tome_discipline = "";
 	tome_roll = irandom(99) + 1;
 	tome_perils_chance = 0;
@@ -82,39 +83,6 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 	tome_slot = 0;
 	tome_tags = "";
 
-
-	function get_tome_discipline(tome_tags) {
-		var tome_discipline = "";
-		
-		if (string_count("Tome", tome_tags) > 0) {
-			var disciplines_map = {
-				"PRE": "nu",
-				"MIN": "tz_daemon",
-				"NURGLE": "nu_daemon",
-				"TZEENTCH": "tz_daemon",
-				"SLAANESH": "sl_daemon",
-				"GOLD": "default",
-				"CRU": "telekenesis",
-				"GLOW": "default",
-				"ADAMANTINE": "default",
-				"THI": "biomancy",
-				"FAL": "nu",
-				"SAL": "pyromancy",
-				"TENTACLES": "what_the_fuck_man",
-				"BUR": "pyromancy"
-			}
-	
-			var keywords = struct_get_names(disciplines_map);
-			for (var i = 0; i < array_length(keywords); i++) {
-				if (string_count(keywords[i], tome_tags) > 0) {
-					tome_discipline = variable_struct_get(disciplines_map, keywords[i]);
-				}
-			}
-		}
-	
-		return tome_discipline;
-	}
-	
 	// In here check if have tome
 	if (unit.weapon_one() == "Tome" || unit.weapon_two() == "Tome") {
 		var tomes;
@@ -192,15 +160,18 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 	};
 
 	var selected_discipline = psy_discipline;
-	if (tome_discipline != "" && tome_roll <= 50) then selected_discipline = tome_discipline;
-
+	if (tome_discipline != "" && tome_roll <= 50){
+		selected_discipline = tome_discipline;
+		using_tome = true;
+	}
 	var disciplines_array = struct_get_names(disciplines_data);
 	for (var i = 0; i < array_length(disciplines_array); i++) {
 		if (string_count(disciplines_array[i], selected_discipline) > 0) {
-			power_name = variable_struct_get(disciplines_data, disciplines_array[i]);
+			var powers_array = disciplines_data[$ disciplines_array[i]].powers;
+			if (using_tome) then power_index = irandom(array_length(powers_array));
+			power_name = powers_array[power_index];
 		}
 	}
-
 
 	// Change cases here
 	if (power_name = "Machine Curse") {
@@ -1327,4 +1298,57 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 
 	obj_ncombat.alarm[3] = 5;
 
+}
+
+function get_tome_discipline(tome_tags) {
+	var tome_discipline = "";
+	
+	if (string_count("Tome", tome_tags) > 0) {
+		var disciplines_map = {
+			"PRE": "nu",
+			"MIN": "tz_daemon",
+			"NURGLE": "nu_daemon",
+			"TZEENTCH": "tz_daemon",
+			"SLAANESH": "sl_daemon",
+			"GOLD": "default",
+			"CRU": "telekenesis",
+			"GLOW": "default",
+			"ADAMANTINE": "default",
+			"THI": "biomancy",
+			"FAL": "nu",
+			"SAL": "pyromancy",
+			"TENTACLES": "what_the_fuck_man",
+			"BUR": "pyromancy"
+		}
+
+		var keywords = struct_get_names(disciplines_map);
+		for (var i = 0; i < array_length(keywords); i++) {
+			if (string_count(keywords[i], tome_tags) > 0) {
+				tome_discipline = variable_struct_get(disciplines_map, keywords[i]);
+			}
+		}
+	}
+
+	return tome_discipline;
+}
+
+function convert_power_letter(power_code) {
+    var discipline_letter = power_code;
+    var discipline_name = "";
+
+    if (string_count("Z", power_code) > 0) {
+        discipline_name = "hacks";
+    } else if (string_count("D", power_code) > 0) {
+        discipline_name = "default";
+    } else if (string_count("B", power_code) > 0) {
+        discipline_name = "biomancy";
+    } else if (string_count("P", power_code) > 0) {
+        discipline_name = "pyromancy";
+    } else if (string_count("T", power_code) > 0) {
+        discipline_name = "telekinesis";
+    } else if (string_count("R", power_code) > 0) {
+        discipline_name = "rune Magick";
+    }
+
+    return discipline_name;
 }
