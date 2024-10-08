@@ -68,6 +68,7 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 	var weapon_two = unit.get_weapon_two_data()
 	target_unit = enemy_target;
 	power_index = power_count;
+	show_debug_message(power_set);
 	psy_discipline = convert_power_letter(power_set);
 	var flavour_text1 = "",
 		flavour_text2 = "",
@@ -102,41 +103,47 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 	var disciplines_data = {
 		"minor_nu": {
 			"powers": ["Wave of Entropy", "Insect Swarm", "Blood Dementia"],
-			"perils_chance": 1,
+			"perils_chance": 0.10,
 			"perils_strength": 10
 		},
 		"minor_nu_daemon": {
 			"powers": ["Wave of Entropy", "Insect Swarm", "Blood Dementia", "Putrid Vomit"],
-			"perils_chance": 3,
+			"perils_chance": 0.30,
 			"perils_strength": 30
 		},
 		"minor_tz_daemon": {
 			"powers": ["Wave of Change", "Warp Bolts", "Warp Beam", "Iron Arm"],
-			"perils_chance": 3,
+			"perils_chance": 0.30,
 			"perils_strength": 30
 		},
 		"minor_sl_daemon": {
 			"powers": ["Warp Bolts", "Rainbow Beam", "Hysterical Frenzy", "Symphony of Pain"],
-			"perils_chance": 3,
+			"perils_chance": 0.30,
 			"perils_strength": 30
 		},
 		"minor_default": {
-			"powers": ["Avenge", "Spatial Distortion", "Stormbringer"]
+			"powers": ["Avenge", "Spatial Distortion", "Stormbringer"],
+			"perils_chance": 0,
+			"perils_strength": 0
 		},
 		"minor_telekenesis": {
-			"powers": ["Spatial Distortion", "Telekinetic Dome", "Vortex of Doom"]
+			"powers": ["Spatial Distortion", "Telekinetic Dome", "Vortex of Doom"],
+			"perils_chance": 0,
+			"perils_strength": 0
 		},
 		"minor_biomancy": {
 			"powers": ["Haemorrhage", "Regenerate", "Iron Arm", "Insect Swarm"],
-			"perils_chance": 1,
+			"perils_chance": 0.10,
 			"perils_strength": 10
 		},
 		"minor_pyromancy": {
-			"powers": ["Inferno", "Sun Burst", "Molten Beam"]
+			"powers": ["Inferno", "Sun Burst", "Molten Beam"],
+			"perils_chance": 0,
+			"perils_strength": 0
 		},
 		"minor_what_the_fuck_man": {
 			"powers": ["Blood Dementia", "Spatial Distortion", "Haemorrhage"],
-			"perils_chance": 2,
+			"perils_chance": 0.20,
 			"perils_strength": 20
 		},
 		"hacks": {
@@ -166,9 +173,16 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 	}
 	var disciplines_array = struct_get_names(disciplines_data);
 	for (var i = 0; i < array_length(disciplines_array); i++) {
-		if (string_count(disciplines_array[i], selected_discipline) > 0) {
+		if (disciplines_array[i] == selected_discipline) {
 			var powers_array = disciplines_data[$ disciplines_array[i]].powers;
-			if (using_tome) then power_index = irandom(array_length(powers_array));
+			if (using_tome){
+				power_index = irandom(array_length(powers_array));
+				tome_perils_chance = disciplines_data[$ disciplines_array[i]].perils_chance;
+				tome_perils_strength = disciplines_data[$ disciplines_array[i]].perils_strength;
+			}
+			show_debug_message(selected_discipline);
+			show_debug_message(powers_array);
+			show_debug_message(power_index);
 			power_name = powers_array[power_index];
 		}
 	}
@@ -785,23 +799,23 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 
 	perils_strength += tome_perils_strength;
 	if scr_has_disadv("Warp Touched") {
-		perils_chance += 1;
-		perils_strength += 20;
+		perils_chance += 0.25;
+		perils_strength += 25;
 	}
 	if scr_has_disadv("Shitty Luck") {
-		perils_chance += 1;
+		perils_chance += 0.25;
 		perils_strength += 25;
 	}
 	perils_strength -= (marine_exp[unit_id] * 0.25);
 
 	perils_chance += tome_perils_chance;
 	perils_chance += obj_ncombat.global_perils;
-	perils_chance -= (marine_exp[unit_id] * 0.01);
+	perils_chance -= (marine_exp[unit_id] * 0.002);
 
 	if (binders_adv) { // I hope you like demons
-		perils_chance -= 0.8;
+		perils_chance -= 0.5;
+		perils_strength += 40;
 		if (perils_strength <= 47) then perils_strength = 48;
-		else perils_strength += 20;
 	}
 
 	if (has_hood){ 
@@ -812,9 +826,9 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 	perils_strength = max(perils_strength, 15);
 	perils_chance = max(perils_chance, 0.05);
 
-	show_debug_message("Peril of the Warp Chance: " + string(perils_chance));
-	show_debug_message("Roll: " + string(perils_roll));
-	show_debug_message("Peril of the Warp Strength: " + string(perils_strength));
+	// show_debug_message("Peril of the Warp Chance: " + string(perils_chance));
+	// show_debug_message("Roll: " + string(perils_roll));
+	// show_debug_message("Peril of the Warp Strength: " + string(perils_strength));
 
 	if (perils_roll <= perils_chance) {
 		if (obj_ncombat.sorcery_seen = 1) then obj_ncombat.sorcery_seen = 0;
