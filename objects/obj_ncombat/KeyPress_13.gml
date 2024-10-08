@@ -91,7 +91,7 @@ function reset_combat_message_arrays(){
     }
 }
 if (timer_stage=1) or (timer_stage=5){
-    if (global_perils>0) then global_perils-=1;
+    if (global_perils>0) then global_perils-=0.1;
     if (global_perils<0) then global_perils=0;
     turns+=1;
     
