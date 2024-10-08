@@ -1305,20 +1305,20 @@ function get_tome_discipline(tome_tags) {
 	
 	if (string_count("Tome", tome_tags) > 0) {
 		var disciplines_map = {
-			"PRE": "nu",
-			"MIN": "tz_daemon",
-			"NURGLE": "nu_daemon",
-			"TZEENTCH": "tz_daemon",
-			"SLAANESH": "sl_daemon",
-			"GOLD": "default",
-			"CRU": "telekenesis",
-			"GLOW": "default",
-			"ADAMANTINE": "default",
-			"THI": "biomancy",
-			"FAL": "nu",
-			"SAL": "pyromancy",
-			"TENTACLES": "what_the_fuck_man",
-			"BUR": "pyromancy"
+			"PRE": "minor_nu",
+			"MIN": "minor_tz_daemon",
+			"NURGLE": "minor_nu_daemon",
+			"TZEENTCH": "minor_tz_daemon",
+			"SLAANESH": "minor_sl_daemon",
+			"GOLD": "minor_default",
+			"CRU": "minor_telekenesis",
+			"GLOW": "minor_default",
+			"ADAMANTINE": "minor_default",
+			"THI": "minor_biomancy",
+			"FAL": "minor_nu",
+			"SAL": "minor_pyromancy",
+			"TENTACLES": "minor_what_the_fuck_man",
+			"BUR": "minor_pyromancy"
 		}
 
 		var keywords = struct_get_names(disciplines_map);
