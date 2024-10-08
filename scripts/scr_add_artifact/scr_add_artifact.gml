@@ -157,11 +157,11 @@ function scr_add_artifact(artifact_type, artifact_tags, is_identified, artifact_
 	}
 	if (artifact_tags="inquisition") then  array_push(tags, "inq");
 	if ((artifact_tags="daemonic"||artifact_tags="daemonic")) and (base_type_detail!="Tome"){
-		t3="daemonic"+choose("1a","2a","3a","4a");
+		t3="daemonic"+choose("KHORNE","NURGLE","TZEENTCH","SLAANESH");
 		 array_push(tags, t3);
 	}
 	if ((artifact_tags="daemonic" || artifact_tags="daemonic")) and (base_type_detail="Tome"){
-		t3="daemonic"+choose("2a","3a","4a");
+		t3="daemonic"+choose("NURGLE","TZEENTCH","SLAANESH");
 		array_push(tags, t3);
 	}
 	if (artifact_type="chaos_gift"){

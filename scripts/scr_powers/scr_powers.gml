@@ -58,201 +58,149 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 	var unit = unit_struct[unit_id];
 	if (!is_struct(unit)) then exit;
 	if (unit.name() == "") then exit;
-	var psy_discipline, power_name, target_type, enemy5, onc, using, binders, book_powers, book_roll, tome_bad, tome_slot, tome_tags;
-	var psy_discipline = "";
-	var power_name = "";
-	var target_type = "";
+
+	var power_name, target_type, target_unit, power_index, psy_discipline;
+	var binders_adv, tome_discipline, tome_roll, tome_perils_chance, tome_perils_strength, tome_slot, tome_tags;
+
+	power_name = "";
+	target_type = "";
 	var weapon_one = unit.get_weapon_one_data()
 	var weapon_two = unit.get_weapon_two_data()
-	enemy5 = enemy_target;
-	onc = power_count;
-	using = power_set;
+	target_unit = enemy_target;
+	power_index = power_count;
+	psy_discipline = power_set;
 	var flavour_text1 = "",
 		flavour_text2 = "",
 		flavour_text3 = "",
 		flavour_text_4 = "";
-	binders = false;
-	book_powers = "";
-	book_roll = irandom(99) + 1;
-	tome_bad = 0;
+	binders_adv = scr_has_adv("Daemon Binders");
+	var has_hood = (string_count("Hood", marine_gear[unit_id]) > 0);
+	tome_discipline = "";
+	tome_roll = irandom(99) + 1;
+	tome_perils_chance = 0;
+	tome_perils_strength = 0;
 	tome_slot = 0;
 	tome_tags = "";
 
-	// In here check if have book
 
+	function get_tome_discipline(tome_tags) {
+		var tome_discipline = "";
+		
+		if (string_count("Tome", tome_tags) > 0) {
+			var disciplines_map = {
+				"PRE": "nu",
+				"MIN": "tz_daemon",
+				"NURGLE": "nu_daemon",
+				"TZEENTCH": "tz_daemon",
+				"SLAANESH": "sl_daemon",
+				"GOLD": "default",
+				"CRU": "telekenesis",
+				"GLOW": "default",
+				"ADAMANTINE": "default",
+				"THI": "biomancy",
+				"FAL": "nu",
+				"SAL": "pyromancy",
+				"TENTACLES": "what_the_fuck_man",
+				"BUR": "pyromancy"
+			}
+	
+			var keywords = struct_get_names(disciplines_map);
+			for (var i = 0; i < array_length(keywords); i++) {
+				if (string_count(keywords[i], tome_tags) > 0) {
+					tome_discipline = variable_struct_get(disciplines_map, keywords[i]);
+				}
+			}
+		}
+	
+		return tome_discipline;
+	}
+	
+	// In here check if have tome
 	if (unit.weapon_one() == "Tome" || unit.weapon_two() == "Tome") {
-		// Nurge is 2, tzeentch is 3, slaanesh 4
+		var tomes;
 
-		var tomes = 1,
-			onf = 0;
+		if (unit.weapon_one() == "Tome") { //has two tomes
+			tomes++;
+		}
 		if (unit.weapon_two() == "Tome") { //has one tome in right
 			tomes++;
-			if (unit.weapon_one() == "Tome") { //has two tomes
-				tomes++;
-			}
 		}
-		if (tomes == 3) {
-			tomes = choose(1, 2)
-		}
-		if (tomes = 1) then tome_tags = marine_wep1[unit_id];
-		if (tomes = 2) then tome_tags = marine_wep2[unit_id];
 
-		if (string_count("Tome", tome_tags) > 0) {
-			if (string_count("PRE", tome_tags) > 0) then book_powers = "nu";
-			if (string_count("MIN", tome_tags) > 0) then book_powers = "tz_daemon";
-			if (string_count("2", tome_tags) > 0) then book_powers = "nu_daemon";
-			if (string_count("3", tome_tags) > 0) then book_powers = "tz_daemon";
-			if (string_count("4", tome_tags) > 0) then book_powers = "sl_daemon";
-
-			if (book_powers = "") { // Check materials here for non-chaos powers
-				if (string_count("GOLD", tome_tags) > 0) then book_powers = "default"; // gold
-				if (string_count("CRU", tome_tags) > 0) then book_powers = "telekenesis"; // crumbling
-				if (string_count("GLOW", tome_tags) > 0) then book_powers = "default"; // blue glow
-				if (string_count("ADAMANTINE", tome_tags) > 0) then book_powers = "default"; // adamantium
-				if (string_count("PRE", tome_tags) > 0) then book_powers = "biomancy"; // preserved flesh
-				if (string_count("THI", tome_tags) > 0) then book_powers = "biomancy"; // thin
-				if (string_count("FAL", tome_tags) > 0) then book_powers = "nu"; // fallen angle
-				if (string_count("SAL", tome_tags) > 0) then book_powers = "pyromancy"; // salamander
-				if (string_count("TENTACLES", tome_tags) > 0) then book_powers = "what_the_fuck_man"; // tentacles
-				if (string_count("MIN", tome_tags) > 0) then book_powers = "tz_daemon"; // mindfuck
-				if (book_powers = "default") and(string_count("BUR", tome_tags) > 0) then book_powers = "pyromancy"; // burning book
-
-				// skulls, falling angel, thin, tentacle, mindfuckif (t2!="Statue") then t5=choose("SKU","FAL","THI","TENTACLES","MIN");
-
-			}
-
-		}
-	}
-	if (scr_has_adv( "Daemon Binders")) then binders = true;
-	var p_type = "";
-	p_rang = 0;
-	p_tar = 0;
-	p_spli = 0;
-	p_att = 0;
-	p_arp = 0;
-	p_duration = 0;
-
-	if (string_count("Z", using) > 0) {
-		psy_discipline = "hacks";
-		power_name = "gather_energy";
+		if (tomes == 1) then tome_tags = marine_wep1[unit_id];
+		else if (tomes == 2) then tome_tags = marine_wep2[unit_id];
+		tome_discipline = get_tome_discipline(tome_tags);
 	}
 
-	if (string_count("D", using) > 0) {
-		psy_discipline = "default";
-		if (onc = 0) then power_name = "Minor Smite";
-		if (onc = 1) then power_name = "Smite";
-		if (onc = 2) then power_name = "Force Dome";
-		if (onc = 3) then power_name = "Machine Curse";
-		if (onc = 4) then power_name = "Avenge";
-		if (onc = 5) then power_name = "Quickening";
-		if (onc = 6) then power_name = "Might of the Ancients";
-		if (onc = 7) then power_name = "Vortex of Doom";
-	}
-	if (string_count("B", using) > 0) {
-		psy_discipline = "biomancy";
-		if (onc = 0) then power_name = "Minor Smite";
-		if (onc = 1) then power_name = "Blood Boil";
-		if (onc = 2) then power_name = "Iron Arm";
-		if (onc = 3) then power_name = "Endurance";
-		if (onc = 4) then power_name = "Regenerate";
-		if (onc = 5) then power_name = "Haemorrhage";
-	}
-	if (string_count("P", using) > 0) {
-		psy_discipline = "pyromancy";
-		if (onc = 0) then power_name = "Breathe Fire";
-		if (onc = 1) then power_name = "Fiery Form";
-		if (onc = 2) then power_name = "Fire Shield";
-		if (onc = 3) then power_name = "Inferno";
-		if (onc = 4) then power_name = "Sun Burst";
-		if (onc = 5) then power_name = "Molten Beam";
-	}
-	if (string_count("T", using) > 0) {
-		psy_discipline = "telekinesis";
-		if (onc = 0) then power_name = "Crush";
-		if (onc = 1) then power_name = "Shockwave";
-		if (onc = 2) then power_name = "Wave of Force";
-		if (onc = 3) then power_name = "Telekinetic Dome";
-		if (onc = 4) then power_name = "Spatial Distortion";
-		if (onc = 5) then power_name = "Vortex of Doom";
-	}
-	if (string_count("R", using) > 0) {
-		psy_discipline = "rune Magick";
-		if (onc = 0) then power_name = "Living Lightning";
-		if (onc = 1) then power_name = "Murderous Hurricane";
-		if (onc = 2) then power_name = "Stormbringer";
-		if (onc = 3) then power_name = "Fury of the Wolf";
-		if (onc = 4) then power_name = "Thunder Clap";
-		if (onc = 5) then power_name = "Spatial Distortion";
+	var disciplines_data = {
+		"minor_nu": {
+			"powers": ["Wave of Entropy", "Insect Swarm", "Blood Dementia"],
+			"perils_chance": 1,
+			"perils_strength": 10
+		},
+		"minor_nu_daemon": {
+			"powers": ["Wave of Entropy", "Insect Swarm", "Blood Dementia", "Putrid Vomit"],
+			"perils_chance": 3,
+			"perils_strength": 30
+		},
+		"minor_tz_daemon": {
+			"powers": ["Wave of Change", "Warp Bolts", "Warp Beam", "Iron Arm"],
+			"perils_chance": 3,
+			"perils_strength": 30
+		},
+		"minor_sl_daemon": {
+			"powers": ["Warp Bolts", "Rainbow Beam", "Hysterical Frenzy", "Symphony of Pain"],
+			"perils_chance": 3,
+			"perils_strength": 30
+		},
+		"minor_default": {
+			"powers": ["Avenge", "Spatial Distortion", "Stormbringer"]
+		},
+		"minor_telekenesis": {
+			"powers": ["Spatial Distortion", "Telekinetic Dome", "Vortex of Doom"]
+		},
+		"minor_biomancy": {
+			"powers": ["Haemorrhage", "Regenerate", "Iron Arm", "Insect Swarm"],
+			"perils_chance": 1,
+			"perils_strength": 10
+		},
+		"minor_pyromancy": {
+			"powers": ["Inferno", "Sun Burst", "Molten Beam"]
+		},
+		"minor_what_the_fuck_man": {
+			"powers": ["Blood Dementia", "Spatial Distortion", "Haemorrhage"],
+			"perils_chance": 2,
+			"perils_strength": 20
+		},
+		"hacks": {
+			"powers": ["Gather Energy"]
+		},
+		"rune_magick": {
+			"powers": ["Living Lightning", "Murderous Hurricane", "Stormbringer", "Fury of the Wolf", "Thunder Clap", "Spatial Distortion"]
+		},
+		"biomancy": {
+			"powers": ["Minor Smite", "Blood Boil", "Iron Arm", "Endurance", "Regenerate", "Haemorrhage"]
+		},
+		"pyromancy": {
+			"powers": ["Breathe Fire", "Fiery Form", "Fire Shield", "Inferno", "Sun Burst", "Molten Beam"]
+		},
+		"telekinesis": {
+			"powers": ["Crush", "Shockwave", "Wave of Force", "Telekinetic Dome", "Spatial Distortion", "Vortex of Doom"]
+		},
+		"default": {
+			"powers": ["Minor Smite", "Smite", "Force Dome", "Machine Curse", "Avenge", "Quickening", "Might of the Ancients", "Vortex of Doom"]
+		}
+	};
+
+	var selected_discipline = psy_discipline;
+	if (tome_discipline != "" && tome_roll <= 50) then selected_discipline = tome_discipline;
+
+	var disciplines_array = struct_get_names(disciplines_data);
+	for (var i = 0; i < array_length(disciplines_array); i++) {
+		if (string_count(disciplines_array[i], selected_discipline) > 0) {
+			power_name = variable_struct_get(disciplines_data, disciplines_array[i]);
+		}
 	}
 
-	if (book_powers != "") and(book_roll <= 50) {
-		power_name = "";
-		if (book_powers = "nu") {
-			onc = choose(1, 2, 3);
-			tome_bad = 1;
-			if (onc = 1) then power_name = "Wave of Entropy";
-			if (onc = 2) then power_name = "Insect Swarm";
-			if (onc = 3) then power_name = "Blood Dementia";
-		}
-		if (book_powers = "nu_daemon") {
-			onc = choose(1, 2, 3, 4);
-			tome_bad = 3;
-			if (onc = 1) then power_name = "Wave of Entropy";
-			if (onc = 2) then power_name = "Insect Swarm";
-			if (onc = 3) then power_name = "Blood Dementia";
-			if (onc = 4) then power_name = "Putrid Vomit";
-		}
-		if (book_powers = "tz_daemon") {
-			onc = choose(1, 2, 3, 4);
-			tome_bad = 3;
-			if (onc = 1) then power_name = "Wave of Change";
-			if (onc = 2) then power_name = "Warp Bolts";
-			if (onc = 3) then power_name = "Warp Beam";
-			if (onc = 4) then power_name = "Iron Arm";
-		}
-		if (book_powers = "sl_daemon") {
-			onc = choose(1, 2, 3, 4);
-			tome_bad = 3;
-			if (onc = 1) then power_name = "Warp Bolts";
-			if (onc = 2) then power_name = "Rainbow Beam";
-			if (onc = 3) then power_name = "Hysterical Frenzy";
-			if (onc = 4) then power_name = "Symphony of Pain";
-		}
-
-		if (book_powers = "default") or(book_powers = "") {
-			onc = choose(1, 2, 3);
-			if (onc = 1) then power_name = "Avenge";
-			if (onc = 2) then power_name = "Spatial Distortion";
-			if (onc = 3) then power_name = "Stormbringer";
-		}
-		if (book_powers = "telekenesis") {
-			onc = choose(1, 2, 3);
-			if (onc = 1) then power_name = "Spatial Distortion";
-			if (onc = 2) then power_name = "Telekinetic Dome";
-			if (onc = 3) then power_name = "Vortex of Doom";
-		}
-		if (book_powers = "biomancy") {
-			onc = choose(1, 2, 3, 4);
-			tome_bad = 1;
-			if (onc = 1) then power_name = "Haemorrhage";
-			if (onc = 2) then power_name = "Regenerate";
-			if (onc = 3) then power_name = "Iron Arm";
-			if (onc = 4) then power_name = "Insect Swarm";
-		}
-		if (book_powers = "pyromancy") {
-			onc = choose(1, 2, 3);
-			if (onc = 1) then power_name = "Inferno";
-			if (onc = 2) then power_name = "Sun Burst";
-			if (onc = 3) then power_name = "Molten Beam";
-		}
-		if (book_powers = "what_the_fuck_man") {
-			onc = choose(1, 2, 3, 1, 3);
-			tome_bad = 2;
-			if (onc = 1) then power_name = "Blood Dementia";
-			if (onc = 2) then power_name = "Spatial Distortion";
-			if (onc = 3) then power_name = "Haemorrhage";
-		}
-	}
 
 	// Change cases here
 	if (power_name = "Machine Curse") {
@@ -270,6 +218,14 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 	// 
 
 	// Chaos powers here
+
+	var p_type = "";
+	p_rang = 0;
+	p_tar = 0;
+	p_spli = 0;
+	p_att = 0;
+	p_arp = 0;
+	p_duration = 0;
 
 	if (power_name = "Wave of Entropy") {
 		p_type = "attack";
@@ -303,10 +259,10 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 		p_att = 500;
 		p_arp = 1;
 		p_duration = 0;
-		var rah;
-		rah = choose(1, 2);
-		if (rah = 1) then flavour_text2 = "- a massive, black cloud of insects spew from his body.  At once they begin burrowing into your foes.  ";
-		if (rah = 2) then flavour_text2 = "- rank, ichory insects spew forth from his body at your foes.  They begin burrowing through flesh and armour alike.  ";
+		var rnd;
+		rnd = choose(1, 2);
+		if (rnd = 1) then flavour_text2 = "- a massive, black cloud of insects spew from his body.  At once they begin burrowing into your foes.  ";
+		if (rnd = 2) then flavour_text2 = "- rank, ichory insects spew forth from his body at your foes.  They begin burrowing through flesh and armour alike.  ";
 		if (obj_ncombat.sorcery_seen < 2) and(obj_ncombat.present_inquisitor = 1) then obj_ncombat.sorcery_seen = 1;
 	}
 	if (power_name = "Blood Dementia") {
@@ -331,8 +287,8 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 		p_att = 600;
 		p_arp = 0;
 		p_duration = 0;
-		var rah;
-		rah = choose(1, 2);
+		var rnd;
+		rnd = choose(1, 2);
 		flavour_text2 = "- from in front of their mouth a stream of rancid, acidic vomit spews forth at tremendous pressure, splashing over his foes.  ";
 		if (obj_ncombat.enemy = 9) then p_att = 450;
 		if (obj_ncombat.sorcery_seen < 2) and(obj_ncombat.present_inquisitor = 1) then obj_ncombat.sorcery_seen = 1;
@@ -345,11 +301,11 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 		p_att = 300;
 		p_arp = 0;
 		p_duration = 0;
-		var rah;
-		rah = choose(1, 2, 3);
-		if (rah = 1) then flavour_text2 = "- several bolts of purple warp energy appear and are flung at the enemy.  ";
-		if (rah = 2) then flavour_text2 = "- he launches a series of rapid warp bolts at the enemy.  ";
-		if (rah = 3) then flavour_text2 = "- three oozing, shifting bolts of warp energy fly outward from his palms.  ";
+		var rnd;
+		rnd = choose(1, 2, 3);
+		if (rnd = 1) then flavour_text2 = "- several bolts of purple warp energy appear and are flung at the enemy.  ";
+		if (rnd = 2) then flavour_text2 = "- he launches a series of rapid warp bolts at the enemy.  ";
+		if (rnd = 3) then flavour_text2 = "- three oozing, shifting bolts of warp energy fly outward from his palms.  ";
 		if (obj_ncombat.sorcery_seen < 2) and(obj_ncombat.present_inquisitor = 1) then obj_ncombat.sorcery_seen = 1;
 	}
 	if (power_name = "Warp Beam") {
@@ -395,10 +351,10 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 		p_arp = 1;
 		p_duration = 0;
 		flavour_text2 = "- mouth stretching unnaturally wide, before letting out a hellish shriek.  ";
-		var rah;
-		rah = choose(1, 2);
-		if (rah = 1) then flavour_text2 = "The air rumbles and shifts at the sheer magnitude of the sound.  ";
-		if (rah = 2) then flavour_text2 = "Armour and flesh tear alike are torn apart by volume of the howl.  ";
+		var rnd;
+		rnd = choose(1, 2);
+		if (rnd = 1) then flavour_text2 = "The air rumbles and shifts at the sheer magnitude of the sound.  ";
+		if (rnd = 2) then flavour_text2 = "Armour and flesh tear alike are torn apart by volume of the howl.  ";
 		if (obj_ncombat.sorcery_seen < 2) and(obj_ncombat.present_inquisitor = 1) then obj_ncombat.sorcery_seen = 1;
 	}
 
@@ -438,7 +394,7 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 		p_arp = 0;
 		p_duration = 0;
 		flavour_text2 = "- a coil of warp energy lashes out at the enemy.  ";
-		if (binders = true) then flavour_text2 = "- a green, sickly coil of energy lashes out at the enemy.  ";
+		if (binders_adv = true) then flavour_text2 = "- a green, sickly coil of energy lashes out at the enemy.  ";
 	}
 	if (power_name = "Smite") {
 		p_type = "attack";
@@ -448,13 +404,13 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 		p_att = 260;
 		p_arp = 0;
 		p_duration = 0;
-		var rah;
-		rah = choose(1, 2, 3);
-		if (rah = 1) then flavour_text2 = "- a blast of warp energy smashes into the enemy.  ";
-		if (rah = 2) then flavour_text2 = "- warp lightning crackles and leaps to the enemy.  ";
-		if (rah = 3) then flavour_text2 = "- a brilliant bolt of lightning crashes into the enemy.  ";
-		if (binders = true) and(rah = 1) then flavour_text2 = "-a green blast of sorcery smashes into the enemy.  ";
-		if (binders = true) and(rah >= 2) then flavour_text2 = "-a wave of green fire launches forth, made up of hideous faces and claws.  ";
+		var rnd;
+		rnd = choose(1, 2, 3);
+		if (rnd = 1) then flavour_text2 = "- a blast of warp energy smashes into the enemy.  ";
+		if (rnd = 2) then flavour_text2 = "- warp lightning crackles and leaps to the enemy.  ";
+		if (rnd = 3) then flavour_text2 = "- a brilliant bolt of lightning crashes into the enemy.  ";
+		if (binders_adv = true) and(rnd = 1) then flavour_text2 = "-a green blast of sorcery smashes into the enemy.  ";
+		if (binders_adv = true) and(rnd >= 2) then flavour_text2 = "-a wave of green fire launches forth, made up of hideous faces and claws.  ";
 	}
 	if (power_name = "Force Dome") {
 		p_type = "buff";
@@ -465,8 +421,8 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 		p_arp = 0;
 		p_duration = 2;
 		flavour_text2 = ".  An oozing, shifting dome of pure energy appears, covering your forces.";
-		if (binders = true) then flavour_text2 = ".  An oozing, shifting dome of sorcerous energy appears, covering your forces.";
-		if (binders = true) and(obj_ncombat.sorcery_seen < 2) and(obj_ncombat.present_inquisitor = 1) then obj_ncombat.sorcery_seen = 1;
+		if (binders_adv = true) then flavour_text2 = ".  An oozing, shifting dome of sorcerous energy appears, covering your forces.";
+		if (binders_adv = true) and(obj_ncombat.sorcery_seen < 2) and(obj_ncombat.present_inquisitor = 1) then obj_ncombat.sorcery_seen = 1;
 	}
 	if (power_name = "Machine Curse") {
 		p_type = "attack";
@@ -486,12 +442,12 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 		p_att = 500;
 		p_arp = 0;
 		p_duration = 0;
-		var rah;
-		rah = choose(1, 2);
-		if (rah = 1) then flavour_text2 = "- a destructive avatar of rolling flame crashes into the enemy.  ";
-		if (rah = 2) then flavour_text2 = "- a massive conflagration rises up and then crashes down upon the enemy.  ";
-		if (binders = true) and(rah = 1) then flavour_text2 = "- a hideous being of rolling flame crashes into the enemy.  ";
-		if (binders = true) and(rah = 2) then flavour_text2 = "- a massive conflagration rises up and then crashes down upon the enemy.  ";
+		var rnd;
+		rnd = choose(1, 2);
+		if (rnd = 1) then flavour_text2 = "- a destructive avatar of rolling flame crashes into the enemy.  ";
+		if (rnd = 2) then flavour_text2 = "- a massive conflagration rises up and then crashes down upon the enemy.  ";
+		if (binders_adv = true) and(rnd = 1) then flavour_text2 = "- a hideous being of rolling flame crashes into the enemy.  ";
+		if (binders_adv = true) and(rnd = 2) then flavour_text2 = "- a massive conflagration rises up and then crashes down upon the enemy.  ";
 	}
 	if (power_name = "Quickening") {
 		p_type = "buff";
@@ -522,8 +478,8 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 		p_arp = 1;
 		p_duration = 0;
 		flavour_text2 = "- a hole between real and warp space is torn open with deadly effect.  ";
-		if (binders = true) then flavour_text2 = "- a hole bewteen realspace and the warp is torn, unleashing a myriad of sorcerous energies.  ";
-		if (binders = true) and(obj_ncombat.sorcery_seen < 2) and(obj_ncombat.present_inquisitor = 1) then obj_ncombat.sorcery_seen = 1;
+		if (binders_adv = true) then flavour_text2 = "- a hole bewteen realspace and the warp is torn, unleashing a myriad of sorcerous energies.  ";
+		if (binders_adv = true) and(obj_ncombat.sorcery_seen < 2) and(obj_ncombat.present_inquisitor = 1) then obj_ncombat.sorcery_seen = 1;
 	}
 
 	if (power_name = "Breathe Fire") {
@@ -535,7 +491,7 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 		p_arp = -1;
 		p_duration = 0;
 		flavour_text2 = "- a bright jet of flame shoots forth at the enemy.  ";
-		if (binders = true) then flavour_text2 = "- a greenish, eery jet of flame shoots forth at the enemy.  ";
+		if (binders_adv = true) then flavour_text2 = "- a greenish, eery jet of flame shoots forth at the enemy.  ";
 	}
 	if (power_name = "Fiery Form") {
 		p_type = "buff";
@@ -546,7 +502,7 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 		p_arp = 0;
 		p_duration = 3;
 		flavour_text2 = ".  Hissing flames appear and roar around the marine, threatening nearby foes.  ";
-		if (binders = true) then flavour_text2 = ".  Hideous, eery beings of warp fire begin to dance around the marine, threatening nearby foes.  ";
+		if (binders_adv = true) then flavour_text2 = ".  Hideous, eery beings of warp fire begin to dance around the marine, threatening nearby foes.  ";
 	}
 	if (power_name = "Fire Shield") {
 		p_type = "buff";
@@ -557,7 +513,7 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 		p_arp = 0;
 		p_duration = 3;
 		flavour_text2 = ".  Orange sheets of fire shimmer around your forces, protecting them.  ";
-		if (binders = true) then flavour_text2 = "-  Purple sheets of warp fire shimmer around your forces, protecting them.  ";
+		if (binders_adv = true) then flavour_text2 = "-  Purple sheets of warp fire shimmer around your forces, protecting them.  ";
 	}
 	if (power_name = "Inferno") {
 		p_type = "attack";
@@ -567,12 +523,12 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 		p_att = 600;
 		p_arp = 0;
 		p_duration = 0;
-		var rah;
-		rah = choose(1, 2);
-		if (rah = 1) then flavour_text2 = "- a massive conflagration rises up and then crashes down upon the enemy.  ";
-		if (rah = 2) then flavour_text2 = "- after breathing deeply a massive jet of flame is unleashed.  Smoke billows into the sky.  ";
-		if (binders = true) and(rah = 1) then flavour_text2 = "- a hideous being of rolling flame crashes into the enemy.  ";
-		if (binders = true) and(rah = 2) then flavour_text2 = "- a massive conflagration rises up and then crashes down upon the enemy.  ";
+		var rnd;
+		rnd = choose(1, 2);
+		if (rnd = 1) then flavour_text2 = "- a massive conflagration rises up and then crashes down upon the enemy.  ";
+		if (rnd = 2) then flavour_text2 = "- after breathing deeply a massive jet of flame is unleashed.  Smoke billows into the sky.  ";
+		if (binders_adv = true) and(rnd = 1) then flavour_text2 = "- a hideous being of rolling flame crashes into the enemy.  ";
+		if (binders_adv = true) and(rnd = 2) then flavour_text2 = "- a massive conflagration rises up and then crashes down upon the enemy.  ";
 	}
 	if (power_name = "Sun Burst") {
 		p_type = "attack";
@@ -583,8 +539,8 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 		p_arp = 1;
 		p_duration = 0;
 		flavour_text2 = "- a crackling, hissing beam of purple-red flame shoots from him.  ";
-		if (binders = true) then flavour_text2 = "- a crackling, hissing beam of purple warp shoots from him.  ";
-		if (binders = true) and(obj_ncombat.sorcery_seen < 2) and(obj_ncombat.present_inquisitor = 1) then obj_ncombat.sorcery_seen = 1;
+		if (binders_adv = true) then flavour_text2 = "- a crackling, hissing beam of purple warp shoots from him.  ";
+		if (binders_adv = true) and(obj_ncombat.sorcery_seen < 2) and(obj_ncombat.present_inquisitor = 1) then obj_ncombat.sorcery_seen = 1;
 	}
 	if (power_name = "Molten Beam") {
 		p_type = "attack";
@@ -595,8 +551,8 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 		p_arp = 1;
 		p_duration = 0;
 		flavour_text2 = "- a white-blue beam, blinding to behold, shoots forth.  All that it touches turns to slag.  ";
-		if (binders = true) then flavour_text2 = "- a massive beam of purple warp energy shoots forth.  All that it touches is consumed.  ";
-		if (binders = true) and(obj_ncombat.sorcery_seen < 2) and(obj_ncombat.present_inquisitor = 1) then obj_ncombat.sorcery_seen = 1;
+		if (binders_adv = true) then flavour_text2 = "- a massive beam of purple warp energy shoots forth.  All that it touches is consumed.  ";
+		if (binders_adv = true) and(obj_ncombat.sorcery_seen < 2) and(obj_ncombat.present_inquisitor = 1) then obj_ncombat.sorcery_seen = 1;
 	}
 
 	if (power_name = "Blood Boil") {
@@ -668,8 +624,8 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 		p_att = 280;
 		p_arp = 0;
 		p_duration = 0;
-		var rah;
-		rah = choose(1, 2, 3);
+		var rnd;
+		rnd = choose(1, 2, 3);
 		flavour_text2 = "- a massive wave of force smashes aside his foes.  ";
 	}
 	if (power_name = "Telekinetic Dome") {
@@ -721,8 +677,8 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 		p_att = 320;
 		p_arp = 0;
 		p_duration = 0;
-		var rah;
-		rah = choose(1, 2, 3);
+		var rnd;
+		rnd = choose(1, 2, 3);
 		flavour_text2 = "- a mighty winter gale billows forth, shredding and freezing flesh.  ";
 	}
 	if (power_name = "Fury of the Wolf Spirits") {
@@ -733,10 +689,10 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 		p_att = 440;
 		p_arp = 0;
 		p_duration = 0;
-		var rah;
-		rah = choose(1, 2);
-		if (rah = 1) then flavour_text2 = "- a pair of Thunderwolf revenants sprint outward, running down and overwhelming foes.  ";
-		if (rah = 2) then flavour_text2 = "- ghostly visages of Freki and Geri launch into his foes, overwhelming them.  ";
+		var rnd;
+		rnd = choose(1, 2);
+		if (rnd = 1) then flavour_text2 = "- a pair of Thunderwolf revenants sprint outward, running down and overwhelming foes.  ";
+		if (rnd = 2) then flavour_text2 = "- ghostly visages of Freki and Geri launch into his foes, overwhelming them.  ";
 	}
 	if (power_name = "Thunderclap") {
 		p_type = "attack";
@@ -767,10 +723,10 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 		p_att = 500;
 		p_arp = 0;
 		p_duration = 0;
-		var rah;
-		rah = choose(1, 2);
-		if (rah = 1) then flavour_text2 = "- a destructive avatar of rolling flame crashes into the enemy.  ";
-		if (rah = 2) then flavour_text2 = "- a massive conflagration rises up and then crashes down upon the enemy.  ";
+		var rnd;
+		rnd = choose(1, 2);
+		if (rnd = 1) then flavour_text2 = "- a destructive avatar of rolling flame crashes into the enemy.  ";
+		if (rnd = 2) then flavour_text2 = "- a massive conflagration rises up and then crashes down upon the enemy.  ";
 	}
 	if (power_name = "Quickening") {
 		p_type = "buff";
@@ -795,6 +751,7 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 	// if (power_name="Vortex of Doom"){p_type="attack";p_rang=5;p_tar=3;p_spli=1;p_att=800;p_arp=800;p_duration=0;
 	//     flavour_text2="- a hole between real and warp space is torn open with deadly effect.  ";
 	// }
+
 	var has_force_weapon = false;
 	if (is_struct(weapon_one)) {
 		if weapon_one.has_tag("force") {
@@ -818,7 +775,7 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 		}
 	}
 
-	if (binders == true) and(p_type == "attack") {
+	if (binders_adv == true) and(p_type == "attack") {
 		if (p_att > 0) then p_att = round(p_att) * 1.15;
 		// if (p_arp>0) then p_arp=round(p_arp)*1.15;
 		if (p_rang > 0) then p_rang = round(p_rang) * 1.2;
@@ -832,16 +789,16 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 	}
 
 	flavour_text1 = $"{unit.name_role()} casts '{power_name}'"
-	if (book_powers != "") and(book_roll <= 33) and(power_name != "Imperator Maior") and(power_name != "gather_energy") {
+	if (tome_discipline != "") and(tome_roll <= 33) and(power_name != "Imperator Maior") and(power_name != "gather_energy") {
 		flavour_text1 = unit.name_role();
 		if (string_char_at(flavour_text1, string_length(flavour_text1)) = "s") then flavour_text1 += "' tome ";
 		if (string_char_at(flavour_text1, string_length(flavour_text1)) != "s") then flavour_text1 += "'s tome ";
 		flavour_text1 += "confers knowledge upon him.  He casts '" + string(power_name) + "'";
 
-		if (tome_bad > 0) {
+		if (tome_perils_chance > 0) {
 			var tome_roll = irandom(99) + 1;
-			if (tome_roll <= 10) and(tome_bad = 1) then unit.corruption += choose(1, 2);
-			if (tome_roll <= 20) and(tome_bad > 1) then unit.corruption += choose(3, 4, 5);
+			if (tome_roll <= 10) and(tome_perils_chance = 1) then unit.corruption += choose(1, 2);
+			if (tome_roll <= 20) and(tome_perils_chance > 1) then unit.corruption += choose(3, 4, 5);
 		}
 
 	}
@@ -851,40 +808,50 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 
 	var good = 0,
 		good2 = 0,
-		perils_chance = 15,
-		perils_roll = 0,
-		perils_strength = 0;
+		perils_chance = 1,
+		perils_roll = random(100),
+		perils_strength = random(100);
 
-	if (scr_has_disadv("Warp Touched")) then perils_chance += 1.5;
-	if (scr_has_disadv("Shitty")) then perils_chance += 2;
-	if (book_powers != "") then perils_chance += tome_bad;
+	perils_strength += tome_perils_strength;
+	if scr_has_disadv("Warp Touched") {
+		perils_chance += 1;
+		perils_strength += 20;
+	}
+	if scr_has_disadv("Shitty Luck") {
+		perils_chance += 1;
+		perils_strength += 25;
+	}
+	perils_strength -= (marine_exp[unit_id] * 0.25);
+
+	perils_chance += tome_perils_chance;
 	perils_chance += obj_ncombat.global_perils;
-	perils_chance -= (marine_exp[unit_id] * 0.05);
-	if (string_count("Hood", marine_gear[unit_id]) > 0) then perils_chance *= 0.75;
+	perils_chance -= (marine_exp[unit_id] * 0.01);
 
-	perils_roll = floor(random(100));
-	perils_strength = floor(random(100));
-
-	if (binders = true) { // I hope you like demons
-		perils_chance -= 25
-		perils_strength += 40;
+	if (binders_adv) { // I hope you like demons
+		perils_chance -= 0.8;
 		if (perils_strength <= 47) then perils_strength = 48;
+		else perils_strength += 20;
 	}
 
-	// show_message("Peril of the Warp Chance: "+string(perils_chance)+"#Roll: "+string(perils_roll));
-	// perils_roll=1;perils_strength=88;
-	perils_chance = max(perils_chance, 1);
+	if (has_hood){ 
+		perils_chance *= 0.75;
+		perils_strength *= 0.75;
+	}
+
+	perils_strength = max(perils_strength, 15);
+	perils_chance = max(perils_chance, 0.05);
+
+	show_debug_message("Peril of the Warp Chance: " + string(perils_chance));
+	show_debug_message("Roll: " + string(perils_roll));
+	show_debug_message("Peril of the Warp Strength: " + string(perils_strength));
 
 	if (perils_roll <= perils_chance) {
 		if (obj_ncombat.sorcery_seen = 1) then obj_ncombat.sorcery_seen = 0;
 		p_type = "perils";
 		flavour_text3 = "";
-		if (array_contains(obj_ini.dis, "Warp Touched")) then perils_strength += 20;
-		if (array_contains(obj_ini.dis, "Shitty Luck")) then perils_strength += 25;
-		if (book_powers != "") then perils_strength += (tome_bad * 10);
-		if (marine_type[unit_id] == "Chapter Master") then perils_strength *= 0.5;
+
 		flavour_text1 = $"{unit.name_role()} suffers Perils of the Warp!  ";
-		flavour_text2 = scr_perils_table(perils_strength, unit, psy_discipline, power_name, unit_id, book_powers);
+		flavour_text2 = scr_perils_table(perils_strength, unit, psy_discipline, power_name, unit_id, tome_discipline);
 
 		if (unit.hp() < 0) {
 			//TODO create is_dead function to remove repeats of this log
@@ -922,7 +889,7 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 
 		obj_ncombat.messages += 1;
 		obj_ncombat.message[obj_ncombat.messages] = flavour_text1 + flavour_text2 + flavour_text3;
-		// if (enemy5.dudes_vehicle[targeh]=1) then obj_ncombat.message_sz[obj_ncombat.messages]=(casualties*10)+(0.5-(obj_ncombat.messages/100));
+		// if (target_unit.dudes_vehicle[targeh]=1) then obj_ncombat.message_sz[obj_ncombat.messages]=(casualties*10)+(0.5-(obj_ncombat.messages/100));
 		obj_ncombat.message_sz[obj_ncombat.messages] = 999 + (0.5 - (obj_ncombat.messages / 100));
 		obj_ncombat.message_priority[obj_ncombat.messages] = 0;
 	}
@@ -1042,7 +1009,7 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 			
 			obj_ncombat.messages += 1;
 			obj_ncombat.message[obj_ncombat.messages] = flavour_text1 + flavour_text2 + flavour_text3;
-			// if (enemy5.dudes_vehicle[targeh]=1) then obj_ncombat.message_sz[obj_ncombat.messages]=(casualties*10)+(0.5-(obj_ncombat.messages/100));
+			// if (target_unit.dudes_vehicle[targeh]=1) then obj_ncombat.message_sz[obj_ncombat.messages]=(casualties*10)+(0.5-(obj_ncombat.messages/100));
 			obj_ncombat.message_sz[obj_ncombat.messages] = 0.5 - (obj_ncombat.messages / 100);
 			obj_ncombat.message_priority[obj_ncombat.messages] = 0;
 			
@@ -1074,23 +1041,23 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 
 				repeat(10) {
 					if (good2 = 0) and(instance_exists(obj_enunit)) {
-						enemy5 = instance_nearest(x, y, obj_enunit);
+						target_unit = instance_nearest(x, y, obj_enunit);
 						var s;
 						s = 0;
 
 						repeat(20) {
-							if (point_distance(x, y, enemy5.x, enemy5.y) < (p_rang * 10)) {
+							if (point_distance(x, y, target_unit.x, target_unit.y) < (p_rang * 10)) {
 								if (p_tar = 3) and(good = 0) {
 									s += 1;
-									if (enemy5.dudes_hp[s] > 0) and(dudes_vehicle[s] = 0) then good = s;
+									if (target_unit.dudes_hp[s] > 0) and(dudes_vehicle[s] = 0) then good = s;
 								}
 								if (p_tar = 4) and(good = 0) {
 									s += 1;
-									if (enemy5.dudes_hp[s] > 0) and(dudes_vehicle[s] = 1) then good = s;
+									if (target_unit.dudes_hp[s] > 0) and(dudes_vehicle[s] = 1) then good = s;
 								}
 							}
 						}
-						if (good = 0) then instance_deactivate_object(enemy5);
+						if (good = 0) then instance_deactivate_object(target_unit);
 						if (good != 0) then good2 = good;
 					}
 				}
@@ -1110,23 +1077,23 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 
 				repeat(10) {
 					if (good2 = 0) and(instance_exists(obj_enunit)) {
-						enemy5 = instance_nearest(x, y, obj_enunit);
+						target_unit = instance_nearest(x, y, obj_enunit);
 						var s;
 						s = 0;
 
 						repeat(20) {
-							if (point_distance(x, y, enemy5.x, enemy5.y) < (p_rang * 10)) {
+							if (point_distance(x, y, target_unit.x, target_unit.y) < (p_rang * 10)) {
 								if (p_tar = 3) and(good = 0) {
 									s += 1;
-									if (enemy5.dudes_hp[s] > 0) and(dudes_vehicle[s] = 0) then good = s;
+									if (target_unit.dudes_hp[s] > 0) and(dudes_vehicle[s] = 0) then good = s;
 								}
 								if (p_tar = 4) and(good = 0) {
 									s += 1;
-									if (enemy5.dudes_hp[s] > 0) and(dudes_vehicle[s] = 1) then good = s;
+									if (target_unit.dudes_hp[s] > 0) and(dudes_vehicle[s] = 1) then good = s;
 								}
 							}
 						}
-						if (good = 0) then instance_deactivate_object(enemy5);
+						if (good = 0) then instance_deactivate_object(target_unit);
 						if (good != 0) then good2 = good;
 					}
 				}
@@ -1134,7 +1101,7 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 				instance_activate_object(obj_enunit);
 			}
 
-			// show_message(string(flavour_text1)+string(flavour_text2)+"#"+string(enemy5));
+			// show_message(string(flavour_text1)+string(flavour_text2)+"#"+string(target_unit));
 
 			if (good2 > 0) {
 				var damage_type, stap;
@@ -1147,18 +1114,18 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 				// if (p_tar=3) then damage_type="att";
 				// if (p_tar=4) then damage_type="arp";
 
-				if (damage_type = "att") and(stap = 0) and(instance_exists(enemy5)) and(enemy5.dudes_num[good2] > 0) {
+				if (damage_type = "att") and(stap = 0) and(instance_exists(target_unit)) and(target_unit.dudes_num[good2] > 0) {
 					var a, b, c, eac;
-					eac = enemy5.dudes_ac[good2];
+					eac = target_unit.dudes_ac[good2];
 					a = p_att; // Average damage
 
-					// b=a-enemy5.dudes_ac[good2];// Average after armour
+					// b=a-target_unit.dudes_ac[good2];// Average after armour
 
-					if (enemy5.dudes_vehicle[good2] = 0) {
+					if (target_unit.dudes_vehicle[good2] = 0) {
 						if (p_arp = 1) then eac = 0;
 						if (p_arp = -1) then eac = eac * 6;
 					}
-					if (enemy5.dudes_vehicle[good2] = 1) {
+					if (target_unit.dudes_vehicle[good2] = 1) {
 						if (p_arp = -1) then eac = a;
 						if (p_arp = 0) then eac = eac * 6;
 						if (p_arp = -1) then eac = a;
@@ -1168,37 +1135,37 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 
 					c = b * 1; // New damage
 
-					if (enemy5.dudes_hp[good2] = 0) {
+					if (target_unit.dudes_hp[good2] = 0) {
 						show_message(power_name);
-						show_message("Getting a 0 health error for target " + string(enemy5) + ", dudes " + string(good2));
-						show_message("Dudes: " + string(enemy5.dudes[good2]) + ", Number: " + string(enemy5.dudes_num[good2]));
+						show_message("Getting a 0 health error for target " + string(target_unit) + ", dudes " + string(good2));
+						show_message("Dudes: " + string(target_unit.dudes[good2]) + ", Number: " + string(target_unit.dudes_num[good2]));
 						show_message("Damage: " + string(c));
-						show_message(string(enemy5.dudes_hp[good2]));
+						show_message(string(target_unit.dudes_hp[good2]));
 					}
 
 					var casualties, ponies, onceh;
 					onceh = 0;
 					ponies = 0;
-					if (p_spli = 0) then casualties = min(floor(c / enemy5.dudes_hp[good2]), 1);
-					if (p_spli != 0) then casualties = floor(c / enemy5.dudes_hp[good2]);
+					if (p_spli = 0) then casualties = min(floor(c / target_unit.dudes_hp[good2]), 1);
+					if (p_spli != 0) then casualties = floor(c / target_unit.dudes_hp[good2]);
 
-					ponies = enemy5.dudes_num[good2];
-					if (enemy5.dudes_num[good2] = 1) and((enemy5.dudes_hp[good2] - c) <= 0) {
+					ponies = target_unit.dudes_num[good2];
+					if (target_unit.dudes_num[good2] = 1) and((target_unit.dudes_hp[good2] - c) <= 0) {
 						casualties = 1;
 					}
 
-					if (enemy5.dudes_num[good2] - casualties < 0) then casualties = ponies;
+					if (target_unit.dudes_num[good2] - casualties < 0) then casualties = ponies;
 					if (casualties < 0) then casualties = 0;
 
-					if (enemy5.dudes_num[good2] = 1) and(c > 0) then enemy5.dudes_hp[good2] -= c; // Need special flavor here for just damaging
+					if (target_unit.dudes_num[good2] = 1) and(c > 0) then target_unit.dudes_hp[good2] -= c; // Need special flavor here for just damaging
 
-					if (casualties > 1) then flavour_text3 = string(casualties) + " " + string(enemy5.dudes[good2]) + " are killed.";
-					if (casualties = 1) then flavour_text3 = "A " + string(enemy5.dudes[good2]) + " is killed.";
-					if (casualties = 0) then flavour_text3 = "The " + string(enemy5.dudes[good2]) + " survives the attack.";
+					if (casualties > 1) then flavour_text3 = string(casualties) + " " + string(target_unit.dudes[good2]) + " are killed.";
+					if (casualties = 1) then flavour_text3 = "A " + string(target_unit.dudes[good2]) + " is killed.";
+					if (casualties = 0) then flavour_text3 = "The " + string(target_unit.dudes[good2]) + " survives the attack.";
 
 					if (casualties > 0) {
 						var duhs;
-						duhs = enemy5.dudes[good2];
+						duhs = target_unit.dudes[good2];
 						if (obj_ncombat.battle_special = "WL10_reveal") or(obj_ncombat.battle_special = "WL10_later") {
 							if (duhs = "Veteran Chaos Terminator") then obj_ncombat.chaos_angry += casualties * 2;
 							if (duhs = "Veteran Chaos Chosen") then obj_ncombat.chaos_angry += casualties;
@@ -1212,7 +1179,7 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 					if (shot_web > 1) then obj_ncombat.message[obj_ncombat.messages] = flavour_text3;
 
 					obj_ncombat.message_sz[obj_ncombat.messages] = casualties + 1;
-					// if (enemy5.dudes_vehicle[targeh]=1) then obj_ncombat.message_sz[obj_ncombat.messages]=(casualties*10)+(0.5-(obj_ncombat.messages/100));
+					// if (target_unit.dudes_vehicle[targeh]=1) then obj_ncombat.message_sz[obj_ncombat.messages]=(casualties*10)+(0.5-(obj_ncombat.messages/100));
 					// else{obj_ncombat.message_sz[obj_ncombat.messages]=(casualties)+(0.5-(obj_ncombat.messages/100));}
 					obj_ncombat.message_priority[obj_ncombat.messages] = 0;
 					if (shot_web > 1) {
@@ -1223,22 +1190,22 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 					// obj_ncombat.alarm[3]=2;
 
 					if (casualties >= 1) {
-						enemy5.dudes_num[good2] -= casualties;
+						target_unit.dudes_num[good2] -= casualties;
 						obj_ncombat.enemy_forces -= casualties;
 					}
 				}
 
-				if (damage_type = "arp") and(stap = 0) and(instance_exists(enemy5)) and(enemy5.dudes_num[good2] > 0) {
+				if (damage_type = "arp") and(stap = 0) and(instance_exists(target_unit)) and(target_unit.dudes_num[good2] > 0) {
 					var a, b, c, eac;
-					eac = enemy5.dudes_ac[good2];
+					eac = target_unit.dudes_ac[good2];
 					a = p_att; // Average damage
-					// b=a-enemy5.dudes_ac[good2];// Average after armour
+					// b=a-target_unit.dudes_ac[good2];// Average after armour
 
-					if (enemy5.dudes_vehicle[good2] = 0) {
+					if (target_unit.dudes_vehicle[good2] = 0) {
 						if (p_arp = 1) then eac = 0;
 						if (p_arp = -1) then eac = eac * 6;
 					}
-					if (enemy5.dudes_vehicle[good2] = 1) {
+					if (target_unit.dudes_vehicle[good2] = 1) {
 						if (p_arp = -1) then eac = a;
 						if (p_arp = 0) then eac = eac * 6;
 						if (p_arp = -1) then eac = a;
@@ -1248,33 +1215,33 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 
 					c = b * 1; // New damage
 
-					if (enemy5.dudes_hp[good2] = 0) {
+					if (target_unit.dudes_hp[good2] = 0) {
 						show_message(power_name);
-						show_message("Getting a 0 health error for target " + string(enemy5) + ", dudes " + string(good2));
-						show_message("Dudes: " + string(enemy5.dudes[good2]) + ", Number: " + string(enemy5.dudes_num[good2]));
+						show_message("Getting a 0 health error for target " + string(target_unit) + ", dudes " + string(good2));
+						show_message("Dudes: " + string(target_unit.dudes[good2]) + ", Number: " + string(target_unit.dudes_num[good2]));
 						show_message("Damage: " + string(c));
-						show_message(string(enemy5.dudes_hp[good2]));
+						show_message(string(target_unit.dudes_hp[good2]));
 					}
 
 					var casualties, ponies, onceh;
 					onceh = 0;
 					ponies = 0;
-					if (p_spli = 0) then casualties = min(floor(c / enemy5.dudes_hp[good2]), 1);
-					if (p_spli != 0) then casualties = floor(c / enemy5.dudes_hp[good2]);
+					if (p_spli = 0) then casualties = min(floor(c / target_unit.dudes_hp[good2]), 1);
+					if (p_spli != 0) then casualties = floor(c / target_unit.dudes_hp[good2]);
 
-					ponies = enemy5.dudes_num[good2];
-					if (enemy5.dudes_num[good2] = 1) and((enemy5.dudes_hp[good2] - c) <= 0) {
+					ponies = target_unit.dudes_num[good2];
+					if (target_unit.dudes_num[good2] = 1) and((target_unit.dudes_hp[good2] - c) <= 0) {
 						casualties = 1;
 					}
 
-					if (enemy5.dudes_num[good2] - casualties < 0) then casualties = ponies;
+					if (target_unit.dudes_num[good2] - casualties < 0) then casualties = ponies;
 					if (casualties < 0) then casualties = 0;
 
-					if (enemy5.dudes_num[good2] = 1) and(c > 0) then enemy5.dudes_hp[good2] -= c; // Need special flavor here for just damaging
+					if (target_unit.dudes_num[good2] = 1) and(c > 0) then target_unit.dudes_hp[good2] -= c; // Need special flavor here for just damaging
 
-					if (casualties > 1) then flavour_text3 = string(casualties) + " " + string(enemy5.dudes[good2]) + " are destroyed.";
-					if (casualties = 1) then flavour_text3 = "A " + string(enemy5.dudes[good2]) + " is destroyed.";
-					if (casualties = 0) then flavour_text3 = "The " + string(enemy5.dudes[good2]) + " survives the attack.";
+					if (casualties > 1) then flavour_text3 = string(casualties) + " " + string(target_unit.dudes[good2]) + " are destroyed.";
+					if (casualties = 1) then flavour_text3 = "A " + string(target_unit.dudes[good2]) + " is destroyed.";
+					if (casualties = 0) then flavour_text3 = "The " + string(target_unit.dudes[good2]) + " survives the attack.";
 
 					/*obj_ncombat.newline=string(flavour_text1)+string(flavour_text2)+string(flavour_text3);
 					obj_ncombat.newline_color="blue";
@@ -1282,7 +1249,7 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 
 					if (casualties > 0) {
 						var duhs;
-						duhs = enemy5.dudes[good2];
+						duhs = target_unit.dudes[good2];
 						if (obj_ncombat.battle_special = "WL10_reveal") or(obj_ncombat.battle_special = "WL10_later") {
 							if (duhs = "Veteran Chaos Terminator") then obj_ncombat.chaos_angry += casualties * 2;
 							if (duhs = "Veteran Chaos Chosen") then obj_ncombat.chaos_angry += casualties;
@@ -1296,7 +1263,7 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 					if (shot_web > 1) then obj_ncombat.message[obj_ncombat.messages] = flavour_text3;
 
 					obj_ncombat.message_sz[obj_ncombat.messages] = casualties + 1;
-					// if (enemy5.dudes_vehicle[targeh]=1) then obj_ncombat.message_sz[obj_ncombat.messages]=(casualties*10)+(0.5-(obj_ncombat.messages/100));
+					// if (target_unit.dudes_vehicle[targeh]=1) then obj_ncombat.message_sz[obj_ncombat.messages]=(casualties*10)+(0.5-(obj_ncombat.messages/100));
 					// else{obj_ncombat.message_sz[obj_ncombat.messages]=(casualties)+(0.5-(obj_ncombat.messages/100));}
 					obj_ncombat.message_priority[obj_ncombat.messages] = 0;
 					if (shot_web > 1) {
@@ -1306,12 +1273,12 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 					// obj_ncombat.alarm[3]=2;
 
 					if (casualties >= 1) {
-						enemy5.dudes_num[good2] -= casualties;
+						target_unit.dudes_num[good2] -= casualties;
 						obj_ncombat.enemy_forces -= casualties;
 					}
 				}
 
-				if (stap = 0) then with(enemy5) {
+				if (stap = 0) then with(target_unit) {
 					var j, good, open;
 					j = 0;
 					good = 0;
@@ -1347,8 +1314,8 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 					}
 					j = 0;
 				}
-				if (enemy5.men + enemy5.veh + enemy5.medi = 0) and(enemy5.owner != 1) {
-					with(enemy5) {
+				if (target_unit.men + target_unit.veh + target_unit.medi = 0) and(target_unit.owner != 1) {
+					with(target_unit) {
 						instance_destroy();
 					}
 				}

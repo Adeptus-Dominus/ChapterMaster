@@ -108,7 +108,7 @@ function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id,
 		        return flavour_text2;
 		}],	
 		[79, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
-			obj_ncombat.global_perils+=5;
+			obj_ncombat.global_perils+=1;
 			var flavour_text2="Wind shrieks and blood pours from the sky!  The warp feels unstable.";
 			return flavour_text2;
 		}],	
@@ -140,9 +140,9 @@ function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id,
 		        var dem=choose("Slaanesh","Nurgle","Tzeentch");
 		        if (book_powers!=""){
 			        if (string_count("Dae",marine_gear[unit_id])>0){
-			            if (string_count("2",marine_gear[unit_id])>0) then dem="Slaanesh";
-			            if (string_count("3",marine_gear[unit_id])>0) then dem="Nurgle";
-			            if (string_count("4",marine_gear[unit_id])>0) then dem="Tzeentch";
+			            if (string_count("SLAANESH",marine_gear[unit_id])>0) then dem="Slaanesh";
+			            if (string_count("NURGLE",marine_gear[unit_id])>0) then dem="Nurgle";
+			            if (string_count("TZEENTCH",marine_gear[unit_id])>0) then dem="Tzeentch";
 			        }
 			    }
 	        
