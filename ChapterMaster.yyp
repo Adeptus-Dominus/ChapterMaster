@@ -976,7 +976,7 @@
     {"id":{"name":"spr_terminator_chap","path":"sprites/spr_terminator_chap/spr_terminator_chap.yy",},},
     {"id":{"name":"spr_sal_mk7_helm","path":"sprites/spr_sal_mk7_helm/spr_sal_mk7_helm.yy",},},
     {"id":{"name":"scr_draw_rainbow","path":"scripts/scr_draw_rainbow/scr_draw_rainbow.yy",},},
-    {"id":{"name":"scr_weapons_equip","path":"scripts/scr_weapons_equip/scr_weapons_equip.yy",},},
+    {"id":{"name":"scr_get_item_names","path":"scripts/scr_get_item_names/scr_get_item_names.yy",},},
     {"id":{"name":"spr_chap_area_pad","path":"sprites/spr_chap_area_pad/spr_chap_area_pad.yy",},},
     {"id":{"name":"scr_master_loc","path":"scripts/scr_master_loc/scr_master_loc.yy",},},
     {"id":{"name":"scr_creation","path":"scripts/scr_creation/scr_creation.yy",},},

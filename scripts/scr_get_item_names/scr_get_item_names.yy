@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "scr_weapons_equip",
+  "name": "scr_get_item_names",
   "isCompatibility": false,
   "isDnD": false,
   "parent": {

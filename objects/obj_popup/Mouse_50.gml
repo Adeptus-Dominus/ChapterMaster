@@ -255,21 +255,18 @@ if (type=6) and (cooldown<=0){// Actually changing equipment right here
         }
         if (mouse_y>=yy+318) and (mouse_y<yy+330) and (mouse_x>=xx+1263) and (mouse_x<xx+1289) and (tab!=2){change_tab=1;tab=2;obj_controller.last_weapons_tab=2;cooldown=8000;}
         if (mouse_y>=yy+318) and (mouse_y<yy+330) and (mouse_x>=xx+1409) and (mouse_x<xx+1435) and (target_comp<3){
-            var onceh=0;cooldown=8000;
-             if (onceh=0){
-                 if (master_crafted=0){
-                    master_crafted=1;
-                    obj_controller.popup_master_crafted=1;
-                    onceh=1;
-                    scr_weapons_equip();
-                }
-                else if (master_crafted=1){
-                    master_crafted=0;
-                    obj_controller.popup_master_crafted=0;
-                    onceh=1;
-                    scr_weapons_equip();
-                }
-             }
+            cooldown=8000;
+
+            master_crafted = !bool(master_crafted);
+            obj_controller.popup_master_crafted = master_crafted;
+            item_name = scr_get_item_names(
+                target_comp,
+                tab,
+                vehicle_equipment,
+                false, // include company standard
+                true, // limit to available equipment
+                master_crafted
+            );
         }
     }
 
@@ -285,17 +282,17 @@ if (type=6) and (cooldown<=0){// Actually changing equipment right here
             if (mouse_y>=yy+295) and (mouse_y<yy+315){target_comp=5;cooldown=8000;}
         }
 
-        if ((befi!=target_comp) and (vehicle_equipment!=-1)) or (change_tab=1){
-            var i;i=-1;repeat(40){i+=1;item_name[i]="";}
-
-            scr_weapons_equip();
-
+        if ((befi != target_comp && vehicle_equipment != -1) || change_tab == 1) {
+            item_name = scr_get_item_names(
+                target_comp,
+                tab,
+                vehicle_equipment,
+                false, // include company standard
+                true, // limit to available equipment
+                master_crafted
+            );
         }
-
-
-
     }
-
 }
 
 

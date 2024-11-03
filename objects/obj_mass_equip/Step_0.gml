@@ -380,7 +380,15 @@ if (refresh=true) and (obj_controller.settings>0){
     
     refresh=false;
     
-    if (tab>0) then scr_weapons_equip();
+    if (tab > 0) {
+		item_name = scr_get_item_names(
+			tab,
+			tab,
+			obj_controller.settings,
+			true, // include company standard
+			false, // show all regardless of inventory
+		 );
+	}
     
     good1=0;
 	good2=0;

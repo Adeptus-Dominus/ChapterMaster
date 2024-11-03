@@ -60,12 +60,17 @@ if (total_role_number>0){
 
 
 
-if (total_role_number>0) and (tab>0){
-    var i=-1,told;repeat(50){i+=1;item_name[i]="";}
-    
+if (total_role_number>0) and (tab>0){   
     if (tab<=2){told=tab;tab=1;}
     if (tab>2){told=tab;tab=tab;}
-    scr_weapons_equip();tab=told;
+    item_name = scr_get_item_names(
+        tab,
+        tab,
+        obj_controller.settings,
+        true, // include the company standard
+        false, // do not limit to available items
+    );
+    tab=told;
 
     draw_set_color(0);
     draw_rectangle(xx+1183,yy+160,xx+1506,yy+747,0);
@@ -119,10 +124,16 @@ if (total_role_number>0) and (tab>0){
         }
     }
     if (tab=1) or (tab=2){
-        var i,told;i=-1;repeat(50){i+=1;item_name[i]="";}
         if (tab<=2){told=tab;tab=2;}
         if (tab>2){told=tab;tab=tab;}
-        scr_weapons_equip();tab=told;
+        item_name = scr_get_item_names(
+            tab,
+            tab,
+            obj_controller.settings,
+            true, // include the company standard
+            false, // do not limit to available items
+        );
+        tab=told;
         
         var x3,y3,h,space;h=0;x3=xx+1205+146;y3=yy+205;space=18;
         repeat(23){h+=1;draw_set_color(c_gray);

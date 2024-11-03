@@ -155,7 +155,13 @@ if (col_shift){
                         if (gg=4) then target_gear=5;
                         if (gg=5) then target_gear=4;
                         
-                        scr_weapons_equip();// Gets item list
+                        item_name = scr_get_item_names(
+                            target_gear,
+                            tab,
+                            type - 100,
+                            false, // no company standard
+                            false, // don't limit to available items
+                        );
                     }
                 }
             }
@@ -185,8 +191,14 @@ if (col_shift){
 
 
 if (target_gear>0){
-    var i;i=-1;repeat(50){i+=1;item_name[i]="";}
-    tab=1;scr_weapons_equip();
+    tab=1;
+    item_name = scr_get_item_names(
+        target_gear,
+        tab,
+        type - 100,
+        false, // no company standard
+        false, // don't limit to available items
+    );
     
     draw_set_color(0);
     draw_rectangle(851,210,1168,749,0);
@@ -236,8 +248,14 @@ if (target_gear>0){
     }
     
     if (target_gear=1) or (target_gear=2){
-        var i;i=-1;repeat(50){i+=1;item_name[i]="";}
-        tab=2;scr_weapons_equip();
+        tab=2;
+        item_name = scr_get_item_names(
+            target_gear,
+            tab,
+            type - 100,
+            false, // no company standard
+            false, // don't limit to available items
+        );
         
         var x3,y3,h,space;h=0;x3=862+146;y3=245;space=18;
         repeat(23){h+=1;draw_set_color(38144);
