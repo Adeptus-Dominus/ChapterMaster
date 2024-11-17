@@ -18,7 +18,7 @@ if (instance_exists(obj_controller)){
     if ((trade_goods="Khorne_warband") or (trade_goods="Khorne_warband_landing_force")) and (obj_controller.faction_defeated[10]=0){
         destroy_khorne_fleet();
     }
-    if (trade_goods="WL7") and (obj_controller.faction_defeated[7]<=0) and (safe=0){
+    if (fleet_has_cargo("ork_warboss")) and (obj_controller.faction_defeated[7]<=0) and (safe=0){
         obj_controller.faction_defeated[7]=1;
         scr_event_log("","Enemy Leader Assassinated: Ork Warboss");
         if (instance_exists(obj_turn_end)) then scr_alert("","ass","Warboss "+string(obj_controller.faction_leader[eFACTION.Ork])+" has been killed.",0,0);

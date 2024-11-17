@@ -33,7 +33,7 @@ for (o=1;o<=20;o++){
             
             if (obj_fleet.capital+obj_fleet.frigate+obj_fleet.escort>0) then obj_controller.gene_seed+=seed_max;
         }else if (apothecary>0){
-            unit.update_health(unit.hp()+irandom(10)+2);
+            unit.add_or_sub_health(irandom_range(9,14));
             apothecary-=0.5;
         }
     }

@@ -19,108 +19,63 @@ function scr_ui_popup() {
 	    if (planet_feature_bool(planet_upgrades, P_features.Arsenal)==1){arsenal=1}
 	    if (planet_feature_bool(planet_upgrades, P_features.Gene_Vault)==1){gene_vault=1}
 	    un_upgraded = gene_vault+arsenal+s_base;
-	    if (obj_temp_build.isnew==1){
-	        title="Secret Lair ("+string(obj_temp_build.target.name)+" "+scr_roman(obj_temp_build.planet)+")";
-	        draw_text_transformed(xx+312-64,yy+10,string_hash_to_newline(title),0.7,0.7,0);
-        
-	        draw_set_font(fnt_40k_14b);
-	        draw_text(xx+312,yy+45,string_hash_to_newline("Select a Secret Lair style."));
-	        draw_set_halign(fa_left);
-        
-	        var r=0,wob="",word="";
-	        for (r=1;r<10;r++){
-		        switch(wob){
-		        	case "Barbarian":
-		        		word="Heavy on leather, hides, and trophy body parts.";
-		        		tag="BRB";
-		        		break;
-		        	case "Disco":
-		        		word="Rainbow colored dance floor and steel rafters.";
-		        		tag="DIS";
-		        		break;
-		        	case "Feudal":
-		        		word="Lots of stone, metal filigree, and statues.";
-		        		tag="FEU";
-		        		break;	 
-		        	case "Gothic":
-		        		word="Heavy on leather, hides, and trophy body parts.";
-		        		tag="GTH";
-		        		break;
-		        	case "Mechanicus":
-		        		word="Grates, tubes, gears, and augmented reality.";
-		        		tag="MCH";
-		        		break;	 
-		        	case "Prospero":
-		        		word="Marble or standstone surfaces and gold filigree.";
-		        		tag="PRS";
-		        		break;
-		        	case "Rave Club":
-		        		word="Large, open area with neon or strobe lights.";
-		        		tag="RAV";
-		        		break;
-		        	case "Steel":
-		        		word="Stainless steel surfaces and water fountains.";
-		        		tag="STL";
-		        		break;
-		        	case "Utilitarian":
-		        		word="Plaster or concrete surfaces with carpeting.";
-		        		tag="UTL"
-		        		break;	        			        			        			        		       			        		       			        		
-		        }
-            
-	            draw_set_color(c_gray);draw_rectangle(xx+21,yy+38+(r*30),xx+600,yy+56+(r*30),0);
-	            if (scr_hit(xx+21,yy+38+(r*30),xx+600,yy+56+(r*30))=true){
-	                draw_set_color(c_black);
-	                draw_set_alpha(0.2);
-	                draw_rectangle(xx+21,yy+38+(r*30),xx+600,yy+56+(r*30),0);draw_set_alpha(1);
-                
-	                if (obj_controller.mouse_left=1) and (obj_controller.cooldown<=0){
-	                    obj_controller.cooldown=8000;var tag="";
-						switch (r) {
-						    case 1:
-						        tag = "BRB";
-						        break;
-						    case 2:
-						        tag = "DIS";
-						        break;
-						    case 3:
-						        tag = "FEU";
-						        break;
-						    case 4:
-						        tag = "GTH";
-						        break;
-						    case 5:
-						        tag = "MCH";
-						        break;
-						    case 6:
-						        tag = "PRS";
-						        break;
-						    case 7:
-						        tag = "RAV";
-						        break;
-						    case 8:
-						        tag = "STL";
-						        break;
-						    case 9:
-						        tag = "UTL";
-						        break;
-						    default:
-						        break;
-						}
-						var base_options = {style:tag};
-	                    obj_temp_build.isnew=0;
-						array_push(planet_upgrades, new new_planet_feature(P_features.Secret_Base, base_options));
-	                }
-	            }
-	            draw_set_color(0);
-	            draw_set_font(fnt_40k_14b);
-	            draw_text_transformed(xx+23,yy+40+(r*30),string_hash_to_newline(string(wob)),1,0.8,0);
-	            draw_set_font(fnt_40k_14);
-	            draw_text_transformed(xx+121,yy+40+(r*30),string_hash_to_newline(string(word)),1,0.8,0);
-	        }
-	    }
+		if (obj_temp_build.isnew == 1) {
+			title = "Secret Lair (" + string(obj_temp_build.target.name) + " " + scr_roman(obj_temp_build.planet) + ")";
+			draw_text_transformed(xx + 312, yy + 10, string_hash_to_newline(title), 0.7, 0.7, 0);
+		
+			draw_set_font(fnt_40k_14b);
+			draw_text(xx + 312, yy + 45, string_hash_to_newline("Select a Secret Lair style."));
+			draw_set_halign(fa_left);
+		
+			var styles = [
+				{name: "Barbarian", description: "Heavy on leather, hides, and trophy body parts.", tag: "BRB"},
+				{name: "Disco", description: "Rainbow colored dance floor and steel rafters.", tag: "DIS"},
+				{name: "Feudal", description: "Lots of stone, metal filigree, and statues.", tag: "FEU"},
+				{name: "Gothic", description: "Heavy on leather, hides, and trophy body parts.", tag: "GTH"},
+				{name: "Mechanicus", description: "Grates, tubes, gears, and augmented reality.", tag: "MCH"},
+				{name: "Prospero", description: "Marble or sandstone surfaces and gold filigree.", tag: "PRS"},
+				{name: "Rave Club", description: "Large, open area with neon or strobe lights.", tag: "RAV"},
+				{name: "Steel", description: "Stainless steel surfaces and water fountains.", tag: "STL"},
+				{name: "Utilitarian", description: "Plaster or concrete surfaces with carpeting.", tag: "UTL"}
+			];
+		
+			var base_x1 = xx + 21;
+			var base_x2 = base_x1 + 579;
+			var base_y1 = yy + 88;
+			var base_y2 = base_y1 + 18;
+			var text_x1 = base_x1 + 2;
+			var text_x2 = text_x1 + 100;
+		
+			for (var r = 0; r < array_length(styles); r++) {
+				var style = styles[r];
+				var y_offset = r * 30;
+		
+				draw_set_color(c_gray);
+				draw_rectangle(base_x1, base_y1 + y_offset, base_x2, base_y2 + y_offset, 0);
+		
+				if (scr_hit(base_x1, base_y1 + y_offset, base_x2, base_y2 + y_offset) == true) {
+					draw_set_color(c_black);
+					draw_set_alpha(0.2);
+					draw_rectangle(base_x1, base_y1 + y_offset, base_x2, base_y2 + y_offset, 0);
+					draw_set_alpha(1);
+		
+					if (obj_controller.mouse_left == 1 && obj_controller.cooldown <= 0) {
+						obj_controller.cooldown = 8000;
+						var base_options = {style: style.tag};
+						obj_temp_build.isnew = 0;
+						array_push(planet_upgrades, new NewPlanetFeature(P_features.Secret_Base, base_options));
+					}
+				}
+		
+				draw_set_color(c_black);
+				draw_set_font(fnt_40k_14b);
+				draw_text_transformed(text_x1, base_y1 + 2 + y_offset, string_hash_to_newline(style.name), 1, 0.8, 0);
+				draw_set_font(fnt_40k_14);
+				draw_text_transformed(text_x2, base_y1 + 2 + y_offset, string_hash_to_newline(style.description), 1, 0.8, 0);
+			}
+		}
+		
 
-    
 
 	    if (un_upgraded==0){
 	    	title="Build ("+string(obj_temp_build.target.name)+" "+scr_roman(obj_temp_build.planet)+")";
@@ -181,7 +136,7 @@ function scr_ui_popup() {
 			                    obj_controller.cooldown=8000;obj_controller.requisition-=tcost;
 			                    if (r=1){
 			                    	s_base.forge=1;
-			                    	s_base.forge_data = new player_forge();
+			                    	s_base.forge_data = new PlayerForge();
 			                    }
 			                    else if (r==2){s_base.hippo=1;}
 			                    else if (r==3){s_base.beastarium=1}
@@ -363,7 +318,7 @@ function scr_ui_popup() {
 	            draw_set_alpha(1);
             
 	            if (obj_controller.cooldown<=0) and (obj_controller.mouse_left==1) and (obj_controller.requisition>=1500){
-	                array_push(planet_upgrades, new new_planet_feature(P_features.Arsenal));
+	                array_push(planet_upgrades, new NewPlanetFeature(P_features.Arsenal));
 	                obj_controller.cooldown=8000;obj_controller.requisition-=1500;
 	            }
 	        }draw_set_halign(fa_left);
@@ -381,7 +336,7 @@ function scr_ui_popup() {
 	            draw_set_alpha(0.2);draw_rectangle(xx+300,yy+175,xx+400,yy+195,0);draw_set_alpha(1);
             
 	            if (obj_controller.cooldown<=0) and (obj_controller.mouse_left=1) and (obj_controller.requisition>=4000){
-	                array_push(planet_upgrades, new new_planet_feature(P_features.Gene_Vault));
+	                array_push(planet_upgrades, new NewPlanetFeature(P_features.Gene_Vault));
 	                obj_controller.cooldown=8000;obj_controller.requisition-=4000;
 	            }
 	        }draw_set_halign(fa_left);
@@ -415,220 +370,6 @@ function scr_ui_popup() {
 	if (selected!=0) and (!instance_exists(selected)) then selected=0;
 
 
-
-	if (popup>0) and (selected!=0) and (zoomed=0) and (sel_system_x+sel_system_y=0) and (diplomacy<=0) and (instance_exists(obj_fleet_select)){
-	    var zm=1,tit="",mnz=0;
-		var xx=__view_get( e__VW.XView, 0 )+0;
-		var yy=__view_get( e__VW.YView, 0 )+0;
-	    //if (fleet_minimized=0){
-	    //    draw_set_color(c_black);
-	    //    draw_rectangle(__view_get( e__VW.XView, 0 )+44,__view_get( e__VW.YView, 0 )+110,__view_get( e__VW.XView, 0 )+267,__view_get( e__VW.YView, 0 )+110+obj_fleet_select.void_hei,0);
-	    //    draw_set_color(c_gray);
-	    //    draw_rectangle(__view_get( e__VW.XView, 0 )+44,__view_get( e__VW.YView, 0 )+110,__view_get( e__VW.XView, 0 )+267,__view_get( e__VW.YView, 0 )+110+obj_fleet_select.void_hei,1);
-	    //}
-    	draw_set_color(c_gray);
-    	obj_fleet_select.selection_window.inside_method = function(){
-    		var mnz=0;
-    		var xx = obj_fleet_select.selection_window.XX;
-    		var yy = obj_fleet_select.selection_window.YY;
-			draw_set_font(fnt_40k_14);
-			var center_draw = xx + (obj_fleet_select.selection_window.width/2);
-			var width = obj_fleet_select.selection_window.width;
-			var height = obj_fleet_select.selection_window.height;
-	    
-		    // draw_text(view_xview[0]+46,view_yview[0]+117,"Title");
-		    // draw_text(view_xview[0]+46,view_yview[0]+142,"1#2#3#4#5#6#7#8#9#10#11#1#13#14#15#16#17#18#19#20#21#22#23#24#25");    
-	    
-		    var type="capital",lines=0,posi=0,colu=1,x3=48,y3=60,escorts,frigates,capitals,ty=0,current_ship=0,current_fleet=0,name="",sal=0,selection_box,scale=1,void_h=122,shew,ship_health=0;
-		    escorts=obj_fleet_select.escort;
-		    frigates=obj_fleet_select.frigate;
-		    capitals=obj_fleet_select.capital;
-	    
-		    current_fleet=instance_nearest(obj_fleet_select.x,obj_fleet_select.y,obj_p_fleet);
-	    
-		    if (escorts>0) then ty++;
-		    if (frigates>0) then ty++;
-		    if (capitals>0) then ty++;
-	    	draw_set_halign(fa_center);
-	    	var set = "capitol";
-	    	var fleet_sel = "[X]";
-		    if (!obj_fleet_select.fleet_all) then fleet_sel = "[ ]";
-
-		    var fleet_all_click = false;
-		    if (!obj_fleet_select.fleet_minimized){
-    	    	if (point_and_click(draw_unit_buttons([xx+width-60, yy+40], fleet_sel,[1,1],c_red))){
-    	    		obj_fleet_select.fleet_all = obj_fleet_select.fleet_all==1?0:1;
-    	    		fleet_all_click=true;  		
-    	    	}
-    	    }
-	    	draw_set_halign(fa_center);	    	
-	    	var ship_type,current_ship, sel_set, full_id;
-	    	if (obj_fleet_select.screen_expansion>0){
-			    for(var j=0; j<(escorts+frigates+capitals); j++){
-			    	draw_set_color(c_gray);
-			        y3+=20;
-			        if (y3>height-5) then break;
-			        lines++;
-			        posi++;
-			        scale=1;
-			        shew=1;
-			        ship_health=100;
-			        if (colu==1) then void_h=min(void_h+20,560);
-		        
-			        if (posi==1){
-			            if (mnz=0) then draw_text(center_draw,yy+y3,string_hash_to_newline("=Capital Ships="));
-			            y3+=20;
-			            if (y3>height-50) then break;
-			            set = "capitol";
-			        }
-	
-			        if (posi==capitals+1) and (frigates>0){
-			        	y3+=20;
-			        	if (y3>height-50) then break;
-			        	if (mnz=0) then draw_text(center_draw,yy+y3,string_hash_to_newline("=Frigates="));
-			        	y3+=20;
-			        	if (y3>height-50) then break;
-	
-			        	set = "frigate";
-			        }
-			        if (posi==capitals+frigates+1) and (escorts>0){
-			        	y3+=20;
-			        	if (y3>height-50) then break;
-			        	if (mnz=0) then draw_text(center_draw,yy+y3,string_hash_to_newline("=Escorts="));
-			        	y3+=20;
-			        	if (y3>height-50) then break;
-			        	set = "escort";
-			        }
-			        switch(set){
-			        	case "capitol":
-			        		ship_type = current_fleet.capital;
-			        		current_ship=posi;
-			        		ship_select = current_fleet.capital_sel[current_ship];
-			        		full_id = current_fleet.capital_num[current_ship];
-			        		break;
-			        	case "frigate":
-				        	ship_type = current_fleet.frigate;
-				        	current_ship=posi-capitals;
-				        	ship_select = current_fleet.frigate_sel[current_ship];
-				        	full_id = current_fleet.frigate_num[current_ship];
-				        	break;	        		
-			        	case "escort":
-				        	ship_type = current_fleet.escort;
-			        		current_ship=posi-(capitals+frigates);
-			        		ship_select = current_fleet.escort_sel[current_ship];
-			        		full_id = current_fleet.escort_num[current_ship];
-				        	break;					        	
-			        }
-			        if (fleet_all_click) then ship_select=obj_fleet_select.fleet_all;
-		        
-			        /*if (y3>670) and (posi<=escorts+frigates+capitals){
-			            lines=1;
-			            y3=30;
-			            x3+=223;
-			            posi++;
-			            colu++;
-			        }*/
-		        
-			        if (posi<=escorts+frigates+capitals){
-			            name=ship_type[current_ship];
-			            if (string_width(name)*scale>179){
-			            	for (i=0;i<9;i++){
-			            		if (string_width(name)*scale>179) then scale-=0.05;
-			            	}
-			            }
-			            if (scr_hit(xx+10,yy+y3,xx+width-10,yy+y3+18)){
-			                if (string_width(name)*scale>135){
-			                	for (i=0;i<9;i++){
-			                		if (string_width(name)*scale>135) then scale-=0.05;
-			                	}
-			                }
-			                shew=2;
-			            }
-			            if (point_and_click([xx+10,yy+y3,xx+width-10,yy+y3+18])){
-		                    if (!(obj_controller.fest_scheduled>0 && obj_controller.fest_sid==full_id)){
-			                    if (ship_select==1){
-			                        ship_select=0;
-			                    }else {
-			                        ship_select=1;
-			                    }
-		                	}
-			            }
-			            if (obj_ini.ship_maxhp[current_ship]>0){
-			            	ship_health=round((obj_ini.ship_hp[current_ship]/obj_ini.ship_maxhp[current_ship])*100);
-			            }
-	
-			            if (ship_select==0){
-			            	selection_box="[ ]";
-			            }else if (ship_select==1){ 
-			            	selection_box="[x] ";
-			            }
-			            if (mnz==0){
-			            	draw_text(xx+width-25,yy+y3,selection_box);
-			            	if (shew==2) then draw_text(xx+width-60,yy+y3,$"{ship_health}%");
-			            }
-			            if (ship_health<=60) and (ship_health>40) then draw_set_color(c_yellow);
-			            if (ship_health<=40) and (ship_health>20) then draw_set_color(c_orange);
-			            if (ship_health<=20) then draw_set_color(c_red);
-			            if (mnz=0) then draw_text_transformed(center_draw,yy+y3,name,scale,1,0);
-			            draw_set_color(c_gray);
-			        }
-			        switch(set){
-			        	case "capitol":
-			        		current_fleet.capital_sel[current_ship] = ship_select;
-			        		break;
-			        	case "frigate":
-				        	current_fleet.frigate_sel[current_ship] = ship_select;
-				        	break;	        		
-			        	case "escort":
-				        	current_fleet.escort_sel[current_ship] = ship_select;
-				        	break;					        	
-			        }			        
-			    }
-	    			}
-		    obj_fleet_select.currently_entered = point_in_rectangle(mouse_x,mouse_y,xx,yy, xx+width, yy+obj_fleet_select.selection_window.height);
-    	}
-		var xx=__view_get( e__VW.XView, 0 )+0;
-		var yy=__view_get( e__VW.YView, 0 )+0;	    	
-    	fleet_min_button = "-"
-    	if (obj_fleet_select.fleet_minimized || obj_fleet_select.screen_expansion<20){
-    		fleet_min_button = "+"
-    		obj_fleet_select.selection_window.draw_cut(xx+60, yy+110, 0.35, 0.8, obj_fleet_select.screen_expansion*5);
-    		if (obj_fleet_select.fleet_minimized && obj_fleet_select.screen_expansion>1){
-    			obj_fleet_select.screen_expansion--;
-    		} else if (!obj_fleet_select.fleet_minimized && obj_fleet_select.screen_expansion<20){
-    			obj_fleet_select.screen_expansion++;
-    		}
-    	} else {
-			obj_fleet_select.selection_window.draw(xx+60, yy+110, 0.35, 0.8);
-    	}	    
-    	xx = obj_fleet_select.selection_window.XX;
-    	yy = obj_fleet_select.selection_window.YY;
-    	var center_draw = xx + (obj_fleet_select.selection_window.width/2);
-    	var width = obj_fleet_select.selection_window.width;
-	    draw_set_halign(fa_center);
-	    draw_text(center_draw,yy+50,string_hash_to_newline(string(global.chapter_name)+" Fleet"));
-	    draw_set_halign(fa_left);
-    
-	    draw_set_color(c_gray);
-	    //draw_rectangle(xx+18+obj_fleet_select.void_wid,yy+116,xx+36+obj_fleet_select.void_wid,yy+134,0);
-
-	    draw_set_color(c_red);
-    
-	    draw_set_color(c_gray);
-	    draw_line(xx+10,yy+75,xx+width-10,yy+75);	    	
-	    if (point_and_click(draw_unit_buttons([xx+25,yy+40], fleet_min_button,[1,1],c_red))){
-	    	obj_fleet_select.fleet_minimized = !obj_fleet_select.fleet_minimized;
-	    	if (obj_fleet_select.fleet_minimized){
-	    		obj_fleet_select.screen_expansion--;
-	    		fleet_minimized=0;
-	    	} else {
-	    		obj_fleet_select.screen_expansion++;
-	    		fleet_minimized=1;
-	    	}
-	    }	    	
-    
-
-	}
 	var xx=__view_get( e__VW.XView, 0 )+0;
 	var yy=__view_get( e__VW.YView, 0 )+0;
 	if (zoomed == 0){
@@ -640,7 +381,7 @@ function scr_ui_popup() {
 	   		if (income_base>0) then plu="+";
 	        tool1+=string("Base Income: {0}{1}", plu, income_base);
 	        tool2+="Base Income: ";
-		    if (obj_ini.fleet_type=1){
+		    if (obj_ini.fleet_type=ePlayerBase.home_world){
 		        plu="";
 
 		        if (income_home>0){
@@ -656,7 +397,7 @@ function scr_ui_popup() {
 		        	tool2+="#Nearby Agri Worlds:";
 		        }
 		    }
-		    if (obj_ini.fleet_type!=1){
+		    if (obj_ini.fleet_type != ePlayerBase.home_world){
 		        plu="";
 		        if (income_home>0) then plu="+";
 		        tool1+="#Battle Barge Trade: "+string(plu)+string(income_home);
@@ -808,6 +549,4 @@ function scr_ui_popup() {
 	        draw_text_transformed(__view_get( e__VW.XView, 0 )+24.5+93,__view_get( e__VW.YView, 0 )+26,string_hash_to_newline(string(blurp2)),0.7,0.7,0);
 	    }
 	}
-
-
 }

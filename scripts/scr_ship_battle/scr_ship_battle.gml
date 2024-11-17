@@ -22,8 +22,8 @@ function scr_ship_battle(target_ship_id, cooridor_width) {
 	            if (stop=0){
 	            	if (obj_ini.name[co][v] == "") then continue;
 	            	unit=obj_ini.TTRPG[co][v];
-	                if (unit.ship_location=target_ship_id) and (obj_ini.hp[co][v]>0) then okay=1;
-	                if (unit.ship_location=cooridor_width) and (cooridor_width=cooridor_width) and (obj_ini.hp[co][v]>0) then okay=1;
+	                if (unit.ship_location=target_ship_id) and (unit.hp()) then okay=1;
+	                if (unit.ship_location=cooridor_width) and (cooridor_width=cooridor_width) and (unit.hp()) then okay=1;
                 
 	                if (string_count("spyrer",obj_ncombat.battle_special)>0) and ((obj_ini.role[co][v]=obj_ini.role[100][6]) or (unit.role()="Venerable "+string(obj_ini.role[100][6]))){
 	                    okay=0;
@@ -94,26 +94,12 @@ function scr_ship_battle(target_ship_id, cooridor_width) {
 	                    if (col=0) then col=obj_controller.bat_hire_column;
                     
 	                    targ = instance_nearest(col * 10, 240, obj_pnunit);
-	                    targ.men += 1;
-	                    targ.unit_struct[targ.men] = unit;
-	                    targ.marine_co[targ.men] = company;
-	                    targ.marine_id[targ.men] = v;
-	                    targ.marine_type[targ.men] = _u_role;
-	                    targ.marine_wep1[targ.men] = unit.weapon_one()
-	                    targ.marine_wep2[targ.men] = unit.get_weapon_two_data()
-	                    targ.marine_armour[targ.men] = unit.armour()
-	                    targ.marine_gear[targ.men] = unit.gear();
-	                    targ.marine_mobi[targ.men] = unit.mobility_item();
-	                    targ.marine_hp[targ.men] = unit.hp();
-	                    targ.marine_exp[targ.men] = unit.experience();
-	                    targ.marine_powers[targ.men] = deploying_unit.spe[cooh][va];
-	                    targ.marine_ranged[targ.men] = unit.ranged_attack();
-	                    targ.marine_ac[targ.men]=unit.armour_calc();
-	                    targ.marine_attack[targ.men]=unit.melee_attack();
+	                     with (targ){
+                            scr_add_unit_to_roster(unit);
+                        }
                                         
 	                }
-                
-                
+                   
                 
 	            }
             

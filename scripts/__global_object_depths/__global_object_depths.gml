@@ -39,7 +39,7 @@ function __global_object_depths() {
 	global.__objectDepths[31] = 0; // obj_temp1
 	global.__objectDepths[32] = 0; // obj_temp2
 	global.__objectDepths[33] = 0; // obj_temp3
-	global.__objectDepths[34] = 0; // obj_temp4
+	global.__objectDepths[34] = 0; // obj_ground_mission
 	global.__objectDepths[35] = -9999999; // obj_temp5
 	global.__objectDepths[36] = 0; // obj_temp6
 	global.__objectDepths[37] = 0; // obj_temp7
@@ -71,7 +71,7 @@ function __global_object_depths() {
 	global.__objectDepths[63] = -7273799; // obj_fade
 	global.__objectDepths[64] = -5; // obj_defeat
 	global.__objectDepths[65] = 0; // obj_ini
-	global.__objectDepths[66] = -1000; // obj_controller
+	global.__objectDepths[66] = -21; // obj_controller
 	global.__objectDepths[67] = -1001; // obj_mass_equip
 	global.__objectDepths[68] = -999; // obj_turn_end
 	global.__objectDepths[69] = -19990; // obj_saveload
@@ -129,7 +129,7 @@ function __global_object_depths() {
 	global.__objectNames[31] = "obj_temp1";
 	global.__objectNames[32] = "obj_temp2";
 	global.__objectNames[33] = "obj_temp3";
-	global.__objectNames[34] = "obj_temp4";
+	global.__objectNames[34] = "obj_ground_mission";
 	global.__objectNames[35] = "obj_temp5";
 	global.__objectNames[36] = "obj_temp6";
 	global.__objectNames[37] = "obj_temp7";

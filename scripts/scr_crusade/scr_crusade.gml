@@ -47,7 +47,7 @@ function scr_crusade() {
                 //TODO figure out how to quantify and present these risks so the player knows to protect dudes with trait
                 if (unit.has_trait("very_hard_to_kill")) then death_determination-=20;
                 death_determination_2=death_determination;
-                death_determination-=(unit.experience()/2);
+                death_determination-=(unit.experience/2);
 
                 //more generalised trait bonus mainly linked to chapter advantage of same name
                 if (unit.has_trait("slow_and_purposeful")) then death_determination-=10;
@@ -124,8 +124,8 @@ function scr_crusade() {
 
 	if (roll3<=10) then artifacts+=1;
 	if (artifacts>0) then repeat(artifacts){
-	    if (obj_ini.fleet_type=1) then scr_add_artifact("random","",4,obj_ini.home_name,2);
-	    if (obj_ini.fleet_type!=1) then scr_add_artifact("random","",4,obj_ini.ship[1],501);
+	    if (obj_ini.fleet_type=ePlayerBase.home_world) then scr_add_artifact("random","",4,obj_ini.home_name,2);
+	    if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("random","",4,obj_ini.ship[1],501);
 	}
 
 

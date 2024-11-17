@@ -125,6 +125,8 @@ function scr_ui_display_weapons(left_or_right, current_armor, equiped_weapon, cu
 			"Force Axe":spr_weapon_powaxe,
 			"Chainfist":spr_weapon_chainfist_small,
 			"Power Weapon":spr_weapon_powswo,
+            "Relic Blade":spr_weapon_relic_blade,
+            "Eviscerator":spr_weapon_evisc,
         }
         var melee_weapons_names=struct_get_names(melee_weapons);
         var wep_
@@ -159,9 +161,7 @@ function scr_ui_display_weapons(left_or_right, current_armor, equiped_weapon, cu
     // Handle two-handed melee
     if (!sprite_found){
         var heavy_melee ={
-            "Eviscerator":spr_weapon_evisc,
             "Heavy Thunder Hammer":spr_weapon_hthhammer,
-            "Relic Blade":spr_weapon_relic_blade,
         }
         var heavy_melee_names=struct_get_names(heavy_melee);
         for (var i=0;i<array_length(heavy_melee_names);i++){
@@ -187,6 +187,95 @@ function scr_ui_display_weapons(left_or_right, current_armor, equiped_weapon, cu
             }
         }
     }
+
+    static set_as_normal_ranged = function(sprite, left_or_right) {
+        ui_weapon[left_or_right] = sprite;
+        arm_variant[left_or_right] = 1;
+        ui_spec[left_or_right] = false;
+        display_type = "normal_ranged";
+    }
+    
+    static set_as_ranged_assault = function(sprite, left_or_right) {
+        ui_weapon[left_or_right] = sprite;
+        display_type = "ranged_assault";
+        arm_variant[left_or_right] = 0;
+        hand_variant[left_or_right] = 0;
+        ui_spec[left_or_right] = true;
+    }
+    
+    static set_as_ranged_twohand = function(sprite, left_or_right) {
+        ui_weapon[left_or_right] = sprite;
+        display_type = "ranged_twohand";
+        arm_variant[1] = 0;
+        arm_variant[2] = 0;
+        hand_variant[1] = 0;
+        hand_variant[2] = 0;
+        ui_spec[left_or_right] = true;
+        ui_twoh[left_or_right] = true;
+    }
+    
+    static set_as_special_ranged = function(sprite, left_or_right) {
+        ui_weapon[left_or_right] = sprite;
+        arm_variant[left_or_right] = 0;
+        hand_variant[left_or_right] = 0;
+        ui_spec[left_or_right] = true;
+        display_type = "special_ranged";
+    }
+    
+    static set_as_terminator_ranged = function(sprite, left_or_right) {
+        ui_weapon[left_or_right] = sprite;
+        arm_variant[left_or_right] = 2;
+        hand_variant[left_or_right] = 0;
+        ui_spec[left_or_right] = true;
+        display_type = "terminator_ranged";
+    }
+    
+    static set_as_melee_onehand = function(sprite, left_or_right) {
+        ui_weapon[left_or_right] = sprite;
+        arm_variant[left_or_right] = 0;
+        hand_variant[left_or_right] = 0;
+        hand_on_top[left_or_right]=true;
+        ui_spec[left_or_right] = true;
+        display_type = "melee_onehand";
+    }
+    
+    static set_as_normal_fist = function(sprite, left_or_right) {
+        ui_weapon[left_or_right] = sprite;
+        arm_variant[left_or_right] = 1;
+        ui_spec[left_or_right] = true;
+        display_type = "normal_fist";
+    }
+    
+    static set_as_melee_twohand = function(sprite, left_or_right) {
+        ui_weapon[left_or_right] = sprite;
+        display_type = "melee_twohand";
+        arm_variant[1] = 0;
+        arm_variant[2] = 0;
+        hand_variant[1] = 0;
+        hand_variant[2] = 0;
+        hand_on_top[left_or_right]=true;
+        ui_spec[left_or_right] = true;
+        ui_twoh[left_or_right] = true;
+    }
+    
+    static set_as_terminator_melee = function(sprite, left_or_right) {
+        ui_weapon[left_or_right] = sprite;
+        arm_variant[left_or_right] = 1;
+        hand_on_top[left_or_right]=true;
+        ui_spec[left_or_right] = true;
+        display_type = "terminator_melee";
+    }
+    
+    static set_as_terminator_fist = function(sprite, left_or_right) {
+        ui_weapon[left_or_right] = sprite;
+        arm_variant[left_or_right] = 1;
+        ui_spec[left_or_right] = true;
+        display_type = "terminator_fist";
+    }
+
+    /////////
+    // Hands and stuff
+    //////////
 
     if (display_type == "terminator_melee") {
         if (array_contains(["Mace of Absolution"], equiped_weapon)) {
@@ -278,7 +367,7 @@ function scr_ui_display_weapons(left_or_right, current_armor, equiped_weapon, cu
             }
         }
 
-        if (array_contains(["Thunder Hammer", "Chainaxe", "Power Axe", "Crozius Arcanum"], equiped_weapon)) {
+        if (array_contains(["Thunder Hammer", "Chainaxe", "Power Axe", "Crozius Arcanum", "Relic Blade"], equiped_weapon)) {
             hand_variant[left_or_right] = 3;
         }
     }
@@ -288,91 +377,6 @@ function scr_ui_display_weapons(left_or_right, current_armor, equiped_weapon, cu
         /*and (current_armor=0)*/
         ui_xmod[left_or_right] = ui_xmod[left_or_right] * -1;
     }
-}
-
-function set_as_normal_ranged(sprite, left_or_right) {
-    ui_weapon[left_or_right] = sprite;
-    arm_variant[left_or_right] = 1;
-    ui_spec[left_or_right] = false;
-    display_type = "normal_ranged";
-}
-
-function set_as_ranged_assault(sprite, left_or_right) {
-    ui_weapon[left_or_right] = sprite;
-    display_type = "ranged_assault";
-    arm_variant[left_or_right] = 0;
-    hand_variant[left_or_right] = 0;
-    ui_spec[left_or_right] = true;
-}
-
-function set_as_ranged_twohand(sprite, left_or_right) {
-    ui_weapon[left_or_right] = sprite;
-    display_type = "ranged_twohand";
-    arm_variant[1] = 0;
-    arm_variant[2] = 0;
-    hand_variant[1] = 0;
-    hand_variant[2] = 0;
-    ui_spec[left_or_right] = true;
-    ui_twoh[left_or_right] = true;
-}
-
-function set_as_special_ranged(sprite, left_or_right) {
-    ui_weapon[left_or_right] = sprite;
-    arm_variant[left_or_right] = 0;
-    hand_variant[left_or_right] = 0;
-    ui_spec[left_or_right] = true;
-    display_type = "special_ranged";
-}
-
-function set_as_terminator_ranged(sprite, left_or_right) {
-    ui_weapon[left_or_right] = sprite;
-    arm_variant[left_or_right] = 2;
-    hand_variant[left_or_right] = 0;
-    ui_spec[left_or_right] = true;
-    display_type = "terminator_ranged";
-}
-
-function set_as_melee_onehand(sprite, left_or_right) {
-    ui_weapon[left_or_right] = sprite;
-    arm_variant[left_or_right] = 0;
-    hand_variant[left_or_right] = 0;
-    hand_on_top[left_or_right]=true;
-    ui_spec[left_or_right] = true;
-    display_type = "melee_onehand";
-}
-
-function set_as_normal_fist(sprite, left_or_right) {
-    ui_weapon[left_or_right] = sprite;
-    arm_variant[left_or_right] = 1;
-    ui_spec[left_or_right] = true;
-    display_type = "normal_fist";
-}
-
-function set_as_melee_twohand(sprite, left_or_right) {
-    ui_weapon[left_or_right] = sprite;
-    display_type = "melee_twohand";
-    arm_variant[1] = 0;
-    arm_variant[2] = 0;
-    hand_variant[1] = 0;
-    hand_variant[2] = 0;
-    hand_on_top[left_or_right]=true;
-    ui_spec[left_or_right] = true;
-    ui_twoh[left_or_right] = true;
-}
-
-function set_as_terminator_melee(sprite, left_or_right) {
-    ui_weapon[left_or_right] = sprite;
-    arm_variant[left_or_right] = 1;
-    hand_on_top[left_or_right]=true;
-    ui_spec[left_or_right] = true;
-    display_type = "terminator_melee";
-}
-
-function set_as_terminator_fist(sprite, left_or_right) {
-    ui_weapon[left_or_right] = sprite;
-    arm_variant[left_or_right] = 1;
-    ui_spec[left_or_right] = true;
-    display_type = "terminator_fist";
 }
 
 function dreadnought_sprite_components(component){
@@ -390,7 +394,7 @@ function dreadnought_sprite_components(component){
         "Inferno Cannon": spr_dread_plasma_cannon,
         "Multi-Melta": spr_dread_plasma_cannon,
         "Twin Linked Lascannon": spr_dread_lascannon,
-       "Heavy Conversion Beam Projector": spr_dread_plasma_cannon,
+        "Heavy Conversion Beam Projector": spr_dread_plasma_cannon,
     };
     if (struct_exists(components, component)){
         return components[$ component]

@@ -1,4 +1,6 @@
+if (instance_number(obj_ncombat)>1) then  instance_destroy();
 
+set_zoom_to_defualt();
 var co,i;co=-1;
 repeat(15){co+=1;i=-1;
     repeat(401){i+=1;
@@ -7,13 +9,13 @@ repeat(15){co+=1;i=-1;
     }
 }co=0;i=0;hue=0;
 
-
+turn_count = 0;
 debugl("Ground Combat Started");
 
 audio_stop_sound(snd_royal);
 audio_play_sound(snd_battle,0,true);
 audio_sound_gain(snd_battle, 0, 0);
-var nope;nope=0;if (obj_controller.master_volume=0) or (obj_controller.music_volume=0) then nope=1;
+var nope=0;if (obj_controller.master_volume=0) or (obj_controller.music_volume=0) then nope=1;
 if (nope!=1){audio_sound_gain(snd_battle,0.25*obj_controller.master_volume*obj_controller.music_volume,2000);}
 
 
@@ -22,7 +24,7 @@ man_size_limit = 0;
 fack=0;
 cd=0;
 owner  = eFACTION.Player;
-fix_timer=0;
+click_stall_timer=0;
 formation_set=0;
 big_boom=0;
 kamehameha=false;
@@ -136,10 +138,10 @@ repeat(70){i+=1;
     if (i<=10) then mucra[i]=0;
 }
 slime=0;
+unit_recovery_score=0;
 apothecaries_alive=0;
-apoth=0;
-techma=0;
 techmarines_alive=0;
+vehicle_recovery_score=0;
 injured=0;
 command_injured=0;
 seed_saved=0;
@@ -221,7 +223,7 @@ en_important_dudes=0;
 
 // 
 
-attacker=0;// 0 is defensive
+defending=true;// 1 is defensive
 dropping=0;// 0 is was on ground
 attacking=0;// 1 means attacked from space/local
 time=floor(random(24))+1;
@@ -234,7 +236,8 @@ enemy_eldar=0;if (string_count("Enemy: Eldar",obj_ini.strin)>0) then enemy_eldar
 enemy_fallen=0;if (string_count("Enemy: Fallen",obj_ini.strin)>0) then enemy_fallen=1;
 enemy_orks=0;if (string_count("Enemy: Orks",obj_ini.strin)>0) then enemy_orks=1;
 enemy_tau=0;if (string_count("Enemy: Tau",obj_ini.strin)>0) then enemy_tau=1;
-enemy_tyranids=0;
+enemy_tyranids=0;if (string_count("Enemy: Tyranids",obj_ini.strin)>0) then enemy_tyranids=1;
+enemy_necrons=0;if (string_count("Enemy: Necrons",obj_ini.strin)>0) then enemy_necrons=1;
 lightning=0;if (string_count("Lightning",obj_ini.strin)>0) then lightning=1;
 siege=0;if (string_count("Siege",obj_ini.strin)>0) then siege=1;
 slow=0;if (string_count("Purposeful",obj_ini.strin)>0) then slow=1;
@@ -266,8 +269,9 @@ if (enemy_fallen=1) and (enemy=10){global_attack=global_attack*1.1;global_defens
 if (enemy_orks=1) and (enemy=7){global_attack=global_attack*1.1;global_defense=global_defense*1.1;}
 if (enemy_tau=1) and (enemy=8){global_attack=global_attack*1.1;global_defense=global_defense*1.1;}
 if (enemy_tyranids=1) and (enemy=9){global_attack=global_attack*1.1;global_defense=global_defense*1.1;}
+if (enemy_necrons=1) and (enemy=13){global_attack=global_attack*1.1;global_defense=global_defense*1.1;}
 
-if (siege=1) and (enemy_fortified>=3) and (attacker=1) then global_attack=global_attack*1.2;
+if (siege=1) and (enemy_fortified>=3) and (defending=false) then global_attack=global_attack*1.2;
 
 
 if (slow=1){global_attack-=0.1;global_defense+=0.2;}

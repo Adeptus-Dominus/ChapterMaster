@@ -14,7 +14,7 @@ function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id,
 		}],
 		[31, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
 			//TODO figure out a better way of making a marine unconcious/incapacitated
-			unit.add_or_sub_health(-5000);
+			//unit.add_or_sub_health(-5000);
 		    var flavour_text2="Psychic backlash knocks him out entirely, incapacitating the marine.";
 		    return flavour_text2;
 		}],

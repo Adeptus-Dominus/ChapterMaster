@@ -23,24 +23,26 @@ function scr_mission_reward(argument0, argument1, argument2) {
 	        repeat(300){i+=1;
 	            if (obj_ini.role[com][i]=obj_ini.role[100][16]) and (obj_ini.loc[com][i]="Mechanicus Vessel"){
 	                roll2=floor(random(100))+1;
-	                if (obj_ini.dis[1]="Shitty Luck") or (obj_ini.dis[2]="Shitty Luck") or (obj_ini.dis[3]="Shitty Luck") or (obj_ini.dis[4]="Shitty Luck") then roll2-=10;
+					
+					if(scr_has_disadv("Shitty Luck")) then roll2-=10; 
 
 	                if (roll2<=50){obj_controller.command-=1;techs_lost+=1;
 	                    kill_and_recover(com, i, true, false);
 	                    cleanup[com]=1;
 	                }
 	                if (roll2>50){
-	                    argument1.p_player[argument2]+=scr_unit_size(obj_ini.armour[com][i],obj_ini.role[com][i],true);
+	                	var unit = obj_ini.TTRPG[com][i];
+	                    argument1.p_player[argument2]+=unit.get_unit_size();
 	                    obj_ini.loc[com][i]=argument1.name;
-	                    obj_ini.TTRPG[com][i].planet_location=argument2;
+	                    unit.planet_location=argument2;
 	                    techs_alive+=1;
-	                    repeat(3){obj_ini.experience[com][i]+=choose(1,2,3,4,5,6);}
+	                    unit.add_experience(irandom_range(3,18));
 	                    if (roll2<80) then found_requisition+=floor(random_range(5,40))+1;
 	                }
 	                if (roll2>=80) and (roll2<88) then found_requisition+=100;
 	                if (roll2>=88) and (roll2<96){
-	                    if (obj_ini.fleet_type=1) then scr_add_artifact("random","",4,obj_ini.home_name,2);
-	                    if (obj_ini.fleet_type!=1) then scr_add_artifact("random","",4,obj_ini.ship[1],501);
+	                    if (obj_ini.fleet_type=ePlayerBase.home_world) then scr_add_artifact("random","",4,obj_ini.home_name,2);
+	                    if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("random","",4,obj_ini.ship[1],501);
 	                    found_artifact+=1;
 	                }
 	                if (roll2>=96){
@@ -92,7 +94,7 @@ function scr_mission_reward(argument0, argument1, argument2) {
 	if (argument0="mech_raider"){
 	    var roll1,result;
 	    roll1=floor(random(100))+1;result="";
-	    if (obj_ini.dis[1]="Shitty Luck") or (obj_ini.dis[2]="Shitty Luck") or (obj_ini.dis[3]="Shitty Luck") or (obj_ini.dis[4]="Shitty Luck") then roll1+=20;
+	    if (scr_has_disadv("Shitty Luck")) then roll1+=20;
 
 	    if (roll1<=33) then result="New";
 	    if (roll1>33) and (roll1<=66) then result="Land Raider";
@@ -143,7 +145,7 @@ function scr_mission_reward(argument0, argument1, argument2) {
 	if (argument0="mech_bionics"){
 	    var roll1,result;
 	    roll1=floor(random(100))+1;result="";
-	    if (obj_ini.dis[1]="Shitty Luck") or (obj_ini.dis[2]="Shitty Luck") or (obj_ini.dis[3]="Shitty Luck") or (obj_ini.dis[4]="Shitty Luck") then roll1+=20;
+	    if (scr_has_disadv("Shitty Luck")) then roll1+=20;
 
 	    if (roll1<=33) then result="Requisition";
 	    if (roll1>33) and (roll1<=66) then result="Bionics";
@@ -161,8 +163,6 @@ function scr_mission_reward(argument0, argument1, argument2) {
 
 	                        argument1.p_player[argument2]-=scr_unit_size(obj_ini.armour[com][i],obj_ini.role[com][i],true);
 
-	                        if (obj_ini.role[com][i]="Chapter Master"){obj_controller.alarm[7]=10;global.defeat=3;}
-
 	                        kill_and_recover(com, i, true, true);
 
 	                        cleanup[com]=1;
@@ -171,6 +171,7 @@ function scr_mission_reward(argument0, argument1, argument2) {
 	            }
 	        }
 	    }
+	    var unit;
 	    if (result="Bionics"){
 	        scr_popup("Mechanicus Mission Completed","The Adeptus Mechanicus have finished experimenting on your marines.  All of your astartes have survived, though they refuse to speak of the experience.  A large amount of additional Bionics have been provided by the Mechanicus as a reward.","mechanicus","");
 	        obj_controller.disposition[3]+=1;var com,i,onceh;onceh=0;com=-1;i=0;
@@ -178,8 +179,9 @@ function scr_mission_reward(argument0, argument1, argument2) {
 	        repeat(11){
 	            if (onceh<10){com+=1;i=0;
 	                repeat(300){i+=1;
+	                	unit = fetch_unit([com,i]);
 	                    if (obj_ini.race[com][i]=1) and (obj_ini.loc[com][i]=argument1.name) and (obj_ini.TTRPG[com][i].planet_location=argument2){onceh+=1;
-	                        obj_ini.hp[com][i]=floor(random_range(2,80))+1;
+	                        unit.update_health(irandom_range(2,80));
 	                        repeat(choose(2,3,4)){obj_ini.TTRPG[com][i].add_bionics()}
 	                    }
 	                }
@@ -188,16 +190,25 @@ function scr_mission_reward(argument0, argument1, argument2) {
 	    }
 	    if (result="Requisition"){
 	        scr_popup("Mechanicus Mission Completed","The Adeptus Mechanicus have finished experimenting on your marines.  All of your astartes have survived, though they refuse to speak of the experience.  200 Requisition has been provided by the Mechanicus as a reward.","mechanicus","");
-	        obj_controller.disposition[3]+=1;obj_controller.requisition+=200;
-	        var com,i,onceh;onceh=0;com=-1;i=0;
-	        repeat(11){
-	            if (onceh<10){com+=1;i=0;
-	                repeat(300){i+=1;
-	                    if (obj_ini.race[com][i]=1) and (obj_ini.loc[com][i]=argument1.name) and (obj_ini.TTRPG[com][i].planet_location=argument2){onceh+=1;
-	                        obj_ini.hp[com][i]=floor(random_range(2,80))+1;
-	                        repeat(choose(2,3,4)){obj_ini.TTRPG[com][i].add_bionics()}
+	        obj_controller.disposition[3]+=1;
+	        obj_controller.requisition+=200;
+	        var found=0,com=-1,i=0,unit;
+	        for (var com=0;com<=10;com++){
+	            if (found<10){
+	                for (i=0;i<=array_length(obj_ini.TTRPG[com]);i++){
+	                	unit = fetch_unit([com,i]);
+	                    if (unit.race()=1) and (obj_ini.loc[com][i]=argument1.name) and (unit.planet_location=argument2){
+	                    	found++;
+	                    	unit.update_loyalty(-30);
+	                        unit.update_health(irandom_range(2,80));
+	                        repeat(choose(2,3,4)){
+	                        	unit.add_bionics();
+	                        }
 	                    }
+	                    if (found>=10) then break;
 	                }
+	            } else {
+	            	break;
 	            }
 	        }
 	    }

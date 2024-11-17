@@ -19,7 +19,7 @@ function scr_powers_new(){
 
 
 	// higer psionice means more powers learnt
-	powers_should_have=floor((experience()-30)/(45-psionic))+1;// +1 for the primary
+	powers_should_have=floor((experience-30)/(45-psionic))+1;// +1 for the primary
 	powers_have=string_count(string(power_code),specials());
 
 

@@ -27,8 +27,9 @@ function scr_max_marine(max_type) {
 	            		man_i=i;
 	            	}
 	            }else if (max_type="exp"){
-	            	if (obj_ini.experience[c,i]>value){
-	            		value=obj_ini.experience[c,i];man_c=c;man_i=i;
+	            	if (unit.experience>value){
+	            		value=unit.experience;
+	            		man_c=c;man_i=i;
 	            	}
 	            }
 	        }

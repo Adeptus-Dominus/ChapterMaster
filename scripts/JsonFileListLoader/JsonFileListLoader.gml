@@ -50,8 +50,8 @@ function JsonFileListLoader() constructor {
             result.is_success = true;
 
             debugl($"Successfully loaded {item_total} values from {relative_file_path}");
-        } catch (_ex) {
-            debugl($"Could not load data from {relative_file_path}: {_ex.message}.");
+        } catch (_exception) {
+            handle_exception(_exception);
             result.values = {}; // do not return incomplete/invalid data
         } finally {
             if (is_undefined(file_buffer) == false) {

@@ -7,10 +7,10 @@ function scr_purge_world(star, planet, action_type, action_score) {
 
 	if ((action_type=2) or (action_type=3)) and (star.p_traitors[planet]=0) and (star.p_chaos[planet]=0) and (obj_controller.turn>=obj_controller.chaos_turn){
 	    if (planet_feature_bool(star.p_feature[planet],P_features.Warlord10) == 1) and (obj_controller.known[10]=0) and (obj_controller.faction_gender[10]=1) then with(obj_drop_select){
-	        var pop;pop=instance_create(0,0,obj_popup);
+	        var pop=instance_create(0,0,obj_popup);
 	        pop.image="chaos_symbol";
 	        pop.title="Concealed Heresy";
-	        pop.text="Your astartes set out and begin to cleanse "+string(star.name)+" "+scr_roman(planet)+" of possible heresy.  The general populace appears to be devout in their faith, but a disturbing trend appears- the odd citizen cursing your forces, frothing at the mouth, and screaming out heresy most foul.  One week into the cleansing a large hostile force is detected approaching and encircling your forces.";        
+	        pop.text=$"Your astartes set out and begin to cleanse {planet_numeral_name(planet, star)} of possible heresy.  The general populace appears to be devout in their faith, but a disturbing trend appears- the odd citizen cursing your forces, frothing at the mouth, and screaming out heresy most foul.  One week into the cleansing a large hostile force is detected approaching and encircling your forces.";        
 	        exit;exit;    
 	    }
 	    if (planet_feature_bool(star.p_feature[planet],P_features.Warlord10) == 1) and (obj_controller.known[10]>=2) and (obj_controller.faction_gender[10]=1) then with(obj_drop_select){
@@ -21,16 +21,16 @@ function scr_purge_world(star, planet, action_type, action_score) {
 
 
 
-
+	// TODO - while I don't expect Surface to Orbit weapons retaliating against player's purge bombardment, it might still be worthwhile to consider possible situations
 
 	if (action_type=1){// Bombardment
-	    txt1="The heavens rumble and thunder as your ship";
+	    txt1=choose("Your cruiser and larger ship", "The heavens rumble and thunder as your ship");
 	    if (ships_selected>1) then txt1+="s";
-	    txt1+=" unload";
+	    txt1+=choose(" position themselves over the target in close orbit, and unleash", " unload");
 	    if (ships_selected=1) then txt1+="s";
-	     txt1+=" annihilation upon "+string(star.name)+" "+string(planet)+".  Even from space the explosions can be seen, clapping across the planet's surface.";
+		txt1+= $" annihilation upon {planet_numeral_name(planet, star)}. Even from space the explosions can be seen, {choose("tearing ground", "hammering", "battering", "thundering")} across the planet's surface.";
  
-	    if (star.p_large[planet]=0) then max_kill=action_score*15000000;// Population if normal
+	    if (star.p_large[planet]=0) then max_kill=action_score*15000000;
 	    if (star.p_large[planet]=1) then max_kill=action_score*0.015;// Population if large
     
 	    pop_before=star.p_population[planet];
@@ -54,9 +54,9 @@ function scr_purge_world(star, planet, action_type, action_score) {
 	    if (star.p_large[planet]=0) then pop_after=round(pop_after);    
 	    if (pop_after<=0) and (pop_before>0) then heres_after=0;
  
-	    if (star.p_large[planet]=0) then txt1+="##It had a population of "+string(scr_display_number(floor(pop_before)))+" and "+string(scr_display_number(floor(kill)))+" die over the duration of the bombardment.##Heresy has fallen down to "+string(max(0,heres_after))+"%.";
-	    if (star.p_large[planet]=1) then txt1+="##it had a population of "+string(pop_before)+" billion and "+string(kill)+" billion die over the duration of the bombardment.##Heresy has fallen down to "+string(max(0,heres_after))+"%.";
-    
+		var _displayed_population = star.p_large[planet] == 1 ? $"{pop_before} billion" : scr_display_number(floor(pop_before));
+		var _displayed_killed = star.p_large[planet] == 1 ? $"{kill} billion" : scr_display_number(floor(kill));
+	    txt1 += $"##The world had {_displayed_population} Imperium subjects. {_displayed_killed} were purged over the duration of the bombardment.##Heresy has fallen down to {max(0, heres_after)}%.";
     
 	    if (pop_after=0){
 	        if (star.p_owner[planet]=2) and (obj_controller.faction_status[2]!="War"){
@@ -70,7 +70,8 @@ function scr_purge_world(star, planet, action_type, action_score) {
 	        }
 	    }
 	    if (star.p_owner[planet]=3) and (obj_controller.faction_status[3]!="War"){
-	        obj_controller.audiences+=1;obj_controller.audien[obj_controller.audiences]=3;
+	        obj_controller.audiences+=1;
+	        obj_controller.audien[obj_controller.audiences]=3;
 	        obj_controller.audien_topic[obj_controller.audiences]="bombard_angry";
 	        if (star.p_type[planet]="Forge") then obj_controller.disposition[3]-=15;
 	        if (star.p_type[planet]="Ice") then obj_controller.disposition[3]-=7;
@@ -99,8 +100,11 @@ function scr_purge_world(star, planet, action_type, action_score) {
 	            scr_event_log("","Inquisition Mission Completed: The mutants of "+string(star.name)+" "+string(scr_roman(planet))+" have been cleansed by promethium.");
 	            scr_gov_disp(star.name,planet,choose(1,2,3));
 	        }
-	    }else if (isquest=0){
-	        txt1="Your forces scour "+string(star.name)+" "+string(planet)+", burning homes and towns that reek of heresy.  The screams and wails of the damned carry through the air.";
+	    }else if (isquest=0){ // TODO add more variation, with planets, features, marine equipment perhaps?
+	        txt1=choose(
+				$"Timing their visits right, Your forces scour {star.name} {planet} burning down whatever the local heretic communities call their homes. Their screams were quickly extinguished by fire, turning whatever it was before, into ash.",
+				$"Your forces scour {star.name} {planet}, burning homes and towns that reek of heresy. The screams and wails of the damned carry through the air."
+				);
      
 	        if (star.p_large[planet]=0) then max_kill=action_score*12000;// Population if normal
 	        if (star.p_large[planet]=1) then max_kill=action_score*0.0000012;// Population if large
@@ -123,11 +127,23 @@ function scr_purge_world(star, planet, action_type, action_score) {
 	        if (sci1>0) then sci2=min((sci1*2),round(action_score/25));// How much hurresy to get rid of
 	        heres_after=heres_before-sci2;
 	        if (pop_before>0) and (pop_after=0) then heres_after=0;
-        
+
+	        var nid_influence = star.p_influence[planet][eFACTION.Tyranids];
+	        if (planet_feature_bool(star.p_feature[planet], P_features.Gene_Stealer_Cult)){
+				var cult = return_planet_features(star.p_feature[planet], P_features.Gene_Stealer_Cult)[0];
+				if (cult.hiding){
+					
+				}
+			} else {
+	        	if (nid_influence>25){
+	        		txt1 += "Scores of mutant offspring from a genestealer infestation are burnt, while the situation is grave the mutants appear to lack the organisation of a true cult";
+	        		adjust_influence(eFACTION.Tyranids, -10, planet, star);
+	        	}
+	        }
 	        if (star.p_large[planet]=0) then pop_after=round(pop_after);    
 	        if (pop_after<=0) and (pop_before>0) then heres_after=0;
-	        if (star.p_large[planet]=0) then txt1+="##The planet had a population of "+string(scr_display_number(floor(pop_before)))+" and "+string(scr_display_number(floor(kill)))+" die over the duration of the cleansing.##Heresy has fallen down to "+string(max(0,heres_after))+"%.";
-	        if (star.p_large[planet]=1) then txt1+="##The planet had a population of "+string(pop_before)+" billion and "+string(scr_display_number(action_score*12000))+" die over the duration of the cleansing.##Heresy has fallen down to "+string(max(0,heres_after))+"%.";
+	        if (star.p_large[planet]=0) then txt1+="##The planet had a population of "+string(scr_display_number(floor(pop_before)))+" and "+string(scr_display_number(floor(kill)))+" were purged over the duration of the cleansing.##Heresy has fallen down to "+string(max(0,heres_after))+"%.";
+	        if (star.p_large[planet]=1) then txt1+="##The planet had a population of "+string(pop_before)+" billion and "+string(scr_display_number(action_score*12000))+" were purged over the duration of the cleansing.##Heresy has fallen down to "+string(max(0,heres_after))+"%.";
 	    }
 	}
 
@@ -152,8 +168,11 @@ function scr_purge_world(star, planet, action_type, action_score) {
 	            scr_gov_disp(star.name,planet,choose(1,2,3));
 	        }
 	    }
-	    else if (isquest=0){
-	        txt1=$"Your marines move across {star.name} {scr_roman(planet)}, rooting out sources of corruption.  Heretics are dragged from their lairs and executed in the streets.";
+	    else if (isquest=0){ // TODO add more variation, with planets, features, possibly marine equipment
+	        txt1=choose(
+				$"Your marines move across {star.name} {scr_roman(planet)}, searching for high profile targets. Once found, they are dragged outside from their lairs. Their execution would soon follow.",
+				$"Your marines move across {star.name} {scr_roman(planet)}, rooting out sources of corruption. Heretics are dragged from their lairs and executed in the streets."
+				);
     
 	        if (star.p_large[planet]=0) then max_kill=action_score*30;// Population if normal
 	        if (star.p_large[planet]=1) then max_kill=0;// Population if large
@@ -191,10 +210,10 @@ function scr_purge_world(star, planet, action_type, action_score) {
 	    if (dis>70) then chance=0;
     
 	    // Advantages
-	    o=0;yep=0;repeat(4){o+=1;if (obj_ini.adv[o]="Ambushers") then yep=1;}if (yep=1) then ambush=true;
-	    o=0;yep=0;repeat(4){o+=1;if (obj_ini.adv[o]="Lightning Warriors") then yep=1;}if (yep=1) then chance+=5;
-	    o=0;yep=0;repeat(4){o+=1;if (obj_ini.dis[o]="Shitty Luck") then yep=1;}if (yep=1) then chance+=20;
-    
+		if(scr_has_adv("Ambushers")) then ambush=true;
+		if(scr_has_adv("Lightning Warriors")) then chance+=5;
+		if(scr_has_disadv("Shitty Luck")) then chance+=20;
+
 	    // Size
 	    if (action_score>5) and (action_score<=10) then siz_penalty=5;
 	    if (action_score>10) and (action_score<=20) then siz_penalty=20;
@@ -206,11 +225,11 @@ function scr_purge_world(star, planet, action_type, action_score) {
 	    // Ambushers go!
 	    if (ambush=true) then chance=round(chance/2);
     
-	    var txt,spec1,spec2;spec1=0;spec2=0;
+	    var spec1=0,spec2=0,txt=""; // TODO consider making it a battle with Planetary governor's guards
 	    txt="Your Astartes descend upon the surface of "+string(star.name)+" "+string(scr_roman(planet))+" and plot the movements and schedule of the governor.  ";    
 	    txt+="Once the time is right their target is ambushed "+choose("in their home","in the streets","while driving","taking a piss")+" and tranquilized.  ";
     
-	    o=0;yep=0;repeat(4){o+=1;if (obj_ini.dis[o]="Never Forgive") then yep=1;}if (yep=1) then spec1=1;
+		if(scr_has_disadv("Never Forgive")) then spec1=1;
 	    if (global.chapter_name="Space Wolves") or (obj_ini.progenitor=3) then spec1=3;
 	    if (global.chapter_name="Iron Hands") or (obj_ini.progenitor=6) then spec1=6;
 	    if (obj_ini.omophagea=1) then spec1=choose(spec1,20);

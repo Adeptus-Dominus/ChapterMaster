@@ -314,8 +314,8 @@ function scr_dialogue(diplo_keyphrase) {
 	    obj_controller.chaos_rating+=1;
     
 	    // Casket, Chalice, Tome
-	    if (obj_ini.fleet_type=1) then scr_add_artifact("chaos_gift","",0,obj_ini.home_name,2);
-	    if (obj_ini.fleet_type!=1) then scr_add_artifact("chaos_gift","",0,obj_ini.ship[1],501);
+	    if (obj_ini.fleet_type=ePlayerBase.home_world) then scr_add_artifact("chaos_gift","",0,obj_ini.home_name,2);
+	    if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("chaos_gift","",0,obj_ini.ship[1],501);
 	}
 	if (string_count("cs_meeting_battle",diplo_keyphrase)>0){
 	    current_eventing=diplo_keyphrase;combating=1;
@@ -324,31 +324,31 @@ function scr_dialogue(diplo_keyphrase) {
 		menu=0;
 	    instance_activate_all();
     
-	    with(obj_temp4){instance_destroy();}
+	    with(obj_ground_mission){instance_destroy();}
 	    with(obj_star){
 			for (var run=1; run<=4; run++) {
     			for (var s=1; s<=4; s++) {
 	                if (p_problem[run,s]=="meeting") or (p_problem[run,s]=="meeting_trap"){
-	                    for (var repeatCount=1; repeatCount<=run; repeatCount++){instance_create(x,y,obj_temp4);}
+	                    for (var repeatCount=1; repeatCount<=run; repeatCount++){instance_create(x,y,obj_ground_mission);}
 	                }
 	            }
 	        }
 	    }
-	    if (instance_number(obj_temp4)==0){
+	    if (instance_number(obj_ground_mission)==0){
 	        with(obj_star){
 	            if (string_count(name,scr_master_loc())>0){
-	                repeat(obj_ini.TTRPG[0,1].planet_location){instance_create(x,y,obj_temp4);}
+	                repeat(obj_ini.TTRPG[0,1].planet_location){instance_create(x,y,obj_ground_mission);}
 	            }
 	        }
 	    }
-	    // show_message(string(instance_number(obj_temp4)));
+	    // show_message(string(instance_number(obj_ground_mission)));
     
 	    instance_create(0,0,obj_ncombat);
 	    obj_ncombat.battle_special=diplo_keyphrase;
-	    obj_ncombat.battle_object=instance_nearest(obj_temp4.x,obj_temp4.y,obj_star);
-	    obj_ncombat.battle_loc=instance_nearest(obj_temp4.x,obj_temp4.y,obj_star).name;
-	    obj_ncombat.battle_id=instance_number(obj_temp4);
-	    with(obj_temp4){instance_destroy();}
+	    obj_ncombat.battle_object=instance_nearest(obj_ground_mission.x,obj_ground_mission.y,obj_star);
+	    obj_ncombat.battle_loc=instance_nearest(obj_ground_mission.x,obj_ground_mission.y,obj_star).name;
+	    obj_ncombat.battle_id=instance_number(obj_ground_mission);
+	    with(obj_ground_mission){instance_destroy();}
 	    obj_ncombat.dropping=0;
 	    obj_ncombat.attacking=1;
 	    obj_ncombat.local_forces=0;
@@ -1489,8 +1489,8 @@ function scr_dialogue(diplo_keyphrase) {
 	        rando=choose(1,1,2);
 	        if (rando==1) then diplo_text="Very well, Chapter Master.  I will bury you and your Chapter so thoroughly even I will forget your existence.";
 	        if (rando==2){
-	            if (obj_ini.fleet_type==1) then diplo_text="I understand.  I am authorizing the deployment of cyclonic torpedoes.  Make peace with your homeworld, Chapter Master.";
-	            if (obj_ini.fleet_type!=1) then diplo_text="I am mobilizing the Segmentum battlefleet.  You may run, heretic, but it will do you no good.";
+	            if (obj_ini.fleet_type==ePlayerBase.home_world) then diplo_text="I understand.  I am authorizing the deployment of cyclonic torpedoes.  Make peace with your homeworld, Chapter Master.";
+	            if (obj_ini.fleet_type != ePlayerBase.home_world) then diplo_text="I am mobilizing the Segmentum battlefleet.  You may run, heretic, but it will do you no good.";
 	        }
 	        var ev=0;
 			for(var v=1; v<=99; v++){if (ev=0) and (event[v]="") then ev=v;}
@@ -1695,11 +1695,8 @@ function scr_dialogue(diplo_keyphrase) {
 	            disposition[diplomacy]+=3;
 				faction_justmet=0;
 	            var o=0;
-				for(o=0; o<=4; o++){
-					if (obj_ini.adv[o]="Reverent Guardians") {
-						o=500;
-						break;
-					}
+				if (scr_has_adv("Reverent Guardians")) {
+					o=500;
 				}
 				if (o>100) then obj_controller.disposition[5]+=2;
 	        }
@@ -2179,8 +2176,8 @@ function scr_dialogue(diplo_keyphrase) {
 							instance_activate_object(obj_star);
 							with(obj_temp6){instance_destroy();}
 							with(obj_temp5){instance_destroy();}
-							if (obj_ini.fleet_type==1) then with(obj_star){if (owner==1) then instance_create(x,y,obj_temp6);}
-							if (obj_ini.fleet_type!=1) then with(obj_p_fleet){if (capital_number>0) then instance_create(x,y,obj_temp6);}
+							if (obj_ini.fleet_type==ePlayerBase.home_world) then with(obj_star){if (owner==1) then instance_create(x,y,obj_temp6);}
+							if (obj_ini.fleet_type != ePlayerBase.home_world) then with(obj_p_fleet){if (capital_number>0) then instance_create(x,y,obj_temp6);}
 						
 							with(obj_star){
 								if (owner != eFACTION.Imperium) then instance_deactivate_object(id);
@@ -2197,7 +2194,7 @@ function scr_dialogue(diplo_keyphrase) {
 										if (array_length(p_feature[j])==0) and (onceh==0) then onceh=j;
 									}
 									if (onceh!=0){
-										array_push(p_feature[onceh], new new_planet_feature(P_features.Webway));
+										array_push(p_feature[onceh], new NewPlanetFeature(P_features.Webway));
 										obj_controller.temp[90]=name;
 										good=1;
 										if (onceh==1) then obj_controller.temp[90]+=" I";
@@ -2220,8 +2217,8 @@ function scr_dialogue(diplo_keyphrase) {
 							instance_activate_object(obj_star);
 							with(obj_temp6){instance_destroy();}
 							with(obj_temp5){instance_destroy();}
-							if (obj_ini.fleet_type==1) then with(obj_star){if (owner==1) then instance_create(x,y,obj_temp6);}
-							if (obj_ini.fleet_type!=1) then with(obj_p_fleet){if (capital_number>0) then instance_create(x,y,obj_temp6);}
+							if (obj_ini.fleet_type==ePlayerBase.home_world) then with(obj_star){if (owner==1) then instance_create(x,y,obj_temp6);}
+							if (obj_ini.fleet_type != ePlayerBase.home_world) then with(obj_p_fleet){if (capital_number>0) then instance_create(x,y,obj_temp6);}
 							with(obj_star){
 								if (owner != eFACTION.Imperium) then instance_deactivate_object(id);
 								if (owner == eFACTION.Imperium) and (point_distance(x,y,obj_temp6.x,obj_temp6.y)<800) then instance_deactivate_object(id);
@@ -2236,7 +2233,7 @@ function scr_dialogue(diplo_keyphrase) {
 										i=floor(random(planets))+1;
 										if (array_length(p_feature[i])==0) and (onceh==0) then onceh=i;}
 									if (onceh!=0){
-										array_push(p_feature[onceh], new new_planet_feature(P_features.Webway));
+										array_push(p_feature[onceh], new NewPlanetFeature(P_features.Webway));
 										obj_controller.temp[90]=name;
 										good=1;
 										if (onceh==1) then obj_controller.temp[90]+=" I";
@@ -2644,8 +2641,8 @@ function scr_dialogue(diplo_keyphrase) {
 	}
 
 	// ** Trading Error Handling **
-	if (diplo_keyphrase=="trade_error_1") and (obj_ini.fleet_type==1) then diplo_text="[Error 1: No valid planet to trade with.]";
-	if (diplo_keyphrase=="trade_error_1") and (obj_ini.fleet_type!=1) then diplo_text="[Error 1: No valid fleet to trade with.]";
+	if (diplo_keyphrase=="trade_error_1") and (obj_ini.fleet_type==ePlayerBase.home_world) then diplo_text="[Error 1: No valid planet to trade with.]";
+	if (diplo_keyphrase=="trade_error_1") and (obj_ini.fleet_type != ePlayerBase.home_world) then diplo_text="[Error 1: No valid fleet to trade with.]";
 	if (diplo_keyphrase=="trade_error_2") then diplo_text="[Error 2: "+string(obj_controller.faction[diplomacy])+" has no valid origin for a fleet.]";
 
 	// ** Sets ignored turns when kicked out of diplomacy screen **

@@ -11,7 +11,7 @@ function scr_load_all(select_units) {
 		        if (man[i]=="man") and (ma_loc[i]==selecting_location) and (ma_wid[i]==selecting_planet) and (ma_god[i]<10){
 		        	if (unit.assignment()=="none"){
 						man_sel[i]=1;
-			            man_size+=scr_unit_size(ma_armour[i],ma_role[i],true);
+			            man_size += display_unit[i].get_unit_size();
 			        }
 		        }
 		    } else if (is_array(unit)){
@@ -34,15 +34,7 @@ function scr_load_all(select_units) {
 	    alll=0;
 		man_size=0;
 	    for(var i=0; i<array_length(display_unit); i++){
-            if (selecting_location!="")
-            and ((ma_loc[i]!=selecting_location)
-            or (ma_wid[i]!=selecting_planet)) then continue;
-            if (selecting_location==""){
-	            selecting_location=ma_loc[i];
-	            selecting_ship=ma_lid[i];
-	            selecting_planet=ma_wid[i];
-            }    	
-	        man_sel[i]=0;
+            man_sel[i] = 0;
 	    }
 	}
 }

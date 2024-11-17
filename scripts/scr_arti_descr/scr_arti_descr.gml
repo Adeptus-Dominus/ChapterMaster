@@ -10,17 +10,17 @@ function scr_arti_descr() {
 		var inq_mission = has_tag("inq");
 		if (typ!="armour"){
 		    mission_data=$"This artifact is a {type()}";
-		    if (inq_mission) then mission_data+=", entrusted by the Inquisition.";
-		    else if (!inq_mission) then mission_data+=".";
+		    if (inq_mission) then mission_data+=", entrusted by the Inquisition.#";
+		    else if (!inq_mission) then mission_data+=".#";
 		}
 	
 		else if (typ=="armour"){
 		    mission_data=$"This artifact is {type()}";
 		    if (inq_mission){
-		    	mission_data+=", entrusted by the Inquisition.";
+		    	mission_data+=", entrusted by the Inquisition.#";
 		    }
 		    else{
-		    	mission_data+=".";
+		    	mission_data+=".#";
 		    }
 		}
 		
@@ -155,7 +155,7 @@ function scr_arti_descr() {
 
 	if (equipped() && is_array(bearer)){
 		var unit = fetch_unit(bearer);
-		final_description += $". It is currently in the possession of {unit.name_role()}."
+		final_description += $"#It is currently in the possession of {unit.name_role()}."
 	}
 
 	return final_description;

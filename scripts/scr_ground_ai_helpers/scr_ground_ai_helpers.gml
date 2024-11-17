@@ -8,8 +8,14 @@ function system_guard_total(){
 	return total;
 }
 
-function planet_imperial_base_enemies(planet){
-	return p_orks[planet]+p_tau[planet]+p_chaos[planet]+p_traitors[planet]+p_tyranids[planet]+p_necrons[planet];
+function planet_imperial_base_enemies(planet, star="none"){
+	if (star=="none"){
+		return p_orks[planet]+p_tau[planet]+p_chaos[planet]+p_traitors[planet]+p_tyranids[planet]+p_necrons[planet];
+	} else {
+		with (star){
+			return p_orks[planet]+p_tau[planet]+p_chaos[planet]+p_traitors[planet]+p_tyranids[planet]+p_necrons[planet];
+		}
+	}
 }
 
 function ensure_no_planet_negatives(planet){

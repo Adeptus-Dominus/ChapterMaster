@@ -1,40 +1,12 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
-
-function mission_name_key(mission){
-	var mission_key = {
-		"meeting_trap" : "Chaos Lord Meeting",
-		"meeting" : "Chaos Lord Meeting",
-		"succession" : "War of succession",
-		"spyrer" : "Kill Spyrer for Inquisitor",
-		"mech_raider" : "Provide Land Raider to Mechanicus",
-		"mech_bionics" : "Provide Bionic Augmented marines to study",
-		"mech_mars" : "Send Techmarines to mars",
-		"mech_tomb1": "Explore Mechanicus Tomb",
-		"fallen" : "Find Chapter Fallen",
-		"recon" : "Recon Mission for Inquisitor",
-		"cleanse" : "Cleanse Planet for Inquisitor",
-		"tyranid_org" : "Capture Tyranid for Inquisitor",
-		"recon" : "Recon Mission for Inquisitor",
-		"bomb" : "Bombard World for inquisitor",
-		"great_crusade": "Answer Crusade Muster Call",
-		"harlequins" : "Harlequin presence Report",
-		"artifact_loan" : "Safeguard Artifact for the inquisition",
-		"fund_elder" : "provide assistance to Eldar"
-	}
-	if (struct_exists(mission_key, mission)){
-		return mission_key[$ mission];
-	} else{
-		return "none"
-	}  
-}
-function scr_unit_quick_find_pane() constructor{
-	main_panel = new data_slate();
+function UnitQuickFindPanel() constructor{
+	main_panel = new DataSlate();
 	tab_buttons = {
-	    "fleets":new main_menu_button(spr_ui_but_3, spr_ui_hov_3),
-	    "garrisons":new main_menu_button(spr_ui_but_3, spr_ui_hov_3),
-	    "hider":new main_menu_button(spr_ui_but_3, spr_ui_hov_3),
-	    "missions":new main_menu_button(spr_ui_but_3, spr_ui_hov_3),
+	    "fleets":new MainMenuButton(spr_ui_but_3, spr_ui_hov_3),
+	    "garrisons":new MainMenuButton(spr_ui_but_3, spr_ui_hov_3),
+	    "hider":new MainMenuButton(spr_ui_but_3, spr_ui_hov_3),
+	    "missions":new MainMenuButton(spr_ui_but_3, spr_ui_hov_3),
 	}
 
 	view_area = "fleets";
@@ -49,6 +21,7 @@ function scr_unit_quick_find_pane() constructor{
 	    		unit = fetch_unit([co, u]);
 	    		if (unit.name() == "") then continue;
 	    		unit_location = unit.marine_location();
+	    		if (unit_location[2]=="Terra") then continue;
 	    		if (unit_location[0]==location_types.planet){
 	    			if (!struct_exists(garrison_log, unit_location[2])){
 	    				garrison_log[$ unit_location[2]] = {
@@ -71,27 +44,32 @@ function scr_unit_quick_find_pane() constructor{
 	    			obj_ini.ship_carrying[unit.ship_location]+=unit.get_unit_size();
 	    		}
 	    	}
-	    	for (var u=1;u<100;u++){
-	    		if (obj_ini.veh_race[co][u]==0) then continue;
-	    		if (obj_ini.veh_wid[co][u]>0){
-	    			unit_location = obj_ini.veh_loc[co][u];
-	    			unit = [co, u];
-	    			if (!struct_exists(garrison_log, unit_location)){
-	    				garrison_log[$ unit_location] = {
-	    					units:[unit],
-	    					vehicles:1, 
-	    					garrison:false, 
-	    					healers:0, 
-	    					techies:0
-	    				}
-	    			} else {
-	    				array_push(garrison_log[$ unit_location].units, unit);
-	    				garrison_log[$ unit_location].vehicles++;
-	    			}
-	    		} else if (obj_ini.veh_lid[co][u]>0){
-	    			obj_ini.ship_carrying[obj_ini.veh_lid[co][u]]+=scr_unit_size("",obj_ini.veh_role[co][u],true);
-	    		}
-	    	}
+	    	try{
+
+		    	for (var u=1;u<array_length(obj_ini.veh_race);u++){
+		    		if (obj_ini.veh_race[co][u]==0) then continue;
+		    		if (obj_ini.veh_wid[co][u]>0){
+		    			unit_location = obj_ini.veh_loc[co][u];
+		    			unit = [co, u];
+		    			if (!struct_exists(garrison_log, unit_location)){
+		    				garrison_log[$ unit_location] = {
+		    					units:[unit],
+		    					vehicles:1, 
+		    					garrison:false, 
+		    					healers:0, 
+		    					techies:0
+		    				}
+		    			} else {
+		    				array_push(garrison_log[$ unit_location].units, unit);
+		    				garrison_log[$ unit_location].vehicles++;
+		    			}
+		    		} else if (obj_ini.veh_lid[co][u]>0){
+		    			obj_ini.ship_carrying[obj_ini.veh_lid[co][u]]+=scr_unit_size("",obj_ini.veh_role[co][u],true);
+		    		}
+		    	}
+		    }catch(_exception){
+				handle_exception(_exception);
+			}
 	    }
 	    update_mission_log();	
 	}
@@ -105,6 +83,7 @@ function scr_unit_quick_find_pane() constructor{
 				problems = p_problem[i];
 				for (p = 0;p<array_length(problems);p++){
 					if (problems[p] != ""){
+						if (problem_has_key_and_value(i,p,"stage","preliminary")) then continue;
 						var mission_explain =  mission_name_key(problems[p]);
 						if (mission_explain!="none"){
 							array_push(temp_log,
@@ -231,18 +210,20 @@ function scr_unit_quick_find_pane() constructor{
 			    if (!hover_entered){
     			    if (point_and_click([xx+10, yy+90+(20*i)-2,xx+main_panel.width,yy+90+(20*i)+18])){
     			    	var star = star_by_name(system_names[i]);
-    			    	if (star!="none")
-    			    	travel_target = [star.x, star.y];
-    			    	travel_increments = [(travel_target[0]-obj_controller.x)/15,(travel_target[1]-obj_controller.y)/15];
-    			    	travel_time = 0;
+    			    	if (star!="none"){
+	    			    	travel_target = [star.x, star.y];
+	    			    	travel_increments = [(travel_target[0]-obj_controller.x)/15,(travel_target[1]-obj_controller.y)/15];
+	    			    	travel_time = 0;
+	    			    }
     			    }
     			}
 			    if (registered_hover){
 			    	any_hover=true;
     			    if (hover_count==10){
-    			    	hover_item = new hover_box();
-    			    	hover_item.relative_x = (mouse_x-xx+(10-10));
-    			    	hover_item.relative_y = (mouse_y-(yy+90+(20*i)));
+    			    	hover_item = new HoverBox();
+    			    	var mouse_consts = return_mouse_consts()
+    			    	hover_item.relative_x = (mouse_consts[0]);
+    			    	hover_item.relative_y = (mouse_consts[1]);
     			    	hover_item.root_item=i;
     			    }
     			}
@@ -270,9 +251,9 @@ function scr_unit_quick_find_pane() constructor{
 			draw_set_halign(fa_center);
 		    draw_text(xx+80, yy+50, "Location");
 		    draw_text(xx+160, yy+50, "Mission");
-		    draw_text(xx+310, yy+50, "Time Remaining");
+		    draw_text(xx+290, yy+50, "Time Remaining");
 		    var i = 0;
-		    while(i<array_length(mission_log) && (yy+90+(20*i)+12 +20)<main_panel.YY+yy+main_panel.height)		
+		    while(i<array_length(mission_log) && (90+(20*i)+12 +20)<main_panel.height)		
 			{
 				mission = mission_log[i];
 				entered=false;
@@ -305,77 +286,76 @@ function scr_unit_quick_find_pane() constructor{
 			    i++;
 			}			
 		}
-		if (array_length(travel_target)==2){
-			if (obj_controller.x!=travel_target[0] || obj_controller.y!=travel_target[1]){
-				obj_controller.x += travel_increments[0];
-				obj_controller.y += travel_increments[1];
-				travel_time++;
-			} else {
-				travel_target=[];		
-			}
-			if (travel_time==15){
-				obj_controller.x = travel_target[0];
-				obj_controller.y = travel_target[1];
-				travel_target=[];			
-			}
-		}
 	}
 	static draw = function(){
 		if (obj_controller.menu==0 && obj_controller.zoomed==0 ){
 			if (!instance_exists(obj_fleet_select) && !instance_exists(obj_star_select)){
-				var xx=__view_get( e__VW.XView, 0 )+0;
-				var yy=__view_get( e__VW.YView, 0 )+0;
-				var x_draw=xx;
-				var lower_draw = yy+main_panel.height+110;
+
+				var x_draw=0;
+				var lower_draw = main_panel.height+110;
 				if (hide_sequence=30) then hide_sequence=0;
 				if ((hide_sequence>0 && hide_sequence<15) || (hide_sequence>15 && hide_sequence<30)){
 					if (hide_sequence>15){
-						x_draw=(xx-main_panel.width) +((main_panel.width/15)*(hide_sequence-15));
+						x_draw=((main_panel.width/15)*(hide_sequence-15))-main_panel.width;
 					} else {
-						x_draw=xx-((main_panel.width/15)*hide_sequence);
+						x_draw=-((main_panel.width/15)*hide_sequence);
 					}
 					hide_sequence++;
 				}
 				if (hide_sequence>15 || hide_sequence<15){
-					main_panel.draw(x_draw, yy+110, 0.46, 0.75);
-					if(tab_buttons.fleets.draw(x_draw,yy+79, "Fleets")){
+					main_panel.draw(x_draw, 110, 0.46, 0.75);
+					if(tab_buttons.fleets.draw(x_draw,79, "Fleets")){
 					    view_area="fleets";
 					}
-					if (tab_buttons.garrisons.draw(x_draw+115,yy+79, "System Troops")){
+					if (tab_buttons.garrisons.draw(115+x_draw,79, "System Troops")){
 					    view_area="garrisons";
 					    update_garrison_log();
 					}
-					if (tab_buttons.missions.draw(x_draw+230,yy+79, "Missions")){
+					if (tab_buttons.missions.draw(230+x_draw,79, "Missions")){
 					    view_area="missions";
 					    update_garrison_log();
 					}					
-					if (x_draw+280<xx){
-						tab_buttons.hider.draw(xx,lower_draw, "Show")
+					if (x_draw<0){
+						tab_buttons.hider.draw(0,lower_draw, "Show")
 					} else {
 						if (tab_buttons.hider.draw(x_draw+280,lower_draw, "Hide")){
 						    hide_sequence++;
 						}					
 					}					
 				} else if (hide_sequence==15){
-					if (tab_buttons.hider.draw(xx,lower_draw, "Show")){
+					if (tab_buttons.hider.draw(0,lower_draw, "Show")){
 					    hide_sequence++;
 					}
 				}
-				/*if (tab_buttons.troops.draw(xx+345,yy+79, "Troops")){
+				/*if (tab_buttons.troops.draw(345,79, "Troops")){
 				    view_area="troops";
 				}*/							
 			}
+			if (array_length(travel_target)==2){
+				if (obj_controller.x!=travel_target[0] || obj_controller.y!=travel_target[1]){
+					obj_controller.x += travel_increments[0];
+					obj_controller.y += travel_increments[1];
+					travel_time++;
+				} else {
+					travel_target=[];		
+				}
+				if (travel_time==15){
+					obj_controller.x = travel_target[0];
+					obj_controller.y = travel_target[1];
+					travel_target=[];			
+				}
+			}			
 		}
 	}
 }
 
-function  hover_box() constructor{
+function HoverBox() constructor{
 	root_item = "none";
 	relative_x=0;
 	relative_y=0;
 	location = [0,0,0,0];
 	static draw = function(xx, yy, button_text){
-		location = draw_unit_buttons([xx+relative_x, yy+relative_y], button_text,[1,1], c_green,, fnt_40k_14b, 1);
+		location = draw_unit_buttons([relative_x, relative_y], button_text,[1,1], c_green,, fnt_40k_14b, 1);
 		return location;
 	}
 }
@@ -387,7 +367,7 @@ function exit_adhoc_manage(){
     click=1;
     hide_banner=0;
     if (instance_exists(selection_data.system)){
-   		selection_data.system.alarm[3]=4;
+   		selection_data.system.alarm[3]=2;
     }		
 };
  function update_garrison_manage(){
@@ -403,21 +383,23 @@ function exit_adhoc_manage(){
 
 
 function update_general_manage_view(){
-    if (obj_controller.managing>0){
-        if (managing<=10) and (managing!=0){
-        	scr_company_view(managing);
-        	company_data = new scr_company_struct(managing);
-        }
-        if (managing>10) or (managing=0){
-			scr_special_view(managing);
-			company_data={};
-        }            
-        cooldown=10;
-        sel_loading=0;
-        unload=0;
-        alarm[6]=30;
-    } else if (obj_controller.managing==-1){
-        update_garrison_manage();
+	with (obj_controller){
+	    if (managing>0){
+	        if (managing<=10) and (managing!=0){
+	        	scr_company_view(managing);
+	        	company_data = new CompanyStruct(managing);
+	        }
+	        if (managing>10) or (managing=0){
+				scr_special_view(managing);
+				company_data={};
+	        }            
+	        cooldown=10;
+	        sel_loading=0;
+	        unload=0;
+	        alarm[6]=30;
+	    } else if (managing==-1){
+	        update_garrison_manage();
+	    }
     }	
 }
 
@@ -489,6 +471,7 @@ function add_bionics_selection(){
     			var comp = unit.company;
     			var mar_id = unit.marine_number;
                 if (obj_ini.loc[comp][mar_id]!="Terra") and (obj_ini.loc[comp][mar_id]!="Mechanicus Vessel"){
+                	//TODO swap for tag method
                     if (string_count("Dread",ma_armour[p])=0){
 			        	unit.add_bionics();
                         if (ma_promote[p]==10) then ma_promote[p]=0;
@@ -640,7 +623,7 @@ function load_selection(){
 }
 
 function unload_selection(){
-	show_debug_message("{0},{1},{2}",obj_controller.selecting_ship,man_size,selecting_location);
+	//show_debug_message("{0},{1},{2}",obj_controller.selecting_ship,man_size,selecting_location);
     if (man_size>0) and (obj_controller.selecting_ship>=1) and (!instance_exists(obj_star_select)) 
     and (selecting_location!="Terra") and (selecting_location!="Mechanicus Vessel") and (selecting_location!="Warp"){
         cooldown=8000;
@@ -671,6 +654,19 @@ function reset_selection_equipment(){
         	}
         }
     }
+}
+
+function add_tag_to_selection(new_tag){
+	var unit;
+    for(var f=0; f<array_length(display_unit); f++){
+        // If come across a man, set vih to 1
+        if (man[f]="man") and (man_sel[f]=1){
+        	if (is_struct(display_unit[f])){
+        		unit = display_unit[f];
+        		unit[$ new_tag] = !unit[$ new_tag];
+        	}
+        }
+    }	
 }
 
 function promote_selection(){
@@ -723,14 +719,14 @@ function planet_selection_action(){
 		}
 	    for (var i = 0;i<target.planets;i++){
 	    	var planet_draw = c_white;
-	        if (point_distance(xx+159+(i*41),yy+287,mouse_x,mouse_y)<=22){
+	        if (mouse_distance_less(159+(i*41),287, 22)){
 	            obj_controller.selecting_planet=i+1;
 	            var sel_plan = obj_controller.selecting_planet;
 	            var planet_is_allies = scr_is_planet_owned_by_allies(target, sel_plan);
 	            var garrison_issue = (!planet_is_allies || target.p_pdf[sel_plan]<1);
 	            if (garrison_assignment && (garrison_issue && mission=="garrison")){
                 	planet_draw = c_red;
-                	tooltip_draw("Can't garrison on non-friendly planet with no PDF", 150);	            	
+                	tooltip_draw("Can't garrison on non-friendly planet or planet with no friendly PDF", 150);	            	
 	            }
 	            if (mouse_check_button_pressed(mb_left)){
 	                if (garrison_assignment){
@@ -752,10 +748,18 @@ function planet_selection_action(){
 		                    };
 		                    array_push(target.p_operatives[sel_plan],operation_data);
 		                    target.garrison = true;
+
+		                    //if there was an outstanding mission to provide the given garrison
+		                    var sel_plan = obj_controller.selecting_planet;
+		                    var garrison_request = find_problem_planet(sel_plan, "provide_garrison", target);
+		                    if (garrison_request>-1){
+		                    	init_garrison_mission(sel_plan, target, garrison_request);
+		                    }
 		                    instance_destroy();
+		                    exit;
 		                }
 	                } else if (!loading){
-	                    garrison = new garrison_force(target.p_operatives[sel_plan]);
+	                    garrison = new GarrisonForce(target.p_operatives[sel_plan]);
 	                    target.garrison = garrison.garrison_force;
 	                    feature="";
 	                    buttons_selected=false;                 
@@ -788,7 +792,7 @@ function planet_selection_action(){
 					            }
 					        }else if (planet_feature_bool(target.p_feature[sel_plan], P_features.Artifact) == 1) and (recon=0){
 						
-					            var artifact=instance_create(target.x,target.y,obj_temp4);// Unloading / artifact crap
+					            var artifact=instance_create(target.x,target.y,obj_ground_mission);// Unloading / artifact crap
 					            artifact.num=sel_plan;
 					            artifact.alarm[0]=1;
 					            artifact.loc=obj_controller.selecting_location;
@@ -813,7 +817,7 @@ function planet_selection_action(){
 					                }
 					            }
 					            if (tch+mch>0){
-					                var arti=instance_create(target.x,target.y,obj_temp4);// Unloading / artifact crap
+					                var arti=instance_create(target.x,target.y,obj_ground_mission);// Unloading / artifact crap
 					                arti.num=sel_plan;
 					                arti.alarm[0]=1;
 					                arti.loc=obj_controller.selecting_location;
@@ -829,73 +833,9 @@ function planet_selection_action(){
 					        }
 					        
 					        // Ancient Ruins
-							var _planet = target.p_feature[sel_plan]
-							var _ruins_list =  search_planet_features( _planet, P_features.Ancient_Ruins)
-							var _explore_ruins;
-					        if (array_length(_ruins_list) > 0){
-								for (var _ruin= 0; _ruin < array_length(_ruins_list); _ruin++){
-									if ( _planet[_ruins_list[_ruin]].exploration_complete == false){
-										 _explore_ruins = _planet[_ruins_list[_ruin]];
-										break;
-									}else{ _explore_ruins=0;}
-								}
-								if ( _explore_ruins!= 0){
-									obj_controller.current_planet_feature =_explore_ruins;
-									obj_controller.current_planet_feature.star = target;
-									obj_controller.current_planet_feature.planet = sel_plan;
-					                var arti;
-					                var pip=instance_create(0,0,obj_popup);
-					                pip.title="Ancient Ruins";
-					    			var ruins_size =obj_controller.current_planet_feature.ruins_size
-					                
-					                var nu=planet_numeral_name(sel_plan,target);
-
-					    			 if(_explore_ruins.failed_exploration ==1){
-					    			 	pip.text=$"The accursed ruins on {nu} where your brothers fell still holds many secrets including the remains of your brothers honour demands you avenge them."
-					    			 }else{
-					    				 pip.text=$"Located upon {nu} is a {ruins_size} expanse of ancient ruins, dating back to times long since forgotten.  Locals are superstitious about the place- as a result the ruins are hardly explored.  What they might contain, and any potential threats, are unknown.";
-					    				switch (ruins_size){
-					    					case "tiny":
-					    						pip.text += "It's tiny nature means no more than five marines can operate in cohesion without being seperated";
-					    					break;
-					    					case "small":
-					    						pip.text += "As a result of it's narrow corridors and tight spaces a squad of any more than 15 would struggle to operate effectivly";
-					    					break;
-					    					case "medium":
-					    						pip.text += "Half a standard company (55) could easily operate effectivly in the many wide spaces and caverns";
-					    					break;
-					    					case "large":
-					    						pip.text += "A whole company (110) would not be confined in the huge spaces that such a ruin contain";
-					    					break;
-					    					case "sprawling":
-					    						pip.text += "The ruins is of an unprecidented size whole legions of old would not feel uncomfortable in such a space"
-					    					break;
-					    				}
-					    				pip.text += ". What is thy will?"
-					    			}
-					                pip.option1="Explore the ruins.";
-					                pip.option2="Do nothing.";
-					                pip.option3="Return your marines to the ship.";
-					                pip.image="ancient_ruins";
-					                
-					                arti=instance_create(target.x,target.y,obj_temp4);
-					                arti.num=sel_plan;
-					                arti.alarm[0]=1;
-					                arti.loc=obj_controller.selecting_location;
-					                arti.battle_loc=target.name;
-					                arti.manag=obj_controller.managing;
-					                arti.obj=target;
-
-					                with (arti){
-					                    setup_planet_mission_group();
-					                }
-
-					                arti.ship_id=obj_controller.ma_lid[1];
-					    			obj_controller.current_planet_feature.battle = arti;
-								}
-					        }
-
-					        instance_destroy();
+							scr_check_for_ruins_exploration(sel_plan, target); 
+							instance_destroy();
+							exit;
 						}	                	
 	                }                
 	            }
@@ -903,30 +843,19 @@ function planet_selection_action(){
 	        xxx=159+(i*41);
 	        if (target.craftworld=0) and (target.space_hulk=0){
 	        	var sel_plan = i+1;
-	        	var temp1=0;
+	        	var planet_frame=0;
 	            with (target){
-	                if (p_type[sel_plan]="Lava") then temp1=0;
-	                if (p_type[sel_plan]="Desert") then temp1=2;
-	                if (p_type[sel_plan]="Dead") then temp1=12;
-	                if (p_type[sel_plan]="Hive") then temp1=4;
-	                if (p_type[sel_plan]="Temperate") or (p_type[sel_plan]="Feudal") then temp1=8;
-	                if (p_type[sel_plan]="Agri") then temp1=6;
-	                if (p_type[sel_plan]="Death") then temp1=5;
-	                if (p_type[sel_plan]="Ice") then temp1=10;
-	                if (p_type[sel_plan]="Forge") then temp1=3;
-	                if (p_type[sel_plan]="Daemon") then temp1=14;
-	                if (p_type[sel_plan]="Shrine") then temp1=15;
+	            	planet_frame = scr_planet_image_numbers(p_type[sel_plan]);
 	            }
-	            draw_sprite_ext(spr_planets,temp1,xx+xxx, yy+287, 1, 1, 0, planet_draw, 0.9)
+	            draw_sprite_ext(spr_planets,planet_frame,xxx, 287, 1, 1, 0, planet_draw, 0.9)
 	            
 	            draw_set_color(global.star_name_colors[target.p_owner[sel_plan]]);
 
-	            draw_text(xx+xxx,yy+255,scr_roman(sel_plan));
+	            draw_text(xxx,255,scr_roman(sel_plan));
 	            
 	        }	                   
 	    }
-	    if (target.craftworld=1) then obj_controller.selecting_planet=1;
-	    if (target.space_hulk=1) then obj_controller.selecting_planet=1;
+	    if (target.craftworld || target.space_hulk) then obj_controller.selecting_planet=1;
 	    x=target.x;
 	    y=target.y;	    
 	}	

@@ -6,13 +6,13 @@ function scr_special_weapon(argument0, argument1, argument2) {
 
 	// This is used with Dreads (and it SHOULD do so with cogmarines) to add their CCW flamer to their battle block
 
-	var j,good,open;
-	j=0;good=0;open=0;
-	repeat(20){j+=1;
-	    if (wep[j]="") and (open=0){open=j;}
-	    if (wep[j]=argument0){good=1;                   scr_weapon(argument0,argument0,true,argument1,argument2,"","");}
-	    if (good=0) and (open!=0){wep[open]=argument0;  scr_weapon(argument0,argument0,true,argument1,argument2,"","");good=1;}
-	}
+	// var j,good,open;
+	// j=0;good=0;open=0;
+	// repeat(20){j+=1;
+	//     if (wep[j]="") and (open=0){open=j;}
+	//     if (wep[j]=argument0){good=1;                   scr_weapon(argument0,argument0,true,argument1,argument2,"","");}
+	//     if (good=0) and (open!=0){wep[open]=argument0;  scr_weapon(argument0,argument0,true,argument1,argument2,"","");good=1;}
+	// }
 
 
 

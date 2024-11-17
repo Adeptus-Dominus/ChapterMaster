@@ -67,55 +67,92 @@ if (obj_controller.cooldown<=0){
 
 
 
-if (obj_controller.cooldown<=0){
-    if (mouse_x>=xx+456) and (mouse_y>=yy+378) and (mouse_x<xx+519) and (mouse_y<yy+403){
-        instance_destroy();obj_controller.cooldown=8000;
+if (obj_controller.cooldown <= 0) {
+    if (mouse_x >= xx + 456) && (mouse_y >= yy + 378) && (mouse_x < xx + 519) && (mouse_y < yy + 403) {
+        instance_destroy();
+        obj_controller.cooldown = 8000;
     }
-    
-    if (mouse_x>=xx+76) and (mouse_y>=yy+82) and (mouse_x<xx+102) and (mouse_y<yy+95){
-        var onceh;once=0;i=0;
-        if (all_sel=0) and (onceh=0){
-            repeat(30){i+=1;
-                if (ship[i]!="") and (ship_all[i]=0){ship_all[i]=1;scr_drop_fiddle(ship_ide[i],true,i,attack);}
+
+    if (mouse_x >= xx + 76) && (mouse_y >= yy + 82) && (mouse_x < xx + 102) && (mouse_y < yy + 95) {
+        var onceh;
+        once = 0;
+        i = 0;
+        if (all_sel = 0) && (onceh = 0) {
+            var ships_len = array_length(ship);
+            for (var i = 0; i < ships_len; i++) {
+                if (ship[i] != "") && (ship_all[i] = 0) {
+                    ship_all[i] = 1;
+                    scr_drop_fiddle(ship_ide[i], true, i, attack);
+                }
             }
-            if (ship_all[500]=0) and (l_size>0){ship_all[500]=1;add_ground=1;}
-            onceh=1;all_sel=1;
+            if (ship_all[500] = 0) && (l_size > 0) {
+                ship_all[500] = 1;
+                add_ground = 1;
+            }
+            onceh = 1;
+            all_sel = 1;
         }
-        if (all_sel=1) and (onceh=0){
-            repeat(30){i+=1;
-                if (ship[i]!="") and (ship_all[i]=1){ship_all[i]=0;scr_drop_fiddle(ship_ide[i],false,i,attack);}
+        if (all_sel = 1) && (onceh = 0) {
+            var ships_len = array_length(ship);
+            for (var i = 0; i < ships_len; i++) {
+                if (ship[i] != "") && (ship_all[i] = 1) {
+                    ship_all[i] = 0;
+                    scr_drop_fiddle(ship_ide[i], false, i, attack);
+                }
             }
-            if (ship_all[500]=1) and (l_size>0){ship_all[500]=0;add_ground=-1;}
-            onceh=1;all_sel=0;
+            if (ship_all[500] = 1) && (l_size > 0) {
+                ship_all[500] = 0;
+                add_ground = -1;
+            }
+            onceh = 1;
+            all_sel = 0;
         }
     }
 }
 
+if (add_ground = 1) {
+    ships_selected += 1;
+    master += l_master;
+    honor += l_honor;
+    capts += l_capts;
+    mahreens += l_mahreens;
+    veterans += l_veterans;
+    terminators += l_terminators;
+    dreads += l_dreads;
+    chaplains += l_chaplains;
+    psykers += l_psykers;
+    apothecaries += l_apothecaries;
+    techmarines += l_techmarines;
+    champions += l_champions;
 
-
-if (add_ground=1){ships_selected+=1;
-    master+=l_master;honor+=l_honor;
-    capts+=l_capts;mahreens+=l_mahreens;
-    veterans+=l_veterans;terminators+=l_terminators;
-    dreads+=l_dreads;chaplains+=l_chaplains;
-    psykers+=l_psykers;apothecaries+=l_apothecaries;
-    techmarines+=l_techmarines;champions+=l_champions;
-    
-    bikes+=l_bikes;rhinos+=l_rhinos;
-    whirls+=l_whirls;predators+=l_predators;
-    raiders+=l_raiders;speeders+=l_speeders;
+    bikes += l_bikes;
+    rhinos += l_rhinos;
+    whirls += l_whirls;
+    predators += l_predators;
+    raiders += l_raiders;
+    speeders += l_speeders;
 }
-if (add_ground=-1){ships_selected-=1;
-    master-=l_master;honor-=l_honor;
-    capts-=l_capts;mahreens-=l_mahreens;
-    veterans-=l_veterans;terminators-=l_terminators;
-    dreads-=l_dreads;chaplains-=l_chaplains;
-    psykers-=l_psykers;apothecaries-=l_apothecaries;
-    techmarines-=l_techmarines;champions-=l_champions;
-    
-    bikes-=l_bikes;rhinos-=l_rhinos;
-    whirls-=l_whirls;predators-=l_predators;
-    raiders-=l_raiders;speeders-=l_speeders;
+if (add_ground = -1) {
+    ships_selected -= 1;
+    master -= l_master;
+    honor -= l_honor;
+    capts -= l_capts;
+    mahreens -= l_mahreens;
+    veterans -= l_veterans;
+    terminators -= l_terminators;
+    dreads -= l_dreads;
+    chaplains -= l_chaplains;
+    psykers -= l_psykers;
+    apothecaries -= l_apothecaries;
+    techmarines -= l_techmarines;
+    champions -= l_champions;
+
+    bikes -= l_bikes;
+    rhinos -= l_rhinos;
+    whirls -= l_whirls;
+    predators -= l_predators;
+    raiders -= l_raiders;
+    speeders -= l_speeders;
 }
 
 
@@ -146,7 +183,7 @@ if (obj_controller.cooldown<=0) and (once_only=0){// Need to change max_ships to
         instance_create(0,0,obj_ncombat);
         obj_ncombat.battle_object=p_target;
         obj_ncombat.battle_loc=p_target.name;
-        obj_ncombat.battle_id=obj_controller.selecting_planet;
+        obj_ncombat.battle_id=planet_number;
         obj_ncombat.dropping=1-attack;
         obj_ncombat.attacking=attack;
         obj_ncombat.enemy=attacking;
@@ -176,7 +213,7 @@ if (obj_controller.cooldown<=0) and (once_only=0){// Need to change max_ships to
         
         
         if (obj_ncombat.enemy=9){
-            if (has_problem_planet(obj_controller.selecting_planet, "tyranid_org", p_target)) then obj_ncombat.battle_special="tyranid_org";
+            if (has_problem_planet(planet_number, "tyranid_org", p_target)) then obj_ncombat.battle_special="tyranid_org";
         }
         
         if (obj_ncombat.enemy=6) then obj_ncombat.threat=eldar;
@@ -217,18 +254,19 @@ if (obj_controller.cooldown<=0) and (once_only=0){// Need to change max_ships to
                         if (veh_fighting[co][v]!=0) then obj_ncombat.veh_fighting[co][v]=1;
                     }
                     if (attack=1) and (ship_all[500]=1){
-                        if (obj_ini.loc[co][v]=p_target.name) and (obj_ini.TTRPG[co][v].planet_location=obj_controller.selecting_planet) then obj_ncombat.fighting[co][v]=1;
-                        if (v<=100){if (obj_ini.veh_loc[co][v]=p_target.name) and (obj_ini.veh_wid[co][v]=obj_controller.selecting_planet) then obj_ncombat.veh_fighting[co][v]=1;}
+                        if (obj_ini.loc[co][v]=p_target.name) and (obj_ini.TTRPG[co][v].planet_location=planet_number) then obj_ncombat.fighting[co][v]=1;
+                        if (v<=100){if (obj_ini.veh_loc[co][v]=p_target.name) and (obj_ini.veh_wid[co][v]=planet_number) then obj_ncombat.veh_fighting[co][v]=1;}
                     }
                 }
             }
         }
         
-        var i;i=-1;ships_selected=0;
-        repeat(31){
-            i+=1;if (ship_all[i]!=0) then scr_battle_roster(ship[i],ship_ide[i],false);
+        ships_selected=0;
+        var ships_len = array_length(ship_all);
+        for (var i = 0; i < ships_len; i++) {
+            if (ship_all[i]!=0) then scr_battle_roster(ship[i],ship_ide[i],false);
         }
-        if (ship_all[500]=1) then scr_battle_roster(p_target.name,obj_controller.selecting_planet,true);
+        if (ship_all[500]=1) then scr_battle_roster(p_target.name,planet_number,true);
         
         
     }

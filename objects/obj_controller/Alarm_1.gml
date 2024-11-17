@@ -31,7 +31,7 @@ for(var i=0; i<100; i++){
                 if (current_system.p_type[1]=="Temperate"){
                     did=1;
                     ok=1;
-                    if (obj_ini.fleet_type==1){
+                    if (obj_ini.fleet_type==ePlayerBase.home_world){
                         current_system.p_owner[1]=eFACTION.Player;
                         current_system.p_first[1]=eFACTION.Player;
                         current_system.owner  = eFACTION.Player;
@@ -42,7 +42,7 @@ for(var i=0; i<100; i++){
                 if (current_system.p_type[2]=="Temperate") and (did=0){
                     did=1;
                     ok=1;
-                    if (obj_ini.fleet_type==1){
+                    if (obj_ini.fleet_type==ePlayerBase.home_world){
                         current_system.p_owner[2]=1;
                         current_system.p_first[2]=1;
                         current_system.owner  = eFACTION.Player;
@@ -53,7 +53,7 @@ for(var i=0; i<100; i++){
                 if (current_system.p_type[3]=="Temperate") and (did=0){
                     did=1;
                     ok=1;
-                    if (obj_ini.fleet_type==1){
+                    if (obj_ini.fleet_type==ePlayerBase.home_world){
                         current_system.p_owner[3]=1;
                         current_system.p_first[3]=1;
                         current_system.owner  = eFACTION.Player;
@@ -64,7 +64,7 @@ for(var i=0; i<100; i++){
                 if (current_system.p_type[4]=="Temperate") and (did=0){
                     did=1;
                     ok=1;
-                    if (obj_ini.fleet_type==1){
+                    if (obj_ini.fleet_type==ePlayerBase.home_world){
                         current_system.p_owner[4]=1;
                         current_system.p_first[4]=1;
                         current_system.owner  = eFACTION.Player;
@@ -85,21 +85,21 @@ if (did==1){
 
     current_system.planets=2;
     current_system.vision=1;
-    if (obj_ini.fleet_type=1) then current_system.owner  = eFACTION.Player;
+    if (obj_ini.fleet_type=ePlayerBase.home_world) then current_system.owner  = eFACTION.Player;
     current_system.p_type[3]="";
     current_system.planet[3]=0;
     current_system.p_type[4]="";
     current_system.planet[4]=0;
     
-    if (obj_ini.fleet_type==1){
+    if (obj_ini.fleet_type==ePlayerBase.home_world){
         if (obj_ini.recruiting_type!=obj_ini.home_type) and (obj_ini.home_name!=obj_ini.recruiting_name){
             current_system.p_type[1]=obj_ini.recruiting_type;
             if (obj_ini.recruiting_name!="random") then current_system.name=obj_ini.recruiting_name;
             current_system.p_type[2]=obj_ini.home_type;
             current_system.planet[2]=1;
             if (obj_ini.home_name!="random") then current_system.name=obj_ini.home_name;
-            array_push(current_system.p_feature[1], new new_planet_feature(P_features.Recruiting_World));//recruiting world
-            array_push(current_system.p_feature[2], new new_planet_feature(P_features.Monastery));current_system.p_owner[2]=eFACTION.Player;current_system.p_first[2]=1; //monestary
+            array_push(current_system.p_feature[1], new NewPlanetFeature(P_features.Recruiting_World));//recruiting world
+            array_push(current_system.p_feature[2], new NewPlanetFeature(P_features.Monastery));current_system.p_owner[2]=eFACTION.Player;current_system.p_first[2]=1; //monestary
             if (homeworld_rule!=1) then current_system.dispo[2]=-5000;
             
             if (obj_ini.home_type=="Shrine") then known[eFACTION.Ecclesiarchy]=1;
@@ -125,7 +125,7 @@ if (did==1){
             current_system.p_type[2]=obj_ini.home_type;
             current_system.planet[2]=1;
             if (obj_ini.home_name!="random") then current_system.name=obj_ini.home_name;
-            array_push(current_system.p_feature[2], new new_planet_feature(P_features.Monastery), new new_planet_feature(P_features.Recruiting_World))
+            array_push(current_system.p_feature[2], new NewPlanetFeature(P_features.Monastery), new NewPlanetFeature(P_features.Recruiting_World))
 			current_system.p_owner[2]=eFACTION.Player;
             current_system.p_first[2]=eFACTION.Player;
             if (homeworld_rule!=1) then current_system.dispo[2]=-5000;
@@ -155,7 +155,7 @@ if (did==1){
             current_system.p_type[2]=obj_ini.home_type;
             current_system.planet[2]=1;
             if (obj_ini.home_name!="random") then current_system.name=obj_ini.home_name;
-            array_push(current_system.p_feature[1],new new_planet_feature(P_features.Recruiting_World))
+            array_push(current_system.p_feature[1],new NewPlanetFeature(P_features.Recruiting_World))
             if (current_system.p_type[1]=="random") then current_system.p_type[1]=choose("Feral","Temperate","Desert","Ice");
             if (current_system.p_type[2]=="random") then current_system.p_type[2]=choose("Feral","Temperate","Desert","Ice");
             if (global.chapter_name!="Lamenters") then obj_controller.recruiting_worlds+=string(current_system.name)+" I|";
@@ -165,7 +165,7 @@ if (did==1){
             current_system.p_type[2]=obj_ini.home_type;
             current_system.planet[2]=1;
             if (obj_ini.home_name!="random") then current_system.name=obj_ini.home_name;
-            array_push(current_system.p_feature[2],new new_planet_feature(P_features.Recruiting_World))
+            array_push(current_system.p_feature[2],new NewPlanetFeature(P_features.Recruiting_World))
             if (current_system.p_type[1]=="random") then current_system.p_type[1]=choose("Feral","Temperate","Desert","Ice");
             if (current_system.p_type[2]=="random") then current_system.p_type[2]=choose("Feral","Temperate","Desert","Ice");
             if (global.chapter_name!="Lamenters") then obj_controller.recruiting_worlds+=string(current_system.name)+" II|";
@@ -191,7 +191,7 @@ if (did==1){
         current_system.p_player[2]+=obj_ini.man_size;
     }
     
-    var fleet=instance_create(current_system.x+24,current_system.y-24,obj_p_fleet);
+    var fleet=instance_create(current_system.x,current_system.y,obj_p_fleet);
     fleet.owner  = eFACTION.Player;
     fleet.alarm[5]=5;
     
@@ -523,7 +523,7 @@ if (did==1){
     var ed2,n,i,orkz=choose(4,5,6)+5;
     if (field=="orks") then orkz+=20;
     if (field=="both") then orkz+=15;
-   /*if (obj_ini.fleet_type==3) then orkz+=2;*/
+   /*if (obj_ini.fleet_type==ePlayerBase.penitent) then orkz+=2;*/
     if (is_test_map==true) then orkz=4;
 
     for(var j=0; j<orkz; j++){
@@ -547,7 +547,7 @@ if (did==1){
 
     if (field=="tyranids"){
         orkz=(choose(3,4,6)+7);
-        if (obj_ini.fleet_type==3) then orkz+=2;
+        if (obj_ini.fleet_type==ePlayerBase.penitent) then orkz+=2;
         
         for(var j=0; j<orkz; j++){
             n=instance_number(obj_temp3);
@@ -569,7 +569,7 @@ if (did==1){
         }
     }
     if (field=="both"){
-        if (obj_ini.fleet_type==3) then orkz+=3;
+        if (obj_ini.fleet_type==ePlayerBase.penitent) then orkz+=3;
         orkz+=3;
         for(var j=0; j<orkz; j++){
             n=instance_number(obj_temp3);
@@ -601,6 +601,7 @@ if (did==1){
     }
 }
 
+
 x=px;
 y=py;
 
@@ -629,10 +630,11 @@ for(var i=0; i<100; i++){
         var craft=instance_create(xx,yy,obj_star);
         craft.craftworld=1;
         go=999;
-		array_push(craft.p_feature[1],new new_planet_feature(P_features.Warlord6));
+		array_push(craft.p_feature[1],new NewPlanetFeature(P_features.Warlord6));
         
-        var elforce=instance_create(xx-24,yy-24,obj_en_fleet);
-        elforce.sprite_index=spr_fleet_eldar;elforce.owner = eFACTION.Eldar;
+        var elforce=instance_create(xx,yy,obj_en_fleet);
+        elforce.sprite_index=spr_fleet_eldar;
+        elforce.owner = eFACTION.Eldar;
         elforce.capital_number=choose(2,3);
         elforce.frigate_number=choose(4,5,6);
         elforce.escort_number=floor(random_range(7,11))+1;
@@ -675,6 +677,9 @@ if (!instance_exists(obj_saveload)) and (instance_exists(obj_creation)) and (glo
 
 instance_activate_all();
 with(obj_creation){instance_destroy();}
+
+
+create_complex_star_routes();
 
 /* //135 testing crusade object
 instance_create(x,y,obj_crusade);

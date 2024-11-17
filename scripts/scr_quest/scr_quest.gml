@@ -112,12 +112,12 @@ function scr_quest(quest_satus=0, quest_name, quest_fac, quest_end) {
 
 
 	if (quick_trade!=0){
-	    if (obj_ini.fleet_type=1) then with(obj_star){
+	    if (obj_ini.fleet_type=ePlayerBase.home_world) then with(obj_star){
 	            if (owner  = eFACTION.Player) and ((p_owner[1]=1) or (p_owner[2]=1)) then instance_create(x,y,obj_temp2);
 	        }
-	        if (obj_ini.fleet_type!=1) then with(obj_p_fleet){// Get fleet star system
+	        if (obj_ini.fleet_type != ePlayerBase.home_world) then with(obj_p_fleet){// Get fleet star system
 	            if (capital_number>0) and (action="") then instance_create(instance_nearest(x,y,obj_star).x,instance_nearest(x,y,obj_star).y,obj_temp2);
-	            if (frigate_number>0) and (action="") then instance_create(instance_nearest(x,y,obj_star).x,instance_nearest(x,y,obj_star).y,obj_temp4);
+	            if (frigate_number>0) and (action="") then instance_create(instance_nearest(x,y,obj_star).x,instance_nearest(x,y,obj_star).y,obj_ground_mission);
 	        }
         
 	        with(obj_star){// Get origin star system for enemy fleet
@@ -127,19 +127,19 @@ function scr_quest(quest_satus=0, quest_name, quest_fac, quest_end) {
         
 	        var targ, flit, goods, i,chasing;goods="";chasing=0;// Set target
 	        if (instance_exists(obj_temp2)) then targ=instance_nearest(obj_temp2.x,obj_temp2.y,obj_temp3);
-	        if (!instance_exists(obj_temp2)) and (instance_exists(obj_temp4)) then targ=instance_nearest(obj_temp4.x,obj_temp4.y,obj_temp3);
+	        if (!instance_exists(obj_temp2)) and (instance_exists(obj_ground_mission)) then targ=instance_nearest(obj_ground_mission.x,obj_ground_mission.y,obj_temp3);
         
 	        // If player fleet is flying about then get their target for new target
-	        if (!instance_exists(obj_temp2)) and (!instance_exists(obj_temp4)) and (instance_exists(obj_p_fleet)){chasing=1;
+	        if (!instance_exists(obj_temp2)) and (!instance_exists(obj_ground_mission)) and (instance_exists(obj_p_fleet)){chasing=1;
 	            with(obj_p_fleet){var pop;
 	                if (capital_number>0) and (action!=""){pop=instance_create(action_x,action_y,obj_temp2);pop.action_eta=action_eta;}
-	                if (frigate_number>0) and (action!=""){pop=instance_create(action_x,action_y,obj_temp4);pop.action_eta=action_eta;}
+	                if (frigate_number>0) and (action!=""){pop=instance_create(action_x,action_y,obj_ground_mission);pop.action_eta=action_eta;}
 	            }
 	        }
 	        if (instance_exists(obj_temp2)) then targ=instance_nearest(obj_temp2.x,obj_temp2.y,obj_temp3);
-	        if (!instance_exists(obj_temp2)) and (instance_exists(obj_temp4)) then targ=instance_nearest(obj_temp4.x,obj_temp4.y,obj_temp3);
+	        if (!instance_exists(obj_temp2)) and (instance_exists(obj_ground_mission)) then targ=instance_nearest(obj_ground_mission.x,obj_ground_mission.y,obj_temp3);
         
-	        flit=instance_create(targ.x-0,targ.y-32,obj_en_fleet);
+	        flit=instance_create(targ.x,targ.y,obj_en_fleet);
 	        flit.owner=quick_trade;
         
 	        if (quick_trade=2) then flit.sprite_index=spr_fleet_imperial;
@@ -156,13 +156,13 @@ function scr_quest(quest_satus=0, quest_name, quest_fac, quest_end) {
 	        flit.trade_goods="none";
         
 	        if (instance_exists(obj_temp2)){flit.action_x=obj_temp2.x;flit.action_y=obj_temp2.y;flit.target=instance_nearest(flit.action_x,flit.action_y,obj_p_fleet);}
-	        if (!instance_exists(obj_temp2)) and (instance_exists(obj_temp4)){flit.action_x=obj_temp4.x;flit.action_y=obj_temp4.y;flit.target=instance_nearest(flit.action_x,flit.action_y,obj_p_fleet);}
+	        if (!instance_exists(obj_temp2)) and (instance_exists(obj_ground_mission)){flit.action_x=obj_ground_mission.x;flit.action_y=obj_ground_mission.y;flit.target=instance_nearest(flit.action_x,flit.action_y,obj_p_fleet);}
         
 	        flit.alarm[4]=1;
         
 	        with(obj_temp2){instance_destroy();}
 	        with(obj_temp3){instance_destroy();}
-	        with(obj_temp4){instance_destroy();}
+	        with(obj_ground_mission){instance_destroy();}
 	}
 
 

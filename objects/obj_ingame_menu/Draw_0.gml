@@ -25,8 +25,8 @@ if (settings=1){
     draw_text(xx+493,yy+281,string_hash_to_newline("Effects Volume"));
     draw_text(xx+493,yy+339,string_hash_to_newline("Music Volume"));
     draw_text(xx+493,yy+423,string_hash_to_newline("Full Screen?:"));
-    draw_text(xx+493,yy+423+59,string_hash_to_newline("Large Text?:"));
-    draw_text(xx+493,yy+483+59,string_hash_to_newline("Heresy?:"));
+    // draw_text(xx+493,yy+423+59,string_hash_to_newline("Large Text?:"));
+    // draw_text(xx+493,yy+483+59,string_hash_to_newline("Heresy?:"));
     
     draw_set_color(0);// 264 long
     draw_rectangle(xx+710,yy+224,xx+974,yy+254,0);
@@ -57,8 +57,8 @@ if (settings=1){
     draw_sprite_stretched(spr_creation_arrow,1,xx+981,yy+339,32,32);// MV right
     
     bar=settings_fullscreen;draw_sprite(spr_creation_check,bar,xx+626,yy+426);
-    bar=large_text;draw_sprite(spr_creation_check,bar,xx+622,yy+426+59);
-    bar=settings_heresy;draw_sprite(spr_creation_check,bar,xx+590,yy+485+59);
+    // bar=large_text;draw_sprite(spr_creation_check,bar,xx+622,yy+426+59);
+    // bar=settings_heresy;draw_sprite(spr_creation_check,bar,xx+590,yy+485+59);
     
     
     if (cooldown<=0) and (mouse_left=1){var onceh;onceh=0;
@@ -73,14 +73,14 @@ if (settings=1){
             if (settings_fullscreen=1) and (onceh=0){onceh=1;cooldown=8000;settings_fullscreen=0;window_set_fullscreen(false);change_volume=2;}
             if (settings_fullscreen=0) and (onceh=0){onceh=1;cooldown=8000;settings_fullscreen=1;window_set_fullscreen(true);change_volume=2;}
         }
-        if (scr_hit(xx+622,yy+426+59,xx+622+32,yy+426+32+59)=true){
-            if (large_text=1) and (onceh=0){onceh=1;cooldown=8000;large_text=0;change_volume=2;}
-            if (large_text=0) and (onceh=0){onceh=1;cooldown=8000;large_text=1;change_volume=2;}
-        }
-        if (scr_hit(xx+590,yy+485+59,xx+590+32,yy+485+32+59)=true){
-            if (settings_heresy=1) and (onceh=0){onceh=1;cooldown=8000;settings_heresy=0;change_volume=2;}
-            if (settings_heresy=0) and (onceh=0){onceh=1;cooldown=8000;settings_heresy=1;change_volume=2;}
-        }
+        // if (scr_hit(xx+622,yy+426+59,xx+622+32,yy+426+32+59)=true){
+        //     if (large_text=1) and (onceh=0){onceh=1;cooldown=8000;large_text=0;change_volume=2;}
+        //     if (large_text=0) and (onceh=0){onceh=1;cooldown=8000;large_text=1;change_volume=2;}
+        // }
+        // if (scr_hit(xx+590,yy+485+59,xx+590+32,yy+485+32+59)=true){
+        //     if (settings_heresy=1) and (onceh=0){onceh=1;cooldown=8000;settings_heresy=0;change_volume=2;}
+        //     if (settings_heresy=0) and (onceh=0){onceh=1;cooldown=8000;settings_heresy=1;change_volume=2;}
+        // }
     }
     
     
@@ -94,8 +94,8 @@ if (settings=1){
             obj_controller.master_volume=master_volume;
             obj_controller.effect_volume=effect_volume;
             obj_controller.music_volume=music_volume;
-            obj_controller.large_text=large_text;
-            obj_controller.settings_heresy=settings_heresy;
+            // obj_controller.large_text=large_text;
+            // obj_controller.settings_heresy=settings_heresy;
             obj_controller.settings_fullscreen=settings_fullscreen;
         }
         if (instance_exists(obj_main_menu)){
@@ -112,8 +112,8 @@ if (settings=1){
             obj_main_menu.master_volume=master_volume;
             obj_main_menu.effect_volume=effect_volume;
             obj_main_menu.music_volume=music_volume;
-            obj_main_menu.large_text=large_text;
-            obj_main_menu.settings_heresy=settings_heresy;
+            // obj_main_menu.large_text=large_text;
+            // obj_main_menu.settings_heresy=settings_heresy;
             obj_main_menu.settings_fullscreen=settings_fullscreen;
         }
     }
@@ -122,8 +122,8 @@ if (settings=1){
         ini_write_real("Settings","master_volume",master_volume);
         ini_write_real("Settings","effect_volume",effect_volume);
         ini_write_real("Settings","music_volume",music_volume);
-        ini_write_real("Settings","large_text",large_text);
-        ini_write_real("Settings","settings_heresy",settings_heresy);
+        // ini_write_real("Settings","large_text",large_text);
+        // ini_write_real("Settings","settings_heresy",settings_heresy);
         ini_write_real("Settings","fullscreen",settings_fullscreen);
         ini_close();
     }

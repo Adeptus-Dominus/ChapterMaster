@@ -102,7 +102,8 @@ for (var i=0; i<3600; i++) {
 }
 
 var ships_selected=0;
-for (var i=0; i<31; i++) {
+var ships_len = array_length(ship_all);
+for (var i = 0; i < ships_len; i++) {
     if (ship_all[i]!=0) then scr_battle_roster(ship[i],ship_ide[i],false);
 }
 if (ship_all[500]=1) and (attack=1) then scr_battle_roster(p_target.name,obj_controller.selecting_planet,true);

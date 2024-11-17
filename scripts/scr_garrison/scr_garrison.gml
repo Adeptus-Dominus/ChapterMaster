@@ -19,7 +19,7 @@ function disposition_description_chart(dispo){
 }
 
 
-function garrison_force(planet_operatives, turn_end=false, type="garrison")constructor{
+function GarrisonForce(planet_operatives, turn_end=false, type="garrison") constructor{
 	garrison_squads=[];
 	total_garrison = 0;
 	garrison_leader=false;
@@ -111,7 +111,7 @@ function garrison_force(planet_operatives, turn_end=false, type="garrison")const
 					}
 				}				
 			}else if (hierarchy[leader_hier_pos]==unit.role()){
-				if (garrison_leader.experience()<unit.experience()){
+				if (garrison_leader.experience<unit.experience){
 					garrison_leader=unit;
 				}
 			}else{
@@ -169,6 +169,9 @@ function garrison_force(planet_operatives, turn_end=false, type="garrison")const
 			disposition_modifier = planet_disposition/10
 			time_modifier = time_on_planet/2.5;
 			if (time_modifier>10) then time_modifier = 10;
+			if (!garrison_leader){
+		    	find_leader();
+		    }
 			var final_modifier = 5 + total_garrison/10 - disposition_modifier + time_modifier;
 			if (up_or_down){
 				dispo_change =  garrison_leader.charisma+final_modifier;
@@ -182,7 +185,7 @@ function garrison_force(planet_operatives, turn_end=false, type="garrison")const
 						dispo_change = "none";
 					}else {
 						if (planet_disposition<obj_controller.disposition[star.p_owner[planet]]){
-							dispo_change = -charisma_test[1]/10;
+							dispo_change = charisma_test[1]/10;
 						} else {
 							dispo_change=0;
 						}

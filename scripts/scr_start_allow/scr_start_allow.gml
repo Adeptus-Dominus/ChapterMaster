@@ -39,7 +39,8 @@ function scr_start_allow(role_id, equip_area, equipment) {
 	if (specialist>=2){if (equip_area!="mobi") and (equip_area!="gear") then allow=true;
 	    if (equipment="Plasma Gun") then allow=false;
 	    if (role_id=14) and (equipment="Rosarius") then allow=true;
-	    if (role_id=16) and (equipment="Servo Arms") then allow=true;
+	    if (role_id=16) and (equipment="Servo-arm") then allow=true;
+		if (role_id=16) and (equipment="Servo-harness") then allow=true;
 	    if (role_id=17) and (equipment="Psychic Hood") then allow=true;
 	}
 

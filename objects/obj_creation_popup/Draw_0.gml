@@ -74,21 +74,10 @@ if (col_shift){
             }
         }
         
-        draw_set_halign(fa_center);
-        draw_set_font(fnt_40k_14b);
-        draw_set_color(38144);
-        draw_rectangle(634 - (string_width(string_hash_to_newline("CANCEL")) / 2), 722, 634 + (string_width(string_hash_to_newline("CANCEL")) / 2), 742, 0);
-        draw_set_color(0);
-        draw_text(634, 723, string_hash_to_newline("CANCEL"));
-        if (scr_hit(634 - (string_width(string_hash_to_newline("CANCEL")) / 2), 722, 634 + (string_width(string_hash_to_newline("CANCEL")) / 2), 742) = true) {
-            draw_set_color(c_white);
-            draw_set_alpha(0.2);
-            draw_rectangle(634 - (string_width(string_hash_to_newline("CANCEL")) / 2), 722, 634 + (string_width(string_hash_to_newline("CANCEL")) / 2), 742, 0);
-            draw_set_alpha(1);
-            if (obj_creation.mouse_left = 1) {
-                obj_creation.cooldown = 8000;
-                instance_destroy();
-            }
+
+        if (point_and_click(draw_unit_buttons([700,550], "CANCEL",[1,1], 38144,, fnt_40k_14b, 1))){
+            obj_creation.cooldown=8000
+            instance_destroy();
         }
 
         if (!scr_hit(430,536,845,748) && mouse_check_button_pressed(mb_left) &&  obj_creation.cooldown == 0) {
@@ -145,9 +134,10 @@ if (col_shift){
             if (gg=4){title="Mobility Item: ";geh=obj_creation.mobi[co,ide];}
             if (gg=5){title="Special Item: ";geh=obj_creation.gear[co,ide];}
             
-            draw_set_halign(fa_right);draw_set_color(38144);
-            draw_rectangle(x5,y5,x5-string_width(string_hash_to_newline(title)),y5+string_height(string_hash_to_newline(title))-2,0);
-            draw_set_color(0);draw_text(x5,y5,string_hash_to_newline(string(title)));
+            draw_set_halign(fa_right);
+            draw_set_color(38144);
+            draw_rectangle(x5,y5,x5-string_width(string_hash_to_newline(title)),y5+string_height(string_hash_to_newline(title))-2,1);
+            draw_text(x5,y5,string_hash_to_newline(string(title)));
             
             if (scr_hit(x5-string_width(string_hash_to_newline(title)),y5,x5,y5+string_height(string_hash_to_newline(title))-2)=true){
                 draw_set_color(c_white);draw_set_alpha(0.2);
@@ -173,14 +163,16 @@ if (col_shift){
             draw_set_halign(fa_left);draw_text(600,y5,string_hash_to_newline(string(geh)));
         }
         
-        draw_set_halign(fa_center);draw_set_font(fnt_40k_14b);if (target_gear>0) then draw_set_alpha(0.5);
-        draw_set_color(38144);draw_rectangle(634-(string_width(string_hash_to_newline("CONFIRM"))/2),722,634+(string_width(string_hash_to_newline("CONFIRM"))/2),742,0);
-        draw_set_color(0);draw_text(634,723,string_hash_to_newline("CONFIRM"));
-        if (scr_hit(634-(string_width(string_hash_to_newline("CONFIRM"))/2),722,634+(string_width(string_hash_to_newline("CONFIRM"))/2),742)=true) and (target_gear=0){
-            draw_set_color(c_white);draw_set_alpha(0.2);
-            draw_rectangle(634-(string_width(string_hash_to_newline("CONFIRM"))/2),722,634+(string_width(string_hash_to_newline("CONFIRM"))/2),742,0);draw_set_alpha(1);
-            if (obj_creation.mouse_left=1) and (obj_creation.role[co,ide]!="") and (badname=0){obj_creation.cooldown=8000;instance_destroy();}
-        }draw_set_alpha(1);
+        var confirm_gear_button = {
+            alpha: 1,
+            rects: [],
+        }
+        confirm_gear_button.alpha = target_gear > 0 ? 0.5 : 1;
+        confirm_gear_button.rects = draw_unit_buttons([614,716], "CONFIRM",[1,1], 38144,, fnt_40k_14b, confirm_gear_button.alpha);
+        if (point_and_click(confirm_gear_button.rects) and (target_gear = 0)) {
+            obj_creation.cooldown = 8000;
+            instance_destroy();
+        }
         
         draw_set_halign(fa_left);
         if (scr_hit(434,591,594,709)=true){
@@ -282,16 +274,10 @@ if (target_gear>0){
     }
     
     
-    
-    draw_set_halign(fa_center);draw_set_font(fnt_40k_14b);
-    draw_set_color(38144);draw_rectangle(1008-(string_width(string_hash_to_newline("CANCEL"))/2),722,1008+(string_width(string_hash_to_newline("CANCEL"))/2),742,0);
-    draw_set_color(0);draw_text(1008,723,string_hash_to_newline("CANCEL"));
-    if (scr_hit(1008-(string_width(string_hash_to_newline("CANCEL"))/2),722,1008+(string_width(string_hash_to_newline("CANCEL"))/2),742)=true){
-        draw_set_color(c_white);draw_set_alpha(0.2);
-        draw_rectangle(1008-(string_width(string_hash_to_newline("CANCEL"))/2),722,1008+(string_width(string_hash_to_newline("CANCEL"))/2),742,0);draw_set_alpha(1);
-        if (obj_creation.mouse_left=1){obj_creation.cooldown=8000;target_gear=0;}
-    }draw_set_alpha(1);
-    
+    if (point_and_click(draw_unit_buttons([980,716], "CANCEL",[1,1], 38144,, fnt_40k_14b, 1))){
+        target_gear=0;
+        obj_creation.cooldown=8000
+    }
 }
 
 

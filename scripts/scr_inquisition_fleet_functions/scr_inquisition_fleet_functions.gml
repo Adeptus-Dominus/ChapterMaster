@@ -3,6 +3,7 @@ function base_inquis_fleet (){
     frigate_number=1;
     sprite_index=spr_fleet_inquisition;
     image_index=0;
+    warp_able=true;
     var roll=irandom(100)+1;
     inquisitor = 0;
     trade_goods="Inqis";
@@ -15,8 +16,11 @@ function base_inquis_fleet (){
 
 function inquisition_fleet_inspection_chase(){
 	var good=0,acty="";
-			
-	if (!instance_exists(target)){// Reaquire target
+	var reset = !instance_exists(target);
+    if (!reset){
+        reset = target.object_index != obj_p_fleet;
+    }
+	if (reset){// Reaquire target
         var target_player_fleet = get_largest_player_fleet();
         if (target_player_fleet != "none"){
             if (target_player_fleet.action == ""){
@@ -25,8 +29,7 @@ function inquisition_fleet_inspection_chase(){
                 set_fleet_target(target_player_fleet.action_x,target_player_fleet.action_y, target_player_fleet);         
             }                        
         }
-	}
-	if (instance_exists(target)) {
+	}else {
 
         var at_star=instance_nearest(target.x,target.y,obj_star).id;
         var target_at_star=instance_nearest(x,y,obj_star).id;
@@ -90,78 +93,78 @@ function inquisition_fleet_inspection_chase(){
 
 // Sets up an inquisitor ship to do an inspection on the HomeWorld
 function new_inquisitor_inspection(){
-	var inspection_set = false;
 	var target_system = "none";
 	var new_inquis_fleet;
-    if (obj_ini.fleet_type==1){
+    if (obj_ini.fleet_type == ePlayerBase.home_world) {
     	var monestary_system = "none";
         // If player does not own their homeworld than do a fleet inspection instead
         var player_stars = [];
-        with(obj_star){
-            if (owner==eFACTION.Player) then array_push(player_stars,id);
-            if (system_feature_bool(p_feature, P_features.Monastery)){
-            	monestary_system=self;
+        with(obj_star) {
+            if (owner == eFACTION.Player) {
+                array_push(player_stars, id);
+            }
+            if (system_feature_bool(p_feature, P_features.Monastery)) {
+            	monestary_system = self;
             }
         }
-        if (monestary_system!="none"){
-        	target_system=monestary_system;
-        } else if (array_length(player_stars)>0){
-        	target_system=player_stars[0];
+        if (monestary_system != "none"){
+        	target_system = monestary_system;
+        } else if (array_length(player_stars) > 0) {
+        	target_system = player_stars[0];
         }
 
-        if (target_system!="none"){
-            inspection_set = true;
+        if (target_system != "none") {
             var target_star = target_system;
-            var tar,new_inquis_fleet;
-            var xx=target_star.x;
-            var yy=target_star.y;
+            var tar, new_inquis_fleet;
+            var xx = target_star.x;
+            var yy = target_star.y;
 
               //get the second or third closest planet to launch inquisitor from
-            var from_star = distance_removed_star(target_star.x,target_star.y);            
-            new_inquis_fleet=instance_create(from_star.x,from_star.y-24,obj_en_fleet);
+            var from_star = distance_removed_star(target_star.x, target_star.y);
+            new_inquis_fleet = instance_create(from_star.x, from_star.y, obj_en_fleet);
 
 
-            with (new_inquis_fleet){
-            	base_inquis_fleet();
-            	action_x=xx;
-            	action_y=yy;
-            	set_fleet_movement();
+            with (new_inquis_fleet) {
+                base_inquis_fleet();
+                action_x = xx;
+                action_y = yy;
+                set_fleet_movement();
             }
-            var mess=$"Inquisitor {obj_controller.inquisitor[new_inquis_fleet.inquisitor]}";
-            mess += " wishes to inspect your chapter base at "+string(target_star.name);
-            scr_alert("green","inspect",mess,target_star.x,target_star.y);
-            obj_controller.last_world_inspection=obj_controller.turn;
+            var mess = $"Inquisitor {obj_controller.inquisitor[new_inquis_fleet.inquisitor]}";
+            mess += " wishes to inspect your chapter base at " + string(target_star.name);
+            scr_alert("green", "inspect", mess, target_star.x, target_star.y);
+            obj_controller.last_world_inspection = obj_controller.turn;
+            // we sent an inspection, we are done
+            return;
         }
     }
-    if  (obj_ini.fleet_type!=1 || !inspection_set){
-        // If player does not own their homeworld than do a fleet inspection instead
+    // otherwise, do a fleet inspection.
 
-        var target_player_fleet = get_largest_player_fleet();
-        if (target_player_fleet != "none"){
+    var target_player_fleet = get_largest_player_fleet();
+    if (target_player_fleet != "none") {
 
-            //get the second or third closest planet to launch inquisitor from
-            var from_star = distance_removed_star(target_player_fleet.x,target_player_fleet.y);
+        //get the second or third closest planet to launch inquisitor from
+        var from_star = distance_removed_star(target_player_fleet.x, target_player_fleet.y);
 
-            new_inquis_fleet=instance_create(from_star.x,from_star.y-24,obj_en_fleet);
-            var obj;
-            with (new_inquis_fleet){
-            	base_inquis_fleet();
-            	target = target_player_fleet;
-            	chase_fleet_target_set();
-            	obj=instance_nearest(action_x,action_y,obj_star);
-            	trade_goods+="_fleet";
-            }              
-
-            var mess=$"Inquisitor {obj_controller.inquisitor[new_inquis_fleet.inquisitor]}";
-
-            mess+=" wishes to inspect your fleet at "+string(obj.name);
-            scr_alert("green","inspect",mess,obj.x,obj.y);
-
-            obj_controller.last_fleet_inspection=obj_controller.turn;
-
-            instance_activate_object(obj_star);
+        new_inquis_fleet = instance_create(from_star.x, from_star.y, obj_en_fleet);
+        var obj;
+        with (new_inquis_fleet) {
+            base_inquis_fleet();
+            target = target_player_fleet;
+            chase_fleet_target_set();
+            obj = instance_nearest(action_x, action_y, obj_star);
+            trade_goods += "_fleet";
         }
-    }	
+
+        var mess = $"Inquisitor {obj_controller.inquisitor[new_inquis_fleet.inquisitor]}";
+
+        mess += " wishes to inspect your fleet at " + string(obj.name);
+        scr_alert("green", "inspect", mess, obj.x, obj.y);
+
+        obj_controller.last_fleet_inspection = obj_controller.turn;
+
+        instance_activate_object(obj_star);
+    }
 }
 
 function inquisition_inspection_logic(){
@@ -231,7 +234,7 @@ function inquisitor_ship_approaches(){
     var approach_system = instance_nearest(action_x,action_y,obj_star);
     var inquis_string;
     var do_alert = false;
-    if (string_count("fleet",trade_goods)>0){
+    if (string_count("fleet",trade_goods)>0 &&  scr_valid_fleet_target(target)){
         var player_fleet_location = fleets_next_location(target);
         if (player_fleet_location != "none"){
             if (approach_system.name==player_fleet_location.name){

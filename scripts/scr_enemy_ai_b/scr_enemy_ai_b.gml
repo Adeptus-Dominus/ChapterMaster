@@ -70,7 +70,7 @@ function scr_enemy_ai_b() {
 
 	            if (fleet_spawn_chance<=15){
 	                if (present_fleet[eFACTION.Necrons] > 0) {//if necron fleet
-						    necron_fleet = instance_nearest(x + 32, y + 32, obj_en_fleet);
+						    necron_fleet = instance_nearest(x , y , obj_en_fleet);
 
 						    if (necron_fleet.owner == eFACTION.Necrons) {
 						        if (necron_fleet.escort_number < necron_fleet.capital_number * 1.5) {
@@ -82,7 +82,7 @@ function scr_enemy_ai_b() {
 						        }
 						    }
 						}else if (present_fleet[eFACTION.Necrons]==0){
-	                    necron_fleet=instance_create(x+32,y+32,obj_en_fleet);
+	                    necron_fleet=instance_create(x,y,obj_en_fleet);
 	                    necron_fleet.owner=eFACTION.Necrons;
 	                    necron_fleet.capital_number=1;
 	                    necron_fleet.sprite_index=spr_fleet_necron;necron_fleet.image_speed=0;
@@ -107,7 +107,7 @@ function scr_enemy_ai_b() {
 	                }                
 	                if (enemy_fleets>0){
 	                    var necron_fleet2;
-	                    necron_fleet2=instance_create(x+32,y+32,obj_en_fleet);
+	                    necron_fleet2=instance_create(x,y,obj_en_fleet);
 	                    necron_fleet2.owner=eFACTION.Necrons;
 	                    necron_fleet2.sprite_index=spr_fleet_necron;
 	                    // necron_fleet2.image_index=0;
@@ -275,7 +275,7 @@ function scr_enemy_ai_b() {
 		        if (rando >= 100) and (p_traitors[i] < 5) {
 		            p_traitors[i] = 6;
 		            p_owner[i] = 10;
-		            array_push(p_feature[i], new new_planet_feature(P_features.Daemonic_Incursion));
+		            array_push(p_feature[i], new NewPlanetFeature(P_features.Daemonic_Incursion));
 
 		            if (p_heresy[i] >= 80){
 		            	p_heresy[i] = 95;
@@ -335,7 +335,7 @@ function scr_enemy_ai_b() {
 		} else if (p_influence[i][eFACTION.Tyranids]>5){
 			adjust_influence(eFACTION.Tyranids, -1, i);
 			if ((irandom(200)+(p_influence[i][eFACTION.Tyranids]/10)) > 195){
-				array_push(p_feature[i], new new_planet_feature(P_features.Gene_Stealer_Cult));
+				array_push(p_feature[i], new NewPlanetFeature(P_features.Gene_Stealer_Cult));
 			}
 		}
 
@@ -357,12 +357,12 @@ function scr_enemy_ai_b() {
 	// Tau rebellions
 	if (present_fleet[8]>=1) and (owner != eFACTION.Tau){
 	    var flit, ran1, ran2, tau_chance;
-	    flit=instance_nearest(x-24,y-24,obj_en_fleet);
+	    flit=scr_orbiting_fleet(eFACTION.Tau);
 	    ran1=0;
 	    ran2=floor(random(planets))+1;
     
     
-	    if (flit.owner = eFACTION.Tau){
+	    if (flit!="none"){
 	        ran1=floor(random(100))+1;
         	var tau_influence = p_influence[ran2][eFACTION.Tau];
         	if (tau_influence<90 && (p_type[ran2]!="Dead")){

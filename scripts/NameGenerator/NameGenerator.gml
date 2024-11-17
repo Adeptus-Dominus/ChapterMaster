@@ -31,8 +31,7 @@ function NameGenerator() constructor {
         for (var i = 0; i < array_length(json_names_property_names); i++) {
             if (load_result.is_success) {
                 result[$ json_names_property_names[i]] = load_result.values[$ json_names_property_names[i]];
-            }
-			else{
+            }else {
 				result[$ json_names_property_names[i]] = array_create(1, $"{json_names_property_names[i]} 1");
 			}
         }
@@ -71,6 +70,8 @@ function NameGenerator() constructor {
 
 	static tau_name_composites = LoadCompositeNames("tau", ["prefixes","suffixes"]);
 
+    static genestealer_cult_names = LoadCompositeNames("genestealercult", ["main","embelishment","title"]);
+
     // init
 
     static SimpleNameGeneration = function(names, used_names, entity_name, reset_on_using_up_all_names = true) {
@@ -103,10 +104,24 @@ function NameGenerator() constructor {
 
         if (syllable_amount >= 3) {
             var random_third_syllable_list = syllables.third_syllables[irandom(array_length(syllables.third_syllables) - 1)];
-            name += random_third_syllable_list[irandom(array_length(random_third_syllable_list) - 1)];
+            name += array_random_element(random_third_syllable_list);
         }
 
         return name;
+    }
+
+    static ComplexTitledName = function(mains, embelishments, titles){
+        var require_embelishments = choose(true, false);
+        var require_titles = choose(true, false);
+        var name = array_random_element(array_random_element(mains));
+        if (require_embelishments){
+            name+=" " + array_random_element(array_random_element(embelishments));
+        }
+        if (require_titles){
+            name+=" " + array_random_element(array_random_element(titles));
+        }
+        return name;
+
     }
 
     static CompositeNameGeneration = function(composite_names, separate_components) {
@@ -154,6 +169,10 @@ function NameGenerator() constructor {
         } else {
             return SimpleNameGeneration(imperial_names, imperial_used_names, "Imperial");
         }
+    }
+
+    static generate_genestealer_cult_name = function(){
+        return ComplexTitledName(genestealer_cult_names.main, genestealer_cult_names.embelishment, genestealer_cult_names.title);
     }
 
     static generate_chaos_name = function() {

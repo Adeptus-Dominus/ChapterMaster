@@ -1,0 +1,29 @@
+# .github/release.yml
+
+changelog:
+  exclude:
+    labels:
+      - "PR: Docs"
+      - "PR: Code Style"
+      - "PR: Chore"
+  categories:
+    - title: Possibly Breaking Changes
+      labels:
+        - "PR: Breaking!"
+        - "PR: Major Feat!"
+    - title: New/Changed
+      labels:
+        - "PR: Feature"
+        - "PR: Enhancement"
+        - "PR: Balance"
+        - "PR: Misc Change"
+    - title: Fixes
+      labels:
+        - "PR: Fix"
+    - title: Under The Hood
+      labels:
+        - "PR: Refactor"
+        - "PR: Performance"
+    - title: Other Changes
+      labels:
+        - "*"

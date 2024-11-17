@@ -111,7 +111,7 @@ for(var i=1; i<=4; i++){
         p_eldar[i]=6;
         owner = eFACTION.Eldar;
         p_owner[1]=6;
-        buddy=0;
+        warp_lanes=[];
         x2=0;
     }
     // p_guardsmen[i]=0;
@@ -121,7 +121,7 @@ for(var i=1; i<=4; i++){p_guardsmen[i]=0;}
 
 var fleet, system_fleet=0,capital=0,frigate=0,escort=0;
 // Create Imperium Fleet
-if (owner == eFACTION.Imperium) or (owner == eFACTION.Ork) or (owner == eFACTION.Mechanicus){
+if (owner == eFACTION.Imperium || owner == eFACTION.Ork || owner == eFACTION.Mechanicus){
     for(var g=1; g<=4; g++){
         switch (p_type[g]) {
             case "Hive":
@@ -152,7 +152,7 @@ if (owner == eFACTION.Imperium) or (owner == eFACTION.Ork) or (owner == eFACTION
     if (escort<0) then escort=0;
     
     if (system_fleet>0){                                                      // DISABLED FOR TESTING FLEET COMBAT
-        fleet=instance_create(x,y-32,obj_en_fleet);
+        fleet=instance_create(x,y,obj_en_fleet);
         fleet.owner = eFACTION.Imperium;
         
         fleet.capital_number=capital;
@@ -211,7 +211,7 @@ if (owner == eFACTION.Tau){
         escort=floor(random_range(5,12));
     }
     if (system_fleet>0){
-        fleet=instance_create(x-24,y-24,obj_en_fleet);
+        fleet=instance_create(x,y,obj_en_fleet);
         fleet.owner = eFACTION.Tau;
         // Create ships here
         fleet.sprite_index=spr_fleet_tau;
@@ -273,7 +273,7 @@ if (owner == eFACTION.Tyranids){
                     p_tyranids[i] = choose(4,5,5);
                     break;
             }
-            //array_push(p_feature[i], new new_planet_feature(P_features.Gene_Stealer_Cult));
+            //array_push(p_feature[i], new NewPlanetFeature(P_features.Gene_Stealer_Cult));
 
         }
         p_owner[i] = eFACTION.Imperium;
@@ -283,7 +283,7 @@ if (owner == eFACTION.Tyranids){
 if (owner>20){
     for (var i = 1; i <= planets; i++) {
         if (p_population[i] > 0) {
-            var new_cult = new new_planet_feature(P_features.Gene_Stealer_Cult);
+            var new_cult = new NewPlanetFeature(P_features.Gene_Stealer_Cult);
             array_push(p_feature[i], new_cult);
             new_cult.cult_age = irandom(300)
             p_influence[i][eFACTION.Tyranids] = new_cult.cult_age/10 + irandom(30);
@@ -360,7 +360,7 @@ if (i==1) and (planets>0){
                     if (goo==0){
                         switch (ranb){
                             case 1:
-                                array_push(p_feature[i], new new_planet_feature(P_features.Sororitas_Cathedral))
+                                array_push(p_feature[i], new NewPlanetFeature(P_features.Sororitas_Cathedral))
                                 if (p_heresy[i]>10) then p_heresy[i]-=10;
                                 p_sisters[i]=choose(2,2,3);
                                 adjust_influence(eFACTION.Ecclesiarchy, (p_sisters[i]*10)-irandom(3), i)
@@ -368,28 +368,28 @@ if (i==1) and (planets>0){
                                 break;
                             case 2:
                                 if (p_type[i]!="Hive") and (p_type[i]!="Lava") and (goo==0){
-                                    array_push(p_feature[i], new new_planet_feature(P_features.Necron_Tomb))
+                                    array_push(p_feature[i], new NewPlanetFeature(P_features.Necron_Tomb))
                                     goo=1;
                                 }
                                 break;
                             case 3:
-                                array_push(p_feature[i], new new_planet_feature( P_features.Artifact))
+                                array_push(p_feature[i], new NewPlanetFeature( P_features.Artifact))
                                 goo=1;
                                 break;
                             case 4:
-                                array_push(p_feature[i], new new_planet_feature( P_features.STC_Fragment))
+                                array_push(p_feature[i], new NewPlanetFeature( P_features.STC_Fragment))
                                 goo=1;
                                 break;
                             case 5:
                                 if (p_type[i]!="Ice") and (p_type[i]!="Dead") and (p_type[i]!="Feudal"){
                                     goo=1;
-                                    array_push(p_feature[i], new new_planet_feature( P_features.Ancient_Ruins))
+                                    array_push(p_feature[i], new NewPlanetFeature( P_features.Ancient_Ruins))
                                 }
                                 break;
                             //alternative spawn for necron tomb probably needs merging with other method
                             case 6:
                                 if ((p_type[i]=="Ice") or (p_type[i]=="Dead")){
-                                    array_push(p_feature[i], new new_planet_feature( P_features.Necron_Tomb))
+                                    array_push(p_feature[i], new NewPlanetFeature( P_features.Necron_Tomb))
                                     goo=1;
                                 }
                                 break;
@@ -397,7 +397,7 @@ if (i==1) and (planets>0){
                             if ((p_type[i]=="Dead") or (p_type[i]=="Desert")){
                                 var randum=floor(random(100))+1;
                                 if (randum<=25){
-                                    array_push(p_feature[i], new new_planet_feature( P_features.Cave_Network))
+                                    array_push(p_feature[i], new NewPlanetFeature( P_features.Cave_Network))
                                     goo=1;
                                 }
                             }

@@ -25,7 +25,9 @@ if (obj_controller.zoomed==1){
 }
 
 // Pass variables to obj_controller.temp[t]=""; here
-with(obj_star_select){instance_destroy();}
+with(obj_star_select){
+    instance_destroy();
+}
 instance_create(x,y,obj_star_select);
 obj_star_select.owner=self.owner;
 obj_star_select.target=self.id;
@@ -35,6 +37,6 @@ if (obj_controller.selection_data != false){
     obj_controller.selecting_planet = data.planet;
     obj_controller.selection_data=false;
     if (obj_controller.selecting_planet >0 && obj_controller.selecting_planet<5){
-    obj_star_select.garrison = new garrison_force(p_operatives[obj_controller.selecting_planet]);       
+        obj_star_select.garrison = new GarrisonForce(p_operatives[obj_controller.selecting_planet]);       
     }
 }

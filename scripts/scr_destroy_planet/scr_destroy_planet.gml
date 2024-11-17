@@ -1,13 +1,11 @@
-function scr_destroy_planet(argument0) {
+function scr_destroy_planet(destruction_method) {
 
-	// argument0: method   (1 being combat exterminatus, 2 being star select cyclonic torpedo)
+	// destruction_method: method   (1 being combat exterminatus, 2 being star select cyclonic torpedo)
 
-
-	var baid,enemy9;
-	baid=0;enemy9=0;
+	var baid=0;enemy9=0;
 
 
-	if (argument0=2){
+	if (destruction_method=2){
 	    var pip;pip=instance_create(0,0,obj_popup);
 	    with(pip){
 	        title="Exterminatus";
@@ -15,7 +13,8 @@ function scr_destroy_planet(argument0) {
 	        text="You give the order to fire the Cyclonic Torpedo.  After a short descent it lands upon the surface and detonates- the air itself igniting across ";
 	    }
 
-	    var you;you=obj_star_select.target;pip.text+=you.name;
+	    var you=obj_star_select.target;
+	    pip.text+=you.name;
 	    pip.text+=" "+scr_roman(obj_controller.selecting_planet);
 	    baid=obj_controller.selecting_planet;
 	    scr_add_item("Cyclonic Torpedo",-1);
@@ -25,8 +24,8 @@ function scr_destroy_planet(argument0) {
 
 
 
-	if (argument0=1){
-	    var pip;pip=instance_create(0,0,obj_popup);
+	else if (destruction_method=1){
+	    var pip=instance_create(0,0,obj_popup);
 	    with(pip){
 	        title="Exterminatus";
 	        image="exterminatus";
@@ -35,10 +34,8 @@ function scr_destroy_planet(argument0) {
 
 	    instance_activate_object(obj_star);
 	    var you;you=battle_object;
-	    pip.text+=you.name;
-    
-	    if (obj_ncombat.battle_id=1) then pip.text+=" I";if (obj_ncombat.battle_id=2) then pip.text+=" II";
-	    if (obj_ncombat.battle_id=3) then pip.text+=" III";if (obj_ncombat.battle_id=4) then pip.text+=" IV";
+	    pip.text+=you.name +scr_roman(obj_controller.obj_ncombat.battle_id);
+
 	    baid=obj_ncombat.battle_id;
 	    scr_add_item("Exterminatus",-1);
     
@@ -50,46 +47,34 @@ function scr_destroy_planet(argument0) {
     
 
 	// No survivors!
-	var cah,ed;cah=-1;ed=0;
+	var cah=-1,ed=0,unit;
 	repeat(11){
-	    cah+=1;ed=0;
+	    cah+=1;
+	    ed=0;
 
 	    repeat(500){ed+=1;
-	        if (obj_ini.loc[cah,ed]=you.name) and (obj_ini.TTRPG[cah,ed].planet_location=baid){
+	    	unit = fetch_unit([cah,ed])
+	        if (obj_ini.loc[cah,ed]=you.name) and (unit.planet_location=baid){
 	            if (obj_ini.role[cah,ed]="Chapter Master"){obj_controller.alarm[7]=15;if (global.defeat<=1) then global.defeat=1;}
             
-	            if (obj_ini.race[cah,ed]=1){var comm;comm=false;
-	                if (obj_ini.role[co][i]="Chapter Master") then comm=true;
-	                if (obj_ini.role[co][i]="Master of Sanctity") then comm=true;
-	                if (obj_ini.role[co][i]="Master of the Apothecarion") then comm=true;
-	                if (obj_ini.role[co][i]="Chief "+string(obj_ini.role[100,17])) then comm=true;
-	                if (obj_ini.role[co][i]="Forge Master") then comm=true;
-	                if (obj_ini.role[co][i]=obj_ini.role[100,17]) then comm=true;
-	                if (obj_ini.role[co][i]=obj_ini.role[100][14]) then comm=true;
-	                if (obj_ini.role[co][i]=obj_ini.role[100][15]) then comm=true;
-	                if (obj_ini.role[co][i]=obj_ini.role[100][16]) then comm=true;
-	                if (obj_ini.role[co][i]=obj_ini.role[100][6]) then comm=true;
-	                if (obj_ini.role[co][i]=obj_ini.role[100][5]) then comm=true;
-	                if (obj_ini.role[co][i]="Codiciery") then comm=true;
-	                if (obj_ini.role[co][i]="Lexicanum") then comm=true;
-	                if (obj_ini.role[co][i]=string(obj_ini.role[100,17])+" Aspirant") then comm=true;
-	                if (obj_ini.role[co][i]=string(obj_ini.role[100][14])+" Aspirant") then comm=true;
-	                if (obj_ini.role[co][i]=string(obj_ini.role[100][15])+" Aspirant") then comm=true;
-	                if (obj_ini.role[co][i]=string(obj_ini.role[100][16])+" Aspirant") then comm=true;
-	                if (obj_ini.role[co][i]="Venerable "+string(obj_ini.role[100][6])) then comm=true;
-                
+	            if (obj_ini.race[cah,ed]=1){
+
+	            	var comm = unit.IsSpecialist(,true);
+
 	                // if (obj_ini.race[cah,ed]=1) then obj_controller.marines-=1;
 	                if (comm=false) then obj_controller.marines-=1;
 	                if (comm=true) then obj_controller.command-=1;
 	            }
             
-            
-            
-	            obj_ini.race[cah,ed]=0;obj_ini.loc[cah,ed]="";obj_ini.name[cah,ed]="";obj_ini.role[cah,ed]="";obj_ini.hp[cah,ed]=0;
+            	scr_kill_unit(cah,ed);
+
 	        }
 	        if (ed<200){
 	            if (obj_ini.veh_loc[cah,ed]=you.name) and (obj_ini.veh_wid[cah,ed]=baid){
-	                obj_ini.veh_race[cah,ed]=0;obj_ini.veh_loc[cah,ed]="";obj_ini.veh_role[cah,ed]="";obj_ini.veh_hp[cah,ed]=0;
+	                obj_ini.veh_race[cah,ed]=0;
+	                obj_ini.veh_loc[cah,ed]="";
+	                obj_ini.veh_role[cah,ed]="";
+	                obj_ini.veh_hp[cah,ed]=0;
 	            }
 	        }
 	    }
@@ -100,7 +85,9 @@ function scr_destroy_planet(argument0) {
 	    obj_controller.disposition[4]+=5;
     
 	    obj_controller.disposition[5]+=5;
-	    var o;o=0;repeat(4){if (o<=4){o+=1;if (obj_ini.adv[o]="Reverent Guardians") then o=500;}}if (o>100) then obj_controller.disposition[5]+=5;
+	    var o;o=0;
+		if (scr_has_adv("Reverent Guardians")) then o=500;
+		if (o>100) then obj_controller.disposition[5]+=5;
     
 	    if (obj_controller.blood_debt=1){obj_controller.penitent_current+=1500;obj_controller.penitent_turn=0;obj_controller.penitent_turnly=0;}
 	}

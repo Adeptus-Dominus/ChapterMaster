@@ -9,6 +9,160 @@ enum eTrials{
 	num
 }
 
+// to be run in teh scope of the PlanetData struct
+function planet_training_sequence(){
+
+    var thirdpop = max_population / 3;
+    var halfpop = max_population / 2;	
+
+	if (planet_feature_bool(features, P_features.Recruiting_World) == 1) and(obj_controller.gene_seed > 0) and(current_owner <= 5) and(obj_controller.faction_status[current_owner] != "War") {
+        var _planet_population = population;
+        if (large_population) {
+            _planet_population *= 1000000000;
+        }		
+	    if (_planet_population >= 50 && obj_controller.recruiting) {
+	        // Commenting this for now, looks like debug code
+	        //scr_alert("green","owner", "Recruitment is slowed due to lack of population on our recruitment worlds",0,0);
+	        var recruit_type = scr_trial_data(obj_controller.recruit_trial);
+	        if (!large_population) then population-= 1;
+
+	        var recruit_chance = 999;
+	        var aspirant = 0;
+	        var new_recruit_corruption = 10;
+	        var months_to_neo = 72;
+	        var dista = 0;
+	        var onceh = 0;
+	        var recruit_chance_array = [0, 250, 200, 150, 125, 100, 75];
+	        if (obj_controller.recruiting>0){
+	            recruit_chance = irandom(recruit_chance_array[obj_controller.recruiting]) + 1;
+	        }
+
+	        // 135; recruiting
+	        // new_recruit_corruption isn't really relevant as corruption in marines doesn't matter
+	        // by default it takes 72 turns (6 years) to train
+
+	        var planet_type_recruit_chance = {
+	            "Hive" : 40,
+	            "Temperate" : 20,
+	            "Feudal" : 20,
+	            "Forge" : 15,
+	            "Shrine" : 15,
+	            "Desert" : 15,
+	            "Ice" : 15,
+	            "Agri" : 10,
+	            "Death" : 10,
+	            "Lava" : 7,
+	        }
+
+	        var recruit_chance_total = 0;
+	        if (struct_exists(planet_type_recruit_chance, planet_type)){
+	            recruit_chance_total = planet_type_recruit_chance[$ planet_type];
+	            if (struct_exists(recruit_type, "recruit_count_modifier")){
+	                var modded=false;
+	                var count_mod = recruit_type.recruit_count_modifier;
+	                if (struct_exists(count_mod, "planets")){
+	                    if (struct_exists(count_mod.planets, planet_type)){
+	                        recruit_chance_total*=(count_mod.planets[$planet_type]);
+	                        modded=true;
+	                    }
+	                }
+	                if (!modded && struct_exists(count_mod, "base")){
+	                    recruit_chance_total*=count_mod.base;
+	                }
+	            }
+	        }
+
+	        if (recruit_chance<=recruit_chance_total){
+	            aspirant = true;
+	        }
+
+	        // if a planet type has less than half it's max pop, you get 20% less spacey marines
+	        if (_planet_population <= halfpop) {
+	            recruit_chance += 1.2;
+	           // scr_alert("red", "owner", "The populations you attain aspirants from are less populant than required, chances of recruiting aspirants is 20% lower", 0, 0);
+	        }
+
+	        // This is the area has trial types that don't care about planet type 
+	        // xp is given in a latter if loop
+	        if (struct_exists(recruit_type, "seed_waste")){
+	            if (obj_controller.recruiting > 0) {
+	                if (random(1)<recruit_type.seed_waste){
+	                    obj_controller.gene_seed--;
+	                    //TODO make more informative
+	                    scr_alert("red", "owner", "Blood Duels are efficient in time, but costly in risk with gene material. Gene-seed has been lost.", 0, 0);
+	                }
+	            }
+	        }
+	        if (struct_exists(recruit_type, "train_time")){
+	            var train_time_data =  recruit_type.train_time;
+	            var chosen_time = false;
+	            if (struct_exists(train_time_data, "planets")){
+	                if (struct_exists(train_time_data.planets, planet_type)){
+	                    months_to_neo = irandom_range(train_time_data.planets[$planet_type][0], train_time_data.planets[$planet_type][1]);
+	                    chosen_time=true;
+	                }
+	            }
+	            if (!chosen_time && struct_exists(train_time_data, "base")){
+	                if (train_time_data.base[0]!=0 && train_time_data.base[1]!=0){
+	                    months_to_neo = irandom_range(train_time_data.base[0], train_time_data.base[1]);
+	                }
+	            }
+	        }
+	        var new_recruit_exp = irandom(5);
+	        if (struct_exists(recruit_type, "exp_bonus")){
+	            var chosen_exp = false;
+	            var exp_bonus_data =  recruit_type.exp_bonus;
+	            if (struct_exists(exp_bonus_data, "planets")){
+	                if (struct_exists(exp_bonus_data.planets, planet_type)){
+	                    new_recruit_exp += irandom_range(exp_bonus_data.planets[$planet_type][0], exp_bonus_data.planets[$planet_type][1]);
+	                    chosen_exp = true;
+	                }
+	            }
+	            if (!chosen_exp && struct_exists(exp_bonus_data, "base")){
+	                if (exp_bonus_data.base[0]!=0 && exp_bonus_data.base[1]!=0){
+	                    if (array_length(exp_bonus_data.base)>2){
+	                        if (random(1)<exp_bonus_data.base[2]){
+	                             new_recruit_exp += irandom_range(exp_bonus_data.base[0], exp_bonus_data.base[1]);
+	                        }
+	                    } else {
+	                        new_recruit_exp = irandom_range(exp_bonus_data.base[0], exp_bonus_data.base[1]);
+	                    }
+	                }                            
+	            }
+	        }
+	        //new_recruit_corruption
+
+	        // xp gain for the recruit is here
+	        // as well as planet type buffs or nerfs
+	        if (aspirant) {
+
+	            var i = 0;
+	            var new_recruit = 0;
+
+	            // gets the next empty recruit space on the array
+	            if (new_recruit_exp >= 40) then new_recruit_exp = 38;// we don't want immediate battle bros
+
+	            for (var i=0;i<array_length(obj_controller.recruit_training);i++) {
+	                if (obj_controller.recruit_training[i]<1 || months_to_neo<obj_controller.recruit_training[i]){
+	                    obj_controller.gene_seed -= 1;
+	                    array_insert(obj_controller.recruit_corruption, i, new_recruit_corruption);
+	                    array_insert(obj_controller.recruit_distance , i, 0);
+	                    array_insert(obj_controller.recruit_training, i, months_to_neo);
+	                    array_insert(obj_controller.recruit_exp, i, new_recruit_exp); 
+	                    array_insert(obj_controller.recruit_name, i, global.name_generator.generate_space_marine_name());    
+	                    array_insert(obj_controller.recruit_data, i, {"recruit_data":{
+	                        recruit_world :planet_type ,
+	                        aspirant_trial :obj_controller.recruit_trial ,
+	                    }});                                                                                                   
+	                    break;
+	                }
+	            }
+	        }
+	        // End aspirant!=0
+	    } // End pop>50
+	} // End recruiting possible	
+}
+
 function scr_trial_data(wanted=-1){
 	var role_data = instance_exists(obj_ini)? obj_ini.role[100] : obj_creation.role[100];
 	var data = [
@@ -59,7 +213,7 @@ function scr_trial_data(wanted=-1){
 				base : [72, 80],
 			},
 			recruit_count_modifier : {
-				base : 0.0,
+				base : 1.0,
 				planets : {
 					Ice :3,
 					Desert : 3,
@@ -92,6 +246,9 @@ function scr_trial_data(wanted=-1){
 					Death : [2,4],
 				}
 			},
+			recruit_count_modifier : {
+				base : 1.0,
+			},
 			long_description :$"Few worlds of the Imperium are free from the adversity of pollution or toxic waste.  Still others are bequeathed with flows of lava and choking atmosphere.  The glory of rising to astartes is only granted to those that can tackle and overcome these dangerous environments.  Aspirants are placed upon the most hellish of planet in the sector, and then expected to traverse the continent with only himself to rely upon.  Those who face the impossible without faltering and survive past the point they should have perished are recovered by {role_data[Role.APOTHECARY]}s, judged worthy of becoming a Neophyte.",						
 		},
 		{
@@ -108,6 +265,9 @@ function scr_trial_data(wanted=-1){
 					Temperate : [20,35],
 				}
 			},
+			recruit_count_modifier : {
+				base : 1.0,
+			},		
 			long_description :$"An Aspirant’s spiritual and mental capability is every bit as important as his physical characteristics.  It is wise to impose Trials not upon their body, but on the mind.  Either through psychic powers, chemical agents, or endurance trials, the Aspirant’s willpower is tested.  Those unworthy do not survive the stress and trauma placed upon their hearts- only those whose minds are proven to be unbreakable are welcomed into our ranks.",							
 		},
 		{
@@ -138,7 +298,7 @@ function scr_trial_data(wanted=-1){
 				base : 1,
 				planets : {
 					Lava :2,
-				}			
+				},			
 			},
 			corruption :{
 				base : [0,-10],
@@ -223,7 +383,7 @@ function set_up_recruitment_view(){
 	    onceh=1;
 	    cooldown=8000;
 	    click=1;
-	    recruit_list_pane = new data_slate();
+	    recruit_list_pane = new DataSlate();
 	    recruit_list_pane.inside_method = function(){
 		    var xx=__view_get( e__VW.XView, 0 )+0;
 		    var yy=__view_get( e__VW.YView, 0 )+0+60;
@@ -247,8 +407,8 @@ function set_up_recruitment_view(){
 		        }
 		    }	
 	    }	    
-	    left_panel = new data_slate();
-	    middle_panel = new data_slate();
+	    left_panel = new DataSlate();
+	    middle_panel = new DataSlate();
 	}
 }
 
@@ -339,7 +499,7 @@ function scr_draw_recruit_advisor(){
             if (recruiting = 0) and(marines < 1000) then blurp += "\n\nRecruitment " + recruitment_rates[recruiting] + ".  You must only give me the word and I can begin further increasing our numbers.  ";
 
             if (recruiting>0 && recruiting < 3) then blurp += $"\n\nRecruitment {recruitment_rates[recruiting]}.  With an increase of funding I could vastly increase the rate.  ";
-            else if (recruiting = 3) then blurp += $"\n\nRecruitment {recruitment_rates[recruiting] }  ";
+            else if (recruiting = 3) then blurp += $"\n\nRecruitment {recruitment_rates[recruiting]}  ";
             else if (recruiting>=4){
                 blurp += $"\n\nRecruitment {recruitment_rates[recruiting]}- give me the word when we have enough Neophytes being trained.  ";
             }
@@ -456,7 +616,7 @@ function scr_draw_recruit_advisor(){
     draw_text(xx + 728, yy + 454, "[-] [+]");
 
     // ** Neophyte Training types **
-    var yyy = 0,
+    var yyy = 0;
     var trial_data = scr_trial_data();
     var cur_trial = trial_data[recruit_trial];
 

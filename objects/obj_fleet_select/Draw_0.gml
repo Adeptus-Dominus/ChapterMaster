@@ -9,11 +9,6 @@ if __b__
 if (obj_controller.diplomacy>0) then exit;
 
 
-/*if (target!=0) and (!instance_exists(target)){
-    instance_destroy();
-    exit;
-}*/
-
 draw_set_color(38144);
 
 draw_set_font(fnt_40k_14b);
@@ -38,32 +33,42 @@ switch(owner){
 // 
 var scale = obj_controller.zoomed ? 3.5 : 1;
 if (obj_controller.zoomed=0) then draw_text_transformed(x,y-32,ppp,scale,scale,0);
-    
-draw_circle(x,y,12,0);
+
 draw_set_halign(fa_left);
 
 
 // Order here
+player_fleet = instance_nearest(x,y,obj_p_fleet).id;
+currently_entered = selection_window.currently_entered;
+if (player_fleet.just_left){
+    var cancel_button = draw_unit_buttons([player_fleet.x+20, player_fleet.y-10], "X",[1,1], c_red,, fnt_40k_30b, 1);
 
-if (owner  = eFACTION.Player) and (instance_nearest(x,y,obj_p_fleet).action=""){
-    var free=1,z=obj_fleet_select;
+    if (scr_hit(cancel_button)){
+        currently_entered = true;
+    }
+
+    if (point_and_click(cancel_button)){
+        show_debug_message("cancel fleet")
+        with (player_fleet){
+            cancel_fleet_movement();
+        }
+    }
+}
+if (!currently_entered){
+    currently_entered =  keyboard_check(vk_shift);
+}
+
+if (owner  == eFACTION.Player) and (player_fleet.action==""){
     var xx = __view_get( e__VW.XView, 0 );
     var yy = __view_get( e__VW.YView, 0 );
-    if (obj_fleet_select.currently_entered) then free = 0;
+    var free =  !(currently_entered);
     
     if (free=1){
-        var player_fleet = instance_nearest(x,y,obj_p_fleet);
-        if (player_fleet.just_left){
-            if point_and_click(draw_unit_buttons([player_fleet.x+20, player_fleet.y-10], "X",[1,1], c_red,, fnt_40k_30b, 1)){
-                with (player_fleet){
-                    cancel_fleet_movement();
-                }
-            }
-        }
+
         var sys_dist=9999,connected=0;
         
         with(obj_star){
-            if (p_type[1]="Craftworld") and (obj_controller.known[eFACTION.Eldar]=0) then instance_deactivate_object(id);
+            if (p_type[1]="Craftworld" && obj_controller.known[eFACTION.Eldar]=0) then instance_deactivate_object(id);
         }
 
         var sys=instance_nearest(mouse_x,mouse_y,obj_star);
@@ -71,8 +76,7 @@ if (owner  = eFACTION.Player) and (instance_nearest(x,y,obj_p_fleet).action=""){
         act_dist=point_distance(x,y,sys.x,sys.y);
         
         var mine=instance_nearest(x,y,obj_star);
-        if (mine.buddy=sys) then connected=1;
-        if (sys.buddy=mine) then connected=1;
+        connected = determine_warp_join(mine, sys);
         
         var web=0;
         
@@ -83,60 +87,43 @@ if (owner  = eFACTION.Player) and (instance_nearest(x,y,obj_p_fleet).action=""){
         
         
         if (sys_dist<32) and (sys.id!=mine.id){
-            var has_capitals = false;
-            var has_frigates = false;
-            var has_escorts = false;
-            with (player_fleet){
-                for (i=0; i<array_length(capital);i++){
-                    if(capital[i]!="" && capital_sel[i]){
-                        has_capitals=true
-                        break;
-                    }
-                } 
-                for (i=0; i<array_length(frigate);i++){
-                    if(frigate[i]!="" && frigate_sel[i]){
-                        has_frigates=true
-                        break;
-                    }
-                } 
-                for (i=0; i<array_length(escort);i++){
-                    if(escort[i]!="" && escort_sel[i]){
-                        has_escorts=true
-                        break;
-                    }
-                }                                 
-            }               
-            var selection_travel_speed = calculate_action_speed(has_capitals,has_frigates,has_escorts);
+             
+            var selection_travel_speed = calculate_action_speed(player_fleet,true);
+            player_fleet.action_spd = selection_travel_speed;
             if (is_array(star_travel)){
-                star_travel = new fastest_route_algorithm(mine.x,mine.y,sys.x,sys.y, selection_travel_speed);
+                star_travel = new FastestRouteAlgorithm(mine.x,mine.y,sys.x,sys.y, player_fleet);
             }else if (sys.id != star_travel.final_route_info[0]){
-                star_travel = new fastest_route_algorithm(mine.x,mine.y,sys.x,sys.y, selection_travel_speed);
+                star_travel = new FastestRouteAlgorithm(mine.x,mine.y,sys.x,sys.y, player_fleet);
             }
             star_travel.draw_route();
             draw_set_color(c_white);
             draw_set_alpha(1);            
             if (web!=0) then draw_set_color(c_orange);
-            if (sys.storm>0) or (instance_nearest(x,y+24,obj_star).storm>0) then draw_set_color(c_red);
+            if (sys.storm>0) or (instance_nearest(x,y,obj_star).storm>0) then draw_set_color(c_red);
     
             
-            draw_line_dashed(x,y,sys.x,sys.y,16,0.5);
+            draw_line_dashed(x,y,sys.x,sys.y,16,scale);
             
             draw_set_font(fnt_40k_14b);
             var eta=0;       
 
-            eta = calculate_fleet_eta(mine.x,mine.y,sys.x,sys.y, selection_travel_speed);
+            eta = calculate_fleet_eta(mine.x,mine.y,sys.x,sys.y, selection_travel_speed, ,,player_fleet.warp_able);
 
-            if (sys.storm>0) or (instance_nearest(x,y+24,obj_star).storm>0) then eta="N/A";
+            if (sys.storm>0) or (instance_nearest(x,y,obj_star).storm>0) then eta="N/A";
             
             draw_set_font(fnt_40k_14b);
             eta = "ETA "+string(eta) + "#Press SHIFT to ignore way points";
             var speed_string = "";
             var viable=true;
-            if (!has_capitals){
+            var types = [0,0,0];
+            with (player_fleet){
+                types = selected_ship_types();
+            }
+            if (!types[0]){
                 speed_string = "#Speed bonus *1.25 frigates and smaller";
-                if (!has_frigates){
+                if (!types[1]){
                     speed_string = "#Speed bonus *1.75 Escort fleet"
-                    if (!has_escorts){
+                    if (!types[2]){
                         speed_string = "#No Ships Selected"
                         viable=false;
                     }                     
@@ -156,7 +143,7 @@ if (owner  = eFACTION.Player) and (instance_nearest(x,y,obj_p_fleet).action=""){
                         move_fleet = split_selected_into_new_fleet(player_fleet);
                     }
                     if (keyboard_check(vk_shift)){
-                        final_course = [sys];
+                        final_course = [sys.name];
                     } else {
                         var final_course = star_travel.final_array_path();
                     }
@@ -168,6 +155,12 @@ if (owner  = eFACTION.Player) and (instance_nearest(x,y,obj_p_fleet).action=""){
             }
         }
         instance_activate_object(obj_star);
+    }
+}
+
+if (mouse_check_button_pressed(mb_left) ){
+    if (!currently_entered && point_distance(mouse_x,mouse_y,player_fleet.x,player_fleet.y)>32 && !keyboard_check(vk_shift)){
+        instance_destroy();
     }
 }
 

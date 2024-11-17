@@ -1631,40 +1631,6 @@
     "spli": 0,
     "arp": 1
 },
-"Lascannons": {
-    "attack": {
-        "standard": 300,
-        "master_crafted": 330,
-        "artifact": 360
-    },
-    "melee_mod": {
-        "standard": 0,
-        "master_crafted": 0,
-        "artifact": 0
-    },
-    "ranged_mod": {
-        "standard": 0,
-        "master_crafted": 0,
-        "artifact": 0
-    },
-    "hp_mod": {
-        "standard": 0,
-        "master_crafted": 0,
-        "artifact": 0
-    },
-    "damage_resistance_mod": {
-        "standard": 0,
-        "master_crafted": 0,
-        "artifact": 0
-    },
-    "description": "Lascannons are powerful anti-armour weapons that fire highly focused and devastating energy beams capable of penetrating even the toughest armor.",
-    "melee_hands": 0,
-    "ranged_hands": 0,
-    "ammo": 5,
-    "range": 20,
-    "spli": 0,
-    "arp": 1
-},
 "Heavy Bolters": {
     "attack": {
         "standard": 320,

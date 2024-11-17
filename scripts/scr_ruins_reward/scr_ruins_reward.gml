@@ -5,7 +5,7 @@ function scr_ruins_reward(star_system, planet, _ruins) {
 	//if there is gear from previoulsy killed marines retrieve instead of a standard reward
 	if (_ruins.unrecovered_items != false){
 		_ruins.recover_from_dead();
-	} else{
+	} else {
 
 	// star_system: world object
 	// planet: planet
@@ -56,7 +56,7 @@ function scr_ruins_reward(star_system, planet, _ruins) {
 	    pop.text="My lord, your battle brothers have located several precious minerals and supplies within the ancient ruins.  Everything was taken and returned to the ship, granting "+string(reqi)+" Requisition.";
 	}
 	else if (loot="artifact"){
-	    var last_artifact = scr_add_artifact("random","random",4,loc,sihd+500);
+        var last_artifact = scr_add_artifact("random", "random", 4, planet, sihd + 500);
     
 	    scr_event_log("","Artifact recovered from Ancient Ruins.");
 	    var pop=instance_create(0,0,obj_popup);
@@ -95,9 +95,12 @@ function scr_ruins_reward(star_system, planet, _ruins) {
 	        wen3=choose(1);
 	    }
 		else if (ruins_type=4){
-			wep1=choose("MK4 Maximus");wen1=choose(2,3);
-	        wep2=choose("MK6 Corvus");wen2=choose(4,5,6);
-	        wep3=choose("MK8 Errant");wen3=choose(1,2);
+			wep1=choose("MK4 Maximus");
+			wen1=choose(2,3);
+	        wep2=choose("MK6 Corvus");
+	        wen2=choose(4,5,6);
+	        wep3=choose("MK8 Errant");
+	        wen3=choose(1,2);
 	    }
 	    else if (ruins_type=5){
 	        wep1=choose("Eviscerator","Underslung Flamer");
@@ -127,7 +130,7 @@ function scr_ruins_reward(star_system, planet, _ruins) {
 			wen1=choose(1,2);
 	        wep2=choose("Company Standard");
 	        wen2=choose(1);
-	        wep3=choose("Master Servo Arms");
+	        wep3=choose("Servo-harness");
 	        wen3=choose(1);
 	    }
 		
@@ -154,8 +157,7 @@ function scr_ruins_reward(star_system, planet, _ruins) {
 	    pop.estimate=gene;
 	}
 	else if (loot="bunker"){// Bunker
-	    var gene,pop;gene=floor(random_range(20,40))+1;
-	    pop=instance_create(0,0,obj_popup);
+	    var gene=floor(random_range(20,40))+1,pop=instance_create(0,0,obj_popup);;
 	    pop.image="ruins_bunker";
 	    pop.title="Ancient Ruins: Bunker Network";
 	    pop.text="Your battle brothers have found several entrances into an ancient bunker network.  Its location has been handed over to the PDF.  The planet's defense rating has increased to ";
@@ -170,7 +172,7 @@ function scr_ruins_reward(star_system, planet, _ruins) {
 	    pop.image="ruins_fort";
 	    pop.title="Ancient Ruins: Fortress";
 	    pop.planet = planet;
-	    pop.feature = _feature;
+	    pop.feature = _ruins;
 	    pop.star_system = star_system;
 	    pop.text="Praise the Emperor! We have found a massive, ancient fortress in needs of repairs. The gun batteries are rusted, and the walls are covered in moss with huge hole in it. Such a pity that such a majestic building is now a pale shadow of its former glory.  It is possible to repair the structure.  What is thy will?";
 	    pop.option1="Repair the fortress to boost defenses.  (1000 Req)";
@@ -189,8 +191,5 @@ function scr_ruins_reward(star_system, planet, _ruins) {
 	_ruins.ruins_explored();
 	// star_system.p_feature[planet]="Ancient Ruins|";
 
-	}
-	if (instance_exists(obj_temp4)){
-		instance_destroy(obj_temp4);
 	}
 }

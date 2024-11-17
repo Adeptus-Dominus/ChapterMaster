@@ -77,9 +77,10 @@ repeat(3600){
 
 // Iterates through all selected "ships" (max 30), including the planet (Local on the drop menu), 
 // and fills the battle roster with any marines found.
-var i;i=-1;ships_selected=0;
-repeat(31){
-    i+=1;if (ship_all[i]!=0) then scr_battle_roster(ship[i],ship_ide[i],false);
+ships_selected=0;
+var ships_len = array_length(ship_all);
+for (var i = 0; i < ships_len; i++) {
+    if (ship_all[i]!=0) then scr_battle_roster(ship[i],ship_ide[i],false);
 }
 //ship_all[500] equals "Local" status on the drop menu
 if (ship_all[500]=1) and (attack=1) then scr_battle_roster(p_target.name,obj_controller.selecting_planet,true);

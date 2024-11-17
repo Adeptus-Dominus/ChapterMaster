@@ -1,5 +1,5 @@
 // Manages space combat, checks if ships are destroyed and does the targeting and pointing of the ship
-show_debug_message("-")
+
 var __b__;
 var bull, ok, targe=0,rdir=0,dist=9999,xx=x,yy=y;
 var front=0,right=0,left=0,rear=0;

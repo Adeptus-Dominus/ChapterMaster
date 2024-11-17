@@ -295,7 +295,7 @@ function scr_random_event(execute_now) {
 		        evented = true;
 			}
 			catch(_exception){
-				show_debug_message("{0} \n hulk error",_exception);
+				handle_exception(_exception);
 			}
 		}
 	}
@@ -325,7 +325,7 @@ function scr_random_event(execute_now) {
 			unit.add_exp(10);
 		}
 		else {
-			unit.add_exp(max(20, unit.experience()));
+			unit.add_exp(max(20, unit.experience));
 		}
 		
 		scr_popup("Promotions!",text,"distinguished","");
@@ -1060,7 +1060,7 @@ function scr_random_event(execute_now) {
 			}
 		}
 		
-		array_push(star.p_feature[planet], new new_planet_feature(P_features.Succession_War));
+		array_push(star.p_feature[planet], new NewPlanetFeature(P_features.Succession_War));
 		add_new_problem(planet, "succession",irandom(6) + 4, star);
 		star.dispo[planet] = -5000; 
 		

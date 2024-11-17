@@ -4,7 +4,6 @@ function khorne_fleet_cargo(){
 	//This handles khorne fleets killing planet popultions moving planet and then choosing a new target ot chase
 	var orb=orbiting; 
 	if (orb!=0) and (instance_exists(orb)) and (action=""){
-        array_reduce(orb.present_fleet, array_sum,1)
         if (orb.present_fleet[1]+orb.present_fleet[2]+orb.present_fleet[3]+orb.present_fleet[6]+orb.present_fleet[7]+orb.present_fleet[9]+orb.present_fleet[13]=0){
             var ii=0,good=0,part=0,find_new_planet=false;
             
@@ -48,7 +47,7 @@ function khorne_fleet_cargo(){
                         ii+=1;
                         if (landing_planet=0){
                             if (planet_imperium_ground_total(ii)>0) and (p_population[ii]>p_max_population[ii]/20){
-                                array_push(p_feature[ii], new new_planet_feature(P_features.World_Eaters));
+                                array_push(p_feature[ii], new NewPlanetFeature(P_features.World_Eaters));
                                 landing_planet=ii;
                                 p_chaos[ii]=6;
                                 break;
@@ -58,7 +57,7 @@ function khorne_fleet_cargo(){
                             if (p_player[ii]>0) and (p_population[ii]>p_max_population[ii]/20){
                                 landing_planet=ii;
                                 p_chaos[ii]=6;
-                                array_push(p_feature[ii], new new_planet_feature(P_features.World_Eaters));
+                                array_push(p_feature[ii], new NewPlanetFeature(P_features.World_Eaters));
                                 break;
                             }// Forces landed
                         }
@@ -125,7 +124,7 @@ function khorne_fleet_cargo(){
                     // Go after the player now
                     var yarr = false;
                     
-                    if (obj_ini.fleet_type==1) {
+                    if (obj_ini.fleet_type==ePlayerBase.home_world) {
                         var player_stars =0;
                         with(obj_star){
                             if !(array_contains(p_owner, eFACTION.Player)){
@@ -146,7 +145,7 @@ function khorne_fleet_cargo(){
 							yarr=true;
                         }
                         instance_activate_object(obj_star);
-                    }else if (obj_ini.fleet_type!=1)  {
+                    }else if (obj_ini.fleet_type != ePlayerBase.home_world)  {
 
                         // Chase player fleets
                         var target_chosen = false;
@@ -196,6 +195,7 @@ function khorne_fleet_cargo(){
                             		} else {
 	                            		action_x = nearest_star.x;
 	                            		action_y = nearest_star.y;
+                                        acyion="";
 	                            		set_fleet_movement();
 	                            		target_chosen=true;	                            			
                             		}
@@ -211,7 +211,6 @@ function khorne_fleet_cargo(){
 }
 function spawn_chaos_warlord(){
 	with (obj_controller){
-		show_debug_message("fleet")
 		with(obj_turn_end){
 			audiences+=1;
 			audien[audiences]=10;
@@ -221,7 +220,6 @@ function spawn_chaos_warlord(){
 		}
 	    fdir=terra_direction+choose(-90,90);
 		fdir+=floor(random_range(-35,35));
-		show_debug_message("fleet")
 	    var len,width,height,t,c,s;
 	    width = room_width;
 	    height = room_height;
@@ -248,7 +246,6 @@ function spawn_chaos_warlord(){
 		    frigate_number=20;
 		    escort_number=40;
 		}
-		show_debug_message("fleet")
 		var rep, filtered_array, candidate_systems;
 		candidate_systems = [];
 	    with(obj_star){
@@ -270,7 +267,6 @@ function spawn_chaos_warlord(){
 				
 				return (prev_dist > curr_dist) ? curr : prev;
 		}),noone)
-		show_debug_message("fleet")
 	    nfleet.action_x=fleet_target.x;
 		nfleet.action_y=fleet_target.y;
 	    nfleet.alarm[4]=1;
@@ -280,7 +276,6 @@ function spawn_chaos_warlord(){
 	    scr_event_log("purple",tix, fleet_target.name);
 	    scr_popup("Black Crusade","A Black Crusade led by the Chaos Lord {faction_leader[eFACTION.Chaos]} has arrived in {obj_ini.sector_name}.  His forces have already carved a bloody path through many sectors and yours is next.  {faction_leader[eFACTION.Chaos]} also seems to be set on killing you.  The Black Crusade's current target is system {fleet_target.name}.","","");
 	    // title / text / image / speshul
-	    show_debug_message("fleet")
 	}
 }
 //TODO make this make sense

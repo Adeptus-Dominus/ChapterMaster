@@ -6,8 +6,11 @@ function scr_battle_allies() {
 	with(obj_temp3){instance_destroy();}
 	instance_activate_object(obj_star);
 
-	with(obj_star){if (name=obj_ncombat.battle_loc) then instance_create(x,y,obj_temp3);}
-	that_star=instance_nearest(x,y,obj_star);plant=obj_ncombat.battle_id;
+	with(obj_star){
+		if (name=obj_ncombat.battle_loc) then instance_create(x,y,obj_temp3);
+	}
+	that_star=instance_nearest(x,y,obj_star);
+	plant=obj_ncombat.battle_id;
 
 	if (obj_controller.faction_status[eFACTION.Imperium]!="War") and (that_star.p_pdf[plant]>0) then obj_ncombat.allies=1;
 	if (obj_controller.faction_status[eFACTION.Imperium]!="War") and (that_star.p_guardsmen[plant]>0) then obj_ncombat.allies=2;

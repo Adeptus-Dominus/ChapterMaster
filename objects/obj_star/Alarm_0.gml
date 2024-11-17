@@ -8,7 +8,6 @@ if (obj_controller.craftworld==0) and (space_hulk==0){
     test=instance_nearest(oldx+choose(random(200),1*-random(200)),oldy+choose(random(200),1*-random(200)),obj_star);
     x2=test.x;
     y2=test.y;
-    buddy=test;
     x=oldx;
     y=oldy;
 }
@@ -18,11 +17,11 @@ for(var i=0; i<80; i++){
          var new_star_name = global.name_generator.generate_star_name();
          name = new_star_name;
          obj_controller.star_names+=new_star_name; // TODO make sure it's always unique. Although star_names should just be removed, frankly.
-         };
-    if (name=="") and (craftworld==1) then global.name_generator.generate_eldar_name(3);
+    };
+    if (name=="") and (craftworld) then global.name_generator.generate_eldar_name(3);
 }
 // Sets up an eldar craftworld
-if (obj_controller.craftworld==1) and (space_hulk==0){
+if (obj_controller.craftworld) and (space_hulk==0){
     star="craftworld";
     sprite_index=spr_craftworld;
     image_index=0;
@@ -181,7 +180,7 @@ switch (name) {
         planets = 3;
         p_type[1] = "Feudal";
         planet[1] = 1;
-        array_push(p_feature[1], new new_planet_feature(P_features.Necron_Tomb));
+        array_push(p_feature[1], new NewPlanetFeature(P_features.Necron_Tomb));
         p_type[2] = "Dead";
         planet[2] = 1;
         p_type[3] = "Dead";

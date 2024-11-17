@@ -10,8 +10,6 @@ if (instance_exists(obj_fleet)) then exit;
 if (obj_controller.scrollbar_engaged!=0) then exit;
 if (cooldown>0) then exit;
 
-if (woopwoopwoop=1){woopwoopwoop=2;exit;}
-
 if (battle_special>0){
     alarm[0]=1;
     cooldown=10;exit;
@@ -227,16 +225,6 @@ if (mouse_x>=xx+1465) and (mouse_y>=yy+499) and (mouse_x<xx+1576) and (mouse_y<y
             
             if (obj_controller.managing>0){
                 reset_manage_arrays();
-                repeat(501){w+=1;
-                    
-                    sh_ide[w]=0;
-                    sh_name[w]="";
-                    sh_class[w]="";
-                    sh_loc[w]="";
-                    sh_hp[w]="";
-                    sh_cargo[w]=0;
-                    sh_cargo_max[w]="";
-                }
                 alll=0;
                 update_general_manage_view();
             }
@@ -572,17 +560,15 @@ if (mouse_x>=xx+1465) and (mouse_y>=yy+499) and (mouse_x<xx+1577) and (mouse_y<y
 
 
 // if ((mouse_x>=xx+240) and (mouse_x<=xx+387) and (type!=88)) or (((type=9) or (type=9.1)) and (mouse_x>=xx+240+420) and (mouse_x<xx+387+420)){
-if ((type=9.1)) and (mouse_x>=xx+240+420) and (mouse_x<xx+387+420){
-    if ((type=9.1)) and (cooldown<=0){
-        giveto=0;
+if (type=9.1) and (mouse_x>=xx+240+420) and (mouse_x<xx+387+420) and (cooldown<=0){
 
-        if (mouse_y>=yy+325) and (mouse_y<yy+342){
-            obj_controller.cooldown=8000;
-            instance_destroy();
-            exit;
-        }
+    if (mouse_y>=yy+325) and (mouse_y<yy+342){
+        obj_controller.cooldown=8000;
+        instance_destroy();
+        exit;
+    }
 
-        if (giveto>0) and (type=9.1){
+    if (giveto>0) {
             var r1,r2,cn;r2=0;cn=obj_controller;
             r1=floor(random(cn.stc_wargear_un+cn.stc_vehicles_un+cn.stc_ships_un))+1;
 
@@ -637,8 +623,6 @@ if ((type=9.1)) and (mouse_x>=xx+240+420) and (mouse_x<xx+387+420){
 			}
             instance_destroy();
 			exit;
-        }
-
     }
 }
 
@@ -649,77 +633,6 @@ if (mouse_x>=xx+121) and (mouse_y>=yy+393) and (mouse_x<xx+231) and (mouse_y<yy+
     if (type=8) and (cooldown<=0){
         obj_controller.cooldown=8000;
         instance_destroy();exit;
-    }
-}
-
-if (type=8) and (cooldown<=0){
-    var xx,yy,before;
-    xx=__view_get( e__VW.XView, 0 )+951;yy=__view_get( e__VW.YView, 0 )+48;
-    before=target_comp;
-
-    if (mouse_y>=yy+71) and (mouse_y<yy+87){
-        if (mouse_x>=xx+75) and (mouse_x<=xx+125){target_comp=0;cooldown=8000;}
-    }
-    if (mouse_y>=yy+87) and (mouse_y<yy+103){
-        if (mouse_x>=xx+77) and (mouse_x<=xx+125){target_comp=1;cooldown=8000;}
-        if (mouse_x>=xx+158) and (mouse_x<=xx+203){target_comp=2;cooldown=8000;}
-        if (mouse_x>=xx+275) and (mouse_x<=xx+320){target_comp=3;cooldown=8000;}
-        if (mouse_x>=xx+386) and (mouse_x<=xx+430){target_comp=4;cooldown=8000;}
-        if (mouse_x>=xx+497) and (mouse_x<=xx+545){target_comp=5;cooldown=8000;}
-    }
-    if (mouse_y>=yy+103) and (mouse_y<yy+129){
-        if (mouse_x>=xx+77) and (mouse_x<=xx+125){target_comp=6;cooldown=8000;}
-        if (mouse_x>=xx+158) and (mouse_x<=xx+203){target_comp=7;cooldown=8000;}
-        if (mouse_x>=xx+275) and (mouse_x<=xx+320){target_comp=8;cooldown=8000;}
-        if (mouse_x>=xx+386) and (mouse_x<=xx+430){target_comp=9;cooldown=8000;}
-        if (mouse_x>=xx+497) and (mouse_x<=xx+545){target_comp=10;cooldown=8000;}
-    }
-
-    if (mouse_y>=yy+124) and (mouse_y<yy+146) and (target_role<3){
-        if (mouse_x>=xx+196) and (mouse_x<xx+291){target_role=1;cooldown=8;}
-        if (mouse_x>=xx+424) and (mouse_x<=xx+525){target_role=2;cooldown=8;}
-    }
-
-    if (before!=target_comp){units=0;
-        with(obj_controller){
-            if (obj_popup.target_comp>0) then scr_company_view(obj_popup.target_comp);
-            if (obj_popup.target_comp=0) then scr_special_view(0);
-        }
-        var i;i=-1;
-        repeat(array_length(obj_controller.display_unit)){i+=1;
-            obj_controller.man_sel[i]=0;
-        }i=-1;
-    }
-
-
-    if (cooldown<=0) and (target_comp!=-1){
-        var xx,yy,bb;bb="";x2=__view_get( e__VW.XView, 0 )+951;y2=__view_get( e__VW.YView, 0 )+398;
-        var top,sel,temp1,temp2,temp3,temp4,temp5;temp1="";temp2="";temp3="";temp4="";temp5="";
-        top=obj_controller.man_current;var stop;stop=0;sel=top;
-
-        repeat(min(array_length(obj_controller.display_unit),23)){
-            if (mouse_x>=xx+29) and (mouse_y>=yy+150) and (mouse_x<xx+569) and (mouse_y<yy+175.4){
-                var onceh;onceh=0;stop=0;
-                if (obj_controller.man_sel[sel]=0) and (onceh=0){cooldown=8000;units=1;
-                    if (stop=0){
-                        onceh=1;
-                        obj_controller.man_sel[sel]=1;
-                        stop=sel;
-                    }
-                }
-                if (obj_controller.man_sel[sel]=1) and (onceh=0){
-                    onceh=1;units=0;obj_controller.man_sel[sel]=0;cooldown=8000;
-                }
-            }
-            yy+=25.4;sel+=1;
-        }
-
-        if (stop!=0){var i;i=-1;
-            repeat(array_length(obj_controller.display_unit)){i+=1;
-                if (i!=stop) then obj_controller.man_sel[i]=0;
-            }
-        }
-
     }
 }
 

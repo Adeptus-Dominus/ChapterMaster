@@ -6,18 +6,15 @@ combating=0;
 instance_activate_object(obj_star);
 
 if (battles>0) and (current_battle<=battles){
-    var ii, good;
-    ii=0;good=0;
-    
+
+    var  ii=0,good=0;
+    var battle_star = star_by_name(battle_location[current_battle]);
     obj_controller.temp[1060]=battle_location[current_battle];
-    with(obj_temp3){instance_destroy();}
-    with(obj_star){if (name=obj_controller.temp[1060]) then instance_create(x,y,obj_temp3);}
-    battle_o=instance_nearest(obj_temp3.x,obj_temp3.y,obj_star);ii=battle_o;
-    with(obj_temp3){instance_destroy();}
-    if (ii.name=battle_location[current_battle]) then good=1;
     
-    if (good=1){
-        obj_controller.x=ii.x;obj_controller.y=ii.y;show=current_battle;
+    if (battle_star!="none"){
+        obj_controller.x=battle_star.x;
+        obj_controller.y=battle_star.y;
+        show=current_battle;
         
         if (battle_world[current_battle]=-50){
             strin[1]=string(battle_pobject[current_battle].capital_number);

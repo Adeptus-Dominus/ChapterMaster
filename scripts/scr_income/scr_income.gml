@@ -4,10 +4,10 @@ function scr_income() {
 
 
 	income_base=32;income_tribute=0;income_controlled_planets=0;
-	if (obj_ini.fleet_type!=1) then income_base=40;
+	if (obj_ini.fleet_type != ePlayerBase.home_world) then income_base=40;
 
 	income_home=0;
-	if (obj_ini.fleet_type=1) then income_home=8;// Homeworld-based income
+	if (obj_ini.fleet_type=ePlayerBase.home_world) then income_home=8;// Homeworld-based income
 
 	income_fleet=0;
 	with(obj_p_fleet){
@@ -15,7 +15,7 @@ function scr_income() {
 	    obj_controller.income_fleet-=frigate_number/2;
 	    obj_controller.income_fleet-=escort_number/10;
 	}
-	if (obj_ini.fleet_type!=1) then obj_controller.income_fleet=round(obj_controller.income_fleet/2);
+	if (obj_ini.fleet_type = ePlayerBase.home_world) then obj_controller.income_fleet=round(obj_controller.income_fleet/2);
 
 	income_forge=0;
 	income_agri=0;
@@ -59,7 +59,7 @@ function scr_income() {
 
 	tau_stars=0;if (instance_exists(obj_turn_end)) then tau_messenger+=1;
 
-	if (obj_ini.fleet_type=1){
+	if (obj_ini.fleet_type=ePlayerBase.home_world){
 	    with(obj_star){
 	        if (planet_feature_bool(p_feature[1], P_features.Monastery)==1){obj_controller.income+=10;instance_create(x,y,obj_temp1);}
 	        if (planet_feature_bool(p_feature[2], P_features.Monastery)==1){obj_controller.income+=10;instance_create(x,y,obj_temp1);}
@@ -69,7 +69,7 @@ function scr_income() {
 	}
 
 
-	if (obj_ini.fleet_type!=1){
+	if (obj_ini.fleet_type != ePlayerBase.home_world){
 	    with(obj_p_fleet){
 	        if (action="") and (capital_number>0){
 	            var mine;mine=instance_nearest(x,y,obj_star);

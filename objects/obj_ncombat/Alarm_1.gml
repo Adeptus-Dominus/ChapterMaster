@@ -469,6 +469,22 @@ if (temp>=100) and (threat>1) and (big_mofo>0) and (big_mofo<10) and (dropping=0
         newline=p4;scr_newtext();
         newline=p5;scr_newtext();
     }
+	if (global.chapter_name="Carcharodons"){standard_cry=1;
+        var rand;rand=choose(1,2,3);
+        if (rand=1) and (big_mofo!=1){p2="remains silent as the Chapter forms for battle-";}if (rand=1) and (big_mofo=1){p2="remain silent as the Chapter forms for battle-";}
+        if (rand=2) and (big_mofo!=1){p2="remains silent and issues orders to the Chapter for battle-";}if (rand=2) and (big_mofo=1){p2="remain silent and issues orders to the Chapter for battle-";}
+        if (rand=3) and (big_mofo!=1){p2="issues orders to the Chapter over Vox-";}if (rand=3) and (big_mofo=1){p2="whisper to your brothers the plans for initial deployment over vox-";}
+        p3="''Sharp gestures and handsigns from officers direct the Marines''";
+        if (temp>=100) and (temp<200){p4="Over a hundred Astartes nod in acknowledgement and move quickly-";}
+        if (temp>=200) and (temp<400){p4="Several hundred Astartes nod in acknowledgement and move swiftly-";}
+        if (temp>=500) and (temp<800){p4="Your battle brothers all nod in acknowledgement and move hastily-";}
+        if (temp>800){p4="The fluidity is astounding as the "+string(global.chapter_name)+" move seamlessly into position ready for battle-";}
+        p5="''They stand ready to engage the enemy''";
+        newline=p1+p2;scr_newtext();
+        newline=p3;scr_newtext();
+        newline=p4;scr_newtext();
+        newline=p5;scr_newtext();
+	}
     
     // show_message(string(global.chapter_name)+"|"+string(global.custom)+"|"+string(standard_cry));
     
@@ -508,15 +524,13 @@ if (temp>=100) and (threat>1) and (big_mofo>0) and (big_mofo<10) and (dropping=0
         newline=p3;scr_newtext();
         newline=p4;scr_newtext();
     }
-    
-    
-    
-    
-    
-    
 }
 
-
+var line_break = "------------------------------------------------------------------------------";
+newline = line_break;
+scr_newtext();
+newline = line_break;
+scr_newtext();
 
 /* */
 /*  */

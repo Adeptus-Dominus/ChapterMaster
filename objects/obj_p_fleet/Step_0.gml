@@ -6,7 +6,7 @@ if (action!="") and (orbiting!=0){
     orbiting=0;
 }
 
-action_spd = calculate_action_speed(capital_number,frigate_number,escort_number);
+action_spd = calculate_action_speed();
 
 if (ii_check=0){set_player_fleet_image()}
 

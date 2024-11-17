@@ -1,35 +1,37 @@
-function scr_recent(argument0, argument1, argument2) {
+function scr_recent(recent_type="", keyword="", numerical_data=0) {
 
-	// argument0: type
-	// argument1: keyword
-	// argument2: number, if applicable
+	// recent_type: type
+	// keyword: keyword
+	// numerical_data: number, if applicable
 
-	// Add an entry to the end of the array
-	if (string(argument0)!="") and (string(argument1)!=""){
-	    var i;i=0;
-	    obj_controller.recent_happenings+=1;
+	// Add an entry to the end of the argument2array
+	if (string(recent_type)!="") and (string(keyword)!=""){
+
 	    i=obj_controller.recent_happenings;
-    
-	    obj_controller.recent_type[i]=argument0;
-	    obj_controller.recent_keyword[i]=argument1;
-	    obj_controller.recent_turn[i]=obj_controller.turn;
-	    obj_controller.recent_number[i]=argument2;
+	    array_push(obj_controller.recent_type,recent_type)
+	    array_push(obj_controller.recent_keyword,keyword)
+	    array_push(obj_controller.recent_turn,obj_controller.turn)
+	    array_push(obj_controller.recent_number,numerical_data)
 	}
 
 
 	// Squish the array when asked to
-	if (string(argument0)="") and (string(argument1)="") and (real(argument2)=0){
-	    var i;i=0;obj_controller.recent_happenings-=1;    
-	    repeat(499){i+=1;
-	        if (obj_controller.recent_type[i]="") and (obj_controller.recent_type[i+1]!=""){
-	            obj_controller.recent_type[i]=obj_controller.recent_type[i+1];
-	            obj_controller.recent_keyword[i]=obj_controller.recent_keyword[i+1];
-	            obj_controller.recent_turn[i]=obj_controller.recent_turn[i+1];
-	            obj_controller.recent_number[i]=obj_controller.recent_number[i+1];
-            
-	            obj_controller.recent_type[i+1]="";obj_controller.recent_keyword[i+1]="";
-	            obj_controller.recent_turn[i+1]=0;obj_controller.recent_number[i+1]=0;
+	if (string(recent_type)="") and (string(keyword)="") and (real(numerical_data)=0){
+	    var i=0;
+	    obj_controller.recent_happenings-=1;
+	    delete_positions = [];    
+	    for (var i=0;i<array_length(obj_controller.recent_type);i++){
+	        if (obj_controller.recent_type[i]=""){
+	        	array_push(delete_positions, i);
 	        }
+	    }
+	    var del_pos;
+	    for (i=0;i<array_length(delete_positions);i++){
+	    	del_pos = delete_positions[i]
+	    	array_delete(obj_controller.recent_type, del_pos, 1);
+	    	array_delete(obj_controller.recent_keyword, del_pos, 1);
+	    	array_delete(obj_controller.recent_turn, del_pos, 1);
+	    	array_delete(obj_controller.recent_number, del_pos, 1);
 	    }
 	}
 

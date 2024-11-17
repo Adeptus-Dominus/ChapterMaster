@@ -31,7 +31,7 @@
   "origin": 0,
   "parent": {
     "name": "deprecated",
-    "path": "folders/Sprites/Marine Viewer/body_types/deprecated.yy",
+    "path": "folders/Sprites/Marine Viewer/deprecated.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

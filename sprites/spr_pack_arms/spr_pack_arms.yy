@@ -27,8 +27,8 @@
   "nineSlice": null,
   "origin": 0,
   "parent": {
-    "name": "packs",
-    "path": "folders/Sprites/Marine Viewer/packs.yy",
+    "name": "deprecated",
+    "path": "folders/Sprites/Marine Viewer/deprecated.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

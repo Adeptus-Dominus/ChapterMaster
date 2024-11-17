@@ -7,7 +7,6 @@ if (hide=true) then exit;
 if (!instance_exists(obj_controller)) then exit;
 if (instance_exists(obj_fleet)) then exit;
 
-if (woopwoopwoop=1){woopwoopwoop=2;exit;}
 
 if (battle_special>0){
     alarm[0]=1;

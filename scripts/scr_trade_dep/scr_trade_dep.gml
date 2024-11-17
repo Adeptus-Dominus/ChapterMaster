@@ -155,7 +155,7 @@ function scr_trade_dep() {
 	    if (g[i]="Ork Sniper") or (g[i]="Flash Git") then temp1=1;
 	    if (temp1=1){
 	        repeat(n[i]){
-	            scr_add_man(string(g[i]),0,"","","","","",0,true,"default","");
+	            scr_add_man(string(g[i]),0,"","",0,true,"default");
 	        }
 	    }
 	    if (temp1=0) and (g[i]!="Requisition") and (g[i]!="Minor Artifact") then scr_add_item(string(g[i]),n[i]);
@@ -168,8 +168,8 @@ function scr_trade_dep() {
 	        if (rar=4) then scr_add_item("Iron Halo",1);
 	        */
         
-	        if (obj_ini.fleet_type=1) then scr_add_artifact("random_nodemon","minor",0,obj_ini.home_name,2);
-	        if (obj_ini.fleet_type!=1) then scr_add_artifact("random_nodemon","minor",0,obj_ini.ship[1],501);
+	        if (obj_ini.fleet_type=ePlayerBase.home_world) then scr_add_artifact("random_nodemon","minor",0,obj_ini.home_name,2);
+	        if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("random_nodemon","minor",0,obj_ini.ship[1],501);
 	    }
 	}
 

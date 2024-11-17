@@ -46,7 +46,7 @@ if (instance_exists(obj_controller)){
         
         ship_lost=0;i=-1;// var ship_lost,i;
         repeat(50){i+=1;ship_lost[i]=0;}i=0;
-        i=0;repeat(4){i+=1;if (obj_ini.adv[i]="Kings of Space") then rdice-=10;}
+        if (scr_has_adv("Kings of Space")) then rdice-=10;
         if (rdice<=80) and (p_strength<=2) then rdice=-5;
         
         if (rdice!=-5){

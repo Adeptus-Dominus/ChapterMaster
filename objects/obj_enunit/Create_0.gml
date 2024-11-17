@@ -6,7 +6,6 @@ dreads=0;
 medi=0;
 owner = eFACTION.Imperium;
 engaged=0;
-hostile_range=999;
 hostile_splash=0;
 flank=0;
 flyer=0;// Works same as flank, but does not get denoted as such

@@ -1,13 +1,14 @@
 // TODO script description: This is the turn management in general 
 // TODO refactor
-var times=max(1,round(turn/150));
+
+try_and_report_loop("final end turn alarm 5",function(){
 var recruit_count=0;
 var random_marine, marine_position;
 var eq1=1,eq2=1,eq3=1,t=0,r=0;
 var marine_company=0;
 var warn="",w5=0;
 var g1=0,g2=0;
-var onceh=0,tot=0,stahp=0;
+var onceh=0,stahp=0;
 var disc=0,droll=0;
 var rund=0;
 var spikky=0;
@@ -15,172 +16,175 @@ var roll=0;
 var novice_type="";
 var unit;
 
-if (known[eFACTION.Chaos]==2) and (faction_defeated[eFACTION.Chaos]==0) then times+=1;
 
-var xx3, yy3, plani, _star;
-xx3=floor(random(room_width))+1;
-yy3=floor(random(room_height))+1;
-_star=instance_nearest(xx3,yy3,obj_star);
-plani=floor(random(_star.planets))+1;
+try_and_report_loop("chaos_spread", function(){
+    var times=max(1,round(turn/150));
+    if (known[eFACTION.Chaos]==2) and (faction_defeated[eFACTION.Chaos]==0) then times+=1;
+    var xx3, yy3, plani, _star;
+    xx3=irandom(room_width)+1;
+    yy3=irandom(room_height)+1;
+    _star=instance_nearest(xx3,yy3,obj_star);
+    plani=floor(random(_star.planets))+1;
 
-// ** Chaos influence / corruption **
-if (faction_gender[eFACTION.Chaos]==1) and (faction_defeated[eFACTION.Chaos]==0) and (turn>=chaos_turn) then repeat(times){
-    if (_star.p_type[plani]!="Dead") and (_star.planets>0) and (turn>=20){
-        var cathedral=0;
-        if (planet_feature_bool(_star.p_feature[plani], P_features.Sororitas_Cathedral)==1) then cathedral=choose(0,1,1);
-    
-        if (cathedral=0){
-            if (_star.p_heresy[plani]>=0) and (_star.p_heresy[plani]<10){
-                _star.p_heresy[plani]+=choose(0,0,0,0,0,0,0,0,5);
-            }else if (_star.p_heresy[plani]>=10) and (_star.p_heresy[plani]<20){
-                _star.p_heresy[plani]+=choose(-2,-2,-2,5,10,15);
-            }else if(_star.p_heresy[plani]>=20) and (_star.p_heresy[plani]<40){
-                _star.p_heresy[plani]+=choose(-2,-1,0,0,0,0,0,0,5,10);
-            }else if(_star.p_heresy[plani]>=40) and (_star.p_heresy[plani]<60){
-                _star.p_heresy[plani]+=choose(-2,-1,0,0,0,0,0,0,5,10,15);
-            }else if(_star.p_heresy[plani]>=60) and (_star.p_heresy[plani]<100){
-                _star.p_heresy[plani]+=choose(-1,0,0,0,0,5,10,15);
+    // ** Chaos influence / corruption **
+    if (faction_gender[eFACTION.Chaos]==1) and (faction_defeated[eFACTION.Chaos]==0) and (turn>=chaos_turn) then repeat(times){
+        if (_star.p_type[plani]!="Dead") and (_star.planets>0) and (turn>=20){
+            var cathedral=0;
+            if (planet_feature_bool(_star.p_feature[plani], P_features.Sororitas_Cathedral)==1) then cathedral=choose(0,1,1);
+        
+            if (cathedral=0){
+                if (_star.p_heresy[plani]>=0) and (_star.p_heresy[plani]<10){
+                    _star.p_heresy[plani]+=choose(0,0,0,0,0,0,0,0,5);
+                }else if (_star.p_heresy[plani]>=10) and (_star.p_heresy[plani]<20){
+                    _star.p_heresy[plani]+=choose(-2,-2,-2,5,10,15);
+                }else if(_star.p_heresy[plani]>=20) and (_star.p_heresy[plani]<40){
+                    _star.p_heresy[plani]+=choose(-2,-1,0,0,0,0,0,0,5,10);
+                }else if(_star.p_heresy[plani]>=40) and (_star.p_heresy[plani]<60){
+                    _star.p_heresy[plani]+=choose(-2,-1,0,0,0,0,0,0,5,10,15);
+                }else if(_star.p_heresy[plani]>=60) and (_star.p_heresy[plani]<100){
+                    _star.p_heresy[plani]+=choose(-1,0,0,0,0,5,10,15);
+                }
             }
+            if (_star.p_heresy[plani]<0) then _star.p_heresy[plani]=0;
         }
-        if (_star.p_heresy[plani]<0) then _star.p_heresy[plani]=0;
     }
-}
 
-instance_activate_object(obj_star);
+    instance_activate_object(obj_star);
+});
 
 // ** Build new Imperial Ships **
-
-imp_ships=0;
-with(obj_en_fleet){
-    if (owner==eFACTION.Imperium){
-        obj_controller.imp_ships+=capital_number;
-        obj_controller.imp_ships+=frigate_number/2;
-        obj_controller.imp_ships+=escort_number/4;
-    }
-}
-var imperium_worlds=[];
-var mechanicus_worlds=[];
-
-with(obj_star){
-    //empty object simply acts as a counter for the number of imperial systems
-    if (owner == eFACTION.Imperium){
-        array_push(imperium_worlds, id);
-    }else if (owner == eFACTION.Mechanicus){
-        array_push(mechanicus_worlds, id);
-    }
-    //unknown function of temp5 same as temp6 but for mechanicus worlds
-    if (space_hulk==1) or (craftworld==1){x-=20000;y-=20000;}
-}
-// Former: var sha;sha=instance_number(obj_temp6)*1.3;
-var mechanicus_world_total = array_length(mechanicus_worlds);
-
-var ship_allowance=array_length(imperium_worlds)*(0.65+(mechanicus_world_total*3));// new
-
-        /*in order for new ships to spawn the number of total imperial ships must be smaller than 
-         one third of the total imperial star systems*/
-if (mechanicus_world_total>0) and (imp_ships<ship_allowance){
-    var rando=irandom(100)+1, rando2=choose(1,2,2,3,3,3);
-    var forge=mechanicus_worlds[irandom(mechanicus_world_total-1)];
-    
-    //the less mechanicus forge worlds the less likely to spawn a new fleet
-    if (rando<=(12)*mechanicus_world_total){
-        var new_defense_fleet=instance_create(forge.x,forge.y,obj_en_fleet);
-        new_defense_fleet.owner= eFACTION.Imperium;
-        new_defense_fleet.sprite_index=spr_fleet_imperial;
-        switch(rando2){
-            case 1:
-                new_defense_fleet.capital_number=1;
-                break;
-            case 2:
-                new_defense_fleet.frigate_number=1;
-                break;
-            case 3:
-                new_defense_fleet.escort_number=1;
-            break;
+try_and_report_loop("imperial ship build", function(){
+    imp_ships=0;
+    with(obj_en_fleet){
+        if (owner==eFACTION.Imperium){
+            obj_controller.imp_ships+=capital_number;
+            obj_controller.imp_ships+=frigate_number/2;
+            obj_controller.imp_ships+=escort_number/4;
         }
-        new_defense_fleet.trade_goods="merge";
-		
-		var system_4 = [];
-		var system_3 = [];
-		var system_other = [];
-		
-        with(obj_star) {
-            if (x>10) and (y>10) and ((owner==eFACTION.Imperium) or (owner==eFACTION.Mechanicus)){
-                var system_fleet_elements=0;
-				
-				var fleet_types = [
-					eFACTION.Player,
-					eFACTION.Imperium,
-					eFACTION.Mechanicus,
-					eFACTION.Inquisition,
-					eFACTION.Ecclesiarchy,
-					eFACTION.Eldar,
-					eFACTION.Ork,
-					eFACTION.Tau,
-					eFACTION.Tyranids,
-					eFACTION.Chaos,
-					eFACTION.Necrons
-				];
-				
-				system_fleet_elements = array_reduce(fleet_types, function(prev, curr) {
-					return prev + present_fleet[curr]
-				});
-				var coords = [x,y];
-				
-                if (system_fleet_elements==0) {
-                    switch(planets){
-                        case 4:
-                            array_push(system_4, coords);
-                            break;
-                        case 3:
-                            array_push(system_3, coords);
-                            break;
-						default:
-							if (p_type[1]!="Dead") {
-								array_push(system_other, coords);
-							}
-                            break;
-                    }
-                };
+    }
+    var imperium_worlds=[];
+    var mechanicus_worlds=[];
+
+    with(obj_star){
+        //empty object simply acts as a counter for the number of imperial systems
+        if (owner == eFACTION.Imperium){
+            array_push(imperium_worlds, id);
+        }else if (owner == eFACTION.Mechanicus){
+            array_push(mechanicus_worlds, id);
+        }
+        //unknown function of temp5 same as temp6 but for mechanicus worlds
+        if (space_hulk==1) or (craftworld==1){x-=20000;y-=20000;}
+    }
+    // Former: var sha;sha=instance_number(obj_temp6)*1.3;
+    var mechanicus_world_total = array_length(mechanicus_worlds);
+
+    var ship_allowance=array_length(imperium_worlds)*(0.65+(mechanicus_world_total*3));// new
+
+            /*in order for new ships to spawn the number of total imperial ships must be smaller than 
+             one third of the total imperial star systems*/
+    if (mechanicus_world_total>0) and (imp_ships<ship_allowance){
+        var rando=irandom(100)+1, rando2=choose(1,2,2,3,3,3);
+        var forge=array_random_element(mechanicus_worlds);
+        
+        //the less mechanicus forge worlds the less likely to spawn a new fleet
+        if (rando<=(12)*mechanicus_world_total){
+            var new_defense_fleet=instance_create(forge.x,forge.y,obj_en_fleet);
+            new_defense_fleet.owner= eFACTION.Imperium;
+            new_defense_fleet.sprite_index=spr_fleet_imperial;
+            switch(rando2){
+                case 1:
+                    new_defense_fleet.capital_number=1;
+                    break;
+                case 2:
+                    new_defense_fleet.frigate_number=1;
+                    break;
+                case 3:
+                    new_defense_fleet.escort_number=1;
+                break;
+            }
+            new_defense_fleet.trade_goods="merge";
+    		
+    		var system_4 = [];
+    		var system_3 = [];
+    		var system_other = [];
+    		
+            with(obj_star) {
+                if (x>10) and (y>10) and ((owner==eFACTION.Imperium) or (owner==eFACTION.Mechanicus)){
+                    var system_fleet_elements=0;
+    				
+    				var fleet_types = [
+    					eFACTION.Player,
+    					eFACTION.Imperium,
+    					eFACTION.Mechanicus,
+    					eFACTION.Inquisition,
+    					eFACTION.Ecclesiarchy,
+    					eFACTION.Eldar,
+    					eFACTION.Ork,
+    					eFACTION.Tau,
+    					eFACTION.Tyranids,
+    					eFACTION.Chaos,
+    					eFACTION.Necrons
+    				];
+    				
+                    system_fleet_elements = array_sum(present_fleet)
+
+    				var coords = [x,y];
+    				
+                    if (system_fleet_elements==0) {
+                        switch(planets){
+                            case 4:
+                                array_push(system_4, coords);
+                                break;
+                            case 3:
+                                array_push(system_3, coords);
+                                break;
+    						default:
+    							if (p_type[1]!="Dead") {
+    								array_push(system_other, coords);
+    							}
+                                break;
+                        }
+                    };
+                }
+            }
+    		
+            var targeted=false;
+            var target;
+    		//shuffle the contents, if any
+    		array_shuffle_ext(system_4);
+    		array_shuffle_ext(system_3);
+    		array_shuffle_ext(system_other);
+
+            if (targeted) {
+    			target = array_pop(system_4)
+                targeted=true;
+    		}
+    		if (targeted) {
+    			target = array_pop(system_3)
+                targeted=true;
+    		}
+    		if (targeted) {
+    			target = array_pop(system_other)
+                targeted=true;
+    		}
+
+            if (targeted){ 
+                new_defense_fleet.action_x=target[0];
+                new_defense_fleet.action_y=target[1];
+                with (new_defense_fleet){
+                    set_fleet_movement();
+                }
             }
         }
-		
-        var targeted=false;
-        var target;
-		//shuffle the contents, if any
-		array_shuffle_ext(system_4);
-		array_shuffle_ext(system_3);
-		array_shuffle_ext(system_other);
-
-        if (targeted) {
-			target = array_pop(system_4)
-            targeted=true;
-		}
-		if (targeted) {
-			target = array_pop(system_3)
-            targeted=true;
-		}
-		if (targeted) {
-			target = array_pop(system_other)
-            targeted=true;
-		}
-
-        if (targeted){ 
-            new_defense_fleet.action_x=target.x;
-            new_defense_fleet.action_y=target.y;
-            with (new_defense_fleet){
-                set_fleet_movement()
-            }
-        }
     }
-}
 
-instance_activate_object(obj_star);
-with(obj_star){
-    if (x<-10000){x+=20000;y+=20000;}
-    if (x<-10000){x+=20000;y+=20000;}
-}
+    instance_activate_object(obj_star);
+    with(obj_star){
+        if (x<-10000){x+=20000;y+=20000;}
+        if (x<-10000){x+=20000;y+=20000;}
+    }
 
+});
 // ** Training **
 // * Apothecary *
 recruit_count=0;
@@ -340,12 +344,11 @@ psyker_points += training_points_values[training_psyker];
 
 var goal=60,yep=0;
 novice_type = string("{0} Aspirant",obj_ini.role[100,17]);
-for(var o=1; o<=4; o++){
-    if (obj_ini.adv[o]=="Psyker Abundance"){
-        goal=40;
-        yep=1;
-    }
+if (scr_has_adv("Psyker Abundance")){
+    goal=40;
+    yep=1;
 }
+
 
 if (training_psyker>0){
     recruit_count=scr_role_count(novice_type,"0");
@@ -388,7 +391,9 @@ if (training_psyker>0){
             unit.update_powers();
             psyker_aspirant=1;
             
-            if (string_count("Abund",obj_ini.strin)>0) then obj_ini.experience[0][g1]+=floor(random(5))+3;
+            if (scr_has_adv("Psyker Abundance")){
+                unit.add_exp(irandom_range(5, 8));
+            }
 
             unit.update_gear("");
             unit.update_mobility_item("");
@@ -523,7 +528,7 @@ while (i<array_length(recruit_name)){
     };
     if  (recruit_distance[i]<=0) then recruit_training[i]-=1;
     if (recruit_training[i]<=0){
-        scr_add_man(obj_ini.role[100][12],10,"Scout Armour",obj_ini.role[100][12],"",recruit_exp[i],recruit_name[i],recruit_corruption[i],false,"default","");
+        scr_add_man(obj_ini.role[100][12],10,recruit_exp[i],recruit_name[i],recruit_corruption[i],false,"default",recruit_data[i]);
         if (recruit_first=="") then recruit_first=recruit_name[i];
         recruits_finished+=1;
         array_delete(recruit_name,i,1);
@@ -531,11 +536,15 @@ while (i<array_length(recruit_name)){
         array_delete(recruit_distance,i,1);
         array_delete(recruit_training,i,1);
         array_delete(recruit_exp,i,1);
+        array_delete(recruit_data,i,1);
         continue;
     } else {
         total_recruits++;
     }
     i++;
+}
+with(obj_ini){
+    scr_company_order(10);
 }
 if (recruits_finished==1){
     scr_alert("green","recruitment",$"{obj_ini.role[100][12]} {recruit_first} has joined X Company.",0,0);
@@ -588,87 +597,14 @@ if (array_contains(obj_ini.adv,"Scavengers")){
         scr_alert("","loot",tix,0,0);
     }
 }
-// ** Check number of navy fleets **
-with(obj_temp_inq){instance_destroy();}
-with(obj_temp8){instance_destroy();}
+imperial_navy_fleet_construction();
 
-with(obj_en_fleet){
-    if (owner==eFACTION.Imperium) and (navy==1) then instance_create(x,y,obj_temp_inq);
-}
-if (instance_number(obj_temp_inq)>target_navy_number) {
-    with(obj_en_fleet) {
-		if (navy==0) or (guardsmen_unloaded==1) then y-=20000;
-	}
-    var him = instance_nearest(random(room_width),random(room_height),obj_en_fleet);
-    if (him.guardsmen_unloaded==0) and (him.navy==1)  {
-		with(him){instance_destroy();}
-	}
-    with(obj_en_fleet){if (y<-10000) then y+=20000;}
-}
-
-//if the inquisition temp navy amount is less than the target, make a fleet
-if (instance_number(obj_temp_inq)<target_navy_number) {
-    with(obj_star){
-        var good=false;
-        for(var o=1; o<=4; o++) {
-            if (p_type[o]=="Forge") 
-				and (p_owner[o]==eFACTION.Mechanicus) 
-				and (p_orks[o]+p_tau[o]+p_tyranids[o]+p_chaos[o]+p_traitors[o]+p_necrons[o]==0) {
-					
-					var enemy_fleets = [
-						eFACTION.Ork,
-						eFACTION.Tau,
-						eFACTION.Tyranids,
-						eFACTION.Chaos,
-						eFACTION.Necrons
-					]
-				
-					var enemy_fleet_count = array_reduce(enemy_fleets, function(prev, curr) {
-						return prev + present_fleet[curr]
-					})
-		            if (enemy_fleet_count == 0){
-		                good=true;
-		                if (instance_nearest(x+24,y-24,obj_en_fleet).navy==1) then good=false;
-		            }
-            }
-        }
-        if (good==true) then instance_create(x,y,obj_temp8);
-    }
-}
-
-// After initial navy fleet construction fleet growth is handled in obj_en_fleet.alarm_5
-if (instance_exists(obj_temp8)){
-    var newy,nav;
-    newy=instance_nearest(random(room_width),random(room_height),obj_temp8);
-    nav=instance_create(newy.x+24,newy.y-24,obj_en_fleet);
-    nav.owner=eFACTION.Imperium;
-    
-    nav.capital_number=0;
-    nav.frigate_number=0;
-    nav.escort_number=1;
-    nav.home_x=x;
-    nav.home_y=y;
-    with(instance_nearest(newy.x,newy.y,obj_star)){present_fleet[2]+=1;}
-    nav.orbiting=instance_nearest(newy.x,newy.y,obj_star);
-    nav.navy=1;
-    
-    var total_ships=0;
-    total_ships+=nav.capital_number-1;
-    total_ships+=round((nav.frigate_number/2));
-    total_ships+=round((nav.escort_number/4));
-    if (total_ships<=1) and (nav.capital_number+nav.frigate_number+nav.escort_number>0) then total_ships=1;
-    nav.image_index=total_ships;
-    nav.image_speed=0;
-    
-    nav.trade_goods="building_ships";
-    with(obj_temp8){instance_destroy();}
-}
 // ** Adeptus Mechanicus Geneseed Tithe **
 if (gene_tithe==0) and (faction_status[eFACTION.Imperium]!="War"){
     gene_tithe=24;
 
     var expected,txt="",mech_mad=false;
-    onceh=0;
+    var onceh=0;
     expected=max(1,round(obj_controller.gene_seed/20));
     if (obj_controller.faction_status[eFACTION.Mechanicus]=="War") then mech_mad=true;
 
@@ -774,9 +710,9 @@ if (gene_xeno>0){
 }
 var p=0,penitorium=0, unit;
 for(var c=0; c<11; c++){
-    for(var e=1; e<=250; e++){
+    for(var e=1; e<=array_length(obj_ini.god); e++){
         if (obj_ini.god[c,e]>=10){
-            unit=obj_ini.TTRPG[c][e];
+            unit=fetch_unit([c,e]);
             p+=1;
             penit_co[p]=c;
             penit_id[p]=e;
@@ -798,46 +734,41 @@ if (obj_controller.stc_ships>=6){
         if (obj_ini.ship_hp[v]>obj_ini.ship_maxhp[v]) then obj_ini.ship_hp[v]=obj_ini.ship_maxhp[v];
     }
 }
-if (turn==5) and (faction_gender[eFACTION.Chaos]==1) {// show_message("Turn 100");
-    var xx4=0,yy4=0,plant=0,planet=0,testi=0,fleeta=0;
 
-    with(obj_en_fleet){if (owner != eFACTION.Imperium) then y-=20000;} //this is stupid, just filter and test with a reduce function
-	//this won't always work due to randomness
-    for(var i=0; i<50; i++){
-		//pick a random star...
-        if (planet==0){
-            xx4=floor(random(room_width))+1;
-            yy4=floor(random(room_height))+1;
-            plant=instance_nearest(xx4,yy4,obj_star);
-        }
-        if (planet==0) and (plant.owner==eFACTION.Imperium) and (plant.planets>1){
-            planet=plant
-			
-            if (planet.present_fleet[eFACTION.Imperium]>0){
-                fleeta=instance_nearest(planet.x,planet.y,obj_en_fleet);
-                if (point_distance(fleeta.x,fleeta.y,planet.x,planet.y)>40)
-					planet=0;
+try_and_report_loop("Secret Chaos Warlord spawn", function(){
+    if (turn==5) and (faction_gender[eFACTION.Chaos]==1) {// show_message("Turn 100");
+
+        var _star_found = false;
+        var _choice_star = noone;
+        var _stars = scr_get_stars(true);
+        for (var i=0;i<array_length(_stars);i++){
+            if (is_dead_star(_stars[i])) then continue;
+            with (_stars[i]){
+                if (owner==eFACTION.Imperium && planets){
+                    if (scr_orbiting_fleet(eFACTION.Imperium) != "none"){
+                        _star_found=true;
+                        _choice_star = self.id;
+                        break;
+                    }
+                } 
             }
-            if (planet.present_fleet[eFACTION.Imperium]==0) then planet=0;
+            if (_star_found){
+                break;
+            }
+        }
+        if (_star_found){
+            var _planet = array_random_element(planets_without_type("Dead",_choice_star));
+            _choice_star.warlord[_planet]=1;
+            array_push(_choice_star.p_feature[_planet], new NewPlanetFeature(P_features.Warlord10));
+
+            var _heresy_inc = _choice_star.p_type[_planet]=="Hive" ? 25 : 10;
+
+            _choice_star.p_heresy[_planet] += _heresy_inc;
+
+            if (_choice_star.p_heresy[_planet]<50) then _choice_star.p_heresy_secret[_planet]=10;        
         }
     }
-    if (planet!=0){
-        if (planet.p_type[1]=="Dead") then testi=2;
-        if (planet.p_type[1]!="Dead") then testi=1;
-        
-        planet.warlord[testi]=1;
-
-        array_push(planet.p_feature[testi], new new_planet_feature(P_features.Warlord10));
-
-        if (planet.p_type[testi]=="Hive") then planet.p_heresy[testi]+=25;
-        if (planet.p_type[testi]!="Hive") then planet.p_heresy[testi]+=10;
-        if (planet.p_heresy[testi]<50) then planet.p_heresy_secret[testi]=10;
-
-        // show_message("Placed the chaos warlord on "+string(planet.name)+" "+scr_roman(testi));// 139
-        // obj_controller.x=planet.x;obj_controller.y=planet.y;
-    }
-    with(obj_en_fleet){if (owner!= eFACTION.Imperium) then y+=20000;}
-}
+});
 // * Blood debt end *
 if (blood_debt==1) and (penitent==1){
     penitent_turn+=1;
@@ -859,9 +790,7 @@ if (blood_debt==1) and (penitent==1){
         disposition[eFACTION.Inquisition]+=20;
         disposition[eFACTION.Ecclesiarchy]+=20;
         var o=0;
-        for(o=1; o<=4; o++){
-            if (obj_ini.adv[o]=="Reverent Guardians") then o=500;
-        }
+        if (scr_has_adv("Reverent Guardians")) then o=500;
         if (o>100) then obj_controller.disposition[eFACTION.Ecclesiarchy]+=10;
         scr_event_log("","Blood Debt payed off.  You may once more recruit Astartes.");
     }
@@ -885,9 +814,7 @@ if (penitent==1) and (blood_debt==0){
         disposition[eFACTION.Imperium]+=20;
         disposition[eFACTION.Ecclesiarchy]+=20;
         var o=0;
-        for(o=1; o<=4; o++){
-            if (obj_ini.adv[o]=="Reverent Guardians") then o=500;
-        }
+        if (scr_has_adv("Reverent Guardians")) then o=500;
         if (o>100) then obj_controller.disposition[eFACTION.Ecclesiarchy]+=10;
         scr_event_log("","Penitent Crusade ends.  You may once more recruit Astartes.");
     }
@@ -932,7 +859,7 @@ if ((turn>=irandom(200)+100) or (obj_ini.fleet_type==eFACTION.Mechanicus)) and (
                     if (!instance_exists(obj_temp2)){
                         rund=round(random(you.planets));
 						if (rund>0) and(rund<5){
-							if	(you.p_owner[rund]==eFACTION.Ork) and (you.p_pdf[rund]+you.p_guardsmen[rund]==0) and (you.p_orks[rund]>=2) then array_push( you.p_feature[rund], new new_planet_feature(P_features.OrkWarboss));
+							if	(you.p_owner[rund]==eFACTION.Ork) and (you.p_pdf[rund]+you.p_guardsmen[rund]==0) and (you.p_orks[rund]>=2) then array_push( you.p_feature[rund], new NewPlanetFeature(P_features.OrkWarboss));
 						}
                         if (you.p_orks[rund]<4) then you.p_orks[rund]=4;
                         if (planet_feature_bool(you.p_feature[rund], P_features.OrkWarboss)==1) then instance_create(x,y,obj_temp2);
@@ -1012,8 +939,8 @@ if (loyalty_counter==0) then scr_loyalty("Undevout","+");
 if (marines>=1050) then scr_loyalty("Non-Codex Size","+");
 
 var last_inquisitor_inspection=0;
-if (obj_ini.fleet_type=1) then last_inquisitor_inspection=last_world_inspection;
-if (obj_ini.fleet_type!=1) then last_inquisitor_inspection=last_fleet_inspection;
+if (obj_ini.fleet_type=ePlayerBase.home_world) then last_inquisitor_inspection=last_world_inspection;
+if (obj_ini.fleet_type != ePlayerBase.home_world) then last_inquisitor_inspection=last_fleet_inspection;
 
 var inspec=false;
 if (loyalty>=85) and ((last_inquisitor_inspection+59)<turn) then inspec=true;
@@ -1021,8 +948,8 @@ if (loyalty>=70) and (loyalty<85) and ((last_inquisitor_inspection+47)<turn) the
 if (loyalty>=50) and (loyalty<70) and ((last_inquisitor_inspection+35)<turn) then inspec=true;
 if (loyalty<50) and ((last_inquisitor_inspection+11+choose(1,2,3,4))<turn) then inspec=true;
 
-if (obj_ini.fleet_type!=1){
-    if (instance_number(obj_p_fleet)==1) and (obj_ini.fleet_type!=1){// Might be crusading, right?
+if (obj_ini.fleet_type != ePlayerBase.home_world){
+    if (instance_number(obj_p_fleet)==1) and (obj_ini.fleet_type = ePlayerBase.home_world){// Might be crusading, right?
         if (obj_p_fleet.x<0) or (obj_p_fleet.x>room_width) or (obj_p_fleet.y<0) or (obj_p_fleet.y>room_height) then inspec=false;
     }
     if (instance_number(obj_p_fleet)==0) then inspec=false;
@@ -1121,24 +1048,25 @@ for(var i=1; i<=99; i++){
             // Ships construction
             if (string_count("new_",event[i])>0){
                 var new_ship_event=event[i];
-                with(obj_temp5){instance_destroy();}
+                var active_forges = [];
+                var chosen_star = false;
                 with(obj_star){
                     if (owner==eFACTION.Mechanicus){
-                        if (p_type[1]=="Forge") and (p_owner[1]==eFACTION.Mechanicus) then instance_create(x,y,obj_temp5);
-                        if (p_type[2]=="Forge") and (p_owner[2]==eFACTION.Mechanicus) then instance_create(x,y,obj_temp5);
-                        if (p_type[3]=="Forge") and (p_owner[3]==eFACTION.Mechanicus) then instance_create(x,y,obj_temp5);
-                        if (p_type[4]=="Forge") and (p_owner[4]==eFACTION.Mechanicus) then instance_create(x,y,obj_temp5);
+                        for (i=1;i<=planets;i++){
+                            if (p_type[i]=="Forge") and (p_owner[i]==eFACTION.Mechanicus){
+                                array_push(active_forges,new PlanetData(i, self));
+                            }
+                        }
                     }
                 }
-                if (instance_number(obj_temp5)>0){
-                    var that,that2,new_defense_fleet;
-                    that=instance_nearest(random(room_width),random(room_height),obj_temp5);
-                    that2=instance_nearest(that.x,that.y,obj_star);
-                    new_defense_fleet=instance_create(that2.x+24,that2.y-24,obj_p_fleet);
+                if (array_length(active_forges)>0){
+                    var ship_spawn = active_forges[irandom(array_length(active_forges)-1)];
+                    var new_defense_fleet=instance_create(ship_spawn.system.x,ship_spawn.system.y,obj_p_fleet);
 
                     // Creates the ship
 
-                    last_ship = new_player_ship(new_ship_event, that2.name);
+                    var last_ship = new_player_ship(new_ship_event, ship_spawn.system.name);
+
                     if (obj_ini.ship_class[last_ship] =="Battle Barge"){
                         new_defense_fleet.capital[1]=obj_ini.ship[last_ship];
                         new_defense_fleet.capital_number=1;
@@ -1166,17 +1094,18 @@ for(var i=1; i<=99; i++){
 
                     // show_message(string(obj_ini.ship_class[last_ship])+":"+string(obj_ini.ship[last_ship]));
 
-                    if (instance_exists(that2)){
-                        if (obj_ini.ship_size[last_ship]!=1) then scr_popup("Ship Constructed","Your new "+string(obj_ini.ship_class[last_ship])+" '"+string(obj_ini.ship[last_ship])+"' has finished being constructed.  It is orbiting "+string(that2.name)+" and awaits its maiden voyage.","shipyard","");
-                        if (obj_ini.ship_size[last_ship]==1) then scr_popup("Ship Constructed","Your new "+string(obj_ini.ship_class[last_ship])+" Escort '"+string(obj_ini.ship[last_ship])+"' has finished being constructed.  It is orbiting "+string(that2.name)+" and awaits its maiden voyage.","shipyard","");
-                        var bob=instance_create(that2.x+16,that2.y-24,obj_star_event);
-                        bob.image_alpha=1;
-                        bob.image_speed=1;
-                    }
+                    if (obj_ini.ship_size[last_ship]!=1) then scr_popup("Ship Constructed",$"Your new {obj_ini.ship_class[last_ship]} '{obj_ini.ship[last_ship]}' has finished being constructed.  It is orbiting {ship_spawn.system.name} and awaits its maiden voyage.","shipyard","");
+                    if (obj_ini.ship_size[last_ship]==1) then scr_popup("Ship Constructed",$"Your new {obj_ini.ship_class[last_ship]} Escort '{obj_ini.ship[last_ship]}' has finished being constructed.  It is orbiting {ship_spawn.system.name} and awaits its maiden voyage.","shipyard","");
+                    var bob=instance_create(ship_spawn.system.x+16,ship_spawn.system.y-24,obj_star_event);
+                    bob.image_alpha=1;
+                    bob.image_speed=1;
                 }
-                if (instance_number(obj_temp5)==0) then event_duration[i]=2;
-                with(obj_temp5){instance_destroy();}
-                event[i]="";event_duration[i]-=1;
+                if (array_length(active_forges)==0){
+                    event_duration[i]=2;
+                    scr_popup("Ship Construction halted",$"A lack of suitable forge worlds in the system has halted construction of your requested ship","shipyard","");
+                }
+                event[i]="";
+                event_duration[i]-=1;
             }
             // Spare the inquisitor
             if (string_count("inquisitor_spared",event[i])>0){
@@ -1193,7 +1122,9 @@ for(var i=1; i<=99; i++){
                 if (diceh>85) and (event[i]="inquisitor_spared2"){
                     scr_popup("Anonymous Message","You recieve an anonymous letter of thanks.  It mentions that motions are underway to destroy any local forces of Chaos.","","");
                     with(obj_star){
-                        for(var o=1; o<=4; o++){p_heresy[o]=max(0,p_heresy[o]-10);}
+                        for(var o=1; o<=planets; o++){
+                            p_heresy[o]=max(0,p_heresy[o]-10);
+                        }
                     }
                 }
             }
@@ -1225,35 +1156,36 @@ for(var i=1; i<=99; i++){
                     tixt+="it is a finely crafted Rhino, conforming to STC standards.  The other "+string(obj_ini.role[100][16])+" are surprised at the rapid pace of his work.";
                 }
                 if (item=="Artifact"){
-                    scr_event_log("",string(obj_ini.role[100][16])+" "+string(marine_name)+" constructs an Artifact.");
-                    if (obj_ini.fleet_type==1) then scr_add_artifact("random_nodemon","",0,obj_ini.home_name,2);
-                    if (obj_ini.fleet_type!=1) then scr_add_artifact("random_nodemon","",0,obj_ini.ship_location[1],501);
                     var last_artifact=0;
-                    for(var k=1; k<=100; k++){
-                        if (last_artifact==0){
-                            if (obj_ini.artifact[k]=="") then last_artifact=k-1;
+                    scr_event_log("",string(obj_ini.role[100][16])+" "+string(marine_name)+" constructs an Artifact.");
+                    if (obj_ini.fleet_type==ePlayerBase.home_world){
+                        last_artifact =  scr_add_artifact("random_nodemon","",0,obj_ini.home_name,2);
+                    } else {
+                        if (obj_ini.fleet_type != ePlayerBase.home_world){
+                            last_artifact = scr_add_artifact("random_nodemon","",0,obj_ini.ship_location[1],501);
                         }
                     }
-                    tixt+="some form of divine inspiration has seemed to have taken hold of him.  An artifact "+string(obj_ini.artifact[k])+" has been crafted.";
+
+                    tixt+=$"some form of divine inspiration has seemed to have taken hold of him.  An artifact {obj_ini.artifact[last_artifact]} has been crafted.";
                 }
                 if (item=="baby"){
                     unit.edit_corruption(choose(8,12,16,20))
                     tixt+="some form of horrendous statue.  A weird amalgram of limbs and tentacles, the sheer atrocity of it is made worse by the tiny, baby-like form, the once natural shape of a human child twisted nearly beyond recognition.";
                 }
-                if (item=="robot"){
+                else if (item=="robot"){
                     unit.edit_corruption(choose(2,4,6,8,10));
-                    tixt+="some form of small, box-like robot.  It seems to teeter around haphazardly, nearly falling over with each step.  "+string(marine_name)+" maintains that it has no AI, though the other "+string(obj_ini.role[100][16])+" express skepticism.";
+                    tixt+=$"some form of small, box-like robot.  It seems to teeter around haphazardly, nearly falling over with each step. {unit.name()} maintains that it has no AI, though the other "+string(obj_ini.role[100][16])+" express skepticism.";
                     unit.add_trait("tech_heretic");
                 }
-                if (item=="demon"){
+                else if (item=="demon"){
                     unit.edit_corruption(choose(8,12,16,20));
                     tixt+="some form of horrendous statue.  What was meant to be some sort of angel, or primarch, instead has a mishappen face that is hardly human in nature.  Between the fetid, ragged feathers and empty sockets it is truly blasphemous.";
                     unit.add_trait("tech_heretic");
                 }
-                if (item=="fusion"){
+                else if (item=="fusion"){
                     //TODO if tech heretic chosen don't kill the dude
                     // unit.corruption+=choose(70);
-                    tixt+="some kind of ill-mannered ascension.  One of your battle-brothers enters the armamentarium to find "+string(marine_name)+" fused to a vehicle, his flesh twisted and submerged into the frame.  Mechendrites and weapons fire upon the marine without warning, a windy scream eminating from the abomination.  It takes several battle-brothers to take out what was once a "+string(obj_ini.role[100][16])+".";
+                    tixt+=$"some kind of ill-mannered ascension.  One of your battle-brothers enters the armamentarium to find {marine_name} fused to a vehicle, his flesh twisted and submerged into the frame.  Mechendrites and weapons fire upon the marine without warning, a windy scream eminating from the abomination.  It takes several battle-brothers to take out what was once a "+string(obj_ini.role[100][16])+".";
 
                     // This is causing the problem
 
@@ -1281,9 +1213,9 @@ with(obj_turn_end){scr_battle_sort();}
 for(var i=1; i<=10; i++){
     if (turns_ignored[i]>0) and (turns_ignored[i]<500) then turns_ignored[i]-=1;
 }
-if (known[eFACTION.Eldar]>=2) and (faction_gender[6]==2) and (floor(turn/10)==(turn/10)) then turns_ignored[6]+=floor(random_range(0,6));
+if (known[eFACTION.Eldar]>=2) and (faction_gender[6]==2) and (turn%10==0) then turns_ignored[6]+=floor(random_range(0,6));
 
-with(obj_temp4){instance_destroy();}
+with(obj_ground_mission){instance_destroy();}
 scr_random_event(true);
 
 // ** Random events here **
@@ -1364,3 +1296,10 @@ research_end();
 apothecary_simple();
 
 //complex route plotting for player fleets
+with (obj_p_fleet){
+    if (array_length(complex_route)>0  && action == ""){
+        set_new_player_fleet_course(complex_route);
+    }
+}
+
+});

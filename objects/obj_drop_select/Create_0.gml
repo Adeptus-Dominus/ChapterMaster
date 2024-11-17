@@ -160,3 +160,5 @@ repeat(501){j+=1;
 alarm[1]=1;
 
 }
+
+set_zoom_to_defualt();

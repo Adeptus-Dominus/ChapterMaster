@@ -8,6 +8,7 @@ if (((x>=(room_width-150)) and (y<=450)) or (y<100)) and (global.load==0){// was
     instance_destroy();
 }
 
+scale = 1;
 var run=0;
 name="";
 star="";
@@ -17,7 +18,7 @@ image_speed=0;
 image_alpha=0;
 x2=0;
 y2=0;
-buddy=0;
+warp_lanes=[];
 if (global.load==0) then alarm[0]=1;
 storm=0;
 storm_image=0;
@@ -43,14 +44,14 @@ for(run=1; run<=8; run++){
     p_pdf[run]=0;
     p_fortified[run]=0;
     p_station[run]=0;
-	warlord=0;
+	//warlord=0; uneeded i think
     // Whether or not player forces are on the planet
     p_player[run]=0;
     p_lasers[run]=0;
     p_silo[run]=0;
     p_defenses[run]=0;
     p_upgrades[run]=[];
-    // v how much of a problem they are from 1-5
+    // v how much of a problem they are from 1-6
     p_orks[run]=0;
     p_tau[run]=0;
     p_eldar[run]=0;
@@ -70,6 +71,7 @@ for(run=1; run<=8; run++){
 
     p_raided[run]=0;
     // 
+    p_governor[run] = "";
     p_problem[run] = array_create(8,"");
     p_problem_other_data[run] = array_create(8,{});
     p_timer[run] = array_create(8,-1);
@@ -102,7 +104,7 @@ global.star_name_colors = [
 	#009500, // waagh
 	#FECB01, // the greater good
 	#AD5272,// bug boys
-	c_purple, // chaos
+	c_dkgray, // chaos
 	38144, //nothing for heretics either
 	#AD5272, //why 12 is skipped in general, we will never know
 	#80FF00 // Sleepy robots

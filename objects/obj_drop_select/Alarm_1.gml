@@ -51,46 +51,47 @@ if (arright=false) then formation_current=formation_possible[1];
 
 
 
-// show_message("Star: "+string(p_target.name)+", Planet: "+string(obj_controller.selecting_planet));
+// show_message("Star: "+string(p_target.name)+", Planet: "+string(planet_number));
 
-var co,i,unit;co=-1;i=0;
-repeat(11){co+=1;i=0;
-    repeat(300){i+=1;
-        if (i<=100){if (obj_ini.veh_loc[co][i]=p_target.name) and (obj_ini.veh_wid[co][i]=obj_controller.selecting_planet) and (attack=1){
-            if (obj_ini.veh_role[co][i]="Land Speeder") then l_speeders+=1;
-            if (obj_ini.veh_role[co][i]="Rhino") then l_rhinos+=1;
-            if (obj_ini.veh_role[co][i]="Whirlwind") then l_whirls+=1;
-            if (obj_ini.veh_role[co][i]="Predator") then l_predators+=1;
-            if (obj_ini.veh_role[co][i]="Land Raider") then l_raiders+=1;
-        }}
-        unit=obj_ini.TTRPG[co][i];
-        if (unit.name()=="") then continue;
-        if (obj_ini.loc[co][i]=p_target.name) and (unit.planet_location==obj_controller.selecting_planet){
-            if ((attack=0) and (string_count("Bike",obj_ini.role[co][i])=0)) or (attack=1){
-                if (unit.role()="Chapter Master") then l_master+=1;
-                if (unit.role()=obj_ini.role[100][2]) then l_honor+=1;
-                if (unit.role()=obj_ini.role[100][5]) then l_capts+=1;
-                if (unit.role()="Champion") then l_champions+=1;
-                
-                if (string_count("Bike",obj_ini.role[co][i])=0) or (attack=0){
-                    if (obj_ini.role[co][i]=obj_ini.role[100][11]) then l_mahreens+=1;
+var unit;
+for (var co = 0; co <= 10; co++) {
+    for (var i = 0; i <= 300; i++) {
+        if (i <= 100) {
+            if (obj_ini.veh_loc[co][i] = p_target.name) && (obj_ini.veh_wid[co][i] = planet_number) && (attack = 1) {
+                if (obj_ini.veh_role[co][i] = "Land Speeder") then l_speeders += 1;
+                if (obj_ini.veh_role[co][i] = "Rhino") then l_rhinos += 1;
+                if (obj_ini.veh_role[co][i] = "Whirlwind") then l_whirls += 1;
+                if (obj_ini.veh_role[co][i] = "Predator") then l_predators += 1;
+                if (obj_ini.veh_role[co][i] = "Land Raider") then l_raiders += 1;
+            }
+        }
+        unit = obj_ini.TTRPG[co][i];
+        if (unit.name() == "") then
+        continue;
+        if (obj_ini.loc[co][i] = p_target.name) && (unit.planet_location == planet_number) {
+            if ((attack = 0) && (string_count("Bike", obj_ini.role[co][i]) = 0)) || (attack = 1) {
+                if (unit.role() = "Chapter Master") then l_master += 1;
+                if (unit.role() = obj_ini.role[100][2]) then l_honor += 1;
+                if (unit.role() = obj_ini.role[100][5]) then l_capts += 1;
+                if (unit.role() = "Champion") then l_champions += 1;
+
+                if (string_count("Bike", obj_ini.role[co][i]) = 0) || (attack = 0) {
+                    if (obj_ini.role[co][i] = obj_ini.role[100][11]) then l_mahreens += 1;
                     if (unit.IsSpecialist("rank_and_file")) then l_mahreens++
-                    if (obj_ini.role[co][i]=obj_ini.role[100][3]) then l_veterans+=1;
+                    if (obj_ini.role[co][i] = obj_ini.role[100][3]) then l_veterans += 1;
                 }
-                if (string_count("Bike",obj_ini.role[co][i])>0) and (attack=1){
-                    if (obj_ini.role[co][i]=obj_ini.role[100][11]) then l_bikes+=1;
+                if (string_count("Bike", obj_ini.role[co][i]) > 0) && (attack = 1) {
+                    if (obj_ini.role[co][i] = obj_ini.role[100][11]) then l_bikes += 1;
                     if (unit.IsSpecialist("rank_and_file")) then l_bikes++
-                    if (obj_ini.role[co][i]=obj_ini.role[100][3]) then l_bikes+=1;
+                    if (obj_ini.role[co][i] = obj_ini.role[100][3]) then l_bikes += 1;
                 }
-                
-                if (unit.role()=obj_ini.role[100][4]) then l_terminators+=1;
-                if (unit.role()=obj_ini.role[100][6]) then l_dreads+=1;
-                if (unit.role()=obj_ini.role[100][14]) then l_chaplains+=1;
-                if (unit.role()=obj_ini.role[100,17]) then l_psykers+=1;
-                if (unit.role()="Codiciery") then l_psykers+=1;
-                if (unit.role()="Lexicanum") then l_psykers+=1;
-                if (unit.role()=obj_ini.role[100][15]) then l_apothecaries+=1;
-                if (unit.role()=obj_ini.role[100][16]) then l_techmarines+=1;
+
+                if (unit.role() = obj_ini.role[100][4]) then l_terminators += 1;
+                if (unit.role() = obj_ini.role[100][6]) then l_dreads += 1;
+                if (unit.IsSpecialist("chap", true)) then l_chaplains += 1;
+                if (unit.IsSpecialist("libs", true)) then l_psykers += 1;
+                if (unit.IsSpecialist("apoth", true)) then l_apothecaries += 1;
+                if (unit.IsSpecialist("forge", true)) then l_techmarines += 1;
             }
         }
     }
@@ -176,17 +177,17 @@ if (sh_target!=-50){
 }
 
 
-sisters=p_target.p_sisters[obj_controller.selecting_planet];
-eldar=p_target.p_eldar[obj_controller.selecting_planet];
-ork=p_target.p_orks[obj_controller.selecting_planet];
-tau=p_target.p_tau[obj_controller.selecting_planet];
-tyranids=p_target.p_tyranids[obj_controller.selecting_planet];
-csm=p_target.p_chaos[obj_controller.selecting_planet];
-traitors=p_target.p_traitors[obj_controller.selecting_planet];
-necrons=p_target.p_necrons[obj_controller.selecting_planet];
-demons=p_target.p_demons[obj_controller.selecting_planet];
+sisters=p_target.p_sisters[planet_number];
+eldar=p_target.p_eldar[planet_number];
+ork=p_target.p_orks[planet_number];
+tau=p_target.p_tau[planet_number];
+tyranids=p_target.p_tyranids[planet_number];
+csm=p_target.p_chaos[planet_number];
+traitors=p_target.p_traitors[planet_number];
+necrons=p_target.p_necrons[planet_number];
+demons=p_target.p_demons[planet_number];
 
-if (p_target.p_player[obj_controller.selecting_planet]>0) then max_ships+=1;
+if (p_target.p_player[planet_number]>0) then max_ships+=1;
 
 var bes,bes_score;bes=0;bes_score=0;
 if (sisters>0) and (obj_controller.faction_status[eFACTION.Ecclesiarchy]="War"){bes=5;bes_score=sisters;}
@@ -201,10 +202,10 @@ if (demons>0){bes=12;bes_score=demons;}
 if (bes_score>0) then attacking=bes;
 
 var spesh;spesh=false;
-if (planet_feature_bool(p_target.p_feature[obj_controller.selecting_planet],P_features.Warlord10)==1) and (obj_controller.faction_defeated[10]=0) and (obj_controller.faction_gender[10]=1) and (obj_controller.known[eFACTION.Chaos]>0) and (obj_controller.turn>=obj_controller.chaos_turn) then spesh=true;
+if (planet_feature_bool(p_target.p_feature[planet_number],P_features.Warlord10)==1) and (obj_controller.faction_defeated[10]=0) and (obj_controller.faction_gender[10]=1) and (obj_controller.known[eFACTION.Chaos]>0) and (obj_controller.turn>=obj_controller.chaos_turn) then spesh=true;
     
 
-if (has_problem_planet(obj_controller.selecting_planet, "tyranid_org", p_target)){
+if (has_problem_planet(planet_number, "tyranid_org", p_target)){
     tyranids=2;
     attacking=9;
 }
@@ -294,8 +295,8 @@ if (sh_target!=-50){
 
 }
 
-if (p_target.p_player[obj_controller.selecting_planet]>0) then max_ships+=1;
-var pp=obj_controller.selecting_planet;
+if (p_target.p_player[planet_number]>0) then max_ships+=1;
+var pp=planet_number;
 purge_d = p_target.p_type[pp]!="Dead";
 
 if (has_problem_planet(pp,"succession",p_target)) then purge_d=0

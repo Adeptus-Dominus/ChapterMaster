@@ -1,4 +1,4 @@
-
+/// @mixin obj_controller
 function scr_ui_advisors() {
 
     var xx, yy, blurp, eta, va;
@@ -398,7 +398,7 @@ function scr_ui_advisors() {
 
         // draw_set_alpha(1);if (obj_controller.gene_seed<=0) or (obj_ini.zygote=1) then draw_set_alpha(0.5);
 
-        if (menu = 12.1) or(fest_sid + fest_wid > 0) then draw_set_alpha(0.25);
+/*         if (menu = 12.1) or(fest_sid + fest_wid > 0) then draw_set_alpha(0.25);
         draw_set_color(c_gray);
         draw_rectangle(xx + 560, yy + 780, xx + 682, yy + 805, 0);
         draw_set_alpha(1);
@@ -434,10 +434,8 @@ function scr_ui_advisors() {
                 fest_star = "";
                 fest_sid = 0;
                 fest_wid = 0;
-                fest_planet = 0;
 
-                if (obj_ini.fleet_type != 1) then fest_planet = -1;
-                if (obj_ini.fleet_type = 1) then fest_planet = 1;
+                fest_planet = (obj_ini.fleet_type == ePlayerBase.home_world) ? 1 : -1;
 
                 fest_lav = 0;
                 fest_locals = 0;
@@ -448,7 +446,7 @@ function scr_ui_advisors() {
                 fest_repeats = 1;
 
             }
-        }
+        } */
         draw_set_alpha(1);
         draw_set_font(fnt_40k_14);
 
@@ -837,119 +835,18 @@ function scr_ui_advisors() {
         draw_text(xx + 222, yy + 200, "Kills:");
         draw_text(xx + 222.5, yy + 200.5, "Kills:");
 
-        var her_ki, ork_ki, tau_ki, tyr_ki, eld_ki, tot_ki, nec_ki, comma;
-        her_ki = "";
-        ork_ki = "";
-        tau_ki = "";
-        tyr_ki = "";
-        eld_ki = "";
-        nec_ki = "";
-        tot_ki = "";
-        comma = 0;
-
-        if (obj_ini.master_heretics = 1) then her_ki += string(obj_ini.master_heretics) + " Heretic, ";
-        if (obj_ini.master_heretics > 1) then her_ki += string(obj_ini.master_heretics) + " Heretics, ";
-        if (obj_ini.master_chaos_marines = 1) then her_ki += string(obj_ini.master_chaos_marines) + " Chaos Space Marine, ";
-        if (obj_ini.master_chaos_marines > 1) then her_ki += string(obj_ini.master_chaos_marines) + " Chaos Space Marines, ";
-        if (obj_ini.master_chaos_vehicles = 1) then her_ki += string(obj_ini.master_chaos_vehicles) + " Chaos Vehicle, ";
-        if (obj_ini.master_chaos_vehicles > 1) then her_ki += string(obj_ini.master_chaos_vehicles) + " Chaos Vehicles, ";
-        if (obj_ini.master_lesser_demons = 1) then her_ki += string(obj_ini.master_lesser_demons) + " Lesser Daemon, ";
-        if (obj_ini.master_lesser_demons > 1) then her_ki += string(obj_ini.master_lesser_demons) + " Lesser Daemons, ";
-        if (obj_ini.master_greater_demons = 1) then her_ki += string(obj_ini.master_greater_demons) + " Greater Daemon, ";
-        if (obj_ini.master_greater_demons > 1) then her_ki += string(obj_ini.master_greater_demons) + " Greater Daemons, ";
-        if (her_ki != "") {
-            comma = string_length(her_ki);
-            her_ki = string_delete(her_ki, comma - 1, 2);
-        }
-        if (her_ki != "") then tot_ki += string(her_ki) + "#";
-
-        if (obj_ini.master_necron_overlord = 1) then nec_ki += string(obj_ini.master_necron_overlord) + " Necron Overlord, ";
-        if (obj_ini.master_necron_overlord > 1) then nec_ki += string(obj_ini.master_necron_overlord) + " Necron Overlords, ";
-        if (obj_ini.master_destroyer = 1) then nec_ki += string(obj_ini.master_destroyer) + " Destroyer, ";
-        if (obj_ini.master_destroyer > 1) then nec_ki += string(obj_ini.master_destroyer) + " Destroyers, ";
-        if (obj_ini.master_necron = 1) then nec_ki += string(obj_ini.master_necron) + " Necron, ";
-        if (obj_ini.master_necron > 1) then nec_ki += string(obj_ini.master_necron) + " Necrons, ";
-        if (obj_ini.master_necron_vehicles = 1) then nec_ki += string(obj_ini.master_necron_vehicles) + " Necron Vehicle, ";
-        if (obj_ini.master_necron_vehicles > 1) then nec_ki += string(obj_ini.master_necron_vehicles) + " Necron Vehicles, ";
-        if (obj_ini.master_monolith = 1) then nec_ki += string(obj_ini.master_monolith) + " Monolith, ";
-        if (obj_ini.master_monolith > 1) then nec_ki += string(obj_ini.master_monolith) + " Monoliths, ";
-        if (nec_ki != "") {
-            comma = string_length(nec_ki);
-            nec_ki = string_delete(nec_ki, comma - 1, 2);
-        }
-        if (nec_ki != "") then tot_ki += string(nec_ki) + "#";
-
-        if (obj_ini.master_ork_boyz = 1) then ork_ki += string(obj_ini.master_ork_boyz) + " Ork Boy, ";
-        if (obj_ini.master_ork_boyz > 1) then ork_ki += string(obj_ini.master_ork_boyz) + " Ork Boyz, ";
-        if (obj_ini.master_ork_nobz = 1) then ork_ki += string(obj_ini.master_ork_nobz) + " Ork Nob, ";
-        if (obj_ini.master_ork_nobz > 1) then ork_ki += string(obj_ini.master_ork_nobz) + " Ork Nobz, ";
-        if (obj_ini.master_ork_warboss = 1) then ork_ki += string(obj_ini.master_ork_warboss) + " Ork Warboss, ";
-        if (obj_ini.master_ork_warboss > 1) then ork_ki += string(obj_ini.master_ork_warboss) + " Ork Warbosses, ";
-        if (obj_ini.master_ork_vehicles = 1) then ork_ki += string(obj_ini.master_ork_vehicles) + " Ork Vehicle, ";
-        if (obj_ini.master_ork_vehicles > 1) then ork_ki += string(obj_ini.master_ork_vehicles) + " Ork Vehicles, ";
-        if (ork_ki != "") {
-            comma = string_length(ork_ki);
-            ork_ki = string_delete(ork_ki, comma - 1, 2);
-        }
-        if (ork_ki != "") then tot_ki += string(ork_ki) + "#";
-
-        if (obj_ini.master_tyrant = 1) then tyr_ki += string(obj_ini.master_tyrant) + " Hive Tyrant, ";
-        if (obj_ini.master_tyrant > 1) then tyr_ki += string(obj_ini.master_tyrant) + " Hive Tyrants, ";
-        if (obj_ini.master_carnifex > 0) then tyr_ki += string(obj_ini.master_carnifex) + " Carnifex, ";
-        if (obj_ini.master_synapse > 0) then tyr_ki += string(obj_ini.master_synapse) + " Synapse Tyranid, ";
-        if (obj_ini.master_warriors = 1) then tyr_ki += string(obj_ini.master_warriors) + " Warrior, ";
-        if (obj_ini.master_warriors > 1) then tyr_ki += string(obj_ini.master_warriors) + " Warriors, ";
-        if (obj_ini.master_gene = 1) then tyr_ki += string(obj_ini.master_gene) + " Genestealer, ";
-        if (obj_ini.master_gene > 1) then tyr_ki += string(obj_ini.master_gene) + " Genestealers, ";
-        if (obj_ini.master_gaunts = 1) then tyr_ki += string(obj_ini.master_gaunts) + " Gaunt, ";
-        if (obj_ini.master_gaunts > 1) then tyr_ki += string(obj_ini.master_gaunts) + " Gaunts, ";
-        if (tyr_ki != "") {
-            comma = string_length(tyr_ki);
-            tyr_ki = string_delete(tyr_ki, comma - 1, 2);
-        }
-        if (tyr_ki != "") then tot_ki += string(tyr_ki) + "#";
-
-        if (obj_ini.master_avatar = 1) then eld_ki += string(obj_ini.master_avatar) + " Avatar, ";
-        if (obj_ini.master_avatar > 1) then eld_ki += string(obj_ini.master_avatar) + " Avatars, ";
-        if (obj_ini.master_autarch > 0) then eld_ki += string(obj_ini.master_autarch) + " Autarch, ";
-        if (obj_ini.master_farseer = 1) then eld_ki += string(obj_ini.master_farseer) + " Farseer, ";
-        if (obj_ini.master_farseer > 1) then eld_ki += string(obj_ini.master_farseer) + " Farseers, ";
-        if (obj_ini.master_aspect = 1) then eld_ki += string(obj_ini.master_aspect) + " Aspect Warrior, ";
-        if (obj_ini.master_aspect > 1) then eld_ki += string(obj_ini.master_aspect) + " Aspect Warriors, ";
-        if (obj_ini.master_eldar > 0) then eld_ki += string(obj_ini.master_eldar) + " Eldar, ";
-        if (obj_ini.master_eldar_vehicles = 1) then eld_ki += string(obj_ini.master_eldar_vehicles) + " Eldar Vehicle, ";
-        if (obj_ini.master_eldar_vehicles > 1) then eld_ki += string(obj_ini.master_eldar_vehicles) + " Eldar Vehicles, ";
-        if (eld_ki != "") {
-            comma = string_length(eld_ki);
-            eld_ki = string_delete(eld_ki, comma - 1, 2);
-        }
-        if (eld_ki != "") then tot_ki += string(eld_ki) + "#";
-
-        if (obj_ini.master_tau = 1) then tau_ki += string(obj_ini.master_tau) + " Fire Warrior, ";
-        if (obj_ini.master_tau > 1) then tau_ki += string(obj_ini.master_tau) + " Fire Warriors, ";
-        if (obj_ini.master_battlesuits = 1) then tau_ki += string(obj_ini.master_battlesuits) + " Battlesuit, ";
-        if (obj_ini.master_battlesuits > 1) then tau_ki += string(obj_ini.master_battlesuits) + " Battlesuits, ";
-        if (obj_ini.master_tau_vehicles = 1) then tau_ki += string(obj_ini.master_tau_vehicles) + " Tau Vehicle, ";
-        if (obj_ini.master_tau_vehicles > 1) then tau_ki += string(obj_ini.master_tau_vehicles) + " Tau Vehicles, ";
-        if (obj_ini.master_kroot > 0) then tau_ki += string(obj_ini.master_kroot) + " Kroot, ";
-        if (tau_ki != "") {
-            comma = string_length(tau_ki);
-            tau_ki = string_delete(tau_ki, comma - 1, 2);
-        }
-        if (tau_ki != "") then tot_ki += string(tau_ki) + "#";
-
 
         draw_text_ext(xx + 222, yy + 216, string_hash_to_newline(string(tot_ki)), -1, 396);
         var unit = fetch_unit([0,1]);
         if (unit.ship_location = 0) then draw_text(xx + 222, yy + 380, string_hash_to_newline("Current Location: " + string(obj_ini.loc[0, 1]) + " " + string(unit.planet_location) + "#Health: " + unit.hp() + "%"));
-        if (unit.ship_location > 0) then draw_text(xx + 222, yy + 380, string_hash_to_newline("Current Location: Onboard " + string(obj_ini.ship[unit.ship_location]) + "#Health: " + string(obj_ini.hp[0, 1]) + "%"));
+        if (unit.ship_location > 0) then draw_text(xx + 222, yy + 380, string_hash_to_newline($"Current Location: Onboard {obj_ini.ship[unit.ship_location]}#Health: {unit.hp()}%"));
         draw_text(xx + 222.5, yy + 380.5, string_hash_to_newline("Current Location:#Health:"));
 
         draw_sprite(spr_arrow, 0, xx + 217, yy + 32);
     }
 
     // ** Welcome menu **
-    if (menu >= 500) and(menu <= 510) {
+    if (menu >= 500 && menu <= 510) {
         draw_sprite(spr_welcome_bg, 0, xx, yy);
         // draw_sprite(spr_advisors,0,xx+16,yy+16);
         scr_image("advisor", 0, xx + 16, yy + 16, 310, 828);
@@ -962,8 +859,7 @@ function scr_ui_advisors() {
         if (menu = 502) then draw_text_ext(xx + 370, yy + 72, string_hash_to_newline(string(temp[67])), -1, 660);
         if (menu = 503) then draw_text_ext(xx + 370, yy + 72, string_hash_to_newline(string(temp[68])), -1, 660);
         draw_set_halign(fa_center);
-        if (temp[68] = "") then draw_text(xx + 702, yy + 695, string_hash_to_newline(string(menu - 499) + "/4 (Press Any Key)"));
-        if (temp[68] != "") then draw_text(xx + 702, yy + 695, string_hash_to_newline(string(menu - 499) + "/4 (Press Any Key)"));
+        draw_text(xx + 702, yy + 695, $"{menu - 499} (Press Any Key)");
         draw_set_halign(fa_left);
 
     }

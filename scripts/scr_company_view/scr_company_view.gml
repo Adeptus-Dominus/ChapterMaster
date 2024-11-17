@@ -1,35 +1,52 @@
-function reset_manage_arrays(){
-	with (obj_controller){
-		display_unit=[];
-	    man=[];
-		ide=[];
-		man_sel=[];
-		ma_lid=[];
-		ma_wid=[];
-	    ma_race=[];
-		ma_loc=[];
-		ma_name=[];
-		ma_role=[];
-		ma_gear=[];
-		ma_mobi=[];
-		ma_wep1=[];
-	    ma_wep2=[];
-		ma_armour=[];
-		ma_health=[];
-		ma_chaos=[];
-		ma_exp=[];
-		ma_promote=[];
-		ma_god=[];
-        for (var i=0;i<=500;i++){
-            sh_ide[i]=0;
-            sh_name[i]="";
-            sh_class[i]="";
-            sh_loc[i]="";
-            sh_hp[i]="";
-            sh_cargo[i]=0;
-            sh_cargo_max[i]="";        	
-        }	
+function reset_ship_manage_arrays() {
+    with (obj_controller) {
+        array_resize(sh_ide, 0);
+        array_resize(sh_uid, 0);
+        array_resize(sh_name, 0);
+        array_resize(sh_class, 0);
+        array_resize(sh_loc, 0);
+        array_resize(sh_hp, 0);
+        array_resize(sh_cargo, 0);
+        array_resize(sh_cargo_max, 0);
+    }
+}
+
+function reset_manage_arrays() {
+    with (obj_controller) {
+        display_unit=[];
+        man=[];
+        ide=[];
+        man_sel=[];
+        ma_lid=[];
+        ma_wid=[];
+        ma_race=[];
+        ma_loc=[];
+        ma_name=[];
+        ma_role=[];
+        ma_gear=[];
+        ma_mobi=[];
+        ma_wep1=[];
+        ma_wep2=[];
+        ma_armour=[];
+        ma_health=[];
+        ma_chaos=[];
+        ma_exp=[];
+        ma_promote=[];
+        ma_god=[];
+        ma_view = [];
+    }
+    reset_ship_manage_arrays();
+}
+
+function find_company_open_slot(target_company){
+	good = -1;
+	for (var i = 0;i<array_length(obj_ini.name[target_company]);i++){
+        if (obj_ini.name[target_company][i]=="") or (obj_ini.role[target_company][i]==""){
+        	good=i;
+        	break;
+        }
 	}
+	return good;
 }
 
 function add_man_to_manage_arrays(unit){
@@ -51,10 +68,11 @@ function add_man_to_manage_arrays(unit){
         array_push(ma_health,unit.hp());
         array_push(ma_mobi,unit.mobility_item());
         array_push(ma_chaos,unit.corruption);
-        array_push(ma_exp,unit.experience());
+        array_push(ma_exp,unit.experience);
         array_push(ma_promote,0);
         array_push(display_unit,unit);
         array_push(ma_god,0);
+        array_push(ma_view,true);
 	}
 }
 
@@ -98,110 +116,109 @@ function add_vehicle_to_manage_arrays(unit){
 		array_push(ma_chaos,0);
 		array_push(ma_exp,0);
 		array_push(ma_promote,0);
-		 array_push(ma_god,0);
+		array_push(ma_god,0);
+		array_push(ma_view,true);
 	}
 }
 
 
 function scr_company_view(company) {
-	var v, mans, bad, squads, squad_type, squad_loc, squad_members, unit, unit_loc, last_man, last_vehicle;
-	v=0;
-	mans=0;
-	bad=0;
-	squads=0;
-	squad_type="";
-	squad_loc=0;
-	squad_members=0;
-	last_man=0;
-	last_vehicle=0;
-	var role_list = ds_list_create();
-	// v: check number
-	// mans: number of mans that a hit has gotten
-	// Calculates the temporary variables to be displayed as marines in the individual company screens
-	reset_manage_arrays();
-	for (var i = 0; i < 20; i++){
-		sel_uni[i]="";
-		sel_veh[i]="";
-	}
-	
-	sel_uni[1]="Command";
+    if (company < 0 || company > 10){
+        var error_message = $"scr_company_view passed bad company:\n{company}";
+        show_error(error_message, true);
+    };
 
-	// This sets up the mans, but not the vehicles
-	// Company_lenght is 501, so we check with 500
-	var company_length = array_length(obj_ini.TTRPG[company]);
-	for (var v = 0; v < company_length; v++){
-		if (v==501) then break;
-		bad=0;
+    var mans, squads, squad_type, squad_loc, squad_members, unit, unit_loc;
+    mans = 0;
+    squads = 0;
+    squad_type = "";
+    squad_loc = 0;
+    squad_members = 0;
+    reset_manage_arrays();
+    sel_uni = array_create(20, "");
+    sel_veh = array_create(20, "");
 
-	    if (company>=0) and (company<=10){
-			unit = obj_ini.TTRPG[company][v];
-	        if (unit.name()!=""){
-				unit_loc = unit.marine_location();
-	            // if (obj_ini.god[company,v]>=10) then bad=1;
-				if (unit_loc[0] == location_types.ship){
-				   	if (obj_ini.ship_location[unit_loc[1]]="Lost") then bad=1;
-				}	            
-	            if (bad==1){
-					continue;
-				}else{
-	                mans+=1;
-	                add_man_to_manage_arrays(unit)
-				    var go=0,op=0;
-					 if (!unit.IsSpecialist()){
-				        for (var j=0; j<20;j++) {
-							if (sel_uni[j] == "") && (op == 0){
-								op = j;
-								break;
-							}
-							if (sel_uni[j] == unit.role()) then go = 1;
-						}
-				        if (go==0) then sel_uni[op]=unit.role();
-				    }
+    sel_uni[1] = "Command";
 
-	            }
-	        } 
-	        if (obj_ini.name[company][v+1]=="")and (last_man==0) and (obj_ini.ship_location[unit.ship_location]!="Lost"){last_man=v;break;}
-	    }
-	}
+    // Processing marines
+    var company_length = array_length(obj_ini.TTRPG[company]);
 
-	v=last_man;
-	last_vehicle=0;
-	for (var i=1;i<=100;i++){
-	// if (!instance_exists(obj_popup)) then repeat(100){// 100
-		bad=0;
+    for (var v = 0; v < company_length; v++) {
+        unit = obj_ini.TTRPG[company][v];
 
-	    // if (obj_ini.veh_race[company][i]=company) and (obj_ini.veh_role[company][i]!=""){
-	    if (obj_ini.veh_race[company][i]!=0){
-	        if (obj_ini.veh_lid[company][i]>0){
-	            if (obj_ini.ship_location[obj_ini.veh_lid[company][i]]=="Lost") then bad=1;
-	        }
+        if (unit.name() != "") {
+            unit_loc = unit.marine_location();
 
-	        if (bad==0){
-				v++;
-	            var step=false;
-	            if (step==false){
-	            	last_vehicle+=1;
-	                add_vehicle_to_manage_arrays([company, i]);
-	                // Select All Vehicle Setup
-	                var go=0,op=0;
-                    for (var p=0;p<20;p++){
-                        if (sel_veh[p]=="") and (op==0) then op=p;
-                        if (sel_veh[p]==obj_ini.veh_role[company][i]) then go=1;
+            // Check if unit is on a lost ship
+            if (
+                unit_loc[0] == location_types.ship &&
+                obj_ini.ship_location[unit_loc[1]] == "Lost"
+            ) {
+                continue;
+            }
+
+            mans += 1;
+            add_man_to_manage_arrays(unit);
+            var go = 0, op = 0;
+            if (!unit.IsSpecialist()) {
+                for (var j = 0; j < 20; j++) {
+                    if (sel_uni[j] == "" && op == 0) {
+                        op = j;
+                        break;
                     }
-                    if (go==0) then sel_veh[op]=obj_ini.veh_role[company][i];
-	            }
-	        }
-	    }
-	}
+                    if (sel_uni[j] == unit.role()) {
+                        go = 1;
+                    }
+                }
+                if (go == 0) {
+                    sel_uni[op] = unit.role();
+                }
+            }
+        }
+    }
 
-	man_current=0;
-	man_max=array_length(display_unit)+2;
-	man_see=38-4;
-	other_manage_data();
+    // Processing vehicles
+    var veh_race_length = array_length(obj_ini.veh_race[company]);
+
+    for (var i = 0; i < veh_race_length; i++) {
+        // Check if vehicle race is valid
+        if (obj_ini.veh_race[company][i] == 0) {
+            continue;
+        }
+
+        // Check if unit is on a lost ship
+        if (
+            obj_ini.veh_lid[company][i] > 0 &&
+            obj_ini.ship_location[obj_ini.veh_lid[company][i]] == "Lost"
+        ) {
+            continue
+        }
+
+        add_vehicle_to_manage_arrays([company, i]);
+
+        // Select All Vehicle Setup
+        var go = 0, op = 0;
+        for (var p = 0; p < 20; p++){
+            if (sel_veh[p] == "" && op == 0){
+                op = p;
+            }
+            if (sel_veh[p] == obj_ini.veh_role[company][i]){
+                go = 1;
+            }
+        }
+        if (go == 0){
+            sel_veh[op] = obj_ini.veh_role[company][i];
+        }
+    }
+
+    man_current = 0;
+    man_max = array_length(display_unit) + 2;
+    man_see = 38 - 4;
+    other_manage_data();
 }
 
 function other_manage_data(){
-	var v, mans, bad, squads, squad_type, squad_loc, squad_members, unit, unit_loc,;
+	var v, mans, bad, squads, squad_type, squad_loc, squad_members, unit, unit_loc;
 	v=0;
 	mans=0;
 	bad=0;
@@ -209,7 +226,6 @@ function other_manage_data(){
 	squad_type="";
 	squad_loc=0;
 	squad_members=0;
-	var unit;
 	for (var v = 0; v < array_length(display_unit); v++){
 		if (!is_struct(display_unit[v])) then continue;
 		unit = display_unit[v];
@@ -230,7 +246,7 @@ function other_manage_data(){
 	        if (unit.squad == "none"){
 
 
-	        	if (is_specialist(squad_type,"heads")) then  n=1;
+	            if (is_specialist(squad_type,"heads")) then n=1;
 	            if (squad_type==obj_ini.role[100][6]) and (squad_type!=ma_role[v]) and (squad_type!="Venerable "+string(ma_role[v])) then n=2;
 	            if (squad_type==obj_ini.role[100][6]) and (ma_role[v]=obj_ini.role[100][6]) then n=0;
 	            if (squad_type==obj_ini.role[100][6]) and (ma_role[v]="Venerable "+string(obj_ini.role[100][6])) then n=0;
@@ -290,43 +306,37 @@ function other_manage_data(){
 	        squad[v]=squads;
 	        squad_loc=unit_loc;
 	    }
-	    //requirements to be promoted through companies index 0 = command comapny requirement
-	    var company_promotion_limits = [0,150,120,110,100,80,70,60,50,40,0];
+        // TODO: connect this logic with the get_unit_promotion_options() to reduce verboseness;
+	    //requirements to be promoted through companies index 0 = command company requirement
+	    var company_promotion_limits = [0,100,65,65,65,65,45,45,35,25,0];
 	    // Right here is where the promotion check will go
 	    // If EXP is enough for that company then ma_promote[i]=1
 	    if (ma_role[v]==obj_ini.role[100][3]) or (ma_role[v]==obj_ini.role[100][4]){
-	        if (unit.company==1) and (ma_exp[v]>=300) then ma_promote[v]=1;
+	        if (unit.company==1) and (ma_exp[v]>=140) then ma_promote[v]=1;
 	        if (ma_health[v]<=10) then ma_promote[v]=10;
 	    }
 	    if (unit.role()=obj_ini.role[100][6]) and (ma_exp[v]>=400) then ma_promote[v]=1;
 	    if (unit.role()=obj_ini.role[100][15]) or (ma_role[v]=obj_ini.role[100][14]) then ma_promote[v]=1;
 	    if (unit.role()=obj_ini.role[100][16]) then ma_promote[v]=1;
 
+		var target_company = 0;
 	    if (unit.IsSpecialist("rank_and_file")){
-	    	var promotion_limit = company_promotion_limits[unit.company-1]
-			if (unit.experience()>=promotion_limit && promotion_limit>0){
+			if (unit.company >= 8) then target_company = unit.company - 1;
+			else if (unit.company >= 6) then target_company = 5;
+			else if (unit.company >= 2) then target_company = 1;
+	    	var promotion_limit = company_promotion_limits[target_company]
+			if (unit.experience>=promotion_limit && promotion_limit>0){
 	    		ma_promote[v]=1;
 	    	}
 	    	if (ma_health[v]<=10) then ma_promote[v]=10;	                	
 	    } else if  (ma_role[v]=obj_ini.role[100][5]){
-	    	var promotion_limit = company_promotion_limits[unit.company-1]
-	    	if (unit.experience()>=promotion_limit+25 && promotion_limit>0){
+	    	var promotion_limit = company_promotion_limits[unit.company - 1]
+	    	if (unit.experience>=promotion_limit+25 && promotion_limit>0){
 
 	    	}
 	    }
 
-	    // Need something to verify there is no standard bearer in the previous company
-	    /*if (ma_role[v]="Standard Bearer"){
-	        if (company=10) and (ma_exp[v]>=25) then ma_promote[v]=1;
-	        if (company=9) and (ma_exp[v]>=30) then ma_promote[v]=1;
-	        if (company=8) and (ma_exp[v]>=35) then ma_promote[v]=1;
-	        if (company=7) and (ma_exp[v]>=40) then ma_promote[v]=1;
-	        if (company=6) and (ma_exp[v]>=45) then ma_promote[v]=1;
-	        if (company=5) and (ma_exp[v]>=55) then ma_promote[v]=1;
-	        if (company=4) and (ma_exp[v]>=65) then ma_promote[v]=1;
-	        if (company=3) and (ma_exp[v]>=75) then ma_promote[v]=1;
-	    }*/
-	    if (obj_controller.command_set[2]==1) and (ma_promote[v]==0) then ma_promote[v]=1;
+	    if (!obj_controller.command_set[2]) and (!ma_promote[v]) then ma_promote[v]=1;
 	}
 }
 
@@ -350,6 +360,7 @@ function filter_and_sort_company(type, specific){
         var tempexp =ma_exp[a];
         var tempprom =ma_promote[a];
         var tempdis =display_unit[a];
+        var tempview = ma_view[a];
 
         man[a]=man[b];
         ide[a]=ide[b];
@@ -368,6 +379,7 @@ function filter_and_sort_company(type, specific){
         ma_exp[a]=ma_exp[b];
         ma_promote[a]=ma_promote[b];
         display_unit[a] =display_unit[b];
+        ma_view[a] =ma_view[b];
 
         man[b]=tempman;
         ide[b]=tempide;
@@ -380,12 +392,13 @@ function filter_and_sort_company(type, specific){
         ma_role[b]=temprole;
         ma_wep1[b]= tempwep;
         ma_wep2[b]= tempwep2;
-        ma_armour[b]=temparm;
-        ma_health[b]=temphealth;
-        ma_chaos[b]=tempcha;
-        ma_exp[b]=tempexp;
-        ma_promote[b]=tempprom;
-        display_unit[b] =tempdis;             
+        ma_armour[b]= temparm;
+        ma_health[b]= temphealth;
+        ma_chaos[b]= tempcha;
+        ma_exp[b]= tempexp;
+        ma_promote[b]= tempprom;
+        display_unit[b] = tempdis;  
+        ma_view[b] = tempview;      
 	}
 	if (type=="stat"){
 		var swapped;
@@ -413,4 +426,62 @@ function filter_and_sort_company(type, specific){
 			}
 		}
 	}
+}
+
+function switch_view_company(new_view){
+	with (obj_controller){
+		if (new_view<1) then exit;
+		filter_mode = false;
+		text_bar=0;
+		if (managing<=10 && managing>=0){
+			if (struct_exists(company_data, "reset_squad_surface")){
+				company_data.reset_squad_surface();
+			}
+		}
+		scr_ui_refresh();
+
+		managing = new_view;
+		if (new_view != 0 ){
+			with(obj_managment_panel){instance_destroy();}
+		}
+		if (new_view>10){
+			view_squad=false;
+			company_data={};
+			scr_special_view(new_view);
+		} else {
+			scr_company_view(new_view);		
+			company_data = new CompanyStruct(managing);
+		}
+	}
+}
+function company_manage_actions(){
+	var onceh=0;
+	var xx=__view_get( e__VW.XView, 0 );
+	var yy=__view_get( e__VW.YView, 0 );
+
+    // Back out from company
+    if (point_and_click([xx+23,yy+80,xx+95,yy+128])){
+        managing=0;
+        cooldown=8000;
+        scr_ui_refresh();
+        scr_management(1);
+        cooldown=8000;
+        click=1;
+        popup=0;
+        selected=0;
+        hide_banner=1;
+        view_squad=false;
+        unit_profile=false;
+    }
+    // Previous company
+    if (point_and_click([xx+424, yy+80,xx+496,yy+128]) || keyboard_check_pressed(ord(string("N")))){
+    	var new_view = managing == 1 ? 15 : managing-1;
+    	switch_view_company(new_view)
+    }
+
+    // Next company
+    if (point_and_click([xx+1105, yy+80,xx+1178,yy+128]) || keyboard_check_pressed(ord(string("M")))){
+    	var new_view = managing == 15 ? 1 : managing+1;
+    	switch_view_company(new_view)
+    } 	 	 
 }

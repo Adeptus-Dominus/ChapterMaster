@@ -7,14 +7,15 @@ if (instance_exists(obj_temp1)){
     
     // Nearby star system
     if (tempy_d>10) and (tempy_d<=180){
-        for(var i=1; i<=4; i++){
+        for(var i=1; i<=planets; i++){
             if (p_type[i]=="Forge") and (p_owner[i]==3) then obj_controller.income_forge+=6;
             if (p_type[i]=="Agri") and (p_owner[i]==2) then obj_controller.income_agri+=3;
         }
     }
     biggy=instance_nearest(obj_temp1.x,obj_temp1.y,obj_star);
-    if (biggy.owner==1) and (tempy_d>180) and ((biggy.buddy==id) or (buddy==biggy)){
-        for(var i=1; i<=4; i++){
+    var connected = determine_warp_join(biggy, self.id);
+    if (biggy.owner==eFACTION.Player) and (tempy_d>180) and (connected){
+        for(var i=1; i<=planets; i++){
             if (p_type[i]=="Forge") and (p_owner[i]==3) then obj_controller.income_forge+=6;
             if (p_type[i]=="Agri") and (p_owner[i]==2) then obj_controller.income_agri+=3;
         }

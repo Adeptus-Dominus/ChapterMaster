@@ -19,7 +19,7 @@ if (capital_number<0) then capital_number=0;
 if (frigate_number<0) then frigate_number=0;
 if (escort_number<0) then escort_number=0;
 
-if (owner  != eFACTION.Inquisition) and (capital_number+frigate_number+escort_number<=0) and (trade_goods!="colonizeL") and (trade_goods!="colonize") then instance_destroy();
+if ((owner  != eFACTION.Inquisition) and (capital_number+frigate_number+escort_number<=0) and !fleet_has_cargo("colonize")) then instance_destroy();
 
 if (owner = eFACTION.Tau) and (x<0) or (y<0) then instance_destroy();
 

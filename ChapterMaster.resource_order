@@ -1,8 +1,0 @@
-{
-  "FolderOrderSettings": [],
-  "ResourceOrderSettings": [
-    {"name":"scr_unit_spawn_functions","order":1,"path":"scripts/scr_unit_spawn_functions/scr_unit_spawn_functions.yy",},
-    {"name":"scr_recruit_data","order":3,"path":"scripts/scr_recruit_data/scr_recruit_data.yy",},
-    {"name":"scr_unit_equip_functions","order":2,"path":"scripts/scr_unit_equip_functions/scr_unit_equip_functions.yy",},
-  ],
-}

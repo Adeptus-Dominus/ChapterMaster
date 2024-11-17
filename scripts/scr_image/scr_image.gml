@@ -6,7 +6,7 @@ function scr_image(argument0, argument1, argument2, argument3, argument4, argume
 	// argument3: y1
 	// argument4: width
 	// argument5: height
-
+	//TODO rewrite this file
 
 	if (!instance_exists(obj_img)) then exit;
 

@@ -75,7 +75,7 @@ function scr_random_marine(role, exp_req, search_params="none"){
             	}
 
             	//check corect experience
-            	if (unit.experience()<exp_req){
+            	if (unit.experience<exp_req){
 	        		array_delete(marine_list, list_place ,1);
 					comp_size--;
 					continue;	        		

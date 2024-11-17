@@ -1,0 +1,11 @@
+"PR: Docs":
+- changed-files:
+  - any-glob-to-all-files: ['docs/*', 'guides/*', '**/*.md']
+
+"PR: Chore":
+- changed-files:
+  - any-glob-to-all-files: ['.github/*', '**/*.yml', '.gitattributes', '.gitignore']
+
+"PR: JSON":
+- changed-files:
+  - all-globs-to-all-files: ['**/*.json']

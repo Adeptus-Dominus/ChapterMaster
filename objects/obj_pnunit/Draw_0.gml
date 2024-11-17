@@ -3,41 +3,36 @@
 if (engaged=0) then image_index=0;
 draw_self();*/
 
-
-
-var diff,siz,pos;
-diff=0;pos=880;
-siz=min(400,(men*0.5)+(veh*2.5)+(dreads*2));
-
-if (veh_type[1]="Defenses"){siz=0;
+var diff=0,pos=880;
+if (veh_type[1]="Defenses"){
+    siz=0;
     if (instance_exists(obj_nfort)) then siz=400;
 }
 draw_set_color(c_white);
 if (instance_exists(obj_centerline)){
     diff=x-obj_centerline.x;
-    
-    if (veh_type[1]="Defenses"){
-        diff=135;
-    }
-    
     draw_set_color(c_red);
-    if (veh_type[1]="Defenses") then draw_set_color(c_gray);
+    if (veh_type[1]=="Defenses"){
+        diff=135;
+        draw_set_color(c_gray);
+    }
 }
-
+siz=min(400,(men*0.5)+(veh*2.5)+(dreads*2));
+x_offset = pos+(diff*2);
 if (siz>0){
     draw_set_alpha(1);
     if (highlight>0) then draw_set_alpha(0.8);
-    if ((pos+(diff*2))>817) and ((pos+(diff*2))<1575){
-        draw_rectangle(pos+(diff*2),450-(siz/2),pos+(diff*2)+10,450+(siz/2),0);
+    if (x_offset>817) and (x_offset<1575){
+        draw_rectangle(x_offset,450-(siz/2),x_offset+10,450+(siz/2),0);
     }
     draw_set_alpha(1);
 }
 
 if (highlight>0) and (obj_ncombat.fadein<=0){
     draw_set_color(38144);
-    draw_line(pos+(diff*2)+5,450,817,685);
+    draw_line(x_offset+5,450,817,685);
     draw_set_font(fnt_40k_14b);
-    draw_text(817,688,string_hash_to_newline("Row Composition:"));
+    draw_text(817,688,"Row Composition:");
     draw_set_font(fnt_40k_14);
     draw_text_ext(817,706,string_hash_to_newline(string(highlight3)),-1,758);    
 }

@@ -1,5 +1,4 @@
 // Sets up the ships for each race
-show_debug_message("alarm 1 ally");
 for(var i=1; i<array_length(cooldown); i++){
     cooldown[i]=0;
 }
@@ -886,4 +885,3 @@ if (owner != eFACTION.Eldar){
 // if (obj_fleet.enemy="orks") then name=global.name_generator.generate_ork_ship_name();
 name="sdagdsagdasg";
 // show_message(string(class));
-show_debug_message("alarm 1 ally");

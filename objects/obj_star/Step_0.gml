@@ -18,10 +18,7 @@ if (name!="") and (planets!=0) and (image_alpha==0.33) then image_alpha=1;
 if (storm>0) then storm_image+=1;
 if (storm==0) then storm_image=0;
 // Checks if they are dead planets, then sets up image
-if (planets==1) and (p_type[1]=="Dead") then image_alpha=0.33;
-if (planets==2) and (p_type[1]=="Dead") and (p_type[2]=="Dead") then image_alpha=0.33;
-if (planets==3) and (p_type[1]=="Dead") and (p_type[2]=="Dead") and (p_type[3]=="Dead") then image_alpha=0.33;
-if (planets==4) and (p_type[1]=="Dead") and (p_type[2]=="Dead") and (p_type[3]=="Dead") and (p_type[4]=="Dead") then image_alpha=0.33;
+if (is_dead_star()) then image_alpha=0.33;
 // Reduces enemy ai count by 1 if they are present in planet
 if (ai_a>=0) then ai_a-=1;
 if (ai_b>=0) then ai_b-=1;
@@ -29,12 +26,20 @@ if (ai_c>=0) then ai_c-=1;
 if (ai_d>=0) then ai_d-=1;
 if (ai_e>=0) then ai_e-=1;
 // Sets up enemy ai beheaviour
-if (ai_a==0) then scr_enemy_ai_a();
-if (ai_b==0) then scr_enemy_ai_b();
-if (ai_c==0) then scr_enemy_ai_c();
-if (ai_d==0) then scr_enemy_ai_d();
+if (ai_a==0){
+    try_and_report_loop("enemy ai a",scr_enemy_ai_a);
+}
+if (ai_b==0) {
+    try_and_report_loop("enemy ai b",scr_enemy_ai_b);
+}
+if (ai_c==0)  {
+    try_and_report_loop("enemy ai c",scr_enemy_ai_c);
+}
+if (ai_d==0) {
+    try_and_report_loop("enemy ai d",scr_enemy_ai_d);
+}
 if (ai_e==0){
-    scr_enemy_ai_e();
+    try_and_report_loop("enemy ai e",scr_enemy_ai_e);
 }
 //big ol temporary way
 system_player_ground_forces = array_reduce(p_player, function(prev, curr) {

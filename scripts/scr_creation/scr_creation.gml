@@ -6,13 +6,13 @@ function scr_creation(argument0) {
 	    if (name_bad=1){cooldown=8000;/*(sound_play(bad);*/}
 	    if (name_bad=0){
 	        change_slide=1;goto_slide=3;cooldown=8000;race[100,17]=1;
-	        var k,ahuh;k=0;ahuh=0;repeat(4){k+=1;if (dis[k]="Psyker Intolerant") then ahuh=1;}if (ahuh=1) then race[100,17]=0;
+	        if (scr_has_disadv("Psyker Intolerant")) then race[100,17]=0;
 	    }
 	}
 
 	if (argument0=2) and (custom=0){
 	    change_slide=1;goto_slide=3;cooldown=8000;race[100,17]=1;race[100,14]=1;
-	    var k,ahuh;k=0;ahuh=0;repeat(4){k+=1;if (dis[k]="Psyker Intolerant") then ahuh=1;}if (ahuh=1) then race[100,17]=0;
+	    if (scr_has_disadv("Psyker Intolerant")) then race[100,17]=0;
 	    if (chapter="Iron Hands") or (chapter="Space Wolves") then race[100,14]=0;
 	}
 
@@ -77,33 +77,33 @@ function scr_creation(argument0) {
 	                disposition[3]-=(6-cooperation);
 	                disposition[2]-=(6-cooperation)*2;
 	            }
-            
+            //TODO encode this logic into advantage/disadvantage structs to be more maintainable and less hardcoded
 	            var ahuh,k;ahuh=0;k=0;
-	            repeat(4){k+=1;if (adv[k]="Crafters") then ahuh=1;}
+	            repeat(8){k+=1;if (adv[k]="Crafters") then ahuh=1;}
 	            if (ahuh=1) then disposition[3]+=2;ahuh=0;k=0;
             
-	            repeat(4){k+=1;if (adv[k]="Tech-Brothers") then ahuh=1;}
+	            repeat(8){k+=1;if (adv[k]="Tech-Brothers") then ahuh=1;}
 	            if (ahuh=1) then disposition[3]+=10;ahuh=0;k=0;
             
-	            repeat(4){k+=1;if (adv[k]="Psyker Intolerant") then ahuh=1;}
+	            repeat(8){k+=1;if (adv[k]="Psyker Intolerant") then ahuh=1;}
 	            if (ahuh=1) then disposition[4]+=5;ahuh=0;k=0;
             
-	            repeat(4){k+=1;if (adv[k]="Daemon Binders") then ahuh=1;}
+	            repeat(8){k+=1;if (adv[k]="Daemon Binders") then ahuh=1;}
 	            if (ahuh=1) then disposition[3]-=8;ahuh=0;k=0;
             
-	            repeat(4){k+=1;if (adv[k]="Sieged") then ahuh=1;}
+	            repeat(8){k+=1;if (adv[k]="Sieged") then ahuh=1;}
 	            if (ahuh=1) then disposition[6]+=5;ahuh=0;k=0;
             
-	            repeat(4){k+=1;if (adv[k]="Suspicious") then ahuh=1;}
+	            repeat(8){k+=1;if (adv[k]="Suspicious") then ahuh=1;}
 	            if (ahuh=1) then disposition[4]-=15;ahuh=0;k=0;
             
-	            repeat(4){k+=1;if (adv[k]="Tech-Heresy") then ahuh=1;}
+	            repeat(8){k+=1;if (adv[k]="Tech-Heresy") then ahuh=1;}
 	            if (ahuh=1) then disposition[3]-=8;ahuh=0;k=0;
             
-	            repeat(4){k+=1;if (adv[k]="Psyker Abundance") then ahuh=1;}
+	            repeat(8){k+=1;if (adv[k]="Psyker Abundance") then ahuh=1;}
 	            if (ahuh=1) then disposition[4]-=4;ahuh=0;k=0;
             
-	            repeat(4){k+=1;if (dis[k]="Tolerant") then ahuh=1;}
+	            repeat(8){k+=1;if (dis[k]="Tolerant") then ahuh=1;}
 	            if (ahuh=1){
 	                disposition[1]-=5;disposition[2]-=5;disposition[4]-=5;
 	                disposition[3]-=5;disposition[5]-=5;disposition[6]-=5;

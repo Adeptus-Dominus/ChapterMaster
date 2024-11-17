@@ -6,7 +6,8 @@ function scr_star_ownership(argument0) {
 	var ork_owner, tau_owner, player_owner, imperium_owner, eldar_owner, traitors_owner, forge_owner, tyranids_owner, necrons_owner, nun_owner;
 	ork_owner=0;tau_owner=0;player_owner=0;eldar_owner=0;traitors_owner=0;forge_owner=0;imperium_owner=0;tyranids_owner=0;necrons_owner=0;nun_owner=0;
 
-	repeat(planets){run+=1;
+	repeat(planets){
+		run+=1;
     	if (p_owner[run]=eFACTION.Player){
     		if (dispo[run]<90 && !planet_feature_bool(p_feature[run], P_features.Monastery)){
     			p_owner[run]=2;
@@ -23,6 +24,7 @@ function scr_star_ownership(argument0) {
 	    	p_heresy[run]=0;
 	    	if (p_owner[run]=10) then p_owner[run]=2;}
 	    if (p_type[run]="Daemon") then p_owner[run]=10;
+
     	if (planet_feature_bool(p_feature[run], P_features.Gene_Stealer_Cult)){
     		if (p_influence[run][eFACTION.Tyranids]>50){
     			p_owner[run]=9;

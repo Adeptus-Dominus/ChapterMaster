@@ -82,7 +82,7 @@ function savechapter(){
 	ini_write_string("Creation","master_specialty",chapter_master_specialty);
 	ini_encode_and_json("Creation","complex_livery", complex_livery_data);
 
-	for(var i =1;i<=4;i++){
+	for(var i =1;i<=8;i++){
 		ini_write_string("Creation",$"adv21{i}",adv[i])
 		ini_write_string("Creation",$"dis21{i}",dis[i])
 	}
@@ -181,15 +181,10 @@ function savechapter(){
      chapter_master_ranged21=chapter_master_ranged;
 	 chapter_master_specialty21= chapter_master_specialty;
 
-     adv21[1]=adv[1];
-     adv21[2]=adv[2];
-     adv21[3]=adv[3];
-     adv21[4]=adv[4];
-	
-	 dis21[1]=dis[1];
-     dis21[2]=dis[2];
-     dis21[3]=dis[3];
-     dis21[4]=dis[4];
+	 for(var i = 1; i <= 8; i++){
+		adv21[i] = adv[i];
+		dis21[i] = dis[i];
+	 }
 
   for (var i=0;i<=22;i++){
     role_21[i]=role[100][i];

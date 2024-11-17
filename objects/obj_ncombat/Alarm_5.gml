@@ -9,13 +9,16 @@ alarm[8]=999999;
 // show_message("Final Deaths: "+string(final_deaths));
 
 
+if (turn_count >= 50){
+    part1 = "Your forces make a fighting retreat \n"
+}
 // check for wounded marines here to finish off, if defeated defending
 var roles = obj_ini.role[100];
-
+var ground_mission = (instance_exists(obj_ground_mission));
 if (final_deaths+final_command_deaths>0){
-    part1=$"Marines Lost: {final_deaths+final_command_deaths}";
-    if(apoth){
-        part1+=$" ({roles[Role.APOTHECARY]}{apoth>1?"s":""} prevented the death of {units_saved})";
+    part1+=$"Marines Lost: {final_deaths+final_command_deaths}";
+    if (units_saved > 0){
+        part1+=$" ({roles[Role.APOTHECARY]}{apothecaries_alive>1?"s":""} prevented the death of {units_saved})";
     }
     if (injured>0) then part8=$"Marines Critically Injured: {injured}";
     
@@ -25,9 +28,13 @@ if (final_deaths+final_command_deaths>0){
             part2+=$"{post_units_lost[i]}x {post_unit_lost[i]},";
         }
     }
-    part2=string_delete(part2,string_length(part2)-1,2);part2+=".";i=0;
+    part2=string_delete(part2,string_length(part2)-1,2);
+    part2+=".";i=0;
     
-    if (injured>0){newline=part8;scr_newtext();}
+    if (injured>0){
+        newline=part8;
+        scr_newtext();
+    }
     newline=part1;
     scr_newtext();
     newline=part2;
@@ -37,27 +44,27 @@ if (final_deaths+final_command_deaths>0){
     scr_newtext();
 }
 
-if (instance_exists(obj_temp4)){
-	if (apoth < 0){
-		obj_temp4.apothecary_present = apoth;
+if (ground_mission){
+	if (apothecaries_alive < 0){
+		obj_ground_mission.apothecary_present = apothecaries_alive;
 	}
 };
 
-seed_saved=(min(seed_max,apoth*40))-gene_penalty;
+seed_saved=(min(seed_max,apothecaries_alive*40))-gene_penalty;
 if (string_count("Doom",obj_ini.strin2)>0) then seed_saved=0;
 if (seed_saved>0) then obj_controller.gene_seed+=seed_saved;
 
-if (string_count("Doom",obj_ini.strin2)>0) &&  (!apoth){
+if (string_count("Doom",obj_ini.strin2)>0) &&  (!apothecaries_alive){
     part3=$"Chapter Mutation prevents retrieving Gene-Seed.  {seed_max} Gene-Seed lost.";
     newline=part3;
     scr_newtext();
     newline=" ";
     scr_newtext();
-}else if (!apoth) and (string_count("Doom",obj_ini.strin2)=0){
+}else if (!apothecaries_alive) and (string_count("Doom",obj_ini.strin2)=0){
     part3=$"No able-bodied {roles[Role.APOTHECARY]}.  {seed_max} Gene-Seed lost.";
     newline=part3;scr_newtext();
     newline=" ";scr_newtext();
-}else if (apoth>0) and (final_deaths+final_command_deaths>0) and (string_count("Doom",obj_ini.strin2)=0){
+}else if (apothecaries_alive>0) and (final_deaths+final_command_deaths>0) and (string_count("Doom",obj_ini.strin2)=0){
     part3=$"Gene-Seed Recovered: {seed_saved}(";
     part3 += seed_saved ? $"{round((seed_saved/seed_max)*100)}" : "0";
     part3 += "%)";
@@ -80,10 +87,10 @@ if (red_thirst>2){
 }
 
 
-if (vehicle_deaths>0){
+if (vehicle_deaths>0 || vehicles_saved>0){
     part4="Vehicles Lost: "+string(vehicle_deaths);
-    if (techma=1) then part4+=" ("+string(roles[16])+" prevented the destruction of "+string(vehicles_saved)+")";
-    if (techma>1) then part4+=" ("+string(roles[16])+"s prevented the destruction of "+string(vehicles_saved)+")";
+    if (techmarines_alive=1) then part4+=" ("+string(roles[16])+" prevented the destruction of "+string(vehicles_saved)+")";
+    if (techmarines_alive>1) then part4+=" ("+string(roles[16])+"s prevented the destruction of "+string(vehicles_saved)+")";
     
     var i;i=0;
     repeat(30){i+=1;
@@ -109,7 +116,9 @@ if (post_equipment_lost[1]!=""){
         }
     }
     part7=string_delete(part7,string_length(part7)-1,2);part7+=".";i=0;
-	if (instance_exists(obj_temp4)){part7 += "Some may be recoverable"}
+	if (ground_mission){
+        part7 += "Some may be recoverable"
+    }
     newline=part6;
     scr_newtext();
     newline=part7;
@@ -123,9 +132,9 @@ if (total_battle_exp_gain>0){
     newline = $"Marines gained a total of {total_battle_exp_gain} experience";
     scr_newtext();
 }
-if (instance_exists(obj_temp4)){
-	obj_temp4.post_equipment_lost = post_equipment_lost
-	obj_temp4.post_equipments_lost = post_equipments_lost
+if (ground_mission){
+	obj_ground_mission.post_equipment_lost = post_equipment_lost
+	obj_ground_mission.post_equipments_lost = post_equipments_lost
 }
 if (slime>0){
     var compan_slime;
@@ -163,19 +172,19 @@ if (slime>0){
 instance_activate_object(obj_star);
 
 
-var lowf=true;
-if (battle_special="tyranid_org") then lowf=false;
-if (string_count("_attack",battle_special)>0) then lowf=false;
-if (battle_special="ship_demon") then lowf=false;
-if (enemy+threat=17) then lowf=false;
-if (battle_special="ruins") then lowf=false;
-if (battle_special="ruins_eldar") then lowf=false;
-if (battle_special="fallen1") then lowf=false;
-if (battle_special="fallen2") then lowf=false;
-if (battle_special="study2a") then lowf=false;
-if (battle_special="study2b") then lowf=false;
+var reduce_fortification=true;
+if (battle_special="tyranid_org") then reduce_fortification=false;
+if (string_count("_attack",battle_special)>0) then reduce_fortification=false;
+if (battle_special="ship_demon") then reduce_fortification=false;
+if (enemy+threat=17) then reduce_fortification=false;
+if (battle_special="ruins") then reduce_fortification=false;
+if (battle_special="ruins_eldar") then reduce_fortification=false;
+if (battle_special="fallen1") then reduce_fortification=false;
+if (battle_special="fallen2") then reduce_fortification=false;
+if (battle_special="study2a") then reduce_fortification=false;
+if (battle_special="study2b") then reduce_fortification=false;
 
-if (fortified>0) and (!instance_exists(obj_nfort)) and (lowf=true){
+if (fortified>0) and (!instance_exists(obj_nfort)) and (reduce_fortification=true){
     part9="Fortification level of "+string(battle_loc);
     if (battle_id=1) then part9+=" I";
     if (battle_id=2) then part9+=" II";
@@ -200,31 +209,32 @@ if (fortified>0) and (!instance_exists(obj_nfort)) and (lowf=true){
 
 
 if (defeat=0) and (battle_special="space_hulk"){
-    var en_power=0,loot=0,dicey=floor(random(100))+1,ex=0;
+    var enemy_power=0,loot=0,dicey=floor(random(100))+1,ex=0;
 
     if (enemy=7){
-        en_power=battle_object.p_orks[battle_id];
+        enemy_power=battle_object.p_orks[battle_id];
         battle_object.p_orks[battle_id]-=1;
     }
     else if (enemy=9){
-        en_power=battle_object.p_tyranids[battle_id];
+        enemy_power=battle_object.p_tyranids[battle_id];
         battle_object.p_tyranids[battle_id]-=1;
     }
     else if (enemy=10){
-        en_power=battle_object.p_traitors[battle_id];
+        enemy_power=battle_object.p_traitors[battle_id];
         battle_object.p_traitors[battle_id]-=1;
     }
 
     part10="Space Hulk Exploration at ";
-    ex=min(100,100-((en_power-1)*20));
+    ex=min(100,100-((enemy_power-1)*20));
     part10+=string(ex)+"%";
-    newline=part10;if (ex=100) then newline_color="red";
+    newline=part10;
+    if (ex=100) then newline_color="red";
     scr_newtext();
 
     if (string_count("Shitty",obj_ini.strin2)>0) then dicey=dicey*1.5;
-    // show_message("Roll Under: "+string(en_power*10)+", Roll: "+string(dicey));
+    // show_message("Roll Under: "+string(enemy_power*10)+", Roll: "+string(dicey));
 
-    if (dicey<=(en_power*10)){
+    if (dicey<=(enemy_power*10)){
         loot=choose(1,2,3,4);
         if (enemy!=10) then loot=choose(1,1,2,3);
         hulk_treasure=loot;
@@ -243,48 +253,81 @@ if (string_count("ruins",battle_special)>0){
     scr_newtext();
 }
 
-var npowers;npowers=true;
-if (battle_special="tyranid_org") then npowers=false;
-if (battle_special="ship_demon") then npowers=false;
-if (string_count("_attack",battle_special)>0) then npowers=false;
-if (string_count("ruins",battle_special)>0) then npowers=false;
-if (battle_special="space_hulk") then npowers=false;
-if (battle_special="fallen1") then npowers=false;
-if (battle_special="fallen2") then npowers=false;
-if (battle_special="study2a") then npowers=false;
-if (battle_special="study2b") then npowers=false;
-if (defeat=0) and (npowers=true){
-    var en_power,new_power;
-    en_power=0;new_power=0;
+var reduce_power=true;
+if (battle_special="tyranid_org") then reduce_power=false;
+if (battle_special="ship_demon") then reduce_power=false;
+if (string_count("_attack",battle_special)>0) then reduce_power=false;
+if (string_count("ruins",battle_special)>0) then reduce_power=false;
+if (battle_special="space_hulk") then reduce_power=false;
+if (battle_special="fallen1") then reduce_power=false;
+if (battle_special="fallen2") then reduce_power=false;
+if (battle_special="study2a") then reduce_power=false;
+if (battle_special="study2b") then reduce_power=false;
+if (defeat=0) and (reduce_power=true){
+    var enemy_power,new_power, power_reduction, final_pow, requisition_reward, power_fought;
+    enemy_power=0;new_power=0; power_reduction=0; requisition_reward=0; power_fought=0;
 
     if (enemy=2){
-        en_power=battle_object.p_guardsmen[battle_id];
+        enemy_power=battle_object.p_guardsmen[battle_id];
         battle_object.p_guardsmen[battle_id]-=threat;
         // if (threat=1) or (threat=2) then battle_object.p_guardsmen[battle_id]=0;
     }
 
-    if (enemy=5){en_power=battle_object.p_sisters[battle_id];part10="Ecclesiarchy";}
-    if (enemy=6){en_power=battle_object.p_eldar[battle_id];part10="Eldar";}
-    if (enemy=7){en_power=battle_object.p_orks[battle_id];part10="Ork";}
-    if (enemy=8){en_power=battle_object.p_tau[battle_id];part10="Tau";}
-    if (enemy=9){en_power=battle_object.p_tyranids[battle_id];part10="Tyranid";}
-    if (enemy=10){en_power=battle_object.p_traitors[battle_id];part10="Heretic";if (threat=7) then part10="Daemon";}
-    if (enemy=11){en_power=battle_object.p_chaos[battle_id];part10="Chaos Space Marine";}
-    if (enemy=13){en_power=battle_object.p_necrons[battle_id];part10="Necrons";}
+    if (enemy=5){
+        enemy_power=battle_object.p_sisters[battle_id];
+        part10="Ecclesiarchy";
+    }
+    else if (enemy=6){
+        enemy_power=battle_object.p_eldar[battle_id];
+        part10="Eldar";
+    }
+    else if (enemy=7){
+        enemy_power=battle_object.p_orks[battle_id];
+        part10="Ork";
+    }
+    else if (enemy=8){
+        enemy_power=battle_object.p_tau[battle_id];
+        part10="Tau";
+    }
+    else if (enemy=9){
+        enemy_power=battle_object.p_tyranids[battle_id];
+        part10="Tyranid";
+    }
+    else if (enemy=10){
+        enemy_power=battle_object.p_traitors[battle_id];
+        part10="Heretic";if (threat=7) then part10="Daemon";
+    }
+    else if (enemy=11){
+        enemy_power=battle_object.p_chaos[battle_id];
+        part10="Chaos Space Marine";}
+    else if (enemy=13){
+        enemy_power=battle_object.p_necrons[battle_id];
+        part10="Necrons";
+    }
 
-    if (instance_exists(battle_object)) and (en_power>2){
+    if (instance_exists(battle_object)) and (enemy_power>2){
         if (awake_tomb_world(battle_object.p_feature[battle_id])!=0){
-            scr_gov_disp(battle_object.name,battle_id,floor(en_power/2));
+            scr_gov_disp(battle_object.name,battle_id,floor(enemy_power/2));
         }
     }
 
 	
     if (enemy!=2){
-        if (attacker=0) then new_power=en_power-1;
-        if ((attacker=1) or (dropping=1)) then new_power=en_power-2;
+        if (dropping == true || defending == true) {
+            power_reduction = 1;
+            power_fought = max(enemy_power - 1, 1); // Raiding generates enemies at -1 power, so less points
+        } else {
+            power_reduction = 2;
+            power_fought = enemy_power;
+        }
+        new_power = enemy_power - power_reduction;
+        new_power = max(new_power, 0);
 
-        new_power=max(new_power,0);
-		
+        // Give some money for killing enemies?
+        var reward_table = [0, 5, 10, 20, 40, 80, 160, 320];
+        requisition_reward = reward_table[power_fought];
+        obj_controller.requisition += requisition_reward;
+
 		//(¿?) Ramps up threat/enemy presence in case enemy Type == "Daemon" (¿?)
 		//Does the inverse check/var assignment 10 lines above
         if (part10="Daemon") then new_power=7;
@@ -323,25 +366,25 @@ if (defeat=0) and (npowers=true){
                 }                               
             }
         }
-        if (enemy=11) and (en_power!=floor(en_power)) then en_power=floor(en_power);
+        if (enemy=11) and (enemy_power!=floor(enemy_power)) then enemy_power=floor(enemy_power);
     }
 
 
-    if ((obj_controller.blood_debt=1) and (defeat=0) && en_power>0){
-        var final_pow = min(en_power, 6)-1;
+    if ((obj_controller.blood_debt=1) and (defeat=0) && enemy_power>0){
+        final_pow = min(enemy_power, 6)-1;
         if (enemy=6) or (enemy=9) or (enemy=11) or (enemy=13){
             obj_controller.penitent_turn=0;
             obj_controller.penitent_turnly=0;
             var penitent_crusade_chart = [25,62,95,190,375,750];
 
-            var final_pow = min(en_power, 6)-1;
+            final_pow = min(enemy_power, 6)-1;
             obj_controller.penitent_current+=penitent_crusade_chart[final_pow];
 
         }
         else if (enemy=7) or (enemy=8) or (enemy=10){
             obj_controller.penitent_turn=0;
             obj_controller.penitent_turnly=0;
-            var final_pow = min(en_power, 7)-1;
+            final_pow = min(enemy_power, 7)-1;
             var penitent_crusade_chart = [25,50,75,150,300,600, 1500];         
              obj_controller.penitent_current+=penitent_crusade_chart[final_pow];
         }
@@ -357,16 +400,24 @@ if (defeat=0) and (npowers=true){
     else if (enemy=13){battle_object.p_necrons[battle_id]=new_power;}
 
     if (enemy!=2) and (string_count("cs_meeting_battle",battle_special)=0){
-        part10+=" Forces on "+string(battle_loc);
+        part10+=" forces on "+string(battle_loc);
         if (battle_id=1) then part10+=" I";
         if (battle_id=2) then part10+=" II";
         if (battle_id=3) then part10+=" III";
         if (battle_id=4) then part10+=" IV";
         if (battle_id=5) then part10+=" V";
-        part10+=$" have decreased to {new_power} ({en_power} {en_power-new_power})";
+        if (new_power == 0){
+            part10+=$" were completely wiped out. Previous power: {
+                enemy_power}. Reduction: {power_reduction}.";
+        } else {
+            part10+=$" were reduced to {new_power} after this battle. Previous power: {
+                enemy_power}. Reduction: {power_reduction}.";
+        }
         newline=part10;scr_newtext();
-
-        if (new_power<=0) and (en_power>0) then battle_object.p_raided[battle_id]=1;
+        part10 = $"Received {requisition_reward} requisition points as a reward for slaying enemies of the Imperium.";
+        newline=part10;scr_newtext();
+    
+        if (new_power<=0) and (enemy_power>0) then battle_object.p_raided[battle_id]=1;
     }
     if (enemy=2){
         part10+=" Imperial Guard Forces on "+string(battle_loc);
@@ -375,7 +426,7 @@ if (defeat=0) and (npowers=true){
         if (battle_id=3) then part10+=" III";
         if (battle_id=4) then part10+=" IV";
         if (battle_id=5) then part10+=" V";
-        part10+=" have decreased to "+string(battle_object.p_guardsmen[battle_id])+" ("+string(en_power)+"-"+string(threat)+")";
+        part10+=" were reduced to "+string(battle_object.p_guardsmen[battle_id])+" ("+string(enemy_power)+"-"+string(threat)+")";
         newline=part10;scr_newtext();
     }
 
@@ -441,6 +492,7 @@ if (defeat=0) and (npowers=true){
         }
     }*/
 }
+
 if (defeat=0) and (enemy=9) and (battle_special="tyranid_org"){
     // show_message(string(captured_gaunt));
     if (captured_gaunt=1) then newline=captured_gaunt+" Gaunt organism have been captured.";
@@ -487,8 +539,12 @@ if (((leader)) or ((battle_special="world_eaters") and (!obj_controller.faction_
     if (enemy=6) then scr_event_log("","Enemy Leader Assassinated: Eldar Farseer");
     if (enemy=7){
 		scr_event_log("","Enemy Leader Assassinated: Ork Warboss");
-		if (Warlord !=0){Warlord.kill_warboss()}
-		}
+		if (Warlord !=0){
+            with (Warlord){
+                kill_warboss();
+            }
+        }
+	}
     if (enemy=8) then scr_event_log("","Enemy Leader Assassinated: Tau Diplomat");
     if (enemy=10) then scr_event_log("","Enemy Leader Assassinated: Chaos Lord");
 }
@@ -601,7 +657,7 @@ if (obj_ini.omophagea){
                     scr_event_log("red","EXCOMMUNICATUS TRAITORUS");  
                     obj_controller.alarm[8]=1;   
                     if ((!instance_exists(obj_turn_end))){
-                        var pip;pip=instance_create(0,0,obj_popup);
+                        var pip=instance_create(0,0,obj_popup);
                         pip.title="Inquisitor Killed";
                         pip.text=msg;
                         pip.image="inquisition";
@@ -617,7 +673,7 @@ if (obj_ini.omophagea){
 
                 with(inquisitor_ship){instance_destroy();}
                 with(obj_temp3){instance_destroy();}
-                with(obj_temp4){instance_destroy();}
+                with(obj_ground_mission){instance_destroy();}
             }
             instance_deactivate_object(obj_star);
             instance_deactivate_object(obj_en_fleet);
@@ -628,7 +684,8 @@ if (obj_ini.omophagea){
 if (inq_eated=false) and (obj_ncombat.sorcery_seen>=2){
     scr_loyalty("Use of Sorcery","+");
     newline="Inquisitor "+string(obj_controller.inquisitor[1])+" witnessed your Chapter using sorcery.";
-    scr_event_log("green",string(newline));scr_newtext();
+    scr_event_log("green",string(newline));
+    scr_newtext();
 }
 
 if (exterminatus>0) and (dropping!=0){
@@ -642,7 +699,7 @@ instance_activate_object(obj_star);
 instance_activate_object(obj_turn_end);
 
 //If not fleet based and...
-if (obj_ini.fleet_type!=1) and (defeat==1) and (dropping==0){
+if (obj_ini.fleet_type != ePlayerBase.home_world) and (defeat==1) and (dropping==0){
 	var monastery_list = search_planet_features(battle_object.p_feature[obj_ncombat.battle_id], P_features.Monastery);
 	var monastery_count = array_length(monastery_list);
 	if(monastery_count>0){
@@ -726,14 +783,16 @@ if (endline=0){
 
 if (defeat=1){
 	player_forces=0;
-		if (instance_exists(obj_temp4)){
-		obj_temp4.recoverable_gene_seed = seed_max;
+	if (ground_mission){
+		obj_ground_mission.recoverable_gene_seed = seed_max;
 	}
 	
 }
 
 instance_deactivate_object(obj_star);
+instance_deactivate_object(obj_ground_mission);
 
-
+show_debug_message($"{instance_number(obj_popup)}");
+show_debug_message($"{started}");
 /* */
 /*  */

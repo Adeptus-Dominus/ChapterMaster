@@ -40,7 +40,7 @@ function scr_draw_management_unit(selected, yy=0, xx=0, draw=true){
 			};
 			assignment=unit.assignment();
 			if (assignment!="none"){
-				unit_location_string+= $"({assignment})";
+				unit_location_string += $"({assignment})";
 			}else if (fest_planet==0) and (fest_sid>0) and (fest_repeats>0) and (ma_lid[selected]==fest_sid){
 				unit_location_string="=Event=";
 				eventing=true;
@@ -130,7 +130,7 @@ function scr_draw_management_unit(selected, yy=0, xx=0, draw=true){
   		}
 	}
 
-	if (draw && !impossible){
+	if (draw && !impossible && ma_view[selected]){
 		draw_set_alpha(1);
 	    draw_set_color(c_black);
 		draw_rectangle(xx+25,yy+64,xx+974,yy+85,0);
@@ -216,7 +216,7 @@ function scr_draw_management_unit(selected, yy=0, xx=0, draw=true){
 			if (ma_promote[selected] >= 10){
 				hpColor = c_red;
 				array_push(health_tooltip, ["Critical Health State! Bionic augmentation is required!", [xx+250, yy+64, xx+300, yy+85]]);
-			}else if (ma_promote[selected] > 0 && !unit_specialist){
+			}else if (ma_promote[selected] > 0 && !unit_specialist && obj_controller.command_set[2] != 0){
 				xpColor = c_yellow;
 				array_push(promotion_tooltip, ["Promotion Recommended", [xx+335, yy+64, xx+385, yy+85]]);
 			}
@@ -306,40 +306,31 @@ function scr_draw_management_unit(selected, yy=0, xx=0, draw=true){
 	        if (ar_we2==2) then draw_set_color(881503);
 	        draw_text(xx+573+xoffset,yy+66,string_hash_to_newline(string(ma_we2)));
 	    }
+	    var cols = [c_gray,c_gray, 881503]
 	    if (man[selected]!="man"){
 			var xoffset=0;
 			//Vehicle Upgrade
-			draw_set_color(c_gray);
-			if (ar_ge==1) then draw_set_color(c_gray);
-			if (ar_ge==2) then draw_set_color(881503);
+			draw_set_color(cols[ar_ge]);
 			draw_text(xx+573,yy+66,string_hash_to_newline(string(ma_ge)));
 		
 			//Vehicle accessory
 			xoffset+=string_width(string_hash_to_newline(ma_ge))+15;
-			draw_set_color(c_gray);
-			if (ar_mb==1) then draw_set_color(c_gray);
-			if (ar_mb==2) then draw_set_color(881503);
+			draw_set_color(cols[ar_mb]);
 			draw_text(xx+573+xoffset,yy+66,string_hash_to_newline(string(ma_mb)));
 		
 			//Vehicle wep 1
 			xoffset+=string_width(string_hash_to_newline(ma_mb))+15;
-			draw_set_color(c_gray);
-			if (ar_we1==1) then draw_set_color(c_gray);
-			if (ar_we1==2) then draw_set_color(881503);
+			draw_set_color(cols[ar_we1]);
 			draw_text(xx+573+xoffset,yy+66,string_hash_to_newline(string(ma_we1)));
 		
 			//Vehicle wep 2
 			xoffset+=string_width(string_hash_to_newline(ma_we1))+15;
-			draw_set_color(c_gray);
-			if (ar_we2==1) then draw_set_color(c_gray);
-			if (ar_we2==2) then draw_set_color(881503);
+			draw_set_color(cols[ar_we2]);
 			draw_text(xx+573+xoffset,yy+66,string_hash_to_newline(string(ma_we2)));
 		
 			//Vehicle wep 3
 			xoffset+=string_width(string_hash_to_newline(ma_we2))+15;
-			draw_set_color(c_gray);
-			if (ar_ar==1) then draw_set_color(c_gray);
-			if (ar_ar==2) then draw_set_color(881503);
+			draw_set_color(cols[ar_ar]);
 			draw_text(xx+573+xoffset,yy+66,string_hash_to_newline(string(ma_ar)));
 	    }
 	}
@@ -356,14 +347,49 @@ function scr_draw_management_unit(selected, yy=0, xx=0, draw=true){
     		wrong_location = ma_loc[selected]!=selecting_location;
     	}
     }
+
+    if (!wrong_location){
+    	wrong_location = (ma_loc[selected] == "Terra");
+    }
     
     var unclickable = (eventing || jailed || wrong_location || impossible || instance_exists(obj_star_select));
 
     if (!unclickable){
     	var changed = false;
+		    	
+    	if (sel_all!="") {
+			if(sel_all == "all"){
+				changed = true;
+			} else if (sel_all=="vehicle" && !is_man){
+				changed = true;
+			} else if(sel_all=="man" && is_man){
+				changed = true;    			
+			} else if (sel_all=="Command" && is_man){
+				if (unit.IsSpecialist("command")){
+					changed=true
+				} else if (unit.squad!="none"){
+					if (obj_ini.squads[unit.squad].type=="command_squad"){
+						changed=true
+					}
+				}
+			} else if (ma_role[selected] == sel_all){
+				changed = true;  
+			}
+    	}
+    	if (filter_mode && changed){
+    		ma_view[selected] = !ma_view[selected];
+    		changed = false;
+    	} else if (changed){
+    		man_sel[selected] = !man_sel[selected];
+    	}
+    	if (!ma_view[selected]){
+    		changed = false;
+    		man_sel[selected]=false;
+    	}
+
     	// individual click
-    	if (draw && scrollbar_engaged==0){
-	    	if (mouse_check_button(mb_left) && point_in_rectangle(mouse_x, mouse_y,xx+25+8,yy+64,xx+974,yy+85) && rectangle_action==-1 /*squad[selected]=squad_sel*/){
+    	if (draw && scrollbar_engaged==0 && ma_view[selected]){
+			if (point_and_click([xx+25+8, yy+64, xx+974, yy+85]) && rectangle_action==-1 /*squad[selected]=squad_sel*/){
 				if (double_click<1){
 					double_was=selected;
 					double_click=12;
@@ -388,31 +414,6 @@ function scr_draw_management_unit(selected, yy=0, xx=0, draw=true){
 	    		}
 	    	}
     	}
-    	if (sel_all!="") {
-    		if (sel_all=="vehicle" || sel_all=="man" || sel_all == "Command"){
-	    		if (sel_all=="vehicle" && !is_man){
-	    			man_sel[selected] = !man_sel[selected];
-	    			changed = true;
-	    		} else if(sel_all=="man" && is_man){
-	    			man_sel[selected] = !man_sel[selected];
-	    			changed = true;    			
-	    		}else if (sel_all=="Command" && is_man){
-
-                    if (unit.IsSpecialist("command")){
-                    	man_sel[selected] = !man_sel[selected];
-                        changed=true
-                    }else if (unit.squad!="none"){
-                        if (obj_ini.squads[unit.squad].type=="command_squad"){
-                        	man_sel[selected] = !man_sel[selected];
-                            changed=true
-                        }
-                    }
-                }
-	    	}else if (ma_role[selected] == sel_all){
-				man_sel[selected] = !man_sel[selected];
-	    		changed = true;  
-    		}
-    	}   	
     	if (changed){
 			if(no_location){
                 selecting_location=ma_loc[selected];
@@ -446,8 +447,6 @@ function scr_draw_management_unit(selected, yy=0, xx=0, draw=true){
         if (((mouse_x>=xx+25 && mouse_y>=yy+64 && mouse_x<xx+974 && mouse_y<yy+85) || force_tool==1) && is_struct(unit)){
             temp[120] = unit; // unit_struct
         }
-        if (man_sel[selected]){
-        	man_count++;
-        }
     }
+    if (!ma_view[selected]) return "continue";
 }

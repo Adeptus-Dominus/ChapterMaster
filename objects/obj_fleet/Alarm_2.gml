@@ -1,4 +1,4 @@
-show_debug_message("alarm2");
+
 capital_max=capital;
 frigate_max=frigate;
 escort_max=escort;
@@ -282,4 +282,4 @@ if (enemy=9){// This is an orderly Tyranid ship formation
 
 /* */
 action_set_alarm(2, 3);
-/*  */show_debug_message("alarm2");
+

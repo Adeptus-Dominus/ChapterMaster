@@ -1,5 +1,5 @@
 
-
+try_and_report_loop("fleet alarm 4", function(){
 if (action!=""){
     var sys, sys_dist, mine, connected, fleet, cont;
     sys_dist=9999;connected=0;cont=0;
@@ -32,25 +32,27 @@ if (action!=""){
 
 
 
-if (action=""){
+if (action==""){
     var sys, sys_dist, mine, connected, fleet, cont, target_dist;
     sys_dist=9999;connected=0;cont=0;target_dist=0;
     
     fleet=id;
     sys=instance_nearest(action_x,action_y,obj_star);
     sys_dist=point_distance(action_x,action_y,sys.x,sys.y);
-    if (target!=0) and (instance_exists(target)) then target_dist=point_distance(x,y,target.action_x,target.action_y);
+    if (scr_valid_fleet_target(target)){
+        target_dist=point_distance(x,y,target.action_x,target.action_y);
+    } else {
+        target=0;
+    }
+    
     act_dist=point_distance(x,y,sys.x,sys.y);
     mine=instance_nearest(x,y,obj_star);
     
     // if (owner = eFACTION.Tau) then mine.tau_fleets-=1;
     // if (owner = eFACTION.Tau) and (image_index!=1) then mine.tau_fleets-=1;
     // mine.present_fleets-=1;
-    
-    
-    if (mine.buddy=sys) then connected=1;
-    if (sys.buddy=mine) then connected=1;
-    
+
+    connected = determine_warp_join(mine, sys);
     cont=1;
     
     
@@ -58,20 +60,22 @@ if (action=""){
         cont=20;
     }
     
-    
     if (cont=20){// Move the entire fleet, don't worry about the other crap
-        var eta;eta=0;
+        var eta=0;
         
         if (trade_goods!="") and (owner != eFACTION.Tyranids) and (owner != eFACTION.Chaos) and (string_count("Inqis",trade_goods)=0) and (string_count("merge",trade_goods)=0)and (string_count("_her",trade_goods)=0) and (trade_goods!="cancel_inspection") and (trade_goods!="return"){
-            if (target!=0) and (instance_exists(target)){
+            if (scr_valid_fleet_target(target)){
                 if (target.action!=""){
                     if (target_dist>sys_dist){
                         action_x=target.action_x;
                         action_y=target.action_y;
-                        sys=instance_nearest(action_x,action_y,obj_star);}
+                        sys=instance_nearest(action_x,action_y,obj_star);
+                    }
                 }
+            } else {
+                target = 0;
             }
-        }        
+        }
         
         eta=floor(point_distance(x,y,action_x,action_y)/action_spd)+1;
         if (connected=0) then eta=eta*2;
@@ -98,4 +102,6 @@ if (action=""){
 }
 
 etah=0;
+
+});
 

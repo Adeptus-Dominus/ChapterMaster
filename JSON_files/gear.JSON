@@ -358,7 +358,7 @@
         "artifact": 20 // Adjusted
       }
     },
-    "Servo Arms": {
+    "Servo-arm": {
       "special_description": "Integrated flamer, repairs",
       "description": "A pair of powerful, mechanical arms. They include several tools that allow trained marines to repair vehicles rapidly.",
       "damage_resistance_mod": {
@@ -372,7 +372,7 @@
         "artifact": 0
       }
     },
-    "Master Servo Arms": {
+    "Servo-harness": {
       "special_description": "Integrated flamer, repairs",
       "description": "This master servo harness includes additional mechanical arms and tools, allowing a greater capacity and rate of repairs.",
       "damage_resistance_mod": {

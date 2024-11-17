@@ -44,7 +44,7 @@ if (instance_number(obj_temp_inq) < target_navy_number){
 	}
     with(obj_star) {
         var sco=0;
-        for(var o=1; o<=4; o++){
+        for(var o=1; o<=planets; o++){
             if (p_type[o]="Hive") then sco+=3;
             if (p_type[o]="Temperate") then sco+=1;
         }
@@ -59,7 +59,7 @@ for(var i=0; i<30; i++){
 }
 
 with(obj_temp_inq){
-    var ii=0,nav=instance_create(x+24,y-24,obj_en_fleet);
+    var ii=0,nav=instance_create(x,y,obj_en_fleet);
     nav.owner=eFACTION.Imperium;
     nav.navy=1;
     
@@ -69,6 +69,7 @@ with(obj_temp_inq){
     nav.home_x=x;nav.home_y=y;
     nav.orbiting=instance_nearest(x,y,obj_star);
     nav.orbiting.present_fleet[eFACTION.Imperium] += 1;
+    nav.warp_able=true;
     
     nav.image_speed=0;
     ii+=nav.capital_number-1;

@@ -82,22 +82,25 @@ function scr_enemy_ai_a() {
 	        }
         	
 
-	        if (stop=false){
+	        if (!stop){
 	            var plap=0,old_x=x,old_y=y,flee=0;
             	var _current_planet_name = name;
             	var launch_planet, launch_point_found=false;
-            	launch_planet = nearest_star_with_ownership(x,y, [owner=eFACTION.Imperium || owner=eFACTION.Mechanicus]);
-
-            	if (instance_exists(launch_planet)){
-		            flee=instance_create(launch_planet.x,launch_planet.y-24,obj_en_fleet);
-		            with (flee){
-		            	base_inquis_fleet();
-		            }
-		            flee.action_x=x;
-		            flee.action_y=y;
-		            flee.trade_goods+="|investigate_dead|";
-		            flee.alarm[4]=1;
-            	}
+            	launch_planet = nearest_star_with_ownership(x,y, [owner=eFACTION.Imperium, owner=eFACTION.Mechanicus], self.id);
+            	if (launch_planet != "none"){
+	            	if (instance_exists(launch_planet)){
+			            flee=instance_create(launch_planet.x,launch_planet.y,obj_en_fleet);
+			            with (flee){
+			            	base_inquis_fleet();
+			            }
+			            flee.action_x=x;
+			            flee.action_y=y;
+			            flee.trade_goods+="|investigate_dead|";
+			            with (flee){
+			            	set_fleet_movement();
+			            }
+	            	}
+	            }
 	        }
 	    }
     
@@ -108,8 +111,8 @@ function scr_enemy_ai_a() {
     var garrison_force=false, total_garrison=0;
 	for (run =1;run<=planets;run++){
 		garrison_force=false;
-		var garrison = new garrison_force(p_operatives[run], true);
-		var sabatours = new garrison_force(p_operatives[run], true, "sabotage");
+		var garrison = new GarrisonForce(p_operatives[run], true);
+		var sabatours = new GarrisonForce(p_operatives[run], true, "sabotage");
 
 		garrison_force = garrison.garrison_force;
 		array_push(system_garrison, garrison);
@@ -161,8 +164,9 @@ function scr_enemy_ai_a() {
 	    if (p_tau[run]=0) and (p_orks[run]=0) and (p_traitors[run]=0) and (p_chaos[run]=0) and (p_player[run]<=0) and (tyranids_score<5) and (p_necrons[run]=0) and (p_owner[run]=8) and (p_sisters[run]=0) then stop=1;
     
 	    if (p_orks[run]>0) and (p_sisters[run]>0) then stop=0;
-	    if (p_necrons[run]>=5) and ((p_guardsmen[run]>0) or (p_pdf[run]>0) or (p_sisters[run]>0)) then stop=0;
-	    if (p_tyranids[run]>=5) and ((p_guardsmen[run]>0) or (p_pdf[run]>0) or (p_sisters[run]>0)) then stop=0;
+	    var imperium_forces = ((p_guardsmen[run]>0) or (p_pdf[run]>0) or (p_sisters[run]>0));
+	    if (p_necrons[run]>=5 && imperium_forces) then stop=0;
+	    if (p_tyranids[run]>=5 && imperium_forces) then stop=0;
 	    if ((p_guardsmen[run]>0) or (p_sisters[run]>0)) and ((p_pdf[run]>0) or (p_tau[run]>0)) and (p_owner[run]=8) and (stop=1) then stop=0;
     
 	    // Attack heretics whenever possible, even player controlled ones

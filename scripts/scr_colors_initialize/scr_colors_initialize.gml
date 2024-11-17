@@ -57,7 +57,7 @@ function scr_colors_initialize() {
         ["Brown", 112, 66, 0],
         ["Light Brown", 160,117,75],
         ["Lightest Brown", 173, 128, 82],
-        ["Deathwing", 238, 204, 163],
+        ["Deathwing", 218, 184, 143],
         ["Bone", 245, 236, 205],
         ["Yellow", 255, 220, 0],
         ["Dark Gold", 204, 150, 38],

@@ -22,25 +22,26 @@ function scr_event_gossip(argument0) {
 	if (obj_ini.mobi[attend_co[argument0],attend_id[argument0]]="Bike"){p+=1;gossip[p]="mah_bike";}
 	if (obj_ini.mobi[attend_co[argument0],attend_id[argument0]]="Jump Pack"){p+=1;gossip[p]="mah_jump";}
 
-	with(obj_temp4){instance_destroy();}
-	with(obj_star){if (owner = eFACTION.Ork) then instance_create(x,y,obj_temp4);}
-	if (instance_number(obj_temp4)>4) and (obj_controller.known[eFACTION.Ork]>0) and (obj_controller.faction_defeated[7]=0){
-	    p+=1;gossip[p]="ork_waaagh";
+	with(obj_ground_mission){instance_destroy();}
+	with(obj_star){if (owner = eFACTION.Ork) then instance_create(x,y,obj_ground_mission);}
+	if (instance_number(obj_ground_mission)>4) and (obj_controller.known[eFACTION.Ork]>0) and (obj_controller.faction_defeated[7]=0){
+	    p+=1;
+	    gossip[p]="ork_waaagh";
 	}
-	with(obj_temp4){instance_destroy();}
+	with(obj_ground_mission){instance_destroy();}
 
 	if (obj_controller.marines<=400){p+=1;gossip[p]="small_chapter";}
 	p+=1;gossip[p]="eager";
 
 
-	with(obj_temp4){instance_destroy();}with(obj_star){if (owner = eFACTION.Ork) then instance_create(x,y,obj_temp4);}
-	if (instance_number(obj_temp4)>=8){p+=1;gossip[p]="ork_numbers";}with(obj_temp4){instance_destroy();}
+	with(obj_ground_mission){instance_destroy();}with(obj_star){if (owner = eFACTION.Ork) then instance_create(x,y,obj_ground_mission);}
+	if (instance_number(obj_ground_mission)>=8){p+=1;gossip[p]="ork_numbers";}with(obj_ground_mission){instance_destroy();}
 
-	with(obj_temp4){instance_destroy();}with(obj_star){if (owner = eFACTION.Tau) then instance_create(x,y,obj_temp4);}
-	if (instance_number(obj_temp4)>=8){p+=1;gossip[p]="tau_numbers";}with(obj_temp4){instance_destroy();}
+	with(obj_ground_mission){instance_destroy();}with(obj_star){if (owner = eFACTION.Tau) then instance_create(x,y,obj_ground_mission);}
+	if (instance_number(obj_ground_mission)>=8){p+=1;gossip[p]="tau_numbers";}with(obj_ground_mission){instance_destroy();}
 
-	with(obj_temp4){instance_destroy();}with(obj_star){if (owner = eFACTION.Chaos) then instance_create(x,y,obj_temp4);}
-	if (instance_number(obj_temp4)>=8){p+=1;gossip[p]="chaos_numbers";}with(obj_temp4){instance_destroy();}
+	with(obj_ground_mission){instance_destroy();}with(obj_star){if (owner = eFACTION.Chaos) then instance_create(x,y,obj_ground_mission);}
+	if (instance_number(obj_ground_mission)>=8){p+=1;gossip[p]="chaos_numbers";}with(obj_ground_mission){instance_destroy();}
 
 	if (obj_controller.faction_status[eFACTION.Inquisition]!="War") and (obj_controller.disposition[4]<=25){p+=1;gossip[p]="low_dispo_inqi";}
 	if (obj_controller.faction_status[eFACTION.Imperium]!="War") and (obj_controller.disposition[2]<=25){p+=1;gossip[p]="low_dispo_impe";}

@@ -9,6 +9,9 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 	// This is a stand-alone script that determines powers based on the POWERS variable,
 	// executes them, and applies the effect and flavor.  All in one.  Because I eventually
 	// got better at this sort of thing.
+    
+    // This is called in context of a obj_pnunit
+    
 	var unit = unit_struct[unit_id];
 	if (!is_struct(unit))then exit;
 	if (unit.name()=="")then exit;
@@ -427,12 +430,14 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 	}
 
 	if (has_force_weapon){
-		if (p_att>0) then p_att=round(p_att)*1.25;
-		if (p_rang>0) then p_rang=round(p_rang)*1.25;
 		if (unit.weapon_one()=="Force Staff" || unit.weapon_two()=="Force Staff"){
 			if (p_att>0) then p_att=round(p_att)*2;
 			if (p_rang>0) then p_rang=round(p_rang)*1.5;
-		}		
+		}
+		else{
+			if (p_att>0) then p_att=round(p_att)*1.25;
+			if (p_rang>0) then p_rang=round(p_rang)*1.25;
+		}
 	}
 
 	if (binders==true) and (p_type=="attack"){
@@ -510,40 +515,38 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 	    flavour_text1=$"{unit.name_role()} suffers Perils of the Warp!  ";
 	    flavour_text2=scr_perils_table(peril3, unit, psy_discipline, power_name,unit_id, book_powers);
     
-	    if (unit.hp()<0){
-	        if (marine_dead[unit_id]=0) then marine_dead[unit_id]=1;
-	        obj_ncombat.player_forces-=1;
-       
-	        var units_lost=0,going_up=0;
-	        var important=[],u=-1,hh=0,stahp=0;
-	        repeat(50)
-	        	{
-	        		u+=1;
-	        		if (u<=20) then important[u]="";
-	        		lost[u]="";
-	        		lost_num[u]=0;
-	        	}
-	        var h=0,good=0,open=0;
-	        repeat(30){// Need to find the open slot
-	            h+=1;
-	            if (obj_ncombat.player_forces>6){
-	                if (marine_type[unit_id]=lost[hh]) and (good=0){
-	                	lost_num[hh]+=1;
-	                	good=1;
-	                }// If one unit is all the same, and get smashed, this should speed up the repeats
-	                if (marine_type[unit_id]=lost[h]) and (good=0){
-	                	lost_num[h]+=1;
-	                	good=1;
-	                	hh=h;}
-	            }
-	            if (lost[h]="") and (open=0) then open=h;// Find the first open
-	        }
-	        if (good=0) and (open!=0){lost_num[open]=1;lost[open]=marine_type[unit_id];}
-	        units_lost+=1;
-	        men-=1;
-        
-	        if (unit.IsSpecialist("dreadnoughts")) then dreads-=1;
-	        if (obj_ncombat.red_thirst=1) and (marine_type[unit_id]!="Death Company") then obj_ncombat.red_thirst=2;
+        if (unit.hp() < 0){//TODO create is_dead function to remove repeats of this log
+            if (marine_dead[unit_id] == 0) {
+                marine_dead[unit_id] = 1;
+                obj_ncombat.player_forces -= 1;
+            }
+            
+            // Track the lost unit
+            var existing_index = array_get_index(lost, marine_type[unit_id]);
+            if (existing_index != -1) {
+                lost_num[existing_index] += 1;
+            } else {
+                array_push(lost, marine_type[unit_id]);
+                array_push(lost_num, 1);
+            }
+
+            // Update unit counts
+            var armour_data = unit.get_armour_data();
+            var is_dread = false;
+            if (is_struct(armour_data)){
+                 is_dread = armour_data.has_tag("dreadnought");
+            }
+            if (is_dread) {
+                dreads -= 1;
+            } else {
+                men -= 1;
+            }
+
+            // Trigger red thirst
+            if (obj_ncombat.red_thirst == 1 && marine_type[unit_id] != "Death Company") {
+                obj_ncombat.red_thirst = 2;
+            }
+
 	    }
     
 	    obj_ncombat.messages+=1;

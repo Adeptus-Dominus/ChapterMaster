@@ -1,0 +1,48 @@
+{
+  "gameConsoleStyle": {
+      "base": "color:#808080;",
+      "lines": [
+        {
+          "pattern" : "^Warning : reference to extension macro",
+          "base" : "color:#808080;"
+        },
+        {
+          "pattern" : "^WARNING: Could not find any events",
+          "base" : "color:#808080;"
+        },
+        {
+          "pattern" : "^WARNING: Could not find animation",
+          "base" : "color:#808080;"
+        },
+        {
+          "pattern" : "^Pause event has been",
+          "base" : "color:#4A4A4A;"
+        },
+        {
+          "pattern" : "is cropped, sprites used by Spine must be uncropped$",
+          "base" : "color:#808080;"
+        },
+        {
+          "pattern": "\\berror\\b",
+          "base": "color: #FF0000; font-weight: bold;"
+        },
+        {
+          "pattern": "\\bwarn(ing)?\\b",
+          "base": "color: #FFD900"
+        },
+        {
+          "base": "color: [#808080](https://github.com/bscotch/stitch/issues/808080);",
+          "description": "Bscotch Echo",
+          "pattern": "^(?<entity>(?<struct>struct)|(?<constructor>Struct\\.(?<constructorName>[^|]+))|(?<rumpus>o_rumpus[^|]+)|(?<http>o_http_controller)|(?<object>o_[^|]+))\\|(?<time>[^|]+)\\| (?<message>.*)",
+          "styles": {
+            "message": "color:white;",
+            "constructor" : "color: #4FE2C2",
+            "object" : "color: #FF9D00",
+            "struct" : "color:cyan",
+            "rumpus" : "color:#0095FF",
+            "http" : "color:#0095FF"
+          }
+        }
+      ]
+  }
+}

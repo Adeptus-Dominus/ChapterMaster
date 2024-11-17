@@ -8,9 +8,8 @@
 
 // show_message("pnunit alarm 6");
 
-var i=0,unit;
-repeat(600){
-    i+=1;
+var i=-1,unit;
+for (var i=0;i<array_length(unit_struct);i++){
     if (marine_dead[i]>0) and (marine_type[i]!="") and (ally[i]=false){
         unit = unit_struct[i];
         if (!is_struct(unit)) continue;
@@ -22,8 +21,10 @@ repeat(600){
         //
         scr_kill_unit(unit.company,unit.marine_number);
     }
+}
 
-    // if (veh_type[i]="Predator") or (veh_type[i]="Land Raider") then show_message(string(veh_type[i])+" ("+string(veh_co[i])+"."+string(veh_id[i])+")#HP: "+string(veh_hp[i])+"#Dead: "+string(veh_dead[i])+"");
+for (var i=0;i<array_length(veh_type);i++){
+        // if (veh_type[i]="Predator") or (veh_type[i]="Land Raider") then show_message(string(veh_type[i])+" ("+string(veh_co[i])+"."+string(veh_id[i])+")#HP: "+string(veh_hp[i])+"#Dead: "+string(veh_dead[i])+"");
 
     if (veh_dead[i]>0) and (veh_type[i]!="") and (veh_ally[i]=false){
         var man_size=scr_unit_size("",veh_type[i],true);

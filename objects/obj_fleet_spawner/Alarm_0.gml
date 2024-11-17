@@ -1,6 +1,6 @@
 
 
-show_debug_message("fleet spawn 0");
+
 
 if (number=1){
     // create blocks of infantry
@@ -247,4 +247,4 @@ if (number>0) and (owner!=1){
 }
 
 action_set_alarm(1, 1);
-show_debug_message("fleet spawn 0");
+

@@ -1,19 +1,29 @@
 
-if (obj_controller.zoomed=1){obj_controller.x=self.x;obj_controller.y=self.y;}
+if (obj_controller.zoomed=1){
+    obj_controller.x=self.x;
+    obj_controller.y=self.y;
+}
 obj_controller.popup=1;// 1: fleet, 2: other fleet, 3: other
-selected=1;obj_controller.fleet_minimized=0;
+selected=1;
+obj_controller.fleet_minimized=0;
 
 
-var xx,yy;xx=x;yy=y;
+var xx=x,yy=y;
 
-obj_controller.selected=instance_nearest(xx,yy,obj_p_fleet);
-
+obj_controller.selected=id;
+if (instance_exists(obj_fleet_select)){
+    if (obj_controller.selected==obj_fleet_select.id){
+        exit;
+    }
+}
 // obj_controller.selected=self;
 obj_controller.sel_owner=self.owner;
 // show_message(obj_controller.selected);
 obj_controller.cooldown=8;
 
-if (obj_controller.zoomed=1){obj_controller.zoomed=0;__view_set( e__VW.Visible, 0, true );__view_set( e__VW.Visible, 1, false );obj_cursor.image_xscale=1;obj_cursor.image_yscale=1;}
+if (obj_controller.zoomed){
+    scr_zoom();
+}
 
 // Pass variables to obj_controller.temp[t]=""; here
 with(obj_fleet_select){instance_destroy();}
@@ -26,7 +36,7 @@ obj_fleet_select.capital=capital_number;
 
 
 
-var i;i=-1;
+var i=-1;
 repeat(91){i+=1;
     if (i<=20) then capital_sel[i]=1;
     frigate_sel[i]=1;
@@ -46,3 +56,4 @@ if (ii<=1) then ii=1;image_index=ii;*/
 
 /* */
 /*  */
+

@@ -45,7 +45,7 @@ function scr_role_count(target_role, search_location="", return_type="count") {
 
 	if (coom<0) then repeat(11){
 	    i=0;
-	    for (i=1;i<array_length(obj_ini.TTRPG[com]);i++){
+	    for (i=0;i<array_length(obj_ini.TTRPG[com]);i++){
 			match=false;
 			unit=obj_ini.TTRPG[com][i];
 			if (unit.name()=="")then continue;

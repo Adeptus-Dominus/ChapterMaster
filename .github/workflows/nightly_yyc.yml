@@ -1,0 +1,87 @@
+name: Nightly-Windows-YYC
+on: 
+  workflow_dispatch:
+  push:
+    branches:
+      - compile/main
+jobs:
+  build_needed:
+    name: Build Needed?
+    runs-on: ubuntu-latest
+    outputs:
+      needed: ${{ steps.commit_check.outputs.needed }}  # Output for skipping
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+  
+      - name: Check Commmit
+        id: commit_check
+        run: |
+          COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+          echo "Merge commit message: $COMMIT_MESSAGE"
+          
+          EXCLUDE_PATTERN="^(docs|chore|style)"
+          
+          if echo "$COMMIT_MESSAGE" | grep -Eq "$EXCLUDE_PATTERN"; then
+            echo "Commit message matches excluded pattern, skipping build."
+            echo "needed=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
+          echo "needed=true" >> $GITHUB_OUTPUT
+
+  gamemaker_build:
+    name: Build
+    uses: ./.github/workflows/gamemaker_build.yml
+    secrets: inherit
+    needs: build_needed
+    if: needs.build_needed.outputs.needed == 'true'
+    with:
+      yyc: true
+
+  release:
+    name: Release
+    runs-on: windows-2022
+    needs: gamemaker_build
+    if: needs.build_needed.outputs.needed == 'true'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+      - name: Check if a nightly release exists
+        id: check_nightly
+        run: |
+          gh release view nightly --repo ${{ github.repository }}
+          if [ $? -eq 0 ] ; then
+            echo "release_exists=true" >> $GITHUB_OUTPUT;
+          else
+            echo "release_exists=false" >> $GITHUB_OUTPUT;
+          fi
+        shell: bash
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - id: delete_release_tag
+        name: Delete the existing nightly tag and release
+        if: steps.check_nightly.outputs.release_exists
+        run: |
+          gh release delete nightly -y --cleanup-tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Download built file artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: built-file
+          path: ./build_output
+      - id: create_release
+        name: Create a Pre-Release and Upload the build
+        uses: softprops/action-gh-release@v2.0.9
+        with:
+          name: ChapterMaster ${{ needs.gamemaker_build.outputs.suffix }}
+          tag_name: nightly
+          prerelease: true
+          generate_release_notes: true
+          make_latest: true
+          files: |
+            ./build_output/${{ needs.gamemaker_build.outputs.built_file }}/*

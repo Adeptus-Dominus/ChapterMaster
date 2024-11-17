@@ -82,7 +82,6 @@ function scr_wep_abbreviate(argument0) {
 	if (we="Close Combat Weapon") then we2="CCW";
 	if (we="Twin Linked Heavy Bolter") then we2="TL Hvy Bolt";
 	if (we="Twin Linked Lascannon") then we2="TL LasCan";
-	if (we="Lascannons") then we2="2 LasCan";
 	if (we="Heavy Bolters") then we2="2 HvyBolt";
 	if (we="Whirlwind Missiles") then we2="Whirl";
 	if (we="HK Missile") then we2="HK Miss";

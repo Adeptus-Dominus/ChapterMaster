@@ -3,6 +3,10 @@
 
 # Re-classify .yy files (for GMS 2 projects)
 *.yy linguist-language=GML
+*.yyp linguist-language=GML
+
+# YYP files are ignored by the diff by default for some reason.
+*.yyp linguist-generated=false
 
 # Denote all files that are truly binary and should not be modified.
 *.png binary

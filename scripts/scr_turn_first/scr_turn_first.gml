@@ -4,31 +4,31 @@ function scr_turn_first() {
 
 	var identifiable=0;
 	var unload=0;
+	var cur_arti;
 	for (var i=0;i<array_length(obj_ini.artifact);i++){
+		identifiable=0;
 		unload=i;
 		if (obj_ini.artifact[unload]=="") then continue;
-		if (obj_ini.artifact_loc[unload]==""){
+		cur_arti = obj_ini.artifact_struct[unload];
+		if (cur_arti.loc()==""){
 			var valid_ship = get_valid_player_ship();
 			if (valid_ship >-1){
 				obj_ini.artifact_loc[unload] = obj_ini.ship[valid_ship];
 				obj_ini.artifact_sid[unload] = 500+valid_ship;
 			}
 		}
-	    if (obj_ini.artifact_identified[unload]>0){
-	        if (obj_ini.artifact_loc[unload]==obj_ini.home_name) then identifiable=1;
-	        if (obj_ini.artifact_sid[unload]>=500){
-	            if (obj_ini.ship_location[obj_ini.artifact_sid[unload]-500]=obj_ini.home_name) then identifiable=1;
-	        }
+	    if (cur_arti.identified()>0){
+	    	identifiable = cur_arti.is_identifiable()
         
 	        if (instance_exists(obj_p_fleet)) and (identifiable=0){
 	            with(obj_p_fleet){
 	                var good=0;
 	               for (var s=0;s<=20;s++){
 	                    if (s<=9){
-	                    	if (capital_num[s]=obj_ini.artifact_sid[other.unload]-500) then good=1;
+	                    	if (capital_num[s]=cur_arti.ship_id()) then good=1;
 	                    }
-	                    if (frigate_num[s]=obj_ini.artifact_sid[other.unload]-500) then good=1;
-	                    if (escort_num[s]=obj_ini.artifact_sid[other.unload]-500) then good=1;
+	                    if (frigate_num[s]=cur_arti.ship_id()) then good=1;
+	                    if (escort_num[s]=cur_arti.ship_id()) then good=1;
 	                }
 	                if (good=1) and (capital_number>0) then good=2;
 	                if (good=2) then obj_controller.identifiable=1;
@@ -40,7 +40,8 @@ function scr_turn_first() {
 	    }
 	    identifiable=0;
 	}
-	identifiable=0;unload=0;
+	identifiable=0;
+	unload=0;
 
 
 	var peace_check,host_p,ox,oy,x5,y5,fdir;
@@ -81,8 +82,11 @@ function scr_turn_first() {
 	        if (did_so=false) and (faction_defeated[7]=1){
 	            with(obj_turn_end){audiences+=1;audien[audiences]=7;known[eFACTION.Chaos]=2;audien_topic[audiences]="new_warboss";did_so=true;}
             
-	            faction_defeated[7]=-1;known[eFACTION.Ork]=0;faction_leader[eFACTION.Ork]=global.name_generator.generate_ork_name();
-	            faction_title[7]="Warboss";faction_status[eFACTION.Ork]="War";disposition[7]=-40;
+	            faction_defeated[7]=-1;known[eFACTION.Ork]=0;
+	            faction_leader[eFACTION.Ork]=global.name_generator.generate_ork_name();
+	            faction_title[7]="Warboss";
+	            faction_status[eFACTION.Ork]="War";
+	            disposition[7]=-40;
             
 	            var gold,gnew,starf;gold=faction_gender[7];if (gold=0) then gold=1;gnew=0;
 	            repeat(20){if (gnew=0) or (gnew=gold) then gnew=choose(1,2,3,4);}
@@ -114,17 +118,25 @@ function scr_turn_first() {
 	                }
                 
 	                var nfleet,tplan;nfleet=instance_create(x4,y4,obj_en_fleet);
-	                nfleet.owner = eFACTION.Ork;nfleet.sprite_index=spr_fleet_ork;
-	                nfleet.capital_number=4;nfleet.frigate_number=10;
-	                nfleet.image_index=9;
+	                nfleet = new_ork_fleet(x4,y4);
 	                tplan=instance_nearest(nfleet.x,nfleet.y,obj_star);
-	                nfleet.action_x=tplan.x;nfleet.action_y=tplan.y;
-	                nfleet.alarm[4]=1;
+	                nfleet.action_x=tplan.x;
+	                nfleet.action_y=tplan.y;
+	                if (fnum=1){
+	                	starf=tplan;
+	                	nfleet.cargo_data.ork_warboss=new NewPlanetFeature(OrkWarboss);
+	                }	                
+	                with (nfleet){
+	                	frigate_number=10;
+	                	capital_number=4;
+	                	set_fleet_movement();
+	                }
                 
-	                if (fnum=1){starf=tplan;nfleet.trade_goods="WL7";}
                 
-	                nfleet.x-=20000;nfleet.y-=20000;
-	                tplan.x-=20000;tplan.y-=20000;
+	                nfleet.x-=20000;
+	                nfleet.y-=20000;
+	                tplan.x-=20000;
+	                tplan.y-=20000;
 	            }
             
 	            with(obj_en_fleet){if (x<-14000) and (y<-14000) and (owner = eFACTION.Ork){x+=20000;y+=20000;}}
@@ -134,9 +146,10 @@ function scr_turn_first() {
 	            with(obj_star){if (x<-14000) and (y<-14000){x+=20000;y+=20000;}}
 	            with(obj_star){if (x<-14000) and (y<-14000){x+=20000;y+=20000;}}
             
-	            var tix;tix="Warboss "+string(obj_controller.faction_leader[eFACTION.Ork])+" leads a WAAAGH! into Sector "+string(obj_ini.sector_name)+".";
-	            scr_alert("red","lol",string(tix),starf.x,starf.y);scr_event_log("red",tix);
-	            scr_popup("WAAAAGH!","A WAAAGH! led by the Warboss "+string(obj_controller.faction_leader[eFACTION.Ork])+" has arrived in "+string(obj_ini.sector_name)+".  With him is a massive Ork fleet.  Numbering in the dozens of battleships, they carry with them countless greenskins.  The forefront of the WAAAGH! is destined for the "+string(starf.name)+" system.","waaagh","");
+	            var tix="Warboss "+string(obj_controller.faction_leader[eFACTION.Ork])+" leads a WAAAGH! into Sector "+string(obj_ini.sector_name)+".";
+	            scr_alert("red","lol",string(tix),starf.x,starf.y);
+	            scr_event_log("red",tix);
+	            scr_popup("WAAAAGH!",$"A WAAAGH! led by the Warboss {obj_controller.faction_leader[eFACTION.Ork]} has arrived in "+string(obj_ini.sector_name)+".  With him is a massive Ork fleet.  Numbering in the dozens of battleships, they carry with them countless greenskins.  The forefront of the WAAAGH! is destined for the "+string(starf.name)+" system.","waaagh","");
 	        }
 	    }
 	}

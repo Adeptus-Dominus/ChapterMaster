@@ -124,19 +124,35 @@ global.weapons = {
 	},
 	"Archeotech Laspistol": {
 		"attack": {
-			"standard": 120,
-			"master_crafted": 130,
-			"artifact": 140
+			"standard": 40,
+			"master_crafted": 60,
+			"artifact": 80
 		},
-		"description": "Known as a Lasrod or Gelt Gun, this pistol is an ancient design of Laspistol with much greater range and power.",
+		"description": "Known as a Lasrod or Gelt Gun, this pistol is an ancient design of Laspistol with much greater power.",
 		"abbreviation": "ArchLpstl",
 		"melee_hands": 0,
-		"ranged_hands": 1,
-		"ammo": 0,
+		"ranged_hands": 0.5,
+		"ammo": 30,
 		"range": 3.1,
 		"spli": 0,
 		"arp": 0,
 		"tags": ["pistol", "ancient", "las"],
+	},
+	"Laspistol": {
+		"attack": {
+			"standard": 20,
+			"master_crafted": 30,
+			"artifact": 40
+		},
+		"description": "The Laspistol is the pistol version of the Lasgun and like that weapon fires a coherent beam of energetic photons that can burn through most materials. The Laspistol is powered by a miniature power pack that is usually placed within the grip.",
+		"abbreviation": "Lpstl",
+		"melee_hands": 0,
+		"ranged_hands": 0.25,
+		"ammo": 30,
+		"range": 3.1,
+		"spli": 0,
+		"arp": 0,
+		"tags": ["pistol", "las"],
 	},
 	"Combat Knife": {
 		"abbreviation": "CbKnf",
@@ -441,6 +457,22 @@ global.weapons = {
 		"spli": 4,
 		"arp": 1,
 		"tags": ["power", "fist", "pair"],
+	},
+	"Servo-arm(M)": {
+		"abbreviation": "MchArm",
+		"attack": {
+			"standard": 220,
+			"master_crafted": 330,
+			"artifact": 500
+		},
+		"description": "",
+		"melee_hands": 0,
+		"ranged_hands": 0,
+		"ammo": 0,
+		"range": 1,
+		"spli": 2,
+		"arp": 1,
+		"tags": ["siege"],
 	},
 	"Boltstorm Gauntlet": {
 		"abbreviation": "BlstGnt",
@@ -853,6 +885,22 @@ global.weapons = {
 		"arp": 1,
 		"tags": ["plasma", "pistol"]
 	},
+	"Plasma Cutter": { // Basically a dual-linked plasma pistol
+		"abbreviation": "PlsmCt",
+		"attack": {
+			"standard": 230,
+			"master_crafted": 260,
+			"artifact": 300
+		},
+		"description": "While actually intended to be used on the battlefield as a tool to repair damaged war machines, the Plasma Cutter is equally adept at slicing through even terminator armour with its intense, constant beam of superheated plasma.",
+		"melee_hands": 0,
+		"ranged_hands": 0,
+		"ammo": 0,
+		"range": 3.1,
+		"spli": 1,
+		"arp": 1,
+		"tags": ["plasma", "pistol"]
+	},
 	"Infernus Pistol": {
 		"abbreviation": "InfPstl",
 		"attack": {
@@ -861,7 +909,7 @@ global.weapons = {
 			"artifact": 120
 		},
 		"description": "The Infernus Pistol is a compact pistol varient of the melta gun. A brutal blast of heat to burn away the The Emperor's foes.",
-		"melee_hands": 1,
+		"melee_hands": 0,
 		"ranged_hands": 1,
 		"ammo": 4,
 		"range": 2.1,
@@ -1041,22 +1089,6 @@ global.weapons = {
 		"ranged_hands": 0,
 		"ammo": 8,
 		"range": 24,
-		"spli": 2,
-		"arp": 1,
-		"tags": ["las", "heavy_ranged", "vehicle", "dreadnought"]
-	},
-	"Lascannons": {
-		"abbreviation": "DblLascnn",
-		"attack": {
-			"standard": 300,
-			"master_crafted": 330,
-			"artifact": 360
-		},
-		"description": "Lascannons are powerful anti-armour weapons that fire highly focused and devastating energy beams capable of penetrating even the toughest armor.",
-		"melee_hands": 1,
-		"ranged_hands": 2.25,
-		"ammo": 5,
-		"range": 20,
 		"spli": 2,
 		"arp": 1,
 		"tags": ["las", "heavy_ranged", "vehicle", "dreadnought"]
@@ -1421,7 +1453,7 @@ global.weapons = {
 		"ammo": 4,
 		"range": 2.1,
 		"spli": 3,
-		"arp": 0,
+		"arp": -1,
 		"tags": ["flame", "attached"]
 	},
 	"Combiflamer": {
@@ -2065,11 +2097,21 @@ global.gear = {
 			"description": "An advanced medical field kit these allow Apothecaries to heal wounds or recover Gene-Seed from fallen Astartes.",
 			"melee_hands": -0.5,
 			"ranged_hands": -0.5,
+			"damage_resistance_mod": {
+				"standard": 0, // Adjusted
+				"master_crafted": 5, // Adjusted
+				"artifact": 10 // Adjusted
+			}, // I also had an idea to make Nartheciums and Servo Arms give bonuses to melee and ranged, when master-crafted or artifact, indicating measuring devices that help to find weakpoints and deal more damage, but I'm not sure if You're okay with that
 		},
 		"Psychic Hood": {
 			"abbreviation": "PsyHd",
-			"special_properties": ["Perils Protection 50"],
+			"special_properties": ["Perils Protection 50"], // I am curious if it is possible to raise the protection, if it's master crafted or artifact quality
 			"description": "An arcane hood that protects Psykers from enemy psychic powers and enhances control of their psychic abilities.",
+			"damage_resistance_mod": {
+				"standard": 0, // Adjusted
+				"master_crafted": 5, // Adjusted
+				"artifact": 10 // Adjusted
+			},
 		},
 		"Rosarius": {
 			"abbreviation": "Rsrius",
@@ -2099,6 +2141,22 @@ global.gear = {
 				"artifact": 30 // Adjusted
 			}
 		},
+		"Combat Shield": {
+			"description": "A lighter, more maneuverable version of a Storm Shield. Due to its flexibility, Combat Shields leave other hand of a Space Marine free to use other hand-to-hand weaponry.",
+			"abbreviation": "CmbtShld",
+			"armour_value": {
+				"standard": 4,
+				"master_crafted": 6,
+				"artifact": 8
+			},
+			"weight": 3,
+			"tags": ["shield"],
+			"hp_mod": {
+				"standard": 10,
+				"master_crafted": 15,
+				"artifact": 20
+			},
+		},
 		"Plasma Bomb": {
 			"abbreviation": "PlBomb",
 			"special_properties": ["Structure Destroyer"],
@@ -2108,20 +2166,6 @@ global.gear = {
 			"abbreviation": "Extrmnts",
 			"special_properties": ["Planet Destroyer"],
 			"description": "A weapon of the Emperor, and His divine judgment, this weapon can be placed upon a planet to obliterate it entirely.",
-		},
-		"Servo Arms": {
-			"abbreviation": "SrvArms",
-			"special_properties": ["Integrated Flamer, Repairs Vehicles"],
-			"description": "A pair of powerful mechanical arms. They include several tools that allow trained Astartes to repair vehicles rapidly alongside an integrated flamer to beat back the Emperor's foes.",
-			"melee_hands": 0.25,
-			"ranged_hands": 0.25,
-		},
-		"Master Servo Arms": {
-			"abbreviation": "MsSrvArms",
-			"special_properties": ["Integrated Flamer, Repairs Vehicles"],
-			"description": "This master servo harness includes additional mechanical arms and tools, allowing a greater capacity and rate of repairs.",
-			"melee_hands": 0.25,
-			"ranged_hands": 0.25,
 		},
 		"Smoke Launchers": {
 			"description": "Useful for providing concealment in open terrain, these launchers project wide-spectrum concealing smoke to prevent accurate targeting of the vehicle.",
@@ -2167,22 +2211,6 @@ global.gear = {
 			},
 			"tags": ["vehicle"],
 		},
-		"Combat Shield": {
-			"description": "A lighter, more maneuverable version of a Storm Shield. Due to its flexibility, Combat Shields leave other hand of a Space Marine free to use other hand-to-hand weaponry.",
-			"abbreviation": "CmbtShld",
-			"armour_value": {
-				"standard": 4,
-				"master_crafted": 6,
-				"artifact": 8
-			},
-			"weight": 3,
-			"tags": ["shield"],
-			"hp_mod": {
-				"standard": 10,
-				"master_crafted": 15,
-				"artifact": 20
-			},
-		},
 	},
 	"mobility": {
 		"Bike": {
@@ -2199,21 +2227,19 @@ global.gear = {
 				"master_crafted": 10,
 				"artifact": 10
 			},
-			"melee_hands": -0.5,
-			"ranged_hands": -0.5,
 		},
 		"Jump Pack": {
 			"abbreviation": "JmpPck",
 			"description": "A back-mounted device containing jets powerful enough to lift an Astartes in Power Armor over great distances. Utilizing these, Assault Marines bring devastation to the foe.",
 			"hp_mod": {
-				"standard": 5,
-				"master_crafted": 5,
-				"artifact": 5
+				"standard": 10,
+				"master_crafted": 15,
+				"artifact": 20
 			},
 			"damage_resistance_mod": {
-				"standard": 10,
-				"master_crafted": 10,
-				"artifact": 10
+				"standard": 20,
+				"master_crafted": 25,
+				"artifact": 30
 			},
 			"tags": ["jump"],
 		},
@@ -2227,12 +2253,46 @@ global.gear = {
 			},
 			"melee_hands": -1,
 			"ranged_hands": 1,
-		}
+		},
+		"Servo-arm": {
+			"abbreviation": "SrvArm",
+			"special_properties": ["Repairs Vehicles"],
+			"second_profiles": ["Servo-arm(M)"],
+			"description": "A manipulator mechandendrite, also known as a Servo-arm. This artificial limb is a great aid to help trained Techmarines repair damaged vehicles on the battlefield, yet may be used in melee combat, thanks to its considerable crushing power and weight.",
+			"damage_resistance_mod": {
+				"standard": 0, // Adjusted
+				"master_crafted": 5, // Adjusted
+				"artifact": 10 // Adjusted
+			},
+			"melee_hands": -0.25,
+			"ranged_hands": -0.25,
+		},
+		"Servo-harness": {
+			"abbreviation": "SrvHrns",
+			"special_properties": ["Repairs Vehicles"],
+			"second_profiles": ["Servo-arm(M)", "Servo-arm(M)", "Flamer", "Plasma Cutter"],
+			"description": "A Servo-Harness is a special type of augmetic aid, often used by Chapter's Master of the Forge or his senior Techmarines. It consists of many blessed tools, two Servo-arms and a couple of deadly weapons. With it, one can make battlefield repairs on any vehicle, shore up defences, or even assist his battle-brothers in combat.",
+			"damage_resistance_mod": {
+				"standard": 5, // Adjusted
+				"master_crafted": 10, // Adjusted
+				"artifact": 15 // Adjusted
+			},
+			"melee_hands": -0.5,
+			"ranged_hands": -0.5,
+		},
+		"Conversion Beamer Pack": {
+			"abbreviation": "CnvBmr",
+			"second_profiles": ["Conversion Beam Projector"],
+			"description": "The Conversion Beam Projector is a heavy energy weapon that harnesses advanced technology to project a concentrated beam of destructive energy. Armor detonates as the matter that comproises it is transformed into pure energy.",
+			"melee_hands": -0.5,
+			"ranged_hands": -0.5,
+		},
+		
 		// Add more mobility items as needed...
 	}
 }
 
-function equipment_struct(item_data, core_type,quality="none") constructor{ 
+function EquipmentStruct(item_data, core_type,quality="none") constructor{ 
     //This could be done with 2d arrays [[],[]]
     var names = ["hp_mod", "description","damage_resistance_mod", "ranged_mod", "melee_mod","armour_value" ,"attack","melee_hands","ranged_hands","ammo","range","spli","arp","special_description", "special_properties", "abbreviation","tags","name","second_profiles","req_exp"];
     var defaults = [0,"",0,0,0,0,0,0,0,0,0,0,0,"",[],"",[],"",[],0];
@@ -2535,7 +2595,7 @@ function gear_weapon_data(search_area="any",item,wanted_data="all", sub_class=fa
     if (is_struct(item_data_set)){
         if (wanted_data=="all"){
             item_data_set.name=item;
-            return new equipment_struct(item_data_set,search_area,quality);
+            return new EquipmentStruct(item_data_set,search_area,quality);
         }
         if (struct_exists(item_data_set, wanted_data)){
             if (is_struct(item_data_set[$ wanted_data])){

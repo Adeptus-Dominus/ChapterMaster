@@ -43,10 +43,10 @@ repeat(200){i+=1;
     artifact_loc[i]="";
     artifact_sid[i]=0;// Over 500 : ship
     // Weapon           Unidentified
-    artifact_struct[i] =  new arti_struct(i);    
+    artifact_struct[i] =  new ArtifactStruct(i);    
 }
 
-var i=-1,v=0;
+var i=-1;
 repeat(210){i+=1;
     ship[i]="";
     ship_uid[i]=0;
@@ -71,7 +71,10 @@ repeat(210){i+=1;
          ship_wep_facing[i,s]="";
          ship_wep_condition[i,s]="";
     }
-    ship_capacity[i]=0;ship_carrying[i]=0;ship_contents[i]="";ship_turrets[i]=0;
+    ship_capacity[i]=0;
+    ship_carrying[i]=0;
+    ship_contents[i]="";
+    ship_turrets[i]=0;
 }
 
 var company,v;
@@ -91,13 +94,11 @@ repeat(11){
         veh_hp[company,v]=100;
         veh_chaos[company,v]=0;
         veh_pilots[company,v]=0;
-        veh_lid[company,i]=0;
+        veh_lid[company,v]=0;
         veh_wid[company,v]=2;
         veh_uid[company,v]=0;
     }
 }
-
-v=0;company=0;
 
 /*if (obj_creation.fleet_type=3){
     obj_controller.penitent=1;
@@ -114,6 +115,7 @@ company_spawn_buffs = [];
 role_spawn_buffs ={};
 previous_forge_masters = [];
 recruit_trial = 0;
+recruiting_type="Death";
 
 /* if (global.load=0){
     if (obj_creation.custom>0) then scr_initialize_custom();

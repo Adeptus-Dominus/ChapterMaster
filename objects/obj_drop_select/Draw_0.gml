@@ -1,3 +1,5 @@
+set_zoom_to_defualt();
+
 var __b__;
 __b__ = action_if_number(obj_ncombat, 0, 0);
 if __b__
@@ -22,8 +24,8 @@ draw_set_font(fnt_40k_30b);
 // var xx,yy;
 // xx=view_xview[0]+545;yy=view_yview[0]+212;
 draw_set_halign(fa_left);draw_set_color(c_gray);
-if (attack=0) then draw_text_transformed(xx+545,yy+212,string_hash_to_newline("Raiding ("+string(p_target.name)+" "+scr_roman(obj_controller.selecting_planet)+")"),0.6,0.6,0);
-if (attack=1) then draw_text_transformed(xx+545,yy+212,string_hash_to_newline("Attacking ("+string(p_target.name)+" "+scr_roman(obj_controller.selecting_planet)+")"),0.6,0.6,0);
+var attack_type = attack ? "Attacking" : "Raiding"
+draw_text_transformed(xx+545,yy+212,$"{attack_type} ({planet_numeral_name(planet_number, p_target)} )",0.6,0.6,0);
 
 
 draw_set_color(c_gray);
@@ -61,8 +63,8 @@ draw_set_alpha(1);draw_text(xx+873,yy+207,string_hash_to_newline("Formation:"));
 var x9,y9;x9=xx+954;y9=yy+214;if (scr_hit(x9,y9,x9+120,y9+16)=true) then draw_set_alpha(0.8);
 draw_set_color(c_gray);draw_rectangle(x9,y9,x9+120,y9+16,0);draw_set_alpha(1);// 160
 draw_set_color(c_black);draw_text_transformed(x9+2,y9,string_hash_to_newline(obj_controller.bat_formation[formation_possible[formation_current]]),0.8,0.8,0);
-if (obj_controller.cooldown<=0) and (mouse_left>=1) and (scr_hit(x9,y9,x9+120,y9+16)=true){
-    formation_current+=1;obj_controller.cooldown=8000;
+if (point_and_click([x9,y9,x9+120,y9+16])) {
+    formation_current+=1;
     if (formation_possible[formation_current]=0) then formation_current=1;
 }
 
@@ -91,8 +93,9 @@ if (ship_max[500]>0) and (attack=1){
     if (ship_all[e]=0) then draw_set_alpha(0.35);
     draw_set_color(c_gray);draw_rectangle(x8,y8,x8+160,y8+16,0);
     draw_set_color(c_black);draw_text(x8+2,y8,string_hash_to_newline("Local ("+string(ship_use[e])+"/"+string(ship_max[e])+")"))
-    if (obj_controller.cooldown<=0) and (mouse_left>=1) and (scr_hit(x8,y8,x8+160,y8+16)=true){var onceh;onceh=0;
-        obj_controller.cooldown=8000;refresh_raid=1;
+    if (point_and_click([x8, y8, x8+160, y8+16])) {
+        var onceh;onceh=0;
+        refresh_raid=1;
         if (ship_all[e]=0){add_ground=1;}
         if (ship_all[e]=1){add_ground=-1;}
     }
@@ -106,10 +109,11 @@ repeat(50){                                 // Ship Forces here
         draw_set_alpha(1);if (ship_all[e]=0) then draw_set_alpha(0.35);
         draw_set_color(c_gray);draw_rectangle(x8,y8,x8+160,y8+16,0);// 160
         draw_set_color(c_black);draw_text_transformed(x8+2,y8,string_hash_to_newline(string(ship[e])+" ("+string(ship_use[e])+"/"+string(ship_max[e])+")"),0.8,0.8,0);
-        if (obj_controller.cooldown<=0) and (mouse_left>=1) and (scr_hit(x8,y8,x8+160,y8+16)=true){var onceh;onceh=0;
-            if (onceh=0) and (ship_all[e]=0){onceh=1;obj_controller.cooldown=8000;scr_drop_fiddle(ship_ide[e],true,e,attack);}
-            if (onceh=0) and (ship_all[e]=1){onceh=1;obj_controller.cooldown=8000;scr_drop_fiddle(ship_ide[e],false,e,attack);}
-            if (onceh=1) then refresh_raid=1;
+        if (point_and_click([x8, y8, x8+160, y8+16])) {
+            if (ship_all[e]>-1 && ship_all[e]<2){
+                 scr_drop_fiddle(ship_ide[e],!ship_all[e],e,attack);
+                 refresh_raid=true;
+            }
         }
         y8+=18;sip+=1;
         if (y8>=yy+299+180){y8=yy+299;x8+=168;}
@@ -186,7 +190,7 @@ repeat(8){e+=1;
     
     if (scr_hit(x8,y8,x8+105,y8+16)=true){
         draw_set_alpha(0.2);draw_rectangle(x8,y8,x8+105,y8+16,0);draw_set_alpha(1);
-        if (mouse_left=1) and (obj_controller.cooldown<=0){
+        if (scr_click_left()){
             if (e=1){if (raid_tact=1) and (onceh=0){onceh=1;raid_tact=0;refresh_raid=1;}if (raid_tact=0) and (onceh=0){onceh=1;raid_tact=1;refresh_raid=1;}}
             if (e=2){if (raid_vet=1) and (onceh=0){onceh=1;raid_vet=0;refresh_raid=1;}if (raid_vet=0) and (onceh=0){onceh=1;raid_vet=1;refresh_raid=1;}}
             if (e=3){if (raid_assa=1) and (onceh=0){onceh=1;raid_assa=0;refresh_raid=1;}if (raid_assa=0) and (onceh=0){onceh=1;raid_assa=1;refresh_raid=1;}}
@@ -197,7 +201,6 @@ repeat(8){e+=1;
             if (e=8){if (raid_wounded=1) and (onceh=0){onceh=1;raid_wounded=0;refresh_raid=1;}if (raid_wounded=0) and (onceh=0){onceh=1;raid_wounded=1;refresh_raid=1;}}
             
             if (e=8) and (onceh=1) then obj_controller.select_wounded=raid_wounded;
-            if (refresh_raid>0) then obj_controller.cooldown=8000;
         }
     }
     x8+=117;
@@ -206,8 +209,8 @@ repeat(8){e+=1;
 
 draw_set_color(c_gray);draw_set_alpha(1);
 yar=2;if (all_sel=1) then yar=3;draw_sprite(spr_creation_check,yar,xx+770,yy+270);yar=0;
-if (scr_hit(xx+770,yy+270,xx+770+32,yy+270+32)=true) and (obj_controller.cooldown<=0) and (mouse_left>=1){
-obj_controller.cooldown=8000;var onceh;onceh=0;
+if (point_and_click([xx+770, yy+270, xx+770+32, yy+270+32])) {
+var onceh;onceh=0;
 var onceh;once=0;i=0;
 if (all_sel=0) and (onceh=0){
     repeat(60){i+=1;
@@ -328,8 +331,8 @@ repeat(20){q+=1;
         draw_set_font(fnt_40k_14b);draw_text(mouse_x+22,mouse_y+22,string_hash_to_newline(string(tt1)));
         draw_set_font(fnt_40k_14);draw_text_ext(mouse_x+22,mouse_y+42,string_hash_to_newline(string(tt2)),-1,500);
         
-        if(obj_controller.mouse_left=1) and (obj_controller.cooldown<=0){
-            if (attacking!=force_present[q]) and (force_present[q]>0){obj_controller.cooldown=8000;attacking=force_present[q];}
+        if(scr_click_left()){
+            if (attacking!=force_present[q]) and (force_present[q]>0){attacking=force_present[q];}
         }
     }
 }
@@ -354,7 +357,7 @@ draw_set_color(c_gray);draw_rectangle(xx+852,yy+556,xx+921,yy+579,0);
 draw_set_color(0);draw_text_transformed(xx+887,yy+559,string_hash_to_newline("BACK"),1.25,1.25,0);
 if (scr_hit(xx+852,yy+556,xx+921,yy+579)=true){
     draw_set_alpha(0.2);draw_rectangle(xx+852,yy+556,xx+921,yy+579,0);draw_set_alpha(1);
-    if (mouse_left>=1) and (obj_controller.cooldown<=0){obj_controller.cooldown=8000;menu=0;purge=0;instance_destroy();}
+    if (scr_click_left()) {menu=0;purge=0;instance_destroy();}
 }
 
 draw_set_color(c_gray);draw_rectangle(xx+952,yy+556,xx+1043,yy+579,0);
@@ -364,8 +367,8 @@ if (attack=1) then draw_text_transformed(xx+999,yy+559,string_hash_to_newline("A
 
 if (scr_hit(xx+954,yy+556,xx+1043,yy+579)=true){
     draw_set_alpha(0.2);draw_rectangle(xx+954,yy+556,xx+1043,yy+579,0);draw_set_alpha(1);
-    if (mouse_left>=1) and (obj_controller.cooldown<=0) and (string_length(sel)>1){
-        obj_controller.cooldown=30;combating=1;// Start battle here
+    if (scr_click_left()) and (string_length(sel)>1){
+        combating=1;// Start battle here
         
         if (attack=1) then obj_controller.last_attack_form=formation_possible[formation_current];
         if (attack=0) then obj_controller.last_raid_form=formation_possible[formation_current];
@@ -379,19 +382,19 @@ if (scr_hit(xx+954,yy+556,xx+1043,yy+579)=true){
         if (sh_target!=-50){sh_target.acted+=1;}
         
         if (attacking==10) or (attacking==11){
-            remove_planet_problem(obj_controller.selecting_planet, "meeting", p_target);
-            remove_planet_problem(obj_controller.selecting_planet, "meeting_trap", p_target);
+            remove_planet_problem(planet_number, "meeting", p_target);
+            remove_planet_problem(planet_number, "meeting_trap", p_target);
         }
             
         instance_create(0,0,obj_ncombat);
         obj_ncombat.battle_object=p_target;
         obj_ncombat.battle_loc=p_target.name;
-        obj_ncombat.battle_id=obj_controller.selecting_planet;
+        obj_ncombat.battle_id=planet_number;
         obj_ncombat.dropping=1-attack;
         obj_ncombat.attacking=attack;
         obj_ncombat.enemy=attacking;
         obj_ncombat.formation_set=formation_possible[formation_current];
-        obj_ncombat.attacker=1;
+        obj_ncombat.defending=false;
         if (ship_all[500]=1) then obj_ncombat.local_forces=1;
         var _planet = obj_ncombat.battle_object.p_feature[obj_ncombat.battle_id]
         if (obj_ncombat.battle_object.space_hulk=1) then obj_ncombat.battle_special="space_hulk";
@@ -406,7 +409,7 @@ if (scr_hit(xx+954,yy+556,xx+1043,yy+579)=true){
 
         
         if (obj_ncombat.enemy=9) and (obj_ncombat.battle_object.space_hulk=0){
-            if (has_problem_planet(obj_controller.selecting_planet, "tyranid_org", p_target)) then obj_ncombat.battle_special="tyranid_org";
+            if (has_problem_planet(planet_number, "tyranid_org", p_target)) then obj_ncombat.battle_special="tyranid_org";
         }
         
         if (obj_ncombat.enemy=11){
@@ -484,8 +487,8 @@ if (scr_hit(xx+954,yy+556,xx+1043,yy+579)=true){
                         if (veh_fighting[co][v]!=0) then obj_ncombat.veh_fighting[co][v]=1;
                     }
                     if (attack=1) and (ship_all[500]=1){
-                        if (obj_ini.loc[co][v]=p_target.name) and (obj_ini.TTRPG[co][v].planet_location=obj_controller.selecting_planet) and (fighting[co][v]=1) then obj_ncombat.fighting[co][v]=1;
-                        if (v<=100){if (obj_ini.veh_loc[co][v]=p_target.name) and (obj_ini.veh_wid[co][v]=obj_controller.selecting_planet) then obj_ncombat.veh_fighting[co][v]=1;}
+                        if (obj_ini.loc[co][v]=p_target.name) and (obj_ini.TTRPG[co][v].planet_location=planet_number) and (fighting[co][v]=1) then obj_ncombat.fighting[co][v]=1;
+                        if (v<=100){if (obj_ini.veh_loc[co][v]=p_target.name) and (obj_ini.veh_wid[co][v]=planet_number) then obj_ncombat.veh_fighting[co][v]=1;}
                     }
                 }
             }
@@ -493,12 +496,13 @@ if (scr_hit(xx+954,yy+556,xx+1043,yy+579)=true){
         
         // Iterates through all selected "ships" (max 30), including the planet (Local on the drop menu), 
         // and fills the battle roster with any marines found.
-        var i;i=-1;ships_selected=0;
-        repeat(31){
-            i+=1;if (ship_all[i]!=0) then scr_battle_roster(ship[i],ship_ide[i],false);
+        ships_selected=0;
+        var ships_len = array_length(ship_all);
+        for (var i = 0; i < ships_len; i++) {
+            if (ship_all[i]!=0) then scr_battle_roster(ship[i],ship_ide[i],false);
         }
 		//ship_all[500] equals "Local" status on the drop menu
-		if (ship_all[500]=1) and (attack=1) then scr_battle_roster(p_target.name,obj_controller.selecting_planet,true);
+		if (ship_all[500]=1) and (attack=1) then scr_battle_roster(p_target.name,planet_number,true);
     }
 }
 
@@ -525,11 +529,18 @@ if (menu=0) and (purge=1){
     draw_set_halign(fa_center);
     draw_set_font(fnt_40k_30b);
     
-    draw_set_color(c_gray);draw_rectangle(xx+740,yy+558,xx+860,yy+585,0);
-    draw_set_color(0);draw_text_transformed(xx+800,yy+559,string_hash_to_newline("Cancel"),0.75,0.75,0);
-    if (scr_hit(xx+740,yy+558,xx+860,yy+585)=true){
-        draw_set_alpha(0.2);draw_set_color(0);draw_rectangle(xx+740,yy+558,xx+860,yy+585,0);draw_set_alpha(1);
-        if (mouse_left>=1){obj_controller.cooldown=8000;instance_destroy();}
+    draw_set_color(c_gray);
+    draw_rectangle(xx + 740, yy + 558, xx + 860, yy + 585, 0);
+    draw_set_color(0);
+    draw_text_transformed(xx + 800, yy + 559, string_hash_to_newline("Cancel"), 0.75, 0.75, 0);
+    if (scr_hit(xx + 740, yy + 558, xx + 860, yy + 585)) {
+        draw_set_alpha(0.2);
+        draw_set_color(0);
+        draw_rectangle(xx + 740, yy + 558, xx + 860, yy + 585, 0);
+        draw_set_alpha(1);
+        if (scr_click_left()) {
+            instance_destroy();
+        }
     }
     
     var hih,x5,y5,iy,r,nup;
@@ -539,7 +550,7 @@ if (menu=0) and (purge=1){
     x5+=89;y5+=31;
     
     if (instance_exists(p_target)){
-        if (p_target.p_type[obj_controller.selecting_planet]="Shrine") then nup=true;
+        if (p_target.p_type[planet_number]="Shrine") then nup=true;
     }
     
     // 89,31
@@ -549,13 +560,12 @@ if (menu=0) and (purge=1){
         if (iy=1) and (purge_a<=0) then draw_set_alpha(0.35);
         if (iy=2) and (purge_b<=0) and (purge_d=0) then draw_set_alpha(0.35);
         if (iy=3) and (purge_c<=0) and (purge_d=0) then draw_set_alpha(0.35);
-        if (iy=4) and ((purge_d+purge_b=0) or (p_target.dispo[obj_controller.selecting_planet]<0)) then draw_set_alpha(0.35);
+        if (iy=4) and ((purge_d+purge_b=0) or (p_target.dispo[planet_number]<0)) then draw_set_alpha(0.35);
         if (iy=4) and (nup=true) then draw_set_alpha(0.35);
         
-        if (scr_hit(x5,y5+((iy-1)*73),x5+351,y5+((iy-1)*73)+63)=true){r=4;
-            if (mouse_left>=1) and (obj_controller.cooldown<=0){
-                obj_controller.cooldown=8000;
-                
+        if (scr_hit(x5,y5+((iy-1)*73),x5+351,y5+((iy-1)*73)+63)=true){
+            r=4;
+            if (scr_click_left()) {
                 if (iy=1) and (purge_a>0){
                     purge=2;obj_controller.cooldown=8;alarm[4]=1;
                     purge_score=0;
@@ -574,7 +584,7 @@ if (menu=0) and (purge=1){
                     ships_selected=0;
                     all_sel=0;
                 }
-                if (iy=4) and (purge_d+purge_b!=0) and (p_target.dispo[obj_controller.selecting_planet]>=0) and (nup=false){
+                if (iy=4) and (purge_d+purge_b!=0) and (p_target.dispo[planet_number]>=0) and (nup=false){
                     purge=5;obj_controller.cooldown=8;alarm[2]=1;
                     purge_score=0;
                     ships_selected=0;
@@ -611,15 +621,15 @@ if (menu=0) and (purge>=2){
     var x2,y2;
     x2=__view_get( e__VW.XView, 0 )+535;y2=__view_get( e__VW.YView, 0 )+200;
     draw_set_halign(fa_left);draw_set_color(c_gray);
-    if (purge=2) then draw_text_transformed(x2+14,y2+12,string_hash_to_newline("Bombard Purging "+string(p_target.name)+" "+scr_roman(obj_controller.selecting_planet)),0.6,0.6,0);
-    if (purge=3) then draw_text_transformed(x2+14,y2+12,string_hash_to_newline("Fire Cleansing "+string(p_target.name)+" "+scr_roman(obj_controller.selecting_planet)),0.6,0.6,0);
-    if (purge=4) then draw_text_transformed(x2+14,y2+12,string_hash_to_newline("Selective Purging "+string(p_target.name)+" "+scr_roman(obj_controller.selecting_planet)),0.6,0.6,0);
-    if (purge=5) then draw_text_transformed(x2+14,y2+12,string_hash_to_newline("Assassinate Governor ("+string(p_target.name)+" "+scr_roman(obj_controller.selecting_planet)+")"),0.6,0.6,0);
+    if (purge=2) then draw_text_transformed(x2+14,y2+12,string_hash_to_newline("Bombard Purging "+string(p_target.name)+" "+scr_roman(planet_number)),0.6,0.6,0);
+    if (purge=3) then draw_text_transformed(x2+14,y2+12,string_hash_to_newline("Fire Cleansing "+string(p_target.name)+" "+scr_roman(planet_number)),0.6,0.6,0);
+    if (purge=4) then draw_text_transformed(x2+14,y2+12,string_hash_to_newline("Selective Purging "+string(p_target.name)+" "+scr_roman(planet_number)),0.6,0.6,0);
+    if (purge=5) then draw_text_transformed(x2+14,y2+12,string_hash_to_newline("Assassinate Governor ("+string(p_target.name)+" "+scr_roman(planet_number)+")"),0.6,0.6,0);
     
     
     
     // Disposition here
-    var succession=0,pp=obj_controller.selecting_planet
+    var succession=0,pp=planet_number
 
     var succession = has_problem_planet(pp,"succession",p_target);
     
@@ -662,8 +672,8 @@ if (menu=0) and (purge>=2){
         if (ship_all[e]=0) then draw_set_alpha(0.35);
         draw_set_color(c_gray);draw_rectangle(x8,y8,x8+160,y8+16,0);
         draw_set_color(c_black);draw_text(x8+2,y8,string_hash_to_newline("Local ("+string(ship_use[e])+"/"+string(ship_max[e])+")"))
-        if (obj_controller.cooldown<=0) and (mouse_left>=1) and (scr_hit(x8,y8,x8+160,y8+16)=true){var onceh;onceh=0;
-            obj_controller.cooldown=8000;
+        if (point_and_click([x8, y8, x8+160, y8+16])) {
+            var onceh;onceh=0;
             if (ship_all[e]=0) then add_ground=1;
             if (ship_all[e]=1) then add_ground=-1;
         }
@@ -679,9 +689,10 @@ if (menu=0) and (purge>=2){
                 draw_set_alpha(1);if (ship_all[e]=0) then draw_set_alpha(0.35);
                 draw_set_color(c_gray);draw_rectangle(x8,y8,x8+160,y8+16,0);// 160
                 draw_set_color(c_black);draw_text_transformed(x8+2,y8,string_hash_to_newline(string(ship[e])+" ("+string(ship_size[e])+")"),0.8,0.8,0);
-                if (obj_controller.cooldown<=0) and (mouse_left>=1) and (scr_hit(x8,y8,x8+160,y8+16)=true){var onceh;onceh=0;
-                    if (onceh=0) and (ship_all[e]=0){onceh=1;obj_controller.cooldown=8000;ship_all[e]=1;ships_selected+=1;}
-                    if (onceh=0) and (ship_all[e]=1){onceh=1;obj_controller.cooldown=8000;ship_all[e]=0;ships_selected-=1;}
+                if (point_and_click([x8, y8, x8+160, y8+16])) {
+                    var onceh;onceh=0;
+                    if (onceh=0) and (ship_all[e]=0){onceh=1;ship_all[e]=1;ships_selected+=1;}
+                    if (onceh=0) and (ship_all[e]=1){onceh=1;ship_all[e]=0;ships_selected-=1;}
                 }
                 y8+=18;sip+=1;
                 
@@ -698,9 +709,10 @@ if (menu=0) and (purge>=2){
                 draw_set_alpha(1);if (ship_all[e]=0) then draw_set_alpha(0.35);
                 draw_set_color(c_gray);draw_rectangle(x8,y8,x8+160,y8+16,0);// 160
                 draw_set_color(c_black);draw_text_transformed(x8+2,y8,string_hash_to_newline(string(ship[e])+" ("+string(ship_use[e])+"/"+string(ship_max[e])+")"),0.8,0.8,0);
-                if (obj_controller.cooldown<=0) and (mouse_left>=1) and (scr_hit(x8,y8,x8+160,y8+16)=true){var onceh;onceh=0;
-                    if (onceh=0) and (ship_all[e]=0){onceh=1;obj_controller.cooldown=8000;scr_drop_fiddle(ship_ide[e],true,e,attack);}
-                    if (onceh=0) and (ship_all[e]=1){onceh=1;obj_controller.cooldown=8000;scr_drop_fiddle(ship_ide[e],false,e,attack);}
+                if (point_and_click([x8, y8, x8+160, y8+16])) {
+                    var onceh;onceh=0;
+                    if (onceh=0) and (ship_all[e]=0){onceh=1;scr_drop_fiddle(ship_ide[e],true,e,attack);}
+                    if (onceh=0) and (ship_all[e]=1){onceh=1;scr_drop_fiddle(ship_ide[e],false,e,attack);}
                 }
                 y8+=18;sip+=1;
                 
@@ -718,12 +730,12 @@ if (menu=0) and (purge>=2){
     draw_set_font(fnt_40k_14);draw_set_color(c_gray);draw_set_alpha(1);
     
     var hers,influ,poppy;
-    hers=p_target.p_heresy[obj_controller.selecting_planet]+p_target.p_heresy_secret[obj_controller.selecting_planet];
-    influ=p_target.p_influence[obj_controller.selecting_planet];
-    if (p_target.p_large[obj_controller.selecting_planet]=1) then poppy=string(p_target.p_population[obj_controller.selecting_planet])+"B";
-    if (p_target.p_large[obj_controller.selecting_planet]=0) then poppy=string(scr_display_number(p_target.p_population[obj_controller.selecting_planet]));
-    draw_text(x2+14,y2+312,string_hash_to_newline("Heresy: "+string(max(hers,influ[eFACTION.Tau]))+"%"));
-    draw_text(x2+14,y2+332,string_hash_to_newline("Population: "+string(poppy)));
+    hers=p_target.p_heresy[planet_number]+p_target.p_heresy_secret[planet_number];
+    influ=p_target.p_influence[planet_number];
+    if (p_target.p_large[planet_number]=1) then poppy=string(p_target.p_population[planet_number])+"B";
+    if (p_target.p_large[planet_number]=0) then poppy=string(scr_display_number(p_target.p_population[planet_number]));
+    draw_text(x2+14,y2+312,"Heresy: "+string(max(hers,influ[eFACTION.Tau]))+"%");
+    draw_text(x2+14,y2+332,"Population: "+string(poppy));
     
     
     
@@ -733,8 +745,8 @@ if (menu=0) and (purge>=2){
     if (purge=2){// Bombardment select all
         draw_set_alpha(1);
         yar=2;if (all_sel=1) then yar=3;draw_sprite(spr_creation_check,yar,x2+233,y2+75);yar=0;
-        if (scr_hit(x2+233,y2+75,x2+233+32,y2+75+32)=true) and (obj_controller.cooldown<=0) and (mouse_left>=1){
-            obj_controller.cooldown=8000;var onceh;onceh=0;
+        if (point_and_click([x2+233, y2+75, x2+233+32, y2+75+32])) {
+            var onceh;onceh=0;
             var onceh;once=0;i=0;
             if (all_sel=0) and (onceh=0){
                 repeat(60){i+=1;if (ship[i]!="") and (ship_all[i]=0){ship_all[i]=1;ships_selected+=1;}}
@@ -752,8 +764,8 @@ if (menu=0) and (purge>=2){
     if (purge>=3){// Anything not bombardment, select all
         draw_set_alpha(1);
         yar=2;if (all_sel=1) then yar=3;draw_sprite(spr_creation_check,yar,x2+233,y2+75);yar=0;
-        if (scr_hit(x2+233,y2+75,x2+233+32,y2+75+32)=true) and (obj_controller.cooldown<=0) and (mouse_left>=1){
-            obj_controller.cooldown=8000;var onceh;onceh=0;
+        if (point_and_click([x2+233, y2+75, x2+233+32, y2+75+32])) {
+            var onceh;onceh=0;
             var onceh;once=0;i=0;
             if (all_sel=0) and (onceh=0){
                 repeat(60){i+=1;
@@ -852,16 +864,20 @@ if (menu=0) and (purge>=2){
     draw_set_color(0);draw_text_transformed(x2+320,y2+358,string_hash_to_newline("BACK"),1.25,1.25,0);
     if (scr_hit(xx+852,yy+556,xx+921,yy+579)=true){
         draw_set_alpha(0.2);draw_rectangle(xx+852,yy+556,xx+921,yy+579,0);draw_set_alpha(1);
-        if (mouse_left>=1) and (obj_controller.cooldown<=0){obj_controller.cooldown=8000;purge=1;}
+        if (scr_click_left()) {
+            purge=1;
+        }
     }
     
-    draw_set_color(c_gray);draw_rectangle(xx+954,yy+556,xx+1043,yy+579,0);
-    draw_set_color(0);draw_text_transformed(x2+423,y2+358,string_hash_to_newline("PURGE!"),1.25,1.25,0);
+    draw_set_color(c_gray);
+    draw_rectangle(xx+954,yy+556,xx+1043,yy+579,0);
+    draw_set_color(0);
+    draw_text_transformed(x2+423,y2+358,"PURGE!",1.25,1.25,0);
     if (scr_hit(xx+954,yy+556,xx+1043,yy+579)=true){
-        draw_set_alpha(0.2);draw_rectangle(xx+954,yy+556,xx+1043,yy+579,0);draw_set_alpha(1);
-        if (mouse_left>=1) and (obj_controller.cooldown<=0){
-            obj_controller.cooldown=30;// Start purge here
-            
+        draw_set_alpha(0.2);
+        draw_rectangle(xx+954,yy+556,xx+1043,yy+579,0);draw_set_alpha(1);
+        if (scr_click_left()) {
+            // Start purge here
             if (purge=2){var i;i=0;
                 repeat(50){i+=1;
                     if (ship[i]!="") and (ship_all[i]>0){
@@ -878,7 +894,7 @@ if (menu=0) and (purge>=2){
                 }
             }
             
-            scr_purge_world(p_target,obj_controller.selecting_planet,purge-1,purge_score);
+            scr_purge_world(p_target,planet_number,purge-1,purge_score);
         }
     }
     

@@ -169,7 +169,7 @@
             {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"a025e794-d660-4430-a914-cd4b735734db","path":"sprites/spr_warp_storm/spr_warp_storm.yy",},},},"Disabled":false,"id":"7e000970-be30-436b-a58d-b6ad3bfc468d","IsCreationKey":false,"Key":56.0,"Length":1.0,"Stretch":false,},
           ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
-    "visibleRange": {"x":0.0,"y":0.0,},
+    "visibleRange": null,
     "volume": 1.0,
     "xorigin": 80,
     "yorigin": 45,

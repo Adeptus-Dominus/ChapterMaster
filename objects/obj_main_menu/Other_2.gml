@@ -1,5 +1,4 @@
-
-version=0;
+something_version=0;
 global.returned=0;
 global.icon_name="";
 

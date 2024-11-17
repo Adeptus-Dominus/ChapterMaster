@@ -58,18 +58,15 @@ if (engage=true){
                      if (is_string(unit.gear(true))){
 						unit.update_gear(req_gear);
                      }
-               
-                    
+                                  
                     // ** Start Mobility Items **
-                    if (unit.mobility_item()!=req_mobi) and (string_count("&",obj_ini.mobi[co][i])=0){
+                    if (unit.mobility_item()!=req_mobi){
                         var stop_mobi=false;
-                    
-                        if (unit_armour.has_tags(["terminator","dreadnought"]))then stop_mobi=true;
-                        if (stop_mobi=true) and (obj_ini.mobi[co][i]!=""){
+                        if (unit_armour.has_tags(["terminator","dreadnought"])){
                         	unit.update_mobility_item("");
-						} else {
-							unit.update_mobility_item(req_mobi);
-						}                       
+                        } else {
+                        	unit.update_mobility_item(req_mobi);
+                        }                     
                     }                   
                 // ** End role check **
 				}
@@ -89,18 +86,18 @@ if (refresh=true) and (obj_controller.settings>0){
 	for(var i=0; i<11; i++){
         role_number[i]=0;
         }
-	for(var i=0; i<61; i++){
-		arm[i]="";
-		arm_n[i]=0;
-		mob[i]="";
-		mob_n[i]=0;
-		gea[i]="";
-		gea_n[i]=0;
-		we1[i]="";
-		we1_n[i]=0;
-		we2[i]="";
-		we2_n[i]=0;
-	}
+
+    arm = array_create(61, "");
+    arm_n = array_create(61, 0);
+    mob = array_create(61, "");
+    mob_n = array_create(61, 0);
+    gea = array_create(61, "");
+    gea_n = array_create(61, 0);
+    we1 = array_create(61, "");
+    we1_n = array_create(61, 0);
+    we2 = array_create(61, "");
+    we2_n = array_create(61, 0);                 
+
     armour_equip="";
 	wep1_equip="";
 	wep2_equip="";
@@ -135,7 +132,7 @@ if (refresh=true) and (obj_controller.settings>0){
     req_mobi=obj_ini.mobi[100,role];
 	
 	for(var co=0; co<11; co++){
-		for(var i=1; i<=300; i++){
+		for(var i=1; i < array_length(obj_ini.role[co]); i++){
             if (obj_ini.role[co][i]=obj_ini.role[100,role]){
                 role_number[co]+=1;
                 
@@ -190,13 +187,15 @@ if (refresh=true) and (obj_controller.settings>0){
                 }
                 
                 if (req_gear!=""){
-                    if (string_count("&",obj_ini.gear[co][i])=0){if (obj_ini.gear[co][i]=req_gear) then have_gear_num+=1;}
-                    if (string_count("&",obj_ini.gear[co][i])>0) then have_gear_num+=1;
+                    if (string_count("&",obj_ini.gear[co][i])=0){
+                    	if (obj_ini.gear[co][i]=req_gear) then have_gear_num+=1;
+                    }
                 }
                 
                 if (req_mobi!=""){
-                    if (string_count("&",obj_ini.mobi[co][i])=0){if (obj_ini.mobi[co][i]=req_mobi) then have_mobi_num+=1;}
-                    if (string_count("&",obj_ini.mobi[co][i])>0) then have_mobi_num+=1;
+                    if (string_count("&",obj_ini.mobi[co][i])=0){
+                    	if (obj_ini.mobi[co][i]=req_mobi) then have_mobi_num+=1;
+                    }
                 }
             }
             if (obj_ini.role[co][i]=obj_ini.role[100,role]){
@@ -327,7 +326,7 @@ if (refresh=true) and (obj_controller.settings>0){
     have_wep2_num+=scr_item_count(req_wep2);
     
     if (req_armour="Power Armour"){
-	have_armour_num+=scr_item_count("MK8 Errant");
+		have_armour_num+=scr_item_count("MK8 Errant");
         have_armour_num+=scr_item_count("MK7 Aquila");
         have_armour_num+=scr_item_count("MK6 Corvus");
         have_armour_num+=scr_item_count("Power Armour");

@@ -97,7 +97,7 @@ function scr_management(argument0) {
 		}
 	    nam[2]=role_names[Role.HONOUR_GUARD];
 
-	    for (var i = 1; i <= 200; i++) {
+	    for (var i = 0; i < array_length(obj_ini.name[0]); i++) {
 			unit = fetch_unit([0,i]);
 			if (unit.role() == "Chapter Master") {
 				num[1] += 1;
@@ -382,7 +382,7 @@ function scr_management(argument0) {
 			nam[22] = "Rhino";
 			nam[23] = "Land Speeder";
 			nam[24] = "Whirlwind";
-	        for (var i=1;i<500;i++) {
+	        for (var i=0;i<array_length(obj_ini.name[0]);i++) {
 	        	if (obj_ini.name[company][i] == "") then continue;
 	        	unit = fetch_unit([company,i]);
 	            if (unit.role()=role_names[Role.CAPTAIN]){

@@ -5,7 +5,7 @@ if (__b__){
     if (__b__){
         __b__ = action_if_variable(cooldown, 500, 1);
         if (__b__){
-            if (obj_controller.menu==0) or ((obj_controller.menu==999) and (instance_exists(obj_ncombat))){
+            if (obj_controller.menu==0 && !instance_exists(obj_popup_dialogue)) or ((obj_controller.menu==999) and (instance_exists(obj_ncombat))){
                 if (instance_exists(obj_ncombat)){
                     if (obj_ncombat.start==7) then exit;
                 }

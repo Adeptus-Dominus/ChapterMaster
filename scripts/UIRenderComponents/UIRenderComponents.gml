@@ -185,7 +185,7 @@ function UISpriteRendererComponent(owner, name) : UIRenderComponent(owner, name)
 				alpha
 			)
 		} catch(_exception){
-			show_debug_message(_exception.message);
+            handle_exception(_exception);
 		}
 		img_index = (img_index + img_speed) % __spr_frames;
 	}

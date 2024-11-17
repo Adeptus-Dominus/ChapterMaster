@@ -1,0 +1,114 @@
+name: Build GameMaker Project
+on:
+  workflow_call:
+    inputs:
+      yyc:
+        required: false
+        type: boolean
+        default: false
+      development:
+        required: false
+        type: boolean
+        default: true
+    outputs:
+      suffix:
+        value: ${{ jobs.build.outputs.suffix }}
+jobs:
+  build:
+    name: Build
+    runs-on: windows-2022
+    outputs:
+      suffix: ${{ steps.version_info.outputs.suffix }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+          
+      - name: fetch tags
+        run: git fetch --tags origin
+        
+      - name: Set date-time and version info
+        id: version_info
+        shell: pwsh
+        run: |
+          # Generate current date-time directly in the format you want
+          $date_time = (Get-Date).ToString("yyyy-MM-dd-HHmm")
+  
+          # Set the version number (this could be dynamic or hardcoded)
+          $BuildDate = $date_time
+          $CommitHash = git rev-parse --short HEAD
+
+          if ("${{ inputs.development }}" -eq "true") {
+            $Version = "Development"
+            echo "::set-output name=suffix::$BuildDate"
+          } else {
+            # Ensure all tags are fetched
+            git fetch --tags
+            # Try to get the latest Git tag
+            try {
+              $Tag = "${{ github.ref_name }}"
+              $Version = $Tag
+              echo "::set-output name=suffix::$Version"
+            } catch {
+              # If no tags exist, use the commit hash as the version
+              Write-Warning "No tags found, using commit hash as version."
+              $Version = $CommitHash
+            }
+          }
+  
+          # Create the version.json content
+          $VersionJson = @{
+            version     = $Version
+            build_date  = $BuildDate
+            commit_hash = $CommitHash
+          } | ConvertTo-Json
+      
+          # Write the version.json to disk
+          Set-Content -Path datafiles/main/version.json -Value $VersionJson
+          
+          # Set outputs for version, build date, and commit hash
+          echo "::set-output name=version::$Version"
+          echo "::set-output name=build_date::$BuildDate"
+          echo "::set-output name=commit_hash::$CommitHash"
+
+      # This step finds the yyp file in the repository and saves the path to an output
+      - id: find_yyp
+        name: Find The yyp File
+        run: |
+          # Search for .yyp file recursively in the repository
+          $yyp = Get-ChildItem -Path ${{ github.workspace }} -Recurse -Filter *.yyp
+          
+          # Check if the file was found
+          if ($yyp.Count -eq 0) {
+          Write-Error "No .yyp file found in the repository"
+          exit 1
+          }
+          # If found, output the path of the .yyp file
+          Write-Output "YYP file found at: $yyp"
+          "yyp-path=$yyp" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          
+      # This step sets up the GameMaker build CLI tool Igor https://github.com/bscotch/igor-setup
+      - id: igor_setup
+        name: Setup Igor
+        uses: bscotch/igor-setup@v1.1.0
+        with:
+          runtime-version: 2023.11.1.160
+          target-yyp: ${{ steps.find_yyp.outputs.yyp-path }}
+          access-key: ${{ secrets.ACCESS_KEY }}
+          
+      # Update the version.json file with build date and other versioning information
+      - id: igor_build
+        name: Build with Igor
+        uses: bscotch/igor-build@v1.0.3
+        with:
+          yyp-path: ${{ steps.find_yyp.outputs.yyp-path }}
+          user-dir: ${{ steps.igor_setup.outputs.user-dir }}
+          name: ChapterMaster-${{ steps.version_info.outputs.suffix }}-Windows.zip
+          yyc: ${{ inputs.yyc }}
+          
+      # Upload built file as an artifact
+      - name: Upload built file as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: built-file
+          path: ${{ steps.igor_build.outputs.out-dir }}

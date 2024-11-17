@@ -6,3 +6,6 @@
 
 # Mac folder info
 **/.DS_Store
+
+# Gamemaker stuff
+ChapterMaster.resource_order

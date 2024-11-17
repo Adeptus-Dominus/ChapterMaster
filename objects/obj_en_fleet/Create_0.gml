@@ -11,18 +11,23 @@ ret=0;
 hurt=0;
 orbiting=0;
 rep=3;
-minimum_eta=0;
+minimum_eta=2;
 navy=0;
 guardsmen_ratio=0;
 guardsmen_unloaded=0;
+complex_route = [];
+warp_able = false;
 ii_check=floor(random(5))+1;
 etah=0;safe=0;
 //TODO set up special save method for faction specific fleet variables
 inquisitor=-1;
 
-image_xscale=1.25;image_yscale=1.25;
+cargo_data = {};
 
-var i;i=-1;
+image_xscale=1.25;
+image_yscale=1.25;
+
+var i=-1;
 repeat(21){i+=1;
     capital[i]="";capital_num[i]=0;capital_sel[i]=1;capital_imp[i]=0;capital_max_imp[i]=0;
 }

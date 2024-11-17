@@ -1,10 +1,16 @@
 // Script assets have changed for v2.3.0 see
-// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
+// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more informationype
+
+enum ePlayerBase {
+	home_world = 1,
+	fleet_based = 2,
+	penitent = 3,
+}
 function fleet_has_roles(fleet="none", roles){
 	var all_ships = fleet_full_ship_array(fleet);
 	var unit;
 	for (var i=0;i<=10;i++){
-		for (var s=0;s<500;s++){
+		for (var s=0;s<array_length(obj_ini.TTRPG[i]);s++){
 			unit=fetch_unit([i,s]);
 			if (unit.planet_location<1){
 				if (array_contains(all_ships,unit.ship_location)){
@@ -59,20 +65,23 @@ function split_selected_into_new_fleet(start_fleet="none"){
 }
 
 function cancel_fleet_movement(){
+	show_debug_message("cancel");
 	var nearest_star = instance_nearest(x,y, obj_star);
     action="";
-    x=nearest_star+24;
-    y=nearest_star-24;
+    x=nearest_star.x;
+    y=nearest_star.y;
     action_x=0;
     action_y=0;
     complex_route=[];
     just_left=false;
 }
+
+
 function set_new_player_fleet_course(target_array){
 	if (array_length(target_array)>0){
 		var target_planet = star_by_name(target_array[0]);
 		var nearest_planet = instance_nearest(x,y,obj_star);
-		var from_star = point_distance(nearest_planet.x,nearest_planet.y, x, y) <100;
+		var from_star = point_distance(nearest_planet.x,nearest_planet.y, x, y) <75;
 		var valid = target_planet!="none";
 		if (valid){
 			valid = !(target_planet.id == nearest_planet.id && from_star);
@@ -88,9 +97,9 @@ function set_new_player_fleet_course(target_array){
 			array_delete(target_array, 0, 1);
 		}
 		complex_route = target_array;
-		var from_x = from_star ? nearest_planet.x:x;
-		var from_y = from_star ? nearest_planet.y:y;
-		action_eta=calculate_fleet_eta(from_x,from_y,target_planet.x,target_planet.y, action_spd, from_star, true);
+		var from_x = from_star ? nearest_planet.x : x;
+		var from_y = from_star ? nearest_planet.y : y;
+		action_eta=calculate_fleet_eta(from_x,from_y,target_planet.x,target_planet.y, action_spd, from_star, ,warp_able);
 		action_x = target_planet.x;
 		action_y = target_planet.y;
 		action="move";
@@ -157,21 +166,21 @@ function fleet_full_ship_array(fleet="none", exclude_capitals=false, exclude_fri
 	var i;
 	if (fleet=="none"){
 		if (!exclude_capitals){
-			for (i=1; i<=capital_number;i++){
+			for (i=0; i<=capital_number;i++){
 				if (i>=0 && i < array_length(capital_num)){
 					array_push(all_ships, capital_num[i]);
 				}
 			}
 		}
 		if (!exclude_frigates){
-			for (i=1; i<=frigate_number;i++){
+			for (i=0; i<=frigate_number;i++){
 				if (i>=0 && i < array_length(frigate_num)){
 					array_push(all_ships, frigate_num[i]);
 				}
 			}
 		}
 		if (!exclude_escorts){
-			for (i=1; i<=escort_number;i++){
+			for (i=0; i<=escort_number;i++){
 				if (i>=0 && i < array_length(escort_num)){
 					array_push(all_ships, escort_num[i]);
 				}
@@ -193,6 +202,29 @@ function set_fleet_location(location){
 			obj_ini.ship_location[temp] = location;
 		}
 	}
+}
+
+function selected_ship_types(){
+	var capitals=0,frigates=0,escorts=0,i;
+    for (i=0; i<array_length(capital);i++){
+        if(capital[i]!="" && capital_sel[i]){
+            capitals=true
+            break;
+        }
+    } 
+    for (i=0; i<array_length(frigate);i++){
+        if(frigate[i]!="" && frigate_sel[i]){
+            frigates=true
+            break;
+        }
+    } 
+    for (i=0; i<array_length(escort);i++){
+        if(escort[i]!="" && escort_sel[i]){
+            escorts=true
+            break;
+        }
+    }
+    return [capitals,frigates,escorts];
 }
 function player_fleet_ship_count(fleet="none"){
 	var ship_count = 0;
@@ -397,10 +429,16 @@ function get_nearest_player_fleet(nearest_x, nearest_y, is_static=false, is_movi
 	return chosen_fleet;	
 }
 
-function get_valid_player_ship(){
+function get_valid_player_ship(location="", name=""){
 	for (var i = 0;i<array_length(obj_ini.ship);i++){
 		if (obj_ini.ship[i] != ""){
-			return i;
+			if (location == ""){
+				return i;
+			} else {
+				if (obj_ini.ship_location[i] == location){
+					return i;
+				}
+			}
 		}
 	}
 	return -1;

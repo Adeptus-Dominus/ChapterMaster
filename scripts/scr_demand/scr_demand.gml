@@ -101,12 +101,12 @@ function scr_demand(argument0) {
     
 	    if (obj_controller.faction_status[eFACTION.Eldar]="War") or (obj_controller.faction_status[eFACTION.Eldar]="Antagonism"){
 	        with(obj_star){if (owner = eFACTION.Eldar) and (craftworld=1) then instance_create(x,y,obj_temp5);}
-	        with(obj_p_fleet){if (point_distance(x,y,obj_temp5.x,obj_temp5.y)<37) and (action="") then instance_create(x,y,obj_temp4);}
+	        with(obj_p_fleet){if (point_distance(x,y,obj_temp5.x,obj_temp5.y)<37) and (action="") then instance_create(x,y,obj_ground_mission);}
 	        with(obj_en_fleet){if (point_distance(x,y,obj_temp5.x,obj_temp5.y)<37) and (action="") and (owner = eFACTION.Eldar) then instance_create(x,y,obj_temp3);}
         
 	        with(obj_temp5){instance_destroy();}
-	        if (instance_number(obj_temp4)>1) and (instance_number(obj_temp3)=0) then resistance-=5;
-	        with(obj_temp4){instance_destroy();}
+	        if (instance_number(obj_ground_mission)>1) and (instance_number(obj_temp3)=0) then resistance-=5;
+	        with(obj_ground_mission){instance_destroy();}
 	        with(obj_temp3){instance_destroy();}
 	    }
     

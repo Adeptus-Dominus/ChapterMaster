@@ -27,7 +27,7 @@ if (debug!=0) then exit;
 
     //TODO centralise this logic
     if (instance_exists(obj_fleet_select)){
-         if (obj_fleet_select.currently_entered) then exit;
+         if (obj_fleet_select.currently_entered)  then exit;
     }
 
 
@@ -86,22 +86,29 @@ if (player_fleet>0) and (imperial_fleet+mechanicus_fleet+inquisitor_fleet+eldar_
     if (combating>0){
         obj_controller.combat=combating;
     
-        var ii, xx, yy, good, enemy_fleet, allied_fleet, ecap, efri, eesc, acap, afri, aesc, e1,e2,e3;
-        ii=0;xx=0;yy=0;good=0=0;enemy_fleet=0;allied_fleet=0;ecap=0;efri=0;eesc=0;e1=0;e2=0;e3=0;
-        ii=-1;repeat(20){
-            ii+=1;
-            enemy_fleet[ii]=0;allied_fleet[ii]=0;ecap[ii]=0;efri[ii]=0;eesc[ii]=0;acap[ii]=0;afri[ii]=0;aesc[ii]=0;}
+        var  xx=false, yy=false, good=false, e1=false,e2=false,e3=false;
+
+
+        var enemy_fleet = array_create(20, 0);
+        var allied_fleet = array_create(20, 0);
+        var ecap = array_create(20, 0);
+        var efri = array_create(20, 0);
+        var eesc = array_create(20, 0);
+        var acap = array_create(20, 0);
+        var afri = array_create(20, 0);
+        var aesc = array_create(20, 0);
         
-        ii=0;good=1;
+        good=1;
         
         var  p_fleet = get_nearest_player_fleet(x,y,true);
         
         obj_controller.temp[1099]=target.name;
-        ii=target;
-        good = p_fleet!="none";
+        good = (p_fleet!="none" and instance_exists(target));
+
         if (good=1){// trying to find the star
             instance_activate_object(obj_star);
-            obj_controller.x=ii.x;obj_controller.y=ii.y;// show=current_battle;
+            obj_controller.x=target.x;
+            obj_controller.y=target.y;// show=current_battle;
             
             strin[1]=string(p_fleet.capital_number);
             strin[2]=string(p_fleet.frigate_number);

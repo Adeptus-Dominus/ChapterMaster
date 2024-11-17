@@ -16,13 +16,3 @@ crap=0;
 oth=0;
 
 mouse_left=0;
-
-/**function main_menu_buttons(Button, Frame) constructor(){
-    button = Button;
-    frame = Frame;
-    stat draw = function(){
-
-    }
-}
-
-new*/
