@@ -133,7 +133,7 @@ global.weapons = {
 		"melee_hands": 0,
 		"ranged_hands": 0.5,
 		"ammo": 30,
-		"range": 3.1,
+		"range": 4.1,
 		"spli": 0,
 		"arp": 0,
 		"tags": ["pistol", "ancient", "las", "energy"],
@@ -149,7 +149,7 @@ global.weapons = {
 		"melee_hands": 0,
 		"ranged_hands": 0.25,
 		"ammo": 30,
-		"range": 3.1,
+		"range": 4.1,
 		"spli": 0,
 		"arp": 0,
 		"tags": ["pistol", "las", "energy"],
@@ -289,9 +289,9 @@ global.weapons = {
 	"Power Spear": {
 		"abbreviation": "PwrSpear",
 		"attack": {
-			"standard": 225,
-			"master_crafted": 260,
-			"artifact": 300
+			"standard": 300,
+			"master_crafted": 375,
+			"artifact": 450
 		},
 		"melee_mod": {
 			"standard": 1,
@@ -692,13 +692,13 @@ global.weapons = {
 		"melee_hands": 0,
 		"ranged_hands": 1,
 		"ammo": 18,
-		"range": 3.1,
+		"range": 4.1,
 		"spli": 3,
 		"arp": 0,
 		"tags": ["bolt", "pistol", "boarding 2"],
 	},
 	"Wrist-Mounted Storm Bolter": {
-		"abbreviation": "WrstStBlt",
+		"abbreviation": "WrstBlt",
 		"attack": {
 			"standard": 200,
 			"master_crafted": 240,
@@ -708,7 +708,7 @@ global.weapons = {
 		"melee_hands": 0,
 		"ranged_hands": 1,
 		"ammo": 18,
-		"range": 3.1,
+		"range": 4.1,
 		"spli": 6,
 		"arp": 0,
 		"tags": ["bolt", "pistol", "boarding 2"],
@@ -740,7 +740,7 @@ global.weapons = {
 		"melee_hands": 0,
 		"ranged_hands": 1,
 		"ammo": 4,
-		"range": 3.1,
+		"range": 4.1,
 		"spli": 1,
 		"arp": 1,
 		"tags": ["grav", "pistol"]
@@ -748,15 +748,15 @@ global.weapons = {
 	"Integrated-Grav": {
 		"abbreviation": "IntMlt",
 		"attack": {
-			"standard": 400,
-			"master_crafted": 450,
-			"artifact": 500
+			"standard": 500,
+			"master_crafted": 550,
+			"artifact": 625
 		},
 		"description": "",
-		"melee_hands": 1,
-		"ranged_hands": 2,
-		"ammo": 5,
-		"range": 2.1,
+		"melee_hands": 0,
+		"ranged_hands": 0,
+		"ammo": 3,
+		"range": 5.1,
 		"spli": 1,
 		"arp": 1,
 		"tags": ["grav"]
@@ -912,7 +912,7 @@ global.weapons = {
 		"melee_hands": 0,
 		"ranged_hands": 3,
 		"ammo": 0,
-		"range": 3.1,
+		"range": 4.1,
 		"spli": 20,
 		"arp": -1,
 		"tags": ["vehicle","heavy_ranged", "flame", "dreadnought"]
@@ -920,13 +920,13 @@ global.weapons = {
 	"Integrated-Melta": {
 		"abbreviation": "IntMlt",
 		"attack": {
-			"standard": 325,
-			"master_crafted": 375,
-			"artifact": 500
+			"standard": 400,
+			"master_crafted": 475,
+			"artifact": 600
 		},
 		"description": "",
-		"melee_hands": 1,
-		"ranged_hands": 2,
+		"melee_hands": 0,
+		"ranged_hands": 0,
 		"ammo": 5,
 		"range": 2.1,
 		"spli": 1,
@@ -938,7 +938,7 @@ global.weapons = {
 		"attack": {
 			"standard": 400,
 			"master_crafted": 475,
-			"artifact": 500
+			"artifact": 600
 		},
 		"description": "A loud weapon that roars with fury, this gun vaporizes flesh and armor alike. Due to heat dissipation, it has only a short range.",
 		"melee_hands": 1,
@@ -992,7 +992,7 @@ global.weapons = {
 		"melee_hands": 0,
 		"ranged_hands": 0,
 		"ammo": 0,
-		"range": 3.1,
+		"range": 4.1,
 		"spli": 1,
 		"arp": 1,
 		"tags": ["plasma", "energy", "pistol"]
@@ -1016,13 +1016,13 @@ global.weapons = {
 	"Integrated-Plasma": {
 		"abbreviation": "IntPls",
 		"attack": {
-			"standard": 300,
-			"master_crafted": 375,
-			"artifact": 450
+			"standard": 350,
+			"master_crafted": 400,
+			"artifact": 475
 		},
 		"description": "",
-		"melee_hands": 1,
-		"ranged_hands": 2,
+		"melee_hands": 0,
+		"ranged_hands": 0,
 		"ammo": 6,
 		"range": 10,
 		"spli": 2,
@@ -1122,7 +1122,7 @@ global.weapons = {
 		"ammo": 6,
 		"range": 15,
 		"spli": 10,
-		"arp": 1,
+		"arp": 0,
 		"tags": ["heavy_ranged", "dreadnought"]
 	},
 	"Lascannon": {
@@ -1157,7 +1157,7 @@ global.weapons = {
 		"arp": 1,
 		"tags": ["heavy_ranged", "ancient"]
 	},
-	"Integrated Bolter": {
+	"Integrated-Bolter": {
 		"abbreviation": "IntgBltr",
 		"attack": {
 			"standard": 150,
@@ -1167,7 +1167,7 @@ global.weapons = {
 		"description": "A Bolter that can be built directly into the structure of the vehicle, armor, another weapon or Dreadnought. When used as a weapon, it leaves both hands free, allowing to use any, even a twohanded weapon, efficiently.",
 		"melee_hands": 0,
 		"ranged_hands": 0,
-		"ammo": 20,
+		"ammo": 8,
 		"range": 12,
 		"spli": 4,
 		"arp": 0,
@@ -1413,8 +1413,8 @@ global.weapons = {
 		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 30,
-		"range": 12,
-		"spli": 8,
+		"range": 10,
+		"spli": 10,
 		"arp": 0,
 		"tags": ["bolt", "vehicle"]
 	},
@@ -1461,7 +1461,7 @@ global.weapons = {
 		"melee_hands": 0,
 		"ranged_hands": 0,
 		"ammo": 20,
-		"range": 16,
+		"range": 14,
 		"spli": 28,
 		"arp": 0,
 		"tags": ["heavy_ranged", "vehicle", "sponson", "bolt"]
@@ -1541,7 +1541,7 @@ global.weapons = {
 		"description": "Along with using a lower-capacity fuel tank it has much reduced range, which makes it suited for assault and close-combat purposes, incinerating foes at short range. The weapon is often used by assault squads.",
 		"melee_hands": 0,
 		"ranged_hands": 1,
-		"ammo": 3,
+		"ammo": 4,
 		"range": 2.1,
 		"spli": 8,
 		"arp": -1,
@@ -1562,7 +1562,7 @@ global.weapons = {
 		"description": "Blackened at the tip, this weapon unleashes a torrent of burning promethium - all the better to cleanse sin and impurity with.",
 		"melee_hands": 1,
 		"ranged_hands": 2,
-		"ammo": 6,
+		"ammo": 8,
 		"range": 4.1,
 		"spli": 14,
 		"arp": -1,
@@ -1570,16 +1570,16 @@ global.weapons = {
 	},
 	"Integrated-Flamer": {
 		"attack": {
-			"standard": 300,
-			"master_crafted": 350,
-			"artifact": 425
+			"standard": 350,
+			"master_crafted": 385,
+			"artifact": 420
 		},
 		"description": "",
 		"abbreviation": "IntFlmr",
 		"melee_hands": 0,
 		"ranged_hands": 0,
 		"ammo": 4,
-		"range": 3.1,
+		"range": 4.1,
 		"spli": 3,
 		"arp": -1,
 		"tags": ["flame", "attached"]
@@ -1857,7 +1857,7 @@ global.weapons = {
 		"ammo": 25,
 		"range": 18,
 		"spli": 30,
-		"arp": 0,
+		"arp": 1,
 		"tags": ["vehicle","heavy_ranged", "turret", "volkite", "ancient"]
 	},
 }
