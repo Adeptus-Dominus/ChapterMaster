@@ -1218,7 +1218,7 @@ global.weapons = {
 		"ammo": 10,
 		"range": 14,
 		"spli": 12,
-		"arp": 1,
+		"arp": 0,
 		"tags": ["heavy_ranged", "bolt"]
 	},
 	"Whirlwind Missiles": {
@@ -1255,7 +1255,7 @@ global.weapons = {
 		"ammo": 20,
 		"range": 16,
 		"spli": 21,
-		"arp": 1,
+		"arp": 0,
 		"tags": ["vehicle", "dreadnought", "heavy_ranged", "bolt"]
 	},
 	"Twin Linked Lascannon Mount": {
