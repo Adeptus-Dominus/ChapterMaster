@@ -697,7 +697,7 @@ global.weapons = {
 		"arp": 0,
 		"tags": ["bolt", "pistol", "boarding 2"],
 	},
-	"Wrist-Mounted Storm Bolter": {
+	"Wrist-Mounted Storm Bolter": { // TODO: Not used outside of this file atm;
 		"abbreviation": "WrstBlt",
 		"attack": {
 			"standard": 200,
@@ -746,7 +746,7 @@ global.weapons = {
 		"tags": ["grav", "pistol"]
 	},
 	"Integrated-Grav": {
-		"abbreviation": "IntMlt",
+		"abbreviation": "IntGrv",
 		"attack": {
 			"standard": 500,
 			"master_crafted": 550,
@@ -1383,7 +1383,7 @@ global.weapons = {
 		"ammo": 6,
 		"range": 4.1,
 		"spli": 30,
-		"arp": 1,
+		"arp": -1,
 		"tags": ["flame","heavy_ranged", "vehicle", "sponson"]
 	},
 	"Twin Linked Heavy Flamer Sponsons": {
@@ -1761,7 +1761,7 @@ global.weapons = {
 		"ammo": 5,
 		"range": 12,
 		"spli": 40,
-		"arp": 0,
+		"arp": 1,
 		"tags": ["heavy_ranged", "twin_linked", "vehicle", "turret"]
 	},
 	"Flamestorm Cannon Turret": {
