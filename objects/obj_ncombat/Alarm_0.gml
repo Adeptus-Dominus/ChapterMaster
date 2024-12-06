@@ -280,11 +280,11 @@ if (battle_special = "space_hulk") {
 	// * Ork Space Hulk *
 	if (enemy = 7) {
 		modi = random_range(0.80, 1.20) + 1;
-		make = round(max(3, player_starting_dudes * modi));
+		make = round(max(3, player_starting_dudes * modi)); // Should we really leave this functionality, forcing the player to pick as few marines as possible? I don't think this makes sense
 
 		u = instance_create(instance_nearest(x - 1000, 240, obj_pnunit)
 			.x - 10, 240, obj_enunit);
-		u.dudes[1] = "Meganob";
+		u.dudes[1] = "Meganob"; // I think the proper unit should be "Ork Kommando", assuming it exists in the roster
 		u.dudes_num[1] = make;
 		enemies[1] = u.dudes[1];
 		u.engaged = 1;
@@ -467,7 +467,7 @@ if (battle_special = "WL10_later") {
 // * Imperial Guard Force *
 if (enemy = 2) {
 	guard_total = threat;
-	guard_score = 6;
+	guard_score = 6; // Okay, this creates a problem, as IG and PDF strength rating rules are a bit different to other factions
 
 	/*if (guard_total>=15000000) then guard_score=6;
 	if (guard_total<15000000) and (guard_total>=6000000) then guard_score=5;
@@ -574,6 +574,250 @@ if (enemy = 2) {
 	u.dudes[1]="Imperial Guardsman";u.dudes_num[1]=floor(guard_effective*0.6);enemies[1]=u.dudes[1];
 	u.dudes[2]="Heavy Weapons Team";u.dudes_num[2]=min(1000,floor(guard_effective*0.1));enemies[2]=u.dudes[2];
 	if (threat>1){u.dudes[3]="Leman Russ Battle Tank";u.dudes_num[3]=min(1000,floor(guard_effective*0.1));enemies[3]=u.dudes[3];}*/
+}
+
+// Need to add Admech (faction 3) and Inquisition (faction 4) force rosters
+
+// ** Sisters Force **
+if (enemy = 5) {
+	// Sister Squad
+	if (threat = 1) {
+		u = instance_nearest(xxx, 240, obj_enunit);
+		enemy_dudes = "4"; // This does raise a question - should strength 1 just send in the chaff, supporting the Sisters? Or go with the actual sister squad?
+
+		u.dudes[1] = "Celestian";
+		u.dudes_num[1] = 1;
+		enemies[1] = u.dudes[1];
+		// Spawn Leader
+		if (leader = 1) {
+			u.dudes[1] = "Leader";
+			u.dudes_num[1] = 1;
+			enemies[1] = 1;
+			enemies_num[1] = 1;
+		}
+		u.dudes[2] = "Battle Sister";
+		u.dudes_num[2] = 3;
+		enemies[2] = u.dudes[2];
+	}
+	// Sister Demi-Platoon
+	if (threat = 2) {
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		enemy_dudes = "20";
+
+		u.dudes[1] = "Celestian";
+		u.dudes_num[1] = 1;
+		// Spawn Leader
+		if (leader = 1) {
+			u.dudes[1] = "Leader";
+			u.dudes_num[1] = 1;
+			enemies[1] = 1;
+			enemies_num[1] = 1;
+		}
+		u.dudes[2] = "Battle Sister";
+		u.dudes_num[2] = 19;
+	}
+	// Sister Platoon
+	if (threat = 3) {
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		enemy_dudes = "200";
+
+		u.dudes[1] = "Palatine";
+		u.dudes_num[1] = 1;
+		// Spawn Leader
+		if (leader = 1) {
+			u.dudes[1] = "Leader";
+			u.dudes_num[1] = 1;
+			enemies[1] = 1;
+			enemies_num[1] = 1;
+		}
+		u.dudes[2] = "Battle Sister";
+		u.dudes_num[2] = 36;
+		u.dudes[3] = "Celestian";
+		u.dudes_num[3] = 4;
+		u.dudes[4] = "Retributor";
+		u.dudes_num[4] = 4;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 10, 240, obj_enunit); // Let me know if we are okay with Sisters having chaff units like these
+		u.dudes[1] = "Priest";
+		u.dudes_num[1] = 5;
+		u.dudes[2] = "Follower";
+		u.dudes_num[2] = 150;
+	}
+	// Small Sister Army
+	if (threat = 4) {
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		enemy_dudes = "4000";
+
+		u.dudes[1] = "Palatine";
+		u.dudes_num[1] = 2;
+		// Spawn Leader
+		if (leader = 1) {
+			u.dudes[1] = "Leader";
+			u.dudes_num[1] = 1;
+			enemies[1] = 1;
+			enemies_num[1] = 1;
+		}
+		u.dudes[2] = "Battle Sister";
+		u.dudes_num[2] = 1000;
+		u.dudes[3] = "Celestian";
+		u.dudes_num[3] = 150;
+		u.dudes[4] = "Retributor";
+		u.dudes_num[4] = 150;
+		u.dudes[5] = "Priest";
+		u.dudes_num[5] = 150;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u.dudes[1] = "Seraphim";
+		u.dudes_num[1] = 200;
+		u.dudes[2] = "Dominion";
+		u.dudes_num[2] = 200;
+		u.dudes[3] = "Immolator";
+		u.dudes_num[3] = 15;
+		u.dudes[4] = "Exorcist";
+		u.dudes_num[4] = 6;
+		u.dudes[5] = "Follower";
+		u.dudes_num[5] = 600;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Follower";
+		u.dudes_num[1] = 1500;
+		u.dudes[2] = "Sister Repentia";
+		u.dudes_num[2] = 100;
+		u.dudes[3] = "Arco-Flagellent";
+		u.dudes_num[3] = 30;
+		u.dudes[4] = "Penitent Engine";
+		u.dudes_num[4] = 4;
+		u.dudes[5] = "Mistress";
+		u.dudes_num[5] = 10;
+	}
+	// Medium Sister Army
+	if (threat = 5) {
+		u = instance_nearest(xxx + 40, 240, obj_enunit);
+		enemy_dudes = "8000";
+
+		u.dudes[1] = "Palatine";
+		u.dudes_num[1] = 2;
+		// Spawn Leader
+		if (leader = 1) {
+			u.dudes[1] = "Leader";
+			u.dudes_num[1] = 1;
+			enemies[1] = 1;
+			enemies_num[1] = 1;
+		}
+		u.dudes[2] = "Battle Sister";
+		u.dudes_num[2] = 1000;
+		u.dudes[3] = "Celestian";
+		u.dudes_num[3] = 150;
+		u.dudes[4] = "Retributor";
+		u.dudes_num[4] = 200;
+		u.dudes[5] = "Priest";
+		u.dudes_num[5] = 200;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u.dudes[1] = "Battle Sister";
+		u.dudes_num[1] = 1000;
+		u.dudes[2] = "Celestian";
+		u.dudes_num[2] = 150;
+		u.dudes[3] = "Retributor";
+		u.dudes_num[3] = 200;
+		u.dudes[4] = "Priest";
+		u.dudes_num[4] = 200;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u.dudes[1] = "Seraphim";
+		u.dudes_num[1] = 200;
+		u.dudes[2] = "Dominion";
+		u.dudes_num[2] = 200;
+		u.dudes[3] = "Immolator";
+		u.dudes_num[3] = 25;
+		u.dudes[4] = "Exorcist";
+		u.dudes_num[4] = 10;
+		u.dudes[5] = "Follower";
+		u.dudes_num[5] = 2000;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Follower";
+		u.dudes_num[1] = 2000;
+		u.dudes[2] = "Sister Repentia";
+		u.dudes_num[2] = 300;
+		u.dudes[3] = "Arco-Flagellent";
+		u.dudes_num[3] = 100;
+		u.dudes[4] = "Penitent Engine";
+		u.dudes_num[4] = 15;
+		u.dudes[5] = "Mistress";
+		u.dudes_num[5] = 30;
+	}
+	// Large Sister Army
+	if (threat = 6) {
+		u = instance_nearest(xxx + 50, 240, obj_enunit);
+		enemy_dudes = "12000";
+
+		u.dudes[1] = "Palatine";
+		u.dudes_num[1] = 1;
+		// Spawn Leader
+		if (leader = 1) {
+			u.dudes[1] = "Leader";
+			u.dudes_num[1] = 1;
+			enemies[1] = 1;
+			enemies_num[1] = 1;
+		}
+		u.dudes[2] = "Battle Sister";
+		u.dudes_num[2] = 1500;
+		u.dudes[3] = "Celestian";
+		u.dudes_num[3] = 150;
+		u.dudes[4] = "Retributor";
+		u.dudes_num[4] = 200;
+		u.dudes[5] = "Priest";
+		u.dudes_num[5] = 200;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 40, 240, obj_enunit);
+		u.dudes[1] = "Battle Sister";
+		u.dudes_num[1] = 1500;
+		u.dudes[2] = "Celestian";
+		u.dudes_num[2] = 150;
+		u.dudes[3] = "Retributor";
+		u.dudes_num[3] = 200;
+		u.dudes[4] = "Priest";
+		u.dudes_num[4] = 200;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u.dudes[1] = "Seraphim";
+		u.dudes_num[1] = 200;
+		u.dudes[2] = "Dominion";
+		u.dudes_num[2] = 200;
+		u.dudes[3] = "Immolator";
+		u.dudes_num[3] = 50;
+		u.dudes[4] = "Exorcist";
+		u.dudes_num[4] = 20;
+		u.dudes[5] = "Follower";
+		u.dudes_num[5] = 2000;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u.dudes[1] = "Follower";
+		u.dudes_num[1] = 2000;
+		u.dudes[2] = "Sister Repentia";
+		u.dudes_num[2] = 500;
+		u.dudes[3] = "Arco-Flagellent";
+		u.dudes_num[3] = 250;
+		u.dudes[4] = "Penitent Engine";
+		u.dudes_num[4] = 30;
+		u.dudes[5] = "Mistress";
+		u.dudes_num[5] = 50;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Follower";
+		u.dudes_num[1] = 3000;
+	}
 }
 
 // ** Aeldar Force **
@@ -980,280 +1224,6 @@ if (enemy = 6) {
 		u.dudes_num[4] = 20;
 		u.dudes[5] = "Shining Spear";
 		u.dudes_num[5] = 160;
-	}
-}
-
-// ** Sisters Force **
-if (enemy = 5) {
-	// Small Sister Group
-	if (threat = 1) {
-		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "110";
-
-		u.dudes[1] = "Celestian";
-		u.dudes_num[1] = 1;
-		enemies[1] = u.dudes[1];
-		// Spawn Leader
-		if (leader = 1) {
-			u.dudes[1] = "Leader";
-			u.dudes_num[1] = 1;
-			enemies[1] = 1;
-			enemies_num[1] = 1;
-		}
-		u.dudes[2] = "Battle Sister";
-		u.dudes_num[2] = 4;
-		enemies[2] = u.dudes[2];
-		u.dudes[3] = "Priest";
-		u.dudes_num[3] = 10;
-		enemies[3] = u.dudes[3];
-		u.dudes[4] = "Follower";
-		u.dudes_num[4] = 100;
-		enemies[4] = u.dudes[4];
-	}
-	// Medium Sister Group
-	if (threat = 2) {
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		enemy_dudes = "nearly 400";
-
-		u.dudes[1] = "Celestian";
-		u.dudes_num[1] = 1;
-		// Spawn Leader
-		if (leader = 1) {
-			u.dudes[1] = "Leader";
-			u.dudes_num[1] = 1;
-			enemies[1] = 1;
-			enemies_num[1] = 1;
-		}
-		u.dudes[2] = "Battle Sister";
-		u.dudes_num[2] = 50;
-		u.dudes[3] = "Follower";
-		u.dudes_num[3] = 300;
-		instance_deactivate_object(u);
-
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
-		u.dudes[1] = "Arco-Flagellent";
-		u.dudes_num[1] = 50;
-		u.dudes[2] = "Chimera";
-		u.dudes_num[2] = 3;
-	}
-	// Large Sister Group
-	if (threat = 3) {
-		u = instance_nearest(xxx + 30, 240, obj_enunit);
-		enemy_dudes = "1000";
-
-		u.dudes[1] = "Palatine";
-		u.dudes_num[1] = 1;
-		// Spawn Leader
-		if (leader = 1) {
-			u.dudes[1] = "Leader";
-			u.dudes_num[1] = 1;
-			enemies[1] = 1;
-			enemies_num[1] = 1;
-		}
-		u.dudes[2] = "Battle Sister";
-		u.dudes_num[2] = 200;
-		u.dudes[3] = "Celestian";
-		u.dudes_num[3] = 40;
-		u.dudes[4] = "Retributor";
-		u.dudes_num[4] = 50;
-		u.dudes[5] = "Priest";
-		u.dudes_num[5] = 60;
-		instance_deactivate_object(u);
-
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		u.dudes[1] = "Seraphim";
-		u.dudes_num[1] = 50;
-		u.dudes[2] = "Dominion";
-		u.dudes_num[2] = 50;
-		u.dudes[3] = "Immolator";
-		u.dudes_num[3] = 4;
-		u.dudes[4] = "Exorcist";
-		u.dudes_num[4] = 2;
-		instance_deactivate_object(u);
-
-		u = instance_nearest(xxx, 240, obj_enunit);
-		u.dudes[1] = "Follower";
-		u.dudes_num[1] = 450;
-		u.dudes[2] = "Sister Repentia";
-		u.dudes_num[2] = 50;
-		u.dudes[3] = "Arco-Flagellent";
-		u.dudes_num[3] = 30;
-		u.dudes[4] = "Penitent Engine";
-		u.dudes_num[4] = 4;
-	}
-	// Small Sister Army
-	if (threat = 4) {
-		u = instance_nearest(xxx + 30, 240, obj_enunit);
-		enemy_dudes = "4000";
-
-		u.dudes[1] = "Palatine";
-		u.dudes_num[1] = 2;
-		// Spawn Leader
-		if (leader = 1) {
-			u.dudes[1] = "Leader";
-			u.dudes_num[1] = 1;
-			enemies[1] = 1;
-			enemies_num[1] = 1;
-		}
-		u.dudes[2] = "Battle Sister";
-		u.dudes_num[2] = 1000;
-		u.dudes[3] = "Celestian";
-		u.dudes_num[3] = 150;
-		u.dudes[4] = "Retributor";
-		u.dudes_num[4] = 150;
-		u.dudes[5] = "Priest";
-		u.dudes_num[5] = 150;
-		instance_deactivate_object(u);
-
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
-		u.dudes[1] = "Seraphim";
-		u.dudes_num[1] = 200;
-		u.dudes[2] = "Dominion";
-		u.dudes_num[2] = 200;
-		u.dudes[3] = "Immolator";
-		u.dudes_num[3] = 15;
-		u.dudes[4] = "Exorcist";
-		u.dudes_num[4] = 6;
-		u.dudes[5] = "Follower";
-		u.dudes_num[5] = 600;
-		instance_deactivate_object(u);
-
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		u.dudes[1] = "Follower";
-		u.dudes_num[1] = 1500;
-		u.dudes[2] = "Sister Repentia";
-		u.dudes_num[2] = 100;
-		u.dudes[3] = "Arco-Flagellent";
-		u.dudes_num[3] = 30;
-		u.dudes[4] = "Penitent Engine";
-		u.dudes_num[4] = 4;
-		u.dudes[5] = "Mistress";
-		u.dudes_num[5] = 10;
-	}
-	// Medium Sister Army
-	if (threat = 5) {
-		u = instance_nearest(xxx + 40, 240, obj_enunit);
-		enemy_dudes = "8000";
-
-		u.dudes[1] = "Palatine";
-		u.dudes_num[1] = 2;
-		// Spawn Leader
-		if (leader = 1) {
-			u.dudes[1] = "Leader";
-			u.dudes_num[1] = 1;
-			enemies[1] = 1;
-			enemies_num[1] = 1;
-		}
-		u.dudes[2] = "Battle Sister";
-		u.dudes_num[2] = 1000;
-		u.dudes[3] = "Celestian";
-		u.dudes_num[3] = 150;
-		u.dudes[4] = "Retributor";
-		u.dudes_num[4] = 200;
-		u.dudes[5] = "Priest";
-		u.dudes_num[5] = 200;
-		instance_deactivate_object(u);
-
-		u = instance_nearest(xxx + 30, 240, obj_enunit);
-		u.dudes[1] = "Battle Sister";
-		u.dudes_num[1] = 1000;
-		u.dudes[2] = "Celestian";
-		u.dudes_num[2] = 150;
-		u.dudes[3] = "Retributor";
-		u.dudes_num[3] = 200;
-		u.dudes[4] = "Priest";
-		u.dudes_num[4] = 200;
-		instance_deactivate_object(u);
-
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
-		u.dudes[1] = "Seraphim";
-		u.dudes_num[1] = 200;
-		u.dudes[2] = "Dominion";
-		u.dudes_num[2] = 200;
-		u.dudes[3] = "Immolator";
-		u.dudes_num[3] = 25;
-		u.dudes[4] = "Exorcist";
-		u.dudes_num[4] = 10;
-		u.dudes[5] = "Follower";
-		u.dudes_num[5] = 2000;
-		instance_deactivate_object(u);
-
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		u.dudes[1] = "Follower";
-		u.dudes_num[1] = 2000;
-		u.dudes[2] = "Sister Repentia";
-		u.dudes_num[2] = 300;
-		u.dudes[3] = "Arco-Flagellent";
-		u.dudes_num[3] = 100;
-		u.dudes[4] = "Penitent Engine";
-		u.dudes_num[4] = 15;
-		u.dudes[5] = "Mistress";
-		u.dudes_num[5] = 30;
-	}
-	// Large Sister Army
-	if (threat = 6) {
-		u = instance_nearest(xxx + 50, 240, obj_enunit);
-		enemy_dudes = "12000";
-
-		u.dudes[1] = "Palatine";
-		u.dudes_num[1] = 1;
-		// Spawn Leader
-		if (leader = 1) {
-			u.dudes[1] = "Leader";
-			u.dudes_num[1] = 1;
-			enemies[1] = 1;
-			enemies_num[1] = 1;
-		}
-		u.dudes[2] = "Battle Sister";
-		u.dudes_num[2] = 1500;
-		u.dudes[3] = "Celestian";
-		u.dudes_num[3] = 150;
-		u.dudes[4] = "Retributor";
-		u.dudes_num[4] = 200;
-		u.dudes[5] = "Priest";
-		u.dudes_num[5] = 200;
-		instance_deactivate_object(u);
-
-		u = instance_nearest(xxx + 40, 240, obj_enunit);
-		u.dudes[1] = "Battle Sister";
-		u.dudes_num[1] = 1500;
-		u.dudes[2] = "Celestian";
-		u.dudes_num[2] = 150;
-		u.dudes[3] = "Retributor";
-		u.dudes_num[3] = 200;
-		u.dudes[4] = "Priest";
-		u.dudes_num[4] = 200;
-		instance_deactivate_object(u);
-
-		u = instance_nearest(xxx + 30, 240, obj_enunit);
-		u.dudes[1] = "Seraphim";
-		u.dudes_num[1] = 200;
-		u.dudes[2] = "Dominion";
-		u.dudes_num[2] = 200;
-		u.dudes[3] = "Immolator";
-		u.dudes_num[3] = 50;
-		u.dudes[4] = "Exorcist";
-		u.dudes_num[4] = 20;
-		u.dudes[5] = "Follower";
-		u.dudes_num[5] = 2000;
-		instance_deactivate_object(u);
-
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
-		u.dudes[1] = "Follower";
-		u.dudes_num[1] = 2000;
-		u.dudes[2] = "Sister Repentia";
-		u.dudes_num[2] = 500;
-		u.dudes[3] = "Arco-Flagellent";
-		u.dudes_num[3] = 250;
-		u.dudes[4] = "Penitent Engine";
-		u.dudes_num[4] = 30;
-		u.dudes[5] = "Mistress";
-		u.dudes_num[5] = 50;
-		instance_deactivate_object(u);
-
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		u.dudes[1] = "Follower";
-		u.dudes_num[1] = 3000;
 	}
 }
 
