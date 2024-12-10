@@ -602,7 +602,7 @@ if (enemy = 5) {
 	// Sister Demi-Platoon
 	if (threat = 2) {
 		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		enemy_dudes = "20";
+		enemy_dudes = "20"; // Full formation: 1 overstrength SoB squad, with 2 specialized sisters
 
 		u.dudes[1] = "Celestian";
 		u.dudes_num[1] = 1;
@@ -614,12 +614,16 @@ if (enemy = 5) {
 			enemies_num[1] = 1;
 		}
 		u.dudes[2] = "Battle Sister";
-		u.dudes_num[2] = 19;
+		u.dudes_num[2] = 17;
+		u.dudes[3] = "Retributor"; // Should be made random whether it is 1 retributor or 1 dominion, maybe
+		u.dudes_num[3] = 1;
+		u.dudes[4] = "Dominion";
+		u.dudes_num[4] = 1;
 	}
 	// Sister Platoon
 	if (threat = 3) {
 		u = instance_nearest(xxx + 30, 240, obj_enunit);
-		enemy_dudes = "200";
+		enemy_dudes = "50"; // Full formation: ~5 SoB squads, 1 Retributor squad, 1 Repentia squad, 1 Dominion squad, 1 Seraphim squad
 
 		u.dudes[1] = "Palatine";
 		u.dudes_num[1] = 1;
@@ -631,26 +635,30 @@ if (enemy = 5) {
 			enemies_num[1] = 1;
 		}
 		u.dudes[2] = "Battle Sister";
-		u.dudes_num[2] = 36;
+		u.dudes_num[2] = 26;
 		u.dudes[3] = "Celestian";
 		u.dudes_num[3] = 4;
 		u.dudes[4] = "Retributor";
 		u.dudes_num[4] = 4;
 		instance_deactivate_object(u);
 
-		u = instance_nearest(xxx + 10, 240, obj_enunit); // Let me know if we are okay with Sisters having chaff units like these
-		u.dudes[1] = "Priest";
-		u.dudes_num[1] = 5;
-		u.dudes[2] = "Follower";
-		u.dudes_num[2] = 150;
+		u = instance_nearest(xxx + 10, 240, obj_enunit); // I considered adding chaff, but maybe to higher levels, for now, it's just more types of Sister squads
+		u.dudes[1] = "Celestian";
+		u.dudes_num[1] = 3;
+		u.dudes[2] = "Sister Repentia";
+		u.dudes_num[2] = 4;
+		u.dudes[3] = "Dominion";
+		u.dudes_num[3] = 4;
+		u.dudes[4] = "Seraphim";
+		u.dudes_num[4] = 4;
 	}
-	// Small Sister Army
+	// Sister Demi-Company
 	if (threat = 4) {
 		u = instance_nearest(xxx + 30, 240, obj_enunit);
-		enemy_dudes = "4000";
+		enemy_dudes = "241"; // Full formation: ~8 SoB squads, 2 Retributor squads, 2 Seraphim squads, 2 Dominion squads, 5 Repentia squads, platoon of followers
 
 		u.dudes[1] = "Palatine";
-		u.dudes_num[1] = 2;
+		u.dudes_num[1] = 1;
 		// Spawn Leader
 		if (leader = 1) {
 			u.dudes[1] = "Leader";
@@ -659,39 +667,39 @@ if (enemy = 5) {
 			enemies_num[1] = 1;
 		}
 		u.dudes[2] = "Battle Sister";
-		u.dudes_num[2] = 1000;
+		u.dudes_num[2] = 40;
 		u.dudes[3] = "Celestian";
-		u.dudes_num[3] = 150;
+		u.dudes_num[3] = 10;
 		u.dudes[4] = "Retributor";
-		u.dudes_num[4] = 150;
+		u.dudes_num[4] = 8;
 		u.dudes[5] = "Priest";
-		u.dudes_num[5] = 150;
+		u.dudes_num[5] = 5;
 		instance_deactivate_object(u);
 
 		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		u.dudes[1] = "Seraphim";
-		u.dudes_num[1] = 200;
+		u.dudes_num[1] = 8;
 		u.dudes[2] = "Dominion";
-		u.dudes_num[2] = 200;
-		u.dudes[3] = "Immolator";
-		u.dudes_num[3] = 15;
-		u.dudes[4] = "Exorcist";
-		u.dudes_num[4] = 6;
+		u.dudes_num[2] = 8;
+		u.dudes[3] = "Celestian";
+		u.dudes_num[3] = 5;
+		u.dudes[4] = "Priest";
+		u.dudes_num[4] = 5;
 		u.dudes[5] = "Follower";
-		u.dudes_num[5] = 600;
+		u.dudes_num[5] = 100;
 		instance_deactivate_object(u);
 
 		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		u.dudes[1] = "Follower";
-		u.dudes_num[1] = 1500;
+		u.dudes[1] = "Celestian";
+		u.dudes_num[1] = 5;
 		u.dudes[2] = "Sister Repentia";
-		u.dudes_num[2] = 100;
-		u.dudes[3] = "Arco-Flagellent";
-		u.dudes_num[3] = 30;
+		u.dudes_num[2] = 20;
+		u.dudes[3] = "Rhino";
+		u.dudes_num[3] = 12;
 		u.dudes[4] = "Penitent Engine";
-		u.dudes_num[4] = 4;
-		u.dudes[5] = "Mistress";
-		u.dudes_num[5] = 10;
+		u.dudes_num[4] = 2;
+		u.dudes[5] = "Chimera"; // Might want to check if it picks the right Chimera, rather than the one from IG
+		u.dudes_num[5] = 12;
 	}
 	// Medium Sister Army
 	if (threat = 5) {
