@@ -280,7 +280,7 @@ if (battle_special = "space_hulk") {
 	// * Ork Space Hulk *
 	if (enemy = 7) {
 		modi = random_range(0.80, 1.20) + 1;
-		make = round(max(3, player_starting_dudes * modi)); // Should we really leave this functionality, forcing the player to pick as few marines as possible? I don't think this makes sense
+		make = round(max(3, player_starting_dudes * modi)); //makes enemy forces in space hulks scale with big player forces
 
 		u = instance_create(instance_nearest(x - 1000, 240, obj_pnunit)
 			.x - 10, 240, obj_enunit);
