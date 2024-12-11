@@ -655,10 +655,10 @@ if (enemy = 5) {
 	// Sister Demi-Company
 	if (threat = 4) {
 		u = instance_nearest(xxx + 30, 240, obj_enunit);
-		enemy_dudes = "241"; // Full formation: ~8 SoB squads, 2 Retributor squads, 2 Seraphim squads, 2 Dominion squads, 5 Repentia squads, platoon of followers
+		enemy_dudes = "242"; // Full formation: ~8 SoB squads, 2 Retributor squads, 2 Seraphim squads, 2 Dominion squads, 5 Repentia squads, platoon of followers with 3 squadrons of vehicles
 
 		u.dudes[1] = "Palatine";
-		u.dudes_num[1] = 1;
+		u.dudes_num[1] = 2;
 		// Spawn Leader
 		if (leader = 1) {
 			u.dudes[1] = "Leader";
@@ -701,13 +701,13 @@ if (enemy = 5) {
 		u.dudes[5] = "Chimera"; // Might want to check if it picks the right Chimera, rather than the one from IG
 		u.dudes_num[5] = 12;
 	}
-	// Medium Sister Army
+	// Sister Company
 	if (threat = 5) {
 		u = instance_nearest(xxx + 40, 240, obj_enunit);
-		enemy_dudes = "8000";
+		enemy_dudes = "651"; // Full formation: 2 platoons of Sisters, 1 platoon of vehicle support
 
 		u.dudes[1] = "Palatine";
-		u.dudes_num[1] = 2;
+		u.dudes_num[1] = 3;
 		// Spawn Leader
 		if (leader = 1) {
 			u.dudes[1] = "Leader";
@@ -716,58 +716,60 @@ if (enemy = 5) {
 			enemies_num[1] = 1;
 		}
 		u.dudes[2] = "Battle Sister";
-		u.dudes_num[2] = 1000;
+		u.dudes_num[2] = 40;
 		u.dudes[3] = "Celestian";
-		u.dudes_num[3] = 150;
+		u.dudes_num[3] = 10;
 		u.dudes[4] = "Retributor";
-		u.dudes_num[4] = 200;
+		u.dudes_num[4] = 8;
 		u.dudes[5] = "Priest";
-		u.dudes_num[5] = 200;
+		u.dudes_num[5] = 5;
 		instance_deactivate_object(u);
 
 		u = instance_nearest(xxx + 30, 240, obj_enunit);
 		u.dudes[1] = "Battle Sister";
-		u.dudes_num[1] = 1000;
+		u.dudes_num[1] = 40;
 		u.dudes[2] = "Celestian";
-		u.dudes_num[2] = 150;
+		u.dudes_num[2] = 10;
 		u.dudes[3] = "Retributor";
-		u.dudes_num[3] = 200;
+		u.dudes_num[3] = 8;
 		u.dudes[4] = "Priest";
-		u.dudes_num[4] = 200;
+		u.dudes_num[4] = 5;
+		u.dudes[5] = "Exorcist";
+		u.dudes_num[5] = 4;
 		instance_deactivate_object(u);
 
 		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		u.dudes[1] = "Seraphim";
-		u.dudes_num[1] = 200;
+		u.dudes_num[1] = 16;
 		u.dudes[2] = "Dominion";
-		u.dudes_num[2] = 200;
-		u.dudes[3] = "Immolator";
-		u.dudes_num[3] = 25;
-		u.dudes[4] = "Exorcist";
-		u.dudes_num[4] = 10;
+		u.dudes_num[2] = 16;
+		u.dudes[3] = "Rhino";
+		u.dudes_num[3] = 24;
+		u.dudes[4] = "Chimera";
+		u.dudes_num[4] = 28;
 		u.dudes[5] = "Follower";
-		u.dudes_num[5] = 2000;
+		u.dudes_num[5] = 250;
 		instance_deactivate_object(u);
 
 		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		u.dudes[1] = "Follower";
-		u.dudes_num[1] = 2000;
+		u.dudes[1] = "Celestian";
+		u.dudes_num[1] = 10;
 		u.dudes[2] = "Sister Repentia";
-		u.dudes_num[2] = 300;
+		u.dudes_num[2] = 50;
 		u.dudes[3] = "Arco-Flagellent";
 		u.dudes_num[3] = 100;
 		u.dudes[4] = "Penitent Engine";
-		u.dudes_num[4] = 15;
-		u.dudes[5] = "Mistress";
-		u.dudes_num[5] = 30;
+		u.dudes_num[4] = 8;
+		u.dudes[5] = "Immolator";
+		u.dudes_num[5] = 16;
 	}
-	// Large Sister Army
+	// Sister Battalion
 	if (threat = 6) {
 		u = instance_nearest(xxx + 50, 240, obj_enunit);
-		enemy_dudes = "12000";
+		enemy_dudes = "1028";
 
 		u.dudes[1] = "Palatine";
-		u.dudes_num[1] = 1;
+		u.dudes_num[1] = 5;
 		// Spawn Leader
 		if (leader = 1) {
 			u.dudes[1] = "Leader";
@@ -776,56 +778,76 @@ if (enemy = 5) {
 			enemies_num[1] = 1;
 		}
 		u.dudes[2] = "Battle Sister";
-		u.dudes_num[2] = 1500;
+		u.dudes_num[2] = 80;
 		u.dudes[3] = "Celestian";
-		u.dudes_num[3] = 150;
+		u.dudes_num[3] = 15;
 		u.dudes[4] = "Retributor";
-		u.dudes_num[4] = 200;
+		u.dudes_num[4] = 16;
 		u.dudes[5] = "Priest";
-		u.dudes_num[5] = 200;
+		u.dudes_num[5] = 10;
 		instance_deactivate_object(u);
 
 		u = instance_nearest(xxx + 40, 240, obj_enunit);
 		u.dudes[1] = "Battle Sister";
-		u.dudes_num[1] = 1500;
+		u.dudes_num[1] = 80;
 		u.dudes[2] = "Celestian";
-		u.dudes_num[2] = 150;
+		u.dudes_num[2] = 15;
 		u.dudes[3] = "Retributor";
-		u.dudes_num[3] = 200;
+		u.dudes_num[3] = 16;
 		u.dudes[4] = "Priest";
-		u.dudes_num[4] = 200;
+		u.dudes_num[4] = 10;
 		instance_deactivate_object(u);
 
 		u = instance_nearest(xxx + 30, 240, obj_enunit);
-		u.dudes[1] = "Seraphim";
-		u.dudes_num[1] = 200;
-		u.dudes[2] = "Dominion";
-		u.dudes_num[2] = 200;
-		u.dudes[3] = "Immolator";
-		u.dudes_num[3] = 50;
-		u.dudes[4] = "Exorcist";
-		u.dudes_num[4] = 20;
-		u.dudes[5] = "Follower";
-		u.dudes_num[5] = 2000;
+		u.dudes[1] = "Palatine";
+		u.dudes_num[1] = 1;
+		u.dudes[2] = "Celestian";
+		u.dudes_num[2] = 4;
+		u.dudes[3] = "Priest";
+		u.dudes_num[3] = 10;
+		u.dudes[4] = "Follower"; // Ideally, we'd want "Ecclesiarchal Servitor"s here, to show support crews with the exorcist, but followers will do for now
+		u.dudes_num[4] = 50;
+		u.dudes[5] = "Exorcist";
+		u.dudes_num[5] = 8;
 		instance_deactivate_object(u);
 
 		u = instance_nearest(xxx + 20, 240, obj_enunit);
-		u.dudes[1] = "Follower";
-		u.dudes_num[1] = 2000;
-		u.dudes[2] = "Sister Repentia";
-		u.dudes_num[2] = 500;
-		u.dudes[3] = "Arco-Flagellent";
-		u.dudes_num[3] = 250;
-		u.dudes[4] = "Penitent Engine";
-		u.dudes_num[4] = 30;
-		u.dudes[5] = "Mistress";
-		u.dudes_num[5] = 50;
+		u.dudes[1] = "Seraphim";
+		u.dudes_num[1] = 32;
+		u.dudes[2] = "Dominion";
+		u.dudes_num[2] = 32;
+		u.dudes[3] = "Rhino";
+		u.dudes_num[3] = 48;
+		u.dudes[4] = "Chimera";
+		u.dudes_num[4] = 28;
+		u.dudes[5] = "Follower";
+		u.dudes_num[5] = 200;
 		instance_deactivate_object(u);
 
 		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		u.dudes[1] = "Follower";
-		u.dudes_num[1] = 3000;
+		u.dudes[1] = "Celestian";
+		u.dudes_num[1] = 20;
+		u.dudes[2] = "Sister Repentia";
+		u.dudes_num[2] = 100;
+		u.dudes[3] = "Arco-Flagellent";
+		u.dudes_num[3] = 200;
+		u.dudes[4] = "Penitent Engine";
+		u.dudes_num[4] = 16;
+		u.dudes[5] = "Immolator";
+		u.dudes_num[5] = 32;
 	}
+	// Sister Regiment 
+	// if (threat = 7) {
+	// }
+	// Sister Brigade
+	// if (threat = 8) {
+	// }
+	// Sister Division
+	// if (threat = 9) {
+	// }
+	// Sister Army Corps
+	// if (threat = 10) {
+	// }
 }
 
 // ** Aeldar Force **
