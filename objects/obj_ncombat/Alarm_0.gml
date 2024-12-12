@@ -658,7 +658,7 @@ if (enemy = 5) {
 		enemy_dudes = "242"; // Full formation: ~8 SoB squads, 2 Retributor squads, 2 Seraphim squads, 2 Dominion squads, 5 Repentia squads, platoon of followers with 3 squadrons of vehicles
 
 		u.dudes[1] = "Palatine";
-		u.dudes_num[1] = 2;
+		u.dudes_num[1] = 1;
 		// Spawn Leader
 		if (leader = 1) {
 			u.dudes[1] = "Leader";
@@ -669,7 +669,7 @@ if (enemy = 5) {
 		u.dudes[2] = "Battle Sister";
 		u.dudes_num[2] = 40;
 		u.dudes[3] = "Celestian";
-		u.dudes_num[3] = 10;
+		u.dudes_num[3] = 11;
 		u.dudes[4] = "Retributor";
 		u.dudes_num[4] = 8;
 		u.dudes[5] = "Priest";
@@ -707,7 +707,7 @@ if (enemy = 5) {
 		enemy_dudes = "651"; // Full formation: 2 platoons of Sisters, 1 platoon of vehicle support
 
 		u.dudes[1] = "Palatine";
-		u.dudes_num[1] = 3;
+		u.dudes_num[1] = 1;
 		// Spawn Leader
 		if (leader = 1) {
 			u.dudes[1] = "Leader";
@@ -718,7 +718,7 @@ if (enemy = 5) {
 		u.dudes[2] = "Battle Sister";
 		u.dudes_num[2] = 40;
 		u.dudes[3] = "Celestian";
-		u.dudes_num[3] = 10;
+		u.dudes_num[3] = 12;
 		u.dudes[4] = "Retributor";
 		u.dudes_num[4] = 8;
 		u.dudes[5] = "Priest";
@@ -769,7 +769,7 @@ if (enemy = 5) {
 		enemy_dudes = "1028";
 
 		u.dudes[1] = "Palatine";
-		u.dudes_num[1] = 5;
+		u.dudes_num[1] = 1;
 		// Spawn Leader
 		if (leader = 1) {
 			u.dudes[1] = "Leader";
@@ -796,11 +796,13 @@ if (enemy = 5) {
 		u.dudes_num[3] = 16;
 		u.dudes[4] = "Priest";
 		u.dudes_num[4] = 10;
+		u.dudes[5] = "Palatine";
+		u.dudes_num[5] = 2;
 		instance_deactivate_object(u);
 
 		u = instance_nearest(xxx + 30, 240, obj_enunit);
 		u.dudes[1] = "Palatine";
-		u.dudes_num[1] = 1;
+		u.dudes_num[1] = 3;
 		u.dudes[2] = "Celestian";
 		u.dudes_num[2] = 4;
 		u.dudes[3] = "Priest";
@@ -837,17 +839,305 @@ if (enemy = 5) {
 		u.dudes_num[5] = 32;
 	}
 	// Sister Regiment 
-	// if (threat = 7) {
-	// }
+	if (threat = 7) {
+		u = instance_nearest(xxx + 50, 240, obj_enunit);
+		enemy_dudes = "2061";
+
+		u.dudes[1] = "Palatine";
+		u.dudes_num[1] = 1;
+		// Spawn Leader
+		if (leader = 1) {
+			u.dudes[1] = "Leader";
+			u.dudes_num[1] = 1;
+			enemies[1] = 1;
+			enemies_num[1] = 1;
+		}
+		u.dudes[2] = "Battle Sister";
+		u.dudes_num[2] = 160;
+		u.dudes[3] = "Celestian";
+		u.dudes_num[3] = 30;
+		u.dudes[4] = "Retributor";
+		u.dudes_num[4] = 32;
+		u.dudes[5] = "Priest";
+		u.dudes_num[5] = 20;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 40, 240, obj_enunit);
+		u.dudes[1] = "Battle Sister";
+		u.dudes_num[1] = 160;
+		u.dudes[2] = "Celestian";
+		u.dudes_num[2] = 30;
+		u.dudes[3] = "Retributor";
+		u.dudes_num[3] = 32;
+		u.dudes[4] = "Priest";
+		u.dudes_num[4] = 20;
+		u.dudes[5] = "Palatine";
+		u.dudes_num[5] = 5;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u.dudes[1] = "Palatine";
+		u.dudes_num[1] = 9;
+		u.dudes[2] = "Celestian";
+		u.dudes_num[2] = 10;
+		u.dudes[3] = "Priest";
+		u.dudes_num[3] = 20;
+		u.dudes[4] = "Follower"; // Ideally, we'd want "Ecclesiarchal Servitor"s here, to show support crews with the exorcist, but followers will do for now
+		u.dudes_num[4] = 350;
+		u.dudes[5] = "Exorcist";
+		u.dudes_num[5] = 16;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u.dudes[1] = "Seraphim";
+		u.dudes_num[1] = 64;
+		u.dudes[2] = "Dominion";
+		u.dudes_num[2] = 64;
+		u.dudes[3] = "Rhino";
+		u.dudes_num[3] = 96;
+		u.dudes[4] = "Chimera";
+		u.dudes_num[4] = 56;
+		u.dudes[5] = "Follower";
+		u.dudes_num[5] = 150;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Celestian";
+		u.dudes_num[1] = 40;
+		u.dudes[2] = "Sister Repentia";
+		u.dudes_num[2] = 200;
+		u.dudes[3] = "Arco-Flagellent";
+		u.dudes_num[3] = 400;
+		u.dudes[4] = "Penitent Engine";
+		u.dudes_num[4] = 32;
+		u.dudes[5] = "Immolator";
+		u.dudes_num[5] = 64;
+	}
 	// Sister Brigade
-	// if (threat = 8) {
-	// }
+	if (threat = 8) {
+		u = instance_nearest(xxx + 50, 240, obj_enunit);
+		enemy_dudes = "4122";
+
+		u.dudes[1] = "Palatine";
+		u.dudes_num[1] = 1;
+		// Spawn Leader
+		if (leader = 1) {
+			u.dudes[1] = "Leader";
+			u.dudes_num[1] = 1;
+			enemies[1] = 1;
+			enemies_num[1] = 1;
+		}
+		u.dudes[2] = "Battle Sister";
+		u.dudes_num[2] = 320;
+		u.dudes[3] = "Celestian";
+		u.dudes_num[3] = 60;
+		u.dudes[4] = "Retributor";
+		u.dudes_num[4] = 64;
+		u.dudes[5] = "Priest";
+		u.dudes_num[5] = 40;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 40, 240, obj_enunit);
+		u.dudes[1] = "Battle Sister";
+		u.dudes_num[1] = 320;
+		u.dudes[2] = "Celestian";
+		u.dudes_num[2] = 60;
+		u.dudes[3] = "Retributor";
+		u.dudes_num[3] = 64;
+		u.dudes[4] = "Priest";
+		u.dudes_num[4] = 40;
+		u.dudes[5] = "Palatine";
+		u.dudes_num[5] = 10;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u.dudes[1] = "Palatine";
+		u.dudes_num[1] = 19;
+		u.dudes[2] = "Celestian";
+		u.dudes_num[2] = 20;
+		u.dudes[3] = "Priest";
+		u.dudes_num[3] = 40;
+		u.dudes[4] = "Follower"; // Ideally, we'd want "Ecclesiarchal Servitor"s here, to show support crews with the exorcist, but followers will do for now
+		u.dudes_num[4] = 750;
+		u.dudes[5] = "Exorcist";
+		u.dudes_num[5] = 32;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u.dudes[1] = "Seraphim";
+		u.dudes_num[1] = 128;
+		u.dudes[2] = "Dominion";
+		u.dudes_num[2] = 128;
+		u.dudes[3] = "Rhino";
+		u.dudes_num[3] = 192;
+		u.dudes[4] = "Chimera";
+		u.dudes_num[4] = 112;
+		u.dudes[5] = "Follower";
+		u.dudes_num[5] = 250;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Celestian";
+		u.dudes_num[1] = 80;
+		u.dudes[2] = "Sister Repentia";
+		u.dudes_num[2] = 400;
+		u.dudes[3] = "Arco-Flagellent";
+		u.dudes_num[3] = 800;
+		u.dudes[4] = "Penitent Engine";
+		u.dudes_num[4] = 64;
+		u.dudes[5] = "Immolator";
+		u.dudes_num[5] = 128;
+	}
 	// Sister Division
-	// if (threat = 9) {
-	// }
+	if (threat = 9) {
+		u = instance_nearest(xxx + 50, 240, obj_enunit);
+		enemy_dudes = "8244";
+
+		u.dudes[1] = "Palatine";
+		u.dudes_num[1] = 1;
+		// Spawn Leader
+		if (leader = 1) {
+			u.dudes[1] = "Leader";
+			u.dudes_num[1] = 1;
+			enemies[1] = 1;
+			enemies_num[1] = 1;
+		}
+		u.dudes[2] = "Battle Sister";
+		u.dudes_num[2] = 640;
+		u.dudes[3] = "Celestian";
+		u.dudes_num[3] = 120;
+		u.dudes[4] = "Retributor";
+		u.dudes_num[4] = 128;
+		u.dudes[5] = "Priest";
+		u.dudes_num[5] = 80;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 40, 240, obj_enunit);
+		u.dudes[1] = "Battle Sister";
+		u.dudes_num[1] = 640;
+		u.dudes[2] = "Celestian";
+		u.dudes_num[2] = 120;
+		u.dudes[3] = "Retributor";
+		u.dudes_num[3] = 128;
+		u.dudes[4] = "Priest";
+		u.dudes_num[4] = 80;
+		u.dudes[5] = "Palatine";
+		u.dudes_num[5] = 20;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u.dudes[1] = "Palatine";
+		u.dudes_num[1] = 39;
+		u.dudes[2] = "Celestian";
+		u.dudes_num[2] = 40;
+		u.dudes[3] = "Priest";
+		u.dudes_num[3] = 80;
+		u.dudes[4] = "Follower"; // Ideally, we'd want "Ecclesiarchal Servitor"s here, to show support crews with the exorcist, but followers will do for now
+		u.dudes_num[4] = 1500;
+		u.dudes[5] = "Exorcist";
+		u.dudes_num[5] = 64;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u.dudes[1] = "Seraphim";
+		u.dudes_num[1] = 256;
+		u.dudes[2] = "Dominion";
+		u.dudes_num[2] = 256;
+		u.dudes[3] = "Rhino";
+		u.dudes_num[3] = 384;
+		u.dudes[4] = "Chimera";
+		u.dudes_num[4] = 224;
+		u.dudes[5] = "Follower";
+		u.dudes_num[5] = 500;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Celestian";
+		u.dudes_num[1] = 160;
+		u.dudes[2] = "Sister Repentia";
+		u.dudes_num[2] = 800;
+		u.dudes[3] = "Arco-Flagellent";
+		u.dudes_num[3] = 1600;
+		u.dudes[4] = "Penitent Engine";
+		u.dudes_num[4] = 128;
+		u.dudes[5] = "Immolator";
+		u.dudes_num[5] = 256;
+	}
 	// Sister Army Corps
-	// if (threat = 10) {
-	// }
+	if (threat = 10) {
+		u = instance_nearest(xxx + 50, 240, obj_enunit);
+		enemy_dudes = "16488";
+
+		u.dudes[1] = "Palatine";
+		u.dudes_num[1] = 1;
+		// Spawn Leader
+		if (leader = 1) {
+			u.dudes[1] = "Leader";
+			u.dudes_num[1] = 1;
+			enemies[1] = 1;
+			enemies_num[1] = 1;
+		}
+		u.dudes[2] = "Battle Sister";
+		u.dudes_num[2] = 1280;
+		u.dudes[3] = "Celestian";
+		u.dudes_num[3] = 240;
+		u.dudes[4] = "Retributor";
+		u.dudes_num[4] = 256;
+		u.dudes[5] = "Priest";
+		u.dudes_num[5] = 160;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 40, 240, obj_enunit);
+		u.dudes[1] = "Battle Sister";
+		u.dudes_num[1] = 1280;
+		u.dudes[2] = "Celestian";
+		u.dudes_num[2] = 240;
+		u.dudes[3] = "Retributor";
+		u.dudes_num[3] = 256;
+		u.dudes[4] = "Priest";
+		u.dudes_num[4] = 160;
+		u.dudes[5] = "Palatine";
+		u.dudes_num[5] = 40;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u.dudes[1] = "Palatine";
+		u.dudes_num[1] = 79;
+		u.dudes[2] = "Celestian";
+		u.dudes_num[2] = 80;
+		u.dudes[3] = "Priest";
+		u.dudes_num[3] = 160;
+		u.dudes[4] = "Follower"; // Ideally, we'd want "Ecclesiarchal Servitor"s here, to show support crews with the exorcist, but followers will do for now
+		u.dudes_num[4] = 3000;
+		u.dudes[5] = "Exorcist";
+		u.dudes_num[5] = 128;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u.dudes[1] = "Seraphim";
+		u.dudes_num[1] = 512;
+		u.dudes[2] = "Dominion";
+		u.dudes_num[2] = 512;
+		u.dudes[3] = "Rhino";
+		u.dudes_num[3] = 768;
+		u.dudes[4] = "Chimera";
+		u.dudes_num[4] = 448;
+		u.dudes[5] = "Follower";
+		u.dudes_num[5] = 1000;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Celestian";
+		u.dudes_num[1] = 320;
+		u.dudes[2] = "Sister Repentia";
+		u.dudes_num[2] = 1600;
+		u.dudes[3] = "Arco-Flagellent";
+		u.dudes_num[3] = 3200;
+		u.dudes[4] = "Penitent Engine";
+		u.dudes_num[4] = 256;
+		u.dudes[5] = "Immolator";
+		u.dudes_num[5] = 512;
+	}
 }
 
 // ** Aeldar Force **
