@@ -917,7 +917,7 @@ if __b__ {
 		}
 
 		if (dudes[j] = "Gretchin") {
-			scr_en_weapon("Grot Blasta", true, dudes_num[j], dudes[j], j);
+			scr_en_weapon("Grot Blasta", true, dudes_num[j], dudes[j], j); // I think they need a melee weapon too
 			dudes_ac[j] = 0;
 			dudes_hp[j] = 15;
 			men += dudes_num[j];

@@ -622,7 +622,7 @@ if (enemy = 5) {
 	}
 	// Sister Platoon
 	if (threat = 3) {
-		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		enemy_dudes = "50"; // Full formation: ~5 SoB squads, 1 Retributor squad, 1 Repentia squad, 1 Dominion squad, 1 Seraphim squad
 
 		u.dudes[1] = "Palatine";
@@ -1552,50 +1552,60 @@ if (enemy = 7) {
 	// u=instance_create(-10,240,obj_enunit);
 	// u.dudes[1]="Stormboy";u.dudes_num[1]=2500;u.flank=1;// enemies[1]=u.dudes[1];
 
-	// Small Ork Group
+	// Ork Squad
 	if (threat = 1) {
 		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "100";
+		enemy_dudes = "5";
+
+		u.dudes[1] = "Gretchin";
+		u.dudes_num[1] = 4;
+		enemies[1] = u.dudes[1];
+		u.dudes[2] = "Slugga Boy";
+		u.dudes_num[2] = 1;
+		enemies[2] = u.dudes[2];
+		// Spawn Leader
+		if (leader = 1) {
+			u.dudes[2] = "Leader";
+			u.dudes_num[2] = 1;
+			enemies[2] = 1;
+			enemies_num[2] = 1;
+		}
+	}
+	// Ork Demi-Platoon
+	if (threat = 2) {
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		enemy_dudes = "20";
+
+		u.dudes[1] = "Ard Boy";
+		u.dudes_num[1] = 1;
+		// Spawn Leader
+		if (leader = 1) {
+			u.dudes[1] = "Leader";
+			u.dudes_num[1] = 1;
+			enemies[1] = 1;
+			enemies_num[1] = 1;
+		u.dudes[2] = "Shoota Boy";
+		u.dudes_num[2] = 3;
+		u.dudes[3] = "Tankbusta"; // In the future, I might want to add choose function to have an option between "Tankbusta" and others
+		u.dudes_num[3] = 1;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Burna Boy";
+		u.dudes_num[1] = 1;
+		u.dudes[2] = "Slugga Boy";
+		u.dudes_num[2] = 4;
+		u.dudes[3] = "Gretchin";
+		u.dudes_num[3] = 10;
+		}
+	}
+	// Ork Platoon
+	if (threat = 3) {
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		enemy_dudes = "50";
 
 		u.dudes[1] = "Meganob";
 		u.dudes_num[1] = 1;
-		enemies[1] = u.dudes[1];
-		u.dudes[2] = "Slugga Boy";
-		u.dudes_num[2] = 50;
-		enemies[2] = u.dudes[2];
-		u.dudes[3] = "Shoota Boy";
-		u.dudes_num[3] = 50;
-		enemies[3] = u.dudes[3];
-		// Spawn Leader
-		if (leader = 1) {
-			u.dudes[4] = "Leader";
-			u.dudes_num[4] = 1;
-			enemies[4] = 1;
-			enemies_num[4] = 1;
-		}
-	}
-	// Medium Ork Group
-	if (threat = 2) {
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		enemy_dudes = "nearly 350";
-
-		u.dudes[1] = "Slugga Boy";
-		u.dudes_num[1] = 50;
-		u.dudes[2] = "Shoota Boy";
-		u.dudes_num[2] = 50;
-		instance_deactivate_object(u);
-
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
-		u.dudes[1] = "Minor Warboss";
-		u.dudes_num[1] = 1;
-		u.dudes[2] = "Meganob";
-		u.dudes_num[2] = 5;
-		u.dudes[3] = "Slugga Boy";
-		u.dudes_num[3] = 70;
-		u.dudes[4] = "Ard Boy";
-		u.dudes_num[4] = 70;
-		u.dudes[5] = "Shoota Boy";
-		u.dudes_num[5] = 100;
 		// Spawn Leader
 		if (leader = 1) {
 			u.dudes[1] = "Leader";
@@ -1603,74 +1613,41 @@ if (enemy = 7) {
 			enemies[1] = 1;
 			enemies_num[1] = 1;
 		}
-	}
-	// Large Ork Group
-	if (threat = 3) {
-		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "over a 1000";
-
-		u.dudes[1] = "Slugga Boy";
-		u.dudes_num[1] = 300;
 		u.dudes[2] = "Ard Boy";
-		u.dudes_num[2] = 150;
-		instance_deactivate_object(u);
-
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		u.dudes[1] = "Deff Dread";
-		u.dudes_num[1] = 9;
-		u.dudes[2] = "Battlewagon";
-		u.dudes_num[2] = 6;
-		u.dudes[3] = "Mekboy";
+		u.dudes_num[2] = 1;
+		u.dudes[3] = "Tankbusta";
 		u.dudes_num[3] = 1;
 		u.dudes[4] = "Flash Git";
-		u.dudes_num[4] = 12;
+		u.dudes_num[4] = 1;
 		instance_deactivate_object(u);
 
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
-		u.dudes[1] = "Warboss";
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Ard Boy";
 		u.dudes_num[1] = 1;
-		// Spawn Leader
-		if (leader = 1) {
-			u.dudes[1] = "Leader";
-			u.dudes_num[1] = 1;
-			enemies[1] = 1;
-			enemies_num[1] = 1;
-		}
-		u.dudes[2] = "Meganob";
-		u.dudes_num[2] = 10;
+		u.dudes[2] = "Tankbusta";
+		u.dudes_num[2] = 1;
+		u.dudes[3] = "Flash Git";
+		u.dudes_num[3] = 1;
+		u.dudes[4] = "Shoota Boy";
+		u.dudes_num[4] = 10;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx, 240, obj_enunit);
+		u.dudes[1] = "Ard Boy";
+		u.dudes_num[1] = 1;
+		u.dudes[2] = "Burna Boy";
+		u.dudes_num[2] = 2;
 		u.dudes[3] = "Slugga Boy";
-		u.dudes_num[3] = 100;
-		u.dudes[4] = "Ard Boy";
-		u.dudes_num[4] = 150;
-		u.dudes[5] = "Shoota Boy";
-		u.dudes_num[5] = 350;
+		u.dudes_num[3] = 10;
+		u.dudes[4] = "Gretchin";
+		u.dudes_num[4] = 20;
 	}
-	// Small Ork Army
+	// Ork Demi-Company
 	if (threat = 4) {
-		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "a green tide of over 3600";
-
-		u.dudes[1] = "Slugga Boy";
-		u.dudes_num[1] = 600;
-		u.dudes[2] = "Ard Boy";
-		u.dudes_num[2] = 300;
-		u.dudes[3] = "Gretchin";
-		u.dudes_num[3] = 1000;
-		instance_deactivate_object(u);
-
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		u.dudes[1] = "Deff Dread";
-		u.dudes_num[1] = 21;
-		u.dudes[2] = "Battlewagon";
-		u.dudes_num[2] = 12;
-		u.dudes[3] = "Mekboy";
-		u.dudes_num[3] = 3;
-		u.dudes[4] = "Flash Git";
-		u.dudes_num[4] = 30;
-		instance_deactivate_object(u);
-
 		u = instance_nearest(xxx + 20, 240, obj_enunit);
-		u.dudes[1] = "Warboss";
+		enemy_dudes = "278";
+
+		u.dudes[1] = "Minor Warboss";
 		u.dudes_num[1] = 1;
 		// Spawn Leader
 		if (leader = 1) {
@@ -1680,43 +1657,45 @@ if (enemy = 7) {
 			enemies_num[1] = 1;
 		}
 		u.dudes[2] = "Meganob";
-		u.dudes_num[2] = 30;
-		u.dudes[3] = "Slugga Boy";
-		u.dudes_num[3] = 300;
-		u.dudes[4] = "Ard Boy";
-		u.dudes_num[4] = 450;
+		u.dudes_num[2] = 1;
+		u.dudes[3] = "Tankbusta";
+		u.dudes_num[3] = 4;
+		u.dudes[4] = "Flash Git";
+		u.dudes_num[4] = 4;
 		u.dudes[5] = "Shoota Boy";
-		u.dudes_num[5] = 1000;
+		u.dudes_num[5] = 25;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Mekboy";
+		u.dudes_num[1] = 1;
+		u.dudes[2] = "Cybork";
+		u.dudes_num[2] = 4;
+		u.dudes[3] = "Battlewagon";
+		u.dudes_num[3] = 2;
+		u.dudes[4] = "Gretchin";
+		u.dudes_num[4] = 150;
+		u.dudes[5] = "Stormboy";
+		u.dudes_num[5] = 10;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx, 240, obj_enunit);
+		u.dudes[1] = "Meganob";
+		u.dudes_num[1] = 1;
+		u.dudes[2] = "Ard Boy";
+		u.dudes_num[2] = 8;
+		u.dudes[3] = "Burna Boy";
+		u.dudes_num[3] = 20;
+		u.dudes[4] = "Slugga Boy";
+		u.dudes_num[4] = 45;
+		u.dudes[5] = "Deff Dread";
+		u.dudes_num[5] = 2;
 	}
-	// Medium Ork Army
+	// Ork Company
 	if (threat = 5) {
-		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "a green tide of over 7000";
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		enemy_dudes = "709";
 
-		u.dudes[1] = "Slugga Boy";
-		u.dudes_num[1] = 1200;
-		u.dudes[2] = "Ard Boy";
-		u.dudes_num[2] = 600;
-		u.dudes[3] = "Gretchin";
-		u.dudes_num[3] = 2000;
-		u.dudes[4] = "Tank Busta";
-		u.dudes_num[4] = 100;
-		instance_deactivate_object(u);
-
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		u.dudes[1] = "Deff Dread";
-		u.dudes_num[1] = 40;
-		u.dudes[2] = "Battlewagon";
-		u.dudes_num[2] = 18;
-		u.dudes[3] = "Mekboy";
-		u.dudes_num[3] = 6;
-		u.dudes[4] = "Flash Git";
-		u.dudes_num[4] = 50;
-		u.dudes[5] = "Kommando";
-		u.dudes_num[5] = 20;
-		instance_deactivate_object(u);
-
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		u.dudes[1] = "Warboss";
 		u.dudes_num[1] = 1;
 		// Spawn Leader
@@ -1727,67 +1706,45 @@ if (enemy = 7) {
 			enemies_num[1] = 1;
 		}
 		u.dudes[2] = "Meganob";
-		u.dudes_num[2] = 80;
-		u.dudes[3] = "Slugga Boy";
-		u.dudes_num[3] = 600;
-		u.dudes[4] = "Ard Boy";
-		u.dudes_num[4] = 900;
-		u.dudes[5] = "Shoota Boy";
-		u.dudes_num[5] = 2000;
-	}
-	// Large Ork Army
-	if (threat = 6) {
-		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "a WAAAAGH!! of 11000";
-
-		u.dudes[1] = "Slugga Boy";
-		u.dudes_num[1] = 1200;
-		u.dudes[2] = "Ard Boy";
-		u.dudes_num[2] = 600;
-		u.dudes[3] = "Gretchin";
-		u.dudes_num[3] = 2000;
-		u.dudes[4] = "Tank Busta";
-		u.dudes_num[4] = 100;
-		instance_deactivate_object(u);
-
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		u.dudes[1] = "Deff Dread";
-		u.dudes_num[1] = 40;
-		u.dudes[2] = "Battlewagon";
-		u.dudes_num[2] = 18;
-		u.dudes[3] = "Mekboy";
-		u.dudes_num[3] = 6;
+		u.dudes_num[2] = 4;
+		u.dudes[3] = "Tankbusta";
+		u.dudes_num[3] = 20;
 		u.dudes[4] = "Flash Git";
-		u.dudes_num[4] = 50;
+		u.dudes_num[4] = 20;
 		u.dudes[5] = "Kommando";
-		u.dudes_num[5] = 20;
+		u.dudes_num[5] = 10;
 		instance_deactivate_object(u);
 
 		u = instance_nearest(xxx + 20, 240, obj_enunit);
-		u.dudes[1] = "Slugga Boy";
-		u.dudes_num[1] = 1200;
+		u.dudes[1] = "Mekboy";
+		u.dudes_num[1] = 4;
+		u.dudes[2] = "Cybork";
+		u.dudes_num[2] = 20;
+		u.dudes[3] = "Battlewagon";
+		u.dudes_num[3] = 8;
+		u.dudes[4] = "Gretchin";
+		u.dudes_num[4] = 250;
+		u.dudes[5] = "Stormboy";
+		u.dudes_num[5] = 40;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Meganob";
+		u.dudes_num[1] = 4;
 		u.dudes[2] = "Ard Boy";
-		u.dudes_num[2] = 600;
-		u.dudes[3] = "Gretchin";
-		u.dudes_num[3] = 2000;
-		u.dudes[4] = "Tank Busta";
-		u.dudes_num[4] = 100;
-		instance_deactivate_object(u);
-
+		u.dudes_num[2] = 40;
+		u.dudes[3] = "Burna Boy";
+		u.dudes_num[3] = 80;
+		u.dudes[4] = "Slugga Boy";
+		u.dudes_num[4] = 200;
+		u.dudes[5] = "Deff Dread";
+		u.dudes_num[5] = 8;
+	}
+	// Ork Battalion
+	if (threat = 6) {
 		u = instance_nearest(xxx + 30, 240, obj_enunit);
-		u.dudes[1] = "Deff Dread";
-		u.dudes_num[1] = 40;
-		u.dudes[2] = "Battlewagon";
-		u.dudes_num[2] = 18;
-		u.dudes[3] = "Mekboy";
-		u.dudes_num[3] = 6;
-		u.dudes[4] = "Flash Git";
-		u.dudes_num[4] = 50;
-		u.dudes[5] = "Kommando";
-		u.dudes_num[5] = 20;
-		instance_deactivate_object(u);
+		enemy_dudes = "1465";
 
-		u = instance_nearest(xxx + 40, 240, obj_enunit);
 		u.dudes[1] = "Big Warboss";
 		u.dudes_num[1] = 1;
 		// Spawn Leader
@@ -1798,13 +1755,235 @@ if (enemy = 7) {
 			enemies_num[1] = 1;
 		}
 		u.dudes[2] = "Meganob";
+		u.dudes_num[2] = 9;
+		u.dudes[3] = "Tankbusta";
+		u.dudes_num[3] = 50;
+		u.dudes[4] = "Flash Git";
+		u.dudes_num[4] = 50;
+		u.dudes[5] = "Kommando";
+		u.dudes_num[5] = 25;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u.dudes[1] = "Mekboy";
+		u.dudes_num[1] = 10;
+		u.dudes[2] = "Cybork";
+		u.dudes_num[2] = 50;
+		u.dudes[3] = "Battlewagon";
+		u.dudes_num[3] = 20;
+		u.dudes[4] = "Gretchin";
+		u.dudes_num[4] = 500;
+		u.dudes[5] = "Stormboy";
+		u.dudes_num[5] = 80;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Meganob";
+		u.dudes_num[1] = 10;
+		u.dudes[2] = "Ard Boy";
 		u.dudes_num[2] = 80;
-		u.dudes[3] = "Slugga Boy";
-		u.dudes_num[3] = 600;
-		u.dudes[4] = "Ard Boy";
-		u.dudes_num[4] = 900;
-		u.dudes[5] = "Shoota Boy";
-		u.dudes_num[5] = 2000;
+		u.dudes[3] = "Burna Boy";
+		u.dudes_num[3] = 160;
+		u.dudes[4] = "Slugga Boy";
+		u.dudes_num[4] = 400;
+		u.dudes[5] = "Deff Dread";
+		u.dudes_num[5] = 20;
+	}
+	// Ork Regiment
+	if (threat = 7) {
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		enemy_dudes = "2930";
+
+		u.dudes[1] = "Big Warboss";
+		u.dudes_num[1] = 1;
+		// Spawn Leader
+		if (leader = 1) {
+			u.dudes[1] = "Leader";
+			u.dudes_num[1] = 1;
+			enemies[1] = 1;
+			enemies_num[1] = 1;
+		}
+		u.dudes[2] = "Meganob";
+		u.dudes_num[2] = 19;
+		u.dudes[3] = "Tankbusta";
+		u.dudes_num[3] = 100;
+		u.dudes[4] = "Flash Git";
+		u.dudes_num[4] = 100;
+		u.dudes[5] = "Kommando";
+		u.dudes_num[5] = 50;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u.dudes[1] = "Mekboy";
+		u.dudes_num[1] = 20;
+		u.dudes[2] = "Cybork";
+		u.dudes_num[2] = 100;
+		u.dudes[3] = "Battlewagon";
+		u.dudes_num[3] = 40;
+		u.dudes[4] = "Gretchin";
+		u.dudes_num[4] = 1000;
+		u.dudes[5] = "Stormboy";
+		u.dudes_num[5] = 160;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Meganob";
+		u.dudes_num[1] = 20;
+		u.dudes[2] = "Ard Boy";
+		u.dudes_num[2] = 160;
+		u.dudes[3] = "Burna Boy";
+		u.dudes_num[3] = 320;
+		u.dudes[4] = "Slugga Boy";
+		u.dudes_num[4] = 800;
+		u.dudes[5] = "Deff Dread";
+		u.dudes_num[5] = 40;
+	}
+	// Ork Brigade
+	if (threat = 8) {
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		enemy_dudes = "5860";
+
+		u.dudes[1] = "Big Warboss";
+		u.dudes_num[1] = 1;
+		// Spawn Leader
+		if (leader = 1) {
+			u.dudes[1] = "Leader";
+			u.dudes_num[1] = 1;
+			enemies[1] = 1;
+			enemies_num[1] = 1;
+		}
+		u.dudes[2] = "Meganob";
+		u.dudes_num[2] = 39;
+		u.dudes[3] = "Tankbusta";
+		u.dudes_num[3] = 200;
+		u.dudes[4] = "Flash Git";
+		u.dudes_num[4] = 200;
+		u.dudes[5] = "Kommando";
+		u.dudes_num[5] = 100;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u.dudes[1] = "Mekboy";
+		u.dudes_num[1] = 40;
+		u.dudes[2] = "Cybork";
+		u.dudes_num[2] = 200;
+		u.dudes[3] = "Battlewagon";
+		u.dudes_num[3] = 80;
+		u.dudes[4] = "Gretchin";
+		u.dudes_num[4] = 2000;
+		u.dudes[5] = "Stormboy";
+		u.dudes_num[5] = 320;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Meganob";
+		u.dudes_num[1] = 40;
+		u.dudes[2] = "Ard Boy";
+		u.dudes_num[2] = 320;
+		u.dudes[3] = "Burna Boy";
+		u.dudes_num[3] = 640;
+		u.dudes[4] = "Slugga Boy";
+		u.dudes_num[4] = 1600;
+		u.dudes[5] = "Deff Dread";
+		u.dudes_num[5] = 80;
+	}
+	// Ork Division
+	if (threat = 9) {
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		enemy_dudes = "11720";
+
+		u.dudes[1] = "Big Warboss";
+		u.dudes_num[1] = 1;
+		// Spawn Leader
+		if (leader = 1) {
+			u.dudes[1] = "Leader";
+			u.dudes_num[1] = 1;
+			enemies[1] = 1;
+			enemies_num[1] = 1;
+		}
+		u.dudes[2] = "Meganob";
+		u.dudes_num[2] = 79;
+		u.dudes[3] = "Tankbusta";
+		u.dudes_num[3] = 400;
+		u.dudes[4] = "Flash Git";
+		u.dudes_num[4] = 400;
+		u.dudes[5] = "Kommando";
+		u.dudes_num[5] = 200;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u.dudes[1] = "Mekboy";
+		u.dudes_num[1] = 80;
+		u.dudes[2] = "Cybork";
+		u.dudes_num[2] = 400;
+		u.dudes[3] = "Battlewagon";
+		u.dudes_num[3] = 160;
+		u.dudes[4] = "Gretchin";
+		u.dudes_num[4] = 4000; // We will need to see if game allows these numbers
+		u.dudes[5] = "Stormboy";
+		u.dudes_num[5] = 640;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Meganob";
+		u.dudes_num[1] = 80;
+		u.dudes[2] = "Ard Boy";
+		u.dudes_num[2] = 640;
+		u.dudes[3] = "Burna Boy";
+		u.dudes_num[3] = 1280;
+		u.dudes[4] = "Slugga Boy";
+		u.dudes_num[4] = 3200;
+		u.dudes[5] = "Deff Dread";
+		u.dudes_num[5] = 160;
+	}
+	// Ork Army Corps
+	if (threat = 10) {
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		enemy_dudes = "23440";
+
+		u.dudes[1] = "Big Warboss";
+		u.dudes_num[1] = 1;
+		// Spawn Leader
+		if (leader = 1) {
+			u.dudes[1] = "Leader";
+			u.dudes_num[1] = 1;
+			enemies[1] = 1;
+			enemies_num[1] = 1;
+		}
+		u.dudes[2] = "Meganob";
+		u.dudes_num[2] = 159;
+		u.dudes[3] = "Tankbusta";
+		u.dudes_num[3] = 800;
+		u.dudes[4] = "Flash Git";
+		u.dudes_num[4] = 800;
+		u.dudes[5] = "Kommando";
+		u.dudes_num[5] = 400;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u.dudes[1] = "Mekboy";
+		u.dudes_num[1] = 160;
+		u.dudes[2] = "Cybork";
+		u.dudes_num[2] = 800;
+		u.dudes[3] = "Battlewagon";
+		u.dudes_num[3] = 320;
+		u.dudes[4] = "Gretchin";
+		u.dudes_num[4] = 8000; // We will need to see if game allows these numbers
+		u.dudes[5] = "Stormboy";
+		u.dudes_num[5] = 1280;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Meganob";
+		u.dudes_num[1] = 160;
+		u.dudes[2] = "Ard Boy";
+		u.dudes_num[2] = 1280;
+		u.dudes[3] = "Burna Boy";
+		u.dudes_num[3] = 2560;
+		u.dudes[4] = "Slugga Boy";
+		u.dudes_num[4] = 6400;
+		u.dudes[5] = "Deff Dread";
+		u.dudes_num[5] = 320;
 	}
 }
 
