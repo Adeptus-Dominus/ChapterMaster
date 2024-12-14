@@ -1989,91 +1989,77 @@ if (enemy = 7) {
 
 // ** Tau Forces **
 if (enemy = 8) {
-	// Small Tau Group
+	// Tau Squad
 	if (threat = 1) {
 		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "11";
+		enemy_dudes = "5";
+
+		u.dudes[1] = "Pathfinder"; // TODO - consider adding "Leader" unit to Tau roster
+		u.dudes_num[1] = 1;
+		u.dudes[2] = "Fire Warrior";
+		u.dudes_num[2] = 1;
+		u.dudes[3] = "Kroot";
+		u.dudes_num[3] = 3;
+		enemies[3] = u.dudes[3];
+	}
+	// Tau Demi-Platoon
+	if (threat = 2) {
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		enemy_dudes = "20";
+
+		u.dudes[1] = "Pathfinder";
+		u.dudes_num[1] = 1;
+		u.dudes[2] = "Fire Warrior";
+		u.dudes_num[2] = 3;
+		u.dudes[3] = "Shield Drone";
+		u.dudes_num[3] = 1;
+		u.dudes[4] = "XV8 Crisis";
+		u.dudes_num[4] = 1;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Vespid";
+		u.dudes_num[1] = 1;
+		u.dudes[2] = "Shield Drone";
+		u.dudes_num[2] = 1;
+		u.dudes[3] = "Kroot";
+		u.dudes_num[3] = 12;
+	}
+	// Tau Platoon
+	if (threat = 3) {
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		enemy_dudes = "42";
 
 		u.dudes[1] = "XV8 Crisis";
 		u.dudes_num[1] = 1;
-		u.dudes[2] = "Fire Warrior";
-		u.dudes_num[2] = 20;
+		u.dudes[2] = "XV8 (Brightknife)";
+		u.dudes_num[2] = 1;
+		u.dudes[3] = "Shield Drone";
+		u.dudes_num[3] = 1;
+		u.dudes[4] = "XV88 Broadside";
+		u.dudes_num[4] = 1;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Pathfinder";
+		u.dudes_num[1] = 2;
+		u.dudes[2] = "Shield Drone";
+		u.dudes_num[2] = 1;
+		u.dudes[3] = "Fire Warrior";
+		u.dudes_num[3] = 10;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx, 240, obj_enunit);
+		u.dudes[1] = "Vespid";
+		u.dudes_num[1] = 2;
+		u.dudes[2] = "Shield Drone";
+		u.dudes_num[2] = 1;
 		u.dudes[3] = "Kroot";
 		u.dudes_num[3] = 20;
-		enemies[3] = u.dudes[3];
-	}
-	// Medium Tau Group
-	if (threat = 2) {
-		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "100";
 
-		u.dudes[1] = "XV8 Commander";
-		u.dudes_num[1] = 1;
-		u.dudes[2] = "XV8 Bodyguard";
-		u.dudes_num[2] = 6;
-		u.dudes[3] = "Shield Drone";
-		u.dudes_num[3] = 4;
-		u.dudes[4] = "XV88 Broadside";
-		u.dudes_num[4] = 3;
-
-		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		u.dudes[1] = "Fire Warrior";
-		u.dudes_num[1] = 60;
-		u.dudes[2] = "Kroot";
-		u.dudes_num[2] = 60;
-		u.dudes[3] = "Pathfinder";
-		u.dudes_num[3] = 20;
-		u.dudes[4] = "XV8 Crisis";
-		u.dudes_num[4] = 12;
-
-		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
-		u.dudes[1] = "Hammerhead";
+		u = instance_create(0, 240, obj_enunit);
+		u.dudes[1] = "XV25 Stealthsuit";
 		u.dudes_num[1] = 2;
-		u.dudes[2] = "Devilfish";
-		u.dudes_num[2] = 4;
-
-		u = instance_create(0, 240, obj_enunit);
-		u.dudes[1] = "XV25 Stealthsuit";
-		u.dudes_num[1] = 6;
-		u.flank = 1;
-	}
-	// Large Tau Group
-	if (threat = 3) {
-		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "100";
-
-		u.dudes[1] = "XV8 Commander";
-		u.dudes_num[1] = 1;
-		u.dudes[2] = "XV8 Bodyguard";
-		u.dudes_num[2] = 9;
-		u.dudes[3] = "Shield Drone";
-		u.dudes_num[3] = 8;
-		u.dudes[4] = "XV88 Broadside";
-		u.dudes_num[4] = 6;
-
-		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		u.dudes[1] = "Fire Warrior";
-		u.dudes_num[1] = 200;
-		u.dudes[2] = "Kroot";
-		u.dudes_num[2] = 150;
-		u.dudes[3] = "Pathfinder";
-		u.dudes_num[3] = 40;
-		u.dudes[4] = "XV8 Crisis";
-		u.dudes_num[4] = 24;
-
-		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
-		u.dudes[1] = "Hammerhead";
-		u.dudes_num[1] = 5;
-		u.dudes[2] = "Devilfish";
-		u.dudes_num[2] = 10;
-
-		u = instance_create(0, 240, obj_enunit);
-		u.dudes[1] = "XV25 Stealthsuit";
-		u.dudes_num[1] = 12;
 		u.flank = 1;
 	}
 	// Small Tau Army
