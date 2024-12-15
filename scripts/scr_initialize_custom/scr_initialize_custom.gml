@@ -3233,6 +3233,7 @@ function scr_initialize_custom() {
 		scr_add_item("Psychic Hood", 4);
 		scr_add_item("Force Staff", 4);
 		scr_add_item("Plasma Pistol", 4);
+		scr_add_item("Company Standard", 4);
 
 		if(scr_has_adv("Crafters")){
 			scr_add_item("Tartaros", 10);
