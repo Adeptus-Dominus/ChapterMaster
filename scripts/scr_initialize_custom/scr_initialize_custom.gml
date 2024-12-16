@@ -957,10 +957,43 @@ function scr_initialize_custom() {
 		assault = 0;
 		devastator = 0;
 	}
-
+	if  scr_has_disadv("Enduring Angels") {
+		fifth = 0;
+		sixth = 0;
+		seventh = 0;
+		eighth = 0;
+		ninth = 0;
+	}
+	if  scr_has_disadv("Serpents Delight") {
+		techmarines -= 5;
+		epistolary -= 1;
+		lexicanum -= 3;
+		apothecary -= 5;
+		chaplains -= 5;
+		terminator = 0;
+		veteran = 0;
+		second = 0;
+		third = 0;
+		fourth = 0;
+		tenth = 0;
+	}
 	if  scr_has_disadv ("Tech-Heresy") {
 		techmarines -= 4;
 		tenth += 4;
+	}
+	if  scr_has_disadv ("Small Apothecarion") {
+		apothecary -= 5;
+		tenth += 5;
+	}
+	if  scr_has_disadv ("Small Librarius") {
+		epistolary -= 1;
+		codiciery -= 1;
+		lexicanum -= 2;
+		tenth += 5;
+	}
+	if  scr_has_disadv ("Small Reclusiam") {
+		chaplains -= 5;
+		tenth += 5;
 	}
 	if scr_has_adv ("Reverent Guardians") {
 		chaplains += 4;
