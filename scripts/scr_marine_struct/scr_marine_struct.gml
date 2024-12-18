@@ -1766,6 +1766,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		// var _company_bonus = 0;
 		var _age_bonus = age();
 		var _gauss_sd_mod = 14;
+		var _exp_bonus = 0;
 
 		// switch(company){
 		// 	case 1:
@@ -1827,7 +1828,11 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			// 	break;
 		// }
 
-		_exp = _age_bonus;
+		if (scr_has_disadv("Sieged")) {
+			_exp_bonus += 40;
+		}
+
+		_exp += _age_bonus + _exp_bonus;
 		_exp = max(0, floor(gauss(_exp, _exp / _gauss_sd_mod)));
 		add_exp(_exp);
 	}
