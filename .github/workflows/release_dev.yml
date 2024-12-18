@@ -79,13 +79,13 @@ jobs:
 
       - id: get_commit_sha
         name: Get commit SHA of the last nightly release
-        if: steps.check_nightly.outputs.release_exists
+        if: steps.check_release.outputs.release_exists
         run: |
           prev_sha=$(git rev-parse nightly)
           echo "prev_SHA=$prev_sha" >> $GITHUB_OUTPUT;
 
       - name: Update tag pointing to the previous nightly release
-        if: steps.check_nightly.outputs.release_exists
+        if: steps.check_release.outputs.release_exists
         run: |
           curl --fail-with-body -X PATCH \
             -H "Authorization: Bearer ${{ secrets.WORKFLOW_TOKEN }}" \
