@@ -2473,7 +2473,7 @@ if (enemy = 8) {
 // Tyranid story event
 if (enemy = 9) and(battle_special = "tyranid_org") {
 	u = instance_nearest(xxx, 240, obj_enunit);
-	enemy_dudes = "81";
+	enemy_dudes = "81"; // TODO: decide how to balance event battles
 	u.dudes[1] = "Termagaunt";
 	u.dudes_num[1] = 40;
 	u.dudes[2] = "Hormagaunt";
@@ -2481,59 +2481,53 @@ if (enemy = 9) and(battle_special = "tyranid_org") {
 	// u.dudes[3]="Lictor";u.dudes_num[3]=1;
 }
 if (enemy = 9) and(battle_special != "tyranid_org") {
-	// Small Genestealer Group
+	// Small Genestealer Group or Tyranid squad
 	if (threat = 1) {
 		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "11";
+		enemy_dudes = "5";
 
 		u.dudes[1] = "Genestealer";
-		u.dudes_num[1] = 10;
-
-		u = instance_create(0, 240, obj_enunit);
-		u.dudes[1] = "Lictor";
 		u.dudes_num[1] = 1;
-		u.flank = 1;
+		u.dudes[2] = "Cultist";
+		u.dudes_num[2] = 4;
 	}
-	// Medium Genestealer Group
+	// Medium Genestealer Group or Tyranid Demi-Platoon
 	if (threat = 2) {
-		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "100";
-
-		u.dudes[1] = "Genestealer Patriarch";
-		u.dudes_num[1] = 1;
-		u.dudes[2] = "Genestealer";
-		u.dudes_num[2] = 30;
-
-		instance_deactivate_object(u);
 		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		u.dudes[1] = "Cultist";
-		u.dudes_num[1] = 150;
+		enemy_dudes = "20";
 
-		u = instance_create(0, 240, obj_enunit);
-		u.dudes[1] = "Lictor";
+		u.dudes[1] = "Genestealer";
 		u.dudes_num[1] = 1;
-		u.flank = 1;
+		u.dudes[2] = "Cultist";
+		u.dudes_num[2] = 17;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx, 240, obj_enunit);
+		u.dudes[1] = "Armoured Limousine";
+		u.dudes_num[1] = 2;
 	}
-	// Large Genestealer Group
+	// Large Genestealer Group or Tyranid Platoon
 	if (threat = 3) {
-		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "100";
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		enemy_dudes = "75";
 
 		u.dudes[1] = "Genestealer Patriarch";
 		u.dudes_num[1] = 1;
-		u.dudes[2] = "Genestealer";
-		u.dudes_num[2] = 120;
-		u.dudes[3] = "Armoured Limousine";
-		u.dudes_num[3] = 20;
-
+		u.dudes[2] = "Cultist";
+		u.dudes_num[2] = 24;
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		u.dudes[1] = "Cultist";
-		u.dudes_num[1] = 600;
+
+		u = instance_nearest(xxx, 240, obj_enunit);
+		u.dudes[1] = "Genestealer";
+		u.dudes_num[1] = 2;
+		u.dudes[2] = "Cultist";
+		u.dudes_num[2] = 43;
+		u.dudes[3] = "Armoured Limousine";
+		u.dudes_num[3] = 4;
 
 		u = instance_create(0, 240, obj_enunit);
 		u.dudes[1] = "Lictor";
-		u.dudes_num[1] = 6;
+		u.dudes_num[1] = 1;
 		u.flank = 1;
 	}
 	// Small Tyranid Army
