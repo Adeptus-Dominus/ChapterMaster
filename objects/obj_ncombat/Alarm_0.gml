@@ -2481,7 +2481,8 @@ if (enemy = 9) and(battle_special = "tyranid_org") {
 	// u.dudes[3]="Lictor";u.dudes_num[3]=1;
 }
 if (enemy = 9) and(battle_special != "tyranid_org") {
-	// Small Genestealer Group or Tyranid squad
+	// Genestealer Cultist Squad
+	/*
 	if (threat = 1) {
 		u = instance_nearest(xxx, 240, obj_enunit);
 		enemy_dudes = "5";
@@ -2491,7 +2492,19 @@ if (enemy = 9) and(battle_special != "tyranid_org") {
 		u.dudes[2] = "Cultist";
 		u.dudes_num[2] = 4;
 	}
-	// Medium Genestealer Group or Tyranid Demi-Platoon
+	*/
+	// Tyranid Squad
+	if (threat = 1) {
+		u = instance_nearest(xxx, 240, obj_enunit);
+		enemy_dudes = "5";
+
+		u.dudes[1] = "Termagaunt";
+		u.dudes_num[1] = 1;
+		u.dudes[2] = "Hormagaunt";
+		u.dudes_num[2] = 4;
+	}
+	// Genestealer Cultist Demi-Platoon
+	/*
 	if (threat = 2) {
 		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		enemy_dudes = "20";
@@ -2506,7 +2519,23 @@ if (enemy = 9) and(battle_special != "tyranid_org") {
 		u.dudes[1] = "Armoured Limousine";
 		u.dudes_num[1] = 2;
 	}
-	// Large Genestealer Group or Tyranid Platoon
+	*/
+	// Tyranid Demi-Platoon
+	if (threat = 2) {
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		enemy_dudes = "20";
+
+		u.dudes[1] = "Lictor";
+		u.dudes_num[1] = 1;
+		u.dudes[2] = "Termagaunt";
+		u.dudes_num[2] = 4;
+
+		u = instance_nearest(xxx, 240, obj_enunit);
+		u.dudes[1] = "Hormagaunt";
+		u.dudes_num[1] = 15;
+	}
+	// Genestealer Cultist Platoon
+	/*
 	if (threat = 3) {
 		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		enemy_dudes = "75";
@@ -2530,61 +2559,109 @@ if (enemy = 9) and(battle_special != "tyranid_org") {
 		u.dudes_num[1] = 1;
 		u.flank = 1;
 	}
-	// Small Tyranid Army
-	if (threat = 4) {
-		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "7000";
-
-		u.dudes[1] = "Hive Tyrant";
-		u.dudes_num[1] = 1;
-		u.dudes[2] = "Tyrant Guard";
-		u.dudes_num[2] = 16;
-		u.dudes[3] = "Tyranid Warrior";
-		u.dudes_num[3] = 40;
-		u.dudes[4] = "Zoanthrope";
-		u.dudes_num[4] = 10;
-
-		instance_deactivate_object(u);
+	*/
+	// Tyranid Platoon
+	if (threat = 3) {
 		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		u.dudes[1] = "Termagaunt";
-		u.dudes_num[1] = 1500;
-		u.dudes[2] = "Hormagaunt";
-		u.dudes_num[2] = 800;
-		u.dudes[3] = "Carnifex";
-		u.dudes_num[3] = 5;
-		u.dudes[4] = "Tyranid Warrior";
-		u.dudes_num[4] = 30;
+		enemy_dudes = "50";
 
-		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
-		u.dudes[1] = "Termagaunt";
-		u.dudes_num[1] = 1500;
-		u.dudes[2] = "Hormagaunt";
-		u.dudes_num[2] = 800;
-		u.dudes[3] = "Carnifex";
-		u.dudes_num[3] = 5;
-		u.dudes[4] = "Tyranid Warrior";
-		u.dudes_num[4] = 30;
+		u.dudes[1] = "Tyranid Warrior";
+		u.dudes_num[1] = 1;
+		u.dudes[2] = "Termagaunt";
+		u.dudes_num[2] = 9;
 
-		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 30, 240, obj_enunit);
-		u.dudes[1] = "Termagaunt";
-		u.dudes_num[1] = 1500;
-		u.dudes[2] = "Hormagaunt";
-		u.dudes_num[2] = 800;
-		u.dudes[3] = "Carnifex";
-		u.dudes_num[3] = 5;
-		u.dudes[4] = "Tyranid Warrior";
-		u.dudes_num[4] = 30;
-
-		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 40, 240, obj_enunit);
-		u.dudes[1] = "Carnifex";
-		u.dudes_num[1] = 6;
+		u = instance_nearest(xxx, 240, obj_enunit);
+		u.dudes[1] = "Hormagaunt";
+		u.dudes_num[1] = 39;
 
 		u = instance_create(0, 240, obj_enunit);
 		u.dudes[1] = "Lictor";
-		u.dudes_num[1] = 15;
+		u.dudes_num[1] = 1;
+		u.flank = 1;
+	}
+	// Genestealer Cultist Demi-Company
+	/*
+	if (threat = 4) {
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		enemy_dudes = "150";
+
+		u.dudes[1] = "Genestealer Patriarch";
+		u.dudes_num[1] = 1;
+		u.dudes[2] = "Cultist";
+		u.dudes_num[2] = 47;
+		u.dudes[3] = "Armoured Limousine";
+		u.dudes_num[3] = 2;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx, 240, obj_enunit);
+		u.dudes[1] = "Genestealer";
+		u.dudes_num[1] = 4;
+		u.dudes[2] = "Cultist";
+		u.dudes_num[2] = 86;
+		u.dudes[3] = "Armoured Limousine";
+		u.dudes_num[3] = 8;
+
+		u = instance_create(0, 240, obj_enunit);
+		u.dudes[1] = "Lictor";
+		u.dudes_num[1] = 2;
+		u.flank = 1;
+	}
+	*/
+	// Tyranid Demi-Company
+	if (threat = 4) {
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		enemy_dudes = "150";
+
+		u.dudes[1] = "Zoanthrope";
+		u.dudes_num[1] = 1;
+		u.dudes[2] = "Tyranid Warrior";
+		u.dudes_num[2] = 2;
+		u.dudes[3] = "Termagaunt";
+		u.dudes_num[3] = 37;
+		// u.dudes[4] = "Zoanthrope";
+		// u.dudes_num[4] = 10;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Tyranid Warrior";
+		u.dudes_num[1] = 2;
+		u.dudes[2] = "Termagaunt";
+		u.dudes_num[2] = 38;
+		// u.dudes[3] = "Carnifex";
+		// u.dudes_num[3] = 5;
+		// u.dudes[4] = "Tyranid Warrior";
+		// u.dudes_num[4] = 30;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx, 240, obj_enunit);
+		u.dudes[1] = "Tyranid Warrior";
+		u.dudes_num[1] = 2;
+		u.dudes[2] = "Hormagaunt";
+		u.dudes_num[2] = 66;
+		// u.dudes[3] = "Carnifex";
+		// u.dudes_num[3] = 5;
+		// u.dudes[4] = "Tyranid Warrior";
+		// u.dudes_num[4] = 30;
+
+		// instance_deactivate_object(u);
+		// u = instance_nearest(xxx + 30, 240, obj_enunit);
+		// u.dudes[1] = "Termagaunt";
+		// u.dudes_num[1] = 1500;
+		// u.dudes[2] = "Hormagaunt";
+		// u.dudes_num[2] = 800;
+		// u.dudes[3] = "Carnifex";
+		// u.dudes_num[3] = 5;
+		// u.dudes[4] = "Tyranid Warrior";
+		// u.dudes_num[4] = 30;
+
+		// instance_deactivate_object(u);
+		// u = instance_nearest(xxx + 40, 240, obj_enunit);
+		// u.dudes[1] = "Carnifex";
+		// u.dudes_num[1] = 6;
+
+		u = instance_create(0, 240, obj_enunit);
+		u.dudes[1] = "Lictor";
+		u.dudes_num[1] = 2;
 		u.flank = 1;
 	}
 	// Medium Tyranid Army
