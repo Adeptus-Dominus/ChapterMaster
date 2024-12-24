@@ -569,7 +569,7 @@ global.weapons = {
 		"range": 1,
 		"spli": 8,
 		"arp": 1,
-		"tags": ["heavy_melee", "power", "hammer", "siege", "martial"],
+		"tags": ["heavy_melee", "power", "hammer", "siege", "savage"],
 		"req_exp": 100,
 	},
 	"Power Mace": {
@@ -1090,7 +1090,7 @@ global.weapons = {
 		"ammo": 5,
 		"range": 12,
 		"spli": 20,
-		"arp": 1,
+		"arp": 0,
 		"tags": ["heavy_ranged", "dreadnought"]
 	},
 	"Autocannon": {
@@ -1287,7 +1287,7 @@ global.weapons = {
 		"ammo": 6,
 		"range": 12,
 		"spli": 40,
-		"arp": 1,
+		"arp": 0,
 		"tags": ["vehicle","heavy_ranged", "pintle", "dreadnought"]
 	},
 	"Reaper Autocannon Mount": {
@@ -1687,7 +1687,7 @@ global.weapons = {
 		"spli": 5,
 		"arp": 1,
 		"special_description": "Spell Damage +100%",
-		"tags": ["force", "savage"]
+		"tags": ["force"]
 	},
 	"Force Sword": {
 		"attack": {
@@ -1761,7 +1761,7 @@ global.weapons = {
 		"ammo": 5,
 		"range": 12,
 		"spli": 40,
-		"arp": 1,
+		"arp": 0,
 		"tags": ["heavy_ranged", "twin_linked", "vehicle", "turret"]
 	},
 	"Flamestorm Cannon Turret": {
