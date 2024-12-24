@@ -695,7 +695,7 @@ global.weapons = {
 		"range": 4.1,
 		"spli": 3,
 		"arp": 0,
-		"tags": ["bolt", "pistol", "boarding 2"],
+		"tags": ["bolt", "pistol", "boarding 1"],
 	},
 	"Wrist-Mounted Storm Bolter": { // TODO: Not used outside of this file atm;
 		"abbreviation": "WrstBlt",
@@ -1599,7 +1599,7 @@ global.weapons = {
 		"spli": 5,
 		"arp": 0,
 		"second_profiles": ["Integrated-Flamer"],
-		"tags": ["combi", "bolt"]
+		"tags": ["combi", "bolt", "boarding 2"]
 	},
 	"Combiplasma": {
 		"abbreviation": "CmbPlsm",
@@ -1650,7 +1650,7 @@ global.weapons = {
 		"spli": 5,
 		"arp": 0,
 		"second_profiles": ["Integrated-Melta"],
-		"tags": ["combi", "bolt"]
+		"tags": ["combi", "bolt", "boarding 3"]
 	},
 	"Incinerator": {
 		"attack": {
