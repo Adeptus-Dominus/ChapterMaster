@@ -93,7 +93,7 @@ jobs:
         with:
           runtime-version: 2023.11.1.160
           target-yyp: ${{ steps.find_yyp.outputs.yyp-path }}
-          access-key: ${{ secrets.ACCESS_KEY }}
+          access-key: ${{ secrets.GM_ACCESS_KEY }}
           
       # Update the version.json file with build date and other versioning information
       - id: igor_build
