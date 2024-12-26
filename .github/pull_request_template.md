@@ -3,6 +3,6 @@
 ## Description of changes
 <!--- Leverage the list functionality, if you have many changes -->
 -
-## Discord bug report link
-<!--- If any related exist -->
-
+## Related links
+<!--- Other PRs; Discord bug reports, messages, threads, etc; outside docs, etc. -->
+-
