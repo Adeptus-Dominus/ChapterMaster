@@ -561,7 +561,7 @@ function scr_image_cache(path, image_id) {
         // Start with 100 slots but allow it to expand if needed
         if (cache_arr_exists && image_id > 100) {
             for (var i = 100; i <= image_id; i++) {
-                array_push(obj_img.image_cache, -1);
+                array_push(obj_img.image_cache[$ path], -1);
             }
         }
 
