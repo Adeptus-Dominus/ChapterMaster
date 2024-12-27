@@ -58,7 +58,6 @@ jobs:
     runs-on: windows-2022
     needs: gamemaker_build
     if: needs.build_needed.outputs.needed == 'true'
-    permissions: write-all
     steps:
       - uses: actions/checkout@v4
         with:
@@ -101,7 +100,7 @@ jobs:
       
           # Use curl to send the PATCH request with proper headers and data
           curl --fail-with-body -X PATCH `
-            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" `
+            -H "Authorization: Bearer ${{ secrets.WORKFLOW_TOKEN }}" `
             -H "Accept: application/vnd.github.v3+json" `
             -d $data `
             $url
