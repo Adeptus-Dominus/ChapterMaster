@@ -58,6 +58,7 @@ jobs:
     runs-on: windows-2022
     needs: gamemaker_build
     if: needs.build_needed.outputs.needed == 'true'
+    permissions: write-all
     steps:
       - uses: actions/checkout@v4
         with:
