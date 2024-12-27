@@ -8,5 +8,5 @@
 <!--- Leverage the list functionality, here as well -->
 -
 ## Related links
-<!--- Other PRs; Discord bug reports, messages, threads, etc; outside docs, etc. -->
+<!--- Other PRs; Discord bug reports, messages, threads, etc.; outside docs, etc.; -->
 -
