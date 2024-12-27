@@ -181,7 +181,7 @@ function scr_load(save_part, save_id) {
 		global.chapter_icon_filename = ini_read_real("Ini", "global_chapter_icon_filename", 0);
 
 
-		if(global.chapter_icon_path != "Error"){
+		if(global.chapter_icon_path != "Error" && global.chapter_icon_path != "") {
 			global.chapter_icon_sprite = scr_image_cache(global.chapter_icon_path, global.chapter_icon_filename);
 		} else {
 			global.chapter_icon_sprite = spr_icon_chapters;
