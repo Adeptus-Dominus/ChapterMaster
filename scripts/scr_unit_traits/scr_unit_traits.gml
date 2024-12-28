@@ -216,7 +216,7 @@ global.trait_list = {
 		intelligence:[4,2,"max"],
 		wisdom:1,
 		technology:2,
-		stength:-1,
+		strength:-1,
 		display_name:"Scholar",
 		flavour_text:"Keen mind and enjoys reading and training it whenever possible",
 	},
