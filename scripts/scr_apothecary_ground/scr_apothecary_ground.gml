@@ -8,7 +8,7 @@ function apothecary_simple(){
  	obj_controller.marines=0;
     marines-=1;
     for(company=0;company<11;company++){
-    	for (v=1;v<500;v++){
+    	for (v=0;v<500;v++){
     		key_val = "";
     		if (obj_ini.name[company][v]=="") then continue;
     		unit = fetch_unit([company, v]);
