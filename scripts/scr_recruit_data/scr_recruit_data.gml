@@ -521,7 +521,7 @@ function set_up_recruitment_view(){
 	}
 }
 
-
+/// @mixin
 function scr_draw_recruit_advisor(){
    var blurp, eta, va;
     var romanNumerals;
@@ -568,44 +568,59 @@ function scr_draw_recruit_advisor(){
         draw_set_font(fnt_40k_14);
     }
 
-    if (menu_adept = 0) then blurp = "Hail " + string(obj_ini.name[0, 0]) + "!  You asked for a report?\n\n";
+    if (menu_adept = 0) then blurp = $"Hail {obj_ini.name[0, 0]}! You asked for a report?\n\n";
 
-    if (obj_ini.doomed = 0) {
-    	if (recruits <= 0){
-	        if (marines >= 1000) then blurp += "Our Chapter currently has no Neophytes- we are at maximum strength and do not require more marines.  ";
-	        if (marines < 1000) and(recruiting = 0) then blurp += "Our Chapter currently has no Neophytes.  Without training more our chapter is doomed to a slow death.";
-	        if (marines < 1000) and(recruiting > 0) then blurp += "Our Chapter currently has no Neophytes.  We are doing our utmost best to find suitable recruits.";
-    	} else if (recruits == 1){
-    		blurp += $"Our Chapter currently has one recruit being trained.  The Neophyte's name is {recruit_name[0]} and they are scheduled to become a battle brother in {recruit_training[0] + recruit_distance[0]} months' time.  ";
-    	}
-        if (recruits = 1) then blurp += $"Our Chapter currently has one recruit being trained.  The Neophyte's name is {recruit_name[0]} and they are scheduled to become a battle brother in " + string(recruit_training[0] + recruit_distance[0]) + " months' time.  ";
-        if (recruits > 1) then blurp += $"Our Chapter currently has {recruits} recruits being trained.  {recruit_name[0]} is the next scheduled Neophyte to become a battle brother in " + string(recruit_training[0] + recruit_distance[0]) + " months' time.  ";
-        if (gene_seed > 0) {
-        	var _recruit_rates = ARR_recruitment_rates;
-        	var _cur_recruit_rate = $"Recruitment {_recruit_rates[recruiting]}";
-            if (recruiting = 0) and(marines >= 1000) then blurp += $"\n\{ _cur_recruit_rate}.  You must only give me the word and I can begin further increasing our numbers... though this would violate the Codex Astartes.  ";
-            if (recruiting = 0) and(marines < 1000) then blurp += $"\n\{_cur_recruit_rate}.  You must only give me the word and I can begin further increasing our numbers.  ";
+	if (obj_ini.doomed == 0) {
+		if (recruits <= 0) {
+			if (marines >= 1000) {
+				blurp += "Our Chapter currently has no Neophytes - we are at maximum strength and do not require more marines.";
+			}
+			if ((marines < 1000) && (recruiting == 0)) {
+				blurp += "Our Chapter currently has no Neophytes. Without training more our chapter is doomed to a slow death.";
+			}
+			if ((marines < 1000) && (recruiting > 0)) {
+				blurp += "Our Chapter currently has no Neophytes. We are doing our utmost best to find suitable recruits.";
+			}
+		} else if (recruits == 1) {
+			blurp += $"Our Chapter currently has one recruit being trained. The Neophyte's name is {recruit_name[0]} and they are scheduled to become a battle brother in {recruit_training[0] + recruit_distance[0]} months' time.";
+		} else if (recruits > 1) {
+			blurp += $"Our Chapter currently has {recruits} recruits being trained. {recruit_name[0]} is the next scheduled Neophyte to become a battle brother in {recruit_training[0] + recruit_distance[0]} months' time.";
+		}
 
-            if (recruiting>0 && recruiting < 3) then blurp += $"\n\{_cur_recruit_rate}.  With an increase of funding I could vastly increase the rate.  ";
-            else if (recruiting = 3) then blurp += $"\n\{_cur_recruit_rate}  ";
-            else if (recruiting>=4){
-                blurp += $"\n\{_cur_recruit_rate}- give me the word when we have enough Neophytes being trained.  ";
-            }
-        }
-    }
+		if (gene_seed > 0) {
+			var _recruit_rates = ARR_recruitment_rates;
+			var _cur_recruit_rate = $"The recruitment is {_recruit_rates[recruiting]}";
+			if ((recruiting == 0) && (marines >= 1000)) {
+				blurp += $"\n{_cur_recruit_rate}. You must only give me the word and I can begin further increasing our numbers... though this would violate the Codex Astartes.";
+			} else if ((recruiting == 0) && (marines < 1000)) {
+				blurp += $"\n{_cur_recruit_rate}. You must only give me the word and I can begin further increasing our numbers.";
+			} else if (recruiting > 0 && recruiting < 3) {
+				blurp += $"\n{_cur_recruit_rate}. With an increase of funding I could vastly increase the rate.";
+			} else if (recruiting == 3) {
+				blurp += $"\n{_cur_recruit_rate}. Everything is progressing as expected.";
+			} else if (recruiting >= 4) {
+				blurp += $"\n{_cur_recruit_rate}. Give me the word when we have enough Neophytes being trained.";
+			}
+		}
+	}
 
-    if (obj_ini.doomed = 1) {
-        blurp += "Our chapter's mutation currently makes us unable to recruit new Neophytes.  We are doomed to a slowe demise unless the Apothecaries can fix it.\n\n";
-    }
-
-    if (gene_seed = 0) {
-        blurp += "We have no more gene-seed in our vaults and cannot create more neophytes as a result.  Something must be done, Chapter Master.\n\n";
-    }
-
-    if (recruiting > 0) and(string_count("|", obj_controller.recruiting_worlds) = 1) then blurp += "Our Chapter is recruiting from one world- " + string(obj_ini.recruiting_name) + ".  Perhaps we should speak with a planetary governor to acquire another.";
-    if (recruiting > 0) and(string_count("|", obj_controller.recruiting_worlds) = 2) then blurp += "Our Chapter is recruiting from two worlds.  Finding recruits is vastly accelerated but incuring more expenses.";
-    if (recruiting > 0) and(string_count("|", obj_controller.recruiting_worlds) > 2) then blurp += "Our Chapter is recruiting from several worlds.";
-
+	if (obj_ini.doomed == 1) {
+		blurp += "\nMutation of our gene-seed currently makes us unable to recruit new Neophytes. We are doomed to a slow demise unless the Apothecaries can fix it.";
+	}
+	
+	if (gene_seed == 0) {
+		blurp += "\nThere is no more gene-seed in our vaults and we cannot create more neophytes as a result. Something must be done, Chapter Master.";
+	}
+	
+	if (recruiting > 0) {
+		if ((string_count("|", obj_controller.recruiting_worlds) == 1)) {
+			blurp += $"\nWe're recruiting from one world - {obj_ini.recruiting_name}. Perhaps we should speak with a planetary governor to acquire another.";
+		} else if ((string_count("|", obj_controller.recruiting_worlds) == 2)) {
+			blurp += "\nWe're recruiting from two worlds. Finding recruits is vastly accelerated but incurring more expenses.";
+		} else if ((string_count("|", obj_controller.recruiting_worlds) > 2)) {
+			blurp += "\nWe're recruiting from several worlds.";
+		}
+	}
 
 
     if (menu_adept = 1) {
