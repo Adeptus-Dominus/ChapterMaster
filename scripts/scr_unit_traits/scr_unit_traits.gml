@@ -384,6 +384,78 @@ global.trait_list = {
 		flavour_text:"Understands the ins and outs of defences both in building them and in taking them appart",
 		effect:"Bonus when commanding defences and extra boosts when leading a garrison",
 	},
+	"students_of_war":{
+		wisdom:[3,2,"max"],
+		intelligence:[3,2,"max"],
+		charisma :[0,1, "min"],
+		strength:[-2, 2,"min"],
+		display_name:"Student of war",
+		flavour_text:"The sons of Guilliman are equally elite warriors and learned statesman",
+	},
+	"secretive_knights":{
+		wisdom:[3,2,"max"],
+		dexterity:[3,2,"max"],
+		weapon_skill:[0,1,"min"],
+		charisma:[-2, 2,"min"],
+		display_name:"Secretive Knight",
+		flavour_text:"This Warrior speaks precious few words to those outside his chapter but his mastery of warfare is apparent",
+	},
+	"warriors_of_the_Wind":{
+		dexterity:[3,2,"max"],
+		weapon_skill:[3,2,"max"],
+		wisdom:[0,1,"min"],
+		constitution:[-2, 2,"min"],
+		display_name:"Warrior of the Wind",
+		flavour_text:"Like the Khagan this marine is a tempest in combat flowing through enemies with finesse not common for astartes",
+	},
+	"wolf_prince":{
+		strength:[3,2,"max"],
+		dexterity:[3,2,"max"],
+		wisdom:[0, 1,"min"],
+		technology:[-2, 2,"min"],
+		display_name:"Wolf Prince",
+		flavour_text:"The Canis Helix of this marine raises him to acts of savage ferocity  matched only by other sons of the Wolf Lord",
+	},
+	"shadow_masters":{
+		dexterity:[3,2,"max"],
+		wisdom:[2,2,"max"],
+		constitution:[0,1],
+		strength:[-2, 2,"min"],
+		display_name:"Shadow Born",
+		flavour_text:"The progeny of the Raven lord are exceptionally nimble stealth operatives this Marine is one such example ",
+	},
+	"keepers_of_the_flame":{
+		strength:[3,2,"max"],
+		constitution:[3,2,"max"],
+		technology:[0, 1,"min"],
+		wisdom:[-2, 2,"min"],
+		display_name:"Keeper of the Flame",
+		flavour_text:"The sons Vulkan are blessed with strong and durable bodies they use to safeguard humanity's flame",
+	},
+	"will_of_iron":{
+		wisdom:[3,2,"max"],
+		constitution:[3,2,"max"],
+		strength:[0, 1,"min"],
+		intelligence:[-2, 2,"min"],
+		display_name:"Will of Iron",
+		flavour_text:"Honed and tempered in the flames of war this marine has chained the emotions that killed his genesire",
+	},
+	"host_of_angels":{
+		weapon_skill:[3,2,"max"],
+		intelligence:[3,2,"max"],
+		charisma:[0, 1,"min"],
+		wisdom:[-2, 2,"min"],
+		display_name:"Angelic Host",
+		flavour_text:"Comparable to the angels of legend this marine wields a paintbrush with the same grace he does a blade",
+	},
+	"obstinate_defenders":{
+		constitution:[3,2,"max"],
+		ballistic_skill:[3,2,"max"],
+		intelligence:[0, 1,"min"],
+		dexterity:[-2, 2,"min"],
+		display_name:"Obstinate Defender",
+		flavour_text:"Even in the face of unsurmountable odds this marine will hold defiantly as befitting a son of Dorn",
+	},
 	"lobotomized" : {
 		wisdom : -50,
 		intelligence : -50,
@@ -802,9 +874,90 @@ global.astartes_trait_dist = [
 					[eTrials.APPRENTICESHIP, -2],
 				]				
 			}
-		]		
+		],		
+		[
+			"secretive_knights",
+			[1,1],
+			{
+				chapter_name:[
+					"Dark Angels",[500,0]
+				],			
+			}
+		],		
+		[
+			"warriors_of_the_wind",
+			[1,1],
+			{
+				chapter_name:[
+					"White Scars",[500,0]
+				],			
+			}
+		],		
+		[
+			"wolf_prince",
+			[1,1],
+			{
+				chapter_name:[
+					"Space Wolves",[500,0]
+				],			
+			}
+		],		
+		[
+			"obstinate_defenders",
+			[1,1],
+			{
+				chapter_name:[
+					"Imperial Fists",[500,0]
+				],			
+			}
+		],		
+		[
+			"host_of_angels",
+			[1,1],
+			{
+				chapter_name:[
+					"Blood Angels",[500,0]
+				],			
+			}
+		],		
+		[
+			"will_of_iron",
+			[1,1],
+			{
+				chapter_name:[
+					"Iron Hands",[500,0]
+				],			
+			}
+		],		
+		[
+			"students_of_war",
+			[1,1],
+			{
+				chapter_name:[
+					"Ultramarines",[500,0]
+				],			
+			}
+		],		
+		[
+			"keepers_of_the_flame",
+			[1,1],
+			{
+				chapter_name:[
+					"Salamanders",[500,0]
+				],			
+			}
+		],		
+		[
+			"shadow_masters",
+			[1,1],
+			{
+				chapter_name:[
+					"Raven Guard",[500,0]
+				],			
+			}
+		],		
+		
 	];
-
 
 
 
