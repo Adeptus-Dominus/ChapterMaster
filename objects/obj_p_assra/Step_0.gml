@@ -129,6 +129,7 @@ if (boarding=true) and (board_cooldown>=0) and (instance_exists(target)) and (in
                 if ((target.owner = eFACTION.Chaos) and (obj_fleet.csm_exp=2)) or (target.owner = eFACTION.Tyranids) then boarding_disadvantage-=30;// Daemons, veteran CSM, tyranids
 
                 boarding_odds+=boarding_advantage+boarding_disadvantage;
+                boarding_odds=clamp(boarding_odds,0,100);
                 outcome_roll=floor(random(100))+1;
                 
                 
