@@ -5,12 +5,18 @@ var romanNumerals= scr_roman_numerals();
 var unit;
 var unit_armour,complete;
 if (engage=true){
-    for(var co=0; co<11; co++){
+    for(var co=0; co<=obj_ini.companies; co++){
         var i=0;
         if (role_number[co]>0){
-			for(i=1; i<=500; i++){
+			for(i=0; i<array_length(obj_ini.role[co]); i++){
                 if (obj_ini.role[co][i]==obj_ini.role[100,role]){
                 	unit = fetch_unit([co,i]);
+                	if (unit.squad!="none"){
+                		var _squad = fetch_squad(unit.squad);
+                		if (!_squad.allow_bulk_swap){
+                			continue;
+                		}
+                	}
                     // ** Start Armour **
                     var yes=false,done="";
 					var unit_armour=unit.get_armour_data();
@@ -380,7 +386,18 @@ if (refresh=true) and (obj_controller.settings>0){
     
     refresh=false;
     
-    if (tab>0) then scr_weapons_equip();
+    if (tab > 0) {
+		item_name = [];
+		var is_hand_slot = (tab == 1 || tab == 2);
+		scr_get_item_names(
+			item_name,
+			obj_controller.settings, // eROLE
+			tab, // slot
+			is_hand_slot ? eENGAGEMENT.Any : eENGAGEMENT.None,
+			true, // include company standard
+			false, // show all regardless of inventory
+		 );
+	}
     
     good1=0;
 	good2=0;

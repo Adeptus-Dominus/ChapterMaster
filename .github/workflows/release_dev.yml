@@ -1,0 +1,133 @@
+name: Release-Development
+on: 
+  workflow_dispatch:
+    inputs:
+      compiler:
+        type: choice
+        description: What compiler to use?
+        required: true
+        default: YYC
+        options: 
+          - YYC
+          - VM
+  push:
+    branches:
+      - release/0.9
+
+jobs:
+  build_needed:
+    name: Build needed?
+    runs-on: ubuntu-latest
+    outputs:
+      needed: ${{ steps.commit_check.outputs.needed }}  # Output for skipping
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Check commit
+        id: commit_check
+        run: |
+          COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+          echo "Merge commit message: $COMMIT_MESSAGE"
+          
+          EXCLUDE_PATTERN="^(docs|chore|style|ci)"
+          
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "Manually triggered, forcing build."
+            echo "needed=true" >> $GITHUB_OUTPUT
+          elif echo "$COMMIT_MESSAGE" | grep -Eq "$EXCLUDE_PATTERN"; then
+            echo "Commit message matches excluded pattern, skipping build."
+            echo "needed=false" >> $GITHUB_OUTPUT
+            exit 0
+          else
+            echo "needed=true" >> $GITHUB_OUTPUT
+          fi
+
+  gamemaker_build:
+    name: Build
+    uses: ./.github/workflows/gamemaker_build.yml
+    secrets: inherit
+    needs: build_needed
+    if: needs.build_needed.outputs.needed == 'true'
+    with:
+      yyc: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.compiler == 'YYC' || github.event_name != 'workflow_dispatch' }}
+
+  release:
+    name: Release
+    runs-on: windows-2022
+    needs: gamemaker_build
+    if: needs.build_needed.outputs.needed == 'true'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+          fetch-depth: 0
+
+      - name: Check if a dev release exists
+        id: check_release
+        run: |
+          gh release view dev/${{ github.ref_name }} --repo ${{ github.repository }}
+          if [ $? -eq 0 ] ; then
+            echo "release_exists=true" >> $GITHUB_OUTPUT;
+          else
+            echo "release_exists=false" >> $GITHUB_OUTPUT;
+          fi
+        shell: bash
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - id: get_commit_sha
+        name: Get commit SHA of the last nightly release
+        if: steps.check_release.outputs.release_exists
+        run: |
+          $prev_sha = git rev-parse dev/${{ github.ref_name }}
+          echo "prev_SHA=$prev_sha" >> $env:GITHUB_ENV
+
+      - name: Update tag pointing to the previous nightly release
+        if: steps.check_release.outputs.release_exists
+        run: |
+          # Get the SHA from the environment variable
+          $sha = $env:prev_SHA
+          # Construct the URL properly
+          $url = "https://api.github.com/repos/$env:GITHUB_REPOSITORY/git/refs/tags/dev-old/$env:GITHUB_REF_NAME"
+      
+          # Create the JSON payload for the PATCH request
+          $data = @{
+            sha = $sha
+          } | ConvertTo-Json
+      
+          # Use curl to send the PATCH request with proper headers and data
+          curl --fail-with-body -X PATCH `
+            -H "Authorization: Bearer ${{ secrets.WORKFLOW_TOKEN }}" `
+            -H "Accept: application/vnd.github.v3+json" `
+            -d $data `
+            $url
+
+      - id: delete_release_tag
+        name: Delete the existing dev tag and release
+        if: steps.check_release.outputs.release_exists
+        run: |
+          gh release delete dev/${{ github.ref_name }} -y --cleanup-tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download built file artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: built-file
+          path: ./build_output
+
+      - id: create_release
+        name: Create a release and upload the build
+        uses: softprops/action-gh-release@v2.0.9
+        with:
+          name: ChapterMaster ${{ needs.gamemaker_build.outputs.suffix }}
+          tag_name: dev/${{ github.ref_name }}
+          prerelease: true
+          generate_release_notes: true
+          make_latest: true
+          target_commitish: ${{ github.ref_name }}
+          files: |
+            ./build_output/${{ needs.gamemaker_build.outputs.built_file }}/*

@@ -27,7 +27,7 @@ if (debug!=0) then exit;
 
     //TODO centralise this logic
     if (instance_exists(obj_fleet_select)){
-         if (obj_fleet_select.currently_entered) then exit;
+         if (obj_fleet_select.currently_entered)  then exit;
     }
 
 
@@ -205,20 +205,8 @@ if (player_fleet>0) and (imperial_fleet+mechanicus_fleet+inquisitor_fleet+eldar_
             }
             instance_deactivate_object(obj_star);
             
-            
-            
-            
-            
-            // 
-            
-            var fleet_ships = fleet_full_ship_array(p_fleet);
-            var p_ship_id;
-            for (i=0;i<array_length(fleet_ships);i++){
-                p_ship_id = fleet_ships[i];
-                if (obj_ini.ship[p_ship_id] != ""){
-                    obj_fleet.fighting[p_ship_id] = 1;
-                }
-            }
+
+            add_fleet_ships_to_combat(p_fleet, obj_fleet);
 
             // instance_deactivate_object(battle_object[current_battle]);
             instance_deactivate_object(p_fleet);

@@ -2,7 +2,7 @@
   "resourceType": "GMSprite",
   "resourceVersion": "1.0",
   "name": "spr_weapon_powspear3",
-  "bbox_bottom": 275,
+  "bbox_bottom": 281,
   "bbox_left": 22,
   "bbox_right": 48,
   "bbox_top": 30,
@@ -20,15 +20,15 @@
   "height": 282,
   "HTile": false,
   "layers": [
-    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"41b6b4ab-54d0-465a-abe2-ed4fff718dc7","blendMode":0,"displayName":"pasteLayer","isLocked":false,"opacity":100.0,"visible":false,},
-    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"017652a3-1080-42c6-8700-3cbe1f99bdb0","blendMode":0,"displayName":"pasteLayer","isLocked":false,"opacity":100.0,"visible":false,},
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"41b6b4ab-54d0-465a-abe2-ed4fff718dc7","blendMode":0,"displayName":"pasteLayer","isLocked":false,"opacity":100.0,"visible":true,},
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"017652a3-1080-42c6-8700-3cbe1f99bdb0","blendMode":0,"displayName":"pasteLayer","isLocked":false,"opacity":100.0,"visible":true,},
     {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"67824055-5997-42cf-9911-ba6b9c0b00e5","blendMode":0,"displayName":"pasteLayer","isLocked":false,"opacity":100.0,"visible":true,},
   ],
   "nineSlice": null,
   "origin": 9,
   "parent": {
-    "name": "deprecated",
-    "path": "folders/Sprites/Marine Viewer/deprecated.yy",
+    "name": "unused",
+    "path": "folders/Sprites/Marine Viewer/unused.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

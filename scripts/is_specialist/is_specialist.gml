@@ -78,12 +78,12 @@ function role_groups(group){
 			break;
 		case "captain_candidates":
 			role_list = [
-				roles[Role.SERGEANT], //sergeant
-				roles[Role.VETERAN_SERGEANT],
-				roles[Role.CHAMPION],				
-				roles[Role.CAPTAIN],								
-				roles[Role.TERMINATOR],				
-				roles[Role.VETERAN],
+				roles[eROLE.Sergeant], //sergeant
+				roles[eROLE.VeteranSergeant],
+				roles[eROLE.Champion],				
+				roles[eROLE.Captain],								
+				roles[eROLE.Terminator],				
+				roles[eROLE.Veteran],
 				 obj_ini.role[100][11],			
 			];
 			break;
@@ -310,77 +310,82 @@ function collect_by_religeon(religion, sub_cult="", location=""){
 }
 
 function group_selection(group, selection_data){
-	var unit, s, unit_location;
-	obj_controller.selection_data = selection_data;
-	set_zoom_to_defualt();
-	with (obj_controller){
-            menu=1;
-            onceh=1;
-            cooldown=8000;
-            click=1;
-            popup=0;
-            selected=0;
-            hide_banner=1;
-            with(obj_fleet_select){instance_destroy();}
-            with(obj_star_select){instance_destroy();}
-            view_squad=false;
-            managing=0;		
-			zoomed=0;
-			menu=1;
-			managing=0;
-			diplomacy=0;
-            cooldown=8000;
-            exit_button = new ShutterButton();
-            proceed_button = new ShutterButton();
-            selection_data.start_count=0;
-        // Resets selections for next turn
-            man_size=0;
-            selecting_location="";
-            selecting_types="";
-            selecting_ship=0;
-            selecting_planet=0;
-            sel_uid=0;
-            reset_manage_arrays();
-            alll=0;              
-            cooldown=10;
-            sel_loading=0;
-            unload=0;
-            alarm[6]=7;
-            company_data={};
-            view_squad=false;
-            managing =-1; 
-            var vehicles = [];
-            for (var i = 0; i< array_length(group);i++){
-            	if (!is_struct(group[i])){
-            		if (is_array(group[i])){
-            			array_push(vehicles, group[i]);
-            		}
-            		continue;
-            	}
-            	unit = group[i];
-            	add_man_to_manage_arrays(unit);
+	try {
+		var unit, s, unit_location;
+		obj_controller.selection_data = selection_data;
+		set_zoom_to_defualt();
+		with (obj_controller){
+				menu=1;
+				onceh=1;
+				cooldown=8000;
+				click=1;
+				popup=0;
+				selected=0;
+				hide_banner=1;
+				with(obj_fleet_select){instance_destroy();}
+				with(obj_star_select){instance_destroy();}
+				view_squad=false;
+				managing=0;		
+				zoomed=0;
+				menu=1;
+				managing=0;
+				diplomacy=0;
+				cooldown=8000;
+				exit_button = new ShutterButton();
+				proceed_button = new ShutterButton();
+				selection_data.start_count=0;
+			// Resets selections for next turn
+				man_size=0;
+				selecting_location="";
+				selecting_types="";
+				selecting_ship=-1;
+				selecting_planet=0;
+				sel_uid=0;
+				reset_manage_arrays();
+				alll=0;              
+				cooldown=10;
+				sel_loading=-1;
+				unload=0;
+				alarm[6]=7;
+				company_data={};
+				view_squad=false;
+				managing =-1; 
+				var vehicles = [];
+				for (var i = 0; i< array_length(group);i++){
+					if (!is_struct(group[i])){
+						if (is_array(group[i])){
+							array_push(vehicles, group[i]);
+						}
+						continue;
+					}
+					unit = group[i];
+					add_man_to_manage_arrays(unit);
 
-                if (selection_data.purpose_code=="forge_assignment"){
-                	if (unit.job != "none"){
-                		if (unit.job.type=="forge" && unit.job.planet== selection_data.planet){
-							man_sel[array_length(display_unit)-1]=1;
-							man_size++;
-							selection_data.start_count++;
+					if (selection_data.purpose_code=="forge_assignment"){
+						if (unit.job != "none"){
+							if (unit.job.type=="forge" && unit.job.planet== selection_data.planet){
+								man_sel[array_length(display_unit)-1]=1;
+								man_size++;
+								selection_data.start_count++;
 
-                		}                		
-                	}
-                }       	
-            }
-            var last_vehicle=0;
-        if (array_length(vehicles)>0){
-        	for (var veh=0;veh<array_length(vehicles);veh++){
-        		unit = vehicles[veh];
-        		_add_vehicle_to_manage_arrays(unit)       		
-        	}
-        }
-        other_manage_data();
-        man_current=0;
-        man_max=array_length(display_unit)+2;
-        man_see=38-4;
+							}                		
+						}
+					}       	
+				}
+				var last_vehicle=0;
+			if (array_length(vehicles)>0){
+				for (var veh=0;veh<array_length(vehicles);veh++){
+					unit = vehicles[veh];
+					add_vehicle_to_manage_arrays(unit)       		
+				}
+			}
+			other_manage_data();
+			man_current=0;
+			man_max=array_length(display_unit)+2;
+			man_see=38-4;
+		}
+	} catch(_exception) {
+	handle_exception(_exception);
+	scr_toggle_manage();//handle and send player back to map
 	}
 }

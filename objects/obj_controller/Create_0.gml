@@ -323,11 +323,6 @@ if (window_get_fullscreen()=1){
 cheatcode=0;
 cheatyface=0;
 // ** Debugging file created **
-debug_lines=0;
-ini_open("debug_log.ini");
-debug_lines=ini_read_real("Main","lines",0);
-ini_close();
-
 debugl("=========Controller Created");
 // ** Creates saves.ini with default settings **
 ini_open("saves.ini");
@@ -488,7 +483,7 @@ sel_all="";
 sel_promoting=0;
 drag_square=[];
 rectangle_action = -1;
-sel_loading=0;
+sel_loading=-1;
 sel_uid=0;
 
 // ** Sets Chapter events and celebrations **
@@ -547,7 +542,7 @@ progenitor_visuals=0;
 
 // ** Default menu items **
 selecting_planet=0;
-selecting_ship=0;
+selecting_ship=-1;
 fleet_minimized=0;
 fleet_all=1;
 tolerant=0;
@@ -570,7 +565,6 @@ forge_points = 0;
 master_craft_chance = 0;
 tech_status = "Cult Mechanicus";
 forge_string="";
-forge_queue=[];
 player_forge_data = {
     player_forges : 0,
     vehicle_hanger : [],
@@ -681,29 +675,8 @@ if (instance_exists(obj_ini)){
     if (string_count(obj_ini.spe[0,1],"$")>0) then born_leader=1;
 }
 // ** Resets marines and other vars **
-for(var i=0; i<501; i++){
-    man[i]="";
-    ide[i]=0;
-    man_sel[i]=0;
-    ma_lid[i]=0;
-    ma_wid[i]=0;
-    ma_promote[i]=0;
-    ma_race[i]=0;
-    ma_loc[i]="";
-    ma_name[i]="";
-    ma_role[i]="";
-    ma_wep1[i]="";
-    ma_mobi[i]="";
-    ma_wep2[i]="";
-    ma_armour[i]="";
-    ma_gear[i]="";
-    ma_health[i]=100;
-    ma_chaos[i]=0;
-    ma_exp[i]=0;
-    ma_god[i]=0;
-    squad[i]=0;
-    display_unit[i]=0;
 
+for(var i=0; i<501; i++){
     
     if (i<=50){
         penit_co[i]=0;
@@ -725,6 +698,7 @@ sh_loc = []
 sh_hp = []
 sh_cargo = []
 sh_cargo_max = []
+reset_manage_arrays();
 alll=0;
 //
 popup=0;// 1: fleet, 2: other, 3: system
@@ -1329,7 +1303,9 @@ if (instance_exists(obj_ini)){
             stc_bonus[3]=3;
         }
         if (global.chapter_name=="Blood Ravens"){
-            for(var i=0; i<3; i++){scr_add_artifact("random_nodemon","",0,obj_ini.ship[1],501);}
+            for(var i=0; i<3; i++){
+                scr_add_artifact("random_nodemon","",0,obj_ini.ship[0],501);
+            }
         }
         // TODO should add special bonus to different chapters based on lore
         adept_name=global.name_generator.generate_space_marine_name();
@@ -1384,7 +1360,7 @@ global.custom=1;
 
 // ** Sets up base training level and trainees at game start **
 training_apothecary=0;
-apothecary_points=0;
+apothecary_recruit_points=0;
 apothecary_aspirant=0;
 training_chaplain=0;
 chaplain_points=0;
@@ -1457,20 +1433,22 @@ loyalty=100;
 loyalty_hidden=100;// Updated when inquisitors do an inspection
 // ** Sets up gene seed **
 gene_seed=20;
-if (string_count("Sieged",obj_ini.strin2)>0) then gene_seed=floor(random_range(250,400));
+if (scr_has_disadv("Sieged")) then gene_seed = floor(random_range(250, 400));
 if scr_has_disadv("Obliterated") then gene_seed=floor(random_range(50,200));
 if (global.chapter_name=="Lamenters") then gene_seed=30;
 if (global.chapter_name=="Soul Drinkers") then gene_seed=60;
 
 //   ** sets up the starting squads**
 squads = true;
-game_start_squads()
+game_start_squads();
 squads = false;
 
 // **sets up starting forge_points
-calculate_research_points()
+specialist_point_handler = new SpecialistPointHandler();
+specialist_point_handler.calculate_research_points();
 
-//** sets up marine_by_location view
+
+//** sets up marine_by_location views
 location_viewer = new UnitQuickFindPanel();
 
 // ** Sets up the number of marines per company **
@@ -1648,7 +1626,7 @@ temp[62]="##Your fleet contains ";
 var bb=0,sk=0,glad=0,hunt=0,ships=0,bb_names=[],sk_names=[],glad_names=[],hunt_names=[];
 
 codex[0]="";codex_discovered[0]=0;
-for(var mm=0; mm<=30; mm++){
+for(var mm=0; mm<array_length(obj_ini.ship); mm++){
     if (obj_ini.ship[mm]!=""){
         ships++;
         if (obj_ini.ship_class[mm] == "Battle Barge") {
@@ -1671,10 +1649,11 @@ for(var mm=0; mm<=30; mm++){
     codex[mm]="";
     codex_discovered[mm]=0;
 }
+
 temp[62]+=string(ships)+$" {string_plural("warship")}-\n";
 
 if (obj_ini.fleet_type != ePlayerBase.home_world || bb == 1) {
-    temp[62] += $"Your flagship, Battle Barge {obj_ini.ship[1]}.";
+    temp[62] += $"Your flagship, Battle Barge {obj_ini.ship[0]}.";
     temp[62] += "\n";
     bb--;
 }
@@ -1777,7 +1756,6 @@ if (welcome_pages>=5){
     }
 }
 remov=string_length(string(temp[65])+string(temp[66])+string(temp[67])+string(temp[68])+string(temp[69]))+1;
-
 action_set_alarm(2, 0);
 
 instance_create(0,0,obj_tooltip );

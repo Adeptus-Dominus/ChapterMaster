@@ -28,7 +28,7 @@ function scr_update_unit_armour(new_armour, from_armoury=true, to_armoury=true, 
 	  	if (_new_power_armour){
 	  		require_carpace=true;
 	  		if (new_armour=="Power Armour"){
-	  			armour_list = global.power_armour;
+	  			armour_list = ARR_power_armour;
 	  		}
 	  	} else if (new_armour="Terminator Armour"){
 	  		require_carpace=true;
@@ -68,11 +68,17 @@ function scr_update_unit_armour(new_armour, from_armoury=true, to_armoury=true, 
 		} else {
 			quality = quality=="any" ? "standard" : quality;
 		}
-		if (change_armour != "") and (to_armoury){
-			if (!is_string(armour(true))){
-				obj_ini.artifact_equipped[armour(true)]=false;
-			} else {	
-				scr_add_item(change_armour,1,armour_quality);
+		if (change_armour != ""){
+			if (to_armoury){
+				if (!is_string(armour(true))){
+					obj_ini.artifact_equipped[armour(true)]=false;
+				} else {	
+					scr_add_item(change_armour,1,armour_quality, true);
+				}
+			} else {
+				if (!is_string(armour(true))){
+					delete_artifact(armour(true));
+				}
 			}
 		}
 		var portion = hp_portion();
@@ -143,11 +149,17 @@ function scr_update_unit_weapon_one(new_weapon,from_armoury=true, to_armoury=tru
 		quality = quality=="any"?"standard":quality;
 	}
 
-	if (change_wep != "") and (to_armoury){
-		if (!is_string(weapon_one(true))){
-			obj_ini.artifact_equipped[weapon_one(true)]=false;
-		} else {			
-			scr_add_item(change_wep,1, weapon_one_quality);
+	if (change_wep != ""){
+		if(to_armoury){
+			if (!is_string(weapon_one(true))){
+				obj_ini.artifact_equipped[weapon_one(true)]=false;
+			} else {			
+				scr_add_item(change_wep,1, weapon_one_quality, true);
+			}
+		} else {
+			if (!is_string(weapon_one(true))){
+				delete_artifact(weapon_one(true));
+			}
 		}
 	}       	
     obj_ini.wep1[company][marine_number] = new_weapon;
@@ -179,12 +191,18 @@ function scr_update_unit_weapon_two(new_weapon,from_armoury=true, to_armoury=tru
 		} else {
 			quality = quality=="any"?"standard":quality;
 		}
-		if (change_wep != "") and (to_armoury){
-			if (!is_string(weapon_two(true))){
-				obj_ini.artifact_equipped[weapon_two(true)]=false;
-			}else {
-				scr_add_item(change_wep,1, weapon_two_quality);
-			}		
+		if (change_wep != ""){
+			if (to_armoury){
+				if (!is_string(weapon_two(true))){
+					obj_ini.artifact_equipped[weapon_two(true)]=false;
+				}else {
+					scr_add_item(change_wep,1, weapon_two_quality, true);
+				}
+			} else {
+				if (!is_string(weapon_two(true))){
+					delete_artifact(weapon_two(true))
+				}
+			}	
 		}      	
     	obj_ini.wep2[company][marine_number] = new_weapon;
 	 	if (arti){
@@ -223,11 +241,17 @@ function scr_update_unit_gear(new_gear,from_armoury=true, to_armoury=true, quali
 	}
 
 	var portion = hp_portion();
-	if (change_gear != "" && to_armoury){
-		if (!is_string(gear(true))){
-			obj_ini.artifact_equipped[gear(true)]=false;
-		} else {			
-			scr_add_item(change_gear,1,gear_quality);
+	if (change_gear != ""){
+		if (to_armoury){
+			if (!is_string(gear(true))){
+				obj_ini.artifact_equipped[gear(true)]=false;
+			} else {			
+				scr_add_item(change_gear,1,gear_quality, true);
+			}
+		} else {
+			if (!is_string(gear(true))){
+				delete_artifact(gear(true));
+			}
 		}
 	}  			
 	obj_ini.gear[company][marine_number] = new_gear;
@@ -245,29 +269,31 @@ function scr_update_unit_gear(new_gear,from_armoury=true, to_armoury=true, quali
 
 function scr_update_unit_mobility_item(new_mobility_item, from_armoury = true, to_armoury=true, quality="any"){
 	var arti = !is_string(new_mobility_item);
-	var change_mob=mobility_item();
+	var _old_mobility_item=mobility_item();
+	new_mobility_item = arti ? obj_ini.artifact[new_mobility_item] : new_mobility_item;
+
 	if (new_mobility_item != ""){
-		var arm_data = get_armour_data();
-		if (is_struct(arm_data)){
-			if (arm_data.has_tag("terminator")){
-				return "incompatible with terminator";
+		var _armour_data = get_armour_data();
+		if (is_struct(_armour_data)){
+			if (_armour_data.has_tag("terminator")){
+				if (!array_contains(["Servo-arm", "Servo-harness", "Conversion Beamer Pack"], new_mobility_item)) {
+					return "incompatible with terminator";
+				}
 			}
 
 			//can probably condense the next 10 lines at some point
-			var core_type = arti ? obj_ini.artifact[new_mobility_item] : new_mobility_item;
 			//TODO move to tag system
-			if (core_type=="Jump Pack" && !arm_data.has_tag("power_armour")){
+			if (new_mobility_item=="Jump Pack" && !_armour_data.has_tag("power_armour")){
 				return "requires power armour";
 			}
 		} else {
-			var core_type = arti ? obj_ini.artifact[new_mobility_item] : new_mobility_item;
-			if (core_type=="Jump Pack"){
+			if (new_mobility_item=="Jump Pack"){
 				return "requires power armour";
 			}			
 		}
 	}
 	var same_quality = quality == "any" || quality == mobility_item_quality;
-	if (change_mob == new_mobility_item && same_quality){
+	if (_old_mobility_item == new_mobility_item && same_quality){
 		return "no change";
 	}
   	if (from_armoury && new_mobility_item!="" && !arti){
@@ -285,11 +311,15 @@ function scr_update_unit_mobility_item(new_mobility_item, from_armoury = true, t
 		quality= quality=="any"?"standard":quality;
 	}
 	var portion = hp_portion();
-	if (change_mob != "") and (to_armoury){
-		if (!is_string(mobility_item(true))){
-			obj_ini.artifact_equipped[mobility_item(true)]=false;
-		} else {
-			scr_add_item(change_mob,1,mobility_item_quality );
+	if (_old_mobility_item != ""){
+		if(to_armoury){
+			if (!is_string(mobility_item(true))){
+				obj_ini.artifact_equipped[mobility_item(true)]=false;
+			} else {
+				scr_add_item(_old_mobility_item,1,mobility_item_quality, true );
+			}
+		} else if (!is_string(mobility_item(true))){
+			delete_artifact(mobility_item(true));
 		}
 	}
 	obj_ini.mobi[company][marine_number] = new_mobility_item;
@@ -304,4 +334,28 @@ function scr_update_unit_mobility_item(new_mobility_item, from_armoury = true, t
 	update_health(portion*max_health());
 	get_unit_size(); //every time mobility_item is changed see if the marines size has changed
 	return "complete";
-};		
+}
+
+
+function alter_unit_equipment(update_equipment, from_armoury=true, to_armoury=true, quality="any"){
+	var equip_areas = struct_get_names(update_equipment);
+	for (var i=0;i<array_length(equip_areas);i++){
+		switch(equip_areas[i]){
+			case "wep1":
+				update_weapon_one(update_equipment[$ equip_areas[i]],from_armoury,to_armoury,quality);
+				break;
+			case "wep2":
+				update_weapon_two(update_equipment[$ equip_areas[i]],from_armoury,to_armoury,quality);
+				break;
+			case "mobi":
+				update_mobility_item(update_equipment[$ equip_areas[i]],from_armoury,to_armoury,quality);
+				break;
+			case "armour":
+				update_armour(update_equipment[$ equip_areas[i]],from_armoury,to_armoury,quality);
+				break;
+			case "gear":
+				update_gear(update_equipment[$ equip_areas[i]],from_armoury,to_armoury,quality);
+				break;								
+		}
+	}
+}

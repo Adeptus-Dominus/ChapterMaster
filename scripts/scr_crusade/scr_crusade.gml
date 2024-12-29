@@ -39,7 +39,7 @@ function scr_crusade() {
         	good=0;dead=false;
         	if (obj_ini.name[co][i]=="") then continue;
         		unit=fetch_unit([co, i]);
-        		if (unit.ship_location==0) then continue;
+        		if (unit.ship_location==-1) then continue;
             if (array_contains(total_ship_id,unit.ship_location)){
             	unit=obj_ini.TTRPG[co][i];
                 death_determination=floor(random(100))+1;
@@ -92,7 +92,6 @@ function scr_crusade() {
                 	if (unit.IsSpecialist("apoth")) and (obj_ini.gear[co][i]="Narthecium") then apoth++;
                 	unit.add_exp(irandom(death_data[3][0])+death_data[3][1]);
                 
-                    if (unit.IsSpecialist("libs")) then unit.update_powers();
                     if (irandom(99)==1 && irandom(20)<unit.luck){
                     	var heroic_deed=choose("still_standing","lone_survivor","beast_slayer");
                     	unit.add_trait(heroic_deed);
@@ -125,7 +124,7 @@ function scr_crusade() {
 	if (roll3<=10) then artifacts+=1;
 	if (artifacts>0) then repeat(artifacts){
 	    if (obj_ini.fleet_type=ePlayerBase.home_world) then scr_add_artifact("random","",4,obj_ini.home_name,2);
-	    if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("random","",4,obj_ini.ship[1],501);
+	    if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("random","",4,obj_ini.ship[0],501);
 	}
 
 

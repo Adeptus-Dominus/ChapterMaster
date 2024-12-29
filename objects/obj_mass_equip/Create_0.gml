@@ -48,5 +48,5 @@ good3=0;
 good4=0;
 good5=0;
 
-
+item_name = [];
 

@@ -1,7 +1,31 @@
 
 if (image="debug_banshee") then obj_controller.cooldown=8;
 if (image="chaos_symbol") and (title="Concealed Heresy") and (instance_exists(obj_drop_select)){
-    obj_drop_select.alarm[5]=1;
+    with (obj_drop_select){
+        obj_controller.cooldown=30;
+        // ** Starts the battle **
+        is_in_combat=true;
+
+        instance_deactivate_all(true);
+        instance_activate_object(obj_controller);
+        instance_activate_object(obj_ini);
+        instance_activate_object(obj_drop_select);
+
+        instance_create(0,0,obj_ncombat);
+        obj_ncombat.battle_object=p_target;
+        obj_ncombat.battle_loc=p_target.name;
+        obj_ncombat.battle_id=obj_controller.selecting_planet;
+        obj_ncombat.dropping=0;
+        obj_ncombat.attacking=10;
+        obj_ncombat.enemy=10;
+        obj_ncombat.formation_set=2;
+        obj_ncombat.leader=1;
+        obj_ncombat.threat=5;
+        obj_ncombat.battle_special="WL10_reveal";    
+        scr_battle_allies();
+        setup_battle_formations();
+        roster.add_to_battle();        
+    }
 }
 
 if (instance_exists(obj_controller)){

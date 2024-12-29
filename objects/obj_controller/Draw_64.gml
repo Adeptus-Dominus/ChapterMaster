@@ -43,7 +43,7 @@ if (!zoomed && !zui){
     
     
     if (y_slide>0) then draw_set_alpha((100-(y_slide*2))/100);
-    
+
     draw_set_alpha(1);
     draw_sprite(spr_new_banner,0,1439+new_banner_x,62);
     draw_sprite(spr_new_ui_cover,0,0,(900-17));
@@ -53,7 +53,9 @@ if (!zoomed && !zui){
         sprw = 141,
         sprh = 141;
     
-    draw_sprite_stretched(global.chapter_icon_sprite, global.chapter_icon_frame, sprx, spry, sprw, sprh);
+    if (sprite_exists(global.chapter_icon_sprite)){
+        draw_sprite_stretched(global.chapter_icon_sprite, global.chapter_icon_frame, sprx, spry, sprw, sprh);
+    }
        
     
     draw_set_color(38144);
@@ -117,6 +119,10 @@ if (!zoomed && !zui){
     draw_set_color(#af5a00)
     draw_text(180,16, string(forge_points));
     draw_text(180.5,16.5, string(forge_points));
+    // Draws apothecary points
+    var _apoth_string = ($"apothecary points : {specialist_point_handler.apothecary_points}");
+    draw_text(180,32, _apoth_string);
+    draw_text(180.5,32.5, _apoth_string);
     // Draws the current loyalty
     draw_sprite(spr_new_resource,1,267,17);
     draw_set_color(1164001);

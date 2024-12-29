@@ -1,55 +1,60 @@
 function scr_start_allow(role_id, equip_area, equipment) {
+	var _allow = false;
+	var _veteran_level = 0;
 
-	var specialist,allow;
-	specialist=0;allow=false;
-	if (role_id=2) then specialist=1;
-	if (role_id=3) then specialist=1;
-	if (role_id=4) then specialist=2;
-	if (role_id=5) then specialist=2;
-	if (role_id=6) then specialist=2;
-	if (role_id>=14) then specialist=2;
-
-
-	if (specialist>=0){
-	    if (equipment="Combat Knife") then allow=true;
-	    if (equipment="Chainsword") then allow=true;
-	    if (equipment="Chainaxe") then allow=true;
-	    if (equipment="Boarding Shield") then allow=true;
-	    if (equipment="Bolt Pistol") then allow=true;
-	    if (equipment="Bolter") then allow=true;
-	    if (equipment="Flamer") then allow=true;
-	    if (equipment="Sniper Rifle") then allow=true;
-    
-	    if (role_id!=8) and (role_id!=9) and (role_id!=4) and (role_id!=6){
-	        if (equipment="Jump Pack") then allow=true;
-	    }
-	}
-	if (specialist>=1){
-	    if (equipment="Storm Bolter") then allow=true;
-	    if (equipment="Meltagun") then allow=true;
-	    if (equipment="Power Fist") then allow=true;
-	    if (equipment="Power Sword") then allow=true;
-	    if (equipment="Power Axe") then allow=true;
-	    if (equipment="Narthecium") then allow=true;
-    
-	    if (role_id!=8) and (role_id!=9) and (role_id!=4) and (role_id!=6){
-	        if (equipment="Bike") then allow=true;
-	    }
-	}
-	if (specialist>=2){if (equip_area!="mobi") and (equip_area!="gear") then allow=true;
-	    if (equipment="Plasma Gun") then allow=false;
-	    if (role_id=14) and (equipment="Rosarius") then allow=true;
-	    if (role_id=16) and (equipment="Servo-arm") then allow=true;
-		if (role_id=16) and (equipment="Servo-harness") then allow=true;
-	    if (role_id=17) and (equipment="Psychic Hood") then allow=true;
+	if (role_id == eROLE.Dreadnought) {
+		equip_area[101, role_id] = equipment;
+		return;
 	}
 
-	if (allow=true){
-	    if (equip_area="wep1") then wep1[101,role_id]=equipment;
-	    if (equip_area="wep2") then wep2[101,role_id]=equipment;
-	    if (equip_area="gear") then gear[101,role_id]=equipment;
-	    if (equip_area="mobi") then mobi[101,role_id]=equipment;
+	if (array_contains([eROLE.Sergeant, eROLE.Veteran, eROLE.Terminator], role_id)) {
+		_veteran_level = 1;
+	} else if (array_contains([eROLE.VeteranSergeant, eROLE.Ancient, eROLE.Captain, eROLE.HonourGuard], role_id)) {
+		_veteran_level = 2;
+	} else if (array_contains([eROLE.Chaplain, eROLE.Apothecary, eROLE.Librarian, eROLE.Techmarine], role_id)) {
+		_veteran_level = 5;
 	}
 
+	var _normal_equipment = ["Combat Knife", "Chainsword", "Chainaxe", "Boarding Shield", "Bolt Pistol", "Bolter", "Flamer", "Sniper Rifle"];
+	_allow = array_contains(_normal_equipment, equipment);
 
+	if (_veteran_level > 0) {
+		var _special_equipment = ["Storm Bolter", "Meltagun", "Power Fist", "Power Sword", "Power Axe"];
+		_allow = array_contains(_special_equipment, equipment);
+	}
+
+	if (equip_area == "mobi") {
+		if (equipment == "Jump Pack" && (_veteran_level > 0 || role_id == eROLE.Assault)) {
+			if (!array_contains([eROLE.Terminator, eROLE.Dreadnought], role_id)) {
+				_allow = true;
+			}
+		} else if (equipment == "Bike" && (_veteran_level > 0 || role_id == eROLE.Assault)) {
+			if (!array_contains([eROLE.Terminator, eROLE.Dreadnought], role_id)) {
+				_allow = true;
+			}
+		} else if (equipment == "Heavy Weapons Pack" && role_id == eROLE.Devastator) {
+			_allow = true;
+		}
+	}
+
+	if (equip_area == "gear") {
+		if (_veteran_level == 5) {
+			if (role_id == eROLE.Chaplain && equipment == "Rosarius") {
+				_allow = true;
+			} else if (role_id == eROLE.Techmarine) {
+				if (array_contains(["Servo-arm", "Servo-harness"], equipment)) {
+					_allow = true;
+				}
+			} else if (role_id == eROLE.Librarian && equipment == "Psychic Hood") {
+				_allow = true;
+			} else if (role_id == eROLE.Apothecary && equipment == "Narthecium") {
+				_allow = true;
+			}
+		}
+	}
+
+	if (_allow) {
+		equip_area[101, role_id] = equipment;
+	}
+	return;
 }

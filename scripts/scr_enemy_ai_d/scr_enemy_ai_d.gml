@@ -212,7 +212,7 @@ function scr_enemy_ai_d() {
                     }
                     if (reward=2){
                         if (obj_ini.fleet_type=ePlayerBase.home_world) then scr_add_artifact("random","",0,obj_ini.home_name,2);
-                        if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("random","",0,obj_ini.ship[1],501);
+                        if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("random","",0,obj_ini.ship[0],501);
                         text="The Mechanicus Research team on planet "+string(name)+" "+scr_roman(i)+" have completed their work without any major setbacks.  Pleased with your astartes' work, they have granted your Chapter an artifact, to be used as you see fit.";
                         scr_event_log("","Mechanicus Mission Completed: The Mechanicus research team on "+string(name)+" "+scr_roman(i)+" have completed their work.");
                         scr_event_log("","Artifact gifted from Mechanicus.");
@@ -240,16 +240,16 @@ function scr_enemy_ai_d() {
             for (com =0; com<=10;com++){
                 for (ide =0; ide<=array_length(obj_ini.role[com]);ide++){
                     unit = fetch_unit([com,ide])
-                    if (unit.role()=obj_ini.role[100][Role.TECHMARINE]){
+                    if (unit.role()=obj_ini.role[100][eROLE.Techmarine]){
                         // Case 1: on planet
                         if (obj_ini.loc[com][ide]=name) and (unit.planet_location=i){
                             p_player[i]-=scr_unit_size(obj_ini.armour[com][ide],obj_ini.role[com][ide],true);
                             obj_ini.loc[com][ide]="Mechanicus Vessel";
                             unit.planet_location=0;
-                            unit.ship_location=0;
+                            unit.ship_location=-1;
                             techs_taken+=1;
                         }
-                        if (unit.ship_location>0){
+                        if (unit.ship_location>-1){
                             ship_planet=obj_ini.ship_location[unit.ship_location];
                             if (ship_planet=name){
                                 obj_ini.ship_carrying[unit.ship_location]-=scr_unit_size(obj_ini.armour[com][ide],obj_ini.role[com][ide],true);
@@ -484,14 +484,14 @@ function scr_enemy_ai_d() {
 		storm-=1;
 	    if (storm=0){
 	        var tr="Warp Storms over "+string(name)+" dissipate.";
-	        scr_alert("green","warp",tr,x,y);scr_event_log("green",tr);
+	        scr_alert("green","Warp",tr,x,y);scr_event_log("green",tr);
 	    }
 	}
 	if (trader>0){
 		trader-=1;
 	    if (trader=0){
 	        var tr="Rogue Trader fleet departs from "+string(name)+".";
-	        scr_alert("green","warp",tr,x,y);scr_event_log("green",tr);
+	        scr_alert("green","Warp",tr,x,y);scr_event_log("green",tr);
 	    }
 	}
 

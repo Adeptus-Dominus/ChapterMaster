@@ -2,21 +2,19 @@
 - changed-files:
   - any-glob-to-all-files: ['docs/*', 'guides/*', '**/*.md']
 
-"PR: Feature":
-- head-branch: ['^feature', 'feature', '^feat', 'feat', 'add']
-
-"PR: Fix":
-- head-branch: ['^fix', 'fix']
-
 "PR: Chore":
 - changed-files:
-  - any-glob-to-all-files: ['.github/*', '**/*.yml']
-
-"PR: Refactor":
-- head-branch: ['^refactor', 'refactor', '^ref', 'ref']
-
-"PR: Performance":
-- head-branch: ['^perf', 'perf', 'performance']
+  - any-glob-to-all-files: ['.github/*', '**/*.yml', '.gitattributes', '.gitignore']
 
 "PR: JSON":
-- all-globs-to-all-files: ['**/*.json']
+- changed-files:
+  - all-globs-to-all-files: ['**/*.json']
+
+"PR: Audio":
+- changed-files:
+  - any-glob-to-any-file: ['**/snd_*', '**/*.ogg', '**/*.wav']
+
+"PR: Sprites":
+- changed-files:
+  - any-glob-to-any-file: ['**/*.png', '**/spr_*']
+  

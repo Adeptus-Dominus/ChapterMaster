@@ -4,18 +4,8 @@ enemy_max=enemy_forces;
 
 instance_activate_object(obj_enunit);
 
-if (dropping=1){
-    repeat(10){
-        var mm=instance_nearest(5000,240,obj_pnunit);
-        if (!collision_point(mm.x+10,mm.y,obj_enunit,0,1)) then with(obj_pnunit){
-            x+=10;
-        }
-    }
-    repeat(10){
-        with(obj_enunit){
-            if (!collision_point(x-10,y,obj_pnunit,0,1)) and (!collision_point(x-10,y,obj_enunit,0,1)) then x-=10;
-        }
-    }
+if (dropping){
+    squeeze_map_forces();
 }
 
 

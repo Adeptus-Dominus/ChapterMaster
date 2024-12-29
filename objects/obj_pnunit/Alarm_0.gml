@@ -17,16 +17,7 @@ enemy=instance_nearest(0,y,obj_enunit);// Left most enemy
 enemy2=enemy;
 
 if (obj_ncombat.defending=false) or (obj_ncombat.dropping=1){
-    if (!collision_point(rightest.x+10,y+1,obj_enunit,0,1)) and (collision_line(x,y+1,x+1000,y,obj_enunit,0,1)){
-       move_unit_block();
-    }
-    if (self.id!=rightest.id) and (!collision_point(x+10,y,obj_pnunit,0,1)) and (collision_line(x,y,x+1000,y,obj_enunit,0,1)){
-        move_unit_block();
-    }
-    
-    if (!collision_line(x,y,x+1000,y,obj_enunit,0,1)) and (collision_line(x,y,x-1000,y,obj_enunit,0,1)){
-        if (!collision_point(x-10,y,obj_pnunit,0,1)) then x-=10;
-    }
+    move_unit_block();
 }
 
 if (!instance_exists(enemy)) then exit;
@@ -92,7 +83,8 @@ if (instance_exists(obj_enunit)){
                         var x2=enemy.x;
                         repeat(instance_number(obj_enunit)-1){
                             if (good=0){
-                                x2+=10;enemy2=instance_nearest(x2,y,obj_enunit);
+                                x2+=10;
+                                enemy2=instance_nearest(x2,y,obj_enunit);
                                 if (enemy2.veh>0) and (good=0){
                                     good=scr_target(enemy2,"veh");// This target has vehicles, blow it to hell
                                     scr_shoot(i,enemy2,good,"arp","ranged");

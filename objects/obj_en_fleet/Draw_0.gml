@@ -1,4 +1,5 @@
 
+if ((obj_controller.menu!= 0) || !instance_exists(obj_star)) then exit;
 var scale = obj_controller.scale_mod;
 if (owner = eFACTION.Eldar) and (instance_exists(orbiting)) and (obj_controller.is_test_map=true){
     draw_set_color(c_red);

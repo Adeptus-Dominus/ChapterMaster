@@ -9,7 +9,7 @@ repeat(61){
     ship_all[i]=0;
     ship_use[i]=0;
     ship_max[i]=0;
-    ship_ide[i]=0;
+    ship_ide[i]=-1;
 }
 
 max_ships=0;
@@ -35,7 +35,8 @@ if (sh_target!=-50){
             ship_size[i]=3;
             
             purge_a+=3;
-            purge_b+=ship_max[i];purge_c+=ship_max[i];
+            purge_b+=ship_max[i];
+            purge_c+=ship_max[i];
         }
     }
     q=0;

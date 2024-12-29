@@ -115,14 +115,6 @@ function scr_enemy_ai_c() {
 	}
 
 
-	// This is the ork landing code
-	ork_fleet_arrive_target();
-
-
-
-
-
-
 
 
 	// traitors below here

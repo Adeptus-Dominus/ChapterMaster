@@ -7,7 +7,8 @@
 
 name: "Pull Request Labeler"
 on:
-- pull_request_target
+  pull_request_target:
+    types: [opened]
 
 jobs:
   labeler:
@@ -17,7 +18,15 @@ jobs:
       pull-requests: write
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/labeler@v5
+    - name: "File Based Labeler"
+      uses: actions/labeler@v5
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
         sync-labels: false
+    - name: "Content Based Labeler"
+      uses: srvaroa/labeler@master
+      env:
+        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      with:
+        config_path: .github/srvaroa_labeler.yml
+        fail_on_error: true

@@ -36,7 +36,8 @@ function scr_manage_task_selector(){
 	                				break;
 								case "captain_promote":
 		                			unit = display_unit[i];
-		                			unit.update_role(obj_ini.role[100][Role.CAPTAIN]);
+		                			unit.update_role(obj_ini.role[100][eROLE.Captain]);
+		                			unit.squad="none";
 		                			var start_company = unit.company;
 		                			var end_company =  selection_data.system;
 		                			var endslot = 0;
@@ -57,7 +58,8 @@ function scr_manage_task_selector(){
 	                				break;
 								case "champion_promote":
 		                			unit = display_unit[i];
-		                			unit.update_role(obj_ini.role[100][Role.CHAMPION]);
+		                			unit.update_role(obj_ini.role[100][eROLE.Champion]);
+		                			unit.squad="none";
 
 									with (obj_ini){
 		                				scr_company_order(unit.company);
@@ -69,7 +71,8 @@ function scr_manage_task_selector(){
 	                				break;
 								case "ancient_promote":
 		                			unit = display_unit[i];
-		                			unit.update_role(obj_ini.role[100][Role.ANCIENT]);
+		                			unit.update_role(obj_ini.role[100][eROLE.Ancient]);
+		                			unit.squad="none";
 
 
 									with (obj_ini){
@@ -110,7 +113,7 @@ function scr_manage_task_selector(){
 	                }
 	                switch(selection_data.purpose_code){
 	                	case "forge_assignment":
-	                		calculate_research_points();
+	                		specialist_point_handler.calculate_research_points();
 	                		break;
 	                	case "hunt_beast":
 							var problem_slot = selection_data.array_slot;

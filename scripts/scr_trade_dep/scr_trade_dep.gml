@@ -169,7 +169,7 @@ function scr_trade_dep() {
 	        */
         
 	        if (obj_ini.fleet_type=ePlayerBase.home_world) then scr_add_artifact("random_nodemon","minor",0,obj_ini.home_name,2);
-	        if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("random_nodemon","minor",0,obj_ini.ship[1],501);
+	        if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("random_nodemon","minor",0,obj_ini.ship[0],501);
 	    }
 	}
 

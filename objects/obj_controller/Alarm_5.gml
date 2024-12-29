@@ -188,14 +188,14 @@ try_and_report_loop("imperial ship build", function(){
 // ** Training **
 // * Apothecary *
 recruit_count=0;
-var training_points_values = [ 0, 0.8, 0.9, 1, 1.5, 2, 4 ];
-apothecary_points += training_points_values[training_apothecary]
+var training_points_values = ARR_apothecary_training_tiers;
+apothecary_recruit_points += training_points_values[training_apothecary]
 
 novice_type = string("{0} Aspirant",obj_ini.role[100][15])
 if (training_apothecary>0){
     recruit_count=scr_role_count(novice_type,"");
 
-    if (apothecary_points>=48){
+    if (apothecary_recruit_points>=48){
         if (recruit_count>0){
             random_marine=scr_random_marine(novice_type,0);
             // show_message(marine_position);
@@ -203,7 +203,7 @@ if (training_apothecary>0){
             if (random_marine != "none"){
                 marine_position=random_marine[1];
                 marine_company=random_marine[0];
-                apothecary_points-=48;
+                apothecary_recruit_points-=48;
                 unit = fetch_unit(random_marine);
                 scr_alert("green","recruitment",unit.name_role()+" has finished training.",0,0);
                 unit.update_role(obj_ini.role[100][15]);
@@ -228,9 +228,9 @@ if (training_apothecary>0){
                 with(obj_ini){scr_company_order(0);}
             }
         } else {
-            apothecary_points=0;
+            apothecary_recruit_points=0;
         }
-    }else if (apothecary_points>=4) and (recruit_count==0){
+    }else if (apothecary_recruit_points>=4) and (recruit_count==0){
         random_marine=scr_random_marine([obj_ini.role[100][8],obj_ini.role[100][18],obj_ini.role[100][10],obj_ini.role[100][9]],60,{"stat":[["technology", 30, "more"],["intelligence", 45, "more"]]});
 
         if (random_marine != "none"){
@@ -267,6 +267,7 @@ if (training_apothecary>0){
 // * Chaplain training *
 // TODO add functionality for Space Wolves and Iron Hands
 recruit_count=0;
+var training_points_values = ARR_chaplain_training_tiers;
 if (global.chapter_name!="Space Wolves") and (global.chapter_name!="Iron Hands"){
 	chaplain_points += training_points_values[training_chaplain];
     novice_type = string("{0} Aspirant",obj_ini.role[100][14]);
@@ -480,13 +481,13 @@ if (training_techmarine>0){
                 unit.update_role(novice_type);
 
                 // Remove from ship
-                if (unit.ship_location>0){
+                if (unit.ship_location>-1){
                     var man_size=scr_unit_size(obj_ini.armour[0][g1],obj_ini.role[0][g1],true);
                     obj_ini.ship_carrying[unit.ship_location]-=man_size;
                 }
                 obj_ini.loc[0][g1]="Terra";
                 unit.planet_location=4;
-                unit.ship_location=0;
+                unit.ship_location=-1;
                 if (unit.weapon_one()!="Power Weapon"){
                     unit.update_weapon_one("");
                 }
@@ -555,18 +556,6 @@ if (recruits_finished==1){
 
 recruits=total_recruits;
 
-// ** Gene-seed Test-Slaves **
-for(var i=1; i<=120; i++){
-    if (obj_ini.slave_batch_num[i]>0){
-        obj_ini.slave_batch_eta[i]-=1;
-        if (obj_ini.slave_batch_eta[i]==0){
-            obj_ini.slave_batch_eta[i]=60;
-            obj_controller.gene_seed+=obj_ini.slave_batch_num[i];
-            // color / type / text /x/y
-            scr_alert("green","test-slaves","Test-Slave Incubators Batch "+string(i)+" harvested for "+string(obj_ini.slave_batch_num[i])+" Gene-Seed.",0,0);
-        }
-    }
-}
 /* TODO implement Lamenters get Black Rage and story
 if (turn=240) and (global.chapter_name="Lamenters"){
     obj_ini.strin2+="Black Rage";
@@ -729,9 +718,12 @@ for(var c=0; c<11; c++){
 }
 // STC Bonuses
 if (obj_controller.stc_ships>=6){
-    for(var v=1; v<=40; v++){
-        if (obj_ini.ship_hp[v]<obj_ini.ship_maxhp[v]) then obj_ini.ship_hp[v]+=round(obj_ini.ship_maxhp[v]*0.06);
-        if (obj_ini.ship_hp[v]>obj_ini.ship_maxhp[v]) then obj_ini.ship_hp[v]=obj_ini.ship_maxhp[v];
+    //self healing ships logic
+    for(var v=0; v<array_length(obj_ini.ship_hp); v++){
+        if (obj_ini.ship_hp[v]<obj_ini.ship_maxhp[v]){
+            var _max = obj_ini.ship_maxhp[v];
+            obj_ini.ship_hp[v] = min(_max,obj_ini.ship_hp[v]+round(_max*0.06));
+        }
     }
 }
 
@@ -1061,36 +1053,12 @@ for(var i=1; i<=99; i++){
                 }
                 if (array_length(active_forges)>0){
                     var ship_spawn = active_forges[irandom(array_length(active_forges)-1)];
-                    var new_defense_fleet=instance_create(ship_spawn.system.x,ship_spawn.system.y,obj_p_fleet);
+                    var _new_player_fleet=instance_create(ship_spawn.system.x,ship_spawn.system.y,obj_p_fleet);
 
                     // Creates the ship
-
                     var last_ship = new_player_ship(new_ship_event, ship_spawn.system.name);
 
-                    if (obj_ini.ship_class[last_ship] =="Battle Barge"){
-                        new_defense_fleet.capital[1]=obj_ini.ship[last_ship];
-                        new_defense_fleet.capital_number=1;
-                        new_defense_fleet.capital_num[1]=last_ship;
-                        new_defense_fleet.capital_uid[1]=obj_ini.ship_uid[last_ship];
-                    }
-                    else if (obj_ini.ship_class[last_ship] =="Strike Cruiser"){
-                        new_defense_fleet.frigate[1]=obj_ini.ship[last_ship];
-                        new_defense_fleet.frigate_number=1;
-                        new_defense_fleet.frigate_num[1]=last_ship;
-                        new_defense_fleet.frigate_uid[1]=obj_ini.ship_uid[last_ship];
-                    }
-                    else if (obj_ini.ship_class[last_ship] =="Gladius"){
-                        new_defense_fleet.escort[1]=obj_ini.ship[last_ship];
-                        new_defense_fleet.escort_number=1;
-                        new_defense_fleet.escort_num[1]=last_ship;
-                        new_defense_fleet.escort_uid[1]=obj_ini.ship_uid[last_ship];
-                    }
-                    else if (obj_ini.ship_class[last_ship] =="Hunter"){
-                        new_defense_fleet.escort[1]=obj_ini.ship[last_ship];
-                        new_defense_fleet.escort_number=1;
-                        new_defense_fleet.escort_num[1]=last_ship;
-                        new_defense_fleet.escort_uid[1]=obj_ini.ship_uid[last_ship];
-                    }
+                    add_ship_to_fleet(last_ship, _new_player_fleet)
 
                     // show_message(string(obj_ini.ship_class[last_ship])+":"+string(obj_ini.ship[last_ship]));
 
@@ -1162,7 +1130,7 @@ for(var i=1; i<=99; i++){
                         last_artifact =  scr_add_artifact("random_nodemon","",0,obj_ini.home_name,2);
                     } else {
                         if (obj_ini.fleet_type != ePlayerBase.home_world){
-                            last_artifact = scr_add_artifact("random_nodemon","",0,obj_ini.ship_location[1],501);
+                            last_artifact = scr_add_artifact("random_nodemon","",0,obj_ini.ship_location[0],501);
                         }
                     }
 
@@ -1294,8 +1262,9 @@ if (fest_scheduled>0) and (fest_repeats>0){
 //research and forge related actions
 
 research_end();
-
+merge_ork_fleets();
 //complex route plotting for player fleets
+return_lost_ships_chance();
 with (obj_p_fleet){
     if (array_length(complex_route)>0  && action == ""){
         set_new_player_fleet_course(complex_route);

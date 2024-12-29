@@ -209,6 +209,15 @@ function khorne_fleet_cargo(){
         }
     }	
 }
+function spawn_chaos_fleet_at_system(system){
+    var _new_fleet = instance_create(system.x,system.y,obj_en_fleet);
+    with (_new_fleet){
+        owner = eFACTION.Chaos;
+        sprite_index=spr_fleet_chaos;
+        image_index=9;
+    }
+    return _new_fleet;
+}
 function spawn_chaos_warlord(){
 	with (obj_controller){
 		with(obj_turn_end){

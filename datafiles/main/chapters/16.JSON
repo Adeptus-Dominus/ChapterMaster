@@ -2,7 +2,7 @@
     "chapter": {
         "id": 16,
         "name": "Soul Drinkers",
-        "flavor": "Rumored to be Successors of the Raven Guard, these Astartes are known for their sudden attacks and shock assaults. Travelling through the Imperium via self-sufficient Nomad-Predation based fleets, no enemy is safe from the fury of these bloodthirsty Space Marines.",
+        "flavor": "Sharing ancestry of the Black Templars or Crimson fists. As proud sons of Dorn they share the strong void combat traditions, fielding a large amount of Battle Barges. As well as being fearsome in close combat. Whispers of the Ruinous Powers are however quite enticing.",
         "origin": 2, // 1 - Founding, 2 - Successor, 3 - Other/non-canon/fanmade, 4 - Custom
         "points": 200,
         "founding": 4, // The id of the founding chapter, 0 for unknown or none, 10 for random

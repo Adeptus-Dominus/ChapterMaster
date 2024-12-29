@@ -1,4 +1,6 @@
 
+if (!instance_exists(obj_star)) then exit;
+
 if (instance_exists(orbiting)) and (obj_controller.is_test_map=true){
     draw_set_color(c_red);
     draw_line_width(x,y,orbiting.x,orbiting.y,1);
@@ -9,6 +11,7 @@ if (x<0) or (x>room_width) or (y<0) or (y>room_height) then exit;
 if (image_alpha=0) then exit;
 
 var coords = [0,0];
+
 var near_star = instance_nearest(x,y, obj_star);
 if (x==near_star.x && y==near_star.y){
     var coords = [24,-24];
@@ -26,26 +29,28 @@ if (obj_controller.zoomed=1){
         within=1;      
     } 
 }
+
 var select_instance = instance_exists(obj_fleet_select);
 if (!select_instance) then selected=0;
-if (within){
-    if (mouse_check_button_pressed(mb_left) && obj_controller.menu==0 && !selected){
-        alarm[3]=1;
-    }  
-} else (mouse_check_button_pressed(mb_left)){
-    if (selected){
-        if (select_instance){
-            if (instance_exists(obj_fleet_select.player_fleet)){
-                if !(obj_fleet_select.player_fleet.id == self.id && !obj_fleet_select.currently_entered){
-                    selected=0;
+if ( !keyboard_check(vk_shift)){
+    if (within){
+        if (mouse_check_button_pressed(mb_left) && obj_controller.menu==0 && !selected){
+            alarm[3]=1;
+        }  
+    } else (mouse_check_button_pressed(mb_left)){
+        if (selected){
+            if (select_instance){
+                if (instance_exists(obj_fleet_select.player_fleet)){
+                    if !(obj_fleet_select.player_fleet.id == self.id && !obj_fleet_select.currently_entered){
+                        selected=0;
+                    }
                 }
             }
+        } else {
+            selected=0;
         }
-    } else {
-        selected=0;
     }
 }
-
 // if (obj_controller.selected!=0) and (selected=1) then within=1;
 
 if (obj_controller.selecting_planet>0){
@@ -88,9 +93,9 @@ if (action!=""){
 if (within=1) or (selected>0){
     var ppp;
     if (owner  = eFACTION.Player) then ppp=global.chapter_name;
-    if (capital_number=1) and (frigate_number=0) and (escort_number=0) then ppp=capital[1];
-    if (capital_number=0) and (frigate_number=1) and (escort_number=0) then ppp=frigate[1];
-    if (capital_number=0) and (frigate_number=0) and (escort_number=1) then ppp=escort[1];
+    if (capital_number=1) and (frigate_number=0) and (escort_number=0) then ppp=capital[0];
+    if (capital_number=0) and (frigate_number=1) and (escort_number=0) then ppp=frigate[0];
+    if (capital_number=0) and (frigate_number=0) and (escort_number=1) then ppp=escort[0];
     // ppp=acted;
     // 
     draw_set_color(38144);

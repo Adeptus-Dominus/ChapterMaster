@@ -88,3 +88,34 @@ function PenAndPaperSim() constructor{
 }
 
 global.character_tester = new PenAndPaperSim();
+
+function compare_stats(stat_one, stat_two){
+	var _stat_names = ARR_stat_list;
+	var stat_diff = {};
+	for (var i=0;i<array_length(_stat_names);i++){
+		stat_diff[$_stat_names[i]] = stat_one[$_stat_names[i]] - stat_two[$_stat_names[i]]
+	}
+	return stat_diff;
+}
+
+function print_stat_diffs(diffs){
+	var _diff_string = "";
+	var _stat_names = ARR_stat_list;
+	var _stat_short = global.stat_shorts;
+	for (var i=0;i<array_length(_stat_names);i++){
+		if (diffs[$_stat_names[i]] != 0 ){
+			var _symbol = diffs[$_stat_names[i]] ? "+" : "";
+			_diff_string += $"{_stat_short[$_stat_names[i]]} : {_symbol}{diffs[$_stat_names[i]]} ,";
+		}
+	}
+	return _diff_string;
+}
+
+function d100_roll(luck_edit=true){
+	var _roll = irandom_range(1,100)
+	if (scr_has_disadv("Shitty Luck")){
+		_roll = min(1,_roll-irandom(10))
+	}
+	return _roll;
+}
+

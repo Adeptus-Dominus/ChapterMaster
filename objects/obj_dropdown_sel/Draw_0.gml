@@ -100,7 +100,8 @@ if (opened=1){
                     }
                     if (target="event_loc"){
                         if (obj_controller.fest_planet=0){
-                            obj_controller.fest_sid=option_id[ii];obj_controller.fest_wid=0;
+                            obj_controller.fest_sid=option_id[ii];
+                            obj_controller.fest_wid=0;
                             if (option_id[ii]>0){
                                 if (obj_controller.fest_warp=0) and (obj_ini.ship_location[option_id[ii]]="Warp") then obj_controller.fest_warp=1;
                                 if (obj_controller.fest_warp=1) and (obj_ini.ship_location[option_id[ii]]!="Warp") then obj_controller.fest_warp=0;

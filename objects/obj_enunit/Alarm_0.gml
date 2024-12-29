@@ -11,25 +11,16 @@ var leftest,charge=0,enemy2=0,chapter_fuck=1,unit;
 
 // with(obj_pnunit){if (x<-4000) or (defenses=1) then instance_deactivate_object(id);}
 
+var _local_fort = instance_exists(obj_nfort);
 if (!flank){
-    leftest=get_leftmost(obj_enunit);// Left most enunit
     enemy=get_rightmost();// Right most enemy
     enemy2=enemy;
-    if (enemy=="none"||leftest=="none"){
+    if (enemy=="none"){
         exit;
     }
-    // if (collision_point(x-10,y,obj_pnunit,0,1)) then engaged=1;
-    // if (!collision_point(x-10,y,obj_pnunit,0,1)) then engaged=0;
-    
-    
-    if (leftest.id=self.id) and (!instance_exists(obj_nfort)){
-        if (position_empty(x-10,y)) and (point_distance(x,y,enemy.x,enemy.y)>10){
-            with(obj_enunit){
-                move_unit_block("west");
-            }
-        }
+    if (!_local_fort){
+        move_unit_block("west");
     }
-    
     
     //if (point_distance(x,0,enemy.x,0)<5) then x+=10;
     // instance_activate_object(obj_cursor);
@@ -42,11 +33,10 @@ else if (flank=1){
     }
     // if (collision_point(x+10,y,obj_pnunit,0,1)) then engaged=1;
     // if (!collision_point(x+10,y,obj_pnunit,0,1)) then engaged=0;
-    if (position_empty(x+10,y)){
+    if (!_local_fort){
         move_unit_block("east");
-    } else if (!position_empty(x+10,y)){
-        engaged=true;// Quick smash
     }
+    
     // instance_activate_object(obj_cursor);
 }
 
@@ -318,22 +308,14 @@ if __b__
 
 
 
-var leftest,charge,enemy2;charge=0;enemy2=0;
+var leftest,charge=0,enemy2=0;
 
-with(obj_pnunit){if (x<-4000) then instance_deactivate_object(id);}
+with(obj_pnunit){
+    if (x<-4000) then instance_deactivate_object(id);
+}
 
 if (flank=0){
-    leftest=get_leftmost(obj_enunit);// Left most enunit
-    enemy=instance_nearest(4000,y,obj_pnunit);// Right most enemy
-    enemy2=enemy;
-    // if (collision_point(x-10,y,obj_pnunit,0,1)) then engaged=1;
-    // if (!collision_point(x-10,y,obj_pnunit,0,1)) then engaged=0;
-    if (leftest.id=self.id) and (!instance_exists(obj_nfort)){
-        // instance_deactivate_object(obj_cursor);
-        if (position_empty(x-10,y)){
-            with(obj_enunit){x-=10;}
-        }
-    }
+    move_unit_block("west");
     // instance_activate_object(obj_cursor);
 }
 if (flank=1){
@@ -341,7 +323,7 @@ if (flank=1){
     enemy2=enemy;
     // if (collision_point(x+10,y,obj_pnunit,0,1)) then engaged=1;
     // if (!collision_point(x+10,y,obj_pnunit,0,1)) then engaged=0;
-    if (position_empty(x+10,y)) then x+=10;
+    move_unit_block();
     
     if (!position_empty(x+10,y)) then engaged=1;// Quick smash
     // instance_activate_object(obj_cursor);

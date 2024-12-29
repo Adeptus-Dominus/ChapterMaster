@@ -2,9 +2,16 @@ function coord_relevative_positions(coords, xx, yy){
 	return [coords[0]+xx, coords[1]+yy,coords[2]+xx, coords[3]+yy];
 }
 
+enum eMarkings {
+    RIGHTPAD,
+    LEFTPAD,
+    LEFTKNEE,
+    RIGHTKNEE
+}
 function ColourItem(xx,yy) constructor{
 	self.xx=xx;
 	self.yy=yy;
+    data_slate = new DataSlate();
     static scr_unit_draw_data = function(){
         map_colour = {
             is_changed : false,
@@ -35,7 +42,9 @@ function ColourItem(xx,yy) constructor{
             right_backpack : 0,   
             left_backpack : 0,
             weapon_primary : 0,
-            weapon_secondary : 0,                           
+            weapon_secondary : 0,
+            company_marks : 0,
+            company_marks_loc : 0,                         
         }
         return map_colour;
     }
@@ -80,7 +89,9 @@ function ColourItem(xx,yy) constructor{
             right_hand : [18,109,33,134], 
 
             right_backpack : [32,17,60,38],
-            left_backpack : [97,17,130,38],                            
+            left_backpack : [97,17,130,38],
+
+            company_marks :[30, 40, string_width("Company Marks"), string_height("Company Marks")],
     }
 
     static lower_left = ["left_leg_lower","left_leg_upper","left_leg_knee"];
@@ -180,79 +191,104 @@ function ColourItem(xx,yy) constructor{
 
     colour_pick=false;
     static draw_base = function(){
-    	if (is_struct(colour_pick)){
-    		var action = colour_pick.draw();
-    		if (action == "destroy"){
-    			colour_pick=false;
-    		} else {
-    			if (colour_pick.chosen!=-1){
-    				map_colour[$ colour_pick.area] = colour_pick.chosen;
-                    map_colour.is_changed = true;
-                    obj_creation.full_liveries[role_set] = DeepCloneStruct(map_colour);
-    			}
+        data_slate.inside_method = function(){
+        	if (is_struct(colour_pick)){
+        		var action = colour_pick.draw();
+        		if (action == "destroy"){
+        			colour_pick=false;
+        		} else {
+        			if (colour_pick.chosen!=-1){
+        				map_colour[$ colour_pick.area] = colour_pick.chosen;
+                        map_colour.is_changed = true;
+                        obj_creation.full_liveries[role_set] = DeepCloneStruct(map_colour);
+        			}
+        		}
+        	}
+            image_location_maps.right_trim = draw_unit_buttons([xx-100, yy+31], "R Trim");
+            image_location_maps.right_trim[0]-=xx;
+            image_location_maps.right_trim[1]-=yy;        
+            image_location_maps.right_trim[2]-=xx;
+            image_location_maps.right_trim[3]-=yy; 
+
+            image_location_maps.left_trim = draw_unit_buttons([xx+150, yy+31], "L Trim");
+            image_location_maps.left_trim[0]-=xx;
+            image_location_maps.left_trim[1]-=yy;        
+            image_location_maps.left_trim[2]-=xx;
+            image_location_maps.left_trim[3]-=yy;
+
+            image_location_maps.company_marks = draw_unit_buttons([xx-30, yy-40], "Company Marks");
+            image_location_maps.company_marks[0]-=xx;
+            image_location_maps.company_marks[1]-=yy;        
+            image_location_maps.company_marks[2]-=xx;
+            image_location_maps.company_marks[3]-=yy;
+            
+    		shader_set(full_livery_shader);
+    		var spot_names = struct_get_names(map_colour);
+    		for (var i=0;i<array_length(spot_names);i++){
+                if (spot_names[i]=="is_changed"  || spot_names[i] == "company_marks_loc") then continue;
+    			var colour = map_colour[$ spot_names[i]];
+    			var colour_set = [obj_creation.col_r[colour]/255, obj_creation.col_g[colour]/255, obj_creation.col_b[colour]/255];
+    			shader_set_uniform_f_array(shader_get_uniform(full_livery_shader, spot_names[i]), colour_set);
     		}
-    	}
-        image_location_maps.right_trim = draw_unit_buttons([xx-100, yy+31], "R Trim");
-        image_location_maps.right_trim[0]-=xx;
-        image_location_maps.right_trim[1]-=yy;        
-        image_location_maps.right_trim[2]-=xx;
-        image_location_maps.right_trim[3]-=yy; 
-
-        image_location_maps.left_trim = draw_unit_buttons([xx+150, yy+31], "L Trim");
-        image_location_maps.left_trim[0]-=xx;
-        image_location_maps.left_trim[1]-=yy;        
-        image_location_maps.left_trim[2]-=xx;
-        image_location_maps.left_trim[3]-=yy;
-
-		shader_set(full_livery_shader);
-		var spot_names = struct_get_names(map_colour);
-		for (var i=0;i<array_length(spot_names);i++){
-            if (spot_names[i]=="is_changed") then continue;
-			var colour = map_colour[$ spot_names[i]];
-			var colour_set = [obj_creation.col_r[colour]/255, obj_creation.col_g[colour]/255, obj_creation.col_b[colour]/255];
-			shader_set_uniform_f_array(shader_get_uniform(full_livery_shader, spot_names[i]), colour_set);
-		}
-		//draw_sprite(sprite_index, 0, x, y);
-		draw_sprite(spr_mk7_complex_backpack, 0, xx, yy);
-        draw_sprite(spr_mk7_right_arm, 0, xx, yy);
-        draw_sprite(spr_mk7_right_trim, 2, xx, yy);
-        draw_sprite(spr_mk7_left_arm, 0, xx, yy);
-        draw_sprite(spr_mk7_left_trim, 2, xx, yy);          
-		draw_sprite(spr_mk7_complex, 0, xx, yy);
-        draw_sprite(spr_mk7_leg_variants, 1, xx, yy);
-        draw_sprite(spr_mk7_chest_variants, 1, xx, yy);           	
-        draw_sprite(spr_mk7_mouth_variants, 1, xx, yy);
-        draw_sprite(spr_mk7_thorax_variants, 1, xx, yy);                  
-    	//draw_sprite(xx,yy,2,spr_mk7_full_colour);
-    	//draw_sprite(xx,yy,3,spr_mk7_full_colour);
-    	shader_reset();
+    		//draw_sprite(sprite_index, 0, x, y);
+    		draw_sprite(spr_mk7_complex_backpack, 0, xx, yy);
+            draw_sprite(spr_mk7_right_arm, 0, xx, yy);
+            draw_sprite(spr_mk7_left_arm, 0, xx, yy);         
+    		draw_sprite(spr_mk7_complex, 0, xx, yy);
+            draw_sprite(spr_mk7_left_trim, 0 , xx, yy);
+            draw_sprite(spr_mk7_right_trim, 0 , xx, yy);
+            draw_sprite(spr_mk7_leg_variants, 1, xx, yy);
+            draw_sprite(spr_mk7_chest_variants, 1, xx, yy);           	
+            draw_sprite(spr_mk7_mouth_variants, 1, xx, yy);
+            draw_sprite(spr_mk7_thorax_variants, 1, xx, yy);
+            draw_sprite(spr_gothic_numbers_right_pauldron,4,xx, yy);
+            draw_sprite(spr_numeral_left_knee,4,xx, yy);                                
+        	//draw_sprite(xx,yy,2,spr_mk7_full_colour);
+        	//draw_sprite(xx,yy,3,spr_mk7_full_colour);
+        	shader_reset();
 
 
-    	var map_names = struct_get_names(image_location_maps);
-    	for (var i=0;i<array_length(map_names);i++){
-    		if (!is_array(image_location_maps[$map_names[i]])) then continue;
-    		var rel_position = coord_relevative_positions(image_location_maps[$map_names[i]],xx, yy);
-    		if (scr_hit(rel_position)){
-    			tooltip_draw(map_names[i]);
-    		}
-    		if (point_and_click(rel_position)){
-    			colour_pick = new colour_picker(xx-20, yy);
-    			colour_pick.area = map_names[i];
-    			colour_pick.title = map_names[i];
-    		}
-    	}
+        	var map_names = struct_get_names(image_location_maps);
+        	for (var i=0;i<array_length(map_names);i++){
+        		if (!is_array(image_location_maps[$map_names[i]])) then continue;
+        		var rel_position = coord_relevative_positions(image_location_maps[$map_names[i]],xx, yy);
+        		if (scr_hit(rel_position)){
+        			tooltip_draw(map_names[i]);
+        		}
+        		if (point_and_click(rel_position)){
+        			colour_pick = new colour_picker(xx-20, yy);
+        			colour_pick.area = map_names[i];
+        			colour_pick.title = map_names[i];
+        		}
+        	}
+        }
+        data_slate.draw(0,5,0.45, 1);
     }
 }
 
 
 function setup_complex_livery_shader(setup_role, game_setup=false){
     shader_reset();
+    var _full_liveries = obj_ini.full_liveries;
+    var _roles = obj_ini.role[100];
     var data_set = obj_ini.full_liveries[0];
-    for (var i=0;i<=20;i++){
-        if (obj_ini.role[100][i]==setup_role){
-            data_set = obj_ini.full_liveries[i];
-            break;
+    if (is_specialist(setup_role, "heads")){
+        if (is_specialist(setup_role, "apoth")){
+            data_set = _full_liveries[eROLE.Apothecary];
+        } else if (is_specialist(setup_role, "forge")){
+            data_set = _full_liveries[eROLE.Techmarine];
+        }else if (is_specialist(setup_role, "libs")){
+            data_set = _full_liveries[eROLE.Librarian];
+        }else if (is_specialist(setup_role, "chap")){
+            data_set = _full_liveries[eROLE.Chaplain];
         }
+    } else {
+        for (var i=0;i<=20;i++){
+            if (_roles[i]==setup_role){
+                data_set = _full_liveries[i];
+                break;
+            }
+        }        
     }
     show_debug_message(data_set);
     shader_set(full_livery_shader);

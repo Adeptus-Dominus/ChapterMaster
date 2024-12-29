@@ -13,110 +13,141 @@ function scr_drop_fiddle(argument0, argument1, argument2, argument3) {
 
 	if (attacking=0) then vgood=0;
 
-	if (argument0>0) and (argument1=true){// Adding marines to the drop roster
-	    ship_all[argument2]=1;
-    	var unit;
-	    repeat(3500){
-	        if (good=1){para=true;
-	            i+=1;if (i>300){i=1;comp+=1;}
-	            if (comp>10) then good=0;
-	        }
-	        if (good=1) and (vgood=1) and (i<=100) and (vehy=1) and (obj_ini.veh_lid[comp][i]=argument0){
-	            veh_fighting[comp][i]=1;
-	            if (obj_ini.veh_role[comp][i]="Land Speeder") then speeders+=1;
-	            if (obj_ini.veh_role[comp][i]="Rhino") then rhinos+=1;
-	            if (obj_ini.veh_role[comp][i]="Whirlwind") then whirls+=1;
-	            if (obj_ini.veh_role[comp][i]="Predator") then predators+=1;
-	            if (obj_ini.veh_role[comp][i]="Land Raider") then raiders+=1;
-	        }
-	        if (good=1){
-	        	unit = fetch_unit([comp,i]);
-	            if (obj_ini.race[comp][i]!=0) and (unit.ship_location=argument0) /*and (string_count("Aspirant",obj_ini.role[comp][i])=0)*/ and (obj_ini.god[comp][i]<10) and ((string_count("Bike",obj_ini.mobi[comp][i])=0) or (vehy=1)) and (para=true){// Man
-	                ship_use[argument2]+=1;fighting[comp][i]=1;
-                
-	                if (obj_ini.role[comp][i]="Chapter Master"){master=1;ship_use[argument2]+=1;}
-	                if (obj_ini.role[comp][i]=obj_ini.role[100][2]) then honor+=1;
-	                if (obj_ini.role[comp][i]="Champion") then champions+=1;
-                
-	                if (obj_ini.role[comp][i]=obj_ini.role[100][5]) then capts+=1;
-	                if (unit.IsSpecialist("chap", true)) then chaplains+=1;
-                	if (unit.IsSpecialist("libs", true)) then psykers+=1;
-                	if (unit.IsSpecialist("apoth", true)) then apothecaries+=1;
-                	if (unit.IsSpecialist("forge", true)) then techmarines+=1;
-                
-	                if (obj_ini.role[comp][i]="Death Company") and (string_count("Dreadnought",obj_ini.armour[comp][i])=0) then mahreens+=1;
-	                if (obj_ini.role[comp][i]=obj_ini.role[100][4]) then terminators+=1;
-	                if ((obj_ini.role[comp][i]=obj_ini.role[100][6]) or (obj_ini.role[comp][i]="Venerable "+string(obj_ini.role[100][6])) or (string_count("Dreadnought",obj_ini.armour[comp][i])=1)) and (assassinate=false) then dreads+=1;
-                
-	                if (string_count("Bike",obj_ini.mobi[comp][i])=0){
-	                    if (obj_ini.role[comp][i]=obj_ini.role[100][11]) then mahreens+=1;
-	                    if (obj_ini.role[comp][i]=obj_ini.role[100][12]) then mahreens+=1;
-	                    if (obj_ini.role[comp][i]=obj_ini.role[100][8]) or (obj_ini.role[comp][i]=obj_ini.role[100][10]) or (obj_ini.role[comp][i]=obj_ini.role[100][9]) then mahreens+=1;
-	                    if (obj_ini.role[comp][i]=obj_ini.role[100][3]) then veterans+=1;
-	                }
-	                if (string_count("Bike",obj_ini.mobi[comp][i])>0) and (vehy=1){
-	                    if (obj_ini.role[comp][i]=obj_ini.role[100][11]) then bikes+=1;
-	                    if (obj_ini.role[comp][i]=obj_ini.role[100][12]) then bikes+=1;
-	                    if (obj_ini.role[comp][i]=obj_ini.role[100][8]) or (obj_ini.role[comp][i]=obj_ini.role[100][10]) or (obj_ini.role[comp][i]=obj_ini.role[100][9]) then bikes+=1;
-	                    if (obj_ini.role[comp][i]=obj_ini.role[100][3]) then bikes+=1;
-	                }
-	            }
-	        }
-    
-	    }
+	if (argument0 > -1 && argument1 == true) { // Adding marines to the drop roster
+		ship_all[argument2] = 1;
+		var unit;
+		for (var i = 0; i <= 3500; i++) {
+			if (good == 1) {
+				para = true;
+				if (i > 300) {
+					i = 0;
+					comp++;
+				}
+				if (comp > 10) then good = 0;
+			}
+	
+			if (good == 1 && vgood == 1 && i <= 100 && vehy == 1 && obj_ini.veh_lid[comp][i] == argument0) {
+				veh_fighting[comp][i] = 1;
+				if (obj_ini.veh_role[comp][i] == "Land Speeder") then speeders++;
+				if (obj_ini.veh_role[comp][i] == "Rhino") then rhinos++;
+				if (obj_ini.veh_role[comp][i] == "Whirlwind") then whirls++;
+				if (obj_ini.veh_role[comp][i] == "Predator") then predators++;
+				if (obj_ini.veh_role[comp][i] == "Land Raider") then raiders++;
+			}
+	
+			if (good == 1) {
+				unit = fetch_unit([comp, i]);
+				if (obj_ini.race[comp][i] != 0 && unit.ship_location == argument0 && obj_ini.god[comp][i] < 10 && 
+					(string_count("Bike", obj_ini.mobi[comp][i]) == 0 || vehy == 1) && para == true) { // Man
+					ship_use[argument2]++;
+					fighting[comp][i] = 1;
+	
+					if (obj_ini.role[comp][i] == "Chapter Master") {
+						master = 1;
+						ship_use[argument2]++;
+					}
+					if (obj_ini.role[comp][i] == obj_ini.role[100][2]) then honor++;
+					if (obj_ini.role[comp][i] == "Champion") then champions++;
+	
+					if (obj_ini.role[comp][i] == obj_ini.role[100][5]) then capts++;
+					if (unit.IsSpecialist("chap", true)) then chaplains++;
+					if (unit.IsSpecialist("libs", true)) then psykers++;
+					if (unit.IsSpecialist("apoth", true)) then apothecaries++;
+					if (unit.IsSpecialist("forge", true)) then techmarines++;
+	
+					if (obj_ini.role[comp][i] == "Death Company" && string_count("Dreadnought", obj_ini.armour[comp][i]) == 0) then mahreens++;
+					if (obj_ini.role[comp][i] == obj_ini.role[100][4]) then terminators++;
+					if (((obj_ini.role[comp][i] == obj_ini.role[100][6]) || 
+						(obj_ini.role[comp][i] == "Venerable " + string(obj_ini.role[100][6])) || 
+						string_count("Dreadnought", obj_ini.armour[comp][i]) == 1) && assassinate == false) then dreads++;
+	
+					if (string_count("Bike", obj_ini.mobi[comp][i]) == 0) {
+						if (obj_ini.role[comp][i] == obj_ini.role[100][11]) then mahreens++;
+						if (obj_ini.role[comp][i] == obj_ini.role[100][12]) then mahreens++;
+						if (obj_ini.role[comp][i] == obj_ini.role[100][8] || 
+							obj_ini.role[comp][i] == obj_ini.role[100][10] || 
+							obj_ini.role[comp][i] == obj_ini.role[100][9]) then mahreens++;
+						if (obj_ini.role[comp][i] == obj_ini.role[100][3]) then veterans++;
+					}
+					if (string_count("Bike", obj_ini.mobi[comp][i]) > 0 && vehy == 1) {
+						if (obj_ini.role[comp][i] == obj_ini.role[100][11]) then bikes++;
+						if (obj_ini.role[comp][i] == obj_ini.role[100][12]) then bikes++;
+						if (obj_ini.role[comp][i] == obj_ini.role[100][8] || 
+							obj_ini.role[comp][i] == obj_ini.role[100][10] || 
+							obj_ini.role[comp][i] == obj_ini.role[100][9]) then bikes++;
+						if (obj_ini.role[comp][i] == obj_ini.role[100][3]) then bikes++;
+					}
+				}
+			}
+		}
 	}
+	
+	if (argument0 > -1 && argument1 == false) { // Removing marines from the drop roster
+		ship_all[argument2] = 0;
+	
+		for (var i = 0; i <= 3500; i++) {
+			if (good == 1) {
+				if (i > 300) {
+					i = 0;
+					comp += 1;
+				}
+				if (comp > 10) then good = 0;
+			}
+	
+			if (good == 1 && i <= 100 && vehy == 1 && obj_ini.veh_lid[comp][i] == argument0) {
+				veh_fighting[comp][i] = 0;
+				if (obj_ini.veh_role[comp][i] == "Land Speeder") then speeders--;
+				if (obj_ini.veh_role[comp][i] == "Rhino") then rhinos--;
+				if (obj_ini.veh_role[comp][i] == "Whirlwind") then whirls--;
+				if (obj_ini.veh_role[comp][i] == "Predator") then predators--;
+				if (obj_ini.veh_role[comp][i] == "Land Raider") then raiders--;
+			}
 
-	if (argument0>0) and (argument1=false){// Removing marines from the drop roster
-	    ship_all[argument2]=0;
-
-	    repeat(3500){
-	        if (good=1){
-	            i+=1;if (i>300){i=1;comp+=1;}
-	            if (comp>10) then good=0;
-	        }
-	        if (good=1) and (i<=100) and (vehy=1) and (obj_ini.veh_lid[comp][i]=argument0){
-	            veh_fighting[comp][i]=0;
-	            if (obj_ini.veh_role[comp][i]="Land Speeder") then speeders-=1;
-	            if (obj_ini.veh_role[comp][i]="Rhino") then rhinos-=1;
-	            if (obj_ini.veh_role[comp][i]="Whirlwind") then whirls-=1;
-	            if (obj_ini.veh_role[comp][i]="Predator") then predators-=1;
-	            if (obj_ini.veh_role[comp][i]="Land Raider") then raiders-=1;
-	        }
-	        if (good=1){
-	        	unit = fetch_unit([comp,i]);
-	            if (obj_ini.race[comp][i]!=0) and (unit.ship_location=argument0) /* and (string_count("Aspirant",obj_ini.role[comp][i])=0) */ and (obj_ini.god[comp][i]<10) and ((string_count("Bike",obj_ini.mobi[comp][i])=0) or (vehy=1)){// Man
-	                ship_use[argument2]-=1;fighting[comp][i]=0;
-                            
-	                if (obj_ini.role[comp][i]="Chapter Master"){master=0;ship_use[argument2]-=1;}
-	                if (obj_ini.role[comp][i]=obj_ini.role[100][2]) then honor-=1;
-	                if (obj_ini.role[comp][i]="Champion") then champions-=1;
-                
-	                if (obj_ini.role[comp][i]=obj_ini.role[100][5]) then capts-=1;
-	                if (unit.IsSpecialist("chap", true)) then chaplains-=1;
-	                if (unit.IsSpecialist("libs", true)) then psykers-=1;
-	                if (unit.IsSpecialist("apoth", true)) then apothecaries-=1;
-	                if (unit.IsSpecialist("forge", true)) then techmarines-=1;
-                
-	                if (obj_ini.role[comp][i]="Death Company") and (string_count("Dreadnought",obj_ini.armour[comp][i])=0) then mahreens-=1;
-	                if (obj_ini.role[comp][i]=obj_ini.role[100][4]) then terminators-=1;
-	                if ((obj_ini.role[comp][i]=obj_ini.role[100][6]) or (obj_ini.role[comp][i]="Venerable "+string(obj_ini.role[100][6])) or (string_count("Dreadnought",obj_ini.armour[comp][i])=1)) and (assassinate=false) then dreads-=1;
-                
-	                if (string_count("Bike",obj_ini.mobi[comp][i])=0){
-	                    if (obj_ini.role[comp][i]=obj_ini.role[100][11]) then mahreens-=1;
-	                    if (obj_ini.role[comp][i]=obj_ini.role[100][12]) then mahreens-=1;
-	                    if (obj_ini.role[comp][i]=obj_ini.role[100][8]) or (obj_ini.role[comp][i]=obj_ini.role[100][10]) or (obj_ini.role[comp][i]=obj_ini.role[100][9]) then mahreens-=1;
-	                    if (obj_ini.role[comp][i]=obj_ini.role[100][3]) then veterans-=1;
-	                }
-	                if (string_count("Bike",obj_ini.mobi[comp][i])>0) and (vehy=1){
-	                    if (obj_ini.role[comp][i]=obj_ini.role[100][11]) then bikes-=1;
-	                    if (obj_ini.role[comp][i]=obj_ini.role[100][12]) then bikes-=1;
-	                    if (obj_ini.role[comp][i]=obj_ini.role[100][8]) or (obj_ini.role[comp][i]=obj_ini.role[100][10]) or (obj_ini.role[comp][i]=obj_ini.role[100][9]) then bikes-=1;
-	                    if (obj_ini.role[comp][i]=obj_ini.role[100][3]) then bikes-=1;
-	                }
-	            }
-	        }
-    
-	    }
+			if (good == 1) {
+				unit = fetch_unit([comp, i]);
+				if (obj_ini.race[comp][i] != 0 && unit.ship_location == argument0 && obj_ini.god[comp][i] < 10 && 
+					(string_count("Bike", obj_ini.mobi[comp][i]) == 0 || vehy == 1)) { // Man
+					ship_use[argument2]--;
+					fighting[comp][i] = 0;
+	
+					if (obj_ini.role[comp][i] == "Chapter Master") {
+						master = 0;
+						ship_use[argument2]--;
+					}
+					if (obj_ini.role[comp][i] == obj_ini.role[100][2]) then honor--;
+					if (obj_ini.role[comp][i] == "Champion") then champions--;
+	
+					if (obj_ini.role[comp][i] == obj_ini.role[100][5]) then capts--;
+					if (unit.IsSpecialist("chap", true)) then chaplains--;
+					if (unit.IsSpecialist("libs", true)) then psykers--;
+					if (unit.IsSpecialist("apoth", true)) then apothecaries--;
+					if (unit.IsSpecialist("forge", true)) then techmarines--;
+	
+					if (obj_ini.role[comp][i] == "Death Company" && string_count("Dreadnought", obj_ini.armour[comp][i]) == 0) then mahreens--;
+					if (obj_ini.role[comp][i] == obj_ini.role[100][4]) then terminators--;
+					if (((obj_ini.role[comp][i] == obj_ini.role[100][6]) || 
+						(obj_ini.role[comp][i] == "Venerable " + string(obj_ini.role[100][6])) || 
+						string_count("Dreadnought", obj_ini.armour[comp][i]) == 1) && assassinate == false) then dreads--;
+	
+					if (string_count("Bike", obj_ini.mobi[comp][i]) == 0) {
+						if (obj_ini.role[comp][i] == obj_ini.role[100][11]) then mahreens--;
+						if (obj_ini.role[comp][i] == obj_ini.role[100][12]) then mahreens--;
+						if (obj_ini.role[comp][i] == obj_ini.role[100][8] || 
+							obj_ini.role[comp][i] == obj_ini.role[100][10] || 
+							obj_ini.role[comp][i] == obj_ini.role[100][9]) then mahreens--;
+						if (obj_ini.role[comp][i] == obj_ini.role[100][3]) then veterans--;
+					}
+					if (string_count("Bike", obj_ini.mobi[comp][i]) > 0 && vehy == 1) {
+						if (obj_ini.role[comp][i] == obj_ini.role[100][11]) then bikes--;
+						if (obj_ini.role[comp][i] == obj_ini.role[100][12]) then bikes--;
+						if (obj_ini.role[comp][i] == obj_ini.role[100][8] || 
+							obj_ini.role[comp][i] == obj_ini.role[100][10] || 
+							obj_ini.role[comp][i] == obj_ini.role[100][9]) then bikes--;
+						if (obj_ini.role[comp][i] == obj_ini.role[100][3]) then bikes--;
+					}
+				}
+			}
+		}
 	}
 
 

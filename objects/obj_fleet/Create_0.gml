@@ -1,4 +1,5 @@
 
+
 instance_activate_object(obj_controller);
 debugl("Fleet Combat Started");
 
@@ -42,12 +43,18 @@ instance_activate_object(obj_ini);
 instance_activate_object(obj_cursor);
 instance_activate_object(obj_img);
 
-column[0]="";column_width[0]=0;// This is determined at the pre-battle screen
-column[1]="";column_width[1]=0;
-column[2]="";column_width[2]=0;
-column[3]="";column_width[3]=0;
-column[4]="";column_width[4]=0;
-column[5]="";column_width[5]=0;// Furthest right
+column[0]="";
+column_width[0]=0;// This is determined at the pre-battle screen
+column[1]="";
+column_width[1]=0;
+column[2]="";
+column_width[2]=0;
+column[3]="";
+column_width[3]=0;
+column[4]="";
+column_width[4]=0;
+column[5]="";
+column_width[5]=0;// Furthest right
 
 
 threat=4;
@@ -65,9 +72,15 @@ repeat(6){k+=1;j=-1;
         en_width[j,k]=0;en_height[j,k]=0;
         en_num[j,k]=0;en_size[j,k]=0;*/
         
-        en_capital[j]=0;en_capital_max[j]=0;en_capital_lost[j]=0;
-        en_frigate[j]=0;en_frigate_max[j]=0;en_frigate_lost[j]=0;
-        en_escort[j]=0;en_escort_max[j]=0;en_escort_lost[j]=0;
+        en_capital[j]=0;
+        en_capital_max[j]=0;
+        en_capital_lost[j]=0;
+        en_frigate[j]=0;
+        en_frigate_max[j]=0;
+        en_frigate_lost[j]=0;
+        en_escort[j]=0;
+        en_escort_max[j]=0;
+        en_escort_lost[j]=0;
         en_ships_max[j]=0;
     }
 }
@@ -86,6 +99,7 @@ ships_damaged=0;
 
 marines_lost=0;
 
+en_mutation=[];
 en_mutation[0]="";
 en_mutation[1]="";
 en_mutation[2]="";
@@ -134,34 +148,8 @@ master=0;
 time=0;
 
 
-
-
-
-
-
-
-
-
-var i;i=-1;
-repeat(110){i+=1;
-    fighting[i]=0;
-    
-    ship[i]="";ship_id[i]=0;ship_class[i]=obj_ini.ship_class[i];ship_size[i]=0;
-    ship_leadership[i]=100;ship_hp[i]=9999;ship_maxhp[i]=9999;
-    ship_conditions[i]="";ship_speed[i]=20;ship_turning[i]=0;
-    ship_front_armour[i]=0;ship_other_armour[i]=0;ship_weapons[i]=0;ship_shields=0;
-    
-    ship_wep[i,1]="";ship_wep_facing[i,1]="";ship_wep_condition[i,1]="";
-    ship_wep[i,2]="";ship_wep_facing[i,2]="";ship_wep_condition[i,2]="";
-    ship_wep[i,3]="";ship_wep_facing[i,3]="";ship_wep_condition[i,3]="";
-    ship_wep[i,4]="";ship_wep_facing[i,4]="";ship_wep_condition[i,4]="";
-    ship_wep[i,5]="";ship_wep_facing[i,5]="";ship_wep_condition[i,5]="";
-    
-    
-    ship_capacity[i]=0;ship_carrying[i]=0;ship_contents[i]="";ship_turrets[i]=0;
-    
-    if (i<=80) then ship_lost[i]=0;
-}
+init_player_fleet_arrays();
+ship_id = [];
 
 
 // screwing around below here
@@ -170,12 +158,24 @@ alarm[6]=2;
 // waiting at this point- show loading screen
 // in this time the obj_controller passes over which units will be fighting, similar to the below code
 
-column[0]="";column_width[0]=0;column_num[0]=0;// This is determined at the pre-battle screen
-column[1]="";column_width[1]=0;column_num[1]=0;
-column[2]="";column_width[2]=0;column_num[3]=0;
-column[3]="Capital";column_width[3]=270;column_num[3]=0;
-column[4]="Strike Cruiser";column_width[4]=140;column_num[4]=0;
-column[5]="Escort";column_width[5]=76;column_num[5]=0;// Furthest right
+column[0]="";
+column_width[0]=0;
+column_num[0]=0;// This is determined at the pre-battle screen
+column[1]="";
+column_width[1]=0;
+column_num[1]=0;
+column[2]="";
+column_width[2]=0;
+column_num[3]=0;
+column[3]="capital";
+column_width[3]=270;
+column_num[3]=0;
+column[4]="frigate";
+column_width[4]=140;
+column_num[4]=0;
+column[5]="escort";
+column_width[5]=76;
+column_num[5]=0;// Furthest right
 
 
 color_index=0;

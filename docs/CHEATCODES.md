@@ -33,6 +33,9 @@ Arguments with stars `(argument*)` can be omitted.
 - `flashgit (number*)` - spawns a Flash Git.
 - `chaosfleetspawn` - spawns a chaos fleet.
 - `neworkfleet` - spawns an ork fleet.
+- `shiplostevent` - looses a random traveling player ship to the warp
+- `recoverlostship` - recovers a random lost ship from the warp
+
 ### Events and Quests:
 - `event (name*)` - triggers a random event if no name specified.
     - `crusade` - triggers the Crusade event.

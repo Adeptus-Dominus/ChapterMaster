@@ -246,13 +246,13 @@ if (full_liveries == ""){
     livery_picker.scr_unit_draw_data();
     livery_picker.set_defualt_armour(struct_cols,col_special);
     full_liveries = array_create(21,DeepCloneStruct(livery_picker.map_colour));
-    full_liveries[Role.LIBRARIAN] = livery_picker.set_defualt_librarian(struct_cols);
+    full_liveries[eROLE.Librarian] = livery_picker.set_defualt_librarian(struct_cols);
 
-    full_liveries[Role.CHAPLAIN] = livery_picker.set_defualt_chaplain(struct_cols);
+    full_liveries[eROLE.Chaplain] = livery_picker.set_defualt_chaplain(struct_cols);
 
-    full_liveries[Role.APOTHECARY] = livery_picker.set_defualt_apothecary(struct_cols);
+    full_liveries[eROLE.Apothecary] = livery_picker.set_defualt_apothecary(struct_cols);
 
-    full_liveries[Role.TECHMARINE] = livery_picker.set_defualt_techmarines(struct_cols);
+    full_liveries[eROLE.Techmarine] = livery_picker.set_defualt_techmarines(struct_cols);
     livery_picker.scr_unit_draw_data();
     livery_picker.set_defualt_armour(struct_cols,col_special);    
 }

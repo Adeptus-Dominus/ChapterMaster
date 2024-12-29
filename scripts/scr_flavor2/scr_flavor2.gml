@@ -273,13 +273,13 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
 		flavor = true;
 		if (_hostile_shots == 1) {
 			if (lost_units_count == 0) {
-				m1 += $"{_hostile_weapon} strikes, but fails to inflict any casualties.";
+				m1 += $"{_hostile_weapon} strikes, but fails to inflict any damage.";
 			} else {
 				m1 += $"{_hostile_weapon} strikes. ";
 			}
 		} else {
 			if (lost_units_count == 0) {
-				m1 += $"{_hostile_shots} {_hostile_weapon}s strike, but fail to inflict any casualties.";
+				m1 += $"{_hostile_shots} {_hostile_weapon}s strike, but fail to inflict any damage.";
 			} else {
 				m1 += $"{_hostile_shots} {_hostile_weapon}s strike. ";
 			}
@@ -291,12 +291,18 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
 	// m2="Blah blah blah";
 
 	if (target_type = "wall") {
-		mes = m1 + m2 + m3;
+		var _wall_destroyed = obj_nfort.hp[1] <= 0 ? true : false;
+
+		if (_wall_destroyed) {
+			mes = m1 + " Destroying the fortifications.";
+		} else {
+			mes = m1 + " Fortifications stand strong.";
+		}
 
 		if (string_length(mes) > 3) {
 			obj_ncombat.messages += 1;
 			obj_ncombat.message[obj_ncombat.messages] = mes;
-			obj_ncombat.message_sz[obj_ncombat.messages] = obj_nfort.hostile_damage;
+			obj_ncombat.message_sz[obj_ncombat.messages] = 100
 			obj_ncombat.message_priority[obj_ncombat.messages] = 0;
 			obj_ncombat.alarm[3] = 2;
 		}

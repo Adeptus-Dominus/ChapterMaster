@@ -1,7 +1,6 @@
 // This will execute before the first room of the game executes.
 gml_pragma("global", "__init_global()");
 
-// @stitch-ignore-next-line: unused-function
 function __init_global() {
     // set any global defaults
     layer_force_draw_depth(true, 0); // force all layers to draw at depth 0

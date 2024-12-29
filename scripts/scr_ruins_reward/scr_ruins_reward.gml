@@ -37,9 +37,9 @@ function scr_ruins_reward(star_system, planet, _ruins) {
 		if (action!="") then instance_deactivate_object(id);
 	}
 	flea=instance_nearest(star_system.x,star_system.y,obj_p_fleet);
-	if (flea.capital_num[1]!=0){sihd=flea.capital_num[1];}
-	else if (flea.frigate_num[1]!=0){sihd=flea.frigate_num[1];}
-	else if (flea.escort_num[1]!=0){;sihd=flea.escort_num[1];}
+	if (flea.capital_num[0]!=0){sihd=flea.capital_num[0];}
+	else if (flea.frigate_num[0]!=0){sihd=flea.frigate_num[0];}
+	else if (flea.escort_num[0]!=0){;sihd=flea.escort_num[0];}
 	instance_activate_object(obj_p_fleet);
 
 	scr_event_log("",$"The Ancient Ruins on {planet_numeral_name(planet,star_system)} has been explored.", star_system.name);

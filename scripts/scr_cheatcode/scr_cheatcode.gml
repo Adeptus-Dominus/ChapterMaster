@@ -47,7 +47,7 @@ function scr_cheatcode(argument0) {
 					}
 					break;
 				case "newapoth":
-					obj_controller.apothecary_points = 50;
+					obj_controller.apothecary_training_points = 50;
 					break;
 				case "newpsyk":
 					obj_controller.psyker_points = 70;
@@ -65,10 +65,10 @@ function scr_cheatcode(argument0) {
 					break;
 				case "artifact":
 					if (cheat_arguments[0] == "1") {
-						scr_add_artifact("random", "", 6, obj_ini.ship[1], 501);
+						scr_add_artifact("random", "", 6, obj_ini.ship[0], 501);
 					} else {
 						repeat(real(cheat_arguments[1])){
-							scr_add_artifact(cheat_arguments[0], "", 6, obj_ini.ship[1], 501);
+							scr_add_artifact(cheat_arguments[0], "", 6, obj_ini.ship[0], 501);
 						}
 					}
 					break;
@@ -113,7 +113,7 @@ function scr_cheatcode(argument0) {
 					break;
 				case "inquisarti":
 					scr_quest(0, "artifact_loan", 4, 10);
-					var last_artifact = scr_add_artifact("good", "inquisition", 0, obj_ini.ship[1], 501);
+					var last_artifact = scr_add_artifact("good", "inquisition", 0, obj_ini.ship[0], 501);
 					break;
 				case "govmission":
 					with (obj_star) {
@@ -280,6 +280,13 @@ function scr_cheatcode(argument0) {
 						scr_alert("green", "recruitment", (string(obj_controller.recruit_name[i]) + "has started training."), 0, 0)
 					}
 					break;
+				case "shiplostevent":
+					loose_ship_to_warp_event();
+					break;
+				case "recoverlostship":
+					return_lost_ship();
+					break;
+
 			}
 		}
 	} catch(_exception) {

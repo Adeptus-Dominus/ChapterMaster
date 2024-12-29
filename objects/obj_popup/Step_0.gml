@@ -22,13 +22,18 @@ if (type=9.1) and (obj_controller.stc_wargear_un+obj_controller.stc_vehicles_un+
     obj_controller.cooldown=10;instance_destroy();exit;
 }
 
-if (image="fuklaw") and (save>0){
-    if (press=1){
-        var del;del=obj_saveload.save[self.save];
-        if (file_exists("save"+string(del)+".ini")){
-            file_delete("save"+string(del)+".ini");
-            if (file_exists("save"+string(del)+"log.ini")){file_delete("save"+string(del)+"log.ini");}
-            if (file_exists("screen"+string(del)+".png")){file_delete("screen"+string(del)+".png");}
+if (image=="fuklaw") and (save>0){
+    if (press==1){
+        var del=obj_saveload.save[save];
+        var _save_file = $"save{del}.ini";
+        if (file_exists(_save_file)){
+            file_delete(_save_file);
+            if (file_exists($"save{del}log.ini")){
+                file_delete($"save{del}log.ini");
+            }
+            if (file_exists($"screen{del}.png")){
+                file_delete($"screen{del}.png");
+            }
             with(obj_saveload){instance_destroy();}
             var news=instance_create(0,0,obj_saveload);
             news.menu=woopwoopwoop;
@@ -619,7 +624,12 @@ if (image="ancient_ruins" && woopwoopwoop && move_to_next_stage()) {
         obj_controller.menu=1;
         // obj_controller.managing=manag;
         with(obj_controller){
-            var i;i=-1;man_size=0;selecting_location="";selecting_types="";selecting_ship=0;sel_uid=0;
+            var i=-1;
+            man_size=0;
+            selecting_location="";
+            selecting_types="";
+            selecting_ship=-1;
+            sel_uid=0;
             reset_manage_arrays();
             alll=0;
             update_general_manage_view();
@@ -680,7 +690,9 @@ if (image="stc"){
             scr_return_ship(obj_ground_mission.loc,obj_ground_mission,obj_ground_mission.num);
             var man_size,ship_id,comp,plan,i;
             i=0;ship_id=0;man_size=0;comp=0;plan=0;
-            repeat(30){i+=1;if (obj_ini.ship[i]=obj_ground_mission.loc) then ship_id=i;}i=0;
+            
+            ship_id = array_get_index(obj_ini.ship,obj_ground_mission.loc);
+
             obj_controller.menu=0;obj_controller.managing=0;
             obj_controller.cooldown=10;
             with(obj_ground_mission){instance_destroy();}
@@ -697,7 +709,7 @@ if (image="stc"){
             scr_return_ship(obj_ground_mission.loc,obj_ground_mission,obj_ground_mission.num);
             var man_size,ship_id,comp,plan,i;
             i=0;ship_id=0;man_size=0;comp=0;plan=0;
-            repeat(30){i+=1;if (obj_ini.ship[i]=obj_ground_mission.loc) then ship_id=i;}i=0;
+            ship_id = array_get_index(obj_ini.ship,obj_ground_mission.loc);
             obj_controller.menu=0;obj_controller.managing=0;
             obj_controller.cooldown=10;
             with(obj_ground_mission){instance_destroy();}
@@ -715,7 +727,7 @@ if (image="stc"){
             scr_return_ship(obj_ground_mission.loc,obj_ground_mission,obj_ground_mission.num);
             var man_size,ship_id,comp,plan,i;
             i=0;ship_id=0;man_size=0;comp=0;plan=0;
-            repeat(30){i+=1;if (obj_ini.ship[i]=obj_ground_mission.loc) then ship_id=i;}i=0;
+            ship_id = array_get_index(obj_ini.ship,obj_ground_mission.loc);
             obj_controller.menu=0;obj_controller.managing=0;
             obj_controller.cooldown=10;
             with(obj_ground_mission){instance_destroy();}
@@ -755,7 +767,7 @@ if (title="Necron Tunnels : 3"){option1="Continue";option2="Return to the surfac
 if (title="He Built It") and (option1="") and (string_count("submerged",text)=0){
     option1="Execute the heretic";
     option2="Move him to the Penitorium";
-    option3="mission_star see no problem";
+    option3="I see no problem";
 }
 
 
@@ -1062,7 +1074,7 @@ if (press=1) and (option1!="") or ((demand=1) and (mission!="") and (string_coun
                     last_artifact = scr_add_artifact("good","inquisition",0,obj_ini.home_name,2);
                 }else if (obj_ini.fleet_type != ePlayerBase.home_world){
                     image="artifact_given";
-                    last_artifact =scr_add_artifact("good","inquisition",0,obj_ini.ship[1],501);
+                    last_artifact =scr_add_artifact("good","inquisition",0,obj_ini.ship[0],501);
                 }
                 
                 title="New Artifact";
@@ -1070,7 +1082,7 @@ if (press=1) and (option1!="") or ((demand=1) and (mission!="") and (string_coun
                 text_center=0;
                 text="The Inquisition has left an Artifact in your care, until it may be retrieved.  It has been stored ";
                 if (obj_ini.fleet_type=ePlayerBase.home_world) then text+="within your Fortress Monastery.";
-                if (obj_ini.fleet_type != ePlayerBase.home_world) then text+=$"upon your ship '{obj_ini.ship[1]}'.";
+                if (obj_ini.fleet_type != ePlayerBase.home_world) then text+=$"upon your ship '{obj_ini.ship[0]}'.";
                 scr_event_log("","Inquisition Mission Accepted: The Inquisition has left an Artifact in your care.");
                 
                 text+=$"  It is some form of {obj_ini.artifact[last_artifact]}.";
@@ -1136,7 +1148,7 @@ if (press=2) and (option2!=""){
     
     if (title="Artifact Offered"){
         with(obj_en_fleet){if (trade_goods="male_her") or (trade_goods="female_her") then instance_destroy();}
-        if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("random","",4,obj_ini.ship[1],501);
+        if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("random","",4,obj_ini.ship[0],501);
         if (obj_ini.fleet_type=ePlayerBase.home_world) then scr_add_artifact("random","",4,obj_ini.home_name,2);
         var i,last_artifact;i=0;last_artifact=0;
         repeat(100){if (last_artifact=0){i+=1;if (obj_ini.artifact[i]="") then last_artifact=i-1;}}
@@ -1229,7 +1241,7 @@ if (press=2) and (option2!=""){
             scr_return_ship(obj_ground_mission.loc,obj_ground_mission,obj_ground_mission.num);
             var man_size,ship_id,comp,plan,i;
             i=0;ship_id=0;man_size=0;comp=0;plan=0;
-            repeat(30){i+=1;if (obj_ini.ship[i]=obj_ground_mission.loc) then ship_id=i;}i=0;
+            ship_id = array_get_index(obj_ini.ship,obj_ground_mission.loc);
             obj_controller.menu=0;obj_controller.managing=0;
             obj_controller.cooldown=10;
             with(obj_ground_mission){instance_destroy();}
@@ -1241,7 +1253,7 @@ if (press=2) and (option2!=""){
             scr_return_ship(obj_ground_mission.loc,obj_ground_mission,obj_ground_mission.num);
             var man_size,ship_id,comp,plan,i;
             i=0;ship_id=0;man_size=0;comp=0;plan=0;
-            repeat(30){i+=1;if (obj_ini.ship[i]=obj_ground_mission.loc) then ship_id=i;}i=0;
+            ship_id = array_get_index(obj_ini.ship,obj_ground_mission.loc);
             obj_controller.menu=0;obj_controller.managing=0;
             obj_controller.cooldown=10;
             with(obj_ground_mission){instance_destroy();}
@@ -1266,7 +1278,7 @@ if (press=3) and (option3!=""){
                 alarm[4]=1;trade_goods="|DELETE|";action_spd=256;action="";
             }
         }
-        if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("random","",4,obj_ini.ship[1],501);
+        if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("random","",4,obj_ini.ship[0],501);
         if (obj_ini.fleet_type=ePlayerBase.home_world) then scr_add_artifact("random","",4,obj_ini.home_name,2);
         var i,last_artifact;i=0;last_artifact=0;
         repeat(100){if (last_artifact=0){i+=1;if (obj_ini.artifact[i]="") then last_artifact=i-1;}}
@@ -1309,10 +1321,7 @@ if (press=3) and (option3!=""){
             scr_return_ship(obj_ground_mission.loc,obj_ground_mission,obj_ground_mission.num);
             var man_size,ship_id,comp,plan,i;
             i=0;ship_id=0;man_size=0;comp=0;plan=0;
-            repeat(30){
-                i+=1;
-                if (obj_ini.ship[i]=obj_ground_mission.loc) then ship_id=i;
-            }i=0;
+            ship_id = array_get_index(obj_ini.ship,obj_ground_mission.loc);
         }
         
         if (target_comp!=3) and (target_comp!=4){
@@ -1326,7 +1335,7 @@ if (press=3) and (option3!=""){
             scr_return_ship(obj_ground_mission.loc,obj_ground_mission,obj_ground_mission.num);
             var man_size,ship_id,comp,plan,i;
             i=0;ship_id=0;man_size=0;comp=0;plan=0;
-            repeat(30){i+=1;if (obj_ini.ship[i]=obj_ground_mission.loc) then ship_id=i;}i=0;
+            ship_id = array_get_index(obj_ini.ship,obj_ground_mission.loc);
             obj_controller.menu=0;obj_controller.managing=0;
             obj_controller.cooldown=10;
             

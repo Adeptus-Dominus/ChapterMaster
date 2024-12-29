@@ -36,6 +36,11 @@ if (started=3){
 
 // if (done>=1) then exit;
 
+
+
+if (turn_count >= 50){
+    started=2;
+}
 if ((started=2) or (started=4)){
     instance_activate_object(obj_pnunit);
     instance_activate_object(obj_enunit);
@@ -46,6 +51,7 @@ if ((started=2) or (started=4)){
         obj_pnunit.alarm[4]=2;
         obj_pnunit.alarm[5]=3;
     }
+    total_battle_exp_gain = threat * 50;
     if (instance_exists(obj_enunit)){obj_enunit.alarm[1]=1;}
     instance_activate_object(obj_star);
     instance_activate_object(obj_event_log);
@@ -99,6 +105,7 @@ if (timer_stage=1) or (timer_stage=5){
         if (instance_exists(obj_pnunit)){
             obj_pnunit.alarm[3]=2;
             obj_pnunit.alarm[1]=3;
+            turn_count++;
             obj_pnunit.alarm[0]=4;
         }
         // alarm[9]=5;
@@ -111,6 +118,7 @@ if (timer_stage=1) or (timer_stage=5){
         }
         if (instance_exists(obj_pnunit)){
             obj_pnunit.alarm[1]=1;
+            turn_count++;
         }
     }
     messages=0;messages_to_show=8;largest=0;random_messages=0;priority=0;messages_shown=0;
@@ -127,6 +135,7 @@ else if (timer_stage=3){
     if (enemy!=6){
         if (instance_exists(obj_pnunit)){
             obj_pnunit.alarm[1]=1;
+            turn_count++;
         }
         if (instance_exists(obj_enunit)){
             obj_enunit.alarm[1]=2;
@@ -142,6 +151,7 @@ else if (timer_stage=3){
         if (instance_exists(obj_pnunit)){
             obj_pnunit.alarm[3]=2;
             obj_pnunit.alarm[1]=3;
+            turn_count++;
             obj_pnunit.alarm[0]=4;
             turns+=1;
         }

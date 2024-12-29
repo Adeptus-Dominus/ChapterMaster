@@ -216,8 +216,8 @@ function inquisition_inspection_logic(){
 function inquisitor_approval_gene_banks(){
     var gene_slave_count = 0;
     var hur=0
-    for (var e=0;e<array_length(obj_ini.slave_batch_num);e++){
-        if (obj_ini.slave_batch_num[e]>0) then gene_slave_count+=obj_ini.slave_batch_num[e];
+    for (var e=0;e<array_length(obj_ini.gene_slaves);e++){
+        gene_slave_count += obj_ini.gene_slaves[e].num;
     }
     if (obj_controller.marines<=200) and (gene_slave_count>=100) and (obj_controller.gene_seed>=1100) then hur=1;
     if (obj_controller.marines<=500) and (obj_controller.marines>200) and (gene_slave_count>=75) and (obj_controller.gene_seed>=900) then hur=1;

@@ -42,7 +42,10 @@ if (closing=true) and (fading=-1) and (fade_alpha<=0){
         scr_event_log("green",string(p1)+" on "+string(p3)+" ends.", p3);
     }
     
-    with(obj_popup){if (number!=0) then obj_turn_end.alarm[1]=10;instance_destroy();}
+    with(obj_popup){
+        if (number!=0) then obj_turn_end.alarm[1]=10;
+        instance_destroy();
+    }
     obj_controller.cooldown=30;
     instance_destroy();
 }

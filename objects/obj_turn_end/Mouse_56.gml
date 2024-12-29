@@ -88,23 +88,7 @@ __b__ = action_if_number(obj_popup, 0, 0);
 						//TODO fix this because this sounds rad
 						//if(planet_feature_bool(stahr.p_feature[p_num], P_features.Monastery)==1)thenobj_fleet.player_lasers=stahr.p_lasers[p_num]; 
 					}
-        			var capital_count = array_length(battle_pobject[current_battle].capital);
-
-					for (var i=1;i<capital_count;i++){
-					    if (battle_pobject[current_battle].capital[i]!="") then obj_fleet.fighting[battle_pobject[current_battle].capital_num[i]]=1;
-					}
-        
-			        var frigate_count = array_length(battle_pobject[current_battle].frigate);
-
-					for (i=1;i<frigate_count;i++){
-					   if (battle_pobject[current_battle].frigate[i]!="") then obj_fleet.fighting[battle_pobject[current_battle].frigate_num[i]]=1;
-					}
-        
-					var escort_count = array_length(battle_pobject[current_battle].escort);
-
-			        for (i=1;i<escort_count;i++){
-			            if (battle_pobject[current_battle].escort[i]!="") then obj_fleet.fighting[battle_pobject[current_battle].escort_num[i]]=1;
-			        }
+					add_fleet_ships_to_combat(battle_pobject[current_battle], obj_fleet)
         
 			        instance_deactivate_all(true);
 			        instance_activate_object(obj_controller);

@@ -10,6 +10,7 @@ function scr_powers_new(){
 
 	var letmax, powers_should_have, powers_have;
 	var power_code="";letmax=0;
+	var _powers_learned = 0;
 
 	if (obj_ini.psy_powers="default"){power_code="D";letmax=7;}
 	if (obj_ini.psy_powers="biomancy"){power_code="B";letmax=5;}
@@ -32,6 +33,7 @@ function scr_powers_new(){
 		        var tha=floor(random(letmax))+1;
 		        if (string_count(string(tha),specials())=0){
 		            powers_have+=1;
+					_powers_learned++;
 		            obj_ini.spe[company,marine_number]+=string(power_code)+string(tha)+"|";
 		        }
 		    }
@@ -50,8 +52,11 @@ function scr_powers_new(){
 	        var tha=powers_have;
 	        if (string_count(string(tha),specials())==0){
 	        	powers_have++;
+				_powers_learned++;
 	            obj_ini.spe[company,marine_number]+=string(power_code)+string(tha)+"|";
 	        }
 	    }
 	}
+
+	return _powers_learned;
 }

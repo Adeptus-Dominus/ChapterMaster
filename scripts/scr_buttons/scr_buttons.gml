@@ -204,3 +204,160 @@ function drop_down(selection, draw_x, draw_y, options,open_marker){
 	}
     return [selection,open_marker];
 }
+
+function ToggleButton() constructor {
+    x1 = 0;
+    y1 = 0;
+	x2 = 0;
+	y2 = 0;
+    str1 = "";
+    width = 0;
+	height = 0;
+    state_alpha = 1;
+    hover_alpha = 1;
+    active = true;
+    text_halign = fa_left;
+    text_color = c_gray;
+    button_color = c_gray;
+
+    update = function () {
+        if (width == 0) {
+            width = string_width(str1) + 4;
+        }
+        if (height == 0) {
+            height = string_height(str1) + 4;
+        }
+        x2 = x1 + width;
+        y2 = y1 + height;
+    };
+
+    hover = function() {
+        return (scr_hit(x1, y1, x2, y2));
+    };
+
+    clicked = function() {
+        if (hover() && scr_click_left()) {
+			active = !active;
+			audio_play_sound(snd_click_small, 10, false, 1);
+			return true;
+        } else {
+            return false;
+        }
+    };
+
+    draw = function() {
+        var str1_h = string_height(str1);
+        var text_padding = width * 0.03;
+        var text_x = x1 + text_padding;
+        var text_y = y1 + text_padding;
+        var total_alpha;
+
+        if (text_halign == fa_center) {
+            text_x = x1 + (width / 2);
+        }
+
+        if (!active){
+            if (state_alpha > 0.5) state_alpha -= 0.05;
+        }
+        else{
+            if (state_alpha < 1) state_alpha += 0.05;
+            if (hover()) {
+                if (hover_alpha > 0.8) hover_alpha -= 0.02; // Decrease state_alpha when hovered
+            } else {
+                if (hover_alpha < 1) hover_alpha += 0.03; // Increase state_alpha when not hovered
+            }
+        }
+
+        total_alpha = state_alpha * hover_alpha;
+        draw_rectangle_color_simple(x1, y1, x1 + width, y1 + str1_h, 1, button_color, total_alpha);
+        draw_set_halign(text_halign);
+        draw_set_valign(fa_top);
+        draw_text_color_simple(text_x, text_y, str1, text_color, total_alpha);
+        draw_set_alpha(1);
+        draw_set_halign(fa_left);
+    };
+}
+
+function InteractiveButton() constructor {
+    x1 = 0;
+    y1 = 0;
+	x2 = 0;
+	y2 = 0;
+    str1 = "";
+    inactive_tooltip = "";
+    tooltip = "";
+    width = 0;
+	height = 0;
+    state_alpha = 1;
+    hover_alpha = 1;
+    active = true;
+    text_halign = fa_left;
+    text_color = c_gray;
+    button_color = c_gray;
+
+    update = function () {
+        if (width == 0) {
+            width = string_width(str1) + 4;
+        }
+        if (height == 0) {
+            height = string_height(str1) + 4;
+        }
+        x2 = x1 + width;
+        y2 = y1 + height;
+    };
+
+    hover = function() {
+        return (scr_hit(x1, y1, x2, y2));
+    };
+
+    clicked = function() {
+        if (hover() && scr_click_left()) {
+            if (!active){
+                audio_play_sound(snd_error, 10, false, 1);
+                return false;
+            } else {
+                audio_play_sound(snd_click_small, 10, false, 1);
+                return true;
+            }
+        } else {
+            return false;
+        }
+    };
+
+    draw = function() {
+        var str1_h = string_height(str1);
+        var text_padding = width * 0.03;
+        var text_x = x1 + text_padding;
+        var text_y = y1 + text_padding;
+        var total_alpha;
+
+        if (text_halign == fa_center) {
+            text_x = x1 + (width / 2);
+        }
+
+        if (!active){
+            if (state_alpha > 0.5) state_alpha -= 0.05;
+            if (inactive_tooltip != "" && hover()) {
+                tooltip_draw(inactive_tooltip);
+            }
+        } else{
+            if (state_alpha < 1) state_alpha += 0.05;
+            if (hover()) {
+                if (hover_alpha > 0.8) hover_alpha -= 0.02; // Decrease state_alpha when hovered
+                if (tooltip != "") {
+                    tooltip_draw(tooltip);
+                }
+            } else {
+                if (hover_alpha < 1) hover_alpha += 0.03; // Increase state_alpha when not hovered
+            }
+        }
+
+        total_alpha = state_alpha * hover_alpha;
+        draw_rectangle_color_simple(x1, y1, x1 + width, y1 + str1_h, 1, button_color, total_alpha);
+        draw_set_halign(text_halign);
+        draw_set_valign(fa_top);
+        draw_text_color_simple(text_x, text_y, str1, text_color, total_alpha);
+        draw_set_alpha(1);
+        draw_set_halign(fa_left);
+    };
+}

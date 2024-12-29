@@ -49,7 +49,7 @@ function scr_ui_manage() {
 		}
 		if (man_size<1){
 	        selecting_location="";
-	        selecting_ship=0;
+	        selecting_ship=-1;
 	        selecting_planet=0;
 	        man_size=0;
 		}	
@@ -99,7 +99,9 @@ function scr_ui_manage() {
 		// Draw the company followed by chapters name
 	    	draw_text(xx+800,yy+74,string_hash_to_newline(string(fx)+", "+string(global.chapter_name)));			
 		} else if (managing<0){
-			draw_text(xx+800,yy+74,selection_data.purpose);			
+			if (struct_exists(selection_data, "purpose")){
+				draw_text(xx+800,yy+74,$"{selection_data.purpose}");			
+			}
 		}
 		
 	    if (managing<=10 && managing>0){
@@ -348,9 +350,11 @@ function scr_ui_manage() {
         	x2 = x1+string_width(var_text);
         	y2 = y1+string_height(var_text);
 	        draw_text_outline(x1,y1,var_text);
-	        for (var part = 0; part<array_length(global.body_parts);part++){
-				if (struct_exists(selected_unit.body[$ global.body_parts[part]], "bionic")){
-					var part_display = global.body_parts_display[part];
+			var _body_parts = ARR_body_parts;
+			var _body_parts_display = ARR_body_parts_display;
+	        for (var part = 0; part<array_length(_body_parts);part++){
+				if (struct_exists(selected_unit.body[$ _body_parts[part]], "bionic")){
+					var part_display = _body_parts_display[part];
 					bionic_tooltip += $"Bionic {part_display}";
 					switch (part_display) {
 						case "Left Leg":
@@ -466,7 +470,7 @@ function scr_ui_manage() {
 	        draw_text_outline(x1,y1,var_text);
 	        array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]); 
 
-	        if (cn.temp[113]!="") then draw_text_outline(x_left,yy+466,string_hash_to_newline("Experience: "+string(cn.temp[113])));
+	        if (cn.temp[113]!="") then draw_text_outline(x_left, yy+466, string_hash_to_newline($"Experience: {cn.temp[113]}"));
 
        
         		 
@@ -503,7 +507,7 @@ function scr_ui_manage() {
 							}
 						}
         		var_text = string_hash_to_newline(string("Damage Resistance: {0}",cn.temp[118]))
-	        	tooltip_text += string_hash_to_newline(string("CON: {0}%#XP: {1}%", round(selected_unit.constitution/2), round(selected_unit.experience/10)));
+	        	tooltip_text += string_hash_to_newline(string("CON: {0}%#EXP: {1}%", round(selected_unit.constitution/2), round(selected_unit.experience/10)));
 	        	x1 = x_left;
 	        	y1 = yy+378;
 	        	x2 = x1+string_width(var_text);
@@ -829,11 +833,11 @@ function scr_ui_manage() {
 				button.tooltip = "Press Shift L";
 				if (load_unload_possible){
 					button.alpha = 1;
-					if (sel_loading==0){
+					if (sel_loading==-1){
 						if (button.draw()){
 							load_selection();						
 						}
-					} else if (sel_loading!=0){
+					} else if (sel_loading!=-1){
 						button.label = "Unload";
 						if (button.draw()){
 							unload_selection();   // Unload - ask for planet confirmation					
@@ -926,7 +930,7 @@ function scr_ui_manage() {
 				button.label = "Set Boarder";
 				button.keystroke = (keyboard_check(vk_shift) && (keyboard_check_pressed(ord("Q"))));
 				button.tooltip = "Press Shift Q";					
-				var boarder_possible = sel_loading!=0  && man_size>0;
+				var boarder_possible = sel_loading!=-1  && man_size>0;
 				button.alpha = boarder_possible ? 1 : 0.5;
 				if (button.draw() && boarder_possible){
 					if (boarder_possible) then toggle_selection_borders();
@@ -969,7 +973,7 @@ function scr_ui_manage() {
 				button.label = "Move Ship";
 				button.keystroke = (keyboard_check(vk_shift) && (keyboard_check_pressed(ord("M"))));
 				button.tooltip = "Press Shift M";					
-				var moveship_possible = !array_contains(invalid_locations, selecting_location) && man_size>0 && selecting_ship>0;	
+				var moveship_possible = !array_contains(invalid_locations, selecting_location) && man_size>0 && selecting_ship>-1;	
 				if (moveship_possible){
 					button.alpha = 1;
 					if (button.draw()){
@@ -1101,7 +1105,7 @@ function scr_ui_manage() {
 			if (cn.temp[120].name()!="") and (cn.temp[120].race()!=0){
 				draw_set_alpha(1);
 				var xx=__view_get( e__VW.XView, 0 )+0, yy=__view_get( e__VW.YView, 0 )+0
-		        if ((point_in_rectangle(mouse_x, mouse_y, xx+1208, yy+210, xx+1374, yy+210+272) || obj_controller.unit_profile) && !instance_exists(obj_temp3) && !instance_exists(obj_popup)) {
+		        if (scr_hit(xx+1208, yy+210, xx+1374, yy+210+272) || obj_controller.unit_profile) && !instance_exists(obj_temp3) && !instance_exists(obj_popup) {
 					stats_displayed = true;
 		        	selected_unit.stat_display(true);
 		       		//tooltip_draw(stat_x, stat_y+string_height(stat_display),0,0,100,17);
@@ -1109,7 +1113,7 @@ function scr_ui_manage() {
 					stats_displayed = false;
 				}
 		        with (obj_controller){
-    		        if (view_squad && !instance_exists(obj_temp3) && !instance_exists(obj_popup)){
+    		        if (view_squad && !instance_exists(obj_popup)){
     		        	if (managing>10){
     		        		view_squad=false;
     		        		unit_profile=false;
@@ -1183,7 +1187,7 @@ function scr_ui_manage() {
 
         draw_text(xx + 800, yy + 74, $"{global.chapter_name} {fx}");
 
-        if (managing >= 0) {
+        if (managing >= 0 && managing <= 10) {
             if (obj_ini.company_title[managing] != "") {
                 draw_set_font(fnt_fancy);
                 draw_text(xx + 800, yy + 110, string_hash_to_newline($"''{obj_ini.company_title[managing]}''"));
@@ -1208,7 +1212,7 @@ function scr_ui_manage() {
         var main_rect;
         var repetitions = min(ship_max, ship_see);
 
-        for (var sel = top; sel < repetitions; sel++) {
+        for (var sel = top; sel < repetitions && sel<array_length(sh_name); sel++) {
 
             if (sh_name[sel] != "") {
                 temp1 = string(sh_name[sel]) + " (" + string(sh_class[sel]) + ")";
@@ -1238,7 +1242,7 @@ function scr_ui_manage() {
                                 if (is_struct(display_unit[q])) {
                                     unit = display_unit[q];
                                     unit.load_marine(sh_ide[sel], load_from_star);
-                                    ma_loc[q] = sh_name[sel];
+                                    ma_loc[q] = sh_loc[sel];
                                     ma_lid[q] = sh_ide[sel];
                                     ma_wid[q] = 0;
                                 }
@@ -1249,7 +1253,7 @@ function scr_ui_manage() {
                                     if ((sh_cargo[sel] + vehic_size) <= sh_cargo_max[sel] && man_sel[q] != 0) {
                                         var start_ship = obj_ini.veh_lid[vehicle[0]][vehicle[1]];
                                         var start_planet = obj_ini.veh_wid[vehicle[0]][vehicle[1]];
-                                        ma_loc[q] = sh_name[sel];
+                                        ma_loc[q] = sh_loc[sel];
                                         ma_lid[q] = sh_ide[sel];
                                         ma_wid[q] = 0;
                                         obj_ini.veh_loc[vehicle[0]][vehicle[1]] = sh_name[sel];
@@ -1266,10 +1270,12 @@ function scr_ui_manage() {
                                 }
                             }
                         }
+                        selecting_location = "";
                         man_size = 0;
                         man_current = 0;
                         menu = 1;
                         cooldown = 8;
+                        selecting_ship = -1;
                         for (var k = 0; k < array_length(display_unit); k++) {
                             man_sel[k] = 0;
                         }

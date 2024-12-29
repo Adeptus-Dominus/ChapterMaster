@@ -61,6 +61,7 @@ if (action==""){
     }
     
     if (cont=20){// Move the entire fleet, don't worry about the other crap
+        turns_static = 0;
         var eta=0;
         
         if (trade_goods!="") and (owner != eFACTION.Tyranids) and (owner != eFACTION.Chaos) and (string_count("Inqis",trade_goods)=0) and (string_count("merge",trade_goods)=0)and (string_count("_her",trade_goods)=0) and (trade_goods!="cancel_inspection") and (trade_goods!="return"){

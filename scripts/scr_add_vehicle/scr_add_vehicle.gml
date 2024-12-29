@@ -20,7 +20,7 @@ function scr_add_vehicle(vehicle_type, target_company, weapon1, weapon2, weapon3
 	    if (obj_ini.fleet_type=ePlayerBase.home_world){
 	    	obj_ini.veh_loc[target_company][good]=obj_ini.home_name;
 	    	obj_ini.veh_wid[target_company][good]=2;
-	    	obj_ini.veh_lid[target_company][good]=0;}
+	    	obj_ini.veh_lid[target_company][good]=-1;}
 
 	    if (obj_ini.fleet_type != ePlayerBase.home_world){// Need a more elaborate ship_carrying += here for the different types of units
 	        var first,backup;first=0;backup=0;i=0;
@@ -41,7 +41,7 @@ function scr_add_vehicle(vehicle_type, target_company, weapon1, weapon2, weapon3
 	            obj_ini.ship_carrying[backup]+=1;
 	        }
 	        if (first=0) and (backup=0){
-	            obj_ini.veh_lid[target_company][good]=0;
+	            obj_ini.veh_lid[target_company][good]=-1;
 	            obj_ini.veh_loc[target_company][good]="";
 	            obj_ini.veh_wid[target_company][good]=0;exit;
 	        }

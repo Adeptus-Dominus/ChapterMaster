@@ -6,94 +6,15 @@ if (number=1){
     // create blocks of infantry
     
     
-    var i, k, col, temp1, temp2, x2, hei, man, sizz;
-    i=0;k=0;col=5;temp1=0;temp2=0;x2=224;hei=0;man=0;sizz=0;
+    var i=0,k=0,x2=224,hei=0,man=0,sizz=0;
     
-    
-    
-    
-    
-    repeat(100){// This determines the number of ships in each column
-        k+=1;
-        
-        
-        if (obj_fleet.fighting[k]=1){
-            if ((obj_fleet.column[col]="Capital") and (obj_fleet.ship_size[k]=3)) then obj_fleet.column_num[col]+=1;
-            if ((obj_fleet.column[col-1]="Capital") and (obj_fleet.ship_size[k]=3)) then obj_fleet.column_num[col-1]+=1;
-            if ((obj_fleet.column[col-2]="Capital") and (obj_fleet.ship_size[k]=3)) then obj_fleet.column_num[col-2]+=1;
-            if ((obj_fleet.column[col-3]="Capital") and (obj_fleet.ship_size[k]=3)) then obj_fleet.column_num[col-3]+=1;
-            if ((obj_fleet.column[col-4]="Capital") and (obj_fleet.ship_size[k]=3)) then obj_fleet.column_num[col-4]+=1;
-        
-            if (obj_fleet.ship_class[k]=obj_fleet.column[col]) then obj_fleet.column_num[col]+=1;
-            if (obj_fleet.ship_class[k]=obj_fleet.column[col-1]) then obj_fleet.column_num[col-1]+=1;
-            if (obj_fleet.ship_class[k]=obj_fleet.column[col-2]) then obj_fleet.column_num[col-2]+=1;
-            if (obj_fleet.ship_class[k]=obj_fleet.column[col-3]) then obj_fleet.column_num[col-3]+=1;
-            if (obj_fleet.ship_class[k]=obj_fleet.column[col-4]) then obj_fleet.column_num[col-4]+=1;
-            
-            if ((obj_fleet.column[col]="Escort") and (obj_fleet.ship_size[k]=1)) then obj_fleet.column_num[col]+=1;
-            if ((obj_fleet.column[col-1]="Escort") and (obj_fleet.ship_size[k]=1)) then obj_fleet.column_num[col-1]+=1;
-            if ((obj_fleet.column[col-2]="Escort") and (obj_fleet.ship_size[k]=1)) then obj_fleet.column_num[col-2]+=1;
-            if ((obj_fleet.column[col-3]="Escort") and (obj_fleet.ship_size[k]=1)) then obj_fleet.column_num[col-3]+=1;
-            if ((obj_fleet.column[col-4]="Escort") and (obj_fleet.ship_size[k]=1)) then obj_fleet.column_num[col-4]+=1;
-        }
-        
-        
+
+    sort_ships_into_columns(obj_fleet);
+
+    with (obj_fleet){
+        player_fleet_ship_spawner();
     }
     
-    
-    
-    col=6;
-    repeat(5){// Start repeat
-        temp1=0;temp2=0;
-    
-        col-=1;
-        if (col<5) then x2-=obj_fleet.column_width[col];
-        
-    
-        if (obj_fleet.column_num[col]>0){// Start ship creation
-            if (obj_fleet.column[col]="Capital"){hei=160;sizz=3;}
-            // if (column[col]="Slaughtersong"){hei=200;sizz=3;}
-            if (obj_fleet.column[col]="Strike Cruiser"){hei=96;sizz=2;}
-            if (obj_fleet.column[col]="Gladius"){hei=64;sizz=1;}
-            if (obj_fleet.column[col]="Hunter"){hei=64;sizz=1;}
-            if (obj_fleet.column[col]="Escort"){hei=64;sizz=1;}
-        
-            temp1=obj_fleet.column_num[col]*hei;
-            // temp2=((y-(height/2))-(temp1/2))+64;
-            temp2=y-(temp1/2)+64;
-            if (obj_fleet.column_num[col]=1) then temp2+=20;
-            
-            // show_message(string(column_num[col])+" "+string(column[col])+" X:"+string(x2));
-            
-            k=0;
-            repeat(100){k+=1;
-                if (obj_fleet.ship_class[k]=obj_fleet.column[col]) or ((obj_fleet.column[col]="Escort") and (obj_fleet.ship_size[k]=1)) or ((obj_fleet.column[col]="Capital") and (obj_fleet.ship_size[k]=3)){
-                    if (sizz=3) and (obj_fleet.ship_class[k]!="") and (obj_fleet.fighting[k]=1){man=instance_create(x2,temp2,obj_p_capital);man.ship_id=k;man.class=obj_fleet.column[col];temp2+=hei;}
-                    if (sizz=2) and (obj_fleet.ship_class[k]!="") and (obj_fleet.fighting[k]=1){man=instance_create(x2,temp2,obj_p_cruiser);man.ship_id=k;man.class=obj_fleet.column[col];temp2+=hei;}
-                    if (sizz=1) and (obj_fleet.ship_class[k]!="") and (obj_fleet.fighting[k]=1){man=instance_create(x2,temp2,obj_p_escort);man.ship_id=k;man.class=obj_fleet.column[col];temp2+=hei;}
-                }
-            }
-            
-        
-        }// End ship creation
-    
-    
-    
-    
-    }// End repeat
-
-
-
-
-
-
-
-
-
-
-
-
-
     
 }
 
@@ -107,7 +28,11 @@ if (number>0) and (owner!=1){
 
     
     if (owner = eFACTION.Imperium){
-        if (en_escort>0){en_column[4]="Sword Class Frigate";en_num[4]=en_escort;en_size[4]=1;}
+        if (en_escort>0){
+            en_column[4]="Sword Class Frigate";
+            en_num[4]=en_escort;
+            en_size[4]=1;
+        }
         
         if (en_frigate>0){en_column[3]="Avenger Class Grand Cruiser";en_num[3]=en_frigate;en_size[3]=2;}
             

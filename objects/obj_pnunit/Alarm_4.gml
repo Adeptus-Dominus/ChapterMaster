@@ -7,7 +7,7 @@ for (var i=0;i<array_length(unit_struct);i++){
     if (!is_struct(unit))then continue;
     if (marine_type[i]!="") and (unit.hp()<-3000) and (obj_ncombat.defeat=0){
         marine_dead[i]=0;
-        unit.add_or_sub_health(5000);
+        //unit.add_or_sub_health(5000);
     }// For incapitated
     
     if (ally[i]=false){

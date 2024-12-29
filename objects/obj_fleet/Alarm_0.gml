@@ -1,5 +1,5 @@
 
-scr_dead_marines(1);
+//scr_dead_marines(1);
 
 
 start=7;

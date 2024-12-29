@@ -25,7 +25,7 @@ scr_dialogue("lol");
 // loyalty=0;loyalty_hidden=0;
 
 
-// show_message(string(obj_ini.ship[1])+" location: "+string(obj_ini.ship_location[1]));
+// show_message(string(obj_ini.ship[0])+" location: "+string(obj_ini.ship_location[0]));
 
 // alarm[8]=1;
 

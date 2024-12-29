@@ -34,6 +34,7 @@ function reset_manage_arrays() {
         ma_promote=[];
         ma_god=[];
         ma_view = [];
+        squad = [];
     }
     reset_ship_manage_arrays();
 }
@@ -73,6 +74,7 @@ function add_man_to_manage_arrays(unit){
         array_push(display_unit,unit);
         array_push(ma_god,0);
         array_push(ma_view,true);
+        array_push(squad, -1);
 	}
 }
 
@@ -100,7 +102,7 @@ function add_vehicle_to_manage_arrays(unit){
 		array_push(ma_lid,obj_ini.veh_lid[unit[0]][unit[1]]);
 		array_push(ma_wid,obj_ini.veh_wid[unit[0]][unit[1]]);
 		array_push(ma_race,obj_ini.veh_race[unit[0]][unit[1]]);
-		if (obj_ini.veh_lid[unit[0]][unit[1]]>0){
+		if (obj_ini.veh_lid[unit[0]][unit[1]]>-1){
 			array_push(ma_loc,obj_ini.ship_location[obj_ini.veh_lid[unit[0]][unit[1]]]);
 		} else {
 			array_push(ma_loc,obj_ini.veh_loc[unit[0]][unit[1]]);
@@ -118,6 +120,7 @@ function add_vehicle_to_manage_arrays(unit){
 		array_push(ma_promote,0);
 		array_push(ma_god,0);
 		array_push(ma_view,true);
+		array_push(squad, -1);
 	}
 }
 
@@ -188,7 +191,7 @@ function scr_company_view(company) {
 
         // Check if unit is on a lost ship
         if (
-            obj_ini.veh_lid[company][i] > 0 &&
+            obj_ini.veh_lid[company][i] > -1 &&
             obj_ini.ship_location[obj_ini.veh_lid[company][i]] == "Lost"
         ) {
             continue
@@ -360,6 +363,7 @@ function filter_and_sort_company(type, specific){
         var tempprom =ma_promote[a];
         var tempdis =display_unit[a];
         var tempview = ma_view[a];
+        var temp_squad = squad[a]
 
         man[a]=man[b];
         ide[a]=ide[b];
@@ -379,6 +383,7 @@ function filter_and_sort_company(type, specific){
         ma_promote[a]=ma_promote[b];
         display_unit[a] =display_unit[b];
         ma_view[a] =ma_view[b];
+        squad[a] = squad[b]
 
         man[b]=tempman;
         ide[b]=tempide;
@@ -397,7 +402,8 @@ function filter_and_sort_company(type, specific){
         ma_exp[b]= tempexp;
         ma_promote[b]= tempprom;
         display_unit[b] = tempdis;  
-        ma_view[b] = tempview;      
+        ma_view[b] = tempview;
+        squad[b] = temp_squad;
 	}
 	if (type=="stat"){
 		var swapped;
@@ -428,8 +434,9 @@ function filter_and_sort_company(type, specific){
 }
 
 function switch_view_company(new_view){
+
 	with (obj_controller){
-		if (new_view<1) then exit;
+		if (new_view<1) then exit;	
 		filter_mode = false;
 		text_bar=0;
 		if (managing<=10 && managing>=0){
@@ -448,6 +455,9 @@ function switch_view_company(new_view){
 			company_data={};
 			scr_special_view(new_view);
 		} else {
+			with (obj_ini){
+				scr_company_order(new_view);
+			}
 			scr_company_view(new_view);		
 			company_data = new CompanyStruct(managing);
 		}

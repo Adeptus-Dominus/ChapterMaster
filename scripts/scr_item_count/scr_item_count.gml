@@ -10,6 +10,7 @@ function scr_item_count(item_type, quality="any") {
 	   		equipemnt list more than once so will have to leave till I can
 	   		find where stuff is added
 	   		*/
+
 	   		if (quality=="any"){
 	   			von+=obj_ini.equipment_number[i];
 	   		} else {

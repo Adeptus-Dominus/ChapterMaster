@@ -5,7 +5,7 @@
 .vscode/
 
 # Mac folder info
-.DS_Store
+**/.DS_Store
 
 # Gamemaker stuff
 ChapterMaster.resource_order

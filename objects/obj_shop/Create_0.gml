@@ -786,6 +786,14 @@ if (shop = "equipment2") {
     item_stocked[i] = scr_item_count(item[i]);
     item_cost[i] = 2500;
 
+    i += 1;
+    x_mod[i] = 9;
+    item[i] = "Gene Pod Incubator";
+    item_stocked[i] = scr_item_count(item[i]);
+    nobuy[i] = 1;
+    item_cost[i] = 0;   
+    forge_cost[i] = 80; 
+
     mc=0;
     repeat(i) {
         mc += 1;

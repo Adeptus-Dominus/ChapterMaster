@@ -294,11 +294,9 @@ function scr_ui_settings() {
 			draw_set_font(fnt_40k_14b);
 			draw_set_halign(fa_right);
         
-	        var title,geh,tab;
-			title="";
-			geh="";
+            var title = "";
+            var geh = "";
 			spacing=22;
-			tab=0;
 	        x5=xx+830;
 			y5=yy+207-spacing;
         
@@ -317,12 +315,12 @@ function scr_ui_settings() {
 					geh=obj_ini.armour[co,ide];
 				}
 	            if (gg=4){
-					title="Mobility Item: ";
-					geh=obj_ini.mobi[co,ide];
-				}
-	            if (gg=5){
 					title="Special Item: ";
 					geh=obj_ini.gear[co,ide];
+				}
+	            if (gg=5){
+					title="Mobility Item: ";
+					geh=obj_ini.mobi[co,ide];
 				}
             
 	            draw_set_halign(fa_right);
@@ -340,25 +338,31 @@ function scr_ui_settings() {
 	                if ((obj_ini.armour[co,ide]="Terminator Armour") or (obj_ini.armour[co,ide]="Dreadnought")) and (gg=4) then nep=true;
 	                if (ide=6) and ((gg=3) or (gg=5)) then nep=true;
                 
-	                if (obj_controller.mouse_left=1) and (obj_controller.cooldown<=0) and (nep=false){
-	                    obj_controller.cooldown=8000;
-	                    if (obj_mass_equip.tab!=0) then obj_mass_equip.refresh=true;
-	                    if (obj_mass_equip.tab=0){
-	                        if (gg=1) then tab=1;
-	                        if (gg=2) then tab=2;
-	                        if (gg=3) then tab=3;
-	                        if (gg=4) then tab=5;
-	                        if (gg=5) then tab=4;
-                        
-	                        obj_mass_equip.tab=tab;
-	                        with(obj_mass_equip){scr_weapons_equip();}// Gets item list
-	                    }
-	                }
+                    if (obj_controller.mouse_left == 1 && obj_controller.cooldown <= 0 && !nep) {
+                        obj_controller.cooldown=8000;
+                        if (obj_mass_equip.tab != 0) {
+                            obj_mass_equip.refresh = true;
+                        } else if (obj_mass_equip.tab == 0) {
+                            obj_mass_equip.tab = gg;
+                            obj_mass_equip.item_name = [];
+                            var is_hand_slot = (gg == 1 || gg == 2);
+                            scr_get_item_names(
+                                obj_mass_equip.item_name,
+                                obj_controller.settings, // eROLE
+                                gg, // slot
+                                is_hand_slot ? (
+                                    obj_mass_equip.tab == 1 ? eENGAGEMENT.Ranged : eENGAGEMENT.Melee
+                                ) : eENGAGEMENT.None,
+                                true, // include company standard
+                                false, // show all regardless of inventory
+                            );
+                        }
+                    }
 	            }
 	            draw_set_alpha(1);
-				draw_set_color(c_gray);
+	            draw_set_color(c_gray);
 	            draw_set_halign(fa_left);
-				draw_text(x5+5,y5,string(geh));
+	            draw_text(x5+5,y5,string(geh));
 	        }
 	    }
 	}

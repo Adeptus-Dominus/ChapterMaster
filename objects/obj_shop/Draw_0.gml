@@ -105,7 +105,7 @@ slate_panel.inside_method = function(){
                 var clicked =(point_in_rectangle(mouse_x, mouse_y, xx+1520, yy+y2+2, xx+1580, yy+y2+18)&& mouse_check_button_pressed(mb_left));
                 if (obj_controller.in_forge){
                     if (clicked){
-                        if (array_length(obj_controller.forge_queue)<20){
+                        if (array_length(obj_controller.specialist_point_handler.forge_queue)<20){
                             var new_queue_item = {
                                 name:item[i],
                                 count:1,
@@ -118,7 +118,7 @@ slate_panel.inside_method = function(){
                                     new_queue_item.forge_points = 5 * forge_cost[i];
                                 }
                             }
-                            array_push(obj_controller.forge_queue, new_queue_item);
+                            array_push(obj_controller.specialist_point_handler.forge_queue, new_queue_item);
                         }               
                     }
                }else if (nobuy[i]=0) && clicked && (!obj_controller.in_forge){

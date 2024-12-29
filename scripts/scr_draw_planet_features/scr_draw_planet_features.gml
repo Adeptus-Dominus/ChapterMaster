@@ -179,6 +179,24 @@ function FeatureSelected(Feature, system, planet) constructor{
 					};
 				}
 				break;
+			case P_features.Recruiting_World:
+				generic = true;
+				var _planet = obj_controller.selecting_planet;
+				var _star = obj_star_select.target;
+				var _system_point_use = obj_controller.specialist_point_handler.point_breakdown.systems;
+				var _spare_apoth_points = 0;
+				if (struct_exists(_system_point_use, _star.name)){
+					var _point_data = _system_point_use[$_star.name][_planet]
+					_spare_apoth_points = _point_data.heal_points - _point_data.heal_points_use;
+				}
+				title = "Marine Recruitment";
+				body  = $"There are {_spare_apoth_points} apothecary rescource points available for recruit screening\n"
+				var _recruit_find_chance = find_recruit_success_chance(_spare_apoth_points, _star.p_type[_planet]);
+
+				body += $"there is a {_recruit_find_chance*100}% of producing a successful recruit this month on the basis of the available apothecary time to screen candidates and the chances of the aspirants passing their trials to an acceptable standard\n"
+
+				body += $"To increase recruit success chance more apothecaries will be required on the planet surface, we could also spend further req on rescources to aid exiting efforts";
+				break;
 			case P_features.Mission:
 				var mission_description=$"";
 				var planet_name = planet_numeral_name(obj_controller.selecting_planet, obj_star_select.target);
@@ -253,7 +271,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 				
 				if (button_text!="none"){
 					if (point_and_click(draw_unit_buttons([xx+((area_width/2)-(string_width(button_text)/2)), yy+40+text_body_height+10], button_text))){
-						if (is_method(button_function)){
+						if (is_callable(button_function)){
 							button_function();
 							destroy=true;
 						} else {
@@ -302,7 +320,7 @@ function DataSlateMKTwo()constructor{
 	width=0;
 	XX=0;
 	YY=0;
-	static draw = function(xx,yy,x_scale, y_scale){
+	static draw = function(xx,yy,x_scale=1, y_scale=1){
 		XX=xx;
 		YY=yy;
 		height = 250*y_scale;
@@ -548,7 +566,7 @@ function DataSlate() constructor{
 		width = 860*scale_x;
 		height = 850*scale_y;
 		draw_sprite_ext(spr_data_slate,1, xx,yy, scale_x, scale_y, 0, c_white, 1);
-		if (is_method(inside_method)){
+		if (is_callable(inside_method)){
 			inside_method();
 		}
 	    if (static_line<=10) then draw_set_alpha(static_line/10);
@@ -585,7 +603,7 @@ function DataSlate() constructor{
 		draw_sprite_part_ext(spr_data_slate,1, 0, 752, 850, 98, XX, YY+(69+683*((middle_percent/100)))*scale_y, scale_x, scale_y, c_white, 1);
 		width = 860*scale_x;
 		height = (69+(683*(middle_percent/100))+98 )*scale_y;
-		if (is_method(inside_method)){
+		if (is_callable(inside_method)){
 			inside_method();
 		}		
 	}

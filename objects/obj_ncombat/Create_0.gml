@@ -9,7 +9,7 @@ repeat(15){co+=1;i=-1;
     }
 }co=0;i=0;hue=0;
 
-
+turn_count = 0;
 debugl("Ground Combat Started");
 
 audio_stop_sound(snd_royal);
@@ -21,6 +21,8 @@ if (nope!=1){audio_sound_gain(snd_battle,0.25*obj_controller.master_volume*obj_c
 
 //limit on the size of the players forces allowed
 man_size_limit = 0;
+man_limit_reached = false;
+man_size_count = 0;
 fack=0;
 cd=0;
 owner  = eFACTION.Player;
@@ -32,6 +34,9 @@ on_ship=false;
 alpha_strike=0;
 Warlord = 0;
 total_battle_exp_gain=0;
+end_alive_units = [];
+average_battle_exp_gain=0;
+upgraded_librarians=[];
 
 view_x=obj_controller.x;view_y=obj_controller.y;
 obj_controller.x=0;obj_controller.y=0;

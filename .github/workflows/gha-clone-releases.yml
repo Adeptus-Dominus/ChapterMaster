@@ -1,0 +1,14 @@
+name: Clone Releases
+on:
+  workflow_dispatch:
+jobs:
+  clone:
+    name: Clone Releases
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run action
+        uses: andrewthetechie/gha-clone-releases@v1.9.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          src_repo: EttyKitty/ChapterMaster
+          copy_assets: true

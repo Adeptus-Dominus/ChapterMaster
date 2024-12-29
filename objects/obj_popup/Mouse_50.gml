@@ -183,19 +183,7 @@ if (mouse_x>=xx+1465) and (mouse_y>=yy+499) and (mouse_x<xx+1576) and (mouse_y<y
                         obj_ini.veh_lid[target_comp][vehi]=obj_ini.veh_lid[veh_data[0]][veh_data[1]];
                         obj_ini.veh_wid[target_comp][vehi]=obj_ini.veh_wid[veh_data[0]][veh_data[1]];
 
-                        obj_ini.veh_race[veh_data[0]][veh_data[1]]=0;
-                        obj_ini.veh_loc[veh_data[0]][veh_data[1]]="";
-                        obj_ini.veh_role[veh_data[0]][veh_data[1]]="";
-                        obj_ini.veh_wep1[veh_data[0]][veh_data[1]]="";
-                        obj_ini.veh_wep2[veh_data[0]][veh_data[1]]="";
-                        obj_ini.veh_wep3[veh_data[0]][veh_data[1]]="";
-                        obj_ini.veh_upgrade[veh_data[0]][veh_data[1]]="";
-                        obj_ini.veh_acc[veh_data[0]][veh_data[1]]="";
-                        obj_ini.veh_hp[veh_data[0]][veh_data[1]]=0;
-                        obj_ini.veh_chaos[veh_data[0]][veh_data[1]]=0;
-                        obj_ini.veh_pilots[veh_data[0]][veh_data[1]]=0;
-                        obj_ini.veh_lid[veh_data[0]][veh_data[1]]=0;
-                        obj_ini.veh_wid[veh_data[0]][veh_data[1]]=0;
+                        destroy_vehicle(veh_data[0],veh_data[1]);
 
                         vehi++;
                     }
@@ -221,7 +209,11 @@ if (mouse_x>=xx+1465) and (mouse_y>=yy+499) and (mouse_x<xx+1576) and (mouse_y<y
 
         with(obj_controller){
             // man_current=0;
-            var i=-1;man_size=0;selecting_location="";selecting_types="";selecting_ship=0;
+            var i=-1;
+            man_size=0;
+            selecting_location="";
+            selecting_types="";
+            selecting_ship=-1;
             
             if (obj_controller.managing>0){
                 reset_manage_arrays();
@@ -255,21 +247,20 @@ if (type=6) and (cooldown<=0){// Actually changing equipment right here
         }
         if (mouse_y>=yy+318) and (mouse_y<yy+330) and (mouse_x>=xx+1263) and (mouse_x<xx+1289) and (tab!=2){change_tab=1;tab=2;obj_controller.last_weapons_tab=2;cooldown=8000;}
         if (mouse_y>=yy+318) and (mouse_y<yy+330) and (mouse_x>=xx+1409) and (mouse_x<xx+1435) and (target_comp<3){
-            var onceh=0;cooldown=8000;
-             if (onceh=0){
-                 if (master_crafted=0){
-                    master_crafted=1;
-                    obj_controller.popup_master_crafted=1;
-                    onceh=1;
-                    scr_weapons_equip();
-                }
-                else if (master_crafted=1){
-                    master_crafted=0;
-                    obj_controller.popup_master_crafted=0;
-                    onceh=1;
-                    scr_weapons_equip();
-                }
-             }
+            cooldown=8000;
+
+            master_crafted = !bool(master_crafted);
+            obj_controller.popup_master_crafted = master_crafted;
+            item_name = [];
+            scr_get_item_names(
+                item_name,
+                vehicle_equipment, // eROLE
+                target_comp, // slot
+                tab == 1 ? eENGAGEMENT.Ranged : eENGAGEMENT.Melee,
+                false, // include company standard
+                true, // limit to available equipment
+                master_crafted
+            );
         }
     }
 
@@ -285,17 +276,19 @@ if (type=6) and (cooldown<=0){// Actually changing equipment right here
             if (mouse_y>=yy+295) and (mouse_y<yy+315){target_comp=5;cooldown=8000;}
         }
 
-        if ((befi!=target_comp) and (vehicle_equipment!=-1)) or (change_tab=1){
-            var i;i=-1;repeat(40){i+=1;item_name[i]="";}
-
-            scr_weapons_equip();
-
+        if ((befi != target_comp && vehicle_equipment != -1) || change_tab == 1) {
+            item_name = [];
+            scr_get_item_names(
+                item_name,
+                vehicle_equipment, // eROLE
+                target_comp, // slot
+                tab == 1 ? eENGAGEMENT.Ranged : eENGAGEMENT.Melee,
+                false, // include company standard
+                true, // limit to available equipment
+                master_crafted
+            );
         }
-
-
-
     }
-
 }
 
 
@@ -422,7 +415,7 @@ if (point_in_rectangle(mouse_x, mouse_y, xx+1465, yy+499,xx+1576,yy+518)){// Pro
             // man_current=0;
             var man_size=0;selecting_location="";
             selecting_types="";
-            selecting_ship=0;
+            selecting_ship=-1;
             reset_manage_arrays();
             alll=0;
             update_general_manage_view();
@@ -445,11 +438,11 @@ if (mouse_x>=xx+1465) and (mouse_y>=yy+499) and (mouse_x<xx+1577) and (mouse_y<y
         cooldown=999;
         obj_controller.cooldown=8;
 
-        if (n_wep1="(None)") then n_wep1="";
-        if (n_wep2="(None)") then n_wep2="";
-        if (n_armour="(None)") then n_armour="";
-        if (n_gear="(None)") then n_gear="";
-        if (n_mobi="(None)") then n_mobi="";
+        if (n_wep1=ITEM_NAME_NONE) then n_wep1="";
+        if (n_wep2=ITEM_NAME_NONE) then n_wep2="";
+        if (n_armour=ITEM_NAME_NONE) then n_armour="";
+        if (n_gear=ITEM_NAME_NONE) then n_gear="";
+        if (n_mobi=ITEM_NAME_NONE) then n_mobi="";
 
 
         for (var i=0;i<array_length(obj_controller.display_unit);i++){
@@ -477,7 +470,7 @@ if (mouse_x>=xx+1465) and (mouse_y>=yy+499) and (mouse_x<xx+1577) and (mouse_y<y
                             obj_controller.ma_armour[i]="";
                             obj_ini.veh_wep3[unit[0],unit[1]]="";
 
-                            if (n_armour!="(None") and (n_armour!=""){
+                            if (n_armour!=ITEM_NAME_NONE) and (n_armour!=""){
                                 obj_controller.ma_armour[i]=n_armour;
                                 obj_ini.veh_wep3[unit[0],unit[1]]=n_armour;
                                 if (n_armour!="") then scr_add_item(n_armour,-1);
@@ -526,7 +519,7 @@ if (mouse_x>=xx+1465) and (mouse_y>=yy+499) and (mouse_x<xx+1577) and (mouse_y<y
                             if (obj_controller.ma_gear[i]!="") then scr_add_item(obj_controller.ma_gear[i],1);
                             obj_controller.ma_gear[i]="";
                             obj_ini.veh_upgrade[unit[0],unit[1]]="";
-                            if (n_gear!="(None)") and (n_gear!=""){
+                            if (n_gear!=ITEM_NAME_NONE) and (n_gear!=""){
                                 obj_controller.ma_gear[i]=n_gear;
                                 obj_ini.veh_upgrade[unit[0],unit[1]]=n_gear;
                             }

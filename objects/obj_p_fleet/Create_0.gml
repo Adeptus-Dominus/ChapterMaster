@@ -11,28 +11,30 @@ ii_check=choose(8,9,10,11,12);
 var wop=instance_nearest(x,y,obj_star);
 if (instance_exists(wop)) and (y>0) and (x>0){
     if (point_distance(x,y,wop.x,wop.y)<=40){
-        orbiting=wop;wop.present_fleet[1]+=1;
+        orbiting=wop;
+        wop.present_fleet[1]+=1;
     }
 }
 
-
-image_xscale=1.25;image_yscale=1.25;
+point_breakdown = single_loc_point_data();
+image_xscale=1.25;
+image_yscale=1.25;
 
 var i=-1;
-capital = array_create(50, "");
-capital_num = array_create(50, 0);
-capital_sel = array_create(50, 1);
-capital_uid = array_create(50, 0);
+capital = [];
+capital_num = [];
+capital_sel = [];
+capital_uid = [];
 
-frigate = array_create(100, "");
-frigate_num = array_create(100, 0);
-frigate_sel = array_create(100, 1);
-frigate_uid = array_create(100, 0);
+frigate = [];
+frigate_num = [];
+frigate_sel = [];
+frigate_uid = [];
 
-escort = array_create(100, "");
-escort_num = array_create(100, 0);
-escort_sel = array_create(100, 1);
-escort_uid = array_create(100, 0);
+escort = [];
+escort_num = [];
+escort_sel = [];
+escort_uid = [];
 
 
 image_speed=0;

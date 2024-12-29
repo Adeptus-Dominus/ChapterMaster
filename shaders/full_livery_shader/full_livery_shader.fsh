@@ -25,6 +25,7 @@ uniform vec3 right_hand;
 uniform vec3 eye_lense;
 uniform vec3 right_backpack;
 uniform vec3 left_backpack;
+uniform vec3 company_marks;
 
 varying vec2 v_vTexcoord;
 varying vec4 v_vColour;
@@ -103,7 +104,10 @@ void main()
     } ;
      if (col.rgb == vec3(1.0,160.0/255.0, 112.0/255.0).rgb){
         col.rgb = left_hand.rgb;
-    } ;              
+    };
+    if (col.rgb == vec3(128.0/255.0,128.0/255.0,0.0)){
+      col.rgb = company_marks.rgb;
+    };         
     gl_FragColor = v_vColour * col;
 
 }

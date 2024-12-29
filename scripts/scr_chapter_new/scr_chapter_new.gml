@@ -218,23 +218,23 @@ function scr_chapter_new(argument0) {
 			obj_creation.race[i][_role_id] = 1;
 		}
 	}
-	load_default_gear(Role.HONOUR_GUARD, "Honour Guard", "Power Sword", "Bolter", "Artificer Armour", "", "");
-	load_default_gear(Role.VETERAN, "Veteran", "Chainsword", "Combiflamer", "Power Armour", "", "");
-	load_default_gear(Role.TERMINATOR, "Terminator", "Power Fist", "Storm Bolter", "Terminator Armour", "", "");
-	load_default_gear(Role.CAPTAIN, "Captain", "Power Sword", "Bolt Pistol", "Power Armour", "", "Iron Halo");
-	load_default_gear(Role.DREADNOUGHT, "Dreadnought", "Dreadnought Lightning Claw", "Lascannon", "Dreadnought", "", "");
-	load_default_gear(Role.CHAMPION, "Champion", "Power Sword", "Power Armour", "Power Armour", "", "Combat Shield");
-	load_default_gear(Role.TACTICAL, "Tactical", "Bolter", "Combat Knife", "Power Armour", "", "");
-	load_default_gear(Role.DEVASTATOR, "Devastator", "", "Combat Knife", "Power Armour", "", "");
-	load_default_gear(Role.ASSAULT, "Assault", "Chainsword", "Bolt Pistol", "Power Armour", "Jump Pack", "");
-	load_default_gear(Role.ANCIENT, "Ancient", "Company Standard", "Bolt Pistol", "Power Armour", "", "");
-	load_default_gear(Role.SCOUT, "Scout", "Bolter", "Combat Knife", "Scout Armour", "", "");
-	load_default_gear(Role.CHAPLAIN, "Chaplain", "Crozius Arcanum", "Bolt Pistol", "Power Armour", "", "Rosarius");
-	load_default_gear(Role.APOTHECARY, "Apothecary", "Chainsword", "Bolt Pistol", "Power Armour", "", "Narthecium");
-	load_default_gear(Role.TECHMARINE, "Techmarine", "Power Axe", "Bolt Pistol", "Artificer Armour", "Servo-arm", "");
-	load_default_gear(Role.LIBRARIAN, "Librarian", "Force Staff", "Bolt Pistol", "Power Armour", "", "Psychic Hood");
-	load_default_gear(Role.SERGEANT, "Sergeant", "Chainsword", "Bolt Pistol", "Power Armour", "", "");
-	load_default_gear(Role.VETERAN_SERGEANT, "Veteran Sergeant", "Chainsword", "Plasma Pistol", "Power Armour", "", "");
+	load_default_gear(eROLE.HonourGuard, "Honour Guard", "Power Sword", "Bolter", "Artificer Armour", "", "");
+	load_default_gear(eROLE.Veteran, "Veteran", "Chainsword", "Combiflamer", "Power Armour", "", "");
+	load_default_gear(eROLE.Terminator, "Terminator", "Power Fist", "Storm Bolter", "Terminator Armour", "", "");
+	load_default_gear(eROLE.Captain, "Captain", "Power Sword", "Bolt Pistol", "Power Armour", "", "Iron Halo");
+	load_default_gear(eROLE.Dreadnought, "Dreadnought", "Dreadnought Lightning Claw", "Lascannon", "Dreadnought", "", "");
+	load_default_gear(eROLE.Champion, "Champion", "Power Sword", "Power Armour", "Power Armour", "", "Combat Shield");
+	load_default_gear(eROLE.Tactical, "Tactical", "Bolter", "Combat Knife", "Power Armour", "", "");
+	load_default_gear(eROLE.Devastator, "Devastator", "", "Combat Knife", "Power Armour", "", "");
+	load_default_gear(eROLE.Assault, "Assault", "Chainsword", "Bolt Pistol", "Power Armour", "Jump Pack", "");
+	load_default_gear(eROLE.Ancient, "Ancient", "Company Standard", "Bolt Pistol", "Power Armour", "", "");
+	load_default_gear(eROLE.Scout, "Scout", "Bolter", "Combat Knife", "Scout Armour", "", "");
+	load_default_gear(eROLE.Chaplain, "Chaplain", "Crozius Arcanum", "Bolt Pistol", "Power Armour", "", "Rosarius");
+	load_default_gear(eROLE.Apothecary, "Apothecary", "Chainsword", "Bolt Pistol", "Power Armour", "", "Narthecium");
+	load_default_gear(eROLE.Techmarine, "Techmarine", "Power Axe", "Bolt Pistol", "Artificer Armour", "Servo-arm", "");
+	load_default_gear(eROLE.Librarian, "Librarian", "Force Staff", "Bolt Pistol", "Power Armour", "", "Psychic Hood");
+	load_default_gear(eROLE.Sergeant, "Sergeant", "Chainsword", "Bolt Pistol", "Power Armour", "", "");
+	load_default_gear(eROLE.VeteranSergeant, "Veteran Sergeant", "Chainsword", "Plasma Pistol", "Power Armour", "", "");
 
 
 	for(var c = 0; c < array_length(obj_creation.all_chapters); c++){
@@ -299,6 +299,7 @@ function scr_chapter_new(argument0) {
 		obj_creation.homeworld_exists = chapter_object.homeworld_exists;
 		obj_creation.homeworld = chapter_object.homeworld;
 		obj_creation.homeworld_rule = chapter_object.homeworld_rule;
+		obj_creation.homeworld_name = chapter_object.homeworld_name;
 
 		obj_creation.recruiting_exists = chapter_object.recruiting_exists;
 		obj_creation.recruiting = chapter_object.recruiting;
@@ -369,13 +370,13 @@ function scr_chapter_new(argument0) {
 			    obj_creation.livery_picker.scr_unit_draw_data();
 			    obj_creation.livery_picker.set_defualt_armour(struct_cols,col_special);
 			    obj_creation.full_liveries = array_create(21,DeepCloneStruct(obj_creation.livery_picker.map_colour)); 			    
-			    obj_creation.full_liveries[Role.LIBRARIAN] = obj_creation.livery_picker.set_defualt_librarian(struct_cols);
+			    obj_creation.full_liveries[eROLE.Librarian] = obj_creation.livery_picker.set_defualt_librarian(struct_cols);
 
-			    obj_creation.full_liveries[Role.CHAPLAIN] = obj_creation.livery_picker.set_defualt_chaplain(struct_cols);
+			    obj_creation.full_liveries[eROLE.Chaplain] = obj_creation.livery_picker.set_defualt_chaplain(struct_cols);
 
-			    obj_creation.full_liveries[Role.APOTHECARY] = obj_creation.livery_picker.set_defualt_apothecary(struct_cols);
+			    obj_creation.full_liveries[eROLE.Apothecary] = obj_creation.livery_picker.set_defualt_apothecary(struct_cols);
 
-			    obj_creation.full_liveries[Role.TECHMARINE] = obj_creation.livery_picker.set_defualt_techmarines(struct_cols);
+			    obj_creation.full_liveries[eROLE.Techmarine] = obj_creation.livery_picker.set_defualt_techmarines(struct_cols);
 			    obj_creation.livery_picker.scr_unit_draw_data();
 			    obj_creation.livery_picker.set_defualt_armour(struct_cols,col_special); 			
 			}
@@ -437,6 +438,9 @@ function scr_chapter_new(argument0) {
 		if(struct_exists(chapter_object, "custom_squads")){
 			obj_creation.custom_squads = chapter_object.custom_squads;
 		}
+		
+		
+
 
 		points = chapter_object.points;
 		maxpoints=chapter_object.points;	

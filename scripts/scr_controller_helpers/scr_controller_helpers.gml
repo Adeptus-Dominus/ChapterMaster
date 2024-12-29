@@ -311,22 +311,20 @@ function scr_toggle_fleet_area(){
 	        }
 
 	        var g=0,u=0,m=0,d=0;
-	        for(var i=1; i<=60; i++){
-	            if (obj_ini.ship[i]!="") and (obj_ini.ship_size[i]==3) then g+=1;
+	        temp[37] = 0;
+	        temp[38] = 0;
+	        temp[39] = 0;
+	        for(var i=0; i<array_length(obj_ini.ship); i++){
+	            if (obj_ini.ship[i]!=""){
+	            	if (obj_ini.ship_size[i]==3) then temp[37]++;
+	            	if (obj_ini.ship_size[i]==2) then temp[38]++;
+	            	if (obj_ini.ship_size[i]==1) then temp[39]++;
+	            }
 	        }
-	        temp[37]=string(g);
+
 	        g=0;
-	        for(var i=1; i<=60; i++){
-	            if (obj_ini.ship[i]!="") and (obj_ini.ship_size[i]==2) then g+=1;
-	        }
-	        temp[38]=string(g);
-	        g=0;
-	        for(var i=1; i<=60; i++){
-	            if (obj_ini.ship[i]!="") and (obj_ini.ship_size[i]==1) then g+=1;
-	        }
-	        temp[39]=string(g);
-	        g=0;
-	        for(var i=1; i<=60; i++){
+	        temp[41]="1";
+	        for (var i=0; i<array_length(obj_ini.ship); i++){
 	            if (g!=0) and (obj_ini.ship[i]!=""){
 	                if ((obj_ini.ship_hp[i]/obj_ini.ship_maxhp[i])<u){
 	                    g=i;

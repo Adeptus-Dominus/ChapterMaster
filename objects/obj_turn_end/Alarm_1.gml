@@ -76,22 +76,6 @@ if (audien[1]=0) or (current_audience>audiences){
         if (popup_special[current_popup]="2") then pip.planet=2;
         pip.number=1;
         
-        if (pip.title="Ship Lost"){
-            var iii=0,yar=0, unit;cah=0;
-            repeat(30){
-                iii+=1;
-                if (obj_ini.name[0][iii] == "") then continue;
-                unit = fetch_unit([0,iii])
-                if (unit.role()=="Chapter Master"){
-                    if (unit.ship_location>0){
-                        if (obj_ini.ship_location[unit.ship_location]=="Lost"){
-                            obj_controller.alarm[7]=70;
-                            if (global.defeat<=1) then global.defeat=1;
-                        }
-                    }
-                }
-            }
-        }
         
     }
     if (current_popup>popups) or (popup[1]=0){

@@ -2,6 +2,7 @@
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 function UnitQuickFindPanel() constructor{
 	main_panel = new DataSlate();
+	garrison_log = {};
 	tab_buttons = {
 	    "fleets":new MainMenuButton(spr_ui_but_3, spr_ui_hov_3),
 	    "garrisons":new MainMenuButton(spr_ui_but_3, spr_ui_hov_3),
@@ -9,14 +10,19 @@ function UnitQuickFindPanel() constructor{
 	    "missions":new MainMenuButton(spr_ui_but_3, spr_ui_hov_3),
 	}
 
+	static detail_slate = new DataSlateMKTwo();
+
 	view_area = "fleets";
-	update_garrison_log = function(){
-		for (var i = 0;i<=200; i++){
+	static update_garrison_log = function(){
+		for (var i = 0;i<array_length(obj_ini.ship_carrying); i++){
 			obj_ini.ship_carrying[i]=0
 		};
 		var unit, unit_location, group;
+		delete garrison_log;
 	    garrison_log = {};
-	    for (var co=0;co<11;co++){
+	    obj_controller.specialist_point_handler.calculate_research_points(false);
+	    show_debug_message(obj_controller.specialist_point_handler.point_breakdown);
+	    for (var co=0;co<=obj_ini.companies;co++){
 	    	for (var u=0;u<array_length(obj_ini.TTRPG[co]);u++){
 				/// @type {Struct.TTRPG_stats}
 	    		unit = fetch_unit([co, u]);
@@ -64,7 +70,7 @@ function UnitQuickFindPanel() constructor{
 		    				array_push(garrison_log[$ unit_location].units, unit);
 		    				garrison_log[$ unit_location].vehicles++;
 		    			}
-		    		} else if (obj_ini.veh_lid[co][u]>0){
+		    		} else if (obj_ini.veh_lid[co][u]>-1){
 		    			obj_ini.ship_carrying[obj_ini.veh_lid[co][u]]+=scr_unit_size("",obj_ini.veh_role[co][u],true);
 		    		}
 		    	}
@@ -153,15 +159,43 @@ function UnitQuickFindPanel() constructor{
 			    draw_text(xx+80, yy+90+(20*i), cur_fleet.capital_number);
 			    draw_text(xx+160, yy+90+(20*i), cur_fleet.frigate_number);
 			    draw_text(xx+240, yy+90+(20*i), cur_fleet.escort_number);
-			    if (cur_fleet.action=="move"){
+			    var _fleet_point_data = cur_fleet.point_breakdown;
+			    if (cur_fleet.action == "Lost"){
+			    	draw_text(xx+310, yy+90+(20*i), "Lost");
+			    }
+			    else if (cur_fleet.action=="move"){
 			    	draw_text(xx+310, yy+90+(20*i), "Warp Travel");
 			    } else {
-			    	draw_text(xx+310, yy+90+(20*i), instance_nearest(cur_fleet.x, cur_fleet.y, obj_star).name);
+			    	var _near_star = instance_nearest(cur_fleet.x, cur_fleet.y, obj_star);
+			    	draw_text(xx+310, yy+90+(20*i), _near_star.name);
+			    	var _special_points = obj_controller.specialist_point_handler.point_breakdown.systems;
+			    	if (struct_exists(_special_points,_near_star)){
+						var _fleet_point_data = _special_points[$ _near_star.name][0];
+					}
 			    }
+			    var _fleet_coords = [xx+10, yy+90+(20*i)-2,xx+main_panel.width,yy+90+(20*i)+18];
+			    
 			    if (point_and_click([xx+10, yy+90+(20*i)-2,xx+main_panel.width,yy+90+(20*i)+18])){
 			    	travel_target = [cur_fleet.x, cur_fleet.y];
 			    	travel_increments = [(travel_target[0]-obj_controller.x)/15,(travel_target[1]-obj_controller.y)/15];
 			    	travel_time = 0;
+			    }
+
+			    if (scr_hit(_fleet_coords)){
+					detail_slate.draw(xx+main_panel.width-10,_fleet_coords[1]-20, 1.5, 1.5);
+					var _xx = xx+main_panel.width-10;
+					var _yy = _fleet_coords[1]-20;
+					draw_set_font(fnt_40k_12i);
+					draw_text(_xx+160, _yy+10,"forge point\ntotal");
+					draw_text( _xx+240, _yy+10,"forge point\nuse");
+					draw_text( _xx+320, _yy+10,"apothecary\npoint total");
+					draw_text(_xx+400, _yy+10,"apothecary\npoint use");
+					draw_text(_xx+60, _yy+50,"Orbiting");
+					var _y_line = _yy+50;
+					draw_text(_xx+160, _y_line,_fleet_point_data.forge_points);
+					draw_text(_xx+240, _y_line,_fleet_point_data.forge_points_use);
+					draw_text(_xx+320, _y_line , _fleet_point_data.heal_points);
+					draw_text(_xx+400, _y_line, _fleet_point_data.heal_points_use);							    	
 			    }
 			    i++;
 			}			
@@ -183,9 +217,11 @@ function UnitQuickFindPanel() constructor{
 				hover_entered = scr_hit(loc[0],loc[1],loc[2],loc[3]);
 			}		    
 		    while(i<array_length(system_names) && (yy+90+(20*i)+12 +20)<main_panel.YY+yy+main_panel.height){
-		    	system_data = garrison_log[$system_names[i]];
+		    	var _sys_name = system_names[i];
+		    	system_data = garrison_log[$_sys_name];
 		    	registered_hover=false;
-				if (scr_hit(xx+10, yy+90+(20*i),xx+main_panel.width,yy+90+(20*i)+18)){
+		    	var _sys_item_y = yy+90+(20*i)+18;
+				if (scr_hit(xx+10, yy+90+(20*i),xx+main_panel.width,_sys_item_y)){
 					if (!hover_entered){
 						draw_set_color(c_gray);
 						draw_rectangle(xx+10+20, yy+90+(20*i)-2,xx+main_panel.width-20,yy+90+(20*i)+18, 0);
@@ -201,6 +237,33 @@ function UnitQuickFindPanel() constructor{
 						if (hover_item.root_item == i){
 							draw_rectangle(xx+10+20, yy+90+(20*i)-2,xx+main_panel.width-20,yy+90+(20*i)+18, 0);
 						}
+					}
+					detail_slate.draw(xx+main_panel.width-10,_sys_item_y-20, 1.5, 1.5);
+					var _special_points = obj_controller.specialist_point_handler.point_breakdown.systems;
+					if (struct_exists(_special_points,_sys_name)){
+						var _system_point_data = _special_points[$ _sys_name];
+						var _xx = xx+main_panel.width-10;
+						var _yy = _sys_item_y-20;
+						draw_set_font(fnt_40k_12i);
+						draw_text(_xx+160, _yy+10,"forge point\ntotal");
+						draw_text( _xx+240, _yy+10,"forge point\nuse");
+						draw_text( _xx+320, _yy+10,"apothecary\npoint total");
+						draw_text(_xx+400, _yy+10,"apothecary\npoint use");
+						draw_text(_xx+60, _yy+50,"Orbiting");
+						draw_text( _xx+60, _yy+100,"I");
+						draw_text(_xx+60, _yy+150,"II");
+						draw_text(_xx+60, _yy+200,"III");
+						draw_text(_xx+60, _yy+300,"IV");
+						var _y_line = _yy+50;
+						for (var o=0;o<5;o++){
+							var _area_item = _system_point_data[o];
+							draw_text(_xx+220, _y_line,_area_item.forge_points);
+							draw_text(_xx+300, _y_line,_area_item.forge_points_use);
+							draw_text(_xx+380, _y_line , _area_item.heal_points);
+							draw_text(_xx+460, _y_line, _area_item.heal_points_use);
+							_y_line+=50;						
+						}
+
 					}
 				}
 			    draw_text(xx+80, yy+90+(20*i), system_names[i]);
@@ -395,7 +458,7 @@ function update_general_manage_view(){
 				company_data={};
 	        }            
 	        cooldown=10;
-	        sel_loading=0;
+	        sel_loading=-1;
 	        unload=0;
 	        alarm[6]=30;
 	    } else if (managing==-1){
@@ -455,7 +518,7 @@ function toggle_selection_borders(){
         	if (is_struct(display_unit[p])){
                 var unit=display_unit[p];
                 var mar_id = unit.marine_number;
-                if (unit.ship_location>0) and (obj_ini.loc[unit.company][mar_id]!="Mechanicus Vessel"){
+                if (unit.ship_location>-1) and (obj_ini.loc[unit.company][mar_id]!="Mechanicus Vessel"){
                 	unit.is_boarder = !unit.is_boarder;
                 }
             }
@@ -500,7 +563,7 @@ function jail_selection(){
     } else if (managing==-1){
     	update_garrison_manage()
     }
-    sel_loading=0;
+    sel_loading=-1;
     unload=0;
     alarm[6]=7;		
 }
@@ -616,7 +679,7 @@ function equip_selection(){
 }
 
 function load_selection(){
-    if (man_size>0) and (selecting_location!="Terra") and (selecting_location!="Mechanicus Vessel"){
+    if (man_size>0) and (selecting_location!="Terra") and (selecting_location!="Mechanicus Vessel") and (selecting_location!="Lost"){
         scr_company_load(selecting_location);
         menu=30;
         top=1;
@@ -625,8 +688,8 @@ function load_selection(){
 
 function unload_selection(){
 	//show_debug_message("{0},{1},{2}",obj_controller.selecting_ship,man_size,selecting_location);
-    if (man_size>0) and (obj_controller.selecting_ship>=1) and (!instance_exists(obj_star_select)) 
-    and (selecting_location!="Terra") and (selecting_location!="Mechanicus Vessel") and (selecting_location!="Warp"){
+    if (man_size>0) and (obj_controller.selecting_ship>=0) and (!instance_exists(obj_star_select)) 
+    and (selecting_location!="Terra" && selecting_location!="Mechanicus Vessel" && selecting_location!="Warp" && selecting_location!="Lost") {
         cooldown=8000;
         var boba=0;
         var unload_star = star_by_name(selecting_location);

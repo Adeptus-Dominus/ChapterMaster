@@ -3,7 +3,7 @@ try_and_report_loop("player alarm 1",function(){
 
     acted=0;
 
-    if (action="lost"){
+    if (action=="Lost"){
         set_fleet_location("Lost");
         exit;
 
@@ -118,7 +118,9 @@ try_and_report_loop("player alarm 1",function(){
         instance_activate_object(obj_star);// Kind of half-ass band-aiding that bug, might need to remove this later; this might cause problems later
         
         
-        with(obj_star){if (p_type[1]!="Craftworld") then instance_deactivate_object(id);}
+        with(obj_star){
+            if (p_type[1]!="Craftworld") then instance_deactivate_object(id);
+        }
 
         var steh;steh=instance_nearest(x,y,obj_star);
         if (instance_exists(steh)) and (steh!=0){

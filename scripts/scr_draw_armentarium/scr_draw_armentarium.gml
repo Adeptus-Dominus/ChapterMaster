@@ -18,7 +18,7 @@ function set_up_armentarium(){
         click=1;
         temp[36]=scr_role_count(obj_ini.role[100][16],"");
         temp[37]=temp[36]+scr_role_count(string(obj_ini.role[100][16])+" Aspirant","");
-        calculate_research_points();
+        specialist_point_handler.calculate_research_points();
         in_forge=false
         forge_button = new ShutterButton();
         stc_flashes = new GlowDot();
@@ -38,7 +38,7 @@ function set_up_armentarium(){
 function same_locations(first_loc,second_loc){
     var same_loc = false;
     if (is_array(first_loc)&& is_array(second_loc)){
-        if (first_loc[2] != "warp" && first_loc[2] != "lost"){
+        if (first_loc[2] != "Warp" && first_loc[2] != "Lost"){
             if (first_loc[2] == second_loc[2]) then same_loc=true;
         } else {
             if (first_loc[1] == second_loc[1]) &&
@@ -75,15 +75,8 @@ function identify_stc(area){
     }
 }
 function scr_draw_armentarium(){
-	    var recruitment_pace = [
-        " is currently halted.",
-        " is advancing sluggishly.",
-        " is advancing slowly.",
-        " is advancing moderately fast.",
-        " is advancing fast.",
-        " is advancing frenetically.",
-        " is advancing as fast as possible."
-    ];
+    var _recruit_pace = ARR_recruitment_pace;
+    var _train_tiers  = ARR_techmarine_training_tiers;
     var xx = __view_get(e__VW.XView, 0) + 0;
 	var yy = __view_get(e__VW.YView, 0) + 0;
 	draw_sprite(spr_rock_bg, 0, xx, yy);
@@ -106,7 +99,7 @@ function scr_draw_armentarium(){
         draw_text_transformed(xx + 336 + 16, yy + 66, string_hash_to_newline(header), 1, 1, 0);
         if (!in_forge){
             draw_set_font(fnt_40k_30b);
-            draw_text_transformed(xx + 336 + 16, yy + 100, string_hash_to_newline("Forge Master " + string(obj_ini.name[0, 2])), 0.6, 0.6, 0);
+            draw_text_transformed(xx + 336 + 16, yy + 100, string_hash_to_newline("Forge Master " + string(obj_ini.name[0, 1])), 0.6, 0.6, 0);
         }
     }
     if (menu_adept = 1) {
@@ -240,32 +233,11 @@ function scr_draw_armentarium(){
             blurp = "Your Chapter contains " + string(temp[36]) + " " + string(obj_ini.role[100, 16]) + ".##";
             blurp += "The training of a new " + string(obj_ini.role[100, 16]);
         }
-        if (training_techmarine = 0) {
-            blurp += recruitment_pace[training_techmarine];
+        if (training_techmarine>=0){
+            blurp += _recruit_pace[training_techmarine];
         }
-        if (training_techmarine = 1) {
-            blurp += recruitment_pace[training_techmarine];
-            eta = floor((359 - tech_points) / 1) + 1;
-        }
-        if (training_techmarine = 2) {
-            blurp += recruitment_pace[training_techmarine];
-            eta = floor((359 - tech_points) / 2) + 1;
-        }
-        if (training_techmarine = 3) {
-            blurp += recruitment_pace[training_techmarine];
-            eta = floor((359 - tech_points) / 4) + 1;
-        }
-        if (training_techmarine = 4) {
-            blurp += recruitment_pace[training_techmarine];
-            eta = floor((359 - tech_points) / 6) + 1;
-        }
-        if (training_techmarine = 5) {
-            blurp += recruitment_pace[training_techmarine];
-            eta = floor((359 - tech_points) / 10) + 1;
-        }
-        if (training_techmarine = 6) {
-            blurp += recruitment_pace[training_techmarine];
-            eta = floor((359 - tech_points) / 14) + 1;
+        if (training_techmarine >0 && training_techmarine<=6) {
+            eta = floor((359 - tech_points) / _train_tiers[training_techmarine])+ 1;
         }
 
         if (tech_aspirant > 0) and(training_techmarine > 0) and(menu_adept = 1) {
@@ -296,7 +268,7 @@ function scr_draw_armentarium(){
         }else if (stc_research.research_focus=="ships"){
             research_area_limit = stc_ships;
         }
-        var research_progress = ceil(((5000*(research_area_limit+1))-stc_research[$ stc_research.research_focus])/research_points);
+        var research_progress = ceil(((5000*(research_area_limit+1))-stc_research[$ stc_research.research_focus])/specialist_point_handler.research_points);
 		static research_drop_down = false;
         var research_eta_message = $"Based on current progress it will be {research_progress} months until next significant research step is complete";
         draw_text_ext(xx + 336 + 16, y_offset+25, string_hash_to_newline(research_eta_message), -1, 536);        
@@ -500,102 +472,13 @@ function scr_draw_armentarium(){
         draw_set_color(0);       
         //draw_rectangle(xx + 359, yy + 66, xx + 886, yy + 818, 0);
 
-        var forge_buttons= [xx + 359, yy + 77, 0, 0]
-        draw_unit_buttons([forge_buttons[0] , forge_buttons[1]],"<-- Overview",[1,1],c_red);
-        forge_buttons[2] = forge_buttons[0] + (string_width("<-- Overview")) + 8;
-        forge_buttons[3] = forge_buttons[1] + (string_height("<-- Overview")) + 5;
-        if (point_in_rectangle(
-            mouse_x,
-            mouse_y, 
-            forge_buttons[0], 
-            forge_buttons[1], 
-            forge_buttons[2],
-            forge_buttons[3]
-            ) && mouse_check_button_pressed(mb_left)
-        ){
+        if (point_and_click(draw_unit_buttons([xx + 359, yy + 77],"<-- Overview",[1,1],c_red))){
             in_forge=false;
         }        
-        draw_set_color(c_gray);
-        draw_rectangle(xx + 359, yy + 107, xx + 886, yy + 127, 0);
-        draw_set_alpha(1);
-        draw_set_font(fnt_40k_14);
-        draw_set_color(0);
-        draw_text(xx+359,yy+109,"Name");
-        draw_text(xx+500,yy+109,"Number");
-        draw_text(xx+600,yy+109,"Forge Points");
-        draw_text(xx+700,yy+109,"Construction ETA");        
-        draw_set_color(c_gray);
-        var item_gap = 130;
-        var total_eta=0;
-        static top_point=0;
-        for (var i=top_point; i<13; i++){
-            if (i+1>array_length(forge_queue)) then break;
-            draw_set_color(c_gray);
-            if point_in_rectangle(mouse_x, mouse_y, xx + 359,yy +item_gap, xx + 886, yy +item_gap+20){
-                draw_set_color(c_white)
-            }
-            if (is_string(forge_queue[i].name)){
-                draw_text(xx+359,yy + item_gap,string_hash_to_newline(forge_queue[i].name));
-                draw_text(xx+525,yy + item_gap,string_hash_to_newline(forge_queue[i].count));
-                if (forge_queue[i].ordered==obj_controller.turn){
-                    if (forge_queue[i].count>1){
-                         draw_unit_buttons([xx+500 , yy + item_gap],"-",[0.75,0.75],c_red);
-                         if (point_in_rectangle(
-                            mouse_x,
-                            mouse_y, 
-                            xx+500, 
-                            yy + item_gap, 
-                            xx+500+3+(0.75*string_width("-")),
-                            yy + item_gap+3+(0.75*string_height("-")), 
-                            ) && mouse_check_button_pressed(mb_left)
-                        ){
-                            var unit_cost = forge_queue[i].forge_points/forge_queue[i].count;
-                            forge_queue[i].count--;
-                            forge_queue[i].forge_points-=unit_cost;
-                         }               
-                    }
-                    if (forge_queue[i].count<100){
-                        draw_unit_buttons([xx+545 , yy + item_gap],"+",[0.75,0.75],c_green);
-                         if (point_in_rectangle(
-                            mouse_x,
-                            mouse_y, 
-                            xx+545, 
-                            yy + item_gap, 
-                            xx+545+3+(0.75*string_width("+")),
-                            yy + item_gap+3+(0.75*string_height("+")) 
-                            ) && mouse_check_button_pressed(mb_left) && current_target==false
-                        ){
-                            var unit_cost = forge_queue[i].forge_points/forge_queue[i].count;
-                            forge_queue[i].count++;
-                            forge_queue[i].forge_points+=unit_cost;
-                         }                  
-                    }
-                }
-            } else if (is_array(forge_queue[i].name)){
-                if (forge_queue[i].name[0]  == "research"){
-                    draw_text(xx+359,yy + item_gap,string_hash_to_newline(forge_queue[i].name[1]));
-                }
-            }
-            draw_text(xx+630,yy + item_gap,string_hash_to_newline(forge_queue[i].forge_points));
-            total_eta += ceil(forge_queue[i].forge_points/forge_points);
-            draw_text(xx+735,yy+ item_gap,string_hash_to_newline(total_eta) + " turns");        
-            forge_buttons= [xx+850, yy + item_gap, 0, 0]
-            draw_unit_buttons([forge_buttons[0] , forge_buttons[1]],"X",[0.75,0.75],c_red);
-            forge_buttons[2] = forge_buttons[0] + (string_width("X")) + 8;
-            forge_buttons[3] = forge_buttons[1] + (string_height("X")) + 5;            
-             if (point_in_rectangle(
-                mouse_x,
-                mouse_y, 
-                forge_buttons[0], 
-                forge_buttons[1], 
-                forge_buttons[2],
-                forge_buttons[3]
-                ) && mouse_check_button_pressed(mb_left)
-            ){
-                array_delete(forge_queue, i, 1);
-             }                     
-            item_gap +=20
-        }
+
+        specialist_point_handler.draw_forge_queue(xx+ 359,yy + 107);
+
+        
         // draw_set_color(c_red);
         //draw_line(xx + 326 + 16, yy + 426, xx + 887 + 16, yy + 426);         
         draw_set_color(#af5a00);

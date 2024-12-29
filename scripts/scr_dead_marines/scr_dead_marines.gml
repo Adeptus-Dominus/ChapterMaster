@@ -13,27 +13,20 @@ function scr_dead_marines(run) {
 	    obj_controller.marines=0;
 	    obj_controller.command=0;
 	}
+
 	i=0;
 	var unit, squad;
 	if (run == 1){
 		for (company=0;company<11;company++){
 			comp_length = array_length(obj_ini.name[company]);
 			clean = true;
-			for (i=1;i<comp_length;i++){
+			for (i=0;i<comp_length;i++){
 				if (obj_ini.name[company][i]!=""){
 		            unit = fetch_unit([company, i]);
-		            if (unit.ship_location>0){
+		            if (unit.ship_location>-1){
 						if ((ship_lost[unit.ship_location]>0) or (obj_ini.ship_hp[unit.ship_location]<=0)){
 				            fallen+=1;
 				            clean = false;
-
-				            if (obj_ini.role[company,i]="Chapter Master"){
-				            	obj_controller.alarm[7]=1;
-				            	if (global.defeat<=1) then global.defeat=1;
-				            }
-				            if (obj_ini.wep1[company,i]="Company Standard") then scr_loyalty("Lost Standard","+");
-				            if (obj_ini.wep2[company,i]="Company Standard") then scr_loyalty("Lost Standard","+");
-				            unit.remove_from_squad();
 				            scr_kill_unit(company, i);
 			        	}
 		        	}
@@ -47,21 +40,8 @@ function scr_dead_marines(run) {
 		        }
 
 		        if (i<120){
-		            if (obj_ini.veh_role[company,i]!="") and ((ship_lost[obj_ini.veh_lid[company,i]]>0) or (obj_ini.ship_hp[obj_ini.veh_lid[company,i]]<=0)) and (obj_ini.veh_lid[company,i]>0){
-		                clean = false;
-		                obj_ini.veh_race[company,i]=0;
-		                obj_ini.veh_loc[company,i]="";
-		                obj_ini.veh_name[company,i]="";
-		                obj_ini.veh_role[company,i]="";
-		                obj_ini.veh_wep1[company,i]="";
-		                obj_ini.veh_wep2[company,i]="";
-		                obj_ini.veh_wep3[company,i]="";
-		                obj_ini.veh_upgrade[company,i]="";
-		                obj_ini.veh_acc[company,i]="";
-		                obj_ini.veh_hp[company,i]=100;
-		                obj_ini.veh_chaos[company,i]=0;
-		                obj_ini.veh_pilots[company,i]=0;
-		                obj_ini.veh_lid[company,i]=0;
+		            if (obj_ini.veh_role[company,i]!="") and ((ship_lost[obj_ini.veh_lid[company,i]]>0) or (obj_ini.ship_hp[obj_ini.veh_lid[company,i]]<=0)) and (obj_ini.veh_lid[company,i]>-1){
+		            	destroy_vehicle(company,i);
 		            }
 		        }
 			}
@@ -70,4 +50,21 @@ function scr_dead_marines(run) {
 			}
 		}
 	}
+}
+
+
+function destroy_vehicle(co, num){
+    obj_ini.veh_race[co][num]=0;
+    obj_ini.veh_loc[co][num]="";
+    obj_ini.veh_name[co][num]="";
+    obj_ini.veh_role[co][num]="";
+    obj_ini.veh_wep1[co][num]="";
+    obj_ini.veh_wep2[co][num]="";
+    obj_ini.veh_wep3[co][num]="";
+    obj_ini.veh_upgrade[co][num]="";
+    obj_ini.veh_acc[co][num]="";
+    obj_ini.veh_hp[co][num]=100;
+    obj_ini.veh_chaos[co][num]=0;
+    obj_ini.veh_pilots[co][num]=0;
+    obj_ini.veh_lid[co][num]=-1;
 }

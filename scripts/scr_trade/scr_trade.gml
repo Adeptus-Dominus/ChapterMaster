@@ -53,21 +53,21 @@ function scr_trade(argument0) {
 	    if (trade_take[i]="Land Raider") then their_worth+=trade_tnum[i]*600;
 	    if (trade_take[i]="Castellax Battle Automata") then their_worth+=trade_tnum[i]*1200;
 	    if (trade_take[i]="Minor Artifact") then their_worth+=trade_tnum[i]*450;
-	    if (trade_take[i]="Skitarii") then their_worth+=trade_tnum[i]*20;
+	    if (trade_take[i]="Skitarii") then their_worth+=trade_tnum[i]*15;
 	    if (trade_take[i]="Techpriest") then their_worth+=trade_tnum[i]*150;
     
 	    if (trade_take[i]="Condemnor Boltgun") then their_worth+=trade_tnum[i]*15;
 	    if (trade_take[i]="Hellrifle") then their_worth+=trade_tnum[i]*20;
 	    if (trade_take[i]="Incinerator") then their_worth+=trade_tnum[i]*20;
-	    if (trade_take[i]="Crusader") then their_worth+=trade_tnum[i]*40;
+	    if (trade_take[i]="Crusader") then their_worth+=trade_tnum[i]*20;
 	    if (trade_take[i]="Exterminatus") then their_worth+=trade_tnum[i]*1500;
 	    if (trade_take[i]="Cyclonic Torpedo") then their_worth+=trade_tnum[i]*3000;
     
 	    if (trade_take[i]="Eviscerator") then their_worth+=trade_tnum[i]*20;
 	    if (trade_take[i]="Heavy Flamer") then their_worth+=trade_tnum[i]*12;
 	    if (trade_take[i]="Inferno Bolts") then their_worth+=trade_tnum[i]*5;
-	    if (trade_take[i]="Sister of Battle") then their_worth+=trade_tnum[i]*50;
-	    if (trade_take[i]="Sister Hospitaler") then their_worth+=trade_tnum[i]*70;
+	    if (trade_take[i]="Sister of Battle") then their_worth+=trade_tnum[i]*40;
+	    if (trade_take[i]="Sister Hospitaler") then their_worth+=trade_tnum[i]*50;
     
 	    if (trade_take[i]="Eldar Power Sword") then their_worth+=trade_tnum[i]*50;
 	    if (trade_take[i]="Archeotech Laspistol") then their_worth+=trade_tnum[i]*150;

@@ -1,13 +1,15 @@
-function scr_ship_count(argument0) {
+function scr_ship_count(wanted_ship_class) {
 
-	// argument0 : role
 
 	// Mi color favorito es bicicleta.
 
-	var i, count;
-	count=0;i=0;
+	var count=0,i=0;
 
-	repeat(30){i+=1;if (obj_ini.ship_class[i]=argument0) then count+=1;}
+	for (var i=0;i<array_length(obj_ini.ship_class);i++){
+		if (obj_ini.ship_class[i]=wanted_ship_class){
+			count++;
+		}
+	}
 
 	return(count);
 

@@ -30,8 +30,8 @@
   "nineSlice": null,
   "origin": 9,
   "parent": {
-    "name": "deprecated",
-    "path": "folders/Sprites/Marine Viewer/deprecated.yy",
+    "name": "unused",
+    "path": "folders/Sprites/Marine Viewer/unused.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

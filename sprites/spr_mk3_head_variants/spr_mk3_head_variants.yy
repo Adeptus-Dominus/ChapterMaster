@@ -26,7 +26,7 @@
     {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"11966306-2c72-4664-be9f-563bdc23de41","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
   ],
   "nineSlice": null,
-  "origin": 0,
+  "origin": 9,
   "parent": {
     "name": "mk_3_complex",
     "path": "folders/Sprites/Marine Viewer/body_types/mk_3_complex.yy",
@@ -65,7 +65,7 @@
     ],
     "visibleRange": null,
     "volume": 1.0,
-    "xorigin": 0,
+    "xorigin": -2,
     "yorigin": 0,
   },
   "swatchColours": null,

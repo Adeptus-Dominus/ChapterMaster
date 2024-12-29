@@ -49,26 +49,6 @@ function planet_forces_array(planet){
 	return force_array;
 }
 
-function guard_target_matrix(planet){
-	guard_attack = "";
-    // if (p_eldar[planet]>0) and (p_owner[planet]!=6) then guard_attack="eldar";
-    //if (planet_forces[eFACTION.Tau] + planet_forces[eFACTION.Ork] + planet_forces[eFACTION.Heretics]+ planet_forces[eFACTION.Chaos])
-    if (p_tau[planet]>0) then guard_attack="tau";
-    if (p_orks[planet]>0) then guard_attack="ork";
-    if (p_traitors[planet]>0) then guard_attack="traitors";
-    if (p_chaos[planet]>0) then guard_attack="csm";
-    if (p_pdf[planet]>0) and (p_owner[planet]=8) then guard_attack="pdf";
-
-    // Always goes after traitors first, unless
-    if (p_traitors[planet]<=1) and (p_tau[planet]>=4) and (p_owner[planet]!=8) then guard_attack="tau";
-    if (p_pdf[planet]>0) and (obj_controller.faction_status[2]="War") and (p_owner[planet]=1) then guard_attack="pdf";
-    if (p_traitors[planet]<=1) and (p_orks[planet]>=4) then guard_attack="ork";
-    // if (p_tyranids[planet]>0) and (guard_attack="") then guard_attack="tyranids";
-    if (p_tyranids[planet]>=4) then guard_attack="tyranids";	
-
-    return guard_attack;
-}
-
 
 
 

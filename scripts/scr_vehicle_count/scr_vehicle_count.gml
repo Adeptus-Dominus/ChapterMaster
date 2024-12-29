@@ -50,7 +50,7 @@ function scr_vehicle_count(role, star_system_num) {
             for (var i = 1; i <= 100; i++) {
                 if (obj_ini.veh_role[company_number, i] == role) and (star_system_num == "") then vehicle_count++;
                 if (obj_ini.veh_role[company_number, i] == role) and (obj_ini.veh_loc[company_number, i] == obj_ini.home_name) and (star_system_num == "home") then vehicle_count++;
-                if (obj_ini.veh_role[company_number, i] == role) and (star_system_num == "field") and ((obj_ini.loc[company_number, i] != obj_ini.home_name) or (obj_ini.veh_lid[company_number, i] > 0)) then vehicle_count++;
+                if (obj_ini.veh_role[company_number, i] == role) and (star_system_num == "field") and ((obj_ini.loc[company_number, i] != obj_ini.home_name) or (obj_ini.veh_lid[company_number, i] > -1)) then vehicle_count++;
 
                 if (star_system_num != "home") and(star_system_num != "field") {
                     if (obj_ini.veh_role[company_number, i] == role) {

@@ -172,7 +172,7 @@ function scr_save_controller(save_id){
     ini_write_real("Controller","penitent_blood",obj_controller.blood_debt);
     //
     ini_write_real("Controller","training_apothecary",obj_controller.training_apothecary);
-    ini_write_real("Controller","apothecary_points",obj_controller.apothecary_points);
+    ini_write_real("Controller","apothecary_recruit_points",obj_controller.apothecary_recruit_points);
     ini_write_real("Controller","apothecary_aspirant",obj_controller.apothecary_aspirant);
     ini_write_real("Controller","training_chaplain",obj_controller.training_chaplain);
     ini_write_real("Controller","chaplain_points",obj_controller.chaplain_points);

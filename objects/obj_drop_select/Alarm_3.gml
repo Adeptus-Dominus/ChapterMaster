@@ -5,7 +5,7 @@ repeat(61){
     ship_all[i]=0;
     ship_use[i]=0;
     ship_max[i]=0;
-    ship_ide[i]=0;
+    ship_ide[i]=-1;
 }
 
 max_ships=0;

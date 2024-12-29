@@ -4,15 +4,15 @@ for(var i=0; i<31; i++){
     ship_all[i]=0;
     ship_use[i]=0;
     ship_max[i]=0;
-    ship_ide[i]=0;
+    ship_ide[i]=-1;
 }
 
 max_ships=sh_target.capital_number+sh_target.frigate_number+sh_target.escort_number;
 
 var tump=0;
 
-var i=0;
-for(var b=1; b<=sh_target.capital_number; b++){
+var i=-1;
+for(var b=0; b<array_length(sh_target.capital); b++){
     if (sh_target.capital[b]!=""){
         i+=1;
         ship[i]=sh_target.capital[i];
@@ -26,7 +26,7 @@ for(var b=1; b<=sh_target.capital_number; b++){
         bomb_b+=ship_max[i];bomb_c+=ship_max[i];
     }
 }
-for(var q=1; q<=sh_target.frigate_number; q++){
+for(var q=0; q<array_length(sh_target.frigate); q++){
     if (sh_target.frigate[q]!=""){
         i+=1;
         ship[i]=sh_target.frigate[q];

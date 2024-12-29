@@ -11,7 +11,7 @@ if (__b__){
     var why=0,onceh=0, ship=0;
 
     bomb_score=0;
-    for(var i=0; i<=25; i++){
+    for(var i=0; i<array_length(ship_ide) i++){
         if (ship_all[i]==1){
             if (obj_ini.ship_class[ship_ide[i]]=="Battle Barge") then bomb_score+=3;
             if (obj_ini.ship_class[ship_ide[i]]=="Strike Cruiser") then bomb_score+=1;

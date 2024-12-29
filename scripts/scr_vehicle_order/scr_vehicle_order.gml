@@ -5,7 +5,7 @@ function reset_vehicle_variable_arrays(company_number,i){
     veh_loc[company_number][i] = "";
     veh_name[company_number][i] = "";
     veh_role[company_number][i] = "";
-    veh_lid[company_number][i] = 0;
+    veh_lid[company_number][i] = -1;
     veh_wid[company_number][i] = 0;
     veh_wep1[company_number][i] = "";
     veh_wep2[company_number][i] = "";
@@ -14,7 +14,7 @@ function reset_vehicle_variable_arrays(company_number,i){
     veh_acc[company_number][i] = "";
     veh_hp[company_number][i] = 100;
     veh_chaos[company_number][i] = 0;
-    veh_uid[company_number][i] = 0;
+    veh_uid[company_number][i] = -1;
 }
 function scr_vehicle_order(company_number) {
     // Once it's actually fucking working it should probably join the scr_company_order script in the Interface folder
@@ -27,7 +27,7 @@ function scr_vehicle_order(company_number) {
         temp_loc[company_number][i] = "";
         temp_name[company_number][i] = "";
         temp_role[company_number][i] = "";
-        temp_lid[company_number][i] = 0;
+        temp_lid[company_number][i] = -1;
         temp_wid[company_number][i] = 0;
         temp_wep1[company_number][i] = "";
         temp_wep2[company_number][i] = "";

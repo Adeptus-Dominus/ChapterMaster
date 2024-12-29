@@ -20,6 +20,8 @@ All notable changes to this project will be documented in this file.
 - here go changes that are important only to other collaborators.
   - everything that a normal player doesn't need to know.
 ----------------------------------
+## [0.10.0.0]
+
 
 ## [0.9.6]
 

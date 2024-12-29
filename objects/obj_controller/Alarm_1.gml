@@ -195,27 +195,8 @@ if (did==1){
     fleet.owner  = eFACTION.Player;
     fleet.alarm[5]=5;
     
-    for(var f=1; f<=40; f++){
-        switch (obj_ini.ship_size[f]) {
-            case 1:
-                fleet.escort_number+=1;
-                fleet.escort[fleet.escort_number]=obj_ini.ship[f];
-                fleet.escort_num[fleet.escort_number]=f;
-                fleet.escort_uid[fleet.escort_number]=obj_ini.ship_uid[fleet.escort_num[fleet.escort_number]];
-                break;
-            case 2:
-                fleet.frigate_number+=1;
-                fleet.frigate[fleet.frigate_number]=obj_ini.ship[f];
-                fleet.frigate_num[fleet.frigate_number]=f;
-                fleet.frigate_uid[fleet.frigate_number]=obj_ini.ship_uid[fleet.frigate_num[fleet.frigate_number]];
-                break;
-            case 3:
-                fleet.capital_number+=1;
-                fleet.capital[fleet.capital_number]=obj_ini.ship[f];
-                fleet.capital_num[fleet.capital_number]=f;
-                fleet.capital_uid[fleet.capital_number]=obj_ini.ship_uid[fleet.capital_num[fleet.capital_number]];
-                break;
-        }
+    for(var f=0; f<array_length(obj_ini.ship); f++){
+        add_ship_to_fleet(f, fleet);
     }
     
     var ii=0;
@@ -513,11 +494,18 @@ if (did==1){
     }
     
     // Ork planets here
+
+    var _imperial_planets = [];
+    var _non_xenos_chaos = [];
     with(obj_star){
-        if (planets>0) and (owner == eFACTION.Imperium) and (p_type[1]!="Dead"){
-            //this object simply acts as a counter of ork owned planets
-            instance_create(x,y,obj_temp3);
+        if (is_dead_star() || planets==0){
+            continue;
         }
+        if  (owner == eFACTION.Imperium){
+            //this object simply acts as a counter of ork owned planets
+            array_push(_imperial_planets, id);
+        }
+      
     }
     
     var ed2,n,i,orkz=choose(4,5,6)+5;
@@ -527,22 +515,14 @@ if (did==1){
     if (is_test_map==true) then orkz=4;
 
     for(var j=0; j<orkz; j++){
-        n=instance_number(obj_temp3);
-        i=floor(random(n));
-        current_system=instance_find(obj_temp3, i);
-        ed2=instance_nearest(current_system.x,current_system.y,obj_star);
+        n=array_length(_imperial_planets);
+        i = array_random_index(_imperial_planets);
+        current_system=_imperial_planets[i];
         
-        ed2.planet[1]=1;
-        ed2.owner = eFACTION.Ork;
-		ed2.p_owner = array_create(5, ed2.owner)
-        with(current_system){instance_destroy();}
-    }
-    with(obj_temp3){instance_destroy();}
-    
-    with(obj_star){
-        if (planets>0) and (owner == eFACTION.Imperium) and (p_type[1]!="Dead"){
-            instance_create(x,y,obj_temp3);
-        }
+        current_system.planet[1]=1;
+        current_system.owner = eFACTION.Ork;
+		current_system.p_owner = array_create(5, current_system.owner)
+        array_delete(_imperial_planets, i, 1);
     }
 
     if (field=="tyranids"){
@@ -550,39 +530,42 @@ if (did==1){
         if (obj_ini.fleet_type==ePlayerBase.penitent) then orkz+=2;
         
         for(var j=0; j<orkz; j++){
-            n=instance_number(obj_temp3);
-            i=floor(random(n));
-            current_system=instance_find(obj_temp3, i);
-            ed2=instance_nearest(current_system.x,current_system.y,obj_star);
+            n=array_length(_imperial_planets);
+            i = array_random_index(_imperial_planets);
+            current_system=_imperial_planets[i];
 
-            ed2.planet[1]=1;
-            ed2.p_owner[1]=9;
-            ed2.owner = eFACTION.Tyranids;
-            with(current_system){instance_destroy();}
+            current_system.planet[1]=1;
+            current_system.p_owner[1]=9;
+            current_system.owner = eFACTION.Tyranids;
+
+            array_delete(_imperial_planets, i, 1);
         }
     }
-    with(obj_temp3){instance_destroy();}
     
     with(obj_star){
-        if (planets>0) and (owner<=5) and (p_type[1]!="Dead"){
-            instance_create(x,y,obj_temp3);
-        }
+        if (is_dead_star() || planets==0){
+            continue;
+        }        
+        if (owner<=5) {
+            array_push(_non_xenos_chaos, id);
+        } 
     }
+
+
     if (field=="both"){
         if (obj_ini.fleet_type==ePlayerBase.penitent) then orkz+=3;
         orkz+=3;
         for(var j=0; j<orkz; j++){
-            n=instance_number(obj_temp3);
-            i=floor(random(n));
-            current_system=instance_find(obj_temp3, i);
-            ed2=instance_nearest(current_system.x,current_system.y,obj_star);
-            ed2.planet[1]=1;
-            ed2.p_owner[1]=90;
-            ed2.owner=90;
-            with(current_system){instance_destroy();}
+            n=array_length(_non_xenos_chaos);
+            i=array_random_index(_non_xenos_chaos);
+            current_system=_non_xenos_chaos[i];
+
+            current_system.planet[1]=1;
+            current_system.p_owner[1]=90;
+            current_system.owner=90;
+            array_delete(_non_xenos_chaos, i, 1);
         }
     }
-    with(obj_temp3){instance_destroy();}
     
     // Another mechanicus
     repeat(choose(3,4,5)){
@@ -649,27 +632,28 @@ scr_restart_variables(2);
 if (!instance_exists(obj_saveload)) and (instance_exists(obj_creation)) and (global.load=0){
     for(var i=1; i<=10; i++){
         if (obj_creation.world[i]!=""){
+            var _wanted_worlds = [];
             with(obj_star){
                 for(var run=1; run<=4; run++){
-                    if (p_type[run]=obj_creation.world_type[i]) then instance_create(x,y,obj_temp3);
+                    if (p_type[run]=obj_creation.world_type[i]){
+                        array_push(_wanted_worlds, id);
+                    }
                 }
             }
             
-            var him=instance_nearest(random(room_width),random(room_height),obj_temp3);
+            var _chosen_world=array_random_element(_wanted_worlds);
             
-            if (instance_exists(him)){
-                var him2=instance_nearest(him.x,him.y,obj_star);
-                with(obj_temp3){instance_destroy();}
+            if (instance_exists(_chosen_world)){
                 for(var run=1; run<=4; run++){
-                    if (him2.p_type[run]=obj_creation.world_type[i]){
-                        him2.name=obj_creation.world[i];
-                        if (obj_creation.world_feature[i]!="") then him2.p_feature[run]=[];
+                    if (_chosen_world.p_type[run]=obj_creation.world_type[i]){
+                        _chosen_world.name=obj_creation.world[i];
+                        if (obj_creation.world_feature[i]!="") then _chosen_world.p_feature[run]=[];
                         obj_creation.world[i]="";
                         obj_creation.world_type[i]="";
                         obj_creation.world_feature[i]="";
                     }
                 }
-                instance_deactivate_object(him2);
+                instance_deactivate_object(_chosen_world);
             }
         }
     }
@@ -694,26 +678,26 @@ obj_crusade.placing=1;scr_zoom();*/
 
 // scr_add_artifact("Weapon","",4,obj_ini.home_name,1);
 
-/*scr_add_artifact("good","daemonic",0,obj_ini.ship[1],501);
-scr_add_artifact("good","daemonic",0,obj_ini.ship[1],501);
-scr_add_artifact("good","daemonic",0,obj_ini.ship[1],501);
-scr_add_artifact("good","daemonic",0,obj_ini.ship[1],501);
-scr_add_artifact("good","daemonic",0,obj_ini.ship[1],501);
-scr_add_artifact("good","daemonic",0,obj_ini.ship[1],501);
-scr_add_artifact("good","daemonic",0,obj_ini.ship[1],501);*/
+/*scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);
+scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);
+scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);
+scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);
+scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);
+scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);
+scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);*/
 
 // scr_add_item("Cyclonic Torpedo",5);
 // scr_add_item("Exterminatus",5);
     
 if (is_test_map==true){
     // scr_add_item("Exterminatus",5);
-    /*scr_add_artifact("good","",0,obj_ini.ship[1],501);
-    scr_add_artifact("good","",0,obj_ini.ship[1],501);
-    scr_add_artifact("good","",0,obj_ini.ship[1],501);
-    scr_add_artifact("good","",0,obj_ini.ship[1],501);
-    scr_add_artifact("good","",0,obj_ini.ship[1],501);
-    scr_add_artifact("good","",0,obj_ini.ship[1],501);
-    scr_add_artifact("good","",0,obj_ini.ship[1],501);*/
+    /*scr_add_artifact("good","",0,obj_ini.ship[0],501);
+    scr_add_artifact("good","",0,obj_ini.ship[0],501);
+    scr_add_artifact("good","",0,obj_ini.ship[0],501);
+    scr_add_artifact("good","",0,obj_ini.ship[0],501);
+    scr_add_artifact("good","",0,obj_ini.ship[0],501);
+    scr_add_artifact("good","",0,obj_ini.ship[0],501);
+    scr_add_artifact("good","",0,obj_ini.ship[0],501);*/
 }
 
 with(obj_temp7){instance_destroy();}

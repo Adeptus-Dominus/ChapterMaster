@@ -1,9 +1,9 @@
-function scr_add_item(item_name, number_of_items, quality="any") {
+function scr_add_item(item_name, number_of_items, quality="any", from_marine=false) {
+	if (item_name=="") then exit;
+	var i, last_open, match_slot, open_slot=false, matched=false;
+	var ok=0;
 
-	var i, ok, last_open, match_slot, open_slot=false, matched=false, last_slot;
-	ok=0;
-
-	last_slot=array_length(obj_ini.equipment);
+	var last_slot=array_length(obj_ini.equipment);
     for (i=0;i<last_slot;i++){
         if (obj_ini.equipment[i]=="") and (open_slot==false){
         	last_open=i;
@@ -28,6 +28,10 @@ function scr_add_item(item_name, number_of_items, quality="any") {
     		if (quality=="any") then quality="standard"
 	    	for (var q=start_count;q<obj_ini.equipment_number[match_slot];q++){
 	    		obj_ini.equipment_quality[match_slot][q]=quality;
+	    	}
+	    	// this is to make sure people can't de=equip items to get around maintenance values
+	    	if (instance_exists(obj_controller)){
+	    		obj_controller.specialist_point_handler.add_to_armoury_repair(item_name, number_of_items);
 	    	}
 	    } else if (number_of_items<0){
 	    	if (start_count==0) then return "no_item";

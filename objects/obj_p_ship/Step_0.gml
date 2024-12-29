@@ -27,8 +27,8 @@ if (instance_exists(obj_en_ship)){
 }
 
 if (hp<=0) and (x>-5000){
-    // obj_fleet.fighting[self.ship_id]=-5;
-    if (class="Battle Barge") or (class="Slaughtersong"){
+
+    if (class="Battle Barge") or (class="Gloriana"){
         obj_fleet.capital-=1;
         obj_fleet.capital_lost+=1;
     }
@@ -44,7 +44,7 @@ if (hp<=0) and (x>-5000){
         obj_fleet.escort-=1;
         obj_fleet.escort_lost+=1;
     }
-    // obj_ini.ship_hp[self.ship_id]=-100;
+
     
     obj_fleet.ship_lost[ship_id]=1;// show_message("obj_fleet.ship_lost["+string(ship_id)+"] = 1");
     
@@ -73,7 +73,7 @@ if (hp>0) and (instance_exists(target)){
     if (cooldown[3]>0) then cooldown[3]-=1;
     if (cooldown[4]>0) then cooldown[4]-=1;
 
-    if (class="Apocalypse Class Battleship") or (class="Slaughtersong"){
+    if (class="Apocalypse Class Battleship") or (class="Gloriana"){
         o_dist=500;
         action="attack";
     }
@@ -139,15 +139,15 @@ if (hp>0) and (instance_exists(target)){
     
     if (paction!="move") and (paction!="turn") and (paction!="attack_move") and (paction!="attack_turn"){
         if (action="attack"){
-            if (dist>o_dist) and (speed<(obj_fleet.ship_speed[self.ship_id]/10)) then speed+=speed_up;
+            if (dist>o_dist) and (speed<(max_speed)) then speed+=speed_up;
             if (dist<o_dist) and (speed>0) then speed-=speed_down;
         }
         if (action="broadside"){
-            if (dist>o_dist) and (speed<(obj_fleet.ship_speed[self.ship_id]/10)) then speed+=speed_up;
+            if (dist>o_dist) and (speed<(max_speed)) then speed+=speed_up;
             if (dist<o_dist) and (speed>0) then speed-=speed_down;
         }
         if (action="flank"){// flank here
-            if (dist>o_dist) and (speed<(obj_fleet.ship_speed[self.ship_id]/10)) then speed+=speed_up;
+            if (dist>o_dist) and (speed<(max_speed)) then speed+=speed_up;
             if (dist<o_dist) and (speed>0) then speed-=speed_down;
         }
     }
@@ -165,7 +165,7 @@ if (hp>0) and (instance_exists(target)){
         }
         }
         
-        if (dist>20) and (speed<(obj_fleet.ship_speed[self.ship_id]/10)) then speed+=speed_up;
+        if (dist>20) and (speed<(max_speed)) then speed+=speed_up;
         if (dist<=20) and (speed>0){
             paction="";
             action="attack";

@@ -132,11 +132,6 @@ tim3=0;
 tim4=0;
 tim5=0;
 
-if (!directory_exists("ErrorLogs")) {
-    directory_create("ErrorLogs");
-}
-
-
 // TODO: maybe replace the OG debug_log.ini with something like this.
 // if (!directory_exists("SessionLogs")) {
 //     directory_create("SessionLogs");
@@ -145,23 +140,6 @@ if (!directory_exists("ErrorLogs")) {
 // global.session_log_file = file_text_open_write("SessionLogs/" + $"session_{_date_time}.log");
 // file_text_close(global.session_log_file);
 
-
-global.build_date = "unknown build";
-global.game_version = "unknown version";
-
-var _version_file_path = working_directory + "\\main\\version.json";
-var _parsed_json = json_to_gamemaker(_version_file_path, json_parse);
-
-if (_parsed_json != undefined) {
-    var _build_date = _parsed_json[$ "build_date"];
-    _build_date = string_replace(_build_date, "BS", "");
-    _build_date = string_replace(_build_date, "BE", "");
-    var _version = _parsed_json[$ "version"];
-    _version = string_replace(_version, "VSv", "");
-    _version = string_replace(_version, "VE", "");
-    global.build_date = _build_date;
-    global.game_version = _version;
-}
 
 /* */
 action_set_alarm(1, 3);

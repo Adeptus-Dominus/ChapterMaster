@@ -4,87 +4,17 @@ frigate_max=frigate;
 escort_max=escort;
 
 
-
-// create blocks of infantry
-
-
-var i, k, col, temp1, temp2, x2, hei, man, sizz;
-i=0;k=0;col=5;temp1=0;temp2=0;x2=224;hei=0;man=0;sizz=0;
+var i, k,  temp1, temp2, x2, hei, man, sizz;
+i=0;k=0;temp1=0;temp2=0;x2=224;hei=0;man=0;sizz=0;
 
 
 
 
 
-repeat(100){// This determines the number of ships in each column
-    k+=1;
-    
-    
-    if (fighting[k]=1){
-        if ((column[col]="Capital") and (ship_size[k]=3)) then column_num[col]+=1;
-        if ((column[col-1]="Capital") and (ship_size[k]=3)) then column_num[col-1]+=1;
-        if ((column[col-2]="Capital") and (ship_size[k]=3)) then column_num[col-2]+=1;
-        if ((column[col-3]="Capital") and (ship_size[k]=3)) then column_num[col-3]+=1;
-        if ((column[col-4]="Capital") and (ship_size[k]=3)) then column_num[col-4]+=1;
-    
-        if (ship_class[k]=column[col]) then column_num[col]+=1;
-        if (ship_class[k]=column[col-1]) then column_num[col-1]+=1;
-        if (ship_class[k]=column[col-2]) then column_num[col-2]+=1;
-        if (ship_class[k]=column[col-3]) then column_num[col-3]+=1;
-        if (ship_class[k]=column[col-4]) then column_num[col-4]+=1;
-        
-        if ((column[col]="Escort") and (ship_size[k]=1)) then column_num[col]+=1;
-        if ((column[col-1]="Escort") and (ship_size[k]=1)) then column_num[col-1]+=1;
-        if ((column[col-2]="Escort") and (ship_size[k]=1)) then column_num[col-2]+=1;
-        if ((column[col-3]="Escort") and (ship_size[k]=1)) then column_num[col-3]+=1;
-        if ((column[col-4]="Escort") and (ship_size[k]=1)) then column_num[col-4]+=1;
-    }
-    
-    
-}
+sort_ships_into_columns(self);
 
 
-
-col=6;
-repeat(5){// Start repeat
-    temp1=0;temp2=0;
-
-    col-=1;
-    if (col<5) then x2-=column_width[col];
-
-
-if (column_num[col]>0){// Start ship creation
-    if (column[col]="Capital"){hei=160;sizz=3;}
-    // if (column[col]="Slaughtersong"){hei=200;sizz=3;}
-    if (column[col]="Strike Cruiser"){hei=96;sizz=2;}
-    if (column[col]="Gladius"){hei=64;sizz=1;}
-    if (column[col]="Hunter"){hei=64;sizz=1;}
-    if (column[col]="Escort"){hei=64;sizz=1;}
-
-    temp1=column_num[col]*hei;
-    temp2=((room_height/2)-(temp1/2))+64;
-    if (column_num[col]=1) then temp2+=20;
-    
-    // show_message(string(column_num[col])+" "+string(column[col])+" X:"+string(x2));
-    
-    k=0;
-    repeat(100){k+=1;
-        if (ship_class[k]=column[col]) or ((column[col]="Escort") and (ship_size[k]=1))or ((column[col]="Capital") and (ship_size[k]=3)){
-            if (sizz=3) and (ship_class[k]!="") and (fighting[k]=1){man=instance_create(x2,temp2,obj_p_capital);man.ship_id=k;man.class=column[col];temp2+=hei;}
-            if (sizz=2) and (ship_class[k]!="") and (fighting[k]=1){man=instance_create(x2,temp2,obj_p_cruiser);man.ship_id=k;man.class=column[col];temp2+=hei;}
-            if (sizz=1) and (ship_class[k]!="") and (fighting[k]=1){man=instance_create(x2,temp2,obj_p_escort);man.ship_id=k;man.class=column[col];temp2+=hei;}
-        }
-    }
-    
-
-}// End ship creation
-
-
-
-
-}// End repeat
-
-
-
+player_fleet_ship_spawner();
 
 
 if (enemy=2){// This is an orderly Tau ship formation

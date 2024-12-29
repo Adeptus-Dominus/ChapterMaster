@@ -154,9 +154,11 @@ if (owner  == eFACTION.Player) and (player_fleet.action==""){
         instance_activate_object(obj_star);
     }
 }
-
-if (mouse_check_button_pressed(mb_left)){
-    if (!currently_entered && point_distance(mouse_x,mouse_y,player_fleet.x,player_fleet.y)>32){
+if (!currently_entered){
+    currently_entered =  keyboard_check(vk_shift);
+}
+if (mouse_check_button_pressed(mb_left) ){
+    if (!currently_entered && point_distance(mouse_x,mouse_y,player_fleet.x,player_fleet.y)>32 && !keyboard_check(vk_shift)){
         instance_destroy();
     }
 }

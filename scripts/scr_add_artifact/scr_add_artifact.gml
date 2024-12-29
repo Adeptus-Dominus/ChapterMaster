@@ -62,9 +62,10 @@ function scr_add_artifact(artifact_type, artifact_tags, is_identified, artifact_
 
 	if (base_type="Armour") and (base_type_detail=""){
 	    if (rand2<=70){
-	    	base_type_detail=global.power_armour[irandom(array_length(global.power_armour)-1)];
+			var _power_armour = ARR_power_armour;
+	    	base_type_detail=_power_armour[irandom(array_length(_power_armour)-1)];
 	    }
-	    else if (rand2<=80){base_type_detail=choose("Terminator Armour","Tartaros","Cataphractii Pattern Terminator",);}
+	    else if (rand2<=80){base_type_detail=choose("Terminator Armour","Tartaros");}
 	    else if (rand2<=90){base_type_detail="Dreadnought Armour";}
 	    else if (rand2<=100){base_type_detail="Artificer Armour";}
 	}
@@ -174,7 +175,7 @@ function scr_add_artifact(artifact_type, artifact_tags, is_identified, artifact_
 			artifact_location = obj_ini.home_name;
 			ship_id = 2;
 		} else {
-			artifact_location = obj_ini.ship[1];
+			artifact_location = obj_ini.ship[0];
 			ship_id = 501;
 		}
 	}
@@ -231,6 +232,10 @@ function ArtifactStruct(Index) constructor{
 
 	static ship_id =  function (){
 		return obj_ini.artifact_sid[index]-500;
+	}
+
+	static set_ship_id = function(ship_id){
+		obj_ini.artifact_sid[index] = ship_id+500;
 	}
 	static location_string = function(){
 		if (sid()>=500){
@@ -334,25 +339,85 @@ function ArtifactStruct(Index) constructor{
 	};
 
 	static unequip_from_unit = function(){
+		try{
 		if (equipped() && is_array(bearer)){
-			var b_type = determine_base_type();
+			var _b_type = determine_base_type();
 			var unit = fetch_unit(bearer);
-			if (b_type=="weapon"){
+			if (_b_type=="weapon"){
 				if (unit.weapon_one(true) == index){
 					unit.update_weapon_one("", false, false);
 				} else if (unit.weapon_two(true) == index){
 					unit.update_weapon_two("", false, false);
 				} 
-			} else if (b_type=="gear"){
+			} else if (_b_type=="gear"){
 				unit.update_gear("", false, false);
-			} else if (b_type=="armour"){
+			} else if (_b_type=="armour"){
 				unit.update_armour("", false, false);
-			} else if (b_type=="mobility"){
+			} else if (_b_type=="mobility"){
 				unit.update_mobility_item("", false, false);
 			}
-			bearer =false;
+			bearer = false;
 			obj_ini.artifact_equipped[index] = false;
+		} else if (equipped()){
+			var _b_type = determine_base_type();
+			var _bearer = false;
+			var _bearer_found = false;
+			var _unit;
+			if (_b_type=="weapon"){
+				for (var co=0;co<obj_ini.companies;co++){
+					for (var i=0;i<array_length(obj_ini.role[co]);i++){
+						_unit = fetch_unit([co,i]);
+						if (_unit.weapon_one(true) == index){
+							_unit.update_weapon_one("", false, false);
+							_bearer_found = true
+						} else if (_unit.weapon_two(true) == index){
+							_unit.update_weapon_two("", false, false);
+							_bearer_found = true
+						}
+						if (_bearer_found){
+							break;
+						}
+					}
+					if (_bearer_found){
+						break;
+					}					
+				}
+			} else {
+				var _find_function = "";
+				if (_b_type=="gear"){
+					var _update_function = "update_gear";
+					_find_function = "gear";
+				} else if (_b_type=="armour"){
+					var _update_function = "update_armour";
+					_find_function = "armour";
+				} else if (_b_type=="mobility"){
+					var _update_function = "update_mobility_item";
+					_find_function = "mobility_item";
+				}
+				if (_find_function!=""){
+					for (var co=0;co<obj_ini.companies;co++){
+						for (var i=0;i<array_length(obj_ini.role[co]);i++){
+							var _unit = fetch_unit([co,i]);
+							if (_unit[$_find_function](true) == index){
+								_unit[$_update_function]("", false, false);
+								_bearer_found = true
+							}
+							if (_bearer_found){
+								break;
+							}						
+						}
+						if (_bearer_found){
+							break;
+						}					
+					}
+				}								
+			}
 		}
+		}catch(_exception){
+        	handle_exception(_exception);
+   		}
+		bearer = false;
+		obj_ini.artifact_equipped[index] = false;
 	}
 	custom_data = {};
 	name = "";

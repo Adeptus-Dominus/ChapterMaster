@@ -5,40 +5,6 @@ yy=__view_get( e__VW.YView, 0 );
 
 if (trading>0) and (force_goodbye!=0) then trading=0;
 
-// ** Gene seed countdown and production **
-if (menu==11) and (cooldown<=0){
-    if (gene_seed>0) and (obj_ini.zygote==0) and (mouse_x>=xx+407) and (mouse_y>=yy+788) and (mouse_x<xx+529) and (mouse_y<yy+811){
-        var i=0,g=0;
-        for(i=1; i<=120; i++){
-            if (g==0){
-                if (obj_ini.slave_batch_eta[i]==120) then g=i;
-            }
-        }
-        if (g=0){
-            for(i=1; i<=120; i++){
-                if (g=0){if (obj_ini.slave_batch_num[i]=0) then g=i;}
-            }
-        }
-
-        var carpal=1;
-        if (obj_ini.slave_batch_num[g]>=10) and (obj_ini.slave_batch_num[g]<50) then carpal=2;
-        if (obj_ini.slave_batch_num[g]>=50) then carpal=5;if (obj_ini.slave_batch_num[g]>=150) then carpal=10;
-        if (obj_controller.gene_seed<carpal) then carpal=obj_controller.gene_seed;
-
-        obj_controller.gene_seed-=carpal;
-        obj_ini.slave_batch_num[g]+=carpal;
-        obj_ini.slave_batch_eta[g]=120;
-        cooldown=10;
-    }
-    if (obj_ini.slave_batch_num[1]>0) and (mouse_x>=xx+659) and (mouse_y>=yy+788) and (mouse_x<xx+838) and (mouse_y<yy+811){
-        for(var i=1; i<=120; i++){
-            gene_seed+=obj_ini.slave_batch_num[i];
-            obj_ini.slave_batch_num[i]=0;
-            obj_ini.slave_batch_eta[i]=0;
-        }
-        cooldown=8000;
-    }
-}
 // ** Reclusium Jail Marines**
 if (menu==12) and (cooldown<=0) and (penitorium>0){
     var behav=0,r_eta=0,re=0;
@@ -56,7 +22,9 @@ if (menu==12) and (cooldown<=0) and (penitorium>0){
                 // TODO Needs to be based on role
                 kill_and_recover(c,e);
                 diplo_char=c;
-                with(obj_ini){scr_company_order(obj_controller.diplo_char);}
+                with(obj_ini){
+                    scr_company_order(obj_controller.diplo_char);
+                }
                 re=1;
                 diplo_char=0;
             }
@@ -390,8 +358,8 @@ if (menu==20) and (diplomacy>0) or ((diplomacy<-5) and (diplomacy>-6)) and (cool
                 trade_disp[1]=30;
                 trade_disp[2]=20;
                 trade_disp[3]=40;
-                trade_disp[4]=30;
-                trade_disp[5]=60;
+                trade_disp[4]=25;
+                trade_disp[5]=55;
             }
             // Inquisition trade goods
             if (diplomacy==4){
@@ -405,7 +373,7 @@ if (menu==20) and (diplomacy>0) or ((diplomacy<-5) and (diplomacy>-6)) and (cool
                 trade_disp[1]=20;
                 trade_disp[2]=30;
                 trade_disp[3]=20;
-                trade_disp[4]=30;
+                trade_disp[4]=25;
                 trade_disp[5]=40;
                 trade_disp[6]=60;
             }
@@ -420,8 +388,8 @@ if (menu==20) and (diplomacy>0) or ((diplomacy<-5) and (diplomacy>-6)) and (cool
                 trade_disp[1]=20;
                 trade_disp[2]=30;
                 trade_disp[3]=30;
-                trade_disp[4]=50;
-                trade_disp[5]=50;
+                trade_disp[4]=40;
+                trade_disp[5]=45;
             }
             // Eldar trade goods
             if (diplomacy==6){

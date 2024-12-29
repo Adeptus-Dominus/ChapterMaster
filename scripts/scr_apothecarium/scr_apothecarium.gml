@@ -1,47 +1,50 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 
-
-function apothecary_points_calc(){
-	with (obj_controller){
-        research_points = 0;
-        apoth_points = 0;
-        var heretics = [], forge_master=-1, notice_heresy=false, forge_point_gen=[], crafters=0, at_forge=0, gen_data={};
-        var apoth_locations=[]
-        var apoths = collect_role_group("forge");
-        var total_techs = array_length(techs);
-        for (var i=0; i<array_length(techs); i++){
-            if (techs[i].IsSpecialist("heads")){
-                forge_master=i;
-            }            
-            if (techs[i].in_jail()){
-                array_delete(techs, i, 1);
-                i--;
-                total_techs--;
-                continue;
-            }
-            if (techs[i].technology>40 && techs[i].hp() >0){
-                research_points += techs[i].technology-40;
-                forge_point_gen=techs[i].forge_point_generation(true);
-                gen_data = forge_point_gen[1];
-                if (struct_exists(gen_data,"crafter")) then crafters++;
-                if (struct_exists(gen_data,"at_forge")){
-                    at_forge++;
-                    master_craft_chance += (techs[i].experience()/50)
-                }
-                forge_points += forge_point_gen[0];
-                if (techs[i].has_trait("tech_heretic")){
-                    array_push(heretics, i);
-                }
-            }
-            tech_locations[i] = techs[i].marine_location();
-        }
-        if (forge_master>-1){
-            obj_controller.master_of_forge = techs[forge_master];
-        }
+function scr_destroy_gene_slave_batch(batch_id, recover_gene=true){
+    var _cur_slave = obj_ini.gene_slaves[batch_id];
+    if (revover_gene){
+        obj_controller.gene_seed+=_cur_slave.num;
+        scr_add_item("Gene Pod Incubator", _cur_slave.num);
     }
+    delete _cur_slave;
+    array_delete(obj_ini.gene_slaves,batch_id, 1);
 }
 
+function destroy_all_gene_slaves(recover_gene=true){
+    var _slave_length = array_length(obj_ini.gene_slaves);
+         if (_slave_length>0){
+            for (var i=_slave_length-1; i>=0; i--){
+                scr_destroy_gene_slave_batch(i,recover_gene);
+            }
+            obj_ini.gene_slaves = [];
+        }   
+}
+
+function add_new_gene_slave(){
+    if (gene_seed>0) and (obj_ini.zygote==0) {
+        var _added = false;
+        if (array_length(obj_ini.gene_slaves)){
+            var _last_set = obj_ini.gene_slaves[array_length(obj_ini.gene_slaves)-1];
+            if (_last_set.turn == obj_controller.turn){
+                _last_set.num++;
+                obj_controller.gene_seed--;
+                _added=true;
+            }
+        }
+        if (!_added){
+            array_push(obj_ini.gene_slaves, {
+                num : 1,
+                eta : 120,
+                harvested_once : false,
+                turn : obj_controller.turn,
+                assigned_apothecaries : [],
+            });
+            obj_controller.gene_seed--;
+        }
+        scr_add_item("Gene Pod Incubator", -1);
+    }
+}
 
 function scr_apothecarium(){
 	draw_sprite(spr_rock_bg, 0, xx, yy);
@@ -70,7 +73,7 @@ function scr_apothecarium(){
         draw_set_color(c_gray);
         draw_set_font(fnt_40k_30b);
         draw_text_transformed(xx + 336 + 16, yy + 66, "Apothecarium", 1, 1, 0);
-        draw_text_transformed(xx + 336 + 16, yy + 100, "Master of the Apothecarion " + string(obj_ini.name[0, 4]), 0.6, 0.6, 0);
+        draw_text_transformed(xx + 336 + 16, yy + 100, "Master of the Apothecarion " + string(obj_ini.name[0, 3]), 0.6, 0.6, 0);
         draw_set_font(fnt_40k_14);
     }
     if (menu_adept = 1) {
@@ -79,8 +82,8 @@ function scr_apothecarium(){
         draw_set_halign(fa_left);
         draw_set_color(c_gray);
         draw_set_font(fnt_40k_30b);
-        draw_text_transformed(xx + 336 + 16, yy + 40, string_hash_to_newline("Apothecarium"), 1, 1, 0);
-        draw_text_transformed(xx + 336 + 16, yy + 100, string_hash_to_newline("Adept " + string(obj_controller.adept_name)), 0.6, 0.6, 0);
+        draw_text_transformed(xx + 336 + 16, yy + 40, "Apothecarium", 1, 1, 0);
+        draw_text_transformed(xx + 336 + 16, yy + 100, $"Adept {obj_controller.adept_name}", 0.6, 0.6, 0);
         draw_set_font(fnt_40k_14);
     }
 
@@ -89,17 +92,19 @@ function scr_apothecarium(){
     if (training_apothecary = 0) then blurp += "Our Brothers are currently not assigned to train further " + string(obj_ini.role[100, 15]) + "; no more can be trained until Apothcarium funds are increased.";
     //
     if (training_apothecary > 0) then blurp += "Our Brothers assigned to the training of future " + string(obj_ini.role[100, 15]) + "s have taken up a ";
-    if (training_apothecary >= 1 && training_apothecary <= 6) then blurp += recruitment_rates[training_apothecary - 1];
-    if (training_apothecary > 0) then blurp += " pace and expect to graduate an additional " + string(obj_ini.role[100, 15]) + " in ";
+    if (training_apothecary >= 1 && training_apothecary <= 6){
+        var _recruit_rates = ARR_recruitment_rates;
+        blurp += _recruit_rates[training_apothecary];
+    }
+    if (training_apothecary > 0){
+        blurp += " pace and expect to graduate an additional " + string(obj_ini.role[100, 15]) + " in ";
+        var training_points_values = ARR_apothecary_training_tiers;
+        eta = floor((47 - apothecary_recruit_points) / training_points_values[training_apothecary]) + 1;
+        blurp += string(eta) + " months.";
+    }
     // 
-    if (training_apothecary = 1) then eta = floor((47 - apothecary_points) / 0.8) + 1;
-    if (training_apothecary = 2) then eta = floor((47 - apothecary_points) / 0.9) + 1;
-    if (training_apothecary = 3) then eta = floor((47 - apothecary_points) / 1) + 1;
-    if (training_apothecary = 4) then eta = floor((47 - apothecary_points) / 1.5) + 1;
-    if (training_apothecary = 5) then eta = floor((47 - apothecary_points) / 2) + 1;
-    if (training_apothecary = 6) then eta = floor((47 - apothecary_points) / 4) + 1;
+
     // 
-    if (training_apothecary > 0) then blurp += string(eta) + " months.";
 
     if (gene_seed <= 0) then blurp += "##My lord, our stocks of gene-seed are empty.  It would be best to have some come mechanicus tithe.##Further training of Neophytes is halted until our stocks replenish.";
     if (gene_seed > 0) and(gene_seed <= 10) then blurp += "##My Brother " + string(obj_ini.role[100, 15]) + "s assigned to the gene-vault have informed me that our stocks are nearly gone.  They only number " + string(gene_seed) + "; this includes those recently recovered from our fallen comerades-in-arms.";
@@ -107,9 +112,10 @@ function scr_apothecarium(){
     if (gene_seed > 0) then blurp += "##The stocks are stable and show no sign of mutation.";
 
     if (menu_adept = 1) {
+        var _recruit_pace = ARR_recruitment_pace;
         blurp = "Your Chapter contains " + string(temp[36]) + " " + string(obj_ini.role[100, 15]) + ".##";
         blurp += "Training of further " + string(obj_ini.role[100, 15]) + "s";
-        if (training_apothecary >= 0 && training_apothecary <= 6) then blurp += recruitment_pace[training_apothecary];
+        if (training_apothecary >= 0 && training_apothecary <= 6) then blurp += _recruit_pace[training_apothecary];
         if (training_apothecary > 0) then blurp += "  The next " + string(obj_ini.role[100, 15]) + " is expected in " + string(eta) + " months.";
         blurp += "##You have " + string(gene_seed) + " gene-seed stocked.";
     }
@@ -117,15 +123,15 @@ function scr_apothecarium(){
     draw_text_ext(xx + 336 + 16, yy + 130, string_hash_to_newline(string(blurp)), -1, 536);
 
     var blurp2 = "";
-
-    if (obj_ini.zygote = 0) {
-        if (obj_controller.marines + obj_controller.gene_seed <= 300) and(obj_ini.slave_batch_num[1] = 0) {
+    var _slave_length = array_length(obj_ini.gene_slaves);
+    if (!obj_ini.zygote) {
+        if (obj_controller.marines + obj_controller.gene_seed <= 300) and(_slave_length = 0) {
             blurp2 = "Our Chapter is disasterously low in number- it is strongly advised that we make use of test-slaves to breed new gene-seed.  Give me the word andwe can begin installing gestation pods.";
         }
-        if (obj_controller.marines + obj_controller.gene_seed > 300) and(obj_ini.slave_batch_num[1] = 0) {
+        else if (obj_controller.marines + obj_controller.gene_seed > 300) and(_slave_length = 0) {
             blurp2 = "Our Chapter is capable of using test-slaves to breed new gene-seed.  Should our number of astartes ever plummet this may prove a valuable method of rapidly bringing our chapter back up to size.";
         }
-        if (obj_ini.slave_batch_num[1] > 0) {
+        else if (_slave_length > 0) {
             blurp2 = "Our Test-Slave Incubators are working optimally.  As soon as a batch fully matures a second progenoid gland they will be harvested and prepared for use.";
         }
     }
@@ -134,43 +140,59 @@ function scr_apothecarium(){
     draw_set_halign(fa_center);
     draw_set_color(c_gray);
     draw_set_font(fnt_40k_30b);
-    draw_text_transformed(xx + 622, yy + 440, string_hash_to_newline("Test-Slave Incubators"), 0.6, 0.6, 0);
+    draw_text_transformed(xx + 622, yy + 440, "Test-Slave Incubators", 0.6, 0.6, 0);
     draw_set_halign(fa_left);
     draw_set_color(c_gray);
     draw_set_font(fnt_40k_14);
     draw_text_ext(xx + 336 + 16, yy + 477, string_hash_to_newline(string(blurp2)), -1, 536);
 
-    var currently_rendered_slave_index = 0;
-    for (var i = 1; i <= 120; i++) { // TODO why go through all batches if we can only display 10?
-        if (obj_ini.slave_batch_num[i] > 0 && currently_rendered_slave_index < 10) {
-            currently_rendered_slave_index++;
-            draw_text(xx + 336 + 16, yy + 513 + (currently_rendered_slave_index * 20), string_hash_to_newline("Batch " + string(currently_rendered_slave_index)));
-            draw_text(xx + 336 + 16.5, yy + 513.5 + (currently_rendered_slave_index * 20), string_hash_to_newline("Batch " + string(currently_rendered_slave_index)));
-            draw_text(xx + 536, yy + 513 + (currently_rendered_slave_index * 20), string_hash_to_newline("Eta: " + string(obj_ini.slave_batch_eta[currently_rendered_slave_index]) + " months"));
-            draw_text(xx + 756, yy + 513 + (currently_rendered_slave_index * 20), string_hash_to_newline(string(obj_ini.slave_batch_num[currently_rendered_slave_index]) + " pods"));
+    ;
+    var _slave_index_shown = 0;
+    var _cur_slave;
+    for (var i = 0; i < _slave_length; i++) { // TODO why go through all batches if we can only display 10?
+        if (obj_ini.gene_slaves[i].num > 0 && _slave_index_shown < 10) {
+            _slave_index_shown++;
+            _cur_slave = obj_ini.gene_slaves[i];
+            draw_text(xx + 336 + 16, yy + 513 + (_slave_index_shown * 20), $"Batch {_slave_index_shown}" );
+            draw_text(xx + 336 + 16.5, yy + 513.5 + (_slave_index_shown * 20), $"Batch {_slave_index_shown}");
+            draw_text(xx + 536, yy + 513 + (_slave_index_shown * 20), $"Eta: {_cur_slave.eta} months");
+            draw_text(xx + 756, yy + 513 + (_slave_index_shown * 20), $"{_cur_slave.num} pods");
         }
     }
     draw_set_alpha(1);
     if (obj_controller.gene_seed <= 0) or(obj_ini.zygote = 1) then draw_set_alpha(0.5);
     draw_set_color(c_gray);
-    draw_rectangle(xx + 407, yy + 788, xx + 529, yy + 811, 0);
     draw_set_color(c_black);
-    draw_text(xx + 411, yy + 793, string_hash_to_newline("Add Test-Slave"));
-    if (obj_controller.gene_seed > 0) and(mouse_x >= xx + 407) and(mouse_y >= yy + 788) and(mouse_x < xx + 529) and(mouse_y < yy + 811) {
-        draw_set_alpha(0.2);
-        draw_set_color(c_gray);
-        draw_rectangle(xx + 407, yy + 788, xx + 529, yy + 811, 0);
+    if (scr_item_count("Gene Pod Incubator")){
+        if (point_and_click(draw_unit_buttons([xx + 411, yy + 793],"Add Test-Slave",[0.75,0.75],c_green))){
+            add_new_gene_slave();
+        }
+    } else {
+        if (scr_hit(draw_unit_buttons([xx + 411, yy + 793],"Add Test-Slave",[0.75,0.75],c_grey))){
+            tooltip_draw("No available Gene Pod Incubators, Build more Gene Pod Incubators in the forge");
+        }
     }
+
     draw_set_alpha(1);
-    if (obj_ini.slave_batch_num[1] <= 0) then draw_set_alpha(0.5);
+    if (_slave_length <= 0){
+        draw_set_alpha(0.5);
+    }
     draw_set_color(c_gray);
     draw_rectangle(xx + 659, yy + 788, xx + 838, yy + 811, 0);
     draw_set_color(c_black);
-    draw_text(xx + 664, yy + 793, string_hash_to_newline("Destroy All Incubators"));
-    if (obj_ini.slave_batch_num[1] > 0) and(mouse_x >= xx + 659) and(mouse_y >= yy + 788) and(mouse_x < xx + 838) and(mouse_y < yy + 811) {
+    var _destroy_button = draw_unit_buttons([xx + 664, yy + 793], "Destroy All Incubators", [0.75,0.75],c_red);
+    if (_slave_length > 0 && scr_hit(_destroy_button)) {
         draw_set_alpha(0.2);
         draw_set_color(c_gray);
         draw_rectangle(xx + 659, yy + 788, xx + 838, yy + 811, 0);
+        if (point_and_click(_destroy_button)){
+            if (_slave_length>0){
+                for (var i=_slave_length-1; i>=0; i--){
+                    scr_destroy_gene_slave_batch(i);
+                }
+                obj_ini.gene_slaves = [];
+            }
+        }
     }
     draw_set_alpha(1);
 }

@@ -1,5 +1,5 @@
 function scr_turn_first() {
-
+	try{
 	// I believe this is ran at the start of the end of the turn.  That would make sense, right?
 
 	var identifiable=0;
@@ -18,29 +18,23 @@ function scr_turn_first() {
 			}
 		}
 	    if (cur_arti.identified()>0){
-	    	identifiable = cur_arti.is_identifiable()
+	    	var _identifiable = cur_arti.is_identifiable()
         
-	        if (instance_exists(obj_p_fleet)) and (identifiable=0){
-	            with(obj_p_fleet){
-	                var good=0;
-	               for (var s=0;s<=20;s++){
-	                    if (s<=9){
-	                    	if (capital_num[s]=cur_arti.ship_id()) then good=1;
-	                    }
-	                    if (frigate_num[s]=cur_arti.ship_id()) then good=1;
-	                    if (escort_num[s]=cur_arti.ship_id()) then good=1;
-	                }
-	                if (good=1) and (capital_number>0) then good=2;
-	                if (good=2) then obj_controller.identifiable=1;
-	            }
+	        if (instance_exists(obj_p_fleet)) and (!_identifiable){
+	        	var _arti_fleet = find_ships_fleet(cur_arti.ship_id());
+	        	if (_arti_fleet!="none"){
+	        		if (array_length(_arti_fleet.capital_num)){
+	        			_identifiable = true;
+	        			cur_arti.set_ship_id(_arti_fleet.capital_num[0]);
+	        		}
+	        	}
 	        }
         
-            if (identifiable=1) then obj_ini.artifact_identified[unload]-=1;
+            if (_identifiable) then obj_ini.artifact_identified[unload]-=1;
             if (obj_ini.artifact_identified[unload]=0) then scr_alert("green","artifact","Artifact ("+string(obj_ini.artifact[unload])+") has been identified.",0,0);
 	    }
-	    identifiable=0;
+	    _identifiable=false;
 	}
-	identifiable=0;
 	unload=0;
 
 
@@ -145,13 +139,17 @@ function scr_turn_first() {
 	            with(obj_star){if (x<-14000) and (y<-14000){x+=20000;y+=20000;}}
 	            with(obj_star){if (x<-14000) and (y<-14000){x+=20000;y+=20000;}}
 	            with(obj_star){if (x<-14000) and (y<-14000){x+=20000;y+=20000;}}
-            
-	            var tix="Warboss "+string(obj_controller.faction_leader[eFACTION.Ork])+" leads a WAAAGH! into Sector "+string(obj_ini.sector_name)+".";
+            	
+            	var _ork_leader = obj_controller.faction_leader[eFACTION.Ork];
+	            var tix=$"Warboss {_ork_leader} leads a WAAAGH! into Sector "+string(obj_ini.sector_name)+".";
 	            scr_alert("red","lol",string(tix),starf.x,starf.y);
 	            scr_event_log("red",tix);
-	            scr_popup("WAAAAGH!",$"A WAAAGH! led by the Warboss {obj_controller.faction_leader[eFACTION.Ork]} has arrived in "+string(obj_ini.sector_name)+".  With him is a massive Ork fleet.  Numbering in the dozens of battleships, they carry with them countless greenskins.  The forefront of the WAAAGH! is destined for the "+string(starf.name)+" system.","waaagh","");
+	            scr_popup("WAAAAGH!",$"A WAAAGH! led by the Warboss {_ork_leader} has arrived in "+string(obj_ini.sector_name)+".  With him is a massive Ork fleet.  Numbering in the dozens of battleships, they carry with them countless greenskins.  The forefront of the WAAAGH! is destined for the "+string(starf.name)+" system.","waaagh","");
 	        }
 	    }
+	}
+	}catch(_exception) {
+    	handle_exception(_exception);
 	}
 
 

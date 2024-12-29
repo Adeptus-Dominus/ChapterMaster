@@ -2,6 +2,7 @@
   <img src="https://github.com/user-attachments/assets/47772b42-59ad-4fdf-84de-ae9bcba999be" alt="Chapter Master - Adeptus Dominus Logo"/>
 </p>
 
+
 # Chapter Master - Adeptus Dominus
 
 **Chapter Master** (aka CM) is a strategy/simulation game, written in **Game Maker Language**, originally designed and developed by Duke.\
@@ -10,8 +11,8 @@ This project aims to continue development on the game, fix any bugs, expand and 
 
 ## Links
 
-- [Discord Server](https://discord.gg/zAGpqHzsXQ)
-   - Where most of the development talk, features suggestion and just general 40K talk takes place.
+- [![](https://dcbadge.limes.pink/api/server/https://discord.gg/zAGpqHzsXQ?style=flat)](https://discord.gg/zAGpqHzsXQ)
+   - Where most of the development talk, feature suggestions and just general 40K talk takes place.
    - If you can code, design, draw or just love WH40K then you'll have a great time with us. :)
    - GitHub issues are not used at the moment, as such we use #bug-report-forum in this server to handle bug reports.
 - [1d6Chan Wiki](https://1d6chan.miraheze.org/wiki/Category:Chapter_Master_:_Adeptus_Dominus)

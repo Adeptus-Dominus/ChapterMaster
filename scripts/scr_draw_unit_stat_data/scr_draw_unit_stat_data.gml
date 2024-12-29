@@ -6,6 +6,7 @@ function scr_draw_unit_stat_data(manage=false){
 	var stat_tool_tips = [];
 	var trait_tool_tips = [];
 	var unit_name = name();
+	var _psy_levels = ARR_psy_levels;
 
 	var data_block = {
 		x1: xx + 1008,
@@ -224,30 +225,33 @@ function scr_draw_unit_stat_data(manage=false){
 		array_push(data_lines, data_entry);
 		
 		data_entry = {};
-		data_entry.text = $"Assignment: {global.phy_levels[psionic]} ({psionic})\n";
+		data_entry.text = $"Assignment: {_psy_levels[psionic]} ({psionic})\n";
 		data_entry.tooltip = "The Imperium measures and records the psionic activity and power level of psychic individuals through a rating system called The Assignment. Comprised of a twenty-four point scale, The Assignment simplifies the comparison of psykers to aid Imperial authorities in recognizing possible threats.";
 		array_push(data_lines, data_entry);
 		
 		var forge_gen = forge_point_generation();
-		if (forge_gen!=0){
-			data_entry = {};
-			data_entry.tooltip="";
-			var gen_reasons = forge_gen[1];
-			data_entry.text = $"Forge Production: {forge_gen[0]}\n";
-			if (struct_exists(gen_reasons, "trained")){
-				data_entry.tooltip+=$"Trained On Mars (TEC/10): {gen_reasons.trained}\n";
-				if (struct_exists(gen_reasons, "at_forge")){
-					data_entry.tooltip+=$"{gen_reasons.at_forge}(at Forge)\n";
-				}
+
+		data_entry = {};
+		data_entry.tooltip="";
+		var gen_reasons = forge_gen[1];
+		data_entry.text = $"Forge Production: {forge_gen[0]}\n";
+		if (struct_exists(gen_reasons, "trained")){
+			data_entry.tooltip+=$"Trained On Mars (TEC/10): {gen_reasons.trained}\n";
+			if (struct_exists(gen_reasons, "at_forge")){
+				data_entry.tooltip+=$"{gen_reasons.at_forge}(at Forge)\n";
 			}
-			if (struct_exists(gen_reasons, "master")){
-				data_entry.tooltip+=$"Forge Master: +{gen_reasons.master}\n";
-			}
-			if (struct_exists(gen_reasons, "crafter")){
-				data_entry.tooltip+=$"Crafter: +{gen_reasons.crafter}\n";
-			}
-			array_push(data_lines, data_entry);
 		}
+		if (struct_exists(gen_reasons, "master")){
+			data_entry.tooltip+=$"Forge Master: +{gen_reasons.master}\n";
+		}
+		if (struct_exists(gen_reasons, "crafter")){
+			data_entry.tooltip+=$"Crafter: +{gen_reasons.crafter}\n";
+		}
+		if (struct_exists(gen_reasons, "maintenance")){
+			data_entry.tooltip+=$"Maintenance: +{gen_reasons.maintenance}";
+		}			
+		array_push(data_lines, data_entry);
+
 		
 		for (var i = 0; i < array_length(data_lines); i++) {
 			draw_text(data_block.x1+16, attribute_box.y2+16+(i*24), data_lines[i].text); // Adjust the y-coordinate for the new line

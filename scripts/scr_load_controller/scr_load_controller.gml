@@ -206,7 +206,7 @@ function scr_load_controller(save_id){
 	    obj_controller.blood_debt=ini_read_real("Controller","penitent_blood",0);
 
 	    obj_controller.training_apothecary=ini_read_real("Controller","training_apothecary",0);
-	    obj_controller.apothecary_points=ini_read_real("Controller","apothecary_points",0);
+	    obj_controller.apothecary_recruit_points=ini_read_real("Controller","apothecary_recruit_points",0);
 	    obj_controller.apothecary_aspirant=ini_read_real("Controller","apothecary_aspirant",0);
 	    obj_controller.training_chaplain=ini_read_real("Controller","training_chaplain",0);
 	    obj_controller.chaplain_points=ini_read_real("Controller","chaplain_points",0);
@@ -230,9 +230,10 @@ function scr_load_controller(save_id){
 	    if (Production_research!=0){
 	    	obj_controller.production_research = json_parse(base64_decode(Production_research));
 	    }
-	    var Forge_queue=ini_read_string("Controller","forge_queue",0);
-	    if (Forge_queue!=0){
-	    	obj_controller.forge_queue = json_parse(base64_decode(Forge_queue));
+	    specialist_point_handler = new SpecialistPointHandler();
+	    var forge_queue=ini_read_string("Controller","forge_queue",0);
+	    if (forge_queue!=0){
+	    	obj_controller.specialist_point_handler.forge_queue = json_parse(base64_decode(forge_queue));
 	    }
 	    var Stc_research=ini_read_string("Controller","stc_research",0);
 	    if (Stc_research!=0){

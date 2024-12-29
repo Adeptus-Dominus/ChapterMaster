@@ -1,4 +1,7 @@
 /// @mixin obj_creation
+/// @description  Called when an empty custom chapter icon is picked, or the custom icon in bottom right is picked from the new game menu.
+/// if "Create Custom" is picked, argument0 = 0, if "Create Random" is picked, argument0 = 1
+/// @param {Real} argument0 0 if Blank Custom, 1 if Random
 function scr_chapter_random(argument0) {
 
 	// argument0 = 0 = create custom 
@@ -70,7 +73,7 @@ function scr_chapter_random(argument0) {
 	chapter_master_specialty=choose(1,1,1,1,1,2,2,2,2,2,3);
 
 
-
+	custom_roles = {};
 
 
 
@@ -390,13 +393,13 @@ function scr_chapter_random(argument0) {
     obj_creation.livery_picker.scr_unit_draw_data();
     obj_creation.livery_picker.set_defualt_armour(struct_cols,col_special);
     obj_creation.full_liveries = array_create(21,DeepCloneStruct(obj_creation.livery_picker.map_colour)); 			    
-    obj_creation.full_liveries[Role.LIBRARIAN] = obj_creation.livery_picker.set_defualt_librarian(struct_cols);
+    obj_creation.full_liveries[eROLE.Librarian] = obj_creation.livery_picker.set_defualt_librarian(struct_cols);
 
-    obj_creation.full_liveries[Role.CHAPLAIN] = obj_creation.livery_picker.set_defualt_chaplain(struct_cols);
+    obj_creation.full_liveries[eROLE.Chaplain] = obj_creation.livery_picker.set_defualt_chaplain(struct_cols);
 
-    obj_creation.full_liveries[Role.APOTHECARY] = obj_creation.livery_picker.set_defualt_apothecary(struct_cols);
+    obj_creation.full_liveries[eROLE.Apothecary] = obj_creation.livery_picker.set_defualt_apothecary(struct_cols);
 
-    obj_creation.full_liveries[Role.TECHMARINE] = obj_creation.livery_picker.set_defualt_techmarines(struct_cols);
+    obj_creation.full_liveries[eROLE.Techmarine] = obj_creation.livery_picker.set_defualt_techmarines(struct_cols);
     obj_creation.livery_picker.scr_unit_draw_data();
     obj_creation.livery_picker.set_defualt_armour(struct_cols,col_special); 			
 

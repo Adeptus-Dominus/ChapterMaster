@@ -4,7 +4,7 @@ function ini_encode_and_json(ini_area, ini_code,value){
 	return ini_write_string(ini_area,ini_code,base64_encode(json_stringify(value)));
 }
 function scr_save(save_part,save_id) {
-
+	try{
 	var num=0,tot=0;
 	num=0;tot=0;
 
@@ -233,6 +233,7 @@ function scr_save(save_part,save_id) {
 	        ini_write_real("Fleet",$"ef{i}orb",instance_array[i].orbiting);
 	        ini_write_real("Fleet",$"ef{i}navy",instance_array[i].navy);
 	        ini_write_real("Fleet",$"ef{i}unl",instance_array[i].guardsmen_unloaded);
+	        ini_write_real("Fleet",$"ef{i}turns_static",instance_array[i].turns_static);
 	        var e
 	        if (instance_array[i].navy=1){e=-1;
 	            repeat(20){e+=1;
@@ -249,11 +250,15 @@ function scr_save(save_part,save_id) {
 	        }
 	    }
 
-		// Save chapter icon
-		ini_write_real("Ini", "global_chapter_icon_sprite", global.chapter_icon_sprite);
-		ini_write_real("Ini", "global_chapter_icon_frame", global.chapter_icon_frame);
-		ini_write_string("Ini", "global_chapter_icon_path", global.chapter_icon_path);
-		ini_write_real("Ini", "global_chapter_icon_filename", global.chapter_icon_filename);
+	    try{
+			// Save chapter icon
+			ini_write_real("Ini", "global_chapter_icon_sprite", global.chapter_icon_sprite);
+			ini_write_real("Ini", "global_chapter_icon_frame", global.chapter_icon_frame);
+			ini_write_string("Ini", "global_chapter_icon_path", global.chapter_icon_path);
+			//ini_write_real("Ini", "global_chapter_icon_filename", global.chapter_icon_filename);
+		} catch(_exception){
+            handle_exception(_exception);
+        }
 
 
 
@@ -276,8 +281,8 @@ function scr_save(save_part,save_id) {
 	    ini_encode_and_json("Ini", "FullLivery",obj_ini.full_liveries)
 		ini_write_real("Ini","companies",obj_ini.companies);
 		ini_encode_and_json("Ini", "comp_title", obj_ini.company_title);
-		ini_encode_and_json("Ini", "slave_num_", obj_ini.slave_batch_num);
-		ini_encode_and_json("Ini", "slave_eta_", obj_ini.slave_batch_eta);
+
+		ini_encode_and_json("Ini", "gene_slaves", obj_ini.gene_slaves);
 
 	    ini_write_string("Ini","battle_cry",obj_ini.battle_cry);
 
@@ -293,7 +298,7 @@ function scr_save(save_part,save_id) {
 	    ini_write_real("Controller","skin_color",obj_ini.skin_color);
 
 	    ini_write_string("Controller","production_research",base64_encode(json_stringify(obj_controller.production_research)));
-	    ini_write_string("Controller","forge_queue",base64_encode(json_stringify(obj_controller.forge_queue)));
+	    ini_write_string("Controller","forge_queue",base64_encode(json_stringify(obj_controller.specialist_point_handler.forge_queue)));
 	    ini_write_string("Controller","stc_research",base64_encode(json_stringify(obj_controller.stc_research)));
 
 	    ini_write_string("Ini","adept_name",obj_controller.adept_name);
@@ -359,50 +364,35 @@ function scr_save(save_part,save_id) {
 	    }
 
 	    //
-	    var g;g=0;repeat(200){g+=1;
-	        ini_write_string("Ships","shi"+string(g),obj_ini.ship[g]);
-	        ini_write_real("Ships","shi_uid"+string(g),obj_ini.ship_uid[g]);
-	        ini_write_string("Ships","shi_class"+string(g),obj_ini.ship_class[g]);
+	    ini_encode_and_json("Ships","shi",obj_ini.ship);
+	    ini_encode_and_json("Ships","shi_uid",obj_ini.ship_uid);
+	    ini_encode_and_json("Ships","shi_class",obj_ini.ship_class);
+	    ini_encode_and_json("Ships","shi_size",obj_ini.ship_size);
+	    ini_encode_and_json("Ships","shi_leadership",obj_ini.ship_leadership);
+	    ini_encode_and_json("Ships","shi_hp",obj_ini.ship_hp);
+	    ini_encode_and_json("Ships","shi_maxhp",obj_ini.ship_maxhp);
+	    ini_encode_and_json("Ships","shi_owner",obj_ini.ship_owner);
 
-	        ini_write_real("Ships","shi_size"+string(g),obj_ini.ship_size[g]);
-	        ini_write_real("Ships","shi_leadership"+string(g),obj_ini.ship_leadership[g]);
-	        ini_write_real("Ships","shi_hp"+string(g),obj_ini.ship_hp[g]);
-	        ini_write_real("Ships","shi_maxhp"+string(g),obj_ini.ship_maxhp[g]);
-	        ini_write_string("Ships","shi_location"+string(g),obj_ini.ship_location[g]);
-	        ini_write_real("Ships","shi_shields"+string(g),obj_ini.ship_shields[g]);
-	        ini_write_string("Ships","shi_conditions"+string(g),obj_ini.ship_conditions[g]);
-	        ini_write_real("Ships","shi_speed"+string(g),obj_ini.ship_speed[g]);
-	        ini_write_real("Ships","shi_turning"+string(g),obj_ini.ship_turning[g]);
-	        ini_write_real("Ships","shi_front_ac"+string(g),obj_ini.ship_front_armour[g]);
-	        ini_write_real("Ships","shi_other_ac"+string(g),obj_ini.ship_other_armour[g]);
-	        ini_write_real("Ships","shi_weapons"+string(g),obj_ini.ship_weapons[g]);
-	        //
-	        ini_write_string("Ships","shi"+string(g)+"wep1",obj_ini.ship_wep[g,1]);
-	        ini_write_string("Ships","shi"+string(g)+"facing1",obj_ini.ship_wep_facing[g,1]);
-	        ini_write_string("Ships","shi"+string(g)+"condition1",obj_ini.ship_wep_condition[g,1]);
-	        //
-	        ini_write_string("Ships","shi"+string(g)+"wep2",obj_ini.ship_wep[g,2]);
-	        ini_write_string("Ships","shi"+string(g)+"facing2",obj_ini.ship_wep_facing[g,2]);
-	        ini_write_string("Ships","shi"+string(g)+"condition2",obj_ini.ship_wep_condition[g,2]);
-	        //
-	        ini_write_string("Ships","shi"+string(g)+"wep3",obj_ini.ship_wep[g,3]);
-	        ini_write_string("Ships","shi"+string(g)+"facing3",obj_ini.ship_wep_facing[g,3]);
-	        ini_write_string("Ships","shi"+string(g)+"condition3",obj_ini.ship_wep_condition[g,3]);
-	        //
-	        ini_write_string("Ships","shi"+string(g)+"wep4",obj_ini.ship_wep[g,4]);
-	        ini_write_string("Ships","shi"+string(g)+"facing4",obj_ini.ship_wep_facing[g,4]);
-	        ini_write_string("Ships","shi"+string(g)+"condition4",obj_ini.ship_wep_condition[g,4]);
-	        //
-	        ini_write_string("Ships","shi"+string(g)+"wep5",obj_ini.ship_wep[g,5]);
-	        ini_write_string("Ships","shi"+string(g)+"facing5",obj_ini.ship_wep_facing[g,5]);
-	        ini_write_string("Ships","shi"+string(g)+"condition5",obj_ini.ship_wep_condition[g,5]);
-	        //
-	        ini_write_real("Ships","shi_capacity"+string(g),obj_ini.ship_capacity[g]);
-	        ini_write_real("Ships","shi_carrying"+string(g),obj_ini.ship_carrying[g]);
-	        ini_write_string("Ships","shi_contents"+string(g),obj_ini.ship_contents[g]);
-	        ini_write_real("Ships","shi_turrets"+string(g),obj_ini.ship_turrets[g]);
-	    }
-	    // the fun begins here
+
+	    ini_encode_and_json("Ships","shi_location",obj_ini.ship_location);
+	    ini_encode_and_json("Ships","shi_shields",obj_ini.ship_shields);
+	    ini_encode_and_json("Ships","shi_conditions",obj_ini.ship_conditions);
+	    ini_encode_and_json("Ships","shi_speed",obj_ini.ship_speed);
+	    ini_encode_and_json("Ships","shi_turning",obj_ini.ship_turning);
+
+	    ini_encode_and_json("Ships","shi_front_ac",obj_ini.ship_front_armour);
+	    ini_encode_and_json("Ships","shi_other_ac",obj_ini.ship_other_armour);
+	    ini_encode_and_json("Ships","shi_weapons",obj_ini.ship_weapons);
+
+	    ini_encode_and_json("Ships","wep",obj_ini.ship_wep);
+	    ini_encode_and_json("Ships","wep_facing",obj_ini.ship_wep_facing);
+	    ini_encode_and_json("Ships","wep_condition",obj_ini.ship_wep_condition);
+
+	    ini_encode_and_json("Ships","shi_capacity",obj_ini.ship_capacity);
+	    ini_encode_and_json("Ships","shi_carrying",obj_ini.ship_carrying);
+	    ini_encode_and_json("Ships","shi_contents",obj_ini.ship_contents);
+	    ini_encode_and_json("Ships","shi_turrets",obj_ini.ship_turrets);
+
 	    ini_close();
 	}
 
@@ -692,6 +682,9 @@ function scr_save(save_part,save_id) {
 
 
 	*/
+	} catch(_exception){
+        handle_exception(_exception);
+    }
 
 
 }

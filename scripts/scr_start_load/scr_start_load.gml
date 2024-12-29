@@ -10,11 +10,17 @@ function scr_start_load(fleet, load_from_star, load_options) {
 	var escort_load = load_options[0];
 	var split_scouts = load_options[1];
 	var split_vets = load_options[2];
+	var _splintered =  scr_has_disadv("Splintered");
+	if (_splintered){
+		split_vets = 1;
+		split_scouts = 1;
+		escort_load = 1;
+	}
 	var comp_has_units=[];
 	for (_comp=0;_comp<10;_comp++;){
 		comp_has_units[_comp]=false
 		for (_unit=0;_unit<20;_unit++){
-			if (obj_ini.name[_comp,_unit] != ""){
+			if (obj_ini.name[_comp][_unit] != ""){
 				comp_has_units[_comp] = true;
 				break;
 			}
@@ -22,7 +28,7 @@ function scr_start_load(fleet, load_from_star, load_options) {
 	}
 
 
-	if (split_vets == 1){
+	if (split_vets){
 		var comp_split=0;
 		for (var squads=0;squads<array_length(obj_ini.squads);squads++){
 			if (comp_split>7 || !comp_has_units[comp_split+2]) then comp_split =0;
@@ -32,7 +38,7 @@ function scr_start_load(fleet, load_from_star, load_options) {
 			}
 		}		
 	}
-	if (split_scouts == 1){
+	if (split_scouts){
 		var comp_split=0;
 		for (var squads=0;squads<array_length(obj_ini.squads);squads++){
 			if (comp_split>7 || !comp_has_units[comp_split+2]) then comp_split =0;
@@ -50,23 +56,20 @@ function scr_start_load(fleet, load_from_star, load_options) {
 			obj_ini.veh_loc[_companies, _equip] = obj_ini.ship_location[_ship];	
 			obj_ini.ship_carrying[_ship] += size;
 	}
-    var splinter, company_size, ship, ship_size, companies_loaded;
-    splinter = 0;
-    company_size = 0;
-    ship = 1;
+    var  ship_size, _companies_loaded;
+    _company_size = 0;
+    var ship = 0;
     //ship_size = obj_ini.ship_size[ship];
-    companies_loaded = 1;
+    _companies_loaded = 1;
 	var ship_return = 1;
 	var ship_has_space =true;
 
-	//thread for now defunct splinter fleets new algorithm just sorts marines into ships and ship location determines splinter status
-    if (scr_has_disadv("Splintered")) then splinter = 1;
 	
 		//loop through companies. try and load whole company onto single ship else spread company across largest ships with remaining space
-	var ship_loop_start = 1;
+	var ship_loop_start = 0;
 	for (_comp = 0; _comp<10;_comp++){
 		if ((split_vets == 1 && _comp == 1) || (!comp_has_units[_comp])) then continue;
-		if (ship_loop_start>array_length(obj_ini.ship_carrying)){
+		if (ship_loop_start>=array_length(obj_ini.ship_carrying)){
 			ship_loop_start=array_length(obj_ini.ship_carrying);
 		}
 		total_vehic_size = 0;
@@ -92,7 +95,7 @@ function scr_start_load(fleet, load_from_star, load_options) {
 			for (var squad=0;squad<array_length(company_squad_dist);squad++){
 				for (var squad_member =0;squad_member<array_length(obj_ini.squads[company_squad_dist[squad]].members);squad_member++){
 					squaddy = obj_ini.squads[company_squad_dist[squad]].members[squad_member]
-					_marine = obj_ini.TTRPG[squaddy[0],squaddy[1]];
+					_marine = fetch_unit(squaddy);
 					var marine_size =  _marine.get_unit_size();
 					_company_size += marine_size;
 					array_push(company_loader, _marine);
@@ -208,7 +211,7 @@ function scr_start_load(fleet, load_from_star, load_options) {
 							   ship_has_space = false;
 						  }
 					  }					  
-					   company_loader= comp_edit;
+					   company_loader = comp_edit;
 					   company_vehicle = veh_edit;
 					}
 				}
@@ -224,5 +227,28 @@ function scr_start_load(fleet, load_from_star, load_options) {
 				ship_loop_start++;	
 			} 
 		 }
+	}
+	if (_splintered){
+		var _imperial_stars = scr_get_stars(true, [eFACTION.Imperium]);
+		var _empty_ships=[];
+		var _fleets=[];
+		with(obj_p_fleet){instance_destroy()};
+		for (var i=0;i<array_length(obj_ini.ship);i++){
+			if (obj_ini.ship[i]!=""){
+				if (obj_ini.ship_carrying[i] ==0){
+					array_push(_empty_ships, i);
+				} else {
+					var _star = array_pop(_imperial_stars);
+					_new_fleet = instance_create(_star.x,_star.y,obj_p_fleet);
+					_new_fleet.owner  = eFACTION.Player;
+					add_ship_to_fleet(i,_new_fleet);	
+					array_push(_fleets, _new_fleet)		;		
+				}
+			}
+		}
+		for (var i=0; i<array_length(_empty_ships); i++){
+			var _add_fleet = array_random_element(_fleets);
+			add_ship_to_fleet(_empty_ships[i], _add_fleet);
+		}
 	}
 }

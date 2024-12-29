@@ -1,78 +1,5 @@
 
-function scr_marine_trait_spawning(distribution_set){
 
-	function is_state_required(mod_area){
-		is_required = false;
-		if (array_length(mod_area)>2){
-			if (mod_area[2] == "require"){
-				is_required =true;
-			}
-		}
-		return is_required;
-	}		
-	for (var i=0;i<array_length(distribution_set);i++){//standard distribution for trait
-		if (array_length(distribution_set[i])==2){
-			if (irandom(distribution_set[i][1][0])>distribution_set[i][1][1]){
-				add_trait(distribution_set[i][0])
-			}
-		} else if (array_length(distribution_set[i])==3){  //trait has conditions
-			var dist_modifiers =distribution_set[i][2];
-			var dist_rate = distribution_set[i][1];
-			if (struct_exists(dist_modifiers, "disadvantage")){
-				if (array_contains(obj_ini.dis, dist_modifiers[$"disadvantage"][0])){
-					dist_rate = dist_modifiers[$"disadvantage"][1];  //apply new modifier rate
-				} else if (is_state_required(dist_modifiers[$"disadvantage"])){
-					dist_rate=[0,0];
-				}
-			}
-			if (struct_exists(dist_modifiers, "advantage")){
-				if (array_contains(obj_ini.adv, dist_modifiers[$"advantage"][0])){
-					dist_rate = dist_modifiers[$"advantage"][1];  //apply new modifier rate
-				} else if (is_state_required(dist_modifiers[$"advantage"])){
-					dist_rate=[0,0];
-				}
-			}
-			if (struct_exists(dist_modifiers, "progenitor")){
-				if (obj_ini.progenitor == dist_modifiers[$ "progenitor"][0]){
-					dist_rate = dist_modifiers[$"progenitor"][1]; 
-				}else if (is_state_required(dist_modifiers[$ "progenitor"])){
-					dist_rate=[0,0];
-				}
-			}
-			if (struct_exists(dist_modifiers, "chapter_name")){
-				if (global.chapter_name == dist_modifiers[$ "chapter_name"][0]){
-					dist_rate = dist_modifiers[$"chapter_name"][1]; 
-				}else if (is_state_required(dist_modifiers[$ "chapter_name"])){
-					dist_rate=[0,0];
-				}
-			}
-			if (struct_exists(spawn_data, "recruit_data")){
-				var recruit_world_data = spawn_data.recruit_data;
-				if (struct_exists(dist_modifiers, "recruit_world_type")){
-					var type_data = dist_modifiers.recruit_world_type;
-					for (var t=0;t<array_length(type_data);t++){
-						if (type_data[t][0] == recruit_world_data.recruit_world){
-							dist_rate[1] += type_data[t][1];
-						}
-					}
-				}
-				if (struct_exists(dist_modifiers,"trial_type")){
-					if (struct_exists(dist_modifiers, "recruit_trial")){
-						trial_data = dist_modifiers.recruit_trial;
-						for (var t=0;t<array_length(trial_data);t++){
-							if (type_data[t][0] == recruit_world_data.aspirant_trial){
-								dist_rate[1] += type_data[t][1];
-							}
-						}						
-					}
-				}
-			}						
-			if (irandom(dist_rate[0])>dist_rate[1]){
-				add_trait(distribution_set[i][0]);
-			}
-		}
-	}	
-}
 function scr_marine_spawn_age(){
 	var _age = 0;
 	var _minimum_age = 0;
@@ -112,6 +39,8 @@ function scr_marine_spawn_age(){
 			break;
 	}
 
+	var _venerable_dred = string_concat("Venerable ", obj_ini.role[100][eROLE.Dreadnought]);
+
 	switch(role()){
 		// HQ only
 		case "Chapter Master":
@@ -124,7 +53,7 @@ function scr_marine_spawn_age(){
 		case "Forge Master":
 		case "Master of Sanctity":
 		case "Master of the Apothecarion":
-		case obj_ini.role[100][Role.HONOUR_GUARD]:
+		case obj_ini.role[100][eROLE.HonourGuard]:
 			_minimum_age = 180;
 			_maximum_age = 300;
 			_apply_gauss = true;
@@ -138,62 +67,62 @@ function scr_marine_spawn_age(){
 			_maximum_age += 60;
 			break;
 		// 1st company only
-		case obj_ini.role[100][Role.VETERAN]:
+		case obj_ini.role[100][eROLE.Veteran]:
 			_minimum_age = 100;
 			_maximum_age = 140;
 			break;
-		case obj_ini.role[100][Role.TERMINATOR]:
+		case obj_ini.role[100][eROLE.Terminator]:
 			_minimum_age = 140;
 			_maximum_age = 160;
 			break;
-		case obj_ini.role[100][Role.VETERAN_SERGEANT]:
+		case obj_ini.role[100][eROLE.VeteranSergeant]:
 			_minimum_age = 140;
 			_maximum_age = 160;
 			break;
 		// Command Squads
-		case obj_ini.role[100][Role.CAPTAIN]:
+		case obj_ini.role[100][eROLE.Captain]:
 			_minimum_age += 80;
 			_maximum_age += 90;
 			break;
-		case obj_ini.role[100][Role.CHAMPION]:
+		case obj_ini.role[100][eROLE.Champion]:
 			_minimum_age += 50;
 			_maximum_age += 60;
 			break;
-		case obj_ini.role[100][Role.ANCIENT]:
+		case obj_ini.role[100][eROLE.Ancient]:
 			_minimum_age += 90;
 			_maximum_age += 140;
 			break;
 		// Command Squads and HQ
-		case obj_ini.role[100][Role.CHAPLAIN]:
-		case obj_ini.role[100][Role.APOTHECARY]:
-		case obj_ini.role[100][Role.TECHMARINE]:
-		case obj_ini.role[100][Role.LIBRARIAN]:
+		case obj_ini.role[100][eROLE.Chaplain]:
+		case obj_ini.role[100][eROLE.Apothecary]:
+		case obj_ini.role[100][eROLE.Techmarine]:
+		case obj_ini.role[100][eROLE.Librarian]:
 			_minimum_age += 70;
 			_maximum_age += 150;
 			_apply_gauss = true;
 			break;
 		// Company marines
-		case obj_ini.role[100][Role.DREADNOUGHT]:
+		case obj_ini.role[100][eROLE.Dreadnought]:
 			_minimum_age = 400;
 			_maximum_age = 600;
 			_apply_gauss = true;
 			break;
-		case "Venerable Dreadnought":
+		case _venerable_dred:
 			_minimum_age = 650;
 			_maximum_age = 0;
 			_apply_gauss = true;
 			break;
-		case obj_ini.role[100][Role.TACTICAL]:
-		case obj_ini.role[100][Role.DEVASTATOR]:
-		case obj_ini.role[100][Role.ASSAULT]:
+		case obj_ini.role[100][eROLE.Tactical]:
+		case obj_ini.role[100][eROLE.Devastator]:
+		case obj_ini.role[100][eROLE.Assault]:
 			_minimum_age += 20;
 			_maximum_age += 30;
 			break;
-		case obj_ini.role[100][Role.SERGEANT]:
+		case obj_ini.role[100][eROLE.Sergeant]:
 			_minimum_age += 25;
 			_maximum_age += 35;
 			break;
-		case obj_ini.role[100][Role.SCOUT]:
+		case obj_ini.role[100][eROLE.Scout]:
 		default:
 			_minimum_age = 18;
 			_maximum_age = 25;
@@ -227,31 +156,31 @@ function scr_marine_spawn_armour(){
 
 	switch(role()){
 		// HQ
-		// case obj_ini.role[100][Role.CHAPTER_MASTER]:
+		// case obj_ini.role[100][eROLE.ChapterMaster]:
 		// case "Chief Librarian":
 		// case "Forge Master":
 		// case "Master of Sanctity":
 		// case "Master of the Apothecarion":
-		// case obj_ini.role[100][Role.HONOUR_GUARD]:
+		// case obj_ini.role[100][eROLE.HonourGuard]:
 		case "Codiciery":
 		case "Lexicanum":
 		// 1st company only
-		case obj_ini.role[100][Role.VETERAN]:
-		case obj_ini.role[100][Role.VETERAN_SERGEANT]:
+		case obj_ini.role[100][eROLE.Veteran]:
+		case obj_ini.role[100][eROLE.VeteranSergeant]:
 		// Command Squads
-		case obj_ini.role[100][Role.CAPTAIN]:
-		case obj_ini.role[100][Role.CHAMPION]:
-		case obj_ini.role[100][Role.ANCIENT]:
+		case obj_ini.role[100][eROLE.Captain]:
+		case obj_ini.role[100][eROLE.Champion]:
+		case obj_ini.role[100][eROLE.Ancient]:
 		// Command Squads and HQ
-		case obj_ini.role[100][Role.CHAPLAIN]:
-		case obj_ini.role[100][Role.APOTHECARY]:
-		case obj_ini.role[100][Role.LIBRARIAN]:
+		case obj_ini.role[100][eROLE.Chaplain]:
+		case obj_ini.role[100][eROLE.Apothecary]:
+		case obj_ini.role[100][eROLE.Librarian]:
 		// Company marines
-		// case obj_ini.role[100][Role.SCOUT]:
-		case obj_ini.role[100][Role.TACTICAL]:
-		case obj_ini.role[100][Role.DEVASTATOR]:
-		case obj_ini.role[100][Role.ASSAULT]:
-		case obj_ini.role[100][Role.SERGEANT]:
+		// case obj_ini.role[100][eROLE.Scout]:
+		case obj_ini.role[100][eROLE.Tactical]:
+		case obj_ini.role[100][eROLE.Devastator]:
+		case obj_ini.role[100][eROLE.Assault]:
+		case obj_ini.role[100][eROLE.Sergeant]:
 			if (_total_score > 280){
 				update_armour(choose_weighted(armour_weighted_lists.old_armour),false,false);
 			} else if (_total_score > 180){
@@ -262,7 +191,7 @@ function scr_marine_spawn_armour(){
 				update_armour(choose_weighted(armour_weighted_lists.normal_armour),false,false);
 			}
 			break;
-		case obj_ini.role[100][Role.TECHMARINE]:
+		case obj_ini.role[100][eROLE.Techmarine]:
 			if (_total_score > 280){
 				update_armour("Artificer Armour",false,false);
 			} else if (_total_score > 180){
@@ -273,7 +202,7 @@ function scr_marine_spawn_armour(){
 				update_armour(choose_weighted(armour_weighted_lists.normal_armour),false,false);
 			}
 			break;
-		case obj_ini.role[100][Role.TERMINATOR]:
+		case obj_ini.role[100][eROLE.Terminator]:
 			if (_total_score > 270){
 				update_armour(choose("Tartaros", "Terminator Armour", "Terminator Armour"),false,false);
 			} else if (_total_score > 250){
@@ -433,7 +362,7 @@ function scr_marine_game_spawn_constructions(){
 			break;
 		case "Lexicanum":
 			break;
-		case obj_ini.role[100][Role.LIBRARIAN]:
+		case obj_ini.role[100][eROLE.Librarian]:
 			if ((old_guard >= 90 && company > 0 && company < 6) || company == 1){
 				bionic_count = choose(0,0,1,2,3)
 			} else if (company > 0 && company < 6){
@@ -442,7 +371,7 @@ function scr_marine_game_spawn_constructions(){
 				bionic_count = choose(0,0,0,0,1)
 			}
 			break;	
-		case obj_ini.role[100][Role.CHAMPION]:
+		case obj_ini.role[100][eROLE.Champion]:
 			if(old_guard>=80 || company == 1){
 				bionic_count = choose(0,0,1,2,3)
 			} else{

@@ -31,7 +31,8 @@ allow_colour_click = (cooldown<=0)   and (mouse_left>=1) and (custom>1) and (!in
 
 draw_set_alpha(slate4/30);
 if (slate4>0){
-    if (slide=1){
+    /* Chapter Selection grid */
+    if (slide==1){
         draw_set_color(38144);
         draw_set_font(fnt_40k_30b);
         draw_set_halign(fa_center);
@@ -39,39 +40,80 @@ if (slate4>0){
         
         draw_set_font(fnt_40k_30b);
         draw_set_halign(fa_left);
-        icon_gap_y = 34;
-        icon_gap_x = 53;
-        founding_y = 133;
-        successor_y = 250;
-        custom_y = 463;
-        other_y = 593
 
         draw_text_transformed(440,founding_y,"Founding Chapters",0.75,0.75,0);
         draw_text_transformed(440,successor_y,"Existing Chapters",0.75,0.75,0);
 		draw_text_transformed(440,custom_y,string_hash_to_newline("Custom Chapters"),0.75,0.75,0);
         draw_text_transformed(440,other_y,string_hash_to_newline("Other"),0.75,0.75,0);
 
+        /// @localvar grid object to keep track of where to draw icon boxes
+        var grid = {
+            count: 0,
+            x1: icon_grid_left_edge,
+            y1: founding_y + icon_gap_y,
+            w: icon_width,
+            h: icon_height,
+            x2:0,
+            y2:0,
+            left_edge: icon_grid_left_edge,
+            right_edge: icon_grid_right_edge(),
+            row_gap: icon_row_gap,
+            section_gap: icon_gap_y,
+            col_gap: icon_gap_x,
+            /// Updates coords to draw a new icon, creating new rows where needed
+            new_cell: function() {
+                if(count > 0){
+                    x1 = x1 + col_gap;
+                } else {
+                    x2 = x1 + w;
+                    y2 = y1 + h;
+                }
+                if(x1 > right_edge){
+                    x1 = left_edge;
+                    y1 = y1 + row_gap;
+                }
+                x2 = x1 + w;
+                y2 = y1 + h;
+                count += 1;
+            },
+            /// given a new y coord for a section heading resets cell drawing to start a new grid
+            new_section: function(new_y){
+                count = 0;
+                x1 = left_edge;
+                y1 = new_y + section_gap;
+                x2 = x1 + w;
+                y2 = y1 + h;
+            },
+            hover : function(){
+                 return scr_hit(x1,y1,x2,y2);
+            },
+            clicked : function(){
+                 return point_and_click([x1,y1,x2,y2]);
+            }
+        };
 
-        
+
 
         /** * Founding Chapters */
-        var x2,y2,i,new_hover,tool;
-        x2=441;y2=founding_y + icon_gap_y;i=1;new_hover=highlight;tool=0;
+        var i,new_hover,tool;
+        i=1;new_hover=highlight;tool=0;
         for(var c = 0; c < array_length(founding_chapters); c++){
             var chap = founding_chapters[c]
             i = chap.id;
+
+            grid.new_cell();
             
-            draw_sprite(spr_creation_icon,0,x2,167);
-            scr_image("creation/chapters/icons", chap.icon,x2,y2,48,48);
-            // draw_sprite_stretched(spr_icon,i,x2,167,48,48);
-            if(scr_hit(x2,y2, x2+48, y2+48) && slate4>=30){
-            // if (mouse_x>=x2) and (mouse_y>=y2) and (mouse_x<x2+48) and (mouse_y<y2+48) and (slate4>=30){
+            draw_sprite(spr_creation_icon,0,grid.x1,grid.y1);
+            scr_image("creation/chapters/icons", chap.icon, grid.x1,grid.y1,grid.w,grid.h);
+
+            // Hover
+            if(grid.hover() && slate4>=30){
                 if (old_highlight!=highlight) and (highlight!=i) and (goto_slide!=2){old_highlight=highlight;highlighting=1;}
                 if (goto_slide!=2){highlight=i;tool=1;}
-                draw_set_alpha(0.1);draw_set_color(c_white);
-                draw_rectangle(x2,y2,x2+48,y2+48,0);
-                draw_set_alpha(slate4/30);
-                if (point_and_click([x2,y2,x2+48,y2+48])){
+                // Highlight white on hover
+                draw_rectangle_color_simple(grid.x1, grid.y1, grid.x2, grid.y2,0,c_white,0.1);
+                // Click
+                if (grid.clicked()){
                     cooldown=8000;
                     chapter_name=chap.name;
                     if (!chap.disabled){
@@ -89,28 +131,30 @@ if (slate4>0){
                     }
                 }
             }
-            x2+=icon_gap_x;
+            // grid.x1 += icon_gap_x;
         }
         
         /** * Successor Chapters */
-        x2=441;y2=successor_y + icon_gap_y;new_hover=highlight;
+        grid.new_section(successor_y);
+
+        new_hover=highlight;
         for(var c = 0; c < array_length(successor_chapters); c++){
             var chap = successor_chapters[c]
             i = chap.id;
-                    
-            draw_sprite(spr_creation_icon,0,x2,y2);
-            // draw_sprite_stretched(spr_icon,i,x2,397,48,48);
-            scr_image("creation/chapters/icons",chap.icon,x2,y2,48,48);
 
-            
-            if (scr_hit(x2, y2, x2+48, y2+48) && slate4>=30){
+            grid.new_cell();
+
+            draw_sprite(spr_creation_icon,0,grid.x1,grid.y1);
+            scr_image("creation/chapters/icons",chap.icon,grid.x1,grid.y1,grid.w, grid.h);
+
+            // Hover
+            if (grid.hover() && slate4>=30){
                 if (old_highlight!=highlight) and (highlight!=i) and (goto_slide!=2){old_highlight=highlight;highlighting=1;}
                 if (goto_slide!=2){highlight=i;tool=1;}
-                draw_set_alpha(0.1);draw_set_color(c_white);
-                draw_rectangle(x2,y2,x2+48,y2+48,0);
-                draw_set_alpha(slate4/30);
+                // Highlight on hover
+                draw_rectangle_color_simple(grid.x1, grid.y1, grid.x2, grid.y2,0,c_white,0.1);
                 //Click
-                if (point_and_click([x2, y2, x2+48, y2+48])){
+                if (grid.clicked()){
                     cooldown=8000;
                     chapter_name=chap.name;
                     if (!chap.disabled){
@@ -127,40 +171,54 @@ if (slate4>0){
                     }
                 }
             }
-            x2+=icon_gap_x;
         }
         
         /** * Saved Custom Chapters */
-		x2=441;y2=custom_y + icon_gap_y;new_hover=highlight;
+        grid.new_section(custom_y);
+		new_hover=highlight;
         for(var c = 0; c < array_length(custom_chapters); c++){
             var chap = custom_chapters[c];
             i = chap.id;
             
+            grid.new_cell();
             
-            draw_sprite(spr_creation_icon,0,x2,y2);
+            draw_sprite(spr_creation_icon,0,grid.x1,grid.y1);
             if(chap.loaded == false){
                 // should be the icon that says 'custom'
-                draw_sprite_stretched(spr_icon_chapters, 31, x2,y2,48,48); 
+                draw_sprite_stretched(spr_icon_chapters, 31, grid.x1,grid.y1, grid.w, grid.h); 
             } else {
                 if(chap.icon > global.normal_icons_count){
-                    draw_sprite_stretched(spr_icon_chapters, chap.icon - global.normal_icons_count, x2,y2,48,48);
+                    if(string_starts_with(chap.icon_name, "custom")){   
+                        var cuicon = obj_cuicons.spr_custom_icon[chap.icon-normal_and_builtin];
+                        draw_sprite_stretched(cuicon, 0, grid.x1,grid.y1, grid.w, grid.h);
+                    } else {
+                        draw_sprite_stretched(spr_icon_chapters, chap.icon - global.normal_icons_count, grid.x1,grid.y1, grid.w, grid.h);
+                    }
                 } else {
-                    scr_image("creation/chapters/icons", chap.icon, x2,y2,48,48);
+                    scr_image("creation/chapters/icons", chap.icon, grid.x1,grid.y1, grid.w, grid.h);
                 }
             }
             
-            
-            if (scr_hit(x2, y2, x2+48, y2+48) && slate4>=30){
+            // Hover
+            if (grid.hover() && slate4>=30){
                 if (old_highlight!=highlight) and (highlight!=i) and (goto_slide!=2){old_highlight=highlight;highlighting=1;}
                 if (goto_slide!=2){highlight=chap.id;tool=1;}
-                draw_set_alpha(0.1);draw_set_color(c_white);
-                draw_rectangle(x2,y2,x2+48,y2+48,0);
-                draw_set_alpha(slate4/30);
-                if (point_and_click([x2, y2, x2+48, y2+48])){
+                // Highlight white on hover
+                draw_rectangle_color_simple(grid.x1, grid.y1, grid.x2, grid.y2,0,c_white,0.1);
+
+                //Click
+                if (grid.clicked()){
 					if(chap.loaded == true && chap.disabled == false){
                         if(chap.icon > global.normal_icons_count){
-                            global.chapter_icon_sprite = spr_icon_chapters;
-                            global.chapter_icon_frame = chap.icon - global.normal_icons_count;
+                            if(string_starts_with(chap.icon_name, "custom")){   
+                                var cuicon = obj_cuicons.spr_custom_icon[chap.icon-normal_and_builtin];
+                                global.chapter_icon_sprite = sprite_duplicate(cuicon);
+                                global.chapter_icon_frame = 0;
+                                global.chapter_icon_filename = chap.icon_name;
+                            } else {
+                                global.chapter_icon_sprite = spr_icon_chapters;
+                                global.chapter_icon_frame = chap.icon - global.normal_icons_count;
+                            }
                         } else {
                             global.chapter_icon_sprite = obj_img.image_cache[$"creation/chapters/icons"][chap.icon];
                             global.chapter_icon_frame = 0;
@@ -183,28 +241,29 @@ if (slate4>0){
                     }
                 }
             }
-            x2+=icon_gap_x;
         }
 
         /** * Other Chapters */
-        x2=441;y2=other_y + icon_gap_y;new_hover=highlight;
+        grid.new_section(other_y);
+
+        new_hover=highlight;
         for(var c = 0; c < array_length(other_chapters); c++){
             var chap = other_chapters[c];
             i = chap.id;
-        
-            draw_sprite(spr_creation_icon,0,x2,y2);
-            // draw_sprite_stretched(spr_icon,i,x2,y2,48,48);
-            scr_image("creation/chapters/icons",chap.icon,x2,y2,48,48);
 
-            
-            if (scr_hit(x2, y2, x2+48, y2+48) && slate4>=30){
+            grid.new_cell();        
+            draw_sprite(spr_creation_icon,0,grid.x1, grid.y1);
+            // draw_sprite_stretched(spr_icon,i,x2,y2,48,48);
+            scr_image("creation/chapters/icons",chap.icon,grid.x1, grid.y1, grid.w, grid.h);
+
+            // Hover
+            if (grid.hover() && slate4>=30){
                 if (old_highlight!=highlight) and (highlight!=i) and (goto_slide!=2){old_highlight=highlight;highlighting=1;}
                 if (goto_slide!=2){highlight=i;tool=1;}
-                draw_set_alpha(0.1);draw_set_color(c_white);
-                draw_rectangle(x2,y2,x2+48,y2+48,0);
-                draw_set_alpha(slate4/30);
+                // Highlight white on hover
+                draw_rectangle_color_simple(grid.x1, grid.y1, grid.x2, grid.y2,0,c_white,0.1);
                 //Click
-                if (point_and_click([x2, y2, x2+48, y2+48])){
+                if (grid.clicked()){
                     cooldown=8000;
                     chapter_name=chap.name;
                     if (!chap.disabled){
@@ -222,23 +281,24 @@ if (slate4>0){
                     }
                 }
             }
-            x2+=icon_gap_x;
         }
         
-        /* Custom + Random*/
-        x2+=53;
+        /* Blank Custom + Random*/
+        grid.new_cell();
+
         i=1001;
         repeat(2){
-            draw_sprite(spr_creation_icon,0,x2,y2);
-            draw_sprite_stretched(spr_icon_chapters,i-1001,x2,y2,48,48);
+            grid.new_cell();            
+
+            draw_sprite(spr_creation_icon,0,grid.x1, grid.y1);
+            draw_sprite_stretched(spr_icon_chapters,i-1001,grid.x1, grid.y1, grid.w, grid.h);
+
             
-            if (scr_hit(x2, y2, x2+48, y2+48) && (slate4>=30)){
+            if (grid.hover() && slate4>=30){
                 if (old_highlight!=highlight) and (highlight!=i) and (goto_slide!=2){old_highlight=highlight;highlighting=1;}
                 if (goto_slide!=2){highlight=i;tool=1;}
-                draw_set_alpha(0.1);draw_set_color(c_white);
-                draw_rectangle(x2,y2,x2+48,y2+48,0);
-                draw_set_alpha(slate4/30);
-                if (point_and_click([x2, y2, x2+48, y2+48])){
+                draw_rectangle_color_simple(grid.x1, grid.y1, grid.x2, grid.y2,0,c_white,0.1);
+                if (grid.clicked()){
                     cooldown=8000;
                     icon=1;
                     icon_name="da";
@@ -248,7 +308,7 @@ if (slate4>0){
                     if (i=1002){custom=1;scr_chapter_random(1);}
                 }
             }
-            i+=1;x2+=53;
+            i+=1;
         }
         
         if (tool=1) and (highlighting<30) then highlighting+=1;
@@ -674,9 +734,6 @@ if (slide=2){
             }
             
             x3+=110;
-            var builtin_icons = array_length(sprite_get_info(spr_icon_chapters).frames);
-            var normal_and_builtin = global.normal_icons_count + builtin_icons;
-            var total_icons = global.normal_icons_count + builtin_icons + global.custom_icons;
             if (ic<=(total_icons)){
                 //ic starts at 1, normal icons = 22
                 if (ic<global.normal_icons_count) {
@@ -721,8 +778,10 @@ if (slide=2){
                             global.chapter_icon_filename = ic;
                         }
                         if (ic>normal_and_builtin) {
-                            global.chapter_icon_sprite = obj_cuicons.spr_custom_icon[ic-normal_and_builtin];
+                            var cuicon_idx = ic-normal_and_builtin;
+                            global.chapter_icon_sprite = sprite_duplicate(obj_cuicons.spr_custom_icon[cuicon_idx]);
                             global.chapter_icon_frame = 0;
+                            obj_creation.icon_name = string_concat("custom", cuicon_idx);
                         }
                         if (ic>global.normal_icons_count && ic <=normal_and_builtin) {
                             global.chapter_icon_sprite = spr_icon_chapters;
@@ -994,6 +1053,13 @@ if (slide=3){
             draw_set_alpha(0.75);
             draw_rectangle(525,398,760,418,1);
             draw_set_alpha(1);
+            var _refresh_hw_name_btn =[770, 398, 790, 418];
+            draw_unit_buttons(_refresh_hw_name_btn,"?", [1,1], 38144,,fnt_40k_14b);
+            if(point_and_click(_refresh_hw_name_btn)){
+                var _new_hw_name = global.name_generator.generate_star_name();
+                show_debug_message($"regen name of homeworld from {homeworld_name} to {_new_hw_name}");
+                homeworld_name = _new_hw_name;
+            }
         }
         
         if (custom>1) then draw_sprite_stretched(spr_creation_arrow,0,525,285,32,32);// Left Arrow
@@ -1040,6 +1106,13 @@ if (slide=3){
             }
             if (text_selected="flagship_name") then flagship_name=keyboard_string;
             draw_set_alpha(0.75);draw_rectangle(525,398,760,418,1);draw_set_alpha(1);
+            var _refresh_fs_name_btn =[770, 398, 790, 418];
+            draw_unit_buttons(_refresh_fs_name_btn,"?", [1,1], 38144,,fnt_40k_14b);
+            if(point_and_click(_refresh_fs_name_btn)){
+                var _new_fs_name = global.name_generator.generate_imperial_ship_name();
+                show_debug_message($"regen name of flagship_name from {flagship_name} to {_new_fs_name}");
+                flagship_name = _new_fs_name;
+            }
         }
     }
     
@@ -1119,6 +1192,14 @@ if (slide=3){
                 }
                 if (text_selected="recruiting_name") then recruiting_name=keyboard_string;
                 draw_set_alpha(0.75);draw_rectangle(525+333,398,760+333,418,1);draw_set_alpha(1);
+
+                var _refresh_rec_name_btn =[1103, 398, 1103+20, 398+20];
+                draw_unit_buttons(_refresh_rec_name_btn,"?", [1,1], 38144,,fnt_40k_14b);
+                if(point_and_click(_refresh_rec_name_btn)){
+                    var _new_rec_name = global.name_generator.generate_star_name();
+                    show_debug_message($"regen name of recruiting_name from {recruiting_name} to {_new_rec_name}");
+                    recruiting_name = _new_rec_name;
+                }
             }
         }
     }
@@ -1500,6 +1581,14 @@ if (slide=6){
         }
         if (text_selected="cm") then chapter_master_name=keyboard_string;
         draw_rectangle(580-2,144-2,582+400,146+hei,1);
+
+        var _refresh_cm_name_btn =[993, 142, 997+hei, 146+hei];
+        draw_unit_buttons(_refresh_cm_name_btn,"?", [1,1], 38144,,fnt_40k_14b);
+        if(point_and_click(_refresh_cm_name_btn)){
+            var _new_cm_name = global.name_generator.generate_space_marine_name();
+            show_debug_message($"regen name of chapter_master_name from {chapter_master_name} to {_new_cm_name}");
+            chapter_master_name = _new_cm_name;
+        }
     }
     
     draw_line(445,200,1125,200);
