@@ -146,7 +146,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 6,
-		"arp": 1,
+		"arp": -1,
 		"tags": ["chain", "sword", "savage"],
 	},
 	"Power Sword": {
@@ -167,7 +167,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 4,
-		"arp": 1,
+		"arp": -1,
 		"special_properties": ["Parry"],
 		"tags": ["power", "sword", "martial", "boarding 1"],
 	},
@@ -189,7 +189,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 6,
-		"arp": 1,
+		"arp": -1,
 		"special_properties": ["Parry"],
 		"tags": ["power", "spear", "martial"],
 	},
@@ -239,7 +239,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 3,
-		"arp": 1,
+		"arp": -1,
 		"tags": ["power"],
 	},
 	"Power Axe": {
@@ -260,7 +260,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 5,
-		"arp": 1,
+		"arp": -1,
 		"tags": ["power", "axe", "dual","savage", "boarding 2"],
 	},
 	"Executioner Power Axe": {
@@ -710,7 +710,7 @@ global.weapons = {
 		"ammo": 20,
 		"range": 16,
 		"spli": 3,
-		"arp": 1,
+		"arp": -1,
 		"tags": ["bolt", "precision"]
 	},
 	"Bolter": {
@@ -868,7 +868,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 5.1,
 		"spli": 2,
-		"arp": 1,
+		"arp": -1,
 		"tags": ["plasma", "energy", "pistol", "boarding 1"]
 	},
 	"Plasma Cutter": { // Basically a dual-linked plasma pistol
@@ -884,7 +884,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 4.1,
 		"spli": 1,
-		"arp": 1,
+		"arp": -1,
 		"tags": ["plasma", "energy", "pistol"]
 	},
 	"Infernus Pistol": {
@@ -900,7 +900,7 @@ global.weapons = {
 		"ammo": 4,
 		"range": 2.1,
 		"spli": 3,
-		"arp": 1,
+		"arp": -1,
 		"tags": ["melta", "pistol", "boarding 2"]
 	},
 	"Integrated-Plasma": {
@@ -916,7 +916,7 @@ global.weapons = {
 		"ammo": 6,
 		"range": 10,
 		"spli": 2,
-		"arp": 1,
+		"arp": -1,
 		"tags": ["plasma"]
 	},
 	"Plasma Gun": {
@@ -932,7 +932,7 @@ global.weapons = {
 		"ammo": 16,
 		"range": 10,
 		"spli": 3,
-		"arp": 1,
+		"arp": -1,
 		"tags": ["plasma", "energy", "boarding 1"]
 	},
 	"Plasma Cannon": {
@@ -948,7 +948,7 @@ global.weapons = {
 		"ammo": 16,
 		"range": 10,
 		"spli": 8,
-		"arp": 1,
+		"arp": -1,
 		"tags": ["plasma","energy","heavy_ranged", "dreadnought"]
 	},
 	"Sniper Rifle": {
@@ -964,7 +964,7 @@ global.weapons = {
 		"ammo": 20,
 		"range": 14,
 		"spli": 1,
-		"arp": 1,
+		"arp": -1,
 		"tags": ["precision", "rifle"]
 	},
 	"Assault Cannon": {
@@ -996,7 +996,7 @@ global.weapons = {
 		"ammo": 25,
 		"range": 14,
 		"spli": 12,
-		"arp": 1,
+		"arp": -1,
 		"tags": ["heavy_ranged", "dreadnought"]
 	},
 	"Missile Launcher": {
@@ -1012,7 +1012,7 @@ global.weapons = {
 		"ammo": 6,
 		"range": 15,
 		"spli": 10,
-		"arp": 0,
+		"arp": -1,
 		"tags": ["heavy_ranged", "dreadnought"]
 	},
 	"Lascannon": {
@@ -1124,7 +1124,7 @@ global.weapons = {
 		"ammo": 6,
 		"range": 20,
 		"spli": 40,
-		"arp": 1,
+		"arp": -1,
 		"tags": ["vehicle","heavy_ranged", "indirect"]
 	},
 	"HK Missile": {
@@ -1193,7 +1193,7 @@ global.weapons = {
 		"ammo": 25,
 		"range": 15,
 		"spli": 24,
-		"arp": 1,
+		"arp": -1,
 		"tags": ["vehicle","heavy_ranged", "pintle"]
 	},
 	"Quad Linked Heavy Bolter Sponsons": {
@@ -1706,7 +1706,7 @@ global.weapons = {
 		"ammo": 16,
 		"range": 14,
 		"spli": 12,
-		"arp": 1,
+		"arp": -1,
 		"tags": ["plasma", "energy","heavy_ranged", "vehicle", "turret"]
 	},
 	"Heavy Conversion Beam Projector": {
