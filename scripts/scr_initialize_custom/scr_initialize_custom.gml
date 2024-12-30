@@ -1714,7 +1714,10 @@ function scr_initialize_custom() {
 			["type_data", {
 				"display_data": $"{roles.tactical} {squad_name}",
 				"formation_options": ["tactical", "assault", "devastator", "scout"],
+				
 			}]
+			
+			
 		],
 
 		"assault_squad": [
@@ -1987,7 +1990,8 @@ function scr_initialize_custom() {
 				"role": $"{roles.tactical} Bike {roles.sergeant}"
 			}, ],
 			["type_data", {
-				"display_data": $"{roles.tactical} Bike {squad_name}"
+				"display_data": $"{roles.tactical} Bike {squad_name}",
+				class:["scout"],
 			}]
 		])
 
