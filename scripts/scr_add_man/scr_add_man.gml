@@ -25,6 +25,7 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
 
 	if (good != -1) {
 		scr_wipe_unit(target_company,good);
+		unit = fetch_unit([target_company,good]);
 		if (other_gear = true) {
 	// Factions 1-5 are part of Imperial family
 		// Faction 1 - Space Marine
@@ -202,9 +203,6 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
 			}
 		}
 
-		unit.add_exp(spawn_exp);
-		unit.update_role(man_role);
-
 		obj_ini.age[target_company][good] = ((obj_controller.millenium * 1000) + obj_controller.year); // Age here // Note: age for marines is generated later with roll_age(), this is left here as a fallback
 
 		if (spawn_name = "") or(spawn_name = "imperial") then obj_ini.name[target_company][good] = global.name_generator.generate_space_marine_name();
@@ -231,7 +229,6 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
 			unit = new TTRPG_stats("chapter", target_company, good, "scout", other_data);
 			unit.corruption = corruption
 			unit.roll_age(); // Age here
-			unit.add_exp(spawn_exp);
 			unit.alter_unit_equipment(_gear);
 			marines += 1;
 
@@ -255,6 +252,7 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
 		obj_ini.TTRPG[target_company][good] = unit;
 		unit.add_exp(spawn_exp);
 		unit.allocate_unit_to_fresh_spawn(home_spot);
+		unit.update_role(man_role);	
 		with(obj_ini) {
 			scr_company_order(target_company);
 		}

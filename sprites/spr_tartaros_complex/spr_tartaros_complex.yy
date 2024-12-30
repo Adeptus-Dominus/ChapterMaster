@@ -2,7 +2,7 @@
   "resourceType": "GMSprite",
   "resourceVersion": "1.0",
   "name": "spr_tartaros_complex",
-  "bbox_bottom": 259,
+  "bbox_bottom": 204,
   "bbox_left": 10,
   "bbox_right": 169,
   "bbox_top": 32,
@@ -20,7 +20,7 @@
   "height": 271,
   "HTile": false,
   "layers": [
-    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"bf13109d-149e-4439-b37b-544f85c80d9b","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"229b5182-d233-4896-9f67-630367846af5","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
   ],
   "nineSlice": null,
   "origin": 9,

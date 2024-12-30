@@ -144,6 +144,11 @@ function get_complex_set(set = eARMOUR_SET.MK7){
             left_leg : spr_tartaros_left_leg,
             chest_variants : spr_tartaros_chest,
             gorget : spr_tartaros_gorget,
+            mouth_variants : spr_tartaros_faceplate,
+            head : spr_tartaros_head,
+            left_trim : spr_tartaros_left_trim,
+            right_trim : spr_tartaros_right_trim,
+
         });                
     }
 
