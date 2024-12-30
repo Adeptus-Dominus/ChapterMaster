@@ -93,7 +93,7 @@ if (boarding=true) and (board_cooldown>=0) and (instance_exists(target)) and (in
                 marine_bonus+=unit.experience/20;
                 marine_bonus+=(1-(target.hp/target.maxhp))*33; // if wounded marine will perform worse
 
-                var _weapons = [gear_weapon_data("weapon", unit.weapon_one()), gear_weapon_data("weapon", unit.weapon_two())];
+                var _weapons = [unit.get_weapon_one_data(), unit.get_weapon_two_data()];
                 if (_weapons[0] == "" && _weapons[1] == "") {
                     gear_bonus -= 10;
                 } else {
