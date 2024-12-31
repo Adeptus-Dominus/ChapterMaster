@@ -160,7 +160,7 @@ function CompanyStruct(comp) constructor{
 							mission_type="garrison";
 						}
 					}
-					if (array_contains(current_squad.class, "scout")){
+					if (array_contains(current_squad.class, "scout")) || (array_contains(current_squad.class, "bike")){
 						tooltip_text="Sabotage";
 						button = draw_unit_buttons([button[2] + 4, yy+bound_height[0]+150], tooltip_text,[1,1],c_red,,,,true);
 						if(point_in_rectangle(mouse_x, mouse_y,xx+bound_width[0]+5+ button_row_offset, yy+bound_height[0]+150, xx+bound_width[0]+5+string_width(tooltip_text)+ button_row_offset, yy+bound_height[0]+150+string_height(tooltip_text))){
