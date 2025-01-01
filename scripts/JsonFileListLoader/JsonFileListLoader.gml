@@ -117,7 +117,8 @@ function JsonFileListLoader() constructor {
 
             // debugl($"Successfully loaded {property} value from {relative_file_path}");
         } catch (_ex) {
-            debugl($"Could not load data from {relative_file_path}: {_ex}.");
+            debugl($"Could not properly parse file at {file_path}: {_ex}.");
+            scr_popup("Error Parsing JSON File", $"Could not properly parse file: #{file_path}.# Please check this file for typos or formatting errors.# # Full error message:# {_ex}", "debug");
             result.value = {}; // do not return incomplete/invalid data
         } finally {
             if (is_undefined(file_buffer) == false && file_buffer != -1) {
