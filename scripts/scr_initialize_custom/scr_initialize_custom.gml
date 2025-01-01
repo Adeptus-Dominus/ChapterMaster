@@ -927,12 +927,12 @@ function scr_initialize_custom() {
 		tenth -= 10;
 	}
 	if scr_has_disadv("Obliterated") {
-		techmarines = 0;
-		epistolary = 0;
-		codiciery = 0;
-		lexicanum = 0;
-		apothecary = 0;
-		chaplains = 0;
+		techmarines -= 7;
+		epistolary -= 2;
+		codiciery -= 1;
+		lexicanum -= 4;
+		apothecary -= 7;
+		chaplains -= 7;
 		terminator = 0;
 		veteran = 0;
 		second = 0;
@@ -945,7 +945,6 @@ function scr_initialize_custom() {
 		ninth = 0;
 		tenth = 10; 
 		assault = 0;
-		siege = 0;
 		devastator = 0;
 	}
 
@@ -976,7 +975,7 @@ function scr_initialize_custom() {
 	if (obj_creation.custom != 0) {
 		var bonus_marines = 0;
 		if (obj_creation.strength > 5) then bonus_marines = (obj_creation.strength - 5) * 50;
-		if scr_has_disadv("Obliterated") then bonus_marines = (obj_creation.strength - 5) * 5;
+		if scr_has_disadv("Obliterated") then bonus_marines = (obj_creation.strength - 5) * 10;
 		var i = 0;
 		while (bonus_marines >= 5) {
 			switch (i % 10) {
