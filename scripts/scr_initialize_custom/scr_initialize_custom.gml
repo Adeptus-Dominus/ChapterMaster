@@ -1991,7 +1991,7 @@ function scr_initialize_custom() {
 			}, ],
 			["type_data", {
 				"display_data": $"{roles.tactical} Bike {squad_name}",
-				class:["bike"],
+				"class":["bike"],
 			}]
 		])
 
