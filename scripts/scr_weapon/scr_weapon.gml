@@ -82,7 +82,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 4,
-		"arp": 0,
+		"arp": -1,
 		"tags": ["chain", "sword"],
 	},
 	"Chainaxe": {
@@ -103,7 +103,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 6,
-		"arp": 0,
+		"arp": -2,
 		"tags": ["chain", "axe", "dual"],
 	},
 	"Company Standard": {
@@ -144,7 +144,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 3,
-		"arp": 1,
+		"arp": -2,
 		"tags": ["chain", "sword"],
 	},
 	"Power Sword": {
@@ -165,7 +165,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 4,
-		"arp": 1,
+		"arp": -2,
 		"special_properties": ["Parry"],
 		"tags": ["power", "sword"],
 	},
@@ -187,7 +187,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 6,
-		"arp": 1,
+		"arp": -2,
 		"special_properties": ["Parry"],
 		"tags": ["power", "spear"],
 	},
@@ -237,7 +237,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 3,
-		"arp": 1,
+		"arp": -2,
 		"tags": ["power"],
 	},
 	"Power Axe": {
@@ -258,7 +258,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 5,
-		"arp": 1,
+		"arp": -2,
 		"tags": ["power", "axe", "dual"],
 	},
 	"Executioner Power Axe": {
@@ -300,7 +300,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 2,
-		"arp": 1,
+		"arp": -2,
 		"tags": ["power", "dual", "fist"],
 	},
 	"Power Fists": {
@@ -316,7 +316,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 4,
-		"arp": 1,
+		"arp": -2,
 		"tags": ["power", "fist", "pair"],
 	},
 	"Servo-arm(M)": {
@@ -332,7 +332,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 2,
-		"arp": 1,
+		"arp": -2,
 		"tags": ["siege"],
 	},
 	"Boltstorm Gauntlet": {
@@ -348,7 +348,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 2,
-		"arp": 1,
+		"arp": -2,
 		"second_profiles": ["Integrated Bolter"],
 		"tags": ["power", "fist"],
 	},
@@ -381,7 +381,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 5,
-		"arp": 1,
+		"arp": -2,
 		"tags": ["power", "dual", "fist"],
 	},
 	"Dreadnought Lightning Claw": {
@@ -673,8 +673,8 @@ global.weapons = {
 		"ranged_hands": 2,
 		"ammo": 20,
 		"range": 15,
-		"spli": 1,
-		"arp": 1,
+		"spli": 0,
+		"arp": -1,
 		"tags": ["bolt", "precision"]
 	},
 	"Bolter": {
@@ -690,7 +690,7 @@ global.weapons = {
 		"ammo": 16,
 		"range": 12,
 		"spli": 3,
-		"arp": 0,
+		"arp": -1,
 		"tags": ["bolt"]
 	},
 	"Heavy Flamer": {
@@ -706,7 +706,7 @@ global.weapons = {
 		"ammo": 8,
 		"range": 2,
 		"spli": 5,
-		"arp": -1,
+		"arp": -2,
 		"tags": ["flame", "heavy_ranged"]
 	},
 	"CCW Heavy Flamer": {
@@ -722,7 +722,7 @@ global.weapons = {
 		"ammo": 6,
 		"range": 2.1,
 		"spli": 5,
-		"arp": -1,
+		"arp": -2,
 		"tags": ["dreadnought","heavy_ranged", "flame"]
 	},
 	"Dreadnought Power Claw": {
@@ -896,7 +896,7 @@ global.weapons = {
 		"ammo": 20,
 		"range": 18,
 		"spli": 1,
-		"arp": 0,
+		"arp": -1,
 		"tags": ["precision", "rifle"]
 	},
 	"Assault Cannon": {
@@ -912,7 +912,7 @@ global.weapons = {
 		"ammo": 5,
 		"range": 12,
 		"spli": 20,
-		"arp": 1,
+		"arp": -1,
 		"tags": ["heavy_ranged", "dreadnought"]
 	},
 	"Autocannon": {
@@ -928,7 +928,7 @@ global.weapons = {
 		"ammo": 25,
 		"range": 18,
 		"spli": 15,
-		"arp": 1,
+		"arp": -2,
 		"tags": ["heavy_ranged", "dreadnought"]
 	},
 	"Missile Launcher": {
@@ -944,7 +944,7 @@ global.weapons = {
 		"ammo": 6,
 		"range": 24,
 		"spli": 3,
-		"arp": 0,
+		"arp": -2,
 		"tags": ["heavy_ranged", "dreadnought"]
 	},
 	"Lascannon": {
@@ -992,7 +992,7 @@ global.weapons = {
 		"ammo": 20,
 		"range": 12,
 		"spli": 4,
-		"arp": 0,
+		"arp": -1,
 		"tags": ["bolt"]
 	},
 	"Twin Linked Heavy Bolter": {
@@ -1008,7 +1008,7 @@ global.weapons = {
 		"ammo": 20,
 		"range": 16,
 		"spli": 9,
-		"arp": 1,
+		"arp": -1,
 		"tags": ["bolt", "heavy_ranged", "vehicle", "dreadnought"]
 	},
 	"Twin Linked Lascannon": {
@@ -1040,7 +1040,7 @@ global.weapons = {
 		"ammo": 10,
 		"range": 16,
 		"spli": 6,
-		"arp": 1,
+		"arp": -1,
 		"tags": ["heavy_ranged", "bolt"]
 	},
 	"Whirlwind Missiles": {
@@ -1056,7 +1056,7 @@ global.weapons = {
 		"ammo": 6,
 		"range": 20,
 		"spli": 25,
-		"arp": 1,
+		"arp": -2,
 		"tags": ["vehicle","heavy_ranged", "indirect"]
 	},
 	"HK Missile": {
@@ -1077,7 +1077,7 @@ global.weapons = {
 		"ammo": 20,
 		"range": 16,
 		"spli": 3,
-		"arp": 1,
+		"arp": -1,
 		"tags": ["vehicle", "dreadnought", "heavy_ranged", "bolt"]
 	},
 	"Twin Linked Lascannon Mount": {
@@ -1109,7 +1109,7 @@ global.weapons = {
 		"ammo": 6,
 		"range": 12,
 		"spli": 30,
-		"arp": 1,
+		"arp": -1,
 		"tags": ["vehicle","heavy_ranged", "pintle", "dreadnought"]
 	},
 	"Reaper Autocannon Mount": {
@@ -1125,7 +1125,7 @@ global.weapons = {
 		"ammo": 25,
 		"range": 15,
 		"spli": 6,
-		"arp": 1,
+		"arp": -2,
 		"tags": ["vehicle","heavy_ranged", "pintle"]
 	},
 	"Quad Linked Heavy Bolter Sponsons": {
@@ -1141,7 +1141,7 @@ global.weapons = {
 		"ammo": 15,
 		"range": 16,
 		"spli": 5,
-		"arp": 1,
+		"arp": -1,
 		"tags": ["bolt","heavy_ranged", "vehicle", "sponson"]
 	},
 	"Twin Linked Lascannon Sponsons": {
@@ -1189,7 +1189,7 @@ global.weapons = {
 		"ammo": 10,
 		"range": 10,
 		"spli": 60,
-		"arp": 0,
+		"arp": -1,
 		"tags": ["bolt","heavy_ranged", "vehicle", "sponson"]
 	},
 	"Flamestorm Cannon Sponsons": {
@@ -1205,7 +1205,7 @@ global.weapons = {
 		"ammo": 6,
 		"range": 2,
 		"spli": 3,
-		"arp": 1,
+		"arp": -2,
 		"tags": ["flame","heavy_ranged", "vehicle", "sponson"]
 	},
 	"Twin Linked Heavy Flamer Sponsons": {
@@ -1221,7 +1221,7 @@ global.weapons = {
 		"ammo": 8,
 		"range": 2.1,
 		"spli": 8,
-		"arp": -1,
+		"arp": -2,
 		"tags": ["flame","heavy_ranged", "vehicle", "dreadnought", "sponson"]
 	},
 	"Twin Linked Bolters": {
@@ -1237,7 +1237,7 @@ global.weapons = {
 		"ammo": 30,
 		"range": 12,
 		"spli": 6,
-		"arp": 0,
+		"arp": -1,
 		"tags": ["bolt", "vehicle"]
 	},
 	"Twin Linked Multi-Melta Sponsons": {
@@ -1270,7 +1270,7 @@ global.weapons = {
 		"ammo": 25,
 		"range": 18,
 		"spli": 9,
-		"arp": 0,
+		"arp": -2,
 		"tags": ["vehicle","heavy_ranged", "Sponson", "volkite", "ancient"]
 	},
 	"Heavy Bolter Sponsons": {
@@ -1286,7 +1286,7 @@ global.weapons = {
 		"ammo": 20,
 		"range": 16,
 		"spli": 4,
-		"arp": 1,
+		"arp": -1,
 		"tags": ["heavy_ranged", "vehicle", "sponson", "bolt"],
 	},
 	"Heavy Flamer Sponsons": {
@@ -1303,7 +1303,7 @@ global.weapons = {
 		"ammo": 8,
 		"range": 2.1,
 		"spli": 4,
-		"arp": -1,
+		"arp": -2,
 		"tags": ["flame","heavy_ranged", "vehicle", "sponson"],
 		"maintenance" : 0.05,
 	},
@@ -1320,7 +1320,7 @@ global.weapons = {
 		"ammo": 25,
 		"range": 18,
 		"spli": 5,
-		"arp": 1,
+		"arp": -2,
 		"tags": ["vehicle","heavy_ranged", "Sponson", "volkite", "ancient"]
 	},
 	"Autocannon Turret": {
@@ -1336,7 +1336,7 @@ global.weapons = {
 		"ammo": 25,
 		"range": 18,
 		"spli": 15,
-		"arp": 0,
+		"arp": -2,
 		"tags": ["vehicle","heavy_ranged", "turret"]
 	},
 	"Storm Bolter": {
@@ -1352,7 +1352,7 @@ global.weapons = {
 		"ammo": 10,
 		"range": 10,
 		"spli": 6,
-		"arp": 0,
+		"arp": -1,
 		"tags": ["bolt"],
 		"maintenance" : 0.03,
 	},
@@ -1423,7 +1423,7 @@ global.weapons = {
 		"ammo": 15,
 		"range": 10,
 		"spli": 3,
-		"arp": 0,
+		"arp": -1,
 		"second_profiles": ["Flamer"],
 		"tags": ["combi", "bolt"]
 	},
@@ -1440,7 +1440,7 @@ global.weapons = {
 		"ammo": 15,
 		"range": 10,
 		"spli": 3,
-		"arp": 0,
+		"arp": -1,
 		"second_profiles": ["Plasma Gun"],
 		"tags": ["combi", "bolt"]
 	},
@@ -1457,7 +1457,7 @@ global.weapons = {
 		"ammo": 15,
 		"range": 10,
 		"spli": 3,
-		"arp": 0,
+		"arp": -1,
 		"second_profiles": ["Grav-Gun"],
 		"tags": ["combi", "bolt"]
 	},
@@ -1474,7 +1474,7 @@ global.weapons = {
 		"ammo": 15,
 		"range": 10,
 		"spli": 3,
-		"arp": 0,
+		"arp": -1,
 		"second_profiles": ["Meltagun"],
 		"tags": ["combi", "bolt"]
 	},
@@ -1491,7 +1491,7 @@ global.weapons = {
 		"ammo": 4,
 		"range": 2.1,
 		"spli": 3,
-		"arp": -1,
+		"arp": -2,
 		"tags": ["flame"]
 	},
 	"Force Staff": {
@@ -1511,7 +1511,7 @@ global.weapons = {
 		"ranged_hands": 1,
 		"range": 1,
 		"spli": 5,
-		"arp": 1,
+		"arp": -2,
 		"special_description": "Spell Damage +100%",
 		"tags": ["force" ],
 		"maintenance" : 0.1,
@@ -1534,7 +1534,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 4,
-		"arp": 1,
+		"arp": -2,
 		"special_description": "Spell damage +25%",
 		"special_properties": ["Parry"],
 		"tags": ["force", "sword"],
@@ -1558,7 +1558,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 5,
-		"arp": 1,
+		"arp": -2,
 		"special_description": "Able to be dual-wielded, Spell damage +25%",
 		"tags": ["force", "axe", "dual"],
 	},
@@ -1589,7 +1589,7 @@ global.weapons = {
 		"ammo": 5,
 		"range": 12,
 		"spli": 30,
-		"arp": 1,
+		"arp": -1,
 		"tags": ["heavy_ranged", "twin_linked", "vehicle", "turret"]
 	},
 	"Flamestorm Cannon Turret": {
@@ -1605,7 +1605,7 @@ global.weapons = {
 		"ammo": 12,
 		"range": 2,
 		"spli": 3,
-		"arp": 1,
+		"arp": -2,
 		"tags": ["flame","heavy_ranged", "vehicle", "turret"]
 	},
 	"Magna-Melta Turret": {
@@ -1685,7 +1685,7 @@ global.weapons = {
 		"ammo": 25,
 		"range": 18,
 		"spli": 30,
-		"arp": 0,
+		"arp": -2,
 		"tags": ["vehicle","heavy_ranged", "turret", "volkite", "ancient"]
 	},
 // Hireling weapons
