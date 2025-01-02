@@ -82,7 +82,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 4,
-		"arp": -1,
+		"arp": 0,
 		"tags": ["chain", "sword"],
 	},
 	"Chainaxe": {
@@ -103,7 +103,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 6,
-		"arp": -2,
+		"arp": 0,
 		"tags": ["chain", "axe", "dual"],
 	},
 	"Company Standard": {
@@ -144,7 +144,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 3,
-		"arp": -2,
+		"arp": -1,
 		"tags": ["chain", "sword"],
 	},
 	"Power Sword": {
@@ -165,7 +165,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 4,
-		"arp": -2,
+		"arp": -1,
 		"special_properties": ["Parry"],
 		"tags": ["power", "sword"],
 	},
@@ -187,7 +187,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 6,
-		"arp": -2,
+		"arp": -1,
 		"special_properties": ["Parry"],
 		"tags": ["power", "spear"],
 	},
@@ -203,7 +203,7 @@ global.weapons = {
 		"ranged_hands": 1,
 		"range": 1,
 		"spli": 2,
-		"arp": 1,
+		"arp": -2,
 		"tags": ["power","boarding", "chain", "fist", "dual", "siege"],
 	},
 	"Lascutter": {
@@ -258,7 +258,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 5,
-		"arp": -2,
+		"arp": -1,
 		"tags": ["power", "axe", "dual"],
 	},
 	"Executioner Power Axe": {
@@ -279,7 +279,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 2,
-		"arp": 1,
+		"arp": -1,
 		"tags": ["power", "axe"],
 	},
 	"Power Fist": {
@@ -364,7 +364,7 @@ global.weapons = {
 		"ranged_hands": 1,
 		"range": 1,
 		"spli": 2,
-		"arp": 1,
+		"arp": -2,
 		"second_profiles": ["Assault Cannon"],
 		"tags": ["power","boarding", "chain", "fist", "dual", "siege"],
 	},
@@ -381,7 +381,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 5,
-		"arp": -2,
+		"arp": -1,
 		"tags": ["power", "dual", "fist"],
 	},
 	"Dreadnought Lightning Claw": {
@@ -402,7 +402,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 15,
-		"arp": 1,
+		"arp": -2,
 		"maintenance" : 0.1,
 		"tags": ["power", "vehicle", "dual", "dreadnought", "fist"],
 	},
@@ -424,7 +424,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 10,
-		"arp": 1,
+		"arp": -2,
 		"tags": ["power", "hammer", "siege"],
 		"maintenance" : 0.1,
 		"req_exp": 100,
@@ -447,7 +447,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 15,
-		"arp": 1,
+		"arp": -2,
 		"tags": ["heavy_melee", "power", "hammer", "siege"],
 		"maintenance" : 0.1,
 		"req_exp": 100,
@@ -470,7 +470,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 10,
-		"arp": 1,
+		"arp": -2,
 		"tags": ["power", "mace", "siege"],
 		"req_exp": 100,
 	},
@@ -493,7 +493,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 10,
-		"arp": 1,
+		"arp": -2,
 		"tags": ["power", "mace", "siege", "pious"],
 		"req_exp": 100,
 	},
@@ -536,7 +536,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 4,
-		"arp": 1,
+		"arp": -1,
 		"tags": ["power", "mace", "pious"],
 	},
 	"Relic Blade": {
@@ -557,7 +557,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 8,
-		"arp": 1,
+		"arp": -1,
 		"special_properties": ["Parry"],
 		"maintenance" : 0.1,
 		"tags": ["power", "sword"],
@@ -690,7 +690,7 @@ global.weapons = {
 		"ammo": 16,
 		"range": 12,
 		"spli": 3,
-		"arp": -1,
+		"arp": 0,
 		"tags": ["bolt"]
 	},
 	"Heavy Flamer": {
@@ -722,7 +722,7 @@ global.weapons = {
 		"ammo": 6,
 		"range": 2.1,
 		"spli": 5,
-		"arp": -2,
+		"arp": -1,
 		"tags": ["dreadnought","heavy_ranged", "flame"]
 	},
 	"Dreadnought Power Claw": {
@@ -784,7 +784,7 @@ global.weapons = {
 		"ammo": 4,
 		"range": 2.1,
 		"spli": 1,
-		"arp": 1,
+		"arp": -2,
 		"tags": ["melta","boarding"]
 	},
 	"Multi-Melta": {
@@ -800,7 +800,7 @@ global.weapons = {
 		"ammo": 8,
 		"range": 4.1,
 		"spli": 1,
-		"arp": 1,
+		"arp": -2,
 		"tags": ["melta", "heavy_ranged", "dreadnought"]
 	},
 	"Plasma Pistol": {
@@ -816,7 +816,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 3.1,
 		"spli": 1,
-		"arp": 1,
+		"arp": -2,
 		"tags": ["plasma", "energy", "pistol"]
 	},
 	"Plasma Cutter": { // Basically a dual-linked plasma pistol
@@ -832,7 +832,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 3.1,
 		"spli": 1,
-		"arp": 1,
+		"arp": -2,
 		"tags": ["plasma", "energy", "pistol"]
 	},
 	"Infernus Pistol": {
@@ -848,7 +848,7 @@ global.weapons = {
 		"ammo": 4,
 		"range": 2.1,
 		"spli": 3,
-		"arp": 1,
+		"arp": -2,
 		"tags": ["melta", "pistol"]
 	},
 	"Plasma Gun": {
@@ -864,7 +864,7 @@ global.weapons = {
 		"ammo": 16,
 		"range": 12,
 		"spli": 3,
-		"arp": 1,
+		"arp": -2,
 		"tags": ["plasma", "energy"]
 	},
 	"Plasma Cannon": {
@@ -880,7 +880,7 @@ global.weapons = {
 		"ammo": 16,
 		"range": 14,
 		"spli": 2,
-		"arp": 1,
+		"arp": -2,
 		"tags": ["plasma","energy","heavy_ranged", "dreadnought"]
 	},
 	"Sniper Rifle": {
@@ -912,7 +912,7 @@ global.weapons = {
 		"ammo": 5,
 		"range": 12,
 		"spli": 20,
-		"arp": -1,
+		"arp": 0,
 		"tags": ["heavy_ranged", "dreadnought"]
 	},
 	"Autocannon": {
@@ -928,7 +928,7 @@ global.weapons = {
 		"ammo": 25,
 		"range": 18,
 		"spli": 15,
-		"arp": -2,
+		"arp": -1,
 		"tags": ["heavy_ranged", "dreadnought"]
 	},
 	"Missile Launcher": {
@@ -944,7 +944,7 @@ global.weapons = {
 		"ammo": 6,
 		"range": 24,
 		"spli": 3,
-		"arp": -2,
+		"arp": -1,
 		"tags": ["heavy_ranged", "dreadnought"]
 	},
 	"Lascannon": {
@@ -992,7 +992,7 @@ global.weapons = {
 		"ammo": 20,
 		"range": 12,
 		"spli": 4,
-		"arp": -1,
+		"arp": 0,
 		"tags": ["bolt"]
 	},
 	"Twin Linked Heavy Bolter": {
@@ -1008,7 +1008,7 @@ global.weapons = {
 		"ammo": 20,
 		"range": 16,
 		"spli": 9,
-		"arp": -1,
+		"arp": 0,
 		"tags": ["bolt", "heavy_ranged", "vehicle", "dreadnought"]
 	},
 	"Twin Linked Lascannon": {
@@ -1040,7 +1040,7 @@ global.weapons = {
 		"ammo": 10,
 		"range": 16,
 		"spli": 6,
-		"arp": -1,
+		"arp": 0,
 		"tags": ["heavy_ranged", "bolt"]
 	},
 	"Whirlwind Missiles": {
@@ -1056,7 +1056,7 @@ global.weapons = {
 		"ammo": 6,
 		"range": 20,
 		"spli": 25,
-		"arp": -2,
+		"arp": -1,
 		"tags": ["vehicle","heavy_ranged", "indirect"]
 	},
 	"HK Missile": {
@@ -1077,7 +1077,7 @@ global.weapons = {
 		"ammo": 20,
 		"range": 16,
 		"spli": 3,
-		"arp": -1,
+		"arp": 0,
 		"tags": ["vehicle", "dreadnought", "heavy_ranged", "bolt"]
 	},
 	"Twin Linked Lascannon Mount": {
@@ -1109,7 +1109,7 @@ global.weapons = {
 		"ammo": 6,
 		"range": 12,
 		"spli": 30,
-		"arp": -1,
+		"arp": 0,
 		"tags": ["vehicle","heavy_ranged", "pintle", "dreadnought"]
 	},
 	"Reaper Autocannon Mount": {
@@ -1125,7 +1125,7 @@ global.weapons = {
 		"ammo": 25,
 		"range": 15,
 		"spli": 6,
-		"arp": -2,
+		"arp": -1,
 		"tags": ["vehicle","heavy_ranged", "pintle"]
 	},
 	"Quad Linked Heavy Bolter Sponsons": {
@@ -1141,7 +1141,7 @@ global.weapons = {
 		"ammo": 15,
 		"range": 16,
 		"spli": 5,
-		"arp": -1,
+		"arp": 0,
 		"tags": ["bolt","heavy_ranged", "vehicle", "sponson"]
 	},
 	"Twin Linked Lascannon Sponsons": {
@@ -1178,9 +1178,9 @@ global.weapons = {
 	},
 	"Hurricane Bolter Sponsons": {
 		"attack": {
-			"standard": 50,
-			"master_crafted": 55,
-			"artifact": 60
+			"standard": 500,
+			"master_crafted": 550,
+			"artifact": 600
 		},
 		"description": "Hurricane Bolters are large hex-mount bolter arrays that are able to deliver a withering hail of anti-infantry fire at short ranges. This version is mounted onto the sides of vehicles.",
 		"abbreviation": "HrcBltrs",
@@ -1189,7 +1189,7 @@ global.weapons = {
 		"ammo": 10,
 		"range": 10,
 		"spli": 60,
-		"arp": -1,
+		"arp": 0,
 		"tags": ["bolt","heavy_ranged", "vehicle", "sponson"]
 	},
 	"Flamestorm Cannon Sponsons": {
@@ -1221,7 +1221,7 @@ global.weapons = {
 		"ammo": 8,
 		"range": 2.1,
 		"spli": 8,
-		"arp": -2,
+		"arp": -1,
 		"tags": ["flame","heavy_ranged", "vehicle", "dreadnought", "sponson"]
 	},
 	"Twin Linked Bolters": {
@@ -1237,7 +1237,7 @@ global.weapons = {
 		"ammo": 30,
 		"range": 12,
 		"spli": 6,
-		"arp": -1,
+		"arp": 0,
 		"tags": ["bolt", "vehicle"]
 	},
 	"Twin Linked Multi-Melta Sponsons": {
@@ -1253,7 +1253,7 @@ global.weapons = {
 		"ammo": 8,
 		"range": 4.1,
 		"spli": 2,
-		"arp": 1,
+		"arp": -2,
 		"tags": ["vehicle","heavy_ranged", "Sponson", "melta"],
 		"maintenance" : 0.05,
 	},
@@ -1286,7 +1286,7 @@ global.weapons = {
 		"ammo": 20,
 		"range": 16,
 		"spli": 4,
-		"arp": -1,
+		"arp": 0,
 		"tags": ["heavy_ranged", "vehicle", "sponson", "bolt"],
 	},
 	"Heavy Flamer Sponsons": {
@@ -1303,7 +1303,7 @@ global.weapons = {
 		"ammo": 8,
 		"range": 2.1,
 		"spli": 4,
-		"arp": -2,
+		"arp": -1,
 		"tags": ["flame","heavy_ranged", "vehicle", "sponson"],
 		"maintenance" : 0.05,
 	},
@@ -1336,7 +1336,7 @@ global.weapons = {
 		"ammo": 25,
 		"range": 18,
 		"spli": 15,
-		"arp": -2,
+		"arp": -1,
 		"tags": ["vehicle","heavy_ranged", "turret"]
 	},
 	"Storm Bolter": {
@@ -1352,7 +1352,7 @@ global.weapons = {
 		"ammo": 10,
 		"range": 10,
 		"spli": 6,
-		"arp": -1,
+		"arp": 0,
 		"tags": ["bolt"],
 		"maintenance" : 0.03,
 	},
@@ -1369,7 +1369,7 @@ global.weapons = {
 		"ammo": 2,
 		"range": 1.1,
 		"spli": 2,
-		"arp": -1,
+		"arp": 0,
 		"tags": ["pistol", "flame"]
 	},
 	"Flamer": {
@@ -1390,7 +1390,7 @@ global.weapons = {
 		"ammo": 4,
 		"range": 2.1,
 		"spli": 4,
-		"arp": -1,
+		"arp": 0,
 		"tags": ["flame"],
 		"maintenance" : 0.01,
 	},
@@ -1407,7 +1407,7 @@ global.weapons = {
 		"ammo": 4,
 		"range": 2.1,
 		"spli": 3,
-		"arp": -1,
+		"arp": 0,
 		"tags": ["flame", "attached"]
 	},
 	"Combiflamer": {
@@ -1423,7 +1423,7 @@ global.weapons = {
 		"ammo": 15,
 		"range": 10,
 		"spli": 3,
-		"arp": -1,
+		"arp": 0,
 		"second_profiles": ["Flamer"],
 		"tags": ["combi", "bolt"]
 	},
@@ -1440,7 +1440,7 @@ global.weapons = {
 		"ammo": 15,
 		"range": 10,
 		"spli": 3,
-		"arp": -1,
+		"arp": 0,
 		"second_profiles": ["Plasma Gun"],
 		"tags": ["combi", "bolt"]
 	},
@@ -1457,7 +1457,7 @@ global.weapons = {
 		"ammo": 15,
 		"range": 10,
 		"spli": 3,
-		"arp": -1,
+		"arp": -2,
 		"second_profiles": ["Grav-Gun"],
 		"tags": ["combi", "bolt"]
 	},
@@ -1474,7 +1474,7 @@ global.weapons = {
 		"ammo": 15,
 		"range": 10,
 		"spli": 3,
-		"arp": -1,
+		"arp": 0,
 		"second_profiles": ["Meltagun"],
 		"tags": ["combi", "bolt"]
 	},
@@ -1491,7 +1491,7 @@ global.weapons = {
 		"ammo": 4,
 		"range": 2.1,
 		"spli": 3,
-		"arp": -2,
+		"arp": -1,
 		"tags": ["flame"]
 	},
 	"Force Staff": {
@@ -1511,7 +1511,7 @@ global.weapons = {
 		"ranged_hands": 1,
 		"range": 1,
 		"spli": 5,
-		"arp": -2,
+		"arp": -1,
 		"special_description": "Spell Damage +100%",
 		"tags": ["force" ],
 		"maintenance" : 0.1,
@@ -1534,7 +1534,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 4,
-		"arp": -2,
+		"arp": -1,
 		"special_description": "Spell damage +25%",
 		"special_properties": ["Parry"],
 		"tags": ["force", "sword"],
@@ -1558,7 +1558,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 5,
-		"arp": -2,
+		"arp": -1,
 		"special_description": "Able to be dual-wielded, Spell damage +25%",
 		"tags": ["force", "axe", "dual"],
 	},
@@ -1589,7 +1589,7 @@ global.weapons = {
 		"ammo": 5,
 		"range": 12,
 		"spli": 30,
-		"arp": -1,
+		"arp": 0,
 		"tags": ["heavy_ranged", "twin_linked", "vehicle", "turret"]
 	},
 	"Flamestorm Cannon Turret": {
@@ -1621,7 +1621,7 @@ global.weapons = {
 		"ammo": 6,
 		"range": 5.1,
 		"spli": 2,
-		"arp": 1,
+		"arp": -2,
 		"tags": ["vehicle","heavy_ranged", "turret", "melta"]
 	},
 	"Plasma Destroyer Turret": {
@@ -1637,7 +1637,7 @@ global.weapons = {
 		"ammo": 16,
 		"range": 14,
 		"spli": 3,
-		"arp": 1,
+		"arp": -2,
 		"tags": ["plasma", "energy","heavy_ranged", "vehicle", "turret"]
 	},
 	"Heavy Conversion Beam Projector": {
@@ -1817,7 +1817,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 3,
-		"arp": 1,
+		"arp": -1,
 		"special_properties": ["Parry"],
 		"tags": ["power", "sword", "elder", "xenos"],
 	},

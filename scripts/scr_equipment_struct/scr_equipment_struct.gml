@@ -173,11 +173,17 @@ function EquipmentStruct(item_data, core_type,quality="none") constructor{
                             array_push(special_properties_array, special_properties[k]);
                         }
                     }
-                    if (arp>0){
-                        array_push(special_properties_array, "Armour Piercing")
+                    if (arp=1){
+                        array_push(special_properties_array, "Anti Vehicle")
                     } 
-                    else if (arp<0){
+                    else if (arp=0){
                         array_push(special_properties_array, "Low Penetration")
+                    }
+					else if (arp=-1){
+                        array_push(special_properties_array, "Medium Penetration")
+                    }
+					else if (arp=-2){
+                        array_push(special_properties_array, "High Penetration")
                     }
                     if (array_length(second_profiles)>0){
                         for (var h = 0; h < array_length(second_profiles); h++) {
