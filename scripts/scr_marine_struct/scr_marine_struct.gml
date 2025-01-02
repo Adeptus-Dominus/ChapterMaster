@@ -1757,7 +1757,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 
 	static marine_assembling = scr_marine_game_spawn_constructions;
 
-	static roll_armour = scr_marine_spawn_armour;
+	static random_update_armour = scr_marine_spawn_armour;
 
 	static roll_age = scr_marine_spawn_age;
 

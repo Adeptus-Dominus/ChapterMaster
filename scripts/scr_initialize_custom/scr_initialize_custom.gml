@@ -545,7 +545,7 @@ function trial_map(trial_name){
 /// @mixin obj_ini
 function scr_initialize_custom() {
 
-	show_debug_message("Executing scr_initialize_custom");
+	// show_debug_message("Executing scr_initialize_custom");
 	
 	progenitor = obj_creation.founding;
 	successors = obj_creation.successors;
@@ -718,8 +718,8 @@ function scr_initialize_custom() {
 	if (scr_has_disadv("Obliterated")) {battle_barges = 0; strike_cruisers = 1; gladius = 2; hunters = 0;}
 
 	var ship_summary_str = $"Ships: bb: {battle_barges} sc: {strike_cruisers} g: {gladius} h: {hunters}"
-	debugl(ship_summary_str);
-	show_debug_message(ship_summary_str);
+	// debugl(ship_summary_str);
+	// show_debug_message(ship_summary_str);
 
 	if (battle_barges>=1){
 	 	for (v=0;v<battle_barges;v++){
@@ -1050,7 +1050,7 @@ function scr_initialize_custom() {
 		for(var s = 0; s < array_length(c_specialist_names); s++){
 			var s_name = c_specialist_names[s];
 			var s_val = struct_get(c_specialists, s_name);
-			show_debug_message($"updating specialist {s_name} with {s_val})");
+			// show_debug_message($"updating specialist {s_name} with {s_val})");
 			switch (s_name){
 				case "chaplains": chaplains = chaplains + real(s_val); break;
 				case "chaplains_per_company": chaplains_per_company = chaplains_per_company + real(s_val); break;
@@ -1289,9 +1289,9 @@ function scr_initialize_custom() {
 					var attribute = possible_custom_attributes[a];
 					if(struct_exists(c_roles[$ c_rolename], attribute)){
 						var value = c_roles[$ c_rolename][$ attribute];
-						var dbg_m = $"role {c_roleid} {c_rolename} updated {attribute} to {typeof(value)} {value}";
-						debugl(dbg_m);
-						show_debug_message(dbg_m);
+						// var dbg_m = $"role {c_roleid} {c_rolename} updated {attribute} to {typeof(value)} {value}";
+						// debugl(dbg_m);
+						// show_debug_message(dbg_m);
 						switch (attribute){
 							case "name": role[defaults_slot][c_roleid] = value; break;
 							case "wep1": wep1[defaults_slot][c_roleid] = value; break;
@@ -2522,15 +2522,8 @@ function scr_initialize_custom() {
 		k += 1;
 		commands += 1; // 1st company Captain
 		name[company][k] = honor_captain_name;
-		var _armour = "Terminator Armour";
-		if(scr_has_adv("Crafters")){
-			var _armour = "Tartaros";
-		}
-		if (terminator <= 0) {
-			_armour = "MK6 Corvus";
-		}
 
-		var _spawn_unit = add_unit_to_company("marine", company, k, roles.captain, eROLE.Captain, "Relic Blade",choose("Storm Shield", "Storm Bolter"),"default","default",_armour);
+		var _spawn_unit = add_unit_to_company("marine", company, k, roles.captain, eROLE.Captain, "Relic Blade",choose("Storm Shield", "Storm Bolter"),"default","default","default");
 		if (_spawn_unit.armour() == "Terminator Armour" || _spawn_unit.armour() == "Tartaros") {
 			man_size += 1;
 		}
@@ -2538,14 +2531,7 @@ function scr_initialize_custom() {
 		repeat(chaplains_per_company){
 			k += 1;
 			commands += 1; // 1st company Chaplain
-			var _armour = "Terminator Armour";
-			if(scr_has_adv("Crafters")){
-				var _armour = "Tartaros";
-			}
-			if (terminator <= 0) {
-				_armour = "MK6 Corvus";
-			}
-			var _spawn_unit = add_unit_to_company("marine", company, k, roles.chaplain, eROLE.Chaplain,"default","Storm Bolter","default","default",_armour);
+			var _spawn_unit = add_unit_to_company("marine", company, k, roles.chaplain, eROLE.Chaplain,"default","Storm Bolter","default","default","default");
 
 			if (_spawn_unit.armour() == "Terminator Armour" || _spawn_unit.armour() == "Tartaros") {
 				man_size += 1;
@@ -2554,14 +2540,7 @@ function scr_initialize_custom() {
 		repeat(apothecary_per_company){
 			k += 1;
 			commands += 1; // 1st company Apothecary
-			var _armour = "Terminator Armour";
-			if(scr_has_adv("Crafters")){
-				var _armour = "Tartaros";
-			}
-			if (terminator <= 0) {
-				_armour = "MK6 Corvus";
-			}
-			var _spawn_unit = add_unit_to_company("marine", company, k, roles.apothecary, eROLE.Apothecary,"Storm Bolter","","default","default",_armour);
+			var _spawn_unit = add_unit_to_company("marine", company, k, roles.apothecary, eROLE.Apothecary,"Storm Bolter","","default","default","default");
 
 			if (_spawn_unit.armour() == "Terminator Armour" || _spawn_unit.armour() == "Tartaros") {
 				man_size += 1;
@@ -2572,14 +2551,7 @@ function scr_initialize_custom() {
 			repeat(epistolary_per_company){
 				k += 1; // 1st company  Librarian
 				commands += 1;
-				var _armour = "Terminator Armour";
-				if(scr_has_adv("Crafters")){
-					var _armour = "Tartaros";
-				}
-				if (terminator <= 0) {
-					_armour = "MK6 Corvus";
-				}
-				var _spawn_unit = add_unit_to_company("marine", company, k, roles.librarian, eROLE.Librarian,"default",choose_weighted(weapon_weighted_lists.pistols),"default","default",_armour);
+				var _spawn_unit = add_unit_to_company("marine", company, k, roles.librarian, eROLE.Librarian,"default",choose_weighted(weapon_weighted_lists.pistols),"default","default","default");
 
 				if (_spawn_unit.armour() == "Terminator Armour" || _spawn_unit.armour() == "Tartaros") {
 					man_size += 1;
@@ -2587,21 +2559,10 @@ function scr_initialize_custom() {
 			}
 		}
 		repeat(techmarines_per_company){
-			show_debug_message($"chap terminators {terminator}")
+			// show_debug_message($"chap terminators {terminator}")
 			k += 1;
 			commands += 1; // 1st company Techmarine
-			var _armour = "Terminator Armour";
-			if(scr_has_adv("Crafters")){
-				_armour = "Tartaros";
-			}
-			if (terminator <= 0){
-				if(scr_has_disadv("Poor Equipment")){
-					_armour = "MK6 Corvus";
-				} else {
-					_armour = "Artificer Armour"
-				}
-			}
-			var _spawn_unit = add_unit_to_company("marine", company, k, roles.techmarine, eROLE.Techmarine, "default","Storm Bolter","default","default",_armour);
+			var _spawn_unit = add_unit_to_company("marine", company, k, roles.techmarine, eROLE.Techmarine, "default","Storm Bolter","default","default","default");
 			if (_spawn_unit.armour() == "Terminator" || _spawn_unit.armour() == "Tartaros") {
 				man_size += 1;
 			} 
@@ -2610,34 +2571,20 @@ function scr_initialize_custom() {
 
 		k += 1; // 1st company Standard bearer
 		man_size += 1;
-		var _armour = "Terminator Armour";
-		if(scr_has_adv("Crafters")){
-			_armour = "Tartaros";
-		}
-		if (terminator <= 0){
-			_armour = "MK6 Corvus"
-		}
-		var _spawn_unit = add_unit_to_company("marine", company, k, roles.ancient, eROLE.Ancient, "default","Storm Bolter","default","default",_armour);
+		var _spawn_unit = add_unit_to_company("marine", company, k, roles.ancient, eROLE.Ancient, "default","Storm Bolter","default","default","default");
 		if (_spawn_unit.armour() == "Terminator" || _spawn_unit.armour() == "Tartaros") {
 			man_size += 1;
 		}
 
 		k += 1;
 		man_size += 1;
-		var _armour = "Terminator Armour";
-		if(scr_has_adv("Crafters")){
-			_armour = "Tartaros";
-		}
-		if (terminator <= 0){
-			_armour = "MK6 Corvus"
-		}
 		var _wep1 = "Thunder Hammer";
 		var _wep2 = "Storm Bolter";
 		if (global.chapter_name == "Dark Angels"){
 			_wep1 = "Heavy Thunder Hammer";
 			_wep2 = "";
 		}
-		var _spawn_unit = add_unit_to_company("marine", company, k, roles.champion, eROLE.Champion, _wep1,_wep2,"default","default",_armour);
+		var _spawn_unit = add_unit_to_company("marine", company, k, roles.champion, eROLE.Champion, _wep1,_wep2,"default","default","default");
 		if (_spawn_unit.armour() == "Terminator" || _spawn_unit.armour() == "Tartaros") {
 			man_size += 1;
 		}
@@ -2705,7 +2652,7 @@ function scr_initialize_custom() {
 	firsts = k;
 
 
-	show_debug_message($"2: {second} 3: {third} 4: {fourth} 5: {fifth} 6: {sixth} 7: {seventh} 8: {eighth} 9: {ninth} 10: {tenth}")
+	// show_debug_message($"2: {second} 3: {third} 4: {fourth} 5: {fifth} 6: {sixth} 7: {seventh} 8: {eighth} 9: {ninth} 10: {tenth}")
 	//non HQ and non firsst company initialised here
 	for (company = 2; company < 11; company++) {
 		// Initialize marines
@@ -3379,13 +3326,16 @@ function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1
 	if(obj_ini.name[company][slot] == ""){
 		obj_ini.name[company][slot] = global.name_generator.generate_space_marine_name();
 	}
+
 	var spawn_unit = fetch_unit([company,slot]);
+
 	if(ttrpg_name == "marine" || ttrpg_name == "scout"){
 		spawn_unit.marine_assembling();
 	} else {
 		spawn_unit.roll_age();
 		spawn_unit.roll_experience();
 	}
+
 	if(wep1 != ""){
 		if(wep1 == "default"){
 			spawn_unit.update_weapon_one(obj_ini.wep1[obj_ini.defaults_slot][role_id], false, false);
@@ -3402,12 +3352,12 @@ function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1
 	}
 	if(armour != ""){
 		if(armour == "default"){
-			var _msg = spawn_unit.update_armour(obj_ini.armour[obj_ini.defaults_slot][role_id], false, false);
+			var _msg = spawn_unit.random_update_armour();
 		} else {
 			var _msg = spawn_unit.update_armour(armour, false, false);
 		}
 		
-		show_debug_message($"updating coy {company}:{slot} {role_name} armour to {armour}: {_msg} : {spawn_unit.armour()} : {obj_ini.armour[company][slot]}");
+		// show_debug_message($"updating coy {company}:{slot} {role_name} armour to {armour}: {_msg} : {spawn_unit.armour()} : {obj_ini.armour[company][slot]}");
 	}
 	if(gear != ""){
 		if(gear == "default"){
@@ -3423,6 +3373,7 @@ function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1
 			spawn_unit.update_mobility_item(mobi, false, false);
 		}
 	}
+
 	if(role_id == eROLE.HonourGuard){
 		spawn_unit.add_trait(choose("guardian", "champion", "observant", "perfectionist","natural_leader"));
 	}

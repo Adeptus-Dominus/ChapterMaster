@@ -290,7 +290,7 @@ function setup_complex_livery_shader(setup_role, game_setup=false){
             }
         }        
     }
-    show_debug_message(data_set);
+    // show_debug_message(data_set);
     shader_set(full_livery_shader);
     var spot_names = struct_get_names(data_set);
     for (var i=0;i<array_length(spot_names);i++){

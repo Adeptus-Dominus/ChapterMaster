@@ -142,82 +142,118 @@ function scr_marine_spawn_age(){
 
 	update_age(round(_age));	
 }
-function scr_marine_spawn_armour(){
+
+/// @mixin
+function scr_marine_spawn_armour() {
+	var _terminator_armour_roll = function(_score) {
+		if (_score > 270) {
+			update_armour(choose("Tartaros", "Terminator Armour", "Terminator Armour"), false, false);
+		} else if (_score > 250) {
+			update_armour(choose("Tartaros", "Terminator Armour", "Terminator Armour", "Terminator Armour"), false, false);
+		} else {
+			update_armour("Terminator Armour", false, false);
+		}
+	};
+
 	var _age = age();
+	var _role = role();
 	var _exp = experience;
-	var _total_score = _age + _exp;
+	var _total_score = _age + _exp + (scr_has_adv("Crafters") ? 50 : 0);
+	var _company = company;
 
-	var armour_weighted_lists = {
-		normal_armour: [["MK7 Aquila", 95], ["MK6 Corvus", 5]],
-		rare_armour: [["MK7 Aquila", 100], ["MK6 Corvus", 30], ["MK8 Errant", 2], ["MK5 Heresy", 2], ["MK4 Maximus", 1], ["MK3 Iron Armour", 1]],
-		quality_armour: [["MK7 Aquila", 30], ["MK6 Corvus", 5], ["MK8 Errant", 5], ["MK4 Maximus", 5]],
-		old_armour: [["MK6 Corvus", 4], ["MK8 Errant", 2], ["MK5 Heresy", 2], ["MK4 Maximus", 1], ["MK3 Iron Armour", 1]],
+	var _armour_weighted_lists = {
+		normal_armour: [
+			["MK7 Aquila", 95],
+			["MK6 Corvus", 5]
+		],
+		rare_armour: [
+			["MK7 Aquila", 100],
+			["MK6 Corvus", 30],
+			["MK8 Errant", 2],
+			["MK5 Heresy", 2],
+			["MK4 Maximus", 1],
+			["MK3 Iron Armour", 1]
+		],
+		quality_armour: [
+			["MK7 Aquila", 30],
+			["MK6 Corvus", 5],
+			["MK8 Errant", 5],
+			["MK4 Maximus", 5]
+		],
+		old_armour: [
+			["MK6 Corvus", 4],
+			["MK8 Errant", 2],
+			["MK5 Heresy", 2],
+			["MK4 Maximus", 1],
+			["MK3 Iron Armour", 1]
+		],
+	};
+
+	var _terminator_roles_array = [obj_ini.role[100][eROLE.Captain], obj_ini.role[100][eROLE.Champion], obj_ini.role[100][eROLE.Ancient], obj_ini.role[100][eROLE.Chaplain], obj_ini.role[100][eROLE.Apothecary], obj_ini.role[100][eROLE.Librarian], obj_ini.role[100][eROLE.Techmarine]];
+
+	if (_company == 1 && array_contains(_terminator_roles_array, _role)) {
+		_terminator_armour_roll(_total_score);
+	} else {
+		switch (_role) {
+			// HQ
+			// case obj_ini.role[100][eROLE.ChapterMaster]:
+			// case "Chief Librarian":
+			// case "Forge Master":
+			// case "Master of Sanctity":
+			// case "Master of the Apothecarion":
+			// case obj_ini.role[100][eROLE.HonourGuard]:
+			case "Codiciery":
+			case "Lexicanum":
+			// 1st company only
+			case obj_ini.role[100][eROLE.Veteran]:
+			case obj_ini.role[100][eROLE.VeteranSergeant]:
+			// Command Squads
+			case obj_ini.role[100][eROLE.Captain]:
+			case obj_ini.role[100][eROLE.Champion]:
+			case obj_ini.role[100][eROLE.Ancient]:
+			// Command Squads and HQ
+			case obj_ini.role[100][eROLE.Chaplain]:
+			case obj_ini.role[100][eROLE.Apothecary]:
+			case obj_ini.role[100][eROLE.Librarian]:
+			// Company marines
+			// case obj_ini.role[100][eROLE.Scout]:
+			case obj_ini.role[100][eROLE.Tactical]:
+			case obj_ini.role[100][eROLE.Devastator]:
+			case obj_ini.role[100][eROLE.Assault]:
+			case obj_ini.role[100][eROLE.Sergeant]:
+				if (_total_score > 280) {
+					update_armour(choose_weighted(_armour_weighted_lists.old_armour), false, false);
+				} else if (_total_score > 180) {
+					update_armour(choose_weighted(_armour_weighted_lists.quality_armour), false, false);
+				} else if (_total_score > 100) {
+					update_armour(choose_weighted(_armour_weighted_lists.rare_armour), false, false);
+				} else {
+					update_armour(choose_weighted(_armour_weighted_lists.normal_armour), false, false);
+				}
+				break;
+			case obj_ini.role[100][eROLE.Techmarine]:
+				if (_total_score > 280) {
+					update_armour("Artificer Armour", false, false);
+				} else if (_total_score > 180) {
+					update_armour(choose_weighted(_armour_weighted_lists.quality_armour), false, false);
+				} else if (_total_score > 100) {
+					update_armour(choose_weighted(_armour_weighted_lists.rare_armour), false, false);
+				} else {
+					update_armour(choose_weighted(_armour_weighted_lists.normal_armour), false, false);
+				}
+				break;
+			case obj_ini.role[100][eROLE.Terminator]:
+				_terminator_armour_roll(_total_score);
+				break;
+		}
 	}
-
-	switch(role()){
-		// HQ
-		// case obj_ini.role[100][eROLE.ChapterMaster]:
-		// case "Chief Librarian":
-		// case "Forge Master":
-		// case "Master of Sanctity":
-		// case "Master of the Apothecarion":
-		// case obj_ini.role[100][eROLE.HonourGuard]:
-		case "Codiciery":
-		case "Lexicanum":
-		// 1st company only
-		case obj_ini.role[100][eROLE.Veteran]:
-		case obj_ini.role[100][eROLE.VeteranSergeant]:
-		// Command Squads
-		case obj_ini.role[100][eROLE.Captain]:
-		case obj_ini.role[100][eROLE.Champion]:
-		case obj_ini.role[100][eROLE.Ancient]:
-		// Command Squads and HQ
-		case obj_ini.role[100][eROLE.Chaplain]:
-		case obj_ini.role[100][eROLE.Apothecary]:
-		case obj_ini.role[100][eROLE.Librarian]:
-		// Company marines
-		// case obj_ini.role[100][eROLE.Scout]:
-		case obj_ini.role[100][eROLE.Tactical]:
-		case obj_ini.role[100][eROLE.Devastator]:
-		case obj_ini.role[100][eROLE.Assault]:
-		case obj_ini.role[100][eROLE.Sergeant]:
-			if (_total_score > 280){
-				update_armour(choose_weighted(armour_weighted_lists.old_armour),false,false);
-			} else if (_total_score > 180){
-				update_armour(choose_weighted(armour_weighted_lists.quality_armour),false,false);
-			} else if (_total_score > 100){
-				update_armour(choose_weighted(armour_weighted_lists.rare_armour),false,false);
-			} else {
-				update_armour(choose_weighted(armour_weighted_lists.normal_armour),false,false);
-			}
-			break;
-		case obj_ini.role[100][eROLE.Techmarine]:
-			if (_total_score > 280){
-				update_armour("Artificer Armour",false,false);
-			} else if (_total_score > 180){
-				update_armour(choose_weighted(armour_weighted_lists.quality_armour),false,false);
-			} else if (_total_score > 100){
-				update_armour(choose_weighted(armour_weighted_lists.rare_armour),false,false);
-			} else {
-				update_armour(choose_weighted(armour_weighted_lists.normal_armour),false,false);
-			}
-			break;
-		case obj_ini.role[100][eROLE.Terminator]:
-			if (_total_score > 270){
-				update_armour(choose("Tartaros", "Terminator Armour", "Terminator Armour"),false,false);
-			} else if (_total_score > 250){
-				update_armour(choose("Tartaros", "Terminator Armour", "Terminator Armour", "Terminator Armour"),false,false);
-			}else {
-				update_armour("Terminator Armour",false,false);
-			}
-			break;
-	}	
 }
+
 function scr_marine_game_spawn_constructions(){
 	roll_age();
 	roll_experience();
 	assign_reactionary_traits();
-	roll_armour();
+	random_update_armour();
 	
 	var old_guard = irandom(100);
 
