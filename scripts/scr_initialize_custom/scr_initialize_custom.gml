@@ -551,6 +551,10 @@ function scr_initialize_custom() {
 	successors = obj_creation.successors;
 	homeworld_rule = obj_creation.homeworld_rule;
 
+	if(struct_exists(obj_creation, "custom_advisors")){
+		obj_ini.custom_advisors = obj_creation.custom_advisors;
+	}
+
 
 	// Initializes all of the marine/vehicle/ship variables for the chapter.
 

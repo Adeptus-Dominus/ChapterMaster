@@ -21,8 +21,11 @@ function scr_fleet_advisor(){
     draw_rectangle(xx + 945, yy + 66, xx + 1580, yy + 818, 1);
 
     if (menu_adept = 0) {
-        scr_image("advisor", 6, xx + 16, yy + 43, 310, 828);
-        // draw_sprite(spr_advisors,6,xx+16,yy+43);
+        if(struct_exists(obj_ini.custom_advisors, "admiral")){
+            scr_image("advisor/splash", obj_ini.custom_advisors.admiral, xx + 16, yy + 43, 310, 828);
+        } else {
+            scr_image("advisor/splash", 7, xx + 16, yy + 43, 310, 828);
+        }        // draw_sprite(spr_advisors,6,xx+16,yy+43);
         draw_set_halign(fa_left);
         draw_set_color(c_gray);
         draw_set_font(fnt_40k_30b);
@@ -32,7 +35,7 @@ function scr_fleet_advisor(){
         blurp = "Greetings, Chapter Master.\n\nYou requested a report?  Our fleet contains ";
     }
     if (menu_adept = 1) {
-        scr_image("advisor", 0, xx + 16, yy + 43, 310, 828);
+        scr_image("advisor/splash", 1, xx + 16, yy + 43, 310, 828);
         // draw_sprite(spr_advisors,0,xx+16,yy+43);
         draw_set_halign(fa_left);
         draw_set_color(c_gray);

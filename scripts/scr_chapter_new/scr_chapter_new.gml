@@ -142,6 +142,9 @@ function ChapterData() constructor {
 	custom_squads = {};
 
 
+	custom_advisors = {};
+
+
 	/// @desc Returns true if loaded successfully, false if not.
 	/// @param {Enum.eCHAPTERS} chapter_id 
 	/// @param {Bool} use_app_data if set to true will read from %AppData%/Local/ChapterMaster instead of /datafiles
@@ -437,6 +440,10 @@ function scr_chapter_new(argument0) {
 		}
 		if(struct_exists(chapter_object, "custom_squads")){
 			obj_creation.custom_squads = chapter_object.custom_squads;
+		}
+
+		if(struct_exists(chapter_object, "custom_advisors")){
+			obj_creation.custom_advisors = chapter_object.custom_advisors;
 		}
 		
 		

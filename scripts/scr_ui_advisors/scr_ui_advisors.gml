@@ -44,8 +44,12 @@ function scr_ui_advisors() {
 
         if (menu_adept = 0) {
             // draw_sprite(spr_advisors,2,xx+16,yy+43);
-            scr_image("advisor", 2, xx + 16, yy + 43, 310, 828);
-            if (global.chapter_name = "Space Wolves") then scr_image("advisor", 11, xx + 16, yy + 43, 310, 828);
+            if(struct_exists(obj_ini.custom_advisors, "chaplain")){
+                scr_image("advisor/splash", obj_ini.custom_advisors.chaplain, xx + 16, yy + 43, 310, 828);
+            } else {
+                scr_image("advisor/splash", 3, xx + 16, yy + 43, 310, 828);
+            }
+            // if (global.chapter_name = "Space Wolves") then scr_image("advisor", 11, xx + 16, yy + 43, 310, 828);
             // draw_sprite(spr_advisors,11,xx+16,yy+16);
             draw_set_halign(fa_left);
             draw_set_color(c_gray);
@@ -55,7 +59,7 @@ function scr_ui_advisors() {
         }
         if (menu_adept = 1) {
             // draw_sprite(spr_advisors,0,xx+16,yy+43);
-            scr_image("advisor", 0, xx + 16, yy + 43, 310, 828);
+            scr_image("advisor/splash", 1, xx + 16, yy + 43, 310, 828);
             draw_set_halign(fa_left);
             draw_set_color(c_gray);
             draw_set_font(fnt_40k_30b);
@@ -678,7 +682,7 @@ function scr_ui_advisors() {
     if (menu >= 500 && menu <= 510) {
         draw_sprite(spr_welcome_bg, 0, xx, yy);
         // draw_sprite(spr_advisors,0,xx+16,yy+16);
-        scr_image("advisor", 0, xx + 16, yy + 16, 310, 828);
+        scr_image("advisor/splash", 1, xx + 16, yy + 16, 310, 828);
         draw_set_halign(fa_left);
         draw_set_color(0);
         draw_set_font(fnt_40k_14);

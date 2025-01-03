@@ -549,8 +549,11 @@ function scr_draw_recruit_advisor(){
 
     if (menu_adept = 0) {
         // draw_sprite(spr_advisors,5,xx+16,yy+43);
-        scr_image("advisor", 5, xx + 16, yy + 43, 310, 828);
-        draw_set_halign(fa_left);
+		if(struct_exists(obj_ini.custom_advisors, "recruiter")){
+            scr_image("advisor/splash", obj_ini.custom_advisors.recruiter, xx + 16, yy + 43, 310, 828);
+        } else {
+            scr_image("advisor/splash", 6, xx + 16, yy + 43, 310, 828);
+        }        draw_set_halign(fa_left);
         draw_set_color(c_gray);
         draw_set_font(fnt_40k_30b);
         draw_text_transformed(xx + 336 + 16, yy + 66, string_hash_to_newline("World " + string(obj_ini.recruiting_name)), 1, 1, 0);
@@ -559,7 +562,7 @@ function scr_draw_recruit_advisor(){
     }
     if (menu_adept = 1) {
         // draw_sprite(spr_advisors,0,xx+16,yy+43);
-        scr_image("advisor", 0, xx + 16, yy + 43, 310, 828);
+        scr_image("advisor/splash", 1, xx + 16, yy + 43, 310, 828);
         draw_set_halign(fa_left);
         draw_set_color(c_gray);
         draw_set_font(fnt_40k_30b);

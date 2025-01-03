@@ -37,51 +37,59 @@ function scr_ui_diplomacy() {
 	    xx+=55;yy-=20;
     
     
-	    var imm;imm=0;
-	    if (known[2]>0) then imm=2;
-		if (known[2]<1) then imm=3;// draw_sprite(spr_diplomacy_med,imm,xx+31,yy+281);
-	    scr_image("diplomacy_icon",imm,xx+31,yy+281,153,135);
-	    if (faction_defeated[2]=1) then draw_sprite(spr_diplomacy_defeated,0,xx+31,yy+281);
+	    var imm = 1;
+	    if (known[eFACTION.Imperium]>0) then imm=3;
+		if (known[eFACTION.Imperium]<1) then imm=4;// draw_sprite(spr_diplomacy_med,imm,xx+31,yy+281);
+	    scr_image("diplomacy/icons",imm,xx+31,yy+281,153,135);
+	    if (faction_defeated[eFACTION.Imperium]=1) then draw_sprite(spr_diplomacy_defeated,0,xx+31,yy+281);
     
-	    if (known[3]>0) then imm=4;
-		if (known[3]<1) then imm=5;// draw_sprite(spr_diplomacy_med,imm,xx+31,yy+417);
-	    scr_image("diplomacy_icon",imm,xx+31,yy+417,153,135);
-	    if (faction_defeated[3]=1) then draw_sprite(spr_diplomacy_defeated,0,xx+31,yy+417);
+	    if (known[eFACTION.Mechanicus]>0) then imm=5;
+		if (known[eFACTION.Mechanicus]<1) then imm=6;// draw_sprite(spr_diplomacy_med,imm,xx+31,yy+417);
+	    scr_image("diplomacy/icons",imm,xx+31,yy+417,153,135);
+	    if (faction_defeated[eFACTION.Mechanicus]=1) then draw_sprite(spr_diplomacy_defeated,0,xx+31,yy+417);
     
-	    if (known[4]>0) then imm=6;
-		if (known[4]<1) then imm=7;// draw_sprite(spr_diplomacy_med,imm,xx+31,yy+553);
-	    scr_image("diplomacy_icon",imm,xx+31,yy+553,153,135);
-	    if (faction_defeated[4]=1) then draw_sprite(spr_diplomacy_defeated,0,xx+31,yy+553);
+	    if (known[eFACTION.Inquisition]>0) then imm=7;
+		if (known[eFACTION.Inquisition]<1) then imm=8;// draw_sprite(spr_diplomacy_med,imm,xx+31,yy+553);
+	    scr_image("diplomacy/icons",imm,xx+31,yy+553,153,135);
+	    if (faction_defeated[eFACTION.Inquisition]=1) then draw_sprite(spr_diplomacy_defeated,0,xx+31,yy+553);
     
-	    if (known[eFACTION.Ecclesiarchy]>0) then imm=8;if (known[eFACTION.Ecclesiarchy]<1) then imm=9;// draw_sprite(spr_diplomacy_med,imm,xx+31,yy+689);
-	    scr_image("diplomacy_icon",imm,xx+31,yy+689,153,135);
-	    if (faction_defeated[5]=1) then draw_sprite(spr_diplomacy_defeated,0,xx+31,yy+689);
+	    if (known[eFACTION.Ecclesiarchy]>0) then imm=9;
+		if (known[eFACTION.Ecclesiarchy]<1) then imm=10;// draw_sprite(spr_diplomacy_med,imm,xx+31,yy+689);
+	    scr_image("diplomacy/icons",imm,xx+31,yy+689,153,135);
+	    if (faction_defeated[eFACTION.Ecclesiarchy]=1) then draw_sprite(spr_diplomacy_defeated,0,xx+31,yy+689);
     
     
-	    if (faction_gender[6]=1){if (known[eFACTION.Eldar]>0) then imm=10;if (known[eFACTION.Eldar]<1) then imm=11;// draw_sprite(spr_diplomacy_med,imm,xx+1041,yy+281);
-	    scr_image("diplomacy_icon",imm,xx+1041,yy+281,153,135);}
+	    if (faction_gender[eFACTION.Eldar]=1){ //male eldar
+			if (known[eFACTION.Eldar]>0) then imm=11;
+			if (known[eFACTION.Eldar]<1) then imm=12;// draw_sprite(spr_diplomacy_med,imm,xx+1041,yy+281);
+	    	scr_image("diplomacy/icons",imm,xx+1041,yy+281,153,135);
+		}
     
-	    if (faction_gender[6]=2){if (known[eFACTION.Eldar]>0) then imm=20;if (known[eFACTION.Eldar]<1) then imm=21;// draw_sprite(spr_diplomacy_med,imm,xx+1041,yy+281);
-	    scr_image("diplomacy_icon",imm,xx+1041,yy+281,153,135);
+	    if (faction_gender[eFACTION.Eldar]=2){ //female eldar
+			if (known[eFACTION.Eldar]>0) then imm=21;
+			if (known[eFACTION.Eldar]<1) then imm=22;// draw_sprite(spr_diplomacy_med,imm,xx+1041,yy+281);
+	    	scr_image("diplomacy/icons",imm,xx+1041,yy+281,153,135);
 	    }
     
-	    if (faction_defeated[6]=1) then draw_sprite(spr_diplomacy_defeated,0,xx+1041,yy+281);
+	    if (faction_defeated[eFACTION.Eldar]=1) then draw_sprite(spr_diplomacy_defeated,0,xx+1041,yy+281);
     
-	    if (known[eFACTION.Ork]>0) then imm=12;if (known[eFACTION.Ork]<1) then imm=13;// draw_sprite(spr_diplomacy_med,imm,xx+1041,yy+417);
-	    scr_image("diplomacy_icon",imm,xx+1041,yy+417,153,135);
-	    if (faction_defeated[7]=1) then draw_sprite(spr_diplomacy_defeated,0,xx+1041,yy+417);
+	    if (known[eFACTION.Ork]>0) then imm=13;
+		if (known[eFACTION.Ork]<1) then imm=14;// draw_sprite(spr_diplomacy_med,imm,xx+1041,yy+417);
+	    scr_image("diplomacy/icons",imm,xx+1041,yy+417,153,135);
+	    if (faction_defeated[eFACTION.Ork]=1) then draw_sprite(spr_diplomacy_defeated,0,xx+1041,yy+417);
     
-	    if (known[eFACTION.Tau]>0) then imm=14;if (known[eFACTION.Tau]<1) then imm=15;// draw_sprite(spr_diplomacy_med,imm,xx+1041,yy+553);
-	    scr_image("diplomacy_icon",imm,xx+1041,yy+553,153,135);
-	    if (faction_defeated[8]=1) then draw_sprite(spr_diplomacy_defeated,0,xx+1041,yy+553);
+	    if (known[eFACTION.Tau]>0) then imm=15;
+		if (known[eFACTION.Tau]<1) then imm=16;// draw_sprite(spr_diplomacy_med,imm,xx+1041,yy+553);
+	    scr_image("diplomacy/icons",imm,xx+1041,yy+553,153,135);
+	    if (faction_defeated[eFACTION.Tau]=1) then draw_sprite(spr_diplomacy_defeated,0,xx+1041,yy+553);
     
-	    if (known[10]>0) and (faction_gender[10]=1) then imm=18;
-		if (known[10]>0) and (faction_gender[10]=2) then imm=26;
-	    if (known[10]<1) and (faction_gender[10]=1) then imm=19;
-		if (known[10]<1) and (faction_gender[10]=2) then imm=27;
+	    if (known[eFACTION.Chaos]>0 && faction_gender[eFACTION.Chaos]=1) then imm=19;
+		if (known[eFACTION.Chaos]>0 && faction_gender[eFACTION.Chaos]=2) then imm=27;
+	    if (known[eFACTION.Chaos]<1 && faction_gender[eFACTION.Chaos]=1) then imm=20;
+		if (known[eFACTION.Chaos]<1 && faction_gender[eFACTION.Chaos]=2) then imm=28;
 	    // draw_sprite(spr_diplomacy_med,imm,xx+1041,yy+689);
-	    scr_image("diplomacy_icon",imm,xx+1041,yy+689,153,135);
-	    if (faction_defeated[10]=1) then draw_sprite(spr_diplomacy_defeated,0,xx+1041,yy+689);
+	    scr_image("diplomacy/icons",imm,xx+1041,yy+689,153,135);
+	    if (faction_defeated[eFACTION.Chaos]=1) then draw_sprite(spr_diplomacy_defeated,0,xx+1041,yy+689);
     
     
 	    /*draw_rectangle(xx+26,yy+34,xx+312,yy+125,1);draw_line(xx+128,yy+34,xx+128,yy+125);
@@ -490,7 +498,7 @@ function scr_ui_diplomacy() {
 	    if (diplomacy=-5.6){advi="flee";fra=6;}
     
 	    // draw_sprite(spr_advisors,fra,xx+16,yy+43);
-	    scr_image("advisor",fra,xx+16,yy+43,310,828);
+	    scr_image("advisor/splash",fra+1,xx+16,yy+43,310,828);
 	    draw_set_halign(fa_center);
 	    draw_set_color(38144);
 	    draw_set_font(fnt_40k_30b);
@@ -534,10 +542,10 @@ function scr_ui_diplomacy() {
 		}
     
 	    if (daemon=false){
-	        if (diplomacy!=6) then scr_image("diplomacy_splash",diplomacy,xx+16,yy+43,310,828);
-	        if (diplomacy!=6) or ((diplomacy=6) and (faction_gender[6]=1)) then scr_image("diplomacy_splash",diplomacy,xx+16,yy+16,310,828);
-	        if (diplomacy=6) and (faction_gender[6]=2) then scr_image("diplomacy_splash",11,xx+16,yy+16,310,828);
-	        if (diplomacy=10) and (faction_gender[10]=2) then scr_image("diplomacy_splash",12,xx+16,yy+43,310,828);
+	        if (diplomacy!=6) then scr_image("diplomacy/splash",diplomacy,xx+16,yy+43,310,828);
+	        if (diplomacy!=6) or ((diplomacy=6) and (faction_gender[6]=1)) then scr_image("diplomacy/splash",diplomacy,xx+16,yy+16,310,828);
+	        if (diplomacy=6) and (faction_gender[6]=2) then scr_image("diplomacy/splash",11,xx+16,yy+16,310,828);
+	        if (diplomacy=10) and (faction_gender[10]=2) then scr_image("diplomacy/splash",12,xx+16,yy+43,310,828);
 	        /*if (diplomacy!=6) then draw_sprite(spr_diplomacy,diplomacy,xx+16,yy+43);
 	        if (diplomacy!=6) or ((diplomacy=6) and (faction_gender[6]=1)) then draw_sprite(spr_diplomacy,diplomacy,xx+16,yy+16);
 	        if (diplomacy=6) and (faction_gender[6]=2) then draw_sprite(spr_diplomacy,11,xx+16,yy+16);

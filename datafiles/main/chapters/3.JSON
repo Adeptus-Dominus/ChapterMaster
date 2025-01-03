@@ -76,6 +76,12 @@
         },
         "battle_cry": "For Russ and the Allfather!",
         "equal_specialists": 1,
+        /** reference the image id in datafiles/images/advisor */
+        "custom_advisors": {
+            "librarian": 11,
+            "apothecary": 12,
+            "chaplain": 12,
+        },
         "load_to_ships": {
             "escort_load": 2, // 0 no, 2 yes, 1 doesnt do anything :)
             "split_scouts": 0, // 0 no, 1 yes
