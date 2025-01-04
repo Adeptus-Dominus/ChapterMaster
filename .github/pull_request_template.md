@@ -15,4 +15,4 @@
 <!--- Commit types can be found at https://github.com/pvdlg/conventional-commit-types?tab=readme-ov-file#commit-types -->
 <!--- You can add "@sourcery-ai" into the title, so that the bot auto-generates a title -->
 <!--- Related links: other PRs, Discord bug reports, messages, threads, outside docs, etc. -->
-<!--- Tests are not required, but each applicable may speedup the review of the PR -->
+<!--- Tests are not required, but each applicable may speed up the review of the PR -->
