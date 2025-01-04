@@ -76,6 +76,7 @@ function get_complex_set(set = eARMOUR_SET.MK7){
             chest_variants : spr_mk7_chest_variants,
             leg_variants : spr_mk7_leg_variants,
             backpack : spr_mk7_complex_backpack,
+            head : spr_mk7_head_variants,
         });       
     }else if (set == eARMOUR_SET.MK6){
         set_pieces.add_group({
@@ -85,6 +86,7 @@ function get_complex_set(set = eARMOUR_SET.MK7){
             right_arm: spr_mk6_right_arm,
             left_trim :spr_mk7_left_trim,
             right_trim: spr_mk7_right_trim,
+            head : spr_mk6_head_variants,
         });
     }else if (set == eARMOUR_SET.MK5){
         set_pieces.add_group({
@@ -107,6 +109,7 @@ function get_complex_set(set = eARMOUR_SET.MK7){
             left_trim: spr_mk4_left_trim,
             right_trim: spr_mk4_right_trim,
             mouth_variants: spr_mk4_mouth_variants,
+            head : spr_mk4_head_variants,
         });                 
     }else if (set == eARMOUR_SET.MK3){
         set_pieces.add_group({
@@ -128,7 +131,8 @@ function get_complex_set(set = eARMOUR_SET.MK7){
             thorax_variants : spr_mk7_thorax_variants,
             chest_variants : spr_mk7_chest_variants,
             leg_variants : spr_mk7_leg_variants,
-            gorget : spr_mk8_gorget,        
+            gorget : spr_mk8_gorget,
+            head : spr_mk7_head_variants,
         });
     }else if (set == eARMOUR_SET.Indomitus){
          set_pieces.add_group({
@@ -149,7 +153,7 @@ function get_complex_set(set = eARMOUR_SET.MK7){
             chest_variants : spr_tartaros_chest,
             gorget : spr_tartaros_gorget,
             mouth_variants : spr_tartaros_faceplate,
-            head : spr_tartaros_head,
+            head : spr_tartaros_head_variants,
             left_trim : spr_tartaros_left_trim,
             right_trim : spr_tartaros_right_trim,
 

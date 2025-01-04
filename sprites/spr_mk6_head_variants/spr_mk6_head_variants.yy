@@ -1,11 +1,11 @@
 {
   "resourceType": "GMSprite",
   "resourceVersion": "1.0",
-  "name": "spr_mk6_complex",
-  "bbox_bottom": 220,
-  "bbox_left": 11,
-  "bbox_right": 152,
-  "bbox_top": 26,
+  "name": "spr_mk6_head_variants",
+  "bbox_bottom": 45,
+  "bbox_left": 65,
+  "bbox_right": 98,
+  "bbox_top": 13,
   "bboxMode": 0,
   "collisionKind": 1,
   "collisionTolerance": 0,
@@ -20,7 +20,7 @@
   "height": 232,
   "HTile": false,
   "layers": [
-    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"78fed957-a769-4e64-9288-8be2bf39a5d4","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"1936fff1-2221-481b-afee-a2bb2a3607ab","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
   ],
   "nineSlice": null,
   "origin": 9,
@@ -32,7 +32,7 @@
   "sequence": {
     "resourceType": "GMSequence",
     "resourceVersion": "1.4",
-    "name": "spr_mk6_complex",
+    "name": "spr_mk6_head_variants",
     "autoRecord": true,
     "backdropHeight": 768,
     "backdropImageOpacity": 0.5,
@@ -54,7 +54,7 @@
     "timeUnits": 1,
     "tracks": [
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"fad92a4f-b6de-4209-8eed-5a7b6bf3abcf","path":"sprites/spr_mk6_complex/spr_mk6_complex.yy",},},},"Disabled":false,"id":"23021aeb-0c67-4243-bf92-73fe45924fe0","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"fad92a4f-b6de-4209-8eed-5a7b6bf3abcf","path":"sprites/spr_mk6_head_variants/spr_mk6_head_variants.yy",},},},"Disabled":false,"id":"4c6fa85d-e91b-4424-a5a9-457f82bdc5b0","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
           ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange": null,
