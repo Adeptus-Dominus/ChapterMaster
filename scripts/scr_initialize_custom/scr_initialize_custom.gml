@@ -3269,8 +3269,6 @@ function scr_initialize_custom() {
 
 	// man_size+=80;// bikes
 
-	// if (string_count("Crafter",strin)>0) and (string_count("Enthusi",strin)>0) then equipment_number[1]=20;
-	// if (string_count("Crafter",strin)>0) and (string_count("Enthusi",strin)=0) then equipment_number[2]=20;
 
 	if (scr_has_adv("Crafters")) && (scr_has_adv("Melee Enthusiasts")) {
         scr_add_item("MK3 Iron Armour", irandom_range(2, 12));

@@ -1104,7 +1104,7 @@ faction_status[eFACTION.Ecclesiarchy]="Allied";
 faction_leader[eFACTION.Eldar]=global.name_generator.generate_eldar_name(2);
 faction_title[6]="Farseer";
 faction_status[eFACTION.Eldar]="Antagonism";// If disposition = 0 then instead set it to "Antagonism"
-if (instance_exists(obj_ini)){if (string_count("Eldar",obj_ini.strin)>0) then faction_status[eFACTION.Eldar]="War";}
+if (scr_has_adv("Enemy: Eldar")) then faction_status[eFACTION.Eldar]="War";
 // Orkz faction
 faction_leader[eFACTION.Ork]=global.name_generator.generate_ork_name();
 faction_title[7]="Warboss";
