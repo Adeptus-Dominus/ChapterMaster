@@ -1150,9 +1150,7 @@ function scr_draw_unit_image(_background=false){
                     if (array_contains(["Raven Guard", "Dark Angels"], unit_chapter)) {
                         halo_color = 1;
                     }
-                    if (unit_armour=="Artificer Armour" && !armour_bypass){
-                        halo_offset_y -= 14;
-                    } else if (unit_armour=="Terminator Armour"){
+                    if (unit_armour=="Terminator Armour"){
                         halo_type = 2;
                         halo_offset_y -= 20;
                     } else if (unit_armour=="Tartaros"){
