@@ -1104,7 +1104,6 @@ faction_status[eFACTION.Ecclesiarchy]="Allied";
 faction_leader[eFACTION.Eldar]=global.name_generator.generate_eldar_name(2);
 faction_title[6]="Farseer";
 faction_status[eFACTION.Eldar]="Antagonism";// If disposition = 0 then instead set it to "Antagonism"
-if (scr_has_adv("Enemy: Eldar")) then faction_status[eFACTION.Eldar]="War";
 // Orkz faction
 faction_leader[eFACTION.Ork]=global.name_generator.generate_ork_name();
 faction_title[7]="Warboss";
@@ -1282,14 +1281,17 @@ other1_disposition=0;
 other1="";
 // ** Sets up bonuses once chapter is created **
 if (instance_exists(obj_ini)){
-    // Tolerant trait
-    if (global.load==0 && scr_has_disadv("Tolerant")){
-        obj_controller.disposition[6]+=5;
-        obj_controller.disposition[7]+=5;
-        obj_controller.disposition[8]+=10;
-    }
     // General setup
     if (global.load==0){
+        // Tolerant trait
+        if (scr_has_disadv("Tolerant")) {
+            obj_controller.disposition[6]+=5;
+            obj_controller.disposition[7]+=5;
+            obj_controller.disposition[8]+=10;
+        }
+        if (scr_has_adv("Enemy: Eldar")) {
+            faction_status[eFACTION.Eldar]="War";
+        }
         // Founding Chapter STC Bonuses here
         if (global.chapter_name=="Salamanders"){
             stc_wargear=4;
