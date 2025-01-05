@@ -2140,4 +2140,5 @@ try {
 	}
 } catch (_exception) {
 	handle_exception(_exception);
+    instance_destroy();
 }

@@ -1834,4 +1834,5 @@ try {
 	if (type == "duel") {}
 } catch (_exception) {
 	handle_exception(_exception);
+    instance_destroy();
 }

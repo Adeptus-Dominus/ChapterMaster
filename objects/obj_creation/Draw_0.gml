@@ -2290,4 +2290,5 @@ try {
 	}
 } catch (_exception) {
 	handle_exception(_exception);
+    room_goto(Main_Menu);
 }

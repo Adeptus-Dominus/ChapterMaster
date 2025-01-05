@@ -120,4 +120,5 @@ try {
 	roster_slate.draw(_draw_x, _draw_y, (300 / 860), (520 / 850));
 } catch (_exception) {
 	handle_exception(_exception);
+    instance_destroy();
 }
