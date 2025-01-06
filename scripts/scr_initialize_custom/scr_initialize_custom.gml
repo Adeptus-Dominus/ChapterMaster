@@ -2617,7 +2617,7 @@ function scr_initialize_custom() {
 				}
 			}
 			var _spawn_unit = add_unit_to_company("marine", company, k, roles.techmarine, eROLE.Techmarine, "default","Storm Bolter","default","default",_armour);
-			if (_spawn_unit.armour() == "Terminator" || _spawn_unit.armour() == "Tartaros") {
+			if (_spawn_unit.armour() == "Terminator Armour" || _spawn_unit.armour() == "Tartaros") {
 				man_size += 1;
 			} 
 		}
@@ -2633,7 +2633,7 @@ function scr_initialize_custom() {
 			_armour = "MK6 Corvus"
 		}
 		var _spawn_unit = add_unit_to_company("marine", company, k, roles.ancient, eROLE.Ancient, "default","Storm Bolter","default","default",_armour);
-		if (_spawn_unit.armour() == "Terminator" || _spawn_unit.armour() == "Tartaros") {
+		if (_spawn_unit.armour() == "Terminator Armour" || _spawn_unit.armour() == "Tartaros") {
 			man_size += 1;
 		}
 
@@ -2653,7 +2653,7 @@ function scr_initialize_custom() {
 			_wep2 = "";
 		}
 		var _spawn_unit = add_unit_to_company("marine", company, k, roles.champion, eROLE.Champion, _wep1,_wep2,"default","default",_armour);
-		if (_spawn_unit.armour() == "Terminator" || _spawn_unit.armour() == "Tartaros") {
+		if (_spawn_unit.armour() == "Terminator Armour" || _spawn_unit.armour() == "Tartaros") {
 			man_size += 1;
 		}
 	}
