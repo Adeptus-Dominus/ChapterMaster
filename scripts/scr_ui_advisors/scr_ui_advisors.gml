@@ -225,7 +225,7 @@ function scr_ui_advisors() {
 
         draw_text_ext(xx + 336 + 16, yy + 477, string_hash_to_newline(string(blurp2)), -1, 536);
 
-        // draw_set_alpha(1);if (obj_controller.gene_seed<=0) or (obj_ini.zygote=1) then draw_set_alpha(0.5);
+        // draw_set_alpha(1);if (gene_seed_count()<=0) or (obj_ini.zygote=1) then draw_set_alpha(0.5);
 
 /*         if (menu = 12.1) or(fest_sid + fest_wid > 0) then draw_set_alpha(0.25);
         draw_set_color(c_gray);

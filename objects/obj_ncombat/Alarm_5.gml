@@ -52,7 +52,9 @@ if (ground_mission){
 
 seed_saved=(min(seed_max,apothecaries_alive*40))-gene_penalty;
 if (obj_ini.doomed) then seed_saved=0;
-if (seed_saved>0) then obj_controller.gene_seed+=seed_saved;
+if (seed_saved>0){
+    gene_seed_count()+=seed_saved;
+}
 
 if (obj_ini.doomed && !apothecaries_alive){
     part3=$"Chapter Mutation prevents retrieving Gene-Seed.  {seed_max} Gene-Seed lost.";
@@ -83,7 +85,8 @@ if (red_thirst>2){
     
     newline=voodoo;newline_color="red";
     scr_newtext();
-    newline=" ";scr_newtext();
+    newline=" ";
+    scr_newtext();
 }
 
 
@@ -92,7 +95,7 @@ if (vehicle_deaths>0 || vehicles_saved>0){
     if (techmarines_alive=1) then part4+=" ("+string(roles[16])+" prevented the destruction of "+string(vehicles_saved)+")";
     if (techmarines_alive>1) then part4+=" ("+string(roles[16])+"s prevented the destruction of "+string(vehicles_saved)+")";
     
-    var i;i=0;
+    var i=0;
     repeat(30){i+=1;
         if (post_unit_lost[i]!="") and (post_units_lost[i]>0) and (post_unit_veh[i]=1){
             part5+=string(post_units_lost[i])+"x "+string(post_unit_lost[i])+", ";
@@ -187,25 +190,18 @@ if (slime>0){
 instance_activate_object(obj_star);
 
 
-var reduce_fortification=true;
-if (battle_special="tyranid_org") then reduce_fortification=false;
-if (string_count("_attack",battle_special)>0) then reduce_fortification=false;
-if (battle_special="ship_demon") then reduce_fortification=false;
-if (enemy+threat=17) then reduce_fortification=false;
-if (battle_special="ruins") then reduce_fortification=false;
-if (battle_special="ruins_eldar") then reduce_fortification=false;
-if (battle_special="fallen1") then reduce_fortification=false;
-if (battle_special="fallen2") then reduce_fortification=false;
-if (battle_special="study2a") then reduce_fortification=false;
-if (battle_special="study2b") then reduce_fortification=false;
+
+var _non_fortification_destroying_battles = ["tyranid_org", "ship_demon","ruins","ruins_eldar","fallen1","fallen2","study2a","study2b"];
+var reduce_fortification=!array_contains(_non_fortification_destroying_battles, battle_special);
+if (reduce_fortification){
+    if (string_count("_attack",battle_special)>0) then reduce_fortification=false;
+    if (enemy+threat=17) then reduce_fortification=false;
+}
+
+
 
 if (fortified>0) and (!instance_exists(obj_nfort)) and (reduce_fortification=true){
-    part9="Fortification level of "+string(battle_loc);
-    if (battle_id=1) then part9+=" I";
-    if (battle_id=2) then part9+=" II";
-    if (battle_id=3) then part9+=" III";
-    if (battle_id=4) then part9+=" IV";
-    if (battle_id=5) then part9+=" V";
+    part9=$"Fortification level of {battle_loc} , scr_roman(battle_id)";
     part9+=$" has decreased to {fortified-1} ({fortified}-1)";
     newline=part9;
     scr_newtext();
@@ -723,8 +719,8 @@ if (obj_ini.fleet_type != ePlayerBase.home_world) and (defeat==1) and (dropping=
 			battle_object.p_feature[obj_ncombat.battle_id][monastery_list[mon]].status="destroyed";
 		}
 
-	    if (obj_controller.und_gene_vaults=0) then newline="Your Fortress Monastery has been raided.  "+string(obj_controller.gene_seed)+" Gene-Seed has been destroyed or stolen.";
-	    if (obj_controller.und_gene_vaults>0) then newline="Your Fortress Monastery has been raided.  "+string(floor(obj_controller.gene_seed/10))+" Gene-Seed has been destroyed or stolen.";
+	    if (obj_controller.und_gene_vaults=0) then newline="Your Fortress Monastery has been raided.  "+string(gene_seed_count())+" Gene-Seed has been destroyed or stolen.";
+	    if (obj_controller.und_gene_vaults>0) then newline="Your Fortress Monastery has been raided.  "+string(floor(gene_seed_count()/10))+" Gene-Seed has been destroyed or stolen.";
 
 	    scr_event_log("red",newline, battle_object.name);
 	    instance_activate_object(obj_event_log);
@@ -778,7 +774,11 @@ if (obj_ini.fleet_type != ePlayerBase.home_world) and (defeat==1) and (dropping=
             //all Gene Pod Incubators and gene seed are lost
 	        destroy_all_gene_slaves(false);
 	    }
-	    if (obj_controller.und_gene_vaults>0) then obj_controller.gene_seed-=floor(obj_controller.gene_seed/10);
+	    if (obj_controller.und_gene_vaults>0){
+            with (obj_controller.gene_stock){
+                remove_gene_seed(floor(gene_seed_count()/10));
+            }
+        } 
 	}
 }
 instance_deactivate_object(obj_star);

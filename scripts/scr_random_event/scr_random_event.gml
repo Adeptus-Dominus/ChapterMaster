@@ -146,7 +146,7 @@ function scr_random_event(execute_now) {
 							}
 							break;
 						case EVENT.mutation:
-							if(gene_seed < 5){
+							if(gene_seed_count() < 5){
 								events_share[i] -= 1;
 								events_total -= 1;
 							}

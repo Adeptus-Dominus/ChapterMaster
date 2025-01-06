@@ -108,7 +108,7 @@ function scr_crusade() {
 	    	seed=min(seed,apoth*death_data[2]);
 	    }
 	    if (apoth=0) then seed=floor(seed*0.2);
-	    obj_controller.gene_seed+=seed;
+	    gene_seed_count()+=seed;
 	}
 
 	// i=-1;

@@ -276,7 +276,7 @@ function scr_save_controller(save_id){
         ini_write_real("Controller","flag_gene",obj_controller.inqis_flag_gene);
 
 
-    ini_write_real("Controller","gene_seed",obj_controller.gene_seed);
+    ini_write_real("Controller","gene_seed",gene_seed_count());
     ini_write_real("Controller","marines",obj_controller.marines);
     ini_write_real("Controller","command",obj_controller.command);
     ini_write_real("Controller","info_chips",obj_controller.info_chips);

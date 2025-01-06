@@ -132,8 +132,9 @@ if (!zoomed && !zui){
     // Draws the current gene seed
     draw_sprite(spr_new_resource,2,355,17);
     draw_set_color(c_red);
-    draw_text(370,16,string_hash_to_newline(string(gene_seed)));
-    draw_text(370.5,16.5,string_hash_to_newline(string(gene_seed)));
+    var _gene_count = $"{gene_seed_count()}";
+    draw_text(370,16,_gene_count);
+    draw_text(370.5,16.5,_gene_count);
     // Draws the current marines in your command
     draw_sprite(spr_new_resource,3,475-10,17);
     draw_set_color(16291875);

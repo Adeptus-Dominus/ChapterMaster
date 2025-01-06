@@ -962,6 +962,9 @@ try {
 				}
 			}
 
+if (slide=5){
+    scr_gene_obj_creation();   
+}
 			var x1, x2, x3, x4, x6, y1, y2, y3, y4, y6, bs, see_size, total_max, current, top;
 
 			x1 = 1111;

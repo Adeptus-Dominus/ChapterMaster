@@ -59,7 +59,7 @@ if (menu==12) and (cooldown<=0) and (penitorium>0){
 // ** Recruitement **
 else if (menu==15) and (cooldown<=0){
     if (mouse_x>=xx+748) and (mouse_x<xx+772){
-        if (mouse_y>=yy+355) and (mouse_y<yy+373) and (recruiting<5) and (gene_seed>0) and (obj_ini.doomed==0) and (string_count("|",recruiting_worlds)>0) and (penitent==0){
+        if (mouse_y>=yy+355) and (mouse_y<yy+373) and (recruiting<5) and (gene_seed_count()>0) and (obj_ini.doomed==0) and (string_count("|",recruiting_worlds)>0) and (penitent==0){
             cooldown=8000;
             recruiting+=1;
             income_recruiting-=2*(string_count("|",recruiting_worlds));
@@ -335,7 +335,7 @@ if (menu==20) and (diplomacy>0) or ((diplomacy<-5) and (diplomacy>-6)) and (cool
             }
 
             trade_req=requisition;
-            trade_gene=gene_seed;
+            trade_gene=gene_seed_count();
             trade_chip=stc_wargear_un+stc_vehicles_un+stc_ships_un;
             trade_info=info_chips;
 
@@ -483,7 +483,7 @@ if (menu==20) and (diplomacy>0) or ((diplomacy<-5) and (diplomacy>-6)) and (cool
                     trade_take[1]="Artifact";
                     trade_tnum[1]=1;
                     trade_req=requisition;
-                    trade_gene=gene_seed;
+                    trade_gene=gene_seed_count();
                     trade_chip=info_chips;
                     trade_info=stc_wargear_un+stc_vehicles_un+stc_ships_un;
                 }
@@ -631,7 +631,7 @@ if (menu==20) and (diplomacy>0) or ((diplomacy<-5) and (diplomacy>-6)) and (cool
             click2=1;
             trade_likely="";
             trade_req=requisition;
-            trade_gene=gene_seed;
+            trade_gene=gene_seed_count();
             trade_chip=stc_wargear_un+stc_vehicles_un+stc_ships_un;
             trade_info=info_chips;
 

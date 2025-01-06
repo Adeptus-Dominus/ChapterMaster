@@ -75,12 +75,20 @@ else if (cheatcode == "req" && global.cheat_req == 1){
 }
 if (cheatcode == "seed" && global.cheat_gene == 0){
     global.cheat_gene = 1;
-    obj_controller.tempGene_seed = obj_controller.gene_seed;
-    obj_controller.gene_seed = 9999;
+    obj_controller.tempGene_seed = gene_seed_count();
+    with(obj_controller.gene_stock){
+        repeat(9999){
+            new_gene_seed();
+        }
+    }
 }
 else if (cheatcode == "seed" && global.cheat_gene == 1){
     global.cheat_gene = 0;
-    obj_controller.gene_seed = obj_controller.tempGene_seed;
+    with(obj_controller.gene_stock){
+        repeat(obj_controller.tempGene_seed){
+            new_gene_seed();
+        }
+    }    
 }
 if (cheatcode == "dep"){
     global.cheat_disp = 1;

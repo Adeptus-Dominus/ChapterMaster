@@ -91,7 +91,7 @@ for (var i=0;i<array_length(unit_struct);i++){
         }
     }
 
-    var destroy;destroy=0;
+    var destroy=0;
     if ((marine_dead[i]>0) or (obj_ncombat.defeat!=0)) and (marine_type[i]!="") and (ally[i]=false){
 
         var comm=false;
@@ -103,7 +103,7 @@ for (var i=0;i<array_length(unit_struct);i++){
             } else if (array_contains([string("Venerable {0}",obj_ini.role[100][6]), "Codiciery", "Lexicanum"], _unit.role())){
                 recent=false
             }
-            if (recent=true) then scr_recent("death_"+string(marine_type[i]),string(obj_ini.name[marine_co[i],marine_id[i]]),marine_co[i]);            
+            if (recent=true) then scr_recent($"death_{_unit.role_name}");            
         } else {
             obj_ncombat.final_deaths+=1;
         }

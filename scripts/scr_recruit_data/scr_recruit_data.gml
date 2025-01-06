@@ -66,7 +66,7 @@ function planet_training_sequence(local_apothecary_points){
     var thirdpop = max_population / 3;
     var halfpop = max_population / 2;	
 
-	if (planet_feature_bool(features, P_features.Recruiting_World)) and(obj_controller.gene_seed > 0) and(current_owner <= 5) and(obj_controller.faction_status[current_owner] != "War") {
+	if (planet_feature_bool(features, P_features.Recruiting_World)) and(gene_seed_count() > 0) and(current_owner <= 5) and(obj_controller.faction_status[current_owner] != "War") {
         var _planet_population = population;
         if (large_population) {
             _planet_population *= 1000000000;
@@ -98,7 +98,7 @@ function planet_training_sequence(local_apothecary_points){
 	        if (struct_exists(recruit_type, "seed_waste")){
 	            if (obj_controller.recruiting > 0) {
 	                if (random(1)<recruit_type.seed_waste){
-	                    obj_controller.gene_seed--;
+	                    obj_controller.gene_stock.remove_gene_seed(1);
 	                    //TODO make more informative
 	                    scr_alert("red", "owner", "Blood Duels are efficient in time, but costly in risk with gene material. Gene-seed has been lost.", 0, 0);
 	                }
@@ -155,7 +155,6 @@ function planet_training_sequence(local_apothecary_points){
 
 	            for (var i=0;i<array_length(obj_controller.recruit_training);i++) {
 	                if (obj_controller.recruit_training[i]<1 || months_to_neo<obj_controller.recruit_training[i]){
-	                    obj_controller.gene_seed -= 1;
 	                    array_insert(obj_controller.recruit_corruption, i, new_recruit_corruption);
 	                    array_insert(obj_controller.recruit_distance , i, 0);
 	                    array_insert(obj_controller.recruit_training, i, months_to_neo);
@@ -164,6 +163,7 @@ function planet_training_sequence(local_apothecary_points){
 	                    array_insert(obj_controller.recruit_data, i, {"recruit_data":{
 	                        recruit_world :planet_type ,
 	                        aspirant_trial :obj_controller.recruit_trial ,
+	                        gene_seed : obj_controller.gene_stock.remove_gene_seed(1)[0];
 	                    }});                                                                                                   
 	                    break;
 	                }
@@ -587,7 +587,7 @@ function scr_draw_recruit_advisor(){
 			blurp += $"Our Chapter currently has {recruits} recruits being trained. {recruit_name[0]} is the next scheduled Neophyte to become a battle brother in {recruit_training[0] + recruit_distance[0]} months' time.";
 		}
 
-		if (gene_seed > 0) {
+		if (gene_seed_count() > 0) {
 			var _recruit_rates = ARR_recruitment_rates;
 			var _cur_recruit_rate = $"The recruitment is {_recruit_rates[recruiting]}";
 			if ((recruiting == 0) && (marines >= 1000)) {
@@ -608,7 +608,7 @@ function scr_draw_recruit_advisor(){
 		blurp += "\nMutation of our gene-seed currently makes us unable to recruit new Neophytes. We are doomed to a slow demise unless the Apothecaries can fix it.";
 	}
 	
-	if (gene_seed == 0) {
+	if (gene_seed_count() == 0) {
 		blurp += "\nThere is no more gene-seed in our vaults and we cannot create more neophytes as a result. Something must be done, Chapter Master.";
 	}
 	

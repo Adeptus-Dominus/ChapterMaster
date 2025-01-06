@@ -334,7 +334,7 @@ function scr_load_controller(save_id){
 	    obj_controller.loyalty_hidden=ini_read_real("Controller","loyalty_hidden",0);
 	    obj_controller.inqis_flag_lair=ini_read_real("Controller","flag_lair",0);
 	    obj_controller.inqis_flag_gene=ini_read_real("Controller","flag_gene",0);
-	    obj_controller.gene_seed=ini_read_real("Controller","gene_seed",0);
+	    gene_seed_count()=ini_read_real("Controller","gene_seed",0);
 	    obj_controller.marines=ini_read_real("Controller","marines",0);
 	    obj_controller.command=ini_read_real("Controller","command",0);
 	    obj_controller.info_chips=ini_read_real("Controller","info_chips",0);

@@ -193,11 +193,10 @@ function scr_trade(argument0) {
     
 	    // Temporary work around
 	    if (lisc>0){
-            for (var i = 1; i <= 4; i += 1) {
+            for (var i = 1; i <= 4; i++) {
 	            if (trade_give[i]="Requisition") then requisition-=trade_mnum[i];
 	            if (trade_give[i]="Gene-Seed") and (trade_mnum[i]>0){
-	                gene_seed-=trade_mnum[i];
-                
+	            	gene_stock.remove_gene_seed(trade_mnum[i]);
 	                if (diplomacy<=5) and (diplomacy!=4) then gene_sold+=trade_mnum[i];
 	                if (diplomacy>=6) then gene_xeno+=trade_mnum[i];
 	            }
@@ -367,7 +366,7 @@ function scr_trade(argument0) {
 	        repeat(4){i+=1;
 	            if (trade_give[i]="Requisition") then requisition-=trade_mnum[i];
 	            if (trade_give[i]="Gene-Seed") and (trade_mnum[i]>0){
-	                gene_seed-=trade_mnum[i];
+	                gene_stock.remove_gene_seed(trade_mnum[i]);
                 
 	                if (diplomacy<=5) and (diplomacy!=4) then gene_sold+=trade_mnum[i];
 	                if (diplomacy>=6) then gene_xeno+=trade_mnum[i];
@@ -472,7 +471,7 @@ function scr_trade(argument0) {
 	        repeat(4){i+=1;
 	            if (trade_give[i]="Requisition") then requisition-=trade_mnum[i];
 	            if (trade_give[i]="Gene-Seed") and (trade_mnum[i]>0){
-	                gene_seed-=trade_mnum[i];
+	                gene_stock.remove_gene_seed(trade_mnum[i]);
                 
 	                if (diplomacy<=5) and (diplomacy!=4) then gene_sold+=trade_mnum[i];
 	                if (diplomacy>=6) then gene_xeno+=trade_mnum[i];

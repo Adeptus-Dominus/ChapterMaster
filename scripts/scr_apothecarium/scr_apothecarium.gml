@@ -1,10 +1,37 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 
+#macro ARR_gene_Seed_mutations ["preomnor", "lyman", "omophagea", "ossmodula", "zygote", "betchers", "catalepsean", "occulobe","mucranoid", "membrane", "voice"];
+
+
+function create_gene_seed = function(){
+   gene_seed_mutations = {
+            "preomnor":obj_ini.preomnor,
+            "lyman":obj_ini.lyman,
+            "omophagea":obj_ini.omophagea,
+            "ossmodula":obj_ini.ossmodula,
+            "zygote":obj_ini.zygote,
+            "betchers":obj_ini.betchers,
+            "catalepsean":obj_ini.catalepsean,
+            "occulobe":obj_ini.occulobe,
+            "mucranoid":obj_ini.mucranoid,
+            "membrane":obj_ini.membrane,
+            "voice":obj_ini.voice,
+    };                                                      
+    var mutation_names = ARR_gene_Seed_mutations;
+    for (var mute = 0; mute <array_length(mutation_names); mute++){
+        if (gene_seed_mutations[$ mutation_names[mute]] == 0){
+            if(irandom(999)-10<obj_ini.stability){
+                gene_seed_mutations[$ mutation_names[mute]] = 1;
+            }
+        }
+    }
+    return gene_seed_mutations;
+}
 function scr_destroy_gene_slave_batch(batch_id, recover_gene=true){
     var _cur_slave = obj_ini.gene_slaves[batch_id];
     if (revover_gene){
-        obj_controller.gene_seed+=_cur_slave.num;
+        gene_seed_count()+=_cur_slave.num;
         scr_add_item("Gene Pod Incubator", _cur_slave.num);
     }
     delete _cur_slave;
@@ -13,34 +40,145 @@ function scr_destroy_gene_slave_batch(batch_id, recover_gene=true){
 
 function destroy_all_gene_slaves(recover_gene=true){
     var _slave_length = array_length(obj_ini.gene_slaves);
-         if (_slave_length>0){
-            for (var i=_slave_length-1; i>=0; i--){
-                scr_destroy_gene_slave_batch(i,recover_gene);
+     if (_slave_length>0){
+        for (var i=_slave_length-1; i>=0; i--){
+            scr_destroy_gene_slave_batch(i,recover_gene);
+        }
+        obj_ini.gene_slaves = [];
+    }   
+}
+
+function GeneStock() constructor(chapter_mutations){
+    self.chapter_mutations = chapter_mutations;
+    gene_seed = [];
+    static new_gene_seed(data = "none"){
+        var _seed_data = data
+        if (_seed_data == "none"){
+            _seed_data = create_gene_seed();
+        }
+        array_push(gene_seed, seed_data);
+    }
+
+    static harvest_from_slave_pod = function (slave_pod){
+        var _slave_num = array_length(slave_pod.num);
+        var _lost_gene_slaves=0;
+        if (_slave_num>0){
+            slave_pod.eta--;
+            if (irandom(100000)<obj_ini.stability*_slave_num){
+                array_delete(slave_pod.num, array_random_index(_cur_slave.num) , 1);
+                _lost_gene_slaves++;
+                _slave_num--;
+                scr_add_item("Gene Pod Incubator");
             }
-            obj_ini.gene_slaves = [];
-        }   
+            if (slave_pod.eta==0 && slave_pod.num>0){
+                slave_pod.eta=60;
+                for (var i=0;i<_slave_num;i++){
+                    new_gene_seed(slave_pod.num[i]);
+                }
+                // color / type / text /x/y
+                scr_alert("green","test-slaves",$"Test-Slave Incubators Batch {i} harvested for {_slave_num} Gene-Seed.",0,0);
+            }
+        }
+    }
+    static remove_gene_seed = function(count=1){
+        _seeds = [];
+        repeat(count){
+            var _remove = array_random_index(gene_seed);
+            var _seed = gene_seed[_remove];
+            array_delete(gene_seed, _remove, 1);
+            array_push(_seeds, _seed);
+        }
+        return _seeds;
+    }
+    static mechanicus_tithes = function(){
+        var expected,txt="";
+        var onceh=0;
+        expected=max(1,round(gene_seed_count()/20));
+
+        var mech_mad = obj_controller.faction_status[eFACTION.Mechanicus]=="War";
+
+        if (!gene_seed_count()) or (mech_mad){
+            onceh=2;
+            gene_iou+=1;
+            loyalty-=2;
+            loyalty_hidden-=2;
+            txt="No Gene-Seed for Adeptus Mechanicus tithe.  High Lords of Terra IOU increased to "+string(gene_iou)+".";
+        }
+
+        if (!mech_mad){
+            if (gene_seed_count()) and (und_gene_vaults==0) and (onceh==0){
+                gene_stock.remove_gene_seed(expected);
+                onceh=1;
+
+                for(var i=0; i<50; i++){
+                    if (gene_seed_count()<gene_iou) and (gene_seed_count()>0) and (gene_iou>0){
+                        expected+=1;
+                        gene_stock.remove_gene_seed(gene_iou);
+
+                        gene_iou-=1;
+                        if (gene_iou==0) then onceh=3;
+                    } else {
+                        break;
+                    }
+                }
+
+                if (gene_iou<0) then gene_iou=0;
+
+                txt=string(expected)+" Gene-Seed sent to Adeptus Mechanicus for tithe.";
+                if (gene_iou>0) then txt+="  IOU remains at "+string(gene_iou)+".";
+                if (onceh==3) then txt+="  IOU has been payed off.";
+            }
+
+            if (gene_seed_count()>0) and (und_gene_vaults>0) and (onceh==0){
+                expected=1;
+                gene_stock.remove_gene_seed(expected);
+                onceh=1;
+
+                if (gene_seed_count()<gene_iou) and (gene_seed_count()>0) and (gene_iou>0){
+                    expected+=1;
+                    gene_stock.remove_gene_seed(1);
+                    gene_iou-=1;
+                    if (gene_iou==0) then onceh=3;
+                }
+
+                if (gene_iou<0) then gene_iou=0;
+
+                txt=string(expected)+" Gene-Seed sent to Adeptus Mechanicus for tithe.";
+                if (gene_iou>0) then txt+="  IOU remains at "+string(gene_iou)+".";
+                if (onceh==3) then txt+="  IOU has been payed off.";
+            }
+
+            var _colour = onceh!=2 ? "green": "red";
+
+            scr_alert(_colour,"tithes",txt,0,0);
+            scr_event_log(_colour,txt);
+
+        }
+    }
+}
+
+function gene_seed_count(){
+    return array_length(obj_controller.gene_stock.gene_seed);
 }
 
 function add_new_gene_slave(){
-    if (gene_seed>0) and (obj_ini.zygote==0) {
+    if (gene_seed_count()>0) and (obj_ini.zygote==0) {
         var _added = false;
         if (array_length(obj_ini.gene_slaves)){
             var _last_set = obj_ini.gene_slaves[array_length(obj_ini.gene_slaves)-1];
             if (_last_set.turn == obj_controller.turn){
-                _last_set.num++;
-                obj_controller.gene_seed--;
+                _last_set.num = array_concat(_last_set.num,obj_controller.gene_stock.remove_gene_seed(1));
                 _added=true;
             }
         }
         if (!_added){
             array_push(obj_ini.gene_slaves, {
-                num : 1,
+                num : obj_controller.gene_stock.remove_gene_seed(1),
                 eta : 120,
                 harvested_once : false,
                 turn : obj_controller.turn,
                 assigned_apothecaries : [],
             });
-            obj_controller.gene_seed--;
         }
         scr_add_item("Gene Pod Incubator", -1);
     }
@@ -106,10 +244,11 @@ function scr_apothecarium(){
 
     // 
 
-    if (gene_seed <= 0) then blurp += "##My lord, our stocks of gene-seed are empty.  It would be best to have some come mechanicus tithe.##Further training of Neophytes is halted until our stocks replenish.";
-    if (gene_seed > 0) and(gene_seed <= 10) then blurp += "##My Brother " + string(obj_ini.role[100, 15]) + "s assigned to the gene-vault have informed me that our stocks are nearly gone.  They only number " + string(gene_seed) + "; this includes those recently recovered from our fallen comerades-in-arms.";
-    if (gene_seed > 10) then blurp += "##My Brother " + string(obj_ini.role[100, 15]) + "s assigned to the gene-vault have informed me that our stocks of gene-seed currently number " + string(gene_seed) + ".  This includes those recently recovered from our fallen comerades-in-arms.";
-    if (gene_seed > 0) then blurp += "##The stocks are stable and show no sign of mutation.";
+    var _gene_count = gene_seed_count();
+    if (_gene_count <= 0) then blurp += $"##My lord, our stocks of gene-seed are empty.  It would be best to have some come mechanicus tithe.##Further training of Neophytes is halted until our stocks replenish.";
+    if (_gene_count > 0) and(_gene_count <= 10) then blurp += $"##My Brother {obj_ini.role[100, 15]}s assigned to the gene-vault have informed me that our stocks are nearly gone.  They only number {_gene_count}; this includes those recently recovered from our fallen comerades-in-arms.";
+    if (_gene_count > 10) then blurp += $"##My Brother {obj_ini.role[100, 15]}s assigned to the gene-vault have informed me that our stocks of gene-seed currently number {_gene_count}.  This includes those recently recovered from our fallen comerades-in-arms.";
+    if (_gene_count > 0) then blurp += $"##The stocks are stable and show no sign of mutation.";
 
     if (menu_adept = 1) {
         var _recruit_pace = ARR_recruitment_pace;
@@ -117,7 +256,7 @@ function scr_apothecarium(){
         blurp += "Training of further " + string(obj_ini.role[100, 15]) + "s";
         if (training_apothecary >= 0 && training_apothecary <= 6) then blurp += _recruit_pace[training_apothecary];
         if (training_apothecary > 0) then blurp += "  The next " + string(obj_ini.role[100, 15]) + " is expected in " + string(eta) + " months.";
-        blurp += "##You have " + string(gene_seed) + " gene-seed stocked.";
+        blurp += $"##You have {_gene_count} gene-seed stocked.";
     }
 
     draw_text_ext(xx + 336 + 16, yy + 130, string_hash_to_newline(string(blurp)), -1, 536);
@@ -125,10 +264,10 @@ function scr_apothecarium(){
     var blurp2 = "";
     var _slave_length = array_length(obj_ini.gene_slaves);
     if (!obj_ini.zygote) {
-        if (obj_controller.marines + obj_controller.gene_seed <= 300) and(_slave_length = 0) {
+        if (obj_controller.marines + gene_seed_count() <= 300) and(_slave_length = 0) {
             blurp2 = "Our Chapter is disasterously low in number- it is strongly advised that we make use of test-slaves to breed new gene-seed.  Give me the word andwe can begin installing gestation pods.";
         }
-        else if (obj_controller.marines + obj_controller.gene_seed > 300) and(_slave_length = 0) {
+        else if (obj_controller.marines + gene_seed_count() > 300) and(_slave_length = 0) {
             blurp2 = "Our Chapter is capable of using test-slaves to breed new gene-seed.  Should our number of astartes ever plummet this may prove a valuable method of rapidly bringing our chapter back up to size.";
         }
         else if (_slave_length > 0) {
@@ -160,7 +299,7 @@ function scr_apothecarium(){
         }
     }
     draw_set_alpha(1);
-    if (obj_controller.gene_seed <= 0) or(obj_ini.zygote = 1) then draw_set_alpha(0.5);
+    if (gene_seed_count() <= 0) or(obj_ini.zygote = 1) then draw_set_alpha(0.5);
     draw_set_color(c_gray);
     draw_set_color(c_black);
     if (scr_item_count("Gene Pod Incubator")){

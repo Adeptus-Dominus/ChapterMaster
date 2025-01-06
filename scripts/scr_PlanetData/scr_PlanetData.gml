@@ -100,7 +100,7 @@ function PlanetData(planet, system) constructor{
     static planet_training = function(local_screening_points){
     	var _training_happend = false;
 	    if (has_feature(P_features.Recruiting_World)){
-	        if (obj_controller.gene_seed == 0) and (obj_controller.recruiting > 0) {
+	        if (gene_seed_count() == 0) and (obj_controller.recruiting > 0) {
 
                 obj_controller.recruiting = 0;
                 obj_controller.income_recruiting = 0;

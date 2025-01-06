@@ -103,7 +103,7 @@ function scr_ruins_recover_from_dead(){
 		}
 		if (recoverable_gene_seed>0){
 			pop.text += $" The strike team returns with remains, apothecaries report the gene-seed was able to be saved;{recoverable_gene_seed} gene-seed is harvested from the chapter’s fallen. At least their genetic legacy will continue, we will recover from this."
-			obj_controller.gene_seed+=recoverable_gene_seed;
+			gene_seed_count()+=recoverable_gene_seed;
 		} else{
 			pop.text += $"The strike team returns with remains, but apothecaries report the gene-seed is too contaminated to use; no gene-seed is harvested from the chapter’s fallen. Their legacy lives on through their armaments, we will hold onto their memory."
 		}

@@ -146,8 +146,8 @@ function scr_ruins_reward(star_system, planet, _ruins) {
 	    pop.text="These ruins were once an armoury. We found some weapons and pieces of wargear.  "+string(wen1)+"x "+string(wep1)+", "+string(wen2)+"x "+string(wep2)+", and "+string(wen3)+"x "+string(wep3)+" have been added to the Armamentarium.";
 	}
 	else if (loot="gene_seed"){// Requisition
-	    var gene,pop;gene=floor(random_range(20,40))+1;
-	    pop=instance_create(0,0,obj_popup);
+	    var gene=floor(random_range(20,40))+1;
+	    var pop=instance_create(0,0,obj_popup);
 	    pop.image="geneseed_lab";
 	    pop.title="Ancient Ruins: Gene-seed";
 	    pop.text="My lord, your battle brothers have located a hidden, fortified laboratory within the ruins.  Contained are a number of bio-vaults with astartes gene-seed; "+string(gene)+" in number.  Your marines are not able to determine the integrity or origin.";

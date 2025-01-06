@@ -591,73 +591,8 @@ imperial_navy_fleet_construction();
 // ** Adeptus Mechanicus Geneseed Tithe **
 if (gene_tithe==0) and (faction_status[eFACTION.Imperium]!="War"){
     gene_tithe=24;
-
-    var expected,txt="",mech_mad=false;
-    var onceh=0;
-    expected=max(1,round(obj_controller.gene_seed/20));
-    if (obj_controller.faction_status[eFACTION.Mechanicus]=="War") then mech_mad=true;
-
-    if (obj_controller.gene_seed<=0) or (mech_mad==true){
-        onceh=2;
-        gene_iou+=1;
-        loyalty-=2;
-        loyalty_hidden-=2;
-        txt="No Gene-Seed for Adeptus Mechanicus tithe.  High Lords of Terra IOU increased to "+string(gene_iou)+".";
-    }
-    if (mech_mad==false){
-        if (obj_controller.gene_seed>0) and (und_gene_vaults==0) and (onceh==0){
-            obj_controller.gene_seed-=expected;
-            onceh=1;
-            if (obj_controller.gene_seed>=gene_iou) and (gene_iou>0){
-                expected+=gene_iou;
-                obj_controller.gene_seed-=gene_iou;
-                gene_iou=0;
-                onceh=3;
-            }
-            for(var i=0; i<50; i++){
-                if (obj_controller.gene_seed<gene_iou) and (obj_controller.gene_seed>0) and (gene_iou>0){
-                    expected+=1;
-                    obj_controller.gene_seed-=1;
-                    gene_iou-=1;
-                    if (gene_iou==0) then onceh=3;
-                }
-            }
-
-            if (gene_iou<0) then gene_iou=0;
-
-            txt=string(expected)+" Gene-Seed sent to Adeptus Mechanicus for tithe.";
-            if (gene_iou>0) then txt+="  IOU remains at "+string(gene_iou)+".";
-            if (onceh==3) then txt+="  IOU has been payed off.";
-        }
-
-        if (obj_controller.gene_seed>0) and (und_gene_vaults>0) and (onceh==0){
-            expected=1;
-            obj_controller.gene_seed-=expected;
-            onceh=1;
-
-            if (obj_controller.gene_seed<gene_iou) and (obj_controller.gene_seed>0) and (gene_iou>0){
-                expected+=1;
-                obj_controller.gene_seed-=1;
-                gene_iou-=1;
-                if (gene_iou==0) then onceh=3;
-            }
-
-            if (gene_iou<0) then gene_iou=0;
-
-            txt=string(expected)+" Gene-Seed sent to Adeptus Mechanicus for tithe.";
-            if (gene_iou>0) then txt+="  IOU remains at "+string(gene_iou)+".";
-            if (onceh==3) then txt+="  IOU has been payed off.";
-        }
-
-        if (onceh!=2){
-            scr_alert("green","tithes",txt,0,0);
-            scr_event_log("",txt);
-        }
-        if (onceh==2){
-            scr_alert("red","tithes",txt,0,0);
-            scr_event_log("red",txt);
-        }
-    }
+    gene_stock.mechanicus_tithes();
+    
 }
 if (gene_sold>0){
     disc=0;

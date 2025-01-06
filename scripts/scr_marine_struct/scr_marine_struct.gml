@@ -811,28 +811,13 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			if (faction ="chapter"){
 				allegiance = global.chapter_name;
 			}
-		   gene_seed_mutations = {
-		   			"preomnor":obj_ini.preomnor,
-			    	"lyman":obj_ini.lyman,
-			    	"omophagea":obj_ini.omophagea,
-			    	"ossmodula":obj_ini.ossmodula,
-			    	"zygote":obj_ini.zygote,
-			    	"betchers":obj_ini.betchers,
-			    	"catalepsean":obj_ini.catalepsean,
-			    	"occulobe":obj_ini.occulobe,
-			    	"mucranoid":obj_ini.mucranoid,
-			    	"membrane":obj_ini.membrane,
-			    	"voice":obj_ini.voice,
-			};														
-			var mutation_names = struct_get_names(gene_seed_mutations)
-			for (var mute =0; mute <array_length(mutation_names); mute++){
-				if (gene_seed_mutations[$ mutation_names[mute]] == 0){
-					if(irandom(999)-10<obj_ini.stability){
-						gene_seed_mutations[$ mutation_names[mute]] = 1;
-					}
-				}
+			if (struct_exists(other_spawn_data , "gene_seed")){
+				gene_seed_mutations = other_spawn_data.gene_seed
+			} else {
+			   gene_seed_mutations = create_gene_seed();
 			}
-			if (gene_seed_mutations[$ "voice"] == 1){
+
+			if (gene_seed_mutations.voice == 1){
 				charisma-=2;
 			}
 			if (instance_exists(obj_controller)){
@@ -904,6 +889,17 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 				if (body[$"torso"].robes == 0 && irandom(1) == 0){
 					body[$"head"].hood = 1;
 				}
+			}
+
+			static harvest_gene_seed = function(){
+				var _gene_data = gene_seed_mutations;
+				var _gene_stock = obj_Controller.gene_stock;
+		        if (age() > 30 && !_gene_data.zygote && !_gene_data.doomed){
+		        	_gene_stock.new_gene_seed(_gene_data);
+		        }
+		        if (age() > 50) and (!obj_ini.doomed){
+		        	_gene_stock.new_gene_seed(_gene_data);	
+		        }				
 			}
 			break;
 		case "tech_priest":

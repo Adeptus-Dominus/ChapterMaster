@@ -380,22 +380,7 @@ function SpecialistPointHandler() constructor{
         var _stack_lost_incubators = [];
         for (var i=0; i<_slave_length; i++){
             _cur_slave = _slaves[i];
-            if (_cur_slave.num>0){
-                _cur_slave.eta--;
-                if (irandom(100000)<obj_ini.stability*_cur_slave.num){
-                    _cur_slave.num--;
-                    _lost_gene_slaves++;
-                    scr_add_item("Gene Pod Incubator");
-                }
-                if (_cur_slave.eta==0 && _cur_slave.num>0){
-                    _cur_slave.eta=60;
-                    obj_controller.gene_seed+=_cur_slave.num;
-                    // color / type / text /x/y
-                    scr_alert("green","test-slaves",$"Test-Slave Incubators Batch {i} harvested for {_cur_slave.num} Gene-Seed.",0,0);
-                } else if (_cur_slave.num==0){
-                    array_push(_stack_lost_incubators, i);
-                }
-            }
+            var _result = obj_controller.gene_stock.harvest_from_slave_pod(_cur_slave);
         }
         if (array_length(_stack_lost_incubators)){
             var _lost_inc_string = "Incubators Batch no longer has gene slaves and has been removed : ";

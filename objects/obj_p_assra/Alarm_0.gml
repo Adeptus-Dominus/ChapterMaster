@@ -31,7 +31,7 @@ for (o=0;o<array_length(origin.board_co);o++){
             
             scr_kill_unit(co,i)
             
-            if (obj_fleet.capital+obj_fleet.frigate+obj_fleet.escort>0) then obj_controller.gene_seed+=seed_max;
+            if (obj_fleet.capital+obj_fleet.frigate+obj_fleet.escort>0) then gene_seed_count()+=seed_max;
         }else if (apothecary>0){
             unit.add_or_sub_health(irandom_range(9,14));
             apothecary-=0.5;

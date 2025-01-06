@@ -184,12 +184,20 @@ function scr_cheatcode(argument0) {
 					if (global.cheat_gene == 0) {
 						global.cheat_gene = 1;
 						cheatyface = 1;
-						obj_controller.tempGene_seed = obj_controller.gene_seed;
-						obj_controller.gene_seed = 9999;
+						obj_controller.tempGene_seed = gene_seed_count();
+					    with(obj_controller.gene_stock){
+					        repeat(9999){
+					            new_gene_seed();
+					        }
+					    }
 					} else {
 						global.cheat_gene = 0;
 						cheatyface = 1;
-						obj_controller.gene_seed = obj_controller.tempGene_seed;
+					    with(obj_controller.gene_stock){
+					        repeat(obj_controller.tempGene_seed){
+					            new_gene_seed();
+					        }
+					    }						
 					}
 					break;
 				case "debug":
@@ -215,7 +223,11 @@ function scr_cheatcode(argument0) {
 				case "seed":
 					if (global.cheat_gene == 0) {
 						cheatyface = 1;
-						obj_controller.gene_seed = real(cheat_arguments[0]);
+					    with(obj_controller.gene_stock){
+					        repeat(real(cheat_arguments[0])){
+					            new_gene_seed();
+					        }
+					    }						
 					}
 					break;
 				case "depimp":

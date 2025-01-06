@@ -719,13 +719,16 @@ try {
 	}
 
 	if (image == "geneseed_lab") {
+		var _gene_stock = obj_controller.gene_stock;
 		if (press == 1) {
 			image = "";
-			text = string(estimate) + " gene-seed has been added to the chapter vaults.";
+			text = $"{estimate} gene-seed has been added to the chapter vaults.";
 			option1 = "";
 			option2 = "";
 			option3 = "";
-			obj_controller.gene_seed += estimate;
+			repeat(estimate){
+				_gene_stock.new_gene_seed();
+			}
 			with (obj_ground_mission) {
 				instance_destroy();
 			}
@@ -1044,13 +1047,14 @@ try {
 
 	if (image == "gene_bad") {
 		option1 = "Dispose of ";
-		if (obj_controller.gene_seed <= 30) {
+		var _gene_count = gene_seed_count();
+		if (_gene_count <= 30) {
 			option1 += "100% of the gene-seed.";
 		}
-		if ((obj_controller.gene_seed > 30) && (obj_controller.gene_seed < 60)) {
+		else if ((_gene_count > 30) && (_gene_count < 60)) {
 			option1 += "50% of all gene-seed.";
 		}
-		if (obj_controller.gene_seed >= 60) {
+		else if (_gene_count >= 60) {
 			option1 += "33% of all gene-seed.";
 		}
 		option2 = "Tell the apothecaries to let it be.";
@@ -1090,16 +1094,16 @@ try {
 
 	if ((press == 1) && (option1 != "") || ((demand == 1) && (mission != "") && (string_count("Inquisition", title) > 0)) || ((demand == 1) && (title == "Inquisition Recon"))) {
 		if (image == "gene_bad") {
-			var onceh;
-			onceh = 0;
-			if ((obj_controller.gene_seed <= 30) && (onceh == 0)) {
-				obj_controller.gene_seed = 0;
+			var _gene_count = gene_seed_count();
+			var _gene_stock = obj_controller.gene_stock;
+			if ((_gene_count <= 30)) {
+				_gene_stock.remove_gene_seed(_gene_count);
 			}
-			if ((obj_controller.gene_seed > 30) && (obj_controller.gene_seed < 60) && (onceh == 0)) {
-				obj_controller.gene_seed = round(obj_controller.gene_seed * 0.5);
+			else if ((_gene_count > 30) && (_gene_count < 60)) {
+				_gene_stock.remove_gene_seed(floor(_gene_count*0.5));
 			}
-			if ((obj_controller.gene_seed >= 60) && (onceh == 0)) {
-				obj_controller.gene_seed = round(obj_controller.gene_seed * 0.66);
+			else if ((_gene_count >= 60)) {
+				_gene_stock.remove_gene_seed(floor(_gene_count*0.66));
 			}
 		}
 		if ((title == "Inquisitor Located") || (title == "Artifact Offered") || (title == "Mercy Plea")) {

@@ -759,16 +759,18 @@ function scr_ui_diplomacy() {
         
         
 	        xx+=419;
-	        if (requisition<=0) then draw_set_alpha(0.33);draw_text_ext(xx+347,yy+379,string_hash_to_newline(string(trade_mine[1])),-1,136);draw_set_alpha(1);
+	        if (requisition<=0) then draw_set_alpha(0.33);
+	        draw_text_ext(xx+347,yy+379,string_hash_to_newline(string(trade_mine[1])),-1,136);
+	        draw_set_alpha(1);
 	        if (trade_mine[1]!="") then draw_line(xx+342,yy+422,xx+485,yy+422);
 	        if (scr_hit(xx+342,yy+371,xx+485,yy+422)=true){
 	            draw_set_color(c_gray);draw_set_alpha(0.15);
 	            draw_rectangle(xx+342,yy+371,xx+485,yy+422,0);
 	            draw_set_color(38144);
 	        }
-	        draw_set_alpha(1);
-        
-	        if (gene_seed<=0) then draw_set_alpha(0.33);draw_text_ext(xx+347,yy+430,string_hash_to_newline(string(trade_mine[2])),-1,136);draw_set_alpha(1);
+
+        	draw_set_alpha(gene_seed_count()1:0.33);
+	        draw_text_ext(xx+347,yy+430,string_hash_to_newline(string(trade_mine[2])),-1,136);draw_set_alpha(1);
 	        if (trade_mine[2]!="") then draw_line(xx+342,yy+470,xx+485,yy+470);
 	        if (scr_hit(xx+342,yy+422,xx+485,yy+470)=true){
 	            draw_set_color(c_gray);draw_set_alpha(0.15);
