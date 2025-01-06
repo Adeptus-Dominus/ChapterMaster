@@ -3524,91 +3524,306 @@ if (enemy = 10) and(battle_special != "ship_demon") and(battle_special != "falle
 		u.dudes_num[2] = 2;
 		u.dudes[3] = "Technical";
 		u.dudes_num[3] = 16;
-		instance_deactivate_object(u);
 	}
-	// Large Chaos Cult Army
+	// Chaos Undivided Cult Battalion
 	if (threat = 6) {
 		u = instance_nearest(xxx + 40, 240, obj_enunit);
-		enemy_dudes = "12000";
+		enemy_dudes = "888";
 
-		u.dudes[1] = "Greater Daemon of " + string(choose("Slaanesh", "Khorne", "Nurgle", "Tzeentch,", "Tzeentch"));
-		u.dudes_num[1] = 2;
-		u.dudes[2] = "Chaos Terminator";
-		u.dudes_num[2] = 20;
-		u.dudes[3] = "Chaos Basilisk";
-		u.dudes_num[3] = 18;
-		instance_deactivate_object(u);
-
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		u.dudes[1] = "Chaos Leman Russ";
-		u.dudes_num[1] = 80;
-		u.dudes[2] = "Defiler";
-		u.dudes_num[2] = 20;
-		u.dudes[3] = "Vindicator";
-		u.dudes_num[3] = 10;
-		instance_deactivate_object(u);
-
-		u = instance_nearest(xxx, 240, obj_enunit);
-		u.dudes[1] = "Mutant";
-		u.dudes_num[1] = 8000;
-		u.dudes[2] = "Cultist Elite";
-		u.dudes_num[2] = 4000;
-		u.dudes[3] = "Havoc";
-		u.dudes_num[3] = 50;
-		u.dudes[4] = "Chaos Space Marine";
-		u.dudes_num[4] = 50;
-		instance_deactivate_object(u);
-	}
-	// Chaos Daemons Army
-	if (threat = 7) {
-		u = instance_nearest(xxx + 40, 240, obj_enunit);
-		u.neww = 1;
-		enemy_dudes = "";
-
-		u.dudes[1] = "Greater Daemon of Slaanesh";
+		u.dudes[1] = "Chaos Lord";
 		u.dudes_num[1] = 1;
-		u.dudes[2] = "Greater Daemon of Slaanesh";
-		u.dudes_num[2] = 1;
-		// u.dudes[3]="Greater Daemon of Slaanesh";u.dudes_num[3]=1;
-		u.dudes[4] = "Greater Daemon of Tzeentch";
-		u.dudes_num[4] = 1;
-		u.dudes[5] = "Greater Daemon of Tzeentch";
-		u.dudes_num[5] = 1;
-		// u.dudes[6]="Greater Daemon of Tzeentch";u.dudes_num[6]=1;
-		u.dudes[7] = "Soul Grinder";
-		u.dudes_num[7] = 3;
+		u.dudes[2] = "Arch Heretic";
+		u.dudes_num[2] = 9;
+		u.dudes[3] = "Cultist Elite";
+		u.dudes_num[3] = 30;
+		u.dudes[4] = "Cultist";
+		u.dudes_num[4] = 160;
 		instance_deactivate_object(u);
 
 		u = instance_nearest(xxx + 30, 240, obj_enunit);
-		u.neww = 1;
-		u.dudes[1] = "Greater Daemon of Khorne";
-		u.dudes_num[1] = 1;
-		u.dudes[2] = "Greater Daemon of Khorne";
-		u.dudes_num[2] = 1;
-		// u.dudes[3]="Greater Daemon of Khorne";u.dudes_num[3]=1;
-		u.dudes[4] = "Greater Daemon of Nurgle";
-		u.dudes_num[4] = 1;
-		u.dudes[5] = "Greater Daemon of Nurgle";
-		u.dudes_num[5] = 1;
-		// u.dudes[6]="Greater Daemon of Nurgle";u.dudes_num[6]=1;
+		u.dudes[1] = "Warpsmith";
+		u.dudes_num[1] = 2;
+		u.dudes[2] = "Chaos Basilisk";
+		u.dudes_num[2] = 4;
+		u.dudes[3] = "Chaos Leman Russ";
+		u.dudes_num[3] = 2;
+		u.dudes[4] = "Cultist Elite";
+		u.dudes_num[4] = 22;
 		instance_deactivate_object(u);
 
 		u = instance_nearest(xxx + 20, 240, obj_enunit);
-		u.dudes[1] = "Bloodletter";
-		u.dudes_num[1] = 800;
-		u.dudes[2] = "Daemonette";
-		u.dudes_num[2] = 800;
-		u.dudes[3] = "Plaguebearer";
-		u.dudes_num[3] = 800;
-		u.dudes[4] = "Pink Horror";
-		u.dudes_num[4] = 800;
-		u.dudes[5] = "Maulerfiend";
-		u.dudes_num[5] = 3;
+		u.dudes[1] = "Chaos Sorcerer";
+		u.dudes_num[1] = 2;
+		u.dudes[2] = "Pink Horror";
+		u.dudes_num[2] = 4;
+		u.dudes[3] = "Daemonette";
+		u.dudes_num[3] = 4;
+		u.dudes[4] = "Plaguebearer";
+		u.dudes_num[4] = 4;
+		u.dudes[5] = "Bloodletter";
+		u.dudes_num[5] = 4;
 		instance_deactivate_object(u);
 
-		// u=instance_nearest(xxx+10,240,obj_enunit);
-		// u.dudes[1]="Mutant";u.dudes_num[1]=6000;
-		// instance_deactivate_object(u);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Technical";
+		u.dudes_num[1] = 32;
+		u.dudes[2] = "Arch Heretic";
+		u.dudes_num[2] = 8;
+		u.dudes[3] = "Cultist Elite";
+		u.dudes_num[3] = 40;
+		u.dudes[4] = "Cultist";
+		u.dudes_num[4] = 160;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx, 240, obj_enunit);
+		u.dudes[1] = "Hellbrute";
+		u.dudes_num[1] = 1;
+		u.dudes[2] = "Daemonhost";
+		u.dudes_num[2] = 1;
+		u.dudes[3] = "Defiler";
+		u.dudes_num[3] = 6;
+		u.dudes[4] = "Mutant";
+		u.dudes_num[4] = 392;
+	}
+	// Chaos Undivided Cult Regiment
+	if (threat = 7) {
+		u = instance_nearest(xxx + 40, 240, obj_enunit);
+		enemy_dudes = "1776";
+
+		u.dudes[1] = "Chaos Lord";
+		u.dudes_num[1] = 1;
+		u.dudes[2] = "Arch Heretic";
+		u.dudes_num[2] = 19;
+		u.dudes[3] = "Cultist Elite";
+		u.dudes_num[3] = 60;
+		u.dudes[4] = "Cultist";
+		u.dudes_num[4] = 320;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u.dudes[1] = "Warpsmith";
+		u.dudes_num[1] = 4;
+		u.dudes[2] = "Chaos Basilisk";
+		u.dudes_num[2] = 8;
+		u.dudes[3] = "Chaos Leman Russ";
+		u.dudes_num[3] = 4;
+		u.dudes[4] = "Cultist Elite";
+		u.dudes_num[4] = 44;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u.dudes[1] = "Chaos Sorcerer";
+		u.dudes_num[1] = 4;
+		u.dudes[2] = "Pink Horror";
+		u.dudes_num[2] = 8;
+		u.dudes[3] = "Daemonette";
+		u.dudes_num[3] = 8;
+		u.dudes[4] = "Plaguebearer";
+		u.dudes_num[4] = 8;
+		u.dudes[5] = "Bloodletter";
+		u.dudes_num[5] = 8;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Technical";
+		u.dudes_num[1] = 64;
+		u.dudes[2] = "Arch Heretic";
+		u.dudes_num[2] = 16;
+		u.dudes[3] = "Cultist Elite";
+		u.dudes_num[3] = 80;
+		u.dudes[4] = "Cultist";
+		u.dudes_num[4] = 320;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx, 240, obj_enunit);
+		u.dudes[1] = "Hellbrute";
+		u.dudes_num[1] = 2;
+		u.dudes[2] = "Daemonhost";
+		u.dudes_num[2] = 2;
+		u.dudes[3] = "Defiler";
+		u.dudes_num[3] = 12;
+		u.dudes[4] = "Mutant";
+		u.dudes_num[4] = 784;
+	}
+	// Chaos Undivided Cult Brigade
+	if (threat = 8) {
+		u = instance_nearest(xxx + 40, 240, obj_enunit);
+		enemy_dudes = "3552";
+
+		u.dudes[1] = "Chaos Lord";
+		u.dudes_num[1] = 1;
+		u.dudes[2] = "Arch Heretic";
+		u.dudes_num[2] = 39;
+		u.dudes[3] = "Cultist Elite";
+		u.dudes_num[3] = 120;
+		u.dudes[4] = "Cultist";
+		u.dudes_num[4] = 640;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u.dudes[1] = "Warpsmith";
+		u.dudes_num[1] = 8;
+		u.dudes[2] = "Chaos Basilisk";
+		u.dudes_num[2] = 16;
+		u.dudes[3] = "Chaos Leman Russ";
+		u.dudes_num[3] = 8;
+		u.dudes[4] = "Cultist Elite";
+		u.dudes_num[4] = 88;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u.dudes[1] = "Chaos Sorcerer";
+		u.dudes_num[1] = 8;
+		u.dudes[2] = "Pink Horror";
+		u.dudes_num[2] = 16;
+		u.dudes[3] = "Daemonette";
+		u.dudes_num[3] = 16;
+		u.dudes[4] = "Plaguebearer";
+		u.dudes_num[4] = 16;
+		u.dudes[5] = "Bloodletter";
+		u.dudes_num[5] = 16;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Technical";
+		u.dudes_num[1] = 128;
+		u.dudes[2] = "Arch Heretic";
+		u.dudes_num[2] = 32;
+		u.dudes[3] = "Cultist Elite";
+		u.dudes_num[3] = 160;
+		u.dudes[4] = "Cultist";
+		u.dudes_num[4] = 640;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx, 240, obj_enunit);
+		u.dudes[1] = "Hellbrute";
+		u.dudes_num[1] = 4;
+		u.dudes[2] = "Daemonhost";
+		u.dudes_num[2] = 4;
+		u.dudes[3] = "Defiler";
+		u.dudes_num[3] = 24;
+		u.dudes[4] = "Mutant";
+		u.dudes_num[4] = 1568;
+	}
+	// Chaos Undivided Cult Division
+	if (threat = 9) {
+		u = instance_nearest(xxx + 40, 240, obj_enunit);
+		enemy_dudes = "7104";
+
+		u.dudes[1] = "Chaos Lord";
+		u.dudes_num[1] = 1;
+		u.dudes[2] = "Arch Heretic";
+		u.dudes_num[2] = 79;
+		u.dudes[3] = "Cultist Elite";
+		u.dudes_num[3] = 240;
+		u.dudes[4] = "Cultist";
+		u.dudes_num[4] = 1280;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u.dudes[1] = "Warpsmith";
+		u.dudes_num[1] = 16;
+		u.dudes[2] = "Chaos Basilisk";
+		u.dudes_num[2] = 32;
+		u.dudes[3] = "Chaos Leman Russ";
+		u.dudes_num[3] = 16;
+		u.dudes[4] = "Cultist Elite";
+		u.dudes_num[4] = 176;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u.dudes[1] = "Chaos Sorcerer";
+		u.dudes_num[1] = 16;
+		u.dudes[2] = "Pink Horror";
+		u.dudes_num[2] = 32;
+		u.dudes[3] = "Daemonette";
+		u.dudes_num[3] = 32;
+		u.dudes[4] = "Plaguebearer";
+		u.dudes_num[4] = 32;
+		u.dudes[5] = "Bloodletter";
+		u.dudes_num[5] = 32;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Technical";
+		u.dudes_num[1] = 256;
+		u.dudes[2] = "Arch Heretic";
+		u.dudes_num[2] = 64;
+		u.dudes[3] = "Cultist Elite";
+		u.dudes_num[3] = 320;
+		u.dudes[4] = "Cultist";
+		u.dudes_num[4] = 1280;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx, 240, obj_enunit);
+		u.dudes[1] = "Hellbrute";
+		u.dudes_num[1] = 8;
+		u.dudes[2] = "Daemonhost";
+		u.dudes_num[2] = 8;
+		u.dudes[3] = "Defiler";
+		u.dudes_num[3] = 48;
+		u.dudes[4] = "Mutant";
+		u.dudes_num[4] = 3136;
+	}
+	// Chaos Undivided Cult Army Corps
+	if (threat = 10) {
+		u = instance_nearest(xxx + 40, 240, obj_enunit);
+		enemy_dudes = "14208";
+
+		u.dudes[1] = "Chaos Lord";
+		u.dudes_num[1] = 1;
+		u.dudes[2] = "Arch Heretic";
+		u.dudes_num[2] = 159;
+		u.dudes[3] = "Cultist Elite";
+		u.dudes_num[3] = 480;
+		u.dudes[4] = "Cultist";
+		u.dudes_num[4] = 2560;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u.dudes[1] = "Warpsmith";
+		u.dudes_num[1] = 32;
+		u.dudes[2] = "Chaos Basilisk";
+		u.dudes_num[2] = 64;
+		u.dudes[3] = "Chaos Leman Russ";
+		u.dudes_num[3] = 32;
+		u.dudes[4] = "Cultist Elite";
+		u.dudes_num[4] = 352;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u.dudes[1] = "Chaos Sorcerer";
+		u.dudes_num[1] = 32;
+		u.dudes[2] = "Pink Horror";
+		u.dudes_num[2] = 64;
+		u.dudes[3] = "Daemonette";
+		u.dudes_num[3] = 64;
+		u.dudes[4] = "Plaguebearer";
+		u.dudes_num[4] = 64;
+		u.dudes[5] = "Bloodletter";
+		u.dudes_num[5] = 64;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Technical";
+		u.dudes_num[1] = 512;
+		u.dudes[2] = "Arch Heretic";
+		u.dudes_num[2] = 128;
+		u.dudes[3] = "Cultist Elite";
+		u.dudes_num[3] = 640;
+		u.dudes[4] = "Cultist";
+		u.dudes_num[4] = 2560;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx, 240, obj_enunit);
+		u.dudes[1] = "Hellbrute";
+		u.dudes_num[1] = 16;
+		u.dudes[2] = "Daemonhost";
+		u.dudes_num[2] = 16;
+		u.dudes[3] = "Defiler";
+		u.dudes_num[3] = 96;
+		u.dudes[4] = "Mutant";
+		u.dudes_num[4] = 6272;
 	}
 }
 
