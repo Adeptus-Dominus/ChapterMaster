@@ -219,7 +219,7 @@ function scr_chapter_new(argument0) {
 		}
 	}
 	load_default_gear(eROLE.HonourGuard, "Honour Guard", "Power Sword", "Bolter", "Artificer Armour", "", "");
-	load_default_gear(eROLE.Veteran, "Veteran", "Chainsword", "Combiflamer", "Power Armour", "", "");
+	load_default_gear(eROLE.Veteran, "Veteran", "Combiflamer", "Combat Knife", "Power Armour", "", "");
 	load_default_gear(eROLE.Terminator, "Terminator", "Power Fist", "Storm Bolter", "Terminator Armour", "", "");
 	load_default_gear(eROLE.Captain, "Captain", "Power Sword", "Bolt Pistol", "Power Armour", "", "Iron Halo");
 	load_default_gear(eROLE.Dreadnought, "Dreadnought", "Dreadnought Lightning Claw", "Lascannon", "Dreadnought", "", "");

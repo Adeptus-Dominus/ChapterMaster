@@ -425,10 +425,10 @@ founding_chapters = array_filter(all_chapters, function(item){ return item.origi
 successor_chapters = array_filter(all_chapters, function(item){ return item.origin == eCHAPTER_ORIGINS.SUCCESSOR});
 custom_chapters = array_filter(all_chapters, function(item){ return item.origin == eCHAPTER_ORIGINS.CUSTOM});
 other_chapters = array_filter(all_chapters, function(item){ return item.origin == eCHAPTER_ORIGINS.NON_CANON});
-show_debug_message($"founding: {founding_chapters}");
-show_debug_message($"successor: {successor_chapters}");
-show_debug_message($"custom: {custom_chapters}");
-show_debug_message($"other: {other_chapters}");
+// show_debug_message($"founding: {founding_chapters}");
+// show_debug_message($"successor: {successor_chapters}");
+// show_debug_message($"custom: {custom_chapters}");
+// show_debug_message($"other: {other_chapters}");
 
 
 // TODO refactor into struct constructors stored in which are struct arrays 
@@ -841,7 +841,7 @@ function load_default_gear(_role_id, _role_name, _wep1, _wep2, _armour, _mobi, _
     race[defaults_slot, _role_id] = 1;
 }
 load_default_gear(eROLE.HonourGuard, "Honour Guard", "Power Sword", "Bolter", "Artificer Armour", "", "");
-load_default_gear(eROLE.Veteran, "Veteran", "Chainsword", "Combiflamer", "Power Armour", "", "");
+load_default_gear(eROLE.Veteran, "Veteran", "Combiflamer", "Combat Knife", "Power Armour", "", "");
 load_default_gear(eROLE.Terminator, "Terminator", "Power Fist", "Storm Bolter", "Terminator Armour", "", "");
 load_default_gear(eROLE.Captain, "Captain", "Power Sword", "Bolt Pistol", "Power Armour", "", "Iron Halo");
 load_default_gear(eROLE.Dreadnought, "Dreadnought", "Dreadnought Lightning Claw", "Lascannon", "Dreadnought", "", "");
