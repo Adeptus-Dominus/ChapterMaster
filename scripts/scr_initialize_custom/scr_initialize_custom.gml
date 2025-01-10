@@ -2534,189 +2534,144 @@ function scr_initialize_custom() {
 
 	k = 0;
 
+	var _first_armour = scr_has_adv("Crafters") ? "Tartaros" : "Terminator Armour";
+	var _first_wep1 = wep1[100][eROLE.Terminator];
+	var _first_wep2 = wep2[100][eROLE.Terminator];
+	if (terminator <= 0) {
+		_first_armour = "";
+		_first_wep1 = "default";
+		_first_wep2 = "default";
+	}
+
+	var _is_terminator = function(_armour) {
+		return array_contains(["Terminator Armour", "Tartaros"], _armour);
+	};
+
+	var _first_size = _is_terminator(_first_armour) ? 2 : 1;
+
 	if (veteran + terminator > 0) {
 		k += 1;
 		commands += 1; // 1st company Captain
 		name[company][k] = honor_captain_name;
-		var _armour = "Terminator Armour";
-		if(scr_has_adv("Crafters")){
-			var _armour = "Tartaros";
-		}
-		if (terminator <= 0) {
-			_armour = "MK6 Corvus";
-		}
-
-		var _spawn_unit = add_unit_to_company("marine", company, k, roles.captain, eROLE.Captain, "Relic Blade",choose("Storm Shield", "Storm Bolter"),"default","default",_armour);
-		if (_spawn_unit.armour() == "Terminator Armour" || _spawn_unit.armour() == "Tartaros") {
-			man_size += 1;
-		}
+		man_size += _first_size;
+		add_unit_to_company("marine", company, k, roles.captain, eROLE.Captain, "Relic Blade",choose("Storm Shield", "Storm Bolter"),"default","default",_first_armour);
 
 		repeat(chaplains_per_company){
 			k += 1;
 			commands += 1; // 1st company Chaplain
-			var _armour = "Terminator Armour";
-			if(scr_has_adv("Crafters")){
-				var _armour = "Tartaros";
-			}
-			if (terminator <= 0) {
-				_armour = "MK6 Corvus";
-			}
-			var _spawn_unit = add_unit_to_company("marine", company, k, roles.chaplain, eROLE.Chaplain,"default","Storm Bolter","default","default",_armour);
-
-			if (_spawn_unit.armour() == "Terminator Armour" || _spawn_unit.armour() == "Tartaros") {
-				man_size += 1;
-			}
+			man_size += _first_size;
+			add_unit_to_company("marine", company, k, roles.chaplain, eROLE.Chaplain,"default",_first_wep2,"default","default",_first_armour);
 		}
+
 		repeat(apothecary_per_company){
 			k += 1;
 			commands += 1; // 1st company Apothecary
-			var _armour = "Terminator Armour";
-			if(scr_has_adv("Crafters")){
-				var _armour = "Tartaros";
-			}
-			if (terminator <= 0) {
-				_armour = "MK6 Corvus";
-			}
-			var _spawn_unit = add_unit_to_company("marine", company, k, roles.apothecary, eROLE.Apothecary,"Storm Bolter","","default","default",_armour);
-
-			if (_spawn_unit.armour() == "Terminator Armour" || _spawn_unit.armour() == "Tartaros") {
-				man_size += 1;
-			}
+			man_size += _first_size;
+			add_unit_to_company("marine", company, k, roles.apothecary, eROLE.Apothecary,_first_wep1,_first_wep2,"default","default",_first_armour);
 		}
 
 		if (!scr_has_disadv("Psyker Intolerant")) {
 			repeat(epistolary_per_company){
 				k += 1; // 1st company  Librarian
 				commands += 1;
-				var _armour = "Terminator Armour";
-				if(scr_has_adv("Crafters")){
-					var _armour = "Tartaros";
-				}
-				if (terminator <= 0) {
-					_armour = "MK6 Corvus";
-				}
-				var _spawn_unit = add_unit_to_company("marine", company, k, roles.librarian, eROLE.Librarian,"default",choose_weighted(weapon_weighted_lists.pistols),"default","default",_armour);
-
-				if (_spawn_unit.armour() == "Terminator Armour" || _spawn_unit.armour() == "Tartaros") {
-					man_size += 1;
-				}
+				man_size += _first_size;
+				add_unit_to_company("marine", company, k, roles.librarian, eROLE.Librarian,"default",_first_wep2,"default","default",_first_armour);
 			}
 		}
+
 		repeat(techmarines_per_company){
-			show_debug_message($"chap terminators {terminator}")
+			// show_debug_message($"chap terminators {terminator}")
 			k += 1;
 			commands += 1; // 1st company Techmarine
-			var _armour = "Terminator Armour";
-			if(scr_has_adv("Crafters")){
-				_armour = "Tartaros";
-			}
-			if (terminator <= 0){
+			var _armour = _first_armour;
+			if (!_is_terminator(_armour)) {
 				if(scr_has_disadv("Poor Equipment")){
 					_armour = "MK6 Corvus";
 				} else {
 					_armour = "Artificer Armour"
 				}
 			}
-			var _spawn_unit = add_unit_to_company("marine", company, k, roles.techmarine, eROLE.Techmarine, "default","Storm Bolter","default","default",_armour);
-			if (_spawn_unit.armour() == "Terminator Armour" || _spawn_unit.armour() == "Tartaros") {
-				man_size += 1;
-			} 
+			man_size += _first_size;
+			add_unit_to_company("marine", company, k, roles.techmarine, eROLE.Techmarine, _first_wep1,_first_wep2,"default","default",_armour);
 		}
-		
 
 		k += 1; // 1st company Standard bearer
-		man_size += 1;
-		var _armour = "Terminator Armour";
-		if(scr_has_adv("Crafters")){
-			_armour = "Tartaros";
+		man_size += _first_size;
+		add_unit_to_company("marine", company, k, roles.ancient, eROLE.Ancient, "default",_first_wep2,"default","default",_first_armour);
+
+		k += 1; // 1st company Champion
+		var _wep1 = _first_wep1;
+		var _wep2 = _first_wep2;
+		if (_is_terminator(_first_armour)) {
+			_wep1 = "Thunder Hammer";
+			if (global.chapter_name == "Dark Angels"){
+				_wep1 = "Heavy Thunder Hammer";
+				_wep2 = "";
+			}
 		}
-		if (terminator <= 0){
-			_armour = "MK6 Corvus"
+		man_size += _first_size;
+		add_unit_to_company("marine", company, k, roles.champion, eROLE.Champion, _wep1,_wep2,"default","default",_first_armour);
+
+		repeat(terminator) {
+			k += 1;
+			man_size += 2;
+			add_unit_to_company("marine", company, k, roles.terminator, eROLE.Terminator, "","","default","default","default");
 		}
-		var _spawn_unit = add_unit_to_company("marine", company, k, roles.ancient, eROLE.Ancient, "default","Storm Bolter","default","default",_armour);
-		if (_spawn_unit.armour() == "Terminator Armour" || _spawn_unit.armour() == "Tartaros") {
+		repeat(veteran) {
+			k += 1;
 			man_size += 1;
+			add_unit_to_company("marine", company, k, roles.veteran, eROLE.Veteran, "","","default","default","default");
+		}
+	
+		repeat(scr_has_adv("Venerable Ancients") ? 3 : 2) {
+			k += 1;
+			commands += 1;
+			add_unit_to_company("dreadnought", company, k, "Venerable " + string(roles.dreadnought),eROLE.Dreadnought, "default", "Plasma Cannon","default","default","Dreadnought");
+		}
+	
+		repeat(4) {
+			v += 1;
+			man_size += 10;
+			add_veh_to_company("Rhino", company, v, "Storm Bolter", "HK Missile", "", "Artificer Hull", "Dozer Blades")
+		}
+	
+		var predrelic = 2;
+		if (scr_has_adv("Tech-Brothers")) then predrelic +=2;
+		repeat(predrelic) {
+			v += 1;
+			man_size += 10;
+			var predtype = choose(1, 2, 3, 4);
+			switch (predtype){
+				case 1:
+					add_veh_to_company("Predator", company, v, "Plasma Destroyer Turret", "Lascannon Sponsons", "HK Missile", "Artificer Hull", "Searchlight")
+				break;
+				case 2: 
+					add_veh_to_company("Predator", company, v, "Heavy Conversion Beamer Turret", "Lascannon Sponsons", "HK Missile", "Artificer Hull", "Searchlight")
+				break;
+				case 3: 
+					add_veh_to_company("Predator", company, v, "Flamestorm Cannon Turret", "Heavy Flamer Sponsons", "Storm Bolter", "Artificer Hull", "Dozer Blades")
+				break;
+				case 4:
+					add_veh_to_company("Predator", company, v, "Magna-Melta Turret", "Heavy Flamer Sponsons", "Storm Bolter", "Artificer Hull", "Dozer Blades")
+				break;
+			}
 		}
 
-		k += 1;
-		man_size += 1;
-		var _armour = "Terminator Armour";
-		if(scr_has_adv("Crafters")){
-			_armour = "Tartaros";
+		if (global.chapter_name != "Lamenters") then repeat(6) {
+			v += 1;
+			man_size += 20;
+			if (floor(v % 4) == 1) or(floor(v % 4) == 2) {
+				add_veh_to_company("Land Raider", company, v, "Twin Linked Heavy Bolter Mount", "Twin Linked Lascannon Sponsons", "HK Missile", "Heavy Armour", "Searchlight")
+			}
+			if (floor(v % 4) == 3) {
+				add_veh_to_company("Land Raider", company, v, "Twin Linked Assault Cannon Mount", "Hurricane Bolter Sponsons", "Storm Bolter", "Heavy Armour", "Frag Assault Launchers")
+			}
+			if (floor(v % 4) == 0) {
+				add_veh_to_company("Land Raider", company, v, "Twin Linked Assault Cannon Mount", "Flamestorm Cannon Sponsons", "Storm Bolter", "Heavy Armour", "Frag Assault Launchers")
+			}
 		}
-		if (terminator <= 0){
-			_armour = "MK6 Corvus"
-		}
-		var _wep1 = "Thunder Hammer";
-		var _wep2 = "Storm Bolter";
-		if (global.chapter_name == "Dark Angels"){
-			_wep1 = "Heavy Thunder Hammer";
-			_wep2 = "";
-		}
-		var _spawn_unit = add_unit_to_company("marine", company, k, roles.champion, eROLE.Champion, _wep1,_wep2,"default","default",_armour);
-		if (_spawn_unit.armour() == "Terminator Armour" || _spawn_unit.armour() == "Tartaros") {
-			man_size += 1;
-		}
+		v = 0;
 	}
-
-	if (terminator > 0) then repeat(terminator) {
-		k += 1;
-		man_size += 2
-		add_unit_to_company("marine", company, k, roles.terminator, eROLE.Terminator, "","","default","default","default");
-	}
-	repeat(veteran) {
-		k += 1;
-		man_size += 1;
-		add_unit_to_company("marine", company, k, roles.veteran, eROLE.Veteran, "","","default","default","default");
-	}
-
-	repeat(scr_has_adv("Venerable Ancients") ? 3 : 2) {
-		k += 1;
-		commands += 1;
-		add_unit_to_company("dreadnought", company, k, "Venerable " + string(roles.dreadnought),eROLE.Dreadnought, "default", "Plasma Cannon","default","default","Dreadnought");
-	}
-
-	for (var i = 0; i < 4; i++) {
-		v += 1;
-		man_size += 10;
-		add_veh_to_company("Rhino", company, v, "Storm Bolter", "HK Missile", "", "Artificer Hull", "Dozer Blades")
-	}
-
-	var predrelic = 2;
-	if (scr_has_adv("Tech-Brothers")) then predrelic +=2;
-	repeat(predrelic) {
-		v += 1;
-		man_size += 10;
-		var predtype = choose(1, 2, 3, 4);
-		switch (predtype){
-			case 1:
-				add_veh_to_company("Predator", company, v, "Plasma Destroyer Turret", "Lascannon Sponsons", "HK Missile", "Artificer Hull", "Searchlight")
-			break;
-			case 2: 
-				add_veh_to_company("Predator", company, v, "Heavy Conversion Beamer Turret", "Lascannon Sponsons", "HK Missile", "Artificer Hull", "Searchlight")
-			break;
-			case 3: 
-				add_veh_to_company("Predator", company, v, "Flamestorm Cannon Turret", "Heavy Flamer Sponsons", "Storm Bolter", "Artificer Hull", "Dozer Blades")
-			break;
-			case 4:
-				add_veh_to_company("Predator", company, v, "Magna-Melta Turret", "Heavy Flamer Sponsons", "Storm Bolter", "Artificer Hull", "Dozer Blades")
-			break;
-		}
-	}
-	if (global.chapter_name != "Lamenters") then repeat(6) {
-		v += 1;
-		man_size += 20;
-		if (floor(v % 4) == 1) or(floor(v % 4) == 2) {
-			add_veh_to_company("Land Raider", company, v, "Twin Linked Heavy Bolter Mount", "Twin Linked Lascannon Sponsons", "HK Missile", "Heavy Armour", "Searchlight")
-		}
-		if (floor(v % 4) == 3) {
-			add_veh_to_company("Land Raider", company, v, "Twin Linked Assault Cannon Mount", "Hurricane Bolter Sponsons", "Storm Bolter", "Heavy Armour", "Frag Assault Launchers")
-		}
-		if (floor(v % 4) == 0) {
-			add_veh_to_company("Land Raider", company, v, "Twin Linked Assault Cannon Mount", "Flamestorm Cannon Sponsons", "Storm Bolter", "Heavy Armour", "Frag Assault Launchers")
-		}
-	}
-	v = 0;
 
 	firsts = k;
 
@@ -3012,7 +2967,7 @@ function scr_initialize_custom() {
 			if (!scr_has_disadv("Psyker Intolerant")) {
 				k += 1; // Company Librarian
 				commands += 1;
-				var _spawn_unit = add_unit_to_company("marine", company, k, roles.librarian, eROLE.Librarian, "default",choose_weighted(weapon_weighted_lists.pistols),"default","default","");
+				add_unit_to_company("marine", company, k, roles.librarian, eROLE.Librarian, "default",choose_weighted(weapon_weighted_lists.pistols),"default","default","");
 			}
 
 			k += 1; // Standard Bearer
