@@ -1458,12 +1458,8 @@ function scr_draw_unit_image(_background=false){
                     var psy_hood_offset_y = 0;
                     robes_hood_bypass = true;
                     if (scr_has_adv("Daemon Binders") && !modest_livery){
-                        if (pauldron_trim=1){
-							draw_sprite(spr_gear_hood2,0,x_surface_offset-2,y_surface_offset-11);
-						}
-                        if (pauldron_trim==0){
-							draw_sprite(spr_gear_hood2,1,x_surface_offset-2,y_surface_offset-11);
-						}
+                        var _index = pauldron_trim == 1 ? 0 : 1;
+						draw_sprite(spr_gear_hood2,_index,x_surface_offset+psy_hood_offset_x,y_surface_offset+psy_hood_offset_y);
                     } else {
                         // if (unit_armour=="Terminator Armour") {
                         //     psy_hood_offset_y = -8;
@@ -1688,11 +1684,8 @@ function scr_draw_unit_image(_background=false){
                         draw_sprite(spr_marine_robes,0,x_surface_offset+robe_offset_x,y_surface_offset+robe_offset_y);     
                     } else if (body.torso.robes == 1) {
                         if (scr_has_adv("Daemon Binders") && !modest_livery){
-                            if (pauldron_trim == 1){
-                                draw_sprite(spr_binders_robes,0,x_surface_offset,y_surface_offset);
-                            } else if (pauldron_trim == 0) {
-                                draw_sprite(spr_binders_robes,1,x_surface_offset,y_surface_offset);
-                            }
+                            var _index = pauldron_trim == 1 ? 0 : 1;
+                            draw_sprite(spr_binders_robes,_index,x_surface_offset+robe_offset_x,y_surface_offset+robe_offset_y);
                         } else {
                             draw_sprite(spr_marine_robes,1,x_surface_offset+robe_offset_x,y_surface_offset+robe_offset_y);       
                         }
