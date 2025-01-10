@@ -887,20 +887,14 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 				religion_sub_cult = "The Cult of Iron";
 			} 
 
+			var _robe_chance = 5;
 			if (global.chapter_name == "Black Templars"){
-				if (irandom(14)==0){
-					body[$"torso"].robes =choose(0,0,0,1,1,2);
-					if (body[$"torso"].robes == 0 && irandom(1) == 0){
-						body[$"head"].hood = 1;
-					}
-				}
+				_robe_chance += 70;
 			}else if(global.chapter_name == "Dark Angels" || obj_ini.progenitor == ePROGENITOR.DARK_ANGELS){
-				body[$"torso"].robes = choose(0,0,0,1,2);
-				if (body[$"torso"].robes == 0 && irandom(1) == 0){
-					body[$"head"].hood = 1;
-				}
-			}else if(irandom(30)==0){
-				body.torso.robes =choose(0,1,2,2,2,2,2);
+				_robe_chance += 50;
+			}
+			if (irandom(100) <= _robe_chance) {
+				body.torso.robes = irandom(2);
 				if (body[$"torso"].robes == 0 && irandom(1) == 0){
 					body[$"head"].hood = 1;
 				}
