@@ -231,7 +231,7 @@ global.weapons = {
 			"master_crafted": 1.1,
 			"artifact": 1.1
 		},
-		"description": "An makeshift power weapon made by Astartes during long term deployment behind enemy lines or when cut from supply lines for long periods of time.",
+		// "description": "An makeshift power weapon made by Astartes during long term deployment behind enemy lines or when cut from supply lines for long periods of time.",
 		"melee_hands": 1.1,
 		"ranged_hands": 0,
 		"ammo": 0,

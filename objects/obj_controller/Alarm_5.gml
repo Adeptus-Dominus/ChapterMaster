@@ -488,9 +488,7 @@ if (training_techmarine>0){
                 obj_ini.loc[0][g1]="Terra";
                 unit.planet_location=4;
                 unit.ship_location=-1;
-                if (unit.weapon_one()!="Power Weapon"){
-                    unit.update_weapon_one("");
-                }
+                unit.update_weapon_one("");
                 unit.update_weapon_two("");
                 unit.update_gear("");
                 unit.update_mobility_item("");

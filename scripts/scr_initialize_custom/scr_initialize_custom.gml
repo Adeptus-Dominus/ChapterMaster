@@ -3306,7 +3306,7 @@ function scr_initialize_custom() {
 		scr_add_item("Bolt Pistol", 80);
 		scr_add_item("Heavy Bolter", 40);
 		scr_add_item("Lascannon", 40);
-		scr_add_item("Power Weapon", 12);
+		scr_add_item("Power Sword", 12);
 		scr_add_item("Rosarius", 4);
 	}
 	if (!scr_has_disadv("Sieged")) {
