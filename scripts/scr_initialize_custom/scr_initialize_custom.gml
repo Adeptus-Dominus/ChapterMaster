@@ -554,26 +554,6 @@ function scr_initialize_custom() {
 
 	// Initializes all of the marine/vehicle/ship variables for the chapter.
 
-	techmarines = 8;
-	apothecary = 8;
-	epistolary = 2;
-	codiciery = 2;
-	lexicanum = 4;
-	terminator = 40;
-	veteran = 70;
-	second = 100;
-	third = 100;
-	fourth = 100;
-	fifth = 100;
-	sixth = 100;
-	seventh = 100;
-	eighth = 100;
-	ninth = 100;
-	tenth = 100;
-	assault = 20;
-	siege = 0;
-	devastator = 20;
-
 	recruit_trial = obj_creation.aspirant_trial;
 	purity = obj_creation.purity;
 	stability = obj_creation.stability;
@@ -785,39 +765,52 @@ function scr_initialize_custom() {
 	millenium = 41;
 
 	var company = 0;
-	var second = 100,
-		third = 100,
-		fourth = 100,
-		fifth = 100,
-		sixth = 100,
-		seventh = 100,
-		eighth = 100,
-		ninth = 100,
-		tenth = 100;
-	var siege = 0,
-		temp1 = 0,
-		intolerant = 0;
-	var k, v;
-	k = 0;
-	v = 0;
+
+	var veteran = 80;
+	var terminator = 20;
+	var second = 100;
+	var	third = 100;
+	var	fourth = 100;
+	var	fifth = 100;
+	var	sixth = 100;
+	var	seventh = 100;
+	var	eighth = 100;
+	var	ninth = 100;
+	var	tenth = 100;
+
+	var	tactical_count = 0;
+	var assault_count = 0;
+	var devastator_count = 0;
+
+	var _assault_proportion = 0.2;
+	var _devastator_proportion = 0.2;
+
+	var k = 0; 
+	var v = 0;
+	var o = 0; 
 
 	/* Default Specialists */
-	var chaplains = 8,
-		chaplains_per_company = 1,
-	 	techmarines = 8,
-		techmarines_per_company = 1,
-		apothecary = 8,
-		apothecary_per_company = 1,
-		epistolary = 2,
-		epistolary_per_company = 1,
-		codiciery = 2,
-		lexicanum = 4,
-		terminator = 20,
-		veteran = 85,
-		assault = 20,
-		devastator = 20;
+	var chaplains = 8;
+	var	chaplains_per_company = 1;
+	var techmarines = 8;
+	var	techmarines_per_company = 1;
+	var	apothecary = 8;
+	var	apothecary_per_company = 1;
+	var	epistolary = 2;
+	var	epistolary_per_company = 1;
+	var	codiciery = 2;
+	var	lexicanum = 4;
 
-	var whirlwind = 4;
+	/* Vehicles */
+	var _dreadnoughts = 8;
+	var _dreadnought_targets = 8;
+	var _venerable_dreadnoughts = 1;
+	var _whirlwinds = 4;
+	var _rhinos = 8;
+	var _landspeeders = 2;
+	var _predators;
+	var _relic_predators = 2;
+	var _landraiders = 6;
 
 	/* Used for summing total count */
 	specials = 0;
@@ -851,48 +844,50 @@ function scr_initialize_custom() {
 	ninth=9;tenth=10;
 	assault=2;siege=0;devastator=2;*/
 
-	var chapter_option, o; 
-	if scr_has_adv("Tech-Brothers") {
+	if (scr_has_adv("Tech-Brothers")) {
 		techmarines += 6;
 		tenth -= 6;
 	}
-	if scr_has_adv("Assault Doctrine") {
-		assault += 10;
-		devastator -= 10;
+	
+	if (scr_has_adv("Assault Doctrine")) {
+		_assault_proportion += 0.1;
+		_devastator_proportion -= 0.1;
 	}
-	if scr_has_adv("Devastator Doctrine") {
-		assault -= 10;
-		devastator += 10;
+	
+	if (scr_has_adv("Devastator Doctrine")) {
+		_assault_proportion -= 0.1;
+		_devastator_proportion += 0.1;
 	}
-	if scr_has_adv("Siege Masters") {
-		siege = 1;
-	}
-	if scr_has_adv("Crafters") {
+	
+	if (scr_has_adv("Crafters")) {
 		techmarines += 2;
 		terminator += 5;
 		tenth -= 5;
 	}
-	if scr_has_adv("Psyker Abundance") {
+	
+	if (scr_has_adv("Psyker Abundance")) {
 		tenth -= 4;
 		epistolary += 1;
 		codiciery += 1;
 		lexicanum += 2;
 	}
-	if scr_has_disadv("Psyker Intolerant") {
+	
+	if (scr_has_disadv("Psyker Intolerant")) {
 		epistolary = 0;
 		codiciery = 0;
 		lexicanum = 0;
 		veteran += 10;
 		tenth += 10;
-		intolerant = 1;
 	}
-	if scr_has_disadv("Fresh Blood") {
+
+	if (scr_has_disadv("Fresh Blood")) {
 		epistolary -= 1;
 		codiciery -= 1;
 		lexicanum -= 2;
 		tenth += 4;
 	}
-	if  scr_has_disadv("Sieged") {
+	
+	if (scr_has_disadv("Sieged")) {
 		techmarines -= 4;
 		epistolary -= 1;
 		codiciery -= 1;
@@ -901,20 +896,16 @@ function scr_initialize_custom() {
 		chaplains -= 4;
 		terminator -= 10;
 		veteran -= 50;
-		second -= 30;
-		third -= 30;
-		fourth -= 30;
-		fifth -= 60;
-		sixth -= 60;
-		seventh -= 60;
-		eighth -= 70;
-		ninth -= 70;
-		tenth -= 70; // 370
-		assault = 10;
-		siege = 0;
-		devastator = 10;
+		sixth -= 100;
+		seventh -= 100;
+		eighth -= 100;
+		ninth -= 100;
+		tenth -= 100;
+		_dreadnoughts += 8;
+		_dreadnought_targets -=5;
 	}
-    if	scr_has_adv("Venerable Ancients") {
+	
+	if (scr_has_adv("Venerable Ancients")) {
 		veteran -= 10;
 		second -= 10;
 		third -= 10;
@@ -925,8 +916,11 @@ function scr_initialize_custom() {
 		eighth -= 10;
 		ninth -= 10;
 		tenth -= 10;
+		_dreadnoughts += 8;
+		_venerable_dreadnoughts += 1;
 	}
-	if scr_has_disadv("Obliterated") {
+	
+	if (scr_has_disadv("Obliterated")) {
 		techmarines -= 7;
 		epistolary -= 2;
 		codiciery -= 1;
@@ -943,30 +937,42 @@ function scr_initialize_custom() {
 		seventh = 0;
 		eighth = 0;
 		ninth = 0;
-		tenth = 10; 
-		assault = 0;
-		devastator = 0;
+		tenth = 10;
 	}
-
-	if  scr_has_disadv ("Tech-Heresy") {
+	
+	if (scr_has_disadv("Tech-Heresy")) {
 		techmarines -= 4;
 		tenth += 4;
 	}
-	if scr_has_adv ("Reverent Guardians") {
+	
+	if (scr_has_adv("Reverent Guardians")) {
 		chaplains += 4;
 		tenth -= 4;
 	}
-	if scr_has_adv("Medicae Primacy") {
+	
+	if (scr_has_adv("Medicae Primacy")) {
 		apothecary_per_company += 1;
 		apothecary += 7;
-	}
+	}	
 	
 	// Strength ratings are made up for founding chapters
 	if (progenitor > ePROGENITOR.NONE && progenitor < ePROGENITOR.RANDOM) {
-		if (obj_creation.strength <= 4) then ninth = 0;
-		if (obj_creation.strength <= 3) then eighth = 0;
-		if (obj_creation.strength <= 2) then seventh = 0;
-		if (obj_creation.strength <= 1) then sixth = 0;
+		if (obj_creation.strength <= 4) {
+			ninth = 0;
+			_dreadnought_targets--;
+		}
+		if (obj_creation.strength <= 3) {
+			eighth = 0;
+			_dreadnought_targets--;
+		}
+		if (obj_creation.strength <= 2) {
+			seventh = 0;
+			_dreadnought_targets--;
+		}
+		if (obj_creation.strength <= 1) {
+			sixth = 0;
+			_dreadnought_targets--;
+		}		
 
 		var bonus_marines = 0;
 		if (obj_creation.strength > 5) then bonus_marines = (obj_creation.strength - 5) * 50;
@@ -1042,6 +1048,9 @@ function scr_initialize_custom() {
 			}
 			i++;
 		}
+	} else {
+		_dreadnoughts += 8;
+		_dreadnought_targets++;
 	}
 
 	if(struct_exists(obj_creation, "extra_specialists")){
@@ -1063,9 +1072,9 @@ function scr_initialize_custom() {
 				case "codiciery": codiciery  = codiciery + real(s_val); break;
 				case "lexicanum": lexicanum  = lexicanum + real(s_val); break;
 				case "terminator": terminator  = terminator + real(s_val); break;
-				case "assault": assault = assault + real(s_val); break;
+				case "assault": assault_count = assault_count + real(s_val); break;
 				case "veteran": veteran = veteran + real(s_val); break;
-				case "devastator": devastator = devastator + real(s_val); break;
+				case "devastator": devastator_count = devastator_count + real(s_val); break;
 			}
 		}
 	}
@@ -2369,7 +2378,7 @@ function scr_initialize_custom() {
 	}
 	mobi[company, 1] = mobi[100, 2];
 	chapter_master.alter_equipment(chapter_master_equip, false, false, "master_crafted")
-	if(scr_has_adv("Paragon")){
+	if (scr_has_adv("Paragon")) {
 		chapter_master.add_trait("paragon");
 	}
 	chapter_master.marine_assembling();
@@ -2492,13 +2501,7 @@ function scr_initialize_custom() {
 
 	// Honour Guard
 	var _honour_guard_count = 0, unit;
-	o = 0;
-	chapter_option = 0;
-	repeat(4) {
-		o += 1;
-		if (obj_creation.adv[o] = "Retinue of Renown") then chapter_option = 1;
-	}
-	if (chapter_option = 1) then _honour_guard_count += 10;
+	if (scr_has_adv("Retinue of Renown")) then _honour_guard_count += 10;
 	if (progenitor == ePROGENITOR.DARK_ANGELS && obj_creation.custom = 0) { _honour_guard_count += 6; }
 	if (_honour_guard_count == 0) {
 		_honour_guard_count = 3
@@ -2721,9 +2724,10 @@ function scr_initialize_custom() {
 	firsts = k;
 
 
-	// show_debug_message($"2: {second} 3: {third} 4: {fourth} 5: {fifth} 6: {sixth} 7: {seventh} 8: {eighth} 9: {ninth} 10: {tenth}")
+	// show_debug_message($"2: {second} 3: {third} 4: {fourth} 5: {fifth} 6: {sixth} 7: {seventh} 8: {eighth} 9: {ninth} 10: {tenth}");
+	var _dreadnought_companies = 0;
 	//non HQ and non firsst company initialised here
-	for (company = 2; company < 11; company++) {
+	for (company = 2; company <= 10; company++) {
 		// Initialize marines
 		for (var i = 0; i < 501; i++) {
 			race[company, i] = 1;
@@ -2745,173 +2749,140 @@ function scr_initialize_custom() {
 		var company_experience = 0,
 			company_unit2 = "",
 			company_unit3 = "",
-			dready = 0,
 			rhinoy = 0,
 			whirly = 0,
 			speedy = 0,
-			stahp = 0;
+			_company_empty = 0,
 
 		v = 0;
 		k = 0;
-
-
-		if (obj_creation.equal_specialists = 1) {
-			if (company = 2) then temp1 = max(0, (second - (assault + devastator)) - 1);
-			if (company = 3) then temp1 = max(0, (third - (assault + devastator)) - 1);
-			if (company = 4) then temp1 = max(0, (fourth - (assault + devastator)) - 1);
-			if (company = 5) then temp1 = max(0, (fifth - (assault + devastator)) - 1);
-			if (company = 6) then temp1 = max(0, (sixth - (assault + devastator)) - 1);
-			if (company = 7) then temp1 = max(0, (seventh - (assault + devastator)) - 1);
-			if (company = 8) then temp1 = max(0, (eighth - (assault + devastator)) - 1);
-			if (company = 9) then temp1 = max(0, (ninth - (assault + devastator)) - 1);
-			if (company = 10) then temp1 = max(0, tenth - 10);
-
-			company_experience = (16 - company) * 5;
-
-			// temp1=(100-(assault*devastator))*10;company_experience=(16-company)*5;
-			// temp1-=1;
-
-			// if (company=2){dready=1;
-			dready = 1;
-			if (scr_has_disadv("Sieged") || obj_creation.custom = 0) {dready =+ 1;}
-			if (scr_has_adv("Venerable Ancients")) {dready += 1;}
-			rhinoy = 8;
-			whirly = whirlwind;
-			speedy = 2;
-		}
 
 		// random xp for each marine company
 		// this gives the entire company the same xp
 		// figure it out later how to give individual ones different ones
 		// repeat didn't work
 
-		if (obj_creation.equal_specialists = 0) {
+		if (obj_creation.equal_specialists == 1 && !scr_has_disadv("Sieged")) {
+			var _total_marine_count = second + third + fourth + fifth + sixth + seventh + eighth + ninth;
+			var _company_marines = _total_marine_count / 8;
+			assault_count = floor(_company_marines * _assault_proportion); 
+			devastator_count = floor(_company_marines * _devastator_proportion);
+			tactical_count = _company_marines - (assault_count + devastator_count);
+
+			company_experience = (16 - company) * 5;
+
+			// tactical=(100-(assault*devastator))*10;company_experience=(16-company)*5;
+			// tactical-=1;
+
+			rhinoy = 8;
+			whirly = _whirlwinds;
+			speedy = 2;
+		} else {
 			if (company = 2) {
-				temp1 = (second - (assault + devastator));
+				assault_count = floor(second * _assault_proportion); 
+				devastator_count = floor(second * _devastator_proportion);
+				tactical_count = second - (assault_count + devastator_count);
 				company_unit2 = "assault";
 				company_unit3 = "devastator";
-				dready = 1;
-				if scr_has_adv("Venerable Ancients") then dready += 1;
-				if (scr_has_disadv("Sieged")) or (obj_creation.custom = 0) then dready += 1;
 				rhinoy = 8;
-				whirly = whirlwind;
+				whirly = _whirlwinds;
 				speedy = 2;
-				if scr_has_adv("Lightning Warriors") then speedy += 2; rhinoy -= 2;
-				if (second <= 0) then stahp = 1;
+				if (scr_has_adv("Lightning Warriors")) then speedy += 2; rhinoy -= 2;
+				if (second <= 0) then _company_empty = 1;
 			}
 	
 			if (company = 3) {
-				temp1 = (third - (assault + devastator));
+				assault_count = floor(third * _assault_proportion); 
+				devastator_count = floor(third * _devastator_proportion);
+				tactical_count = third - (assault_count + devastator_count);
 				company_unit2 = "assault";
 				company_unit3 = "devastator";
-				dready = 1;
-				if scr_has_adv("Venerable Ancients") then dready += 1;
-				if (scr_has_disadv("Sieged")) or (obj_creation.custom = 0) then dready += 1; 
 				rhinoy = 8;
-				whirly = whirlwind;
+				whirly = _whirlwinds;
 				speedy = 2;
 				if (array_contains(obj_creation.adv, "Lightning Warriors")) then speedy += 2; rhinoy -= 2;
-				if (third <= 0) then stahp = 1;
+				if (third <= 0) then _company_empty = 1;
 			}
 
 			if (company = 4) {
-				temp1 = (fourth - (assault + devastator));
+				assault_count = floor(fourth * _assault_proportion); 
+				devastator_count = floor(fourth * _devastator_proportion);
+				tactical_count = fourth - (assault_count + devastator_count);
 				company_unit2 = "assault";
 				company_unit3 = "devastator";
-				dready = 1;
-				if scr_has_adv("Venerable Ancients") then dready += 1;
-				if (scr_has_disadv("Sieged")) or (obj_creation.custom = 0) then dready += 1;
 				rhinoy = 8;
-				whirly = whirlwind;
+				whirly = _whirlwinds;
 				speedy = 2;
 				if (array_contains(obj_creation.adv, "Lightning Warriors")) then speedy += 2; rhinoy -= 2;
-				if (fourth <= 0) then stahp = 1;
+				if (fourth <= 0) then _company_empty = 1;
 			}
 
 			if (company = 5) {
-				temp1 = (fifth - (assault + devastator));
+				assault_count = floor(fifth * _assault_proportion); 
+				devastator_count = floor(fifth * _devastator_proportion);
+				tactical_count = fifth - (assault_count + devastator_count);
 				company_unit2 = "assault";
 				company_unit3 = "devastator";
-				dready = 1;
-				if scr_has_adv("Venerable Ancients") then dready += 1;
-				if (scr_has_disadv("Sieged")) or (obj_creation.custom = 0) then dready += 1;
 				rhinoy = 8;
-				whirly = whirlwind;
+				whirly = _whirlwinds;
 				speedy = 2;
 				if (array_contains(obj_creation.adv, "Lightning Warriors")) then speedy += 2; rhinoy -= 2;
-				if (fifth <= 0) then stahp = 1;
+				if (fifth <= 0) then _company_empty = 1;
 			}
 
 			if (company = 6) {
-				temp1 = sixth;
+				tactical_count = sixth;
 				company_unit2 = "";
 				company_unit3 = "";
-				dready = 1;
-				if scr_has_adv("Venerable Ancients") then dready += 1;
-				if (obj_creation.custom = 0) then dready += 1;
 				rhinoy = 8;
-				whirly = whirlwind;
+				whirly = _whirlwinds;
 				speedy = 0;
-				if (sixth <= 0) then stahp = 1;
+				if (sixth <= 0) then _company_empty = 1;
 			}
 
 			if (company = 7) {
-				temp1 = seventh;
+				tactical_count = seventh;
 				company_unit2 = "";
 				company_unit3 = "";
-				dready = 1
-				if scr_has_adv("Venerable Ancients") then dready += 1;
-				if (obj_creation.custom = 0) then dready += 1;
 				rhinoy = 8;
 				whirly = 0;
 				speedy = 8;
-				if (seventh <= 0) then stahp = 1;
+				if (seventh <= 0) then _company_empty = 1;
 			}
 
 			if (company = 8) {
-				temp1 = eighth;
+				tactical_count = eighth;
 				company_unit2 = "";
 				company_unit3 = "";
-				dready = 1
-				if scr_has_adv("Venerable Ancients") then dready += 1;
-				if (obj_creation.custom = 0) then dready += 1;
 				rhinoy = 2;
 				whirly = 0;
 				speedy = 2;
-				if (eighth <= 0) then stahp = 1;
+				if (eighth <= 0) then _company_empty = 1;
 			}
 
 			if (company = 9) {
-				temp1 = ninth;
+				tactical_count = ninth;
 				company_unit2 = "";
 				company_unit3 = "";
-				dready = 1
-				if scr_has_adv("Venerable Ancients") then dready += 1;
-				if (obj_creation.custom = 0) then dready += 1;
-
 				rhinoy = 2;
 				whirly = 0;
 				speedy = 0;
-				if (ninth <= 0) then stahp = 1;
+				if (ninth <= 0) then _company_empty = 1;
 			}
 			if (company = 10) {
-				temp1 = tenth;
 				company_unit2 = "";
 				company_unit3 = "";
-				dready = 0;
 				rhinoy = 8;
 				whirly = 0;
 				speedy = 0;
 				if scr_has_disadv("Obliterated") then rhinoy = 0;
-
-				// if (obj_creation.custom=0) then temp1-=5;
-
-				if (tenth <= 0) then stahp = 1;
+				// if (obj_creation.custom=0) then tactical-=5;
+				if (tenth <= 0) then _company_empty = 1;
 			}
 		}
 
 		var spawn_unit;
-		if (stahp = 0) {
+		if (!_company_empty) {
 			k += 1;
 			commands += 1; // Captain
 
@@ -3032,17 +3003,17 @@ function scr_initialize_custom() {
 			// just making em the same to reduce meta/power gaming
 			if (obj_creation.equal_specialists == 1) {
 				if (company < 10) {
-					repeat(temp1) {
+					repeat(tactical_count) {
 						k += 1;
 						man_size += 1;
 						add_unit_to_company("marine", company, k, roles.tactical, eROLE.Tactical, "default","default", "default", "default", "default");
 					}
-					repeat(assault) {
+					repeat(assault_count) {
 						k += 1;
 						man_size += 1;
 						add_unit_to_company("marine", company, k, roles.assault, eROLE.Assault, "default", "default", "default", "default", "default");
 					}
-					repeat(devastator) {
+					repeat(devastator_count) {
 						k += 1;
 						man_size += 1;
 						var _wep1 = wep1[defaults_slot, eROLE.Devastator];
@@ -3053,30 +3024,28 @@ function scr_initialize_custom() {
 					}
 				}
 				if (company = 10) {
-					repeat(temp1) {
+					repeat(tactical_count) {
 						k += 1;
 						man_size += 1;
 						add_unit_to_company("scout", company, k, roles.scout, eROLE.Scout, "default", "default", "default", "default", "Scout Armour");
 					}
 				}
-			}
-
-			if (obj_creation.equal_specialists = 0) {
-				if (company < 8) then repeat(temp1) {
+			} else if (obj_creation.equal_specialists = 0) {
+				if (company < 8) then repeat(tactical_count) {
 					k += 1;
 					man_size += 1;
 					add_unit_to_company("marine", company, k, roles.tactical, eROLE.Tactical, "default", "default", "default", "default", "default");
 				} 
 				
 				// reserve company only of assault
-				if (company = 8) then repeat(temp1) {
+				if (company = 8) then repeat(tactical_count) {
 					k += 1;
 					man_size += 1; // assault reserve company
 					add_unit_to_company("marine", company, k, roles.assault,eROLE.Assault, "", "", "", "default", "");
 				} 
 				
 				// reserve company only devo
-				if (company = 9) then repeat(temp1) {
+				if (company = 9) then repeat(tactical_count) {
 					k += 1;
 					man_size += 1;
 					var _wep1 = wep1[defaults_slot, eROLE.Devastator];
@@ -3087,19 +3056,19 @@ function scr_initialize_custom() {
 				}
 	
 				if (company = 10) then
-				for (var i = 0; i < temp1; i++) {
+				for (var i = 0; i < tenth; i++) {
 					k += 1;
 					man_size += 1;
 					add_unit_to_company("scout", company, k, roles.scout,eROLE.Scout, , , , , "Scout Armour");
 				}
 
-				if (company_unit2 = "assault") then repeat(assault) {
+				if (company_unit2 = "assault") then repeat(assault_count) {
 					k += 1;
 					man_size += 1;
 					add_unit_to_company("marine", company, k, roles.assault,eROLE.Assault);
 				}
 
-				if (company_unit3 = "devastator") then repeat(devastator) {
+				if (company_unit3 = "devastator") then repeat(devastator_count) {
 					k += 1;
 					man_size += 1;
 
@@ -3107,8 +3076,13 @@ function scr_initialize_custom() {
 				}
 			}
 
-			if (dready > 0) {
-				repeat(dready) {
+			if (_dreadnought_targets > 0) {
+				repeat(_dreadnought_targets) {
+					if (_dreadnoughts == 0) {
+						break;
+					}
+					_dreadnoughts--;
+
 					k += 1;
 					man_size += 10;
 					commands += 1;
@@ -3321,12 +3295,12 @@ function scr_initialize_custom() {
 	// man_size+=80;// bikes
 
 
-	if (scr_has_adv("Crafters")) && (scr_has_adv("Melee Enthusiasts")) {
-        scr_add_item("MK3 Iron Armour", irandom_range(2, 12));
-	}
-
-	if (scr_has_adv("Crafters")) && (!scr_has_adv("Melee Enthusiasts")) {
-        scr_add_item("MK4 Maximus", irandom_range(3, 18));
+	if (scr_has_adv("Crafters")) {
+		if (scr_has_adv("Melee Enthusiasts")) {
+			scr_add_item("MK3 Iron Armour", irandom_range(2, 12));
+		} else {
+			scr_add_item("MK4 Maximus", irandom_range(3, 18));
+		}
 	}
 
     gene_slaves = [];
