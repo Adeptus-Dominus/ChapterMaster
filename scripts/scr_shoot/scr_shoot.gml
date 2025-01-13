@@ -263,6 +263,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 
 					target_armour_value = target_object.dudes_ac[target_type];
 
+					// Calculate final armor value based on armor piercing (AP) rating against target type
 					if (target_object.dudes_vehicle[target_type]) {
 						if (armour_pierce = 1) then target_armour_value = 0;
 						if (armour_pierce = 0) then target_armour_value = target_armour_value * 6;

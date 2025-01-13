@@ -68,7 +68,7 @@ if (boarding=true) and (board_cooldown>=0) and (instance_exists(target)) and (in
 
     if (board_cooldown=0){board_cooldown=60;
         var o,challenge,boarding_odds,boarding_difficulty,boarding_advantage,boarding_disadvantage,gear_bonus,marine_bonus,outcome_roll,damage_roll,attack,arp,wep,ac,dr,co,i,hits,hurt,damaged_ship,bridge_damage;
-        o=firstest-1;boarding_odds=0;challenge=0;outcome_roll=0;damage_roll=0;attack=0;arp=0;wep="";hits=0;hurt=0;damaged_ship=0,bridge_damage=1;
+        o=firstest-1;boarding_odds=0;challenge=0;outcome_roll=0;damage_roll=0;attack=0;arp=0;wep="";hits=0;hurt=0;damaged_ship=0;bridge_damage=1;
         co=0;i=0;ac=0;dr=1;
         
         for (var o=0;o<array_length(origin.board_co);o++){
