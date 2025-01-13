@@ -1526,7 +1526,7 @@ global.weapons = {
 		"ammo": 8,
 		"range": 10,
 		"spli": 5,
-		"arp": -2,
+		"arp": 0,
 		"second_profiles": ["Integrated-Grav"],
 		"tags": ["combi", "bolt"]
 	},
