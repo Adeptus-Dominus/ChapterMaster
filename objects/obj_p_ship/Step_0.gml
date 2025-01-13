@@ -68,28 +68,29 @@ if (hp<=0) and (x>-5000){
     x=-7000;y=room_height/2;
 }
 if (hp>0) and (instance_exists(target)){
-    if (cooldown[1]>0) then cooldown[1]-=1;
-    if (cooldown[2]>0) then cooldown[2]-=1;
-    if (cooldown[3]>0) then cooldown[3]-=1;
-    if (cooldown[4]>0) then cooldown[4]-=1;
+    for (var i=0;i<array_length(cooldown);i++){
+        if (cooldown[i]>0){
+            cooldown[i]--;
+        }
+    }
 
     if (class="Apocalypse Class Battleship") or (class="Gloriana"){
         o_dist=500;
         action="attack";
     }
-    if (class="Nemesis Class Fleet Carrier"){
+    else if (class="Nemesis Class Fleet Carrier"){
         o_dist=1000;
         action="attack";
     }
-    if (class="Avenger Class Grand Cruiser"){
+    else if (class="Avenger Class Grand Cruiser"){
         o_dist=64;
         action="broadside";
     }
-    if (class="Battle Barge") or (class="Strike Cruiser"){
+   else  if (class="Battle Barge") or (class="Strike Cruiser"){
         o_dist=300;
         action="attack";
     }
-    if (class="Hunter") or (class="Gladius"){
+    else if (class="Hunter") or (class="Gladius"){
         o_dist=64;
         action="flank";
     }
@@ -212,10 +213,9 @@ if (hp>0) and (instance_exists(target)){
         if (collision_line(x,y,x+lengthdir_x(2000,direction),y+lengthdir_y(2000,direction),obj_en_ship,0,1)) then front=1;
         
         
-        var f=0,facing="",ammo=0,range=0,wep="",dam=0,gg=0;
+        var f=0,facing="",ammo=0,range=0,wep="",dam=0;
         
-        repeat(weapons){
-            gg+=1;
+        for (var gg=1;gg<array_length(weapon);gg++){
         
             // if (cooldown[gg]>0) then cooldown[gg]-=1;
         
@@ -230,6 +230,7 @@ if (hp>0) and (instance_exists(target)){
             }
             
             targe=target;
+
             if (facing="right") then targe=target_r;
             if (facing="left") then targe=target_l;    
             if ((facing="front") or (facing="most")) and (front=1) then ok=2;
@@ -311,9 +312,12 @@ if (hp>0) and (instance_exists(target)){
 
 
 /* */
+
+//Deploy boarding craft logic
 if (instance_exists(obj_en_ship)) and (boarders>0) and (board_cooldown<=0) and ((board_capital=true) or (board_frigate=true)){
     var eh=0,te=0;
-    repeat(2){eh+=1;te=0;
+    repeat(2){
+        eh+=1;te=0;
         if (eh=1) and (board_capital=true){if (instance_exists(obj_en_capital)) then te=instance_nearest(x,y,obj_en_capital);}
         if (eh=2) and (board_frigate=true){if (instance_exists(obj_en_cruiser)) then te=instance_nearest(x,y,obj_en_cruiser);}
         if (te!=0) and (instance_exists(te)){

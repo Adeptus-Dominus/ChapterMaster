@@ -273,7 +273,7 @@ function determine_pdf_defence(pdf, garrison="none", planet_forti=0, enemy=0){
 	explanations += $"Planet Defences:X{defence_mult+1}#"
 	if (garrison!="none"){//if player supports give garrison bonus
     	var garrison_mult = garrison.viable_garrison*(0.008+(0.001*planet_forti))
-    	var siege_masters =array_contains(obj_ini.adv, "Siege Masters");
+    	var siege_masters =scr_has_adv("Siege Masters");
     	if (siege_masters) then garrison_mult*=2;
     	explanations += $"Garrison Bonus:X{garrison_mult+1}#";
     	if (siege_masters){

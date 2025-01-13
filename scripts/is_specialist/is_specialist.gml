@@ -313,7 +313,7 @@ function group_selection(group, selection_data){
 	try {
 		var unit, s, unit_location;
 		obj_controller.selection_data = selection_data;
-		set_zoom_to_defualt();
+		set_zoom_to_default();
 		with (obj_controller){
 				menu=1;
 				onceh=1;

@@ -132,7 +132,6 @@ function scr_ui_display_weapons(left_or_right, current_armor, equiped_weapon, cu
             "Force Staff":spr_weapon_frcstaff,
 			"Force Sword":spr_weapon_powswo,
 			"Force Axe":spr_weapon_powaxe,
-			"Power Weapon":spr_weapon_powswo,
             "Relic Blade":spr_weapon_relic_blade,
             "Eviscerator":spr_weapon_evisc,
             "Power Mace":spr_weapon_powmace,

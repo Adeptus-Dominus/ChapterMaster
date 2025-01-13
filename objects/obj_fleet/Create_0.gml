@@ -105,20 +105,20 @@ en_mutation[1]="";
 en_mutation[2]="";
 
 // 
-ambushers=0;if (string_count("Ambushers",obj_ini.strin)>0) then ambushers=1;
-bolter_drilling=0;if (string_count("Bolter",obj_ini.strin)>0) then bolter_drilling=1;
-enemy_eldar=0;if (string_count("Enemy: Eldar",obj_ini.strin)>0) then enemy_eldar=1;
-enemy_fallen=0;if (string_count("Enemy: Fallen",obj_ini.strin)>0) then enemy_fallen=1;
-enemy_orks=0;if (string_count("Enemy: Orks",obj_ini.strin)>0) then enemy_orks=1;
-enemy_tau=0;if (string_count("Enemy: Tau",obj_ini.strin)>0) then enemy_tau=1;
-enemy_tyranids=0;if (string_count("Enemy: Tyraninids",obj_ini.strin)>0) then enemy_tyranids=1;
-siege=0;if (string_count("Siege",obj_ini.strin)>0) then siege=1;
-slow=0;if (string_count("Purposeful",obj_ini.strin)>0) then slow=1;
-melee=0;if (string_count("Melee Enthus",obj_ini.strin)>0) then melee=1;
+ambushers = scr_has_adv("Ambushers");
+bolter_drilling = scr_has_adv("Bolter Drilling");
+enemy_eldar= scr_has_adv("Enemy: Eldar");
+enemy_fallen=scr_has_adv("Enemy: Fallen");
+enemy_orks=scr_has_adv("Enemy: Orks");
+enemy_tau = scr_has_adv("Enemy: Tau");
+enemy_tyranids= scr_has_adv("Enemy: Tyranids");
+siege=scr_has_adv("Siege Masters");
+slow=scr_has_adv("Devastator Doctrine");
+melee=scr_has_adv("Assault Doctrine");
 // 
-black_rage=0;if (string_count("Black Rage",obj_ini.strin2)>0) then black_rage=1;
-shitty_luck=0;if (string_count("Shitty",obj_ini.strin2)>0) then shitty_luck=1;
-warp_touched=0;if (string_count("Warp Touched",obj_ini.strin2)>0) then warp_touched=1;
+black_rage=scr_has_disadv("Black Rage");
+shitty_luck=scr_has_disadv("Shitty Luck");
+warp_touched=scr_has_disadv("Warp Touched");
 lyman=obj_ini.lyman;// drop pod penalties
 omophagea=obj_ini.omophagea;// feast
 ossmodula=obj_ini.ossmodula;// small penalty to all
@@ -139,7 +139,11 @@ if (obj_controller.stc_bonus[5]=2) then global_attack=1.05;
 if (obj_controller.stc_bonus[6]=1) then global_defense+=0.1;
 
 // Kings of Space Bonus
-if (string_count("Kings of Space",obj_ini.strin)>0){control=1;global_defense+=0.1;global_attack+=0.1;}
+if (scr_has_adv("Kings of Space")){
+    control=1;
+    global_defense+=0.1;
+    global_attack+=0.1;
+}
 
 
 

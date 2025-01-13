@@ -460,7 +460,7 @@ if (unload>0){
         man_sel[i]=0;
     }
     obj_ini.ship_carrying[b]-=man_size;
-    sh_cargo[b]-=man_size;
+    reset_ship_manage_arrays();
     cooldown=10;
     sel_loading=-1;
     man_size=0;

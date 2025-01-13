@@ -4,7 +4,7 @@ global.default_view_height = 900;
 function scr_zoom() {
 
 	// Zooms the view in or out when executed
-    set_zoom_to_defualt();
+    set_zoom_to_default();
     if (obj_controller.zoomed) {
         obj_controller.zoomed=0;
         view_set_visible(0, true);
@@ -24,7 +24,7 @@ function scr_zoom() {
     }
 }
 
-function set_zoom_to_defualt(){
+function set_zoom_to_default(){
     camera_set_view_size(view_camera[0], global.default_view_width, global.default_view_height);
 }
 

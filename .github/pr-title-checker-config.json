@@ -1,12 +1,8 @@
 {
-  "LABEL": {
-    "name": "",
-    "color": "EEEEEE"
-  },
 	"CHECKS": {
-		"regexp": "(feat|fix|ci|chore|docs|test|refactor|revert)(\\([^\\)]+\\))?\\!?: .{1,}$|(?:Bump .+)$|^Release [0-9]+\\.[0-9]+\\.[0-9]+$|^Merge master into develop"
+		"regexp": "((feat|fix|ci|chore|docs|test|refactor|revert|style|perf|build)(\\(.*\\))?: )|Merge branch"
 	},
-  "MESSAGES": {
-    "failure": "Invalid PR Title. Please use the following formats: 'commit type(area of change(optional)): Title'. Refer to the list of [conventional commit types](https://github.com/pvdlg/conventional-commit-types?tab=readme-ov-file#commit-types)."
-  }
+	"MESSAGES": {
+		"failure": "Invalid PR Title. Please use the following formats: `<type>(<optional-scope>): <Short summary>`. Refer to the list of [conventional commit types](https://github.com/pvdlg/conventional-commit-types?tab=readme-ov-file#commit-types)."
+	}
 }

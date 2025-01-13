@@ -1,4 +1,4 @@
-function scr_add_item(item_name, number_of_items, quality="any", from_marine=false) {
+function scr_add_item(item_name, number_of_items=1, quality="any", from_marine=false) {
 	if (item_name=="") then exit;
 	var i, last_open, match_slot, open_slot=false, matched=false;
 	var ok=0;

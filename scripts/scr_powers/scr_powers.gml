@@ -75,7 +75,7 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
         
 	    }
 	}
-	if (array_contains(obj_ini.adv,"Daemon Binders")) then binders=true;
+	if (scr_has_adv("Daemon Binders")) then binders=true;
 	var p_type="";p_rang=0;p_tar=0;p_spli=0;p_att=0;p_arp=0;p_duration=0;
 
 	if (string_count("Z",using)>0){
@@ -484,9 +484,9 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 	// peril1+=30;
 	if (string_count("Hood",marine_gear[unit_id])>0) then peril1-=5;
 	if (peril1<1) then peril1=1;
-	if (string_count("Warp Touched",obj_ini.strin2)>0) then peril1+=2;
+	if (scr_has_disadv("Warp Touched")) then peril1+=2;
 	if (marine_type[unit_id]="Chapter Master") and (peril1>1) then peril1=round(peril1/2);
-	if (string_count("Shitty",obj_ini.strin2)>0) then peril1+=3;
+	if (scr_has_disadv("Shitty Luck")) then peril1+=3;
 
 	if (book_powers!="") then peril1+=tome_bad;
 	if (string_count("daemon",book_powers)>0) then peril1+=3;
@@ -506,8 +506,8 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 
 	    p_type="perils";
 	    flavour_text3="";
-	    if (array_contains(obj_ini.dis,"Warp Touched")) then peril3+=20;
-	    if (array_contains(obj_ini.dis,"Shitty Luck")) then peril3+=25;
+	    if (scr_has_disadv("Warp Touched")) then peril3+=20;
+	    if (scr_has_disadv("Shitty Luck")) then peril3+=25;
 
 	    if (string_count("daemon",book_powers)>0) then peril1+=25;
 

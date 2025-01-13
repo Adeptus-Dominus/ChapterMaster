@@ -57,7 +57,7 @@ function scr_menu_clear_up(specific_area_function){
 function scr_change_menu(specific_area_function){
 	var continue_sequence = false;
 	with (obj_controller){
-		set_zoom_to_defualt();
+		set_zoom_to_default();
 		continue_sequence = scr_menu_clear_up(function(){
 			if (zoomed==0)  && (diplomacy==0){
 				return true;
@@ -75,7 +75,7 @@ function scr_in_game_help(){
 	scr_change_menu(function(){
 		with (obj_controller){
 			if (zoomed == 0) and (!instance_exists(obj_ingame_menu)) and (!instance_exists(obj_popup)){
-				set_zoom_to_defualt();
+				set_zoom_to_default();
 				if (menu!=17.5){
 					menu=17.5;
 					cooldown=8000;
@@ -105,7 +105,7 @@ function scr_in_game_menu(){
 				location_viewer.update_garrison_log();
 				managing=0;
 			}
-			set_zoom_to_defualt();
+			set_zoom_to_default();
 			instance_create(0,0,obj_ingame_menu);
 		}
 	});

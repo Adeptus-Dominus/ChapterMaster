@@ -62,8 +62,9 @@ if (!zoomed && !zui){
     draw_set_font(fnt_menu);
     draw_set_halign(fa_center);
     // Draws the sector name
-    draw_text(775,17,string_hash_to_newline("Sector "+string(obj_ini.sector_name)));
-    draw_text(775.5,17.5,string_hash_to_newline("Sector "+string(obj_ini.sector_name)));
+    var _sector_string = $"Sector {obj_ini.sector_name ?? "Terra Nova"}";
+    draw_text(775,17,_sector_string);
+    draw_text(775.5,17.5,_sector_string);
     
     // Checks if you are penitent
     if (obj_controller.faction_status[eFACTION.Imperium]!="War"){

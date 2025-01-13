@@ -982,14 +982,14 @@ function scr_marine_trait_spawning(distribution_set){
 			var dist_rate=[];
 			array_copy(dist_rate, 0, distribution_set[i][1], 0, array_length(distribution_set[i][1]));
 			if (struct_exists(dist_modifiers, "disadvantage")){
-				if (array_contains(obj_ini.dis, dist_modifiers[$"disadvantage"][0])){
+				if (scr_has_disadv(dist_modifiers[$"disadvantage"][0])){
 					dist_rate = dist_modifiers[$"disadvantage"][1];  //apply new modifier rate
 				} else if (is_state_required(dist_modifiers[$"disadvantage"])){
 					dist_rate=[0,0];
 				}
 			}
 			if (struct_exists(dist_modifiers, "advantage")){
-				if (array_contains(obj_ini.adv, dist_modifiers[$"advantage"][0])){
+				if (scr_has_adv(dist_modifiers[$"advantage"][0])){
 					dist_rate = dist_modifiers[$"advantage"][1];  //apply new modifier rate
 				} else if (is_state_required(dist_modifiers[$"advantage"])){
 					dist_rate=[0,0];

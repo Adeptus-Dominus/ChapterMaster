@@ -96,7 +96,7 @@ function scr_add_artifact(artifact_type, artifact_tags, is_identified, artifact_
 
 
 	rand2=floor(random(100))+1;good=0;
-	if (string_count("Shit",obj_ini.strin2)>0){rand2=min(rand2+20,100);}
+	if (scr_has_disadv("Shitty Luck")){rand2=min(rand2+20,100);}
 	if (rand2<=70){t3="";}
 	else if (rand2<=90 && artifact_type!="random_nodemon"){
 		array_push(tags, "chaos");

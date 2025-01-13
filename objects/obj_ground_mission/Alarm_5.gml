@@ -4,7 +4,7 @@ plan=instance_nearest(x,y,obj_star);
 
 var mission,mission_roll;
 mission="bad";mission_roll=floor(random(100))+1;
-if (string_count("Ambusher",obj_ini.strin)=1) then mission_roll-=15;
+if (scr_has_adv("Ambushers")) then mission_roll-=15;
 if (plan.p_owner[num]=3) then mission_roll+=20;
 if (mission_roll<=60) then mission="good";// 135
 if (plan.p_type[num]="Dead") then mission="good";

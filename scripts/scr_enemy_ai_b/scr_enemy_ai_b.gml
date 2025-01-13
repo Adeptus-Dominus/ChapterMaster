@@ -66,7 +66,7 @@ function scr_enemy_ai_b() {
             
 	            var fleet_spawn_chance=irandom(99)+1
 	            onceh=0;
-	            if (array_contains(obj_ini.dis,"Shitty Luck")) then fleet_spawn_chance-=5;
+	            if (scr_has_disadv("Shitty Luck")) then fleet_spawn_chance-=5;
 
 	            if (fleet_spawn_chance<=15){
 	                if (present_fleet[eFACTION.Necrons] > 0) {//if necron fleet

@@ -1781,35 +1781,34 @@ function scr_dialogue(diplo_keyphrase) {
 	        diplo_text+="###";
 			// * Normal craftworld reveal *
 	        if (string_count("1",diplo_keyphrase)>0){
-	            if (obj_ini.tolerant==1) and (string_count("Eldar",obj_ini.strin)==0){
-					diplo_text+="Your future is clouded, human.  Will you be a tool, or a thorn in our side?";
-				}
-	            if (obj_ini.tolerant==0) and (string_count("Eldar",obj_ini.strin)==0){
-					diplo_text+="Another repulsive Mon'keigh.  Leave the Eldar alone, primitive.  You have no idea what you face.";
-				}
-	            if (string_count("Eldar",obj_ini.strin)=1){
+				if (scr_has_adv("Enemy: Eldar")){
 					diplo_text+="This is our home, Mon'keigh.  Leave it in peace or feel the full wrath of Kaela Mensha Khaine.";
+				} else {
+					if (obj_ini.tolerant==1){
+						diplo_text+="Your future is clouded, human.  Will you be a tool, or a thorn in our side?";
+					} else {
+						diplo_text+="Another repulsive Mon'keigh.  Leave the Eldar alone, primitive.  You have no idea what you face.";
+					}
 				}
 	        }
 			// * Running into eldar ships *
 	        if (string_count("2",diplo_keyphrase)>0){
-	            if (obj_ini.tolerant==1) and (string_count("Eldar",obj_ini.strin)==0){
+	            if (obj_ini.tolerant==1) and (!scr_has_adv("Enemy: Eldar")){
 					diplo_text+="This meeting is long since due.  I pray that you pull back your forces, "+string(obj_ini.master_name)+".  None of this concerns you.";
-				}
-	            if (obj_ini.tolerant==0) or (string_count("Eldar",obj_ini.strin)==1){
+				} else {
 					diplo_text+="You do not understand that which you trifle with.  Leave or be eradicated.";
 				}
 	        }
 			// * Request audience *
 	        if (diplo_keyphrase=="intro"){
-	            if (obj_ini.tolerant==1) and (string_count("Eldar",obj_ini.strin)==0){
-					diplo_text+="We have been expecting you, "+string(obj_ini.master_name)+".";
-				}
-	            if (obj_ini.tolerant==0) and (string_count("Eldar",obj_ini.strin)==0){
-					diplo_text+="The skeins have foretold of our meeting, Space Marine.";
-				}
-	            if (string_count("Eldar",obj_ini.strin)=1){
+				if (scr_has_adv("Enemy: Eldar")){
 					diplo_text+="Another repulsive Mon'keigh.  Leave the Eldar alone, primitive, you have no idea what you face.";
+				} else {
+					if (obj_ini.tolerant==1) {
+						diplo_text+="We have been expecting you, "+string(obj_ini.master_name)+".";
+					} else {
+						diplo_text+="The skeins have foretold of our meeting, Space Marine.";
+					}
 				}
 	        }
 	        diplo_text+=tempd;
@@ -2269,14 +2268,14 @@ function scr_dialogue(diplo_keyphrase) {
 	        if (rando==1) then diplo_text="[["+string(faction_leader[diplomacy])+" is the scourge of the sector, a colossal green brute infamous for the destruction of a dozen worlds. He rules his vicious horde of xenos savages the only way greenskins know how; with brute force. Trophies from the champions of a score of races bedeck his armour, including many from "+string(choose("other Astartes","the Tyranids","the Tau Empire"))+".]]";
 	        if (rando==2) then diplo_text="[["+string(faction_leader[diplomacy])+" is a veteran of countless engagements, leading his tribe into battle with an almost manic giddiness. His name is synonymous with extended campaigns of looting and senseless violence, even more so than the other members of his barbaric race. He and the rest of his tribe hail from the "+string(choose("Goffs","Blood Axes","Bad Moons","Death Skulls","Death Skulls"))+" clan.]]";
 	        diplo_text+="###";
-	        if (obj_ini.tolerant==1) and (string_count("Ork",obj_ini.strin)==0){
-				diplo_text+="You seem good for a scrap, ya beaky faced ponce! Bring your lads down my way some time and we'll have one!";
-			}
-	        if (obj_ini.tolerant==0) and (string_count("Ork",obj_ini.strin)==0){
-				diplo_text+="All you space marines seem da same ta me. I reckon we'll be seein' each other soon enough...";
-			}
-	        if (string_count("Ork",obj_ini.strin)==1){
+			if (scr_has_adv("Enemy: Orks")){
 				diplo_text+="Oi Beaky! I ain't heard your name round here before! If ya eva get bored of havin' your ‘ead attached to your shouldas, good old "+string(faction_leader[diplomacy])+" can sort dat out for ya!";
+			} else {
+				if (obj_ini.tolerant==1){
+					diplo_text+="You seem good for a scrap, ya beaky faced ponce! Bring your lads down my way some time and we'll have one!";
+				} else {
+					diplo_text+="All you space marines seem da same ta me. I reckon we'll be seein' each other soon enough...";
+				}
 			}
 	        diplo_text+=tempd;
 	    }

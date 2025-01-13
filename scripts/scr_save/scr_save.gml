@@ -275,8 +275,8 @@ function scr_save(save_part,save_id) {
 	    ini_write_real("Ini","icon",obj_ini.icon);
 	    ini_write_string("Ini","icon_name",obj_ini.icon_name);
 	    ini_write_real("Ini","man_size",obj_ini.man_size);
-	    ini_write_string("Ini","strin1",obj_ini.strin);
-	    ini_write_string("Ini","strin2",obj_ini.strin2);
+	    // ini_write_string("Ini","strin1",obj_ini.strin);
+	    // ini_write_string("Ini","strin2",obj_ini.strin2);
 	    ini_write_string("Ini","psy_powers",obj_ini.psy_powers);
 	    ini_encode_and_json("Ini", "FullLivery",obj_ini.full_liveries)
 		ini_write_real("Ini","companies",obj_ini.companies);
@@ -421,91 +421,6 @@ function scr_save(save_part,save_id) {
                 }
             }
 	    }
-
-
-
-
-	    var i=0;
-	    ini_write_string("Res","nm",obj_controller.restart_name);
-	    ini_write_real("Res","found",obj_controller.restart_founding);
-	    ini_write_string("Res","secre",obj_controller.restart_secret);
-	    ini_write_string("Res","tit0",obj_controller.restart_title[0]);
-
-	    repeat(11){i+=1;ini_write_string("Res","tit"+string(i),obj_controller.restart_title[i]);}
-	    ini_write_real("Res","ico",obj_controller.restart_icon);
-	    ini_write_string("Res","icn",obj_controller.restart_icon_name);
-	    ini_write_string("Res","power",obj_controller.restart_powers);
-	    var ad;ad=-1;repeat(5){ad+=1;ini_write_string("Res","adv"+string(ad),obj_controller.restart_adv[ad]);ini_write_string("Res","dis"+string(ad),obj_controller.restart_dis[ad]);}
-	    ini_write_string("Res","rcrtyp",obj_controller.restart_recruiting_type);
-	    ini_write_string("Res","trial",obj_controller.restart_trial);
-	    ini_write_string("Res","rcrnam",obj_controller.restart_recruiting_name);
-	    ini_write_string("Res","homtyp",obj_controller.restart_home_type);
-	    ini_write_string("Res","homnam",obj_controller.restart_home_name);
-
-	    ini_write_real("Res","flit",obj_controller.restart_fleet_type);
-	    ini_write_real("Res","recr_e",obj_controller.restart_recruiting_exists);
-	    ini_write_real("Res","home_e",obj_controller.restart_homeworld_exists);
-	    ini_write_real("Res","home_r",obj_controller.restart_homeworld_rule);
-	    ini_write_string("Res","cry",obj_controller.restart_battle_cry);
-	    ini_write_string("Res","flagship",obj_controller.restart_flagship_name);
-	    ini_write_string("Res","maincol",obj_controller.col[obj_controller.restart_main_color]);
-	    ini_write_string("Res","seccol",obj_controller.col[obj_controller.restart_secondary_color]);
-	    ini_write_string("Res","tricol",obj_controller.col[obj_controller.restart_trim_color]);
-	    ini_write_string("Res","paul2col",obj_controller.col[obj_controller.restart_pauldron2_color]);
-	    ini_write_string("Res","paul1col",obj_controller.col[obj_controller.restart_pauldron_color]);
-	    ini_write_string("Res","lenscol",obj_controller.col[obj_controller.restart_lens_color]);
-	    ini_write_string("Res","wepcol",obj_controller.col[obj_controller.restart_weapon_color]);
-	    ini_write_real("Res","speccol",obj_controller.restart_col_special);
-	    ini_write_real("Res","trim",obj_controller.restart_trim);
-	    ini_write_real("Res","skin",obj_controller.restart_skin_color);
-	    ini_write_string("Res","hapo",obj_controller.restart_hapothecary);
-	    ini_write_string("Res","hcha",obj_controller.restart_hchaplain);
-	    ini_write_string("Res","clib",obj_controller.restart_clibrarian);
-	    ini_write_string("Res","fmas",obj_controller.restart_fmaster);
-	    ini_write_string("Res","recruiter",obj_controller.restart_recruiter);
-	    ini_write_string("Res","admir",obj_controller.restart_admiral);
-	    ini_write_real("Res","eqspec",obj_controller.restart_equal_specialists);
-	    ini_write_string("Res","load2",base64_encode(json_stringify(obj_controller.restart_load_to_ships)));
-	    ini_write_real("Res","successors",obj_controller.restart_successors);
-	    ini_write_real("Res","muta",obj_controller.restart_mutations);
-	    ini_write_real("Res","preo",obj_controller.restart_preomnor);
-	    ini_write_real("Res","voic",obj_controller.restart_voice);
-	    ini_write_real("Res","doom",obj_controller.restart_doomed);
-	    ini_write_real("Res","lyma",obj_controller.restart_lyman);
-	    ini_write_real("Res","omop",obj_controller.restart_omophagea);
-	    ini_write_real("Res","ossm",obj_controller.restart_ossmodula);
-	    ini_write_real("Res","memb",obj_controller.restart_membrane);
-	    ini_write_real("Res","zygo",obj_controller.restart_zygote);
-	    ini_write_real("Res","betc",obj_controller.restart_betchers);
-	    ini_write_real("Res","catal",obj_controller.restart_catalepsean);
-	    ini_write_real("Res","secr",obj_controller.restart_secretions);
-	    ini_write_real("Res","occu",obj_controller.restart_occulobe);
-	    ini_write_real("Res","mucra",obj_controller.restart_mucranoid);
-	    ini_write_string("Res","master_name",obj_controller.restart_master_name);
-	    ini_write_real("Res","master_melee",obj_controller.restart_master_melee);
-	    ini_write_real("Res","master_ranged",obj_controller.restart_master_ranged);
-	    ini_write_real("Res","master_specialty",obj_controller.restart_master_specialty);
-	    ini_write_real("Res","strength",obj_controller.restart_strength);
-	    ini_write_real("Res","cooperation",obj_controller.restart_cooperation);
-	    ini_write_real("Res","purity",obj_controller.restart_purity);
-	    ini_write_real("Res","stability",obj_controller.restart_stability);
-	    i=99;
-	    repeat(3){i+=1;
-	         var o;o=1;
-	         repeat(14){o+=1;
-	            if (o=11) then o=12;
-	            if (o=13) then o=14;
-	            ini_write_real("Res","r_race"+string(i)+"."+string(o),obj_controller.r_race[i,o]);
-	            ini_write_string("Res","r_role"+string(i)+"."+string(o),obj_controller.r_role[i,o]);
-	            ini_write_string("Res","r_wep1"+string(i)+"."+string(o),obj_controller.r_wep1[i,o]);
-	            ini_write_string("Res","r_wep2"+string(i)+"."+string(o),obj_controller.r_wep2[i,o]);
-	            ini_write_string("Res","r_armour"+string(i)+"."+string(o),obj_controller.r_armour[i,o]);
-	            ini_write_string("Res","r_mobi"+string(i)+"."+string(o),obj_controller.r_mobi[i,o]);
-	            ini_write_string("Res","r_gear"+string(i)+"."+string(o),obj_controller.r_gear[i,o]);
-	         }
-	    }// 100 is defaults, 101 is the allowable starting equipment
-
-
 	    ini_close();
 	}
 

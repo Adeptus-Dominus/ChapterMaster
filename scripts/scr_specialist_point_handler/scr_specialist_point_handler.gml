@@ -84,7 +84,7 @@ function SpecialistPointHandler() constructor{
         forge_string += $"Techmarines: +{floor(forge_points)}#";
         forge_points-=tech_points_used;        
         forge_string += $"Vehicle Repairs:#";
-        forge_string += $"   Combat Repairs : {forge_veh_maintenance.repairs}"
+        forge_string += $"   Combat Repairs : {forge_veh_maintenance.repairs}\n";
         if (struct_exists(forge_veh_maintenance, "land_raider")){
             forge_string += $"   Land Raider Maintenance: -{forge_veh_maintenance.land_raider}#";
             forge_points-=forge_veh_maintenance.land_raider;
@@ -146,7 +146,7 @@ function SpecialistPointHandler() constructor{
     static new_tech_heretic_spawn = function() {
         var _tester = global.character_tester;
         var _possibility_of_heresy = 8;
-        if (array_contains(obj_ini.dis, "Tech-Heresy")) {
+        if (scr_has_disadv("Tech-Heresy")) {
             _possibility_of_heresy = 6;
         }
         if (irandom(power(_possibility_of_heresy, (array_length(techs) + 2.2))) == 0 && array_length(techs) > 0) {

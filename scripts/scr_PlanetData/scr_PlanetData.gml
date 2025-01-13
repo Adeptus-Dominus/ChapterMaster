@@ -26,22 +26,25 @@ function PlanetData(planet, system) constructor{
     ground_defences = system.p_defenses[planet];
     upgrades = system.p_upgrades[planet];
     // v how much of a problem they are from 1-5
-    planet_forces = [
-    	0,
-    	player_forces,
-    	guardsmen,
-    	0,
-    	0,
-    	system.p_sisters[planet],
-    	system.p_eldar[planet],
-    	system.p_orks[planet],
-    	system.p_tau[planet],
-    	system.p_tyranids[planet],
-		system.p_traitors[planet],    	
-    	system.p_chaos[planet]+ system.p_demons[planet],
-    	0,
-    	system.p_necrons[planet]
-    ]
+    planet_forces = array_create(14, 0);
+
+    try{
+    	planet_forces[1] = player_forces;
+
+	    planet_forces[2] =	guardsmen;
+
+	    planet_forces[5] =	system.p_sisters[planet];
+	    planet_forces[6] =	system.p_eldar[planet];
+	    planet_forces[7] =	system.p_orks[planet];
+	    planet_forces[8] =	system.p_tau[planet];
+	    planet_forces[9] =	system.p_tyranids[planet];
+		planet_forces[10] =	system.p_traitors[planet];   	
+	    planet_forces[11] =	system.p_chaos[planet]+ system.p_demons[planet];
+
+	    planet_forces[13] =	system.p_necrons[planet];
+	}catch(_exception){
+		handle_exception(_exception);
+	}
 
     deamons = system.p_demons[planet];
     chaos_forces = system.p_chaos[planet];
@@ -122,45 +125,42 @@ function PlanetData(planet, system) constructor{
 
     static recover_starship = function(techs){
     	try {
-			var engineer_count=array_length(techs);
-			if (has_feature(P_features.Starship) && engineer_count>0 && turn_end){
+			var engineer_count = array_length(techs);
+			if (has_feature(P_features.Starship) && engineer_count>0){
 				//TODO allow total tech point usage here
-		        var _starship = get_features(,P_features.Starship)[0];
+		        var _starship = get_features(P_features.Starship)[0];
 
 		        var _engineer_score_start = _starship.engineer_score;
 		    	if (_starship.engineer_score<2000){
 		        	for (var v=0;v<engineer_count;v++){
 		        		_starship.engineer_score += (techs[v].technology/2);
 		        	}
-		        	scr_alert("green","owner",$"Ancient ship repairs {min((_starship.engineer_score/2000)*100, 100)}% complete",x,y);
+		        	scr_alert("green","owner",$"Ancient ship repairs {min((_starship.engineer_score/2000)*100, 100)}% complete",system.x,system.y);
 		    	}
 
-		        var _maxr=0,_requisition_spend=0,_target_spend=10000;
+		        var _target_spend=10000;
 
-		        _maxr=floor(obj_controller.requisition/50);
-		        _requisition_spend=min(_maxr*50,array_length(techs)*50,_target_spend-_starship.funds_spent);
+		        var _maxr=floor(obj_controller.requisition/50);
+		        var _requisition_spend=min(_maxr*50,array_length(techs)*50,_target_spend-_starship.funds_spent);
 		        obj_controller.requisition-=_requisition_spend;
 		        _starship.funds_spent+=_requisition_spend;
 		    
 		        if (_requisition_spend>0 && _starship.funds_spent<_target_spend){
-		            scr_alert("green","owner",$"{_requisition_spend} Requision spent on Ancient Ship repairs in materials and outfitting (outfitting {(_starship.funds_spent/_target_spend)*100}%)",x,y);
+		            scr_alert("green","owner",$"{_requisition_spend} Requision spent on Ancient Ship repairs in materials and outfitting (outfitting {(_starship.funds_spent/_target_spend)*100}%)",system.x,system.y);
 		        }
 		        if (_starship.funds_spent>=_target_spend && _starship.engineer_score>=2000){// u2=tar;
 		        	//TODO refactor into general new ship logic
-		            delete_features(cur_system.p_feature[p],P_features.Starship);
+		            delete_features(features,P_features.Starship);
 		        
-		            var locy=$"{name} {scr_roman_numerals()[p-1]}";
+		            var locy=$"{name()}";
 		        
-		            var flit=instance_create(cur_system.x,cur_system.y,obj_p_fleet);
+		            var flit=instance_create(system.x,system.y,obj_p_fleet);
 		      
-		        	var _slaughter = new_player_ship("Gloriana", name, "Slaughtersong");
-		            flit.capital[1]=obj_ini.ship[_slaughter];
-		            flit.capital_number=1;
-		            flit.capital_num[1]=_slaughter;
-		            flit.capital_uid[1]=obj_ini.ship_uid[_slaughter];
-		            flit.oribiting = cur_system.id;
+		        	var _slaughter = new_player_ship("Gloriana", system.name, "Slaughtersong");
+		        	add_ship_to_fleet(_slaughter, flit);
+		            flit.oribiting = system.id;
 		        
-		            scr_popup($"Ancient Ship Restored",$"The ancient ship within the ruins of {locy} has been fully repaired.  It is determined to be a Slaughtersong vessel and is bristling with golden age weaponry and armour.  Your {string(obj_ini.role[100][16])}s are excited; the Slaughtersong is ready for it's maiden voyage, at your command.","","");                
+		            scr_popup($"Ancient Ship Restored",$"The ancient ship within the ruins of {locy} has been fully repaired.  It is determined to be a Gloriana Class vessel and is bristling with golden age weaponry and armour.  Your {string(obj_ini.role[100][16])}s are excited; the Slaughtersong is ready for it's maiden voyage, at your command.","","");                
 		        }
 		    }    	
 	    }catch (_exception){

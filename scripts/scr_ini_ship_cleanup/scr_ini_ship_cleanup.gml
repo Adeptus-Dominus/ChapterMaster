@@ -7,17 +7,25 @@ function scr_kill_ship(index){
 			for (var co=0;co<=companies;co++){
 				for (var i=0;i<array_length(name[co]);i++){
 					_unit = fetch_unit([co,i]);
-					if (_unit.ship_location == index){
-						if (!irandom(luck)-3){
-							scr_kill_unit(_unit.company, _unit.marine_number);
+					if (_unit.ship_location>-1){
+						if (_unit.ship_location == index){
+							if (!(irandom(_unit.luck)-3)){
+								scr_kill_unit(_unit.company, _unit.marine_number);
+							} else {
+								array_push(_units_on_ship, _unit);
+							}
 						} else {
-							array_push(_units_on_ship, _unit);
+							if (_unit.ship_location>index){
+								_unit.ship_location--;
+							}
 						}
 					}
 				}
-				for (var i=0;i<array_length(veh_role);i++){
+				for (var i=0;i<array_length(veh_role[co]);i++){
 					if (veh_lid[co][i]==index){
 						reset_vehicle_variable_arrays(co, i);
+					} else if (veh_lid[co][i]>index){
+						veh_lid[co][i]--;
 					}
 				}
 			}

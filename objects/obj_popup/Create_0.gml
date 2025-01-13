@@ -1,4 +1,4 @@
-set_zoom_to_defualt();
+set_zoom_to_default();
 type=0;size=2;y_scale=1;
 if (size=1) then sprite_index=spr_popup_small;
 if (size=2) then sprite_index=spr_popup_medium;

@@ -172,7 +172,7 @@ function scr_player_combat_weapon_stacks() {
 
                 if (unit.IsSpecialist("libs",true)||(unit.role()=="Chapter Master" && obj_ncombat.chapter_master_psyker=1)){
                     var cast_dice=irandom(99)+1;
-                    if (array_contains(obj_ini.dis,"Warp Touched")) then cast_dice-=5;
+                    if (scr_has_disadv("Warp Touched")) then cast_dice-=5;
 
                     cast_dice-=(unit.psionic+(unit.experience/60))
 

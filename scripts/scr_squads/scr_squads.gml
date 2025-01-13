@@ -651,7 +651,7 @@ function game_start_squads(){
 		create_squad("command_squad", company);
 		last_squad_count = array_length(obj_ini.squads);
 		while (last_squad_count == array_length(obj_ini.squads)){ ///keep making tact squads for as long as there are enough tact marines
-			if (global.chapter_name == "White Scars") or (array_contains(obj_ini.adv, "Lightning Warriors")) {
+			if (scr_has_adv("Lightning Warriors")) {
 				last_squad_count = (array_length(obj_ini.squads) + 1);
 				if(last_squad_count%2 == 0){		
 					create_squad("tactical_squad", company);
@@ -670,7 +670,7 @@ function game_start_squads(){
 		}		
 		last_squad_count = array_length(obj_ini.squads);
 		while (last_squad_count == array_length(obj_ini.squads)){
-			if (array_contains(obj_ini.adv, "Boarders")) {
+			if (scr_has_adv("Boarders")) {
 				last_squad_count = (array_length(obj_ini.squads) + 1);
 				if(last_squad_count%2 == 0){		
 					create_squad("assault_squad", company);

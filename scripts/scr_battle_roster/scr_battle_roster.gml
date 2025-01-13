@@ -52,7 +52,7 @@ function scr_battle_roster(required_location, _target_location, _is_planet, over
                 //Special (okay -1) battle cases go here
                 var _not_dread_advised = (_spyrer_mission > 0) or(new_combat.battle_special == "space_hulk") or(string_count("chaos_meeting", new_combat.battle_special) > 0);
                 if (_not_dread_advised) {
-                    var _u_armour = unit.armour_data();
+                    var _u_armour = unit.get_armour_data();
                     if (is_struct(_u_armour)){
                         if (_u_armour.has_tag("dreadnought")){
                             okay = -1;

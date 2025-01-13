@@ -1,14 +1,14 @@
 "PR: Docs":
 - changed-files:
-  - any-glob-to-all-files: ['docs/*', 'guides/*', '**/*.md']
+  - any-glob-to-any-file: ['docs/*', 'guides/*', '**/*.md']
 
-"PR: Chore":
+"PR: CI":
 - changed-files:
-  - any-glob-to-all-files: ['.github/*', '**/*.yml', '.gitattributes', '.gitignore']
+  - any-glob-to-any-file: ['.github/*', '**/*.yml', '.gitattributes', '.gitignore']
 
 "PR: JSON":
 - changed-files:
-  - all-globs-to-all-files: ['**/*.json']
+  - all-globs-to-any-file: ['**/*.json']
 
 "PR: Audio":
 - changed-files:

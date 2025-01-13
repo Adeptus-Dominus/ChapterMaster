@@ -131,7 +131,7 @@ function scr_livery_setup(){
     }else{
         draw_text(444,252,string_hash_to_newline("Color swap shader#did not compile"));
     }
-    var liv_string = $"Full Livery \n{livery_picker.role_set == 0? "Defualt" :role[100][livery_picker.role_set]}";
+    var liv_string = $"Full Livery \n{livery_picker.role_set == 0? "default" :role[100][livery_picker.role_set]}";
     draw_text(160, 100, liv_string);    
     
     draw_set_color(38144);
@@ -283,7 +283,7 @@ function scr_livery_setup(){
 	    			lens_color:lens_color,
 	    			weapon_color:weapon_color
 	    		}
-	    		livery_picker.set_defualt_armour(struct_cols, col_special);          
+	    		livery_picker.set_default_armour(struct_cols, col_special);          
              }
              draw_text_transformed(cur_button.cords[0]+30,cur_button.cords[1]+4,cur_button.text,0.4,0.4,0);
         }
@@ -537,7 +537,7 @@ function scr_livery_setup(){
         }
     }
     if (livery_picker.role_set!=0){
-    	if (point_and_click(draw_unit_buttons([20, 50], $"Return to defualt Livery"))){
+    	if (point_and_click(draw_unit_buttons([20, 50], $"Return to default Livery"))){
             full_liveries[livery_picker.role_set] = DeepCloneStruct(livery_picker.map_colour);
             livery_picker.map_colour = full_liveries[0];
             livery_picker.role_set = 0;   		

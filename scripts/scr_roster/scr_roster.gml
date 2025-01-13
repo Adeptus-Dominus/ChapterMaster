@@ -283,35 +283,43 @@ function Roster() constructor{
                     }
                 }
             }
-            if (obj_drop_select.attack){
-                for (var i=0;i<array_length(obj_ini.veh_race[co]);i++){
-                	var _allow = false;
-                	 if (obj_ini.veh_race[co][i] == 0) then continue;
-                	 if (obj_ini.veh_loc[co][i] == roster_location){
-                	 	 if (obj_ini.veh_wid[co][i]>0){
-                	 	 	 if (obj_ini.veh_wid[co][i] ==roster_planet){
-                	 	 	 	_allow=true;
-                	 	 	 }
-                	 	 }
-                	 }
-    				if (obj_ini.veh_lid[co][i]>-1){
-            	 	 	if (obj_ini.veh_lid[co][i]>= array_length(obj_ini.ship_location)){
-            	 	 		obj_ini.veh_lid[co][i] = -1;
-            	 	 	}
-            	 	 	if (obj_ini.ship_location[obj_ini.veh_lid[co][i]] == roster_location){
-            	 	 		_allow=true;
-            	 	 	}
-            	 	}
-            	 	if (_allow){
-                        _company_present = true;
-            	 		array_push(full_roster_units, [co, i]);
-            	 		if (!array_contains(_vehicles, obj_ini.veh_role[co][i])){
-                            array_push(_vehicles, obj_ini.veh_role[co][i]);
-            	 			new_vehicle_button(obj_ini.veh_role[co][i],obj_ini.veh_role[co][i]);
-            	 		}
-            	 	}
+
+            var _raid_allowable = ["Land Speeder"];
+            for (var i=0;i<array_length(obj_ini.veh_race[co]);i++){
+            	var _allow = false;
+            	 if (obj_ini.veh_race[co][i] == 0) then continue;
+                 var _v_role = obj_ini.veh_role[co][i];
+            	 if (obj_ini.veh_loc[co][i] == roster_location){
+            	 	 if (obj_ini.veh_wid[co][i]>0){
+            	 	 	 if (obj_ini.veh_wid[co][i] ==roster_planet){
+            	 	 	 	_allow=true;
+            	 	 	 }
+            	 	 }
+            	 }
+				if (obj_ini.veh_lid[co][i]>-1){
+        	 	 	if (obj_ini.veh_lid[co][i]>= array_length(obj_ini.ship_location)){
+        	 	 		obj_ini.veh_lid[co][i] = -1;
+        	 	 	}
+        	 	 	if (obj_ini.ship_location[obj_ini.veh_lid[co][i]] == roster_location){
+        	 	 		_allow=true;
+        	 	 	}
+        	 	}
+                if (_allow){
+                    if (!obj_drop_select.attack){
+    
+                        _allow = array_contains(_raid_allowable, _v_role);
+                    }
                 }
+        	 	if (_allow){
+                    _company_present = true;
+        	 		array_push(full_roster_units, [co, i]);
+        	 		if (!array_contains(_vehicles, obj_ini.veh_role[co][i])){
+                        array_push(_vehicles, obj_ini.veh_role[co][i]);
+        	 			new_vehicle_button(obj_ini.veh_role[co][i],obj_ini.veh_role[co][i]);
+        	 		}
+        	 	}
             }
+
             var _button = new ToggleButton();
             var _col = _company_present ? CM_GREEN_COLOR : c_red;
             var _display = co ? scr_roman_numerals()[co-1] : "HQ";

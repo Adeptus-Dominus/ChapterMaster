@@ -494,3 +494,31 @@ function company_manage_actions(){
     	switch_view_company(new_view)
     } 	 	 
 }
+
+function ui_manage_hotkeys(){
+	if (managing >=0){
+	    for (var i=1;i<10;i++){ 
+	    	if (press_exclusive(ord(string(i)))){
+	    		switch_view_company(i);
+	    	}
+	    }
+		if (press_exclusive(ord("0"))){
+			switch_view_company(10);
+		}
+		else if (press_exclusive(ord("Q"))){
+			switch_view_company(11);
+		} 
+		else if (press_exclusive(ord("E"))){
+			switch_view_company(12);
+		}
+		else if (press_exclusive(ord("R"))){
+			switch_view_company(13);
+		}
+		else if (press_exclusive(ord("T"))){
+			switch_view_company(14);
+		}
+		else if (press_exclusive(ord("Y"))){
+			switch_view_company(15);
+		}    		
+	}	
+}

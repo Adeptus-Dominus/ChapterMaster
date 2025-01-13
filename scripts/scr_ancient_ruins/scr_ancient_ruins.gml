@@ -20,7 +20,9 @@ function scr_ruins_suprise_attack_player(){
 		instance_deactivate_all(true);
 		instance_activate_object(obj_controller);
 		instance_activate_object(obj_ini);
+		instance_activate_object(obj_star_select);
 		instance_activate_object(obj_star);
+		instance_activate_object(obj_ground_mission);
 		var _star = star_by_name(obj_ground_mission.loc);
 		var _planet = obj_ground_mission.num;
 		
@@ -30,7 +32,7 @@ function scr_ruins_suprise_attack_player(){
 		
 		//that_one=instance_nearest(0,0,obj_star);
 	// instance_activate_object(obj_star);
-		scr_battle_roster(_star.name ,_planet,true);
+		scr_battle_roster(obj_ground_mission.loc ,_planet,true);
 		obj_controller.cooldown=10;
 		obj_ncombat.battle_object=_star;
 		obj_ncombat.battle_loc=_star.name;
@@ -48,6 +50,10 @@ function scr_ruins_suprise_attack_player(){
 	} catch (_exception) {
 		handle_exception(_exception);
 		instance_activate_all();
+		instance_destroy(obj_popup);
+		instance_destroy(obj_star_select);
+		instance_destroy(obj_ground_mission);	
+		instance_destroy(obj_ncombat);		
 	}
 }
 //spawn point for starship
@@ -134,60 +140,63 @@ function scr_ruins_determine_race(){
 };
 
 
-function scr_explore_ruins(){
+function scr_explore_ruins() {
+	try {
+		obj_controller.current_planet_feature = self;
+		obj_controller.menu = 0;
 
-	obj_controller.current_planet_feature =self;
-	obj_controller.menu=0;
+		var pip = instance_create(0, 0, obj_popup);
+		pip.title = "Ancient Ruins";
 
-    var pip=instance_create(0,0,obj_popup);
-    pip.title="Ancient Ruins";
-    
-    var nu=planet_numeral_name(planet,star);
+		var nu = planet_numeral_name(planet, star);
 
-    var arti=instance_create(star.x,star.y,obj_ground_mission);
-    arti.explore_feature = self;
-    arti.num=planet;
-    arti.loc=star.name;
-    arti.battle_loc=star.name;
-    arti.manag=obj_controller.managing;
-    arti.obj=star;
-    with (arti){
-        setup_planet_mission_group();
-    }
-
-    arti.ship_id=obj_controller.ma_lid[1];
-	obj_controller.current_planet_feature.battle = arti;	    
-
-	 if (failed_exploration){
-	 	pip.text=$"The accursed ruins on {nu} where your brothers fell still holds many secrets including the remains of your brothers honour demands you avenge them."
-	 }else{
-		 pip.text=$"Located upon {nu} is a {ruins_size} expanse of ancient ruins, dating back to times long since forgotten.  Locals are superstitious about the place- as a result the ruins are hardly explored.  What they might contain, and any potential threats, are unknown.";
-		switch (ruins_size){
-			case "tiny":
-				pip.text += "It's tiny nature means no more than five marines can operate in cohesion without being seperated";
-			break;
-			case "small":
-				pip.text += "As a result of it's narrow corridors and tight spaces a squad of any more than 15 would struggle to operate effectivly";
-			break;
-			case "medium":
-				pip.text += "Half a standard company (55) could easily operate effectivly in the many wide spaces and caverns";
-			break;
-			case "large":
-				pip.text += "A whole company (110) would not be confined in the huge spaces that such a ruin contain";
-			break;
-			case "sprawling":
-				pip.text += "The ruins is of an unprecidented size whole legions of old would not feel uncomfortable in such a space"
-			break;
+		var arti = instance_create(star.x, star.y, obj_ground_mission);
+		arti.explore_feature = self;
+		arti.num = planet;
+		arti.loc = star.name;
+		arti.battle_loc = star.name;
+		arti.manag = obj_controller.managing;
+		arti.obj = star;
+		with (arti) {
+			setup_planet_mission_group();
 		}
-		pip.text += ". What is thy will?"
-	}
 
-    pip.option1="Explore the ruins.";
-    pip.option2="Do nothing.";
-    pip.option3="Return your marines to the ship.";
-    pip.image="ancient_ruins";
-   		
+		arti.ship_id = obj_controller.ma_lid[1];
+		obj_controller.current_planet_feature.battle = arti;
+
+		if (failed_exploration) {
+			pip.text = $"The accursed ruins on {nu} where your brothers fell still holds many secrets including the remains of your brothers honour demands you avenge them.";
+		} else {
+			pip.text = $"Located upon {nu} is a {ruins_size} expanse of ancient ruins, dating back to times long since forgotten.  Locals are superstitious about the place- as a result the ruins are hardly explored.  What they might contain, and any potential threats, are unknown.";
+			switch (ruins_size) {
+				case "tiny":
+					pip.text += "It's tiny nature means no more than five marines can operate in cohesion without being seperated";
+					break;
+				case "small":
+					pip.text += "As a result of it's narrow corridors and tight spaces a squad of any more than 15 would struggle to operate effectivly";
+					break;
+				case "medium":
+					pip.text += "Half a standard company (55) could easily operate effectivly in the many wide spaces and caverns";
+					break;
+				case "large":
+					pip.text += "A whole company (110) would not be confined in the huge spaces that such a ruin contain";
+					break;
+				case "sprawling":
+					pip.text += "The ruins is of an unprecidented size whole legions of old would not feel uncomfortable in such a space";
+					break;
+			}
+			pip.text += ". What is thy will?";
+		}
+
+		pip.option1 = "Explore the ruins.";
+		pip.option2 = "Do nothing.";
+		pip.option3 = "Return your marines to the ship.";
+		pip.image = "ancient_ruins";
+	} catch (_exception) {
+		handle_exception(_exception);
+	}
 }
+
 function scr_check_for_ruins_exploration(select_planet, star){
 	var _planet_features = star.p_feature[select_planet]
 	var _ruins_list =  search_planet_features( _planet_features, P_features.Ancient_Ruins)

@@ -65,9 +65,10 @@ function UnitButtonObject() constructor{
 	tooltip = "";
 
 	static update = function(data){
-		updaters = struct_get_names(data);
-		for (var i=0;i<array_length(updaters);i++){
-			self[$ updaters[i]] = data[$ updaters[i]];
+		var _updaters = struct_get_names(data);
+		var i=0
+		for (i=0;i<array_length(_updaters);i++){
+			self[$ _updaters[i]] = data[$ _updaters[i]];
 		}
 	}
 

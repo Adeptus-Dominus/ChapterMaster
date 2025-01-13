@@ -1,6 +1,5 @@
 // Sets up the sector spawn and assigns spawned enemies to the sector
 instance_activate_object(obj_star);
-instance_activate_object(obj_restart_vars);
 instance_activate_all();
 
 // Should determine here, randomly what sort of enemy planets there are
@@ -626,8 +625,6 @@ for(var i=0; i<100; i++){
     }
 }
 // End craftworld
-
-scr_restart_variables(2);
 
 if (!instance_exists(obj_saveload)) and (instance_exists(obj_creation)) and (global.load=0){
     for(var i=1; i<=10; i++){

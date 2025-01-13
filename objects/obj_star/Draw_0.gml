@@ -45,31 +45,18 @@ if (!global.load && (obj_controller.zoomed || in_camera_view(star_box_shape())))
         surface_set_target(star_tag_surface);
         var panel_width = string_width(name) + 60;
         if (owner != eFACTION.Player ){
-            var faction_index = owner +1;
-            scr_image_cache("ui/force", faction_index);
-            var faction_sprite = obj_img.image_cache[$"ui/force"][faction_index];
-            var faction_colour = global.star_name_colors[owner];
+            var _faction_index = owner;
+            var faction_colour = global.star_name_colors[_faction_index];
             draw_sprite_general(spr_p_name_bg, 0, 0, 0, string_width(name) + 60, 32, xx-(panel_width/2), yy+30, 1, 1, 0, faction_colour, faction_colour, faction_colour, faction_colour, 1);
-            if (obj_img.force_exists[owner]==-1){
-                try{
-                    // scr_image("ui/force",-50,0,0,0,0);
-                    scr_image_cache("ui/force", faction_index);
-                    var faction_sprite = obj_img.image_cache[$"ui/force"][faction_index];
-                    draw_sprite_ext(faction_sprite,faction_index,xx+(panel_width/2)-30,yy+25, 0.60, 0.60, 0, c_white, 1);
-                } catch(_exception){
-                    handle_exception(_exception);
-                }
-            } else {
-                draw_sprite_ext(faction_sprite,faction_index,xx+(panel_width/2)-30,yy+25, 0.60, 0.60, 0, c_white, 1);
-            }
+            draw_sprite_ext(spr_faction_icons,_faction_index,xx+(panel_width/2)-30,yy+25, 0.60, 0.60, 0, c_white, 1);
         } else {
             scr_shader_initialize();
             var main_color = make_colour_from_array(obj_controller.body_colour_replace);
             var right_pauldron = make_colour_from_array(obj_controller.pauldron_colour_replace);
             draw_sprite_general(spr_p_name_bg, 0, 0, 0, string_width(name) + 60, 32, xx-(panel_width/2), yy+30, 1, 1, 0, main_color, main_color, right_pauldron, right_pauldron, 1);
             var faction_sprite = global.chapter_icon_sprite;
-            var faction_index = global.chapter_icon_frame;
-            draw_sprite_ext(faction_sprite,faction_index,xx+(panel_width/2)-30,yy+30, 0.2, 0.2, 0, c_white, 1);
+            var _faction_index = global.chapter_icon_frame;
+            draw_sprite_ext(faction_sprite,_faction_index,xx+(panel_width/2)-30,yy+30, 0.2, 0.2, 0, c_white, 1);
             //context.set_vertical_gradient(main_color, right_pauldron);
             //draw_text_ext_transformed_color(gx + xoffset,gy + yoffset,text,sep,owner.width,xscale,yscale,angle ,col1, col2, col3, col4, alpha);
         }

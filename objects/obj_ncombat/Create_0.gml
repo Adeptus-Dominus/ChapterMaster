@@ -1,6 +1,6 @@
 if (instance_number(obj_ncombat)>1) then  instance_destroy();
 
-set_zoom_to_defualt();
+set_zoom_to_default();
 var co,i;co=-1;
 repeat(15){co+=1;i=-1;
     repeat(401){i+=1;

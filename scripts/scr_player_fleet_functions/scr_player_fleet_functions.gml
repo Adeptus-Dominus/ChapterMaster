@@ -164,7 +164,9 @@ function find_and_move_ship_between_fleets(out_fleet, in_fleet, index){
 function merge_player_fleets(main_fleet, merge_fleet){
 	var _merge_ships = fleet_full_ship_array(merge_fleet);
 	for (var i=0;i<array_length(_merge_ships);i++){
-		find_and_move_ship_between_fleets(merge_fleet, main_fleet, _merge_ships[i]);
+		if (_merge_ships[i]<array_length(obj_ini.ship)){
+			find_and_move_ship_between_fleets(merge_fleet, main_fleet, _merge_ships[i]);
+		}
 	}
 	main_fleet.alarm[7]=1;
     if (instance_exists(obj_fleet_select)){
@@ -458,26 +460,31 @@ function player_retreat_from_fleet_combat(){
 function fleet_full_ship_array(fleet="none", exclude_capitals=false, exclude_frigates = false, exclude_escorts = false){
 	var all_ships = [];
 	var i;
+	var _ship_count = array_length(obj_ini.ship);
 	if (fleet=="none"){
 		if (!exclude_capitals){
 			for (i=0; i<array_length(capital_num);i++){
 
-				array_push(all_ships, capital_num[i]);
+				if (capital_num[i]<_ship_count){
+					array_push(all_ships, capital_num[i]);
+				}
 
 			}
 		}
 		if (!exclude_frigates){
 			for (i=0; i<array_length(frigate_num);i++){
 
-				array_push(all_ships, frigate_num[i]);
+				if (frigate_num[i]<_ship_count){
+					array_push(all_ships, frigate_num[i]);
+				}
 
 			}
 		}
 		if (!exclude_escorts){
 			for (i=0; i<array_length(escort_num);i++){
-
-				array_push(all_ships, escort_num[i]);
-
+				if (escort_num[i]<_ship_count){
+					array_push(all_ships, escort_num[i]);
+				}
 			}
 		}			
 	} else {

@@ -120,7 +120,7 @@ function ColourItem(xx,yy) constructor{
         }
     }
 
-    static set_defualt_armour = function(struct_cols, armour_style=0){
+    static set_default_armour = function(struct_cols, armour_style=0){
         map_colour.right_pauldron = struct_cols.right_pauldron;   
         map_colour.left_pauldron = struct_cols.left_pauldron;   
 
@@ -152,7 +152,7 @@ function ColourItem(xx,yy) constructor{
         return DeepCloneStruct(map_colour);
     }
 
-    static set_defualt_techmarines = function(struct_cols){
+    static set_default_techmarines = function(struct_cols){
         set_pattern(Colors.Red,full_body);
         map_colour.eye_lense = Colors.Green;
         map_colour.right_pauldron = Colors.Red;   
@@ -161,7 +161,7 @@ function ColourItem(xx,yy) constructor{
         return DeepCloneStruct(map_colour);                       
     }
 
-    static set_defualt_apothecary = function(struct_cols){
+    static set_default_apothecary = function(struct_cols){
         set_pattern(Colors.White,full_body);
         map_colour.eye_lense = Colors.Red;
         map_colour.right_pauldron = Colors.White;   
@@ -170,7 +170,7 @@ function ColourItem(xx,yy) constructor{
         return DeepCloneStruct(map_colour);                 
     }
 
-    static set_defualt_chaplain = function(struct_cols){
+    static set_default_chaplain = function(struct_cols){
         set_pattern(Colors.Black,full_body);
         map_colour.eye_lense = Colors.Red;
         map_colour.right_pauldron = Colors.Black;   
@@ -180,7 +180,7 @@ function ColourItem(xx,yy) constructor{
     }
 
 
-    static set_defualt_librarian = function(struct_cols){
+    static set_default_librarian = function(struct_cols){
         set_pattern(Colors.Dark_Ultramarine,full_body);
         map_colour.eye_lense = Colors.Cyan;
         map_colour.right_pauldron = Colors.Dark_Ultramarine;   
@@ -290,7 +290,7 @@ function setup_complex_livery_shader(setup_role, game_setup=false){
             }
         }        
     }
-    show_debug_message(data_set);
+    // show_debug_message(data_set);
     shader_set(full_livery_shader);
     var spot_names = struct_get_names(data_set);
     for (var i=0;i<array_length(spot_names);i++){

@@ -136,8 +136,6 @@ function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id,
 				marine_dead[unit_id]=2;
 		        if (unit.role()="Chapter Master") then global.defeat=3;
 		        flavour_text2="The marine's flesh begins to twist and rip, seemingly turning inside out.  His form looms up, and up, and up.  Within seconds a Greater Daemon of ";
-		        //if (obj_ini.age[marine_co[unit_id],marine_id[unit_id]]<=((obj_controller.millenium*1000)+obj_controller.year)-10) and (obj_ini.zygote=0) and (string_count("Doom",obj_ini.strin2)=0) then obj_ncombat.gene_penalty+=1;
-		        //if (obj_ini.age[marine_co[unit_id],marine_id[unit_id]]<=((obj_controller.millenium*1000)+obj_controller.year)-5) and (string_count("Doom",obj_ini.strin2)=0) then obj_ncombat.gene_penalty+=1;
 	        
 		        var dem=choose("Slaanesh","Nurgle","Tzeentch");
 		        if (book_powers!=""){

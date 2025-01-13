@@ -155,7 +155,7 @@ function scr_load(save_part, save_id) {
 
 
 	    // obj_ini
-	    //TODO allow methods to be passed as teh defualt to return_json_from_ini to optomise load speed
+	    //TODO allow methods to be passed as teh default to return_json_from_ini to optomise load speed
 	    var livery_picker = new ColourItem(0,0);
 		livery_picker.scr_unit_draw_data();
 	    obj_ini.full_liveries = return_json_from_ini("Ini", "full_liveries",array_create(21,DeepCloneStruct(livery_picker.map_colour)));
@@ -170,8 +170,8 @@ function scr_load(save_part, save_id) {
 	    obj_ini.icon_name=ini_read_string("Ini","icon_name","custom1");
 	    global.icon_name=obj_ini.icon_name;
 	    obj_ini.man_size=ini_read_real("Ini","man_size",0);
-	    obj_ini.strin=ini_read_string("Ini","strin1","");
-	    obj_ini.strin2=ini_read_string("Ini","strin2","");
+	    // obj_ini.strin=ini_read_string("Ini","strin1","");
+	    // obj_ini.strin2=ini_read_string("Ini","strin2","");
 	    obj_ini.psy_powers=ini_read_string("Ini","psy_powers","default");
 
 		
@@ -565,27 +565,6 @@ function scr_load(save_part, save_id) {
 	    ini_open("tsave.ini");
 	    // file_delete("tsave.ini");
 
-	    var i=0;
-	    obj_controller.restart_name=ini_read_string("Res","nm","");
-	    obj_controller.restart_founding=ini_read_real("Res","found",0);
-	    obj_controller.restart_secret=ini_read_string("Res","secre","");
-	    obj_controller.restart_title[0]=ini_read_string("Res","tit0","");
-	    var i;i=0;repeat(11){i+=1;obj_controller.restart_title[i]=ini_read_string("Res","tit"+string(i),"");}
-	    obj_controller.restart_icon=ini_read_real("Res","ico",0);
-	    obj_controller.restart_icon_name=ini_read_string("Res","icn","");
-	    obj_controller.restart_powers=ini_read_string("Res","power","");
-	    var ad;ad=-1;repeat(5){ad+=1;obj_controller.restart_adv[ad]=ini_read_string("Res","adv"+string(ad),"");obj_controller.restart_dis[ad]=ini_read_string("Res","dis"+string(ad),"");}
-	    obj_controller.restart_recruiting_type=ini_read_string("Res","rcrtyp","");
-	    obj_controller.restart_trial=ini_read_string("Res","trial","");
-	    obj_controller.restart_recruiting_name=ini_read_string("Res","rcrnam","");
-	    obj_controller.restart_home_type=ini_read_string("Res","homtyp","");
-	    obj_controller.restart_home_name=ini_read_string("Res","homnam","");
-	    obj_controller.restart_flagship_name=ini_read_string("Res","flagship","");
-	    obj_controller.restart_fleet_type=ini_read_real("Res","flit",0);
-	    obj_controller.restart_recruiting_exists=ini_read_real("Res","recr_e",0);
-	    obj_controller.restart_homeworld_exists=ini_read_real("Res","home_e",0);
-	    obj_controller.restart_homeworld_rule=ini_read_real("Res","home_r",0);
-	    obj_controller.restart_battle_cry=ini_read_string("Res","cry","");
 
 
 	    with(obj_controller){
@@ -596,131 +575,7 @@ function scr_load(save_part, save_id) {
 //	    	star_ui_name_node();
 	    }
 
-	    var tempa,tempa2,q,good;tempa="";tempa2=0;q=0;good=0;
-
-		tempa = ini_read_string("Res", "maincol", "");
-		tempa2 = 0;
-		q = 0;
-		good = 0;
-		for(var q=0; q<global.colors_count; q++){
-			if (tempa = obj_controller.col[q]) and(good = 0) {
-				good = q;
-				tempa2 = q;
-			}
-		}
-		obj_controller.restart_main_color = tempa2;
-
-		tempa = ini_read_string("Res", "seccol", "");
-		tempa2 = 0;
-		q = 0;
-		good = 0;
-		for(var q=0; q<global.colors_count; q++){
-			if (tempa = obj_controller.col[q]) and(good = 0) {
-				good = q;
-				tempa2 = q;
-			}
-		}
-		obj_controller.restart_secondary_color = tempa2;
-
-		tempa = ini_read_string("Res", "tricol", "");
-		tempa2 = 0;
-		q = 0;
-		good = 0;
-		for(var q=0; q<global.colors_count; q++){
-			if (tempa = obj_controller.col[q]) and(good = 0) {
-				good = q;
-				tempa2 = q;
-			}
-		}
-		obj_controller.restart_trim_color = tempa2;
-
-		tempa = ini_read_string("Res", "paul2col", "");
-		tempa2 = 0;
-		q = 0;
-		good = 0;
-		for(var q=0; q<global.colors_count; q++){
-			if (tempa = obj_controller.col[q]) and(good = 0) {
-				good = q;
-				tempa2 = q;
-			}
-		}
-		obj_controller.restart_pauldron2_color = tempa2;
-
-		tempa = ini_read_string("Res", "paul1col", "");
-		tempa2 = 0;
-		q = 0;
-		good = 0;
-		for(var q=0; q<global.colors_count; q++){
-			if (tempa = obj_controller.col[q]) and(good = 0) {
-				good = q;
-				tempa2 = q;
-			}
-		}
-		obj_controller.restart_pauldron_color = tempa2;
-
-		tempa = ini_read_string("Res", "lenscol", "");
-		tempa2 = 0;
-		q = 0;
-		good = 0;
-		for(var q=0; q<global.colors_count; q++){
-			if (tempa = obj_controller.col[q]) and(good = 0) {
-				good = q;
-				tempa2 = q;
-			}
-		}
-		obj_controller.restart_lens_color = tempa2;
-
-		tempa = ini_read_string("Res", "wepcol", "");
-		tempa2 = 0;
-		q = 0;
-		good = 0;
-		for(var q=0; q<global.colors_count; q++){
-			if (tempa = obj_controller.col[q]) and(good = 0) {
-				good = q;
-				tempa2 = q;
-			}
-		}
-		obj_controller.restart_weapon_color = tempa2;
-
-	    //
-
-	    obj_controller.restart_col_special=ini_read_real("Res","speccol",0);
-	    obj_controller.restart_trim=ini_read_real("Res","trim",0);
-	    obj_controller.restart_skin_color=ini_read_real("Res","skin",0);
-	    obj_controller.restart_hapothecary=ini_read_string("Res","hapo","");
-	    obj_controller.restart_hchaplain=ini_read_string("Res","hcha","");
-	    obj_controller.restart_clibrarian=ini_read_string("Res","clib","");
-	    obj_controller.restart_fmaster=ini_read_string("Res","fmas","");
-	    obj_controller.restart_recruiter=ini_read_string("Res","recruiter","");
-	    obj_controller.restart_admiral=ini_read_string("Res","admir","");
-	    obj_controller.restart_equal_specialists=ini_read_real("Res","eqspec",0);
-		if (ini_read_string("Res","load2",0)!= 0){
-			 obj_controller.restart_load_to_ships = json_parse(base64_decode(ini_read_string("Res","load2",0)));
-		} else { obj_controller.restart_load_to_ships=[0,0,0]}
-	    obj_controller.restart_successors=ini_read_string("Res","successors",0);
-
-	    obj_controller.restart_mutations=ini_read_real("Res","muta",0);
-	    obj_controller.restart_preomnor=ini_read_real("Res","preo",0);
-	    obj_controller.restart_voice=ini_read_real("Res","voic",0);
-	    obj_controller.restart_doomed=ini_read_real("Res","doom",0);
-	    obj_controller.restart_lyman=ini_read_real("Res","lyma",0);
-	    obj_controller.restart_omophagea=ini_read_real("Res","omop",0);
-	    obj_controller.restart_ossmodula=ini_read_real("Res","ossm",0);
-	    obj_controller.restart_membrane=ini_read_real("Res","memb",0);
-	    obj_controller.restart_zygote=ini_read_real("Res","zygo",0);
-	    obj_controller.restart_betchers=ini_read_real("Res","betc",0);
-	    obj_controller.restart_catalepsean=ini_read_real("Res","catal",0);
-	    obj_controller.restart_secretions=ini_read_real("Res","secr",0);
-	    obj_controller.restart_occulobe=ini_read_real("Res","occu",0);
-	    obj_controller.restart_mucranoid=ini_read_real("Res","mucra",0);
-	    obj_controller.restart_master_name=ini_read_string("Res","master_name","");
-	    obj_controller.restart_master_melee=ini_read_real("Res","master_melee",0);
-	    obj_controller.restart_master_ranged=ini_read_real("Res","master_ranged",0);
-	    obj_controller.restart_master_specialty=ini_read_real("Res","master_specialty",0);
-	    obj_controller.restart_strength=ini_read_real("Res","strength",0);
-	    obj_controller.restart_cooperation=ini_read_real("Res","cooperation",0);
-	    obj_controller.restart_purity=ini_read_real("Res","purity",0);
-	    obj_controller.restart_stability=ini_read_real("Res","stability",0);
+	    
 	    obj_controller.squads = false;
 
 	    i=99;

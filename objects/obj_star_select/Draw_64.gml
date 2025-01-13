@@ -37,6 +37,9 @@ if (loading=1){
         if (target.space_hulk=1) then exit;
     }
 }
+if (obj_controller.selecting_planet>target.planets){
+    obj_controller.selecting_planet = 0;
+}
 var click_accepted = (!obj_controller.menu) and (!obj_controller.zoomed) and (!instance_exists(obj_bomb_select)) and (!instance_exists(obj_drop_select));
 if (click_accepted) {
     if (scr_click_left(0)) {
@@ -296,11 +299,11 @@ if (obj_controller.selecting_planet!=0){
         var bar_start_point = xx+349;
         var bar_percent_length = (bar_width/100);
         var current_bar_percent = 0;
-        with (target){
-            var hidden_cult = false;
-            if (planet_feature_bool(p_feature[current_planet],P_features.Gene_Stealer_Cult)){
-                hidden_cult = return_planet_features(p_feature[current_planet],P_features.Gene_Stealer_Cult)[0].hiding;
-            }            
+        var hidden_cult = false;
+        if (planet_data.has_feature(P_features.Gene_Stealer_Cult)){
+            hidden_cult = planet_data.get_features(P_features.Gene_Stealer_Cult)[0].hiding;
+        }          
+        with (target){          
             for (var i=1;i<13;i++){
                 if (p_influence[current_planet][i]>0){
                     draw_set_color(global.star_name_colors[i]);
@@ -384,7 +387,7 @@ if (obj_controller.selecting_planet!=0){
                 
                 var improve_cost=1500,yep=0,o=0;
 
-                if (array_contains(obj_ini.adv, "Siege Masters")) then improve_cost=1100;
+                if (scr_has_adv("Siege Masters")) then improve_cost=1100;
                 
                 draw_text_glow(xx+671, yy+281,string(improve_cost),16291875,0);
                 

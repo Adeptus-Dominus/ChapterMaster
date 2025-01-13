@@ -391,17 +391,17 @@ function scr_chapter_random(argument0) {
     }
     obj_creation.livery_picker = new ColourItem(100,230);
     obj_creation.livery_picker.scr_unit_draw_data();
-    obj_creation.livery_picker.set_defualt_armour(struct_cols,col_special);
+    obj_creation.livery_picker.set_default_armour(struct_cols,col_special);
     obj_creation.full_liveries = array_create(21,DeepCloneStruct(obj_creation.livery_picker.map_colour)); 			    
-    obj_creation.full_liveries[eROLE.Librarian] = obj_creation.livery_picker.set_defualt_librarian(struct_cols);
+    obj_creation.full_liveries[eROLE.Librarian] = obj_creation.livery_picker.set_default_librarian(struct_cols);
 
-    obj_creation.full_liveries[eROLE.Chaplain] = obj_creation.livery_picker.set_defualt_chaplain(struct_cols);
+    obj_creation.full_liveries[eROLE.Chaplain] = obj_creation.livery_picker.set_default_chaplain(struct_cols);
 
-    obj_creation.full_liveries[eROLE.Apothecary] = obj_creation.livery_picker.set_defualt_apothecary(struct_cols);
+    obj_creation.full_liveries[eROLE.Apothecary] = obj_creation.livery_picker.set_default_apothecary(struct_cols);
 
-    obj_creation.full_liveries[eROLE.Techmarine] = obj_creation.livery_picker.set_defualt_techmarines(struct_cols);
+    obj_creation.full_liveries[eROLE.Techmarine] = obj_creation.livery_picker.set_default_techmarines(struct_cols);
     obj_creation.livery_picker.scr_unit_draw_data();
-    obj_creation.livery_picker.set_defualt_armour(struct_cols,col_special); 			
+    obj_creation.livery_picker.set_default_armour(struct_cols,col_special); 			
 
 	obj_creation.livery_picker.map_colour = full_liveries[0];
 	obj_creation.livery_picker.role_set = 0; 

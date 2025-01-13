@@ -400,7 +400,7 @@ function scr_compile_trial_bonus_string(trial_data){
 	}	
 	if (struct_exists(trial_data,"train_time")){
 		var train_time_data = trial_data.train_time;
-		bonus_string+=$"years training : {train_time_string(train_time_data.base)}\n";
+		bonus_string+=$"Years training : {train_time_string(train_time_data.base)}\n";
 		if (struct_exists(train_time_data, "planets")){
 			var planets = struct_get_names(train_time_data.planets);
 			for (var i=0;i<array_length(planets);i++){
@@ -448,7 +448,7 @@ function scr_compile_trial_bonus_string(trial_data){
 	}
 	var _traits = global.trait_list;
 	if (struct_exists(trial_data,"favoured_traits")){
-		bonus_string += "Favoured Traits:"
+		bonus_string += "Favoured Traits: "
 		for (var i=0;i<array_length(trial_data.favoured_traits);i++){
 			var _favoured_trait = trial_data.favoured_traits[i];
 			bonus_string += $"{_traits[$ _favoured_trait].display_name}, ";
@@ -456,16 +456,16 @@ function scr_compile_trial_bonus_string(trial_data){
 		bonus_string+="\n\n";
 	}
 	if (struct_exists(trial_data,"disfavoured_traits")){
-		bonus_string += "Dis-Favoured Traits:"
+		bonus_string += "Dis-Favoured Traits: "
 		for (var i=0;i<array_length(trial_data.disfavoured_traits);i++){
 			var _disfavoured_trait = trial_data.disfavoured_traits[i];
 			bonus_string += $"{_traits[$ _disfavoured_trait].display_name}, ";
 		}
 		bonus_string+="\n\n";
 	}
-	if (struct_exists(trial_data,"stat_diffs")){
-		bonus_string+=$"{trial_data.stat_diffs}\n";
-	}		
+	// if (struct_exists(trial_data,"stat_diffs")){
+	// 	bonus_string+=$"{trial_data.stat_diffs}\n";
+	// }		
 	return bonus_string;
 }
 function StatDistributionUnit(data) constructor{

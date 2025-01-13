@@ -66,7 +66,7 @@ function CompanyStruct(comp) constructor{
 		return obj_ini.squads[company_squads[cur_squad]];
 	}
 
-	static defualt_member = function(){
+	static default_member = function(){
 		var member = obj_ini.squads[company_squads[0]].members[0];
 		obj_controller.temp[120] = fetch_unit(member);
 		selected_unit = obj_controller.temp[120];		
@@ -89,18 +89,18 @@ function CompanyStruct(comp) constructor{
     					}
     				}
     				if (!squad_found){
-    					defualt_member();
+    					default_member();
     				}
     			}
     		} else {
-    			defualt_member();
+    			default_member();
     		}
 		} else if (obj_controller.view_squad){
 			obj_controller.view_squad = false;
 			obj_controller.unit_profile =false;
 		}
 		if (selected_unit.squad=="none"){
-			defualt_member();
+			default_member();
 		}
     	if (selected_unit.squad!="none"){			        	
 			current_squad = obj_ini.squads[selected_unit.squad];

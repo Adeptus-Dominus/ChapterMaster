@@ -1133,7 +1133,7 @@ function scr_random_event(execute_now) {
 	    var own,time,him;
 		
 		time=irandom_range(6,24);
-	    if (string_count("Shitty",obj_ini.strin2)==1){
+	    if (scr_has_disadv("Shitty Luck")){
 			own=1;
 		}
 		else {
@@ -1169,7 +1169,7 @@ function scr_random_event(execute_now) {
 	else if (chosen_event == EVENT.enemy_forces){
 		debugl("RE: Enemy Forces");
 		var own;
-	    if (string_count("Shitty",obj_ini.strin2)==1) {
+	    if (scr_has_disadv("Shitty Luck")) {
 			own=1;
 		}
 		else{

@@ -51,20 +51,20 @@ if (ground_mission){
 };
 
 seed_saved=(min(seed_max,apothecaries_alive*40))-gene_penalty;
-if (string_count("Doom",obj_ini.strin2)>0) then seed_saved=0;
+if (obj_ini.doomed) then seed_saved=0;
 if (seed_saved>0) then obj_controller.gene_seed+=seed_saved;
 
-if (string_count("Doom",obj_ini.strin2)>0) &&  (!apothecaries_alive){
+if (obj_ini.doomed && !apothecaries_alive){
     part3=$"Chapter Mutation prevents retrieving Gene-Seed.  {seed_max} Gene-Seed lost.";
     newline=part3;
     scr_newtext();
     newline=" ";
     scr_newtext();
-}else if (!apothecaries_alive) and (string_count("Doom",obj_ini.strin2)=0){
+}else if (!apothecaries_alive && !obj_ini.doomed){
     part3=$"No able-bodied {roles[eROLE.Apothecary]}.  {seed_max} Gene-Seed lost.";
     newline=part3;scr_newtext();
     newline=" ";scr_newtext();
-}else if (apothecaries_alive>0) and (final_deaths+final_command_deaths>0) and (string_count("Doom",obj_ini.strin2)=0){
+}else if (apothecaries_alive>0 && final_deaths+final_command_deaths>0 && !obj_ini.doomed){
     part3=$"Gene-Seed Recovered: {seed_saved}(";
     part3 += seed_saved ? $"{round((seed_saved/seed_max)*100)}" : "0";
     part3 += "%)";
@@ -246,7 +246,7 @@ if (defeat=0) and (battle_special="space_hulk"){
     if (ex=100) then newline_color="red";
     scr_newtext();
 
-    if (string_count("Shitty",obj_ini.strin2)>0) then dicey=dicey*1.5;
+    if (scr_has_disadv("Shitty Luck")) then dicey=dicey*1.5;
     // show_message("Roll Under: "+string(enemy_power*10)+", Roll: "+string(dicey));
 
     if (dicey<=(enemy_power*10)){
@@ -577,7 +577,7 @@ if (obj_ini.omophagea){
 
     if (red_thirst=3) then thirsty=1;if (red_thirst>3) then thirsty=red_thirst-2;
     if (thirsty>0) then eatme-=(thirsty*6);if (really_thirsty>0) then eatme-=(really_thirsty*15);
-    if (string_count("Shitty",obj_ini.strin2)=1) then eatme-=10;
+    if (scr_has_disadv("Shitty Luck")) then eatme-=10;
 
     if (allies>0){
         obj_controller.disposition[2]-=choose(1,0,0);
@@ -609,7 +609,7 @@ if (obj_ini.omophagea){
 
         // check for pdf/guardsmen
         eatme=floor(random(100))+1;
-        if (array_contains(obj_ini.dis,"Shitty Luck")) then eatme-=10;
+        if (scr_has_disadv("Shitty Luck")) then eatme-=10;
         if (eatme<=10) and (allies>0){
             obj_controller.disposition[2]-=2;
             if (allies=1){
@@ -625,7 +625,7 @@ if (obj_ini.omophagea){
 
         // check for inquisitor
         eatme=floor(random(100))+1;
-        if (array_contains(obj_ini.dis,"Shitty Luck")) then eatme-=5;
+        if (scr_has_disadv("Shitty Luck")) then eatme-=5;
         if (eatme<=40) and (present_inquisitor=1){
             var thatta=0,remove=0,i=0;
             obj_controller.disposition[4]-=10;

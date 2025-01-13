@@ -26,8 +26,8 @@
   "nineSlice": null,
   "origin": 0,
   "parent": {
-    "name": "decorations",
-    "path": "folders/Sprites/Marine Viewer/decorations.yy",
+    "name": "unused",
+    "path": "folders/Sprites/Marine Viewer/unused.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

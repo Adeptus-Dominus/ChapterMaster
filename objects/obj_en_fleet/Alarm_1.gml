@@ -627,8 +627,8 @@ if (action=="" && _is_orbiting){
             
             var whom=-1;
             whom = inquisitor;
-
-            var inquis_string = $"Inquisitor {obj_controller.inquisitor[whom]}";
+            var inquisitors = obj_controller.inquisitor;
+            var inquis_string = $"Inquisitor {whom>-1 ? inquisitors[whom] : inquisitors[0]}";
             
             // INVESTIGATE DEAD HERE 137 ; INVESTIGATE DEAD HERE 137 ; INVESTIGATE DEAD HERE 137 ; INVESTIGATE DEAD HERE 137 ; 
             var cur_star,t,type,cha,dem,tem1,tem1_base,perc,popup;

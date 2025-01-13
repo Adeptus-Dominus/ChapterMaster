@@ -40,22 +40,19 @@ function scr_enemy_ai_a() {
 
 	// checking for inquisition dead world inspections here
 	if (present_fleet[eFACTION.Player]>=0) and (present_fleet[eFACTION.Inquisition]==0){
-	    var chapter_asset_discovery,cur_planet=0,yep=0,stop=false,shitty=false;
-    
-	    chapter_asset_discovery=floor(random(200))+1;
-
-	    if (array_contains(obj_ini.dis,"Shitty Luck")) then shitty=true;
-
-	    if (shitty=true) then chapter_asset_discovery=floor(random(50))+1;
+	    var chapter_asset_discovery,yep=0,stop=false;
+   
+	    var shitty = scr_has_disadv("Shitty Luck");
     
 	    if (present_fleet[1]=0){
-	        chapter_asset_discovery=floor(random(2000))+1;
-	        if (shitty=true) then chapter_asset_discovery=floor(random(800))+1;
+	    	chapter_asset_discovery = irandom_range(1, shitty?800:2000);
+	    } else {
+	    	chapter_asset_discovery = irandom_range(1, shitty?50:200);
 	    }
     
 	    // 137 ; chapter_asset_discovery=floor(random(20))+1;
     
-	    cur_planet=0;
+	    var cur_planet=0;
 	    if (chapter_asset_discovery<=5){
 		    repeat(planets){
 		    	cur_planet+=1;
@@ -86,7 +83,7 @@ function scr_enemy_ai_a() {
 	            var plap=0,old_x=x,old_y=y,flee=0;
             	var _current_planet_name = name;
             	var launch_planet, launch_point_found=false;
-            	launch_planet = nearest_star_with_ownership(x,y, [owner=eFACTION.Imperium, owner=eFACTION.Mechanicus], self.id);
+            	launch_planet = nearest_star_with_ownership(x,y, [eFACTION.Imperium, eFACTION.Mechanicus], self.id);
             	if (launch_planet != "none"){
 	            	if (instance_exists(launch_planet)){
 			            flee=instance_create(launch_planet.x,launch_planet.y,obj_en_fleet);
@@ -870,6 +867,7 @@ function scr_enemy_ai_a() {
 	    }
 	    
 	    if (p_raided[_run] > 0) then p_raided[_run] = 0;
+	    delete _planet_data;
 	} // end repeat here
 
 

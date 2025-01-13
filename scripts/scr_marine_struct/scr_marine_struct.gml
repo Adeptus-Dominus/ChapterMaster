@@ -86,7 +86,7 @@ global.base_stats = { //tempory stats subject to change by anyone that wishes to
 			skills: {
 				weapons:{
 					"bolter":3, "chainsword":3, "ccw":3, "bolt_pistol":3}},
-			start_gear:{"armour":"Power Armour", "wep1":"Bolter", "wep2":"Chainsword"},
+			start_gear:{"armour":"Power Armour", "wep1":"Chainsword", "wep2":"Chainsword"},
 			base_group : "astartes",
 	},
 	"scout":{
@@ -867,10 +867,10 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 				}
 			}
 
-			if (array_contains(obj_ini.adv, "Psyker Abundance")){
+			if (scr_has_adv("Psyker Abundance")){
 				if (psionic<16) then psionic++;
 				if (psionic<10) then psionic++;
-			} else if (array_contains(obj_ini.dis, "Psyker Intolerant")){
+			} else if (scr_has_disadv("Psyker Intolerant")){
 				if (warp_level<=190){
 					psionic=choose(0,1);
 				} else {
@@ -887,20 +887,14 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 				religion_sub_cult = "The Cult of Iron";
 			} 
 
+			var _robe_chance = 5;
 			if (global.chapter_name == "Black Templars"){
-				if (irandom(14)==0){
-					body[$"torso"].robes =choose(0,0,0,1,1,2);
-					if (body[$"torso"].robes == 0 && irandom(1) == 0){
-						body[$"head"].hood = 1;
-					}
-				}
+				_robe_chance += 70;
 			}else if(global.chapter_name == "Dark Angels" || obj_ini.progenitor == ePROGENITOR.DARK_ANGELS){
-				body[$"torso"].robes = choose(0,0,0,1,2);
-				if (body[$"torso"].robes == 0 && irandom(1) == 0){
-					body[$"head"].hood = 1;
-				}
-			}else if(irandom(30)==0){
-				body.torso.robes =choose(0,1,2,2,2,2,2);
+				_robe_chance += 50;
+			}
+			if (irandom(100) <= _robe_chance) {
+				body.torso.robes = irandom(2);
 				if (body[$"torso"].robes == 0 && irandom(1) == 0){
 					body[$"head"].hood = 1;
 				}
@@ -1796,7 +1790,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 
 	static marine_assembling = scr_marine_game_spawn_constructions;
 
-	static roll_armour = scr_marine_spawn_armour;
+	static random_update_armour = scr_marine_spawn_armour;
 
 	static roll_age = scr_marine_spawn_age;
 
