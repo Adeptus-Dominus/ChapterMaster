@@ -1,4 +1,7 @@
 
 if (instance_exists(obj_pnunit)){
-    x=instance_nearest(-100,240,obj_pnunit).x;
+    var _nearest = instance_nearest(-100,240,obj_pnunit);
+    if (instance_exists(_nearest)){
+        x = _nearest.x;
+    }
 }

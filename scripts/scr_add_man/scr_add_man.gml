@@ -216,13 +216,14 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
 
 		if (!array_contains(non_marine_roles, man_role)) {
 			// Weapons
+			obj_ini.race[target_company][good] = eFACTION.Player;
 			if (man_role == obj_ini.role[100][12]) {
 				_gear = {
-					wep2 : obj_ini.wep2[100, 12],
-					wep1 : obj_ini.wep1[100, 12],
-					armour : obj_ini.armour[100, 12],
-					gear : obj_ini.gear[100, 12],
-					mobi : obj_ini.mobi[100, 12],
+					wep2 : obj_ini.wep2[100][12],
+					wep1 : obj_ini.wep1[100][12],
+					armour : obj_ini.armour[100][12],
+					gear : obj_ini.gear[100][12],
+					mobi : obj_ini.mobi[100][12],
 				}
 			};
 

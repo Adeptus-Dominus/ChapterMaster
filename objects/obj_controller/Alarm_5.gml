@@ -717,7 +717,8 @@ for(var c=0; c<11; c++){
 // STC Bonuses
 if (obj_controller.stc_ships>=6){
     //self healing ships logic
-    for(var v=0; v<array_length(obj_ini.ship_hp); v++){
+    for (var v=0; v<array_length(obj_ini.ship_hp); v++){
+        if (obj_ini.ship[v]=="" || obj_ini.ship_hp[v]<0) then continue;
         if (obj_ini.ship_hp[v]<obj_ini.ship_maxhp[v]){
             var _max = obj_ini.ship_maxhp[v];
             obj_ini.ship_hp[v] = min(_max,obj_ini.ship_hp[v]+round(_max*0.06));

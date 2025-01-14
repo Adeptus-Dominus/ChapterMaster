@@ -260,12 +260,6 @@ try {
     
     instance_activate_all();
     
-    if (scr_role_count("Chapter Master","")=0){
-        obj_controller.alarm[7]=1;
-        if (global.defeat<=1) then global.defeat=1;
-        if (enemy=1) or (enemy=2) or (enemy=5) then global.defeat=3;
-    }
-    
     
     if (turn_count < 20){
         if (defeat=0) and (threat>=4) then scr_recent("battle_victory", $"{battle_loc} {scr_roman(battle_id)}",enemy);
