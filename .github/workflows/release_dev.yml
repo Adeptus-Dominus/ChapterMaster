@@ -10,16 +10,41 @@ on:
         options: 
           - YYC
           - VM
-  push:
-    branches:
-      - release/0.9
+  schedule:
+    - cron: "0 0 * * *"
+
+env:
+  MAIN_TAG: nightly
+  PREV_TAG: nightly-prev
 
 jobs:
+  release_type:
+    name: Release Type
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set Tag Names
+        run: |
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            echo "MAIN_TAG=nightly" >> $GITHUB_ENV
+            echo "PREV_TAG=nightly-prev" >> $GITHUB_ENV
+          elif [ "${{ github.ref }}" = "refs/heads/stable-candidate" ]; then
+            echo "MAIN_TAG=stable-preview" >> $GITHUB_ENV
+            echo "PREV_TAG=stable-preview-prev" >> $GITHUB_ENV
+          else
+            BRANCH_NAME=$(echo "${{ github.ref }}" | cut -d'/' -f3)
+            BRANCH_NAME=${BRANCH_NAME##*/}
+            echo "MAIN_TAG=${BRANCH_NAME}_preview" >> $GITHUB_ENV
+            echo "PREV_TAG=${BRANCH_NAME}_preview-prev" >> $GITHUB_ENV
+          fi
+
   build_needed:
     name: Build needed?
     runs-on: ubuntu-latest
     outputs:
-      needed: ${{ steps.commit_check.outputs.needed }}  # Output for skipping
+      needs_build: ${{ steps.commit_check.outputs.needs_build }}  # Output for skipping
     steps:
       - uses: actions/checkout@v4
         with:
@@ -35,13 +60,40 @@ jobs:
           
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
             echo "Manually triggered, forcing build."
-            echo "needed=true" >> $GITHUB_OUTPUT
+            echo "needs_build=true" >> $GITHUB_OUTPUT
           elif echo "$COMMIT_MESSAGE" | grep -Eq "$EXCLUDE_PATTERN"; then
             echo "Commit message matches excluded pattern, skipping build."
-            echo "needed=false" >> $GITHUB_OUTPUT
+            echo "needs_build=false" >> $GITHUB_OUTPUT
             exit 0
           else
-            echo "needed=true" >> $GITHUB_OUTPUT
+            echo "Workflow triggered by a scheduled run. Continuing..."
+            echo "needs_build=false" >> $GITHUB_OUTPUT;
+          fi
+
+      - name: Checkout code
+        if: ${{ steps.commit_check.outputs.needs_build == 'false' }}
+        uses: actions/checkout@v4
+
+      - name: Fetch tags
+        if: ${{ steps.commit_check.outputs.needs_build == 'false' }}
+        run: git fetch --tags origin
+
+      - name: Check if tags point to the same commit
+        if: ${{ steps.commit_check.outputs.needs_build == 'false' }}
+        id: check_tags
+        run: |
+          curr_sha=$(git rev-parse HEAD)
+          prev_sha=$(git rev-parse ${{ env.PREV_TAG }} 2>/dev/null)
+
+          if [[ $? -ne 0 ]]; then
+            echo "Tag ${{ env.PREV_TAG }} cannot be resolved. Continuing..."
+            echo "needs_build=true" >> $GITHUB_OUTPUT;
+          elif [[ "$curr_sha" == "$prev_sha" ]]; then
+            echo "No changes since last nightly release. Exiting..."
+            echo "needs_build=false" >> $GITHUB_OUTPUT;
+          else
+            echo "Changes since last nightly release detected. Continuing..."
+            echo "needs_build=true" >> $GITHUB_OUTPUT;
           fi
 
   gamemaker_build:
@@ -49,7 +101,7 @@ jobs:
     uses: ./.github/workflows/gamemaker_build.yml
     secrets: inherit
     needs: build_needed
-    if: needs.build_needed.outputs.needed == 'true'
+    if: needs.build_needed.outputs.needs_build == 'true'
     with:
       yyc: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.compiler == 'YYC' || github.event_name != 'workflow_dispatch' }}
 
@@ -57,7 +109,7 @@ jobs:
     name: Release
     runs-on: windows-2022
     needs: gamemaker_build
-    if: needs.build_needed.outputs.needed == 'true'
+    if: needs.build_needed.outputs.needs_build == 'true'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -67,7 +119,7 @@ jobs:
       - name: Check if a dev release exists
         id: check_release
         run: |
-          gh release view dev/${{ github.ref_name }} --repo ${{ github.repository }}
+          gh release view ${{ env.MAIN_TAG }} --repo ${{ github.repository }}
           if [ $? -eq 0 ] ; then
             echo "release_exists=true" >> $GITHUB_OUTPUT;
           else
@@ -82,7 +134,7 @@ jobs:
         name: Get commit SHA of the last nightly release
         if: steps.check_release.outputs.release_exists
         run: |
-          $prev_sha = git rev-parse dev/${{ github.ref_name }}
+          $prev_sha = git rev-parse ${{ env.MAIN_TAG }}
           echo "prev_SHA=$prev_sha" >> $env:GITHUB_ENV
 
       - name: Update tag pointing to the previous nightly release
@@ -91,7 +143,7 @@ jobs:
           # Get the SHA from the environment variable
           $sha = $env:prev_SHA
           # Construct the URL properly
-          $url = "https://api.github.com/repos/$env:GITHUB_REPOSITORY/git/refs/tags/dev-old/$env:GITHUB_REF_NAME"
+          $url = "https://api.github.com/repos/$env:GITHUB_REPOSITORY/git/refs/tags/$env:PREV_TAG"
       
           # Create the JSON payload for the PATCH request
           $data = @{
@@ -109,7 +161,7 @@ jobs:
         name: Delete the existing dev tag and release
         if: steps.check_release.outputs.release_exists
         run: |
-          gh release delete dev/${{ github.ref_name }} -y --cleanup-tag
+          gh release delete ${{ env.MAIN_TAG }} -y --cleanup-tag
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -124,7 +176,7 @@ jobs:
         uses: softprops/action-gh-release@v2.0.9
         with:
           name: ChapterMaster ${{ needs.gamemaker_build.outputs.suffix }}
-          tag_name: dev/${{ github.ref_name }}
+          tag_name: ${{ env.MAIN_TAG }}
           prerelease: true
           generate_release_notes: true
           make_latest: true
