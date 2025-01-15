@@ -252,23 +252,28 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 						if (weapon_index_position = -52) {
 							wii = "Missile Launcher Emplacement";
 							at = 200;
-							armour_pierce = 1;
+							armour_pierce = -1;
 						}
 						if (weapon_index_position = -53) {
 							wii = "Missile Silo";
 							at = 250;
-							ar = 0;
+							armour_pierce = 0;
 						}
 					}
 
 					target_armour_value = target_object.dudes_ac[target_type];
 
+					// Calculate final armor value based on armor piercing (AP) rating against target type
 					if (target_object.dudes_vehicle[target_type]) {
+						if (armour_pierce = 1) then target_armour_value = 0;
 						if (armour_pierce = 0) then target_armour_value = target_armour_value * 6;
-						if (armour_pierce = -1) then target_armour_value = damage_per_weapon;
+						if (armour_pierce = -1) then target_armour_value = target_armour_value * 4 ;
+						if (armour_pierce = -2) then target_armour_value = target_armour_value * 2;
 					} else {
 						if (armour_pierce = 1) then target_armour_value = 0;
-						if (armour_pierce = -1) then target_armour_value = target_armour_value * 6;
+						if (armour_pierce = 0) then target_armour_value = target_armour_value * 4;
+						if (armour_pierce = -1) then target_armour_value = target_armour_value * 3;
+						if (armour_pierce = -2) then target_armour_value = target_armour_value * 1.5;
 					}
 
 					attack_count_mod = max(1, splash[weapon_index_position]);
@@ -358,11 +363,14 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 								target_armour_value2 = target_object.dudes_ac[godd];
 								if (target_object.dudes_vehicle[godd] = 0) {
 									if (ap2 = 1) then target_armour_value2 = 0;
-									if (ap2 = -1) then target_armour_value2 = target_armour_value2 * 6;
+									if (ap2 = 0) then target_armour_value2 = target_armour_value2 * 4;
+									if (ap2 = -1) then target_armour_value2 = target_armour_value2 * 3;
+									if (ap2 = -2) then target_armour_value2 = target_armour_value2 * 1.5;
 								}
 								if (target_object.dudes_vehicle[godd] = 1) {
 									if (ap2 = 0) then target_armour_value2 = target_armour_value2 * 6;
-									if (ap2 = -1) then target_armour_value2 = damage_per_weapon;
+									if (ap2 = -1) then target_armour_value2 = target_armour_value2 * 4;
+									if (ap2 = -2) then target_armour_value2 = target_armour_value2 * 2;
 								}
 								b2 = a2 - target_armour_value2;
 								if (b2 <= 0) then b2 = 0; // Average after armour
