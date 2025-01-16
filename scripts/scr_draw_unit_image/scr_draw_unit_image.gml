@@ -86,6 +86,7 @@ function get_complex_set(set = eARMOUR_SET.MK7){
             right_arm: spr_mk6_right_arm,
             left_trim :spr_mk7_left_trim,
             right_trim: spr_mk7_right_trim,
+            mouth_variants : spr_mk6_mouth_variants,
             head : spr_mk6_head_variants,
         });
     }else if (set == eARMOUR_SET.MK5){
@@ -1250,10 +1251,6 @@ function scr_draw_unit_image(_background=false){
                                 var choice = get_body_data("thorax_variation","torso")%sprite_get_number(complex_set.thorax_variants);
                                 draw_sprite(complex_set.thorax_variants,choice,x_surface_offset,y_surface_offset);
                             }
-                            if (struct_exists(complex_set, "mouth_variants")){
-                                var choice = get_body_data("mouth_variants","jaw")%sprite_get_number(complex_set.mouth_variants);
-                                draw_sprite(complex_set.mouth_variants,choice,x_surface_offset,y_surface_offset);
-                            }
                             if (struct_exists(complex_set, "leg_variants")){
                                 var choice = get_body_data("leg_variants","left_leg")%sprite_get_number(complex_set.leg_variants);
                                 draw_sprite(complex_set.leg_variants,choice,x_surface_offset,y_surface_offset);
@@ -1277,6 +1274,10 @@ function scr_draw_unit_image(_background=false){
                             if (struct_exists(complex_set, "head")){
                                 var choice = get_body_data("variation","head")%sprite_get_number(complex_set.head);
                                 draw_sprite(complex_set.head,choice,x_surface_offset,y_surface_offset);
+                            }
+                            if (struct_exists(complex_set, "mouth_variants")){
+                                var choice = get_body_data("variant","jaw")%sprite_get_number(complex_set.mouth_variants);
+                                draw_sprite(complex_set.mouth_variants,choice,x_surface_offset,y_surface_offset);
                             }
                             if (struct_exists(complex_set, "left_eye")){
                                 var choice = get_body_data("variant","left_eye")%sprite_get_number(complex_set.left_eye);
