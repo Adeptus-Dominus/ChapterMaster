@@ -27,8 +27,8 @@
   "nineSlice": null,
   "origin": 0,
   "parent": {
-    "name": "helms",
-    "path": "folders/Sprites/Marine Viewer/helms.yy",
+    "name": "sergeant",
+    "path": "folders/Sprites/Marine Viewer/helms/sergeant.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

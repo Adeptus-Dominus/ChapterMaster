@@ -81,6 +81,7 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"standards","folderPath":"folders/Sprites/Marine Viewer/gear/standards.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"helms","folderPath":"folders/Sprites/Marine Viewer/helms.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"dark_angels","folderPath":"folders/Sprites/Marine Viewer/helms/dark_angels.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"sergeant","folderPath":"folders/Sprites/Marine Viewer/helms/sergeant.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"packs","folderPath":"folders/Sprites/Marine Viewer/packs.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"unused","folderPath":"folders/Sprites/Marine Viewer/unused.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"weapons_terminator","folderPath":"folders/Sprites/Marine Viewer/weapons_terminator.yy",},
