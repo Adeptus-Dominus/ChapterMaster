@@ -40,15 +40,25 @@ enum eARMOUR_SET {
 function ComplexSet() constructor{
     static add_to_area = function(area, add_sprite){
         if (!struct_exists(self, area)){
-            self[$ area] = sprite_duplicate(add_sprite);
+            self.replace_area(area, add_sprite);
         } else {
             sprite_merge(self[$ area], add_sprite);
         }
     }
 
+    static replace_area = function(area, add_sprite){
+        self[$ area] = sprite_duplicate(add_sprite);
+    }
+
+    static remove_area = function(area){
+        if (struct_exists(self, area)){
+            struct_remove(self, area);
+        }
+    }
+
     static add_group = function(group){
         var _areas = struct_get_names(group);
-        for (var i=0;i<array_length(_areas)i++){
+        for (var i=0;i<array_length(_areas); i++){
             var _area = _areas[i];
             add_to_area(_area, group[$_area]);
         }
@@ -196,6 +206,12 @@ function UnitImage(unit_surface) constructor{
     }
 }
 
+function BaseColor(R,G,B) constructor{
+    r=R;
+    g=G;
+    b=B;
+}
+
 //TODO this is a laxy fix and can be written better
 function set_shader_color(shaderType, colorIndex) {
     var findShader, setShader;
@@ -306,8 +322,6 @@ function set_shader_array(shader_array){
 
 /// @mixin
 function scr_draw_unit_image(_background=false){
-    var _role = obj_ini.role[100];
-    var complex_set={};    
     var draw_unit_hands = function(x_surface_offset, y_surface_offset, armour_type, specialist_colours, hide_bionics, right_left){
         if (arm_variant[right_left] == 1) {
             return;
@@ -415,6 +429,8 @@ function scr_draw_unit_image(_background=false){
         }
     };
 
+    var _role = obj_ini.role[100];
+    var complex_set={};    
     var x_surface_offset = 200;
     var y_surface_offset = 110;
     var unit_surface = surface_create(600, 600);
@@ -468,7 +484,7 @@ function scr_draw_unit_image(_background=false){
         var complex_livery = false;
         var back_equipment = BackType.None;
         var psy_hood = false;
-        var skull_mask = 0;
+        var skull_mask = false;
         var servo_arm = 0;
         var servo_harness = 0;
         var halo = 0;
@@ -537,7 +553,7 @@ function scr_draw_unit_image(_background=false){
             psy_hood = true;
         }
 
-        if (array_contains([UnitSpecialization.Chaplain, UnitSpecialization.WolfPriest], unit_specialization)) then skull_mask=-50;
+        if (array_contains([UnitSpecialization.Chaplain, UnitSpecialization.WolfPriest], unit_specialization)) then skull_mask = true;
     
         // if (_armour_type!=ArType.Norm) then draw_backpack=false;
 
@@ -807,9 +823,7 @@ function scr_draw_unit_image(_background=false){
                         break;
                 }
             }
-        
-            // Determine Sprite
-            if (skull_mask=-50) then skull_mask=1;
+       
         
             if (unit_armour!=""){
                 var yep=0;
@@ -860,12 +874,10 @@ function scr_draw_unit_image(_background=false){
 			}else if (unit_armour=="Tartaros"){
 				armour_sprite=spr_tartaros2_colors;
 				if (tech_brothers_trait>-5) then tech_brothers_trait=4;
-				if (skull_mask==1) then skull_mask=3;
 			}
             if (unit_armour=="Terminator Armour"){
 				armour_sprite=spr_terminator3_colors;
 				if (tech_brothers_trait>-5) then tech_brothers_trait=5;
-				if (skull_mask==1) then skull_mask=2;
 			}else if (unit_armour=="Artificer Armour"){
 				if (dev_trait>0) then dev_trait=13;
 				if (tech_brothers_trait>-5) then tech_brothers_trait=1;
@@ -886,7 +898,6 @@ function scr_draw_unit_image(_background=false){
                 if (string_count("Termi",unit_armour)>0){
 					if (tech_brothers_trait>-5) then tech_brothers_trait=5;
 					armour_sprite=spr_terminator3_colors;
-					if (skull_mask==1) then skull_mask=2;
 				}
             }
         
@@ -1085,7 +1096,7 @@ function scr_draw_unit_image(_background=false){
                             hide_bionics = true;
                             robes_bypass = true;
                             robes_hood_bypass = true;
-                            skull_mask = 0;
+                            skull_mask = false;
                             armour_draw=[spr_da_chaplain,0];
                         }
                     }
@@ -1133,6 +1144,25 @@ function scr_draw_unit_image(_background=false){
                         mouth_variants : spr_artificer_mouth
                     });
                 }
+
+                // Chaplain helmet
+                if (skull_mask) {
+                    complex_set.remove_area("mouth_variants");
+                    if (armour_type == ArmourType.Terminator) {
+                        if (unit_specialization == UnitSpecialization.WolfPriest) {
+                            complex_set.replace_area("head",spr_chaplain_wolfterm_helm);
+                        } else {
+                            complex_set.replace_area("head",spr_chaplain_term_helm);
+                        }
+                    } else {
+                        if (unit_specialization == UnitSpecialization.WolfPriest) {
+                            complex_set.replace_area("head",spr_chaplain_wolf_helm);
+                        } else {
+                            complex_set.replace_area("head",spr_chaplain_helm); 
+                        }
+                    }
+                }
+
                 // Draw the Iron Halo
                 if (halo==1 && !halo_bypass){
                     var halo_offset_y = 0;
@@ -1473,15 +1503,6 @@ function scr_draw_unit_image(_background=false){
                         draw_sprite(spr_psy_hood,2, x_surface_offset+psy_hood_offset_x, y_surface_offset+psy_hood_offset_y);
                     }
                 }
-
-                //Chaplain head and Terminator version
-                if (skull_mask>0){
-                    if (armour_type == ArmourType.Normal) {
-						draw_sprite(spr_chaplain_skull_helm,0,x_surface_offset,y_surface_offset);
-					} else if (armour_type == ArmourType.Terminator) {
-						draw_sprite(spr_chaplain_skull_helm,1,x_surface_offset,y_surface_offset);
-					}
-                }
             }
             //purity seals/decorations
             //TODO imprvoe this logic to be more extendable
@@ -1533,7 +1554,7 @@ function scr_draw_unit_image(_background=false){
                 var eye_spacer = 0;
                 if (unit_armour=="Terminator Armour") {
                     // Adjust eye bionics on chaplain terminator armour
-                    if (skull_mask > 0) {
+                    if (skull_mask) {
                         eye_move_y = 2;
                         eye_spacer = -2;
                     // Adjust eye bionics on terminator armour
@@ -1812,10 +1833,4 @@ function scr_draw_unit_image(_background=false){
     }
     delete complex_set;
     return new UnitImage(unit_surface);   
-}
-
-function BaseColor(R,G,B) constructor{
-    r=R;
-    g=G;
-    b=B;
 }
