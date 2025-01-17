@@ -4,6 +4,9 @@ on:
     types:
       - opened
       - edited
+      - ready_for_review
+      - synchronize
+      - review_requested
 
 jobs:
   check:
