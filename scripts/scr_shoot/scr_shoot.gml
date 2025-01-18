@@ -271,8 +271,8 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 						if (armour_pierce = -2) then target_armour_value = target_armour_value * 2;
 					} else {
 						if (armour_pierce = 1) then target_armour_value = 0;
-						if (armour_pierce = 0) then target_armour_value = target_armour_value * 4;
-						if (armour_pierce = -1) then target_armour_value = target_armour_value * 3;
+						if (armour_pierce = 0) then target_armour_value = target_armour_value * 3;
+						if (armour_pierce = -1) then target_armour_value = target_armour_value * 2;
 						if (armour_pierce = -2) then target_armour_value = target_armour_value * 1.5;
 					}
 
@@ -363,8 +363,8 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 								target_armour_value2 = target_object.dudes_ac[godd];
 								if (target_object.dudes_vehicle[godd] = 0) {
 									if (ap2 = 1) then target_armour_value2 = 0;
-									if (ap2 = 0) then target_armour_value2 = target_armour_value2 * 4;
-									if (ap2 = -1) then target_armour_value2 = target_armour_value2 * 3;
+									if (ap2 = 0) then target_armour_value2 = target_armour_value2 * 3;
+									if (ap2 = -1) then target_armour_value2 = target_armour_value2 * 2;
 									if (ap2 = -2) then target_armour_value2 = target_armour_value2 * 1.5;
 								}
 								if (target_object.dudes_vehicle[godd] = 1) {
