@@ -880,7 +880,7 @@ if __b__ {
 			scr_en_weapon("Power Klaw", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Rokkit Launcha", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Big Shoota", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 60;
+			dudes_ac[j] = 20;
 			if (obj_ncombat.started = 0) or(dudes_num[j] > 1) {
 				dudes_hp[j] = 600;
 			}
@@ -891,7 +891,7 @@ if __b__ {
 		if (dudes[j] = "Minor Warboss") {
 			scr_en_weapon("Choppa", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Big Shoota", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 40;
+			dudes_ac[j] = 15;
 			if (obj_ncombat.started = 0) or(dudes_num[j] > 1) {
 				dudes_hp[j] = 150;
 			}
@@ -900,7 +900,7 @@ if __b__ {
 		if (dudes[j] = "Warboss") {
 			scr_en_weapon("Power Klaw", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Rokkit Launcha", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 50;
+			dudes_ac[j] = 15;
 			if (obj_ncombat.started = 0) or(dudes_num[j] > 1) {
 				dudes_hp[j] = 200;
 			}
@@ -909,7 +909,7 @@ if __b__ {
 		if (dudes[j] = "Big Warboss") {
 			scr_en_weapon("Power Klaw", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Rokkit Launcha", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 60;
+			dudes_ac[j] = 20;
 			if (obj_ncombat.started = 0) or(dudes_num[j] > 1) {
 				dudes_hp[j] = 300;
 			}
@@ -925,81 +925,81 @@ if __b__ {
 		if (dudes[j] = "Slugga Boy") {
 			scr_en_weapon("Choppa", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Slugga", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 10;
-			dudes_hp[j] = 50;
+			dudes_ac[j] = 5;
+			dudes_hp[j] = 60;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Shoota Boy") {
 			scr_en_weapon("Shoota", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Choppa", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 10;
-			dudes_hp[j] = 50;
+			dudes_ac[j] = 5;
+			dudes_hp[j] = 60;
 			men += dudes_num[j];
 		}
 
 		if (dudes[j] = "Mekboy") {
 			scr_en_weapon("Power Klaw", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Big Shoota", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 30;
-			dudes_hp[j] = 60;
+			dudes_ac[j] = 15;
+			dudes_hp[j] = 100;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Meganob") {
 			scr_en_weapon("Power Klaw", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Big Shoota", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 40;
-			dudes_hp[j] = 120;
+			dudes_ac[j] = 15;
+			dudes_hp[j] = 150;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Flash Git") {
 			scr_en_weapon("Snazzgun", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Choppa", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 15;
-			dudes_hp[j] = 65;
+			dudes_ac[j] = 10;
+			dudes_hp[j] = 100;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Cybork") {
 			scr_en_weapon("Power Klaw", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Big Shoota", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 30;
-			dudes_hp[j] = 80;
+			dudes_ac[j] = 15;
+			dudes_hp[j] = 100;
 			men += dudes_num[j];
 		}
 
 		if (dudes[j] = "Ard Boy") {
 			scr_en_weapon("Choppa", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Slugga", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 20;
-			dudes_hp[j] = 70;
+			dudes_ac[j] = 10;
+			dudes_hp[j] = 80;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Kommando") {
 			scr_en_weapon("Choppa", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Rokkit Launcha", true, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 10;
-			dudes_hp[j] = 80;
+			dudes_hp[j] = 150;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Burna Boy") {
 			scr_en_weapon("Choppa", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Burna", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 10;
-			dudes_hp[j] = 35;
+			dudes_ac[j] = 5;
+			dudes_hp[j] = 80;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Tankbusta") {
 			scr_en_weapon("Rokkit Launcha", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Tankbusta Bomb", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Melee1", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 10;
-			dudes_hp[j] = 50;
+			dudes_ac[j] = 5;
+			dudes_hp[j] = 80;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Stormboy") {
 			scr_en_weapon("Choppa", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Slugga", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 10;
-			dudes_hp[j] = 50;
+			dudes_ac[j] = 5;
+			dudes_hp[j] = 80;
 			dudes_special[j] = "Jetpack";
 			men += dudes_num[j];
 		}
@@ -1010,6 +1010,7 @@ if __b__ {
 			scr_en_weapon("Rokkit Launcha", false, dudes_num[j] * 2, dudes[j], j);
 			dudes_ac[j] = 40;
 			dudes_hp[j] = 200;
+			dudes_dr[j] = 0.8;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
@@ -1017,8 +1018,9 @@ if __b__ {
 			scr_en_weapon("Power Klaw", false, dudes_num[j] * 2, dudes[j], j);
 			scr_en_weapon("Big Shoota", false, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Rokkit Launcha", false, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 35;
-			dudes_hp[j] = 150;
+			dudes_ac[j] = 30;
+			dudes_hp[j] = 200;
+			dudes_dr[j] = 0.25;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
