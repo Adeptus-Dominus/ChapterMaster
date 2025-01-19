@@ -1143,51 +1143,52 @@ if __b__ {
 			scr_en_weapon("Bonesword", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Lashwhip", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Heavy Venom Cannon", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 35;
-			dudes_hp[j] = 250;
+			dudes_ac[j] = 20;
+			dudes_hp[j] = 400;
+			dudes_dr[j] = 0.2;
 			men += dudes_num[j];
 		}
 
 		if (dudes[j] = "Tyrant Guard") {
 			scr_en_weapon("Crushing Claws", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 30;
-			dudes_hp[j] = 100;
+			dudes_ac[j] = 15;
+			dudes_hp[j] = 200;
+			dudes_dr[j] = 0.4;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Tyranid Warrior") {
 			scr_en_weapon("Rending Claws", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Devourer", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 20;
+			dudes_ac[j] = 10;
 			dudes_hp[j] = 100;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Zoanthrope") {
 			scr_en_weapon("Zoanthrope Blast", false, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 40;
-			dudes_hp[j] = 200;
-			dudes_dr[j] = 0.5;
-			medi += dudes_num[j];
-			dudes_vehicle[j] = 1.5;
+			dudes_ac[j] = 10;
+			dudes_hp[j] = 300;
+			dudes_dr[j] = 0.75;
+			men += dudes_num[j];
 		}
 		if (dudes[j] = "Carnifex") {
 			scr_en_weapon("Carnifex Claws", false, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Venom Cannon", false, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 40;
+			dudes_ac[j] = 20;
 			dudes_hp[j] = 300;
-			dudes_dr[j] = 0.75;
+			dudes_dr[j] = 0.25;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
 		if (dudes[j] = "Termagaunt") {
 			scr_en_weapon("Fleshborer", true, dudes_num[j] / 10, dudes[j], j);
-			dudes_ac[j] = 0;
-			dudes_hp[j] = 20;
+			dudes_ac[j] = 5;
+			dudes_hp[j] = 25;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Hormagaunt") {
 			scr_en_weapon("Scything Talons", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 0;
-			dudes_hp[j] = 20;
+			dudes_ac[j] = 5;
+			dudes_hp[j] = 25;
 			men += dudes_num[j];
 		}
 
@@ -1195,20 +1196,20 @@ if __b__ {
 			scr_en_weapon("Autogun", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("melee0.5", true, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 0;
-			dudes_hp[j] = 20;
+			dudes_hp[j] = 35;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Genestealer") {
 			scr_en_weapon("Genestealer Claws", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 10;
-			dudes_hp[j] = 50;
+			dudes_ac[j] = 5;
+			dudes_hp[j] = 75;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Genestealer Patriarch") {
 			scr_en_weapon("Genestealer Claws", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Witchfire", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 20;
-			dudes_hp[j] = 150;
+			dudes_ac[j] = 10;
+			dudes_hp[j] = 300;
 			dudes_dr[j] = 0.75;
 			men += dudes_num[j];
 		}
@@ -1216,18 +1217,19 @@ if __b__ {
 			scr_en_weapon("Autogun", false, dudes_num[j] * 4, dudes[j], j);
 			dudes_ac[j] = 10;
 			dudes_hp[j] = 150;
+			dudes_dr[j] = 0.25;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
 		if (dudes[j] = "Lictor") {
 			scr_en_weapon("Lictor Claws", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Flesh Hooks", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 20;
-			dudes_hp[j] = 150;
+			dudes_ac[j] = 10;
+			dudes_hp[j] = 300;
+			dudes_dr[j] = 0.75;
 			men += dudes_num[j];
 		}
 
-		dudes_dr[j] += 0.25;
 	}
 
 	/* */
