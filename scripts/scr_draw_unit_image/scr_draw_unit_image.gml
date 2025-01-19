@@ -461,7 +461,7 @@ function scr_draw_unit_image(_background=false){
             ui_twoh[i]=false;
             ui_xmod[i]=0;
             ui_ymod[i]=0;
-            new_weapon_draw[i]=false;
+            new_weapon_draw[i]=true;
         }
         var draw_backpack = true;
         var ui_force_both=false;
@@ -603,11 +603,11 @@ function scr_draw_unit_image(_background=false){
         
         if (armour_type!=ArmourType.Dreadnought && armour_type!=ArmourType.None){
             if (weapon_one()!=""){
-                scr_ui_display_weapons(1,unit_armour,weapon_one(), armour_type);
+                set_weapon_display_data(1, self, armour_type);
             }
             
             if (weapon_two()!="") and (ui_twoh[1]==false){
-                scr_ui_display_weapons(2,unit_armour,weapon_two(), armour_type);
+                set_weapon_display_data(2, self, armour_type);
             }
         }
 

@@ -649,7 +649,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 	static alter_equipment = alter_unit_equipment;
 	static stat_display = scr_draw_unit_stat_data;
 	static draw_unit_image = scr_draw_unit_image;
-	static display_wepaons = scr_ui_display_weapons;
+	static display_wepaons = set_weapon_display_data;
 	static unit_profile_text = scr_unit_detail_text;
 	static unit_equipment_data= function(){
 		var armour_data=get_armour_data()

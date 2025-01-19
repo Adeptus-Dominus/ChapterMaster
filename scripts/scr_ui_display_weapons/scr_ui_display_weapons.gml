@@ -3,386 +3,452 @@
 // TODO: Overall a refactor to weapon draw logic would be good, as current approach may be a bit too verbose and at the same time not very customizable.
 // My advice is to use Bolter and Power Sword as baselines for all origin, offset and other adjustments, to keep stuff consistent.
 /// @mixin
-function scr_ui_display_weapons(left_or_right, current_armor, equiped_weapon, current_armor_type) {
-    clear = false;
-    display_type = "normal_ranged";
-    var sprite_found = false;
+function set_weapon_display_data(weapon_slot, unit, armour_type) {
 
-    if (current_armor_type == ArmourType.Terminator){
-        // Handle terminator ranged sprites
-        if (!sprite_found){
-            var terminator_ranged = {
-                "Assault Cannon":spr_weapon_assca,
-                "Heavy Flamer":spr_weapon_hflamer_term,
-                "Plasma Cannon":spr_weapon_plasma_cannon_term,
-                "Grav-Cannon":spr_weapon_plasma_cannon_term,
-            }
-            var terminator_ranged_names=struct_get_names(terminator_ranged);
-            for (var i=0;i<array_length(terminator_ranged_names);i++){
-                if (terminator_ranged_names[i] == equiped_weapon){
-                    set_as_terminator_ranged(terminator_ranged[$ terminator_ranged_names[i]],left_or_right)
-                    sprite_found = true;
-                    break;               
+    var _equipped_weapon = weapon_slot == 1 ? unit.weapon_one() : unit.weapon_two();
+    var standards = {
+        "Dark Angels" : spr_da_standard,
+    }
+    var chap_name = global.chapter_name;
+
+    static weapon_display_data_terminator = {
+        "Assault Cannon": {
+            "sprite": spr_weapon_assca,
+            "draw_preset": "terminator_ranged"
+        },
+        "Heavy Flamer": {
+            "sprite": spr_weapon_hflamer_term,
+            "draw_preset": "terminator_ranged"
+        },
+        "Plasma Cannon": {
+            "sprite": spr_weapon_plasma_cannon_term,
+            "draw_preset": "terminator_ranged"
+        },
+        "Grav-Cannon": {
+            "sprite": spr_weapon_plasma_cannon_term,
+            "draw_preset": "terminator_ranged"
+        },
+        "Power Fist": {
+            "sprite": spr_weapon_powfist4,
+            "draw_preset": "terminator_melee"
+        },
+        "Lightning Claw": {
+            "sprite": spr_weapon_lightning2,
+            "draw_preset": "terminator_melee"
+        },
+        "Chainfist": {
+            "sprite": spr_weapon_chainfist,
+            "draw_preset": "terminator_melee"
+        },
+        "Boltstorm Gauntlet": {
+            "sprite": spr_weapon_boltstorm_gauntlet,
+            "draw_preset": "terminator_melee"
+        }
+    }
+
+    static weapon_display_data_normal = {
+        "Bolt Pistol": {
+            "sprite": spr_weapon_boltpis,
+            "draw_preset": "normal_ranged"
+        },
+        "Infernus Pistol": {
+            "sprite": spr_weapon_inferno,
+            "draw_preset": "normal_ranged"
+        },
+        "Bolter": {
+            "sprite": spr_weapon_bolter,
+            "draw_preset": "normal_ranged"
+        },
+        "Storm Bolter": {
+            "sprite": spr_weapon_sbolter,
+            "draw_preset": "normal_ranged"
+        },
+        "Plasma Pistol": {
+            "sprite": spr_weapon_plasp,
+            "draw_preset": "normal_ranged"
+        },
+        "Plasma Gun": {
+            "sprite": spr_weapon_plasg,
+            "draw_preset": "normal_ranged"
+        },
+        "Flamer": {
+            "sprite": spr_weapon_flamer,
+            "draw_preset": "normal_ranged"
+        },
+        "Meltagun": {
+            "sprite": spr_weapon_melta,
+            "draw_preset": "normal_ranged"
+        },
+        "Stalker Pattern Bolter": {
+            "sprite": spr_weapon_stalker,
+            "draw_preset": "normal_ranged"
+        },
+        "Combiflamer": {
+            "sprite": spr_weapon_comflamer,
+            "draw_preset": "normal_ranged"
+        },
+        "Combiplasma": {
+            "sprite": spr_weapon_complas,
+            "draw_preset": "normal_ranged"
+        },
+        "Combigrav": {
+            "sprite": spr_weapon_comgrav,
+            "draw_preset": "normal_ranged"
+        },
+        "Combimelta": {
+            "sprite": spr_weapon_commelta,
+            "draw_preset": "normal_ranged"
+        },
+        "Grav-Pistol": {
+            "sprite": spr_weapon_grav_pistol,
+            "draw_preset": "normal_ranged"
+        },
+        "Grav-Gun": {
+            "sprite": spr_weapon_grav_gun,
+            "draw_preset": "normal_ranged"
+        },
+        "Missile Launcher": {
+            "sprite": spr_weapon_missile,
+            "draw_preset": "normal_ranged"
+        },
+        "Hand Flamer": {
+            "sprite": spr_weapon_hand_flamer,
+            "draw_preset": "normal_ranged"
+        },
+        "Heavy Bolter": {
+            "sprite": spr_weapon_hbolt,
+            "draw_preset": "ranged_twohand"
+        },
+        "Lascannon": {
+            "sprite": spr_weapon_lasca,
+            "draw_preset": "ranged_twohand"
+        },
+        "Multi-Melta": {
+            "sprite": spr_weapon_mmelta,
+            "draw_preset": "ranged_twohand"
+        },
+        "Heavy Flamer": {
+            "sprite": spr_weapon_hflamer,
+            "draw_preset": "ranged_twohand"
+        },
+        "Plasma Cannon": {
+            "sprite": spr_weapon_plasc,
+            "draw_preset": "ranged_twohand"
+        },
+        "Grav-Cannon": {
+            "sprite": spr_weapon_grav_cannon,
+            "draw_preset": "ranged_twohand"
+        },
+        "Company Standard": {
+            "sprite": spr_weapon_standard2,
+            "draw_preset": "melee_onehand",
+            "main_hand_variant": 0,
+            "options": [
+                {
+                    "sprite": spr_da_standard,
+                    "chapter": "Dark Angels",
                 }
-            }
-        }
-
-        // Handle terminator melee sprites
-        if (!sprite_found){
-            var terminator_melee = {
-
-            }
-            var terminator_melee_names=struct_get_names(terminator_melee);
-            for (var i=0;i<array_length(terminator_melee_names);i++){
-                if (terminator_melee_names[i] == equiped_weapon){
-                    set_as_terminator_melee(terminator_melee[$ terminator_melee_names[i]],left_or_right)
-                    sprite_found = true;
-                    break;               
+            ],
+        },
+        "Chainsword": {
+            "sprite": spr_weapon_chsword,
+            "draw_preset": "melee_onehand"
+        },
+        "Combat Knife": {
+            "sprite": spr_weapon_knife,
+            "draw_preset": "melee_onehand"
+        },
+        "Power Sword": {
+            "sprite": spr_weapon_powswo,
+            "draw_preset": "melee_onehand"
+        },
+        "Eldar Power Sword": {
+            "sprite": spr_weapon_eldsword,
+            "draw_preset": "melee_onehand"
+        },
+        "Power Spear": {
+            "sprite": spr_weapon_powspear,
+            "draw_preset": "melee_onehand"
+        },
+        "Thunder Hammer": {
+            "sprite": spr_weapon_thhammer,
+            "draw_preset": "melee_onehand"
+        },
+        "Power Axe": {
+            "sprite": spr_weapon_powaxe,
+            "draw_preset": "melee_onehand_low_grip"
+        },
+        "Crozius Arcanum": {
+            "sprite": spr_weapon_crozarc,
+            "draw_preset": "melee_onehand_low_grip"
+        },
+        "Chainaxe": {
+            "sprite": spr_weapon_chaxe,
+            "draw_preset": "melee_onehand_low_grip"
+        },
+        "Force Staff": {
+            "sprite": spr_weapon_frcstaff,
+            "draw_preset": "melee_onehand"
+        },
+        "Force Sword": {
+            "sprite": spr_weapon_powswo,
+            "draw_preset": "melee_onehand"
+        },
+        "Force Axe": {
+            "sprite": spr_weapon_powaxe,
+            "draw_preset": "melee_onehand_low_grip"
+        },
+        "Relic Blade": {
+            "sprite": spr_weapon_relic_blade,
+            "draw_preset": "melee_onehand"
+        },
+        "Eviscerator": {
+            "sprite": spr_weapon_evisc,
+            "draw_preset": "melee_onehand"
+        },
+        "Power Mace": {
+            "sprite": spr_weapon_powmace,
+            "draw_preset": "melee_onehand_low_grip"
+        },
+        "Mace of Absolution": {
+            "sprite": spr_weapon_mace_of_absolution,
+            "draw_preset": "melee_onehand_low_grip"
+        },
+        "Show Maul": {
+            "sprite": spr_weapon_powmaul,
+            "draw_preset": "melee_onehand_low_grip"
+        },
+        "Power Fist": {
+            "sprite": spr_weapon_powfist,
+            "draw_preset": "melee_fist"
+        },
+        "Lightning Claw": {
+            "sprite": spr_weapon_lightning1,
+            "draw_preset": "melee_fist"
+        },
+        "Boltstorm Gauntlet": {
+            "sprite": spr_weapon_boltstorm_gauntlet_small,
+            "draw_preset": "melee_fist"
+        },
+        "Chainfist": {
+            "sprite": spr_weapon_chainfist_small,
+            "draw_preset": "melee_fist"
+        },
+        "Assault Chainfist": {
+            "sprite": spr_weapon_chainfist_small,
+            "draw_preset": "melee_fist"
+        },
+        "Heavy Thunder Hammer": {
+            "sprite": spr_weapon_hthhammer,
+            "draw_preset": "melee_twohand"
+        },
+        "Sniper Rifle": {
+            "sprite": spr_weapon_sniper,
+            "draw_preset": "melee_onehand"
+        },
+        "Autocannon": {
+            "sprite": spr_weapon_autocannon2,
+            "draw_preset": "melee_onehand"
+        },
+        "Storm Shield": {
+            sprite: spr_weapon_storm2,
+            options: [
+                {
+                    sprite: spr_weapon_storm,
+                    chapter: "Dark Angels",
+                    role: eROLE.HonourGuard,
                 }
-            }
-        }
-
-        // Handle terminator fist sprites
-        if (!sprite_found){
-            var terminator_fist = {
-                "Power Fist":spr_weapon_powfist4,
-                "Lightning Claw":spr_weapon_lightning2,
-                "Chainfist":spr_weapon_chainfist,
-                "Boltstorm Gauntlet":spr_weapon_boltstorm_gauntlet,
-            }
-            var terminator_fist_names=struct_get_names(terminator_fist);
-            for (var i=0;i<array_length(terminator_fist_names);i++){
-                if (terminator_fist_names[i] == equiped_weapon){
-                    set_as_terminator_fist(terminator_fist[$ terminator_fist_names[i]],left_or_right)
-                    sprite_found = true;
-                    break;               
-                }
-            }
-        }
+            ],
+            "draw_preset": "shield"
+        },
+        "Boarding Shield": {
+            sprite: spr_weapon_boarding,
+            "draw_preset": "shield"
+        },
     }
 
-    // Handle one-handed ranged
-    if (!sprite_found){
-        var normal_ranged ={
-            "Bolt Pistol":spr_weapon_boltpis,
-            "Infernus Pistol":spr_weapon_inferno,
-            "Bolter":spr_weapon_bolter,
-            "Storm Bolter":spr_weapon_sbolter,
-            "Plasma Pistol":spr_weapon_plasp,
-            "Plasma Gun":spr_weapon_plasg,
-            "Flamer":spr_weapon_flamer,
-            "Meltagun":spr_weapon_melta,
-            "Stalker Pattern Bolter":spr_weapon_stalker,
-            "Combiflamer":spr_weapon_comflamer,
-            "Combiplasma":spr_weapon_complas,
-            "Combigrav":spr_weapon_comgrav,
-            "Combimelta":spr_weapon_commelta,
-            "Grav-Pistol":spr_weapon_grav_pistol,
-            "Grav-Gun":spr_weapon_grav_gun,
-            "Missile Launcher":spr_weapon_missile,
-            "Hand Flamer":spr_weapon_hand_flamer,
-        }
-        var normal_ranged_names = struct_get_names(normal_ranged);
-        for (var i=0;i<array_length(normal_ranged_names);i++){
-            if (normal_ranged_names[i] == equiped_weapon){
-                set_as_normal_ranged(normal_ranged[$ normal_ranged_names[i]],left_or_right)
-                sprite_found = true;
-                break;
-            }
-        }
-    }
 
-    // Handle two-handed ranged
-    if (!sprite_found){
-        var heavy_ranged ={
-            "Heavy Bolter":spr_weapon_hbolt,
-            "Lascannon":spr_weapon_lasca,
-            "Multi-Melta":spr_weapon_mmelta,
-            "Heavy Flamer":spr_weapon_hflamer,
-			"Plasma Cannon":spr_weapon_plasc,
-            "Grav-Cannon":spr_weapon_grav_cannon,
-        }
-        var heavy_ranged_names=struct_get_names(heavy_ranged);
-        for (var i=0;i<array_length(heavy_ranged_names);i++){
-            if (heavy_ranged_names[i] == equiped_weapon) {
-                set_as_ranged_twohand(heavy_ranged[$ heavy_ranged_names[i]],left_or_right)
-                sprite_found = true;
-                break;               
-            }
-        }
-    }
-
-    // Handle one-handed melee
-    if (!sprite_found){
-        var standards = {
-            "Dark Angels" : spr_da_standard,
-        }
-        var chap_name = global.chapter_name;
-        var melee_weapons ={
-            "Company Standard":struct_exists(standards, chap_name) ? standards[$ chap_name] :spr_weapon_standard2,
-            "Chainsword":spr_weapon_chsword,
-            "Combat Knife":spr_weapon_knife,
-            "Power Sword":spr_weapon_powswo,
-            "Eldar Power Sword":spr_weapon_eldsword,
-            "Power Spear":spr_weapon_powspear,
-            "Thunder Hammer":spr_weapon_thhammer,
-            "Power Axe":spr_weapon_powaxe,
-			"Crozius Arcanum":spr_weapon_crozarc,
-            "Chainaxe":spr_weapon_chaxe,
-            "Force Staff":spr_weapon_frcstaff,
-			"Force Sword":spr_weapon_powswo,
-			"Force Axe":spr_weapon_powaxe,
-            "Relic Blade":spr_weapon_relic_blade,
-            "Eviscerator":spr_weapon_evisc,
-            "Power Mace":spr_weapon_powmace,
-            "Mace of Absolution":spr_weapon_mace_of_absolution,
-            "Show Maul":spr_weapon_powmaul,
-        }
-        var melee_weapons_names=struct_get_names(melee_weapons);
-        var wep_
-        for (var i=0;i<array_length(melee_weapons_names);i++){
-            if (melee_weapons_names[i] == equiped_weapon){
-                set_as_melee_onehand(melee_weapons[$ melee_weapons_names[i]],left_or_right);
-                sprite_found = true;
-                break;               
-            }                      
-        }
-    }
-
-    // Handle one-handed fist melee
-    if (!sprite_found){
-        if (string_count("DUB", equiped_weapon) == 0){
-            var fist_melee ={
-                "Power Fist":spr_weapon_powfist,
-                "Lightning Claw":spr_weapon_lightning1,
-                "Boltstorm Gauntlet":spr_weapon_boltstorm_gauntlet_small,
-                "Chainfist":spr_weapon_chainfist_small,
-                "Assault Chainfist": spr_weapon_chainfist_small,
-            }
-            var fist_melee_names=struct_get_names(fist_melee);
-            for (var i=0;i<array_length(fist_melee_names);i++){
-                if (fist_melee_names[i] == equiped_weapon) {
-                    set_as_normal_fist(fist_melee[$ fist_melee_names[i]],left_or_right)
-                    sprite_found = true;
-                    break;               
-                }
-            }
-        }
-    }
-
-    // Handle two-handed melee
-    if (!sprite_found){
-        var heavy_melee ={
-            "Heavy Thunder Hammer":spr_weapon_hthhammer,
-        }
-        var heavy_melee_names=struct_get_names(heavy_melee);
-        for (var i=0;i<array_length(heavy_melee_names);i++){
-            if (heavy_melee_names[i] == equiped_weapon) {
-                set_as_melee_twohand(heavy_melee[$ heavy_melee_names[i]],left_or_right)
-                sprite_found = true;
-                break;               
-            }
-        }
-    }
-
-    // Handle special ranged
-    if (!sprite_found){
-        var special_ranged ={
-            "Sniper Rifle":spr_weapon_sniper,
-            "Autocannon":spr_weapon_autocannon2,
-        }
-        var special_ranged_names=struct_get_names(special_ranged);
-        for (var i=0;i<array_length(special_ranged_names);i++){
-            if (special_ranged_names[i] == equiped_weapon){
-                set_as_special_ranged(special_ranged[$ special_ranged_names[i]],left_or_right)
-                sprite_found = true;
-                break;               
-            }
-        }
-    }
-
-    static set_as_normal_ranged = function(sprite, left_or_right) {
-        ui_weapon[left_or_right] = sprite;
-        arm_variant[left_or_right] = 1;
-        ui_spec[left_or_right] = false;
-        new_weapon_draw[left_or_right] = true;
-        display_type = "normal_ranged";
+    static draw_presets = {
+        "default": {
+            "main_arm_variant": 0,
+            "secondary_arm_variant": 0,
+            "main_hand_variant": 0,
+            "secondary_hand_variant": 0,
+            "hand_on_top": false,
+            "ui_spec": false,
+            "ui_twoh": false,
+        },
+        "normal_ranged": {
+            "main_arm_variant": 1,
+            "ui_spec": false,
+        },
+        "ranged_twohand": {
+            "main_arm_variant": 0,
+            "secondary_arm_variant": 0,
+            "main_hand_variant": 0,
+            "secondary_hand_variant": 0,
+            "ui_spec": true,
+            "ui_twoh": true,
+        },
+        "terminator_ranged": {
+            "main_arm_variant": 2,
+            "main_hand_variant": 0,
+            "ui_spec": true,
+        },
+        "melee_onehand": {
+            "main_arm_variant": 0,
+            "main_hand_variant": 2,
+            "ui_spec": true,
+            "hand_on_top": true,
+        },
+        "melee_onehand_low_grip": {
+            "main_arm_variant": 0,
+            "main_hand_variant": 3,
+            "ui_spec": true,
+            "hand_on_top": true,
+        },
+        "melee_fist": {
+            "main_arm_variant": 1,
+            "ui_spec": true,
+        },
+        "melee_twohand": {
+            "main_arm_variant": 0,
+            "secondary_arm_variant": 0,
+            "main_hand_variant": 0,
+            "secondary_hand_variant": 0,
+            "hand_on_top": true,
+            "ui_spec": true,
+            "ui_twoh": true,
+        },
+        "terminator_ranged": {
+            "main_arm_variant": 1,
+            "hand_on_top": true,
+            "ui_spec": true,
+        },
+        "terminator_fist": {
+            "main_arm_variant": 1,
+            "ui_spec": true,
+        },
+        "shield": {
+            "arm_variant": 2,
+            "ui_spec": false,
+        },
     }
     
-    static set_as_ranged_assault = function(sprite, left_or_right) {
-        ui_weapon[left_or_right] = sprite;
-        display_type = "ranged_assault";
-        arm_variant[left_or_right] = 0;
-        hand_variant[left_or_right] = 0;
-        ui_spec[left_or_right] = true;
-    }
+    var _weapon_struct = {};
+    var _preset = "default"; // Default preset name
     
-    static set_as_ranged_twohand = function(sprite, left_or_right) {
-        ui_weapon[left_or_right] = sprite;
-        display_type = "ranged_twohand";
-        arm_variant[1] = 0;
-        arm_variant[2] = 0;
-        hand_variant[1] = 0;
-        hand_variant[2] = 0;
-        ui_spec[left_or_right] = true;
-        ui_twoh[left_or_right] = true;
-    }
-    
-    static set_as_special_ranged = function(sprite, left_or_right) {
-        ui_weapon[left_or_right] = sprite;
-        arm_variant[left_or_right] = 0;
-        hand_variant[left_or_right] = 0;
-        ui_spec[left_or_right] = true;
-        new_weapon_draw[left_or_right] = true;
-        display_type = "special_ranged";
-    }
-    
-    static set_as_terminator_ranged = function(sprite, left_or_right) {
-        ui_weapon[left_or_right] = sprite;
-        arm_variant[left_or_right] = 2;
-        hand_variant[left_or_right] = 0;
-        ui_spec[left_or_right] = true;
-        display_type = "terminator_ranged";
-    }
-    
-    static set_as_melee_onehand = function(sprite, left_or_right) {
-        ui_weapon[left_or_right] = sprite;
-        arm_variant[left_or_right] = 0;
-        hand_variant[left_or_right] = 0;
-        hand_on_top[left_or_right]=true;
-        ui_spec[left_or_right] = true;
-        display_type = "melee_onehand";
-    }
-    
-    static set_as_normal_fist = function(sprite, left_or_right) {
-        ui_weapon[left_or_right] = sprite;
-        arm_variant[left_or_right] = 1;
-        ui_spec[left_or_right] = true;
-        display_type = "normal_fist";
-    }
-    
-    static set_as_melee_twohand = function(sprite, left_or_right) {
-        ui_weapon[left_or_right] = sprite;
-        display_type = "melee_twohand";
-        arm_variant[1] = 0;
-        arm_variant[2] = 0;
-        hand_variant[1] = 0;
-        hand_variant[2] = 0;
-        hand_on_top[1]=true;
-        hand_on_top[2]=true;
-        ui_spec[left_or_right] = true;
-        ui_twoh[left_or_right] = true;
-    }
-    
-    static set_as_terminator_melee = function(sprite, left_or_right) {
-        ui_weapon[left_or_right] = sprite;
-        arm_variant[left_or_right] = 1;
-        hand_on_top[left_or_right]=true;
-        ui_spec[left_or_right] = true;
-        display_type = "terminator_melee";
-    }
-    
-    static set_as_terminator_fist = function(sprite, left_or_right) {
-        ui_weapon[left_or_right] = sprite;
-        arm_variant[left_or_right] = 1;
-        ui_spec[left_or_right] = true;
-        display_type = "terminator_fist";
-    }
-
-    /////////
-    // Hands and stuff
-    //////////
-
-    if ("Storm Shield" == equiped_weapon) {
-        if (global.chapter_name == "Dark Angels" && role() == obj_ini.role[100][eROLE.HonourGuard]){
-            ui_weapon[left_or_right] = spr_weapon_storm;
+    // If armour type is Terminator, check the equipped weapon data.
+    if (armour_type == ArmourType.Terminator) {
+        if (struct_exists(weapon_display_data_terminator, _equipped_weapon)) {
+            _weapon_struct = weapon_display_data_terminator;
+            _preset = _weapon_struct[$ _equipped_weapon].draw_preset;
+        } else if (struct_exists(weapon_display_data_normal, _equipped_weapon)) {
+            _weapon_struct = weapon_display_data_normal;
+            _preset = _weapon_struct[$ _equipped_weapon].draw_preset;
         }
-        else {
-            ui_weapon[left_or_right] = spr_weapon_storm2;
+    } else {
+        if (struct_exists(weapon_display_data_normal, _equipped_weapon)) {
+            _weapon_struct = weapon_display_data_normal;
+            _preset = _weapon_struct[$ _equipped_weapon].draw_preset;
         }
-        arm_variant[left_or_right] = 2;
-        ui_spec[left_or_right] = false;
     }
-    if ("Boarding Shield" == equiped_weapon) {
-        ui_weapon[left_or_right] = spr_weapon_boarding;
-        arm_variant[left_or_right] = 2;
-        ui_spec[left_or_right] = false;
-    }
+    
+    // Initialize all values with the default preset
+    var weapon_preset = draw_presets[$ "default"];
+    var custom_preset = draw_presets[$ _preset];
+    
+    // Get the keys from the custom_preset struct
+    var _names = struct_get_names(custom_preset);
 
-    if ("Company Standard" == equiped_weapon) {
-        hand_variant[left_or_right] = 0;
+    // Override with the custom preset values
+    for (var i = 0; i < array_length(_names); i++) {
+        var _name = _names[i];
+        weapon_preset[$ _name] = custom_preset[$ _name];
     }
-
-    if ("Autocannon" == equiped_weapon) {
-        arm_variant[1] = 0;
-        arm_variant[2] = 1;
-        hand_variant[1] = 6;
-        hand_on_top[2]=true;
-    }
-
-    if (array_contains(["Power Mace", "Mace of Absolution", "Power Axe", "Shock Maul", "Chainaxe", "Force Axe"], equiped_weapon)) {
-        hand_variant[left_or_right] = 3;
-    }
-
-    if (array_contains(["Sniper Rifle", "Force Staff", "Power Sword", "Thunder Hammer", "Autocannon", "Combat Knife", "Power Spear", "Chainsword", "Force Sword"], equiped_weapon)) {
-        hand_variant[left_or_right] = 2;
-        hand_on_top[left_or_right] = true;
-    }
-
-    // New weapon draw method
-    if (array_contains(["Force Staff", "Mace of Absolution", "Power Mace", "Power Axe", "Power Sword", "Autocannon", "Combat Knife", "Power Spear", "Shock Maul", "Chainsword", "Chainaxe", "Force Sword", "Force Axe"], equiped_weapon)) {
-        new_weapon_draw[left_or_right] = true;
-    }
-
-    // Adjust weapon sprites meant for normal power armour but used on terminators
-    if (current_armor_type == ArmourType.Terminator && !array_contains(["terminator_ranged", "terminator_melee","terminator_fist"],display_type)){
-        ui_ymod[left_or_right] -= 20;
-        if (display_type == "normal_ranged") {
-            ui_xmod[left_or_right] -= 24;
-            ui_ymod[left_or_right] += 24;
+    
+    // Now override with the specific weapon values if present
+    if (_weapon_struct != {}) {
+        ui_weapon[weapon_slot] = _weapon_struct[$ _equipped_weapon].sprite;
+        display_type = _weapon_struct[$ _equipped_weapon].draw_preset;
+        
+        // Replace with weapon-specific values
+        if (struct_exists(_weapon_struct[$ _equipped_weapon], "main_arm_variant")) {
+            arm_variant[1] = _weapon_struct[$ _equipped_weapon].main_arm_variant;
         }
-        if (display_type == "melee_onehand" && equiped_weapon != "Company Standard") {
-            arm_variant[left_or_right] = 2;
-            hand_variant[left_or_right] = 2;
-            ui_xmod[left_or_right] -= 14;
-            ui_ymod[left_or_right] += 23;
+        if (struct_exists(_weapon_struct[$ _equipped_weapon], "secondary_arm_variant")) {
+            arm_variant[2] = _weapon_struct[$ _equipped_weapon].secondary_arm_variant;
         }
+        if (struct_exists(_weapon_struct[$ _equipped_weapon], "main_hand_variant")) {
+            hand_variant[1] = _weapon_struct[$ _equipped_weapon].main_hand_variant;
+        }
+        if (struct_exists(_weapon_struct[$ _equipped_weapon], "secondary_hand_variant")) {
+            hand_variant[2] = _weapon_struct[$ _equipped_weapon].secondary_hand_variant;
+        }
+        if (struct_exists(_weapon_struct[$ _equipped_weapon], "hand_on_top")) {
+            hand_on_top[1] = _weapon_struct[$ _equipped_weapon].hand_on_top;
+        }
+        if (struct_exists(_weapon_struct[$ _equipped_weapon], "hand_on_top")) { // Checking hand_on_top for both hands
+            hand_on_top[2] = _weapon_struct[$ _equipped_weapon].hand_on_top;
+        }
+        if (struct_exists(_weapon_struct[$ _equipped_weapon], "ui_spec")) {
+            ui_spec[weapon_slot] = _weapon_struct[$ _equipped_weapon].ui_spec;
+        }
+        if (struct_exists(_weapon_struct[$ _equipped_weapon], "ui_twoh")) {
+            ui_twoh[weapon_slot] = _weapon_struct[$ _equipped_weapon].ui_twoh;
+        }
+    }
+    
 
-        if (display_type == "melee_twohand") {
-            arm_variant[1] = 2;
-            arm_variant[2] = 2;
-            hand_variant[1] = 3;
-            hand_variant[2] = 4;
-            ui_ymod[left_or_right] += 25;
-        }
-
-        if (display_type == "ranged_twohand") {
-            arm_variant[1] = 2;
-            arm_variant[2] = 2;
-            hand_variant[1] = 0;
-            hand_variant[2] = 0;
-            ui_ymod[left_or_right] += 15;
-        }
-
-        if (array_contains(["Chainaxe", "Power Axe", "Crozius Arcanum", "Power Mace", "Mace of Absolution", "Relic Blade"], equiped_weapon)) {
-            hand_variant[left_or_right] = 3;
-            arm_variant[left_or_right] = 3;
-        }
-    } else if (current_armor_type == ArmourType.Scout){
-        ui_xmod[left_or_right] += 4;
-        ui_ymod[left_or_right] += 11;
+    if (weapon_slot == 2 && ui_xmod[weapon_slot] != 0) {
+        ui_xmod[weapon_slot] = ui_xmod[weapon_slot] * -1;
     }
 
-    // This is for when weapon sprites that are touching the ground and must be independent of unit height.
-    if ((display_type == "melee_onehand" && equiped_weapon != "Combat Knife") || equiped_weapon == "Sniper Rifle") {
-        ui_ymod[left_or_right] = 0;
-    }
 
-    // Flip the ui_xmod for offhand
-    if (left_or_right == 2  && ui_xmod[left_or_right] != 0) {
-        /*and (current_armor=0)*/
-        ui_xmod[left_or_right] = ui_xmod[left_or_right] * -1;
-    }
+    // // Adjust weapon sprites meant for normal power armour but used on terminators
+    // if (armour_type == ArmourType.Terminator && !array_contains(["terminator_ranged", "terminator_melee","terminator_fist"],draw_preset)){
+    //     ui_ymod[weapon_slot] -= 20;
+    //     if (draw_preset == "normal_ranged") {
+    //         ui_xmod[weapon_slot] -= 24;
+    //         ui_ymod[weapon_slot] += 24;
+    //     }
+    //     if (draw_preset == "melee_onehand" && _equipped_weapon != "Company Standard") {
+    //         arm_variant[weapon_slot] = 2;
+    //         hand_variant[weapon_slot] = 2;
+    //         ui_xmod[weapon_slot] -= 14;
+    //         ui_ymod[weapon_slot] += 23;
+    //     }
+
+    //     if (draw_preset == "melee_twohand") {
+    //         arm_variant[1] = 2;
+    //         arm_variant[2] = 2;
+    //         hand_variant[1] = 3;
+    //         hand_variant[2] = 4;
+    //         ui_ymod[weapon_slot] += 25;
+    //     }
+
+    //     if (draw_preset == "ranged_twohand") {
+    //         arm_variant[1] = 2;
+    //         arm_variant[2] = 2;
+    //         hand_variant[1] = 0;
+    //         hand_variant[2] = 0;
+    //         ui_ymod[weapon_slot] += 15;
+    //     }
+
+    //     if (array_contains(["Chainaxe", "Power Axe", "Crozius Arcanum", "Power Mace", "Mace of Absolution", "Relic Blade"], _equipped_weapon)) {
+    //         hand_variant[weapon_slot] = 3;
+    //         arm_variant[weapon_slot] = 3;
+    //     }
+    // } else if (armour_type == ArmourType.Scout){
+    //     ui_xmod[weapon_slot] += 4;
+    //     ui_ymod[weapon_slot] += 11;
+    // }
+
+    // // This is for when weapon sprites that are touching the ground and must be independent of unit height.
+    // if ((draw_preset == "melee_onehand" && _equipped_weapon != "Combat Knife") || _equipped_weapon == "Sniper Rifle") {
+    //     ui_ymod[weapon_slot] = 0;
+    // }
+    
 }
 
 function dreadnought_sprite_components(component){
