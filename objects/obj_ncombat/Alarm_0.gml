@@ -3829,112 +3829,73 @@ if (enemy = 10) and(battle_special != "ship_demon") and(battle_special != "falle
 
 // ** Chaos Space Marines Forces **
 if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeting_battle", battle_special) = 0) {
-	// Small CSM Group
+	// CSMs are a bit special case compared to other factions - it is a player's "evil mirror" faction so to speak
+	// CSM Marine
 	if (threat = 1) {
 		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "5";
+		enemy_dudes = "1";
 
-		u.dudes[1] = "Chaos Space Marine";
-		u.dudes_num[1] = 5;
+		u.dudes[1] = "Chaos Space Marine"; // TODO - consider it's randomization between various kinds of marines/leaders
+		u.dudes_num[1] = 1;
 		enemies[1] = u.dudes[1];
-		u.dudes[2] = "Cultist";
-		u.dudes_num[2] = 30;
-		enemies[2] = u.dudes[2];
 	}
-	// Medium CSM Group
+	// CSM Demi-Squad
 	if (threat = 2) {
 		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "41";
+		enemy_dudes = "3";
 
 		u.dudes[1] = "Chaos Chosen";
 		u.dudes_num[1] = 1;
 		u.dudes[2] = "Chaos Space Marine";
-		u.dudes_num[2] = 35;
+		u.dudes_num[2] = 1;
 		u.dudes[3] = "Havoc";
-		u.dudes_num[3] = 5;
+		u.dudes_num[3] = 1;
+	}
+	// CSM Squad
+	if (threat = 3) {
+		u = instance_nearest(xxx, 240, obj_enunit);
+		enemy_dudes = "10";
+
+		u.dudes[1] = "Chaos Chosen";
+		u.dudes_num[1] = 1;
+		u.dudes[2] = "Chaos Space Marine";
+		u.dudes_num[2] = 3;
+		u.dudes[3] = "Havoc";
+		u.dudes_num[3] = 1;
 
 		instance_deactivate_object(u);
 		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		u.dudes[1] = "Cultist";
-		u.dudes_num[1] = 100;
-		u.dudes[2] = "Rhino";
-		u.dudes_num[2] = 2;
-		u.dudes[3] = "Predator";
-		u.dudes_num[3] = 4;
+		u.dudes[1] = "Raptor";
+		u.dudes_num[1] = 5;
 	}
-	// Large CSM Group
-	if (threat = 3) {
+	// CSM Several Squads
+	if (threat = 4) {
 		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "over 100";
+		enemy_dudes = "23";
 
 		u.dudes[1] = "Chaos Lord";
 		u.dudes_num[1] = 1;
 		u.dudes[2] = "Chaos Sorcerer";
 		u.dudes_num[2] = 1;
-		u.dudes[3] = "Chaos Chosen";
-		u.dudes_num[3] = 10;
-		u.dudes[4] = "Chaos Space Marine";
-		u.dudes_num[4] = 100;
-
-		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		u.dudes[1] = "Rhino";
-		u.dudes_num[1] = 6;
-		u.dudes[2] = "Defiler";
-		u.dudes_num[2] = 2;
-
-		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
-		u.dudes[1] = "Cultist";
-		u.dudes_num[1] = 300;
-		u.dudes[2] = "Helbrute";
-		u.dudes_num[2] = 3;
-		u.dudes[3] = "Predator";
-		u.dudes_num[3] = 6;
-		u.dudes[4] = "Land Raider";
-		u.dudes_num[4] = 2;
-	}
-	// Small CSM Army
-	if (threat = 4) {
-		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "over 700";
-
-		u.dudes[1] = "Chaos Lord";
-		u.dudes_num[1] = 1;
-		u.dudes[2] = "Chaos Sorcerer";
-		u.dudes_num[2] = 2;
-		u.dudes[3] = "Chaos Chosen";
-		u.dudes_num[3] = 10;
+		u.dudes[3] = "Warpsmith";
+		u.dudes_num[3] = 1;
 		// u.dudes[4]="Chaos Terminator";u.dudes_num[4]=5;
 
 		instance_deactivate_object(u);
 		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		u.dudes[1] = "Chaos Space Marine";
-		u.dudes_num[1] = 250;
+		u.dudes_num[1] = 7;
 		u.dudes[2] = "Havoc";
-		u.dudes_num[2] = 20;
+		u.dudes_num[2] = 3;
 
 		instance_deactivate_object(u);
 		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		u.dudes[1] = "Rhino";
-		u.dudes_num[1] = 15;
+		u.dudes_num[1] = 1;
 		u.dudes[2] = "Defiler";
-		u.dudes_num[2] = 4;
-		u.dudes[3] = "Heldrake";
-		u.dudes_num[3] = 1;
-
-		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 30, 240, obj_enunit);
-		u.dudes[1] = "Cultist";
-		u.dudes_num[1] = 600;
-		u.dudes[2] = "Helbrute";
-		u.dudes_num[2] = 3;
-		u.dudes[3] = "Predator";
-		u.dudes_num[3] = 6;
-		u.dudes[4] = "Vindicator";
-		u.dudes_num[4] = 3;
-		u.dudes[5] = "Land Raider";
-		u.dudes_num[5] = 2;
+		u.dudes_num[2] = 1;
+		u.dudes[3] = "Raptor";
+		u.dudes_num[3] = 8;
 	}
 	// Medium CSM Army
 	if (threat = 5) {
