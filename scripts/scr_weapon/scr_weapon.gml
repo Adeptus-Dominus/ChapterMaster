@@ -568,30 +568,30 @@ global.weapons = {
 	"Bolt Pistol": {
 		"abbreviation": "BltPstl",
 		"attack": {
-			"standard": 100,
-			"master_crafted": 120,
-			"artifact": 150
+			"standard": 150,
+			"master_crafted": 175,
+			"artifact": 200
 		},
 		"description": "A smaller, more compact version of the venerable Boltgun. This model is produced in the standard Godwyn pattern.",
 		"melee_hands": 0,
 		"ranged_hands": 1,
 		"ammo": 18,
 		"range": 4.1,
-		"spli": 3,
+		"spli": 2,
 		"arp": 0,
 		"tags": ["bolt", "pistol", "boarding 1"],
 	},
 	"Wrist-Mounted Storm Bolter": { // TODO: Not used outside of this file atm;
 		"abbreviation": "WrstBlt",
 		"attack": {
-			"standard": 200,
-			"master_crafted": 240,
-			"artifact": 300
+			"standard": 275,
+			"master_crafted": 300,
+			"artifact": 350
 		},
 		"description": "A smaller, more compact version of the venerable Boltgun. This model is produced in the standard Godwyn pattern.",
 		"melee_hands": 0,
 		"ranged_hands": 1,
-		"ammo": 18,
+		"ammo": 10,
 		"range": 4.1,
 		"spli": 6,
 		"arp": 0,
