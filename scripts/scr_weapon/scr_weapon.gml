@@ -351,7 +351,7 @@ global.weapons = {
 		"range": 1,
 		"spli": 2,
 		"arp": -2,
-		"second_profiles": ["Integrated Bolter"],
+		"second_profiles": ["Integrated-Bolter"],
 		"tags": ["power", "fist", "savage", "boarding 2"],
 	},
 	"Assault Chainfist": {
