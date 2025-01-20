@@ -1043,67 +1043,66 @@ if __b__ {
 			scr_en_weapon("Plasma Rifle", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Fusion Blaster", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Cyclic Ion Blaster", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 30;
-			dudes_hp[j] = 150;
-			medi += dudes_num[j];
-			dudes_vehicle[j] = 1;
+			dudes_ac[j] = 15;
+			dudes_hp[j] = 300;
+			dudes_dr[j] = 0.5;
+			men += dudes_num[j];
 		}
 		if (dudes[j] = "XV8 Bodyguard") {
 			scr_en_weapon("Plasma Rifle", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Burst Rifle", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 30;
-			dudes_hp[j] = 100;
-			medi += dudes_num[j];
-			dudes_vehicle[j] = 1;
+			dudes_ac[j] = 10;
+			dudes_hp[j] = 200;
+			dudes_dr[j] = 0.25;
+			men += dudes_num[j];
 		}
 		if (dudes[j] = "XV8 Crisis") {
 			scr_en_weapon("Plasma Rifle", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Missile Pod", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 30;
-			dudes_hp[j] = 75;
-			medi += dudes_num[j];
-			dudes_vehicle[j] = 1;
+			dudes_ac[j] = 10;
+			dudes_hp[j] = 150;
+			dudes_dr[j] = 0.25;
+			men += dudes_num[j];
 		}
 		if (dudes[j] = "XV8 (Brightknife)") {
 			scr_en_weapon("Fusion Blaster", true, dudes_num[j] * 2, dudes[j], j);
-			dudes_ac[j] = 30;
-			dudes_hp[j] = 75;
-			medi += dudes_num[j];
-			dudes_vehicle[j] = 1;
+			dudes_ac[j] = 10;
+			dudes_hp[j] = 150;
+			dudes_dr[j] = 0.25;
+			men += dudes_num[j];
 		}
 		if (dudes[j] = "Shield Drone") {
-			dudes_ac[j] = 30;
-			dudes_hp[j] = 100;
-			medi += dudes_num[j];
-			dudes_vehicle[j] = 1;
+			dudes_ac[j] = 10;
+			dudes_hp[j] = 50;
+			men += dudes_num[j];
 		}
 
 		if (dudes[j] = "XV88 Broadside") {
 			scr_en_weapon("Smart Missile System", true, dudes_num[j] * 2, dudes[j], j);
 			scr_en_weapon("Small Railgun", true, dudes_num[j] * 2, dudes[j], j);
-			dudes_ac[j] = 30;
-			dudes_hp[j] = 150;
-			medi += dudes_num[j];
-			dudes_vehicle[j] = 1;
+			dudes_ac[j] = 15;
+			dudes_hp[j] = 225;
+			dudes_dr[j] = 0.25;
+			men += dudes_num[j];
 		}
 		if (dudes[j] = "XV25 Stealthsuit") {
 			scr_en_weapon("Burst Rifle", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 20;
+			dudes_ac[j] = 10;
 			dudes_hp[j] = 50;
+			dudes_dr[j] = 0.25;
 			men += dudes_num[j];
-			dudes_vehicle[j] = 1;
 		}
 
 		if (dudes[j] = "Fire Warrior") {
 			scr_en_weapon("Pulse Rifle", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 20;
-			dudes_hp[j] = 20;
+			dudes_ac[j] = 10;
+			dudes_hp[j] = 30;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Pathfinder") {
 			scr_en_weapon("Rail Rifle", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 20;
-			dudes_hp[j] = 20;
+			dudes_ac[j] = 10;
+			dudes_hp[j] = 30;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Kroot") {
@@ -1116,7 +1115,7 @@ if __b__ {
 		if (dudes[j] = "Vespid") {
 			scr_en_weapon("Vespid Crystal", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Melee2", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 10;
+			dudes_ac[j] = 5;
 			dudes_hp[j] = 50;
 			men += dudes_num[j];
 		}
@@ -1125,14 +1124,16 @@ if __b__ {
 			scr_en_weapon("Smart Missile System", false, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 30;
 			dudes_hp[j] = 150;
+			dudes_dr[j] = 0.25;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
 		if (dudes[j] = "Hammerhead") {
 			scr_en_weapon("Railgun", false, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Smart Missile System", false, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 40;
-			dudes_hp[j] = 250;
+			dudes_ac[j] = 30;
+			dudes_hp[j] = 150;
+			dudes_dr[j] = 0.25;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
@@ -1151,7 +1152,7 @@ if __b__ {
 			scr_en_weapon("Heavy Venom Cannon", true, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 20;
 			dudes_hp[j] = 400;
-			dudes_dr[j] = 0.2;
+			dudes_dr[j] = 0.6;
 			men += dudes_num[j];
 		}
 
