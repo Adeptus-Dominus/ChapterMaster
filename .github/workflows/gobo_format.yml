@@ -1,0 +1,69 @@
+name: Format Code
+
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - ready_for_review
+      - synchronize
+
+jobs:
+  format:
+    runs-on: ubuntu-latest  # Or 'windows-latest' if using Windows runner
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+
+      - name: Download Release
+        run: |
+          curl -LO https://github.com/Pizzaandy/Gobo/releases/download/v0.4.0/gobo-ubuntu.zip
+
+      - name: Extract ZIP
+        run: |
+          unzip gobo-ubuntu.zip
+
+      - name: Ensure executable permissions
+        run: |
+          chmod +x ./gobo
+
+      - name: Get Changed Files
+        id: changed_files
+        run: |
+          target_branch="${{ github.event.pull_request.base.ref }}"
+          pr_branch="${{ github.event.pull_request.head.ref }}"
+          echo "Target branch is $target_branch"
+          echo "PR branch is $pr_branch"
+
+          # Fetch the base branch and PR branch commit refs
+          git fetch origin $target_branch:$target_branch
+          git fetch origin $pr_branch:$pr_branch
+
+          # Store the result of the diff in the environment variable
+          changed_files=$(git diff --name-only origin/$target_branch...origin/$pr_branch)
+          echo "changed_files=$changed_files" >> $GITHUB_ENV
+          
+          # Echo the contents of the changed_files variable
+          echo "Changed files: $changed_files"
+
+
+      - name: Run Formatter on Changed Files
+        run: |
+          if [ -n "$changed_files" ]; then
+            # Iterate over each file using a for loop
+            for file in $changed_files; do
+              echo "Formatting $file"
+              ./gobo "$file"  # Run formatter on each changed file
+            done
+          else
+            echo "No files changed, skipping formatting."
+          fi
+
+      - name: Clean up Gobo Files
+        run: |
+          rm -rf gobo-ubuntu.zip gobo
+
+      - name: Check for formatting changes
+        run: |
+          git diff --quiet --exit-code || exit 1
