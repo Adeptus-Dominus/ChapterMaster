@@ -3383,6 +3383,9 @@ function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1
 	if(role_id == eROLE.Champion){
 		spawn_unit.add_trait("champion");
 	}
+	if(role_id == eROLE.Apothecary){
+		spawn_unit.add_trait("soft_target");
+	}
 	if(role_id == eROLE.Librarian){
 		var let = "";
 		if (obj_creation.discipline = "default") {
@@ -3407,6 +3410,9 @@ function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1
 		spawn_unit.update_powers();
 		if(scr_has_adv("Psyker Abundance")){
 			spawn_unit.add_exp(10);
+		}
+		if(scr_has_disadv("Barren Librarius")){
+			spawn_unit.psionic = choose(8, 9, 10, 11,);
 		}
 	}
 	

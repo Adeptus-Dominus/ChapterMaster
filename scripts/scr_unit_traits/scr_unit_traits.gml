@@ -165,12 +165,20 @@ global.trait_list = {
 	},
 	"zealous_faith":{
 		strength:[1,1,"max"],
-		texhnology:-2,
+		technology:-2,
 		wisdom:3,
 		intelligence:-2,
 		piety:[5,2,"max"],
 		display_name:"Zealous Faith",
 		flavour_text:"Put great emphasis on their faith, able to draw strength from it in crisis"
+	},
+	"faithless":{
+		technology:2,
+		wisdom:2,
+		intelligence:2,
+		piety:[-5,2,"max"],
+		display_name:"Faithless",
+		flavour_text:"Puts great emphasis on a pragmatic and logical approach in place of faith and spiritual beliefs"
 	},
 	"feet_floor":{
 		wisdom:1,
@@ -315,6 +323,11 @@ global.trait_list = {
 		technology:[-7,2,"min"],
 		flavour_text:"Have a deep mistrust and loathing of technology",
 	},
+	"soft_target":{
+		display_name:"Marked for death",
+		constitution:[-5,2,],
+		flavour_text:"This Marine can't shake the feeling that his days are numbered; in battle enemy attacks seem to find their way to softer sections of armor",
+	},
 	"fast_learner":{
 		display_name:"Quick Learner",
 		wisdom:[2,2,"max"],
@@ -335,7 +348,6 @@ global.trait_list = {
 		technology:[3,1,"max"],
 		intelligence:1,
 		flavour_text:"Engage in study and beliefs considered heretical in the eyes of Mars and the Imperium",
-		//effect:"bonus to fist type weaponry",
 	},
 	"crafter":{
 		display_name:"Crafter",
@@ -793,6 +805,15 @@ global.astartes_trait_dist = [
 				recruit_trial : [
 					[eTrials.KNOWLEDGE, -2],
 				]										
+			}
+		],
+		[
+			"faithless",
+			[1000,980],
+			{
+				"disadvantage":[
+					"Small Reclusiam",[1000,50],"required"
+				]									
 			}
 		],
 		["flesh_is_weak",[1000,999],{
