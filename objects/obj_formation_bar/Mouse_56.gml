@@ -38,7 +38,9 @@ if (dragging=true) and (instance_exists(mah_target)){
             if (unit_id=12) then obj_controller.bat_hire_for[obj_controller.formating]=mah_target.col_parent;
             if (unit_id=13) then obj_controller.bat_rhin_for[obj_controller.formating]=mah_target.col_parent;
             if (unit_id=14) then obj_controller.bat_pred_for[obj_controller.formating]=mah_target.col_parent;
-            if (unit_id=15) then obj_controller.bat_land_for[obj_controller.formating]=mah_target.col_parent;
+            if (unit_id=15) then obj_controller.bat_landraid_for[obj_controller.formating]=mah_target.col_parent;
+            if (unit_id=16) then obj_controller.bat_landspee_for[obj_controller.formating]=mah_target.col_parent;
+            if (unit_id=17) then obj_controller.bat_whirl_for[obj_controller.formating]=mah_target.col_parent;
             obj_cursor.dragging=0;obj_cursor.image_index=0;
             
             // show_message("-> slot "+string(mah_target.col_parent)+", now "+string(obj_controller.temp[te]+size)+"/10 full, old slot is "+string(obj_controller.temp[4800+col_parent])+"/10");

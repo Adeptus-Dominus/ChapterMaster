@@ -485,7 +485,9 @@ function setup_battle_formations(){
     obj_controller.bat_dreadnought_column = obj_controller.bat_drea_for[new_combat.formation_set];
     obj_controller.bat_rhino_column = obj_controller.bat_rhin_for[new_combat.formation_set];
     obj_controller.bat_predator_column = obj_controller.bat_pred_for[new_combat.formation_set];
-    obj_controller.bat_landraider_column = obj_controller.bat_land_for[new_combat.formation_set];
+    obj_controller.bat_landraider_column = obj_controller.bat_landraid_for[new_combat.formation_set];
+    obj_controller.bat_landspeeder_column = obj_controller.bat_landspee_for[new_combat.formation_set];
+    obj_controller.bat_whirlwind_column = obj_controller.bat_whirl_for[new_combat.formation_set];
     obj_controller.bat_scout_column = obj_controller.bat_scou_for[new_combat.formation_set];  
 }
 
@@ -697,8 +699,12 @@ function add_vehicle_to_battle(company, veh_index, is_local){
             col = obj_controller.bat_landraider_column;
             new_combat.land_raiders++;
             break;
+            case "Land Speeder":
+            col = obj_controller.bat_landspeeder_column;
+            new_combat.land_speeders++;
+            break;
          case "Whirlwind":
-            col = 1;
+            col = obj_controller.bat_whirlwind_column;
             new_combat.whirlwinds++;
             break;                                    
     }

@@ -960,7 +960,9 @@ for(var i=0; i<16; i++){
     bat_drea_for[i]=5;
     bat_rhin_for[i]=6;
     bat_pred_for[i]=7;
-    bat_land_for[i]=7;
+    bat_landraid_for[i]=7;
+    bat_landspee_for[i]=4;
+    bat_whirl_for[i]=1;
     bat_scou_for[i]=1;
 }
 // ground=1    raid=2
@@ -985,6 +987,8 @@ bat_dreadnought_column=5;
 bat_rhino_column=6;
 bat_predator_column=7;
 bat_landraider_column=7;
+bat_whirlwind_column=1;
+bat_landspeeder_column=4;
 bat_scout_column=1;
 // ** Sets up disposition per faction **
 enum eFACTION {
