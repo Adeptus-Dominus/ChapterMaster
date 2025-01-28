@@ -1,57 +1,57 @@
-function scr_loyalty(argument0, argument1) {
-	// argument0 = name
-	// argument1 = todo
+function scr_loyalty(loaylty_effect, loyalty_value) {
+	// loaylty_effect = name
+	// loyalty_value = todo
 
 	// This adds the crime to the chapter history
 
-	if (argument1="+"){
+	if (loyalty_value="+"){
 	    var i, noplus;i=0;noplus=0;
     
 	    repeat(30){
 	        i+=1;noplus=0;
         
-	        if (obj_controller.loyal[i]=argument0){// Increases detection chance by a variable amount
+	        if (obj_controller.loyal[i]=loaylty_effect){// Increases detection chance by a variable amount
 	            var amount;amount=0;
 	            if (obj_controller.loyal_num[i]<1) then amount=0.03;
             
-	            if (argument0="Xeno Associate"){
+	            if (loaylty_effect="Xeno Associate"){
 	                if (obj_controller.loyal_num[i]=0) then amount=0.09;
 	                if (obj_controller.loyal_num[i]!=0) then amount=0;
 	            }
             
-	            if (argument0="Lack of Apothecary") or (argument0="Upset Machine Spirits") or (argument0="Undevout"){
+	            if (loaylty_effect="Lack of Apothecary") or (loaylty_effect="Upset Machine Spirits") or (loaylty_effect="Undevout"){
 	                if (obj_controller.loyal_num[i]=0) then amount=0.075;
 	                if (obj_controller.loyal_num[i]!=0) then amount=0;
 	            }
             
-	            if (argument0="Xeno Trade") then amount=0.05;
-	            if (argument0="Irreverance for His Servants") then amount=0.005;
+	            if (loaylty_effect="Xeno Trade") then amount=0.05;
+	            if (loaylty_effect="Irreverance for His Servants") then amount=0.005;
             
             
-	            // if (argument0="Heretic Contact") then amount=0.01;
-	            if (argument0="Heretic Contact") then amount=0.099;
+	            // if (loaylty_effect="Heretic Contact") then amount=0.01;
+	            if (loaylty_effect="Heretic Contact") then amount=0.099;
             
-	            if (argument0="Non-Codex Size"){
+	            if (loaylty_effect="Non-Codex Size"){
 	                if (obj_controller.loyal_num[i]=0) then amount=0.06;
 	                if (obj_controller.loyal_num[i]!=0) then amount=0;
 	            }
             
-	            if (argument0="Mutant Gene-Seed"){
+	            if (loaylty_effect="Mutant Gene-Seed"){
 	                if (obj_controller.loyal_num[i]=0) then amount=0.01;
 	                if (obj_controller.loyal_num[i]!=0) then amount=0;
 	            }
             
-	            if (argument0="Heretical Homeworld"){
+	            if (loaylty_effect="Heretical Homeworld"){
 	                if (obj_controller.loyal_num[i]=0) then amount=0.07;
 	                if (obj_controller.loyal_num[i]!=0) then amount=0;
 	            }
             
-	            if (argument0="Inquisitor Killer"){
+	            if (loaylty_effect="Inquisitor Killer"){
 	                if (obj_controller.loyal_num[i]=0) then amount=0.005;
 	                if (obj_controller.loyal_num[i]!=0) then amount=0;
 	            }
             
-	            if (argument0="Avoiding Inspections"){
+	            if (loaylty_effect="Avoiding Inspections"){
 	                obj_controller.loyalty-=5;
 	                obj_controller.loyalty_hidden-=5;
 	                obj_controller.loyal_num[i]+=5;
@@ -59,7 +59,7 @@ function scr_loyalty(argument0, argument1) {
 	                amount=0;noplus=1;exit;
 	            }
             
-	            if (argument0="Lost Standard"){
+	            if (loaylty_effect="Lost Standard"){
 	                obj_controller.loyalty-=2;
 	                obj_controller.loyalty_hidden-=2;
 	                obj_controller.loyal_num[i]+=5;
@@ -69,23 +69,27 @@ function scr_loyalty(argument0, argument1) {
 	                exit;
 	            }
             
-	            if (argument0="Refusing to Crusade"){
+	            if (loaylty_effect="Refusing to Crusade"){
 	                obj_controller.loyalty-=20;
 	                obj_controller.loyalty_hidden-=20;
-	                obj_controller.loyal_num[i]+=20;
-	                obj_controller.loyal_time[i]=9999;
-	                amount=0;noplus=1;exit;
+	                obj_controller.loyal_num[i]=[20,0, 1];
+	                obj_controller.loyal_time[i]=400;
+	                amount=0;
+	                noplus=1;
+	                exit;
 	            }
             
-	            if (argument0="Crossing the Inquisition"){
+	            if (loaylty_effect="Crossing the Inquisition"){
 	                obj_controller.loyalty-=40;
 	                obj_controller.loyalty_hidden-=40;
 	                obj_controller.loyal_num[i]+=40;
 	                obj_controller.loyal_time[i]=9999;
-	                amount=0;noplus=1;exit;
+	                amount=0;
+	                noplus=1;
+	                exit;
 	            }
             
-	            if (argument0="Use of Sorcery"){
+	            if (loaylty_effect="Use of Sorcery"){
 	                if (string_count("|SC|",obj_controller.useful_info)=0){
 	                    obj_controller.loyalty-=30;
 	                    obj_controller.loyalty_hidden-=30;

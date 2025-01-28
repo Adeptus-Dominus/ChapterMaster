@@ -170,8 +170,8 @@ function set_fleet_movement(fastest_route = true){
 		    sys=instance_nearest(action_x,action_y,obj_star);
 
 		    mine=instance_nearest(x,y,obj_star);
-	        
-	        var eta = calculate_fleet_eta(x,y,action_x,action_y,action_spd,instance_exists(sys),is_orbiting(),warp_able);
+	        var _travel_to_star = point_distance(sys.x, sys.y, action_x,action_y < 20);
+	        var eta = (x,y,action_x,action_y,action_spd,is_orbiting(),_travel_to_star,warp_able);
 	        action_eta = eta;
 	        if (action_eta<=0) or (owner  != eFACTION.Inquisition){
 	            action_eta=eta;

@@ -99,6 +99,7 @@ function scr_enemy_ai_d() {
             if (result="imperial") then scr_event_log("",alert_text);
             remove_planet_problem(i, "succession");
 	    }
+
 	   if (has_problem_planet_and_time(i, "recon", 0)>-1){
             var alert_text="Inquisition Mission Failed: Investigate ";
             alert_text+=string(name)+" "+scr_roman(i)+".";
@@ -108,34 +109,10 @@ function scr_enemy_ai_d() {
             remove_planet_problem(i, "recon");
         }
 
-        if (has_problem_planet_and_time(i, "great_crusade", 0)>-1){
-            var flet,cont,dir;cont=0;
-            flet=instance_nearest(x,y,obj_p_fleet);
-        
-            if (flet.action="") then cont=1;
-            if (cont=1) and (point_distance(x,y,flet.x,flet.y)<40) then cont=2;
-        
-            if (cont=2){
-                flet.action="crusade1";
-                dir=point_direction(room_width/2,room_height/2,x,y);
-                flet.action_x=x+lengthdir_x(2000,dir);
-                flet.action_y=y+lengthdir_y(2000,dir);
-                // flet.action_eta=floor(random(8))+12;
-                flet.action_eta=floor(random(8))+2;
-                flet.alarm[4]=1;
-                scr_alert("green","crusade","Fleet embarks upon Crusade.",x,y);
-                scr_event_log("","Fleet embarks upon Crusade.");
-            }
-            if (cont=1) or (cont=0){
-                // hit loyalty here
-                obj_controller.disposition[2]-=5;
-                obj_controller.disposition[4]-=10;
-                scr_alert("red","crusade","No ships designated for Crusade.",x,y);
-                scr_loyalty("Refusing to Crusade","+");
-                scr_event_log("red","No ships designated for Crusade.");
-                if (obj_controller.penitent=1) then obj_controller.penitent_current=0;
-            }
-        	remove_planet_problem(i, "great_crusade");
+        var _great_crusade = has_problem_planet_and_time(i, "great_crusade", 0);
+
+        if (_great_crusade>-1){
+            init_crusade_mission(i, _great_crusade);
         }
 
         var raider_planet_slot = has_problem_planet_with_time(i,"mech_raider");
