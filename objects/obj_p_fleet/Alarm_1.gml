@@ -24,7 +24,6 @@ try_and_report_loop("player alarm 1",function(){
 
 
     else if (action="move") or (action="crusade1") or (action="crusade2") or (action="crusade3"){
-        
         var i;
         set_fleet_location("Warp");
 
@@ -64,8 +63,10 @@ try_and_report_loop("player alarm 1",function(){
             var ret=instance_nearest(x,y,obj_star);
             action_x=ret.x;
             action_y=ret.y;
-            action="crusade3";action_eta=floor(point_distance(x,y,ret.x,ret.y)/128)+1;
-            alarm[4]=1;instance_activate_object(obj_star);
+            action="crusade3";
+            action_eta=floor(point_distance(x,y,ret.x,ret.y)/128)+1;
+            alarm[4]=1;
+            instance_activate_object(obj_star);
         }
         if (action_eta=0) and (action="crusade3"){
             // Popup here

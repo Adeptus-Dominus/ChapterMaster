@@ -143,6 +143,7 @@ function set_fleet_movement(fastest_route = true){
 
 	action = "";
 
+	static minimum_eta = 1;
 	if (action==""){
 		turns_static = 0;
 	    var sys, mine, fleet;
@@ -171,14 +172,16 @@ function set_fleet_movement(fastest_route = true){
 
 		    mine=instance_nearest(x,y,obj_star);
 	        var _travel_to_star = point_distance(sys.x, sys.y, action_x,action_y < 20);
-	        var eta = (x,y,action_x,action_y,action_spd,is_orbiting(),_travel_to_star,warp_able);
+	        var eta = calculate_fleet_eta(x,y,action_x,action_y,action_spd,is_orbiting(),_travel_to_star,warp_able);
 	        action_eta = eta;
 	        if (action_eta<=0) or (owner  != eFACTION.Inquisition){
 	            action_eta=eta;
 	            if (owner  = eFACTION.Inquisition) and (action_eta<2) and (string_count("_her",trade_goods)=0) then action_eta=2;
 	        }
 	        
-	        if (owner != eFACTION.Eldar && mine.storm) then action_eta+=10000;
+	        if (owner != eFACTION.Eldar && mine.storm){
+	        	action_eta+=10000;
+	        }
 	        
 	        // action_x=sys.x;
 	        // action_y=sys.y;
@@ -186,7 +189,6 @@ function set_fleet_movement(fastest_route = true){
 	        action="move";
 	        
 	        if (minimum_eta>action_eta) and (minimum_eta>0) then action_eta=minimum_eta;
-	        minimum_eta=0;
 		}
 	}
 }

@@ -1276,8 +1276,10 @@ for (var i=0;i<array_length(obj_controller.loyal_time);i++){
             var loyal_nums = obj_controller.loyal_num[i];
             if (loyal_nums[1]++>=loyal_nums[0]){
                 obj_controller.loyalty+=loyal_nums[2];
+                obj_controller.loyal_num[i]=[loyal_nums[0],0, loyal_nums[2]];
+            } else {
+                obj_controller.loyal_num[i]=loyal_nums;
             }
-            obj_controller.loyal_num[i]=[loyal_nums[0],0, loyal_nums[2]];
         }
         if (obj_controller.loyal_time[i] == 0){
             obj_controller.loyal_num = 0;

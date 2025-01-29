@@ -111,7 +111,7 @@ function init_crusade_mission(targ_planet, problem_index){
         scr_loyalty("Refusing to Crusade","+");
         if (obj_controller.penitent=1) then obj_controller.penitent_current=0;
     }
-	remove_planet_problem(i, "great_crusade");	
+	remove_planet_problem(targ_planet, "great_crusade");	
 }
 
 function init_garrison_mission(planet, star, mission_slot){

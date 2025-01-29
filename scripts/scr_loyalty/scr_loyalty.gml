@@ -1,3 +1,31 @@
+global.loyalty_effects  = {
+	"Xeno Associate" : {
+
+	}
+}
+
+
+function loyalty_tooltip_string(){
+	var  tx=0,ty=0,tool1="",tool2="",plu="";
+
+ 	var lines=0;
+    for(var d=0; d<=20; d++){
+    	if (is_array(loyal_num[d])){
+
+    	}
+        else if (loyal_num[d]>1) and (lines=0){
+            tool1+=string(loyal[d])+": -"+string(loyal_num[d])+"#";
+            tool2+=string(loyal[d])+": #";
+            lines++;
+        }
+    }
+
+    if (tool1="") then tool1="Loyalty";
+
+    if (tool1!=""){
+        tooltip_draw(tool1);
+    }	
+}
 function scr_loyalty(loaylty_effect, loyalty_value) {
 	// loaylty_effect = name
 	// loyalty_value = todo
@@ -5,13 +33,13 @@ function scr_loyalty(loaylty_effect, loyalty_value) {
 	// This adds the crime to the chapter history
 
 	if (loyalty_value="+"){
-	    var i, noplus;i=0;noplus=0;
+	    var i=0, noplus=0;
     
-	    repeat(30){
-	        i+=1;noplus=0;
+	    for (var i=0;i<array_length(obj_controller.loyal);i++){
+	        noplus=0;
         
-	        if (obj_controller.loyal[i]=loaylty_effect){// Increases detection chance by a variable amount
-	            var amount;amount=0;
+	        if (obj_controller.loyal[i]==loaylty_effect){// Increases detection chance by a variable amount
+	            var amount=0;
 	            if (obj_controller.loyal_num[i]<1) then amount=0.03;
             
 	            if (loaylty_effect="Xeno Associate"){
@@ -105,8 +133,17 @@ function scr_loyalty(loaylty_effect, loyalty_value) {
                 
 	                if (obj_controller.loyalty<=0) and (one<2) then one=2;
 	                if (one=1) then with(obj_controller){scr_audience(4,"sorcery1",0,"",0,0);}
-	                if (one>=2) and (obj_controller.penitent=0){repeat(2){obj_controller.useful_info+="|SC|";}scr_audience(4,"loyalty_zero",0,"",0,0);}
-	                if (one>=2) and (obj_controller.penitent=1){repeat(2){obj_controller.useful_info+="|SC|";}obj_controller.alarm[8]=1;}
+	                if (one>=2) and (obj_controller.penitent=0){
+	                	repeat(2){
+	                		obj_controller.useful_info+="|SC|";
+	                	}
+	                	scr_audience(4,"loyalty_zero",0,"",0,0);
+	                }
+	                if (one>=2) and (obj_controller.penitent=1){
+	                	repeat(2){
+	                		obj_controller.useful_info+="|SC|";
+	                	}
+	                	obj_controller.alarm[8]=1;}
                 
 	                exit;exit;
 	            }

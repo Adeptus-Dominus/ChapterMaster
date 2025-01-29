@@ -498,6 +498,19 @@ function set_fleet_location(location){
 			obj_ini.ship_location[temp] = location;
 		}
 	}
+	for (var co=0;co<array_length(obj_ini.companies);co++){
+		for (var s=0;s<array_length(obj_ini.name[co]);s++){
+			var _unit = fetch_unit([co, s]);
+			if (_unit.ship_location==-1){
+				continue;
+			} else {
+				if (array_contains(fleet_ships, _unit.ship_location)){
+					obj_ini.loc[co,s] = location;
+					_unit.planet_location = 0;
+				}
+			}
+		}
+	}	
 }
 
 function selected_ship_types(){
