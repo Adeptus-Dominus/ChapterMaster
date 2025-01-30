@@ -45,7 +45,7 @@ global.loyalty_effects  = {
 		hit : 40,
 		time : 99999,
 	},
-	"of Sorcery":{
+	"Use of Sorcery":{
 		hit : 40,
 		time : 99999,
 	},	
@@ -53,9 +53,40 @@ global.loyalty_effects  = {
 
 function loyalty_penalty(loyalty_reason){
 	var _reasons = global.loyalty_effects;
+	var _existing = array_get_index(obj_controller.loyal);
 	if (struct_exists(loyalty_effects, loyalty_reason)){
 		var _penalty_data = loyalty_effects[$ loyalty_reason];
-		if (struct_exists())
+		if (struct_exists(_penalty_data, "hit")){
+			if (_existing == -1){
+				with (obj_controller){
+					array_push(loyal,loyalty_reason);
+					array_push(loyal_num,_penalty_data.hit );
+	
+				}
+			} else {
+				loyal_num[_existing] += _penalty_data.hit;
+			}
+		}
+	}
+}
+
+function loyalty_countdowns(){
+	for (var i=0;i<array_length(obj_controller.loyal_time);i++){
+	    if (obj_controller.loyal_time[i]>0){
+	        obj_controller.loyal_time[i]--;
+	        if (is_array(obj_controller.loyal_num[i])){
+	            var loyal_nums = obj_controller.loyal_num[i];
+	            if (loyal_nums[1]++>=loyal_nums[0]){
+	                obj_controller.loyalty+=loyal_nums[2];
+	                obj_controller.loyal_num[i]=[loyal_nums[0],0, loyal_nums[2]];
+	            } else {
+	                obj_controller.loyal_num[i]=loyal_nums;
+	            }
+	        }
+	        if (obj_controller.loyal_time[i] == 0){
+	            obj_controller.loyal_num = 0;
+	        }
+	    }
 	}
 }
 function loyalty_tooltip_string(){
