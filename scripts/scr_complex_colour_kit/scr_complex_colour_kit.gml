@@ -268,8 +268,9 @@ function ColourItem(xx,yy) constructor{
 }
 
 
-function setup_complex_livery_shader(setup_role, game_setup=false){
+function setup_complex_livery_shader(setup_role, game_setup=false, unit = "none"){
     shader_reset();
+    shader_set(full_livery_shader);
     var _full_liveries = obj_ini.full_liveries;
     var _roles = obj_ini.role[100];
     var data_set = obj_ini.full_liveries[0];
@@ -291,9 +292,33 @@ function setup_complex_livery_shader(setup_role, game_setup=false){
             }
         }        
     }
-    // show_debug_message(data_set);
-    shader_set(full_livery_shader);
     var spot_names = struct_get_names(data_set);
+    var cloth_col = [201.0/255.0, 178.0/255.0, 147.0/255.0];
+    if (unit != "none"){
+        var cloth_variation=unit.body.torso.cloth.variation;
+        
+
+        if (cloth_variation>10){
+            var _distinct_colours = [];
+            for (var i=0;i<array_length(spot_names);i++){
+                if (spot_names[i] == "eye_lense" || spot_names[i] ==  "is_changed"){
+                    continue;
+                }
+                var _colour = data_set[$ spot_names[i]];
+                if (!array_contains(_distinct_colours, _colour)){
+                    array_push(_distinct_colours, _colour);
+                }
+            }
+            var _choice = cloth_variation%array_length(_distinct_colours);
+            set_complex_shader_area(["robes_colour_replace"], _distinct_colours[_choice]);   
+        }else {
+            shader_set_uniform_f_array(shader_get_uniform(full_livery_shader, "robes_colour_replace"), cloth_col);
+        }
+    } else {
+        shader_set_uniform_f_array(shader_get_uniform(full_livery_shader, "robes_colour_replace"), cloth_col);
+    }
+    // show_debug_message(data_set);
+    
     for (var i=0;i<array_length(spot_names);i++){
         var colour = data_set[$ spot_names[i]];
         var colour_set = [obj_controller.col_r[colour]/255, obj_controller.col_g[colour]/255, obj_controller.col_b[colour]/255];

@@ -555,6 +555,7 @@ function scr_initialize_custom() {
     home_warp_position = obj_creation.buttons.home_warp.current_selection;
     home_planet_count = obj_creation.buttons.home_planets.current_selection;
     recruit_relative_loc = obj_creation.buttons.recruit_home_relationship.current_selection;
+    culture_styles = obj_creation.buttons.culture_styles.selections();
 
 
 	if(struct_exists(obj_creation, "custom_advisors")){

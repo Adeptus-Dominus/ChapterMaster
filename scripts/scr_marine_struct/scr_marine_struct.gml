@@ -701,8 +701,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		}, 
 		"torso":{
 			cloth:{
-				variation:irandom(15),
+				variation:irandom(100),
 			},
+			tabbard_variation:irandom(100),
 			armour_choice:irandom(100),
 			variation:irandom(10),
 			backpack_variation:irandom(100),

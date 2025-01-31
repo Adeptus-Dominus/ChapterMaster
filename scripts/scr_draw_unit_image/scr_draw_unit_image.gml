@@ -480,37 +480,6 @@ function scr_draw_unit_image(_background=false){
 
             //TODO make some sort of reusable structure to handle this sort of colour logic
             // also not ideal way of creating colour variation but it's a first pass
-            var cloth_variation=body.torso.cloth.variation;
-            var cloth_col = [201.0/255.0, 178.0/255.0, 147.0/255.0];
-            if (unit_chapter != "Dark Angels"){
-                with (obj_controller){
-                    if (cloth_variation < 2){
-                        cloth_col = body_colour_replace;
-                    } else if (cloth_variation < 4){
-                        cloth_col = secondary_colour_replace;
-                    } else if (cloth_variation < 6){
-                        cloth_col = pauldron_colour_replace;
-                    } else if (cloth_variation < 8){
-                        cloth_col = trim_colour_replace;
-                    }else if (cloth_variation < 10){
-                        cloth_col = pauldron2_colour_replace;
-                    }else if (cloth_variation < 12){
-                        cloth_col = weapon_colour_replace;
-                    }
-                }
-            }
-            with (obj_controller){
-                shader_set_uniform_f_array(shader_get_uniform(sReplaceColor, "robes_colour_replace"), cloth_col);
-            }
-            // Special specialist stuff here
-            /*
-            unit_specialization=0;
-            if (unit_role=obj_ini.role[100,14]) then unit_specialization == UnitSpecialization.Chaplain;// Chaplain
-            if (unit_role=obj_ini.role[100,15]) then unit_specialization == UnitSpecialization.Apothecary;// Apothecary
-            if (unit_role=obj_ini.role[100,15]) and ((unit_chapter="Blood Angels" || obj_ini.progenitor==PROGENITOR.BLOOD_ANGELS)) then unit_specialization=4;// Sanguinary
-            if (unit_role=obj_ini.role[100,16]) then unit_specialization == UnitSpecialization.Techmarine;// Techmarine
-            if (unit_role=obj_ini.role[100,17]) then unit_specialization == UnitSpecialization.Librarian;// Librarian
-            */
             var shader_array_set = array_create(8, -1);
         
             pauldron_trim=obj_controller.trim;
@@ -534,37 +503,6 @@ function scr_draw_unit_image(_background=false){
                 }
             }
 			//TODO complex shader means no need for all this edge case stuff
-			// Apothecary
-            else if (unit_specialization == UnitSpecialization.Apothecary) and (unit_chapter!="Space Wolves"){
-                shader_array_set[ShaderType.Body] = Colors.White;
-                shader_array_set[ShaderType.Helmet] = Colors.White;
-                shader_array_set[ShaderType.Lens] = Colors.Red;
-                shader_array_set[ShaderType.RightPauldron] = Colors.White;
-                pauldron_trim=0;
-                specialist_colours=0;
-            }
-			
-			// Techmarine
-            else if (unit_specialization == UnitSpecialization.Techmarine) and (unit_chapter!="Iron Hands"){
-                shader_array_set[ShaderType.Body] = Colors.Red;
-                shader_array_set[ShaderType.Helmet] = Colors.Red;
-                shader_array_set[ShaderType.Lens] = Colors.Lime;
-                shader_array_set[ShaderType.Trim] = Colors.Silver;
-                shader_array_set[ShaderType.RightPauldron] = Colors.Red;
-                pauldron_trim=1;
-                specialist_colours=0;
-            }
-
-			// Librarian
-            else if (unit_specialization == UnitSpecialization.Librarian){
-                shader_array_set[ShaderType.Body] = Colors.Dark_Ultramarine;
-                shader_array_set[ShaderType.Helmet] = Colors.Dark_Ultramarine;
-                shader_array_set[ShaderType.Lens] = Colors.Cyan;
-                shader_array_set[ShaderType.Trim] = Colors.Gold;
-                shader_array_set[ShaderType.RightPauldron] = Colors.Dark_Ultramarine;
-                pauldron_trim=1;
-                specialist_colours=0;
-            }
 			
 			// Honour Guard
             else if (unit_role==_role[eROLE.HonourGuard]){
@@ -667,33 +605,6 @@ function scr_draw_unit_image(_background=false){
         
             //Rejoice!
             // draw_sprite(spr_marine_base,img,x_surface_offset,y_surface_offset);
-            var clothing_style = 3;
-
-            if (global.chapter_name == "Doom Benefactors") {
-                clothing_style = 4;
-            } else {
-                switch (obj_ini.progenitor) {
-                    case ePROGENITOR.DARK_ANGELS:
-                    case ePROGENITOR.IMPERIAL_FISTS:
-                    case ePROGENITOR.IRON_HANDS:
-                    case ePROGENITOR.RAVEN_GUARD:
-                        clothing_style = 0;
-                        break;
-
-                    case ePROGENITOR.WHITE_SCARS:
-                        clothing_style = 1;
-                        break;
-
-                    case ePROGENITOR.SPACE_WOLVES:
-                        clothing_style = 2;
-                        break;
-
-                    case ePROGENITOR.SALAMANDERS:
-                        clothing_style = 4;
-                        break;
-                }
-            }
-       
         
             if (unit_armour!=""){
                 var yep=0;
@@ -717,60 +628,8 @@ function scr_draw_unit_image(_background=false){
                         unit_is_sniper = true;
                     }
                 }
-			}else if (unit_armour=="MK3 Iron Armour"){
-				if (dev_trait>0) then dev_trait=13;
-				if (tech_brothers_trait>-5) then tech_brothers_trait=3;
-				armour_sprite=spr_mk3_colors;
-			}else if (unit_armour=="MK4 Maximus"){
-				if (dev_trait>0) then dev_trait=13;
-				if (tech_brothers_trait>-5) then tech_brothers_trait=3;
-				armour_sprite=spr_mk4_colors;
-			}else if (unit_armour=="MK5 Heresy"){
-				if (dev_trait>0) then dev_trait=13;
-				if (tech_brothers_trait>-5) then tech_brothers_trait=3;
-				armour_sprite=spr_mk5_colors;
-			}else if (unit_armour=="MK6 Corvus"){
-				if (dev_trait>0) then dev_trait=13;
-				if (tech_brothers_trait>-5) then tech_brothers_trait=2;
-				armour_sprite=spr_beakie_colors;
-			}else if (unit_armour=="MK7 Aquila" || unit_armour=="Power Armour"){
-				if (tech_brothers_trait>-5) then tech_brothers_trait=0;
-				if (dev_trait>0) then dev_trait=13;
-				armour_sprite=spr_mk7_colors;
-			}else if (unit_armour=="MK8 Errant"){
-				if (dev_trait>0) then dev_trait=13;
-				if (tech_brothers_trait>-5) then tech_brothers_trait=0;
-				armour_sprite=spr_mk8_colors;
-			}else if (unit_armour=="Tartaros"){
-				armour_sprite=spr_tartaros2_colors;
-				if (tech_brothers_trait>-5) then tech_brothers_trait=4;
 			}
-            if (unit_armour=="Terminator Armour"){
-				armour_sprite=spr_terminator3_colors;
-				if (tech_brothers_trait>-5) then tech_brothers_trait=5;
-			}else if (unit_armour=="Artificer Armour"){
-				if (dev_trait>0) then dev_trait=13;
-				if (tech_brothers_trait>-5) then tech_brothers_trait=1;
-				armour_sprite=spr_artificer_colors;
-			}
-        
-            if (armour_sprite=spr_weapon_blank) and (unit_armour!=""){
-                if (string_count("Power Armour",unit_armour)>0){
-					if (dev_trait>0) then dev_trait=13;
-					if (tech_brothers_trait>-5) then tech_brothers_trait=0;
-					armour_sprite=spr_mk7_colors;
-				}
-                if (string_count("Artifi",unit_armour)>0){
-					if (dev_trait>0) then dev_trait=13;
-					if (tech_brothers_trait>-5) then tech_brothers_trait=1;
-					armour_sprite=spr_artificer_colors;
-				}
-                if (string_count("Termi",unit_armour)>0){
-					if (tech_brothers_trait>-5) then tech_brothers_trait=5;
-					armour_sprite=spr_terminator3_colors;
-				}
-            }
-        
+                
             // Draw the lights
             if (unit_specialization == UnitSpecialization.Apothecary) and (unit_armour!="") and (back_equipment == BackType.None){
                 if (unit_armour=="Terminator Armour") then draw_sprite(spr_gear_apoth,0,x_surface_offset,y_surface_offset-22); // for terminators
@@ -792,7 +651,7 @@ function scr_draw_unit_image(_background=false){
             
                 draw_sprite(spr_marine_base,skin_color,x_surface_offset,y_surface_offset);
             
-                if (skin_color!=6) then draw_sprite(spr_clothing_colors,clothing_style,x_surface_offset,y_surface_offset);
+               // if (skin_color!=6) then draw_sprite(spr_clothing_colors,clothing_style,x_surface_offset,y_surface_offset);
             } else { 
                 if (armour_type == ArmourType.Scout){
                     if (unit_is_sniper = true){
@@ -800,13 +659,16 @@ function scr_draw_unit_image(_background=false){
                         draw_sprite(spr_scout_colors,11,x_surface_offset,y_surface_offset);// Scout Sniper Cloak
                     }
                     draw_sprite(armour_sprite,specialist_colours,x_surface_offset,y_surface_offset);
-                    draw_sprite(spr_facial_colors,clothing_style,x_surface_offset,y_surface_offset);
+                    //draw_sprite(spr_facial_colors,clothing_style,x_surface_offset,y_surface_offset);
                     specific_armour_sprite=armour_sprite;
                     armour_bypass=true;
                 }else if (unit_armour=="MK3 Iron Armour"){
                     specific_armour_sprite = spr_mk3_complex;
                     complex_set = get_complex_set(eARMOUR_SET.MK3);
                     complex_livery = true;
+                    if (scr_has_style("Knightly")){
+                        complex_set.add_relative_to_status("crest", spr_da_mk5_helm_crests, 2, get_body_data("crest_variation","head"), self);
+                    }                      
                     if (unit_progenitor == ePROGENITOR.DARK_ANGELS){
                         complex_livery = false;
                         if (unit_role==_role[eROLE.Captain]){
@@ -821,6 +683,9 @@ function scr_draw_unit_image(_background=false){
                     specific_armour_sprite = spr_mk4_complex;
                     complex_set = get_complex_set(eARMOUR_SET.MK4);
                     complex_livery = true;
+                    if (scr_has_style("Knightly")){
+                        complex_set.add_relative_to_status("crest", spr_da_mk5_helm_crests, 2, get_body_data("crest_variation","head"), self);
+                    }                      
                     if (array_contains(["Champion",_role[2],_role[5]], unit_role)){
                         /*if (unit_chapter=="Ultramarines"){
                             armour_draw=[spr_ultra_honor_guard,body.torso.armour_choice];
@@ -846,11 +711,13 @@ function scr_draw_unit_image(_background=false){
                     complex_set = get_complex_set(eARMOUR_SET.MK5);
                     complex_livery = true;
                     //TODO sort this mess out streamline system somehow
-                    if (progenitor_map() == 2){
+                    if (scr_has_style("Mongol")){
                         complex_set.add_to_area("mouth_variants", spr_mk5_samuri_faceplate);
                     }
-                    if (unit_progenitor == ePROGENITOR.DARK_ANGELS){
+                    if (scr_has_style("Knightly")){
                         complex_set.add_relative_to_status("crest", spr_da_mk5_helm_crests, 2, get_body_data("crest_variation","head"), self);
+                    }                      
+                    if (unit_progenitor == ePROGENITOR.DARK_ANGELS){
                         if (unit_role==_role[eROLE.Captain]){
                             // specific_armour_sprite = spr_da_mk5;
                             armour_draw=[spr_da_mk5,0];
@@ -865,6 +732,9 @@ function scr_draw_unit_image(_background=false){
                     complex_set = get_complex_set(eARMOUR_SET.MK6);
                     complex_livery = true;
                     specific_armour_sprite = spr_beakie_colors;
+                    if (scr_has_style("Knightly")){
+                        complex_set.add_relative_to_status("crest", spr_da_mk6_helm_crests, 2, get_body_data("crest_variation","head"), self);
+                    }
                     if (obj_ini.progenitor == ePROGENITOR.DARK_ANGELS){
                         complex_set.add_relative_to_status("crest", spr_da_mk6_helm_crests, 2, get_body_data("crest_variation","head"), self);
                         if (unit_role==_role[eROLE.Captain]){
@@ -881,8 +751,10 @@ function scr_draw_unit_image(_background=false){
                     specific_armour_sprite = spr_mk7_complex;
                     complex_set = get_complex_set(eARMOUR_SET.MK7);
                     complex_livery = true;
-                    if (obj_ini.progenitor == ePROGENITOR.DARK_ANGELS){
+                    if (scr_has_style("Knightly")){
                         complex_set.add_relative_to_status("crest", spr_da_mk7_helm_crests, 2, get_body_data("crest_variation","head"), self);
+                    }
+                    if (obj_ini.progenitor == ePROGENITOR.DARK_ANGELS){
                         if (unit_role==_role[eROLE.Captain]){
                             // specific_armour_sprite = spr_da_mk7;
                             armour_draw = [spr_da_mk7,0];
@@ -896,8 +768,10 @@ function scr_draw_unit_image(_background=false){
                     specific_armour_sprite = spr_mk8_colors;
                     complex_set = get_complex_set(eARMOUR_SET.MK8);
                     complex_livery = true;
-                    if (unit_progenitor == ePROGENITOR.DARK_ANGELS) {
+                    if (scr_has_style("Knightly")){
                         complex_set.add_relative_to_status("crest", spr_da_mk7_helm_crests, 2, get_body_data("crest_variation","head"), self);
+                    }
+                    if (unit_progenitor == ePROGENITOR.DARK_ANGELS) {
                         if (unit_role==_role[eROLE.Captain]){
                             // specific_armour_sprite = spr_da_mk8;
                             armour_draw=[spr_da_mk8,0];
@@ -917,6 +791,9 @@ function scr_draw_unit_image(_background=false){
                         left_trim : spr_artificer_left_trim,
                         left_pauldron : spr_artificer_left_pad,
                     });
+                    if (scr_has_style("Knightly")){
+                        complex_set.add_relative_to_status("crest", spr_da_mk7_helm_crests, 2, get_body_data("crest_variation","head"), self);
+                    }                    
                     complex_livery = true;
                     if (array_contains(["Champion",_role[2],_role[5]], unit_role)){
                         if (unit_chapter=="Ultramarines"){
@@ -995,6 +872,9 @@ function scr_draw_unit_image(_background=false){
                         complex_set.add_to_area("crest", spr_mongol_topknots);
                         complex_set.add_to_area("forehead", spr_mongol_hat);
                     }
+                    if (scr_has_style("Mechanical Cult")){
+                        complex_set.add_relative_to_status("tabbard", spr_metal_tabbard, 2, get_body_data("tabbard_variation","torso"), self);
+                    }                    
                 }
                 if (unit_specialization == UnitSpecialization.Techmarine){
                     if array_contains(["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"], unit_armour){
@@ -1097,7 +977,7 @@ function scr_draw_unit_image(_background=false){
                     }*/
                     if (complex_livery) && (struct_exists(complex_set, "backpack")){
                         var choice = get_body_data("backpack_variation","torso")%sprite_get_number(complex_set.backpack);
-                        setup_complex_livery_shader(role());
+                        setup_complex_livery_shader(role(),self);
                         draw_sprite(complex_set.backpack,choice,x_surface_offset,y_surface_offset);
                         shader_set(sReplaceColor);
                     } else {
@@ -1144,6 +1024,35 @@ function scr_draw_unit_image(_background=false){
                 if(!complex_livery){
                     draw_unit_arms(x_surface_offset, y_surface_offset, armour_type, specialist_colours, hide_bionics, complex_set);
                 }
+                if (armour_type == ArmourType.Normal && (!robes_bypass || !robes_hood_bypass)) {
+                    var robe_offset_x = 0;
+                    var robe_offset_y = 0;
+                    var hood_offset_x = 0;
+                    var hood_offset_y = 0;
+                    if (armour_type == ArmourType.Scout) {
+                        robe_offset_x = 1;
+                        robe_offset_y = 10;
+                        hood_offset_x = 1;
+                        hood_offset_y = 10;
+                    }
+                    if (struct_exists(body[$ "head"],"hood") && !robes_hood_bypass) {
+                        draw_sprite(spr_marine_cloth_hood,0,x_surface_offset+hood_offset_x,y_surface_offset+hood_offset_y);     
+                    }
+                    if (struct_exists(body[$ "torso"],"robes") && !robes_bypass) {
+                        if (body.torso.robes == 0){
+                            complex_set.add_to_area("robe",spr_marine_robes);      
+                        } else if (body.torso.robes == 1) {
+                            if (scr_has_adv("Daemon Binders") && !modest_livery){
+                                var _index = pauldron_trim == 1 ? 0 : 1;
+                                draw_sprite(spr_binders_robes,_index,x_surface_offset+robe_offset_x,y_surface_offset+robe_offset_y);
+                            } else {
+                                draw_sprite(spr_marine_robes,1,x_surface_offset+robe_offset_x,y_surface_offset+robe_offset_y);       
+                            }
+                        } else {
+                            complex_set.add_to_area("tabbard",spr_cloth_tabbard);   
+                        }
+                    }              
+                }              
                 
                 if (armour_type==ArmourType.Normal && complex_livery){
                     if (struct_exists(body[$ "right_leg"], "bionic")) {
@@ -1156,7 +1065,7 @@ function scr_draw_unit_image(_background=false){
                     }
                 } 
                 if (complex_livery){
-                    setup_complex_livery_shader(role());
+                    setup_complex_livery_shader(role(),self);
                     var _complex_helm = false;
                     if (unit_role ==_role[eROLE.Sergeant]){
                         _complex_helm = obj_ini.complex_livery_data.sgt;
@@ -1176,6 +1085,7 @@ function scr_draw_unit_image(_background=false){
                         complex_set.replace_area("crown", spr_psy_hood_complex);
                     }
                 }
+
                 // Draw torso
                 if (!armour_bypass){
                     if (complex_livery){
@@ -1228,7 +1138,16 @@ function scr_draw_unit_image(_background=false){
                             }                            
                             if (struct_exists(complex_set, "left_knee")){
                                 draw_sprite(complex_set.left_knee,company,x_surface_offset,y_surface_offset);
-                            }                                                                                                                                         
+                            }
+                            if (struct_exists(complex_set, "tabbard")){
+                                var choice = get_body_data("tabbard_variation","torso")%sprite_get_number(complex_set.tabbard);
+                                draw_sprite(complex_set.tabbard,company,x_surface_offset,y_surface_offset);
+                            }
+                            if (struct_exists(complex_set, "robe")){
+                                var choice = get_body_data("tabbard_variation","torso")%sprite_get_number(complex_set.robe);
+                                draw_sprite(complex_set.robe,company,x_surface_offset,y_surface_offset);
+                            }                                                                                            
+                                                                                                                                
                         } else {
                             draw_sprite(specific_armour_sprite,0,x_surface_offset,y_surface_offset);
                         }                       
@@ -1291,9 +1210,9 @@ function scr_draw_unit_image(_background=false){
                     }
                     if (body.torso.variation > 5) {
                         if (unit_armour == "Terminator Armour"){
-                            draw_sprite(spr_gear_techb,1,x_surface_offset,y_surface_offset);
+                            draw_sprite(spr_metal_tabbard,1,x_surface_offset,y_surface_offset);
                         } else {
-                            draw_sprite(spr_gear_techb,0,x_surface_offset,y_surface_offset);
+                            draw_sprite(spr_metal_tabbard,0,x_surface_offset,y_surface_offset);
                         }
                     }
                 }
@@ -1505,35 +1424,6 @@ function scr_draw_unit_image(_background=false){
             ) {
                 robes_bypass = true;
                 robes_hood_bypass = true;
-            }
-            if (armour_type == ArmourType.Normal && (!robes_bypass || !robes_hood_bypass)) {
-                var robe_offset_x = 0;
-                var robe_offset_y = 0;
-                var hood_offset_x = 0;
-                var hood_offset_y = 0;
-                if (armour_type == ArmourType.Scout) {
-                    robe_offset_x = 1;
-                    robe_offset_y = 10;
-                    hood_offset_x = 1;
-                    hood_offset_y = 10;
-                }
-                if (struct_exists(body[$ "head"],"hood") && !robes_hood_bypass) {
-                    draw_sprite(spr_marine_cloth_hood,0,x_surface_offset+hood_offset_x,y_surface_offset+hood_offset_y);     
-                }
-                if (struct_exists(body[$ "torso"],"robes") && !robes_bypass) {
-                    if (body.torso.robes == 0){
-                        draw_sprite(spr_marine_robes,0,x_surface_offset+robe_offset_x,y_surface_offset+robe_offset_y);     
-                    } else if (body.torso.robes == 1) {
-                        if (scr_has_adv("Daemon Binders") && !modest_livery){
-                            var _index = pauldron_trim == 1 ? 0 : 1;
-                            draw_sprite(spr_binders_robes,_index,x_surface_offset+robe_offset_x,y_surface_offset+robe_offset_y);
-                        } else {
-                            draw_sprite(spr_marine_robes,1,x_surface_offset+robe_offset_x,y_surface_offset+robe_offset_y);       
-                        }
-                    } else {
-                        draw_sprite(spr_cloth_tabbard,0,x_surface_offset+robe_offset_x,y_surface_offset+robe_offset_y);     
-                    }
-                }              
             }
 
             var shield_offset_x = 0;

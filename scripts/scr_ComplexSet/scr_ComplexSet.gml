@@ -1,3 +1,25 @@
+function scr_has_style(style){
+    try {
+        var result;
+        if (instance_exists(obj_creation)) {
+            result = buttons.culture_styles.selections();
+        } else {
+            result = array_contains(obj_ini.culture_styles, style);
+        }
+    } catch (_exception){
+        handle_exception(_exception);
+        result = false;
+    }
+    return result;
+
+    // var adv_count = array_length(obj_ini.adv);
+    // for(var i = 0; i < adv_count; i++){
+    //  if(obj_ini.adv[i] == advantage){
+    //      return true;
+    //  }
+    // }
+    // return false;
+}
 
 function ComplexSet() constructor{
     static add_to_area = function(area, add_sprite){
