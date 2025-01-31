@@ -293,6 +293,85 @@ function drop_down(selection, draw_x, draw_y, options,open_marker){
     return [selection,open_marker];
 }
 
+function multi_select(options_array, title)constructor{
+	self.title = title;
+	x_gap = 10;
+	y_gap = 5;
+	x1 = 0;
+	y1 = 0;
+	x2 = 0;
+	y2 = 0;
+
+	active_col = #009500;
+	innactive_col = c_gray;	
+	max_width = 0;
+	max_height = 0;
+	toggles = [];
+	for (var i=0;i<array_length(options_array);i++){
+		var _next_tog = new ToggleButton(options_array[i]);
+		_next_tog.active = false;
+		array_push(toggles, _next_tog);
+	}
+	static update = item_data_updater
+	static draw = function(){
+		draw_text(x1, y1, title);
+
+		var _prev_x = x1;
+		var _prev_y = y1+string_height(title)+10;
+		var items_on_row = 0;
+		for (var i=0;i<array_length(toggles);i++){
+			var _cur_opt = toggles[i];
+			_cur_opt.x1 = _prev_x;
+			_cur_opt.y1 = _prev_y;
+			_cur_opt.update()
+			_cur_opt.clicked();
+			_cur_opt.button_color = _cur_opt.active ? active_col: innactive_col;
+			_cur_opt.draw();
+			items_on_row++
+
+			_prev_x = _cur_opt.x2+x_gap;
+
+			x2 = _prev_x>x2 ? _prev_x:x2;
+			y2 = _prev_y + _cur_opt.height;
+			if (max_width>0){
+				if (_prev_x - x1 > max_width){
+					_prev_x = x1;
+					_prev_y += _cur_opt.height+y_gap;
+					items_on_row = 0;
+				}
+			}
+		}
+	}
+	static set = function(set_array){
+		for (var s=0;s<array_length(set_array);s++){
+			var _setter = set_array[s];
+			for (var i=0;i<array_length(toggles);i++){
+				var _cur_opt = toggles[i];
+				_cur_opt.active = _cur_opt.str1 == _setter;
+				if (_cur_opt.str1 == _setter){
+
+				}
+			}			
+		}
+	}
+	static selections = function(){
+		var _selecs = [];
+		for (var i=0;i<array_length(toggles);i++){
+			var _cur_opt = toggles[i];
+			if (_cur_opt.active){
+				array_push(_selecs, _cur_opt.str1);
+			}
+		}
+		return _selecs;
+	}	
+}
+
+function item_data_updater(data){
+    var _data_presets = struct_get_names(data);
+    for (var i=0;i<array_length(_data_presets);i++){
+    	self[$_data_presets[i]] = data[$_data_presets[i]];
+    }		
+}
 function radio_set(options_array, title)constructor{
 	toggles = [];
 	current_selection = 0;
@@ -312,12 +391,7 @@ function radio_set(options_array, title)constructor{
 	x2 = 0;
 	y2 = 0;
 
-	static update = function(data){
-	    var _data_presets = struct_get_names(data);
-	    for (var i=0;i<array_length(_data_presets);i++){
-	    	self[$_data_presets[i]] = data[$_data_presets[i]];
-	    }		
-	}
+	static update = item_data_updater
 	static draw = function(){
 		draw_text(x1, y1, title);
 

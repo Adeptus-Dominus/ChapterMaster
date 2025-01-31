@@ -34,6 +34,8 @@ function scr_save_chapter(chapter_id){
 
 	chap.advantages = adv;
 	chap.disadvantages = dis;
+
+	chap.culture_styles = buttons.culture_styles.selections();
 	chap.colors = {
 		main: col[main_color],
 		secondary: col[secondary_color],

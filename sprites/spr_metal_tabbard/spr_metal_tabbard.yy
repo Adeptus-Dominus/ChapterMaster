@@ -1,11 +1,11 @@
 {
   "resourceType": "GMSprite",
   "resourceVersion": "1.0",
-  "name": "spr_gear_techb",
+  "name": "spr_metal_tabbard",
   "bbox_bottom": 226,
-  "bbox_left": 62,
-  "bbox_right": 104,
-  "bbox_top": 85,
+  "bbox_left": 65,
+  "bbox_right": 103,
+  "bbox_top": 102,
   "bboxMode": 0,
   "collisionKind": 1,
   "collisionTolerance": 0,
@@ -14,7 +14,6 @@
   "For3D": false,
   "frames": [
     {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"c686bbde-e480-472c-bb08-d523ecc16fd7",},
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"a3bd7913-7f8a-4295-966a-f682bf92a8c6",},
   ],
   "gridX": 0,
   "gridY": 0,
@@ -33,7 +32,7 @@
   "sequence": {
     "resourceType": "GMSequence",
     "resourceVersion": "1.4",
-    "name": "",
+    "name": "spr_metal_tabbard",
     "autoRecord": true,
     "backdropHeight": 1080,
     "backdropImageOpacity": 0.5,
@@ -44,7 +43,7 @@
     "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "eventStubScript": null,
     "eventToFunction": {},
-    "length": 2.0,
+    "length": 1.0,
     "lockOrigin": false,
     "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "playback": 1,
@@ -55,8 +54,7 @@
     "timeUnits": 1,
     "tracks": [
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"c686bbde-e480-472c-bb08-d523ecc16fd7","path":"sprites/spr_gear_techb/spr_gear_techb.yy",},},},"Disabled":false,"id":"181eb698-17b4-48e0-bf60-e786cc8baaa7","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"a3bd7913-7f8a-4295-966a-f682bf92a8c6","path":"sprites/spr_gear_techb/spr_gear_techb.yy",},},},"Disabled":false,"id":"43c1207e-c7c6-403a-b684-df028baadd9f","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"c686bbde-e480-472c-bb08-d523ecc16fd7","path":"sprites/spr_metal_tabbard/spr_metal_tabbard.yy",},},},"Disabled":false,"id":"181eb698-17b4-48e0-bf60-e786cc8baaa7","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
           ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange": null,
