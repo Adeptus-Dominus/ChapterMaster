@@ -176,7 +176,7 @@ function ChapterData() constructor {
 			// Treat incoming empty vals as 'use default' and don't overwrite
 			// a value if it was already set in the chapter constructor
 			if (struct_exists(self, key)){
-				if(self[key] != "" && val == ""){
+				if(self[$key] != "" && val == ""){
 					continue;
 				}
 			}
