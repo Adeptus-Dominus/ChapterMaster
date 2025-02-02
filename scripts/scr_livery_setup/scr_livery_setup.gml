@@ -785,7 +785,7 @@ function scr_livery_setup(){
     right_data_slate.inside_method = function() {
         var _cultures = buttons.culture_styles;
         _cultures.x1 = right_data_slate.XX+30;
-        _cultures.y1 = right_data_slate.YY+500
+        _cultures.y1 = right_data_slate.YY+80
         _cultures.max_width = right_data_slate.width-100;
         _cultures.draw();
     }

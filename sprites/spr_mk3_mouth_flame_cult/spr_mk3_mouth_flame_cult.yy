@@ -1,11 +1,11 @@
 {
   "resourceType": "GMSprite",
   "resourceVersion": "1.0",
-  "name": "spr_mk3_head_variants",
-  "bbox_bottom": 37,
+  "name": "spr_mk3_mouth_flame_cult",
+  "bbox_bottom": 50,
   "bbox_left": 66,
   "bbox_right": 98,
-  "bbox_top": 13,
+  "bbox_top": 31,
   "bboxMode": 0,
   "collisionKind": 1,
   "collisionTolerance": 0,
@@ -13,8 +13,7 @@
   "edgeFiltering": false,
   "For3D": false,
   "frames": [
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"120c0dc2-09ee-43e7-8b97-23af2bfa96b6",},
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"6ae95461-420f-49c2-b583-d6fc14c50cb2",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"006f1fc6-2a40-4299-aedd-c8ec3435711f",},
   ],
   "gridX": 0,
   "gridY": 0,
@@ -33,7 +32,7 @@
   "sequence": {
     "resourceType": "GMSequence",
     "resourceVersion": "1.4",
-    "name": "spr_mk3_head_variants",
+    "name": "spr_mk3_mouth_flame_cult",
     "autoRecord": true,
     "backdropHeight": 768,
     "backdropImageOpacity": 0.5,
@@ -44,7 +43,7 @@
     "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "eventStubScript": null,
     "eventToFunction": {},
-    "length": 2.0,
+    "length": 1.0,
     "lockOrigin": false,
     "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "playback": 1,
@@ -55,8 +54,7 @@
     "timeUnits": 1,
     "tracks": [
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"120c0dc2-09ee-43e7-8b97-23af2bfa96b6","path":"sprites/spr_mk3_head_variants/spr_mk3_head_variants.yy",},},},"Disabled":false,"id":"3815daad-43a5-4bb4-bec9-9760cbddeaff","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"6ae95461-420f-49c2-b583-d6fc14c50cb2","path":"sprites/spr_mk3_head_variants/spr_mk3_head_variants.yy",},},},"Disabled":false,"id":"0eb1a70a-6aba-4101-a2a0-89b4b569a337","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"006f1fc6-2a40-4299-aedd-c8ec3435711f","path":"sprites/spr_mk3_mouth_flame_cult/spr_mk3_mouth_flame_cult.yy",},},},"Disabled":false,"id":"dafbefe7-5ef7-4c6e-bf41-74e0fc0edf26","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
           ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange": null,
