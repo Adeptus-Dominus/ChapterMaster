@@ -205,10 +205,9 @@ function get_complex_set(set = eARMOUR_SET.MK7){
             left_knee : spr_numeral_left_knee
         })
     }
-
-    if (set == eARMOUR_SET.MK7){
-        set_pieces.add_group({
+    static mk7_bits = {
             armour : spr_mk7_complex,
+            backpack : spr_mk7_complex_backpack,
             left_arm : spr_mk7_left_arm,
             right_arm : spr_mk7_right_arm,
             left_trim : spr_mk7_left_trim,
@@ -217,12 +216,16 @@ function get_complex_set(set = eARMOUR_SET.MK7){
             thorax_variants : spr_mk7_thorax_variants,
             chest_variants : spr_mk7_chest_variants,
             leg_variants : spr_mk7_leg_variants,
-            backpack : spr_mk7_complex_backpack,
-            head : spr_mk7_head_variants,
-        });
+            head : spr_mk7_head_variants,       
+    };
+    if (set == eARMOUR_SET.MK7){
+        set_pieces.add_group(mk7_bits);
         if (scr_has_style("Mongol")){
             set_pieces.add_to_area("chest_variants" ,spr_mk7_mongol_chest_variants);
-        }   
+        }
+        if (scr_has_style("Prussian")){
+            set_pieces.add_to_area("mouth_variants", spr_mk7_mouth_prussian);
+        }           
     }else if (set == eARMOUR_SET.MK6){
         set_pieces.add_group({
             armour: spr_mk6_complex,
@@ -236,7 +239,10 @@ function get_complex_set(set = eARMOUR_SET.MK7){
         });
         if (scr_has_style("Mongol")){
             set_pieces.add_to_area("chest_variants" ,spr_mk6_mongol_chest_variants);
-        }         
+        } 
+        if (scr_has_style("Prussian")){
+            set_pieces.add_to_area("mouth_variants", spr_mk6_mouth_prussian);
+        }                 
     }else if (set == eARMOUR_SET.MK5){
         set_pieces.add_group({
             armour: spr_mk5_complex,
@@ -282,21 +288,11 @@ function get_complex_set(set = eARMOUR_SET.MK7){
             set_pieces.add_to_area("mouth_variants", spr_mk3_mouth_prussian);
         }        
     }else if (set == eARMOUR_SET.MK8){
-        set_pieces.add_group({
-            armour : spr_mk7_complex,
-            backpack : spr_mk7_complex_backpack,
-            left_arm : spr_mk7_left_arm,
-            right_arm : spr_mk7_right_arm,
-            left_trim : spr_mk7_left_trim,
-            right_trim : spr_mk7_right_trim,
-            mouth_variants : spr_mk7_mouth_variants,
-            thorax_variants : spr_mk7_thorax_variants,
-            chest_variants : spr_mk7_chest_variants,
-            leg_variants : spr_mk7_leg_variants,
-            gorget : spr_mk8_gorget,
-            head : spr_mk7_head_variants,
-               
-        });
+        set_pieces.add_group(mk7_bits);
+        set_pieces.add_to_area("gorget",spr_mk8_gorget);
+        if (scr_has_style("Prussian")){
+            set_pieces.add_to_area("mouth_variants", spr_mk7_mouth_prussian);
+        }         
         if (scr_has_style("Mongol")){
             set_pieces.add_to_area("chest_variants" ,spr_mk7_mongol_chest_variants);
         }		

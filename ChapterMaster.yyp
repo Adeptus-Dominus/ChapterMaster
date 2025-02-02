@@ -650,6 +650,7 @@
     {"id":{"name":"scr_unit_spawn_functions","path":"scripts/scr_unit_spawn_functions/scr_unit_spawn_functions.yy",},},
     {"id":{"name":"spr_ui_but_1","path":"sprites/spr_ui_but_1/spr_ui_but_1.yy",},},
     {"id":{"name":"spr_ui_but_2","path":"sprites/spr_ui_but_2/spr_ui_but_2.yy",},},
+    {"id":{"name":"spr_mk7_mouth_prussian","path":"sprites/spr_mk7_mouth_prussian/spr_mk7_mouth_prussian.yy",},},
     {"id":{"name":"spr_ui_but_3","path":"sprites/spr_ui_but_3/spr_ui_but_3.yy",},},
     {"id":{"name":"spr_ui_but_4","path":"sprites/spr_ui_but_4/spr_ui_but_4.yy",},},
     {"id":{"name":"spr_ui_hov_1","path":"sprites/spr_ui_hov_1/spr_ui_hov_1.yy",},},
