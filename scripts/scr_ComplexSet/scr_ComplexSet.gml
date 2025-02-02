@@ -225,6 +225,7 @@ function get_complex_set(set = eARMOUR_SET.MK7){
         }
         if (scr_has_style("Prussian")){
             set_pieces.add_to_area("mouth_variants", spr_mk7_mouth_prussian);
+             set_pieces.add_to_area("chest_variants", spr_mk7_prussia_chest);
         }           
     }else if (set == eARMOUR_SET.MK6){
         set_pieces.add_group({
@@ -292,6 +293,7 @@ function get_complex_set(set = eARMOUR_SET.MK7){
         set_pieces.add_to_area("gorget",spr_mk8_gorget);
         if (scr_has_style("Prussian")){
             set_pieces.add_to_area("mouth_variants", spr_mk7_mouth_prussian);
+            set_pieces.add_to_area("chest_variants", spr_mk7_prussia_chest);
         }         
         if (scr_has_style("Mongol")){
             set_pieces.add_to_area("chest_variants" ,spr_mk7_mongol_chest_variants);
