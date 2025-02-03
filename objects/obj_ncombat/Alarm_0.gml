@@ -3897,115 +3897,327 @@ if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeti
 		u.dudes[3] = "Raptor";
 		u.dudes_num[3] = 8;
 	}
-	// Medium CSM Army
+	// CSM Demi-Company
 	if (threat = 5) {
 		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "over 1200";
+		enemy_dudes = "40";
 
 		u.dudes[1] = "Chaos Lord";
 		u.dudes_num[1] = 1;
 		u.dudes[2] = "Chaos Sorcerer";
-		u.dudes_num[2] = 3;
-		u.dudes[3] = "Chaos Chosen";
-		u.dudes_num[3] = 20;
-		u.dudes[4] = "Obliterator";
-		u.dudes_num[4] = 6;
+		u.dudes_num[2] = 2;
+		u.dudes[3] = "Warpsmith";
+		u.dudes_num[3] = 1;
+		u.dudes[4] = "Chaos Terminator";
+		u.dudes_num[4] = 1;
 
 		instance_deactivate_object(u);
 		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		u.dudes[1] = "Chaos Space Marine";
-		u.dudes_num[1] = 600;
+		u.dudes[1] = "Chaos Chosen";
+		u.dudes_num[1] = 1;
 		u.dudes[2] = "Havoc";
-		u.dudes_num[2] = 40;
-		u.dudes[3] = "Raptor";
-		u.dudes_num[3] = 40;
+		u.dudes_num[2] = 9;
+		u.dudes[3] = "Chaos Space Marine";
+		u.dudes_num[3] = 9;
+		u.dudes[4] = "Heldrake";
+		u.dudes_num[4] = 1;
 
 		instance_deactivate_object(u);
 		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		u.dudes[1] = "Rhino";
-		u.dudes_num[1] = 25;
+		u.dudes_num[1] = 2;
 		u.dudes[2] = "Defiler";
-		u.dudes_num[2] = 8;
-		u.dudes[3] = "Heldrake";
-		u.dudes_num[3] = 3;
-
-		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 30, 240, obj_enunit);
-		u.dudes[1] = "Cultist";
-		u.dudes_num[1] = 600;
-		u.dudes[2] = "Helbrute";
-		u.dudes_num[2] = 5;
+		u.dudes_num[2] = 2;
 		u.dudes[3] = "Predator";
-		u.dudes_num[3] = 10;
-		u.dudes[4] = "Vindicator";
-		u.dudes_num[4] = 6;
-		u.dudes[5] = "Land Raider";
-		u.dudes_num[5] = 3;
-		u.dudes[6] = "Possessed";
-		u.dudes_num[6] = 30;
-
-		u = instance_create(0, 240, obj_enunit);
-		u.dudes[1] = "Chaos Terminator";
-		u.dudes_num[1] = 10;
-		u.flank = 1;
+		u.dudes_num[3] = 1;
+		u.dudes[4] = "Raptor";
+		u.dudes_num[4] = 10;
 	}
-	// Large CSM Army
+	// CSM Company
 	if (threat = 6) {
 		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "2000";
+		enemy_dudes = "70";
 
 		u.dudes[1] = "Chaos Lord";
 		u.dudes_num[1] = 2;
 		u.dudes[2] = "Chaos Sorcerer";
-		u.dudes_num[2] = 10;
-		u.dudes[3] = "Chaos Chosen";
-		u.dudes_num[3] = 40;
+		u.dudes_num[2] = 2;
+		u.dudes[3] = "Warpsmith";
+		u.dudes_num[3] = 2;
 		u.dudes[4] = "Obliterator";
-		u.dudes_num[4] = 12;
+		u.dudes_num[4] = 1;
 
 		instance_deactivate_object(u);
 		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		u.dudes[1] = "Chaos Space Marine";
-		u.dudes_num[1] = 800;
-		u.dudes[2] = "Havoc";
-		u.dudes_num[2] = 50;
-		u.dudes[3] = "Raptor";
-		u.dudes_num[3] = 50;
-		u.dudes[4] = choose("Noise Marine", "Plague Marine", "Khorne Berzerker", "Rubric Marine");
-		u.dudes_num[3] = 50;
+		u.dudes[1] = "Land Raider";
+		u.dudes_num[1] = 1;
+		u.dudes[2] = "Chaos Terminator";
+		u.dudes_num[2] = 2;
 
 		instance_deactivate_object(u);
 		u = instance_nearest(xxx + 20, 240, obj_enunit);
-		u.dudes[1] = "Rhino";
-		u.dudes_num[1] = 30;
-		u.dudes[2] = "Defiler";
-		u.dudes_num[2] = 10;
+		u.dudes[1] = "Chaos Chosen";
+		u.dudes_num[1] = 2;
+		u.dudes[2] = "Chaos Space Marine";
+		u.dudes_num[2] = 19;
+		u.dudes[3] = "Havoc";
+		u.dudes_num[3] = 9;
+		u.dudes[4] = choose("Noise Marine", "Plague Marine", "Khorne Berzerker", "Rubric Marine");
+		u.dudes_num[4] = 10;
 
 		instance_deactivate_object(u);
 		u = instance_nearest(xxx + 30, 240, obj_enunit);
-		u.dudes[1] = "Cultist";
-		u.dudes_num[1] = 1200;
-		u.dudes[2] = "Helbrute";
-		u.dudes_num[2] = 10;
+		u.dudes[1] = "Rhino";
+		u.dudes_num[1] = 2;
+		u.dudes[2] = "Defiler";
+		u.dudes_num[2] = 4;
 		u.dudes[3] = "Predator";
-		u.dudes_num[3] = 20;
-		u.dudes[4] = "Vindicator";
-		u.dudes_num[4] = 15;
-		u.dudes[5] = "Land Raider";
-		u.dudes_num[5] = 6;
-		u.dudes[6] = "Possessed";
-		u.dudes_num[6] = 60;
+		u.dudes_num[3] = 1;
+		u.dudes[4] = "Raptor";
+		u.dudes_num[4] = 10;
 
 		instance_deactivate_object(u);
 		u = instance_nearest(xxx + 40, 240, obj_enunit);
 		u.dudes[1] = "Heldrake";
-		u.dudes_num[1] = 6;
+		u.dudes_num[1] = 1;
 		u.flank = 1;
 		u.flyer = 1;
 
 		u = instance_create(0, 240, obj_enunit);
-		u.dudes[1] = "Chaos Terminator";
+		u.dudes[1] = "Chaos Space Marine";
+		u.dudes_num[1] = 2;
+		u.flank = 1;
+	}
+	// CSM Company + Support
+	if (threat = 7) {
+		u = instance_nearest(xxx, 240, obj_enunit);
+		enemy_dudes = "115";
+
+		u.dudes[1] = "Chaos Lord";
+		u.dudes_num[1] = 2;
+		u.dudes[2] = "Chaos Sorcerer";
+		u.dudes_num[2] = 2;
+		u.dudes[3] = "Warpsmith";
+		u.dudes_num[3] = 2;
+		u.dudes[4] = "Obliterator";
+		u.dudes_num[4] = 4;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Land Raider";
+		u.dudes_num[1] = 2;
+		u.dudes[2] = "Chaos Terminator";
+		u.dudes_num[2] = 8;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u.dudes[1] = "Chaos Chosen";
+		u.dudes_num[1] = 4;
+		u.dudes[2] = "Chaos Space Marine";
+		u.dudes_num[2] = 38;
+		u.dudes[3] = "Havoc";
+		u.dudes_num[3] = 18;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u.dudes[1] = "Predator";
+		u.dudes_num[1] = 2;
+		u.dudes[2] = "Vindicator";
+		u.dudes_num[2] = 2;
+		u.dudes[3] = "Rhino";
+		u.dudes_num[3] = 2;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 40, 240, obj_enunit);
+		u.dudes[1] = "Defiler";
+		u.dudes_num[1] = 4;
+		u.dudes[2] = "Raptor";
+		u.dudes_num[2] = 20;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 50, 240, obj_enunit);
+		u.dudes[1] = "Heldrake";
+		u.dudes_num[1] = 1;
+		u.flank = 1;
+		u.flyer = 1;
+
+		u = instance_create(0, 240, obj_enunit);
+		u.dudes[1] = choose("Chaos Space Marine", "Noise Marine", "Plague Marine", "Khorne Berzerker", "Rubric Marine");
+		u.dudes_num[1] = 4;
+		u.flank = 1;
+	}
+	// CSM 2 Companies + Support
+	if (threat = 8) {
+		u = instance_nearest(xxx, 240, obj_enunit);
+		enemy_dudes = "190";
+
+		u.dudes[1] = "Chaos Lord";
+		u.dudes_num[1] = 3;
+		u.dudes[2] = "Chaos Sorcerer";
+		u.dudes_num[2] = 3;
+		u.dudes[3] = "Warpsmith";
+		u.dudes_num[3] = 3;
+		u.dudes[4] = "Obliterator";
+		u.dudes_num[4] = 11;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Land Raider";
+		u.dudes_num[1] = 4;
+		u.dudes[2] = "Chaos Terminator";
+		u.dudes_num[2] = 16;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u.dudes[1] = "Chaos Chosen";
+		u.dudes_num[1] = 6;
+		u.dudes[2] = "Chaos Space Marine";
+		u.dudes_num[2] = 47;
+		u.dudes[3] = "Havoc";
+		u.dudes_num[3] = 27;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u.dudes[1] = "Predator";
+		u.dudes_num[1] = 4;
+		u.dudes[2] = "Vindicator";
+		u.dudes_num[2] = 4;
+		u.dudes[3] = "Rhino";
+		u.dudes_num[3] = 4;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 40, 240, obj_enunit);
+		u.dudes[1] = "Defiler";
+		u.dudes_num[1] = 8;
+		u.dudes[2] = "Raptor";
+		u.dudes_num[2] = 40;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 50, 240, obj_enunit);
+		u.dudes[1] = "Heldrake";
+		u.dudes_num[1] = 3;
+		u.flank = 1;
+		u.flyer = 1;
+
+		u = instance_create(0, 240, obj_enunit);
+		u.dudes[1] = choose("Chaos Space Marine", "Noise Marine", "Plague Marine", "Khorne Berzerker", "Rubric Marine");
+		u.dudes_num[1] = 7;
+		u.flank = 1;
+	}
+	// CSM 4 Companies + Support
+	if (threat = 9) {
+		u = instance_nearest(xxx, 240, obj_enunit);
+		enemy_dudes = "317";
+
+		u.dudes[1] = "Chaos Lord";
+		u.dudes_num[1] = 5;
+		u.dudes[2] = "Chaos Sorcerer";
+		u.dudes_num[2] = 5;
+		u.dudes[3] = "Warpsmith";
+		u.dudes_num[3] = 5;
+		u.dudes[4] = "Obliterator";
+		u.dudes_num[4] = 25;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Land Raider";
+		u.dudes_num[1] = 10;
+		u.dudes[2] = "Chaos Terminator";
+		u.dudes_num[2] = 50;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u.dudes[1] = "Chaos Chosen";
+		u.dudes_num[1] = 8;
+		u.dudes[2] = "Chaos Space Marine";
+		u.dudes_num[2] = 66;
+		u.dudes[3] = "Havoc";
+		u.dudes_num[3] = 36;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u.dudes[1] = "Predator";
+		u.dudes_num[1] = 10;
+		u.dudes[2] = "Vindicator";
+		u.dudes_num[2] = 10;
+		u.dudes[3] = "Rhino";
+		u.dudes_num[3] = 10;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 40, 240, obj_enunit);
+		u.dudes[1] = "Defiler";
+		u.dudes_num[1] = 12;
+		u.dudes[2] = "Raptor";
+		u.dudes_num[2] = 40;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 50, 240, obj_enunit);
+		u.dudes[1] = "Heldrake";
+		u.dudes_num[1] = 5;
+		u.flank = 1;
+		u.flyer = 1;
+
+		u = instance_create(0, 240, obj_enunit);
+		u.dudes[1] = choose("Chaos Space Marine", "Noise Marine", "Plague Marine", "Khorne Berzerker", "Rubric Marine");
 		u.dudes_num[1] = 20;
+		u.flank = 1;
+	}
+	// CSM Chapter or Warband
+	if (threat = 10) {
+		u = instance_nearest(xxx, 240, obj_enunit);
+		enemy_dudes = "600";
+
+		u.dudes[1] = "Chaos Lord";
+		u.dudes_num[1] = 10;
+		u.dudes[2] = "Chaos Sorcerer";
+		u.dudes_num[2] = 10;
+		u.dudes[3] = "Warpsmith";
+		u.dudes_num[3] = 10;
+		u.dudes[4] = "Obliterator";
+		u.dudes_num[4] = 50;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Land Raider";
+		u.dudes_num[1] = 20;
+		u.dudes[2] = "Chaos Terminator";
+		u.dudes_num[2] = 100;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u.dudes[1] = "Chaos Chosen";
+		u.dudes_num[1] = 12;
+		u.dudes[2] = "Chaos Space Marine";
+		u.dudes_num[2] = 124;
+		u.dudes[3] = "Havoc";
+		u.dudes_num[3] = 64;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u.dudes[1] = "Predator";
+		u.dudes_num[1] = 20;
+		u.dudes[2] = "Vindicator";
+		u.dudes_num[2] = 20;
+		u.dudes[3] = "Rhino";
+		u.dudes_num[3] = 20;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 40, 240, obj_enunit);
+		u.dudes[1] = "Defiler";
+		u.dudes_num[1] = 30;
+		u.dudes[2] = "Raptor";
+		u.dudes_num[2] = 60;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 50, 240, obj_enunit);
+		u.dudes[1] = "Heldrake";
+		u.dudes_num[1] = 10;
+		u.flank = 1;
+		u.flyer = 1;
+
+		u = instance_create(0, 240, obj_enunit);
+		u.dudes[1] = choose("Chaos Space Marine", "Noise Marine", "Plague Marine", "Khorne Berzerker", "Rubric Marine");
+		u.dudes_num[1] = 40;
 		u.flank = 1;
 	}
 }
