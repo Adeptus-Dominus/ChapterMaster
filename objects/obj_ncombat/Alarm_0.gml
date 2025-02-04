@@ -4224,122 +4224,77 @@ if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeti
 
 // ** World Eaters Forces **
 if (enemy = 11) and(battle_special = "world_eaters") {
-	// Small WE Group
+	// WE Marine
 	if (threat = 1) {
 		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "20";
+		enemy_dudes = "1";
 
 		u.dudes[1] = "Khorne Berzerker";
-		u.dudes_num[1] = 15;
+		u.dudes_num[1] = 1;
 		enemies[1] = u.dudes[1];
 		// Spawn Leader
 		if (obj_controller.faction_defeated[10] = 0) {
-			u.dudes[2] = "Leader";
-			u.dudes_num[2] = 1;
+			u.dudes[1] = "Leader";
+			u.dudes_num[1] = 1;
 		}
-		u.dudes[3] = "World Eaters Veteran";
-		u.dudes_num[3] = 5;
 	}
-	// Medium WE Group
+	// WE Demi-Squad
 	if (threat = 2) {
 		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "135";
+		enemy_dudes = "3";
 
 		u.dudes[1] = "Chaos Chosen";
 		u.dudes_num[1] = 1;
 		// Spawn Leader
 		if (obj_controller.faction_defeated[10] = 0) then u.dudes[1] = "Leader";
 		u.dudes[2] = "Khorne Berzerker";
-		u.dudes_num[2] = 35;
+		u.dudes_num[2] = 1;
 		u.dudes[3] = "World Eaters Veteran";
-		u.dudes_num[3] = 5;
-
-		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		u.dudes[1] = "World Eater";
-		u.dudes_num[1] = 100;
-		u.dudes[2] = "Rhino";
-		u.dudes_num[2] = 2;
-		u.dudes[3] = "Vindicator";
-		u.dudes_num[3] = 4;
+		u.dudes_num[3] = 1;
 	}
-	// Large WE Group
+	// WE Squad
 	if (threat = 3) {
 		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "over 200";
+		enemy_dudes = "10";
 
 		u.dudes[1] = "Chaos Chosen";
 		u.dudes_num[1] = 1;
 		// Spawn Leader
 		if (obj_controller.faction_defeated[10] = 0) then u.dudes[1] = "Leader";
-		u.dudes[2] = "Greater Daemon of Khorne";
-		u.dudes_num[2] = 1;
-		u.dudes[3] = "World Eater Terminator";
-		u.dudes_num[3] = 10;
-		u.dudes[4] = "World Eater";
-		u.dudes_num[4] = 100;
+		u.dudes[2] = "World Eaters Veteran";
+		u.dudes_num[2] = 4;
 
 		instance_deactivate_object(u);
 		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		u.dudes[1] = "Rhino";
-		u.dudes_num[1] = 6;
-		u.dudes[2] = "Defiler";
-		u.dudes_num[2] = 2;
-
-		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		u.dudes[1] = "Khorne Berzerker";
-		u.dudes_num[1] = 100;
-		u.dudes[2] = "Helbrute";
-		u.dudes_num[2] = 5;
-		u.dudes[3] = "Vindicator";
-		u.dudes_num[3] = 6;
-		u.dudes[4] = "Land Raider";
-		u.dudes_num[4] = 4;
+		u.dudes_num[1] = 5;
 	}
-	// Small WE Army
+	// WE Several Squads
 	if (threat = 4) {
 		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "over 300";
+		enemy_dudes = "20";
 
 		u.dudes[1] = "Chaos Chosen";
 		u.dudes_num[1] = 1;
 		// Spawn Leader
 		if (obj_controller.faction_defeated[10] = 0) then u.dudes[1] = "Leader";
-		u.dudes[2] = "Greater Daemon of Khorne";
-		u.dudes_num[2] = 2;
-		u.dudes[3] = "World Eater Terminator";
-		u.dudes_num[3] = 10;
+		u.dudes[2] = "World Eater Terminator";
+		u.dudes_num[2] = 1;
 		// u.dudes[4]="Chaos Terminator";u.dudes_num[4]=5;
 
 		instance_deactivate_object(u);
 		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		u.dudes[1] = "World Eaters Veteran";
-		u.dudes_num[1] = 250;
-		u.dudes[2] = "Possessed";
-		u.dudes_num[2] = 20;
+		u.dudes_num[1] = 5;
 
 		instance_deactivate_object(u);
 		u = instance_nearest(xxx + 20, 240, obj_enunit);
-		u.dudes[1] = "Vindicator";
-		u.dudes_num[1] = 15;
-		u.dudes[2] = "Defiler";
-		u.dudes_num[2] = 4;
-		u.dudes[3] = "Heldrake";
-		u.dudes_num[3] = 1;
-
-		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 30, 240, obj_enunit);
-		u.dudes[1] = "Khorne Berzerker";
-		u.dudes_num[1] = 300;
-		u.dudes[2] = "Helbrute";
-		u.dudes_num[2] = 3;
-		u.dudes[3] = "Predator";
-		u.dudes_num[3] = 6;
-		u.dudes[4] = "Vindicator";
-		u.dudes_num[4] = 3;
-		u.dudes[5] = "Land Raider";
-		u.dudes_num[5] = 2;
+		u.dudes[1] = "Defiler";
+		u.dudes_num[1] = 1;
+		u.dudes[2] = "Khorne Berzerker";
+		u.dudes_num[2] = 2;
+		u.dudes[3] = "Possessed";
+		u.dudes_num[3] = 10;
 	}
 	// Medium WE Army
 	if (threat = 5) {
