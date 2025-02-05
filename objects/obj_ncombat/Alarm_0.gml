@@ -4296,122 +4296,322 @@ if (enemy = 11) and(battle_special = "world_eaters") {
 		u.dudes[3] = "Possessed";
 		u.dudes_num[3] = 10;
 	}
-	// Medium WE Army
+	// WE Demi-Company
 	if (threat = 5) {
 		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "over 900";
+		enemy_dudes = "40";
 
 		u.dudes[1] = "Chaos Chosen";
 		u.dudes_num[1] = 1;
 		// Spawn Leader
 		if (obj_controller.faction_defeated[10] = 0) then u.dudes[1] = "Leader";
-		u.dudes[2] = "Greater Daemon of Khorne";
-		u.dudes_num[2] = 3;
-		u.dudes[3] = "World Eater Terminator";
-		u.dudes_num[3] = 20;
-		u.dudes[4] = "Helbrute";
-		u.dudes_num[4] = 6;
+		u.dudes[2] = "World Eater Terminator";
+		u.dudes_num[2] = 4;
 
 		instance_deactivate_object(u);
 		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		u.dudes[1] = "World Eaters Veteran";
-		u.dudes_num[1] = 600;
-		u.dudes[2] = "Possessed";
-		u.dudes_num[2] = 40;
-		u.dudes[3] = "Possessed";
-		u.dudes_num[3] = 40;
+		u.dudes_num[1] = 10;
 
 		instance_deactivate_object(u);
 		u = instance_nearest(xxx + 20, 240, obj_enunit);
-		u.dudes[1] = "Vindicator";
-		u.dudes_num[1] = 15;
-		u.dudes[2] = "Defiler";
-		u.dudes_num[2] = 8;
+		u.dudes[1] = "Predator";
+		u.dudes_num[1] = 1;
+		u.dudes[2] = "Vindicator";
+		u.dudes_num[2] = 2;
 		u.dudes[3] = "Heldrake";
-		u.dudes_num[3] = 3;
+		u.dudes_num[3] = 1;
 
 		instance_deactivate_object(u);
 		u = instance_nearest(xxx + 30, 240, obj_enunit);
-		u.dudes[1] = "Khorne Berzerker";
-		u.dudes_num[1] = 300;
-		u.dudes[2] = "Helbrute";
-		u.dudes_num[2] = 5;
-		u.dudes[3] = "Predator";
-		u.dudes_num[3] = 10;
-		u.dudes[4] = "Vindicator";
-		u.dudes_num[4] = 6;
-		u.dudes[5] = "Land Raider";
-		u.dudes_num[5] = 3;
-		u.dudes[6] = "Possessed";
-		u.dudes_num[6] = 30;
+		u.dudes[1] = "Defiler";
+		u.dudes_num[1] = 2;
+		u.dudes[2] = "Khorne Berzerker";
+		u.dudes_num[2] = 4;
+		u.dudes[3] = "Helbrute";
+		u.dudes_num[3] = 1;
+		u.dudes[4] = "Possessed";
+		u.dudes_num[4] = 10;
 
 		u = instance_create(0, 240, obj_enunit);
-		u.dudes[1] = "Chaos Terminator";
-		u.dudes_num[1] = 10;
+		u.dudes[1] = choose("Khorne Berzerker", "World Eaters Veteran");
+		u.dudes_num[1] = 4;
 		u.flank = 1;
 	}
-	// Large WE Army
+	// WE Company
 	if (threat >= 6) {
 		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "1300";
+		enemy_dudes = "77";
 
 		u.dudes[1] = "Chaos Lord";
-		u.dudes_num[1] = 2;
+		u.dudes_num[1] = 1;
 		// Spawn Leader
 		if (obj_controller.faction_defeated[10] = 0) {
 			u.dudes[1] = "Leader";
 			u.dudes_num[1] = 1;
 		}
-		u.dudes[2] = "Greater Daemon of Khorne";
-		u.dudes_num[2] = 5;
-		u.dudes[3] = "World Eaters Terminator";
-		u.dudes_num[3] = 40;
-		u.dudes[4] = "Helbrute";
-		u.dudes_num[4] = 10;
+		u.dudes[2] = "World Eaters Terminator";
+		u.dudes_num[2] = 3;
+		u.dudes[3] = "Land Raider";
+		u.dudes_num[3] = 1;
 
 		instance_deactivate_object(u);
 		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		u.dudes[1] = "World Eaters Veteran";
-		u.dudes_num[1] = 800;
-		u.dudes[2] = "Possessed";
-		u.dudes_num[2] = 50;
-		u.dudes[3] = "Possessed";
-		u.dudes_num[3] = 50;
-		u.dudes[4] = "Khorne Berzerker";
-		u.dudes_num[3] = 50;
+		u.dudes_num[1] = 15;
 
 		instance_deactivate_object(u);
 		u = instance_nearest(xxx + 20, 240, obj_enunit);
-		u.dudes[1] = "Vindicator";
-		u.dudes_num[1] = 20;
-		u.dudes[2] = "Defiler";
-		u.dudes_num[2] = 10;
+		u.dudes[1] = "Predator";
+		u.dudes_num[1] = 2;
+		u.dudes[2] = "Vindicator";
+		u.dudes_num[2] = 4;
 
 		instance_deactivate_object(u);
 		u = instance_nearest(xxx + 30, 240, obj_enunit);
-		u.dudes[1] = "Khorne Berzerker";
-		u.dudes_num[1] = 500;
-		u.dudes[2] = "Helbrute";
-		u.dudes_num[2] = 10;
-		u.dudes[3] = "Predator";
-		u.dudes_num[3] = 15;
-		u.dudes[4] = "Vindicator";
+		u.dudes[1] = "Defiler";
+		u.dudes_num[1] = 6;
+		u.dudes[2] = "Khorne Berzerker";
+		u.dudes_num[2] = 12;
+		u.dudes[3] = "Helbrute";
+		u.dudes_num[3] = 2;
+		u.dudes[4] = "Possessed";
 		u.dudes_num[4] = 20;
-		u.dudes[5] = "Land Raider";
-		u.dudes_num[5] = 6;
-		u.dudes[6] = "Possessed";
-		u.dudes_num[6] = 60;
 
 		instance_deactivate_object(u);
 		u = instance_nearest(xxx + 40, 240, obj_enunit);
 		u.dudes[1] = "Heldrake";
-		u.dudes_num[1] = 6;
+		u.dudes_num[1] = 1;
 		u.flank = 1;
 		u.flyer = 1;
 
 		u = instance_create(0, 240, obj_enunit);
-		u.dudes[1] = "World Eaters Terminator";
+		u.dudes[1] = choose("Khorne Berzerker", "World Eaters Veteran");
+		u.dudes_num[1] = 10;
+		u.flank = 1;
+	}
+	// WE Company + Support
+	if (threat >= 7) {
+		u = instance_nearest(xxx, 240, obj_enunit);
+		enemy_dudes = "134";
+
+		u.dudes[1] = "Chaos Lord";
+		u.dudes_num[1] = 1;
+		// Spawn Leader
+		if (obj_controller.faction_defeated[10] = 0) {
+			u.dudes[1] = "Leader";
+			u.dudes_num[1] = 1;
+		}
+		u.dudes[2] = "Venerable Chaos Chosen";
+		u.dudes_num[2] = 1;
+		u.dudes[3] = "World Eaters Terminator";
+		u.dudes_num[3] = 6;
+		u.dudes[4] = "Land Raider";
+		u.dudes_num[4] = 2;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Venerable Chaos Chosen";
+		u.dudes_num[1] = 1;
+		u.dudes[2] = "World Eaters Veteran";
+		u.dudes_num[2] = 19;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u.dudes[1] = "Predator";
+		u.dudes_num[1] = 4;
+		u.dudes[2] = "Vindicator";
+		u.dudes_num[2] = 8;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u.dudes[1] = "Defiler";
+		u.dudes_num[1] = 12;
+		u.dudes[2] = "Khorne Berzerker";
+		u.dudes_num[2] = 24;
+		u.dudes[3] = "Helbrute";
+		u.dudes_num[3] = 4;
+		u.dudes[4] = "Possessed";
+		u.dudes_num[4] = 30;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 40, 240, obj_enunit);
+		u.dudes[1] = "Heldrake";
+		u.dudes_num[1] = 2;
+		u.flank = 1;
+		u.flyer = 1;
+
+		u = instance_create(0, 240, obj_enunit);
+		u.dudes[1] = choose("Khorne Berzerker", "World Eaters Veteran");
 		u.dudes_num[1] = 20;
+		u.flank = 1;
+	}
+	// WE 2 Companies + Support
+	if (threat >= 8) {
+		u = instance_nearest(xxx, 240, obj_enunit);
+		enemy_dudes = "250";
+
+		u.dudes[1] = "Chaos Lord";
+		u.dudes_num[1] = 1;
+		// Spawn Leader
+		if (obj_controller.faction_defeated[10] = 0) {
+			u.dudes[1] = "Leader";
+			u.dudes_num[1] = 1;
+		}
+		u.dudes[2] = "Venerable Chaos Chosen";
+		u.dudes_num[2] = 1;
+		u.dudes[3] = "World Eaters Terminator";
+		u.dudes_num[3] = 14;
+		u.dudes[4] = "Land Raider";
+		u.dudes_num[4] = 4;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Venerable Chaos Chosen";
+		u.dudes_num[1] = 1;
+		u.dudes[2] = "World Eaters Veteran";
+		u.dudes_num[2] = 39;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u.dudes[1] = "Predator";
+		u.dudes_num[1] = 6;
+		u.dudes[2] = "Vindicator";
+		u.dudes_num[2] = 14;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u.dudes[1] = "Defiler";
+		u.dudes_num[1] = 20;
+		u.dudes[2] = "Khorne Berzerker";
+		u.dudes_num[2] = 40;
+		u.dudes[3] = "Helbrute";
+		u.dudes_num[3] = 10;
+		u.dudes[4] = "Possessed";
+		u.dudes_num[4] = 60;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 40, 240, obj_enunit);
+		u.dudes[1] = "Heldrake";
+		u.dudes_num[1] = 4;
+		u.flank = 1;
+		u.flyer = 1;
+
+		u = instance_create(0, 240, obj_enunit);
+		u.dudes[1] = choose("Khorne Berzerker", "World Eaters Veteran");
+		u.dudes_num[1] = 36;
+		u.flank = 1;
+	}
+	// WE 4 Companies + Support
+	if (threat >= 9) {
+		u = instance_nearest(xxx, 240, obj_enunit);
+		enemy_dudes = "355";
+
+		u.dudes[1] = "Chaos Lord";
+		u.dudes_num[1] = 1;
+		// Spawn Leader
+		if (obj_controller.faction_defeated[10] = 0) {
+			u.dudes[1] = "Leader";
+			u.dudes_num[1] = 1;
+		}
+		u.dudes[2] = "Venerable Chaos Chosen";
+		u.dudes_num[2] = 2;
+		u.dudes[3] = "World Eaters Terminator";
+		u.dudes_num[3] = 17;
+		u.dudes[4] = "Land Raider";
+		u.dudes_num[4] = 5;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Venerable Chaos Chosen";
+		u.dudes_num[1] = 2;
+		u.dudes[2] = "World Eaters Veteran";
+		u.dudes_num[2] = 58;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u.dudes[1] = "Predator";
+		u.dudes_num[1] = 8;
+		u.dudes[2] = "Vindicator";
+		u.dudes_num[2] = 22;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u.dudes[1] = "Defiler";
+		u.dudes_num[1] = 30;
+		u.dudes[2] = "Khorne Berzerker";
+		u.dudes_num[2] = 50;
+		u.dudes[3] = "Helbrute";
+		u.dudes_num[3] = 10;
+		u.dudes[4] = "Possessed";
+		u.dudes_num[4] = 100;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 40, 240, obj_enunit);
+		u.dudes[1] = "Heldrake";
+		u.dudes_num[1] = 5;
+		u.flank = 1;
+		u.flyer = 1;
+
+		u = instance_create(0, 240, obj_enunit);
+		u.dudes[1] = choose("Khorne Berzerker", "World Eaters Veteran");
+		u.dudes_num[1] = 45;
+		u.flank = 1;
+	}
+	// WE Warband
+	if (threat >= 10) {
+		u = instance_nearest(xxx, 240, obj_enunit);
+		enemy_dudes = "620";
+
+		u.dudes[1] = "Chaos Lord";
+		u.dudes_num[1] = 1;
+		// Spawn Leader
+		if (obj_controller.faction_defeated[10] = 0) {
+			u.dudes[1] = "Leader";
+			u.dudes_num[1] = 1;
+		}
+		u.dudes[2] = "Venerable Chaos Chosen";
+		u.dudes_num[2] = 4;
+		u.dudes[3] = "World Eaters Terminator";
+		u.dudes_num[3] = 45;
+		u.dudes[4] = "Land Raider";
+		u.dudes_num[4] = 10;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Venerable Chaos Chosen";
+		u.dudes_num[1] = 5;
+		u.dudes[2] = "World Eaters Veteran";
+		u.dudes_num[2] = 95;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u.dudes[1] = "Predator";
+		u.dudes_num[1] = 10;
+		u.dudes[2] = "Vindicator";
+		u.dudes_num[2] = 40;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u.dudes[1] = "Defiler";
+		u.dudes_num[1] = 40;
+		u.dudes[2] = "Khorne Berzerker";
+		u.dudes_num[2] = 60;
+		u.dudes[3] = "Helbrute";
+		u.dudes_num[3] = 10;
+		u.dudes[4] = "Possessed";
+		u.dudes_num[4] = 200;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 40, 240, obj_enunit);
+		u.dudes[1] = "Heldrake";
+		u.dudes_num[1] = 10;
+		u.flank = 1;
+		u.flyer = 1;
+
+		u = instance_create(0, 240, obj_enunit);
+		u.dudes[1] = choose("Khorne Berzerker", "World Eaters Veteran");
+		u.dudes_num[1] = 90;
 		u.flank = 1;
 	}
 }
