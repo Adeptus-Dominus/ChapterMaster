@@ -4621,76 +4621,52 @@ if (enemy = 12) {
 	// If we want to have multiple story events regarding specific Chaos Gods, we could name slaa into gods and just check the value? TBD
 	var slaa = false;
 	if (battle_special = "ruins_eldar") then slaa = true;
-	// Small Daemon Group
+	// Single Daemonic Entity
 	if (threat = 1) {
 		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "5";
+		enemy_dudes = "1";
 
-		u.dudes[1] = choose("Bloodletter", "Daemonette", "Plaguebearer", "Pink Horror");
+		u.dudes[1] = choose("Bloodletter", "Daemonette", "Plaguebearer", "Pink Horror"); // I'm thinking of adding "Arch Heretic" and "Possessed" to the list
 		if (slaa) then u.dudes[1] = "Daemonette";
-		u.dudes_num[1] = 5;
+		u.dudes_num[1] = 1;
 		enemies[1] = u.dudes[1];
-		u.dudes[2] = "Cultist Elite";
-		u.dudes_num[2] = 30;
-		enemies[2] = u.dudes[2];
 	}
-	// Medium Daemon Group
+	// Daemon "Demi-Squad"
 	if (threat = 2) {
 		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "90";
+		enemy_dudes = "4";
 
 		u.dudes[1] = choose("Bloodletter", "Daemonette", "Plaguebearer", "Pink Horror");
 		if (slaa) then u.dudes[1] = "Daemonette";
-		u.dudes_num[1] = 30;
-
-		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		u.dudes[1] = choose("Bloodletter", "Daemonette", "Plaguebearer", "Pink Horror");
-		if (slaa) then u.dudes[1] = "Daemonette";
-		u.dudes_num[1] = 30;
-		u.dudes[2] = "Defiler";
-		u.dudes_num[2] = 1;
-	}
-	// Large Daemon Group
-	if (threat = 3) {
-		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "240";
-
-		u.dudes[1] = "Greater Daemon of " + choose("Tzeentch", "Slaanesh", "Nurgle", "Khorne");
-		if (slaa) then u.dudes[1] = "Greater Daemon of Slaanesh";
-		u.dudes_num[1] = 1;
-		u.dudes[2] = "Chaos Sorcerer";
-		u.dudes_num[2] = 1;
-		u.dudes[3] = "Pink Horror";
-		if (slaa) then u.dudes[3] = "Daemonette";
-		u.dudes_num[3] = 60;
-
-		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		u.dudes[1] = "Defiler";
 		u.dudes_num[1] = 2;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
-		if (slaa) {
-			u.dudes[1] = "Daemonette";
-			u.dudes_num[1] = 240;
-		} else {
-			u.dudes[1] = "Bloodletter";
-			u.dudes_num[1] = 60;
-			u.dudes[2] = "Plaguebearer";
-			u.dudes_num[2] = 60;
-			u.dudes[3] = "Daemonette";
-			u.dudes_num[3] = 60;
-			u.dudes[4] = "Maulerfiend";
-			u.dudes_num[4] = 2;
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = choose("Cultist", "Mutant");
+		u.dudes_num[1] = 2;
+	}
+	// Daemon "Squad"
+	if (threat = 3) {
+		u = instance_nearest(xxx, 240, obj_enunit);
+		enemy_dudes = "10";
+
+		u.dudes[1] = choose("Bloodletter", "Daemonette", "Plaguebearer", "Pink Horror");
+		if (slaa) then u.dudes[1] = "Daemonette";
+		u.dudes_num[1] = 2;
+		u.dudes[2] = "Cultist Elite";
+		u.dudes_num[2] = 2;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = choose("Cultist", "Mutant");
+		u.dudes_num[1] = 6;
 		}
 	}
-	// Small Daemon Army
+	// Daemon "Demi-Platoon"
 	if (threat = 4) {
-		u = instance_nearest(xxx + 40, 240, obj_enunit);
-		enemy_dudes = "400";
-		u.neww = 1;
+		u = instance_nearest(xxx, 240, obj_enunit);
+		enemy_dudes = "20";
+		u.neww = 1; // What does this do?
 
 		u.dudes[1] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch"));
 		if (slaa) then u.dudes[1] = "Greater Daemon of Slaanesh";
@@ -4699,35 +4675,37 @@ if (enemy = 12) {
 		if (slaa) then u.dudes[2] = "Greater Daemon of Slaanesh";
 		u.dudes_num[2] = 1;
 		// u.dudes[6]="Greater Daemon of Tzeentch";u.dudes_num[6]=1;
-		u.dudes[3] = "Soul Grinder";
+		u.dudes[3] = "Arch Heretic";
 		u.dudes_num[3] = 1;
 		instance_deactivate_object(u);
 
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		if (slaa) {
 			u.dudes[1] = "Daemonette";
-			u.dudes_num[1] = 400;
+			u.dudes_num[1] = 15;
 			u.dudes[2] = "Maulerfiend";
 			u.dudes_num[2] = 2;
 		} else {
-			u.dudes[1] = "Bloodletter";
-			u.dudes_num[1] = 100;
-			u.dudes[2] = "Daemonette";
-			u.dudes_num[2] = 100;
-			u.dudes[3] = "Plaguebearer";
-			u.dudes_num[3] = 100;
-			u.dudes[4] = "Pink Horror";
-			u.dudes_num[4] = 100;
-			u.dudes[5] = "Maulerfiend";
+			u.dudes[1] = "Cultist Elite";
+			u.dudes_num[1] = 7;
+			u.dudes[2] = "Bloodletter";
+			u.dudes_num[2] = 2;
+			u.dudes[3] = "Daemonette";
+			u.dudes_num[3] = 2;
+			u.dudes[4] = "Plaguebearer";
+			u.dudes_num[4] = 2;
+			u.dudes[5] = "Pink Horror";
 			u.dudes_num[5] = 2;
+			u.dudes[6] = "Maulerfiend";
+			u.dudes_num[6] = 2;
 		}
-		instance_deactivate_object(u);
+		instance_deactivate_object(u); // Why is it here, unlike others? Is it due to u.neww?
 	}
-	// Medium Daemon Army
+	// Daemon "Demi-Company"
 	if (threat = 5) {
-		u = instance_nearest(xxx + 40, 240, obj_enunit);
-		enemy_dudes = "1000";
-		u.neww = 1;
+		u = instance_nearest(xxx, 240, obj_enunit);
+		enemy_dudes = "50";
+		u.neww = 1; // What does this do?
 
 		u.dudes[1] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
 		if (slaa) then u.dudes[1] = "Greater Daemon of Slaanesh";
@@ -4742,31 +4720,31 @@ if (enemy = 12) {
 		u.dudes_num[4] = 2;
 		instance_deactivate_object(u);
 
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		if (slaa) {
 			u.dudes[1] = "Daemonette";
-			u.dudes_num[1] = 1000;
+			u.dudes_num[1] = 40;
 			u.dudes[2] = "Maulerfiend";
-			u.dudes_num[2] = 2;
+			u.dudes_num[2] = 5;
 		} else {
 			u.dudes[1] = "Bloodletter";
-			u.dudes_num[1] = 250;
+			u.dudes_num[1] = 10;
 			u.dudes[2] = "Daemonette";
-			u.dudes_num[2] = 250;
+			u.dudes_num[2] = 10;
 			u.dudes[3] = "Plaguebearer";
-			u.dudes_num[3] = 250;
+			u.dudes_num[3] = 10;
 			u.dudes[4] = "Pink Horror";
-			u.dudes_num[4] = 250;
+			u.dudes_num[4] = 10;
 			u.dudes[5] = "Maulerfiend";
-			u.dudes_num[5] = 2;
+			u.dudes_num[5] = 5;
 		}
 		instance_deactivate_object(u);
 	}
-	// Large Daemon Army
+	// Daemon "Company"
 	if (threat = 6) {
-		u = instance_nearest(xxx + 40, 240, obj_enunit);
-		enemy_dudes = "2000";
-		u.neww = 1;
+		u = instance_nearest(xxx, 240, obj_enunit);
+		enemy_dudes = "80";
+		u.neww = 1; // What does this do?
 
 		u.dudes[1] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
 		if (slaa) then u.dudes[1] = "Greater Daemon of Slaanesh";
@@ -4778,17 +4756,17 @@ if (enemy = 12) {
 		if (slaa) then u.dudes[3] = "Greater Daemon of Slaanesh";
 		u.dudes_num[3] = 1;
 		u.dudes[4] = "Soul Grinder";
-		u.dudes_num[4] = 1;
+		u.dudes_num[4] = 2;
 		instance_deactivate_object(u);
 
-		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		u.neww = 1;
 		u.dudes[1] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
 		if (slaa) then u.dudes[1] = "Greater Daemon of Slaanesh";
-		u.dudes_num[1] = 1;
+		u.dudes_num[1] = 2;
 		u.dudes[2] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
 		if (slaa) then u.dudes[2] = "Greater Daemon of Slaanesh";
-		u.dudes_num[2] = 1;
+		u.dudes_num[2] = 2;
 		u.dudes[3] = "Soul Grinder";
 		u.dudes_num[3] = 1;
 		instance_deactivate_object(u);
@@ -4796,20 +4774,224 @@ if (enemy = 12) {
 		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		if (slaa) {
 			u.dudes[1] = "Daemonette";
-			u.dudes_num[1] = 2000;
+			u.dudes_num[1] = 60;
 			u.dudes[2] = "Maulerfiend";
-			u.dudes_num[2] = 3;
+			u.dudes_num[2] = 10;
 		} else {
 			u.dudes[1] = "Bloodletter";
-			u.dudes_num[1] = 500;
+			u.dudes_num[1] = 15;
 			u.dudes[2] = "Daemonette";
-			u.dudes_num[2] = 500;
+			u.dudes_num[2] = 15;
 			u.dudes[3] = "Plaguebearer";
-			u.dudes_num[3] = 500;
+			u.dudes_num[3] = 15;
 			u.dudes[4] = "Pink Horror";
-			u.dudes_num[4] = 500;
+			u.dudes_num[4] = 15;
 			u.dudes[5] = "Maulerfiend";
-			u.dudes_num[5] = 3;
+			u.dudes_num[5] = 10;
+		}
+		instance_deactivate_object(u);
+	}
+	// Daemon "Company + Support"
+	if (threat = 7) {
+		u = instance_nearest(xxx, 240, obj_enunit);
+		enemy_dudes = "120";
+		u.neww = 1; // What does this do?
+
+		u.dudes[1] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+		if (slaa) then u.dudes[1] = "Greater Daemon of Slaanesh";
+		u.dudes_num[1] = 2;
+		u.dudes[2] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+		if (slaa) then u.dudes[2] = "Greater Daemon of Slaanesh";
+		u.dudes_num[2] = 2;
+		u.dudes[3] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+		if (slaa) then u.dudes[3] = "Greater Daemon of Slaanesh";
+		u.dudes_num[3] = 2;
+		u.dudes[4] = "Soul Grinder";
+		u.dudes_num[4] = 4;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.neww = 1;
+		u.dudes[1] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+		if (slaa) then u.dudes[1] = "Greater Daemon of Slaanesh";
+		u.dudes_num[1] = 4;
+		u.dudes[2] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+		if (slaa) then u.dudes[2] = "Greater Daemon of Slaanesh";
+		u.dudes_num[2] = 4;
+		u.dudes[3] = "Soul Grinder";
+		u.dudes_num[3] = 2;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		if (slaa) {
+			u.dudes[1] = "Daemonette";
+			u.dudes_num[1] = 80;
+			u.dudes[2] = "Maulerfiend";
+			u.dudes_num[2] = 20;
+		} else {
+			u.dudes[1] = "Bloodletter";
+			u.dudes_num[1] = 20;
+			u.dudes[2] = "Daemonette";
+			u.dudes_num[2] = 20;
+			u.dudes[3] = "Plaguebearer";
+			u.dudes_num[3] = 20;
+			u.dudes[4] = "Pink Horror";
+			u.dudes_num[4] = 20;
+			u.dudes[5] = "Maulerfiend";
+			u.dudes_num[5] = 20;
+		}
+		instance_deactivate_object(u);
+	}
+	// Daemon "2 Companies + Support"
+	if (threat = 8) {
+		u = instance_nearest(xxx, 240, obj_enunit);
+		enemy_dudes = "200";
+		u.neww = 1; // What does this do?
+
+		u.dudes[1] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+		if (slaa) then u.dudes[1] = "Greater Daemon of Slaanesh";
+		u.dudes_num[1] = 5;
+		u.dudes[2] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+		if (slaa) then u.dudes[2] = "Greater Daemon of Slaanesh";
+		u.dudes_num[2] = 5;
+		u.dudes[3] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+		if (slaa) then u.dudes[3] = "Greater Daemon of Slaanesh";
+		u.dudes_num[3] = 5;
+		u.dudes[4] = "Soul Grinder";
+		u.dudes_num[4] = 5;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.neww = 1;
+		u.dudes[1] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+		if (slaa) then u.dudes[1] = "Greater Daemon of Slaanesh";
+		u.dudes_num[1] = 5;
+		u.dudes[2] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+		if (slaa) then u.dudes[2] = "Greater Daemon of Slaanesh";
+		u.dudes_num[2] = 5;
+		u.dudes[3] = "Soul Grinder";
+		u.dudes_num[3] = 10;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		if (slaa) {
+			u.dudes[1] = "Daemonette";
+			u.dudes_num[1] = 120;
+			u.dudes[2] = "Maulerfiend";
+			u.dudes_num[2] = 40;
+		} else {
+			u.dudes[1] = "Bloodletter";
+			u.dudes_num[1] = 30;
+			u.dudes[2] = "Daemonette";
+			u.dudes_num[2] = 30;
+			u.dudes[3] = "Plaguebearer";
+			u.dudes_num[3] = 30;
+			u.dudes[4] = "Pink Horror";
+			u.dudes_num[4] = 30;
+			u.dudes[5] = "Maulerfiend";
+			u.dudes_num[5] = 40;
+		}
+		instance_deactivate_object(u);
+	}
+	// Daemon "4 Companies + Support"
+	if (threat = 9) {
+		u = instance_nearest(xxx, 240, obj_enunit);
+		enemy_dudes = "270";
+		u.neww = 1; // What does this do?
+
+		u.dudes[1] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+		if (slaa) then u.dudes[1] = "Greater Daemon of Slaanesh";
+		u.dudes_num[1] = 10;
+		u.dudes[2] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+		if (slaa) then u.dudes[2] = "Greater Daemon of Slaanesh";
+		u.dudes_num[2] = 10;
+		u.dudes[3] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+		if (slaa) then u.dudes[3] = "Greater Daemon of Slaanesh";
+		u.dudes_num[3] = 10;
+		u.dudes[4] = "Soul Grinder";
+		u.dudes_num[4] = 10;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.neww = 1;
+		u.dudes[1] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+		if (slaa) then u.dudes[1] = "Greater Daemon of Slaanesh";
+		u.dudes_num[1] = 10;
+		u.dudes[2] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+		if (slaa) then u.dudes[2] = "Greater Daemon of Slaanesh";
+		u.dudes_num[2] = 10;
+		u.dudes[3] = "Soul Grinder";
+		u.dudes_num[3] = 10;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		if (slaa) {
+			u.dudes[1] = "Daemonette";
+			u.dudes_num[1] = 140;
+			u.dudes[2] = "Maulerfiend";
+			u.dudes_num[2] = 60;
+		} else {
+			u.dudes[1] = "Bloodletter";
+			u.dudes_num[1] = 35;
+			u.dudes[2] = "Daemonette";
+			u.dudes_num[2] = 35;
+			u.dudes[3] = "Plaguebearer";
+			u.dudes_num[3] = 35;
+			u.dudes[4] = "Pink Horror";
+			u.dudes_num[4] = 35;
+			u.dudes[5] = "Maulerfiend";
+			u.dudes_num[5] = 60;
+		}
+		instance_deactivate_object(u);
+	}
+	// Daemon "Warband"
+	if (threat = 10) {
+		u = instance_nearest(xxx, 240, obj_enunit);
+		enemy_dudes = "540";
+		u.neww = 1; // What does this do?
+
+		u.dudes[1] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+		if (slaa) then u.dudes[1] = "Greater Daemon of Slaanesh";
+		u.dudes_num[1] = 20;
+		u.dudes[2] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+		if (slaa) then u.dudes[2] = "Greater Daemon of Slaanesh";
+		u.dudes_num[2] = 20;
+		u.dudes[3] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+		if (slaa) then u.dudes[3] = "Greater Daemon of Slaanesh";
+		u.dudes_num[3] = 20;
+		u.dudes[4] = "Soul Grinder";
+		u.dudes_num[4] = 20;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.neww = 1;
+		u.dudes[1] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+		if (slaa) then u.dudes[1] = "Greater Daemon of Slaanesh";
+		u.dudes_num[1] = 20;
+		u.dudes[2] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+		if (slaa) then u.dudes[2] = "Greater Daemon of Slaanesh";
+		u.dudes_num[2] = 20;
+		u.dudes[3] = "Soul Grinder";
+		u.dudes_num[3] = 20;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		if (slaa) {
+			u.dudes[1] = "Daemonette";
+			u.dudes_num[1] = 280;
+			u.dudes[2] = "Maulerfiend";
+			u.dudes_num[2] = 120;
+		} else {
+			u.dudes[1] = "Bloodletter";
+			u.dudes_num[1] = 70;
+			u.dudes[2] = "Daemonette";
+			u.dudes_num[2] = 70;
+			u.dudes[3] = "Plaguebearer";
+			u.dudes_num[3] = 70;
+			u.dudes[4] = "Pink Horror";
+			u.dudes_num[4] = 70;
+			u.dudes[5] = "Maulerfiend";
+			u.dudes_num[5] = 120;
 		}
 		instance_deactivate_object(u);
 	}
