@@ -93,7 +93,7 @@ function player_home_star(home_planet){
 
 function set_player_recruit_planet(recruit_planet){
 	p_type[recruit_planet]=obj_ini.recruiting_type;
-	if (obj_ini.recruit_relative_loc==2 || obj_ini.fleet_type!=ePlayerBase.home_world){
+	if (obj_ini.fleet_type==ePlayerBase.home_world && obj_ini.recruit_relative_loc==2){
 		var recruit_name = obj_ini.recruiting_name;
 	    if (recruit_name!="random"){
 	        array_push(global.name_generator.star_used_names, recruit_name);
@@ -101,6 +101,14 @@ function set_player_recruit_planet(recruit_planet){
 	            star_by_name(recruit_name).name = global.name_generator.generate_star_name();
 	        }
 	        name=recruit_name;
+	    }
+	} else {
+	    if (obj_ini.home_name!="random"){
+	        array_push(global.name_generator.star_used_names, obj_ini.home_name);
+	        if (star_by_name(obj_ini.home_name) != "none" ){
+	            star_by_name(obj_ini.home_name).name = global.name_generator.generate_star_name();
+	        }
+	        name=obj_ini.home_name;
 	    }
 	}
 	array_push(p_feature[recruit_planet], new NewPlanetFeature(P_features.Recruiting_World));//recruiting world
