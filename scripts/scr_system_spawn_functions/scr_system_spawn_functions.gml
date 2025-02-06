@@ -93,7 +93,7 @@ function player_home_star(home_planet){
 
 function set_player_recruit_planet(recruit_planet){
 	p_type[recruit_planet]=obj_ini.recruiting_type;
-	if (obj_ini.fleet_type==ePlayerBase.home_world && obj_ini.recruit_relative_loc==2){
+	if (obj_ini.fleet_type==ePlayerBase.home_world && obj_ini.recruit_relative_loc==2){ // Possibly a temporary fix, Fleet-based Chapters use Homeworld names for the Recruiting stars for some reason
 		var recruit_name = obj_ini.recruiting_name;
 	    if (recruit_name!="random"){
 	        array_push(global.name_generator.star_used_names, recruit_name);
