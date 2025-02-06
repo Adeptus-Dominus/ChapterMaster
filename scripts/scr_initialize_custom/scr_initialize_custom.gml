@@ -2007,59 +2007,6 @@ function scr_initialize_custom() {
 				"formation_options": ["tactical", "assault", "devastator", "scout"],
 			}]
 		])
-
-		variable_struct_set(st, "tactical_squad", [
-			[roles.tactical, {
-				"max": 9,
-				"min": 4,
-				"loadout": {
-					"required": {
-						"wep1": [wep1[100, 8], 7],
-						"wep2": [wep2[100, 8], 7]
-					},
-					"option": {
-						"wep1": [
-							[
-								weapon_lists.special_weapons, 1
-							],
-							[
-								weapon_lists.heavy_weapons, 1, {
-									"wep2":"Combat Knife",
-									"mobi":"Heavy Weapons Pack",
-								}
-							]
-						],
-					}
-				}
-			}],
-			[roles.sergeant, {
-				"max": 1,
-				"min": 1,
-				"role": $"{roles.tactical} {roles.sergeant}",
-				"loadout": {
-					"required": {
-						"wep1": ["", 0],
-						"wep2": ["Chainsword", 1]
-					},
-					"option": {
-						"wep1": [
-							[
-								weapon_lists.pistols, 1
-							],
-						],
-						"wep2": [
-							[
-								weapon_lists.melee_weapons, 1
-							],
-						],
-					}
-				}
-			}],
-			["type_data", {
-				"display_data": $"{roles.tactical} {squad_name}",
-				"formation_options": ["tactical", "assault", "devastator", "scout"],
-			}]
-		])
 	}
 	if (scr_has_adv("Boarders")) {
 		variable_struct_set(st, "breachers", [
