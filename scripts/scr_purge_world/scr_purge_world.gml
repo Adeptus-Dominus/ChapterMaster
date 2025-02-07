@@ -161,10 +161,7 @@ function scr_purge_world(star, planet, action_type, action_score) {
 
 	        var nid_influence = star.p_influence[planet][eFACTION.Tyranids];
             if (planet_feature_bool(star.p_feature[planet], P_features.Gene_Stealer_Cult)) {
-                var cult = return_planet_features(
-                    star.p_feature[planet],
-                    P_features.Gene_Stealer_Cult
-                )[0];
+                var cult = return_planet_features(star.p_feature[planet], P_features.Gene_Stealer_Cult)[0];
                 if (cult.hiding) {}
             } else {
                 if (nid_influence > 25) {
