@@ -160,18 +160,18 @@ function scr_purge_world(star, planet, action_type, action_score) {
 	        if (pop_before>0) and (pop_after=0) then heres_after=0;
 
 	        var nid_influence = star.p_influence[planet][eFACTION.Tyranids];
-	        if (planet_feature_bool(star.p_feature[planet], P_features.Gene_Stealer_Cult)){
-				var cult = return_planet_features(star.p_feature[planet], P_features.Gene_Stealer_Cult)[0];
-				if (cult.hiding){
-					
-				}
-			} else {
-	        	if (nid_influence>25){
-	        		txt1 += "Scores of mutant offspring from a genestealer infestation are burnt, while the situation is grave the mutants appear to lack the organisation of a true cult";
-	        		adjust_influence(eFACTION.Tyranids, -10, planet, star);
-	        	}
-	        }
-	        if (star.p_large[planet]=0) then pop_after=round(pop_after);    
+            if (planet_feature_bool(star.p_feature[planet], P_features.Gene_Stealer_Cult)) {
+                var cult = return_planet_features(star.p_feature[planet], P_features.Gene_Stealer_Cult)[0];
+                if (cult.hiding) {}
+            } else {
+                if (nid_influence > 25) {
+                    txt1 += " Scores of mutant offspring from a genestealer infestation are burnt, while we have damaged their influence over this world, the mutants appear to lack the organisation of a true cult";
+                    adjust_influence(eFACTION.Tyranids, -10, planet, star);
+                } else if (nid_influence > 0) {
+                    txt1 += " There are signs of a genestealer infestation but the cultists are too unorganized to do any real damage to their influence on this world";
+                }
+            }
+	        if (star.p_large[planet]=0) then pop_after=round(pop_after);
 	        if (pop_after<=0) and (pop_before>0) then heres_after=0;
 	        if (star.p_large[planet]=0) then txt1+="##The planet had a population of "+string(scr_display_number(floor(pop_before)))+" and "+string(scr_display_number(floor(kill)))+" were purged over the duration of the cleansing.##Heresy has fallen down to "+string(max(0,heres_after))+"%.";
 	        if (star.p_large[planet]=1) then txt1+="##The planet had a population of "+string(pop_before)+" billion and "+string(scr_display_number(action_score*12000))+" were purged over the duration of the cleansing.##Heresy has fallen down to "+string(max(0,heres_after))+"%.";

@@ -270,11 +270,13 @@ function scr_bomb_world(star_system, planet_number, bombard_target_faction, bomb
 	        		obj_controller.disposition[3]-=7;
 	       		}
 	        }
-	        if (planet_feature_bool(star_system.p_feature[planet_number], P_features.Gene_Stealer_Cult)){
-	        	delete_features(star_system.p_feature[planet_number], P_features.Gene_Stealer_Cult);
-	        	adjust_influence(eFACTION.Tyranids, -100, planet_number,star_system);
-	        }
-	        pip.text+= " The xenos taint of the tyranids infecting the population has been completely eradicated with the planets cleansing";
+            if (planet_feature_bool(star_system.p_feature[planet_number], P_features.Gene_Stealer_Cult)) {
+                delete_features(star_system.p_feature[planet_number], P_features.Gene_Stealer_Cult);
+                adjust_influence(eFACTION.Tyranids, -100, planet_number, star_system);
+                pip.text += " The xeno taint of the tyranids that was infesting the population has been completely eradicated with the planets cleansing";
+            } else {
+                pip.text += " Any xeno taint that was infesting the population has been completely eradicated with the planets cleansing";
+            }
 	    }
 	    if (bombard_target_faction=8) and (obj_controller.faction_status[eFACTION.Tau]!="War"){
 	        obj_controller.audiences+=1;
