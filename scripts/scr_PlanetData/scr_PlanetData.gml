@@ -81,6 +81,14 @@ function PlanetData(planet, system) constructor{
     requests_help = system.p_halp[planet];
 
     // current planet heresy
+    if (population == 0) {
+        system.p_heresy[planet] = 0;
+        system.p_heresy_secret[planet] = 0;
+        for (var i = 0; i < array_length(system.p_influence[planet]); ++i) {
+            system.p_influence[planet][i] = 0;
+        }
+    }
+
     corruption = system.p_heresy[planet];
 
     is_heretic = system.p_hurssy[planet];
