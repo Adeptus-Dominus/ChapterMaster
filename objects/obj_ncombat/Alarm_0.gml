@@ -4999,187 +4999,342 @@ if (enemy = 12) {
 
 // ** Necron Forces **
 if (enemy = 13) and((string_count("_attack", battle_special) = 0) or(string_count("wake", battle_special) > 0)) {
-	// Small Necron Group
+	// Necron Scarab Squad
 	if (threat = 1) {
 		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "11";
+		enemy_dudes = "5";
 
-		u.dudes[1] = "Necron Destroyer";
-		u.dudes_num[1] = 1;
+		u.dudes[1] = "Canoptek Scarab";
+		u.dudes_num[1] = 5;
 		enemies[1] = u.dudes[1];
-		u.dudes[2] = "Necron Warrior";
-		u.dudes_num[2] = 10;
-		enemies[2] = u.dudes[2];
 	}
-	// Medium Necron Group
+	// Necron Soldier + Scarabs
 	if (threat = 2) {
 		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "54";
+		enemy_dudes = "10";
 
-		u.dudes[1] = "Necron Destroyer";
+		u.dudes[1] = choose("Necron Warrior", "Necron Wraith", "Flayed One");
 		u.dudes_num[1] = 1;
-		u.dudes[2] = "Necron Warrior";
-		u.dudes_num[2] = 20;
-		u.dudes[3] = "Necron Immortal";
-		u.dudes_num[3] = 10;
+		u.dudes[2] = "Canoptek Scarab";
+		u.dudes_num[2] = 4;
 
 		instance_deactivate_object(u);
 		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		u.dudes[1] = "Necron Warrior";
-		u.dudes_num[1] = 20;
-		u.dudes[2] = "Canoptek Spyder";
-		u.dudes_num[2] = 3;
+		u.dudes[1] = "Canoptek Scarab";
+		u.dudes_num[1] = 5;
 	}
-	// Large Necron Group
+	// Necron Squad
 	if (threat = 3) {
 		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "110";
+		enemy_dudes = "20";
 
-		u.dudes[1] = "Necron Overlord";
+		u.dudes[1] = choose("Necron Immortal", "Necron Wraith", "Necron Destroyer", "Canoptek Spyder");
 		u.dudes_num[1] = 1;
-		u.dudes[2] = "Necron Destroyer";
+		u.dudes[2] = choose("Necron Warrior", "Flayed One");
 		u.dudes_num[2] = 3;
-		u.dudes[3] = "Lychguard";
-		u.dudes_num[3] = 5;
-		u.dudes[4] = "Necron Warrior";
-		u.dudes_num[4] = 100;
+		u.dudes[3] = "Canoptek Scarab";
+		u.dudes_num[3] = 6;
 
 		instance_deactivate_object(u);
 		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		u.dudes[1] = "Canoptek Spyder";
-		u.dudes_num[1] = 6;
-		u.dudes[2] = "Canoptek Scarab";
-		u.dudes_num[2] = 120;
-
-		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
-		u.dudes[1] = "Doomsday Arc";
-		u.dudes_num[1] = 2;
-		u.dudes[2] = "Monolith";
-		u.dudes_num[2] = 1;
+		u.dudes[1] = "Canoptek Scarab";
+		u.dudes_num[1] = 10;
 	}
-	// Small Necron Army
+	// Necron Platoon
 	if (threat = 4) {
 		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "290";
+		enemy_dudes = "50";
 
-		u.dudes[1] = "Necron Overlord";
+		u.dudes[1] = choose("Lychguard", "Necron Destroyer", "Necron Immortal");
 		u.dudes_num[1] = 1;
-		u.dudes[2] = "Necron Destroyer";
-		u.dudes_num[2] = 6;
-		u.dudes[3] = "Lychguard";
-		u.dudes_num[3] = 10;
+		u.dudes[2] = "Necron Warrior";
+		u.dudes_num[2] = 4;
 
 		instance_deactivate_object(u);
 		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		u.dudes[1] = "Necron Warrior";
-		u.dudes_num[1] = 250;
-		u.dudes[2] = "Necron Immortal";
-		u.dudes_num[2] = 20;
+		u.dudes[1] = "Necron Immortal";
+		u.dudes_num[1] = 1;
+		u.dudes[2] = "Necron Warrior";
+		u.dudes_num[2] = 4;
 
 		instance_deactivate_object(u);
 		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		u.dudes[1] = "Canoptek Spyder";
-		u.dudes_num[1] = 6;
-		u.dudes[2] = "Canoptek Scarab";
-		u.dudes_num[2] = 120;
-		u.dudes[3] = "Tomb Stalker";
-		u.dudes_num[3] = 1;
-
-		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 30, 240, obj_enunit);
-		u.dudes[1] = "Doomsday Arc";
-		u.dudes_num[1] = 2;
-		u.dudes[2] = "Monolith";
-		u.dudes_num[2] = 1;
+		u.dudes_num[1] = 1;
+		u.dudes[2] = choose("Flayed One", "Necron Wraith", "Necron Warrior");
+		u.dudes_num[2] = 4;
+		u.dudes[3] = "Canoptek Scarab";
+		u.dudes_num[3] = 34;
 
 		u = instance_create(0, 240, obj_enunit);
-		u.dudes[1] = "Necron Wraith";
-		u.dudes_num[1] = 6;
+		u.dudes[1] = choose("Necron Wraith", "Flayed One");
+		u.dudes_num[1] = 1;
 		u.flank = 1;
 	}
-	// Medium Necron Army
+	// Necron Demi-Company
 	if (threat = 5) {
 		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "700";
+		enemy_dudes = "100";
 
-		u.dudes[1] = "Necron Overlord";
+		u.dudes[1] = choose("Necron Overlord", "Tomb Stalker");
 		u.dudes_num[1] = 1;
-		u.dudes[2] = "Necron Destroyer";
-		u.dudes_num[2] = 12;
-		u.dudes[3] = "Lychguard";
+		u.dudes[2] = "Lychguard";
+		u.dudes_num[2] = 4;
+		u.dudes[3] = "Necron Warrior";
 		u.dudes_num[3] = 20;
 
 		instance_deactivate_object(u);
 		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		u.dudes[1] = "Necron Warrior";
-		u.dudes_num[1] = 600;
-		u.dudes[2] = "Necron Immortal";
+		u.dudes[1] = "Necron Immortal";
+		u.dudes_num[1] = 3;
+		u.dudes[2] = "Necron Warrior";
+		u.dudes_num[2] = 12;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u.dudes[1] = "Canoptek Spyder";
+		u.dudes_num[1] = 2;
+		u.dudes[2] = "Necron Destroyer";
+		u.dudes_num[2] = 2;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u.dudes[1] = "Necron Wraith";
+		u.dudes_num[1] = 2;
+		u.dudes[2] = "Flayed One";
+		u.dudes_num[2] = 6;
+		u.dudes[3] = "Canoptek Scarab";
+		u.dudes_num[3] = 46;
+
+		u = instance_create(0, 240, obj_enunit);
+		u.dudes[1] = choose("Necron Wraith", "Flayed One");
+		u.dudes_num[1] = 2;
+		u.flank = 1;
+	}
+	// Necron Company
+	if (threat = 6) {
+		u = instance_nearest(xxx, 240, obj_enunit);
+		enemy_dudes = "200";
+
+		u.dudes[1] = "Necron Overlord";
+		u.dudes_num[1] = 1;
+		u.dudes[2] = "Lychguard";
+		u.dudes_num[2] = 9;
+		u.dudes[3] = "Necron Warrior";
+		u.dudes_num[3] = 50;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Necron Immortal";
+		u.dudes_num[1] = 10;
+		u.dudes[2] = "Necron Warrior";
 		u.dudes_num[2] = 40;
 
 		instance_deactivate_object(u);
 		u = instance_nearest(xxx + 20, 240, obj_enunit);
-		u.dudes[1] = "Canoptek Spyder";
-		u.dudes_num[1] = 12;
-		u.dudes[2] = "Canoptek Scarab";
-		u.dudes_num[2] = 240;
-		u.dudes[3] = "Tomb Stalker";
-		u.dudes_num[3] = 2;
+		u.dudes[1] = "Tomb Stalker";
+		u.dudes_num[1] = 1;
+		u.dudes[2] = "Necron Destroyer";
+		u.dudes_num[2] = 5;
 
 		instance_deactivate_object(u);
 		u = instance_nearest(xxx + 30, 240, obj_enunit);
-		u.dudes[1] = "Doomsday Arc";
-		u.dudes_num[1] = 4;
-		u.dudes[2] = "Monolith";
-		u.dudes_num[2] = 2;
-		u.dudes[3] = "Necron Destroyer";
-		u.dudes_num[3] = 12;
+		u.dudes[1] = "Canoptek Spyder";
+		u.dudes_num[1] = 5;
+		u.dudes[2] = "Necron Wraith";
+		u.dudes_num[2] = 5;
+		u.dudes[3] = "Flayed One";
+		u.dudes_num[3] = 10;
+		u.dudes[4] = "Canoptek Scarab";
+		u.dudes_num[4] = 60;
 
 		u = instance_create(0, 240, obj_enunit);
-		u.dudes[1] = "Necron Wraith";
-		u.dudes_num[1] = 12;
+		u.dudes[1] = choose("Necron Wraith", "Flayed One");
+		u.dudes_num[1] = 4;
 		u.flank = 1;
 	}
-	// Large Necron Army
-	if (threat = 6) {
+	// Necron Company + Support
+	if (threat = 7) {
 		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "1000";
+		enemy_dudes = "320";
 
 		u.dudes[1] = "Necron Overlord";
-		u.dudes_num[1] = 2;
-		u.dudes[2] = "Necron Destroyer";
-		u.dudes_num[2] = 20;
-		u.dudes[3] = "Lychguard";
-		u.dudes_num[3] = 40;
+		u.dudes_num[1] = 1;
+		u.dudes[2] = "Lychguard";
+		u.dudes_num[2] = 19;
+		u.dudes[3] = "Necron Warrior";
+		u.dudes_num[3] = 80;
 
 		instance_deactivate_object(u);
 		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		u.dudes[1] = "Necron Warrior";
-		u.dudes_num[1] = 800;
-		u.dudes[2] = "Necron Immortal";
-		u.dudes_num[2] = 50;
+		u.dudes[1] = "Necron Immortal";
+		u.dudes_num[1] = 20;
+		u.dudes[2] = "Necron Warrior";
+		u.dudes_num[2] = 80;
 
 		instance_deactivate_object(u);
 		u = instance_nearest(xxx + 20, 240, obj_enunit);
-		u.dudes[1] = "Canoptek Spyder";
-		u.dudes_num[1] = 16;
-		u.dudes[2] = "Canoptek Scarab";
-		u.dudes_num[2] = 320;
-		u.dudes[3] = "Tomb Stalker";
-		u.dudes_num[3] = 3;
+		u.dudes[1] = "Tomb Stalker";
+		u.dudes_num[1] = 1;
+		u.dudes[2] = "Necron Monolith";
+		u.dudes_num[2] = 1;
+		u.dudes[3] = "Doomsday Arc";
+		u.dudes_num[3] = 1;
+		u.dudes[4] = "Necron Destroyer";
+		u.dudes_num[4] = 7;
 
 		instance_deactivate_object(u);
 		u = instance_nearest(xxx + 30, 240, obj_enunit);
-		u.dudes[1] = "Doomsday Arc";
-		u.dudes_num[1] = 6;
-		u.dudes[2] = "Monolith";
-		u.dudes_num[2] = 2;
-		u.dudes[3] = "Necron Destroyer";
+		u.dudes[1] = "Canoptek Spyder";
+		u.dudes_num[1] = 10;
+		u.dudes[2] = "Necron Wraith";
+		u.dudes_num[2] = 10;
+		u.dudes[3] = "Flayed One";
 		u.dudes_num[3] = 20;
+		u.dudes[4] = "Canoptek Scarab";
+		u.dudes_num[4] = 60;
 
 		u = instance_create(0, 240, obj_enunit);
-		u.dudes[1] = "Necron Wraith";
-		u.dudes_num[1] = 24;
+		u.dudes[1] = choose("Necron Wraith", "Flayed One");
+		u.dudes_num[1] = 10;
+		u.flank = 1;
+	}
+	// Necron 2 Companies + Support
+	if (threat = 8) {
+		u = instance_nearest(xxx, 240, obj_enunit);
+		enemy_dudes = "520";
+
+		u.dudes[1] = "Necron Overlord";
+		u.dudes_num[1] = 1;
+		u.dudes[2] = "Lychguard";
+		u.dudes_num[2] = 29;
+		u.dudes[3] = "Necron Warrior";
+		u.dudes_num[3] = 120;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Necron Immortal";
+		u.dudes_num[1] = 30;
+		u.dudes[2] = "Necron Warrior";
+		u.dudes_num[2] = 120;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u.dudes[1] = "Tomb Stalker";
+		u.dudes_num[1] = 2;
+		u.dudes[2] = "Necron Monolith";
+		u.dudes_num[2] = 2;
+		u.dudes[3] = "Doomsday Arc";
+		u.dudes_num[3] = 2;
+		u.dudes[4] = "Necron Destroyer";
+		u.dudes_num[4] = 14;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u.dudes[1] = "Canoptek Spyder";
+		u.dudes_num[1] = 15;
+		u.dudes[2] = "Necron Wraith";
+		u.dudes_num[2] = 15;
+		u.dudes[3] = "Flayed One";
+		u.dudes_num[3] = 30;
+		u.dudes[4] = "Canoptek Scarab";
+		u.dudes_num[4] = 120;
+
+		u = instance_create(0, 240, obj_enunit);
+		u.dudes[1] = choose("Necron Wraith", "Flayed One");
+		u.dudes_num[1] = 20;
+		u.flank = 1;
+	}
+	// Necron 4 Companies + Support
+	if (threat = 9) {
+		u = instance_nearest(xxx, 240, obj_enunit);
+		enemy_dudes = "690";
+
+		u.dudes[1] = "Necron Overlord";
+		u.dudes_num[1] = 1;
+		u.dudes[2] = "Lychguard";
+		u.dudes_num[2] = 39;
+		u.dudes[3] = "Necron Warrior";
+		u.dudes_num[3] = 160;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Necron Immortal";
+		u.dudes_num[1] = 40;
+		u.dudes[2] = "Necron Warrior";
+		u.dudes_num[2] = 160;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u.dudes[1] = "Tomb Stalker";
+		u.dudes_num[1] = 3;
+		u.dudes[2] = "Necron Monolith";
+		u.dudes_num[2] = 3;
+		u.dudes[3] = "Doomsday Arc";
+		u.dudes_num[3] = 3;
+		u.dudes[4] = "Necron Destroyer";
+		u.dudes_num[4] = 21;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u.dudes[1] = "Canoptek Spyder";
+		u.dudes_num[1] = 20;
+		u.dudes[2] = "Necron Wraith";
+		u.dudes_num[2] = 20;
+		u.dudes[3] = "Flayed One";
+		u.dudes_num[3] = 40;
+		u.dudes[4] = "Canoptek Scarab";
+		u.dudes_num[4] = 150;
+
+		u = instance_create(0, 240, obj_enunit);
+		u.dudes[1] = choose("Necron Wraith", "Flayed One");
+		u.dudes_num[1] = 30;
+		u.flank = 1;
+	}
+	// Necron Expeditionary Force
+	if (threat = 10) {
+		u = instance_nearest(xxx, 240, obj_enunit);
+		enemy_dudes = "1020";
+
+		u.dudes[1] = "Necron Overlord";
+		u.dudes_num[1] = 1;
+		u.dudes[2] = "Lychguard";
+		u.dudes_num[2] = 49;
+		u.dudes[3] = "Necron Warrior";
+		u.dudes_num[3] = 200;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Necron Immortal";
+		u.dudes_num[1] = 50;
+		u.dudes[2] = "Necron Warrior";
+		u.dudes_num[2] = 200;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u.dudes[1] = "Tomb Stalker";
+		u.dudes_num[1] = 5;
+		u.dudes[2] = "Necron Monolith";
+		u.dudes_num[2] = 5;
+		u.dudes[3] = "Doomsday Arc";
+		u.dudes_num[3] = 5;
+		u.dudes[4] = "Necron Destroyer";
+		u.dudes_num[4] = 35;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u.dudes[1] = "Canoptek Spyder";
+		u.dudes_num[1] = 30;
+		u.dudes[2] = "Necron Wraith";
+		u.dudes_num[2] = 30;
+		u.dudes[3] = "Flayed One";
+		u.dudes_num[3] = 60;
+		u.dudes[4] = "Canoptek Scarab";
+		u.dudes_num[4] = 300;
+
+		u = instance_create(0, 240, obj_enunit);
+		u.dudes[1] = choose("Necron Wraith", "Flayed One");
+		u.dudes_num[1] = 50;
 		u.flank = 1;
 	}
 }
