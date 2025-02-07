@@ -8,6 +8,10 @@ if (press_exclusive(vk_escape)) {
     instance_destroy();
 }
 
+if (press_with_held(ord("V"), vk_control)) {
+    keyboard_string += clipboard_get_text();
+}
+
 if (blink > 0) {
     blink -= delta_time/1000000;
 } else if (blink <= 0) {
