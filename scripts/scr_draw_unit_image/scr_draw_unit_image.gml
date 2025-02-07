@@ -1627,8 +1627,8 @@ function scr_draw_unit_image(_background=false){
         }else if (race()=="4"){
             if (string_count("Crusader",name_role())>0) then draw_sprite(spr_crusader,0,x_surface_offset,y_surface_offset);
         }else if (race()=="5"){
-            if (string_count("Sister of Battle",name_role())>0) then draw_sprite(spr_sororitas,0,x_surface_offset,y_surface_offset);
-            if (string_count("Sister Hospitaler",name_role())>0) then draw_sprite(spr_sororitas,1,x_surface_offset,y_surface_offset);
+            if (string_count("Sister of Battle",name_role())>0) then draw_sprite(spr_sister_of_battle,0,x_surface_offset,y_surface_offset);
+            if (string_count("Sister Hospitaler",name_role())>0) then draw_sprite(spr_sister_hospitaler,0,x_surface_offset,y_surface_offset);
         }else if (race()=="6"){
             if (string_count("Ranger",name_role())>0) then draw_sprite(spr_eldar_hire,0,x_surface_offset,y_surface_offset);
             if (string_count("Howling Banshee",name_role())>0) then draw_sprite(spr_eldar_hire,1,x_surface_offset,y_surface_offset);
