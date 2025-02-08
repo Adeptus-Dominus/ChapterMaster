@@ -4,6 +4,15 @@
 #macro ARR_strength_descriptions ["none", "Minimal", "Sparse", "Moderate", "Numerous", "Very Numerous", "Overwhelming"];
 
 function PlanetData(planet, system) constructor{
+//safeguards // TODO LOW DEBUG_LOGGING // Log when tripped somewhere
+    //disposition
+    if (system.dispo[planet] < 0 && system.dispo[planet] > -1000 && system.p_owner[planet] != eFACTION.Player ) { // Personal Rule code be doing some interesting things
+        system.dispo[planet] = 0; // Maybe change to -100 if we are allowing negative numbers like for factions
+    } else if (system.dispo[planet] > 100) {
+        system.dispo[planet] = 100;
+    }
+//
+
 	self.planet = planet;
 	self.system = system;
 	player_disposition = system.dispo[planet];
