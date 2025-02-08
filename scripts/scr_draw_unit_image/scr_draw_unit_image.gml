@@ -719,17 +719,7 @@ function scr_draw_unit_image(_background=false){
                     }
                     if (scr_has_style("Knightly")){
                         complex_set.add_relative_to_status("crest", spr_da_mk5_helm_crests, 2, get_body_data("crest_variation","head"), self);
-                    }                      
-                    if (unit_progenitor == ePROGENITOR.DARK_ANGELS){
-                        if (unit_role==_role[eROLE.Captain]){
-                            // specific_armour_sprite = spr_da_mk5;
-                            armour_draw=[spr_da_mk5,0];
-                            robes_bypass = true;
-                            robes_hood_bypass = true;
-                            armour_bypass=true;
-                            complex_livery = false;
-                        }                        
-                    }                   
+                    }                                        
                 } else if (unit_armour=="MK6 Corvus"){
                     specific_armour_sprite = spr_mk6_complex;
                     complex_set = get_complex_set(eARMOUR_SET.MK6);
@@ -737,16 +727,6 @@ function scr_draw_unit_image(_background=false){
                     specific_armour_sprite = spr_beakie_colors;
                     if (scr_has_style("Knightly")){
                         complex_set.add_relative_to_status("crest", spr_da_mk6_helm_crests, 2, get_body_data("crest_variation","head"), self);
-                    }
-                    if (obj_ini.progenitor == ePROGENITOR.DARK_ANGELS){
-                        if (unit_role==_role[eROLE.Captain]){
-                            complex_livery = false;
-                            // specific_armour_sprite = spr_da_mk6;
-                            armour_draw=[spr_da_mk6,0];
-                            robes_bypass = true;
-                            robes_hood_bypass = true;
-                            armour_bypass=true;
-                        }                      
                     }
 
                 } else if (unit_armour=="MK7 Aquila" || unit_armour="Power Armour"){
@@ -756,32 +736,13 @@ function scr_draw_unit_image(_background=false){
                     if (scr_has_style("Knightly")){
                         complex_set.add_relative_to_status("crest", spr_da_mk7_helm_crests, 2, get_body_data("crest_variation","head"), self);
                     }
-                    if (obj_ini.progenitor == ePROGENITOR.DARK_ANGELS){
-                        if (unit_role==_role[eROLE.Captain]){
-                            // specific_armour_sprite = spr_da_mk7;
-                            armour_draw = [spr_da_mk7,0];
-                            robes_bypass = true;
-                            robes_hood_bypass = true;
-                            armour_bypass = true;
-                            complex_livery = false;
-                        }                          
-                    }
                 } else if (unit_armour=="MK8 Errant"){
                     specific_armour_sprite = spr_mk8_colors;
                     complex_set = get_complex_set(eARMOUR_SET.MK8);
                     complex_livery = true;
                     if (scr_has_style("Knightly")){
                         complex_set.add_relative_to_status("crest", spr_da_mk7_helm_crests, 2, get_body_data("crest_variation","head"), self);
-                    }
-                    if (unit_progenitor == ePROGENITOR.DARK_ANGELS) {
-                        if (unit_role==_role[eROLE.Captain]){
-                            // specific_armour_sprite = spr_da_mk8;
-                            armour_draw=[spr_da_mk8,0];
-                            robes_bypass = true;
-                            robes_hood_bypass = true;
-                            armour_bypass=true;
-                        }                          
-                    }                    
+                    }                   
                 } else if (unit_armour=="Artificer Armour"){
                     complex_set = get_complex_set(eARMOUR_SET.MK7);
                     complex_set.add_group({
@@ -879,7 +840,13 @@ function scr_draw_unit_image(_background=false){
                     }                    
                     if (scr_has_style("Mechanical Cult") || array_contains([UnitSpecialization.Techmarine, UnitSpecialization.IronFather], unit_specialization)){
                         complex_set.add_relative_to_status("tabbard", spr_metal_tabbard, 2, get_body_data("tabbard_variation","torso"), self);
-                    }                    
+                    } 
+                    if (scr_has_style("Knightly")){
+                        complex_set.add_relative_to_status("left_personal_livery", spr_knightly_personal_livery, 3, get_body_data("personal_livery","left_arm"), self);
+                    }
+                    if (scr_has_style("Gladiator")){
+                        complex_set.add_relative_to_status("crest", spr_gladiator_crest, 2, get_body_data("crest_variation","head"), self);
+                    }                                                            
                 }else if (armour_type == ArmourType.Terminator){
                     if (scr_has_style("Mechanical Cult") || array_contains([UnitSpecialization.Techmarine, UnitSpecialization.IronFather], unit_specialization)){
                         complex_set.add_relative_to_status("tabbard", spr_terminator_metal_tabbard, 2, get_body_data("tabbard_variation","torso"), self);
@@ -1035,7 +1002,10 @@ function scr_draw_unit_image(_background=false){
                     }
                     if (struct_exists(body[$ "torso"],"robes") && !robes_bypass) {
                         if (body.torso.robes == 0){
-                            complex_set.add_to_area("robe",spr_marine_robes);      
+                            complex_set.add_to_area("robe",spr_marine_robes);
+                            if (scr_has_style("Knightly")){
+                                complex_set.add_relative_to_status("robe", spr_knightly_robes, 4, get_body_data("tabbard_variation","torso"), self);
+                            }
                         } else if (body.torso.robes == 1) {
                             if (scr_has_adv("Daemon Binders") && !modest_livery){
                                 var _index = pauldron_trim == 1 ? 0 : 1;
@@ -1130,7 +1100,11 @@ function scr_draw_unit_image(_background=false){
                             }
                             if (struct_exists(complex_set, "left_pauldron")){
                                 draw_sprite(complex_set.left_pauldron,company,x_surface_offset,y_surface_offset);
-                            }                            
+                            }
+                            if (struct_exists(complex_set, "left_personal_livery")){
+                                var choice = get_body_data("personal_livery","left_arm")%sprite_get_number(complex_set.left_personal_livery);                                
+                                draw_sprite(complex_set.left_personal_livery,choice,x_surface_offset,y_surface_offset);
+                            }                       
                             if (struct_exists(complex_set, "left_knee")){
                                 draw_sprite(complex_set.left_knee,company,x_surface_offset,y_surface_offset);
                             }

@@ -233,7 +233,11 @@ buttons = {
         {
             str1 : "Knightly",
             font : fnt_40k_14b
-        }, 
+        },
+        {
+            str1 : "Gladiator",
+            font : fnt_40k_14b
+        },         
         {
             str1 : "Mongol",
             font : fnt_40k_14b

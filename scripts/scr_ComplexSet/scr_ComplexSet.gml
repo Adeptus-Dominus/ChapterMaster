@@ -2,7 +2,7 @@ function scr_has_style(style){
     try {
         var result;
         if (instance_exists(obj_creation)) {
-            result = buttons.culture_styles.selections();
+            result = array_contains(obj_creation.buttons.culture_styles.selections(), style);
         } else {
             result = array_contains(obj_ini.culture_styles, style);
         }
@@ -226,7 +226,10 @@ function get_complex_set(set = eARMOUR_SET.MK7){
         if (scr_has_style("Prussian")){
             set_pieces.add_to_area("mouth_variants", spr_mk7_mouth_prussian);
              set_pieces.add_to_area("chest_variants", spr_mk7_prussia_chest);
-        }           
+        }
+        if (scr_has_style("Gladiator")){
+            set_pieces.add_to_area("chest_variants" ,spr_mk7_gladiator_chest);
+        }                   
     }else if (set == eARMOUR_SET.MK6){
         set_pieces.add_group({
             armour: spr_mk6_complex,
@@ -253,7 +256,10 @@ function get_complex_set(set = eARMOUR_SET.MK7){
             left_trim :spr_mk7_left_trim,
             right_trim: spr_mk7_right_trim,
             head : spr_mk5_head_variants,
-        });        
+        }); 
+        /*if (scr_has_style("Prussian")){
+            set_pieces.add_to_area("chest_variants", spr_mk7_prussia_chest);
+        }*/               
     }else if (set == eARMOUR_SET.MK4){
         set_pieces.add_group({
             chest_variants: spr_mk4_chest_variants,
@@ -269,7 +275,10 @@ function get_complex_set(set = eARMOUR_SET.MK7){
         });
         if (scr_has_style("Mongol")){
             set_pieces.add_to_area("chest_variants" ,spr_mk4_mongol_chest_variants);
-        }                         
+        } 
+        if (scr_has_style("Prussian")){
+            set_pieces.add_to_area("chest_variants", spr_mk7_prussia_chest);
+        }                                
     }else if (set == eARMOUR_SET.MK3){
         set_pieces.add_group({
             armour : spr_mk3_complex,
@@ -287,7 +296,9 @@ function get_complex_set(set = eARMOUR_SET.MK7){
         }
         if (scr_has_style("Prussian")){
             set_pieces.add_to_area("mouth_variants", spr_mk3_mouth_prussian);
-        }        
+            set_pieces.add_to_area("chest_variants", spr_mk7_prussia_chest);         
+        }
+
     }else if (set == eARMOUR_SET.MK8){
         set_pieces.add_group(mk7_bits);
         set_pieces.add_to_area("gorget",spr_mk8_gorget);
@@ -297,7 +308,10 @@ function get_complex_set(set = eARMOUR_SET.MK7){
         }         
         if (scr_has_style("Mongol")){
             set_pieces.add_to_area("chest_variants" ,spr_mk7_mongol_chest_variants);
-        }		
+        }
+        if (scr_has_style("Gladiator")){
+            set_pieces.add_to_area("chest_variants" ,spr_mk7_gladiator_chest);
+        }         		
     }else if (set == eARMOUR_SET.Indomitus){
          set_pieces.add_group({
             armour : spr_indomitus_complex,
