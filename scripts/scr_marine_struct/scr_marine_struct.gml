@@ -712,6 +712,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		}, 
 		"left_arm":{
 			trim_variation : irandom(100),
+			personal_livery : irandom(100),
 		},
 		"right_arm":{
 			trim_variation : irandom(100),
@@ -900,7 +901,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			var _robe_chance = 5;
 			if (global.chapter_name == "Black Templars"){
 				_robe_chance += 70;
-			}else if(global.chapter_name == "Dark Angels" || obj_ini.progenitor == ePROGENITOR.DARK_ANGELS){
+			} else if (scr_has_style("Knightly")){
 				_robe_chance += 50;
 			}
 			if (irandom(100) <= _robe_chance) {
