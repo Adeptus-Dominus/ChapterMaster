@@ -1145,64 +1145,281 @@ if (enemy = 6) {
 	// Ranger Group
 	if (threat = 1) {
 		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "20";
+		enemy_dudes = "3";
 
-		u.dudes[1] = "Pathfinder";
+		u.dudes[1] = "Pathfinder"; // I don't like "Pathfinder" being in Eldar and T'au roster, we should consider renaming them
 		u.dudes_num[1] = 1;
 		enemies[1] = u.dudes[1];
 		u.dudes[2] = "Ranger";
-		u.dudes_num[2] = 10;
+		u.dudes_num[2] = 1;
 		enemies[2] = u.dudes[2];
-		u.dudes[3] = "Striking Scorpian";
-		u.dudes_num[3] = 10;
-		enemies[3] = u.dudes[3];
+		u.dudes[3] = "Striking Scorpion";
+		u.dudes_num[3] = 1;
+		enemies[3] = u.dudes[3]; // I think they are too strong for a single marine, it probably requires a terminator or relic weapons to beat them for 1 person
 	}
 	// Harlequin Group
 	if (threat = 1) {
 		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "9";
+		enemy_dudes = "3";
 
 		u.dudes[1] = "Athair";
 		u.dudes_num[1] = 1;
 		enemies[1] = u.dudes[1];
 		u.dudes[2] = "Warlock";
-		u.dudes_num[2] = 2;
+		u.dudes_num[2] = 1;
 		enemies[2] = u.dudes[2];
 		u.dudes[3] = "Trouper";
-		u.dudes_num[3] = 6;
-		enemies[3] = u.dudes[3];
+		u.dudes_num[3] = 1;
+		enemies[3] = u.dudes[3]; // I think they are too strong for a single marine, it probably requires a terminator or relic weapons to beat them for 1 person
 	}
-	// Craftworld Small Group
+	// Craftworld Squad
 	if (threat = 1) {
 		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "24";
+		enemy_dudes = "4";
 
 		u.dudes[1] = "Warlock";
 		u.dudes_num[1] = 1;
 		enemies[1] = u.dudes[1];
 		enemies_num[1] = 1;
-		u.dudes[2] = choose("Howling Banshee", "Striking Scorpian");
-		u.dudes_num[2] = 8;
+		u.dudes[2] = choose("Howling Banshee", "Striking Scorpion");
+		u.dudes_num[2] = 1;
 		enemies[2] = u.dudes[2];
-		u.dudes[3] = "Dire Avenger";
-		u.dudes_num[3] = 15;
+		// Spawn leader
+		if (leader = 1) {
+			u.dudes[1] = "Leader";
+			u.dudes_num[1] = 1;
+			enemies[1] = 1;
+			enemies_num[1] = 1;
+			if (obj_controller.faction_gender[6] = 2) then u.dudes[2] = "Howling Banshee";
+			if (obj_controller.faction_gender[6] = 2) then u.dudes[2] = "Dark Reaper"; // Wait, why 'gender' setting is 2 in both cases? That will just automatically make the latter always apply
+		}
+		u.dudes[3] = "Guardian";
+		u.dudes_num[3] = 2;
 		enemies[3] = u.dudes[3];
+	}
+	// Craftworld Demi-Platoon
+	if (threat = 2) {
+		u = instance_nearest(xxx, 240, obj_enunit);
+		enemy_dudes = "19";
+
+		u.dudes[1] = "Dire Avenger";
+		u.dudes_num[1] = 2;
+		u.dudes_special[1] = "shimmershield";
+		u.dudes[2] = "Dire Avenger Exarch";
+		u.dudes_num[2] = 1;
+		u.dudes_special[2] = "shimmershield";
+		u.dudes[3] = "Autarch";
+		u.dudes_num[3] = 1;
+		u.dudes[4] = "Farseer";
+		u.dudes_num[4] = 1;
+		u.dudes_special[4] = "farseer_powers";
+		u.dudes[5] = "Night Spinner";
+		u.dudes_num[5] = 1;
+		// Spawn leader
 		if (leader = 1) {
 			u.dudes[4] = "Leader";
 			u.dudes_num[4] = 1;
 			enemies[4] = 1;
 			enemies_num[4] = 1;
-			if (obj_controller.faction_gender[6] = 2) then u.dudes[2] = "Howling Banshee";
-			if (obj_controller.faction_gender[6] = 2) then u.dudes[2] = "Dark Reapers";
 		}
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Fire Dragon";
+		u.dudes_num[1] = 2;
+		u.dudes[2] = "Fire Dragon Exarch";
+		u.dudes_num[2] = 1;
+		u.dudes[3] = "Warp Spider";
+		u.dudes_num[3] = 2;
+		u.dudes_special[3] = "warp_jump";
+		u.dudes[4] = "Warp Spider Exarch";
+		u.dudes_num[4] = 1;
+		u.dudes_special[4] = "warp_jump";
+		u.dudes[5] = "Howling Banshee";
+		u.dudes_num[5] = 2;
+		u.dudes_special[5] = "banshee_mask";
+		u.dudes[6] = "Howling Banshee Exarch";
+		u.dudes_num[6] = 1;
+		u.dudes_special[6] = "banshee_mask";
+		u.dudes[7] = "Striking Scorpion";
+		u.dudes_num[7] = 2;
+		u.dudes[8] = "Striking Scorpion Exarch";
+		u.dudes_num[8] = 1;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u.dudes[1] = "Falcon";
+		u.dudes_num[1] = 1;
 	}
-	// Craftworld Medium Group
-	if (threat = 2) {
+	// Craftworld Platoon
+	if (threat = 3) {
 		u = instance_nearest(xxx, 240, obj_enunit);
-		enemy_dudes = "100";
+		enemy_dudes = "29";
 
 		u.dudes[1] = "Dire Avenger";
-		u.dudes_num[1] = 56;
+		u.dudes_num[1] = 4;
+		u.dudes_special[1] = "shimmershield";
+		u.dudes[2] = "Dire Avenger Exarch";
+		u.dudes_num[2] = 1;
+		u.dudes_special[2] = "shimmershield";
+		u.dudes[3] = "Autarch";
+		u.dudes_num[3] = 1;
+		u.dudes[4] = "Farseer";
+		u.dudes_num[4] = 1;
+		u.dudes_special[4] = "farseer_powers";
+		u.dudes[5] = "Night Spinner";
+		u.dudes_num[5] = 1;
+		// Spawn leader
+		if (leader = 1) {
+			u.dudes[4] = "Leader";
+			u.dudes_num[4] = 1;
+			enemies[4] = 1;
+			enemies_num[4] = 1;
+		}
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Fire Dragon";
+		u.dudes_num[1] = 4;
+		u.dudes[2] = "Fire Dragon Exarch";
+		u.dudes_num[2] = 1;
+		u.dudes[3] = "Warp Spider";
+		u.dudes_num[3] = 4;
+		u.dudes_special[3] = "warp_jump";
+		u.dudes[4] = "Warp Spider Exarch";
+		u.dudes_num[4] = 1;
+		u.dudes_special[4] = "warp_jump";
+		u.dudes[5] = "Howling Banshee";
+		u.dudes_num[5] = 4;
+		u.dudes_special[5] = "banshee_mask";
+		u.dudes[6] = "Howling Banshee Exarch";
+		u.dudes_num[6] = 1;
+		u.dudes_special[6] = "banshee_mask";
+		u.dudes[7] = "Striking Scorpion";
+		u.dudes_num[7] = 4;
+		u.dudes[8] = "Striking Scorpion Exarch";
+		u.dudes_num[8] = 1;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u.dudes[1] = "Falcon";
+		u.dudes_num[1] = 2;
+	}
+	// Craftworld Demi-Company
+	if (threat = 4) {
+		u = instance_nearest(xxx, 240, obj_enunit);
+		enemy_dudes = "57";
+
+		u.dudes[1] = "Dire Avenger";
+		u.dudes_num[1] = 8;
+		u.dudes_special[1] = "shimmershield";
+		u.dudes[2] = "Dire Avenger Exarch";
+		u.dudes_num[2] = 2;
+		u.dudes_special[2] = "shimmershield";
+		u.dudes[3] = "Autarch";
+		u.dudes_num[3] = 1;
+		u.dudes[4] = "Farseer";
+		u.dudes_num[4] = 1;
+		u.dudes_special[4] = "farseer_powers";
+		u.dudes[5] = "Night Spinner";
+		u.dudes_num[5] = 1;
+		// Spawn leader
+		if (leader = 1) {
+			u.dudes[4] = "Leader";
+			u.dudes_num[4] = 1;
+			enemies[4] = 1;
+			enemies_num[4] = 1;
+		}
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Fire Dragon";
+		u.dudes_num[1] = 8;
+		u.dudes[2] = "Fire Dragon Exarch";
+		u.dudes_num[2] = 2;
+		u.dudes[3] = "Warp Spider";
+		u.dudes_num[3] = 8;
+		u.dudes_special[3] = "warp_jump";
+		u.dudes[4] = "Warp Spider Exarch";
+		u.dudes_num[4] = 2;
+		u.dudes_special[4] = "warp_jump";
+		u.dudes[5] = "Howling Banshee";
+		u.dudes_num[5] = 8;
+		u.dudes_special[5] = "banshee_mask";
+		u.dudes[6] = "Howling Banshee Exarch";
+		u.dudes_num[6] = 2;
+		u.dudes_special[6] = "banshee_mask";
+		u.dudes[7] = "Striking Scorpion";
+		u.dudes_num[7] = 8;
+		u.dudes[8] = "Striking Scorpion Exarch";
+		u.dudes_num[8] = 2;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u.dudes[1] = "Falcon";
+		u.dudes_num[1] = 4;
+	}
+	// Craftworld Company
+	if (threat = 5) {
+		u = instance_nearest(xxx, 240, obj_enunit);
+		enemy_dudes = "84";
+
+		u.dudes[1] = "Dire Avenger";
+		u.dudes_num[1] = 12;
+		u.dudes_special[1] = "shimmershield";
+		u.dudes[2] = "Dire Avenger Exarch";
+		u.dudes_num[2] = 3;
+		u.dudes_special[2] = "shimmershield";
+		u.dudes[3] = "Autarch";
+		u.dudes_num[3] = 1;
+		u.dudes[4] = "Farseer";
+		u.dudes_num[4] = 1;
+		u.dudes_special[4] = "farseer_powers";
+		u.dudes[5] = "Night Spinner";
+		u.dudes_num[5] = 1;
+		// Spawn leader
+		if (leader = 1) {
+			u.dudes[4] = "Leader";
+			u.dudes_num[4] = 1;
+			enemies[4] = 1;
+			enemies_num[4] = 1;
+		}
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u.dudes[1] = "Fire Dragon";
+		u.dudes_num[1] = 12;
+		u.dudes[2] = "Fire Dragon Exarch";
+		u.dudes_num[2] = 3;
+		u.dudes[3] = "Warp Spider";
+		u.dudes_num[3] = 12;
+		u.dudes_special[3] = "warp_jump";
+		u.dudes[4] = "Warp Spider Exarch";
+		u.dudes_num[4] = 3;
+		u.dudes_special[4] = "warp_jump";
+		u.dudes[5] = "Howling Banshee";
+		u.dudes_num[5] = 12;
+		u.dudes_special[5] = "banshee_mask";
+		u.dudes[6] = "Howling Banshee Exarch";
+		u.dudes_num[6] = 3;
+		u.dudes_special[6] = "banshee_mask";
+		u.dudes[7] = "Striking Scorpion";
+		u.dudes_num[7] = 12;
+		u.dudes[8] = "Striking Scorpion Exarch";
+		u.dudes_num[8] = 3;
+
+		instance_deactivate_object(u);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u.dudes[1] = "Falcon";
+		u.dudes_num[1] = 6;
+	}
+	// Craftworld Battalion
+	if (threat = 6) {
+		u = instance_nearest(xxx, 240, obj_enunit);
+		enemy_dudes = "111";
+
+		u.dudes[1] = "Dire Avenger";
+		u.dudes_num[1] = 16;
 		u.dudes_special[1] = "shimmershield";
 		u.dudes[2] = "Dire Avenger Exarch";
 		u.dudes_num[2] = 4;
@@ -1225,33 +1442,33 @@ if (enemy = 6) {
 		instance_deactivate_object(u);
 		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		u.dudes[1] = "Fire Dragon";
-		u.dudes_num[1] = 7;
+		u.dudes_num[1] = 16;
 		u.dudes[2] = "Fire Dragon Exarch";
-		u.dudes_num[2] = 1;
+		u.dudes_num[2] = 4;
 		u.dudes[3] = "Warp Spider";
-		u.dudes_num[3] = 7;
+		u.dudes_num[3] = 16;
 		u.dudes_special[3] = "warp_jump";
 		u.dudes[4] = "Warp Spider Exarch";
-		u.dudes_num[4] = 1;
+		u.dudes_num[4] = 4;
 		u.dudes_special[4] = "warp_jump";
 		u.dudes[5] = "Howling Banshee";
-		u.dudes_num[5] = 9;
+		u.dudes_num[5] = 16;
 		u.dudes_special[5] = "banshee_mask";
 		u.dudes[6] = "Howling Banshee Exarch";
-		u.dudes_num[6] = 1;
+		u.dudes_num[6] = 4;
 		u.dudes_special[6] = "banshee_mask";
-		u.dudes[7] = "Striking Scorpian";
-		u.dudes_num[7] = 9;
-		u.dudes[8] = "Striking Scorpian Exarch";
-		u.dudes_num[8] = 1;
+		u.dudes[7] = "Striking Scorpion";
+		u.dudes_num[7] = 16;
+		u.dudes[8] = "Striking Scorpion Exarch";
+		u.dudes_num[8] = 4;
 
 		instance_deactivate_object(u);
 		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		u.dudes[1] = "Falcon";
-		u.dudes_num[1] = 2;
+		u.dudes_num[1] = 8;
 	}
-	// Craftworld Large Group
-	if (threat = 3) {
+	// PLACEHOLDER Craftworld Large Group or Regiment
+	if (threat = 7) {
 		u = instance_nearest(xxx, 240, obj_enunit);
 		enemy_dudes = "300";
 
@@ -1296,9 +1513,9 @@ if (enemy = 6) {
 		u.dudes[6] = "Howling Banshee Exarch";
 		u.dudes_num[6] = 2;
 		u.dudes_special[6] = "banshee_mask";
-		u.dudes[7] = "Striking Scorpian";
+		u.dudes[7] = "Striking Scorpion";
 		u.dudes_num[7] = 19;
-		u.dudes[8] = "Striking Scorpian Exarch";
+		u.dudes[8] = "Striking Scorpion Exarch";
 		u.dudes_num[8] = 1;
 
 		instance_deactivate_object(u);
@@ -1312,8 +1529,8 @@ if (enemy = 6) {
 		u.dudes[4] = "Wraithlord";
 		u.dudes_num[4] = 2;
 	}
-	// Craftworld Small Army
-	if (threat = 4) {
+	// PLACEHOLDER Craftworld Small Army or Brigade
+	if (threat = 8) {
 		u = instance_nearest(xxx, 240, obj_enunit);
 		enemy_dudes = "1100";
 
@@ -1371,9 +1588,9 @@ if (enemy = 6) {
 		u.dudes[6] = "Howling Banshee Exarch";
 		u.dudes_num[6] = 4;
 		u.dudes_special[6] = "banshee_mask";
-		u.dudes[7] = "Striking Scorpian";
+		u.dudes[7] = "Striking Scorpion";
 		u.dudes_num[7] = 38;
-		u.dudes[8] = "Striking Scorpian Exarch";
+		u.dudes[8] = "Striking Scorpion Exarch";
 		u.dudes_num[8] = 2;
 
 		instance_deactivate_object(u);
@@ -1389,8 +1606,8 @@ if (enemy = 6) {
 		u.dudes[5] = "Shining Spear";
 		u.dudes_num[5] = 40;
 	}
-	// Craftworld Medium Army
-	if (threat = 5) {
+	// PLACEHOLDER Craftworld Medium Army or Division
+	if (threat = 9) {
 		u = instance_nearest(xxx, 240, obj_enunit);
 		enemy_dudes = "2500";
 
@@ -1448,9 +1665,9 @@ if (enemy = 6) {
 		u.dudes[6] = "Howling Banshee Exarch";
 		u.dudes_num[6] = 8;
 		u.dudes_special[6] = "banshee_mask";
-		u.dudes[7] = "Striking Scorpian";
+		u.dudes[7] = "Striking Scorpion";
 		u.dudes_num[7] = 72;
-		u.dudes[8] = "Striking Scorpian Exarch";
+		u.dudes[8] = "Striking Scorpion Exarch";
 		u.dudes_num[8] = 8;
 
 		instance_deactivate_object(u);
@@ -1466,8 +1683,8 @@ if (enemy = 6) {
 		u.dudes[5] = "Shining Spear";
 		u.dudes_num[5] = 80;
 	}
-	// Craftworld Large Army
-	if (threat = 6) {
+	// PLACEHOLDER Craftworld Large Army or Army Group
+	if (threat = 10) {
 		u = instance_nearest(xxx, 240, obj_enunit);
 		enemy_dudes = "5000";
 
@@ -1527,9 +1744,9 @@ if (enemy = 6) {
 		u.dudes[6] = "Howling Banshee Exarch";
 		u.dudes_num[6] = 16;
 		u.dudes_special[6] = "banshee_mask";
-		u.dudes[7] = "Striking Scorpian";
+		u.dudes[7] = "Striking Scorpion";
 		u.dudes_num[7] = 144;
-		u.dudes[8] = "Striking Scorpian Exarch";
+		u.dudes[8] = "Striking Scorpion Exarch";
 		u.dudes_num[8] = 16;
 
 		instance_deactivate_object(u);
