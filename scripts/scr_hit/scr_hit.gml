@@ -17,49 +17,51 @@ function scr_hit(x1=0, y1=0, x2=0, y2=0) {
 /// @param {array} rect x1, y1, x2, y2 array.
 /// @returns {bool}
 function point_and_click(rect, cooldown = 60) {
+	var _mouse_clicked = event_number==ev_gui ? device_mouse_check_button_pressed(0,mb_left) : mouse_check_button_pressed(mb_left);
+	if (!_mouse_clicked) {
+		return false;
+	}
+
+	var _point_check = scr_hit(rect[0], rect[1],rect[2], rect[3]);
+	if (!_point_check) {
+		return false;
+	}
+
 	var controller_exist = instance_exists(obj_controller);
-	var click_check = false;
-	var mouse_consts = return_mouse_consts();
-	var mouse_clicked = event_number==ev_gui ? device_mouse_check_button_pressed(0,mb_left) : mouse_check_button_pressed(mb_left);
-
-	if (!mouse_clicked) {
-		return false;
-	}
-
 	if (controller_exist && obj_controller.cooldown > 0) {
-		show_debug_message("point_and_click: ignored click for cooldown, " + string(obj_controller.cooldown) + " steps remaining");
-		show_debug_message($"{array_to_string_list(debug_get_callstack())}");
+		log_warning("Ignored click for cooldown, {obj_controller.cooldown} steps remaining!");
+		log_warning($"Click callstack: \n{array_to_string_list(debug_get_callstack(), true)}");
 		return false;
 	}
 
+	var mouse_consts = return_mouse_consts();
 	var click_check = point_in_rectangle(mouse_consts[0], mouse_consts[1], rect[0], rect[1],rect[2], rect[3]);
 	if (controller_exist && click_check && cooldown > 0) {
-		show_debug_message("scr_click_left: clicked and set cooldown!");
-		show_debug_message($"{array_to_string_list(debug_get_callstack())}");
+		// log_message("scr_click_left: clicked and set cooldown!");
+		// show_debug_message($"{array_to_string_list(debug_get_callstack())}");
 		obj_controller.cooldown = cooldown * delta_time/1000000;
 	}
 	if(is_debug_overlay_open()){
 		show_debug_message($"mouse coords x: {mouse_consts[0]} y: {mouse_consts[1]}")
 	}
-	return click_check;
+
+	return true;
 }
 
 function scr_click_left(cooldown = 60){
 	var mouse_clicked = event_number==ev_gui ? device_mouse_check_button_pressed(0,mb_left) : mouse_check_button_pressed(mb_left);
-
 	if (!mouse_clicked) {
 		return false;
 	}
 
 	var controller_exist = instance_exists(obj_controller);
-
 	if (controller_exist && obj_controller.cooldown > 0) {
-		show_debug_message("scr_click_left: ignored click for cooldown, " + string(obj_controller.cooldown) + " steps remaining");
-		show_debug_message($"{array_to_string_list(debug_get_callstack())}");
+		log_warning($"Ignored click for cooldown, {obj_controller.cooldown} steps remaining!");
+		log_warning($"Click callstack: \n{array_to_string_list(debug_get_callstack(), true)}");
 		return false;
 	} else if (controller_exist && cooldown > 0) {
-		show_debug_message("scr_click_left: clicked and set cooldown!");
-		show_debug_message($"{array_to_string_list(debug_get_callstack())}");
+		// log_message("scr_click_left: clicked and set cooldown!");
+		// show_debug_message($"{array_to_string_list(debug_get_callstack())}");
 		obj_controller.cooldown = cooldown * delta_time/1000000;
 	}
 
@@ -76,16 +78,13 @@ function return_mouse_consts(){
 	}
 	return [mouse_const_x,mouse_const_y]
 }
+
 function mouse_distance_less(xx, yy, distance){
 	var mouse_consts = return_mouse_consts();
 	return (point_distance(xx,yy,mouse_consts[0],mouse_consts[1])<=distance)
 }
+
 function return_mouse_consts_tooltip(){
 	var consts = return_mouse_consts();
 	return [consts[0]+20, consts[1]]
 }
-
-
-
-
-

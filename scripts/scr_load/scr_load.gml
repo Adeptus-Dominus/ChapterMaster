@@ -31,7 +31,7 @@ function scr_load(save_part, save_id) {
 
 
 	if (save_part=2) or (save_part=0){
-		debugl("Loading slot "+string(save_id)+" part 2");
+		log_message("Loading slot "+string(save_id)+" part 2");
 	    ini_open("tsave.ini");
 
 	    stars=ini_read_real("Save","stars",0);
@@ -295,7 +295,7 @@ function scr_load(save_part, save_id) {
 
 
 
-	if (save_part=3) or (save_part=0){debugl("Loading slot "+string(save_id)+" part 3");
+	if (save_part=3) or (save_part=0){log_message("Loading slot "+string(save_id)+" part 3");
 	    ini_open("tsave.ini");
 
 	    var coh,mah,good;
@@ -441,7 +441,7 @@ function scr_load(save_part, save_id) {
 
 
 	if (save_part=4) or (save_part=0){
-		debugl("Loading slot "+string(save_id)+" part 4");// PLAYER FLEET OBJECTS
+		log_message("Loading slot "+string(save_id)+" part 4");// PLAYER FLEET OBJECTS
 	    ini_open("tsave.ini");
 
 	    var num,i,fla;
@@ -604,7 +604,7 @@ function scr_load(save_part, save_id) {
 	    obj_controller.invis=false;
 	    global.load=0;
 	    scr_image("force",-50,0,0,0,0);
-	    debugl("Loading slot "+string(save_id)+" completed");
+	    log_message("Loading slot "+string(save_id)+" completed");
 	}
 
 

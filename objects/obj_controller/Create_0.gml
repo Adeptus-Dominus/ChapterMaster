@@ -323,7 +323,7 @@ if (window_get_fullscreen()=1){
 cheatcode=0;
 cheatyface=0;
 // ** Debugging file created **
-debugl("=========Controller Created");
+log_message("Controller Created");
 // ** Creates saves.ini with default settings **
 ini_open("saves.ini");
 master_volume=ini_read_real("Settings","master_volume",1);
@@ -1330,7 +1330,7 @@ if (instance_exists(obj_ini)){
         scr_colors_initialize();
         scr_shader_initialize();
         instance_create(-100,-100,obj_event_log);
-        debugl("New Game");
+        log_message("New Game");
     }
 }
 //Set player colour
@@ -1352,8 +1352,8 @@ if (global.load>0){
     obj_saveload.load_part=1;
     obj_cursor.image_alpha=0;
     scr_colors_initialize();
-    if (global.restart==0) then debugl("Loading Game");
-    if (global.restart>0) then debugl("Restarting Game");
+    if (global.restart==0) then log_message("Loading Game");
+    if (global.restart>0) then log_message("Restarting Game");
     exit;
 }
 

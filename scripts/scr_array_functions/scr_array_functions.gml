@@ -73,18 +73,24 @@ function array_random_index(choice_array){
 /// @description Converts an array into a string, with each element on a newline.
 /// @param {array} stacktrace stacktrace.
 /// @return {string}
-function array_to_string_list(_array) {
+function array_to_string_list(_array, _pop_last = false) {
     var _string_list = "";
 
     if (!is_array(_array)) {
         return;
     }
+
+    if (_pop_last) {
+        array_pop(_array);
+    }
+
     for (var i = 0; i < array_length(_array); i++) {
         _string_list += string(_array[i]);
         if (i < array_length(_array) - 1) {
             _string_list += "\n";
         }
     }
+
     return _string_list;
 }
 

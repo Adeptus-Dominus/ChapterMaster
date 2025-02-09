@@ -728,7 +728,7 @@ function scr_initialize_custom() {
 	if (scr_has_disadv("Obliterated")) {battle_barges = 0; strike_cruisers = 1; gladius = 2; hunters = 0;}
 
 	var ship_summary_str = $"Ships: bb: {battle_barges} sc: {strike_cruisers} g: {gladius} h: {hunters}"
-	// debugl(ship_summary_str);
+	// log_message(ship_summary_str);
 	// show_debug_message(ship_summary_str);
 
 	if (battle_barges>=1){
@@ -1300,7 +1300,7 @@ function scr_initialize_custom() {
 					if(struct_exists(c_roles[$ c_rolename], attribute)){
 						var value = c_roles[$ c_rolename][$ attribute];
 						// var dbg_m = $"role {c_roleid} {c_rolename} updated {attribute} to {typeof(value)} {value}";
-						// debugl(dbg_m);
+						// log_message(dbg_m);
 						// show_debug_message(dbg_m);
 						switch (attribute){
 							case "name": role[defaults_slot][c_roleid] = value; break;

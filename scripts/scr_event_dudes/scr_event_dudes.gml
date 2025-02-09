@@ -122,7 +122,7 @@ function scr_event_dudes(do_action, is_planet, system_name, location_id) {
 
 	// Yar har har
 	if (do_action=1){
-	    debugl("Event: Present marines passed to obj_event array");
+	    log_message("Event: Present marines passed to obj_event array");
 	    obj_event.time_max=obj_event.attendants*10;
     
 	    obj_event.alarm[0]=30;
