@@ -109,13 +109,10 @@ function find_recruit_corruption(planet_type){
 	}
 
 	if (struct_exists(_trial_type, "corruption_bonus")){
-		var _trial_corruption = _trial_type[$ "corruption_bonus"];
-		if (struct_exists(_planet_type_data, "corruption_bonus")){
-			_trial_corruption = _trial_type[$ "corruption_bonus"][0];
-			var _gauss_sd = _trial_type[$ "corruption_bonus"][1];
-			_trial_corruption = gauss(_trial_corruption, _gauss_sd);
-			_recruit_corruption += _trial_corruption;
-		}
+		var _trial_corruption = _trial_type[$ "corruption_bonus"][0];
+		var _gauss_sd = _trial_type[$ "corruption_bonus"][1];
+		_trial_corruption = gauss(_trial_corruption, _gauss_sd);
+		_recruit_corruption += _trial_corruption;
 	}
 
 	_recruit_corruption = floor(_recruit_corruption);
