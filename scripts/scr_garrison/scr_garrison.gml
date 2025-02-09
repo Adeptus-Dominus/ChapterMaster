@@ -1,7 +1,7 @@
 function disposition_description_chart(dispo) {
-    if (dispo < 0) {
-        return "DEBUG: Negative numbers detected, this shouldn't happen!";
-    } else if (dispo == 0) {
+    if (dispo < -100) {
+        return "DEBUG: Numbers lower than -100 detected, this shouldn't happen!";
+    } else if (dispo <= 0) {
         return "Extremely Hostile";
     } else if (dispo < 10) {
         return "Very Hostile";
@@ -187,13 +187,20 @@ function GarrisonForce(planet_operatives, turn_end=false, type="garrison") const
 			} else {
 				var charisma_test = global.character_tester.standard_test(garrison_leader, "charisma", final_modifier);
                 if (!charisma_test[0]) {
-                    if (garrison_leader.has_trait("honorable")) {
+                    var _diplomatic_leader = false;
+                    if (is_struct(garrison_leader)){
+                        _diplomatic_leader = garrison_leader.has_trait("honorable");
+                    } else {
+                        scr_event_log("purple",$"DEBUG: Garrison Leader on {star.name} {planet} couldn't be found!");
+                    }
+
+                    if (_diplomatic_leader) {
                         dispo_change = "none";
                     } else {
                         if (planet_disposition > obj_controller.disposition[star.p_owner[planet]]) {
                             dispo_change = charisma_test[1] / 10;
-                            if (planet_disposition < abs(dispo_change)) {
-                                dispo_change = -planet_disposition;
+                            if (planet_disposition + dispo_change >= -100) {
+                                dispo_change = planet_disposition + 100;
                             }
                         } else {
                             dispo_change = 0;
