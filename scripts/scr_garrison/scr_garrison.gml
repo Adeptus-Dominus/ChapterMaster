@@ -188,10 +188,12 @@ function GarrisonForce(planet_operatives, turn_end=false, type="garrison") const
 				var charisma_test = global.character_tester.standard_test(garrison_leader, "charisma", final_modifier);
                 if (!charisma_test[0]) {
                     var _diplomatic_leader = false;
-                    if (is_struct(garrison_leader)){
+                    if (is_struct(garrison_leader)) {
                         _diplomatic_leader = garrison_leader.has_trait("honorable");
                     } else {
-                        scr_event_log("purple",$"DEBUG: Garrison Leader on {star.name} {planet} couldn't be found!");
+                        scr_alert("yellow", "DEBUG", $"DEBUG: Garrison Leader on {star.name} {planet} couldn't be found!", 0, 0);
+                        scr_event_log("yellow", $"DEBUG: Garrison Leader on {star.name} {planet} couldn't be found!");
+                        log_error($"DEBUG: Garrison Leader on {star.name} {planet} couldn't be found!");
                     }
 
                     if (_diplomatic_leader) {
