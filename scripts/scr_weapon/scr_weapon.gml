@@ -648,9 +648,8 @@ global.weapons = {
 		"range": 4.1,
 		"spli": 1,
 		"arp": 1,
-    "maintenance" : 0.8,
+    	"maintenance" : 0.2,
 		"tags": ["grav", "pistol"],
-		"maintenance" : 0.8,
 	},
 	"Integrated-Grav": {
 		"abbreviation": "IntGrv",
@@ -683,7 +682,7 @@ global.weapons = {
 		"spli": 3,
 		"arp": 1,
 		"tags": ["grav"],
-		"maintenance" : 0.1,
+		"maintenance" : 0.5,
 	},
 	"Grav-Cannon": {
 		"abbreviation": "GrvCan",
@@ -700,7 +699,7 @@ global.weapons = {
 		"spli": 6,
 		"arp": 1,
 		"tags": ["grav", "heavy_ranged"],
-		"maintenance" : 0.2,
+		"maintenance" : 0.8,
 	},
 	"Underslung Bolter": {
 		"abbreviation": "UndBltr",
