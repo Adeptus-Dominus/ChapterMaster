@@ -602,7 +602,7 @@ global.weapons = {
 		"arp": 0,
 		"tags": ["bolt", "pistol", "boarding 1"],
 	},
-	"Wrist-Mounted Storm Bolter": { // TODO: Not used outside of this file atm;
+	"Wrist-Mounted Storm Bolter": {
 		"abbreviation": "WrstBlt",
 		"attack": {
 			"standard": 275,
@@ -616,6 +616,7 @@ global.weapons = {
 		"range": 4.1,
 		"spli": 8,
 		"arp": 0,
+		"maintenance" : 0.1,
 		"tags": ["bolt", "pistol", "boarding 2"],
 	},
 	"Webber": {
@@ -1033,7 +1034,6 @@ global.weapons = {
 		"range": 14,
 		"spli": 12,
 		"arp": -1,
-		"tags": ["heavy_ranged", "dreadnought"]
 		"tags": ["heavy_ranged","explosive", "dreadnought"]
 	},
 	"Missile Launcher": {
