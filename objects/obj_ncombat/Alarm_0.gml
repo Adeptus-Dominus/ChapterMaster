@@ -1815,7 +1815,6 @@ if (enemy = 7) {
 		u.dudes_num[2] = 4;
 		u.dudes[3] = "Gretchin";
 		u.dudes_num[3] = 10;
-		}
 	}
 	// Ork Platoon
 	if (threat = 3) {
@@ -4878,7 +4877,6 @@ if (enemy = 12) {
 		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		u.dudes[1] = choose("Cultist", "Mutant");
 		u.dudes_num[1] = 6;
-		}
 	}
 	// Daemon "Demi-Platoon"
 	if (threat = 4) {
