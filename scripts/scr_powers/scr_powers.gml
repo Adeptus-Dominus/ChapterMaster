@@ -864,12 +864,15 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
                 
 	                if (enemy5.dudes_vehicle[good2]=0){
 	                    if (p_arp=1) then eac=0;
-	                    if (p_arp=-1) then eac=eac*6;
+	                    if (p_arp=0) then eac=eac*3;
+						if (p_arp=-1) then eac=eac*2;
+						if (p_arp=-2) then eac=eac*1.5;
 	                }
 	                if (enemy5.dudes_vehicle[good2]=1){
 	                    if (p_arp=-1) then eac=a;
 	                    if (p_arp=0) then eac=eac*6;
-	                    if (p_arp=-1) then eac=a;
+						if (p_arp=-1) then eac=eac*4;
+						if (p_arp=-2) then eac=eac*2;
 	                }
 	                b=a-eac;if (b<=0) then b=0;
                 

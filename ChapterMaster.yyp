@@ -185,7 +185,6 @@
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"daemon7.png","CopyToMask":-1,"filePath":"datafiles/images/diplomacy",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"daemon8.png","CopyToMask":-1,"filePath":"datafiles/images/diplomacy",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"daemon9.png","CopyToMask":-1,"filePath":"datafiles/images/diplomacy",},
-    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"diplomacy_icons.png","CopyToMask":-1,"filePath":"datafiles/images/diplomacy",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"diplomacy10.png","CopyToMask":-1,"filePath":"datafiles/images/diplomacy",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"diplomacy11.png","CopyToMask":-1,"filePath":"datafiles/images/diplomacy",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"diplomacy12.png","CopyToMask":-1,"filePath":"datafiles/images/diplomacy",},
@@ -447,10 +446,10 @@
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"eldar.json","CopyToMask":-1,"filePath":"datafiles/main/names",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"genestealercult.json","CopyToMask":-1,"filePath":"datafiles/main/names",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"hulk.json","CopyToMask":-1,"filePath":"datafiles/main/names",},
-    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"imperial_ship.json","CopyToMask":-1,"filePath":"datafiles/main/names",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"imperial.json","CopyToMask":-1,"filePath":"datafiles/main/names",},
-    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"ork_ship.json","CopyToMask":-1,"filePath":"datafiles/main/names",},
+    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"imperial_ship.json","CopyToMask":-1,"filePath":"datafiles/main/names",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"ork.json","CopyToMask":-1,"filePath":"datafiles/main/names",},
+    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"ork_ship.json","CopyToMask":-1,"filePath":"datafiles/main/names",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"sector.json","CopyToMask":-1,"filePath":"datafiles/main/names",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"space_marine.json","CopyToMask":-1,"filePath":"datafiles/main/names",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"star.json","CopyToMask":-1,"filePath":"datafiles/main/names",},
@@ -1525,6 +1524,6 @@
   ],
   "templateType": null,
   "TextureGroups": [
-    {"resourceType":"GMTextureGroup","resourceVersion":"1.3","name":"Default","autocrop":true,"border":2,"compressFormat":"bz2","directory":"","groupParent":null,"isScaled":false,"loadType":"default","mipsToGenerate":0,"targets":-1,},
+    {"resourceType":"GMTextureGroup","resourceVersion":"1.3","name":"Default","autocrop":true,"border":2,"compressFormat":"bz2","customOptions":"","directory":"","groupParent":null,"isScaled":false,"loadType":"default","mipsToGenerate":0,"targets":-1,},
   ],
 }
