@@ -236,17 +236,17 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 
 	// Chaos powers here
 
-	if (power_name="Wave of Entropy"){p_type="attack";p_rang=3;p_tar=3;p_spli=1;p_att=220;p_arp=0;p_duration=0;
+	if (power_name="Wave of Entropy"){p_type="attack";p_rang=3;p_tar=3;p_spli=1;p_att=250;p_arp=-1;p_duration=0;
 	    flavour_text2="- a putrid cone of warp energy splashes outward, ";
 	    if (obj_ncombat.enemy=9) then flavour_text2+="twisting and rusting everything it touches.  ";
 	    if (obj_ncombat.enemy!=9) then flavour_text2+="boiling and putrifying flesh.  ";
 	    if (obj_ncombat.sorcery_seen<2) and (obj_ncombat.present_inquisitor=1) then obj_ncombat.sorcery_seen=1;
 	}
-	if (power_name="Wave of Change"){p_type="attack";p_rang=3;p_tar=3;p_spli=1;p_att=220;p_arp=0;p_duration=0;
+	if (power_name="Wave of Change"){p_type="attack";p_rang=3;p_tar=3;p_spli=1;p_att=300;p_arp=-2;p_duration=0;
 	    flavour_text2="- a wispy cone of warp energy reaches outward, twisting and morphing all that it touches.  ";
 	    if (obj_ncombat.sorcery_seen<2) and (obj_ncombat.present_inquisitor=1) then obj_ncombat.sorcery_seen=1;
 	}
-	if (power_name="Insect Swarm"){p_type="attack";p_rang=3;p_tar=3;p_spli=1;p_att=500;p_arp=1;p_duration=0;
+	if (power_name="Insect Swarm"){p_type="attack";p_rang=3;p_tar=3;p_spli=1;p_att=500;p_arp=-1;p_duration=0;
 	    var rah;rah=choose(1,2);
 	    if (rah=1) then flavour_text2="- a massive, black cloud of insects spew from his body.  At once they begin burrowing into your foes.  ";
 	    if (rah=2) then flavour_text2="- rank, ichory insects spew forth from his body at your foes.  They begin burrowing through flesh and armour alike.  ";
@@ -259,13 +259,13 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 	    marine_attack[unit_id]+=2;marine_ranged[unit_id]=0;
 	    if (obj_ncombat.sorcery_seen<2) and (obj_ncombat.present_inquisitor=1) then obj_ncombat.sorcery_seen=1;
 	}
-	if (power_name="Putrid Vomit"){p_type="attack";p_rang=2.1;p_tar=3;p_spli=1;p_att=600;p_arp=0;p_duration=0;
+	if (power_name="Putrid Vomit"){p_type="attack";p_rang=2.1;p_tar=3;p_spli=1;p_att=600;p_arp=-2;p_duration=0;
 	    var rah;rah=choose(1,2);
 	    flavour_text2="- from in front of their mouth a stream of rancid, acidic vomit spews forth at tremendous pressure, splashing over his foes.  ";
 	    if (obj_ncombat.enemy=9) then p_att=450;
 	    if (obj_ncombat.sorcery_seen<2) and (obj_ncombat.present_inquisitor=1) then obj_ncombat.sorcery_seen=1;
 	}
-	if (power_name="Warp Bolts"){p_type="attack";p_rang=5;p_tar=3;p_spli=1;p_att=300;p_arp=0;p_duration=0;
+	if (power_name="Warp Bolts"){p_type="attack";p_rang=5;p_tar=3;p_spli=1;p_att=450;p_arp=1;p_duration=0;
 	    var rah;rah=choose(1,2,3);
 	    if (rah=1) then flavour_text2="- several bolts of purple warp energy appear and are flung at the enemy.  ";
 	    if (rah=2) then flavour_text2="- he launches a series of rapid warp bolts at the enemy.  ";
@@ -320,11 +320,11 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 
 
 	// target       0: self     1: ally     2: ally vehicle     3: enemy       4: enemy vehicle
-	if (power_name="Minor Smite"){p_type="attack";p_rang=5;p_tar=3;p_spli=1;p_att=160;p_arp=0;p_duration=0;
+	if (power_name="Minor Smite"){p_type="attack";p_rang=5;p_tar=3;p_spli=1;p_att=250;p_arp=-2;p_duration=0;
 	    flavour_text2="- a coil of warp energy lashes out at the enemy.  ";
 	    if (binders=true) then flavour_text2="- a green, sickly coil of energy lashes out at the enemy.  ";
 	}
-	if (power_name="Smite"){p_type="attack";p_rang=5;p_tar=3;p_spli=1;p_att=260;p_arp=0;p_duration=0;
+	if (power_name="Smite"){p_type="attack";p_rang=5;p_tar=3;p_spli=1;p_att=350;p_arp=-2;p_duration=0;
 	    var rah;rah=choose(1,2,3);
 	    if (rah=1) then flavour_text2="- a blast of warp energy smashes into the enemy.  ";
 	    if (rah=2) then flavour_text2="- warp lightning crackles and leaps to the enemy.  ";
@@ -337,10 +337,10 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 	    if (binders=true) then flavour_text2=".  An oozing, shifting dome of sorcerous energy appears, covering your forces.";
 	    if (binders=true) and (obj_ncombat.sorcery_seen<2) and (obj_ncombat.present_inquisitor=1) then obj_ncombat.sorcery_seen=1;
 	}
-	if (power_name="Machine Curse"){p_type="attack";p_rang=5;p_tar=4;p_spli=0;p_att=300;p_arp=1;p_duration=0;
+	if (power_name="Machine Curse"){p_type="attack";p_rang=5;p_tar=4;p_spli=0;p_att=400;p_arp=1;p_duration=0;
 	    flavour_text2="- the machine spirit within an enemy vehicle is roused.  ";
 	}
-	if (power_name="Avenge"){p_type="attack";p_rang=5;p_tar=3;p_spli=1;p_att=500;p_arp=0;p_duration=0;
+	if (power_name="Avenge"){p_type="attack";p_rang=5;p_tar=3;p_spli=1;p_att=500;p_arp=-2;p_duration=0;
 	    var rah;rah=choose(1,2);
 	    if (rah=1) then flavour_text2="- a destructive avatar of rolling flame crashes into the enemy.  ";
 	    if (rah=2) then flavour_text2="- a massive conflagration rises up and then crashes down upon the enemy.  ";
@@ -353,14 +353,14 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 	if (power_name="Might of the Ancients"){p_type="buff";p_rang=0;p_tar=0;p_spli=0;p_att=0;p_arp=0;p_duration=3;
 	    flavour_text2=".  His physical power and might is increased to unimaginable levels.";
 	}
-	if (power_name="Vortex of Doom"){p_type="attack";p_rang=5;p_tar=3;p_spli=1;p_att=800;p_arp=1;p_duration=0;
+	if (power_name="Vortex of Doom"){p_type="attack";p_rang=5;p_tar=3;p_spli=1;p_att=800;p_arp=-2;p_duration=0;
 	    flavour_text2="- a hole between real and warp space is torn open with deadly effect.  ";
 	    if (binders=true) then flavour_text2="- a hole bewteen realspace and the warp is torn, unleashing a myriad of sorcerous energies.  ";
 	    if (binders=true) and (obj_ncombat.sorcery_seen<2) and (obj_ncombat.present_inquisitor=1) then obj_ncombat.sorcery_seen=1;
 	}
 
 
-	if (power_name="Breathe Fire"){p_type="attack";p_rang=3;p_tar=3;p_spli=0;p_att=200;p_arp=-1;p_duration=0;
+	if (power_name="Breathe Fire"){p_type="attack";p_rang=3;p_tar=3;p_spli=0;p_att=300;p_arp=-1;p_duration=0;
 	    flavour_text2="- a bright jet of flame shoots forth at the enemy.  ";
 	    if (binders=true) then flavour_text2="- a greenish, eery jet of flame shoots forth at the enemy.  ";
 	}
@@ -372,14 +372,14 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 	    flavour_text2=".  Orange sheets of fire shimmer around your forces, protecting them.  ";
 	    if (binders=true) then flavour_text2="-  Purple sheets of warp fire shimmer around your forces, protecting them.  ";
 	}
-	if (power_name="Inferno"){p_type="attack";p_rang=4;p_tar=3;p_spli=1;p_att=600;p_arp=0;p_duration=0;
+	if (power_name="Inferno"){p_type="attack";p_rang=4;p_tar=3;p_spli=1;p_att=600;p_arp=-1;p_duration=0;
 	    var rah;rah=choose(1,2);
 	    if (rah=1) then flavour_text2="- a massive conflagration rises up and then crashes down upon the enemy.  ";
 	    if (rah=2) then flavour_text2="- after breathing deeply a massive jet of flame is unleashed.  Smoke billows into the sky.  ";
 	    if (binders=true) and (rah=1) then flavour_text2="- a hideous being of rolling flame crashes into the enemy.  ";
 	    if (binders=true) and (rah=2) then flavour_text2="- a massive conflagration rises up and then crashes down upon the enemy.  ";
 	}
-	if (power_name="Sun Burst"){p_type="attack";p_rang=8;p_tar=4;p_spli=1;p_att=200;p_arp=1;p_duration=0;
+	if (power_name="Sun Burst"){p_type="attack";p_rang=8;p_tar=4;p_spli=1;p_att=400;p_arp=1;p_duration=0;
 	    flavour_text2="- a crackling, hissing beam of purple-red flame shoots from him.  ";
 	    if (binders=true) then flavour_text2="- a crackling, hissing beam of purple warp shoots from him.  ";
 	    if (binders=true) and (obj_ncombat.sorcery_seen<2) and (obj_ncombat.present_inquisitor=1) then obj_ncombat.sorcery_seen=1;
@@ -390,7 +390,7 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 	    if (binders=true) and (obj_ncombat.sorcery_seen<2) and (obj_ncombat.present_inquisitor=1) then obj_ncombat.sorcery_seen=1;
 	}
 
-	if (power_name="Blood Boil"){p_type="attack";p_rang=3;p_tar=3;p_spli=0;p_att=220;p_arp=0;p_duration=0;
+	if (power_name="Blood Boil"){p_type="attack";p_rang=3;p_tar=3;p_spli=0;p_att=250;p_arp=1;p_duration=0;
 	    flavour_text2="- accelerating the pulse and blood pressure of his foes.  ";
 	}
 	if (power_name="Iron Arm"){p_type="buff";p_rang=0;p_tar=0;p_spli=0;p_att=0;p_arp=0;p_duration=3;
@@ -402,14 +402,14 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 	if (power_name="Regenerate"){p_type="buff";p_rang=0;p_tar=0;p_spli=0;p_att=0;p_arp=0;p_duration=0;
 	    flavour_text2=".  His flesh shimmers and twists back together, sealing up wounds and damage.  ";
 	}
-	if (power_name="Haemorrhage"){p_type="attack";p_rang=3;p_tar=3;p_spli=1;p_att=800;p_arp=0;p_duration=0;
+	if (power_name="Haemorrhage"){p_type="attack";p_rang=3;p_tar=3;p_spli=1;p_att=800;p_arp=-2;p_duration=0;
 	    flavour_text2="- reaching inside of his foes and lighting their flesh aflame.  ";
 	}
 
-	if (power_name="Crush"){p_type="attack";p_rang=4;p_tar=3;p_spli=0;p_att=190;p_arp=0;p_duration=0;
+	if (power_name="Crush"){p_type="attack";p_rang=4;p_tar=4;p_spli=0;p_att=300;p_arp=1;p_duration=0;
 	    flavour_text2="- his foes are entraped in a crushing mass of force.  ";
 	}
-	if (power_name="Shockwave"){p_type="attack";p_rang=4;p_tar=3;p_spli=1;p_att=280;p_arp=0;p_duration=0;
+	if (power_name="Shockwave"){p_type="attack";p_rang=4;p_tar=3;p_spli=1;p_att=300;p_arp=0;p_duration=0;
 	    var rah;rah=choose(1,2,3);
 	    flavour_text2="- a massive wave of force smashes aside his foes.  ";
 	}
@@ -421,22 +421,22 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 	}
 
 
-	if (power_name="Living Lightning"){p_type="attack";p_rang=5;p_tar=3;p_spli=0;p_att=160;p_arp=0;p_duration=0;
+	if (power_name="Living Lightning"){p_type="attack";p_rang=5;p_tar=3;p_spli=0;p_att=300;p_arp=0;p_duration=0;
 	    flavour_text2="- arcs of lightning shoot from hand and strike his foes.  ";
 	}
 	if (power_name="Stormbringer"){p_type="buff";p_rang=1;p_tar=1;p_spli=0;p_att=0;p_arp=0;p_duration=2;
 	    flavour_text2=".  A vortex of ice and winds crackle into existance, covering your forces.";
 	}
-	if (power_name="Murderous Hurricane"){p_type="attack";p_rang=4;p_tar=3;p_spli=1;p_att=320;p_arp=0;p_duration=0;
+	if (power_name="Murderous Hurricane"){p_type="attack";p_rang=4;p_tar=3;p_spli=1;p_att=450;p_arp=-1;p_duration=0;
 	    var rah;rah=choose(1,2,3);
 	    flavour_text2="- a mighty winter gale billows forth, shredding and freezing flesh.  ";
 	}
-	if (power_name="Fury of the Wolf Spirits"){p_type="attack";p_rang=3;p_tar=3;p_spli=1;p_att=440;p_arp=0;p_duration=0;
+	if (power_name="Fury of the Wolf Spirits"){p_type="attack";p_rang=3;p_tar=3;p_spli=1;p_att=440;p_arp=-2;p_duration=0;
 	    var rah;rah=choose(1,2);
 	    if (rah=1) then flavour_text2="- a pair of Thunderwolf revenants sprint outward, running down and overwhelming foes.  ";
 	    if (rah=2) then flavour_text2="- ghostly visages of Freki and Geri launch into his foes, overwhelming them.  ";
 	}
-	if (power_name="Thunderclap"){p_type="attack";p_rang=1.1;p_tar=3;p_spli=1;p_att=600;p_arp=0;p_duration=0;
+	if (power_name="Thunderclap"){p_type="attack";p_rang=1.1;p_tar=3;p_spli=1;p_att=600;p_arp=-2;p_duration=0;
 	    flavour_text2="- smashing his gauntlets together and unleashing a mighty shockwave.  ";
 	}
 	if (power_name="Jaws of the World Wolf"){p_type="attack";p_rang=5;p_tar=3;p_spli=1;p_att=800;p_arp=1;p_duration=0;
@@ -445,7 +445,7 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
 
 
 
-	if (power_name="Avenge"){p_type="attack";p_rang=5;p_tar=3;p_spli=1;p_att=500;p_arp=0;p_duration=0;
+	if (power_name="Avenge"){p_type="attack";p_rang=5;p_tar=3;p_spli=1;p_att=500;p_arp=-1;p_duration=0;
 	    var rah;rah=choose(1,2);
 	    if (rah=1) then flavour_text2="- a destructive avatar of rolling flame crashes into the enemy.  ";
 	    if (rah=2) then flavour_text2="- a massive conflagration rises up and then crashes down upon the enemy.  ";
