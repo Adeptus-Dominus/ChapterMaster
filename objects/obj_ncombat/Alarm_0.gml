@@ -1801,6 +1801,7 @@ if (enemy = 7) {
 			u.dudes_num[1] = 1;
 			enemies[1] = 1;
 			enemies_num[1] = 1;
+		}
 		u.dudes[2] = "Shoota Boy";
 		u.dudes_num[2] = 3;
 		u.dudes[3] = "Tankbusta"; // In the future, I might want to add choose function to have an option between "Tankbusta" and others
