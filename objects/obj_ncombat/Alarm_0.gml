@@ -467,7 +467,7 @@ if (battle_special = "WL10_later") {
 // * Imperial Guard Force *
 if (enemy = 2) {
 	guard_total = threat;
-	guard_score = 6; // Okay, this creates a problem, as IG and PDF strength rating rules are a bit different to other factions
+	guard_score = 10; // Okay, this creates a problem, as IG and PDF strength rating rules are a bit different to other factions
 
 	/*if (guard_total>=15000000) then guard_score=6;
 	if (guard_total<15000000) and (guard_total>=6000000) then guard_score=5;
@@ -1199,7 +1199,7 @@ if (enemy = 6) {
 	}
 	// Craftworld Demi-Platoon
 	if (threat = 2) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		enemy_dudes = "19";
 
 		u.dudes[1] = "Dire Avenger";
@@ -1247,13 +1247,13 @@ if (enemy = 6) {
 		u.dudes_num[8] = 1;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Falcon";
 		u.dudes_num[1] = 1;
 	}
 	// Craftworld Platoon
 	if (threat = 3) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		enemy_dudes = "29";
 
 		u.dudes[1] = "Dire Avenger";
@@ -1301,13 +1301,13 @@ if (enemy = 6) {
 		u.dudes_num[8] = 1;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Falcon";
 		u.dudes_num[1] = 2;
 	}
 	// Craftworld Demi-Company
 	if (threat = 4) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		enemy_dudes = "57";
 
 		u.dudes[1] = "Dire Avenger";
@@ -1355,13 +1355,13 @@ if (enemy = 6) {
 		u.dudes_num[8] = 2;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Falcon";
 		u.dudes_num[1] = 4;
 	}
 	// Craftworld Company
 	if (threat = 5) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		enemy_dudes = "84";
 
 		u.dudes[1] = "Dire Avenger";
@@ -1409,13 +1409,13 @@ if (enemy = 6) {
 		u.dudes_num[8] = 3;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Falcon";
 		u.dudes_num[1] = 6;
 	}
 	// Craftworld Battalion
 	if (threat = 6) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		enemy_dudes = "111";
 
 		u.dudes[1] = "Dire Avenger";
@@ -1463,13 +1463,13 @@ if (enemy = 6) {
 		u.dudes_num[8] = 4;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Falcon";
 		u.dudes_num[1] = 8;
 	}
 	// PLACEHOLDER Craftworld Large Group or Regiment
 	if (threat = 7) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		enemy_dudes = "300";
 
 		u.dudes[1] = "Dire Avenger";
@@ -1519,7 +1519,7 @@ if (enemy = 6) {
 		u.dudes_num[8] = 1;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Falcon";
 		u.dudes_num[1] = 5;
 		u.dudes[2] = "Vyper";
@@ -1531,7 +1531,7 @@ if (enemy = 6) {
 	}
 	// PLACEHOLDER Craftworld Small Army or Brigade
 	if (threat = 8) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
 		enemy_dudes = "1100";
 
 		u.dudes[1] = "Dire Avenger";
@@ -1558,7 +1558,7 @@ if (enemy = 6) {
 		u.dudes_num[6] = 1;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		u.dudes[1] = "Warlock";
 		u.dudes_num[1] = 40;
 		u.dudes[2] = "Guardian";
@@ -1571,7 +1571,7 @@ if (enemy = 6) {
 		u.dudes_num[5] = 2;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		u.dudes[1] = "Fire Dragon";
 		u.dudes_num[1] = 36;
 		u.dudes[2] = "Fire Dragon Exarch";
@@ -1594,7 +1594,7 @@ if (enemy = 6) {
 		u.dudes_num[8] = 2;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Falcon";
 		u.dudes_num[1] = 12;
 		u.dudes[2] = "Vyper";
@@ -1608,7 +1608,7 @@ if (enemy = 6) {
 	}
 	// PLACEHOLDER Craftworld Medium Army or Division
 	if (threat = 9) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
 		enemy_dudes = "2500";
 
 		u.dudes[1] = "Dire Avenger";
@@ -1635,7 +1635,7 @@ if (enemy = 6) {
 		u.dudes_num[6] = 1;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		u.dudes[1] = "Warlock";
 		u.dudes_num[1] = 80;
 		u.dudes[2] = "Guardian";
@@ -1648,7 +1648,7 @@ if (enemy = 6) {
 		u.dudes_num[5] = 4;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		u.dudes[1] = "Fire Dragon";
 		u.dudes_num[1] = 72;
 		u.dudes[2] = "Fire Dragon Exarch";
@@ -1671,7 +1671,7 @@ if (enemy = 6) {
 		u.dudes_num[8] = 8;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Falcon";
 		u.dudes_num[1] = 24;
 		u.dudes[2] = "Vyper";
@@ -1685,7 +1685,7 @@ if (enemy = 6) {
 	}
 	// PLACEHOLDER Craftworld Large Army or Army Group
 	if (threat = 10) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
 		enemy_dudes = "5000";
 
 		u.dudes[1] = "Dire Avenger";
@@ -1712,7 +1712,7 @@ if (enemy = 6) {
 		u.dudes_num[6] = 1;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		u.dudes[1] = "Warlock";
 		u.dudes_num[1] = 100;
 		u.dudes[2] = "Guardian";
@@ -1727,7 +1727,7 @@ if (enemy = 6) {
 		u.dudes_num[6] = 2;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		u.dudes[1] = "Fire Dragon";
 		u.dudes_num[1] = 144;
 		u.dudes[2] = "Fire Dragon Exarch";
@@ -1750,7 +1750,7 @@ if (enemy = 6) {
 		u.dudes_num[8] = 16;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Falcon";
 		u.dudes_num[1] = 48;
 		u.dudes[2] = "Vyper";
@@ -4070,7 +4070,7 @@ if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeti
 	}
 	// CSM Squad
 	if (threat = 3) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		enemy_dudes = "10";
 
 		u.dudes[1] = "Chaos Chosen";
@@ -4081,13 +4081,13 @@ if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeti
 		u.dudes_num[3] = 1;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Raptor";
 		u.dudes_num[1] = 5;
 	}
 	// CSM Several Squads
 	if (threat = 4) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		enemy_dudes = "23";
 
 		u.dudes[1] = "Chaos Lord";
@@ -4106,7 +4106,7 @@ if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeti
 		u.dudes_num[2] = 3;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Rhino";
 		u.dudes_num[1] = 1;
 		u.dudes[2] = "Defiler";
@@ -4116,7 +4116,7 @@ if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeti
 	}
 	// CSM Demi-Company
 	if (threat = 5) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		enemy_dudes = "40";
 
 		u.dudes[1] = "Chaos Lord";
@@ -4140,7 +4140,7 @@ if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeti
 		u.dudes_num[4] = 1;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Rhino";
 		u.dudes_num[1] = 2;
 		u.dudes[2] = "Defiler";
@@ -4152,7 +4152,7 @@ if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeti
 	}
 	// CSM Company
 	if (threat = 6) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 40, 240, obj_enunit);
 		enemy_dudes = "70";
 
 		u.dudes[1] = "Chaos Lord";
@@ -4165,7 +4165,7 @@ if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeti
 		u.dudes_num[4] = 1;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
 		u.dudes[1] = "Land Raider";
 		u.dudes_num[1] = 1;
 		u.dudes[2] = "Chaos Terminator";
@@ -4183,7 +4183,7 @@ if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeti
 		u.dudes_num[4] = 10;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		u.dudes[1] = "Rhino";
 		u.dudes_num[1] = 2;
 		u.dudes[2] = "Defiler";
@@ -4194,7 +4194,7 @@ if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeti
 		u.dudes_num[4] = 10;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 40, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Heldrake";
 		u.dudes_num[1] = 1;
 		u.flank = 1;
@@ -4207,7 +4207,7 @@ if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeti
 	}
 	// CSM Company + Support
 	if (threat = 7) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 50, 240, obj_enunit);
 		enemy_dudes = "115";
 
 		u.dudes[1] = "Chaos Lord";
@@ -4220,14 +4220,14 @@ if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeti
 		u.dudes_num[4] = 4;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u = instance_nearest(xxx + 40, 240, obj_enunit);
 		u.dudes[1] = "Land Raider";
 		u.dudes_num[1] = 2;
 		u.dudes[2] = "Chaos Terminator";
 		u.dudes_num[2] = 8;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
 		u.dudes[1] = "Chaos Chosen";
 		u.dudes_num[1] = 4;
 		u.dudes[2] = "Chaos Space Marine";
@@ -4236,7 +4236,7 @@ if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeti
 		u.dudes_num[3] = 18;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		u.dudes[1] = "Predator";
 		u.dudes_num[1] = 2;
 		u.dudes[2] = "Vindicator";
@@ -4245,14 +4245,14 @@ if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeti
 		u.dudes_num[3] = 2;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 40, 240, obj_enunit);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		u.dudes[1] = "Defiler";
 		u.dudes_num[1] = 4;
 		u.dudes[2] = "Raptor";
 		u.dudes_num[2] = 20;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 50, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Heldrake";
 		u.dudes_num[1] = 1;
 		u.flank = 1;
@@ -4265,7 +4265,7 @@ if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeti
 	}
 	// CSM 2 Companies + Support
 	if (threat = 8) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 50, 240, obj_enunit);
 		enemy_dudes = "190";
 
 		u.dudes[1] = "Chaos Lord";
@@ -4278,14 +4278,14 @@ if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeti
 		u.dudes_num[4] = 11;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u = instance_nearest(xxx + 40, 240, obj_enunit);
 		u.dudes[1] = "Land Raider";
 		u.dudes_num[1] = 4;
 		u.dudes[2] = "Chaos Terminator";
 		u.dudes_num[2] = 16;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
 		u.dudes[1] = "Chaos Chosen";
 		u.dudes_num[1] = 6;
 		u.dudes[2] = "Chaos Space Marine";
@@ -4294,7 +4294,7 @@ if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeti
 		u.dudes_num[3] = 27;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		u.dudes[1] = "Predator";
 		u.dudes_num[1] = 4;
 		u.dudes[2] = "Vindicator";
@@ -4303,14 +4303,14 @@ if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeti
 		u.dudes_num[3] = 4;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 40, 240, obj_enunit);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		u.dudes[1] = "Defiler";
 		u.dudes_num[1] = 8;
 		u.dudes[2] = "Raptor";
 		u.dudes_num[2] = 40;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 50, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Heldrake";
 		u.dudes_num[1] = 3;
 		u.flank = 1;
@@ -4323,7 +4323,7 @@ if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeti
 	}
 	// CSM 4 Companies + Support
 	if (threat = 9) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 50, 240, obj_enunit);
 		enemy_dudes = "317";
 
 		u.dudes[1] = "Chaos Lord";
@@ -4336,14 +4336,14 @@ if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeti
 		u.dudes_num[4] = 25;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u = instance_nearest(xxx + 40, 240, obj_enunit);
 		u.dudes[1] = "Land Raider";
 		u.dudes_num[1] = 10;
 		u.dudes[2] = "Chaos Terminator";
 		u.dudes_num[2] = 50;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
 		u.dudes[1] = "Chaos Chosen";
 		u.dudes_num[1] = 8;
 		u.dudes[2] = "Chaos Space Marine";
@@ -4352,7 +4352,7 @@ if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeti
 		u.dudes_num[3] = 36;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		u.dudes[1] = "Predator";
 		u.dudes_num[1] = 10;
 		u.dudes[2] = "Vindicator";
@@ -4361,14 +4361,14 @@ if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeti
 		u.dudes_num[3] = 10;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 40, 240, obj_enunit);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		u.dudes[1] = "Defiler";
 		u.dudes_num[1] = 12;
 		u.dudes[2] = "Raptor";
 		u.dudes_num[2] = 40;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 50, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Heldrake";
 		u.dudes_num[1] = 5;
 		u.flank = 1;
@@ -4381,7 +4381,7 @@ if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeti
 	}
 	// CSM Chapter or Warband
 	if (threat = 10) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 50, 240, obj_enunit);
 		enemy_dudes = "600";
 
 		u.dudes[1] = "Chaos Lord";
@@ -4394,14 +4394,14 @@ if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeti
 		u.dudes_num[4] = 50;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u = instance_nearest(xxx + 40, 240, obj_enunit);
 		u.dudes[1] = "Land Raider";
 		u.dudes_num[1] = 20;
 		u.dudes[2] = "Chaos Terminator";
 		u.dudes_num[2] = 100;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
 		u.dudes[1] = "Chaos Chosen";
 		u.dudes_num[1] = 12;
 		u.dudes[2] = "Chaos Space Marine";
@@ -4410,7 +4410,7 @@ if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeti
 		u.dudes_num[3] = 64;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		u.dudes[1] = "Predator";
 		u.dudes_num[1] = 20;
 		u.dudes[2] = "Vindicator";
@@ -4419,14 +4419,14 @@ if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeti
 		u.dudes_num[3] = 20;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 40, 240, obj_enunit);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		u.dudes[1] = "Defiler";
 		u.dudes_num[1] = 30;
 		u.dudes[2] = "Raptor";
 		u.dudes_num[2] = 60;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 50, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Heldrake";
 		u.dudes_num[1] = 10;
 		u.flank = 1;
@@ -4471,7 +4471,7 @@ if (enemy = 11) and(battle_special = "world_eaters") {
 	}
 	// WE Squad
 	if (threat = 3) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		enemy_dudes = "10";
 
 		u.dudes[1] = "Chaos Chosen";
@@ -4482,13 +4482,13 @@ if (enemy = 11) and(battle_special = "world_eaters") {
 		u.dudes_num[2] = 4;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Khorne Berzerker";
 		u.dudes_num[1] = 5;
 	}
 	// WE Several Squads
 	if (threat = 4) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		enemy_dudes = "20";
 
 		u.dudes[1] = "Chaos Chosen";
@@ -4505,7 +4505,7 @@ if (enemy = 11) and(battle_special = "world_eaters") {
 		u.dudes_num[1] = 5;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Defiler";
 		u.dudes_num[1] = 1;
 		u.dudes[2] = "Khorne Berzerker";
@@ -4515,7 +4515,7 @@ if (enemy = 11) and(battle_special = "world_eaters") {
 	}
 	// WE Demi-Company
 	if (threat = 5) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
 		enemy_dudes = "40";
 
 		u.dudes[1] = "Chaos Chosen";
@@ -4526,12 +4526,12 @@ if (enemy = 11) and(battle_special = "world_eaters") {
 		u.dudes_num[2] = 4;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		u.dudes[1] = "World Eaters Veteran";
 		u.dudes_num[1] = 10;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		u.dudes[1] = "Predator";
 		u.dudes_num[1] = 1;
 		u.dudes[2] = "Vindicator";
@@ -4540,7 +4540,7 @@ if (enemy = 11) and(battle_special = "world_eaters") {
 		u.dudes_num[3] = 1;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Defiler";
 		u.dudes_num[1] = 2;
 		u.dudes[2] = "Khorne Berzerker";
@@ -4557,7 +4557,7 @@ if (enemy = 11) and(battle_special = "world_eaters") {
 	}
 	// WE Company
 	if (threat >= 6) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 40, 240, obj_enunit);
 		enemy_dudes = "77";
 
 		u.dudes[1] = "Chaos Lord";
@@ -4573,7 +4573,7 @@ if (enemy = 11) and(battle_special = "world_eaters") {
 		u.dudes_num[3] = 1;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
 		u.dudes[1] = "World Eaters Veteran";
 		u.dudes_num[1] = 15;
 
@@ -4585,7 +4585,7 @@ if (enemy = 11) and(battle_special = "world_eaters") {
 		u.dudes_num[2] = 4;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		u.dudes[1] = "Defiler";
 		u.dudes_num[1] = 6;
 		u.dudes[2] = "Khorne Berzerker";
@@ -4596,7 +4596,7 @@ if (enemy = 11) and(battle_special = "world_eaters") {
 		u.dudes_num[4] = 20;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 40, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Heldrake";
 		u.dudes_num[1] = 1;
 		u.flank = 1;
@@ -4609,7 +4609,7 @@ if (enemy = 11) and(battle_special = "world_eaters") {
 	}
 	// WE Company + Support
 	if (threat >= 7) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 40, 240, obj_enunit);
 		enemy_dudes = "134";
 
 		u.dudes[1] = "Chaos Lord";
@@ -4627,7 +4627,7 @@ if (enemy = 11) and(battle_special = "world_eaters") {
 		u.dudes_num[4] = 2;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
 		u.dudes[1] = "Venerable Chaos Chosen";
 		u.dudes_num[1] = 1;
 		u.dudes[2] = "World Eaters Veteran";
@@ -4641,7 +4641,7 @@ if (enemy = 11) and(battle_special = "world_eaters") {
 		u.dudes_num[2] = 8;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		u.dudes[1] = "Defiler";
 		u.dudes_num[1] = 12;
 		u.dudes[2] = "Khorne Berzerker";
@@ -4652,7 +4652,7 @@ if (enemy = 11) and(battle_special = "world_eaters") {
 		u.dudes_num[4] = 30;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 40, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Heldrake";
 		u.dudes_num[1] = 2;
 		u.flank = 1;
@@ -4665,7 +4665,7 @@ if (enemy = 11) and(battle_special = "world_eaters") {
 	}
 	// WE 2 Companies + Support
 	if (threat >= 8) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 40, 240, obj_enunit);
 		enemy_dudes = "250";
 
 		u.dudes[1] = "Chaos Lord";
@@ -4683,7 +4683,7 @@ if (enemy = 11) and(battle_special = "world_eaters") {
 		u.dudes_num[4] = 4;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
 		u.dudes[1] = "Venerable Chaos Chosen";
 		u.dudes_num[1] = 1;
 		u.dudes[2] = "World Eaters Veteran";
@@ -4697,7 +4697,7 @@ if (enemy = 11) and(battle_special = "world_eaters") {
 		u.dudes_num[2] = 14;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		u.dudes[1] = "Defiler";
 		u.dudes_num[1] = 20;
 		u.dudes[2] = "Khorne Berzerker";
@@ -4708,7 +4708,7 @@ if (enemy = 11) and(battle_special = "world_eaters") {
 		u.dudes_num[4] = 60;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 40, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Heldrake";
 		u.dudes_num[1] = 4;
 		u.flank = 1;
@@ -4721,7 +4721,7 @@ if (enemy = 11) and(battle_special = "world_eaters") {
 	}
 	// WE 4 Companies + Support
 	if (threat >= 9) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 40, 240, obj_enunit);
 		enemy_dudes = "355";
 
 		u.dudes[1] = "Chaos Lord";
@@ -4739,7 +4739,7 @@ if (enemy = 11) and(battle_special = "world_eaters") {
 		u.dudes_num[4] = 5;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
 		u.dudes[1] = "Venerable Chaos Chosen";
 		u.dudes_num[1] = 2;
 		u.dudes[2] = "World Eaters Veteran";
@@ -4753,7 +4753,7 @@ if (enemy = 11) and(battle_special = "world_eaters") {
 		u.dudes_num[2] = 22;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		u.dudes[1] = "Defiler";
 		u.dudes_num[1] = 30;
 		u.dudes[2] = "Khorne Berzerker";
@@ -4764,7 +4764,7 @@ if (enemy = 11) and(battle_special = "world_eaters") {
 		u.dudes_num[4] = 100;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 40, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Heldrake";
 		u.dudes_num[1] = 5;
 		u.flank = 1;
@@ -4777,7 +4777,7 @@ if (enemy = 11) and(battle_special = "world_eaters") {
 	}
 	// WE Warband
 	if (threat >= 10) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 40, 240, obj_enunit);
 		enemy_dudes = "620";
 
 		u.dudes[1] = "Chaos Lord";
@@ -4795,7 +4795,7 @@ if (enemy = 11) and(battle_special = "world_eaters") {
 		u.dudes_num[4] = 10;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
 		u.dudes[1] = "Venerable Chaos Chosen";
 		u.dudes_num[1] = 5;
 		u.dudes[2] = "World Eaters Veteran";
@@ -4809,7 +4809,7 @@ if (enemy = 11) and(battle_special = "world_eaters") {
 		u.dudes_num[2] = 40;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		u.dudes[1] = "Defiler";
 		u.dudes_num[1] = 40;
 		u.dudes[2] = "Khorne Berzerker";
@@ -4820,7 +4820,7 @@ if (enemy = 11) and(battle_special = "world_eaters") {
 		u.dudes_num[4] = 200;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 40, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Heldrake";
 		u.dudes_num[1] = 10;
 		u.flank = 1;
@@ -4850,7 +4850,7 @@ if (enemy = 12) {
 	}
 	// Daemon "Demi-Squad"
 	if (threat = 2) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		enemy_dudes = "4";
 
 		u.dudes[1] = choose("Bloodletter", "Daemonette", "Plaguebearer", "Pink Horror");
@@ -4858,13 +4858,13 @@ if (enemy = 12) {
 		u.dudes_num[1] = 2;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = choose("Cultist", "Mutant");
 		u.dudes_num[1] = 2;
 	}
 	// Daemon "Squad"
 	if (threat = 3) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		enemy_dudes = "10";
 
 		u.dudes[1] = choose("Bloodletter", "Daemonette", "Plaguebearer", "Pink Horror");
@@ -4874,13 +4874,13 @@ if (enemy = 12) {
 		u.dudes_num[2] = 2;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = choose("Cultist", "Mutant");
 		u.dudes_num[1] = 6;
 	}
 	// Daemon "Demi-Platoon"
 	if (threat = 4) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		enemy_dudes = "20";
 		u.neww = 1; // What does this do?
 
@@ -4895,7 +4895,7 @@ if (enemy = 12) {
 		u.dudes_num[3] = 1;
 		instance_deactivate_object(u);
 
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		if (slaa) {
 			u.dudes[1] = "Daemonette";
 			u.dudes_num[1] = 15;
@@ -4919,7 +4919,7 @@ if (enemy = 12) {
 	}
 	// Daemon "Demi-Company"
 	if (threat = 5) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		enemy_dudes = "50";
 		u.neww = 1; // What does this do?
 
@@ -4936,7 +4936,7 @@ if (enemy = 12) {
 		u.dudes_num[4] = 2;
 		instance_deactivate_object(u);
 
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		if (slaa) {
 			u.dudes[1] = "Daemonette";
 			u.dudes_num[1] = 40;
@@ -4958,7 +4958,7 @@ if (enemy = 12) {
 	}
 	// Daemon "Company"
 	if (threat = 6) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		enemy_dudes = "80";
 		u.neww = 1; // What does this do?
 
@@ -4987,7 +4987,7 @@ if (enemy = 12) {
 		u.dudes_num[3] = 1;
 		instance_deactivate_object(u);
 
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		if (slaa) {
 			u.dudes[1] = "Daemonette";
 			u.dudes_num[1] = 60;
@@ -5009,7 +5009,7 @@ if (enemy = 12) {
 	}
 	// Daemon "Company + Support"
 	if (threat = 7) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		enemy_dudes = "120";
 		u.neww = 1; // What does this do?
 
@@ -5038,7 +5038,7 @@ if (enemy = 12) {
 		u.dudes_num[3] = 2;
 		instance_deactivate_object(u);
 
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		if (slaa) {
 			u.dudes[1] = "Daemonette";
 			u.dudes_num[1] = 80;
@@ -5060,7 +5060,7 @@ if (enemy = 12) {
 	}
 	// Daemon "2 Companies + Support"
 	if (threat = 8) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		enemy_dudes = "200";
 		u.neww = 1; // What does this do?
 
@@ -5089,7 +5089,7 @@ if (enemy = 12) {
 		u.dudes_num[3] = 10;
 		instance_deactivate_object(u);
 
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		if (slaa) {
 			u.dudes[1] = "Daemonette";
 			u.dudes_num[1] = 120;
@@ -5111,7 +5111,7 @@ if (enemy = 12) {
 	}
 	// Daemon "4 Companies + Support"
 	if (threat = 9) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		enemy_dudes = "270";
 		u.neww = 1; // What does this do?
 
@@ -5140,7 +5140,7 @@ if (enemy = 12) {
 		u.dudes_num[3] = 10;
 		instance_deactivate_object(u);
 
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		if (slaa) {
 			u.dudes[1] = "Daemonette";
 			u.dudes_num[1] = 140;
@@ -5162,7 +5162,7 @@ if (enemy = 12) {
 	}
 	// Daemon "Warband"
 	if (threat = 10) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		enemy_dudes = "540";
 		u.neww = 1; // What does this do?
 
@@ -5191,7 +5191,7 @@ if (enemy = 12) {
 		u.dudes_num[3] = 20;
 		instance_deactivate_object(u);
 
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		if (slaa) {
 			u.dudes[1] = "Daemonette";
 			u.dudes_num[1] = 280;
@@ -5226,7 +5226,7 @@ if (enemy = 13) and((string_count("_attack", battle_special) = 0) or(string_coun
 	}
 	// Necron Soldier + Scarabs
 	if (threat = 2) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		enemy_dudes = "10";
 
 		u.dudes[1] = choose("Necron Warrior", "Necron Wraith", "Flayed One");
@@ -5235,13 +5235,13 @@ if (enemy = 13) and((string_count("_attack", battle_special) = 0) or(string_coun
 		u.dudes_num[2] = 4;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Canoptek Scarab";
 		u.dudes_num[1] = 5;
 	}
 	// Necron Squad
 	if (threat = 3) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		enemy_dudes = "20";
 
 		u.dudes[1] = choose("Necron Immortal", "Necron Wraith", "Necron Destroyer", "Canoptek Spyder");
@@ -5252,13 +5252,13 @@ if (enemy = 13) and((string_count("_attack", battle_special) = 0) or(string_coun
 		u.dudes_num[3] = 6;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Canoptek Scarab";
 		u.dudes_num[1] = 10;
 	}
 	// Necron Platoon
 	if (threat = 4) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		enemy_dudes = "50";
 
 		u.dudes[1] = choose("Lychguard", "Necron Destroyer", "Necron Immortal");
@@ -5274,7 +5274,7 @@ if (enemy = 13) and((string_count("_attack", battle_special) = 0) or(string_coun
 		u.dudes_num[2] = 4;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Canoptek Spyder";
 		u.dudes_num[1] = 1;
 		u.dudes[2] = choose("Flayed One", "Necron Wraith", "Necron Warrior");
@@ -5289,7 +5289,7 @@ if (enemy = 13) and((string_count("_attack", battle_special) = 0) or(string_coun
 	}
 	// Necron Demi-Company
 	if (threat = 5) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
 		enemy_dudes = "100";
 
 		u.dudes[1] = choose("Necron Overlord", "Tomb Stalker");
@@ -5300,21 +5300,21 @@ if (enemy = 13) and((string_count("_attack", battle_special) = 0) or(string_coun
 		u.dudes_num[3] = 20;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		u.dudes[1] = "Necron Immortal";
 		u.dudes_num[1] = 3;
 		u.dudes[2] = "Necron Warrior";
 		u.dudes_num[2] = 12;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		u.dudes[1] = "Canoptek Spyder";
 		u.dudes_num[1] = 2;
 		u.dudes[2] = "Necron Destroyer";
 		u.dudes_num[2] = 2;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Necron Wraith";
 		u.dudes_num[1] = 2;
 		u.dudes[2] = "Flayed One";
@@ -5329,7 +5329,7 @@ if (enemy = 13) and((string_count("_attack", battle_special) = 0) or(string_coun
 	}
 	// Necron Company
 	if (threat = 6) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
 		enemy_dudes = "200";
 
 		u.dudes[1] = "Necron Overlord";
@@ -5340,21 +5340,21 @@ if (enemy = 13) and((string_count("_attack", battle_special) = 0) or(string_coun
 		u.dudes_num[3] = 50;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		u.dudes[1] = "Necron Immortal";
 		u.dudes_num[1] = 10;
 		u.dudes[2] = "Necron Warrior";
 		u.dudes_num[2] = 40;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		u.dudes[1] = "Tomb Stalker";
 		u.dudes_num[1] = 1;
 		u.dudes[2] = "Necron Destroyer";
 		u.dudes_num[2] = 5;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Canoptek Spyder";
 		u.dudes_num[1] = 5;
 		u.dudes[2] = "Necron Wraith";
@@ -5371,7 +5371,7 @@ if (enemy = 13) and((string_count("_attack", battle_special) = 0) or(string_coun
 	}
 	// Necron Company + Support
 	if (threat = 7) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
 		enemy_dudes = "320";
 
 		u.dudes[1] = "Necron Overlord";
@@ -5382,14 +5382,14 @@ if (enemy = 13) and((string_count("_attack", battle_special) = 0) or(string_coun
 		u.dudes_num[3] = 80;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		u.dudes[1] = "Necron Immortal";
 		u.dudes_num[1] = 20;
 		u.dudes[2] = "Necron Warrior";
 		u.dudes_num[2] = 80;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		u.dudes[1] = "Tomb Stalker";
 		u.dudes_num[1] = 1;
 		u.dudes[2] = "Necron Monolith";
@@ -5400,7 +5400,7 @@ if (enemy = 13) and((string_count("_attack", battle_special) = 0) or(string_coun
 		u.dudes_num[4] = 7;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Canoptek Spyder";
 		u.dudes_num[1] = 10;
 		u.dudes[2] = "Necron Wraith";
@@ -5417,7 +5417,7 @@ if (enemy = 13) and((string_count("_attack", battle_special) = 0) or(string_coun
 	}
 	// Necron 2 Companies + Support
 	if (threat = 8) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
 		enemy_dudes = "520";
 
 		u.dudes[1] = "Necron Overlord";
@@ -5428,14 +5428,14 @@ if (enemy = 13) and((string_count("_attack", battle_special) = 0) or(string_coun
 		u.dudes_num[3] = 120;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		u.dudes[1] = "Necron Immortal";
 		u.dudes_num[1] = 30;
 		u.dudes[2] = "Necron Warrior";
 		u.dudes_num[2] = 120;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		u.dudes[1] = "Tomb Stalker";
 		u.dudes_num[1] = 2;
 		u.dudes[2] = "Necron Monolith";
@@ -5446,7 +5446,7 @@ if (enemy = 13) and((string_count("_attack", battle_special) = 0) or(string_coun
 		u.dudes_num[4] = 14;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Canoptek Spyder";
 		u.dudes_num[1] = 15;
 		u.dudes[2] = "Necron Wraith";
@@ -5463,7 +5463,7 @@ if (enemy = 13) and((string_count("_attack", battle_special) = 0) or(string_coun
 	}
 	// Necron 4 Companies + Support
 	if (threat = 9) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
 		enemy_dudes = "690";
 
 		u.dudes[1] = "Necron Overlord";
@@ -5474,14 +5474,14 @@ if (enemy = 13) and((string_count("_attack", battle_special) = 0) or(string_coun
 		u.dudes_num[3] = 160;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		u.dudes[1] = "Necron Immortal";
 		u.dudes_num[1] = 40;
 		u.dudes[2] = "Necron Warrior";
 		u.dudes_num[2] = 160;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		u.dudes[1] = "Tomb Stalker";
 		u.dudes_num[1] = 3;
 		u.dudes[2] = "Necron Monolith";
@@ -5492,7 +5492,7 @@ if (enemy = 13) and((string_count("_attack", battle_special) = 0) or(string_coun
 		u.dudes_num[4] = 21;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Canoptek Spyder";
 		u.dudes_num[1] = 20;
 		u.dudes[2] = "Necron Wraith";
@@ -5509,7 +5509,7 @@ if (enemy = 13) and((string_count("_attack", battle_special) = 0) or(string_coun
 	}
 	// Necron Expeditionary Force
 	if (threat = 10) {
-		u = instance_nearest(xxx, 240, obj_enunit);
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
 		enemy_dudes = "1020";
 
 		u.dudes[1] = "Necron Overlord";
@@ -5520,14 +5520,14 @@ if (enemy = 13) and((string_count("_attack", battle_special) = 0) or(string_coun
 		u.dudes_num[3] = 200;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 10, 240, obj_enunit);
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		u.dudes[1] = "Necron Immortal";
 		u.dudes_num[1] = 50;
 		u.dudes[2] = "Necron Warrior";
 		u.dudes_num[2] = 200;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u = instance_nearest(xxx + 10, 240, obj_enunit);
 		u.dudes[1] = "Tomb Stalker";
 		u.dudes_num[1] = 5;
 		u.dudes[2] = "Necron Monolith";
@@ -5538,7 +5538,7 @@ if (enemy = 13) and((string_count("_attack", battle_special) = 0) or(string_coun
 		u.dudes_num[4] = 35;
 
 		instance_deactivate_object(u);
-		u = instance_nearest(xxx + 30, 240, obj_enunit);
+		u = instance_nearest(xxx, 240, obj_enunit);
 		u.dudes[1] = "Canoptek Spyder";
 		u.dudes_num[1] = 30;
 		u.dudes[2] = "Necron Wraith";
