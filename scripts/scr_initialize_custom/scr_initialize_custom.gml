@@ -1346,7 +1346,7 @@ function scr_initialize_custom() {
 		ranged_weapons: ["Bolter", "Bolter",  "Storm Bolter", "Storm Bolter", "Stalker Pattern Bolter", "Stalker Pattern Bolter" ],
 		special_ranged_weapons: ["Flamer", "Flamer", "Meltagun", "Meltagun", "Plasma Gun", "Grav-Gun"],
 		combi_weapons: ["Combiflamer","Combiplasma","Combigrav","Combimelta"],
-		pistols: ["Bolt Pistol", "Bolt Pistol", "Bolt Pistol", "Bolt Pistol", "Hand Flamer", "Hand Flamer", "Plasma Pistol", "Plasma Pistol", "Grav-Pistol"],
+		pistols: ["Bolt Pistol", "Bolt Pistol", "Bolt Pistol", "Hand Flamer", "Hand Flamer", "Plasma Pistol", "Plasma Pistol", "Grav-Pistol"],
 		one_hand_melee: ["Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Power Sword", "Power Sword", "Power Sword", "Lightning Claw", "Lightning Claw", "Lightning Claw", "Power Fist", "Power Fist", "Thunder Hammer"],
 	}
 
@@ -1745,7 +1745,7 @@ function scr_initialize_custom() {
 						],
 						"wep2": [
 							[
-								["Plasma Pistol", "Flamer"], 2
+								weapon_lists.pistols, 2
 							]
 						]
 					}
@@ -1814,7 +1814,7 @@ function scr_initialize_custom() {
 							],
 							"wep2": [
 								[
-									["Power Sword", "Chainsword", "Power Axe"], 1
+									weapon_lists.melee_weapons, 1
 								]
 							]
 						}
@@ -1841,7 +1841,7 @@ function scr_initialize_custom() {
 						"option": {
 							"wep1": [
 								[
-									["Missile Launcher"], 1
+									["Missile Launcher","Needle Sniper Rifle"], 1
 								]						
 							],
 						}
