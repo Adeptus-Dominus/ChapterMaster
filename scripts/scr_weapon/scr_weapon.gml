@@ -211,15 +211,15 @@ global.weapons = {
 	"Lascutter": {
 		"abbreviation": "Lasct",
 		"attack": {
-			"standard": 100,
-			"master_crafted": 150,
-			"artifact": 200
+			"standard": 250,
+			"master_crafted": 300,
+			"artifact": 425
 		},
-		"description": "Origonally industrial tools used for breaking through bulkheads, this laser weapon is devastating in close combat.",
+		"description": "Originally industrial tools used for breaking through bulkheads, this laser weapon is devastating in close combat.",
 		"melee_hands": 1,
 		"range": 1,
 		"arp": 1,
-		"tags": ["las","boarding", "siege"],
+		"tags": ["las","boarding 3", "siege"],
 	},
 	"Power Weapon": {
 		"abbreviation": "PwrWpn",
@@ -239,7 +239,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 3,
-		"arp": -2,
+		"arp": -1,
 		"tags": ["power"],
 	},
 	"Power Axe": {
@@ -263,6 +263,27 @@ global.weapons = {
 		"arp": -1,
 		"tags": ["power", "axe", "dual","savage", "boarding 2"],
 	},
+	"Omnissian Axe": {
+		"abbreviation": "OmnAxe",
+		"attack": {
+			"standard": 400,
+			"master_crafted": 450,
+			"artifact": 550
+		},
+		"melee_mod": {
+			"standard": 1,
+			"master_crafted": 1.1,
+			"artifact": 1.2
+		},
+		"description": "A symbol that is equally weapon and holy icon given only to those trained by the Adeptus Mechanicus and have shown their devotion to the Omnissiah in battle.",
+		"melee_hands": 1,
+		"ranged_hands": 0,
+		"ammo": 0,
+		"range": 1,
+		"spli": 5,
+		"arp": -1,
+		"tags": ["power", "axe", "savage", "boarding 3"],
+	},
 	"Executioner Power Axe": {
 		"abbreviation": "ExPwrAxe",
 		"attack": {
@@ -280,7 +301,7 @@ global.weapons = {
 		"ranged_hands": 2,
 		"ammo": 0,
 		"range": 1,
-		"spli": 2,
+		"spli": 5,
 		"arp": -2,
 		"tags": ["power", "axe", "martial"],
 	},
@@ -368,7 +389,7 @@ global.weapons = {
 		"spli": 2,
 		"arp": -2,
 		"second_profiles": ["Assault Cannon"],
-		"tags": ["power","boarding", "chain", "fist", "dual", "siege"],
+		"tags": ["power","boarding 3", "chain", "fist", "dual", "siege"],
 	},
 	"Lightning Claw": {
 		"abbreviation": "LghtClw",
@@ -389,9 +410,9 @@ global.weapons = {
 	"Dreadnought Lightning Claw": {
 		"abbreviation": "LghtClw",
 		"attack": {
-			"standard": 300,
-			"master_crafted": 400,
-			"artifact": 600
+			"standard": 600,
+			"master_crafted": 700,
+			"artifact": 850
 		},
 		"melee_mod": {
 			"standard": 1.2,
@@ -452,7 +473,7 @@ global.weapons = {
 		"spli": 15,
     "maintenance" : 0.1,
 		"req_exp": 100,
-    "tags": ["heavy_melee", "power", "hammer", "siege", "savage"],
+    	"tags": ["heavy_melee", "power", "hammer", "siege", "savage"],
 	},
 	"Power Mace": {
 		"abbreviation": "PwrMace",
@@ -593,7 +614,7 @@ global.weapons = {
 		"ranged_hands": 1,
 		"ammo": 10,
 		"range": 4.1,
-		"spli": 6,
+		"spli": 8,
 		"arp": 0,
 		"tags": ["bolt", "pistol", "boarding 2"],
 	},
@@ -678,7 +699,7 @@ global.weapons = {
 		"range": 6,
 		"spli": 6,
 		"arp": 1,
-		"tags": ["grav", "heavy_weapon"],
+		"tags": ["grav", "heavy_ranged"],
 		"maintenance" : 0.2,
 	},
 	"Underslung Bolter": {
@@ -980,7 +1001,7 @@ global.weapons = {
 		"ammo": 20,
 		"range": 14,
 		"spli": 1,
-		"arp": -1,
+		"arp": -2,
 		"tags": ["precision", "rifle"]
 	},
 	"Assault Cannon": {
@@ -1014,6 +1035,7 @@ global.weapons = {
 		"spli": 12,
 		"arp": -1,
 		"tags": ["heavy_ranged", "dreadnought"]
+		"tags": ["heavy_ranged","explosive", "dreadnought"]
 	},
 	"Missile Launcher": {
 		"abbreviation": "MsslLnch",
@@ -1029,7 +1051,24 @@ global.weapons = {
 		"range": 15,
 		"spli": 10,
 		"arp": -1,
-		"tags": ["heavy_ranged", "dreadnought"]
+		
+		"tags": ["heavy_ranged","explosive", "dreadnought"]
+	},
+	"Cyclone Missile Launcher": {
+		"abbreviation": "CycLnch",
+		"attack": {
+			"standard": 600,
+			"master_crafted": 700,
+			"artifact": 950
+		},
+		"description": "This power pack mounted weapon is capable of unleashing a hail of either armor-piercing or fragmentation rockets. It's ammunition is limited by what the bearer has carried with them.",
+		"melee_hands": 1,
+		"ranged_hands": 2,
+		"ammo": 6,
+		"range": 15,
+		"spli": 20,
+		"arp": -1,
+		"tags": ["heavy_ranged","explosive"]
 	},
 	"Lascannon": {
 		"abbreviation": "Lascnn",
@@ -1421,7 +1460,7 @@ global.weapons = {
 		"range": 18,
 		"spli": 15,
 		"arp": -1,
-		"tags": ["vehicle","heavy_ranged", "turret"]
+		"tags": ["vehicle","heavy_ranged","explosive", "turret"]
 	},
 	"Storm Bolter": {
 		"abbreviation": "StrmBltr",

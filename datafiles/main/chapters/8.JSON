@@ -226,7 +226,7 @@
         "custom_roles": {
             "veteran": {
                 "name": "Firedrake",
-                "wep1": "Power Sword"
+                "wep2": "Power Sword"
             },
             "veteran_sergeant": {
                 "name": "Firedrake Master"

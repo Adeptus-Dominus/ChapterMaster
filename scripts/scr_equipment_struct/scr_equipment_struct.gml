@@ -49,7 +49,7 @@ function EquipmentStruct(item_data, core_type,quality="none") constructor{
 
     if (maintenance == 0){
         if (has_tags(["heavy_ranged","power", "plasma", "melta"])){
-            maintenance = 0.05;
+            maintenance += 0.05;
         }
     }  
     static item_tooltip_desc_gen = function(){
@@ -295,7 +295,7 @@ function EquipmentStruct(item_data, core_type,quality="none") constructor{
                 if (obj_controller.stc_bonus[2]>0 && obj_controller.stc_bonus[2]<3){
                     if (obj_controller.stc_bonus[1]==1 && has_tag("fist")){
                         attack*=1.1;
-                    } else if (obj_controller.stc_bonus[1]==2 && has_tag("Plasma")){
+                    } else if (obj_controller.stc_bonus[1]==2 && has_tag("plasma")){
                         attack*=1.1;
                     }                   
                 }
