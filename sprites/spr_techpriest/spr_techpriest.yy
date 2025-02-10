@@ -25,8 +25,8 @@
   "nineSlice": null,
   "origin": 0,
   "parent": {
-    "name": "Ally Splash",
-    "path": "folders/Sprites/New UI/Ally Splash.yy",
+    "name": "allies",
+    "path": "folders/Sprites/Marine Viewer/allies.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

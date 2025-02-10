@@ -23,13 +23,13 @@ function scr_bomb_world(star_system, planet_number, bombard_target_faction, bomb
 	pop_after=max(0,pop_before-kill);
 	if (pop_after<=0) and (pop_before>0) then heres_after=0;
 
-	// We should also make the regular bombardment lower heresy, I'm gonna copy some bits of code from scr_purge_world 
-	// heres_before=max(star.p_heresy[planet]+star.p_heresy_secret[planet],star.p_influence[planet][eFACTION.Tau]);
-	// sci1=0;sci2=0;
-	// if (pop_before>0) then sci1=(pop_after/pop_before)*100;
-	// if (sci1>0) then sci2=min((sci1*2),action_score*2);
-	// heres_after=heres_before-sci2;
-
+    // Code bits copied from scr_purge_world
+    if (star_system.p_population[planet_number] > 0) {
+        heres_before = max(star_system.p_heresy[planet_number] + star_system.p_heresy_secret[planet_number], star_system.p_influence[planet_number][eFACTION.Tau]);
+        sci1 = 0;
+        sci1 = (pop_after / pop_before) * irandom_range(1, 3); // Make bombard corruption reduction random to encourage other forms of purging // TODO MEDIUM BOMBARD_CORRUPTION // Tweak numbers
+        heres_after = heres_before - sci1;
+    }
 
 	if (star_system.p_type[planet_number]!="Space Hulk"){
 	    var bombard_protection=1;
@@ -231,21 +231,32 @@ function scr_bomb_world(star_system, planet_number, bombard_target_faction, bomb
 	    if (kill>0) then kill=min(star_system.p_population[planet_number],kill);
     
 	    txt3=""; // Life is the Emperor's currency. Spend it well
-	    if (pop_before > 0 && star_system.p_type[planet_number] != "Daemon") {
-			var _displayed_population = star_system.p_large[planet_number] == 1 ? $"{pop_before} billion" : scr_display_number(floor(pop_before));
-			var _displayed_killed = star_system.p_large[planet_number] == 1 ? $"{kill} billion" : scr_display_number(floor(kill));
-			txt3 += $"##The world had {_displayed_population} Imperium subjects. {_displayed_killed} died over the duration of the bombardment.";
-	    }
+        if (pop_before > 0 && star_system.p_type[planet_number] != "Daemon") {
+            var _displayed_population = star_system.p_large[planet_number] == 1 ? $"{pop_before} billion" : scr_display_number(floor(pop_before));
+            var _displayed_killed = star_system.p_large[planet_number] == 1 ? $"{kill} billion" : scr_display_number(floor(kill));
+            if (pop_after == 0) {
+                heres_after = 0;
+            }
+            txt3 += $"##The world had {_displayed_population} Imperium subjects. {_displayed_killed} died over the duration of the bombardment,##Heresy has fallen down to {max(0, heres_after)}%.";
+        }
     
-    
-	    // DO EET
-	    if (pop_before>0){
-	    	star_system.p_population[planet_number]=pop_before-kill;
-		}
-    
+        // DO EET
+        if (pop_before > 0) {
+            star_system.p_population[planet_number] = pop_before - kill;
+            star_system.p_heresy[planet_number] -= sci1;
+            star_system.p_influence[planet_number][eFACTION.Tau] -= sci1; // TODO LOW PURGE_INFLUENCE // Make this affect all influences
+            if (star_system.p_heresy[planet_number] < 0) {
+                star_system.p_heresy[planet_number] = 0;
+            }
+            if (star_system.p_influence[planet_number][eFACTION.Tau] < 0) {
+                star_system.p_influence[planet_number][eFACTION.Tau] = 0;
+            }
+        }
+
 	    var pip=instance_create(0,0,obj_popup);
 	    pip.title="Bombard Results";
 	    pip.text=txt1+txt2+txt3;
+	    //pip.text=txt1+txt2+txt3+" "+string(sci1)+" "+string(heres_before)+" "+string(heres_after); // TODO LOW DEBUG_INFLUENCE // Put in debug code path and make it clearer
     
     
 	    if (pop_after==0 && pop_before>0){

@@ -855,9 +855,9 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
             switch (_slot) {
                 case 1: push_rhino_weapons_item_names(_item_names); break;
+                case 2: push_rhino_side_item_names(_item_names); break;
                 case 4: push_tank_upgrade_item_names(_item_names, false); break;
                 case 5: push_tank_accessory_item_names(_item_names, false, false); break;
-                case 2: push_rhino_side_item_names(_item_names); break;
                 case 3:
                     // Rhino doesn't have these slots, but empty lists are shown in the UI
                     break;
