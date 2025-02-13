@@ -312,7 +312,7 @@ function drop_select_draw(){
                 // if (obj_ncombat.threat>1) and (obj_ncombat.enemy!=13) then obj_ncombat.threat-=1;
                 if (obj_ncombat.threat > 1) and(obj_ncombat.battle_special != "world_eaters") and(attack = 0) then obj_ncombat.threat -= 1;
                 if (obj_ncombat.threat < 1) then obj_ncombat.threat = 1;
-                if (obj_ncombat.enemy = 10) and(obj_ncombat.battle_object.p_type[obj_ncombat.battle_id] = "Daemon") then obj_ncombat.threat = 7;
+                // if (obj_ncombat.enemy = 10) and(obj_ncombat.battle_object.p_type[obj_ncombat.battle_id] = "Daemon") then obj_ncombat.threat = 7;
 
                 var _battle_place = obj_ncombat.battle_object;
                 var _battle_sub_loc = obj_ncombat.battle_id;
