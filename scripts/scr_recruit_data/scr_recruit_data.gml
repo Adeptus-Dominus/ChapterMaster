@@ -64,7 +64,7 @@ function find_recruit_success_chance(local_apothecary_points, planet_type){
 function find_recruit_corruption(planet_type){
 	var _recruit_corruption = 0;
 	var _trial_type = scr_trial_data(obj_controller.recruit_trial);
-	var _planet_types_data = {
+	static _planet_types_data = {
 		// The first number is base, the second one is SD for gaussian distribution;
 		"Hive": {
 			corruption_bonus: [15, 2],
