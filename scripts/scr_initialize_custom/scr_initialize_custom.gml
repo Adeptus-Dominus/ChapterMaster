@@ -1745,7 +1745,7 @@ function scr_initialize_custom() {
 						],
 						"wep2": [
 							[
-								weapon_lists.pistols, 2
+								["Plasma Pistol", "Flamer"], 2
 							]
 						]
 					}
