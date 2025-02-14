@@ -85,8 +85,8 @@ repeat(20) {
 
 	if ((obj_ncombat.started = 0) or(neww = 1)) or(dudes_num[j] > 1) {
 		if (dudes[j] = "Greater Daemon of Khorne") {
-			dudes_ac[j] = 18;
-			dudes_hp[j] = 600;
+			dudes_ac[j] = 12;
+			dudes_hp[j] = 700;
 		}
 	}
 	if (dudes[j] = "Greater Daemon of Khorne") {
@@ -97,20 +97,22 @@ repeat(20) {
 	}
 	if ((obj_ncombat.started = 0) or(neww = 1)) or(dudes_num[j] > 1) {
 		if (dudes[j] = "Greater Daemon of Slaanesh") {
-			dudes_ac[j] = 18;
-			dudes_hp[j] = 500;
+		dudes_ac[j] = 10;
+		dudes_hp[j] = 500;
+		dudes_dr[j] = 0.25;
 		}
 	}
 	if (dudes[j] = "Greater Daemon of Slaanesh") {
 		scr_en_weapon("Demon Melee", true, dudes_num[j], dudes[j], j);
 		scr_en_weapon("Lash Whip", true, dudes_num[j], dudes[j], j);
-		dudes_dr[j] = 0.7;
+		dudes_dr[j] = 0.25;
 		medi += dudes_num[j];
 	}
 	if ((obj_ncombat.started = 0) or(neww = 1)) or(dudes_num[j] > 1) {
 		if (dudes[j] = "Greater Daemon of Nurgle") {
-			dudes_ac[j] = 25;
-			dudes_hp[j] = 700;
+			dudes_ac[j] = 8;
+			dudes_hp[j] = 900;
+			dudes_dr[j] = 0.2;
 		}
 	}
 	if (dudes[j] = "Greater Daemon of Nurgle") {
@@ -121,54 +123,54 @@ repeat(20) {
 	}
 	if ((obj_ncombat.started = 0) or(neww = 1)) or(dudes_num[j] > 1) {
 		if (dudes[j] = "Greater Daemon of Tzeentch") {
-			dudes_ac[j] = 18;
-			dudes_hp[j] = 500;
+			dudes_ac[j] = 10;
+			dudes_hp[j] = 600;
 		}
 	}
 	if (dudes[j] = "Greater Daemon of Tzeentch") {
 		scr_en_weapon("Demon Melee", true, dudes_num[j], dudes[j], j);
 		scr_en_weapon("Witchfire", true, dudes_num[j], dudes[j], j);
-		dudes_dr[j] = 0.7;
+		dudes_dr[j] = 0.75;
 		medi += dudes_num[j];
 	}
 
 	if (dudes[j] = "Bloodletter") {
 		scr_en_weapon("Bloodletter Melee", true, dudes_num[j], dudes[j], j);
 		dudes_ac[j] = 10;
-		dudes_hp[j] = 150;
+		dudes_hp[j] = 200;
 		men += dudes_num[j];
-		dudes_dr[j] = 0.5;
+		dudes_dr[j] = 0.4;
 	}
 	if (dudes[j] = "Daemonette") {
 		scr_en_weapon("Daemonette Melee", true, dudes_num[j], dudes[j], j);
 		dudes_ac[j] = 8;
-		dudes_hp[j] = 100;
+		dudes_hp[j] = 150;
 		men += dudes_num[j];
-		dudes_dr[j] = 0.25;
+		dudes_dr[j] = 0.3;
 	}
 	if (dudes[j] = "Pink Horror") {
 		scr_en_weapon("Eldritch Fire", true, dudes_num[j], dudes[j], j);
 		dudes_ac[j] = 8;
-		dudes_hp[j] = 80;
+		dudes_hp[j] = 100;
 		men += dudes_num[j];
-		dudes_dr[j] = 0.2;
+		dudes_dr[j] = 0.5;
 	}
 	if (dudes[j] = "Plaguebearer") {
 		scr_en_weapon("Plaguebearer Melee", true, dudes_num[j], dudes[j], j);
-		dudes_ac[j] = 8;
-		dudes_hp[j] = 200;
+		dudes_ac[j] = 5;
+		dudes_hp[j] = 300;
 		men += dudes_num[j];
-		dudes_dr[j] = 0.25;
+		dudes_dr[j] = 0.4;
 	}
 
 	if (dudes[j] = "Helbrute") {
 		scr_en_weapon("Power Fist", false, dudes_num[j], dudes[j], j);
 		scr_en_weapon("Multi-Melta", false, dudes_num[j], dudes[j], j);
 		dudes_ac[j] = 40;
-		dudes_hp[j] = 100;
+		dudes_hp[j] = 300;
 		veh += dudes_num[j];
 		dudes_vehicle[j] = 1;
-		dudes_dr[j] = 0.25;
+		dudes_dr[j] = 0.5;
 	}
 	if (dudes[j] = "Soul Grinder") {
 		scr_en_weapon("Warpsword", false, dudes_num[j], dudes[j], j);
@@ -178,15 +180,15 @@ repeat(20) {
 		dudes_hp[j] = 350;
 		veh += dudes_num[j];
 		dudes_vehicle[j] = 1;
-		dudes_dr[j] = 0.75;
+		dudes_dr[j] = 0.5;
 	}
 	if (dudes[j] = "Maulerfiend") {
 		scr_en_weapon("Maulerfiend Claws", false, dudes_num[j], dudes[j], j);
-		dudes_ac[j] = 20;
+		dudes_ac[j] = 30;
 		dudes_hp[j] = 250;
 		veh += dudes_num[j];
 		dudes_vehicle[j] = 1;
-		dudes_dr[j] = 0.75;
+		dudes_dr[j] = 0.5;
 	}
 
 }
@@ -1219,7 +1221,7 @@ if __b__ {
 			scr_en_weapon("Venom Cannon", false, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 20;
 			dudes_hp[j] = 300;
-			dudes_dr[j] = 0.25;
+			dudes_dr[j] = 0.75;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
@@ -1492,8 +1494,8 @@ if __b__ {
 				scr_en_weapon("Power Fist", false, dudes_num[j], dudes[j], j);
 				scr_en_weapon("Meltagun", false, dudes_num[j], dudes[j], j);
 				dudes_ac[j] = 40;
-				dudes_hp[j] = 200;
-				dudes_dr[j] = 0.75;
+				dudes_hp[j] = 300;
+				dudes_dr[j] = 0.5;
 				veh += dudes_num[j];
 				dudes_vehicle[j] = 1;
 			}
