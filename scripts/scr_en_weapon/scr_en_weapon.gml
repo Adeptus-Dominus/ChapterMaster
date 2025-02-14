@@ -152,10 +152,17 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 
 		if (obj_ncombat.enemy = 6) {
 
-			if (argument0 = "Fusion Gun") or(argument0 = "Firepike") {
+			if (argument0 = "Fusion Gun"){
 				atta = 200;
 				arp = 1;
 				rang = 2;
+				amm = 4;
+			}
+
+			if (argument0 = "Firepike") {
+				atta = 300;
+				arp = 1;
+				rang = 4;
 				amm = 4;
 			}
 			if (argument0 = "Singing Spear") {
@@ -268,7 +275,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				rang = 2;
 			}
 			if (argument0 = "Dual Deathspinner") {
-				atta = 80;
+				atta = 100;
 				arp = 0;
 				rang = 2;
 			}
@@ -279,12 +286,12 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				amm = 8;
 				spli = 3;
 			}
-			if (argument0 = "Eldar Missile Launcher") {
+			if (argument0 = "Tempest Launcher") {
 				atta = 200;
 				arp = -1;
 				rang = 20;
-				amm = 4;
-				spli = 3;
+				amm = 8;
+				spli = 9;
 			}
 			if (argument0 = "Laser Lance") {
 				atta = 80;
