@@ -640,21 +640,25 @@ function PlanetData(planet, system) constructor{
                 if (t=1){ahuh="Ork Presence: ";ahuh2=p_orks[current_planet];}
                 if (t=2){ahuh="Tau Presence: ";ahuh2=p_tau[current_planet];}
                 if (t=3){ahuh="Tyranid Presence: ";ahuh2=p_tyranids[current_planet];}
-                if (t=4){ahuh="Traitor Presence: ";ahuh2=p_traitors[current_planet];if (ahuh2>6) then ahuh="Daemon Presence: ";}
+                if (t=4){ahuh="Traitor Presence: ";ahuh2=p_traitors[current_planet];} // if (ahuh2>6) then ahuh="Daemon Presence: ";}
                 if (t=5){ahuh="CSM Presence: ";ahuh2=p_chaos[current_planet];}
                 if (t=6){ahuh="Daemon Presence: ";ahuh2=p_demons[current_planet];}
                 if (t=7){ahuh="Necron Presence: ";ahuh2=p_necrons[current_planet];}
             }
             
             if (t!=0){
-                if (ahuh2=1) then ahuh3="Tiny";if (ahuh2=2) then ahuh3="Sparse";
-                if (ahuh2=3) then ahuh3="Moderate";if (ahuh2=4) then ahuh3="Heavy";
-                if (ahuh2=5) then ahuh3="Extreme";if (ahuh2>=6) then ahuh3="Rampant";
-            }
+                if (ahuh2=1) then ahuh3="Marine";if (ahuh2=2) then ahuh3="Demi-Squad";
+                if (ahuh2=3) then ahuh3="Squad";if (ahuh2=4) then ahuh3="Squads+";
+                if (ahuh2=5) then ahuh3="Demi-Company";if (ahuh2=6) then ahuh3="Company";
+                if (ahuh2=7) then ahuh3="Company+";if (ahuh2=8) then ahuh3="Companies++";
+                if (ahuh2=9) then ahuh3="Chapter/2";if (ahuh2>=10) then ahuh3="Chapter";
+            } // Same between these 2 - need to decide by community vote
             if (t=0){
-                if (ahuh2=1) then ahuh3="Very Few";if (ahuh2=2) then ahuh3="Few";
-                if (ahuh2=3) then ahuh3="Moderate";if (ahuh2=4) then ahuh3="Numerous";
-                if (ahuh2=5) then ahuh3="Very Numerous";if (ahuh2>=6) then ahuh3="Overwhelming";
+                if (ahuh2=1) then ahuh3="Marine";if (ahuh2=2) then ahuh3="Demi-Squad";
+                if (ahuh2=3) then ahuh3="Squad";if (ahuh2=4) then ahuh3="Squads+";
+                if (ahuh2=5) then ahuh3="Demi-Company";if (ahuh2=6) then ahuh3="Company";
+                if (ahuh2=7) then ahuh3="Company+";if (ahuh2=8) then ahuh3="Companies++";
+                if (ahuh2=9) then ahuh3="Chapter/2";if (ahuh2>=10) then ahuh3="Chapter";
             }
             
             if (ahuh!="") and (ahuh2>0) then temp8+=string(ahuh)+" "+string(ahuh3)+"#";
