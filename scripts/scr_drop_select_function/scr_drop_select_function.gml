@@ -175,7 +175,7 @@ function drop_select_draw(){
                 target_threat = "",
                 race_quantity = 0;
             var races = ["", "Ecclesiarchy", "Eldar", "Orks", "Tau", "Tyranids", "Heretics", "CSMs", "Daemons", "Necrons"];
-            var threat_levels = ["", "Squad","Demi-Platoon","Platoon","Demi-Company","Company","Battalion","Regiment","Brigade","Division","Army Corps", "???"];
+            var threat_levels = ["", "Marine","Demi-Squad","Squad","Squads+","Demi-Company","Company","Company+","Companies++","Chapter/2","Chapter", "???"]; // Current version is - marine, should be determined by community vote
             var race_quantities = [0, sisters, eldar, ork, tau, tyranids, traitors, csm, demons, necrons];
 
             if (attacking >= 5 && attacking <= 13) {
