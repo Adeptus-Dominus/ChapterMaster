@@ -508,7 +508,11 @@ if (shop = "equipment") {
     forge_cost[i] = 200;
     item_stocked[i] = scr_item_count(item[i]);
     item_cost[i] = 10;
-
+    i += 1;
+    item[i] = "Needle Sniper Rifle";
+    forge_cost[i] = 500;
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 200;
     i += 1;
     item[i] = "Missile Launcher";
     forge_cost[i] = 300;
