@@ -936,7 +936,7 @@ function scr_initialize_custom() {
 		ninth -= 10;
 		tenth -= 10;
 	}
-	if scr_has_disadv("Obliterated") {
+	if ((obj_creation.equal_specialists = 1) or (obj_creation.equal_specialists = 0)) and scr_has_disadv("Obliterated") {
 		techmarines -= 7;
 		epistolary -= 2;
 		codiciery -= 1;
@@ -2690,6 +2690,11 @@ function scr_initialize_custom() {
 			rhinoy = 8;
 			whirly = whirlwind;
 			speedy = 2;
+			if scr_has_disadv("Obliterated") {
+				rhinoy = 0;
+				whirly = 0;
+				speedy = 0;
+			}
 		}
 
 		// random xp for each marine company
