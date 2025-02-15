@@ -119,7 +119,7 @@ function khorne_fleet_cargo(){
                 
                 
                 if (landing_planet=0 && trade_goods="Khorne_warband_landing_force"){
-                    debugl("BLOOD: A");
+                    log_message("BLOOD: A");
                     
                     // Go after the player now
                     var yarr = false;

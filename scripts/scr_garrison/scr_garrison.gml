@@ -1,23 +1,28 @@
-function disposition_description_chart(dispo){
-	if (dispo<10){
-		return "Very Hostile";
-	} else if (dispo<30){
-		return "Hostile";
-	}else if (dispo<50){
-		return "Uneasy";
-	}else if (dispo<60){
-		return "Neutral";
-	}else if (dispo<70){
-		return "Friendly";
-	}else if (dispo<80){
-		return "Very Friendly";
-	}else if (dispo<90){
-		return "Excellent";
-	}else {
-		return "Unquestionable";
-	}
+function disposition_description_chart(dispo) {
+    if (dispo < -100) {
+        return "DEBUG: Numbers lower than -100 detected, this shouldn't happen!";
+    } else if (dispo <= 0) {
+        return "Extremely Hostile";
+    } else if (dispo < 10) {
+        return "Very Hostile";
+    } else if (dispo < 30) {
+        return "Hostile";
+    } else if (dispo < 50) {
+        return "Uneasy";
+    } else if (dispo < 60) {
+        return "Neutral";
+    } else if (dispo < 70) {
+        return "Friendly";
+    } else if (dispo < 80) {
+        return "Very Friendly";
+    } else if (dispo < 90) {
+        return "Excellent";
+    } else if (dispo <= 100) {
+        return "Unquestionable";
+    } else {
+        return "DEBUG: Numbers higher than 100, this shouldn't happen!";
+    }
 }
-
 
 function GarrisonForce(planet_operatives, turn_end=false, type="garrison") constructor{
 	garrison_squads=[];
@@ -147,14 +152,15 @@ function GarrisonForce(planet_operatives, turn_end=false, type="garrison") const
 		} else {report_string+="The garrison is comprised of a single squad,"}
 
 		report_string+= $" with a total man count of {total_garrison}.#"
-		if (system.dispo[planet]>-1){
-			var disposition = disposition_description_chart(system.dispo[planet]);
-			report_string+=$"Our Relationship with the Rulers of the planet is {disposition}#";
-		} else if(system.dispo[planet]<-1000 && system.p_owner[planet] = eFACTION.Player){
-			report_string+=$"Rule of the planet is going well";
-		} else {
-			report_string+=$"There is no clear chain of command on the planet we suspect the existence of Xenos or Heretic Forces";
-		}
+        if (system.p_owner[planet] != eFACTION.Player) {
+            var disposition = disposition_description_chart(system.dispo[planet]);
+            report_string += $"Our Relationship with the Rulers of the planet is {disposition}#";
+        } else if (system.dispo[planet] < -1000 && system.p_owner[planet] == eFACTION.Player) {
+            report_string += $"Rule of the planet is going well";
+        } else {
+            report_string += $"DEBUG: planet owner check failed";
+            //report_string+=$"There is no clear chain of command on the planet we suspect the existence of Xenos or Heretic Forces"; // TODO LOW GARRISON_XENO // Readd when this actually gets implented
+        }
 
 		return report_string;
 	}
@@ -180,19 +186,34 @@ function GarrisonForce(planet_operatives, turn_end=false, type="garrison") const
 				}
 			} else {
 				var charisma_test = global.character_tester.standard_test(garrison_leader, "charisma", final_modifier);
-				if (!charisma_test[0]){
-					if (garrison_leader.has_trait("honorable")){
-						dispo_change = "none";
-					}else {
-						if (planet_disposition<obj_controller.disposition[star.p_owner[planet]]){
-							dispo_change = charisma_test[1]/10;
-						} else {
-							dispo_change=0;
-						}
-					}
-				} else {
-					dispo_change=charisma_test[1]/10;
-				}
+                if (!charisma_test[0]) {
+                    var _diplomatic_leader = false;
+                    if (is_struct(garrison_leader)) {
+                        _diplomatic_leader = garrison_leader.has_trait("honorable");
+                    } else {
+                        scr_alert("yellow", "DEBUG", $"DEBUG: Garrison Leader on {star.name} {planet} couldn't be found!", 0, 0);
+                        scr_event_log("yellow", $"DEBUG: Garrison Leader on {star.name} {planet} couldn't be found!");
+                        log_error($"DEBUG: Garrison Leader on {star.name} {planet} couldn't be found!");
+                    }
+
+                    if (_diplomatic_leader) {
+                        dispo_change = "none";
+                    } else {
+                        if (planet_disposition > obj_controller.disposition[star.p_owner[planet]]) {
+                            dispo_change = charisma_test[1] / 10;
+                            if (planet_disposition + dispo_change >= -100) {
+                                dispo_change = planet_disposition + 100;
+                            }
+                        } else {
+                            dispo_change = 0;
+                        }
+                    }
+                } else {
+                    dispo_change = charisma_test[1] / 10;
+                    if (planet_disposition + dispo_change >= 100) {
+                        dispo_change = abs(planet_disposition - 100);
+                    }
+                }
 			}
 		} else {
 			dispo_change = "none";

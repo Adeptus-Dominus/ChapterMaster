@@ -568,7 +568,7 @@ function scr_image_cache(path, image_id) {
         try {
             existing_sprite = array_get(obj_img.image_cache[$ path], image_id);
         } catch (_ex) {
-            debugl($"error trying to fetch image {path}/{image_id}.png from cache: {_ex}");
+            log_error($"error trying to fetch image {path}/{image_id}.png from cache: {_ex}");
             existing_sprite = -1;
         }
 
@@ -585,7 +585,7 @@ function scr_image_cache(path, image_id) {
                 array_set(obj_img.image_cache[$ path], image_id, drawing_sprite);
             } else {
                 drawing_sprite = -1;
-                // debugl($"No directory/file found matching {dir}"); // too much noise
+                // log_error($"No directory/file found matching {dir}"); // too much noise
             }
         }
         return drawing_sprite;

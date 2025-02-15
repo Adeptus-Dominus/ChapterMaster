@@ -1,7 +1,7 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 function scr_save_controller(save_id){
-    debugl("Saving to slot "+string(save_id));
+    log_message("Saving to slot "+string(save_id));
     ini_open($"save{save_id}.ini");
     // Global variables
     ini_write_string("Save","chapter_name",global.chapter_name);

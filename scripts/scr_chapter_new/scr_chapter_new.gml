@@ -163,7 +163,7 @@ function ChapterData() constructor {
 			 load_result = file_loader.load_struct_from_json_file($"main\\chapters\\{chapter_id}.json", "chapter", false);
 		}
 		if(!load_result.is_success){
-			// debugl($"No chapter json exits for chapter_id {chapter_id}");
+			// log_error($"No chapter json exits for chapter_id {chapter_id}");
 			return false;
 		}
 		var json_chapter = load_result.value.chapter;
@@ -258,7 +258,7 @@ function scr_chapter_new(argument0) {
 		var successfully_loaded = chapter_obj.load_from_json(chapter_id);
 		if(!successfully_loaded){
 			var issue = $"No json file exists for chapter id {chapter_id} and name {argument0}";
-			// debugl (issue);
+			// log_error(issue);
 			scr_popup("Error Loading Chapter", issue, "debug");
 			return false;
 		}
@@ -276,7 +276,7 @@ function scr_chapter_new(argument0) {
 		var successfully_loaded = chapter_obj.load_from_json(argument0, true);
 		if(!successfully_loaded){
 			var issue = $"No json file exists for chapter id {argument0} and name {argument0}";
-			debugl (issue);
+			log_error(issue);
 			scr_popup("Error Loading Chapter", issue, "debug");
 			return false;
 		}

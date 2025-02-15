@@ -471,10 +471,8 @@ function company_manage_actions(){
     // Back out from company
     if (point_and_click([xx+23,yy+80,xx+95,yy+128])){
         managing=0;
-        cooldown=8000;
         scr_ui_refresh();
         scr_management(1);
-        cooldown=8000;
         click=1;
         popup=0;
         selected=0;

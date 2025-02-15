@@ -163,7 +163,7 @@ function scr_crusade() {
 function launch_crusade(){
 	var star_id = scr_random_find(2,true,"","");
 	if(star_id == undefined){
-		debugl("RE: Crusade, couldn't find a star for the crusade");
+		log_error("RE: Crusade, couldn't find a star for the crusade");
 		return false;
 	}
 	else{
@@ -173,7 +173,7 @@ function launch_crusade(){
 			if (assigned_crusade>0) then break;
 		}
 		if(!assigned_crusade){
-			debugl("RE: Crusade, couldn't assign a crusade at the system");
+			log_error("RE: Crusade, couldn't assign a crusade at the system");
 			return false;
 		}
 		else{

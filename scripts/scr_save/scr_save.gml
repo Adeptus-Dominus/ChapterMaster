@@ -22,7 +22,7 @@ function scr_save(save_part,save_id) {
 
 
 	if (save_part=2) or (save_part=0){
-		debugl("Saving to slot "+string(save_id)+" part 2");
+		log_message("Saving to slot "+string(save_id)+" part 2");
 	    ini_open($"save{save_id}.ini");
 	    // Stars
 
@@ -398,7 +398,7 @@ function scr_save(save_part,save_id) {
 	}
 
 
-	if (save_part=3) or (save_part=0){debugl($"Saving to slot {save_id} part 3");
+	if (save_part=3) or (save_part=0){log_message($"Saving to slot {save_id} part 3");
 	    ini_open($"save{save_id}.ini");
 	    var coh,mah,good;
 	    for (coh=1;coh<=10;coh++){
@@ -426,7 +426,7 @@ function scr_save(save_part,save_id) {
 	}
 
 	if (save_part=4) or (save_part=0){
-		debugl("Saving to slot "+string(save_id)+" part 4");
+		log_message("Saving to slot "+string(save_id)+" part 4");
 	    ini_open($"save{save_id}.ini");
 	    var coh,mah,good;
 	    good=0;coh=100;mah=0;
@@ -534,7 +534,7 @@ function scr_save(save_part,save_id) {
 
 	    obj_saveload.save[save_id]=1;
 
-	    debugl("Saving to slot "+string(save_id)+" complete");
+	    log_message("Saving to slot "+string(save_id)+" complete");
 	}
 
 	// Finish here

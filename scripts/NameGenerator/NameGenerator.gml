@@ -78,12 +78,12 @@ function NameGenerator() constructor {
 			if (array_length(names) == 0) {
 				var used_names_length = array_length(used_names);
 				if (reset_on_using_up_all_names) {
-					debugl($"Used up all {entity_name} names, resetting name lists");
+					log_message($"Used up all {entity_name} names, resetting name lists");
 					// TODO the 2 lines below could be simplified by swapping references, instead of copying and deleting
 					array_copy(names, 0, used_names, 0, used_names_length);
 					array_delete(used_names, 0, used_names_length);
 				} else {
-					debugl($"Used up all {entity_name} names, generating generic name");
+					log_message($"Used up all {entity_name} names, generating generic name");
 					return $"{entity_name} {used_names_length + ++star_names_generic_counter}";
 				}
 			}

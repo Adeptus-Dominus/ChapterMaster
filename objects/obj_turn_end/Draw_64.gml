@@ -14,11 +14,7 @@ if (alerts>0) and (popups_end=1){
 	
     repeat(alerts){
         i+=1;
-
-        draw_set_color(38144);
-        if (alert_color[i] == "red") then draw_set_color(c_red);
-        if (alert_color[i] == "yellow") then draw_set_color(57586);
-        // if (alert_color[i]="purple") then draw_set_color(c_red);
+        set_alert_draw_colour(alert_color[i]);
         draw_set_alpha(min(1,alert_alpha[i]));
         
         if (obj_controller.zoomed=0){

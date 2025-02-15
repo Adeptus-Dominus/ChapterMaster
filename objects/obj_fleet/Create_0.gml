@@ -1,7 +1,7 @@
 
 
 instance_activate_object(obj_controller);
-debugl("Fleet Combat Started");
+log_message("Fleet Combat Started");
 
 beg=0;fallen=0;fallen_command=0;
 obj_controller.cooldown=20;

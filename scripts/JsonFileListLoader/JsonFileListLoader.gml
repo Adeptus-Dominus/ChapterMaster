@@ -8,7 +8,7 @@ function JsonFileListLoader() constructor {
         };
 
         if (is_array(properties_to_read) == false || array_length(properties_to_read) == 0) {
-            debugl("Received invalid property name list");
+            log_error("Received invalid property name list");
             return result;
         }
 
@@ -20,7 +20,7 @@ function JsonFileListLoader() constructor {
 			var item_total = 0;
             var file_path = working_directory + relative_file_path;
             if(file_exists(file_path) == false){
-                debugl($"File does not exist at path {file_path}");
+                log_error($"File does not exist at path {file_path}");
                 return result;
             }
             file_buffer = buffer_load(file_path);
@@ -53,7 +53,7 @@ function JsonFileListLoader() constructor {
 
             result.is_success = true;
 
-            debugl($"Successfully loaded {item_total} values from {relative_file_path}");
+            log_message($"Successfully loaded {item_total} values from {relative_file_path}");
         } catch (_exception) {
             handle_exception(_exception);
             result.values = {}; // do not return incomplete/invalid data
@@ -77,7 +77,7 @@ function JsonFileListLoader() constructor {
         };
 
         if (is_string(property_to_read) == false || string_length(property_to_read) == 0) {
-            debugl("Received invalid property name, expected a string");
+            log_error("Received invalid property name, expected a string");
             return result;
         }
 
@@ -115,9 +115,9 @@ function JsonFileListLoader() constructor {
 
             result.is_success = true;
 
-            // debugl($"Successfully loaded {property} value from {relative_file_path}");
+            // log_message($"Successfully loaded {property} value from {relative_file_path}");
         } catch (_ex) {
-            debugl($"Could not properly parse file at {file_path}: {_ex}.");
+            log_error($"Could not properly parse file at {file_path}: {_ex}.");
             scr_popup("Error Parsing JSON File", $"Could not properly parse file: #{file_path}.# Please check this file for typos or formatting errors.# # Full error message:# {_ex}", "debug");
             result.value = {}; // do not return incomplete/invalid data
         } finally {

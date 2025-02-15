@@ -20,7 +20,7 @@ if (__b__) {
         draw_set_color(c_gray); // 38144
         draw_set_font(fnt_40k_30b);
         draw_set_halign(fa_center);
-        draw_text(xx + 800, yy + 74, string_hash_to_newline(string(global.chapter_name) + " Event Log"));
+        draw_text(xx + 800, yy + 74, string(global.chapter_name) + " Event Log");
         draw_set_halign(fa_left);
         var t = 0,
             p = -1,
@@ -28,27 +28,16 @@ if (__b__) {
         var ent = array_length(event);
         draw_set_color(38144);
         if (ent == 0) {
-            draw_text(xx + 25, yy + 120, string_hash_to_newline("No entries logged."));
+            draw_text(xx + 25, yy + 120, "No entries logged.");
         } else {
-            t = top - 2;
             p = -1;
             draw_set_font(fnt_40k_14);
             draw_set_alpha(0.8);
-            repeat(25) {
-                t++;
+            for (var t=top - 1; t<ent; t++){
                 p++;
-                if (t >= ent) {
-                    break;
-                }
                 cur_event = event[t];
                 if (cur_event.text != "") { // 1554
-                    draw_set_color(38144);
-                    if (cur_event.colour = "red") {
-                        draw_set_color(c_red);
-                    }
-                    if (cur_event.colour = "purple") {
-                        draw_set_color(c_purple);
-                    }
+                    set_alert_draw_colour(cur_event.colour);
                     draw_text_ext(xx + 25, yy + 120 + (p * 26), $"{cur_event.date}  (Turn {cur_event.turn}) - {cur_event.text}", -1, 1554);
                     if (cur_event.event_target != "none") {
                         if (point_and_click(draw_unit_buttons([xx + 1400, yy + 120 + (p * 26)], "View", [1, 1], c_green, , fnt_40k_14b, 1,true))) {

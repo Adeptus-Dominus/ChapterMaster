@@ -337,7 +337,7 @@ function scr_efleet_arrive_at_trade_loc(){
         else{
 			bleh=$"Inquisitor Ship finalizes trade at {cur_star.name}.";
         }
-        debugl(bleh);
+        log_message(bleh);
         scr_alert("green","trade",bleh,cur_star.x,cur_star.y);
         scr_event_log("",bleh,cur_star.name);
         
