@@ -90,13 +90,13 @@ function scr_random_event(execute_now) {
 					[
 						EVENT.warp_storms,
 						EVENT.enemy_forces,
-						EVENT.crusade,
-						EVENT.enemy,
+						//EVENT.crusade, // Reportly breaks often because of lack of imperial fleets and eats player ships // TODO LOW CRUSADE_EVENT // fix
+						EVENT.enemy, // Save-scumming event, Should probably base this on something else than tech-scavs
 						EVENT.mutation,
-						EVENT.ship_lost,
-						EVENT.chaos_invasion,
-						EVENT.necron_awaken,
-						EVENT.fallen,
+						EVENT.ship_lost, // Another save-scumming event, mainly due to rarity of player ships
+						//EVENT.chaos_invasion, // Spawns Chaos fleets way too close to player owned worlds with no warning and usually lots of big ships, save-scum galore and encourages fleet-based chapters // TODO LOW INVASION_EVENT // Make them spawn way farther with more warning, make them have a different goal or remove this event entirely
+						EVENT.necron_awaken, // Inquisitor check for this is inverted
+						//EVENT.fallen, // Event mission cannot be completed and never expires // TODO LOW FALLEN_EVENT // fix
 					];
 				}
 	

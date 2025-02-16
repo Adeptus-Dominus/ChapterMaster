@@ -311,8 +311,7 @@ if (boarding=true) and (board_cooldown>=0) and (instance_exists(target)) and (in
         if (experience>0){
             var o=0,co=0,i=0;
             var new_exp, unit_exp, exp_roll;
-            repeat(boarders){
-                o+=1;
+            for (var o=0;o<array_length(origin.board_co);o++){
                 co=origin.board_co[o];
                 i=origin.board_id[o];               
                 unit = obj_ini.TTRPG[co][i];

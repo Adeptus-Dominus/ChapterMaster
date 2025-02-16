@@ -6,7 +6,7 @@
 function PlanetData(planet, system) constructor{
 //safeguards // TODO LOW DEBUG_LOGGING // Log when tripped somewhere
     //disposition
-    if (system.dispo[planet] < 0 && system.dispo[planet] > -1000 && system.p_owner[planet] != eFACTION.Player ) { // Personal Rule code be doing some interesting things
+    if (system.dispo[planet] < -100 && system.dispo[planet] > -1000 && system.p_owner[planet] != eFACTION.Player ) { // Personal Rule code be doing some interesting things
         system.dispo[planet] = -100; // TODO LOW DISPOSITION_REVAMP // Consider revamping the disposition system
     } else if (system.dispo[planet] > 100) {
         system.dispo[planet] = 100;

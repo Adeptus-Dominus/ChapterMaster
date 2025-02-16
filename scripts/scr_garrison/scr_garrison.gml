@@ -1,5 +1,7 @@
 function disposition_description_chart(dispo) {
-    if (dispo < -100) {
+    if (global.cheat_debug) {
+        return $"{dispo}"
+    } else if (dispo < -100) {
         return "DEBUG: Numbers lower than -100 detected, this shouldn't happen!";
     } else if (dispo <= 0) {
         return "Extremely Hostile";
@@ -167,7 +169,7 @@ function GarrisonForce(planet_operatives, turn_end=false, type="garrison") const
 
 	static garrison_disposition_change = function(star, planet, up_or_down = false){
 		dispo_change = 0;
-		if (array_contains(obj_controller.imperial_factions, star.p_owner[planet]) && star.dispo[planet]>-1){
+		if (array_contains(obj_controller.imperial_factions, star.p_owner[planet])){
 			planet_disposition = star.dispo[planet];
 
 			var disposition_modifier = planet_disposition<=50 ? (planet_disposition/10) :((planet_disposition-50)/10)%5;
@@ -201,8 +203,8 @@ function GarrisonForce(planet_operatives, turn_end=false, type="garrison") const
                     } else {
                         if (planet_disposition > obj_controller.disposition[star.p_owner[planet]]) {
                             dispo_change = charisma_test[1] / 10;
-                            if (planet_disposition + dispo_change >= -100) {
-                                dispo_change = planet_disposition + 100;
+                            if (planet_disposition + dispo_change <= -100) {
+                                dispo_change = -(planet_disposition + 100);
                             }
                         } else {
                             dispo_change = 0;
