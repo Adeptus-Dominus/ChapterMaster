@@ -458,12 +458,26 @@ global.trait_list = {
 	},
 	"lobotomized" : {
 		wisdom : -50,
-		intelligence : -50,
+		 // intelligence : -50,
 		charisma : -5,
 		constitution : 1, // Slight buff to health, as clear mind helps to stay healthy in some cases
 		technology : 1, // Also helps with some boring tasks, I think?
 		display_name : "Lobotomized",
-		flavour_text : "received treatment or damage, which resulted in portion of brain missing, akin to servitors",
+		flavour_text : "received treatment or damage, which resulted in portion of nervous system missing, akin to servitors",
+	},
+	"combat_protocols" : { // Should be made to conflict with "maintenance_protocols"
+		strength : 2,
+		dexterity : 2,
+		weapon_skill : 2,
+		ballistic_skill : 2,
+		display_name : "Combat Protocols",
+		flavour_text : "this servitor or automaton has been reprogrammed to function as a combat unit",
+	},
+	"maintenance_protocols" : { // Should be made to conflict with "combat_protocols"
+		technology : 2,
+		intelligence : 1,
+		display_name : "Maintenance Protocols",
+		flavour_text : "this servitor or automaton has been reprogrammed to function as a maintenance unit",
 	},
 	"psychotic" : { // IT IS THE BANEBLAAADE!!! - Captain Diomedes, DoW 2 Retribution
 		wisdom : 10,

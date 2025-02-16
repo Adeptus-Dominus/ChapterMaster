@@ -126,27 +126,44 @@ global.base_stats = { //tempory stats subject to change by anyone that wishes to
 			base_group : "astartes",
 			traits:["ancient","slow_and_purposeful","lead_example","zealous_faith",choose("still_standing","beast_slayer","lone_survivor")]
 	},			
-	/* TODO - check and tweak if necessary
-	"chapter_servitor":{
-			title : "Chapter Servitor",
-			strength:[36,4],
-			constitution:[36,3],
-			weapon_skill : [30,2,"max"],
-			ballistic_skill : [30,2,"max"],
-			dexterity:[36,3],
-			intelligence:0,
+	"combat_servitor":{
+			title : "Combat Servitor",
+			strength:[38,4],
+			constitution:[37,3],
+			weapon_skill : [32,2,"max"],
+			ballistic_skill : [32,2,"max"],
+			dexterity:[38,3],
+			intelligence:[38,3],
 			wisdom:0,
 			charisma :[10,1],
 			religion : "imperial_cult",
 			piety : [28,3],
 			luck : 10,
-			technology :[30,3],
+			technology :[29,3],
 			skills: {weapons:{"Bolter":1, "Chainsword":1, "Combat Knife":1, "Bolt Pistol":1}},
-			start_gear:{"armour":"power_armour", "wep1":"Combat Knife", "gear":"Servo-arm"}, TODO - tweak and check if correct
+			start_gear:{"armour":"Scout Armour", "wep1":"Combat Knife", "wep2":"Bolt Pistol"}, // Needs that backpack
 			base_group : "astartes",
-			traits:["lobotomized"],
+			traits:["lobotomized", "combat_protocols"],
 	},
-	*/
+	"maintenance_servitor":{
+			title : "Maintenance Servitor",
+			strength:[36,4],
+			constitution:[37,3],
+			weapon_skill : [30,2,"max"],
+			ballistic_skill : [30,2,"max"],
+			dexterity:[36,3],
+			intelligence:[39,3],
+			wisdom:0,
+			charisma :[10,1],
+			religion : "imperial_cult",
+			piety : [28,3],
+			luck : 10,
+			technology :[31,3],
+			skills: {weapons:{"Bolter":1, "Chainsword":1, "Combat Knife":1, "Bolt Pistol":1}},
+			start_gear:{"armour":"Scout Armour", "mobi":"Servo-arm"}, 
+			base_group : "astartes",
+			traits:["lobotomized", "maintenance_protocols"],
+	},
 	// TODO - add more hirelings on the imperial side...
 	"skitarii":{
 			title : "Skitarii",
