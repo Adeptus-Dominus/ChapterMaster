@@ -268,7 +268,6 @@ function scr_save_controller(save_id){
     ini_write_real("Controller","income_home",obj_controller.income_home);
     ini_write_real("Controller","income_forge",obj_controller.income_forge);
     ini_write_real("Controller","income_agri",obj_controller.income_agri);
-    ini_write_real("Controller","income_recruiting",obj_controller.income_recruiting);
     ini_write_real("Controller","income_training",obj_controller.income_training);
     ini_write_real("Controller","income_fleet",obj_controller.income_fleet);
     ini_write_real("Controller","income_trade",obj_controller.income_trade);

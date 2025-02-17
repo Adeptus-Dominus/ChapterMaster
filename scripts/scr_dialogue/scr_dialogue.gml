@@ -895,14 +895,6 @@ function scr_dialogue(diplo_keyphrase) {
 	        with(obj_star){
 				for(var p=1; p<=4; p++){
 	                if (planets>=p){
-						//change this p_owner to check against an array of valid choices eventually
-	                    if (p_owner[p]<=2) and (dispo[p]<100) and (planet_feature_bool(p_feature[p], P_features.Recruiting_World)==1){
-							delete_features(p_feature[p], P_features.Recruiting_World)
-	                        p_feature[p]=string_replace(p_feature[p],"Recruiting World|","");
-	                        scr_alert("red","blarg","Recruiting rights on "+string(name)+" "+scr_roman(p)+" revoked!",x,y);
-	                        scr_event_log("red","Recruiting rights on "+string(name)+" "+scr_roman(p)+" revoked!");
-	                        obj_controller.recruiting_worlds=string_replace(obj_controller.recruiting_worlds,string(name)+" "+scr_roman(p)+"|","");
-	                    }
 	                    if (p_owner[p]==eFACTION.Player) and (dispo[p]<100) and (planet_feature_bool(p_feature[p], P_features.Monastery)==0){
 	                        if (p_first[p]!=eFACTION.Player) then p_owner[p]=p_first[p];
 	                        else p_owner[p]=eFACTION.Imperium;

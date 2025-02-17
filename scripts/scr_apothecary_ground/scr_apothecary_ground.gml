@@ -159,8 +159,7 @@ function apothecary_simple(){
 				var _training_ground = system_feature_bool(self.p_feature, P_features.Recruiting_World);
 				if (_training_ground){
                     obj_controller.recruiting = 0;
-                    obj_controller.income_recruiting = 0;
-                    scr_alert("red", "recruiting", "The Chapter has run out of gene-seed!", 0, 0);		
+                    scr_alert("red", "recruiting", "The Chapter has run out of gene-seed!", 0, 0);
 				}
 			}
 		}

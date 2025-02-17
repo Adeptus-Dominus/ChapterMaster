@@ -57,10 +57,6 @@ function scr_income() {
 	if (training_techmarine=5) then income_training-=6;
 	if (training_techmarine=6) then income_training-=12;
 
-
-
-	income_recruiting=(recruiting*-2)*string_count("|",obj_controller.recruiting_worlds);
-
 	tau_stars=0;if (instance_exists(obj_turn_end)) then tau_messenger+=1;
 
 	if (obj_ini.fleet_type=ePlayerBase.home_world){

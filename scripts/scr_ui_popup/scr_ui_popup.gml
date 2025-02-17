@@ -404,11 +404,6 @@ function scr_ui_popup() {
 		        tool2+="#Battle Barge Trade: ";
 		    }
 	        plu="";
-	        if (income_recruiting>0) then plu="+";
-	        if (income_recruiting!=0){
-	        	tool1+=string("#Astartes Recruitment: {0}{1}",plu,income_recruiting);
-	        	tool2+="#Astartes Recruitment:";}
-	        plu="";
 	        if (income_training>0) then plu="+";
 	        if (income_training!=0){
 	        	tool1+=string("#Specialist Training: {0}{1}",plu,income_training);

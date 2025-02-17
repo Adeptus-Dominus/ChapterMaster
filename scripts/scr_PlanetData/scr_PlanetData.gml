@@ -158,28 +158,25 @@ function PlanetData(planet, system) constructor{
   		}
   		return _select_features;
     }
-    static planet_training = function(local_screening_points){
-    	var _training_happend = false;
-	    if (has_feature(P_features.Recruiting_World)){
-	        if (obj_controller.gene_seed == 0) and (obj_controller.recruiting > 0) {
 
+    static planet_training = function(local_screening_points) {
+        var _training_happend = false;
+        if (has_feature(P_features.Recruiting_World)) {
+            if (obj_controller.gene_seed == 0 && obj_controller.recruiting > 0) {
                 obj_controller.recruiting = 0;
-                obj_controller.income_recruiting = 0;
                 scr_alert("red", "recruiting", "The Chapter has run out of gene-seed!", 0, 0);
+            } else if (obj_controller.recruiting > 0) {
+                if (local_screening_points > 0) {
+                    marine_training(local_screening_points);
 
-	        }else if (obj_controller.recruiting > 0){
-	        	if (local_screening_points>0){
-
-	           		marine_training(local_screening_points);
-
-	           		_training_happend = true;
-	        	} else {
-	        		scr_alert("red", "recruiting", $"Recruitment on {name()} halted due to insufficient apothecary rescources", 0, 0);
-	        	}
-	        }
-		}
-		return _training_happend;   	
-    }
+                    _training_happend = true;
+                } else {
+                    scr_alert("red", "recruiting", $"Recruitment on {name()} halted due to insufficient apothecary rescources", 0, 0);
+                }
+            }
+        }
+        return _training_happend;
+    };
 
     static recover_starship = function(techs){
     	try {

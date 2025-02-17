@@ -208,7 +208,7 @@ if (obj_controller.selecting_planet!=0){
             }
         }
         
-        if (obj_controller.recruiting_worlds_bought>0 && !p_data.at_war()) || (p_data.at_war() && p_data.player_disposition >= 80){
+        if (obj_controller.recruiting_worlds_bought>0 && !p_data.at_war()){
             if (!p_data.has_feature(P_features.Recruiting_World) && p_data.planet_type != "Dead" && !target.space_hulk){
                 button4="+Recruiting";
             }
@@ -284,12 +284,22 @@ if (obj_controller.selecting_planet!=0){
             var cur_planet = obj_controller.selecting_planet;
             var half_way =  garrison_data_slate.height/2;
             draw_set_halign(fa_left);
-            colonist_button.update({
-                x1:xx+20,
-                y1:yy+half_way,
-                allow_click : array_length(potential_doners),
-            });     
-            colonist_button.draw();
+            if (!target.space_hulk) {
+                if (obj_controller.faction_status[eFACTION.Imperium] != "War" && p_data.current_owner <= 5) || (obj_controller.faction_status[eFACTION.Imperium] == "War") {
+                    colonist_button.update({
+                        x1:xx+20,
+                        y1:yy+half_way,
+                        allow_click : array_length(potential_doners),
+                    });
+                    colonist_button.draw();
+                    recruiting_button.update({
+                        x1:xx+200,
+                        y1:yy+half_way,
+                        allow_click : true,
+                    });
+                    recruiting_button.draw();
+                }
+            }
 
         }
         garrison_data_slate.draw(344+main_data_slate.width-4, 160, 0.6, 0.6);          
@@ -371,7 +381,7 @@ if (obj_controller.selecting_planet!=0){
                 }
             }
         }else if (current_button=="+Recruiting"){
-            if (obj_controller.recruiting_worlds_bought > 0 && target.p_owner[obj_controller.selecting_planet] <= 5 && obj_controller.faction_status[target.p_owner[obj_controller.selecting_planet]] != "War") || (obj_controller.faction_status[eFACTION.Imperium] == "War" && p_data.player_disposition >= 80) {
+            if (obj_controller.recruiting_worlds_bought > 0 && target.p_owner[obj_controller.selecting_planet] <= 5 && obj_controller.faction_status[target.p_owner[obj_controller.selecting_planet]] != "War"){
                 if (!p_data.has_feature(P_features.Recruiting_World)) {
                     if (obj_controller.faction_status[eFACTION.Imperium] == "War") {
                         obj_controller.recruiting_worlds_bought -= 1;

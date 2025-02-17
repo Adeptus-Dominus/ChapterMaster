@@ -177,24 +177,36 @@ function FeatureSelected(Feature, system, planet) constructor{
 					};
 				}
 				break;
-			case P_features.Recruiting_World:
-				generic = true;
-				var _planet = planet_data.planet;
-				var _star = obj_star_select.target;
-				var _system_point_use = obj_controller.specialist_point_handler.point_breakdown.systems;
-				var _spare_apoth_points = 0;
-				if (struct_exists(_system_point_use, _star.name)){
-					var _point_data = _system_point_use[$_star.name][_planet]
-					_spare_apoth_points = _point_data.heal_points - _point_data.heal_points_use;
-				}
-				title = "Marine Recruitment";
-				body  = $"There are {_spare_apoth_points} apothecary rescource points available for recruit screening\n"
-				var _recruit_find_chance = find_recruit_success_chance(_spare_apoth_points, _star.p_type[_planet]);
+            case P_features.Recruiting_World:
+                generic = true;
+                var _planet = planet_data.planet;
+                var _star = obj_star_select.target;
+                var current_owner = _star.p_owner[_planet];
+                var player_disposition = _star.dispo[_planet];
+                var _system_point_use = obj_controller.specialist_point_handler.point_breakdown.systems;
+                var _spare_apoth_points = 0;
+                if (struct_exists(_system_point_use, _star.name)) {
+                    var _point_data = _system_point_use[$ _star.name][_planet];
+                    _spare_apoth_points = _point_data.heal_points - _point_data.heal_points_use;
+                }
+                title = "Marine Recruitment";
+                body = $"There are {_spare_apoth_points} apothecary rescource points available for recruit screening,\n\n";
+                var _recruit_find_chance = find_recruit_success_chance(_spare_apoth_points, _star, _planet);
 
-				body += $"there is a {_recruit_find_chance*100}% of producing a successful recruit this month on the basis of the available apothecary time to screen candidates and the chances of the aspirants passing their trials to an acceptable standard\n"
+                body += $"There is a {_recruit_find_chance * 100}% of producing a successful recruit this month on the basis of the available apothecary time to screen candidates and the chances of the aspirants passing their trials to an acceptable standard,\n\n";
 
-				body += $"To increase recruit success chance more apothecaries will be required on the planet surface, we could also spend further req on rescources to aid exiting efforts";
-				break;
+                if (obj_controller.faction_status[current_owner] == "War" || obj_controller.faction_status[current_owner] == "Antagonism") && (player_disposition <= 50) { // TODO LOW RECRUITING_DIALOG // Make this more dynamic and maybe make a event for this.
+                    body += "Since our relations with the populations' faction are... strained, we are having to do our recruiting operation covertly, some of our brothers may resort to more extreme methods of recruitment,\n\n"
+                } else if (obj_controller.faction_status[current_owner] == "War" || obj_controller.faction_status[current_owner] == "Antagonism") {
+                    body += "The population has grown accustomed to us and their Governor has given us the clear to openly recruit,\n\n"
+                }
+
+                if (player_disposition < 100) {
+                    body += "To increase recruit success chance more apothecaries will be required on the planet surface, we could also deploy garrisons to make the population more friendly to our chapter";
+                } else {
+                    body += "To increase recruit success chance more apothecaries will be required on the planet surface.";
+                }
+                break;
 			case P_features.Mission:
 				var mission_description=$"";
 				var planet_name = planet_numeral_name(planet_data.planet, obj_star_select.target);

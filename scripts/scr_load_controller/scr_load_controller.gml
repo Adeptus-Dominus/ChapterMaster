@@ -353,7 +353,6 @@ function scr_load_controller(save_id){
 	    obj_controller.income_home=ini_read_real("Controller","income_home",0);
 	    obj_controller.income_forge=ini_read_real("Controller","income_forge",0);
 	    obj_controller.income_agri=ini_read_real("Controller","income_agri",0);
-	    obj_controller.income_recruiting=ini_read_real("Controller","income_recruiting",0);
 	    obj_controller.income_training=ini_read_real("Controller","income_training",0);
 	    obj_controller.income_fleet=ini_read_real("Controller","income_fleet",0);
 	    obj_controller.income_trade=ini_read_real("Controller","income_trade",0);

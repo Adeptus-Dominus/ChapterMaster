@@ -385,7 +385,7 @@ and (faction_justmet==1) and (questing==0) and (trading_demand==0) and (complex_
     }
 }
 
-income=income_base+income_home+income_forge+income_agri+income_recruiting+income_training+income_fleet+income_trade+income_tribute;
+income=income_base+income_home+income_forge+income_agri+income_training+income_fleet+income_trade+income_tribute;
 
 if (menu==20) and ((diplomacy>0) or ((diplomacy<-5) and (diplomacy>-6))){
     if (string_length(diplo_txt)<string_length(diplo_text)){

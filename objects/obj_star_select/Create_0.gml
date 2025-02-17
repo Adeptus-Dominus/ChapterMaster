@@ -34,6 +34,24 @@ colonist_button.bind_method = function(){
     new_colony_fleet(doner[0],doner[1],target.id,obj_controller.selecting_planet,"bolster_population");
 };
 
+recruiting_button = new PurchaseButton(0);
+recruiting_button.update({
+	tooltip : "Enable recruiting",
+	label : "Recruiting",
+	target : target,
+});
+recruiting_button.bind_method = function(){
+    if (obj_controller.faction_status[eFACTION.Imperium] != "War" && p_data.current_owner <= 5) || (obj_controller.faction_status[eFACTION.Imperium] == "War") {
+        if (!p_data.has_feature(P_features.Recruiting_World)) {
+            array_push(target.p_feature[obj_controller.selecting_planet], new NewPlanetFeature(P_features.Recruiting_World));
+            obj_controller.recruiting_worlds += $"{planet_numeral_name(obj_controller.selecting_planet, target)}|";
+        } else {
+            delete_features(target.p_feature[obj_controller.selecting_planet], P_features.Recruiting_World)
+            obj_controller.recruiting_worlds=string_replace(obj_controller.recruiting_worlds,string(target.name)+" "+scr_roman(obj_controller.selecting_planet)+"|","");
+        }
+    }
+};
+
 buttons_selected = false;
 button1="";
 button2="";
