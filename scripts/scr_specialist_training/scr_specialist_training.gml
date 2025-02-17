@@ -331,8 +331,13 @@ function techmarine_training(){
 	                t=0;
 	                r=0;
 	                unit.religion="cult_mechanicus";
-	                unit.add_trait("mars_trained");
-	                scr_alert("green","recruitment",$"{unit.name()} returns from Mars, a {unit.role()}.",0,0);
+                    if (obj_controller.faction_status[eFACTION.Mechanicus] != "War") {
+                        unit.add_trait("mars_trained");
+	                    scr_alert("green","recruitment",$"{unit.name()} returns from Mars, a {unit.role()}.",0,0);
+                    } else {
+                        unit.add_trait("chapter_trained");
+                        scr_alert("green","recruitment",$"{unit.name_role()} has finished training.",0,0);
+                    }
 
 	                 warn="";
 	                if (unit.update_weapon_one(obj_ini.wep1[100,16]) == "no_items"){
@@ -350,7 +355,10 @@ function techmarine_training(){
 	                    scr_alert("red","recruitment","Not enough equipment: "+string(warn),0,0);
 	                }
 
-	                unit.allocate_unit_to_fresh_spawn("default");
+                    if (obj_controller.faction_status[eFACTION.Mechanicus] != "War") || (unit.ship_location == -1) {
+                        unit.allocate_unit_to_fresh_spawn("default");
+                    }
+
 	 				var extra_bio = 0;
 	                if (global.chapter_name!="Iron Hands"|| !unit.has_trait("flesh_is_weak")){
 	                	extra_bio = unit.bionics<4 ? choose(1,2,3): 1
@@ -393,10 +401,15 @@ function techmarine_training(){
 	                unit.update_role(novice_type);
 
 	                // Remove from ship
-	                if (unit.ship_location>-1){
-	                    var man_size=scr_unit_size(obj_ini.armour[0][open_slot],obj_ini.role[0][open_slot],true);
-	                    obj_ini.ship_carrying[unit.ship_location]-=man_size;
-	                }
+                    if (obj_controller.faction_status[eFACTION.Mechanicus] != "War") {
+                        if (unit.ship_location>-1){
+                            var man_size=scr_unit_size(obj_ini.armour[0][g1],obj_ini.role[0][g1],true);
+                            obj_ini.ship_carrying[unit.ship_location]-=man_size;
+                        }
+                        obj_ini.loc[0][g1]="Terra";
+                        unit.planet_location=4;
+                        unit.ship_location=-1;
+                    }
 	                obj_ini.loc[0][open_slot]="Terra";
 	                unit.planet_location=4;
 	                unit.ship_location=-1;
@@ -404,7 +417,11 @@ function techmarine_training(){
 	                unit.update_weapon_two("");
 	                unit.update_gear("");
 	                unit.update_mobility_item("");
-	                scr_alert("green","recruitment",$"{unit.name_role()} journeys to Mars.",0,0);
+                    if (obj_controller.faction_status[eFACTION.Mechanicus] != "War") {
+                        scr_alert("green","recruitment",$"{unit.name_role()} journeys to Mars.",0,0);
+                    } else {
+                        scr_alert("green","recruitment",$"{unit.name_role()} begins training.",0,0);
+                    }
 	                with(obj_ini){
 	                    scr_company_order(marine_company);
 	                    scr_company_order(0);

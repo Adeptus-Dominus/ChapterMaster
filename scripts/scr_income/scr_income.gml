@@ -22,8 +22,12 @@ function scr_income() {
 	income_recruiting=0;
 	income_training=0;
 
-	var pid;pid=0;pid=scr_role_count(obj_ini.role[100][16],"");
-	if (pid>=((disposition[3]/2)+5)) then training_techmarine=0;
+    if (obj_controller.faction_status[eFACTION.Mechanicus] != "War") {
+        var pid = scr_role_count(obj_ini.role[100][16], "");
+        if (pid >= ((disposition[3] / 2) + 5)) {
+            training_techmarine = 0;
+        }
+    }
 
 	if (training_apothecary=1) then income_training-=1;
 	if (training_apothecary=2) then income_training-=2;
