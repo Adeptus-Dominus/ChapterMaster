@@ -364,18 +364,18 @@ if (menu==20) and (diplomacy>0) or ((diplomacy<-5) and (diplomacy>-6)) and (cool
             // Inquisition trade goods
             if (diplomacy==4){
                 cooldown=8;
-                trade_theirs[1]="Condemnor Boltgun";
-                trade_theirs[2]="Hellrifle";
-                trade_theirs[3]="Incinerator";
-                trade_theirs[4]="Crusader";
-                trade_theirs[5]="Exterminatus";
-                trade_theirs[6]="Cyclonic Torpedo";
-                trade_disp[1]=20;
-                trade_disp[2]=30;
-                trade_disp[3]=20;
-                trade_disp[4]=25;
-                trade_disp[5]=40;
-                trade_disp[6]=60;
+                // trade_theirs[1]="Condemnor Boltgun";
+                trade_theirs[1]="Hellrifle";
+                trade_theirs[2]="Incinerator";
+                trade_theirs[3]="Crusader";
+                trade_theirs[4]="Exterminatus";
+                trade_theirs[5]="Cyclonic Torpedo";
+                // trade_disp[1]=20;
+                trade_disp[1]=30;
+                trade_disp[2]=20;
+                trade_disp[3]=25;
+                trade_disp[4]=40;
+                trade_disp[5]=60;
             }
             // Ecclesiarchy trade goods
             if (diplomacy==5){

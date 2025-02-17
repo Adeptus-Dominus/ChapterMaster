@@ -56,7 +56,7 @@ function scr_trade(argument0) {
 	    if (trade_take[i]="Skitarii") then their_worth+=trade_tnum[i]*15;
 	    if (trade_take[i]="Techpriest") then their_worth+=trade_tnum[i]*150;
     
-	    if (trade_take[i]="Condemnor Boltgun") then their_worth+=trade_tnum[i]*15;
+	    // if (trade_take[i]="Condemnor Boltgun") then their_worth+=trade_tnum[i]*15;
 	    if (trade_take[i]="Hellrifle") then their_worth+=trade_tnum[i]*20;
 	    if (trade_take[i]="Incinerator") then their_worth+=trade_tnum[i]*20;
 	    if (trade_take[i]="Crusader") then their_worth+=trade_tnum[i]*20;
