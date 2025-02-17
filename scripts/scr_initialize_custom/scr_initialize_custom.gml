@@ -2193,7 +2193,7 @@ function scr_initialize_custom() {
 	company = 0;
 
     //loads up marine traits potential modding potential;
-    intialise_marine_triats();
+    intialise_marine_traits();
 
 	// Chapter Master
 	// This needs work

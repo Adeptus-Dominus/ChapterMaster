@@ -1,5 +1,5 @@
 //TODO Jsonify
-function intialise_marine_triats(){
+function intialise_marine_traits(){
 	global.trait_list = {
 		"champion":{
 			weapon_skill : [10,5,"max"],      
