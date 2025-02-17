@@ -230,10 +230,10 @@ function scr_draw_armentarium(){
 
         blurp = "Subject ID confirmed.  Rank Identified: Chapter Master.  Salutations Chapter Master.  We have assembled the following Data: ##" + string(obj_ini.role[100, 16]) + "s: " + string(temp[36]) + ".##Summation: ";
         if (obj_controller.faction_status[eFACTION.Mechanicus] != "War") {
-            if (max_techs > temp[37]) then blurp += "Our Mechanicus Requisitionary powers are sufficient to train " + string(max_techs - temp[37]) + " additional " + string(obj_ini.role[100, 16]) + ".";
-            if (max_techs <= temp[37]) then blurp += "We require " + string(yyy) + " additional Mechanicus Disposition to train one additional " + string(obj_ini.role[100, 16]) + ".";
+            if (max_techs > temp[37]) then blurp += $"Our Mechanicus Requisitionary powers are sufficient to train {max_techs - temp[37]} additional {obj_ini.role[100][eROLE.Techmarine]}.";
+            if (max_techs <= temp[37]) then blurp += $"We require {yyy} additional Mechanicus Disposition to train one additional obj_ini.role[100][eROLE.Techmarine].";
         } else {
-            blurp += $"Since we are at war with the Mechanicus we'll have to train our own {obj_ini.role[100, 16]}s."
+            blurp += $"Since we are at war with the Mechanicus we'll have to train our own {obj_ini.role[100][eROLE.Techmarine]}s."
         }
         blurp += "  The training of new " + string(obj_ini.role[100, 16]) + "s";
 
@@ -260,10 +260,10 @@ function scr_draw_armentarium(){
 
         if (menu_adept = 1) {
             if (obj_controller.faction_status[eFACTION.Mechanicus] != "War") {
-                if (max_techs > temp[37]) then blurp += "Our Mechanicus Requisitionary powers are sufficient to train " + string(max_techs - temp[37]) + " additional " + string(obj_ini.role[100, 16]) + ".";
-                if (max_techs <= temp[37]) then blurp += "We require " + string(yyy) + " additional Mechanicus Disposition to train one additional " + string(obj_ini.role[100, 16]) + ".";
+                if (max_techs > temp[37]) then blurp += $"Our Mechanicus Requisitionary powers are sufficient to train {max_techs - temp[37]} additional {obj_ini.role[100][eROLE.Techmarine]}.";
+                if (max_techs <= temp[37]) then blurp += $"We require {yyy} additional Mechanicus Disposition to train one additional obj_ini.role[100][eROLE.Techmarine].";
             } else {
-                blurp += $"Since we are at war with the Mechanicus we'll have to train our own {obj_ini.role[100, 16]}s."
+                blurp += $"Since we are at war with the Mechanicus we'll have to train our own {obj_ini.role[100][eROLE.Techmarine]}s."
             }
 
             blurp += "##Data compilation complete.  You currently possess the technology to produce the following:";

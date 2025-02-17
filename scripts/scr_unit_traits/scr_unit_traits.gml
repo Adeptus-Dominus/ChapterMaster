@@ -155,7 +155,7 @@ global.trait_list = {
 		display_name:"Trained On Mars",
 		flavour_text:"Had the best instruction in the imperium on technology from the Tech Priests of Mars"
 	},
-	"chapter_trained":{
+	"chapter_trained_tech":{
 		technology:[8,4,"max"],
 		intelligence:[5,3,"max"],
 		display_name:"Trained By The Chapter",

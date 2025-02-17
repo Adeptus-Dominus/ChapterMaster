@@ -237,7 +237,7 @@ function scr_unit_detail_text(){
 			unit_data_string+= "\nHis strength greatly exceeds that of the standard astartes allowing him to wield weapons that normally require two hands in one."
 		} 
 		// Technology text
-		if(!array_contains(traits, "mars_trained")) && (!array_contains(traits, "chapter_trained")){
+		if(!array_contains(traits, "mars_trained")) && (!array_contains(traits, "chapter_trained_tech")){
 			if (technology >= 35){
 				unit_data_string +="\nDisplays a talent with technology that might make him suited to a role within the armentarium.";
 			} else if (technology <= 25){

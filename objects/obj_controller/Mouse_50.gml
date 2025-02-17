@@ -83,11 +83,11 @@ else if (menu==15) and (cooldown<=0){
         if ((mouse_y >= yy + 455) && (mouse_y < yy + 473) && (training_techmarine < 6)) {
             cooldown = 8000;
             if (obj_controller.faction_status[eFACTION.Mechanicus] != "War") {
-                var pid = scr_role_count("Techmarine", "");
-                if (pid >= ((disposition[3] / 2) + 5)) {
+                var _chapter_tech_count = scr_role_count("Techmarine", "");
+                if (_chapter_tech_count >= ((disposition[3] / 2) + 5)) {
                     training_techmarine = 0;
                 }
-                if (pid < ((disposition[3] / 2) + 5)) {
+                if (_chapter_tech_count < ((disposition[3] / 2) + 5)) {
                     training_techmarine += 1;
                     scr_income();
                 }

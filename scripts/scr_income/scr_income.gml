@@ -23,8 +23,8 @@ function scr_income() {
 	income_training=0;
 
     if (obj_controller.faction_status[eFACTION.Mechanicus] != "War") {
-        var pid = scr_role_count(obj_ini.role[100][16], "");
-        if (pid >= ((disposition[3] / 2) + 5)) {
+        var _chapter_tech_count = scr_role_count(obj_ini.role[100][eROLE.Techmarine], "");
+        if (_chapter_tech_count >= ((disposition[3] / 2) + 5)) {
             training_techmarine = 0;
         }
     }
