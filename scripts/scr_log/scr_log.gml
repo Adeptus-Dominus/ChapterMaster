@@ -25,11 +25,11 @@ function handle_error(_header, _message, _stacktrace="", _critical = false, _rep
     var _full_message = "";
     _full_message += $"{LB_92}\n";
     _full_message += $"{_header}\n\n";
-    _full_message += $"Date-Time: {DATE_TIME_3}\n"; 
-    var _format_version = string_split(global.game_version, "/");
-    _full_message += $"Game Version: {_format_version[0]}\n"; 
-    _full_message += $"Build Date: {global.build_date}\n";
-    _full_message += $"Commit Hash: {global.commit_hash}\n\n";
+    _full_message += $"Date-Time: {DATE_TIME_3}\n";
+    var _format_version = is_string(global.game_version) ? string_split(global.game_version, "/") :["Unknown Version"];
+    _full_message += $"Game Version: {_format_version[0]}\n";
+    _full_message += $"Build Date: {global.build_date ?? ""}\n";
+    _full_message += $"Commit Hash: {global.commit_hash ?? ""}\n\n";
     _full_message += $"Details:\n";
     _full_message += $"{_message}\n\n";
     _full_message += $"Stacktrace:\n";
@@ -68,7 +68,7 @@ function handle_exception(_exception, custom_title=STR_error_message_head, criti
     var _header = critical ? STR_error_message_head2 : custom_title;
     var _message = _exception.longMessage;
     var _stacktrace = array_to_string_list(_exception.stacktrace);
-    var _report_title = $"[{global.game_version}] {_exception.stacktrace[0]}";
+    var _report_title = $"[{is_string(global.game_version)?global.game_version: " CM: Adeptus Dominus unknown version" }] {_exception.stacktrace[0]}";
     handle_error(_header, _message, _stacktrace, critical, _report_title);
 }
 
