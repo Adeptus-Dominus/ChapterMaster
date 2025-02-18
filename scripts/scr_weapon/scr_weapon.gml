@@ -989,13 +989,13 @@ global.weapons = {
 		"tags": ["precision", "rifle"]
 	},
 	"Needle Sniper Rifle": {
-		"abbreviation": "SnprRfl",
+		"abbreviation": "NdlSnpr",
 		"attack": {
 			"standard": 250,
 			"master_crafted": 300,
 			"artifact": 350
 		},
-		"description": "The Sniper Rifle fires a solid shell over long range and boasts powerful telescopic sights to assist, allowing the user to target enemy weak points and distant foes.",
+		"description": "The Needle Sniper Rifle is a deadly weapon that uses both directed lasers and crystallised neurotoxic needles to dispatch enemies, commonly favoured by assasins and Astartes Scouts .",
 		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 20,
