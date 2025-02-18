@@ -344,6 +344,8 @@ function scr_load(save_part, save_id) {
 	            obj_ini.gear[coh,mah]=ini_read_string("Mar","ge"+string(coh)+"."+string(mah),"");
 	            obj_ini.mobi[coh,mah]=ini_read_string("Mar","mb"+string(coh)+"."+string(mah),"");	
 	        }
+
+	       	intialise_marine_traits();
 	        for (coh=0;coh<=10;coh++){
 	        	for (mah=0;mah<=500;mah++){
 

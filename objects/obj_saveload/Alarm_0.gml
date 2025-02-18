@@ -78,7 +78,6 @@ if (load_part==6){
         }
     }
     trickle=50;
-    intialise_marine_traits();
     if (instance_exists(obj_cuicons)){
         obj_cuicons.alarm[1]=30;
     }
