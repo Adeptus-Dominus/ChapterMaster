@@ -1340,7 +1340,7 @@ function scr_initialize_custom() {
 	}
 	
 	var weapon_lists = {
-		heavy_weapons: ["Heavy Bolter", "Heavy Bolter", "Missile Launcher", "Missile Launcher", "Multi-Melta", "Lascannon","Plasma Cannon","Grav Cannon"],
+		heavy_weapons: ["Heavy Bolter", "Heavy Bolter", "Missile Launcher", "Missile Launcher", "Multi-Melta", "Lascannon","Plasma Cannon","Grav-Cannon"],
 		melee_weapons: ["Chainsword", "Chainsword", "Chainsword", "Chainaxe", "Chainaxe"],
 		special_melee_weapons: [ "Eviscerator", "Eviscerator", "Power Sword", "Power Sword", "Power Axe", "Power Axe", "Lightning Claw", "Lightning Claw", "Lightning Claw", "Power Fist", "Power Fist"],
 		ranged_weapons: ["Bolter", "Bolter",  "Storm Bolter", "Storm Bolter", "Stalker Pattern Bolter", "Stalker Pattern Bolter" ],
@@ -1351,7 +1351,7 @@ function scr_initialize_custom() {
 	}
 
 	var weapon_weighted_lists = {
-		heavy_weapons: [["Heavy Bolter", 3], ["Missile Launcher", 3], ["Multi-Melta", 1], ["Lascannon", 1], ["Plasma Cannon", 1], ["Grav Cannon", 1]],
+		heavy_weapons: [["Heavy Bolter", 3], ["Missile Launcher", 3], ["Multi-Melta", 1], ["Lascannon", 1], ["Plasma Cannon", 1], ["Grav-Cannon", 1]],
 		ranged_weapons: [["Bolter", 4], ["Storm Bolter", 2],["Stalker Pattern Bolter", 2]],
 		special_ranged_weapons: [["Flamer", 2], ["Meltagun", 2], ["Plasma Gun", 1], ["Grav-Gun", 1]],
 		melee_weapons: [["Chainsword", 3], ["Chainaxe", 2]],
