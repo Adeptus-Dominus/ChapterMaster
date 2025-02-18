@@ -488,7 +488,7 @@ function scr_draw_unit_image(_background=false){
 			
 
 			// Blood Angels Death Company Marines
-            else if (unit_specialization==UnitSpecialization.DeathCompany){
+            if (unit_specialization==UnitSpecialization.DeathCompany){
                 shader_array_set[ShaderType.Body] = Colors.Black;
                 shader_array_set[ShaderType.Helmet] = Colors.Black;
                 shader_array_set[ShaderType.LeftPauldron] = Colors.Black;
