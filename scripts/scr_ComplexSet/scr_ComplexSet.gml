@@ -726,5 +726,9 @@ function load_vis_set_to_global(directory, data){
     }
 }
 
-load_visual_sets();
+try{
+    load_visual_sets();
+} catch(_exception){
+    handle_exception(_exception);
+}
 
