@@ -279,25 +279,44 @@ if (obj_controller.selecting_planet!=0){
     } else if (population){
         garrison_data_slate.title = "Population Report";
         garrison_data_slate.inside_method = function(){
+            draw_set_color(c_gray);
             var xx = garrison_data_slate.XX;
             var yy = garrison_data_slate.YY;                
             var cur_planet = obj_controller.selecting_planet;
             var half_way =  garrison_data_slate.height/2;
+            var spacing_x = 100
+            var spacing_y = 50
             draw_set_halign(fa_left);
             if (!target.space_hulk) {
                 if (obj_controller.faction_status[eFACTION.Imperium] != "War" && p_data.current_owner <= 5) || (obj_controller.faction_status[eFACTION.Imperium] == "War") {
                     colonist_button.update({
-                        x1:xx+20,
-                        y1:yy+half_way,
+                        x1:xx+35,
+                        y1:half_way,
                         allow_click : array_length(potential_doners),
                     });
                     colonist_button.draw();
                     recruiting_button.update({
-                        x1:xx+200,
-                        y1:yy+half_way,
+                        x1:xx+(spacing_x*2)+15,
+                        y1:half_way,
                         allow_click : true,
                     });
                     recruiting_button.draw();
+                    if (p_data.has_feature(P_features.Recruiting_World)) {
+                        var _recruit_world = p_data.get_features(P_features.Recruiting_World)[0];
+                        if (_recruit_world.recruit_type == 0) && (obj_controller.faction_status[p_data.current_owner] != "War" && obj_controller.faction_status[p_data.current_owner] != "Antagonism" || p_data.player_disposition >= 50) {
+                            draw_text(xx+(spacing_x*3)+35, half_way-20, "Open: Voluntery");
+                        } else if (_recruit_world.recruit_type == 0 && p_data.player_disposition <= 50) {
+                            draw_text(xx+(spacing_x*3)+35, half_way-20, "Covert: Voluntery");
+                        } else {
+                            draw_text(xx+(spacing_x*3)+35, half_way-20, "Abduct");
+                        }
+                        recruitment_type_button.update({
+                            x1:xx+(spacing_x*3)+35,
+                            y1:half_way,
+                            allow_click : true,
+                        });
+                        recruitment_type_button.draw();
+                    }
                 }
             }
 

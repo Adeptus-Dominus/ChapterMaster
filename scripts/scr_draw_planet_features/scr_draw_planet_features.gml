@@ -181,8 +181,8 @@ function FeatureSelected(Feature, system, planet) constructor{
                 generic = true;
                 var _planet = planet_data.planet;
                 var _star = obj_star_select.target;
-                var current_owner = _star.p_owner[_planet];
-                var player_disposition = _star.dispo[_planet];
+                var p_data = new PlanetData(_planet, _star);
+                var _recruit_world = p_data.get_features(P_features.Recruiting_World)[0];
                 var _system_point_use = obj_controller.specialist_point_handler.point_breakdown.systems;
                 var _spare_apoth_points = 0;
                 if (struct_exists(_system_point_use, _star.name)) {
@@ -191,18 +191,30 @@ function FeatureSelected(Feature, system, planet) constructor{
                 }
                 title = "Marine Recruitment";
                 body = $"There are {_spare_apoth_points} apothecary rescource points available for recruit screening,\n\n";
-                var _recruit_find_chance = find_recruit_success_chance(_spare_apoth_points, _star, _planet);
+                var _recruit_find_chance = find_recruit_success_chance(_spare_apoth_points, _star, _planet, 1);
 
                 body += $"There is a {_recruit_find_chance * 100}% of producing a successful recruit this month on the basis of the available apothecary time to screen candidates and the chances of the aspirants passing their trials to an acceptable standard,\n\n";
 
-                if (obj_controller.faction_status[current_owner] == "War" || obj_controller.faction_status[current_owner] == "Antagonism") && (player_disposition <= 50) { // TODO LOW RECRUITING_DIALOG // Make this more dynamic and maybe make a event for this.
-                    body += "Since our relations with the populations' faction are... strained, we are having to do our recruiting operation covertly, some of our brothers may resort to more extreme methods of recruitment,\n\n"
-                } else if (obj_controller.faction_status[current_owner] == "War" || obj_controller.faction_status[current_owner] == "Antagonism") {
-                    body += "The population has grown accustomed to us and their Governor has given us the clear to openly recruit,\n\n"
+                if (obj_controller.faction_status[p_data.current_owner] == "War" || obj_controller.faction_status[p_data.current_owner] == "Antagonism") && (p_data.player_disposition <= 50) { // TODO LOW RECRUITING_DIALOG // Make this more dynamic.
+                    if (_recruit_world.recruit_type == 0) {
+                        body += "Since our relations with the populations' faction are... strained, we are having to do our recruiting operation covertly,\n\n"
+                    } else {
+                        body += "Since our relations with the populations' faction are... strained, we are having to do our recruiting operation covertly,"
+                        body += " our brothers are authorized to use more extreme methods of recruitment,\n\n"
+                    }
+                } else if (obj_controller.faction_status[p_data.current_owner] == "War" || obj_controller.faction_status[p_data.current_owner] == "Antagonism") {
+                    if (_recruit_world.recruit_type == 0) {
+                        body += "The population has grown accustomed to us and their Governor has given us the clear to openly recruit,\n\n"
+                    } else {
+                        body += "The population has grown accustomed to us and their Governor has given us the clear to openly recruit,"
+                        body += " however our brothers are still authorized to use more extreme methods of recruitment regardless,\n\n"
+                    }
+                } else if (_recruit_world.recruit_type == 1){
+                    body += "We've authorized our brothers to use more extreme methods of recruitment, should we really allow this Milord?\n\n"
                 }
 
-                if (player_disposition < 100) {
-                    body += "To increase recruit success chance more apothecaries will be required on the planet surface, we could also deploy garrisons to make the population more friendly to our chapter";
+                if (p_data.player_disposition < 100) {
+                    body += "To increase recruit success chance more apothecaries will be required on the planet surface, we could also deploy garrisons to make the population more friendly to our chapter.";
                 } else {
                     body += "To increase recruit success chance more apothecaries will be required on the planet surface.";
                 }

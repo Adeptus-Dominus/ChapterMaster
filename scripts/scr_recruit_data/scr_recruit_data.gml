@@ -19,10 +19,9 @@ enum eTrials{
 #macro ARR_chaplain_training_tiers  [0,0.8,0.9, 1,1.5,2,4]
 #macro ARR_techmarine_training_tiers  [0,1,2,4, 6,10,14]
 
-function find_recruit_success_chance(local_apothecary_points, system, planet) {
-    var current_owner = system.p_owner[planet];
-    var player_disposition = system.dispo[planet];
-    var planet_type = system.p_type[planet];
+function find_recruit_success_chance(local_apothecary_points, system, planet, ui=0) {
+    var p_data = new PlanetData(planet, system);
+    var _recruit_world = p_data.get_features(P_features.Recruiting_World)[0];
 
     var recruit_type = scr_trial_data(obj_controller.recruit_trial);
     var planet_type_recruit_chance = {
@@ -38,26 +37,47 @@ function find_recruit_success_chance(local_apothecary_points, system, planet) {
         "Lava": 15,
     };
     var recruit_chance = 0;
-    if (local_apothecary_points == 0) {
+    if (local_apothecary_points > 0) {
+        if ((obj_controller.faction_status[p_data.current_owner] == "War" || obj_controller.faction_status[p_data.current_owner] == "Antagonism") && p_data.player_disposition < 0) {
+            recruit_chance = 2000
+        } else if ((obj_controller.faction_status[p_data.current_owner] != "War" && obj_controller.faction_status[p_data.current_owner] != "Antagonism") && p_data.player_disposition < 0) {
+            recruit_chance = 1000
+        } else if ((obj_controller.faction_status[p_data.current_owner] == "War" || obj_controller.faction_status[p_data.current_owner] == "Antagonism") && p_data.player_disposition <= 50) {
+            recruit_chance = -(p_data.player_disposition*20)+2000
+        } else {
+            recruit_chance = -(p_data.player_disposition*5)+1000
+        }
 
-    } else if ((obj_controller.faction_status[current_owner] == "War" || obj_controller.faction_status[current_owner] == "Antagonism") && player_disposition < 0) {
-        recruit_chance = 2000
-    } else if ((obj_controller.faction_status[current_owner] != "War" && obj_controller.faction_status[current_owner] != "Antagonism") && player_disposition < 0) {
-        recruit_chance = 1000
-    } else if ((obj_controller.faction_status[current_owner] == "War" || obj_controller.faction_status[current_owner] == "Antagonism") && player_disposition <= 50) {
-        recruit_chance = -(player_disposition*20)+2000
-    } else {
-        recruit_chance = -(player_disposition*5)+1000
+        if (_recruit_world.recruit_type == 1) {
+            recruit_chance = recruit_chance/2;
+            if (recruit_chance < 300) {
+                recruit_chance = 300;
+            }
+            if (ui == 0) {
+                if (scr_has_adv("Ambushers")) {
+                    var droll = irandom(400)
+                } else {
+                    var droll = irandom(100)
+                }
+
+                if (droll == 0) {
+                    scr_alert(#FF9900, "DIPLOMATIC DISASTER", $"Apothecaries at {system.name} {planet} has been spotted doing suspicious activities!", system.x, system.y)
+                    scr_event_log(#FF9900, $"Apothecaries at {system.name} {planet} has been spotted doing suspicious activities!", system.name)
+                    system.dispo[planet]-=25;
+                    obj_controller.disposition[p_data.current_owner]-=5;
+                }
+            }
+        }
     }
     var recruit_chance_total = 0;
-    if (struct_exists(planet_type_recruit_chance, planet_type)) {
-        recruit_chance_total = planet_type_recruit_chance[$ planet_type] + local_apothecary_points;
+    if (struct_exists(planet_type_recruit_chance, p_data.planet_type)) {
+        recruit_chance_total = planet_type_recruit_chance[$ p_data.planet_type] + local_apothecary_points;
         if (struct_exists(recruit_type, "recruit_count_modifier")) {
             var modded = false;
             var count_mod = recruit_type.recruit_count_modifier;
             if (struct_exists(count_mod, "planets")) {
-                if (struct_exists(count_mod.planets, planet_type)) {
-                    recruit_chance_total *= count_mod.planets[$ planet_type];
+                if (struct_exists(count_mod.planets, p_data.planet_type)) {
+                    recruit_chance_total *= count_mod.planets[$ p_data.planet_type];
                     modded = true;
                 }
             }
@@ -69,7 +89,7 @@ function find_recruit_success_chance(local_apothecary_points, system, planet) {
     if (recruit_chance != 0) {
         var _success_chance = recruit_chance_total / recruit_chance;
     } else {
-        _success_chance = 0;
+        var _success_chance = 0;
     }
     return _success_chance;
 }
