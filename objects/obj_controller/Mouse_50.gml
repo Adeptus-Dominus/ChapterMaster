@@ -364,6 +364,8 @@ if (menu==20) and (diplomacy>0) or ((diplomacy<-5) and (diplomacy>-6)) and (cool
             // Inquisition trade goods
             if (diplomacy==4){
                 cooldown=8;
+                // TODO: Condemnor Boltgun trade is temporarily disabled due to crashes as the item doesn't exist in other parts of the game.
+                // To re-enable: Implement the Condemnor Boltgun item in the game's inventory, equipment, and combat systems.
                 // trade_theirs[1]="Condemnor Boltgun";
                 trade_theirs[1]="Hellrifle";
                 trade_theirs[2]="Incinerator";
