@@ -61,15 +61,15 @@ function scr_ruins_reward(star_system, planet, _ruins) {
 		    var pop = instance_create(0,0,obj_popup);
 		    pop.image = "ancient_ruins";
 		    pop.title = "Ancient Ruins: Artifact";
-		    pop.text = "An Artifact has been found within the ancient ruins.  It appears to be a " + string(obj_ini.artifact[last_artifact]) + " but should be brought to the Lexicanum and identified posthaste.";
-		    with(obj_star_select){ instance_destroy(); }
-		    with(obj_fleet_select){ instance_destroy(); }
+		    pop.text = $"An Artifact has been found within the ancient ruins.  It appears to be a {obj_ini.artifact[last_artifact]} but should be brought to the Lexicanum and identified posthaste.";
 		} else {
 		    var pop = instance_create(0,0,obj_popup);
 		    pop.image = "ancient_ruins";
 		    pop.title = "Ancient Ruins: Artifact Lost";
 		    pop.text = "An Artifact was discovered within the ancient ruins, but no suitable ship was available for its retrieval. The sacred object remains unclaimed.";
 		}
+		with(obj_star_select){ instance_destroy(); }
+		with(obj_fleet_select){ instance_destroy(); }
 	}
 
 	else if (loot="stc"){
