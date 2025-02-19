@@ -621,9 +621,9 @@ function scr_draw_unit_image(_background=false){
                     specific_armour_sprite=armour_sprite;
                     armour_bypass=true;
                 }else{
-                    var complex_armours = ["MK3 Iron Armour", "MK4 Maximus","Terminator Armour","Tartaros","MK7 Aquila", "Power Armour", "MK8 Errant","Artificer Armour","MK3 Iron Armour", "MK4 Maximus", "MK5 Heresy"];
-                    if (array_contains(complex_armours, unit.armour())){
-                        complex_set = new ComplexSet(unit);
+                    var _complex_armours = ["MK3 Iron Armour", "MK4 Maximus","Terminator Armour","Tartaros","MK7 Aquila", "Power Armour", "MK8 Errant","Artificer Armour","MK3 Iron Armour", "MK4 Maximus", "MK5 Heresy"];
+                    if (array_contains(_complex_armours, armour())){
+                        complex_set = new ComplexSet(self);
                         complex_livery = true;
                     } 
                 }

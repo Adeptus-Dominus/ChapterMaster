@@ -32,9 +32,9 @@ function scr_has_style(style){
 
 
 
-function ComplexSet(unit) constructor{
+function ComplexSet(unit, set) constructor{
     self.unit = unit;
-    if (!array_contains([eARMOUR_SET.Indomitus, eARMOUR_SET.Tartaros], set)) {
+    if (!array_contains(["Terminator Armour","Tartaros"], set)) {
         add_group({
             right_pauldron : spr_gothic_numbers_right_pauldron,
             left_knee : spr_numeral_left_knee
@@ -148,16 +148,16 @@ function ComplexSet(unit) constructor{
         gorget : unit.get_body_data("variant","throat"),
         right_pauldron: unit.company,
         left_pauldron: unit.company,        
-        left_personal_livery : get_body_data("personal_livery","left_arm"),
+        left_personal_livery : unit.get_body_data("personal_livery","left_arm"),
         left_knee : unit.company,
         tabbard : unit.get_body_data("tabbard_variation","torso"),
         robe : unit.get_body_data("tabbard_variation","torso"),
         crest : unit.get_body_data("crest_variation","head"),
         head : unit.get_body_data("variation","head"),
         mouth_variants:unit.get_body_data("variant","jaw"),
-        left_eye : get_body_data("variant","left_eye"),
-        right_eye : get_body_data("variant","right_eye"),
-        crown : get_body_data("crown_variation","head"),
+        left_eye : unit.get_body_data("variant","left_eye"),
+        right_eye : unit.get_body_data("variant","right_eye"),
+        crown : unit.get_body_data("crown_variation","head"),
     }
 
     static draw_component = function(component_name){
@@ -677,7 +677,7 @@ global.modular_drawing_items = [
     },        
 
 ]
-    var _vis_set_directory = exists(working_directory + "main\\visual_sets");
+    var _vis_set_directory = working_directory + "main\\visual_sets";
     if (directory_exists(_vis_set_directory)){
         try {
             var _file_buffer = buffer_load(_vis_set_directory + "\\use_sets.json");
