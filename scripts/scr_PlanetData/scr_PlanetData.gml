@@ -141,8 +141,12 @@ function PlanetData(planet, system) constructor{
     static has_feature = function(feature){
     	return planet_feature_bool(features, feature);
     }
-    
-    static has_upgrade= function(feature){
+
+    static add_feature = function(feature_type){
+    	array_push(system.p_feature[planet], new NewPlanetFeature(feature_type));
+    }
+
+    static has_upgrade = function(feature){
     	return planet_feature_bool(upgrades, feature);
     }
 
