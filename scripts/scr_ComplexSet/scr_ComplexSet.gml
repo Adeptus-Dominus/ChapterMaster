@@ -32,9 +32,9 @@ function scr_has_style(style){
 
 
 
-function ComplexSet(unit, set) constructor{
+function ComplexSet(unit) constructor{
     self.unit = unit;
-    if (!array_contains(["Terminator Armour","Tartaros"], set)) {
+    if (!array_contains(["Terminator Armour","Tartaros"], unit.armour())) {
         add_group({
             right_pauldron : spr_gothic_numbers_right_pauldron,
             left_knee : spr_numeral_left_knee
@@ -57,7 +57,7 @@ function ComplexSet(unit, set) constructor{
     static assign_modulars = function(){
         var modulars = global.modular_drawing_items;
         body_type = "normal";
-        if (unit.armour() = "Terminator Armour" ||unit.armour() =  "Tartaros"){
+        if (unit.armour() = "Terminator Armour" || unit.armour() =  "Tartaros"){
             body_type = "terminator";
         }
         static _mod = {};
@@ -168,7 +168,7 @@ function ComplexSet(unit, set) constructor{
     }
     static draw = function(){
         draw_cloaks(x_surface_offset,y_surface_offset );
-         draw_unit_arms(x_surface_offset, y_surface_offset, armour_type, specialist_colours, hide_bionics, complex_set);
+         //draw_unit_arms(x_surface_offset, y_surface_offset, armour_type, specialist_colours, hide_bionics, complex_set);
          shader_set(full_livery_shader);
 
          _draw_order = [
@@ -193,7 +193,7 @@ function ComplexSet(unit, set) constructor{
             if (_draw_order[i] == "head"){
                 draw_head(self, x_surface_offset,y_surface_offset);
             } else {
-                draw_component(_draw_order[i]);
+                draw_component(_draw_order[i],x_surface_offset,y_surface_offset);
             }
             
          }
@@ -203,16 +203,6 @@ function ComplexSet(unit, set) constructor{
     switch (unit.armour()){
         case "MK7 Aquila":
             add_group(mk7_bits);
-            if (scr_has_style("Mongol")){
-                add_to_area("chest_variants" ,spr_mk7_mongol_chest_variants);
-            }
-            if (scr_has_style("Prussian")){
-                add_to_area("mouth_variants", spr_mk7_mouth_prussian);
-                 add_to_area("chest_variants", spr_mk7_prussia_chest);
-            }
-            if (scr_has_style("Gladiator")){
-                add_to_area("chest_variants" ,spr_mk7_gladiator_chest);
-            } 
             break;                  
         case "MK6 Corvus":
             add_group({
@@ -225,12 +215,6 @@ function ComplexSet(unit, set) constructor{
                 mouth_variants : spr_mk6_mouth_variants,
                 head : spr_mk6_head_variants,
             });
-            if (scr_has_style("Mongol")){
-                add_to_area("chest_variants" ,spr_mk6_mongol_chest_variants);
-            } 
-            if (scr_has_style("Prussian")){
-                add_to_area("mouth_variants", spr_mk6_mouth_prussian);
-            } 
             break;                
         case  "MK5 Heresy":
             add_group({
@@ -259,12 +243,6 @@ function ComplexSet(unit, set) constructor{
                 mouth_variants: spr_mk4_mouth_variants,
                 head : spr_mk4_head_variants,            
             });
-            if (scr_has_style("Mongol")){
-                add_to_area("chest_variants" ,spr_mk4_mongol_chest_variants);
-            } 
-            if (scr_has_style("Prussian")){
-                add_to_area("chest_variants", spr_mk7_prussia_chest);
-            }
             break;                                
         case  "MK3 Iron":
             add_group({
@@ -278,27 +256,11 @@ function ComplexSet(unit, set) constructor{
                 mouth_variants: spr_mk3_mouth,
                 forehead : spr_mk3_forehead_variants  
             });
-            if (scr_has_style("Flame Cult")){
-                add_to_area("mouth_variants", spr_mk3_mouth_flame_cult);
-            }
-            if (scr_has_style("Prussian")){
-                add_to_area("mouth_variants", spr_mk3_mouth_prussian);
-                add_to_area("chest_variants", spr_mk7_prussia_chest);         
-            }
 
         case  "MK8 Errant":
             add_group(mk7_bits);
             add_to_area("gorget",spr_mk8_gorget);
-            if (scr_has_style("Prussian")){
-                add_to_area("mouth_variants", spr_mk7_mouth_prussian);
-                add_to_area("chest_variants", spr_mk7_prussia_chest);
-            }         
-            if (scr_has_style("Mongol")){
-                add_to_area("chest_variants" ,spr_mk7_mongol_chest_variants);
-            }
-            if (scr_has_style("Gladiator")){
-                add_to_area("chest_variants" ,spr_mk7_gladiator_chest);
-            }               
+                    
        case  "Terminator Armour":
              add_group({
                 armour : spr_indomitus_complex,
@@ -326,7 +288,10 @@ function ComplexSet(unit, set) constructor{
                 right_trim : spr_tartaros_right_trim,
 
             });
-            break;                
+            break;
+            case defualt:
+                add_group(mk7_bits);
+
         }
         assign_modulars();
     }
@@ -674,7 +639,69 @@ global.modular_drawing_items = [
         body_types :["terminator"],
         position : "tabbard",
         allow_either : ["cultures", "role_type"],       
-    },        
+    },
+    {
+        cultures : ["Flame Cult"],
+        sprite : spr_mk3_mouth_flame_cult,
+        body_types :["normal"],
+        position : "mouth_variants",
+        armours : ["MK3 Iron"],    
+    },
+    {
+        cultures : ["Prussian"],
+        sprite : spr_mk3_mouth_prussian,
+        body_types :["normal"],
+        position : "mouth_variants",
+        armours : ["MK3 Iron"],    
+    },
+    {
+        cultures : ["Prussian"],
+        sprite : spr_mk6_mouth_prussian,
+        body_types :["normal"],
+        position : "mouth_variants",
+        armours : ["MK3 Iron"],    
+    },
+    {
+        cultures : ["Prussian"],
+        sprite : spr_mk7_prussia_chest,
+        body_types :["normal"],
+        position : "chest_variants",  
+    },
+    {
+        cultures : ["Prussian"],
+        sprite : spr_mk7_mouth_prussian,
+        body_types :["normal"],
+        position : "chest_variants",
+        armours : ["MK8 Errant", "MK7 Aquila"],      
+    }, 
+    {
+        cultures : ["Mongol"],
+        sprite : spr_mk7_mongol_chest_variants,
+        body_types :["normal"],
+        position : "chest_variants",
+        armours : ["MK8 Errant", "MK7 Aquila"],      
+    },
+    {
+        cultures : ["Gladiator"],
+        sprite : spr_mk7_gladiator_chest,
+        body_types :["normal"],
+        position : "chest_variants",
+        armours : ["MK8 Errant", "MK7 Aquila"],      
+    },
+    {
+        cultures : ["Mongol"],
+        sprite : spr_mk4_mongol_chest_variants,
+        body_types :["normal"],
+        position : "chest_variants",
+        armours : ["MK4 Maximus"],      
+    },
+    {
+        cultures : ["Mongol"],
+        sprite : spr_mk6_mongol_chest_variants,
+        body_types :["normal"],
+        position : "chest_variants",
+        armours : ["MK6 Corvus"],      
+    },           
 
 ]
     var _vis_set_directory = working_directory + "main\\visual_sets";
