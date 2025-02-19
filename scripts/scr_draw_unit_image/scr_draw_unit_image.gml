@@ -814,6 +814,8 @@ function scr_draw_unit_image(_background=false){
                 if (!armour_bypass){
                     if (complex_livery){
                         if (struct_exists(complex_set, "armour")){
+                            complex_set.x_surface_offset = x_surface_offset;
+                            complex_set.y_surface_offset = y_surface_offset
                             complex_set.draw();                                                                                                                                                                                                                      
                         } else {
                             draw_sprite(specific_armour_sprite,0,x_surface_offset,y_surface_offset);
@@ -1183,7 +1185,35 @@ function scr_draw_unit_image(_background=false){
     var _complex_sprite_names = struct_get_names(complex_set);
     for (var i=0;i<array_length(_complex_sprite_names);i++){
         var _area = _complex_sprite_names[i];
-        if (!is_method(complex_set[$ _area])){
+        if (!is_callable(complex_set[$ _area])){
+            if array_contains([
+             "armour",
+             "chest_variants",
+             "thorax_variants",
+             "leg_variants",
+             "left_leg",
+             "right_leg",
+             "head",
+             "left_trim",
+             "right_trim",
+             "gorget",
+             "right_pauldron",
+             "left_pauldron",
+             "left_personal_livery",
+             "left_knee",
+             "tabbard",
+             "robe",
+             "mouth_variants",
+             "crest",
+             "forehead",
+             "head",
+             "forehead",
+             "left_eye",
+             "right_eye",
+             "crown"
+            ], _area
+         )
+
             if (sprite_exists(complex_set[$ _area])){
                 sprite_delete(complex_set[$_area]);
             } 
