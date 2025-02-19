@@ -183,12 +183,7 @@ function FeatureSelected(Feature, system, planet) constructor{
                 var _star = obj_star_select.target;
                 var p_data = new PlanetData(_planet, _star);
                 var _recruit_world = p_data.get_features(P_features.Recruiting_World)[0];
-                var _system_point_use = obj_controller.specialist_point_handler.point_breakdown.systems;
-                var _spare_apoth_points = 0;
-                if (struct_exists(_system_point_use, _star.name)) {
-                    var _point_data = _system_point_use[$ _star.name][_planet];
-                    _spare_apoth_points = _point_data.heal_points - _point_data.heal_points_use;
-                }
+                var _spare_apoth_points = p_data.get_local_apothecary_points();
                 title = "Marine Recruitment";
                 body = $"There are {_spare_apoth_points} apothecary rescource points available for recruit screening,\n\n";
                 var _recruit_find_chance = find_recruit_success_chance(_spare_apoth_points, _star, _planet, 1);

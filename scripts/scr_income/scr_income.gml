@@ -19,8 +19,13 @@ function scr_income() {
 
 	income_forge=0;
 	income_agri=0;
-	income_recruiting=0;
 	income_training=0;
+
+    if (income_recruiting != 0) {
+        if (income_recruiting > 0) || (!string_count("|",obj_controller.recruiting_worlds) && income_recruiting < 0) {
+            income_recruiting = 0;
+        }
+    }
 
     if (obj_controller.faction_status[eFACTION.Mechanicus] != "War") {
         var _chapter_tech_count = scr_role_count(obj_ini.role[100][eROLE.Techmarine], "");

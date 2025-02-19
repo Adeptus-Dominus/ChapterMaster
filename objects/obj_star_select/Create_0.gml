@@ -45,6 +45,8 @@ recruiting_button.bind_method = function(){
         array_push(target.p_feature[obj_controller.selecting_planet], new NewPlanetFeature(P_features.Recruiting_World));
         obj_controller.recruiting_worlds += $"{planet_numeral_name(obj_controller.selecting_planet, target)}|";
     } else {
+        var _recruit_world = p_data.get_features(P_features.Recruiting_World)[0];
+        obj_controller.income_recruiting+=_recruit_world.recruit_cost * 2;
         delete_features(target.p_feature[obj_controller.selecting_planet], P_features.Recruiting_World);
         obj_controller.recruiting_worlds=string_replace(obj_controller.recruiting_worlds,string(target.name)+" "+scr_roman(obj_controller.selecting_planet)+"|","");
     }
@@ -57,12 +59,41 @@ recruitment_type_button.update({
 	target : target,
 });
 recruitment_type_button.bind_method = function(){
-    var p_data = new PlanetData(obj_controller.selecting_planet, target);
     var _recruit_world = p_data.get_features(P_features.Recruiting_World)[0];
     if (_recruit_world.recruit_type < 1) {
         _recruit_world.recruit_type++
     } else {
         _recruit_world.recruit_type--
+    }
+};
+
+recruitment_costdown_button = new PurchaseButton(0);
+recruitment_costdown_button.update({
+	tooltip : "Deaccelerate recruitment",
+	label : "RQD",
+	target : target,
+});
+recruitment_costdown_button.bind_method = function(){
+    var _recruit_world = p_data.get_features(P_features.Recruiting_World)[0];
+    _recruit_world.recruit_cost--
+
+    if (obj_controller.recruiting == 1 && _recruit_world.recruit_use == 1) {
+        obj_controller.income_recruiting+=2;
+    }
+};
+
+recruitment_costup_button = new PurchaseButton(0);
+recruitment_costup_button.update({
+	tooltip : "Accelerate recruitment with req",
+	label : "RQU",
+	target : target,
+});
+recruitment_costup_button.bind_method = function(){
+    var _recruit_world = p_data.get_features(P_features.Recruiting_World)[0];
+    _recruit_world.recruit_cost++
+
+    if (obj_controller.recruiting == 1 && _recruit_world.recruit_use == 1) {
+        obj_controller.income_recruiting-=2;
     }
 };
 

@@ -136,8 +136,6 @@ function PlanetData(planet, system) constructor{
     	return xh_force;
     }
     
-    static marine_training = planet_training_sequence;
-
     static has_feature = function(feature){
     	return planet_feature_bool(features, feature);
     }
@@ -159,11 +157,36 @@ function PlanetData(planet, system) constructor{
   		return _select_features;
     }
 
+    static get_local_apothecary_points = function() {
+        var _system_point_use = obj_controller.specialist_point_handler.point_breakdown.systems;
+        var _spare_apoth_points = 0;
+        if (struct_exists(_system_point_use, system.name)) {
+            var _point_data = _system_point_use[$ system.name][planet];
+            _spare_apoth_points = _point_data.heal_points - _point_data.heal_points_use;
+        }
+        return _spare_apoth_points;
+    }
+
+    if (has_feature(P_features.Recruiting_World)) {
+        var _recruit_world = get_features(P_features.Recruiting_World)[0];
+        var _spare_apoth_points = get_local_apothecary_points();
+        if (_recruit_world.recruit_use == 1 && _spare_apoth_points == 0) {
+            _recruit_world.recruit_use = 0;
+            obj_controller.income_recruiting+=_recruit_world.recruit_cost * 2;
+        } else if (_recruit_world.recruit_use == 0 && _spare_apoth_points > 0) {
+            _recruit_world.recruit_use = 1;
+            obj_controller.income_recruiting-=_recruit_world.recruit_cost * 2;
+        }
+    }
+
+    static marine_training = planet_training_sequence;
+
     static planet_training = function(local_screening_points) {
         var _training_happend = false;
         if (has_feature(P_features.Recruiting_World)) {
             if (obj_controller.gene_seed == 0 && obj_controller.recruiting > 0) {
                 obj_controller.recruiting = 0;
+                obj_controller.income_recruiting = 0;
                 scr_alert("red", "recruiting", "The Chapter has run out of gene-seed!", 0, 0);
             } else if (obj_controller.recruiting > 0) {
                 if (local_screening_points > 0) {

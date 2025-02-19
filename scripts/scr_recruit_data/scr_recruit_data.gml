@@ -22,6 +22,7 @@ enum eTrials{
 function find_recruit_success_chance(local_apothecary_points, system, planet, ui=0) {
     var p_data = new PlanetData(planet, system);
     var _recruit_world = p_data.get_features(P_features.Recruiting_World)[0];
+    var _recruit_cost = _recruit_world.recruit_cost;
 
     var recruit_type = scr_trial_data(obj_controller.recruit_trial);
     var planet_type_recruit_chance = {
@@ -38,15 +39,18 @@ function find_recruit_success_chance(local_apothecary_points, system, planet, ui
     };
     var recruit_chance = 0;
     if (local_apothecary_points > 0) {
-        if ((obj_controller.faction_status[p_data.current_owner] == "War" || obj_controller.faction_status[p_data.current_owner] == "Antagonism") && p_data.player_disposition < 0) {
+        if ((p_data.owner_status() == "War" || p_data.owner_status() == "Antagonism") && p_data.player_disposition < 0) {
+            recruit_chance = 3000
+        } else if ((p_data.owner_status() != "War" && p_data.owner_status() != "Antagonism") && p_data.player_disposition < 0) {
             recruit_chance = 2000
-        } else if ((obj_controller.faction_status[p_data.current_owner] != "War" && obj_controller.faction_status[p_data.current_owner] != "Antagonism") && p_data.player_disposition < 0) {
-            recruit_chance = 1000
-        } else if ((obj_controller.faction_status[p_data.current_owner] == "War" || obj_controller.faction_status[p_data.current_owner] == "Antagonism") && p_data.player_disposition <= 50) {
-            recruit_chance = -(p_data.player_disposition*20)+2000
         } else {
-            recruit_chance = -(p_data.player_disposition*5)+1000
-        }
+            var _frictious = ((p_data.owner_status() == "War" || p_data.owner_status() == "Antagonism") && p_data.player_disposition <= 50);
+            var _disp_mod = -((_frictious ? 30 : 10) * p_data.player_disposition);
+            var _faction_disp_mod = !_frictious ? 2000 : 3000;
+            var _recruit_cost_mod = -_recruit_cost*100;
+
+            var recruit_chance = _disp_mod + _recruit_cost_mod + _faction_disp_mod
+        };
 
         if (_recruit_world.recruit_type == 1) {
             recruit_chance = recruit_chance/2;
@@ -64,7 +68,9 @@ function find_recruit_success_chance(local_apothecary_points, system, planet, ui
                     scr_alert(#FF9900, "DIPLOMATIC DISASTER", $"Apothecaries at {system.name} {planet} has been spotted doing suspicious activities!", system.x, system.y)
                     scr_event_log(#FF9900, $"Apothecaries at {system.name} {planet} has been spotted doing suspicious activities!", system.name)
                     system.dispo[planet]-=25;
-                    obj_controller.disposition[p_data.current_owner]-=5;
+                    if (p_data.current_owner != eFACTION.Player) {
+                        obj_controller.disposition[p_data.current_owner]-=5;
+                    }
                 }
             }
         }

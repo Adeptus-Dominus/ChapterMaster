@@ -153,7 +153,9 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 	case P_features.Recruiting_World:
 		planet_display="Recruitment";
 		player_hidden = 0;
+        recruit_use = 0;
         recruit_type = 0;
+        recruit_cost = 0;
 		break;
 	default:
 		player_hidden = 1;

@@ -285,7 +285,7 @@ if (obj_controller.selecting_planet!=0){
             var cur_planet = obj_controller.selecting_planet;
             var half_way =  garrison_data_slate.height/2;
             var spacing_x = 100
-            var spacing_y = 50
+            var spacing_y = 65
             draw_set_halign(fa_left);
             if (!target.space_hulk) {
                 if (obj_controller.faction_status[eFACTION.Imperium] != "War" && p_data.current_owner <= 5) || (obj_controller.faction_status[eFACTION.Imperium] == "War") {
@@ -295,6 +295,7 @@ if (obj_controller.selecting_planet!=0){
                         allow_click : array_length(potential_doners),
                     });
                     colonist_button.draw();
+
                     recruiting_button.update({
                         x1:xx+(spacing_x*2)+15,
                         y1:half_way,
@@ -316,6 +317,26 @@ if (obj_controller.selecting_planet!=0){
                             allow_click : true,
                         });
                         recruitment_type_button.draw();
+
+                        draw_text(xx+(spacing_x*3)-15, half_way+(spacing_y)-20, $"Req:{_recruit_world.recruit_cost * 2}");
+                        if (obj_controller.recruiting == 1) {
+                            if (_recruit_world.recruit_cost > 0) {
+                                recruitment_costdown_button.update({
+                                    x1:xx+(spacing_x*2)+35,
+                                    y1:half_way+(spacing_y),
+                                    allow_click : true,
+                                });
+                                recruitment_costdown_button.draw();
+                            }
+                            if (_recruit_world.recruit_cost < 5) {
+                                recruitment_costup_button.update({
+                                    x1:xx+(spacing_x*3)+35,
+                                    y1:half_way+(spacing_y),
+                                    allow_click : true,
+                                });
+                                recruitment_costup_button.draw();
+                            }
+                        }
                     }
                 }
             }
@@ -410,7 +431,6 @@ if (obj_controller.selecting_planet!=0){
                     if (obj_controller.selecting_planet) {
                         obj_controller.recruiting_worlds += planet_numeral_name(obj_controller.selecting_planet, target);
                     }
-                    obj_controller.income_recruiting = (obj_controller.recruiting * -2) * string_count("|", obj_controller.recruiting_worlds);
                     if (obj_controller.recruiting_worlds_bought == 0) {
                         if (button1 == "+Recruiting") {
                             button1 = "";
