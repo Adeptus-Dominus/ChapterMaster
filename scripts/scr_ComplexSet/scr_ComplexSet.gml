@@ -50,7 +50,7 @@ function ComplexSet(unit) constructor{
             mouth_variants : spr_mk7_mouth_variants,
             thorax_variants : spr_mk7_thorax_variants,
             chest_variants : spr_mk7_chest_variants,
-            leg_variancts : spr_mk7_leg_variants,
+            leg_variants  : spr_mk7_leg_variants,
             head : spr_mk7_head_variants,       
     };
 
