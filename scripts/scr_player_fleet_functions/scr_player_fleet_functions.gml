@@ -599,7 +599,26 @@ function get_nearest_player_fleet(nearest_x, nearest_y, is_static=false, is_movi
 	return chosen_fleet;	
 }
 
+function calculate_fleet_content_size(ship_array){
+	var total_content = 0;
+	for (var i=0;i<array_length(ship_array);i++){
+		var _ship_id  = ship_array[i];
+		if (_ship_id<array_length(obj_ini.ship)){
+			total_content += obj_ini.ship_carrying[_ship_id];
+		}
+	}
+	return total_content;	
+}
 
 
-
+function calculate_fleet_bombard_score(ship_array){
+	var bomb_score = 0;
+	for (var i=0;i<array_length(ship_array);i++){
+		var _ship_id  = ship_array[i];
+		if (_ship_id<array_length(obj_ini.ship)){
+			bomb_score += ship_bombard_score(_ship_id);
+		}
+	}
+	return bomb_score;
+}
 

@@ -285,7 +285,7 @@ function new_player_ship(type, start_loc="home", new_name=""){
         obj_ini.ship_wep[index,4]="Torpedo Tubes";
         obj_ini.ship_wep_facing[index,4]="front";
         obj_ini.ship_wep_condition[index,4]="";
-        obj_ini.ship_wep[index,5]="Bombardment Cannons";
+        obj_ini.ship_wep[index,5]="Macro Bombardment Cannons";
         obj_ini.ship_wep_facing[index,5]="most";
         obj_ini.ship_wep_condition[index,5]="";
         obj_ini.ship_capacity[index]=600;
@@ -389,6 +389,9 @@ function new_player_ship(type, start_loc="home", new_name=""){
         obj_ini.ship_wep_condition[index,3]="";
         obj_ini.ship_wep[index,4]="Plasma Cannon";
         ship_wep_facing[index,4]="front";
+        obj_ini.ship_wep[index,5]="Macro Bombardment Cannons";
+        obj_ini.ship_wep_facing[index,4]="most";
+        obj_ini.ship_wep_condition[index,4]="";               
         obj_ini.ship_wep_condition[index,4]="";
         obj_ini.ship_capacity[index]=800;
         obj_ini.ship_carrying[index]=0;
@@ -403,6 +406,7 @@ function ship_class_name(index){
 	var _ship_class = obj_ini.ship_class[index];	
 	return $"{_ship_class} '{_ship_name}'";
 }
+
 function player_ships_class(index){
 	var _escorts = ["Escort", "Hunter", "Gladius"];
 	var _capitals = ["Gloriana", "Battle Barge", "Capital"];
@@ -416,4 +420,30 @@ function player_ships_class(index){
 		return "frigate";
 	}
 	return _ship_name_class;
+}
+
+function ship_bombard_score(ship_id){
+	var _bomb_score = 0;
+	static weapon_bomb_scores = {
+		"Bombardment Cannons" : {
+			value : 1,
+		},
+		"Macro Bombardment Cannons" : {
+			value : 2,
+		},
+		"Plasma Cannon" : {
+			value : 4
+		},
+		"Torpedo Tubes" : {
+			value : 1
+		}
+	}
+	for (var b=0;b<array_length(obj_ini.ship_wep[ship_id]);b++){
+		var _wep = obj_ini.ship_wep[ship_id][b];
+		if (struct_exists(weapon_bomb_scores, _wep)){
+			_bomb_score += weapon_bomb_scores[$ _wep].value;
+		}
+	}
+
+	return _bomb_score;	
 }
