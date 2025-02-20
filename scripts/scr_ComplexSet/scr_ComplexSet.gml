@@ -717,8 +717,7 @@ global.modular_drawing_items = [
                 throw ("use_sets.json File Wrong Format");
             }
             for (var i=0;i<array_length(_raw_data);_raw_data++){
--for (var i=0;i<array_length(_raw_data);_raw_data++){
-+for (var i=0; i<array_length(_raw_data); i++){
+                var _sepcific_vis_set = _vis_set_directory + $"\\_raw_data[i]";
                 if (directory_exists(_sepcific_vis_set)){
                     var _file_buffer = buffer_load(_sepcific_vis_set + "\\data.json");
                     if (file_buffer == -1) {
