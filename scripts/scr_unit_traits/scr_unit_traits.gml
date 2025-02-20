@@ -159,7 +159,7 @@ function intialise_marine_traits(){
 			technology:[8,4,"max"],
 			intelligence:[5,3,"max"],
 			display_name:"Trained By The Chapter",
-			flavour_text:"Trained by the best Techmarines in the Chapter" // tried making this not hardcoded but it caused a crash
+			flavour_text:$"Trained by the best {obj_ini.role[100][eROLE.Techmarine]}s in the Chapter" // tried making this not hardcoded but it caused a crash
 		},
 		"flesh_is_weak":{
 			technology:[2,1,"max"],
