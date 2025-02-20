@@ -37,7 +37,7 @@ if (p_data.guardsmen>0){
     imp=p_data.guard_score_calc();
 }
 var _pdf_count=p_data.pdf;
-if (pdf >= 50000000) {
+if (_pdf_count >= 50000000) {
     pdf = 6;
 } else if (_pdf_count >= 15000000) {
     pdf = 5;
