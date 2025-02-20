@@ -148,11 +148,14 @@ if (obj_controller.selecting_planet!=0){
     }
 // Buttons that are available
     if (!buttons_selected){
-        var is_enemy=false;
+        if (obj_controller.faction_status[eFACTION.Imperium] != "War" && p_data.current_owner > 5) || (obj_controller.faction_status[eFACTION.Imperium] == "War" && p_data.at_war(0, 1, 1) && p_data.player_disposition <= 50) {
+            var is_enemy=true;
+        } else {
+            var is_enemy=false;
+        }
+
         if (p_data.planet>0){
             if (target.present_fleet[1]=0)/* and (target.p_type[obj_controller.selecting_planet]!="Dead")*/{
-                is_enemy = p_data.at_war();
-
                 if (p_data.player_forces>0){
                     if (is_enemy){
                         button1="Attack";
@@ -161,9 +164,7 @@ if (obj_controller.selecting_planet!=0){
                 }
             }
             if (target.present_fleet[1]>0)/* and (target.p_type[obj_controller.selecting_planet]!="Dead")*/{
-                is_enemy = p_data.at_war();
-
-                if (is_enemy){
+                if (is_enemy) {
                     button1="Attack";
                     button2="Raid";
                     button3="Bombard";

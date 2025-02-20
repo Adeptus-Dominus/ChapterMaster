@@ -39,12 +39,12 @@ function find_recruit_success_chance(local_apothecary_points, system, planet, ui
     };
     var recruit_chance = 0;
     if (local_apothecary_points > 0) {
-        if ((p_data.owner_status() == "War" || p_data.owner_status() == "Antagonism") && p_data.player_disposition < 0) {
+        if (p_data.at_war(0, 1, 1) && p_data.player_disposition < 0) {
             recruit_chance = 3000
-        } else if ((p_data.owner_status() != "War" && p_data.owner_status() != "Antagonism") && p_data.player_disposition < 0) {
+        } else if (p_data.at_war(0, 0, 0) && p_data.player_disposition < 0) {
             recruit_chance = 2000
         } else {
-            var _frictious = ((p_data.owner_status() == "War" || p_data.owner_status() == "Antagonism") && p_data.player_disposition <= 50);
+            var _frictious = (p_data.at_war(0, 1, 1) && p_data.player_disposition <= 50);
             var _disp_mod = -((_frictious ? 30 : 10) * p_data.player_disposition);
             var _faction_disp_mod = !_frictious ? 2000 : 3000;
             var _recruit_cost_mod = -_recruit_cost*100;

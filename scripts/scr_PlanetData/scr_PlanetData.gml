@@ -36,16 +36,26 @@ function PlanetData(planet, system) constructor{
     	}
     }
 
-    static at_war = function(){
-    	var _at_war = false
-    	if (current_owner>5) then _at_war=true;
-        if (obj_controller.faction_status[current_owner]="War") then _at_war=true;
-        return _at_war;
-    }
-
     static owner_status = function(){
     	return obj_controller.faction_status[current_owner];
     }
+
+    static at_war = function(imperium=1, antagonism=0, war=1){
+        var _at_war = false
+        if (imperium) {
+            if (current_owner>5) then _at_war=true;
+        }
+
+        if (antagonism) {
+            if (owner_status()=="Antagonism") then _at_war=true;
+        }
+
+        if (war) {
+            if (owner_status()=="War") then _at_war=true;
+        }
+        return _at_war;
+    }
+
     guardsmen = system.p_guardsmen[planet];
     pdf = system.p_pdf[planet];
     fortification_level  = system.p_fortified[planet];
