@@ -8,19 +8,6 @@ function scr_draw_management_unit(selected, yy=0, xx=0, draw=true){
 	jailed = false;
 	var impossible = (!is_struct(display_unit[selected]) && !is_array(display_unit[selected]));
 	var is_man=false;
-    if (draw) {
-        var spec_tips = [
-            string("{0} Potential", obj_ini.role[100][16]),
-            string("{0} Potential", obj_ini.role[100][15]),
-            string("{0} Potential", obj_ini.role[100][14]),
-            string("{0} Potential", obj_ini.role[100][17]),
-            string("{0} Applicant", obj_ini.role[100][16]),
-            string("{0} Applicant", obj_ini.role[100][15]),
-            string("{0} Applicant", obj_ini.role[100][14]),
-            string("{0} Applicant", obj_ini.role[100][17]),
-            string("Promote to Marine")
-        ];
-    }
     if (man[selected]=="man" && is_struct(display_unit[selected])){
     	is_man = true;
 		unit = display_unit[selected];
@@ -160,32 +147,57 @@ function scr_draw_management_unit(selected, yy=0, xx=0, draw=true){
             if (!unit_specialist) {
                 var _role = unit.role();
                 var _experience = unit.experience;
-                var specialistfunct = function(specialist, unit_role, unit_exp, req_exp, spec_tips) {
+                var specialistfunct = function(specialist, unit_role, unit_exp, req_exp) {
+                    var spec_tips = [
+                        string("{0} Potential", obj_ini.role[100][16]),
+                        string("{0} Potential", obj_ini.role[100][15]),
+                        string("{0} Potential", obj_ini.role[100][14]),
+                        string("{0} Potential", obj_ini.role[100][17]),
+                        string("{0} Applicant", obj_ini.role[100][16]),
+                        string("{0} Applicant", obj_ini.role[100][15]),
+                        string("{0} Applicant", obj_ini.role[100][14]),
+                        string("{0} Applicant", obj_ini.role[100][17]),
+                        string("Promote to Marine")
+                    ];
+
+                    var colors;
                     var tips_list = [0, 0, spec_tips[8]];
                     var spec_tip;
                     switch (specialist) {
                         case "Techmarine":
+                            colors = [c_dkgray, c_red];
                             tips_list[0] = spec_tips[0];
                             tips_list[1] = spec_tips[4];
                             break;
 
                         case "Librarian":
+                            colors = [c_white, c_aqua];
                             tips_list[0] = spec_tips[3];
                             tips_list[1] = spec_tips[7];
                             break;
 
                         case "Chaplain":
+                            colors = [c_black, c_yellow];
                             tips_list[0] = spec_tips[2];
                             tips_list[1] = spec_tips[6];
                             break;
 
                         case "Apothecary":
+                            colors = [c_red, c_white];
                             tips_list[0] = spec_tips[1];
                             tips_list[1] = spec_tips[5];
                             break;
                     }
 
-                    if (unit_exp > req_exp) {
+                    if (unit_role == obj_ini.role[100][12]) {
+                        colors[0] = c_fuchsia;
+                    }
+
+                    if (unit_exp < req_exp) {
+                        colors = array_reverse(colors);
+                    }
+
+                    if (unit_exp >= req_exp) {
                         if (!(unit_role == obj_ini.role[100][12])) {
                             spec_tip = tips_list[1];
                         } else {
@@ -194,35 +206,41 @@ function scr_draw_management_unit(selected, yy=0, xx=0, draw=true){
                     } else {
                         spec_tip = tips_list[0];
                     }
-                    return spec_tip;
+
+                    return {spec_tip: spec_tip, colors: colors};
                 };
 
                 //if unit has techmarine potential
                 if (unit.technology >= 35) {
                     unit_specialism_option = true;
-                    spec_tip = specialistfunct("Techmarine", _role, _experience, 30, spec_tips);
-                    array_push(potential_tooltip, [spec_tip, [xx + 234 - 3, yy + 76 - 3, xx + 234 + 3, yy + 76 + 4]]);
+                    // idk what to even call this so dir for directory
+                    specialistdir = specialistfunct("Techmarine", _role, _experience, 30);
+                    draw_circle_colour(xx + 234, yy + 76, 3, specialistdir.colors[0], specialistdir.colors[1], 0);
+                    array_push(potential_tooltip, [specialistdir.spec_tip, [xx + 234 - 3, yy + 76 - 3, xx + 234 + 3, yy + 76 + 4]]);
                 }
 
                 //if unit has librarian potential
                 if (unit.psionic > 7) {
                     unit_specialism_option = true;
-                    spec_tip = specialistfunct("Librarian", _role, _experience, 30, spec_tips);
-                    array_push(potential_tooltip, [spec_tip, [xx + 234 - 3, yy + 76 - 7 - 3, xx + 234 + 3, yy + 76 - 7 + 4]]);
+                    specialistdir = specialistfunct("Librarian", _role, _experience, 30);
+                    draw_circle_colour(xx + 234, yy + 76 - 7, 3, specialistdir.colors[0], specialistdir.colors[1], 0);
+                    array_push(potential_tooltip, [specialistdir.spec_tip, [xx + 234 - 3, yy + 76 - 7 - 3, xx + 234 + 3, yy + 76 - 7 + 4]]);
                 }
 
                 //if unit has chaplain potential
                 if ((unit.piety >= 35) && (unit.charisma >= 30)) {
                     unit_specialism_option = true;
-                    spec_tip = specialistfunct("Chaplain", _role, _experience, 60, spec_tips);
-                    array_push(potential_tooltip, [spec_tip, [xx + 234 + 7 - 3, yy + 76 - 7 - 3, xx + 234 + 7 + 3, yy + 76 - 7 + 4]]);
+                    specialistdir = specialistfunct("Chaplain", _role, _experience, 60);
+                    draw_circle_colour(xx + 234 + 7, yy + 76 - 7, 3, specialistdir.colors[0], specialistdir.colors[1], 0);
+                    array_push(potential_tooltip, [specialistdir.spec_tip, [xx + 234 + 7 - 3, yy + 76 - 7 - 3, xx + 234 + 7 + 3, yy + 76 - 7 + 4]]);
                 }
 
                 //if unit has apothecary potential
                 if ((unit.technology >= 30) && (unit.intelligence >= 45)) {
                     unit_specialism_option = true;
-                    spec_tip = specialistfunct("Apothecary", _role, _experience, 60, spec_tips);
-                    array_push(potential_tooltip, [spec_tip, [xx + 234 + 7 - 3, yy + 76 - 3, xx + 234 + 7 + 3, yy + 76 + 4]]);
+                    specialistdir = specialistfunct("Apothecary", _role, _experience, 60);
+                    draw_circle_colour(xx + 234 + 7, yy + 76, 3, specialistdir.colors[0], specialistdir.colors[1], 0);
+                    array_push(potential_tooltip, [specialistdir.spec_tip, [xx + 234 + 7 - 3, yy + 76 - 3, xx + 234 + 7 + 3, yy + 76 + 4]]);
                 }
             }
         }
@@ -279,7 +297,6 @@ function scr_draw_management_unit(selected, yy=0, xx=0, draw=true){
 		var xpText = [xx+330+8, yy+66, exp_string]; // EXP
 		var hpColor = c_gray;
 		var xpColor = c_gray;
-		var specialismColors = [];
 		// Draw EXP value and set up health color
 		if (man[selected] == "man"){
 			if (ma_promote[selected] >= 10){
@@ -293,65 +310,7 @@ function scr_draw_management_unit(selected, yy=0, xx=0, draw=true){
 		}
 		// Draw the health value with the defined colors
 		draw_text_color(hpText[0], hpText[1], hpText[2], hpColor, hpColor, hpColor, hpColor, 1);
-        // Handle potential indication
-        if (unit_specialism_option) {
-            var _role = unit.role();
-            var _experience = unit.experience;
-            var specialistfunct = function(specialist, unit_role, unit_exp, req_exp) {
-                var colors;
-                switch (specialist) {
-                    case "Techmarine":
-                        colors = [c_dkgray, c_red];
-                        break;
 
-                    case "Librarian":
-                        colors = [c_white, c_aqua];
-                        break;
-
-                    case "Chaplain":
-                        colors = [c_black, c_yellow];
-                        break;
-
-                    case "Apothecary":
-                        colors = [c_red, c_white];
-                        break;
-                }
-
-                if (unit_role == obj_ini.role[100][12]) {
-                    colors[0] = c_fuchsia;
-                }
-
-                if (unit_exp < req_exp) {
-                    colors = array_reverse(colors);
-                }
-                return colors;
-            };
-
-            //if unit has techmarine potential
-            if (unit.technology >= 35) {
-                specialismColors = specialistfunct("Techmarine", _role, _experience, 30, specialismColors);
-                draw_circle_colour(xx + 234, yy + 76, 3, specialismColors[0], specialismColors[1], 0);
-            }
-
-            //if unit has librarian potential
-            if (unit.psionic > 7) {
-                specialismColors = specialistfunct("Librarian", _role, _experience, 30, specialismColors);
-                draw_circle_colour(xx + 234, yy + 76 - 7, 3, specialismColors[0], specialismColors[1], 0);
-            }
-
-            //if unit has chaplain potential
-            if (unit.piety >= 35 && unit.charisma >= 30) {
-                specialismColors = specialistfunct("Chaplain", _role, _experience, 60, specialismColors);
-                draw_circle_colour(xx + 234 + 7, yy + 76 - 7, 3, specialismColors[0], specialismColors[1], 0);
-            }
-
-            //if unit has apothecary potential
-            if (unit.technology >= 30 && unit.intelligence >= 45) {
-                specialismColors = specialistfunct("Apothecary", _role, _experience, 60, specialismColors);
-                draw_circle_colour(xx + 234 + 7, yy + 76, 3, specialismColors[0], specialismColors[1], 0);
-            }
-        }
-	
 		// Draw the name
 	    draw_set_color(c_gray);
 		draw_text_transformed(xx+27+8,yy+66,string_hash_to_newline(string(string_role)),name_xr,1,0);
