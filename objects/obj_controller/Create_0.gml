@@ -1376,6 +1376,33 @@ tech_aspirant=0;
 recruiting=0;
 penitorium=0;
 end_turn_insights = {};
+spec_train_data = [
+    {
+        name : "Techmarine",
+        min_exp : 30,
+        coord_offset : [0, 0],
+        checks : [],
+        req : [["technology",34, "more"]]
+    },
+    {
+        name : "Librarian",
+        min_exp : 30,
+        coord_offset : [0, -7],
+        req : [[psionic,7, "more"]]
+    },
+    {
+        name : "Chaplain",
+        min_exp : 60,
+        coord_offset : [7, -7],
+        req : [[piety,34, "more"], [charisma,29, "more"]]
+    },
+    {
+        name : "Apothecary",
+        min_exp : 60,
+        coord_offset : [7, 0],
+        req : [[technology,29, "more"], [intelligence,44, "more"]]
+    },
+];
 // Redefines training based on chapter
 if (instance_exists(obj_ini)){
     if (scr_has_disadv("Psyker Intolerant")) then training_psyker=0;

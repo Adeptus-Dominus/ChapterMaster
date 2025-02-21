@@ -1741,7 +1741,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		}		
 	}
 
-
+	static specialist_tooltips = specialistfunct;
 	static is_at_location = function(location="", planet=0, ship=-1){
 		var is_at_loc = false;
 		if (planet>0){

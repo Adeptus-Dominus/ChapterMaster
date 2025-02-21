@@ -181,6 +181,8 @@ function scr_save_controller(save_id){
     ini_write_real("Controller","psyker_points",obj_controller.psyker_points);
     ini_write_real("Controller","psyker_aspirant",obj_controller.psyker_aspirant);
     ini_write_real("Controller","training_techmarine",obj_controller.training_techmarine);
+    ini_encode_and_json("Controller", "spec_train",obj_controller.spec_train_data);
+
     ini_write_real("Controller","tech_points",obj_controller.tech_points);
     ini_write_real("Controller","tech_aspirant",obj_controller.tech_aspirant);
 
