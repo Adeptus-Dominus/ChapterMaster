@@ -38,7 +38,7 @@ function scr_ruins_reward(star_system, planet, _ruins) {
 	var _chosen_ship = -1;
 	var _ships = fleet_full_ship_array(flea);
 	if (array_length(_ships)){
-		var _chosen_ship = _ships[0];
+		_chosen_ship = _ships[0];
 	}
 	scr_event_log("",$"The Ancient Ruins on {planet_numeral_name(planet,star_system)} has been explored.", star_system.name);
 
