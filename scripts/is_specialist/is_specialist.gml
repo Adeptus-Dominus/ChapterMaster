@@ -269,21 +269,18 @@ function collect_role_group(group="standard", location="", opposite=false, searc
 function stat_valuator(search_params, unit){
 	match = true;
 	for (var stat = 0;stat<array_length(search_params);stat++){
-		var _stat_val = search_params[stat];
-		show_debug_message($"{_stat_val}, {unit.name()} one");				
+		var _stat_val = search_params[stat];		
 		if (!struct_exists(unit,_stat_val[0])){
 			match = false;
 			break;
 		}
 		if (_stat_val[2] == "more"){
 
-			show_debug_message($"{_stat_val}, {unit.name()} two");
 			if (unit[$ _stat_val[0]] < _stat_val[1]){
 				match = false;
 				break;
 			}
-			show_debug_message($"worked");
-		} else if(_stat_val[2] =="less"){
+		} else if(_stat_val[2] == "less"){
 				if (unit[$ _stat_val[0]] > _stat_val[1]){
 				match = false;
 				break;

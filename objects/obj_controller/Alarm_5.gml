@@ -188,6 +188,7 @@ try_and_report_loop("imperial ship build", function(){
 apothecary_training();
 chaplain_training();
 librarian_training();
+techmarine_training();
 
 
 if (obj_ini.fleet_type!=1){

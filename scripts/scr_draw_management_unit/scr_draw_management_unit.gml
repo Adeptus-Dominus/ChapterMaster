@@ -151,7 +151,7 @@ function scr_draw_management_unit(selected, yy=0, xx=0, draw=true){
 
                 //if unit has techmarine potential
                 var _data, valid=false;
-                var _circle_coords = [xx + 231, yy + 75,xx + 237, yy + 82];
+                var _circle_coords = [xx + 231, yy + 77,xx + 237, yy + 84];
                 for (var s=0; s<=3;s++){
                 	_data = obj_controller.spec_train_data[s];
                 	var valid = stat_valuator(_data.req, unit);
