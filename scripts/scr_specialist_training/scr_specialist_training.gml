@@ -21,19 +21,16 @@ function specialistfunct (specialist, req_exp) {
             tips_list[0] = spec_tips[0];
             tips_list[1] = spec_tips[4];
             break;
-
         case "Librarian":
             colors = [c_white, c_aqua];
             tips_list[0] = spec_tips[3];
             tips_list[1] = spec_tips[7];
             break;
-
         case "Chaplain":
             colors = [c_black, c_yellow];
             tips_list[0] = spec_tips[2];
             tips_list[1] = spec_tips[6];
             break;
-
         case "Apothecary":
             colors = [c_red, c_white];
             tips_list[0] = spec_tips[1];
@@ -45,11 +42,11 @@ function specialistfunct (specialist, req_exp) {
         colors[0] = c_fuchsia;
     }
 
-    if (unit_exp() < req_exp) {
+    if (experience < req_exp) {
         colors = array_reverse(colors);
     }
 
-    if (unit_exp() >= req_exp) {
+    if (experience >= req_exp) {
         if (!(role() == obj_ini.role[100][12])) {
             spec_tip = tips_list[1];
         } else {
@@ -238,7 +235,7 @@ function chaplain_training(){
 function librarian_training(){
 	var recruit_count=0;
 	// * Psycher Training *
-
+	var training_points_values = ARR_chaplain_training_tiers;
 	psyker_points += training_points_values[training_psyker];
 
 	var goal=60,yep=0;

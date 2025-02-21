@@ -145,12 +145,13 @@ function scr_draw_management_unit(selected, yy=0, xx=0, draw=true){
 		draw_rectangle(xx+25,yy+64,xx+974,yy+85,1);
         if (man[selected] == "man" && is_struct(display_unit[selected])) {
             if (!unit_specialist) {
+            	var unit = display_unit[selected];
                 var _role = unit.role();
                 var _experience = unit.experience;
 
                 //if unit has techmarine potential
                 var _data, valid=false;
-                var _circle_coords = [xx + 231, yy + 73,xx + 237, yy + 80];
+                var _circle_coords = [xx + 231, yy + 75,xx + 237, yy + 82];
                 for (var s=0; s<=3;s++){
                 	_data = obj_controller.spec_train_data[s];
                 	var valid = stat_valuator(_data.req, unit);
