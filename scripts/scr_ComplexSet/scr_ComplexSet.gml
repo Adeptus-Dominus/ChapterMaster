@@ -54,89 +54,95 @@ function ComplexSet(unit) constructor{
             head : spr_mk7_head_variants,       
     };
 
+    _are_exceptions = false;
+    exceptions = [];
+    static check_exception = function(exception_key){
+        if (_are_exceptions){
+            var array_position = array_find_value(exceptions,exception_key);
+            if (array_position>-1){
+                array_delete(exceptions, array_position, 1);
+                if (array_length(exceptions)){
+                    return true;
+                } else {
+                    return false;
+                }          
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }    
+    
     static assign_modulars = function(){
         var modulars = global.modular_drawing_items;
         body_type = "normal";
         if (unit.armour() = "Terminator Armour" || unit.armour() =  "Tartaros"){
             body_type = "terminator";
         }
-        static _mod = {};
-        static has_key = function(key){
-            return struct_exists(_mod,key)
-        }
-        static _are_exceptions = false;
+        var _mod = {};
 
-        static check_exception = function(exception_key){
-            if (_are_exceptions){
-                var array_position = array_find_value(exceptions,exception_key);
-                if (array_position>-1){
-                    array_delete(exceptions, array_position, 1);
-                    if (array_length(exceptions)){
-                        return true;
-                    } else {
-                        return false;
-                    }          
-                } else {
-                    return false;
+
+        try{
+            for (var i=0; i<array_length(modulars);i++){
+
+                _are_exceptions = false;
+                _mod = modulars[i];
+                exceptions = [];
+                if (!array_contains(_mod.body_types, body_type)){
+                    continue
                 }
-            } else {
-                return false;
-            }
-        }
 
-        for (var i=0; i<array_length(modular_drawing_items);i++){
-            _mod = modulars[i];
-            if (!array_contains(_mod.body_types, body_type)){
-                continue
-            }
-            if (has_key("allow_either")){
-                _are_exceptions = true;
-                exceptions = _mod.allow_either;
-            }
-            if (has_key("role_type")){
-                if (!unit.IsSpecialist(_mod.role_type)){
-                    if (!check_exception("role_type")){
-                        continue;
+                if (struct_exists(_mod, "allow_either")){
+                    _are_exceptions = true;
+                    exceptions = _mod.allow_either;
+                }
+                if (struct_exists(_mod, "role_type")){
+                    if (!unit.IsSpecialist(_mod.role_type)){
+                        if (!check_exception("role_type")){
+                            continue;
+                        }
                     }
                 }
+               if (struct_exists(_mod, "cultures")){
+                    if (!scr_has_style(_mod.cultures)){
+                        if (!check_exception("cultures")){
+                            continue;
+                        }                    
+                    }
+               }
+               if (struct_exists(_mod, "body_types")){
+                    if (!array_contains(_mod.body_types, body_type)){
+                        if (!check_exception("body_types")){
+                            continue;
+                        }                    
+                    }
+               }
+               if (struct_exists(_mod, "armours")){
+                    if (!array_contains(_mod.armours, unit.armour())){
+                        if (!check_exception("armours")){
+                            continue;
+                        }                     
+                    }
+               }
+               if (struct_exists(_mod, "armours_exclude")){
+                    if (array_contains(_mod.armours_exclude, unit.armour())){
+                        if (!check_exception("armours_exclude")){
+                            continue;
+                        }                     
+                    }
+               }
+               if (!struct_exists(_mod, "assign_by_rank")){
+                   add_to_area(_mod.position, _mod.sprite)
+               } else {
+                    add_relative_to_status(_mod.position, _mod.sprite, _mod.assign_by_rank);
+               }
             }
-           if (has_key("cultures")){
-                if (!scr_has_style(_mod.cultures)){
-                    if (!check_exception("cultures")){
-                        continue;
-                    }                    
-                }
-           }
-           if (has_key("body_types")){
-                if (_mod.body_types != body_type){
-                    if (!check_exception("body_types")){
-                        continue;
-                    }                    
-                }
-           }
-           if (has_key("armours")){
-                if (!array_contains(_mod.armours, unit.armour())){
-                    if (!check_exception("armours")){
-                        continue;
-                    }                     
-                }
-           }
-           if (has_key("armours_exclude")){
-                if (!array_contains(_mod.armours_exclude, unit.armour())){
-                    if (!check_exception("armours_exclude")){
-                        continue;
-                    }                     
-                }
-           }
-           if (!has_key("assign_by_rank")){
-               add_to_area(_mod.position, _mod.sprite)
-           } else {
-                add_relative_to_status(_mod.position, _mod.sprite, _mod.assign_by_rank);
-           }
-        }
+        } except(_exception){}
     }
 
     variation_map = {
+        backpack : unit.get_body_data("backpack_variation","torso"),
         armour : unit.get_body_data("armour_choice","torso"),
         chest_variants : unit.get_body_data("chest_variation","torso"),
         thorax_variants : unit.get_body_data("thorax_variation","torso"),
@@ -162,8 +168,11 @@ function ComplexSet(unit) constructor{
 
     static draw_component = function(component_name){
         if (struct_exists(self, component_name)){
-            var choice = variation_map[$component_name]%sprite_get_number(self[$component_name]);
-            draw_sprite(component_name,choice,x_surface_offset,y_surface_offset);
+            var _sprite = self[$component_name];
+            if (sprite_exists(_sprite)){
+                var choice = variation_map[$component_name]%sprite_get_number(_sprite);
+                draw_sprite(_sprite,choice ?? 0,x_surface_offset,y_surface_offset);
+            }
         }
     }
     static draw = function(){
@@ -172,6 +181,7 @@ function ComplexSet(unit) constructor{
          shader_set(full_livery_shader);
 
          _draw_order = [
+            "backpack",
              "armour",
              "chest_variants",
              "thorax_variants",
@@ -189,7 +199,7 @@ function ComplexSet(unit) constructor{
              "tabbard",
              "robe"
          ];
-         for (var i=0;i<array_length(draw_order);i++){
+         for (var i=0;i<array_length(_draw_order);i++){
             if (_draw_order[i] == "head"){
                 draw_head(self, x_surface_offset,y_surface_offset);
             } else {
@@ -244,7 +254,7 @@ function ComplexSet(unit) constructor{
                 head : spr_mk4_head_variants,            
             });
             break;                                
-        case  "MK3 Iron":
+        case  "MK3 Iron Armour":
             add_group({
                 armour : spr_mk3_complex,
                 backpack : spr_mk3_complex_backpack,
@@ -256,11 +266,11 @@ function ComplexSet(unit) constructor{
                 mouth_variants: spr_mk3_mouth,
                 forehead : spr_mk3_forehead_variants  
             });
-
+            break;
         case  "MK8 Errant":
             add_group(mk7_bits);
             add_to_area("gorget",spr_mk8_gorget);
-                    
+            break;
        case  "Terminator Armour":
              add_group({
                 armour : spr_indomitus_complex,
@@ -289,8 +299,9 @@ function ComplexSet(unit) constructor{
 
             });
             break;
-            case defualt:
-                add_group(mk7_bits);
+        case defualt:
+            add_group(mk7_bits);
+            break;
 
         }
         assign_modulars();
@@ -406,7 +417,7 @@ function ComplexSet(unit) constructor{
         shader_set(full_livery_shader);
     }
 
-    static draw_head = function(unit, x_surface_offset,y_surface_offset){
+    static draw_head = function(unit){
         var choice;
         if (struct_exists(self, "head")){
             draw_component("crest");
@@ -434,7 +445,7 @@ function ComplexSet(unit) constructor{
             var _decoration_surface = surface_create(_surface_width, 60);
             shader_reset();
             surface_set_target(_head_surface);
-            draw_head(unit, 0, 0);
+            draw_head(unit);
             surface_reset_target();
             
             remove_area("mouth_variants");
@@ -576,6 +587,7 @@ global.modular_drawing_items = [
         armours : ["Terminator Armour", "Tartaros"],
         roles : [eROLE.Captain,eROLE.Champion],
         position : "crown",
+        body_types :["terminator"],
     },
     {
         sprite : spr_laurel,
@@ -645,21 +657,21 @@ global.modular_drawing_items = [
         sprite : spr_mk3_mouth_flame_cult,
         body_types :["normal"],
         position : "mouth_variants",
-        armours : ["MK3 Iron"],    
+        armours : ["MK3 Iron Armour"],    
     },
     {
         cultures : ["Prussian"],
         sprite : spr_mk3_mouth_prussian,
         body_types :["normal"],
         position : "mouth_variants",
-        armours : ["MK3 Iron"],    
+        armours : ["MK3 Iron Armour"],    
     },
     {
         cultures : ["Prussian"],
         sprite : spr_mk6_mouth_prussian,
         body_types :["normal"],
         position : "mouth_variants",
-        armours : ["MK3 Iron"],    
+        armours : ["MK3 Iron Armour"],    
     },
     {
         cultures : ["Prussian"],
@@ -701,7 +713,14 @@ global.modular_drawing_items = [
         body_types :["normal"],
         position : "chest_variants",
         armours : ["MK6 Corvus"],      
-    },           
+    },
+    {
+        cultures : ["Knightly"],
+        sprite : spr_knightly_robes,
+        body_types :["normal"],
+        position : "robe",
+        assign_by_rank : 4,    
+    },               
 
 ]
     var _vis_set_directory = working_directory + "main\\visual_sets";

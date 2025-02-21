@@ -621,7 +621,7 @@ function scr_draw_unit_image(_background=false){
                     specific_armour_sprite=armour_sprite;
                     armour_bypass=true;
                 }else{
-                    var _complex_armours = ["MK3 Iron Armour", "MK4 Maximus","Terminator Armour","Tartaros","MK7 Aquila", "Power Armour", "MK8 Errant","Artificer Armour","MK3 Iron Armour", "MK4 Maximus", "MK5 Heresy"];
+                    var _complex_armours = ["MK3 Iron Armour", "MK4 Maximus","Terminator Armour","Tartaros","MK7 Aquila", "Power Armour", "MK8 Errant","Artificer Armour", "MK4 Maximus", "MK5 Heresy", "MK6 Corvus"];
                     if (array_contains(_complex_armours, armour())){
                         complex_set = new ComplexSet(self);
                         complex_livery = true;
@@ -696,14 +696,6 @@ function scr_draw_unit_image(_background=false){
                             _backpack_index = 1;
                         }
                     }*/
-                    if (complex_livery) && (struct_exists(complex_set, "backpack")){
-                        var choice = get_body_data("backpack_variation","torso")%sprite_get_number(complex_set.backpack);
-                        setup_complex_livery_shader(role(),self);
-                        draw_sprite(complex_set.backpack,choice,x_surface_offset,y_surface_offset);
-                        shader_set(sReplaceColor);
-                    } else {
-                        //draw_sprite(_backpack_sprite, 0, x_surface_offset, y_surface_offset);
-                    }
                 }else{
                     if (back_equipment==BackType.Jump){
                         var color_variant = min(specialist_colours, 2);
@@ -742,9 +734,7 @@ function scr_draw_unit_image(_background=false){
                         } 
                     }                   
                 }
-                if(!complex_livery){
                     draw_unit_arms(x_surface_offset, y_surface_offset, armour_type, specialist_colours, hide_bionics, complex_set);
-                }
                 if (armour_type == ArmourType.Normal && (!robes_bypass || !robes_hood_bypass)) {
                     var robe_offset_x = 0;
                     var robe_offset_y = 0;
@@ -762,9 +752,6 @@ function scr_draw_unit_image(_background=false){
                     if (struct_exists(body[$ "torso"],"robes") && !robes_bypass) {
                         if (body.torso.robes == 0){
                             complex_set.add_to_area("robe",spr_marine_robes);
-                            if (scr_has_style("Knightly")){
-                                complex_set.add_relative_to_status("robe", spr_knightly_robes, 4, get_body_data("tabbard_variation","torso"), self);
-                            }
                         } else if (body.torso.robes == 1) {
                             if (scr_has_adv("Daemon Binders") && !modest_livery){
                                 var _index = pauldron_trim == 1 ? 0 : 1;

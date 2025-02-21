@@ -338,7 +338,7 @@ if (refresh=true) and (obj_controller.settings>0){
         have_armour_num+=scr_item_count("Power Armour");
         have_armour_num+=scr_item_count("MK4 Maximus");
         have_armour_num+=scr_item_count("MK5 Heresy");
-        have_armour_num+=scr_item_count("MK3 Iron");
+        have_armour_num+=scr_item_count("MK3 Iron Armour");
     }
     if (req_armour="Terminator Armour"){
         have_armour_num+=scr_item_count("Terminator Armour");
