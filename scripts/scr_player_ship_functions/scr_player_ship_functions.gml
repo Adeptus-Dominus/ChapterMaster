@@ -244,6 +244,7 @@ function loose_ship_to_warp_event(){
 	}	
 }
 
+//TODO make method for setting ship weaponry
 function new_player_ship(type, start_loc="home", new_name=""){
     var ship_names="",index=0;
     var index = new_player_ship_defaults();
@@ -379,20 +380,20 @@ function new_player_ship(type, start_loc="home", new_name=""){
         obj_ini.ship_weapons[index]=4;
         obj_ini.ship_shields[index]=24;
         obj_ini.ship_wep[index,1]="Lance Battery";
-        ship_wep_facing[index,1]="most";
+        obj_ini.ship_wep_facing[index,1]="most";
         obj_ini.ship_wep_condition[index,1]="";
         obj_ini.ship_wep[index,2]="Lance Battery";
-		ship_wep_facing[index,2]="most";
+		obj_ini.ship_wep_facing[index,2]="most";
         obj_ini.ship_wep_condition[index,2]="";
         obj_ini.ship_wep[index,3]="Lance Battery";
-        ship_wep_facing[index,3]="most";
+        obj_ini.ship_wep_facing[index,3]="most";
         obj_ini.ship_wep_condition[index,3]="";
         obj_ini.ship_wep[index,4]="Plasma Cannon";
-        ship_wep_facing[index,4]="front";
-        obj_ini.ship_wep[index,5]="Macro Bombardment Cannons";
-        obj_ini.ship_wep_facing[index,4]="most";
-        obj_ini.ship_wep_condition[index,4]="";               
+        obj_ini.ship_wep_facing[index,4]="front";
         obj_ini.ship_wep_condition[index,4]="";
+        obj_ini.ship_wep[index,5]="Macro Bombardment Cannons";
+        obj_ini.ship_wep_facing[index,5]="most";
+        obj_ini.ship_wep_condition[index,5]="";               
         obj_ini.ship_capacity[index]=800;
         obj_ini.ship_carrying[index]=0;
         obj_ini.ship_contents[index]="";
