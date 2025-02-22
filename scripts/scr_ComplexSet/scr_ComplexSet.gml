@@ -1,5 +1,6 @@
 function scr_has_style(style){
-    if (!is_array(scr_has_style)){
+    var result = false;
+    if (!is_array(style)){
         try {
             var result;
             if (instance_exists(obj_creation)) {
@@ -104,6 +105,13 @@ function ComplexSet(unit) constructor{
                         }
                     }
                 }
+                if (struct_exists(_mod, "roles")){
+                    if (!array_contains(_mod.roles, unit.role())){
+                        if (!check_exception("roles")){
+                            continue;
+                        }
+                    }
+                }                
                if (struct_exists(_mod, "cultures")){
                     if (!scr_has_style(_mod.cultures)){
                         if (!check_exception("cultures")){
@@ -132,6 +140,37 @@ function ComplexSet(unit) constructor{
                         }                     
                     }
                }
+               if (struct_exists(_mod, "exp")){
+                    if (struct_exists(_mod.exp, "min")){
+                        if (unit.experience < _mod.exp.min){
+                            if (!check_exception("min_exp")){
+                                continue;
+                            }
+                        }
+                    }
+               }
+               if (struct_exists(_mod, "chapter_adv")){
+                    var _viable = false;
+                    for (var a=0;a<array_length(_mod.chapter_adv);a++){
+                        var _adv = _mod.chapter_adv[a];
+                        _viable = scr_has_adv(_adv);
+                        if (_viable){
+                            break;
+                        }
+                    }
+                    if (!_viable){
+                        if (!check_exception("chapter_adv")){
+                            continue;
+                        }                         
+                    }
+               }
+               if (struct_exists(_mod, "stats")){
+                    if (!stat_valuator(_mod.stats,unit)){
+                        if (!check_exception("stats")){
+                            continue;
+                        }                         
+                    }
+               }               
                if (!struct_exists(_mod, "assign_by_rank")){
                    add_to_area(_mod.position, _mod.sprite)
                } else {
@@ -166,13 +205,17 @@ function ComplexSet(unit) constructor{
         left_eye : unit.get_body_data("variant","left_eye"),
         right_eye : unit.get_body_data("variant","right_eye"),
         crown : unit.get_body_data("crown_variation","head"),
+        forehead : unit.get_body_data("forehead_variation","head"),
     }
 
     static draw_component = function(component_name){
         if (struct_exists(self, component_name)){
             var _sprite = self[$component_name];
             if (sprite_exists(_sprite)){
-                var choice = variation_map[$component_name]%sprite_get_number(_sprite);
+                var choice = 0;
+                if (struct_exists(variation_map, component_name)){
+                    var choice = variation_map[$component_name]%sprite_get_number(_sprite);
+                }
                 draw_sprite(_sprite,choice ?? 0,x_surface_offset,y_surface_offset);
             }
         }
@@ -180,6 +223,22 @@ function ComplexSet(unit) constructor{
     static draw = function(){
         draw_cloaks(x_surface_offset,y_surface_offset );
          //draw_unit_arms(x_surface_offset, y_surface_offset, armour_type, specialist_colours, hide_bionics, complex_set);
+            var _complex_helm = false;
+            var unit_role = unit.role();
+            var _role = obj_ini.role[100];
+            var _comp_helms = obj_ini.complex_livery_data;
+            if (unit_role ==_role[eROLE.Sergeant]){
+                _complex_helm = _comp_helms.sgt;
+            }else if(unit_role==_role[eROLE.VeteranSergeant]){
+                _complex_helm = _comp_helms.vet_sgt;
+            }else if(unit_role==_role[eROLE.Captain]){
+                _complex_helm = _comp_helms.captain;
+            }else if(unit_role==_role[eROLE.Veteran] || (unit_role==_role[eROLE.Terminator] && company == 1)){
+                _complex_helm = _comp_helms.veteran;
+            }
+            if (is_struct(_complex_helm) && struct_exists(self, "head")){
+                complex_helms(_complex_helm);
+            }         
          shader_set(full_livery_shader);
 
          _draw_order = [
@@ -214,7 +273,9 @@ function ComplexSet(unit) constructor{
     static base_armour = function(){
     switch (unit.armour()){
         case "MK7 Aquila":
+        case "Artificer Armour":
             add_group(mk7_bits);
+            armour_type == ArmourType.Normal
             break;                  
         case "MK6 Corvus":
             add_group({
@@ -227,6 +288,7 @@ function ComplexSet(unit) constructor{
                 mouth_variants : spr_mk6_mouth_variants,
                 head : spr_mk6_head_variants,
             });
+            armour_type == ArmourType.Normal
             break;                
         case  "MK5 Heresy":
             add_group({
@@ -238,6 +300,7 @@ function ComplexSet(unit) constructor{
                 right_trim: spr_mk7_right_trim,
                 head : spr_mk5_head_variants,
             }); 
+            armour_type == ArmourType.Normal
             /*if (scr_has_style("Prussian")){
                 add_to_area("chest_variants", spr_mk7_prussia_chest);
             }*/  
@@ -255,6 +318,7 @@ function ComplexSet(unit) constructor{
                 mouth_variants: spr_mk4_mouth_variants,
                 head : spr_mk4_head_variants,            
             });
+            armour_type == ArmourType.Normal
             break;                                
         case  "MK3 Iron Armour":
             add_group({
@@ -268,10 +332,12 @@ function ComplexSet(unit) constructor{
                 mouth_variants: spr_mk3_mouth,
                 forehead : spr_mk3_forehead_variants  
             });
+            armour_type == ArmourType.Normal
             break;
         case  "MK8 Errant":
             add_group(mk7_bits);
             add_to_area("gorget",spr_mk8_gorget);
+            armour_type == ArmourType.Normal
             break;
        case  "Terminator Armour":
              add_group({
@@ -284,7 +350,7 @@ function ComplexSet(unit) constructor{
                 head : spr_indomitus_head_variants         
             });
              break;
-        case  "tartaros":                       
+        case  "Tartaros":                       
 
                 add_group({
                 armour : spr_tartaros_complex,
@@ -432,7 +498,7 @@ function ComplexSet(unit) constructor{
         }
     }
 
-    static complex_helms = function(data,unit){
+    static complex_helms = function(data){
         set_complex_shader_area(["eye_lense"], data.helm_lens);
         if (data.helm_pattern == 0){
             set_complex_shader_area(["left_head", "right_head","left_muzzle", "right_muzzle"], data.helm_secondary);
@@ -447,12 +513,20 @@ function ComplexSet(unit) constructor{
             var _decoration_surface = surface_create(_surface_width, 60);
             shader_reset();
             surface_set_target(_head_surface);
+            var _temp = [x_surface_offset, y_surface_offset];
+            x_surface_offset = 0;
+            y_surface_offset = 0;
             draw_head(unit);
             surface_reset_target();
+            x_surface_offset = _temp[0];
+            y_surface_offset = _temp[1];
             
             remove_area("mouth_variants");
             remove_area("crest");
             remove_area("forehead");
+            remove_area("left_eye");
+            remove_area("right_eye");
+            remove_area("crown");
 
             shader_set(helm_shader);
             surface_set_target(_decoration_surface);
@@ -563,220 +637,5 @@ function blend_mode_custom(source_surface, destination_surface, allowed_cross_co
 
     // Reset the target
     surface_reset_target();
-}
-
-
-function load_visual_sets(){
-global.modular_drawing_items = [
-    {
-        sprite : spr_da_mk5_helm_crests,
-        cultures : ["knightly"],
-        body_types :["normal"],
-        armours : ["MK3 Iron Armour", "MK4 Maximus", "MK5 Heresy"],
-        position : "crest",
-        assign_by_rank : 2,
-    },
-    {
-        sprite : spr_da_mk7_helm_crests,
-        cultures : ["knightly"],
-        body_types :["normal"],
-        armours : ["MK7 Aquila", "Power Armour", "MK8 Errant","Artificer Armour"],
-        position : "crest",
-        assign_by_rank : 2,
-    },
-    {
-        sprite : spr_terminator_laurel,
-        armours : ["Terminator Armour", "Tartaros"],
-        roles : [eROLE.Captain,eROLE.Champion],
-        position : "crown",
-        body_types :["terminator"],
-    },
-    {
-        sprite : spr_laurel,
-        body_types :["normal"],
-        armours : ["Terminator Armour", "Tartaros"],
-        roles : [eROLE.Captain,eROLE.Champion],
-        position : "crown",
-    },
-    {
-        sprite : spr_special_helm,
-        body_types :["normal"],
-        armours_exclude : ["MK3 Iron Armour"],
-        position : "mouth",
-    },
-    {
-        cultures : ["Mongol"],
-        sprite : spr_mongol_topknots,
-        body_types :["normal"],
-        position : "crest",
-    },
-    {
-        cultures : ["Mongol"],
-        sprite : spr_mongol_hat,
-        body_types :["normal"],
-        position : "crown",
-    },
-    {
-        cultures : ["Prussian"],
-        sprite : spr_prussian_spike,
-        body_types :["normal"],
-        position : "crest",
-    },
-    {
-        cultures : ["Mechanical Cult"],
-        assign_by_rank : 2,
-        sprite : spr_metal_tabbard,
-        role_type : ["forge"],
-        body_types :["normal"],
-        position : "tabbard",
-        allow_either : ["cultures", "role_type"],
-    },
-    {
-        cultures : ["Knightly"],
-        sprite : spr_knightly_personal_livery,
-        body_types :["normal"],
-        assign_by_rank : 3,
-        position : "left_personal_livery",        
-    },
-    {
-        cultures : ["Gladiator"],
-        sprite : spr_gladiator_crest,
-        body_types :["normal"],
-        assign_by_rank : 2,
-        position : "crest",        
-    },
-    {
-        cultures : ["Mechanical Cult"],
-        assign_by_rank : 2,
-        sprite : spr_terminator_metal_tabbard,
-        role_type : ["forge"],
-        body_types :["terminator"],
-        position : "tabbard",
-        allow_either : ["cultures", "role_type"],       
-    },
-    {
-        cultures : ["Flame Cult"],
-        sprite : spr_mk3_mouth_flame_cult,
-        body_types :["normal"],
-        position : "mouth_variants",
-        armours : ["MK3 Iron Armour"],    
-    },
-    {
-        cultures : ["Prussian"],
-        sprite : spr_mk3_mouth_prussian,
-        body_types :["normal"],
-        position : "mouth_variants",
-        armours : ["MK3 Iron Armour"],    
-    },
-    {
-        cultures : ["Prussian"],
-        sprite : spr_mk6_mouth_prussian,
-        body_types :["normal"],
-        position : "mouth_variants",
-        armours : ["MK3 Iron Armour"],    
-    },
-    {
-        cultures : ["Prussian"],
-        sprite : spr_mk7_prussia_chest,
-        body_types :["normal"],
-        position : "chest_variants",  
-    },
-    {
-        cultures : ["Prussian"],
-        sprite : spr_mk7_mouth_prussian,
-        body_types :["normal"],
-        position : "chest_variants",
-        armours : ["MK8 Errant", "MK7 Aquila"],      
-    }, 
-    {
-        cultures : ["Mongol"],
-        sprite : spr_mk7_mongol_chest_variants,
-        body_types :["normal"],
-        position : "chest_variants",
-        armours : ["MK8 Errant", "MK7 Aquila"],      
-    },
-    {
-        cultures : ["Gladiator"],
-        sprite : spr_mk7_gladiator_chest,
-        body_types :["normal"],
-        position : "chest_variants",
-        armours : ["MK8 Errant", "MK7 Aquila"],      
-    },
-    {
-        cultures : ["Mongol"],
-        sprite : spr_mk4_mongol_chest_variants,
-        body_types :["normal"],
-        position : "chest_variants",
-        armours : ["MK4 Maximus"],      
-    },
-    {
-        cultures : ["Mongol"],
-        sprite : spr_mk6_mongol_chest_variants,
-        body_types :["normal"],
-        position : "chest_variants",
-        armours : ["MK6 Corvus"],      
-    },
-    {
-        cultures : ["Knightly"],
-        sprite : spr_knightly_robes,
-        body_types :["normal"],
-        position : "robe",
-        assign_by_rank : 4,    
-    },               
-
-]
-    var _vis_set_directory = working_directory + "main\\visual_sets";
-    if (directory_exists(_vis_set_directory)){
-        try {
-            var _file_buffer = buffer_load(_vis_set_directory + "\\use_sets.json");
-            if (file_buffer == -1) {
-                throw ("Could not open file");
-            }
-            var _json_string = buffer_read(file_buffer, buffer_string);
-            var _raw_data = json_parse(json_string);
-            if (!is_array(raw_data)){
-                throw ("use_sets.json File Wrong Format");
-            }
-            for (var i=0;i<array_length(_raw_data);_raw_data++){
-                var _sepcific_vis_set = _vis_set_directory + $"\\_raw_data[i]";
-                if (directory_exists(_sepcific_vis_set)){
-                    var _file_buffer = buffer_load(_sepcific_vis_set + "\\data.json");
-                    if (file_buffer == -1) {
-                        continue;
-                    } else {
-                        var _json_string = buffer_read(file_buffer, buffer_string);
-                        var _raw_data = json_parse(json_string);
-                        load_vis_set_to_global(_sepcific_vis_set, _raw_data);
-                    }
-                }
-            }
-        }
-    }
-}
-
-function load_vis_set_to_global(directory, data){
-    for (var i=0;i<array_length(data); i++){
-        var sprite_item = data[i];
-        if (directory_exists(directory + "\\{sprite_item.name}")){
-            var _sprite_direct = directory + "\\{sprite_item.name}";
-            if (file_exists(_sprite_direct + "1.png")){
-                var _new_sprite = sprite_add(_sprite_direct + "1.png",1,0,0,0,0);
-                var s = 2;
-                while (file_exists(_sprite_direct + $"{s}.png")){
-                    s++;
-                    sprite_merge(_new_sprite, sprite_add(_sprite_direct + $"{s}.png",1,0,0,0,0));
-                }
-                var s_data = sprite_item.data;
-                s_data.sprite = _new_sprite;
-                array_push(global.modular_drawing_items, s_data);
-            }
-        }
-    }
-}
-
-try{
-    load_visual_sets();
-} catch(_exception){
-    handle_exception(_exception);
 }
 

@@ -1206,6 +1206,7 @@
     {"id":{"name":"scr_draw_management_unit","path":"scripts/scr_draw_management_unit/scr_draw_management_unit.yy",},},
     {"id":{"name":"scr_gov_disp","path":"scripts/scr_gov_disp/scr_gov_disp.yy",},},
     {"id":{"name":"scr_trade","path":"scripts/scr_trade/scr_trade.yy",},},
+    {"id":{"name":"spr_bionic_right_eyes","path":"sprites/spr_bionic_right_eyes/spr_bionic_right_eyes.yy",},},
     {"id":{"name":"scr_trade_add","path":"scripts/scr_trade_add/scr_trade_add.yy",},},
     {"id":{"name":"scr_trade_dep","path":"scripts/scr_trade_dep/scr_trade_dep.yy",},},
     {"id":{"name":"scr_unit_equip_functions","path":"scripts/scr_unit_equip_functions/scr_unit_equip_functions.yy",},},

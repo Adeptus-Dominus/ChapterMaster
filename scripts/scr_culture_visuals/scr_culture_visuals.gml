@@ -154,7 +154,22 @@ global.modular_drawing_items = [
         body_types :["normal"],
         position : "robe",
         assign_by_rank : 4,    
-    },               
+    },
+    {
+        cultures : ["Knightly"],
+        sprite : spr_da_backpack,
+        body_types :["normal"],
+        position : "backpack",
+        assign_by_rank : 3,
+        armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"],         
+    },
+    {
+        chapter_adv : ["reverent_guardian"],
+        sprite : spr_pack_brazier3,
+        body_types :["normal"],
+        position : "backpack",
+        assign_by_rank : 4,
+    },                       
 
 ]
     var _vis_set_directory = working_directory + "main\\visual_sets";
