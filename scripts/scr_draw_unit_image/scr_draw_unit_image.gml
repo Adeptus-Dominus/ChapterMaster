@@ -676,12 +676,6 @@ function scr_draw_unit_image(_background=false){
                  // Draw the backpack
                 if (draw_backpack){
                     if (body.torso.backpack_variation % 3 == 0) {
-                        if (scr_has_style("Knightly")){
-                            if array_contains(["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"], unit_armour){
-                                _backpack_sprite = spr_da_backpack;
-                                complex_set.add_to_area("backpack",spr_da_backpack);                                                        
-                            }
-                        }
                         if (reverent_guardians) and (!modest_livery){
                             complex_set.add_to_area("backpack",spr_pack_brazier3);                         
                         }
@@ -775,26 +769,12 @@ function scr_draw_unit_image(_background=false){
                         complex_set.replace_area("left_leg",spr_bionic_leg_left);
                     }
                 } 
+
                 if (complex_livery){
-                    setup_complex_livery_shader(role(),self);
-                    var _complex_helm = false;
-                    if (unit_role ==_role[eROLE.Sergeant]){
-                        _complex_helm = obj_ini.complex_livery_data.sgt;
-                    }else if(unit_role==_role[eROLE.VeteranSergeant]){
-                        _complex_helm = obj_ini.complex_livery_data.vet_sgt;
-                    }else if(unit_role==_role[eROLE.Captain]){
-                        _complex_helm = obj_ini.complex_livery_data.captain;
-                    }else if(unit_role==_role[eROLE.Veteran] || (unit_role==_role[eROLE.Terminator] && company == 1)){
-                        _complex_helm = obj_ini.complex_livery_data.veteran;
-                    }
-                    if (is_struct(_complex_helm) && struct_exists(complex_set, "head")){
-                        surface_reset_target();
-                        complex_set.complex_helms(_complex_helm, self);
-                        surface_set_target(unit_surface);
-                    }
                     if (psy_hood){
                         complex_set.replace_area("crown", spr_psy_hood_complex);
-                    }
+                    }                    
+
                 }
 
                 // Draw torso
@@ -804,7 +784,7 @@ function scr_draw_unit_image(_background=false){
                             complex_set.x_surface_offset = x_surface_offset;
                             complex_set.y_surface_offset = y_surface_offset
                             complex_set.draw();                                                                                                                                                                                                                      
-                        } else {
+                        } else if (specific_armour_sprite!="none"){
                             if (sprite_exists(specific_armour_sprite)){
                                 draw_sprite(specific_armour_sprite,0,x_surface_offset,y_surface_offset);
                             }
@@ -927,27 +907,7 @@ function scr_draw_unit_image(_background=false){
                 }            
             }		
 
-			// Bionics
-            if (!hide_bionics || armour_type != ArmourType.Terminator) {
-                var eye_move_x = 0;
-                var eye_move_y = 0;
-                var eye_spacer = 0;
-                if (unit_armour=="Terminator Armour") {
-                    // Adjust eye bionics on chaplain terminator armour
-                    if (skull_mask) {
-                        eye_move_y = 2;
-                        eye_spacer = -2;
-                    // Adjust eye bionics on terminator armour
-                    } else {
-                        eye_move_y = -7;
-                    }
-                }
-                // Draw bionics
-                surface_reset_target();
-                var bionic_surface = surface_create(512,512);             
-                surface_set_target(bionic_surface);
-                var _body_parts = ARR_body_parts;
-
+            if (complex_livery){
                 for (var part = 0; part < array_length(_body_parts); part++) {
                     if (struct_exists(body[$ _body_parts[part]], "bionic")) {
                         if (armour_type == ArmourType.Normal) {
@@ -955,65 +915,19 @@ function scr_draw_unit_image(_background=false){
                             var bionic = body[$ body_part][$ "bionic"];
                             switch (body_part) {
                                 case "left_eye":
-                                    if (bionic.variant == 0) {
-                                        draw_sprite(spr_bionics_eye, 1,x_surface_offset+ eye_move_x + eye_spacer, y_surface_offset + eye_move_y);
-                                    } else if (bionic.variant == 1) {
-                                        draw_sprite(spr_bionic_eye_2, 1,x_surface_offset+eye_move_x + eye_spacer, y_surface_offset + eye_move_y);
-                                    } else if (bionic.variant == 2) {
-                                        draw_sprite(spr_bionic_eye_2, 2,x_surface_offset+eye_move_x + eye_spacer, y_surface_offset + eye_move_y);
-                                    }
+                                    complex_set.add_to_area("left_eye", spr_bionic_right_eyes);
                                     break;
-
+    
                                 case "right_eye":
-                                    if (bionic.variant == 0) {
-                                        draw_sprite(spr_bionics_eye, 0,x_surface_offset+eye_move_x, y_surface_offset + eye_move_y);
-                                    } else if (bionic.variant == 1) {
-                                        draw_sprite(spr_bionic_eye_2, 0,x_surface_offset+eye_move_x, y_surface_offset + eye_move_y);
-                                    } else if (bionic.variant == 2) {
-                                        draw_sprite(spr_bionic_eye_2, 4,x_surface_offset+eye_move_x, y_surface_offset + eye_move_y);
-                                    }
+                                    complex_set.add_to_area("left_eye", spr_bionic_right_eyes);
                                     break;
-
-                                case "left_leg":
-                                    if (!complex_livery){
-                                        if (armour_type == ArmourType.Normal) {
-                                            var sprite_num = 2;
-                                            if (specialist_colours >= 2) {
-                                                sprite_num = 3;
-                                            }
-                                            if (bionic.variant == 0) {
-                                                draw_sprite(spr_bionics_leg_2, sprite_num, x_surface_offset, y_surface_offset)
-                                            } else {
-                                                draw_sprite(spr_bionics_leg_3, sprite_num, x_surface_offset, y_surface_offset)
-                                            }
-                                        }
-                                    }
-                                    break;
-
-                                case "right_leg":
-                                    if (!complex_livery){
-                                        if (armour_type == ArmourType.Normal) {
-                                            if (bionic.variant == 0) {
-                                                draw_sprite(spr_bionics_leg_2, 0, x_surface_offset, y_surface_offset)
-                                            } else {
-                                                draw_sprite(spr_bionics_leg_3, 0, x_surface_offset, y_surface_offset)
-                                            }
-                                        }
-                                    }
-                                    break;
+    
                             }
                         }
                     }
                 }
-                surface_reset_target();
-                shader_set_uniform_i(shader_get_uniform(sReplaceColor, "u_blend_modes"), 1);
-                texture_set_stage(shader_get_sampler_index(sReplaceColor, "background_texture"), surface_get_texture(unit_surface));                   
-                surface_set_target(unit_surface);                
-                draw_surface(bionic_surface, 0,0);
-                surface_free(bionic_surface);
-                shader_set(sReplaceColor);
-                shader_set_uniform_i(shader_get_uniform(sReplaceColor, "u_blend_modes"), 0);                
             }
+
             // Draw Custom Helmets
             if (armour_type==ArmourType.Normal && !armour_bypass){
                 if (unit_role == _role[eROLE.Champion]) {
