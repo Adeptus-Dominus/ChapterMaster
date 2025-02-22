@@ -275,7 +275,7 @@ function ComplexSet(unit) constructor{
         case "MK7 Aquila":
         case "Artificer Armour":
             add_group(mk7_bits);
-            armour_type == ArmourType.Normal
+            armour_type = ArmourType.Normal
             break;                  
         case "MK6 Corvus":
             add_group({
@@ -288,7 +288,7 @@ function ComplexSet(unit) constructor{
                 mouth_variants : spr_mk6_mouth_variants,
                 head : spr_mk6_head_variants,
             });
-            armour_type == ArmourType.Normal
+            armour_type = ArmourType.Normal
             break;                
         case  "MK5 Heresy":
             add_group({
@@ -300,7 +300,7 @@ function ComplexSet(unit) constructor{
                 right_trim: spr_mk7_right_trim,
                 head : spr_mk5_head_variants,
             }); 
-            armour_type == ArmourType.Normal
+            armour_type = ArmourType.Normal
             /*if (scr_has_style("Prussian")){
                 add_to_area("chest_variants", spr_mk7_prussia_chest);
             }*/  
@@ -318,7 +318,7 @@ function ComplexSet(unit) constructor{
                 mouth_variants: spr_mk4_mouth_variants,
                 head : spr_mk4_head_variants,            
             });
-            armour_type == ArmourType.Normal
+            armour_type = ArmourType.Normal
             break;                                
         case  "MK3 Iron Armour":
             add_group({
@@ -332,12 +332,12 @@ function ComplexSet(unit) constructor{
                 mouth_variants: spr_mk3_mouth,
                 forehead : spr_mk3_forehead_variants  
             });
-            armour_type == ArmourType.Normal
+            armour_type = ArmourType.Normal
             break;
         case  "MK8 Errant":
             add_group(mk7_bits);
             add_to_area("gorget",spr_mk8_gorget);
-            armour_type == ArmourType.Normal
+            armour_type = ArmourType.Normal
             break;
        case  "Terminator Armour":
              add_group({
