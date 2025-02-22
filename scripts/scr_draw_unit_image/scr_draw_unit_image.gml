@@ -805,7 +805,9 @@ function scr_draw_unit_image(_background=false){
                             complex_set.y_surface_offset = y_surface_offset
                             complex_set.draw();                                                                                                                                                                                                                      
                         } else {
-                            draw_sprite(specific_armour_sprite,0,x_surface_offset,y_surface_offset);
+                            if (sprite_exists(specific_armour_sprite)){
+                                draw_sprite(specific_armour_sprite,0,x_surface_offset,y_surface_offset);
+                            }
                         }                       
                         shader_set(sReplaceColor);
                     } else{                   

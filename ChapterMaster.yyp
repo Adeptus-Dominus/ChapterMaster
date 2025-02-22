@@ -1416,6 +1416,7 @@
     {"id":{"name":"obj_controller","path":"objects/obj_controller/obj_controller.yy",},},
     {"id":{"name":"spr_mk7_thorax_variants","path":"sprites/spr_mk7_thorax_variants/spr_mk7_thorax_variants.yy",},},
     {"id":{"name":"obj_mass_equip","path":"objects/obj_mass_equip/obj_mass_equip.yy",},},
+    {"id":{"name":"scr_culture_visuals","path":"scripts/scr_culture_visuals/scr_culture_visuals.yy",},},
     {"id":{"name":"obj_turn_end","path":"objects/obj_turn_end/obj_turn_end.yy",},},
     {"id":{"name":"obj_saveload","path":"objects/obj_saveload/obj_saveload.yy",},},
     {"id":{"name":"spr_da_term_honor","path":"sprites/spr_da_term_honor/spr_da_term_honor.yy",},},

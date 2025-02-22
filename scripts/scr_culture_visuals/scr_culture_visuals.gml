@@ -1,0 +1,213 @@
+function load_visual_sets(){
+global.modular_drawing_items = [
+    {
+        sprite : spr_da_mk5_helm_crests,
+        cultures : ["knightly"],
+        body_types :["normal"],
+        armours : ["MK3 Iron Armour", "MK4 Maximus", "MK5 Heresy"],
+        position : "crest",
+        assign_by_rank : 2,
+    },
+    {
+        sprite : spr_da_mk7_helm_crests,
+        cultures : ["knightly"],
+        body_types :["normal"],
+        armours : ["MK7 Aquila", "Power Armour", "MK8 Errant","Artificer Armour"],
+        position : "crest",
+        assign_by_rank : 2,
+    },
+    {
+        sprite : spr_terminator_laurel,
+        armours : ["Terminator Armour", "Tartaros"],
+        roles : [eROLE.Captain,eROLE.Champion],
+        position : "crown",
+        body_types :["terminator"],
+    },
+    {
+        sprite : spr_laurel,
+        body_types :["normal"],
+        armours : ["Terminator Armour", "Tartaros"],
+        roles : [eROLE.Captain,eROLE.Champion],
+        position : "crown",
+    },
+    {
+        sprite : spr_special_helm,
+        body_types :["normal"],
+        armours_exclude : ["MK3 Iron Armour"],
+        position : "mouth",
+    },
+    {
+        cultures : ["Mongol"],
+        sprite : spr_mongol_topknots,
+        body_types :["normal"],
+        position : "crest",
+    },
+    {
+        cultures : ["Mongol"],
+        sprite : spr_mongol_hat,
+        body_types :["normal"],
+        position : "crown",
+    },
+    {
+        cultures : ["Prussian"],
+        sprite : spr_prussian_spike,
+        body_types :["normal"],
+        position : "crest",
+    },
+    {
+        cultures : ["Mechanical Cult"],
+        assign_by_rank : 2,
+        sprite : spr_metal_tabbard,
+        role_type : ["forge"],
+        body_types :["normal"],
+        position : "tabbard",
+        allow_either : ["cultures", "role_type"],
+    },
+    {
+        cultures : ["Knightly"],
+        sprite : spr_knightly_personal_livery,
+        body_types :["normal"],
+        assign_by_rank : 3,
+        position : "left_personal_livery",        
+    },
+    {
+        cultures : ["Gladiator"],
+        sprite : spr_gladiator_crest,
+        body_types :["normal"],
+        assign_by_rank : 2,
+        position : "crest",        
+    },
+    {
+        cultures : ["Mechanical Cult"],
+        assign_by_rank : 2,
+        sprite : spr_terminator_metal_tabbard,
+        role_type : ["forge"],
+        body_types :["terminator"],
+        position : "tabbard",
+        allow_either : ["cultures", "role_type"],       
+    },
+    {
+        cultures : ["Flame Cult"],
+        sprite : spr_mk3_mouth_flame_cult,
+        body_types :["normal"],
+        position : "mouth_variants",
+        armours : ["MK3 Iron Armour"],    
+    },
+    {
+        cultures : ["Prussian"],
+        sprite : spr_mk3_mouth_prussian,
+        body_types :["normal"],
+        position : "mouth_variants",
+        armours : ["MK3 Iron Armour"],    
+    },
+    {
+        cultures : ["Prussian"],
+        sprite : spr_mk6_mouth_prussian,
+        body_types :["normal"],
+        position : "mouth_variants",
+        armours : ["MK3 Iron Armour"],    
+    },
+    {
+        cultures : ["Prussian"],
+        sprite : spr_mk7_prussia_chest,
+        body_types :["normal"],
+        position : "chest_variants",  
+    },
+    {
+        cultures : ["Prussian"],
+        sprite : spr_mk7_mouth_prussian,
+        body_types :["normal"],
+        position : "chest_variants",
+        armours : ["MK8 Errant", "MK7 Aquila"],      
+    }, 
+    {
+        cultures : ["Mongol"],
+        sprite : spr_mk7_mongol_chest_variants,
+        body_types :["normal"],
+        position : "chest_variants",
+        armours : ["MK8 Errant", "MK7 Aquila"],      
+    },
+    {
+        cultures : ["Gladiator"],
+        sprite : spr_mk7_gladiator_chest,
+        body_types :["normal"],
+        position : "chest_variants",
+        armours : ["MK8 Errant", "MK7 Aquila"],      
+    },
+    {
+        cultures : ["Mongol"],
+        sprite : spr_mk4_mongol_chest_variants,
+        body_types :["normal"],
+        position : "chest_variants",
+        armours : ["MK4 Maximus"],      
+    },
+    {
+        cultures : ["Mongol"],
+        sprite : spr_mk6_mongol_chest_variants,
+        body_types :["normal"],
+        position : "chest_variants",
+        armours : ["MK6 Corvus"],      
+    },
+    {
+        cultures : ["Knightly"],
+        sprite : spr_knightly_robes,
+        body_types :["normal"],
+        position : "robe",
+        assign_by_rank : 4,    
+    },               
+
+]
+    var _vis_set_directory = working_directory + "main\\visual_sets";
+    if (directory_exists(_vis_set_directory)){
+        try {
+            var _file_buffer = buffer_load(_vis_set_directory + "\\use_sets.json");
+            if (file_buffer == -1) {
+                throw ("Could not open file");
+            }
+            var _json_string = buffer_read(file_buffer, buffer_string);
+            var _raw_data = json_parse(json_string);
+            if (!is_array(raw_data)){
+                throw ("use_sets.json File Wrong Format");
+            }
+            for (var i=0;i<array_length(_raw_data);_raw_data++){
+                var _sepcific_vis_set = _vis_set_directory + $"\\_raw_data[i]";
+                if (directory_exists(_sepcific_vis_set)){
+                    var _file_buffer = buffer_load(_sepcific_vis_set + "\\data.json");
+                    if (file_buffer == -1) {
+                        continue;
+                    } else {
+                        var _json_string = buffer_read(file_buffer, buffer_string);
+                        var _raw_data = json_parse(json_string);
+                        load_vis_set_to_global(_sepcific_vis_set, _raw_data);
+                    }
+                }
+            }
+        }
+    }
+}
+
+function load_vis_set_to_global(directory, data){
+    for (var i=0;i<array_length(data); i++){
+        var sprite_item = data[i];
+        if (directory_exists(directory + "\\{sprite_item.name}")){
+            var _sprite_direct = directory + "\\{sprite_item.name}";
+            if (file_exists(_sprite_direct + "1.png")){
+                var _new_sprite = sprite_add(_sprite_direct + "1.png",1,0,0,0,0);
+                var s = 2;
+                while (file_exists(_sprite_direct + $"{s}.png")){
+                    s++;
+                    sprite_merge(_new_sprite, sprite_add(_sprite_direct + $"{s}.png",1,0,0,0,0));
+                }
+                var s_data = sprite_item.data;
+                s_data.sprite = _new_sprite;
+                array_push(global.modular_drawing_items, s_data);
+            }
+        }
+    }
+}
+
+try{
+    load_visual_sets();
+} catch(_exception){
+    handle_exception(_exception);
+}

@@ -138,7 +138,9 @@ function ComplexSet(unit) constructor{
                     add_relative_to_status(_mod.position, _mod.sprite, _mod.assign_by_rank);
                }
             }
-        } except(_exception){}
+        } catch(_exception){
+            handle_exception(_exception);
+        }
     }
 
     variation_map = {
