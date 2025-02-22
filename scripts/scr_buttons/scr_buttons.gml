@@ -149,6 +149,55 @@ function PurchaseButton(req) : UnitButtonObject() constructor{
 	}
 }
 
+
+function slider_bar() constructor{
+	x1 = 0;
+	y1 = 0;
+	w = 102;
+	h = 15
+	value_limits = [0,0];
+	value_increments = 1;
+	value = 0;
+	dragging = false;
+	slider_pos = 0;
+	static update = function(data){
+	    var _data_presets = struct_get_names(data);
+	    for (var i=0;i<array_length(_data_presets);i++){
+	    	self[$_data_presets[i]] = data[$_data_presets[i]];
+	    }		
+	}
+	function draw(){
+		if (value<value_limits[0]){
+			value = value_limits[0];
+		}
+		if (dragging){
+			dragging = mouse_check_button(mb_left);
+		}
+		var _rect = [x1,y1,x1+w, y1+h];
+		draw_rectangle_array(_rect,1);
+		width_increments = w/((value_limits[1]-value_limits[0])/value_increments);
+		var __rel_cur_pos = increments*(value - value_limits[0]);
+		var _mouse_pos = return_mouse_consts();
+		var _lit_cur_pos = _rel_cur_pos+x1;
+		if (scr_hit(_rect) && !dragging){
+			if (point_distance(_lit_cur_pos, 0, _mouse_pos[0], 0)>increments){
+				if (mouse_check_button(mb_left)){
+					dragging = true
+				}
+			}
+		}
+		if (dragging){
+			if (_mouse_pos[0]>(_rect[2])){
+				value = value_limits[1];
+			} else if (_mouse_pos[0]<(_rect[0])){
+				value = value_limits[0];
+			} else {
+				var mouse_rel = _mouse_pos[0] - x1;
+				var increment_count = (mouse_rel/width_increments);
+			}
+		}
+	}
+}
 function TextBarArea(XX,YY,Max_width = 400) constructor{
 	allow_input=false;
 	xx=XX;
