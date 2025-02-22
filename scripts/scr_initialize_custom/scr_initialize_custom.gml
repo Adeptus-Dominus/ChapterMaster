@@ -936,7 +936,7 @@ function scr_initialize_custom() {
 		ninth -= 10;
 		tenth -= 10;
 	}
-	if ((obj_creation.equal_specialists = 1) or (obj_creation.equal_specialists = 0)) and scr_has_disadv("Obliterated") {
+	if (obj_creation.equal_specialists < 2) and scr_has_disadv("Obliterated") {
 		techmarines -= 7;
 		epistolary -= 2;
 		codiciery -= 1;
