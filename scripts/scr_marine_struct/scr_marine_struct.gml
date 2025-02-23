@@ -714,11 +714,13 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			trim_variation : irandom(100),
 			personal_livery : irandom(100),
 			pad_variation : irandom(100),
+			variation : irandom(100),
 		},
 		"right_arm":{
 			trim_variation : irandom(100),
 			personal_livery : irandom(100),
-			pad_variation : irandom(100),			
+			pad_variation : irandom(100),
+			variation : irandom(100),			
 		}, 
 		"left_eye":{
 			variant : irandom(100),

@@ -235,69 +235,7 @@ function scr_draw_unit_image(_background=false){
         shader_set(full_livery_shader);
     };
 
-    static draw_unit_arms = function(_x_surface_offset, _y_surface_offset, _armour_type, _specialist_colours, _hide_bionics, _complex_set) {
-        shader_set(sReplaceColor);
-        if (array_contains([ArmourType.Normal, ArmourType.Terminator, ArmourType.Scout], _armour_type)) {
-            var _bionic_options = [];
-            var _arm_spr;
-            switch (_armour_type) {
-                case ArmourType.Terminator:
-                    _arm_spr = spr_terminator_arms;
-                    _bionic_options = [spr_indomitus_right_arm_bionic];
-                    break;
-                case ArmourType.Scout:
-                    _arm_spr = spr_scout_arms;
-                    break;
-                case ArmourType.Normal:
-                default:
-                    _bionic_options = [spr_bionics_arm, spr_bionics_arm_2];
-                    if (armour() == "Artificer Armour") {
-                        //todo: refactor this
-                        _arm_spr = spr_pa_arms_ornate;
-                    } else {
-                        _arm_spr = spr_pa_arms;
-                    }
-                    break;
-            }
-            for (var _right_left = 1; _right_left <= 2; _right_left++) {
-                // Draw bionic arms
-                var _bionic_arm = get_body_data("bionic", _right_left == 1 ? "right_arm" : "left_arm");
-                if (arm_variant[_right_left] == 1 && array_length(_bionic_options) && !_hide_bionics && _bionic_arm) {
-                    var _bionic_variant = _bionic_arm.variant % array_length(_bionic_options);
-                    var _bionic_spr_index = 0;
-                    var _bionic_spr = _bionic_options[_bionic_variant];
-                    if (_right_left == 2) {
-                        if (_specialist_colours >= 2) {
-                            _bionic_spr_index = sprite_get_number(_bionic_spr) - 1;
-                        }
-                        draw_sprite_flipped(_bionic_spr, _bionic_spr_index, _x_surface_offset, _y_surface_offset);
-                    } else {
-                        draw_sprite(_bionic_spr, _bionic_spr_index, _x_surface_offset, _y_surface_offset);
-                    }
-                } else if (arm_variant[_right_left] > 0) {
-                    shader_set(full_livery_shader);
-                    if ((_right_left == 1) && struct_exists(_complex_set, "right_arm") && (arm_variant[_right_left] == 1)) {
-                        draw_sprite(_complex_set.right_arm, 0, _x_surface_offset, _y_surface_offset);
-                        shader_set(sReplaceColor);
-                    } else if ((_right_left == 2) && struct_exists(_complex_set, "left_arm") && (arm_variant[_right_left] == 1)) {
-                        shader_set(full_livery_shader);
-                        draw_sprite(_complex_set.left_arm, 0, _x_surface_offset, _y_surface_offset);
-                        shader_set(sReplaceColor);
-                    } else {
-                        shader_set(sReplaceColor);
-                        var _spr_index = (arm_variant[_right_left] - 1) * 2;
-                        if (_right_left == 2) {
-                            _spr_index += (_specialist_colours >= 2) ? 1 : 0;
-                            draw_sprite_flipped(_arm_spr, _spr_index, _x_surface_offset, _y_surface_offset);
-                        } else {
-                            draw_sprite(_arm_spr, _spr_index, _x_surface_offset, _y_surface_offset);
-                        }
-                    }
-                }
-            }
-        }
-        shader_set(full_livery_shader);
-    };
+
 
     var _role = obj_ini.role[100];
     var complex_set={};    
@@ -362,6 +300,7 @@ function scr_draw_unit_image(_background=false){
         var tech_brothers_trait = -5;
         var body_part;
         var dev_trait = 0;
+        static _body_parts = ARR_body_parts;
 
         // if (unit_role=="Chapter Master"){unit_specialization=111;}
         // // Honour Guard
@@ -692,7 +631,6 @@ function scr_draw_unit_image(_background=false){
                 }
 
                 if (armour_type == ArmourType.Terminator && complex_livery){
-                    var _body_parts = ARR_body_parts;
                     for (var part = 0; part < array_length(_body_parts); part++) {
                         if (struct_exists(body[$ _body_parts[part]], "bionic")) {
 
@@ -719,7 +657,6 @@ function scr_draw_unit_image(_background=false){
                         } 
                     }                   
                 }
-                    draw_unit_arms(x_surface_offset, y_surface_offset, armour_type, specialist_colours, hide_bionics, complex_set);
                 if (armour_type == ArmourType.Normal && (!robes_bypass || !robes_hood_bypass)) {
                     var robe_offset_x = 0;
                     var robe_offset_y = 0;
@@ -739,10 +676,9 @@ function scr_draw_unit_image(_background=false){
                             complex_set.add_to_area("robe",spr_marine_robes);
                         } else if (body.torso.robes == 1) {
                             if (scr_has_adv("Daemon Binders") && !modest_livery){
-                                var _index = pauldron_trim == 1 ? 0 : 1;
-                                draw_sprite(spr_binders_robes,_index,x_surface_offset+robe_offset_x,y_surface_offset+robe_offset_y);
+                                complex_set.add_to_area("tabbard",spr_binders_robes);  
                             } else {
-                                draw_sprite(spr_marine_robes,1,x_surface_offset+robe_offset_x,y_surface_offset+robe_offset_y);       
+                                complex_set.add_to_area("tabbard",spr_marine_robes);  
                             }
                         } else {
                             complex_set.add_to_area("tabbard",spr_cloth_tabbard);   
@@ -772,7 +708,7 @@ function scr_draw_unit_image(_background=false){
                                 var bionic = body[$ body_part][$ "bionic"];
                                 switch (body_part) {
                                     case "left_eye":
-                                        complex_set.add_to_area("left_eye", spr_bionic_right_eyes);
+                                        complex_set.add_to_area("left_eye", spr_bionic_left_eyes);
                                         break;
         
                                     case "right_eye":
@@ -805,13 +741,6 @@ function scr_draw_unit_image(_background=false){
                     if (array_contains(["MK3 Iron Armour", "MK6 Corvus", "MK7 Aquila", "MK8 Errant"], unit_armour)){
                         if (back_equipment == BackType.Jump || back_equipment == BackType.Dev){
                             draw_sprite(mk7_chest_variants,1,x_surface_offset,y_surface_offset);
-                        }
-                    }
-                    // Draw pauldron trim
-                    if (!complex_livery){
-                         if (specific_armour_sprite != "none"){
-                            if (pauldron_trim==0 && specialist_colours<=1) then draw_sprite(specific_armour_sprite,4,x_surface_offset,y_surface_offset);
-                            if (pauldron_trim==0 && specialist_colours>=2) then draw_sprite(specific_armour_sprite,5,x_surface_offset,y_surface_offset);
                         }
                     }
                 } else if (array_length(armour_draw)){
