@@ -217,7 +217,19 @@ global.modular_drawing_items = [
         body_types :[0],
         position : "backpack",
         assign_by_rank : 4,
-    },                       
+    },
+    {
+        sprite : spr_gear_librarian,
+        body_types :[0],
+        position : "right_pauldron",
+        role_type : ["lib"],
+    },
+    {
+        sprite : spr_gear_librarian_term,
+        body_types :[2],
+        position : "right_pauldron",
+        role_type : ["lib"],
+    },                              
 
 ];
 try{

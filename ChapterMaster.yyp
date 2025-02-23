@@ -1040,6 +1040,7 @@
     {"id":{"name":"spr_weapon_grav_pistol","path":"sprites/spr_weapon_grav_pistol/spr_weapon_grav_pistol.yy",},},
     {"id":{"name":"scr_text_hit","path":"scripts/scr_text_hit/scr_text_hit.yy",},},
     {"id":{"name":"spr_shutter_button","path":"sprites/spr_shutter_button/spr_shutter_button.yy",},},
+    {"id":{"name":"spr_gear_librarian_term","path":"sprites/spr_gear_librarian_term/spr_gear_librarian_term.yy",},},
     {"id":{"name":"scr_json_functions","path":"scripts/scr_json_functions/scr_json_functions.yy",},},
     {"id":{"name":"scr_colors_initialize","path":"scripts/scr_colors_initialize/scr_colors_initialize.yy",},},
     {"id":{"name":"spr_mk3_forehead_variants","path":"sprites/spr_mk3_forehead_variants/spr_mk3_forehead_variants.yy",},},
