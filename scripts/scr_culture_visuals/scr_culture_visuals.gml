@@ -229,6 +229,15 @@ global.modular_drawing_items = [
         body_types :[2],
         position : "right_pauldron",
         role_type : ["lib"],
+    },
+    {
+        sprite : spr_roman_centurian_crest,
+        body_types :[0],
+        cultures : ["Roman, Greek", "Ultra", "Gladiator"],
+        position : "crest",
+        role_type : ["captain_candidates"],
+        assign_by_rank : 2,
+
     },                              
 
 ];

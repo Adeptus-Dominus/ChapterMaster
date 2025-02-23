@@ -93,11 +93,19 @@ function ComplexSet(unit) constructor{
                     }
                }                
                 if (struct_exists(_mod, "role_type")){
-                    if (!unit.IsSpecialist(_mod.role_type)){
-                        if (!check_exception("role_type")){
-                            continue;
+                    var _viable = false;
+                    for (var a=0;a<array_length(_mod.role_type);a++){
+                        var _r_t = _mod.role_type[a];
+                        _viable = unit.IsSpecialist(_r_t);
+                        if (_viable){
+                            break;
                         }
                     }
+                    if (!_viable){
+                        if (!check_exception("chapter_adv")){
+                            continue;
+                        }                         
+                    }                    
                 }
                 if (struct_exists(_mod, "roles")){
                     if (!array_contains(_mod.roles, unit.role())){
@@ -456,7 +464,7 @@ function ComplexSet(unit) constructor{
     		add_to_area(area, add_sprite);
     	} else {
     		var variation_tier = (_unit_tier - status_level)+1;
-    		if (variant%variation_tier == 0){
+    		if (variation_map[$ area] % variation_tier == 0){
     			add_to_area(area, add_sprite);
     		}
     	}
