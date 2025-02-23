@@ -192,6 +192,8 @@ function ComplexSet(unit) constructor{
         right_leg : unit.get_body_data("leg_variants","right_leg"),
         left_trim : unit.get_body_data("trim_variation","left_arm"),
         right_trim : unit.get_body_data("trim_variation","right_arm"),
+        left_arm : unit.get_body_data("variation","left_arm"),
+        right_arm : unit.get_body_data("variation","right_arm"),        
         gorget : unit.get_body_data("variant","throat"),
         right_pauldron: unit.get_body_data("pad_variation","right_arm"),
         left_pauldron: unit.get_body_data("pad_variation","left_arm"),
@@ -220,10 +222,35 @@ function ComplexSet(unit) constructor{
             }
         }
     }
+    static draw_unit_arms = function() {
+        var _bionic_options = [];
+        if (array_contains([ArmourType.Normal, ArmourType.Terminator, ArmourType.Scout], armour_type)) {
+       
+            for (var _right_left = 1; _right_left <= 2; _right_left++) {
+                if (unit.arm_variant[_right_left] == 0) then continue;
+                var _arm_string = _right_left == 1 ? "right_arm" : "left_arm";
+                var _bionic_arm = unit.get_body_data("bionic", _arm_string);
+                if (_bionic_arm){
+                    _bio = [];
+                    if (ArmourType.Normal){
+                        var _bio = ["", spr_bionic_right_arm, spr_bionic_left_arm];
+                    } else if (ArmourType.Terminator){
+                        _bio = ["", spr_bionic_right_arm, spr_indomitus_left_arm_bionic];
+                    }
+                    if (array_length(_bio)){
+                        replace_area(_arm_string, _bio[_right_left]);
+                    }
+                }
+                draw_component(_arm_string);
+            }
+        }
+        shader_set(full_livery_shader);
+    };    
     static draw = function(){
         setup_complex_livery_shader(unit.role(),unit);
         draw_cloaks(x_surface_offset,y_surface_offset );
          //draw_unit_arms(x_surface_offset, y_surface_offset, armour_type, specialist_colours, hide_bionics, complex_set);
+         draw_unit_arms();
         var _complex_helm = false;
         var unit_role = unit.role();
         var _role = obj_ini.role[100];
@@ -380,6 +407,8 @@ function ComplexSet(unit) constructor{
             case "Scout Armour":
                 add_group({
                     armour : spr_scout_complex,
+                    left_arm: spr_mk6_left_arm,
+                    right_arm: spr_mk6_right_arm,                    
                 })            
                 armour_type = ArmourType.Scout;
     			break
