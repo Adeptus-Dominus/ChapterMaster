@@ -80,14 +80,18 @@ function ComplexSet(unit) constructor{
                 _are_exceptions = false;
                 _mod = modulars[i];
                 exceptions = [];
-                if (!array_contains(_mod.body_types, armour_type)){
-                    continue
-                }
 
                 if (struct_exists(_mod, "allow_either")){
                     _are_exceptions = true;
                     exceptions = _mod.allow_either;
                 }
+               if (struct_exists(_mod, "body_types")){
+                    if (!array_contains(_mod.body_types, armour_type)){
+                        if (!check_exception("body_types")){
+                            continue;
+                        }                    
+                    }
+               }                
                 if (struct_exists(_mod, "role_type")){
                     if (!unit.IsSpecialist(_mod.role_type)){
                         if (!check_exception("role_type")){
@@ -109,11 +113,11 @@ function ComplexSet(unit) constructor{
                         }                    
                     }
                }
-               if (struct_exists(_mod, "body_types")){
-                    if (!array_contains(_mod.body_types, body_type)){
-                        if (!check_exception("body_types")){
+               if (struct_exists(_mod, "company")){
+                    if (!array_contains(_mod.company, unit.company)){
+                        if (!check_exception("company")){
                             continue;
-                        }                    
+                        }                         
                     }
                }
                if (struct_exists(_mod, "armours")){
@@ -167,8 +171,6 @@ function ComplexSet(unit) constructor{
                     add_relative_to_status(_mod.position, _mod.sprite, _mod.assign_by_rank);
                }
             }
-        } catch(_exception){
-            handle_exception(_exception);
         }
     }
 
@@ -183,8 +185,8 @@ function ComplexSet(unit) constructor{
         left_trim : unit.get_body_data("trim_variation","left_arm"),
         right_trim : unit.get_body_data("trim_variation","right_arm"),
         gorget : unit.get_body_data("variant","throat"),
-        right_pauldron: unit.company,
-        left_pauldron: unit.company,        
+        right_pauldron: unit.get_body_data("pad_variation","right_arm"),
+        left_pauldron: unit.get_body_data("pad_variation","left_arm"),
         left_personal_livery : unit.get_body_data("personal_livery","left_arm"),
         left_knee : unit.company,
         tabbard : unit.get_body_data("tabbard_variation","torso"),
@@ -377,13 +379,7 @@ function ComplexSet(unit) constructor{
                 add_group(mk7_bits);
                 break;
 
-        }
-        if (armour_type == ArmourType.Normal) {
-            add_group({
-                right_pauldron : spr_gothic_numbers_right_pauldron,
-                left_knee : spr_numeral_left_knee
-            });
-        }        
+        }       
         assign_modulars();
     }
      if (unit.IsSpecialist("forge")){

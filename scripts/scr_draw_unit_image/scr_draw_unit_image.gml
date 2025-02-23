@@ -765,9 +765,25 @@ function scr_draw_unit_image(_background=false){
                     if (psy_hood){
                         complex_set.replace_area("crown", spr_psy_hood_complex);
                     }                    
-
+                    for (var part = 0; part < array_length(_body_parts); part++) {
+                        if (struct_exists(body[$ _body_parts[part]], "bionic")) {
+                            if (armour_type == ArmourType.Normal) {
+                                var body_part = _body_parts[part];
+                                var bionic = body[$ body_part][$ "bionic"];
+                                switch (body_part) {
+                                    case "left_eye":
+                                        complex_set.add_to_area("left_eye", spr_bionic_right_eyes);
+                                        break;
+        
+                                    case "right_eye":
+                                        complex_set.add_to_area("left_eye", spr_bionic_right_eyes);
+                                        break;
+        
+                                }
+                            }
+                        }
+                    }
                 }
-
                 // Draw torso
                 if (!armour_bypass){
                     if (complex_livery){
@@ -888,27 +904,6 @@ function scr_draw_unit_image(_background=false){
                     }                    
                 }            
             }		
-
-            if (complex_livery){
-                for (var part = 0; part < array_length(_body_parts); part++) {
-                    if (struct_exists(body[$ _body_parts[part]], "bionic")) {
-                        if (armour_type == ArmourType.Normal) {
-                            var body_part = _body_parts[part];
-                            var bionic = body[$ body_part][$ "bionic"];
-                            switch (body_part) {
-                                case "left_eye":
-                                    complex_set.add_to_area("left_eye", spr_bionic_right_eyes);
-                                    break;
-    
-                                case "right_eye":
-                                    complex_set.add_to_area("left_eye", spr_bionic_right_eyes);
-                                    break;
-    
-                            }
-                        }
-                    }
-                }
-            }
 
             // Draw Custom Helmets
             if (armour_type==ArmourType.Normal && !armour_bypass){
