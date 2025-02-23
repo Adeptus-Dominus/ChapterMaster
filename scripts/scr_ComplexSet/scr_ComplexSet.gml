@@ -77,9 +77,9 @@ function ComplexSet(unit) constructor{
     
     static assign_modulars = function(){
         var modulars = global.modular_drawing_items;
-        body_type = "normal";
+        body_type = ArmourType.Normal;
         if (unit.armour() = "Terminator Armour" || unit.armour() =  "Tartaros"){
-            body_type = "terminator";
+            body_type = ArmourType.Terminator;
         }
         var _mod = {};
 
@@ -224,22 +224,22 @@ function ComplexSet(unit) constructor{
         setup_complex_livery_shader(unit.role(),unit);
         draw_cloaks(x_surface_offset,y_surface_offset );
          //draw_unit_arms(x_surface_offset, y_surface_offset, armour_type, specialist_colours, hide_bionics, complex_set);
-            var _complex_helm = false;
-            var unit_role = unit.role();
-            var _role = obj_ini.role[100];
-            var _comp_helms = obj_ini.complex_livery_data;
-            if (unit_role ==_role[eROLE.Sergeant]){
-                _complex_helm = _comp_helms.sgt;
-            }else if(unit_role==_role[eROLE.VeteranSergeant]){
-                _complex_helm = _comp_helms.vet_sgt;
-            }else if(unit_role==_role[eROLE.Captain]){
-                _complex_helm = _comp_helms.captain;
-            }else if(unit_role==_role[eROLE.Veteran] || (unit_role==_role[eROLE.Terminator] && company == 1)){
-                _complex_helm = _comp_helms.veteran;
-            }
-            if (is_struct(_complex_helm) && struct_exists(self, "head")){
-                complex_helms(_complex_helm);
-            }         
+        var _complex_helm = false;
+        var unit_role = unit.role();
+        var _role = obj_ini.role[100];
+        var _comp_helms = obj_ini.complex_livery_data;
+        if (unit_role ==_role[eROLE.Sergeant]){
+            _complex_helm = _comp_helms.sgt;
+        }else if(unit_role==_role[eROLE.VeteranSergeant]){
+            _complex_helm = _comp_helms.vet_sgt;
+        }else if(unit_role==_role[eROLE.Captain]){
+            _complex_helm = _comp_helms.captain;
+        }else if(unit_role==_role[eROLE.Veteran] || (unit_role==_role[eROLE.Terminator] && unit.company == 1)){
+            _complex_helm = _comp_helms.veteran;
+        }
+        if (is_struct(_complex_helm) && struct_exists(self, "head")){
+            complex_helms(_complex_helm);
+        }         
          shader_set(full_livery_shader);
 
          _draw_order = [
@@ -338,7 +338,7 @@ function ComplexSet(unit) constructor{
         case  "MK8 Errant":
             add_group(mk7_bits);
             add_to_area("gorget",spr_mk8_gorget);
-            armour_type = ArmourType.Normal
+            armour_type = ArmourType.Normal;
             break;
        case  "Terminator Armour":
              add_group({
@@ -350,6 +350,7 @@ function ComplexSet(unit) constructor{
                 leg_variants : spr_indomitus_leg_variants,
                 head : spr_indomitus_head_variants         
             });
+             armour_type = ArmourType.Terminator;
              break;
         case  "Tartaros":                       
 
@@ -367,7 +368,20 @@ function ComplexSet(unit) constructor{
                 right_trim : spr_tartaros_right_trim,
 
             });
+                armour_type = ArmourType.Terminator;
             break;
+        case  "Dreadnought":
+            add_group({
+                armour : spr_dreadnought_complex,
+            })
+            armour_type = ArmourType.Dreadnought;
+            break;
+        case "Scout Armour":
+            add_group({
+                armour : spr_scout_complex,
+            })            
+            armour_type = ArmourType.Scout;
+			break
         case defualt:
             add_group(mk7_bits);
             break;
