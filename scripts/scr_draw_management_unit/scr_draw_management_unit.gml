@@ -145,28 +145,31 @@ function scr_draw_management_unit(selected, yy=0, xx=0, draw=true){
 		draw_rectangle(xx+25,yy+64,xx+974,yy+85,1);
         if (man[selected] == "man" && is_struct(display_unit[selected])) {
             if (!unit_specialist) {
-            	var unit = display_unit[selected];
+                var unit = display_unit[selected];
                 var _role = unit.role();
                 var _experience = unit.experience;
 
-                //if unit has techmarine potential
-                var _data, valid=false;
-                var _circle_coords = [xx + 231, yy + 77,xx + 237, yy + 84];
-                for (var s=0; s<=3;s++){
-                	_data = obj_controller.spec_train_data[s];
-                	var valid = stat_valuator(_data.req, unit);
-                	if (valid){
-                		unit_specialism_option = true;
-                		var _draw_coords = [
-                			_circle_coords[0] + _data.coord_offset[0] ,  
-                			_circle_coords[1] + _data.coord_offset[1] ,
-                			_circle_coords[2] + _data.coord_offset[0] , 
-                			_circle_coords[3] + _data.coord_offset[1] , 
-                		];
-                		specialistdir = unit.specialist_tooltips(_data.name, _data.min_exp);
-                		draw_circle_colour(_draw_coords[0], _draw_coords[1], 3,specialistdir.colors[0], specialistdir.colors[1], 0);
-                		array_push(potential_tooltip, [specialistdir.spec_tip, _draw_coords]);
-                	}
+                var _data, valid = false;
+                var _circle_coords = [xx + 321, yy + 77];
+                var _circle_radius = 3
+                for (var s = 0; s <= 3; s++) {
+                    _data = obj_controller.spec_train_data[s];
+                    var valid = stat_valuator(_data.req, unit);
+                    if (valid) {
+                        unit_specialism_option = true;
+                        var _draw_coords = [
+                            _circle_coords[0] + _data.coord_offset[0],
+                            _circle_coords[1] + _data.coord_offset[1],
+                            _circle_coords[0] + _data.coord_offset[0] + _circle_radius,
+                            _circle_coords[1] + _data.coord_offset[1] + _circle_radius
+                        ];
+                        specialistdir = unit.specialist_tooltips(_data.name, _data.min_exp);
+                        draw_circle_colour(_draw_coords[0], _draw_coords[1], _circle_radius, specialistdir.colors[0], specialistdir.colors[1], 0);
+                        for (var i = 0; i < 2; ++i) {
+                            _draw_coords[i] = _draw_coords[i] - _circle_radius;
+                        }
+                        array_push(potential_tooltip, [specialistdir.spec_tip, _draw_coords]);
+                    }
                 }
             }
         }
