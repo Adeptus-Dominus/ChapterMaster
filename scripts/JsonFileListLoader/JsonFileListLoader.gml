@@ -19,7 +19,7 @@ function JsonFileListLoader() constructor {
         try {
 			var item_total = 0;
             var file_path = working_directory + relative_file_path;
-            if(file_exists(file_path) == false){
+            if (file_exists(file_path) == false){
                 log_error($"File does not exist at path {file_path}");
                 return result;
             }

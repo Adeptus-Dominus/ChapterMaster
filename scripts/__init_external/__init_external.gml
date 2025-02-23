@@ -19,7 +19,7 @@ function __init_external() {
         directory_create("Logs");
     }
 
-    #macro PATH_last_messages Logs/last_messages.log
+    #macro PATH_last_messages $"Logs/last_messages.log"
 
     var _log_file = file_text_open_write(PATH_last_messages);
     file_text_close(_log_file);
