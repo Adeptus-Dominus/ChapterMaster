@@ -109,6 +109,7 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"UI","folderPath":"folders/Sprites/UI.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Tile Sets","folderPath":"folders/Tile Sets.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Timelines","folderPath":"folders/Timelines.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"roman_theme","folderPath":"folders/Sprites/Marine Viewer/body_types/specialist/roman_theme.yy",},
   ],
   "IncludedFiles": [
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"traits.json","CopyToMask":-1,"filePath":"datafiles/data",},
@@ -1394,6 +1395,7 @@
     {"id":{"name":"obj_ground_mission","path":"objects/obj_ground_mission/obj_ground_mission.yy",},},
     {"id":{"name":"obj_temp5","path":"objects/obj_temp5/obj_temp5.yy",},},
     {"id":{"name":"obj_temp6","path":"objects/obj_temp6/obj_temp6.yy",},},
+    {"id":{"name":"spr_roman_centurian_crest","path":"sprites/spr_roman_centurian_crest/spr_roman_centurian_crest.yy",},},
     {"id":{"name":"obj_temp7","path":"objects/obj_temp7/obj_temp7.yy",},},
     {"id":{"name":"obj_temp8","path":"objects/obj_temp8/obj_temp8.yy",},},
     {"id":{"name":"obj_temp_inq","path":"objects/obj_temp_inq/obj_temp_inq.yy",},},
