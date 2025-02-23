@@ -825,15 +825,6 @@ function scr_draw_unit_image(_background=false){
                         }
                     }
                 }
-				
-				// Librarian Details
-                if (unit_specialization == UnitSpecialization.Librarian) {
-                    if (armour_type == ArmourType.Normal) {
-                        draw_sprite(spr_gear_librarian, 0, x_surface_offset, y_surface_offset);
-                    } else if (armour_type == ArmourType.Terminator) {
-						draw_sprite(spr_gear_librarian, 0, x_surface_offset-14, y_surface_offset-14);
-					}
-                }
             
                 // Hood
                 if (!complex_livery){

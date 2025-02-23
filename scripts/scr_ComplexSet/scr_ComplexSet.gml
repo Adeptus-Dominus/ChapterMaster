@@ -35,12 +35,6 @@ function scr_has_style(style){
 
 function ComplexSet(unit) constructor{
     self.unit = unit;
-    if (!array_contains(["Terminator Armour","Tartaros"], unit.armour())) {
-        add_group({
-            right_pauldron : spr_gothic_numbers_right_pauldron,
-            left_knee : spr_numeral_left_knee
-        })
-    }
     static mk7_bits = {
             armour : spr_mk7_complex,
             backpack : spr_mk7_complex_backpack,
@@ -77,10 +71,6 @@ function ComplexSet(unit) constructor{
     
     static assign_modulars = function(){
         var modulars = global.modular_drawing_items;
-        body_type = ArmourType.Normal;
-        if (unit.armour() = "Terminator Armour" || unit.armour() =  "Tartaros"){
-            body_type = ArmourType.Terminator;
-        }
         var _mod = {};
 
 
@@ -90,7 +80,7 @@ function ComplexSet(unit) constructor{
                 _are_exceptions = false;
                 _mod = modulars[i];
                 exceptions = [];
-                if (!array_contains(_mod.body_types, body_type)){
+                if (!array_contains(_mod.body_types, armour_type)){
                     continue
                 }
 
@@ -272,121 +262,128 @@ function ComplexSet(unit) constructor{
                               
     }
     static base_armour = function(){
-    switch (unit.armour()){
-        case "MK7 Aquila":
-        case "Artificer Armour":
-            add_group(mk7_bits);
-            armour_type = ArmourType.Normal
-            break;                  
-        case "MK6 Corvus":
-            add_group({
-                armour: spr_mk6_complex,
-                backpack: spr_mk6_complex_backpack,
-                left_arm: spr_mk6_left_arm,
-                right_arm: spr_mk6_right_arm,
-                left_trim :spr_mk7_left_trim,
-                right_trim: spr_mk7_right_trim,
-                mouth_variants : spr_mk6_mouth_variants,
-                head : spr_mk6_head_variants,
-            });
-            armour_type = ArmourType.Normal
-            break;                
-        case  "MK5 Heresy":
-            add_group({
-                armour: spr_mk5_complex,
-                backpack: spr_mk5_complex_backpack,
-                left_arm: spr_mk5_left_arm,
-                right_arm: spr_mk5_right_arm,
-                left_trim :spr_mk7_left_trim,
-                right_trim: spr_mk7_right_trim,
-                head : spr_mk5_head_variants,
-            }); 
-            armour_type = ArmourType.Normal
-            /*if (scr_has_style("Prussian")){
-                add_to_area("chest_variants", spr_mk7_prussia_chest);
-            }*/  
-            break;             
-        case  "MK4 Maximus":
-            add_group({
-                chest_variants: spr_mk4_chest_variants,
-                armour: spr_mk4_complex,
-                backpack: spr_mk4_complex_backpack,
-                left_arm :spr_mk4_left_arm,
-                leg_variants: spr_mk4_leg_variants,
-                right_arm: spr_mk4_right_arm,
-                left_trim: spr_mk4_left_trim,
-                right_trim: spr_mk4_right_trim,
-                mouth_variants: spr_mk4_mouth_variants,
-                head : spr_mk4_head_variants,            
-            });
-            armour_type = ArmourType.Normal
-            break;                                
-        case  "MK3 Iron Armour":
-            add_group({
-                armour : spr_mk3_complex,
-                backpack : spr_mk3_complex_backpack,
-                left_arm : spr_mk3_left_arm,
-                right_arm : spr_mk3_right_arm ,   
-                head : spr_mk3_head_variants, 
-                left_leg : spr_mk3_left_leg_variants,
-                right_leg : spr_mk3_right_leg_variants,
-                mouth_variants: spr_mk3_mouth,
-                forehead : spr_mk3_forehead_variants  
-            });
-            armour_type = ArmourType.Normal
-            break;
-        case  "MK8 Errant":
-            add_group(mk7_bits);
-            add_to_area("gorget",spr_mk8_gorget);
-            armour_type = ArmourType.Normal;
-            break;
-       case  "Terminator Armour":
-             add_group({
-                armour : spr_indomitus_complex,
-                left_arm : spr_indomitus_left_arm,
-                right_arm : spr_indomitus_right_arm,
-                backpack : spr_indomitus_backpack_variants,
-                chest_variants : spr_indomitus_chest_variants,
-                leg_variants : spr_indomitus_leg_variants,
-                head : spr_indomitus_head_variants         
-            });
-             armour_type = ArmourType.Terminator;
-             break;
-        case  "Tartaros":                       
+        armour_type = ArmourType.Normal
+        switch (unit.armour()){
+            case "MK7 Aquila":
+            case "Artificer Armour":
+                add_group(mk7_bits);
+                armour_type = ArmourType.Normal
+                break;                  
+            case "MK6 Corvus":
+                add_group({
+                    armour: spr_mk6_complex,
+                    backpack: spr_mk6_complex_backpack,
+                    left_arm: spr_mk6_left_arm,
+                    right_arm: spr_mk6_right_arm,
+                    left_trim :spr_mk7_left_trim,
+                    right_trim: spr_mk7_right_trim,
+                    mouth_variants : spr_mk6_mouth_variants,
+                    head : spr_mk6_head_variants,
+                });
+                armour_type = ArmourType.Normal
+                break;                
+            case  "MK5 Heresy":
+                add_group({
+                    armour: spr_mk5_complex,
+                    backpack: spr_mk5_complex_backpack,
+                    left_arm: spr_mk5_left_arm,
+                    right_arm: spr_mk5_right_arm,
+                    left_trim :spr_mk7_left_trim,
+                    right_trim: spr_mk7_right_trim,
+                    head : spr_mk5_head_variants,
+                }); 
+                armour_type = ArmourType.Normal
+                /*if (scr_has_style("Prussian")){
+                    add_to_area("chest_variants", spr_mk7_prussia_chest);
+                }*/  
+                break;             
+            case  "MK4 Maximus":
+                add_group({
+                    chest_variants: spr_mk4_chest_variants,
+                    armour: spr_mk4_complex,
+                    backpack: spr_mk4_complex_backpack,
+                    left_arm :spr_mk4_left_arm,
+                    leg_variants: spr_mk4_leg_variants,
+                    right_arm: spr_mk4_right_arm,
+                    left_trim: spr_mk4_left_trim,
+                    right_trim: spr_mk4_right_trim,
+                    mouth_variants: spr_mk4_mouth_variants,
+                    head : spr_mk4_head_variants,            
+                });
+                armour_type = ArmourType.Normal
+                break;                                
+            case  "MK3 Iron Armour":
+                add_group({
+                    armour : spr_mk3_complex,
+                    backpack : spr_mk3_complex_backpack,
+                    left_arm : spr_mk3_left_arm,
+                    right_arm : spr_mk3_right_arm ,   
+                    head : spr_mk3_head_variants, 
+                    left_leg : spr_mk3_left_leg_variants,
+                    right_leg : spr_mk3_right_leg_variants,
+                    mouth_variants: spr_mk3_mouth,
+                    forehead : spr_mk3_forehead_variants  
+                });
+                armour_type = ArmourType.Normal
+                break;
+            case  "MK8 Errant":
+                add_group(mk7_bits);
+                add_to_area("gorget",spr_mk8_gorget);
+                armour_type = ArmourType.Normal;
+                break;
+           case  "Terminator Armour":
+                add_group({
+                    armour : spr_indomitus_complex,
+                    left_arm : spr_indomitus_left_arm,
+                    right_arm : spr_indomitus_right_arm,
+                    backpack : spr_indomitus_backpack_variants,
+                    chest_variants : spr_indomitus_chest_variants,
+                    leg_variants : spr_indomitus_leg_variants,
+                    head : spr_indomitus_head_variants         
+                });
+                 armour_type = ArmourType.Terminator;
+                 break;
+            case  "Tartaros":                       
 
                 add_group({
-                armour : spr_tartaros_complex,
-                left_arm : spr_tartaros_left_arm,
-                right_arm : spr_tartaros_right_arm, 
-                right_leg : spr_tartaros_right_leg,
-                left_leg : spr_tartaros_left_leg,
-                chest_variants : spr_tartaros_chest,
-                gorget : spr_tartaros_gorget,
-                mouth_variants : spr_tartaros_faceplate,
-                head : spr_tartaros_head_variants,
-                left_trim : spr_tartaros_left_trim,
-                right_trim : spr_tartaros_right_trim,
+                    armour : spr_tartaros_complex,
+                    left_arm : spr_tartaros_left_arm,
+                    right_arm : spr_tartaros_right_arm, 
+                    right_leg : spr_tartaros_right_leg,
+                    left_leg : spr_tartaros_left_leg,
+                    chest_variants : spr_tartaros_chest,
+                    gorget : spr_tartaros_gorget,
+                    mouth_variants : spr_tartaros_faceplate,
+                    head : spr_tartaros_head_variants,
+                    left_trim : spr_tartaros_left_trim,
+                    right_trim : spr_tartaros_right_trim,
 
-            });
-                armour_type = ArmourType.Terminator;
-            break;
-        case  "Dreadnought":
-            add_group({
-                armour : spr_dreadnought_complex,
-            })
-            armour_type = ArmourType.Dreadnought;
-            break;
-        case "Scout Armour":
-            add_group({
-                armour : spr_scout_complex,
-            })            
-            armour_type = ArmourType.Scout;
-			break
-        case defualt:
-            add_group(mk7_bits);
-            break;
+                });
+                    armour_type = ArmourType.Terminator;
+                break;
+            case  "Dreadnought":
+                add_group({
+                    armour : spr_dreadnought_complex,
+                })
+                armour_type = ArmourType.Dreadnought;
+                break;
+            case "Scout Armour":
+                add_group({
+                    armour : spr_scout_complex,
+                })            
+                armour_type = ArmourType.Scout;
+    			break
+            case defualt:
+                add_group(mk7_bits);
+                break;
 
         }
+        if (armour_type == ArmourType.Normal) {
+            add_group({
+                right_pauldron : spr_gothic_numbers_right_pauldron,
+                left_knee : spr_numeral_left_knee
+            });
+        }        
         assign_modulars();
     }
      if (unit.IsSpecialist("forge")){
