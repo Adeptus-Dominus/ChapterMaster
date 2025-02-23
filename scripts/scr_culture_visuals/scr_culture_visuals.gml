@@ -1,4 +1,52 @@
 function load_visual_sets(){
+    var _vis_set_directory = working_directory + "\\main\\visual_sets";
+    if (directory_exists(_vis_set_directory)){
+
+        var _file_buffer = buffer_load($"{_vis_set_directory}\\use_sets.json");
+        if (_file_buffer == -1) {
+            throw ("Could not open file");
+        }
+        var _json_string = buffer_read(_file_buffer, buffer_string);
+        var _raw_data = json_parse(_json_string);
+        if (!is_array(_raw_data)){
+            throw ("use_sets.json File Wrong Format");
+        }
+        for (var i=0;i<array_length(_raw_data);i++){
+            var _sepcific_vis_set = $"{_vis_set_directory}\\{_raw_data[i]}";
+            if (directory_exists(_sepcific_vis_set)){
+                var _data_buffer = buffer_load($"{_sepcific_vis_set}\\data.json");
+                if (_data_buffer == -1) {
+                    continue;
+                } else {
+                    var _data_string = buffer_read(_data_buffer, buffer_string);
+                    var _data_set = json_parse(_data_string);
+                    load_vis_set_to_global(_sepcific_vis_set, _data_set);
+                }
+            }
+        }
+
+    }
+}
+
+function load_vis_set_to_global(directory, data){
+    for (var i=0;i<array_length(data); i++){
+        var _sprite_item = data[i];
+        if (directory_exists(directory + $"\\{_sprite_item.name}")){
+            var _sprite_direct = directory + $"\\{_sprite_item.name}";
+            if (file_exists($"{_sprite_direct}\\1.png")){
+                var _new_sprite = sprite_add(_sprite_direct + "\\1.png",1,0,0,0,0);
+                var s = 2;
+                while (file_exists(_sprite_direct + $"\\{s}.png")){
+                    s++;
+                    sprite_merge(_new_sprite, sprite_add(_sprite_direct + $"\\{s}.png",1,0,0,0,0));
+                }
+                var _s_data = _sprite_item.data;
+                _s_data.sprite = _new_sprite;
+                array_push(global.modular_drawing_items, _s_data);
+            }
+        }
+    }
+}
 global.modular_drawing_items = [
     {
         sprite : spr_da_mk5_helm_crests,
@@ -171,56 +219,7 @@ global.modular_drawing_items = [
         assign_by_rank : 4,
     },                       
 
-]
-    var _vis_set_directory = working_directory + "main\\visual_sets";
-    if (directory_exists(_vis_set_directory)){
-        try {
-            var _file_buffer = buffer_load(_vis_set_directory + "\\use_sets.json");
-            if (file_buffer == -1) {
-                throw ("Could not open file");
-            }
-            var _json_string = buffer_read(file_buffer, buffer_string);
-            var _raw_data = json_parse(json_string);
-            if (!is_array(raw_data)){
-                throw ("use_sets.json File Wrong Format");
-            }
-            for (var i=0;i<array_length(_raw_data);_raw_data++){
-                var _sepcific_vis_set = _vis_set_directory + $"\\_raw_data[i]";
-                if (directory_exists(_sepcific_vis_set)){
-                    var _file_buffer = buffer_load(_sepcific_vis_set + "\\data.json");
-                    if (file_buffer == -1) {
-                        continue;
-                    } else {
-                        var _json_string = buffer_read(file_buffer, buffer_string);
-                        var _raw_data = json_parse(json_string);
-                        load_vis_set_to_global(_sepcific_vis_set, _raw_data);
-                    }
-                }
-            }
-        }
-    }
-}
-
-function load_vis_set_to_global(directory, data){
-    for (var i=0;i<array_length(data); i++){
-        var sprite_item = data[i];
-        if (directory_exists(directory + "\\{sprite_item.name}")){
-            var _sprite_direct = directory + "\\{sprite_item.name}";
-            if (file_exists(_sprite_direct + "1.png")){
-                var _new_sprite = sprite_add(_sprite_direct + "1.png",1,0,0,0,0);
-                var s = 2;
-                while (file_exists(_sprite_direct + $"{s}.png")){
-                    s++;
-                    sprite_merge(_new_sprite, sprite_add(_sprite_direct + $"{s}.png",1,0,0,0,0));
-                }
-                var s_data = sprite_item.data;
-                s_data.sprite = _new_sprite;
-                array_push(global.modular_drawing_items, s_data);
-            }
-        }
-    }
-}
-
+];
 try{
     load_visual_sets();
 } catch(_exception){

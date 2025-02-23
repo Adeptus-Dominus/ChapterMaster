@@ -221,6 +221,7 @@ function ComplexSet(unit) constructor{
         }
     }
     static draw = function(){
+        setup_complex_livery_shader(unit.role(),unit);
         draw_cloaks(x_surface_offset,y_surface_offset );
          //draw_unit_arms(x_surface_offset, y_surface_offset, armour_type, specialist_colours, hide_bionics, complex_set);
             var _complex_helm = false;
