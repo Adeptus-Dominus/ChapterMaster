@@ -128,17 +128,17 @@ function Roster() constructor{
 		    	 	_add = true;
 		    	 }
 		   	} else {
-                 if (!array_contains(_valid_companies, _unit[0])) then continue;
+                if (!array_contains(_valid_companies, _unit[0])) then continue;
                 var _role = obj_ini.veh_role[_unit[0]][_unit[1]];
 		   		var _vehic_lid = obj_ini.veh_lid[_unit[0]][_unit[1]];
                 if (array_contains(_valid_vehicles, _role)){
     		   		if (_vehic_lid>-1){
     		    	 	if (array_contains(_valid_ship ,_vehic_lid)){
     		    	 		_add = true;  	 		
-    		    	 	} else if (local_button.active){
-    		    	 		_add = true;
     		    	 	}
-    		   		}
+    		   		}else if (local_button.active){
+                        _add = true;
+                    }
                 }
 		   	}
 
