@@ -38,9 +38,16 @@ function load_vis_set_to_global(directory, data){
             if (file_exists($"{_sprite_direct}\\1.png")){
                 var _new_sprite = sprite_add(_sprite_direct + "\\1.png",1,0,0,0,0);
                 var s = 2;
+                _exit = false;
                 while (file_exists(_sprite_direct + $"\\{s}.png")){
+                    var _merge_sprite = sprite_add(_sprite_direct + $"\\{s}.png",1,0,0,0,0);
+                    if (_merge_sprite == -1) {
+                        sprite_delete(_new_sprite);
+                        continue;
+                    }                    
                     s++;
-                    sprite_merge(_new_sprite, sprite_add(_sprite_direct + $"\\{s}.png",1,0,0,0,0));
+                    sprite_merge(_new_sprite, _merge_sprite);
+                    sprite_delete(_merge_sprite);
                 }
                 var _s_data = _sprite_item.data;
                 _s_data.sprite = _new_sprite;
