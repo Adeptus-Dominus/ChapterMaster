@@ -194,6 +194,7 @@ function slider_bar() constructor{
 			} else {
 				var mouse_rel = _mouse_pos[0] - x1;
 				var increment_count = (mouse_rel/width_increments);
+				value = value_limits[0] + (increment_count * value_increments);
 			}
 		}
 	}
