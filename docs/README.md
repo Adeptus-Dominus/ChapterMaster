@@ -4,8 +4,8 @@
 
 # Chapter Master - Adeptus Dominus
 [![](https://dcbadge.limes.pink/api/server/https://discord.gg/zAGpqHzsXQ?style=flat)](https://discord.gg/zAGpqHzsXQ)
-![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/Adeptus-Dominus/ChapterMaster?label=CodeRabbit%20Reviews)
-![GitHub repo size](https://img.shields.io/github/repo-size/Adeptus-Dominus/ChapterMaster?label=Repo%20Size)
+[![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/Adeptus-Dominus/ChapterMaster?logoColor=%23808080&label=CodeRabbit%20Reviews&labelColor=fd5608&color=545454)](https://coderabbit.ai/)
+[![GitHub repo size](https://img.shields.io/github/repo-size/Adeptus-Dominus/ChapterMaster?style=flat&label=Repo%20Size&labelColor=4493f8&color=545454)](https://github.com/Adeptus-Dominus/ChapterMaster)
 
 **Chapter Master** (aka CM) is a strategy/simulation game, written in **Game Maker Language**, originally designed and developed by Duke.\
 This project aims to continue development on the game, fix any bugs, expand and add features.
