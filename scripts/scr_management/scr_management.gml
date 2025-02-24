@@ -316,7 +316,7 @@ function scr_management(argument0) {
     
 			if (unit.role() == "Lexicanum") then num[4] += 1;
     
-			if (unit.role() == string(role_names[eROLE.Apothecary]) + " Aspirant") then num[5] += 1;
+			if (unit.role() == string(role_names[eROLE.Librarian]) + " Aspirant") then num[5] += 1;
 		}
 		
 	    with(obj_managment_panel){if (manage!=obj_controller.temp[71]) then instance_deactivate_object(id);}

@@ -127,8 +127,6 @@ function apothecary_training(){
 	        if (random_marine != "none"){
 	            marine_position=random_marine[1];
 	            marine_company=random_marine[0];
-	            open_slot=0;
-	            g2=0;
 	            // This gets the last open slot for company 0
 	            var open_slot = find_company_open_slot(0);
 	            if (open_slot!=-1){
@@ -247,7 +245,7 @@ function librarian_training(){
 
 
 	if (training_psyker>0){
-	    recruit_count=scr_role_count(novice_type,"0");
+	    recruit_count=scr_role_count(novice_type,"");
 	    if (psyker_points>=goal){
 	        if (recruit_count>0){
 	            marine_position=0;
@@ -286,8 +284,10 @@ function librarian_training(){
 	            scr_alert("red","recruitment","No remaining warp sensitive marines for training",0,0);
 	        }else if (random_marine != "none"){
 	            // This gets the last open slot for company 0
+	            marine_position = random_marine[1];
+	            marine_company = random_marine[0];
 	            var open_slot = find_company_open_slot(0);
-				scr_move_unit_info(random_marine[0],0, random_marine[1], open_slot);
+	            scr_move_unit_info(marine_company,0, marine_position, open_slot);
 	            unit = fetch_unit([0,open_slot]);
 	            unit.update_role(novice_type)
 	            unit.update_powers();
@@ -301,7 +301,7 @@ function librarian_training(){
 	            unit.update_mobility_item("");
 	            scr_alert("green","recruitment",unit.name_role()+" begins training.",0,0);
 	            with(obj_ini){
-	                scr_company_order(random_marine[0]);
+	                scr_company_order(marine_company);
 	                scr_company_order(0);
 	            }  
 	        }
@@ -368,7 +368,7 @@ function techmarine_training(){
 	        }
 	    }else if (tech_points>=4) and (recruit_count==0){    
 	        marine_position=0;
-        	var _data = spec_train_data[1]; 
+        	var _data = spec_train_data[0];
             var marine_company=0;
             var random_marine=scr_random_marine(
                 [
@@ -385,7 +385,6 @@ function techmarine_training(){
 	        if (random_marine != "none"){
 	            marine_position = random_marine[1];
 	            marine_company = random_marine[0];
-	            g2=0;
 	            // This gets the last open slot for company 0
 	            var open_slot = find_company_open_slot(0);
 	            if (open_slot!=-1){

@@ -274,17 +274,36 @@ function stat_valuator(search_params, unit){
 			match = false;
 			break;
 		}
-		if (_stat_val[2] == "more"){
+		switch _stat_val[2] {
+    		case "inmore":
+	    	case "more":
+    			if (unit[$ _stat_val[0]] < _stat_val[1]){
+    				match = false;
+					break;
+    			}
+			break;
 
-			if (unit[$ _stat_val[0]] < _stat_val[1]){
-				match = false;
-				break;
-			}
-		} else if(_stat_val[2] == "less"){
-				if (unit[$ _stat_val[0]] > _stat_val[1]){
-				match = false;
-				break;
-			}           					
+    		case "exmore":
+    			if (unit[$ _stat_val[0]] <= _stat_val[1]){
+    				match = false;
+					break;
+    			}
+			break;
+
+    		case "inless":
+	    	case "less":
+    			if (unit[$ _stat_val[0]] > _stat_val[1]){
+    				match = false;
+					break;
+    			}
+			break;
+
+    		case "exless":
+    			if (unit[$ _stat_val[0]] >= _stat_val[1]){
+    				match = false;
+					break;
+    			}
+			break;
 		}
 	}
 	return match;	
