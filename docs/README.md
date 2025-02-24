@@ -38,4 +38,7 @@ Everything else **must** be covered by [paid **GameMaker** subscriptions](https:
 
 ## Contributing
 
-See [Contributing](https://github.com/Adeptus-Dominus/ChapterMaster/wiki/Contributing) wiki page.
+- Best bet is to ask about everything in our Discord.
+- See [Contributing](https://github.com/Adeptus-Dominus/ChapterMaster/wiki/Contributing) wiki page (not filled properly, WIP).
+- See [Code Style](https://github.com/Adeptus-Dominus/ChapterMaster/blob/main/docs/CODE_STYLE.md) (may be a bit dated).
+- See [Code Guidance](https://github.com/Adeptus-Dominus/ChapterMaster/blob/main/docs/code_guidance.md) (probably dated as well).
