@@ -45,8 +45,6 @@ recruiting_button.bind_method = function(){
         array_push(target.p_feature[obj_controller.selecting_planet], new NewPlanetFeature(P_features.Recruiting_World));
         obj_controller.recruiting_worlds += $"{planet_numeral_name(obj_controller.selecting_planet, target)}|";
     } else {
-        var _recruit_world = p_data.get_features(P_features.Recruiting_World)[0];
-        obj_controller.income_recruiting+=_recruit_world.recruit_cost * 2;
         delete_features(target.p_feature[obj_controller.selecting_planet], P_features.Recruiting_World);
         obj_controller.recruiting_worlds=string_replace(obj_controller.recruiting_worlds,string(target.name)+" "+scr_roman(obj_controller.selecting_planet)+"|","");
     }
@@ -76,10 +74,6 @@ recruitment_costdown_button.update({
 recruitment_costdown_button.bind_method = function(){
     var _recruit_world = p_data.get_features(P_features.Recruiting_World)[0];
     _recruit_world.recruit_cost--
-
-    if (obj_controller.recruiting == 1 && _recruit_world.recruit_use == 1) {
-        obj_controller.income_recruiting+=2;
-    }
 };
 
 recruitment_costup_button = new PurchaseButton(0);
@@ -91,10 +85,6 @@ recruitment_costup_button.update({
 recruitment_costup_button.bind_method = function(){
     var _recruit_world = p_data.get_features(P_features.Recruiting_World)[0];
     _recruit_world.recruit_cost++
-
-    if (obj_controller.recruiting == 1 && _recruit_world.recruit_use == 1) {
-        obj_controller.income_recruiting-=2;
-    }
 };
 
 buttons_selected = false;

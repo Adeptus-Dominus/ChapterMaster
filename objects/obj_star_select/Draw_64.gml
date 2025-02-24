@@ -320,23 +320,21 @@ if (obj_controller.selecting_planet!=0){
                         recruitment_type_button.draw();
 
                         draw_text(xx+(spacing_x*3)-15, half_way+(spacing_y)-20, $"Req:{_recruit_world.recruit_cost * 2}");
-                        if (obj_controller.recruiting == 1) {
-                            if (_recruit_world.recruit_cost > 0) {
-                                recruitment_costdown_button.update({
-                                    x1:xx+(spacing_x*2)+35,
-                                    y1:half_way+(spacing_y),
-                                    allow_click : true,
-                                });
-                                recruitment_costdown_button.draw();
-                            }
-                            if (_recruit_world.recruit_cost < 5) {
-                                recruitment_costup_button.update({
-                                    x1:xx+(spacing_x*3)+35,
-                                    y1:half_way+(spacing_y),
-                                    allow_click : true,
-                                });
-                                recruitment_costup_button.draw();
-                            }
+                        if (_recruit_world.recruit_cost > 0) {
+                            recruitment_costdown_button.update({
+                                x1:xx+(spacing_x*2)+35,
+                                y1:half_way+(spacing_y),
+                                allow_click : true,
+                            });
+                            recruitment_costdown_button.draw();
+                        }
+                        if (_recruit_world.recruit_cost < 5) {
+                            recruitment_costup_button.update({
+                                x1:xx+(spacing_x*3)+35,
+                                y1:half_way+(spacing_y),
+                                allow_click : true,
+                            });
+                            recruitment_costup_button.draw();
                         }
                     }
                 }

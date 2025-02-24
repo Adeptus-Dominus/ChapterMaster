@@ -62,7 +62,6 @@ else if (menu==15) and (cooldown<=0){
         if (mouse_y>=yy+355) and (mouse_y<yy+373) and (recruiting<1) and (gene_seed>0) and (obj_ini.doomed==0) and (penitent==0){
             cooldown=8000;
             recruiting+=1;
-            income_recruiting=income_recruiting_offline;
             scr_income();
         }
         if (mouse_y>=yy+395) and (mouse_y<yy+413) and (training_apothecary<6){
@@ -101,8 +100,6 @@ else if (menu==15) and (cooldown<=0){
         if (mouse_y>=yy+355) and (mouse_y<yy+373) and (recruiting>0){
             cooldown=8000;
             recruiting-=1;
-            income_recruiting_offline=income_recruiting;
-            income_recruiting=0;
             scr_income();
         }
         if (mouse_y>=yy+395) and (mouse_y<yy+413) and (training_apothecary>0){
