@@ -7,7 +7,7 @@
 **Chapter Master** (aka CM) is a strategy/simulation game, written in **Game Maker Language**, originally designed and developed by Duke.\
 This project aims to continue development on the game, fix any bugs, expand and add features.
 
-**Adeptus Dominus** is just how the team of the primordial collaborators decided to call themselves.
+**Adeptus Dominus** is just how the team of primordial collaborators decided to call themselves.
 
 [![](https://dcbadge.limes.pink/api/server/https://discord.gg/zAGpqHzsXQ?style=flat)](https://discord.gg/zAGpqHzsXQ)
 ![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/Adeptus-Dominus/ChapterMaster?style=flat)
