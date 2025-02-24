@@ -3,14 +3,28 @@
 </p>
 
 # Chapter Master - Adeptus Dominus
+[![](https://dcbadge.limes.pink/api/server/https://discord.gg/zAGpqHzsXQ?style=flat)](https://discord.gg/zAGpqHzsXQ)
+![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/Adeptus-Dominus/ChapterMaster?style=flat)
 
 **Chapter Master** (aka CM) is a strategy/simulation game, written in **Game Maker Language**, originally designed and developed by Duke.\
 This project aims to continue development on the game, fix any bugs, expand and add features.
 
 **Adeptus Dominus** is just how the team of primordial collaborators decided to call themselves.
 
-[![](https://dcbadge.limes.pink/api/server/https://discord.gg/zAGpqHzsXQ?style=flat)](https://discord.gg/zAGpqHzsXQ)
-![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/Adeptus-Dominus/ChapterMaster?style=flat)
+- Our discord server: [Chapter Master Discord](https://discord.gg/zAGpqHzsXQ)
+   - Where most of the development talk, feature suggestion and bug-reporting takes place.
+   - GitHub issues are not used at the moment, as such we use #bug-report-forum in this server to handle bug reports.
+   - If you can code, draw, design, help with the GitHub stuff or just want to help in any way possible - you'll be welcomed with open arms.
+   - If you just love WH40K and want to chat - you'll have a great time in the server as well.
+
+- 1d6Chan Wiki: [Chapter Master: Adeptus_Dominus](https://1d6chan.miraheze.org/wiki/Category:Chapter_Master_:_Adeptus_Dominus)
+   - With some helpful pages that explain some of the new systems added in the Adeptus Dominus version.
+   - Help with expanding it will be welcomed.
+
+- Don't forget about the GitHub Wiki (WIP): https://github.com/Adeptus-Dominus/ChapterMaster/wiki
+  - Help with expanding this one will be welcomed as well.
+
+- Main repository: https://github.com/Adeptus-Dominus/ChapterMaster
 
 ## Playing
 Just download the [latest release](https://github.com/Adeptus-Dominus/ChapterMaster/releases/latest) or a [development pre-release](https://github.com/Adeptus-Dominus/ChapterMaster/releases), unzip it and launch the .exe.
@@ -25,12 +39,3 @@ Everything else **must** be covered by [paid **GameMaker** subscriptions](https:
 ## Contributing
 
 See [Contributing](https://github.com/Adeptus-Dominus/ChapterMaster/wiki/Contributing) wiki page.
-
-## Links
-
-- [Chapter Master Discord](https://discord.gg/zAGpqHzsXQ)
-   - Where most of the development talk, feature suggestions and just general 40K talk takes place.
-   - If you can code, design, draw or just love WH40K then you'll have a great time with us.
-   - GitHub issues are not used at the moment, as such we use #bug-report-forum in this server to handle bug reports.
-- [1d6Chan Wiki](https://1d6chan.miraheze.org/wiki/Category:Chapter_Master_:_Adeptus_Dominus)
-   - With some helpful pages that explain new systems added in the Adeptus Dominus version.
