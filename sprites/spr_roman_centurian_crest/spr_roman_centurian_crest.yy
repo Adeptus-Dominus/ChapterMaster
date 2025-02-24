@@ -4,7 +4,7 @@
   "name": "spr_roman_centurian_crest",
   "bbox_bottom": 87,
   "bbox_left": 18,
-  "bbox_right": 103,
+  "bbox_right": 104,
   "bbox_top": 14,
   "bboxMode": 0,
   "collisionKind": 1,
@@ -14,6 +14,8 @@
   "For3D": false,
   "frames": [
     {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"dd649fd8-7e35-4852-a36d-a78f4f914d36",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"ecad98d1-bb1f-4cb3-b4f0-6d3bdd38418e",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"93ba81df-88f2-4d08-9f82-8e78097802e9",},
   ],
   "gridX": 0,
   "gridY": 0,
@@ -43,7 +45,7 @@
     "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "eventStubScript": null,
     "eventToFunction": {},
-    "length": 1.0,
+    "length": 3.0,
     "lockOrigin": false,
     "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "playback": 1,
@@ -55,6 +57,8 @@
     "tracks": [
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
             {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"dd649fd8-7e35-4852-a36d-a78f4f914d36","path":"sprites/spr_roman_centurian_crest/spr_roman_centurian_crest.yy",},},},"Disabled":false,"id":"508f7cdc-6556-4fd2-ae19-caa00fdda7cd","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"ecad98d1-bb1f-4cb3-b4f0-6d3bdd38418e","path":"sprites/spr_roman_centurian_crest/spr_roman_centurian_crest.yy",},},},"Disabled":false,"id":"081e45b1-f437-4ec9-bca2-4b4d5bd6000f","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"93ba81df-88f2-4d08-9f82-8e78097802e9","path":"sprites/spr_roman_centurian_crest/spr_roman_centurian_crest.yy",},},},"Disabled":false,"id":"2c11e64b-0ad4-4a34-a388-29e5e02054b8","IsCreationKey":false,"Key":2.0,"Length":1.0,"Stretch":false,},
           ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange": null,

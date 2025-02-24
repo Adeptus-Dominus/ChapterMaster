@@ -188,7 +188,7 @@ function set_shader_array(shader_array){
 /// @mixin
 function scr_draw_unit_image(_background=false){
     static draw_unit_hands = function(x_surface_offset, y_surface_offset, armour_type, specialist_colours, hide_bionics, right_left){
-        shader_set(sReplaceColor);
+        shader_set(full_livery_shader);
         if (arm_variant[right_left] == 1) {
             return;
         }
@@ -232,7 +232,6 @@ function scr_draw_unit_image(_background=false){
                 }
             }
         }
-        shader_set(full_livery_shader);
     };
 
 
@@ -712,7 +711,7 @@ function scr_draw_unit_image(_background=false){
                                         break;
         
                                     case "right_eye":
-                                        complex_set.add_to_area("left_eye", spr_bionic_right_eyes);
+                                        complex_set.add_to_area("right_eye", spr_bionic_right_eyes);
                                         break;
         
                                 }
