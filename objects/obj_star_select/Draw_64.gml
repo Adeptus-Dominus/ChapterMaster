@@ -420,7 +420,7 @@ if (obj_controller.selecting_planet!=0){
                 }
             }
         }else if (current_button=="+Recruiting"){
-            if (obj_controller.recruiting_worlds_bought > 0 && p_data.current_owner <= && !p_data.at_war()) {
+            if (obj_controller.recruiting_worlds_bought > 0 && p_data.current_owner <= 5 && !p_data.at_war()) {
                 if (!p_data.has_feature(P_features.Recruiting_World)) {
                     if (obj_controller.faction_status[eFACTION.Imperium] == "War") {
                         obj_controller.recruiting_worlds_bought -= 1;
