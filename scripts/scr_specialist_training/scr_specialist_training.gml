@@ -406,13 +406,10 @@ function techmarine_training(){
                             var man_size=unit.get_unit_size();
                             obj_ini.ship_carrying[unit.ship_location]-=man_size;
                         }
-                        obj_ini.loc[0][g1]="Terra";
+                        obj_ini.loc[0][open_slot]="Terra";
                         unit.planet_location=4;
                         unit.ship_location=-1;
                     }
-	                obj_ini.loc[0][open_slot]="Terra";
-	                unit.planet_location=4;
-	                unit.ship_location=-1;
 	                unit.update_weapon_one("");
 	                unit.update_weapon_two("");
 	                unit.update_gear("");
