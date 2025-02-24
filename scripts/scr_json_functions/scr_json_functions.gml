@@ -9,7 +9,7 @@ function json_to_gamemaker(_json_path, _func) {
             var _json_string = "";
             var _parsed_json = {};
 
-            var file_buffer = buffer_load(_json_path);
+            file_buffer = buffer_load(_json_path);
 
             if (file_buffer == -1) {
                 throw ("Could not open file");

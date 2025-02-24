@@ -346,7 +346,7 @@ function scr_load(save_part, save_id) {
 	        }
 
 			// TODO: When modding support is implemented, uncomment this init. Otherwise traits are initialized at compile.
-	       	// intialise_marine_traits();
+	       	// initialize_marine_traits();
 	        for (coh=0;coh<=10;coh++){
 	        	for (mah=0;mah<=500;mah++){
 

@@ -1,4 +1,4 @@
-function intialise_marine_traits(){
+function initialize_marine_traits(){
 	global.trait_list = json_to_gamemaker(working_directory + "\\data\\traits.json", json_parse);
 }
 
