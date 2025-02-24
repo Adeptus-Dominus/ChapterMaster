@@ -7,6 +7,7 @@ function load_visual_sets(){
             throw ("Could not open file");
         }
         var _json_string = buffer_read(_file_buffer, buffer_string);
+        buffer_delete(_file_buffer);
         var _raw_data = json_parse(_json_string);
         if (!is_array(_raw_data)){
             throw ("use_sets.json File Wrong Format");
@@ -19,6 +20,7 @@ function load_visual_sets(){
                     continue;
                 } else {
                     var _data_string = buffer_read(_data_buffer, buffer_string);
+                    buffer_delete(_data_buffer);
                     var _data_set = json_parse(_data_string);
                     load_vis_set_to_global(_sepcific_vis_set, _data_set);
                 }
