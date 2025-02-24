@@ -227,20 +227,29 @@ function ComplexSet(unit) constructor{
         if (array_contains([ArmourType.Normal, ArmourType.Terminator, ArmourType.Scout], armour_type)) {
        
             for (var _right_left = 1; _right_left <= 2; _right_left++) {
-                if (unit.arm_variant[_right_left] == 0) then continue;
+                var _variant = unit.arm_variant[_right_left];
+                if (_variant == 0) then continue;
+
                 var _arm_string = _right_left == 1 ? "right_arm" : "left_arm";
                 var _bionic_arm = unit.get_body_data("bionic", _arm_string);
-                if (_bionic_arm){
-                    _bio = [];
-                    if (ArmourType.Normal){
-                        var _bio = ["", spr_bionic_right_arm, spr_bionic_left_arm];
-                    } else if (ArmourType.Terminator){
-                        _bio = ["", spr_bionic_right_arm, spr_indomitus_left_arm_bionic];
+                _bio = [];
+                if (ArmourType.Terminator == armour_type){
+                    if (_variant == 2){
+                        _bio = ["", spr_terminator_complex_arms_upper_right, spr_terminator_complex_arms_upper_left];
+                    } else if (_variant == 3){
+                        _bio = ["", spr_terminator_complex_arm_hidden_right, spr_terminator_complex_arm_hidden_left];
                     }
-                    if (array_length(_bio)){
-                        replace_area(_arm_string, _bio[_right_left]);
+                }                
+                if (_bionic_arm && !array_length(_bio)){
+                    if (armour_type == ArmourType.Normal){
+                        var _bio = ["", spr_bionic_right_arm, spr_bionic_left_arm];
+                    } else if (armour_type == ArmourType.Terminator){
+                        _bio = ["", spr_indomitus_right_arm_bionic, spr_indomitus_left_arm_bionic];
                     }
                 }
+                if (array_length(_bio)){
+                    replace_area(_arm_string, _bio[_right_left]);
+                }                
                 draw_component(_arm_string);
             }
         }
@@ -437,10 +446,12 @@ function ComplexSet(unit) constructor{
     }   
 
     static add_to_area = function(area, add_sprite){
-        if (!struct_exists(self, area)){
-            self[$ area] = sprite_duplicate(add_sprite);
-        } else {
-            sprite_merge(self[$ area], add_sprite);
+        if (sprite_exists(add_sprite)){
+            if (!struct_exists(self, area)){
+                self[$ area] = sprite_duplicate(add_sprite);
+            } else {
+                sprite_merge(self[$ area], add_sprite);
+            }
         }
     }
 
