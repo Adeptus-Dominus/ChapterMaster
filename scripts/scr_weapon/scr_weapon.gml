@@ -1367,10 +1367,11 @@ global.weapons = {
 		"melee_hands": 0,
 		"ranged_hands": 1,
 		"ammo": 2,
-		"range": 1.1,
-		"spli": 2,
+		"range": 2.1, // Infernus pistol has 2 range, so
+		"spli": 2, // This should probably be increased to at least 3, but maybe even 5 or 10
 		"arp": -1,
-		"tags": ["pistol", "flame"]
+		"tags": ["pistol", "flame"] //,
+		// "maintenance" : 0.01, - decide on the value you prefer
 	},
 	"Flamer": {
 		"abbreviation": "Flmr",
