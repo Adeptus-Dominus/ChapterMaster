@@ -42,7 +42,7 @@ recruiting_button.update({
 });
 recruiting_button.bind_method = function(){
     if (!p_data.has_feature(P_features.Recruiting_World)) {
-        array_push(target.p_feature[obj_controller.selecting_planet], new NewPlanetFeature(P_features.Recruiting_World));
+        p_data.add_feature(P_features.Recruiting_World);
         obj_controller.recruiting_worlds += $"{planet_numeral_name(obj_controller.selecting_planet, target)}|";
     } else {
         delete_features(target.p_feature[obj_controller.selecting_planet], P_features.Recruiting_World);
