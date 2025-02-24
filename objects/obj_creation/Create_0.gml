@@ -662,25 +662,25 @@ var all_advantages = [
         {
             name : "Enemy: Eldar",
             description : "Eldar are particularly hated by your chapter.  When fighting Eldar damage is increased.",
-            value : 10,
+            value : 20,
             meta : ["Main Enemy"],
         },
         {
             name : "Enemy: Fallen",
             description : "Chaos Marines are particularly hated by your chapter.  When fighting the traitors damage is increased.",
-            value : 15,
+            value : 20,
             meta : ["Main Enemy"],
         },
         {
             name : "Enemy: Necrons",
             description : "Necrons are particularly hated by your chapter.  When fighting Necrons damage is increased.",
-            value : 15,
+            value : 20,
             meta : ["Main Enemy"],
         },  
         {
             name : "Enemy: Orks",
             description : "Orks are particularly hated by your chapter.  When fighting Orks damage is increased.",
-            value : 35,
+            value : 20,
             meta : ["Main Enemy"]
         },
         {
@@ -717,19 +717,19 @@ var all_advantages = [
             name : "Psyker Abundance",
             description : "The Psyker mutation runs rampant in your chapter.  Librarians train in 60% the normal time and receive bonus experience.",
             value : 30,
-            meta : ["Psyker Views","Specialists"],
+            meta : ["Psyker Views","Librarians"],
         }, 
         {
             name : "Reverent Guardians",
             description : "Your chapter places great faith in the Imperial Cult; you start with more Chaplains and any Ecclesiarchy disposition increases are enhanced.",
-            value : 10,
-            meta : ["Faith","Imperium Trust","Specialists"],
+            value : 25,
+            meta : ["Faith","Imperium Trust"],
         },
         {
             name : "Tech-Brothers",
             description : "Your chapter has better ties to the mechanicus; you have more techmarines and higher mechanicus disposition.",
             value : 25,
-            meta : ["Mechanicus Faith","Specialists"],
+            meta : ["Mechanicus Faith"],
         }, 
         {
             name : "Tech-Scavengers",
@@ -763,7 +763,7 @@ var all_advantages = [
             name : "Medicae Primacy",
             description : "Your chapter reveres its Apothecarion above all of it's specialist; You start with more Apothecaries.",
             value : 25,
-            meta : ["Specialists"]
+            meta : ["Apothecaries"]
         },
         {
             name : "Ryzan Patronage",
@@ -844,7 +844,7 @@ var all_disadvantages = [
     {
         name : "Tech-Heresy",
         description : "Your chapter does things that makes the Mechanicus upset.  Mechanicus disposition is lowered and you have less Tech Marines. You start as a tech heretic tolerant chapter",
-        value : 15,
+        value : 30,
         meta : ["Mechanicus Faith"],
     },
     {
@@ -874,7 +874,37 @@ var all_disadvantages = [
         description : "Whether due to being cut off from forge worlds or bad luck, your chapter no longer has enough high quality gear to go around. Your elite troops will have to make do with standard armour.",
         value: 10,
         meta : ["Gear Quality"]
-    }          
+    },
+    {
+        name : "Enduring Angels",
+        description : "The Chapter's journey thus far has been arduous & unforgiving leaving them severely understrength yet not out of the fight. You begin with 5 fewer company's",
+        value : 50,
+        meta : ["Status"],
+    },
+    {
+        name : "Serpents Delight",
+        description : "Sleeper cells infiltrated your chapter. When they rose up for the decapitation strike,they slew the 5 most experienced company's and many of the HQ staff before being defeated",
+        value : 70,
+        meta : ["Status"],
+    },
+    {
+        name : "Weakened Apothecarion",
+        description : "Many of your chapter's Apothecaries have fallen in recent battles whether due to their incompetence or deliberate targetting.",
+        value : 25,
+        meta : ["Apothecaries"],
+    },
+    {
+        name : "Small Reclusiam",
+        description : "Your chapter cares little for its reclusiam compared to other chapters fewer marines have shown the desire to be chaplains.",
+        value : 25, 
+        meta : ["Faith"],
+    },
+    {
+        name : "Barren Librarius",
+        description : "Your chapter has a smaller Librarius compared to other chapters due to having fewer potent psykers.",
+        value : 25,
+        meta : ["Librarians"],
+    },
 ]
 
 obj_creation.all_disadvantages = []

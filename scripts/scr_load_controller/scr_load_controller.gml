@@ -218,6 +218,33 @@ function scr_load_controller(save_id){
 	    obj_controller.tech_points=ini_read_real("Controller","tech_points",0);
 	    obj_controller.tech_aspirant=ini_read_real("Controller","tech_aspirant",0);
 
+	    obj_controller.spec_train_data = return_json_from_ini("Controller", "spec_train",[
+		    {
+		        name : "Techmarine",
+		        min_exp : 30,
+		        coord_offset : [0, 0],
+		        req : [["technology",34, "more"]]
+		    },
+		    {
+		        name : "Librarian",
+		        min_exp : 30,
+		        coord_offset : [0, -7],
+		        req : [["psionic", 8, "more"]]
+		    },
+		    {
+		        name : "Chaplain",
+		        min_exp : 60,
+		        coord_offset : [7, -7],
+		        req : [["piety", 34, "more"], ["charisma", 29, "more"]]
+		    },
+		    {
+		        name : "Apothecary",
+		        min_exp : 60,
+		        coord_offset : [7, 0],
+		        req : [["technology", 29, "more"], ["intelligence",44, "more"]]
+		    },
+		]);
+
 	    obj_controller.penitorium=ini_read_real("Controller","penitorium",0);
 
 	    obj_controller.recruiting_worlds=ini_read_string("Controller","recruiting_worlds","");

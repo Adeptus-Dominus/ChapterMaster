@@ -893,7 +893,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			var mutation_names = struct_get_names(gene_seed_mutations)
 			for (var mute =0; mute <array_length(mutation_names); mute++){
 				if (gene_seed_mutations[$ mutation_names[mute]] == 0){
-					if(irandom(999)-10<obj_ini.stability){
+					if(irandom(999)<=(10-obj_ini.stability)){
 						gene_seed_mutations[$ mutation_names[mute]] = 1;
 					}
 				}
@@ -1798,7 +1798,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		}		
 	}
 
-
+	static specialist_tooltips = specialistfunct;
 	static is_at_location = function(location="", planet=0, ship=-1){
 		var is_at_loc = false;
 		if (planet>0){

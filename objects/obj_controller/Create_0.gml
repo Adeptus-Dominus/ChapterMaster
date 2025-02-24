@@ -1376,6 +1376,32 @@ tech_aspirant=0;
 recruiting=0;
 penitorium=0;
 end_turn_insights = {};
+spec_train_data = [
+    {
+        name : "Techmarine",
+        min_exp : 30,
+        coord_offset : [0, 0],
+        req : [["technology",34, "more"]]
+    },
+    {
+        name : "Librarian",
+        min_exp : 30,
+        coord_offset : [0, -7],
+        req : [["psionic", 8, "more"]]
+    },
+    {
+        name : "Chaplain",
+        min_exp : 60,
+        coord_offset : [7, -7],
+        req : [["piety", 34, "more"], ["charisma", 29, "more"]]
+    },
+    {
+        name : "Apothecary",
+        min_exp : 60,
+        coord_offset : [7, 0],
+        req : [["technology", 29, "more"], ["intelligence",44, "more"]]
+    },
+];
 // Redefines training based on chapter
 if (instance_exists(obj_ini)){
     if (scr_has_disadv("Psyker Intolerant")) then training_psyker=0;
@@ -1435,8 +1461,10 @@ loyalty=100;
 loyalty_hidden=100;// Updated when inquisitors do an inspection
 // ** Sets up gene seed **
 gene_seed=20;
-if (scr_has_disadv("Sieged")) then gene_seed = floor(random_range(250, 400));
+if scr_has_disadv("Sieged") then gene_seed=floor(random_range(250,400));
 if scr_has_disadv("Obliterated") then gene_seed=floor(random_range(50,200));
+if scr_has_disadv("Serpents Delight") then gene_seed=floor(random_range(50,250)); 
+if scr_has_disadv("Enduring Angels") then gene_seed=floor(random_range(50,250)); 
 if (global.chapter_name=="Lamenters") then gene_seed=30;
 if (global.chapter_name=="Soul Drinkers") then gene_seed=60;
 

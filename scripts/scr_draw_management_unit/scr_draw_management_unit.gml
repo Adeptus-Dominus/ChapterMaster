@@ -8,12 +8,6 @@ function scr_draw_management_unit(selected, yy=0, xx=0, draw=true){
 	jailed = false;
 	var impossible = (!is_struct(display_unit[selected]) && !is_array(display_unit[selected]));
 	var is_man=false;
-	if (draw){
-		var spec_tips = [string("{0} Potential",obj_ini.role[100][16]),		
-						string("{0} Potential",obj_ini.role[100][15]),
-						string("{0} Potential",obj_ini.role[100][14]),
-						string("{0} Potential",obj_ini.role[100][17])];
-	}
     if (man[selected]=="man" && is_struct(display_unit[selected])){
     	is_man = true;
 		unit = display_unit[selected];
@@ -149,27 +143,37 @@ function scr_draw_management_unit(selected, yy=0, xx=0, draw=true){
 		draw_set_color(c_gray);
 		draw_set_alpha(1);
 		draw_rectangle(xx+25,yy+64,xx+974,yy+85,1);
-	    if (man[selected]="man"  && is_struct(display_unit[selected])){
-	    	if (!unit_specialist){
-		        if (unit.technology>=35){
-		        	 //if unit has techmarine potential
-		        	unit_specialism_option=true;
-		        	spec_tip = spec_tips[0];
-		        //if unit has librarian potential
-		    	} else if (unit.psionic>7){
-		    		spec_tip = spec_tips[3];
-		    		unit_specialism_option=true;
-		    	}else if (unit.piety>=35) and (unit.charisma>=30){  //if unit has chaplain potential
-		    		spec_tip = spec_tips[2];
-		    		unit_specialism_option=true;
-		    	}else if (unit.technology>=30) and (unit.intelligence>=45){ //if unit has apothecary potential
-		    		spec_tip = spec_tips[1];
-		    		unit_specialism_option=true;
-		    	}
-	    	}
-		}
-		if (unit_specialism_option) then array_push(potential_tooltip, [spec_tip, [xx+232,yy+64,xx+246,yy+85]]);
-	
+        if (man[selected] == "man" && is_struct(display_unit[selected])) {
+            if (!unit_specialist) {
+                var unit = display_unit[selected];
+                var _role = unit.role();
+                var _experience = unit.experience;
+
+                var _data, valid = false;
+                var _circle_coords = [xx + 321, yy + 77];
+                var _circle_radius = 3
+                for (var s = 0; s <= 3; s++) {
+                    _data = obj_controller.spec_train_data[s];
+                    var valid = stat_valuator(_data.req, unit);
+                    if (valid) {
+                        unit_specialism_option = true;
+                        var _draw_coords = [
+                            _circle_coords[0] + _data.coord_offset[0],
+                            _circle_coords[1] + _data.coord_offset[1],
+                            _circle_coords[0] + _data.coord_offset[0] + _circle_radius,
+                            _circle_coords[1] + _data.coord_offset[1] + _circle_radius
+                        ];
+                        specialistdir = unit.specialist_tooltips(_data.name, _data.min_exp);
+                        draw_circle_colour(_draw_coords[0], _draw_coords[1], _circle_radius, specialistdir.colors[0], specialistdir.colors[1], 0);
+                        for (var i = 0; i < 2; ++i) {
+                            _draw_coords[i] = _draw_coords[i] - _circle_radius;
+                        }
+                        array_push(potential_tooltip, [specialistdir.spec_tip, _draw_coords]);
+                    }
+                }
+            }
+        }
+
 	    // Squads
 	    var sqi="";
 	    draw_set_color(c_black);
@@ -222,7 +226,6 @@ function scr_draw_management_unit(selected, yy=0, xx=0, draw=true){
 		var xpText = [xx+330+8, yy+66, exp_string]; // EXP
 		var hpColor = c_gray;
 		var xpColor = c_gray;
-		var specialismColors = [];
 		// Draw EXP value and set up health color
 		if (man[selected] == "man"){
 			if (ma_promote[selected] >= 10){
@@ -236,21 +239,7 @@ function scr_draw_management_unit(selected, yy=0, xx=0, draw=true){
 		}
 		// Draw the health value with the defined colors
 		draw_text_color(hpText[0], hpText[1], hpText[2], hpColor, hpColor, hpColor, hpColor, 1);
-	
-		// Handle potential indication
-		if (unit_specialism_option){
-			if (unit.technology>=35){	//if unit has techmarine potential
-				specialismColors = [c_dkgray, c_red];
-			} else if (unit.psionic>7){	//if unit has librarian potential
-				specialismColors = [c_white, c_aqua];
-			}else if (unit.piety>=35 && unit.charisma>=30){	//if unit has chaplain potential
-				specialismColors = [c_black, c_yellow];
-			}else if (unit.technology>=30 && unit.intelligence>=45){	//if unit has apothecary potential
-				specialismColors = [c_red, c_white];
-			}
-			draw_circle_colour(xx+238, yy+73, 6, specialismColors[0],specialismColors[1], 0);
-		}
-	
+
 		// Draw the name
 	    draw_set_color(c_gray);
 		draw_text_transformed(xx+27+8,yy+66,string_hash_to_newline(string(string_role)),name_xr,1,0);
@@ -451,7 +440,7 @@ function scr_draw_management_unit(selected, yy=0, xx=0, draw=true){
         force_tool=0;
         if (temp[101] == $"{unit.role()} {unit.name}")
         and ((temp[102]!=unit.armour()) or (temp[104]!=unit.gear()) or (temp[106]=unit.mobility_item()) 
-        or (temp[108]!=unit.weapon_one()) or (temp[110]!=unit.weapon_one())
+        or (temp[108]!=unit.weapon_one()) or (temp[110]!=unit.weapon_two())
         or (temp[114]="refresh")) then force_tool=1;
         
         if (((mouse_x>=xx+25 && mouse_y>=yy+64 && mouse_x<xx+974 && mouse_y<yy+85) || force_tool==1) && is_struct(unit)){

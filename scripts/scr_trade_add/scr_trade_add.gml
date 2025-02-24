@@ -36,7 +36,9 @@ function scr_trade_add(argument0) {
 	        if (string_count("Useful Info",woj)>1){trade_tnum[thinz]=0;tomp1=0;trade_take[thinz]="";}
 	    }
     
-	    if (argument0="Condemnor Boltgun"){get_diag_integer("Condemnor Boltguns wanted?",20,"t"+string(thinz),"Condemnor Boltgun");}
+        // TODO: Condemnor Boltgun trade dialog disabled due to weapon being temporarily removed.
+        // Re-enable when the weapon is properly implemented.
+        // if (argument0="Condemnor Boltgun"){get_diag_integer("Condemnor Boltguns wanted?",20,"t"+string(thinz),"Condemnor Boltgun");}
 	    if (argument0="Hellrifle"){get_diag_integer("Hellrifles wanted?",3,"t"+string(thinz),"Hellrifle");}
 	    if (argument0="Incinerator"){get_diag_integer("Incinerators wanted?",10,"t"+string(thinz),"Incinerator");}
 	    if (argument0="Crusader"){get_diag_integer("Crusaders wanted?",5,"t"+string(thinz),"Crusader");}

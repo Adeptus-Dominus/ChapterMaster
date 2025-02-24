@@ -79,7 +79,6 @@ function scr_ui_advisors() {
             blurp += _recruit_rates[training_chaplain];
             if (training_chaplain>0 && training_chaplain <=6) {
                 var training_points_values = ARR_chaplain_training_tiers;
-                blurp += _recruit_rates[training_chaplain];
                 eta = floor((47 - chaplain_points) / training_points_values[training_chaplain]) + 1;
             }
             // 

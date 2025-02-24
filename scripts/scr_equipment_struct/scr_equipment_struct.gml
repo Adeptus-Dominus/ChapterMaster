@@ -287,9 +287,9 @@ function EquipmentStruct(item_data, core_type,quality="none") constructor{
                     }
                 }
                 if (obj_controller.stc_bonus[2]>0 && obj_controller.stc_bonus[2]<3){
-                    if (obj_controller.stc_bonus[1]==1 && has_tag("fist")){
+                    if (obj_controller.stc_bonus[2]==1 && has_tag("fist")){
                         attack*=1.1;
-                    } else if (obj_controller.stc_bonus[1]==2 && has_tag("Plasma")){
+                    } else if (obj_controller.stc_bonus[2]==2 && has_tag("plasma")){
                         attack*=1.1;
                     }                   
                 }

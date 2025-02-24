@@ -304,11 +304,13 @@ if (menu==1 && (managing>0 || managing<0)){
             } else {
                 temp[107]="";
             } 
+            temp[108]=unit.weapon_one();
             if (is_struct(equip_data.weapon_one_data)){
                 temp[109]=equip_data.weapon_one_data.item_tooltip_desc_gen();
             } else {
                 temp[109]="";
             }
+            temp[110]=unit.weapon_two();
             if (is_struct(equip_data.weapon_two_data)){
                 temp[111]=equip_data.weapon_two_data.item_tooltip_desc_gen();
             } else {

@@ -60,6 +60,67 @@ function find_recruit_success_chance(local_apothecary_points, planet_type){
     }
     return _success_chance;
 }
+
+function find_recruit_corruption(planet_type){
+	var _recruit_corruption = 0;
+	var _trial_type = scr_trial_data(obj_controller.recruit_trial);
+	static _planet_types_data = {
+		// The first number is base, the second one is SD for gaussian distribution;
+		"Hive": {
+			corruption_bonus: [15, 2],
+		},
+		"Temperate": {
+			corruption_bonus: [10, 2],
+		},
+		"Feudal": {
+			corruption_bonus: [10, 2],
+		},
+		"Forge": {
+			corruption_bonus: [5, 2],
+		},
+		"Shrine": {
+			corruption_bonus: [-10, 2],
+		},
+		"Desert": {
+			corruption_bonus: [5, 2],
+		},
+		"Ice": {
+			corruption_bonus: [5, 2],
+		},
+		"Agri": {
+			corruption_bonus: [5, 2],
+		},
+		"Death": {
+			corruption_bonus: [5, 2],
+		},
+		"Lava": {
+			corruption_bonus: [5, 2],
+		},
+	};
+
+	if (struct_exists(_planet_types_data, planet_type)){
+		var _planet_type_data = _planet_types_data[$ planet_type];
+		if (struct_exists(_planet_type_data, "corruption_bonus")){
+			var _planet_corruption = _planet_type_data[$ "corruption_bonus"][0];
+			var _gauss_sd = _planet_type_data[$ "corruption_bonus"][1];
+			_planet_corruption = gauss(_planet_corruption, _gauss_sd);
+			_recruit_corruption += _planet_corruption;
+		}
+	}
+
+	if (struct_exists(_trial_type, "corruption_bonus")){
+		var _trial_corruption = _trial_type[$ "corruption_bonus"][0];
+		var _gauss_sd = _trial_type[$ "corruption_bonus"][1];
+		_trial_corruption = gauss(_trial_corruption, _gauss_sd);
+		_recruit_corruption += _trial_corruption;
+	}
+
+	_recruit_corruption = floor(_recruit_corruption);
+	_recruit_corruption = max(0, _recruit_corruption);
+
+    return _recruit_corruption;
+}
+
 // to be run in teh scope of the PlanetData struct
 function planet_training_sequence(local_apothecary_points){
 
@@ -79,7 +140,8 @@ function planet_training_sequence(local_apothecary_points){
 
 	        var recruit_chance = 999;
 	        var aspirant = 0;
-	        var new_recruit_corruption = 10;
+	        var new_recruit_corruption = find_recruit_corruption(planet_type);
+			show_debug_message($"new_recruit_corruption: {new_recruit_corruption}");
 	        var months_to_neo = 72;
 	        var dista = 0;
 	        var onceh = 0;
@@ -186,12 +248,7 @@ function scr_trial_data(wanted=-1){
 				base : 0.3,
 			},
 			seed_waste : 0.1,
-			corruption :{
-				base : [10,20],
-				planets :{
-
-				}
-			},		
+			corruption_bonus: [10, 2],
 			long_description :$"THE BLOOD DUEL?  HA DO I EVEN NEED TO EXPLAIN, CHAPTER MASTER?  ASPIRANTS ENTER.  NEOPHYTES LEAVE.  Those worthy of serving the Emperor are rewarded justly and those merely pretending at glory are lost in the BLOOD AND THUNDER of the dome.  Do not be alarmed at the carnage.  The Apothecarium has become quite adept at rebuilding those fit to serve.  The others are given to the {role_data[eROLE.Techmarine]}s.  The mind is a terrible thing to waste and the Emperor does hate waste.  Not every man is useful as an Astartes but every man is useful.",
 		},
 		{
@@ -235,6 +292,7 @@ function scr_trial_data(wanted=-1){
 			exp_bonus : {
 				base:[0,0],
 			},
+			corruption_bonus: [5, 1],
 			long_description :$"To become one of the Imperium’s finest warriors, the Space Marines, is the greatest glory that any human can aspire to. And is glory not worth fighting, bleeding or even dying for? It must be, for whole worlds of ice, ash and sand have buried generations of sons in pursuit of this glory and never once called the price too dear.  To ensure the necessary bloodshed, lies, paranoia and psychosis-inducing drugs have been introduced to .  This trial will seperate the weak from the strong and the chaff from the wheat.",				
 		},
 		{
@@ -278,7 +336,8 @@ function scr_trial_data(wanted=-1){
 			},
 			recruit_count_modifier : {
 				base : 1.0,
-			},		
+			},
+			corruption_bonus: [-5, 1],
 			long_description :$"An Aspirant’s spiritual and mental capability is every bit as important as his physical characteristics.  It is wise to impose Trials not upon their body, but on the mind.  Either through psychic powers, chemical agents, or endurance trials, the Aspirant’s willpower is tested.  Those unworthy do not survive the stress and trauma placed upon their hearts- only those whose minds are proven to be unbreakable are welcomed into our ranks.",							
 		},
 		{
@@ -292,6 +351,7 @@ function scr_trial_data(wanted=-1){
 			exp_bonus : {
 				base: [10,20,0.2],
 			},
+			corruption_bonus: [5, 1],
 			long_description :$"What better gauge of an Aspirant than in a duel with our astartes?  Our brother, unarmed and unarmoured, will face against the armed challenger until one cannot continue.  It is impossible for the Aspirant to actually succeed these trials, but demonstrates how far they can possibly go, and allow us to judge him accordingly.  As with most trials the Aspirant’s life is in their own hands.  He who has failed the duel- yet proven himself worthy- is rescued from the jaws of death by {role_data[eROLE.Apothecary]} and allowed to progress to the rank of Neophyte.",				
 		},
 		{
@@ -311,12 +371,7 @@ function scr_trial_data(wanted=-1){
 					Lava :2,
 				},			
 			},
-			corruption :{
-				base : [0,-10],
-				planets :{
-
-				}
-			},
+			corruption_bonus: [-10, 1],
 			long_description :$"What better way to cultivate astartes than to raise them from youth?  The capable children of our recruitment targets are apprenticed to our battle brothers.  Beneath their steady guidance the Aspirants spend several years learning the art of the smith.  The most able are judged by our Chapter’s {role_data[eROLE.Apothecary]}s and {role_data[eROLE.Chaplain]} to deem if they are compatible with gene-seed implantation.  If so, the Aspirant’s trial culminates in hunting and slaying a massive beast.  Only the brightest and bravest are added to our ranks.",									
 		},						
 	]
@@ -435,15 +490,15 @@ function scr_compile_trial_bonus_string(trial_data){
 		bonus_string+=$"{trial_data.seed_waste*100}% of gene-seed wastage per turn\n"
 		bonus_string+= "\n";
 	}
-	if (struct_exists(trial_data,"corruption")){
-		var corruption_bonus = trial_data.corruption;
-		bonus_string+=$"Corruption Effect : {exp_bonus_string(corruption_bonus.base)}\n";
-		if (struct_exists(corruption_bonus, "planets")){
+	if (struct_exists(trial_data,"corruption_bonus")){
+		var corruption_bonus = trial_data[$ "corruption_bonus"];
+		bonus_string+=$"Corruption Effect : ~{corruption_bonus[0]}\n";
+		/* if (struct_exists(corruption_bonus, "planets")){
 			var planets = struct_get_names(corruption_bonus.planets);
 			for (var i=0;i<array_length(planets);i++){
 				bonus_string += $"   {planets[i]} : {exp_bonus_string(corruption_bonus.planets[$ planets[i]])}\n";
 			}
-		}
+		} */
 		bonus_string+= "\n";
 	}
 	var _traits = global.trait_list;

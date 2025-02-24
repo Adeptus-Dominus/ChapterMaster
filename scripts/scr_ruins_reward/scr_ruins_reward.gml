@@ -10,8 +10,6 @@ function scr_ruins_reward(star_system, planet, _ruins) {
 	// star_system: world object
 	// planet: planet
 	// ruins_type: ruins_type
-
-	var sihd=0;
 	var dice=floor(random(100))+1;
 	var loot="";
 
@@ -37,11 +35,11 @@ function scr_ruins_reward(star_system, planet, _ruins) {
 		if (action!="") then instance_deactivate_object(id);
 	}
 	flea=instance_nearest(star_system.x,star_system.y,obj_p_fleet);
-	if (flea.capital_num[0]!=0){sihd=flea.capital_num[0];}
-	else if (flea.frigate_num[0]!=0){sihd=flea.frigate_num[0];}
-	else if (flea.escort_num[0]!=0){;sihd=flea.escort_num[0];}
-	instance_activate_object(obj_p_fleet);
-
+	var _chosen_ship = -1;
+	var _ships = fleet_full_ship_array(flea);
+	if (array_length(_ships)){
+		_chosen_ship = _ships[0];
+	}
 	scr_event_log("",$"The Ancient Ruins on {planet_numeral_name(planet,star_system)} has been explored.", star_system.name);
 
 	// loot="artifact";
@@ -56,21 +54,27 @@ function scr_ruins_reward(star_system, planet, _ruins) {
 	    pop.text="My lord, your battle brothers have located several precious minerals and supplies within the ancient ruins.  Everything was taken and returned to the ship, granting "+string(reqi)+" Requisition.";
 	}
 	else if (loot="artifact"){
-        var last_artifact = scr_add_artifact("random", "random", 4, planet, sihd + 500);
-    
-	    scr_event_log("","Artifact recovered from Ancient Ruins.");
-	    var pop=instance_create(0,0,obj_popup);
-	    pop.image="ancient_ruins";
-	    pop.title="Ancient Ruins: Artifact";
-	    pop.text="An Artifact has been found within the ancient ruins.  It appears to be a "+string(obj_ini.artifact[last_artifact])+" but should be brought to the Lexicanum and identified posthaste.";
-	    with(obj_star_select){instance_destroy();}
-	    with(obj_fleet_select){instance_destroy();}
+		if (_chosen_ship>-1){
+	        var last_artifact = scr_add_artifact("random", "random", 4, planet, _chosen_ship + 500);
+	    
+		    scr_event_log("","Artifact recovered from Ancient Ruins.");
+		    var pop = instance_create(0,0,obj_popup);
+		    pop.image = "ancient_ruins";
+		    pop.title = "Ancient Ruins: Artifact";
+		    pop.text = $"An Artifact has been found within the ancient ruins.  It appears to be a {obj_ini.artifact[last_artifact]} but should be brought to the Lexicanum and identified posthaste.";
+		} else {
+		    var pop = instance_create(0,0,obj_popup);
+		    pop.image = "ancient_ruins";
+		    pop.title = "Ancient Ruins: Artifact Lost";
+		    pop.text = "An Artifact was discovered within the ancient ruins, but no suitable ship was available for its retrieval. The sacred object remains unclaimed.";
+		}
+		with(obj_star_select){ instance_destroy(); }
+		with(obj_fleet_select){ instance_destroy(); }
 	}
 
 	else if (loot="stc"){
 	    scr_add_stc_fragment();// STC here
-	    var pop;
-	    pop=instance_create(0,0,obj_popup);
+	    var pop=instance_create(0,0,obj_popup);
 	    pop.image="ancient_ruins";
 	    pop.title="Ancient Ruins: STC Fragment";
 	    pop.text="Praise the Omnissiah, an STC Fragment has been retrieved from the ancient ruins and safely stowed away.  It is ready to be decrypted or gifted at your convenience.";
