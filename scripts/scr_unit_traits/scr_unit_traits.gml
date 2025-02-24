@@ -465,7 +465,7 @@ global.trait_list = {
 		display_name : "Lobotomized",
 		flavour_text : "received treatment or damage, which resulted in portion of nervous system missing, akin to servitors",
 	},
-	"combat_protocols" : { // Should be made to conflict with "maintenance_protocols"
+	"combat_protocols" : { // Should be made to conflict with "apothecarion_protocols", "armamentarium_protocols"
 		strength : 2,
 		dexterity : 2,
 		weapon_skill : 2,
@@ -473,11 +473,24 @@ global.trait_list = {
 		display_name : "Combat Protocols",
 		flavour_text : "this servitor or automaton has been reprogrammed to function as a combat unit",
 	},
+	/*
 	"maintenance_protocols" : { // Should be made to conflict with "combat_protocols"
 		technology : 2,
 		intelligence : 1,
 		display_name : "Maintenance Protocols",
 		flavour_text : "this servitor or automaton has been reprogrammed to function as a maintenance unit",
+	},
+	*/
+	"apothecarion_protocols" : { // Should be made to conflict with "combat_protocols", "armamentarium_protocols"
+		technology : 1,
+		intelligence : 2,
+		display_name : "Apothecarion Protocols",
+		flavour_text : "this servitor or automaton has been reprogrammed to function as Apothecarion maintenance unit",
+	},
+	"armamentarium_protocols" : { // Should be made to conflict with "combat_protocols", "apothecarion_protocols"
+		technology : 2,
+		display_name : "Armamentarium Protocols",
+		flavour_text : "this servitor or automaton has been reprogrammed to function as Armamentarium maintenance unit",
 	},
 	"psychotic" : { // IT IS THE BANEBLAAADE!!! - Captain Diomedes, DoW 2 Retribution
 		wisdom : 10,

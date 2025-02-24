@@ -128,11 +128,11 @@ global.base_stats = { //tempory stats subject to change by anyone that wishes to
 	},			
 	"combat_servitor":{
 			title : "Combat Servitor",
-			strength:[38,4],
+			strength:[38,4,"max"],
 			constitution:[37,3],
 			weapon_skill : [32,2,"max"],
 			ballistic_skill : [32,2,"max"],
-			dexterity:[38,3],
+			dexterity:[38,3,"max"],
 			intelligence:[38,3],
 			wisdom:0,
 			charisma :[10,1],
@@ -141,10 +141,11 @@ global.base_stats = { //tempory stats subject to change by anyone that wishes to
 			luck : 10,
 			technology :[29,3],
 			skills: {weapons:{"Bolter":1, "Chainsword":1, "Combat Knife":1, "Bolt Pistol":1}},
-			start_gear:{"armour":"Scout Armour", "wep1":"Combat Knife", "wep2":"Bolt Pistol"}, // Needs that backpack
+			start_gear:{"armour":"Scout Armour", "wep1":"Combat Knife", "wep2":"Bolt Pistol", "mobi":"Heavy Weapons Pack"}, // Needs that backpack
 			base_group : "astartes",
 			traits:["lobotomized", "combat_protocols"],
 	},
+	/*
 	"maintenance_servitor":{
 			title : "Maintenance Servitor",
 			strength:[36,4],
@@ -163,6 +164,45 @@ global.base_stats = { //tempory stats subject to change by anyone that wishes to
 			start_gear:{"armour":"Scout Armour", "mobi":"Servo-arm"}, 
 			base_group : "astartes",
 			traits:["lobotomized", "maintenance_protocols"],
+	},
+	*/
+	"apothecarion_servitor":{
+			title : "Apothecarion Servitor",
+			strength:[36,4],
+			constitution:[37,3],
+			weapon_skill : [30,2],
+			ballistic_skill : [30,2],
+			dexterity:[36,3],
+			intelligence:[45,3,"max"], // I'm not sure what "max" does, but I assume it is needed here
+			wisdom:0,
+			charisma :[10,1],
+			religion : "imperial_cult",
+			piety : [28,3],
+			luck : 10,
+			technology :[30,3,"max"],
+			skills: {weapons:{"Bolter":1, "Chainsword":1, "Combat Knife":1, "Bolt Pistol":1}},
+			start_gear:{"armour":"Scout Armour", "gear":"Narthecium"}, 
+			base_group : "astartes",
+			traits:["lobotomized", "apothecarion_protocols"],
+	},
+	"armamentarium_servitor":{
+			title : "Armamentarium Servitor",
+			strength:[36,4],
+			constitution:[37,3],
+			weapon_skill : [30,2],
+			ballistic_skill : [30,2],
+			dexterity:[36,3],
+			intelligence:[38,3],
+			wisdom:0,
+			charisma :[10,1],
+			religion : "imperial_cult",
+			piety : [28,3],
+			luck : 10,
+			technology :[35,3,"max"],
+			skills: {weapons:{"Bolter":1, "Chainsword":1, "Combat Knife":1, "Bolt Pistol":1}},
+			start_gear:{"armour":"Scout Armour", "mobi":"Servo-arm"}, 
+			base_group : "astartes",
+			traits:["lobotomized", "armamentarium_protocols"],
 	},
 	// TODO - add more hirelings on the imperial side...
 	"skitarii":{
