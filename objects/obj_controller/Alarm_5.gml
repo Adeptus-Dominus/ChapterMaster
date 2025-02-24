@@ -955,4 +955,6 @@ with (obj_p_fleet){
     }
 }
 
+loyaty_countdowns();
+
 });

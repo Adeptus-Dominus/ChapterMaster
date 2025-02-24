@@ -434,27 +434,7 @@ function scr_ui_popup() {
 
 		// Current Loyalty tooltip
 		if (scr_hit(xx+247,yy+10,xx+328,yy+38)){
-		    var  tx=0,ty=0,tool1="",tool2="",plu="";
-
-		    var d,lines;d=0;lines=0;
-		    for(var d=1; d<=20; d++){
-		        if (loyal_num[d]>1) and (lines=0){
-		            tool1+=string(loyal[d])+": -"+string(loyal_num[d])+"#";
-		            tool2+=string(loyal[d])+": #";
-		            lines++;
-		        }
-		        if (loyal_num[d]>1) and (lines>0){
-		            tool1+=string(loyal[d])+": -"+string(loyal_num[d])+"#";
-		            tool2+=string(loyal[d])+": #";
-		            lines++;
-		        }
-		    }
-	    
-		    if (tool1="") then tool1="Loyalty";
-	    
-		    if (tool1!=""){
-		        tooltip_draw(tool1);
-		    }
+		    loyalty_tooltip_string();
 		}
 
 		// Stored Gene-Seed tooltip

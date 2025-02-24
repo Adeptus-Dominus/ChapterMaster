@@ -84,6 +84,35 @@ function scr_new_governor_mission(planet){
 	}
 }
 
+function init_crusade_mission(targ_planet, problem_index){
+	var cont,dir;cont=0;
+    var flet=instance_nearest(x,y,obj_p_fleet);
+
+    if (flet.action="") then cont=1;
+    if (cont=1) and (point_distance(x,y,flet.x,flet.y)<40) then cont=2;
+
+    if (cont=2){
+        flet.action="";
+        dir=point_direction(room_width/2,room_height/2,x,y);
+        flet.action_x=x+lengthdir_x(2000,dir);
+        flet.action_y=y+lengthdir_y(2000,dir);
+        // flet.action_eta=floor(random(8))+12;
+        with (flet){
+        	set_fleet_movement(false);
+        	action="crusade1";
+        }
+        alert_and_event("green","Fleet embarks upon Crusade.", self.id);
+    }
+    if (cont=1) or (cont=0){
+        // hit loyalty here
+        obj_controller.disposition[2]-=5;
+        obj_controller.disposition[4]-=10;
+        alert_and_event("red","No ships designated for Crusade.", self.id);
+        scr_loyalty("Refusing to Crusade","+");
+        if (obj_controller.penitent=1) then obj_controller.penitent_current=0;
+    }
+	remove_planet_problem(targ_planet, "great_crusade");	
+}
 
 function init_garrison_mission(planet, star, mission_slot){
 	var problems_data = star.p_problem_other_data[planet]

@@ -1,7 +1,7 @@
 function scr_event_log(event_colour, event_text, target = "none") {
 
 	if (instance_exists(obj_event_log)){
-	    var yf;yf="";
+	    var yf="";
 	    if (obj_controller.year_fraction<10) then yf="00"+string(obj_controller.year_fraction);
 	    if (obj_controller.year_fraction>=10) and (obj_controller.year_fraction<100) then yf="0"+string(obj_controller.year_fraction);
 	    if (obj_controller.year_fraction>=100) then yf=string(obj_controller.year_fraction);
@@ -16,4 +16,14 @@ function scr_event_log(event_colour, event_text, target = "none") {
     	array_insert(obj_event_log.event, 0, new_event);
    
 	}
+}
+
+function alert_and_event(event_colour, event_text, target=-1){
+	if (instance_exists(target)){
+		scr_event_log(event_colour, event_text, target.name);
+		scr_alert(event_colour, event_text, target.x, target.y);
+	} else {
+		scr_event_log(event_colour, event_text);
+		scr_alert(event_colour, event_text);
+	} 	
 }

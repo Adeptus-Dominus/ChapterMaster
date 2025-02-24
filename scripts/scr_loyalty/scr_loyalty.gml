@@ -1,57 +1,169 @@
-function scr_loyalty(argument0, argument1) {
-	// argument0 = name
-	// argument1 = todo
+global.loyalty_effects  = {
+	"Xeno Associate" : {
+		hit : 0.09,
+	},
+	"Lack of Apothecary" :{
+		hit : 0.075,
+	},
+	"Upset Machine Spirits":{
+		hit : 0.075,
+	},
+	"Undevout":{
+		hit : 0.075,
+	},
+	"Xeno Trade":{
+		hit : 0.05,
+	},
+	"Non-Codex Size":{
+		hit : 0.06,
+	},
+	"Irreverance for His Servants":{
+		hit : 0.005,
+	},
+	"Mutant Gene-Seed":{
+		hit : 0.01,
+	},
+	"Heretical Homeworld":{
+		hit : 0.07,
+	},
+	"Avoiding Inspections":{
+		hit : 5,
+		time : 200,
+		incremental : true,
+	},
+	"Lost Standard" : {
+		hit : 5,
+		time : 99999,
+		incremental : false,		
+	},
+	"Refusing to Crusade":{
+		hit : 20,
+		time : 600,
+		incremental : false,		
+	},
+	"Crossing the Inquisition":{
+		hit : 40,
+		time : 99999,
+	},
+	"Use of Sorcery":{
+		hit : 40,
+		time : 99999,
+	},	
+}
+
+function loyalty_penalty(loyalty_reason){
+	var _reasons = global.loyalty_effects;
+	var _existing = array_get_index(obj_controller.loyal);
+	if (struct_exists(loyalty_effects, loyalty_reason)){
+		var _penalty_data = loyalty_effects[$ loyalty_reason];
+		if (struct_exists(_penalty_data, "hit")){
+			if (_existing == -1){
+				with (obj_controller){
+					array_push(loyal,loyalty_reason);
+					array_push(loyal_num,_penalty_data.hit );
+	
+				}
+			} else {
+				loyal_num[_existing] += _penalty_data.hit;
+			}
+		}
+	}
+}
+
+function loyalty_countdowns(){
+	for (var i=0;i<array_length(obj_controller.loyal_time);i++){
+	    if (obj_controller.loyal_time[i]>0){
+	        obj_controller.loyal_time[i]--;
+	        if (is_array(obj_controller.loyal_num[i])){
+	            var loyal_nums = obj_controller.loyal_num[i];
+	            if (loyal_nums[1]++>=loyal_nums[0]){
+	                obj_controller.loyalty+=loyal_nums[2];
+	                obj_controller.loyal_num[i]=[loyal_nums[0],0, loyal_nums[2]];
+	            } else {
+	                obj_controller.loyal_num[i]=loyal_nums;
+	            }
+	        }
+	        if (obj_controller.loyal_time[i] == 0){
+	            obj_controller.loyal_num = 0;
+	        }
+	    }
+	}
+}
+function loyalty_tooltip_string(){
+	var  tx=0,ty=0,tool1="",tool2="",plu="";
+
+ 	var lines=0;
+    for(var d=0; d<=20; d++){
+    	if (is_array(loyal_num[d])){
+
+    	}
+        else if (loyal_num[d]>1) and (lines=0){
+            tool1+=string(loyal[d])+": -"+string(loyal_num[d])+"#";
+            tool2+=string(loyal[d])+": #";
+            lines++;
+        }
+    }
+
+    if (tool1="") then tool1="Loyalty";
+
+    if (tool1!=""){
+        tooltip_draw(tool1);
+    }	
+}
+function scr_loyalty(loaylty_effect, loyalty_value) {
+	// loaylty_effect = name
+	// loyalty_value = todo
 
 	// This adds the crime to the chapter history
 
-	if (argument1="+"){
-	    var i, noplus;i=0;noplus=0;
+	if (loyalty_value="+"){
+	    var i=0, noplus=0;
     
-	    repeat(30){
-	        i+=1;noplus=0;
+	    for (var i=0;i<array_length(obj_controller.loyal);i++){
+	        noplus=0;
         
-	        if (obj_controller.loyal[i]=argument0){// Increases detection chance by a variable amount
-	            var amount;amount=0;
+	        if (obj_controller.loyal[i]==loaylty_effect){// Increases detection chance by a variable amount
+	            var amount=0;
 	            if (obj_controller.loyal_num[i]<1) then amount=0.03;
             
-	            if (argument0="Xeno Associate"){
+	            if (loaylty_effect="Xeno Associate"){
 	                if (obj_controller.loyal_num[i]=0) then amount=0.09;
 	                if (obj_controller.loyal_num[i]!=0) then amount=0;
 	            }
             
-	            if (argument0="Lack of Apothecary") or (argument0="Upset Machine Spirits") or (argument0="Undevout"){
+	            if (loaylty_effect="Lack of Apothecary") or (loaylty_effect="Upset Machine Spirits") or (loaylty_effect="Undevout"){
 	                if (obj_controller.loyal_num[i]=0) then amount=0.075;
 	                if (obj_controller.loyal_num[i]!=0) then amount=0;
 	            }
             
-	            if (argument0="Xeno Trade") then amount=0.05;
-	            if (argument0="Irreverance for His Servants") then amount=0.005;
+	            if (loaylty_effect="Xeno Trade") then amount=0.05;
+	            if (loaylty_effect="Irreverance for His Servants") then amount=0.005;
             
             
-	            // if (argument0="Heretic Contact") then amount=0.01;
-	            if (argument0="Heretic Contact") then amount=0.099;
+	            // if (loaylty_effect="Heretic Contact") then amount=0.01;
+	            if (loaylty_effect="Heretic Contact") then amount=0.099;
             
-	            if (argument0="Non-Codex Size"){
+	            if (loaylty_effect="Non-Codex Size"){
 	                if (obj_controller.loyal_num[i]=0) then amount=0.06;
 	                if (obj_controller.loyal_num[i]!=0) then amount=0;
 	            }
             
-	            if (argument0="Mutant Gene-Seed"){
+	            if (loaylty_effect="Mutant Gene-Seed"){
 	                if (obj_controller.loyal_num[i]=0) then amount=0.01;
 	                if (obj_controller.loyal_num[i]!=0) then amount=0;
 	            }
             
-	            if (argument0="Heretical Homeworld"){
+	            if (loaylty_effect="Heretical Homeworld"){
 	                if (obj_controller.loyal_num[i]=0) then amount=0.07;
 	                if (obj_controller.loyal_num[i]!=0) then amount=0;
 	            }
             
-	            if (argument0="Inquisitor Killer"){
+	            if (loaylty_effect="Inquisitor Killer"){
 	                if (obj_controller.loyal_num[i]=0) then amount=0.005;
 	                if (obj_controller.loyal_num[i]!=0) then amount=0;
 	            }
             
-	            if (argument0="Avoiding Inspections"){
+	            if (loaylty_effect="Avoiding Inspections"){
 	                obj_controller.loyalty-=5;
 	                obj_controller.loyalty_hidden-=5;
 	                obj_controller.loyal_num[i]+=5;
@@ -59,7 +171,7 @@ function scr_loyalty(argument0, argument1) {
 	                amount=0;noplus=1;exit;
 	            }
             
-	            if (argument0="Lost Standard"){
+	            if (loaylty_effect="Lost Standard"){
 	                obj_controller.loyalty-=2;
 	                obj_controller.loyalty_hidden-=2;
 	                obj_controller.loyal_num[i]+=5;
@@ -69,42 +181,62 @@ function scr_loyalty(argument0, argument1) {
 	                exit;
 	            }
             
-	            if (argument0="Refusing to Crusade"){
+	            if (loaylty_effect="Refusing to Crusade"){
 	                obj_controller.loyalty-=20;
 	                obj_controller.loyalty_hidden-=20;
-	                obj_controller.loyal_num[i]+=20;
-	                obj_controller.loyal_time[i]=9999;
-	                amount=0;noplus=1;exit;
+	                obj_controller.loyal_num[i]=[20,0, 1];
+	                obj_controller.loyal_time[i]=400;
+	                amount=0;
+	                noplus=1;
+	                exit;
 	            }
             
-	            if (argument0="Crossing the Inquisition"){
+	            if (loaylty_effect="Crossing the Inquisition"){
 	                obj_controller.loyalty-=40;
 	                obj_controller.loyalty_hidden-=40;
 	                obj_controller.loyal_num[i]+=40;
 	                obj_controller.loyal_time[i]=9999;
-	                amount=0;noplus=1;exit;
+	                amount=0;
+	                noplus=1;
+	                exit;
 	            }
             
-	            if (argument0="Use of Sorcery"){
+	            if (loaylty_effect="Use of Sorcery"){
 	                if (string_count("|SC|",obj_controller.useful_info)=0){
 	                    obj_controller.loyalty-=30;
 	                    obj_controller.loyalty_hidden-=30;
 	                    obj_controller.loyal_num[i]+=30;
 	                    obj_controller.loyal_time[i]=9999;
 	                }
-	                amount=0;noplus=1;var one;one=0;
+	                amount=0;noplus=1;var one=0;
 	                obj_controller.useful_info+="|SC|";
                 
 	                if (obj_controller.disposition[4]>=50) and (one=0) and (string_count("|SC|",obj_controller.useful_info)=1){obj_controller.disposition[4]=20;one=1;}
 	                if (obj_controller.disposition[4]<50)  and (string_count("|SC|",obj_controller.useful_info)=1) and (obj_controller.disposition[4]>10) and (one=0){obj_controller.disposition[4]=0;one=2;}
-	                if (string_count("|SC|",obj_controller.useful_info)>1){obj_controller.disposition[4]=0;one=2;}
+	                if (string_count("|SC|",obj_controller.useful_info)>1){
+	                	obj_controller.disposition[4]=0;
+	                	one=2;
+	                }
                 
 	                if (obj_controller.loyalty<=0) and (one<2) then one=2;
-	                if (one=1) then with(obj_controller){scr_audience(4,"sorcery1",0,"",0,0);}
-	                if (one>=2) and (obj_controller.penitent=0){repeat(2){obj_controller.useful_info+="|SC|";}scr_audience(4,"loyalty_zero",0,"",0,0);}
-	                if (one>=2) and (obj_controller.penitent=1){repeat(2){obj_controller.useful_info+="|SC|";}obj_controller.alarm[8]=1;}
+	                if (one=1) then with(obj_controller){
+	                	scr_audience(4,"sorcery1",0,"",0,0);
+	                }
+	                if (one>=2) and (obj_controller.penitent=0){
+	                	repeat(2){
+	                		obj_controller.useful_info+="|SC|";
+	                	}
+	                	scr_audience(4,"loyalty_zero",0,"",0,0);
+	                }
+	                if (one>=2) and (obj_controller.penitent=1){
+	                	repeat(2){
+	                		obj_controller.useful_info+="|SC|";
+	                	}
+	                	obj_controller.alarm[8]=1;
+	                }
                 
-	                exit;exit;
+	                exit;
+	                exit;
 	            }
             
 	            if (noplus=0) then obj_controller.loyal_num[i]+=amount;
