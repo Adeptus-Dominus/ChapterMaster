@@ -2192,8 +2192,9 @@ function scr_initialize_custom() {
 	v = 0;
 	company = 0;
 
+	// TODO: When modding support is implemented, uncomment this init. Otherwise traits are initialized at compile.
     //loads up marine traits potential modding potential;
-    intialise_marine_traits();
+    // intialise_marine_traits();
 
 	// Chapter Master
 	// This needs work
