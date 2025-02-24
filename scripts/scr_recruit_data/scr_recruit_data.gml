@@ -39,10 +39,12 @@ function find_recruit_success_chance(local_apothecary_points, system, planet, ui
     };
     var recruit_chance = 0;
     if (local_apothecary_points > 0) {
-        if (_recruit_cost > 0 && obj_controller.requisition >= (_recruit_cost * 2)) {
-            obj_controller.requisition-=_recruit_cost * 2;
-        } else {
-            _recruit_world.recruit_cost=0;
+        if (ui == 0) {
+            if (_recruit_cost > 0 && obj_controller.requisition >= (_recruit_cost * 2)) {
+                obj_controller.requisition-=_recruit_cost * 2;
+            } else {
+                _recruit_world.recruit_cost=0;
+            }
         }
 
         if (p_data.at_war(0, 1, 1) && p_data.player_disposition < 0) {
