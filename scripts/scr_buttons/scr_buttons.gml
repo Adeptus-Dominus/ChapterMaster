@@ -474,3 +474,35 @@ function InteractiveButton(data={}) constructor {
         draw_set_halign(fa_left);
     };
 }
+
+function list_traveler(list, cur_val, move_up_coords, move_down_coords){
+	var _new_val = cur_val;
+    var _found = false;
+    for (var i=0;i<array_length(list);i++){
+        if (cur_val==list[i]){
+            _found = true;
+            if (point_and_click(move_up_coords)){
+                if (i==array_length(list)-1){
+                    _new_val=list[0];
+                } else {
+                    _new_val=list[i+1];
+                }
+            }
+            else if (point_and_click(move_down_coords)){
+                if (i==0){
+                    _new_val=list[array_length(list)-1];
+                } else {
+                    _new_val=list[i-1];
+                }
+            }
+        }
+    }
+    // If value not found in list, default to first element
+    if (!_found && array_length(list) > 0) {
+        _new_val = list[0];
+    }
+    return _new_val;
+}
+
+
+

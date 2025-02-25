@@ -24,28 +24,7 @@ function player_recruit_planet_selection(){
     if (custom>1 && _recruit_world_type>0){
         draw_sprite_stretched(spr_creation_arrow,0,1265,285,32,32);
         draw_sprite_stretched(spr_creation_arrow,1,1455,285,32,32);
-        var planet_types = ARR_planet_types;
-        var planet_change_allow = (mouse_left>=1) and (cooldown<=0) and (custom>1);
-        for (var i=0;i<array_length(planet_types);i++){
-
-            if (recruiting==planet_types[i] && planet_change_allow){
-                if (point_and_click([1265,285,1265+32,285+32])){
-                    if (i==array_length(planet_types)-1){
-                        recruiting=planet_types[0];
-                    } else {
-                        recruiting=planet_types[i+1];
-                    }
-                }
-
-                if (point_and_click([1455,285,1455+32,285+32])){
-                    if (i==0){
-                        recruiting=planet_types[array_length(planet_types)-1];
-                    } else {
-                        recruiting=planet_types[i-1];
-                    }
-                }
-            }
-        }               
+        recruiting = list_traveler(planet_types, recruiting, [1265,285,1265+32,285+32],[1455,285,1455+32,285+32]);              
     } 
    
 
@@ -144,28 +123,8 @@ function scr_creation_home_planet_create(){
         if (custom>1){
         	draw_sprite_stretched(spr_creation_arrow,0,525,285,32,32);
         	draw_sprite_stretched(spr_creation_arrow,1,725,285,32,32);
-        }
-        var planet_types = ["Dead","Ice", "Temperate","Feudal","Shrine","Agri","Death","Hive","Forge","Desert","Lava"];
-        var planet_change_allow = (mouse_left>=1) and (cooldown<=0) and (custom>1);
-        for (var i=0;i<array_length(planet_types);i++){
-            if (homeworld==planet_types[i] && planet_change_allow){
-                if (point_and_click([525,285,525+32,285+32])){
-                    if (i==array_length(planet_types)-1){
-                        homeworld=planet_types[0];
-                    } else {
-                        homeworld=planet_types[i+1];
-                    }
-                    break;
-                } else if (point_and_click([725,285,725+32,285+32])){
-                    if (i==0){
-                        homeworld=planet_types[array_length(planet_types)-1];
-                    } else {
-                        homeworld=planet_types[i-1];
-                    }
-                    break;
-                }
-            }
-        }
+            homeworld = list_traveler(planet_types, homeworld, [525,285,525+32,285+32],[725,285,725+32,285+32]);
+        }      
         var _system_complex = buttons.complex_homeworld;
         _system_complex.update();
         _system_complex.draw();
@@ -180,6 +139,7 @@ function scr_creation_home_planet_create(){
         // draw_text_transformed(644,398,string(homeworld_name),0.5,0.5,0);
         if (text_selected!="flagship_name") or (custom=0) then draw_text_transformed(644,398,flagship_name,0.5,0.5,0);
 
+        //TODO swap out for TextBarArea constructor
         if (custom>1){
             if (text_selected="flagship_name") and (text_bar>30) then draw_text_transformed(644,398,flagship_name,0.5,0.5,0);
             if (text_selected="flagship_name") and (text_bar<=30) then draw_text_transformed(644,398,flagship_name+"|",0.5,0.5,0);
