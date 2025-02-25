@@ -1417,6 +1417,11 @@ if (shop = "warships") {
         item_cost[i] = 0;
     }
     i += 1;
+    item[i] = "Q-ship";
+    item_stocked[i] = scr_ship_count(item[i]);
+    nobuy[i] = 1;
+    // forge_cost[i] = 10000;
+    i += 1;
     item[i] = "Gladius";
     item_stocked[i] = scr_ship_count(item[i]);
     item_cost[i] = 2250;
