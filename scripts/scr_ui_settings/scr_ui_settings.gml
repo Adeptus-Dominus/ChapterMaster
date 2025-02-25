@@ -469,6 +469,29 @@ function scr_ui_settings() {
 				modest_livery=0;
 			}
 		}
+
+        draw_text(xx+66,yy+343,"Tagged Training");
+        che=tagged_training;
+        cx=xx+31;
+        cy=yy+339;
+
+        draw_sprite(spr_creation_check,che+2,cx,cy);
+        if (scr_hit(cx+31,cy,cx+300,cy+20)=true) {
+            tool1="Tagged training";
+            tool2="Turned off by default, makes specialist training select only tagged marines, click on their potential indicators to tag.";
+        }
+        if (scr_hit(cx,cy,cx+32,cy+32)=true) && (mouse_left=1) && (cooldown<=0) {
+            var onceh=0;
+            cooldown=8000;
+            if (onceh=0) && (tagged_training=0) {
+                onceh=1;
+                tagged_training=1;
+            }
+            if (onceh=0) && (tagged_training=1) {
+                onceh=1;
+                tagged_training=0;
+            }
+        }
     
 	    yy+=35;
     

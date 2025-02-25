@@ -539,6 +539,7 @@ command_set[20]=1;
 command_set[24]=1;
 modest_livery=0;
 progenitor_visuals=0;
+tagged_training=0;
 
 // ** Default menu items **
 selecting_planet=0;
