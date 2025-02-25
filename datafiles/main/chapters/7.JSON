@@ -58,6 +58,10 @@
             "special": 0, // 0 - normal, 1 - Breastplate, 2 - Vertical, 3 - Quadrant
             //"trim_on": 0 // 0 no, 1 yes for special trim colours 
         },
+        "culture_styles" : [
+            "Roman",
+            "Ultra"
+        ],
         "names": {
             //Chapter Staff
             "hchaplain": "Ortan Cassius",

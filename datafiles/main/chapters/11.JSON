@@ -56,6 +56,9 @@
             "special": 0, // 0 - normal, 1 - Breastplate, 2 - Vertical, 3 - Quadrant
             //"trim_on": 1 // 0 no, 1 yes for pauldron trim colours. Trim colour will still be used for certain complex livery items 
         },
+        "culture_styles" : [
+            "Greek",
+        ],
         "names": {
             //Chapter Staff
             "hchaplain": "Ivanus Enkomi", // Head Chaplain

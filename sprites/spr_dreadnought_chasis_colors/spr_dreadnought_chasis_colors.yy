@@ -13,8 +13,6 @@
   "edgeFiltering": false,
   "For3D": false,
   "frames": [
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"aabebdae-4337-4746-b7cf-292919a40ce4",},
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"113b3a46-7ce2-45a1-87a5-79b52a0f3314",},
     {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"643bbde4-1fea-4393-8d81-fd6c3ced5272",},
   ],
   "gridX": 0,
@@ -46,7 +44,7 @@
     "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "eventStubScript": null,
     "eventToFunction": {},
-    "length": 3.0,
+    "length": 1.0,
     "lockOrigin": false,
     "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "playback": 1,
@@ -57,9 +55,7 @@
     "timeUnits": 1,
     "tracks": [
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"aabebdae-4337-4746-b7cf-292919a40ce4","path":"sprites/spr_dreadnought_chasis_colors/spr_dreadnought_chasis_colors.yy",},},},"Disabled":false,"id":"f16c4711-629a-43ed-a5c8-57c7fbc6402c","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"113b3a46-7ce2-45a1-87a5-79b52a0f3314","path":"sprites/spr_dreadnought_chasis_colors/spr_dreadnought_chasis_colors.yy",},},},"Disabled":false,"id":"bfb32420-43d2-46cf-818f-54bf41a6bec8","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"643bbde4-1fea-4393-8d81-fd6c3ced5272","path":"sprites/spr_dreadnought_chasis_colors/spr_dreadnought_chasis_colors.yy",},},},"Disabled":false,"id":"7b10ebfe-7411-4619-8df5-4c9bcb341ece","IsCreationKey":false,"Key":2.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"643bbde4-1fea-4393-8d81-fd6c3ced5272","path":"sprites/spr_dreadnought_chasis_colors/spr_dreadnought_chasis_colors.yy",},},},"Disabled":false,"id":"7b10ebfe-7411-4619-8df5-4c9bcb341ece","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
           ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange": null,

@@ -219,8 +219,76 @@ buttons = {
             str1 : "four",
             font : fnt_40k_14b
         },                    
-    ], "Home System Planets"),        
+    ], "Home System Planets"), 
+
+    culture_styles : new multi_select([
+        {
+            str1 : "Greek",
+            font : fnt_40k_14b,
+        },
+        {
+            str1 : "Roman",
+            font : fnt_40k_14b
+        },
+        {
+            str1 : "Knightly",
+            font : fnt_40k_14b
+        },
+        {
+            str1 : "Gladiator",
+            font : fnt_40k_14b
+        },         
+        {
+            str1 : "Mongol",
+            font : fnt_40k_14b
+        },
+        {
+            str1 : "Feral",
+            font : fnt_40k_14b
+        },
+        {
+            str1 : "Flame Cult",
+            font : fnt_40k_14b
+        },
+        {
+            str1 : "Mechanical Cult",
+            font : fnt_40k_14b
+        },
+        {
+            str1 : "Prussian",
+            font : fnt_40k_14b
+        },
+        {
+            str1 : "Ganger (cthonian)",
+            font : fnt_40k_14b
+        },
+        {
+            str1 : "Alpha",
+            font : fnt_40k_14b
+        },
+        {
+            str1 : "Ultra",
+            font : fnt_40k_14b
+        },
+        {   
+            str1 : "Renaissance",
+            font : fnt_40k_14b,
+        },
+        {   
+            str1 : "Blood",
+            font : fnt_40k_14b,
+        },
+        {   
+            str1 : "Angelic",
+            font : fnt_40k_14b,
+        },
+        {   
+            str1 : "Crusader",
+            font : fnt_40k_14b,
+        },                                                                             
+    ], "Chapter Visual Styles")  
 }
+
 with (buttons){
     home_spawn_loc_options.current_selection = 1;
     home_planets.current_selection = 1;

@@ -24,6 +24,7 @@
         "recruiting_name": "",
         "discipline": "rune Magick", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune Magick'
         "aspirant_trial": "SURVIVAL", // ? need to find the best way to do this
+
         "advantages": [ //TODO something with these after rework of adv organisation
             "",
             "Lightning Warriors",
@@ -57,6 +58,9 @@
             "special": 0, // 0 - normal, 1 - Breastplate, 2 - Vertical, 3 - Quadrant
             //"trim_on": 0 // 0 no, 1 yes for special trim colours // todo update ref for new name
         },
+        "culture_styles" : [
+            "Mongol",
+        ],
         "names": {
             //Chapter Staff
             "hchaplain": "Jaghorin",

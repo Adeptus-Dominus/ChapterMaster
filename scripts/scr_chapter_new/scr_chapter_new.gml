@@ -27,6 +27,7 @@ function ChapterData() constructor {
 	home_spawn_loc = 1;
 	recruit_home_relationship = 1;
 	home_warp = 1;
+	culture_styles = [];
 	home_planets = 1;
 
 	flagship_name = global.name_generator.generate_imperial_ship_name();
@@ -322,6 +323,7 @@ function scr_chapter_new(argument0) {
 		obj_creation.adv = chapter_object.advantages;
 		obj_creation.dis = chapter_object.disadvantages;
 
+		obj_creation.buttons.culture_styles.set(chapter_object.culture_styles);
 		obj_creation.full_liveries = chapter_object.full_liveries;
 		obj_creation.complex_livery_data = chapter_object.complex_livery_data;
 		if (obj_creation.full_liveries!=""){
