@@ -2484,12 +2484,7 @@ function scr_initialize_custom() {
 
 	// Honour Guard
 	var _honour_guard_count = 0, unit;
-	o = 0;
-	chapter_option = 0;
-	repeat(4) {
-		o += 1;
-		if (obj_creation.adv[o] = "Retinue of Renown") then chapter_option = 1;
-	}
+    chapter_option = scr_has_adv("Retinue of Renown");
 	if (chapter_option = 1) then _honour_guard_count += 10;
 	if (progenitor == ePROGENITOR.DARK_ANGELS && obj_creation.custom = 0) { _honour_guard_count += 6; }
 	if (_honour_guard_count == 0) {
