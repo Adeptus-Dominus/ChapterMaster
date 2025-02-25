@@ -345,16 +345,16 @@ function ArtifactStruct(Index) constructor{
 			var unit = fetch_unit(bearer);
 			if (_b_type=="weapon"){
 				if (unit.weapon_one(true) == index){
-					unit.update_weapon_one("", false, false);
+					unit.update_weapon_one("", false, true);
 				} else if (unit.weapon_two(true) == index){
-					unit.update_weapon_two("", false, false);
+					unit.update_weapon_two("", false, true);
 				} 
 			} else if (_b_type=="gear"){
-				unit.update_gear("", false, false);
+				unit.update_gear("", false, true);
 			} else if (_b_type=="armour"){
-				unit.update_armour("", false, false);
+				unit.update_armour("", false, true);
 			} else if (_b_type=="mobility"){
-				unit.update_mobility_item("", false, false);
+				unit.update_mobility_item("", false, true);
 			}
 			bearer = false;
 			obj_ini.artifact_equipped[index] = false;
@@ -368,10 +368,10 @@ function ArtifactStruct(Index) constructor{
 					for (var i=0;i<array_length(obj_ini.role[co]);i++){
 						_unit = fetch_unit([co,i]);
 						if (_unit.weapon_one(true) == index){
-							_unit.update_weapon_one("", false, false);
+							_unit.update_weapon_one("", false, true);
 							_bearer_found = true
 						} else if (_unit.weapon_two(true) == index){
-							_unit.update_weapon_two("", false, false);
+							_unit.update_weapon_two("", false, true);
 							_bearer_found = true
 						}
 						if (_bearer_found){
@@ -399,7 +399,7 @@ function ArtifactStruct(Index) constructor{
 						for (var i=0;i<array_length(obj_ini.role[co]);i++){
 							var _unit = fetch_unit([co,i]);
 							if (_unit[$_find_function](true) == index){
-								_unit[$_update_function]("", false, false);
+								_unit[$_update_function]("", false, true);
 								_bearer_found = true
 							}
 							if (_bearer_found){

@@ -77,7 +77,7 @@ function scr_update_unit_armour(new_armour, from_armoury=true, to_armoury=true, 
 				}
 			} else {
 				if (!is_string(armour(true))){
-					delete_artifact(armour(true));
+					delete_artifact(armour(true)); // This code path along with the other functions causes a feedback loop as delete_artifact calls unequip_from_unit which calls all functions in this file
 				}
 			}
 		}
