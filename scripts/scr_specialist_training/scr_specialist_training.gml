@@ -121,7 +121,7 @@ function apothecary_training(){
 	                unit = fetch_unit(random_marine);
 	                scr_alert("green","recruitment",unit.name_role()+" has finished training.",0,0);
 	                unit.update_role(obj_ini.role[100][15]);
-                    unit.role_tags = [0, 0, 0, 0];
+                    unit.role_tag = [0, 0, 0, 0];
 	                unit.add_exp(10);
 
 	                warn="";
@@ -194,7 +194,7 @@ function chaplain_training(){
 	                    scr_alert("green","recruitment",unit.name_role()+" has finished training.",0,0);
 	                    chaplain_points-=48;
 	                    unit.update_role(obj_ini.role[100][14]);
-                        unit.role_tags = [0, 0, 0, 0];
+                        unit.role_tag = [0, 0, 0, 0];
 	                    unit.add_exp(10);
 	                    chaplain_aspirant=0;
 	                    warn="";
@@ -271,7 +271,7 @@ function librarian_training(){
 
 	                scr_alert("green","recruitment",unit.name_role()+" has finished training.",0,0);
 	                unit.update_role("Lexicanum");
-                    unit.role_tags = [0, 0, 0, 0];
+                    unit.role_tag = [0, 0, 0, 0];
 	                with(obj_ini){scr_company_order(0);}
 	            }
 	        }else {
@@ -326,7 +326,7 @@ function techmarine_training(){
 	                tech_points-=360;
 
 	                unit.update_role(obj_ini.role[100][16]);
-                    unit.role_tags = [0, 0, 0, 0];
+                    unit.role_tag = [0, 0, 0, 0];
 	                unit.add_exp(30);
 	                
 	                t=0;
