@@ -119,22 +119,22 @@ function scr_random_marine(role, exp_req, search_params="none"){
                         match = false;
                         switch search_params.role_tag {
                             case "Techmarine":
-                                if (unit.role_tag[0] == 1) {
+                                if (unit.role_tag[eROLE_TAG.Techmarine] == 1) {
                                     match = true;
                                 }
                                 break;
                             case "Librarian":
-                                if (unit.role_tag[1] == 1) {
+                                if (unit.role_tag[eROLE_TAG.Librarian] == 1) {
                                     match = true;
                                 }
                                 break;
                             case "Chaplain":
-                                if (unit.role_tag[2] == 1) {
+                                if (unit.role_tag[eROLE_TAG.Chaplain] == 1) {
                                     match = true;
                                 }
                                 break;
                             case "Apothecary":
-                                if (unit.role_tag[3] == 1) {
+                                if (unit.role_tag[eROLE_TAG.Apothecary] == 1) {
                                     match = true;
                                 }
                                 break;

@@ -170,32 +170,16 @@ function scr_draw_management_unit(selected, yy=0, xx=0, draw=true){
                             if (scr_click_left()) {
                                 switch _data.name {
                                     case "Techmarine":
-                                        if (unit.role_tag[0] == 0) {
-                                            unit.role_tag[0] = 1;
-                                        } else {
-                                            unit.role_tag[0] = 0;
-                                        }
+                                        unit.role_tag[eROLE_TAG.Techmarine] = !unit.role_tag[eROLE_TAG.Techmarine];
                                         break;
                                     case "Librarian":
-                                        if (unit.role_tag[1] == 0) {
-                                            unit.role_tag[1] = 1;
-                                        } else {
-                                            unit.role_tag[1] = 0;
-                                        }
+                                        unit.role_tag[eROLE_TAG.Librarian] = !unit.role_tag[eROLE_TAG.Librarian];
                                         break;
                                     case "Chaplain":
-                                        if (unit.role_tag[2] == 0) {
-                                            unit.role_tag[2] = 1;
-                                        } else {
-                                            unit.role_tag[2] = 0;
-                                        }
+                                        unit.role_tag[eROLE_TAG.Chaplain] = !unit.role_tag[eROLE_TAG.Chaplain];
                                         break;
                                     case "Apothecary":
-                                        if (unit.role_tag[3] == 0) {
-                                            unit.role_tag[3] = 1;
-                                        } else {
-                                            unit.role_tag[3] = 0;
-                                        }
+                                        unit.role_tag[eROLE_TAG.Apothecary] = !unit.role_tag[eROLE_TAG.Apothecary];
                                         break;
                                 }
                             }

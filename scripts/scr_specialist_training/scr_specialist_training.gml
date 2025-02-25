@@ -71,19 +71,17 @@ function specialistfunct (specialist, req_exp) {
     return {spec_tip: spec_tip, colors: colors};
 };
 
+// Function: spec_data_set(specialist)
+// Description: Centralizes logic for retrieving a random marine based on specialist training data
+// Parameters:
+//   specialist - Integer index (0: Techmarine, 1: Librarian, 2: Chaplain, 3: Apothecary)
+// Returns: Array containing company and position of selected marine, or "none" if no suitable marine found
 function spec_data_set(specialist) {
     var _data = spec_train_data[specialist];
-    if (!obj_controller.tagged_training == 1) {
-        var _search =
-        {
-            "stat":_data.req
-        }
-    } else {
-        var _search =
-        {
-            "role_tag":_data.name,
-            "stat":_data.req
-        }
+    var _search = { "stat": _data.req };
+
+    if (obj_controller.tagged_training == 1) {
+        _search.role_tag = _data.name;
     }
 
     var random_marine=scr_random_marine( // TODO LOW SEARCH_OPTIONAL // Make this function handle optional search_params
@@ -150,7 +148,7 @@ function apothecary_training(){
 	            apothecary_recruit_points=0;
 	        }
 	    }else if (apothecary_recruit_points>=4) and (recruit_count==0){
-            var random_marine = spec_data_set(3);
+            var random_marine = spec_data_set(eROLE_TAG.Apothecary);
 	        if (random_marine != "none"){
                 var marine_position=random_marine[1];
                 var marine_company=random_marine[0];
@@ -220,7 +218,7 @@ function chaplain_training(){
 	                chaplain_points=0;
 	            }
 	        }else if (chaplain_points>=4) and (recruit_count==0){
-                var random_marine = spec_data_set(2);
+                var random_marine = spec_data_set(eROLE_TAG.Chaplain);
 	            if (random_marine != "none"){
                     var marine_position = random_marine[1];
                     var marine_company = random_marine[0];
@@ -280,7 +278,7 @@ function librarian_training(){
 	            psyker_points=0;
 	        }
 	    } else if (psyker_points>=4) and (recruit_count==0){
-            var random_marine = spec_data_set(1);
+            var random_marine = spec_data_set(eROLE_TAG.Librarian);
 	        if (random_marine == "none"){
 	            training_psyker=0;
 	            scr_alert("red","recruitment","No remaining warp sensitive marines for training",0,0);
@@ -378,7 +376,7 @@ function techmarine_training(){
 	            tech_points=0;
 	        }
 	    }else if (tech_points>=4) and (recruit_count==0){    
-            var random_marine = spec_data_set(0);
+            var random_marine = spec_data_set(eROLE_TAG.Techmarine);
 	        if (random_marine != "none"){
                 var marine_position = random_marine[1];
                 var marine_company = random_marine[0];
