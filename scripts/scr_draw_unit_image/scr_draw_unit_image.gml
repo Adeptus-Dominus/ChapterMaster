@@ -789,49 +789,7 @@ function scr_draw_unit_image(_background=false){
                         }
                     }
                 }
-            }
-            //purity seals/decorations
-            //TODO imprvoe this logic to be more extendable
-
-            if (armour_type==ArmourType.Normal){
-                var _torso_data = body[$ "torso"];
-                if (struct_exists(_torso_data,"purity_seal")){
-                    var _torso_purity_seals = _torso_data[$"purity_seal"];
-                    if (_torso_purity_seals[2]==1){
-                        draw_sprite(spr_purity_seal,2,x_surface_offset-24,y_surface_offset+14);
-                    }
-                    if (_torso_purity_seals[0]==1){
-                        draw_sprite(spr_purity_seal,0,x_surface_offset-44,y_surface_offset+18);
-                    }
-                    if (_torso_purity_seals[1]==1){
-                        draw_sprite(spr_purity_seal,0,x_surface_offset-6,y_surface_offset+16);
-                    }                                       
-                }
-                if (struct_exists(body[$ "left_arm"],"purity_seal")){
-                    var _arm_seals = body[$ "left_arm"][$"purity_seal"];
-                    if (_arm_seals[0]==1){
-                        draw_sprite(spr_purity_seal,1,x_surface_offset+70,y_surface_offset);
-                    }
-                    if (_arm_seals[1]==1){
-                        draw_sprite(spr_purity_seal,0,x_surface_offset+26,y_surface_offset+7);
-                    }
-                    if (_arm_seals[2]==1){
-                        draw_sprite(spr_purity_seal,0,x_surface_offset+15,y_surface_offset+10);
-                    }                                       
-                }
-                if (struct_exists(body[$ "right_arm"],"purity_seal")){
-                    var _arm_seals = body[$ "right_arm"][$"purity_seal"];
-                    if (_arm_seals[0]==1){
-                        draw_sprite(spr_purity_seal,2,x_surface_offset-54,y_surface_offset-3);
-                    }
-                    if (_arm_seals[0]==1){
-                        draw_sprite(spr_purity_seal,0,x_surface_offset-72,y_surface_offset+8);
-                    }
-                    if (_arm_seals[0]==1){
-                        draw_sprite(spr_purity_seal,0,x_surface_offset-57,y_surface_offset+12);
-                    }                    
-                }            
-            }		
+            }	
 
             // Draw Custom Helmets
             if (armour_type==ArmourType.Normal && !armour_bypass){

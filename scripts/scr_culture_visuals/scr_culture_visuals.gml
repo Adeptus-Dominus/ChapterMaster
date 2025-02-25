@@ -91,7 +91,9 @@ global.modular_drawing_items = [
         sprite : spr_special_helm,
         body_types :[0],
         armours_exclude : ["MK3 Iron Armour"],
-        position : "mouth",
+        roles : [eROLE.Captain,eROLE.Champion],
+        assign_by_rank : 2,
+        position : "mouth_variants",
     },
     {
         cultures : ["Mongol"],
@@ -246,8 +248,19 @@ global.modular_drawing_items = [
         position : "crest",
         role_type : ["captain_candidates"],
         assign_by_rank : 2,
-
-    },                              
+    },
+    {
+        sprite : spr_purity_seal,
+        body_types :[0],
+        position : "purity_seals",
+    },
+    {
+        cultures : ["Knightly"],
+        sprite : spr_mk6_knightly_mouth_variants,
+        body_types :[0],
+        position : "mouth_variants",
+        armours : ["MK6 Corvus"],    
+    },                                  
 
 ];
 try{

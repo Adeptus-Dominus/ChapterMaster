@@ -432,19 +432,19 @@ function scr_marine_game_spawn_constructions(){
 			add_bionics("none","standard",false);
 	}
 	if (irandom(3)==0){
-		body[$ "torso"][$ "purity_seal"] = [irandom(1),irandom(1),irandom(1),];
+		body[$ "torso"][$ "purity_seal"] = [irandom(100),irandom(100),irandom(100),];
 	}
 	if (irandom(3)==0){
-		body[$ "left_arm"][$ "purity_seal"] = [irandom(1),irandom(1),irandom(1),];
+		body[$ "left_arm"][$ "purity_seal"] = [irandom(100),irandom(100),irandom(100),];
 	}
 	if (irandom(3)==0){
-		body[$ "right_arm"][$ "purity_seal"] = [irandom(1),irandom(1),irandom(1),];
+		body[$ "right_arm"][$ "purity_seal"] = [irandom(100),irandom(100),irandom(100),];
 	}	
 	if (irandom(3)==0){
-		body[$ "left_leg"][$ "purity_seal"] = [irandom(1),irandom(1),irandom(1),];
+		body[$ "left_leg"][$ "purity_seal"] = [irandom(100),irandom(100),irandom(100),];
 	}
 	if (irandom(3)==0){
-		body[$ "right_leg"][$ "purity_seal"] = [irandom(1),irandom(1),irandom(1),];
+		body[$ "right_leg"][$ "purity_seal"] = [irandom(100),irandom(100),irandom(100),];
 	}	
 
 }
