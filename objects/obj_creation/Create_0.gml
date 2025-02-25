@@ -98,7 +98,7 @@ if (nope!=1){
 }
 
 global.load=0;
-
+planet_types = ARR_planet_types;
 skip=false;
 premades=true;
 
