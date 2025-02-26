@@ -83,31 +83,21 @@ if (started>0){// This might be causing problems?
     if (instance_exists(obj_enunit)) then obj_enunit.alarm[8]=8;
 }
 
-function reset_combat_message_arrays(){
-    for (var i=0;i<array_length(message);i++){
-        message[i]="";
-        message_sz[i]=0;
-        message_priority[i]=0;
-    }
-}
+
 if (timer_stage=1) or (timer_stage=5){
     if (global_perils>0) then global_perils-=4;
     if (global_perils<0) then global_perils=0;
     turns+=1;
     
-    four_show=0;click_stall_timer=15;
+    four_show=0;
+    click_stall_timer=15;
     // if (battle_over!=1) then alarm[8]=15;
 
     if (enemy!=6){
         if (instance_exists(obj_enunit)){
             obj_enunit.alarm[1]=1;
         }
-        if (instance_exists(obj_pnunit)){
-            obj_pnunit.alarm[3]=2;
-            obj_pnunit.alarm[1]=3;
-            turn_count++;
-            obj_pnunit.alarm[0]=4;
-        }
+        set_up_player_blocks_turn();
         // alarm[9]=5;
     }
 
@@ -117,13 +107,12 @@ if (timer_stage=1) or (timer_stage=5){
             obj_enunit.alarm[0]=3;
         }
         if (instance_exists(obj_pnunit)){
-            obj_pnunit.alarm[1]=1;
+            wait_and_execute(1, scr_player_combat_weapon_stacks);
             turn_count++;
         }
     }
-    messages=0;messages_to_show=8;largest=0;random_messages=0;priority=0;messages_shown=0;
-    reset_combat_message_arrays();
-    timer_stage=2;timer=0;done=0;messages_shown=0;    
+    reset_combat_message_arrays();   
+    timer_stage=2;
 }
 
 
@@ -134,7 +123,9 @@ else if (timer_stage=3){
 
     if (enemy!=6){
         if (instance_exists(obj_pnunit)){
-            obj_pnunit.alarm[1]=1;
+            with(obj_pnunit){
+                wait_and_execute(1, scr_player_combat_weapon_stacks);
+            }
             turn_count++;
         }
         if (instance_exists(obj_enunit)){
@@ -143,25 +134,16 @@ else if (timer_stage=3){
             obj_enunit.alarm[8]=4;
             turns+=1;
         }
-        var messages=0;messages_to_show=8;largest=0;random_messages=0;priority=0;messages_shown=0;
         reset_combat_message_arrays();
-        timer_stage=4;timer=0;done=0;messages_shown=0;
     }
     if (enemy=6){
-        if (instance_exists(obj_pnunit)){
-            obj_pnunit.alarm[3]=2;
-            obj_pnunit.alarm[1]=3;
-            turn_count++;
-            obj_pnunit.alarm[0]=4;
-            turns+=1;
-        }
+        set_up_player_blocks_turn();
+        turns+=1;
         if (instance_exists(obj_enunit)){
             obj_enunit.alarm[1]=1;
         }
         // alarm[9]=5;
-        var i;i=0;messages=0;messages_to_show=8;largest=0;random_messages=0;priority=0;messages_shown=0;
         reset_combat_message_arrays();
-        timer_stage=4;timer=0;done=0;messages_shown=0;
     }
 }
 
