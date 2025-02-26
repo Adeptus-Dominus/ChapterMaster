@@ -480,17 +480,8 @@ function scr_ui_settings() {
             tool1="Tagged training";
             tool2="Turned off by default, makes specialist training select only tagged marines, click on their potential indicators to tag.";
         }
-        if (scr_hit(cx,cy,cx+32,cy+32)=true) && (mouse_left=1) && (cooldown<=0) {
-            var onceh=0;
-            cooldown=8000;
-            if (onceh=0) && (tagged_training=0) {
-                onceh=1;
-                tagged_training=1;
-            }
-            if (onceh=0) && (tagged_training=1) {
-                onceh=1;
-                tagged_training=0;
-            }
+        if (point_and_click([cx,cy,cx+32,cy+32])) {
+            tagged_training = !tagged_training;
         }
     
 	    yy+=35;

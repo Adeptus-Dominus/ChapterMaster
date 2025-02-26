@@ -20,7 +20,7 @@ function specialistfunct (specialist, req_exp) {
             colors = [c_dkgray, c_red];
             tips_list[0] = spec_tips[0];
             tips_list[1] = spec_tips[4];
-            if (role_tag[eROLE_TAG.Techmarine] == 1) {
+            if (role_tag[eROLE_TAG.Techmarine] == true) {
                 colors[1] = c_navy;
             }
             break;
@@ -28,7 +28,7 @@ function specialistfunct (specialist, req_exp) {
             colors = [c_white, c_aqua];
             tips_list[0] = spec_tips[3];
             tips_list[1] = spec_tips[7];
-            if (role_tag[eROLE_TAG.Librarian] == 1) {
+            if (role_tag[eROLE_TAG.Librarian] == true) {
                 colors[1] = c_navy;
             }
             break;
@@ -36,7 +36,7 @@ function specialistfunct (specialist, req_exp) {
             colors = [c_black, c_yellow];
             tips_list[0] = spec_tips[2];
             tips_list[1] = spec_tips[6];
-            if (role_tag[eROLE_TAG.Chaplain] == 1) {
+            if (role_tag[eROLE_TAG.Chaplain] == true) {
                 colors[1] = c_navy;
             }
             break;
@@ -44,7 +44,7 @@ function specialistfunct (specialist, req_exp) {
             colors = [c_red, c_white];
             tips_list[0] = spec_tips[1];
             tips_list[1] = spec_tips[5];
-            if (role_tag[eROLE_TAG.Apothecary] == 1) {
+            if (role_tag[eROLE_TAG.Apothecary] == true) {
                 colors[1] = c_navy;
             }
             break;
@@ -80,7 +80,7 @@ function spec_data_set(specialist) {
     var _data = spec_train_data[specialist];
     var _search = { "stat": _data.req };
 
-    if (obj_controller.tagged_training == 1) {
+    if (obj_controller.tagged_training == true) {
         _search.role_tag = _data.name;
     }
 

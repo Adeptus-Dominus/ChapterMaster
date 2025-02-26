@@ -160,12 +160,17 @@ function scr_draw_management_unit(selected, yy=0, xx=0, draw=true){
                         var _draw_coords = [
                             _circle_coords[0] + _data.coord_offset[0],
                             _circle_coords[1] + _data.coord_offset[1],
-                            _circle_coords[0] + _data.coord_offset[0] + _circle_radius,
-                            _circle_coords[1] + _data.coord_offset[1] + _circle_radius
+                        ];
+
+                        var _draw_coords_mouse = [
+                            _draw_coords[0] - _circle_radius,
+                            _draw_coords[1] - _circle_radius,
+                            _draw_coords[0] + _circle_radius,
+                            _draw_coords[1] + _circle_radius
                         ];
                         specialistdir = unit.specialist_tooltips(_data.name, _data.min_exp);
 
-                        if (mouse_x>=_draw_coords[0] - _circle_radius) && (mouse_y>=_draw_coords[1] - _circle_radius) && (mouse_x<=_draw_coords[2]) && (mouse_y<_draw_coords[3]) {
+                        if (scr_hit(_draw_coords_mouse)) {
                             draw_set_alpha(0.8)
                             if (scr_click_left()) {
                                 switch _data.name {
@@ -187,10 +192,7 @@ function scr_draw_management_unit(selected, yy=0, xx=0, draw=true){
 
                         draw_circle_colour(_draw_coords[0], _draw_coords[1], _circle_radius, specialistdir.colors[0], specialistdir.colors[1], 0);
                         draw_set_alpha(1.0)
-                        for (var i = 0; i < 2; ++i) {
-                            _draw_coords[i] = _draw_coords[i] - _circle_radius;
-                        }
-                        array_push(potential_tooltip, [specialistdir.spec_tip, _draw_coords]);
+                        array_push(potential_tooltip, [specialistdir.spec_tip, _draw_coords_mouse]);
                     }
                 }
             }
