@@ -164,7 +164,7 @@ function scr_player_combat_weapon_stacks() {
                 }
 
                 if (is_struct(mobi_item)){
-                   add_second_profiles_to_stack(mobi_item);
+                    add_second_profiles_to_stack(mobi_item);
                 }
                 if (is_struct(gear_item)){
                     add_second_profiles_to_stack(gear_item);
@@ -173,22 +173,34 @@ function scr_player_combat_weapon_stacks() {
                     add_second_profiles_to_stack(armour_item);
                 }
 
-                if (unit.IsSpecialist("libs",true)||(unit.role()=="Chapter Master" && obj_ncombat.chapter_master_psyker=1)){
-                    var known_powers = unit.specials();
-                    if (is_string(known_powers) && string_length(known_powers) > 0) {
-                        if (marine_casting[g] > 0) then marine_casting[g] = 0;
-                        else if (marine_casting[g] < 0) then marine_casting[g] += 1; //timer for libs to be able to cast
-    
-                        var cast_dice=irandom(99)+1;
-                        if (scr_has_disadv("Warp Touched")) then cast_dice-=5;
-                        cast_dice -= (unit.psionic+(unit.experience/60))
-                        if (marine_type[g]="Chapter Master") and (obj_ncombat.chapter_master_psyker=1){
-                            cast_dice -= 10;
-                            // Stuff bellow shouldn't be used
-                            // if (obj_ncombat.big_boom>0) and (obj_ncombat.kamehameha=true) then marine_casting[g] = 1;
+                if (unit.IsSpecialist("libs", true) || (unit.role() == "Chapter Master" && obj_ncombat.chapter_master_psyker == 1)) {
+                    if (marine_casting_cooldown[g] == 0) {
+                        var known_powers = unit.specials();
+                        if (is_string(known_powers) && string_length(known_powers) > 0) {
+                            if (marine_casting[g] == true) {
+                                marine_casting[g] = false;
+                            }
+
+                            var cast_dice = irandom(99) + 1;
+                            cast_dice -= unit.psionic + (unit.experience / 60);
+                            if (scr_has_disadv("Warp Touched")) {
+                                cast_dice -= 5;
+                            }
+                            if (scr_has_adv("Daemon Binders")) {
+                                cast_dice -= 5;
+                            }
+                            if ((marine_type[g] == "Chapter Master") && (obj_ncombat.chapter_master_psyker == 1)) {
+                                cast_dice -= 10;
+                                // Stuff bellow is weird and never worked, I think
+                                // if (obj_ncombat.big_boom>0) and (obj_ncombat.kamehameha=true) then marine_casting[g] = true;
+                            }
+
+                            if (cast_dice <= 50) {
+                                marine_casting[g] = true;
+                            }
                         }
-    
-                        if (cast_dice <= 50) then marine_casting[g] = 1;
+                    } else {
+                        marine_casting_cooldown[g]--;
                     }
                 }
 
@@ -209,7 +221,7 @@ function scr_player_combat_weapon_stacks() {
                         dudes_num[open]=1;
                     }
                 }
-                if (marine_casting[g]!=1){
+                if (marine_casting[g] == false){
                     var weapon_stack_index=0;
                     var primary_ranged = unit.ranged_damage_data[3];//collect unit ranged data
                     var weapon_stack_index = find_stack_index(primary_ranged.name, head_role, unit);
@@ -330,7 +342,8 @@ function scr_add_unit_to_roster(unit, is_local=false,is_ally=false){
     array_push(marine_ac, unit.armour_calc());
     array_push(marine_attack, unit.melee_attack());
     array_push(marine_local, is_local);
-    array_push(marine_casting, 0);
+    array_push(marine_casting, false);
+    array_push(marine_casting_cooldown, 0);
     array_push(marine_defense, 1);
 
     array_push(marine_dead, 0);
