@@ -15,7 +15,9 @@ if __b__
 // 135;
 // instance_activate_object(obj_cursor);
 
-
+if (enemy_forces<=0) { // Combat for whatever reason sometimes bugs out when there are no enemies, so if enter is pressed 6 times at this state it will set started to 2
+    enter_pressed++
+}
 
 if (started>=2) then instance_activate_object(obj_pnunit);
 
@@ -38,7 +40,7 @@ if (started=3){
 
 
 
-if (turn_count >= 50){
+if (turn_count >= 50 || enter_pressed > 5) {
     started=2;
 }
 if ((started=2) or (started=4)){
