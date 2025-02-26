@@ -125,9 +125,6 @@ function scr_player_combat_weapon_stacks() {
     for (g=0;g<array_length(unit_struct);g++) {
         unit = unit_struct[g];
         if (is_struct(unit)) {
-            if (marine_casting[g]>=0) then marine_casting[g]=0;
-            if (marine_casting[g]<0) then marine_casting[g]+=1;//timer for libs to be able to cast
-
             if (unit.hp()>0) then marine_dead[g]=0;
             if (unit.hp()>0 && marine_dead[g]!=true){
                 var head_role = unit.IsSpecialist();
@@ -177,16 +174,21 @@ function scr_player_combat_weapon_stacks() {
                 }
 
                 if (unit.IsSpecialist("libs",true)||(unit.role()=="Chapter Master" && obj_ncombat.chapter_master_psyker=1)){
-                    var cast_dice=irandom(99)+1;
-                    if (scr_has_disadv("Warp Touched")) then cast_dice-=5;
-
-                    cast_dice-=(unit.psionic+(unit.experience/60))
-
-                    if (cast_dice<=50) then marine_casting[g]=1;
-
-                    if (marine_type[g]="Chapter Master") and (obj_ncombat.chapter_master_psyker=1){
-                        if (cast_dice<=66) then marine_casting[g]=1;
-                        if (obj_ncombat.big_boom>0) and (obj_ncombat.kamehameha=true) then marine_casting[g]=1;
+                    var known_powers = unit.specials();
+                    if (is_string(known_powers) && string_length(known_powers) > 0) {
+                        if (marine_casting[g] > 0) then marine_casting[g] = 0;
+                        else if (marine_casting[g] < 0) then marine_casting[g] += 1; //timer for libs to be able to cast
+    
+                        var cast_dice=irandom(99)+1;
+                        if (scr_has_disadv("Warp Touched")) then cast_dice-=5;
+                        cast_dice -= (unit.psionic+(unit.experience/60))
+                        if (marine_type[g]="Chapter Master") and (obj_ncombat.chapter_master_psyker=1){
+                            cast_dice -= 10;
+                            // Stuff bellow shouldn't be used
+                            // if (obj_ncombat.big_boom>0) and (obj_ncombat.kamehameha=true) then marine_casting[g] = 1;
+                        }
+    
+                        if (cast_dice <= 50) then marine_casting[g] = 1;
                     }
                 }
 
