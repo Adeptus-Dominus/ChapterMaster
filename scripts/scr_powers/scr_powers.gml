@@ -80,27 +80,24 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
         exit;
     }
 
-    var power_name, target_type, target_unit, power_index, psy_discipline;
-    var binders_adv, tome_discipline, tome_roll, tome_perils_chance, tome_perils_strength, tome_slot, tome_tags;
-
-    power_name = "";
-    target_type = "";
+    var power_name = "";
+    var target_type = "";
     var weapon_one = unit.get_weapon_one_data();
     var weapon_two = unit.get_weapon_two_data();
-    target_unit = enemy_target;
-    power_index = power_count;
-    show_debug_message(power_set);
-    psy_discipline = convert_power_letter(power_set);
+    var target_unit = enemy_target;
+    var power_index = power_count;
+    // show_debug_message(power_set);
+    var psy_discipline = convert_power_letter(power_set);
     var flavour_text1 = "", flavour_text2 = "", flavour_text3 = "", flavour_text_4 = "";
-    binders_adv = scr_has_adv("Daemon Binders");
+    var binders_adv = scr_has_adv("Daemon Binders");
     var has_hood = string_count("Hood", marine_gear[unit_id]) > 0;
     var using_tome = false;
-    tome_discipline = "";
-    tome_roll = irandom(99) + 1;
-    tome_perils_chance = 0;
-    tome_perils_strength = 0;
-    tome_slot = 0;
-    tome_tags = "";
+    var tome_discipline = "";
+    var tome_roll = irandom(99) + 1;
+    var tome_perils_chance = 0;
+    var tome_perils_strength = 0;
+    var tome_slot = 0;
+    var tome_tags = "";
 
     // In here check if have tome
     if (unit.weapon_one() == "Tome" || unit.weapon_two() == "Tome") {
@@ -203,9 +200,7 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
                 tome_perils_chance = disciplines_data[$ disciplines_array[i]].perils_chance;
                 tome_perils_strength = disciplines_data[$ disciplines_array[i]].perils_strength;
             }
-            show_debug_message(selected_discipline);
-            show_debug_message(powers_array);
-            show_debug_message(power_index);
+            // show_debug_message(power_index);
             power_name = powers_array[power_index];
         }
     }
