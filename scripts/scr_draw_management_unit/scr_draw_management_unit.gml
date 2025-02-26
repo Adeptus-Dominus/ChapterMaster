@@ -160,15 +160,39 @@ function scr_draw_management_unit(selected, yy=0, xx=0, draw=true){
                         var _draw_coords = [
                             _circle_coords[0] + _data.coord_offset[0],
                             _circle_coords[1] + _data.coord_offset[1],
-                            _circle_coords[0] + _data.coord_offset[0] + _circle_radius,
-                            _circle_coords[1] + _data.coord_offset[1] + _circle_radius
+                        ];
+
+                        var _draw_coords_mouse = [
+                            _draw_coords[0] - _circle_radius,
+                            _draw_coords[1] - _circle_radius,
+                            _draw_coords[0] + _circle_radius,
+                            _draw_coords[1] + _circle_radius
                         ];
                         specialistdir = unit.specialist_tooltips(_data.name, _data.min_exp);
-                        draw_circle_colour(_draw_coords[0], _draw_coords[1], _circle_radius, specialistdir.colors[0], specialistdir.colors[1], 0);
-                        for (var i = 0; i < 2; ++i) {
-                            _draw_coords[i] = _draw_coords[i] - _circle_radius;
+
+                        if (scr_hit(_draw_coords_mouse)) {
+                            draw_set_alpha(0.8)
+                            if (scr_click_left()) {
+                                switch _data.name {
+                                    case "Techmarine":
+                                        unit.role_tag[eROLE_TAG.Techmarine] = !unit.role_tag[eROLE_TAG.Techmarine];
+                                        break;
+                                    case "Librarian":
+                                        unit.role_tag[eROLE_TAG.Librarian] = !unit.role_tag[eROLE_TAG.Librarian];
+                                        break;
+                                    case "Chaplain":
+                                        unit.role_tag[eROLE_TAG.Chaplain] = !unit.role_tag[eROLE_TAG.Chaplain];
+                                        break;
+                                    case "Apothecary":
+                                        unit.role_tag[eROLE_TAG.Apothecary] = !unit.role_tag[eROLE_TAG.Apothecary];
+                                        break;
+                                }
+                            }
                         }
-                        array_push(potential_tooltip, [specialistdir.spec_tip, _draw_coords]);
+
+                        draw_circle_colour(_draw_coords[0], _draw_coords[1], _circle_radius, specialistdir.colors[0], specialistdir.colors[1], 0);
+                        draw_set_alpha(1.0)
+                        array_push(potential_tooltip, [specialistdir.spec_tip, _draw_coords_mouse]);
                     }
                 }
             }

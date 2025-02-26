@@ -469,6 +469,20 @@ function scr_ui_settings() {
 				modest_livery=0;
 			}
 		}
+
+        draw_text(xx+66,yy+343,"Tagged Training");
+        che=tagged_training;
+        cx=xx+31;
+        cy=yy+339;
+
+        draw_sprite(spr_creation_check,che+2,cx,cy);
+        if (scr_hit(cx+31,cy,cx+300,cy+20)=true) {
+            tool1="Tagged training";
+            tool2="Turned off by default, makes specialist training select only tagged marines, click on their potential indicators to tag.";
+        }
+        if (point_and_click([cx,cy,cx+32,cy+32])) {
+            tagged_training = !tagged_training;
+        }
     
 	    yy+=35;
     

@@ -335,6 +335,13 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 	religion_sub_cult = "none";
 	base_group = "none";
 	role_history = [];
+    enum eROLE_TAG {
+        Techmarine = 0,
+        Librarian = 1,
+        Chaplain = 2,
+        Apothecary = 3
+    }
+    role_tag = [0, 0, 0, 0]; // [Techmarine, Librarian, Chaplain, Apothecary] // maybe add to list instead?
 	encumbered_ranged=false;
 	encumbered_melee=false;
 	home_world="";

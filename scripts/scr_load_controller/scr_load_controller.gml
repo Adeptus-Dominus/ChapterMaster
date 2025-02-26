@@ -205,6 +205,7 @@ function scr_load_controller(save_id){
 	    obj_controller.penitent_end=ini_read_real("Controller","penitent_end",0);
 	    obj_controller.blood_debt=ini_read_real("Controller","penitent_blood",0);
 
+	    obj_controller.tagged_training=ini_read_real("Controller","tagged_training",0);
 	    obj_controller.training_apothecary=ini_read_real("Controller","training_apothecary",0);
 	    obj_controller.apothecary_recruit_points=ini_read_real("Controller","apothecary_recruit_points",0);
 	    obj_controller.apothecary_aspirant=ini_read_real("Controller","apothecary_aspirant",0);
