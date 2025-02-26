@@ -274,7 +274,23 @@ global.modular_drawing_items = [
         body_types :[0],
         position : "mouth_variants",
         armours : ["MK6 Corvus"],    
-    },                                 
+    },
+    {
+        cultures : ["Knightly", "Crusader"],
+        sprite : spr_mk7_rope_belt,
+        body_types :[0],
+        position : "belt",
+        armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"], 
+        assign_by_rank : 2,   
+    },
+    {
+        cultures : ["Knightly", "Crusader","Gladiator"],
+        sprite : spr_lion_belt,
+        body_types :[0],
+        position : "belt",
+        armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"], 
+        assign_by_rank : 2,   
+    },                                         
 
 ];
 try{
