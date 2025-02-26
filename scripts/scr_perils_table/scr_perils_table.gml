@@ -110,10 +110,10 @@ function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id,
 		        var flavour_text2="There is a massive explosion of warp energy which incapacitates him and injures several other marines!";
 		        unit.add_or_sub_health(-65);
 		       unit.add_or_sub_health(-5000);
-		        repeat(7){
-		            // var t=irandom(men);
-		            if (marine_type[t]!="") then marine_hp[t]-=choose(10,20,30);
-		        }
+		        // repeat(7){
+		        // var t=irandom(men);
+		        //     if (marine_type[t]!="") then marine_hp[t]-=choose(10,20,30);
+		        // }
 		        return flavour_text2;
 		}],	
 		[79, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
