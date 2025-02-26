@@ -3229,11 +3229,14 @@ function scr_initialize_custom() {
 	}
 	
 	if(scr_has_disadv("Sieged")){
+		scr_add_item("Servo-arm", 4);
+		scr_add_item(wep1[defaults_slot, eROLE.Techmarine], 4);
+		scr_add_item(wep2[defaults_slot,  eROLE.Techmarine], 4);
 		scr_add_item("Narthecium", 4);
 		scr_add_item(wep1[defaults_slot, eROLE.Apothecary], 4);
 		scr_add_item(wep2[defaults_slot,  eROLE.Apothecary], 4);
 		scr_add_item("Psychic Hood", 4);
-		scr_add_item("Force Staff", 4);
+		scr_add_item("Force Staff", 4); // These more or less cover the librarians
 		scr_add_item("Plasma Pistol", 4);
 		scr_add_item("Company Standard", 4);
 
@@ -3252,6 +3255,8 @@ function scr_initialize_custom() {
 		scr_add_item("Lascannon", 40);
 		scr_add_item("Power Sword", 12);
 		scr_add_item("Rosarius", 4);
+		scr_add_item(wep1[defaults_slot, eROLE.Chaplain], 4);
+		scr_add_item(wep2[defaults_slot,  eROLE.Chaplain], 4); // With Crozius arcanum added, we want to add these
 	}
 	if (!scr_has_disadv("Sieged")) {
 		scr_add_item("Dreadnought", 6);
@@ -3260,6 +3265,34 @@ function scr_initialize_custom() {
 	if (scr_has_adv("Venerable Ancients")) {
 		scr_add_item("Dreadnought", 4);
 		scr_add_item("Close Combat Weapon", 4);
+	}
+
+	if(scr_has_disadv("Obliterated")){
+		scr_add_item("Servo-arm", 5);
+		scr_add_item(wep1[defaults_slot, eROLE.Techmarine], 5);
+		scr_add_item(wep2[defaults_slot,  eROLE.Techmarine], 5);
+		scr_add_item("Narthecium", 5);
+		scr_add_item(wep1[defaults_slot, eROLE.Apothecary], 5);
+		scr_add_item(wep2[defaults_slot,  eROLE.Apothecary], 5);
+		scr_add_item("Psychic Hood", 5);
+		scr_add_item("Force Staff", 5); // These more or less cover the librarians
+		scr_add_item("Plasma Pistol", 5);
+		scr_add_item("Company Standard", 5);
+
+		// Pretend that if crafters, terminator armor gets lost/stolen?
+
+		scr_add_item("MK7 Aquila", 200);
+		scr_add_item("Scout Armour", 100);
+		scr_add_item("Bolter", 200);
+		scr_add_item("Chainsword", 200);
+		scr_add_item("Jump Pack", 100);
+		scr_add_item("Bolt Pistol", 100);
+		scr_add_item("Heavy Bolter", 50);
+		scr_add_item("Lascannon", 50);
+		scr_add_item("Power Sword", 15);
+		scr_add_item("Rosarius", 5);
+		scr_add_item(wep1[defaults_slot, eROLE.Chaplain], 5);
+		scr_add_item(wep2[defaults_slot,  eROLE.Chaplain], 5); // With crozius arcanum added, we want to add these
 	}
 
 	// man_size+=80;// bikes

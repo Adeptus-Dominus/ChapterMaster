@@ -1461,7 +1461,7 @@ loyalty_hidden=100;// Updated when inquisitors do an inspection
 // ** Sets up gene seed **
 gene_seed=20;
 if scr_has_disadv("Sieged") then gene_seed=floor(random_range(250,400));
-if scr_has_disadv("Obliterated") then gene_seed=floor(random_range(50,200));
+if scr_has_disadv("Obliterated") then gene_seed=floor(random_range(300,500));
 if scr_has_disadv("Serpents Delight") then gene_seed=floor(random_range(50,250)); 
 if scr_has_disadv("Enduring Angels") then gene_seed=floor(random_range(50,250)); 
 if (global.chapter_name=="Lamenters") then gene_seed=30;
