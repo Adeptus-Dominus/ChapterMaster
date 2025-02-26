@@ -205,57 +205,100 @@ i=0;
 if (instance_exists(obj_enunit)){
     for (var i=0;i<array_length(unit_struct);i++){
         if (marine_dead[i]==0 && marine_casting[i]=1){
-            var let,buvvs,buvvs_num;let="D";
-            if (string_count("D0",marine_powers[i])>0) then let="D";
-            if (string_count("B0",marine_powers[i])>0) then let="B";
-            if (string_count("P0",marine_powers[i])>0) then let="P";
-            if (string_count("T0",marine_powers[i])>0) then let="T";
-            if (string_count("R0",marine_powers[i])>0) then let="R";
-            
-            var powerz,buvvs_roll,tha,p;tha=-1;
-            powerz=string_count(let,marine_powers[i]);
-            p=-1;repeat(20){p+=1;buvvs[p]=-1;}
-            if (let="D"){buvvs[1]=2;buvvs[2]=5;buvvs[3]=6;buvvs_num=3;}
-            if (let="B"){buvvs[1]=2;buvvs[2]=3;buvvs_num=2;}
-            if (let="P"){buvvs[1]=1;buvvs[2]=2;buvvs_num=2;}
-            if (let="T"){buvvs[1]=3;buvvs[2]=4;buvvs_num=2;}
-            if (let="R"){buvvs[1]=2;buvvs_num=1;}
-            
-            p=0;repeat(10){p+=1;if (buvvs[p]>powerz-1){buvvs_num-=1;buvvs[p]=-1;}}
-            buvvs_roll=floor(random(100))+1;
-            
-            if (buvvs_roll<=(105-(obj_ncombat.turns*35))) and (obj_ncombat.enemy_forces>=obj_ncombat.player_forces) and (buvvs_num>0){// Cast buffs
-            // if (obj_ncombat.turns<2) and (obj_ncombat.enemy_max>=obj_ncombat.player_max) and (buvvs_num>0){
-                tha=max(buvvs[floor(random(buvvs_num))+1],buvvs[floor(random(buvvs_num))+1]);
-            }
-            
-            if (buvvs_roll>(105-(obj_ncombat.turns*35))) or (obj_ncombat.enemy_forces<obj_ncombat.player_forces) or (buvvs_num=0){// Slam away
-            // if (obj_ncombat.turns>=2) or (obj_ncombat.enemy_max<obj_ncombat.player_max) or (buvvs_num=0){
-                repeat(100){
-                    if (tha=-1) or (tha=buvvs[1]) or (tha=buvvs[2]) or (tha=buvvs[3]) or (tha=buvvs[4]) or (tha=buvvs[5]){
-                        tha=max(floor(random(powerz)),floor(random(powerz)));
-                        if (marine_type[i]="Chief "+string(obj_ini.role[100,17])) then tha=powerz-choose(-1,0,0,1,1,2);
-                        if (marine_type[i]="Chapter Master") then tha=powerz-choose(-1,0,0,1,1,2);
+            try {
+                var known_powers = string_split(unit_struct[i].specials(), "|");
+                if (array_length(known_powers) > 1) {
+                    array_pop(known_powers);
+                }
+                var power_set_letter = "D";
+                var power_sets = ["D0", "B0", "P0", "T0", "R0"];
+                for (var p = 0; p < array_length(power_sets); p++) {
+                    if (string_count(power_sets[p], known_powers) > 0) {
+                        power_set_letter = string_char_at(power_sets[p], 1);
+                        break;
                     }
                 }
-            }
-            
-            enemy=instance_nearest(0,y,obj_enunit);enemy2=enemy;
-            if (enemy.men+enemy.veh+enemy.medi<=0){
-                var x5=enemy.x;
-                with(enemy){
-                    instance_destroy();
+    
+                var power_index;
+                var power_count = string_count(power_set_letter, known_powers);
+    
+                var buff_powers = [];
+                switch (power_set_letter) {
+                    case "D":
+                        buff_powers = [2, 5, 6];
+                        break;
+                    case "B":
+                        buff_powers = [2, 3];
+                        break;
+                    case "P":
+                        buff_powers = [1, 2];
+                        break;
+                    case "T":
+                        buff_powers = [3, 4];
+                        break;
+                    case "R":
+                        buff_powers = [2];
+                        break;
                 }
+    
+                // Decide whenever to cast buffs or attack spells
+                var buff_cast = 0;
+                var buff_roll=irandom(100);
+                if (buff_roll<=(105-(obj_ncombat.turns*35))) and (obj_ncombat.enemy_forces>=obj_ncombat.player_forces) and (array_length(buff_powers) > 0){
+                    // Cast buffs
+                    buff_cast = 1;
+                    // Filter the buff powers that the unit knows
+                    var known_buff_powers = [];
+                    for (var i = 0; i < array_length(buff_powers); i++) {
+                        if (string_count(known_powers, string(buff_powers[i])) > 0) {
+                            array_push(known_buff_powers, buff_powers[i]);
+                        }
+                    }
+                    if (array_length(known_buff_powers) > 0) {
+                        power_index = array_random_element(known_buff_powers);
+                        power_index = string_char_at(power_index, 2);
+                    }
+                } else {
+                    // Cast attack spells
+                    // Filter the attack powers that the unit knows
+                    var known_attack_powers = [];
+                    for (var i = 0; i < array_length(known_powers); i++) {
+                        if (string_count(buff_powers, string(known_powers[i])) == 0) {
+                            array_push(known_attack_powers, known_powers[i]);
+                        }
+                    }
+                    if (array_length(known_attack_powers) > 0) {
+                        power_index = array_random_element(known_attack_powers);
+                        power_index = string_char_at(power_index, 2);
+                    }
+                }
+                
                 enemy=instance_nearest(0,y,obj_enunit);
                 enemy2=enemy;
+                if (enemy.men+enemy.veh+enemy.medi<=0){
+                    var x5=enemy.x;
+                    with(enemy){
+                        instance_destroy();
+                    }
+                    enemy=instance_nearest(0,y,obj_enunit);
+                    enemy2=enemy;
+                }
+                
+                // I'm not sure what was the plan, but "Z" powers (hacks) are unused in scr_powers
+                /* var ham=false;
+                if (marine_type[i]="Chapter Master") and (obj_ncombat.kamehameha=true) and ((obj_ncombat.big_boom>0) or (choose(1,2)=2)){
+                    if (obj_ncombat.enemy_forces>=40) then ham=true;
+                }
+    
+                if (ham=false) then scr_powers(string_upper(power_set_letter),power_index,enemy2,i);
+                if (ham=true) then scr_powers("Z",power_index,enemy2,i); */
+    
+                scr_powers(string_upper(power_set_letter),power_index,enemy2,i);
+            } catch (_exception) {
+                show_debug_message($"buff_cast: {buff_cast}");
+                show_debug_message($"known_powers: {known_powers}");
+                handle_exception(_exception);
             }
-            
-            var ham=false;
-            if (marine_type[i]="Chapter Master") and (obj_ncombat.kamehameha=true) and ((obj_ncombat.big_boom>0) or (choose(1,2)=2)){
-                if (obj_ncombat.enemy_forces>=40) then ham=true;
-            }
-            if (ham=false) then scr_powers(string_upper(let),tha,enemy2,i);
-            if (ham=true) then scr_powers("Z",tha,enemy2,i);
         }
     }
 }
