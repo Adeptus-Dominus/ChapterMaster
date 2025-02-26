@@ -46,7 +46,8 @@ function ComplexSet(unit) constructor{
             thorax_variants : spr_mk7_thorax_variants,
             chest_variants : spr_mk7_chest_variants,
             leg_variants  : spr_mk7_leg_variants,
-            head : spr_mk7_head_variants,       
+            head : spr_mk7_head_variants,
+            belt : spr_mk7_complex_belt      
     };
 
     _are_exceptions = false;
@@ -209,6 +210,7 @@ function ComplexSet(unit) constructor{
         crown : unit.get_body_data("crown_variation","head"),
         forehead : unit.get_body_data("forehead_variation","head"),
         backpack_decoration : unit.get_body_data("backpack_decoration_variation","torso"),
+        belt : unit.get_body_data("belt_variation","torso"),
     }
 
     static draw_component = function(component_name){
@@ -297,6 +299,7 @@ function ComplexSet(unit) constructor{
              "left_knee",
              "tabbard",
              "robe",
+             "belt",
              "left_personal_livery",             
          ];
          for (var i=0;i<array_length(_draw_order);i++){

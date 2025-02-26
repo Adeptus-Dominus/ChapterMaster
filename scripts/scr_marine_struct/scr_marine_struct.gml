@@ -710,6 +710,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			backpack_decoration_variation : irandom(100),
 			thorax_variation : irandom(100),
 			chest_variation : irandom(100),
+			belt_variation : irandom(100),
 		}, 
 		"left_arm":{
 			trim_variation : irandom(100),

@@ -251,21 +251,21 @@ global.modular_drawing_items = [
     },
     {
         sprite : spr_purity_seal,
-        body_types :[0],
+        body_types :[0,2],
         position : "purity_seals",
     },
     {
         sprite : spr_marksmans_honor,
-        body_types :[0],
+        body_types :[0,2],
         position : "purity_seals",
         stats : [["weapon_skill", 50, "moreex"]]
     },
     {
         sprite : spr_crux_on_chain,
-        body_types :[0],
+        body_types :[0,2],
         position : "purity_seals",
         exp : {
-            min : 120,
+            min : 110,
         }
     },    
     {

@@ -1319,6 +1319,7 @@
     {"id":{"name":"fnt_cul_14","path":"fonts/fnt_cul_14/fnt_cul_14.yy",},},
     {"id":{"name":"fnt_cul_18","path":"fonts/fnt_cul_18/fnt_cul_18.yy",},},
     {"id":{"name":"spr_mk4_leg_variants","path":"sprites/spr_mk4_leg_variants/spr_mk4_leg_variants.yy",},},
+    {"id":{"name":"spr_mk7_complex_belt","path":"sprites/spr_mk7_complex_belt/spr_mk7_complex_belt.yy",},},
     {"id":{"name":"fnt_40k_10","path":"fonts/fnt_40k_10/fnt_40k_10.yy",},},
     {"id":{"name":"fnt_40k_12","path":"fonts/fnt_40k_12/fnt_40k_12.yy",},},
     {"id":{"name":"fnt_40k_12i","path":"fonts/fnt_40k_12i/fnt_40k_12i.yy",},},
