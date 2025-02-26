@@ -296,7 +296,7 @@ function ComplexSet(unit) constructor{
              "left_pauldron",
              "left_knee",
              "tabbard",
-             "robe"
+             "robe",
              "left_personal_livery",             
          ];
          for (var i=0;i<array_length(_draw_order);i++){
@@ -310,7 +310,7 @@ function ComplexSet(unit) constructor{
          purity_seals_and_hangings();
                               
     }
-    static purity_seals_and_hangings(){
+    static purity_seals_and_hangings = function(){
         //purity seals/decorations
         //TODO imprvoe this logic to be more extendable
 
@@ -320,30 +320,30 @@ function ComplexSet(unit) constructor{
             var _exp = unit.experience
             if (struct_exists(_torso_data,"purity_seal")){
                 var _torso_purity_seals = _torso_data[$"purity_seal"];
-                var positions = [[-24, 14], [-44, 18], [-6, 16]];
+                var positions = [[60, 88], [90, 84], [104, 64]];
                 for (var i=0;i<array_length(_torso_purity_seals);i++){
                     if ((_torso_purity_seals[i]+_exp)>100){
-                        draw_sprite(purity_seals,_torso_purity_seals[i] ,positions[i][0], positions[i][1]);
+                        draw_sprite(purity_seals,_torso_purity_seals[i] ,x_surface_offset+positions[i][0], y_surface_offset+positions[i][1]);
                     }
                 }                                      
             }
             if (struct_exists(_body[$ "left_arm"],"purity_seal")){
                 var _arm_seals = _body[$ "left_arm"][$"purity_seal"];
                 var _arm_seals = _torso_data[$"purity_seal"];
-                var positions = [[70, 0], [26, 7], [15, 10]];
-                for (var i=0;i<array_length(_torso_purity_seals);i++){
+                var positions = [[146, 69], [121, 73], [151, 69]];
+                for (var i=0;i<array_length(_arm_seals);i++){
                     if ((_arm_seals[i]+_exp)>100){
-                        draw_sprite(purity_seals,_arm_seals[i] ,positions[i][0], positions[i][1]);
+                        draw_sprite(purity_seals,_arm_seals[i] ,x_surface_offset+positions[i][0], y_surface_offset+positions[i][1]);
                     }
                 }                                                     
             }
             if (struct_exists(_body[$ "right_arm"],"purity_seal")){
                 var _arm_seals = _body[$ "right_arm"][$"purity_seal"];
                 var _arm_seals = _torso_data[$"purity_seal"];
-                var positions = [[-54, -3], [-72,8], [-57, 12]];
-                for (var i=0;i<array_length(_torso_purity_seals);i++){
+                var positions = [[44, 76], [30,71], [16, 69]];
+                for (var i=0;i<array_length(_arm_seals);i++){
                     if ((_arm_seals[i]+_exp)>100){
-                        draw_sprite(purity_seals,_arm_seals[i] ,positions[i][0], positions[i][1]);
+                        draw_sprite(purity_seals,_arm_seals[i] ,x_surface_offset+positions[i][0], y_surface_offset+positions[i][1]);
                     }
                 }                                    
             }            

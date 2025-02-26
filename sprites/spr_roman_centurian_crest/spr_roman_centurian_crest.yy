@@ -4,7 +4,7 @@
   "name": "spr_roman_centurian_crest",
   "bbox_bottom": 87,
   "bbox_left": 18,
-  "bbox_right": 104,
+  "bbox_right": 105,
   "bbox_top": 14,
   "bboxMode": 0,
   "collisionKind": 1,

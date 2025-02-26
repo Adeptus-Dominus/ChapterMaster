@@ -244,7 +244,7 @@ global.modular_drawing_items = [
     {
         sprite : spr_roman_centurian_crest,
         body_types :[0],
-        cultures : ["Roman, Greek", "Ultra", "Gladiator"],
+        cultures : ["Roman, Greek", "Gladiator"],
         position : "crest",
         role_type : ["captain_candidates"],
         assign_by_rank : 2,
@@ -254,6 +254,14 @@ global.modular_drawing_items = [
         body_types :[0],
         position : "purity_seals",
     },
+    {
+        sprite : spr_crux_on_chain,
+        body_types :[0],
+        position : "purity_seals",
+        exp : {
+            min : 120,
+        }
+    },    
     {
         cultures : ["Knightly"],
         sprite : spr_mk6_knightly_mouth_variants,
