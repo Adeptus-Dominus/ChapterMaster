@@ -52,6 +52,7 @@ function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id,
 				marine_casting_cooldown[unit_id] += 1;
 		        var flavour_text2="Capricious voices eminate from the surrounding area, whispering poisonous lies and horrible truths.";
 		        unit.corruption+=choose(10,15,20);
+				// TODO: Code bellow causes out of bounds crashes. Fix and uncomment;
 		        // repeat(6){
 		        //     var t=irandom(men);
 		        //     if (marine_type[t]!="") then unit.corruption+=choose(6,9,12,15);
@@ -110,6 +111,7 @@ function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id,
 		        var flavour_text2="There is a massive explosion of warp energy which incapacitates him and injures several other marines!";
 		        unit.add_or_sub_health(-65);
 		       unit.add_or_sub_health(-5000);
+			   	// TODO: Code bellow causes out of bounds crashes. Fix and uncomment;
 		        // repeat(7){
 		        // var t=irandom(men);
 		        //     if (marine_type[t]!="") then marine_hp[t]-=choose(10,20,30);
