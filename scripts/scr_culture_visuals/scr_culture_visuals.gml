@@ -59,7 +59,7 @@ function load_vis_set_to_global(directory, data){
 global.modular_drawing_items = [
     {
         sprite : spr_da_mk5_helm_crests,
-        cultures : ["knightly"],
+        cultures : ["Knightly"],
         body_types :[0],
         armours : ["MK3 Iron Armour", "MK4 Maximus", "MK5 Heresy"],
         position : "crest",
@@ -67,7 +67,7 @@ global.modular_drawing_items = [
     },
     {
         sprite : spr_da_mk7_helm_crests,
-        cultures : ["knightly"],
+        cultures : ["Knightly"],
         body_types :[0],
         armours : ["MK7 Aquila", "Power Armour", "MK8 Errant","Artificer Armour"],
         position : "crest",
@@ -258,7 +258,7 @@ global.modular_drawing_items = [
         sprite : spr_marksmans_honor,
         body_types :[0],
         position : "purity_seals",
-        stats : ["weapon_skill", 50, "moreex"]
+        stats : [["weapon_skill", 50, "moreex"]]
     },
     {
         sprite : spr_crux_on_chain,

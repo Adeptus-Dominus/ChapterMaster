@@ -307,18 +307,26 @@ function scr_marine_game_spawn_constructions(){
 			} else{
 				bionic_count = choose(0,0,0,1,2)
 			}
+			if (global.chapter_name=="Ultramarines" || scr_has_adv("Enemy: Tyranids")){
+				if (choose(true,false)){
+					add_trait("tyrannic_vet");
+					bionic_count+=irandom(1);
+				}
+			}			
 			break;
 		case  obj_ini.role[100][8]:		//tacticals
 			break;
 		case  obj_ini.role[100][9]: 		//devastators	
 			break;
+		case  obj_ini.role[100][4]:			
 		case  obj_ini.role[100][3]: //veterans
-			if (global.chapter_name=="Ultramarines"){
+			if (global.chapter_name=="Ultramarines" || scr_has_adv("Enemy: Tyranids")){
 				if (choose(true,false)){
 					add_trait("tyrannic_vet");
 					bionic_count+=irandom(1);
 				}
 			}
+
 			break;
 		case obj_ini.role[100][16]: //techmarines
 			if ((old_guard >= 90 && company > 0 && company < 6) || company == 1){

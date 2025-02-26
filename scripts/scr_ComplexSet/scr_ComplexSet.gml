@@ -310,40 +310,59 @@ function ComplexSet(unit) constructor{
          purity_seals_and_hangings();
                               
     }
-    static purity_seals_and_hangings = function(){
+static purity_seals_and_hangings = function(){
         //purity seals/decorations
         //TODO imprvoe this logic to be more extendable
 
-        if (armour_type==ArmourType.Normal){
+        if (armour_type==ArmourType.Normal || armour_type==ArmourType.Terminator){
             var _body = unit.body;
             var _torso_data = _body[$ "torso"];
             var _exp = unit.experience
+            var _x_offset = x_surface_offset + (armour_type==ArmourType.Normal ? 0 : -7);
+            var _y_offset = y_surface_offset + (armour_type==ArmourType.Normal ? 0 : -38);
             if (struct_exists(_torso_data,"purity_seal")){
                 var _torso_purity_seals = _torso_data[$"purity_seal"];
-                var positions = [[60, 88], [90, 84], [104, 64]];
+                if (armour_type==ArmourType.Normal){
+                    var positions = [[60, 88], [90, 84], [104, 64]];
+                } else {
+                    var positions = [[117, 115], [51, 139], [131, 136]];
+                }
                 for (var i=0;i<array_length(_torso_purity_seals);i++){
+                    if (i >= array_length(positions)) then continue;
                     if ((_torso_purity_seals[i]+_exp)>100){
-                        draw_sprite(purity_seals,_torso_purity_seals[i] ,x_surface_offset+positions[i][0], y_surface_offset+positions[i][1]);
+                        draw_sprite(purity_seals,_torso_purity_seals[i] ,_x_offset+positions[i][0], _y_offset+positions[i][1]);
                     }
                 }                                      
             }
             if (struct_exists(_body[$ "left_arm"],"purity_seal")){
                 var _arm_seals = _body[$ "left_arm"][$"purity_seal"];
                 var _arm_seals = _torso_data[$"purity_seal"];
-                var positions = [[146, 69], [121, 73], [151, 69]];
+                if (armour_type==ArmourType.Normal){
+                    var positions = [[135, 69], [121, 73]];
+                }
+                else {
+                    var positions = [[163, 92], [148, 94], [126, 84]];
+                }                
                 for (var i=0;i<array_length(_arm_seals);i++){
+                    if (i >= array_length(positions)) then continue;
                     if ((_arm_seals[i]+_exp)>100){
-                        draw_sprite(purity_seals,_arm_seals[i] ,x_surface_offset+positions[i][0], y_surface_offset+positions[i][1]);
+                        draw_sprite(purity_seals,_arm_seals[i] ,_x_offset+positions[i][0], _y_offset+positions[i][1]);
                     }
                 }                                                     
             }
             if (struct_exists(_body[$ "right_arm"],"purity_seal")){
                 var _arm_seals = _body[$ "right_arm"][$"purity_seal"];
                 var _arm_seals = _torso_data[$"purity_seal"];
-                var positions = [[44, 76], [30,71], [16, 69]];
+                if (armour_type==ArmourType.Normal){
+                    var positions = [[44, 76], [30,71], [16, 69]];
+                }                
+                else {
+                    var positions = [[11, 91], [39, 90], [66, 86]];
+                } 
                 for (var i=0;i<array_length(_arm_seals);i++){
+                    if (i >= array_length(positions)) then continue;
                     if ((_arm_seals[i]+_exp)>100){
-                        draw_sprite(purity_seals,_arm_seals[i] ,x_surface_offset+positions[i][0], y_surface_offset+positions[i][1]);
+                        draw_sprite(purity_seals,_arm_seals[i] ,_x_offset+positions[i][0], _y_offset+positions[i][1]);
                     }
                 }                                    
             }            
