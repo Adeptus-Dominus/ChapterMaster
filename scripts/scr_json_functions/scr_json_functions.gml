@@ -16,7 +16,6 @@ function json_to_gamemaker(_json_path, _func) {
             }
 
             var _json_string = buffer_read(file_buffer, buffer_string);
-            show_debug_message($"_json_string: {_json_string}");
             var _parsed_json = _func(_json_string);
     
             return _parsed_json;
