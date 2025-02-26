@@ -255,6 +255,12 @@ global.modular_drawing_items = [
         position : "purity_seals",
     },
     {
+        sprite : spr_marksmans_honor,
+        body_types :[0],
+        position : "purity_seals",
+        stats : ["weapon_skill", 50, "moreex"]
+    },
+    {
         sprite : spr_crux_on_chain,
         body_types :[0],
         position : "purity_seals",
@@ -268,7 +274,7 @@ global.modular_drawing_items = [
         body_types :[0],
         position : "mouth_variants",
         armours : ["MK6 Corvus"],    
-    },                                  
+    },                                 
 
 ];
 try{
