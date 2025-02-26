@@ -1804,7 +1804,7 @@ if (enemy = 7) {
 		}
 		u.dudes[2] = "Shoota Boy";
 		u.dudes_num[2] = 3;
-		u.dudes[3] = "Tankbusta"; // In the future, I might want to add choose function to have an option between "Tankbusta" and others
+		u.dudes[3] = "Burna Boy"; // In the future, I might want to add choose function to have an option between "Tankbusta" and others
 		u.dudes_num[3] = 1;
 		instance_deactivate_object(u);
 
