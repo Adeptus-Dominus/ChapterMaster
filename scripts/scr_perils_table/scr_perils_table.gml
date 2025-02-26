@@ -1,4 +1,5 @@
 
+/// @mixin
 function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
 	 var combat_perils = [
 		[15, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
@@ -46,7 +47,7 @@ function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id,
 		        var flavour_text2="Capricious voices eminate from the surrounding area, whispering poisonous lies and horrible truths.";
 		        unit.corruption+=choose(10,15,20);
 		        repeat(6){
-		            var t=floor(random(men));
+		            var t=irandom(men);
 		            if (marine_type[t]!="") then unit.corruption+=choose(6,9,12,15);
 		        }
 		        return flavour_text2;
@@ -102,7 +103,7 @@ function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id,
 		        unit.add_or_sub_health(-65);
 		       unit.add_or_sub_health(-5000);
 		        repeat(7){
-		            var t=floor(random(men));
+		            var t=irandom(men);
 		            if (marine_type[t]!="") then marine_hp[t]-=choose(10,20,30);
 		        }
 		        return flavour_text2;
