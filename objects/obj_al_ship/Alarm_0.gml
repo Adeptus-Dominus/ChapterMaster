@@ -730,7 +730,7 @@ if (class=="Iconoclast"){
     weapon_range[1]=300;
     weapon_cooldown[1]=30;
 }else 
-if (class=="Q-ship"){
+if (class=="Armed Freighter"){
     sprite_index=spr_ship_stri;
     ship_size=2;
     name="";

@@ -172,7 +172,7 @@ if (class="Gloriana"){
         weapon_cooldown[2]=60;
     }
 
-    if (class="Q-ship"){turrets=2;
+    if (class="Armed Freighter"){turrets=2;
         weapons=1;shield_size=1;sprite_index=spr_ship_stri;
         weapon_facing[1]="most";
         weapon_dam[1]=8;
