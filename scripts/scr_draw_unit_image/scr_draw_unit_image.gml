@@ -958,7 +958,9 @@ function scr_draw_unit_image(_background=false){
              "forehead",
              "left_eye",
              "right_eye",
-             "crown"
+             "crown",
+             "backpack_decoration",
+             "belt"
             ], _area
          )
 
