@@ -60,10 +60,10 @@ function player_select_powers() {
 }
 
 /// @mixin
-function scr_powers(power_set, power_count, enemy_target, unit_id) {
+function scr_powers(power_set, power_index, target_unit, unit_id) {
     // power_set: letter
-    // power_count: number
-    // enemy_target: target
+    // power_index: number
+    // target_unit: target
     // unit_id: marine_id
 
     // This is a stand-alone script that determines powers based on the POWERS variable,
@@ -84,13 +84,12 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
     var target_type = "";
     var weapon_one = unit.get_weapon_one_data();
     var weapon_two = unit.get_weapon_two_data();
-    var target_unit = enemy_target;
-    var power_index = power_count;
+    var gear = unit.gear();
     // show_debug_message(power_set);
     var psy_discipline = convert_power_letter(power_set);
     var flavour_text1 = "", flavour_text2 = "", flavour_text3 = "", flavour_text_4 = "";
     var binders_adv = scr_has_adv("Daemon Binders");
-    var has_hood = string_count("Hood", marine_gear[unit_id]) > 0;
+    var has_hood = gear == "Psychic Hood";
     var using_tome = false;
     var tome_discipline = "";
     var tome_roll = irandom(99) + 1;
@@ -200,7 +199,8 @@ function scr_powers(power_set, power_count, enemy_target, unit_id) {
                 tome_perils_chance = disciplines_data[$ disciplines_array[i]].perils_chance;
                 tome_perils_strength = disciplines_data[$ disciplines_array[i]].perils_strength;
             }
-            // show_debug_message(power_index);
+            // show_debug_message($"powers_array: {powers_array}");
+            // show_debug_message($"power_index: {power_index}");
             power_name = powers_array[power_index];
         }
     }

@@ -31,11 +31,11 @@ function scr_powers_new(){
 
 
 
-	if (powers_have<powers_should_have) and (powers_have<(letmax)+1) and (random_learn=true){
+	if (powers_have<powers_should_have) and (powers_have<(letmax)) and (random_learn=true){
 	    var newpow;newpow=0;
-	    if (powers_have<powers_should_have) and (powers_have<(letmax)+1){
-		    if (powers_have<powers_should_have) and (powers_have<(letmax)+1){
-		        var tha=floor(random(letmax))+1;
+	    if (powers_have<powers_should_have) and (powers_have<(letmax)){
+		    if (powers_have<powers_should_have) and (powers_have<(letmax)){
+		        var tha=floor(random(letmax));
 		        if (string_count(string(tha),specials())=0){
 		            powers_have+=1;
 					_powers_learned++;
@@ -46,13 +46,13 @@ function scr_powers_new(){
 	}
 
 
-	if (powers_have<powers_should_have) and (powers_have<(letmax)+1) and (random_learn=false){
+	if (powers_have<powers_should_have) and (powers_have<(letmax)) and (random_learn=false){
 	    // Used to work like this.  I removed it because I was too lazy to have powers chance to be cast be based on experience.
 	    // Should you wish to have powers be randomly learned simply change random_learn to true and write the rest of the code.
     
 	    var newpow=0;
 	    var reps = 0;
-	    while(powers_have<powers_should_have && reps<(letmax)+1){
+	    while(powers_have<powers_should_have && reps<(letmax)){
 	    	reps++;
 	        var tha=powers_have;
 	        if (string_count(string(tha),specials())==0){
