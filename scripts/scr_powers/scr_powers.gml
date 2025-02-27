@@ -1,5 +1,641 @@
 #macro ARR_power_discipline_list ["default", "biomancy", "pyromancy","telekinesis","rune Magick"]
 
+global.disciplines_data = {
+    "minor_nu": {
+        "powers": ["Wave of Entropy", "Insect Swarm", "Blood Dementia"],
+        "perils_chance": 0.10,
+        "perils_strength": 10
+    },
+    "minor_nu_daemon": {
+        "powers": ["Wave of Entropy", "Insect Swarm", "Blood Dementia", "Putrid Vomit"],
+        "perils_chance": 0.30,
+        "perils_strength": 30
+    },
+    "minor_tz_daemon": {
+        "powers": ["Wave of Change", "Warp Bolts", "Warp Beam", "Iron Arm"],
+        "perils_chance": 0.30,
+        "perils_strength": 30
+    },
+    "minor_sl_daemon": {
+        "powers": ["Warp Bolts", "Rainbow Beam", "Hysterical Frenzy", "Symphony of Pain"],
+        "perils_chance": 0.30,
+        "perils_strength": 30
+    },
+    "minor_default": {
+        "powers": ["Avenge", "Spatial Distortion", "Stormbringer"],
+        "perils_chance": 0,
+        "perils_strength": 0
+    },
+    "minor_telekenesis": {
+        "powers": ["Spatial Distortion", "Telekinetic Dome", "Vortex of Doom"],
+        "perils_chance": 0,
+        "perils_strength": 0
+    },
+    "minor_biomancy": {
+        "powers": ["Haemorrhage", "Regenerate", "Iron Arm", "Insect Swarm"],
+        "perils_chance": 0.10,
+        "perils_strength": 10
+    },
+    "minor_pyromancy": {
+        "powers": ["Inferno", "Sun Burst", "Molten Beam"],
+        "perils_chance": 0,
+        "perils_strength": 0
+    },
+    "minor_what_the_fuck_man": {
+        "powers": ["Blood Dementia", "Spatial Distortion", "Haemorrhage"],
+        "perils_chance": 0.20,
+        "perils_strength": 20
+    },
+    "hacks": {
+        "powers": ["Gather Energy"]
+    },
+    "rune_magick": {
+        "powers": ["Living Lightning", "Murderous Hurricane", "Stormbringer", "Fury of the Wolf", "Thunder Clap", "Spatial Distortion"]
+    },
+    "biomancy": {
+        "powers": ["Minor Smite", "Blood Boil", "Iron Arm", "Endurance", "Regenerate", "Haemorrhage"]
+    },
+    "pyromancy": {
+        "powers": ["Breathe Fire", "Fiery Form", "Fire Shield", "Inferno", "Sun Burst", "Molten Beam"]
+    },
+    "telekinesis": {
+        "powers": ["Crush", "Shockwave", "Wave of Force", "Telekinetic Dome", "Spatial Distortion", "Vortex of Doom"]
+    },
+    "default": {
+        "powers": ["Minor Smite", "Smite", "Force Dome", "Machine Curse", "Avenge", "Quickening", "Might of the Ancients", "Vortex of Doom"]
+    }
+};
+
+// TODO: flavour_text options and power_modifiers require a better structure to.
+global.powers_data = {
+    "Minor Smite": {
+        "type": "attack",
+        "range": 5,
+        "target_type": 3,
+        "max_kills": 1,
+        "power": 160,
+        "armor_piercing": 0,
+        "duration": 0,
+        "flavour_text": {
+            "default_1": "- a coil of warp energy lashes out at the enemy.",
+            "binders_adv": "- a green, sickly coil of energy lashes out at the enemy."
+        }
+    },
+    "Wave of Entropy": {
+        "type": "attack",
+        "range": 3,
+        "target_type": 3,
+        "max_kills": 1,
+        "power": 220,
+        "armor_piercing": 0,
+        "duration": 0,
+        "flavour_text": {
+            "default_1": "- a putrid cone of warp energy splashes outward, ",
+            "enemy_9": "twisting and rusting everything it touches.",
+            "enemy_10": "boiling and turning everything to ash."
+        },
+        "sorcery": true
+    },
+    "Wave of Change": {
+        "type": "attack",
+        "range": 3,
+        "target_type": 3,
+        "max_kills": 1,
+        "power": 220,
+        "armor_piercing": 0,
+        "duration": 0,
+        "flavour_text": {
+            "default_1": "- a wispy cone of warp energy reaches outward, twisting and morphing all that it touches."
+        },
+        "sorcery": true
+    },
+    "Insect Swarm": {
+        "type": "attack",
+        "range": 3,
+        "target_type": 3,
+        "max_kills": 1,
+        "power": 500,
+        "armor_piercing": 1,
+        "duration": 0,
+        "flavour_text": {
+            "default_1": "- a massive, black cloud of insects spew from his body. At once they begin burrowing into your foes.",
+            "default_2": "- rank, ichory insects spew forth from his body at your foes. They begin burrowing through flesh and armour alike."
+        },
+        "sorcery": true
+    },
+    "Blood Dementia": {
+        "type": "buff",
+        "range": 0,
+        "target_type": 0,
+        "max_kills": 0,
+        "power": 0,
+        "armor_piercing": 0,
+        "duration": 3,
+        "buff": {
+            "attack": 2
+        },
+        "flavour_text": {
+            "default_1": ". He goes absolutely nuts, screaming and raging, his mind and body pulsing with chaotic energy."
+        }
+    },
+    "Putrid Vomit": {
+        "type": "attack",
+        "range": 2.1,
+        "target_type": 3,
+        "max_kills": 1,
+        "power": 600,
+        "armor_piercing": 0,
+        "duration": 0,
+        "flavour_text": {
+            "default_1": "- from in front of their mouth a stream of rancid, acidic vomit spews forth at tremendous pressure, splashing over his foes."
+        },
+        "sorcery": true,
+        "power_modifiers": {
+            "enemy_9": 450
+        }
+    },
+    "Warp Bolts": {
+        "type": "attack",
+        "range": 5,
+        "target_type": 3,
+        "max_kills": 1,
+        "power": 300,
+        "armor_piercing": 0,
+        "duration": 0,
+        "flavour_text": {
+            "default_1": "- several bolts of purple warp energy appear and are flung at the enemy.",
+            "default_2": "- he launches a series of rapid warp bolts at the enemy.",
+            "default_3": "- three oozing, shifting bolts of warp energy fly outward from his palms."
+        },
+        "sorcery": true
+    },
+    "Warp Beam": {
+        "type": "attack",
+        "range": 8,
+        "target_type": 4,
+        "max_kills": 1,
+        "power": 600,
+        "armor_piercing": 1,
+        "duration": 0,
+        "flavour_text": {
+            "default": "- a massive beam of purple warp energy shoots forth. All that it touches is consumed."
+        },
+        "sorcery": true
+    },
+    "Rainbow Beam": {
+        "type": "attack",
+        "range": 10,
+        "target_type": 3,
+        "max_kills": 1,
+        "power": 500,
+        "armor_piercing": 1,
+        "duration": 0,
+        "flavour_text": {
+            "default": "- a massive beam of warp energy hisses at the enemy, the crackling energy shifting through every color imaginable sickeningly fast."
+        },
+        "sorcery": true
+    },
+    "Hysterical Frenzy": {
+        "type": "buff",
+        "range": 0,
+        "target_type": 0,
+        "max_kills": 0,
+        "power": 0,
+        "armor_piercing": 0,
+        "duration": 999,
+        "flavour_text": {
+            "multiple": ". Warp energy infuses his body, and several other marines, frenzying them into sensation-seeking destruction.",
+            "single": ". Warp energy infuses his body, frenzying him into sensation-seeking destruction."
+        },
+        "sorcery": true
+    },
+    "Symphony of Pain": {
+        "type": "attack",
+        "range": 2.1,
+        "target_type": 3,
+        "max_kills": 1,
+        "power": 750,
+        "armor_piercing": 1,
+        "duration": 0,
+        "flavour_text": {
+            "default": "- mouth stretching unnaturally wide, before letting out a hellish shriek.",
+            "alternate_1": "The air rumbles and shifts at the sheer magnitude of the sound.",
+            "alternate_2": "Armour and flesh tear alike are torn apart by volume of the howl."
+        },
+        "sorcery": true
+    },
+    "gather_energy": {
+        "type": "buff",
+        "range": 0,
+        "target_type": 0,
+        "max_kills": 0,
+        "power": 0,
+        "armor_piercing": 0,
+        "duration": 0,
+        "flavour_text": {
+            "default_1": " begins to gather psychic energy.",
+            "default_2": " continues to gather psychic energy."
+        },
+        "sorcery": true
+    },
+    "Imperator Maior": {
+        "type": "attack",
+        "range": 5,
+        "target_type": 3,
+        "max_kills": 1,
+        "power": 1000,
+        "armor_piercing": 1,
+        "duration": 0,
+        "flavour_text": {
+            "default": "- he unleashes all of the gathered energy in a massive psychic blast."
+        },
+        "sorcery": true
+    },
+    "Minor Smite": {
+        "type": "attack",
+        "range": 5,
+        "target_type": 3,
+        "max_kills": 1,
+        "power": 160,
+        "armor_piercing": 0,
+        "duration": 0,
+        "flavour_text": {
+            "default": "- a coil of warp energy lashes out at the enemy.",
+            "binders_adv": "- a green, sickly coil of energy lashes out at the enemy."
+        },
+        "sorcery": true
+    },
+    "Smite": {
+        "type": "attack",
+        "range": 5,
+        "target_type": 3,
+        "max_kills": 1,
+        "power": 260,
+        "armor_piercing": 0,
+        "duration": 0,
+        "flavour_text": {
+            "default_1": "- a blast of warp energy smashes into the enemy.",
+            "default_2": "- warp lightning crackles and leaps to the enemy.",
+            "default_3": "- a brilliant bolt of lightning crashes into the enemy.",
+            "binders_adv_1": "- a green blast of sorcery smashes into the enemy.",
+            "binders_adv_2": "- a wave of green fire launches forth, made up of hideous faces and claws."
+        },
+        "sorcery": true
+    },
+    "Force Dome": {
+        "type": "buff",
+        "range": 1,
+        "target_type": 1,
+        "max_kills": 0,
+        "power": 0,
+        "armor_piercing": 0,
+        "duration": 2,
+        "flavour_text": {
+            "default": ".  An oozing, shifting dome of pure energy appears, covering your forces.",
+            "binders_adv": ".  An oozing, shifting dome of sorcerous energy appears, covering your forces."
+        },
+        "sorcery": true
+    },
+    "Machine Curse": {
+        "type": "attack",
+        "range": 5,
+        "target_type": 4,
+        "max_kills": 0,
+        "power": 300,
+        "armor_piercing": 1,
+        "duration": 0,
+        "flavour_text": {
+            "default": "- the machine spirit within an enemy vehicle is roused."
+        }
+    },
+    "Avenge": {
+        "type": "attack",
+        "range": 5,
+        "target_type": 3,
+        "max_kills": 1,
+        "power": 500,
+        "armor_piercing": 0,
+        "duration": 0,
+        "flavour_text": {
+            "default_1": "- a destructive avatar of rolling flame crashes into the enemy.",
+            "default_2": "- a massive conflagration rises up and then crashes down upon the enemy.",
+            "binders_adv_1": "- a hideous being of rolling flame crashes into the enemy.",
+            "binders_adv_2": "- a massive conflagration rises up and then crashes down upon the enemy."
+        },
+        "sorcery": true
+    },
+    "Quickening": {
+        "type": "buff",
+        "range": 0,
+        "target_type": 0,
+        "max_kills": 0,
+        "power": 0,
+        "armor_piercing": 0,
+        "duration": 3,
+        "flavour_text": {
+            "default": ".  Gaining precognitive powers, he is better able to avoid enemy blows."
+        }
+    },
+    "Might of the Ancients": {
+        "type": "buff",
+        "range": 0,
+        "target_type": 0,
+        "max_kills": 0,
+        "power": 0,
+        "armor_piercing": 0,
+        "duration": 3,
+        "flavour_text": {
+            "default": ".  His physical power and might is increased to unimaginable levels."
+        }
+    },
+    "Vortex of Doom": {
+        "type": "attack",
+        "range": 5,
+        "target_type": 3,
+        "max_kills": 1,
+        "power": 800,
+        "armor_piercing": 1,
+        "duration": 0,
+        "flavour_text": {
+            "default": "- a hole between real and warp space is torn open with deadly effect.",
+            "binders_adv": "- a hole between realspace and the warp is torn, unleashing a myriad of sorcerous energies."
+        },
+        "sorcery": true
+    },
+    "Breathe Fire": {
+        "type": "attack",
+        "range": 3,
+        "target_type": 3,
+        "max_kills": 0,
+        "power": 200,
+        "armor_piercing": -1,
+        "duration": 0,
+        "flavour_text": {
+            "default": "- a bright jet of flame shoots forth at the enemy.",
+            "binders_adv": "- a greenish, eerie jet of flame shoots forth at the enemy."
+        }
+    },
+    "Fiery Form": {
+        "type": "buff",
+        "range": 0,
+        "target_type": 0,
+        "max_kills": 0,
+        "power": 0,
+        "armor_piercing": 0,
+        "duration": 3,
+        "flavour_text": {
+            "default": ".  Hissing flames appear and roar around the marine, threatening nearby foes.",
+            "binders_adv": ".  Hideous, eerie beings of warp fire begin to dance around the marine, threatening nearby foes."
+        }
+    },
+    "Fire Shield": {
+        "type": "buff",
+        "range": 0,
+        "target_type": 0,
+        "max_kills": 0,
+        "power": 0,
+        "armor_piercing": 0,
+        "duration": 3,
+        "flavour_text": {
+            "default": ".  Orange sheets of fire shimmer around your forces, protecting them.",
+            "binders_adv": "-  Purple sheets of warp fire shimmer around your forces, protecting them."
+        }
+    },
+    "Inferno": {
+        "type": "attack",
+        "range": 4,
+        "target_type": 3,
+        "max_kills": 1,
+        "power": 600,
+        "armor_piercing": 0,
+        "duration": 0,
+        "flavour_text": {
+            "default": {
+                "1": "- a massive conflagration rises up and then crashes down upon the enemy.",
+                "2": "- after breathing deeply a massive jet of flame is unleashed.  Smoke billows into the sky."
+            },
+            "binders_adv": {
+                "1": "- a hideous being of rolling flame crashes into the enemy.",
+                "2": "- a massive conflagration rises up and then crashes down upon the enemy."
+            }
+        }
+    },
+    "Sun Burst": {
+        "type": "attack",
+        "range": 8,
+        "target_type": 4,
+        "max_kills": 1,
+        "power": 200,
+        "armor_piercing": 1,
+        "duration": 0,
+        "flavour_text": {
+            "default": "- a crackling, hissing beam of purple-red flame shoots from him.",
+            "binders_adv": "- a crackling, hissing beam of purple warp shoots from him."
+        },
+        "sorcery": true
+    },
+    "Molten Beam": {
+        "type": "attack",
+        "range": 8,
+        "target_type": 4,
+        "max_kills": 1,
+        "power": 600,
+        "armor_piercing": 1,
+        "duration": 0,
+        "flavour_text": {
+            "default": "- a white-blue beam, blinding to behold, shoots forth.  All that it touches turns to slag.",
+            "binders_adv": "- a massive beam of purple warp energy shoots forth.  All that it touches is consumed."
+        },
+        "sorcery": true
+    },
+    "Blood Boil": {
+        "type": "attack",
+        "range": 3,
+        "target_type": 3,
+        "max_kills": 0,
+        "power": 220,
+        "armor_piercing": 0,
+        "duration": 0,
+        "flavour_text": "- accelerating the pulse and blood pressure of his foes."
+    },
+    "Iron Arm": {
+        "type": "buff",
+        "range": 0,
+        "target_type": 0,
+        "max_kills": 0,
+        "power": 0,
+        "armor_piercing": 0,
+        "duration": 3,
+        "flavour_text": ".  His flesh is transmuted into a form of living metal."
+    },
+    "Endurance": {
+        "type": "buff",
+        "range": 0,
+        "target_type": 0,
+        "max_kills": 0,
+        "power": 0,
+        "armor_piercing": 0,
+        "duration": 3,
+        "flavour_text": ".  He reaches into nearby allies, restoring their flesh and knitting wounds."
+    },
+    "Regenerate": {
+        "type": "buff",
+        "range": 0,
+        "target_type": 0,
+        "max_kills": 0,
+        "power": 0,
+        "armor_piercing": 0,
+        "duration": 0,
+        "flavour_text": ".  His flesh shimmers and twists back together, sealing up wounds and damage."
+    },
+    "Haemorrhage": {
+        "type": "attack",
+        "range": 3,
+        "target_type": 3,
+        "max_kills": 1,
+        "power": 800,
+        "armor_piercing": 0,
+        "duration": 0,
+        "flavour_text": "- reaching inside of his foes and lighting their flesh aflame."
+    },
+    "Crush": {
+        "type": "attack",
+        "range": 4,
+        "target_type": 3,
+        "max_kills": 0,
+        "power": 190,
+        "armor_piercing": 0,
+        "duration": 0,
+        "flavour_text": "- his foes are entrapped in a crushing mass of force."
+    },
+    "Shockwave": {
+        "type": "attack",
+        "range": 4,
+        "target_type": 3,
+        "max_kills": 1,
+        "power": 280,
+        "armor_piercing": 0,
+        "duration": 0,
+        "flavour_text": "- a massive wave of force smashes aside his foes."
+    },
+    "Telekinetic Dome": {
+        "type": "buff",
+        "range": 0,
+        "target_type": 0,
+        "max_kills": 0,
+        "power": 0,
+        "armor_piercing": 0,
+        "duration": 3,
+        "flavour_text": ".  Invisible currents of force surround him, ready to deflect bolts or blows."
+    },
+    "Spatial Distortion": {
+        "type": "buff",
+        "range": 0,
+        "target_type": 0,
+        "max_kills": 0,
+        "power": 0,
+        "armor_piercing": 0,
+        "duration": 3,
+        "flavour_text": ".  His blows, once thrown, are now able to become impossibly heavy and forceful."
+    },
+    "Living Lightning": {
+        "type": "attack",
+        "range": 5,
+        "target_type": 3,
+        "max_kills": 0,
+        "power": 160,
+        "armor_piercing": 0,
+        "duration": 0,
+        "flavour_text": "- arcs of lightning shoot from hand and strike his foes."
+    },
+    "Stormbringer": {
+        "type": "buff",
+        "range": 1,
+        "target_type": 1,
+        "max_kills": 0,
+        "power": 0,
+        "armor_piercing": 0,
+        "duration": 2,
+        "flavour_text": ".  A vortex of ice and winds crackle into existence, covering your forces."
+    },
+    "Murderous Hurricane": {
+        "type": "attack",
+        "range": 4,
+        "target_type": 3,
+        "max_kills": 1,
+        "power": 320,
+        "armor_piercing": 0,
+        "duration": 0,
+        "flavour_text": "- a mighty winter gale billows forth, shredding and freezing flesh."
+    },
+    "Fury of the Wolf Spirits": {
+        "type": "attack",
+        "range": 3,
+        "target_type": 3,
+        "max_kills": 1,
+        "power": 440,
+        "armor_piercing": 0,
+        "duration": 0,
+        "flavour_text": {
+            "1": "- a pair of Thunderwolf revenants sprint outward, running down and overwhelming foes.",
+            "2": "- ghostly visages of Freki and Geri launch into his foes, overwhelming them."
+        }
+    },
+    "Thunderclap": {
+        "type": "attack",
+        "range": 1.1,
+        "target_type": 3,
+        "max_kills": 1,
+        "power": 600,
+        "armor_piercing": 0,
+        "duration": 0,
+        "flavour_text": "- smashing his gauntlets together and unleashing a mighty shockwave."
+    },
+    "Jaws of the World Wolf": {
+        "type": "attack",
+        "range": 5,
+        "target_type": 3,
+        "max_kills": 1,
+        "power": 800,
+        "armor_piercing": 1,
+        "duration": 0,
+        "flavour_text": "- chasms open up beneath his foes, swallowing them down and crushing them."
+    },
+    "Avenge": {
+        "type": "attack",
+        "range": 5,
+        "target_type": 3,
+        "max_kills": 1,
+        "power": 500,
+        "armor_piercing": 0,
+        "duration": 0,
+        "flavour_text": {
+            "1": "- a destructive avatar of rolling flame crashes into the enemy.",
+            "2": "- a massive conflagration rises up and then crashes down upon the enemy."
+        }
+    },
+    "Quickening": {
+        "type": "buff",
+        "range": 0,
+        "target_type": 0,
+        "max_kills": 0,
+        "power": 0,
+        "armor_piercing": 0,
+        "duration": 3,
+        "flavour_text": ".  Gaining precognitive powers, he is better able to avoid enemy blows."
+    },
+    "Might of the Ancients": {
+        "type": "buff",
+        "range": 0,
+        "target_type": 0,
+        "max_kills": 0,
+        "power": 0,
+        "armor_piercing": 0,
+        "duration": 3,
+        "flavour_text": ".  His physical power and might are increased to unimaginable levels."
+    }
+}
+
 /// @mixin
 function player_select_powers() {
     if (race[100, 17] != 0) {
@@ -98,6 +734,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
     var tome_slot = 0;
     var tome_tags = "";
 
+    //TODO: Maybe move into a separate function;
     // In here check if have tome
     if (unit.weapon_one() == "Tome" || unit.weapon_two() == "Tome") {
         if (unit.weapon_one() == "Tome") {
@@ -110,648 +747,14 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         tome_discipline = get_tome_discipline(tome_tags);
     }
 
-    var disciplines_data = {
-        "minor_nu": {
-            "powers": ["Wave of Entropy", "Insect Swarm", "Blood Dementia"],
-            "perils_chance": 0.10,
-            "perils_strength": 10
-        },
-        "minor_nu_daemon": {
-            "powers": ["Wave of Entropy", "Insect Swarm", "Blood Dementia", "Putrid Vomit"],
-            "perils_chance": 0.30,
-            "perils_strength": 30
-        },
-        "minor_tz_daemon": {
-            "powers": ["Wave of Change", "Warp Bolts", "Warp Beam", "Iron Arm"],
-            "perils_chance": 0.30,
-            "perils_strength": 30
-        },
-        "minor_sl_daemon": {
-            "powers": ["Warp Bolts", "Rainbow Beam", "Hysterical Frenzy", "Symphony of Pain"],
-            "perils_chance": 0.30,
-            "perils_strength": 30
-        },
-        "minor_default": {
-            "powers": ["Avenge", "Spatial Distortion", "Stormbringer"],
-            "perils_chance": 0,
-            "perils_strength": 0
-        },
-        "minor_telekenesis": {
-            "powers": ["Spatial Distortion", "Telekinetic Dome", "Vortex of Doom"],
-            "perils_chance": 0,
-            "perils_strength": 0
-        },
-        "minor_biomancy": {
-            "powers": ["Haemorrhage", "Regenerate", "Iron Arm", "Insect Swarm"],
-            "perils_chance": 0.10,
-            "perils_strength": 10
-        },
-        "minor_pyromancy": {
-            "powers": ["Inferno", "Sun Burst", "Molten Beam"],
-            "perils_chance": 0,
-            "perils_strength": 0
-        },
-        "minor_what_the_fuck_man": {
-            "powers": ["Blood Dementia", "Spatial Distortion", "Haemorrhage"],
-            "perils_chance": 0.20,
-            "perils_strength": 20
-        },
-        "hacks": {
-            "powers": ["Gather Energy"]
-        },
-        "rune_magick": {
-            "powers": ["Living Lightning", "Murderous Hurricane", "Stormbringer", "Fury of the Wolf", "Thunder Clap", "Spatial Distortion"]
-        },
-        "biomancy": {
-            "powers": ["Minor Smite", "Blood Boil", "Iron Arm", "Endurance", "Regenerate", "Haemorrhage"]
-        },
-        "pyromancy": {
-            "powers": ["Breathe Fire", "Fiery Form", "Fire Shield", "Inferno", "Sun Burst", "Molten Beam"]
-        },
-        "telekinesis": {
-            "powers": ["Crush", "Shockwave", "Wave of Force", "Telekinetic Dome", "Spatial Distortion", "Vortex of Doom"]
-        },
-        "default": {
-            "powers": ["Minor Smite", "Smite", "Force Dome", "Machine Curse", "Avenge", "Quickening", "Might of the Ancients", "Vortex of Doom"]
-        }
-    };
-
-    // TODO: flavour_text options and power_modifiers require a better structure to.
-    var powers_data = {
-        "Minor Smite": {
-            "type": "attack",
-            "range": 5,
-            "target_type": 3,
-            "max_kills": 1,
-            "power": 160,
-            "armor_piercing": 0,
-            "duration": 0,
-            "flavour_text": {
-                "default_1": "- a coil of warp energy lashes out at the enemy.",
-                "binders_adv": "- a green, sickly coil of energy lashes out at the enemy."
-            }
-        },
-        "Wave of Entropy": {
-            "type": "attack",
-            "range": 3,
-            "target_type": 3,
-            "max_kills": 1,
-            "power": 220,
-            "armor_piercing": 0,
-            "duration": 0,
-            "flavour_text": {
-                "default_1": "- a putrid cone of warp energy splashes outward, ",
-                "enemy_9": "twisting and rusting everything it touches.",
-                "enemy_10": "boiling and turning everything to ash."
-            },
-            "sorcery": true
-        },
-        "Wave of Change": {
-            "type": "attack",
-            "range": 3,
-            "target_type": 3,
-            "max_kills": 1,
-            "power": 220,
-            "armor_piercing": 0,
-            "duration": 0,
-            "flavour_text": {
-                "default_1": "- a wispy cone of warp energy reaches outward, twisting and morphing all that it touches."
-            },
-            "sorcery": true
-        },
-        "Insect Swarm": {
-            "type": "attack",
-            "range": 3,
-            "target_type": 3,
-            "max_kills": 1,
-            "power": 500,
-            "armor_piercing": 1,
-            "duration": 0,
-            "flavour_text": {
-                "default_1": "- a massive, black cloud of insects spew from his body. At once they begin burrowing into your foes.",
-                "default_2": "- rank, ichory insects spew forth from his body at your foes. They begin burrowing through flesh and armour alike."
-            },
-            "sorcery": true
-        },
-        "Blood Dementia": {
-            "type": "buff",
-            "range": 0,
-            "target_type": 0,
-            "max_kills": 0,
-            "power": 0,
-            "armor_piercing": 0,
-            "duration": 3,
-            "buff": {
-                "attack": 2
-            },
-            "flavour_text": {
-                "default_1": ". He goes absolutely nuts, screaming and raging, his mind and body pulsing with chaotic energy."
-            }
-        },
-        "Putrid Vomit": {
-            "type": "attack",
-            "range": 2.1,
-            "target_type": 3,
-            "max_kills": 1,
-            "power": 600,
-            "armor_piercing": 0,
-            "duration": 0,
-            "flavour_text": {
-                "default_1": "- from in front of their mouth a stream of rancid, acidic vomit spews forth at tremendous pressure, splashing over his foes."
-            },
-            "sorcery": true,
-            "power_modifiers": {
-                "enemy_9": 450
-            }
-        },
-        "Warp Bolts": {
-            "type": "attack",
-            "range": 5,
-            "target_type": 3,
-            "max_kills": 1,
-            "power": 300,
-            "armor_piercing": 0,
-            "duration": 0,
-            "flavour_text": {
-                "default_1": "- several bolts of purple warp energy appear and are flung at the enemy.",
-                "default_2": "- he launches a series of rapid warp bolts at the enemy.",
-                "default_3": "- three oozing, shifting bolts of warp energy fly outward from his palms."
-            },
-            "sorcery": true
-        },
-        "Warp Beam": {
-            "type": "attack",
-            "range": 8,
-            "target_type": 4,
-            "max_kills": 1,
-            "power": 600,
-            "armor_piercing": 1,
-            "duration": 0,
-            "flavour_text": {
-                "default": "- a massive beam of purple warp energy shoots forth. All that it touches is consumed."
-            },
-            "sorcery": true
-        },
-        "Rainbow Beam": {
-            "type": "attack",
-            "range": 10,
-            "target_type": 3,
-            "max_kills": 1,
-            "power": 500,
-            "armor_piercing": 1,
-            "duration": 0,
-            "flavour_text": {
-                "default": "- a massive beam of warp energy hisses at the enemy, the crackling energy shifting through every color imaginable sickeningly fast."
-            },
-            "sorcery": true
-        },
-        "Hysterical Frenzy": {
-            "type": "buff",
-            "range": 0,
-            "target_type": 0,
-            "max_kills": 0,
-            "power": 0,
-            "armor_piercing": 0,
-            "duration": 999,
-            "flavour_text": {
-                "multiple": ". Warp energy infuses his body, and several other marines, frenzying them into sensation-seeking destruction.",
-                "single": ". Warp energy infuses his body, frenzying him into sensation-seeking destruction."
-            },
-            "sorcery": true
-        },
-        "Symphony of Pain": {
-            "type": "attack",
-            "range": 2.1,
-            "target_type": 3,
-            "max_kills": 1,
-            "power": 750,
-            "armor_piercing": 1,
-            "duration": 0,
-            "flavour_text": {
-                "default": "- mouth stretching unnaturally wide, before letting out a hellish shriek.",
-                "alternate_1": "The air rumbles and shifts at the sheer magnitude of the sound.",
-                "alternate_2": "Armour and flesh tear alike are torn apart by volume of the howl."
-            },
-            "sorcery": true
-        },
-        "gather_energy": {
-            "type": "buff",
-            "range": 0,
-            "target_type": 0,
-            "max_kills": 0,
-            "power": 0,
-            "armor_piercing": 0,
-            "duration": 0,
-            "flavour_text": {
-                "default_1": " begins to gather psychic energy.",
-                "default_2": " continues to gather psychic energy."
-            },
-            "sorcery": true
-        },
-        "Imperator Maior": {
-            "type": "attack",
-            "range": 5,
-            "target_type": 3,
-            "max_kills": 1,
-            "power": 1000,
-            "armor_piercing": 1,
-            "duration": 0,
-            "flavour_text": {
-                "default": "- he unleashes all of the gathered energy in a massive psychic blast."
-            },
-            "sorcery": true
-        },
-        "Minor Smite": {
-            "type": "attack",
-            "range": 5,
-            "target_type": 3,
-            "max_kills": 1,
-            "power": 160,
-            "armor_piercing": 0,
-            "duration": 0,
-            "flavour_text": {
-                "default": "- a coil of warp energy lashes out at the enemy.",
-                "binders_adv": "- a green, sickly coil of energy lashes out at the enemy."
-            },
-            "sorcery": true
-        },
-        "Smite": {
-            "type": "attack",
-            "range": 5,
-            "target_type": 3,
-            "max_kills": 1,
-            "power": 260,
-            "armor_piercing": 0,
-            "duration": 0,
-            "flavour_text": {
-                "default_1": "- a blast of warp energy smashes into the enemy.",
-                "default_2": "- warp lightning crackles and leaps to the enemy.",
-                "default_3": "- a brilliant bolt of lightning crashes into the enemy.",
-                "binders_adv_1": "- a green blast of sorcery smashes into the enemy.",
-                "binders_adv_2": "- a wave of green fire launches forth, made up of hideous faces and claws."
-            },
-            "sorcery": true
-        },
-        "Force Dome": {
-            "type": "buff",
-            "range": 1,
-            "target_type": 1,
-            "max_kills": 0,
-            "power": 0,
-            "armor_piercing": 0,
-            "duration": 2,
-            "flavour_text": {
-                "default": ".  An oozing, shifting dome of pure energy appears, covering your forces.",
-                "binders_adv": ".  An oozing, shifting dome of sorcerous energy appears, covering your forces."
-            },
-            "sorcery": true
-        },
-        "Machine Curse": {
-            "type": "attack",
-            "range": 5,
-            "target_type": 4,
-            "max_kills": 0,
-            "power": 300,
-            "armor_piercing": 1,
-            "duration": 0,
-            "flavour_text": {
-                "default": "- the machine spirit within an enemy vehicle is roused."
-            }
-        },
-        "Avenge": {
-            "type": "attack",
-            "range": 5,
-            "target_type": 3,
-            "max_kills": 1,
-            "power": 500,
-            "armor_piercing": 0,
-            "duration": 0,
-            "flavour_text": {
-                "default_1": "- a destructive avatar of rolling flame crashes into the enemy.",
-                "default_2": "- a massive conflagration rises up and then crashes down upon the enemy.",
-                "binders_adv_1": "- a hideous being of rolling flame crashes into the enemy.",
-                "binders_adv_2": "- a massive conflagration rises up and then crashes down upon the enemy."
-            },
-            "sorcery": true
-        },
-        "Quickening": {
-            "type": "buff",
-            "range": 0,
-            "target_type": 0,
-            "max_kills": 0,
-            "power": 0,
-            "armor_piercing": 0,
-            "duration": 3,
-            "flavour_text": {
-                "default": ".  Gaining precognitive powers, he is better able to avoid enemy blows."
-            }
-        },
-        "Might of the Ancients": {
-            "type": "buff",
-            "range": 0,
-            "target_type": 0,
-            "max_kills": 0,
-            "power": 0,
-            "armor_piercing": 0,
-            "duration": 3,
-            "flavour_text": {
-                "default": ".  His physical power and might is increased to unimaginable levels."
-            }
-        },
-        "Vortex of Doom": {
-            "type": "attack",
-            "range": 5,
-            "target_type": 3,
-            "max_kills": 1,
-            "power": 800,
-            "armor_piercing": 1,
-            "duration": 0,
-            "flavour_text": {
-                "default": "- a hole between real and warp space is torn open with deadly effect.",
-                "binders_adv": "- a hole between realspace and the warp is torn, unleashing a myriad of sorcerous energies."
-            },
-            "sorcery": true
-        },
-        "Breathe Fire": {
-            "type": "attack",
-            "range": 3,
-            "target_type": 3,
-            "max_kills": 0,
-            "power": 200,
-            "armor_piercing": -1,
-            "duration": 0,
-            "flavour_text": {
-                "default": "- a bright jet of flame shoots forth at the enemy.",
-                "binders_adv": "- a greenish, eerie jet of flame shoots forth at the enemy."
-            }
-        },
-        "Fiery Form": {
-            "type": "buff",
-            "range": 0,
-            "target_type": 0,
-            "max_kills": 0,
-            "power": 0,
-            "armor_piercing": 0,
-            "duration": 3,
-            "flavour_text": {
-                "default": ".  Hissing flames appear and roar around the marine, threatening nearby foes.",
-                "binders_adv": ".  Hideous, eerie beings of warp fire begin to dance around the marine, threatening nearby foes."
-            }
-        },
-        "Fire Shield": {
-            "type": "buff",
-            "range": 0,
-            "target_type": 0,
-            "max_kills": 0,
-            "power": 0,
-            "armor_piercing": 0,
-            "duration": 3,
-            "flavour_text": {
-                "default": ".  Orange sheets of fire shimmer around your forces, protecting them.",
-                "binders_adv": "-  Purple sheets of warp fire shimmer around your forces, protecting them."
-            }
-        },
-        "Inferno": {
-            "type": "attack",
-            "range": 4,
-            "target_type": 3,
-            "max_kills": 1,
-            "power": 600,
-            "armor_piercing": 0,
-            "duration": 0,
-            "flavour_text": {
-                "default": {
-                    "1": "- a massive conflagration rises up and then crashes down upon the enemy.",
-                    "2": "- after breathing deeply a massive jet of flame is unleashed.  Smoke billows into the sky."
-                },
-                "binders_adv": {
-                    "1": "- a hideous being of rolling flame crashes into the enemy.",
-                    "2": "- a massive conflagration rises up and then crashes down upon the enemy."
-                }
-            }
-        },
-        "Sun Burst": {
-            "type": "attack",
-            "range": 8,
-            "target_type": 4,
-            "max_kills": 1,
-            "power": 200,
-            "armor_piercing": 1,
-            "duration": 0,
-            "flavour_text": {
-                "default": "- a crackling, hissing beam of purple-red flame shoots from him.",
-                "binders_adv": "- a crackling, hissing beam of purple warp shoots from him."
-            },
-            "sorcery": true
-        },
-        "Molten Beam": {
-            "type": "attack",
-            "range": 8,
-            "target_type": 4,
-            "max_kills": 1,
-            "power": 600,
-            "armor_piercing": 1,
-            "duration": 0,
-            "flavour_text": {
-                "default": "- a white-blue beam, blinding to behold, shoots forth.  All that it touches turns to slag.",
-                "binders_adv": "- a massive beam of purple warp energy shoots forth.  All that it touches is consumed."
-            },
-            "sorcery": true
-        },
-        "Blood Boil": {
-            "type": "attack",
-            "range": 3,
-            "target_type": 3,
-            "max_kills": 0,
-            "power": 220,
-            "armor_piercing": 0,
-            "duration": 0,
-            "flavour_text": "- accelerating the pulse and blood pressure of his foes."
-        },
-        "Iron Arm": {
-            "type": "buff",
-            "range": 0,
-            "target_type": 0,
-            "max_kills": 0,
-            "power": 0,
-            "armor_piercing": 0,
-            "duration": 3,
-            "flavour_text": ".  His flesh is transmuted into a form of living metal."
-        },
-        "Endurance": {
-            "type": "buff",
-            "range": 0,
-            "target_type": 0,
-            "max_kills": 0,
-            "power": 0,
-            "armor_piercing": 0,
-            "duration": 3,
-            "flavour_text": ".  He reaches into nearby allies, restoring their flesh and knitting wounds."
-        },
-        "Regenerate": {
-            "type": "buff",
-            "range": 0,
-            "target_type": 0,
-            "max_kills": 0,
-            "power": 0,
-            "armor_piercing": 0,
-            "duration": 0,
-            "flavour_text": ".  His flesh shimmers and twists back together, sealing up wounds and damage."
-        },
-        "Haemorrhage": {
-            "type": "attack",
-            "range": 3,
-            "target_type": 3,
-            "max_kills": 1,
-            "power": 800,
-            "armor_piercing": 0,
-            "duration": 0,
-            "flavour_text": "- reaching inside of his foes and lighting their flesh aflame."
-        },
-        "Crush": {
-            "type": "attack",
-            "range": 4,
-            "target_type": 3,
-            "max_kills": 0,
-            "power": 190,
-            "armor_piercing": 0,
-            "duration": 0,
-            "flavour_text": "- his foes are entrapped in a crushing mass of force."
-        },
-        "Shockwave": {
-            "type": "attack",
-            "range": 4,
-            "target_type": 3,
-            "max_kills": 1,
-            "power": 280,
-            "armor_piercing": 0,
-            "duration": 0,
-            "flavour_text": "- a massive wave of force smashes aside his foes."
-        },
-        "Telekinetic Dome": {
-            "type": "buff",
-            "range": 0,
-            "target_type": 0,
-            "max_kills": 0,
-            "power": 0,
-            "armor_piercing": 0,
-            "duration": 3,
-            "flavour_text": ".  Invisible currents of force surround him, ready to deflect bolts or blows."
-        },
-        "Spatial Distortion": {
-            "type": "buff",
-            "range": 0,
-            "target_type": 0,
-            "max_kills": 0,
-            "power": 0,
-            "armor_piercing": 0,
-            "duration": 3,
-            "flavour_text": ".  His blows, once thrown, are now able to become impossibly heavy and forceful."
-        },
-        "Living Lightning": {
-            "type": "attack",
-            "range": 5,
-            "target_type": 3,
-            "max_kills": 0,
-            "power": 160,
-            "armor_piercing": 0,
-            "duration": 0,
-            "flavour_text": "- arcs of lightning shoot from hand and strike his foes."
-        },
-        "Stormbringer": {
-            "type": "buff",
-            "range": 1,
-            "target_type": 1,
-            "max_kills": 0,
-            "power": 0,
-            "armor_piercing": 0,
-            "duration": 2,
-            "flavour_text": ".  A vortex of ice and winds crackle into existence, covering your forces."
-        },
-        "Murderous Hurricane": {
-            "type": "attack",
-            "range": 4,
-            "target_type": 3,
-            "max_kills": 1,
-            "power": 320,
-            "armor_piercing": 0,
-            "duration": 0,
-            "flavour_text": "- a mighty winter gale billows forth, shredding and freezing flesh."
-        },
-        "Fury of the Wolf Spirits": {
-            "type": "attack",
-            "range": 3,
-            "target_type": 3,
-            "max_kills": 1,
-            "power": 440,
-            "armor_piercing": 0,
-            "duration": 0,
-            "flavour_text": {
-                "1": "- a pair of Thunderwolf revenants sprint outward, running down and overwhelming foes.",
-                "2": "- ghostly visages of Freki and Geri launch into his foes, overwhelming them."
-            }
-        },
-        "Thunderclap": {
-            "type": "attack",
-            "range": 1.1,
-            "target_type": 3,
-            "max_kills": 1,
-            "power": 600,
-            "armor_piercing": 0,
-            "duration": 0,
-            "flavour_text": "- smashing his gauntlets together and unleashing a mighty shockwave."
-        },
-        "Jaws of the World Wolf": {
-            "type": "attack",
-            "range": 5,
-            "target_type": 3,
-            "max_kills": 1,
-            "power": 800,
-            "armor_piercing": 1,
-            "duration": 0,
-            "flavour_text": "- chasms open up beneath his foes, swallowing them down and crushing them."
-        },
-        "Avenge": {
-            "type": "attack",
-            "range": 5,
-            "target_type": 3,
-            "max_kills": 1,
-            "power": 500,
-            "armor_piercing": 0,
-            "duration": 0,
-            "flavour_text": {
-                "1": "- a destructive avatar of rolling flame crashes into the enemy.",
-                "2": "- a massive conflagration rises up and then crashes down upon the enemy."
-            }
-        },
-        "Quickening": {
-            "type": "buff",
-            "range": 0,
-            "target_type": 0,
-            "max_kills": 0,
-            "power": 0,
-            "armor_piercing": 0,
-            "duration": 3,
-            "flavour_text": ".  Gaining precognitive powers, he is better able to avoid enemy blows."
-        },
-        "Might of the Ancients": {
-            "type": "buff",
-            "range": 0,
-            "target_type": 0,
-            "max_kills": 0,
-            "power": 0,
-            "armor_piercing": 0,
-            "duration": 3,
-            "flavour_text": ".  His physical power and might are increased to unimaginable levels."
-        }
-    }
-    
-
+    //TODO: Move into a separate function;
     var selected_discipline = psy_discipline;
     if (tome_discipline != "" && tome_roll <= 50) {
         selected_discipline = tome_discipline;
         using_tome = true;
     }
+
+    //TODO: Move into a separate function;
     var disciplines_array = struct_get_names(disciplines_data);
     for (var i = 0; i < array_length(disciplines_array); i++) {
         if (disciplines_array[i] == selected_discipline) {
@@ -798,235 +801,27 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
     var p_arp = 0;
     var p_duration = 0;
 
-
-
-
-
-
-
-
     if ((power_name == "gather_energy") && (obj_ncombat.big_boom == 3)) {
         power_name = "Imperator Maior";
     }
 
-
-    if (power_name == "Blood Boil") {
-        p_type = "attack";
-        p_rang = 3;
-        p_tar = 3;
-        p_spli = 0;
-        p_att = 220;
-        p_arp = 0;
-        p_duration = 0;
-        flavour_text2 = "- accelerating the pulse and blood pressure of his foes.  ";
-    }
-    if (power_name == "Iron Arm") {
-        p_type = "buff";
-        p_rang = 0;
-        p_tar = 0;
-        p_spli = 0;
-        p_att = 0;
-        p_arp = 0;
-        p_duration = 3;
-        flavour_text2 = ".  His flesh is transmuted into a form of living metal.  ";
-    }
-    if (power_name == "Endurance") {
-        p_type = "buff";
-        p_rang = 0;
-        p_tar = 0;
-        p_spli = 0;
-        p_att = 0;
-        p_arp = 0;
-        p_duration = 3;
-        flavour_text2 = ".  He reaches into nearby allies, restoring their flesh and kniting wounds.  ";
-    }
-    if (power_name == "Regenerate") {
-        p_type = "buff";
-        p_rang = 0;
-        p_tar = 0;
-        p_spli = 0;
-        p_att = 0;
-        p_arp = 0;
-        p_duration = 0;
-        flavour_text2 = ".  His flesh shimmers and twists back together, sealing up wounds and damage.  ";
-    }
-    if (power_name == "Haemorrhage") {
-        p_type = "attack";
-        p_rang = 3;
-        p_tar = 3;
-        p_spli = 1;
-        p_att = 800;
-        p_arp = 0;
-        p_duration = 0;
-        flavour_text2 = "- reaching inside of his foes and lighting their flesh aflame.  ";
-    }
-
-    if (power_name == "Crush") {
-        p_type = "attack";
-        p_rang = 4;
-        p_tar = 3;
-        p_spli = 0;
-        p_att = 190;
-        p_arp = 0;
-        p_duration = 0;
-        flavour_text2 = "- his foes are entraped in a crushing mass of force.  ";
-    }
-    if (power_name == "Shockwave") {
-        p_type = "attack";
-        p_rang = 4;
-        p_tar = 3;
-        p_spli = 1;
-        p_att = 280;
-        p_arp = 0;
-        p_duration = 0;
-        var rnd;
-        rnd = choose(1, 2, 3);
-        flavour_text2 = "- a massive wave of force smashes aside his foes.  ";
-    }
-    if (power_name == "Telekinetic Dome") {
-        p_type = "buff";
-        p_rang = 0;
-        p_tar = 0;
-        p_spli = 0;
-        p_att = 0;
-        p_arp = 0;
-        p_duration = 3;
-        flavour_text2 = ".  Invisible currents of force surround him, ready to deflect bolts or blows.  ";
-    }
-    if (power_name == "Spatial Distortion") {
-        p_type = "buff";
-        p_rang = 0;
-        p_tar = 0;
-        p_spli = 0;
-        p_att = 0;
-        p_arp = 0;
-        p_duration = 3;
-        flavour_text2 = ".  His blows, once thrown, are now able to become impossibly heavy and forceful.  ";
-    }
-
-    if (power_name == "Living Lightning") {
-        p_type = "attack";
-        p_rang = 5;
-        p_tar = 3;
-        p_spli = 0;
-        p_att = 160;
-        p_arp = 0;
-        p_duration = 0;
-        flavour_text2 = "- arcs of lightning shoot from hand and strike his foes.  ";
-    }
-    if (power_name == "Stormbringer") {
-        p_type = "buff";
-        p_rang = 1;
-        p_tar = 1;
-        p_spli = 0;
-        p_att = 0;
-        p_arp = 0;
-        p_duration = 2;
-        flavour_text2 = ".  A vortex of ice and winds crackle into existance, covering your forces.";
-    }
-    if (power_name == "Murderous Hurricane") {
-        p_type = "attack";
-        p_rang = 4;
-        p_tar = 3;
-        p_spli = 1;
-        p_att = 320;
-        p_arp = 0;
-        p_duration = 0;
-        var rnd;
-        rnd = choose(1, 2, 3);
-        flavour_text2 = "- a mighty winter gale billows forth, shredding and freezing flesh.  ";
-    }
-    if (power_name == "Fury of the Wolf Spirits") {
-        p_type = "attack";
-        p_rang = 3;
-        p_tar = 3;
-        p_spli = 1;
-        p_att = 440;
-        p_arp = 0;
-        p_duration = 0;
-        var rnd;
-        rnd = choose(1, 2);
-        if (rnd == 1) {
-            flavour_text2 = "- a pair of Thunderwolf revenants sprint outward, running down and overwhelming foes.  ";
-        }
-        if (rnd == 2) {
-            flavour_text2 = "- ghostly visages of Freki and Geri launch into his foes, overwhelming them.  ";
-        }
-    }
-    if (power_name == "Thunderclap") {
-        p_type = "attack";
-        p_rang = 1.1;
-        p_tar = 3;
-        p_spli = 1;
-        p_att = 600;
-        p_arp = 0;
-        p_duration = 0;
-        flavour_text2 = "- smashing his gauntlets together and unleashing a mighty shockwave.  ";
-    }
-    if (power_name == "Jaws of the World Wolf") {
-        p_type = "attack";
-        p_rang = 5;
-        p_tar = 3;
-        p_spli = 1;
-        p_att = 800;
-        p_arp = 1;
-        p_duration = 0;
-        flavour_text2 = "- chasms open up beneath his foes, swallowing them down and crushing them.  ";
-    }
-
-    if (power_name == "Avenge") {
-        p_type = "attack";
-        p_rang = 5;
-        p_tar = 3;
-        p_spli = 1;
-        p_att = 500;
-        p_arp = 0;
-        p_duration = 0;
-        var rnd;
-        rnd = choose(1, 2);
-        if (rnd == 1) {
-            flavour_text2 = "- a destructive avatar of rolling flame crashes into the enemy.  ";
-        }
-        if (rnd == 2) {
-            flavour_text2 = "- a massive conflagration rises up and then crashes down upon the enemy.  ";
-        }
-    }
-    if (power_name == "Quickening") {
-        p_type = "buff";
-        p_rang = 0;
-        p_tar = 0;
-        p_spli = 0;
-        p_att = 0;
-        p_arp = 0;
-        p_duration = 3;
-        flavour_text2 = ".  Gaining precognitive powers, he is better able to avoid enemy blows.";
-    }
-    if (power_name == "Might of the Ancients") {
-        p_type = "buff";
-        p_rang = 0;
-        p_tar = 0;
-        p_spli = 0;
-        p_att = 0;
-        p_arp = 0;
-        p_duration = 3;
-        flavour_text2 = ".  His physical power and might is increased to unimaginable levels.";
-    }
     // if (power_name="Vortex of Doom"){p_type="attack";p_rang=5;p_tar=3;p_spli=1;p_att=800;p_arp=800;p_duration=0;
     //     flavour_text2="- a hole between real and warp space is torn open with deadly effect.  ";
     // }
 
+    //TODO: Move into a separate function;
     var has_force_weapon = false;
     if (is_struct(weapon_one)) {
         if (weapon_one.has_tag("force")) {
             has_force_weapon = true;
         }
     }
-
     if (is_struct(weapon_two)) {
         if (weapon_two.has_tag("force")) {
             has_force_weapon = true;
         }
     }
+
 
     if (has_force_weapon) {
         if (unit.weapon_one() == "Force Staff" || unit.weapon_two() == "Force Staff") {
@@ -1055,6 +850,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
             p_rang = round(p_rang) * 1.2;
         }
     }
+
     if (marine_type[unit_id] == "Chapter Master") {
         if (unit.has_trait("paragon")) {
             if (p_att > 0) {
@@ -1096,6 +892,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         flavour_text1 = unit.name_role() + " casts '" + string(power_name) + "'";
     }
 
+    //TODO: Perhaps separate perils calculations into a separate function;
     var good = 0, good2 = 0, perils_chance = 1, perils_roll = random(100), perils_strength = random(100);
 
     perils_strength += tome_perils_strength;
