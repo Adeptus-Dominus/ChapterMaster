@@ -100,22 +100,13 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
 
     // In here check if have tome
     if (unit.weapon_one() == "Tome" || unit.weapon_two() == "Tome") {
-        var tomes;
-
         if (unit.weapon_one() == "Tome") {
-            //has two tomes
-            tomes++;
+            tome_tags += marine_wep1[unit_id];
         }
         if (unit.weapon_two() == "Tome") {
-            //has one tome in right
-            tomes++;
+            tome_tags += marine_wep2[unit_id];
         }
 
-        if (tomes == 1) {
-            tome_tags = marine_wep1[unit_id];
-        } else if (tomes == 2) {
-            tome_tags = marine_wep2[unit_id];
-        }
         tome_discipline = get_tome_discipline(tome_tags);
     }
 
