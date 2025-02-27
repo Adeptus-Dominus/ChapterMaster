@@ -149,14 +149,21 @@ function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id,
 		        if (unit.role()="Chapter Master") then global.defeat=3;
 		        flavour_text2="The marine's flesh begins to twist and rip, seemingly turning inside out.  His form looms up, and up, and up.  Within seconds a Greater Daemon of ";
 	        
-		        var dem=choose("Slaanesh","Nurgle","Tzeentch");
-		        if (book_powers!=""){
-			        if (string_count("Dae",marine_gear[unit_id])>0){
-			            if (string_count("SLAANESH",marine_gear[unit_id])>0) then dem="Slaanesh";
-			            if (string_count("NURGLE",marine_gear[unit_id])>0) then dem="Nurgle";
-			            if (string_count("TZEENTCH",marine_gear[unit_id])>0) then dem="Tzeentch";
-			        }
-			    }
+                var dem = choose("Slaanesh","Nurgle","Tzeentch");
+				if (book_powers != "") {
+					if (string_count("daemonic", marine_gear[unit_id]) > 0) {
+						if (string_count("SLAANESH", marine_gear[unit_id]) > 0) {
+							dem = "Slaanesh";
+						}
+						if (string_count("NURGLE", marine_gear[unit_id]) > 0) {
+							dem = "Nurgle";
+						}
+						if (string_count("TZEENTCH", marine_gear[unit_id]) > 0) {
+							dem = "Tzeentch";
+						}
+					}
+				}
+				
 	        
 		        flavour_text2+=string(dem)+" has taken form.";
 		        var d1=0,d2=0,d3=0,d1=instance_nearest(x,y,obj_enunit);
