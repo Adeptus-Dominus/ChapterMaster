@@ -356,7 +356,6 @@ static purity_seals_and_hangings = function(){
             }
             if (struct_exists(_body[$ "left_arm"],"purity_seal")){
                 var _arm_seals = _body[$ "left_arm"][$"purity_seal"];
-                var _arm_seals = _torso_data[$"purity_seal"];
                 if (armour_type==ArmourType.Normal){
                     var positions = [[135, 69], [121, 73]];
                 }
@@ -372,7 +371,6 @@ static purity_seals_and_hangings = function(){
             }
             if (struct_exists(_body[$ "right_arm"],"purity_seal")){
                 var _arm_seals = _body[$ "right_arm"][$"purity_seal"];
-                var _arm_seals = _torso_data[$"purity_seal"];
                 if (armour_type==ArmourType.Normal){
                     var positions = [[44, 76], [30,71], [16, 69]];
                 }                
