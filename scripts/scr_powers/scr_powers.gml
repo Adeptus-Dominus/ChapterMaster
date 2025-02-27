@@ -66,7 +66,6 @@ global.disciplines_data = {
     }
 };
 
-// TODO: flavour_text options and power_modifiers require a better structure to.
 global.powers_data = {
     "Minor Smite": {
         "type": "attack",
@@ -77,8 +76,19 @@ global.powers_data = {
         "armor_piercing": 0,
         "duration": 0,
         "flavour_text": {
-            "default_1": "- a coil of warp energy lashes out at the enemy.",
-            "binders_adv": "- a green, sickly coil of energy lashes out at the enemy."
+            "default": {
+                "text": [
+                    "- a coil of warp energy lashes out at the enemy."
+                ]
+            },
+            "binders_adv": {
+                "text": [
+                    "- a green, sickly coil of energy lashes out at the enemy."
+                ],
+                "conditions": [
+                    {"type": "advantage", "value": "Daemon Binders"}
+                ]
+            }
         }
     },
     "Wave of Entropy": {
@@ -90,9 +100,19 @@ global.powers_data = {
         "armor_piercing": 0,
         "duration": 0,
         "flavour_text": {
-            "default_1": "- a putrid cone of warp energy splashes outward, ",
-            "enemy_9": "twisting and rusting everything it touches.",
-            "enemy_10": "boiling and turning everything to ash."
+            "default": {
+                "text": [
+                    "- a putrid cone of warp energy splashes outward, boiling and putrifying flesh.",
+                ],
+            },
+            "enemy_type_9": {
+                "text": [
+                    "- a putrid cone of warp energy splashes outward, twisting and rusting everything it touches.",
+                ],
+                "conditions": [
+                    {"type": "enemy_type", "value": 3}
+                ]
+            },
         },
         "sorcery": true
     },
@@ -105,7 +125,11 @@ global.powers_data = {
         "armor_piercing": 0,
         "duration": 0,
         "flavour_text": {
-            "default_1": "- a wispy cone of warp energy reaches outward, twisting and morphing all that it touches."
+            "default": {
+                "text": [
+                    "- a wispy cone of warp energy reaches outward, twisting and morphing all that it touches."
+                ]
+            }
         },
         "sorcery": true
     },
@@ -118,8 +142,12 @@ global.powers_data = {
         "armor_piercing": 1,
         "duration": 0,
         "flavour_text": {
-            "default_1": "- a massive, black cloud of insects spew from his body. At once they begin burrowing into your foes.",
-            "default_2": "- rank, ichory insects spew forth from his body at your foes. They begin burrowing through flesh and armour alike."
+            "default": {
+                "text": [
+                    "- a massive, black cloud of insects spew from his body. At once they begin burrowing into your foes.",
+                    "- rank, ichory insects spew forth from his body at your foes. They begin burrowing through flesh and armour alike."
+                ]
+            }
         },
         "sorcery": true
     },
@@ -135,7 +163,11 @@ global.powers_data = {
             "attack": 2
         },
         "flavour_text": {
-            "default_1": ". He goes absolutely nuts, screaming and raging, his mind and body pulsing with chaotic energy."
+            "default": {
+                "text": [
+                    ". He goes absolutely nuts, screaming and raging, his mind and body pulsing with chaotic energy."
+                ]
+            }
         }
     },
     "Putrid Vomit": {
@@ -151,8 +183,13 @@ global.powers_data = {
         },
         "sorcery": true,
         "power_modifiers": {
-            "enemy_9": 450
-        }
+            "enemy_type_9": {
+                "modifier": -150,
+                "conditions": [
+                    {"type": "enemy_type", "value": 9}
+                ]
+            },
+        },
     },
     "Warp Bolts": {
         "type": "attack",
@@ -163,9 +200,13 @@ global.powers_data = {
         "armor_piercing": 0,
         "duration": 0,
         "flavour_text": {
-            "default_1": "- several bolts of purple warp energy appear and are flung at the enemy.",
-            "default_2": "- he launches a series of rapid warp bolts at the enemy.",
-            "default_3": "- three oozing, shifting bolts of warp energy fly outward from his palms."
+            "default": {
+                "text": [
+                    "- several bolts of purple warp energy appear and are flung at the enemy.",
+                    "- he launches a series of rapid warp bolts at the enemy.",
+                    "- three oozing, shifting bolts of warp energy fly outward from his palms."
+                ]
+            }
         },
         "sorcery": true
     },
@@ -178,7 +219,11 @@ global.powers_data = {
         "armor_piercing": 1,
         "duration": 0,
         "flavour_text": {
-            "default": "- a massive beam of purple warp energy shoots forth. All that it touches is consumed."
+            "default": {
+                "text": [
+                    "- a massive beam of purple warp energy shoots forth. All that it touches is consumed."
+                ]
+            }
         },
         "sorcery": true
     },
@@ -191,7 +236,11 @@ global.powers_data = {
         "armor_piercing": 1,
         "duration": 0,
         "flavour_text": {
-            "default": "- a massive beam of warp energy hisses at the enemy, the crackling energy shifting through every color imaginable sickeningly fast."
+            "default": {
+                "text": [
+                    "- a massive beam of warp energy hisses at the enemy, the crackling energy shifting through every color imaginable sickeningly fast."
+                ]
+            }
         },
         "sorcery": true
     },
@@ -204,8 +253,19 @@ global.powers_data = {
         "armor_piercing": 0,
         "duration": 999,
         "flavour_text": {
-            "multiple": ". Warp energy infuses his body, and several other marines, frenzying them into sensation-seeking destruction.",
-            "single": ". Warp energy infuses his body, frenzying him into sensation-seeking destruction."
+            "default": {
+                "text": [
+                    ". Warp energy infuses his body, frenzying him into sensation-seeking destruction."
+                ]
+            },
+            "multiple_enemies": {
+                "text": [
+                    ". Warp energy infuses his body, and several other marines, frenzying them into sensation-seeking destruction."
+                ],
+                "conditions": [
+                    {"type": "allies_more_than", "value": 1}
+                ]
+            }
         },
         "sorcery": true
     },
@@ -218,9 +278,12 @@ global.powers_data = {
         "armor_piercing": 1,
         "duration": 0,
         "flavour_text": {
-            "default": "- mouth stretching unnaturally wide, before letting out a hellish shriek.",
-            "alternate_1": "The air rumbles and shifts at the sheer magnitude of the sound.",
-            "alternate_2": "Armour and flesh tear alike are torn apart by volume of the howl."
+            "default": {
+                "text": [
+                    "- mouth stretching unnaturally wide, before letting out a hellish shriek. The air rumbles and shifts at the sheer magnitude of the sound.",
+                    "- mouth stretching unnaturally wide, before letting out a hellish shriek. Armour and flesh tear alike are torn apart by volume of the howl.",
+                ]
+            },
         },
         "sorcery": true
     },
@@ -233,8 +296,11 @@ global.powers_data = {
         "armor_piercing": 0,
         "duration": 0,
         "flavour_text": {
-            "default_1": " begins to gather psychic energy.",
-            "default_2": " continues to gather psychic energy."
+            "default": {
+                "text": [
+                    " begins to gather psychic energy.",
+                ]
+            }
         },
         "sorcery": true
     },
@@ -247,7 +313,11 @@ global.powers_data = {
         "armor_piercing": 1,
         "duration": 0,
         "flavour_text": {
-            "default": "- he unleashes all of the gathered energy in a massive psychic blast."
+            "default": {
+                "text": [
+                    "- he unleashes all of the gathered energy in a massive psychic blast."
+                ]
+            }
         },
         "sorcery": true
     },
@@ -260,8 +330,19 @@ global.powers_data = {
         "armor_piercing": 0,
         "duration": 0,
         "flavour_text": {
-            "default": "- a coil of warp energy lashes out at the enemy.",
-            "binders_adv": "- a green, sickly coil of energy lashes out at the enemy."
+            "default": {
+                "text": [
+                    "- a coil of warp energy lashes out at the enemy."
+                ]
+            },
+            "binders_adv": {
+                "text": [
+                    "- a green, sickly coil of energy lashes out at the enemy."
+                ],
+                "conditions": [
+                    {"type": "advantage", "value": "Daemon Binders"}
+                ]
+            }
         },
         "sorcery": true
     },
@@ -274,11 +355,22 @@ global.powers_data = {
         "armor_piercing": 0,
         "duration": 0,
         "flavour_text": {
-            "default_1": "- a blast of warp energy smashes into the enemy.",
-            "default_2": "- warp lightning crackles and leaps to the enemy.",
-            "default_3": "- a brilliant bolt of lightning crashes into the enemy.",
-            "binders_adv_1": "- a green blast of sorcery smashes into the enemy.",
-            "binders_adv_2": "- a wave of green fire launches forth, made up of hideous faces and claws."
+            "default": {
+                "text": [
+                    "- a blast of warp energy smashes into the enemy.",
+                    "- warp lightning crackles and leaps to the enemy.",
+                    "- a bolt of lightning crashes into the enemy."
+                ]
+            },
+            "binders_adv": {
+                "text": [
+                    "- a green blast of sorcery smashes into the enemy.",
+                    "- a wave of green fire launches forth, made up of hideous faces and claws."
+                ],
+                "conditions": [
+                    {"type": "advantage", "value": "Daemon Binders"}
+                ]
+            }
         },
         "sorcery": true
     },
@@ -291,8 +383,19 @@ global.powers_data = {
         "armor_piercing": 0,
         "duration": 2,
         "flavour_text": {
-            "default": ".  An oozing, shifting dome of pure energy appears, covering your forces.",
-            "binders_adv": ".  An oozing, shifting dome of sorcerous energy appears, covering your forces."
+            "default": {
+                "text": [
+                    ". An oozing, shifting dome of pure energy appears, covering your forces."
+                ]
+            },
+            "binders_adv": {
+                "text": [
+                    ". An oozing, shifting dome of sorcerous energy appears, covering your forces."
+                ],
+                "conditions": [
+                    {"type": "advantage", "value": "Daemon Binders"}
+                ]
+            }
         },
         "sorcery": true
     },
@@ -305,7 +408,11 @@ global.powers_data = {
         "armor_piercing": 1,
         "duration": 0,
         "flavour_text": {
-            "default": "- the machine spirit within an enemy vehicle is roused."
+            "default": {
+                "text": [
+                    "- the machine spirit within an enemy vehicle is roused."
+                ]
+            }
         }
     },
     "Avenge": {
@@ -317,10 +424,21 @@ global.powers_data = {
         "armor_piercing": 0,
         "duration": 0,
         "flavour_text": {
-            "default_1": "- a destructive avatar of rolling flame crashes into the enemy.",
-            "default_2": "- a massive conflagration rises up and then crashes down upon the enemy.",
-            "binders_adv_1": "- a hideous being of rolling flame crashes into the enemy.",
-            "binders_adv_2": "- a massive conflagration rises up and then crashes down upon the enemy."
+            "default": {
+                "text": [
+                    "- a destructive avatar of rolling flame crashes into the enemy.",
+                    "- a massive conflagration rises up and then crashes down upon the enemy."
+                ]
+            },
+            "binders_adv": {
+                "text": [
+                    "- a hideous being of rolling flame crashes into the enemy.",
+                    "- a massive conflagration rises up and then crashes down upon the enemy."
+                ],
+                "conditions": [
+                    {"type": "advantage", "value": "Daemon Binders"}
+                ]
+            }
         },
         "sorcery": true
     },
@@ -333,7 +451,11 @@ global.powers_data = {
         "armor_piercing": 0,
         "duration": 3,
         "flavour_text": {
-            "default": ".  Gaining precognitive powers, he is better able to avoid enemy blows."
+            "default": {
+                "text": [
+                    ". Gaining precognitive powers, he is better able to avoid enemy blows."
+                ]
+            }
         }
     },
     "Might of the Ancients": {
@@ -345,7 +467,11 @@ global.powers_data = {
         "armor_piercing": 0,
         "duration": 3,
         "flavour_text": {
-            "default": ".  His physical power and might is increased to unimaginable levels."
+            "default": {
+                "text": [
+                    ". His physical power and might is increased to unimaginable levels."
+                ]
+            }
         }
     },
     "Vortex of Doom": {
@@ -357,8 +483,19 @@ global.powers_data = {
         "armor_piercing": 1,
         "duration": 0,
         "flavour_text": {
-            "default": "- a hole between real and warp space is torn open with deadly effect.",
-            "binders_adv": "- a hole between realspace and the warp is torn, unleashing a myriad of sorcerous energies."
+            "default": {
+                "text": [
+                    "- a hole between real and warp space is torn open with deadly effect."
+                ]
+            },
+            "binders_adv": {
+                "text": [
+                    "- a hole between realspace and the warp is torn, unleashing a myriad of sorcerous energies."
+                ],
+                "conditions": [
+                    {"type": "advantage", "value": "Daemon Binders"}
+                ]
+            }
         },
         "sorcery": true
     },
@@ -371,8 +508,19 @@ global.powers_data = {
         "armor_piercing": -1,
         "duration": 0,
         "flavour_text": {
-            "default": "- a bright jet of flame shoots forth at the enemy.",
-            "binders_adv": "- a greenish, eerie jet of flame shoots forth at the enemy."
+            "default": {
+                "text": [
+                    "- a bright jet of flame shoots forth at the enemy."
+                ]
+            },
+            "binders_adv": {
+                "text": [
+                    "- a greenish, eerie jet of flame shoots forth at the enemy."
+                ],
+                "conditions": [
+                    {"type": "advantage", "value": "Daemon Binders"}
+                ]
+            }
         }
     },
     "Fiery Form": {
@@ -384,8 +532,19 @@ global.powers_data = {
         "armor_piercing": 0,
         "duration": 3,
         "flavour_text": {
-            "default": ".  Hissing flames appear and roar around the marine, threatening nearby foes.",
-            "binders_adv": ".  Hideous, eerie beings of warp fire begin to dance around the marine, threatening nearby foes."
+            "default": {
+                "text": [
+                    ". Hissing flames appear and roar around the marine, threatening nearby foes."
+                ]
+            },
+            "binders_adv": {
+                "text": [
+                    ". Hideous, eerie beings of warp fire begin to dance around the marine, threatening nearby foes."
+                ],
+                "conditions": [
+                    {"type": "advantage", "value": "Daemon Binders"}
+                ]
+            }
         }
     },
     "Fire Shield": {
@@ -397,8 +556,19 @@ global.powers_data = {
         "armor_piercing": 0,
         "duration": 3,
         "flavour_text": {
-            "default": ".  Orange sheets of fire shimmer around your forces, protecting them.",
-            "binders_adv": "-  Purple sheets of warp fire shimmer around your forces, protecting them."
+            "default": {
+                "text": [
+                    ". Orange sheets of fire shimmer around your forces, protecting them."
+                ]
+            },
+            "binders_adv": {
+                "text": [
+                    "- Purple sheets of warp fire shimmer around your forces, protecting them."
+                ],
+                "conditions": [
+                    {"type": "advantage", "value": "Daemon Binders"}
+                ]
+            }
         }
     },
     "Inferno": {
@@ -411,12 +581,19 @@ global.powers_data = {
         "duration": 0,
         "flavour_text": {
             "default": {
-                "1": "- a massive conflagration rises up and then crashes down upon the enemy.",
-                "2": "- after breathing deeply a massive jet of flame is unleashed.  Smoke billows into the sky."
+                "text": [
+                    "- a massive conflagration rises up and then crashes down upon the enemy.",
+                    "- after breathing deeply a massive jet of flame is unleashed. Smoke billows into the sky."
+                ]
             },
             "binders_adv": {
-                "1": "- a hideous being of rolling flame crashes into the enemy.",
-                "2": "- a massive conflagration rises up and then crashes down upon the enemy."
+                "text": [
+                    "- a hideous being of rolling flame crashes into the enemy.",
+                    "- a massive conflagration rises up and then crashes down upon the enemy."
+                ],
+                "conditions": [
+                    {"type": "advantage", "value": "Daemon Binders"}
+                ]
             }
         }
     },
@@ -429,8 +606,19 @@ global.powers_data = {
         "armor_piercing": 1,
         "duration": 0,
         "flavour_text": {
-            "default": "- a crackling, hissing beam of purple-red flame shoots from him.",
-            "binders_adv": "- a crackling, hissing beam of purple warp shoots from him."
+            "default": {
+                "text": [
+                    "- a crackling, hissing beam of purple-red flame shoots from him."
+                ]
+            },
+            "binders_adv": {
+                "text": [
+                    "- a crackling, hissing beam of purple warp shoots from him."
+                ],
+                "conditions": [
+                    {"type": "advantage", "value": "Daemon Binders"}
+                ]
+            }
         },
         "sorcery": true
     },
@@ -443,8 +631,19 @@ global.powers_data = {
         "armor_piercing": 1,
         "duration": 0,
         "flavour_text": {
-            "default": "- a white-blue beam, blinding to behold, shoots forth.  All that it touches turns to slag.",
-            "binders_adv": "- a massive beam of purple warp energy shoots forth.  All that it touches is consumed."
+            "default": {
+                "text": [
+                    "- a white-blue beam, blinding to behold, shoots forth. All that it touches turns to slag."
+                ]
+            },
+            "binders_adv": {
+                "text": [
+                    "- a massive beam of purple warp energy shoots forth. All that it touches is consumed."
+                ],
+                "conditions": [
+                    {"type": "advantage", "value": "Daemon Binders"}
+                ]
+            }
         },
         "sorcery": true
     },
@@ -456,7 +655,13 @@ global.powers_data = {
         "power": 220,
         "armor_piercing": 0,
         "duration": 0,
-        "flavour_text": "- accelerating the pulse and blood pressure of his foes."
+        "flavour_text": {
+            "default": {
+                "text": [
+                    "- accelerating the pulse and blood pressure of his foes."
+                ]
+            }
+        }
     },
     "Iron Arm": {
         "type": "buff",
@@ -466,7 +671,13 @@ global.powers_data = {
         "power": 0,
         "armor_piercing": 0,
         "duration": 3,
-        "flavour_text": ".  His flesh is transmuted into a form of living metal."
+        "flavour_text": {
+            "default": {
+                "text": [
+                    ". His flesh is transmuted into a form of living metal."
+                ]
+            }
+        }
     },
     "Endurance": {
         "type": "buff",
@@ -476,7 +687,13 @@ global.powers_data = {
         "power": 0,
         "armor_piercing": 0,
         "duration": 3,
-        "flavour_text": ".  He reaches into nearby allies, restoring their flesh and knitting wounds."
+        "flavour_text": {
+            "default": {
+                "text": [
+                    ". He reaches into nearby allies, restoring their flesh and knitting wounds."
+                ]
+            }
+        }
     },
     "Regenerate": {
         "type": "buff",
@@ -486,7 +703,13 @@ global.powers_data = {
         "power": 0,
         "armor_piercing": 0,
         "duration": 0,
-        "flavour_text": ".  His flesh shimmers and twists back together, sealing up wounds and damage."
+        "flavour_text": {
+            "default": {
+                "text": [
+                    ". His flesh shimmers and twists back together, sealing up wounds and damage."
+                ]
+            }
+        }
     },
     "Haemorrhage": {
         "type": "attack",
@@ -496,7 +719,13 @@ global.powers_data = {
         "power": 800,
         "armor_piercing": 0,
         "duration": 0,
-        "flavour_text": "- reaching inside of his foes and lighting their flesh aflame."
+        "flavour_text": {
+            "default": {
+                "text": [
+                    "- reaching inside of his foes and lighting their flesh aflame."
+                ]
+            }
+        }
     },
     "Crush": {
         "type": "attack",
@@ -506,7 +735,13 @@ global.powers_data = {
         "power": 190,
         "armor_piercing": 0,
         "duration": 0,
-        "flavour_text": "- his foes are entrapped in a crushing mass of force."
+        "flavour_text": {
+            "default": {
+                "text": [
+                    "- his foes are entrapped in a crushing mass of force."
+                ]
+            }
+        }
     },
     "Shockwave": {
         "type": "attack",
@@ -516,7 +751,13 @@ global.powers_data = {
         "power": 280,
         "armor_piercing": 0,
         "duration": 0,
-        "flavour_text": "- a massive wave of force smashes aside his foes."
+        "flavour_text": {
+            "default": {
+                "text": [
+                    "- a massive wave of force smashes aside his foes."
+                ]
+            }
+        }
     },
     "Telekinetic Dome": {
         "type": "buff",
@@ -526,7 +767,13 @@ global.powers_data = {
         "power": 0,
         "armor_piercing": 0,
         "duration": 3,
-        "flavour_text": ".  Invisible currents of force surround him, ready to deflect bolts or blows."
+        "flavour_text": {
+            "default": {
+                "text": [
+                    ". Invisible currents of force surround him, ready to deflect bolts or blows."
+                ]
+            }
+        }
     },
     "Spatial Distortion": {
         "type": "buff",
@@ -536,7 +783,13 @@ global.powers_data = {
         "power": 0,
         "armor_piercing": 0,
         "duration": 3,
-        "flavour_text": ".  His blows, once thrown, are now able to become impossibly heavy and forceful."
+        "flavour_text": {
+            "default": {
+                "text": [
+                    ". His blows, once thrown, are now able to become impossibly heavy and forceful."
+                ]
+            }
+        }
     },
     "Living Lightning": {
         "type": "attack",
@@ -546,7 +799,13 @@ global.powers_data = {
         "power": 160,
         "armor_piercing": 0,
         "duration": 0,
-        "flavour_text": "- arcs of lightning shoot from hand and strike his foes."
+        "flavour_text": {
+            "default": {
+                "text": [
+                    "- arcs of lightning shoot from hand and strike his foes."
+                ]
+            }
+        }
     },
     "Stormbringer": {
         "type": "buff",
@@ -556,7 +815,13 @@ global.powers_data = {
         "power": 0,
         "armor_piercing": 0,
         "duration": 2,
-        "flavour_text": ".  A vortex of ice and winds crackle into existence, covering your forces."
+        "flavour_text": {
+            "default": {
+                "text": [
+                    ". A vortex of ice and winds crackle into existence, covering your forces."
+                ]
+            }
+        }
     },
     "Murderous Hurricane": {
         "type": "attack",
@@ -566,7 +831,13 @@ global.powers_data = {
         "power": 320,
         "armor_piercing": 0,
         "duration": 0,
-        "flavour_text": "- a mighty winter gale billows forth, shredding and freezing flesh."
+        "flavour_text": {
+            "default": {
+                "text": [
+                    "- a mighty winter gale billows forth, shredding and freezing flesh."
+                ]
+            }
+        }
     },
     "Fury of the Wolf Spirits": {
         "type": "attack",
@@ -577,8 +848,12 @@ global.powers_data = {
         "armor_piercing": 0,
         "duration": 0,
         "flavour_text": {
-            "1": "- a pair of Thunderwolf revenants sprint outward, running down and overwhelming foes.",
-            "2": "- ghostly visages of Freki and Geri launch into his foes, overwhelming them."
+            "default": {
+                "text": [
+                    "- a pair of Thunderwolf revenants sprint outward, running down and overwhelming foes.",
+                    "- ghostly visages of Freki and Geri launch into his foes, overwhelming them."
+                ]
+            }
         }
     },
     "Thunderclap": {
@@ -589,7 +864,13 @@ global.powers_data = {
         "power": 600,
         "armor_piercing": 0,
         "duration": 0,
-        "flavour_text": "- smashing his gauntlets together and unleashing a mighty shockwave."
+        "flavour_text": {
+            "default": {
+                "text": [
+                    "- smashing his gauntlets together and unleashing a mighty shockwave."
+                ]
+            }
+        }
     },
     "Jaws of the World Wolf": {
         "type": "attack",
@@ -599,7 +880,13 @@ global.powers_data = {
         "power": 800,
         "armor_piercing": 1,
         "duration": 0,
-        "flavour_text": "- chasms open up beneath his foes, swallowing them down and crushing them."
+        "flavour_text": {
+            "default": {
+                "text": [
+                    "- chasms open up beneath his foes, swallowing them down and crushing them."
+                ]
+            }
+        }
     },
     "Avenge": {
         "type": "attack",
@@ -610,8 +897,12 @@ global.powers_data = {
         "armor_piercing": 0,
         "duration": 0,
         "flavour_text": {
-            "1": "- a destructive avatar of rolling flame crashes into the enemy.",
-            "2": "- a massive conflagration rises up and then crashes down upon the enemy."
+            "default": {
+                "text": [
+                    "- a destructive avatar of rolling flame crashes into the enemy.",
+                    "- a massive conflagration rises up and then crashes down upon the enemy."
+                ]
+            }
         }
     },
     "Quickening": {
@@ -622,7 +913,13 @@ global.powers_data = {
         "power": 0,
         "armor_piercing": 0,
         "duration": 3,
-        "flavour_text": ".  Gaining precognitive powers, he is better able to avoid enemy blows."
+        "flavour_text": {
+            "default": {
+                "text": [
+                    ". Gaining precognitive powers, he is better able to avoid enemy blows."
+                ]
+            }
+        }
     },
     "Might of the Ancients": {
         "type": "buff",
@@ -632,7 +929,13 @@ global.powers_data = {
         "power": 0,
         "armor_piercing": 0,
         "duration": 3,
-        "flavour_text": ".  His physical power and might are increased to unimaginable levels."
+        "flavour_text": {
+            "default": {
+                "text": [
+                    ". His physical power and might are increased to unimaginable levels."
+                ]
+            }
+        }
     }
 }
 
