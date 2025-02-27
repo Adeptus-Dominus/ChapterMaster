@@ -288,9 +288,23 @@ global.modular_drawing_items = [
         sprite : spr_lion_belt,
         body_types :[0],
         position : "belt",
+        exp : {
+            min : 70,
+        },        
         armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"], 
         assign_by_rank : 2,   
-    },                                         
+    },
+    {
+        cultures : ["Knightly"],
+        sprite : spr_knightly_belt,
+        body_types :[0],
+        position : "belt",
+        exp : {
+            min : 50,
+        } ,      
+        armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"], 
+        assign_by_rank : 3,   
+    },                                             
 
 ];
 try{

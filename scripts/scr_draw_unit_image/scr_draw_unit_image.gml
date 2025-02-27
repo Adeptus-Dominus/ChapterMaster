@@ -675,9 +675,9 @@ function scr_draw_unit_image(_background=false){
                             complex_set.add_to_area("robe",spr_marine_robes);
                         } else if (body.torso.robes == 1) {
                             if (scr_has_adv("Daemon Binders") && !modest_livery){
-                                complex_set.add_to_area("tabbard",spr_binders_robes);  
+                                complex_set.add_to_area("robes",spr_binders_robes);  
                             } else {
-                                complex_set.add_to_area("tabbard",spr_marine_robes);  
+                                complex_set.add_to_area("robes",spr_marine_robes);  
                             }
                         } else {
                             complex_set.add_to_area("tabbard",spr_cloth_tabbard);   

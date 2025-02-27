@@ -545,6 +545,7 @@
     {"id":{"name":"spr_generic_sgt_mk5","path":"sprites/spr_generic_sgt_mk5/spr_generic_sgt_mk5.yy",},},
     {"id":{"name":"spr_bionics_leg_3","path":"sprites/spr_bionics_leg_3/spr_bionics_leg_3.yy",},},
     {"id":{"name":"spr_tartaros2_colors","path":"sprites/spr_tartaros2_colors/spr_tartaros2_colors.yy",},},
+    {"id":{"name":"spr_knightly_belt","path":"sprites/spr_knightly_belt/spr_knightly_belt.yy",},},
     {"id":{"name":"spr_tartaros_wep_fix","path":"sprites/spr_tartaros_wep_fix/spr_tartaros_wep_fix.yy",},},
     {"id":{"name":"spr_terminator_colors","path":"sprites/spr_terminator_colors/spr_terminator_colors.yy",},},
     {"id":{"name":"spr_terminator2_colors","path":"sprites/spr_terminator2_colors/spr_terminator2_colors.yy",},},
