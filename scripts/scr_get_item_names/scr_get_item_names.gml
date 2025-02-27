@@ -22,7 +22,7 @@ function get_none_or_any_item_names(_item_names, _with_none=false, _with_any=fal
 /// @param {array} _item_names - The list of ranged weapons to append to.
 /// @returns {void}
 function push_marine_ranged_weapons_item_names(_item_names) {
-    var item_count = 23
+    var item_count = 22
     var initial_size = array_length(_item_names);
     array_resize(_item_names, initial_size + item_count);
 
@@ -38,7 +38,6 @@ function push_marine_ranged_weapons_item_names(_item_names) {
     _item_names[@ index++] = "Heavy Flamer";
     _item_names[@ index++] = "Hellrifle";
     _item_names[@ index++] = "Incinerator";
-    _item_names[@ index++] = "Integrated Bolter";
     _item_names[@ index++] = "Lascannon";
     _item_names[@ index++] = "Lascutter";
     _item_names[@ index++] = "Meltagun";
@@ -49,14 +48,14 @@ function push_marine_ranged_weapons_item_names(_item_names) {
     _item_names[@ index++] = "Plasma Pistol";
     _item_names[@ index++] = "Sniper Rifle";
     _item_names[@ index++] = "Storm Bolter";
-    _item_names[@ index++] = "Webber"; // 23
+    _item_names[@ index++] = "Webber"; // 22
 }
 
 /// @description This function returns the hard-coded list of melee weapons.
 /// @param {array} _item_names - The list to append to.
 /// @returns {void}
 function push_marine_melee_weapons_item_names(_item_names) {
-    var item_count = 16;
+    var item_count = 17;
     var initial_size = array_length(_item_names);
     array_resize(_item_names, initial_size + item_count);
 
@@ -68,6 +67,7 @@ function push_marine_melee_weapons_item_names(_item_names) {
     _item_names[@ index++] = "Power Sword";
     _item_names[@ index++] = "Power Axe";
     _item_names[@ index++] = "Power Fist";
+    _item_names[@ index++] = "Boltstorm Gauntlet";
     _item_names[@ index++] = "Chainfist";
     _item_names[@ index++] = "Lightning Claw";
     _item_names[@ index++] = "Force Staff";
@@ -76,7 +76,7 @@ function push_marine_melee_weapons_item_names(_item_names) {
     _item_names[@ index++] = "Boarding Shield";
     _item_names[@ index++] = "Storm Shield";
     _item_names[@ index++] = "Bolt Pistol";
-    _item_names[@ index++] = "Bolter"; // 16
+    _item_names[@ index++] = "Bolter"; // 17
 }
 
 
