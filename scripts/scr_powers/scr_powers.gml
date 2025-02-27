@@ -176,6 +176,166 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         }
     };
 
+    var powers_data = {
+        "Minor Smite": {
+            "type": "attack",
+            "range": 5,
+            "target_type": 3,
+            "max_kills": 1,
+            "power": 160,
+            "armor_piercing": 0,
+            "duration": 0,
+            "flavour_text": {
+                "default_1": "- a coil of warp energy lashes out at the enemy.",
+                "binders_adv": "- a green, sickly coil of energy lashes out at the enemy."
+            }
+        },
+        "Wave of Entropy": {
+            "type": "attack",
+            "range": 3,
+            "target_type": 3,
+            "max_kills": 1,
+            "power": 220,
+            "armor_piercing": 0,
+            "duration": 0,
+            "flavour_text": {
+                "default_1": "- a putrid cone of warp energy splashes outward, ",
+                "enemy_9": "twisting and rusting everything it touches.",
+                "enemy_10": "boiling and turning everything to ash."
+            },
+            "sorcery": true
+        },
+        "Wave of Change": {
+            "type": "attack",
+            "range": 3,
+            "target_type": 3,
+            "max_kills": 1,
+            "power": 220,
+            "armor_piercing": 0,
+            "duration": 0,
+            "flavour_text": {
+                "default_1": "- a wispy cone of warp energy reaches outward, twisting and morphing all that it touches."
+            },
+            "sorcery": true
+        },
+        "Insect Swarm": {
+            "type": "attack",
+            "range": 3,
+            "target_type": 3,
+            "max_kills": 1,
+            "power": 500,
+            "armor_piercing": 1,
+            "duration": 0,
+            "flavour_text": {
+                "default_1": "- a massive, black cloud of insects spew from his body. At once they begin burrowing into your foes.",
+                "default_2": "- rank, ichory insects spew forth from his body at your foes. They begin burrowing through flesh and armour alike."
+            },
+            "sorcery": true
+        },
+        "Blood Dementia": {
+            "type": "buff",
+            "range": 0,
+            "target_type": 0,
+            "max_kills": 0,
+            "power": 0,
+            "armor_piercing": 0,
+            "duration": 3,
+            "buff": {
+                "attack": 2
+            },
+            "flavour_text": {
+                "default_1": ". He goes absolutely nuts, screaming and raging, his mind and body pulsing with chaotic energy."
+            }
+        },
+        "Putrid Vomit": {
+            "type": "attack",
+            "range": 2.1,
+            "target_type": 3,
+            "max_kills": 1,
+            "power": 600,
+            "armor_piercing": 0,
+            "duration": 0,
+            "flavour_text": {
+                "default_1": "- from in front of their mouth a stream of rancid, acidic vomit spews forth at tremendous pressure, splashing over his foes."
+            },
+            "sorcery": true,
+            "power_modifiers": {
+                "enemy_9": 450
+            }
+        },
+        "Warp Bolts": {
+            "type": "attack",
+            "range": 5,
+            "target_type": 3,
+            "max_kills": 1,
+            "power": 300,
+            "armor_piercing": 0,
+            "duration": 0,
+            "flavour_text": {
+                "default_1": "- several bolts of purple warp energy appear and are flung at the enemy.",
+                "default_2": "- he launches a series of rapid warp bolts at the enemy.",
+                "default_3": "- three oozing, shifting bolts of warp energy fly outward from his palms."
+            },
+            "sorcery": true
+        },
+        "Warp Beam": {
+            "type": "attack",
+            "range": 8,
+            "target_type": 4,
+            "max_kills": 1,
+            "power": 600,
+            "armor_piercing": 1,
+            "duration": 0,
+            "flavour_text": {
+                "default": "- a massive beam of purple warp energy shoots forth. All that it touches is consumed."
+            },
+            "sorcery": true
+        },
+        "Rainbow Beam": {
+            "type": "attack",
+            "range": 10,
+            "target_type": 3,
+            "max_kills": 1,
+            "power": 500,
+            "armor_piercing": 1,
+            "duration": 0,
+            "flavour_text": {
+                "default": "- a massive beam of warp energy hisses at the enemy, the crackling energy shifting through every color imaginable sickeningly fast."
+            },
+            "sorcery": true
+        },
+        "Hysterical Frenzy": {
+            "type": "buff",
+            "range": 0,
+            "target_type": 0,
+            "max_kills": 0,
+            "power": 0,
+            "armor_piercing": 0,
+            "duration": 999,
+            "flavour_text": {
+                "multiple": ". Warp energy infuses his body, and several other marines, frenzying them into sensation-seeking destruction.",
+                "single": ". Warp energy infuses his body, frenzying him into sensation-seeking destruction."
+            },
+            "sorcery": true
+        },
+        "Symphony of Pain": {
+            "type": "attack",
+            "range": 2.1,
+            "target_type": 3,
+            "max_kills": 1,
+            "power": 750,
+            "armor_piercing": 1,
+            "duration": 0,
+            "flavour_text": {
+                "default": "- mouth stretching unnaturally wide, before letting out a hellish shriek.",
+                "alternate_1": "The air rumbles and shifts at the sheer magnitude of the sound.",
+                "alternate_2": "Armour and flesh tear alike are torn apart by volume of the howl."
+            },
+            "sorcery": true
+        }
+    }
+    
+
     var selected_discipline = psy_discipline;
     if (tome_discipline != "" && tome_roll <= 50) {
         selected_discipline = tome_discipline;
@@ -227,115 +387,10 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
     var p_arp = 0;
     var p_duration = 0;
 
-    if (power_name == "Wave of Entropy") {
-        p_type = "attack";
-        p_rang = 3;
-        p_tar = 3;
-        p_spli = 1;
-        p_att = 220;
-        p_arp = 0;
-        p_duration = 0;
-        flavour_text2 = "- a putrid cone of warp energy splashes outward, ";
-        if (obj_ncombat.enemy == 9) {
-            flavour_text2 += "twisting and rusting everything it touches.  ";
-        }
-        if (obj_ncombat.enemy != 9) {
-            flavour_text2 += "boiling and putrifying flesh.  ";
-        }
-        if ((obj_ncombat.sorcery_seen < 2) && (obj_ncombat.present_inquisitor == 1)) {
-            obj_ncombat.sorcery_seen = 1;
-        }
-    }
-    if (power_name == "Wave of Change") {
-        p_type = "attack";
-        p_rang = 3;
-        p_tar = 3;
-        p_spli = 1;
-        p_att = 220;
-        p_arp = 0;
-        p_duration = 0;
-        flavour_text2 = "- a wispy cone of warp energy reaches outward, twisting and morphing all that it touches.  ";
-        if ((obj_ncombat.sorcery_seen < 2) && (obj_ncombat.present_inquisitor == 1)) {
-            obj_ncombat.sorcery_seen = 1;
-        }
-    }
-    if (power_name == "Insect Swarm") {
-        p_type = "attack";
-        p_rang = 3;
-        p_tar = 3;
-        p_spli = 1;
-        p_att = 500;
-        p_arp = 1;
-        p_duration = 0;
-        var rnd;
-        rnd = choose(1, 2);
-        if (rnd == 1) {
-            flavour_text2 = "- a massive, black cloud of insects spew from his body.  At once they begin burrowing into your foes.  ";
-        }
-        if (rnd == 2) {
-            flavour_text2 = "- rank, ichory insects spew forth from his body at your foes.  They begin burrowing through flesh and armour alike.  ";
-        }
-        if ((obj_ncombat.sorcery_seen < 2) && (obj_ncombat.present_inquisitor == 1)) {
-            obj_ncombat.sorcery_seen = 1;
-        }
-    }
-    if (power_name == "Blood Dementia") {
-        p_type = "buff";
-        p_rang = 0;
-        p_tar = 0;
-        p_spli = 0;
-        p_att = 0;
-        p_arp = 0;
-        p_duration = 3;
-        flavour_text2 = ".  He goes absolutely nuts, screaming and raging, his mind and body pulsing with chaotic energy.  ";
-        // marine_dementia[unit_id]=1;
-        marine_attack[unit_id] += 2;
-        marine_ranged[unit_id] = 0;
-        if ((obj_ncombat.sorcery_seen < 2) && (obj_ncombat.present_inquisitor == 1)) {
-            obj_ncombat.sorcery_seen = 1;
-        }
-    }
-    if (power_name == "Putrid Vomit") {
-        p_type = "attack";
-        p_rang = 2.1;
-        p_tar = 3;
-        p_spli = 1;
-        p_att = 600;
-        p_arp = 0;
-        p_duration = 0;
-        var rnd;
-        rnd = choose(1, 2);
-        flavour_text2 = "- from in front of their mouth a stream of rancid, acidic vomit spews forth at tremendous pressure, splashing over his foes.  ";
-        if (obj_ncombat.enemy == 9) {
-            p_att = 450;
-        }
-        if ((obj_ncombat.sorcery_seen < 2) && (obj_ncombat.present_inquisitor == 1)) {
-            obj_ncombat.sorcery_seen = 1;
-        }
-    }
-    if (power_name == "Warp Bolts") {
-        p_type = "attack";
-        p_rang = 5;
-        p_tar = 3;
-        p_spli = 1;
-        p_att = 300;
-        p_arp = 0;
-        p_duration = 0;
-        var rnd;
-        rnd = choose(1, 2, 3);
-        if (rnd == 1) {
-            flavour_text2 = "- several bolts of purple warp energy appear and are flung at the enemy.  ";
-        }
-        if (rnd == 2) {
-            flavour_text2 = "- he launches a series of rapid warp bolts at the enemy.  ";
-        }
-        if (rnd == 3) {
-            flavour_text2 = "- three oozing, shifting bolts of warp energy fly outward from his palms.  ";
-        }
-        if ((obj_ncombat.sorcery_seen < 2) && (obj_ncombat.present_inquisitor == 1)) {
-            obj_ncombat.sorcery_seen = 1;
-        }
-    }
+
+
+
+
     if (power_name == "Warp Beam") {
         p_type = "attack";
         p_rang = 8;
