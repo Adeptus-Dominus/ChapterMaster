@@ -52,11 +52,15 @@ function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id,
 				marine_casting_cooldown[unit_id] += 1;
 		        var flavour_text2="Capricious voices eminate from the surrounding area, whispering poisonous lies and horrible truths.";
 		        unit.corruption+=choose(10,15,20);
-				// TODO: Code bellow causes out of bounds crashes. Fix and uncomment;
-		        // repeat(6){
-		        //     var t=irandom(men);
-		        //     if (marine_type[t]!="") then unit.corruption+=choose(6,9,12,15);
-		        // }
+                // Fixed version that prevents out-of-bounds crashes
+                if (men > 0) {
+                    repeat(6) {
+                        var t = irandom(men-1); // Random value from 0 to men-1
+                        if (marine_type[t] != "") {
+                            unit.corruption += choose(6,9,12,15);
+                        }
+                    }
+                }
 		        return flavour_text2;
 		}],
 		[63, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
@@ -111,11 +115,15 @@ function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id,
 		        var flavour_text2="There is a massive explosion of warp energy which incapacitates him and injures several other marines!";
 		        unit.add_or_sub_health(-65);
 		       unit.add_or_sub_health(-5000);
-			   	// TODO: Code bellow causes out of bounds crashes. Fix and uncomment;
-		        // repeat(7){
-		        // var t=irandom(men);
-		        //     if (marine_type[t]!="") then marine_hp[t]-=choose(10,20,30);
-		        // }
+                // Fixed version that prevents out-of-bounds crashes
+                if (men > 0) {
+                    repeat(7) {
+                        var t = irandom(men-1); // Random value from 0 to men-1
+                        if (marine_type[t] != "") {
+                            marine_hp[t]-=choose(10,20,30);
+                        }
+                    }
+                }
 		        return flavour_text2;
 		}],	
 		[79, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
