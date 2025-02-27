@@ -2,7 +2,7 @@
   "resourceType": "GMSprite",
   "resourceVersion": "1.0",
   "name": "spr_mk7_thorax_variants",
-  "bbox_bottom": 90,
+  "bbox_bottom": 94,
   "bbox_left": 0,
   "bbox_right": 99,
   "bbox_top": 0,
