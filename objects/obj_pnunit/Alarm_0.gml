@@ -231,7 +231,7 @@ try {
                         buff_powers = ["B2", "B3"];
                         break;
                     case "P":
-                        buff_powers = ["P", "P2"];
+                        buff_powers = ["P0", "P2"];
                         break;
                     case "T":
                         buff_powers = ["T3", "T4"];
