@@ -276,6 +276,19 @@ global.modular_drawing_items = [
         armours : ["MK6 Corvus"],    
     },
     {
+        cultures : ["Knightly"],
+        sprite : spr_mk6_forehead_knightly,
+        body_types :[0],
+        position : "forehead",
+        armours : ["MK6 Corvus"],    
+    },    
+    {
+        sprite : spr_mk7_complex_belt,
+        body_types :[0],
+        position : "belt",
+        armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"],
+    },
+    {
         cultures : ["Knightly", "Crusader"],
         sprite : spr_mk7_rope_belt,
         body_types :[0],

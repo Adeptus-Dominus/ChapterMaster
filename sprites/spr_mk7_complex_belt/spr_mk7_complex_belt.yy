@@ -3,8 +3,8 @@
   "resourceVersion": "1.0",
   "name": "spr_mk7_complex_belt",
   "bbox_bottom": 104,
-  "bbox_left": 56,
-  "bbox_right": 107,
+  "bbox_left": 54,
+  "bbox_right": 108,
   "bbox_top": 88,
   "bboxMode": 0,
   "collisionKind": 1,
@@ -14,6 +14,8 @@
   "For3D": false,
   "frames": [
     {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"b6ba8600-fb6b-4fa9-abc7-bdc2311eb79e",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"c5eacaf3-6c5a-4af4-ac56-fd957c8f9f0b",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"163be470-f687-42e2-b07c-ad2291c828fa",},
   ],
   "gridX": 0,
   "gridY": 0,
@@ -43,7 +45,7 @@
     "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "eventStubScript": null,
     "eventToFunction": {},
-    "length": 1.0,
+    "length": 3.0,
     "lockOrigin": false,
     "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "playback": 1,
@@ -55,6 +57,8 @@
     "tracks": [
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
             {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"b6ba8600-fb6b-4fa9-abc7-bdc2311eb79e","path":"sprites/spr_mk7_complex_belt/spr_mk7_complex_belt.yy",},},},"Disabled":false,"id":"8516e89a-68d9-460b-8288-a2e0c1a172f2","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"c5eacaf3-6c5a-4af4-ac56-fd957c8f9f0b","path":"sprites/spr_mk7_complex_belt/spr_mk7_complex_belt.yy",},},},"Disabled":false,"id":"693f0993-f516-43e1-916e-17852438db85","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"163be470-f687-42e2-b07c-ad2291c828fa","path":"sprites/spr_mk7_complex_belt/spr_mk7_complex_belt.yy",},},},"Disabled":false,"id":"776e1e3e-6e97-42ba-ae9f-0a99fb30f986","IsCreationKey":false,"Key":2.0,"Length":1.0,"Stretch":false,},
           ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange": null,

@@ -46,8 +46,7 @@ function ComplexSet(unit) constructor{
             thorax_variants : spr_mk7_thorax_variants,
             chest_variants : spr_mk7_chest_variants,
             leg_variants  : spr_mk7_leg_variants,
-            head : spr_mk7_head_variants,
-            belt : spr_mk7_complex_belt      
+            head : spr_mk7_head_variants,    
     };
 
     _are_exceptions = false;
