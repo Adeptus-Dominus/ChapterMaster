@@ -321,7 +321,7 @@ function ComplexSet(unit) constructor{
          ];
          for (var i=0;i<array_length(_draw_order);i++){
             if (_draw_order[i] == "head"){
-                draw_head(self, x_surface_offset,y_surface_offset);
+                draw_head(self);
             } else {
                 draw_component(_draw_order[i]);
             }
