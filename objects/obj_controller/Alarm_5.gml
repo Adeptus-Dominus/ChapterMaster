@@ -54,6 +54,7 @@ try_and_report_loop("chaos_spread", function(){
 
 // ** Build new Imperial Ships **
 build_planet_defence_fleets();
+
 apothecary_training();
 chaplain_training();
 librarian_training();
