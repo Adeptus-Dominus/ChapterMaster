@@ -176,6 +176,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         }
     };
 
+    // TODO: flavour_text options and power_modifiers require a better structure to.
     var powers_data = {
         "Minor Smite": {
             "type": "attack",
@@ -332,6 +333,416 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                 "alternate_2": "Armour and flesh tear alike are torn apart by volume of the howl."
             },
             "sorcery": true
+        },
+        "gather_energy": {
+            "type": "buff",
+            "range": 0,
+            "target_type": 0,
+            "max_kills": 0,
+            "power": 0,
+            "armor_piercing": 0,
+            "duration": 0,
+            "flavour_text": {
+                "default_1": " begins to gather psychic energy.",
+                "default_2": " continues to gather psychic energy."
+            },
+            "sorcery": true
+        },
+        "Imperator Maior": {
+            "type": "attack",
+            "range": 5,
+            "target_type": 3,
+            "max_kills": 1,
+            "power": 1000,
+            "armor_piercing": 1,
+            "duration": 0,
+            "flavour_text": {
+                "default": "- he unleashes all of the gathered energy in a massive psychic blast."
+            },
+            "sorcery": true
+        },
+        "Minor Smite": {
+            "type": "attack",
+            "range": 5,
+            "target_type": 3,
+            "max_kills": 1,
+            "power": 160,
+            "armor_piercing": 0,
+            "duration": 0,
+            "flavour_text": {
+                "default": "- a coil of warp energy lashes out at the enemy.",
+                "binders_adv": "- a green, sickly coil of energy lashes out at the enemy."
+            },
+            "sorcery": true
+        },
+        "Smite": {
+            "type": "attack",
+            "range": 5,
+            "target_type": 3,
+            "max_kills": 1,
+            "power": 260,
+            "armor_piercing": 0,
+            "duration": 0,
+            "flavour_text": {
+                "default_1": "- a blast of warp energy smashes into the enemy.",
+                "default_2": "- warp lightning crackles and leaps to the enemy.",
+                "default_3": "- a brilliant bolt of lightning crashes into the enemy.",
+                "binders_adv_1": "- a green blast of sorcery smashes into the enemy.",
+                "binders_adv_2": "- a wave of green fire launches forth, made up of hideous faces and claws."
+            },
+            "sorcery": true
+        },
+        "Force Dome": {
+            "type": "buff",
+            "range": 1,
+            "target_type": 1,
+            "max_kills": 0,
+            "power": 0,
+            "armor_piercing": 0,
+            "duration": 2,
+            "flavour_text": {
+                "default": ".  An oozing, shifting dome of pure energy appears, covering your forces.",
+                "binders_adv": ".  An oozing, shifting dome of sorcerous energy appears, covering your forces."
+            },
+            "sorcery": true
+        },
+        "Machine Curse": {
+            "type": "attack",
+            "range": 5,
+            "target_type": 4,
+            "max_kills": 0,
+            "power": 300,
+            "armor_piercing": 1,
+            "duration": 0,
+            "flavour_text": {
+                "default": "- the machine spirit within an enemy vehicle is roused."
+            }
+        },
+        "Avenge": {
+            "type": "attack",
+            "range": 5,
+            "target_type": 3,
+            "max_kills": 1,
+            "power": 500,
+            "armor_piercing": 0,
+            "duration": 0,
+            "flavour_text": {
+                "default_1": "- a destructive avatar of rolling flame crashes into the enemy.",
+                "default_2": "- a massive conflagration rises up and then crashes down upon the enemy.",
+                "binders_adv_1": "- a hideous being of rolling flame crashes into the enemy.",
+                "binders_adv_2": "- a massive conflagration rises up and then crashes down upon the enemy."
+            },
+            "sorcery": true
+        },
+        "Quickening": {
+            "type": "buff",
+            "range": 0,
+            "target_type": 0,
+            "max_kills": 0,
+            "power": 0,
+            "armor_piercing": 0,
+            "duration": 3,
+            "flavour_text": {
+                "default": ".  Gaining precognitive powers, he is better able to avoid enemy blows."
+            }
+        },
+        "Might of the Ancients": {
+            "type": "buff",
+            "range": 0,
+            "target_type": 0,
+            "max_kills": 0,
+            "power": 0,
+            "armor_piercing": 0,
+            "duration": 3,
+            "flavour_text": {
+                "default": ".  His physical power and might is increased to unimaginable levels."
+            }
+        },
+        "Vortex of Doom": {
+            "type": "attack",
+            "range": 5,
+            "target_type": 3,
+            "max_kills": 1,
+            "power": 800,
+            "armor_piercing": 1,
+            "duration": 0,
+            "flavour_text": {
+                "default": "- a hole between real and warp space is torn open with deadly effect.",
+                "binders_adv": "- a hole between realspace and the warp is torn, unleashing a myriad of sorcerous energies."
+            },
+            "sorcery": true
+        },
+        "Breathe Fire": {
+            "type": "attack",
+            "range": 3,
+            "target_type": 3,
+            "max_kills": 0,
+            "power": 200,
+            "armor_piercing": -1,
+            "duration": 0,
+            "flavour_text": {
+                "default": "- a bright jet of flame shoots forth at the enemy.",
+                "binders_adv": "- a greenish, eerie jet of flame shoots forth at the enemy."
+            }
+        },
+        "Fiery Form": {
+            "type": "buff",
+            "range": 0,
+            "target_type": 0,
+            "max_kills": 0,
+            "power": 0,
+            "armor_piercing": 0,
+            "duration": 3,
+            "flavour_text": {
+                "default": ".  Hissing flames appear and roar around the marine, threatening nearby foes.",
+                "binders_adv": ".  Hideous, eerie beings of warp fire begin to dance around the marine, threatening nearby foes."
+            }
+        },
+        "Fire Shield": {
+            "type": "buff",
+            "range": 0,
+            "target_type": 0,
+            "max_kills": 0,
+            "power": 0,
+            "armor_piercing": 0,
+            "duration": 3,
+            "flavour_text": {
+                "default": ".  Orange sheets of fire shimmer around your forces, protecting them.",
+                "binders_adv": "-  Purple sheets of warp fire shimmer around your forces, protecting them."
+            }
+        },
+        "Inferno": {
+            "type": "attack",
+            "range": 4,
+            "target_type": 3,
+            "max_kills": 1,
+            "power": 600,
+            "armor_piercing": 0,
+            "duration": 0,
+            "flavour_text": {
+                "default": {
+                    "1": "- a massive conflagration rises up and then crashes down upon the enemy.",
+                    "2": "- after breathing deeply a massive jet of flame is unleashed.  Smoke billows into the sky."
+                },
+                "binders_adv": {
+                    "1": "- a hideous being of rolling flame crashes into the enemy.",
+                    "2": "- a massive conflagration rises up and then crashes down upon the enemy."
+                }
+            }
+        },
+        "Sun Burst": {
+            "type": "attack",
+            "range": 8,
+            "target_type": 4,
+            "max_kills": 1,
+            "power": 200,
+            "armor_piercing": 1,
+            "duration": 0,
+            "flavour_text": {
+                "default": "- a crackling, hissing beam of purple-red flame shoots from him.",
+                "binders_adv": "- a crackling, hissing beam of purple warp shoots from him."
+            },
+            "sorcery": true
+        },
+        "Molten Beam": {
+            "type": "attack",
+            "range": 8,
+            "target_type": 4,
+            "max_kills": 1,
+            "power": 600,
+            "armor_piercing": 1,
+            "duration": 0,
+            "flavour_text": {
+                "default": "- a white-blue beam, blinding to behold, shoots forth.  All that it touches turns to slag.",
+                "binders_adv": "- a massive beam of purple warp energy shoots forth.  All that it touches is consumed."
+            },
+            "sorcery": true
+        },
+        "Blood Boil": {
+            "type": "attack",
+            "range": 3,
+            "target_type": 3,
+            "max_kills": 0,
+            "power": 220,
+            "armor_piercing": 0,
+            "duration": 0,
+            "flavour_text": "- accelerating the pulse and blood pressure of his foes."
+        },
+        "Iron Arm": {
+            "type": "buff",
+            "range": 0,
+            "target_type": 0,
+            "max_kills": 0,
+            "power": 0,
+            "armor_piercing": 0,
+            "duration": 3,
+            "flavour_text": ".  His flesh is transmuted into a form of living metal."
+        },
+        "Endurance": {
+            "type": "buff",
+            "range": 0,
+            "target_type": 0,
+            "max_kills": 0,
+            "power": 0,
+            "armor_piercing": 0,
+            "duration": 3,
+            "flavour_text": ".  He reaches into nearby allies, restoring their flesh and knitting wounds."
+        },
+        "Regenerate": {
+            "type": "buff",
+            "range": 0,
+            "target_type": 0,
+            "max_kills": 0,
+            "power": 0,
+            "armor_piercing": 0,
+            "duration": 0,
+            "flavour_text": ".  His flesh shimmers and twists back together, sealing up wounds and damage."
+        },
+        "Haemorrhage": {
+            "type": "attack",
+            "range": 3,
+            "target_type": 3,
+            "max_kills": 1,
+            "power": 800,
+            "armor_piercing": 0,
+            "duration": 0,
+            "flavour_text": "- reaching inside of his foes and lighting their flesh aflame."
+        },
+        "Crush": {
+            "type": "attack",
+            "range": 4,
+            "target_type": 3,
+            "max_kills": 0,
+            "power": 190,
+            "armor_piercing": 0,
+            "duration": 0,
+            "flavour_text": "- his foes are entrapped in a crushing mass of force."
+        },
+        "Shockwave": {
+            "type": "attack",
+            "range": 4,
+            "target_type": 3,
+            "max_kills": 1,
+            "power": 280,
+            "armor_piercing": 0,
+            "duration": 0,
+            "flavour_text": "- a massive wave of force smashes aside his foes."
+        },
+        "Telekinetic Dome": {
+            "type": "buff",
+            "range": 0,
+            "target_type": 0,
+            "max_kills": 0,
+            "power": 0,
+            "armor_piercing": 0,
+            "duration": 3,
+            "flavour_text": ".  Invisible currents of force surround him, ready to deflect bolts or blows."
+        },
+        "Spatial Distortion": {
+            "type": "buff",
+            "range": 0,
+            "target_type": 0,
+            "max_kills": 0,
+            "power": 0,
+            "armor_piercing": 0,
+            "duration": 3,
+            "flavour_text": ".  His blows, once thrown, are now able to become impossibly heavy and forceful."
+        },
+        "Living Lightning": {
+            "type": "attack",
+            "range": 5,
+            "target_type": 3,
+            "max_kills": 0,
+            "power": 160,
+            "armor_piercing": 0,
+            "duration": 0,
+            "flavour_text": "- arcs of lightning shoot from hand and strike his foes."
+        },
+        "Stormbringer": {
+            "type": "buff",
+            "range": 1,
+            "target_type": 1,
+            "max_kills": 0,
+            "power": 0,
+            "armor_piercing": 0,
+            "duration": 2,
+            "flavour_text": ".  A vortex of ice and winds crackle into existence, covering your forces."
+        },
+        "Murderous Hurricane": {
+            "type": "attack",
+            "range": 4,
+            "target_type": 3,
+            "max_kills": 1,
+            "power": 320,
+            "armor_piercing": 0,
+            "duration": 0,
+            "flavour_text": "- a mighty winter gale billows forth, shredding and freezing flesh."
+        },
+        "Fury of the Wolf Spirits": {
+            "type": "attack",
+            "range": 3,
+            "target_type": 3,
+            "max_kills": 1,
+            "power": 440,
+            "armor_piercing": 0,
+            "duration": 0,
+            "flavour_text": {
+                "1": "- a pair of Thunderwolf revenants sprint outward, running down and overwhelming foes.",
+                "2": "- ghostly visages of Freki and Geri launch into his foes, overwhelming them."
+            }
+        },
+        "Thunderclap": {
+            "type": "attack",
+            "range": 1.1,
+            "target_type": 3,
+            "max_kills": 1,
+            "power": 600,
+            "armor_piercing": 0,
+            "duration": 0,
+            "flavour_text": "- smashing his gauntlets together and unleashing a mighty shockwave."
+        },
+        "Jaws of the World Wolf": {
+            "type": "attack",
+            "range": 5,
+            "target_type": 3,
+            "max_kills": 1,
+            "power": 800,
+            "armor_piercing": 1,
+            "duration": 0,
+            "flavour_text": "- chasms open up beneath his foes, swallowing them down and crushing them."
+        },
+        "Avenge": {
+            "type": "attack",
+            "range": 5,
+            "target_type": 3,
+            "max_kills": 1,
+            "power": 500,
+            "armor_piercing": 0,
+            "duration": 0,
+            "flavour_text": {
+                "1": "- a destructive avatar of rolling flame crashes into the enemy.",
+                "2": "- a massive conflagration rises up and then crashes down upon the enemy."
+            }
+        },
+        "Quickening": {
+            "type": "buff",
+            "range": 0,
+            "target_type": 0,
+            "max_kills": 0,
+            "power": 0,
+            "armor_piercing": 0,
+            "duration": 3,
+            "flavour_text": ".  Gaining precognitive powers, he is better able to avoid enemy blows."
+        },
+        "Might of the Ancients": {
+            "type": "buff",
+            "range": 0,
+            "target_type": 0,
+            "max_kills": 0,
+            "power": 0,
+            "armor_piercing": 0,
+            "duration": 3,
+            "flavour_text": ".  His physical power and might are increased to unimaginable levels."
         }
     }
     
@@ -391,324 +802,13 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
 
 
 
-    if (power_name == "Warp Beam") {
-        p_type = "attack";
-        p_rang = 8;
-        p_tar = 4;
-        p_spli = 1;
-        p_att = 600;
-        p_arp = 1;
-        p_duration = 0;
-        flavour_text2 = "- a massive beam of purple warp energy shoots forth.  All that it touches is consumed.  ";
-        if ((obj_ncombat.sorcery_seen < 2) && (obj_ncombat.present_inquisitor == 1)) {
-            obj_ncombat.sorcery_seen = 1;
-        }
-    }
-    if (power_name == "Rainbow Beam") {
-        p_type = "attack";
-        p_rang = 10;
-        p_tar = 3;
-        p_spli = 1;
-        p_att = 500;
-        p_arp = 1;
-        p_duration = 0;
-        flavour_text2 = "- a massive beam of warp energy hisses at the enemy, the crackling energy shifting through every color imaginable sickeningly fast.  ";
-        if ((obj_ncombat.sorcery_seen < 2) && (obj_ncombat.present_inquisitor == 1)) {
-            obj_ncombat.sorcery_seen = 1;
-        }
-    }
-    if (power_name == "Hysterical Frenzy") {
-        p_type = "buff";
-        p_rang = 0;
-        p_tar = 0;
-        p_spli = 0;
-        p_att = 0;
-        p_arp = 0;
-        p_duration = 999;
-        if (obj_ncombat.player_forces > 1) {
-            flavour_text2 = ".  Warp energy infuses his body, and several other marines, frenzying them into sensation-seeking destruction.  ";
-        }
-        if (obj_ncombat.player_forces == 1) {
-            flavour_text2 = ".  Warp energy infuses his body, frenzying him into sensation-seeking destruction.  ";
-        }
-        if ((obj_ncombat.sorcery_seen < 2) && (obj_ncombat.present_inquisitor == 1)) {
-            obj_ncombat.sorcery_seen = 1;
-        }
-    }
-    if (power_name == "Symphony of Pain") {
-        p_type = "attack";
-        p_rang = 2.1;
-        p_tar = 3;
-        p_spli = 1;
-        p_att = 750;
-        p_arp = 1;
-        p_duration = 0;
-        flavour_text2 = "- mouth stretching unnaturally wide, before letting out a hellish shriek.  ";
-        var rnd;
-        rnd = choose(1, 2);
-        if (rnd == 1) {
-            flavour_text2 = "The air rumbles and shifts at the sheer magnitude of the sound.  ";
-        }
-        if (rnd == 2) {
-            flavour_text2 = "Armour and flesh tear alike are torn apart by volume of the howl.  ";
-        }
-        if ((obj_ncombat.sorcery_seen < 2) && (obj_ncombat.present_inquisitor == 1)) {
-            obj_ncombat.sorcery_seen = 1;
-        }
-    }
 
-    if (power_name == "gather_energy") {
-        p_type = "buff";
-        p_rang = 0;
-        p_tar = 0;
-        p_spli = 0;
-        p_att = 0;
-        p_arp = 0;
-        p_duration = 0;
-        if (obj_ncombat.big_boom < 1) {
-            flavour_text2 = " begins to gather psychic energy.";
-        }
-        if (obj_ncombat.big_boom >= 1) {
-            flavour_text2 = " continues to gather psychic energy.";
-        }
-        obj_ncombat.big_boom += 1;
-    }
+
+
     if ((power_name == "gather_energy") && (obj_ncombat.big_boom == 3)) {
         power_name = "Imperator Maior";
     }
 
-    if (power_name == "Imperator Maior") {
-        obj_ncombat.big_boom = 0;
-        p_type = "attack";
-        p_rang = 5;
-        p_tar = 3;
-        p_spli = 1;
-        p_att = 1000;
-        p_arp = 1;
-        p_duration = 0;
-        flavour_text2 = "- he unleashes all of the gathered energy in a massive psychic blast.  ";
-    }
-
-    // target       0: self     1: ally     2: ally vehicle     3: enemy       4: enemy vehicle
-    if (power_name == "Minor Smite") {
-        p_type = "attack";
-        p_rang = 5;
-        p_tar = 3;
-        p_spli = 1;
-        p_att = 160;
-        p_arp = 0;
-        p_duration = 0;
-        flavour_text2 = "- a coil of warp energy lashes out at the enemy.  ";
-        if (binders_adv == true) {
-            flavour_text2 = "- a green, sickly coil of energy lashes out at the enemy.  ";
-        }
-    }
-    if (power_name == "Smite") {
-        p_type = "attack";
-        p_rang = 5;
-        p_tar = 3;
-        p_spli = 1;
-        p_att = 260;
-        p_arp = 0;
-        p_duration = 0;
-        var rnd;
-        rnd = choose(1, 2, 3);
-        if (rnd == 1) {
-            flavour_text2 = "- a blast of warp energy smashes into the enemy.  ";
-        }
-        if (rnd == 2) {
-            flavour_text2 = "- warp lightning crackles and leaps to the enemy.  ";
-        }
-        if (rnd == 3) {
-            flavour_text2 = "- a brilliant bolt of lightning crashes into the enemy.  ";
-        }
-        if ((binders_adv == true) && (rnd == 1)) {
-            flavour_text2 = "-a green blast of sorcery smashes into the enemy.  ";
-        }
-        if ((binders_adv == true) && (rnd >= 2)) {
-            flavour_text2 = "-a wave of green fire launches forth, made up of hideous faces and claws.  ";
-        }
-    }
-    if (power_name == "Force Dome") {
-        p_type = "buff";
-        p_rang = 1;
-        p_tar = 1;
-        p_spli = 0;
-        p_att = 0;
-        p_arp = 0;
-        p_duration = 2;
-        flavour_text2 = ".  An oozing, shifting dome of pure energy appears, covering your forces.";
-        if (binders_adv == true) {
-            flavour_text2 = ".  An oozing, shifting dome of sorcerous energy appears, covering your forces.";
-        }
-        if ((binders_adv == true) && (obj_ncombat.sorcery_seen < 2) && (obj_ncombat.present_inquisitor == 1)) {
-            obj_ncombat.sorcery_seen = 1;
-        }
-    }
-    if (power_name == "Machine Curse") {
-        p_type = "attack";
-        p_rang = 5;
-        p_tar = 4;
-        p_spli = 0;
-        p_att = 300;
-        p_arp = 1;
-        p_duration = 0;
-        flavour_text2 = "- the machine spirit within an enemy vehicle is roused.  ";
-    }
-    if (power_name == "Avenge") {
-        p_type = "attack";
-        p_rang = 5;
-        p_tar = 3;
-        p_spli = 1;
-        p_att = 500;
-        p_arp = 0;
-        p_duration = 0;
-        var rnd;
-        rnd = choose(1, 2);
-        if (rnd == 1) {
-            flavour_text2 = "- a destructive avatar of rolling flame crashes into the enemy.  ";
-        }
-        if (rnd == 2) {
-            flavour_text2 = "- a massive conflagration rises up and then crashes down upon the enemy.  ";
-        }
-        if ((binders_adv == true) && (rnd == 1)) {
-            flavour_text2 = "- a hideous being of rolling flame crashes into the enemy.  ";
-        }
-        if ((binders_adv == true) && (rnd == 2)) {
-            flavour_text2 = "- a massive conflagration rises up and then crashes down upon the enemy.  ";
-        }
-    }
-    if (power_name == "Quickening") {
-        p_type = "buff";
-        p_rang = 0;
-        p_tar = 0;
-        p_spli = 0;
-        p_att = 0;
-        p_arp = 0;
-        p_duration = 3;
-        flavour_text2 = ".  Gaining precognitive powers, he is better able to avoid enemy blows.";
-    }
-    if (power_name == "Might of the Ancients") {
-        p_type = "buff";
-        p_rang = 0;
-        p_tar = 0;
-        p_spli = 0;
-        p_att = 0;
-        p_arp = 0;
-        p_duration = 3;
-        flavour_text2 = ".  His physical power and might is increased to unimaginable levels.";
-    }
-    if (power_name == "Vortex of Doom") {
-        p_type = "attack";
-        p_rang = 5;
-        p_tar = 3;
-        p_spli = 1;
-        p_att = 800;
-        p_arp = 1;
-        p_duration = 0;
-        flavour_text2 = "- a hole between real and warp space is torn open with deadly effect.  ";
-        if (binders_adv == true) {
-            flavour_text2 = "- a hole bewteen realspace and the warp is torn, unleashing a myriad of sorcerous energies.  ";
-        }
-        if ((binders_adv == true) && (obj_ncombat.sorcery_seen < 2) && (obj_ncombat.present_inquisitor == 1)) {
-            obj_ncombat.sorcery_seen = 1;
-        }
-    }
-
-    if (power_name == "Breathe Fire") {
-        p_type = "attack";
-        p_rang = 3;
-        p_tar = 3;
-        p_spli = 0;
-        p_att = 200;
-        p_arp = -1;
-        p_duration = 0;
-        flavour_text2 = "- a bright jet of flame shoots forth at the enemy.  ";
-        if (binders_adv == true) {
-            flavour_text2 = "- a greenish, eery jet of flame shoots forth at the enemy.  ";
-        }
-    }
-    if (power_name == "Fiery Form") {
-        p_type = "buff";
-        p_rang = 0;
-        p_tar = 0;
-        p_spli = 0;
-        p_att = 0;
-        p_arp = 0;
-        p_duration = 3;
-        flavour_text2 = ".  Hissing flames appear and roar around the marine, threatening nearby foes.  ";
-        if (binders_adv == true) {
-            flavour_text2 = ".  Hideous, eery beings of warp fire begin to dance around the marine, threatening nearby foes.  ";
-        }
-    }
-    if (power_name == "Fire Shield") {
-        p_type = "buff";
-        p_rang = 0;
-        p_tar = 0;
-        p_spli = 0;
-        p_att = 0;
-        p_arp = 0;
-        p_duration = 3;
-        flavour_text2 = ".  Orange sheets of fire shimmer around your forces, protecting them.  ";
-        if (binders_adv == true) {
-            flavour_text2 = "-  Purple sheets of warp fire shimmer around your forces, protecting them.  ";
-        }
-    }
-    if (power_name == "Inferno") {
-        p_type = "attack";
-        p_rang = 4;
-        p_tar = 3;
-        p_spli = 1;
-        p_att = 600;
-        p_arp = 0;
-        p_duration = 0;
-        var rnd;
-        rnd = choose(1, 2);
-        if (rnd == 1) {
-            flavour_text2 = "- a massive conflagration rises up and then crashes down upon the enemy.  ";
-        }
-        if (rnd == 2) {
-            flavour_text2 = "- after breathing deeply a massive jet of flame is unleashed.  Smoke billows into the sky.  ";
-        }
-        if ((binders_adv == true) && (rnd == 1)) {
-            flavour_text2 = "- a hideous being of rolling flame crashes into the enemy.  ";
-        }
-        if ((binders_adv == true) && (rnd == 2)) {
-            flavour_text2 = "- a massive conflagration rises up and then crashes down upon the enemy.  ";
-        }
-    }
-    if (power_name == "Sun Burst") {
-        p_type = "attack";
-        p_rang = 8;
-        p_tar = 4;
-        p_spli = 1;
-        p_att = 200;
-        p_arp = 1;
-        p_duration = 0;
-        flavour_text2 = "- a crackling, hissing beam of purple-red flame shoots from him.  ";
-        if (binders_adv == true) {
-            flavour_text2 = "- a crackling, hissing beam of purple warp shoots from him.  ";
-        }
-        if ((binders_adv == true) && (obj_ncombat.sorcery_seen < 2) && (obj_ncombat.present_inquisitor == 1)) {
-            obj_ncombat.sorcery_seen = 1;
-        }
-    }
-    if (power_name == "Molten Beam") {
-        p_type = "attack";
-        p_rang = 8;
-        p_tar = 4;
-        p_spli = 1;
-        p_att = 600;
-        p_arp = 1;
-        p_duration = 0;
-        flavour_text2 = "- a white-blue beam, blinding to behold, shoots forth.  All that it touches turns to slag.  ";
-        if (binders_adv == true) {
-            flavour_text2 = "- a massive beam of purple warp energy shoots forth.  All that it touches is consumed.  ";
-        }
-        if ((binders_adv == true) && (obj_ncombat.sorcery_seen < 2) && (obj_ncombat.present_inquisitor == 1)) {
-            obj_ncombat.sorcery_seen = 1;
-        }
-    }
 
     if (power_name == "Blood Boil") {
         p_type = "attack";
