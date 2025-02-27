@@ -500,7 +500,7 @@ static purity_seals_and_hangings = function(){
                 })            
                 armour_type = ArmourType.Scout;
     			break
-            case defualt:
+            case default:
                 add_group(mk7_bits);
                 break;
 
