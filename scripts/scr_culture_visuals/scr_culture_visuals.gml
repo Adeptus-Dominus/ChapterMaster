@@ -226,7 +226,7 @@ global.modular_drawing_items = [
         armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"],         
     },
     {
-        chapter_adv : ["reverent_guardian"],
+        chapter_adv : ["Reverent Guardians"],
         sprite : spr_pack_brazier3,
         body_types :[0],
         position : "backpack",

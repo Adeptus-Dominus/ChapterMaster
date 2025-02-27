@@ -594,11 +594,6 @@ function scr_draw_unit_image(_background=false){
 
                  // Draw the backpack
                 if (draw_backpack){
-                    if (body.torso.backpack_variation % 3 == 0) {
-                        if (reverent_guardians) and (!modest_livery){
-                            complex_set.add_to_area("backpack",spr_pack_brazier3);                         
-                        }
-                    }
 
                     /*if (unit_progenitor == "Dark Angels") {
                         if (unit_role == "Chapter Master") {
