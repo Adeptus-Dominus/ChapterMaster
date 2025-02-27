@@ -255,7 +255,7 @@ if __b__ {
 			// if (marine_hp[g]>0) then men+=1;
 
 			/*
-			scr_infantry_weapon
+			scr_en_weapon
 			argument0: name
 			argument1: man?
 			argument2: number
