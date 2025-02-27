@@ -327,7 +327,29 @@ global.modular_drawing_items = [
         position : "belt",
         role_type : ["chap"],
         armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"],  
-    },                                            
+    },
+    {
+        sprite : spr_skulls_belt,
+        body_types :[0],
+        position : "belt",
+        role_type : ["forge"],
+        armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"],  
+    },     
+    {
+        cultures : ["Feral"],
+        sprite : spr_teeth,
+        body_types :[0,2],
+        position : "purity_seals",
+        traits : ["tyrannic_vet", "beast_slayer","feral"],
+        allow_either : ["cultures", "traits"],
+    },
+    {
+        cultures : ["Knightly"],
+        sprite : spr_mk7_knightly_chest,
+        body_types :[0],
+        position : "chest_variants",
+        armours : ["MK8 Errant", "MK7 Aquila"],  
+    },                                           
 
 ];
 try{

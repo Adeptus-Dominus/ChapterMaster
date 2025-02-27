@@ -83,7 +83,10 @@ function ComplexSet(unit) constructor{
 
                 if (struct_exists(_mod, "allow_either")){
                     _are_exceptions = true;
-                    exceptions = _mod.allow_either;
+                    exceptions = [];
+                    for (var m=0;m<array_length(_mod.allow_either);m++){
+                        array_push(exceptions, _mod.allow_either[m]);
+                    }
                 }
                if (struct_exists(_mod, "body_types")){
                     if (!array_contains(_mod.body_types, armour_type)){
@@ -172,7 +175,22 @@ function ComplexSet(unit) constructor{
                             continue;
                         }                         
                     }
-               }               
+               }
+                if (struct_exists(_mod, "traits")){
+                    var _viable = false;
+                    for (var a=0;a<array_length(_mod.traits);a++){
+                        var _trait = _mod.traits[a];
+                        _viable = unit.has_trait(_trait);
+                        if (_viable){
+                            break;
+                        }
+                    }
+                    if (!_viable){
+                        if (!check_exception("traits")){
+                            continue;
+                        }
+                    }
+                }                             
                if (!struct_exists(_mod, "assign_by_rank")){
                    add_to_area(_mod.position, _mod.sprite)
                } else {
