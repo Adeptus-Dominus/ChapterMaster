@@ -367,25 +367,30 @@ function scr_efleet_arrive_at_trade_loc(){
         }
     }
 }
-function scr_orbiting_fleet(faction){
-
-	nearest_fleet = instance_nearest(x,y,obj_en_fleet);
-	while (nearest_fleet.x==x && nearest_fleet.y==y){
+function scr_orbiting_fleet(faction, system="none"){
+	if (system == "none"){
 		nearest_fleet = instance_nearest(x,y,obj_en_fleet);
-		var _valid = false;
-		if (is_array(faction)){
-			_valid = array_contains(faction, nearest_fleet.owner);
-		} else {
-			_valid = nearest_fleet.owner;
+		while (nearest_fleet.x==x && nearest_fleet.y==y){
+			nearest_fleet = instance_nearest(x,y,obj_en_fleet);
+			var _valid = false;
+			if (is_array(faction)){
+				_valid = array_contains(faction, nearest_fleet.owner);
+			} else {
+				_valid = nearest_fleet.owner;
+			}
+			if (_valid && nearest_fleet.action == ""){
+				instance_activate_object(obj_en_fleet);
+				return nearest_fleet.id;
+			} else {
+				instance_deactivate_object(nearest_fleet.id);
+			}
 		}
-		if (_valid && nearest_fleet.action == ""){
-			instance_activate_object(obj_en_fleet);
-			return nearest_fleet.id;
-		} else {
-			instance_deactivate_object(nearest_fleet.id);
+		instance_activate_object(obj_en_fleet);
+	} else {
+		with (system){
+			return scr_orbiting_fleet(faction);
 		}
 	}
-	instance_activate_object(obj_en_fleet);
 	return "none";
 
 }
