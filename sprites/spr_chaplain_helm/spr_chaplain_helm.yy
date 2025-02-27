@@ -4,7 +4,7 @@
   "name": "spr_chaplain_helm",
   "bbox_bottom": 44,
   "bbox_left": 68,
-  "bbox_right": 96,
+  "bbox_right": 97,
   "bbox_top": 14,
   "bboxMode": 0,
   "collisionKind": 1,

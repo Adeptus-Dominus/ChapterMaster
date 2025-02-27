@@ -64,6 +64,9 @@ global.modular_drawing_items = [
         armours : ["MK3 Iron Armour", "MK4 Maximus", "MK5 Heresy"],
         position : "crest",
         assign_by_rank : 2,
+        exp : {
+            min : 70,
+        },         
     },
     {
         sprite : spr_da_mk7_helm_crests,
@@ -233,13 +236,13 @@ global.modular_drawing_items = [
         sprite : spr_gear_librarian,
         body_types :[0],
         position : "right_pauldron",
-        role_type : ["lib"],
+        role_type : ["libs"],
     },
     {
         sprite : spr_gear_librarian_term,
         body_types :[2],
         position : "right_pauldron",
-        role_type : ["lib"],
+        role_type : ["libs"],
     },
     {
         sprite : spr_roman_centurian_crest,
@@ -317,7 +320,14 @@ global.modular_drawing_items = [
         } ,      
         armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"], 
         assign_by_rank : 3,   
-    },                                             
+    }, 
+    {
+        sprite : spr_skulls_belt,
+        body_types :[0],
+        position : "belt",
+        role_type : ["chap"],
+        armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"],  
+    },                                            
 
 ];
 try{

@@ -512,19 +512,9 @@ function scr_draw_unit_image(_background=false){
                         tech_brothers_trait=0
                     }
 				}
-            }else{armour_sprite=spr_weapon_blank;}// Define armour
-        
-			
-			
-            if (armour_type == ArmourType.Scout){
-				if (dev_trait>0) then dev_trait=10;
-				armour_sprite=spr_scout_colors2;
-                if (squad!="none"){
-                    if (obj_ini.squads[squad].type=="scout_sniper_squad" || weapon_one()=="Sniper Rifle" || weapon_two()=="Sniper Rifle"){
-                        unit_is_sniper = true;
-                    }
-                }
-			}
+            }else {
+                armour_sprite=spr_weapon_blank;
+            }// Define armour
                 
             // Draw the lights
             if (unit_specialization == UnitSpecialization.Apothecary) and (unit_armour!="") and (back_equipment == BackType.None){
