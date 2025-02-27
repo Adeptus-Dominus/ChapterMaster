@@ -203,7 +203,10 @@ try {
     if (instance_exists(obj_enunit)) {
         for (var i = 0; i < array_length(unit_struct); i++) {
             if (marine_dead[i] == 0 && marine_casting[i] == true) {
-                var known_powers = string_split(unit_struct[i].specials(), "|");
+                var caster_id = i;
+                var known_attack_powers = [];
+                var known_buff_powers = [];
+                var known_powers = string_split(unit_struct[caster_id].specials(), "|");
                 if (array_length(known_powers) > 1) {
                     array_pop(known_powers);
                 }
@@ -216,52 +219,52 @@ try {
                     }
                 }
 
-                var power_index;
+                var power_index = -1; // Just so there is at least something to debug;
                 var power_count = string_count(power_set_letter, known_powers);
 
                 var buff_powers = [];
                 switch (power_set_letter) {
                     case "D":
-                        buff_powers = [2, 5, 6];
+                        buff_powers = ["D2", "D5", "D6"];
                         break;
                     case "B":
-                        buff_powers = [2, 3];
+                        buff_powers = ["B2", "B3"];
                         break;
                     case "P":
-                        buff_powers = [1, 2];
+                        buff_powers = ["P", "P2"];
                         break;
                     case "T":
-                        buff_powers = [3, 4];
+                        buff_powers = ["T3", "T4"];
                         break;
                     case "R":
-                        buff_powers = [2];
+                        buff_powers = ["R2"];
                         break;
                 }
 
                 // Decide whenever to cast buffs or attack spells
-                var buff_cast = 0;
+                var buff_cast = false;
                 var buff_roll = irandom(100);
-                if ((buff_roll <= (105 - (obj_ncombat.turns * 35))) && (obj_ncombat.enemy_forces >= obj_ncombat.player_forces) && (array_length(buff_powers) > 0)) {
-                    // Cast buffs
-                    buff_cast = 1;
+                if ((buff_roll <= (105 - (obj_ncombat.turns * 35))) && (array_length(buff_powers) > 0)) {
+                    // Try to cast buffs
                     // Filter the buff powers that the unit knows
-                    var known_buff_powers = [];
-                    for (var i = 0; i < array_length(buff_powers); i++) {
-                        if (string_count(known_powers, string(buff_powers[i])) > 0) {
-                            array_push(known_buff_powers, buff_powers[i]);
+                    for (var p = 0; p < array_length(buff_powers); p++) {
+                        if (array_contains(known_powers, buff_powers[p])) {
+                            array_push(known_buff_powers, buff_powers[p]);
                         }
                     }
                     if (array_length(known_buff_powers) > 0) {
                         power_index = array_random_element(known_buff_powers);
                         power_index = string_char_at(power_index, 2);
+                        buff_cast = true;
                     }
-                } else {
+                }
+
+                if (!buff_cast) {
                     // Cast attack spells
                     // Filter the attack powers that the unit knows
-                    var known_attack_powers = [];
-                    for (var i = 0; i < array_length(known_powers); i++) {
-                        if (string_count(buff_powers, string(known_powers[i])) == 0) {
-                            array_push(known_attack_powers, known_powers[i]);
+                    for (var p = 0; p < array_length(known_powers); p++) {
+                        if (!array_contains(buff_powers, known_powers[p])) {
+                            array_push(known_attack_powers, known_powers[p]);
                         }
                     }
                     if (array_length(known_attack_powers) > 0) {
@@ -271,29 +274,35 @@ try {
                 }
 
                 enemy = instance_nearest(0, y, obj_enunit);
-                enemy2 = enemy;
+                var target_enemy = enemy;
                 if (enemy.men + enemy.veh + enemy.medi <= 0) {
                     var x5 = enemy.x;
                     with (enemy) {
                         instance_destroy();
                     }
                     enemy = instance_nearest(0, y, obj_enunit);
-                    enemy2 = enemy;
+                    target_enemy = enemy;
                 }
 
                 // I'm not sure what was the plan, but "Z" powers (hacks) are unused in scr_powers
                 /* var ham=false;
-                if (marine_type[i]="Chapter Master") and (obj_ncombat.kamehameha=true) and ((obj_ncombat.big_boom>0) or (choose(1,2)=2)){
+                if (marine_type[caster_id]="Chapter Master") and (obj_ncombat.kamehameha=true) and ((obj_ncombat.big_boom>0) or (choose(1,2)=2)){
                     if (obj_ncombat.enemy_forces>=40) then ham=true;
                 }
 
-                if (ham=false) then scr_powers(string_upper(power_set_letter),power_index,enemy2,i);
-                if (ham=true) then scr_powers("Z",power_index,enemy2,i); */
+                if (ham=false) then scr_powers(string_upper(power_set_letter),power_index,target_enemy,caster_id);
+                if (ham=true) then scr_powers("Z",power_index,target_enemy,caster_id); */
 
-                scr_powers(string_upper(power_set_letter), power_index, enemy2, i);
+                scr_powers(string_upper(power_set_letter), power_index, target_enemy, caster_id);
             }
         }
     }
 } catch (_exception) {
+    // show_debug_message($"known_powers: {known_powers}");
+    // show_debug_message($"buff_powers: {buff_powers}");
+    // show_debug_message($"buff_cast: {buff_cast}");
+    // show_debug_message($"power_index: {power_index}");
+    // show_debug_message($"known_attack_powers: {known_attack_powers}");
+    // show_debug_message($"known_buff_powers: {known_buff_powers}");
     handle_exception(_exception);
 }
