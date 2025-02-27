@@ -24,9 +24,8 @@ try {
     if (!collision_point(x+10,y,obj_enunit,0,1)) and (!collision_point(x-10,y,obj_enunit,0,1)) then engaged=0;
 
     var once_only;once_only=0;
-    var i=0,dist=999;
     var range_shoot="";
-    dist=point_distance(x,y,enemy.x,enemy.y)/10;
+    var dist=point_distance(x,y,enemy.x,enemy.y)/10;
 
     for (var i=0;i<array_length(unit_struct);i++){
         if (marine_mshield[i]>0) then marine_mshield[i]-=1;
@@ -36,7 +35,7 @@ try {
         if (marine_fshield[i]>0) then marine_fshield[i]-=1;
         if (marine_dome[i]>0) then marine_dome[i]-=1;
         if (marine_spatial[i]>0) then marine_spatial[i]-=1;
-    }i=0;
+    }
 
     if (instance_exists(obj_enunit)){
         for (var i=0;i<array_length(wep);i++){
