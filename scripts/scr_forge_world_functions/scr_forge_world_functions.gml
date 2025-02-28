@@ -141,11 +141,11 @@ function build_planet_defence_fleets(){
     // Former: var sha;sha=instance_number(obj_temp6)*1.3;
     var mechanicus_world_total = array_length(_mechanicus_worlds);
 
-    var _ship_allowance =(_imperial_planet_count/8)*(mechanicus_world_total*3);// new
+   	max_fleet_strength =(_imperial_planet_count/8)*(mechanicus_world_total*3);// new
 
             /*in order for new ships to spawn the number of total imperial ships must be smaller than 
              one third of the total imperial star systems*/
-    if (mechanicus_world_total>0) and (imp_ships<_ship_allowance){
+    if (mechanicus_world_total>0 && imp_ships<max_fleet_strength){
         var rando=d100_roll(), rando2=choose(1,2,2,3,3,3);
         if (rando>(12)*mechanicus_world_total){
         	instance_activate_object(obj_star);
@@ -166,10 +166,10 @@ function build_planet_defence_fleets(){
         		navy = false
         		owner = eFACTION.Imperium;
         		choose_fleet_sprite_image();
-        		trade_goods = "merge";
         	}
         }
         if (_defence_fleet && array_length(_value_hierarchy)){
+        	trade_goods = "merge";
             switch(rando2){
                 case 1:
                     _current_imperial_fleet.capital_number++;

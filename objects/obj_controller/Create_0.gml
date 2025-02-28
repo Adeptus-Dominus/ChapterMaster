@@ -1473,6 +1473,25 @@ squads = true;
 game_start_squads();
 squads = false;
 
+system_fleet_strength = 0;
+var _imperial_planet_count = 0;
+var _mech_worlds = 0;
+with(obj_en_fleet){
+    if (owner==eFACTION.Imperium){
+        var _imperial_fleet_defence_score = capital_number + (frigate_number/2) + (escort_number/4);
+        obj_controller.imp_ships += _imperial_fleet_defence_score;
+    }
+}
+with(obj_star){
+    for (var i=0;i<=planets;i++){
+        var _owner_imperial = (p_owner[i] < 5 && p_owner[i] > 1);
+        _imperial_planet_count += _owner_imperial;
+    }
+    if (owner == eFACTION.Mechanicus){
+        _mech_worlds++;
+    }
+}
+max_fleet_strength = (_imperial_planet_count/8)*(_mech_worlds*3);
 // **sets up starting forge_points
 specialist_point_handler = new SpecialistPointHandler();
 specialist_point_handler.calculate_research_points();
