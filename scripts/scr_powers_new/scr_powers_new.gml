@@ -1,5 +1,4 @@
-function scr_powers_new(){
-
+function scr_powers_new() {
 	// company: Company
 	// marine_number: Marine ID
 
@@ -11,56 +10,66 @@ function scr_powers_new(){
     }
 
 	var random_learn;
-	random_learn=false;
+	random_learn = false;
 
 	var letmax, powers_should_have, powers_have;
-	var power_code="";letmax=0;
+	var power_code = "";
+	letmax = 0;
 	var _powers_learned = 0;
 
-	if (obj_ini.psy_powers="default"){power_code="D";letmax=7;}
-	if (obj_ini.psy_powers="biomancy"){power_code="B";letmax=5;}
-	if (obj_ini.psy_powers="pyromancy"){power_code="P";letmax=5;}
-	if (obj_ini.psy_powers="telekinesis"){power_code="T";letmax=5;}
-	if (obj_ini.psy_powers="rune magic"){power_code="R";letmax=5;}
-
-
-	// higer psionice means more powers learnt
-	powers_should_have=floor((experience-30)/(45-psionic))+1;// +1 for the primary
-	powers_have=string_count(string(power_code),specials());
-
-
-
-
-	if (powers_have<powers_should_have) and (powers_have<(letmax)) and (random_learn=true){
-	    var newpow;newpow=0;
-	    if (powers_have<powers_should_have) and (powers_have<(letmax)){
-		    if (powers_have<powers_should_have) and (powers_have<(letmax)){
-		        var tha=floor(random(letmax));
-		        if (string_count(string(tha),specials())=0){
-		            powers_have+=1;
-					_powers_learned++;
-		            obj_ini.spe[company,marine_number]+=string(power_code)+string(tha)+"|";
-		        }
-		    }
-		}
+	if (obj_ini.psy_powers == "default") {
+		power_code = "D";
+		letmax = 7;
+	}
+	if (obj_ini.psy_powers == "biomancy") {
+		power_code = "B";
+		letmax = 5;
+	}
+	if (obj_ini.psy_powers == "pyromancy") {
+		power_code = "P";
+		letmax = 5;
+	}
+	if (obj_ini.psy_powers == "telekinesis") {
+		power_code = "T";
+		letmax = 5;
+	}
+	if (obj_ini.psy_powers == "rune magic") {
+		power_code = "R";
+		letmax = 5;
 	}
 
+	// higer psionice means more powers learnt
+	powers_should_have = floor((experience - 30) / (45 - psionic)) + 1; // +1 for the primary
+	powers_have = string_count(string(power_code), specials());
 
-	if (powers_have<powers_should_have) and (powers_have<(letmax)) and (random_learn=false){
-	    // Used to work like this.  I removed it because I was too lazy to have powers chance to be cast be based on experience.
-	    // Should you wish to have powers be randomly learned simply change random_learn to true and write the rest of the code.
-    
-	    var newpow=0;
-	    var reps = 0;
-	    while(powers_have<powers_should_have && reps<(letmax)){
-	    	reps++;
-	        var tha=powers_have;
-	        if (string_count(string(tha),specials())==0){
-	        	powers_have++;
+	if ((powers_have < powers_should_have) && (powers_have < letmax) && (random_learn == true)) {
+		var newpow;
+		newpow = 0;
+		if ((powers_have < powers_should_have) && (powers_have < letmax)) {
+			if ((powers_have < powers_should_have) && (powers_have < letmax)) {
+				var tha = floor(random(letmax));
+				if (string_count(string(tha), specials()) == 0) {
+					powers_have += 1;
+					_powers_learned++;
+					obj_ini.spe[company, marine_number] += string(power_code) + string(tha) + "|";
+				}
+			}
+		}
+	} else if ((powers_have < powers_should_have) && (powers_have < letmax) && (random_learn == false)) {
+		// Used to work like this.  I removed it because I was too lazy to have powers chance to be cast be based on experience.
+		// Should you wish to have powers be randomly learned simply change random_learn to true and write the rest of the code.
+
+		var newpow = 0;
+		var reps = 0;
+		while (powers_have < powers_should_have && reps < letmax) {
+			reps++;
+			var tha = powers_have;
+			if (string_count(string(tha), specials()) == 0) {
+				powers_have++;
 				_powers_learned++;
-	            obj_ini.spe[company,marine_number]+=string(power_code)+string(tha)+"|";
-	        }
-	    }
+				obj_ini.spe[company, marine_number] += string(power_code) + string(tha) + "|";
+			}
+		}
 	}
 
 	return _powers_learned;
