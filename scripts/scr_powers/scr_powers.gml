@@ -217,8 +217,8 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
     var gear = unit.gear();
     // show_debug_message(power_set);
     var psy_discipline = convert_power_letter(power_set);
-    var flavour_text1 = "";
-    var flavour_text3 = "";
+    var _cast_flavour_text = "";
+    var _casualties_flavour_text = "";
     var flavour_text_4 = "";
     var using_tome = false;
     var tome_discipline = "";
@@ -366,16 +366,16 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         }
     }
 
-    flavour_text1 = $"{unit.name_role()} casts '{_power_name}'";
+    _cast_flavour_text = $"{unit.name_role()} casts '{_power_name}'";
     if ((tome_discipline != "") && (tome_roll <= 33) && (_power_name != "Imperator Maior") && (_power_name != "Kamehameha")) {
-        flavour_text1 = unit.name_role();
-        if (string_char_at(flavour_text1, string_length(flavour_text1)) == "s") {
-            flavour_text1 += "' tome ";
+        _cast_flavour_text = unit.name_role();
+        if (string_char_at(_cast_flavour_text, string_length(_cast_flavour_text)) == "s") {
+            _cast_flavour_text += "' tome ";
         }
-        if (string_char_at(flavour_text1, string_length(flavour_text1)) != "s") {
-            flavour_text1 += "'s tome ";
+        if (string_char_at(_cast_flavour_text, string_length(_cast_flavour_text)) != "s") {
+            _cast_flavour_text += "'s tome ";
         }
-        flavour_text1 += "confers knowledge upon him.  He casts '" + string(_power_name) + "'";
+        _cast_flavour_text += "confers knowledge upon him.  He casts '" + string(_power_name) + "'";
 
         if (tome_perils_chance > 0) {
             if ((tome_roll <= 10) && (tome_perils_chance == 1)) {
@@ -388,10 +388,10 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
     }
 
     if (_power_name == "Kamehameha") {
-        flavour_text1 = unit.name_role() + " ";
+        _cast_flavour_text = unit.name_role() + " ";
     }
     if (_power_name == "Imperator Maior") {
-        flavour_text1 = unit.name_role() + " casts '" + string(_power_name) + "'";
+        _cast_flavour_text = unit.name_role() + " casts '" + string(_power_name) + "'";
     }
 
     //TODO: Perhaps separate perils calculations into a separate function;
@@ -438,9 +438,9 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
             obj_ncombat.sorcery_seen = 0;
         }
         _power_type = "perils";
-        flavour_text3 = "";
+        _casualties_flavour_text = "";
 
-        flavour_text1 = $"{unit.name_role()} suffers Perils of the Warp!  ";
+        _cast_flavour_text = $"{unit.name_role()} suffers Perils of the Warp!  ";
         _power_flavour_text = scr_perils_table(perils_strength, unit, psy_discipline, _power_name, unit_id, tome_discipline);
 
         if (unit.hp() < 0) {
@@ -478,8 +478,8 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         }
 
         obj_ncombat.messages += 1;
-        obj_ncombat.message[obj_ncombat.messages] = flavour_text1 + _power_flavour_text + flavour_text3;
-        // if (target_unit.dudes_vehicle[targeh]=1) then obj_ncombat.message_sz[obj_ncombat.messages]=(casualties*10)+(0.5-(obj_ncombat.messages/100));
+        obj_ncombat.message[obj_ncombat.messages] = _cast_flavour_text + _power_flavour_text + _casualties_flavour_text;
+        // if (target_unit.dudes_vehicle[targeh]=1) then obj_ncombat.message_sz[obj_ncombat.messages]=(_casualties*10)+(0.5-(obj_ncombat.messages/100));
         obj_ncombat.message_sz[obj_ncombat.messages] = 999 + (0.5 - (obj_ncombat.messages / 100));
         obj_ncombat.message_priority[obj_ncombat.messages] = 0;
     }
@@ -595,13 +595,10 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
             }
         }
 
-        /*obj_ncombat.newline=string(flavour_text1)+string(_power_flavour_text)+string(flavour_text3);
-					obj_ncombat.newline_color="blue";
-					with(obj_ncombat){scr_newtext();}*/
-
+        // TODO: Battle log messages should be packed into a separate function, not only for use with powers;
         obj_ncombat.messages += 1;
-        obj_ncombat.message[obj_ncombat.messages] = flavour_text1 + _power_flavour_text + flavour_text3;
-        // if (target_unit.dudes_vehicle[targeh]=1) then obj_ncombat.message_sz[obj_ncombat.messages]=(casualties*10)+(0.5-(obj_ncombat.messages/100));
+        obj_ncombat.message[obj_ncombat.messages] = _cast_flavour_text + _power_flavour_text + _casualties_flavour_text;
+        // if (target_unit.dudes_vehicle[targeh]=1) then obj_ncombat.message_sz[obj_ncombat.messages]=(_casualties*10)+(0.5-(obj_ncombat.messages/100));
         obj_ncombat.message_sz[obj_ncombat.messages] = 0.5 - (obj_ncombat.messages / 100);
         obj_ncombat.message_priority[obj_ncombat.messages] = 0;
 
@@ -622,7 +619,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
 
     if (_cast_count > 1) {
         obj_ncombat.messages += 1;
-        obj_ncombat.message[obj_ncombat.messages] = flavour_text1 + _power_flavour_text;
+        obj_ncombat.message[obj_ncombat.messages] = _cast_flavour_text + _power_flavour_text;
         obj_ncombat.message_priority[obj_ncombat.messages] = 136;
         obj_ncombat.message_sz[obj_ncombat.messages] = 2500;
     }
@@ -631,7 +628,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
 
     repeat (_cast_count) {
         if (_cast_count > 1) {
-            flavour_text3 = "";
+            _casualties_flavour_text = "";
         }
 
         if (_power_type == "attack") {
@@ -714,8 +711,6 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                 instance_activate_object(obj_enunit);
             }
 
-            // show_message(string(flavour_text1)+string(_power_flavour_text)+"#"+string(target_unit));
-
             if (good2 > 0) {
                 var damage_type, stap;
                 damage_type = "att";
@@ -770,70 +765,70 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                         show_message(string(target_unit.dudes_hp[good2]));
                     }
 
-                    var casualties, ponies, onceh;
+                    var _casualties, ponies, onceh;
                     onceh = 0;
                     ponies = 0;
                     if (_power_max_kills == 0) {
-                        casualties = min(floor(c / target_unit.dudes_hp[good2]), 1);
+                        _casualties = min(floor(c / target_unit.dudes_hp[good2]), 1);
                     }
                     if (_power_max_kills != 0) {
-                        casualties = floor(c / target_unit.dudes_hp[good2]);
+                        _casualties = floor(c / target_unit.dudes_hp[good2]);
                     }
 
                     ponies = target_unit.dudes_num[good2];
                     if ((target_unit.dudes_num[good2] == 1) && ((target_unit.dudes_hp[good2] - c) <= 0)) {
-                        casualties = 1;
+                        _casualties = 1;
                     }
 
-                    if (target_unit.dudes_num[good2] - casualties < 0) {
-                        casualties = ponies;
+                    if (target_unit.dudes_num[good2] - _casualties < 0) {
+                        _casualties = ponies;
                     }
-                    if (casualties < 0) {
-                        casualties = 0;
+                    if (_casualties < 0) {
+                        _casualties = 0;
                     }
 
                     if ((target_unit.dudes_num[good2] == 1) && (c > 0)) {
                         target_unit.dudes_hp[good2] -= c;
                     } // Need special flavor here for just damaging
 
-                    if (casualties > 1) {
-                        flavour_text3 = string(casualties) + " " + string(target_unit.dudes[good2]) + " are killed.";
+                    if (_casualties > 1) {
+                        _casualties_flavour_text = string(_casualties) + " " + string(target_unit.dudes[good2]) + " are killed.";
                     }
-                    if (casualties == 1) {
-                        flavour_text3 = "A " + string(target_unit.dudes[good2]) + " is killed.";
+                    if (_casualties == 1) {
+                        _casualties_flavour_text = "A " + string(target_unit.dudes[good2]) + " is killed.";
                     }
-                    if (casualties == 0) {
-                        flavour_text3 = "The " + string(target_unit.dudes[good2]) + " survives the attack.";
+                    if (_casualties == 0) {
+                        _casualties_flavour_text = "The " + string(target_unit.dudes[good2]) + " survives the attack.";
                     }
 
-                    if (casualties > 0) {
+                    if (_casualties > 0) {
                         var duhs;
                         duhs = target_unit.dudes[good2];
                         if ((obj_ncombat.battle_special == "WL10_reveal") || (obj_ncombat.battle_special == "WL10_later")) {
                             if (duhs == "Veteran Chaos Terminator") {
-                                obj_ncombat.chaos_angry += casualties * 2;
+                                obj_ncombat.chaos_angry += _casualties * 2;
                             }
                             if (duhs == "Veteran Chaos Chosen") {
-                                obj_ncombat.chaos_angry += casualties;
+                                obj_ncombat.chaos_angry += _casualties;
                             }
                             if (duhs == "Greater Daemon of Slaanesh") {
-                                obj_ncombat.chaos_angry += casualties * 5;
+                                obj_ncombat.chaos_angry += _casualties * 5;
                             }
                             if (duhs == "Greater Daemon of Tzeentch") {
-                                obj_ncombat.chaos_angry += casualties * 5;
+                                obj_ncombat.chaos_angry += _casualties * 5;
                             }
                         }
                     }
 
                     obj_ncombat.messages += 1;
-                    obj_ncombat.message[obj_ncombat.messages] = flavour_text1 + _power_flavour_text + flavour_text3;
+                    obj_ncombat.message[obj_ncombat.messages] = _cast_flavour_text + _power_flavour_text + _casualties_flavour_text;
                     if (_cast_count > 1) {
-                        obj_ncombat.message[obj_ncombat.messages] = flavour_text3;
+                        obj_ncombat.message[obj_ncombat.messages] = _casualties_flavour_text;
                     }
 
-                    obj_ncombat.message_sz[obj_ncombat.messages] = casualties + 1;
-                    // if (target_unit.dudes_vehicle[targeh]=1) then obj_ncombat.message_sz[obj_ncombat.messages]=(casualties*10)+(0.5-(obj_ncombat.messages/100));
-                    // else{obj_ncombat.message_sz[obj_ncombat.messages]=(casualties)+(0.5-(obj_ncombat.messages/100));}
+                    obj_ncombat.message_sz[obj_ncombat.messages] = _casualties + 1;
+                    // if (target_unit.dudes_vehicle[targeh]=1) then obj_ncombat.message_sz[obj_ncombat.messages]=(_casualties*10)+(0.5-(obj_ncombat.messages/100));
+                    // else{obj_ncombat.message_sz[obj_ncombat.messages]=(_casualties)+(0.5-(obj_ncombat.messages/100));}
                     obj_ncombat.message_priority[obj_ncombat.messages] = 0;
                     if (_cast_count > 1) {
                         obj_ncombat.message_priority[obj_ncombat.messages] = 135;
@@ -842,9 +837,9 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
 
                     // obj_ncombat.alarm[3]=2;
 
-                    if (casualties >= 1) {
-                        target_unit.dudes_num[good2] -= casualties;
-                        obj_ncombat.enemy_forces -= casualties;
+                    if (_casualties >= 1) {
+                        target_unit.dudes_num[good2] -= _casualties;
+                        obj_ncombat.enemy_forces -= _casualties;
                     }
                 }
 
@@ -888,74 +883,68 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                         show_message(string(target_unit.dudes_hp[good2]));
                     }
 
-                    var casualties, ponies, onceh;
+                    var _casualties, ponies, onceh;
                     onceh = 0;
                     ponies = 0;
                     if (_power_max_kills == 0) {
-                        casualties = min(floor(c / target_unit.dudes_hp[good2]), 1);
+                        _casualties = min(floor(c / target_unit.dudes_hp[good2]), 1);
                     }
                     if (_power_max_kills != 0) {
-                        casualties = floor(c / target_unit.dudes_hp[good2]);
+                        _casualties = floor(c / target_unit.dudes_hp[good2]);
                     }
 
                     ponies = target_unit.dudes_num[good2];
                     if ((target_unit.dudes_num[good2] == 1) && ((target_unit.dudes_hp[good2] - c) <= 0)) {
-                        casualties = 1;
+                        _casualties = 1;
                     }
 
-                    if (target_unit.dudes_num[good2] - casualties < 0) {
-                        casualties = ponies;
+                    if (target_unit.dudes_num[good2] - _casualties < 0) {
+                        _casualties = ponies;
                     }
-                    if (casualties < 0) {
-                        casualties = 0;
+                    if (_casualties < 0) {
+                        _casualties = 0;
                     }
 
                     if ((target_unit.dudes_num[good2] == 1) && (c > 0)) {
                         target_unit.dudes_hp[good2] -= c;
-                    } // Need special flavor here for just damaging
+                    } // TODO: Need special flavor here for just damaging
 
-                    if (casualties > 1) {
-                        flavour_text3 = string(casualties) + " " + string(target_unit.dudes[good2]) + " are destroyed.";
-                    }
-                    if (casualties == 1) {
-                        flavour_text3 = "A " + string(target_unit.dudes[good2]) + " is destroyed.";
-                    }
-                    if (casualties == 0) {
-                        flavour_text3 = "The " + string(target_unit.dudes[good2]) + " survives the attack.";
+                    if (_casualties > 1) {
+                        _casualties_flavour_text = $" {_casualties} {target_unit.dudes[good2]} are destroyed.";
+                    } else if (_casualties == 1) {
+                        _casualties_flavour_text = $" A {target_unit.dudes[good2]} is destroyed.";
+                    } else (_casualties == 0) {
+                        _casualties_flavour_text = $" The {target_unit.dudes[good2]} survives the attack.";
                     }
 
-                    /*obj_ncombat.newline=string(flavour_text1)+string(_power_flavour_text)+string(flavour_text3);
-					obj_ncombat.newline_color="blue";
-					with(obj_ncombat){scr_newtext();}*/
-
-                    if (casualties > 0) {
+                    if (_casualties > 0) {
                         var duhs;
                         duhs = target_unit.dudes[good2];
                         if ((obj_ncombat.battle_special == "WL10_reveal") || (obj_ncombat.battle_special == "WL10_later")) {
                             if (duhs == "Veteran Chaos Terminator") {
-                                obj_ncombat.chaos_angry += casualties * 2;
+                                obj_ncombat.chaos_angry += _casualties * 2;
                             }
                             if (duhs == "Veteran Chaos Chosen") {
-                                obj_ncombat.chaos_angry += casualties;
+                                obj_ncombat.chaos_angry += _casualties;
                             }
                             if (duhs == "Greater Daemon of Slaanesh") {
-                                obj_ncombat.chaos_angry += casualties * 5;
+                                obj_ncombat.chaos_angry += _casualties * 5;
                             }
                             if (duhs == "Greater Daemon of Tzeentch") {
-                                obj_ncombat.chaos_angry += casualties * 5;
+                                obj_ncombat.chaos_angry += _casualties * 5;
                             }
                         }
                     }
 
                     obj_ncombat.messages += 1;
-                    obj_ncombat.message[obj_ncombat.messages] = flavour_text1 + _power_flavour_text + flavour_text3;
+                    obj_ncombat.message[obj_ncombat.messages] = _cast_flavour_text + _power_flavour_text + _casualties_flavour_text;
                     if (_cast_count > 1) {
-                        obj_ncombat.message[obj_ncombat.messages] = flavour_text3;
+                        obj_ncombat.message[obj_ncombat.messages] = _casualties_flavour_text;
                     }
 
-                    obj_ncombat.message_sz[obj_ncombat.messages] = casualties + 1;
-                    // if (target_unit.dudes_vehicle[targeh]=1) then obj_ncombat.message_sz[obj_ncombat.messages]=(casualties*10)+(0.5-(obj_ncombat.messages/100));
-                    // else{obj_ncombat.message_sz[obj_ncombat.messages]=(casualties)+(0.5-(obj_ncombat.messages/100));}
+                    obj_ncombat.message_sz[obj_ncombat.messages] = _casualties + 1;
+                    // if (target_unit.dudes_vehicle[targeh]=1) then obj_ncombat.message_sz[obj_ncombat.messages]=(_casualties*10)+(0.5-(obj_ncombat.messages/100));
+                    // else{obj_ncombat.message_sz[obj_ncombat.messages]=(_casualties)+(0.5-(obj_ncombat.messages/100));}
                     obj_ncombat.message_priority[obj_ncombat.messages] = 0;
                     if (_cast_count > 1) {
                         obj_ncombat.message_priority[obj_ncombat.messages] = 135;
@@ -963,9 +952,9 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                     }
                     // obj_ncombat.alarm[3]=2;
 
-                    if (casualties >= 1) {
-                        target_unit.dudes_num[good2] -= casualties;
-                        obj_ncombat.enemy_forces -= casualties;
+                    if (_casualties >= 1) {
+                        target_unit.dudes_num[good2] -= _casualties;
+                        obj_ncombat.enemy_forces -= _casualties;
                     }
                 }
 
