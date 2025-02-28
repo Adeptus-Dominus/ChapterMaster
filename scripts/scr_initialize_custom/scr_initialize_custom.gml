@@ -2406,7 +2406,7 @@ function scr_initialize_custom() {
 				case "telekinesis":
 					let = "T";
 					break;
-				case "rune magic":
+				case "rune_magic":
 					let = "R";
 					break;
 			}
@@ -3456,7 +3456,7 @@ function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1
 		if (obj_creation.discipline = "telekinesis") {
 			let = "T";
 		}
-		if (obj_creation.discipline = "rune magic") {
+		if (obj_creation.discipline = "rune_magic") {
 			let = "R";
 		}
 		obj_ini.spe[company][slot] += string(let) + "0|";
