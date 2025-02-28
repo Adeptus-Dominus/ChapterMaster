@@ -22,7 +22,7 @@
         "recruit_home_relationship" : 0, //recruit from different system
         "recruiting": "", //"Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
         "recruiting_name": "",
-        "discipline": "default", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune Magick'
+        "discipline": "default", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune magic'
         "aspirant_trial": "KNOWLEDGE", // ? need to find the best way to do this
         "advantages": [ //TODO something with these after rework of adv organisation
             "",
