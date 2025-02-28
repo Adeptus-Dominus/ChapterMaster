@@ -321,31 +321,6 @@ global.powers_data = {
         },
         "sorcery": true
     },
-    "Minor Smite": {
-        "type": "attack",
-        "range": 5,
-        "target_type": 3,
-        "max_kills": 1,
-        "power": 160,
-        "armor_piercing": 0,
-        "duration": 0,
-        "flavour_text": {
-            "default": {
-                "text": [
-                    "- a coil of warp energy lashes out at the enemy."
-                ]
-            },
-            "binders_adv": {
-                "text": [
-                    "- a green, sickly coil of energy lashes out at the enemy."
-                ],
-                "conditions": [
-                    {"type": "advantage", "value": "Daemon Binders"}
-                ]
-            }
-        },
-        "sorcery": true
-    },
     "Smite": {
         "type": "attack",
         "range": 5,
@@ -887,55 +862,79 @@ global.powers_data = {
                 ]
             }
         }
-    },
-    "Avenge": {
-        "type": "attack",
-        "range": 5,
-        "target_type": 3,
-        "max_kills": 1,
-        "power": 500,
-        "armor_piercing": 0,
-        "duration": 0,
-        "flavour_text": {
-            "default": {
-                "text": [
-                    "- a destructive avatar of rolling flame crashes into the enemy.",
-                    "- a massive conflagration rises up and then crashes down upon the enemy."
-                ]
+    }
+}
+
+/// Function to get requested data from the powers_data structure
+/// @param power_name - The name of the power (e.g., "Minor Smite")
+/// @param data_name - The specific data attribute you want (e.g., "type", "range", "flavour_text")
+/// @returns The requested data, or undefined if not found
+function get_power_data(power_name, data_name) {
+    // Check if the power exists in the global.powers_data
+    if (struct_exists(global.powers_data, power_name)) {
+        var _power_object = global.powers_data[$ power_name];
+        // Check if the data exists for that power
+        if (struct_exists(_power_object, data_name)) {
+            var _data_content = _power_object[$ data_name];
+            if (data_name == "flavour_text") {
+                var _flavour_text = "";
+                var _text_option_names = struct_get_names(_data_content);
+                for (var i = 0; i < array_length(_text_option_names); i++) {
+                    var _text_option_name = _text_option_names[i];
+                    var _text_option = _data_content[$ _text_option_name];
+                    if (struct_exists(_text_option, "conditions")) {
+                        var _conditions_array = _text_option[$ "conditions"];
+                        var _conditions_satisfied = true;
+                        for (var p = 0; p < array_length(_conditions_array); p++) {
+                            var _condition_struct = _conditions_array[p];
+                            var _condition_type = _condition_struct[$ "type"];
+                            var _condition_value = _condition_struct[$ "value"];
+                            var _condition_satisfied = power_condition_check(_condition_type, _condition_value);
+                            if (!_condition_satisfied) {
+                                _conditions_satisfied = false;
+                                break;
+                            }
+                        }
+                        if (_conditions_satisfied) {
+                            _flavour_text = array_random_element(_text_option[$ "text"]);
+                            return _flavour_text;   
+                        }
+                    } else {
+                        _flavour_text = array_random_element(_text_option[$ "text"]);
+                        return _flavour_text;
+                    }
+                }
+            } else {
+                return _data_content;
             }
         }
-    },
-    "Quickening": {
-        "type": "buff",
-        "range": 0,
-        "target_type": 0,
-        "max_kills": 0,
-        "power": 0,
-        "armor_piercing": 0,
-        "duration": 3,
-        "flavour_text": {
-            "default": {
-                "text": [
-                    ". Gaining precognitive powers, he is better able to avoid enemy blows."
-                ]
-            }
+    }
+}
+
+function power_condition_check(condition, value) {
+    try {
+        switch(condition) {
+            case "advantage":
+                return scr_has_adv(value);
+                break;
+            case "disadvantage":
+                return scr_has_disadv(value);
+                break;
+            case "enemy_type":
+                return obj_ncombat.enemy == value;
+                break;
+            case "allies_more_than":
+                return obj_ncombat.player_forces > value;
+                break;
+            default:
+                show_debug_message($"Condition type was not found!");
+                log_error("Condition type was not found!");
+                return false;
+                break;
         }
-    },
-    "Might of the Ancients": {
-        "type": "buff",
-        "range": 0,
-        "target_type": 0,
-        "max_kills": 0,
-        "power": 0,
-        "armor_piercing": 0,
-        "duration": 3,
-        "flavour_text": {
-            "default": {
-                "text": [
-                    ". His physical power and might are increased to unimaginable levels."
-                ]
-            }
-        }
+    } catch (_exception) {
+        return false;
+        handle_exception(_exception);
     }
 }
 
@@ -1026,7 +1025,9 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
     var gear = unit.gear();
     // show_debug_message(power_set);
     var psy_discipline = convert_power_letter(power_set);
-    var flavour_text1 = "", flavour_text2 = "", flavour_text3 = "", flavour_text_4 = "";
+    var flavour_text1 = "";
+    var flavour_text3 = "";
+    var flavour_text_4 = "";
     var binders_adv = scr_has_adv("Daemon Binders");
     var has_hood = gear == "Psychic Hood";
     var using_tome = false;
@@ -1058,14 +1059,14 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
     }
 
     //TODO: Move into a separate function;
-    var disciplines_array = struct_get_names(disciplines_data);
+    var disciplines_array = struct_get_names(global.disciplines_data);
     for (var i = 0; i < array_length(disciplines_array); i++) {
         if (disciplines_array[i] == selected_discipline) {
-            var powers_array = disciplines_data[$ disciplines_array[i]].powers;
+            var powers_array = global.disciplines_data[$ disciplines_array[i]].powers;
             if (using_tome) {
                 power_index = irandom(array_length(powers_array));
-                tome_perils_chance = disciplines_data[$ disciplines_array[i]].perils_chance;
-                tome_perils_strength = disciplines_data[$ disciplines_array[i]].perils_strength;
+                tome_perils_chance = global.disciplines_data[$ disciplines_array[i]].perils_chance;
+                tome_perils_strength = global.disciplines_data[$ disciplines_array[i]].perils_strength;
             }
             // show_debug_message($"powers_array: {powers_array}");
             // show_debug_message($"power_index: {power_index}");
@@ -1096,20 +1097,21 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
 
     // Chaos powers here
 
-    var p_type = "";
-    var p_rang = 0;
-    var p_tar = 0;
-    var p_spli = 0;
-    var p_att = 0;
-    var p_arp = 0;
-    var p_duration = 0;
+    var p_type = get_power_data(power_name, "type");
+    var p_rang = get_power_data(power_name, "range");
+    var p_tar = get_power_data(power_name, "target_type");
+    var p_spli = get_power_data(power_name, "max_kills");
+    var p_att = get_power_data(power_name, "power");
+    var p_arp = get_power_data(power_name, "armor_piercing");
+    var p_duration = get_power_data(power_name, "duration");
+    var p_flavour_text = get_power_data(power_name, "flavour_text");
 
     if ((power_name == "gather_energy") && (obj_ncombat.big_boom == 3)) {
         power_name = "Imperator Maior";
     }
 
     // if (power_name="Vortex of Doom"){p_type="attack";p_rang=5;p_tar=3;p_spli=1;p_att=800;p_arp=800;p_duration=0;
-    //     flavour_text2="- a hole between real and warp space is torn open with deadly effect.  ";
+    //     p_flavour_text="- a hole between real and warp space is torn open with deadly effect.  ";
     // }
 
     //TODO: Move into a separate function;
@@ -1242,7 +1244,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         flavour_text3 = "";
 
         flavour_text1 = $"{unit.name_role()} suffers Perils of the Warp!  ";
-        flavour_text2 = scr_perils_table(perils_strength, unit, psy_discipline, power_name, unit_id, tome_discipline);
+        p_flavour_text = scr_perils_table(perils_strength, unit, psy_discipline, power_name, unit_id, tome_discipline);
 
         if (unit.hp() < 0) {
             //TODO create is_dead function to remove repeats of this log
@@ -1279,7 +1281,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         }
 
         obj_ncombat.messages += 1;
-        obj_ncombat.message[obj_ncombat.messages] = flavour_text1 + flavour_text2 + flavour_text3;
+        obj_ncombat.message[obj_ncombat.messages] = flavour_text1 + p_flavour_text + flavour_text3;
         // if (target_unit.dudes_vehicle[targeh]=1) then obj_ncombat.message_sz[obj_ncombat.messages]=(casualties*10)+(0.5-(obj_ncombat.messages/100));
         obj_ncombat.message_sz[obj_ncombat.messages] = 999 + (0.5 - (obj_ncombat.messages / 100));
         obj_ncombat.message_priority[obj_ncombat.messages] = 0;
@@ -1396,12 +1398,12 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
             }
         }
 
-        /*obj_ncombat.newline=string(flavour_text1)+string(flavour_text2)+string(flavour_text3);
+        /*obj_ncombat.newline=string(flavour_text1)+string(p_flavour_text)+string(flavour_text3);
 					obj_ncombat.newline_color="blue";
 					with(obj_ncombat){scr_newtext();}*/
 
         obj_ncombat.messages += 1;
-        obj_ncombat.message[obj_ncombat.messages] = flavour_text1 + flavour_text2 + flavour_text3;
+        obj_ncombat.message[obj_ncombat.messages] = flavour_text1 + p_flavour_text + flavour_text3;
         // if (target_unit.dudes_vehicle[targeh]=1) then obj_ncombat.message_sz[obj_ncombat.messages]=(casualties*10)+(0.5-(obj_ncombat.messages/100));
         obj_ncombat.message_sz[obj_ncombat.messages] = 0.5 - (obj_ncombat.messages / 100);
         obj_ncombat.message_priority[obj_ncombat.messages] = 0;
@@ -1421,7 +1423,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
 
     if (shot_web > 1) {
         obj_ncombat.messages += 1;
-        obj_ncombat.message[obj_ncombat.messages] = flavour_text1 + flavour_text2;
+        obj_ncombat.message[obj_ncombat.messages] = flavour_text1 + p_flavour_text;
         obj_ncombat.message_priority[obj_ncombat.messages] = 136;
         obj_ncombat.message_sz[obj_ncombat.messages] = 2500;
     }
@@ -1513,7 +1515,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                 instance_activate_object(obj_enunit);
             }
 
-            // show_message(string(flavour_text1)+string(flavour_text2)+"#"+string(target_unit));
+            // show_message(string(flavour_text1)+string(p_flavour_text)+"#"+string(target_unit));
 
             if (good2 > 0) {
                 var damage_type, stap;
@@ -1625,7 +1627,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                     }
 
                     obj_ncombat.messages += 1;
-                    obj_ncombat.message[obj_ncombat.messages] = flavour_text1 + flavour_text2 + flavour_text3;
+                    obj_ncombat.message[obj_ncombat.messages] = flavour_text1 + p_flavour_text + flavour_text3;
                     if (shot_web > 1) {
                         obj_ncombat.message[obj_ncombat.messages] = flavour_text3;
                     }
@@ -1723,7 +1725,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                         flavour_text3 = "The " + string(target_unit.dudes[good2]) + " survives the attack.";
                     }
 
-                    /*obj_ncombat.newline=string(flavour_text1)+string(flavour_text2)+string(flavour_text3);
+                    /*obj_ncombat.newline=string(flavour_text1)+string(p_flavour_text)+string(flavour_text3);
 					obj_ncombat.newline_color="blue";
 					with(obj_ncombat){scr_newtext();}*/
 
@@ -1747,7 +1749,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                     }
 
                     obj_ncombat.messages += 1;
-                    obj_ncombat.message[obj_ncombat.messages] = flavour_text1 + flavour_text2 + flavour_text3;
+                    obj_ncombat.message[obj_ncombat.messages] = flavour_text1 + p_flavour_text + flavour_text3;
                     if (shot_web > 1) {
                         obj_ncombat.message[obj_ncombat.messages] = flavour_text3;
                     }
