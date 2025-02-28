@@ -330,7 +330,6 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         flavour_text1 += "confers knowledge upon him.  He casts '" + string(power_name) + "'";
 
         if (tome_perils_chance > 0) {
-            var tome_roll = irandom_range(1, 100);
             if ((tome_roll <= 10) && (tome_perils_chance == 1)) {
                 unit.corruption += choose(1, 2);
             }
