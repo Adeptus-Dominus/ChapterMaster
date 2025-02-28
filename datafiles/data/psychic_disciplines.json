@@ -52,7 +52,7 @@
         "perils_strength": 0,
         "tags": ["GLOW", "GOLD", "ADAMANTINE"]
     },
-    "minor_telekenesis": {
+    "minor_telekinesis": {
         "powers": [
             "Spatial Distortion",
             "Telekinetic Dome",

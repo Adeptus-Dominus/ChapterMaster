@@ -12,7 +12,7 @@ function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id,
 		[23, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
 			marine_casting_cooldown[unit_id] += 3;
 			unit.add_or_sub_health(choose(-30,-35,-40,-45));
-		   	var flavour_text2="His mind is burned fiercly by the warp.";
+		   	var flavour_text2="His mind is burned fiercely by the warp.";
 		   	return flavour_text2;
 		}],
 		[31, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
