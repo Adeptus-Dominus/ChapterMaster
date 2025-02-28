@@ -7,19 +7,19 @@ global.powers_data = json_to_gamemaker(working_directory + "\\data\\psychic_powe
 
 // God help the next person who will read this function;
 /// Function to get requested data from the powers_data structure
-/// @param power_name - The name of the power (e.g., "Minor Smite")
-/// @param data_name - The specific data attribute you want (e.g., "type", "range", "flavour_text")
+/// @param _power_name - The name of the power (e.g., "Minor Smite")
+/// @param _data_name - The specific data attribute you want (e.g., "type", "range", "flavour_text")
 /// @returns The requested data, or undefined if not found
-function get_power_data(power_name, data_name) {
+function get_power_data(_power_name, _data_name) {
     // Check if the power exists in the global.powers_data
-    if (struct_exists(global.powers_data, power_name)) {
-        var _power_object = global.powers_data[$ power_name];
+    if (struct_exists(global.powers_data, _power_name)) {
+        var _power_object = global.powers_data[$ _power_name];
         // Check if the data exists for that power
-        if (struct_exists(_power_object, data_name)) {
-            var _data_content = _power_object[$ data_name];
-            if (data_name == "flavour_text") {
+        if (struct_exists(_power_object, _data_name)) {
+            var _data_content = _power_object[$ _data_name];
+            if (_data_name == "flavour_text") {
                 return get_flavour_text(_data_content);
-            } else if (data_name == "power_modifiers") {
+            } else if (_data_name == "power_modifiers") {
                 return get_power_modifiers(_data_content);
             } else {
                 return _data_content;
@@ -210,7 +210,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         exit;
     }
 
-    var power_name = "";
+    var _power_name = "";
     var target_type = "";
     var weapon_one = unit.get_weapon_one_data();
     var weapon_two = unit.get_weapon_two_data();
@@ -260,42 +260,42 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
             }
             // show_debug_message($"powers_array: {powers_array}");
             // show_debug_message($"power_index: {power_index}");
-            power_name = powers_array[power_index];
+            _power_name = powers_array[power_index];
         }
     }
 
     // Change cases here
-    if (power_name == "Machine Curse") {
+    if (_power_name == "Machine Curse") {
         with (obj_enunit) {
             if (veh > 0) {
                 instance_create(x, y, obj_temp3);
             }
         }
         if (instance_number(obj_temp3) == 0) {
-            power_name = "Smite";
+            _power_name = "Smite";
         }
         if (obj_ncombat.enemy == 9) {
-            power_name = "Smite";
+            _power_name = "Smite";
         }
         with (obj_temp3) {
             instance_destroy();
         }
     }
 
-    // show_message(string(power_name));
+    // show_message(string(_power_name));
     //
 
     // Chaos powers here
 
-    var _power_type = get_power_data(power_name, "type");
-    var _power_range = get_power_data(power_name, "range");
-    var _power_target_type = get_power_data(power_name, "target_type");
-    var _power_max_kills = get_power_data(power_name, "max_kills");
-    var _power_magnitude = get_power_data(power_name, "magnitude");
-    var _power_armour_piercing = get_power_data(power_name, "armour_piercing");
-    var _power_duration = get_power_data(power_name, "duration");
-    var _power_flavour_text = get_power_data(power_name, "flavour_text");
-    var _power_sourcery = get_power_data(power_name, "sorcery");
+    var _power_type = get_power_data(_power_name, "type");
+    var _power_range = get_power_data(_power_name, "range");
+    var _power_target_type = get_power_data(_power_name, "target_type");
+    var _power_max_kills = get_power_data(_power_name, "max_kills");
+    var _power_magnitude = get_power_data(_power_name, "magnitude");
+    var _power_armour_piercing = get_power_data(_power_name, "armour_piercing");
+    var _power_duration = get_power_data(_power_name, "duration");
+    var _power_flavour_text = get_power_data(_power_name, "flavour_text");
+    var _power_sourcery = get_power_data(_power_name, "sorcery");
 
     //TODO: this should be refactored;
     if (_power_sourcery != undefined && _power_sourcery > 0) {
@@ -304,11 +304,11 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         }
     }
     
-    if ((power_name == "Kamehameha") && (obj_ncombat.big_boom == 3)) {
-        power_name = "Imperator Maior";
+    if ((_power_name == "Kamehameha") && (obj_ncombat.big_boom == 3)) {
+        _power_name = "Imperator Maior";
     }
 
-    // if (power_name="Vortex of Doom"){_power_type="attack";_power_range=5;_power_target_type=3;_power_max_kills=1;_power_magnitude=800;_power_armour_piercing=800;_power_duration=0;
+    // if (_power_name="Vortex of Doom"){_power_type="attack";_power_range=5;_power_target_type=3;_power_max_kills=1;_power_magnitude=800;_power_armour_piercing=800;_power_duration=0;
     //     _power_flavour_text="- a hole between real and warp space is torn open with deadly effect.  ";
     // }
 
@@ -366,8 +366,8 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         }
     }
 
-    flavour_text1 = $"{unit.name_role()} casts '{power_name}'";
-    if ((tome_discipline != "") && (tome_roll <= 33) && (power_name != "Imperator Maior") && (power_name != "Kamehameha")) {
+    flavour_text1 = $"{unit.name_role()} casts '{_power_name}'";
+    if ((tome_discipline != "") && (tome_roll <= 33) && (_power_name != "Imperator Maior") && (_power_name != "Kamehameha")) {
         flavour_text1 = unit.name_role();
         if (string_char_at(flavour_text1, string_length(flavour_text1)) == "s") {
             flavour_text1 += "' tome ";
@@ -375,7 +375,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         if (string_char_at(flavour_text1, string_length(flavour_text1)) != "s") {
             flavour_text1 += "'s tome ";
         }
-        flavour_text1 += "confers knowledge upon him.  He casts '" + string(power_name) + "'";
+        flavour_text1 += "confers knowledge upon him.  He casts '" + string(_power_name) + "'";
 
         if (tome_perils_chance > 0) {
             if ((tome_roll <= 10) && (tome_perils_chance == 1)) {
@@ -387,11 +387,11 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         }
     }
 
-    if (power_name == "Kamehameha") {
+    if (_power_name == "Kamehameha") {
         flavour_text1 = unit.name_role() + " ";
     }
-    if (power_name == "Imperator Maior") {
-        flavour_text1 = unit.name_role() + " casts '" + string(power_name) + "'";
+    if (_power_name == "Imperator Maior") {
+        flavour_text1 = unit.name_role() + " casts '" + string(_power_name) + "'";
     }
 
     //TODO: Perhaps separate perils calculations into a separate function;
@@ -441,7 +441,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         flavour_text3 = "";
 
         flavour_text1 = $"{unit.name_role()} suffers Perils of the Warp!  ";
-        _power_flavour_text = scr_perils_table(perils_strength, unit, psy_discipline, power_name, unit_id, tome_discipline);
+        _power_flavour_text = scr_perils_table(perils_strength, unit, psy_discipline, _power_name, unit_id, tome_discipline);
 
         if (unit.hp() < 0) {
             //TODO create is_dead function to remove repeats of this log
@@ -490,7 +490,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
 
     // determine target here
 
-    if ((_power_type == "buff") || (power_name == "Kamehameha")) {
+    if ((_power_type == "buff") || (_power_name == "Kamehameha")) {
         var marine_index;
         var _random_marine_list = [];
         for (var i = 0; i < array_length(unit_struct); i++) {
@@ -498,7 +498,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         }
         _random_marine_list = array_shuffle(_random_marine_list);
 
-        if ((power_name == "Force Dome") || (power_name == "Stormbringer")) {
+        if ((_power_name == "Force Dome") || (_power_name == "Stormbringer")) {
             var buf = 9;
             for (var i = 0; i < array_length(_random_marine_list); i++) {
                 if (buf <= 0) {
@@ -512,23 +512,23 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
             }
         }
 
-        if (power_name == "Quickening") {
+        if (_power_name == "Quickening") {
             if (marine_quick[unit_id] < 3) {
                 marine_quick[unit_id] = 3;
             }
         }
-        if (power_name == "Might of the Ancients") {
+        if (_power_name == "Might of the Ancients") {
             if (marine_might[unit_id] < 3) {
                 marine_might[unit_id] = 3;
             }
         }
 
-        if (power_name == "Fiery Form") {
+        if (_power_name == "Fiery Form") {
             if (marine_fiery[unit_id] < 3) {
                 marine_fiery[unit_id] = 3;
             }
         }
-        if (power_name == "Fire Shield") {
+        if (_power_name == "Fire Shield") {
             var buf = 9;
             for (var i = 0; i < array_length(_random_marine_list); i++) {
                 if (buf <= 0) {
@@ -542,10 +542,10 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
             }
         }
 
-        if (power_name == "Iron Arm") {
+        if (_power_name == "Iron Arm") {
             marine_iron[unit_id] += 1;
         }
-        if (power_name == "Endurance") {
+        if (_power_name == "Endurance") {
             var buf = 5;
             h = 0;
             for (var i = 0; i < array_length(_random_marine_list); i++) {
@@ -562,7 +562,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                 }
             }
         }
-        if (power_name == "Hysterical Frenzy") {
+        if (_power_name == "Hysterical Frenzy") {
             var buf = 5;
             h = 0;
             for (var i = 0; i < array_length(_random_marine_list); i++) {
@@ -577,19 +577,19 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                 }
             }
         }
-        if (power_name == "Regenerate") {
+        if (_power_name == "Regenerate") {
             unit.add_or_sub_health(choose(2, 3, 4) * 5);
             if (unit.hp() > unit.max_health()) {
                 unit.update_health(unit.max_health());
             }
         }
 
-        if (power_name == "Telekinetic Dome") {
+        if (_power_name == "Telekinetic Dome") {
             if (marine_dome[unit_id] < 3) {
                 marine_dome[unit_id] = 3;
             }
         }
-        if (power_name == "Spatial Distortion") {
+        if (_power_name == "Spatial Distortion") {
             if (marine_spatial[unit_id] < 3) {
                 marine_spatial[unit_id] = 3;
             }
@@ -605,20 +605,22 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         obj_ncombat.message_sz[obj_ncombat.messages] = 0.5 - (obj_ncombat.messages / 100);
         obj_ncombat.message_priority[obj_ncombat.messages] = 0;
 
-        if (power_name == "Kamehameha") {
+        if (_power_name == "Kamehameha") {
             obj_ncombat.message_priority[obj_ncombat.messages] = 135;
             obj_ncombat.message_sz[obj_ncombat.messages] = 300 - (obj_ncombat.messages / 100);
         }
         // obj_ncombat.alarm[3]=2;
     }
 
-    var shot_web;
-    shot_web = 1;
-    if ((_power_type == "attack") && (power_name == "Imperator Maior")) {
-        shot_web = 3;
+    // TODO: separate the code bellow into a separate function;
+    // Actually cast powers here;
+    var _cast_count;
+    _cast_count = 1;
+    if ((_power_type == "attack") && (_power_name == "Imperator Maior")) {
+        _cast_count = 3;
     }
 
-    if (shot_web > 1) {
+    if (_cast_count > 1) {
         obj_ncombat.messages += 1;
         obj_ncombat.message[obj_ncombat.messages] = flavour_text1 + _power_flavour_text;
         obj_ncombat.message_priority[obj_ncombat.messages] = 136;
@@ -627,8 +629,8 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
 
     flavour_text_4 = "";
 
-    repeat (shot_web) {
-        if (shot_web > 1) {
+    repeat (_cast_count) {
+        if (_cast_count > 1) {
             flavour_text3 = "";
         }
 
@@ -761,7 +763,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                     c = b * 1; // New damage
 
                     if (target_unit.dudes_hp[good2] == 0) {
-                        show_message(power_name);
+                        show_message(_power_name);
                         show_message("Getting a 0 health error for target " + string(target_unit) + ", dudes " + string(good2));
                         show_message("Dudes: " + string(target_unit.dudes[good2]) + ", Number: " + string(target_unit.dudes_num[good2]));
                         show_message("Damage: " + string(c));
@@ -825,7 +827,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
 
                     obj_ncombat.messages += 1;
                     obj_ncombat.message[obj_ncombat.messages] = flavour_text1 + _power_flavour_text + flavour_text3;
-                    if (shot_web > 1) {
+                    if (_cast_count > 1) {
                         obj_ncombat.message[obj_ncombat.messages] = flavour_text3;
                     }
 
@@ -833,7 +835,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                     // if (target_unit.dudes_vehicle[targeh]=1) then obj_ncombat.message_sz[obj_ncombat.messages]=(casualties*10)+(0.5-(obj_ncombat.messages/100));
                     // else{obj_ncombat.message_sz[obj_ncombat.messages]=(casualties)+(0.5-(obj_ncombat.messages/100));}
                     obj_ncombat.message_priority[obj_ncombat.messages] = 0;
-                    if (shot_web > 1) {
+                    if (_cast_count > 1) {
                         obj_ncombat.message_priority[obj_ncombat.messages] = 135;
                         obj_ncombat.message_sz[obj_ncombat.messages] = 2000 + obj_ncombat.messages;
                     }
@@ -879,7 +881,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                     c = b * 1; // New damage
 
                     if (target_unit.dudes_hp[good2] == 0) {
-                        show_message(power_name);
+                        show_message(_power_name);
                         show_message("Getting a 0 health error for target " + string(target_unit) + ", dudes " + string(good2));
                         show_message("Dudes: " + string(target_unit.dudes[good2]) + ", Number: " + string(target_unit.dudes_num[good2]));
                         show_message("Damage: " + string(c));
@@ -947,7 +949,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
 
                     obj_ncombat.messages += 1;
                     obj_ncombat.message[obj_ncombat.messages] = flavour_text1 + _power_flavour_text + flavour_text3;
-                    if (shot_web > 1) {
+                    if (_cast_count > 1) {
                         obj_ncombat.message[obj_ncombat.messages] = flavour_text3;
                     }
 
@@ -955,7 +957,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                     // if (target_unit.dudes_vehicle[targeh]=1) then obj_ncombat.message_sz[obj_ncombat.messages]=(casualties*10)+(0.5-(obj_ncombat.messages/100));
                     // else{obj_ncombat.message_sz[obj_ncombat.messages]=(casualties)+(0.5-(obj_ncombat.messages/100));}
                     obj_ncombat.message_priority[obj_ncombat.messages] = 0;
-                    if (shot_web > 1) {
+                    if (_cast_count > 1) {
                         obj_ncombat.message_priority[obj_ncombat.messages] = 135;
                         obj_ncombat.message_sz[obj_ncombat.messages] = 2000 + obj_ncombat.messages;
                     }
