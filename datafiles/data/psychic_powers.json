@@ -8,7 +8,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 5,
         "target_type": 3,
         "max_kills": 1,
-        "power": 160,
+        "magnitude": 160,
         "armor_piercing": 0,
         "duration": 0,
         "flavour_text": {
@@ -35,7 +35,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 3,
         "target_type": 3,
         "max_kills": 1,
-        "power": 220,
+        "magnitude": 220,
         "armor_piercing": 0,
         "duration": 0,
         "flavour_text": {
@@ -63,7 +63,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 3,
         "target_type": 3,
         "max_kills": 1,
-        "power": 220,
+        "magnitude": 220,
         "armor_piercing": 0,
         "duration": 0,
         "flavour_text": {
@@ -80,7 +80,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 3,
         "target_type": 3,
         "max_kills": 1,
-        "power": 500,
+        "magnitude": 500,
         "armor_piercing": 1,
         "duration": 0,
         "flavour_text": {
@@ -98,7 +98,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 0,
         "target_type": 0,
         "max_kills": 0,
-        "power": 0,
+        "magnitude": 0,
         "armor_piercing": 0,
         "duration": 3,
         "buff": {
@@ -117,7 +117,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 2.1,
         "target_type": 3,
         "max_kills": 1,
-        "power": 600,
+        "magnitude": 600,
         "armor_piercing": 0,
         "duration": 0,
         "flavour_text": {
@@ -145,7 +145,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 5,
         "target_type": 3,
         "max_kills": 1,
-        "power": 300,
+        "magnitude": 300,
         "armor_piercing": 0,
         "duration": 0,
         "flavour_text": {
@@ -164,7 +164,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 8,
         "target_type": 4,
         "max_kills": 1,
-        "power": 600,
+        "magnitude": 600,
         "armor_piercing": 1,
         "duration": 0,
         "flavour_text": {
@@ -181,7 +181,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 10,
         "target_type": 3,
         "max_kills": 1,
-        "power": 500,
+        "magnitude": 500,
         "armor_piercing": 1,
         "duration": 0,
         "flavour_text": {
@@ -198,7 +198,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 0,
         "target_type": 0,
         "max_kills": 0,
-        "power": 0,
+        "magnitude": 0,
         "armor_piercing": 0,
         "duration": 999,
         "flavour_text": {
@@ -226,7 +226,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 2.1,
         "target_type": 3,
         "max_kills": 1,
-        "power": 750,
+        "magnitude": 750,
         "armor_piercing": 1,
         "duration": 0,
         "flavour_text": {
@@ -244,7 +244,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 0,
         "target_type": 0,
         "max_kills": 0,
-        "power": 0,
+        "magnitude": 0,
         "armor_piercing": 0,
         "duration": 0,
         "flavour_text": {
@@ -261,7 +261,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 5,
         "target_type": 3,
         "max_kills": 1,
-        "power": 1000,
+        "magnitude": 1000,
         "armor_piercing": 1,
         "duration": 0,
         "flavour_text": {
@@ -278,7 +278,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 5,
         "target_type": 3,
         "max_kills": 1,
-        "power": 260,
+        "magnitude": 260,
         "armor_piercing": 0,
         "duration": 0,
         "flavour_text": {
@@ -309,7 +309,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 1,
         "target_type": 1,
         "max_kills": 0,
-        "power": 0,
+        "magnitude": 0,
         "armor_piercing": 0,
         "duration": 2,
         "flavour_text": {
@@ -337,7 +337,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 5,
         "target_type": 4,
         "max_kills": 0,
-        "power": 300,
+        "magnitude": 300,
         "armor_piercing": 1,
         "duration": 0,
         "flavour_text": {
@@ -353,7 +353,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 5,
         "target_type": 3,
         "max_kills": 1,
-        "power": 500,
+        "magnitude": 500,
         "armor_piercing": 0,
         "duration": 0,
         "flavour_text": {
@@ -383,7 +383,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 0,
         "target_type": 0,
         "max_kills": 0,
-        "power": 0,
+        "magnitude": 0,
         "armor_piercing": 0,
         "duration": 3,
         "flavour_text": {
@@ -399,7 +399,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 0,
         "target_type": 0,
         "max_kills": 0,
-        "power": 0,
+        "magnitude": 0,
         "armor_piercing": 0,
         "duration": 3,
         "flavour_text": {
@@ -415,7 +415,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 5,
         "target_type": 3,
         "max_kills": 1,
-        "power": 800,
+        "magnitude": 800,
         "armor_piercing": 1,
         "duration": 0,
         "flavour_text": {
@@ -443,7 +443,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 3,
         "target_type": 3,
         "max_kills": 0,
-        "power": 200,
+        "magnitude": 200,
         "armor_piercing": -1,
         "duration": 0,
         "flavour_text": {
@@ -470,7 +470,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 0,
         "target_type": 0,
         "max_kills": 0,
-        "power": 0,
+        "magnitude": 0,
         "armor_piercing": 0,
         "duration": 3,
         "flavour_text": {
@@ -497,7 +497,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 0,
         "target_type": 0,
         "max_kills": 0,
-        "power": 0,
+        "magnitude": 0,
         "armor_piercing": 0,
         "duration": 3,
         "flavour_text": {
@@ -524,7 +524,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 4,
         "target_type": 3,
         "max_kills": 1,
-        "power": 600,
+        "magnitude": 600,
         "armor_piercing": 0,
         "duration": 0,
         "flavour_text": {
@@ -553,7 +553,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 8,
         "target_type": 4,
         "max_kills": 1,
-        "power": 200,
+        "magnitude": 200,
         "armor_piercing": 1,
         "duration": 0,
         "flavour_text": {
@@ -581,7 +581,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 8,
         "target_type": 4,
         "max_kills": 1,
-        "power": 600,
+        "magnitude": 600,
         "armor_piercing": 1,
         "duration": 0,
         "flavour_text": {
@@ -609,7 +609,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 3,
         "target_type": 3,
         "max_kills": 0,
-        "power": 220,
+        "magnitude": 220,
         "armor_piercing": 0,
         "duration": 0,
         "flavour_text": {
@@ -625,7 +625,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 0,
         "target_type": 0,
         "max_kills": 0,
-        "power": 0,
+        "magnitude": 0,
         "armor_piercing": 0,
         "duration": 3,
         "flavour_text": {
@@ -641,7 +641,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 0,
         "target_type": 0,
         "max_kills": 0,
-        "power": 0,
+        "magnitude": 0,
         "armor_piercing": 0,
         "duration": 3,
         "flavour_text": {
@@ -657,7 +657,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 0,
         "target_type": 0,
         "max_kills": 0,
-        "power": 0,
+        "magnitude": 0,
         "armor_piercing": 0,
         "duration": 0,
         "flavour_text": {
@@ -673,7 +673,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 3,
         "target_type": 3,
         "max_kills": 1,
-        "power": 800,
+        "magnitude": 800,
         "armor_piercing": 0,
         "duration": 0,
         "flavour_text": {
@@ -689,7 +689,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 4,
         "target_type": 3,
         "max_kills": 0,
-        "power": 190,
+        "magnitude": 190,
         "armor_piercing": 0,
         "duration": 0,
         "flavour_text": {
@@ -705,7 +705,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 4,
         "target_type": 3,
         "max_kills": 1,
-        "power": 280,
+        "magnitude": 280,
         "armor_piercing": 0,
         "duration": 0,
         "flavour_text": {
@@ -721,7 +721,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 0,
         "target_type": 0,
         "max_kills": 0,
-        "power": 0,
+        "magnitude": 0,
         "armor_piercing": 0,
         "duration": 3,
         "flavour_text": {
@@ -737,7 +737,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 0,
         "target_type": 0,
         "max_kills": 0,
-        "power": 0,
+        "magnitude": 0,
         "armor_piercing": 0,
         "duration": 3,
         "flavour_text": {
@@ -753,7 +753,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 5,
         "target_type": 3,
         "max_kills": 0,
-        "power": 160,
+        "magnitude": 160,
         "armor_piercing": 0,
         "duration": 0,
         "flavour_text": {
@@ -769,7 +769,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 1,
         "target_type": 1,
         "max_kills": 0,
-        "power": 0,
+        "magnitude": 0,
         "armor_piercing": 0,
         "duration": 2,
         "flavour_text": {
@@ -785,7 +785,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 4,
         "target_type": 3,
         "max_kills": 1,
-        "power": 320,
+        "magnitude": 320,
         "armor_piercing": 0,
         "duration": 0,
         "flavour_text": {
@@ -801,7 +801,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 3,
         "target_type": 3,
         "max_kills": 1,
-        "power": 440,
+        "magnitude": 440,
         "armor_piercing": 0,
         "duration": 0,
         "flavour_text": {
@@ -818,7 +818,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 1.1,
         "target_type": 3,
         "max_kills": 1,
-        "power": 600,
+        "magnitude": 600,
         "armor_piercing": 0,
         "duration": 0,
         "flavour_text": {
@@ -834,7 +834,7 @@ I see no reason to have these named structs, as their names are not used for any
         "range": 5,
         "target_type": 3,
         "max_kills": 1,
-        "power": 800,
+        "magnitude": 800,
         "armor_piercing": 1,
         "duration": 0,
         "flavour_text": {
