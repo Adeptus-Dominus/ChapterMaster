@@ -24,7 +24,11 @@ function get_power_data(_power_name, _data_name) {
             } else {
                 return _data_content;
             }
+        } else {
+            log_error("Requested data was not found!");
         }
+    } else {
+        log_error("Requested power was not found!");
     }
     return;
 }
