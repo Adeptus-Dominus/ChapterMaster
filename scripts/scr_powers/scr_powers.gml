@@ -189,6 +189,119 @@ function player_select_powers() {
     }
 }
 
+function get_tome_discipline(_tome_tags) {
+    try {
+        var discipline_names = struct_get_names(global.disciplines_data);
+        for (var i = 0; i < array_length(discipline_names); i++) {
+            var discipline_name = discipline_names[i];
+            var discipline_struct = global.disciplines_data[$ discipline_name];
+            if (struct_exists(discipline_struct, "tags")) {
+                var discipline_tags = discipline_struct[$ "tags"];
+                for (var p = 0; p < array_length(discipline_tags); p++) {
+                    var discipline_tag = discipline_tags[p];
+                    if (string_count(discipline_tag, _tome_tags) > 0) {
+                        return discipline_name;
+                    }
+                }
+            }
+        }
+        log_error("no matching discipline was found.")
+        return "";
+    } catch (_exception) {
+        return "";
+        handle_exception(_exception);
+    }
+}
+
+function convert_power_letter(power_code) {
+    try {
+        var power_letter = string_char_at(power_code, 1);
+        var matched_discipline = "";
+    
+        var discipline_names = struct_get_names(global.disciplines_data);
+        for (var i = 0; i < array_length(discipline_names); i++) {
+            var discipline_name = discipline_names[i];
+            var discipline_struct = global.disciplines_data[$ discipline_name];
+            if (struct_exists(discipline_struct, "letter")) {
+                var discipline_letter = discipline_struct[$ "letter"];
+                if (power_letter == discipline_letter) {
+                    matched_discipline = discipline_name;
+                    return discipline_name;
+                }
+            }
+        }
+        log_error("no matching discipline was found.")
+        return "";
+    } catch (_exception) {
+        return "";
+        handle_exception(_exception);
+    }
+}
+
+function get_perils_chance(_unit, _tome_perils_chance) {
+    var _perils_chance = 1;
+    var _unit_exp = _unit.experience;
+    var _unit_gear = _unit._unit_gear();
+
+    if (scr_has_disadv("Warp Touched")) {
+        _perils_chance += 0.25;
+    }
+    if (scr_has_disadv("Shitty Luck")) {
+        _perils_chance += 0.25;
+    }
+
+    _perils_chance += _tome_perils_chance;
+    _perils_chance += obj_ncombat.global_perils;
+    _perils_chance -= _unit_exp * 0.002;
+
+    if (scr_has_adv("Daemon Binders")) {
+        // I hope you like demons
+        _perils_chance -= 0.5;
+    }
+
+    if (_unit_gear == "Psychic Hood") {
+        _perils_chance *= 0.75;
+    }
+
+    _perils_chance = max(_perils_chance, 0.05);
+    
+    // show_debug_message("Peril of the Warp Chance: " + string(_perils_chance));
+    return _perils_chance;
+}
+
+function get_perils_strength(_unit, _tome_perils_strength) {
+    var _perils_strength = 1;
+    var _unit_exp = _unit.experience;
+    var _unit_gear = _unit._unit_gear();
+
+    _perils_strength += _tome_perils_strength;
+    if (scr_has_disadv("Warp Touched")) {
+        _perils_strength += 25;
+    }
+    if (scr_has_disadv("Shitty Luck")) {
+        _perils_strength += 25;
+    }
+    _perils_strength -= _unit_exp * 0.25;
+
+
+    if (scr_has_adv("Daemon Binders")) {
+        // I hope you like demons
+        _perils_strength += 40;
+        if (_perils_strength <= 47) {
+            _perils_strength = 48;
+        }
+    }
+
+    if (_unit_gear == "Psychic Hood") {
+        _perils_strength *= 0.75;
+    }
+
+    _perils_strength = max(_perils_strength, 15);
+    
+    // show_debug_message("Peril of the Warp Strength: " + string(perils_strength));
+    return _perils_strength;
+}
+
 /// @mixin
 function scr_powers(power_set, power_index, target_unit, unit_id) {
     // power_set: letter
@@ -202,50 +315,49 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
 
     // This is called in context of a obj_pnunit
 
-    var unit = unit_struct[unit_id];
-    if (!is_struct(unit)) {
+    var _unit = unit_struct[unit_id];
+    if (!is_struct(_unit)) {
         exit;
     }
-    if (unit.name() == "") {
+    if (_unit.name() == "") {
         exit;
     }
 
     var _power_name = "";
-    var target_type = "";
-    var weapon_one = unit.get_weapon_one_data();
-    var weapon_two = unit.get_weapon_two_data();
-    var gear = unit.gear();
+    var _unit_weapon_one_data = _unit.get_weapon_one_data();
+    var _unit_weapon_two_data = _unit.get_weapon_two_data();
+    var _unit_gear = _unit._unit_gear();
     // show_debug_message(power_set);
-    var psy_discipline = convert_power_letter(power_set);
+    var _psy_discipline = convert_power_letter(power_set);
     var _cast_flavour_text = "";
     var _casualties_flavour_text = "";
-    var flavour_text_4 = "";
-    var using_tome = false;
-    var tome_discipline = "";
-    var tome_roll = irandom_range(1, 100);
-    var tome_perils_chance = 0;
-    var tome_perils_strength = 0;
-    var tome_slot = 0;
-    var tome_tags = "";
+    var _using_tome = false;
+    var _tome_discipline = "";
+    var _tome_roll = irandom_range(1, 100);
+    var _tome_perils_chance = 0;
+    var _tome_perils_strength = 0;
+    var _tome_slot = 0;
+    var _tome_tags = "";
+    var _marine_role = _unit.role();
+    var _unit_exp = _unit.experience;
 
     //TODO: Maybe move into a separate function;
     // In here check if have tome
-    if (unit.weapon_one() == "Tome" || unit.weapon_two() == "Tome") {
-        if (unit.weapon_one() == "Tome") {
-            tome_tags += marine_wep1[unit_id];
+    if (_unit._unit_weapon_one_data() == "Tome" || _unit._unit_weapon_two_data() == "Tome") {
+        if (_unit._unit_weapon_one_data() == "Tome") {
+            _tome_tags += marine_wep1[unit_id];
         }
-        if (unit.weapon_two() == "Tome") {
-            tome_tags += marine_wep2[unit_id];
+        if (_unit._unit_weapon_two_data() == "Tome") {
+            _tome_tags += marine_wep2[unit_id];
         }
-
-        tome_discipline = get_tome_discipline(tome_tags);
+        _tome_discipline = get_tome_discipline(_tome_tags);
     }
 
     //TODO: Move into a separate function;
-    var selected_discipline = psy_discipline;
-    if (tome_discipline != "" && tome_roll <= 50) {
-        selected_discipline = tome_discipline;
-        using_tome = true;
+    var selected_discipline = _psy_discipline;
+    if (_tome_discipline != "" && _tome_roll <= 50) {
+        selected_discipline = _tome_discipline;
+        _using_tome = true;
     }
 
     //TODO: Move into a separate function;
@@ -253,10 +365,10 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
     for (var i = 0; i < array_length(disciplines_array); i++) {
         if (disciplines_array[i] == selected_discipline) {
             var powers_array = global.disciplines_data[$ disciplines_array[i]].powers;
-            if (using_tome) {
+            if (_using_tome) {
                 power_index = irandom(array_length(powers_array));
-                tome_perils_chance = global.disciplines_data[$ disciplines_array[i]].perils_chance;
-                tome_perils_strength = global.disciplines_data[$ disciplines_array[i]].perils_strength;
+                _tome_perils_chance = global.disciplines_data[$ disciplines_array[i]].perils_chance;
+                _tome_perils_strength = global.disciplines_data[$ disciplines_array[i]].perils_strength;
             }
             // show_debug_message($"powers_array: {powers_array}");
             // show_debug_message($"power_index: {power_index}");
@@ -314,20 +426,20 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
 
     //TODO: Move into a separate function;
     var has_force_weapon = false;
-    if (is_struct(weapon_one)) {
-        if (weapon_one.has_tag("force")) {
+    if (is_struct(_unit_weapon_one_data)) {
+        if (_unit_weapon_one_data.has_tag("force")) {
             has_force_weapon = true;
         }
     }
-    if (is_struct(weapon_two)) {
-        if (weapon_two.has_tag("force")) {
+    if (is_struct(_unit_weapon_two_data)) {
+        if (_unit_weapon_two_data.has_tag("force")) {
             has_force_weapon = true;
         }
     }
 
 
     if (has_force_weapon) {
-        if (unit.weapon_one() == "Force Staff" || unit.weapon_two() == "Force Staff") {
+        if (_unit._unit_weapon_one_data() == "Force Staff" || _unit._unit_weapon_two_data() == "Force Staff") {
             if (_power_magnitude > 0) {
                 _power_magnitude = round(_power_magnitude) * 2;
             }
@@ -354,8 +466,8 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         }
     }
 
-    if (marine_type[unit_id] == "Chapter Master") {
-        if (unit.has_trait("paragon")) {
+    if (_marine_role == "Chapter Master") {
+        if (_unit.has_trait("paragon")) {
             if (_power_magnitude > 0) {
                 _power_magnitude = round(_power_magnitude) * 1.25;
             }
@@ -366,9 +478,10 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         }
     }
 
-    _cast_flavour_text = $"{unit.name_role()} casts '{_power_name}'";
-    if ((tome_discipline != "") && (tome_roll <= 33) && (_power_name != "Imperator Maior") && (_power_name != "Kamehameha")) {
-        _cast_flavour_text = unit.name_role();
+    // Some tome shit;
+    _cast_flavour_text = $"{_unit.name_role()} casts '{_power_name}'";
+    if ((_tome_discipline != "") && (_tome_roll <= 33) && (_power_name != "Imperator Maior") && (_power_name != "Kamehameha")) {
+        _cast_flavour_text = _unit.name_role();
         if (string_char_at(_cast_flavour_text, string_length(_cast_flavour_text)) == "s") {
             _cast_flavour_text += "' tome ";
         }
@@ -377,61 +490,29 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         }
         _cast_flavour_text += "confers knowledge upon him.  He casts '" + string(_power_name) + "'";
 
-        if (tome_perils_chance > 0) {
-            if ((tome_roll <= 10) && (tome_perils_chance == 1)) {
-                unit.corruption += choose(1, 2);
+        if (_tome_perils_chance > 0) {
+            if ((_tome_roll <= 10) && (_tome_perils_chance == 1)) {
+                _unit.corruption += choose(1, 2);
             }
-            if ((tome_roll <= 20) && (tome_perils_chance > 1)) {
-                unit.corruption += choose(3, 4, 5);
+            if ((_tome_roll <= 20) && (_tome_perils_chance > 1)) {
+                _unit.corruption += choose(3, 4, 5);
             }
         }
     }
 
     if (_power_name == "Kamehameha") {
-        _cast_flavour_text = unit.name_role() + " ";
+        _cast_flavour_text = _unit.name_role() + " ";
     }
     if (_power_name == "Imperator Maior") {
-        _cast_flavour_text = unit.name_role() + " casts '" + string(_power_name) + "'";
+        _cast_flavour_text = _unit.name_role() + " casts '" + string(_power_name) + "'";
     }
 
     //TODO: Perhaps separate perils calculations into a separate function;
-    var good = 0, good2 = 0, perils_chance = 1, perils_roll = irandom_range(1, 100), perils_strength = irandom_range(1, 100);
+    var perils_chance = get_perils_chance(_unit, _tome_perils_chance);
+    var perils_roll = irandom_range(1, 100);
+    var perils_strength = get_perils_strength(_unit, _tome_perils_strength);
 
-    perils_strength += tome_perils_strength;
-    if (scr_has_disadv("Warp Touched")) {
-        perils_chance += 0.25;
-        perils_strength += 25;
-    }
-    if (scr_has_disadv("Shitty Luck")) {
-        perils_chance += 0.25;
-        perils_strength += 25;
-    }
-    perils_strength -= marine_exp[unit_id] * 0.25;
-
-    perils_chance += tome_perils_chance;
-    perils_chance += obj_ncombat.global_perils;
-    perils_chance -= marine_exp[unit_id] * 0.002;
-
-    if (scr_has_adv("Daemon Binders")) {
-        // I hope you like demons
-        perils_chance -= 0.5;
-        perils_strength += 40;
-        if (perils_strength <= 47) {
-            perils_strength = 48;
-        }
-    }
-
-    if (gear == "Psychic Hood") {
-        perils_chance *= 0.75;
-        perils_strength *= 0.75;
-    }
-
-    perils_strength = max(perils_strength, 15);
-    perils_chance = max(perils_chance, 0.05);
-
-    // show_debug_message("Peril of the Warp Chance: " + string(perils_chance));
     // show_debug_message("Roll: " + string(perils_roll));
-    // show_debug_message("Peril of the Warp Strength: " + string(perils_strength));
 
     if (perils_roll <= perils_chance) {
         if (obj_ncombat.sorcery_seen == 1) {
@@ -440,10 +521,10 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         _power_type = "perils";
         _casualties_flavour_text = "";
 
-        _cast_flavour_text = $"{unit.name_role()} suffers Perils of the Warp!  ";
-        _power_flavour_text = scr_perils_table(perils_strength, unit, psy_discipline, _power_name, unit_id, tome_discipline);
+        _cast_flavour_text = $"{_unit.name_role()} suffers Perils of the Warp!  ";
+        _power_flavour_text = scr_perils_table(perils_strength, _unit, _psy_discipline, _power_name, unit_id, _tome_discipline);
 
-        if (unit.hp() < 0) {
+        if (_unit.hp() < 0) {
             //TODO create is_dead function to remove repeats of this log
             if (marine_dead[unit_id] == 0) {
                 marine_dead[unit_id] = 1;
@@ -451,16 +532,16 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
             }
 
             // Track the lost unit
-            var existing_index = array_get_index(lost, marine_type[unit_id]);
+            var existing_index = array_get_index(lost, _marine_role);
             if (existing_index != -1) {
                 lost_num[existing_index] += 1;
             } else {
-                array_push(lost, marine_type[unit_id]);
+                array_push(lost, _marine_role);
                 array_push(lost_num, 1);
             }
 
             // Update unit counts
-            var armour_data = unit.get_armour_data();
+            var armour_data = _unit.get_armour_data();
             var is_dread = false;
             if (is_struct(armour_data)) {
                 is_dread = armour_data.has_tag("dreadnought");
@@ -472,7 +553,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
             }
 
             // Trigger red thirst
-            if (obj_ncombat.red_thirst == 1 && marine_type[unit_id] != "Death Company") {
+            if (obj_ncombat.red_thirst == 1 && _marine_role != "Death Company") {
                 obj_ncombat.red_thirst = 2;
             }
         }
@@ -578,9 +659,9 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
             }
         }
         if (_power_name == "Regenerate") {
-            unit.add_or_sub_health(choose(2, 3, 4) * 5);
-            if (unit.hp() > unit.max_health()) {
-                unit.update_health(unit.max_health());
+            _unit.add_or_sub_health(choose(2, 3, 4) * 5);
+            if (_unit.hp() > _unit.max_health()) {
+                _unit.update_health(_unit.max_health());
             }
         }
 
@@ -611,8 +692,10 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
 
     // TODO: separate the code bellow into a separate function;
     // Actually cast powers here;
-    var _cast_count;
-    _cast_count = 1;
+    var good = 0;
+    var good2 = 0;
+    var _cast_count = 1;
+
     if ((_power_type == "attack") && (_power_name == "Imperator Maior")) {
         _cast_count = 3;
     }
@@ -623,8 +706,6 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         obj_ncombat.message_priority[obj_ncombat.messages] = 136;
         obj_ncombat.message_sz[obj_ncombat.messages] = 2500;
     }
-
-    flavour_text_4 = "";
 
     repeat (_cast_count) {
         if (_cast_count > 1) {
@@ -1006,53 +1087,4 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
     } // End repeat
 
     obj_ncombat.alarm[3] = 5;
-}
-
-function get_tome_discipline(tome_tags) {
-    try {
-        var discipline_names = struct_get_names(global.disciplines_data);
-        for (var i = 0; i < array_length(discipline_names); i++) {
-            var discipline_name = discipline_names[i];
-            var discipline_struct = global.disciplines_data[$ discipline_name];
-            if (struct_exists(discipline_struct, "tags")) {
-                var discipline_tags = discipline_struct[$ "tags"];
-                for (var p = 0; p < array_length(discipline_tags); p++) {
-                    var discipline_tag = discipline_tags[p];
-                    if (string_count(discipline_tag, tome_tags) > 0) {
-                        return discipline_name;
-                    }
-                }
-            }
-        }
-        log_error("no matching discipline was found.")
-        return "";
-    } catch (_exception) {
-        return "";
-        handle_exception(_exception);
-    }
-}
-
-function convert_power_letter(power_code) {
-    try {
-        var power_letter = string_char_at(power_code, 1);
-        var matched_discipline = "";
-    
-        var discipline_names = struct_get_names(global.disciplines_data);
-        for (var i = 0; i < array_length(discipline_names); i++) {
-            var discipline_name = discipline_names[i];
-            var discipline_struct = global.disciplines_data[$ discipline_name];
-            if (struct_exists(discipline_struct, "letter")) {
-                var discipline_letter = discipline_struct[$ "letter"];
-                if (power_letter == discipline_letter) {
-                    matched_discipline = discipline_name;
-                    return discipline_name;
-                }
-            }
-        }
-        log_error("no matching discipline was found.")
-        return "";
-    } catch (_exception) {
-        return "";
-        handle_exception(_exception);
-    }
 }
