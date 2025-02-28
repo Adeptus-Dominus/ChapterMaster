@@ -1,65 +1,144 @@
 {
     "minor_nu": {
-        "powers": ["Wave of Entropy", "Insect Swarm", "Blood Dementia"],
+        "powers": [
+            "Wave of Entropy",
+            "Insect Swarm",
+            "Blood Dementia"
+        ],
         "perils_chance": 0.10,
         "perils_strength": 10
     },
     "minor_nu_daemon": {
-        "powers": ["Wave of Entropy", "Insect Swarm", "Blood Dementia", "Putrid Vomit"],
+        "powers": [
+            "Wave of Entropy",
+            "Insect Swarm",
+            "Blood Dementia",
+            "Putrid Vomit"
+        ],
         "perils_chance": 0.30,
         "perils_strength": 30
     },
     "minor_tz_daemon": {
-        "powers": ["Wave of Change", "Warp Bolts", "Warp Beam", "Iron Arm"],
+        "powers": [
+            "Wave of Change",
+            "Warp Bolts",
+            "Warp Beam",
+            "Iron Arm"
+        ],
         "perils_chance": 0.30,
         "perils_strength": 30
     },
     "minor_sl_daemon": {
-        "powers": ["Warp Bolts", "Rainbow Beam", "Hysterical Frenzy", "Symphony of Pain"],
+        "powers": [
+            "Warp Bolts",
+            "Rainbow Beam",
+            "Hysterical Frenzy",
+            "Symphony of Pain"
+        ],
         "perils_chance": 0.30,
         "perils_strength": 30
     },
     "minor_default": {
-        "powers": ["Avenge", "Spatial Distortion", "Stormbringer"],
+        "powers": [
+            "Avenge",
+            "Spatial Distortion",
+            "Stormbringer"
+        ],
         "perils_chance": 0,
         "perils_strength": 0
     },
     "minor_telekenesis": {
-        "powers": ["Spatial Distortion", "Telekinetic Dome", "Vortex of Doom"],
+        "powers": [
+            "Spatial Distortion",
+            "Telekinetic Dome",
+            "Vortex of Doom"
+        ],
         "perils_chance": 0,
         "perils_strength": 0
     },
     "minor_biomancy": {
-        "powers": ["Haemorrhage", "Regenerate", "Iron Arm", "Insect Swarm"],
+        "powers": [
+            "Haemorrhage",
+            "Regenerate",
+            "Iron Arm",
+            "Insect Swarm"
+        ],
         "perils_chance": 0.10,
         "perils_strength": 10
     },
     "minor_pyromancy": {
-        "powers": ["Inferno", "Sun Burst", "Molten Beam"],
+        "powers": [
+            "Inferno",
+            "Sun Burst",
+            "Molten Beam"
+        ],
         "perils_chance": 0,
         "perils_strength": 0
     },
     "minor_what_the_fuck_man": {
-        "powers": ["Blood Dementia", "Spatial Distortion", "Haemorrhage"],
+        "powers": [
+            "Blood Dementia",
+            "Spatial Distortion",
+            "Haemorrhage"
+        ],
         "perils_chance": 0.20,
         "perils_strength": 20
     },
     "hacks": {
-        "powers": ["Gather Energy"]
+        "powers": [
+            "Gather Energy"
+        ]
     },
     "rune_magick": {
-        "powers": ["Living Lightning", "Murderous Hurricane", "Stormbringer", "Fury of the Wolf", "Thunder Clap", "Spatial Distortion"]
+        "powers": [
+            "Living Lightning",
+            "Murderous Hurricane",
+            "Stormbringer",
+            "Fury of the Wolf",
+            "Thunder Clap",
+            "Spatial Distortion"
+        ]
     },
     "biomancy": {
-        "powers": ["Minor Smite", "Blood Boil", "Iron Arm", "Endurance", "Regenerate", "Haemorrhage"]
+        "powers": [
+            "Minor Smite",
+            "Blood Boil",
+            "Iron Arm",
+            "Endurance",
+            "Regenerate",
+            "Haemorrhage"
+        ]
     },
     "pyromancy": {
-        "powers": ["Breathe Fire", "Fiery Form", "Fire Shield", "Inferno", "Sun Burst", "Molten Beam"]
+        "powers": [
+            "Breathe Fire",
+            "Fiery Form",
+            "Fire Shield",
+            "Inferno",
+            "Sun Burst",
+            "Molten Beam"
+        ]
     },
     "telekinesis": {
-        "powers": ["Crush", "Shockwave", "Wave of Force", "Telekinetic Dome", "Spatial Distortion", "Vortex of Doom"]
+        "powers": [
+            "Crush",
+            "Shockwave",
+            "Wave of Force",
+            "Telekinetic Dome",
+            "Spatial Distortion",
+            "Vortex of Doom"
+        ]
     },
     "default": {
-        "powers": ["Minor Smite", "Smite", "Force Dome", "Machine Curse", "Avenge", "Quickening", "Might of the Ancients", "Vortex of Doom"]
+        "powers": [
+            "Minor Smite",
+            "Smite",
+            "Force Dome",
+            "Machine Curse",
+            "Avenge",
+            "Quickening",
+            "Might of the Ancients",
+            "Vortex of Doom"
+        ]
     }
 }

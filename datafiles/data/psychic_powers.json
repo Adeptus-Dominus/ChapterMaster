@@ -22,7 +22,10 @@ I see no reason to have these named structs, as their names are not used for any
                     "- a green, sickly coil of energy lashes out at the enemy."
                 ],
                 "conditions": [
-                    {"type": "advantage", "value": "Daemon Binders"}
+                    {
+                        "type": "advantage",
+                        "value": "Daemon Binders"
+                    }
                 ]
             }
         }
@@ -46,7 +49,10 @@ I see no reason to have these named structs, as their names are not used for any
                     "- a putrid cone of warp energy splashes outward, twisting and rusting everything it touches."
                 ],
                 "conditions": [
-                    {"type": "enemy_type", "value": 3}
+                    {
+                        "type": "enemy_type",
+                        "value": 3
+                    }
                 ]
             }
         },
@@ -122,7 +128,10 @@ I see no reason to have these named structs, as their names are not used for any
             "enemy_type_9": {
                 "modifier": -150,
                 "conditions": [
-                    {"type": "enemy_type", "value": 9}
+                    {
+                        "type": "enemy_type",
+                        "value": 9
+                    }
                 ]
             }
         }
@@ -199,7 +208,10 @@ I see no reason to have these named structs, as their names are not used for any
                     ". Warp energy infuses his body, and several other marines, frenzying them into sensation-seeking destruction."
                 ],
                 "conditions": [
-                    {"type": "allies_more_than", "value": 1}
+                    {
+                        "type": "allies_more_than",
+                        "value": 1
+                    }
                 ]
             }
         },
@@ -279,7 +291,10 @@ I see no reason to have these named structs, as their names are not used for any
                     "- a wave of green fire launches forth, made up of hideous faces and claws."
                 ],
                 "conditions": [
-                    {"type": "advantage", "value": "Daemon Binders"}
+                    {
+                        "type": "advantage",
+                        "value": "Daemon Binders"
+                    }
                 ]
             }
         },
@@ -304,7 +319,10 @@ I see no reason to have these named structs, as their names are not used for any
                     ". An oozing, shifting dome of sorcerous energy appears, covering your forces."
                 ],
                 "conditions": [
-                    {"type": "advantage", "value": "Daemon Binders"}
+                    {
+                        "type": "advantage",
+                        "value": "Daemon Binders"
+                    }
                 ]
             }
         },
@@ -347,7 +365,10 @@ I see no reason to have these named structs, as their names are not used for any
                     "- a massive conflagration rises up and then crashes down upon the enemy."
                 ],
                 "conditions": [
-                    {"type": "advantage", "value": "Daemon Binders"}
+                    {
+                        "type": "advantage",
+                        "value": "Daemon Binders"
+                    }
                 ]
             }
         },
@@ -404,7 +425,10 @@ I see no reason to have these named structs, as their names are not used for any
                     "- a hole between realspace and the warp is torn, unleashing a myriad of sorcerous energies."
                 ],
                 "conditions": [
-                    {"type": "advantage", "value": "Daemon Binders"}
+                    {
+                        "type": "advantage",
+                        "value": "Daemon Binders"
+                    }
                 ]
             }
         },
@@ -429,7 +453,10 @@ I see no reason to have these named structs, as their names are not used for any
                     "- a greenish, eerie jet of flame shoots forth at the enemy."
                 ],
                 "conditions": [
-                    {"type": "advantage", "value": "Daemon Binders"}
+                    {
+                        "type": "advantage",
+                        "value": "Daemon Binders"
+                    }
                 ]
             }
         }
@@ -453,7 +480,10 @@ I see no reason to have these named structs, as their names are not used for any
                     ". Hideous, eerie beings of warp fire begin to dance around the marine, threatening nearby foes."
                 ],
                 "conditions": [
-                    {"type": "advantage", "value": "Daemon Binders"}
+                    {
+                        "type": "advantage",
+                        "value": "Daemon Binders"
+                    }
                 ]
             }
         }
@@ -477,7 +507,10 @@ I see no reason to have these named structs, as their names are not used for any
                     "- Purple sheets of warp fire shimmer around your forces, protecting them."
                 ],
                 "conditions": [
-                    {"type": "advantage", "value": "Daemon Binders"}
+                    {
+                        "type": "advantage",
+                        "value": "Daemon Binders"
+                    }
                 ]
             }
         }
@@ -503,7 +536,10 @@ I see no reason to have these named structs, as their names are not used for any
                     "- a massive conflagration rises up and then crashes down upon the enemy."
                 ],
                 "conditions": [
-                    {"type": "advantage", "value": "Daemon Binders"}
+                    {
+                        "type": "advantage",
+                        "value": "Daemon Binders"
+                    }
                 ]
             }
         }
@@ -527,7 +563,10 @@ I see no reason to have these named structs, as their names are not used for any
                     "- a crackling, hissing beam of purple warp shoots from him."
                 ],
                 "conditions": [
-                    {"type": "advantage", "value": "Daemon Binders"}
+                    {
+                        "type": "advantage",
+                        "value": "Daemon Binders"
+                    }
                 ]
             }
         },
@@ -552,7 +591,10 @@ I see no reason to have these named structs, as their names are not used for any
                     "- a massive beam of purple warp energy shoots forth. All that it touches is consumed."
                 ],
                 "conditions": [
-                    {"type": "advantage", "value": "Daemon Binders"}
+                    {
+                        "type": "advantage",
+                        "value": "Daemon Binders"
+                    }
                 ]
             }
         },
