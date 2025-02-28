@@ -1,3 +1,5 @@
+// TODO: a bunch of stuff in this file and related to it uses strings, replace them with constants;
+
 #macro ARR_power_discipline_list ["default", "biomancy", "pyromancy","telekinesis","rune_magic"]
 
 global.disciplines_data = json_to_gamemaker(working_directory + "\\data\\psychic_disciplines.json", json_parse);
