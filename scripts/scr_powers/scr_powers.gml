@@ -292,7 +292,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
     var _power_target_type = get_power_data(power_name, "target_type");
     var _power_max_kills = get_power_data(power_name, "max_kills");
     var _power_magnitude = get_power_data(power_name, "magnitude");
-    var _power_armor_piercing = get_power_data(power_name, "armor_piercing");
+    var _power_armour_piercing = get_power_data(power_name, "armour_piercing");
     var _power_duration = get_power_data(power_name, "duration");
     var _power_flavour_text = get_power_data(power_name, "flavour_text");
     var _power_sourcery = get_power_data(power_name, "sorcery");
@@ -308,7 +308,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         power_name = "Imperator Maior";
     }
 
-    // if (power_name="Vortex of Doom"){_power_type="attack";_power_range=5;_power_target_type=3;_power_max_kills=1;_power_magnitude=800;_power_armor_piercing=800;_power_duration=0;
+    // if (power_name="Vortex of Doom"){_power_type="attack";_power_range=5;_power_target_type=3;_power_max_kills=1;_power_magnitude=800;_power_armour_piercing=800;_power_duration=0;
     //     _power_flavour_text="- a hole between real and warp space is torn open with deadly effect.  ";
     // }
 
@@ -348,7 +348,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         if (_power_magnitude > 0) {
             _power_magnitude = round(_power_magnitude) * 1.15;
         }
-        // if (_power_armor_piercing>0) then _power_armor_piercing=round(_power_armor_piercing)*1.15;
+        // if (_power_armour_piercing>0) then _power_armour_piercing=round(_power_armour_piercing)*1.15;
         if (_power_range > 0) {
             _power_range = round(_power_range) * 1.2;
         }
@@ -359,7 +359,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
             if (_power_magnitude > 0) {
                 _power_magnitude = round(_power_magnitude) * 1.25;
             }
-            // if (_power_armor_piercing>0) then _power_armor_piercing=round(_power_armor_piercing)*1.25;
+            // if (_power_armour_piercing>0) then _power_armour_piercing=round(_power_armour_piercing)*1.25;
             if (_power_range > 0) {
                 _power_range = round(_power_range) * 1.25;
             }
@@ -667,7 +667,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
 
                 var onk;
                 onk = 0;
-                if ((_power_target_type == 3) && (good == 0) && (good2 == 0) && (_power_armor_piercing > 0) && (onk == 0)) {
+                if ((_power_target_type == 3) && (good == 0) && (good2 == 0) && (_power_armour_piercing > 0) && (onk == 0)) {
                     _power_target_type = 4;
                     onk = 1;
                 }
@@ -720,7 +720,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                 stap = 0;
 
                 damage_type = "att";
-                if ((_power_armor_piercing > 0) && (_power_magnitude >= 100)) {
+                if ((_power_armour_piercing > 0) && (_power_magnitude >= 100)) {
                     damage_type = "arp";
                 }
 
@@ -735,21 +735,21 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                     // b=a-target_unit.dudes_ac[good2];// Average after armour
 
                     if (target_unit.dudes_vehicle[good2] == 0) {
-                        if (_power_armor_piercing == 1) {
+                        if (_power_armour_piercing == 1) {
                             eac = 0;
                         }
-                        if (_power_armor_piercing == -1) {
+                        if (_power_armour_piercing == -1) {
                             eac = eac * 6;
                         }
                     }
                     if (target_unit.dudes_vehicle[good2] == 1) {
-                        if (_power_armor_piercing == -1) {
+                        if (_power_armour_piercing == -1) {
                             eac = a;
                         }
-                        if (_power_armor_piercing == 0) {
+                        if (_power_armour_piercing == 0) {
                             eac = eac * 6;
                         }
-                        if (_power_armor_piercing == -1) {
+                        if (_power_armour_piercing == -1) {
                             eac = a;
                         }
                     }
@@ -853,21 +853,21 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                     // b=a-target_unit.dudes_ac[good2];// Average after armour
 
                     if (target_unit.dudes_vehicle[good2] == 0) {
-                        if (_power_armor_piercing == 1) {
+                        if (_power_armour_piercing == 1) {
                             eac = 0;
                         }
-                        if (_power_armor_piercing == -1) {
+                        if (_power_armour_piercing == -1) {
                             eac = eac * 6;
                         }
                     }
                     if (target_unit.dudes_vehicle[good2] == 1) {
-                        if (_power_armor_piercing == -1) {
+                        if (_power_armour_piercing == -1) {
                             eac = a;
                         }
-                        if (_power_armor_piercing == 0) {
+                        if (_power_armour_piercing == 0) {
                             eac = eac * 6;
                         }
-                        if (_power_armor_piercing == -1) {
+                        if (_power_armour_piercing == -1) {
                             eac = a;
                         }
                     }

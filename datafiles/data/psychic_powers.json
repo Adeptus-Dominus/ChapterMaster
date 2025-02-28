@@ -9,7 +9,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 3,
         "max_kills": 1,
         "magnitude": 160,
-        "armor_piercing": 0,
+        "armour_piercing": 0,
         "duration": 0,
         "flavour_text": {
             "default": {
@@ -36,7 +36,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 3,
         "max_kills": 1,
         "magnitude": 220,
-        "armor_piercing": 0,
+        "armour_piercing": 0,
         "duration": 0,
         "flavour_text": {
             "default": {
@@ -64,7 +64,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 3,
         "max_kills": 1,
         "magnitude": 220,
-        "armor_piercing": 0,
+        "armour_piercing": 0,
         "duration": 0,
         "flavour_text": {
             "default": {
@@ -81,7 +81,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 3,
         "max_kills": 1,
         "magnitude": 500,
-        "armor_piercing": 1,
+        "armour_piercing": 1,
         "duration": 0,
         "flavour_text": {
             "default": {
@@ -99,7 +99,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 0,
         "max_kills": 0,
         "magnitude": 0,
-        "armor_piercing": 0,
+        "armour_piercing": 0,
         "duration": 3,
         "buff": {
             "attack": 2
@@ -118,7 +118,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 3,
         "max_kills": 1,
         "magnitude": 600,
-        "armor_piercing": 0,
+        "armour_piercing": 0,
         "duration": 0,
         "flavour_text": {
             "default": {
@@ -146,7 +146,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 3,
         "max_kills": 1,
         "magnitude": 300,
-        "armor_piercing": 0,
+        "armour_piercing": 0,
         "duration": 0,
         "flavour_text": {
             "default": {
@@ -165,7 +165,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 4,
         "max_kills": 1,
         "magnitude": 600,
-        "armor_piercing": 1,
+        "armour_piercing": 1,
         "duration": 0,
         "flavour_text": {
             "default": {
@@ -182,7 +182,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 3,
         "max_kills": 1,
         "magnitude": 500,
-        "armor_piercing": 1,
+        "armour_piercing": 1,
         "duration": 0,
         "flavour_text": {
             "default": {
@@ -199,7 +199,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 0,
         "max_kills": 0,
         "magnitude": 0,
-        "armor_piercing": 0,
+        "armour_piercing": 0,
         "duration": 999,
         "flavour_text": {
             "default": {
@@ -227,7 +227,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 3,
         "max_kills": 1,
         "magnitude": 750,
-        "armor_piercing": 1,
+        "armour_piercing": 1,
         "duration": 0,
         "flavour_text": {
             "default": {
@@ -245,7 +245,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 0,
         "max_kills": 0,
         "magnitude": 0,
-        "armor_piercing": 0,
+        "armour_piercing": 0,
         "duration": 0,
         "flavour_text": {
             "default": {
@@ -262,7 +262,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 3,
         "max_kills": 1,
         "magnitude": 1000,
-        "armor_piercing": 1,
+        "armour_piercing": 1,
         "duration": 0,
         "flavour_text": {
             "default": {
@@ -279,7 +279,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 3,
         "max_kills": 1,
         "magnitude": 260,
-        "armor_piercing": 0,
+        "armour_piercing": 0,
         "duration": 0,
         "flavour_text": {
             "default": {
@@ -310,7 +310,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 1,
         "max_kills": 0,
         "magnitude": 0,
-        "armor_piercing": 0,
+        "armour_piercing": 0,
         "duration": 2,
         "flavour_text": {
             "default": {
@@ -338,7 +338,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 4,
         "max_kills": 0,
         "magnitude": 300,
-        "armor_piercing": 1,
+        "armour_piercing": 1,
         "duration": 0,
         "flavour_text": {
             "default": {
@@ -354,7 +354,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 3,
         "max_kills": 1,
         "magnitude": 500,
-        "armor_piercing": 0,
+        "armour_piercing": 0,
         "duration": 0,
         "flavour_text": {
             "default": {
@@ -384,7 +384,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 0,
         "max_kills": 0,
         "magnitude": 0,
-        "armor_piercing": 0,
+        "armour_piercing": 0,
         "duration": 3,
         "flavour_text": {
             "default": {
@@ -400,7 +400,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 0,
         "max_kills": 0,
         "magnitude": 0,
-        "armor_piercing": 0,
+        "armour_piercing": 0,
         "duration": 3,
         "flavour_text": {
             "default": {
@@ -416,7 +416,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 3,
         "max_kills": 1,
         "magnitude": 800,
-        "armor_piercing": 1,
+        "armour_piercing": 1,
         "duration": 0,
         "flavour_text": {
             "default": {
@@ -444,7 +444,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 3,
         "max_kills": 0,
         "magnitude": 200,
-        "armor_piercing": -1,
+        "armour_piercing": -1,
         "duration": 0,
         "flavour_text": {
             "default": {
@@ -471,7 +471,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 0,
         "max_kills": 0,
         "magnitude": 0,
-        "armor_piercing": 0,
+        "armour_piercing": 0,
         "duration": 3,
         "flavour_text": {
             "default": {
@@ -498,7 +498,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 0,
         "max_kills": 0,
         "magnitude": 0,
-        "armor_piercing": 0,
+        "armour_piercing": 0,
         "duration": 3,
         "flavour_text": {
             "default": {
@@ -525,7 +525,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 3,
         "max_kills": 1,
         "magnitude": 600,
-        "armor_piercing": 0,
+        "armour_piercing": 0,
         "duration": 0,
         "flavour_text": {
             "default": {
@@ -554,7 +554,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 4,
         "max_kills": 1,
         "magnitude": 200,
-        "armor_piercing": 1,
+        "armour_piercing": 1,
         "duration": 0,
         "flavour_text": {
             "default": {
@@ -582,7 +582,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 4,
         "max_kills": 1,
         "magnitude": 600,
-        "armor_piercing": 1,
+        "armour_piercing": 1,
         "duration": 0,
         "flavour_text": {
             "default": {
@@ -610,7 +610,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 3,
         "max_kills": 0,
         "magnitude": 220,
-        "armor_piercing": 0,
+        "armour_piercing": 0,
         "duration": 0,
         "flavour_text": {
             "default": {
@@ -626,7 +626,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 0,
         "max_kills": 0,
         "magnitude": 0,
-        "armor_piercing": 0,
+        "armour_piercing": 0,
         "duration": 3,
         "flavour_text": {
             "default": {
@@ -642,7 +642,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 0,
         "max_kills": 0,
         "magnitude": 0,
-        "armor_piercing": 0,
+        "armour_piercing": 0,
         "duration": 3,
         "flavour_text": {
             "default": {
@@ -658,7 +658,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 0,
         "max_kills": 0,
         "magnitude": 0,
-        "armor_piercing": 0,
+        "armour_piercing": 0,
         "duration": 0,
         "flavour_text": {
             "default": {
@@ -674,7 +674,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 3,
         "max_kills": 1,
         "magnitude": 800,
-        "armor_piercing": 0,
+        "armour_piercing": 0,
         "duration": 0,
         "flavour_text": {
             "default": {
@@ -690,7 +690,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 3,
         "max_kills": 0,
         "magnitude": 190,
-        "armor_piercing": 0,
+        "armour_piercing": 0,
         "duration": 0,
         "flavour_text": {
             "default": {
@@ -706,7 +706,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 3,
         "max_kills": 1,
         "magnitude": 280,
-        "armor_piercing": 0,
+        "armour_piercing": 0,
         "duration": 0,
         "flavour_text": {
             "default": {
@@ -722,7 +722,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 0,
         "max_kills": 0,
         "magnitude": 0,
-        "armor_piercing": 0,
+        "armour_piercing": 0,
         "duration": 3,
         "flavour_text": {
             "default": {
@@ -738,7 +738,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 0,
         "max_kills": 0,
         "magnitude": 0,
-        "armor_piercing": 0,
+        "armour_piercing": 0,
         "duration": 3,
         "flavour_text": {
             "default": {
@@ -754,7 +754,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 3,
         "max_kills": 0,
         "magnitude": 160,
-        "armor_piercing": 0,
+        "armour_piercing": 0,
         "duration": 0,
         "flavour_text": {
             "default": {
@@ -770,7 +770,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 1,
         "max_kills": 0,
         "magnitude": 0,
-        "armor_piercing": 0,
+        "armour_piercing": 0,
         "duration": 2,
         "flavour_text": {
             "default": {
@@ -786,7 +786,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 3,
         "max_kills": 1,
         "magnitude": 320,
-        "armor_piercing": 0,
+        "armour_piercing": 0,
         "duration": 0,
         "flavour_text": {
             "default": {
@@ -802,7 +802,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 3,
         "max_kills": 1,
         "magnitude": 440,
-        "armor_piercing": 0,
+        "armour_piercing": 0,
         "duration": 0,
         "flavour_text": {
             "default": {
@@ -819,7 +819,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 3,
         "max_kills": 1,
         "magnitude": 600,
-        "armor_piercing": 0,
+        "armour_piercing": 0,
         "duration": 0,
         "flavour_text": {
             "default": {
@@ -835,7 +835,7 @@ I see no reason to have these named structs, as their names are not used for any
         "target_type": 3,
         "max_kills": 1,
         "magnitude": 800,
-        "armor_piercing": 1,
+        "armour_piercing": 1,
         "duration": 0,
         "flavour_text": {
             "default": {
