@@ -85,11 +85,13 @@
         "perils_strength": 20
     },
     "hacks": {
+        "letter": "Z",
         "powers": [
             "Gather Energy"
         ]
     },
     "rune_magick": {
+        "letter": "R",
         "powers": [
             "Living Lightning",
             "Murderous Hurricane",
@@ -100,6 +102,7 @@
         ]
     },
     "biomancy": {
+        "letter": "B",
         "powers": [
             "Minor Smite",
             "Blood Boil",
@@ -110,6 +113,7 @@
         ]
     },
     "pyromancy": {
+        "letter": "P",
         "powers": [
             "Breathe Fire",
             "Fiery Form",
@@ -120,6 +124,7 @@
         ]
     },
     "telekinesis": {
+        "letter": "T",
         "powers": [
             "Crush",
             "Shockwave",
@@ -130,6 +135,7 @@
         ]
     },
     "default": {
+        "letter": "D",
         "powers": [
             "Minor Smite",
             "Smite",
