@@ -220,8 +220,6 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
     var flavour_text1 = "";
     var flavour_text3 = "";
     var flavour_text_4 = "";
-    var binders_adv = scr_has_adv("Daemon Binders");
-    var has_hood = gear == "Psychic Hood";
     var using_tome = false;
     var tome_discipline = "";
     var tome_roll = irandom_range(1, 100);
@@ -346,7 +344,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         }
     }
 
-    if ((binders_adv == true) && (_power_type == "attack")) {
+    if ((scr_has_adv("Daemon Binders")) && (_power_type == "attack")) {
         if (_power_magnitude > 0) {
             _power_magnitude = round(_power_magnitude) * 1.15;
         }
@@ -414,7 +412,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
     perils_chance += obj_ncombat.global_perils;
     perils_chance -= marine_exp[unit_id] * 0.002;
 
-    if (binders_adv) {
+    if (scr_has_adv("Daemon Binders")) {
         // I hope you like demons
         perils_chance -= 0.5;
         perils_strength += 40;
@@ -423,7 +421,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         }
     }
 
-    if (has_hood) {
+    if (gear == "Psychic Hood") {
         perils_chance *= 0.75;
         perils_strength *= 0.75;
     }
