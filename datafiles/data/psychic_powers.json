@@ -235,7 +235,7 @@ I see no reason to have these named structs, as their names are not used for any
         },
         "sorcery": true
     },
-    "gather_energy": {
+    "Kamehameha": {
         "type": "buff",
         "range": 0,
         "target_type": 0,

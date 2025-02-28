@@ -1,4 +1,4 @@
-#macro ARR_power_discipline_list ["default", "biomancy", "pyromancy","telekinesis","rune Magick"]
+#macro ARR_power_discipline_list ["default", "biomancy", "pyromancy","telekinesis","rune magic"]
 
 global.disciplines_data = json_to_gamemaker(working_directory + "\\data\\psychic_disciplines.json", json_parse);
 global.powers_data = json_to_gamemaker(working_directory + "\\data\\psychic_powers.json", json_parse);
@@ -113,7 +113,7 @@ function player_select_powers() {
         if (discipline == "telekinesis") {
             psy_info = "-Manipulates Gravity to Throw or Shield";
         }
-        if (discipline == "rune Magick") {
+        if (discipline == "rune magic") {
             psy_info = "-Summons Deadly Elements and Feral Spirits";
         }
         draw_text_transformed(533, 729, string_hash_to_newline(string(psy_info)), 0.5, 0.5, 0);
@@ -256,7 +256,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         }
     }
     
-    if ((power_name == "gather_energy") && (obj_ncombat.big_boom == 3)) {
+    if ((power_name == "Kamehameha") && (obj_ncombat.big_boom == 3)) {
         power_name = "Imperator Maior";
     }
 
@@ -319,7 +319,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
     }
 
     flavour_text1 = $"{unit.name_role()} casts '{power_name}'";
-    if ((tome_discipline != "") && (tome_roll <= 33) && (power_name != "Imperator Maior") && (power_name != "gather_energy")) {
+    if ((tome_discipline != "") && (tome_roll <= 33) && (power_name != "Imperator Maior") && (power_name != "Kamehameha")) {
         flavour_text1 = unit.name_role();
         if (string_char_at(flavour_text1, string_length(flavour_text1)) == "s") {
             flavour_text1 += "' tome ";
@@ -340,7 +340,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         }
     }
 
-    if (power_name == "gather_energy") {
+    if (power_name == "Kamehameha") {
         flavour_text1 = unit.name_role() + " ";
     }
     if (power_name == "Imperator Maior") {
@@ -443,7 +443,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
 
     // determine target here
 
-    if ((p_type == "buff") || (power_name == "gather_energy")) {
+    if ((p_type == "buff") || (power_name == "Kamehameha")) {
         var marine_index;
         var _random_marine_list = [];
         for (var i = 0; i < array_length(unit_struct); i++) {
@@ -558,7 +558,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         obj_ncombat.message_sz[obj_ncombat.messages] = 0.5 - (obj_ncombat.messages / 100);
         obj_ncombat.message_priority[obj_ncombat.messages] = 0;
 
-        if (power_name == "gather_energy") {
+        if (power_name == "Kamehameha") {
             obj_ncombat.message_priority[obj_ncombat.messages] = 135;
             obj_ncombat.message_sz[obj_ncombat.messages] = 300 - (obj_ncombat.messages / 100);
         }
@@ -1017,7 +1017,7 @@ function convert_power_letter(power_code) {
     } else if (string_count("T", power_code) > 0) {
         discipline_name = "telekinesis";
     } else if (string_count("R", power_code) > 0) {
-        discipline_name = "rune Magick";
+        discipline_name = "rune magic";
     }
 
     return discipline_name;
