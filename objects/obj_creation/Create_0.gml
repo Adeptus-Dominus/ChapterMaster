@@ -880,6 +880,11 @@ var all_disadvantages = [
         value : 50,
     },
     {
+        name : "Depleted Gene-seed Stocks",
+        description : "Your chapter has lost it's gene-seed stocks in recent engagement. You start with no gene-seed.",
+        value : 20,
+    },
+    {
         name : "Fresh Blood",
         description : "Due to being newly created your chapter has little special wargear or psykers.",
         value : 30,
