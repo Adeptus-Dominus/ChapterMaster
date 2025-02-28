@@ -157,7 +157,7 @@ try {
                             var like_tags_array = ["PUR", "ART", "GOLD"];
                             break;
                         case eFACTION.Eldar:
-                            var like_tags_array = ["SUP", "ART", "JAD", "SLIENT", "SCOPE"];
+                            var like_tags_array = ["SUP", "ART", "JAD", "SILENT", "SCOPE"];
                             break;
                         case eFACTION.Tau:
                             var like_tags_array = ["SUP", "ART", "BIG", "SOO", "SCOPE"];
@@ -178,8 +178,9 @@ try {
                             if (is_daemon) {
                                 var v = 0, ev = 0;
                                 for (var v = 1; v < array_length(obj_controller.event); v++) {
-                                    if ((ev == 0) && (obj_controller.event[v] == "")) {
+                                    if (obj_controller.event[v] == "") {
                                         ev = v;
+                                        break;
                                     }
                                 }
                                 obj_controller.event[ev] = "imperium_daemon";
