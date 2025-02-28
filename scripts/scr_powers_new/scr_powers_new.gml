@@ -33,7 +33,7 @@ function scr_powers_new() {
 		power_code = "T";
 		letmax = 5;
 	}
-	if (obj_ini.psy_powers == "rune magic") {
+	if (obj_ini.psy_powers == "rune_magic") {
 		power_code = "R";
 		letmax = 5;
 	}

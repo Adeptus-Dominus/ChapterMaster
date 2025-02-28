@@ -23,7 +23,7 @@
         "home_planets":3,
         "recruiting": "Death", //"Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
         "recruiting_name": "Parmenio",
-        "discipline": "default", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune magic'
+        "discipline": "default", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune_magic'
         "aspirant_trial": "EXPOSURE", // ? need to find the best way to do this
         "advantages": [ //TODO something with these after rework of adv organisation
             "",
