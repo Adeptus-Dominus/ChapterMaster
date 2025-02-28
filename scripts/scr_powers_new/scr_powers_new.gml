@@ -21,7 +21,7 @@ function scr_powers_new(){
 	if (obj_ini.psy_powers="biomancy"){power_code="B";letmax=5;}
 	if (obj_ini.psy_powers="pyromancy"){power_code="P";letmax=5;}
 	if (obj_ini.psy_powers="telekinesis"){power_code="T";letmax=5;}
-	if (obj_ini.psy_powers="rune Magick") or (obj_ini.psy_powers="Rune Magick"){power_code="R";letmax=5;}
+	if (obj_ini.psy_powers="rune magic"){power_code="R";letmax=5;}
 
 
 	// higer psionice means more powers learnt
