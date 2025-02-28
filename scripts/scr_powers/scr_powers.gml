@@ -174,7 +174,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
     var has_hood = gear == "Psychic Hood";
     var using_tome = false;
     var tome_discipline = "";
-    var tome_roll = irandom(99) + 1;
+    var tome_roll = irandom_range(1, 100);
     var tome_perils_chance = 0;
     var tome_perils_strength = 0;
     var tome_slot = 0;
@@ -330,7 +330,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         flavour_text1 += "confers knowledge upon him.  He casts '" + string(power_name) + "'";
 
         if (tome_perils_chance > 0) {
-            var tome_roll = irandom(99) + 1;
+            var tome_roll = irandom_range(1, 100);
             if ((tome_roll <= 10) && (tome_perils_chance == 1)) {
                 unit.corruption += choose(1, 2);
             }
@@ -348,7 +348,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
     }
 
     //TODO: Perhaps separate perils calculations into a separate function;
-    var good = 0, good2 = 0, perils_chance = 1, perils_roll = random(100), perils_strength = random(100);
+    var good = 0, good2 = 0, perils_chance = 1, perils_roll = irandom_range(1, 100), perils_strength = irandom_range(1, 100);
 
     perils_strength += tome_perils_strength;
     if (scr_has_disadv("Warp Touched")) {
