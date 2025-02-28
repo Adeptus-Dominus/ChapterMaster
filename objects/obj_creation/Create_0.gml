@@ -702,12 +702,12 @@ var all_advantages = [
         {
             name : "Ambushers",
             description : "Your chapter is especially trained with ambushing foes; they have a bonus to attack during the start of a battle.",
-            value : 20,
+            value : 30,
         },
         {
             name : "Boarders",
             description : "Boarding other ships is the specialty of your chapter.  Your chapter is more lethal when boarding ships, have dedicated boarding squads, and two extra strike cruisers.",
-            value : 30,
+            value : 20,
         },
         {
             name : "Bolter Drilling",
@@ -776,7 +776,7 @@ var all_advantages = [
         {
             name : "Lightning Warriors",
             description : "Your chapter's style of warfare is built around the speedy execution of battle. Infantry have boosted attack at the cost of defense as well as two additional Land speeders and Biker squads.",
-            value : 40,
+            value : 20,
             meta : ["Doctrine"],
         },
         {
@@ -794,7 +794,7 @@ var all_advantages = [
         {
             name : "Reverent Guardians",
             description : "Your chapter places great faith in the Imperial Cult; you start with more Chaplains and any Ecclesiarchy disposition increases are enhanced.",
-            value : 30,
+            value : 20,
             meta : ["Faith","Imperium Trust"],
         },
         {
@@ -840,7 +840,7 @@ var all_advantages = [
         {
             name : "Ryzan Patronage",
             description : "Your chapter has strong ties to the Forgeworld of Ryza as a result your Techmarines are privy to the secrets of their Techpriests enhancing your Plasma and Las weaponry.",
-            value : 20,
+            value : 30,
             meta : ["Weapon Specialty"] 
         },                                                                                                                                                                             
     ]
