@@ -34,6 +34,9 @@ function scr_has_style(style){
 
 
 function ComplexSet(unit) constructor{
+    overides = {
+
+    };
     self.unit = unit;
     static mk7_bits = {
             armour : spr_mk7_complex,
@@ -86,6 +89,15 @@ function ComplexSet(unit) constructor{
                     exceptions = [];
                     for (var m=0;m<array_length(_mod.allow_either);m++){
                         array_push(exceptions, _mod.allow_either[m]);
+                    }
+                }
+                if (struct_exists(_mod, "max_saturation")){
+                    if (struct_exists(variation_map, _mod.position)){
+                        if (variation_map[$_mod.position]>=_mod.max_saturation){
+                            if (!check_exception("max_saturation")){
+                                continue;
+                            }
+                        }
                     }
                 }
                if (struct_exists(_mod, "body_types")){
@@ -190,11 +202,15 @@ function ComplexSet(unit) constructor{
                             continue;
                         }
                     }
-                }                             
+                } 
+                var _overides = "none";
+                if (struct_exists(_mod, "overides")){
+                    _overides = _mod.overides;
+                }                           
                if (!struct_exists(_mod, "assign_by_rank")){
-                   add_to_area(_mod.position, _mod.sprite)
+                   add_to_area(_mod.position, _mod.sprite,_overides)
                } else {
-                    add_relative_to_status(_mod.position, _mod.sprite, _mod.assign_by_rank);
+                    add_relative_to_status(_mod.position, _mod.sprite, _mod.assign_by_rank,_overides);
                }
             }
         }
@@ -241,6 +257,18 @@ function ComplexSet(unit) constructor{
                 if (struct_exists(variation_map, component_name)){
                     var choice = variation_map[$component_name]%sprite_get_number(_sprite);
                 }
+                if (struct_exists(overides, component_name)){
+                    var _overide_set = overides[$component_name];
+                    for (var i=0;i<array_length(_overide_set);i++){
+                        var _spec_over = _overide_set[i];
+                        if (_spec_over[0]<=choice && _spec_over[1]>choice){
+                            var _override_areas = struct_get_names(_spec_over[2]);
+                            for (var i=0;i<array_length(_override_areas);i++){
+                                replace_area(_override_areas[i], _spec_over[2][$_override_areas[i]]);
+                            }
+                        }
+                    }
+                };
                 draw_sprite(_sprite,choice ?? 0,x_surface_offset,y_surface_offset);
             }
         }
@@ -280,7 +308,7 @@ function ComplexSet(unit) constructor{
     };    
     static draw = function(){
         setup_complex_livery_shader(unit.role(),unit);
-        draw_cloaks( );
+        draw_cloaks();
          //draw_unit_arms(x_surface_offset, y_surface_offset, armour_type, specialist_colours, hide_bionics, complex_set);
          draw_unit_arms();
         var _complex_helm = false;
@@ -302,9 +330,6 @@ function ComplexSet(unit) constructor{
          shader_set(full_livery_shader);
 
          _draw_order = [
-            "cloak",
-            "cloak_image",
-            "cloak_trim",
             "backpack",
             "backpack_decoration",
              "armour",
@@ -325,6 +350,29 @@ function ComplexSet(unit) constructor{
              "belt",
              "left_personal_livery",             
          ];
+         if (unit.armour = "MK4 Maximus"){
+             _draw_order = [
+                "backpack",
+                "backpack_decoration",
+                 "armour",
+                 "thorax_variants",
+                 "leg_variants",
+                 "left_leg",
+                 "right_leg",
+                 "tabbard",
+                 "belt",                 
+                 "chest_variants",
+                 "head",
+                 "left_trim",
+                 "right_trim",
+                 "gorget",
+                 "right_pauldron",
+                 "left_pauldron",
+                 "left_knee",
+                 "robe",
+                 "left_personal_livery",             
+             ];            
+         }
          for (var i=0;i<array_length(_draw_order);i++){
             if (_draw_order[i] == "head"){
                 draw_head(self);
@@ -519,7 +567,9 @@ static purity_seals_and_hangings = function(){
                 "cloth":spr_cloak_cloth,
             }
             if (struct_exists(_cloaks, type)){
-                add_to_area("cloak",_cloaks[$ type]);        
+                add_to_area("cloak",_cloaks[$ type]);
+                add_to_area("cloak_image",spr_cloak_image_1);  
+                add_to_area("cloak_trim",spr_cloak_image_0);        
             }
             
         }          
@@ -549,32 +599,47 @@ static purity_seals_and_hangings = function(){
             shader_set_uniform_f(shader_get_uniform(shd_multiply_blend, "u_Color"), _r, _g, _b);
         };        
         _shader_set_multiply_blend(127, 107, 89);
-        draw_component("cloak")
+        draw_component("cloak");
 
         _shader_set_multiply_blend(obj_controller.trim_colour_replace[0]*255, obj_controller.trim_colour_replace[1]*255, obj_controller.trim_colour_replace[2]*255);
-        draw_component("cloak_image")
-        var choice = unit.get_body_data("image_1","cloak")%sprite_get_number(spr_cloak_image_1);
-        draw_component("cloak_trim")
+        draw_component("cloak_image");
+        draw_component("cloak_trim");
 
         shader_reset();
         shader_set(full_livery_shader);         
     }
 
-    static add_to_area = function(area, add_sprite){
+    static add_to_area = function(area, add_sprite, overide_data = "none"){
         if (sprite_exists(add_sprite)){
+            var _add_sprite_length = sprite_get_number(add_sprite);
             if (!struct_exists(self, area)){
                 self[$ area] = sprite_duplicate(add_sprite);
+                var _overide_start = 0;
             } else {
-                sprite_merge(self[$ area], add_sprite);
+                var _overide_start = sprite_get_number(self[$ area]);
+                sprite_merge(self[$ area], add_sprite)
             }
+            if (overide_data != "none"){
+                add_overide(area, _overide_start, _add_sprite_length,overide_data)
+            }            
         }
     }
 
-    static replace_area = function(area, add_sprite){
+    static add_overide = function(area,_overide_start, sprite_length, overide_data){
+        if (!struct_exists(overides, area)){
+            overides[$ area] = []; 
+        }
+        array_push(overides[$ area], [_overide_start, _overide_start+sprite_length, overide_data]);
+    }
+
+    static replace_area = function(area, add_sprite, overide_data = "none"){
         if (struct_exists(self, area)){
             sprite_delete(self[$area]);
         }
         self[$ area] = sprite_duplicate(add_sprite);
+        if (overide_data != "none"){
+            add_overide(area, 0, sprite_get_number(self[$ area]),overide_data)
+        }
     }
 
     static remove_area = function(area){
@@ -592,15 +657,15 @@ static purity_seals_and_hangings = function(){
         }
     }
 
-    static add_relative_to_status = function(area, add_sprite, status_level){
+    static add_relative_to_status = function(area, add_sprite, status_level, overide_data="none"){
     	var _roles = obj_ini.role[100];
     	var tiers = [
     		["Chapter Master"],
     		["Forge Master", "Master of Sanctity","Master of the Apothecarion",string("Chief {0}",_roles[eROLE.Librarian])],
-    		[_roles[eROLE.Captain]],
-    		[_roles[eROLE.HonourGuard]],
-    		[_roles[eROLE.Ancient], _roles[eROLE.Champion]],
-    		[_roles[eROLE.VeteranSergeant], _roles[eROLE.Terminator]],
+    		[_roles[eROLE.Captain], _roles[eROLE.HonourGuard]],
+    		[_roles[eROLE.Champion]],
+    		[_roles[eROLE.Ancient],_roles[eROLE.VeteranSergeant]],
+    		[ _roles[eROLE.Terminator]],
     		[_roles[eROLE.Veteran], _roles[eROLE.Sergeant],_roles[eROLE.Chaplain],_roles[eROLE.Apothecary],_roles[eROLE.Techmarine],_roles[eROLE.Librarian]],
     		["Codiciery", "Lexicanum",_roles[eROLE.Tactical],_roles[eROLE.Assault],_roles[eROLE.Devastator]],
     		[_roles[eROLE.Scout],]
@@ -616,11 +681,11 @@ static purity_seals_and_hangings = function(){
 	    	}
 	    }
     	if (_unit_tier<=status_level){
-    		add_to_area(area, add_sprite);
+    		add_to_area(area, add_sprite, overide_data);
     	} else {
     		var variation_tier = (_unit_tier - status_level)+1;
     		if (variation_map[$ area] % variation_tier == 0){
-    			add_to_area(area, add_sprite);
+    			add_to_area(area, add_sprite, overide_data);
     		}
     	}
     }

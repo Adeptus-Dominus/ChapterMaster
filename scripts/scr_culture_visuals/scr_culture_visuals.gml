@@ -363,6 +363,7 @@ global.modular_drawing_items = [
         sprite : spr_roman_tabbard,
         body_types :[0, 2],
         position : "tabbard",
+        max_saturation : 50,
         assign_by_rank : 3,
         exp : {
             min : 50,
@@ -387,7 +388,21 @@ global.modular_drawing_items = [
         exp : {
             min : 80,
         },
-    },                                            
+    },
+    {
+        cultures : ["Ultra", "Roman"],
+        sprite : spr_roman_cloak,
+        body_types :[0],
+        position : "cloak",
+        max_saturation : 50,
+        overides : {
+            "right_pauldron" : spr_ultra_right_shoulder_hanging,
+        },
+        assign_by_rank :1,
+        exp : {
+            min : 80,
+        },
+    },                                           
 
 ];
 try{

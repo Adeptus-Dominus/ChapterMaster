@@ -856,6 +856,7 @@
     {"id":{"name":"spr_mk5_right_arm","path":"sprites/spr_mk5_right_arm/spr_mk5_right_arm.yy",},},
     {"id":{"name":"spr_darkstar","path":"sprites/spr_darkstar/spr_darkstar.yy",},},
     {"id":{"name":"sprite221","path":"sprites/sprite221/sprite221.yy",},},
+    {"id":{"name":"spr_ultra_right_shoulder_hanging","path":"sprites/spr_ultra_right_shoulder_hanging/spr_ultra_right_shoulder_hanging.yy",},},
     {"id":{"name":"spr_ship_custodian","path":"sprites/spr_ship_custodian/spr_ship_custodian.yy",},},
     {"id":{"name":"spr_ship_protector","path":"sprites/spr_ship_protector/spr_ship_protector.yy",},},
     {"id":{"name":"spr_ship_emissary","path":"sprites/spr_ship_emissary/spr_ship_emissary.yy",},},
