@@ -40,7 +40,7 @@ I see no reason to have these named structs, as their names are not used for any
         "duration": 0,
         "flavour_text": {
             "default": {
-                "text": [
+                "text": [   
                     "- a putrid cone of warp energy splashes outward, boiling and putrifying flesh."
                 ]
             },
@@ -121,7 +121,11 @@ I see no reason to have these named structs, as their names are not used for any
         "armor_piercing": 0,
         "duration": 0,
         "flavour_text": {
-            "default_1": "- from in front of their mouth a stream of rancid, acidic vomit spews forth at tremendous pressure, splashing over his foes."
+            "default": {
+                "text": [
+                    "- from in front of their mouth a stream of rancid, acidic vomit spews forth at tremendous pressure, splashing over his foes."
+                ]
+            }
         },
         "sorcery": true,
         "power_modifiers": {
