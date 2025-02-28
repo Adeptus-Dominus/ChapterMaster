@@ -1,4 +1,4 @@
-#macro ARR_power_discipline_list ["default", "biomancy", "pyromancy","telekinesis","rune magic"]
+#macro ARR_power_discipline_list ["default", "biomancy", "pyromancy","telekinesis","rune_magic"]
 
 global.disciplines_data = json_to_gamemaker(working_directory + "\\data\\psychic_disciplines.json", json_parse);
 global.powers_data = json_to_gamemaker(working_directory + "\\data\\psychic_powers.json", json_parse);
@@ -113,7 +113,7 @@ function player_select_powers() {
         if (discipline == "telekinesis") {
             psy_info = "-Manipulates Gravity to Throw or Shield";
         }
-        if (discipline == "rune magic") {
+        if (discipline == "rune_magic") {
             psy_info = "-Summons Deadly Elements and Feral Spirits";
         }
         draw_text_transformed(533, 729, string_hash_to_newline(string(psy_info)), 0.5, 0.5, 0);
