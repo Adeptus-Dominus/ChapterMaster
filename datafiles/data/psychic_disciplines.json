@@ -6,7 +6,8 @@
             "Blood Dementia"
         ],
         "perils_chance": 0.10,
-        "perils_strength": 10
+        "perils_strength": 10,
+        "tags": ["PRE", "FALL"]
     },
     "minor_nu_daemon": {
         "powers": [
@@ -16,7 +17,8 @@
             "Putrid Vomit"
         ],
         "perils_chance": 0.30,
-        "perils_strength": 30
+        "perils_strength": 30,
+        "tags": ["NURGLE"]
     },
     "minor_tz_daemon": {
         "powers": [
@@ -26,7 +28,8 @@
             "Iron Arm"
         ],
         "perils_chance": 0.30,
-        "perils_strength": 30
+        "perils_strength": 30,
+        "tags": ["MIN", "TZEENTCH"]
     },
     "minor_sl_daemon": {
         "powers": [
@@ -36,7 +39,8 @@
             "Symphony of Pain"
         ],
         "perils_chance": 0.30,
-        "perils_strength": 30
+        "perils_strength": 30,
+        "tags": ["SLAANESH"]
     },
     "minor_default": {
         "powers": [
@@ -45,7 +49,8 @@
             "Stormbringer"
         ],
         "perils_chance": 0,
-        "perils_strength": 0
+        "perils_strength": 0,
+        "tags": ["GLOW", "GOLD", "ADAMANTINE"]
     },
     "minor_telekenesis": {
         "powers": [
@@ -54,7 +59,8 @@
             "Vortex of Doom"
         ],
         "perils_chance": 0,
-        "perils_strength": 0
+        "perils_strength": 0,
+        "tags": ["CRU"]
     },
     "minor_biomancy": {
         "powers": [
@@ -64,7 +70,8 @@
             "Insect Swarm"
         ],
         "perils_chance": 0.10,
-        "perils_strength": 10
+        "perils_strength": 10,
+        "tags": ["THI"]
     },
     "minor_pyromancy": {
         "powers": [
@@ -73,7 +80,8 @@
             "Molten Beam"
         ],
         "perils_chance": 0,
-        "perils_strength": 0
+        "perils_strength": 0,
+        "tags": ["SAL", "BUR"]
     },
     "minor_what_the_fuck_man": {
         "powers": [
@@ -82,7 +90,8 @@
             "Haemorrhage"
         ],
         "perils_chance": 0.20,
-        "perils_strength": 20
+        "perils_strength": 20,
+        "tags": ["TENTACLES"]
     },
     "hacks": {
         "letter": "Z",

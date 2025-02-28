@@ -969,36 +969,28 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
     obj_ncombat.alarm[3] = 5;
 }
 
-global.artifact_disciplines_map = {
-    "PRE": "minor_nu",
-    "MIN": "minor_tz_daemon",
-    "NURGLE": "minor_nu_daemon",
-    "TZEENTCH": "minor_tz_daemon",
-    "SLAANESH": "minor_sl_daemon",
-    "GOLD": "minor_default",
-    "CRU": "minor_telekenesis",
-    "GLOW": "minor_default",
-    "ADAMANTINE": "minor_default",
-    "THI": "minor_biomancy",
-    "FAL": "minor_nu",
-    "SAL": "minor_pyromancy",
-    "TENTACLES": "minor_what_the_fuck_man",
-    "BUR": "minor_pyromancy",
-}
-
 function get_tome_discipline(tome_tags) {
-    var tome_discipline = "";
-
-    if (string_count("Tome", tome_tags) > 0) {
-        var keywords = struct_get_names(global.artifact_disciplines_map);
-        for (var i = 0; i < array_length(keywords); i++) {
-            if (string_count(keywords[i], tome_tags) > 0) {
-                tome_discipline = variable_struct_get(global.artifact_disciplines_map, keywords[i]);
+    try {
+        var discipline_names = struct_get_names(global.disciplines_data);
+        for (var i = 0; i < array_length(discipline_names); i++) {
+            var discipline_name = discipline_names[i];
+            var discipline_struct = global.disciplines_data[$ discipline_name];
+            if (struct_exists(discipline_struct, "tags")) {
+                var discipline_tags = discipline_struct[$ "tags"];
+                for (var p = 0; p < array_length(discipline_tags); p++) {
+                    var discipline_tag = discipline_tags[p];
+                    if (string_count(discipline_tag, tome_tags) > 0) {
+                        return discipline_name;
+                    }
+                }
             }
         }
+        log_error("no matching discipline was found.")
+        return "";
+    } catch (_exception) {
+        return "";
+        handle_exception(_exception);
     }
-
-    return tome_discipline;
 }
 
 function convert_power_letter(power_code) {
@@ -1021,6 +1013,7 @@ function convert_power_letter(power_code) {
         log_error("no matching discipline was found.")
         return "";
     } catch (_exception) {
+        return "";
         handle_exception(_exception);
     }
 }
