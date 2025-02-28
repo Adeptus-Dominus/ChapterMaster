@@ -90,6 +90,10 @@ if (!zoomed && !zui){
         draw_text(998,17.5,string_hash_to_newline("Renegade"));
         draw_set_color(38144);
     }
+    draw_text(750, 60, $"Sector Fleet Strength {imp_ships}/{max_fleet_strength}");
+    if (scr_hit([800, 60, 900, 80])){
+        tooltip_draw("The relative strength of the imperial navy and defence fleet forces and their max supported strength. Increase The number of imperial aligned planets and active forge worlds to increase the limit")
+    }
     // Checks if the chapter name is less than 140 chars, adjusts chapter_master_name_width accordingly
     var chapter_master_name_width=1;
     for(var i=0; i<10; i++){

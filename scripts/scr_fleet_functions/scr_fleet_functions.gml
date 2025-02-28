@@ -368,32 +368,68 @@ function scr_efleet_arrive_at_trade_loc(){
     }
 }
 function scr_orbiting_fleet(faction, system="none"){
+	var _found_fleet = "none";
+	var _deactivated = [];
+	var _faction_list = is_array(faction);
 	if (system == "none"){
 		nearest_fleet = instance_nearest(x,y,obj_en_fleet);
 		while (nearest_fleet.x==x && nearest_fleet.y==y){
+			var _valid = false;
+			if (_faction_list){
+				_valid = array_contains(faction, nearest_fleet.owner);
+			} else {
+				_valid = nearest_fleet.owner == faction;
+			}
+			if (_valid && nearest_fleet.action == ""){
+				_found_fleet = nearest_fleet.id;
+				break;
+			} else {
+				array_push(_deactivated, nearest_fleet.id);
+				instance_deactivate_object(nearest_fleet.id);
+			}
 			nearest_fleet = instance_nearest(x,y,obj_en_fleet);
+		}
+	} else {
+		with (system){
+			_found_fleet = scr_orbiting_fleet(faction);
+		}
+	}
+	for (var i=0;i<array_length(_deactivated);i++){
+		instance_activate_object(_deactivated[i]);
+	}
+	return _found_fleet;
+}
+
+function get_orbiting_fleets(faction,system="none"){
+	var _fleets = [];
+	var _deactivated = [];
+	if (system == "none"){
+		nearest_fleet = instance_nearest(x,y,obj_en_fleet);
+		while (nearest_fleet.x==x && nearest_fleet.y==y){
 			var _valid = false;
 			if (is_array(faction)){
 				_valid = array_contains(faction, nearest_fleet.owner);
 			} else {
-				_valid = nearest_fleet.owner;
+				_valid = nearest_fleet.owner == faction;
 			}
 			if (_valid && nearest_fleet.action == ""){
-				instance_activate_object(obj_en_fleet);
-				return nearest_fleet.id;
-			} else {
-				instance_deactivate_object(nearest_fleet.id);
-			}
+				array_push(_fleets, id);
+			} 
+			array_push(_deactivated, nearest_fleet.id);
+			instance_deactivate_object(nearest_fleet.id);
+			nearest_fleet = instance_nearest(x,y,obj_en_fleet);
 		}
-		instance_activate_object(obj_en_fleet);
 	} else {
 		with (system){
-			return scr_orbiting_fleet(faction);
+			_fleets = scr_orbiting_fleet(faction);
 		}
 	}
-	return "none";
-
+	for (var i=0;i<array_length(_deactivated);i++){
+		instance_activate_object(_deactivated[i]);
+	}
+	return _fleets;	
 }
+
 function fleet_star_draw_offsets(){
 	var coords = [0,0];	
 	switch(owner){
@@ -445,7 +481,9 @@ function fleet_arrival_logic(){
     if (owner == eFACTION.Mechanicus){
         if (string_count("spelunk1",trade_goods)=1){
             trade_goods="mars_spelunk2";
-            action_x=home_x;action_y=home_y;action_eta=52;
+            action_x=home_x;
+            action_y=home_y;
+            action_eta=52;
             exit;
         }
         if (string_count("spelunk2",trade_goods)=1){
@@ -515,8 +553,32 @@ function fleet_arrival_logic(){
     
     
     if (!navy){
-        var cancel;
-		cancel=false;
+	    if (trade_goods=="merge"){
+	    	show_debug_message("merge fleet arrive")
+	    	if (is_orbiting()){
+	    		show_debug_message("{arrive at {orbiting.name}")
+	    		var _orbit = orbiting;
+	    		var _viable_merge = false;
+	    		var _merge_fleet = false;
+	    		var _imperial_fleets = get_orbiting_fleets(eFACTION.Imperium);
+	    		for (var i=0;i<array_length(_imperial_fleets);i++){
+	    			var _fleet = _imperial_fleets[i];
+	    			if (!_fleet.navy && _fleet.id != id){
+	    				_viable_merge = true;
+	    				_merge_fleet = _fleet;
+	    				break;
+	    			}
+	    		}
+
+	    		if (_viable_merge){
+	    			merge_fleets(_merge_fleet, self.id);
+	    			exit;
+	    		}
+	    	}
+
+	    }    	
+
+		var cancel=false;
         if (string_count("Inqis",trade_goods)>0) then cancel=true;
         if (string_count("merge",trade_goods)>0) then cancel=true;
         if (trade_goods="cancel_inspection") then cancel=true;
@@ -666,7 +728,6 @@ function fleet_arrival_logic(){
     }
     
     if (owner=eFACTION.Chaos) and (trade_goods="csm") or (trade_goods="Khorne_warband") then mergus=0;
-    if (trade_goods="merge") then mergus=0;
     // if (cur_star.owner!=owner) then mergus=0;
     
     
