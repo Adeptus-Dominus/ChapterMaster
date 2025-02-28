@@ -1,3 +1,5 @@
+# Chapter Master Documentation 
+
 ## How can I add new custom chapter icons?
 
 Add them to the icons folder in the root of your game (ChapterMaster/icons/your_image.png).
@@ -23,10 +25,13 @@ custom11.png
 etc.
 
 ## Where are the save files stored?
+
 `C:\Users\<UserName>\AppData\Local\ChapterMaster\`.
 
 ## Where are the error logs stored?
+
 `C:\Users\<UserName>\AppData\Local\ChapterMaster\Logs`.
 
 ## Where are the message logs stored?
+
 `C:\Users\<UserName>\AppData\Local\ChapterMaster\Logs\last_messages.log`.
