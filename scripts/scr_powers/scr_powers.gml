@@ -870,6 +870,7 @@ global.powers_data = {
 }
 
 // TODO: refactor this, maybe into multiple functions;
+// TODO: add proper support for power_modifiers;
 // God help the next person who will read this function;
 /// Function to get requested data from the powers_data structure
 /// @param power_name - The name of the power (e.g., "Minor Smite")
