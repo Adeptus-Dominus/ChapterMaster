@@ -129,8 +129,8 @@ function power_condition_check(condition, value) {
                 break;
         }
     } catch (_exception) {
-        return false;
         handle_exception(_exception);
+        return false;
     }
 }
 
@@ -999,7 +999,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                         _casualties_flavour_text = $" {_casualties} {target_unit.dudes[good2]} are destroyed.";
                     } else if (_casualties == 1) {
                         _casualties_flavour_text = $" A {target_unit.dudes[good2]} is destroyed.";
-                    } else (_casualties == 0) {
+                    } else {
                         _casualties_flavour_text = $" The {target_unit.dudes[good2]} survives the attack.";
                     }
 
