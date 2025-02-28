@@ -302,6 +302,7 @@ function get_perils_strength(_unit, _tome_perils_strength) {
     return _perils_strength;
 }
 
+// TODO: All tome logic has to be reworked;
 /// @mixin
 function scr_powers(power_set, power_index, target_unit, unit_id) {
     // power_set: letter
@@ -558,6 +559,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
             }
         }
 
+        // TODO: Battle log messages should be packed into a separate function, not only for use with powers;
         obj_ncombat.messages += 1;
         obj_ncombat.message[obj_ncombat.messages] = _cast_flavour_text + _power_flavour_text + _casualties_flavour_text;
         // if (target_unit.dudes_vehicle[targeh]=1) then obj_ncombat.message_sz[obj_ncombat.messages]=(_casualties*10)+(0.5-(obj_ncombat.messages/100));
@@ -676,7 +678,6 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
             }
         }
 
-        // TODO: Battle log messages should be packed into a separate function, not only for use with powers;
         obj_ncombat.messages += 1;
         obj_ncombat.message[obj_ncombat.messages] = _cast_flavour_text + _power_flavour_text + _casualties_flavour_text;
         // if (target_unit.dudes_vehicle[targeh]=1) then obj_ncombat.message_sz[obj_ncombat.messages]=(_casualties*10)+(0.5-(obj_ncombat.messages/100));
