@@ -5,8 +5,6 @@
 global.disciplines_data = json_to_gamemaker(working_directory + "\\data\\psychic_disciplines.json", json_parse);
 global.powers_data = json_to_gamemaker(working_directory + "\\data\\psychic_powers.json", json_parse);
 
-// TODO: refactor this, maybe into multiple functions;
-// TODO: add proper support for power_modifiers;
 // God help the next person who will read this function;
 /// Function to get requested data from the powers_data structure
 /// @param power_name - The name of the power (e.g., "Minor Smite")
@@ -20,39 +18,89 @@ function get_power_data(power_name, data_name) {
         if (struct_exists(_power_object, data_name)) {
             var _data_content = _power_object[$ data_name];
             if (data_name == "flavour_text") {
-                var _flavour_text = [];
-                var _text_option_names = struct_get_names(_data_content);
-                for (var i = 0; i < array_length(_text_option_names); i++) {
-                    var _text_option_name = _text_option_names[i];
-                    var _text_option = _data_content[$ _text_option_name];
-                    if (struct_exists(_text_option, "conditions")) {
-                        var _conditions_array = _text_option[$ "conditions"];
-                        var _conditions_satisfied = true;
-                        for (var p = 0; p < array_length(_conditions_array); p++) {
-                            var _condition_struct = _conditions_array[p];
-                            var _condition_type = _condition_struct[$ "type"];
-                            var _condition_value = _condition_struct[$ "value"];
-                            var _condition_satisfied = power_condition_check(_condition_type, _condition_value);
-                            if (!_condition_satisfied) {
-                                _conditions_satisfied = false;
-                                break;
-                            }
-                        }
-                        if (_conditions_satisfied) {
-                            _flavour_text = array_concat(_flavour_text, _text_option[$ "text"]);
-                        }
-                    } else {
-                        _flavour_text = array_concat(_flavour_text, _text_option[$ "text"]);
-                    }
-                }
-                _flavour_text = array_random_element(_flavour_text);
-                return _flavour_text;
+                return get_flavour_text(_data_content);
+            } else if (data_name == "power_modifiers") {
+                return get_power_modifiers(_data_content);
             } else {
                 return _data_content;
             }
         }
     }
     return;
+}
+
+// TODO: get_flavour_text and get_power_modifiers can probably be combined into one function, due to high level of code duplication;
+/// Helper function that processes flavour text with conditions
+/// @param _flavour_text_data - The flavour text data structure
+/// @returns A randomly chosen flavour text that meets conditions
+function get_flavour_text(_flavour_text_data) {
+    var _flavour_text = [];
+    var _text_option_names = struct_get_names(_flavour_text_data);
+    
+    for (var i = 0; i < array_length(_text_option_names); i++) {
+        var _text_option_name = _text_option_names[i];
+        var _text_option = _flavour_text_data[$ _text_option_name];
+        
+        if (struct_exists(_text_option, "conditions")) {
+            var _conditions_array = _text_option[$ "conditions"];
+            var _conditions_satisfied = true;
+            
+            for (var p = 0; p < array_length(_conditions_array); p++) {
+                var _condition_struct = _conditions_array[p];
+                var _condition_type = _condition_struct[$ "type"];
+                var _condition_value = _condition_struct[$ "value"];
+                var _condition_satisfied = power_condition_check(_condition_type, _condition_value);
+                
+                if (!_condition_satisfied) {
+                    _conditions_satisfied = false;
+                    break;
+                }
+            }
+            
+            if (_conditions_satisfied) {
+                _flavour_text = array_concat(_flavour_text, _text_option[$ "text"]);
+            }
+        } else {
+            _flavour_text = array_concat(_flavour_text, _text_option[$ "text"]);
+        }
+    }
+    
+    return array_random_element(_flavour_text);
+}
+
+/// Helper function that calculates the total value of all applicable power modifiers
+/// @param _modifiers_data - The power modifiers data structure
+/// @returns The sum of all modifier values that meet their conditions
+function get_power_modifiers(_modifiers_data) {
+    var _total_modifier = 0;
+    var _modifier_names = struct_get_names(_modifiers_data);
+    
+    for (var i = 0; i < array_length(_modifier_names); i++) {
+        var _modifier_name = _modifier_names[i];
+        var _modifier = _modifiers_data[$ _modifier_name];
+        var _should_apply = true;
+        
+        if (struct_exists(_modifier, "conditions")) {
+            var _conditions_array = _modifier[$ "conditions"];
+            
+            for (var p = 0; p < array_length(_conditions_array); p++) {
+                var _condition_struct = _conditions_array[p];
+                var _condition_type = _condition_struct[$ "type"];
+                var _condition_value = _condition_struct[$ "value"];
+                
+                if (!power_condition_check(_condition_type, _condition_value)) {
+                    _should_apply = false;
+                    break;
+                }
+            }
+        }
+        
+        if (_should_apply && struct_exists(_modifier, "value")) {
+            _total_modifier += _modifier[$ "value"];
+        }
+    }
+    
+    return _total_modifier;
 }
 
 function power_condition_check(condition, value) {
