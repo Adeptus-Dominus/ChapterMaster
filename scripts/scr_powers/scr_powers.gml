@@ -66,6 +66,10 @@ global.disciplines_data = {
     }
 };
 
+/* 
+TODO: Change flavour_text format from a struct with structs, to an array with structs;
+I see no reason to have these named structs, as their names are not used for anything and they make looping more difficult;
+*/
 global.powers_data = {
     "Minor Smite": {
         "type": "attack",
@@ -865,6 +869,8 @@ global.powers_data = {
     }
 }
 
+// TODO: refactor this, maybe into multiple functions;
+// God help the next person who will read this function;
 /// Function to get requested data from the powers_data structure
 /// @param power_name - The name of the power (e.g., "Minor Smite")
 /// @param data_name - The specific data attribute you want (e.g., "type", "range", "flavour_text")
@@ -877,7 +883,7 @@ function get_power_data(power_name, data_name) {
         if (struct_exists(_power_object, data_name)) {
             var _data_content = _power_object[$ data_name];
             if (data_name == "flavour_text") {
-                var _flavour_text = "";
+                var _flavour_text = [];
                 var _text_option_names = struct_get_names(_data_content);
                 for (var i = 0; i < array_length(_text_option_names); i++) {
                     var _text_option_name = _text_option_names[i];
@@ -896,19 +902,20 @@ function get_power_data(power_name, data_name) {
                             }
                         }
                         if (_conditions_satisfied) {
-                            _flavour_text = array_random_element(_text_option[$ "text"]);
-                            return _flavour_text;   
+                            _flavour_text = array_concat(_flavour_text, _text_option[$ "text"]);
                         }
                     } else {
-                        _flavour_text = array_random_element(_text_option[$ "text"]);
-                        return _flavour_text;
+                        _flavour_text = array_concat(_flavour_text, _text_option[$ "text"]);
                     }
                 }
+                _flavour_text = array_random_element(_flavour_text);
+                return _flavour_text;
             } else {
                 return _data_content;
             }
         }
     }
+    return;
 }
 
 function power_condition_check(condition, value) {
@@ -1105,7 +1112,15 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
     var p_arp = get_power_data(power_name, "armor_piercing");
     var p_duration = get_power_data(power_name, "duration");
     var p_flavour_text = get_power_data(power_name, "flavour_text");
+    var p_sorcery = get_power_data(power_name, "sorcery");
 
+    //TODO: this should be refactored;
+    if (p_sorcery != undefined && p_sorcery > 0) {
+        if ((obj_ncombat.sorcery_seen < 2) && (obj_ncombat.present_inquisitor == 1)) {
+            obj_ncombat.sorcery_seen = 1;
+        }
+    }
+    
     if ((power_name == "gather_energy") && (obj_ncombat.big_boom == 3)) {
         power_name = "Imperator Maior";
     }
