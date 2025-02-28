@@ -98,9 +98,9 @@ function player_select_powers() {
             tooltip2 = "The Psychic Discipline that your psykers will use by default.";
         }
 
-        var fug = string_delete(discipline, 2, string_length(discipline));
-        var fug2 = string_delete(discipline, 1, 1);
-        draw_text_transformed(513, 697, string_hash_to_newline(string_upper(fug) + string(fug2)), 0.5, 0.5, 0);
+        var discipline_first_letter = string_delete(discipline, 2, string_length(discipline));  
+        var discipline_suffix = string_delete(discipline, 1, 1);  
+        draw_text_transformed(513, 697, string_hash_to_newline(string_upper(discipline_first_letter) + string(discipline_suffix)), 0.5, 0.5, 0);  
 
         var psy_info = "";
         if (discipline == "default") {
