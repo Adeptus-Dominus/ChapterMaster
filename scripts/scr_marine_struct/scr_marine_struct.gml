@@ -938,6 +938,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 					body.cloak.type = "pelt";
 				} else {
 					body.cloak.type = "cloth";
+					body.cloak.variation = irandom(100);
 					body.cloak.image_0 = irandom(100);
 					body.cloak.image_1 = irandom(100);
 				}

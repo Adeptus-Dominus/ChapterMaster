@@ -1,11 +1,11 @@
 {
   "resourceType": "GMSprite",
   "resourceVersion": "1.0",
-  "name": "spr_techmarine_complex",
-  "bbox_bottom": 220,
-  "bbox_left": 11,
-  "bbox_right": 154,
-  "bbox_top": 13,
+  "name": "spr_tech_face_plate",
+  "bbox_bottom": 44,
+  "bbox_left": 69,
+  "bbox_right": 95,
+  "bbox_top": 28,
   "bboxMode": 0,
   "collisionKind": 1,
   "collisionTolerance": 0,
@@ -32,7 +32,7 @@
   "sequence": {
     "resourceType": "GMSequence",
     "resourceVersion": "1.4",
-    "name": "spr_techmarine_complex",
+    "name": "spr_tech_face_plate",
     "autoRecord": true,
     "backdropHeight": 768,
     "backdropImageOpacity": 0.5,
@@ -54,7 +54,7 @@
     "timeUnits": 1,
     "tracks": [
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"6f5f8280-1432-4189-ba71-5cb47411b603","path":"sprites/spr_techmarine_complex/spr_techmarine_complex.yy",},},},"Disabled":false,"id":"4ae9f309-78c6-4606-92b1-e0f1c674862b","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"6f5f8280-1432-4189-ba71-5cb47411b603","path":"sprites/spr_tech_face_plate/spr_tech_face_plate.yy",},},},"Disabled":false,"id":"3a68cfe1-8533-4723-9fc1-c27fb8484d51","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
           ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange": null,

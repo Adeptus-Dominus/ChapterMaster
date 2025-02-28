@@ -247,7 +247,7 @@ global.modular_drawing_items = [
     {
         sprite : spr_roman_centurian_crest,
         body_types :[0],
-        cultures : ["Roman, Greek", "Gladiator"],
+        cultures : ["Roman", "Greek", "Gladiator"],
         position : "crest",
         role_type : ["captain_candidates"],
         assign_by_rank : 2,
@@ -261,7 +261,7 @@ global.modular_drawing_items = [
         sprite : spr_marksmans_honor,
         body_types :[0,2],
         position : "purity_seals",
-        stats : [["weapon_skill", 50, "moreex"]]
+        stats : [["ballistic_skill", 50, "exmore"]]
     },
     {
         sprite : spr_crux_on_chain,
@@ -287,9 +287,9 @@ global.modular_drawing_items = [
     },    
     {
         sprite : spr_mk7_complex_belt,
-        body_types :[0],
+        body_types :[0, 2],
         position : "belt",
-        armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"],
+        armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour", "Tartaros"],
     },
     {
         cultures : ["Knightly", "Crusader"],
@@ -329,7 +329,7 @@ global.modular_drawing_items = [
         armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"],  
     },
     {
-        sprite : spr_skulls_belt,
+        sprite : spr_tech_belt,
         body_types :[0],
         position : "belt",
         role_type : ["forge"],
@@ -349,7 +349,45 @@ global.modular_drawing_items = [
         body_types :[0],
         position : "chest_variants",
         armours : ["MK8 Errant", "MK7 Aquila"],  
-    },                                           
+    },
+    {
+        sprite : spr_ultra_belt,
+        cultures : ["Ultra"],
+        body_types :[0, 2],
+        assign_by_rank : 3,
+        position : "belt",
+        armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour", "Tartaros"],  
+    },
+    {
+        cultures : ["Roman", "Gladiator"],
+        sprite : spr_roman_tabbard,
+        body_types :[0, 2],
+        position : "tabbard",
+        assign_by_rank : 3,
+        exp : {
+            min : 50,
+        },
+        armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour", "Tartaros"], 
+    },
+    {
+        cultures : ["Ultra"],
+        sprite : spr_ultra_tassels,
+        body_types :[0,2],
+        position : "purity_seals",
+        exp : {
+            min : 80,
+        },
+    },
+    {
+        cultures : ["Ultra", "Roman"],
+        sprite : spr_ultra_backpack,
+        body_types :[0],
+        position : "backpack",
+        assign_by_rank : 2,
+        exp : {
+            min : 80,
+        },
+    },                                            
 
 ];
 try{

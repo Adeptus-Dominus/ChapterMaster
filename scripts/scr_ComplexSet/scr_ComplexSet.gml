@@ -228,6 +228,9 @@ function ComplexSet(unit) constructor{
         forehead : unit.get_body_data("forehead_variation","head"),
         backpack_decoration : unit.get_body_data("backpack_decoration_variation","torso"),
         belt : unit.get_body_data("belt_variation","torso"),
+        cloak :unit.get_body_data("variation","cloak"),
+        cloak_image : unit.get_body_data("image_0","cloak"),
+        cloak_trim : unit.get_body_data("image_1","cloak"),
     }
 
     static draw_component = function(component_name){
@@ -277,7 +280,7 @@ function ComplexSet(unit) constructor{
     };    
     static draw = function(){
         setup_complex_livery_shader(unit.role(),unit);
-        draw_cloaks(x_surface_offset,y_surface_offset );
+        draw_cloaks( );
          //draw_unit_arms(x_surface_offset, y_surface_offset, armour_type, specialist_colours, hide_bionics, complex_set);
          draw_unit_arms();
         var _complex_helm = false;
@@ -299,6 +302,9 @@ function ComplexSet(unit) constructor{
          shader_set(full_livery_shader);
 
          _draw_order = [
+            "cloak",
+            "cloak_image",
+            "cloak_trim",
             "backpack",
             "backpack_decoration",
              "armour",
@@ -504,9 +510,22 @@ static purity_seals_and_hangings = function(){
                 add_group(mk7_bits);
                 break;
 
-        }       
+        }
+        var type = unit.get_body_data("type","cloak");
+        if (type != "none") {
+            static _cloaks = {
+                "scale":spr_cloak_scale,
+                "pelt":spr_cloak_fur,
+                "cloth":spr_cloak_cloth,
+            }
+            if (struct_exists(_cloaks, type)){
+                add_to_area("cloak",_cloaks[$ type]);        
+            }
+            
+        }          
         assign_modulars();
     }
+
      if (unit.IsSpecialist("forge")){
         if array_contains(["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"], unit.armour()){
             if (unit.has_trait("tinkerer")){
@@ -517,12 +536,29 @@ static purity_seals_and_hangings = function(){
                     "leg_variants":spr_techmarine_left_leg,
                     "leg_variants":spr_techmarine_right_leg,
                     "head":spr_techmarine_head,
-                    "chest_variants":spr_techmarine_chest,                               
+                    "chest_variants":spr_techmarine_chest, 
+                    "mouth_variants" : spr_tech_face_plate                    
                 })
             }
         }
 
-    }   
+    }  
+    static draw_cloaks = function(){
+        var _shader_set_multiply_blend = function(_r, _g, _b) {
+            shader_set(shd_multiply_blend);
+            shader_set_uniform_f(shader_get_uniform(shd_multiply_blend, "u_Color"), _r, _g, _b);
+        };        
+        _shader_set_multiply_blend(127, 107, 89);
+        draw_component("cloak")
+
+        _shader_set_multiply_blend(obj_controller.trim_colour_replace[0]*255, obj_controller.trim_colour_replace[1]*255, obj_controller.trim_colour_replace[2]*255);
+        draw_component("cloak_image")
+        var choice = unit.get_body_data("image_1","cloak")%sprite_get_number(spr_cloak_image_1);
+        draw_component("cloak_trim")
+
+        shader_reset();
+        shader_set(full_livery_shader);         
+    }
 
     static add_to_area = function(area, add_sprite){
         if (sprite_exists(add_sprite)){
@@ -589,36 +625,9 @@ static purity_seals_and_hangings = function(){
     	}
     }
 
-    static draw_cloaks = function(x_offset,y_offset){
-        var type = unit.get_body_data("type","cloak");
-        if (type != "none") {
-            var _cloaks = {
-                "scale":spr_cloak_scale,
-                "pelt":spr_cloak_fur,
-                "cloth":spr_cloak_cloth,
-            }
-            if (struct_exists(_cloaks, type)){
-                var _draw_sprite  = _cloaks[$ type];
-                var _shader_set_multiply_blend = function(_r, _g, _b) {
-                    shader_set(shd_multiply_blend);
-                    shader_set_uniform_f(shader_get_uniform(shd_multiply_blend, "u_Color"), _r, _g, _b);
-                };          
-                _shader_set_multiply_blend(127, 107, 89);
-                var choice = unit.get_body_data("variant","cloak")%sprite_get_number(_draw_sprite);
-                draw_sprite(_draw_sprite,choice,x_offset,y_offset);
-                if (_draw_sprite == spr_cloak_cloth) {
-                    _shader_set_multiply_blend(obj_controller.trim_colour_replace[0]*255, obj_controller.trim_colour_replace[1]*255, obj_controller.trim_colour_replace[2]*255);
-                    var choice = unit.get_body_data("image_0","cloak")%sprite_get_number(spr_cloak_image_0);
-                    draw_sprite(spr_cloak_image_0,choice,x_offset,y_offset);
-                    var choice = unit.get_body_data("image_1","cloak")%sprite_get_number(spr_cloak_image_1);
-                    draw_sprite(spr_cloak_image_1,choice,x_offset,y_offset);
-                }
-                shader_reset();
-            }
-            
-        }
-        shader_set(full_livery_shader);
-    }
+    position_overides = {
+
+    };
 
     static draw_head = function(unit){
         var choice;

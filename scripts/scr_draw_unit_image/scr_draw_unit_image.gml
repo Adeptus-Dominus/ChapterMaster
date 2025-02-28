@@ -954,6 +954,7 @@ function scr_draw_unit_image(_background=false){
              "left_eye",
              "right_eye",
              "crown",
+             "backpack",
              "backpack_decoration",
              "belt"
             ], _area
