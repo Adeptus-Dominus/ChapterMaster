@@ -141,37 +141,6 @@ try {
             if (artifact_struct.has_tag("MINOR")) {
                 obj_controller.disposition[giveto] = clamp(obj_controller.disposition[giveto] + 1, -100, 100);
             } else {
-                var artifact_tags_helper = function(faction, artifact_struct) {
-                    var returnvalue = 0;
-                    switch (faction) {
-                        case eFACTION.Imperium:
-                            var like_tags_array = ["PUR", "ADAMANTINE", "GLOW", "CHB", "UFL", "UBOLT", "DUB"];
-                            break;
-                        case eFACTION.Mechanicus:
-                            var like_tags_array = ["PUR", "RO", "CRU"];
-                            break;
-                        case eFACTION.Inquisition:
-                            var like_tags_array = ["PUR"];
-                            break;
-                        case eFACTION.Ecclesiarchy:
-                            var like_tags_array = ["PUR", "ART", "GOLD"];
-                            break;
-                        case eFACTION.Eldar:
-                            var like_tags_array = ["SUP", "ART", "JAD", "SILENT", "SCOPE"];
-                            break;
-                        case eFACTION.Tau:
-                            var like_tags_array = ["SUP", "ART", "BIG", "SOO", "SCOPE"];
-                            break;
-                    }
-
-                    for (var i = 0; i<array_length(like_tags_array); i++) {
-                        if (artifact_struct.has_tag(like_tags_array[i])) {
-                            returnvalue += 2;
-                        }
-                    }
-                    return returnvalue;
-                }
-
                 var daemon_arts = function(faction, is_chaos, is_daemon) {
                     switch (faction) {
                         case eFACTION.Imperium:
@@ -258,7 +227,7 @@ try {
                 }
 
                 daemon_arts(giveto, is_chaos, is_daemon)
-                var tagmod = artifact_tags_helper(giveto, artifact_struct);
+                var tagmod = artifact_struct.artifact_faction_value(giveto);
                 obj_controller.disposition[giveto] = clamp(obj_controller.disposition[giveto] + 2 + specialmod + tagmod, -100, 100);
             }
 

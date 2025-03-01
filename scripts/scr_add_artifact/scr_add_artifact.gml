@@ -292,6 +292,30 @@ function ArtifactStruct(Index) constructor{
 
 	}
 
+    static artifact_faction_value = function(faction) {
+        #macro ART_PLAYER []
+        #macro ART_IMPERIUM ["PUR", "ADAMANTINE", "GLOW", "CHB", "UFL", "UBOLT", "DUB"]
+        #macro ART_MECHANICUS ["PUR", "RO", "CRU"]
+        #macro ART_INQUISITION ["PUR"]
+        #macro ART_ECCLESIARCHY ["PUR", "ART", "GOLD"]
+        #macro ART_ELDAR ["SUP", "ART", "JAD", "SILENT", "SCOPE"]
+        #macro ART_ORK []
+        #macro ART_TAU ["SUP", "ART", "BIG", "SOO", "SCOPE"]
+        #macro ART_TYRANIDS []
+        #macro ART_CHAOS []
+        #macro ART_NECRONS []
+
+        var returnvalue = 0;
+        var faction_preferences = [[], ART_PLAYER, ART_IMPERIUM, ART_MECHANICUS, ART_INQUISITION, ART_ECCLESIARCHY, ART_ELDAR, ART_ORK, ART_TAU, ART_TYRANIDS, ART_CHAOS, ART_CHAOS, ART_TYRANIDS, ART_NECRONS];
+        var like_tags_array = faction_preferences[faction];
+        for (var i = 0; i<array_length(like_tags_array); i++) {
+            if (has_tag(like_tags_array[i])) {
+                returnvalue += 2;
+            }
+        }
+        return returnvalue;
+    }
+
 	static destroy_arti = function(){
         if (has_tag("daemonic")){
             if (ship_id()){
