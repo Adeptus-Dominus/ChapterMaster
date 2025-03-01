@@ -369,63 +369,46 @@ function scr_efleet_arrive_at_trade_loc(){
 }
 function scr_orbiting_fleet(faction, system="none"){
 	var _found_fleet = "none";
-	var _deactivated = [];
 	var _faction_list = is_array(faction);
-	if (system == "none"){
-		nearest_fleet = instance_nearest(x,y,obj_en_fleet);
-		while (nearest_fleet.x==x && nearest_fleet.y==y){
+	var xx = system == "none" ? x : system.x;
+	var yy = system == "none" ? y : system.y;
+	with (obj_en_fleet){
+		if (x=xx && y==yy){
 			var _valid = false;
 			if (_faction_list){
-				_valid = array_contains(faction, nearest_fleet.owner);
+				_valid = array_contains(faction, owner);
 			} else {
-				_valid = nearest_fleet.owner == faction;
+				if (owner == faction){
+					_valid = true;
+				}
 			}
-			if (_valid && nearest_fleet.action == ""){
-				_found_fleet = nearest_fleet.id;
-				break;
-			} else {
-				array_push(_deactivated, nearest_fleet.id);
-				instance_deactivate_object(nearest_fleet.id);
-			}
-			nearest_fleet = instance_nearest(x,y,obj_en_fleet);
-		}
-	} else {
-		with (system){
-			_found_fleet = scr_orbiting_fleet(faction);
+			if (_valid && action == ""){
+				_found_fleet = id;
+			}					
 		}
 	}
-	for (var i=0;i<array_length(_deactivated);i++){
-		instance_activate_object(_deactivated[i]);
-	}
-	return _found_fleet;
+	return _found_fleet;	
 }
 
 function get_orbiting_fleets(faction,system="none"){
 	var _fleets = [];
-	var _deactivated = [];
-	if (system == "none"){
-		nearest_fleet = instance_nearest(x,y,obj_en_fleet);
-		while (nearest_fleet.x==x && nearest_fleet.y==y){
+	var _faction_list = is_array(faction);
+	var xx = system == "none" ? x : system.x;
+	var yy = system == "none" ? y : system.y;
+	with (obj_en_fleet){
+		if (x=xx && y==yy){
 			var _valid = false;
-			if (is_array(faction)){
-				_valid = array_contains(faction, nearest_fleet.owner);
+			if (_faction_list){
+				_valid = array_contains(faction, owner);
 			} else {
-				_valid = nearest_fleet.owner == faction;
+				if (owner == faction){
+					_valid = true;
+				}
 			}
-			if (_valid && nearest_fleet.action == ""){
+			if (_valid && action == ""){
 				array_push(_fleets, id);
-			} 
-			array_push(_deactivated, nearest_fleet.id);
-			instance_deactivate_object(nearest_fleet.id);
-			nearest_fleet = instance_nearest(x,y,obj_en_fleet);
+			}					
 		}
-	} else {
-		with (system){
-			_fleets = scr_orbiting_fleet(faction);
-		}
-	}
-	for (var i=0;i<array_length(_deactivated);i++){
-		instance_activate_object(_deactivated[i]);
 	}
 	return _fleets;	
 }
@@ -554,13 +537,11 @@ function fleet_arrival_logic(){
     
     if (!navy){
 	    if (trade_goods=="merge"){
-	    	show_debug_message("merge fleet arrive")
 	    	if (is_orbiting()){
-	    		show_debug_message("{arrive at {orbiting.name}")
 	    		var _orbit = orbiting;
 	    		var _viable_merge = false;
 	    		var _merge_fleet = false;
-	    		var _imperial_fleets = get_orbiting_fleets(eFACTION.Imperium);
+	    		var _imperial_fleets = get_orbiting_fleets(eFACTION.Imperium, _orbit);
 	    		for (var i=0;i<array_length(_imperial_fleets);i++){
 	    			var _fleet = _imperial_fleets[i];
 	    			if (!_fleet.navy && _fleet.id != id){
@@ -569,10 +550,11 @@ function fleet_arrival_logic(){
 	    				break;
 	    			}
 	    		}
-
 	    		if (_viable_merge){
-	    			merge_fleets(_merge_fleet, self.id);
+	    			merge_fleets(_merge_fleet.id, id);
 	    			exit;
+	    		} else {
+	    			trade_goods = "";
 	    		}
 	    	}
 
@@ -944,10 +926,7 @@ function merge_fleets(main_fleet, merge_fleet){
 			main_fleet.cargo_data[$ _merge_cargo[i]] = merge_fleet.cargo_data[$ _merge_cargo[i]];
 		}
 	}
-	with(merge_fleet){
-		instance_destroy();
-	}
-
+	instance_destroy(merge_fleet.id);
 }
 
 function fleet_respond_crusade(){

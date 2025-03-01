@@ -24,7 +24,7 @@ var yy = 0;
 
 // Main UI
 if (!zoomed && !zui){
-    draw_sprite(spr_new_ui,0,0,0);
+    draw_sprite(spr_new_ui,menu==0,0,0);
     draw_set_color(c_white);
 
     menu_buttons.chapter_manage.draw(34,838+y_slide, "Chapter Management",1,1,145)
@@ -90,11 +90,12 @@ if (!zoomed && !zui){
         draw_text(998,17.5,string_hash_to_newline("Renegade"));
         draw_set_color(38144);
     }
-    draw_text(750, 60, $"Sector Fleet Strength {imp_ships}/{max_fleet_strength}");
-    if (scr_hit([800, 60, 900, 80])){
-        tooltip_draw("The relative strength of the imperial navy and defence fleet forces and their max supported strength. Increase The number of imperial aligned planets and active forge worlds to increase the limit")
-    }
-    // Checks if the chapter name is less than 140 chars, adjusts chapter_master_name_width accordingly
+    if (menu==0){
+        draw_text(850, 60, $"Sector Fleet Strength {imp_ships}/{max_fleet_strength}");
+        if (scr_hit([700, 60, 1000, 80])){
+            tooltip_draw("The relative strength of the imperial navy and defence fleet forces and their max supported strength. Increase The number of imperial aligned planets and active forge worlds to increase the limit")
+        }
+    }    // Checks if the chapter name is less than 140 chars, adjusts chapter_master_name_width accordingly
     var chapter_master_name_width=1;
     for(var i=0; i<10; i++){
         if ((string_width(string_hash_to_newline(string(global.chapter_name)))*chapter_master_name_width)>140) then chapter_master_name_width-=0.1;

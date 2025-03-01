@@ -169,7 +169,7 @@ function build_planet_defence_fleets(){
         	}
         }
         if (_defence_fleet && array_length(_value_hierarchy)){
-        	trade_goods = "merge";
+        	_current_imperial_fleet.trade_goods = "merge";
             switch(rando2){
                 case 1:
                     _current_imperial_fleet.capital_number++;

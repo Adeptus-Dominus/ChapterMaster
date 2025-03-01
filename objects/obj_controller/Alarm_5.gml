@@ -826,3 +826,8 @@ with (obj_p_fleet){
 }
 
 });
+
+
+instance_activate_object(obj_star);
+instance_activate_object(obj_en_fleet);
+
