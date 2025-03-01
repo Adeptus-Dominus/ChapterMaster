@@ -108,7 +108,8 @@
             "Fury of the Wolf Spirits",
             "Thunderclap",
             "Spatial Distortion"
-        ]
+        ],
+        "description": "Summons Deadly Elements and Feral Spirits."
     },
     "biomancy": {
         "letter": "B",
@@ -119,7 +120,8 @@
             "Endurance",
             "Regenerate",
             "Haemorrhage"
-        ]
+        ],
+        "description": "Manipulates Biology to Buff or Heal."
     },
     "pyromancy": {
         "letter": "P",
@@ -130,7 +132,8 @@
             "Inferno",
             "Sun Burst",
             "Molten Beam"
-        ]
+        ],
+        "description": "Unleashes Blasts and Walls of Flame."
     },
     "telekinesis": {
         "letter": "T",
@@ -141,7 +144,9 @@
             "Telekinetic Dome",
             "Spatial Distortion",
             "Vortex of Doom"
-        ]
+        ],
+        "description": "Manipulates Gravity to Throw or Shield."
+        
     },
     "default": {
         "letter": "D",
@@ -154,6 +159,7 @@
             "Quickening",
             "Might of the Ancients",
             "Vortex of Doom"
-        ]
+        ],
+        "description": "Psychic Blasts and Barriers."
     }
 }

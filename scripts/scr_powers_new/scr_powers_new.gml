@@ -17,25 +17,14 @@ function scr_powers_new() {
 	letmax = 0;
 	var _powers_learned = 0;
 
-	if (obj_ini.psy_powers == "default") {
-		power_code = "D";
-		letmax = 7;
-	}
-	if (obj_ini.psy_powers == "biomancy") {
-		power_code = "B";
-		letmax = 5;
-	}
-	if (obj_ini.psy_powers == "pyromancy") {
-		power_code = "P";
-		letmax = 5;
-	}
-	if (obj_ini.psy_powers == "telekinesis") {
-		power_code = "T";
-		letmax = 5;
-	}
-	if (obj_ini.psy_powers == "rune_magic") {
-		power_code = "R";
-		letmax = 5;
+	var discipline_names = struct_get_names(global.disciplines_data);
+	for (var i = 0; i < array_length(discipline_names); i++) {
+		var discipline_name = discipline_names[i];
+		if (discipline_name == obj_ini.psy_powers) {
+			var discipline_struct = global.disciplines_data[$ discipline_name];
+			power_code = discipline_struct[$ "letter"];
+			letmax = array_length(discipline_struct[$ "powers"]);
+		}
 	}
 
 	// higer psionice means more powers learnt
