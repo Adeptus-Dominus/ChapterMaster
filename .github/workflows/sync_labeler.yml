@@ -18,15 +18,15 @@ jobs:
       pull-requests: write
     runs-on: ubuntu-latest
     steps:
-    - name: "File Based Labeler"
-      uses: actions/labeler@v5
-      with:
-        repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        sync-labels: true
-    - name: "Size Based Labeler"
-      uses: srvaroa/labeler@master
-      env:
-        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-      with:
-        config_path: .github/size_labeler.yml
-        fail_on_error: true
+      - name: "File Based Labeler"
+        uses: actions/labeler@v5
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          sync-labels: true
+      - name: "Size Based Labeler"
+        uses: srvaroa/labeler@master
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        with:
+          config_path: .github/size_labeler.yml
+          fail_on_error: true
