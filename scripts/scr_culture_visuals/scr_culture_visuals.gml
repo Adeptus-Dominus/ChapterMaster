@@ -286,7 +286,7 @@ global.modular_drawing_items = [
         armours : ["MK6 Corvus"],    
     },    
     {
-        sprite : spr_mk7_complex_crux_belt2,
+        sprite : spr_mk7_complex_crux_belt,
         body_types :[0, 2],
         position : "belt",
         armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour", "Tartaros"],
