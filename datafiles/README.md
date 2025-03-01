@@ -1,4 +1,4 @@
-# Chapter Master Documentation 
+# Chapter Master Documentation
 
 ## How can I add new custom chapter icons?
 
