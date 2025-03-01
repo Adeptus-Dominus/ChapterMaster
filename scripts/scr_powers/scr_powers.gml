@@ -245,7 +245,7 @@ function convert_power_letter(power_code) {
 function get_perils_chance(_unit, _tome_perils_chance) {
     var _perils_chance = 1;
     var _unit_exp = _unit.experience;
-    var _unit_gear = _unit._unit_gear();
+    var _unit_gear = _unit.gear();
 
     if (scr_has_disadv("Warp Touched")) {
         _perils_chance += 0.25;
@@ -276,7 +276,7 @@ function get_perils_chance(_unit, _tome_perils_chance) {
 function get_perils_strength(_unit, _tome_perils_strength) {
     var _perils_strength = 1;
     var _unit_exp = _unit.experience;
-    var _unit_gear = _unit._unit_gear();
+    var _unit_gear = _unit.gear();
 
     _perils_strength += _tome_perils_strength;
     if (scr_has_disadv("Warp Touched")) {
@@ -331,8 +331,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
     var _power_name = "";
     var _unit_weapon_one_data = _unit.get_weapon_one_data();
     var _unit_weapon_two_data = _unit.get_weapon_two_data();
-    var _unit_gear = _unit._unit_gear();
-    // show_debug_message(power_set);
+    var _unit_gear = _unit.gear();
     var _psy_discipline = convert_power_letter(power_set);
     var _cast_flavour_text = "";
     var _casualties_flavour_text = "";
@@ -341,18 +340,19 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
     var _tome_roll = irandom_range(1, 100);
     var _tome_perils_chance = 0;
     var _tome_perils_strength = 0;
-    var _tome_slot = 0;
-    var _tome_tags = "";
-    var _marine_role = _unit.role();
+    var _unit_role = _unit.role();
     var _unit_exp = _unit.experience;
+    var _battle_log_message = "";
+    var _battle_log_priority = 0;
 
     //TODO: Maybe move into a separate function;
     // In here check if have tome
-    if (_unit._unit_weapon_one_data() == "Tome" || _unit._unit_weapon_two_data() == "Tome") {
-        if (_unit._unit_weapon_one_data() == "Tome") {
+    if (_unit_weapon_one_data == "Tome" || _unit_weapon_two_data == "Tome") {
+        var _tome_tags = "";
+        if (_unit_weapon_one_data == "Tome") {
             _tome_tags += marine_wep1[unit_id];
         }
-        if (_unit._unit_weapon_two_data() == "Tome") {
+        if (_unit_weapon_two_data == "Tome") {
             _tome_tags += marine_wep2[unit_id];
         }
         _tome_discipline = get_tome_discipline(_tome_tags);
@@ -444,7 +444,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
 
 
     if (has_force_weapon) {
-        if (_unit._unit_weapon_one_data() == "Force Staff" || _unit._unit_weapon_two_data() == "Force Staff") {
+        if (_unit_weapon_one_data == "Force Staff" || _unit_weapon_two_data == "Force Staff") {
             if (_power_magnitude > 0) {
                 _power_magnitude = round(_power_magnitude) * 2;
             }
@@ -471,7 +471,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         }
     }
 
-    if (_marine_role == "Chapter Master") {
+    if (_unit_role == "Chapter Master") {
         if (_unit.has_trait("paragon")) {
             if (_power_magnitude > 0) {
                 _power_magnitude = round(_power_magnitude) * 1.25;
@@ -524,7 +524,6 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
             obj_ncombat.sorcery_seen = 0;
         }
         _power_type = "perils";
-        _casualties_flavour_text = "";
 
         _cast_flavour_text = $"{_unit.name_role()} suffers Perils of the Warp!  ";
         _power_flavour_text = scr_perils_table(perils_strength, _unit, _psy_discipline, _power_name, unit_id, _tome_discipline);
@@ -537,11 +536,11 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
             }
 
             // Track the lost unit
-            var existing_index = array_get_index(lost, _marine_role);
+            var existing_index = array_get_index(lost, _unit_role);
             if (existing_index != -1) {
                 lost_num[existing_index] += 1;
             } else {
-                array_push(lost, _marine_role);
+                array_push(lost, _unit_role);
                 array_push(lost_num, 1);
             }
 
@@ -558,17 +557,13 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
             }
 
             // Trigger red thirst
-            if (obj_ncombat.red_thirst == 1 && _marine_role != "Death Company") {
+            if (obj_ncombat.red_thirst == 1 && _unit_role != "Death Company") {
                 obj_ncombat.red_thirst = 2;
             }
         }
 
-        // TODO: Battle log messages should be packed into a separate function, not only for use with powers;
-        obj_ncombat.messages += 1;
-        obj_ncombat.message[obj_ncombat.messages] = _cast_flavour_text + _power_flavour_text + _casualties_flavour_text;
-        // if (target_unit.dudes_vehicle[targeh]=1) then obj_ncombat.message_sz[obj_ncombat.messages]=(_casualties*10)+(0.5-(obj_ncombat.messages/100));
-        obj_ncombat.message_sz[obj_ncombat.messages] = 999 + (0.5 - (obj_ncombat.messages / 100));
-        obj_ncombat.message_priority[obj_ncombat.messages] = 0;
+        _battle_log_message = _cast_flavour_text + _power_flavour_text;
+        add_battle_log_message(_battle_log_message, 999, 135);
     }
 
     if (obj_ncombat.sorcery_seen == 1) {
@@ -682,17 +677,8 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
             }
         }
 
-        obj_ncombat.messages += 1;
-        obj_ncombat.message[obj_ncombat.messages] = _cast_flavour_text + _power_flavour_text + _casualties_flavour_text;
-        // if (target_unit.dudes_vehicle[targeh]=1) then obj_ncombat.message_sz[obj_ncombat.messages]=(_casualties*10)+(0.5-(obj_ncombat.messages/100));
-        obj_ncombat.message_sz[obj_ncombat.messages] = 0.5 - (obj_ncombat.messages / 100);
-        obj_ncombat.message_priority[obj_ncombat.messages] = 0;
-
-        if (_power_name == "Kamehameha") {
-            obj_ncombat.message_priority[obj_ncombat.messages] = 135;
-            obj_ncombat.message_sz[obj_ncombat.messages] = 300 - (obj_ncombat.messages / 100);
-        }
-        // obj_ncombat.alarm[3]=2;
+        _battle_log_message = _cast_flavour_text + _power_flavour_text;
+        add_battle_log_message(_battle_log_message, 999, 135);
     }
 
     // TODO: separate the code bellow into a separate function;
@@ -703,13 +689,8 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
 
     if ((_power_type == "attack") && (_power_name == "Imperator Maior")) {
         _cast_count = 3;
-    }
-
-    if (_cast_count > 1) {
-        obj_ncombat.messages += 1;
-        obj_ncombat.message[obj_ncombat.messages] = _cast_flavour_text + _power_flavour_text;
-        obj_ncombat.message_priority[obj_ncombat.messages] = 136;
-        obj_ncombat.message_sz[obj_ncombat.messages] = 2500;
+        _battle_log_message = _cast_flavour_text + _power_flavour_text;
+        add_battle_log_message(_battle_log_message, 999, 135);
     }
 
     repeat (_cast_count) {
@@ -878,13 +859,11 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                     } // Need special flavor here for just damaging
 
                     if (_casualties > 1) {
-                        _casualties_flavour_text = string(_casualties) + " " + string(target_unit.dudes[good2]) + " are killed.";
-                    }
-                    if (_casualties == 1) {
-                        _casualties_flavour_text = "A " + string(target_unit.dudes[good2]) + " is killed.";
-                    }
-                    if (_casualties == 0) {
-                        _casualties_flavour_text = "The " + string(target_unit.dudes[good2]) + " survives the attack.";
+                        _casualties_flavour_text = $" {_casualties} {target_unit.dudes[good2]} are killed.";
+                    } else if (_casualties == 1) {
+                        _casualties_flavour_text = $" A {target_unit.dudes[good2]} is killed.";
+                    } else {
+                        _casualties_flavour_text = $" The {target_unit.dudes[good2]} survives the attack.";
                     }
 
                     if (_casualties > 0) {
@@ -906,22 +885,9 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                         }
                     }
 
-                    obj_ncombat.messages += 1;
-                    obj_ncombat.message[obj_ncombat.messages] = _cast_flavour_text + _power_flavour_text + _casualties_flavour_text;
-                    if (_cast_count > 1) {
-                        obj_ncombat.message[obj_ncombat.messages] = _casualties_flavour_text;
-                    }
-
-                    obj_ncombat.message_sz[obj_ncombat.messages] = _casualties + 1;
-                    // if (target_unit.dudes_vehicle[targeh]=1) then obj_ncombat.message_sz[obj_ncombat.messages]=(_casualties*10)+(0.5-(obj_ncombat.messages/100));
-                    // else{obj_ncombat.message_sz[obj_ncombat.messages]=(_casualties)+(0.5-(obj_ncombat.messages/100));}
-                    obj_ncombat.message_priority[obj_ncombat.messages] = 0;
-                    if (_cast_count > 1) {
-                        obj_ncombat.message_priority[obj_ncombat.messages] = 135;
-                        obj_ncombat.message_sz[obj_ncombat.messages] = 2000 + obj_ncombat.messages;
-                    }
-
-                    // obj_ncombat.alarm[3]=2;
+                    _battle_log_message = _cast_flavour_text + _power_flavour_text  + _casualties_flavour_text;
+                    _battle_log_priority = _casualties * 10;
+                    add_battle_log_message(_battle_log_message, _battle_log_priority, 135);
 
                     if (_casualties >= 1) {
                         target_unit.dudes_num[good2] -= _casualties;
@@ -1022,21 +988,9 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                         }
                     }
 
-                    obj_ncombat.messages += 1;
-                    obj_ncombat.message[obj_ncombat.messages] = _cast_flavour_text + _power_flavour_text + _casualties_flavour_text;
-                    if (_cast_count > 1) {
-                        obj_ncombat.message[obj_ncombat.messages] = _casualties_flavour_text;
-                    }
-
-                    obj_ncombat.message_sz[obj_ncombat.messages] = _casualties + 1;
-                    // if (target_unit.dudes_vehicle[targeh]=1) then obj_ncombat.message_sz[obj_ncombat.messages]=(_casualties*10)+(0.5-(obj_ncombat.messages/100));
-                    // else{obj_ncombat.message_sz[obj_ncombat.messages]=(_casualties)+(0.5-(obj_ncombat.messages/100));}
-                    obj_ncombat.message_priority[obj_ncombat.messages] = 0;
-                    if (_cast_count > 1) {
-                        obj_ncombat.message_priority[obj_ncombat.messages] = 135;
-                        obj_ncombat.message_sz[obj_ncombat.messages] = 2000 + obj_ncombat.messages;
-                    }
-                    // obj_ncombat.alarm[3]=2;
+                    _battle_log_message = _cast_flavour_text + _power_flavour_text + _casualties_flavour_text;
+                    _battle_log_priority = _casualties * 100;
+                    add_battle_log_message(_battle_log_message, _battle_log_priority, 135);
 
                     if (_casualties >= 1) {
                         target_unit.dudes_num[good2] -= _casualties;
@@ -1091,5 +1045,5 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         }
     } // End repeat
 
-    obj_ncombat.alarm[3] = 5;
+    display_battle_log_message();
 }
