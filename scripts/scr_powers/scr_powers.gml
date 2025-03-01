@@ -276,7 +276,7 @@ function get_perils_chance(_unit, _tome_perils_chance) {
 
     _perils_chance = max(_perils_chance, 0.05);
     
-    // show_debug_message("Peril of the Warp Chance: " + string(_perils_chance));
+    //// show_debug_message("Peril of the Warp Chance: " + string(_perils_chance));
     return _perils_chance;
 }
 
@@ -309,7 +309,7 @@ function get_perils_strength(_unit, _tome_perils_strength) {
 
     _perils_strength = max(_perils_strength, 15);
     
-    // show_debug_message("Peril of the Warp Strength: " + string(perils_strength));
+    //// show_debug_message("Peril of the Warp Strength: " + string(perils_strength));
     return _perils_strength;
 }
 
@@ -401,8 +401,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         }
     }
 
-    // show_message(string(_power_name));
-    //
+    //// show_message(string(_power_name));
 
     // Chaos powers here
 
@@ -427,9 +426,9 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         _power_name = "Imperator Maior";
     }
 
-    // if (_power_name="Vortex of Doom"){_power_type="attack";_power_range=5;_power_target_type=3;_power_max_kills=1;_power_magnitude=800;_power_armour_piercing=800;_power_duration=0;
-    //     _power_flavour_text="- a hole between real and warp space is torn open with deadly effect.  ";
-    // }
+    //// if (_power_name="Vortex of Doom"){_power_type="attack";_power_range=5;_power_target_type=3;_power_max_kills=1;_power_magnitude=800;_power_armour_piercing=800;_power_duration=0;
+    ////     _power_flavour_text="- a hole between real and warp space is torn open with deadly effect.  ";
+    //// }
 
     //TODO: Move into a separate function;
     var has_force_weapon = false;
@@ -467,7 +466,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         if (_power_magnitude > 0) {
             _power_magnitude = round(_power_magnitude) * 1.15;
         }
-        // if (_power_armour_piercing>0) then _power_armour_piercing=round(_power_armour_piercing)*1.15;
+        //// if (_power_armour_piercing>0) then _power_armour_piercing=round(_power_armour_piercing)*1.15;
         if (_power_range > 0) {
             _power_range = round(_power_range) * 1.2;
         }
@@ -478,7 +477,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
             if (_power_magnitude > 0) {
                 _power_magnitude = round(_power_magnitude) * 1.25;
             }
-            // if (_power_armour_piercing>0) then _power_armour_piercing=round(_power_armour_piercing)*1.25;
+            //// if (_power_armour_piercing>0) then _power_armour_piercing=round(_power_armour_piercing)*1.25;
             if (_power_range > 0) {
                 _power_range = round(_power_range) * 1.25;
             }
@@ -514,12 +513,12 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         _cast_flavour_text = _unit.name_role() + " casts '" + string(_power_name) + "'";
     }
 
-    //TODO: Perhaps separate perils calculations into a separate function;
+    //TODO: Perhaps separate perils into a separate function;
     var perils_chance = get_perils_chance(_unit, _tome_perils_chance);
     var perils_roll = irandom_range(1, 100);
     var perils_strength = get_perils_strength(_unit, _tome_perils_strength);
 
-    // show_debug_message("Roll: " + string(perils_roll));
+    //// show_debug_message("Roll: " + string(perils_roll));
 
     if (perils_roll <= perils_chance) {
         if (obj_ncombat.sorcery_seen == 1) {
@@ -572,8 +571,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         obj_ncombat.sorcery_seen = 2;
     }
 
-    // determine target here
-
+    //* Buff powers code
     if ((_power_type == "buff") || (_power_name == "Kamehameha")) {
         var marine_index;
         var _random_marine_list = [];
@@ -684,7 +682,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
     }
 
     // TODO: separate the code bellow into a separate function;
-    // Actually cast powers here;
+    //* Power cast code
     var good = 0;
     var good2 = 0;
     var _cast_count = 1;
@@ -700,6 +698,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
             _casualties_flavour_text = "";
         }
 
+        //* Pick the target
         if (_power_type == "attack") {
             if (good == 0) {
                 repeat (10) {
@@ -780,6 +779,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                 instance_activate_object(obj_enunit);
             }
 
+            //* Calculate damage
             if (good2 > 0) {
                 var damage_type, stap;
                 damage_type = "att";
@@ -790,15 +790,16 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                     damage_type = "arp";
                 }
 
-                // if (_power_target_type=3) then damage_type="att";
-                // if (_power_target_type=4) then damage_type="arp";
+                //// if (_power_target_type=3) then damage_type="att";
+                //// if (_power_target_type=4) then damage_type="arp";
 
+                //* Anti-personnel attacks;
                 if ((damage_type == "att") && (stap == 0) && instance_exists(target_unit) && (target_unit.dudes_num[good2] > 0)) {
                     var a, b, c, eac;
                     eac = target_unit.dudes_ac[good2];
                     a = _power_magnitude; // Average damage
 
-                    // b=a-target_unit.dudes_ac[good2];// Average after armour
+                    //// b=a-target_unit.dudes_ac[good2];// Average after armour
 
                     if (target_unit.dudes_vehicle[good2] == 0) {
                         if (_power_armour_piercing == 1) {
@@ -834,6 +835,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                         show_message(string(target_unit.dudes_hp[good2]));
                     }
 
+                    //* Calculate casualties
                     var _casualties, ponies, onceh;
                     onceh = 0;
                     ponies = 0;
@@ -858,7 +860,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
 
                     if ((target_unit.dudes_num[good2] == 1) && (c > 0)) {
                         target_unit.dudes_hp[good2] -= c;
-                    } // Need special flavor here for just damaging
+                    } //TODO: Need special flavor here for just damaging
 
                     if (_casualties > 1) {
                         _casualties_flavour_text = $" {_casualties} {target_unit.dudes[good2]} are killed.";
@@ -887,21 +889,23 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                         }
                     }
 
-                    _battle_log_message = _cast_flavour_text + _power_flavour_text  + _casualties_flavour_text;
-                    _battle_log_priority = _casualties;
-                    add_battle_log_message(_battle_log_message, _battle_log_priority, 135);
-
                     if (_casualties >= 1) {
                         target_unit.dudes_num[good2] -= _casualties;
                         obj_ncombat.enemy_forces -= _casualties;
                     }
+
+                    //* Queue a battle log message
+                    _battle_log_message = _cast_flavour_text + _power_flavour_text  + _casualties_flavour_text;
+                    _battle_log_priority = _casualties;
+                    add_battle_log_message(_battle_log_message, _battle_log_priority, 135);
                 }
 
+                //* Anti-vehicle attacks;
                 if ((damage_type == "arp") && (stap == 0) && instance_exists(target_unit) && (target_unit.dudes_num[good2] > 0)) {
                     var a, b, c, eac;
                     eac = target_unit.dudes_ac[good2];
                     a = _power_magnitude; // Average damage
-                    // b=a-target_unit.dudes_ac[good2];// Average after armour
+                    //// b=a-target_unit.dudes_ac[good2];// Average after armour
 
                     if (target_unit.dudes_vehicle[good2] == 0) {
                         if (_power_armour_piercing == 1) {
@@ -937,6 +941,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                         show_message(string(target_unit.dudes_hp[good2]));
                     }
 
+                    //* Calculate casualties
                     var _casualties, ponies, onceh;
                     onceh = 0;
                     ponies = 0;
@@ -990,14 +995,15 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                         }
                     }
 
-                    _battle_log_message = _cast_flavour_text + _power_flavour_text + _casualties_flavour_text;
-                    _battle_log_priority = _casualties;
-                    add_battle_log_message(_battle_log_message, _battle_log_priority, 135);
-
                     if (_casualties >= 1) {
                         target_unit.dudes_num[good2] -= _casualties;
                         obj_ncombat.enemy_forces -= _casualties;
                     }
+
+                    //* Queue a battle log message
+                    _battle_log_message = _cast_flavour_text + _power_flavour_text + _casualties_flavour_text;
+                    _battle_log_priority = _casualties;
+                    add_battle_log_message(_battle_log_message, _battle_log_priority, 135);
                 }
 
                 if (stap == 0) {
