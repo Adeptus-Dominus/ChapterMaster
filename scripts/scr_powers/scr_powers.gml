@@ -375,8 +375,6 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                 _tome_perils_chance = global.disciplines_data[$ disciplines_array[i]].perils_chance;
                 _tome_perils_strength = global.disciplines_data[$ disciplines_array[i]].perils_strength;
             }
-            // show_debug_message($"powers_array: {powers_array}");
-            // show_debug_message($"power_index: {power_index}");
             _power_name = powers_array[power_index];
         }
     }
@@ -412,10 +410,10 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
     var _power_armour_piercing = get_power_data(_power_name, "armour_piercing");
     var _power_duration = get_power_data(_power_name, "duration");
     var _power_flavour_text = get_power_data(_power_name, "flavour_text");
-    var _power_sourcery = get_power_data(_power_name, "sorcery");
+    var _power_sorcery = get_power_data(_power_name, "sorcery");
 
     //TODO: this should be refactored;
-    if (_power_sourcery != undefined && _power_sourcery > 0) {
+    if (_power_sorcery != undefined && _power_sorcery > 0) {
         if ((obj_ncombat.sorcery_seen < 2) && (obj_ncombat.present_inquisitor == 1)) {
             obj_ncombat.sorcery_seen = 1;
         }
