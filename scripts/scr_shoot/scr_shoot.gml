@@ -121,7 +121,9 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 				var damage_per_weapon, hit_number;
 				damage_per_weapon = aggregate_damage;
 				if (aggregate_damage = 0) then damage_per_weapon = shots_fired;
-
+				if (melee_or_ranged != "wall") {
+					shots_fired *= attack_count_mod;
+				}
 				if (melee_or_ranged = "melee") {
 					if (shots_fired > ((target_object.veh + target_object.dreads) * 5)) {
 						doom = ((target_object.veh + target_object.dreads) * 5) / shots_fired;
@@ -132,9 +134,6 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 				if (doom != 0) and(shots_fired > 1) {
 					damage_per_weapon = floor((doom * damage_per_weapon));
 					hit_number = floor(hit_number * doom);
-				}
-				if (melee_or_ranged != "wall") {
-					shots_fired *= attack_count_mod;
 				}
 
 				if (damage_per_weapon = 0) then damage_per_weapon = shots_fired * doom;
@@ -202,7 +201,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 			}
 
 			if (weapon_index_position >= 0) {
-				if (ammo[weapon_index_position] = 0) then stop = 1;
+				if (ammo[weapon_index_position] == 0) then stop = 1;
 				if (ammo[weapon_index_position] > 0) then ammo[weapon_index_position] -= 1;
 			}
 			if (wep[weapon_index_position] == "Missile Silo") then obj_ncombat.player_silos -= min(obj_ncombat.player_silos, 30);
@@ -252,23 +251,28 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 						if (weapon_index_position = -52) {
 							wii = "Missile Launcher Emplacement";
 							at = 200;
-							armour_pierce = 1;
+							armour_pierce = -1;
 						}
 						if (weapon_index_position = -53) {
 							wii = "Missile Silo";
 							at = 250;
-							ar = 0;
+							armour_pierce = 0;
 						}
 					}
 
 					target_armour_value = target_object.dudes_ac[target_type];
 
+					// Calculate final armor value based on armor piercing (AP) rating against target type
 					if (target_object.dudes_vehicle[target_type]) {
+						if (armour_pierce = 1) then target_armour_value = 0;
 						if (armour_pierce = 0) then target_armour_value = target_armour_value * 6;
-						if (armour_pierce = -1) then target_armour_value = damage_per_weapon;
+						if (armour_pierce = -1) then target_armour_value = target_armour_value * 4 ;
+						if (armour_pierce = -2) then target_armour_value = target_armour_value * 2;
 					} else {
 						if (armour_pierce = 1) then target_armour_value = 0;
-						if (armour_pierce = -1) then target_armour_value = target_armour_value * 6;
+						if (armour_pierce = 0) then target_armour_value = target_armour_value * 3;
+						if (armour_pierce = -1) then target_armour_value = target_armour_value * 2;
+						if (armour_pierce = -2) then target_armour_value = target_armour_value * 1.5;
 					}
 
 					attack_count_mod = max(1, splash[weapon_index_position]);
@@ -358,11 +362,14 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 								target_armour_value2 = target_object.dudes_ac[godd];
 								if (target_object.dudes_vehicle[godd] = 0) {
 									if (ap2 = 1) then target_armour_value2 = 0;
-									if (ap2 = -1) then target_armour_value2 = target_armour_value2 * 6;
+									if (ap2 = 0) then target_armour_value2 = target_armour_value2 * 3;
+									if (ap2 = -1) then target_armour_value2 = target_armour_value2 * 2;
+									if (ap2 = -2) then target_armour_value2 = target_armour_value2 * 1.5;
 								}
 								if (target_object.dudes_vehicle[godd] = 1) {
 									if (ap2 = 0) then target_armour_value2 = target_armour_value2 * 6;
-									if (ap2 = -1) then target_armour_value2 = damage_per_weapon;
+									if (ap2 = -1) then target_armour_value2 = target_armour_value2 * 4;
+									if (ap2 = -2) then target_armour_value2 = target_armour_value2 * 2;
 								}
 								b2 = a2 - target_armour_value2;
 								if (b2 <= 0) then b2 = 0; // Average after armour

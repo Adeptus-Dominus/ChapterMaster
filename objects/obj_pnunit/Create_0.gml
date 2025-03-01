@@ -110,5 +110,3 @@ hostile_type=0;
 hostile_splash=0;
 
 alarm[1]=4;
-
-action_set_alarm(1, 3);
