@@ -1,3 +1,24 @@
+/// @function add_battle_log_message
+/// @param {string} _message - The message text to add to the battle log
+/// @param {real} [_message_size=0] - The size/importance of the message (higher values = higher display priority; affects sorting order)
+/// @param {real} [_message_priority=0] - The priority level (affects sorting and text color: 0=normal, 135/136=blue, 2.1=purple)
+/// @returns {real} The index of the newly added message
+function add_battle_log_message(_message, _message_size = 0, _message_priority = 0) {
+    obj_ncombat.messages++;
+    var _message_index = obj_ncombat.messages;
+    
+    obj_ncombat.message[_message_index] = _message;
+    obj_ncombat.message_sz[_message_index] = _message_size + (0.5 - (obj_ncombat.messages / 100));
+    obj_ncombat.message_priority[_message_index] = _message_priority;
+    
+    return _message_index;
+}
+
+function display_battle_log_message() {
+    // Trigger the message processing alarm
+    obj_ncombat.alarm[3] = 5;
+}
+
 function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shots, casulties) {
 
 	// Generates flavor based on the damage and casualties from scr_shoot, only for the player
