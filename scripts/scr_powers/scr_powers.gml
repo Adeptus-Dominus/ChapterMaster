@@ -12,7 +12,7 @@ global.powers_data = json_to_gamemaker(working_directory + "\\data\\psychic_powe
 function get_discipline_data(_discipline_name, _data_name) {
     // Check if the power exists in the global.disciplines_data
     if (struct_exists(global.disciplines_data, _discipline_name)) {
-        var _discipline_object = global.powers_data[$ _discipline_name];
+        var _discipline_object = global.disciplines_data[$ _discipline_name];
         // Check if the data exists for that power
         if (struct_exists(_discipline_object, _data_name)) {
             var _data_content = _discipline_object[$ _data_name];
@@ -188,7 +188,8 @@ function player_select_powers() {
             draw_sprite_stretched(spr_creation_arrow, 1, 475, 688, 32, 32);
         }
         draw_set_alpha(1);
-        if ((mouse_left >= 1) && (cooldown <= 0) && (custom > 1)) {
+
+        if ((scr_click_left) && (custom > 1)) {
             if (scr_hit(437, 688, 437 + 32, 688 + 32)) {
                 _disp_index = _disp_index == 0 ? array_length(_powers) - 1 : _disp_index - 1;
             } else if (scr_hit(475, 688, 475 + 32, 688 + 32)) {
