@@ -348,7 +348,7 @@ global.modular_drawing_items = [
         sprite : spr_mk7_knightly_chest,
         body_types :[0],
         position : "chest_variants",
-        armours : ["MK8 Errant", "MK7 Aquila"],  
+        armours : ["MK8 Errant", "MK7 Aquila","Artificer Armour"],  
     },
     {
         sprite : spr_ultra_belt,
@@ -402,7 +402,14 @@ global.modular_drawing_items = [
         exp : {
             min : 80,
         },
-    },                                           
+    }, 
+    {
+        cultures : ["Ultra"],
+        sprite : spr_mk7_chest_ultra,
+        body_types :[0],
+        position : "chest_variants",
+        armours : ["MK7 Aquila", "MK8 Errant", "Artificer Armour"]
+    },                                          
 
 ];
 try{

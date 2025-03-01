@@ -1507,6 +1507,7 @@
     {"id":{"name":"obj_fleet_show","path":"objects/obj_fleet_show/obj_fleet_show.yy",},},
     {"id":{"name":"spr_generic_sgt_mk3","path":"sprites/spr_generic_sgt_mk3/spr_generic_sgt_mk3.yy",},},
     {"id":{"name":"Main_Menu","path":"rooms/Main_Menu/Main_Menu.yy",},},
+    {"id":{"name":"spr_mk7_chest_ultra","path":"sprites/spr_mk7_chest_ultra/spr_mk7_chest_ultra.yy",},},
     {"id":{"name":"scr_population_influence","path":"scripts/scr_population_influence/scr_population_influence.yy",},},
     {"id":{"name":"Creation","path":"rooms/Creation/Creation.yy",},},
     {"id":{"name":"Game","path":"rooms/Game/Game.yy",},},
