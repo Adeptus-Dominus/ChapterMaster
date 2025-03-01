@@ -57,13 +57,13 @@ labels:
 
 - label: "Size: Big"
   size:
-      above: 399
-      below: 800
+    above: 399
+    below: 800
 
 - label: "Size: Huge"
   size:
-      above: 799
-      below: 1600
+    above: 799
+    below: 1600
 
 - label: "Size: Epic"
   size:
