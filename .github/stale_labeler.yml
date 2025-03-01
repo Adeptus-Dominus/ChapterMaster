@@ -1,0 +1,6 @@
+version: 1
+appendOnly: false
+labels:
+  - label: "Status: Stale"
+    last-modified:
+      at-least: 2w
