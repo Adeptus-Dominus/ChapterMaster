@@ -41,6 +41,18 @@ labels:
 - label: "PR: Performance"
   body: "(?i)(\\[performance\\]|\\[perf\\])"
 
-- label: "PR: Major Coding"
+- label: "Size: Medium"
+  size:
+    above: 200
+
+- label: "Size: Big"
+  size:
+    above: 400
+
+- label: "Size: Huge"
   size:
     above: 800
+
+- label: "Size: Epic"
+  size:
+    above: 1600
