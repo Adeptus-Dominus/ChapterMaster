@@ -9,55 +9,33 @@ function scr_powers_new() {
         return 0;
     }
 
-	var random_learn;
-	random_learn = false;
-
-	var letmax, powers_should_have, powers_have;
-	var power_code = "";
-	letmax = 0;
+	var _powers_can_have;
+	var _powers_have;
+	var _powers_letter = "";
+	var _powers_max = 0;
 	var _powers_learned = 0;
+	var _powers_string = specials();
 
 	var discipline_names = struct_get_names(global.disciplines_data);
 	for (var i = 0; i < array_length(discipline_names); i++) {
 		var discipline_name = discipline_names[i];
 		if (discipline_name == obj_ini.psy_powers) {
 			var discipline_struct = global.disciplines_data[$ discipline_name];
-			power_code = discipline_struct[$ "letter"];
-			letmax = array_length(discipline_struct[$ "powers"]);
+			_powers_letter = discipline_struct[$ "letter"];
+			_powers_max = array_length(discipline_struct[$ "powers"]);
 		}
 	}
 
-	// higer psionice means more powers learnt
-	powers_should_have = floor((experience - 30) / (45 - psionic)) + 1; // +1 for the primary
-	powers_have = string_count(string(power_code), specials());
+	// higher psionic and exp means more powers learnt
+	_powers_can_have = floor((experience - 30) / (45 - psionic)) + 1; // +1 for the primary
+	_powers_have = string_count(string(_powers_letter), _powers_string);
 
-	if ((powers_have < powers_should_have) && (powers_have < letmax) && (random_learn == true)) {
-		var newpow;
-		newpow = 0;
-		if ((powers_have < powers_should_have) && (powers_have < letmax)) {
-			if ((powers_have < powers_should_have) && (powers_have < letmax)) {
-				var tha = floor(random(letmax));
-				if (string_count(string(tha), specials()) == 0) {
-					powers_have += 1;
-					_powers_learned++;
-					obj_ini.spe[company, marine_number] += string(power_code) + string(tha) + "|";
-				}
-			}
-		}
-	} else if ((powers_have < powers_should_have) && (powers_have < letmax) && (random_learn == false)) {
-		// Used to work like this.  I removed it because I was too lazy to have powers chance to be cast be based on experience.
-		// Should you wish to have powers be randomly learned simply change random_learn to true and write the rest of the code.
-
-		var newpow = 0;
-		var reps = 0;
-		while (powers_have < powers_should_have && reps < letmax) {
-			reps++;
-			var tha = powers_have;
-			if (string_count(string(tha), specials()) == 0) {
-				powers_have++;
-				_powers_learned++;
-				obj_ini.spe[company, marine_number] += string(power_code) + string(tha) + "|";
-			}
+	while ((_powers_have < _powers_can_have) && (_powers_have < _powers_max)) {
+		var _power_index = _powers_have;
+		if (string_count(string(_power_index), _powers_string) == 0) {
+			_powers_have++;
+			_powers_learned++;
+			obj_ini.spe[company, marine_number] += string(_powers_letter) + string(_power_index) + "|";
 		}
 	}
 
