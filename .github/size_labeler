@@ -1,0 +1,30 @@
+version: 1
+appendOnly: false
+labels:
+- label: "Size: Tiny"
+  size:
+    below: 50
+
+- label: "Size: Small"
+  size:
+    above: 49
+    below: 200
+
+- label: "Size: Medium"
+  size:
+    above: 199
+    below: 400
+
+- label: "Size: Big"
+  size:
+    above: 399
+    below: 800
+
+- label: "Size: Huge"
+  size:
+    above: 799
+    below: 1600
+
+- label: "Size: Epic"
+  size:
+    above: 1599
