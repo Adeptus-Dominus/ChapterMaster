@@ -264,7 +264,7 @@ function ComplexSet(unit) constructor{
                         if (_spec_over[0]<=choice && _spec_over[1]>choice){
                             var _override_areas = struct_get_names(_spec_over[2]);
                             for (var j = 0;j <array_length(_override_areas);j++){
-                                replace_area(_override_areas[i], _spec_over[2][$_override_areas[i]]);
+                                replace_area(_override_areas[j], _spec_over[2][$_override_areas[j]]);
                             }
                         }
                     }
@@ -339,6 +339,7 @@ function ComplexSet(unit) constructor{
                  "left_leg",
                  "right_leg",
                  "tabbard",
+                 "robe",                 
                  "belt",                 
                  "chest_variants",
                  "head",
@@ -348,7 +349,6 @@ function ComplexSet(unit) constructor{
                  "right_pauldron",
                  "left_pauldron",
                  "left_knee",
-                 "robe",
                  "left_personal_livery",             
              ];            
          } else {
@@ -521,7 +521,8 @@ static purity_seals_and_hangings = function(){
                     backpack : spr_indomitus_backpack_variants,
                     chest_variants : spr_indomitus_chest_variants,
                     leg_variants : spr_indomitus_leg_variants,
-                    head : spr_indomitus_head_variants         
+                    head : spr_indomitus_head_variants,
+                    belt : spr_indomitus_belt        
                 });
                  armour_type = ArmourType.Terminator;
                  break;

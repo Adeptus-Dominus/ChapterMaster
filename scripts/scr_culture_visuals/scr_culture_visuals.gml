@@ -409,7 +409,27 @@ global.modular_drawing_items = [
         body_types :[0],
         position : "chest_variants",
         armours : ["MK7 Aquila", "MK8 Errant", "Artificer Armour"]
-    },                                          
+    },
+    {
+        max_saturation : 50,
+        cultures : ["Knightly"],
+        sprite : spr_indomitus_knightly_robe,
+        body_types :[2],
+        position : "robe",
+        armours : ["Terminator Armour"],
+    },
+    {
+        cultures : ["Feral", "Gothic"],
+        sprite : spr_skull_on_chain,
+        body_types :[2],
+        position : "purity_seals",
+    },
+    {
+        cultures : ["Knightly"],
+        sprite : spr_sword_pendant,
+        body_types :[0,2],
+        position : "purity_seals",
+    },                                                   
 
 ];
 try{
