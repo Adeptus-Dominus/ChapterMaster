@@ -296,7 +296,7 @@ global.modular_drawing_items = [
         sprite : spr_mk7_rope_belt,
         body_types :[0],
         position : "belt",
-        armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"], 
+        armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour","MK4 Maximus"], 
         assign_by_rank : 2,   
     },
     {
@@ -368,7 +368,7 @@ global.modular_drawing_items = [
         exp : {
             min : 50,
         },
-        armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour", "Tartaros"], 
+        armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour", "Tartaros","MK4 Maximus", "MK3 Iron Armour"], 
     },
     {
         cultures : ["Ultra"],

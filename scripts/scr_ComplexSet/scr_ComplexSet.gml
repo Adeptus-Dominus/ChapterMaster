@@ -329,28 +329,7 @@ function ComplexSet(unit) constructor{
         }         
          shader_set(full_livery_shader);
 
-         _draw_order = [
-            "backpack",
-            "backpack_decoration",
-             "armour",
-             "chest_variants",
-             "thorax_variants",
-             "leg_variants",
-             "left_leg",
-             "right_leg",
-             "head",
-             "left_trim",
-             "right_trim",
-             "gorget",
-             "right_pauldron",
-             "left_pauldron",
-             "left_knee",
-             "tabbard",
-             "robe",
-             "belt",
-             "left_personal_livery",             
-         ];
-         if (unit.armour = "MK4 Maximus"){
+         if (unit.armour() == "MK4 Maximus" || unit.armour() == "MK3 Iron Armour"){
              _draw_order = [
                 "backpack",
                 "backpack_decoration",
@@ -370,6 +349,28 @@ function ComplexSet(unit) constructor{
                  "left_pauldron",
                  "left_knee",
                  "robe",
+                 "left_personal_livery",             
+             ];            
+         } else {
+             _draw_order = [
+                "backpack",
+                "backpack_decoration",
+                 "armour",
+                 "chest_variants",
+                 "thorax_variants",
+                 "leg_variants",
+                 "left_leg",
+                 "right_leg",
+                 "head",
+                 "left_trim",
+                 "right_trim",
+                 "gorget",
+                 "right_pauldron",
+                 "left_pauldron",
+                 "left_knee",
+                 "tabbard",
+                 "robe",
+                 "belt",
                  "left_personal_livery",             
              ];            
          }
@@ -501,7 +502,9 @@ static purity_seals_and_hangings = function(){
                     left_leg : spr_mk3_left_leg_variants,
                     right_leg : spr_mk3_right_leg_variants,
                     mouth_variants: spr_mk3_mouth,
-                    forehead : spr_mk3_forehead_variants  
+                    forehead : spr_mk3_forehead_variants,
+                    belt : spr_mk3_belt,
+                    chest_variants : spr_mk3_chest,
                 });
                 armour_type = ArmourType.Normal
                 break;
