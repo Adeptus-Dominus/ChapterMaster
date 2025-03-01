@@ -18,11 +18,6 @@ jobs:
       pull-requests: write
     runs-on: ubuntu-latest
     steps:
-    - name: "File Based Labeler"
-      uses: actions/labeler@v5
-      with:
-        repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        sync-labels: false
     - name: "Content Based Labeler"
       uses: srvaroa/labeler@master
       env:
