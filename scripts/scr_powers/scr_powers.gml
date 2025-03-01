@@ -5,7 +5,27 @@
 global.disciplines_data = json_to_gamemaker(working_directory + "\\data\\psychic_disciplines.json", json_parse);
 global.powers_data = json_to_gamemaker(working_directory + "\\data\\psychic_powers.json", json_parse);
 
-// God help the next person who will read this function;
+/// Function to get requested data from the disciplines_data structure
+/// @param _discipline_name - The name of the discipline
+/// @param _data_name - The specific data attribute you want
+/// @returns The requested data, or undefined if not found
+function get_discipline_data(_discipline_name, _data_name) {
+    // Check if the power exists in the global.disciplines_data
+    if (struct_exists(global.disciplines_data, _discipline_name)) {
+        var _discipline_object = global.powers_data[$ _discipline_name];
+        // Check if the data exists for that power
+        if (struct_exists(_discipline_object, _data_name)) {
+            var _data_content = _discipline_object[$ _data_name];
+            return _data_content;
+        } else {
+            log_error("Requested data was not found!");
+        }
+    } else {
+        log_error("Requested discipline was not found!");
+    }
+    return;
+}
+
 /// Function to get requested data from the powers_data structure
 /// @param _power_name - The name of the power (e.g., "Minor Smite")
 /// @param _data_name - The specific data attribute you want (e.g., "type", "range", "flavour_text")
@@ -154,22 +174,8 @@ function player_select_powers() {
         var discipline_suffix = string_delete(discipline, 1, 1);  
         draw_text_transformed(513, 697, string_hash_to_newline(string_upper(discipline_first_letter) + string(discipline_suffix)), 0.5, 0.5, 0);  
 
-        var psy_info = "";
-        if (discipline == "default") {
-            psy_info = "-Psychic Blasts and Barriers";
-        }
-        if (discipline == "biomancy") {
-            psy_info = "-Manipulates Biology to Buff or Heal";
-        }
-        if (discipline == "pyromancy") {
-            psy_info = "-Unleashes Blasts and Walls of Flame";
-        }
-        if (discipline == "telekinesis") {
-            psy_info = "-Manipulates Gravity to Throw or Shield";
-        }
-        if (discipline == "rune_magic") {
-            psy_info = "-Summons Deadly Elements and Feral Spirits";
-        }
+        var psy_info = get_discipline_data(discipline, "description");
+
         draw_text_transformed(533, 729, string_hash_to_newline(string(psy_info)), 0.5, 0.5, 0);
 
         if (custom < 2) {
@@ -366,17 +372,14 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
     }
 
     //TODO: Move into a separate function;
-    var disciplines_array = struct_get_names(global.disciplines_data);
-    for (var i = 0; i < array_length(disciplines_array); i++) {
-        if (disciplines_array[i] == selected_discipline) {
-            var powers_array = global.disciplines_data[$ disciplines_array[i]].powers;
-            if (_using_tome) {
-                power_index = irandom(array_length(powers_array));
-                _tome_perils_chance = global.disciplines_data[$ disciplines_array[i]].perils_chance;
-                _tome_perils_strength = global.disciplines_data[$ disciplines_array[i]].perils_strength;
-            }
-            _power_name = powers_array[power_index];
+    if (struct_exists(global.disciplines_data, selected_discipline)) {
+        var powers_array = get_discipline_data(selected_discipline, "powers");
+        if (_using_tome) {
+            power_index = irandom(array_length(powers_array));
+            _tome_perils_chance = get_discipline_data(selected_discipline, "perils_chance");
+            _tome_perils_strength = get_discipline_data(selected_discipline, "perils_strength");
         }
+        _power_name = powers_array[power_index];
     }
 
     // Change cases here
