@@ -11,10 +11,10 @@ jobs:
       pull-requests: write
     runs-on: ubuntu-latest
     steps:
-    - name: "Run Srvaroa Labeler"
-      uses: srvaroa/labeler@master
-      env:
-        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-      with:
-        config_path: .github/stale_labeler.yml
-        fail_on_error: true
+      - name: "Run Srvaroa Labeler"
+        uses: srvaroa/labeler@master
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        with:
+          config_path: .github/stale_labeler.yml
+          fail_on_error: true
