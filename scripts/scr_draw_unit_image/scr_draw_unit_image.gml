@@ -365,13 +365,7 @@ function scr_draw_unit_image(_background=false){
     
         // if (_armour_type!=ArType.Norm) then draw_backpack=false;
 
-        if (unit_back=="Jump Pack"){
-			draw_backpack=false;
-			back_equipment=BackType.Jump;
-		}else if (unit_back=="Heavy Weapons Pack"){
-            draw_backpack=false;
-			back_equipment=BackType.Dev;
-        } else if (unit_back="Servo-arm"){
+        if (unit_back="Servo-arm"){
             servo_arm=1;
         } else if (unit_back="Servo-harness"){
             servo_harness=1;
@@ -540,7 +534,7 @@ function scr_draw_unit_image(_background=false){
                // if (skin_color!=6) then draw_sprite(spr_clothing_colors,clothing_style,x_surface_offset,y_surface_offset);
             } else {
 
-                var _complex_armours = ["MK3 Iron Armour", "MK4 Maximus","Terminator Armour","Tartaros","MK7 Aquila", "Power Armour", "MK8 Errant","Artificer Armour", "MK4 Maximus", "MK5 Heresy", "MK6 Corvus", "Dreadnought", "Scout Armour"];
+                static _complex_armours = ["MK3 Iron Armour", "MK4 Maximus","Terminator Armour","Tartaros","MK7 Aquila", "Power Armour", "MK8 Errant","Artificer Armour", "MK4 Maximus", "MK5 Heresy", "MK6 Corvus", "Dreadnought", "Scout Armour"];
                 if (array_contains(_complex_armours, armour())){
                     complex_set = new ComplexSet(self);
                     complex_livery = true;
@@ -590,28 +584,6 @@ function scr_draw_unit_image(_background=false){
                         halo_offset_y -= 20;
                     }
                     draw_sprite(spr_gear_halo,halo_type+halo_color,x_surface_offset,y_surface_offset+halo_offset_y);
-                }
-
-                 // Draw the backpack
-                if (draw_backpack){
-
-                    /*if (unit_progenitor == "Dark Angels") {
-                        if (unit_role == "Chapter Master") {
-                            _backpack_sprite = spr_da_backpack;
-                            _backpack_index = 1;
-                        } else if (unit_role == "Master of Sanctity") {
-                            _backpack_sprite = spr_da_chaplain;
-                            _backpack_index = 1;
-                        }
-                    }*/
-                }else{
-                    if (back_equipment==BackType.Jump){
-                        var color_variant = min(specialist_colours, 2);
-                        draw_sprite(spr_pack_jump,color_variant,x_surface_offset,y_surface_offset);
-                    } else if (back_equipment==BackType.Dev){
-                        var color_variant = min(specialist_colours, 2);
-                        draw_sprite(spr_pack_devastator,color_variant,x_surface_offset,y_surface_offset);
-                    }
                 }
 
                 if (armour_type == ArmourType.Terminator && complex_livery){
@@ -719,13 +691,6 @@ function scr_draw_unit_image(_background=false){
                         shader_set(sReplaceColor);
                     } else{                   
                         draw_sprite(armour_sprite,specialist_colours,x_surface_offset,y_surface_offset);
-                    }
-                    // Draw additional torso decals
-
-                    if (array_contains(["MK3 Iron Armour", "MK6 Corvus", "MK7 Aquila", "MK8 Errant"], unit_armour)){
-                        if (back_equipment == BackType.Jump || back_equipment == BackType.Dev){
-                            draw_sprite(mk7_chest_variants,1,x_surface_offset,y_surface_offset);
-                        }
                     }
                 } else if (array_length(armour_draw)){
                     draw_sprite(armour_draw[0], armour_draw[1],x_surface_offset,y_surface_offset);
@@ -955,7 +920,9 @@ function scr_draw_unit_image(_background=false){
              "right_eye",
              "crown",
              "backpack",
-             "backpack_decoration",
+            "backpack_augment",
+            "backpack_decoration",
+            "chest_fastening",
              "belt"
             ], _area
          )

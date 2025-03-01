@@ -188,6 +188,14 @@ function ComplexSet(unit) constructor{
                         }                         
                     }
                }
+               if (struct_exists(_mod, "equipped")){
+                    if (!unit.has_equipped(_mod.equipped)){
+                        if (!check_exception("equipped")){
+                            continue;
+                        }
+                    }
+               }
+
                 if (struct_exists(_mod, "traits")){
                     var _viable = false;
                     for (var a=0;a<array_length(_mod.traits);a++){
@@ -247,6 +255,8 @@ function ComplexSet(unit) constructor{
         cloak :unit.get_body_data("variation","cloak"),
         cloak_image : unit.get_body_data("image_0","cloak"),
         cloak_trim : unit.get_body_data("image_1","cloak"),
+        backpack_augment : unit.get_body_data("backpack_augment_variation","torso"),
+        chest_fastening : unit.get_body_data("chest_fastening","torso"),
     }
 
     static draw_component = function(component_name){
@@ -332,6 +342,7 @@ function ComplexSet(unit) constructor{
          if (unit.armour() == "MK4 Maximus" || unit.armour() == "MK3 Iron Armour"){
              _draw_order = [
                 "backpack",
+                "backpack_augment",
                 "backpack_decoration",
                  "armour",
                  "thorax_variants",
@@ -342,6 +353,7 @@ function ComplexSet(unit) constructor{
                  "robe",                 
                  "belt",                 
                  "chest_variants",
+                 "chest_fastening",
                  "head",
                  "left_trim",
                  "right_trim",
@@ -354,10 +366,12 @@ function ComplexSet(unit) constructor{
          } else {
              _draw_order = [
                 "backpack",
+                "backpack_augment",
                 "backpack_decoration",
                  "armour",
                  "thorax_variants",
                  "chest_variants",
+                 "chest_fastening",
                  "leg_variants",
                  "left_leg",
                  "right_leg",

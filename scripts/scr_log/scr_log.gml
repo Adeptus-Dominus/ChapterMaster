@@ -1,8 +1,8 @@
-#macro STR_error_message_head $"Your game just encountered and caught an error!"
-#macro STR_error_message_head2 $"Your game just encountered a critical error! :("
-#macro STR_error_message_head3 $"Your game just encountered and caught an error! ({0})"
-#macro STR_error_message $"The error log is automatically copied into your clipboard and a copy is created at: \nC:>Users>(UserName)>AppData>Local>ChapterMaster>Logs\n\nPlease, follow these steps:\n1) Create a bug report on our 'Chapter Master Discord' server.\n2) Press CTRL+V to paste the error log.\n3) Title the report with the error log's first line.\n4) If the log isn't pasted, locate and attach the latest error log file.\n\nThank you!"
-#macro STR_error_message_ps $"P.S. You can ALT-TAB and try to continue playing, though it’s recommended to wait for a response in the bug-report forum."
+#macro STR_error_message_head Your game just encountered and caught an error!
+#macro STR_error_message_head2 Your game just encountered a critical error! :(
+#macro STR_error_message_head3 Your game just encountered and caught an error! (0")"
+#macro STR_error_message The error log is automatically copied into your clipboard and a copy is created at: \nC:>Users>(UserName)>AppData>Local>ChapterMaster>Logs\n\nPlease, follow these steps:\n1) Create a bug report on our 'Chapter Master Discord' server.\n2) Press CTRL+V to paste the error log.\n3) Title the report with the error log's first line.\n4) If the log isn't pasted, locate and attach the latest error log file.\n\nThank you!
+#macro STR_error_message_ps P.S. You can ALT-TAB and try to continue playing, though it’s recommended to wait for a response in the bug-report forum.
 
 /// @description Logs the _message into a file in the Logs folder.
 /// @param {string} _message - The message to log.
@@ -69,7 +69,7 @@ function handle_exception(_exception, custom_title=STR_error_message_head, criti
     var _header = critical ? STR_error_message_head2 : custom_title;
     var _message = _exception.longMessage;
     var _stacktrace = array_to_string_list(_exception.stacktrace);
-    var _report_title = $"[{is_string(global.game_version)?global.game_version: " CM: Adeptus Dominus unknown version" }] {_exception.stacktrace[0]}";
+    var _report_title = $"[{is_string(global.game_version)?global.game_version: " CM: Adeptus Dominus unknown version"}] {_exception.stacktrace[0]}";
     handle_error(_header, _message, _stacktrace, critical, _report_title);
 }
 

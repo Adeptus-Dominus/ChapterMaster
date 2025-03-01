@@ -268,7 +268,7 @@ global.modular_drawing_items = [
         body_types :[0,2],
         position : "purity_seals",
         exp : {
-            min : 110,
+            min : 100,
         }
     },    
     {
@@ -286,7 +286,7 @@ global.modular_drawing_items = [
         armours : ["MK6 Corvus"],    
     },    
     {
-        sprite : spr_mk7_complex_belt,
+        sprite : spr_mk7_complex_crux_belt2,
         body_types :[0, 2],
         position : "belt",
         armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour", "Tartaros"],
@@ -394,7 +394,7 @@ global.modular_drawing_items = [
         sprite : spr_roman_cloak,
         body_types :[0],
         position : "cloak",
-        max_saturation : 50,
+        max_saturation : 35,
         overides : {
             "right_pauldron" : spr_ultra_right_shoulder_hanging,
         },
@@ -429,7 +429,39 @@ global.modular_drawing_items = [
         sprite : spr_sword_pendant,
         body_types :[0,2],
         position : "purity_seals",
-    },                                                   
+    },
+    {
+        sprite : spr_mk7_complex_belt,
+        body_types :[0],
+        position : "belt",
+        armours_exclude : ["MK3 Iron Armour", "MK4 Maximus"],
+        exp : {
+            min : 100,
+        },        
+    },
+    {
+        sprite : spr_dev_pack_complex,
+        body_types :[0],
+        position : "backpack_augment",
+        equipped : {
+            "mobi" : "Heavy Weapons Pack"
+        },
+        overides : {
+            "chest_fastening" : spr_backpack_fastening,
+        },        
+    },
+    {
+        sprite : spr_jump_pack_complex,
+        body_types :[0],
+        position : "backpack_augment",
+        equipped : {
+            "mobi" : "Jump Pack"
+        },
+        overides : {
+            "chest_fastening" : spr_backpack_fastening,
+        },        
+
+    }                                                       
 
 ];
 try{

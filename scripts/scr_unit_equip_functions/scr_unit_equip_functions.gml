@@ -359,3 +359,34 @@ function alter_unit_equipment(update_equipment, from_armoury=true, to_armoury=tr
 		}
 	}
 }
+
+function unit_has_equipped(check_equippment){
+	var equip_areas = struct_get_names(check_equippment);
+	var _has_equipped = true;
+	for (var i=0;i<array_length(equip_areas);i++){
+		switch(equip_areas[i]){
+			case "wep1":
+				_has_equipped =  weapon_one() == check_equippment.wep1;
+				break;
+			case "wep2":
+				_has_equipped =  weapon_two() == check_equippment.wep2;
+				break;
+			case "mobi":
+				_has_equipped =  mobility_item() == check_equippment.mobi;
+				break;
+			case "armour":
+				_has_equipped =  armour() == check_equippment.armour;
+				break;
+			case "gear":
+				_has_equipped =  gear() == check_equippment.gear;
+				break;								
+		}
+		if (!_has_equipped){
+			return false;
+		}
+	}	
+	return true;
+}
+
+
+
