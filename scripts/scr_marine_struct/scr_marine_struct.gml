@@ -658,6 +658,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 	static draw_unit_image = scr_draw_unit_image;
 	static display_wepaons = scr_ui_display_weapons;
 	static unit_profile_text = scr_unit_detail_text;
+	static has_equipped = unit_has_equipped;
 	static unit_equipment_data= function(){
 		var armour_data=get_armour_data()
 		var gear_data=get_gear_data()
@@ -715,9 +716,11 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			variation: irandom(10),
 			backpack_variation: irandom(100),
 			backpack_decoration_variation : irandom(100),
+			backpack_augment_variation : irandom(100),
 			thorax_variation : irandom(100),
 			chest_variation : irandom(100),
 			belt_variation : irandom(100),
+			chest_fastening : irandom(100),
 		}, 
 		"left_arm":{
 			trim_variation : irandom(100),
@@ -938,6 +941,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 					body.cloak.type = "pelt";
 				} else {
 					body.cloak.type = "cloth";
+					body.cloak.variation = irandom(100);
 					body.cloak.image_0 = irandom(100);
 					body.cloak.image_1 = irandom(100);
 				}

@@ -285,7 +285,11 @@ buttons = {
         {   
             str1 : "Crusader",
             font : fnt_40k_14b,
-        },                                                                             
+        },
+        {   
+            str1 : "Gothic",
+            font : fnt_40k_14b,
+        },                                                                              
     ], "Chapter Visual Styles")  
 }
 
