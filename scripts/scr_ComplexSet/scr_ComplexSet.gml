@@ -263,7 +263,7 @@ function ComplexSet(unit) constructor{
                         var _spec_over = _overide_set[i];
                         if (_spec_over[0]<=choice && _spec_over[1]>choice){
                             var _override_areas = struct_get_names(_spec_over[2]);
-                            for (var i=0;i<array_length(_override_areas);i++){
+                            for (var j = 0;j <array_length(_override_areas);j++){
                                 replace_area(_override_areas[i], _spec_over[2][$_override_areas[i]]);
                             }
                         }
