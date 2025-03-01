@@ -638,6 +638,9 @@ static purity_seals_and_hangings = function(){
     static replace_area = function(area, add_sprite, overide_data = "none"){
         if (struct_exists(self, area)){
             sprite_delete(self[$area]);
+            if (struct_exists(overides, area)){
+                struct_remove(overides,area);
+            }            
         }
         self[$ area] = sprite_duplicate(add_sprite);
         if (overide_data != "none"){
@@ -649,6 +652,9 @@ static purity_seals_and_hangings = function(){
         if (struct_exists(self, area)){
             sprite_delete(self[$area]);
             struct_remove(self, area);
+            if (struct_exists(overides, area)){
+                struct_remove(overides,area);
+            }
         }
     }
 
