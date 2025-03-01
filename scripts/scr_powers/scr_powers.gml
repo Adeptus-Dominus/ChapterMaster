@@ -888,7 +888,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                     }
 
                     _battle_log_message = _cast_flavour_text + _power_flavour_text  + _casualties_flavour_text;
-                    _battle_log_priority = _casualties * 10;
+                    _battle_log_priority = _casualties;
                     add_battle_log_message(_battle_log_message, _battle_log_priority, 135);
 
                     if (_casualties >= 1) {
@@ -991,7 +991,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                     }
 
                     _battle_log_message = _cast_flavour_text + _power_flavour_text + _casualties_flavour_text;
-                    _battle_log_priority = _casualties * 100;
+                    _battle_log_priority = _casualties;
                     add_battle_log_message(_battle_log_message, _battle_log_priority, 135);
 
                     if (_casualties >= 1) {

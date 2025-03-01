@@ -452,9 +452,9 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 		// show_message("Added to message slot: "+string(obj_ncombat.messages)+"#"+string(leader_message));
 		// show_message(string(obj_ncombat.message[obj_ncombat.messages]));
 
-		if (target.dudes_vehicle[targeh] = 1) then obj_ncombat.message_sz[obj_ncombat.messages] = max(number_of_shots, casulties * 10) + (0.5 - (obj_ncombat.messages / 100));
+		if (target.dudes_vehicle[targeh] = 1) then obj_ncombat.message_sz[obj_ncombat.messages] = casulties * 10 + (0.5 - (obj_ncombat.messages / 100));
 		else {
-			obj_ncombat.message_sz[obj_ncombat.messages] = max(number_of_shots, casulties) + (0.5 - (obj_ncombat.messages / 100));
+			obj_ncombat.message_sz[obj_ncombat.messages] = casulties + (0.5 - (obj_ncombat.messages / 100));
 		}
 
 		obj_ncombat.message_priority[obj_ncombat.messages] = led;
@@ -471,9 +471,9 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 		// show_message("Added to message slot: "+string(obj_ncombat.messages)+"#"+string(leader_message));
 		// show_message(string(obj_ncombat.message[obj_ncombat.messages]));
 
-		if (target.dudes_vehicle[targeh] = 1) then obj_ncombat.message_sz[obj_ncombat.messages] = max(number_of_shots, casulties * 10) + (0.5 - (obj_ncombat.messages / 100));
+		if (target.dudes_vehicle[targeh] = 1) then obj_ncombat.message_sz[obj_ncombat.messages] = casulties * 10 + (0.5 - (obj_ncombat.messages / 100));
 		else {
-			obj_ncombat.message_sz[obj_ncombat.messages] = max(number_of_shots, casulties) + (0.5 - (obj_ncombat.messages / 100));
+			obj_ncombat.message_sz[obj_ncombat.messages] = casulties + (0.5 - (obj_ncombat.messages / 100));
 		}
 
 		obj_ncombat.message_priority[obj_ncombat.messages] = led;
