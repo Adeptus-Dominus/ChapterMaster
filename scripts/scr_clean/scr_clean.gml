@@ -1,3 +1,110 @@
+/// @function compress_enemy_array
+/// @description Compresses column data arrays by removing gaps left by eliminated entities, processes only the first 20 indices
+/// @param {id.Instance} _target_column - The column instance to clean up
+/// @returns {undefined} No return value; modifies target column directly
+function compress_enemy_array(_target_column) {
+	if (!instance_exists(_target_column)) {
+		return;
+	}
+
+	with (_target_column) {
+		// Define all data arrays to be processed with their default values
+        var _data_arrays = [{
+            arr: dudes,
+            def: ""
+        }, {
+            arr: dudes_special,
+            def: ""
+        }, {
+            arr: dudes_num,
+            def: 0
+        }, {
+            arr: dudes_ac,
+            def: 0
+        }, {
+            arr: dudes_hp,
+            def: 0
+        }, {
+            arr: dudes_vehicle,
+            def: 0
+        }, {
+            arr: dudes_damage,
+            def: 0
+        }];
+
+		// Track which slots are empty
+		var _empty_slots = array_create(20, false);
+		for (var i = 0; i < array_length(_empty_slots); i++) {
+			if (dudes_num[i] <= 0) {
+				_empty_slots[i] = true;
+			}
+		}
+
+		// Compress arrays by shifting data to fill empty slots
+		for (var i = 0; i < array_length(_empty_slots) - 1; i++) {
+			if (_empty_slots[i] && !_empty_slots[i + 1]) {
+				// Move data from position i+1 to i
+				for (var j = 0; j < array_length(_data_arrays); j++) {
+					_data_arrays[j].arr[i] = _data_arrays[j].arr[i + 1];
+					_data_arrays[j].arr[i + 1] = _data_arrays[j].def;
+				}
+				_empty_slots[i] = false;
+				_empty_slots[i + 1] = true;
+				i = 0; // Restart compression from beginning to ensure proper packing
+			}
+		}
+	}
+}
+
+
+/// @function destroy_empty_column
+/// @description Destroys the column if it's empty
+/// @param {id.Instance} _target_column - The column instance to clean up
+function destroy_empty_column(_target_column) {
+    // Destroy empty non-player columns to conserve memory and processing
+    with (_target_column) {
+        if ((men + veh + medi == 0) && (owner != 1)) {
+            instance_destroy();
+        }
+    }
+}
+
+/// @function check_dead_marines
+/// @description Checks if the marine is dead and then runs various related code
+/// @param {id.Instance} _target_column - The column instance to clean up
+/// @mixin
+function check_dead_marines(unit_struct, unit_index) {
+    if (unit_struct.hp() <= 0 && marine_dead[unit_index] < 1) {
+        marine_dead[unit_index] = 1;
+        units_lost += 1;
+        obj_ncombat.player_forces -= 1;
+
+        // Record loss
+        var existing_index = array_get_index(lost, marine_type[unit_index]);
+        if (existing_index != -1) {
+            lost_num[existing_index] += 1;
+        } else {
+            array_push(lost, marine_type[unit_index]);
+            array_push(lost_num, 1);
+        }
+        
+        // Remove dead infantry from further hits
+        array_delete(valid_marines, unit_index, 1);
+
+        // Check red thirst threadhold
+        if (obj_ncombat.red_thirst == 1 && marine_type[unit_index] != "Death Company" && ((obj_ncombat.player_forces / obj_ncombat.player_max) < 0.9)) {
+            obj_ncombat.red_thirst = 2;
+        }
+        
+
+        if (unit_struct.IsSpecialist("dreadnoughts")) {
+            dreads -= 1;
+        } else {
+            men -= 1;
+        }
+    }
+}
+
 function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_damage, hostile_weapon, hostile_range, hostile_splash) {
     // Converts enemy scr_shoot damage into player marine or vehicle casualties.
     //
@@ -143,38 +250,7 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
                     marine.add_or_sub_health(-minus);
 
                     // Check if marine is dead
-                    if (marine.hp() <= 0 && marine_dead[marine_index] < 1) {
-                        marine_dead[marine_index] = 1;
-                        units_lost += 1;
-                        obj_ncombat.player_forces -= 1;
-
-                        // Record loss
-                        var existing_index = array_get_index(lost, marine_type[marine_index]);
-                        if (existing_index != -1) {
-                            lost_num[existing_index] += 1;
-                        } else {
-                            array_push(lost, marine_type[marine_index]);
-                            array_push(lost_num, 1);
-                        }
-                        
-                        // Remove dead infantry from further hits
-                        array_delete(valid_marines, marine_index, 1);
-
-                        // Check red thirst threadhold
-                        if (
-                            obj_ncombat.red_thirst == 1 &&
-                            marine_type[marine_index] != "Death Company" &&
-                            ((obj_ncombat.player_forces / obj_ncombat.player_max) < 0.9)
-                        ) {
-                            obj_ncombat.red_thirst = 2;
-                        }
-
-                        if (marine.IsSpecialist("dreadnoughts")) {
-                            dreads -= 1;
-                        } else {
-                            men -= 1;
-                        }
-                    }
+                    handle_marine_death(marine, marine_index);
                 }
 
                 // After processing, update messages if any hits occurred
