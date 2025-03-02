@@ -3,7 +3,8 @@ TODO: Change flavour_text format from a struct with structs, to an array with st
 I see no reason to have these named structs, as their names are not used for anything and just make looping more difficult;
 */
 {
-    "Minor Smite": {
+    "minor_smite": {
+        "name": "Minor Smite",
         "type": "attack",
         "range": 5,
         "target_type": 3,
@@ -30,7 +31,8 @@ I see no reason to have these named structs, as their names are not used for any
             }
         }
     },
-    "Wave of Entropy": {
+    "wave_of_entropy": {
+        "name": "Wave of Entropy",
         "type": "attack",
         "range": 3,
         "target_type": 3,
@@ -58,7 +60,8 @@ I see no reason to have these named structs, as their names are not used for any
         },
         "sorcery": true
     },
-    "Wave of Change": {
+    "wave_of_change": {
+        "name": "Wave of Change",
         "type": "attack",
         "range": 3,
         "target_type": 3,
@@ -75,7 +78,8 @@ I see no reason to have these named structs, as their names are not used for any
         },
         "sorcery": true
     },
-    "Insect Swarm": {
+    "insect_swarm": {
+        "name": "Insect Swarm",
         "type": "attack",
         "range": 3,
         "target_type": 3,
@@ -93,7 +97,8 @@ I see no reason to have these named structs, as their names are not used for any
         },
         "sorcery": true
     },
-    "Blood Dementia": {
+    "blood_dementia": {
+        "name": "Blood Dementia",
         "type": "buff",
         "range": 0,
         "target_type": 0,
@@ -112,7 +117,8 @@ I see no reason to have these named structs, as their names are not used for any
             }
         }
     },
-    "Putrid Vomit": {
+    "putrid_vomit": {
+        "name": "Putrid Vomit",
         "type": "attack",
         "range": 2.1,
         "target_type": 3,
@@ -140,7 +146,8 @@ I see no reason to have these named structs, as their names are not used for any
             }
         }
     },
-    "Warp Bolts": {
+    "warp_bolts": {
+        "name": "Warp Bolts",
         "type": "attack",
         "range": 5,
         "target_type": 3,
@@ -159,7 +166,8 @@ I see no reason to have these named structs, as their names are not used for any
         },
         "sorcery": true
     },
-    "Warp Beam": {
+    "warp_beam": {
+        "name": "Warp Beam",
         "type": "attack",
         "range": 8,
         "target_type": 4,
@@ -176,7 +184,8 @@ I see no reason to have these named structs, as their names are not used for any
         },
         "sorcery": true
     },
-    "Rainbow Beam": {
+    "rainbow_beam": {
+        "name": "Rainbow Beam",
         "type": "attack",
         "range": 10,
         "target_type": 3,
@@ -193,7 +202,8 @@ I see no reason to have these named structs, as their names are not used for any
         },
         "sorcery": true
     },
-    "Hysterical Frenzy": {
+    "hysterical_frenzy": {
+        "name": "Hysterical Frenzy",
         "type": "buff",
         "range": 0,
         "target_type": 0,
@@ -221,7 +231,8 @@ I see no reason to have these named structs, as their names are not used for any
         },
         "sorcery": true
     },
-    "Symphony of Pain": {
+    "symphony_of_pain": {
+        "name": "Symphony of Pain",
         "type": "attack",
         "range": 2.1,
         "target_type": 3,
@@ -239,7 +250,8 @@ I see no reason to have these named structs, as their names are not used for any
         },
         "sorcery": true
     },
-    "Kamehameha": {
+    "kamehameha": {
+        "name": "Kamehameha",
         "type": "buff",
         "range": 0,
         "target_type": 0,
@@ -256,7 +268,8 @@ I see no reason to have these named structs, as their names are not used for any
         },
         "sorcery": true
     },
-    "Imperator Maior": {
+    "imperator_maior": {
+        "name": "Imperator Maior",
         "type": "attack",
         "range": 5,
         "target_type": 3,
@@ -273,7 +286,8 @@ I see no reason to have these named structs, as their names are not used for any
         },
         "sorcery": true
     },
-    "Smite": {
+    "smite": {
+        "name": "Smite",
         "type": "attack",
         "range": 5,
         "target_type": 3,
@@ -304,7 +318,8 @@ I see no reason to have these named structs, as their names are not used for any
         },
         "sorcery": true
     },
-    "Force Dome": {
+    "force_dome": {
+        "name": "Force Dome",
         "type": "buff",
         "range": 1,
         "target_type": 1,
@@ -332,7 +347,8 @@ I see no reason to have these named structs, as their names are not used for any
         },
         "sorcery": true
     },
-    "Machine Curse": {
+    "machine_curse": {
+        "name": "Machine Curse",
         "type": "attack",
         "range": 5,
         "target_type": 4,
@@ -348,7 +364,8 @@ I see no reason to have these named structs, as their names are not used for any
             }
         }
     },
-    "Avenge": {
+    "avenge": {
+        "name": "Avenge",
         "type": "attack",
         "range": 5,
         "target_type": 3,
@@ -378,7 +395,8 @@ I see no reason to have these named structs, as their names are not used for any
         },
         "sorcery": true
     },
-    "Quickening": {
+    "quickening": {
+        "name": "Quickening",
         "type": "buff",
         "range": 0,
         "target_type": 0,
@@ -394,7 +412,8 @@ I see no reason to have these named structs, as their names are not used for any
             }
         }
     },
-    "Might of the Ancients": {
+    "might_of_the_ancients": {
+        "name": "Might of the Ancients",
         "type": "buff",
         "range": 0,
         "target_type": 0,
@@ -410,7 +429,8 @@ I see no reason to have these named structs, as their names are not used for any
             }
         }
     },
-    "Vortex of Doom": {
+    "vortex_of_doom": {
+        "name": "Vortex of Doom",
         "type": "attack",
         "range": 5,
         "target_type": 3,
@@ -438,7 +458,8 @@ I see no reason to have these named structs, as their names are not used for any
         },
         "sorcery": true
     },
-    "Breathe Fire": {
+    "breathe_fire": {
+        "name": "Breathe Fire",
         "type": "attack",
         "range": 3,
         "target_type": 3,
@@ -465,7 +486,8 @@ I see no reason to have these named structs, as their names are not used for any
             }
         }
     },
-    "Fiery Form": {
+    "fiery_form": {
+        "name": "Fiery Form",
         "type": "buff",
         "range": 0,
         "target_type": 0,
@@ -492,7 +514,8 @@ I see no reason to have these named structs, as their names are not used for any
             }
         }
     },
-    "Fire Shield": {
+    "fire_shield": {
+        "name": "Fire Shield",
         "type": "buff",
         "range": 0,
         "target_type": 0,
@@ -519,7 +542,8 @@ I see no reason to have these named structs, as their names are not used for any
             }
         }
     },
-    "Inferno": {
+    "inferno": {
+        "name": "Inferno",
         "type": "attack",
         "range": 4,
         "target_type": 3,
@@ -548,7 +572,8 @@ I see no reason to have these named structs, as their names are not used for any
             }
         }
     },
-    "Sun Burst": {
+    "sun_burst": {
+        "name": "Sun Burst",
         "type": "attack",
         "range": 8,
         "target_type": 4,
@@ -576,7 +601,8 @@ I see no reason to have these named structs, as their names are not used for any
         },
         "sorcery": true
     },
-    "Molten Beam": {
+    "molten_beam": {
+        "name": "Molten Beam",
         "type": "attack",
         "range": 8,
         "target_type": 4,
@@ -604,7 +630,8 @@ I see no reason to have these named structs, as their names are not used for any
         },
         "sorcery": true
     },
-    "Blood Boil": {
+    "blood_boil": {
+        "name": "Blood Boil",
         "type": "attack",
         "range": 3,
         "target_type": 3,
@@ -620,7 +647,8 @@ I see no reason to have these named structs, as their names are not used for any
             }
         }
     },
-    "Iron Arm": {
+    "iron_arm": {
+        "name": "Iron Arm",
         "type": "buff",
         "range": 0,
         "target_type": 0,
@@ -636,7 +664,8 @@ I see no reason to have these named structs, as their names are not used for any
             }
         }
     },
-    "Endurance": {
+    "endurance": {
+        "name": "Endurance",
         "type": "buff",
         "range": 0,
         "target_type": 0,
@@ -652,7 +681,8 @@ I see no reason to have these named structs, as their names are not used for any
             }
         }
     },
-    "Regenerate": {
+    "regenerate": {
+        "name": "Regenerate",
         "type": "buff",
         "range": 0,
         "target_type": 0,
@@ -668,7 +698,8 @@ I see no reason to have these named structs, as their names are not used for any
             }
         }
     },
-    "Haemorrhage": {
+    "haemorrhage": {
+        "name": "Haemorrhage",
         "type": "attack",
         "range": 3,
         "target_type": 3,
@@ -684,7 +715,8 @@ I see no reason to have these named structs, as their names are not used for any
             }
         }
     },
-    "Crush": {
+    "crush": {
+        "name": "Crush",
         "type": "attack",
         "range": 4,
         "target_type": 3,
@@ -700,7 +732,8 @@ I see no reason to have these named structs, as their names are not used for any
             }
         }
     },
-    "Shockwave": {
+    "shockwave": {
+        "name": "Shockwave",
         "type": "attack",
         "range": 4,
         "target_type": 3,
@@ -716,7 +749,8 @@ I see no reason to have these named structs, as their names are not used for any
             }
         }
     },
-    "Telekinetic Dome": {
+    "telekinetic_dome": {
+        "name": "Telekinetic Dome",
         "type": "buff",
         "range": 0,
         "target_type": 0,
@@ -732,7 +766,8 @@ I see no reason to have these named structs, as their names are not used for any
             }
         }
     },
-    "Spatial Distortion": {
+    "spatial_distortion": {
+        "name": "Spatial Distortion",
         "type": "buff",
         "range": 0,
         "target_type": 0,
@@ -748,7 +783,8 @@ I see no reason to have these named structs, as their names are not used for any
             }
         }
     },
-    "Living Lightning": {
+    "living_lightning": {
+        "name": "Living Lightning",
         "type": "attack",
         "range": 5,
         "target_type": 3,
@@ -764,7 +800,8 @@ I see no reason to have these named structs, as their names are not used for any
             }
         }
     },
-    "Stormbringer": {
+    "stormbringer": {
+        "name": "Stormbringer",
         "type": "buff",
         "range": 1,
         "target_type": 1,
@@ -780,7 +817,8 @@ I see no reason to have these named structs, as their names are not used for any
             }
         }
     },
-    "Murderous Hurricane": {
+    "murderous_hurricane": {
+        "name": "Murderous Hurricane",
         "type": "attack",
         "range": 4,
         "target_type": 3,
@@ -796,7 +834,8 @@ I see no reason to have these named structs, as their names are not used for any
             }
         }
     },
-    "Fury of the Wolf Spirits": {
+    "fury_of_the_wolf_spirits": {
+        "name": "Fury of the Wolf Spirits",
         "type": "attack",
         "range": 3,
         "target_type": 3,
@@ -813,7 +852,8 @@ I see no reason to have these named structs, as their names are not used for any
             }
         }
     },
-    "Thunderclap": {
+    "thunderclap": {
+        "name": "Thunderclap",
         "type": "attack",
         "range": 1.1,
         "target_type": 3,
@@ -829,7 +869,8 @@ I see no reason to have these named structs, as their names are not used for any
             }
         }
     },
-    "Jaws of the World Wolf": {
+    "jaws_of_the_world_wolf": {
+        "name": "Jaws of the World Wolf",
         "type": "attack",
         "range": 5,
         "target_type": 3,
