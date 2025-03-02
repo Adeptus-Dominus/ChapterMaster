@@ -886,6 +886,12 @@ var all_disadvantages = [
         meta : ["Status"],
     }, 
     {
+        name : "Lost Fleet",
+        description : "Your chapter has seen most of it's fleet lost during a recent engagement.",
+        value : 30,
+        meta : ["Naval"],
+    },
+    {
         name : "Never Forgive",
         description : "In the past traitors broke off from your chapter.  They harbor incriminating secrets or heritical beliefs, and as thus, must be hunted down whenever possible.",
         value : 15,
