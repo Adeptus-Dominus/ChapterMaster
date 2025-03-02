@@ -320,11 +320,11 @@ function ComplexSet(unit) constructor{
         setup_complex_livery_shader(unit.role(),unit);
         draw_cloaks();
          //draw_unit_arms(x_surface_offset, y_surface_offset, armour_type, specialist_colours, hide_bionics, complex_set);
-         draw_unit_arms();
+        draw_unit_arms();
         var _complex_helm = false;
         var unit_role = unit.role();
-        var _role = obj_ini.role[100];
-        var _comp_helms = obj_ini.complex_livery_data;
+        var _role = active_roles();
+        var _comp_helms = instance_exists(obj_creation) ? obj_creation.complex_livery_data : obj_ini.complex_livery_data;
         if (unit_role ==_role[eROLE.Sergeant]){
             _complex_helm = _comp_helms.sgt;
         }else if(unit_role==_role[eROLE.VeteranSergeant]){
@@ -399,7 +399,7 @@ function ComplexSet(unit) constructor{
          purity_seals_and_hangings();
                               
     }
-static purity_seals_and_hangings = function(){
+    static purity_seals_and_hangings = function(){
         //purity seals/decorations
         //TODO imprvoe this logic to be more extendable
 
@@ -619,7 +619,7 @@ static purity_seals_and_hangings = function(){
         _shader_set_multiply_blend(127, 107, 89);
         draw_component("cloak");
 
-        _shader_set_multiply_blend(obj_controller.trim_colour_replace[0]*255, obj_controller.trim_colour_replace[1]*255, obj_controller.trim_colour_replace[2]*255);
+        //_shader_set_multiply_blend(obj_controller.trim_colour_replace[0]*255, obj_controller.trim_colour_replace[1]*255, obj_controller.trim_colour_replace[2]*255);
         draw_component("cloak_image");
         draw_component("cloak_trim");
 
@@ -682,7 +682,7 @@ static purity_seals_and_hangings = function(){
     }
 
     static add_relative_to_status = function(area, add_sprite, status_level, overide_data="none"){
-    	var _roles = obj_ini.role[100];
+    	var _roles = active_roles();
     	var tiers = [
     		["Chapter Master"],
     		["Forge Master", "Master of Sanctity","Master of the Apothecarion",string("Chief {0}",_roles[eROLE.Librarian])],

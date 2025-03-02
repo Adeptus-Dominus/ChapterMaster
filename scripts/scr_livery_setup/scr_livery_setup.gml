@@ -786,7 +786,12 @@ function scr_livery_setup(){
         var _cultures = buttons.culture_styles;
         _cultures.x1 = right_data_slate.XX+30;
         _cultures.y1 = right_data_slate.YY+80
-        _cultures.max_width = right_data_slate.width-100;
+        _cultures.max_width = right_data_slate.width-120;
+        _cultures.on_change = function(){
+            var _picker = obj_creation.livery_picker;
+            _picker.shuffle_dummy();
+            _picker.reset_image();
+        }
         _cultures.draw();
     }
 
