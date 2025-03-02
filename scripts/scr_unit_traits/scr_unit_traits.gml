@@ -2,6 +2,9 @@ function initialize_marine_traits(){
 	global.trait_list = json_to_gamemaker(working_directory + "\\data\\traits.json", json_parse);
 }
 
+function marine_has_trait(wanted_trait){
+	return array_contains(traits, wanted_trait);
+}
 //TODO Jsonify
 global.astartes_trait_dist = [
 		[

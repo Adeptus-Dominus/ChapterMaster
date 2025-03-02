@@ -236,7 +236,7 @@ function scr_draw_unit_image(_background=false){
 
 
 
-    var _role = obj_ini.role[100];
+    var _role = active_roles();
     var complex_set={};    
     var x_surface_offset = 200;
     var y_surface_offset = 110;
@@ -246,9 +246,11 @@ function scr_draw_unit_image(_background=false){
     draw_set_font(fnt_40k_14b);
     draw_set_color(c_gray);
 	var xx=__view_get( e__VW.XView, 0 )+0, yy=__view_get( e__VW.YView, 0 )+0, bb="", img=0;
-    var modest_livery = obj_controller.modest_livery;
-    var progenitor_visuals = obj_controller.progenitor_visuals;
-    var draw_sequence = [];
+    var _controller = instance_exists(obj_controller);
+
+    var modest_livery = _controller ? obj_controller.modest_livery : 0;
+    var progenitor_visuals = _controller ? obj_controller.progenitor_visuals : 0;
+
     try {
     if (name_role()!="") and (base_group=="astartes"){
         for (var i = 1; i <= 2; i++) {
@@ -272,11 +274,9 @@ function scr_draw_unit_image(_background=false){
         var halo_bypass = false;
         var arm_bypass = false;
         var armour_draw = [];
-		var specialist_colours=obj_ini.col_special; 
+		var specialist_colours=instance_exists(obj_ini) ? obj_ini.col_special : obj_creation.col_special;
         var specific_armour_sprite = "none";
-        var unit_chapter = global.chapter_name;
-        var unit_progenitor = progenitor_visuals ? progenitor_map() : 0;
-        var unit_is_sniper = false;
+        var unit_chapter = instance_exists(obj_creation)? obj_creation.chapter_name : global.chapter_name;
         var unit_role = role();
         var unit_wep1=weapon_one();
         var unit_wep2=weapon_two();
@@ -285,7 +285,7 @@ function scr_draw_unit_image(_background=false){
         var unit_back=mobility_item()
         var unit_specialization=UnitSpecialization.None;
         var unit_special_colours=0;
-        var skin_color=obj_ini.skin_color;
+        var skin_color=instance_exists(obj_ini) ? obj_ini.skin_color : 0;
         var armour_type = ArmourType.Normal;
         var armour_sprite = spr_weapon_blank;
         var complex_livery = false;
@@ -414,8 +414,7 @@ function scr_draw_unit_image(_background=false){
             // also not ideal way of creating colour variation but it's a first pass
             var shader_array_set = array_create(8, -1);
         
-            pauldron_trim=obj_controller.trim;
-			specialist_colours=obj_ini.col_special;
+            pauldron_trim=instance_exists(obj_controller) ? obj_controller.trim : obj_creation.trim;
 			//TODO complex shader means no need for all this edge case stuff
 			
 
@@ -766,23 +765,13 @@ function scr_draw_unit_image(_background=false){
 				yep=0;
                 if (scr_has_adv("Tech-Brothers")){
                     helm_ii=2;
-                }else if (scr_has_adv("Never Forgive") || obj_ini.progenitor == ePROGENITOR.DARK_ANGELS){
+                }else if (scr_has_adv("Never Forgive") ){
                     helm_ii=3;
                 } else if (reverent_guardians) {
                     helm_ii=4;
                 }
                 draw_sprite(spr_honor_helm,helm_ii,x_surface_offset-2,y_surface_offset-11);     
 			}
-
-            // Drawing Robes
-            if (
-                ((unit_chapter == "Dark Angels") || (obj_ini.progenitor == ePROGENITOR.DARK_ANGELS)) &&
-                (unit_role != _role[eROLE.Sergeant]) &&
-                (unit_role != _role[eROLE.VeteranSergeant])
-            ) {
-                robes_bypass = true;
-                robes_hood_bypass = true;
-            }
 
             var shield_offset_x = 0;
             var shield_offset_y = 0;

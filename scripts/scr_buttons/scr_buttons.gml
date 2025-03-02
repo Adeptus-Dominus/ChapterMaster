@@ -302,7 +302,7 @@ function multi_select(options_array, title)constructor{
 	y1 = 0;
 	x2 = 0;
 	y2 = 0;
-
+	on_change = false;
 	active_col = #009500;
 	innactive_col = c_gray;	
 	max_width = 0;
@@ -315,6 +315,7 @@ function multi_select(options_array, title)constructor{
 	}
 	static update = item_data_updater
 	static draw = function(){
+		var _change_method = is_callable(on_change);
 		draw_text(x1, y1, title);
 
 		var _prev_x = x1;
@@ -325,7 +326,11 @@ function multi_select(options_array, title)constructor{
 			_cur_opt.x1 = _prev_x;
 			_cur_opt.y1 = _prev_y;
 			_cur_opt.update()
-			_cur_opt.clicked();
+			if (_cur_opt.clicked()){
+				if (_change_method){
+					on_change();
+				}
+			}
 			_cur_opt.button_color = _cur_opt.active ? active_col: innactive_col;
 			_cur_opt.draw();
 			items_on_row++
