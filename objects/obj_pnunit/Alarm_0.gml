@@ -27,14 +27,29 @@ try {
     var range_shoot="";
     var dist=point_distance(x,y,enemy.x,enemy.y)/10;
 
-    for (var i=0;i<array_length(unit_struct);i++){
-        if (marine_mshield[i]>0) then marine_mshield[i]-=1;
-        if (marine_quick[i]>0) then marine_quick[i]-=1;
-        if (marine_might[i]>0) then marine_might[i]-=1;
-        if (marine_fiery[i]>0) then marine_fiery[i]-=1;
-        if (marine_fshield[i]>0) then marine_fshield[i]-=1;
-        if (marine_dome[i]>0) then marine_dome[i]-=1;
-        if (marine_spatial[i]>0) then marine_spatial[i]-=1;
+    //* Psychic power buffs
+    for (var i = 0; i < array_length(unit_struct); i++) {
+        if (marine_mshield[i] > 0) {
+            marine_mshield[i] -= 1;
+        }
+        if (marine_quick[i] > 0) {
+            marine_quick[i] -= 1;
+        }
+        if (marine_might[i] > 0) {
+            marine_might[i] -= 1;
+        }
+        if (marine_fiery[i] > 0) {
+            marine_fiery[i] -= 1;
+        }
+        if (marine_fshield[i] > 0) {
+            marine_fshield[i] -= 1;
+        }
+        if (marine_dome[i] > 0) {
+            marine_dome[i] -= 1;
+        }
+        if (marine_spatial[i] > 0) {
+            marine_spatial[i] -= 1;
+        }
     }
 
     if (instance_exists(obj_enunit)){
