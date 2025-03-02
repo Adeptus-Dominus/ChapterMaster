@@ -448,50 +448,9 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 				}
 			}
 
-			if (stop = 0) then with(target_object) {
-				var j, good, open;
-				j = 0;
-				good = 0;
-				open = 0;
-				repeat(20) {
-					j += 1;
-					if (dudes_num[j] <= 0) {
-						dudes[j] = "";
-						dudes_special[j] = "";
-						dudes_num[j] = 0;
-						dudes_ac[j] = 0;
-						dudes_hp[j] = 0;
-						dudes_vehicle[j] = 0;
-						dudes_damage[j] = 0;
-					}
-					if (dudes[j] = "") and(dudes[j + 1] != "") {
-						dudes[j] = dudes[j + 1];
-						dudes_special[j] = dudes_special[j + 1];
-						dudes_num[j] = dudes_num[j + 1];
-						dudes_ac[j] = dudes_ac[j + 1];
-						dudes_hp[j] = dudes_hp[j + 1];
-						dudes_vehicle[j] = dudes_vehicle[j + 1];
-						dudes_damage[j] = dudes_damage[j + 1];
-
-						dudes[j + 1] = "";
-						dudes_special[j + 1] = "";
-						dudes_num[j + 1] = 0;
-						dudes_ac[j + 1] = 0;
-						dudes_hp[j + 1] = 0;
-						dudes_vehicle[j + 1] = 0;
-						dudes_damage[j + 1] = 0;
-					}
-				}
-				j = 0;
-			}
-			if (target_object.men + target_object.veh + target_object.medi = 0) and(target_object.owner != 1) {
-				with(target_object) {
-					instance_destroy();
-				}
-			}
-
-			if (melee_or_ranged = "melee") {
-				// lololol
+			if (stop = 0) {
+                compress_enemy_array(target_object);
+                destroy_empty_column(target_object);
 			}
 
 		}
