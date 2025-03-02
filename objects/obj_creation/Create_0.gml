@@ -880,6 +880,11 @@ var all_disadvantages = [
         value : 50,
     },
     {
+        name : "Depleted Armamentarium Stocks",
+        description : "Your chapter has lost its equipment stocks in recent engagement.",
+        value : 10,
+    },
+    {
         name : "Fresh Blood",
         description : "Due to being newly created your chapter has little special wargear or psykers.",
         value : 30,
