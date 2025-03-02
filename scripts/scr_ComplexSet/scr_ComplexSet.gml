@@ -314,7 +314,6 @@ function ComplexSet(unit) constructor{
                 draw_component(_arm_string);
             }
         }
-        shader_set(full_livery_shader);
     };    
     static draw = function(){
         setup_complex_livery_shader(unit.role(),unit);

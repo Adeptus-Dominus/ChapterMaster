@@ -470,6 +470,20 @@ try{
     handle_exception(_exception);
 }
 
+function fetch_marine_components_to_memory(){
+    array_foreach(global.modular_drawing_items, function(_element, _index){
+        if (sprite_exists((_element.sprite))){
+            sprite_prefetch(_element.sprite);
+            if (struct_exists(_element, "overides")){
+                var _override_areas = struct_get_names(_element.overides);
+                for (var i = 0;i<array_length(_override_areas)i++){
+                    sprite_prefetch(_element.overides[$_override_areas[i]]);
+                }
+            }
+        }
+    });
+}
+
 
 
 function DummyMarine()constructor{
@@ -493,29 +507,38 @@ function DummyMarine()constructor{
     static name_role= function(){
         return "jeff";
     } 
-    static role= function(){
-        return "jeff";
+    static role = function(){
+        with (obj_creation){
+            return role[100][livery_picker.role_set > 0  ? livery_picker.role_set :eROLE.Tactical];
+        }
     } 
     static weapon_one= function(){
-        return "Bolter";
+        with (obj_creation){
+            return wep1[100][livery_picker.role_set > 0  ? livery_picker.role_set :eROLE.Tactical];
+        }
     } 
     static race= function(){
         return "1";
     }  
     static weapon_two= function(){
-        return "Chainsword";
-    }  
-    static role= function(){
-        return "jeff";
+        with (obj_creation){
+            return wep2[100][livery_picker.role_set > 0  ? livery_picker.role_set :eROLE.Tactical];
+        }
     }  
     static armour = function(){
-        return "MK7 Aquila"
+         with (obj_creation){
+            return armour[100][livery_picker.role_set > 0  ? livery_picker.role_set :eROLE.Tactical];
+        }
     } 
     static gear = function(){
-        return "";
+         with (obj_creation){
+            return gear[100][livery_picker.role_set > 0  ? livery_picker.role_set :eROLE.Tactical];
+        }
     }
     static mobility_item = function(){
-        return "";
+         with (obj_creation){
+            return mobi[100][livery_picker.role_set > 0  ? livery_picker.role_set :eROLE.Tactical];
+        }
     }
     static IsSpecialist = function(search_type="standard",include_trainee=false){
         return is_specialist(role(), search_type,include_trainee)

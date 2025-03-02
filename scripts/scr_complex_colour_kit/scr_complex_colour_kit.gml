@@ -9,6 +9,7 @@ enum eMarkings {
     RIGHTKNEE
 }
 function ColourItem(xx,yy) constructor{
+    fetch_marine_components_to_memory();
 	self.xx=xx;
 	self.yy=yy;
     data_slate = new DataSlate();
@@ -243,7 +244,7 @@ function ColourItem(xx,yy) constructor{
             if (!is_struct(dummy_image)){
                 dummy_image = dummy_marine.draw_unit_image();
             }
-            dummy_image.draw(xx, yy);
+            dummy_image.draw(xx, yy-20);
     		/*draw_sprite(spr_mk7_complex_backpack, 0, xx, yy);
             draw_sprite(spr_mk7_right_arm, 0, xx, yy);
             draw_sprite(spr_mk7_left_arm, 0, xx, yy);         
@@ -259,7 +260,7 @@ function ColourItem(xx,yy) constructor{
             draw_sprite(spr_gothic_numbers_right_pauldron,4,xx, yy);
             draw_sprite(spr_numeral_left_knee,4,xx, yy);                                
         	//draw_sprite(xx,yy,2,spr_mk7_full_colour);
-        	//draw_sprite(xx,yy,3,spr_mk7_full_colour);*
+        	//draw_sprite(xx,yy,3,spr_mk7_full_colour);*/
 
         	var map_names = struct_get_names(image_location_maps);
         	for (var i=0;i<array_length(map_names);i++){

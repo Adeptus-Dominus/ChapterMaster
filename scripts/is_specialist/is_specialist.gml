@@ -5,7 +5,6 @@ function active_roles(){
 
 function role_groups(group){
 	var role_list = [];
-	instance_exists(obj_creation)
 	var roles = active_roles();
 	switch (group){
 		case "lib":
