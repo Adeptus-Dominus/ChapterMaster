@@ -881,7 +881,7 @@ var all_disadvantages = [
     },
     {
         name : "Depleted Gene-seed Stocks",
-        description : "Your chapter has lost it's gene-seed stocks in recent engagement. You start with no gene-seed.",
+        description : "Your chapter has lost its gene-seed stocks in recent engagement. You start with no gene-seed.",
         value : 20,
     },
     {
