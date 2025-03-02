@@ -522,6 +522,8 @@ function scr_livery_setup(){
                         if (!livery_picker.map_colour.is_changed){
                             livery_picker.map_colour = DeepCloneStruct(full_liveries[0]);
                         }
+                        livery_picker.shuffle_dummy();
+                        livery_picker.reset_image();
                     }
                 }
             }
@@ -630,7 +632,10 @@ function scr_livery_setup(){
     
     if (!instance_exists(obj_creation_popup)){
     
-        if (scr_hit(540,547,800,725)){tooltip="Advisor Names";tooltip2="The names of your main Advisors.  They provide useful information and reports on the divisions of your Chapter.";}
+        if (scr_hit(540,547,800,725)){
+            tooltip="Advisor Names";
+            tooltip2="The names of your main Advisors.  They provide useful information and reports on the divisions of your Chapter.";
+        }
     
         draw_text_transformed(444,550,string_hash_to_newline("Advisor Names"),0.6,0.6,0);
         draw_set_font(fnt_40k_14b);
@@ -786,7 +791,12 @@ function scr_livery_setup(){
         var _cultures = buttons.culture_styles;
         _cultures.x1 = right_data_slate.XX+30;
         _cultures.y1 = right_data_slate.YY+80
-        _cultures.max_width = right_data_slate.width-100;
+        _cultures.max_width = right_data_slate.width-120;
+        _cultures.on_change = function(){
+            var _picker = obj_creation.livery_picker;
+            _picker.shuffle_dummy();
+            _picker.reset_image();
+        }
         _cultures.draw();
     }
 
