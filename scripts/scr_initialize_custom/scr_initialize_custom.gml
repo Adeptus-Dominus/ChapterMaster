@@ -3229,6 +3229,8 @@ function scr_initialize_custom() {
 		}
 	}
 	
+	// I need advice on how to implement "Depleted Armamentarium Stocks" properly
+	
 	if(scr_has_disadv("Sieged")){
 		scr_add_item("Narthecium", 4);
 		scr_add_item(wep1[defaults_slot, eROLE.Apothecary], 4);
