@@ -1,5 +1,5 @@
-function build_new_navy_fleet(construction_system){
-	    new_navy_fleet=instance_create(construction_system.x,construction_system.y,obj_en_fleet);
+function build_new_navy_fleet(construction_forge){
+	    new_navy_fleet=instance_create(construction_forge.x,construction_forge.y,obj_en_fleet);
 
 	    with(new_navy_fleet){
     	    owner=eFACTION.Imperium;
