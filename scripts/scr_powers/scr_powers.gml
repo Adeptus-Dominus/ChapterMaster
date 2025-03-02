@@ -313,7 +313,7 @@ function get_perils_strength(_unit, _tome_perils_strength) {
     return _perils_strength;
 }
 
-// TODO: All tome logic has to be reworked;
+//TODO: All tome related logic in this file has to be reworked;
 /// @mixin
 function scr_powers(power_set, power_index, target_unit, unit_id) {
     // power_set: letter
@@ -484,7 +484,6 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         }
     }
 
-    // Some tome shit;
     _cast_flavour_text = $"{_unit.name_role()} casts '{_power_name}'";
     if ((_tome_discipline != "") && (_tome_roll <= 33) && (_power_name != "Imperator Maior") && (_power_name != "Kamehameha")) {
         _cast_flavour_text = _unit.name_role();
@@ -684,7 +683,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
     // TODO: separate the code bellow into a separate function;
     //* Power cast code
     var good = 0;
-    var good2 = 0;
+    var _target_index = 0;
     var _cast_count = 1;
 
     if ((_power_type == "attack") && (_power_name == "Imperator Maior")) {
@@ -702,7 +701,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         if (_power_type == "attack") {
             if (good == 0) {
                 repeat (10) {
-                    if ((good2 == 0) && instance_exists(obj_enunit)) {
+                    if ((_target_index == 0) && instance_exists(obj_enunit)) {
                         target_unit = instance_nearest(x, y, obj_enunit);
                         var s;
                         s = 0;
@@ -727,18 +726,18 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                             instance_deactivate_object(target_unit);
                         }
                         if (good != 0) {
-                            good2 = good;
+                            _target_index = good;
                         }
                     }
                 }
 
                 var onk;
                 onk = 0;
-                if ((_power_target_type == 3) && (good == 0) && (good2 == 0) && (_power_armour_piercing > 0) && (onk == 0)) {
+                if ((_power_target_type == 3) && (good == 0) && (_target_index == 0) && (_power_armour_piercing > 0) && (onk == 0)) {
                     _power_target_type = 4;
                     onk = 1;
                 }
-                if ((_power_target_type == 4) && (good == 0) && (good2 == 0) && (_power_magnitude > 0) && (onk == 0)) {
+                if ((_power_target_type == 4) && (good == 0) && (_target_index == 0) && (_power_magnitude > 0) && (onk == 0)) {
                     _power_target_type = 3;
                     onk = 1;
                 }
@@ -746,7 +745,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                 instance_activate_object(obj_enunit);
 
                 repeat (10) {
-                    if ((good2 == 0) && instance_exists(obj_enunit)) {
+                    if ((_target_index == 0) && instance_exists(obj_enunit)) {
                         target_unit = instance_nearest(x, y, obj_enunit);
                         var s;
                         s = 0;
@@ -771,7 +770,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                             instance_deactivate_object(target_unit);
                         }
                         if (good != 0) {
-                            good2 = good;
+                            _target_index = good;
                         }
                     }
                 }
@@ -780,269 +779,150 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
             }
 
             //* Calculate damage
-            if (good2 > 0) {
-                var damage_type, stap;
-                damage_type = "att";
-                stap = 0;
-
-                damage_type = "att";
+            if (_target_index > 0) {
+                var _damage_type;
                 if ((_power_armour_piercing > 0) && (_power_magnitude >= 100)) {
-                    damage_type = "arp";
+                    _damage_type = "arp";
+                } else {
+                    _damage_type = "att";
                 }
 
-                //// if (_power_target_type=3) then damage_type="att";
-                //// if (_power_target_type=4) then damage_type="arp";
+                //// if (_power_target_type=3) then _damage_type="att";
+                //// if (_power_target_type=4) then _damage_type="arp";
 
-                //* Anti-personnel attacks;
-                if ((damage_type == "att") && (stap == 0) && instance_exists(target_unit) && (target_unit.dudes_num[good2] > 0)) {
-                    var a, b, c, eac;
-                    eac = target_unit.dudes_ac[good2];
-                    a = _power_magnitude; // Average damage
-
-                    //// b=a-target_unit.dudes_ac[good2];// Average after armour
-
-                    if (target_unit.dudes_vehicle[good2] == 0) {
+                if (instance_exists(target_unit) && (target_unit.dudes_num[_target_index] > 0)) {
+                    // Set up variables for damage calculation
+                    var _base_damage = _power_magnitude;
+                    var _effective_armour = target_unit.dudes_ac[_target_index];
+                    var _is_vehicle = (target_unit.dudes_vehicle[_target_index] == 1);
+                    var _action_verb = _is_vehicle ? "destroyed" : "killed";
+                    var _entity_health = target_unit.dudes_hp[_target_index];
+                    
+                    // Calculate armour effectiveness based on target type and power's armour piercing
+                    if (!_is_vehicle) { // Non-vehicle targets
                         if (_power_armour_piercing == 1) {
-                            eac = 0;
+                            _effective_armour = 0; // Full penetration ignores armour
+                        } else if (_power_armour_piercing == -1) {
+                            _effective_armour *= 6; // Reduced effectiveness against armour
                         }
+                    } else { // Vehicle targets
                         if (_power_armour_piercing == -1) {
-                            eac = eac * 6;
+                            _effective_armour = _base_damage; // Completely ineffective against vehicles
+                        } else if (_power_armour_piercing == 0) {
+                            _effective_armour *= 6; // Normal weapons struggle against vehicle armour
                         }
                     }
-                    if (target_unit.dudes_vehicle[good2] == 1) {
-                        if (_power_armour_piercing == -1) {
-                            eac = a;
-                        }
-                        if (_power_armour_piercing == 0) {
-                            eac = eac * 6;
-                        }
-                        if (_power_armour_piercing == -1) {
-                            eac = a;
-                        }
-                    }
-                    b = a - eac;
-                    if (b <= 0) {
-                        b = 0;
-                    }
-
-                    c = b * 1; // New damage
-
-                    if (target_unit.dudes_hp[good2] == 0) {
+                    
+                    // Calculate final damage after armour reduction
+                    var _damage_after_armour = _base_damage - _effective_armour;
+                    _damage_after_armour = max(0, _damage_after_armour); // Ensure damage isn't negative
+                    var _final_damage = _damage_after_armour; // Apply any additional modifiers here if needed
+                    
+                    // Error checking for invalid health values
+                    if (_entity_health <= 0) {
                         show_message(_power_name);
-                        show_message("Getting a 0 health error for target " + string(target_unit) + ", dudes " + string(good2));
-                        show_message("Dudes: " + string(target_unit.dudes[good2]) + ", Number: " + string(target_unit.dudes_num[good2]));
-                        show_message("Damage: " + string(c));
-                        show_message(string(target_unit.dudes_hp[good2]));
+                        show_message("Getting a 0 health error for target " + string(target_unit) + ", entity " + string(_target_index));
+                        show_message("Entity type: " + string(target_unit.dudes[_target_index]) + ", Number: " + string(target_unit.dudes_num[_target_index]));
+                        show_message("Damage: " + string(_final_damage));
+                        show_message("Health: " + string(_entity_health));
                     }
-
-                    //* Calculate casualties
-                    var _casualties, ponies, onceh;
-                    onceh = 0;
-                    ponies = 0;
+                    
+                    // Calculate casualties based on damage and health
+                    var _total_entities = target_unit.dudes_num[_target_index];
+                    var _casualties = 0;
+                    
                     if (_power_max_kills == 0) {
-                        _casualties = min(floor(c / target_unit.dudes_hp[good2]), 1);
+                        // Single target limit - at most one casualty
+                        _casualties = min(floor(_final_damage / _entity_health), 1);
+                    } else {
+                        // Multi-target - can kill multiple entities
+                        _casualties = floor(_final_damage / _entity_health);
                     }
-                    if (_power_max_kills != 0) {
-                        _casualties = floor(c / target_unit.dudes_hp[good2]);
-                    }
-
-                    ponies = target_unit.dudes_num[good2];
-                    if ((target_unit.dudes_num[good2] == 1) && ((target_unit.dudes_hp[good2] - c) <= 0)) {
+                    
+                    // Special case for last remaining entity
+                    if ((_total_entities == 1) && ((_entity_health - _final_damage) <= 0)) {
                         _casualties = 1;
                     }
-
-                    if (target_unit.dudes_num[good2] - _casualties < 0) {
-                        _casualties = ponies;
+                    
+                    // Cap casualties at available entities and ensure non-negative
+                    _casualties = min(max(_casualties, 0), _total_entities);
+                    
+                    // Apply damage to last entity if it survives
+                    if ((_total_entities == 1) && (_final_damage > 0) && (_casualties == 0)) {
+                        target_unit.dudes_hp[_target_index] -= _final_damage;
                     }
-                    if (_casualties < 0) {
-                        _casualties = 0;
-                    }
-
-                    if ((target_unit.dudes_num[good2] == 1) && (c > 0)) {
-                        target_unit.dudes_hp[good2] -= c;
-                    } //TODO: Need special flavor here for just damaging
-
+                    
+                    // Generate appropriate flavour text based on outcome
                     if (_casualties > 1) {
-                        _casualties_flavour_text = $" {_casualties} {target_unit.dudes[good2]} are killed.";
+                        _casualties_flavour_text = $" {_casualties} {target_unit.dudes[_target_index]} are {_action_verb}.";
                     } else if (_casualties == 1) {
-                        _casualties_flavour_text = $" A {target_unit.dudes[good2]} is killed.";
+                        _casualties_flavour_text = $" A {target_unit.dudes[_target_index]} is {_action_verb}.";
                     } else {
-                        _casualties_flavour_text = $" The {target_unit.dudes[good2]} survives the attack.";
+                        _casualties_flavour_text = $" The {target_unit.dudes[_target_index]} survives the attack.";
                     }
-
+                    
+                    // Apply special battle effects for certain unit types
                     if (_casualties > 0) {
-                        var duhs;
-                        duhs = target_unit.dudes[good2];
+                        var _target_unit_type = target_unit.dudes[_target_index];
                         if ((obj_ncombat.battle_special == "WL10_reveal") || (obj_ncombat.battle_special == "WL10_later")) {
-                            if (duhs == "Veteran Chaos Terminator") {
+                            // Adjust chaos anger based on unit type
+                            if (_target_unit_type == "Veteran Chaos Terminator") {
                                 obj_ncombat.chaos_angry += _casualties * 2;
-                            }
-                            if (duhs == "Veteran Chaos Chosen") {
+                            } else if (_target_unit_type == "Veteran Chaos Chosen") {
                                 obj_ncombat.chaos_angry += _casualties;
-                            }
-                            if (duhs == "Greater Daemon of Slaanesh") {
-                                obj_ncombat.chaos_angry += _casualties * 5;
-                            }
-                            if (duhs == "Greater Daemon of Tzeentch") {
+                            } else if (_target_unit_type == "Greater Daemon of Slaanesh" || _target_unit_type == "Greater Daemon of Tzeentch") {
                                 obj_ncombat.chaos_angry += _casualties * 5;
                             }
                         }
                     }
-
+                    
+                    // Update unit counts after casualties are applied
                     if (_casualties >= 1) {
-                        target_unit.dudes_num[good2] -= _casualties;
+                        target_unit.dudes_num[_target_index] -= _casualties;
                         obj_ncombat.enemy_forces -= _casualties;
                     }
-
-                    //* Queue a battle log message
-                    _battle_log_message = _cast_flavour_text + _power_flavour_text  + _casualties_flavour_text;
-                    _battle_log_priority = _casualties;
-                    add_battle_log_message(_battle_log_message, _battle_log_priority, 135);
-                }
-
-                //* Anti-vehicle attacks;
-                if ((damage_type == "arp") && (stap == 0) && instance_exists(target_unit) && (target_unit.dudes_num[good2] > 0)) {
-                    var a, b, c, eac;
-                    eac = target_unit.dudes_ac[good2];
-                    a = _power_magnitude; // Average damage
-                    //// b=a-target_unit.dudes_ac[good2];// Average after armour
-
-                    if (target_unit.dudes_vehicle[good2] == 0) {
-                        if (_power_armour_piercing == 1) {
-                            eac = 0;
-                        }
-                        if (_power_armour_piercing == -1) {
-                            eac = eac * 6;
-                        }
-                    }
-                    if (target_unit.dudes_vehicle[good2] == 1) {
-                        if (_power_armour_piercing == -1) {
-                            eac = a;
-                        }
-                        if (_power_armour_piercing == 0) {
-                            eac = eac * 6;
-                        }
-                        if (_power_armour_piercing == -1) {
-                            eac = a;
-                        }
-                    }
-                    b = a - eac;
-                    if (b <= 0) {
-                        b = 0;
-                    }
-
-                    c = b * 1; // New damage
-
-                    if (target_unit.dudes_hp[good2] == 0) {
-                        show_message(_power_name);
-                        show_message("Getting a 0 health error for target " + string(target_unit) + ", dudes " + string(good2));
-                        show_message("Dudes: " + string(target_unit.dudes[good2]) + ", Number: " + string(target_unit.dudes_num[good2]));
-                        show_message("Damage: " + string(c));
-                        show_message(string(target_unit.dudes_hp[good2]));
-                    }
-
-                    //* Calculate casualties
-                    var _casualties, ponies, onceh;
-                    onceh = 0;
-                    ponies = 0;
-                    if (_power_max_kills == 0) {
-                        _casualties = min(floor(c / target_unit.dudes_hp[good2]), 1);
-                    }
-                    if (_power_max_kills != 0) {
-                        _casualties = floor(c / target_unit.dudes_hp[good2]);
-                    }
-
-                    ponies = target_unit.dudes_num[good2];
-                    if ((target_unit.dudes_num[good2] == 1) && ((target_unit.dudes_hp[good2] - c) <= 0)) {
-                        _casualties = 1;
-                    }
-
-                    if (target_unit.dudes_num[good2] - _casualties < 0) {
-                        _casualties = ponies;
-                    }
-                    if (_casualties < 0) {
-                        _casualties = 0;
-                    }
-
-                    if ((target_unit.dudes_num[good2] == 1) && (c > 0)) {
-                        target_unit.dudes_hp[good2] -= c;
-                    } // TODO: Need special flavor here for just damaging
-
-                    if (_casualties > 1) {
-                        _casualties_flavour_text = $" {_casualties} {target_unit.dudes[good2]} are destroyed.";
-                    } else if (_casualties == 1) {
-                        _casualties_flavour_text = $" A {target_unit.dudes[good2]} is destroyed.";
-                    } else {
-                        _casualties_flavour_text = $" The {target_unit.dudes[good2]} survives the attack.";
-                    }
-
-                    if (_casualties > 0) {
-                        var duhs;
-                        duhs = target_unit.dudes[good2];
-                        if ((obj_ncombat.battle_special == "WL10_reveal") || (obj_ncombat.battle_special == "WL10_later")) {
-                            if (duhs == "Veteran Chaos Terminator") {
-                                obj_ncombat.chaos_angry += _casualties * 2;
-                            }
-                            if (duhs == "Veteran Chaos Chosen") {
-                                obj_ncombat.chaos_angry += _casualties;
-                            }
-                            if (duhs == "Greater Daemon of Slaanesh") {
-                                obj_ncombat.chaos_angry += _casualties * 5;
-                            }
-                            if (duhs == "Greater Daemon of Tzeentch") {
-                                obj_ncombat.chaos_angry += _casualties * 5;
-                            }
-                        }
-                    }
-
-                    if (_casualties >= 1) {
-                        target_unit.dudes_num[good2] -= _casualties;
-                        obj_ncombat.enemy_forces -= _casualties;
-                    }
-
-                    //* Queue a battle log message
+                    
+                    // Log battle message to combat feed
                     _battle_log_message = _cast_flavour_text + _power_flavour_text + _casualties_flavour_text;
-                    _battle_log_priority = _casualties;
+                    _battle_log_priority = _casualties; // Higher casualties = higher priority messages
                     add_battle_log_message(_battle_log_message, _battle_log_priority, 135);
                 }
 
-                if (stap == 0) {
-                    with (target_unit) {
-                        var j, good, open;
-                        j = 0;
-                        good = 0;
-                        open = 0;
-                        repeat (20) {
-                            j += 1;
-                            if (dudes_num[j] <= 0) {
-                                dudes[j] = "";
-                                dudes_special[j] = "";
-                                dudes_num[j] = 0;
-                                dudes_ac[j] = 0;
-                                dudes_hp[j] = 0;
-                                dudes_vehicle[j] = 0;
-                                dudes_damage[j] = 0;
-                            }
-                            if ((dudes[j] == "") && (dudes[j + 1] != "")) {
-                                dudes[j] = dudes[j + 1];
-                                dudes_special[j] = dudes_special[j + 1];
-                                dudes_num[j] = dudes_num[j + 1];
-                                dudes_ac[j] = dudes_ac[j + 1];
-                                dudes_hp[j] = dudes_hp[j + 1];
-                                dudes_vehicle[j] = dudes_vehicle[j + 1];
-                                dudes_damage[j] = dudes_damage[j + 1];
-
-                                dudes[j + 1] = "";
-                                dudes_special[j + 1] = "";
-                                dudes_num[j + 1] = 0;
-                                dudes_ac[j + 1] = 0;
-                                dudes_hp[j + 1] = 0;
-                                dudes_vehicle[j + 1] = 0;
-                                dudes_damage[j + 1] = 0;
-                            }
+                with (target_unit) {
+                    var j, good, open;
+                    j = 0;
+                    good = 0;
+                    open = 0;
+                    repeat (20) {
+                        j += 1;
+                        if (dudes_num[j] <= 0) {
+                            dudes[j] = "";
+                            dudes_special[j] = "";
+                            dudes_num[j] = 0;
+                            dudes_ac[j] = 0;
+                            dudes_hp[j] = 0;
+                            dudes_vehicle[j] = 0;
+                            dudes_damage[j] = 0;
                         }
-                        j = 0;
+                        if ((dudes[j] == "") && (dudes[j + 1] != "")) {
+                            dudes[j] = dudes[j + 1];
+                            dudes_special[j] = dudes_special[j + 1];
+                            dudes_num[j] = dudes_num[j + 1];
+                            dudes_ac[j] = dudes_ac[j + 1];
+                            dudes_hp[j] = dudes_hp[j + 1];
+                            dudes_vehicle[j] = dudes_vehicle[j + 1];
+                            dudes_damage[j] = dudes_damage[j + 1];
+
+                            dudes[j + 1] = "";
+                            dudes_special[j + 1] = "";
+                            dudes_num[j + 1] = 0;
+                            dudes_ac[j + 1] = 0;
+                            dudes_hp[j + 1] = 0;
+                            dudes_vehicle[j + 1] = 0;
+                            dudes_damage[j + 1] = 0;
+                        }
                     }
+                    j = 0;
                 }
                 if ((target_unit.men + target_unit.veh + target_unit.medi == 0) && (target_unit.owner != 1)) {
                     with (target_unit) {
