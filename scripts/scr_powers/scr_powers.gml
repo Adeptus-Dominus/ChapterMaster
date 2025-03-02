@@ -30,12 +30,14 @@ function get_discipline_data(_discipline_name, _data_name) {
 /// @param _power_name - The name of the power (e.g., "Minor Smite")
 /// @param _data_name - The specific data attribute you want (e.g., "type", "range", "flavour_text")
 /// @returns The requested data, or undefined if not found
-function get_power_data(_power_name, _data_name) {
+function get_power_data(_power_name, _data_name = "") {
     // Check if the power exists in the global.powers_data
     if (struct_exists(global.powers_data, _power_name)) {
         var _power_object = global.powers_data[$ _power_name];
         // Check if the data exists for that power
-        if (struct_exists(_power_object, _data_name)) {
+        if (_data_name == "") {
+            return _power_object;
+        } else if (struct_exists(_power_object, _data_name)) {
             var _data_content = _power_object[$ _data_name];
             if (_data_name == "flavour_text") {
                 return get_flavour_text(_data_content);
