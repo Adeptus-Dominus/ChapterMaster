@@ -411,7 +411,6 @@ function scr_powers(discipline_letter, power_index, target_column, caster_id) {
     //// show_message(string(_power_name));
 
     // Chaos powers here
-
     var _power_type = get_power_data(_power_name, "type");
     var _power_range = get_power_data(_power_name, "range");
     var _power_target_type = get_power_data(_power_name, "target_type");
@@ -535,34 +534,8 @@ function scr_powers(discipline_letter, power_index, target_column, caster_id) {
         _cast_flavour_text = $"{_unit.name_role()} suffers Perils of the Warp!  ";
         _power_flavour_text = scr_perils_table(_perils_strength, _unit, _psy_discipline, _power_name, caster_id, _tome_discipline);
 
-        if (_unit.hp() < 0) {
-            //TODO create is_dead function to remove repeats of this log
-            if (marine_dead[caster_id] == 0) {
-                marine_dead[caster_id] = 1;
-                obj_ncombat.player_forces -= 1;
-            }
-
-            // Track the lost unit
-            var _existing_index = array_get_index(lost, _unit_role);
-            if (_existing_index != -1) {
-                lost_num[_existing_index] += 1;
-            } else {
-                array_push(lost, _unit_role);
-                array_push(lost_num, 1);
-            }
-
-            // Update unit counts
-            if (_is_dread) {
-                dreads -= 1;
-            } else {
-                men -= 1;
-            }
-
-            // Trigger red thirst
-            if (obj_ncombat.red_thirst == 1 && _unit_role != "Death Company") {
-                obj_ncombat.red_thirst = 2;
-            }
-        }
+        // Check if marine is dead
+        check_dead_marines(_unit, _marine_index);
 
         _battle_log_message = _cast_flavour_text + _power_flavour_text;
         add_battle_log_message(_battle_log_message, 999, 135);
@@ -662,9 +635,6 @@ function scr_powers(discipline_letter, power_index, target_column, caster_id) {
         }
         if (_power_name == "Regenerate") {
             _unit.add_or_sub_health(choose(2, 3, 4) * 5);
-            if (_unit.hp() > _unit.max_health()) {
-                _unit.update_health(_unit.max_health());
-            }
         }
 
         if (_power_name == "Telekinetic Dome") {
@@ -889,48 +859,8 @@ function scr_powers(discipline_letter, power_index, target_column, caster_id) {
                     _battle_log_priority = _casualties; // Higher casualties = higher priority messages
                     add_battle_log_message(_battle_log_message, _battle_log_priority, 135);
                 }
-
-                with (target_column) {
-                    var j, _good, _open;
-                    j = 0;
-                    _good = 0;
-                    _open = 0;
-                    repeat (20) {
-                        j += 1;
-                        if (dudes_num[j] <= 0) {
-                            dudes[j] = "";
-                            dudes_special[j] = "";
-                            dudes_num[j] = 0;
-                            dudes_ac[j] = 0;
-                            dudes_hp[j] = 0;
-                            dudes_vehicle[j] = 0;
-                            dudes_damage[j] = 0;
-                        }
-                        if ((dudes[j] == "") && (dudes[j + 1] != "")) {
-                            dudes[j] = dudes[j + 1];
-                            dudes_special[j] = dudes_special[j + 1];
-                            dudes_num[j] = dudes_num[j + 1];
-                            dudes_ac[j] = dudes_ac[j + 1];
-                            dudes_hp[j] = dudes_hp[j + 1];
-                            dudes_vehicle[j] = dudes_vehicle[j + 1];
-                            dudes_damage[j] = dudes_damage[j + 1];
-
-                            dudes[j + 1] = "";
-                            dudes_special[j + 1] = "";
-                            dudes_num[j + 1] = 0;
-                            dudes_ac[j + 1] = 0;
-                            dudes_hp[j + 1] = 0;
-                            dudes_vehicle[j + 1] = 0;
-                            dudes_damage[j + 1] = 0;
-                        }
-                    }
-                    j = 0;
-                }
-                if ((target_column.men + target_column.veh + target_column.medi == 0) && (target_column.owner != 1)) {
-                    with (target_column) {
-                        instance_destroy();
-                    }
-                }
+                compress_enemy_array(target_column);
+                destroy_empty_column(target_column);
             }
         }
     } // End repeat
