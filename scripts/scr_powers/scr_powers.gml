@@ -309,25 +309,24 @@ function get_perils_strength(_unit, _tome_perils_strength) {
 
     _perils_strength = max(_perils_strength, 15);
     
-    //// show_debug_message("Peril of the Warp Strength: " + string(perils_strength));
+    //// show_debug_message("Peril of the Warp Strength: " + string(_perils_strength));
     return _perils_strength;
 }
 
 //TODO: All tome related logic in this file has to be reworked;
+/*
+This is a stand-alone script that determines powers based on the POWERS variable,
+executes them, and applies the effect and flavor.  All in one.  Because I eventually
+got better at this sort of thing.
+This called in context of a obj_pnunit
+*/
+/// @param {string} discipline_letter - Letter of the discipline
+/// @param {real} power_index - Index of the power in the powers array
+/// @param {Asset.GMObject} target_column - Target column with units
+/// @param {real} caster_id - ID of the caster.
 /// @mixin
-function scr_powers(power_set, power_index, target_unit, unit_id) {
-    // power_set: letter
-    // power_index: number
-    // target_unit: target
-    // unit_id: marine_id
-
-    // This is a stand-alone script that determines powers based on the POWERS variable,
-    // executes them, and applies the effect and flavor.  All in one.  Because I eventually
-    // got better at this sort of thing.
-
-    // This is called in context of a obj_pnunit
-
-    var _unit = unit_struct[unit_id];
+function scr_powers(discipline_letter, power_index, target_column, caster_id) {
+    var _unit = unit_struct[caster_id];
     if (!is_struct(_unit)) {
         exit;
     }
@@ -339,7 +338,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
     var _unit_weapon_one_data = _unit.get_weapon_one_data();
     var _unit_weapon_two_data = _unit.get_weapon_two_data();
     var _unit_gear = _unit.gear();
-    var _psy_discipline = convert_power_letter(power_set);
+    var _psy_discipline = convert_power_letter(discipline_letter);
     var _cast_flavour_text = "";
     var _casualties_flavour_text = "";
     var _using_tome = false;
@@ -351,36 +350,42 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
     var _unit_exp = _unit.experience;
     var _battle_log_message = "";
     var _battle_log_priority = 0;
+    var _armour_data = _unit.get_armour_data();
+    var _is_dread = false;
+    if (is_struct(_armour_data)) {
+        _is_dread = _armour_data.has_tag("dreadnought");
+    }
+
 
     //TODO: Maybe move into a separate function;
     // In here check if have tome
     if (_unit_weapon_one_data == "Tome" || _unit_weapon_two_data == "Tome") {
         var _tome_tags = "";
         if (_unit_weapon_one_data == "Tome") {
-            _tome_tags += marine_wep1[unit_id];
+            _tome_tags += marine_wep1[caster_id];
         }
         if (_unit_weapon_two_data == "Tome") {
-            _tome_tags += marine_wep2[unit_id];
+            _tome_tags += marine_wep2[caster_id];
         }
         _tome_discipline = get_tome_discipline(_tome_tags);
     }
 
     //TODO: Move into a separate function;
-    var selected_discipline = _psy_discipline;
+    var _selected_discipline = _psy_discipline;
     if (_tome_discipline != "" && _tome_roll <= 50) {
-        selected_discipline = _tome_discipline;
+        _selected_discipline = _tome_discipline;
         _using_tome = true;
     }
 
     //TODO: Move into a separate function;
-    if (struct_exists(global.disciplines_data, selected_discipline)) {
-        var powers_array = get_discipline_data(selected_discipline, "powers");
+    if (struct_exists(global.disciplines_data, _selected_discipline)) {
+        var _powers_array = get_discipline_data(_selected_discipline, "powers");
         if (_using_tome) {
-            power_index = irandom(array_length(powers_array));
-            _tome_perils_chance = get_discipline_data(selected_discipline, "perils_chance");
-            _tome_perils_strength = get_discipline_data(selected_discipline, "perils_strength");
+            power_index = irandom(array_length(_powers_array));
+            _tome_perils_chance = get_discipline_data(_selected_discipline, "_perils_chance");
+            _tome_perils_strength = get_discipline_data(_selected_discipline, "_perils_strength");
         }
-        _power_name = powers_array[power_index];
+        _power_name = _powers_array[power_index];
     }
 
     // Change cases here
@@ -427,24 +432,24 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
     }
 
     //// if (_power_name="Vortex of Doom"){_power_type="attack";_power_range=5;_power_target_type=3;_power_max_kills=1;_power_magnitude=800;_power_armour_piercing=800;_power_duration=0;
-    ////     _power_flavour_text="- a hole between real and warp space is torn open with deadly effect.  ";
+    ////     _power_flavour_text="- a hole between real and warp space is torn _open with deadly effect.  ";
     //// }
 
     //TODO: Move into a separate function;
-    var has_force_weapon = false;
+    var _has_force_weapon = false;
     if (is_struct(_unit_weapon_one_data)) {
         if (_unit_weapon_one_data.has_tag("force")) {
-            has_force_weapon = true;
+            _has_force_weapon = true;
         }
     }
     if (is_struct(_unit_weapon_two_data)) {
         if (_unit_weapon_two_data.has_tag("force")) {
-            has_force_weapon = true;
+            _has_force_weapon = true;
         }
     }
 
 
-    if (has_force_weapon) {
+    if (_has_force_weapon) {
         if (_unit_weapon_one_data == "Force Staff" || _unit_weapon_two_data == "Force Staff") {
             if (_power_magnitude > 0) {
                 _power_magnitude = round(_power_magnitude) * 2;
@@ -487,11 +492,11 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
     _cast_flavour_text = $"{_unit.name_role()} casts '{_power_name}'";
     if ((_tome_discipline != "") && (_tome_roll <= 33) && (_power_name != "Imperator Maior") && (_power_name != "Kamehameha")) {
         _cast_flavour_text = _unit.name_role();
-        if (string_char_at(_cast_flavour_text, string_length(_cast_flavour_text)) == "s") {
+        if (string_char_at(_cast_flavour_text, string_length(_cast_flavour_text)) == "_s") {
             _cast_flavour_text += "' tome ";
         }
-        if (string_char_at(_cast_flavour_text, string_length(_cast_flavour_text)) != "s") {
-            _cast_flavour_text += "'s tome ";
+        if (string_char_at(_cast_flavour_text, string_length(_cast_flavour_text)) != "_s") {
+            _cast_flavour_text += "'_s tome ";
         }
         _cast_flavour_text += "confers knowledge upon him.  He casts '" + string(_power_name) + "'";
 
@@ -513,44 +518,39 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
     }
 
     //TODO: Perhaps separate perils into a separate function;
-    var perils_chance = get_perils_chance(_unit, _tome_perils_chance);
-    var perils_roll = irandom_range(1, 100);
-    var perils_strength = get_perils_strength(_unit, _tome_perils_strength);
+    var _perils_chance = get_perils_chance(_unit, _tome_perils_chance);
+    var _perils_roll = irandom_range(1, 100);
+    var _perils_strength = get_perils_strength(_unit, _tome_perils_strength);
 
-    //// show_debug_message("Roll: " + string(perils_roll));
+    //// show_debug_message("Roll: " + string(_perils_roll));
 
-    if (perils_roll <= perils_chance) {
+    if (_perils_roll <= _perils_chance) {
         if (obj_ncombat.sorcery_seen == 1) {
             obj_ncombat.sorcery_seen = 0;
         }
         _power_type = "perils";
 
         _cast_flavour_text = $"{_unit.name_role()} suffers Perils of the Warp!  ";
-        _power_flavour_text = scr_perils_table(perils_strength, _unit, _psy_discipline, _power_name, unit_id, _tome_discipline);
+        _power_flavour_text = scr_perils_table(_perils_strength, _unit, _psy_discipline, _power_name, caster_id, _tome_discipline);
 
         if (_unit.hp() < 0) {
             //TODO create is_dead function to remove repeats of this log
-            if (marine_dead[unit_id] == 0) {
-                marine_dead[unit_id] = 1;
+            if (marine_dead[caster_id] == 0) {
+                marine_dead[caster_id] = 1;
                 obj_ncombat.player_forces -= 1;
             }
 
             // Track the lost unit
-            var existing_index = array_get_index(lost, _unit_role);
-            if (existing_index != -1) {
-                lost_num[existing_index] += 1;
+            var _existing_index = array_get_index(lost, _unit_role);
+            if (_existing_index != -1) {
+                lost_num[_existing_index] += 1;
             } else {
                 array_push(lost, _unit_role);
                 array_push(lost_num, 1);
             }
 
             // Update unit counts
-            var armour_data = _unit.get_armour_data();
-            var is_dread = false;
-            if (is_struct(armour_data)) {
-                is_dread = armour_data.has_tag("dreadnought");
-            }
-            if (is_dread) {
+            if (_is_dread) {
                 dreads -= 1;
             } else {
                 men -= 1;
@@ -572,7 +572,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
 
     //* Buff powers code
     if ((_power_type == "buff") || (_power_name == "Kamehameha")) {
-        var marine_index;
+        var _marine_index;
         var _random_marine_list = [];
         for (var i = 0; i < array_length(unit_struct); i++) {
             array_push(_random_marine_list, i);
@@ -580,81 +580,81 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         _random_marine_list = array_shuffle(_random_marine_list);
 
         if ((_power_name == "Force Dome") || (_power_name == "Stormbringer")) {
-            var buf = 9;
+            var _buff_casts = 9;
             for (var i = 0; i < array_length(_random_marine_list); i++) {
-                if (buf <= 0) {
+                if (_buff_casts <= 0) {
                     break;
                 }
-                marine_index = _random_marine_list[i];
-                if ((!marine_dead[marine_index]) && (!marine_mshield[marine_index])) {
-                    buf -= 1;
-                    marine_mshield[marine_index] = 2;
+                _marine_index = _random_marine_list[i];
+                if ((!marine_dead[_marine_index]) && (!marine_mshield[_marine_index])) {
+                    _buff_casts -= 1;
+                    marine_mshield[_marine_index] = 2;
                 }
             }
         }
 
         if (_power_name == "Quickening") {
-            if (marine_quick[unit_id] < 3) {
-                marine_quick[unit_id] = 3;
+            if (marine_quick[caster_id] < 3) {
+                marine_quick[caster_id] = 3;
             }
         }
         if (_power_name == "Might of the Ancients") {
-            if (marine_might[unit_id] < 3) {
-                marine_might[unit_id] = 3;
+            if (marine_might[caster_id] < 3) {
+                marine_might[caster_id] = 3;
             }
         }
 
         if (_power_name == "Fiery Form") {
-            if (marine_fiery[unit_id] < 3) {
-                marine_fiery[unit_id] = 3;
+            if (marine_fiery[caster_id] < 3) {
+                marine_fiery[caster_id] = 3;
             }
         }
         if (_power_name == "Fire Shield") {
-            var buf = 9;
+            var _buff_casts = 9;
             for (var i = 0; i < array_length(_random_marine_list); i++) {
-                if (buf <= 0) {
+                if (_buff_casts <= 0) {
                     break;
                 }
-                marine_index = _random_marine_list[i];
-                if ((!marine_dead[marine_index]) && (!marine_fshield[marine_index])) {
-                    buf -= 1;
-                    marine_fshield[marine_index] = 2;
+                _marine_index = _random_marine_list[i];
+                if ((!marine_dead[_marine_index]) && (!marine_fshield[_marine_index])) {
+                    _buff_casts -= 1;
+                    marine_fshield[_marine_index] = 2;
                 }
             }
         }
 
         if (_power_name == "Iron Arm") {
-            marine_iron[unit_id] += 1;
+            marine_iron[caster_id] += 1;
         }
         if (_power_name == "Endurance") {
-            var buf = 5;
+            var _buff_casts = 5;
             h = 0;
             for (var i = 0; i < array_length(_random_marine_list); i++) {
-                if (buf <= 0) {
+                if (_buff_casts <= 0) {
                     break;
                 }
-                marine_index = _random_marine_list[i];
-                if (!marine_dead[marine_index]) {
-                    var _buff_unit = unit_struct[marine_index];
+                _marine_index = _random_marine_list[i];
+                if (!marine_dead[_marine_index]) {
+                    var _buff_unit = unit_struct[_marine_index];
                     if (_buff_unit.hp() < _buff_unit.max_health()) {
-                        buf -= 1;
+                        _buff_casts -= 1;
                         _buff_unit.add_or_sub_health(20);
                     }
                 }
             }
         }
         if (_power_name == "Hysterical Frenzy") {
-            var buf = 5;
+            var _buff_casts = 5;
             h = 0;
             for (var i = 0; i < array_length(_random_marine_list); i++) {
-                if (buf <= 0) {
+                if (_buff_casts <= 0) {
                     break;
                 }
-                marine_index = _random_marine_list[i];
-                if ((!marine_dead[marine_index]) && (marine_attack[marine_index] < 2.5)) {
-                    buf -= 1;
-                    marine_attack[marine_index] += 1.5;
-                    marine_defense[marine_index] -= 0.15;
+                _marine_index = _random_marine_list[i];
+                if ((!marine_dead[_marine_index]) && (marine_attack[_marine_index] < 2.5)) {
+                    _buff_casts -= 1;
+                    marine_attack[_marine_index] += 1.5;
+                    marine_defense[_marine_index] -= 0.15;
                 }
             }
         }
@@ -666,13 +666,13 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
         }
 
         if (_power_name == "Telekinetic Dome") {
-            if (marine_dome[unit_id] < 3) {
-                marine_dome[unit_id] = 3;
+            if (marine_dome[caster_id] < 3) {
+                marine_dome[caster_id] = 3;
             }
         }
         if (_power_name == "Spatial Distortion") {
-            if (marine_spatial[unit_id] < 3) {
-                marine_spatial[unit_id] = 3;
+            if (marine_spatial[caster_id] < 3) {
+                marine_spatial[caster_id] = 3;
             }
         }
 
@@ -682,7 +682,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
 
     // TODO: separate the code bellow into a separate function;
     //* Power cast code
-    var good = 0;
+    var _good = 0;
     var _target_index = 0;
     var _cast_count = 1;
 
@@ -699,78 +699,78 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
 
         //* Pick the target
         if (_power_type == "attack") {
-            if (good == 0) {
+            if (_good == 0) {
                 repeat (10) {
                     if ((_target_index == 0) && instance_exists(obj_enunit)) {
-                        target_unit = instance_nearest(x, y, obj_enunit);
-                        var s;
-                        s = 0;
+                        target_column = instance_nearest(x, y, obj_enunit);
+                        var _s;
+                        _s = 0;
 
                         repeat (20) {
-                            if (point_distance(x, y, target_unit.x, target_unit.y) < (_power_range * 10)) {
-                                if ((_power_target_type == 3) && (good == 0)) {
-                                    s += 1;
-                                    if ((target_unit.dudes_hp[s] > 0) && (dudes_vehicle[s] == 0)) {
-                                        good = s;
+                            if (point_distance(x, y, target_column.x, target_column.y) < (_power_range * 10)) {
+                                if ((_power_target_type == 3) && (_good == 0)) {
+                                    _s += 1;
+                                    if ((target_column.dudes_hp[_s] > 0) && (dudes_vehicle[_s] == 0)) {
+                                        _good = _s;
                                     }
                                 }
-                                if ((_power_target_type == 4) && (good == 0)) {
-                                    s += 1;
-                                    if ((target_unit.dudes_hp[s] > 0) && (dudes_vehicle[s] == 1)) {
-                                        good = s;
+                                if ((_power_target_type == 4) && (_good == 0)) {
+                                    _s += 1;
+                                    if ((target_column.dudes_hp[_s] > 0) && (dudes_vehicle[_s] == 1)) {
+                                        _good = _s;
                                     }
                                 }
                             }
                         }
-                        if (good == 0) {
-                            instance_deactivate_object(target_unit);
+                        if (_good == 0) {
+                            instance_deactivate_object(target_column);
                         }
-                        if (good != 0) {
-                            _target_index = good;
+                        if (_good != 0) {
+                            _target_index = _good;
                         }
                     }
                 }
 
-                var onk;
-                onk = 0;
-                if ((_power_target_type == 3) && (good == 0) && (_target_index == 0) && (_power_armour_piercing > 0) && (onk == 0)) {
+                var _onk;
+                _onk = 0;
+                if ((_power_target_type == 3) && (_good == 0) && (_target_index == 0) && (_power_armour_piercing > 0) && (_onk == 0)) {
                     _power_target_type = 4;
-                    onk = 1;
+                    _onk = 1;
                 }
-                if ((_power_target_type == 4) && (good == 0) && (_target_index == 0) && (_power_magnitude > 0) && (onk == 0)) {
+                if ((_power_target_type == 4) && (_good == 0) && (_target_index == 0) && (_power_magnitude > 0) && (_onk == 0)) {
                     _power_target_type = 3;
-                    onk = 1;
+                    _onk = 1;
                 }
 
                 instance_activate_object(obj_enunit);
 
                 repeat (10) {
                     if ((_target_index == 0) && instance_exists(obj_enunit)) {
-                        target_unit = instance_nearest(x, y, obj_enunit);
-                        var s;
-                        s = 0;
+                        target_column = instance_nearest(x, y, obj_enunit);
+                        var _s;
+                        _s = 0;
 
                         repeat (20) {
-                            if (point_distance(x, y, target_unit.x, target_unit.y) < (_power_range * 10)) {
-                                if ((_power_target_type == 3) && (good == 0)) {
-                                    s += 1;
-                                    if ((target_unit.dudes_hp[s] > 0) && (dudes_vehicle[s] == 0)) {
-                                        good = s;
+                            if (point_distance(x, y, target_column.x, target_column.y) < (_power_range * 10)) {
+                                if ((_power_target_type == 3) && (_good == 0)) {
+                                    _s += 1;
+                                    if ((target_column.dudes_hp[_s] > 0) && (dudes_vehicle[_s] == 0)) {
+                                        _good = _s;
                                     }
                                 }
-                                if ((_power_target_type == 4) && (good == 0)) {
-                                    s += 1;
-                                    if ((target_unit.dudes_hp[s] > 0) && (dudes_vehicle[s] == 1)) {
-                                        good = s;
+                                if ((_power_target_type == 4) && (_good == 0)) {
+                                    _s += 1;
+                                    if ((target_column.dudes_hp[_s] > 0) && (dudes_vehicle[_s] == 1)) {
+                                        _good = _s;
                                     }
                                 }
                             }
                         }
-                        if (good == 0) {
-                            instance_deactivate_object(target_unit);
+                        if (_good == 0) {
+                            instance_deactivate_object(target_column);
                         }
-                        if (good != 0) {
-                            _target_index = good;
+                        if (_good != 0) {
+                            _target_index = _good;
                         }
                     }
                 }
@@ -790,15 +790,15 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                 //// if (_power_target_type=3) then _damage_type="att";
                 //// if (_power_target_type=4) then _damage_type="arp";
 
-                if (instance_exists(target_unit) && (target_unit.dudes_num[_target_index] > 0)) {
+                if (instance_exists(target_column) && (target_column.dudes_num[_target_index] > 0)) {
                     // Set up variables for damage calculation
                     var _base_damage = _power_magnitude;
-                    var _effective_armour = target_unit.dudes_ac[_target_index];
-                    var _is_vehicle = (target_unit.dudes_vehicle[_target_index] == 1);
+                    var _effective_armour = target_column.dudes_ac[_target_index];
+                    var _is_vehicle = (target_column.dudes_vehicle[_target_index] == 1);
                     var _action_verb = _is_vehicle ? "destroyed" : "killed";
-                    var _entity_health = target_unit.dudes_hp[_target_index];
+                    var _entity_health = target_column.dudes_hp[_target_index];
                     
-                    // Calculate armour effectiveness based on target type and power's armour piercing
+                    // Calculate armour effectiveness based on target type and power'_s armour piercing
                     if (!_is_vehicle) { // Non-vehicle targets
                         if (_power_armour_piercing == 1) {
                             _effective_armour = 0; // Full penetration ignores armour
@@ -821,14 +821,14 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                     // Error checking for invalid health values
                     if (_entity_health <= 0) {
                         show_message(_power_name);
-                        show_message("Getting a 0 health error for target " + string(target_unit) + ", entity " + string(_target_index));
-                        show_message("Entity type: " + string(target_unit.dudes[_target_index]) + ", Number: " + string(target_unit.dudes_num[_target_index]));
+                        show_message("Getting a 0 health error for target " + string(target_column) + ", entity " + string(_target_index));
+                        show_message("Entity type: " + string(target_column.dudes[_target_index]) + ", Number: " + string(target_column.dudes_num[_target_index]));
                         show_message("Damage: " + string(_final_damage));
                         show_message("Health: " + string(_entity_health));
                     }
                     
                     // Calculate casualties based on damage and health
-                    var _total_entities = target_unit.dudes_num[_target_index];
+                    var _total_entities = target_column.dudes_num[_target_index];
                     var _casualties = 0;
                     
                     if (_power_max_kills == 0) {
@@ -849,21 +849,21 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                     
                     // Apply damage to last entity if it survives
                     if ((_total_entities == 1) && (_final_damage > 0) && (_casualties == 0)) {
-                        target_unit.dudes_hp[_target_index] -= _final_damage;
+                        target_column.dudes_hp[_target_index] -= _final_damage;
                     }
                     
                     // Generate appropriate flavour text based on outcome
                     if (_casualties > 1) {
-                        _casualties_flavour_text = $" {_casualties} {target_unit.dudes[_target_index]} are {_action_verb}.";
+                        _casualties_flavour_text = $" {_casualties} {target_column.dudes[_target_index]} are {_action_verb}.";
                     } else if (_casualties == 1) {
-                        _casualties_flavour_text = $" A {target_unit.dudes[_target_index]} is {_action_verb}.";
+                        _casualties_flavour_text = $" A {target_column.dudes[_target_index]} is {_action_verb}.";
                     } else {
-                        _casualties_flavour_text = $" The {target_unit.dudes[_target_index]} survives the attack.";
+                        _casualties_flavour_text = $" The {target_column.dudes[_target_index]} survives the attack.";
                     }
                     
                     // Apply special battle effects for certain unit types
                     if (_casualties > 0) {
-                        var _target_unit_type = target_unit.dudes[_target_index];
+                        var _target_unit_type = target_column.dudes[_target_index];
                         if ((obj_ncombat.battle_special == "WL10_reveal") || (obj_ncombat.battle_special == "WL10_later")) {
                             // Adjust chaos anger based on unit type
                             if (_target_unit_type == "Veteran Chaos Terminator") {
@@ -878,7 +878,7 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                     
                     // Update unit counts after casualties are applied
                     if (_casualties >= 1) {
-                        target_unit.dudes_num[_target_index] -= _casualties;
+                        target_column.dudes_num[_target_index] -= _casualties;
                         obj_ncombat.enemy_forces -= _casualties;
                     }
                     
@@ -888,11 +888,11 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                     add_battle_log_message(_battle_log_message, _battle_log_priority, 135);
                 }
 
-                with (target_unit) {
-                    var j, good, open;
+                with (target_column) {
+                    var j, _good, _open;
                     j = 0;
-                    good = 0;
-                    open = 0;
+                    _good = 0;
+                    _open = 0;
                     repeat (20) {
                         j += 1;
                         if (dudes_num[j] <= 0) {
@@ -924,8 +924,8 @@ function scr_powers(power_set, power_index, target_unit, unit_id) {
                     }
                     j = 0;
                 }
-                if ((target_unit.men + target_unit.veh + target_unit.medi == 0) && (target_unit.owner != 1)) {
-                    with (target_unit) {
+                if ((target_column.men + target_column.veh + target_column.medi == 0) && (target_column.owner != 1)) {
+                    with (target_column) {
                         instance_destroy();
                     }
                 }
