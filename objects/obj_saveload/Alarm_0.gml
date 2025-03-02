@@ -75,6 +75,7 @@ if (load_part==6){
         //** sets up marine_by_location view
         with(obj_controller){
             global.star_name_colors[1] = make_color_rgb(body_colour_replace[0],body_colour_replace[1],body_colour_replace[2]);
+            sector_imperial_fleet_strength();
         }
     }
     trickle=50;
