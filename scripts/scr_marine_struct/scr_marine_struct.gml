@@ -1021,9 +1021,34 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 
 	weapon_two_quality="standard";
 
-		static specials = function(){ 
-			return obj_ini.spe[company][marine_number];
-		};	   
+	static specials = function(){ 
+		return obj_ini.spe[company][marine_number];
+	};	   
+
+	static psy_powers_array = function(){ 
+		var _psy_discipline = psy_discipline();
+
+		var _known_powers = string_split(specials(), "|");
+		if (array_length(_known_powers) > 1) {
+			array_pop(_known_powers);
+		}
+
+		for (var i = 0; i < array_length(_known_powers); i++) {
+			_known_powers[i] = string_char_at(_known_powers[i], 2);
+			var _powers_array = get_discipline_data(_psy_discipline, "powers");
+			_known_powers[i] = _powers_array[i];
+		}
+
+		return _known_powers;
+	};
+
+	static psy_discipline = function(){ 
+		var _power_letter = string_char_at(specials(), 1);
+		var _psy_discipline = convert_power_letter(_power_letter);
+
+		return _psy_discipline;
+	};
+
        static update_powers = scr_powers_new;
 	   	static race = function(){ 
 			return obj_ini.race[company][marine_number];
