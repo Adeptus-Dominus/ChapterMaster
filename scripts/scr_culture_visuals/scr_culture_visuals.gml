@@ -401,7 +401,7 @@ global.modular_drawing_items = [
         overides : {
             "right_pauldron" : spr_ultra_right_shoulder_hanging,
         },
-        assign_by_rank :1,
+        assign_by_rank :2,
         exp : {
             min : 80,
         },
