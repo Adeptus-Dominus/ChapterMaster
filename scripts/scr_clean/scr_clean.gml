@@ -250,7 +250,7 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
                     marine.add_or_sub_health(-minus);
 
                     // Check if marine is dead
-                    handle_marine_death(marine, marine_index);
+                    check_dead_marines(marine, marine_index);
                 }
 
                 // After processing, update messages if any hits occurred
