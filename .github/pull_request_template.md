@@ -11,8 +11,10 @@
 <!-- Describe what steps you took to test that this PR resolved the bug or added the feature, and what tests you performed to make sure it didn't cause any regressions. -->
 
 #### Related links
-<!--- Other PRs, Discord bug reports, messages, threads, outside docs, etc. -->
+<!-- Other PRs, Discord bug reports, messages, threads, outside docs, etc. -->
 
+#### Player notes
+<!-- This will be added to the PR description in the release notes. List changes that players may be interested in, in simple words. -->
 
 <!--- PR title format should be "<type>(<optional-scope>): <Short summary>" -->
 <!--- Commit types can be found at https://github.com/pvdlg/conventional-commit-types?tab=readme-ov-file#commit-types -->
