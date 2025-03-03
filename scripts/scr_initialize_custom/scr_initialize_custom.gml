@@ -726,7 +726,7 @@ function scr_initialize_custom() {
 
 	if (scr_has_adv ("Kings of Space")) {battle_barges += 1;}
 	if (scr_has_adv("Boarders")){ strike_cruisers += 2;}
-	if (scr_has_disadv("Obliterated")) {battle_barges = 0; strike_cruisers = 1; gladius = 2; hunters = 0;}
+	if (scr_has_disadv("Lost Fleet")) {battle_barges = 0; strike_cruisers = 1; gladius = 2; hunters = 0;}
 
 	var ship_summary_str = $"Ships: bb: {battle_barges} sc: {strike_cruisers} g: {gladius} h: {hunters}"
 	// log_message(ship_summary_str);
