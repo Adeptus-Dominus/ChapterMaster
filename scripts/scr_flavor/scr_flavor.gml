@@ -23,16 +23,14 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 
 	// Generates flavor based on the damage and casualties from scr_shoot, only for the player
 
-	targeh = target_type;
 	var attack_message, kill_message, leader_message, targeh;
+	targeh = target_type;
 	leader_message = "";
 	attack_message = $"";
 	kill_message = "";
 
-	var weapon_name = "";
-	if (id_of_attacking_weapons > 0) {
-		weapon_name = wep[id_of_attacking_weapons];
-	}
+	var weapon_name = wep[id_of_attacking_weapons];
+
 	if (id_of_attacking_weapons = -51) then weapon_name = "Heavy Bolter Emplacemelse ent";
 	if (id_of_attacking_weapons = -52) then weapon_name = "Missile Launcher Emplacement";
 	if (id_of_attacking_weapons = -53) then weapon_name = "Missile Silo";
@@ -448,35 +446,26 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 	}
 
 	var message_size = 0;
-	if (attack_message != "") {
+	if (defenses == 1) {
+		message_size = 999;
+	} else if (casulties == 0) {
+		message_size = number_of_shots;
+	} else {
 		if (target.dudes_vehicle[targeh] = 1) {
 			message_size = casulties * 10;
 		}
 		else {
 			message_size = casulties;
 		}
+	}
 
-		if (defenses = 1) {
-			message_size = 999;
-		}
-
-		add_battle_log_message(attack_message, casulties, message_priority);
+	if (attack_message != "") {
+		add_battle_log_message(attack_message, message_size, message_priority);
 		display_battle_log_message();
 	}
 
 	if (leader_message != "") {
-		if (target.dudes_vehicle[targeh] = 1) {
-			message_size = casulties * 10;
-		}
-		else {
-			message_size = casulties;
-		}
-
-		if (defenses = 1) {
-			message_size = 999;
-		}
-
-		add_battle_log_message(leader_message, casulties, message_priority);
+		add_battle_log_message(leader_message, message_size, message_priority);
 		display_battle_log_message();
 	}
 
