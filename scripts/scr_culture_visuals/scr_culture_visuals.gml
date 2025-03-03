@@ -512,22 +512,31 @@ function DummyMarine()constructor{
             return role[100][livery_picker.role_set > 0  ? livery_picker.role_set :eROLE.Tactical];
         }
     } 
-    static weapon_one= function(){
+    static weapon_one = function(){
         with (obj_creation){
             return wep1[100][livery_picker.role_set > 0  ? livery_picker.role_set :eROLE.Tactical];
         }
     } 
-    static race= function(){
+    static race = function(){
         return "1";
     }  
-    static weapon_two= function(){
+    static weapon_two = function(){
         with (obj_creation){
             return wep2[100][livery_picker.role_set > 0  ? livery_picker.role_set :eROLE.Tactical];
         }
     }  
     static armour = function(){
+        var armours = ARR_power_armour;
          with (obj_creation){
-            return armour[100][livery_picker.role_set > 0  ? livery_picker.role_set :eROLE.Tactical];
+            var _armour  = armour[100][livery_picker.role_set > 0  ? livery_picker.role_set : eROLE.Tactical];
+            if (array_contains(armours, _armour)){
+                _armour = array_random_element(armours);
+            }
+            if (_armour == "Power Armour"){
+                _armour = "MK7 Aquila";
+            }
+            show_debug_message(_armour)
+            return _armour;
         }
     } 
     static gear = function(){
@@ -544,6 +553,7 @@ function DummyMarine()constructor{
         return is_specialist(role(), search_type,include_trainee)
     }
     static has_trait = marine_has_trait;
+
     experience = 120;
 }
 
@@ -641,19 +651,19 @@ function generate_marine_body(){
 
 function add_purity_seal_markers (){
     if (irandom(3)==0){
-        body[$ "torso"][$ "purity_seal"] = [irandom(100),irandom(100),irandom(100),];
+        body[$ "torso"][$ "purity_seal"] = [irandom(100),irandom(100),irandom(100),irandom(100)];
     }
     if (irandom(3)==0){
-        body[$ "left_arm"][$ "purity_seal"] = [irandom(100),irandom(100),irandom(100),];
+        body[$ "left_arm"][$ "purity_seal"] = [irandom(100),irandom(100),irandom(100),irandom(100)];
     }
     if (irandom(3)==0){
-        body[$ "right_arm"][$ "purity_seal"] = [irandom(100),irandom(100),irandom(100),];
+        body[$ "right_arm"][$ "purity_seal"] = [irandom(100),irandom(100),irandom(100),irandom(100)];
     }   
     if (irandom(3)==0){
-        body[$ "left_leg"][$ "purity_seal"] = [irandom(100),irandom(100),irandom(100),];
+        body[$ "left_leg"][$ "purity_seal"] = [irandom(100),irandom(100),irandom(100),irandom(100)];
     }
     if (irandom(3)==0){
-        body[$ "right_leg"][$ "purity_seal"] = [irandom(100),irandom(100),irandom(100),];
+        body[$ "right_leg"][$ "purity_seal"] = [irandom(100),irandom(100),irandom(100),irandom(100)];
     }       
 }
 

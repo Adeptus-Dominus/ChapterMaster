@@ -219,23 +219,26 @@ function ColourItem(xx,yy) constructor{
         			}
         		}
         	}
-            image_location_maps.right_trim = draw_unit_buttons([xx-90, yy+31], "R Trim");
-            image_location_maps.right_trim[0]-=xx;
-            image_location_maps.right_trim[1]-=yy;        
-            image_location_maps.right_trim[2]-=xx;
-            image_location_maps.right_trim[3]-=yy; 
-
-            image_location_maps.left_trim = draw_unit_buttons([xx+150, yy+31], "L Trim");
-            image_location_maps.left_trim[0]-=xx;
-            image_location_maps.left_trim[1]-=yy;        
-            image_location_maps.left_trim[2]-=xx;
-            image_location_maps.left_trim[3]-=yy;
-
-            image_location_maps.company_marks = draw_unit_buttons([xx-30, yy-40], "Company Marks");
-            image_location_maps.company_marks[0]-=xx;
-            image_location_maps.company_marks[1]-=yy;        
-            image_location_maps.company_marks[2]-=xx;
-            image_location_maps.company_marks[3]-=yy;
+            image_location_maps.right_trim = move_location_relative(
+                draw_unit_buttons([xx-90, yy+31], "R Trim"),
+                -xx,
+                -yy
+            );
+            image_location_maps.eye_lense = move_location_relative(
+                draw_unit_buttons([xx-90, yy+image_location_maps.right_trim[3]], "Lenses"),
+                -xx,
+                -yy
+            );
+            image_location_maps.left_trim = move_location_relative(
+                draw_unit_buttons([xx+150, yy+31], "L Trim"),
+                -xx,
+                -yy
+            );
+            image_location_maps.company_marks = move_location_relative(
+                draw_unit_buttons([xx-30, yy-40], "Company Marks"),
+                -xx,
+                -yy
+            );
             
     		//draw_sprite(sprite_index, 0, x, y);
             if (dummy_marine == false){
@@ -245,22 +248,6 @@ function ColourItem(xx,yy) constructor{
                 dummy_image = dummy_marine.draw_unit_image();
             }
             dummy_image.draw(xx, yy-20);
-    		/*draw_sprite(spr_mk7_complex_backpack, 0, xx, yy);
-            draw_sprite(spr_mk7_right_arm, 0, xx, yy);
-            draw_sprite(spr_mk7_left_arm, 0, xx, yy);         
-    		draw_sprite(spr_mk7_complex, 0, xx, yy);
-            draw_sprite(spr_mk7_left_trim, 0 , xx, yy);
-            draw_sprite(spr_mk7_right_trim, 0 , xx, yy);
-            draw_sprite(spr_mk7_leg_variants, 1, xx, yy);
-            draw_sprite(spr_mk7_chest_variants, 1, xx, yy);
-            draw_sprite(spr_mk7_head_variants, 1, xx, yy);         	
-            draw_sprite(spr_mk7_mouth_variants, 1, xx, yy);
-            draw_sprite(spr_mk7_thorax_variants, 1, xx, yy);
-            draw_sprite(spr_mk7_complex_belt, 1, xx, yy);
-            draw_sprite(spr_gothic_numbers_right_pauldron,4,xx, yy);
-            draw_sprite(spr_numeral_left_knee,4,xx, yy);                                
-        	//draw_sprite(xx,yy,2,spr_mk7_full_colour);
-        	//draw_sprite(xx,yy,3,spr_mk7_full_colour);*/
 
         	var map_names = struct_get_names(image_location_maps);
         	for (var i=0;i<array_length(map_names);i++){

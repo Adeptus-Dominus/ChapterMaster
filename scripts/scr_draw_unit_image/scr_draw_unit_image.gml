@@ -275,7 +275,7 @@ function scr_draw_unit_image(_background=false){
         var halo_bypass = false;
         var arm_bypass = false;
         var armour_draw = [];
-		var specialist_colours=obj_creation ? obj_creation.col_special : obj_ini.col_special;
+		var specialist_colours= instance_exists(obj_creation) ? obj_creation.col_special : obj_ini.col_special;
         var specific_armour_sprite = "none";
         var unit_chapter = _creation? obj_creation.chapter_name : global.chapter_name;
         var unit_role = role();
@@ -534,8 +534,8 @@ function scr_draw_unit_image(_background=false){
            // if (skin_color!=6) then draw_sprite(spr_clothing_colors,clothing_style,x_surface_offset,y_surface_offset);
         } else {
 
-            var _complex_armours = ["MK3 Iron Armour", "MK4 Maximus","Terminator Armour","Tartaros","MK7 Aquila", "Power Armour", "MK8 Errant","Artificer Armour", "MK4 Maximus", "MK5 Heresy", "MK6 Corvus", "Dreadnought", "Scout Armour"];
-            if (array_contains(_complex_armours, armour())){
+            var _complex_armours = ["MK3 Iron Armour", "Terminator Armour","Tartaros","MK7 Aquila", "Power Armour", "MK8 Errant","Artificer Armour", "MK4 Maximus", "MK5 Heresy", "MK6 Corvus", "Dreadnought", "Scout Armour"];
+            if (array_contains(_complex_armours, unit_armour)){
                 complex_set = new ComplexSet(self);
                 complex_livery = true;
             } 

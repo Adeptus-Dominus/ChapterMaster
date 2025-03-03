@@ -37,6 +37,7 @@ function ComplexSet(unit) constructor{
     overides = {
 
     };
+    unit_armour = unit.armour();
     self.unit = unit;
     static mk7_bits = {
             armour : spr_mk7_complex,
@@ -49,7 +50,7 @@ function ComplexSet(unit) constructor{
             thorax_variants : spr_mk7_thorax_variants,
             chest_variants : spr_mk7_chest_variants,
             leg_variants  : spr_mk7_leg_variants,
-            head : spr_mk7_head_variants,    
+            head : spr_mk7_head_variants,
     };
 
     _are_exceptions = false;
@@ -144,14 +145,14 @@ function ComplexSet(unit) constructor{
                     }
                }
                if (struct_exists(_mod, "armours")){
-                    if (!array_contains(_mod.armours, unit.armour())){
+                    if (!array_contains(_mod.armours, unit_armour)){
                         if (!check_exception("armours")){
                             continue;
                         }                     
                     }
                }
                if (struct_exists(_mod, "armours_exclude")){
-                    if (array_contains(_mod.armours_exclude, unit.armour())){
+                    if (array_contains(_mod.armours_exclude, unit_armour)){
                         if (!check_exception("armours_exclude")){
                             continue;
                         }                     
@@ -252,7 +253,7 @@ function ComplexSet(unit) constructor{
         forehead : unit.get_body_data("forehead_variation","head"),
         backpack_decoration : unit.get_body_data("backpack_decoration_variation","torso"),
         belt : unit.get_body_data("belt_variation","torso"),
-        cloak :unit.get_body_data("variation","cloak"),
+        cloak :unit.get_body_data("variant","cloak"),
         cloak_image : unit.get_body_data("image_0","cloak"),
         cloak_trim : unit.get_body_data("image_1","cloak"),
         backpack_augment : unit.get_body_data("backpack_augment_variation","torso"),
@@ -265,7 +266,7 @@ function ComplexSet(unit) constructor{
             if (sprite_exists(_sprite)){
                 var choice = 0;
                 if (struct_exists(variation_map, component_name)){
-                    var choice = variation_map[$component_name]%sprite_get_number(_sprite);
+                    var choice = variation_map[$component_name] % sprite_get_number(_sprite);
                 }
                 if (struct_exists(overides, component_name)){
                     var _overide_set = overides[$component_name];
@@ -338,7 +339,7 @@ function ComplexSet(unit) constructor{
         }         
          shader_set(full_livery_shader);
 
-         if (unit.armour() == "MK4 Maximus" || unit.armour() == "MK3 Iron Armour"){
+         if (unit_armour == "MK4 Maximus" || unit_armour == "MK3 Iron Armour"){
              _draw_order = [
                 "backpack",
                 "backpack_augment",
@@ -456,7 +457,7 @@ function ComplexSet(unit) constructor{
     }
     static base_armour = function(){
         armour_type = ArmourType.Normal
-        switch (unit.armour()){
+        switch (unit_armour){
             case "MK7 Aquila":
             case "Artificer Armour":
                 add_group(mk7_bits);
@@ -589,12 +590,12 @@ function ComplexSet(unit) constructor{
                 add_to_area("cloak_trim",spr_cloak_image_0);        
             }
             
-        }          
+        }         
         assign_modulars();
     }
 
      if (unit.IsSpecialist("forge")){
-        if array_contains(["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"], unit.armour()){
+        if array_contains(["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"], unit_armour){
             if (unit.has_trait("tinkerer")){
                 add_group({
                     "armour":spr_techmarine_complex,
@@ -816,7 +817,7 @@ function blend_mode_custom(source_surface, destination_surface, allowed_cross_co
 
             var col = surface_getpixel_ext(destination_surface, _x, _y)
             var _alpha = (col >> 24) & 255;
-            if (_alpha<150){
+            if (_alpha<58){
                 
                 if (_x>=80){
                     break;
@@ -826,7 +827,7 @@ function blend_mode_custom(source_surface, destination_surface, allowed_cross_co
             var dest_color = surface_getpixel(destination_surface, _x, _y);
 
             var scource_alpha = (surface_getpixel_ext(source_surface, _x, _y) >>24 &255);
-            if (scource_alpha<150){
+            if (scource_alpha<58){
                 if (had_colour_this_row){
                     break;
                 } else {
