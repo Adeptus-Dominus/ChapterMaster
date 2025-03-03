@@ -692,103 +692,47 @@ function scr_powers(caster_id) {
 
     // TODO: separate the code bellow into a separate function;
     //* Power cast code
-    var _target_index = -1;
     var _cast_count = 1;
-
     if ((_power_type == "attack") && (_power_id == "imperator_maior")) {
         _cast_count = 3;
         _battle_log_message = _cast_flavour_text + _power_flavour_text;
         add_battle_log_message(_battle_log_message, 999, 135);
     }
 
-    var _target_column;
+    var _enemy_distance = function(_target_column) {
+        return ((point_distance(self.x, self.y, _target_column.x, _target_column.y)) / 10);
+    }
+
+    var _target_vehicles = _power_target_type == 4 ? true : false;
     repeat (_cast_count) {
+        var _target_index = -1;
+        var _target_column = -1;
         //* Pick the target
         if (_power_type == "attack") {
-            if (_target_index == -1) {
-                repeat (10) {
-                    if ((_target_index == -1) && instance_exists(_target_column)) {
-                        var _s;
-                        _s = 0;
-
-                        repeat (20) {
-                            if (point_distance(x, y, _target_column.x, _target_column.y) < (_power_range * 10)) {
-                                if ((_power_target_type == 3) && (_target_index == -1)) {
-                                    _s += 1;
-                                    if ((_target_column.dudes_hp[_s] > 0) && (_target_column.dudes_vehicle[_s] == 0)) {
-                                        _target_index = _s;
-                                    }
-                                }
-                                if ((_power_target_type == 4) && (_target_index == -1)) {
-                                    _s += 1;
-                                    if ((_target_column.dudes_hp[_s] > 0) && (_target_column.dudes_vehicle[_s] == 1)) {
-                                        _target_index = _s;
-                                    }
+            repeat (10) {
+                if (instance_exists(obj_enunit)) {
+                    _target_column = instance_nearest(x, y, obj_enunit);
+                    if (_enemy_distance(_target_column) < (_power_range)) {
+                        for (var i = 0; i < array_length(_target_column.dudes); i++) {
+                            if ((_target_column.dudes_hp[i] > 0)) {
+                                if (_target_column.dudes_vehicle[i] == _target_vehicles) {
+                                    _target_index = i;
+                                    break;
                                 }
                             }
                         }
-                        if (_target_index == -1) {
-                            instance_deactivate_object(_target_column);
-                        }
+                    }
+
+                    if (_target_index == -1) {
+                        instance_deactivate_object(_target_column);
                     }
                 }
-
-                var _onk;
-                _onk = 0;
-                if ((_power_target_type == 3) && (_target_index == -1) && (_power_armour_piercing > 0) && (_onk == 0)) {
-                    _power_target_type = 4;
-                    _onk = 1;
-                }
-                if ((_power_target_type == 4) && (_target_index == -1) && (_power_magnitude > 0) && (_onk == 0)) {
-                    _power_target_type = 3;
-                    _onk = 1;
-                }
-
-                instance_activate_object(obj_enunit);
-
-                repeat (10) {
-                    if ((_target_index == -1) && instance_exists(obj_enunit)) {
-                        _target_column = instance_nearest(x, y, obj_enunit);
-                        var _s;
-                        _s = 0;
-
-                        repeat (20) {
-                            if (point_distance(x, y, _target_column.x, _target_column.y) < (_power_range * 10)) {
-                                if ((_power_target_type == 3) && (_target_index == -1)) {
-                                    _s += 1;
-                                    if ((_target_column.dudes_hp[_s] > 0) && (_target_column.dudes_vehicle[_s] == 0)) {
-                                        _target_index = _s;
-                                    }
-                                }
-                                if ((_power_target_type == 4) && (_target_index == -1)) {
-                                    _s += 1;
-                                    if ((_target_column.dudes_hp[_s] > 0) && (_target_column.dudes_vehicle[_s] == 1)) {
-                                        _target_index = _s;
-                                    }
-                                }
-                            }
-                        }
-                        if (_target_index == -1) {
-                            instance_deactivate_object(_target_column);
-                        }
-                    }
-                }
-
-                instance_activate_object(obj_enunit);
             }
+
+            instance_activate_object(obj_enunit);
 
             //* Calculate damage
             if (_target_index != -1) {
-                var _damage_type;
-                if ((_power_armour_piercing > 0) && (_power_magnitude >= 100)) {
-                    _damage_type = "arp";
-                } else {
-                    _damage_type = "att";
-                }
-
-                //// if (_power_target_type=3) then _damage_type="att";
-                //// if (_power_target_type=4) then _damage_type="arp";
-
                 if (instance_exists(_target_column) && (_target_column.dudes_num[_target_index] > 0)) {
                     // Set up variables for damage calculation
                     var _effective_armour = _target_column.dudes_ac[_target_index];
@@ -891,6 +835,8 @@ function scr_powers(caster_id) {
                 _battle_log_message = _cast_flavour_text + _power_flavour_text + _casualties_flavour_text;
                 _battle_log_priority = _casualties * 2; // More casualties = higher priority messages
                 add_battle_log_message(_battle_log_message, _battle_log_priority, 135);
+            } else {
+                break;
             }
         }
     } // End repeat
