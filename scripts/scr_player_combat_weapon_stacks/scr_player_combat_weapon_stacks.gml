@@ -191,8 +191,6 @@ function scr_player_combat_weapon_stacks() {
                             }
                             if ((marine_type[g] == "Chapter Master") && (obj_ncombat.chapter_master_psyker == 1)) {
                                 cast_dice -= 10;
-                                // Stuff bellow is weird and never worked, I think
-                                // if (obj_ncombat.big_boom>0) and (obj_ncombat.kamehameha=true) then marine_casting[g] = true;
                             }
 
                             if (cast_dice <= 50) {

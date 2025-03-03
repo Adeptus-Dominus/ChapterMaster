@@ -341,8 +341,8 @@ function scr_powers(caster_id) {
     var buff_roll = irandom_range(1, 100);
     var known_buff_powers = [];
     if (buff_roll <= (105 - (obj_ncombat.turns * 35))) {
-        // Try to cast buffs
-    
+        // Try to pick a buff
+
         // Filter the buff powers that the unit knows
         for (var i = 0; i < array_length(_known_powers); i++) {
             var __power_type = get_power_data(_known_powers[i], "type");
@@ -359,7 +359,8 @@ function scr_powers(caster_id) {
 
     var known_attack_powers = [];
     if (!buff_cast) {
-        // Cast attack spells
+        // Pick an attack spell
+
         // Filter the attack powers that the unit knows
         for (var i = 0; i < array_length(_known_powers); i++) {
             var __power_type = get_power_data(_known_powers[i], "type");
@@ -446,7 +447,7 @@ function scr_powers(caster_id) {
     //// show_message(string(_power_id));
 
     // Chaos powers here
-    var _power_struct = get_power_data(_power_id);
+    // var _power_struct = get_power_data(_power_id); // Not used atm
     var _power_name = get_power_data(_power_id, "name");
     var _power_type = get_power_data(_power_id, "type");
     var _power_range = get_power_data(_power_id, "range");
@@ -454,7 +455,7 @@ function scr_powers(caster_id) {
     var _power_max_kills = get_power_data(_power_id, "max_kills");
     var _power_magnitude = get_power_data(_power_id, "magnitude");
     var _power_armour_piercing = get_power_data(_power_id, "armour_piercing");
-    var _power_duration = get_power_data(_power_id, "duration");
+    // var _power_duration = get_power_data(_power_id, "duration"); // Not used atm
     var _power_flavour_text = get_power_data(_power_id, "flavour_text");
     var _power_sorcery = get_power_data(_power_id, "sorcery");
 
@@ -464,14 +465,6 @@ function scr_powers(caster_id) {
             obj_ncombat.sorcery_seen = 1;
         }
     }
-    
-    if ((_power_id == "kamehameha") && (obj_ncombat.big_boom == 3)) {
-        _power_id = "imperator_maior";
-    }
-
-    //// if (_power_id="Vortex of Doom"){_power_type="attack";_power_range=5;_power_target_type=3;_power_max_kills=1;_power_magnitude=800;_power_armour_piercing=800;_power_duration=0;
-    ////     _power_flavour_text="- a hole between real and warp space is torn _open with deadly effect.  ";
-    //// }
 
     //TODO: Move into a separate function;
     var _has_force_weapon = false;
@@ -529,7 +522,7 @@ function scr_powers(caster_id) {
 
     // Tome shit bellow may not work.
     _cast_flavour_text = $"{_unit.name_role()} casts '{_power_name}'";
-    if ((_tome_discipline != "") && (_tome_roll <= 33) && (_power_id != "imperator_maior") && (_power_id != "kamehameha")) {
+    if ((_tome_discipline != "") && (_tome_roll <= 33)) {
         _cast_flavour_text = _unit.name_role();
         if (string_char_at(_cast_flavour_text, string_length(_cast_flavour_text)) == "_s") {
             _cast_flavour_text += "' tome ";
@@ -547,13 +540,6 @@ function scr_powers(caster_id) {
                 _unit.corruption += choose(3, 4, 5);
             }
         }
-    }
-
-    if (_power_id == "kamehameha") {
-        _cast_flavour_text = _unit.name_role() + " ";
-    }
-    if (_power_id == "imperator_maior") {
-        _cast_flavour_text = _unit.name_role() + " casts '" + string(_power_name) + "'";
     }
 
     //TODO: Perhaps separate perils into a separate function;
@@ -584,7 +570,7 @@ function scr_powers(caster_id) {
     }
 
     //* Buff powers code
-    if ((_power_type == "buff") || (_power_id == "kamehameha")) {
+    if ((_power_type == "buff")) {
         var _marine_index;
         var _random_marine_list = [];
         for (var i = 0; i < array_length(unit_struct); i++) {
@@ -688,158 +674,147 @@ function scr_powers(caster_id) {
 
         _battle_log_message = _cast_flavour_text + _power_flavour_text;
         add_battle_log_message(_battle_log_message, 999, 135);
-    }
 
-    // TODO: separate the code bellow into a separate function;
-    //* Power cast code
-    var _cast_count = 1;
-    if ((_power_type == "attack") && (_power_id == "imperator_maior")) {
-        _cast_count = 3;
-        _battle_log_message = _cast_flavour_text + _power_flavour_text;
-        add_battle_log_message(_battle_log_message, 999, 135);
-    }
+    } else if (_power_type == "attack") {
+        // TODO: separate the code bellow into a separate function;
+        //* Attack power cast
+        var _enemy_distance = function(_target_column) {
+            return ((point_distance(self.x, self.y, _target_column.x, _target_column.y)) / 10);
+        }
 
-    var _enemy_distance = function(_target_column) {
-        return ((point_distance(self.x, self.y, _target_column.x, _target_column.y)) / 10);
-    }
-
-    var _target_vehicles = _power_target_type == 4 ? true : false;
-    repeat (_cast_count) {
+        var _target_vehicles = _power_target_type == 4 ? true : false;
         var _target_index = -1;
         var _target_column = -1;
+
         //* Pick the target
-        if (_power_type == "attack") {
-            repeat (10) {
-                if (instance_exists(obj_enunit)) {
-                    _target_column = instance_nearest(x, y, obj_enunit);
-                    if (_enemy_distance(_target_column) < (_power_range)) {
-                        for (var i = 0; i < array_length(_target_column.dudes); i++) {
-                            if ((_target_column.dudes_hp[i] > 0)) {
-                                if (_target_column.dudes_vehicle[i] == _target_vehicles) {
-                                    _target_index = i;
-                                    break;
-                                }
+        repeat (10) {
+            if (instance_exists(obj_enunit)) {
+                _target_column = instance_nearest(x, y, obj_enunit);
+                if (_enemy_distance(_target_column) < (_power_range)) {
+                    for (var i = 0; i < array_length(_target_column.dudes); i++) {
+                        if ((_target_column.dudes_hp[i] > 0)) {
+                            if (_target_column.dudes_vehicle[i] == _target_vehicles) {
+                                _target_index = i;
+                                break;
                             }
                         }
                     }
-
-                    if (_target_index == -1) {
-                        instance_deactivate_object(_target_column);
-                    }
-                }
-            }
-
-            instance_activate_object(obj_enunit);
-
-            //* Calculate damage
-            if (_target_index != -1) {
-                if (instance_exists(_target_column) && (_target_column.dudes_num[_target_index] > 0)) {
-                    // Set up variables for damage calculation
-                    var _effective_armour = _target_column.dudes_ac[_target_index];
-                    var _is_vehicle = (_target_column.dudes_vehicle[_target_index] == 1);
-                    var _destruction_verb = _is_vehicle ? "destroyed" : "killed";
-                    var _damage_verb = _is_vehicle ? "damaged" : "hurt";
-                    var _entity_health = _target_column.dudes_hp[_target_index];
-                    
-                    // Calculate armour effectiveness based on target type and power'_s armour piercing
-                    if (!_is_vehicle) { // Non-vehicle targets
-                        if (_power_armour_piercing == 1) {
-                            _effective_armour = 0; // Full penetration ignores armour
-                        } else if (_power_armour_piercing == -1) {
-                            _effective_armour *= 6; // Reduced effectiveness against armour
-                        }
-                    } else { // Vehicle targets
-                        if (_power_armour_piercing == -1) {
-                            _effective_armour = _power_magnitude; // Completely ineffective against vehicles
-                        } else if (_power_armour_piercing == 0) {
-                            _effective_armour *= 6; // Normal weapons struggle against vehicle armour
-                        }
-                    }
-                    
-                    // Calculate final damage after armour reduction
-                    var _damage_after_armour = _power_magnitude - _effective_armour;
-                    _damage_after_armour = max(0, _damage_after_armour); // Ensure damage isn't negative
-                    var _final_damage = _damage_after_armour; // Apply any additional modifiers here if needed
-                    
-                    // Error checking for invalid health values
-                    if (_entity_health <= 0) {
-                        show_message(_power_id);
-                        show_message("Getting a 0 health error for target " + string(_target_column) + ", entity " + string(_target_index));
-                        show_message("Entity type: " + string(_target_column.dudes[_target_index]) + ", Number: " + string(_target_column.dudes_num[_target_index]));
-                        show_message("Damage: " + string(_final_damage));
-                        show_message("Health: " + string(_entity_health));
-                    }
-                    
-                    // Calculate casualties based on damage and health
-                    var _total_entities = _target_column.dudes_num[_target_index];
-                    var _casualties = 0;
-                    
-                    if (_power_max_kills == 0) {
-                        // Single target limit - at most one casualty
-                        _casualties = min(floor(_final_damage / _entity_health), 1);
-                    } else {
-                        // Multi-target - can kill multiple entities
-                        _casualties = floor(_final_damage / _entity_health);
-                    }
-                    
-                    // Special case for last remaining entity
-                    if ((_total_entities == 1) && ((_entity_health - _final_damage) <= 0)) {
-                        _casualties = 1;
-                    }
-                    
-                    // Cap casualties at available entities and ensure non-negative
-                    _casualties = min(max(_casualties, 0), _total_entities);
-                    
-                    // No casualties
-                    if ((_casualties == 0)) {
-                        _casualties_flavour_text = $" The {_target_column.dudes[_target_index]} survives the attack.";
-
-                        // Apply damage to last entity if it survives
-                        if ((_total_entities == 1) && (_final_damage > 0)) {
-                            _target_column.dudes_hp[_target_index] -= _final_damage;
-                            _casualties_flavour_text = $" The {_target_column.dudes[_target_index]} survives the attack but is {_damage_verb}.";
-                        }
-                    // Apply casualties
-                    } else {
-                        // Update unit counts after casualties are applied
-                        _target_column.dudes_num[_target_index] -= _casualties;
-                        obj_ncombat.enemy_forces -= _casualties;
-
-                        // Apply special battle effects for certain unit types
-                        var _target_unit_type = _target_column.dudes[_target_index];
-                        if ((obj_ncombat.battle_special == "WL10_reveal") || (obj_ncombat.battle_special == "WL10_later")) {
-                            // Adjust chaos anger based on unit type
-                            if (_target_unit_type == "Veteran Chaos Terminator") {
-                                obj_ncombat.chaos_angry += _casualties * 2;
-                            } else if (_target_unit_type == "Veteran Chaos Chosen") {
-                                obj_ncombat.chaos_angry += _casualties;
-                            } else if (_target_unit_type == "Greater Daemon of Slaanesh" || _target_unit_type == "Greater Daemon of Tzeentch") {
-                                obj_ncombat.chaos_angry += _casualties * 5;
-                            }
-                        }
-
-                        // Generate appropriate flavour text based on outcome
-                        if (_casualties > 1) {
-                            _casualties_flavour_text = $" {_casualties} {_target_column.dudes[_target_index]} are {_destruction_verb}.";
-                        } else if (_casualties == 1) {
-                            _casualties_flavour_text = $" A {_target_column.dudes[_target_index]} is {_destruction_verb}.";
-                        }
-
-                        // Process the enemy column after applying casualties
-                        compress_enemy_array(_target_column);
-                        destroy_empty_column(_target_column);
-                    }
                 }
 
-                // Log battle message to combat feed
-                _battle_log_message = _cast_flavour_text + _power_flavour_text + _casualties_flavour_text;
-                _battle_log_priority = _casualties * 2; // More casualties = higher priority messages
-                add_battle_log_message(_battle_log_message, _battle_log_priority, 135);
-            } else {
-                break;
+                if (_target_index == -1) {
+                    instance_deactivate_object(_target_column);
+                }
             }
         }
-    } // End repeat
+
+        instance_activate_object(obj_enunit);
+
+        //* Calculate damage
+        if (_target_index != -1) {
+            if (instance_exists(_target_column) && (_target_column.dudes_num[_target_index] > 0)) {
+                // Set up variables for damage calculation
+                var _effective_armour = _target_column.dudes_ac[_target_index];
+                var _is_vehicle = (_target_column.dudes_vehicle[_target_index] == 1);
+                var _destruction_verb = _is_vehicle ? "destroyed" : "killed";
+                var _damage_verb = _is_vehicle ? "damaged" : "hurt";
+                var _entity_health = _target_column.dudes_hp[_target_index];
+                
+                // Calculate armour effectiveness based on target type and power'_s armour piercing
+                if (!_is_vehicle) { // Non-vehicle targets
+                    if (_power_armour_piercing == 1) {
+                        _effective_armour = 0; // Full penetration ignores armour
+                    } else if (_power_armour_piercing == -1) {
+                        _effective_armour *= 6; // Reduced effectiveness against armour
+                    }
+                } else { // Vehicle targets
+                    if (_power_armour_piercing == -1) {
+                        _effective_armour = _power_magnitude; // Completely ineffective against vehicles
+                    } else if (_power_armour_piercing == 0) {
+                        _effective_armour *= 6; // Normal weapons struggle against vehicle armour
+                    }
+                }
+                
+                // Calculate final damage after armour reduction
+                var _damage_after_armour = _power_magnitude - _effective_armour;
+                _damage_after_armour = max(0, _damage_after_armour); // Ensure damage isn't negative
+                var _final_damage = _damage_after_armour; // Apply any additional modifiers here if needed
+                
+                // Error checking for invalid health values
+                if (_entity_health <= 0) {
+                    show_message(_power_id);
+                    show_message("Getting a 0 health error for target " + string(_target_column) + ", entity " + string(_target_index));
+                    show_message("Entity type: " + string(_target_column.dudes[_target_index]) + ", Number: " + string(_target_column.dudes_num[_target_index]));
+                    show_message("Damage: " + string(_final_damage));
+                    show_message("Health: " + string(_entity_health));
+                }
+                
+                // Calculate casualties based on damage and health
+                var _total_entities = _target_column.dudes_num[_target_index];
+                var _casualties = 0;
+                
+                if (_power_max_kills == 0) {
+                    // Single target limit - at most one casualty
+                    _casualties = min(floor(_final_damage / _entity_health), 1);
+                } else {
+                    // Multi-target - can kill multiple entities
+                    _casualties = floor(_final_damage / _entity_health);
+                }
+                
+                // Special case for last remaining entity
+                if ((_total_entities == 1) && ((_entity_health - _final_damage) <= 0)) {
+                    _casualties = 1;
+                }
+                
+                // Cap casualties at available entities and ensure non-negative
+                _casualties = min(max(_casualties, 0), _total_entities);
+                
+                // No casualties
+                if ((_casualties == 0)) {
+                    _casualties_flavour_text = $" The {_target_column.dudes[_target_index]} survives the attack.";
+
+                    // Apply damage to last entity if it survives
+                    if ((_total_entities == 1) && (_final_damage > 0)) {
+                        _target_column.dudes_hp[_target_index] -= _final_damage;
+                        _casualties_flavour_text = $" The {_target_column.dudes[_target_index]} survives the attack but is {_damage_verb}.";
+                    }
+                // Apply casualties
+                } else {
+                    // Update unit counts after casualties are applied
+                    _target_column.dudes_num[_target_index] -= _casualties;
+                    obj_ncombat.enemy_forces -= _casualties;
+
+                    // Apply special battle effects for certain unit types
+                    var _target_unit_type = _target_column.dudes[_target_index];
+                    if ((obj_ncombat.battle_special == "WL10_reveal") || (obj_ncombat.battle_special == "WL10_later")) {
+                        // Adjust chaos anger based on unit type
+                        if (_target_unit_type == "Veteran Chaos Terminator") {
+                            obj_ncombat.chaos_angry += _casualties * 2;
+                        } else if (_target_unit_type == "Veteran Chaos Chosen") {
+                            obj_ncombat.chaos_angry += _casualties;
+                        } else if (_target_unit_type == "Greater Daemon of Slaanesh" || _target_unit_type == "Greater Daemon of Tzeentch") {
+                            obj_ncombat.chaos_angry += _casualties * 5;
+                        }
+                    }
+
+                    // Generate appropriate flavour text based on outcome
+                    if (_casualties > 1) {
+                        _casualties_flavour_text = $" {_casualties} {_target_column.dudes[_target_index]} are {_destruction_verb}.";
+                    } else if (_casualties == 1) {
+                        _casualties_flavour_text = $" A {_target_column.dudes[_target_index]} is {_destruction_verb}.";
+                    }
+
+                    // Process the enemy column after applying casualties
+                    compress_enemy_array(_target_column);
+                    destroy_empty_column(_target_column);
+                }
+            }
+
+            // Log battle message to combat feed
+            _battle_log_message = _cast_flavour_text + _power_flavour_text + _casualties_flavour_text;
+            _battle_log_priority = _casualties * 2; // More casualties = higher priority messages
+            add_battle_log_message(_battle_log_message, _battle_log_priority, 135);
+        }
+    }
 
     display_battle_log_message();
 }
