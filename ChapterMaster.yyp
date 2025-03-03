@@ -1325,6 +1325,7 @@
     {"id":{"name":"__init_d3d","path":"scripts/__init_d3d/__init_d3d.yy",},},
     {"id":{"name":"draw_set_blend_mode","path":"scripts/draw_set_blend_mode/draw_set_blend_mode.yy",},},
     {"id":{"name":"instance_create","path":"scripts/instance_create/instance_create.yy",},},
+    {"id":{"name":"spr_mk7_sculpted_chest","path":"sprites/spr_mk7_sculpted_chest/spr_mk7_sculpted_chest.yy",},},
     {"id":{"name":"object_get_depth","path":"scripts/object_get_depth/object_get_depth.yy",},},
     {"id":{"name":"__view_get","path":"scripts/__view_get/__view_get.yy",},},
     {"id":{"name":"__view_set","path":"scripts/__view_set/__view_set.yy",},},
