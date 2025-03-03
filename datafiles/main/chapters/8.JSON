@@ -21,7 +21,7 @@
         "homeworld_name": "Nocturne",
         "recruiting": "", //"Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
         "recruiting_name": "",
-        "discipline": "pyromancy", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune Magick'
+        "discipline": "pyromancy", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune_magic'
         "aspirant_trial": "APPRENTICESHIP", // ? need to find the best way to do this
         "advantages": [ //TODO something with these after rework of adv organisation
             "",
