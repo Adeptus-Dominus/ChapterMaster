@@ -28,3 +28,8 @@ labels:
 - label: "Size: Epic"
   size:
     above: 1599
+    below: 3200
+
+- label: "Size: Warning!"
+  size:
+    above: 3199
