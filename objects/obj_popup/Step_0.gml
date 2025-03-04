@@ -322,7 +322,7 @@ try {
 				} else if ((press == 2) && (mission == "meeting_1")) {
 					obj_controller.complex_event = true;
 					obj_controller.current_eventing = "chaos_meeting_1";
-					text = "mission_star signal your readiness to the heretic.  Nearly twenty minutes of following the man passes before mission_star all enter an ordinary-looking structure.  Down, within the basement, mission_star then pass into the entrance of a tunnel.  As the trek downward continues more and more heretics appear- cultists, renegades that appear to be from the local garrison, and occasionally even the fallen of your kind.  Overall the heretics seem well supplied and equip.  This observation is interrupted as your group enters into a larger chamber, revealing a network of tunnels and what appears to be ancient catacombs.  Bones of the ancient dead, the forgotten, litter the walls and floor.  And the chamber seems to open up wider, and wider, until mission_star find yourself within a hall.  Within this hall, waiting for mission_star, are several dozen Chaos Terminators, a Greater Daemon of Tzeentch and Slaanesh, and Chaos Lord " + string(obj_controller.faction_leader[eFACTION.Chaos]) + ".";
+					text = $"{global.chapter_name} signal your readiness to the heretic.  Nearly twenty minutes of following the man passes before {global.chapter_name} all enter an ordinary-looking structure.  Down, within the basement, {global.chapter_name} then pass into the entrance of a tunnel.  As the trek downward continues more and more heretics appear- cultists, renegades that appear to be from the local garrison, and occasionally even the fallen of your kind.  Overall the heretics seem well supplied and equip.  This observation is interrupted as your group enters into a larger chamber, revealing a network of tunnels and what appears to be ancient catacombs.  Bones of the ancient dead, the forgotten, litter the walls and floor.  And the chamber seems to open up wider, and wider, until {global.chapter_name} find yourself within a hall.  Within this hall, waiting for {global.chapter_name}, are several dozen Chaos Terminators, a Greater Daemon of Tzeentch and Slaanesh, and Chaos Lord " + string(obj_controller.faction_leader[eFACTION.Chaos]) + ".";
 					option1 = "";
 					option2 = "";
 					option3 = "";
@@ -340,7 +340,7 @@ try {
 					}
 					obj_controller.complex_event = true;
 					obj_controller.current_eventing = "chaos_trap";
-					text = "mission_star signal your readiness to the heretic.  Nearly twenty minutes of following the man passes before mission_star all enter an ordinary-looking structure.  Down, within the basement, mission_star then pass into the entrance of a tunnel.  As the trek downward continues more and more heretics appear- cultists, renegades that appear to be from the local garrison, and occasionally even the fallen of your kind.  Overall the heretics seem well supplied and equip.  This observation is interrupted as your group enters into a larger chamber, revealing a network of tunnels and what appears to be ancient catacombs.  Bones of the ancient dead, the forgotten, litter the walls and floor.  And the chamber seems to open up wider, and wider, until mission_star find yourself within a hall.  Within this hall, waiting for mission_star, are several dozen Chaos Terminators, a handful of Helbrute, and many more Chaos Space Marines.  The Chaos Lord is nowhere to be seen.  It is a trap.";
+					text = $"{global.chapter_name} signal your readiness to the heretic.  Nearly twenty minutes of following the man passes before {global.chapter_name} all enter an ordinary-looking structure.  Down, within the basement, {global.chapter_name} then pass into the entrance of a tunnel.  As the trek downward continues more and more heretics appear- cultists, renegades that appear to be from the local garrison, and occasionally even the fallen of your kind.  Overall the heretics seem well supplied and equip.  This observation is interrupted as your group enters into a larger chamber, revealing a network of tunnels and what appears to be ancient catacombs.  Bones of the ancient dead, the forgotten, litter the walls and floor.  And the chamber seems to open up wider, and wider, until {global.chapter_name} find yourself within a hall.  Within this hall, waiting for {global.chapter_name}, are several dozen Chaos Terminators, a handful of Helbrute, and many more Chaos Space Marines.  The Chaos Lord is nowhere to be seen.  It is a trap.";
 					option1 = "";
 					option2 = "";
 					option3 = "";
@@ -465,7 +465,7 @@ try {
 			option1 = "";
 			option2 = "";
 			loc = "";
-			text = "All Chaos and Daemonic Artifacts present have been handed over to the Inquisitor.  They remain seething, but your destruction has been stalled.  Or so mission_star imagine.";
+			text = $"All Chaos and Daemonic Artifacts present have been handed over to the Inquisitor.  They remain seething, but your destruction has been stalled.  Or so {global.chapter_name} imagine.";
 			exit;
 		}
 
@@ -664,7 +664,7 @@ try {
 					if (eh > 0) {
 						if (find_problem_planet(that, "", tempy) > 0) {
 							add_new_problem(that, "mech_tomb1", 17, tempy);
-							text = "The Adeptus Mechanicus await your forces at " + string(tempy.name) + " " + scr_roman(that) + ".  They are expecting at least two squads of Astartes and have placed the testing on hold until their arrival.  mission_star have 16 months to arrive.";
+							text = $"The Adeptus Mechanicus await your forces at " + string(tempy.name) + " " + scr_roman(that) + $".  They are expecting at least two squads of Astartes and have placed the testing on hold until their arrival.  {global.chapter_name} have 16 months to arrive.";
 							scr_event_log("", "Mechanicus Mission Accepted: At least two squads of marines are expected at " + string(tempy.name) + " " + scr_roman(that) + " within 16 months.", tempy.name);
 							new_star_event_marker("green");
 							title = "Mechanicus Mission Accepted";
@@ -837,7 +837,7 @@ try {
 					text += "golden-age Imperial ruins, since decorated with spikes and bones.";
 				}
 				if (_ruins.failed_exploration == 1) {
-					text += "mission_star see the scarring in the walls and round impacts where your brothers died to clense this place of it's foul inhabitants";
+					text += $"{global.chapter_name} see the scarring in the walls and round impacts where your brothers died to clense this place of it's foul inhabitants";
 				}
 				text += "  Unfortunantly, it's too late before your Battle Brothers discern the ruins are still inhabited.  Shapes begin to descend upon them from all directions, masked in the shadows.";
 
@@ -1342,7 +1342,7 @@ try {
 			var mission_star = star_by_name(obj_controller.temp[200]);
 			if (add_new_problem(planet, "recon", estimate, mission_star)) {
 				title = "Inquisition Mission Demand";
-				text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  mission_star are to land Astartes on {mission_star.name} {scr_roman(planet)} to investigate the planet within {estimate} months.";
+				text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  {global.chapter_name} are to land Astartes on {mission_star.name} {scr_roman(planet)} to investigate the planet within {estimate} months.";
 				with (mission_star) {
 					new_star_event_marker("green");
 				}
@@ -1373,12 +1373,12 @@ try {
 					if (mission == "purge") {
 						scr_event_log("", $"Inquisition Mission Accepted: The nobles of {mission_star.name} {scr_roman(planet)} must be selectively purged within {estimate} months.", mission_star.name);
 						if (demand) {
-							text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  mission_star are to selectively purge the Nobles on {mission_star.name} {scr_roman(onceh)} within {estimate} months.";
+							text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  {global.chapter_name} are to selectively purge the Nobles on {mission_star.name} {scr_roman(onceh)} within {estimate} months.";
 						}
 					} else if (mission == "cleanse") {
 						scr_event_log("", $"Inquisition Mission Accepted: The mutants beneath {planet_numeral_name(planet, mission_star)} must be cleansed by fire within {estimate} months.", mission_star.name);
 						if (demand) {
-							text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  mission_star are to cleanse by fire the mutants in Hive {planet_numeral_name(planet, mission_star)} within {estimate} months.";
+							text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  {global.chapter_name} are to cleanse by fire the mutants in Hive {planet_numeral_name(planet, mission_star)} within {estimate} months.";
 						}
 					} else if (mission == "inquisitor") {
 						scr_event_log("", $"Inquisition Mission Accepted: A radical Inquisitor enroute to {mission_star.name} must be removed.  Estimated arrival in {estimate} months.", mission_star.name);
@@ -1393,16 +1393,16 @@ try {
 							text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  An out of control Spyrer on Hive {mission_star.name} {scr_roman(onceh)} must be removed within {estimate} months.";
 						}
 					} else if (mission == "necron") {
-						scr_event_log("", $"Inquisition Mission Accepted: mission_star have been given a Bomb to seal the Necron Tomb on {mission_star.name} {scr_roman(planet)}.", mission_star.name);
+						scr_event_log("", $"Inquisition Mission Accepted: {global.chapter_name} have been given a Bomb to seal the Necron Tomb on {mission_star.name} {scr_roman(planet)}.", mission_star.name);
 
 						image = "necron_cave";
 						title = "New Equipment";
 						fancy_title = 0;
 						text_center = 0;
-						text = "mission_star have been provided with 1x Plasma Bomb in order to complete the mission.";
+						text = $"{global.chapter_name} have been provided with 1x Plasma Bomb in order to complete the mission.";
 
 						if (demand) {
-							text = $"The Inquisition demands that your Chapter demonstrate its loyalty.  mission_star have been given a Plasma Bomb to seal the Necron Tomb on {mission_star.name} {scr_roman(onceh)}.  It is expected to be completed within {estimate} months.";
+							text = $"The Inquisition demands that your Chapter demonstrate its loyalty.  {global.chapter_name} have been given a Plasma Bomb to seal the Necron Tomb on {mission_star.name} {scr_roman(onceh)}.  It is expected to be completed within {estimate} months.";
 						}
 						option1 = "";
 						option2 = "";
@@ -1418,10 +1418,10 @@ try {
 						title = "New Equipment";
 						fancy_title = 0;
 						text_center = 0;
-						text = "mission_star have been provided with 4x Astartes Webbers in order to complete the mission.";
+						text = $"{global.chapter_name} have been provided with 4x Astartes Webbers in order to complete the mission.";
 
 						if (demand) {
-							text = "The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  mission_star are to capture a Gaunt organism and return it, unharmed- 4x Webbers have been provided for this purpose.";
+							text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  {global.chapter_name} are to capture a Gaunt organism and return it, unharmed- 4x Webbers have been provided for this purpose.";
 						}
 
 						option1 = "";
@@ -1446,10 +1446,10 @@ try {
 
 						if (demand) {
 							title = "Inquisition Mission Demand";
-							text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  mission_star are to capture the Tau Ethereal somewhere within the {mission_star.name} system.";
+							text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  {global.chapter_name} are to capture the Tau Ethereal somewhere within the {mission_star.name} system.";
 						}
 						if (mission_star.p_problem[planet, 1] == "recon") {
-							scr_event_log("", $"Inquisition Mission Accepted: The Inquisition wish for mission_star to capture the Tau Ethereal somewhere within {mission_star.name}.", mission_star.name);
+							scr_event_log("", $"Inquisition Mission Accepted: The Inquisition wish for {global.chapter_name} to capture the Tau Ethereal somewhere within {mission_star.name}.", mission_star.name);
 						}
 					}
 				}
@@ -1652,7 +1652,7 @@ try {
 
 			if (offer == 1) {
 				title = "Artifact Offered";
-				text = "The Inquisitor claims that this is a massive misunderstanding, and " + string(gender) + " wishes to prove " + string(gender2) + " innocence.  If mission_star allow their ship to leave " + string(gender) + " will give mission_star an artifact.";
+				text = "The Inquisitor claims that this is a massive misunderstanding, and " + string(gender) + " wishes to prove " + string(gender2) + $" innocence.  If {global.chapter_name} allow their ship to leave " + string(gender) + $" will give {global.chapter_name} an artifact.";
 				option1 = "Destroy their vessel";
 				option2 = "Take the artifact and then destroy them";
 				option3 = "Take the artifact and spare them";
@@ -1661,7 +1661,7 @@ try {
 
 			if (offer == 2) {
 				title = "Mercy Plea";
-				text = "The Inquisitor claims that " + string(gender) + " has key knowledge that would grant the Imperium vital power over the forces of Chaos.  If mission_star allow " + string(gender2) + " ship to leave the forces of Chaos within this sector will be weakened.";
+				text = "The Inquisitor claims that " + string(gender) + $" has key knowledge that would grant the Imperium vital power over the forces of Chaos.  If {global.chapter_name} allow " + string(gender2) + " ship to leave the forces of Chaos within this sector will be weakened.";
 				option1 = "Destroy their vessel";
 				option2 = "Search their ship";
 				option3 = "Spare them";
@@ -1692,7 +1692,7 @@ try {
 				}
 				title = "Inquisition Mission Completed";
 				image = "exploding_ship";
-				text = "mission_star allow communications.  As soon as the vox turns on mission_star hear a sickly, hateful voice.  They begin to speak of the inevitable death of your marines, the fall of all that is and ever shall be, and " + string(gender2) + " Lord of Decay.  Their ship is fired upon and destroyed without hesitation.";
+				text = $"{global.chapter_name} allow communications.  As soon as the vox turns on {global.chapter_name} hear a sickly, hateful voice.  They begin to speak of the inevitable death of your marines, the fall of all that is and ever shall be, and " + string(gender2) + " Lord of Decay.  Their ship is fired upon and destroyed without hesitation.";
 				option1 = "";
 				option2 = "";
 				option3 = "";
@@ -1792,7 +1792,7 @@ try {
 			option3 = "";
 			title = "Inquisition Mission Completed";
 			text = "Your ship sends over a boarding party, who retrieve the offered artifact- ";
-			text += " some form of " + string(obj_ini.artifact[last_artifact]) + ".  As promised mission_star allow the Inquisitor to leave, hoping for the best.  What's the worst that could happen?";
+			text += " some form of " + string(obj_ini.artifact[last_artifact]) + $".  As promised {global.chapter_name} allow the Inquisitor to leave, hoping for the best.  What's the worst that could happen?";
 			image = "artifact_recovered";
 			option1 = "";
 			option2 = "";
@@ -1824,7 +1824,7 @@ try {
 				}
 			}
 			title = "Inquisition Mission Completed";
-			text = "mission_star allow the Inquisitor to leave, trusting in their words.  If they truly do have key information it is a risk mission_star are willing to take.  What's the worst that could happen?";
+			text = $"{global.chapter_name} allow the Inquisitor to leave, trusting in their words.  If they truly do have key information it is a risk {global.chapter_name} are willing to take.  What's the worst that could happen?";
 			image = "artifact_recovered";
 			option1 = "";
 			option2 = "";
