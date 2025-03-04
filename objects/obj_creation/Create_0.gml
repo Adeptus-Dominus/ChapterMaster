@@ -719,12 +719,12 @@ var all_advantages = [
         {
             name : "Boarders",
             description : "Boarding other ships is the specialty of your chapter.  Your chapter is more lethal when boarding ships, have dedicated boarding squads, and two extra strike cruisers.",
-            value : 20,
+            value : 30,
         },
         {
             name : "Bolter Drilling",
             description : "Bolter drills are sacred to your chapter; all marines have increased attack with Bolter weaponry.",
-            value : 30,
+            value : 40,
             meta : ["Weapon Specialty"]
         },
         {
@@ -788,7 +788,7 @@ var all_advantages = [
         {
             name : "Lightning Warriors",
             description : "Your chapter's style of warfare is built around the speedy execution of battle. Infantry have boosted attack at the cost of defense as well as two additional Land speeders and Biker squads.",
-            value : 20,
+            value : 30,
             meta : ["Doctrine"],
         },
         {
@@ -800,7 +800,7 @@ var all_advantages = [
         {
             name : "Psyker Abundance",
             description : "The Psyker mutation runs rampant in your chapter.  Librarians train in 60% the normal time and receive bonus experience.",
-            value : 30,
+            value : 20,
             meta : ["Psyker Views","Librarians"],
         }, 
         {
@@ -812,7 +812,7 @@ var all_advantages = [
         {
             name : "Tech-Brothers",
             description : "Your chapter has better ties to the mechanicus; you have more techmarines and higher mechanicus disposition.",
-            value : 30,
+            value : 20,
             meta : ["Mechanicus Faith"],
         }, 
         {
@@ -828,7 +828,7 @@ var all_advantages = [
         {
             name : "Devastator Doctrine",
             description : "The steady advance of overwhelming firepower is your chapters combat doctrine each company has an additional Devastator squad, all infantry have boosted defence, and heavy weapons have increased attack.",
-            value : 30,
+            value : 40,
             meta : ["Doctrine"],
         },
         {
@@ -852,7 +852,7 @@ var all_advantages = [
         {
             name : "Ryzan Patronage",
             description : "Your chapter has strong ties to the Forgeworld of Ryza as a result your Techmarines are privy to the secrets of their Techpriests enhancing your Plasma and Las weaponry.",
-            value : 30,
+            value : 40,
             meta : ["Weapon Specialty"] 
         },                                                                                                                                                                             
     ]
@@ -889,7 +889,7 @@ var all_disadvantages = [
     {
         name : "Blood Debt",
         description : "Prevents your Chapter from recruiting new Astartes until enough of your marines, or enemies, have been killed.  Incompatible with Penitent chapter types.",
-        value : 30,
+        value : 50,
     },
     {
         name : "Depleted Gene-seed Stocks",
@@ -905,7 +905,7 @@ var all_disadvantages = [
     {
         name : "Never Forgive",
         description : "In the past traitors broke off from your chapter.  They harbor incriminating secrets or heritical beliefs, and as thus, must be hunted down whenever possible.",
-        value : 10, // When fixed the events, consider raising to 20
+        value : 20,
     },
     {
         name : "Shitty Luck",
@@ -915,7 +915,7 @@ var all_disadvantages = [
     {
         name : "Sieged",
         description : "A recent siege has reduced the number of your marines greatly.  You retain a normal amount of equipment but some is damaged.",
-        value : 20,
+        value : 40,
         meta : ["Status"],
     },
     {
@@ -949,13 +949,13 @@ var all_disadvantages = [
     {
         name : "Psyker Intolerant",
         description : "Witches are hated by your chapter.  You cannot create Librarians but gain a little bonus attack against psykers.",
-        value : 10,
+        value : 30,
         meta : ["Psyker Views"],
     },
     {
         name : "Obliterated",
         description : "A recent string of unfortunate events has left your chapter decimated. You have very little left, will your story continue?",
-        value : 40,
+        value : 80,
         meta : ["Status"],
     },
     {
@@ -973,25 +973,25 @@ var all_disadvantages = [
     {
         name : "Serpents Delight",
         description : "Sleeper cells infiltrated your chapter. When they rose up for the decapitation strike,they slew the 5 most experienced company's and many of the HQ staff before being defeated",
-        value : 30,
+        value : 50,
         meta : ["Status"],
     },
     {
         name : "Weakened Apothecarion",
         description : "Many of your chapter's Apothecaries have fallen in recent battles whether due to their incompetence or deliberate targetting.",
-        value : 10,
+        value : 20,
         meta : ["Apothecaries"],
     },
     {
         name : "Small Reclusiam",
         description : "Your chapter cares little for its reclusiam compared to other chapters fewer marines have shown the desire to be chaplains.",
-        value : 10, 
+        value : 20, 
         meta : ["Faith"],
     },
     {
         name : "Barren Librarius",
         description : "Your chapter has a smaller Librarius compared to other chapters due to having fewer potent psykers.",
-        value : 10,
+        value : 20,
         meta : ["Librarians"],
     },
 ]
