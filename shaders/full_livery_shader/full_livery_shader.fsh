@@ -41,9 +41,8 @@ void main()
     vec4 col = texture2D(gm_BaseTexture, v_vTexcoord);
     vec4 col_orig = texture2D(gm_BaseTexture, v_vTexcoord);
    if (col.rgb == vec3(0.0,0.0, 128.0/255.0).rgb){
-      if (col.a == 1.0){
-         col.rgb = left_head.rgb;
-      }
+
+      col.rgb = left_head.rgb;
    };
     if (col.rgb == vec3(181.0/255.0,0.0, 255.0/255.0).rgb){
         col.rgb = right_backpack.rgb;
