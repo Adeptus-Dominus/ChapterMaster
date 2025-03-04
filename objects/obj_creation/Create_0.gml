@@ -880,11 +880,6 @@ var all_disadvantages = [
         value : 50,
     },
     {
-        name : "Depleted Gene-seed Stocks",
-        description : "Your chapter has lost its gene-seed stocks in recent engagement. You start with no gene-seed.",
-        value : 20,
-    },
-    {
         name : "Fresh Blood",
         description : "Due to being newly created your chapter has little special wargear or psykers.",
         value : 30,
@@ -951,12 +946,6 @@ var all_disadvantages = [
         description : "Whether due to being cut off from forge worlds or bad luck, your chapter no longer has enough high quality gear to go around. Your elite troops will have to make do with standard armour.",
         value: 10,
         meta : ["Gear Quality"]
-    },
-    {
-        name : "Enduring Angels",
-        description : "The Chapter's journey thus far has been arduous & unforgiving leaving them severely understrength yet not out of the fight. You begin with 5 fewer company's",
-        value : 50,
-        meta : ["Status"],
     },
     {
         name : "Serpents Delight",
