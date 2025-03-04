@@ -726,8 +726,18 @@ function scr_initialize_custom() {
 
 	if (scr_has_adv ("Kings of Space")) {battle_barges += 1;}
 	if (scr_has_adv("Boarders")){ strike_cruisers += 2;}
-	if (scr_has_disadv("Obliterated")) {battle_barges = 0; strike_cruisers = 1; gladius = 2; hunters = 0;}
-
+	if (scr_has_disadv("Obliterated")){ if (obj_creation.fleet_type == ePlayerBase.home_world) {
+		battle_barges = 0;
+		strike_cruisers = 2;
+		gladius = 1;
+		hunters = 0;
+		} else {
+		battle_barges = 1;
+		strike_cruisers = 0;
+		gladius = 2;
+		hunters = 0;
+		}
+	}
 	var ship_summary_str = $"Ships: bb: {battle_barges} sc: {strike_cruisers} g: {gladius} h: {hunters}"
 	// log_message(ship_summary_str);
 	// show_debug_message(ship_summary_str);
@@ -1019,7 +1029,7 @@ function scr_initialize_custom() {
 	if (obj_creation.custom != 0) {
 		var bonus_marines = 0;
 		if (obj_creation.strength > 5) then bonus_marines = (obj_creation.strength - 5) * 50;
-		if scr_has_disadv("Obliterated") then bonus_marines = (obj_creation.strength - 5) * 10;
+		if scr_has_disadv("Obliterated") then bonus_marines = (obj_creation.strength - 1) * 10;
 		var i = 0;
 		while (bonus_marines >= 5) {
 			switch (i % 10) {
