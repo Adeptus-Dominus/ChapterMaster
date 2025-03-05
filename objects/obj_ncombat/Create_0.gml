@@ -194,6 +194,7 @@ vet_sgts=0;
 rhinos=0;
 predators=0;
 land_raiders=0;
+land_speeders=0;
 whirlwinds=0;
 
 big_mofo=10;

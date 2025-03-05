@@ -37,7 +37,9 @@ function scr_civil_roster(_unit_location, _target_location, _is_planet) {
 	obj_controller.bat_dreadnought_column=obj_controller.bat_drea_for[new_combat.formation_set];
 	obj_controller.bat_rhino_column=obj_controller.bat_rhin_for[new_combat.formation_set];
 	obj_controller.bat_predator_column=obj_controller.bat_pred_for[new_combat.formation_set];
-	obj_controller.bat_landraider_column=obj_controller.bat_land_for[new_combat.formation_set];
+	obj_controller.bat_landraider_column=obj_controller.bat_landraid_for[new_combat.formation_set];
+	obj_controller.bat_landspeeder_column = obj_controller.bat_landspee_for[new_combat.formation_set];
+    obj_controller.bat_whirlwind_column = obj_controller.bat_whirl_for[new_combat.formation_set];
 	obj_controller.bat_scout_column=obj_controller.bat_scou_for[new_combat.formation_set];
 
 	var co, v, meeting, he_good,unit;

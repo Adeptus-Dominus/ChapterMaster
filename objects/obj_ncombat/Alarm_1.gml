@@ -234,6 +234,10 @@ if (dreadnoughts+predators+land_raiders>3){
     
     if (land_raiders=1) then p6+=string(land_raiders)+" Land Raider, ";
     if (land_raiders>1) then p6+=string(land_raiders)+" Land Raiders, ";
+
+    if (land_speeders=1) then p6+=string(land_speeders)+" Land Speeder, ";
+    if (land_speeders>1) then p6+=string(land_speeders)+" Land Speeders, ";
+    
     
     if (whirlwinds=1) then p6+=string(whirlwinds)+" Whirlwind, ";
     if (whirlwinds>1) then p6+=string(whirlwinds)+" Whirlwinds, ";
