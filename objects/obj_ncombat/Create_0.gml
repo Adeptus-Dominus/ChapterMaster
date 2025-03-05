@@ -113,7 +113,7 @@ player_defenses=0;player_silos=0;
 enemy_forces=0;enemy_max=0;
 hulk_forces=0;
 
-i=-1;messages=0;messages_to_show=4;messages_shown=0;
+i=-1;messages=0;messages_to_show=24;messages_shown=0;
 largest=0;priority=0;random_messages=0;dead_enemies=0;
 repeat(70){i+=1;
     lines[i]="";
