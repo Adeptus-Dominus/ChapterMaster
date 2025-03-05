@@ -1,57 +1,58 @@
-function EquipmentStruct(item_data, core_type,quality="none") constructor{ 
-	type = core_type;
+function EquipmentStruct(item_data, core_type, quality_request="none") constructor{ 
+	var start_time = get_timer();
+    type = core_type;
 
-	var properties = [
-		["hp_mod", 0],
-		["description", ""],
-		["damage_resistance_mod", 0],
-		["ranged_mod", 0],
-		["melee_mod", 0],
-		["armour_value", 0],
-		["attack", 0],
-		["melee_hands", 0],
-		["ranged_hands", 0],
-		["ammo", 0],
-		["range", 0],
-		["spli", 0],
-		["arp", 0],
-		["special_description", ""],
-		["special_properties", []],
-		["abbreviation", ""],
-		["tags", []],
-		["name", ""],
-		["second_profiles", []],
-		["req_exp", 0],
-        ["maintenance", 0]
-	];
+    // Struct defaults;
+    hp_mod = 0;
+    description = "";
+    damage_resistance_mod = 0;
+    ranged_mod = 0;
+    melee_mod = 0;
+    armour_value = 0;
+    attack = 0;
+    melee_hands = 0;
+    ranged_hands = 0;
+    ammo = 0;
+    range = 0;
+    spli = 0;
+    arp = 0;
+    special_description = "";
+    special_properties = [];
+    abbreviation = "";
+    tags = [];
+    name = "";
+    second_profiles = [];
+    req_exp = 0;
+    maintenance = 0;
+    specials = "";
+	quality = quality_request == "none" ? "standard" : quality_request;
+    // Struct defaults end;
 
-	for (var i = 0; i < array_length(properties); i++) {
-		var name = properties[i][0];
-		var default_value = properties[i][1];
+    // Loop through teh data, to fill the struct;
+    if (is_struct(item_data)) {
+        var _struct_keys = struct_get_names(item_data);
+        for (var i = 0; i < array_length(_struct_keys); i++) {
+            var _struct_key = _struct_keys[i];
+            // _struct_keys = [];
+            self[$ _struct_key] = item_data[$ _struct_key];
+            if (is_struct(self[$ _struct_key])) {
+                if (struct_exists(self[$ _struct_key], quality)) {
+                    self[$ _struct_key] = self[$ _struct_key][$ quality];
+                }
+            }
+            // _struct_key = "";
+        }
+    }
 
-		if (struct_exists(item_data, name)) {
-			self[$ name] = item_data[$ name];
-			if (quality != "none") {
-				if (is_struct(self[$ name])) {
-					if (struct_exists(self[$ name], quality)) {
-						self[$ name] = self[$ name][$ quality];
-					} else {
-						self[$ name] = self[$ name].standard;
-					}
-				}
-			}
-		} else {
-			self[$ name] = default_value;
-		}
-	}
-
-	variable_struct_set(self, "quality", quality == "none" ? "standard" : quality);
-
+    // Placeholder maintenance values;
     if (maintenance == 0){
         if (has_tags(["heavy_ranged","power", "plasma", "melta"])){
             maintenance = 0.05;
         }
-    }  
+    }
+
+    // All methods and functions are bllow;
+
     static item_tooltip_desc_gen = function(){
         item_desc_tooltip = "";
         var stat_order;
@@ -76,10 +77,10 @@ function EquipmentStruct(item_data, core_type,quality="none") constructor{
         }
         switch (item_type) {
             default:
-                stat_order = ["description", "special_description", "quality", "armour_value", "damage_resistance_mod", "hp_mod", "ranged_mod", "melee_mod", "attack", "spli", "range", "ammo", "melee_hands", "ranged_hands", "maintenance","special_properties", "req_exp", "tags"];
+                stat_order = ["description", "special_description", "quality", "armour_value", "damage_resistance_mod", "hp_mod", "ranged_mod", "melee_mod", "attack", "spli", "range", "ammo", "melee_hands", "ranged_hands", "maintenance","special_properties", "req_exp", "tags", "specials"];
                 break;
             case "weapon":
-                stat_order = ["description", "special_description", "quality", "attack", "spli", "range", "ammo", "ranged_mod", "melee_mod", "armour_value", "hp_mod", "damage_resistance_mod", "melee_hands", "ranged_hands", "maintenance","special_properties", "req_exp", "tags"];
+                stat_order = ["description", "special_description", "quality", "attack", "spli", "range", "ammo", "ranged_mod", "melee_mod", "armour_value", "hp_mod", "damage_resistance_mod", "melee_hands", "ranged_hands", "maintenance","special_properties", "req_exp", "tags", "specials"];
                 break;
             }
 			
@@ -226,8 +227,19 @@ function EquipmentStruct(item_data, core_type,quality="none") constructor{
                     break;
                 case "maintenance":
                     if (maintenance>0){
-                        item_desc_tooltip += $"#Maintenance:#{maintenance} Forge Points#"
+                        item_desc_tooltip += $"#Maintenance: {maintenance}#"
                     }
+                    break;
+                case "specials":
+                    if (specials != "") {
+                        var _specials = struct_get_names(specials);
+                        for (var i = 0; i < array_length(_specials); i++) {
+                            var _special = _specials[i];
+                            var _special_value = specials[$ _special];
+                            item_desc_tooltip += $"#Specials:#{_special} {_special_value}#"
+                        }
+                    }
+                    break
             }
         }
         return item_desc_tooltip
@@ -295,9 +307,17 @@ function EquipmentStruct(item_data, core_type,quality="none") constructor{
                 }
             }
         }
-    }      
+    }
+    
+    var end_time = get_timer();
+
+    // Calculate the elapsed time (in seconds)
+    var elapsed_time = (end_time - start_time);
+
+    // Output the time taken
+    show_message("Time taken: " + string(elapsed_time) + " milliseconds");
 }
-function gear_weapon_data(search_area="any",item,wanted_data="all", sub_class=false, quality="standard"){
+function gear_weapon_data(search_area="any",item,wanted_data="all", sub_class=false, quality_request="standard"){
     var item_data_set=false;
     var equip_area=false;
     gear_areas =  ["gear","armour","mobility"];
@@ -337,12 +357,12 @@ function gear_weapon_data(search_area="any",item,wanted_data="all", sub_class=fa
     if (is_struct(item_data_set)){
         if (wanted_data=="all"){
             item_data_set.name=item;
-            return new EquipmentStruct(item_data_set,search_area,quality);
+            return new EquipmentStruct(item_data_set,search_area,quality_request);
         }
         if (struct_exists(item_data_set, wanted_data)){
             if (is_struct(item_data_set[$ wanted_data])){
-                if (struct_exists(item_data_set[$ wanted_data], quality)){
-                    return item_data_set[$ wanted_data][$ quality];
+                if (struct_exists(item_data_set[$ wanted_data], quality_request)){
+                    return item_data_set[$ wanted_data][$ quality_request];
                 } else {
                     if (struct_exists(item_data_set[$ wanted_data],"standard")){
                         return item_data_set[$ wanted_data][$ "standard"]
@@ -360,7 +380,7 @@ function gear_weapon_data(search_area="any",item,wanted_data="all", sub_class=fa
     return false;//nothing found
 }
 
-function quality_string_conversion(quality){
+function quality_string_conversion(quality_request){
     var quality_conversions = {
         standard:"Normal",
         master_crafted:"Master Crafted",
@@ -368,8 +388,8 @@ function quality_string_conversion(quality){
         artifact:"Artifact",
         exemplary:"Exemplary"
     }
-    if (struct_exists(quality_conversions, quality)){
-        return quality_conversions[$ quality]
+    if (struct_exists(quality_conversions, quality_request)){
+        return quality_conversions[$ quality_request]
     } else {return "";}
 }
 
