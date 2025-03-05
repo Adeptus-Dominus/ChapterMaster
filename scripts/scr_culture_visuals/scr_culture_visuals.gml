@@ -461,8 +461,14 @@ global.modular_drawing_items = [
             "chest_fastening" : spr_backpack_fastening,
         },        
 
-    }                                                       
-
+    },
+    {
+        sprite : spr_gear_hood2,
+        body_types :[0],
+        position : "mouth_variants", 
+        role_type : ["libs"],
+        chapter_adv : ["Daemon Binders"],    
+    }                                                      
 ];
 try{
     load_visual_sets();

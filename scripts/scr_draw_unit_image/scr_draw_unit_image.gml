@@ -719,26 +719,6 @@ function scr_draw_unit_image(_background=false){
                     }
                 }
             }
-        
-            // Hood
-            if (!complex_livery){
-                if (psy_hood && armour_type != ArmourType.Terminator && !armour_bypass){
-                    var psy_hood_offset_x = 0;
-                    var psy_hood_offset_y = 0;
-                    robes_hood_bypass = true;
-                    if (scr_has_adv("Daemon Binders") && !modest_livery){
-                        var _index = pauldron_trim == 1 ? 0 : 1;
-						draw_sprite(spr_gear_hood2,_index,x_surface_offset+psy_hood_offset_x,y_surface_offset+psy_hood_offset_y);
-                    } else {
-                        // if (unit_armour=="Terminator Armour") {
-                        //     psy_hood_offset_y = -8;
-                        // }
-                        //if (obj_ini.main_color=obj_ini.secondary_color) then draw_sprite(spr_gear_hood1,hood,0,y_surface_offset);
-                        //if (obj_ini.main_color!=obj_ini.secondary_color) then draw_sprite(spr_gear_hood3,hood,0,y_surface_offset);
-                        draw_sprite(spr_psy_hood,2, x_surface_offset+psy_hood_offset_x, y_surface_offset+psy_hood_offset_y);
-                    }
-                }
-            }
         }	
 
         // Draw Custom Helmets
@@ -758,21 +738,6 @@ function scr_draw_unit_image(_background=false){
                 draw_sprite(spr_helm_decorations,0,x_surface_offset,y_surface_offset-10);
             }
         }
-
-
-        if (psy_hood==0) and (armour_type==ArmourType.Normal) and (unit_armour!="") and (unit_role==_role[2]) && (unit_chapter!="Ultramarines") && (unit_chapter!="Blood Angels"){
-            var helm_ii,o,yep;
-            helm_ii=0;
-			yep=0;
-            if (scr_has_adv("Tech-Brothers")){
-                helm_ii=2;
-            }else if (scr_has_adv("Never Forgive") ){
-                helm_ii=3;
-            } else if (reverent_guardians) {
-                helm_ii=4;
-            }
-            draw_sprite(spr_honor_helm,helm_ii,x_surface_offset-2,y_surface_offset-11);     
-		}
 
         var shield_offset_x = 0;
         var shield_offset_y = 0;

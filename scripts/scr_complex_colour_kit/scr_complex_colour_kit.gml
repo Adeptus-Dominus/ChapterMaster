@@ -277,13 +277,13 @@ function setup_complex_livery_shader(setup_role, game_setup=false, unit = "none"
         var _full_liveries = obj_ini.full_liveries;
         var _roles = obj_ini.role[100];
         var data_set = obj_ini.full_liveries[0];
-        if (is_specialist(setup_role, "heads")){
+        if (is_specialist(setup_role, "libs")){
+            data_set = _full_liveries[eROLE.Librarian];
+        } else if (is_specialist(setup_role, "heads")){
             if (is_specialist(setup_role, "apoth")){
                 data_set = _full_liveries[eROLE.Apothecary];
             } else if (is_specialist(setup_role, "forge")){
                 data_set = _full_liveries[eROLE.Techmarine];
-            }else if (is_specialist(setup_role, "libs")){
-                data_set = _full_liveries[eROLE.Librarian];
             }else if (is_specialist(setup_role, "chap")){
                 data_set = _full_liveries[eROLE.Chaplain];
             }
