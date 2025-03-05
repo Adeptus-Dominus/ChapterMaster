@@ -199,11 +199,13 @@ function slider_bar() constructor{
 		}
 	}
 }
-function TextBarArea(XX,YY,Max_width = 400) constructor{
+function TextBarArea(XX,YY,Max_width = 400, requires_input = false) constructor{
 	allow_input=false;
+	self.requires_input = requires_input;
 	xx=XX;
 	yy=YY
 	max_width = Max_width;
+	draw_col = c_gray;
 	cooloff=0
     // Draw BG
     static draw = function(string_area){
@@ -218,11 +220,15 @@ function TextBarArea(XX,YY,Max_width = 400) constructor{
 	    //draw_sprite(spr_rock_bg,0,xx,yy);
 	    draw_set_font(fnt_40k_30b);
 	    draw_set_halign(fa_center);
-	    draw_set_color(c_gray);// 38144	
+	    draw_set_color(draw_col);// 38144	
 		var bar_wid=max_width,click_check, string_h;
 	    draw_set_alpha(0.25);
 	    if (string_area!=""){
 	    	bar_wid=max(max_width,string_width(string_hash_to_newline(string_area)));
+	    } else {
+	    	if (requires_input){
+	    		draw_set_color(c_red);
+	    	}
 	    }
 		string_h = string_height("LOL");
 		var rect = [xx-(bar_wid/2),yy,xx+(bar_wid/2),yy-8+string_h]
@@ -302,7 +308,7 @@ function multi_select(options_array, title)constructor{
 	y1 = 0;
 	x2 = 0;
 	y2 = 0;
-
+	on_change = false;
 	active_col = #009500;
 	innactive_col = c_gray;	
 	max_width = 0;
@@ -315,6 +321,7 @@ function multi_select(options_array, title)constructor{
 	}
 	static update = item_data_updater
 	static draw = function(){
+		var _change_method = is_callable(on_change);
 		draw_text(x1, y1, title);
 
 		var _prev_x = x1;
@@ -325,7 +332,11 @@ function multi_select(options_array, title)constructor{
 			_cur_opt.x1 = _prev_x;
 			_cur_opt.y1 = _prev_y;
 			_cur_opt.update()
-			_cur_opt.clicked();
+			if (_cur_opt.clicked()){
+				if (_change_method){
+					on_change();
+				}
+			}
 			_cur_opt.button_color = _cur_opt.active ? active_col: innactive_col;
 			_cur_opt.draw();
 			items_on_row++
@@ -627,6 +638,4 @@ function list_traveler(list, cur_val, move_up_coords, move_down_coords){
     }
     return _new_val;
 }
-
-
 
