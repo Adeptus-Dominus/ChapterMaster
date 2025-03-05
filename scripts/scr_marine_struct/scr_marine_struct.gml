@@ -327,6 +327,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		planet_location=2;
 	}
 	ship_location=-1;
+    last_ship = {uid : "", name : ""};
 	religion="none";
 	master_loyalty = 0;
 	job="none";

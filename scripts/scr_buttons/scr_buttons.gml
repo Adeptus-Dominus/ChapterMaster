@@ -51,7 +51,7 @@ function draw_unit_buttons(position, text, size_mod=[1.5,1.5],colour=c_gray,_hal
 
 
 //object containing draw_unit_buttons
-function UnitButtonObject() constructor{
+function UnitButtonObject(data = false) constructor{
 	x1 = 0;
 	y1 = 0;
 	w = 102;
@@ -68,7 +68,7 @@ function UnitButtonObject() constructor{
 
 	static update_loc = function(){
 		if (label != ""){
-			w = string_width(label)
+			w = string_width(label) + 10;
 		};
 		x2 = x1 + w;
 		y2 = y1 + h;		
@@ -80,7 +80,10 @@ function UnitButtonObject() constructor{
 			self[$ _updaters[i]] = data[$ _updaters[i]];
 		}
 		update_loc();
-	}	
+	}
+	if (data != false){
+		update(data);
+	}
 
 	update_loc();
 	static move = function(m_direction, with_gap=false, multiplier=1){
@@ -108,7 +111,7 @@ function UnitButtonObject() constructor{
 			tooltip_draw(tooltip);
 		}
 		if (allow_click){
-			var clicked = point_and_click(draw_unit_buttons([x1, y1, x2, y2], label, [1,1],color,,,alpha)) || keystroke;
+			var clicked = point_and_click(draw_unit_buttons(w > 0 ? [x1, y1, x2, y2] : [x1, y1] , label, [1,1],color,,,alpha)) || keystroke;
 			if (clicked){
 				if (is_callable(bind_method)){
 					bind_method();
