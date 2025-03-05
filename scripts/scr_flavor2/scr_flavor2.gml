@@ -302,7 +302,7 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
 		if (string_length(mes) > 3) {
 			obj_ncombat.messages += 1;
 			obj_ncombat.message[obj_ncombat.messages] = mes;
-			obj_ncombat.message_sz[obj_ncombat.messages] = 100
+			obj_ncombat.message_sz[obj_ncombat.messages] = 999;
 			obj_ncombat.message_priority[obj_ncombat.messages] = 0;
 			obj_ncombat.alarm[3] = 2;
 		}

@@ -33,7 +33,7 @@ function scr_add_artifact(artifact_type, artifact_tags, is_identified, artifact_
 	}
 	if (base_type==""){
 		if (array_contains(["Weapon","Armour","Gear","Device"],artifact_type)) then base_type=artifact_type ;
-	
+
 		    if (artifact_type="Robot"){
 		    	base_type="Device";
 		    	base_type_detail="Robot";
@@ -156,14 +156,18 @@ function scr_add_artifact(artifact_type, artifact_tags, is_identified, artifact_
 		 array_push(tags, t3);
 	}
 	if (artifact_tags="inquisition") then  array_push(tags, "inq");
-	if ((artifact_tags="daemonic"||artifact_tags="daemonic")) and (base_type_detail!="Tome"){
-		t3="daemonic"+choose("1a","2a","3a","4a");
-		 array_push(tags, t3);
+
+	if (artifact_tags == "daemonic") {
+		array_push(tags, "daemonic");
+		if (base_type_detail == "Tome") {
+			t3 = choose("NURGLE", "TZEENTCH", "SLAANESH");
+			array_push(tags, t3);
+		} else {
+			t3 = choose("KHORNE", "NURGLE", "TZEENTCH", "SLAANESH");
+			array_push(tags, t3);
+		}
 	}
-	if ((artifact_tags="daemonic" || artifact_tags="daemonic")) and (base_type_detail="Tome"){
-		t3="daemonic"+choose("2a","3a","4a");
-		array_push(tags, t3);
-	}
+
 	if (artifact_type="chaos_gift"){
 		array_push(tags, "daemonic");
 		array_push(tags, "chaos_gift");
@@ -252,7 +256,7 @@ function ArtifactStruct(Index) constructor{
             if (obj_ini.ship_location[ship_id()] = obj_ini.home_name) then identifiable = 1;
             if (obj_ini.ship_class[ship_id()]=="Battle Barge") then identifiable = 1;
         }
-        return identifiable;		
+        return identifiable;
 	}
 	static quality = function(){
 		return obj_ini.artifact_quality[index];
@@ -280,7 +284,7 @@ function ArtifactStruct(Index) constructor{
 			}
 		}
 		return false;
-	}	
+	}
 
 	static inquisition_disprove = function(){
 		var inquis_tags = ["daemonic","chaos_gift", "chaos"];
@@ -364,7 +368,7 @@ function ArtifactStruct(Index) constructor{
 		else if (type()=="Chalice") { item_type="device";}
 		else if (type()=="Statue") { item_type="device";}
 		else if (type()=="Tome") { item_type="device";}
-		else if (type()=="Robot") { item_type="device";}      
+		else if (type()=="Robot") { item_type="device";}
         return (item_type);
 	};
 
@@ -410,7 +414,7 @@ function ArtifactStruct(Index) constructor{
 					}
 					if (_bearer_found){
 						break;
-					}					
+					}
 				}
 			} else {
 				var _find_function = "";
@@ -434,13 +438,13 @@ function ArtifactStruct(Index) constructor{
 							}
 							if (_bearer_found){
 								break;
-							}						
+							}
 						}
 						if (_bearer_found){
 							break;
-						}					
+						}
 					}
-				}								
+				}
 			}
 		}
 		}catch(_exception){
