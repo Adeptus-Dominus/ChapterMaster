@@ -1515,6 +1515,9 @@ global.weapons = {
 		"arp": 1,
 		"special_description": "Spell Damage +100%",
 		"tags": ["force" ],
+		"specials": {
+			"psy_focus": 5
+		},
 		"maintenance" : 0.1,
 	},
 	"Force Sword": {
