@@ -206,31 +206,7 @@
         * `custom_roles` should be used for specialist/leadership type roles, 
         * To affect an entire squad, see `custom_squads` below
         */
-        "custom_roles": {
-            "terminator": {
-                "name": "Red Brother"
-            },
-            "captain": {
-                "name": "Company Master",
-                "wep1": "Eviscerator"
-            },
-            "veteran_sergeant": {
-                "name": "Veteran Strike Leader",
-                "wep1": "Power Axe"
-            },
-            "tactical": {
-                "name": "Void Brother",
-                "wep2": "Chainaxe"
-            },
-            "assault": {
-                "name": "Devourer",
-                "wep1": "Chainaxe"
-            },
-            "sergeant": {
-                "name": "Strike Leader",
-                "wep1": "Chainaxe"
-            }
-        },
+
         /**
         * * Custom squad roles, loadouts and formations
         * When companies are made, squads are formed based on these rules: 
