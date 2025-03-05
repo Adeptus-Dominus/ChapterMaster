@@ -502,7 +502,7 @@ function ComplexSet(unit) constructor{
                     left_trim: spr_mk4_left_trim,
                     right_trim: spr_mk4_right_trim,
                     mouth_variants: spr_mk4_mouth_variants,
-                    head : spr_mk4_head_variants,            
+                    head : spr_mk4_head_variants,           
                 });
                 armour_type = ArmourType.Normal
                 break;                                

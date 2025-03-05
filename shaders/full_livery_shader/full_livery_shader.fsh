@@ -27,6 +27,8 @@ uniform vec3 right_backpack;
 uniform vec3 left_backpack;
 uniform vec3 company_marks;
 uniform vec3 robes_colour_replace;
+uniform vec3 weapon_primary;
+uniform vec3 weapon_secondary;
 
 varying vec2 v_vTexcoord;
 varying vec4 v_vColour;
@@ -116,6 +118,12 @@ void main()
     if (col.rgb == vec3(128.0/255.0,128.0/255.0,0.0)){
       col.rgb = company_marks.rgb;
     };
+    if (col.rgb == vec3(0.0,1.0,1.0)){
+      col.rgb = weapon_primary.rgb;
+    };
+    if (col.rgb == vec3(1.0,0.0,1.0)){
+      col.rgb = weapon_secondary.rgb;
+    };
     if (col_orig.rgb != col.rgb){
       if (col_orig.a==128.0/255.0){
          col.rgb = light_or_dark(col.rgb, 1.2);
@@ -123,18 +131,18 @@ void main()
       }
 
       if (col_orig.a==60.0/255.0){
-         col.rgb = light_or_dark(col.rgb, 1.35);
+         col.rgb = light_or_dark(col.rgb, 1.4);
          col.a = 1.0;
       }         
 
 
       if (col_orig.a==215.0/255.0){
-         col.rgb = light_or_dark(col.rgb,0.7);
+         col.rgb = light_or_dark(col.rgb,0.6);
          col.a = 1.0;
       }         
 
       if (col_orig.a==160.0/255.0){
-         col.rgb = light_or_dark(col.rgb, 0.85);
+         col.rgb = light_or_dark(col.rgb, 0.8);
          col.a = 1.0;
       }         
 

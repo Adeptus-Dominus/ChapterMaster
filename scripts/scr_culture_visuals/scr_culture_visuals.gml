@@ -437,7 +437,7 @@ global.modular_drawing_items = [
         sprite : spr_mk7_complex_belt,
         body_types :[0],
         position : "belt",
-        armours_exclude : ["MK3 Iron Armour", "MK4 Maximus"],        
+        armours_exclude : ["MK3 Iron Armour"],        
     },
     {
         sprite : spr_dev_pack_complex,

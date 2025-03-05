@@ -95,6 +95,38 @@ function ColourItem(xx,yy) constructor{
             company_marks :[30, 40, string_width("Company Marks"), string_height("Company Marks")],
     }
 
+    static name_maps = {
+        left_leg_lower: "Left Leg Lower",
+        left_leg_upper: "Left Leg Upper",
+        left_leg_knee: "Left Leg Knee",
+        right_leg_lower: "Right Leg Lower",
+        right_leg_upper: "Right Leg Upper",
+        right_leg_knee: "Right Leg Knee",
+        metallic_trim: "Metallic Trim",
+        right_trim: "Right Trim",
+        left_trim: "Left Trim",
+        left_chest: "Left Chest",
+        right_chest: "Right Chest",
+        left_thorax: "Left Thorax",
+        right_thorax: "Right Thorax",
+        weapon_primary: "Weapon Primary",
+        weapon_secondary: "Weapon Secondary",
+        left_pauldron: "Left Pauldron",
+        right_pauldron: "Right Pauldron",
+        left_head: "Left Head",
+        right_head: "Right Head",
+        left_muzzle: "Left Muzzle",
+        right_muzzle: "Right Muzzle",
+        eye_lense: "Eye Lense",
+        left_arm: "Left Arm",
+        left_hand: "Left Hand",
+        right_arm: "Right Arm",
+        right_hand: "Right Hand",
+        right_backpack: "Right Backpack",
+        left_backpack: "Left Backpack",
+        company_marks: "Company Marks"
+    }
+
     static lower_left = ["left_leg_lower","left_leg_upper","left_leg_knee"];
 
     static lower_right = ["right_leg_lower","right_leg_upper","right_leg_knee"];
@@ -203,8 +235,24 @@ function ColourItem(xx,yy) constructor{
     static shuffle_dummy = function(){
         dummy_marine.update();
     }
+    hover_pos = false;
+    colour_return = false;
     static draw_base = function(){
         data_slate.inside_method = function(){
+            if (hover_pos != false){
+                if (colour_return != false){
+                    if (colour_return[0] != hover_pos){
+                        map_colour[$ colour_return[0]] = colour_return[1];
+                        colour_return = [hover_pos, map_colour[$ hover_pos]];
+                        map_colour[$ hover_pos] = 0;
+                        reset_image();                       
+                    }
+                } else {
+                    colour_return = [hover_pos, map_colour[$ hover_pos]];
+                    map_colour[$ hover_pos] = 0;
+                    reset_image();                     
+                }
+            }
         	if (is_struct(colour_pick)){
         		var action = colour_pick.draw();
         		if (action == "destroy"){
@@ -229,6 +277,16 @@ function ColourItem(xx,yy) constructor{
                 -xx,
                 -yy
             );
+            image_location_maps.weapon_primary = move_location_relative(
+                draw_unit_buttons([xx-90, yy+image_location_maps.eye_lense[3]], "Weapon\nPrimary"),
+                -xx,
+                -yy
+            );
+            image_location_maps.weapon_secondary = move_location_relative(
+                draw_unit_buttons([xx-90, yy+image_location_maps.weapon_primary[3]], "Weapon\nSecondary"),
+                -xx,
+                -yy
+            );
             image_location_maps.left_trim = move_location_relative(
                 draw_unit_buttons([xx+150, yy+31], "L Trim"),
                 -xx,
@@ -248,13 +306,18 @@ function ColourItem(xx,yy) constructor{
                 dummy_image = dummy_marine.draw_unit_image();
             }
             dummy_image.draw(xx, yy-20);
-
+            hover_pos = false;
         	var map_names = struct_get_names(image_location_maps);
         	for (var i=0;i<array_length(map_names);i++){
         		if (!is_array(image_location_maps[$map_names[i]])) then continue;
         		var rel_position = coord_relevative_positions(image_location_maps[$map_names[i]],xx, yy);
         		if (scr_hit(rel_position)){
-        			tooltip_draw(map_names[i]);
+                    if (struct_exists(name_maps, map_names[i])){
+                        tooltip_draw(name_maps[$ map_names[i]]);
+                    } else{
+                        tooltip_draw(map_names[i]);
+                    }
+                    hover_pos = map_names[i];
         		}
         		if (point_and_click(rel_position)){
         			colour_pick = new colour_picker(xx-20, yy);
@@ -262,6 +325,14 @@ function ColourItem(xx,yy) constructor{
         			colour_pick.title = map_names[i];
         		}
         	}
+            if (colour_return != false){
+                if (hover_pos != colour_return[0]){
+                    map_colour[$ colour_return[0]] = colour_return[1];
+                    colour_return = false;
+                    reset_image();
+
+                }
+            }
         }
         data_slate.draw(0,5,0.45, 1);
     }
