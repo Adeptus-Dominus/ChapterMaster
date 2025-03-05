@@ -88,7 +88,7 @@ function scr_chapter_random(argument0) {
 	    cooperation=choose(2,3,4,5,6,7,8);if (stability<5) then cooperation+=2;
 	    founding=10;found_secret=floor(random(10))+1;
     
-	    custom=1;points=100;maxpoints=100;
+	    points=100;maxpoints=100;
 	    battle_cry="For the Emperor";
     
 	    discipline=choose("default","default","default","default","biomancy","pyromancy","telekinesis");

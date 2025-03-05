@@ -232,6 +232,7 @@ function draw_chapter_select(){
 					global.chapter_id = chap.id;
 					change_slide = 1;
 					goto_slide = 2;
+					custom = 2;
 					scr_chapter_new(chap.id);
 				} else {
 					global.chapter_id = chap.id;
@@ -299,7 +300,7 @@ function draw_chapter_select(){
 	grid.new_cell();
 
 	i = 1001;
-	repeat (2) {
+    for (var c = 1001; c < 1003; c++) {
 		grid.new_cell();
 
 		draw_sprite(spr_creation_icon, 0, grid.x1, grid.y1);
@@ -321,12 +322,12 @@ function draw_chapter_select(){
 				icon_name = "da";
 				change_slide = 1;
 				goto_slide = 2;
-				if (i == 1001) {
-					custom = 2;
+				if (c == 1001) {
+                    custom = 2;
 					scr_chapter_random(0);
 				}
-				if (i == 1002) {
-					custom = 1;
+				if (c == 1002) {
+                    custom = 1;
 					scr_chapter_random(1);
 				}
 			}
