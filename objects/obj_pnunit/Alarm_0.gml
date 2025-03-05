@@ -21,10 +21,9 @@ if (obj_ncombat.defending=false) or (obj_ncombat.dropping=1){
 }
 
 if (!instance_exists(enemy)) then exit;
-if (collision_point(x+10,y,obj_enunit,0,1)) or (collision_point(x-10,y,obj_enunit,0,1)) then engaged=1;
-if (!collision_point(x+10,y,obj_enunit,0,1)) and (!collision_point(x-10,y,obj_enunit,0,1)) then engaged=0;
+engaged = collision_point(x-14, y, obj_enunit, 0, 1) || collision_point(x+14, y, obj_enunit, 0, 1); 
 
-var once_only;once_only=0;
+var once_only=0;
 var i=0,dist=999;
 var range_shoot="";
 dist=point_distance(x,y,enemy.x,enemy.y)/10;

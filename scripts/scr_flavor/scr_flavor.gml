@@ -32,21 +32,21 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 		unit_name = "",
 		cm_kill = 0;
 
-	// I don't understand how this part of code works, nor how it should work, but it doesn't seem to be working properly.
-	// if (id_of_attacking_weapons > 0) {
-	// 	if (array_length(wep_solo[id_of_attacking_weapons]) > 0) {
-	// 		character_shot = true;
-	// 		full_names = wep_solo[id_of_attacking_weapons];
-	// 		if (wep_title[id_of_attacking_weapons] != "") {
-	// 			if (array_length(full_names) == 1) {
-	// 				unit_name = wep_title[id_of_attacking_weapons] + " " + wep_solo[id_of_attacking_weapons][0];
-	// 			} else {
-	// 				unit_name = wep_title[id_of_attacking_weapons] + "'s"
-	// 			}
-	// 		}
-	// 		if (wep_solo[id_of_attacking_weapons][0] == obj_ini.master_name) then cm_kill = 1;
-	// 	}
-	// }
+
+	 if (id_of_attacking_weapons > 0) {
+	 	if (array_length(wep_solo[id_of_attacking_weapons]) > 0) {
+	 		character_shot = true;
+	 		full_names = wep_solo[id_of_attacking_weapons];
+	 		if (wep_title[id_of_attacking_weapons] != "") {
+	 			if (array_length(full_names) == 1) {
+	 				unit_name = wep_title[id_of_attacking_weapons] + " " + wep_solo[id_of_attacking_weapons][0];
+	 			} else {
+	 				unit_name = wep_title[id_of_attacking_weapons] + "'s"
+	 			}
+	 		}
+	 		if (wep_solo[id_of_attacking_weapons][0] == obj_ini.master_name) then cm_kill = 1;
+	 	}
+	 }
 
 	if (obj_ncombat.battle_special = "WL10_reveal") or (obj_ncombat.battle_special = "WL10_later") {
 		if (target_name = "Veteran Chaos Terminator") and (target_name > 0) then obj_ncombat.chaos_angry += casulties * 2;
