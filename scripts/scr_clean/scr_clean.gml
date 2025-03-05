@@ -71,12 +71,13 @@ function destroy_empty_column(_target_column) {
 
 /// @function check_dead_marines
 /// @description Checks if the marine is dead and then runs various related code
-/// @param {id.Instance} _target_column - The column instance to clean up
 /// @mixin
 function check_dead_marines(unit_struct, unit_index) {
+    var unit_lost = false;
+
     if (unit_struct.hp() <= 0 && marine_dead[unit_index] < 1) {
         marine_dead[unit_index] = 1;
-        units_lost += 1;
+        unit_lost = true;
         obj_ncombat.player_forces -= 1;
 
         // Record loss
@@ -87,9 +88,6 @@ function check_dead_marines(unit_struct, unit_index) {
             array_push(lost, marine_type[unit_index]);
             array_push(lost_num, 1);
         }
-        
-        // Remove dead infantry from further hits
-        array_delete(valid_marines, unit_index, 1);
 
         // Check red thirst threadhold
         if (obj_ncombat.red_thirst == 1 && marine_type[unit_index] != "Death Company" && ((obj_ncombat.player_forces / obj_ncombat.player_max) < 0.9)) {
@@ -103,6 +101,8 @@ function check_dead_marines(unit_struct, unit_index) {
             men -= 1;
         }
     }
+
+    return unit_lost;
 }
 
 function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_damage, hostile_weapon, hostile_range, hostile_splash) {
@@ -126,10 +126,10 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
             var vehicle_hits = 0;
             var man_hits = 0;
             var total_hits = hostile_shots;
+            var unit_type = "";
 
             // ### Vehicle Damage Processing ###
             if (!target_is_infantry and veh > 0) {
-                var units_lost = 0;
                 var you = -1;
 
                 // Find valid vehicle targets
@@ -159,12 +159,14 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
                         minus = 1;
                     }
                     veh_hp[you] -= minus;
+                    unit_type = veh_type[you];
                     vehicle_hits++;
 
+                    var units_lost = 0;
                     // Check if the vehicle is destroyed
                     if (veh_hp[you] <= 0 && veh_dead[you] == 0) {
                         veh_dead[you] = 1;
-                        units_lost += 1;
+                        units_lost++;
                         obj_ncombat.player_forces -= 1;
 
                         // Record loss
@@ -179,18 +181,16 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
                         // Remove dead vehicles from further hits
                         array_delete(valid_vehicles, you, 1);
                     }
+                    // Flavor messages
+                    scr_flavor2(units_lost, unit_type, hostile_range, hostile_weapon, vehicle_hits, hostile_splash);
                 }
 
-                // Update flavor messages if required
-                if (vehicle_hits > 0) {
-                    scr_flavor2(units_lost, "", hostile_range, hostile_weapon, vehicle_hits, hostile_splash);
-                }
+
             }
 
             // ### Marine + Dreadnought Processing ###
             if (target_is_infantry and (men + dreads > 0)) {
                 man_hits = total_hits - vehicle_hits;
-                var units_lost = 0;
 
                 // Find valid infantry targets
                 var valid_marines = [];
@@ -213,6 +213,8 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
                     var random_index = array_random_index(valid_marines);
                     var marine_index = valid_marines[random_index];
                     var marine = unit_struct[marine_index];
+                    unit_type = marine.role();
+                    var units_lost = 0;
 
                     // Apply damage
                     var _shot_luck = d100_roll();
@@ -250,12 +252,14 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
                     marine.add_or_sub_health(-minus);
 
                     // Check if marine is dead
-                    check_dead_marines(marine, marine_index);
-                }
+                    if (check_dead_marines(marine, marine_index)) {
+                    // Remove dead infantry from further hits
+                        array_delete(valid_marines, marine_index, 1);
+                        units_lost++;
+                    }
 
-                // After processing, update messages if any hits occurred
-                if (man_hits > 0) {
-                    scr_flavor2(units_lost, "", hostile_range, hostile_weapon, man_hits, hostile_splash);
+                    // Flavor messages
+                    scr_flavor2(units_lost, unit_type, hostile_range, hostile_weapon, man_hits, hostile_splash);
                 }
             }
 
