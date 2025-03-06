@@ -1,6 +1,19 @@
 // TODO: a bunch of stuff in this file and related to it uses strings, replace them with constants;
 
-#macro ARR_power_discipline_list ["default", "biomancy", "pyromancy","telekinesis","rune_magic"]
+#macro PSY_DISCIPLINES_STARTING ["default", "biomancy", "pyromancy","telekinesis","rune_magic"]
+
+#macro PSY_PERILS_CHANCE_BASE 1
+#macro PSY_PERILS_CHANCE_MIN 0.5
+#macro PSY_PERILS_CHANCE_LOW 0.25
+#macro PSY_PERILS_CHANCE_MED 0.5
+#macro PSY_PERILS_CHANCE_XP 0.002
+#macro PSY_PERILS_CHANCE_HOOD 0.80
+
+#macro PSY_PERILS_STR_MIN 0
+#macro PSY_PERILS_STR_LOW 20
+#macro PSY_PERILS_STR_MED 40
+#macro PSY_PERILS_STR_HOOD 0.80
+#macro PSY_PERILS_STR_EXP 0.25
 
 global.disciplines_data = json_to_gamemaker(working_directory + "\\data\\psychic_disciplines.json", json_parse);
 global.powers_data = json_to_gamemaker(working_directory + "\\data\\psychic_powers.json", json_parse);
@@ -159,7 +172,7 @@ function power_condition_check(condition, value) {
 /// @mixin
 function player_select_powers() {
     if (race[100, 17] != 0) {
-        var _powers = ARR_power_discipline_list;
+        var _powers = PSY_DISCIPLINES_STARTING;
         var _disp_index = array_get_index(_powers, discipline);
         if (_disp_index == -1) {
             discipline = _powers[0];
@@ -252,67 +265,67 @@ function convert_power_letter(power_code) {
 }
 
 function get_perils_chance(_unit, _tome_perils_chance) {
-    var _perils_chance = 1;
+    var _perils_chance = PSY_PERILS_CHANCE_BASE;
     var _unit_exp = _unit.experience;
     var _unit_gear = _unit.gear();
 
-    if (scr_has_disadv("Warp Touched")) {
-        _perils_chance += 0.25;
-    }
-    if (scr_has_disadv("Shitty Luck")) {
-        _perils_chance += 0.25;
-    }
-
     _perils_chance += _tome_perils_chance;
     _perils_chance += obj_ncombat.global_perils;
-    _perils_chance -= _unit_exp * 0.002;
+    _perils_chance -= _unit_exp * PSY_PERILS_CHANCE_XP;
 
+    if (scr_has_disadv("Warp Touched")) {
+        _perils_chance += PSY_PERILS_CHANCE_LOW;
+    }
+    if (scr_has_disadv("Shitty Luck")) {
+        _perils_chance += PSY_PERILS_CHANCE_LOW;
+    }
     if (scr_has_adv("Daemon Binders")) {
-        // I hope you like demons
-        _perils_chance -= 0.5;
+        _perils_chance -= PSY_PERILS_CHANCE_MED;
     }
 
     if (_unit_gear == "Psychic Hood") {
-        _perils_chance *= 0.75;
+        _perils_chance *= PSY_PERILS_CHANCE_HOOD;
     }
 
-    _perils_chance = max(_perils_chance, 0.05);
+    _perils_chance = max(_perils_chance, PSY_PERILS_CHANCE_MIN);
     
-    //// show_debug_message("Peril of the Warp Chance: " + string(_perils_chance));
     return _perils_chance;
 }
 
 function get_perils_strength(_unit, _tome_perils_strength) {
-    var _perils_strength = 1;
+    var _perils_strength = roll_d200();
     var _unit_exp = _unit.experience;
     var _unit_gear = _unit.gear();
 
     _perils_strength += _tome_perils_strength;
+    _perils_strength -= _unit_exp * PSY_PERILS_STR_EXP;
+
     if (scr_has_disadv("Warp Touched")) {
-        _perils_strength += 25;
+        _perils_strength += PSY_PERILS_STR_LOW;
     }
     if (scr_has_disadv("Shitty Luck")) {
-        _perils_strength += 25;
+        _perils_strength += PSY_PERILS_STR_LOW;
     }
-    _perils_strength -= _unit_exp * 0.25;
-
-
     if (scr_has_adv("Daemon Binders")) {
         // I hope you like demons
-        _perils_strength += 40;
-        if (_perils_strength <= 47) {
-            _perils_strength = 48;
+        _perils_strength += PSY_PERILS_STR_MED;
+        if (_perils_strength < 50) {
+            _perils_strength = 50;
         }
     }
 
     if (_unit_gear == "Psychic Hood") {
-        _perils_strength *= 0.75;
+        _perils_strength *= PSY_PERILS_STR_HOOD;
     }
 
-    _perils_strength = max(_perils_strength, 15);
+    _perils_strength = max(_perils_strength, PSY_PERILS_STR_MIN);
     
     //// show_debug_message("Peril of the Warp Strength: " + string(_perils_strength));
     return _perils_strength;
+}
+
+function roll_d200() {
+    return irandom_range(1, 200);
 }
 
 //TODO: Make target selection to happen before attack power selection;
@@ -337,7 +350,7 @@ function scr_powers(caster_id) {
     var buff_cast = false;
     var buff_roll = irandom_range(1, 100);
     var known_buff_powers = [];
-    if (buff_roll <= (105 - (obj_ncombat.turns * 35))) {
+    if (buff_roll >= 80) {
         // Try to pick a buff
 
         // Filter the buff powers that the unit knows
@@ -371,16 +384,17 @@ function scr_powers(caster_id) {
         }
     }
 
+    var _psy_discipline = _unit.psy_discipline();
+    var _selected_discipline = _psy_discipline;
+
+    var _unit_role = _unit.role();
+    var _unit_exp = _unit.experience;
     var _unit_weapon_one_data = _unit.get_weapon_one_data();
     var _unit_weapon_two_data = _unit.get_weapon_two_data();
     var _unit_gear = _unit.gear();
-    var _psy_discipline = _unit.psy_discipline();
-    var _selected_discipline = _psy_discipline;
-    var _unit_role = _unit.role();
-    var _unit_exp = _unit.experience;
-    var _armour_data = _unit.get_armour_data();
-    if (is_struct(_armour_data)) {
-        var _is_dread = _armour_data.has_tag("dreadnought");
+    var _unit_armour = _unit.get_unit_armour();
+    if (is_struct(_unit_armour)) {
+        var _is_dread = _unit_armour.has_tag("dreadnought");
     } else {
         var _is_dread = false;
     }
