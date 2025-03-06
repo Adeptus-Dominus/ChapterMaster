@@ -293,7 +293,7 @@ function get_perils_chance(_unit, _tome_perils_chance) {
 }
 
 function get_perils_strength(_unit, _tome_perils_strength) {
-    var _perils_strength = roll_d200();
+    var _perils_strength = roll_1d200();
     var _unit_exp = _unit.experience;
     var _unit_gear = _unit.gear();
 
@@ -324,10 +324,6 @@ function get_perils_strength(_unit, _tome_perils_strength) {
     return _perils_strength;
 }
 
-function roll_d200() {
-    return irandom_range(1, 200);
-}
-
 //TODO: Make target selection to happen before attack power selection;
 //TODO: Make buff power selection to depend on more stuff;
 //TODO: All tome related logic in this file has to be reworked;
@@ -348,7 +344,7 @@ function scr_powers(caster_id) {
     var _known_powers = _unit.psy_powers_array();
 
     var buff_cast = false;
-    var buff_roll = irandom_range(1, 100);
+    var buff_roll = roll_1d100();
     var known_buff_powers = [];
     if (buff_roll >= 80) {
         // Try to pick a buff
@@ -391,8 +387,8 @@ function scr_powers(caster_id) {
     var _unit_exp = _unit.experience;
     var _unit_weapon_one_data = _unit.get_weapon_one_data();
     var _unit_weapon_two_data = _unit.get_weapon_two_data();
-    var _unit_gear = _unit.gear();
-    var _unit_armour = _unit.get_unit_armour();
+    var _unit_gear = _unit.get_gear_data();
+    var _unit_armour = _unit.get_armour_data();
     if (is_struct(_unit_armour)) {
         var _is_dread = _unit_armour.has_tag("dreadnought");
     } else {
@@ -419,7 +415,7 @@ function scr_powers(caster_id) {
 
     //TODO: Move into a separate function;
     var _using_tome = false;
-    var _tome_roll = irandom_range(1, 100);
+    var _tome_roll = roll_1d100();
     if (_tome_discipline != "" && _tome_roll <= 50) {
         _selected_discipline = _tome_discipline;
         _using_tome = true;
@@ -455,8 +451,6 @@ function scr_powers(caster_id) {
         }
     }
 
-    //// show_message(string(_power_id));
-
     // Chaos powers here
     // var _power_struct = get_power_data(_power_id); // Not used atm
     var _power_name = get_power_data(_power_id, "name");
@@ -474,38 +468,6 @@ function scr_powers(caster_id) {
     if (_power_sorcery != undefined && _power_sorcery > 0) {
         if ((obj_ncombat.sorcery_seen < 2) && (obj_ncombat.present_inquisitor == 1)) {
             obj_ncombat.sorcery_seen = 1;
-        }
-    }
-
-    //TODO: Move into a separate function;
-    var _has_force_weapon = false;
-    if (is_struct(_unit_weapon_one_data)) {
-        if (_unit_weapon_one_data.has_tag("force")) {
-            _has_force_weapon = true;
-        }
-    }
-    if (is_struct(_unit_weapon_two_data)) {
-        if (_unit_weapon_two_data.has_tag("force")) {
-            _has_force_weapon = true;
-        }
-    }
-
-
-    if (_has_force_weapon) {
-        if (_unit_weapon_one_data == "Force Staff" || _unit_weapon_two_data == "Force Staff") {
-            if (_power_magnitude > 0) {
-                _power_magnitude = round(_power_magnitude) * 2;
-            }
-            if (_power_range > 0) {
-                _power_range = round(_power_range) * 1.5;
-            }
-        } else {
-            if (_power_magnitude > 0) {
-                _power_magnitude = round(_power_magnitude) * 1.25;
-            }
-            if (_power_range > 0) {
-                _power_range = round(_power_range) * 1.25;
-            }
         }
     }
 
@@ -557,8 +519,19 @@ function scr_powers(caster_id) {
         obj_ncombat.sorcery_seen = 2;
     }
 
+    //TODO: Move into a separate function;
+    var _equipment_psy_focus = get_total_special_value(_unit, "psy_focus");
+
+    var _cast_successful = false;
+    var _cast_difficulty = 40; //TODO: Make this more dynamic;
+    _cast_difficulty -= _unit_exp * 0.2;
+    _cast_difficulty -= _equipment_psy_focus;
+    if (roll_1d100() >= _cast_difficulty) {
+        _cast_successful = true;
+    }
+
     //* Buff powers code
-    if ((_power_type == "buff")) {
+    if (_power_type == "buff" && _cast_successful) {
         var _marine_index;
         var _random_marine_list = [];
         for (var i = 0; i < array_length(unit_struct); i++) {
@@ -663,7 +636,7 @@ function scr_powers(caster_id) {
         _battle_log_message = _cast_flavour_text + _power_flavour_text;
         add_battle_log_message(_battle_log_message, 999, 135);
 
-    } else if (_power_type == "attack") {
+    } else if (_power_type == "attack" && _cast_successful) {
         // TODO: separate the code bellow into a separate function;
         //* Attack power cast
         var _enemy_distance = function(_target_column) {
@@ -799,10 +772,8 @@ function scr_powers(caster_id) {
 
     //TODO: Perhaps separate perils into a separate function;
     var _perils_chance = get_perils_chance(_unit, _tome_perils_chance);
-    var _perils_roll = irandom_range(1, 100);
+    var _perils_roll = roll_1d100();
     var _perils_strength = get_perils_strength(_unit, _tome_perils_strength);
-
-    //// show_debug_message("Roll: " + string(_perils_roll));
 
     if (_perils_roll <= _perils_chance) {
         if (obj_ncombat.sorcery_seen == 1) {

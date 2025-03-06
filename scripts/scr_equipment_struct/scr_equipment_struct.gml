@@ -231,12 +231,17 @@ function EquipmentStruct(item_data, core_type, quality_request="none") construct
                     break;
                 case "specials":
                     if (is_struct(specials)) {
+                        var _specials_string = "";
                         var _specials = struct_get_names(specials);
                         for (var j = 0; j < array_length(_specials); j++) {
                             var _special = _specials[j];
                             var _special_value = specials[$ _special];
-                            item_desc_tooltip += $"#Specials:#{_special} {_special_value}#"
+                            _specials_string += $"{_special} {_special_value}";
+                            if (j < array_length(_specials) - 1) {
+                                _specials_string += ", "
+                            }
                         }
+                        item_desc_tooltip += $"#Specials:#{_specials_string}#";
                     }
                     break
             }
@@ -246,6 +251,20 @@ function EquipmentStruct(item_data, core_type, quality_request="none") construct
 
     static has_tag =  function(tag){
         return array_contains(tags, tag);
+    }
+
+    static special_value =  function(special){
+        if (is_struct(specials)) {
+            var _specials = struct_get_names(specials);
+            for (var j = 0; j < array_length(_specials); j++) {
+                var _special = _specials[j];
+                if (_special = special) {
+                    var _special_value = specials[$ _special];
+                    return _special_value;
+                }
+            }
+        }
+        return 0;
     }
 
     static has_tags =  function(search_tags){
@@ -406,4 +425,17 @@ function quality_color(_item_quality){
 
 function format_number_with_sign(number){
     return number > 0 ? "+" + string(number) : string(number);
+}
+
+//TODO: Make this into a universtal stat gatherting function from all gear, for any stat;
+function get_total_special_value(unit, special) {
+    var _total_special_value = 0;
+
+    var _all_data = [unit.get_armour_data(), unit.get_gear_data(), unit.get_mobility_data(), unit.get_weapon_one_data(), unit.get_weapon_two_data()];
+
+    for (var i = 0; i < array_length(_all_data); i++) {
+        _total_special_value += _all_data[i].special_value(special);
+    }
+
+    return _total_special_value;
 }

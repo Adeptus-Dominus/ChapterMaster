@@ -1513,10 +1513,9 @@ global.weapons = {
 		"range": 1,
 		"spli": 5,
 		"arp": 1,
-		"special_description": "Spell Damage +100%",
 		"tags": ["force" ],
 		"specials": {
-			"psy_focus": 5
+			"psy_focus": 15
 		},
 		"maintenance" : 0.1,
 	},
