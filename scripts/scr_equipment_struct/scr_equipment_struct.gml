@@ -1,5 +1,4 @@
 function EquipmentStruct(item_data, core_type, quality_request="none") constructor{ 
-	var start_time = get_timer();
     type = core_type;
 
     // Struct defaults;
@@ -231,10 +230,10 @@ function EquipmentStruct(item_data, core_type, quality_request="none") construct
                     }
                     break;
                 case "specials":
-                    if (specials != "") {
+                    if (is_struct(specials)) {
                         var _specials = struct_get_names(specials);
-                        for (var i = 0; i < array_length(_specials); i++) {
-                            var _special = _specials[i];
+                        for (var j = 0; j < array_length(_specials); j++) {
+                            var _special = _specials[j];
                             var _special_value = specials[$ _special];
                             item_desc_tooltip += $"#Specials:#{_special} {_special_value}#"
                         }
@@ -308,14 +307,6 @@ function EquipmentStruct(item_data, core_type, quality_request="none") construct
             }
         }
     }
-    
-    var end_time = get_timer();
-
-    // Calculate the elapsed time (in seconds)
-    var elapsed_time = (end_time - start_time);
-
-    // Output the time taken
-    show_message("Time taken: " + string(elapsed_time) + " milliseconds");
 }
 function gear_weapon_data(search_area="any",item,wanted_data="all", sub_class=false, quality_request="standard"){
     var item_data_set=false;
