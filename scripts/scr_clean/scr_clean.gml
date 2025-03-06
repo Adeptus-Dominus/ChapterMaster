@@ -217,7 +217,7 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
                     var units_lost = 0;
 
                     // Apply damage
-                    var _shot_luck = d100_roll();
+                    var _shot_luck = roll_1d100();
                     if (_shot_luck<1){
                         var minus = hostile_damage;
                     } else if (_shot_luck<5){
