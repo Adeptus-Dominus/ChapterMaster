@@ -41,7 +41,7 @@ function handle_error(_header, _message, _stacktrace="", _critical = false, _rep
         _report_title += "\n";
     }
 
-    var _commit_history_link = $"https://github.com/EttyKitty/ChapterMaster/commits/{_commit_hash}";
+    var _commit_history_link = $"https://github.com/Adeptus-Dominus/ChapterMaster/commits/{_commit_hash}";
 
     create_error_file($"{_report_title}{_full_message}\n{_commit_history_link}");
     show_debug_message(_full_message);
