@@ -235,13 +235,13 @@ global.modular_drawing_items = [
     {
         sprite : spr_gear_librarian,
         body_types :[0],
-        position : "right_pauldron",
+        position : "right_pauldron_icons",
         role_type : ["libs"],
     },
     {
         sprite : spr_gear_librarian_term,
         body_types :[2],
-        position : "right_pauldron",
+        position : "right_pauldron_icons",
         role_type : ["libs"],
     },
     {
@@ -399,7 +399,7 @@ global.modular_drawing_items = [
         position : "cloak",
         max_saturation : 35,
         overides : {
-            "right_pauldron" : spr_ultra_right_shoulder_hanging,
+            "right_pauldron_hangings" : spr_ultra_right_shoulder_hanging,
         },
         assign_by_rank :2,
         exp : {
@@ -468,7 +468,49 @@ global.modular_drawing_items = [
         position : "mouth_variants", 
         role_type : ["libs"],
         chapter_adv : ["Daemon Binders"],    
-    }                                                      
+    },
+    {
+        sprite : spr_mk4_chest_fastenings,
+        body_types :[0],
+        position : "chest_fastening",
+        armours : ["MK4 Maximus"]
+    }, 
+    {
+        sprite : spr_mk7_complex_left_pauldron,
+        body_types :[0],
+        position : "left_pauldron_base",
+    } ,
+    {
+        sprite : spr_mk7_complex_right_pauldron,
+        body_types :[0],
+        position : "right_pauldron_base",
+    },
+    {
+        sprite : spr_bonding_studs_left,
+        body_types :[0],
+        position : "left_pauldron_embeleshments",
+        armours : ["MK5 Heresy", "MK6 Corvus"]
+    },
+    {
+        sprite : spr_bonding_studs_left,
+        body_types :[0],
+        position : "left_pauldron_embeleshments",
+        max_saturation : 15,
+        armours_exclude : ["MK5 Heresy", "MK6 Corvus"]
+    },
+    {
+        sprite : spr_bonding_studs_right,
+        body_types :[0],
+        position : "right_pauldron_embeleshments",
+        armours : ["MK5 Heresy", "MK6 Corvus"]
+    },
+    {
+        sprite : spr_bonding_studs_right,
+        body_types :[0],
+        position : "right_pauldron_embeleshments",
+        max_saturation : 15,
+        armours_exclude : ["MK5 Heresy", "MK6 Corvus"]
+    }                                                                
 ];
 try{
     load_visual_sets();
