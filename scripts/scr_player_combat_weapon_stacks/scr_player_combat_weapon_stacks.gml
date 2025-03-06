@@ -148,7 +148,7 @@ function scr_player_combat_weapon_stacks() {
                 if (unit.mobility_item() != "Bike" && unit.mobility_item() != "") {
                     if (is_struct(mobi_item)){
                         if (mobi_item.has_tag("jump")) {
-                            var stack_index = find_stack_index("hammer_of_wrath", head_role, unit);
+                            var stack_index = find_stack_index("Hammer of Wrath", head_role, unit);
                             if (stack_index > -1){
                                 add_data_to_stack(stack_index, unit.hammer_of_wrath(), false, head_role, unit);
                                 ammo[stack_index] = -1;
