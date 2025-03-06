@@ -2241,7 +2241,6 @@ global.gear = {
 				"master_crafted": 5,
 				"artifact": 10
 			},
-			"tags": ["power_armour"],
 		},
 	// Sororitas and other imperials
 		"Light Power Armour": { // According to lore, lack of black carapace makes regular humans less capable to use PAs properly, but this is a concern for the future
@@ -2262,7 +2261,6 @@ global.gear = {
 				"artifact": 10
 			},
 			"description": "A suit of light power armour, intended to be useable by the regular humans.",
-			"tags": ["power_armour"],
 		},
 	// Eldar
 		"Ranger Armour":{
