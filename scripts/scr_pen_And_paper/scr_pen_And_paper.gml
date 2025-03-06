@@ -111,11 +111,76 @@ function print_stat_diffs(diffs){
 	return _diff_string;
 }
 
-function d100_roll(luck_edit=true, luck_mod=10){
-	var _roll = irandom_range(1,100)
+function roll_1d100(target_high = true) {
+	var _roll = irandom_range(1, 100);
+
 	if (scr_has_disadv("Shitty Luck")){
-		_roll = max(1,_roll-irandom(luck_mod))
+		if (target_high && _roll > 50) {
+			_roll = irandom_range(1, 100);
+		} else if (_roll < 51) {
+			_roll = irandom_range(1, 100);
+		}
 	}
-	return _roll;
+
+    return _roll;
 }
 
+function roll_1d6(target_high = true) {
+	var _roll = irandom_range(1, 6);
+
+	if (scr_has_disadv("Shitty Luck")){
+		if (target_high && _roll > 3) {
+			_roll = irandom_range(1, 6);
+		} else if (_roll < 4) {
+			_roll = irandom_range(1, 6);
+		}
+	}
+
+    return _roll;
+}
+
+function roll_1d10(target_high = true) {
+	var _roll = irandom_range(1, 10);
+
+	if (scr_has_disadv("Shitty Luck")){
+		if (target_high && _roll > 5) {
+			_roll = irandom_range(1, 10);
+		} else if (_roll < 6) {
+			_roll = irandom_range(1, 10);
+		}
+	}
+
+    return _roll;
+}
+
+function roll_1d50(target_high = true) {
+	var _roll = irandom_range(1, 50);
+
+	if (scr_has_disadv("Shitty Luck")){
+		if (target_high && _roll > 25) {
+			_roll = irandom_range(1, 50);
+		} else if (_roll < 26) {
+			_roll = irandom_range(1, 50);
+		}
+	}
+
+    return _roll;
+}
+
+function roll_5d10(target_high = true) {
+	var _roll = 0;
+
+	repeat(5) {
+		_roll += irandom_range(1, 10);
+
+		if (scr_has_disadv("Shitty Luck")){
+			if (target_high && _roll > 5) {
+				_roll = irandom_range(1, 10);
+			} else if (_roll < 6) {
+				_roll = irandom_range(1, 10);
+			}
+		}
+	}
+
+    return _roll;
+}

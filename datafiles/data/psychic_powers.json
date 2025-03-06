@@ -685,9 +685,9 @@ I see no reason to have these named structs, as their names are not used for any
         "name": "Regenerate",
         "type": "buff",
         "range": 0,
-        "target_type": 0,
+        "target_type": 3,
         "max_kills": 0,
-        "magnitude": 0,
+        "magnitude": 15,
         "armour_piercing": 0,
         "duration": 0,
         "flavour_text": {

@@ -84,11 +84,3 @@ function lanczos_gamma(x1) {
 //     var raw = -log(1 - u) / lambda;  // Generate an exponentially distributed number
 //     return base * raw;  // Scale the number by the base value
 // }
-
-function roll_1d200() {
-    return irandom_range(1, 200);
-}
-
-function roll_1d100() {
-    return irandom_range(1, 100);
-}
