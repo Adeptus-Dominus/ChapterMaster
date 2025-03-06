@@ -752,7 +752,7 @@ function ComplexSet(unit) constructor{
     static complex_helms = function(data){
         set_complex_shader_area(["eye_lense"], data.helm_lens);
         if (data.helm_pattern == 0){
-            set_complex_shader_area(["left_head", "right_head","left_muzzle", "right_muzzle"], data.helm_secondary);
+            set_complex_shader_area(["left_head", "right_head","left_muzzle", "right_muzzle"], data.helm_primary);
 
         } else if (data.helm_pattern == 2){
             set_complex_shader_area(["left_head", "right_head"], data.helm_primary);

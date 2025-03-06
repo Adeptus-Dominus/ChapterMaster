@@ -38,6 +38,7 @@ enum ePROGENITOR {
     RAVEN_GUARD,
     RANDOM,
 }
+
 function progenitor_map(){
     var founding_chapters = [
         "",
@@ -51,11 +52,13 @@ function progenitor_map(){
         "Salamanders",
         "Raven Guard",
     ]
-    for (i=1;i<10;i++){
-        if (global.chapter_name==founding_chapters[i] || obj_ini.progenitor==i){
+
+    for (var i=1; i<10; i++){
+        if (global.chapter_name == founding_chapters[i] || obj_ini.progenitor==i){
             return i;
         }
     }
+
     return 0;
 }
 
@@ -101,8 +104,12 @@ function select_livery_data(livery_data, specific) {
     }
 }
 
-function progenitor_livery(progenitor, specific = "none") {
+function helmet_livery(progenitor, specific = "none") {
     var livery_data;
+
+	if ((obj_creation.custom == 0) && (global.chapter_creation_object.origin == 1)) {
+		progenitor = progenitor_map();
+	}
 
     var name_selected = true;
     switch (global.chapter_name) {
@@ -171,7 +178,38 @@ function progenitor_livery(progenitor, specific = "none") {
                 },
             };
             break;
-
+		case "Lamenters":
+			livery_data = {
+				sgt : {
+					helm_pattern:1,
+					helm_primary : obj_creation.main_color,
+					helm_secondary : Colors.Black,
+					helm_detail : obj_creation.main_trim,
+					helm_lens : obj_creation.lens_color,
+				},
+				vet_sgt : {
+					helm_pattern:1,
+					helm_primary : obj_creation.main_color,
+					helm_secondary : Colors.Black,
+					helm_detail : obj_creation.main_trim,
+					helm_lens : obj_creation.lens_color,
+				},
+				captain : {
+					helm_pattern:0,
+					helm_primary : Colors.White,
+					helm_secondary : Colors.White,
+					helm_detail : obj_creation.main_trim,
+					helm_lens : obj_creation.lens_color,
+				},
+				veteran : {
+					helm_pattern:2,
+					helm_primary : obj_creation.main_color,
+					helm_secondary : Colors.Black,
+					helm_detail : obj_creation.main_trim,
+					helm_lens : obj_creation.lens_color,	
+				}				
+			}
+			break;
         default:
             name_selected = false;
             break;
@@ -387,21 +425,21 @@ function progenitor_livery(progenitor, specific = "none") {
                     helm_primary: Colors.Red,
                     helm_secondary: Colors.Red,
                     helm_detail: Colors.Red,
-                    helm_lens: Colors.Green,
+                    helm_lens: Colors.Lime,
                 },
                 vet_sgt: {
                     helm_pattern: 1,
                     helm_primary: Colors.Red,
-                    helm_secondary: Colors.White,
+                    helm_secondary: Colors.Red,
                     helm_detail: Colors.Red,
-                    helm_lens: Colors.Green,
+                    helm_lens: Colors.Lime,
                 },
                 captain: {
                     helm_pattern: 0,
-                    helm_primary: Colors.Dark_Ultramarine,
-                    helm_secondary: Colors.Dark_Ultramarine,
-                    helm_detail: Colors.Dark_Ultramarine,
-                    helm_lens: Colors.Red,
+                    helm_primary: obj_creation.main_color,
+                    helm_secondary: obj_creation.secondary_color,
+                    helm_detail: obj_creation.main_trim,
+                    helm_lens: obj_creation.lens_color,
                 },
                 veteran: {
                     helm_pattern: 0,
@@ -449,32 +487,32 @@ function progenitor_livery(progenitor, specific = "none") {
         case ePROGENITOR.BLOOD_ANGELS:
             livery_data = {
                 sgt: {
-                    helm_pattern: 1,
-                    helm_primary: Colors.Sanguine_Red,
-                    helm_secondary: Colors.Sanguine_Red,
-                    helm_detail: Colors.Lighter_Black,
-                    helm_lens: Colors.Lime,
+					helm_pattern: 0,
+					helm_primary: obj_creation.main_color,
+					helm_secondary: obj_creation.secondary_color,
+					helm_detail: Colors.Gold,
+					helm_lens: obj_creation.lens_color,
                 },
                 vet_sgt: {
-                    helm_pattern: 1,
-                    helm_primary: Colors.Gold,
-                    helm_secondary: Colors.Black,
-                    helm_detail: Colors.Gold,
-                    helm_lens: Colors.Lime,
+					helm_pattern: 0,
+					helm_primary: Colors.Gold,
+					helm_secondary: obj_creation.secondary_color,
+					helm_detail: obj_creation.main_trim,
+					helm_lens: obj_creation.lens_color,
                 },
                 captain: {
-                    helm_pattern: 0,
-                    helm_primary: Colors.Sanguine_Red,
-                    helm_secondary: Colors.Sanguine_Red,
-                    helm_detail: Colors.Gold,
-                    helm_lens: Colors.Lime,
+					helm_pattern: 0,
+					helm_primary: obj_creation.main_color,
+					helm_secondary: obj_creation.secondary_color,
+					helm_detail: Colors.Gold,
+					helm_lens: obj_creation.lens_color,
                 },
                 veteran: {
-                    helm_pattern: 0,
-                    helm_primary: Colors.Gold,
-                    helm_secondary: Colors.Gold,
-                    helm_detail: Colors.Gold,
-                    helm_lens: Colors.Lime,
+					helm_pattern: 0,
+					helm_primary: Colors.Gold,
+					helm_secondary: obj_creation.secondary_color,
+					helm_detail: obj_creation.main_trim,
+					helm_lens: obj_creation.lens_color,
                 },
             };
             break;
@@ -488,20 +526,20 @@ function progenitor_livery(progenitor, specific = "none") {
                     helm_primary: Colors.Red,
                     helm_secondary: Colors.Red,
                     helm_detail: Colors.Red,
-                    helm_lens: Colors.Green,
+                    helm_lens: Colors.Lime,
                 },
                 vet_sgt: {
                     helm_pattern: 1,
                     helm_primary: Colors.Red,
-                    helm_secondary: Colors.White,
+                    helm_secondary: Colors.Red,
                     helm_detail: Colors.Red,
-                    helm_lens: Colors.Green,
+                    helm_lens: Colors.Lime,
                 },
                 captain: {
                     helm_pattern: 0,
                     helm_primary: obj_creation.main_color,
-                    helm_secondary: obj_creation.main_color,
-                    helm_detail: obj_creation.main_color,
+                    helm_secondary: obj_creation.secondary_color,
+                    helm_detail: obj_creation.main_trim,
                     helm_lens: obj_creation.lens_color,
                 },
                 veteran: {
@@ -1188,7 +1226,7 @@ function scr_initialize_custom() {
     for (var i = 0; i < array_length(complex_type); i++) {
         with (complex_livery_data[$ complex_type[i]]) {
             if (helm_primary == 0 && helm_secondary == 0 && helm_lens == 0) {
-                obj_ini.complex_livery_data[$ complex_type[i]] = progenitor_livery(obj_ini.progenitor, complex_type[i]);
+                obj_ini.complex_livery_data[$ complex_type[i]] = helmet_livery(obj_ini.progenitor, complex_type[i]);
             }
         }
     }
