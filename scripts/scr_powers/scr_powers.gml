@@ -553,29 +553,6 @@ function scr_powers(caster_id) {
         }
     }
 
-    //TODO: Perhaps separate perils into a separate function;
-    var _perils_chance = get_perils_chance(_unit, _tome_perils_chance);
-    var _perils_roll = irandom_range(1, 100);
-    var _perils_strength = get_perils_strength(_unit, _tome_perils_strength);
-
-    //// show_debug_message("Roll: " + string(_perils_roll));
-
-    if (_perils_roll <= _perils_chance) {
-        if (obj_ncombat.sorcery_seen == 1) {
-            obj_ncombat.sorcery_seen = 0;
-        }
-        _power_type = "perils";
-
-        _cast_flavour_text = $"{_unit.name_role()} suffers Perils of the Warp!  ";
-        _power_flavour_text = scr_perils_table(_perils_strength, _unit, _psy_discipline, _power_id, caster_id, _tome_discipline);
-
-        // Check if marine is dead
-        check_dead_marines(_unit, _marine_index);
-
-        _battle_log_message = _cast_flavour_text + _power_flavour_text;
-        add_battle_log_message(_battle_log_message, 999, 135);
-    }
-
     if (obj_ncombat.sorcery_seen == 1) {
         obj_ncombat.sorcery_seen = 2;
     }
@@ -818,6 +795,28 @@ function scr_powers(caster_id) {
                 add_battle_log_message(_battle_log_message, _battle_log_priority, 135);
             }
         }
+    }
+
+    //TODO: Perhaps separate perils into a separate function;
+    var _perils_chance = get_perils_chance(_unit, _tome_perils_chance);
+    var _perils_roll = irandom_range(1, 100);
+    var _perils_strength = get_perils_strength(_unit, _tome_perils_strength);
+
+    //// show_debug_message("Roll: " + string(_perils_roll));
+
+    if (_perils_roll <= _perils_chance) {
+        if (obj_ncombat.sorcery_seen == 1) {
+            obj_ncombat.sorcery_seen = 0;
+        }
+
+        _cast_flavour_text = $"{_unit.name_role()} suffers Perils of the Warp!  ";
+        _power_flavour_text = scr_perils_table(_perils_strength, _unit, _psy_discipline, _power_id, caster_id, _tome_discipline);
+
+        // Check if marine is dead
+        check_dead_marines(_unit, _marine_index);
+
+        _battle_log_message = _cast_flavour_text + _power_flavour_text;
+        add_battle_log_message(_battle_log_message, 999, 135);
     }
 
     display_battle_log_message();
