@@ -1515,7 +1515,7 @@ global.weapons = {
 		"arp": 1,
 		"tags": ["force" ],
 		"specials": {
-			"psy_focus": 15
+			"psy_invocation": 25
 		},
 		"maintenance" : 0.1,
 	},
@@ -1538,7 +1538,6 @@ global.weapons = {
 		"range": 1,
 		"spli": 4,
 		"arp": 1,
-		"special_description": "Spell damage +25%",
 		"special_properties": ["Parry"],
 		"tags": ["force", "sword"],
 		"maintenance" : 0.1,
@@ -1562,7 +1561,7 @@ global.weapons = {
 		"range": 1,
 		"spli": 5,
 		"arp": 1,
-		"special_description": "Able to be dual-wielded, Spell damage +25%",
+		"special_description": "Able to be dual-wielded",
 		"tags": ["force", "axe", "dual"],
 	},
 	"Twin Linked Lascannon Turret": {
@@ -2333,12 +2332,9 @@ global.gear = {
 		},
 		"Psychic Hood": {
 			"abbreviation": "PsyHd",
-			"special_properties": ["Perils Protection 50"], // I am curious if it is possible to raise the protection, if it's master crafted or artifact quality
 			"description": "An arcane hood that protects Psykers from enemy psychic powers and enhances control of their psychic abilities.",
-			"damage_resistance_mod": {
-				"standard": 0, // Adjusted
-				"master_crafted": 5, // Adjusted
-				"artifact": 10 // Adjusted
+			"specials": {
+				"psy_focus": 15
 			},
 		},
 		"Rosarius": {

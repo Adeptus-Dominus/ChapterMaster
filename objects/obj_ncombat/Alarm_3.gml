@@ -105,6 +105,7 @@ if ((messages>0) and (messages_shown<24)) and (messages_shown<=100){
         
         if (message_priority[that]=135) then newline_color="blue";
         if (message_priority[that]=136) then newline_color="blue";
+        if (message_priority[that]=137) then newline_color="red";
         
         scr_newtext();
         messages_shown+=1;

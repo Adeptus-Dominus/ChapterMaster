@@ -434,7 +434,10 @@ function get_total_special_value(unit, special) {
     var _all_data = [unit.get_armour_data(), unit.get_gear_data(), unit.get_mobility_data(), unit.get_weapon_one_data(), unit.get_weapon_two_data()];
 
     for (var i = 0; i < array_length(_all_data); i++) {
-        _total_special_value += _all_data[i].special_value(special);
+        var _equipment_piece = _all_data[i];
+        if (is_struct(_equipment_piece)) {
+            _total_special_value += _equipment_piece.special_value(special);
+        }
     }
 
     return _total_special_value;
