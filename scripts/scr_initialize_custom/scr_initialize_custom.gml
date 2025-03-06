@@ -1575,7 +1575,7 @@ function scr_initialize_custom() {
 				"loadout": {
 					"required": {
 						"wep1": ["", 0],
-						"wep2": ["Combat Knife", 9],
+						"wep2": ["Combat Knife", max],
 					},
 					"option": {
 						"wep1": [
@@ -1589,7 +1589,10 @@ function scr_initialize_custom() {
 								weapon_lists.special_weapons, 1
 							],
 							[
-								weapon_lists.heavy_weapons, 1
+								weapon_lists.heavy_weapons, 1, {
+									"wep2":"Combat Knife",
+									"mobi":"Heavy Weapons Pack",
+								}
 							],
 						]
 					}
