@@ -41,7 +41,7 @@ else if (flank=1){
 }
 
 //In melee check
-engaged = point_distance(x,0,enemy.x,0)<=10 || !position_empty(x+flank?10:-10,y);
+engaged = collision_point(x-10, y, obj_pnunit, 0, 1) || collision_point(x+10, y, obj_pnunit, 0, 1); 
 
 show_debug_message($"enemy is in melee {engaged}")
 
@@ -253,7 +253,7 @@ else if ((engaged || enemy.engaged) and target_block_is_valid( enemy,obj_pnunit)
         
         
         if (apa[i]=0) or (apa[i]<att[i]) then no_ap+=1;
-        show_debug_message($"{range[i]},{att[i]},{apa[i]},{wep[i]},{enemy}")
+        show_debug_message($"{range[i]},{att[i]},{apa[i]},{wep[i]},{enemy}");
         if  ((range[i]<=2) or ((floor(range[i])!=range[i]))){// Weapon meets preliminary checks
             if (apa[i]>0) then _armour_piercing=1;// Determines if it is _armour_piercing or not
             if (_armour_piercing) and (instance_exists(obj_nfort)) and (!flank){// Huff and puff and blow the wall down
@@ -272,7 +272,7 @@ else if ((engaged || enemy.engaged) and target_block_is_valid( enemy,obj_pnunit)
                 if (!good) then _armour_piercing=0;// Fuck it, shoot at infantry
             }
             
-            if (!_armour_piercing) and (target_block_is_valid(enemy)){// Check for men
+            if (!_armour_piercing) {// Check for men
                 // show_message(string(wep[i]));
                 var enemy2,g=0,good=0;
                 if ((enemy.men)){

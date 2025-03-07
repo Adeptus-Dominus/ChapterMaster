@@ -122,7 +122,7 @@ function scr_player_combat_weapon_stacks() {
             if (marine_casting[g]>=0) then marine_casting[g]=0;
             if (marine_casting[g]<0) then marine_casting[g]+=1;//timer for libs to be able to cast
 
-            if (unit.hp()>0) then marine_dead[g]=0;
+            if (unit.hp()>0) then marine_dead[g]=false;
             if (unit.hp()>0 && marine_dead[g]!=true){
                 var head_role = unit.IsSpecialist();
                 var armour_data = unit.get_armour_data();
@@ -151,7 +151,6 @@ function scr_player_combat_weapon_stacks() {
                             var stack_index = find_stack_index("hammer_of_wrath", head_role, unit);
                             if (stack_index > -1){
                                 add_data_to_stack(stack_index, unit.hammer_of_wrath(), false, head_role, unit);
-                                ammo[stack_index] = -1;
                                 if (head_role){
                                     player_head_role_stack(stack_index, unit);
                                 }
@@ -302,6 +301,34 @@ function scr_player_combat_weapon_stacks() {
     }
 }
 
+function set_up_player_blocks_turn(){
+    if (instance_exists(obj_pnunit)){
+        with (obj_pnunit){
+            alarm[3]=2;
+            wait_and_execute(3, scr_player_combat_weapon_stacks);
+            alarm[0]=4;
+        }
+    }
+    turn_count++;        
+}
+
+function reset_combat_message_arrays(){
+    messages=0;
+    messages_to_show=8;
+    largest=0;
+    random_messages=0;
+    priority=0;
+    messages_shown=0;
+    for (var i=0;i<array_length(message);i++){
+        message[i]="";
+        message_sz[i]=0;
+        message_priority[i]=0;
+    }
+    timer_stage=4;
+    timer=0;
+    done=0;
+    messages_shown=0;   
+}
 
 function scr_add_unit_to_roster(unit, is_local=false,is_ally=false){
     array_push(unit_struct, unit);
