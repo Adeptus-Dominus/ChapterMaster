@@ -964,11 +964,10 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 	static age = function(){
 	    if (instance_exists(obj_controller)){
 		    var real_age = (obj_ini.age[company][marine_number] + (obj_controller.millenium * 1000) + obj_controller.year - 41735);
-		    return real_age;
 		} else {
 		    var real_age = obj_ini.age[company][marine_number];
-		    return real_age;
 		}
+		return real_age;
 	};// age
 
 	static update_age = function(new_val){
