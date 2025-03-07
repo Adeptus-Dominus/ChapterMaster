@@ -13,9 +13,6 @@
   "edgeFiltering": false,
   "For3D": false,
   "frames": [
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"f0ff24f9-bb86-49c8-9679-44c56735a77c",},
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"0b8f3cc3-3ce9-4378-ad72-939912fe0616",},
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"67fde332-4798-49cf-bb44-0ebd213419c6",},
     {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"cbb0ffd1-9108-4578-8690-2b8c6fc3c0be",},
   ],
   "gridX": 0,
@@ -47,7 +44,7 @@
     "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "eventStubScript": null,
     "eventToFunction": {},
-    "length": 4.0,
+    "length": 1.0,
     "lockOrigin": false,
     "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "playback": 1,
@@ -58,10 +55,7 @@
     "timeUnits": 1,
     "tracks": [
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"f0ff24f9-bb86-49c8-9679-44c56735a77c","path":"sprites/spr_weapon_grav_cannon/spr_weapon_grav_cannon.yy",},},},"Disabled":false,"id":"dbc4ffb4-dc70-41fd-83b7-be3dc0ae50a0","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"0b8f3cc3-3ce9-4378-ad72-939912fe0616","path":"sprites/spr_weapon_grav_cannon/spr_weapon_grav_cannon.yy",},},},"Disabled":false,"id":"94013f91-770a-49c3-a40e-9a0ac97fbbc4","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"67fde332-4798-49cf-bb44-0ebd213419c6","path":"sprites/spr_weapon_grav_cannon/spr_weapon_grav_cannon.yy",},},},"Disabled":false,"id":"249cb8fd-b259-483a-89be-edfb1756753d","IsCreationKey":false,"Key":2.0,"Length":1.0,"Stretch":false,},
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"cbb0ffd1-9108-4578-8690-2b8c6fc3c0be","path":"sprites/spr_weapon_grav_cannon/spr_weapon_grav_cannon.yy",},},},"Disabled":false,"id":"ae74c7da-b7f7-4015-941e-562f4bc25c9a","IsCreationKey":false,"Key":3.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"cbb0ffd1-9108-4578-8690-2b8c6fc3c0be","path":"sprites/spr_weapon_grav_cannon/spr_weapon_grav_cannon.yy",},},},"Disabled":false,"id":"ae74c7da-b7f7-4015-941e-562f4bc25c9a","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
           ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange": null,

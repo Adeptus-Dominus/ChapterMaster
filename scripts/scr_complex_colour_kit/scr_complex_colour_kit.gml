@@ -232,6 +232,7 @@ function ColourItem(xx,yy) constructor{
 		}
 
     }
+    freeze_armour = false;
     static shuffle_dummy = function(){
         dummy_marine.update();
     }
@@ -292,12 +293,31 @@ function ColourItem(xx,yy) constructor{
                 -xx,
                 -yy
             );
+            var freeze_image_shuffle = draw_unit_buttons([xx+150, yy+image_location_maps.left_trim[3]], "Freeze",,freeze_armour ? c_green :c_red);
+
+            if (point_and_click(freeze_image_shuffle)){
+                freeze_armour = !freeze_armour;
+            }
+            if (scr_hit(freeze_image_shuffle)){
+                tooltip_draw("Freeze and un-freeze marine armour changes");
+            }
+
+            var _shuffle_marine_decorations = draw_unit_buttons([xx+150, freeze_image_shuffle[3]], "Shuffle", ,c_green);
+
+            if (point_and_click(_shuffle_marine_decorations)){
+                freeze_armour = !freeze_armour;
+                shuffle_dummy();
+                reset_image();
+            }
+            if (scr_hit(_shuffle_marine_decorations)){
+                tooltip_draw("click to shuffle marine decorations and randomisations");
+            }
             image_location_maps.company_marks = move_location_relative(
                 draw_unit_buttons([xx-30, yy-40], "Company Marks"),
                 -xx,
                 -yy
             );
-            
+        
     		//draw_sprite(sprite_index, 0, x, y);
             if (dummy_marine == false){
                 dummy_marine = new DummyMarine();

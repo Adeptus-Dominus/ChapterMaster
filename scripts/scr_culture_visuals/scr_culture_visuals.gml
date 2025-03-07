@@ -573,19 +573,25 @@ function DummyMarine()constructor{
             return wep2[100][livery_picker.role_set > 0  ? livery_picker.role_set :eROLE.Tactical];
         }
     }  
+    last_armour = "MK7 Aquila";
     static armour = function(){
         var armours = ARR_power_armour;
-         with (obj_creation){
-            var _armour  = armour[100][livery_picker.role_set > 0  ? livery_picker.role_set : eROLE.Tactical];
-            if (array_contains(armours, _armour)){
-                _armour = array_random_element(armours);
+        var _last_armour = last_armour;
+        with (obj_creation){
+            if (!livery_picker.freeze_armour){
+                var _armour  = armour[100][livery_picker.role_set > 0  ? livery_picker.role_set : eROLE.Tactical];
+                if (array_contains(armours, _armour)){
+                     _armour = array_random_element(armours);
+                }
+                if (_armour == "Power Armour"){
+                     _armour = "MK7 Aquila";
+                }
+            } else {
+                _armour = _last_armour;
             }
-            if (_armour == "Power Armour"){
-                _armour = "MK7 Aquila";
-            }
-            show_debug_message(_armour)
-            return _armour;
         }
+        last_armour = _armour;
+        return _armour;
     } 
     static gear = function(){
          with (obj_creation){

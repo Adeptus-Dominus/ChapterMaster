@@ -14,8 +14,6 @@
   "For3D": false,
   "frames": [
     {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"b72324e5-1184-447b-810f-30d301bb38bd",},
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"62d8f216-40e5-476d-a7e0-cbe1e0e3e2e6",},
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"24c94624-1b7a-44a7-ae83-6a2baaad033c",},
     {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"ed640cbb-a482-497a-8c41-5bf4ef9883ae",},
   ],
   "gridX": 0,
@@ -47,7 +45,7 @@
     "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "eventStubScript": null,
     "eventToFunction": {},
-    "length": 4.0,
+    "length": 2.0,
     "lockOrigin": false,
     "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "playback": 1,
@@ -59,9 +57,7 @@
     "tracks": [
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
             {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"b72324e5-1184-447b-810f-30d301bb38bd","path":"sprites/spr_weapon_chainfist_small/spr_weapon_chainfist_small.yy",},},},"Disabled":false,"id":"64a7d678-a244-456b-b317-31f452cd6459","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"62d8f216-40e5-476d-a7e0-cbe1e0e3e2e6","path":"sprites/spr_weapon_chainfist_small/spr_weapon_chainfist_small.yy",},},},"Disabled":false,"id":"5e4db555-42f5-4cfb-a439-901e4923fdc4","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"24c94624-1b7a-44a7-ae83-6a2baaad033c","path":"sprites/spr_weapon_chainfist_small/spr_weapon_chainfist_small.yy",},},},"Disabled":false,"id":"d1dad926-3eed-404a-93a6-578f1dc37e4d","IsCreationKey":false,"Key":2.0,"Length":1.0,"Stretch":false,},
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"ed640cbb-a482-497a-8c41-5bf4ef9883ae","path":"sprites/spr_weapon_chainfist_small/spr_weapon_chainfist_small.yy",},},},"Disabled":false,"id":"7eb962ec-d2a6-41ba-b53d-b74c98fa6374","IsCreationKey":false,"Key":3.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"ed640cbb-a482-497a-8c41-5bf4ef9883ae","path":"sprites/spr_weapon_chainfist_small/spr_weapon_chainfist_small.yy",},},},"Disabled":false,"id":"7eb962ec-d2a6-41ba-b53d-b74c98fa6374","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
           ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange": null,

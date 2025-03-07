@@ -14,7 +14,6 @@
   "For3D": false,
   "frames": [
     {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"de3dcbc3-1a69-4b3c-ad1b-9c3dbaae504c",},
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"2c680cce-bbb6-4a1a-80db-6667a8d9f3ba",},
   ],
   "gridX": 0,
   "gridY": 0,
@@ -45,7 +44,7 @@
     "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "eventStubScript": null,
     "eventToFunction": {},
-    "length": 2.0,
+    "length": 1.0,
     "lockOrigin": false,
     "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "playback": 1,
@@ -57,7 +56,6 @@
     "tracks": [
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
             {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"de3dcbc3-1a69-4b3c-ad1b-9c3dbaae504c","path":"sprites/spr_weapon_boltstorm_gauntlets/spr_weapon_boltstorm_gauntlets.yy",},},},"Disabled":false,"id":"5ccef341-8cb6-4c1b-b5d2-dd48dd9784b6","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"2c680cce-bbb6-4a1a-80db-6667a8d9f3ba","path":"sprites/spr_weapon_boltstorm_gauntlets/spr_weapon_boltstorm_gauntlets.yy",},},},"Disabled":false,"id":"094ddd7b-24c2-4d70-a49e-b79e6d439c6e","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
           ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange": null,

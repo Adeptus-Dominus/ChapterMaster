@@ -585,8 +585,8 @@ function ComplexSet(unit) constructor{
             case "Scout Armour":
                 add_group({
                     armour : spr_scout_complex,
-                    left_arm: spr_mk6_left_arm,
-                    right_arm: spr_mk6_right_arm,                    
+                    left_arm: spr_scout_left,
+                    right_arm: spr_scout_right,                    
                 })            
                 armour_type = ArmourType.Scout;
     			break
