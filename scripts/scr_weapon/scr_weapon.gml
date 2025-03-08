@@ -2447,7 +2447,6 @@ global.gear = {
 	"mobility": {
 		"Bike": {
 			"abbreviation": "Bike",
-			"special_properties": ["Integrated Twin Linked-Bolters"],
 			"description": "A robust bike that can propel an Astartes at very high speeds. Boasts highly responsive controls that allow for fluid movement on the battlefield and and respectable Twin-Linked Bolters for offensive action.",
 			"hp_mod": {
 				"standard": 25,
