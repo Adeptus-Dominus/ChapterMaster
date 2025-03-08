@@ -2317,13 +2317,11 @@ function scr_initialize_custom() {
 			gear[company, 1] = "Psychic Hood";
 			var
 			let = "";
-			letmax = 5;
 			chapter_master.add_trait("warp_touched");
-			chapter_master.psionic = choose(15, 16);
+			chapter_master.psionic = choose(13, 14);
 			switch (obj_creation.discipline) {
 				case "default":
 					let = "D";
-					letmax = 7;
 					break;
 				case "biomancy":
 					let = "B";
@@ -2402,7 +2400,7 @@ function scr_initialize_custom() {
 		name[company, 5] = obj_creation.clibrarian;
 		var _clibrarian = add_unit_to_company("marine", company, 5, string("Chief {0}", roles.librarian), eROLE.Librarian, "default", "Plasma Pistol", "default", "", _hq_armour);
 		_clibrarian.edit_corruption(0);
-		_clibrarian.psionic = choose(13, 14, 15, 16);
+		_clibrarian.psionic = choose(11, 12);
 		_clibrarian.update_powers();
 		_clibrarian.add_trait("warp_touched");
 		k+=1;
@@ -2425,7 +2423,6 @@ function scr_initialize_custom() {
 		commands += 1;
 		man_size += 1;
 		var _epi = add_unit_to_company("marine", company, k, roles.librarian, eROLE.Librarian, "default", choose_weighted(weapon_weighted_lists.pistols), "default", "default", "");
-		_epi.psionic = choose(13, 14, 15, 16);
 		_epi.update_powers();
 	}
 	// Codiciery
@@ -2434,7 +2431,6 @@ function scr_initialize_custom() {
 		commands += 1;
 		man_size += 1;
 		var _codi = add_unit_to_company("marine", company, k, "Codiciery", eROLE.Librarian, "default", choose_weighted(weapon_weighted_lists.pistols), "default", "default", "");
-		_codi.psionic = choose(11, 12, 13, 14, 15);
 		_codi.update_powers();
 	}
 
@@ -2444,7 +2440,6 @@ function scr_initialize_custom() {
 		commands += 1;
 		man_size += 1;
 		var _lexi = add_unit_to_company("marine", company, k, "Lexicanum", eROLE.Librarian, "default", choose_weighted(weapon_weighted_lists.pistols), "default", "default", "");
-		_lexi.psionic = choose(8, 9, 10, 11, 12, 13, 14);
 		_lexi.update_powers();
 	}
 
@@ -3389,15 +3384,14 @@ function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1
 		}
 		obj_ini.spe[company][slot] += string(let) + "0|";
 
+		if (roll_1d6() < 4) {
 		spawn_unit.add_trait("warp_touched");
-		spawn_unit.psionic = choose(8, 9, 10, 11, 12, 13, 14);
-		spawn_unit.update_powers();
+		}
 		if(scr_has_adv("Psyker Abundance")){
 			spawn_unit.add_exp(10);
 		}
-		if(scr_has_disadv("Barren Librarius")){
-			spawn_unit.psionic = choose(8, 9, 10, 11,);
-		}
+		spawn_unit.psionic = irandom_range(8, 10);
+		spawn_unit.update_powers();
 	}
 	
 	return spawn_unit;
