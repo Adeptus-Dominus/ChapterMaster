@@ -138,7 +138,6 @@ repeat(70){i+=1;
     
     if (i<=10) then mucra[i]=0;
 }
-slime=0;
 unit_recovery_score=0;
 apothecaries_alive=0;
 techmarines_alive=0;

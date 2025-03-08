@@ -151,38 +151,6 @@ if (ground_mission){
 	obj_ground_mission.post_equipment_lost = post_equipment_lost
 	obj_ground_mission.post_equipments_lost = post_equipments_lost
 }
-if (slime>0){
-    var compan_slime;
-    compan_slime=0;
-    
-    var s1,s2,s3,s4;
-    s1="";s2="";s3="";s4="";
-    
-    i=-1;
-    
-    s1="Slime has short-circuited and destroyed "+string(slime);
-    
-    for (var i=0;i<=10;i++){
-        if (mucra[i]){
-            compan_slime+=1;
-			if (i>0){
-				s3+=$"{i}, ";
-			} else {
-				s3+=$"HQ, ";
-			}
-        }
-    }
-    
-    s2=$" {slime==1?"suit":"suits"} of Power Armour.  {compan_slime>1?$"{s3} Companies":$"{s3} company"} {s4} has been effected.";
-    
-    s3=string_delete(s3,string_length(s3)-1,2);
-    
-    newline=s1+s2+s3+s4;
-    newline_color="red";
-    scr_newtext();
-    newline=" ";
-    scr_newtext();
-}
 
 instance_activate_object(obj_star);
 
