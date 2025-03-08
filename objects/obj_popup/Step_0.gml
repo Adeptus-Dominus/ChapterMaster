@@ -488,11 +488,8 @@ try {
 
 		if (press > 0) {
 			var randa, randa2;
-			randa = floor(random(100)) + 1;
-			randa2 = floor(random(100)) + 1;
-			if (scr_has_disadv("Shitty Luck")) {
-				randa -= 20;
-			}
+			randa = d100_roll(true, 20);
+			randa2 = d100_roll(false);
 		}
 
 		if (press == 1) {
@@ -518,13 +515,12 @@ try {
 			new_target.dispo[planet] = 70 + floor(random_range(5, 15)) + 1;
 			scr_event_log("", "Planetary Governor of " + string(new_target.name) + " " + scr_roman(planet) + " assassinated.  A more suitable Governor is installed.");
 			if (randa2 <= (10 * estimate)) {
-				var v = 0, ev = 0;
-				repeat (99) {
-					v += 1;
-					if ((ev == 0) && (obj_controller.event[v] == "")) {
-						ev = v;
-					}
-				}
+                for (var i = 0; i < array_length(obj_controller.event); i++) {
+                    if (obj_controller.event[i] == "") {
+                        var ev = i;
+                        break;
+                    }
+                }
 				obj_controller.event[ev] = "governor_assassination_1|" + string(new_target.name) + "|" + string(planet) + "|";
 				obj_controller.event_duration[ev] = ((choose(1, 2, 3, 4, 5, 6) + choose(1, 2, 3, 4, 5, 6)) * 6) + choose(-3, -2, -1, 0, 1, 2, 3);
 			}
@@ -542,13 +538,12 @@ try {
 			new_target.dispo[planet] = 101;
 			scr_event_log("", "Planetary Governor of " + string(new_target.name) + " " + scr_roman(planet) + " assassinated.  One of your Chapter Serfs take their position.");
 			if (randa2 <= (25 * estimate)) {
-				var v = 0, ev = 0;
-				repeat (99) {
-					v += 1;
-					if ((ev == 0) && (obj_controller.event[v] == "")) {
-						ev = v;
-					}
-				}
+                for (var i = 0; i < array_length(obj_controller.event); i++) {
+                    if (obj_controller.event[i] == "") {
+                        var ev = i;
+                        break;
+                    }
+                }
 				obj_controller.event[ev] = "governor_assassination_2|" + string(new_target.name) + "|" + string(planet) + "|";
 				obj_controller.event_duration[ev] = (choose(1, 2) * 6) + choose(-3, -2, -1, 0, 1, 2, 3);
 			}
@@ -758,149 +753,136 @@ try {
 		}
 	}
 
-	if (image == "ancient_ruins" && woopwoopwoop && move_to_next_stage()) {
-		instance_deactivate_all(true);
-		instance_activate_object(obj_ground_mission);
-		instance_activate_object(obj_popup);
-		var _explore_feature = obj_ground_mission.explore_feature;
-		_explore_feature.suprise_attack();
-		woopwoopwoop = 0;
-		show_debug_message("ruins combat");
-		instance_destroy(self.id);
-		instance_destroy();
-		exit;
-	} else if (image == "ancient_ruins" && option1 != "" && instance_exists(obj_ground_mission)) {
-		if (press == 1) {
-			// Begin
-			var _ruins = obj_ground_mission.explore_feature;
-			var ruins_battle = 0, ruins_fact = 0, ruins_disp = 0, ruins_reward = 0, dice, battle_threat = 0;
+    if (image == "ancient_ruins" && woopwoopwoop && move_to_next_stage()) {
+        instance_deactivate_all(true);
+        instance_activate_object(obj_ground_mission);
+        instance_activate_object(obj_popup);
+        var _explore_feature = obj_ground_mission.explore_feature;
+        _explore_feature.suprise_attack();
+        woopwoopwoop = 0;
+        show_debug_message("ruins combat");
+        instance_destroy(self.id);
+        instance_destroy();
+        exit;
+    } else if (image == "ancient_ruins" && option1 != "" && instance_exists(obj_ground_mission)) {
+        if (press == 1) {
+            // Begin
+            var _ruins = obj_ground_mission.explore_feature;
+            var ruins_battle = 0, ruins_fact = 0, ruins_disp = 0, ruins_reward = 0, dice, battle_threat = 0;
 
-			_ruins.determine_race();
+            _ruins.determine_race();
 
-			dice = floor(random(100)) + 1;
-			var shit_luck = scr_has_disadv("Shitty Luck");
-			var pass_mark = shit_luck ? 66 : 50;
-			ruins_battle = dice <= pass_mark;
+            dice = d100_roll(true, 20);
+            ruins_battle = dice <= 50;
 
-			// ruins_battle=1;
+            // ruins_battle=1;
 
-			if (ruins_battle == 1) {
-				dice = floor(random(100)) + 1;
-				if (shit_luck) {
-					dice += 10;
-				}
+            if (ruins_battle == 1) {
+                dice = d100_roll();
 
-				battle_threat = 4;
-				if ((dice > 0) && (dice <= 60)) {
-					battle_threat = 1;
-				}
-				if ((dice > 60) && (dice <= 90)) {
-					battle_threat = 2;
-				}
-				if ((dice > 90) && (dice <= 99)) {
-					battle_threat = 3;
-				}
+                if (dice >= 0 && dice <= 60) {
+                    battle_threat = 1;
+                } else if (dice > 60 && dice <= 90) {
+                    battle_threat = 2;
+                } else if (dice < 99) {
+                    battle_threat = 3;
+                } else {
+                    battle_threat = 4;
+                }
 
-				if ((_ruins.ruins_race == 1) || (_ruins.ruins_race == 2) || (_ruins.ruins_race == 10)) {
-					ruins_battle = choose(10, 10, 10, 10, 11, 11, 12);
-				}
-				if (_ruins.ruins_race == 5) {
-					ruins_battle = 10;
-				}
-				if (_ruins.ruins_race == 6) {
-					ruins_battle = choose(6, 6, 10, 10, 10, 12);
-				}
-				if (ruins_battle == 1) {
-					ruins_battle = choose(6, 10, 12);
-				}
-				obj_ground_mission.ruins_race = _ruins.ruins_race;
-				obj_ground_mission.ruins_battle = ruins_battle;
-				obj_ground_mission.battle_threat = battle_threat;
+                switch (_ruins.ruins_race) {
+                case eFACTION.Player:
+                case eFACTION.Imperium:
+                case eFACTION.Chaos:
+                    ruins_battle = choose(10, 10, 10, 10, 11, 11, 12);
+                    break;
+                case eFACTION.Ecclesiarchy:
+                    ruins_battle = 10;
+                    break;
+                case eFACTION.Eldar:
+                    ruins_battle = choose(6, 6, 10, 10, 10, 12);
+                    break;
+                default:
+                    ruins_battle = choose(6, 10, 12);
+                    break;
+                }
 
-				option1 = "";
-				option2 = "";
-				option3 = "";
-				text = "Your marines descended into the ancient ruins, mapping them out as they go.  They quickly determine the ruins were once ";
-				if (_ruins.ruins_race == 1) {
-					text += "a Space Marine fortification from earlier times.";
-				}
-				if (_ruins.ruins_race == 2) {
-					text += "golden-age Imperial ruins, lost to time.";
-				}
-				if (_ruins.ruins_race == 5) {
-					text += "a magnificent temple of the Imperial Cult.";
-				}
-				if (_ruins.ruins_race == 6) {
-					text += "Eldar colonization structures from an unknown time.";
-				}
-				if (_ruins.ruins_race == 10) {
-					text += "golden-age Imperial ruins, since decorated with spikes and bones.";
-				}
-				if (_ruins.failed_exploration == 1) {
-					text += $"{global.chapter_name} see the scarring in the walls and round impacts where your brothers died to clense this place of it's foul inhabitants";
-				}
-				text += "  Unfortunantly, it's too late before your Battle Brothers discern the ruins are still inhabited.  Shapes begin to descend upon them from all directions, masked in the shadows.";
+                obj_ground_mission.ruins_race = _ruins.ruins_race;
+                obj_ground_mission.ruins_battle = ruins_battle;
+                obj_ground_mission.battle_threat = battle_threat;
 
-				cooldown = 15;
-				woopwoopwoop = 1;
-				exit;
-			}
-			if (ruins_battle == 0) {
-				var obj = obj_ground_mission.obj;
-				instance_activate_object(obj_star);
-				scr_ruins_reward(star_by_name(obj_ground_mission.battle_loc), obj_ground_mission.num, obj_ground_mission.explore_feature);
-				instance_destroy();
-				exit;
-			}
-		}
-		if (press == 2) {
-			// Nothing
-			obj_controller.cooldown = 10;
-			obj_controller.menu = 1;
-			// obj_controller.managing=manag;
-			with (obj_controller) {
-				var i = -1;
-				man_size = 0;
-				selecting_location = "";
-				selecting_types = "";
-				selecting_ship = -1;
-				sel_uid = 0;
-				reset_manage_arrays();
-				alll = 0;
-				update_general_manage_view();
-			}
-			with (obj_ground_mission) {
-				instance_destroy();
-			}
-			instance_destroy();
-			exit;
-		}
-		if (press == 3) {
-			// Return to ship, exit
-			scr_return_ship(obj_ground_mission.loc, obj_ground_mission, obj_ground_mission.num);
-			var man_size, ship_id, comp, plan, i;
-			i = 0;
-			ship_id = 0;
-			man_size = 0;
-			comp = 0;
-			plan = 0;
-			repeat (30) {
-				i += 1;
-				if (obj_ini.ship[i] == obj_ground_mission.loc) {
-					ship_id = i;
-				}
-			}
-			i = 0;
-			obj_controller.menu = 0;
-			obj_controller.managing = 0;
-			obj_controller.cooldown = 10;
-			with (obj_ground_mission) {
-				instance_destroy();
-			}
-			instance_destroy();
-			exit;
-		}
-	}
+                option1 = "";
+                option2 = "";
+                option3 = "";
+                text = "Your marines descended into the ancient ruins, mapping them out as they go.  They quickly determine the ruins were once ";
+                switch (_ruins.ruins_race) {
+                case eFACTION.Player:
+                    text += "a Space Marine fortification from earlier times.";
+                    break;
+                case eFACTION.Imperium:
+                    text += "golden-age Imperial ruins, lost to time.";
+                    break;
+                case eFACTION.Ecclesiarchy:
+                    text += "a magnificent temple of the Imperial Cult.";
+                    break;
+                case eFACTION.Eldar:
+                    text += "Eldar colonization structures from an unknown time.";
+                    break;
+                case eFACTION.Chaos:
+                    text += "golden-age Imperial ruins, since decorated with spikes and bones.";
+                    break;
+                }
+
+                if (_ruins.failed_exploration == 1) {
+                    text += $"{global.chapter_name} see the scarring in the walls and round impacts where your brothers died to clense this place of it's foul inhabitants";
+                }
+                text += "  Unfortunantly, it's too late before your Battle Brothers discern the ruins are still inhabited.  Shapes begin to descend upon them from all directions, masked in the shadows.";
+
+                cooldown = 15;
+                woopwoopwoop = 1;
+                exit;
+            } else {
+                var obj = obj_ground_mission.obj;
+                instance_activate_object(obj_star);
+                scr_ruins_reward(star_by_name(obj_ground_mission.battle_loc), obj_ground_mission.num, obj_ground_mission.explore_feature);
+                instance_destroy();
+                exit;
+            }
+        }
+        if (press == 2) {
+            // Nothing
+            obj_controller.cooldown = 10;
+            obj_controller.menu = 1;
+            // obj_controller.managing=manag;
+            with (obj_controller) {
+                scr_ui_refresh()
+                update_general_manage_view();
+            }
+            with (obj_ground_mission) {
+                instance_destroy();
+            }
+            instance_destroy();
+            exit;
+        }
+        if (press == 3) {
+            // Return to ship, exit
+            scr_return_ship(obj_ini.ship[obj_ground_mission.ship_id], obj_ground_mission, obj_ground_mission.num);
+            var man_size, ship_id, comp, plan, i;
+            ship_id = 0;
+            man_size = 0;
+            comp = 0;
+            plan = 0;
+            ship_id = obj_ground_mission.ship_id;
+            obj_controller.menu = 0;
+            obj_controller.managing = 0;
+            obj_controller.cooldown = 10;
+            with (obj_ground_mission) {
+                instance_destroy();
+            }
+            instance_destroy();
+            exit;
+        }
+    }
 
 	if (image == "stc") {
 		if ((ma_co > 0) && (ma_id == 0)) {
@@ -912,18 +894,11 @@ try {
 			if (press == 2) {
 				scr_return_ship(obj_ground_mission.loc, obj_ground_mission, obj_ground_mission.num);
 				var man_size, ship_id, comp, plan, i;
-				i = 0;
 				ship_id = 0;
 				man_size = 0;
 				comp = 0;
 				plan = 0;
-				repeat (30) {
-					i += 1;
-					if (obj_ini.ship[i] == obj_ground_mission.loc) {
-						ship_id = i;
-					}
-				}
-				i = 0;
+				ship_id = array_get_index(obj_ini.ship, obj_ground_mission.loc);
 				obj_controller.menu = 0;
 				obj_controller.managing = 0;
 				obj_controller.cooldown = 10;
@@ -1583,28 +1558,17 @@ try {
 				}
 			}
 			if (obj_ini.fleet_type != ePlayerBase.home_world) {
-				scr_add_artifact("random", "", 4, obj_ini.ship[0], 501);
+				var last_artifact = scr_add_artifact("random", "", 4, obj_ini.ship[0], 501);
 			}
 			if (obj_ini.fleet_type == ePlayerBase.home_world) {
-				scr_add_artifact("random", "", 4, obj_ini.home_name, 2);
-			}
-			var i, last_artifact;
-			i = 0;
-			last_artifact = 0;
-			repeat (100) {
-				if (last_artifact == 0) {
-					i += 1;
-					if (obj_ini.artifact[i] == "") {
-						last_artifact = i - 1;
-					}
-				}
+				var last_artifact = scr_add_artifact("random", "", 4, obj_ini.home_name, 2);
 			}
 			option1 = "";
 			option2 = "";
 			option3 = "";
 			title = "Inquisition Mission Completed";
 			text = "Your ship sends over a boarding party, who retrieve the offered artifact- ";
-			text += " some form of " + string(obj_ini.artifact[last_artifact]) + ".  Once it is safely stowed away your ship is then ordered to fire.  The Inquisitor's own seems to hesitate an instant before banking away, but is quickly destroyed.";
+			text += $" some form of {obj_ini.artifact[last_artifact]}.  Once it is safely stowed away your ship is then ordered to fire.  The Inquisitor's own seems to hesitate an instant before banking away, but is quickly destroyed.";
 			image = "exploding_ship";
 			option1 = "";
 			option2 = "";
@@ -1771,28 +1735,17 @@ try {
 				}
 			}
 			if (obj_ini.fleet_type != ePlayerBase.home_world) {
-				scr_add_artifact("random", "", 4, obj_ini.ship[0], 501);
+				var last_artifact = scr_add_artifact("random", "", 4, obj_ini.ship[0], 501);
 			}
 			if (obj_ini.fleet_type == ePlayerBase.home_world) {
-				scr_add_artifact("random", "", 4, obj_ini.home_name, 2);
-			}
-			var i, last_artifact;
-			i = 0;
-			last_artifact = 0;
-			repeat (100) {
-				if (last_artifact == 0) {
-					i += 1;
-					if (obj_ini.artifact[i] == "") {
-						last_artifact = i - 1;
-					}
-				}
+				var last_artifact = scr_add_artifact("random", "", 4, obj_ini.home_name, 2);
 			}
 			option1 = "";
 			option2 = "";
 			option3 = "";
 			title = "Inquisition Mission Completed";
 			text = "Your ship sends over a boarding party, who retrieve the offered artifact- ";
-			text += " some form of " + string(obj_ini.artifact[last_artifact]) + $".  As promised {global.chapter_name} allow the Inquisitor to leave, hoping for the best.  What's the worst that could happen?";
+			text += $" some form of {obj_ini.artifact[last_artifact]}.  As promised {global.chapter_name} allow the Inquisitor to leave, hoping for the best.  What's the worst that could happen?";
 			image = "artifact_recovered";
 			option1 = "";
 			option2 = "";
@@ -1800,13 +1753,12 @@ try {
 			scr_event_log("", "Artifact Recovered from radical Inquisitor.");
 			scr_event_log("", "Inquisition Mission Completed: The radical Inquisitor has been purged.");
 
-			var v = 0, ev = 0;
-			repeat (99) {
-				v += 1;
-				if ((ev == 0) && (obj_controller.event[v] == "")) {
-					ev = v;
-				}
-			}
+            for (var i = 0; i < array_length(obj_controller.event); i++) {
+                if (obj_controller.event[i] == "") {
+                    var ev = i;
+                    break;
+                }
+            }
 			obj_controller.event[ev] = "inquisitor_spared1";
 			obj_controller.event_duration[ev] = floor(random_range(6, 18)) + 1;
 
@@ -1832,13 +1784,12 @@ try {
 
 			scr_event_log("", "Inquisition Mission Completed?: The radical Inquisitor has been allowed to flee in order to weaken the forces of Chaos, as they promised.");
 
-			var v = 0, ev = 0;
-			repeat (99) {
-				v += 1;
-				if ((ev == 0) && (obj_controller.event[v] == "")) {
-					ev = v;
-				}
-			}
+            for (var i = 0; i < array_length(obj_controller.event); i++) {
+                if (obj_controller.event[i] == "") {
+                    var ev = i;
+                    break;
+                }
+            }
 			obj_controller.event[ev] = "inquisitor_spared2";
 			obj_controller.event_duration[ev] = floor(random_range(6, 18)) + 1;
 

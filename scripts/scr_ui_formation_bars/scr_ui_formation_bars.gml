@@ -25,7 +25,7 @@ function scr_ui_formation_bars() {
         temp[ui_formations_data.te] = 0;
         temp[ui_formations_data.te + 100] = 0;
 
-        for (var ii = 1; ii <= 15; ii++) {
+        for (var ii = 1; ii <= 17; ii++) {
             if (ii == 1) and(bat_comm_for[_formatting] == bar) {
                 init_combat_bars(bar, ii, ui_formations_data, 2, 0, "HQ");
             }
@@ -70,8 +70,14 @@ function scr_ui_formation_bars() {
                 else if (ii == 14) and(bat_pred_for[_formatting] == bar) {
                     init_combat_bars(bar, ii, ui_formations_data, 2, 13, "Predator");
                 }
-                else if (ii == 15) and(bat_land_for[_formatting] == bar) {
+                else if (ii == 15) and(bat_landraid_for[_formatting] == bar) {
                     init_combat_bars(bar, ii, ui_formations_data, 2, 14, "Land Raider");
+                }
+                else if (ii == 16) and(bat_landspee_for[_formatting] == bar) {
+                    init_combat_bars(bar, ii, ui_formations_data, 2, 14, "Land Speeder");
+                }
+                else if (ii == 17) and(bat_whirl_for[_formatting] == bar) {
+                    init_combat_bars(bar, ii, ui_formations_data, 2, 14, "Whirlwind");
                 }
             }
 
@@ -93,7 +99,9 @@ function scr_ui_formation_bars() {
                 bat_drea_for[bar] = 5;
                 bat_rhin_for[bar] = 6;
                 bat_pred_for[bar] = 7;
-                bat_land_for[bar] = 7;
+                bat_landraid_for[bar] = 7;
+                bat_landspee_for[bar] = 4;
+                bat_whirl_for[bar] = 1;
                 bat_scou_for[bar] = 1;
                 bar_fix = 1;
             }

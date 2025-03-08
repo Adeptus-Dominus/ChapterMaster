@@ -14,8 +14,6 @@
   "For3D": false,
   "frames": [
     {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"ff8f3b8f-e6d3-4ab5-9964-7d942b49dc26",},
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"2f4b2d38-8373-4d71-a455-71ea8c45249a",},
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"9c2552f9-69bc-4dec-a5ab-213fbcbd06a7",},
     {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"dc91fe9c-4af9-4355-9a5b-8026131bffcb",},
   ],
   "gridX": 0,
@@ -46,7 +44,7 @@
     "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "eventStubScript": null,
     "eventToFunction": {},
-    "length": 4.0,
+    "length": 2.0,
     "lockOrigin": false,
     "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "playback": 1,
@@ -58,9 +56,7 @@
     "tracks": [
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
             {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"ff8f3b8f-e6d3-4ab5-9964-7d942b49dc26","path":"sprites/spr_weapon_crozarc/spr_weapon_crozarc.yy",},},},"Disabled":false,"id":"9eab9f74-15b4-456c-8c7c-ae59842340a8","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"2f4b2d38-8373-4d71-a455-71ea8c45249a","path":"sprites/spr_weapon_crozarc/spr_weapon_crozarc.yy",},},},"Disabled":false,"id":"02ac4d4d-74d4-4e5a-b353-dd5b5c969b17","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"9c2552f9-69bc-4dec-a5ab-213fbcbd06a7","path":"sprites/spr_weapon_crozarc/spr_weapon_crozarc.yy",},},},"Disabled":false,"id":"71416991-e500-47b6-8522-405dc699dc2c","IsCreationKey":false,"Key":2.0,"Length":1.0,"Stretch":false,},
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"dc91fe9c-4af9-4355-9a5b-8026131bffcb","path":"sprites/spr_weapon_crozarc/spr_weapon_crozarc.yy",},},},"Disabled":false,"id":"24773002-9e70-4bb6-8e4e-25af34700cd4","IsCreationKey":false,"Key":3.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"dc91fe9c-4af9-4355-9a5b-8026131bffcb","path":"sprites/spr_weapon_crozarc/spr_weapon_crozarc.yy",},},},"Disabled":false,"id":"24773002-9e70-4bb6-8e4e-25af34700cd4","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
           ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange": null,

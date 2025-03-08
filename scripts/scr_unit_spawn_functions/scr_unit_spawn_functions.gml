@@ -256,9 +256,10 @@ function scr_marine_game_spawn_constructions(){
 	random_update_armour();
 	
 	var old_guard = irandom(100);
-
+	var _chap_name = instance_exists(obj_creation) ? obj_creation.chapter_name : global.chapter_name;
+	
 	var bionic_count = choose(0,0,0,0,1,2,3);
-	if (global.chapter_name=="Iron Hands"){
+	if (_chap_name=="Iron Hands"){
 		bionic_count = choose(2,3,4,5);
 	}
 	switch(role()){
@@ -307,7 +308,7 @@ function scr_marine_game_spawn_constructions(){
 			} else{
 				bionic_count = choose(0,0,0,1,2)
 			}
-			if (global.chapter_name=="Ultramarines" || scr_has_adv("Enemy: Tyranids")){
+			if (_chap_name=="Ultramarines" || scr_has_adv("Enemy: Tyranids")){
 				if (choose(true,false)){
 					add_trait("tyrannic_vet");
 					bionic_count+=irandom(1);
@@ -320,7 +321,7 @@ function scr_marine_game_spawn_constructions(){
 			break;
 		case  obj_ini.role[100][4]:			
 		case  obj_ini.role[100][3]: //veterans
-			if (global.chapter_name=="Ultramarines" || scr_has_adv("Enemy: Tyranids")){
+			if (_chap_name=="Ultramarines" || scr_has_adv("Enemy: Tyranids")){
 				if (choose(true,false)){
 					add_trait("tyrannic_vet");
 					bionic_count+=irandom(1);
@@ -337,7 +338,7 @@ function scr_marine_game_spawn_constructions(){
 				bionic_count = choose(1,1,1,2,3)
 			}
 			if (
-                (global.chapter_name == "Iron Hands") ||
+                (_chap_name == "Iron Hands") ||
                 (obj_ini.progenitor = ePROGENITOR.IRON_HANDS) ||
                 scr_has_disadv("Tech-Heresy")
             ) {
@@ -439,20 +440,6 @@ function scr_marine_game_spawn_constructions(){
 	for(var i=0;i<bionic_count;i++){
 			add_bionics("none","standard",false);
 	}
-	if (irandom(3)==0){
-		body[$ "torso"][$ "purity_seal"] = [irandom(100),irandom(100),irandom(100),];
-	}
-	if (irandom(3)==0){
-		body[$ "left_arm"][$ "purity_seal"] = [irandom(100),irandom(100),irandom(100),];
-	}
-	if (irandom(3)==0){
-		body[$ "right_arm"][$ "purity_seal"] = [irandom(100),irandom(100),irandom(100),];
-	}	
-	if (irandom(3)==0){
-		body[$ "left_leg"][$ "purity_seal"] = [irandom(100),irandom(100),irandom(100),];
-	}
-	if (irandom(3)==0){
-		body[$ "right_leg"][$ "purity_seal"] = [irandom(100),irandom(100),irandom(100),];
-	}	
+	add_purity_seal_markers();	
 
 }

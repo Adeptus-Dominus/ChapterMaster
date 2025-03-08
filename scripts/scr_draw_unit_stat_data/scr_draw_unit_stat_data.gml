@@ -208,7 +208,7 @@ function scr_draw_unit_stat_data(manage=false){
 	draw_set_valign(fa_top);
 	draw_set_color(#50a076);
 
-		if (!obj_controller.view_squad && obj_controller.managing >0 && obj_controller.unit_bio){
+		if (!obj_controller.view_squad && obj_controller.unit_bio){
 			var unit_data_string = unit_profile_text();
 			tooltip_draw(unit_data_string, 925, [xx+23,yy+141],,,,,true);
 		}

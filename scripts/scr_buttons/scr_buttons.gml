@@ -51,7 +51,7 @@ function draw_unit_buttons(position, text, size_mod=[1.5,1.5],colour=c_gray,_hal
 
 
 //object containing draw_unit_buttons
-function UnitButtonObject() constructor{
+function UnitButtonObject(data = false) constructor{
 	x1 = 0;
 	y1 = 0;
 	w = 102;
@@ -68,7 +68,7 @@ function UnitButtonObject() constructor{
 
 	static update_loc = function(){
 		if (label != ""){
-			w = string_width(label)
+			w = string_width(label) + 10;
 		};
 		x2 = x1 + w;
 		y2 = y1 + h;		
@@ -80,7 +80,10 @@ function UnitButtonObject() constructor{
 			self[$ _updaters[i]] = data[$ _updaters[i]];
 		}
 		update_loc();
-	}	
+	}
+	if (data != false){
+		update(data);
+	}
 
 	update_loc();
 	static move = function(m_direction, with_gap=false, multiplier=1){
@@ -108,7 +111,7 @@ function UnitButtonObject() constructor{
 			tooltip_draw(tooltip);
 		}
 		if (allow_click){
-			var clicked = point_and_click(draw_unit_buttons([x1, y1, x2, y2], label, [1,1],color,,,alpha)) || keystroke;
+			var clicked = point_and_click(draw_unit_buttons(w > 0 ? [x1, y1, x2, y2] : [x1, y1] , label, [1,1],color,,,alpha)) || keystroke;
 			if (clicked){
 				if (is_callable(bind_method)){
 					bind_method();
@@ -199,11 +202,13 @@ function slider_bar() constructor{
 		}
 	}
 }
-function TextBarArea(XX,YY,Max_width = 400) constructor{
+function TextBarArea(XX,YY,Max_width = 400, requires_input = false) constructor{
 	allow_input=false;
+	self.requires_input = requires_input;
 	xx=XX;
 	yy=YY
 	max_width = Max_width;
+	draw_col = c_gray;
 	cooloff=0
     // Draw BG
     static draw = function(string_area){
@@ -218,11 +223,15 @@ function TextBarArea(XX,YY,Max_width = 400) constructor{
 	    //draw_sprite(spr_rock_bg,0,xx,yy);
 	    draw_set_font(fnt_40k_30b);
 	    draw_set_halign(fa_center);
-	    draw_set_color(c_gray);// 38144	
+	    draw_set_color(draw_col);// 38144	
 		var bar_wid=max_width,click_check, string_h;
 	    draw_set_alpha(0.25);
 	    if (string_area!=""){
 	    	bar_wid=max(max_width,string_width(string_hash_to_newline(string_area)));
+	    } else {
+	    	if (requires_input){
+	    		draw_set_color(c_red);
+	    	}
 	    }
 		string_h = string_height("LOL");
 		var rect = [xx-(bar_wid/2),yy,xx+(bar_wid/2),yy-8+string_h]
@@ -302,7 +311,7 @@ function multi_select(options_array, title)constructor{
 	y1 = 0;
 	x2 = 0;
 	y2 = 0;
-
+	on_change = false;
 	active_col = #009500;
 	innactive_col = c_gray;	
 	max_width = 0;
@@ -315,6 +324,7 @@ function multi_select(options_array, title)constructor{
 	}
 	static update = item_data_updater
 	static draw = function(){
+		var _change_method = is_callable(on_change);
 		draw_text(x1, y1, title);
 
 		var _prev_x = x1;
@@ -325,7 +335,11 @@ function multi_select(options_array, title)constructor{
 			_cur_opt.x1 = _prev_x;
 			_cur_opt.y1 = _prev_y;
 			_cur_opt.update()
-			_cur_opt.clicked();
+			if (_cur_opt.clicked()){
+				if (_change_method){
+					on_change();
+				}
+			}
 			_cur_opt.button_color = _cur_opt.active ? active_col: innactive_col;
 			_cur_opt.draw();
 			items_on_row++
@@ -627,6 +641,4 @@ function list_traveler(list, cur_val, move_up_coords, move_down_coords){
     }
     return _new_val;
 }
-
-
 

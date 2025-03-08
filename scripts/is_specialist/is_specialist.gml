@@ -1,27 +1,32 @@
+function active_roles(){
+	var _roles =  instance_exists(obj_creation) ?  obj_creation.role[100] : obj_ini.role[100];
+	return _roles;
+}
+
 function role_groups(group){
 	var role_list = [];
-	var roles = obj_ini.role[100];
+	var roles = active_roles();
 	switch (group){
 		case "lib":
 			role_list = [
-						string("Chief {0}",obj_ini.role[100,17]),
-						obj_ini.role[100,17], //librarian
+						string("Chief {0}",roles[17]),
+						roles[17], //librarian
 						"Codiciery",
 						"Lexicanum",
 			];
 			break;
 		case "trainee":
 			role_list = [
-				string("{0} Aspirant",obj_ini.role[100,17]),
-				string("{0} Aspirant",obj_ini.role[100,15]),  
-				string("{0} Aspirant",obj_ini.role[100,14]),
-				string("{0} Aspirant",obj_ini.role[100,16]),
+				string("{0} Aspirant",roles[17]),
+				string("{0} Aspirant",roles[15]),  
+				string("{0} Aspirant",roles[14]),
+				string("{0} Aspirant",roles[16]),
 			];
 			break;
 		case "heads":
 			role_list = [
 				"Master of Sanctity",
-				string("Chief {0}", obj_ini.role[100,17]),
+				string("Chief {0}", roles[17]),
 				"Forge Master", 
 				"Chapter Master", 
 				"Master of the Apothecarion"
@@ -29,49 +34,49 @@ function role_groups(group){
 			break;
 		case "veterans":
 			role_list = [
-				obj_ini.role[100,3],  //veterans
-				obj_ini.role[100,4],  //terminatore
-				obj_ini.role[100,19], //vet sergeant
-				obj_ini.role[100,2],  //honour guard
+				roles[3],  //veterans
+				roles[4],  //terminatore
+				roles[19], //vet sergeant
+				roles[2],  //honour guard
 			];
 			break;
 		case "rank_and_file":
 			role_list = [
-				obj_ini.role[100,8], //tactical marine
-				obj_ini.role[100,9], //devastator
-				obj_ini.role[100,10], //assualt
-				obj_ini.role[100,12], //scout
+				roles[8], //tactical marine
+				roles[9], //devastator
+				roles[10], //assualt
+				roles[12], //scout
 			];
 			break;
 
 		case "squad_leaders":
 			role_list = [
-				obj_ini.role[100][18], //sergeant
-				obj_ini.role[100][19],  //vet sergeant
+				roles[18], //sergeant
+				roles[19],  //vet sergeant
 			]
 			break;
 		case "command":
 			role_list = [
-	            obj_ini.role[100][5],
-	            obj_ini.role[100][14],
-	            obj_ini.role[100][15],
-	            obj_ini.role[100][16],
-	            obj_ini.role[100][17],
+	            roles[5],
+	            roles[14],
+	            roles[15],
+	            roles[16],
+	            roles[17],
 	            "Codiciery",
 	            "Lexicanum",
-	            obj_ini.role[100][11],
-	            obj_ini.role[100][7],
+	            roles[11],
+	            roles[7],
 	        ]; 
 	        break;
 	    case "dreadnoughts":
 	        role_list = [
-				obj_ini.role[100][6],//dreadnought
-				string("Venerable {0}",obj_ini.role[100][6]),
+				roles[6],//dreadnought
+				string("Venerable {0}",roles[6]),
 			];
 			break;
 		case "forge":
 	        role_list = [
-				obj_ini.role[100][16],//techmarine
+				roles[16],//techmarine
 				"Forge Master",
 				"Techpriest"
 			];
@@ -84,7 +89,7 @@ function role_groups(group){
 				roles[eROLE.Captain],								
 				roles[eROLE.Terminator],				
 				roles[eROLE.Veteran],
-				 obj_ini.role[100][11],			
+				 roles[11],			
 			];
 			break;
 	}
@@ -95,31 +100,33 @@ function is_specialist(unit_role, type="standard", include_trainee=false) {
 
 	// unit_role
 	//TODO need to make all string roles not strings but array references
+	var roles = instance_exists(obj_creation) ?  obj_creation.role[100] : obj_ini.role[100];
+	var _chap_name = instance_exists(obj_creation) ? obj_creation.chapter_name : global.chapter_name;
 	switch(type){
 		case "standard":
 			specialists = ["Chapter Master",
 							"Forge Master",
 							"Master of Sanctity",
 							"Master of the Apothecarion",
-							string("Chief {0}",obj_ini.role[100][17]),//chief librarian
-							obj_ini.role[100][5],//captain
-							obj_ini.role[100][6],//dreadnought
-							string("Venerable {0}",obj_ini.role[100][6]),
-							obj_ini.role[100][7],//company_champion
-							obj_ini.role[100][14],//chaplain
-							obj_ini.role[100][15],//apothecary
-							obj_ini.role[100][16],//techmarine
-							obj_ini.role[100][17], //librarian
+							string("Chief {0}",roles[17]),//chief librarian
+							roles[5],//captain
+							roles[6],//dreadnought
+							string("Venerable {0}",roles[6]),
+							roles[7],//company_champion
+							roles[14],//chaplain
+							roles[15],//apothecary
+							roles[16],//techmarine
+							roles[17], //librarian
 							"Codiciery",
 							"Lexicanum",
-							obj_ini.role[100,2],//honour guard
+							roles[2],//honour guard
 			];
 			if (include_trainee){
 				array_push(specialists, 
-							 string("{0} Aspirant",obj_ini.role[100][17]),
-							 string("{0} Aspirant",obj_ini.role[100][15]),  
-							 string("{0} Aspirant",obj_ini.role[100][14]),
-							 string("{0} Aspirant",obj_ini.role[100][16]),
+							 string("{0} Aspirant",roles[17]),
+							 string("{0} Aspirant",roles[15]),  
+							 string("{0} Aspirant",roles[14]),
+							 string("{0} Aspirant",roles[16]),
 							 );
 			}
 			break;
@@ -127,37 +134,37 @@ function is_specialist(unit_role, type="standard", include_trainee=false) {
 		case "libs":
 			specialists = role_groups("lib");
 			if (include_trainee){
-				array_push(specialists,  string("{0} Aspirant",obj_ini.role[100][17]));
+				array_push(specialists,  string("{0} Aspirant",roles[17]));
 			}
 			break;
 		case "forge":
 			specialists = role_groups("forge");
 			if (include_trainee){
-				array_push(specialists,  string("{0} Aspirant",obj_ini.role[100][16]));
+				array_push(specialists,  string("{0} Aspirant",roles[16]));
 			}			
 			break;
 		case "chap":
 			specialists = [
-						obj_ini.role[100][14],//chaplain
+						roles[14],//chaplain
 						"Master of Sanctity",
 			];
 			if (include_trainee){
-				array_push(specialists,  string("{0} Aspirant",obj_ini.role[100][14]));
+				array_push(specialists,  string("{0} Aspirant",roles[14]));
 			}
-			if (global.chapter_name == "Iron Hands"){
-				array_push(specialists, obj_ini.role[100][16]);
+			if (_chap_name == "Iron Hands"){
+				array_push(specialists, roles[16]);
 			}	
 			break;
 		case "apoth":
 			specialists = [
-						obj_ini.role[100][15],
+						roles[15],
 						"Master of the Apothecarion",
 			];
 			if (include_trainee){
-				array_push(specialists,  string("{0} Aspirant",obj_ini.role[100][15]));
+				array_push(specialists,  string("{0} Aspirant",roles[15]));
 			}	
-			if (global.chapter_name == "Space Wolves"){
-				array_push(specialists, obj_ini.role[100][14]);
+			if (_chap_name == "Space Wolves"){
+				array_push(specialists, roles[14]);
 			}		
 			break;
 		case "heads":

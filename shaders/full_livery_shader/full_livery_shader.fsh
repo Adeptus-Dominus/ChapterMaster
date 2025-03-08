@@ -27,20 +27,24 @@ uniform vec3 right_backpack;
 uniform vec3 left_backpack;
 uniform vec3 company_marks;
 uniform vec3 robes_colour_replace;
+uniform vec3 weapon_primary;
+uniform vec3 weapon_secondary;
 
 varying vec2 v_vTexcoord;
 varying vec4 v_vColour;
 
 
 vec3 light_or_dark(vec3 m_colour, float shade){
-  return vec3((m_colour.r * shade) + 0.01, m_colour.g * shade, m_colour.b * shade);
+  return vec3((m_colour.r * shade) + 0.001, m_colour.g * shade, m_colour.b * shade);
 }
 
 void main()
 {
     vec4 col = texture2D(gm_BaseTexture, v_vTexcoord);
+    vec4 col_orig = texture2D(gm_BaseTexture, v_vTexcoord);
    if (col.rgb == vec3(0.0,0.0, 128.0/255.0).rgb){
-     col.rgb = left_head.rgb;
+
+      col.rgb = left_head.rgb;
    };
     if (col.rgb == vec3(181.0/255.0,0.0, 255.0/255.0).rgb){
         col.rgb = right_backpack.rgb;
@@ -114,6 +118,35 @@ void main()
     if (col.rgb == vec3(128.0/255.0,128.0/255.0,0.0)){
       col.rgb = company_marks.rgb;
     };
+    if (col.rgb == vec3(0.0,1.0,1.0)){
+      col.rgb = weapon_primary.rgb;
+    };
+    if (col.rgb == vec3(1.0,0.0,1.0)){
+      col.rgb = weapon_secondary.rgb;
+    };
+    if (col_orig.rgb != col.rgb){
+      if (col_orig.a==128.0/255.0){
+         col.rgb = light_or_dark(col.rgb, 1.2);
+         col.a = 1.0;
+      }
+
+      if (col_orig.a==60.0/255.0){
+         col.rgb = light_or_dark(col.rgb, 1.4);
+         col.a = 1.0;
+      }         
+
+
+      if (col_orig.a==215.0/255.0){
+         col.rgb = light_or_dark(col.rgb,0.6);
+         col.a = 1.0;
+      }         
+
+      if (col_orig.a==160.0/255.0){
+         col.rgb = light_or_dark(col.rgb, 0.8);
+         col.a = 1.0;
+      }         
+
+    }
 
      vec3 robes_colour_base = vec3(201.0 / 255.0, 178.0 / 255.0, 147.0 / 255.0);
      vec3 robes_highlight = vec3(230.0 / 255.0, 203.0 / 255.0, 168.0 / 255.0);

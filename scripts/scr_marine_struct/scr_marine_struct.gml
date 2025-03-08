@@ -327,6 +327,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		planet_location=2;
 	}
 	ship_location=-1;
+    last_ship = {uid : "", name : ""};
 	religion="none";
 	master_loyalty = 0;
 	job="none";
@@ -632,9 +633,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			}
 	};
 
-	static has_trait = function(wanted_trait){
-		return array_contains(traits, wanted_trait);
-	}
+	static has_trait = marine_has_trait;
 
 	static add_feat = function(feat){
 		feat_data = {};
@@ -700,63 +699,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			}
 		}
 	};
-	body = {
-		"left_leg":{
-			leg_variants: irandom(100),
-		}, 
-		"right_leg":{
-			leg_variants: irandom(100),
-		}, 
-		"torso":{
-			cloth:{
-				variation:irandom(100),
-			},
-			tabbard_variation:irandom(100),
-			armour_choice :  irandom(100),
-			variation: irandom(10),
-			backpack_variation: irandom(100),
-			backpack_decoration_variation : irandom(100),
-			backpack_augment_variation : irandom(100),
-			thorax_variation : irandom(100),
-			chest_variation : irandom(100),
-			belt_variation : irandom(100),
-			chest_fastening : irandom(100),
-		}, 
-		"left_arm":{
-			trim_variation : irandom(100),
-			personal_livery : irandom(100),
-			pad_variation : irandom(100),
-			variation : irandom(100),
-		},
-		"right_arm":{
-			trim_variation : irandom(100),
-			personal_livery : irandom(100),
-			pad_variation : irandom(100),
-			variation : irandom(100),			
-		}, 
-		"left_eye":{
-			variant : irandom(100),
-		}, 
-		"right_eye":{
-			variant : irandom(100),
-		},
-		"throat":{
-			variant : irandom(100),
-		}, 
-		"jaw":{
-			variant: irandom(100),
-		},
-		"head":{
-			variation:irandom(100),
-			crest_variation : irandom(100),
-			forehead_variation : irandom(100),
-			crown_variation : irandom(100),
-		},
-		"cloak":{
-			type: "none",
-			variant: irandom(100)
-		},
-	}; //body parts list can be extended as much as people want
+	body = generate_marine_body();
+//body parts list can be extended as much as people want
 
 	static alter_body = function(body_slot, body_item_key, new_body_data, overwrite=true){//overwrite means it will replace any existing data
 		if (struct_exists(body, body_slot)){
@@ -768,35 +712,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		}
 	}
 
-	static get_body_data = function(body_item_key,body_slot="none"){
-		if (body_slot!="none"){
-			if (struct_exists(body, body_slot)){
-				if (struct_exists(body[$ body_slot], body_item_key)){
-					return body[$ body_slot][$ body_item_key]
-				} else {
-					return false;
-				}
-			}else {
-				return "invalid body area";
-			}
-		} else {
-			var item_key_map = {};
-			var body_part_area_keys
-			var _body_parts = ARR_body_parts;
-			for (var i=0;i<array_length(_body_parts);i++){//search all body parts
-				body_area = body[$ _body_parts[i]]
-				body_part_area_keys=struct_get_names(body_area);
-				for (var b=0;b<array_length(body_part_area_keys);b++){
-					if (body_part_area_keys[b]==body_item_key){
-						item_key_map[$ _body_parts[i]] = body_area[$ body_item_key]
-					}
-				}
-				
-			}
-			return item_key_map;
-		}
-		return false;
-	}
+	static get_body_data = scr_get_body_data;
 
 	if (struct_exists(self,"start_gear")){
 		if (base_group!="marine"){
@@ -1676,6 +1592,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			 var current_location = marine_location();
 			 var system = current_location[2];
 			 var target_ship_location= obj_ini.ship_location[ship];
+			 set_last_ship();
 			 if (assignment()!="none") then return "on assignment";
 			 if (target_ship_location == "home" ){target_ship_location = obj_ini.home_name;}
 			
@@ -1704,8 +1621,22 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			 }
 		};
 
+
+	static set_last_ship = function(){
+		if (ship_location>-1){
+			last_ship.uid = obj_ini.ship_uid[ship_location];
+	        last_ship.name = obj_ini.ship[ship_location];	
+	    } else {
+	    	last_ship = {
+	    		uid : "",
+	    		name : ""
+	    	}
+	    }
+    }
+
 	static unload = function(planet_number, system){
 		var current_location = marine_location();
+		set_last_ship();
 		if (current_location[0]==location_types.ship){
 			if (!array_contains(["Warp", "Terra", "Mechanicus Vessel", "Lost"],current_location[2]) && current_location[2]==system.name){
 				obj_ini.loc[company][marine_number]=obj_ini.ship_location[current_location[1]];

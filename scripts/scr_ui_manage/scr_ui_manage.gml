@@ -1,3 +1,73 @@
+function load_marines_into_ship(system, ship, units, reload=false) {
+    var _load_into_ship = function(system, ship, units, size, loop, reload) {
+        var load_from_star = star_by_name(system);
+        if (is_struct(units[loop])) {
+            units[loop].load_marine(sh_ide[ship], load_from_star);
+            ma_loc[loop] = sh_loc[ship];
+            ma_lid[loop] = sh_ide[ship];
+            ma_wid[loop] = 0;
+        } else if (is_array(units[loop]) && ma_loc[loop] == system && sh_loc[ship] == system) {
+            var vehicle = units[loop];
+
+            var start_ship = obj_ini.veh_lid[vehicle[0]][vehicle[1]];
+            var start_planet = obj_ini.veh_wid[vehicle[0]][vehicle[1]];
+            ma_loc[loop] = sh_loc[ship];
+            ma_lid[loop] = sh_ide[ship];
+            ma_wid[loop] = 0;
+            obj_ini.veh_loc[vehicle[0]][vehicle[1]] = sh_name[ship];
+            obj_ini.veh_lid[vehicle[0]][vehicle[1]] = sh_ide[ship];
+            obj_ini.veh_wid[vehicle[0]][vehicle[1]] = 0;
+            obj_ini.veh_uid[vehicle[0]][vehicle[1]] = sh_uid[ship];
+            obj_ini.ship_carrying[sh_ide[ship]] += size;
+
+            if (start_planet) {
+                load_from_star.p_player[start_planet] -= size;
+            } else if (start_ship) {
+                obj_ini.ship_carrying[start_ship] -= size;
+            }
+
+            set_vehicle_last_ship(vehicle, true);
+        }
+    }
+
+    for (var q = 0; q < array_length(units); q++) {
+        if (man_sel[q] == 1) {
+            var _unit_ship_id
+            if (!reload) {
+                _unit_ship_id = ship;
+            } else {
+                if (!is_array(units[q])) {
+                    _unit_ship_id = array_get_index(sh_uid, units[q].last_ship.uid);
+                } else {
+                    _unit_ship_id = array_get_index(sh_uid, obj_ini.last_ship[units[q][0]][units[q][1]].uid);
+                }
+            }
+
+            if (!is_array(units[q])) {
+                var _unit_size = man_size;
+            } else {
+                var _vehic_size = scr_unit_size("", ma_role[q], true);
+                var _unit_size = _vehic_size;
+            }
+
+            if (_unit_ship_id != undefined && ((sh_cargo[_unit_ship_id] + _unit_size) <= sh_cargo_max[_unit_ship_id])) {
+                _load_into_ship(system, _unit_ship_id, units, _unit_size, q, reload)
+                man_sel[q] = 0;
+            }
+        }
+    }
+    system = "";
+    man_size = 0;
+    man_current = 0;
+    if (reload == false) {
+        menu = 1;
+    }
+    cooldown = 8;
+    selecting_ship = -1;
+    if (managing == -1 && obj_controller.selection_data.purpose != "Ship Management") {
+        update_garrison_manage();
+    }
+}
 
 function scr_ui_manage() {
 	if (combat!=0) then exit;
@@ -181,29 +251,20 @@ function scr_ui_manage() {
 			var x6=x5+string_width("Company View")+8;
 			var y6=y5+string_height("Company View")+2;
 			button_coords = draw_unit_buttons([x5, y5, x6, y6], stat_tool_tip_text,[1,1],#50a076);
-			if (managing>0 && managing<11){
-				array_push(tooltip_drawing, ["Click here or press S to toggle Squad View.", [x5,y5,x6,y6]]);
-				if ((point_in_rectangle(mouse_x, mouse_y,x5,y5,x6,y6) && mouse_check_button_pressed(mb_left)) || (keyboard_check_pressed(ord("S")) && !text_bar)){
-					obj_controller.view_squad = !obj_controller.view_squad;
-					if (stat_tool_tip_text=="Squad View"){
-						obj_controller.company_data = new CompanyStruct(obj_controller.managing);
-						obj_controller.unit_profile = true;
-					} else {
-						obj_controller.unit_profile = false;
-					}
-				}	
-			} else{
-				draw_set_alpha(0.5);
-				draw_set_color(c_black);
-				draw_rectangle(x5, y5, x6, y6, 0);
-				draw_set_alpha(1);
-			}
-			if (!view_squad){
-				if (!unit_profile){
-					stat_tool_tip_text = "Show Profile";
+			array_push(tooltip_drawing, ["Click here or press S to toggle Squad View.", [x5,y5,x6,y6]]);
+			if ( point_and_click([x5,y5,x6,y6]) || (keyboard_check_pressed(ord("S")) && !text_bar)){
+				obj_controller.view_squad = !obj_controller.view_squad;
+				if (stat_tool_tip_text=="Squad View"){
+					new_company_struct();
+					obj_controller.unit_profile = true;
 				} else {
-					stat_tool_tip_text = "Hide Profile"; 
+					obj_controller.unit_profile = false;
 				}
+			}	
+
+			if (!view_squad){
+				stat_tool_tip_text = !unit_profile  ?  "Show Profile" : "Hide Profile";
+
 				x5=x6+4;
 				x6=x5+string_width("Show Profile")+8;
 				array_push(tooltip_drawing, ["Click here or press P to show unit profile.", [x5,y5,x6,y6]]);
@@ -798,10 +859,11 @@ function scr_ui_manage() {
 				draw_set_font(fnt_40k_14b);
 				draw_set_color(#50a076);
 				var button = new UnitButtonObject();
-				
-				button.x1 = right_ui_block.x1+26;
+
+                button.h = 15;
+				button.x1 = right_ui_block.x1+1;
 				button.y1 = right_ui_block.y2-6-30;
-				button.x2 = button.x1 + button.w;
+				button.x2 = button.x1 + 128;
 				button.y2 = button.y1 + button.h;
 				// Load/Unload to ship button
 				button.label = "Load";
@@ -818,14 +880,38 @@ function scr_ui_manage() {
 					} else if (sel_loading!=-1){
 						button.label = "Unload";
 						if (button.draw()){
-							unload_selection();   // Unload - ask for planet confirmation					
-						}				
+							unload_selection();   // Unload - ask for planet confirmation
+						}
 					}
 				} else {
 					button.alpha = 0.5;
 					button.draw(false);
 				}
 
+				button.move("down", true);
+
+                button.label = "Reload";
+                //button.keystroke = (keyboard_check(vk_shift) && (keyboard_check_pressed(ord("F"))));
+                if (instance_exists(cn)) and (is_struct(temp[120])) {
+                    button.tooltip = $"{temp[120].last_ship.name}"//Press Shift F";
+                }
+                reload_possible = man_size>0 && sel_loading==-1;
+                if (reload_possible) {
+                    button.alpha = 1;
+                    if (button.draw()) {
+                        scr_company_load(selecting_location)
+                        load_marines_into_ship(selecting_location, sh_ide, display_unit, true)
+                    }
+                } else {
+                    button.alpha = 0.5;
+                    button.draw(false);
+                }
+
+                button.h = 30;
+				button.x1 = right_ui_block.x1+26;
+				button.y1 = right_ui_block.y2-6-30;
+				button.x2 = button.x1 + button.w;
+				button.y2 = button.y1 + button.h;
 				button.move("right", true);
 
 				// // Re equip button
@@ -1210,57 +1296,7 @@ function scr_ui_manage() {
                 draw_text_transformed(xx + 580, yy + 66, string_hash_to_newline(string(temp3)), 1, 1, 0);
                 draw_text_transformed(xx + 730, yy + 66, string_hash_to_newline(string(temp4)), 1, 1, 0);
                 if (point_and_click(main_rect)) {
-                    if ((sh_cargo[sel] + man_size) <= sh_cargo_max[sel]) {
-
-                        var load_from_star = star_by_name(selecting_location);
-                        var onceh = 0;
-                        stop = 0;
-                        for (var q = 0; q < array_length(display_unit); q++) {
-                            if (man_sel[q] == 1) {
-                                if (is_struct(display_unit[q])) {
-                                    unit = display_unit[q];
-                                    unit.load_marine(sh_ide[sel], load_from_star);
-                                    ma_loc[q] = sh_loc[sel];
-                                    ma_lid[q] = sh_ide[sel];
-                                    ma_wid[q] = 0;
-                                }
-                                else if (is_array(display_unit[q]) && ma_loc[q] == selecting_location && sh_loc[sel] == selecting_location) {
-                                    var vehicle = display_unit[q];
-                                    var vehic_size = scr_unit_size("", ma_role[q], true);
-
-                                    if ((sh_cargo[sel] + vehic_size) <= sh_cargo_max[sel] && man_sel[q] != 0) {
-                                        var start_ship = obj_ini.veh_lid[vehicle[0]][vehicle[1]];
-                                        var start_planet = obj_ini.veh_wid[vehicle[0]][vehicle[1]];
-                                        ma_loc[q] = sh_loc[sel];
-                                        ma_lid[q] = sh_ide[sel];
-                                        ma_wid[q] = 0;
-                                        obj_ini.veh_loc[vehicle[0]][vehicle[1]] = sh_name[sel];
-                                        obj_ini.veh_lid[vehicle[0]][vehicle[1]] = sh_ide[sel];
-                                        obj_ini.veh_wid[vehicle[0]][vehicle[1]] = 0;
-                                        obj_ini.veh_uid[vehicle[0]][vehicle[1]] = sh_uid[sel];
-                                        obj_ini.ship_carrying[sh_ide[sel]] += vehic_size;
-                                        if (start_planet) {
-                                            load_from_star.p_player[start_planet] -= vehic_size;
-                                        } else if (start_ship) {
-                                            obj_ini.ship_carrying[start_ship] -= vehic_size;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        selecting_location = "";
-                        man_size = 0;
-                        man_current = 0;
-                        menu = 1;
-                        cooldown = 8;
-                        selecting_ship = -1;
-                        for (var k = 0; k < array_length(display_unit); k++) {
-                            man_sel[k] = 0;
-                        }
-                    }
-                    if (managing == -1) {
-                        update_garrison_manage();
-                    }
+                    load_marines_into_ship(selecting_location, sel, display_unit)
                 }
                 yy += 20;
             }

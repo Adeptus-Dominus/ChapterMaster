@@ -328,6 +328,7 @@ function scr_load(save_part, save_id) {
 
 	                    obj_ini.veh_hp[coh,mah]=ini_read_real("Veh","hp"+string(coh)+"."+string(mah),0);
 	                    obj_ini.veh_chaos[coh,mah]=ini_read_real("Veh","cha"+string(coh)+"."+string(mah),0);
+	                    obj_ini.last_ship[coh,mah]=return_json_from_ini("Veh","last_ship"+string(coh)+"."+string(mah),{uid : "", name : ""});
 	                    // ini_write_real("Veh","pil"+string(coh)+"."+string(mah),obj_ini.veh_pilots[coh,mah]);
 	                // }
 	                if (coh=1) and (mah=1) then good=1;

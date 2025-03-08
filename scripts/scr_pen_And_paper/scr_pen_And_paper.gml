@@ -111,10 +111,10 @@ function print_stat_diffs(diffs){
 	return _diff_string;
 }
 
-function d100_roll(luck_edit=true){
+function d100_roll(luck_edit=true, luck_mod=10){
 	var _roll = irandom_range(1,100)
 	if (scr_has_disadv("Shitty Luck")){
-		_roll = min(1,_roll-irandom(10))
+		_roll = max(1,_roll-irandom(luck_mod))
 	}
 	return _roll;
 }

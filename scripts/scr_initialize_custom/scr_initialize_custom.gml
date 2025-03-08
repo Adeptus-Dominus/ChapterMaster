@@ -1997,115 +1997,83 @@ function scr_initialize_custom() {
 	}
 	if (scr_has_adv("Lightning Warriors")) {
 		variable_struct_set(st, "bikers", [
-			[roles.tactical, {
+			[roles.assault, {
 				"max": 9,
 				"min": 4,
 				"loadout": { //tactical marine
 						"required": {
-						"wep1": [wep1[100, 8], 6],
-						"wep2": [wep2[100, 8], 6],
+						"wep1": ["", max],
+						"wep2": ["Chainsword", max],
 						"mobi": ["Bike", max]
-					},
-					"option": {
-						"wep1": [
-							[
-								weapon_lists.special_weapons, 3
-							],
-						],
-						"wep2": [
-							[
-								weapon_lists.melee_weapons, 3
-							],
-						],
 					}
 				},
-				"role": $"{roles.tactical} Biker"
+				"role": $"Biker"
 			}],
 			[roles.sergeant, {
 				"max": 1,
 				"min": 1,
 				"loadout": { //sergeant
 					"required": {
-						"wep1": ["", 0],
-						"wep2": ["Chainsword", 1],
+						"wep1": ["", max],
+						"wep2": ["Chainsword", max],
 						"mobi": ["Bike", 1]
-					},
-					"option": {
-						"wep1": [
-							[
-								weapon_lists.pistols, 1
-							],
-						],
-						"wep2": [
-							[
-								weapon_lists.melee_weapons, 1
-							],
-						],
 					}
 				},
-				"role": $"{roles.tactical} Bike {roles.sergeant}"
+				"role": $"Biker {roles.sergeant}"
 			}, ],
 			["type_data", {
-				"display_data": $"{roles.tactical} Bike {squad_name}",
+				"display_data": $"Bike {squad_name}",
 				"class":["bike"],
-				"formation_options": ["tactical", "assault", "devastator", "scout"],
+				"formation_options": ["assault", "tactical"],
 			}]
 		])
 	}
 	if (scr_has_adv("Boarders")) {
 		variable_struct_set(st, "breachers", [
-			[roles.assault, {
+			[roles.tactical, {
 				"max": 9,
 				"min": 4,
-				"loadout": { //assault breacher marine
+				"loadout": { //tactical breacher marine
 					"required": {
-						"wep1":["Chainaxe", 4],
+						"wep1":[wep1[100, 8], 7],
 						"wep2":["Boarding Shield", max],
 						"armour":["MK3 Iron Armour", max],
-						"gear":["Plasma Bomb", 2],
+						"gear":["Plasma Bomb", max],
 						"mobi":["", max]
 					},
 					"option": {
 						"wep1": [
 							[
-								["Storm Bolter", "Combiflamer", "Meltagun"], 3,
+								["Flamer", "Grav-Gun", "Meltagun", "Lascutter"], 2,
 							],
-							[
-								["Power Axe", "Power Fist"], 2
-							]
-							
 						]
 								}
 				},
-				"role": $"{roles.assault} Breacher"
+				"role": $"Breacher"
 			}],
 			[roles.sergeant, {
 				"max": 1,
 				"min": 1,
 				"loadout": { //sergeant 
 					"required": {
-					"armour":["MK3 Iron Armour", 1],
-					"mobi": ["",1],
-					"gear": ["Plasma Bomb", 1]
+						"wep2":["Boarding Shield", max],
+						"armour":["MK3 Iron Armour", max],
+						"mobi": ["", max],
+						"gear": ["Plasma Bomb", max]
 					},
 					"option": {
 						"wep1": [
 							[
-								["Power Sword", "Power Axe", "Power Fist", "Thunder Hammer", "Chainsword"], 1
+								["Bolter", "Bolter", "Bolter", "Combiflamer"], 1
 							]
 						],
-						"wep2": [
-							[
-								["Boarding Shield", "Storm Bolter", "Meltagun"], 1
-							]
-						]
 					}
 				},
-				"role": $"{roles.assault} Breacher {roles.sergeant}"
+				"role": $"Breacher {roles.sergeant}"
 			}, ],
 			["type_data", {
-				"display_data": $"{roles.assault} Breacher {squad_name}",
-				"formation_options": ["tactical", "assault", "devastator", "scout"],
+				"display_data": $"Breacher {squad_name}",
+				"formation_options": ["tactical"],
 			}]
 		])
 		variable_struct_set(st,"assault_squad", [
@@ -2157,7 +2125,7 @@ function scr_initialize_custom() {
 			}],
 			["type_data", {
 				"display_data": $"{roles.assault} {squad_name}",
-				"formation_options": ["tactical", "assault", "devastator", "scout"],
+				"formation_options": ["assault"],
 			}]
 		])
 	}
