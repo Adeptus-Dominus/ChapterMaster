@@ -3,7 +3,7 @@ if (last_turn_check == obj_controller.turn){
     exit;
 }
 var _same_navy = navy == other.navy;
-if (other.owner==self.owner){
+if (other.owner==self.owner && _same_navy){
     if !((action_x=other.action_x) and (action_y=other.action_y)) then exit;
 
 
