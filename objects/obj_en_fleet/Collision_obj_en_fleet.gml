@@ -1,5 +1,8 @@
 
-if (other.owner=self.owner){
+if (last_turn_check == obj_controller.turn){
+    exit;
+}
+if (other.owner==self.owner){
     if !((action_x=other.action_x) and (action_y=other.action_y)) then exit;
 
 
@@ -20,5 +23,6 @@ if (other.owner=self.owner){
         }
     }
 }
+last_turn_check = obj_controller.turn;
 
 
