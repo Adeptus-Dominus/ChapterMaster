@@ -110,7 +110,7 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 			}
 		}
 
-	} else if (weapon_name == "Hammer of Wrath") {
+	} else if (weapon_name == "Hammer of Wrath" || weapon_name == "Hammer of Wrath(M)") {
 		flavoured = true;
 		if (!character_shot) {
 			if (number_of_shots < 20) {
