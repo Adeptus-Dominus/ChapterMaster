@@ -184,3 +184,21 @@ function roll_5d10(target_high = true) {
 
     return _roll;
 }
+
+function roll_2d50(target_high = true) {
+	var _roll = 0;
+
+	repeat(2) {
+		_roll += irandom_range(1, 50);
+
+		if (scr_has_disadv("Shitty Luck")){
+			if (target_high && _roll > 50) {
+				_roll = irandom_range(1, 50);
+			} else if (_roll < 51) {
+				_roll = irandom_range(1, 50);
+			}
+		}
+	}
+
+    return _roll;
+}

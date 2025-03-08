@@ -319,19 +319,26 @@ if (menu==1 && (managing>0 || managing<0)){
             //if (string_count("&",temp[106])>0) then temp[106]=clean_tags(temp[106]);
             // Experience
             temp[113]=string(floor(unit.experience));
-            // Bonuses
-            temp[119]="";
-            if (string_length(unit.specials())>0){
-            //if (string_count("$",unit.specials())>0) then temp[119]="Born Leader Bonus";
-            //if (string_count("@",unit.specials())>0){
-                //temp[119]="Champion Bonus";
-                //melee_attack=melee_attack*1.15;ranged_attack=ranged_attack*1.15;
-            }
-            if (string_count("0",unit.specials())>0){
-                temp[119]="PSYKER ("+string_upper(string(obj_ini.psy_powers))+"): ";
-                var _power_count = string_count("|",unit.specials());
-                temp[119]+=string(_power_count);
-                temp[119]+=(_power_count = 1) ? " Power known." : " Powers known.";
+            // Psyker things
+            temp[119] = "";
+            temp[122] = "";
+            var _psy_powers_known = unit.powers_known;
+			var _psy_powers_count = array_length(_psy_powers_known);
+            if (_psy_powers_count > 0){
+                var _psy_discipline = unit.psy_discipline();
+                var _psy_discipline_name = get_discipline_data(_psy_discipline, "name");
+                temp[119]=$"Psyker: {_psy_discipline_name} {_psy_powers_count}";
+
+				var _tooltip = "";
+				for (var i = 0; i < _psy_powers_count; i++) {
+					_tooltip += get_power_data(_psy_powers_known[i], "name");
+					if (i < _psy_powers_count - 1) {
+						_tooltip += ", ";
+					} else {
+						_tooltip += ".";
+					}
+				}
+                temp[122] = _tooltip;
             }
             // Corruption
             if (obj_controller.chaos_rating>0) and (temp[119]!="") then temp[119]+="#"+string(max(0,unit.corruption()))+"% Corruption.";
