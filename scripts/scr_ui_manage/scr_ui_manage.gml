@@ -553,7 +553,19 @@ function scr_ui_manage() {
 		        array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]);
 	    	}
 
-	        if (cn.temp[119]!="") then draw_text_outline(x_left,yy+488,cn.temp[119]);
+			var _psy_powers_known = selected_unit.powers_known;
+			var _psy_powers_count = array_length(_psy_powers_known);
+	        if (cn.temp[119] != "") {
+				var_text= string_hash_to_newline(cn.temp[119]);
+				tooltip_text = cn.temp[122]
+	        	x1 = x_left;
+	        	y1 = yy+488;
+	        	x2 = x1+string_width(var_text);
+	        	y2 = y1+string_width(var_text);	  
+	        	draw_text_outline(x1,y1,var_text);
+	        	array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]);
+	        }
+
 
 		// Right side of the screen
 		//draw_set_halign(fa_right);

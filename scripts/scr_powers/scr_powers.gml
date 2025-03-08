@@ -166,46 +166,38 @@ function power_condition_check(condition, value) {
 /// @mixin
 function player_select_powers() {
     if (race[100, 17] != 0) {
-        var _powers = PSY_DISCIPLINES_STARTING;
-        var _disp_index = array_get_index(_powers, discipline);
-        if (_disp_index == -1) {
-            discipline = _powers[0];
-            _disp_index = 0;
+        var _starting_powers = PSY_DISCIPLINES_STARTING;
+        var _discipline_index = array_get_index(_starting_powers, discipline);
+        if (_discipline_index == -1) {
+            discipline = _starting_powers[0];
+            _discipline_index = 0;
         }
 
-        draw_text_transformed(460, 665, "Psychic Discipline", 0.6, 0.6, 0);
-        if (scr_hit(445, 665, 620, 690)) {
-            tooltip = "Psychic Discipline";
+        draw_set_halign(fa_left);
+        var _title_01 = "Psychic Discipline";
+        draw_text_transformed(440, 660, _title_01, 0.6, 0.6, 0);
+        if (scr_hit(440, 660, 440 + string_width(_title_01) * 0.6, 690)) {
+            tooltip = _title_01;
             tooltip2 = "The Psychic Discipline that your psykers will use by default.";
         }
 
-        var discipline_first_letter = string_delete(discipline, 2, string_length(discipline));  
-        var discipline_suffix = string_delete(discipline, 1, 1);  
-        draw_text_transformed(513, 697, string_hash_to_newline(string_upper(discipline_first_letter) + string(discipline_suffix)), 0.5, 0.5, 0);  
+        var _discipline_name = get_discipline_data(discipline, "name");
+        draw_text_transformed(520, 697, _discipline_name, 0.5, 0.5, 0);  
 
-        var psy_info = get_discipline_data(discipline, "description");
+        var _psy_info = get_discipline_data(discipline, "description");
+        draw_text_transformed(440, 729, _psy_info, 0.5, 0.5, 0);
 
-        draw_text_transformed(533, 729, string_hash_to_newline(string(psy_info)), 0.5, 0.5, 0);
-
-        if (custom < 2) {
-            draw_set_alpha(0.5);
-        }
         if (custom == 2) {
             draw_sprite_stretched(spr_creation_arrow, 0, 437, 688, 32, 32);
-        }
-        if (custom == 2) {
             draw_sprite_stretched(spr_creation_arrow, 1, 475, 688, 32, 32);
-        }
-        draw_set_alpha(1);
-
-        if ((scr_click_left) && (custom > 1)) {
-            if (scr_hit(437, 688, 437 + 32, 688 + 32)) {
-                _disp_index = _disp_index == 0 ? array_length(_powers) - 1 : _disp_index - 1;
-            } else if (scr_hit(475, 688, 475 + 32, 688 + 32)) {
-                _disp_index = _disp_index >= array_length(_powers) - 1 ? 0 : _disp_index + 1;
+            if (point_and_click([437, 688, 437 + 32, 688 + 32])) {
+                _discipline_index = _discipline_index == 0 ? array_length(_starting_powers) - 1 : _discipline_index - 1;
+            } else if (point_and_click([475, 688, 475 + 32, 688 + 32])) {
+                _discipline_index = _discipline_index >= array_length(_starting_powers) - 1 ? 0 : _discipline_index + 1;
             }
         }
-        discipline = _powers[_disp_index];
+
+        discipline = _starting_powers[_discipline_index];
     }
 }
 
@@ -213,14 +205,14 @@ function get_tome_discipline(_tome_tags) {
     try {
         var discipline_names = struct_get_names(global.disciplines_data);
         for (var i = 0; i < array_length(discipline_names); i++) {
-            var discipline_name = discipline_names[i];
-            var discipline_struct = global.disciplines_data[$ discipline_name];
+            var _discipline_name = discipline_names[i];
+            var discipline_struct = global.disciplines_data[$ _discipline_name];
             if (struct_exists(discipline_struct, "tags")) {
                 var discipline_tags = discipline_struct[$ "tags"];
                 for (var p = 0; p < array_length(discipline_tags); p++) {
                     var discipline_tag = discipline_tags[p];
                     if (string_count(discipline_tag, _tome_tags) > 0) {
-                        return discipline_name;
+                        return _discipline_name;
                     }
                 }
             }
@@ -240,13 +232,13 @@ function convert_power_letter(power_code) {
     
         var discipline_names = struct_get_names(global.disciplines_data);
         for (var i = 0; i < array_length(discipline_names); i++) {
-            var discipline_name = discipline_names[i];
-            var discipline_struct = global.disciplines_data[$ discipline_name];
+            var _discipline_name = discipline_names[i];
+            var discipline_struct = global.disciplines_data[$ _discipline_name];
             if (struct_exists(discipline_struct, "letter")) {
                 var discipline_letter = discipline_struct[$ "letter"];
                 if (power_letter == discipline_letter) {
-                    matched_discipline = discipline_name;
-                    return discipline_name;
+                    matched_discipline = _discipline_name;
+                    return _discipline_name;
                 }
             }
         }
@@ -403,7 +395,7 @@ function scr_powers(caster_id) {
 
     // Gather the invocation stats (multiplier to power stats)
     var _equipment_psy_invocation = get_total_special_value(_unit, "psy_invocation") / 100;
-    var _character_psy_invocation = _unit_exp / 100 + (_unit.psionic / 18);
+    var _character_psy_invocation = (_unit_exp / 100) + (_unit.psionic / 10);
     var _total_psy_invocation = 1 + _equipment_psy_invocation + _character_psy_invocation;
 
     // Gather power data

@@ -651,7 +651,7 @@ function scr_draw_unit_image(_background=false){
             } 
 
             if (complex_livery){
-                if (psy_hood){
+                if (armour_type==ArmourType.Normal && psy_hood){
                     complex_set.replace_area("crown", spr_psy_hood_complex);
                 }                    
                 for (var part = 0; part < array_length(_body_parts); part++) {
