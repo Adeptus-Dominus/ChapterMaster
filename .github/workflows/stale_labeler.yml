@@ -1,7 +1,7 @@
 name: "Stale Labeler"
 on:
-  schedule:
-    - cron: "0 00 * * *"   # <=== Change this value
+  # schedule:
+  #   - cron: "0 00 * * *"   # <=== Change this value
 
 jobs:
   labeler:
