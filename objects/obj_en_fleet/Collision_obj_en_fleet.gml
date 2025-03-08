@@ -15,7 +15,7 @@ if (other.owner==self.owner){
 
             if (string_count("!",trade_goods)>0) and (string_count("!",other.trade_goods)>0){
                 if (id>other.id){
-                   merge_fleets(other.id), self.id);
+                   merge_fleets(other.id, self.id);
                 }
             }
         }
