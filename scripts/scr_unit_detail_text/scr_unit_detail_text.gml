@@ -8,7 +8,13 @@ function scr_unit_detail_text(){
 	var unit_role = role();
 	var body_augmentations = {mutations:[], bionics:[[],[]]}
 	var body_bionics = get_body_data("bionic");
-	var _phy_levels = ARR_psy_levels;
+	if (psionic < 0) {
+		var _psy_levels = ARR_negative_psy_levels;
+		var _psionic_assignment = _psy_levels[psionic * -1]
+	} else {
+		var _psy_levels = ARR_psy_levels
+		var _psionic_assignment = _psy_levels[psionic]
+	}
 	var _body_parts = ARR_body_parts;
 	var _body_parts_display = ARR_body_parts_display;
 	if(base_group == "astartes"){
@@ -65,29 +71,35 @@ function scr_unit_detail_text(){
 		}
 
 		// Psyker text
-		unit_data_string += $"Has an Assignment rating of {_phy_levels[psionic]} ({psionic}) ";
+		unit_data_string += $"Has an Assignment rating of {_psionic_assignment} ({psionic}) ";
 		var is_lib = array_contains(["Lexicanum", "Codiciery",obj_ini.role[100,17]], role());
-		if (psionic<2){
-			unit_data_string += "and as such has almost no presence in the warp.";
+		if (psionic<-6){
+			unit_data_string += ", so inert in the Warp as to actually exhibit negative psychic influence upon others.";
+		} else if(psionic<0){
+			unit_data_string += ", psionically-dense, oblivious to warp fluctuations and psychic probing.";
+		} else if(psionic==0){
+			unit_data_string += ", no manifestation of psychic talent.";
+		} else if (psionic==1){
+			unit_data_string += ", second of the two so-called inert psychic levels.";
 		} else if(psionic<8){
-			unit_data_string += "and a limited presence in the warp causing them to be more prone to attacks from the immaterium.";
+			unit_data_string += ", limited presence in the warp causing them to be more prone to attacks from the immaterium.";
 		} else if(psionic<11){
-			unit_data_string += "and therefore is considered to be a low level psyker with conscious levels of psionic talent.";
+			unit_data_string += ", therefore is considered to be a low level psyker with conscious levels of psionic talent.";
 			if (is_astartes){
 				if (!is_lib){
 					unit_data_string += "\n";
 					unit_data_string += "He would be eligible for a role in the Librarium however is unlikely to ever exceed the role of Lexicanum.";
 				}
 			}
-		}else if(psionic<13){
-			unit_data_string += "and has a very high level of mental psychic activity, making them a potent psyker, their presence in the warp is obvious to the daemons of the immaterium.";
+		} else if (psionic<13){
+			unit_data_string += ", a very high level of mental psychic activity, making them a potent psyker, their presence in the warp is obvious to the daemons of the immaterium.";
 			if (is_astartes){
 				if (!is_lib){
 					unit_data_string += "\n";
 					unit_data_string += " He would be eligible for a role in the Librarium capable of wielding his power to good effect.";
 				}
 			}
-		}else if(psionic<15){
+		}else if (psionic<15){
 			unit_data_string += ", occurring in approximately one-per-billion human births, they are a very potent psyker.";
 			if (is_astartes){
 				if (!is_lib){
@@ -98,7 +110,7 @@ function scr_unit_detail_text(){
 					unit_data_string += " His rare talent is of great benefit to the chapter and could one day be a candidate for Chief of the librariam.";
 				}
 			}		       				       			
-		} else if(psionic<15){
+		} else {
 			unit_data_string += ", exceedingly rare and dangerous but unfathomably powerful.";
 			if (is_astartes){
 				unit_data_string += "\n"
