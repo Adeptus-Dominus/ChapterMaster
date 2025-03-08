@@ -48,7 +48,7 @@ function fleet_has_cargo(desired_cargo, fleet="none"){
     } else {
         var has_cargo = false;
         with (fleet){
-            has_cargo =  fleet_has_cargo();
+            has_cargo =  fleet_has_cargo(desired_cargo);
         }
         return has_cargo;
     }
