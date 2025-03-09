@@ -183,9 +183,7 @@ function scr_player_combat_weapon_stacks() {
 
                             var cast_dice = irandom_range(1, 100);
                             cast_dice -= unit.psionic + (unit.experience / 60);
-                            if (scr_has_disadv("Warp Touched")) {
-                                cast_dice -= 5;
-                            }
+
                             if (scr_has_adv("Daemon Binders")) {
                                 cast_dice -= 5;
                             }

@@ -260,9 +260,6 @@ function perils_test(_unit, _tome_perils_chance) {
     if (scr_has_disadv("Warp Touched")) {
         _perils_threshold += PSY_PERILS_CHANCE_LOW;
     }
-    if (scr_has_disadv("Shitty Luck")) {
-        _perils_threshold += PSY_PERILS_CHANCE_LOW;
-    }
     if (scr_has_adv("Daemon Binders")) {
         _perils_threshold -= PSY_PERILS_CHANCE_LOW;
     }
@@ -278,9 +275,6 @@ function roll_perils_strength(_unit, _tome_perils_strength) {
     _perils_strength += _tome_perils_strength;
 
     if (scr_has_disadv("Warp Touched")) {
-        _perils_strength += PSY_PERILS_STR_LOW;
-    }
-    if (scr_has_disadv("Shitty Luck")) {
         _perils_strength += PSY_PERILS_STR_LOW;
     }
     if (scr_has_adv("Daemon Binders")) {
