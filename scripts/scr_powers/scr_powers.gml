@@ -349,6 +349,46 @@ function process_tome_mechanics(_unit, _unit_id) {
     return _result;
 }
 
+/// @function find_valid_target
+/// @param {struct} _power_data - Data about the power being used
+/// @returns {struct} The target information with column and index
+function find_valid_target(_power_data) {
+    var _result = {
+        column: noone, 
+        index: -1
+    };
+    var _target_vehicles = _power_data.target_type == 4;
+    
+    // Create a priority queue for potential targets
+    var _targets_queue = ds_priority_create();
+    
+    with (obj_enunit) {
+        var _distance = point_distance(other.x, other.y, x, y) / 10;
+        if (_distance <= _power_data.range) {
+            ds_priority_add(_targets_queue, id, _distance);
+        }
+    }
+    
+    // Find closest valid target
+    while (!ds_priority_empty(_targets_queue)) {
+        var _potential_target = ds_priority_delete_min(_targets_queue);
+        
+        for (var i = 0; i < array_length(_potential_target.dudes); i++) {
+            if (_potential_target.dudes_hp[i] > 0 && 
+                _potential_target.dudes_vehicle[i] == _target_vehicles) {
+                _result.column = _potential_target;
+                _result.index = i;
+                break;
+            }
+        }
+        
+        if (_result.index != -1) break;
+    }
+    
+    ds_priority_destroy(_targets_queue);
+    return _result;
+}
+
 //TODO: Make target selection to happen before attack power selection;
 //TODO: Make buff power selection to depend on more stuff;
 //TODO: All tome related logic in this file has to be reworked;
@@ -461,6 +501,7 @@ function scr_powers(caster_id) {
 
     // Gather power data
     // var _power_struct = get_power_data(_power_id); // Not used atm
+    var _power_data = get_power_data(_power_id);
     var _power_name = get_power_data(_power_id, "name");
     var _power_type = get_power_data(_power_id, "type");
     var _power_range = round(get_power_data(_power_id, "range") * _total_psy_invocation);
@@ -610,47 +651,18 @@ function scr_powers(caster_id) {
     } else if (_power_type == "attack" && _cast_successful) {
     //* Attack power casting
         // TODO: separate the code bellow into a separate function;
-        var _enemy_distance = function(_target_column) {
-            return ((point_distance(self.x, self.y, _target_column.x, _target_column.y)) / 10);
-        }
-
-        var _target_vehicles = _power_target_type == 4 ? true : false;
-        var _target_index = -1;
-        var _target_column = -1;
-
-        //* Pick the target
-        repeat (10) {
-            if (instance_exists(obj_enunit)) {
-                _target_column = instance_nearest(x, y, obj_enunit);
-                if (_enemy_distance(_target_column) <= (_power_range)) {
-                    for (var i = 0; i < array_length(_target_column.dudes); i++) {
-                        if ((_target_column.dudes_hp[i] > 0)) {
-                            if (_target_column.dudes_vehicle[i] == _target_vehicles) {
-                                _target_index = i;
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                if (_target_index == -1) {
-                    instance_deactivate_object(_target_column);
-                }
-            }
-        }
-
-        instance_activate_object(obj_enunit);
+        var _target_data = find_valid_target(_power_data);
 
         //* Calculate damage
-        if (_target_index != -1 && instance_exists(_target_column) && (_target_column.dudes_num[_target_index] > 0)) {
+        if (_target_data.index != -1 && instance_exists(_target_data.column) && (_target_data.column.dudes_num[_target_data.index] > 0)) {
             // Set up variables for damage calculation
-            var _effective_armour = _target_column.dudes_ac[_target_index];
-            var _target_is_vehicle = (_target_column.dudes_vehicle[_target_index] == 1);
+            var _effective_armour = _target_data.column.dudes_ac[_target_data.index];
+            var _target_is_vehicle = (_target_data.column.dudes_vehicle[_target_data.index] == 1);
             var _destruction_verb = _target_is_vehicle ? "destroyed" : "killed";
             var _damage_verb = _target_is_vehicle ? "damaged" : "hurt";
-            var _target_unit_health = _target_column.dudes_hp[_target_index];
-            var _target_unit_name = _target_column.dudes[_target_index];
-            var _target_unit_count = _target_column.dudes_num[_target_index];
+            var _target_unit_health = _target_data.column.dudes_hp[_target_data.index];
+            var _target_unit_name = _target_data.column.dudes[_target_data.index];
+            var _target_unit_count = _target_data.column.dudes_num[_target_data.index];
             
             // Calculate armour effectiveness based on target type and power'_s armour piercing
             if (!_target_is_vehicle) { // Non-vehicle targets
@@ -690,7 +702,7 @@ function scr_powers(caster_id) {
             if ((_casualties == 0)) {
                 // Apply damage if any
                 if (_final_damage > 0) {
-                    _target_column.dudes_hp[_target_index] -= _final_damage;
+                    _target_data.column.dudes_hp[_target_data.index] -= _final_damage;
                     _casualties_flavour_text = $" The {_target_unit_name} survives the attack but is {_damage_verb}.";
                 // No damage
                 } else {
@@ -699,7 +711,7 @@ function scr_powers(caster_id) {
             // Apply casualties
             } else {
                 // Update unit counts
-                _target_column.dudes_num[_target_index] -= _casualties;
+                _target_data.column.dudes_num[_target_data.index] -= _casualties;
                 obj_ncombat.enemy_forces -= _casualties;
 
                 // Apply special battle effects for certain unit types
@@ -722,8 +734,8 @@ function scr_powers(caster_id) {
                 }
 
                 // Process the enemy column after applying casualties
-                compress_enemy_array(_target_column);
-                destroy_empty_column(_target_column);
+                compress_enemy_array(_target_data.column);
+                destroy_empty_column(_target_data.column);
 
                 // Log battle message to combat feed
                 _battle_log_message = _cast_flavour_text + _power_flavour_text + _casualties_flavour_text;
