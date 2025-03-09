@@ -258,7 +258,7 @@ function EquipmentStruct(item_data, core_type, quality_request="none") construct
             var _specials = struct_get_names(specials);
             for (var j = 0; j < array_length(_specials); j++) {
                 var _special = _specials[j];
-                if (_special = special) {
+                if (_special == special) {
                     var _special_value = specials[$ _special];
                     return _special_value;
                 }
