@@ -1051,25 +1051,32 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 
 	static psy_powers_array = function(){ 
 		var _psy_discipline = psy_discipline();
-
+		if (_psy_discipline == "") return [];
+ 
 		var _known_powers = string_split(specials(), "|");
 		if (array_length(_known_powers) > 1) {
 			array_pop(_known_powers);
 		}
-
+ 
+		var _powers_array = get_discipline_data(_psy_discipline, "powers");
+		if (_powers_array == undefined || !is_array(_powers_array)) return [];
+    
 		for (var i = 0; i < array_length(_known_powers); i++) {
 			_known_powers[i] = string_char_at(_known_powers[i], 2);
-			var _powers_array = get_discipline_data(_psy_discipline, "powers");
-			_known_powers[i] = _powers_array[i];
+			// Ensure index is within array bounds
+			if (i < array_length(_powers_array)) {
+				_known_powers[i] = _powers_array[i];
+			}
 		}
-
+ 
 		return _known_powers;
 	};
-
+ 
 	static psy_discipline = function(){ 
 		var _power_letter = string_char_at(specials(), 1);
+		if (_power_letter == "") return "";
 		var _psy_discipline = convert_power_letter(_power_letter);
-
+ 
 		return _psy_discipline;
 	};
 
