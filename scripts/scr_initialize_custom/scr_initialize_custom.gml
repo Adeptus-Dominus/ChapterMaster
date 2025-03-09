@@ -1789,7 +1789,9 @@ function scr_initialize_custom() {
 					"option": {
 						"wep1": [
 							[
-								weapon_lists.melee_weapons, 2,
+								["Eviscerator"], 2, {
+									"wep2":"",
+								}
 							],
 						],
 						"wep2": [
@@ -2358,7 +2360,7 @@ function scr_initialize_custom() {
 
 	// Forge Master
 	name[company, 2] = obj_creation.fmaster;
-	var _forge_master = add_unit_to_company("marine", company, 2, "Forge Master", eROLE.Techmarine, "Infernus Pistol", "Power Axe", "", "Servo-harness", _hq_armour);
+	var _forge_master = add_unit_to_company("marine", company, 2, "Forge Master", eROLE.Techmarine, "Infernus Pistol", "Power Axe", "default", "Servo-harness", _hq_armour);
 	if (_forge_master.technology < 40) {
 		_forge_master.technology = 40;
 	}
@@ -2380,7 +2382,7 @@ function scr_initialize_custom() {
 	// Master of Sanctity (Chaplain)
 	if (chaplains > 0){
 		name[company, 3] = high_chaplain_name;
-		var _hchap = add_unit_to_company("marine", company, 3, "Master of Sanctity", eROLE.Chaplain, "default", "Plasma Pistol", "default", "", _hq_armour);
+		var _hchap = add_unit_to_company("marine", company, 3, "Master of Sanctity", eROLE.Chaplain, "default", "Plasma Pistol", "default", "default", _hq_armour);
 		_hchap.edit_corruption(-100);
 		if (_hchap.piety < 45) {
 			_hchap.piety = 45;
@@ -2392,7 +2394,7 @@ function scr_initialize_custom() {
 
 	// Maser of the Apothecarion (Apothecary)
 	name[company, 4] = obj_creation.hapothecary;
-	var _hapoth = add_unit_to_company("marine", company, 4, "Master of the Apothecarion", eROLE.Apothecary, "default", "Plasma Pistol", "default", "", _hq_armour);
+	var _hapoth = add_unit_to_company("marine", company, 4, "Master of the Apothecarion", eROLE.Apothecary, "default", "Plasma Pistol", "default", "default", _hq_armour);
 	_hapoth.edit_corruption(0);
 	k+=1;
 	commands +=1;
@@ -2400,7 +2402,7 @@ function scr_initialize_custom() {
 	// Chief Librarian
 	if(!scr_has_disadv("Psyker Intolerant")){
 		name[company, 5] = obj_creation.clibrarian;
-		var _clibrarian = add_unit_to_company("marine", company, 5, string("Chief {0}", roles.librarian), eROLE.Librarian, "default", "Plasma Pistol", "default", "", _hq_armour);
+		var _clibrarian = add_unit_to_company("marine", company, 5, string("Chief {0}", roles.librarian), eROLE.Librarian, "default", "Plasma Pistol", "default", "default", _hq_armour);
 		_clibrarian.edit_corruption(0);
 		_clibrarian.psionic = choose(13, 14, 15, 16);
 		_clibrarian.update_powers();
@@ -2416,7 +2418,7 @@ function scr_initialize_custom() {
 		k += 1;
 		commands += 1;
 		man_size += 1;
-		add_unit_to_company("marine", company, k, roles.techmarine, eROLE.Techmarine, "default", choose_weighted(weapon_weighted_lists.pistols), "default", "default", "");
+		add_unit_to_company("marine", company, k, roles.techmarine, eROLE.Techmarine, "default", choose_weighted(weapon_weighted_lists.pistols));
 	}
 
 	// Librarians in the librarium
@@ -2424,7 +2426,7 @@ function scr_initialize_custom() {
 		k += 1;
 		commands += 1;
 		man_size += 1;
-		var _epi = add_unit_to_company("marine", company, k, roles.librarian, eROLE.Librarian, "default", choose_weighted(weapon_weighted_lists.pistols), "default", "default", "");
+		var _epi = add_unit_to_company("marine", company, k, roles.librarian, eROLE.Librarian, "default", choose_weighted(weapon_weighted_lists.pistols));
 		_epi.psionic = choose(13, 14, 15, 16);
 		_epi.update_powers();
 	}
@@ -2433,7 +2435,7 @@ function scr_initialize_custom() {
 		k += 1;
 		commands += 1;
 		man_size += 1;
-		var _codi = add_unit_to_company("marine", company, k, "Codiciery", eROLE.Librarian, "default", choose_weighted(weapon_weighted_lists.pistols), "default", "default", "");
+		var _codi = add_unit_to_company("marine", company, k, "Codiciery", eROLE.Librarian, "default", choose_weighted(weapon_weighted_lists.pistols));
 		_codi.psionic = choose(11, 12, 13, 14, 15);
 		_codi.update_powers();
 	}
@@ -2443,7 +2445,7 @@ function scr_initialize_custom() {
 		k += 1;
 		commands += 1;
 		man_size += 1;
-		var _lexi = add_unit_to_company("marine", company, k, "Lexicanum", eROLE.Librarian, "default", choose_weighted(weapon_weighted_lists.pistols), "default", "default", "");
+		var _lexi = add_unit_to_company("marine", company, k, "Lexicanum", eROLE.Librarian, "default", choose_weighted(weapon_weighted_lists.pistols));
 		_lexi.psionic = choose(8, 9, 10, 11, 12, 13, 14);
 		_lexi.update_powers();
 	}
@@ -2453,7 +2455,7 @@ function scr_initialize_custom() {
 		k += 1;
 		commands += 1;
 		man_size += 1;
-		add_unit_to_company("marine", company, k, roles.apothecary, eROLE.Apothecary,"Chainsword", choose_weighted(weapon_weighted_lists.pistols), "default", "default","");
+		add_unit_to_company("marine", company, k, roles.apothecary, eROLE.Apothecary,"Chainsword", choose_weighted(weapon_weighted_lists.pistols));
 	}
 
 	// Chaplains in Reclusium
@@ -2461,7 +2463,7 @@ function scr_initialize_custom() {
 		k += 1;
 		commands += 1;
 		man_size += 1;
-		add_unit_to_company("marine", company, k, roles.chaplain, eROLE.Chaplain,"default", choose_weighted(weapon_weighted_lists.pistols), "default", "default","");
+		add_unit_to_company("marine", company, k, roles.chaplain, eROLE.Chaplain,"default", choose_weighted(weapon_weighted_lists.pistols));
 	}
 
 	// Honour Guard
@@ -2476,7 +2478,7 @@ function scr_initialize_custom() {
 		k += 1;
 		commands += 1;
 		man_size += 1;
-		add_unit_to_company("marine", company, k, roles.honour_guard, eROLE.HonourGuard,"default", "default","default","default","default");
+		add_unit_to_company("marine", company, k, roles.honour_guard, eROLE.HonourGuard);
 	}
 
 	specials = k;
@@ -2584,12 +2586,12 @@ function scr_initialize_custom() {
 		repeat(terminator) {
 			k += 1;
 			man_size += 2;
-			add_unit_to_company("marine", company, k, roles.terminator, eROLE.Terminator, "","","default","default","default");
+			add_unit_to_company("marine", company, k, roles.terminator, eROLE.Terminator);
 		}
 		repeat(veteran) {
 			k += 1;
 			man_size += 1;
-			add_unit_to_company("marine", company, k, roles.veteran, eROLE.Veteran, "","","default","default","default");
+			add_unit_to_company("marine", company, k, roles.veteran, eROLE.Veteran);
 		}
 	
 		repeat(scr_has_adv("Venerable Ancients") ? 3 : 2) {
@@ -2908,7 +2910,7 @@ function scr_initialize_custom() {
 
 			var _mobi = mobi[defaults_slot, eROLE.Captain];
 			if (company = 8) and(obj_creation.equal_specialists = 0) then _mobi = "Jump Pack";
-			add_unit_to_company("marine", company, k, roles.captain, eROLE.Captain, "default",choose_weighted(weapon_weighted_lists.pistols),"default",_mobi,"");
+			add_unit_to_company("marine", company, k, roles.captain, eROLE.Captain, "default",choose_weighted(weapon_weighted_lists.pistols),"default",_mobi);
 
 			repeat (chaplains_per_company){
 				k += 1;
@@ -2929,30 +2931,30 @@ function scr_initialize_custom() {
 			repeat (apothecary_per_company){
 				k += 1;
 				commands += 1; // Company Apothecary
-				add_unit_to_company("marine", company, k, roles.apothecary, eROLE.Apothecary, "default",choose_weighted(weapon_weighted_lists.pistols),"default","default","");
+				add_unit_to_company("marine", company, k, roles.apothecary, eROLE.Apothecary, "default",choose_weighted(weapon_weighted_lists.pistols));
 			}
 
 			repeat(techmarines_per_company) {
 				k += 1; // Company Techmarine
 				commands += 1;
-				add_unit_to_company("marine", company, k, roles.techmarine, eROLE.Techmarine, "default",choose_weighted(weapon_weighted_lists.pistols),"default","default","");
+				add_unit_to_company("marine", company, k, roles.techmarine, eROLE.Techmarine, "default",choose_weighted(weapon_weighted_lists.pistols));
 			}
 
 			if (!scr_has_disadv("Psyker Intolerant")) {
 				k += 1; // Company Librarian
 				commands += 1;
-				add_unit_to_company("marine", company, k, roles.librarian, eROLE.Librarian, "default",choose_weighted(weapon_weighted_lists.pistols),"default","default","");
+				add_unit_to_company("marine", company, k, roles.librarian, eROLE.Librarian, "default",choose_weighted(weapon_weighted_lists.pistols));
 			}
 
 			k += 1; // Standard Bearer
-			add_unit_to_company("marine", company, k, roles.ancient, eROLE.Ancient, "default","default","default","default","");
+			add_unit_to_company("marine", company, k, roles.ancient, eROLE.Ancient);
 			
 			k += 1;
 			man_size += 1; // Champion
 			if (company == 8) and(obj_creation.equal_specialists = 0){
-				add_unit_to_company("marine", company, k, roles.champion, eROLE.Champion, "default","default","default","Jump Pack","");
+				add_unit_to_company("marine", company, k, roles.champion, eROLE.Champion);
 			} else {
-				add_unit_to_company("marine", company, k, roles.champion, eROLE.Champion, "default","default","default","","");
+				add_unit_to_company("marine", company, k, roles.champion, eROLE.Champion);
 			}
 
 			// have equal spec true or false have same old_guard chance
@@ -2964,12 +2966,12 @@ function scr_initialize_custom() {
 					repeat(temp1) {
 						k += 1;
 						man_size += 1;
-						add_unit_to_company("marine", company, k, roles.tactical, eROLE.Tactical, "default","default", "default", "default", "default");
+						add_unit_to_company("marine", company, k, roles.tactical, eROLE.Tactical);
 					}
 					repeat(assault) {
 						k += 1;
 						man_size += 1;
-						add_unit_to_company("marine", company, k, roles.assault, eROLE.Assault, "default", "default", "default", "default", "default");
+						add_unit_to_company("marine", company, k, roles.assault, eROLE.Assault);
 					}
 					repeat(devastator) {
 						k += 1;
@@ -2978,14 +2980,14 @@ function scr_initialize_custom() {
 						if (wep1[defaults_slot, eROLE.Devastator] == "Heavy Ranged") {
 							_wep1 = choose("Multi-Melta", "Lascannon", "Missile Launcher", "Heavy Bolter");
 						} 
-						add_unit_to_company("marine", company, k, roles.devastator, eROLE.Devastator, _wep1, "default","default", "default", "default");
+						add_unit_to_company("marine", company, k, roles.devastator, eROLE.Devastator, _wep1);
 					}
 				}
 				if (company = 10) {
 					repeat(temp1) {
 						k += 1;
 						man_size += 1;
-						add_unit_to_company("scout", company, k, roles.scout, eROLE.Scout, "default", "default", "default", "default", "Scout Armour");
+						add_unit_to_company("scout", company, k, roles.scout, eROLE.Scout);
 					}
 				}
 			}
@@ -2994,14 +2996,14 @@ function scr_initialize_custom() {
 				if (company < 8) then repeat(temp1) {
 					k += 1;
 					man_size += 1;
-					add_unit_to_company("marine", company, k, roles.tactical, eROLE.Tactical, "default", "default", "default", "default", "default");
+					add_unit_to_company("marine", company, k, roles.tactical, eROLE.Tactical);
 				} 
 				
 				// reserve company only of assault
 				if (company = 8) then repeat(temp1) {
 					k += 1;
 					man_size += 1; // assault reserve company
-					add_unit_to_company("marine", company, k, roles.assault,eROLE.Assault, "", "", "", "default", "");
+					add_unit_to_company("marine", company, k, roles.assault,eROLE.Assault);
 				} 
 				
 				// reserve company only devo
@@ -3019,7 +3021,7 @@ function scr_initialize_custom() {
 				for (var i = 0; i < temp1; i++) {
 					k += 1;
 					man_size += 1;
-					add_unit_to_company("scout", company, k, roles.scout,eROLE.Scout, , , , , "Scout Armour");
+					add_unit_to_company("scout", company, k, roles.scout,eROLE.Scout);
 				}
 
 				if (company_unit2 = "assault") then repeat(assault) {
