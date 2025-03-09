@@ -120,9 +120,11 @@ function array_to_string_order(_strings_array) {
 
     return result;
 }
-
-
-
+/// @function alter_deep_array
+/// @description Modifies a value in a deeply nested array structure.
+/// @param {array} array The array to modify
+/// @param {array} accessors Array of indices for traversing the nested structure
+/// @param {any} value The value to set at the specified location
 function alter_deep_array(array, accessors, value){
 	var _array_step = array;
 	var accessors_length = array_length(accessors);
@@ -132,6 +134,11 @@ function alter_deep_array(array, accessors, value){
 	_array_step[@ accessors[accessors_length-1]] = value;
 }
 
+/// @function fetch_deep_array
+/// @description Retrieves a value from a deeply nested array structure.
+/// @param {array} array The array to retrieve from
+/// @param {array} accessors Array of indices for traversing the nested structure
+/// @return {any} The value at the specified location
 function fetch_deep_array(array, accessors){
 	var _array_step = array;
 	var accessors_length = array_length(accessors);
@@ -140,6 +147,4 @@ function fetch_deep_array(array, accessors){
 	}	
 	return _array_step;
 }
-
-
 
