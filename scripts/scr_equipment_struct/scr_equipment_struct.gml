@@ -226,7 +226,7 @@ function EquipmentStruct(item_data, core_type, quality_request="none") construct
                     break;
                 case "maintenance":
                     if (maintenance>0){
-                        item_desc_tooltip += $"#Maintenance: {maintenance}#"
+                        item_desc_tooltip += $"Maintenance: {maintenance}#"
                     }
                     break;
                 case "specials":
