@@ -9,7 +9,7 @@ function load_marines_into_ship(system, ship, units, reload=false) {
         } else if (is_array(units[loop]) && ma_loc[loop] == system && sh_loc[ship] == system) {
             var vehicle = units[loop];
             var _get = fetch_deep_array;
-            var _set = alter_deep_array
+            var _set = alter_deep_array;
             var start_ship = _get(obj_ini.veh_lid,vehicle);
             var start_planet = _get(obj_ini.veh_wid,vehicle);
             ma_loc[loop] = sh_loc[ship];
