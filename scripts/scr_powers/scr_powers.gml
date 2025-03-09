@@ -251,7 +251,7 @@ function convert_power_letter(power_code) {
 }
 
 function perils_test(_unit, _tome_perils_chance) {
-    var _1roll_1d100 = roll_1d100();
+    var _roll_1d100 = roll_dice(1, 100, "high");
     var _perils_threshold = PSY_PERILS_CHANCE_BASE;
 
     _perils_threshold += _tome_perils_chance;
@@ -269,11 +269,11 @@ function perils_test(_unit, _tome_perils_chance) {
 
     _perils_threshold = max(_perils_threshold, PSY_PERILS_CHANCE_BASE);
     
-    return _perils_threshold >= _1roll_1d100;
+    return _perils_threshold >= _roll_1d100;
 }
 
 function roll_perils_strength(_unit, _tome_perils_strength) {
-    var _perils_strength = roll_1d100();
+    var _perils_strength = roll_dice(1, 100, "low");
 
     _perils_strength += _tome_perils_strength;
 
@@ -337,7 +337,7 @@ function scr_powers(caster_id) {
 
     // Buffs
     var buff_cast = false;
-    var buff_roll = roll_1d100();
+    var buff_roll = roll_dice(1, 100);
     var known_buff_powers = [];
     if (buff_roll >= 80) {
         // Try to pick a buff
@@ -444,7 +444,7 @@ function scr_powers(caster_id) {
     if (_has_tome) {
         //TODO: Move into a separate function;
         var _using_tome = false;
-        var _tome_roll = roll_1d100();
+        var _tome_roll = roll_dice(1, 100);
         if (_tome_discipline != "" && _tome_roll <= 50) {
             _selected_discipline = _tome_discipline;
             _using_tome = true;
@@ -492,7 +492,7 @@ function scr_powers(caster_id) {
     _cast_difficulty -= _equipment_psy_focus;
     _cast_difficulty -= _unit.wisdom * 0.4;
 
-    if (roll_1d100() >= _cast_difficulty) {
+    if (roll_dice(1, 100, "high") >= _cast_difficulty) {
         _cast_successful = true;
         _cast_flavour_text = $"{_unit.name_role()} casts '{_power_name}'";
     } else {

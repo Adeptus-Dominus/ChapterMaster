@@ -742,14 +742,14 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			//array index 0 == trait to add
 			// array index 1 == probability e.g 99,98 == if (irandom(99)>98){add_trait}
 			// array index 3 == probability modifiers
-			var warp_level = roll_2d50();
+			var warp_level = roll_dice(2, 50, "high");
 			if (scr_has_adv("Psyker Abundance")) {
 				if (warp_level < 85) {
-					warp_level = roll_2d50();
+					warp_level = roll_dice(2, 50, "high");
 				}
 			} else if (scr_has_disadv("Psyker Intolerant")) {
 				if (warp_level > 84) {
-					warp_level = roll_2d50();
+					warp_level = roll_dice(2, 50, "low");
 				}
 			}
 

@@ -111,94 +111,116 @@ function print_stat_diffs(diffs){
 	return _diff_string;
 }
 
-function roll_1d100(target_high = true) {
+/* function roll_1d100(target = "none") {
 	var _roll = irandom_range(1, 100);
 
 	if (scr_has_disadv("Shitty Luck")){
-		if (target_high && _roll > 50) {
+		if (target == "high" && _roll > 50) {
 			_roll = irandom_range(1, 100);
-		} else if (_roll < 51) {
+		} else if (target == "low" &&_roll < 51) {
 			_roll = irandom_range(1, 100);
 		}
 	}
 
     return _roll;
-}
+} */
 
-function roll_1d6(target_high = true) {
+/* function roll_1d6(target = "none") {
 	var _roll = irandom_range(1, 6);
 
 	if (scr_has_disadv("Shitty Luck")){
-		if (target_high && _roll > 3) {
+		if (target == "high" && _roll > 3) {
 			_roll = irandom_range(1, 6);
-		} else if (_roll < 4) {
+		} else if (target == "low" &&_roll < 4) {
 			_roll = irandom_range(1, 6);
 		}
 	}
 
     return _roll;
-}
+} */
 
-function roll_1d10(target_high = true) {
+/* function roll_1d10(target = "none") {
 	var _roll = irandom_range(1, 10);
 
 	if (scr_has_disadv("Shitty Luck")){
-		if (target_high && _roll > 5) {
+		if (target == "high" && _roll > 5) {
 			_roll = irandom_range(1, 10);
-		} else if (_roll < 6) {
+		} else if (target == "low" &&_roll < 6) {
 			_roll = irandom_range(1, 10);
 		}
 	}
 
     return _roll;
-}
+} */
 
-function roll_1d50(target_high = true) {
+/* function roll_1d50(target = "none") {
 	var _roll = irandom_range(1, 50);
 
 	if (scr_has_disadv("Shitty Luck")){
-		if (target_high && _roll > 25) {
+		if (target == "high" && _roll > 25) {
 			_roll = irandom_range(1, 50);
-		} else if (_roll < 26) {
+		} else if (target == "low" &&_roll < 26) {
 			_roll = irandom_range(1, 50);
 		}
 	}
 
     return _roll;
-}
+} */
 
-function roll_5d10(target_high = true) {
+/* function roll_5d10(target = "none") {
 	var _roll = 0;
 
 	repeat(5) {
 		_roll += irandom_range(1, 10);
 
 		if (scr_has_disadv("Shitty Luck")){
-			if (target_high && _roll > 5) {
+			if (target == "high" && _roll > 5) {
 				_roll = irandom_range(1, 10);
-			} else if (_roll < 6) {
+			} else if (target == "low" &&_roll < 6) {
 				_roll = irandom_range(1, 10);
 			}
 		}
 	}
 
     return _roll;
-}
+} */
 
-function roll_2d50(target_high = true) {
+/* function roll_2d50(target = "none") {
 	var _roll = 0;
 
 	repeat(2) {
 		_roll += irandom_range(1, 50);
 
 		if (scr_has_disadv("Shitty Luck")){
-			if (target_high && _roll > 50) {
+			if (target == "high" && _roll > 50) {
 				_roll = irandom_range(1, 50);
-			} else if (_roll < 51) {
+			} else if (target == "low" && _roll < 51) {
 				_roll = irandom_range(1, 50);
 			}
 		}
 	}
 
     return _roll;
+} */
+
+//? Maybe use this instead of the above functions?
+function roll_dice(dices = 1, faces = 6, target = "none") {
+	var _total_roll = 0;
+	var _roll = 0;
+
+	repeat(dices) {
+		_roll = irandom_range(1, faces);
+
+		if (scr_has_disadv("Shitty Luck") && target != "none"){
+			if (target == "high" && _roll > (faces / 2)) {
+				_roll = irandom_range(1, faces);
+			} else if (target == "low" && _roll < (faces / 2 + 1)) {
+				_roll = irandom_range(1, faces);
+			}
+		}
+
+		_total_roll += _roll;
+	}
+
+    return _total_roll;
 }
