@@ -111,11 +111,23 @@ function print_stat_diffs(diffs){
 	return _diff_string;
 }
 
-function d100_roll(luck_edit=true, luck_mod=10){
-	var _roll = irandom_range(1,100)
-	if (scr_has_disadv("Shitty Luck")){
-		_roll = max(1,_roll-irandom(luck_mod))
-	}
-	return _roll;
-}
+function roll_dice(dices = 1, faces = 6, target = "none") {
+	var _total_roll = 0;
+	var _roll = 0;
 
+	repeat(dices) {
+		_roll = irandom_range(1, faces);
+
+		if (scr_has_disadv("Shitty Luck") && target != "none"){
+			if (target == "high" && _roll > (faces / 2)) {
+				_roll = irandom_range(1, faces);
+			} else if (target == "low" && _roll < (faces / 2 + 1)) {
+				_roll = irandom_range(1, faces);
+			}
+		}
+
+		_total_roll += _roll;
+	}
+
+    return _total_roll;
+}

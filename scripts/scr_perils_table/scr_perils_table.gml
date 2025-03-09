@@ -1,57 +1,70 @@
-
-function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
+/// @mixin
+function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id, using_tome){
 	 var combat_perils = [
-		[15, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
-				unit.add_or_sub_health(choose(-8,-12,1-6,-20));
+		[1, function(peril_roll, unit, psy_discipline, power_name, unit_id, using_tome){
+				unit.corruption+=roll_dice(1, 6, "low");
 		    	var flavour_text2="He begins to gibber as psychic backlash overtakes him.";
-		    	unit.corruption+=choose(2,4,6,8);
 		    	return flavour_text2;
 		}],
-		[23, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
-			unit.add_or_sub_health(choose(-30,-35,-40,-45));
-		   	var flavour_text2="His mind is burned fiercly by the warp.";
+		[5, function(peril_roll, unit, psy_discipline, power_name, unit_id, using_tome){
+			marine_casting_cooldown[unit_id] += roll_dice(1, 6, "low");
+		   	var flavour_text2="His mind is burned fiercely by the warp.";
 		   	return flavour_text2;
 		}],
-		[31, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
-			//TODO figure out a better way of making a marine unconcious/incapacitated
-			//unit.add_or_sub_health(-5000);
-		    var flavour_text2="Psychic backlash knocks him out entirely, incapacitating the marine.";
+		[15, function(peril_roll, unit, psy_discipline, power_name, unit_id, using_tome){
+			var _cooldown = roll_dice(1, 6, "low");
+			marine_casting_cooldown[unit_id] += _cooldown;
+			var _cooldown2 = roll_dice(1, 6, "low");
+			if (men > 0) {
+				repeat(6) {
+					var t = irandom(men-1); // Random value from 0 to men-1
+					if (marine_type[t] != "") {
+						marine_casting_cooldown[t] += _cooldown2;
+					}
+				}
+			}
+		    var flavour_text2=$"Psychic energy outlash knocks him out for {_cooldown} hours, and stuns nearby marines for {_cooldown2}.";
 		    return flavour_text2;
 		}],
-		[39, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
-	    	var flavour_text2="His mind is seared by the warp, now unable to cast more powers this battle.";
-	    	unit.corruption+=choose(7,10,13,15);
-	    	return flavour_text2;
-		}],
-		[47, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
-			unit.add_or_sub_health(choose(-30,-35,-40,-45));
+		[20, function(peril_roll, unit, psy_discipline, power_name, unit_id, using_tome){
+			unit.add_or_sub_health(roll_dice(1, 50, "low") * -1);
 	        switch(psy_discipline){
 	        	case "biomancy":
-	        		flavour_text2="The psychic blast he had prepared runs loose, boiling his own blood!"
+	        		var flavour_text2="The psychic blast he had prepared runs loose, boiling his own blood!"
 	        		break;
 	        	case "pyromancy":
-	        		flavour_text2="He lights on fire from the inside out, incapacitated in agony!"
+	        		var flavour_text2="He lights on fire from the inside out, burning in agony!"
 	        		break;
 	        	case "telekinesis":
-	        		flavour_text2="The blast he had prepared runs loose, smashing himself into the ground!"
+	        		var flavour_text2="The blast he had prepared runs loose, smashing himself into the ground!"
 	        		break;
 	        	default:
-	        		flavour_text2="The psychic blast he had prepared runs loose, striking himself!";
+	        		var flavour_text2="The psychic blast he had prepared runs loose, striking himself!";
 	        		break
-
 	        }
 	        return flavour_text2;
 		}],
-		[55, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
+		[30, function(peril_roll, unit, psy_discipline, power_name, unit_id, using_tome){
+			marine_casting_cooldown[unit_id] += 20;
+			unit.corruption+=roll_dice(1, 6, "low");
+	    	var flavour_text2=$"His mind is seared by the warp, now unable to cast more powers for {marine_casting_cooldown[unit_id]} hours.";
+	    	return flavour_text2;
+		}],
+		[40, function(peril_roll, unit, psy_discipline, power_name, unit_id, using_tome){
 		        var flavour_text2="Capricious voices eminate from the surrounding area, whispering poisonous lies and horrible truths.";
-		        unit.corruption+=choose(10,15,20);
-		        repeat(6){
-		            var t=floor(random(men));
-		            if (marine_type[t]!="") then unit.corruption+=choose(6,9,12,15);
-		        }
+		        unit.corruption+=roll_dice(1, 10, "low");
+				if (men > 0) {
+					repeat(6) {
+						var t = irandom(men-1); // Random value from 0 to men-1
+						if (marine_type[t] != "") {
+							var _ally = unit_struct[t];
+							_ally.corruption+=roll_dice(1, 10, "low");
+						}
+					}
+				}
 		        return flavour_text2;
 		}],
-		[63, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
+		[50, function(peril_roll, unit, psy_discipline, power_name, unit_id, using_tome){
 		       var  flavour_text2="Dark, shifting lights form into several ";
 		        var d1=0,d2=0,d3=0;
 		        var dem=choose("Pink Horror","Daemonette","Bloodletter","Plaguebearer");
@@ -97,57 +110,59 @@ function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id,
 		        }
 		        return flavour_text2;
 		}],	
-		[71, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
-		        var flavour_text2="There is a massive explosion of warp energy which incapacitates him and injures several other marines!";
-		        unit.add_or_sub_health(-65);
-		       unit.add_or_sub_health(-5000);
-		        repeat(7){
-		            var t=floor(random(men));
-		            if (marine_type[t]!="") then marine_hp[t]-=choose(10,20,30);
-		        }
+		[60, function(peril_roll, unit, psy_discipline, power_name, unit_id, using_tome){
+		        var flavour_text2="There is a massive explosion of warp energy which injures him and several other marines!";
+		        unit.add_or_sub_health(roll_dice(1, 50, "low") * -1);
+				if (men > 0) {
+					repeat(6) {
+						var t = irandom(men-1); // Random value from 0 to men-1
+						if (marine_type[t] != "") {
+							marine_hp[t]-=roll_dice(1, 50, "low");
+						}
+					}
+				}
 		        return flavour_text2;
 		}],	
-		[79, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
-			obj_ncombat.global_perils+=25;
+		[70, function(peril_roll, unit, psy_discipline, power_name, unit_id, using_tome){
+			obj_ncombat.global_perils+=90;
 			var flavour_text2="Wind shrieks and blood pours from the sky!  The warp feels unstable.";
 			return flavour_text2;
 		}],	
-		[87, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
-		        marine_casting[unit_id]=-999;
-		        unit.add_or_sub_health(-70);
+		[80, function(peril_roll, unit, psy_discipline, power_name, unit_id, using_tome){
+		        unit.add_or_sub_health(roll_dice(5, 10, "low") * -1);
+				if (men > 0) {
+					repeat(6) {
+						var t = irandom(men-1); // Random value from 0 to men-1
+						if (marine_type[t] != "") {
+							marine_hp[t]-=roll_dice(1, 50, "low");
+						}
+					}
+				}
+				unit.alter_equipment({wep1:"",wep2:"",armour:"",gear:"",mobi:""},false,false);
 		        var flavour_text2="A massive shockwave eminates from the marine, who is knocked out cold!  All of his equipment is destroyed!";
-		        unit.alter_equipment({wep1:"",wep2:"",armour:"",gear:"",mobi:""},false,false);
 		        return flavour_text2;
 		}],	
-		[95, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
+		[90, function(peril_roll, unit, psy_discipline, power_name, unit_id, using_tome){
 				var flavour_text2;
-				unit.update_health(0);
-				marine_dead[unit_id]=2;
-		        flavour_text2=choose(
-		        	"There is a snap, and pop, and he disappears entirely.",
-		        	"He explodes into a cloud of gore, splattering guts and ceramite across the battlefield."
-		        )
-		        if (unit.role()="Chapter Master") then global.defeat=3;
-		        return flavour_text2;
-		}],	
-		[200, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
-				var flavour_text2;
-				unit.update_health(0);
-				marine_dead[unit_id]=2;
-		        if (unit.role()="Chapter Master") then global.defeat=3;
+				marine_casting_cooldown[unit_id] += 999;
+				unit.corruption+=roll_dice(5, 10, "low");
 		        flavour_text2="The marine's flesh begins to twist and rip, seemingly turning inside out.  His form looms up, and up, and up.  Within seconds a Greater Daemon of ";
 	        
-		        var dem=choose("Slaanesh","Nurgle","Tzeentch");
-		        if (book_powers!=""){
-			        if (string_count("Dae",marine_gear[unit_id])>0){
-			            if (string_count("2",marine_gear[unit_id])>0) then dem="Slaanesh";
-			            if (string_count("3",marine_gear[unit_id])>0) then dem="Nurgle";
-			            if (string_count("4",marine_gear[unit_id])>0) then dem="Tzeentch";
-			        }
-			    }
-	        
-		        flavour_text2+=string(dem)+" has taken form.";
-		        var d1=0,d2=0,d3=0,d1=instance_nearest(x,y,obj_enunit);
+                var dem = choose("Slaanesh","Nurgle","Tzeentch");
+				if (using_tome != "") {
+					if (string_count("daemonic", marine_gear[unit_id]) > 0) {
+						if (string_count("SLAANESH", marine_gear[unit_id]) > 0) {
+							dem = "Slaanesh";
+						}
+						if (string_count("NURGLE", marine_gear[unit_id]) > 0) {
+							dem = "Nurgle";
+						}
+						if (string_count("TZEENTCH", marine_gear[unit_id]) > 0) {
+							dem = "Tzeentch";
+						}
+					}
+				}
+				var d1=0,d2=0,d3=0,d1=instance_nearest(x,y,obj_enunit);
 		        repeat(30){
 		        	if (d3=0){
 			        	d2+=1;
@@ -168,13 +183,26 @@ function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id,
 		        obj_ncombat.enemy_forces+=1;obj_ncombat.enemy_max+=1;
 		        d1.neww=1;
 		        d1.alarm[1]=1;
+	        
+		        flavour_text2+=string(dem)+" has taken form.";
 		        return flavour_text2;
-		}],    					
+		}],    	
+		[100, function(peril_roll, unit, psy_discipline, power_name, unit_id, using_tome){
+			var flavour_text2;
+			unit.update_health(0);
+			marine_dead[unit_id]=2;
+			flavour_text2=choose(
+				"There is a snap, and pop, and he disappears entirely.",
+				"He explodes into a cloud of gore, splattering guts and ceramite across the battlefield."
+			)
+			if (unit.role()="Chapter Master") then global.defeat=3;
+			return flavour_text2;
+	}],					
 	]
 
 	for (var i =0; i <array_length(combat_perils);i++){
 		if (peril_roll<combat_perils[i][0]){
-			return combat_perils[i][1](peril_roll, unit, psy_discipline, power_name, unit_id, book_powers);
+			return combat_perils[i][1](peril_roll, unit, psy_discipline, power_name, unit_id, using_tome);
 		}
 	}
 

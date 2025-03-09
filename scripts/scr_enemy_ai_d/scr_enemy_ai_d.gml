@@ -58,8 +58,8 @@ function scr_enemy_ai_d() {
         numeral_name = planet_numeral_name(i);
 	    if (has_problem_planet_and_time(i, "succession", 0)){
             var result,alert_text;
-            var dice1=d100_roll();
-            var dice2=d100_roll();
+            var dice1=roll_dice(1, 100);
+            var dice2=roll_dice(1, 100);
         
             result="";alert_text="";
             if (dice1<=(p_heresy[i]*2)) then result="chaos";
