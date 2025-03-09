@@ -1,4 +1,4 @@
-// TODO: a bunch of stuff in this file and related to it uses strings, replace them with constants;
+//TODO: a bunch of stuff in this file and related to it uses strings, replace them with constants;
 
 #macro PSY_DISCIPLINES_STARTING ["default", "biomancy", "pyromancy","telekinesis","rune_magic"]
 
@@ -62,7 +62,7 @@ function get_power_data(_power_id, _data_name = "") {
     return;
 }
 
-// TODO: get_flavour_text and get_power_modifiers can probably be combined into one function, due to high level of code duplication;
+//TODO: get_flavour_text and get_power_modifiers can probably be combined into one function, due to high level of code duplication;
 /// Helper function that processes flavour text with conditions
 /// @param _flavour_text_data - The flavour text data structure
 /// @returns A randomly chosen flavour text that meets conditions
@@ -389,9 +389,6 @@ function find_valid_target(_power_data) {
     return _result;
 }
 
-//TODO: Make target selection to happen before attack power selection;
-//TODO: Make buff power selection to depend on more stuff;
-//TODO: All tome related logic in this file has to be reworked;
 /// @desc Psychic powers execution mess. Called in the scope of obj_pnunit.
 /// @param {real} caster_id - ID of the caster in the player column from obj_pnunit.
 /// @mixin
@@ -431,6 +428,7 @@ function scr_powers(caster_id) {
     var _power_id = "";
     var _known_powers = _unit.psy_powers_array();
 
+    //TODO: All tome related logic in this file has to be reworked;
     var _tome_data = process_tome_mechanics(_unit, caster_id);
     if (_tome_data.using_tome) {
         _known_powers = _tome_data.powers;
@@ -452,6 +450,7 @@ function scr_powers(caster_id) {
         }
 
         if (array_length(known_buff_powers) > 0) {
+            //TODO: Make buff power selection to depend on more stuff;
             _power_id = array_random_element(known_buff_powers);
             buff_cast = true;
         }
@@ -650,7 +649,8 @@ function scr_powers(caster_id) {
 
     } else if (_power_type == "attack" && _cast_successful) {
     //* Attack power casting
-        // TODO: separate the code bellow into a separate function;
+        //TODO: separate the code bellow into a separate function;
+        //TODO: Make target selection to happen before attack power selection;
         var _target_data = find_valid_target(_power_data);
 
         //* Calculate damage
