@@ -151,14 +151,14 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
                     you = random_index;
 
                     // Apply damage
-                    var minus = hostile_damage - veh_ac[you];
-                    if (minus < 0) {
-                        minus = 0.25;
+                    var _modified_damage = hostile_damage - veh_ac[you];
+                    if (_modified_damage < 0) {
+                        _modified_damage = 0.25;
                     }
-                    if (enemy == 13 && minus < 1) {
-                        minus = 1;
+                    if (enemy == 13 && _modified_damage < 1) {
+                        _modified_damage = 1;
                     }
-                    veh_hp[you] -= minus;
+                    veh_hp[you] -= _modified_damage;
                     unit_type = veh_type[you];
                     vehicle_hits++;
 
@@ -217,17 +217,17 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
                     var units_lost = 0;
 
                     // Apply damage
-                    var _shot_luck = roll_1d100();
-                    if (_shot_luck<1){
-                        var minus = hostile_damage;
-                    } else if (_shot_luck<5){
-                        var minus = hostile_damage - marine_ac[marine_index];
+                    var _shot_luck = roll_dice(1, 100, "low");
+                    var _modified_damage = 0;
+                    if (_shot_luck <= 5){
+                        _modified_damage = hostile_damage - (2 * marine_ac[marine_index]);
+                    } else if (_shot_luck > 95){
+                        _modified_damage = hostile_damage;
                     } else {
-                        var minus = hostile_damage - (2 * marine_ac[marine_index]);
+                        _modified_damage = hostile_damage - marine_ac[marine_index];
                     }
-                    
 
-                    if (minus > 0) {
+                    if (_modified_damage > 0) {
                         var damage_resistance = (marine.damage_resistance() / 100);
                         if (marine_mshield[marine_index] > 0) damage_resistance += 0.1;
                         if (marine_fiery[marine_index] > 0) damage_resistance += 0.15;
@@ -241,15 +241,15 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
                                 damage_resistance += (marine_iron[marine_index] / 5);
                             }
                         }
-                        minus = round(minus * (1 - damage_resistance));
+                        _modified_damage = round(_modified_damage * (1 - damage_resistance));
                     }
-                    if (minus < 0 && hostile_weapon == "Fleshborer") minus = 1.5;
+                    if (_modified_damage < 0 && hostile_weapon == "Fleshborer") _modified_damage = 1.5;
                     /* if (hostile_weapon == "Web Spinner") {
                         var webr = floor(random(100)) + 1;
                         var chunk = max(10, 62 - (marine_ac[marine_index] * 2));
-                        minus = (webr <= chunk) ? 5000 : 0;
+                        _modified_damage = (webr <= chunk) ? 5000 : 0;
                     } */
-                    marine.add_or_sub_health(-minus);
+                    marine.add_or_sub_health(-_modified_damage);
 
                     // Check if marine is dead
                     if (check_dead_marines(marine, marine_index)) {

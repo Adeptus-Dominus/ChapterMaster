@@ -2,19 +2,19 @@
 function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
 	 var combat_perils = [
 		[1, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
-				unit.corruption+=roll_1d6(false);
+				unit.corruption+=roll_dice(1, 6, "low");
 		    	var flavour_text2="He begins to gibber as psychic backlash overtakes him.";
 		    	return flavour_text2;
 		}],
 		[5, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
-			marine_casting_cooldown[unit_id] += roll_1d6(false);
+			marine_casting_cooldown[unit_id] += roll_dice(1, 6, "low");
 		   	var flavour_text2="His mind is burned fiercely by the warp.";
 		   	return flavour_text2;
 		}],
 		[15, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
-			var _cooldown = roll_1d6(false);
+			var _cooldown = roll_dice(1, 6, "low");
 			marine_casting_cooldown[unit_id] += _cooldown;
-			var _cooldown2 = roll_1d6(false);
+			var _cooldown2 = roll_dice(1, 6, "low");
 			if (men > 0) {
 				repeat(6) {
 					var t = irandom(men-1); // Random value from 0 to men-1
@@ -27,7 +27,7 @@ function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id,
 		    return flavour_text2;
 		}],
 		[20, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
-			unit.add_or_sub_health(roll_1d50(false) * -1);
+			unit.add_or_sub_health(roll_dice(1, 50, "low") * -1);
 	        switch(psy_discipline){
 	        	case "biomancy":
 	        		var flavour_text2="The psychic blast he had prepared runs loose, boiling his own blood!"
@@ -46,19 +46,19 @@ function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id,
 		}],
 		[30, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
 			marine_casting_cooldown[unit_id] += 20;
-			unit.corruption+=roll_1d6(false);
+			unit.corruption+=roll_dice(1, 6, "low");
 	    	var flavour_text2=$"His mind is seared by the warp, now unable to cast more powers for {marine_casting_cooldown[unit_id]} hours.";
 	    	return flavour_text2;
 		}],
 		[40, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
 		        var flavour_text2="Capricious voices eminate from the surrounding area, whispering poisonous lies and horrible truths.";
-		        unit.corruption+=roll_1d10(false);
+		        unit.corruption+=roll_dice(1, 10, "low");
 				if (men > 0) {
 					repeat(6) {
 						var t = irandom(men-1); // Random value from 0 to men-1
 						if (marine_type[t] != "") {
 							var _ally = unit_struct[t];
-							_ally.corruption+=roll_1d10(false);
+							_ally.corruption+=roll_dice(1, 10, "low");
 						}
 					}
 				}
@@ -112,12 +112,12 @@ function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id,
 		}],	
 		[60, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
 		        var flavour_text2="There is a massive explosion of warp energy which injures him and several other marines!";
-		        unit.add_or_sub_health(roll_1d50(false) * -1);
+		        unit.add_or_sub_health(roll_dice(1, 50, "low") * -1);
 				if (men > 0) {
 					repeat(6) {
 						var t = irandom(men-1); // Random value from 0 to men-1
 						if (marine_type[t] != "") {
-							marine_hp[t]-=roll_1d50(false);
+							marine_hp[t]-=roll_dice(1, 50, "low");
 						}
 					}
 				}
@@ -129,12 +129,12 @@ function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id,
 			return flavour_text2;
 		}],	
 		[80, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
-		        unit.add_or_sub_health(roll_5d10(false) * -1);
+		        unit.add_or_sub_health(roll_dice(5, 10, "low") * -1);
 				if (men > 0) {
 					repeat(6) {
 						var t = irandom(men-1); // Random value from 0 to men-1
 						if (marine_type[t] != "") {
-							marine_hp[t]-=roll_1d50(false);
+							marine_hp[t]-=roll_dice(1, 50, "low");
 						}
 					}
 				}
@@ -145,7 +145,7 @@ function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id,
 		[90, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
 				var flavour_text2;
 				marine_casting_cooldown[unit_id] += 999;
-				unit.corruption+=roll_5d10(false);
+				unit.corruption+=roll_dice(5, 10, "low");
 		        flavour_text2="The marine's flesh begins to twist and rip, seemingly turning inside out.  His form looms up, and up, and up.  Within seconds a Greater Daemon of ";
 	        
                 var dem = choose("Slaanesh","Nurgle","Tzeentch");

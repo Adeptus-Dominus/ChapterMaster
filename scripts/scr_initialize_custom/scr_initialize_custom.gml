@@ -3456,8 +3456,8 @@ function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1
 		}
 		obj_ini.spe[company][slot] += string(let) + "0|";
 
-		if (roll_1d6() < 4) {
-		spawn_unit.add_trait("warp_touched");
+		if (roll_dice(1, 6, "high") < 4) {
+			spawn_unit.add_trait("warp_touched");
 		}
 		if(scr_has_adv("Psyker Abundance")){
 			spawn_unit.add_exp(10);
