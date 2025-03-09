@@ -2408,7 +2408,6 @@ function scr_initialize_custom() {
 					let = "R";
 					break;
 			}
-			spe[company, 1] += string(let) + "0|";
 			chapter_master.update_powers();
 	}
 	mobi[company, 1] = mobi[100, 2];
@@ -3438,24 +3437,6 @@ function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1
 		spawn_unit.add_trait("soft_target");
 	}
 	if(role_id == eROLE.Librarian){
-		var let = "";
-		if (obj_creation.discipline = "default") {
-			let = "D";
-		}
-		if (obj_creation.discipline = "biomancy") {
-			let = "B";
-		}
-		if (obj_creation.discipline = "pyromancy") {
-			let = "P";
-		}
-		if (obj_creation.discipline = "telekinesis") {
-			let = "T";
-		}
-		if (obj_creation.discipline = "rune_magic") {
-			let = "R";
-		}
-		obj_ini.spe[company][slot] += string(let) + "0|";
-
 		if (roll_dice(1, 6, "high") < 4) {
 			spawn_unit.add_trait("warp_touched");
 		}

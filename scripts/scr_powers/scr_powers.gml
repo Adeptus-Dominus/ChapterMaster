@@ -293,6 +293,62 @@ function roll_perils_strength(_unit, _tome_perils_strength) {
     return _perils_strength;
 }
 
+/// @function process_tome_mechanics
+/// @param {struct} _unit - The unit structure
+/// @param {real} _unit_id - The caster's ID
+/// @returns {struct} Tome-related data and modifiers
+function process_tome_mechanics(_unit, _unit_id) {
+    var _result = {
+        has_tome: false,
+        discipline: "",
+        powers: [],
+        perils_chance: 0,
+        perils_strength: 0,
+        using_tome: false,
+        cast_flavour_text: ""
+    };
+    
+    var _unit_weapon_one_data = _unit.get_weapon_one_data();
+    var _unit_weapon_two_data = _unit.get_weapon_two_data();
+    
+    if (_unit_weapon_one_data == "Tome" || _unit_weapon_two_data == "Tome") {
+        _result.has_tome = true;
+        
+        var _tome_tags = "";
+        if (_unit_weapon_one_data == "Tome") {
+            _tome_tags += marine_wep1[_unit_id];
+        }
+        if (_unit_weapon_two_data == "Tome") {
+            _tome_tags += marine_wep2[_unit_id];
+        }
+        _result.discipline = get_tome_discipline(_tome_tags);
+        
+        // Determine if tome is used and apply effects
+        var _tome_roll = roll_dice(1, 100);
+        if (_result.discipline != "" && _tome_roll > 50) {
+            _result.using_tome = true;
+            
+            if (struct_exists(global.disciplines_data, _result.discipline)) {
+                _result.perils_chance = get_discipline_data(_result.discipline, "perils_chance");
+                _result.perils_strength = get_discipline_data(_result.discipline, "perils_strength");
+                _result.powers = get_discipline_data(_result.discipline, "powers");
+            }
+            
+            // Generate flavor text for tome usage
+            _result.cast_flavour_text = $"{_unit.name_role()}' tome confers knowledge upon them.";
+
+            // Apply corruption based on perils chance
+            if (_result.perils_chance > 0) {
+                if ((_tome_roll > 90) && (_result.perils_chance > 0)) {
+                    _unit.corruption += roll_dice(1, 6, "low");
+                }
+            }
+        }
+    }
+    
+    return _result;
+}
+
 //TODO: Make target selection to happen before attack power selection;
 //TODO: Make buff power selection to depend on more stuff;
 //TODO: All tome related logic in this file has to be reworked;
@@ -334,6 +390,11 @@ function scr_powers(caster_id) {
     // Decide what to cast
     var _power_id = "";
     var _known_powers = _unit.psy_powers_array();
+
+    var _tome_data = process_tome_mechanics(_unit, caster_id);
+    if (_tome_data.using_tome) {
+        _known_powers = _tome_data.powers;
+    }
 
     // Buffs
     var buff_cast = false;
@@ -417,67 +478,6 @@ function scr_powers(caster_id) {
     if (_power_sorcery != undefined && _power_sorcery > 0) {
         if ((obj_ncombat.sorcery_seen < 2) && (obj_ncombat.present_inquisitor == 1)) {
             obj_ncombat.sorcery_seen = 2;
-        }
-    }
-
-
-    // Tome shit bellow may not work.
-    //TODO: Maybe move into a separate function;
-    var _has_tome = false;
-    var _tome_discipline = "";
-    var _tome_perils_chance = 0;
-    var _tome_perils_strength = 0;
-
-    if (_unit_weapon_one_data == "Tome" || _unit_weapon_two_data == "Tome") {
-        _has_tome = true;
-
-        var _tome_tags = "";
-        if (_unit_weapon_one_data == "Tome") {
-            _tome_tags += marine_wep1[caster_id];
-        }
-        if (_unit_weapon_two_data == "Tome") {
-            _tome_tags += marine_wep2[caster_id];
-        }
-        _tome_discipline = get_tome_discipline(_tome_tags);
-    }
-
-    if (_has_tome) {
-        //TODO: Move into a separate function;
-        var _using_tome = false;
-        var _tome_roll = roll_dice(1, 100);
-        if (_tome_discipline != "" && _tome_roll <= 50) {
-            _selected_discipline = _tome_discipline;
-            _using_tome = true;
-        }
-
-        //TODO: Move into a separate function;
-        if (struct_exists(global.disciplines_data, _selected_discipline)) {
-            var _powers_array = get_discipline_data(_selected_discipline, "powers");
-            if (_using_tome) {
-                _power_id = array_random_element(_powers_array);
-                _tome_perils_chance = get_discipline_data(_selected_discipline, "perils_chance");
-                _tome_perils_strength = get_discipline_data(_selected_discipline, "perils_strength");
-            }
-        }
-
-        if ((_tome_discipline != "") && (_tome_roll <= 33)) {
-            _cast_flavour_text = _unit.name_role();
-            if (string_char_at(_cast_flavour_text, string_length(_cast_flavour_text)) == "_s") {
-                _cast_flavour_text += "' tome ";
-            }
-            if (string_char_at(_cast_flavour_text, string_length(_cast_flavour_text)) != "_s") {
-                _cast_flavour_text += "'_s tome ";
-            }
-            _cast_flavour_text += $"confers knowledge upon him.  He casts '{_power_name}'";
-
-            if (_tome_perils_chance > 0) {
-                if ((_tome_roll <= 10) && (_tome_perils_chance == 1)) {
-                    _unit.corruption += choose(1, 2);
-                }
-                if ((_tome_roll <= 20) && (_tome_perils_chance > 1)) {
-                    _unit.corruption += choose(3, 4, 5);
-                }
-            }
         }
     }
 
@@ -743,12 +743,12 @@ function scr_powers(caster_id) {
 
     //* Perils happen bellow
     //TODO: Perhaps separate perils into a separate function;
-    var _perils_happened = perils_test(_unit, _tome_perils_chance);
-    var _perils_strength = roll_perils_strength(_unit, _tome_perils_strength);
+    var _perils_happened = perils_test(_unit, _tome_data.perils_chance);
+    var _perils_strength = roll_perils_strength(_unit, _tome_data.perils_strength);
 
     if (_perils_happened) {
         _cast_flavour_text = $"{_unit.name_role()} suffers Perils of the Warp!  ";
-        _power_flavour_text = scr_perils_table(_perils_strength, _unit, _psy_discipline, _power_id, caster_id, _tome_discipline);
+        _power_flavour_text = scr_perils_table(_perils_strength, _unit, _psy_discipline, _power_id, caster_id, _tome_data.using_tome);
 
         // Check if marine is dead
         check_dead_marines(_unit, caster_id);

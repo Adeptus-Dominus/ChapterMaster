@@ -1,17 +1,17 @@
 /// @mixin
-function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
+function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id, using_tome){
 	 var combat_perils = [
-		[1, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
+		[1, function(peril_roll, unit, psy_discipline, power_name, unit_id, using_tome){
 				unit.corruption+=roll_dice(1, 6, "low");
 		    	var flavour_text2="He begins to gibber as psychic backlash overtakes him.";
 		    	return flavour_text2;
 		}],
-		[5, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
+		[5, function(peril_roll, unit, psy_discipline, power_name, unit_id, using_tome){
 			marine_casting_cooldown[unit_id] += roll_dice(1, 6, "low");
 		   	var flavour_text2="His mind is burned fiercely by the warp.";
 		   	return flavour_text2;
 		}],
-		[15, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
+		[15, function(peril_roll, unit, psy_discipline, power_name, unit_id, using_tome){
 			var _cooldown = roll_dice(1, 6, "low");
 			marine_casting_cooldown[unit_id] += _cooldown;
 			var _cooldown2 = roll_dice(1, 6, "low");
@@ -26,7 +26,7 @@ function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id,
 		    var flavour_text2=$"Psychic energy outlash knocks him out for {_cooldown} hours, and stuns nearby marines for {_cooldown2}.";
 		    return flavour_text2;
 		}],
-		[20, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
+		[20, function(peril_roll, unit, psy_discipline, power_name, unit_id, using_tome){
 			unit.add_or_sub_health(roll_dice(1, 50, "low") * -1);
 	        switch(psy_discipline){
 	        	case "biomancy":
@@ -44,13 +44,13 @@ function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id,
 	        }
 	        return flavour_text2;
 		}],
-		[30, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
+		[30, function(peril_roll, unit, psy_discipline, power_name, unit_id, using_tome){
 			marine_casting_cooldown[unit_id] += 20;
 			unit.corruption+=roll_dice(1, 6, "low");
 	    	var flavour_text2=$"His mind is seared by the warp, now unable to cast more powers for {marine_casting_cooldown[unit_id]} hours.";
 	    	return flavour_text2;
 		}],
-		[40, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
+		[40, function(peril_roll, unit, psy_discipline, power_name, unit_id, using_tome){
 		        var flavour_text2="Capricious voices eminate from the surrounding area, whispering poisonous lies and horrible truths.";
 		        unit.corruption+=roll_dice(1, 10, "low");
 				if (men > 0) {
@@ -64,7 +64,7 @@ function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id,
 				}
 		        return flavour_text2;
 		}],
-		[50, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
+		[50, function(peril_roll, unit, psy_discipline, power_name, unit_id, using_tome){
 		       var  flavour_text2="Dark, shifting lights form into several ";
 		        var d1=0,d2=0,d3=0;
 		        var dem=choose("Pink Horror","Daemonette","Bloodletter","Plaguebearer");
@@ -110,7 +110,7 @@ function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id,
 		        }
 		        return flavour_text2;
 		}],	
-		[60, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
+		[60, function(peril_roll, unit, psy_discipline, power_name, unit_id, using_tome){
 		        var flavour_text2="There is a massive explosion of warp energy which injures him and several other marines!";
 		        unit.add_or_sub_health(roll_dice(1, 50, "low") * -1);
 				if (men > 0) {
@@ -123,12 +123,12 @@ function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id,
 				}
 		        return flavour_text2;
 		}],	
-		[70, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
+		[70, function(peril_roll, unit, psy_discipline, power_name, unit_id, using_tome){
 			obj_ncombat.global_perils+=90;
 			var flavour_text2="Wind shrieks and blood pours from the sky!  The warp feels unstable.";
 			return flavour_text2;
 		}],	
-		[80, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
+		[80, function(peril_roll, unit, psy_discipline, power_name, unit_id, using_tome){
 		        unit.add_or_sub_health(roll_dice(5, 10, "low") * -1);
 				if (men > 0) {
 					repeat(6) {
@@ -142,14 +142,14 @@ function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id,
 		        var flavour_text2="A massive shockwave eminates from the marine, who is knocked out cold!  All of his equipment is destroyed!";
 		        return flavour_text2;
 		}],	
-		[90, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
+		[90, function(peril_roll, unit, psy_discipline, power_name, unit_id, using_tome){
 				var flavour_text2;
 				marine_casting_cooldown[unit_id] += 999;
 				unit.corruption+=roll_dice(5, 10, "low");
 		        flavour_text2="The marine's flesh begins to twist and rip, seemingly turning inside out.  His form looms up, and up, and up.  Within seconds a Greater Daemon of ";
 	        
                 var dem = choose("Slaanesh","Nurgle","Tzeentch");
-				if (book_powers != "") {
+				if (using_tome != "") {
 					if (string_count("daemonic", marine_gear[unit_id]) > 0) {
 						if (string_count("SLAANESH", marine_gear[unit_id]) > 0) {
 							dem = "Slaanesh";
@@ -187,7 +187,7 @@ function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id,
 		        flavour_text2+=string(dem)+" has taken form.";
 		        return flavour_text2;
 		}],    	
-		[100, function(peril_roll, unit, psy_discipline, power_name, unit_id, book_powers){
+		[100, function(peril_roll, unit, psy_discipline, power_name, unit_id, using_tome){
 			var flavour_text2;
 			unit.update_health(0);
 			marine_dead[unit_id]=2;
@@ -202,7 +202,7 @@ function scr_perils_table(peril_roll, unit, psy_discipline, power_name, unit_id,
 
 	for (var i =0; i <array_length(combat_perils);i++){
 		if (peril_roll<combat_perils[i][0]){
-			return combat_perils[i][1](peril_roll, unit, psy_discipline, power_name, unit_id, book_powers);
+			return combat_perils[i][1](peril_roll, unit, psy_discipline, power_name, unit_id, using_tome);
 		}
 	}
 
