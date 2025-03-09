@@ -1192,8 +1192,8 @@ function scr_ui_manage() {
 		for (var i=0;i < array_length(tooltip_drawing); i++){
 			tip = tooltip_drawing[i];
 			coords=tip[1];
-			if (point_in_rectangle(mouse_x, mouse_y, coords[0],coords[1],coords[2],coords[3])){
-		        	tooltip_draw(tip[0], 350);
+			if (scr_hit(coords)){
+		        tooltip_draw(tip[0], 350);
 			}
 		}		
 	}
