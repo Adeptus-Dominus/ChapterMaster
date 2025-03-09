@@ -1481,7 +1481,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			wrath.name = "Hammer of Wrath";
 			wrath.range = 2;
 			wrath.ammo = 6;
-			wrath.second_profiles = ["Hammer of Wrath(M)"];
 			wrath.spli = _melee_weapon.spli;
 			wrath.arp = wrath.arp;
 
@@ -1492,6 +1491,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			wrath_melee.ammo = 8;
 			wrath_melee.spli = _melee_weapon.spli;
 			wrath_melee.arp = _melee_weapon.arp;
+			
+			wrath.second_profiles = [wrath_melee];
 
 			return wrath;
 		}

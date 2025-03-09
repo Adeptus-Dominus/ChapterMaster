@@ -3,14 +3,18 @@
 
 function add_second_profiles_to_stack (weapon,head_role=false, unit="none"){
     if (array_length(weapon.second_profiles)>0){//for adding in intergrated weaponry
-        var secondary_profile;
+        var _secondary_profile;
         for (var p=0;p<array_length(weapon.second_profiles);p++){
 
-            secondary_profile = gear_weapon_data("weapon",weapon.second_profiles[p],"all");
-            if (!is_struct(secondary_profile)) then continue;
-            var wep_index =  find_stack_index(secondary_profile.name, head_role,unit);
+            if (is_string(weapon.second_profiles[p])){
+                _secondary_profile = gear_weapon_data("weapon",weapon.second_profiles[p],"all");
+            } else {
+                _secondary_profile = weapon.second_profiles[p];
+            }
+            if (!is_struct(_secondary_profile)) then continue;
+            var wep_index =  find_stack_index(_secondary_profile.name, head_role,unit);
             if (wep_index>-1){
-                add_data_to_stack(wep_index,secondary_profile);
+                add_data_to_stack(wep_index,_secondary_profile);
             }
         }
     }
