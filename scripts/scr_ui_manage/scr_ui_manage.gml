@@ -8,16 +8,17 @@ function load_marines_into_ship(system, ship, units, reload=false) {
             ma_wid[loop] = 0;
         } else if (is_array(units[loop]) && ma_loc[loop] == system && sh_loc[ship] == system) {
             var vehicle = units[loop];
-
-            var start_ship = obj_ini.veh_lid[vehicle[0]][vehicle[1]];
-            var start_planet = obj_ini.veh_wid[vehicle[0]][vehicle[1]];
+            var _get = fetch_deep_array;
+            var _set = alter_deep_array;
+            var start_ship = _get(obj_ini.veh_lid,vehicle);
+            var start_planet = _get(obj_ini.veh_wid,vehicle);
             ma_loc[loop] = sh_loc[ship];
             ma_lid[loop] = sh_ide[ship];
             ma_wid[loop] = 0;
-            obj_ini.veh_loc[vehicle[0]][vehicle[1]] = sh_name[ship];
-            obj_ini.veh_lid[vehicle[0]][vehicle[1]] = sh_ide[ship];
-            obj_ini.veh_wid[vehicle[0]][vehicle[1]] = 0;
-            obj_ini.veh_uid[vehicle[0]][vehicle[1]] = sh_uid[ship];
+            _set(obj_ini.veh_loc, vehicle,sh_name[ship])
+            _set(obj_ini.veh_lid, vehicle, sh_name[ship])
+            _set(obj_ini.veh_wid, vehicle, sh_ide[ship])
+            _set(obj_ini.veh_uid, vehicle, sh_uid[ship])
             obj_ini.ship_carrying[sh_ide[ship]] += size;
 
             if (start_planet) {
@@ -39,7 +40,8 @@ function load_marines_into_ship(system, ship, units, reload=false) {
                 if (!is_array(units[q])) {
                     _unit_ship_id = array_get_index(sh_uid, units[q].last_ship.uid);
                 } else {
-                    _unit_ship_id = array_get_index(sh_uid, obj_ini.last_ship[units[q][0]][units[q][1]].uid);
+                	var last_ship_data = fetch_deep_array(obj_ini.last_ship, units[q]);
+                    _unit_ship_id = array_get_index(sh_uid, last_ship_data.uid);
                 }
             }
 
