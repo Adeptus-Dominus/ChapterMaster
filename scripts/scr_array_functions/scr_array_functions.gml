@@ -120,3 +120,26 @@ function array_to_string_order(_strings_array) {
 
     return result;
 }
+
+
+
+function alter_deep_array(array, accessors, value){
+	var _array_step = array;
+	var accessors_length = array_length(accessors);
+	for (var i=0;i <accessors_length-1; i++){
+		_array_step = _array_step[accessors[i]];
+	}
+	_array_step[@ accessors[accessors_length-1]] = value;
+}
+
+function fetch_deep_array(array, accessors){
+	var _array_step = array;
+	var accessors_length = array_length(accessors);
+	for (var i=0; i <accessors_length; i++){
+		_array_step = _array_step[accessors[i]];
+	}	
+	return _array_step;
+}
+
+
+
