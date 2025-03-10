@@ -416,6 +416,68 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			}
 			assign_reactionary_traits();
 		}
+		if (base_group == "human"){
+			while (stat_point_exp_marker>=15){
+				var stat_gains = choose("weapon_skill", "ballistic_skill", "piety", "wisdom"); // sisters getting more fanatical as they become more experienced
+				var special_stat = irandom(4);
+				self[$ stat_gains]++;
+				stat_point_exp_marker-=15;
+				if (struct_exists(instace_stat_point_gains, stat_gains)){
+					instace_stat_point_gains[$ stat_gains]++;
+				} else {
+					instace_stat_point_gains[$ stat_gains]=1;
+				}
+				if (struct_exists(turn_stat_gains, stat_gains)){
+					turn_stat_gains[$ stat_gains]++;
+				} else {
+					turn_stat_gains[$ stat_gains]=1;
+				}
+			}
+			assign_reactionary_traits();
+		}
+		if (base_group == "skitarii"){
+			while (stat_point_exp_marker>=15){
+				var stat_gains = choose("weapon_skill", "ballistic_skill", "technology", "wisdom");
+				var special_stat = irandom(4);
+				self[$ stat_gains]++;
+				stat_point_exp_marker-=15;
+				if (struct_exists(instace_stat_point_gains, stat_gains)){
+					instace_stat_point_gains[$ stat_gains]++;
+				} else {
+					instace_stat_point_gains[$ stat_gains]=1;
+				}
+				if (struct_exists(turn_stat_gains, stat_gains)){
+					turn_stat_gains[$ stat_gains]++;
+				} else {
+					turn_stat_gains[$ stat_gains]=1;
+				}
+			}
+			assign_reactionary_traits();
+		}
+		if (base_group == "tech_priest"){
+			while (stat_point_exp_marker>=15){
+				var stat_gains = choose("weapon_skill", "ballistic_skill", "technology", "intelligence");
+				var special_stat = irandom(4);
+					if (job!="none"){
+					if (job.type == "forge"){
+						stat_gains="technology";
+					}
+				}	
+				self[$ stat_gains]++;
+				stat_point_exp_marker-=15;
+				if (struct_exists(instace_stat_point_gains, stat_gains)){
+					instace_stat_point_gains[$ stat_gains]++;
+				} else {
+					instace_stat_point_gains[$ stat_gains]=1;
+				}
+				if (struct_exists(turn_stat_gains, stat_gains)){
+					turn_stat_gains[$ stat_gains]++;
+				} else {
+					turn_stat_gains[$ stat_gains]=1;
+				}
+			}
+			assign_reactionary_traits();
+		}
 		return [instace_stat_point_gains, _powers_learned];
 	}
 	static armour = function(raw=false){
