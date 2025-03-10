@@ -239,11 +239,11 @@ global.base_stats = { //tempory stats subject to change by anyone that wishes to
 	*/
 	"sister_of_battle":{
 			title : "Sister of Battle",
-			strength : [12,1],
-			constitution : [12,1], // TODO - consider making it that hireling armour boosts constitution, and possibly other stats
-			weapon_skill : [15,1],
-			ballistic_skill : [15,1],
-			dexterity : [22,1],
+			strength : [10,1],
+			constitution : [10,1], // TODO - consider making it that hireling armour boosts constitution, and possibly other stats
+			weapon_skill : [12,1],
+			ballistic_skill : [12,1],
+			dexterity : [10,1],
 			intelligence : [10,1],
 			wisdom : [10,1],
 			charisma : [10,1],
