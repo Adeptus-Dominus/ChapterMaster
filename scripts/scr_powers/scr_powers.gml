@@ -255,19 +255,12 @@ function convert_power_letter(power_code) {
     }
 }
 
-function perils_test(_unit, _tome_perils_chance) {
+function perils_test(_unit, _tome_perils_chance = 0) {
     var _roll_1d100 = roll_personal_dice(1, 100, "high", _unit);
     var _perils_threshold = PSY_PERILS_CHANCE_BASE;
 
     _perils_threshold += _tome_perils_chance;
     _perils_threshold += obj_ncombat.global_perils;
-
-    if (_unit.has_trait("warp_touched")) {
-        _perils_threshold += PSY_PERILS_CHANCE_LOW;
-    }
-    if (scr_has_adv("Daemon Binders")) {
-        _perils_threshold -= PSY_PERILS_CHANCE_LOW;
-    }
 
     _perils_threshold = max(_perils_threshold, PSY_PERILS_CHANCE_BASE);
 
@@ -279,9 +272,6 @@ function roll_perils_strength(_unit, _tome_perils_strength) {
 
     _perils_strength += _tome_perils_strength;
 
-    if (_unit.has_trait("warp_touched")) {
-        _perils_strength += PSY_PERILS_STR_LOW;
-    }
     if (scr_has_adv("Daemon Binders")) {
         // I hope you like demons
         _perils_strength += PSY_PERILS_STR_MED;
