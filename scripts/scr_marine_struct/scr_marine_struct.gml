@@ -255,7 +255,7 @@ global.base_stats = { //tempory stats subject to change by anyone that wishes to
 				weapons:{
 					"Light Bolter":1, "Bolt Pistol":1, "Chainsword":1, "Sarissa":1}},
 			start_gear:{"armour":"Light Power Armour", "wep1":"Light Bolter", "wep2":""},
-			base_group : "",
+			base_group : "human",
 			// traits:["zealous_faith"],
 	},
 	"sister_hospitaler":{
