@@ -24,10 +24,11 @@ function get_discipline_data(_discipline_name, _data_name) {
         // Check if the data exists for that power
         if (struct_exists(_discipline_object, _data_name)) {
             var _data_content = _discipline_object[$ _data_name];
-            return _data_content;
         } else {
-            log_error("Requested data was not found!");
+            _discipline_object = global.disciplines_data[$ "example"];
+            var _data_content = _discipline_object[$ _data_name];
         }
+        return _data_content;
     } else {
         log_error("Requested discipline was not found!");
     }
@@ -42,24 +43,28 @@ function get_power_data(_power_id, _data_name = "") {
     // Check if the power exists in the global.powers_data
     if (struct_exists(global.powers_data, _power_id)) {
         var _power_object = global.powers_data[$ _power_id];
+
         // Check if the data exists for that power
         if (_data_name == "") {
             return _power_object;
         } else if (struct_exists(_power_object, _data_name)) {
             var _data_content = _power_object[$ _data_name];
-            if (_data_name == "flavour_text") {
-                return get_flavour_text(_data_content);
-            } else if (_data_name == "power_modifiers") {
-                return get_power_modifiers(_data_content);
-            } else {
-                return _data_content;
-            }
         } else {
-            log_error("Requested data was not found!");
+            _power_object = global.powers_data[$ "example"];
+            var _data_content = _power_object[$ _data_name];
+        }
+
+        if (_data_name == "flavour_text") {
+            return get_flavour_text(_data_content);
+        } else if (_data_name == "power_modifiers") {
+            return get_power_modifiers(_data_content);
+        } else {
+            return _data_content;
         }
     } else {
         log_error("Requested power was not found!");
     }
+
     return;
 }
 
@@ -341,7 +346,7 @@ function process_tome_mechanics(_unit, _unit_id) {
 /// @returns {struct} The target information with column and index
 function find_valid_target(_power_data) {
     var _result = {column: noone, index: -1};
-    var _target_vehicles = _power_data.target_type == 4;
+    var _target_vehicles = _power_data.target_type == 2;
 
     // Create a priority queue for potential targets
     var _targets_queue = ds_priority_create();

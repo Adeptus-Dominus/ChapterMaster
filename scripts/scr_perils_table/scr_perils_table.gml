@@ -244,7 +244,7 @@ function scr_perils_table(perils_strength, unit, psy_discipline, power_name, uni
 		]
 	];
 
-	for (var i = 0; i < array_length(combat_perils); i++) {
+	for (var i = array_length(combat_perils) - 1; i >= 0; i--) {
 		if (perils_strength >= combat_perils[i][0]) {
 			return combat_perils[i][1](perils_strength, unit, psy_discipline, power_name, unit_id, using_tome);
 		}
