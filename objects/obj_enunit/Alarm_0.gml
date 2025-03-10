@@ -179,7 +179,7 @@ if (!engaged){// Shooting
                         // There were no marines in the first column, looking behind;
                         var enemy2;
                 
-                        var _column_size_value = (enemy.veh * 4) + (enemy.dreads * 4) + enemy.men;
+                        var _column_size_value = (enemy.veh * 2.5) + (enemy.dreads * 2) + (enemy.men * 0.5);
                         var x2 = enemy.x;
                         x2 += !flank ? 10 : -10;
                 
@@ -191,7 +191,7 @@ if (!engaged){// Shooting
                                 continue;
                             } else {
                                 var _pass_chance = ((_back_column_size_value / _column_size_value) - 1) * 100;
-                                if (roll_dice(1, 100, "high") > min(_pass_chance, 60)) {
+                                if (irandom_range(1, 100) > min(_pass_chance, 60)) {
                                     continue;
                                 }
                             }
