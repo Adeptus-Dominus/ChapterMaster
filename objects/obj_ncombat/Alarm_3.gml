@@ -94,7 +94,6 @@ if ((messages>0) and (messages_shown<24)) and (messages_shown<=100){
         newline=message[that];
         if (message_priority[that]>0) then newline_color="bright";
         if (string_count(" casts '",newline)>0) then newline_color="blue";
-        if (string_count("Perils of the Warp!",newline)>0) then newline_color="red";
         if (string_count("lost",newline)>0) then newline_color="red";
         if (string_count("^",newline)>0){
             newline=string_replace(newline,"^","");

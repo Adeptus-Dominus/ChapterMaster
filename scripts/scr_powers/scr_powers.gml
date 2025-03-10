@@ -760,7 +760,7 @@ function scr_powers(caster_id) {
         check_dead_marines(_unit, caster_id);
 
         _battle_log_message = _cast_flavour_text + _power_flavour_text;
-        add_battle_log_message(_battle_log_message, 999, 135);
+        add_battle_log_message(_battle_log_message, 999, 137);
     }
 
     display_battle_log_message();
