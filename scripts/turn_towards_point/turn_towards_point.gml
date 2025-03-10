@@ -7,7 +7,7 @@ function turn_towards_point(argument0, argument1, argument2, argument3, argument
 	y1 = argument2;
 	x2 = argument3;
 	y2 = argument4;
-	sp = argument5 * pi/180;
+	sp = (argument5 * global.frame_pacing) * pi/180;
 
 	a = arctan2(y1-y2, x2-x1) - ca;
 	while (a < -pi || a > pi)

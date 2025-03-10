@@ -20,7 +20,7 @@ function main_map_move_keys(){
     var x_limits = 0;
     var y_limits = 0;
 	if ((menu==0) and (formating==0)) or (instance_exists(obj_fleet)){
-	    var spd=12*obj_controller.scale_mod,keyb=""; // player move speed on campaign map
+	    var spd = global.frame_timings.t12 * obj_controller.scale_mod, keyb=""; // player move speed on campaign map
 	    if ((!instance_exists(obj_ingame_menu)) and (!instance_exists(obj_ncombat))) or (instance_exists(obj_fleet)){
 	        if keyboard_check(vk_shift){spd*=3;} // shift down, increase speed
 	        var view_x = __view_get( e__VW.XView, 0 )+2;
@@ -95,7 +95,7 @@ function draw_warp_lanes(){
 	}
 	var route;
 	static warp_image=-1;
-	warp_image+=0.5;
+	warp_image += global.frame_timings.t05;
 	if warp_image==58 then warp_image = 0;
 	// if (!warp_point_hover) then hover_time=0;
 	// warp_point_hover = false;

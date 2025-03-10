@@ -2,7 +2,7 @@
 
 image_xscale=0.5;
 image_yscale=0.5;
-speed=4;
+speed = global.frame_timings.t4;
 shields=0;
 
 target=0;
