@@ -11,7 +11,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 1,
         "magnitude": 160,
         "armour_piercing": 0,
-        "duration": 0,
         "flavour_text": {
             "default": {
                 "text": [
@@ -39,7 +38,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 1,
         "magnitude": 220,
         "armour_piercing": 0,
-        "duration": 0,
         "flavour_text": {
             "default": {
                 "text": [   
@@ -57,8 +55,7 @@ I see no reason to have these named structs, as their names are not used for any
                     }
                 ]
             }
-        },
-        "sorcery": true
+        }
     },
     "wave_of_change": {
         "name": "Wave of Change",
@@ -68,15 +65,13 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 1,
         "magnitude": 220,
         "armour_piercing": 0,
-        "duration": 0,
         "flavour_text": {
             "default": {
                 "text": [
                     "- a wispy cone of warp energy reaches outward, twisting and morphing all that it touches."
                 ]
             }
-        },
-        "sorcery": true
+        }
     },
     "insect_swarm": {
         "name": "Insect Swarm",
@@ -86,7 +81,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 1,
         "magnitude": 500,
         "armour_piercing": 1,
-        "duration": 0,
         "flavour_text": {
             "default": {
                 "text": [
@@ -94,8 +88,7 @@ I see no reason to have these named structs, as their names are not used for any
                     "- rank, ichory insects spew forth from his body at your foes. They begin burrowing through flesh and armour alike."
                 ]
             }
-        },
-        "sorcery": true
+        }
     },
     "blood_dementia": {
         "name": "Blood Dementia",
@@ -105,7 +98,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 0,
         "magnitude": 0,
         "armour_piercing": 0,
-        "duration": 3,
         "buff": {
             "attack": 2
         },
@@ -125,7 +117,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 1,
         "magnitude": 600,
         "armour_piercing": 0,
-        "duration": 0,
         "flavour_text": {
             "default": {
                 "text": [
@@ -133,7 +124,6 @@ I see no reason to have these named structs, as their names are not used for any
                 ]
             }
         },
-        "sorcery": true,
         "power_modifiers": {
             "enemy_type_9": {
                 "modifier": -150,
@@ -154,7 +144,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 1,
         "magnitude": 300,
         "armour_piercing": 0,
-        "duration": 0,
         "flavour_text": {
             "default": {
                 "text": [
@@ -163,8 +152,7 @@ I see no reason to have these named structs, as their names are not used for any
                     "- three oozing, shifting bolts of warp energy fly outward from his palms."
                 ]
             }
-        },
-        "sorcery": true
+        }
     },
     "warp_beam": {
         "name": "Warp Beam",
@@ -174,15 +162,13 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 1,
         "magnitude": 600,
         "armour_piercing": 1,
-        "duration": 0,
         "flavour_text": {
             "default": {
                 "text": [
                     "- a massive beam of purple warp energy shoots forth. All that it touches is consumed."
                 ]
             }
-        },
-        "sorcery": true
+        }
     },
     "rainbow_beam": {
         "name": "Rainbow Beam",
@@ -192,15 +178,13 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 1,
         "magnitude": 500,
         "armour_piercing": 1,
-        "duration": 0,
         "flavour_text": {
             "default": {
                 "text": [
                     "- a massive beam of warp energy hisses at the enemy, the crackling energy shifting through every color imaginable sickeningly fast."
                 ]
             }
-        },
-        "sorcery": true
+        }
     },
     "hysterical_frenzy": {
         "name": "Hysterical Frenzy",
@@ -210,7 +194,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 0,
         "magnitude": 0,
         "armour_piercing": 0,
-        "duration": 999,
         "flavour_text": {
             "default": {
                 "text": [
@@ -228,8 +211,7 @@ I see no reason to have these named structs, as their names are not used for any
                     }
                 ]
             }
-        },
-        "sorcery": true
+        }
     },
     "symphony_of_pain": {
         "name": "Symphony of Pain",
@@ -239,7 +221,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 1,
         "magnitude": 750,
         "armour_piercing": 1,
-        "duration": 0,
         "flavour_text": {
             "default": {
                 "text": [
@@ -247,8 +228,7 @@ I see no reason to have these named structs, as their names are not used for any
                     "- mouth stretching unnaturally wide, before letting out a hellish shriek. Armour and flesh tear alike are torn apart by volume of the howl."
                 ]
             }
-        },
-        "sorcery": true
+        }
     },
     "kamehameha": {
         "name": "Kamehameha",
@@ -258,15 +238,13 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 0,
         "magnitude": 0,
         "armour_piercing": 0,
-        "duration": 0,
         "flavour_text": {
             "default": {
                 "text": [
                     " begins to gather psychic energy."
                 ]
             }
-        },
-        "sorcery": true
+        }
     },
     "imperator_maior": {
         "name": "Imperator Maior",
@@ -276,15 +254,13 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 1,
         "magnitude": 1000,
         "armour_piercing": 1,
-        "duration": 0,
         "flavour_text": {
             "default": {
                 "text": [
                     "- he unleashes all of the gathered energy in a massive psychic blast."
                 ]
             }
-        },
-        "sorcery": true
+        }
     },
     "smite": {
         "name": "Smite",
@@ -294,7 +270,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 1,
         "magnitude": 260,
         "armour_piercing": 0,
-        "duration": 0,
         "flavour_text": {
             "default": {
                 "text": [
@@ -315,8 +290,7 @@ I see no reason to have these named structs, as their names are not used for any
                     }
                 ]
             }
-        },
-        "sorcery": true
+        }
     },
     "force_dome": {
         "name": "Force Dome",
@@ -326,7 +300,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 0,
         "magnitude": 0,
         "armour_piercing": 0,
-        "duration": 2,
         "flavour_text": {
             "default": {
                 "text": [
@@ -344,8 +317,7 @@ I see no reason to have these named structs, as their names are not used for any
                     }
                 ]
             }
-        },
-        "sorcery": true
+        }
     },
     "machine_curse": {
         "name": "Machine Curse",
@@ -355,7 +327,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 0,
         "magnitude": 300,
         "armour_piercing": 1,
-        "duration": 0,
         "flavour_text": {
             "default": {
                 "text": [
@@ -372,7 +343,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 1,
         "magnitude": 500,
         "armour_piercing": 0,
-        "duration": 0,
         "flavour_text": {
             "default": {
                 "text": [
@@ -392,8 +362,7 @@ I see no reason to have these named structs, as their names are not used for any
                     }
                 ]
             }
-        },
-        "sorcery": true
+        }
     },
     "quickening": {
         "name": "Quickening",
@@ -403,7 +372,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 0,
         "magnitude": 0,
         "armour_piercing": 0,
-        "duration": 3,
         "flavour_text": {
             "default": {
                 "text": [
@@ -420,7 +388,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 0,
         "magnitude": 0,
         "armour_piercing": 0,
-        "duration": 3,
         "flavour_text": {
             "default": {
                 "text": [
@@ -437,7 +404,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 1,
         "magnitude": 800,
         "armour_piercing": 1,
-        "duration": 0,
         "flavour_text": {
             "default": {
                 "text": [
@@ -455,8 +421,7 @@ I see no reason to have these named structs, as their names are not used for any
                     }
                 ]
             }
-        },
-        "sorcery": true
+        }
     },
     "breathe_fire": {
         "name": "Breathe Fire",
@@ -466,7 +431,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 0,
         "magnitude": 200,
         "armour_piercing": -1,
-        "duration": 0,
         "flavour_text": {
             "default": {
                 "text": [
@@ -494,7 +458,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 0,
         "magnitude": 0,
         "armour_piercing": 0,
-        "duration": 3,
         "flavour_text": {
             "default": {
                 "text": [
@@ -522,7 +485,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 0,
         "magnitude": 0,
         "armour_piercing": 0,
-        "duration": 3,
         "flavour_text": {
             "default": {
                 "text": [
@@ -550,7 +512,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 1,
         "magnitude": 600,
         "armour_piercing": 0,
-        "duration": 0,
         "flavour_text": {
             "default": {
                 "text": [
@@ -580,7 +541,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 1,
         "magnitude": 200,
         "armour_piercing": 1,
-        "duration": 0,
         "flavour_text": {
             "default": {
                 "text": [
@@ -598,8 +558,7 @@ I see no reason to have these named structs, as their names are not used for any
                     }
                 ]
             }
-        },
-        "sorcery": true
+        }
     },
     "molten_beam": {
         "name": "Molten Beam",
@@ -609,7 +568,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 1,
         "magnitude": 600,
         "armour_piercing": 1,
-        "duration": 0,
         "flavour_text": {
             "default": {
                 "text": [
@@ -627,8 +585,7 @@ I see no reason to have these named structs, as their names are not used for any
                     }
                 ]
             }
-        },
-        "sorcery": true
+        }
     },
     "blood_boil": {
         "name": "Blood Boil",
@@ -638,7 +595,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 0,
         "magnitude": 220,
         "armour_piercing": 0,
-        "duration": 0,
         "flavour_text": {
             "default": {
                 "text": [
@@ -655,7 +611,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 0,
         "magnitude": 0,
         "armour_piercing": 0,
-        "duration": 3,
         "flavour_text": {
             "default": {
                 "text": [
@@ -672,7 +627,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 0,
         "magnitude": 0,
         "armour_piercing": 0,
-        "duration": 3,
         "flavour_text": {
             "default": {
                 "text": [
@@ -689,7 +643,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 0,
         "magnitude": 15,
         "armour_piercing": 0,
-        "duration": 0,
         "flavour_text": {
             "default": {
                 "text": [
@@ -706,7 +659,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 1,
         "magnitude": 800,
         "armour_piercing": 0,
-        "duration": 0,
         "flavour_text": {
             "default": {
                 "text": [
@@ -723,7 +675,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 0,
         "magnitude": 190,
         "armour_piercing": 0,
-        "duration": 0,
         "flavour_text": {
             "default": {
                 "text": [
@@ -740,7 +691,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 1,
         "magnitude": 280,
         "armour_piercing": 0,
-        "duration": 0,
         "flavour_text": {
             "default": {
                 "text": [
@@ -757,7 +707,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 0,
         "magnitude": 0,
         "armour_piercing": 0,
-        "duration": 3,
         "flavour_text": {
             "default": {
                 "text": [
@@ -774,7 +723,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 0,
         "magnitude": 0,
         "armour_piercing": 0,
-        "duration": 3,
         "flavour_text": {
             "default": {
                 "text": [
@@ -791,7 +739,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 0,
         "magnitude": 160,
         "armour_piercing": 0,
-        "duration": 0,
         "flavour_text": {
             "default": {
                 "text": [
@@ -808,7 +755,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 0,
         "magnitude": 0,
         "armour_piercing": 0,
-        "duration": 2,
         "flavour_text": {
             "default": {
                 "text": [
@@ -825,7 +771,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 1,
         "magnitude": 320,
         "armour_piercing": 0,
-        "duration": 0,
         "flavour_text": {
             "default": {
                 "text": [
@@ -842,7 +787,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 1,
         "magnitude": 440,
         "armour_piercing": 0,
-        "duration": 0,
         "flavour_text": {
             "default": {
                 "text": [
@@ -860,7 +804,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 1,
         "magnitude": 600,
         "armour_piercing": 0,
-        "duration": 0,
         "flavour_text": {
             "default": {
                 "text": [
@@ -877,7 +820,6 @@ I see no reason to have these named structs, as their names are not used for any
         "max_kills": 1,
         "magnitude": 800,
         "armour_piercing": 1,
-        "duration": 0,
         "flavour_text": {
             "default": {
                 "text": [
