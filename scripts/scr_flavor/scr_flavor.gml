@@ -1,7 +1,7 @@
 /// @function add_battle_log_message
 /// @param {string} _message - The message text to add to the battle log
 /// @param {real} [_message_size=0] - The size/importance of the message (higher values = higher display priority; affects sorting order)
-/// @param {real} [_message_priority=0] - The priority level (affects sorting and text color: 0=normal, 135/136=blue, 2.1=purple)
+/// @param {real} [_message_priority=0] - The priority level (affects sorting and text color: 0=normal, 135=blue, 134=purple)
 /// @returns {real} The index of the newly added message
 function add_battle_log_message(_message, _message_size = 0, _message_priority = 0) {
     obj_ncombat.messages++;
@@ -429,9 +429,6 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 	// }
 
 	var message_priority = 0;
-	if (wep[id_of_attacking_weapons] == "Hammer of Wrath" || wep[id_of_attacking_weapons] == "Hammer of Wrath(M)") {
-		message_priority = 2.1;
-	}
 	if (obj_ncombat.enemy <= 10) {
 		if (target_name = obj_controller.faction_leader[obj_ncombat.enemy]) { // Cleaning up the message for the enemy leader
 			leader_message = string_replace(leader_message, "a " + target_name, target_name);

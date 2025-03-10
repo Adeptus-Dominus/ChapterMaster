@@ -740,7 +740,7 @@ function scr_powers(caster_id) {
                         _battle_log_priority = _casualties * 2; // More casualties = higher priority messages
                     }
                 }
-                add_battle_log_message(_battle_log_message, _battle_log_priority, 135);
+                add_battle_log_message(_battle_log_message, _battle_log_priority, 134);
             }
         }
     }

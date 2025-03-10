@@ -93,17 +93,14 @@ if ((messages>0) and (messages_shown<24)) and (messages_shown<=100){
     if (that!=0) and (that_sz>0){
         newline=message[that];
         if (message_priority[that]>0) then newline_color="bright";
-        if (string_count(" casts '",newline)>0) then newline_color="blue";
         if (string_count("lost",newline)>0) then newline_color="red";
         if (string_count("^",newline)>0){
             newline=string_replace(newline,"^","");
             newline_color="white";
         }
-        if (message_priority[that]=2.1) then newline_color="purple";
-        if (string_count("confers knowledge",newline)>0) then newline_color="purple";
-        
+
+        if (message_priority[that]=134) then newline_color="purple";        
         if (message_priority[that]=135) then newline_color="blue";
-        if (message_priority[that]=136) then newline_color="blue";
         if (message_priority[that]=137) then newline_color="red";
         
         scr_newtext();
