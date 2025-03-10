@@ -1194,7 +1194,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			} else if base_group == "tech_priest" {
 				ranged_hands_limit = 2+(technology/100);
 			}else if base_group == "human" {
-				ranged_hands_limit = 2;
+				ranged_hands_limit = 1;
 			}	
 			carry_string+=$"Base: {ranged_hands_limit}#";
 			if (strength>=50){
@@ -1373,7 +1373,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			} else if base_group == "tech_priest" {
 				melee_hands_limit = 1+(technology/100);
 			}else if base_group == "human" {
-				melee_hands_limit = 2;
+				melee_hands_limit = 1;
 			}				
 			carry_string+="Base: 2#";
 			if (strength>=50){
