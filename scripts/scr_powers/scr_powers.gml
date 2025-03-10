@@ -3,8 +3,7 @@
 #macro PSY_DISCIPLINES_STARTING ["default", "biomancy", "pyromancy","telekinesis","rune_magic"]
 
 #macro PSY_PERILS_CHANCE_BASE 1
-#macro PSY_PERILS_CHANCE_MIN 0.5
-#macro PSY_PERILS_CHANCE_LOW 0.5
+#macro PSY_PERILS_CHANCE_LOW 1
 
 #macro PSY_PERILS_STR_BASE 1
 #macro PSY_PERILS_STR_LOW 10
@@ -257,7 +256,7 @@ function convert_power_letter(power_code) {
 }
 
 function perils_test(_unit, _tome_perils_chance) {
-    var _roll_1d100 = roll_dice(1, 100, "high");
+    var _roll_1d100 = roll_personal_dice(1, 100, "high", _unit);
     var _perils_threshold = PSY_PERILS_CHANCE_BASE;
 
     _perils_threshold += _tome_perils_chance;
@@ -270,13 +269,13 @@ function perils_test(_unit, _tome_perils_chance) {
         _perils_threshold -= PSY_PERILS_CHANCE_LOW;
     }
 
-    _perils_threshold = max(_perils_threshold, PSY_PERILS_CHANCE_MIN);
+    _perils_threshold = max(_perils_threshold, PSY_PERILS_CHANCE_BASE);
 
     return _roll_1d100 <= _perils_threshold;
 }
 
 function roll_perils_strength(_unit, _tome_perils_strength) {
-    var _perils_strength = roll_dice(1, 100, "low");
+    var _perils_strength = roll_personal_dice(1, 100, "low", _unit);
 
     _perils_strength += _tome_perils_strength;
 
