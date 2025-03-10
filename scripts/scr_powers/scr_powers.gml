@@ -258,16 +258,16 @@ function perils_test(_unit, _tome_perils_chance) {
     _perils_threshold += _tome_perils_chance;
     _perils_threshold += obj_ncombat.global_perils;
 
-    if (scr_has_disadv("Warp Touched")) {
+    if (_unit.has_trait("warp_touched")) {
         _perils_threshold += PSY_PERILS_CHANCE_LOW;
     }
     if (scr_has_adv("Daemon Binders")) {
         _perils_threshold -= PSY_PERILS_CHANCE_LOW;
     }
 
-    _perils_threshold = max(_perils_threshold, PSY_PERILS_CHANCE_BASE);
+    _perils_threshold = max(_perils_threshold, PSY_PERILS_CHANCE_MIN);
     
-    return _perils_threshold >= _roll_1d100;
+    return _roll_1d100 <= _perils_threshold;
 }
 
 function roll_perils_strength(_unit, _tome_perils_strength) {
@@ -275,7 +275,7 @@ function roll_perils_strength(_unit, _tome_perils_strength) {
 
     _perils_strength += _tome_perils_strength;
 
-    if (scr_has_disadv("Warp Touched")) {
+    if (_unit.has_trait("warp_touched")) {
         _perils_strength += PSY_PERILS_STR_LOW;
     }
     if (scr_has_adv("Daemon Binders")) {
