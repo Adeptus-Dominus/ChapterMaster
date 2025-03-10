@@ -835,7 +835,7 @@ if (research.armour[1].stealth[0] > 0 && research.armour[1].armour[0] > 1 && obj
     item[i] = "Iron Halo";
     item_stocked[i] = scr_item_count(item[i]);
     forge_cost[i] = 2000;
-    item_cost[i] = 250;
+    item_cost[i] = 300;
     if (rene = 1) {
         nobuy[i] = 1;
         item_cost[i] = 0;

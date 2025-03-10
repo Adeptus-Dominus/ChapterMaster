@@ -1473,11 +1473,29 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 
 		//TODO just did this so that we're not loosing featuring but this porbably needs a rethink
 		static hammer_of_wrath =  function(){
-			var wrath =  new EquipmentStruct({},"");
-			wrath.attack=(strength*2) +(0.5*weapon_skill);
-			wrath.name = "hammer_of_wrath";
-			wrath.range = 1;
-			wrath.ammo = -1;
+			var _melee_attack = melee_damage_data[0];
+			var _melee_weapon = melee_damage_data[3];
+
+			var wrath =  new EquipmentStruct({
+				attack : _melee_attack * 0.75, 
+				name :  "Hammer of Wrath",
+				range : 2,
+				ammo : 6,
+				spli : _melee_weapon.spli,
+				arp : _melee_weapon.arp
+			},"weapon");
+
+			var wrath_melee =  new EquipmentStruct({
+				attack : _melee_attack * 1.25, 
+				name :  "Hammer of Wrath(M)",
+				range : 1,
+				ammo : 8,
+				spli : _melee_weapon.spli,
+				arp : _melee_weapon.arp,
+			},"weapon");			
+
+			wrath.second_profiles = [wrath_melee];
+
 			return wrath;
 		}
 
