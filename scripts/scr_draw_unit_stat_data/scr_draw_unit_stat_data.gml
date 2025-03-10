@@ -24,6 +24,9 @@ function scr_draw_unit_stat_data(manage=false){
 		y1: data_block.y1 + 8,
 		w: 32,
 		h: 48,
+		enter : function(){
+			return scr_hit(x1,y1,x2,y2);
+		}
 	};
 	attribute_box.x2 = attribute_box.x1 + attribute_box.w;
 	attribute_box.y2 = attribute_box.y1 + attribute_box.h;
@@ -112,14 +115,17 @@ function scr_draw_unit_stat_data(manage=false){
 	// draw_rectangle(stat_block.x1,stat_block.y1, stat_block.x1 + (4*array_length(stat_display_list)), stat_block.y1+48+4, 1)
 	var viewing_stat,icon_colour;
 	for (var i=0; i<array_length(stat_display_list);i++){
-		if (point_in_rectangle(mouse_x, mouse_y, attribute_box.x1,attribute_box.y1,attribute_box.x2,attribute_box.y2)){
+		var stat_data = stat_display_list[i];
+		var stat_key_string = stat_data[6];
+		var _stat_name = stat_data[4];
+		if (attribute_box.enter()){
 			viewing_stat=true;
 		}else{
 			viewing_stat=false;
 		}
 		if (viewing_stat){
 			icon_colour = c_white;
-			draw_set_color(stat_display_list[i][2]);
+			draw_set_color(stat_data[2]);
 			draw_rectangle(attribute_box.x1,attribute_box.y1,attribute_box.x2,attribute_box.y2, 0);
 		}else{
 			icon_colour = c_gray;
@@ -138,7 +144,14 @@ function scr_draw_unit_stat_data(manage=false){
 				obj_controller.unit_bio = false;
 			}
 		}
-		array_push(stat_tool_tips,[attribute_box.x1, attribute_box.y1, attribute_box.x2, attribute_box.y2,stat_display_list[i][1] + $"#Click to order by highest {stat_display_list[i][4]}", $"{stat_display_list[i][4]} ({stat_display_list[i][5]})"]);
+		var stat_percentage = 0;
+
+		if (is_struct(obj_controller.temp[122])){
+			if (struct_exists(obj_controller.temp[122],stat_key_string)){
+				stat_percentage = obj_controller.temp[122][$ stat_key_string];
+			}
+		}
+		array_push(stat_tool_tips,[attribute_box.x1, attribute_box.y1, attribute_box.x2, attribute_box.y2,stat_display_list[i][1] + $"#Click to order by highest {_stat_name}#{stat_percentage}% chance of growth", $"{_stat_name} ({stat_display_list[i][5]})"]);
 		attribute_box.x1+=36;
 		attribute_box.x2+=36;
 	}

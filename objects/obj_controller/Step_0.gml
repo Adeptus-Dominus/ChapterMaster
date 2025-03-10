@@ -348,6 +348,8 @@ if (menu==1 && (managing>0 || managing<0)){
                 }
             }
             temp[121] = unit.draw_unit_image();
+            show_debug_message("calc growth stats")
+            temp[122] = unit.handle_stat_growth();
         /*if (man[sel]="vehicle"){
             // TODO
         }*/
