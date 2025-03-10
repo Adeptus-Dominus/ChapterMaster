@@ -357,6 +357,7 @@ function find_valid_target(_power_data) {
     // Create a priority queue for potential targets
     var _targets_queue = ds_priority_create();
     
+    if (_power_data.type == "attack") {
     with (obj_enunit) {
         var _distance = point_distance(other.x, other.y, x, y) / 10;
         if (_distance <= _power_data.range) {
@@ -378,6 +379,39 @@ function find_valid_target(_power_data) {
         }
         
         if (_result.index != -1) break;
+        }
+    } else {
+        with (obj_pnunit) {
+            var _distance = point_distance(other.x, other.y, x, y) / 10;
+            if (_distance <= _power_data.range) {
+                ds_priority_add(_targets_queue, id, _distance);
+            }
+        }
+
+        // Find closest valid target
+        while (!ds_priority_empty(_targets_queue)) {
+            var _potential_target = ds_priority_delete_min(_targets_queue);
+            
+            if (!_target_vehicles) {
+                for (var i = 0; i < array_length(_potential_target.unit_struct); i++) {
+                    if (_potential_target.marine_dead[i] == 0) {
+                        _result.column = _potential_target;
+                        _result.index = i;
+                        break;
+                    }
+                }
+            } else {
+                for (var i = 0; i < array_length(_potential_target.veh); i++) {
+                    if (_potential_target.veh_hp[i] > 0) {
+                        _result.column = _potential_target;
+                        _result.index = i;
+                        break;
+                    }
+                }
+            }
+            
+            if (_result.index != -1) break;
+        }
         }
     
     ds_priority_destroy(_targets_queue);
@@ -540,101 +574,70 @@ function scr_powers(caster_id) {
     //* Buff powers casting code
     if (_power_type == "buff" && _cast_successful) {
         var _marine_index;
-        var _random_marine_list = [];
-        for (var i = 0; i < array_length(unit_struct); i++) {
-            array_push(_random_marine_list, i);
-        }
-        _random_marine_list = array_shuffle(_random_marine_list);
+        var _marine_column;
 
         if ((_power_id == "force_dome") || (_power_id == "stormbringer")) {
-            var _buff_casts = 9;
-            for (var i = 0; i < array_length(_random_marine_list); i++) {
-                if (_buff_casts <= 0) {
-                    break;
-                }
-                _marine_index = _random_marine_list[i];
-                if ((!marine_dead[_marine_index]) && (!marine_mshield[_marine_index])) {
-                    _buff_casts -= 1;
-                    marine_mshield[_marine_index] = 2;
+            var _buff_casts = 8;
+            repeat (_buff_casts) {
+                var _target_data = find_valid_target(_power_data);
+                _marine_index = _target_data.index;
+                _marine_column = _target_data.column;
+                if (_marine_index != -1) {
+                    _marine_column.marine_mshield[_marine_index] = 2;
                 }
             }
-        }
-
-        if (_power_id == "quickening") {
+        } else if (_power_id == "quickening") {
             if (marine_quick[caster_id] < 3) {
                 marine_quick[caster_id] = 3;
             }
-        }
-        if (_power_id == "might_of_the_ancients") {
+        } else if (_power_id == "might_of_the_ancients") {
             if (marine_might[caster_id] < 3) {
                 marine_might[caster_id] = 3;
             }
-        }
-
-        if (_power_id == "fiery_form") {
+        } else if (_power_id == "fiery_form") {
             if (marine_fiery[caster_id] < 3) {
                 marine_fiery[caster_id] = 3;
             }
-        }
-        if (_power_id == "fire_shield") {
+        } else if (_power_id == "fire_shield") {
             var _buff_casts = 9;
-            for (var i = 0; i < array_length(_random_marine_list); i++) {
-                if (_buff_casts <= 0) {
-                    break;
-                }
-                _marine_index = _random_marine_list[i];
-                if ((!marine_dead[_marine_index]) && (!marine_fshield[_marine_index])) {
-                    _buff_casts -= 1;
-                    marine_fshield[_marine_index] = 2;
+            repeat (_buff_casts) {
+                var _target_data = find_valid_target(_power_data);
+                _marine_index = _target_data.index;
+                _marine_column = _target_data.column;
+                if (_marine_index != -1) {
+                    _marine_column.marine_fshield[_marine_index] = 2;
                 }
             }
-        }
-
-        if (_power_id == "iron_arm") {
+        } else if (_power_id == "iron_arm") {
             marine_iron[caster_id] += 1;
-        }
-        if (_power_id == "endurance") {
+        } else if (_power_id == "endurance") {
             var _buff_casts = 5;
-            h = 0;
-            for (var i = 0; i < array_length(_random_marine_list); i++) {
-                if (_buff_casts <= 0) {
-                    break;
-                }
-                _marine_index = _random_marine_list[i];
-                if (!marine_dead[_marine_index]) {
-                    var _buff_unit = unit_struct[_marine_index];
-                    if (_buff_unit.hp() < _buff_unit.max_health()) {
-                        _buff_casts -= 1;
-                        _buff_unit.add_or_sub_health(20);
+            repeat (_buff_casts) {
+                var _target_data = find_valid_target(_power_data);
+                _marine_index = _target_data.index;
+                _marine_column = _target_data.column;
+                if (_marine_index != -1) {
+                    _marine_column.unit_struct[_marine_index].add_or_sub_health(20);
                     }
                 }
-            }
-        }
-        if (_power_id == "hysterical_frenzy") {
+        } else if (_power_id == "hysterical_frenzy") {
             var _buff_casts = 5;
-            h = 0;
-            for (var i = 0; i < array_length(_random_marine_list); i++) {
-                if (_buff_casts <= 0) {
-                    break;
-                }
-                _marine_index = _random_marine_list[i];
-                if (!marine_dead[_marine_index]) {
-                    _buff_casts -= 1;
+            repeat (_buff_casts) {
+                var _target_data = find_valid_target(_power_data);
+                _marine_index = _target_data.index;
+                _marine_column = _target_data.column;
+                if (_marine_index != -1) {
                     marine_attack[_marine_index] += 1.5 * _total_psy_invocation;
                     marine_defense[_marine_index] -= 0.15 * _total_psy_invocation;
                 }
             }
-        }
-        if (_power_id == "regenerate") {
+        } else if (_power_id == "regenerate") {
             _unit.add_or_sub_health(_power_magnitude * _total_psy_invocation);
-        }
-
-        if (_power_id == "telekinetic_dome") {
+        } else if (_power_id == "telekinetic_dome") {
             if (marine_dome[caster_id] < 3) {
                 marine_dome[caster_id] = 3;
             }
-        }
-        if (_power_id == "spatial_distortion") {
+        } else if (_power_id == "spatial_distortion") {
             if (marine_spatial[caster_id] < 3) {
                 marine_spatial[caster_id] = 3;
             }
@@ -642,9 +645,7 @@ function scr_powers(caster_id) {
 
         _battle_log_message = _cast_flavour_text + _power_flavour_text;
         add_battle_log_message(_battle_log_message, 999, 135);
-
-    } else if (_power_type == "attack" && _cast_successful) {
-    //* Attack power casting
+    } else if (_power_type == "attack" && _cast_successful) {               //* Attack power casting
         //TODO: separate the code bellow into a separate function;
         //TODO: Make target selection to happen before attack power selection;
         var _target_data = find_valid_target(_power_data);
