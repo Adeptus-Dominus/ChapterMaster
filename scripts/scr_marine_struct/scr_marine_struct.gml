@@ -51,6 +51,7 @@ enum location_types {
 }
 
 #macro ARR_psy_levels ["Rho","Pi","Omicron","Xi","Nu","Mu","Lambda","Kappa","Iota","Theta","Eta","Zeta","Epsilon","Delta","Gamma","Beta","Alpha","Alpha Plus","Beta","Gamma Plus"]
+#macro ARR_negative_psy_levels ["Rho","Sigma","Tau","Upsilon","Phi","Chi","Psi","Omega"]
 
 global.base_stats = { //tempory stats subject to change by anyone that wishes to try their luck
 	"chapter_master":{ // TODO consider allowing the player to change the starting stats of the chapter master, and closest advisors, especially for custom chapters
@@ -362,6 +363,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 	}
 	experience = 0;
 	turn_stat_gains = {};
+	powers_known = [];
 
 	static update_exp = function(new_val){
 		experience = new_val
@@ -791,35 +793,57 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			//array index 0 == trait to add
 			// array index 1 == probability e.g 99,98 == if (irandom(99)>98){add_trait}
 			// array index 3 == probability modifiers
-			psionic = 0
-			var warp_level = irandom(299)+1;
-			if (warp_level<=190){
-				psionic=choose(0,1);
-			} else if(warp_level<=294){
-				psionic=choose(2,3,4,5,6,7);
-			}else if(warp_level<=297){
-				psionic=choose(8,9,10);
-			} else if(warp_level<=298){
-				psionic=choose(11,12);
-			} else if(warp_level<=299){
-				psionic=choose(11,12,13,14);
-			} else if warp_level<=300{
-				if(irandom(4)==4){
-					psionic=choose(15,16);
-				} else{
-					psionic=choose(13,14);
+			var warp_level = roll_dice(2, 50, "high");
+			if (scr_has_adv("Psyker Abundance")) {
+				if (warp_level < 85) {
+					warp_level = roll_dice(2, 50, "high");
+				}
+			} else if (scr_has_disadv("Psyker Intolerant")) {
+				if (warp_level > 84) {
+					warp_level = roll_dice(2, 50, "low");
 				}
 			}
 
-			if (scr_has_adv("Psyker Abundance")){
-				if (psionic<16) then psionic++;
-				if (psionic<10) then psionic++;
-			} else if (scr_has_disadv("Psyker Intolerant")){
-				if (warp_level<=190){
-					psionic=choose(0,1);
-				} else {
-					psionic=choose(2,3,4,5,6,7);
-				}
+			if (warp_level == 1) {
+				psionic = -7;
+			} else if (warp_level <= 3) {
+				psionic = -6;
+			} else if (warp_level <= 5) {
+				psionic = -5;
+			} else if (warp_level <= 7) {
+				psionic = -4;
+			} else if (warp_level <= 9) {
+				psionic = -3;
+			} else if (warp_level <= 11) {
+				psionic = -2;
+			} else if (warp_level <= 13) {
+				psionic = -1;
+			} else if (warp_level <= 15) {
+				psionic = 0;
+			} else if (warp_level <= 17) {
+				psionic = 1;
+			} else if (warp_level <= 70) {
+				psionic = 2;
+			} else if (warp_level <= 80) {
+				psionic = 3;
+			} else if (warp_level <= 82) {
+				psionic = 4;
+			} else if (warp_level <= 84) {
+				psionic = 5;
+			} else if (warp_level <= 86) {
+				psionic = 6;
+			} else if (warp_level <= 88) {
+				psionic = 7;
+			} else if (warp_level <= 90) {
+				psionic = 8;
+			} else if (warp_level <= 95) {
+				psionic = 9;
+			} else if (warp_level <= 97) {
+				psionic = 10;
+			} else if (warp_level <= 99) {
+				psionic = 11;
+			} else {
+				psionic = 12;
 			}
 
 
@@ -1072,9 +1096,41 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 
 	weapon_two_quality="standard";
 
-		static specials = function(){ 
-			return obj_ini.spe[company][marine_number];
-		};	   
+	static specials = function(){ 
+		return obj_ini.spe[company][marine_number];
+	};	   
+
+	static psy_powers_array = function(){ 
+		var _psy_discipline = psy_discipline();
+		if (_psy_discipline == "") return [];
+ 
+		var _known_powers = string_split(specials(), "|");
+		if (array_length(_known_powers) > 1) {
+			array_pop(_known_powers);
+		}
+ 
+		var _powers_array = get_discipline_data(_psy_discipline, "powers");
+		if (_powers_array == undefined || !is_array(_powers_array)) return [];
+    
+		for (var i = 0; i < array_length(_known_powers); i++) {
+			_known_powers[i] = string_char_at(_known_powers[i], 2);
+			// Ensure index is within array bounds
+			if (i < array_length(_powers_array)) {
+				_known_powers[i] = _powers_array[i];
+			}
+		}
+ 
+		return _known_powers;
+	};
+ 
+	static psy_discipline = function(){ 
+		var _power_letter = string_char_at(specials(), 1);
+		if (_power_letter == "") return "";
+		var _psy_discipline = convert_power_letter(_power_letter);
+ 
+		return _psy_discipline;
+	};
+
        static update_powers = scr_powers_new;
 	   	static race = function(){ 
 			return obj_ini.race[company][marine_number];

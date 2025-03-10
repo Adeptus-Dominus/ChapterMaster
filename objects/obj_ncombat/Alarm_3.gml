@@ -6,7 +6,7 @@ if (wall_destroyed=1) then wall_destroyed=0;
 
 var i,good,changed;i=0;good=0;changed=0;
 
-// if (messages_to_show=8) and (messages_shown=0) then alarm[6]=75;
+// if (messages_to_show = 24) and (messages_shown=0) then alarm[6]=75;
 // if (messages_shown=105) then exit;
 
 
@@ -80,7 +80,7 @@ repeat(100){
 
 
 
-if ((messages>0) and (messages_shown<8)) and (messages_shown<=100){
+if ((messages>0) and (messages_shown<24)) and (messages_shown<=100){
     var that_sz,that;// show_message("Largest Message");
     that_sz=0;that=0;
     
@@ -93,17 +93,15 @@ if ((messages>0) and (messages_shown<8)) and (messages_shown<=100){
     if (that!=0) and (that_sz>0){
         newline=message[that];
         if (message_priority[that]>0) then newline_color="bright";
-        if (string_count(" casts '",newline)>0) then newline_color="blue";
-        if (string_count("Perils of the Warp!",newline)>0) then newline_color="red";
+        if (string_count("lost",newline)>0) then newline_color="red";
         if (string_count("^",newline)>0){
             newline=string_replace(newline,"^","");
             newline_color="white";
         }
-        if (message_priority[that]=2.1) then newline_color="purple";
-        if (string_count("confers knowledge",newline)>0) then newline_color="purple";
-        
+
+        if (message_priority[that]=134) then newline_color="purple";        
         if (message_priority[that]=135) then newline_color="blue";
-        if (message_priority[that]=136) then newline_color="blue";
+        if (message_priority[that]=137) then newline_color="red";
         
         scr_newtext();
         messages_shown+=1;
@@ -121,7 +119,7 @@ if ((messages>0) and (messages_shown<8)) and (messages_shown<=100){
 
 
 
-if (messages=0) or (messages_shown>=8) then messages_shown=999;
+if (messages=0) or (messages_shown>=24) then messages_shown=999;
 
 if (messages=0) then messages_shown=999;
 

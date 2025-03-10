@@ -303,7 +303,7 @@ function player_retreat_from_fleet_combat(){
     p_strength+=mfleet.frigate_number*3;
     p_strength+=mfleet.capital_number*8;
 
-    _roll_100=d100_roll();
+    _roll_100=roll_dice(1, 100, "low");
     
 
     var _loc_star = star_by_name(obj_turn_end.battle_location[obj_turn_end.current_battle]);
@@ -341,7 +341,7 @@ function player_retreat_from_fleet_combat(){
     
     if (_roll_100!=-5){
         repeat(50){
-            diceh=d100_roll();
+            diceh=roll_dice(1, 100, "high");
             if (diceh<=ratio){
                 ratio-=100;
                 var onceh=0;
