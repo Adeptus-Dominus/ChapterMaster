@@ -40,19 +40,26 @@ function compress_enemy_array(_target_column) {
 			}
 		}
 
-		// Compress arrays by shifting data to fill empty slots
-		for (var i = 0; i < array_length(_empty_slots) - 1; i++) {
-			if (_empty_slots[i] && !_empty_slots[i + 1]) {
-				// Move data from position i+1 to i
-				for (var j = 0; j < array_length(_data_arrays); j++) {
-					_data_arrays[j].arr[i] = _data_arrays[j].arr[i + 1];
-					_data_arrays[j].arr[i + 1] = _data_arrays[j].def;
-				}
-				_empty_slots[i] = false;
-				_empty_slots[i + 1] = true;
-				i = 0; // Restart compression from beginning to ensure proper packing
-			}
-		}
+        // Compress arrays using a pointer that doesn't restart from beginning
+        var pos = 0;
+        while (pos < array_length(_empty_slots) - 1) {
+            if (_empty_slots[pos] && !_empty_slots[pos + 1]) {
+                // Move data from position pos+1 to pos
+                for (var j = 0; j < array_length(_data_arrays); j++) {
+                    _data_arrays[j].arr[pos] = _data_arrays[j].arr[pos + 1];
+                    _data_arrays[j].arr[pos + 1] = _data_arrays[j].def;
+                }
+                _empty_slots[pos] = false;
+                _empty_slots[pos + 1] = true;
+
+                // Only backtrack if we're not at the beginning
+                if (pos > 0) {
+                    pos--;  // Check this position again in case we need to shift more
+                }
+            } else {
+                pos++;  // Move to next position
+            }
+        }
 	}
 }
 
@@ -93,7 +100,7 @@ function check_dead_marines(unit_struct, unit_index) {
         if (obj_ncombat.red_thirst == 1 && marine_type[unit_index] != "Death Company" && ((obj_ncombat.player_forces / obj_ncombat.player_max) < 0.9)) {
             obj_ncombat.red_thirst = 2;
         }
-        
+
 
         if (unit_struct.IsSpecialist("dreadnoughts")) {
             dreads -= 1;
