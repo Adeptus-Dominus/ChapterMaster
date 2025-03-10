@@ -255,7 +255,7 @@ global.base_stats = { //tempory stats subject to change by anyone that wishes to
 				weapons:{
 					"Light Bolter":1, "Bolt Pistol":1, "Chainsword":1, "Sarissa":1}},
 			start_gear:{"armour":"Light Power Armour", "wep1":"Light Bolter", "wep2":""},
-			base_group : "human",
+			base_group : "",
 			// traits:["zealous_faith"],
 	},
 	"sister_hospitaler":{
@@ -1132,7 +1132,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			} else if base_group == "tech_priest" {
 				ranged_hands_limit = 1+(technology/100);
 			}else if base_group == "human" {
-				ranged_hands_limit = 2;
+				ranged_hands_limit = 1.75;
 			}	
 			carry_string+=$"Base: {ranged_hands_limit}#";
 			if (strength>=50){
@@ -1311,7 +1311,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			} else if base_group == "tech_priest" {
 				melee_hands_limit = 1+(technology/100);
 			}else if base_group == "human" {
-				melee_hands_limit = 2;
+				melee_hands_limit = 1.75;
 			}				
 			carry_string+="Base: 2#";
 			if (strength>=50){
