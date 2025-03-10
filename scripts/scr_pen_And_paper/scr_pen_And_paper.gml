@@ -121,10 +121,10 @@ function roll_dice(dices = 1, faces = 6, player_benifit_at = "none") {
 	var _total_roll = 0;
 	var _roll = 0;
 
-	repeat(dices) {
+	repeat (dices) {
 		_roll = irandom_range(1, faces);
 
-		if (scr_has_disadv("Shitty Luck") && player_benifit_at != "none"){
+		if (scr_has_disadv("Shitty Luck") && player_benifit_at != "none") {
 			if (player_benifit_at == "high" && _roll > (faces / 2)) {
 				_roll = irandom_range(1, faces);
 			} else if (player_benifit_at == "low" && _roll < (faces / 2 + 1)) {
@@ -135,5 +135,38 @@ function roll_dice(dices = 1, faces = 6, player_benifit_at = "none") {
 		_total_roll += _roll;
 	}
 
-    return _total_roll;
+	return _total_roll;
 }
+
+/// @description Roll a custom dice, influenced by the unit' luck, return sum of all rolls.
+/// @param {real} dices - how many dices to roll.
+/// @param {real} faces - how many faces each dice has.
+/// @param {real} player_benifit_at - will the player benifit from low or high rolls, for the luck logic.
+/// @param {struct} unit - unit struct.
+/// @returns {real}
+function roll_personal_dice(dices = 1, faces = 6, player_benifit_at = "none", unit) {
+	var _total_roll = 0;
+	var _roll = 0;
+
+	repeat (dices) {
+		_roll = irandom_range(1, faces);
+
+		if (player_benifit_at != "none" && unit.luck > 0) {
+			// Chance to reroll, based on the luck stat
+			var luck_chance = roll_dice(1, 100);
+
+			if (luck_chance <= unit.luck) {
+				if (player_benifit_at == "high" && _roll > (faces / 2)) {
+					_roll = irandom_range(1, faces);
+				} else if (player_benifit_at == "low" && _roll < (faces / 2 + 1)) {
+					_roll = irandom_range(1, faces);
+				}
+			}
+		}
+
+		_total_roll += _roll;
+	}
+
+	return _total_roll;
+}
+

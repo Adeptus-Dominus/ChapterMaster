@@ -3,7 +3,8 @@
 #macro PSY_DISCIPLINES_STARTING ["default", "biomancy", "pyromancy","telekinesis","rune_magic"]
 
 #macro PSY_PERILS_CHANCE_BASE 1
-#macro PSY_PERILS_CHANCE_LOW 1
+#macro PSY_PERILS_CHANCE_MIN 0.5
+#macro PSY_PERILS_CHANCE_LOW 0.5
 
 #macro PSY_PERILS_STR_BASE 1
 #macro PSY_PERILS_STR_LOW 10
@@ -334,7 +335,7 @@ function process_tome_mechanics(_unit, _unit_id) {
             // Apply corruption based on perils chance
             if (_result.perils_chance > 0) {
                 if ((_tome_roll > 90) && (_result.perils_chance > 0)) {
-                    _unit.corruption += roll_dice(1, 6, "low");
+                    _unit.corruption += roll_personal_dice(1, 6, "low", _unit);
                 }
             }
         }
@@ -526,7 +527,7 @@ function scr_powers(caster_id) {
     _cast_difficulty -= _equipment_psy_focus;
     _cast_difficulty -= _unit.wisdom * 0.4;
 
-    if (roll_dice(1, 100, "high") >= _cast_difficulty) {
+    if (roll_personal_dice(1, 100, "high", _unit) >= _cast_difficulty) {
         _cast_successful = true;
         _cast_flavour_text = $"{_unit.name_role()} casts '{_power_name}'";
     } else {
