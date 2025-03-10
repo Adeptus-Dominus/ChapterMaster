@@ -176,6 +176,10 @@ if (!engaged){// Shooting
                             continue;
                         }
                     } else if (instance_number(obj_pnunit) > 1) {
+                        if (enemy2.men > 0) {
+                            continue;
+                        }
+
                         // There were no marines in the first column, looking behind;
                         var enemy2;
                 
@@ -196,10 +200,7 @@ if (!engaged){// Shooting
                                 }
                             }
                 
-                            if (enemy2.men > 0) {
-                                scr_shoot(i, enemy2, chapter_fuck, "att", "ranged");
-                                break;
-                            }
+                            scr_shoot(i, enemy2, chapter_fuck, "att", "ranged");
                         }
                     }
                 }
