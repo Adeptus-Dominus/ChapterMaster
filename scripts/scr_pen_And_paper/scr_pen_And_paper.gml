@@ -111,17 +111,23 @@ function print_stat_diffs(diffs){
 	return _diff_string;
 }
 
-function roll_dice(dices = 1, faces = 6, target = "none") {
+
+/// @description Roll a custom dice, influenced by the chapter' luck, return sum of all rolls.
+/// @param {real} dices - how many dices to roll.
+/// @param {real} faces - how many faces each dice has.
+/// @param {real} player_benifit_at - will the player benifit from low or high rolls, for the luck logic.
+/// @returns {real}
+function roll_dice(dices = 1, faces = 6, player_benifit_at = "none") {
 	var _total_roll = 0;
 	var _roll = 0;
 
 	repeat(dices) {
 		_roll = irandom_range(1, faces);
 
-		if (scr_has_disadv("Shitty Luck") && target != "none"){
-			if (target == "high" && _roll > (faces / 2)) {
+		if (scr_has_disadv("Shitty Luck") && player_benifit_at != "none"){
+			if (player_benifit_at == "high" && _roll > (faces / 2)) {
 				_roll = irandom_range(1, faces);
-			} else if (target == "low" && _roll < (faces / 2 + 1)) {
+			} else if (player_benifit_at == "low" && _roll < (faces / 2 + 1)) {
 				_roll = irandom_range(1, faces);
 			}
 		}
