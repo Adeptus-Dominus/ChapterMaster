@@ -8,6 +8,7 @@
         ],
         "perils_chance": 0.10,
         "perils_strength": 10,
+        "heretical": true,
         "tags": ["PRE", "FALL"]
     },
     "minor_nu_daemon": {
@@ -20,6 +21,7 @@
         ],
         "perils_chance": 0.30,
         "perils_strength": 30,
+        "heretical": true,
         "tags": ["NURGLE"]
     },
     "minor_tz_daemon": {
@@ -32,6 +34,7 @@
         ],
         "perils_chance": 0.30,
         "perils_strength": 30,
+        "heretical": true,
         "tags": ["MIN", "TZEENTCH"]
     },
     "minor_sl_daemon": {
@@ -44,6 +47,7 @@
         ],
         "perils_chance": 0.30,
         "perils_strength": 30,
+        "heretical": true,
         "tags": ["SLAANESH"]
     },
     "minor_default": {
@@ -100,6 +104,7 @@
         ],
         "perils_chance": 0.20,
         "perils_strength": 20,
+        "heretical": true,
         "tags": ["TENTACLES"]
     },
     "hacks": {
