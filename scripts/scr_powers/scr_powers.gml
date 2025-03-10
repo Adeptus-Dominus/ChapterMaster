@@ -70,27 +70,27 @@ function get_power_data(_power_id, _data_name = "") {
 function get_flavour_text(_flavour_text_data) {
     var _flavour_text = [];
     var _text_option_names = struct_get_names(_flavour_text_data);
-    
+
     for (var i = 0; i < array_length(_text_option_names); i++) {
         var _text_option_name = _text_option_names[i];
         var _text_option = _flavour_text_data[$ _text_option_name];
-        
+
         if (struct_exists(_text_option, "conditions")) {
             var _conditions_array = _text_option[$ "conditions"];
             var _conditions_satisfied = true;
-            
+
             for (var p = 0; p < array_length(_conditions_array); p++) {
                 var _condition_struct = _conditions_array[p];
                 var _condition_type = _condition_struct[$ "type"];
                 var _condition_value = _condition_struct[$ "value"];
                 var _condition_satisfied = power_condition_check(_condition_type, _condition_value);
-                
+
                 if (!_condition_satisfied) {
                     _conditions_satisfied = false;
                     break;
                 }
             }
-            
+
             if (_conditions_satisfied) {
                 _flavour_text = array_concat(_flavour_text, _text_option[$ "text"]);
             }
@@ -98,7 +98,7 @@ function get_flavour_text(_flavour_text_data) {
             _flavour_text = array_concat(_flavour_text, _text_option[$ "text"]);
         }
     }
-    
+
     return array_random_element(_flavour_text);
 }
 
@@ -108,38 +108,38 @@ function get_flavour_text(_flavour_text_data) {
 function get_power_modifiers(_modifiers_data) {
     var _total_modifier = 0;
     var _modifier_names = struct_get_names(_modifiers_data);
-    
+
     for (var i = 0; i < array_length(_modifier_names); i++) {
         var _modifier_name = _modifier_names[i];
         var _modifier = _modifiers_data[$ _modifier_name];
         var _should_apply = true;
-        
+
         if (struct_exists(_modifier, "conditions")) {
             var _conditions_array = _modifier[$ "conditions"];
-            
+
             for (var p = 0; p < array_length(_conditions_array); p++) {
                 var _condition_struct = _conditions_array[p];
                 var _condition_type = _condition_struct[$ "type"];
                 var _condition_value = _condition_struct[$ "value"];
-                
+
                 if (!power_condition_check(_condition_type, _condition_value)) {
                     _should_apply = false;
                     break;
                 }
             }
         }
-        
+
         if (_should_apply && struct_exists(_modifier, "value")) {
             _total_modifier += _modifier[$ "value"];
         }
     }
-    
+
     return _total_modifier;
 }
 
 function power_condition_check(condition, value) {
     try {
-        switch(condition) {
+        switch (condition) {
             case "advantage":
                 return scr_has_adv(value);
                 break;
@@ -183,7 +183,7 @@ function player_select_powers() {
         }
 
         var _discipline_name = get_discipline_data(discipline, "name");
-        draw_text_transformed(520, 697, _discipline_name, 0.5, 0.5, 0);  
+        draw_text_transformed(520, 697, _discipline_name, 0.5, 0.5, 0);
 
         var _psy_info = get_discipline_data(discipline, "description");
         draw_text_transformed(440, 729, _psy_info, 0.5, 0.5, 0);
@@ -218,7 +218,7 @@ function get_tome_discipline(_tome_tags) {
                 }
             }
         }
-        log_error("no matching discipline was found.")
+        log_error("no matching discipline was found.");
         return "";
     } catch (_exception) {
         return "";
@@ -230,7 +230,7 @@ function convert_power_letter(power_code) {
     try {
         var power_letter = string_char_at(power_code, 1);
         var matched_discipline = "";
-    
+
         var discipline_names = struct_get_names(global.disciplines_data);
         for (var i = 0; i < array_length(discipline_names); i++) {
             var _discipline_name = discipline_names[i];
@@ -243,7 +243,7 @@ function convert_power_letter(power_code) {
                 }
             }
         }
-        log_error("no matching discipline was found.")
+        log_error("no matching discipline was found.");
         return "";
     } catch (_exception) {
         return "";
@@ -266,7 +266,7 @@ function perils_test(_unit, _tome_perils_chance) {
     }
 
     _perils_threshold = max(_perils_threshold, PSY_PERILS_CHANCE_MIN);
-    
+
     return _roll_1d100 <= _perils_threshold;
 }
 
@@ -284,7 +284,7 @@ function roll_perils_strength(_unit, _tome_perils_strength) {
     }
 
     _perils_strength = max(_perils_strength, PSY_PERILS_STR_BASE);
-    
+
     return _perils_strength;
 }
 
@@ -293,22 +293,14 @@ function roll_perils_strength(_unit, _tome_perils_strength) {
 /// @param {real} _unit_id - The caster's ID
 /// @returns {struct} Tome-related data and modifiers
 function process_tome_mechanics(_unit, _unit_id) {
-    var _result = {
-        has_tome: false,
-        discipline: "",
-        powers: [],
-        perils_chance: 0,
-        perils_strength: 0,
-        using_tome: false,
-        cast_flavour_text: ""
-    };
-    
+    var _result = {has_tome: false, discipline: "", powers: [], perils_chance: 0, perils_strength: 0, using_tome: false, cast_flavour_text: ""};
+
     var _unit_weapon_one_data = _unit.get_weapon_one_data();
     var _unit_weapon_two_data = _unit.get_weapon_two_data();
-    
+
     if (_unit_weapon_one_data == "Tome" || _unit_weapon_two_data == "Tome") {
         _result.has_tome = true;
-        
+
         var _tome_tags = "";
         if (_unit_weapon_one_data == "Tome") {
             _tome_tags += marine_wep1[_unit_id];
@@ -317,18 +309,18 @@ function process_tome_mechanics(_unit, _unit_id) {
             _tome_tags += marine_wep2[_unit_id];
         }
         _result.discipline = get_tome_discipline(_tome_tags);
-        
+
         // Determine if tome is used and apply effects
         var _tome_roll = roll_dice(1, 100);
         if (_result.discipline != "" && _tome_roll > 50) {
             _result.using_tome = true;
-            
+
             if (struct_exists(global.disciplines_data, _result.discipline)) {
                 _result.perils_chance = get_discipline_data(_result.discipline, "perils_chance");
                 _result.perils_strength = get_discipline_data(_result.discipline, "perils_strength");
                 _result.powers = get_discipline_data(_result.discipline, "powers");
             }
-            
+
             // Generate flavor text for tome usage
             _result.cast_flavour_text = $"{_unit.name_role()}' tome confers knowledge upon them.";
 
@@ -340,7 +332,7 @@ function process_tome_mechanics(_unit, _unit_id) {
             }
         }
     }
-    
+
     return _result;
 }
 
@@ -348,37 +340,35 @@ function process_tome_mechanics(_unit, _unit_id) {
 /// @param {struct} _power_data - Data about the power being used
 /// @returns {struct} The target information with column and index
 function find_valid_target(_power_data) {
-    var _result = {
-        column: noone, 
-        index: -1
-    };
+    var _result = {column: noone, index: -1};
     var _target_vehicles = _power_data.target_type == 4;
-    
+
     // Create a priority queue for potential targets
     var _targets_queue = ds_priority_create();
-    
+
     if (_power_data.type == "attack") {
-    with (obj_enunit) {
-        var _distance = point_distance(other.x, other.y, x, y) / 10;
-        if (_distance <= _power_data.range) {
-            ds_priority_add(_targets_queue, id, _distance);
-        }
-    }
-    
-    // Find closest valid target
-    while (!ds_priority_empty(_targets_queue)) {
-        var _potential_target = ds_priority_delete_min(_targets_queue);
-        
-        for (var i = 0; i < array_length(_potential_target.dudes); i++) {
-            if (_potential_target.dudes_hp[i] > 0 && 
-                _potential_target.dudes_vehicle[i] == _target_vehicles) {
-                _result.column = _potential_target;
-                _result.index = i;
-                break;
+        with (obj_enunit) {
+            var _distance = point_distance(other.x, other.y, x, y) / 10;
+            if (_distance <= _power_data.range) {
+                ds_priority_add(_targets_queue, id, _distance);
             }
         }
-        
-        if (_result.index != -1) break;
+
+        // Find closest valid target
+        while (!ds_priority_empty(_targets_queue)) {
+            var _potential_target = ds_priority_delete_min(_targets_queue);
+
+            for (var i = 0; i < array_length(_potential_target.dudes); i++) {
+                if (_potential_target.dudes_hp[i] > 0 && _potential_target.dudes_vehicle[i] == _target_vehicles) {
+                    _result.column = _potential_target;
+                    _result.index = i;
+                    break;
+                }
+            }
+
+            if (_result.index != -1) {
+                break;
+            }
         }
     } else {
         with (obj_pnunit) {
@@ -391,7 +381,7 @@ function find_valid_target(_power_data) {
         // Find closest valid target
         while (!ds_priority_empty(_targets_queue)) {
             var _potential_target = ds_priority_delete_min(_targets_queue);
-            
+
             if (!_target_vehicles) {
                 for (var i = 0; i < array_length(_potential_target.unit_struct); i++) {
                     if (_potential_target.marine_dead[i] == 0) {
@@ -409,11 +399,13 @@ function find_valid_target(_power_data) {
                     }
                 }
             }
-            
-            if (_result.index != -1) break;
+
+            if (_result.index != -1) {
+                break;
+            }
         }
-        }
-    
+    }
+
     ds_priority_destroy(_targets_queue);
     return _result;
 }
@@ -451,7 +443,6 @@ function scr_powers(caster_id) {
     var _battle_log_priority = 0;
     var _cast_flavour_text = "";
     var _casualties_flavour_text = "";
-
 
     // Decide what to cast
     var _power_id = "";
@@ -522,7 +513,6 @@ function scr_powers(caster_id) {
         }
     }
 
-
     // Gather the invocation stats (multiplier to power stats)
     var _equipment_psy_invocation = get_total_special_value(_unit, "psy_invocation") / 100;
     var _character_psy_invocation = (_unit_exp / 100) + (_unit.psionic / 10);
@@ -542,7 +532,6 @@ function scr_powers(caster_id) {
     var _power_flavour_text = get_power_data(_power_id, "flavour_text");
     var _heretical = get_discipline_data(_selected_discipline, "heretical");
 
-
     // Some stuff about the inquisition getting angry for using psy powers
     //TODO: this should be refactored;
     if (_heretical != undefined && _heretical) {
@@ -550,7 +539,6 @@ function scr_powers(caster_id) {
             obj_ncombat.sorcery_seen = 2;
         }
     }
-
 
     // Psy focus and casting fail/success bellow
     //TODO: Move into a separate function;
@@ -618,8 +606,8 @@ function scr_powers(caster_id) {
                 _marine_column = _target_data.column;
                 if (_marine_index != -1) {
                     _marine_column.unit_struct[_marine_index].add_or_sub_health(20);
-                    }
                 }
+            }
         } else if (_power_id == "hysterical_frenzy") {
             var _buff_casts = 5;
             repeat (_buff_casts) {
@@ -645,7 +633,8 @@ function scr_powers(caster_id) {
 
         _battle_log_message = _cast_flavour_text + _power_flavour_text;
         add_battle_log_message(_battle_log_message, 999, 135);
-    } else if (_power_type == "attack" && _cast_successful) {               //* Attack power casting
+    } else if (_power_type == "attack" && _cast_successful) {
+        //* Attack power casting
         //TODO: separate the code bellow into a separate function;
         //TODO: Make target selection to happen before attack power selection;
         var _target_data = find_valid_target(_power_data);
@@ -654,36 +643,38 @@ function scr_powers(caster_id) {
         if (_target_data.index != -1 && instance_exists(_target_data.column) && (_target_data.column.dudes_num[_target_data.index] > 0)) {
             // Set up variables for damage calculation
             var _effective_armour = _target_data.column.dudes_ac[_target_data.index];
-            var _target_is_vehicle = (_target_data.column.dudes_vehicle[_target_data.index] == 1);
+            var _target_is_vehicle = _target_data.column.dudes_vehicle[_target_data.index] == 1;
             var _destruction_verb = _target_is_vehicle ? "destroyed" : "killed";
             var _damage_verb = _target_is_vehicle ? "damaged" : "hurt";
             var _target_unit_health = _target_data.column.dudes_hp[_target_data.index];
             var _target_unit_name = _target_data.column.dudes[_target_data.index];
             var _target_unit_count = _target_data.column.dudes_num[_target_data.index];
-            
+
             // Calculate armour effectiveness based on target type and power'_s armour piercing
-            if (!_target_is_vehicle) { // Non-vehicle targets
+            if (!_target_is_vehicle) {
+                // Non-vehicle targets
                 if (_power_armour_piercing == 1) {
                     _effective_armour = 0; // Full penetration ignores armour
                 } else if (_power_armour_piercing == -1) {
                     _effective_armour *= 6; // Reduced effectiveness against armour
                 }
-            } else { // Vehicle targets
+            } else {
+                // Vehicle targets
                 if (_power_armour_piercing == -1) {
                     _effective_armour = _power_magnitude; // Completely ineffective against vehicles
                 } else if (_power_armour_piercing == 0) {
                     _effective_armour *= 6; // Normal weapons struggle against vehicle armour
                 }
             }
-            
+
             // Calculate final damage after armour reduction
             var _damage_after_armour = _power_magnitude - _effective_armour;
             _damage_after_armour = max(0, _damage_after_armour); // Ensure damage isn't negative
             var _final_damage = _damage_after_armour; // Apply any additional modifiers here if needed
-            
+
             // Calculate casualties based on damage and health
             var _casualties = 0;
-            
+
             if (_power_max_kills == 0) {
                 // Single target limit - at most one casualty
                 _casualties = min(floor(_final_damage / _target_unit_health), 1);
@@ -691,21 +682,21 @@ function scr_powers(caster_id) {
                 // Multi-target - can kill multiple entities
                 _casualties = floor(_final_damage / _target_unit_health);
             }
-            
+
             // Cap casualties at available entities and ensure non-negative
             _casualties = min(max(_casualties, 0), _target_unit_count);
-            
+
             // No casualties
-            if ((_casualties == 0)) {
+            if (_casualties == 0) {
                 // Apply damage if any
                 if (_final_damage > 0) {
                     _target_data.column.dudes_hp[_target_data.index] -= _final_damage;
                     _casualties_flavour_text = $" The {_target_unit_name} survives the attack but is {_damage_verb}.";
-                // No damage
+                    // No damage
                 } else {
                     _casualties_flavour_text = $" The {_target_unit_name} is unscratched.";
                 }
-            // Apply casualties
+                // Apply casualties
             } else {
                 // Update unit counts
                 _target_data.column.dudes_num[_target_data.index] -= _casualties;
