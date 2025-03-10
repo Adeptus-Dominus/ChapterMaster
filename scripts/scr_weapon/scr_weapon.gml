@@ -12,7 +12,7 @@ global.weapons = {
 			"master_crafted": 10,
 			"artifact": 12
 		},
-		"melee_hands": 0.9,
+		"melee_hands": 0.75,
 		"ranged_hands": 1,
 		"tags": ["shield"],
 		"hp_mod": {
@@ -29,7 +29,7 @@ global.weapons = {
 			"master_crafted": 5,
 			"artifact": 6
 		},
-		"melee_hands": 0.9,
+		"melee_hands": 0.75,
 		"tags": ["shield","boarding"],
 		"hp_mod": {
 			"standard": 15,
@@ -1732,8 +1732,8 @@ global.weapons = {
 			"artifact": 45
 		},
 		"description": "A smaller variant of Bolter, intended to be useable by unaugmented humans.",
-		"melee_hands": 0,
-		"ranged_hands": 1,
+		"melee_hands": 1.25,
+		"ranged_hands": 1.25,
 		"ammo": 16,
 		"range": 10,
 		"spli": 2,
@@ -2565,6 +2565,3 @@ global.gear = {
                       descr="A Predator-compatible turret housing a neutron blaster; a weapon from the Dark Age of Technology, this weapon is capable of destroying enemy armour with impunity. ";}
                 if (thawep="Volkite Saker Turret"){attack=400;arp=0;range=18;amm=50;spli=1;
                         descr="A Predator-compatible turret housing a Volkite Saker, capable of igniting entire formations of enemy forces with a single sweep. ";}
-
-
-
