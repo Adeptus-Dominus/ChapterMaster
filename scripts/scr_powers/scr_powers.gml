@@ -378,7 +378,7 @@ function find_valid_target(_power_data) {
         }
         
         if (_result.index != -1) break;
-    }
+        }
     
     ds_priority_destroy(_targets_queue);
     return _result;
@@ -427,6 +427,7 @@ function scr_powers(caster_id) {
     var _tome_data = process_tome_mechanics(_unit, caster_id);
     if (_tome_data.using_tome) {
         _known_powers = _tome_data.powers;
+        _selected_discipline = _tome_data.discipline;
     }
 
     // Buffs
@@ -505,12 +506,12 @@ function scr_powers(caster_id) {
     var _power_armour_piercing = get_power_data(_power_id, "armour_piercing");
     // var _power_duration = get_power_data(_power_id, "duration"); // Not used atm
     var _power_flavour_text = get_power_data(_power_id, "flavour_text");
-    var _power_sorcery = get_power_data(_power_id, "sorcery");
+    var _heretical = get_discipline_data(_selected_discipline, "heretical");
 
 
     // Some stuff about the inquisition getting angry for using psy powers
     //TODO: this should be refactored;
-    if (_power_sorcery != undefined && _power_sorcery > 0) {
+    if (_heretical != undefined && _heretical) {
         if ((obj_ncombat.sorcery_seen < 2) && (obj_ncombat.present_inquisitor == 1)) {
             obj_ncombat.sorcery_seen = 2;
         }
@@ -755,7 +756,7 @@ function scr_powers(caster_id) {
 
     if (_perils_happened) {
         _cast_flavour_text = $"{_unit.name_role()} suffers Perils of the Warp!  ";
-        _power_flavour_text = scr_perils_table(_perils_strength, _unit, _psy_discipline, _power_id, caster_id, _tome_data.using_tome);
+        _power_flavour_text = scr_perils_table(_perils_strength, _unit, _selected_discipline, _power_id, caster_id, _tome_data.using_tome);
 
         // Check if marine is dead
         check_dead_marines(_unit, caster_id);
