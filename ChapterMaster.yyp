@@ -110,6 +110,7 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"UI","folderPath":"folders/Sprites/UI.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Tile Sets","folderPath":"folders/Tile Sets.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Timelines","folderPath":"folders/Timelines.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"textures","folderPath":"folders/Sprites/Marine Viewer/textures.yy",},
   ],
   "IncludedFiles": [
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"README.md","CopyToMask":-1,"filePath":"datafiles",},
@@ -783,6 +784,7 @@
     {"id":{"name":"spr_mk6_mongol_chest_variants","path":"sprites/spr_mk6_mongol_chest_variants/spr_mk6_mongol_chest_variants.yy",},},
     {"id":{"name":"spr_maximus_colors2","path":"sprites/spr_maximus_colors2/spr_maximus_colors2.yy",},},
     {"id":{"name":"spr_indomitus_leg_variants","path":"sprites/spr_indomitus_leg_variants/spr_indomitus_leg_variants.yy",},},
+    {"id":{"name":"spr_hazzard_texture","path":"sprites/spr_hazzard_texture/spr_hazzard_texture.yy",},},
     {"id":{"name":"spr_diplomacy_dae","path":"sprites/spr_diplomacy_dae/spr_diplomacy_dae.yy",},},
     {"id":{"name":"sprite267","path":"sprites/sprite267/sprite267.yy",},},
     {"id":{"name":"spr_mk4_left_arm","path":"sprites/spr_mk4_left_arm/spr_mk4_left_arm.yy",},},
@@ -873,6 +875,7 @@
     {"id":{"name":"spr_ultra_right_shoulder_hanging","path":"sprites/spr_ultra_right_shoulder_hanging/spr_ultra_right_shoulder_hanging.yy",},},
     {"id":{"name":"spr_ship_custodian","path":"sprites/spr_ship_custodian/spr_ship_custodian.yy",},},
     {"id":{"name":"spr_ship_protector","path":"sprites/spr_ship_protector/spr_ship_protector.yy",},},
+    {"id":{"name":"armour_texture","path":"shaders/armour_texture/armour_texture.yy",},},
     {"id":{"name":"spr_ship_emissary","path":"sprites/spr_ship_emissary/spr_ship_emissary.yy",},},
     {"id":{"name":"spr_ship_warden","path":"sprites/spr_ship_warden/spr_ship_warden.yy",},},
     {"id":{"name":"spr_ballistic_skill_icon","path":"sprites/spr_ballistic_skill_icon/spr_ballistic_skill_icon.yy",},},

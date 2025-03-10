@@ -323,7 +323,13 @@ function ComplexSet(unit) constructor{
         }
     };    
     static draw = function(){
-        setup_complex_livery_shader(unit.role(),unit);
+        var _final_surface = surface_get_target();
+        surface_reset_target();
+        var prep_surface = surface_create(600, 600);
+        surface_set_target(prep_surface); 
+         
+
+        var texture_draws = setup_complex_livery_shader(unit.role(),unit);
         draw_cloaks();
          //draw_unit_arms(x_surface_offset, y_surface_offset, armour_type, specialist_colours, hide_bionics, complex_set);
         draw_unit_arms();
@@ -342,9 +348,9 @@ function ComplexSet(unit) constructor{
         }
         if (is_struct(_complex_helm) && struct_exists(self, "head")){
             complex_helms(_complex_helm);
-        }         
-         shader_set(full_livery_shader);
+        }
 
+        shader_reset();
          if (unit_armour == "MK4 Maximus" || unit_armour == "MK3 Iron Armour"){
              _draw_order = [
                 "backpack",
@@ -415,6 +421,38 @@ function ComplexSet(unit) constructor{
             
          }
          purity_seals_and_hangings();
+
+         var _tex_names = struct_get_names(texture_draws);
+         if (array_length(_tex_names)){
+            var tex_surface = surface_create(600, 600);
+            surface_copy(tex_surface, 0, 0, prep_surface);
+
+
+            var prep_surface_texture = surface_get_texture(tex_surface);
+
+
+            var armour_sampler = shader_get_sampler_index(armour_texture, "armour_texture");
+            shader_set(armour_texture);            
+            texture_set_stage(armour_sampler, prep_surface_texture);
+
+
+            for (var i=0;i<array_length(_tex_names);i++){
+                var _tex_data = texture_draws[$ _tex_names[i]];
+                var _replace_col = shader_get_uniform(armour_texture, "replace_colour");
+                for (var t=0; t<array_length(_tex_data.areas); t++){
+                    show_debug_message($"{_tex_data.areas[t]}");
+                    shader_set_uniform_f_array(_replace_col, _tex_data.areas[t]);
+                    draw_sprite(_tex_data.texture, 0, 0, 0);
+                }
+               
+            }
+         }
+
+         surface_reset_target();
+         surface_set_target(_final_surface);
+        shader_set(full_livery_shader);         
+         draw_surface(prep_surface, 0, 0)
+         surface_free(prep_surface);         
                               
     }
     static purity_seals_and_hangings = function(){
