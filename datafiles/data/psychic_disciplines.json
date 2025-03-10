@@ -1,4 +1,14 @@
 {
+    "example": {
+        "name": "",
+        "letter": "",
+        "description": "",
+        "powers": [],
+        "perils_chance": 0,
+        "perils_strength": 0,
+        "heretical": false,
+        "tags": []
+    },
     "minor_nu": {
         "name": "Minor Not Nurgle",
         "powers": [
