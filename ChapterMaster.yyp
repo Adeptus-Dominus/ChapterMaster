@@ -576,6 +576,7 @@
     {"id":{"name":"spr_purity_s","path":"sprites/spr_purity_s/spr_purity_s.yy",},},
     {"id":{"name":"spr_weapon_boltpis","path":"sprites/spr_weapon_boltpis/spr_weapon_boltpis.yy",},},
     {"id":{"name":"spr_artificer_left_leg","path":"sprites/spr_artificer_left_leg/spr_artificer_left_leg.yy",},},
+    {"id":{"name":"exp_and_exp_growth","path":"scripts/exp_and_exp_growth/exp_and_exp_growth.yy",},},
     {"id":{"name":"spr_weapon_bolter","path":"sprites/spr_weapon_bolter/spr_weapon_bolter.yy",},},
     {"id":{"name":"spr_weapon_sbolter","path":"sprites/spr_weapon_sbolter/spr_weapon_sbolter.yy",},},
     {"id":{"name":"spr_terminator_complex_arm_hidden_right","path":"sprites/spr_terminator_complex_arm_hidden_right/spr_terminator_complex_arm_hidden_right.yy",},},

@@ -712,7 +712,8 @@
     "duelist": {
         "weapon_skill": [
             2,
-            2
+            2,
+            "max"
         ],
         "display_name": "Duelist",
         "flavour_text": "a superlative duelist favoring traditional dueling weaponry",
