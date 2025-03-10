@@ -2357,15 +2357,10 @@ global.gear = {
 			"abbreviation": "IrnHalo",
 			"description": "An ancient artifact, these powerful conversion field generators are granted to high ranking battle brothers or heroes of the chapter. Bearers are often looked to for guidance by their fellow Astartes.",
 			"damage_resistance_mod": {
-				"standard": 10, // Adjusted
-				"master_crafted": 15, // Adjusted
-				"artifact": 20 // Adjusted
+				"standard": 35, // Adjusted
+				"master_crafted": 40, // Adjusted
+				"artifact": 45 // Adjusted
 			},
-			"hp_mod": {
-				"standard": 20, // Adjusted
-				"master_crafted": 25, // Adjusted
-				"artifact": 30 // Adjusted
-			}
 		},
 		"Combat Shield": {
 			"description": "A lighter, more maneuverable version of a Storm Shield. Due to its flexibility, Combat Shields leave other hand of a Space Marine free to use other hand-to-hand weaponry.",
@@ -2460,16 +2455,12 @@ global.gear = {
 		},
 		"Jump Pack": {
 			"abbreviation": "JmpPck",
+			"special_properties": ["Hammer of Wrath"],
 			"description": "A back-mounted device containing jets powerful enough to lift an Astartes in Power Armor over great distances. Utilizing these, Assault Marines bring devastation to the foe.",
-			"hp_mod": {
-				"standard": 10,
-				"master_crafted": 15,
-				"artifact": 20
-			},
 			"damage_resistance_mod": {
-				"standard": 20,
-				"master_crafted": 25,
-				"artifact": 30
+				"standard": 25,
+				"master_crafted": 30,
+				"artifact": 35
 			},
 			"tags": ["jump"],
 		},
