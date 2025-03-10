@@ -181,17 +181,18 @@ function scr_player_combat_weapon_stacks() {
                                 marine_casting[g] = false;
                             }
 
-                            var cast_dice = irandom_range(1, 100);
-                            cast_dice -= unit.psionic + (unit.experience / 60);
+                            var cast_dice = roll_dice(1, 100);
+                            cast_dice += unit.psionic + (unit.experience / 60);
 
                             if (scr_has_adv("Daemon Binders")) {
-                                cast_dice -= 5;
-                            }
-                            if ((marine_type[g] == "Chapter Master") && (obj_ncombat.chapter_master_psyker == 1)) {
-                                cast_dice -= 10;
+                                cast_dice += 5;
                             }
 
-                            if (cast_dice <= 50) {
+                            if (obj_ncombat.global_perils > 0) {
+                                cast_dice -= obj_ncombat.global_perils * 5;
+                            }
+
+                            if (cast_dice > 50) {
                                 marine_casting[g] = true;
                             }
                         }
