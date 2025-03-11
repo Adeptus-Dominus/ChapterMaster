@@ -963,7 +963,7 @@ function scr_initialize_custom() {
 		terminator += 5;
 		tenth -= 5;
 	}
-	if scr_has_adv("Psyker Abundance") {
+	if scr_has_adv("Warp Touched") {
 		tenth -= 5;
 		epistolary += 1;
 		codiciery += 2;
@@ -3441,9 +3441,6 @@ function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1
 			spawn_unit.add_trait("favoured_by_the_warp");
 		} else if (roll_dice(1, 10, "high") > 9) {
 			spawn_unit.add_trait("favoured_by_the_warp");
-		}
-		if (scr_has_adv("Psyker Abundance")){
-			spawn_unit.add_exp(10);
 		}
 		spawn_unit.psionic = irandom_range(8, 10);
 		spawn_unit.update_powers();

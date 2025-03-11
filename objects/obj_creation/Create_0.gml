@@ -793,8 +793,8 @@ var all_advantages = [
             meta : ["Chapter Master"],
         },
         {
-            name : "Psyker Abundance",
-            description : "The Psyker mutation runs rampant in your chapter.  Librarians train in 60% the normal time and receive bonus experience.",
+            name : "Warp Touched",
+            description : "The Psyker mutation runs rampant in your chapter. Librarians train in 60% the normal time and receive bonus experience.",
             value : 20,
             meta : ["Psyker Views","Librarians"],
         },

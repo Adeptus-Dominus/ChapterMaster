@@ -742,54 +742,57 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			//array index 0 == trait to add
 			// array index 1 == probability e.g 99,98 == if (irandom(99)>98){add_trait}
 			// array index 3 == probability modifiers
-			var warp_level = roll_dice(2, 50, "high");
-			if (scr_has_adv("Psyker Abundance")) {
-				if (warp_level < 85) {
-					warp_level = roll_dice(2, 50, "high");
+
+			var _psionics_roll = roll_personal_dice(1, 100, "high", self);
+			if (scr_has_adv("Warp Touched")) {
+				if (_psionics_roll <= 76) {
+					var _second_roll = roll_personal_dice(1, 100, "high", self);
+					_psionics_roll = _second_roll > _psionics_roll ? _second_roll : _psionics_roll;
 				}
 			} else if (scr_has_disadv("Psyker Intolerant")) {
-				if (warp_level > 84) {
-					warp_level = roll_dice(2, 50, "low");
+				if (_psionics_roll >= 78) {
+					var _second_roll = roll_personal_dice(1, 100, "low", self);
+					_psionics_roll = _second_roll < _psionics_roll ? _second_roll : _psionics_roll;
 				}
 			}
 
-			if (warp_level == 1) {
+			if (_psionics_roll == 1) {
 				psionic = -7;
-			} else if (warp_level <= 3) {
+			} else if (_psionics_roll <= 3) {
 				psionic = -6;
-			} else if (warp_level <= 5) {
+			} else if (_psionics_roll <= 5) {
 				psionic = -5;
-			} else if (warp_level <= 7) {
+			} else if (_psionics_roll <= 7) {
 				psionic = -4;
-			} else if (warp_level <= 9) {
+			} else if (_psionics_roll <= 9) {
 				psionic = -3;
-			} else if (warp_level <= 11) {
+			} else if (_psionics_roll <= 11) {
 				psionic = -2;
-			} else if (warp_level <= 13) {
+			} else if (_psionics_roll <= 13) {
 				psionic = -1;
-			} else if (warp_level <= 15) {
+			} else if (_psionics_roll <= 15) {
 				psionic = 0;
-			} else if (warp_level <= 17) {
+			} else if (_psionics_roll <= 76) {
 				psionic = 1;
-			} else if (warp_level <= 70) {
+			} else if (_psionics_roll <= 78) {
 				psionic = 2;
-			} else if (warp_level <= 80) {
+			} else if (_psionics_roll <= 80) {
 				psionic = 3;
-			} else if (warp_level <= 82) {
+			} else if (_psionics_roll <= 82) {
 				psionic = 4;
-			} else if (warp_level <= 84) {
+			} else if (_psionics_roll <= 84) {
 				psionic = 5;
-			} else if (warp_level <= 86) {
+			} else if (_psionics_roll <= 86) {
 				psionic = 6;
-			} else if (warp_level <= 88) {
+			} else if (_psionics_roll <= 88) {
 				psionic = 7;
-			} else if (warp_level <= 90) {
+			} else if (_psionics_roll <= 90) {
 				psionic = 8;
-			} else if (warp_level <= 95) {
+			} else if (_psionics_roll <= 95) {
 				psionic = 9;
-			} else if (warp_level <= 97) {
+			} else if (_psionics_roll <= 97) {
 				psionic = 10;
-			} else if (warp_level <= 99) {
+			} else if (_psionics_roll <= 99) {
 				psionic = 11;
 			} else {
 				psionic = 12;

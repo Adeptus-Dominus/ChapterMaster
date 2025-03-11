@@ -152,7 +152,7 @@ function scr_creation(slide_num) {
 				if(scr_has_disadv("Tech-Heresy")){
 					disposition[3]-=8;
 				}
-				if(scr_has_adv("Psyker Abundance")){
+				if(scr_has_adv("Warp Touched")){
 					disposition[4]-=4;
 				}
 				if(scr_has_disadv("Tolerant")){
