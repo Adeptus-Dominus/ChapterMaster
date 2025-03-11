@@ -255,10 +255,6 @@ function librarian_training(){
 
 	var goal=60,yep=0;
 	novice_type = string("{0} Aspirant",obj_ini.role[100,17]);
-	if (scr_has_adv("Psyker Abundance")){
-	    goal=40;
-	    yep=1;
-	}
 
 
 	if (training_psyker>0){
@@ -296,10 +292,6 @@ function librarian_training(){
 	            unit.update_role(novice_type)
 	            unit.update_powers();
 	            psyker_aspirant=1;
-	            
-	            if (scr_has_adv("Psyker Abundance")){
-	                unit.add_exp(irandom_range(5, 8));
-	            }
 
 	            unit.update_gear("");
 	            unit.update_mobility_item("");
