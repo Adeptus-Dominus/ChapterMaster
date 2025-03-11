@@ -313,9 +313,8 @@ global.astartes_trait_dist = [
 			"zealous_faith",
 			[99,98],
 			{
-				"chapter_name":[
-					"Black Templars",
-					[300,200]
+				"advantage":[
+					"Psyker Intolerant",[300,200]
 				],
 				recruit_world_type: [
 					["Shrine", -15]
