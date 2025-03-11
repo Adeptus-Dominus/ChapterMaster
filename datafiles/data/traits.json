@@ -64,6 +64,11 @@
         "flavour_text": "Interacted with the warp in a way that has forever marked them",
         "display_name": "Warp Touched"
     },
+    "warp_tainted": {
+        "luck": -2,
+        "flavour_text": "Interacted with the warp in a way that has forever marked them",
+        "display_name": "Warp Tainted"
+    },
     "lucky": {
         "luck": 4,
         "flavour_text": "Inexplicably lucky",

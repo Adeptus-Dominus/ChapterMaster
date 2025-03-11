@@ -467,7 +467,7 @@ global.modular_drawing_items = [
         body_types :[0],
         position : "mouth_variants", 
         role_type : ["libs"],
-        chapter_adv : ["Daemon Binders"],    
+        chapter_disadv : ["Warp Tainted"],    
     },
     {
         sprite : spr_mk4_chest_fastenings,

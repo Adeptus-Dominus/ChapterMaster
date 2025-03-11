@@ -184,7 +184,7 @@ function scr_player_combat_weapon_stacks() {
                             var cast_dice = roll_dice(1, 100);
                             cast_dice += unit.psionic + (unit.experience / 60);
 
-                            if (scr_has_adv("Daemon Binders")) {
+                            if (_unit.has_trait("warp_tainted")) {
                                 cast_dice += 5;
                             }
 

@@ -265,7 +265,7 @@ function perils_test(_unit, _tome_perils_chance = 0) {
 
     _perils_threshold = max(_perils_threshold, PSY_PERILS_CHANCE_BASE);
 
-    if (scr_has_adv("Daemon Binders")) {
+    if (_unit.has_trait("warp_tainted")) {
         if (_roll_1d100 <= _perils_threshold) {
             _roll_1d100 = roll_personal_dice(1, 100, "high", _unit);
         }
@@ -279,7 +279,7 @@ function roll_perils_strength(_unit, _tome_perils_strength) {
 
     _perils_strength += _tome_perils_strength;
 
-    if (scr_has_adv("Daemon Binders")) {
+    if (_unit.has_trait("warp_tainted")) {
         // I hope you like demons
         _perils_strength += PSY_PERILS_STR_HIGH;
     }
