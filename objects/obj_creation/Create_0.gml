@@ -793,8 +793,8 @@ var all_advantages = [
             meta : ["Chapter Master"],
         },
         {
-            name : "Warp Touched",
-            description : "The Psyker mutation runs rampant in your chapter. Librarians train in 60% the normal time and receive bonus experience.",
+            name : "Warp Touched", //TODO: This is probably can be better handled as a positive seed mutation;
+            description : "Psychic mutations run rampant in your chapter. You have more marines with high psychic rating and aspirants are also more likely to be capable of harnessing powers of the warp.",
             value : 20,
             meta : ["Psyker Views","Librarians"],
         },
