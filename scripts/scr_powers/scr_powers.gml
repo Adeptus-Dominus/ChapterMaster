@@ -8,6 +8,7 @@
 #macro PSY_PERILS_STR_BASE 1
 #macro PSY_PERILS_STR_LOW 10
 #macro PSY_PERILS_STR_MED 20
+#macro PSY_PERILS_STR_HIGH 40
 
 global.disciplines_data = json_to_gamemaker(working_directory + "\\data\\psychic_disciplines.json", json_parse);
 global.powers_data = json_to_gamemaker(working_directory + "\\data\\psychic_powers.json", json_parse);
@@ -264,6 +265,12 @@ function perils_test(_unit, _tome_perils_chance = 0) {
 
     _perils_threshold = max(_perils_threshold, PSY_PERILS_CHANCE_BASE);
 
+    if (scr_has_adv("Daemon Binders")) {
+        if (_roll_1d100 <= _perils_threshold) {
+            _roll_1d100 = roll_personal_dice(1, 100, "high", _unit);
+        }
+    }
+
     return _roll_1d100 <= _perils_threshold;
 }
 
@@ -274,7 +281,7 @@ function roll_perils_strength(_unit, _tome_perils_strength) {
 
     if (scr_has_adv("Daemon Binders")) {
         // I hope you like demons
-        _perils_strength += PSY_PERILS_STR_MED;
+        _perils_strength += PSY_PERILS_STR_HIGH;
     }
 
     _perils_strength = max(_perils_strength, PSY_PERILS_STR_BASE);
