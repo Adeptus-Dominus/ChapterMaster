@@ -139,7 +139,9 @@ function drop_select_draw(){
         var _x_offset = 0;
         var _row = 0;
         var loop_cycle = array_length(roster.squad_buttons);
-        loop_cycle = array_length(roster.vehicle_buttons) ? loop_cycle+array_length(roster.vehicle_buttons)-1 : loop_cycle
+        if (array_length(roster.vehicle_buttons) > 0) {
+            loop_cycle += array_length(roster.vehicle_buttons);
+        }
         var _squad_length = array_length(roster.squad_buttons);
         var _button;
         for (var i = 0; i < loop_cycle; i++){

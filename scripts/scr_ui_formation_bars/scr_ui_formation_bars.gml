@@ -62,6 +62,9 @@ function scr_ui_formation_bars() {
             else if (ii == 12) and(bat_hire_for[_formatting] == bar) {
                 init_combat_bars(bar, ii, ui_formations_data, 1, 7, "???");
             }
+            else if (ii == 16) and(bat_landspee_for[_formatting] == bar) {
+                init_combat_bars(bar, ii, ui_formations_data, 2, 14, "Land Speeder");
+            }
 
             if (bat_formation_type[_formatting] != 2) {
                 if (ii == 13) and(bat_rhin_for[_formatting] == bar) {
@@ -72,9 +75,6 @@ function scr_ui_formation_bars() {
                 }
                 else if (ii == 15) and(bat_landraid_for[_formatting] == bar) {
                     init_combat_bars(bar, ii, ui_formations_data, 2, 14, "Land Raider");
-                }
-                else if (ii == 16) and(bat_landspee_for[_formatting] == bar) {
-                    init_combat_bars(bar, ii, ui_formations_data, 2, 14, "Land Speeder");
                 }
                 else if (ii == 17) and(bat_whirl_for[_formatting] == bar) {
                     init_combat_bars(bar, ii, ui_formations_data, 2, 14, "Whirlwind");
