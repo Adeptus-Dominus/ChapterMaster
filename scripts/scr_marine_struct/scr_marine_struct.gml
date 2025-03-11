@@ -1311,7 +1311,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			} else if base_group == "tech_priest" {
 				melee_hands_limit = 1+(technology/100);
 			}else if base_group == "human" {
-				melee_hands_limit = 1.75;
+				melee_hands_limit = 1.75+(strength/40)+(weapon_skill/80);
 			}				
 			carry_string+="Base: 2#";
 			if (strength>=50){
