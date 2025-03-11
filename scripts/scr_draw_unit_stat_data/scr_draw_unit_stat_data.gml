@@ -295,7 +295,7 @@ function scr_draw_unit_stat_data(manage=false){
 		}
 
 		for (var i=0;i<array_length(stat_tool_tips);i++){
-			if (point_in_rectangle(mouse_x, mouse_y, stat_tool_tips[i][0], stat_tool_tips[i][1], stat_tool_tips[i][2], stat_tool_tips[i][3])){
+			if (scr_hit(stat_tool_tips[i])){
 				tooltip_draw(stat_tool_tips[i][4], 300, [stat_tool_tips[i][0], stat_tool_tips[i][3]],,,stat_tool_tips[i][5]);
 			}
 		}
