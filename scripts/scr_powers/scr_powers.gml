@@ -255,11 +255,10 @@ function match_power_prefix(power_prefix) {
     }
 }
 
-function perils_test(_unit, _tome_perils_chance = 0) {
+function perils_test(_unit) {
     var _roll_1d100 = roll_personal_dice(1, 100, "high", _unit);
     var _perils_threshold = PSY_PERILS_CHANCE_BASE;
 
-    _perils_threshold += _tome_perils_chance;
     _perils_threshold += obj_ncombat.global_perils;
 
     _perils_threshold = max(_perils_threshold, PSY_PERILS_CHANCE_BASE);
@@ -285,10 +284,8 @@ function perils_test(_unit, _tome_perils_chance = 0) {
     return _roll_1d100 <= _perils_threshold;
 }
 
-function roll_perils_strength(_unit, _tome_perils_strength) {
+function roll_perils_strength(_unit) {
     var _perils_strength = roll_personal_dice(1, 100, "low", _unit);
-
-    _perils_strength += _tome_perils_strength;
 
     if (_unit.has_trait("warp_tainted")) {
         // I hope you like demons
@@ -458,17 +455,21 @@ function scr_powers(caster_id) {
     var _known_powers = _unit.powers_known;
 
     //TODO: All tome related logic in this file has to be reworked;
-    var _tome_data = process_tome_mechanics(_unit, caster_id);
+    //! Tomes are broken, just don't bother with them atm;
+    /* var _tome_data = process_tome_mechanics(_unit, caster_id);
     if (_tome_data.using_tome) {
         _known_powers = _tome_data.powers;
         _selected_discipline = _tome_data.discipline;
-    }
+    } */
 
     // Buffs
     var buff_cast = false;
     var buff_roll = roll_dice(1, 100);
     var known_buff_powers = [];
-    if (buff_roll >= 80) {
+    //! Buffs are currently just not worth it at all. Their targeting, power priorities (absent) and effects are all over the place;
+    //! Allowing to cast them, actually harms the gameplay, by sacrificing damage, for miniscule and random effects;
+    //TODO: Rework the buffs and uncomment;
+    /* if (buff_roll > 80) {
         // Try to pick a buff
 
         // Filter the buff powers that the unit knows
@@ -484,7 +485,7 @@ function scr_powers(caster_id) {
             _power_id = array_random_element(known_buff_powers);
             buff_cast = true;
         }
-    }
+    } */
 
     // Attack powers
     var known_attack_powers = [];
@@ -752,12 +753,12 @@ function scr_powers(caster_id) {
 
     //* Perils happen bellow
     //TODO: Perhaps separate perils into a separate function;
-    var _perils_happened = perils_test(_unit, _tome_data.perils_chance);
-    var _perils_strength = roll_perils_strength(_unit, _tome_data.perils_strength);
+    var _perils_happened = perils_test(_unit);
+    var _perils_strength = roll_perils_strength(_unit);
 
     if (_perils_happened) {
         _cast_flavour_text = $"{_unit.name_role()} suffers Perils of the Warp!  ";
-        _power_flavour_text = scr_perils_table(_perils_strength, _unit, _selected_discipline, _power_id, caster_id, _tome_data.using_tome);
+        _power_flavour_text = scr_perils_table(_perils_strength, _unit, _selected_discipline, _power_id, caster_id);
 
         // Check if marine is dead
         check_dead_marines(_unit, caster_id);
