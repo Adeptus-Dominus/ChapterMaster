@@ -349,10 +349,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 	turn_stat_gains = {};
 	powers_known = [];
 
-	static update_exp = function(new_val){
-		experience = new_val
-	}//change exp
-
 	static set_exp = function(new_val){
 		experience = new_val
 		var _powers_learned = 0;
@@ -1052,38 +1048,51 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		return obj_ini.spe[company][marine_number];
 	};	   
 
-	static psy_powers_array = function(){ 
-		var _psy_discipline = psy_discipline();
-		if (_psy_discipline == "") return [];
- 
-		var _known_powers = string_split(specials(), "|");
-		if (array_length(_known_powers) > 1) {
-			array_pop(_known_powers);
-		}
- 
-		var _powers_array = get_discipline_data(_psy_discipline, "powers");
-		if (_powers_array == undefined || !is_array(_powers_array)) return [];
-    
-		for (var i = 0; i < array_length(_known_powers); i++) {
-			_known_powers[i] = string_char_at(_known_powers[i], 2);
-			// Ensure index is within array bounds
-			if (i < array_length(_powers_array)) {
-				_known_powers[i] = _powers_array[i];
-			}
-		}
- 
-		return _known_powers;
-	};
- 
-	static psy_discipline = function(){ 
-		var _power_letter = string_char_at(specials(), 1);
-		if (_power_letter == "") return "";
-		var _psy_discipline = convert_power_letter(_power_letter);
- 
-		return _psy_discipline;
+	static specials_array = function(){ 
+		var _specials_array = string_split(obj_ini.spe[company][marine_number], "|", true);
+		return _specials_array;
+	};	   
+
+	static psy_discipline = function(){
+		var _specials_array = specials_array();
+		var _first_power_prefix = string_letters(_specials_array[0]);
+		var _discipline = match_power_prefix(_first_power_prefix);
+
+		return _discipline ?? "";
 	};
 
-       static update_powers = scr_powers_new;
+	static update_powers = function() {
+		if (!IsSpecialist("libs")) {
+			return 0;
+		}
+
+		var _powers_limit = 0;
+		var _powers_known_count = 0;
+		var _discipline_powers_max = 0;
+		var _powers_learned = 0;
+		var _abilities_string = specials();
+
+		var _discipline_prefix = get_discipline_data(obj_ini.psy_powers, "prefix");
+		var _discipline_powers = get_discipline_data(obj_ini.psy_powers, "powers");
+		_discipline_powers_max = array_length(_discipline_powers);
+
+		// higher exp means more powers learnt
+		_powers_limit = floor(experience / 20) + 1; // +1 for the primary
+		_powers_known_count = string_count(string(_discipline_prefix), _abilities_string);
+
+		while ((_powers_known_count < _powers_limit) && (_powers_known_count < _discipline_powers_max)) {
+			var _power_index = _powers_known_count;
+			if (string_count(string(_power_index), _abilities_string) == 0) {
+				_powers_known_count++;
+				_powers_learned++;
+				obj_ini.spe[company, marine_number] += string(_discipline_prefix) + string(_power_index) + "|";
+				array_push(self.powers_known, _discipline_powers[_power_index]);
+			}
+		}
+
+		return _powers_learned;
+	};
+
 	   	static race = function(){ 
 			return obj_ini.race[company][marine_number];
 		};

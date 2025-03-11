@@ -1,7 +1,7 @@
 {
     "example": {
         "name": "",
-        "letter": "",
+        "prefix": "",
         "description": "",
         "powers": [],
         "perils_chance": 0,
@@ -11,6 +11,7 @@
     },
     "minor_nu": {
         "name": "Minor Not Nurgle",
+        "prefix": "MFAL",
         "powers": [
             "wave_of_entropy",
             "insect_swarm",
@@ -23,6 +24,7 @@
     },
     "minor_nu_daemon": {
         "name": "Minor Nurgle",
+        "prefix": "MNUR",
         "powers": [
             "wave_of_entropy",
             "insect_swarm",
@@ -36,6 +38,7 @@
     },
     "minor_tz_daemon": {
         "name": "Minor Tzeentch",
+        "prefix": "MTZE",
         "powers": [
             "wave_of_change",
             "warp_bolts",
@@ -49,6 +52,7 @@
     },
     "minor_sl_daemon": {
         "name": "Minor Slaneesh",
+        "prefix": "MSLA",
         "powers": [
             "warp_bolts",
             "rainbow_beam",
@@ -62,6 +66,7 @@
     },
     "minor_default": {
         "name": "Minor Librarius",
+        "prefix": "MLIB",
         "powers": [
             "avenge",
             "spatial_distortion",
@@ -73,6 +78,7 @@
     },
     "minor_telekinesis": {
         "name": "Minor Telekinesis",
+        "prefix": "MTEL",
         "powers": [
             "spatial_distortion",
             "telekinetic_dome",
@@ -84,6 +90,7 @@
     },
     "minor_biomancy": {
         "name": "Minor Biomancy",
+        "prefix": "MBIO",
         "powers": [
             "haemorrhage",
             "regenerate",
@@ -96,6 +103,7 @@
     },
     "minor_pyromancy": {
         "name": "Minor Pyromancy",
+        "prefix": "MPYR",
         "powers": [
             "inferno",
             "sun_burst",
@@ -107,6 +115,7 @@
     },
     "minor_what_the_fuck_man": {
         "name": "Occultism",
+        "prefix": "OCC",
         "powers": [
             "blood_dementia",
             "spatial_distortion",
@@ -119,14 +128,14 @@
     },
     "hacks": {
         "name": "Hacks",
-        "letter": "Z",
+        "prefix": "Z",
         "powers": [
             "gather_energy"
         ]
     },
     "rune_magic": {
         "name": "Rune Magick",
-        "letter": "R",
+        "prefix": "RUN",
         "powers": [
             "living_lightning",
             "murderous_hurricane",
@@ -139,7 +148,7 @@
     },
     "biomancy": {
         "name": "Biomancy",
-        "letter": "B",
+        "prefix": "BIO",
         "powers": [
             "minor_smite",
             "blood_boil",
@@ -152,7 +161,7 @@
     },
     "pyromancy": {
         "name": "Pyromancy",
-        "letter": "P",
+        "prefix": "PYR",
         "powers": [
             "breathe_fire",
             "fiery_form",
@@ -165,7 +174,7 @@
     },
     "telekinesis": {
         "name": "Telekinesis",
-        "letter": "T",
+        "prefix": "TEL",
         "powers": [
             "crush",
             "shockwave",
@@ -178,7 +187,7 @@
     },
     "default": {
         "name": "Librarius",
-        "letter": "D",
+        "prefix": "LIB",
         "powers": [
             "minor_smite",
             "smite",

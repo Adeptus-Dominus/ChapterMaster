@@ -1178,7 +1178,6 @@
     {"id":{"name":"scr_clean","path":"scripts/scr_clean/scr_clean.yy",},},
     {"id":{"name":"spr_weapon_boltstorm_gauntlet_small","path":"sprites/spr_weapon_boltstorm_gauntlet_small/spr_weapon_boltstorm_gauntlet_small.yy",},},
     {"id":{"name":"scr_powers","path":"scripts/scr_powers/scr_powers.yy",},},
-    {"id":{"name":"scr_powers_new","path":"scripts/scr_powers_new/scr_powers_new.yy",},},
     {"id":{"name":"scr_recruit_data","path":"scripts/scr_recruit_data/scr_recruit_data.yy",},},
     {"id":{"name":"scr_weapon","path":"scripts/scr_weapon/scr_weapon.yy",},},
     {"id":{"name":"UINodeScripts","path":"scripts/UINodeScripts/UINodeScripts.yy",},},

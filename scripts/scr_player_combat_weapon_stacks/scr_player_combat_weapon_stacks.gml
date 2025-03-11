@@ -184,8 +184,12 @@ function scr_player_combat_weapon_stacks() {
                             var cast_dice = roll_dice(1, 100);
                             cast_dice += unit.psionic + (unit.experience / 60);
 
-                            if (_unit.has_trait("warp_tainted")) {
-                                cast_dice += 5;
+                            if (unit.has_trait("warp_tainted")) {
+                                cast_dice += 20;
+                            }
+
+                            if (unit.has_trait("favoured_by_the_warp")) {
+                                cast_dice += 10;
                             }
 
                             if (obj_ncombat.global_perils > 0) {
