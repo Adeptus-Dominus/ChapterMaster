@@ -194,6 +194,9 @@ if (!engaged){// Shooting
                             if (_back_column_size_value < _column_size_value) {
                                 continue;
                             } else {
+                                // Calculate chance of shots passing through to back row
+                                // Higher ratio of back column size to front column size increases pass-through chance
+                                // Maximum chance capped at 60% to ensure some protection remains
                                 var _pass_chance = ((_back_column_size_value / _column_size_value) - 1) * 100;
                                 if (irandom_range(1, 100) > min(_pass_chance, 60)) {
                                     continue;
