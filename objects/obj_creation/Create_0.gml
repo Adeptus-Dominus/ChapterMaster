@@ -800,8 +800,8 @@ var all_advantages = [
         },
         {
             name : "Favoured By The Warp",
-            description : "Many marines in your chapter are favoured by the powers of the warp. Perils of the warp happen less frequently for them.",
-            value : 15,
+            description : "Many marines in your chapter are favoured by the powers of the warp, making perils of the warp happen less frequently for them.",
+            value : 20,
         },
         {
             name : "Reverent Guardians",
@@ -943,7 +943,7 @@ var all_disadvantages = [
     },
     {
         name : "Warp Tainted",
-        description : "Your chapter was somehow tainted by the warp. Many of your marines are afflicted with it, making getting caught in perils of the warp is less likely, but when they are caught - the results are devastating.",
+        description : "Your chapter is tainted by the warp. Many of your marines are afflicted with it, making getting caught in perils of the warp less likely, but when caught - the results are devastating.",
         value : 20,
     },
     {
