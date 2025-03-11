@@ -739,11 +739,6 @@ var all_advantages = [
             meta : ["Gear Quality"]
         },
         {
-            name : "Daemon Binders",
-            description : "Powers are replaced with a more powerful Witchfire variant.  Perils are also less likely to occur but are more disasterous when they do.",
-            value : 20,
-        },
-        {
             name : "Enemy: Eldar",
             description : "Eldar are particularly hated by your chapter.  When fighting Eldar damage is increased.",
             value : 20,
@@ -945,6 +940,11 @@ var all_disadvantages = [
         name : "Warp Touched",
         description : "Demons seem attracted to your chapter; perils of the warp happen more frequently and with more disasterous results.",
         value : 10,
+    },
+    {
+        name : "Warp Tainted",
+        description : "Your chapter was somehow tainted by the warp. Many of your marines are afflicted with it, making getting caught in perils of the warp is less likely, but when they are caught - the results are devastating.",
+        value : 20,
     },
     {
         name : "Psyker Intolerant",

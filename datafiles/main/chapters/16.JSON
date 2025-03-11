@@ -28,7 +28,7 @@
             "Assault Doctrine",
             "Boarders",
             "Kings of Space",
-            "Daemon Binders",
+            "",
             "",
             "",
             "",
@@ -37,7 +37,7 @@
         "disadvantages": [
             "", // leave the first entry blank for now
             "Suspicious",
-            "",
+            "Warp Tainted",
             "",
             "",
             "",

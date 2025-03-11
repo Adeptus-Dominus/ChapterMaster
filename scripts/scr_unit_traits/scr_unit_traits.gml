@@ -249,6 +249,14 @@ global.astartes_trait_dist = [
 				]
 			}
 		],
+		["warp_tainted",
+		[299,298],
+		{
+			"disadvantage":[
+				"Warp Tainted",[20,1]
+			]
+		}
+	],
 		["shitty_luck",
 			[99,98],
 			{

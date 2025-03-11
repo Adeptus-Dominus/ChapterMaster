@@ -123,7 +123,10 @@ function ComplexSet(unit) constructor{
                     if (!_viable){
                         if (!check_exception("chapter_adv")){
                             continue;
-                        }                         
+                        }
+                        if (!check_exception("chapter_disadv")){
+                            continue;
+                        }
                     }                    
                 }
                 if (struct_exists(_mod, "roles")){
@@ -185,6 +188,21 @@ function ComplexSet(unit) constructor{
                         }                         
                     }
                }
+               if (struct_exists(_mod, "chapter_disadv")){
+                var _viable = false;
+                for (var a=0;a<array_length(_mod.chapter_disadv);a++){
+                    var _disadv = _mod.chapter_disadv[a];
+                    _viable = scr_has_disadv(_disadv);
+                    if (_viable){
+                        break;
+                    }
+                }
+                if (!_viable){
+                    if (!check_exception("chapter_disadv")){
+                        continue;
+                    }                         
+                }
+           }
                if (struct_exists(_mod, "stats")){
                     if (!stat_valuator(_mod.stats,unit)){
                         if (!check_exception("stats")){
