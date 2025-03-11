@@ -334,7 +334,7 @@ function process_tome_mechanics(_unit, _unit_id) {
 /// @param {struct} _power_data - Data about the power being used
 /// @returns {struct} The target information with column and index
 function find_valid_target(_power_data) {
-    var _result = {column: noone, index: -1};
+    var _result = {column: noone, index: undefined};
     var _target_vehicles = _power_data.target_type == 2;
 
     // Create a priority queue for potential targets
@@ -358,10 +358,6 @@ function find_valid_target(_power_data) {
                     _result.index = i;
                     break;
                 }
-            }
-
-            if (_result.index != -1) {
-                break;
             }
         }
     } else {
@@ -393,15 +389,16 @@ function find_valid_target(_power_data) {
                     }
                 }
             }
-
-            if (_result.index != -1) {
-                break;
-            }
         }
     }
 
     ds_priority_destroy(_targets_queue);
-    return _result;
+
+    if (_result.index != undefined) {
+        return _result;
+    } else {
+        return undefined;
+    }
 }
 
 /// @desc Psychic powers execution mess. Called in the scope of obj_pnunit.
@@ -634,7 +631,7 @@ function scr_powers(caster_id) {
         var _target_data = find_valid_target(_power_data);
 
         //* Calculate damage
-        if (_target_data.index != -1 && instance_exists(_target_data.column) && (_target_data.column.dudes_num[_target_data.index] > 0)) {
+        if (_target_data != undefined) {
             // Set up variables for damage calculation
             var _effective_armour = _target_data.column.dudes_ac[_target_data.index];
             var _target_is_vehicle = _target_data.column.dudes_vehicle[_target_data.index] == 1;
