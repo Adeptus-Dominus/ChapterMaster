@@ -231,18 +231,17 @@ function get_tome_discipline(_tome_tags) {
     }
 }
 
-function convert_power_letter(power_code) {
+function match_power_prefix(power_prefix) {
     try {
-        var power_letter = string_char_at(power_code, 1);
         var matched_discipline = "";
 
         var discipline_names = struct_get_names(global.disciplines_data);
         for (var i = 0; i < array_length(discipline_names); i++) {
             var _discipline_name = discipline_names[i];
             var discipline_struct = global.disciplines_data[$ _discipline_name];
-            if (struct_exists(discipline_struct, "letter")) {
-                var discipline_letter = discipline_struct[$ "letter"];
-                if (power_letter == discipline_letter) {
+            if (struct_exists(discipline_struct, "prefix")) {
+                var discipline_prefix = discipline_struct[$ "prefix"];
+                if (power_prefix == discipline_prefix) {
                     matched_discipline = _discipline_name;
                     return _discipline_name;
                 }
@@ -456,7 +455,7 @@ function scr_powers(caster_id) {
 
     // Decide what to cast
     var _power_id = "";
-    var _known_powers = _unit.psy_powers_array();
+    var _known_powers = _unit.powers_known;
 
     //TODO: All tome related logic in this file has to be reworked;
     var _tome_data = process_tome_mechanics(_unit, caster_id);
