@@ -241,11 +241,11 @@ global.astartes_trait_dist = [
 			}
 		],
 		["paragon", [999,998]],
-		["warp_touched",
+		["favoured_by_the_warp",
 			[299,298],
 			{
 				"disadvantage":[
-					"Warp Touched",[29,28]
+					"Favoured By The Warp",[10,9]
 				]
 			}
 		],

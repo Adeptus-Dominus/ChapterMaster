@@ -267,7 +267,19 @@ function perils_test(_unit, _tome_perils_chance = 0) {
 
     if (_unit.has_trait("warp_tainted")) {
         if (_roll_1d100 <= _perils_threshold) {
-            _roll_1d100 = roll_personal_dice(1, 100, "high", _unit);
+            var _second_roll = roll_personal_dice(1, 100, "high", _unit);
+            if (_second_roll > _roll_1d100) {
+                _roll_1d100 = _second_roll;
+            }
+        }
+    }
+
+    if (_unit.has_trait("favoured_by_the_warp")) {
+        if (_roll_1d100 <= _perils_threshold) {
+            var _second_roll = roll_personal_dice(1, 100, "high", _unit);
+            if (_second_roll > _roll_1d100) {
+                _roll_1d100 = _second_roll;
+            }
         }
     }
 
