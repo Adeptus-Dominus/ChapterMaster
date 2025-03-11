@@ -210,6 +210,38 @@ function helmet_livery(progenitor, specific = "none") {
 				}				
 			}
 			break;
+			case "Tome Keepers":
+				livery_data = {
+					sgt : {
+						helm_pattern:0,
+						helm_primary : Colors.Sanguine_Red,
+						helm_secondary : obj_creation.secondary_color,
+						helm_detail : obj_creation.main_trim,
+						helm_lens : Colors.Lime,
+					},
+					vet_sgt : {
+						helm_pattern:2,
+						helm_primary : Colors.Sanguine_Red,
+						helm_secondary : Colors.Lighter_Black,
+						helm_detail : obj_creation.main_trim,
+						helm_lens : Colors.Lime,
+					},
+					captain : {
+						helm_pattern:0,
+						helm_primary : obj_creation.main_color,
+						helm_secondary : obj_creation.secondary_color,
+						helm_detail : obj_creation.main_trim,
+						helm_lens : obj_creation.lens_color,
+					},
+					veteran : {
+						helm_pattern:2,
+						helm_primary : obj_creation.main_color,
+						helm_secondary : Colors.Lighter_Black,
+						helm_detail : obj_creation.main_trim,
+						helm_lens : obj_creation.lens_color,	
+					}				
+				}
+				break;
         default:
             name_selected = false;
             break;
@@ -523,16 +555,16 @@ function helmet_livery(progenitor, specific = "none") {
             livery_data = {
                 sgt: {
                     helm_pattern: 0,
-                    helm_primary: Colors.Red,
-                    helm_secondary: Colors.Red,
-                    helm_detail: Colors.Red,
+                    helm_primary: Colors.Sanguine_Red,
+                    helm_secondary: Colors.Sanguine_Red,
+                    helm_detail: Colors.Sanguine_Red,
                     helm_lens: Colors.Lime,
                 },
                 vet_sgt: {
                     helm_pattern: 1,
-                    helm_primary: Colors.Red,
-                    helm_secondary: Colors.Red,
-                    helm_detail: Colors.Red,
+                    helm_primary: Colors.Sanguine_Red,
+                    helm_secondary: Colors.Sanguine_Red,
+                    helm_detail: Colors.Sanguine_Red,
                     helm_lens: Colors.Lime,
                 },
                 captain: {
