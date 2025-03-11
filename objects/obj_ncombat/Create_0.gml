@@ -245,7 +245,7 @@ melee=0;if (scr_has_adv("Assault Doctrine")) then melee=1;
 // 
 black_rage=0;if (scr_has_disadv("Black Rage")){black_rage=1;red_thirst=1;}
 shitty_luck=0;if (scr_has_disadv("Shitty Luck")) then shitty_luck=1;
-warp_touched=0;if (scr_has_disadv("Warp Touched")) then warp_touched=1;
+favoured_by_the_warp=0;if (scr_has_adv("Favoured By The Warp")) then favoured_by_the_warp=1;
 
 
 lyman=obj_ini.lyman;// drop pod penalties

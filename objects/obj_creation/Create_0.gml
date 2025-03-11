@@ -797,7 +797,12 @@ var all_advantages = [
             description : "The Psyker mutation runs rampant in your chapter.  Librarians train in 60% the normal time and receive bonus experience.",
             value : 20,
             meta : ["Psyker Views","Librarians"],
-        }, 
+        },
+        {
+            name : "Favoured By The Warp",
+            description : "Many marines in your chapter are favoured by the powers of the warp. Perils of the warp happen less frequently for them.",
+            value : 15,
+        },
         {
             name : "Reverent Guardians",
             description : "Your chapter places great faith in the Imperial Cult; you start with more Chaplains and any Ecclesiarchy disposition increases are enhanced.",
@@ -934,11 +939,6 @@ var all_disadvantages = [
     {
         name : "Tolerant",
         description : "Your chapter is more lenient with xenos.  All xeno disposition is slightly increased and all Imperial disposition is lowered.",
-        value : 10,
-    },
-    {
-        name : "Warp Touched",
-        description : "Demons seem attracted to your chapter; perils of the warp happen more frequently and with more disasterous results.",
         value : 10,
     },
     {

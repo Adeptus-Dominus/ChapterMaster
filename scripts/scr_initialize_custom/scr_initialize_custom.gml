@@ -2389,7 +2389,7 @@ function scr_initialize_custom() {
 			gear[company, 1] = "Psychic Hood";
 			var
 			let = "";
-			chapter_master.add_trait("warp_touched");
+			chapter_master.add_trait("favoured_by_the_warp");
 			chapter_master.psionic = choose(13, 14);
 			switch (obj_creation.discipline) {
 				case "default":
@@ -2473,7 +2473,7 @@ function scr_initialize_custom() {
 		_clibrarian.edit_corruption(0);
 		_clibrarian.psionic = choose(11, 12);
 		_clibrarian.update_powers();
-		_clibrarian.add_trait("warp_touched");
+		_clibrarian.add_trait("favoured_by_the_warp");
 		k+=1;
 		commands +=1;
 	}
@@ -3437,10 +3437,12 @@ function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1
 		spawn_unit.add_trait("soft_target");
 	}
 	if(role_id == eROLE.Librarian){
-		if (roll_dice(1, 6, "high") < 4) {
-			spawn_unit.add_trait("warp_touched");
+		if (scr_has_adv("Favoured By The Warp") && (roll_dice(1, 6, "high") > 3)) {
+			spawn_unit.add_trait("favoured_by_the_warp");
+		} else if (roll_dice(1, 10, "high") > 9) {
+			spawn_unit.add_trait("favoured_by_the_warp");
 		}
-		if(scr_has_adv("Psyker Abundance")){
+		if (scr_has_adv("Psyker Abundance")){
 			spawn_unit.add_exp(10);
 		}
 		spawn_unit.psionic = irandom_range(8, 10);

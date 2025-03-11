@@ -1411,7 +1411,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 				}
 			};
 			var basic_wep_string = $"{primary_weapon.name}: {primary_weapon.attack}#";
-			if IsSpecialist("libs") or has_trait("warp_touched"){
+			if (IsSpecialist("libs") || psionic > 7){
 				if (primary_weapon.has_tag("force") ||_wep2.has_tag("force")){
 					var force_modifier = (((weapon_skill/100) * (psionic/10) * (intelligence/10)) + (experience/1000)+0.1);
 					primary_weapon.attack *= force_modifier;
