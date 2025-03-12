@@ -11,7 +11,7 @@
         "icon_name": "ih", // ? dunno what this is used for yet but the icon breaks if you dont use it 
         "fleet_type": 1, // 1= Homeworld, 2 = Fleet based, 3 = Penitent
         "strength": 5, // 1-10
-        "purity": 8, // 1-10
+        "purity": 10, // 1-10
         "stability": 8, // 1-10
         "cooperation": 2, // 1-10
         "homeworld_exists": 1, // 1 = true
