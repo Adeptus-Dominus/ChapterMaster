@@ -51,6 +51,7 @@ enum location_types {
 }
 
 #macro ARR_psy_levels ["Rho","Pi","Omicron","Xi","Nu","Mu","Lambda","Kappa","Iota","Theta","Eta","Zeta","Epsilon","Delta","Gamma","Beta","Alpha","Alpha Plus","Beta","Gamma Plus"]
+#macro ARR_negative_psy_levels ["Rho","Sigma","Tau","Upsilon","Phi","Chi","Psi","Omega"]
 
 global.base_stats = { //tempory stats subject to change by anyone that wishes to try their luck
 	"chapter_master":{ // TODO consider allowing the player to change the starting stats of the chapter master, and closest advisors, especially for custom chapters
@@ -362,10 +363,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 	}
 	experience = 0;
 	turn_stat_gains = {};
-
-	static update_exp = function(new_val){
-		experience = new_val
-	}//change exp
+	powers_known = [];
 
 	static set_exp = function(new_val){
 		experience = new_val
@@ -415,6 +413,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 				}
 			}
 			assign_reactionary_traits();
+			role_refresh();
 		}
 		return [instace_stat_point_gains, _powers_learned];
 	}
@@ -744,9 +743,19 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 	switch base_group{
 		case "astartes":				//basic marine class //adds specific mechanics not releveant to most units
 			loyalty = 100;
-			var _astartes_trait_dist = global.astartes_trait_dist;
 
+			var _astartes_trait_dist = global.astartes_trait_dist;
 			distribute_traits(_astartes_trait_dist);
+
+			if (instance_exists(obj_controller)){
+				role_history = [[obj_ini.role[company][marine_number], obj_controller.turn]]; //marines_promotion and demotion history
+				marine_ascension = ((obj_controller.millenium*1000)+obj_controller.year); // on what day did this marine begin to exist
+			} else {
+				role_history = [[obj_ini.role[company][marine_number], "pre_game"]];
+				marine_ascension = "pre_game"; // on what day did turn did this marine begin to exist
+			}
+
+			roll_psionics();
 
 			alter_body("torso","black_carapace",true);
 			if (class=="scout" &&  global.chapter_name!="Space Wolves"){
@@ -779,49 +788,10 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			if (gene_seed_mutations[$ "voice"] == 1){
 				charisma-=2;
 			}
-			if (instance_exists(obj_controller)){
-				role_history = [[obj_ini.role[company][marine_number], obj_controller.turn]]; //marines_promotion and demotion history
-				marine_ascension = ((obj_controller.millenium*1000)+obj_controller.year); // on what day did this marine begin to exist
-			} else {
-				role_history = [[obj_ini.role[company][marine_number], "pre_game"]];
-				marine_ascension = "pre_game"; // on what day did turn did this marine begin to exist
-
-			}
 
 			//array index 0 == trait to add
 			// array index 1 == probability e.g 99,98 == if (irandom(99)>98){add_trait}
 			// array index 3 == probability modifiers
-			psionic = 0
-			var warp_level = irandom(299)+1;
-			if (warp_level<=190){
-				psionic=choose(0,1);
-			} else if(warp_level<=294){
-				psionic=choose(2,3,4,5,6,7);
-			}else if(warp_level<=297){
-				psionic=choose(8,9,10);
-			} else if(warp_level<=298){
-				psionic=choose(11,12);
-			} else if(warp_level<=299){
-				psionic=choose(11,12,13,14);
-			} else if warp_level<=300{
-				if(irandom(4)==4){
-					psionic=choose(15,16);
-				} else{
-					psionic=choose(13,14);
-				}
-			}
-
-			if (scr_has_adv("Psyker Abundance")){
-				if (psionic<16) then psionic++;
-				if (psionic<10) then psionic++;
-			} else if (scr_has_disadv("Psyker Intolerant")){
-				if (warp_level<=190){
-					psionic=choose(0,1);
-				} else {
-					psionic=choose(2,3,4,5,6,7);
-				}
-			}
-
 
 			if (global.chapter_name=="Space Wolves") or (obj_ini.progenitor == ePROGENITOR.SPACE_WOLVES) {
 				religion_sub_cult = "The Allfather";
@@ -1072,10 +1042,127 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 
 	weapon_two_quality="standard";
 
-		static specials = function(){ 
-			return obj_ini.spe[company][marine_number];
-		};	   
-       static update_powers = scr_powers_new;
+	static specials = function(){ 
+		return obj_ini.spe[company][marine_number];
+	};	   
+
+	static specials_array = function(){ 
+		var _specials_array = string_split(obj_ini.spe[company][marine_number], "|", true);
+		return _specials_array;
+	};	   
+
+	static psy_discipline = function(){
+		var _specials_array = specials_array();
+		var _first_power_prefix = string_letters(_specials_array[0]);
+		var _discipline = match_power_prefix(_first_power_prefix);
+
+		return _discipline ?? "";
+	};
+
+	static update_powers = function() {
+		var _powers_limit = 0;
+		var _powers_known_count = 0;
+		var _discipline_powers_max = 0;
+		var _powers_learned = 0;
+		var _abilities_string = specials();
+
+		var _discipline_prefix = get_discipline_data(obj_ini.psy_powers, "prefix");
+		var _discipline_powers = get_discipline_data(obj_ini.psy_powers, "powers");
+		_discipline_powers_max = array_length(_discipline_powers);
+
+		_powers_limit = floor(experience / 30);
+		_powers_known_count = string_count(string(_discipline_prefix), _abilities_string);
+
+		while ((_powers_known_count < _powers_limit) && (_powers_known_count < _discipline_powers_max)) {
+			var _power_index = _powers_known_count;
+			if (string_count(string(_power_index), _abilities_string) == 0) {
+				_powers_known_count++;
+				_powers_learned++;
+				obj_ini.spe[company, marine_number] += string(_discipline_prefix) + string(_power_index) + "|";
+				array_push(self.powers_known, _discipline_powers[_power_index]);
+			}
+		}
+
+		return _powers_learned;
+	};
+
+	static psionic_increase = function() {
+		if (psionic < 12) {
+			var _exp_bonus = round((experience / psionic) / 2);
+			var _dice_roll = roll_personal_dice(5, 100, "high", self);
+			var _target_roll = 500 - _exp_bonus;
+			if (_dice_roll >= _target_roll) {
+				psionic++;
+				add_battle_log_message($"{name_role()} was touched by the warp!", 999, 135);
+			}
+		}
+	};
+
+	static roll_psionics = function() {
+		var _dice_count = marine_ascension == "pre_game" ? 1 : 2;
+		var _psionics_roll = roll_dice(_dice_count, 100);
+
+		if (scr_has_adv("Warp Touched")) {
+			if (_psionics_roll < 170) {
+				var _second_roll = roll_personal_dice(_dice_count, 100, "high", self);
+				_psionics_roll = _second_roll > _psionics_roll ? _second_roll : _psionics_roll;
+			}
+		} else if (scr_has_disadv("Psyker Intolerant")) {
+			if (_psionics_roll >= 170) {
+				var _second_roll = roll_personal_dice(_dice_count, 100, "low", self);
+				_psionics_roll = _second_roll < _psionics_roll ? _second_roll : _psionics_roll;
+			}
+		}
+
+		if (_psionics_roll == 200) {
+			psionic = 12;
+		} else if (_psionics_roll >= 199) {
+			psionic = 11;
+		} else if (_psionics_roll >= 198) {
+			psionic = 10;
+		} else if (_psionics_roll >= 196) {
+			psionic = 9;
+		} else if (_psionics_roll >= 194) {
+			psionic = 8;
+		} else if (_psionics_roll >= 190) {
+			psionic = 7;
+		} else if (_psionics_roll >= 186) {
+			psionic = 6;
+		} else if (_psionics_roll >= 182) {
+			psionic = 5;
+		} else if (_psionics_roll >= 178) {
+			psionic = 4;
+		} else if (_psionics_roll >= 174) {
+			psionic = 3;
+		} else if (_psionics_roll >= 170) {
+			psionic = 2;
+		} else if (_psionics_roll >= 22) {
+			psionic = 1;
+		} else if (_psionics_roll >= 17) {
+			psionic = 0;
+		} else if (_psionics_roll >= 12) {
+			psionic = -1;
+		} else if (_psionics_roll >= 8) {
+			psionic = -2;
+		} else if (_psionics_roll >= 5) {
+			psionic = -3;
+		} else if (_psionics_roll >= 3) {
+			psionic = -4;
+		} else if (_psionics_roll >= 2) {
+			psionic = -5;
+		} else {
+			psionic = -6;
+		}
+	}
+
+	static role_refresh = function() {
+		if (role() == "Lexicanum" && psionic >= 5 && experience > 50) {
+			update_role("Codiciery");
+		} else if (role() == "Codiciery" && psionic >= 8 && experience > 100) {
+			update_role(obj_ini.role[100][eROLE.Librarian]);
+		}
+	};
+
 	   	static race = function(){ 
 			return obj_ini.race[company][marine_number];
 		};
@@ -1406,7 +1493,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 				}
 			};
 			var basic_wep_string = $"{primary_weapon.name}: {primary_weapon.attack}#";
-			if IsSpecialist("libs") or has_trait("warp_touched"){
+			if (IsSpecialist("libs") || psionic > 7){
 				if (primary_weapon.has_tag("force") ||_wep2.has_tag("force")){
 					var force_modifier = (((weapon_skill/100) * (psionic/10) * (intelligence/10)) + (experience/1000)+0.1);
 					primary_weapon.attack *= force_modifier;

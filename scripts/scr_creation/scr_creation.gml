@@ -135,8 +135,13 @@ function scr_creation(slide_num) {
 				if(scr_has_disadv("Psyker Intolerant")){
 					disposition[4]+=5;
 				}
-				if(scr_has_adv("Daemon Binders")){
-					disposition[3]-=8;
+				if(scr_has_disadv("Warp Tainted")){
+					disposition[1]-=10;
+					disposition[2]-=10;
+					disposition[3]-=10;
+					disposition[4]-=10;
+					disposition[5]-=10;
+					disposition[6]-=10;
 				}
 				if(scr_has_disadv("Sieged")){
 					disposition[6]+=5;
@@ -147,7 +152,7 @@ function scr_creation(slide_num) {
 				if(scr_has_disadv("Tech-Heresy")){
 					disposition[3]-=8;
 				}
-				if(scr_has_adv("Psyker Abundance")){
+				if(scr_has_adv("Warp Touched")){
 					disposition[4]-=4;
 				}
 				if(scr_has_disadv("Tolerant")){

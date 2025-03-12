@@ -22,7 +22,7 @@
         "recruit_home_relationship" : 0, //recruit from home planet
         "recruiting": "", //"Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
         "recruiting_name": "",
-        "discipline": "rune Magick", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune Magick'
+        "discipline": "rune_magic", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune_magic'
         "aspirant_trial": "SURVIVAL", // ? need to find the best way to do this
 
         "advantages": [ //TODO something with these after rework of adv organisation

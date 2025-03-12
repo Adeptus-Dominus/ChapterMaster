@@ -631,7 +631,7 @@ function scr_draw_unit_image(_background=false){
                     if (body.torso.robes == 0){
                         complex_set.add_to_area("robe",spr_marine_robes);
                     } else if (body.torso.robes == 1) {
-                        if (scr_has_adv("Daemon Binders") && !modest_livery){
+                        if (scr_has_disadv("Warp Tainted") && !modest_livery){
                             complex_set.add_to_area("robes",spr_binders_robes);  
                         } else {
                             complex_set.add_to_area("robes",spr_marine_robes);  
@@ -654,7 +654,7 @@ function scr_draw_unit_image(_background=false){
             } 
 
             if (complex_livery){
-                if (psy_hood){
+                if (armour_type==ArmourType.Normal && psy_hood){
                     complex_set.replace_area("crown", spr_psy_hood_complex);
                 }                    
                 for (var part = 0; part < array_length(_body_parts); part++) {

@@ -735,11 +735,6 @@ var all_advantages = [
             meta : ["Gear Quality"]
         },
         {
-            name : "Daemon Binders",
-            description : "Powers are replaced with a more powerful Witchfire variant.  Perils are also less likely to occur but are more disasterous when they do.",
-            value : 20,
-        },
-        {
             name : "Enemy: Eldar",
             description : "Eldar are particularly hated by your chapter.  When fighting Eldar damage is increased.",
             value : 20,
@@ -794,11 +789,16 @@ var all_advantages = [
             meta : ["Chapter Master"],
         },
         {
-            name : "Psyker Abundance",
-            description : "The Psyker mutation runs rampant in your chapter.  Librarians train in 60% the normal time and receive bonus experience.",
+            name : "Warp Touched", //TODO: This is probably can be better handled as a positive seed mutation;
+            description : "Psychic mutations run rampant in your chapter. You have more marines with high psychic rating and aspirants are also more likely to be capable of harnessing powers of the warp.",
             value : 30,
             meta : ["Psyker Views","Librarians"],
-        }, 
+        },
+        {
+            name : "Favoured By The Warp",
+            description : "Many marines in your chapter are favoured by the powers of the warp, making perils of the warp happen less frequently for them.",
+            value : 20,
+        },
         {
             name : "Reverent Guardians",
             description : "Your chapter places great faith in the Imperial Cult; you start with more Chaplains and any Ecclesiarchy disposition increases are enhanced.",
@@ -938,9 +938,9 @@ var all_disadvantages = [
         value : 10,
     },
     {
-        name : "Warp Touched",
-        description : "Demons seem attracted to your chapter; perils of the warp happen more frequently and with more disasterous results.",
-        value : 10,
+        name : "Warp Tainted",
+        description : "Your chapter is tainted by the warp. Many of your marines are afflicted with it, making getting caught in perils of the warp less likely, but when caught - the results are devastating.",
+        value : 20,
     },
     {
         name : "Psyker Intolerant",

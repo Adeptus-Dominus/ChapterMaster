@@ -146,7 +146,7 @@ function build_planet_defence_fleets(){
             /*in order for new ships to spawn the number of total imperial ships must be smaller than 
              one third of the total imperial star systems*/
     if (mechanicus_world_total>0 && imp_ships<max_fleet_strength){
-        var rando=d100_roll(), rando2=choose(1,2,2,3,3,3);
+        var rando=roll_dice(1, 100), rando2=choose(1,2,2,3,3,3);
         if (rando>(12)*mechanicus_world_total){
         	instance_activate_object(obj_star);
         	scr_alert("", "forge_world", "No new imperial defence ships built this month");
