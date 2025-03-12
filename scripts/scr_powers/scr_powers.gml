@@ -565,7 +565,7 @@ function scr_powers(caster_id) {
     if (roll_personal_dice(1, 100, "high", _unit) >= _cast_difficulty) {
         _cast_successful = true;
         _cast_flavour_text = $"{_unit.name_role()} casts '{_power_name}'";
-        _unit.psionic_increase_chance();
+        _unit.psionic_increase();
         if (roll_personal_dice(2, 10, "high", _unit) == 20) {
             _unit.add_exp(max((_cast_difficulty / 30), 0));
         }
