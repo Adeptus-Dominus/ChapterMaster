@@ -95,7 +95,7 @@ function scr_draw_unit_stat_data(manage=false){
 	for (var i=0; i<array_length(stat_display_list);i++){
 		var stat_data = stat_display_list[i];
 		var stat_key = stat_data[1];
-		var stat_abbreviation = global.stat_display_strings[$ stat_key];
+		var stat_abbreviation = global.stat_shorts[$ stat_key];
 		var _stat_name = global.stat_display_strings[$ stat_key];
 		var _icon = global.stat_icons[$ stat_key];
 		var _stat_description = stat_data[0]
@@ -115,7 +115,7 @@ function scr_draw_unit_stat_data(manage=false){
 		draw_sprite_ext(_icon,0, attribute_box.x1,attribute_box.y1, 0.5, 0.5, 0, icon_colour, 1);
 		draw_set_color(#50a076);
 		draw_set_halign(fa_center);
-		draw_text((attribute_box.x1+attribute_box.x2)/2, attribute_box.y1+32, "{self[$ stat_key]}")
+		draw_text((attribute_box.x1+attribute_box.x2)/2, attribute_box.y1+32, $"{self[$ stat_key]}")
 		draw_set_halign(fa_left);
 		if (manage){
 			if point_and_click([attribute_box.x1, attribute_box.y1, attribute_box.x2, attribute_box.y1+45]){
@@ -252,7 +252,7 @@ function scr_draw_unit_stat_data(manage=false){
 		}
 
 		var x1 = data_block.x2-16;
-		if array_length(traits) != 0 {
+		if (array_length(traits) != 0) {
 			for (var i=0; i<array_length(traits); i++) {
 				var trait = global.trait_list[$ traits[i]];
 				var trait_name = trait.display_name;
@@ -270,8 +270,9 @@ function scr_draw_unit_stat_data(manage=false){
 
 				var _trait_growth_effect = "";
 				var _stat_list = ARR_stat_list;
-				for (var i=0;i<array_length(_stat_list);i++){
-					var _stat = _stat_list[i];
+				for (var j=0;j<array_length(_stat_list);j++){
+					var _stat = _stat_list[j];
+					var _stat_name = global.stat_display_strings[$ _stat];
 					if (struct_exists(trait, _stat)){
 						var _stat_val = eval_trait_stat_data(trait[$ _stat]);
 						var descriptive_string = "";
@@ -284,7 +285,7 @@ function scr_draw_unit_stat_data(manage=false){
 								descriptive_string += "-"
 							}							
 						}
-						_trait_growth_effect += $"{_stat} : {descriptive_string}\n";
+						_trait_growth_effect += $"{_stat_name} : {descriptive_string}\n";
 					}
 				}
 				array_push(trait_tool_tips, [x1, y1, x2, y2, $"{trait_description}\n{trait_effect}\n{_trait_growth_effect}" + trait_effect]);

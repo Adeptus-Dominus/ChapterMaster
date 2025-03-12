@@ -46,7 +46,7 @@ global.stat_display_colour = {
 
 global.stat_icons = {
 	"constitution":spr_constitution_icon, 
-	"strength":spr_dexterity_icon, 
+	"strength":spr_strength_icon, 
 	"luck":spr_luck_icon, 
 	"dexterity":spr_dexterity_icon, 
 	"wisdom":spr_wisdom_icon, 
