@@ -725,27 +725,47 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			if (faction ="chapter"){
 				allegiance = global.chapter_name;
 			}
-		   gene_seed_mutations = {
-		   			"preomnor":obj_ini.preomnor,
-			    	"lyman":obj_ini.lyman,
-			    	"omophagea":obj_ini.omophagea,
-			    	"ossmodula":obj_ini.ossmodula,
-			    	"zygote":obj_ini.zygote,
-			    	"betchers":obj_ini.betchers,
-			    	"catalepsean":obj_ini.catalepsean,
-			    	"occulobe":obj_ini.occulobe,
-			    	"mucranoid":obj_ini.mucranoid,
-			    	"membrane":obj_ini.membrane,
-			    	"voice":obj_ini.voice,
-			};														
-			var mutation_names = struct_get_names(gene_seed_mutations)
-			for (var mute =0; mute <array_length(mutation_names); mute++){
-				if (gene_seed_mutations[$ mutation_names[mute]] == 0){
-					if(irandom(999)<=(10-obj_ini.stability)){
-						gene_seed_mutations[$ mutation_names[mute]] = 1;
+
+			gene_seed_mutations = {
+				"preomnor": obj_ini.preomnor,
+				"lyman": obj_ini.lyman,
+				"omophagea": obj_ini.omophagea,
+				"ossmodula": obj_ini.ossmodula,
+				"zygote": obj_ini.zygote,
+				"betchers": obj_ini.betchers,
+				"catalepsean": obj_ini.catalepsean,
+				"occulobe": obj_ini.occulobe,
+				"mucranoid": obj_ini.mucranoid,
+				"membrane": obj_ini.membrane,
+				"voice": obj_ini.voice
+			};
+
+			var _mutation_roll = (irandom_range(1, 100));
+			if (_mutation_roll > obj_ini.stability * 10) {
+				var _mutation_names = struct_get_names(gene_seed_mutations);
+				var _possible_mutations = [];
+				for (var i = 0; i < array_length(_mutation_names); i++){
+					var _mutation = _mutation_names[i];
+					if (gene_seed_mutations[$ _mutation] == 0){
+						array_push(_possible_mutations, _mutation);
+					}
+				}
+				repeat (10) {
+					if (array_length(_possible_mutations) > 0) {
+						var _picked_mutation = array_random_index(_possible_mutations);
+						gene_seed_mutations[$ _possible_mutations[_picked_mutation]] = 1;
+						array_delete(_possible_mutations, _picked_mutation, 1);
+						if (irandom_range(1, 10) == 10) {
+							continue;
+						} else {
+							break;
+						}
+					} else {
+						break;
 					}
 				}
 			}
+
 			if (gene_seed_mutations[$ "voice"] == 1){
 				charisma-=2;
 			}

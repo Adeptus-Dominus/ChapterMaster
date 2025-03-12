@@ -128,7 +128,6 @@ repeat(70){i+=1;
     post_unit_lost[i]="";
     post_unit_veh[i]=0;
     post_units_lost[i]=0;
-    post_geneseed_recovered[i]=0;
     post_equipment_lost[i]="";
     post_equipments_lost[i]=0;
     
@@ -158,7 +157,6 @@ newline="";
 newline_color="";
 liness=0;
 world_size=0;
-gene_penalty=0;
 
 timer=0;
 timer_stage=0;

@@ -50,7 +50,7 @@ if (ground_mission){
 	}
 };
 
-seed_saved=(min(seed_max,apothecaries_alive*40))-gene_penalty;
+seed_saved = (min(seed_max, apothecaries_alive * 40));
 if (obj_ini.doomed) then seed_saved=0;
 if (seed_saved>0) then obj_controller.gene_seed+=seed_saved;
 

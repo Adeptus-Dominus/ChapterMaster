@@ -98,11 +98,7 @@ function scr_creation(slide_num) {
 	            secretions=0;
 	            occulobe=0;
 	            mucranoid=0;
-	            if (purity>=1) then mutations=4;
-	            if (purity>=2) then mutations=3;
-	            if (purity>=4) then mutations=2;
-	            if (purity>=7) then mutations=1;
-	            if (purity=10) then mutations=0;
+				mutations = 10 - purity
 	        }
         
 			if (custom > 0) {
