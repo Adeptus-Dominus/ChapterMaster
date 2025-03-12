@@ -181,22 +181,21 @@ function scr_player_combat_weapon_stacks() {
                                 marine_casting[g] = false;
                             }
 
-                            var cast_dice = roll_dice(1, 100);
-                            cast_dice += unit.psionic + (unit.experience / 60);
+                            var cast_target = 100;
+                            var cast_dice = roll_dice(1, cast_target);
 
+                            cast_target -= (unit.psionic * 2) + (unit.experience / 10);
                             if (unit.has_trait("warp_tainted")) {
-                                cast_dice += 20;
+                                cast_target -= 20;
                             }
-
                             if (unit.has_trait("favoured_by_the_warp")) {
-                                cast_dice += 10;
+                                cast_target -= 10;
                             }
-
                             if (obj_ncombat.global_perils > 0) {
-                                cast_dice -= obj_ncombat.global_perils * 5;
+                                cast_target += obj_ncombat.global_perils * 10;
                             }
 
-                            if (cast_dice > 50) {
+                            if (cast_dice >= cast_target) {
                                 marine_casting[g] = true;
                             }
                         }

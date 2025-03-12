@@ -2494,7 +2494,6 @@ function scr_initialize_custom() {
 		commands += 1;
 		man_size += 1;
 		var _epi = add_unit_to_company("marine", company, k, roles.librarian, eROLE.Librarian, "default", choose_weighted(weapon_weighted_lists.pistols));
-		_epi.update_powers();
 	}
 	// Codiciery
 	repeat(codiciery) {
@@ -2502,7 +2501,6 @@ function scr_initialize_custom() {
 		commands += 1;
 		man_size += 1;
 		var _codi = add_unit_to_company("marine", company, k, "Codiciery", eROLE.Librarian, "default", choose_weighted(weapon_weighted_lists.pistols));
-		_codi.update_powers();
 	}
 
 	// Lexicanum
@@ -2511,7 +2509,6 @@ function scr_initialize_custom() {
 		commands += 1;
 		man_size += 1;
 		var _lexi = add_unit_to_company("marine", company, k, "Lexicanum", eROLE.Librarian, "default", choose_weighted(weapon_weighted_lists.pistols));
-		_lexi.update_powers();
 	}
 
 	// Apothecaries in Apothecarion
@@ -3437,12 +3434,19 @@ function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1
 		spawn_unit.add_trait("soft_target");
 	}
 	if(role_id == eROLE.Librarian){
-		if (scr_has_adv("Favoured By The Warp") && (roll_dice(1, 6, "high") > 3)) {
+		if (scr_has_adv("Favoured By The Warp") && (roll_dice(1, 6, "high") >= 4)) {
 			spawn_unit.add_trait("favoured_by_the_warp");
-		} else if (roll_dice(1, 10, "high") > 9) {
+		} else if (roll_dice(1, 10, "high") == 10) {
 			spawn_unit.add_trait("favoured_by_the_warp");
 		}
-		spawn_unit.psionic = irandom_range(8, 10);
+
+		if (role_name == obj_ini.role[100][eROLE.Librarian]) {
+			spawn_unit.psionic = irandom_range(8, 10);
+		} else if (role_name == "Codiciery") {
+			spawn_unit.psionic = irandom_range(5, 7);
+		} else if (role_name == "Lexicanum") {
+			spawn_unit.psionic = irandom_range(2, 4);
+		}
 		spawn_unit.update_powers();
 	}
 	
