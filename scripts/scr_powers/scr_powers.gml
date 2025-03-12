@@ -225,8 +225,8 @@ function get_tome_discipline(_tome_tags) {
         log_error("no matching discipline was found.");
         return "";
     } catch (_exception) {
-        return "";
         handle_exception(_exception);
+        return "";
     }
 }
 
