@@ -17,22 +17,6 @@
 		the first int is a base or mean value the second int is a sd number to be passed to the gauss() function
 		the string (usually max) is guidance so in the instance of max it will pick the larger value of the mean and the gauss function return
 */
-#macro ARR_stat_list ["constitution", "strength", "luck", "dexterity", "wisdom", "piety", "charisma", "technology","intelligence", "weapon_skill", "ballistic_skill"]
-
-global.stat_shorts = {
-	"constitution":"CON", 
-	"strength":"STR", 
-	"luck":"LCK", 
-	"dexterity":"DEX", 
-	"wisdom":"WIS", 
-	"piety":"PTY", 
-	"charisma":"CHA", 
-	"technology":"TEC",
-	"intelligence":"INT", 
-	"weapon_skill":"WS", 
-	"ballistic_skill":"BS",
-}
-
 // will swap these out for enums or some better method as i develop where this is going
 #macro ARR_body_parts ["left_leg", "right_leg", "torso", "right_arm", "left_arm", "left_eye", "right_eye", "throat", "jaw","head"]
 #macro ARR_body_parts_display ["Left Leg", "Right Leg", "Torso", "Right Arm", "Left Arm", "Left Eye", "Right Eye", "Throat", "Jaw","Head"]
