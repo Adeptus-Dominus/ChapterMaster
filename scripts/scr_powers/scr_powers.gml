@@ -158,7 +158,6 @@ function power_condition_check(condition, value) {
                 return obj_ncombat.player_forces > value;
                 break;
             default:
-                show_debug_message($"Condition type was not found!");
                 log_error("Condition type was not found!");
                 return false;
                 break;
@@ -287,9 +286,12 @@ function perils_test(_unit) {
 function roll_perils_strength(_unit) {
     var _perils_strength = roll_personal_dice(1, 100, "low", _unit);
 
+    // I hope you like demons
     if (_unit.has_trait("warp_tainted")) {
-        // I hope you like demons
-        _perils_strength += PSY_PERILS_STR_HIGH;
+        var _second_roll = roll_personal_dice(1, 100, "high", _unit);
+        if (_second_roll > _perils_strength) {
+            _perils_strength = _second_roll;
+        }
     }
 
     _perils_strength = max(_perils_strength, PSY_PERILS_STR_BASE);
@@ -563,6 +565,10 @@ function scr_powers(caster_id) {
     if (roll_personal_dice(1, 100, "high", _unit) >= _cast_difficulty) {
         _cast_successful = true;
         _cast_flavour_text = $"{_unit.name_role()} casts '{_power_name}'";
+        _unit.psionic_increase_chance();
+        if (roll_personal_dice(2, 10, "high", _unit) == 20) {
+            _unit.add_exp(max((_cast_difficulty / 30), 0));
+        }
     } else {
         _cast_flavour_text = $"{_unit.name_role()} failed to cast {_power_name}!";
         _battle_log_message = _cast_flavour_text;

@@ -4,14 +4,17 @@
 /// @param {real} [_message_priority=0] - The priority level (affects sorting and text color: 0=normal, 135=blue, 134=purple)
 /// @returns {real} The index of the newly added message
 function add_battle_log_message(_message, _message_size = 0, _message_priority = 0) {
-    obj_ncombat.messages++;
-    var _message_index = obj_ncombat.messages;
-    
-    obj_ncombat.message[_message_index] = _message;
-    obj_ncombat.message_sz[_message_index] = _message_size + (0.5 - (obj_ncombat.messages / 100));
-    obj_ncombat.message_priority[_message_index] = _message_priority;
-    
-    return _message_index;
+	if (instance_exists(obj_ncombat)) {
+		obj_ncombat.messages++;
+		var _message_index = obj_ncombat.messages;
+		
+		obj_ncombat.message[_message_index] = _message;
+		obj_ncombat.message_sz[_message_index] = _message_size + (0.5 - (obj_ncombat.messages / 100));
+		obj_ncombat.message_priority[_message_index] = _message_priority;
+		
+		return _message_index;
+	}
+	return -1;
 }
 
 function display_battle_log_message() {

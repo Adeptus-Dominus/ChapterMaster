@@ -262,7 +262,7 @@ function librarian_training(){
 	    if (psyker_points>=goal){
 	        if (recruit_count>0){
 	            marine_position=0;
-	            random_marine=scr_random_marine(novice_type,0,{"stat":[["psionic", 8, "more"]]});
+	            random_marine=scr_random_marine(novice_type,0,{"stat":[["psionic", 2, "more"]]});
 	            if (random_marine != "none"){
 
 	                unit = fetch_unit(random_marine)

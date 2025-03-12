@@ -259,5 +259,6 @@ function add_unit_exp(add_val){
 	}
 
 	_powers_learned = update_powers()
+	role_refresh();
 	return [instace_stat_point_gains, _powers_learned];
 }
