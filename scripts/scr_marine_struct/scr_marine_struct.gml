@@ -1038,7 +1038,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		return _powers_learned;
 	};
 
-	static psionic_increase_chance = function() {
+	static psionic_increase = function() {
 		if (psionic < 12) {
 			var _exp_bonus = round((experience / psionic) / 2);
 			var _dice_roll = roll_personal_dice(5, 100, "high", self);
