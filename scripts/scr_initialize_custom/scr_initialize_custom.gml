@@ -3446,6 +3446,8 @@ function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1
 			spawn_unit.psionic = irandom_range(5, 7);
 		} else if (role_name == "Lexicanum") {
 			spawn_unit.psionic = irandom_range(2, 4);
+			spawn_unit.update_weapon_one(choose("Force Axe", "Force Sword"), false, false);
+			spawn_unit.update_gear(obj_ini.gear[obj_ini.defaults_slot][eROLE.Tactical], false, false);
 		}
 		spawn_unit.update_powers();
 	}
