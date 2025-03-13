@@ -81,20 +81,7 @@ function get_flavour_text(_flavour_text_data) {
         var _text_option = _flavour_text_data[$ _text_option_name];
 
         if (struct_exists(_text_option, "conditions")) {
-            var _conditions_array = _text_option[$ "conditions"];
-            var _conditions_satisfied = true;
-
-            for (var p = 0; p < array_length(_conditions_array); p++) {
-                var _condition_struct = _conditions_array[p];
-                var _condition_type = _condition_struct[$ "type"];
-                var _condition_value = _condition_struct[$ "value"];
-                var _condition_satisfied = power_condition_check(_condition_type, _condition_value);
-
-                if (!_condition_satisfied) {
-                    _conditions_satisfied = false;
-                    break;
-                }
-            }
+            var _conditions_satisfied = power_conditions_check(_text_option[$ "conditions"]);  
 
             if (_conditions_satisfied) {
                 _flavour_text = array_concat(_flavour_text, _text_option[$ "text"]);
@@ -110,57 +97,63 @@ function get_flavour_text(_flavour_text_data) {
 /// Helper function that calculates the total value of all applicable power modifiers
 /// @param _modifiers_data - The power modifiers data structure
 /// @returns The sum of all modifier values that meet their conditions
-function get_power_modifiers(_modifiers_data) {
-    var _total_modifier = 0;
-    var _modifier_names = struct_get_names(_modifiers_data);
+function get_power_modifiers(_modifiers_data) {  
+    var _total_modifier = 0;  
+    var _modifier_names = struct_get_names(_modifiers_data);  
 
-    for (var i = 0; i < array_length(_modifier_names); i++) {
-        var _modifier_name = _modifier_names[i];
-        var _modifier = _modifiers_data[$ _modifier_name];
-        var _should_apply = true;
+    for (var i = 0; i < array_length(_modifier_names); i++) {  
+        var _modifier_name = _modifier_names[i];  
+        var _modifier = _modifiers_data[$ _modifier_name];  
+        var _should_apply = true;  
 
-        if (struct_exists(_modifier, "conditions")) {
-            var _conditions_array = _modifier[$ "conditions"];
+        if (struct_exists(_modifier, "conditions")) {  
+            _should_apply = power_conditions_check(_modifier[$ "conditions"]);  
+        }  
 
-            for (var p = 0; p < array_length(_conditions_array); p++) {
-                var _condition_struct = _conditions_array[p];
-                var _condition_type = _condition_struct[$ "type"];
-                var _condition_value = _condition_struct[$ "value"];
+        if (_should_apply && struct_exists(_modifier, "value")) {  
+            _total_modifier += _modifier[$ "value"];  
+        }  
+    }  
 
-                if (!power_condition_check(_condition_type, _condition_value)) {
-                    _should_apply = false;
+    return _total_modifier;  
+}  
+
+function power_conditions_check(conditions_struct) {
+    try {
+        var _conditions_array = struct_get_names(conditions_struct);
+        var _conditions_satisfied = false;
+
+        for (var p = 0; p < array_length(_conditions_array); p++) {
+            var _condition_struct = _conditions_array[p];
+            var _condition_type = _condition_struct[$ "type"];
+            var _condition_value = _condition_struct[$ "value"];
+
+            switch (_condition_type) {
+                case "advantage":
+                    _conditions_satisfied = scr_has_adv(_condition_value);
                     break;
-                }
+                case "disadvantage":
+                    _conditions_satisfied = scr_has_disadv(_condition_value);
+                    break;
+                case "enemy_type":
+                    _conditions_satisfied = obj_ncombat.enemy == _condition_value;
+                    break;
+                case "allies_more_than":
+                    _conditions_satisfied = obj_ncombat.player_forces > _condition_value;
+                    break;
+                default:
+                    log_error("Condition type was not found!");
+                    _conditions_satisfied = false;
+                    break;
+            }
+
+            if (!_conditions_satisfied) {
+                return false;
             }
         }
 
-        if (_should_apply && struct_exists(_modifier, "value")) {
-            _total_modifier += _modifier[$ "value"];
-        }
-    }
-
-    return _total_modifier;
-}
-
-function power_condition_check(condition, value) {
-    try {
-        switch (condition) {
-            case "advantage":
-                return scr_has_adv(value);
-                break;
-            case "disadvantage":
-                return scr_has_disadv(value);
-                break;
-            case "enemy_type":
-                return obj_ncombat.enemy == value;
-                break;
-            case "allies_more_than":
-                return obj_ncombat.player_forces > value;
-                break;
-            default:
-                log_error("Condition type was not found!");
-                return false;
-                break;
+        if (_conditions_satisfied) {
+            return true;
         }
     } catch (_exception) {
         handle_exception(_exception);
