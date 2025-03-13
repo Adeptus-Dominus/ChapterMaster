@@ -81,7 +81,7 @@ function get_flavour_text(_flavour_text_data) {
         var _text_option = _flavour_text_data[$ _text_option_name];
 
         if (struct_exists(_text_option, "conditions")) {
-            var _conditions_satisfied = power_conditions_check(_text_option[$ "conditions"]);  
+            var _conditions_satisfied = power_conditions_check(_text_option[$ "conditions"]);
 
             if (_conditions_satisfied) {
                 _flavour_text = array_concat(_flavour_text, _text_option[$ "text"]);
@@ -97,26 +97,26 @@ function get_flavour_text(_flavour_text_data) {
 /// Helper function that calculates the total value of all applicable power modifiers
 /// @param _modifiers_data - The power modifiers data structure
 /// @returns The sum of all modifier values that meet their conditions
-function get_power_modifiers(_modifiers_data) {  
-    var _total_modifier = 0;  
-    var _modifier_names = struct_get_names(_modifiers_data);  
+function get_power_modifiers(_modifiers_data) {
+    var _total_modifier = 0;
+    var _modifier_names = struct_get_names(_modifiers_data);
 
-    for (var i = 0; i < array_length(_modifier_names); i++) {  
-        var _modifier_name = _modifier_names[i];  
-        var _modifier = _modifiers_data[$ _modifier_name];  
-        var _should_apply = true;  
+    for (var i = 0; i < array_length(_modifier_names); i++) {
+        var _modifier_name = _modifier_names[i];
+        var _modifier = _modifiers_data[$ _modifier_name];
+        var _should_apply = true;
 
-        if (struct_exists(_modifier, "conditions")) {  
-            _should_apply = power_conditions_check(_modifier[$ "conditions"]);  
-        }  
+        if (struct_exists(_modifier, "conditions")) {
+            _should_apply = power_conditions_check(_modifier[$ "conditions"]);
+        }
 
-        if (_should_apply && struct_exists(_modifier, "value")) {  
-            _total_modifier += _modifier[$ "value"];  
-        }  
-    }  
+        if (_should_apply && struct_exists(_modifier, "value")) {
+            _total_modifier += _modifier[$ "value"];
+        }
+    }
 
-    return _total_modifier;  
-}  
+    return _total_modifier;
+}
 
 function power_conditions_check(conditions_struct) {
     try {
@@ -411,6 +411,92 @@ function find_valid_target(_power_data) {
     }
 }
 
+/// @function check_cast_success
+/// @param {struct} _unit - The caster unit
+/// @returns {bool} Whether the cast was successful
+function check_cast_success(_unit) {
+    var _equipment_psy_focus = get_total_special_value(_unit, "psy_focus");
+
+    var _cast_difficulty = 40;  //TODO: Make this more dynamic;
+    _cast_difficulty -= _unit.experience * 0.05;
+    _cast_difficulty -= _equipment_psy_focus;
+    _cast_difficulty -= _unit.wisdom * 0.4;
+
+    var _cast_roll = roll_personal_dice(1, 100, "high", _unit);
+    var _cast_successful = _cast_roll >= _cast_difficulty;
+
+    if (_cast_successful) {
+        _unit.psionic_increase();
+        if (roll_personal_dice(2, 10, "high", _unit) == 20) {
+            _unit.add_exp(max((_cast_difficulty / 30), 0));
+        }
+    }
+
+    return _cast_successful;
+}
+
+
+/// @function select_psychic_power
+/// @param {struct} _unit - The caster unit
+/// @returns {string} The ID of the selected power
+function select_psychic_power(_unit) {
+    var _known_powers = _unit.powers_known;
+    var _power_id = "";
+
+    // Attack powers
+    var known_attack_powers = [];
+    for (var i = 0; i < array_length(_known_powers); i++) {
+        var __power_type = get_power_data(_known_powers[i], "type");
+        if (__power_type == "attack") {
+            array_push(known_attack_powers, _known_powers[i]);
+        }
+    }
+
+    if (array_length(known_attack_powers) > 0) {
+        _power_id = array_random_element(known_attack_powers);
+    }
+
+    // Handle special cases
+    if (_power_id == "machine_curse") {
+        with (obj_enunit) {
+            if (veh > 0) instance_create(x, y, obj_temp3);
+        }
+
+        if (instance_number(obj_temp3) == 0 || obj_ncombat.enemy == 9) {
+            _power_id = "smite";
+        }
+
+        with (obj_temp3) instance_destroy();
+    }
+
+    //! Buffs are currently just not worth it at all. Their targeting, power priorities (absent) and effects are all over the place;
+    //! Allowing to cast them, actually harms the gameplay, by sacrificing damage, for miniscule and random effects;
+    //TODO: Rework the buffs and uncomment;
+    // Buffs
+    // var buff_cast = false;
+    // var buff_roll = roll_dice(1, 100);
+    // var known_buff_powers = [];
+    /* if (buff_roll > 80) {
+        // Try to pick a buff
+
+        // Filter the buff powers that the unit knows
+        for (var i = 0; i < array_length(_known_powers); i++) {
+            var __power_type = get_power_data(_known_powers[i], "type");
+            if (__power_type == "buff") {
+                array_push(known_buff_powers, _known_powers[i]);
+            }
+        }
+
+        if (array_length(known_buff_powers) > 0) {
+            //TODO: Make buff power selection to depend on more stuff;
+            _power_id = array_random_element(known_buff_powers);
+            buff_cast = true;
+        }
+    } */
+
+    return _power_id;
+}
+
 /// @desc Psychic powers execution mess. Called in the scope of obj_pnunit.
 /// @param {real} caster_id - ID of the caster in the player column from obj_pnunit.
 /// @mixin
@@ -446,8 +532,9 @@ function scr_powers(caster_id) {
     var _casualties_flavour_text = "";
 
     // Decide what to cast
-    var _power_id = "";
     var _known_powers = _unit.powers_known;
+    var _power_id = select_psychic_power(_unit);
+
 
     //TODO: All tome related logic in this file has to be reworked;
     //! Tomes are broken, just don't bother with them atm;
@@ -456,67 +543,6 @@ function scr_powers(caster_id) {
         _known_powers = _tome_data.powers;
         _selected_discipline = _tome_data.discipline;
     } */
-
-    // Buffs
-    var buff_cast = false;
-    var buff_roll = roll_dice(1, 100);
-    var known_buff_powers = [];
-    //! Buffs are currently just not worth it at all. Their targeting, power priorities (absent) and effects are all over the place;
-    //! Allowing to cast them, actually harms the gameplay, by sacrificing damage, for miniscule and random effects;
-    //TODO: Rework the buffs and uncomment;
-    /* if (buff_roll > 80) {
-        // Try to pick a buff
-
-        // Filter the buff powers that the unit knows
-        for (var i = 0; i < array_length(_known_powers); i++) {
-            var __power_type = get_power_data(_known_powers[i], "type");
-            if (__power_type == "buff") {
-                array_push(known_buff_powers, _known_powers[i]);
-            }
-        }
-
-        if (array_length(known_buff_powers) > 0) {
-            //TODO: Make buff power selection to depend on more stuff;
-            _power_id = array_random_element(known_buff_powers);
-            buff_cast = true;
-        }
-    } */
-
-    // Attack powers
-    var known_attack_powers = [];
-    if (!buff_cast) {
-        // Pick an attack spell
-
-        // Filter the attack powers that the unit knows
-        for (var i = 0; i < array_length(_known_powers); i++) {
-            var __power_type = get_power_data(_known_powers[i], "type");
-            if (__power_type == "attack") {
-                array_push(known_attack_powers, _known_powers[i]);
-            }
-        }
-
-        if (array_length(known_attack_powers) > 0) {
-            _power_id = array_random_element(known_attack_powers);
-        }
-    }
-
-    // Ancient texts bellow
-    if (_power_id == "machine_curse") {
-        with (obj_enunit) {
-            if (veh > 0) {
-                instance_create(x, y, obj_temp3);
-            }
-        }
-        if (instance_number(obj_temp3) == 0) {
-            _power_id = "smite";
-        }
-        if (obj_ncombat.enemy == 9) {
-            _power_id = "smite";
-        }
-        with (obj_temp3) {
-            instance_destroy();
-        }
-    }
 
     // Gather the invocation stats (multiplier to power stats)
     var _equipment_psy_invocation = get_total_special_value(_unit, "psy_invocation") / 100;
@@ -549,19 +575,9 @@ function scr_powers(caster_id) {
     //TODO: Move into a separate function;
     var _equipment_psy_focus = get_total_special_value(_unit, "psy_focus");
 
-    var _cast_successful = false;
-    var _cast_difficulty = 40; //TODO: Make this more dynamic;
-    _cast_difficulty -= _unit_exp * 0.05;
-    _cast_difficulty -= _equipment_psy_focus;
-    _cast_difficulty -= _unit.wisdom * 0.4;
-
-    if (roll_personal_dice(1, 100, "high", _unit) >= _cast_difficulty) {
-        _cast_successful = true;
+    var _cast_successful = check_cast_success(_unit);
+    if (_cast_successful) {
         _cast_flavour_text = $"{_unit.name_role()} casts '{_power_name}'";
-        _unit.psionic_increase();
-        if (roll_personal_dice(2, 10, "high", _unit) == 20) {
-            _unit.add_exp(max((_cast_difficulty / 30), 0));
-        }
     } else {
         _cast_flavour_text = $"{_unit.name_role()} failed to cast {_power_name}!";
         _battle_log_message = _cast_flavour_text;
@@ -753,9 +769,9 @@ function scr_powers(caster_id) {
     //* Perils happen bellow
     //TODO: Perhaps separate perils into a separate function;
     var _perils_happened = perils_test(_unit);
-    var _perils_strength = roll_perils_strength(_unit);
 
     if (_perils_happened) {
+        var _perils_strength = roll_perils_strength(_unit);
         _cast_flavour_text = $"{_unit.name_role()} suffers Perils of the Warp!  ";
         _power_flavour_text = scr_perils_table(_perils_strength, _unit, _selected_discipline, _power_id, caster_id);
 
