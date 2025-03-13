@@ -266,7 +266,7 @@ function ComplexSet(unit) constructor{
         chest_fastening : unit.get_body_data("chest_fastening","torso"),
     }
 
-    static draw_component = function(component_name){
+    static draw_component = function(component_name, texture_draws={}){
         if (struct_exists(self, component_name)){
             var _sprite = self[$component_name];
             if (sprite_exists(_sprite)){
@@ -286,7 +286,43 @@ function ComplexSet(unit) constructor{
                         }
                     }
                 };
-                draw_sprite(_sprite,choice ?? 0,x_surface_offset,y_surface_offset);
+                 var _tex_names = struct_get_names(texture_draws);
+                 if (array_length(_tex_names)){
+                    var _return_surface = surface_get_target();                    
+                    surface_reset_target();                   
+                    var tex_surface = surface_create(600, 600);
+                    var base_component_surface = surface_create(600, 600);
+                    shader_reset();
+                    surface_set_target(base_component_surface);                          
+                    shader_set(armour_texture);
+                    for (var i=0;i<array_length(_tex_names);i++){
+                        var _tex_data = texture_draws[$ _tex_names[i]];
+                        var tex_texture = sprite_get_texture(_tex_data.texture, 0);
+                        for (var t=0; t<array_length(_tex_data.areas); t++){
+                            
+                            var armour_sampler = shader_get_sampler_index(armour_texture, "armour_texture");
+                            texture_set_stage(armour_sampler, tex_texture);
+                            show_debug_message($"{_tex_data.areas[t]}");
+                            var _replace_col = shader_get_uniform(armour_texture, "replace_colour");
+                            shader_set_uniform_f_array(_replace_col, _tex_data.areas[t]);
+                            draw_sprite(_sprite,choice ?? 0,x_surface_offset,y_surface_offset);    
+                        }    
+                    }
+                    surface_reset_target();
+                    surface_set_target(_return_surface);                    
+                    shader_set(full_livery_shader);
+                    draw_sprite(_sprite,choice ?? 0,x_surface_offset,y_surface_offset);
+                    draw_surface(base_component_surface, 0, 0);
+                    surface_reset_target();
+
+                    set_and_clear_surface(tex_surface);
+                    set_and_clear_surface(base_component_surface);
+
+                    surface_set_target(_return_surface);             
+                 } else {
+                    draw_sprite(_sprite,choice ?? 0,x_surface_offset, y_surface_offset);
+                 }
+                 //sprite_delete(_sprite);
             }
         }
     }
@@ -321,11 +357,11 @@ function ComplexSet(unit) constructor{
                 draw_component(_arm_string);
             }
         }
-    };    
+    };   
+    static prep_surface = surface_create(600, 600);
     static draw = function(){
         var _final_surface = surface_get_target();
         surface_reset_target();
-        var prep_surface = surface_create(600, 600);
         surface_set_target(prep_surface); 
          
 
@@ -350,7 +386,6 @@ function ComplexSet(unit) constructor{
             complex_helms(_complex_helm);
         }
 
-        shader_reset();
          if (unit_armour == "MK4 Maximus" || unit_armour == "MK3 Iron Armour"){
              _draw_order = [
                 "backpack",
@@ -414,46 +449,22 @@ function ComplexSet(unit) constructor{
          }
          for (var i=0;i<array_length(_draw_order);i++){
             if (_draw_order[i] == "head"){
-                draw_head(self);
+                draw_head(texture_draws);
             } else {
-                draw_component(_draw_order[i]);
+                draw_component(_draw_order[i], texture_draws);
             }
             
          }
          purity_seals_and_hangings();
 
-         var _tex_names = struct_get_names(texture_draws);
-         if (array_length(_tex_names)){
-            var tex_surface = surface_create(600, 600);
-            surface_copy(tex_surface, 0, 0, prep_surface);
-
-
-            var prep_surface_texture = surface_get_texture(tex_surface);
-
-
-            var armour_sampler = shader_get_sampler_index(armour_texture, "armour_texture");
-            shader_set(armour_texture);            
-            texture_set_stage(armour_sampler, prep_surface_texture);
-
-
-            for (var i=0;i<array_length(_tex_names);i++){
-                var _tex_data = texture_draws[$ _tex_names[i]];
-                var _replace_col = shader_get_uniform(armour_texture, "replace_colour");
-                for (var t=0; t<array_length(_tex_data.areas); t++){
-                    show_debug_message($"{_tex_data.areas[t]}");
-                    shader_set_uniform_f_array(_replace_col, _tex_data.areas[t]);
-                    draw_sprite(_tex_data.texture, 0, 0, 0);
-                }
-               
-            }
-         }
-
+        shader_reset();
          surface_reset_target();
-         surface_set_target(_final_surface);
-        shader_set(full_livery_shader);         
-         draw_surface(prep_surface, 0, 0)
-         surface_free(prep_surface);         
-                              
+         surface_set_target(_final_surface);       
+         draw_surface(prep_surface, 0, 0);
+         delete texture_draws;
+        surface_set_target(prep_surface);
+        draw_clear_alpha(c_white,0);
+        surface_reset_target();        
     }
     static purity_seals_and_hangings = function(){
         //purity seals/decorations
@@ -774,16 +785,16 @@ function ComplexSet(unit) constructor{
 
     };
 
-    static draw_head = function(unit){
+    static draw_head = function(texture_draws={}){
         var choice;
         if (struct_exists(self, "head")){
-            draw_component("crest");
-            draw_component("head");
-            draw_component("forehead");
-            draw_component("mouth_variants");
-            draw_component("left_eye");
-            draw_component("right_eye");
-            draw_component("crown");                                                                                
+            draw_component("crest",texture_draws);
+            draw_component("head",texture_draws);
+            draw_component("forehead",texture_draws);
+            draw_component("mouth_variants",texture_draws);
+            draw_component("left_eye",texture_draws);
+            draw_component("right_eye",texture_draws);
+            draw_component("crown",texture_draws);                                                                                
         }
     }
 
@@ -805,7 +816,7 @@ function ComplexSet(unit) constructor{
             var _temp = [x_surface_offset, y_surface_offset];
             x_surface_offset = 0;
             y_surface_offset = 0;
-            draw_head(unit);
+            draw_head({});
             surface_reset_target();
             x_surface_offset = _temp[0];
             y_surface_offset = _temp[1];
@@ -833,8 +844,8 @@ function ComplexSet(unit) constructor{
             blend_mode_custom(_decoration_surface,_head_surface,_swaps);
 
             head = sprite_create_from_surface(_head_surface, 0, 0, _surface_width, 60, false, false, 0, 0);
-            surface_free(_head_surface);
-            surface_free(_decoration_surface);
+            set_and_clear_surface(_head_surface);
+            set_and_clear_surface(_decoration_surface);
             shader_set(full_livery_shader);
             set_complex_shader_area(["left_head", "right_head","left_muzzle", "right_muzzle"], data.helm_primary);
         }

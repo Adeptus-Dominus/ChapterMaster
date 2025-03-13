@@ -433,33 +433,33 @@ function setup_complex_livery_shader(setup_role, game_setup=false, unit = "none"
     }
 
      static complex_colour_swaps = {
-        left_head : [0.0, 0.0, 128.0/255.0],
-        right_backpack : [181.0/255.0, 0.0, 255.0/255.0],
-        left_backpack : [104.0/255.0, 0.0, 168.0/255.0],
-        right_head : [0.0, 0.0, 1.0],
-        left_muzzle : [128.0/255.0, 64.0/255.0, 1.0],
-        right_muzzle : [64.0/255.0, 128.0/255.0, 1.0],
-        eye_lense : [0.0, 1.0, 0.0],
-        right_chest : [1.0, 20.0/255.0, 147.0/255.0],
-        left_chest : [128.0/255.0, 0.0, 128.0/255.0],
-        right_trim : [0.0, 128.0/255.0, 128.0/255.0],
-        left_trim : [1.0, 128.0/255.0, 0.0],
-        metallic_trim : [135.0/255.0, 130.0/255.0, 188.0/255.0],
-        right_pauldron : [1.0, 1.0, 1.0],
-        left_pauldron : [1.0, 1.0, 0.0],
-        right_leg_upper : [0.0, 128.0/255.0, 0.0],
-        left_leg_upper : [255.0/255.0, 112.0/255.0, 170.0/255.0],
-        left_leg_knee : [1.0, 0.0, 0.0],
-        left_leg_lower : [128.0/255.0, 0.0, 0.0],
-        right_leg_knee : [214.0/255.0, 194.0/255.0, 255.0/255.0],
-        right_leg_lower : [165.0/255.0, 84.0/255.0, 24.0/255.0],
-        right_arm : [138.0/255.0, 218.0/255.0, 140.0/255.0],
-        right_hand : [46.0/255.0, 169.0/255.0, 151.0/255.0],
-        left_arm : [1.0, 230.0/255.0, 140.0/255.0],
-        left_hand : [1.0, 160.0/255.0, 112.0/255.0],
-        company_marks : [128.0/255.0, 128.0/255.0, 0.0],
-        weapon_primary : [0.0, 1.0, 1.0],
-        weapon_secondary : [1.0, 0.0, 1.0]
+        left_head : [0, 0, 128/255],
+        right_backpack : [181/255, 0, 255/255],
+        left_backpack : [104/255, 0, 168/255],
+        right_head : [0, 0, 1],
+        left_muzzle : [128/255, 64/255, 1],
+        right_muzzle : [64/255, 128/255, 1],
+        eye_lense : [0, 1, 0],
+        right_chest : [1, 20/255, 147/255],
+        left_chest : [128/255, 0, 128/255],
+        right_trim : [0, 128/255, 128/255],
+        left_trim : [1, 128/255, 0],
+        metallic_trim : [135/255, 130/255, 188/255],
+        right_pauldron : [1, 1, 1],
+        left_pauldron : [1, 1, 0],
+        right_leg_upper : [0, 128/255, 0],
+        left_leg_upper : [255/255, 112/255, 170/255],
+        left_leg_knee : [1, 0, 0],
+        left_leg_lower : [128/255, 0, 0],
+        right_leg_knee : [214/255, 194/255, 255/255],
+        right_leg_lower : [165/255, 84/255, 24/255],
+        right_arm : [138/255, 218/255, 140/255],
+        right_hand : [46/255, 169/255, 151/255],
+        left_arm : [1, 230/255, 140/255],
+        left_hand : [1, 160/255, 112/255],
+        company_marks : [128/255, 128/255, 0],
+        weapon_primary : [0, 1, 1],
+        weapon_secondary : [1, 0, 1]
     };       
 
     for (var i=0;i<array_length(spot_names);i++){
@@ -500,7 +500,8 @@ function set_complex_shader_area(area, colour){
 }
 
 global.textures = {
-    "Hazzards" : spr_hazzard_texture
+    "Hazzards" : spr_hazzard_texture,
+    "Checks" : spr_checker_texture
 };
 
 function colour_picker(xx,yy, max_width=400) constructor{

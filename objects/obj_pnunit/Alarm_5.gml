@@ -53,7 +53,7 @@ if (obj_ncombat.defeat == 0) {
     
             if (obj_controller.stc_bonus[3] = 4) {
                 _survival_roll = 80 + _vehicles_priority[$ veh_type[i]];
-                _dice_roll = irandom(1, 100);
+                _dice_roll = irandom_range(1, 100);
                 if (_dice_roll > _survival_roll) && (veh_dead[i] != 2) {
                     veh_hp[i] = 10;
                     veh_dead[i] = 0;
