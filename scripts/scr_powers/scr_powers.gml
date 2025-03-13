@@ -13,6 +13,294 @@
 global.disciplines_data = json_to_gamemaker(working_directory + "\\data\\psychic_disciplines.json", json_parse);
 global.powers_data = json_to_gamemaker(working_directory + "\\data\\psychic_powers.json", json_parse);
 
+/// @desc Psychic powers execution mess. Called in the scope of obj_pnunit.
+/// @param {real} caster_id - ID of the caster in the player column from obj_pnunit.
+/// @mixin
+function scr_powers(caster_id) {
+    // Gather unit data
+    var _unit = unit_struct[caster_id];
+    if (!is_struct(_unit)) {
+        exit;
+    }
+    if (_unit.name() == "") {
+        exit;
+    }
+
+    var _unit_role = _unit.role();
+    var _unit_exp = _unit.experience;
+    var _unit_weapon_one_data = _unit.get_weapon_one_data();
+    var _unit_weapon_two_data = _unit.get_weapon_two_data();
+    var _unit_gear = _unit.get_gear_data();
+    var _unit_armour = _unit.get_armour_data();
+    if (is_struct(_unit_armour)) {
+        var _is_dread = _unit_armour.has_tag("dreadnought");
+    } else {
+        var _is_dread = false;
+    }
+
+    var _psy_discipline = _unit.psy_discipline();
+    var _selected_discipline = _psy_discipline;
+
+    // Prepare the battlelog variables
+    var _battle_log_message = "";
+    var _battle_log_priority = 0;
+    var _cast_flavour_text = "";
+    var _casualties_flavour_text = "";
+
+    // Decide what to cast
+    var _known_powers = _unit.powers_known;
+    var _power_id = select_psychic_power(_unit);
+
+
+    //TODO: All tome related logic in this file has to be reworked;
+    //! Tomes are broken, just don't bother with them atm;
+    /* var _tome_data = process_tome_mechanics(_unit, caster_id);
+    if (_tome_data.using_tome) {
+        _known_powers = _tome_data.powers;
+        _selected_discipline = _tome_data.discipline;
+    } */
+
+    // Gather the invocation stats (multiplier to power stats)
+    var _equipment_psy_invocation = get_total_special_value(_unit, "psy_invocation") / 100;
+    var _character_psy_invocation = (_unit_exp / 100) + (_unit.psionic / 10);
+    var _total_psy_invocation = 1 + _equipment_psy_invocation + _character_psy_invocation;
+
+    // Gather power data
+    // var _power_struct = get_power_data(_power_id); // Not used atm
+    var _power_data = get_power_data(_power_id);
+    var _power_name = get_power_data(_power_id, "name");
+    var _power_type = get_power_data(_power_id, "type");
+    var _power_range = round(get_power_data(_power_id, "range") * _total_psy_invocation);
+    var _power_target_type = get_power_data(_power_id, "target_type");
+    var _power_max_kills = round(get_power_data(_power_id, "max_kills") * _total_psy_invocation);
+    var _power_magnitude = get_power_data(_power_id, "magnitude") * _total_psy_invocation;
+    var _power_armour_piercing = get_power_data(_power_id, "armour_piercing");
+    // var _power_duration = get_power_data(_power_id, "duration"); // Not used atm
+    var _power_flavour_text = get_power_data(_power_id, "flavour_text");
+    var _heretical = get_discipline_data(_selected_discipline, "heretical");
+
+    // Some stuff about the inquisition getting angry for using psy powers
+    //TODO: this should be refactored;
+    if (_heretical != undefined && _heretical) {
+        if ((obj_ncombat.sorcery_seen < 2) && (obj_ncombat.present_inquisitor == 1)) {
+            obj_ncombat.sorcery_seen = 2;
+        }
+    }
+
+    // Psy focus and casting fail/success bellow
+    //TODO: Move into a separate function;
+    var _equipment_psy_focus = get_total_special_value(_unit, "psy_focus");
+
+    var _cast_successful = check_cast_success(_unit);
+    if (_cast_successful) {
+        _cast_flavour_text = $"{_unit.name_role()} casts '{_power_name}'";
+    } else {
+        _cast_flavour_text = $"{_unit.name_role()} failed to cast {_power_name}!";
+        _battle_log_message = _cast_flavour_text;
+        add_battle_log_message(_battle_log_message, 999, 137);
+    }
+
+    //* Buff powers casting code
+    if (_power_type == "buff" && _cast_successful) {
+        var _marine_index;
+        var _marine_column;
+
+        if ((_power_id == "force_dome") || (_power_id == "stormbringer")) {
+            var _buff_casts = 8;
+            repeat (_buff_casts) {
+                var _target_data = find_valid_target(_power_data);
+                _marine_index = _target_data.index;
+                _marine_column = _target_data.column;
+                if (_marine_index != -1) {
+                    _marine_column.marine_mshield[_marine_index] = 2;
+                }
+            }
+        } else if (_power_id == "quickening") {
+            if (marine_quick[caster_id] < 3) {
+                marine_quick[caster_id] = 3;
+            }
+        } else if (_power_id == "might_of_the_ancients") {
+            if (marine_might[caster_id] < 3) {
+                marine_might[caster_id] = 3;
+            }
+        } else if (_power_id == "fiery_form") {
+            if (marine_fiery[caster_id] < 3) {
+                marine_fiery[caster_id] = 3;
+            }
+        } else if (_power_id == "fire_shield") {
+            var _buff_casts = 9;
+            repeat (_buff_casts) {
+                var _target_data = find_valid_target(_power_data);
+                _marine_index = _target_data.index;
+                _marine_column = _target_data.column;
+                if (_marine_index != -1) {
+                    _marine_column.marine_fshield[_marine_index] = 2;
+                }
+            }
+        } else if (_power_id == "iron_arm") {
+            marine_iron[caster_id] += 1;
+        } else if (_power_id == "endurance") {
+            var _buff_casts = 5;
+            repeat (_buff_casts) {
+                var _target_data = find_valid_target(_power_data);
+                _marine_index = _target_data.index;
+                _marine_column = _target_data.column;
+                if (_marine_index != -1) {
+                    _marine_column.unit_struct[_marine_index].add_or_sub_health(20);
+                }
+            }
+        } else if (_power_id == "hysterical_frenzy") {
+            var _buff_casts = 5;
+            repeat (_buff_casts) {
+                var _target_data = find_valid_target(_power_data);
+                _marine_index = _target_data.index;
+                _marine_column = _target_data.column;
+                if (_marine_index != -1) {
+                    marine_attack[_marine_index] += 1.5 * _total_psy_invocation;
+                    marine_defense[_marine_index] -= 0.15 * _total_psy_invocation;
+                }
+            }
+        } else if (_power_id == "regenerate") {
+            _unit.add_or_sub_health(_power_magnitude * _total_psy_invocation);
+        } else if (_power_id == "telekinetic_dome") {
+            if (marine_dome[caster_id] < 3) {
+                marine_dome[caster_id] = 3;
+            }
+        } else if (_power_id == "spatial_distortion") {
+            if (marine_spatial[caster_id] < 3) {
+                marine_spatial[caster_id] = 3;
+            }
+        }
+
+        _battle_log_message = _cast_flavour_text + _power_flavour_text;
+        add_battle_log_message(_battle_log_message, 999, 135);
+    } else if (_power_type == "attack" && _cast_successful) {
+        //* Attack power casting
+        //TODO: separate the code bellow into a separate function;
+        //TODO: Make target selection to happen before attack power selection;
+        var _target_data = find_valid_target(_power_data);
+
+        //* Calculate damage
+        if (_target_data != false) {
+            // Set up variables for damage calculation
+            var _effective_armour = _target_data.column.dudes_ac[_target_data.index];
+            var _target_is_vehicle = _target_data.column.dudes_vehicle[_target_data.index] == 1;
+            var _destruction_verb = _target_is_vehicle ? "destroyed" : "killed";
+            var _damage_verb = _target_is_vehicle ? "damaged" : "hurt";
+            var _target_unit_health = _target_data.column.dudes_hp[_target_data.index];
+            var _target_unit_name = _target_data.column.dudes[_target_data.index];
+            var _target_unit_count = _target_data.column.dudes_num[_target_data.index];
+
+            // Calculate armour effectiveness based on target type and power'_s armour piercing
+            if (!_target_is_vehicle) {
+                // Non-vehicle targets
+                if (_power_armour_piercing == 1) {
+                    _effective_armour = 0; // Full penetration ignores armour
+                } else if (_power_armour_piercing == -1) {
+                    _effective_armour *= 6; // Reduced effectiveness against armour
+                }
+            } else {
+                // Vehicle targets
+                if (_power_armour_piercing == -1) {
+                    _effective_armour = _power_magnitude; // Completely ineffective against vehicles
+                } else if (_power_armour_piercing == 0) {
+                    _effective_armour *= 6; // Normal weapons struggle against vehicle armour
+                }
+            }
+
+            // Calculate final damage after armour reduction
+            var _damage_after_armour = _power_magnitude - _effective_armour;
+            _damage_after_armour = max(0, _damage_after_armour); // Ensure damage isn't negative
+            var _final_damage = _damage_after_armour; // Apply any additional modifiers here if needed
+
+            // Calculate casualties based on damage and health
+            var _casualties = 0;
+
+            if (_power_max_kills == 0) {
+                // Single target limit - at most one casualty
+                _casualties = min(floor(_final_damage / _target_unit_health), 1);
+            } else {
+                // Multi-target - can kill multiple entities
+                _casualties = floor(_final_damage / _target_unit_health);
+            }
+
+            // Cap casualties at available entities and ensure non-negative
+            _casualties = min(max(_casualties, 0), _target_unit_count);
+
+            // No casualties
+            if (_casualties == 0) {
+                // Apply damage if any
+                if (_final_damage > 0) {
+                    _target_data.column.dudes_hp[_target_data.index] -= _final_damage;
+                    _casualties_flavour_text = $" The {_target_unit_name} survives the attack but is {_damage_verb}.";
+                    // No damage
+                } else {
+                    _casualties_flavour_text = $" The {_target_unit_name} is unscratched.";
+                }
+                // Apply casualties
+            } else {
+                // Update unit counts
+                _target_data.column.dudes_num[_target_data.index] -= _casualties;
+                obj_ncombat.enemy_forces -= _casualties;
+
+                // Apply special battle effects for certain unit types
+                if ((obj_ncombat.battle_special == "WL10_reveal") || (obj_ncombat.battle_special == "WL10_later")) {
+                    // Adjust chaos anger based on unit type
+                    if (_target_unit_name == "Veteran Chaos Terminator") {
+                        obj_ncombat.chaos_angry += _casualties * 2;
+                    } else if (_target_unit_name == "Veteran Chaos Chosen") {
+                        obj_ncombat.chaos_angry += _casualties;
+                    } else if (_target_unit_name == "Greater Daemon of Slaanesh" || _target_unit_name == "Greater Daemon of Tzeentch") {
+                        obj_ncombat.chaos_angry += _casualties * 5;
+                    }
+                }
+
+                // Generate appropriate flavour text based on outcome
+                if (_casualties > 1) {
+                    _casualties_flavour_text = $" {_casualties} {_target_unit_name} are {_destruction_verb}.";
+                } else if (_casualties == 1) {
+                    _casualties_flavour_text = $" A {_target_unit_name} is {_destruction_verb}.";
+                }
+
+                // Process the enemy column after applying casualties
+                compress_enemy_array(_target_data.column);
+                destroy_empty_column(_target_data.column);
+
+                // Log battle message to combat feed
+                _battle_log_message = _cast_flavour_text + _power_flavour_text + _casualties_flavour_text;
+                if (_casualties == 0) {
+                    _battle_log_priority = _final_damage / 2; // Just to have some priority here, as they don't have the usual "shots fired"
+                } else {
+                    if (_target_is_vehicle) {
+                        _battle_log_priority = _casualties * 12; // Vehicles are more juicy
+                    } else {
+                        _battle_log_priority = _casualties * 2; // More casualties = higher priority messages
+                    }
+                }
+                add_battle_log_message(_battle_log_message, _battle_log_priority, 134);
+            }
+        }
+    }
+
+    //* Perils happen bellow
+    //TODO: Perhaps separate perils into a separate function;
+    var _perils_happened = perils_test(_unit);
+
+    if (_perils_happened) {
+        var _perils_strength = roll_perils_strength(_unit);
+        _cast_flavour_text = $"{_unit.name_role()} suffers Perils of the Warp!  ";
+        _power_flavour_text = scr_perils_table(_perils_strength, _unit, _selected_discipline, _power_id, caster_id);
+
+        // Check if marine is dead
+        check_dead_marines(_unit, caster_id);
+
+        _battle_log_message = _cast_flavour_text + _power_flavour_text;
+        add_battle_log_message(_battle_log_message, 999, 137);
+    }
+
+    display_battle_log_message();
+}
+
 /// Function to get requested data from the disciplines_data structure
 /// @param _discipline_name - The name of the discipline
 /// @param _data_name - The specific data attribute you want
@@ -495,292 +783,4 @@ function select_psychic_power(_unit) {
     } */
 
     return _power_id;
-}
-
-/// @desc Psychic powers execution mess. Called in the scope of obj_pnunit.
-/// @param {real} caster_id - ID of the caster in the player column from obj_pnunit.
-/// @mixin
-function scr_powers(caster_id) {
-    // Gather unit data
-    var _unit = unit_struct[caster_id];
-    if (!is_struct(_unit)) {
-        exit;
-    }
-    if (_unit.name() == "") {
-        exit;
-    }
-
-    var _unit_role = _unit.role();
-    var _unit_exp = _unit.experience;
-    var _unit_weapon_one_data = _unit.get_weapon_one_data();
-    var _unit_weapon_two_data = _unit.get_weapon_two_data();
-    var _unit_gear = _unit.get_gear_data();
-    var _unit_armour = _unit.get_armour_data();
-    if (is_struct(_unit_armour)) {
-        var _is_dread = _unit_armour.has_tag("dreadnought");
-    } else {
-        var _is_dread = false;
-    }
-
-    var _psy_discipline = _unit.psy_discipline();
-    var _selected_discipline = _psy_discipline;
-
-    // Prepare the battlelog variables
-    var _battle_log_message = "";
-    var _battle_log_priority = 0;
-    var _cast_flavour_text = "";
-    var _casualties_flavour_text = "";
-
-    // Decide what to cast
-    var _known_powers = _unit.powers_known;
-    var _power_id = select_psychic_power(_unit);
-
-
-    //TODO: All tome related logic in this file has to be reworked;
-    //! Tomes are broken, just don't bother with them atm;
-    /* var _tome_data = process_tome_mechanics(_unit, caster_id);
-    if (_tome_data.using_tome) {
-        _known_powers = _tome_data.powers;
-        _selected_discipline = _tome_data.discipline;
-    } */
-
-    // Gather the invocation stats (multiplier to power stats)
-    var _equipment_psy_invocation = get_total_special_value(_unit, "psy_invocation") / 100;
-    var _character_psy_invocation = (_unit_exp / 100) + (_unit.psionic / 10);
-    var _total_psy_invocation = 1 + _equipment_psy_invocation + _character_psy_invocation;
-
-    // Gather power data
-    // var _power_struct = get_power_data(_power_id); // Not used atm
-    var _power_data = get_power_data(_power_id);
-    var _power_name = get_power_data(_power_id, "name");
-    var _power_type = get_power_data(_power_id, "type");
-    var _power_range = round(get_power_data(_power_id, "range") * _total_psy_invocation);
-    var _power_target_type = get_power_data(_power_id, "target_type");
-    var _power_max_kills = round(get_power_data(_power_id, "max_kills") * _total_psy_invocation);
-    var _power_magnitude = get_power_data(_power_id, "magnitude") * _total_psy_invocation;
-    var _power_armour_piercing = get_power_data(_power_id, "armour_piercing");
-    // var _power_duration = get_power_data(_power_id, "duration"); // Not used atm
-    var _power_flavour_text = get_power_data(_power_id, "flavour_text");
-    var _heretical = get_discipline_data(_selected_discipline, "heretical");
-
-    // Some stuff about the inquisition getting angry for using psy powers
-    //TODO: this should be refactored;
-    if (_heretical != undefined && _heretical) {
-        if ((obj_ncombat.sorcery_seen < 2) && (obj_ncombat.present_inquisitor == 1)) {
-            obj_ncombat.sorcery_seen = 2;
-        }
-    }
-
-    // Psy focus and casting fail/success bellow
-    //TODO: Move into a separate function;
-    var _equipment_psy_focus = get_total_special_value(_unit, "psy_focus");
-
-    var _cast_successful = check_cast_success(_unit);
-    if (_cast_successful) {
-        _cast_flavour_text = $"{_unit.name_role()} casts '{_power_name}'";
-    } else {
-        _cast_flavour_text = $"{_unit.name_role()} failed to cast {_power_name}!";
-        _battle_log_message = _cast_flavour_text;
-        add_battle_log_message(_battle_log_message, 999, 137);
-    }
-
-    //* Buff powers casting code
-    if (_power_type == "buff" && _cast_successful) {
-        var _marine_index;
-        var _marine_column;
-
-        if ((_power_id == "force_dome") || (_power_id == "stormbringer")) {
-            var _buff_casts = 8;
-            repeat (_buff_casts) {
-                var _target_data = find_valid_target(_power_data);
-                _marine_index = _target_data.index;
-                _marine_column = _target_data.column;
-                if (_marine_index != -1) {
-                    _marine_column.marine_mshield[_marine_index] = 2;
-                }
-            }
-        } else if (_power_id == "quickening") {
-            if (marine_quick[caster_id] < 3) {
-                marine_quick[caster_id] = 3;
-            }
-        } else if (_power_id == "might_of_the_ancients") {
-            if (marine_might[caster_id] < 3) {
-                marine_might[caster_id] = 3;
-            }
-        } else if (_power_id == "fiery_form") {
-            if (marine_fiery[caster_id] < 3) {
-                marine_fiery[caster_id] = 3;
-            }
-        } else if (_power_id == "fire_shield") {
-            var _buff_casts = 9;
-            repeat (_buff_casts) {
-                var _target_data = find_valid_target(_power_data);
-                _marine_index = _target_data.index;
-                _marine_column = _target_data.column;
-                if (_marine_index != -1) {
-                    _marine_column.marine_fshield[_marine_index] = 2;
-                }
-            }
-        } else if (_power_id == "iron_arm") {
-            marine_iron[caster_id] += 1;
-        } else if (_power_id == "endurance") {
-            var _buff_casts = 5;
-            repeat (_buff_casts) {
-                var _target_data = find_valid_target(_power_data);
-                _marine_index = _target_data.index;
-                _marine_column = _target_data.column;
-                if (_marine_index != -1) {
-                    _marine_column.unit_struct[_marine_index].add_or_sub_health(20);
-                }
-            }
-        } else if (_power_id == "hysterical_frenzy") {
-            var _buff_casts = 5;
-            repeat (_buff_casts) {
-                var _target_data = find_valid_target(_power_data);
-                _marine_index = _target_data.index;
-                _marine_column = _target_data.column;
-                if (_marine_index != -1) {
-                    marine_attack[_marine_index] += 1.5 * _total_psy_invocation;
-                    marine_defense[_marine_index] -= 0.15 * _total_psy_invocation;
-                }
-            }
-        } else if (_power_id == "regenerate") {
-            _unit.add_or_sub_health(_power_magnitude * _total_psy_invocation);
-        } else if (_power_id == "telekinetic_dome") {
-            if (marine_dome[caster_id] < 3) {
-                marine_dome[caster_id] = 3;
-            }
-        } else if (_power_id == "spatial_distortion") {
-            if (marine_spatial[caster_id] < 3) {
-                marine_spatial[caster_id] = 3;
-            }
-        }
-
-        _battle_log_message = _cast_flavour_text + _power_flavour_text;
-        add_battle_log_message(_battle_log_message, 999, 135);
-    } else if (_power_type == "attack" && _cast_successful) {
-        //* Attack power casting
-        //TODO: separate the code bellow into a separate function;
-        //TODO: Make target selection to happen before attack power selection;
-        var _target_data = find_valid_target(_power_data);
-
-        //* Calculate damage
-        if (_target_data != false) {
-            // Set up variables for damage calculation
-            var _effective_armour = _target_data.column.dudes_ac[_target_data.index];
-            var _target_is_vehicle = _target_data.column.dudes_vehicle[_target_data.index] == 1;
-            var _destruction_verb = _target_is_vehicle ? "destroyed" : "killed";
-            var _damage_verb = _target_is_vehicle ? "damaged" : "hurt";
-            var _target_unit_health = _target_data.column.dudes_hp[_target_data.index];
-            var _target_unit_name = _target_data.column.dudes[_target_data.index];
-            var _target_unit_count = _target_data.column.dudes_num[_target_data.index];
-
-            // Calculate armour effectiveness based on target type and power'_s armour piercing
-            if (!_target_is_vehicle) {
-                // Non-vehicle targets
-                if (_power_armour_piercing == 1) {
-                    _effective_armour = 0; // Full penetration ignores armour
-                } else if (_power_armour_piercing == -1) {
-                    _effective_armour *= 6; // Reduced effectiveness against armour
-                }
-            } else {
-                // Vehicle targets
-                if (_power_armour_piercing == -1) {
-                    _effective_armour = _power_magnitude; // Completely ineffective against vehicles
-                } else if (_power_armour_piercing == 0) {
-                    _effective_armour *= 6; // Normal weapons struggle against vehicle armour
-                }
-            }
-
-            // Calculate final damage after armour reduction
-            var _damage_after_armour = _power_magnitude - _effective_armour;
-            _damage_after_armour = max(0, _damage_after_armour); // Ensure damage isn't negative
-            var _final_damage = _damage_after_armour; // Apply any additional modifiers here if needed
-
-            // Calculate casualties based on damage and health
-            var _casualties = 0;
-
-            if (_power_max_kills == 0) {
-                // Single target limit - at most one casualty
-                _casualties = min(floor(_final_damage / _target_unit_health), 1);
-            } else {
-                // Multi-target - can kill multiple entities
-                _casualties = floor(_final_damage / _target_unit_health);
-            }
-
-            // Cap casualties at available entities and ensure non-negative
-            _casualties = min(max(_casualties, 0), _target_unit_count);
-
-            // No casualties
-            if (_casualties == 0) {
-                // Apply damage if any
-                if (_final_damage > 0) {
-                    _target_data.column.dudes_hp[_target_data.index] -= _final_damage;
-                    _casualties_flavour_text = $" The {_target_unit_name} survives the attack but is {_damage_verb}.";
-                    // No damage
-                } else {
-                    _casualties_flavour_text = $" The {_target_unit_name} is unscratched.";
-                }
-                // Apply casualties
-            } else {
-                // Update unit counts
-                _target_data.column.dudes_num[_target_data.index] -= _casualties;
-                obj_ncombat.enemy_forces -= _casualties;
-
-                // Apply special battle effects for certain unit types
-                if ((obj_ncombat.battle_special == "WL10_reveal") || (obj_ncombat.battle_special == "WL10_later")) {
-                    // Adjust chaos anger based on unit type
-                    if (_target_unit_name == "Veteran Chaos Terminator") {
-                        obj_ncombat.chaos_angry += _casualties * 2;
-                    } else if (_target_unit_name == "Veteran Chaos Chosen") {
-                        obj_ncombat.chaos_angry += _casualties;
-                    } else if (_target_unit_name == "Greater Daemon of Slaanesh" || _target_unit_name == "Greater Daemon of Tzeentch") {
-                        obj_ncombat.chaos_angry += _casualties * 5;
-                    }
-                }
-
-                // Generate appropriate flavour text based on outcome
-                if (_casualties > 1) {
-                    _casualties_flavour_text = $" {_casualties} {_target_unit_name} are {_destruction_verb}.";
-                } else if (_casualties == 1) {
-                    _casualties_flavour_text = $" A {_target_unit_name} is {_destruction_verb}.";
-                }
-
-                // Process the enemy column after applying casualties
-                compress_enemy_array(_target_data.column);
-                destroy_empty_column(_target_data.column);
-
-                // Log battle message to combat feed
-                _battle_log_message = _cast_flavour_text + _power_flavour_text + _casualties_flavour_text;
-                if (_casualties == 0) {
-                    _battle_log_priority = _final_damage / 2; // Just to have some priority here, as they don't have the usual "shots fired"
-                } else {
-                    if (_target_is_vehicle) {
-                        _battle_log_priority = _casualties * 12; // Vehicles are more juicy
-                    } else {
-                        _battle_log_priority = _casualties * 2; // More casualties = higher priority messages
-                    }
-                }
-                add_battle_log_message(_battle_log_message, _battle_log_priority, 134);
-            }
-        }
-    }
-
-    //* Perils happen bellow
-    //TODO: Perhaps separate perils into a separate function;
-    var _perils_happened = perils_test(_unit);
-
-    if (_perils_happened) {
-        var _perils_strength = roll_perils_strength(_unit);
-        _cast_flavour_text = $"{_unit.name_role()} suffers Perils of the Warp!  ";
-        _power_flavour_text = scr_perils_table(_perils_strength, _unit, _selected_discipline, _power_id, caster_id);
-
-        // Check if marine is dead
-        check_dead_marines(_unit, caster_id);
-
-        _battle_log_message = _cast_flavour_text + _power_flavour_text;
-        add_battle_log_message(_battle_log_message, 999, 137);
-    }
-
-    display_battle_log_message();
 }
