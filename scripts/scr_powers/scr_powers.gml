@@ -728,19 +728,25 @@ function check_cast_success(_unit) {
 function select_psychic_power(_unit) {
     var _known_powers = _unit.powers_known;
     var _power_id = "";
+    var _powers_priority_queue = ds_priority_create();
 
     // Attack powers
-    var known_attack_powers = [];
     for (var i = 0; i < array_length(_known_powers); i++) {
-        var __power_type = get_power_data(_known_powers[i], "type");
-        if (__power_type == "attack") {
-            array_push(known_attack_powers, _known_powers[i]);
+        var _power_type = get_power_data(_known_powers[i], "type");
+        if (_power_type == "attack") {
+            var _power_magnitude = get_power_data(_known_powers[i], "magnitude");
+            var _power_max_kills = get_power_data(_known_powers[i], "max_kills");
+            var _power_priority = _power_magnitude + (_power_max_kills * roll_dice(1, 50));
+
+            ds_priority_add(_powers_priority_queue, _known_powers[i], _power_priority);
         }
     }
 
-    if (array_length(known_attack_powers) > 0) {
-        _power_id = array_random_element(known_attack_powers);
+    if (!ds_priority_empty(_powers_priority_queue)) {
+        _power_id = ds_priority_delete_max(_powers_priority_queue);
     }
+
+    ds_priority_destroy(_powers_priority_queue);
 
     // Handle special cases
     if (_power_id == "machine_curse") {
