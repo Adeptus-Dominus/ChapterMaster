@@ -30,7 +30,7 @@ function get_discipline_data(_discipline_name, _data_name) {
         }
         return _data_content;
     } else {
-        log_error("Requested discipline was not found!");
+        assert_error_popup("Requested discipline was not found!");
     }
     return;
 }
@@ -62,7 +62,7 @@ function get_power_data(_power_id, _data_name = "") {
             return _data_content;
         }
     } else {
-        log_error("Requested power was not found!");
+        assert_error_popup("Requested power was not found!");
     }
 
     return;
@@ -215,7 +215,7 @@ function get_tome_discipline(_tome_tags) {
                 }
             }
         }
-        log_error("no matching discipline was found.");
+        assert_error_popup("no matching discipline was found.");
         return "";
     } catch (_exception) {
         handle_exception(_exception);
@@ -239,11 +239,11 @@ function match_power_prefix(power_prefix) {
                 }
             }
         }
-        log_error("no matching discipline was found.");
+        assert_error_popup("no matching discipline was found.");
         return "";
     } catch (_exception) {
-        return "";
         handle_exception(_exception);
+        return "";
     }
 }
 
@@ -407,7 +407,7 @@ function find_valid_target(_power_data) {
     if (_result.index != undefined) {
         return _result;
     } else {
-        return undefined;
+        return false;
     }
 }
 
@@ -649,7 +649,7 @@ function scr_powers(caster_id) {
         var _target_data = find_valid_target(_power_data);
 
         //* Calculate damage
-        if (_target_data != undefined) {
+        if (_target_data != false) {
             // Set up variables for damage calculation
             var _effective_armour = _target_data.column.dudes_ac[_target_data.index];
             var _target_is_vehicle = _target_data.column.dudes_vehicle[_target_data.index] == 1;
