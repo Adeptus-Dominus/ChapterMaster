@@ -23,8 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
--        uses: actions/checkout@v2
-+        uses: actions/checkout@v4
+        uses: actions/checkout@v4
 
       - name: Set Tag Names
         run: |
@@ -109,7 +108,7 @@ jobs:
   release:
     name: Release
     runs-on: windows-2022
-    needs: gamemaker_build
+    needs: [build_needed, gamemaker_build]
     if: needs.build_needed.outputs.needs_build == 'true'
     steps:
       - uses: actions/checkout@v4
