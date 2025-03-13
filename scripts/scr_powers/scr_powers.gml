@@ -406,13 +406,11 @@ function get_power_modifiers(_modifiers_data) {
     return _total_modifier;
 }
 
-function power_conditions_check(conditions_struct) {
+function power_conditions_check(conditions_array) {
     try {
-        var _conditions_array = struct_get_names(conditions_struct);
         var _conditions_satisfied = false;
-
-        for (var p = 0; p < array_length(_conditions_array); p++) {
-            var _condition_struct = _conditions_array[p];
+        for (var p = 0; p < array_length(conditions_array); p++) {
+            var _condition_struct = conditions_array[p];
             var _condition_type = _condition_struct[$ "type"];
             var _condition_value = _condition_struct[$ "value"];
 
