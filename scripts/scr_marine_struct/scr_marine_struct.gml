@@ -765,7 +765,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			var _cloak_chance = 5;
 			if (role() == obj_ini.role[100][eROLE.Chaplain]) {
 				_cloak_chance += 25;
-			} else if (role() == obj_ini.role[100][eROLE.Librarian]) {
+			} else if (IsSpecialist("libs")) {
 				_cloak_chance += 75;
 			}
 			if (irandom(100) <= _cloak_chance) {
@@ -1031,7 +1031,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 				_powers_known_count++;
 				_powers_learned++;
 				obj_ini.spe[company, marine_number] += string(_discipline_prefix) + string(_power_index) + "|";
-				array_push(self.powers_known, _discipline_powers[_power_index]);
+				array_push(powers_known, _discipline_powers[_power_index]);
 			}
 		}
 
@@ -1443,16 +1443,23 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 				} else if (weapon_slot==2){
 					primary_weapon=_wep2;
 				}
-			};
+			}
+
 			var basic_wep_string = $"{primary_weapon.name}: {primary_weapon.attack}#";
-			if (IsSpecialist("libs") || psionic > 7){
-				if (primary_weapon.has_tag("force") ||_wep2.has_tag("force")){
-					var force_modifier = (((weapon_skill/100) * (psionic/10) * (intelligence/10)) + (experience/1000)+0.1);
-					primary_weapon.attack *= force_modifier;
-					basic_wep_string += $"Active Force Weapon: x{force_modifier}#  Base: 0.10#  WSxPSIxINT: x{(weapon_skill/100)*(psionic/10)*(intelligence/10)}#  EXP: x{experience/1000}#";
+
+			if (psionic > 0){
+				if (has_force_weapon()){
+					var psychic_bonus = psionic * 20;
+					psychic_bonus *= 0.5 + (wisdom / 100);
+					psychic_bonus *= 0.5 + (experience / 100);
+					psychic_bonus *= IsSpecialist("libs") ? 1 : 0.25;
+					psychic_bonus = round(psychic_bonus);
+					primary_weapon.attack += psychic_bonus;
+					basic_wep_string += $"Psychic Power: +{psychic_bonus}#";
 				}		
-			};
-			explanation_string = basic_wep_string + explanation_string
+			}
+
+			explanation_string = basic_wep_string + explanation_string;
 
 			if (melee_carrying[0]>melee_carrying[1]){
 				encumbered_melee=true;	
@@ -1509,6 +1516,21 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			melee_damage_data=[final_attack,explanation_string,melee_carrying,primary_weapon, secondary_weapon];
 			return melee_damage_data;
 		};
+
+		static has_force_weapon =  function(){
+			var _wep1 = get_weapon_one_data();
+			var _wep2 = get_weapon_two_data();
+
+			if (is_struct(_wep1) && _wep1.has_tag("force")) {
+				return true;
+			}
+
+			if (is_struct(_wep2) && _wep2.has_tag("force")) {
+				return true;
+			}
+
+			return false;
+		}
 
 		//TODO just did this so that we're not loosing featuring but this porbably needs a rethink
 		static hammer_of_wrath =  function(){
