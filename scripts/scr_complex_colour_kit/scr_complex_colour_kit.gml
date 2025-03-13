@@ -474,7 +474,7 @@ function setup_complex_livery_shader(setup_role, game_setup=false, unit = "none"
                     var name = colour[1];
                     if (!struct_exists(_textures, name)){
                         _textures[$name] = {
-                            texture : global.textures[$colour[1]],
+                            texture : global.textures[$ colour[1]],
                             areas : [complex_colour_swaps[$ spot_names[i]]],
                         }
                     } else {

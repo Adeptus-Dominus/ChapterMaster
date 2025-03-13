@@ -864,6 +864,7 @@
     {"id":{"name":"spr_mk7_colors","path":"sprites/spr_mk7_colors/spr_mk7_colors.yy",},},
     {"id":{"name":"spr_mk4_colors","path":"sprites/spr_mk4_colors/spr_mk4_colors.yy",},},
     {"id":{"name":"spr_mk4_mongol_chest_variants","path":"sprites/spr_mk4_mongol_chest_variants/spr_mk4_mongol_chest_variants.yy",},},
+    {"id":{"name":"spr_helm_stripe_term","path":"sprites/spr_helm_stripe_term/spr_helm_stripe_term.yy",},},
     {"id":{"name":"spr_ship_shadow","path":"sprites/spr_ship_shadow/spr_ship_shadow.yy",},},
     {"id":{"name":"spr_mk4_complex_backpack","path":"sprites/spr_mk4_complex_backpack/spr_mk4_complex_backpack.yy",},},
     {"id":{"name":"spr_ws_mk5_helm","path":"sprites/spr_ws_mk5_helm/spr_ws_mk5_helm.yy",},},

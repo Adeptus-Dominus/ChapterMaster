@@ -462,7 +462,7 @@ function helmet_livery(progenitor, specific = "none") {
                 vet_sgt: {
                     helm_pattern: 1,
                     helm_primary: Colors.Red,
-                    helm_secondary: Colors.Red,
+                    helm_secondary: Colors.White,
                     helm_detail: Colors.Red,
                     helm_lens: Colors.Lime,
                 },
@@ -563,7 +563,7 @@ function helmet_livery(progenitor, specific = "none") {
                 vet_sgt: {
                     helm_pattern: 1,
                     helm_primary: Colors.Sanguine_Red,
-                    helm_secondary: Colors.Sanguine_Red,
+                    helm_secondary: Colors.White,
                     helm_detail: Colors.Sanguine_Red,
                     helm_lens: Colors.Lime,
                 },
