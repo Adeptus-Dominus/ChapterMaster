@@ -1,4 +1,5 @@
 {
+    "$schema": "./chapter_schema.json",
     "chapter": {
         "id": 12,
         "name": "Blood Ravens",
