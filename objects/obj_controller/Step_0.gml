@@ -346,8 +346,11 @@ if (menu==1 && (managing>0 || managing<0)){
                 try{
                     temp[121].destroy_image();
                 }
+                delete temp[121];
             }
             temp[121] = unit.draw_unit_image();
+
+            temp[122] = unit.handle_stat_growth();
         /*if (man[sel]="vehicle"){
             // TODO
         }*/
