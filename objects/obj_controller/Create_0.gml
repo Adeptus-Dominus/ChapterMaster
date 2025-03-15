@@ -332,8 +332,6 @@ effect_volume=ini_read_real("Settings","effect_volume",1);
 music_volume=ini_read_real("Settings","music_volume",1);
 large_text=ini_read_real("Settings","large_text",0);
 settings_heresy=ini_read_real("Settings","settings_heresy",0);
-settings_fps = ini_read_real("Settings", "settings_fps", 30);
-settings_displayfps = ini_read_real("Settings", "settings_displayfps", 1);
 settings_fullscreen=ini_read_real("Settings","fullscreen",1);
 settings_window_data=ini_read_string("Settings","window_data","fullscreen");
 if (is_test_map) then global.cheat_debug=true;
@@ -731,7 +729,6 @@ tau_stars=0;
 tau_messenger=0;
 imp_ships=0;
 cooldown=8;
-cooldown_text=0.8;
 exit_all=0;
 // ** Sets diplomacy and trading **
 diplomacy=0;
