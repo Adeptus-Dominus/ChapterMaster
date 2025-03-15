@@ -4,6 +4,11 @@ function scr_powers_new(){
 	// marine_number: Marine ID
 
 	// This script checks if the marine is capable of using psychic powers, and if so, assigns them based on experience
+    // 'This script checks if the marine is capable of using psychic powers', why the fuck is bro lying
+
+    if (!IsSpecialist("libs")) {
+        return 0;
+    }
 
 	var random_learn;
 	random_learn=false;

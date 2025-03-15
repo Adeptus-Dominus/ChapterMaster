@@ -1,7 +1,7 @@
 
-if (life=1) and (projectile_infos=0) then instance_destroy();
+if (life >= 0.75 && life <= 1.25) && (projectile_infos == 0) { instance_destroy(); }
 
-life+=1;
+life += global.frame_timings.t1;
 
 if (sprite_index=spr_flame2){
     if (instance_exists(owner)){
@@ -13,7 +13,7 @@ if (sprite_index=spr_flame2){
     if (life>8) then instance_destroy();
 }
 
-if (life=2) and (sprite_index!=spr_flame2){
+if (life >= 1.75 && life <= 2.25) && (sprite_index != spr_flame2) {
     var miss;miss=floor(random(100))+1;
     
     if (miss<=10){
@@ -22,7 +22,7 @@ if (life=2) and (sprite_index!=spr_flame2){
         rep.image_index=image_index;
         rep.image_speed=image_speed;
         rep.direction=direction;
-        rep.speed=speed;
+        rep.speed = speed;
         instance_destroy();
     }
 }
