@@ -558,24 +558,6 @@ function scr_draw_unit_image(_background=false){
                 });
             }
 
-            // Chaplain helmet
-            if (skull_mask) {
-                complex_set.remove_area("mouth_variants");
-                if (armour_type == ArmourType.Terminator) {
-                    if (unit_specialization == UnitSpecialization.WolfPriest) {
-                        complex_set.replace_area("head",spr_chaplain_wolfterm_helm);
-                    } else {
-                        complex_set.replace_area("head",spr_chaplain_term_helm);
-                    }
-                } else {
-                    if (unit_specialization == UnitSpecialization.WolfPriest) {
-                        complex_set.replace_area("head",spr_chaplain_wolf_helm);
-                    } else {
-                        complex_set.replace_area("head",spr_chaplain_helm); 
-                    }
-                }
-            }
-
             // Draw the Iron Halo
             if (halo==1 && !halo_bypass){
                 var halo_offset_y = 0;

@@ -147,6 +147,10 @@
             "The Blackmanes",
             ""
         ],
+       "culture_styles" : [
+            "Feral",
+            "Wolf Cult"
+        ],
         "flagship_name": "",
         /**
         * * Default fleet composition

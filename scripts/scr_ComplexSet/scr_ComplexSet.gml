@@ -84,6 +84,9 @@ function ComplexSet(unit) constructor{
                 _are_exceptions = false;
                 _mod = modulars[i];
                 exceptions = [];
+                if (array_contains(blocked, _mod.position)){
+                    return "blocked";
+                }
 
                 if (struct_exists(_mod, "allow_either")){
                     _are_exceptions = true;
@@ -215,7 +218,18 @@ function ComplexSet(unit) constructor{
                 var _overides = "none";
                 if (struct_exists(_mod, "overides")){
                     _overides = _mod.overides;
-                }                           
+                }
+                if (struct_exists(_mod, "prevent_others")){
+                    replace_area(_mod.position, _mod.sprite,_overides);
+                    array_push(blocked,_mod.position );
+                    if (struct_exists(_mod, "ban")){
+                        for (var b=0;b<array_length(_mod.ban);b++){
+                            if (!array_contains(banned, _mod.ban[b])){
+                                array_push(banned, _mod.ban[b]);
+                            }
+                        }
+                    }
+                }                       
                if (!struct_exists(_mod, "assign_by_rank")){
                    add_to_area(_mod.position, _mod.sprite,_overides)
                } else {
@@ -224,7 +238,8 @@ function ComplexSet(unit) constructor{
             }
         }
     }
-
+    blocked = [];
+    banned  = [];
     variation_map = {
         backpack : unit.get_body_data("backpack_variation","torso"),
         armour : unit.get_body_data("armour_choice","torso"),
@@ -267,6 +282,9 @@ function ComplexSet(unit) constructor{
     }
 
     static draw_component = function(component_name, texture_draws={}){
+        if (array_contains(banned, component_name)){
+            return "banned component";
+        }
         if (struct_exists(self, component_name)){
             var _sprite = self[$component_name];
             if (sprite_exists(_sprite)){
@@ -484,7 +502,8 @@ function ComplexSet(unit) constructor{
          delete texture_draws;
         surface_set_target(prep_surface);
         draw_clear_alpha(c_white,0);
-        surface_reset_target();        
+        surface_reset_target(); 
+        shader_set(full_livery_shader);    
     }
     static purity_seals_and_hangings = function(){
         //purity seals/decorations
