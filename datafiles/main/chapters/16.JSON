@@ -11,7 +11,7 @@
         "icon_name": "sd", // ? dunno what this is used for yet but the icon breaks if you dont use it 
         "fleet_type": 2, // 1= Homeworld, 2 = Fleet based, 3 = Penitent
         "strength": 2, // 1-10
-        "purity": 10, // 1-10
+        "purity": 9, // 1-10
         "stability": 2, // 1-10
         "cooperation": 2, // 1-10
         "homeworld_exists": 0, // 1 = true
