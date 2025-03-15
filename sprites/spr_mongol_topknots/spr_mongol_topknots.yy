@@ -15,7 +15,7 @@
   "frames": [
     {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"5a405388-8efb-49b6-a38f-f27ec42f29e3",},
     {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"4a660cc7-bffb-4e55-a447-3261a00bc7c8",},
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"c688668f-be39-4c47-aa4a-d5e8cd3588ba",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"8dfcac38-dfd1-4639-84d7-f101aec4c205",},
   ],
   "gridX": 0,
   "gridY": 0,
@@ -58,7 +58,7 @@
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
             {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"5a405388-8efb-49b6-a38f-f27ec42f29e3","path":"sprites/spr_mongol_topknots/spr_mongol_topknots.yy",},},},"Disabled":false,"id":"5866fa80-598f-4ae8-8d66-084c1cdd183e","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
             {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"4a660cc7-bffb-4e55-a447-3261a00bc7c8","path":"sprites/spr_mongol_topknots/spr_mongol_topknots.yy",},},},"Disabled":false,"id":"ea659019-df79-4bf1-ae2f-14074bff361b","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"c688668f-be39-4c47-aa4a-d5e8cd3588ba","path":"sprites/spr_mongol_topknots/spr_mongol_topknots.yy",},},},"Disabled":false,"id":"3fcba2ac-74e4-4754-8df9-717072185edd","IsCreationKey":false,"Key":2.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"8dfcac38-dfd1-4639-84d7-f101aec4c205","path":"sprites/spr_mongol_topknots/spr_mongol_topknots.yy",},},},"Disabled":false,"id":"bf9cefb6-3a88-481c-ab5a-bb6cb1fd5de9","IsCreationKey":false,"Key":2.0,"Length":1.0,"Stretch":false,},
           ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange": null,

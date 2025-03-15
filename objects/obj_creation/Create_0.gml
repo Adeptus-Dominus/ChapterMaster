@@ -292,7 +292,11 @@ buttons = {
         {   
             str1 : "Gothic",
             font : fnt_40k_14b,
-        },                                                                              
+        },
+        {   
+            str1 : "Wolf Cult",
+            font : fnt_40k_14b,
+        },                                                                                      
     ], "Chapter Visual Styles")  
 }
 
