@@ -15,6 +15,7 @@ if (__b__){
         if (ship_all[i]==1){
             if (obj_ini.ship_class[ship_ide[i]]=="Battle Barge") then bomb_score+=3;
             if (obj_ini.ship_class[ship_ide[i]]=="Strike Cruiser") then bomb_score+=1;
+            // if (obj_ini.ship_class[ship_ide[i]]=="Armed Freighter") then bomb_score+=1;
         }
     }
 
