@@ -87,7 +87,7 @@ function ChapterData() constructor {
 	battle_cry = "For the Emperor";
 	equal_specialists = 0;
 	load_to_ships = {
-		escort_load: 0,
+		escort_load: 2,
 		split_scouts: 0,
 		split_vets: 0,
 	};

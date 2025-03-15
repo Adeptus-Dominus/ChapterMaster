@@ -28,6 +28,7 @@ for (var i=0;i<array_length(unit_struct);i++){
         }
         
         if (!marine_dead[i]){
+            // Apothecaries for saving marines;
             if (unit.IsSpecialist("apoth", true)) {
                 skill_level = unit.intelligence * 0.0125;
                 if (marine_gear[i]=="Narthecium"){
@@ -37,14 +38,16 @@ for (var i=0;i<array_length(unit_struct);i++){
                 skill_level += random(unit.luck*0.05);
                 obj_ncombat.unit_recovery_score += skill_level;
             }
-            else if (unit.IsSpecialist("forge", true)) {
-                skill_level = unit.technology * 0.01;
+
+            // Techmarines for saving vehicles;
+            if (unit.IsSpecialist("forge", true)) {
+                skill_level = unit.technology / 10;
                 if (marine_mobi[i]=="Servo-arm") {
-                    skill_level*=2; 
+                    skill_level *= 1.5; 
                 } else if (marine_mobi[i]=="Servo-harness") {
-                    skill_level*=4;
+                    skill_level *= 2;
                 }
-                skill_level += random(unit.luck*0.05);
+                skill_level += random(unit.luck / 2);
                 obj_ncombat.vehicle_recovery_score += skill_level;
                 obj_ncombat.techmarines_alive++;
             }

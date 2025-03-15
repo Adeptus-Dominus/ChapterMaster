@@ -647,14 +647,14 @@ function PlanetData(planet, system) constructor{
             }
             
             if (t!=0){
-                if (ahuh2=1) then ahuh3="Tiny";if (ahuh2=2) then ahuh3="Sparse";
-                if (ahuh2=3) then ahuh3="Moderate";if (ahuh2=4) then ahuh3="Heavy";
-                if (ahuh2=5) then ahuh3="Extreme";if (ahuh2>=6) then ahuh3="Rampant";
+                if (ahuh2=1) then ahuh3="Minima (1)";if (ahuh2=2) then ahuh3="Parvus (2)";
+                if (ahuh2=3) then ahuh3="Moderatus (3)";if (ahuh2=4) then ahuh3="Significus (4)";
+                if (ahuh2=5) then ahuh3="Enormicus (5)";if (ahuh2>=6) then ahuh3="Extremis (6)";
             }
             if (t=0){
-                if (ahuh2=1) then ahuh3="Very Few";if (ahuh2=2) then ahuh3="Few";
-                if (ahuh2=3) then ahuh3="Moderate";if (ahuh2=4) then ahuh3="Numerous";
-                if (ahuh2=5) then ahuh3="Very Numerous";if (ahuh2>=6) then ahuh3="Overwhelming";
+                if (ahuh2=1) then ahuh3="Minima (1)";if (ahuh2=2) then ahuh3="Parvus (2)";
+                if (ahuh2=3) then ahuh3="Moderatus (3)";if (ahuh2=4) then ahuh3="Significus (4)";
+                if (ahuh2=5) then ahuh3="Enormicus (5)";if (ahuh2>=6) then ahuh3="Extremis (6)";
             }
             
             if (ahuh!="") and (ahuh2>0) then temp8+=string(ahuh)+" "+string(ahuh3)+"#";

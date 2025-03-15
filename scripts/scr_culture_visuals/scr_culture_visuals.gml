@@ -510,7 +510,82 @@ global.modular_drawing_items = [
         position : "right_pauldron_embeleshments",
         max_saturation : 15,
         armours_exclude : ["MK5 Heresy", "MK6 Corvus"]
-    }                                                                
+    },
+    {
+        cultures : ["Wolf Cult"],
+        sprite : spr_chaplain_wolfterm_helm,
+        body_types :[2],
+        position : "head",
+        prevent_others : true,
+        ban : ["mouth_variants"],
+        role_type : ["chap"],
+    },
+    {
+        cultures : ["Wolf Cult"],
+        sprite : spr_chaplain_wolf_helm,
+        body_types :[0],
+        position : "head",
+        prevent_others : true,
+        ban : ["mouth_variants"],
+        role_type : ["chap"],
+    },
+    {   
+        sprite : spr_chaplain_term_helm,
+        body_types :[2],
+        position : "head",
+        prevent_others : true,
+        ban : ["mouth_variants"],
+        role_type : ["chap"],
+    },
+    {
+        sprite : spr_chaplain_helm,
+        body_types :[0],
+        position : "head",
+        prevent_others : true,
+        ban : ["mouth_variants"],
+        role_type : ["chap"],
+    }, 
+    {
+        cultures : ["Feral", "Wolf Cult"],
+        sprite : spr_wolf_tail,
+        body_types :[2, 0],
+        position : "purity_seals",
+    },
+    {
+        cultures : ["Feral", "Wolf Cult"],
+        sprite : spr_right_pauldron_fur_hanging,
+        body_types :[0],
+        position : "right_pauldron_hangings",
+        max_saturation : 20,
+    },
+    {
+        cultures : ["Feral", "Wolf Cult"],
+        sprite : spr_left_pauldron_fur_hanging,
+        body_types :[0],
+        position : "left_pauldron_hangings",
+        max_saturation : 20,
+    }, 
+    {
+        cultures : ["Feral", "Wolf Cult"],
+        sprite : spr_term_right_fur_hanging,
+        body_types :[2],
+        position : "right_pauldron_hangings",
+        max_saturation : 20,
+    },
+    {
+        cultures : ["Feral", "Wolf Cult"],
+        sprite : spr_term_left_fur_hanging,
+        body_types :[2],
+        position : "left_pauldron_hangings",
+        max_saturation : 20,
+    },
+    {
+        cultures : ["Wolf Cult"],
+        sprite : spr_fur_tail_topknot,
+        body_types :[0],
+        position : "crest",
+        max_saturation : 30,
+    },                                                                  
 ];
 try{
     load_visual_sets();
