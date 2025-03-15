@@ -252,6 +252,13 @@ function scr_draw_unit_image(_background=false){
     var _creation = instance_exists(obj_creation);
 
     var unit_surface = _controller ? obj_controller.marine_surface : obj_creation.marine_surface;
+    if (!surface_exists(unit_surface)){
+        var _obj = _controller ? obj_controller : obj_creation;
+        with (_obj){
+            marine_surface = surface_create(600, 600);
+            unit_surface = marine_surface;
+        }
+    }
     surface_set_target(unit_surface);
     draw_clear_alpha(c_black, 0);//RESET surface
     draw_set_font(fnt_40k_14b);
