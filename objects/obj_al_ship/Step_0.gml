@@ -143,15 +143,15 @@ if (!__b__){
         dist=point_distance(x,y,target.x,target.y)-(max(sprite_get_width(sprite_index),sprite_get_height(sprite_index)));
         // For example here we could improve the options and how ships beheave...
         if (target!=0) and (action=="attack"){
-            direction = turn_towards_point(direction, x, y, target.x, target.y, global.frame_timings.t01);
+            direction=turn_towards_point(direction,x,y,target.x,target.y,.1);
         }
         if (target!=0) and (action=="broadside") and (dist>o_dist){
             if (y>=target.y) then dist=point_distance(x,y,target.x+lengthdir_x(64,target.direction-180),target.y+lengthdir_y(128,target.direction-90))-(max(sprite_get_width(sprite_index),sprite_get_height(sprite_index)));
             if (y<target.y) then dist=point_distance(x,y,target.x+lengthdir_x(64,target.direction-180),target.y+lengthdir_y(128,target.direction+90))-(max(sprite_get_width(sprite_index),sprite_get_height(sprite_index)));
-            if (y > target.y) && (dist>o_dist) { direction = turn_towards_point(direction, x + lengthdir_x(64, target.direction - 180), y, target.x, target.y + lengthdir_y(128, target.direction - 90), global.frame_timings.t02); }
-            if (y < target.y) && (dist>o_dist) { direction = turn_towards_point(direction, x + lengthdir_x(64, target.direction - 180), y, target.x, target.y + lengthdir_y(128, target.direction + 90), global.frame_timings.t02); }
-            if (turn_bonus > 1) {
-                if (y < target.y) && (dist > o_dist) { direction = turn_towards_point(direction, x + lengthdir_x(64, target.direction - 180), y, target.x, target.y + lengthdir_y(128, target.direction + 90), global.frame_timings.t02); }
+            if (y>target.y) and (dist>o_dist) then direction=turn_towards_point(direction,x+lengthdir_x(64,target.direction-180),y,target.x,target.y+lengthdir_y(128,target.direction-90),.2);
+            if (y<target.y) and (dist>o_dist) then direction=turn_towards_point(direction,x+lengthdir_x(64,target.direction-180),y,target.x,target.y+lengthdir_y(128,target.direction+90),.2);
+            if (turn_bonus>1){
+                if (y<target.y) and (dist>o_dist) then direction=turn_towards_point(direction,x+lengthdir_x(64,target.direction-180),y,target.x,target.y+lengthdir_y(128,target.direction+90),.2);
             }
         }
         /*if (target!=0) and (action="broadside") and (o_dist>=dist){
@@ -449,10 +449,10 @@ if (__b__){
             if (instance_exists(target)){
                 dist=point_distance(x,y,target.x,target.y);
                 
-                if (action == "swoop") { direction = turn_towards_point(direction, x, y, target.x, target.y, global.frame_timings.t5 - ship_size);}
+                if (action=="swoop"){direction=turn_towards_point(direction,x,y,target.x,target.y,5-ship_size);}
                 if (dist<=o_dist) and (collision_line(x,y,x+lengthdir_x(o_dist,direction),y+lengthdir_y(o_dist,direction),obj_en_ship,0,1)) then action="attack";
                 if (dist<300) and (action=="attack") then action="bank";
-                if (action == "bank") { direction = turn_towards_point(direction, x, y, room_width, room_height / 2, global.frame_timings.t5 - ship_size); }
+                if (action=="bank") then direction=turn_towards_point(direction,x,y,room_width,room_height/2,5-ship_size);
                 if (action=="bank") and (dist>700) then action="attack";
             }
         }
@@ -551,7 +551,7 @@ if (__b__){
             if (facing=="left") and (point_direction(x,y,target_r.x,target_r.y)>22) and (point_direction(x,y,target_r.x,target_r.y)<157) then ok=2;
             /*
             var re_deh;re_deh=relative_direction(direction,target.direction);
-            if (re_deh < 45) || (re_deh > 315) || ((re_deh > 135) && (re_deh < 225)) { direction = turn_towards_point(direction, x + lengthdir_x(128, target.direction-90), y, target.x, target.y + lengthdir_y(128, target.direction - 90), global.frame_timings.t02) }
+            if (re_deh<45) or (re_deh>315) or ((re_deh>135) and (re_deh<225)) then direction=turn_towards_point(direction,x+lengthdir_x(128,target.direction-90),y,target.x,target.y+lengthdir_y(128,target.direction-90),.2)
             */
             if (ok==2) and (dist<(range+(max(sprite_get_width(sprite_index),sprite_get_height(sprite_index))))){
                 if (ammo>0) and (ammo<900) then ammo-=1;

@@ -552,7 +552,7 @@ try {
 
 	if (change_slide > 0) {
 		draw_set_color(c_black);
-		if (change_slide >= 3 && 4 >= change_slide) {
+		if (change_slide == 3) {
 			if (slate5 <= 0) {
 				slate5 = 1;
 			}
@@ -686,7 +686,7 @@ try {
 			if (point_and_click([604, 756, 675, 824]) && (cooldown <= 0) && (!instance_exists(obj_creation_popup))) {
 				// Previous slide
 				cooldown = 8000;
-				change_slide = global.frame_timings.t1;
+				change_slide = 1;
 				goto_slide = slide - 1;
 				popup = "";
 				if (goto_slide == 1) {

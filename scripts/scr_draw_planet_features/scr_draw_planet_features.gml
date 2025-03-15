@@ -370,9 +370,9 @@ function RackAndPinion(Type="forward") constructor{
 				}
 				draw_sprite_ext(spr_cog_pinion, 0, x, y, 1, 1, rotation, c_white, 1)
 				if (!reverse){
-					rotation -= global.frame_timings.t4;
+					rotation-=4;
 				} else {
-					rotation += global.frame_timings.t4;
+					rotation+=4;
 				}
 				rack_y = (75.3982236862/360)*(360-rotation);
 				if (rack_y > 70){
@@ -399,9 +399,9 @@ function RackAndPinion(Type="forward") constructor{
 				}
 				draw_sprite_ext(spr_cog_pinion, 0, x, y, 1, 1, rotation, c_white, 1)
 				if (!reverse){
-					rotation += global.frame_timings.t4;
+					rotation+=4;
 				} else {
-					rotation -= global.frame_timings.t4;
+					rotation-=4;
 				}
 				rack_y = (75.3982236862/360)*(360-rotation)
 				if (rack_y > 70){
@@ -429,7 +429,7 @@ function SpeedingDot(XX,YY, limit) constructor{
 		var top_cut = 36-stack>0 ? 36-stack :0;
 		var bottom_cut = bottom_limit<stack? 46-stack-bottom_limit:46;
 		draw_sprite_part_ext(spr_research_bar, 2, 0, top_cut, 200, bottom_cut, xx-105, yy+stack, 1, 0.7, c_white, 1);
-		stack += global.frame_timings.t3;
+		stack+=3;
 	}
 	current_y = function(){
 		return yy+stack;
@@ -517,7 +517,7 @@ function ShutterButton() constructor{
 		var shutter_backdrop = 5;
 		if (entered || click_timer>0){
 			if (time_open<20){
-				time_open += global.frame_timings.t1;
+				time_open++;
 				right_rack.draw(xx+width, yy, false, false);
 				left_rack.draw(xx, yy, false, false);
 			} else {
@@ -529,7 +529,7 @@ function ShutterButton() constructor{
 				click_timer++;
 			}
 		} else if (time_open>0){
-			time_open -= global.frame_timings.t1;
+			time_open--;
 			right_rack.draw(xx+width, yy, false, true);
 			left_rack.draw(xx, yy, false, true);
 		} else {
@@ -604,10 +604,9 @@ function DataSlate() constructor{
 		var line_move = yy+(70*scale_y)+((36*scale_y)*static_line);
 		draw_line(xx+(30*scale_x),line_move,xx+(820*scale_x),line_move);
 		draw_set_alpha(1);
-		if (irandom(global.frame_timings.i75) == 0 && static_line > 1) {
-			static_line -= global.frame_timings.t1; // not sure why you would do this, makes the game look like it is repeating frames
-		} else {
-			static_line += global.frame_timings.t01;
+		if (irandom(75)=0 && static_line>1){static_line--;}
+		else{
+			static_line+=0.1;
 		}
 		if (static_line>20) then static_line=1;
 		draw_set_color(c_gray);
