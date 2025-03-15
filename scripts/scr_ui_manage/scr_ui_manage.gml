@@ -273,16 +273,18 @@ function scr_ui_manage() {
 	
 				}
 
-				var bio_toggle = management_buttons.profile_toggle;
-				bio_toggle.update({
-					label : !unit_bio  ?  "Show Bio" : "Hide Bio",
-					x1 : _profile_toggle.x2,
-					y1 : _profile_toggle.y1,
-					keystroke : keyboard_check_pressed(ord("B"))
-				});
-				if (bio_toggle.draw(!text_bar)){
-					unit_bio = !unit_bio
-				}								
+				if (unit_profile){
+					var bio_toggle = management_buttons.bio_toggle;
+					bio_toggle.update({
+						label : !unit_bio  ?  "Show Bio" : "Hide Bio",
+						x1 : _profile_toggle.x2,
+						y1 : _profile_toggle.y1,
+						keystroke : keyboard_check_pressed(ord("B"))
+					});
+					if (bio_toggle.draw(!text_bar)){
+						unit_bio = !unit_bio
+					}
+				}							
 			}
 
 			if (managing<0 && selection_data.purpose_code!="manage") then unit_profile=true;
