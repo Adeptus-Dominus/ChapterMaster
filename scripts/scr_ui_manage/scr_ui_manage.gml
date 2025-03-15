@@ -226,7 +226,7 @@ function scr_ui_manage() {
 
 		draw_set_color(c_white);
 		draw_sprite_stretched(spr_data_slate_back, 0, xx+1008-1, yy+140, 572, 378);
-		draw_sprite_stretched(unit_card_icons, 0, xx+1007-1, yy+140, 166, 167);
+		draw_sprite_stretched(spr_unit_card_icons, 0, xx+1007-1, yy+140, 166, 167);
 		// draw_sprite_stretched(spr_data_slate_border, 0, xx+1008-1, yy+140, 572, 378); Old Location
 		// draw_rectangle_color_simple(xx+1007, yy+140, xx+1579, yy+519, 0, c_white, 0.05);
 		draw_rectangle_color_simple(xx+1007, yy+140, xx+1579, yy+519, 0, 5998382, 0.05);
@@ -242,54 +242,46 @@ function scr_ui_manage() {
 			var no_other_instances =  !instance_exists(obj_temp3) && !instance_exists(obj_popup);
 		    var stat_tool_tip_text;
 			var button_coords;
-		    if (!obj_controller.view_squad && !obj_controller.company_report){
-			    stat_tool_tip_text = "Squad View";
-			} else {
-				stat_tool_tip_text = "Company View"; 
-			}
-		    var x5=right_ui_block.x1+5;//this should be relational with the unit area tab
-			var y5=right_ui_block.y1+8;
-			var x6=x5+string_width("Company View")+8;
-			var y6=y5+string_height("Company View")+2;
-			button_coords = draw_unit_buttons([x5, y5, x6, y6], stat_tool_tip_text,[1,1],#50a076, , , , false,);
-			array_push(tooltip_drawing, ["Click here or press S to toggle Squad View.", [x5,y5,x6,y6]]);
-			if ( point_and_click([x5,y5,x6,y6]) || (keyboard_check_pressed(ord("S")) && !text_bar)){
-				obj_controller.view_squad = !obj_controller.view_squad;
-				if (stat_tool_tip_text=="Squad View"){
+			var _squad_button = management_buttons.squad_toggle;
+			_squad_button.update({
+				x1 : right_ui_block.x1+5,
+				y1 : right_ui_block.y1+8,
+				label : !obj_controller.view_squad && !obj_controller.company_report ? "Squad View" : "Company View",
+				keystroke : keyboard_check_pressed(ord("S"))
+			});
+
+			if (_squad_button.draw(!text_bar)){
+				view_squad = !view_squad
+				if (view_squad){
 					new_company_struct();
-					obj_controller.unit_profile = true;
-				} else {
-					obj_controller.unit_profile = false;
 				}
 			}	
 
+
 			if (!view_squad){
-				stat_tool_tip_text = !unit_profile  ?  "Show Profile" : "Hide Profile";
-
-				x5=x6+4;
-				x6=x5+string_width("Show Profile")+8;
-				array_push(tooltip_drawing, ["Click here or press P to show unit profile.", [x5,y5,x6,y6]]);
-				button_coords = draw_unit_buttons([x5, y5, x6, y6], stat_tool_tip_text,[1,1],#50a076)
-				if (((keyboard_check_pressed(ord("P"))&& !text_bar)|| (point_and_click(button_coords))) && no_other_instances){
-					unit_profile = !unit_profile;
+				var _profile_toggle = management_buttons.profile_toggle;
+				_profile_toggle.update({
+					label : !unit_profile  ?  "Show Profile" : "Hide Profile",
+					x1 : _squad_button.x2 + 4,
+					y1 : _squad_button.y1,
+					keystroke : keyboard_check_pressed(ord("P"))
+				});
+				if (_profile_toggle.draw(!text_bar)){
+					unit_profile = !unit_profile
+	
 				}
-				x5=x6+4;
+
+				var bio_toggle = management_buttons.profile_toggle;
+				bio_toggle.update({
+					label : !unit_bio  ?  "Show Bio" : "Hide Bio",
+					x1 : _profile_toggle.x2 + 4,
+					y1 : _profile_toggle.y1,
+					keystroke : keyboard_check_pressed(ord("B"))
+				});
+				if (bio_toggle.draw(!text_bar)){
+					unit_bio = !unit_bio
+				}								
 			}
-		
-		    if (unit_profile && !view_squad){
-				if (!unit_bio){
-					stat_tool_tip_text = "Show Bio"
-				} else {
-					stat_tool_tip_text = "Hide Bio"; 
-				}
-				x6=x5+string_width("Hide Bio")+8;
-				button_coords = draw_unit_buttons([x5, y5, x6, y6], stat_tool_tip_text,[1,1],#50a076);
-				array_push(tooltip_drawing, ["Click here or press B to Toggle Unit Biography.", button_coords]);
-				if (((keyboard_check_pressed(ord("B"))&& !text_bar)|| (point_and_click(button_coords))) && no_other_instances){
-					unit_bio = !unit_bio;
-				}
-		    }
-
 
 			if (managing<0 && selection_data.purpose_code!="manage") then unit_profile=true;
 			//TODO Implement company report
@@ -314,7 +306,7 @@ function scr_ui_manage() {
 			// Draw unit image
 			draw_set_color(c_white);
 			if (is_struct(temp[121])){
-				temp[121].draw(xx+1208, yy+240)
+				temp[121].draw(xx+1328, yy+240)
 			}
 
 			//TODO implement tooltip explaining potential loyalty hit of demoting a sgt
@@ -337,7 +329,7 @@ function scr_ui_manage() {
 			// Draw unit name and role
 			draw_set_halign(fa_center);
 			draw_set_font(fnt_40k_30b);
-			draw_text_transformed_outline(xx+1290,yy+177,string_hash_to_newline(selected_unit.name_role()),0.7,0.7,0);
+			draw_text_transformed_outline(xx+1290,yy+197,selected_unit.name_role(),0.7,0.7,0);
 
 			// Draw unit info
 			draw_set_font(fnt_40k_14);
