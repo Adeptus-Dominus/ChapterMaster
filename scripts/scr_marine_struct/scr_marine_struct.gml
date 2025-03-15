@@ -17,22 +17,6 @@
 		the first int is a base or mean value the second int is a sd number to be passed to the gauss() function
 		the string (usually max) is guidance so in the instance of max it will pick the larger value of the mean and the gauss function return
 */
-#macro ARR_stat_list ["constitution", "strength", "luck", "dexterity", "wisdom", "piety", "charisma", "technology","intelligence", "weapon_skill", "ballistic_skill"]
-
-global.stat_shorts = {
-	"constitution":"CON", 
-	"strength":"STR", 
-	"luck":"LCK", 
-	"dexterity":"DEX", 
-	"wisdom":"WIS", 
-	"piety":"PTY", 
-	"charisma":"CHA", 
-	"technology":"TEC",
-	"intelligence":"INT", 
-	"weapon_skill":"WS", 
-	"ballistic_skill":"BS",
-}
-
 // will swap these out for enums or some better method as i develop where this is going
 #macro ARR_body_parts ["left_leg", "right_leg", "torso", "right_arm", "left_arm", "left_eye", "right_eye", "throat", "jaw","head"]
 #macro ARR_body_parts_display ["Left Leg", "Right Leg", "Torso", "Right Arm", "Left Arm", "Left Eye", "Right Eye", "Throat", "Jaw","Head"]
@@ -379,45 +363,10 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		return [0, _powers_learned];
 	}//change exp
 
-	static add_exp = function(add_val){
-		var instace_stat_point_gains = {};
-		var _powers_learned = 0;
-		stat_point_exp_marker += add_val;
-		experience += add_val;
-		if (base_group == "astartes"){
-			while (stat_point_exp_marker>=15){
-				var stat_gains = choose("weapon_skill", "ballistic_skill", "wisdom");
-				var special_stat = irandom(3);
-				if (IsSpecialist("forge") && special_stat==0) then stat_gains = "technology";
-				if (IsSpecialist("libs")) {
-					if (special_stat==0) then stat_gains = "intelligence";
-					_powers_learned = update_powers();
-				}
-				if (IsSpecialist("chap") && special_stat==0) then stat_gains = "charisma";
-				if (IsSpecialist("apoth") && special_stat==0) then stat_gains = "intelligence";
-				if (role()=="Champion" && stat_gains!="weapon_skill" && special_stat==0) then stat_gains = "weapon_skill";
-				if (job!="none"){
-					if (job.type == "forge"){
-						stat_gains="technology";
-					}
-				}				
-				self[$ stat_gains]++;
-				stat_point_exp_marker-=15;
-				if (struct_exists(instace_stat_point_gains, stat_gains)){
-					instace_stat_point_gains[$ stat_gains]++;
-				} else {
-					instace_stat_point_gains[$ stat_gains]=1;
-				}
-				if (struct_exists(turn_stat_gains, stat_gains)){
-					turn_stat_gains[$ stat_gains]++;
-				} else {
-					turn_stat_gains[$ stat_gains]=1;
-				}
-			}
-			assign_reactionary_traits();
-		}
-		return [instace_stat_point_gains, _powers_learned];
-	}
+	static handle_stat_growth = unit_stat_growth;
+
+	static add_exp = add_unit_exp;
+
 	static armour = function(raw=false){
 		var wep = obj_ini.armour[company][marine_number];
 		if (is_string(wep) || raw) then return wep;

@@ -75,11 +75,11 @@ if (instance_exists(obj_main_menu)) and (!instance_exists(obj_saveload)) and (!i
             draw_sprite_ext(spr_mm_butts, i, 580,y_start, 2.2, 2.2, 0, c_white, 1);
             if (scr_hit(580,y_start, 580+width, y_start+height)){
                 if (hover[i]<20){
-                    hover[i]++;
+                    hover[i] += global.frame_timings.t1;
                 }
             } else {
                 if (hover[i]>0){
-                    hover[i]--;
+                    hover[i] -= global.frame_timings.t1;
                 }
             }
             if (point_and_click([580,y_start, 580+width, y_start+height]) and !instance_exists(obj_ingame_menu)){

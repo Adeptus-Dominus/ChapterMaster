@@ -44,7 +44,12 @@ enum ArmourType {
     Dreadnought,
     None
 }
-
+function set_and_clear_surface(_surface){
+    surface_set_target(_surface);
+    draw_clear_alpha(c_white,0);
+    surface_reset_target(); 
+    surface_free(_surface)   
+}
 function UnitImage(unit_surface) constructor{
     u_surface = unit_surface;
     static draw = function (xx, yy, _background=false){
@@ -54,8 +59,8 @@ function UnitImage(unit_surface) constructor{
             draw_rectangle_color_simple(xx-2,yy-2,xx+166+2,yy+2+271,1,c_black);
             draw_rectangle_color_simple(xx-3,yy-3,xx+166+3,yy+3+271,1,c_gray);
         }      
-        if (surface_exists(u_surface)){
-            draw_surface(u_surface, xx-200,yy-90);
+        if (sprite_exists(u_surface)){
+            draw_sprite(u_surface, 0,xx-200,yy-90);
         }
     }
 
@@ -66,14 +71,14 @@ function UnitImage(unit_surface) constructor{
             draw_rectangle_color_simple(xx-2+left,yy-2+top,xx+width+2,yy+2+height,1,c_black);
             draw_rectangle_color_simple(xx-3+left,yy-3+top,xx+width+3,yy+3+height,1,c_gray);
         }     
-        if (surface_exists(u_surface)){
-            draw_surface_part(u_surface, left+200, top+90, width,height, xx,yy);
+        if (sprite_exists(u_surface)){
+            draw_sprite_part(u_surface,0, left+200, top+90, width,height, xx,yy);
         }       
     }
 
     static destroy_image = function(){
-        if (surface_exists(u_surface)){
-            surface_free(u_surface);
+        if (sprite_exists(u_surface)){
+            sprite_delete(u_surface);
         }
     }
 }
@@ -240,14 +245,17 @@ function scr_draw_unit_image(_background=false){
     var complex_set={};    
     var x_surface_offset = 200;
     var y_surface_offset = 110;
-    var unit_surface = surface_create(600, 600);
+
+
+	var xx=__view_get( e__VW.XView, 0 )+0, yy=__view_get( e__VW.YView, 0 )+0, bb="", img=0;
+    var _controller = instance_exists(obj_controller);
+    var _creation = instance_exists(obj_creation);
+
+    var unit_surface = _controller ? obj_controller.marine_surface : obj_creation.marine_surface;
     surface_set_target(unit_surface);
     draw_clear_alpha(c_black, 0);//RESET surface
     draw_set_font(fnt_40k_14b);
     draw_set_color(c_gray);
-	var xx=__view_get( e__VW.XView, 0 )+0, yy=__view_get( e__VW.YView, 0 )+0, bb="", img=0;
-    var _controller = instance_exists(obj_controller);
-    var _creation = instance_exists(obj_creation);
 
     var modest_livery = _controller ? obj_controller.modest_livery : 0;
     var progenitor_visuals = _controller ? obj_controller.progenitor_visuals : 0;
@@ -843,46 +851,15 @@ function scr_draw_unit_image(_background=false){
     var _complex_sprite_names = struct_get_names(complex_set);
     for (var i=0;i<array_length(_complex_sprite_names);i++){
         var _area = _complex_sprite_names[i];
-        if (!is_callable(complex_set[$ _area])){
-            if array_contains([
-             "armour",
-             "chest_variants",
-             "thorax_variants",
-             "leg_variants",
-             "left_leg",
-             "right_leg",
-             "head",
-             "left_trim",
-             "right_trim",
-             "gorget",
-             "right_pauldron",
-             "left_pauldron",
-             "left_personal_livery",
-             "left_knee",
-             "tabbard",
-             "robe",
-             "mouth_variants",
-             "crest",
-             "forehead",
-             "head",
-             "forehead",
-             "left_eye",
-             "right_eye",
-             "crown",
-             "backpack",
-            "backpack_augment",
-            "backpack_decoration",
-            "chest_fastening",
-             "belt"
-            ], _area
-         )
-
-            if (sprite_exists(complex_set[$ _area])){
-                sprite_delete(complex_set[$_area]);
+        var _item = complex_set[$ _area];
+        if (!is_callable(_item) && !is_struct(_item) && !is_array(_item) && !is_string(_item)){
+            if (sprite_exists(_item)){
+                sprite_delete(_item);
             } 
         }
     }
     delete complex_set;
-    return new UnitImage(unit_surface);   
-
+    return new UnitImage(sprite_create_from_surface(unit_surface, 0, 0, 600, 600, true, false, 0, 0));
 }
+
+

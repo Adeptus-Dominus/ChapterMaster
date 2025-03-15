@@ -1,6 +1,6 @@
 
 image_angle=direction;
-if (cooldown>0) then cooldown-=1;
+if (cooldown > 0) { cooldown -= global.frame_timings.t1; }
 
 var dist;
 if (instance_exists(target)){
@@ -13,9 +13,9 @@ if (instance_exists(target)){
     
     dist=point_distance(x,y,target.x,target.y);
     
-    if (action="goto"){speed=4;
-        direction=turn_towards_point(direction,x,y,target.x,target.y,8);
-        direction=turn_towards_point(direction,x,y,target.x,target.y,8);
+    if (action="goto") {speed = global.frame_timings.t4;
+        direction = turn_towards_point(direction, x, y, target.x, target.y, global.frame_timings.t8);
+        direction = turn_towards_point(direction, x, y, target.x, target.y, global.frame_timings.t8);
     }
     
     if (instance_exists(target)){
@@ -37,9 +37,9 @@ if (instance_exists(target)){
     // Might change based on chapter settings
 }
 
-if (action="return"){speed=4;
-    direction=turn_towards_point(direction,x,y,origin.x,origin.y,8);
-    direction=turn_towards_point(direction,x,y,origin.x,origin.y,8);
+if (action="return"){speed = global.frame_timings.t4;
+    direction = turn_towards_point(direction, x, y, origin.x, origin.y, global.frame_timings.t8);
+    direction = turn_towards_point(direction, x, y, origin.x, origin.y, global.frame_timings.t8);
 }
 if (action="return") and (point_distance(x,y,origin.x,origin.y)<=16){
     speed=0;action="sdagsdagasdgsdag";x=-500;y=-500;
@@ -63,10 +63,10 @@ if (boarding=true) and (!instance_exists(target)){
     }
 }
 var unit;
-if (boarding=true) and (board_cooldown>=0) and (instance_exists(target)) and (instance_exists(origin)){
-    board_cooldown-=1;
+if (boarding == true) && (board_cooldown >= 0) && (instance_exists(target)) && (instance_exists(origin)){
+    board_cooldown -= global.frame_timings.t1;
 
-    if (board_cooldown=0){board_cooldown=60;
+    if (board_cooldown <= 0){board_cooldown = 60;
         var o,challenge,difficulty,roll1,roll2,attack,arp,wep,ac,dr,co,i,hits,hurt,damaged_ship;
         o=firstest-1;difficulty=50;challenge=0;roll1=0;roll2=0;attack=0;arp=0;wep="";hits=0;hurt=0;damaged_ship=0;
         co=0;i=0;ac=0;dr=1;

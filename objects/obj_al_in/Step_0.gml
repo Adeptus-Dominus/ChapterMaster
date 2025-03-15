@@ -6,7 +6,7 @@ if (owner == 9) then sprite_index = spr_bio_fighter;
 if (owner == eFACTION.Chaos) then sprite_index = spr_ship_dreadclaw;
 
 image_angle = direction;
-if (cooldown1 > 0) then cooldown1 -= 1;
+if (cooldown1 > 0) then cooldown1 -= global.frame_timings.t1;
 
 var dist, range;
 if (instance_exists(target)) {
@@ -15,13 +15,13 @@ if (instance_exists(target)) {
     range = 100 + max(sprite_get_width(target.sprite_index), sprite_get_height(target.sprite_index));
 
     if (action == "close") {
-        speed = 4;
-        direction = turn_towards_point(direction, x, y, target.x, target.y, 6);
+        speed = global.frame_timings.t4;
+        direction = turn_towards_point(direction, x, y, target.x, target.y, global.frame_timings.t6);
     }
     if (dist < range) and(dist > 100) and(action = "close") then action = "shoot";
     if (action == "shoot") and(dist > range) then action = "close";
     if (dist < 80) and(action = "shoot") then action = "bank";
-    if (action == "bank") then direction = turn_towards_point(direction, x, y, room_width, room_height / 2, 3);
+    if (action == "bank") { direction = turn_towards_point(direction, x, y, room_width, room_height / 2, global.frame_timings.t3); }
     if (action == "bank") and(dist > 300) then action = "close";
 
     if (action == "shoot") and(cooldown1 <= 0) {
@@ -32,7 +32,7 @@ if (instance_exists(target)) {
         bull.direction = self.direction;
         if (owner == 8) or(owner == 6) then bull.sprite_index = spr_pulse;
         if (owner == 9) then bull.sprite_index = spr_glob;
-        bull.speed = 20;
+        bull.speed = global.frame_timings.t20;
         bull.image_xscale = 0.5;
         bull.image_yscale = 0.5;
         bull.dam = 3;

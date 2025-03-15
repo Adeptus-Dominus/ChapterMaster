@@ -32,9 +32,53 @@ effect_volume=ini_read_real("Settings","effect_volume",1);
 music_volume=ini_read_real("Settings","music_volume",1);
 large_text=ini_read_real("Settings","large_text",0);
 settings_heresy=ini_read_real("Settings","settings_heresy",0);
+settings_fps = ini_read_real("Settings", "settings_fps", 30);
+settings_displayfps = ini_read_real("Settings", "settings_displayfps", 1);
 settings_fullscreen=ini_read_real("Settings","fullscreen",1);
 settings_window_data=ini_read_string("Settings","window_data","fullscreen");
 ini_close()
+
+function precalc_timings() { // precalc most frame timings so we don't have to do this in runtime, could also use this for delta time in the future
+    var _fps_temp = settings_displayfps == 1 ? display_get_frequency() : settings_fps; // unsurprisingly, this takes wine's virtual desktop FPS
+    game_set_speed(_fps_temp, gamespeed_fps)
+    global.frame_pacing = 30 / _fps_temp;
+    global.invert_frame_pacing = _fps_temp / 30;
+
+    global.frame_timings = {
+        t0003 : 0.003 * global.frame_pacing,
+        t0005 : 0.005 * global.frame_pacing,
+        t0006 : 0.006 * global.frame_pacing,
+        t0012 : 0.012 * global.frame_pacing,
+        t002 : 0.02 * global.frame_pacing,
+        t003 : 0.03 * global.frame_pacing,
+        t005 : 0.05 * global.frame_pacing,
+        t0025 : 0.025 * global.frame_pacing,
+        t01 : 0.1 * global.frame_pacing,
+        t02 : 0.2 * global.frame_pacing,
+        t05 : 0.5 * global.frame_pacing,
+        t075 : 0.75 * global.frame_pacing,
+        t1 : 1 * global.frame_pacing,
+        t2 : 2 * global.frame_pacing,
+        t3 : 3 * global.frame_pacing,
+        t4 : 4 * global.frame_pacing,
+        t5 : 5 * global.frame_pacing,
+        t6 : 6 * global.frame_pacing,
+        t8 : 8 * global.frame_pacing,
+        t10 : 10 * global.frame_pacing,
+        t12 : 12 * global.frame_pacing,
+        t15 : 15 * global.frame_pacing,
+        t20 : 20 * global.frame_pacing,
+        t30 : 30 * global.frame_pacing,
+        i10 : 10 * global.invert_frame_pacing,
+        i75 : 75 * global.invert_frame_pacing,
+        i150 : 150 * global.invert_frame_pacing,
+        i660 : 660 * global.invert_frame_pacing,
+        i2000 : 2000 * global.invert_frame_pacing,
+        i9999 : 9999 * global.invert_frame_pacing
+    }
+}
+
+precalc_timings()
 
 /*if (window_get_fullscreen()=1) and (settings_fullscreen=0){
     window_set_fullscreen(false);

@@ -163,22 +163,22 @@ function SpecialistPointHandler() constructor{
             return;
         }
         array_push(techs, unit);
-        if (unit.technology>40 && unit.hp() > 0){
-            research_points += unit.technology-40;
-            var _forge_point_gen=unit.forge_point_generation(true);
+        if (unit.technology > 40 && unit.hp() > 0){
+            research_points += unit.technology - 40;
+            var _forge_point_gen = unit.forge_point_generation(false);
             var _unit_forge_gen_data = _forge_point_gen[1];
-            if (struct_exists(_unit_forge_gen_data,"crafter")) then crafters++;
-            if (struct_exists(_unit_forge_gen_data,"at_forge")){
+            if (struct_exists(_unit_forge_gen_data, "crafter")) { crafters++; }
+            if (struct_exists(_unit_forge_gen_data, "at_forge")){
                 at_forge++;
-                master_craft_chance += (unit.experience/50);
+                master_craft_chance += (unit.experience / 50);
             }
             forge_points += _forge_point_gen[0];
-            var _tech_array_id = array_length(techs)-1;
-            if (unit.has_trait("tech_heretic")){
+            var _tech_array_id = array_length(techs) - 1;
+            if (unit.has_trait("tech_heretic")) {
                 array_push(heretics, _tech_array_id);
             }
-            if (unit.IsSpecialist("heads")){
-                forge_master=_tech_array_id;
+            if (unit.IsSpecialist("heads")) {
+                forge_master = _tech_array_id;
             }  
         }
     }
@@ -188,8 +188,8 @@ function SpecialistPointHandler() constructor{
             return;
         }
         if (unit.hp() > 0){
-        	var _apoth_point_gen=unit.apothecary_point_generation(true);
-        	apothecary_points += _apoth_point_gen[0];
+            var _apoth_point_gen=unit.apothecary_point_generation(false);
+            apothecary_points += _apoth_point_gen[0];
         }
     }
 
