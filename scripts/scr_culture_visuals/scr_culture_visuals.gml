@@ -529,7 +529,8 @@ global.modular_drawing_items = [
         ban : ["mouth_variants"],
         role_type : ["chap"],
     },
-    {        sprite : spr_chaplain_term_helm,
+    {   
+        sprite : spr_chaplain_term_helm,
         body_types :[2],
         position : "head",
         prevent_others : true,
@@ -550,12 +551,6 @@ global.modular_drawing_items = [
         body_types :[2, 0],
         position : "purity_seals",
     },
-    {
-        cultures : ["Feral", "Wolf Cult"],
-        sprite : spr_wolf_tail,
-        body_types :[2, 0],
-        position : "purity_seals",
-    }, 
     {
         cultures : ["Feral", "Wolf Cult"],
         sprite : spr_right_pauldron_fur_hanging,
@@ -579,9 +574,9 @@ global.modular_drawing_items = [
     },
     {
         cultures : ["Feral", "Wolf Cult"],
-        sprite : spr_term_right_fur_hanging,
+        sprite : spr_term_left_fur_hanging,
         body_types :[2],
-        position : "right_pauldron_hangings",
+        position : "left_pauldron_hangings",
         max_saturation : 20,
     },
     {
