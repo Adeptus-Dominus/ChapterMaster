@@ -245,7 +245,7 @@ function scr_ui_manage() {
 			var _squad_button = management_buttons.squad_toggle;
 			_squad_button.update({
 				x1 : right_ui_block.x1+5,
-				y1 : right_ui_block.y1+8,
+				y1 : right_ui_block.y1+6,
 				label : !obj_controller.view_squad && !obj_controller.company_report ? "Squad View" : "Company View",
 				keystroke : keyboard_check_pressed(ord("S"))
 			});
@@ -262,7 +262,7 @@ function scr_ui_manage() {
 				var _profile_toggle = management_buttons.profile_toggle;
 				_profile_toggle.update({
 					label : !unit_profile  ?  "Show Profile" : "Hide Profile",
-					x1 : _squad_button.x2 + 4,
+					x1 : _squad_button.x2,
 					y1 : _squad_button.y1,
 					keystroke : keyboard_check_pressed(ord("P"))
 				});
@@ -274,7 +274,7 @@ function scr_ui_manage() {
 				var bio_toggle = management_buttons.profile_toggle;
 				bio_toggle.update({
 					label : !unit_bio  ?  "Show Bio" : "Hide Bio",
-					x1 : _profile_toggle.x2 + 4,
+					x1 : _profile_toggle.x2,
 					y1 : _profile_toggle.y1,
 					keystroke : keyboard_check_pressed(ord("B"))
 				});
@@ -329,7 +329,7 @@ function scr_ui_manage() {
 			// Draw unit name and role
 			draw_set_halign(fa_center);
 			draw_set_font(fnt_40k_30b);
-			draw_text_transformed_outline(xx+1290,yy+197,selected_unit.name_role(),0.7,0.7,0);
+			draw_text_transformed_outline(xx+1290,yy+182,selected_unit.name_role(),0.7,0.7,0);
 
 			// Draw unit info
 			draw_set_font(fnt_40k_14);
@@ -356,7 +356,7 @@ function scr_ui_manage() {
 				var_text= string_hash_to_newline(selected_unit.equipments_qual_string("gear", true));
 	        	tooltip_text = cn.temp[105];
 	        	x1 = x_left;
-	        	y1 = yy+455;
+	        	y1 = yy+446;
 	        	x2 = x1+string_width_ext(var_text, -1,187);
 	        	y2 = y1+string_height_ext(var_text, -1,187);	 
 	        	draw_text_ext_outline(x1,y1,var_text,-1,187, 0, quality_color(selected_unit.gear_quality));
@@ -368,7 +368,7 @@ function scr_ui_manage() {
 				var_text= string_hash_to_newline(selected_unit.equipments_qual_string("mobi", true));
 	        	tooltip_text = cn.temp[107];
 	        	x1 = x_left;
-	        	y1 = yy+476;
+	        	y1 = yy+467;
 	        	x2 = x1+string_width_ext(var_text, -1,187);
 	        	y2 = y1+string_height_ext(var_text, -1,187);	  
 	        	draw_text_ext_outline(x1,y1,var_text,-1,187, 0, quality_color(selected_unit.mobility_item_quality));
@@ -376,8 +376,8 @@ function scr_ui_manage() {
 	        }
 
 			// Stats
-    		var_text = string_hash_to_newline(string("   {0}",selected_unit.bionics));  // Bionics tracker
-        	x1 = x_left+93;
+    		var_text = string_hash_to_newline(string("      {0}",selected_unit.bionics));  // Bionics tracker
+        	x1 = x_left+82;
         	y1 = yy+209;
         	x2 = x1+string_width(var_text);
         	y2 = y1+string_height(var_text);
@@ -421,7 +421,7 @@ function scr_ui_manage() {
 	    		array_push(tooltip_drawing, ["Bionic Augmentation is something a unit can do to both enhance their capabilities, but also replace a missing limb to get back into the fight. There is a limit of 10 Bionic augmentations. After that the damage is so extensive that a marine requires a dreadnought to keep going. For everyone else? It's time for the emperor's mercy.##This unit has no bionic augmentations.", [x1,y1,x2,y2]]);
 	    	}
 
-        var_text = string_hash_to_newline($"  {selected_unit.armour_calc()}") // Armour Rating
+        var_text = string_hash_to_newline($"     {selected_unit.armour_calc()}") // Armour Rating
           var tooltip_text = "Armor reduces incoming damage at a flat rate. Certain enemies may attack in ways that may bypass your armor entirely, for example power weapons and some warp sorceries.##Contributing factors:#";
           var equipment_types = ["armour", "weapon_one", "weapon_two", "mobility", "gear"];
           for (var i = 0; i < array_length(equipment_types); i++) {
@@ -457,14 +457,14 @@ function scr_ui_manage() {
 			if (obj_controller.stc_bonus[1] == 5 || obj_controller.stc_bonus[2] == 3){
                 tooltip_text += string_hash_to_newline($"STC Bonus: x1.05#");
 			}
-        	x1 = x_left;
+        	x1 = x_left-11;
         	y1 = yy+232;
         	x2 = x1+string_width(var_text);
         	y2 = y1+string_height(var_text);
 	        draw_text_outline(x1,y1,var_text);
 	        array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]); 
 
-    		var_text = string_hash_to_newline($"  {round(selected_unit.hp())}/{round(selected_unit.max_health())}") // Health Tracker
+    		var_text = string_hash_to_newline($"     {round(selected_unit.hp())}/{round(selected_unit.max_health())}") // Health Tracker
         	tooltip_text = string_hash_to_newline(string("Health is a measure how much punishment the creature can take. Marines can go into the negatives and still survive, but they'll require a bionic to become fighting fit once more.##Contributing factors:#CON: {0}#", round(100*(1+((selected_unit.constitution-40)*0.025)))));
             for (var i = 0; i < array_length(equipment_types); i++) {
                 var equipment_type = equipment_types[i];
@@ -496,7 +496,7 @@ function scr_ui_manage() {
                     tooltip_text += string_hash_to_newline($"{name}: {format_number_with_sign(hp_mod)}%#");
                 }
             }
-        	x1 = x_left;
+        	x1 = x_left-11;
         	y1 = yy+209;
         	x2 = x1+string_width(var_text);
         	y2 = y1+string_height(var_text);
@@ -539,9 +539,9 @@ function scr_ui_manage() {
 									tooltip_text += string_hash_to_newline($"{name}: {dr}%#");
 							}
 						}
-        		var_text = string_hash_to_newline(string("   {0}",cn.temp[118])) // Damage Resistance
+        		var_text = string_hash_to_newline(string("      {0}",cn.temp[118])) // Damage Resistance
 	        	tooltip_text += string_hash_to_newline(string("CON: {0}%#EXP: {1}%", round(selected_unit.constitution/2), round(selected_unit.experience/10)));
-	        	x1 = x_left+93;
+	        	x1 = x_left+82;
 	        	y1 = yy+234;
 	        	x2 = x1+string_width(var_text);
 	        	y2 = y1+string_height(var_text);
@@ -582,9 +582,9 @@ function scr_ui_manage() {
 
 		// Stats
 		if (is_array(cn.temp[117])){
-			var_text = string_hash_to_newline(string("  {0}",round(cn.temp[116][0]))) // melee attack
+			var_text = string_hash_to_newline(string("     {0}",round(cn.temp[116][0]))) // melee attack
 			tooltip_text = string_hash_to_newline(string(cn.temp[116][1]));
-			x1 = x_left;
+			x1 = x_left-11;
 			y1 = yy+262;
 			x2 = x1+string_width(var_text);
 			y2 = y1+string_height(var_text);
@@ -598,9 +598,9 @@ function scr_ui_manage() {
 		}
 
 		if (is_array(cn.temp[117])){
-			var_text = string_hash_to_newline(string("  {0}",round(cn.temp[117][0]))) // ranged attack
+			var_text = string_hash_to_newline(string("     {0}",round(cn.temp[117][0]))) // ranged attack
 			tooltip_text = string_hash_to_newline(string(cn.temp[117][1]));
-			x1 = x_left;
+			x1 = x_left-11;
 			y1 = yy+287;
 			x2 = x1+string_width(var_text);
 			y2 = y1+string_height(var_text);
