@@ -60,10 +60,12 @@ function UnitButtonObject(data = false) constructor{
 	v_gap= 4;
 	label= "";
 	alpha= 1;
-	color= #50a076;
+	color = #50a076;
 	keystroke = false;
 	tooltip = "";
 	bind_method = "";
+	style = "standard";
+	font=fnt_40k_14b
 
 
 	static update_loc = function(){
@@ -107,11 +109,49 @@ function UnitButtonObject(data = false) constructor{
 		}
 	}
 	static draw = function(allow_click = true){
+		var cur_alpha = draw_get_alpha();
+		var cur_font = draw_get_font();
+		var cur_color = draw_get_color();
+		var cur_halign = draw_get_halign();
+		var cur_valign = draw_get_valign();
+		if (style = "standard"){
+			var _button_click_area = draw_unit_buttons(w > 0 ? [x1, y1, x2, y2] : [x1, y1] , label, [1,1],color,,font,alpha);
+		} else if (style = "pixel"){
+
+			var _widths =  [sprite_get_width(spr_pixel_button_left), sprite_get_width(spr_pixel_button_middle), sprite_get_width(spr_pixel_button_right)]
+
+			var height_scale = h/sprite_get_height(spr_pixel_button_left);
+			_widths[0]*=height_scale;
+			_widths[2]*=height_scale;
+			draw_sprite_ext(spr_pixel_button_left, 0, x1, y1, height_scale, height_scale, 0, c_white, 1);
+			var _width_scale = w/_widths[1];
+			_widths[1] *= _width_scale;
+			draw_sprite_ext(spr_pixel_button_middle, 0, x1 + _widths[0], y1, _width_scale, height_scale, 0, c_white, 1);
+			draw_sprite_ext(spr_pixel_button_right, 0, x1 + _widths[0] + _widths[1] ,y1, height_scale, height_scale, 0, c_white, 1);
+			var _text_position_x = x1 + ((_widths[0] + 2) * height_scale);
+			_text_position_x += (_widths[1]) / 2;
+			draw_set_font(font);
+			draw_set_halign(fa_center);
+			draw_set_valign(fa_middle);
+			draw_set_color(color);
+			draw_text_transformed(_text_position_x, y1 + ( (h * height_scale)/2),  label, 1, 1, 0);
+
+			x2 = x1 + array_sum(_widths);
+			y2 = y1 + h;
+			var _button_click_area = [x1, y1, x2, y2];
+		}
+		draw_set_alpha(cur_alpha);
+		draw_set_font(cur_font);
+		draw_set_color(cur_color);
+		draw_set_halign(cur_halign);
+		draw_set_valign(cur_valign);	
+			
 		if (scr_hit(x1, y1, x2, y2) && tooltip!=""){
 			tooltip_draw(tooltip);
 		}
+
 		if (allow_click){
-			var clicked = point_and_click(draw_unit_buttons(w > 0 ? [x1, y1, x2, y2] : [x1, y1] , label, [1,1],color,,,alpha)) || keystroke;
+			var clicked = point_and_click(_button_click_area) || keystroke;
 			if (clicked){
 				if (is_callable(bind_method)){
 					bind_method();
@@ -119,7 +159,6 @@ function UnitButtonObject(data = false) constructor{
 			}
 			return clicked
 		} else {
-			draw_unit_buttons([x1, y1, x2, y2], label, [1,1],color,,,alpha);
 			return false;
 		}
 	}
