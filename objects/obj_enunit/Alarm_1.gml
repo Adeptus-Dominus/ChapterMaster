@@ -480,7 +480,7 @@ if __b__ {
 			dudes_dr[j] = 0.5;
 		}
 
-		if (dudes[j] = "Arco-Flagellent") { // Should be "Arco-Flagellant"
+		if (dudes[j] = "Arco-Flagellent") {
 			scr_en_weapon("Electro-Flail", true, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 0;
 			dudes_hp[j] = 150;
@@ -496,7 +496,7 @@ if __b__ {
 			men += dudes_num[j];
 			dudes_dr[j] = 0.65;
 		}
-		if (dudes[j] = "Mistress") { // I can't find mentions of this one in the lexicanum
+		if (dudes[j] = "Mistress") {
 			scr_en_weapon("Neural Whip", true, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 20;
 			dudes_hp[j] = 40;
@@ -917,7 +917,7 @@ if __b__ {
 		}
 
 		if (dudes[j] = "Gretchin") {
-			scr_en_weapon("Grot Blasta", true, dudes_num[j], dudes[j], j); // I think they need a melee weapon too
+			scr_en_weapon("Grot Blasta", true, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 0;
 			dudes_hp[j] = 15;
 			men += dudes_num[j];
