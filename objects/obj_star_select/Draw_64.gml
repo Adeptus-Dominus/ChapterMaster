@@ -166,33 +166,18 @@ if (obj_controller.selecting_planet!=0){
     }
 // Buttons that are available
     if (!buttons_selected){
-        if (obj_controller.faction_status[eFACTION.Imperium] != "War" && p_data.current_owner > 5) || (obj_controller.faction_status[eFACTION.Imperium] == "War" && p_data.at_war(0, 1, 1) && p_data.player_disposition <= 50) {
-            var is_enemy=true;
-        } else {
-            var is_enemy=false;
-        }
-
         if (p_data.planet>0){
             if (target.present_fleet[1]=0)/* and (target.p_type[obj_controller.selecting_planet]!="Dead")*/{
                 if (p_data.player_forces>0){
-                    if (is_enemy){
-                        button1="Attack";
-                        button2="Purge";
-                    }
+                    button1="Attack";
+                    button2="Purge";
                 }
             }
             if (target.present_fleet[1]>0)/* and (target.p_type[obj_controller.selecting_planet]!="Dead")*/{
-                if (is_enemy) {
-                    button1="Attack";
-                    button2="Raid";
-                    button3="Bombard";
-                }
-                else {
-                    button1="Attack";
-                    button2="Raid";
-                    button3="Purge";
-                }
-                
+                button1="Attack";
+                button2="Raid";
+                button3="Purge";
+
                 if (torpedo>0){
                     var pfleet=instance_nearest(x,y,obj_p_fleet);
                     if (instance_exists(pfleet)) and (point_distance(pfleet.x,pfleet.y,target.x,target.y)<=40) and (pfleet.action=""){
@@ -235,7 +220,7 @@ if (obj_controller.selecting_planet!=0){
         if (target.space_hulk){
             if (target.present_fleet[1]>0){
                 button1="Raid";
-                button2="Bombard";
+                button2="Purge";
                 button3="";
                 button4="";
             }
@@ -421,22 +406,13 @@ if (obj_controller.selecting_planet!=0){
             if (_allow_attack){           
                 instance_create_layer(x, y, layer_get_all()[0], obj_drop_select,{
                     p_target:target,
+                    p_data : p_data,
                     purge:1,
                     planet_number : obj_controller.selecting_planet,
                     sh_target : _targ,
                 });
             }
 
-        }else if (current_button=="Bombard"){
-            instance_create(x,y,obj_bomb_select);
-            if (instance_exists(obj_bomb_select)){
-                obj_bomb_select.p_target=target;
-                obj_bomb_select.sh_target=instance_nearest(x,y,obj_p_fleet);
-                obj_bomb_select.p_data = p_data;
-                if (instance_nearest(x,y,obj_p_fleet).acted>0) then with(obj_bomb_select){
-                    instance_destroy();
-                }
-            }
         }else if (current_button=="+Recruiting"){
             if (obj_controller.recruiting_worlds_bought > 0 && p_data.current_owner <= 5 && !p_data.at_war()) {
                 if (!p_data.has_feature(P_features.Recruiting_World)) {

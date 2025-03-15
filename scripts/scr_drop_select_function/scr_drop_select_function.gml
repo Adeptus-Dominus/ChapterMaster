@@ -8,8 +8,8 @@ enum DropType {
 }
 
 function drop_select_draw(){
-	with (obj_drop_select){
-	if (purge != DropType.PurgeSelect) {
+    with (obj_drop_select){
+    if (purge != DropType.PurgeSelect) {
         w = 660;
         h = 520;
         // Center of the screen
@@ -89,7 +89,91 @@ function drop_select_draw(){
             if (_local_button.clicked()) {
                 roster.update_roster();
             }     
-        }   
+        } else {
+            if (purge == DropType.PurgeBombard) {
+                if (p_target.sprite_index != spr_star_hulk) {
+                    // TODO a centralised point to be able to fetch display names from factions identifying number
+                    draw_set_color(c_gray);
+                    var t_name = "";
+                    switch (target) {
+                        case eFACTION.Imperium:
+                            t_name = "Imperial Forces";
+                            break;
+                        case 2.5:
+                            if (p_target.p_owner[obj_controller.selecting_planet] == 8) {
+                                t_name = "Gue'la Forces";
+                            } else {
+                                t_name = "PDF";
+                            }
+                            break;
+                        case eFACTION.Mechanicus:
+                            t_name = "Mechanicus";
+                            break;
+                        case eFACTION.Ecclesiarchy:
+                            t_name = "Ecclesiarchy";
+                            break;
+                        case eFACTION.Eldar:
+                            t_name = "Eldar";
+                            break;
+                        case eFACTION.Ork:
+                            t_name = "Orks";
+                            break;
+                        case eFACTION.Tau:
+                            t_name = "Tau";
+                            break;
+                        case eFACTION.Tyranids:
+                            t_name = "Tyranids";
+                            break;
+                        case eFACTION.Chaos:
+                            t_name = "Chaos";
+                            break;
+                        case eFACTION.Necrons:
+                            t_name = "Necrons";
+                            break;
+                        default:
+                            t_name = "";
+                            break;
+                    }
+
+                    var str=0,str_string="";
+                    // TODO a centralised point to be able to fetch display names from factions identifying number
+                    str = floor(p_data.planet_forces[target]);
+                    if (target == 2.5){
+                        str = determine_pdf_defence(p_data.pdf,,p_data.fortification_level)[0];
+                    }
+                    var _s_strings = ARR_strength_descriptions
+                    if (str<array_length(_s_strings)){
+                        str_string = _s_strings[str];
+                    }
+
+                    var target_string = "Target force:  ";
+                    draw_text_bold(x8 + 325, y8+25, target_string);
+                    if (point_and_click(draw_unit_buttons([x8 + 200 + string_width(target_string), y8], string(t_name), [1, 1], #34bc75, fa_center, fnt_info))) {
+
+                        var _possible_targets = [];
+                        for (var i = 2; i < array_length(p_data.planet_forces); i++){
+                            if (p_data.planet_forces[i] > 0){
+                                array_push(_possible_targets, i);
+                            }
+                        }
+                        if (p_data.pdf > 0) {
+                            array_push(_possible_targets, 2.5);
+                        }
+                        // Switch target to the next in the array
+                        if (array_length(_possible_targets) > 0) {
+                            var _current_index = array_get_index(_possible_targets, target);
+                            _current_index = _current_index < (array_length(_possible_targets) - 1) ? _current_index + 1: 0 ;
+                            target = _possible_targets[_current_index];
+                        }
+
+                    }
+                    var strength_string = $"Strength: {str}";
+                    draw_text_bold(x8 + 325, y8 + 50, strength_string);
+                    var bombard_strength = roster.purge_bombard_score();
+                    draw_text_bold(x8 + 325, y8 + 75, $"Bombard Strength: {bombard_strength}");
+                }
+            }
+        }
         y8 += 21;
 
         var _all_active = true;
@@ -361,15 +445,18 @@ function drop_select_draw(){
                 draw_rectangle(954, 556, 1043, 579, 0);
                 draw_set_alpha(1);
                 var _purge_score=0;
-                if (purge == 2) {
-                    _purge_score = roster.purge_bombard_score();
-                }                  
+                if (purge == DropType.PurgeBombard) {
+                    _purge_score = bombard_strength;
+                } else {
+                    target = undefined;
+                    str = undefined;
+                }
 
                 if (purge >= 3) {
                     _purge_score = array_length(roster.selected_units);
                 }
 
-                scr_purge_world(p_target, planet_number, purge , _purge_score);              
+                scr_purge_world(p_target, planet_number, purge, _purge_score, target, str);
             }
         }
     }
@@ -447,102 +534,29 @@ function drop_select_draw(){
 }
 
 function collect_local_units(){
-		//
-	// I think this script is used to count local forces. l_ meaning local.
-	//
-	ship_use[500]=0;
-	ship_max[500]=l_size;
-	purge_d=ship_max[500];
+    if (purge==1) {
+        if (sh_target!=-50){
+            if (sh_target.acted >= 1) {
+                instance_destroy();
+            }
 
-	if (purge==1)
-	{
+            purge_a = fleet_bombard_score;
+            purge_b = viable_ground_forces;
+            purge_c = viable_ground_forces;
+            purge_d = viable_ground_forces;
+        }
 
+        if (p_target.p_player[planet_number]>0) {
+            max_ships+=1;
+        }
 
+        var pp=planet_number;
+        purge_d = p_target.p_type[pp] != "Dead";
 
-
-	if (sh_target!=-50){
-	    
-	    max_ships=sh_target.capital_number+sh_target.frigate_number+sh_target.escort_number;
-	    
-	    
-	    if (sh_target.acted>=1) then instance_destroy();
-	    
-	    var tump;tump=0;
-	    
-	    var i, q, b;i=-1;q=-1;b=-1;
-	    repeat(sh_target.capital_number){
-	        b+=1;
-	        if (sh_target.capital[b]!=""){
-	            i+=1;
-	            ship[i]=sh_target.capital[i];
-	            
-	            ship_use[i]=0;
-	            tump=sh_target.capital_num[i];
-	            ship_max[i]=obj_ini.ship_carrying[tump];
-	            ship_ide[i]=tump;
-	            
-	            ship_size[i]=3;
-	            
-	            purge_a+=3;
-	            purge_b+=ship_max[i];purge_c+=ship_max[i];purge_d+=ship_max[i];
-	        }
-	    }
-	    q=-1;
-	    repeat(sh_target.frigate_number){
-	        q+=1;
-	        if (sh_target.frigate[q]!=""){
-	            i+=1;
-	            ship[i]=sh_target.frigate[q];
-	            
-	            ship_use[i]=0;
-	            tump=sh_target.frigate_num[q];
-	            ship_max[i]=obj_ini.ship_carrying[tump];
-	            ship_ide[i]=tump;
-	            
-	            ship_size[i]=2;
-	            
-	            purge_a+=1;
-	            purge_b+=ship_max[i];
-                purge_c+=ship_max[i];
-                purge_d+=ship_max[i];
-	        }
-	    }
-	    q=-1;
-	    repeat(sh_target.escort_number){
-	        q+=1;
-	        if (sh_target.escort[q]!="") and (obj_ini.ship_carrying[sh_target.escort_num[q]]>0){
-	            i+=1;
-	            ship[i]=sh_target.escort[q];
-	            
-	            ship_use[i]=0;
-	            tump=sh_target.escort_num[q];
-	            ship_max[i]=obj_ini.ship_carrying[tump];
-	            ship_ide[i]=tump;
-	            
-	            ship_size[i]=1;
-	            
-	            purge_b+=ship_max[i];
-                purge_c+=ship_max[i];
-                purge_d+=ship_max[i];
-	        }
-	    }
-
-	}
-
-	if (p_target.p_player[planet_number]>0) then max_ships+=1;
-	var pp=planet_number;
-	purge_d = p_target.p_type[pp]!="Dead";
-
-	if (has_problem_planet(pp,"succession",p_target)) then purge_d=0
-
-	if (p_target.dispo[pp]<-2000) then purge_d=0;
-
-	if (planet_feature_bool(p_target.p_feature[pp],P_features.Monastery)==1) and (obj_controller.homeworld_rule!=1) then purge_d=0;
-
-	if (p_target.p_type[pp]="Dead") then purge_d=0;
-
-
-	}
+        if (p_target.p_type[pp] == "Dead") || (has_problem_planet(pp,"succession",p_target)) || (p_target.dispo[pp] < -2000) || (planet_feature_bool(p_target.p_feature[pp],P_features.Monastery) == 1 && obj_controller.homeworld_rule != 1) {
+            purge_d=0
+        }
+    }
 }
 
 
