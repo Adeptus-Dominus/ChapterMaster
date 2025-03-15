@@ -120,6 +120,25 @@ function scr_toggle_manage(){
 		        popup=0;
 		        selected=0;
 		        hide_banner=1;
+		        management_buttons = {
+		        	squad_toggle : new UnitButtonObject({
+		        		style : "pixel",
+		        		label : "Squad View",
+		        		tooltip : "Click here or press S to toggle Squad View."
+		        	}),
+
+		        	profile_toggle : new UnitButtonObject({
+		        		style : "pixel",
+		        		label : "Show Profile",
+		        		tooltip : "Click here or press P to show unit profile."
+		        	}),
+
+		        	bio_toggle : new UnitButtonObject({
+		        		style : "pixel",
+		        		label : "Show Bio",
+		        		tooltip : "Click here or press B to Toggle Unit Biography."
+		        	}),
+		        }
 		    }
 		    else if (menu==1){
 		        menu=0;
