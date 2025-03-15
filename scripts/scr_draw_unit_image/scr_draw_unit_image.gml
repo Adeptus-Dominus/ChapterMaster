@@ -255,7 +255,7 @@ function scr_draw_unit_image(_background=false){
     if (!surface_exists(unit_surface)){
         var _obj = _controller ? obj_controller : obj_creation;
         with (_obj){
-            marine_surface = surface_create(600, 600);\
+            marine_surface = surface_create(600, 600);
             unit_surface = marine_surface;
         }
     }
