@@ -549,39 +549,39 @@ if (debug){
     draw_text(147, 316, string_hash_to_newline("[-] [+]"));
 
     if (point_and_click([147, 176, 167, 196])) {
-        target.p_orks[current_planet] = clamp(target.p_orks[current_planet] - 1, 0, 6);
+        target.p_orks[current_planet] = clamp(target.p_orks[current_planet] - 1, 0, 10);
     } else if (point_and_click([147, 196, 167, 216])) {
-        target.p_tau[current_planet] = clamp(target.p_tau[current_planet] - 1, 0, 6);
+        target.p_tau[current_planet] = clamp(target.p_tau[current_planet] - 1, 0, 10);
     } else if (point_and_click([147, 216, 167, 236])) {
-        target.p_tyranids[current_planet] = clamp(target.p_tyranids[current_planet] - 1, 0, 6);
+        target.p_tyranids[current_planet] = clamp(target.p_tyranids[current_planet] - 1, 0, 10);
     } else if (point_and_click([147, 236, 167, 256])) {
-        target.p_traitors[current_planet] = clamp(target.p_traitors[current_planet] - 1, 0, 6);
+        target.p_traitors[current_planet] = clamp(target.p_traitors[current_planet] - 1, 0, 10);
     } else if (point_and_click([147, 256, 167, 276])) {
-        target.p_chaos[current_planet] = clamp(target.p_chaos[current_planet] - 1, 0, 6);
+        target.p_chaos[current_planet] = clamp(target.p_chaos[current_planet] - 1, 0, 10);
     } else if (point_and_click([147, 276, 167, 296])) {
-        target.p_demons[current_planet] = clamp(target.p_demons[current_planet] - 1, 0, 6);
+        target.p_demons[current_planet] = clamp(target.p_demons[current_planet] - 1, 0, 10);
     } else if (point_and_click([147, 296, 167, 316])) {
-        target.p_necrons[current_planet] = clamp(target.p_necrons[current_planet] - 1, 0, 6);
+        target.p_necrons[current_planet] = clamp(target.p_necrons[current_planet] - 1, 0, 10);
     } else if (point_and_click([147, 316, 167, 336])) {
-        target.p_sisters[current_planet] = clamp(target.p_sisters[current_planet] - 1, 0, 6);
+        target.p_sisters[current_planet] = clamp(target.p_sisters[current_planet] - 1, 0, 10);
     }
     
     else if (point_and_click([177, 176, 197, 196])) {
-        target.p_orks[current_planet] = clamp(target.p_orks[current_planet] + 1, 0, 6);
+        target.p_orks[current_planet] = clamp(target.p_orks[current_planet] + 1, 0, 10);
     } else if (point_and_click([177, 196, 197, 216])) {
-        target.p_tau[current_planet] = clamp(target.p_tau[current_planet] + 1, 0, 6);
+        target.p_tau[current_planet] = clamp(target.p_tau[current_planet] + 1, 0, 10);
     } else if (point_and_click([177, 216, 197, 236])) {
-        target.p_tyranids[current_planet] = clamp(target.p_tyranids[current_planet] + 1, 0, 6);
+        target.p_tyranids[current_planet] = clamp(target.p_tyranids[current_planet] + 1, 0, 10);
     } else if (point_and_click([177, 236, 197, 256])) {
-        target.p_traitors[current_planet] = clamp(target.p_traitors[current_planet] + 1, 0, 6);
+        target.p_traitors[current_planet] = clamp(target.p_traitors[current_planet] + 1, 0, 10);
     } else if (point_and_click([177, 256, 197, 276])) {
-        target.p_chaos[current_planet] = clamp(target.p_chaos[current_planet] + 1, 0, 6);
+        target.p_chaos[current_planet] = clamp(target.p_chaos[current_planet] + 1, 0, 10);
     } else if (point_and_click([177, 276, 197, 296])) {
-        target.p_demons[current_planet] = clamp(target.p_demons[current_planet] + 1, 0, 6);
+        target.p_demons[current_planet] = clamp(target.p_demons[current_planet] + 1, 0, 10);
     } else if (point_and_click([177, 296, 197, 316])) {
-        target.p_necrons[current_planet] = clamp(target.p_necrons[current_planet] + 1, 0, 6);
+        target.p_necrons[current_planet] = clamp(target.p_necrons[current_planet] + 1, 0, 10);
     } else if (point_and_click([177, 316, 197, 336])) {
-        target.p_sisters[current_planet] = clamp(target.p_sisters[current_planet] + 1, 0, 6);
+        target.p_sisters[current_planet] = clamp(target.p_sisters[current_planet] + 1, 0, 10);
     }
 
 }
