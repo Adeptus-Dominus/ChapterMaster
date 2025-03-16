@@ -1508,7 +1508,7 @@
     {"id":{"name":"obj_main_menu_buttons","path":"objects/obj_main_menu_buttons/obj_main_menu_buttons.yy",},},
     {"id":{"name":"obj_new_button","path":"objects/obj_new_button/obj_new_button.yy",},},
     {"id":{"name":"obj_managment_panel","path":"objects/obj_managment_panel/obj_managment_panel.yy",},},
-    {"id":{"name":"scr_pen_and_paper","path":"scripts/scr_pen_and_paper/scr_pen_and_paper.yy",},},
+    {"id":{"name":"scr_pen_And_paper","path":"scripts/scr_pen_And_paper/scr_pen_And_paper.yy",},},
     {"id":{"name":"obj_restart_game","path":"objects/obj_restart_game/obj_restart_game.yy",},},
     {"id":{"name":"obj_restart_vars","path":"objects/obj_restart_vars/obj_restart_vars.yy",},},
     {"id":{"name":"obj_formation_bar","path":"objects/obj_formation_bar/obj_formation_bar.yy",},},
