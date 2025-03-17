@@ -585,7 +585,20 @@ global.modular_drawing_items = [
         body_types :[0],
         position : "crest",
         max_saturation : 30,
-    },                                                                  
+    },
+    {
+        cultures : ["Runic"],
+        sprite : spr_runes_hanging,
+        body_types :[0,2],
+        position : "purity_seals",
+    }, 
+    {
+        cultures : ["Wolf Cult"],
+        sprite : spr_mk7_wolf_cult_chest_variants,
+        body_types :[0],
+        position : "chest_variants",
+        armours : ["MK7 Aquila", "MK8 Errant", "Artificer Armour"],
+    },                                                                 
 ];
 try{
     load_visual_sets();
