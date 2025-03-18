@@ -17,6 +17,7 @@ function load_visual_sets(){
             if (directory_exists(_sepcific_vis_set)){
                 var _data_buffer = buffer_load($"{_sepcific_vis_set}\\data.json");
                 if (_data_buffer == -1) {
+                    buffer_delete(_data_buffer);
                     continue;
                 } else {
                     var _data_string = buffer_read(_data_buffer, buffer_string);
@@ -27,6 +28,46 @@ function load_visual_sets(){
             }
         }
 
+    }
+    var _cons_directory = working_directory + "\\main\\chapter_symbols";
+    if (directory_exists(_cons_directory)){
+        show_debug_message($"{_cons_directory}")
+        var _file_buffer = buffer_load($"{_cons_directory}\\load_sets.json");
+        if (_file_buffer == -1) {
+            throw (false);
+        }
+        var _json_string = buffer_read(_file_buffer, buffer_string);
+        buffer_delete(_file_buffer);
+        var _raw_data = json_parse(_json_string);
+        if (!is_array(_raw_data)){
+            throw ("use_sets.json File Wrong Format");
+        }
+        var _sprite_double_surface = surface_create(200,200);
+        for (var i=0;i<array_length(_raw_data);i++){
+            var _sepcific_vis_set = $"{_cons_directory}\\{_raw_data[i]}";
+            if (directory_exists(_sepcific_vis_set)){
+                var _pauldron = $"{_sepcific_vis_set}\\pauldron.png";
+                if (file_exists(_pauldron)){
+                    var _new_sprite = sprite_add(_pauldron,1,0,0,0,0);
+                    var _width = sprite_get_width(_new_sprite);
+                    var _height = sprite_get_height(_new_sprite);
+                    surface_resize(_sprite_double_surface, _width, _height)
+                    surface_set_target(_sprite_double_surface);
+                    draw_clear_alpha(c_white,0);
+                    draw_sprite_ext(_new_sprite, 0, _width, 0, -1, 1, 0, c_white, 1);
+                    surface_reset_target();
+                    sprite_add_from_surface(_new_sprite, _sprite_double_surface, 0, 0, _width, _height, 1, 0);
+                    global.chapter_markings.pauldron[$ _raw_data[i]] = _new_sprite;
+                }
+            }
+        }
+        surface_free(_sprite_double_surface);    
+    }
+}
+
+global.chapter_markings  = {
+    pauldron : {
+        mantis_warriors : spr_mantis_warriors_icon,
     }
 }
 
@@ -614,11 +655,7 @@ global.modular_drawing_items = [
         armours_exclude : ["MK3 Iron Armour"],      
     },                                                                 
 ];
-try{
-    load_visual_sets();
-} catch(_exception){
-    handle_exception(_exception);
-}
+
 
 function fetch_marine_components_to_memory(){
     array_foreach(global.modular_drawing_items, function(_element, _index){
@@ -626,7 +663,7 @@ function fetch_marine_components_to_memory(){
             sprite_prefetch(_element.sprite);
             if (struct_exists(_element, "overides")){
                 var _override_areas = struct_get_names(_element.overides);
-                for (var i = 0;i<array_length(_override_areas)i++){
+                for (var i = 0;i<array_length(_override_areas);i++){
                     sprite_prefetch(_element.overides[$_override_areas[i]]);
                 }
             }

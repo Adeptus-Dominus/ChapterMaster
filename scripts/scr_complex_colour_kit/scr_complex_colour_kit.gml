@@ -269,6 +269,14 @@ function ColourItem(xx,yy) constructor{
                             _reset = true;
                         } else if (!array_equals(map_colour[$ colour_pick.area], colour_pick.chosen)){
                             _reset = true;
+                            if (colour_pick.chosen[0] == "icon"){
+                                if (is_struct(map_colour[$ colour_pick.area][1])){
+                                    var _comp_icon = map_colour[$ colour_pick.area][1].icon;
+                                    if (_comp_icon == colour_pick.chosen[1].icon){
+                                        _reset = false;
+                                    }
+                                }
+                            } 
                         }
                     }
                     if (_reset){
@@ -483,12 +491,15 @@ function setup_complex_livery_shader(setup_role, game_setup=false, unit = "none"
                     }                    
                 }
             } else if (colour[0] == "icon"){
+                if (array_contains(["right_pauldron", "left_pauldron"], spot_names[i])){
+                    var _tex_set = global.chapter_markings.pauldron;
+                }
                 var _data = colour[1]
-                if (struct_exists(global.chapter_markings, _data.icon)){
+                if (struct_exists(_tex_set, _data.icon)){
                     var name = colour[1];
                     if (!struct_exists(_textures, name)){
                         _textures[$name] = {
-                            texture : global.chapter_markings[$ _data.icon],
+                            texture : _tex_set[$ _data.icon],
                             areas : [complex_colour_swaps[$ spot_names[i]]],
                         }
                     } else {
@@ -520,10 +531,6 @@ global.textures = {
     "Hazzards" : spr_hazzard_texture,
     "Checks" : spr_checker_texture
 };
-
-global.chapter_markings  = {
-    mantis_warriors : spr_mantis_warriors_icon
-}
 
 function colour_picker(xx,yy, max_width=400) constructor{
 	x=xx;
@@ -574,7 +581,7 @@ function colour_picker(xx,yy, max_width=400) constructor{
             if (!markings){
                 for (var i=0;i<array_length(obj_creation.col_r);i++){
                     column++;
-                    if ((column *box_size)+40 > max_width){
+                    if ((column * box_size)+40 > max_width){
                         row++;
                         column = 0;
                     }
@@ -595,27 +602,27 @@ function colour_picker(xx,yy, max_width=400) constructor{
                             } else {
                                 markings = true;
                                 base_colour = i;
+                                box_size*=3
                             }
                         }                    
                     }
                 }
             } else if (markings){
-                if (markings_options.current_selection==2){
-                    textures = global.chapter_markings;
-                    var texture_names = struct_get_names(global.chapter_markings);
+                if (markings_options.current_selection==2 && array_contains(["right_pauldron", "left_pauldron"], title)){
+                    textures = global.chapter_markings.pauldron;
+                    var texture_names = struct_get_names(textures);
                     for (var i=0;i<array_length(texture_names);i++){
                         var _tex = textures[$ texture_names[i]];
                         column++;
-                        var _box_size = box_size*3
-                        if ((column *_box_size)+40 > max_width){
+                        if ((column *box_size)+40 > max_width){
                             row++;
                             column = 0;
                         }
     
-                        box_coords = [box_x+(_box_size *column), box_y+(_box_size*row), box_x+(_box_size*column)+_box_size, box_y+(_box_size*row)+_box_size];
+                        box_coords = [box_x+(box_size *column), box_y+(box_size*row), box_x+(box_size*column)+box_size, box_y+(box_size*row)+box_size];
                         draw_rectangle_array(box_coords, 0);
-                        //draw_sprite_part(_tex, 0, 12, 30, _box_size, _box_size,box_x+(_box_size *column), box_y+(_box_size*row));
-                        draw_sprite_part_ext(_tex, 0, 12, 30, _box_size, _box_size,box_x+(_box_size *column), box_y+(_box_size*row), 2, 2, c_white, 1);
+                        //draw_sprite_part(_tex, 0, 12, 30, box_size, box_size,box_x+(box_size *column), box_y+(box_size*row));
+                        draw_sprite_part_ext(_tex, 0, 12, 30, box_size, box_size,box_x+(box_size *column), box_y+(box_size*row), 2, 2, c_white, 1);
                         draw_set_color(38144);
                         draw_rectangle_array(box_coords, 1);
                         if (scr_hit(box_coords)) {
@@ -640,15 +647,14 @@ function colour_picker(xx,yy, max_width=400) constructor{
             for (var i=0;i<array_length(texture_names);i++){
                 var _tex = textures[$ texture_names[i]];
                 column++;
-                var _box_size = box_size*3
-                if ((column *_box_size)+40 > max_width){
+                if ((column *box_size)+40 > max_width){
                     row++;
                     column = 0;
                 }
 
-                box_coords = [box_x+(_box_size *column), box_y+(_box_size*row), box_x+(_box_size*column)+_box_size, box_y+(_box_size*row)+_box_size];
+                box_coords = [box_x+(box_size *column), box_y+(box_size*row), box_x+(box_size*column)+box_size, box_y+(box_size*row)+box_size];
                 draw_rectangle_array(box_coords, 0);
-                draw_sprite_part(_tex, 0, 0, 0, _box_size, _box_size,box_x+(_box_size *column), box_y+(_box_size*row));
+                draw_sprite_part(_tex, 0, 0, 0, box_size, box_size,box_x+(box_size *column), box_y+(box_size*row));
                 draw_set_color(38144);
                 draw_rectangle_array(box_coords, 1);
                 if (scr_hit(box_coords)) {
@@ -669,19 +675,26 @@ function colour_picker(xx,yy, max_width=400) constructor{
         if (point_and_click(draw_unit_buttons([x+max_width-(string_width("close"))-6,y+(box_size*(row+1))],"close"))){
             return "destroy";
         }
-
-        var tex_coords = draw_unit_buttons([x+max_width/2,y+(box_size*(row+1))],"Texture");
-        if (point_and_click(tex_coords)){
-            choose_textures = !choose_textures;
-        }
-
         var marking_opts = ["right_pauldron", "left_pauldron", "right_leg_knee", "left_leg_knee"];
         if (array_contains(marking_opts, title)){
             markings_options.x1 = x+10;
-            markings_options.y1 = tex_coords[3];
-
-            markings_options.draw();
+            markings_options.y1 = y + (box_size*(row+1));
         }
+
+        if (!markings){
+            var tex_coords = draw_unit_buttons([x+max_width/2,y+(box_size*(row+1))],"Texture");
+            markings_options.y1 = tex_coords[3];
+            if (point_and_click(tex_coords)){
+                choose_textures = !choose_textures;
+                if (choose_textures){
+                    box_size*=3
+                } else {
+                    box_size/=3
+                }
+            }
+        }
+
+        markings_options.draw();
 
         if (!scr_hit(130,536,545,748) && mouse_check_button_pressed(mb_left)) {
         }
