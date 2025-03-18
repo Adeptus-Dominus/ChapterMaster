@@ -1,7 +1,7 @@
 
-if (fadein > -30) { fadein -= global.frame_timings.t1; }
-if (cd>=0) { cd -= 1; }
-if (click_stall_timer >= 0) { click_stall_timer -= global.frame_timings.t1; }
+if (fadein>-30) then fadein-=1;
+if (cd>=0) then cd-=1;
+if (click_stall_timer>=0) then click_stall_timer-=1;
 // if (done>=1) then done+=1;
 
 
@@ -96,15 +96,19 @@ if ((fugg>=60) or (fugg2>=60)) and (messages_shown=0) and (messages_to_show=8) a
 
 
 // if (player_forces>0) and (enemy_forces>0) and (battle_over=0){
-    if (timer_stage == 2) { fugg += global.frame_timings.t1; }
-    if (timer_stage == 2) && (fugg > 60){
-        timer_stage = 3;// if (!instance_exists(obj_pnunit)) or (!instance_exists(obj_enunit)){alarm[5]=1;started=4;defeat_message=1;}
+    if (timer_stage=2) then fugg+=1;
+    if (timer_stage=2) and (fugg>60){
+        timer_stage=3;// if (!instance_exists(obj_pnunit)) or (!instance_exists(obj_enunit)){alarm[5]=1;started=4;defeat_message=1;}
     }
-
-    if (timer_stage != 2) { fugg = 0; }
-    if (timer_stage == 4) { fugg2 += global.frame_timings.t1; }
-    if (timer_stage == 4) && (fugg2 > 60){
-        timer_stage = 5;// if (!instance_exists(obj_pnunit)) or (!instance_exists(obj_enunit)){alarm[5]=1;started=4;defeat_message=1;}
+    
+    if (timer_stage!=2) then fugg=0;
+    if (timer_stage=4) then fugg2+=1;
+    if (timer_stage=4) and (fugg2>60){
+        timer_stage=5;// if (!instance_exists(obj_pnunit)) or (!instance_exists(obj_enunit)){alarm[5]=1;started=4;defeat_message=1;}
     }
+    
+    if (timer_stage!=4) then fugg2=0;
+    
+    
+    
 
-    if (timer_stage != 4) { fugg2 = 0; }
