@@ -16,8 +16,8 @@ function load_marines_into_ship(system, ship, units, reload=false) {
             ma_lid[loop] = sh_ide[ship];
             ma_wid[loop] = 0;
             _set(obj_ini.veh_loc, vehicle,sh_name[ship])
-            _set(obj_ini.veh_lid, vehicle, sh_name[ship])
-            _set(obj_ini.veh_wid, vehicle, sh_ide[ship])
+            _set(obj_ini.veh_lid, vehicle, sh_ide[ship])
+            _set(obj_ini.veh_wid, vehicle, 0)
             _set(obj_ini.veh_uid, vehicle, sh_uid[ship])
             obj_ini.ship_carrying[sh_ide[ship]] += size;
 
