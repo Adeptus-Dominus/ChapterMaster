@@ -51,6 +51,7 @@ function ComplexSet(unit) constructor{
             chest_variants : spr_mk7_chest_variants,
             leg_variants  : spr_mk7_leg_variants,
             head : spr_mk7_head_variants,
+            knees : spr_mk7_complex_knees
     };
 
     _are_exceptions = false;
@@ -466,6 +467,7 @@ function ComplexSet(unit) constructor{
                  "leg_variants",
                  "left_leg",
                  "right_leg",
+                 "knees",
                  "head",
                  "gorget",
                  "left_pauldron_base" ,  
@@ -591,6 +593,8 @@ function ComplexSet(unit) constructor{
                     left_trim :spr_mk7_left_trim,
                     right_trim: spr_mk7_right_trim,
                     head : spr_mk5_head_variants,
+                    chest_variants : spr_mk5_chest_variants,
+                    knees : spr_mk7_complex_knees
                 }); 
                 armour_type = ArmourType.Normal
                 /*if (scr_has_style("Prussian")){

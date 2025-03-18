@@ -502,7 +502,7 @@ global.modular_drawing_items = [
         sprite : spr_bonding_studs_right,
         body_types :[0],
         position : "right_pauldron_embeleshments",
-        armours : ["MK5 Heresy", "MK6 Corvus"]
+        armours : ["MK5 Heresy", "MK6 Corvus"],
     },
     {
         sprite : spr_bonding_studs_right,
@@ -598,6 +598,20 @@ global.modular_drawing_items = [
         body_types :[0],
         position : "chest_variants",
         armours : ["MK7 Aquila", "MK8 Errant", "Artificer Armour"],
+    },
+    {
+        cultures : ["Wolf Cult"],
+        sprite : spr_mk7_wolf_cult_belt,
+        body_types :[0],
+        position : "belt",
+        armours_exclude : ["MK3 Iron Armour"],      
+    }, 
+    {
+        cultures : ["Runic"],
+        sprite : spr_mk7_runic_belt,
+        body_types :[0],
+        position : "belt",
+        armours_exclude : ["MK3 Iron Armour"],      
     },                                                                 
 ];
 try{
