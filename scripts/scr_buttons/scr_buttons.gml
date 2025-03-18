@@ -445,7 +445,7 @@ function radio_set(options_array, title)constructor{
 	x2 = 0;
 	y2 = 0;
 
-	static update = item_data_updater
+	static update = item_data_updater;
 	static draw = function(){
 		draw_text(x1, y1, title);
 

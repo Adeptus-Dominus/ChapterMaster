@@ -111,6 +111,7 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"UI","folderPath":"folders/Sprites/UI.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Tile Sets","folderPath":"folders/Tile Sets.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Timelines","folderPath":"folders/Timelines.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"shoulder_icons","folderPath":"folders/Sprites/Marine Viewer/shoulder_icons.yy",},
   ],
   "IncludedFiles": [
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"traits.json","CopyToMask":-1,"filePath":"datafiles/data",},
@@ -1110,6 +1111,7 @@
     {"id":{"name":"scr_colors_initialize","path":"scripts/scr_colors_initialize/scr_colors_initialize.yy",},},
     {"id":{"name":"spr_mk3_forehead_variants","path":"sprites/spr_mk3_forehead_variants/spr_mk3_forehead_variants.yy",},},
     {"id":{"name":"scr_shader_initialize","path":"scripts/scr_shader_initialize/scr_shader_initialize.yy",},},
+    {"id":{"name":"spr_mantis_warriors_icon","path":"sprites/spr_mantis_warriors_icon/spr_mantis_warriors_icon.yy",},},
     {"id":{"name":"spr_indomitus_complex","path":"sprites/spr_indomitus_complex/spr_indomitus_complex.yy",},},
     {"id":{"name":"spr_sal_mk6_helm","path":"sprites/spr_sal_mk6_helm/spr_sal_mk6_helm.yy",},},
     {"id":{"name":"spr_mk4_chest_fastenings","path":"sprites/spr_mk4_chest_fastenings/spr_mk4_chest_fastenings.yy",},},

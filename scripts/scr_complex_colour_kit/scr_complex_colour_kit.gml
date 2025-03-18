@@ -462,10 +462,11 @@ function setup_complex_livery_shader(setup_role, game_setup=false, unit = "none"
         weapon_secondary : [1, 0, 1]
     };       
 
+    var colours_instance = instance_exists(obj_creation) ? obj_creation : obj_controller;
     for (var i=0;i<array_length(spot_names);i++){
         var colour = data_set[$ spot_names[i]];
+        
         if (!is_array(colour)){
-            var colours_instance = instance_exists(obj_creation) ? obj_creation : obj_controller;
             var colour_set = [colours_instance.col_r[colour]/255, colours_instance.col_g[colour]/255, colours_instance.col_b[colour]/255];
             shader_set_uniform_f_array(shader_get_uniform(full_livery_shader, spot_names[i]), colour_set);
         } else {
@@ -481,6 +482,22 @@ function setup_complex_livery_shader(setup_role, game_setup=false, unit = "none"
                         array_push(_textures[$name].areas, complex_colour_swaps[$ spot_names[i]]);
                     }                    
                 }
+            } else if (colour[0] == "icon"){
+                var _data = colour[1]
+                if (struct_exists(global.chapter_markings, _data.icon)){
+                    var name = colour[1];
+                    if (!struct_exists(_textures, name)){
+                        _textures[$name] = {
+                            texture : global.chapter_markings[$ _data.icon],
+                            areas : [complex_colour_swaps[$ spot_names[i]]],
+                        }
+                    } else {
+                        array_push(_textures[$name].areas, complex_colour_swaps[$ spot_names[i]]);
+                    }                    
+                }
+                colour = _data.colour;      
+                var colour_set = [colours_instance.col_r[colour]/255, colours_instance.col_g[colour]/255, colours_instance.col_b[colour]/255];
+                shader_set_uniform_f_array(shader_get_uniform(full_livery_shader, spot_names[i]), colour_set);                
             }
         }
     } 
@@ -504,14 +521,44 @@ global.textures = {
     "Checks" : spr_checker_texture
 };
 
+global.chapter_markings  = {
+    mantis_warriors : spr_mantis_warriors_icon
+}
+
 function colour_picker(xx,yy, max_width=400) constructor{
 	x=xx;
 	y=yy;
 	chosen = -1;
 	count_destroy=false;
     box_size = 30;
-    textures = false;
+    choose_textures = false;
+    markings = false;
     self.max_width = max_width;
+    base_colour = 0;
+    markings_options  = new radio_set(       
+       [ {
+                   str1 : "None",
+                   font : fnt_40k_14b,
+               },
+               {
+                   str1 : "Company",
+                   font : fnt_40k_14b
+               },
+               {
+                   str1 : "Chapter",
+                   font : fnt_40k_14b
+               },
+               {
+                   str1 : "Squad",
+                   font : fnt_40k_14b
+               },         
+               {
+                   str1 : "Role",
+                   font : fnt_40k_14b
+               }
+        ],
+    ,"Markings");
+
 	static draw = function(){
 		if (count_destroy) then return "destroy";
         draw_set_font(fnt_40k_30b);
@@ -523,27 +570,68 @@ function colour_picker(xx,yy, max_width=400) constructor{
         var defualt_box_x = x;
         var box_x = defualt_box_x
         var box_y = y;
-        if (!textures) {
-            for (var i=0;i<array_length(obj_creation.col_r);i++){
-                column++;
-                if ((column *box_size)+40 > max_width){
-                    row++;
-                    column = 0;
-                }
-                draw_set_color(make_color_rgb(obj_creation.col_r[i], obj_creation.col_g[i], obj_creation.col_b[i]));
-                box_coords = [box_x+(box_size*column), box_y+(box_size*row), box_x+(box_size*column)+box_size, box_y+(box_size*row)+box_size];
-                draw_rectangle_array(box_coords, 0);
-                draw_set_color(38144);
-                draw_rectangle_array(box_coords, 1);
-                if (scr_hit(box_coords)) {
-                    draw_set_color(c_white);
-                    draw_set_alpha(0.2);
+        if (!choose_textures) {
+            if (!markings){
+                for (var i=0;i<array_length(obj_creation.col_r);i++){
+                    column++;
+                    if ((column *box_size)+40 > max_width){
+                        row++;
+                        column = 0;
+                    }
+                    draw_set_color(make_color_rgb(obj_creation.col_r[i], obj_creation.col_g[i], obj_creation.col_b[i]));
+                    box_coords = [box_x+(box_size*column), box_y+(box_size*row), box_x+(box_size*column)+box_size, box_y+(box_size*row)+box_size];
                     draw_rectangle_array(box_coords, 0);
-                    draw_set_alpha(1);
-                    chosen = i;
-                    if (scr_click_left(box_coords)) {
-                       count_destroy=true;
-                    }                    
+                    draw_set_color(38144);
+                    draw_rectangle_array(box_coords, 1);
+                    if (scr_hit(box_coords)) {
+                        draw_set_color(c_white);
+                        draw_set_alpha(0.2);
+                        draw_rectangle_array(box_coords, 0);
+                        draw_set_alpha(1);
+                        chosen = i;
+                        if (scr_click_left(box_coords)) {
+                            if (markings_options.current_selection == 0){
+                                count_destroy=true;
+                            } else {
+                                markings = true;
+                                base_colour = i;
+                            }
+                        }                    
+                    }
+                }
+            } else if (markings){
+                if (markings_options.current_selection==2){
+                    textures = global.chapter_markings;
+                    var texture_names = struct_get_names(global.chapter_markings);
+                    for (var i=0;i<array_length(texture_names);i++){
+                        var _tex = textures[$ texture_names[i]];
+                        column++;
+                        var _box_size = box_size*3
+                        if ((column *_box_size)+40 > max_width){
+                            row++;
+                            column = 0;
+                        }
+    
+                        box_coords = [box_x+(_box_size *column), box_y+(_box_size*row), box_x+(_box_size*column)+_box_size, box_y+(_box_size*row)+_box_size];
+                        draw_rectangle_array(box_coords, 0);
+                        //draw_sprite_part(_tex, 0, 12, 30, _box_size, _box_size,box_x+(_box_size *column), box_y+(_box_size*row));
+                        draw_sprite_part_ext(_tex, 0, 12, 30, _box_size, _box_size,box_x+(_box_size *column), box_y+(_box_size*row), 2, 2, c_white, 1);
+                        draw_set_color(38144);
+                        draw_rectangle_array(box_coords, 1);
+                        if (scr_hit(box_coords)) {
+                            draw_set_color(c_white);
+                            draw_set_alpha(0.2);
+                            draw_rectangle_array(box_coords, 0);
+                            draw_set_alpha(1);
+                            chosen = ["icon", {
+                                icon: texture_names[i],
+                                colour : base_colour,
+                            }];
+                            if (scr_click_left(box_coords)) {
+                               count_destroy=true;
+                            }                    
+                        }            
+                    }
                 }
             }
         } else {
@@ -582,8 +670,17 @@ function colour_picker(xx,yy, max_width=400) constructor{
             return "destroy";
         }
 
-        if (point_and_click(draw_unit_buttons([x+max_width/2,y+(box_size*(row+1))],"Texture"))){
-            textures = !textures;
+        var tex_coords = draw_unit_buttons([x+max_width/2,y+(box_size*(row+1))],"Texture");
+        if (point_and_click(tex_coords)){
+            choose_textures = !choose_textures;
+        }
+
+        var marking_opts = ["right_pauldron", "left_pauldron", "right_leg_knee", "left_leg_knee"];
+        if (array_contains(marking_opts, title)){
+            markings_options.x1 = x+10;
+            markings_options.y1 = tex_coords[3];
+
+            markings_options.draw();
         }
 
         if (!scr_hit(130,536,545,748) && mouse_check_button_pressed(mb_left)) {
