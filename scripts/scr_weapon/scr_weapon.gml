@@ -1732,8 +1732,8 @@ global.weapons = {
 			"artifact": 45
 		},
 		"description": "A smaller variant of Bolter, intended to be useable by unaugmented humans.",
-		"melee_hands": 1.25,
-		"ranged_hands": 1.25,
+		"melee_hands": 1,
+		"ranged_hands": 1,
 		"ammo": 16,
 		"range": 10,
 		"spli": 2,
