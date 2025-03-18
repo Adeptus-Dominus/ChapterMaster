@@ -334,10 +334,10 @@ if (defeat=0) and (reduce_power=true){
 	
     if (enemy!=2){
         if (dropping == true || defending == true) { // TODO: consider buffing defense battle victory results
-            power_reduction = 1; // TODO: consider buffing raid victory results
+            power_reduction = 1; // TODO: consider buffing raid victory results (e.g., increase to 2 depending on victory margin)
             power_fought = max(enemy_power - 1, 1); // Raiding generates enemies at -1 power, so less points
         } else {
-            power_reduction = 2; // TODO: consider buffing attack battle results
+            power_reduction = 2; // TODO: consider buffing attack battle results (e.g., increase to 3 based on victory margin)
             power_fought = enemy_power;
         }
         new_power = enemy_power - power_reduction;
