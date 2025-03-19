@@ -681,7 +681,6 @@ function ComplexSet(unit) constructor{
                     mouth_variants: spr_mk3_mouth,
                     forehead : spr_mk3_forehead_variants,
                     belt : spr_mk3_belt,
-                    chest_variants : spr_mk3_chest,
                 });
                 armour_type = ArmourType.Normal
                 break;
