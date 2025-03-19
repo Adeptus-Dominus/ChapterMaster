@@ -756,7 +756,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 						var _picked_mutation = array_random_index(_possible_mutations);
 						gene_seed_mutations[$ _possible_mutations[_picked_mutation]] = 1;
 						array_delete(_possible_mutations, _picked_mutation, 1);
-						_mutation_roll -= 10;
+						_mutation_roll *= 0.5;
 						if (_mutation_roll > obj_ini.stability * 10) {
 							continue;
 						} else {
