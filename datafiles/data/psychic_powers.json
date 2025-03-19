@@ -335,7 +335,7 @@ I see no reason to have these named structs, as their names are not used for any
         "type": "attack",
         "range": 5,
         "target_type": "enemy_vehicle",
-        "max_kills": 0,
+        "max_kills": 1,
         "magnitude": 300,
         "armour_piercing": 1,
         "flavour_text": {
@@ -439,7 +439,7 @@ I see no reason to have these named structs, as their names are not used for any
         "type": "attack",
         "range": 3,
         "target_type": "enemy_unit",
-        "max_kills": 0,
+        "max_kills": 1,
         "magnitude": 200,
         "armour_piercing": -1,
         "flavour_text": {
@@ -603,7 +603,7 @@ I see no reason to have these named structs, as their names are not used for any
         "type": "attack",
         "range": 3,
         "target_type": "enemy_unit",
-        "max_kills": 0,
+        "max_kills": 1,
         "magnitude": 220,
         "armour_piercing": 0,
         "flavour_text": {
@@ -683,7 +683,7 @@ I see no reason to have these named structs, as their names are not used for any
         "type": "attack",
         "range": 4,
         "target_type": "enemy_unit",
-        "max_kills": 0,
+        "max_kills": 1,
         "magnitude": 190,
         "armour_piercing": 0,
         "flavour_text": {
@@ -747,7 +747,7 @@ I see no reason to have these named structs, as their names are not used for any
         "type": "attack",
         "range": 5,
         "target_type": "enemy_unit",
-        "max_kills": 0,
+        "max_kills": 1,
         "magnitude": 160,
         "armour_piercing": 0,
         "flavour_text": {
