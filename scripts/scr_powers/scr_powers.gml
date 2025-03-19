@@ -741,17 +741,13 @@ function select_psychic_power(_unit) {
 
     ds_priority_destroy(_powers_priority_queue);
 
-    // Handle special cases
-    if (_power_id == "machine_curse") {
-        with (obj_enunit) {
-            if (veh > 0) instance_create(x, y, obj_temp3);
-        }
-
-        if (instance_number(obj_temp3) == 0 || obj_ncombat.enemy == 9) {
+    //TODO: Fix this dumb band-aid;
+    // Flip anti-vehicle powers into smite;
+    var _power_target_type = get_power_data(_known_powers[i], "target_type");
+    if (_power_target_type == 2) {
+        if (obj_enunit.veh < 1 || obj_ncombat.enemy == 9) {
             _power_id = "smite";
         }
-
-        with (obj_temp3) instance_destroy();
     }
 
     //! Buffs are currently just not worth it at all. Their targeting, power priorities (absent) and effects are all over the place;
