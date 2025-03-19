@@ -627,13 +627,13 @@ function PlanetData(planet, system) constructor{
         
         
         draw_set_font(fnt_40k_14b);
-        draw_text(xx+349,yy+326,"Planet Presence");
-        draw_text(xx+535,yy+326,"Planet Features");
+        draw_text(xx+349,yy+326,"Planetary Presence");
+        draw_text(xx+535,yy+326,"Planetary Features");
         draw_set_font(fnt_40k_14);
         
         
         var presence_text = "";
-        var faction_names = ["Adeptas", "Orks", "Tau", "Tyranid", "Chaos", "Chaos Marines", "Daemons", "Necrons"];
+        var faction_names = ["Adeptas", "Orks", "Tau", "Tyranids", "Chaos", "Traitors", "Daemons", "Necrons"];
         var faction_ids = ["p_sisters", "p_orks", "p_tau", "p_tyranids", "p_traitors", "p_chaos", "p_demons", "p_necrons"];
         var blurbs = ["Minima", "Parvus", "Moderatus", "Significus", "Enormicus", "Extremis"];
         
