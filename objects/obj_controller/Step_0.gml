@@ -321,7 +321,7 @@ if (menu==1 && (managing>0 || managing<0)){
             temp[113]=string(floor(unit.experience));
             // Psyker things
             temp[119] = "";
-            temp[122] = "";
+            temp[123] = "";
             var _psy_powers_known = unit.powers_known;
 			var _psy_powers_count = array_length(_psy_powers_known);
             if (_psy_powers_count > 0){
@@ -338,7 +338,7 @@ if (menu==1 && (managing>0 || managing<0)){
 						_tooltip += ".";
 					}
 				}
-                temp[122] = _tooltip;
+                temp[123] = _tooltip;
             }
             // Corruption
             if (obj_controller.chaos_rating>0) and (temp[119]!="") then temp[119]+="#"+string(max(0,unit.corruption()))+"% Corruption.";

@@ -236,3 +236,25 @@ function string_to_integer(_string) {
     }
     return(val);
 }
+
+/// @description Replaces underscores with spaces and capitalizes the first letter of each word.
+function format_underscore_string(input_string) {
+    // Split the string into words
+    var words = string_split(input_string, "_");
+    var result = "";
+    
+    // Loop through each word and capitalize the first letter
+    for (var i = 0; i < array_length(words); i++)
+    {
+        // Capitalize the first character and concatenate it with the rest of the word
+        var word = string_upper_first(words[i]);
+        result += word;
+        
+        // Add a space after each word (except for the last one)
+        if (i < array_length(words) - 1) {
+            result += " ";
+        }
+    }
+    
+    return result;
+}

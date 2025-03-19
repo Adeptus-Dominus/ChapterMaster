@@ -557,7 +557,7 @@ function scr_ui_manage() {
 			var _psy_powers_count = array_length(_psy_powers_known);
 	        if (cn.temp[119] != "") {
 				var_text= string_hash_to_newline(cn.temp[119]);
-				tooltip_text = cn.temp[122]
+				tooltip_text = cn.temp[123]
 	        	x1 = x_left;
 	        	y1 = yy+488;
 	        	x2 = x1+string_width(var_text);

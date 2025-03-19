@@ -191,6 +191,18 @@ function EquipmentStruct(item_data, core_type, quality_request="none") construct
                         }
                         //item_desc_tooltip += $"#Properties:#{special_properties_string}#"
                     }
+
+                    if (is_struct(specials)) {
+                        var _specials_string = "";
+                        var _specials = struct_get_names(specials);
+                        for (var j = 0; j < array_length(_specials); j++) {
+                            var _special = _specials[j];
+                            var _special_value = specials[$ _special];
+                            _specials_string += $"{format_underscore_string(_special)} ({_special_value})";
+                            array_push(special_properties_array, _specials_string)
+                        }
+                    }
+
                     if (array_length(special_properties_array) > 0){
                         var special_properties_string = ""
                         for (var j = 0; j < array_length(special_properties_array); j++) {
@@ -229,21 +241,6 @@ function EquipmentStruct(item_data, core_type, quality_request="none") construct
                         item_desc_tooltip += $"Maintenance: {maintenance}#"
                     }
                     break;
-                case "specials":
-                    if (is_struct(specials)) {
-                        var _specials_string = "";
-                        var _specials = struct_get_names(specials);
-                        for (var j = 0; j < array_length(_specials); j++) {
-                            var _special = _specials[j];
-                            var _special_value = specials[$ _special];
-                            _specials_string += $"{_special} {_special_value}";
-                            if (j < array_length(_specials) - 1) {
-                                _specials_string += ", "
-                            }
-                        }
-                        item_desc_tooltip += $"#Specials:#{_specials_string}#";
-                    }
-                    break
             }
         }
         return item_desc_tooltip
