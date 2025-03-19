@@ -113,14 +113,19 @@ function scr_creation(slide_num) {
 				disposition[eSTART_FACTION.Inquisition] = 30 + ((cooperation - 5) * 2) - (2 * (10 - purity)) - (2 * (10 - stability)); // Inq
 				disposition[eSTART_FACTION.Ecclesiarchy] = 40 + ((cooperation - 5) * 4)  - (10 - purity) - ((10 - stability)); // Ecclesiarchy
 			
-				if (founding == eCHAPTERS.SPACE_WOLVES) {
-					disposition[eSTART_FACTION.Progenitor] = 70;
-				} else if (founding == eCHAPTERS.IMPERIAL_FISTS) {
-					disposition[eSTART_FACTION.Progenitor] = 50;
-				} else if (founding == eCHAPTERS.SALAMANDERS) {
-					disposition[eSTART_FACTION.Progenitor] = 70;
-				} else if (founding == 10) { // random/unknown
-					disposition[eSTART_FACTION.Inquisition] -= 5;
+				switch (founding) {
+					case eCHAPTERS.SPACE_WOLVES:
+					case eCHAPTERS.SALAMANDERS:
+						disposition[eSTART_FACTION.Progenitor] = 70;
+						break;
+					case eCHAPTERS.IMPERIAL_FISTS:
+						disposition[eSTART_FACTION.Progenitor] = 50;
+						break;
+					case eCHAPTERS.UNKNOWN:
+						disposition[eSTART_FACTION.Inquisition] -= 5;
+						break;
+					default:
+						break;
 				}
 
 				if (strength > 5) {
