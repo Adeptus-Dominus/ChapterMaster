@@ -496,44 +496,61 @@ function draw_chapter_trait_select(){
         
         draw_set_halign(fa_center);
         draw_text_transformed(800,301,string_hash_to_newline("Chapter Stats"),0.6,0.6,0);
-        draw_set_halign(fa_right);
+        draw_set_halign(fa_left);
         
-        draw_text_transformed(617,332,$"Strength ({strength})",0.5,0.5,0);
-        draw_text_transformed(617,387,$"Cooperation ({cooperation})",0.5,0.5,0);
-        draw_text_transformed(617,442,$"GeneSeed Purity ({purity})",0.5,0.5,0);
-        draw_text_transformed(617,497,$"GeneSeed Stability ({stability})",0.5,0.5,0);
-        var arrow_buttons_controls = [strength, cooperation, purity, stability]
-        for (var i=0;i<4;i++){
-            if (custom=2) then draw_sprite_stretched(spr_arrow,0,625,325+(i*55),32,32);
-            if (scr_hit(625,325+(i*55),657,357+(i*55))){
-                obj_cursor.image_index=1;
-                if (cooldown<=0) and (custom=2) and (arrow_buttons_controls[i]>1) and (mouse_left>=1){
-                    arrow_buttons_controls[i]-=1;
-                    points-=10;
-                    cooldown=8000;
+        var _strength_ratings = ["", "Decimated", "Reduced", "Reduced", "Reduced", "Average", "Above Average", "Above Average", "Considerable", "Considerable", "Overwhelming"];
+        var _cooperation_ratings = ["", "Antagonistic", "Uncooperative", "Uncooperative", "Uncooperative", "Neutral", "Trusted", "Trusted", "Trusted", "Trusted", "Exemplary"];
+        var _geneseed_ratings = ["", "Abnormal", "Horrible", "Horrible", "Bad", "Bad", "Mediocre", "Mediocre", "Good", "Good", "Perfect"];
+        draw_text_transformed(505, 332, $"Strength: {_strength_ratings[strength]} ({strength})", 0.5, 0.5, 0);
+        draw_text_transformed(505, 387, $"Cooperation: {_cooperation_ratings[cooperation]}  ({cooperation})", 0.5, 0.5, 0);
+        draw_text_transformed(505, 442, $"Gene-Seed Purity: {_geneseed_ratings[purity]} ({purity})", 0.5, 0.5, 0);
+        draw_text_transformed(505, 497, $"Gene-Seed Stability: {_geneseed_ratings[stability]} ({stability*10}%)", 0.5, 0.5, 0);
+        
+        var arrow_buttons_controls = [strength, cooperation, purity, stability];
+        if (custom == 2) {
+            for (var i = 0; i < 4; i++) {
+                draw_sprite_stretched(spr_arrow, 0, 436, 325 + (i * 55), 32, 32);
+                if (scr_hit(436, 325 + (i * 55), 436 + sprite_get_width(spr_arrow), 357 + (i * 55))) {
+                    obj_cursor.image_index = 1;
+                    if ((cooldown <= 0) && (arrow_buttons_controls[i] > 1) && (mouse_left >= 1)) {
+                        arrow_buttons_controls[i] -= 1;
+                        points -= 10;
+                        cooldown = 8000;
+                    }
+                }
+                draw_sprite_stretched(spr_arrow, 1, 470, 325 + (i * 55), 32, 32);
+                if (scr_hit(470, 325 + (i * 55), 470 + sprite_get_width(spr_arrow), 357 + (i * 55))) {
+                    obj_cursor.image_index = 1;
+                    if ((cooldown <= 0) && (arrow_buttons_controls[i] < 10) && (points + 10 <= maxpoints) && (mouse_left >= 1)) {
+                        arrow_buttons_controls[i] += 1;
+                        points += 10;
+                        cooldown = 8000;
+                    }
                 }
             }
-            if (custom=2) then draw_sprite_stretched(spr_arrow,1,1135,325+(i*55),32,32);
-            if (scr_hit(1135,325+(i*55),1167,357+(i*55))){
-                obj_cursor.image_index=1;
-                if (cooldown<=0) and (custom=2) and (arrow_buttons_controls[i]<10) and (points+10<=maxpoints) and (mouse_left>=1){
-                    arrow_buttons_controls[i]+=1;
-                    points+=10;
-                    cooldown=8000;
-                }
-            }
-            draw_rectangle(668,330+(i*55),1125,351+(i*55),1);   
-            draw_rectangle(668,330+(i*55),668+(arrow_buttons_controls[i]*45.7),351+(i*55),0);     
         }
+
         strength = arrow_buttons_controls[0];
         cooperation = arrow_buttons_controls[1];
         purity = arrow_buttons_controls[2];
         stability = arrow_buttons_controls[3];
         
-        if (scr_hit(532,325,1166,357)){tooltip="Strength";tooltip2="How many companies your chapter begins with.  For every score below five a company will be removed; conversely, each score higher grants 50 additional astartes.";}
-        if (scr_hit(486,380,1166,412)){tooltip="Cooperation";tooltip2="How diplomatic your chapter is.  A low score will lower starting dispositions of Imperial factions and make disposition increases less likely to occur.";}
-        if (scr_hit(442,435,1166,467)){tooltip="Purity";tooltip2="A measure of how pure and mutation-free your chapter's gene-seed is.  A perfect score means no mutations must be chosen.  The lower the score, the more mutations.";}
-        if (scr_hit(423,490,1166,522)){tooltip="Stability";tooltip2="A measure of how easily new mutations and corruption can occur with your chapter-gene seed.  A perfect score makes the gene-seed almost perfectly stable.";}
+        if (scr_hit(436, 325, 800, 357)) {
+            tooltip = "Strength";
+            tooltip2 = "How many marines your chapter has. \nFor every score below five a company will be removed; conversely, each score higher grants 50 additional astartes.";
+        }
+        if (scr_hit(436, 380, 800, 412)) {
+            tooltip = "Cooperation";
+            tooltip2 = "How diplomatic your chapter is. \nA low score will lower starting dispositions of Imperial factions and make disposition increases less likely to occur.";
+        }
+        if (scr_hit(436, 435, 800, 467)) {
+            tooltip = "Purity";
+            tooltip2 = "How many inherent mutations your gene-seed has. \nEach score bellow ten means one mutations will need to be chosen.";
+        }
+        if (scr_hit(436, 490, 800, 522)) {
+            tooltip = "Stability";
+            tooltip2 = "How easily new mutations and corruption can occur with your chapter-gene seed. \nAffects the amount of random mutations your existing marines have, and the amount new aspirants get after the implantation is finished.";
+        }
     }
     
     if (popup!="icons"){
