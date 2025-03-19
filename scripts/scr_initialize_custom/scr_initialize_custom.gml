@@ -2391,23 +2391,6 @@ function scr_initialize_custom() {
 			let = "";
 			chapter_master.add_trait("favoured_by_the_warp");
 			chapter_master.psionic = choose(13, 14);
-			switch (obj_creation.discipline) {
-				case "default":
-					let = "D";
-					break;
-				case "biomancy":
-					let = "B";
-					break;
-				case "pyromancy":
-					let = "P";
-					break;
-				case "telekinesis":
-					let = "T";
-					break;
-				case "rune_magic":
-					let = "R";
-					break;
-			}
 			chapter_master.update_powers();
 	}
 	mobi[company, 1] = mobi[100, 2];

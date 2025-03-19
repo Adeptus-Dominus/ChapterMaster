@@ -1008,10 +1008,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 	};
 
 	static update_powers = function() {
-		if (!IsSpecialist("libs")) {
-			return 0;
-		}
-
 		var _powers_limit = 0;
 		var _powers_known_count = 0;
 		var _discipline_powers_max = 0;
