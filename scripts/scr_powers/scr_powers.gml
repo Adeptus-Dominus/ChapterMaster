@@ -71,17 +71,17 @@ function scr_powers(caster_id) {
     var _power_name = get_power_data(_power_id, "name");
     var _power_type = get_power_data(_power_id, "type");
     var _power_range = round(get_power_data(_power_id, "range") * _total_psy_invocation);
-    var _power_target_type = get_power_data(_power_id, "target_type");
+    // var _power_target_type = get_power_data(_power_id, "target_type"); // Not used here
     var _power_max_kills = round(get_power_data(_power_id, "max_kills") * _total_psy_invocation);
     var _power_magnitude = get_power_data(_power_id, "magnitude") * _total_psy_invocation;
     var _power_armour_piercing = get_power_data(_power_id, "armour_piercing");
     // var _power_duration = get_power_data(_power_id, "duration"); // Not used atm
     var _power_flavour_text = get_power_data(_power_id, "flavour_text");
-    var _heretical = get_discipline_data(_selected_discipline, "heretical");
+    var _sourcery = get_discipline_data(_selected_discipline, "sourcery");
 
     // Some stuff about the inquisition getting angry for using psy powers
     //TODO: this should be refactored;
-    if (_heretical != undefined && _heretical) {
+    if (_sourcery != undefined && _sourcery) {
         if ((obj_ncombat.sorcery_seen < 2) && (obj_ncombat.present_inquisitor == 1)) {
             obj_ncombat.sorcery_seen = 2;
         }
@@ -624,7 +624,7 @@ function process_tome_mechanics(_unit, _unit_id) {
 /// @returns {struct} The target information with column and index
 function find_valid_target(_power_data) {
     var _result = {column: noone, index: undefined};
-    var _target_vehicles = _power_data.target_type == 2;
+    var _target_vehicles = _power_data.target_type == "enemy_vehicle";
 
     // Create a priority queue for potential targets
     var _targets_queue = ds_priority_create();
@@ -744,7 +744,7 @@ function select_psychic_power(_unit) {
     //TODO: Fix this dumb band-aid;
     // Flip anti-vehicle powers into smite;
     var _power_target_type = get_power_data(_power_id, "target_type");
-    if (_power_target_type == 2) {
+    if (_power_target_type == "enemy_vehicle") {
         if (obj_enunit.veh < 1 || obj_ncombat.enemy == 9) {
             _power_id = "smite";
         }
