@@ -215,14 +215,7 @@ function scr_powers(caster_id) {
 
             // Calculate casualties based on damage and health
             var _casualties = 0;
-
-            if (_power_max_kills == 0) {
-                // Single target limit - at most one casualty
-                _casualties = min(floor(_final_damage / _target_unit_health), 1);
-            } else {
-                // Multi-target - can kill multiple entities
-                _casualties = floor(_final_damage / _target_unit_health);
-            }
+            _casualties = min(floor(_final_damage / _target_unit_health), max(_power_max_kills, 1));
 
             // Cap casualties at available entities and ensure non-negative
             _casualties = min(max(_casualties, 0), _target_unit_count);
