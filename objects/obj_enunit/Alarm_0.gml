@@ -59,7 +59,6 @@ if (!engaged){// Shooting
         enemy=instance_nearest(obj_temp_inq.x,obj_temp_inq.y,obj_pnunit);
         with(obj_temp_inq){instance_destroy();}
     }*/
-    
     if (!instance_exists(obj_pnunit)) then exit;
 
     for (var i=0;i<array_length(wep);i++){
@@ -167,59 +166,47 @@ if (!engaged){// Shooting
                 
                 
                 if (string_count("Gauss",wep[i])) then _armour_piercing=false;
+
+                // Shooting normal marines;
+                if ((!_armour_piercing) && ((!instance_exists(obj_nfort)) || flank) && instance_exists(obj_pnunit) && instance_exists(enemy)) {
+                    if (enemy.men > 0) {
+                        // There are marines in the first column;
+                        if (target_block_is_valid(enemy, obj_pnunit)) {
+                            scr_shoot(i, enemy, chapter_fuck, "att", "ranged");
+                            continue;
+                        }
+                    } else if (instance_number(obj_pnunit) > 1) {
+                        if (enemy2.men > 0) {
+                            continue;
+                        }
+
+                        // There were no marines in the first column, looking behind;
+                        var enemy2;
                 
-                if (!_armour_piercing) and ((!instance_exists(obj_nfort)) or (flank)) and (instance_exists(obj_pnunit)) and (instance_exists(enemy)){// Check for men
-                    var g=0,good=0,enemy2;
-
-                    if (target_block_is_valid(enemy,obj_pnunit)){
-                        // good=scr_target(enemy,"men");// First target has vehicles, blow it to hell
-                        scr_shoot(i,enemy,chapter_fuck,"att","ranged");
-                    }
-                    
-                    // First target does not have vehicles, cycle through objects to find one that has vehicles
-                    // Note that unless the player has 10+ vehicles in the front rank they can fire on through
-                    
-                    if (!good) and (instance_number(obj_pnunit)>1) and (enemy.veh+enemy.dreads<=10){
-                        var x2=enemy.x;
-                        repeat(instance_number(obj_pnunit)-1){
-                            if (!good){
-                                if (!flank) then x2-=10;
-                                if (flank) then x2+=10;
-                                enemy2=instance_nearest(x2,y,obj_pnunit);
-                                
-                                var j,totes;j=0;totes=0;
-                                for (j=0;j<array_length(enemy2.unit_struct);j++){
-                                    unit = enemy2.unit_struct[j];
-                                    if (!is_struct(unit))then continue;
-                                    if (unit.hp()>0){
-                                        if (enemy2.marine_type[j]=obj_ini.role[100][6]) then totes+=1;
-                                        if (enemy2.marine_type[j]="Venerable "+string(obj_ini.role[100][6])) then totes+=1;
-                                    }
-
-                                }
-                                for (j=0;j<array_length(enemy2.veh_hp);j++){
-                                        if (enemy2.veh_hp[j]>0){
-                                        if (enemy2.veh_type[i]="Rhino") then totes++;
-                                        if (enemy2.veh_type[i]="Predator") then totes++;
-                                        if (enemy2.veh_type[i]="Land Raider") then totes++;
-                                    }
-                                }
-                                // show_message(totes);
-                                
-                                // if (enemy2.veh+enemy2.dreads>10) then block=1;
-                                if (totes>=10) then block=1;
-                                
-                                // if (enemy2.men-enemy2.dreads>0) and (good=0) and (block=0){
-                                if (enemy2.men>0) and (good=0) and (block=0){
-                                    // good=scr_target(enemy2,"men");// This target has men, blow it to hell
-                                    scr_shoot(i,enemy2,chapter_fuck,"att","ranged");
+                        var _column_size_value = (enemy.veh * 2.5) + (enemy.dreads * 2) + (enemy.men * 0.5);
+                        var x2 = enemy.x;
+                        x2 += !flank ? 10 : -10;
+                
+                        repeat (instance_number(obj_pnunit) - 1) {
+                            enemy2 = instance_nearest(x2, y, obj_pnunit);
+                
+                            var _back_column_size_value = (enemy2.veh * 2.5) + (enemy2.dreads * 2) + (enemy2.men * 0.5);
+                            if (_back_column_size_value < _column_size_value) {
+                                continue;
+                            } else {
+                                // Calculate chance of shots passing through to back row
+                                // Higher ratio of back column size to front column size increases pass-through chance
+                                // Maximum chance capped at 60% to ensure some protection remains
+                                var _pass_chance = ((_back_column_size_value / _column_size_value) - 1) * 100;
+                                if (irandom_range(1, 100) > min(_pass_chance, 60)) {
+                                    continue;
                                 }
                             }
+                
+                            scr_shoot(i, enemy2, chapter_fuck, "att", "ranged");
                         }
                     }
                 }
-                
-
             }
         }
     }

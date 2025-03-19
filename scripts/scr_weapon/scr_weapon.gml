@@ -2241,7 +2241,6 @@ global.gear = {
 				"master_crafted": 5,
 				"artifact": 10
 			},
-			"tags": ["power_armour"],
 		},
 	// Sororitas and other imperials
 		"Light Power Armour": { // According to lore, lack of black carapace makes regular humans less capable to use PAs properly, but this is a concern for the future
@@ -2262,7 +2261,6 @@ global.gear = {
 				"artifact": 10
 			},
 			"description": "A suit of light power armour, intended to be useable by the regular humans.",
-			"tags": ["power_armour"],
 		},
 	// Eldar
 		"Ranger Armour":{
@@ -2359,15 +2357,10 @@ global.gear = {
 			"abbreviation": "IrnHalo",
 			"description": "An ancient artifact, these powerful conversion field generators are granted to high ranking battle brothers or heroes of the chapter. Bearers are often looked to for guidance by their fellow Astartes.",
 			"damage_resistance_mod": {
-				"standard": 10, // Adjusted
-				"master_crafted": 15, // Adjusted
-				"artifact": 20 // Adjusted
+				"standard": 35, // Adjusted
+				"master_crafted": 40, // Adjusted
+				"artifact": 45 // Adjusted
 			},
-			"hp_mod": {
-				"standard": 20, // Adjusted
-				"master_crafted": 25, // Adjusted
-				"artifact": 30 // Adjusted
-			}
 		},
 		"Combat Shield": {
 			"description": "A lighter, more maneuverable version of a Storm Shield. Due to its flexibility, Combat Shields leave other hand of a Space Marine free to use other hand-to-hand weaponry.",
@@ -2447,7 +2440,7 @@ global.gear = {
 	"mobility": {
 		"Bike": {
 			"abbreviation": "Bike",
-			"special_properties": ["Integrated Twin Linked-Bolters"],
+			"second_profiles": ["Twin Linked Bolters"],
 			"description": "A robust bike that can propel an Astartes at very high speeds. Boasts highly responsive controls that allow for fluid movement on the battlefield and and respectable Twin-Linked Bolters for offensive action.",
 			"hp_mod": {
 				"standard": 25,
@@ -2462,16 +2455,12 @@ global.gear = {
 		},
 		"Jump Pack": {
 			"abbreviation": "JmpPck",
+			"special_properties": ["Hammer of Wrath"],
 			"description": "A back-mounted device containing jets powerful enough to lift an Astartes in Power Armor over great distances. Utilizing these, Assault Marines bring devastation to the foe.",
-			"hp_mod": {
-				"standard": 10,
-				"master_crafted": 15,
-				"artifact": 20
-			},
 			"damage_resistance_mod": {
-				"standard": 20,
-				"master_crafted": 25,
-				"artifact": 30
+				"standard": 25,
+				"master_crafted": 30,
+				"artifact": 35
 			},
 			"tags": ["jump"],
 		},

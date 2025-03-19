@@ -87,7 +87,7 @@ function ChapterData() constructor {
 	battle_cry = "For the Emperor";
 	equal_specialists = 0;
 	load_to_ships = {
-		escort_load: 0,
+		escort_load: 2,
 		split_scouts: 0,
 		split_vets: 0,
 	};
@@ -214,7 +214,7 @@ function scr_chapter_new(argument0) {
 	world_feature = array_create(20, "");
 	
 
-	points=100;maxpoints=100;custom=0;
+	points=100;maxpoints=100;
 	
 	function load_default_gear(_role_id, _role_name, _wep1, _wep2, _armour, _mobi, _gear){
 		for(var i = 100; i <=102; i++){

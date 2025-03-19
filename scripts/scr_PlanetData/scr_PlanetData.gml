@@ -13,10 +13,10 @@ function PlanetData(planet, system) constructor{
     }
 //
 
-	self.planet = planet;
-	self.system = system;
-	player_disposition = system.dispo[planet];
-	planet_type = system.p_type[planet];
+    self.planet = planet;
+    self.system = system;
+    player_disposition = system.dispo[planet];
+    planet_type = system.p_type[planet];
     operatives = system.p_operatives[planet];
     features =system.p_feature[planet];
     current_owner = system.p_owner[planet];
@@ -27,6 +27,10 @@ function PlanetData(planet, system) constructor{
     secondary_population = system.p_pop[planet];
     is_craftworld = system.craftworld;
     is_hulk = system.space_hulk;
+
+    static set_player_disposition = function(){
+        system.dispo[planet] = player_disposition;
+    }
 
     static display_population = function(){
     	if (large_population){
@@ -455,18 +459,18 @@ function PlanetData(planet, system) constructor{
         draw_set_color(c_gray);
         draw_rectangle(xx+349,yy+175,xx+717,yy+192,1);
         draw_set_color(c_white);
-        
-        var player_dispo = player_disposition;
+
+
         if (!_succession){
-            if (player_dispo>=0) and (origional_owner<=5) and (current_owner<=5) and (population>0) then draw_text(xx+534,yy+176,"Disposition: "+string(min(100,player_dispo))+"/100");
-            if (player_dispo>-30) and (player_dispo<0) and (current_owner<=5) and (population>0){
+            if (player_disposition>=0) and (origional_owner<=5) and (current_owner<=5) and (population>0) then draw_text(xx+534,yy+176,"Disposition: "+string(min(100,player_disposition))+"/100");
+            if (player_disposition>-30) and (player_disposition<0) and (current_owner<=5) and (population>0){
                 draw_text(xx+534,yy+176,"Disposition: ???/100");
             }
-            if ((player_dispo>=0) and (origional_owner<=5) and (current_owner>5)) or (population<=0){
+            if ((player_disposition>=0) and (origional_owner<=5) and (current_owner>5)) or (population<=0){
                 draw_text(xx+534,yy+176,"-------------");
             }
 
-            if (player_dispo<=-3000) then draw_text(xx+534,yy+176,"Disposition: N/A");
+            if (player_disposition<=-3000) then draw_text(xx+534,yy+176,"Disposition: N/A");
         } else  if (_succession=1) then draw_text(xx+534,yy+176,"War of _Succession");
         draw_set_color(c_gray);
         // End draw disposition
@@ -575,6 +579,7 @@ function PlanetData(planet, system) constructor{
                         
                         if (player_disposition>0) and (player_disposition<=100){
                             player_disposition=min(100,player_disposition+(9-fortification_level));
+                            set_player_disposition();
                         }
                     }
                     
@@ -642,14 +647,14 @@ function PlanetData(planet, system) constructor{
             }
             
             if (t!=0){
-                if (ahuh2=1) then ahuh3="Tiny";if (ahuh2=2) then ahuh3="Sparse";
-                if (ahuh2=3) then ahuh3="Moderate";if (ahuh2=4) then ahuh3="Heavy";
-                if (ahuh2=5) then ahuh3="Extreme";if (ahuh2>=6) then ahuh3="Rampant";
+                if (ahuh2=1) then ahuh3="Minima (1)";if (ahuh2=2) then ahuh3="Parvus (2)";
+                if (ahuh2=3) then ahuh3="Moderatus (3)";if (ahuh2=4) then ahuh3="Significus (4)";
+                if (ahuh2=5) then ahuh3="Enormicus (5)";if (ahuh2>=6) then ahuh3="Extremis (6)";
             }
             if (t=0){
-                if (ahuh2=1) then ahuh3="Very Few";if (ahuh2=2) then ahuh3="Few";
-                if (ahuh2=3) then ahuh3="Moderate";if (ahuh2=4) then ahuh3="Numerous";
-                if (ahuh2=5) then ahuh3="Very Numerous";if (ahuh2>=6) then ahuh3="Overwhelming";
+                if (ahuh2=1) then ahuh3="Minima (1)";if (ahuh2=2) then ahuh3="Parvus (2)";
+                if (ahuh2=3) then ahuh3="Moderatus (3)";if (ahuh2=4) then ahuh3="Significus (4)";
+                if (ahuh2=5) then ahuh3="Enormicus (5)";if (ahuh2>=6) then ahuh3="Extremis (6)";
             }
             
             if (ahuh!="") and (ahuh2>0) then temp8+=string(ahuh)+" "+string(ahuh3)+"#";

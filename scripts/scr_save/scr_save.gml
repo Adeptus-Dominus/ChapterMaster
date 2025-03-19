@@ -420,6 +420,7 @@ function scr_save(save_part,save_id) {
     
                     ini_write_real("Veh",$"hp{coh}.{mah}",obj_ini.veh_hp[coh,mah]);
                     ini_write_real("Veh",$"cha{coh}.{mah}",obj_ini.veh_chaos[coh,mah]);
+                    ini_encode_and_json("Veh",$"last_ship{coh}.{mah}",obj_ini.last_ship[coh,mah]);
                 }
             }
 	    }

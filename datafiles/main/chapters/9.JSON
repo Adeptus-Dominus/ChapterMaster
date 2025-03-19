@@ -118,8 +118,8 @@
                 "still_standing",
                 "seasoned"
             ],
-            "gear": "Jump Pack",
-            "mobi": "",
+            "gear": "",
+            "mobi": "Jump Pack",
             "armour": "",
             "bionics": 0
         },

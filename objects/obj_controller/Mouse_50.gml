@@ -43,9 +43,9 @@ if (menu==12) and (cooldown<=0) and (penitorium>0){
         }
         penitorium=0;
         var p=0;
-        for(var c=0; c<11; c++){
-            for(var e=1; e<=250; e++){
-                if (obj_ini.god[c,e]>=10){
+        for (var c = 0; c < 11; c++){
+            for (var e = 0; e < array_length(obj_ini.god[c]); e++){
+                if (obj_ini.god[c,e] == 10){
                     p+=1;
                     penit_co[p]=c;
                     penit_id[p]=e;

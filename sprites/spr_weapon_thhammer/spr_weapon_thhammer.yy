@@ -14,8 +14,6 @@
   "For3D": false,
   "frames": [
     {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"6d683d25-adba-4942-a5d9-ef5f267f4485",},
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"8d203c8e-4873-4ec8-9b4c-75602e50f757",},
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"8196def0-25fd-4668-8954-71c28339ee56",},
     {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"7091a0da-79ce-4cc8-90f4-c0cc1f33d26f",},
   ],
   "gridX": 0,
@@ -46,7 +44,7 @@
     "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "eventStubScript": null,
     "eventToFunction": {},
-    "length": 4.0,
+    "length": 2.0,
     "lockOrigin": false,
     "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "playback": 1,
@@ -58,9 +56,7 @@
     "tracks": [
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
             {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"6d683d25-adba-4942-a5d9-ef5f267f4485","path":"sprites/spr_weapon_thhammer/spr_weapon_thhammer.yy",},},},"Disabled":false,"id":"2ff65f5b-1f6b-4784-8772-4baedbf78fa4","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"8d203c8e-4873-4ec8-9b4c-75602e50f757","path":"sprites/spr_weapon_thhammer/spr_weapon_thhammer.yy",},},},"Disabled":false,"id":"6dbd8cd9-7c83-441d-8d57-9a29c2886e23","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"8196def0-25fd-4668-8954-71c28339ee56","path":"sprites/spr_weapon_thhammer/spr_weapon_thhammer.yy",},},},"Disabled":false,"id":"b57b5fd8-c133-4618-9571-6d59c48aee2d","IsCreationKey":false,"Key":2.0,"Length":1.0,"Stretch":false,},
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"7091a0da-79ce-4cc8-90f4-c0cc1f33d26f","path":"sprites/spr_weapon_thhammer/spr_weapon_thhammer.yy",},},},"Disabled":false,"id":"1174f450-c54c-4b3f-91db-ea2d44f77ee5","IsCreationKey":false,"Key":3.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"7091a0da-79ce-4cc8-90f4-c0cc1f33d26f","path":"sprites/spr_weapon_thhammer/spr_weapon_thhammer.yy",},},},"Disabled":false,"id":"1174f450-c54c-4b3f-91db-ea2d44f77ee5","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
           ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange": null,

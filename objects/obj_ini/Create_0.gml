@@ -60,6 +60,7 @@ var company=-1;
 repeat(11){
     company+=1;v=-1;// show_message("v company: "+string(company));
     repeat(205){v+=1;// show_message(string(company)+"."+string(v));
+        last_ship[company,v] = {uid : "", name : ""};
         veh_race[company,v]=0;
         veh_loc[company,v]="";
         veh_name[company,v]="";

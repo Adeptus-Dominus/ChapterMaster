@@ -305,6 +305,7 @@ function ArtifactStruct(Index) constructor{
         #macro ART_CHAOS [] // Chaos, Heretics
         #macro ART_NECRONS []
 
+        var faction_preferences = [[], ART_PLAYER, ART_IMPERIUM, ART_MECHANICUS, ART_INQUISITION, ART_ECCLESIARCHY, ART_ELDAR, ART_ORK, ART_TAU, ART_TYRANIDS, ART_CHAOS, ART_CHAOS, ART_TYRANIDS, ART_NECRONS];
         if (faction < 0 || faction >= array_length(faction_preferences)) {
             // Logging or fallback
             log_warning("Warning: Faction index out of range. Defaulting to empty preferences.");
@@ -312,7 +313,6 @@ function ArtifactStruct(Index) constructor{
         }
 
         var returnvalue = 0;
-        var faction_preferences = [[], ART_PLAYER, ART_IMPERIUM, ART_MECHANICUS, ART_INQUISITION, ART_ECCLESIARCHY, ART_ELDAR, ART_ORK, ART_TAU, ART_TYRANIDS, ART_CHAOS, ART_CHAOS, ART_TYRANIDS, ART_NECRONS];
         var like_tags_array = faction_preferences[faction];
         for (var i = 0; i<array_length(like_tags_array); i++) {
             if (has_tag(like_tags_array[i])) {

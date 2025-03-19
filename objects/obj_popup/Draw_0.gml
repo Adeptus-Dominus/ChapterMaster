@@ -65,9 +65,9 @@ try {
 				draw_set_alpha(1);
 			}
 			spacer = iter * 40;
-			ch = obj_controller.disposition[i] > 0 ? "+" : "-";
+			ch = obj_controller.disposition[i] > 0 ? "+" : "";
 			if (obj_controller.known[i] > 1) {
-				draw_text(xx + 740, yy + 140 + spacer, $"{scr_faction_string_name(i)} ({ch}{obj_controller.disposition[2]})");
+				draw_text(xx + 740, yy + 140 + spacer, $"{scr_faction_string_name(i)} ({ch}{obj_controller.disposition[i]})");
 				// draw_text(xx+740,yy+140+spacer,$"{obj_controller.faction_title[i]}");
 				iter++;
 			} else {

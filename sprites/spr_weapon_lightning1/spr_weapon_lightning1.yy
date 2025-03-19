@@ -14,8 +14,6 @@
   "For3D": false,
   "frames": [
     {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"b1c6a391-2103-4634-8d8d-639c44dfdc61",},
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"0b2a3c5a-78bd-45a0-ace2-3c96dd2493cb",},
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"e91f935b-83d9-49ec-9c23-bd4f6c9bd4e8",},
     {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"1ded3c78-16a8-4653-a48b-3dc1b2e1e824",},
   ],
   "gridX": 0,
@@ -46,7 +44,7 @@
     "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "eventStubScript": null,
     "eventToFunction": {},
-    "length": 4.0,
+    "length": 2.0,
     "lockOrigin": false,
     "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "playback": 1,
@@ -58,9 +56,7 @@
     "tracks": [
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
             {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"b1c6a391-2103-4634-8d8d-639c44dfdc61","path":"sprites/spr_weapon_lightning1/spr_weapon_lightning1.yy",},},},"Disabled":false,"id":"c502156f-5600-4fd7-b57c-dbad9c3b4c1c","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"0b2a3c5a-78bd-45a0-ace2-3c96dd2493cb","path":"sprites/spr_weapon_lightning1/spr_weapon_lightning1.yy",},},},"Disabled":false,"id":"fc19ee9f-d0cb-4b2b-ab4b-5b5381503b36","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"e91f935b-83d9-49ec-9c23-bd4f6c9bd4e8","path":"sprites/spr_weapon_lightning1/spr_weapon_lightning1.yy",},},},"Disabled":false,"id":"551235e0-6668-4c46-a5ae-3b3f037c7516","IsCreationKey":false,"Key":2.0,"Length":1.0,"Stretch":false,},
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"1ded3c78-16a8-4653-a48b-3dc1b2e1e824","path":"sprites/spr_weapon_lightning1/spr_weapon_lightning1.yy",},},},"Disabled":false,"id":"f24b1116-c8d7-44b5-b845-94444938cf9c","IsCreationKey":false,"Key":3.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"1ded3c78-16a8-4653-a48b-3dc1b2e1e824","path":"sprites/spr_weapon_lightning1/spr_weapon_lightning1.yy",},},},"Disabled":false,"id":"f24b1116-c8d7-44b5-b845-94444938cf9c","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
           ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange": null,

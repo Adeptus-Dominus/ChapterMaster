@@ -120,6 +120,25 @@ function scr_toggle_manage(){
 		        popup=0;
 		        selected=0;
 		        hide_banner=1;
+		        management_buttons = {
+		        	squad_toggle : new UnitButtonObject({
+		        		style : "pixel",
+		        		label : "Squad View",
+		        		tooltip : "Click here or press S to toggle Squad View."
+		        	}),
+
+		        	profile_toggle : new UnitButtonObject({
+		        		style : "pixel",
+		        		label : "Show Profile",
+		        		tooltip : "Click here or press P to show unit profile."
+		        	}),
+
+		        	bio_toggle : new UnitButtonObject({
+		        		style : "pixel",
+		        		label : "Show Bio",
+		        		tooltip : "Click here or press B to Toggle Unit Biography."
+		        	}),
+		        }
 		    }
 		    else if (menu==1){
 		        menu=0;
@@ -192,9 +211,9 @@ function scr_toggle_reclu(){
 
             // Get list of jailed marines
             var p=0;
-            for(var c=0; c<11; c++){
-                for(var e=0; e<array_length(obj_ini.name[c]); e++){
-                    if (obj_ini.god[c][e]>=10){
+            for (var c = 0; c < 11; c++) {
+                for (var e = 0; e < array_length(obj_ini.god[c]); e++) {
+                    if (obj_ini.god[c][e] == 10){
                         p+=1;
                         penit_co[p]=c;
                         penit_id[p]=e;

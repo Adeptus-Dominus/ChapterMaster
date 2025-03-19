@@ -14,8 +14,6 @@
   "For3D": false,
   "frames": [
     {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"75b84618-33d2-48de-be45-cbf2383a7323",},
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"8210889a-4944-402a-9747-c473e9d682db",},
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"6fbfb5dc-1a73-4ad1-8d8e-4e2eaca8e3c4",},
     {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"27510bd8-a89a-4cd8-abc9-d39b1f92f0ff",},
   ],
   "gridX": 0,
@@ -46,7 +44,7 @@
     "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "eventStubScript": null,
     "eventToFunction": {},
-    "length": 4.0,
+    "length": 2.0,
     "lockOrigin": false,
     "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "playback": 1,
@@ -58,12 +56,10 @@
     "tracks": [
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
             {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"75b84618-33d2-48de-be45-cbf2383a7323","path":"sprites/spr_weapon_eldsword/spr_weapon_eldsword.yy",},},},"Disabled":false,"id":"15ac1141-71a9-490d-ab55-2df178b0cd36","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"8210889a-4944-402a-9747-c473e9d682db","path":"sprites/spr_weapon_eldsword/spr_weapon_eldsword.yy",},},},"Disabled":false,"id":"2a1f7be1-cf34-4d64-92f8-f583ee472c80","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"6fbfb5dc-1a73-4ad1-8d8e-4e2eaca8e3c4","path":"sprites/spr_weapon_eldsword/spr_weapon_eldsword.yy",},},},"Disabled":false,"id":"578b7d99-09e3-4ab3-8a72-5a81dabf7111","IsCreationKey":false,"Key":2.0,"Length":1.0,"Stretch":false,},
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"27510bd8-a89a-4cd8-abc9-d39b1f92f0ff","path":"sprites/spr_weapon_eldsword/spr_weapon_eldsword.yy",},},},"Disabled":false,"id":"0cdb8b25-52a3-4a26-8d12-8518e68d6995","IsCreationKey":false,"Key":3.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"27510bd8-a89a-4cd8-abc9-d39b1f92f0ff","path":"sprites/spr_weapon_eldsword/spr_weapon_eldsword.yy",},},},"Disabled":false,"id":"0cdb8b25-52a3-4a26-8d12-8518e68d6995","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
           ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
-    "visibleRange": {"x":0.0,"y":0.0,},
+    "visibleRange": null,
     "volume": 1.0,
     "xorigin": 0,
     "yorigin": 0,

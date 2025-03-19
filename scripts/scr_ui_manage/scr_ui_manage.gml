@@ -1,3 +1,75 @@
+function load_marines_into_ship(system, ship, units, reload=false) {
+    var _load_into_ship = function(system, ship, units, size, loop, reload) {
+        var load_from_star = star_by_name(system);
+        if (is_struct(units[loop])) {
+            units[loop].load_marine(sh_ide[ship], load_from_star);
+            ma_loc[loop] = sh_loc[ship];
+            ma_lid[loop] = sh_ide[ship];
+            ma_wid[loop] = 0;
+        } else if (is_array(units[loop]) && ma_loc[loop] == system && sh_loc[ship] == system) {
+            var vehicle = units[loop];
+            var _get = fetch_deep_array;
+            var _set = alter_deep_array;
+            var start_ship = _get(obj_ini.veh_lid,vehicle);
+            var start_planet = _get(obj_ini.veh_wid,vehicle);
+            ma_loc[loop] = sh_loc[ship];
+            ma_lid[loop] = sh_ide[ship];
+            ma_wid[loop] = 0;
+            _set(obj_ini.veh_loc, vehicle,sh_name[ship])
+            _set(obj_ini.veh_lid, vehicle, sh_ide[ship])
+            _set(obj_ini.veh_wid, vehicle, 0)
+            _set(obj_ini.veh_uid, vehicle, sh_uid[ship])
+            obj_ini.ship_carrying[sh_ide[ship]] += size;
+
+            if (start_planet) {
+                load_from_star.p_player[start_planet] -= size;
+            } else if (start_ship) {
+                obj_ini.ship_carrying[start_ship] -= size;
+            }
+
+            set_vehicle_last_ship(vehicle, true);
+        }
+    }
+
+    for (var q = 0; q < array_length(units); q++) {
+        if (man_sel[q] == 1) {
+            var _unit_ship_id
+            if (!reload) {
+                _unit_ship_id = ship;
+            } else {
+                if (!is_array(units[q])) {
+                    _unit_ship_id = array_get_index(sh_uid, units[q].last_ship.uid);
+                } else {
+                	var last_ship_data = fetch_deep_array(obj_ini.last_ship, units[q]);
+                    _unit_ship_id = array_get_index(sh_uid, last_ship_data.uid);
+                }
+            }
+
+            if (!is_array(units[q])) {
+                var _unit_size = man_size;
+            } else {
+                var _vehic_size = scr_unit_size("", ma_role[q], true);
+                var _unit_size = _vehic_size;
+            }
+
+            if (_unit_ship_id != undefined && ((sh_cargo[_unit_ship_id] + _unit_size) <= sh_cargo_max[_unit_ship_id])) {
+                _load_into_ship(system, _unit_ship_id, units, _unit_size, q, reload)
+                man_sel[q] = 0;
+            }
+        }
+    }
+    system = "";
+    man_size = 0;
+    man_current = 0;
+    if (reload == false) {
+        menu = 1;
+    }
+    cooldown = 8;
+    selecting_ship = -1;
+    if (managing == -1 && obj_controller.selection_data.purpose != "Ship Management") {
+        update_garrison_manage();
+    }
+}
 
 function scr_ui_manage() {
 	if (combat!=0) then exit;
@@ -155,8 +227,9 @@ function scr_ui_manage() {
 		unit_view_block.y2 = unit_view_block.y1 + unit_view_block.h;*/
 
 		draw_set_color(c_white);
-		draw_sprite_stretched(spr_data_slate_back, 0, xx+1007-1, yy+140, 572, 378);
-		draw_sprite_stretched(spr_data_slate_border, 0, xx+1007-1, yy+140, 572, 378);
+		draw_sprite_stretched(spr_data_slate_back, 0, xx+1008-1, yy+140, 572, 378);
+		draw_sprite_stretched(spr_unit_card_icons, 0, xx+1007-1, yy+140, 166, 167);
+		// draw_sprite_stretched(spr_data_slate_border, 0, xx+1008-1, yy+140, 572, 378); Old Location
 		// draw_rectangle_color_simple(xx+1007, yy+140, xx+1579, yy+519, 0, c_white, 0.05);
 		draw_rectangle_color_simple(xx+1007, yy+140, xx+1579, yy+519, 0, 5998382, 0.05);
 		// Swap between squad view and normal view
@@ -171,63 +244,48 @@ function scr_ui_manage() {
 			var no_other_instances =  !instance_exists(obj_temp3) && !instance_exists(obj_popup);
 		    var stat_tool_tip_text;
 			var button_coords;
-		    if (!obj_controller.view_squad && !obj_controller.company_report){
-			    stat_tool_tip_text = "Squad View";
-			} else {
-				stat_tool_tip_text = "Company View"; 
-			}
-		    var x5=right_ui_block.x1+15;//this should be relational with the unit area tab
-			var y5=right_ui_block.y1+8;
-			var x6=x5+string_width("Company View")+8;
-			var y6=y5+string_height("Company View")+2;
-			button_coords = draw_unit_buttons([x5, y5, x6, y6], stat_tool_tip_text,[1,1],#50a076);
-			if (managing>0 && managing<11){
-				array_push(tooltip_drawing, ["Click here or press S to toggle Squad View.", [x5,y5,x6,y6]]);
-				if ((point_in_rectangle(mouse_x, mouse_y,x5,y5,x6,y6) && mouse_check_button_pressed(mb_left)) || (keyboard_check_pressed(ord("S")) && !text_bar)){
-					obj_controller.view_squad = !obj_controller.view_squad;
-					if (stat_tool_tip_text=="Squad View"){
-						obj_controller.company_data = new CompanyStruct(obj_controller.managing);
-						obj_controller.unit_profile = true;
-					} else {
-						obj_controller.unit_profile = false;
-					}
-				}	
-			} else{
-				draw_set_alpha(0.5);
-				draw_set_color(c_black);
-				draw_rectangle(x5, y5, x6, y6, 0);
-				draw_set_alpha(1);
-			}
-			if (!view_squad){
-				if (!unit_profile){
-					stat_tool_tip_text = "Show Profile";
-				} else {
-					stat_tool_tip_text = "Hide Profile"; 
-				}
-				x5=x6+4;
-				x6=x5+string_width("Show Profile")+8;
-				array_push(tooltip_drawing, ["Click here or press P to show unit profile.", [x5,y5,x6,y6]]);
-				button_coords = draw_unit_buttons([x5, y5, x6, y6], stat_tool_tip_text,[1,1],#50a076)
-				if (((keyboard_check_pressed(ord("P"))&& !text_bar)|| (point_and_click(button_coords))) && no_other_instances){
-					unit_profile = !unit_profile;
-				}
-				x5=x6+4;
-			}
-		
-		    if (unit_profile && !view_squad){
-				if (!unit_bio){
-					stat_tool_tip_text = "Show Bio"
-				} else {
-					stat_tool_tip_text = "Hide Bio"; 
-				}
-				x6=x5+string_width("Hide Bio")+8;
-				button_coords = draw_unit_buttons([x5, y5, x6, y6], stat_tool_tip_text,[1,1],#50a076);
-				array_push(tooltip_drawing, ["Click here or press B to Toggle Unit Biography.", button_coords]);
-				if (((keyboard_check_pressed(ord("B"))&& !text_bar)|| (point_and_click(button_coords))) && no_other_instances){
-					unit_bio = !unit_bio;
-				}
-		    }
+			var _squad_button = management_buttons.squad_toggle;
+			_squad_button.update({
+				x1 : right_ui_block.x1+5,
+				y1 : right_ui_block.y1+6,
+				label : !obj_controller.view_squad && !obj_controller.company_report ? "Squad View" : "Company View",
+				keystroke : keyboard_check_pressed(ord("S"))
+			});
 
+			if (_squad_button.draw(!text_bar)){
+				view_squad = !view_squad
+				if (view_squad){
+					new_company_struct();
+				}
+			}	
+
+
+			if (!view_squad){
+				var _profile_toggle = management_buttons.profile_toggle;
+				_profile_toggle.update({
+					label : !unit_profile  ?  "Show Profile" : "Hide Profile",
+					x1 : _squad_button.x2,
+					y1 : _squad_button.y1,
+					keystroke : keyboard_check_pressed(ord("P"))
+				});
+				if (_profile_toggle.draw(!text_bar)){
+					unit_profile = !unit_profile
+	
+				}
+
+				if (unit_profile){
+					var bio_toggle = management_buttons.bio_toggle;
+					bio_toggle.update({
+						label : !unit_bio  ?  "Show Bio" : "Hide Bio",
+						x1 : _profile_toggle.x2,
+						y1 : _profile_toggle.y1,
+						keystroke : keyboard_check_pressed(ord("B"))
+					});
+					if (bio_toggle.draw(!text_bar)){
+						unit_bio = !unit_bio
+					}
+				}							
+			}
 
 			if (managing<0 && selection_data.purpose_code!="manage") then unit_profile=true;
 			//TODO Implement company report
@@ -252,7 +310,7 @@ function scr_ui_manage() {
 			// Draw unit image
 			draw_set_color(c_white);
 			if (is_struct(temp[121])){
-				temp[121].draw(xx+1208, yy+240)
+				temp[121].draw(xx+1328, yy+240)
 			}
 
 			//TODO implement tooltip explaining potential loyalty hit of demoting a sgt
@@ -275,7 +333,7 @@ function scr_ui_manage() {
 			// Draw unit name and role
 			draw_set_halign(fa_center);
 			draw_set_font(fnt_40k_30b);
-			draw_text_transformed_outline(xx+1290,yy+177,string_hash_to_newline(selected_unit.name_role()),0.7,0.7,0);
+			draw_text_transformed_outline(xx+1290,yy+182,selected_unit.name_role(),0.7,0.7,0);
 
 			// Draw unit info
 			draw_set_font(fnt_40k_14);
@@ -289,7 +347,7 @@ function scr_ui_manage() {
 				var_text= string_hash_to_newline(selected_unit.equipments_qual_string("armour", true));
                 tooltip_text = cn.temp[103];
 	        	x1 = x_left;
-	        	y1 = yy+216;
+	        	y1 = yy+320;
 	        	x2 = x1+string_width_ext(var_text, -1,187);
 	        	y2 = y1+string_height_ext(var_text, -1,187);
 				draw_set_alpha(1);
@@ -302,7 +360,7 @@ function scr_ui_manage() {
 				var_text= string_hash_to_newline(selected_unit.equipments_qual_string("gear", true));
 	        	tooltip_text = cn.temp[105];
 	        	x1 = x_left;
-	        	y1 = yy+260;
+	        	y1 = yy+446;
 	        	x2 = x1+string_width_ext(var_text, -1,187);
 	        	y2 = y1+string_height_ext(var_text, -1,187);	 
 	        	draw_text_ext_outline(x1,y1,var_text,-1,187, 0, quality_color(selected_unit.gear_quality));
@@ -314,7 +372,7 @@ function scr_ui_manage() {
 				var_text= string_hash_to_newline(selected_unit.equipments_qual_string("mobi", true));
 	        	tooltip_text = cn.temp[107];
 	        	x1 = x_left;
-	        	y1 = yy+304;
+	        	y1 = yy+467;
 	        	x2 = x1+string_width_ext(var_text, -1,187);
 	        	y2 = y1+string_height_ext(var_text, -1,187);	  
 	        	draw_text_ext_outline(x1,y1,var_text,-1,187, 0, quality_color(selected_unit.mobility_item_quality));
@@ -322,14 +380,15 @@ function scr_ui_manage() {
 	        }
 
 			// Stats
-    		var_text = string_hash_to_newline(string("Bionics: {0}",selected_unit.bionics));
-        	x1 = x_left;
-        	y1 = yy+444;
+    		var_text = string_hash_to_newline(string("      {0}",selected_unit.bionics));  // Bionics tracker
+        	x1 = x_left+82;
+        	y1 = yy+209;
         	x2 = x1+string_width(var_text);
         	y2 = y1+string_height(var_text);
 	        draw_text_outline(x1,y1,var_text);
 			var _body_parts = ARR_body_parts;
 			var _body_parts_display = ARR_body_parts_display;
+			bionic_tooltip = "Bionic Augmentation is something a unit can do to both enhance their capabilities, but also replace a missing limb to get back into the fight. There is a limit of 10 Bionic augmentations. After that the damage is so extensive that a marine requires a dreadnought to keep going. For everyone else? It's time for the emperor's mercy.##Current Bionic Augmentations:#";
 	        for (var part = 0; part<array_length(_body_parts);part++){
 				if (struct_exists(selected_unit.body[$ _body_parts[part]], "bionic")){
 					var part_display = _body_parts_display[part];
@@ -360,14 +419,14 @@ function scr_ui_manage() {
 					}
 				}				
 			}
-	        if (bionic_tooltip !=""){
+	        if (bionic_tooltip !="Bionic Augmentation is something a unit can do to both enhance their capabilities, but also replace a missing limb to get back into the fight. There is a limit of 10 Bionic augmentations. After that the damage is so extensive that a marine requires a dreadnought to keep going. For everyone else? It's time for the emperor's mercy.##Current Bionic Augmentations:#"){
 	        	array_push(tooltip_drawing, [bionic_tooltip, [x1,y1,x2,y2]]);
 	    	} else{
-	    		array_push(tooltip_drawing, ["No Bionic Augmentations", [x1,y1,x2,y2]]);
+	    		array_push(tooltip_drawing, ["Bionic Augmentation is something a unit can do to both enhance their capabilities, but also replace a missing limb to get back into the fight. There is a limit of 10 Bionic augmentations. After that the damage is so extensive that a marine requires a dreadnought to keep going. For everyone else? It's time for the emperor's mercy.##This unit has no bionic augmentations.", [x1,y1,x2,y2]]);
 	    	}
 
-        var_text = string_hash_to_newline($"Armour Rating: {selected_unit.armour_calc()}")
-          var tooltip_text = "";
+        var_text = string_hash_to_newline($"     {selected_unit.armour_calc()}") // Armour Rating
+          var tooltip_text = "Armor reduces incoming damage at a flat rate. Certain enemies may attack in ways that may bypass your armor entirely, for example power weapons and some warp sorceries.##Contributing factors:#";
           var equipment_types = ["armour", "weapon_one", "weapon_two", "mobility", "gear"];
           for (var i = 0; i < array_length(equipment_types); i++) {
             var equipment_type = equipment_types[i];
@@ -402,15 +461,15 @@ function scr_ui_manage() {
 			if (obj_controller.stc_bonus[1] == 5 || obj_controller.stc_bonus[2] == 3){
                 tooltip_text += string_hash_to_newline($"STC Bonus: x1.05#");
 			}
-        	x1 = x_left;
-        	y1 = yy+400;
+        	x1 = x_left-11;
+        	y1 = yy+232;
         	x2 = x1+string_width(var_text);
         	y2 = y1+string_height(var_text);
 	        draw_text_outline(x1,y1,var_text);
 	        array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]); 
 
-    		var_text = string_hash_to_newline($"Health: {round(selected_unit.hp())}/{round(selected_unit.max_health())}")
-        	tooltip_text = string_hash_to_newline(string("CON: {0}#", round(100*(1+((selected_unit.constitution-40)*0.025)))));
+    		var_text = string_hash_to_newline($"     {round(selected_unit.hp())}/{round(selected_unit.max_health())}") // Health Tracker
+        	tooltip_text = string_hash_to_newline(string("Health is a measure how much punishment the creature can take. Marines can go into the negatives and still survive, but they'll require a bionic to become fighting fit once more.##Contributing factors:#CON: {0}#", round(100*(1+((selected_unit.constitution-40)*0.025)))));
             for (var i = 0; i < array_length(equipment_types); i++) {
                 var equipment_type = equipment_types[i];
                 var hp_mod = 0;
@@ -441,19 +500,19 @@ function scr_ui_manage() {
                     tooltip_text += string_hash_to_newline($"{name}: {format_number_with_sign(hp_mod)}%#");
                 }
             }
-        	x1 = x_left;
-        	y1 = yy+422;
+        	x1 = x_left-11;
+        	y1 = yy+209;
         	x2 = x1+string_width(var_text);
         	y2 = y1+string_height(var_text);
 	        draw_text_outline(x1,y1,var_text);
 	        array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]); 
 
-	        if (cn.temp[113]!="") then draw_text_outline(x_left, yy+466, string_hash_to_newline($"Experience: {cn.temp[113]}"));
+	        if (cn.temp[113]!="") then draw_text_outline(x_left, yy+184, string_hash_to_newline($"  {cn.temp[113]}")); // Experience
 
        
         		 
         	if (cn.temp[118]!=""){
-						tooltip_text = "";
+						tooltip_text = "Health damage taken by the marine is reduced by this percentage. This happens after the flat reduction from armor.##Contributing factors:#";
 						for (var i = 0; i < array_length(equipment_types); i++){
 							var equipment_type = equipment_types[i];
 							var dr = 0;
@@ -484,10 +543,10 @@ function scr_ui_manage() {
 									tooltip_text += string_hash_to_newline($"{name}: {dr}%#");
 							}
 						}
-        		var_text = string_hash_to_newline(string("Damage Resistance: {0}",cn.temp[118]))
+        		var_text = string_hash_to_newline(string("      {0}",cn.temp[118])) // Damage Resistance
 	        	tooltip_text += string_hash_to_newline(string("CON: {0}%#EXP: {1}%", round(selected_unit.constitution/2), round(selected_unit.experience/10)));
-	        	x1 = x_left;
-	        	y1 = yy+378;
+	        	x1 = x_left+82;
+	        	y1 = yy+234;
 	        	x2 = x1+string_width(var_text);
 	        	y2 = y1+string_height(var_text);
 		        draw_text_outline(x1,y1,var_text);
@@ -497,41 +556,41 @@ function scr_ui_manage() {
 	        if (cn.temp[119]!="") then draw_text_outline(x_left,yy+488,cn.temp[119]);
 
 		// Right side of the screen
-		draw_set_halign(fa_right);
-		var x_right = xx+1576-24;
+		//draw_set_halign(fa_right);
+		//var x_right = xx+1576-24;
 
 		// Equipment
 		var wep1= selected_unit.weapon_one();
 		if (wep1!=""){
 			var_text= string_hash_to_newline(selected_unit.equipments_qual_string("wep1", true));
 			tooltip_text = cn.temp[109];
-			x1 = x_right;
-			y1 = yy+216;
-			x2 = x1-string_width_ext(var_text, -1,187);
+			x1 = x_left;
+			y1 = yy+345;
+			x2 = x1+string_width_ext(var_text, -1,187);
 			y2 = y1+string_height_ext(var_text, -1,187);	 	 
 			draw_text_ext_outline(x1,y1,var_text,-1,187, 0, quality_color(selected_unit.weapon_one_quality));
-			array_push(tooltip_drawing, [tooltip_text, [x2,y1,x1,y2]]);
+			array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]);
 		}
 	
 		var wep2 = selected_unit.weapon_two();
 		if (wep2!=""){
 			var_text= string_hash_to_newline(selected_unit.equipments_qual_string("wep2", true));
 			tooltip_text = cn.temp[111];
-			x1 = x_right;
-			y1 = yy+260;
-			x2 = x1-string_width_ext(var_text, -1,187);
+			x1 = x_left;
+			y1 = yy+395;
+			x2 = x1+string_width_ext(var_text, -1,187);
 			y2 = y1+string_height_ext(var_text, -1,187);	 
 			draw_text_ext_outline(x1,y1,var_text,-1,187, 0, quality_color(selected_unit.weapon_two_quality)); 
-			array_push(tooltip_drawing, [tooltip_text, [x2,y1,x1,y2]]);
+			array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]);
 		}
 
 		// Stats
 		if (is_array(cn.temp[117])){
-			var_text = string_hash_to_newline(string("Melee Attack: {0}",round(cn.temp[116][0])))
+			var_text = string_hash_to_newline(string("     {0}",round(cn.temp[116][0]))) // melee attack
 			tooltip_text = string_hash_to_newline(string(cn.temp[116][1]));
-			x1 = x_right;
-			y1 = yy+378;
-			x2 = x1-string_width(var_text);
+			x1 = x_left-11;
+			y1 = yy+262;
+			x2 = x1+string_width(var_text);
 			y2 = y1+string_height(var_text);
 			if (selected_unit.encumbered_melee){
 				draw_set_color(#bf4040);
@@ -539,58 +598,59 @@ function scr_ui_manage() {
 			}
 			draw_text_outline(x1,y1,var_text);
 			draw_set_color(line_color);
-			array_push(tooltip_drawing, [tooltip_text, [x2,y1,x1,y2]]);
+			array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]);
 		}
 
 		if (is_array(cn.temp[117])){
-			var_text = string_hash_to_newline(string("Ranged Attack: {0}",round(cn.temp[117][0])))
+			var_text = string_hash_to_newline(string("     {0}",round(cn.temp[117][0]))) // ranged attack
 			tooltip_text = string_hash_to_newline(string(cn.temp[117][1]));
-			x1 = x_right;
-			y1 = yy+400;
-			x2 = x1-string_width(var_text);
+			x1 = x_left-11;
+			y1 = yy+287;
+			x2 = x1+string_width(var_text);
 			y2 = y1+string_height(var_text);
 			if (selected_unit.encumbered_ranged){
 				draw_set_color(#bf4040);
 			}
 			draw_text_outline(x1,y1,var_text);
-			array_push(tooltip_drawing, [tooltip_text, [x2,y1,x1,y2]]);
+			array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]);
 			draw_set_color(line_color);
 		}
 
 		if (is_array(cn.temp[116])){
 			carry_data = cn.temp[116][2];
-			var carry_string = $"Melee Burden: {carry_data[0]}/{carry_data[1]}"
-			x1 = x_right;
-			y1 = yy+444;
-			x2 = x1-string_width(carry_string);
+			var carry_string = $"{carry_data[0]}/{carry_data[1]}" // Melee Burden
+			x1 = x_left+73;
+			y1 = yy+262;
+			x2 = x1+string_width(carry_string);
 			y2 = y1+string_height(carry_string);
 			if (selected_unit.encumbered_melee){
 				draw_set_color(#bf4040);
 			}
 			draw_text_outline(x1,y1,string_hash_to_newline(carry_string));
 			tooltip_text = string_hash_to_newline(carry_data[2]);
-			array_push(tooltip_drawing, [tooltip_text, [x2,y1,x1,y2]]);
+			array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]);
 			draw_set_color(line_color);
 		}
 
 		if (is_array(cn.temp[117])){
 			carry_data = cn.temp[117][2];
-			var carry_string = $"Ranged Burden: {carry_data[0]}/{carry_data[1]}"
-			x1 = x_right;
-			y1 = yy+466;
-			x2 = x1-string_width(carry_string);
+			var carry_string = $"{carry_data[0]}/{carry_data[1]}" // Ranged Burden
+			x1 = x_left+73;
+			y1 = yy+287;
+			x2 = x1+string_width(carry_string);
 			y2 = y1+string_height(carry_string);
 			if (selected_unit.encumbered_ranged){
 				draw_set_color(#bf4040);
 			}
 			draw_text_outline(x1,y1,string_hash_to_newline(carry_string));
 			tooltip_text = string_hash_to_newline(carry_data[2]);
-			array_push(tooltip_drawing, [tooltip_text, [x2,y1,x1,y2]]);
+			array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]);
 			draw_set_color(line_color);
 		}
 
 		// Animated scanline
-		draw_animated_scanline(xx+1007+18, yy+140+4, 530, 368);
+		draw_animated_scanline(xx+1013, yy+140+4, 558, 368);
+		draw_sprite_stretched(spr_data_slate_border, 0, xx+1008-1, yy+140, 572, 378);
 	}	
 
 	    draw_set_font(fnt_40k_14);draw_set_halign(fa_left);
@@ -798,10 +858,11 @@ function scr_ui_manage() {
 				draw_set_font(fnt_40k_14b);
 				draw_set_color(#50a076);
 				var button = new UnitButtonObject();
-				
-				button.x1 = right_ui_block.x1+26;
+
+                button.h = 15;
+				button.x1 = right_ui_block.x1+1;
 				button.y1 = right_ui_block.y2-6-30;
-				button.x2 = button.x1 + button.w;
+				button.x2 = button.x1 + 128;
 				button.y2 = button.y1 + button.h;
 				// Load/Unload to ship button
 				button.label = "Load";
@@ -818,14 +879,38 @@ function scr_ui_manage() {
 					} else if (sel_loading!=-1){
 						button.label = "Unload";
 						if (button.draw()){
-							unload_selection();   // Unload - ask for planet confirmation					
-						}				
+							unload_selection();   // Unload - ask for planet confirmation
+						}
 					}
 				} else {
 					button.alpha = 0.5;
 					button.draw(false);
 				}
 
+				button.move("down", true);
+
+                button.label = "Reload";
+                //button.keystroke = (keyboard_check(vk_shift) && (keyboard_check_pressed(ord("F"))));
+                if (instance_exists(cn)) and (is_struct(temp[120])) {
+                    button.tooltip = $"{temp[120].last_ship.name}"//Press Shift F";
+                }
+                reload_possible = man_size>0 && sel_loading==-1;
+                if (reload_possible) {
+                    button.alpha = 1;
+                    if (button.draw()) {
+                        scr_company_load(selecting_location)
+                        load_marines_into_ship(selecting_location, sh_ide, display_unit, true)
+                    }
+                } else {
+                    button.alpha = 0.5;
+                    button.draw(false);
+                }
+
+                button.h = 30;
+				button.x1 = right_ui_block.x1+26;
+				button.y1 = right_ui_block.y2-6-30;
+				button.x2 = button.x1 + button.w;
+				button.y2 = button.y1 + button.h;
 				button.move("right", true);
 
 				// // Re equip button
@@ -1106,8 +1191,8 @@ function scr_ui_manage() {
 		for (var i=0;i < array_length(tooltip_drawing); i++){
 			tip = tooltip_drawing[i];
 			coords=tip[1];
-			if (point_in_rectangle(mouse_x, mouse_y, coords[0],coords[1],coords[2],coords[3])){
-		        	tooltip_draw(tip[0], 350);
+			if (scr_hit(coords)){
+		        tooltip_draw(tip[0], 350);
 			}
 		}		
 	}
@@ -1210,57 +1295,7 @@ function scr_ui_manage() {
                 draw_text_transformed(xx + 580, yy + 66, string_hash_to_newline(string(temp3)), 1, 1, 0);
                 draw_text_transformed(xx + 730, yy + 66, string_hash_to_newline(string(temp4)), 1, 1, 0);
                 if (point_and_click(main_rect)) {
-                    if ((sh_cargo[sel] + man_size) <= sh_cargo_max[sel]) {
-
-                        var load_from_star = star_by_name(selecting_location);
-                        var onceh = 0;
-                        stop = 0;
-                        for (var q = 0; q < array_length(display_unit); q++) {
-                            if (man_sel[q] == 1) {
-                                if (is_struct(display_unit[q])) {
-                                    unit = display_unit[q];
-                                    unit.load_marine(sh_ide[sel], load_from_star);
-                                    ma_loc[q] = sh_loc[sel];
-                                    ma_lid[q] = sh_ide[sel];
-                                    ma_wid[q] = 0;
-                                }
-                                else if (is_array(display_unit[q]) && ma_loc[q] == selecting_location && sh_loc[sel] == selecting_location) {
-                                    var vehicle = display_unit[q];
-                                    var vehic_size = scr_unit_size("", ma_role[q], true);
-
-                                    if ((sh_cargo[sel] + vehic_size) <= sh_cargo_max[sel] && man_sel[q] != 0) {
-                                        var start_ship = obj_ini.veh_lid[vehicle[0]][vehicle[1]];
-                                        var start_planet = obj_ini.veh_wid[vehicle[0]][vehicle[1]];
-                                        ma_loc[q] = sh_loc[sel];
-                                        ma_lid[q] = sh_ide[sel];
-                                        ma_wid[q] = 0;
-                                        obj_ini.veh_loc[vehicle[0]][vehicle[1]] = sh_name[sel];
-                                        obj_ini.veh_lid[vehicle[0]][vehicle[1]] = sh_ide[sel];
-                                        obj_ini.veh_wid[vehicle[0]][vehicle[1]] = 0;
-                                        obj_ini.veh_uid[vehicle[0]][vehicle[1]] = sh_uid[sel];
-                                        obj_ini.ship_carrying[sh_ide[sel]] += vehic_size;
-                                        if (start_planet) {
-                                            load_from_star.p_player[start_planet] -= vehic_size;
-                                        } else if (start_ship) {
-                                            obj_ini.ship_carrying[start_ship] -= vehic_size;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        selecting_location = "";
-                        man_size = 0;
-                        man_current = 0;
-                        menu = 1;
-                        cooldown = 8;
-                        selecting_ship = -1;
-                        for (var k = 0; k < array_length(display_unit); k++) {
-                            man_sel[k] = 0;
-                        }
-                    }
-                    if (managing == -1) {
-                        update_garrison_manage();
-                    }
+                    load_marines_into_ship(selecting_location, sel, display_unit)
                 }
                 yy += 20;
             }

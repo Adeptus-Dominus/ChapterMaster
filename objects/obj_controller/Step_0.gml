@@ -346,8 +346,11 @@ if (menu==1 && (managing>0 || managing<0)){
                 try{
                     temp[121].destroy_image();
                 }
+                delete temp[121];
             }
             temp[121] = unit.draw_unit_image();
+
+            temp[122] = unit.handle_stat_growth();
         /*if (man[sel]="vehicle"){
             // TODO
         }*/
@@ -461,7 +464,9 @@ if (unload>0){
     for(var i=0; i<array_length(display_unit); i++){
         man_sel[i]=0;
     }
-    obj_ini.ship_carrying[b]-=man_size;
+    if (b > -1 && b<array_length(obj_ini.ship_carrying)){
+            obj_ini.ship_carrying[b]-=man_size;
+    }
     reset_ship_manage_arrays();
     cooldown=10;
     sel_loading=-1;

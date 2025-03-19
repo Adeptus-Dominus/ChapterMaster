@@ -13,6 +13,7 @@ ork=0;
 tau=0;
 chaos=0;
 p_data = new PlanetData(0, target);
+has_player_forces = array_sum(target.p_player);
 torpedo = scr_item_count("Cyclonic Torpedo");
 
 feature= "";

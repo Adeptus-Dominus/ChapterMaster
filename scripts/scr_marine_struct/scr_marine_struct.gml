@@ -17,22 +17,6 @@
 		the first int is a base or mean value the second int is a sd number to be passed to the gauss() function
 		the string (usually max) is guidance so in the instance of max it will pick the larger value of the mean and the gauss function return
 */
-#macro ARR_stat_list ["constitution", "strength", "luck", "dexterity", "wisdom", "piety", "charisma", "technology","intelligence", "weapon_skill", "ballistic_skill"]
-
-global.stat_shorts = {
-	"constitution":"CON", 
-	"strength":"STR", 
-	"luck":"LCK", 
-	"dexterity":"DEX", 
-	"wisdom":"WIS", 
-	"piety":"PTY", 
-	"charisma":"CHA", 
-	"technology":"TEC",
-	"intelligence":"INT", 
-	"weapon_skill":"WS", 
-	"ballistic_skill":"BS",
-}
-
 // will swap these out for enums or some better method as i develop where this is going
 #macro ARR_body_parts ["left_leg", "right_leg", "torso", "right_arm", "left_arm", "left_eye", "right_eye", "throat", "jaw","head"]
 #macro ARR_body_parts_display ["Left Leg", "Right Leg", "Torso", "Right Arm", "Left Arm", "Left Eye", "Right Eye", "Throat", "Jaw","Head"]
@@ -327,6 +311,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		planet_location=2;
 	}
 	ship_location=-1;
+    last_ship = {uid : "", name : ""};
 	religion="none";
 	master_loyalty = 0;
 	job="none";
@@ -378,45 +363,10 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		return [0, _powers_learned];
 	}//change exp
 
-	static add_exp = function(add_val){
-		var instace_stat_point_gains = {};
-		var _powers_learned = 0;
-		stat_point_exp_marker += add_val;
-		experience += add_val;
-		if (base_group == "astartes"){
-			while (stat_point_exp_marker>=15){
-				var stat_gains = choose("weapon_skill", "ballistic_skill", "wisdom");
-				var special_stat = irandom(3);
-				if (IsSpecialist("forge") && special_stat==0) then stat_gains = "technology";
-				if (IsSpecialist("libs")) {
-					if (special_stat==0) then stat_gains = "intelligence";
-					_powers_learned = update_powers();
-				}
-				if (IsSpecialist("chap") && special_stat==0) then stat_gains = "charisma";
-				if (IsSpecialist("apoth") && special_stat==0) then stat_gains = "intelligence";
-				if (role()=="Champion" && stat_gains!="weapon_skill" && special_stat==0) then stat_gains = "weapon_skill";
-				if (job!="none"){
-					if (job.type == "forge"){
-						stat_gains="technology";
-					}
-				}				
-				self[$ stat_gains]++;
-				stat_point_exp_marker-=15;
-				if (struct_exists(instace_stat_point_gains, stat_gains)){
-					instace_stat_point_gains[$ stat_gains]++;
-				} else {
-					instace_stat_point_gains[$ stat_gains]=1;
-				}
-				if (struct_exists(turn_stat_gains, stat_gains)){
-					turn_stat_gains[$ stat_gains]++;
-				} else {
-					turn_stat_gains[$ stat_gains]=1;
-				}
-			}
-			assign_reactionary_traits();
-		}
-		return [instace_stat_point_gains, _powers_learned];
-	}
+	static handle_stat_growth = unit_stat_growth;
+
+	static add_exp = add_unit_exp;
+
 	static armour = function(raw=false){
 		var wep = obj_ini.armour[company][marine_number];
 		if (is_string(wep) || raw) then return wep;
@@ -632,9 +582,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			}
 	};
 
-	static has_trait = function(wanted_trait){
-		return array_contains(traits, wanted_trait);
-	}
+	static has_trait = marine_has_trait;
 
 	static add_feat = function(feat){
 		feat_data = {};
@@ -700,63 +648,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			}
 		}
 	};
-	body = {
-		"left_leg":{
-			leg_variants: irandom(100),
-		}, 
-		"right_leg":{
-			leg_variants: irandom(100),
-		}, 
-		"torso":{
-			cloth:{
-				variation:irandom(100),
-			},
-			tabbard_variation:irandom(100),
-			armour_choice :  irandom(100),
-			variation: irandom(10),
-			backpack_variation: irandom(100),
-			backpack_decoration_variation : irandom(100),
-			backpack_augment_variation : irandom(100),
-			thorax_variation : irandom(100),
-			chest_variation : irandom(100),
-			belt_variation : irandom(100),
-			chest_fastening : irandom(100),
-		}, 
-		"left_arm":{
-			trim_variation : irandom(100),
-			personal_livery : irandom(100),
-			pad_variation : irandom(100),
-			variation : irandom(100),
-		},
-		"right_arm":{
-			trim_variation : irandom(100),
-			personal_livery : irandom(100),
-			pad_variation : irandom(100),
-			variation : irandom(100),			
-		}, 
-		"left_eye":{
-			variant : irandom(100),
-		}, 
-		"right_eye":{
-			variant : irandom(100),
-		},
-		"throat":{
-			variant : irandom(100),
-		}, 
-		"jaw":{
-			variant: irandom(100),
-		},
-		"head":{
-			variation:irandom(100),
-			crest_variation : irandom(100),
-			forehead_variation : irandom(100),
-			crown_variation : irandom(100),
-		},
-		"cloak":{
-			type: "none",
-			variant: irandom(100)
-		},
-	}; //body parts list can be extended as much as people want
+	body = generate_marine_body();
+//body parts list can be extended as much as people want
 
 	static alter_body = function(body_slot, body_item_key, new_body_data, overwrite=true){//overwrite means it will replace any existing data
 		if (struct_exists(body, body_slot)){
@@ -768,35 +661,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		}
 	}
 
-	static get_body_data = function(body_item_key,body_slot="none"){
-		if (body_slot!="none"){
-			if (struct_exists(body, body_slot)){
-				if (struct_exists(body[$ body_slot], body_item_key)){
-					return body[$ body_slot][$ body_item_key]
-				} else {
-					return false;
-				}
-			}else {
-				return "invalid body area";
-			}
-		} else {
-			var item_key_map = {};
-			var body_part_area_keys
-			var _body_parts = ARR_body_parts;
-			for (var i=0;i<array_length(_body_parts);i++){//search all body parts
-				body_area = body[$ _body_parts[i]]
-				body_part_area_keys=struct_get_names(body_area);
-				for (var b=0;b<array_length(body_part_area_keys);b++){
-					if (body_part_area_keys[b]==body_item_key){
-						item_key_map[$ _body_parts[i]] = body_area[$ body_item_key]
-					}
-				}
-				
-			}
-			return item_key_map;
-		}
-		return false;
-	}
+	static get_body_data = scr_get_body_data;
 
 	if (struct_exists(self,"start_gear")){
 		if (base_group!="marine"){
@@ -1557,11 +1422,29 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 
 		//TODO just did this so that we're not loosing featuring but this porbably needs a rethink
 		static hammer_of_wrath =  function(){
-			var wrath =  new EquipmentStruct({},"");
-			wrath.attack=(strength*2) +(0.5*weapon_skill);
-			wrath.name = "hammer_of_wrath";
-			wrath.range = 1;
-			wrath.ammo = -1;
+			var _melee_attack = melee_damage_data[0];
+			var _melee_weapon = melee_damage_data[3];
+
+			var wrath =  new EquipmentStruct({
+				attack : _melee_attack * 0.75, 
+				name :  "Hammer of Wrath",
+				range : 2,
+				ammo : 6,
+				spli : _melee_weapon.spli,
+				arp : _melee_weapon.arp
+			},"weapon");
+
+			var wrath_melee =  new EquipmentStruct({
+				attack : _melee_attack * 1.25, 
+				name :  "Hammer of Wrath(M)",
+				range : 1,
+				ammo : 8,
+				spli : _melee_weapon.spli,
+				arp : _melee_weapon.arp,
+			},"weapon");			
+
+			wrath.second_profiles = [wrath_melee];
+
 			return wrath;
 		}
 
@@ -1676,6 +1559,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			 var current_location = marine_location();
 			 var system = current_location[2];
 			 var target_ship_location= obj_ini.ship_location[ship];
+			 set_last_ship();
 			 if (assignment()!="none") then return "on assignment";
 			 if (target_ship_location == "home" ){target_ship_location = obj_ini.home_name;}
 			
@@ -1704,8 +1588,22 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			 }
 		};
 
+
+	static set_last_ship = function(){
+		if (ship_location>-1){
+			last_ship.uid = obj_ini.ship_uid[ship_location];
+	        last_ship.name = obj_ini.ship[ship_location];	
+	    } else {
+	    	last_ship = {
+	    		uid : "",
+	    		name : ""
+	    	}
+	    }
+    }
+
 	static unload = function(planet_number, system){
 		var current_location = marine_location();
+		set_last_ship();
 		if (current_location[0]==location_types.ship){
 			if (!array_contains(["Warp", "Terra", "Mechanicus Vessel", "Lost"],current_location[2]) && current_location[2]==system.name){
 				obj_ini.loc[company][marine_number]=obj_ini.ship_location[current_location[1]];

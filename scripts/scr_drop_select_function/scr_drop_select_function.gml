@@ -175,7 +175,7 @@ function drop_select_draw(){
                 target_threat = "",
                 race_quantity = 0;
             var races = ["", "Ecclesiarchy", "Eldar", "Orks", "Tau", "Tyranids", "Heretics", "CSMs", "Daemons", "Necrons"];
-            var threat_levels = ["", "Negligible", "Minor", "Moderate", "High", "Very High", "Overwhelming"];
+            var threat_levels = ["", "Minima (1)", "Parvus (2)", "Moderatus (3)", "Significus (4)", "Enormicus (5)", "Extremis (6)"];
             var race_quantities = [0, sisters, eldar, ork, tau, tyranids, traitors, csm, demons, necrons];
 
             if (attacking >= 5 && attacking <= 13) {

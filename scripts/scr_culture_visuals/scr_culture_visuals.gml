@@ -235,13 +235,13 @@ global.modular_drawing_items = [
     {
         sprite : spr_gear_librarian,
         body_types :[0],
-        position : "right_pauldron",
+        position : "right_pauldron_icons",
         role_type : ["libs"],
     },
     {
         sprite : spr_gear_librarian_term,
         body_types :[2],
-        position : "right_pauldron",
+        position : "right_pauldron_icons",
         role_type : ["libs"],
     },
     {
@@ -290,6 +290,9 @@ global.modular_drawing_items = [
         body_types :[0, 2],
         position : "belt",
         armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour", "Tartaros"],
+        exp : {
+            min : 100,
+        },        
     },
     {
         cultures : ["Knightly", "Crusader"],
@@ -396,9 +399,9 @@ global.modular_drawing_items = [
         position : "cloak",
         max_saturation : 35,
         overides : {
-            "right_pauldron" : spr_ultra_right_shoulder_hanging,
+            "right_pauldron_hangings" : spr_ultra_right_shoulder_hanging,
         },
-        assign_by_rank :1,
+        assign_by_rank :2,
         exp : {
             min : 80,
         },
@@ -434,10 +437,7 @@ global.modular_drawing_items = [
         sprite : spr_mk7_complex_belt,
         body_types :[0],
         position : "belt",
-        armours_exclude : ["MK3 Iron Armour", "MK4 Maximus"],
-        exp : {
-            min : 100,
-        },        
+        armours_exclude : ["MK3 Iron Armour"],        
     },
     {
         sprite : spr_dev_pack_complex,
@@ -461,11 +461,342 @@ global.modular_drawing_items = [
             "chest_fastening" : spr_backpack_fastening,
         },        
 
-    }                                                       
-
+    },
+    {
+        sprite : spr_gear_hood2,
+        body_types :[0],
+        position : "mouth_variants", 
+        role_type : ["libs"],
+        chapter_adv : ["Daemon Binders"],    
+    },
+    {
+        sprite : spr_mk4_chest_fastenings,
+        body_types :[0],
+        position : "chest_fastening",
+        armours : ["MK4 Maximus"]
+    }, 
+    {
+        sprite : spr_mk7_complex_left_pauldron,
+        body_types :[0],
+        position : "left_pauldron_base",
+    } ,
+    {
+        sprite : spr_mk7_complex_right_pauldron,
+        body_types :[0],
+        position : "right_pauldron_base",
+    },
+    {
+        sprite : spr_bonding_studs_left,
+        body_types :[0],
+        position : "left_pauldron_embeleshments",
+        armours : ["MK5 Heresy", "MK6 Corvus"]
+    },
+    {
+        sprite : spr_bonding_studs_left,
+        body_types :[0],
+        position : "left_pauldron_embeleshments",
+        max_saturation : 15,
+        armours_exclude : ["MK5 Heresy", "MK6 Corvus"]
+    },
+    {
+        sprite : spr_bonding_studs_right,
+        body_types :[0],
+        position : "right_pauldron_embeleshments",
+        armours : ["MK5 Heresy", "MK6 Corvus"]
+    },
+    {
+        sprite : spr_bonding_studs_right,
+        body_types :[0],
+        position : "right_pauldron_embeleshments",
+        max_saturation : 15,
+        armours_exclude : ["MK5 Heresy", "MK6 Corvus"]
+    },
+    {
+        cultures : ["Wolf Cult"],
+        sprite : spr_chaplain_wolfterm_helm,
+        body_types :[2],
+        position : "head",
+        prevent_others : true,
+        ban : ["mouth_variants"],
+        role_type : ["chap"],
+    },
+    {
+        cultures : ["Wolf Cult"],
+        sprite : spr_chaplain_wolf_helm,
+        body_types :[0],
+        position : "head",
+        prevent_others : true,
+        ban : ["mouth_variants"],
+        role_type : ["chap"],
+    },
+    {   
+        sprite : spr_chaplain_term_helm,
+        body_types :[2],
+        position : "head",
+        prevent_others : true,
+        ban : ["mouth_variants"],
+        role_type : ["chap"],
+    },
+    {
+        sprite : spr_chaplain_helm,
+        body_types :[0],
+        position : "head",
+        prevent_others : true,
+        ban : ["mouth_variants"],
+        role_type : ["chap"],
+    }, 
+    {
+        cultures : ["Feral", "Wolf Cult"],
+        sprite : spr_wolf_tail,
+        body_types :[2, 0],
+        position : "purity_seals",
+    },
+    {
+        cultures : ["Feral", "Wolf Cult"],
+        sprite : spr_right_pauldron_fur_hanging,
+        body_types :[0],
+        position : "right_pauldron_hangings",
+        max_saturation : 20,
+    },
+    {
+        cultures : ["Feral", "Wolf Cult"],
+        sprite : spr_left_pauldron_fur_hanging,
+        body_types :[0],
+        position : "left_pauldron_hangings",
+        max_saturation : 20,
+    }, 
+    {
+        cultures : ["Feral", "Wolf Cult"],
+        sprite : spr_term_right_fur_hanging,
+        body_types :[2],
+        position : "right_pauldron_hangings",
+        max_saturation : 20,
+    },
+    {
+        cultures : ["Feral", "Wolf Cult"],
+        sprite : spr_term_left_fur_hanging,
+        body_types :[2],
+        position : "left_pauldron_hangings",
+        max_saturation : 20,
+    },
+    {
+        cultures : ["Wolf Cult"],
+        sprite : spr_fur_tail_topknot,
+        body_types :[0],
+        position : "crest",
+        max_saturation : 30,
+    },                                                                  
 ];
 try{
     load_visual_sets();
 } catch(_exception){
     handle_exception(_exception);
 }
+
+function fetch_marine_components_to_memory(){
+    array_foreach(global.modular_drawing_items, function(_element, _index){
+        if (sprite_exists((_element.sprite))){
+            sprite_prefetch(_element.sprite);
+            if (struct_exists(_element, "overides")){
+                var _override_areas = struct_get_names(_element.overides);
+                for (var i = 0;i<array_length(_override_areas)i++){
+                    sprite_prefetch(_element.overides[$_override_areas[i]]);
+                }
+            }
+        }
+    });
+}
+
+
+
+function DummyMarine()constructor{
+    static update = function(){
+        delete body;
+        body = generate_marine_body();
+        add_purity_seal_markers();
+    }
+    update();
+    static distribute_traits = scr_marine_trait_spawning;
+    base_group="astartes";
+    static alter_equipment = alter_unit_equipment;
+    static stat_display = scr_draw_unit_stat_data;
+    static draw_unit_image = scr_draw_unit_image;
+    static display_wepaons = scr_ui_display_weapons;
+    static unit_profile_text = scr_unit_detail_text;
+    static has_equipped = unit_has_equipped;
+    static get_body_data = scr_get_body_data;
+    traits = [];
+    company = irandom_range(1,10);
+    static name_role= function(){
+        return "jeff";
+    } 
+    static role = function(){
+        with (obj_creation){
+            return role[100][livery_picker.role_set > 0  ? livery_picker.role_set :eROLE.Tactical];
+        }
+    } 
+    static weapon_one = function(){
+        with (obj_creation){
+            return wep1[100][livery_picker.role_set > 0  ? livery_picker.role_set :eROLE.Tactical];
+        }
+    } 
+    static race = function(){
+        return "1";
+    }  
+    static weapon_two = function(){
+        with (obj_creation){
+            return wep2[100][livery_picker.role_set > 0  ? livery_picker.role_set :eROLE.Tactical];
+        }
+    }  
+    last_armour = "MK7 Aquila";
+    static armour = function(){
+        var armours = ARR_power_armour;
+        var _last_armour = last_armour;
+        with (obj_creation){
+            if (!livery_picker.freeze_armour){
+                var _armour  = armour[100][livery_picker.role_set > 0  ? livery_picker.role_set : eROLE.Tactical];
+                if (array_contains(armours, _armour)){
+                     _armour = array_random_element(armours);
+                }
+                if (_armour == "Power Armour"){
+                     _armour = "MK7 Aquila";
+                }
+            } else {
+                _armour = _last_armour;
+            }
+        }
+        last_armour = _armour;
+        return _armour;
+    } 
+    static gear = function(){
+         with (obj_creation){
+            return gear[100][livery_picker.role_set > 0  ? livery_picker.role_set :eROLE.Tactical];
+        }
+    }
+    static mobility_item = function(){
+         with (obj_creation){
+            return mobi[100][livery_picker.role_set > 0  ? livery_picker.role_set :eROLE.Tactical];
+        }
+    }
+    static IsSpecialist = function(search_type="standard",include_trainee=false){
+        return is_specialist(role(), search_type,include_trainee)
+    }
+    static has_trait = marine_has_trait;
+
+    experience = 120;
+}
+
+function scr_get_body_data (body_item_key,body_slot="none"){
+    if (body_slot!="none"){
+        if (struct_exists(body, body_slot)){
+            if (struct_exists(body[$ body_slot], body_item_key)){
+                return body[$ body_slot][$ body_item_key]
+            } else {
+                return false;
+            }
+        }else {
+            return "invalid body area";
+        }
+    } else {
+        var item_key_map = {};
+        var body_part_area_keys
+        var _body_parts = ARR_body_parts;
+        for (var i=0;i<array_length(_body_parts);i++){//search all body parts
+            body_area = body[$ _body_parts[i]]
+            body_part_area_keys=struct_get_names(body_area);
+            for (var b=0;b<array_length(body_part_area_keys);b++){
+                if (body_part_area_keys[b]==body_item_key){
+                    item_key_map[$ _body_parts[i]] = body_area[$ body_item_key]
+                }
+            }
+            
+        }
+        return item_key_map;
+    }
+    return false;
+}
+
+
+function generate_marine_body(){
+    var _body = {
+        "left_leg":{
+            leg_variants: irandom(100),
+        }, 
+        "right_leg":{
+            leg_variants: irandom(100),
+        }, 
+        "torso":{
+            cloth:{
+                variation:irandom(100),
+            },
+            tabbard_variation:irandom(100),
+            armour_choice :  irandom(100),
+            variation: irandom(10),
+            backpack_variation: irandom(100),
+            backpack_decoration_variation : irandom(100),
+            backpack_augment_variation : irandom(100),
+            thorax_variation : irandom(100),
+            chest_variation : irandom(100),
+            belt_variation : irandom(100),
+            chest_fastening : irandom(100),
+        }, 
+        "left_arm":{
+            trim_variation : irandom(100),
+            personal_livery : irandom(100),
+            pad_variation : irandom(100),
+            variation : irandom(100),
+        },
+        "right_arm":{
+            trim_variation : irandom(100),
+            personal_livery : irandom(100),
+            pad_variation : irandom(100),
+            variation : irandom(100),           
+        }, 
+        "left_eye":{
+            variant : irandom(100),
+        }, 
+        "right_eye":{
+            variant : irandom(100),
+        },
+        "throat":{
+            variant : irandom(100),
+        }, 
+        "jaw":{
+            variant: irandom(100),
+        },
+        "head":{
+            variation:irandom(100),
+            crest_variation : irandom(100),
+            forehead_variation : irandom(100),
+            crown_variation : irandom(100),
+        },
+        "cloak":{
+            type: "none",
+            variant: irandom(100)
+        },
+    }
+    return _body; 
+}
+
+function add_purity_seal_markers (){
+    if (irandom(3)==0){
+        body[$ "torso"][$ "purity_seal"] = [irandom(100),irandom(100),irandom(100),irandom(100)];
+    }
+    if (irandom(3)==0){
+        body[$ "left_arm"][$ "purity_seal"] = [irandom(100),irandom(100),irandom(100),irandom(100)];
+    }
+    if (irandom(3)==0){
+        body[$ "right_arm"][$ "purity_seal"] = [irandom(100),irandom(100),irandom(100),irandom(100)];
+    }   
+    if (irandom(3)==0){
+        body[$ "left_leg"][$ "purity_seal"] = [irandom(100),irandom(100),irandom(100),irandom(100)];
+    }
+    if (irandom(3)==0){
+        body[$ "right_leg"][$ "purity_seal"] = [irandom(100),irandom(100),irandom(100),irandom(100)];
+    }       
+}
+
+
+
+
+

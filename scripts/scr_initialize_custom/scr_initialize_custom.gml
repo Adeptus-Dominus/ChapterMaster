@@ -38,6 +38,7 @@ enum ePROGENITOR {
     RAVEN_GUARD,
     RANDOM,
 }
+
 function progenitor_map(){
     var founding_chapters = [
         "",
@@ -51,11 +52,13 @@ function progenitor_map(){
         "Salamanders",
         "Raven Guard",
     ]
-    for (i=1;i<10;i++){
-        if (global.chapter_name==founding_chapters[i] || obj_ini.progenitor==i){
+
+    for (var i=1; i<10; i++){
+        if (global.chapter_name == founding_chapters[i] || obj_ini.progenitor==i){
             return i;
         }
     }
+
     return 0;
 }
 
@@ -101,8 +104,12 @@ function select_livery_data(livery_data, specific) {
     }
 }
 
-function progenitor_livery(progenitor, specific = "none") {
+function helmet_livery(progenitor, specific = "none") {
     var livery_data;
+
+	if ((obj_creation.custom == 0) && (global.chapter_creation_object.origin == 1)) {
+		progenitor = progenitor_map();
+	}
 
     var name_selected = true;
     switch (global.chapter_name) {
@@ -171,7 +178,70 @@ function progenitor_livery(progenitor, specific = "none") {
                 },
             };
             break;
-
+		case "Lamenters":
+			livery_data = {
+				sgt : {
+					helm_pattern:1,
+					helm_primary : obj_creation.main_color,
+					helm_secondary : Colors.Black,
+					helm_detail : obj_creation.main_trim,
+					helm_lens : obj_creation.lens_color,
+				},
+				vet_sgt : {
+					helm_pattern:1,
+					helm_primary : obj_creation.main_color,
+					helm_secondary : Colors.Black,
+					helm_detail : obj_creation.main_trim,
+					helm_lens : obj_creation.lens_color,
+				},
+				captain : {
+					helm_pattern:0,
+					helm_primary : Colors.White,
+					helm_secondary : Colors.White,
+					helm_detail : obj_creation.main_trim,
+					helm_lens : obj_creation.lens_color,
+				},
+				veteran : {
+					helm_pattern:2,
+					helm_primary : obj_creation.main_color,
+					helm_secondary : Colors.Black,
+					helm_detail : obj_creation.main_trim,
+					helm_lens : obj_creation.lens_color,	
+				}				
+			}
+			break;
+			case "Tome Keepers":
+				livery_data = {
+					sgt : {
+						helm_pattern:0,
+						helm_primary : Colors.Sanguine_Red,
+						helm_secondary : obj_creation.secondary_color,
+						helm_detail : obj_creation.main_trim,
+						helm_lens : Colors.Lime,
+					},
+					vet_sgt : {
+						helm_pattern:2,
+						helm_primary : Colors.Sanguine_Red,
+						helm_secondary : Colors.Lighter_Black,
+						helm_detail : obj_creation.main_trim,
+						helm_lens : Colors.Lime,
+					},
+					captain : {
+						helm_pattern:0,
+						helm_primary : obj_creation.main_color,
+						helm_secondary : obj_creation.secondary_color,
+						helm_detail : obj_creation.main_trim,
+						helm_lens : obj_creation.lens_color,
+					},
+					veteran : {
+						helm_pattern:2,
+						helm_primary : obj_creation.main_color,
+						helm_secondary : Colors.Lighter_Black,
+						helm_detail : obj_creation.main_trim,
+						helm_lens : obj_creation.lens_color,	
+					}				
+				}
+				break;
         default:
             name_selected = false;
             break;
@@ -387,21 +457,21 @@ function progenitor_livery(progenitor, specific = "none") {
                     helm_primary: Colors.Red,
                     helm_secondary: Colors.Red,
                     helm_detail: Colors.Red,
-                    helm_lens: Colors.Green,
+                    helm_lens: Colors.Lime,
                 },
                 vet_sgt: {
                     helm_pattern: 1,
                     helm_primary: Colors.Red,
                     helm_secondary: Colors.White,
                     helm_detail: Colors.Red,
-                    helm_lens: Colors.Green,
+                    helm_lens: Colors.Lime,
                 },
                 captain: {
                     helm_pattern: 0,
-                    helm_primary: Colors.Dark_Ultramarine,
-                    helm_secondary: Colors.Dark_Ultramarine,
-                    helm_detail: Colors.Dark_Ultramarine,
-                    helm_lens: Colors.Red,
+                    helm_primary: obj_creation.main_color,
+                    helm_secondary: obj_creation.secondary_color,
+                    helm_detail: obj_creation.main_trim,
+                    helm_lens: obj_creation.lens_color,
                 },
                 veteran: {
                     helm_pattern: 0,
@@ -449,32 +519,32 @@ function progenitor_livery(progenitor, specific = "none") {
         case ePROGENITOR.BLOOD_ANGELS:
             livery_data = {
                 sgt: {
-                    helm_pattern: 1,
-                    helm_primary: Colors.Sanguine_Red,
-                    helm_secondary: Colors.Sanguine_Red,
-                    helm_detail: Colors.Lighter_Black,
-                    helm_lens: Colors.Lime,
+					helm_pattern: 0,
+					helm_primary: obj_creation.main_color,
+					helm_secondary: obj_creation.secondary_color,
+					helm_detail: Colors.Gold,
+					helm_lens: obj_creation.lens_color,
                 },
                 vet_sgt: {
-                    helm_pattern: 1,
-                    helm_primary: Colors.Gold,
-                    helm_secondary: Colors.Black,
-                    helm_detail: Colors.Gold,
-                    helm_lens: Colors.Lime,
+					helm_pattern: 0,
+					helm_primary: Colors.Gold,
+					helm_secondary: obj_creation.secondary_color,
+					helm_detail: obj_creation.main_trim,
+					helm_lens: obj_creation.lens_color,
                 },
                 captain: {
-                    helm_pattern: 0,
-                    helm_primary: Colors.Sanguine_Red,
-                    helm_secondary: Colors.Sanguine_Red,
-                    helm_detail: Colors.Gold,
-                    helm_lens: Colors.Lime,
+					helm_pattern: 0,
+					helm_primary: obj_creation.main_color,
+					helm_secondary: obj_creation.secondary_color,
+					helm_detail: Colors.Gold,
+					helm_lens: obj_creation.lens_color,
                 },
                 veteran: {
-                    helm_pattern: 0,
-                    helm_primary: Colors.Gold,
-                    helm_secondary: Colors.Gold,
-                    helm_detail: Colors.Gold,
-                    helm_lens: Colors.Lime,
+					helm_pattern: 0,
+					helm_primary: Colors.Gold,
+					helm_secondary: obj_creation.secondary_color,
+					helm_detail: obj_creation.main_trim,
+					helm_lens: obj_creation.lens_color,
                 },
             };
             break;
@@ -485,23 +555,23 @@ function progenitor_livery(progenitor, specific = "none") {
             livery_data = {
                 sgt: {
                     helm_pattern: 0,
-                    helm_primary: Colors.Red,
-                    helm_secondary: Colors.Red,
-                    helm_detail: Colors.Red,
-                    helm_lens: Colors.Green,
+                    helm_primary: Colors.Sanguine_Red,
+                    helm_secondary: Colors.Sanguine_Red,
+                    helm_detail: Colors.Sanguine_Red,
+                    helm_lens: Colors.Lime,
                 },
                 vet_sgt: {
                     helm_pattern: 1,
-                    helm_primary: Colors.Red,
+                    helm_primary: Colors.Sanguine_Red,
                     helm_secondary: Colors.White,
-                    helm_detail: Colors.Red,
-                    helm_lens: Colors.Green,
+                    helm_detail: Colors.Sanguine_Red,
+                    helm_lens: Colors.Lime,
                 },
                 captain: {
                     helm_pattern: 0,
                     helm_primary: obj_creation.main_color,
-                    helm_secondary: obj_creation.main_color,
-                    helm_detail: obj_creation.main_color,
+                    helm_secondary: obj_creation.secondary_color,
+                    helm_detail: obj_creation.main_trim,
                     helm_lens: obj_creation.lens_color,
                 },
                 veteran: {
@@ -726,8 +796,18 @@ function scr_initialize_custom() {
 
 	if (scr_has_adv ("Kings of Space")) {battle_barges += 1;}
 	if (scr_has_adv("Boarders")){ strike_cruisers += 2;}
-	if (scr_has_disadv("Obliterated")) {battle_barges = 0; strike_cruisers = 1; gladius = 2; hunters = 0;}
-
+	if (scr_has_disadv("Obliterated")){ if (obj_creation.fleet_type == ePlayerBase.home_world) {
+		battle_barges = 0;
+		strike_cruisers = 2;
+		gladius = 1;
+		hunters = 0;
+		} else {
+		battle_barges = 1;
+		strike_cruisers = 0;
+		gladius = 2;
+		hunters = 0;
+		}
+	}
 	var ship_summary_str = $"Ships: bb: {battle_barges} sc: {strike_cruisers} g: {gladius} h: {hunters}"
 	// log_message(ship_summary_str);
 	// show_debug_message(ship_summary_str);
@@ -1019,7 +1099,7 @@ function scr_initialize_custom() {
 	if (obj_creation.custom != 0) {
 		var bonus_marines = 0;
 		if (obj_creation.strength > 5) then bonus_marines = (obj_creation.strength - 5) * 50;
-		if scr_has_disadv("Obliterated") then bonus_marines = (obj_creation.strength - 5) * 10;
+		if scr_has_disadv("Obliterated") then bonus_marines = (obj_creation.strength - 1) * 10;
 		var i = 0;
 		while (bonus_marines >= 5) {
 			switch (i % 10) {
@@ -1178,7 +1258,7 @@ function scr_initialize_custom() {
     for (var i = 0; i < array_length(complex_type); i++) {
         with (complex_livery_data[$ complex_type[i]]) {
             if (helm_primary == 0 && helm_secondary == 0 && helm_lens == 0) {
-                obj_ini.complex_livery_data[$ complex_type[i]] = progenitor_livery(obj_ini.progenitor, complex_type[i]);
+                obj_ini.complex_livery_data[$ complex_type[i]] = helmet_livery(obj_ini.progenitor, complex_type[i]);
             }
         }
     }
@@ -1565,7 +1645,7 @@ function scr_initialize_custom() {
 				"loadout": {
 					"required": {
 						"wep1": ["", 0],
-						"wep2": ["Combat Knife", 9],
+						"wep2": ["Combat Knife", max],
 					},
 					"option": {
 						"wep1": [
@@ -1579,7 +1659,10 @@ function scr_initialize_custom() {
 								weapon_lists.special_weapons, 1
 							],
 							[
-								weapon_lists.heavy_weapons, 1
+								weapon_lists.heavy_weapons, 1, {
+									"wep2":"Combat Knife",
+									"mobi":"Heavy Weapons Pack",
+								}
 							],
 						]
 					}
@@ -1776,7 +1859,9 @@ function scr_initialize_custom() {
 					"option": {
 						"wep1": [
 							[
-								weapon_lists.melee_weapons, 2,
+								["Eviscerator"], 2, {
+									"wep2":"",
+								}
 							],
 						],
 						"wep2": [
@@ -1987,115 +2072,83 @@ function scr_initialize_custom() {
 	}
 	if (scr_has_adv("Lightning Warriors")) {
 		variable_struct_set(st, "bikers", [
-			[roles.tactical, {
+			[roles.assault, {
 				"max": 9,
 				"min": 4,
 				"loadout": { //tactical marine
 						"required": {
-						"wep1": [wep1[100, 8], 6],
-						"wep2": [wep2[100, 8], 6],
+						"wep1": ["", max],
+						"wep2": ["Chainsword", max],
 						"mobi": ["Bike", max]
-					},
-					"option": {
-						"wep1": [
-							[
-								weapon_lists.special_weapons, 3
-							],
-						],
-						"wep2": [
-							[
-								weapon_lists.melee_weapons, 3
-							],
-						],
 					}
 				},
-				"role": $"{roles.tactical} Biker"
+				"role": $"Biker"
 			}],
 			[roles.sergeant, {
 				"max": 1,
 				"min": 1,
 				"loadout": { //sergeant
 					"required": {
-						"wep1": ["", 0],
-						"wep2": ["Chainsword", 1],
+						"wep1": ["", max],
+						"wep2": ["Chainsword", max],
 						"mobi": ["Bike", 1]
-					},
-					"option": {
-						"wep1": [
-							[
-								weapon_lists.pistols, 1
-							],
-						],
-						"wep2": [
-							[
-								weapon_lists.melee_weapons, 1
-							],
-						],
 					}
 				},
-				"role": $"{roles.tactical} Bike {roles.sergeant}"
+				"role": $"Biker {roles.sergeant}"
 			}, ],
 			["type_data", {
-				"display_data": $"{roles.tactical} Bike {squad_name}",
+				"display_data": $"Bike {squad_name}",
 				"class":["bike"],
-				"formation_options": ["tactical", "assault", "devastator", "scout"],
+				"formation_options": ["assault", "tactical"],
 			}]
 		])
 	}
 	if (scr_has_adv("Boarders")) {
 		variable_struct_set(st, "breachers", [
-			[roles.assault, {
+			[roles.tactical, {
 				"max": 9,
 				"min": 4,
-				"loadout": { //assault breacher marine
+				"loadout": { //tactical breacher marine
 					"required": {
-						"wep1":["Chainaxe", 4],
+						"wep1":[wep1[100, 8], 7],
 						"wep2":["Boarding Shield", max],
 						"armour":["MK3 Iron Armour", max],
-						"gear":["Plasma Bomb", 2],
+						"gear":["Plasma Bomb", max],
 						"mobi":["", max]
 					},
 					"option": {
 						"wep1": [
 							[
-								["Storm Bolter", "Combiflamer", "Meltagun"], 3,
+								["Flamer", "Grav-Gun", "Meltagun", "Lascutter"], 2,
 							],
-							[
-								["Power Axe", "Power Fist"], 2
-							]
-							
 						]
 								}
 				},
-				"role": $"{roles.assault} Breacher"
+				"role": $"Breacher"
 			}],
 			[roles.sergeant, {
 				"max": 1,
 				"min": 1,
 				"loadout": { //sergeant 
 					"required": {
-					"armour":["MK3 Iron Armour", 1],
-					"mobi": ["",1],
-					"gear": ["Plasma Bomb", 1]
+						"wep2":["Boarding Shield", max],
+						"armour":["MK3 Iron Armour", max],
+						"mobi": ["", max],
+						"gear": ["Plasma Bomb", max]
 					},
 					"option": {
 						"wep1": [
 							[
-								["Power Sword", "Power Axe", "Power Fist", "Thunder Hammer", "Chainsword"], 1
+								["Bolter", "Bolter", "Bolter", "Combiflamer"], 1
 							]
 						],
-						"wep2": [
-							[
-								["Boarding Shield", "Storm Bolter", "Meltagun"], 1
-							]
-						]
 					}
 				},
-				"role": $"{roles.assault} Breacher {roles.sergeant}"
+				"role": $"Breacher {roles.sergeant}"
 			}, ],
 			["type_data", {
-				"display_data": $"{roles.assault} Breacher {squad_name}",
-				"formation_options": ["tactical", "assault", "devastator", "scout"],
+				"display_data": $"Breacher {squad_name}",
+				"formation_options": ["tactical"],
 			}]
 		])
 		variable_struct_set(st,"assault_squad", [
@@ -2147,7 +2200,7 @@ function scr_initialize_custom() {
 			}],
 			["type_data", {
 				"display_data": $"{roles.assault} {squad_name}",
-				"formation_options": ["tactical", "assault", "devastator", "scout"],
+				"formation_options": ["assault"],
 			}]
 		])
 	}
@@ -2377,7 +2430,7 @@ function scr_initialize_custom() {
 
 	// Forge Master
 	name[company, 2] = obj_creation.fmaster;
-	var _forge_master = add_unit_to_company("marine", company, 2, "Forge Master", eROLE.Techmarine, "Infernus Pistol", "Power Axe", "", "Servo-harness", _hq_armour);
+	var _forge_master = add_unit_to_company("marine", company, 2, "Forge Master", eROLE.Techmarine, "Infernus Pistol", "Power Axe", "default", "Servo-harness", _hq_armour);
 	if (_forge_master.technology < 40) {
 		_forge_master.technology = 40;
 	}
@@ -2399,7 +2452,7 @@ function scr_initialize_custom() {
 	// Master of Sanctity (Chaplain)
 	if (chaplains > 0){
 		name[company, 3] = high_chaplain_name;
-		var _hchap = add_unit_to_company("marine", company, 3, "Master of Sanctity", eROLE.Chaplain, "default", "Plasma Pistol", "default", "", _hq_armour);
+		var _hchap = add_unit_to_company("marine", company, 3, "Master of Sanctity", eROLE.Chaplain, "default", "Plasma Pistol", "default", "default", _hq_armour);
 		_hchap.edit_corruption(-100);
 		if (_hchap.piety < 45) {
 			_hchap.piety = 45;
@@ -2411,7 +2464,7 @@ function scr_initialize_custom() {
 
 	// Maser of the Apothecarion (Apothecary)
 	name[company, 4] = obj_creation.hapothecary;
-	var _hapoth = add_unit_to_company("marine", company, 4, "Master of the Apothecarion", eROLE.Apothecary, "default", "Plasma Pistol", "default", "", _hq_armour);
+	var _hapoth = add_unit_to_company("marine", company, 4, "Master of the Apothecarion", eROLE.Apothecary, "default", "Plasma Pistol", "default", "default", _hq_armour);
 	_hapoth.edit_corruption(0);
 	k+=1;
 	commands +=1;
@@ -2419,7 +2472,7 @@ function scr_initialize_custom() {
 	// Chief Librarian
 	if(!scr_has_disadv("Psyker Intolerant")){
 		name[company, 5] = obj_creation.clibrarian;
-		var _clibrarian = add_unit_to_company("marine", company, 5, string("Chief {0}", roles.librarian), eROLE.Librarian, "default", "Plasma Pistol", "default", "", _hq_armour);
+		var _clibrarian = add_unit_to_company("marine", company, 5, string("Chief {0}", roles.librarian), eROLE.Librarian, "default", "Plasma Pistol", "default", "default", _hq_armour);
 		_clibrarian.edit_corruption(0);
 		_clibrarian.psionic = choose(13, 14, 15, 16);
 		_clibrarian.update_powers();
@@ -2435,7 +2488,7 @@ function scr_initialize_custom() {
 		k += 1;
 		commands += 1;
 		man_size += 1;
-		add_unit_to_company("marine", company, k, roles.techmarine, eROLE.Techmarine, "default", choose_weighted(weapon_weighted_lists.pistols), "default", "default", "");
+		add_unit_to_company("marine", company, k, roles.techmarine, eROLE.Techmarine, "default", choose_weighted(weapon_weighted_lists.pistols));
 	}
 
 	// Librarians in the librarium
@@ -2443,7 +2496,7 @@ function scr_initialize_custom() {
 		k += 1;
 		commands += 1;
 		man_size += 1;
-		var _epi = add_unit_to_company("marine", company, k, roles.librarian, eROLE.Librarian, "default", choose_weighted(weapon_weighted_lists.pistols), "default", "default", "");
+		var _epi = add_unit_to_company("marine", company, k, roles.librarian, eROLE.Librarian, "default", choose_weighted(weapon_weighted_lists.pistols));
 		_epi.psionic = choose(13, 14, 15, 16);
 		_epi.update_powers();
 	}
@@ -2452,7 +2505,7 @@ function scr_initialize_custom() {
 		k += 1;
 		commands += 1;
 		man_size += 1;
-		var _codi = add_unit_to_company("marine", company, k, "Codiciery", eROLE.Librarian, "default", choose_weighted(weapon_weighted_lists.pistols), "default", "default", "");
+		var _codi = add_unit_to_company("marine", company, k, "Codiciery", eROLE.Librarian, "default", choose_weighted(weapon_weighted_lists.pistols));
 		_codi.psionic = choose(11, 12, 13, 14, 15);
 		_codi.update_powers();
 	}
@@ -2462,7 +2515,7 @@ function scr_initialize_custom() {
 		k += 1;
 		commands += 1;
 		man_size += 1;
-		var _lexi = add_unit_to_company("marine", company, k, "Lexicanum", eROLE.Librarian, "default", choose_weighted(weapon_weighted_lists.pistols), "default", "default", "");
+		var _lexi = add_unit_to_company("marine", company, k, "Lexicanum", eROLE.Librarian, "default", choose_weighted(weapon_weighted_lists.pistols));
 		_lexi.psionic = choose(8, 9, 10, 11, 12, 13, 14);
 		_lexi.update_powers();
 	}
@@ -2472,7 +2525,7 @@ function scr_initialize_custom() {
 		k += 1;
 		commands += 1;
 		man_size += 1;
-		add_unit_to_company("marine", company, k, roles.apothecary, eROLE.Apothecary,"Chainsword", choose_weighted(weapon_weighted_lists.pistols), "default", "default","");
+		add_unit_to_company("marine", company, k, roles.apothecary, eROLE.Apothecary,"Chainsword", choose_weighted(weapon_weighted_lists.pistols));
 	}
 
 	// Chaplains in Reclusium
@@ -2480,7 +2533,7 @@ function scr_initialize_custom() {
 		k += 1;
 		commands += 1;
 		man_size += 1;
-		add_unit_to_company("marine", company, k, roles.chaplain, eROLE.Chaplain,"default", choose_weighted(weapon_weighted_lists.pistols), "default", "default","");
+		add_unit_to_company("marine", company, k, roles.chaplain, eROLE.Chaplain,"default", choose_weighted(weapon_weighted_lists.pistols));
 	}
 
 	// Honour Guard
@@ -2495,7 +2548,7 @@ function scr_initialize_custom() {
 		k += 1;
 		commands += 1;
 		man_size += 1;
-		add_unit_to_company("marine", company, k, roles.honour_guard, eROLE.HonourGuard,"default", "default","default","default","default");
+		add_unit_to_company("marine", company, k, roles.honour_guard, eROLE.HonourGuard);
 	}
 
 	specials = k;
@@ -2603,12 +2656,12 @@ function scr_initialize_custom() {
 		repeat(terminator) {
 			k += 1;
 			man_size += 2;
-			add_unit_to_company("marine", company, k, roles.terminator, eROLE.Terminator, "","","default","default","default");
+			add_unit_to_company("marine", company, k, roles.terminator, eROLE.Terminator);
 		}
 		repeat(veteran) {
 			k += 1;
 			man_size += 1;
-			add_unit_to_company("marine", company, k, roles.veteran, eROLE.Veteran, "","","default","default","default");
+			add_unit_to_company("marine", company, k, roles.veteran, eROLE.Veteran);
 		}
 	
 		repeat(scr_has_adv("Venerable Ancients") ? 3 : 2) {
@@ -2927,7 +2980,7 @@ function scr_initialize_custom() {
 
 			var _mobi = mobi[defaults_slot, eROLE.Captain];
 			if (company = 8) and(obj_creation.equal_specialists = 0) then _mobi = "Jump Pack";
-			add_unit_to_company("marine", company, k, roles.captain, eROLE.Captain, "default",choose_weighted(weapon_weighted_lists.pistols),"default",_mobi,"");
+			add_unit_to_company("marine", company, k, roles.captain, eROLE.Captain, "default",choose_weighted(weapon_weighted_lists.pistols),"default",_mobi);
 
 			repeat (chaplains_per_company){
 				k += 1;
@@ -2948,30 +3001,30 @@ function scr_initialize_custom() {
 			repeat (apothecary_per_company){
 				k += 1;
 				commands += 1; // Company Apothecary
-				add_unit_to_company("marine", company, k, roles.apothecary, eROLE.Apothecary, "default",choose_weighted(weapon_weighted_lists.pistols),"default","default","");
+				add_unit_to_company("marine", company, k, roles.apothecary, eROLE.Apothecary, "default",choose_weighted(weapon_weighted_lists.pistols));
 			}
 
 			repeat(techmarines_per_company) {
 				k += 1; // Company Techmarine
 				commands += 1;
-				add_unit_to_company("marine", company, k, roles.techmarine, eROLE.Techmarine, "default",choose_weighted(weapon_weighted_lists.pistols),"default","default","");
+				add_unit_to_company("marine", company, k, roles.techmarine, eROLE.Techmarine, "default",choose_weighted(weapon_weighted_lists.pistols));
 			}
 
 			if (!scr_has_disadv("Psyker Intolerant")) {
 				k += 1; // Company Librarian
 				commands += 1;
-				add_unit_to_company("marine", company, k, roles.librarian, eROLE.Librarian, "default",choose_weighted(weapon_weighted_lists.pistols),"default","default","");
+				add_unit_to_company("marine", company, k, roles.librarian, eROLE.Librarian, "default",choose_weighted(weapon_weighted_lists.pistols));
 			}
 
 			k += 1; // Standard Bearer
-			add_unit_to_company("marine", company, k, roles.ancient, eROLE.Ancient, "default","default","default","default","");
+			add_unit_to_company("marine", company, k, roles.ancient, eROLE.Ancient);
 			
 			k += 1;
 			man_size += 1; // Champion
 			if (company == 8) and(obj_creation.equal_specialists = 0){
-				add_unit_to_company("marine", company, k, roles.champion, eROLE.Champion, "default","default","default","Jump Pack","");
+				add_unit_to_company("marine", company, k, roles.champion, eROLE.Champion);
 			} else {
-				add_unit_to_company("marine", company, k, roles.champion, eROLE.Champion, "default","default","default","","");
+				add_unit_to_company("marine", company, k, roles.champion, eROLE.Champion);
 			}
 
 			// have equal spec true or false have same old_guard chance
@@ -2983,12 +3036,12 @@ function scr_initialize_custom() {
 					repeat(temp1) {
 						k += 1;
 						man_size += 1;
-						add_unit_to_company("marine", company, k, roles.tactical, eROLE.Tactical, "default","default", "default", "default", "default");
+						add_unit_to_company("marine", company, k, roles.tactical, eROLE.Tactical);
 					}
 					repeat(assault) {
 						k += 1;
 						man_size += 1;
-						add_unit_to_company("marine", company, k, roles.assault, eROLE.Assault, "default", "default", "default", "default", "default");
+						add_unit_to_company("marine", company, k, roles.assault, eROLE.Assault);
 					}
 					repeat(devastator) {
 						k += 1;
@@ -2997,14 +3050,14 @@ function scr_initialize_custom() {
 						if (wep1[defaults_slot, eROLE.Devastator] == "Heavy Ranged") {
 							_wep1 = choose("Multi-Melta", "Lascannon", "Missile Launcher", "Heavy Bolter");
 						} 
-						add_unit_to_company("marine", company, k, roles.devastator, eROLE.Devastator, _wep1, "default","default", "default", "default");
+						add_unit_to_company("marine", company, k, roles.devastator, eROLE.Devastator, _wep1);
 					}
 				}
 				if (company = 10) {
 					repeat(temp1) {
 						k += 1;
 						man_size += 1;
-						add_unit_to_company("scout", company, k, roles.scout, eROLE.Scout, "default", "default", "default", "default", "Scout Armour");
+						add_unit_to_company("scout", company, k, roles.scout, eROLE.Scout);
 					}
 				}
 			}
@@ -3013,14 +3066,14 @@ function scr_initialize_custom() {
 				if (company < 8) then repeat(temp1) {
 					k += 1;
 					man_size += 1;
-					add_unit_to_company("marine", company, k, roles.tactical, eROLE.Tactical, "default", "default", "default", "default", "default");
+					add_unit_to_company("marine", company, k, roles.tactical, eROLE.Tactical);
 				} 
 				
 				// reserve company only of assault
 				if (company = 8) then repeat(temp1) {
 					k += 1;
 					man_size += 1; // assault reserve company
-					add_unit_to_company("marine", company, k, roles.assault,eROLE.Assault, "", "", "", "default", "");
+					add_unit_to_company("marine", company, k, roles.assault,eROLE.Assault);
 				} 
 				
 				// reserve company only devo
@@ -3038,7 +3091,7 @@ function scr_initialize_custom() {
 				for (var i = 0; i < temp1; i++) {
 					k += 1;
 					man_size += 1;
-					add_unit_to_company("scout", company, k, roles.scout,eROLE.Scout, , , , , "Scout Armour");
+					add_unit_to_company("scout", company, k, roles.scout,eROLE.Scout);
 				}
 
 				if (company_unit2 = "assault") then repeat(assault) {

@@ -145,7 +145,9 @@ function scr_save_controller(save_id){
     ini_encode_and_json("Formation", "drea",obj_controller.bat_drea_for);
     ini_encode_and_json("Formation", "rhin",obj_controller.bat_rhin_for);
     ini_encode_and_json("Formation", "pred",obj_controller.bat_pred_for);
-    ini_encode_and_json("Formation", "land",obj_controller.bat_land_for);
+    ini_encode_and_json("Formation", "landraid",obj_controller.bat_landraid_for);
+    ini_encode_and_json("Formation", "landspee",obj_controller.bat_landspee_for);
+    ini_encode_and_json("Formation", "whirl",obj_controller.bat_whirl_for);
     ini_encode_and_json("Formation", "scou",obj_controller.bat_scou_for);
 
 

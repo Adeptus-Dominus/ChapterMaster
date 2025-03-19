@@ -110,15 +110,15 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 			}
 		}
 
-	} else if (weapon_name == "hammer_of_wrath") {
+	} else if (weapon_name == "Hammer of Wrath" || weapon_name == "Hammer of Wrath(M)") {
 		flavoured = true;
 		if (!character_shot) {
 			if (number_of_shots < 20) {
 				attack_message += $"{number_of_shots} Astartes with Jump Packs soar upwards, flames roaring. They plummet back down upon the enemy- ";
 			} else if (number_of_shots >= 20 && number_of_shots < 100) {
-				attack_message += $"Squads of Astartes ascend with roaring Jump Packs. They descend upon the enemy- ";
+				attack_message += $"Squads of {number_of_shots} Astartes ascend with roaring Jump Packs. They descend upon the enemy- ";
 			} else {
-				attack_message += $"A massive wave of Astartes rise, their Jump Packs a furious beast. They crash down, smashing their foe- ";
+				attack_message += $"A massive wave of {number_of_shots} Astartes rise, their Jump Packs a furious beast. They crash down, smashing their foe- ";
 			}
 			if (target.dudes_num[targeh] == 1) {
 				if (casulties == 0) {
@@ -410,7 +410,7 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 	// }
 
 	var led = 0;
-	if (wep[id_of_attacking_weapons] == "hammer_of_wrath") then led = 2.1;
+	if (wep[id_of_attacking_weapons] == "Hammer of Wrath") then led = 2.1;
 	if (obj_ncombat.enemy <= 10) {
 		if (target_name = obj_controller.faction_leader[obj_ncombat.enemy]) { // Cleaning up the message for the enemy leader
 			leader_message = string_replace(leader_message, "a " + target_name, target_name);

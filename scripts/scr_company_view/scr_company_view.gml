@@ -459,7 +459,7 @@ function switch_view_company(new_view){
 				scr_company_order(new_view);
 			}
 			scr_company_view(new_view);		
-			company_data = new CompanyStruct(managing);
+			new_company_struct();
 		}
 	}
 }

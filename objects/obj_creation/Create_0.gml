@@ -4,6 +4,9 @@
  */
 keyboard_string="";
 
+
+texturegroup_load("Defualt", true);
+
 #region Global Settings: volume, fullscreen etc
 ini_open("saves.ini");
 master_volume=ini_read_real("Settings","master_volume",1);
@@ -39,7 +42,7 @@ successor_y = 250;
 custom_y = 463;
 /// y coord of Other section heading
 other_y = 593;
-
+marine_surface = surface_create(600, 600);
 var show_debug = false;
 if(show_debug){
     show_debug_overlay(true);
@@ -289,7 +292,11 @@ buttons = {
         {   
             str1 : "Gothic",
             font : fnt_40k_14b,
-        },                                                                              
+        },
+        {   
+            str1 : "Wolf Cult",
+            font : fnt_40k_14b,
+        },                                                                                      
     ], "Chapter Visual Styles")  
 }
 
@@ -298,6 +305,11 @@ with (buttons){
     home_planets.current_selection = 1;
     home_warp.current_selection = 1;
     recruit_home_relationship.current_selection = 1;
+}
+
+text_bars = {
+    battle_cry : new TextBarArea(920,118, 540),
+    admiral : new TextBarArea(890,685, 580,true),
 }
 scrollbar_engaged=0;
 

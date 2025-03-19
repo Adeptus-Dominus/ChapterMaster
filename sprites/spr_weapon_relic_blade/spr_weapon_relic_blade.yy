@@ -14,8 +14,6 @@
   "For3D": false,
   "frames": [
     {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"a9e77be2-64e4-4dd1-a478-6b5a0b0a6ba8",},
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"1bfd070d-6bbf-4cdf-8b0d-0ce2213bfcaa",},
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"bae8e0fd-52f4-441a-8dc2-cf5bfef00265",},
     {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"0ab801f3-77b9-4897-baa2-21d1b1a66a59",},
   ],
   "gridX": 0,
@@ -47,7 +45,7 @@
     "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "eventStubScript": null,
     "eventToFunction": {},
-    "length": 4.0,
+    "length": 2.0,
     "lockOrigin": false,
     "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "playback": 1,
@@ -59,9 +57,7 @@
     "tracks": [
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
             {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"a9e77be2-64e4-4dd1-a478-6b5a0b0a6ba8","path":"sprites/spr_weapon_relic_blade/spr_weapon_relic_blade.yy",},},},"Disabled":false,"id":"551ad9d7-f899-49d8-824c-c4aa630cc24b","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"1bfd070d-6bbf-4cdf-8b0d-0ce2213bfcaa","path":"sprites/spr_weapon_relic_blade/spr_weapon_relic_blade.yy",},},},"Disabled":false,"id":"d75ccb1c-0665-437e-9b5d-e66e48bdf621","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"bae8e0fd-52f4-441a-8dc2-cf5bfef00265","path":"sprites/spr_weapon_relic_blade/spr_weapon_relic_blade.yy",},},},"Disabled":false,"id":"76e88c39-2f7c-4701-9ef4-eee423aa0cd9","IsCreationKey":false,"Key":2.0,"Length":1.0,"Stretch":false,},
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"0ab801f3-77b9-4897-baa2-21d1b1a66a59","path":"sprites/spr_weapon_relic_blade/spr_weapon_relic_blade.yy",},},},"Disabled":false,"id":"93d5883f-4bed-45b6-9c83-3b88ce7201db","IsCreationKey":false,"Key":3.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"0ab801f3-77b9-4897-baa2-21d1b1a66a59","path":"sprites/spr_weapon_relic_blade/spr_weapon_relic_blade.yy",},},},"Disabled":false,"id":"93d5883f-4bed-45b6-9c83-3b88ce7201db","IsCreationKey":false,"Key":1.0,"Length":1.0,"Stretch":false,},
           ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange": null,

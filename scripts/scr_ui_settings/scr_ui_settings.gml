@@ -233,6 +233,14 @@ function scr_ui_settings() {
 					tooltip="Land Raiders";
 					tooltip2="Land Raiders are incredibly tanky war machines that protect rear columns and offer tremendous amounts of firepower.  Other super-heavy vehicles will also be placed here.";
 				}
+				if (theh.unit_id=16){
+					tooltip="Land Speeders";
+					tooltip2="Land Speeders are incredibly agile attack vehicles that offer a light highly mobile heavy weapon platform.";
+				}
+				if (theh.unit_id=17){
+					tooltip="Whirlwinds";
+					tooltip2="Whirlwinds are armoured fire-support capable of supporting assaults from a long range safe from enemy retaliation.";
+				}
 	            too_img=theh.unit_id-1;
 	        }
 	    }
@@ -943,7 +951,9 @@ function scr_ui_settings() {
 	                        bat_drea_for[formating]=5;
 	                        bat_rhin_for[formating]=6;
 	                        bat_pred_for[formating]=7;
-	                        bat_land_for[formating]=7;
+	                        bat_landraid_for[formating] = 7;
+                			bat_landspee_for[formating] = 4;
+                			bat_whirl_for[formating] = 1;
 	                        bat_scou_for[formating]=1;
 	                    }
 	                }

@@ -117,7 +117,7 @@ function scr_ui_display_weapons(left_or_right, current_armor, equiped_weapon, cu
         var standards = {
             "Dark Angels" : spr_da_standard,
         }
-        var chap_name = global.chapter_name;
+        var chap_name = instance_exists(obj_creation) ? obj_creation.chapter_name : global.chapter_name;
         var melee_weapons ={
             "Company Standard":struct_exists(standards, chap_name) ? standards[$ chap_name] :spr_weapon_standard2,
             "Chainsword":spr_weapon_chsword,
