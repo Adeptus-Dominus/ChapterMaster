@@ -144,13 +144,14 @@ for (var i=0;i<array_length(unit_struct);i++){
             var _birthday = obj_ini.age[marine_co[i], marine_id[i]];
             var _current_year = (obj_controller.millenium * 1000) + obj_controller.year;
             var _harvestable_seed = 0;
+
             if (_birthday <= (_current_year - 10) && obj_ini.zygote == 0) {
-                if (irandom(19) > 0) {
+                if (irandom_range(1, 20) > 1) {
                     _harvestable_seed++;
                 }
             }
             if (_birthday <= (_current_year - 5)) {
-                if (irandom(19) > 0) {
+                if (irandom_range(1, 20) > 1) {
                     _harvestable_seed++;
                 }
             }
