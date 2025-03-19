@@ -1,3 +1,13 @@
+enum eSTART_FACTION {
+	Progenitor = 1,
+	Imperium,
+	Mechanicus,
+	Inquisition,
+	Ecclesiarchy,
+	Astartes,
+	Reserved,
+}
+
 /// @mixin obj_creation
 function scr_creation(slide_num) {
 
@@ -95,75 +105,69 @@ function scr_creation(slide_num) {
 	            if (purity=10) then mutations=0;
 	        }
         
-	        if (custom>0){
-	            disposition[0]=0;
-	            disposition[1]=60;// Prog
-	            disposition[2]=0;// Imp
-	            disposition[3]=0;// Mech
-	            disposition[4]=0;// Inq
-	            disposition[5]=0;// Ecclesiarchy
-	            disposition[6]=50;// Astartes
-	            disposition[7]=0;// Reserved
-            
-	            if (founding==eCHAPTERS.SPACE_WOLVES) then disposition[1]=70;
-	            if (founding==eCHAPTERS.IMPERIAL_FISTS) then disposition[1]=50;
-	            if (founding==eCHAPTERS.SALAMANDERS) then disposition[1]=70;
-            
-	            disposition[2]=50;
-	            disposition[3]=40;
-	            disposition[4]=30;
-	            disposition[5]=40;
-            
-	            if (strength>5) then disposition[4]-=(strength-5)*2;
-	            if (purity<6) then disposition[4]-=5;
-	            if (founding==10) then disposition[4]-=5; // random/unknown
-            
-	            if (cooperation<5){
-	                disposition[6]-=(6-cooperation)*2;
-	                disposition[5]-=(6-cooperation)*2;
-	                disposition[4]-=(6-cooperation);
-	                disposition[3]-=(6-cooperation);
-	                disposition[2]-=(6-cooperation)*2;
-	            }
-            
-	            if(scr_has_adv("Crafters")){
-					disposition[3]+=2;
+			if (custom > 0) {
+				disposition[0] = 0;
+				disposition[eSTART_FACTION.Progenitor] = 60 + ((cooperation - 5) * 4); // Prog
+				disposition[eSTART_FACTION.Imperium] = 50 + ((cooperation - 5) * 4); // Imp
+				disposition[eSTART_FACTION.Mechanicus] = 40 + ((cooperation - 5) * 2); // Mech
+				disposition[eSTART_FACTION.Inquisition] = 30 + ((cooperation - 5) * 2) - (2 * (10 - purity)) - (2 * (10 - stability)); // Inq
+				disposition[eSTART_FACTION.Ecclesiarchy] = 40 + ((cooperation - 5) * 4)  - (10 - purity) - ((10 - stability)); // Ecclesiarchy
+			
+				if (founding == eCHAPTERS.SPACE_WOLVES) {
+					disposition[eSTART_FACTION.Progenitor] = 70;
+				} else if (founding == eCHAPTERS.IMPERIAL_FISTS) {
+					disposition[eSTART_FACTION.Progenitor] = 50;
+				} else if (founding == eCHAPTERS.SALAMANDERS) {
+					disposition[eSTART_FACTION.Progenitor] = 70;
+				} else if (founding == 10) { // random/unknown
+					disposition[eSTART_FACTION.Inquisition] -= 5;
 				}
-				if(scr_has_adv("Tech-Brothers")){
-					disposition[3]+=10;
+
+				if (strength > 5) {
+					disposition[eSTART_FACTION.Inquisition] -= (strength - 5) * 2;
+				} else if (strength < 5) {
+					disposition[eSTART_FACTION.Imperium] += (5 - strength) * 2;
 				}
-				if(scr_has_disadv("Psyker Intolerant")){
-					disposition[4]+=5;
+			
+				if (scr_has_adv("Crafters")) {
+					disposition[eSTART_FACTION.Mechanicus] += 2;
 				}
-				if(scr_has_disadv("Warp Tainted")){
-					disposition[1]-=10;
-					disposition[2]-=10;
-					disposition[3]-=10;
-					disposition[4]-=10;
-					disposition[5]-=10;
-					disposition[6]-=10;
+				if (scr_has_adv("Tech-Brothers")) {
+					disposition[eSTART_FACTION.Mechanicus] += 10;
 				}
-				if(scr_has_disadv("Sieged")){
-					disposition[6]+=5;
+				if (scr_has_disadv("Psyker Intolerant")) {
+					disposition[eSTART_FACTION.Inquisition] += 5;
+					disposition[eSTART_FACTION.Ecclesiarchy] += 5;
 				}
-				if(scr_has_disadv("Suspicious")){
-					disposition[4]-=15;
+				if (scr_has_disadv("Warp Tainted")) {
+					disposition[eSTART_FACTION.Progenitor] -= 10;
+					disposition[eSTART_FACTION.Imperium] -= 10;
+					disposition[eSTART_FACTION.Mechanicus] -= 10;
+					disposition[eSTART_FACTION.Inquisition] -= 10;
+					disposition[eSTART_FACTION.Ecclesiarchy] -= 10;
+					disposition[eSTART_FACTION.Astartes] -= 10;
 				}
-				if(scr_has_disadv("Tech-Heresy")){
-					disposition[3]-=8;
+				if (scr_has_disadv("Sieged")) {
+					disposition[eSTART_FACTION.Imperium] += 5;
 				}
-				if(scr_has_adv("Warp Touched")){
-					disposition[4]-=4;
+				if (scr_has_disadv("Suspicious")) {
+					disposition[eSTART_FACTION.Inquisition] -= 15;
 				}
-				if(scr_has_disadv("Tolerant")){
-	                disposition[1]-=5;
-					disposition[2]-=5;
-	                disposition[3]-=5;
-					disposition[4]-=5;
-					disposition[5]-=5;
-					disposition[6]-=5;
+				if (scr_has_disadv("Tech-Heresy")) {
+					disposition[eSTART_FACTION.Mechanicus] -= 8;
 				}
-	        }
+				if (scr_has_adv("Warp Touched")) {
+					disposition[eSTART_FACTION.Inquisition] -= 4;
+				}
+				if (scr_has_disadv("Tolerant")) {
+					disposition[eSTART_FACTION.Progenitor] -= 5;
+					disposition[eSTART_FACTION.Imperium] -= 5;
+					disposition[eSTART_FACTION.Mechanicus] -= 5;
+					disposition[eSTART_FACTION.Inquisition] -= 5;
+					disposition[eSTART_FACTION.Ecclesiarchy] -= 5;
+					disposition[eSTART_FACTION.Astartes] -= 5;
+				}
+			}
 	    }
 	}
 
