@@ -740,6 +740,7 @@
     {"id":{"name":"spr_diplo_symbols","path":"sprites/spr_diplo_symbols/spr_diplo_symbols.yy",},},
     {"id":{"name":"spr_defeat","path":"sprites/spr_defeat/spr_defeat.yy",},},
     {"id":{"name":"spr_mk7_gladiator_chest","path":"sprites/spr_mk7_gladiator_chest/spr_mk7_gladiator_chest.yy",},},
+    {"id":{"name":"spr_flora_camo_texture","path":"sprites/spr_flora_camo_texture/spr_flora_camo_texture.yy",},},
     {"id":{"name":"spr_mk3_right_leg_variants","path":"sprites/spr_mk3_right_leg_variants/spr_mk3_right_leg_variants.yy",},},
     {"id":{"name":"spr_rectangle","path":"sprites/spr_rectangle/spr_rectangle.yy",},},
     {"id":{"name":"sprite245","path":"sprites/sprite245/sprite245.yy",},},

@@ -563,7 +563,7 @@ function set_complex_shader_area(area, colour){
 global.textures = {
     "Hazzards" : spr_hazzard_texture,
     "Checks" : spr_checker_texture,
-    "Checks1" : spr_checker_texture,
+    "flora_camo" : spr_flora_camo_texture,
     "Checks2" : spr_hazzard_texture,
     "Checks3" : spr_checker_texture,
     "Checks4" : spr_hazzard_texture,
@@ -642,7 +642,11 @@ function colour_picker(xx,yy, max_width=400) constructor{
 
     static draw_textures_surface = function(selection_method){
         draw_set_alpha(1);
-        draw_surface_part(textures_surface, _texture_offset[0], _texture_offset[1], min(max_width,surface_get_width(textures_surface)), surface_get_height(textures_surface), x, y);
+        var _tex_height = surface_get_height(textures_surface);
+        draw_surface_part(textures_surface, _texture_offset[0], _texture_offset[1], min(max_width,surface_get_width(textures_surface)), _tex_height, x, y);
+         if (scr_hit(x, y, x+max_width ,  y + _tex_height)){
+            tooltip_draw("scroll with arrow keys");
+         }
         for (var i=0;i<array_length(texture_coords);i++){
             var _tex_coord = texture_coords[i];
 
@@ -653,7 +657,6 @@ function colour_picker(xx,yy, max_width=400) constructor{
             }
             _texture_offset[0] = clamp(_texture_offset[0], 0, max(surface_get_width(textures_surface) - max_width, 0));
             if (scr_hit_relative(_tex_coord[0], [x - _texture_offset[0],y - _texture_offset[1]])){
-                show_debug_message("hit");
                 draw_set_color(c_white);
                 draw_set_alpha(0.2);
                 var rel_coords = [];
