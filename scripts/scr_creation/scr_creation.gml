@@ -158,6 +158,7 @@ function scr_creation(slide_num) {
 				}
 				if (scr_has_adv("Warp Touched")) {
 					disposition[eSTART_FACTION.Inquisition] -= 4;
+					disposition[eSTART_FACTION.Ecclesiarchy] -= 4;
 				}
 				if (scr_has_disadv("Tolerant")) {
 					disposition[eSTART_FACTION.Progenitor] -= 5;
