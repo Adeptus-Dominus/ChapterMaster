@@ -992,7 +992,7 @@ var all_disadvantages = [
         name : "Barren Librarius",
         description : "Your chapter has a smaller Librarius compared to other chapters due to having fewer potent psykers.",
         value : 20,
-        meta : ["Librarians"],
+        meta : ["Psyker Views","Librarians"],
     },
 ]
 
