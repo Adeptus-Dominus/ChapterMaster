@@ -53,7 +53,7 @@ if ((started=2) or (started=4)){
         obj_pnunit.alarm[4]=2;
         obj_pnunit.alarm[5]=3;
     }
-    total_battle_exp_gain = threat * 50;
+    total_battle_exp_gain = (threat * threat) * 10; // Values should be: 10, 40, 90, 160, 250, 360, 490, 640, 810, 1000
     if (instance_exists(obj_enunit)){obj_enunit.alarm[1]=1;}
     instance_activate_object(obj_star);
     instance_activate_object(obj_event_log);

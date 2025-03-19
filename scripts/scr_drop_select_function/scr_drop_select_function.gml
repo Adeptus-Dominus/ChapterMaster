@@ -175,7 +175,7 @@ function drop_select_draw(){
                 target_threat = "",
                 race_quantity = 0;
             var races = ["", "Ecclesiarchy", "Eldar", "Orks", "Tau", "Tyranids", "Heretics", "CSMs", "Daemons", "Necrons"];
-            var threat_levels = ["", "Minima (1)", "Parvus (2)", "Moderatus (3)", "Significus (4)", "Enormicus (5)", "Extremis (6)"];
+            var threat_levels = ["", "Marine","Demi-Squad","Squad","Squads+","Demi-Company","Company","Company+","Companies++","Chapter/2","Chapter", "???"]; // Current version is - marine, should be determined by community vote
             var race_quantities = [0, sisters, eldar, ork, tau, tyranids, traitors, csm, demons, necrons];
 
             if (attacking >= 5 && attacking <= 13) {
@@ -183,10 +183,10 @@ function drop_select_draw(){
                 target_race = races[attacking - 4];
             }
 
-            if (race_quantity >= 1 && race_quantity <= 6) {
-                target_threat = threat_levels[race_quantity];
-            } else if (race_quantity >= 6) {
-                target_threat = threat_levels[6];
+            if (race_quantity >= 1 && race_quantity <= 10) {
+                target_threat = $"{threat_levels[race_quantity]} ({race_quantity})";
+            } else if (race_quantity > 10) {
+                target_threat = $"{threat_levels[11]} ({race_quantity})";
             }
             target.x1 = formation.x1;
             target.y1 = formation.y2 + 10;
@@ -312,7 +312,7 @@ function drop_select_draw(){
                 // if (obj_ncombat.threat>1) and (obj_ncombat.enemy!=13) then obj_ncombat.threat-=1;
                 if (obj_ncombat.threat > 1) and(obj_ncombat.battle_special != "world_eaters") and(attack = 0) then obj_ncombat.threat -= 1;
                 if (obj_ncombat.threat < 1) then obj_ncombat.threat = 1;
-                if (obj_ncombat.enemy = 10) and(obj_ncombat.battle_object.p_type[obj_ncombat.battle_id] = "Daemon") then obj_ncombat.threat = 7;
+                // if (obj_ncombat.enemy = 10) and(obj_ncombat.battle_object.p_type[obj_ncombat.battle_id] = "Daemon") then obj_ncombat.threat = 7;
 
                 var _battle_place = obj_ncombat.battle_object;
                 var _battle_sub_loc = obj_ncombat.battle_id;
