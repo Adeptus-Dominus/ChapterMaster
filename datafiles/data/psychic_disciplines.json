@@ -51,7 +51,7 @@
         "tags": ["MIN", "TZEENTCH"]
     },
     "minor_sl_daemon": {
-        "name": "Minor Slaneesh",
+        "name": "Minor Slaanesh",
         "prefix": "MSLA",
         "powers": [
             "warp_bolts",
