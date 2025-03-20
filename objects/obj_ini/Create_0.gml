@@ -30,6 +30,7 @@ penitent_max=0;
 penitent_current=0;
 penitent_end=0;
 man_size=0;
+home_planet = 2;
 
 // Equipment- maybe the bikes should go here or something?          yes they should
 i=-1;

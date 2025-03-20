@@ -308,7 +308,7 @@ global.base_stats = { //tempory stats subject to change by anyone that wishes to
 function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) constructor{
 	constitution=0; strength=0;luck=0;dexterity=0;wisdom=0;piety=0;charisma=0;technology=0;intelligence=0;weapon_skill=0;ballistic_skill=0;size = 0;planet_location=0;
 	if (!instance_exists(obj_controller) && class!="blank"){//game start unit planet location
-		planet_location=2;
+		planet_location = obj_ini.home_planet;
 	}
 	ship_location=-1;
     last_ship = {uid : "", name : ""};
