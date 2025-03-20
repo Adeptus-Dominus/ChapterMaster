@@ -561,7 +561,7 @@ function scr_ui_manage() {
 	        	x1 = x_left;
 	        	y1 = yy+488;
 	        	x2 = x1+string_width(var_text);
-	        	y2 = y1+string_width(var_text);	  
+	        	y2 = y1+string_height(var_text);	  
 	        	draw_text_outline(x1,y1,var_text);
 	        	array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]);
 	        }
