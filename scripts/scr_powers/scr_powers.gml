@@ -298,10 +298,9 @@ function scr_powers(caster_id) {
     display_battle_log_message();
 }
 
-/// Function to get requested data from the disciplines_data structure
+/// @desc Function to get requested data from the disciplines_data structure. Returns The requested data, or undefined if not found.
 /// @param _discipline_name - The name of the discipline
 /// @param _data_name - The specific data attribute you want
-/// @returns The requested data, or undefined if not found
 function get_discipline_data(_discipline_name, _data_name) {
     // Check if the power exists in the global.disciplines_data
     if (struct_exists(global.disciplines_data, _discipline_name)) {
@@ -316,8 +315,8 @@ function get_discipline_data(_discipline_name, _data_name) {
         return _data_content;
     } else {
         assert_error_popup("Requested discipline was not found!");
+        return;
     }
-    return;
 }
 
 /// Function to get requested data from the powers_data structure
