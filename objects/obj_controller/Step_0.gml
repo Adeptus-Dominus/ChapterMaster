@@ -327,15 +327,15 @@ if (menu==1 && (managing>0 || managing<0)){
             if (_psy_powers_count > 0){
                 var _psy_discipline = unit.psy_discipline();
                 var _psy_discipline_name = get_discipline_data(_psy_discipline, "name");
-                temp[119]=$"Psyker: {_psy_discipline_name} {_psy_powers_count}";
+                temp[119]=$"{unit.psionic}/{_psy_powers_count}";
 
-				var _tooltip = "";
+				var _tooltip = $"Main Discipline: {_psy_discipline_name}\n";
+                _tooltip += $"Psychic Rating: {unit.psionic}\n";
+                _tooltip += $"Known Powers: ";
 				for (var i = 0; i < _psy_powers_count; i++) {
 					_tooltip += get_power_data(_psy_powers_known[i], "name");
 					if (i < _psy_powers_count - 1) {
 						_tooltip += ", ";
-					} else {
-						_tooltip += ".";
 					}
 				}
                 temp[123] = _tooltip;

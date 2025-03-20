@@ -103,7 +103,7 @@ function scr_ui_manage() {
 	        selecting_planet=0;
 	        man_size=0;
 		}	
-		var unit,x1,x2,y1,y2, var_text;
+		var unit,x1,x2,x3,y1,y2,y3,text;
 		var romanNumerals=scr_roman_numerals();	
 		var tooltip_text="",bionic_tooltip="",tooltip_drawing=[];
 			var invalid_locations = ["Mechanicus Vessel", "Terra"];
@@ -147,7 +147,7 @@ function scr_ui_manage() {
 				}
 			}
 		// Draw the company followed by chapters name
-	    	draw_text(xx+800,yy+74,string_hash_to_newline(string(fx)+", "+string(global.chapter_name)));			
+	    	draw_text(xx+800,yy+74,string(fx)+", "+string(global.chapter_name));			
 		} else if (managing<0){
 			if (struct_exists(selection_data, "purpose")){
 				draw_text(xx+800,yy+74,$"{selection_data.purpose}");			
@@ -159,7 +159,7 @@ function scr_ui_manage() {
 	        draw_set_alpha(0.25);
 	        if (obj_ini.company_title[managing]!="") then bar_wid=max(400,string_width(obj_ini.company_title[managing]));
 	        if (obj_ini.company_title[managing]="") then bar_wid=400;
-        	string_h = string_height(string_hash_to_newline("LOL"));
+        	string_h = string_height("LOL");
 	        draw_rectangle(xx+800-(bar_wid/2),yy+108,xx+800+(bar_wid/2),yy+100+string_h,1);
 	        click_check = scr_hit(xx+800-(bar_wid/2),yy+108,xx+800+(bar_wid/2),yy+100+string_h);
 	        obj_cursor.image_index=0;
@@ -228,7 +228,6 @@ function scr_ui_manage() {
 
 		draw_set_color(c_white);
 		draw_sprite_stretched(spr_data_slate_back, 0, xx+1008-1, yy+140, 572, 378);
-		draw_sprite_stretched(spr_unit_card_icons, 0, xx+1007-1, yy+140, 166, 167);
 		// draw_sprite_stretched(spr_data_slate_border, 0, xx+1008-1, yy+140, 572, 378); Old Location
 		// draw_rectangle_color_simple(xx+1007, yy+140, xx+1579, yy+519, 0, c_white, 0.05);
 		draw_rectangle_color_simple(xx+1007, yy+140, xx+1579, yy+519, 0, 5998382, 0.05);
@@ -310,10 +309,11 @@ function scr_ui_manage() {
 			// Draw unit image
 			draw_set_color(c_white);
 			if (is_struct(temp[121])){
-				temp[121].draw(xx+1328, yy+240)
+				temp[121].draw(xx+1328, yy+250)
 			}
 
 			//TODO implement tooltip explaining potential loyalty hit of demoting a sgt
+			// Sergeant promotion button
 			if (view_squad &&  company_data!={}){
 				if (company_data.cur_squad!=0){
 					var cur_squad = company_data.grab_current_squad();
@@ -331,9 +331,30 @@ function scr_ui_manage() {
 			draw_set_color(line_color);
 
 			// Draw unit name and role
+			var _name_box = {
+				x1: xx + 1410,
+				y1: yy + 177,
+				text1: "",
+				text2: "",
+				text3: selected_unit.name()
+			}
+			_name_box.y2 = _name_box.y1 + 20;
+			_name_box.y3 = _name_box.y2 + 20;
+			if (selected_unit.company <= 0) {
+				_name_box.text2 = $"{selected_unit.squad_role()}";
+			} else if (selected_unit.IsSpecialist()) {
+				_name_box.text1 = $"{selected_unit.company_roman()} Company";
+				_name_box.text2 = $"{selected_unit.role()}";
+			} else {
+				_name_box.text1 = $"{selected_unit.company_roman()} Company";
+				_name_box.text2 = $"{selected_unit.squad_role()}";
+			}
 			draw_set_halign(fa_center);
+			draw_set_font(fnt_40k_14b);
+			draw_text_transformed_outline(_name_box.x1,_name_box.y1,_name_box.text1,1,1,0);
+			draw_text_transformed_outline(_name_box.x1,_name_box.y2,_name_box.text2,1,1,0);
 			draw_set_font(fnt_40k_30b);
-			draw_text_transformed_outline(xx+1290,yy+182,selected_unit.name_role(),0.7,0.7,0);
+			draw_text_transformed_outline(_name_box.x1,_name_box.y3,_name_box.text3,0.7,0.7,0);
 
 			// Draw unit info
 			draw_set_font(fnt_40k_14);
@@ -344,51 +365,83 @@ function scr_ui_manage() {
 			// Equipment
         	var armour = selected_unit.armour();
 	        if (armour!=""){
-				var_text= string_hash_to_newline(selected_unit.equipments_qual_string("armour", true));
+				text= selected_unit.equipments_qual_string("armour", true);
                 tooltip_text = cn.temp[103];
 	        	x1 = x_left;
 	        	y1 = yy+320;
-	        	x2 = x1+string_width_ext(var_text, -1,187);
-	        	y2 = y1+string_height_ext(var_text, -1,187);
+	        	x2 = x1+string_width_ext(text, -1,187);
+	        	y2 = y1+string_height_ext(text, -1,187);
 				draw_set_alpha(1);
-	        	draw_text_ext_outline(x1,y1,var_text,-1,187, 0, quality_color(selected_unit.armour_quality));
+	        	draw_text_ext_outline(x1,y1,text,-1,187, 0, quality_color(selected_unit.armour_quality));
 	        	array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]); 
 	        } 
 
 	        var gear = selected_unit.gear();
 	        if (selected_unit.gear()!=""){
-				var_text= string_hash_to_newline(selected_unit.equipments_qual_string("gear", true));
+				text= selected_unit.equipments_qual_string("gear", true);
 	        	tooltip_text = cn.temp[105];
 	        	x1 = x_left;
 	        	y1 = yy+446;
-	        	x2 = x1+string_width_ext(var_text, -1,187);
-	        	y2 = y1+string_height_ext(var_text, -1,187);	 
-	        	draw_text_ext_outline(x1,y1,var_text,-1,187, 0, quality_color(selected_unit.gear_quality));
+	        	x2 = x1+string_width_ext(text, -1,187);
+	        	y2 = y1+string_height_ext(text, -1,187);	 
+	        	draw_text_ext_outline(x1,y1,text,-1,187, 0, quality_color(selected_unit.gear_quality));
 	        	array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]);
 	        }
 
 	        var mobi = selected_unit.mobility_item();
 	        if (mobi!=""){
-				var_text= string_hash_to_newline(selected_unit.equipments_qual_string("mobi", true));
+				text= selected_unit.equipments_qual_string("mobi", true);
 	        	tooltip_text = cn.temp[107];
 	        	x1 = x_left;
 	        	y1 = yy+467;
-	        	x2 = x1+string_width_ext(var_text, -1,187);
-	        	y2 = y1+string_height_ext(var_text, -1,187);	  
-	        	draw_text_ext_outline(x1,y1,var_text,-1,187, 0, quality_color(selected_unit.mobility_item_quality));
+	        	x2 = x1+string_width_ext(text, -1,187);
+	        	y2 = y1+string_height_ext(text, -1,187);	  
+	        	draw_text_ext_outline(x1,y1,text,-1,187, 0, quality_color(selected_unit.mobility_item_quality));
 	        	array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]);
 	        }
 
+			var wep1= selected_unit.weapon_one();
+			if (wep1!=""){
+				text= selected_unit.equipments_qual_string("wep1", true);
+				tooltip_text = cn.temp[109];
+				x1 = x_left;
+				y1 = yy+345;
+				x2 = x1+string_width_ext(text, -1,187);
+				y2 = y1+string_height_ext(text, -1,187);	 	 
+				draw_text_ext_outline(x1,y1,text,-1,187, 0, quality_color(selected_unit.weapon_one_quality));
+				array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]);
+			}
+		
+			var wep2 = selected_unit.weapon_two();
+			if (wep2!=""){
+				text= selected_unit.equipments_qual_string("wep2", true);
+				tooltip_text = cn.temp[111];
+				x1 = x_left;
+				y1 = yy+395;
+				x2 = x1+string_width_ext(text, -1,187);
+				y2 = y1+string_height_ext(text, -1,187);	
+				draw_text_ext_outline(x1,y1,text,-1,187, 0, quality_color(selected_unit.weapon_two_quality)); 
+				array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]);
+			}
+
 			// Stats
-    		var_text = string_hash_to_newline(string("      {0}",selected_unit.bionics));  // Bionics tracker
-        	x1 = x_left+82;
-        	y1 = yy+209;
-        	x2 = x1+string_width(var_text);
-        	y2 = y1+string_height(var_text);
-	        draw_text_outline(x1,y1,var_text);
+    		text = $"{selected_unit.bionics}";  // Bionics tracker
+        	x1 = x_left+110;
+        	y1 = yy+208;
+        	x2 = x1+string_width(text);
+        	y2 = y1+string_height(text);
+			x3 = x1 - 26;
+			y3 = y1 - 4;
+
+			draw_sprite_stretched(spr_bionic2_icon, 0, x3, y3, 24, 24);
+	        draw_text_outline(x1,y1,text);
 			var _body_parts = ARR_body_parts;
 			var _body_parts_display = ARR_body_parts_display;
-			bionic_tooltip = "Bionic Augmentation is something a unit can do to both enhance their capabilities, but also replace a missing limb to get back into the fight. There is a limit of 10 Bionic augmentations. After that the damage is so extensive that a marine requires a dreadnought to keep going. For everyone else? It's time for the emperor's mercy.##Current Bionic Augmentations:#";
+			bionic_tooltip = "Bionics Installed\n\n";
+			bionic_tooltip += "Bionic Augmentation is something a unit can do to both enhance their capabilities, but also replace a missing limb to get back into the fight.";
+			bionic_tooltip += "\nThere is a limit of 10 Bionic augmentations. After that the damage is so extensive that a marine requires a dreadnought to keep going.";
+			bionic_tooltip += "\nFor everyone else? It's time for the emperor's mercy.";
+			bionic_tooltip += "\n\nCurrent Bionic Augmentations:\n";
 	        for (var part = 0; part<array_length(_body_parts);part++){
 				if (struct_exists(selected_unit.body[$ _body_parts[part]], "bionic")){
 					var part_display = _body_parts_display[part];
@@ -396,39 +449,37 @@ function scr_ui_manage() {
 					switch (part_display) {
 						case "Left Leg":
 						case "Right Leg":
-							bionic_tooltip += $" (CON: +2 STR: +1 DEX: -2)#";
+							bionic_tooltip += $" (CON: +2 STR: +1 DEX: -2)\n";
 							break;
 						case "Left Eye":
 						case "Right Eye":
-							bionic_tooltip += $" (CON: +1 WIS: +1 DEX: +1)#";
+							bionic_tooltip += $" (CON: +1 WIS: +1 DEX: +1)\n";
 							break;
 						case "Left Arm":
 						case "Right Arm":
-							bionic_tooltip += $" (CON: +2 STR: +2 WS: -1)#";
+							bionic_tooltip += $" (CON: +2 STR: +2 WS: -1)\n";
 							break;
 						case "Torso":
-							bionic_tooltip += $" (CON: +4 STR: +1 DEX: -1)#";
+							bionic_tooltip += $" (CON: +4 STR: +1 DEX: -1)\n";
 							break;
 						case "Throat":
-							bionic_tooltip += $" (CHA: -1)#";
+							bionic_tooltip += $" (CHA: -1)\n";
 							break;
 						case "Jaw":
 						case "Head":
-							bionic_tooltip += $" (CON: +1)#";
+							bionic_tooltip += $" (CON: +1)\n";
 							break;
 					}
 				}				
 			}
-	        if (bionic_tooltip !="Bionic Augmentation is something a unit can do to both enhance their capabilities, but also replace a missing limb to get back into the fight. There is a limit of 10 Bionic augmentations. After that the damage is so extensive that a marine requires a dreadnought to keep going. For everyone else? It's time for the emperor's mercy.##Current Bionic Augmentations:#"){
-	        	array_push(tooltip_drawing, [bionic_tooltip, [x1,y1,x2,y2]]);
-	    	} else{
-	    		array_push(tooltip_drawing, ["Bionic Augmentation is something a unit can do to both enhance their capabilities, but also replace a missing limb to get back into the fight. There is a limit of 10 Bionic augmentations. After that the damage is so extensive that a marine requires a dreadnought to keep going. For everyone else? It's time for the emperor's mercy.##This unit has no bionic augmentations.", [x1,y1,x2,y2]]);
-	    	}
+		if (bionic_tooltip != ""){
+			array_push(tooltip_drawing, [bionic_tooltip, [x3,y1,x2,y2]]);
+		}
 
-        var_text = string_hash_to_newline($"     {selected_unit.armour_calc()}") // Armour Rating
-          var tooltip_text = "Armor reduces incoming damage at a flat rate. Certain enemies may attack in ways that may bypass your armor entirely, for example power weapons and some warp sorceries.##Contributing factors:#";
-          var equipment_types = ["armour", "weapon_one", "weapon_two", "mobility", "gear"];
-          for (var i = 0; i < array_length(equipment_types); i++) {
+        text = $"{selected_unit.armour_calc()}"; // Armour Rating
+			var tooltip_text = "Armour Rating\n\nReduces incoming damage at a flat rate. Certain enemies may attack in ways that may bypass your armor entirely, for example power weapons and some warp sorceries.\n\nContributing factors:\n";
+			var equipment_types = ["armour", "weapon_one", "weapon_two", "mobility", "gear"];
+			for (var i = 0; i < array_length(equipment_types); i++) {
             var equipment_type = equipment_types[i];
             var ac = 0;
             var name = "";
@@ -455,21 +506,24 @@ function scr_ui_manage() {
                     break;
             }
             if (ac != 0) {
-                tooltip_text += string_hash_to_newline($"{name}: {ac}#");
+                tooltip_text += $"{name}: {ac}\n";
             }
           }
 			if (obj_controller.stc_bonus[1] == 5 || obj_controller.stc_bonus[2] == 3){
-                tooltip_text += string_hash_to_newline($"STC Bonus: x1.05#");
+                tooltip_text += $"STC Bonus: x1.05\n";
 			}
-        	x1 = x_left-11;
+        	x1 = x_left + 20;
         	y1 = yy+232;
-        	x2 = x1+string_width(var_text);
-        	y2 = y1+string_height(var_text);
-	        draw_text_outline(x1,y1,var_text);
-	        array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]); 
+        	x2 = x1+string_width(text);
+        	y2 = y1+string_height(text);
+			x3 = x1 - 26;
+			y3 = y1 - 4;
+			draw_sprite_stretched(spr_armour2_icon, 0, x3, y3, 24, 24);
+	        draw_text_outline(x1,y1,text);
+	        array_push(tooltip_drawing, [tooltip_text, [x3,y1,x2,y2]]); 
 
-    		var_text = string_hash_to_newline($"     {round(selected_unit.hp())}/{round(selected_unit.max_health())}") // Health Tracker
-        	tooltip_text = string_hash_to_newline(string("Health is a measure how much punishment the creature can take. Marines can go into the negatives and still survive, but they'll require a bionic to become fighting fit once more.##Contributing factors:#CON: {0}#", round(100*(1+((selected_unit.constitution-40)*0.025)))));
+    		text = $"{round(selected_unit.hp())}/{round(selected_unit.max_health())}"; // Health Tracker
+        	tooltip_text = $"Health\n\nA measure how much punishment the creature can take. Marines can go into the negatives and still survive, but they'll require a bionic to become fighting fit once more.\n\nContributing factors:\nCON: {round(100*(1+((selected_unit.constitution-40)*0.025)))}\n";
             for (var i = 0; i < array_length(equipment_types); i++) {
                 var equipment_type = equipment_types[i];
                 var hp_mod = 0;
@@ -497,22 +551,37 @@ function scr_ui_manage() {
                         break;
                 }
                 if (hp_mod != 0) {
-                    tooltip_text += string_hash_to_newline($"{name}: {format_number_with_sign(hp_mod)}%#");
+                    tooltip_text += $"{name}: {format_number_with_sign(hp_mod)}%\n";
                 }
             }
-        	x1 = x_left-11;
-        	y1 = yy+209;
-        	x2 = x1+string_width(var_text);
-        	y2 = y1+string_height(var_text);
-	        draw_text_outline(x1,y1,var_text);
-	        array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]); 
+        	x1 = x_left + 20;
+        	y1 = yy+208;
+        	x2 = x1+string_width(text);
+        	y2 = y1+string_height(text);
+			x3 = x1 - 26;
+			y3 = y1 - 4;
+			draw_sprite_stretched(spr_wounds_icon, 0, x3, y3, 24, 24);
+	        draw_text_outline(x1,y1,text);
+	        array_push(tooltip_drawing, [tooltip_text, [x3,y1,x2,y2]]); 
 
-	        if (cn.temp[113]!="") then draw_text_outline(x_left, yy+184, string_hash_to_newline($"  {cn.temp[113]}")); // Experience
-
+			// Experience
+			if (cn.temp[113]!="") {
+				text = $"{cn.temp[113]}";
+				x1 = x_left + 20;
+				y1 = yy+184;
+				x2 = x1+string_width(text);
+				y2 = y1+string_height(text);
+				x3 = x1 - 26;
+				y3 = y1 - 4;
+				tooltip_text = "Experience\n\nA measureme of how battle-hardened the unit is. Provides a lot of various bonuses across the board.";
+				array_push(tooltip_drawing, [tooltip_text, [x3,y1,x2,y2]]); 
+				draw_sprite_stretched(spr_exp_icon, 0, x_left - 6, yy+180, 24, 24);
+				draw_text_outline(x1, y1, text);
+			}
        
         		 
         	if (cn.temp[118]!=""){
-						tooltip_text = "Health damage taken by the marine is reduced by this percentage. This happens after the flat reduction from armor.##Contributing factors:#";
+						tooltip_text = "Damage Resistance\n\nHealth damage taken by the marine is reduced by this percentage. This happens after the flat reduction from armor.\n\nContributing factors:\n";
 						for (var i = 0; i < array_length(equipment_types); i++){
 							var equipment_type = equipment_types[i];
 							var dr = 0;
@@ -540,123 +609,109 @@ function scr_ui_manage() {
 											break;
 							}
 							if (dr != 0) {
-									tooltip_text += string_hash_to_newline($"{name}: {dr}%#");
+									tooltip_text += $"{name}: {dr}%\n";
 							}
 						}
-        		var_text = string_hash_to_newline(string("      {0}",cn.temp[118])) // Damage Resistance
-	        	tooltip_text += string_hash_to_newline(string("CON: {0}%#EXP: {1}%", round(selected_unit.constitution/2), round(selected_unit.experience/10)));
-	        	x1 = x_left+82;
-	        	y1 = yy+234;
-	        	x2 = x1+string_width(var_text);
-	        	y2 = y1+string_height(var_text);
-		        draw_text_outline(x1,y1,var_text);
-		        array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]);
+        		text = $"{cn.temp[118]}"; // Damage Resistance
+	        	tooltip_text += string("CON: {0}%\nEXP: {1}%", round(selected_unit.constitution/2), round(selected_unit.experience/10));
+	        	x1 = x_left+110;
+	        	y1 = yy+232;
+	        	x2 = x1+string_width(text);
+	        	y2 = y1+string_height(text);
+				x3 = x1 - 26;
+				y3 = y1 - 4;
+				draw_sprite_stretched(spr_resistance_icon, 0, x3, y3, 24, 24);
+		        draw_text_outline(x1,y1,text);
+		        array_push(tooltip_drawing, [tooltip_text, [x3,y1,x2,y2]]);
 	    	}
 
-			var _psy_powers_known = selected_unit.powers_known;
-			var _psy_powers_count = array_length(_psy_powers_known);
+			// Psyker things
 	        if (cn.temp[119] != "") {
-				var_text= string_hash_to_newline(cn.temp[119]);
+				text= cn.temp[119];
 				tooltip_text = cn.temp[123]
-	        	x1 = x_left;
-	        	y1 = yy+488;
-	        	x2 = x1+string_width(var_text);
-	        	y2 = y1+string_height(var_text);	  
-	        	draw_text_outline(x1,y1,var_text);
-	        	array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]);
+	        	x1 = x_left+110;
+	        	y1 = yy+184;
+	        	x2 = x1+string_width(text);
+	        	y2 = y1+string_height(text);	  
+				x3 = x1 - 26;
+				y3 = y1 - 4;
+				draw_sprite_stretched(spr_psy_icon, 0, x3, y3, 24, 24);
+	        	draw_text_outline(x1,y1,text);
+	        	array_push(tooltip_drawing, [tooltip_text, [x3,y1,x2,y2]]);
 	        }
 
-
-		// Right side of the screen
-		//draw_set_halign(fa_right);
-		//var x_right = xx+1576-24;
-
-		// Equipment
-		var wep1= selected_unit.weapon_one();
-		if (wep1!=""){
-			var_text= string_hash_to_newline(selected_unit.equipments_qual_string("wep1", true));
-			tooltip_text = cn.temp[109];
-			x1 = x_left;
-			y1 = yy+345;
-			x2 = x1+string_width_ext(var_text, -1,187);
-			y2 = y1+string_height_ext(var_text, -1,187);	 	 
-			draw_text_ext_outline(x1,y1,var_text,-1,187, 0, quality_color(selected_unit.weapon_one_quality));
-			array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]);
-		}
-	
-		var wep2 = selected_unit.weapon_two();
-		if (wep2!=""){
-			var_text= string_hash_to_newline(selected_unit.equipments_qual_string("wep2", true));
-			tooltip_text = cn.temp[111];
-			x1 = x_left;
-			y1 = yy+395;
-			x2 = x1+string_width_ext(var_text, -1,187);
-			y2 = y1+string_height_ext(var_text, -1,187);	 
-			draw_text_ext_outline(x1,y1,var_text,-1,187, 0, quality_color(selected_unit.weapon_two_quality)); 
-			array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]);
-		}
-
-		// Stats
 		if (is_array(cn.temp[117])){
-			var_text = string_hash_to_newline(string("     {0}",round(cn.temp[116][0]))) // melee attack
-			tooltip_text = string_hash_to_newline(string(cn.temp[116][1]));
-			x1 = x_left-11;
-			y1 = yy+262;
-			x2 = x1+string_width(var_text);
-			y2 = y1+string_height(var_text);
+			text = $"{round(cn.temp[116][0])}"; // melee attack
+			tooltip_text = string(cn.temp[116][1]);
+			x1 = x_left + 20;
+			y1 = yy+256;
+			x2 = x1+string_width(text);
+			y2 = y1+string_height(text);
 			if (selected_unit.encumbered_melee){
 				draw_set_color(#bf4040);
-				//tooltip_text+="#encumbered"
+				//tooltip_text+="\nencumbered"
 			}
-			draw_text_outline(x1,y1,var_text);
+			x3 = x1 - 26;
+			y3 = y1 - 4;
+			draw_sprite_stretched(spr_melee_icon, 0, x3, y3, 24, 24);
+			draw_text_outline(x1,y1,text);
 			draw_set_color(line_color);
-			array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]);
+			array_push(tooltip_drawing, [tooltip_text, [x3,y1,x2,y2]]);
 		}
 
 		if (is_array(cn.temp[117])){
-			var_text = string_hash_to_newline(string("     {0}",round(cn.temp[117][0]))) // ranged attack
-			tooltip_text = string_hash_to_newline(string(cn.temp[117][1]));
-			x1 = x_left-11;
-			y1 = yy+287;
-			x2 = x1+string_width(var_text);
-			y2 = y1+string_height(var_text);
+			text = $"{round(cn.temp[117][0])}"; // ranged attack
+			tooltip_text = string(cn.temp[117][1]);
+			x1 = x_left + 20;
+			y1 = yy+280;
+			x2 = x1+string_width(text);
+			y2 = y1+string_height(text);
 			if (selected_unit.encumbered_ranged){
 				draw_set_color(#bf4040);
 			}
-			draw_text_outline(x1,y1,var_text);
-			array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]);
+			x3 = x1 - 26;
+			y3 = y1 - 4;
+			draw_sprite_stretched(spr_ranged_icon, 0, x3, y3, 24, 24);
+			draw_text_outline(x1,y1,text);
+			array_push(tooltip_drawing, [tooltip_text, [x3,y1,x2,y2]]);
 			draw_set_color(line_color);
 		}
 
 		if (is_array(cn.temp[116])){
 			carry_data = cn.temp[116][2];
-			var carry_string = $"{carry_data[0]}/{carry_data[1]}" // Melee Burden
-			x1 = x_left+73;
-			y1 = yy+262;
+			var carry_string = $"{carry_data[0]}/{carry_data[1]}"; // Melee Burden
+			x1 = x_left+110;
+			y1 = yy+256;
 			x2 = x1+string_width(carry_string);
 			y2 = y1+string_height(carry_string);
 			if (selected_unit.encumbered_melee){
 				draw_set_color(#bf4040);
 			}
-			draw_text_outline(x1,y1,string_hash_to_newline(carry_string));
-			tooltip_text = string_hash_to_newline(carry_data[2]);
-			array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]);
+			x3 = x1 - 26;
+			y3 = y1 - 4;
+			draw_sprite_stretched(spr_weight_icon, 0, x3, y3, 24, 24);
+			draw_text_outline(x1,y1,carry_string);
+			tooltip_text = carry_data[2];
+			array_push(tooltip_drawing, [tooltip_text, [x3,y1,x2,y2]]);
 			draw_set_color(line_color);
 		}
 
 		if (is_array(cn.temp[117])){
 			carry_data = cn.temp[117][2];
-			var carry_string = $"{carry_data[0]}/{carry_data[1]}" // Ranged Burden
-			x1 = x_left+73;
-			y1 = yy+287;
+			var carry_string = $"{carry_data[0]}/{carry_data[1]}"; // Ranged Burden
+			x1 = x_left+110;
+			y1 = yy+280;
 			x2 = x1+string_width(carry_string);
 			y2 = y1+string_height(carry_string);
 			if (selected_unit.encumbered_ranged){
 				draw_set_color(#bf4040);
 			}
-			draw_text_outline(x1,y1,string_hash_to_newline(carry_string));
-			tooltip_text = string_hash_to_newline(carry_data[2]);
-			array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]);
+			x3 = x1 - 26;
+			y3 = y1 - 4;
+			draw_sprite_stretched(spr_weight_icon, 0, x3, y3, 24, 24);
+			draw_text_outline(x1,y1,carry_string);
+			tooltip_text = carry_data[2];
+			array_push(tooltip_drawing, [tooltip_text, [x3,y1,x2,y2]]);
 			draw_set_color(line_color);
 		}
 
@@ -665,7 +720,8 @@ function scr_ui_manage() {
 		draw_sprite_stretched(spr_data_slate_border, 0, xx+1008-1, yy+140, 572, 378);
 	}	
 
-	    draw_set_font(fnt_40k_14);draw_set_halign(fa_left);
+	    draw_set_font(fnt_40k_14);
+		draw_set_halign(fa_left);
 
 	    // Back
 	    var top=man_current,sel=top,temp1="",temp2="",temp3="",temp4="",temp5="";
@@ -1265,7 +1321,7 @@ function scr_ui_manage() {
         if (managing >= 0 && managing <= 10) {
             if (obj_ini.company_title[managing] != "") {
                 draw_set_font(fnt_fancy);
-                draw_text(xx + 800, yy + 110, string_hash_to_newline($"''{obj_ini.company_title[managing]}''"));
+                draw_text(xx + 800, yy + 110, $"''{obj_ini.company_title[managing]}''");
             }
         }
 
@@ -1315,7 +1371,7 @@ function scr_ui_manage() {
 
         // Load to selected
         draw_set_font(fnt_40k_14b);
-        draw_text_transformed(xx + 320, yy + 402, string_hash_to_newline($"Click a Ship to Load Selection (Req. {man_size} Space)"), 1, 1, 0);
+        draw_text_transformed(xx + 320, yy + 402, $"Click a Ship to Load Selection (Req. {man_size} Space)", 1, 1, 0);
 
         xx = __view_get(e__VW.XView, 0) + 0;
         yy = __view_get(e__VW.YView, 0) + 0;

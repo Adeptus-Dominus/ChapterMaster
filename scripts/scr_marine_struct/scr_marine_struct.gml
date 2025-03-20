@@ -374,6 +374,19 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		return obj_ini.role[company][marine_number];
 	};
 
+	static squad_role = function(){
+		var temp_role = role();
+		if (squad != "none"){
+			if (struct_exists(obj_ini.squad_types[$ obj_ini.squads[squad].type], temp_role)){
+				var role_info = obj_ini.squad_types[$ obj_ini.squads[squad].type][$ temp_role]
+				if (struct_exists(role_info, "role")){
+					temp_role = role_info[$ "role"];
+				}
+			}
+		}
+		return string(temp_role)
+	};
+
 	static IsSpecialist = function(search_type="standard",include_trainee=false){
 		return is_specialist(role(), search_type,include_trainee)
 	}
@@ -1659,7 +1672,11 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		}
 
 		static full_title = function(){
-			return $"{name_role()} of the {scr_roman_numerals()[company-1]}co.";
+			return $"{squad_role()} of the {company_roman} Company";
+		}
+
+		static company_roman = function(){
+			return $"{scr_roman_numerals()[company-1]}";
 		}
 		
 		static load_marine = function(ship, star="none"){
