@@ -740,25 +740,25 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 				"voice": obj_ini.voice
 			};
 
-			var _mutation_roll = (irandom_range(1, 50));
-			var _mutation_threshold = 10 - obj_ini.stability;
+			var _mutation_roll = irandom_range(1, 100);
+			var _mutation_threshold = 11 - obj_ini.stability;
 			if (_mutation_roll <= _mutation_threshold) {
 				var _mutation_names = struct_get_names(gene_seed_mutations);
 				var _possible_mutations = [];
-				for (var i = 0; i < array_length(_mutation_names); i++){
+				for (var i = 0; i < array_length(_mutation_names); i++) {
 					var _mutation = _mutation_names[i];
-					if (gene_seed_mutations[$ _mutation] == 0){
+					if (gene_seed_mutations[$ _mutation] == 0) {
 						array_push(_possible_mutations, _mutation);
 					}
 				}
-
+			
 				repeat (array_length(_possible_mutations)) {
 					if (array_length(_possible_mutations) > 0) {
 						var _picked_mutation = array_random_index(_possible_mutations);
 						gene_seed_mutations[$ _possible_mutations[_picked_mutation]] = 1;
 						array_delete(_possible_mutations, _picked_mutation, 1);
 						_mutation_threshold = min(_mutation_threshold - 1, 1);
-						_mutation_roll = (irandom_range(1, 50));
+						_mutation_roll = irandom_range(1, 100);
 						if (_mutation_roll <= _mutation_threshold) {
 							continue;
 						} else {
