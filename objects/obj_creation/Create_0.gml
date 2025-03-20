@@ -355,7 +355,7 @@ recruiting_exists=1;
 homeworld_exists=1;
 homeworld_rule=1;
 aspirant_trial=eTrials.BLOODDUEL;
-discipline="default";
+discipline="librarius";
 
 battle_cry="For the Emperor";
 

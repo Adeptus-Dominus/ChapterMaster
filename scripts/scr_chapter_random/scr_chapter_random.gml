@@ -32,7 +32,7 @@ function scr_chapter_random(argument0) {
 	flagship_name=global.name_generator.generate_imperial_ship_name();
 	recruiting_exists=1;homeworld_exists=1;
 	homeworld_rule=1;aspirant_trial=eTrials.BLOODDUEL;
-	discipline="default";battle_cry="For the Emperor";
+	discipline="librarius";battle_cry="For the Emperor";
 
 	main_color=1;secondary_color=1;main_trim=1;
 	left_pauldron=1;right_pauldron=1;// Left/Right pauldron
@@ -91,7 +91,7 @@ function scr_chapter_random(argument0) {
 	    points=100;maxpoints=100;
 	    battle_cry="For the Emperor";
     
-	    discipline=choose("default","default","default","default","biomancy","pyromancy","telekinesis");
+	    discipline=choose("librarius","librarius","librarius","librarius","biomancy","pyromancy","telekinesis");
     
 	    scr_icon("random");
 	}

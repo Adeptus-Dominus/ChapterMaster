@@ -1,6 +1,6 @@
 //TODO: a bunch of stuff in this file and related to it uses strings, replace them with constants;
 
-#macro PSY_DISCIPLINES_STARTING ["default", "biomancy", "pyromancy","telekinesis","rune_magic"]
+#macro PSY_DISCIPLINES_STARTING ["librarius", "biomancy", "pyromancy","telekinesis","rune_magic"]
 
 #macro PSY_PERILS_CHANCE_BASE 1
 #macro PSY_PERILS_CHANCE_LOW 1

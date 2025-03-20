@@ -174,7 +174,7 @@ function scr_load(save_part, save_id) {
 	    obj_ini.man_size=ini_read_real("Ini","man_size",0);
 	    // obj_ini.strin=ini_read_string("Ini","strin1","");
 	    // obj_ini.strin2=ini_read_string("Ini","strin2","");
-	    obj_ini.psy_powers=ini_read_string("Ini","psy_powers","default");
+	    obj_ini.psy_powers=ini_read_string("Ini","psy_powers","librarius");
 
 		
 		global.chapter_icon_sprite = ini_read_real("Ini", "global_chapter_icon_sprite", spr_icon_chapters);

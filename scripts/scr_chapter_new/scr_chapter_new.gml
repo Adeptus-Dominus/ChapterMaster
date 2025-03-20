@@ -34,7 +34,7 @@ function ChapterData() constructor {
 	monastary_name = "";
 	advantages = array_create(9);
 	disadvantages = array_create(9);
-	discipline = "default"; // todo convert to enum
+	discipline = "librarius"; // todo convert to enum
 
 	full_liveries = "";
 	complex_livery_data = complex_livery_default();

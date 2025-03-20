@@ -185,7 +185,7 @@
         ],
         "description": "Manipulates Gravity to Throw or Shield."
     },
-    "default": {
+    "librarius": {
         "name": "Librarius",
         "prefix": "LIB",
         "powers": [
