@@ -266,12 +266,12 @@ function scr_powers(caster_id) {
                 // Log battle message to combat feed
                 _battle_log_message = _cast_flavour_text + _power_flavour_text + _casualties_flavour_text;
                 if (_casualties == 0) {
-                    _battle_log_priority = _final_damage / 2; // Just to have some priority here, as they don't have the usual "shots fired"
+                    _battle_log_priority = _final_damage / 50; // Just to have some priority here, as they don't have the usual "shots fired"
                 } else {
                     if (_target_is_vehicle) {
                         _battle_log_priority = _casualties * 12; // Vehicles are more juicy
                     } else {
-                        _battle_log_priority = _casualties * 2; // More casualties = higher priority messages
+                        _battle_log_priority = _casualties * 3; // More casualties = higher priority messages
                     }
                 }
                 add_battle_log_message(_battle_log_message, _battle_log_priority, 134);

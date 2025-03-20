@@ -449,9 +449,9 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 	if (defenses == 1) {
 		message_size = 999;
 	} else if (casulties == 0) {
-		message_size = number_of_shots;
+		message_size = number_of_shots / 10;
 	} else {
-		if (target.dudes_vehicle[targeh] = 1) {
+		if (target.dudes_vehicle[targeh] == 1) {
 			message_size = casulties * 10;
 		}
 		else {
