@@ -115,19 +115,19 @@ function print_stat_diffs(diffs){
 /// @description Roll a custom dice, influenced by the chapter' luck, return sum of all rolls.
 /// @param {real} dices - how many dices to roll.
 /// @param {real} faces - how many faces each dice has.
-/// @param {real} player_benifit_at - will the player benifit from low or high rolls, for the luck logic.
+/// @param {real} player_benefit_at - will the player benefit from low or high rolls, for the luck logic.
 /// @returns {real}
-function roll_dice(dices = 1, faces = 6, player_benifit_at = "none") {
+function roll_dice(dices = 1, faces = 6, player_benefit_at = "none") {
 	var _total_roll = 0;
 	var _roll = 0;
 
 	repeat (dices) {
 		_roll = irandom_range(1, faces);
 
-		if (scr_has_disadv("Shitty Luck") && player_benifit_at != "none") {
-			if (player_benifit_at == "high" && _roll > (faces / 2)) {
+		if (scr_has_disadv("Shitty Luck") && player_benefit_at != "none") {
+			if (player_benefit_at == "high" && _roll > (faces / 2)) {
 				_roll = irandom_range(1, faces);
-			} else if (player_benifit_at == "low" && _roll < (faces / 2 + 1)) {
+			} else if (player_benefit_at == "low" && _roll < (faces / 2 + 1)) {
 				_roll = irandom_range(1, faces);
 			}
 		}
@@ -141,24 +141,24 @@ function roll_dice(dices = 1, faces = 6, player_benifit_at = "none") {
 /// @description Roll a custom dice, influenced by the unit' luck, return sum of all rolls.
 /// @param {real} dices - how many dices to roll.
 /// @param {real} faces - how many faces each dice has.
-/// @param {real} player_benifit_at - will the player benifit from low or high rolls, for the luck logic.
+/// @param {real} player_benefit_at - will the player benefit from low or high rolls, for the luck logic.
 /// @param {struct} unit - unit struct.
 /// @returns {real}
-function roll_personal_dice(dices = 1, faces = 6, player_benifit_at = "none", unit) {
+function roll_personal_dice(dices = 1, faces = 6, player_benefit_at = "none", unit) {
 	var _total_roll = 0;
 	var _roll = 0;
 
 	repeat (dices) {
 		_roll = irandom_range(1, faces);
 
-		if (player_benifit_at != "none" && unit.luck > 0) {
+		if (player_benefit_at != "none" && unit.luck > 0) {
 			// Chance to reroll, based on the luck stat
 			var luck_chance = roll_dice(1, 100);
 
 			if (luck_chance <= unit.luck) {
-				if (player_benifit_at == "high" && _roll > (faces / 2)) {
+				if (player_benefit_at == "high" && _roll > (faces / 2)) {
 					_roll = irandom_range(1, faces);
-				} else if (player_benifit_at == "low" && _roll < (faces / 2 + 1)) {
+				} else if (player_benefit_at == "low" && _roll < (faces / 2 + 1)) {
 					_roll = irandom_range(1, faces);
 				}
 			}
