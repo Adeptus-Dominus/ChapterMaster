@@ -114,6 +114,7 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Timelines","folderPath":"folders/Timelines.yy",},
   ],
   "IncludedFiles": [
+    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"README.md","CopyToMask":-1,"filePath":"datafiles",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"psychic_disciplines.json","CopyToMask":-1,"filePath":"datafiles/data",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"psychic_powers.json","CopyToMask":-1,"filePath":"datafiles/data",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"traits.json","CopyToMask":-1,"filePath":"datafiles/data",},
@@ -434,6 +435,7 @@
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"raid1.png","CopyToMask":-1,"filePath":"datafiles/images/ui",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"resources.png","CopyToMask":-1,"filePath":"datafiles/images/ui",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"load_sets.json","CopyToMask":-1,"filePath":"datafiles/main/chapter_symbols",},
+    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"pauldron.png","CopyToMask":-1,"filePath":"datafiles/main/role_markings/ultramarines",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"pauldron.png","CopyToMask":-1,"filePath":"datafiles/main/chapter_symbols/ultramarines",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"pauldron.png","CopyToMask":-1,"filePath":"datafiles/main/chapter_symbols/Ultramarines",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"1.JSON","CopyToMask":-1,"filePath":"datafiles/main/chapters",},
@@ -471,7 +473,6 @@
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"tau.json","CopyToMask":-1,"filePath":"datafiles/main/names",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"readme.md","CopyToMask":-1,"filePath":"datafiles/main",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"load_sets.json","CopyToMask":-1,"filePath":"datafiles/main/role_markings",},
-    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"pauldron.png","CopyToMask":-1,"filePath":"datafiles/main/role_markings/ultramarines",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"version.json","CopyToMask":-1,"filePath":"datafiles/main",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"data.json","CopyToMask":-1,"filePath":"datafiles/main/visual_sets/Company_marks_roman_right_knee",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"12.png","CopyToMask":-1,"filePath":"datafiles/main/visual_sets/Company_marks_roman_right_knee/one",},
