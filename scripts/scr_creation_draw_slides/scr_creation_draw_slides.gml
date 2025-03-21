@@ -508,7 +508,7 @@ function draw_chapter_trait_select(){
         
         var arrow_buttons_controls = [strength, cooperation, purity, stability];
         var score_costs = [10, 10, 10, 1];
-        var scores_max = [10, 10, 10, 100];
+        var scores_max = [10, 10, 10, 99];
         var scores_min = [1, 1, 1, 1];
         var click_change = keyboard_check(vk_control) ? 10 : 1;
         if (custom == 2) {

@@ -12,7 +12,7 @@
         "fleet_type": 2, // 1= Homeworld, 2 = Fleet based, 3 = Penitent
         "strength": 5, // 1-10
         "purity": 8, // 1-10
-        "stability": 90, // 1-10
+        "stability": 92, // 1-99
         "cooperation": 5, // 1-10
         "homeworld_exists": 0, // 1 = true
         "recruiting_exists": 0, // 1 = true

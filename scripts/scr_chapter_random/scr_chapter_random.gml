@@ -26,7 +26,7 @@ function scr_chapter_random(argument0) {
 	icon=1;icon_name="da";
 	founding=1;found_secret=0;
 	points=0;maxpoints=100;
-	fleet_type=1;strength=5;cooperation=5;purity=5;stability=50;
+	fleet_type=1;strength=5;cooperation=5;purity=5;stability=90;
 	homeworld="Temperate";homeworld_name=global.name_generator.generate_star_name();
 	recruiting="Death";recruiting_name=global.name_generator.generate_star_name();
 	flagship_name=global.name_generator.generate_imperial_ship_name();
@@ -84,8 +84,8 @@ function scr_chapter_random(argument0) {
 	if (argument0=1){
 	    strength=choose(2,3,4,5,6,7,8);
 	    purity=choose(2,3,4,5,6,7,8);if (strength<5) then purity+=2;
-	    stability=choose(20,30,40,50,60,70,80);if (purity<5) then stability+=20;
-	    cooperation=choose(2,3,4,5,6,7,8);if (stability<50) then cooperation+=2;
+	    stability=choose(20,30,40,50,60,70,80);if (purity<5) then stability+=19;
+	    cooperation=choose(2,3,4,5,6,7,8);if (stability<90) then cooperation+=2;
 	    founding=10;found_secret=floor(random(10))+1;
     
 	    points=100;maxpoints=100;
