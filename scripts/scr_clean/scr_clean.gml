@@ -7,11 +7,9 @@ function compress_enemy_array(_target_column) {
 		return;
 	}
 
-    show_debug_message($"dudes_num: {dudes_num}");
-
 	with (_target_column) {
 		for (var i = 1; i < array_length(dudes_num); i++) {
-            if (i == 30) {
+            if (i == 40) {
                 break;
             }
 			if (dudes_num[i] <= 0) {
@@ -21,6 +19,7 @@ function compress_enemy_array(_target_column) {
                 array_delete(dudes_hp, i, 1);
                 array_delete(dudes_vehicle, i, 1);
                 array_delete(dudes_damage, i, 1);
+                array_delete(dudes_num, i, 1);
 			}
 		}
 	}
