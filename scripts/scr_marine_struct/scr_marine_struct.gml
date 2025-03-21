@@ -750,7 +750,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 			};
 
 			static assign_random_mutations = function() {
-				var _mutation_roll = irandom_range(1, 100);
+				var _mutation_roll = roll_personal_dice(1, 100, "high", self);
 				var _mutation_threshold = 100 - obj_ini.stability;
 				if (_mutation_roll <= _mutation_threshold) {
 					var _mutation_names = struct_get_names(gene_seed_mutations);
