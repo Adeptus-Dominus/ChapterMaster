@@ -349,7 +349,7 @@ fleet_type=1;
 strength=5;
 cooperation=5;
 purity=5;
-stability=5;
+stability=50;
 
 
 var i = 9;

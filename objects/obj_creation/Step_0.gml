@@ -101,7 +101,7 @@ if (change_slide==35) or (change_slide==36) or (chapter_name=="Doom Benefactors"
         strength=5;
         cooperation=5;
         purity=5;
-        stability=5;
+        stability=50;
         for(var i=0; i<16; i++){
             adv[i]="";
             adv_num[i]=0;

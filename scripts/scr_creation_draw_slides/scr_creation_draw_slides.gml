@@ -504,27 +504,29 @@ function draw_chapter_trait_select(){
         draw_text_transformed(505, 332, $"Strength: {_strength_ratings[strength]} ({strength})", 0.5, 0.5, 0);
         draw_text_transformed(505, 387, $"Cooperation: {_cooperation_ratings[cooperation]}  ({cooperation})", 0.5, 0.5, 0);
         draw_text_transformed(505, 442, $"Gene-Seed Purity: {_geneseed_ratings[purity]} ({purity})", 0.5, 0.5, 0);
-        draw_text_transformed(505, 497, $"Gene-Seed Stability: {_geneseed_ratings[stability]} ({stability*10}%)", 0.5, 0.5, 0);
+        draw_text_transformed(505, 497, $"Gene-Seed Stability: ({stability}%)", 0.5, 0.5, 0);
         
         var arrow_buttons_controls = [strength, cooperation, purity, stability];
+        var score_costs = [10, 10, 10, 1];
+        var scores_max = [10, 10, 10, 100];
+        var scores_min = [1, 1, 1, 1];
+        var click_change = keyboard_check(vk_control) ? 10 : 1;
         if (custom == 2) {
             for (var i = 0; i < 4; i++) {
                 draw_sprite_stretched(spr_arrow, 0, 436, 325 + (i * 55), 32, 32);
                 if (scr_hit(436, 325 + (i * 55), 436 + sprite_get_width(spr_arrow), 357 + (i * 55))) {
                     obj_cursor.image_index = 1;
-                    if ((cooldown <= 0) && (arrow_buttons_controls[i] > 1) && (mouse_left >= 1)) {
-                        arrow_buttons_controls[i] -= 1;
-                        points -= 10;
-                        cooldown = 8000;
+                    if (scr_click_left() && (arrow_buttons_controls[i] - click_change) >= scores_min[i]) {
+                        arrow_buttons_controls[i] -= click_change;
+                        points -= score_costs[i] * click_change;
                     }
                 }
                 draw_sprite_stretched(spr_arrow, 1, 470, 325 + (i * 55), 32, 32);
                 if (scr_hit(470, 325 + (i * 55), 470 + sprite_get_width(spr_arrow), 357 + (i * 55))) {
                     obj_cursor.image_index = 1;
-                    if ((cooldown <= 0) && (arrow_buttons_controls[i] < 10) && (points + 10 <= maxpoints) && (mouse_left >= 1)) {
-                        arrow_buttons_controls[i] += 1;
-                        points += 10;
-                        cooldown = 8000;
+                    if (scr_click_left() && (arrow_buttons_controls[i] + click_change) <= scores_max[i] && (points + (score_costs[i] * click_change) <= maxpoints)) {
+                        arrow_buttons_controls[i] += click_change;
+                        points += score_costs[i] * click_change;
                     }
                 }
             }
@@ -549,7 +551,7 @@ function draw_chapter_trait_select(){
         }
         if (scr_hit(436, 490, 800, 522)) {
             tooltip = "Stability";
-            tooltip2 = "How easily new mutations and corruption can occur with your chapter-gene seed. \nAffects the amount of random mutations your existing marines have, and the amount new aspirants get after the implantation is finished.";
+            tooltip2 = "How easily new mutations and corruption can occur with your chapter's gene seed. \nAffects the amount of random mutations your existing marines have, and the amount new aspirants get after the implantation is finished. \nEven a 100% stable gene seed is not fully protected from the mutations.";
         }
     }
     
