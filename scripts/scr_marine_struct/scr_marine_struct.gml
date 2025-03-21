@@ -726,52 +726,59 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 				allegiance = global.chapter_name;
 			}
 
-			gene_seed_mutations = {
-				"preomnor": obj_ini.preomnor,
-				"lyman": obj_ini.lyman,
-				"omophagea": obj_ini.omophagea,
-				"ossmodula": obj_ini.ossmodula,
-				"zygote": obj_ini.zygote,
-				"betchers": obj_ini.betchers,
-				"catalepsean": obj_ini.catalepsean,
-				"occulobe": obj_ini.occulobe,
-				"mucranoid": obj_ini.mucranoid,
-				"membrane": obj_ini.membrane,
-				"voice": obj_ini.voice
-			};
-
-			var _mutation_roll = irandom_range(1, 100);
-			var _mutation_threshold = 100 - obj_ini.stability;
-			if (_mutation_roll <= _mutation_threshold) {
-				var _mutation_names = struct_get_names(gene_seed_mutations);
-				var _possible_mutations = [];
-				for (var i = 0; i < array_length(_mutation_names); i++) {
-					var _mutation = _mutation_names[i];
-					if (gene_seed_mutations[$ _mutation] == 0) {
-						array_push(_possible_mutations, _mutation);
-					}
-				}
-			
-				repeat (array_length(_possible_mutations)) {
-					if (array_length(_possible_mutations) > 0) {
-						var _picked_mutation = array_random_index(_possible_mutations);
-						gene_seed_mutations[$ _possible_mutations[_picked_mutation]] = 1;
-						array_delete(_possible_mutations, _picked_mutation, 1);
-						_mutation_threshold = max(_mutation_threshold - 5, 0);
-						if (_mutation_roll <= _mutation_threshold) {
-							continue;
-						} else {
-							break;
-						}
-					} else {
-						break;
-					}
-				}
-			}
+			assign_inherent_mutations();
+			assign_random_mutations();
 
 			if (gene_seed_mutations[$ "voice"] == 1){
 				charisma-=2;
 			}
+
+			static assign_inherent_mutations = function() {
+				gene_seed_mutations = {
+					"preomnor": obj_ini.preomnor,
+					"lyman": obj_ini.lyman,
+					"omophagea": obj_ini.omophagea,
+					"ossmodula": obj_ini.ossmodula,
+					"zygote": obj_ini.zygote,
+					"betchers": obj_ini.betchers,
+					"catalepsean": obj_ini.catalepsean,
+					"occulobe": obj_ini.occulobe,
+					"mucranoid": obj_ini.mucranoid,
+					"membrane": obj_ini.membrane,
+					"voice": obj_ini.voice
+				};
+			};
+
+			static assign_random_mutations = function() {
+				var _mutation_roll = irandom_range(1, 100);
+				var _mutation_threshold = 100 - obj_ini.stability;
+				if (_mutation_roll <= _mutation_threshold) {
+					var _mutation_names = struct_get_names(gene_seed_mutations);
+					var _possible_mutations = [];
+					for (var i = 0; i < array_length(_mutation_names); i++) {
+						var _mutation = _mutation_names[i];
+						if (gene_seed_mutations[$ _mutation] == 0) {
+							array_push(_possible_mutations, _mutation);
+						}
+					}
+				
+					repeat (array_length(_possible_mutations)) {
+						if (array_length(_possible_mutations) > 0) {
+							var _picked_mutation = array_random_index(_possible_mutations);
+							gene_seed_mutations[$ _possible_mutations[_picked_mutation]] = 1;
+							array_delete(_possible_mutations, _picked_mutation, 1);
+							_mutation_threshold = max(_mutation_threshold - 5, 0);
+							if (_mutation_roll <= _mutation_threshold) {
+								continue;
+							} else {
+								break;
+							}
+						} else {
+							break;
+						}
+					}
+				}
+			};
 
 			//array index 0 == trait to add
 			// array index 1 == probability e.g 99,98 == if (irandom(99)>98){add_trait}
