@@ -60,20 +60,20 @@ function scr_powers(caster_id) {
         _selected_discipline = _tome_data.discipline;
     } */
 
-    // Gather the invocation stats (multiplier to power stats)
-    var _equipment_psy_invocation = get_total_special_value(_unit, "psy_invocation") / 100;
-    var _character_psy_invocation = (_unit_exp / 100) + (_unit.psionic / 10);
-    var _total_psy_invocation = 1 + _equipment_psy_invocation + _character_psy_invocation;
+    // Gather the amplification stats (multiplier to power stats)
+    var _equipment_psy_amplification = get_total_special_value(_unit, "psy_amplification") / 100;
+    var _character_psy_amplification = (_unit.psionic - 2) + (_unit_exp / 100);
+    var _total_psy_amplification = 1 + _equipment_psy_amplification + _character_psy_amplification;
 
     // Gather power data
     // var _power_struct = get_power_data(_power_id); // Not used atm
     var _power_data = get_power_data(_power_id);
     var _power_name = get_power_data(_power_id, "name");
     var _power_type = get_power_data(_power_id, "type");
-    var _power_range = round(get_power_data(_power_id, "range") * _total_psy_invocation);
+    var _power_range = round(get_power_data(_power_id, "range") * _total_psy_amplification);
     // var _power_target_type = get_power_data(_power_id, "target_type"); // Not used here
-    var _power_max_kills = round(get_power_data(_power_id, "max_kills") * _total_psy_invocation);
-    var _power_magnitude = get_power_data(_power_id, "magnitude") * _total_psy_invocation;
+    var _power_max_kills = round(get_power_data(_power_id, "max_kills") * _total_psy_amplification);
+    var _power_magnitude = get_power_data(_power_id, "magnitude") * _total_psy_amplification;
     var _power_armour_piercing = get_power_data(_power_id, "armour_piercing");
     // var _power_duration = get_power_data(_power_id, "duration"); // Not used atm
     var _power_flavour_text = get_power_data(_power_id, "flavour_text");
@@ -87,10 +87,7 @@ function scr_powers(caster_id) {
         }
     }
 
-    // Psy focus and casting fail/success bellow
-    //TODO: Move into a separate function;
-    var _equipment_psy_focus = get_total_special_value(_unit, "psy_focus");
-
+    // Casting fail/success bellow
     var _cast_successful = check_cast_success(_unit);
     if (_cast_successful) {
         _cast_flavour_text = $"{_unit.name_role()} casts '{_power_name}'";
@@ -101,6 +98,7 @@ function scr_powers(caster_id) {
     }
 
     //* Buff powers casting code
+    //! Buff casting is currently disabled, see select_psychic_power();
     if (_power_type == "buff" && _cast_successful) {
         var _marine_index;
         var _marine_column;
@@ -156,12 +154,12 @@ function scr_powers(caster_id) {
                 _marine_index = _target_data.index;
                 _marine_column = _target_data.column;
                 if (_marine_index != -1) {
-                    marine_attack[_marine_index] += 1.5 * _total_psy_invocation;
-                    marine_defense[_marine_index] -= 0.15 * _total_psy_invocation;
+                    marine_attack[_marine_index] += 1.5 * _total_psy_amplification;
+                    marine_defense[_marine_index] -= 0.15 * _total_psy_amplification;
                 }
             }
         } else if (_power_id == "regenerate") {
-            _unit.add_or_sub_health(_power_magnitude * _total_psy_invocation);
+            _unit.add_or_sub_health(_power_magnitude * _total_psy_amplification);
         } else if (_power_id == "telekinetic_dome") {
             if (marine_dome[caster_id] < 3) {
                 marine_dome[caster_id] = 3;

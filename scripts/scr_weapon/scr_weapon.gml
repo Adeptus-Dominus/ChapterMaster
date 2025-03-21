@@ -1515,7 +1515,7 @@ global.weapons = {
 		"arp": 1,
 		"tags": ["force" ],
 		"specials": {
-			"psy_invocation": 25
+			"psy_amplification": 25
 		},
 		"maintenance" : 0.1,
 	},
