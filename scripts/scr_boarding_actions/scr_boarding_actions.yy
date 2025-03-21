@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "scr_boarding_actions",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "Combat",
-    "path": "folders/Scripts/Combat.yy",
+  "$GMScript":"v1",
+  "%Name":"scr_boarding_actions",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_boarding_actions",
+  "parent":{
+    "name":"Combat",
+    "path":"folders/Scripts/Combat.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

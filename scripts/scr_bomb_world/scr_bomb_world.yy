@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "scr_bomb_world",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "Scripts",
-    "path": "folders/Scripts.yy",
+  "$GMScript":"v1",
+  "%Name":"scr_bomb_world",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_bomb_world",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

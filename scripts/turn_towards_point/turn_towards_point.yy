@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "turn_towards_point",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "Sys",
-    "path": "folders/Scripts/Sys.yy",
+  "$GMScript":"v1",
+  "%Name":"turn_towards_point",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"turn_towards_point",
+  "parent":{
+    "name":"Sys",
+    "path":"folders/Scripts/Sys.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "scr_management",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "Interface",
-    "path": "folders/Scripts/Interface.yy",
+  "$GMScript":"v1",
+  "%Name":"scr_management",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_management",
+  "parent":{
+    "name":"Interface",
+    "path":"folders/Scripts/Interface.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

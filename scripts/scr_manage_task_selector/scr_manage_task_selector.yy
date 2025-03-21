@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "scr_manage_task_selector",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "Scripts",
-    "path": "folders/Scripts.yy",
+  "$GMScript":"v1",
+  "%Name":"scr_manage_task_selector",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_manage_task_selector",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

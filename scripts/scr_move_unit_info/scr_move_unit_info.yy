@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "scr_move_unit_info",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "ChapterMaster",
-    "path": "ChapterMaster.yyp",
+  "$GMScript":"v1",
+  "%Name":"scr_move_unit_info",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_move_unit_info",
+  "parent":{
+    "name":"ChapterMaster",
+    "path":"ChapterMaster.yyp",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

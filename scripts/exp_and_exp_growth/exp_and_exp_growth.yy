@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "exp_and_exp_growth",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "Scripts",
-    "path": "folders/Scripts.yy",
+  "$GMScript":"v1",
+  "%Name":"exp_and_exp_growth",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"exp_and_exp_growth",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

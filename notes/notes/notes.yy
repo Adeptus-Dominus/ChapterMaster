@@ -1,9 +1,11 @@
 {
-  "resourceType": "GMNotes",
-  "resourceVersion": "1.1",
-  "name": "notes",
-  "parent": {
-    "name": "Notes",
-    "path": "folders/Notes.yy",
+  "$GMNotes":"",
+  "%Name":"notes",
+  "name":"notes",
+  "parent":{
+    "name":"Notes",
+    "path":"folders/Notes.yy",
   },
+  "resourceType":"GMNotes",
+  "resourceVersion":"2.0",
 }
