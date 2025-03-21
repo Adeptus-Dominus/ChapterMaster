@@ -105,7 +105,7 @@ function scr_ui_manage() {
 		}	
 		var unit,x1,x2,x3,y1,y2,y3,text;
 		var romanNumerals=scr_roman_numerals();	
-		var tooltip_text="",bionic_tooltip="",tooltip_drawing=[];
+		var tooltip_text="",bionic_tooltip="",tooltip_drawing=["", [0,0,0,0], ""];
 			var invalid_locations = ["Mechanicus Vessel", "Terra"];
 
 	    var xx=__view_get( e__VW.XView, 0 )+0, yy=__view_get( e__VW.YView, 0 )+0, bb="", img=0;
@@ -433,12 +433,11 @@ function scr_ui_manage() {
 			x3 = x1 - 26;
 			y3 = y1 - 4;
 
-			draw_sprite_stretched(spr_bionic2_icon, 0, x3, y3, 24, 24);
+			draw_sprite_stretched(spr_icon_bionics, 0, x3, y3, 24, 24);
 	        draw_text_outline(x1,y1,text);
 			var _body_parts = ARR_body_parts;
 			var _body_parts_display = ARR_body_parts_display;
-			bionic_tooltip = "Bionics Installed\n\n";
-			bionic_tooltip += "Bionic Augmentation is something a unit can do to both enhance their capabilities, but also replace a missing limb to get back into the fight.";
+			bionic_tooltip = "Bionic Augmentation is something a unit can do to both enhance their capabilities, but also replace a missing limb to get back into the fight.";
 			bionic_tooltip += "\nThere is a limit of 10 Bionic augmentations. After that the damage is so extensive that a marine requires a dreadnought to keep going.";
 			bionic_tooltip += "\nFor everyone else? It's time for the emperor's mercy.";
 			bionic_tooltip += "\n\nCurrent Bionic Augmentations:\n";
@@ -473,11 +472,11 @@ function scr_ui_manage() {
 				}				
 			}
 		if (bionic_tooltip != ""){
-			array_push(tooltip_drawing, [bionic_tooltip, [x3,y1,x2,y2]]);
+			array_push(tooltip_drawing, [bionic_tooltip, [x3,y1,x2,y2], "Bionics Installed"]);
 		}
 
         text = $"{selected_unit.armour_calc()}"; // Armour Rating
-			var tooltip_text = "Armour Rating\n\nReduces incoming damage at a flat rate. Certain enemies may attack in ways that may bypass your armor entirely, for example power weapons and some warp sorceries.\n\nContributing factors:\n";
+			var tooltip_text = "Reduces incoming damage at a flat rate. Certain enemies may attack in ways that may bypass your armor entirely, for example power weapons and some warp sorceries.\n\nContributing factors:\n";
 			var equipment_types = ["armour", "weapon_one", "weapon_two", "mobility", "gear"];
 			for (var i = 0; i < array_length(equipment_types); i++) {
             var equipment_type = equipment_types[i];
@@ -518,12 +517,12 @@ function scr_ui_manage() {
         	y2 = y1+string_height(text);
 			x3 = x1 - 26;
 			y3 = y1 - 4;
-			draw_sprite_stretched(spr_armour2_icon, 0, x3, y3, 24, 24);
+			draw_sprite_stretched(spr_icon_shield2, 0, x3, y3, 24, 24);
 	        draw_text_outline(x1,y1,text);
-	        array_push(tooltip_drawing, [tooltip_text, [x3,y1,x2,y2]]); 
+	        array_push(tooltip_drawing, [tooltip_text, [x3,y1,x2,y2], "Armour Rating"]); 
 
     		text = $"{round(selected_unit.hp())}/{round(selected_unit.max_health())}"; // Health Tracker
-        	tooltip_text = $"Health\n\nA measure how much punishment the creature can take. Marines can go into the negatives and still survive, but they'll require a bionic to become fighting fit once more.\n\nContributing factors:\nCON: {round(100*(1+((selected_unit.constitution-40)*0.025)))}\n";
+        	tooltip_text = $"A measure how much punishment the creature can take. Marines can go into the negatives and still survive, but they'll require a bionic to become fighting fit once more.\n\nContributing factors:\nCON: {round(100*(1+((selected_unit.constitution-40)*0.025)))}\n";
             for (var i = 0; i < array_length(equipment_types); i++) {
                 var equipment_type = equipment_types[i];
                 var hp_mod = 0;
@@ -560,9 +559,9 @@ function scr_ui_manage() {
         	y2 = y1+string_height(text);
 			x3 = x1 - 26;
 			y3 = y1 - 4;
-			draw_sprite_stretched(spr_wounds_icon, 0, x3, y3, 24, 24);
+			draw_sprite_stretched(spr_icon_health, 0, x3, y3, 24, 24);
 	        draw_text_outline(x1,y1,text);
-	        array_push(tooltip_drawing, [tooltip_text, [x3,y1,x2,y2]]); 
+	        array_push(tooltip_drawing, [tooltip_text, [x3,y1,x2,y2], "Health"]); 
 
 			// Experience
 			if (cn.temp[113]!="") {
@@ -573,15 +572,15 @@ function scr_ui_manage() {
 				y2 = y1+string_height(text);
 				x3 = x1 - 26;
 				y3 = y1 - 4;
-				tooltip_text = "Experience\n\nA measureme of how battle-hardened the unit is. Provides a lot of various bonuses across the board.";
-				array_push(tooltip_drawing, [tooltip_text, [x3,y1,x2,y2]]); 
-				draw_sprite_stretched(spr_exp_icon, 0, x_left - 6, yy+180, 24, 24);
+				tooltip_text = "A measureme of how battle-hardened the unit is. Provides a lot of various bonuses across the board.";
+				array_push(tooltip_drawing, [tooltip_text, [x3,y1,x2,y2], "Experience"]); 
+				draw_sprite_stretched(spr_icon_veteran, 0, x_left - 6, yy+180, 24, 24);
 				draw_text_outline(x1, y1, text);
 			}
        
         		 
         	if (cn.temp[118]!=""){
-						tooltip_text = "Damage Resistance\n\nHealth damage taken by the marine is reduced by this percentage. This happens after the flat reduction from armor.\n\nContributing factors:\n";
+						tooltip_text = "Health damage taken by the marine is reduced by this percentage. This happens after the flat reduction from armor.\n\nContributing factors:\n";
 						for (var i = 0; i < array_length(equipment_types); i++){
 							var equipment_type = equipment_types[i];
 							var dr = 0;
@@ -620,9 +619,9 @@ function scr_ui_manage() {
 	        	y2 = y1+string_height(text);
 				x3 = x1 - 26;
 				y3 = y1 - 4;
-				draw_sprite_stretched(spr_resistance_icon, 0, x3, y3, 24, 24);
+				draw_sprite_stretched(spr_icon_iron_halo, 0, x3, y3, 24, 24);
 		        draw_text_outline(x1,y1,text);
-		        array_push(tooltip_drawing, [tooltip_text, [x3,y1,x2,y2]]);
+		        array_push(tooltip_drawing, [tooltip_text, [x3,y1,x2,y2], "Damage Resistance"]);
 	    	}
 
 			// Psyker things
@@ -635,9 +634,9 @@ function scr_ui_manage() {
 	        	y2 = y1+string_height(text);	  
 				x3 = x1 - 26;
 				y3 = y1 - 4;
-				draw_sprite_stretched(spr_psy_icon, 0, x3, y3, 24, 24);
+				draw_sprite_stretched(spr_icon_psyker, 0, x3, y3, 24, 24);
 	        	draw_text_outline(x1,y1,text);
-	        	array_push(tooltip_drawing, [tooltip_text, [x3,y1,x2,y2]]);
+	        	array_push(tooltip_drawing, [tooltip_text, [x3,y1,x2,y2], "Psychic Stats"]);
 	        }
 
 		if (is_array(cn.temp[117])){
@@ -653,10 +652,10 @@ function scr_ui_manage() {
 			}
 			x3 = x1 - 26;
 			y3 = y1 - 4;
-			draw_sprite_stretched(spr_melee_icon, 0, x3, y3, 24, 24);
+			draw_sprite_stretched(spr_icon_weapon_skill, 0, x3, y3, 24, 24);
 			draw_text_outline(x1,y1,text);
 			draw_set_color(line_color);
-			array_push(tooltip_drawing, [tooltip_text, [x3,y1,x2,y2]]);
+			array_push(tooltip_drawing, [tooltip_text, [x3,y1,x2,y2], "Melee Attack"]);
 		}
 
 		if (is_array(cn.temp[117])){
@@ -671,9 +670,9 @@ function scr_ui_manage() {
 			}
 			x3 = x1 - 26;
 			y3 = y1 - 4;
-			draw_sprite_stretched(spr_ranged_icon, 0, x3, y3, 24, 24);
+			draw_sprite_stretched(spr_icon_ballistic_skill, 0, x3, y3, 24, 24);
 			draw_text_outline(x1,y1,text);
-			array_push(tooltip_drawing, [tooltip_text, [x3,y1,x2,y2]]);
+			array_push(tooltip_drawing, [tooltip_text, [x3,y1,x2,y2], "Ranged Attack"]);
 			draw_set_color(line_color);
 		}
 
@@ -689,10 +688,10 @@ function scr_ui_manage() {
 			}
 			x3 = x1 - 26;
 			y3 = y1 - 4;
-			draw_sprite_stretched(spr_weight_icon, 0, x3, y3, 24, 24);
+			draw_sprite_stretched(spr_icon_weight, 0, x3, y3, 24, 24);
 			draw_text_outline(x1,y1,carry_string);
 			tooltip_text = carry_data[2];
-			array_push(tooltip_drawing, [tooltip_text, [x3,y1,x2,y2]]);
+			array_push(tooltip_drawing, [tooltip_text, [x3,y1,x2,y2], "Melee Burden"]);
 			draw_set_color(line_color);
 		}
 
@@ -708,10 +707,10 @@ function scr_ui_manage() {
 			}
 			x3 = x1 - 26;
 			y3 = y1 - 4;
-			draw_sprite_stretched(spr_weight_icon, 0, x3, y3, 24, 24);
+			draw_sprite_stretched(spr_icon_weight, 0, x3, y3, 24, 24);
 			draw_text_outline(x1,y1,carry_string);
 			tooltip_text = carry_data[2];
-			array_push(tooltip_drawing, [tooltip_text, [x3,y1,x2,y2]]);
+			array_push(tooltip_drawing, [tooltip_text, [x3,y1,x2,y2], "Ranged Burden"]);
 			draw_set_color(line_color);
 		}
 
@@ -1260,7 +1259,7 @@ function scr_ui_manage() {
 			tip = tooltip_drawing[i];
 			coords=tip[1];
 			if (scr_hit(coords)){
-		        tooltip_draw(tip[0], 350);
+		        tooltip_draw(tip[0], 350, , , , tip[2]);
 			}
 		}		
 	}
