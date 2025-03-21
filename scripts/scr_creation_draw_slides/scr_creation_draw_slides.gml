@@ -495,7 +495,7 @@ function draw_chapter_trait_select(){
         draw_line(445,291,1125,291);
         
         draw_set_halign(fa_center);
-        draw_text_transformed(800,301,string_hash_to_newline("Chapter Stats"),0.6,0.6,0);
+        draw_text_transformed(800,301,"Chapter Stats",0.6,0.6,0);
         draw_set_halign(fa_left);
         
         var _strength_ratings = ["", "Decimated", "Reduced", "Reduced", "Reduced", "Average", "Above Average", "Above Average", "Considerable", "Considerable", "Overwhelming"];
@@ -516,6 +516,8 @@ function draw_chapter_trait_select(){
                 draw_sprite_stretched(spr_arrow, 0, 436, 325 + (i * 55), 32, 32);
                 if (scr_hit(436, 325 + (i * 55), 436 + sprite_get_width(spr_arrow), 357 + (i * 55))) {
                     obj_cursor.image_index = 1;
+                    tooltip = "Decrease";
+                    tooltip2 = "(Hold Ctrl to decrease by 10)";
                     if (scr_click_left() && (arrow_buttons_controls[i] - click_change) >= scores_min[i]) {
                         arrow_buttons_controls[i] -= click_change;
                         points -= score_costs[i] * click_change;
@@ -524,6 +526,8 @@ function draw_chapter_trait_select(){
                 draw_sprite_stretched(spr_arrow, 1, 470, 325 + (i * 55), 32, 32);
                 if (scr_hit(470, 325 + (i * 55), 470 + sprite_get_width(spr_arrow), 357 + (i * 55))) {
                     obj_cursor.image_index = 1;
+                    tooltip = "Increase";
+                    tooltip2 = "(Hold Ctrl to increase by 10)";
                     if (scr_click_left() && (arrow_buttons_controls[i] + click_change) <= scores_max[i] && (points + (score_costs[i] * click_change) <= maxpoints)) {
                         arrow_buttons_controls[i] += click_change;
                         points += score_costs[i] * click_change;
@@ -537,21 +541,21 @@ function draw_chapter_trait_select(){
         purity = arrow_buttons_controls[2];
         stability = arrow_buttons_controls[3];
         
-        if (scr_hit(436, 325, 800, 357)) {
+        if (scr_hit(505, 325, 800, 357)) {
             tooltip = "Strength";
             tooltip2 = "How many marines your chapter has. \nFor every score below five a company will be removed; conversely, each score higher grants 50 additional astartes.";
         }
-        if (scr_hit(436, 380, 800, 412)) {
+        if (scr_hit(505, 380, 800, 412)) {
             tooltip = "Cooperation";
             tooltip2 = "How diplomatic your chapter is. \nA low score will lower starting dispositions of Imperial factions and make disposition increases less likely to occur.";
         }
-        if (scr_hit(436, 435, 800, 467)) {
-            tooltip = "Purity";
+        if (scr_hit(505, 435, 800, 467)) {
+            tooltip = "Gene-Seed Purity";
             tooltip2 = "How many inherent mutations your gene-seed has. \nEach score bellow ten means one mutations will need to be chosen.";
         }
-        if (scr_hit(436, 490, 800, 522)) {
-            tooltip = "Stability";
-            tooltip2 = "How easily new mutations and corruption can occur with your chapter's gene seed. \nAffects the amount of random mutations your existing marines have, and the amount new aspirants get after the implantation is finished. \nEven a 100% stable gene seed is not fully protected from the mutations.";
+        if (scr_hit(505, 490, 800, 522)) {
+            tooltip = "Gene-Seed Stability";
+            tooltip2 = "How easily new mutations and corruption can occur with your chapter's gene seed. \nAffects the amount of random mutations your existing marines have, and the amount new aspirants get after the implantation is finished.";
         }
     }
     
