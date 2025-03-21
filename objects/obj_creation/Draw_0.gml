@@ -237,7 +237,7 @@ try {
 			]
 		}, {
 			t_tip: "Faulty Lyman's Ear",
-			t_tip2: "Lacking a working Lyman's ear, all deep-striked Astartes recieve moderate penalties to both attack and defense.",
+			t_tip2: "Lacking a working Lyman's ear, all deep-striked Astartes receive moderate penalties to both attack and defense.",
 			data: lyman,
 			mutation_points: 1
 		}, {
@@ -257,7 +257,7 @@ try {
 			mutation_points: 2
 		}, {
 			t_tip: "Inactive Sus-an Membrane",
-			t_tip2: "Your Astartes do not have a Sus-an Membrane; they cannot enter suspended animation and recieve more casualties as a result.",
+			t_tip2: "Your Astartes do not have a Sus-an Membrane; they cannot enter suspended animation and receive more casualties as a result.",
 			data: membrane,
 			mutation_points: 1
 		}, {

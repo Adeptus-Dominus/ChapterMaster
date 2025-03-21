@@ -551,7 +551,7 @@ function draw_chapter_trait_select(){
         }
         if (scr_hit(505, 435, 800, 467)) {
             tooltip = "Gene-Seed Purity";
-            tooltip2 = "How many inherent mutations your gene-seed has. \nEach score bellow ten means one mutations will need to be chosen.";
+            tooltip2 = "How many inherent mutations your gene-seed has. \nEach score below ten means one mutations will need to be chosen.";
         }
         if (scr_hit(505, 490, 800, 522)) {
             tooltip = "Gene-Seed Stability";
