@@ -8,20 +8,58 @@ function compress_enemy_array(_target_column) {
 	}
 
 	with (_target_column) {
-		for (var i = 1; i < array_length(dudes_num); i++) {
-            if (i == 40) {
-                break;
-            }
+		// Define all data arrays to be processed with their default values
+        var _data_arrays = [{
+            arr: dudes,
+            def: ""
+        }, {
+            arr: dudes_special,
+            def: ""
+        }, {
+            arr: dudes_num,
+            def: 0
+        }, {
+            arr: dudes_ac,
+            def: 0
+        }, {
+            arr: dudes_hp,
+            def: 0
+        }, {
+            arr: dudes_vehicle,
+            def: 0
+        }, {
+            arr: dudes_damage,
+            def: 0
+        }];
+
+		// Track which slots are empty
+		var _empty_slots = array_create(20, false);
+		for (var i = 0; i < array_length(_empty_slots); i++) {
 			if (dudes_num[i] <= 0) {
-				array_delete(dudes, i, 1);
-                array_delete(dudes_special, i, 1);
-                array_delete(dudes_ac, i, 1);
-                array_delete(dudes_hp, i, 1);
-                array_delete(dudes_vehicle, i, 1);
-                array_delete(dudes_damage, i, 1);
-                array_delete(dudes_num, i, 1);
+				_empty_slots[i] = true;
 			}
 		}
+
+        // Compress arrays using a pointer that doesn't restart from beginning
+        var pos = 0;
+        while (pos < array_length(_empty_slots) - 1) {
+            if (_empty_slots[pos] && !_empty_slots[pos + 1]) {
+                // Move data from position pos+1 to pos
+                for (var j = 0; j < array_length(_data_arrays); j++) {
+                    _data_arrays[j].arr[pos] = _data_arrays[j].arr[pos + 1];
+                    _data_arrays[j].arr[pos + 1] = _data_arrays[j].def;
+                }
+                _empty_slots[pos] = false;
+                _empty_slots[pos + 1] = true;
+
+                // Only backtrack if we're not at the beginning
+                if (pos > 0) {
+                    pos--;  // Check this position again in case we need to shift more
+                }
+            } else {
+                pos++;  // Move to next position
+            }
+        }
 	}
 }
 
