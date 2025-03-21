@@ -105,7 +105,7 @@ function scr_ui_manage() {
 		}	
 		var unit,x1,x2,x3,y1,y2,y3,text;
 		var romanNumerals=scr_roman_numerals();	
-		var tooltip_text="",bionic_tooltip="",tooltip_drawing=["", [0,0,0,0], ""];
+		var tooltip_text="",bionic_tooltip="",tooltip_drawing=[];
 			var invalid_locations = ["Mechanicus Vessel", "Terra"];
 
 	    var xx=__view_get( e__VW.XView, 0 )+0, yy=__view_get( e__VW.YView, 0 )+0, bb="", img=0;
@@ -373,7 +373,7 @@ function scr_ui_manage() {
 	        	y2 = y1+string_height_ext(text, -1,187);
 				draw_set_alpha(1);
 	        	draw_text_ext_outline(x1,y1,text,-1,187, 0, quality_color(selected_unit.armour_quality));
-	        	array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]); 
+	        	array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2], "Armour"]); 
 	        } 
 
 	        var gear = selected_unit.gear();
@@ -385,7 +385,7 @@ function scr_ui_manage() {
 	        	x2 = x1+string_width_ext(text, -1,187);
 	        	y2 = y1+string_height_ext(text, -1,187);	 
 	        	draw_text_ext_outline(x1,y1,text,-1,187, 0, quality_color(selected_unit.gear_quality));
-	        	array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]);
+	        	array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2], "Gear"]);
 	        }
 
 	        var mobi = selected_unit.mobility_item();
@@ -397,7 +397,7 @@ function scr_ui_manage() {
 	        	x2 = x1+string_width_ext(text, -1,187);
 	        	y2 = y1+string_height_ext(text, -1,187);	  
 	        	draw_text_ext_outline(x1,y1,text,-1,187, 0, quality_color(selected_unit.mobility_item_quality));
-	        	array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]);
+	        	array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2], "Back/Mobilitiy"]);
 	        }
 
 			var wep1= selected_unit.weapon_one();
@@ -409,7 +409,7 @@ function scr_ui_manage() {
 				x2 = x1+string_width_ext(text, -1,187);
 				y2 = y1+string_height_ext(text, -1,187);	 	 
 				draw_text_ext_outline(x1,y1,text,-1,187, 0, quality_color(selected_unit.weapon_one_quality));
-				array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]);
+				array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2], "First Weapon"]);
 			}
 		
 			var wep2 = selected_unit.weapon_two();
@@ -421,7 +421,7 @@ function scr_ui_manage() {
 				x2 = x1+string_width_ext(text, -1,187);
 				y2 = y1+string_height_ext(text, -1,187);	
 				draw_text_ext_outline(x1,y1,text,-1,187, 0, quality_color(selected_unit.weapon_two_quality)); 
-				array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2]]);
+				array_push(tooltip_drawing, [tooltip_text, [x1,y1,x2,y2], "Second Weapon"]);
 			}
 
 			// Stats
