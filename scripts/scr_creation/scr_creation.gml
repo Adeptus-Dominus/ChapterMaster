@@ -106,8 +106,8 @@ function scr_creation(slide_num) {
 				disposition[eSTART_FACTION.Progenitor] = 60 + ((cooperation - 5) * 4); // Prog
 				disposition[eSTART_FACTION.Imperium] = 50 + ((cooperation - 5) * 4); // Imp
 				disposition[eSTART_FACTION.Mechanicus] = 40 + ((cooperation - 5) * 2); // Mech
-				disposition[eSTART_FACTION.Inquisition] = 30 + ((cooperation - 5) * 2) - (2 * (10 - purity)) - (2 * (10 - stability)); // Inq
-				disposition[eSTART_FACTION.Ecclesiarchy] = 40 + ((cooperation - 5) * 4)  - (10 - purity) - ((10 - stability)); // Ecclesiarchy
+				disposition[eSTART_FACTION.Inquisition] = 30 + ((cooperation - 5) * 2) - (2 * (10 - purity)) - ((99 - stability) / 5)); // Inq
+				disposition[eSTART_FACTION.Ecclesiarchy] = 40 + ((cooperation - 5) * 4)  - (10 - purity) - ((99 - stability) / 5); // Ecclesiarchy
 			
 				switch (founding) {
 					case eCHAPTERS.SPACE_WOLVES:
