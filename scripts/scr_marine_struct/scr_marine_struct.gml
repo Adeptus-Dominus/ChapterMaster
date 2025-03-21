@@ -762,12 +762,14 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 						}
 					}
 				
+					var _mutations_assigned = 0;
 					repeat (array_length(_possible_mutations)) {
 						if (array_length(_possible_mutations) > 0) {
 							var _picked_mutation = array_random_index(_possible_mutations);
 							gene_seed_mutations[$ _possible_mutations[_picked_mutation]] = 1;
 							array_delete(_possible_mutations, _picked_mutation, 1);
-							_mutation_threshold = max(_mutation_threshold - 5, 0);
+							_mutations_assigned++;
+							_mutation_threshold = max(_mutation_threshold - 5 * _mutations_assigned, 0);
 							if (_mutation_roll <= _mutation_threshold) {
 								continue;
 							} else {
