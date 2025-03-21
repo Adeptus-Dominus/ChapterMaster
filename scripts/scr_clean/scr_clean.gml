@@ -34,14 +34,14 @@ function compress_enemy_array(_target_column) {
 
 		// Track which slots are empty
 		var _empty_slots = array_create(20, false);
-		for (var i = 0; i < array_length(_empty_slots); i++) {
+		for (var i = 1; i < array_length(_empty_slots); i++) {
 			if (dudes_num[i] <= 0) {
 				_empty_slots[i] = true;
 			}
 		}
 
         // Compress arrays using a pointer that doesn't restart from beginning
-        var pos = 0;
+        var pos = 1;
         while (pos < array_length(_empty_slots) - 1) {
             if (_empty_slots[pos] && !_empty_slots[pos + 1]) {
                 // Move data from position pos+1 to pos
@@ -53,7 +53,7 @@ function compress_enemy_array(_target_column) {
                 _empty_slots[pos + 1] = true;
 
                 // Only backtrack if we're not at the beginning
-                if (pos > 0) {
+                if (pos > 1) {
                     pos--;  // Check this position again in case we need to shift more
                 }
             } else {

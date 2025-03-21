@@ -260,7 +260,7 @@ function scr_powers(caster_id) {
                 }
 
                 // Process the enemy column after applying casualties
-                // compress_enemy_array(_target_data.column);
+                compress_enemy_array(_target_data.column);
                 destroy_empty_column(_target_data.column);
 
                 // Log battle message to combat feed

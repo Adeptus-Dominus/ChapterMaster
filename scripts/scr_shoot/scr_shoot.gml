@@ -449,7 +449,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 			}
 
 			if (stop = 0) {
-                // compress_enemy_array(target_object);
+                compress_enemy_array(target_object);
                 destroy_empty_column(target_object);
 			}
 
