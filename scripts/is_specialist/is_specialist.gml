@@ -347,22 +347,10 @@ function group_selection(group, selection_data){
 		obj_controller.selection_data = selection_data;
 		set_zoom_to_default();
 		with (obj_controller){
-				menu=1;
-				onceh=1;
-				cooldown=8000;
-				click=1;
-				popup=0;
-				selected=0;
-				hide_banner=1;
+				basic_manage_settings();
 				with(obj_fleet_select){instance_destroy();}
 				with(obj_star_select){instance_destroy();}
-				view_squad=false;
-				managing=0;		
-				zoomed=0;
-				menu=1;
-				managing=0;
-				diplomacy=0;
-				cooldown=8000;
+
 				exit_button = new ShutterButton();
 				proceed_button = new ShutterButton();
 				selection_data.start_count=0;
@@ -417,7 +405,7 @@ function group_selection(group, selection_data){
 			man_see=38-4;
 		}
 	} catch(_exception) {
-	handle_exception(_exception);
-	scr_toggle_manage();//handle and send player back to map
+		handle_exception(_exception);
+		scr_toggle_manage();//handle and send player back to map
 	}
 }

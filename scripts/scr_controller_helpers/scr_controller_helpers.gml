@@ -110,35 +110,40 @@ function scr_in_game_menu(){
 		}
 	});
 }
+
+function basic_manage_settings(){
+    menu=1;
+    popup=0;
+    selected=0;
+    hide_banner=1;
+	diplomacy=0; 
+	zoomed=0;  
+	view_squad=false; 	
+    management_buttons = {
+    	squad_toggle : new UnitButtonObject({
+    		style : "pixel",
+    		label : "Squad View",
+    		tooltip : "Click here or press S to toggle Squad View."
+    	}),
+
+    	profile_toggle : new UnitButtonObject({
+    		style : "pixel",
+    		label : "Show Profile",
+    		tooltip : "Click here or press P to show unit profile."
+    	}),
+
+    	bio_toggle : new UnitButtonObject({
+    		style : "pixel",
+    		label : "Show Bio",
+    		tooltip : "Click here or press B to Toggle Unit Biography."
+    	}),
+    }
+}
 function scr_toggle_manage(){
     scr_change_menu(function(){
     	with (obj_controller){
 		    if (menu!=1){
-		    	view_squad=false;
-		        scr_management(1);
-		        menu=1;
-		        popup=0;
-		        selected=0;
-		        hide_banner=1;
-		        management_buttons = {
-		        	squad_toggle : new UnitButtonObject({
-		        		style : "pixel",
-		        		label : "Squad View",
-		        		tooltip : "Click here or press S to toggle Squad View."
-		        	}),
-
-		        	profile_toggle : new UnitButtonObject({
-		        		style : "pixel",
-		        		label : "Show Profile",
-		        		tooltip : "Click here or press P to show unit profile."
-		        	}),
-
-		        	bio_toggle : new UnitButtonObject({
-		        		style : "pixel",
-		        		label : "Show Bio",
-		        		tooltip : "Click here or press B to Toggle Unit Biography."
-		        	}),
-		        }
+				basic_manage_settings();
 		    }
 		    else if (menu==1){
 		        menu=0;
