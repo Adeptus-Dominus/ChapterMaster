@@ -61,7 +61,7 @@ try {
 	draw_set_halign(fa_center);
 	if (purge == DropType.RaidAttack) {
 		local_content_slate.draw(_x_center - local_content_slate.width, _y_center, (300 / 860), (520 / 850));
-	} else if (purge == 1) {
+	} else if (purge == DropType.PurgeSelect) {
 		local_content_slate.draw((camera_width / 2) - (local_content_slate.width / 2), _y_center, (300 / 860), (520 / 850));
 	} else {
 		if (local_content_slate.XX > _x_center - local_content_slate.width) {

@@ -1,4 +1,4 @@
-function scr_purge_world(star, planet, action_type, action_score) {
+function scr_purge_world(star, planet, action_type, action_score, bombard_target_faction = undefined, target_strength = undefined) {
 
 	var pop_before,pop_after,sci1,sci2,txt1,txt2, max_kill, overkill, heres_before, heres_after, kill;
 	var isquest,thequest,questnum;isquest=0;thequest="";questnum=0;pop_after=0;txt1="";txt2="";overkill=0;
@@ -54,63 +54,371 @@ function scr_purge_world(star, planet, action_type, action_score) {
 
 	// TODO - while I don't expect Surface to Orbit weapons retaliating against player's purge bombardment, it might still be worthwhile to consider possible situations
 
-	if (action_type=DropType.PurgeBombard){// Bombardment
-	    txt1=choose("Your cruiser and larger ship", "The heavens rumble and thunder as your ship");
-	    if (ships_selected>1) then txt1+="s";
-	    txt1+=choose(" position themselves over the target in close orbit, and unleash", " unload");
-	    if (ships_selected=1) then txt1+="s";
-		txt1+= $" annihilation upon {planet_numeral_name(planet, star)}. Even from space the explosions can be seen, {choose("tearing ground", "hammering", "battering", "thundering")} across the planet's surface.";
- 
-	    if (star.p_large[planet]=0) then max_kill=action_score*15000000;
-	    if (star.p_large[planet]=1) then max_kill=action_score*0.015;// Population if large
-    
-	    pop_before=star.p_population[planet];
-    
-	    heres_before=max(star.p_heresy[planet]+star.p_heresy_secret[planet],star.p_influence[planet][eFACTION.Tau]);// Starting heresy
-    
-	    // Minimum kills
-	    if (pop_before>0) then overkill=max(pop_before*0.1,((heres_before/200)*pop_before));
-	    if (pop_before=0) then overkill=0;
-    
-	    kill=min(max_kill,overkill,pop_before);// How many people ARE going to be killed
-    
-	    pop_after=pop_before-kill;
-	    sci1=0;sci2=0;
-    
-	    if (pop_before>0) then sci1=(pop_after/pop_before)*100;// Relative % of people murderized
-	    if (sci1>0) then sci2=min((sci1*2),action_score*2);// How much hurresy to get rid of
-	    heres_after=heres_before-sci2;
-	    if (pop_before>0) and (pop_after=0) then heres_after=0;
-    
-	    if (star.p_large[planet]=0) then pop_after=round(pop_after);    
-	    if (pop_after<=0) and (pop_before>0) then heres_after=0;
- 
-		var _displayed_population = star.p_large[planet] == 1 ? $"{pop_before} billion" : scr_display_number(floor(pop_before));
-		var _displayed_killed = star.p_large[planet] == 1 ? $"{kill} billion" : scr_display_number(floor(kill));
-	    txt1 += $"##The world had {_displayed_population} Imperium subjects. {_displayed_killed} were purged over the duration of the bombardment.##Heresy has fallen down to {max(0, heres_after)}%.";
-    
-	    if (pop_after=0){
-	        if (star.p_owner[planet]=2) and (obj_controller.faction_status[2]!="War"){
-	            if (star.p_type[planet]="Temperate") or (star.p_type[planet]="Hive") or (star.p_type[planet]="Desert"){
-	                obj_controller.audiences+=1;obj_controller.audien[obj_controller.audiences]=2;
-	                obj_controller.audien_topic[obj_controller.audiences]="bombard_angry";
-	            }
-	            if (star.p_type[planet]="Temperate") then obj_controller.disposition[2]-=5;
-	            if (star.p_type[planet]="Desert") then obj_controller.disposition[2]-=3;
-	            if (star.p_type[planet]="Hive") then obj_controller.disposition[2]-=10;
-	        }
-	    }
-	    if (star.p_owner[planet]=3) and (obj_controller.faction_status[3]!="War"){
-	        obj_controller.audiences+=1;
-	        obj_controller.audien[obj_controller.audiences]=3;
-	        obj_controller.audien_topic[obj_controller.audiences]="bombard_angry";
-	        if (star.p_type[planet]="Forge") then obj_controller.disposition[3]-=15;
-	        if (star.p_type[planet]="Ice") then obj_controller.disposition[3]-=7;
-	    }
+    if (action_type=DropType.PurgeBombard) { // Bombardment
+        txt1 = "";
+        txt2 = "";
+        txt3 = "";
 
-    
-	}
+        txt1 = choose("Your cruiser and larger ship", "The heavens rumble and thunder as your ship");
+        if (ships_selected > 1) { txt1 += "s" };
+        txt1 += choose(" position themselves over the target in close orbit, and unleash", " unload");
+        if (ships_selected == 1) { txt1 += "s" };
+        txt1 += $" annihilation upon {planet_numeral_name(planet, star)}. Even from space the explosions can be seen, {choose("tearing ground", "hammering", "battering", "thundering")} across the planet's surface.";
 
+        if (star.p_type[planet] != "Space Hulk") {
+            if (star.p_large[planet] == false) {
+                max_kill = action_score*15000000;
+            } else {
+                max_kill = action_score*0.015; // Population if large
+            }
+
+            pop_before = star.p_population[planet];
+
+            heres_before = max(star.p_heresy[planet] + star.p_heresy_secret[planet], star.p_influence[planet][eFACTION.Tau]);// Starting heresy
+
+            // Minimum kills
+            if (pop_before > 0) {
+                overkill = max(pop_before * 0.1, ((heres_before / 200) * pop_before));
+            } else {
+                overkill=0;
+            }
+
+            kill = min(max_kill, overkill, pop_before);// How many people ARE going to be killed
+
+            pop_after = pop_before-kill;
+            var sci1 = 0;
+            var sci2 = 0;
+
+            if (pop_before > 0) {
+                sci1 = (pop_after / pop_before) * 100; // Relative % of people murderized
+                if (sci1 > 0) {
+                    sci2 = min((sci1 * 2), action_score * 2); // How much hurresy to get rid of
+                }
+            }
+
+            if (star.p_large[planet] == false) {
+                pop_after = round(pop_after);
+            }
+
+            heres_after = heres_before - sci2;
+            if (pop_before > 0 && pop_after <= 0) {
+                heres_after = 0;
+            }
+
+            var _displayed_population = star.p_large[planet] == 1 ? $"{pop_before} billion" : scr_display_number(floor(pop_before));
+            var _displayed_killed = star.p_large[planet] == 1 ? $"{kill} billion" : scr_display_number(floor(kill));
+            txt1 += $"##The world had {_displayed_population} Imperium subjects. {_displayed_killed} were purged over the duration of the bombardment.##Heresy has fallen down to {max(0, heres_after)}%.";
+
+            if (pop_after == 0 && pop_before > 0) {
+                if (star.p_owner[planet] == eFACTION.Imperium) && (obj_controller.faction_status[eFACTION.Imperium] != "War") {
+                    if (star.p_type[planet] == "Temperate") || (star.p_type[planet] == "Hive") || (star.p_type[planet] == "Desert") {
+                        obj_controller.audiences++;
+                        obj_controller.audien[obj_controller.audiences] = 2;
+                        obj_controller.audien_topic[obj_controller.audiences] = "bombard_angry";
+                    }
+
+                    switch (star.p_type[planet]) {
+                    case "Temperate":
+                        obj_controller.disposition[eFACTION.Imperium] -= 5;
+                        break;
+                    case "Desert":
+                        obj_controller.disposition[eFACTION.Imperium] -= 3;
+                        break;
+                    case "Hive":
+                        obj_controller.disposition[eFACTION.Imperium] -= 10;
+                        break;
+                    }
+                } else if (star.p_owner[planet] == eFACTION.Mechanicus) && (obj_controller.faction_status[eFACTION.Mechanicus] != "War") {
+                    obj_controller.audiences++;
+                    obj_controller.audien[obj_controller.audiences] = 3;
+                    obj_controller.audien_topic[obj_controller.audiences] = "bombard_angry";
+                    switch (star.p_type[planet]) {
+                    case "Forge":
+                        obj_controller.disposition[eFACTION.Mechanicus] -= 15;
+                        break;
+                    case "Ice": // the fuck do the mechanicus want with a ice planet?
+                        obj_controller.disposition[eFACTION.Mechanicus] -= 7;
+                        break;
+                    }
+                }
+            }
+
+            if (bombard_target_faction == eFACTION.Tau) && (obj_controller.faction_status[eFACTION.Tau] != "War") {
+                obj_controller.audiences += 1;
+                obj_controller.audien[obj_controller.audiences] = eFACTION.Tau;
+                obj_controller.audien_topic[obj_controller.audiences] = choose("declare_war", "bombard_angry");
+                obj_controller.disposition[eFACTION.Tau] -= 15;
+            }
+
+            if (pop_after == 0) {
+                if (planet_feature_bool(star.p_feature[planet], P_features.Gene_Stealer_Cult)) {
+                    delete_features(star.p_feature[planet], P_features.Gene_Stealer_Cult);
+                    adjust_influence(eFACTION.Tyranids, -100, planet, star);
+                    pip.text += " The xeno taint of the tyranids that was infesting the population has been completely eradicated with the planets cleansing";
+                } else {
+                    pip.text += " Any xeno taint that was infesting the population has been completely eradicated with the planets cleansing";
+                }
+            }
+
+            if (bombard_target_faction != undefined) {
+                var bombard_protection = 1;
+                switch (bombard_target_faction) {
+                    // case eFACTION.Player:
+                        // txt2="##The Space Marine forces are difficult to bombard; ";
+                        // bombard_protection=3;
+                        // break;
+                    case eFACTION.Imperium:
+                        txt2 = "##The Imperial forces are suitably fortified; ";
+                        bombard_protection = 2;
+                        break; // I'm not sure about IG, maybe they should be left at 2, or, maybe they should be at 1, like the PDF
+                    case 2.5:
+                        if (star.p_owner[planet] <= 5){
+                            txt2 = "##The PDF forces are poorly fortified; ";
+                            bombard_protection = 1;
+                        } else if (star.p_owner[planet] > 5){
+                            txt2 = "##The renegade forces are poorly fortified; ";
+                            bombard_protection = 1;
+                        }
+                        break; // I think PDF and renegades down there should be kind of poorly prepared for this
+                    case eFACTION.Mechanicus:
+                        txt2 = "##The Mechanicus forces are well fortified; ";
+                        bombard_protection = 3; // If we get to Admech, I think they should be pretty capable with the hi-tech goodies they have
+                        break;
+                    // case eFACTION.Inquisition:
+                        // txt2="##The Inquisition forces are difficult to bombard; ";
+                        // bombard_protection=3;
+                        // break;
+                    case eFACTION.Ecclesiarchy:
+                        txt2 = "##The Ecclesiarchy forces are concentrated within their Cathedral; ";
+                        bombard_protection = 1;
+                        break; // Maybe we should make it 0? Though, Cathedral does have a roof at least
+                    case eFACTION.Eldar:
+                        txt2="##The Eldar forces are challenging to pin down; ";
+                        bombard_protection = 4; // Hi-tech faction
+                        break;
+                    case eFACTION.Ork:
+                        txt2 = "##The Ork forces, for brutal savages, are well dug in; "; // TODO spice up descriptions with variable levels of protection
+                        bombard_protection = 2; // TODO Make protection variable depending on leaders present
+                        break;
+                    case eFACTION.Tau:
+                        txt2 = "##The Tau forces are well fortified; ";
+                        bombard_protection = 3; // Hi-tech, but not as high as Eldar or Necrons
+                        break;
+                    case eFACTION.Tyranids:
+                        txt2 = "##The Tyranid Swarm is a large target; ";
+                        bombard_protection = 0; // TODO add considerations when it is a cult, and when it is bioforms out in the open
+                        break;
+                    case eFACTION.Chaos:
+                        if (star.p_type[planet] = "Daemon") {
+                            bombard_protection = 3; // Kind of irrelevant if the bombardment will be nulled later either way
+                            txt2 = "##Reality warps and twists within the planet; ";
+                        } else {
+                            txt2 = "##The Chaos forces are suitably fortified; ";
+                            bombard_protection = 2;
+                        }
+                        break;
+                    case eFACTION.Necrons:
+                        txt2="##The Necron forces are incredibly difficult to bombard; ";
+                        bombard_protection = 4; // They are a hi-tech faction, so bombing them should be difficult
+                        break;
+                }
+
+                reduced_bombard_score = action_score / 3;
+                strength_reduction = 0;
+
+                var i = reduced_bombard_score;
+                roll = 0;
+
+                if (bombard_protection == 0) { // No protection, Nids out in the open use this
+                    i=i*4;
+                } else if (bombard_protection == 1) { // Poor protection, PDF/Renegades and Ecclesiarchy use it,
+                    i = i * 0.9;
+                } else if (bombard_protection == 2) { // Competent protection - IG, standard chaos forces and Orks
+                    i = i * 0.75;
+                } else if (bombard_protection == 3) { // Hi-tech, Admech, Tau and Daemons kind of
+                    i = i * 0.5;
+                } else if (bombard_protection == 4) { // Figured I add a level 4 to this, Ultra hi-tech, Necrons and Eldar
+                    i = i * 0.34;
+                }
+
+                for(var r=0;r<100;r++) {
+                    if (i < 1) {
+                        break;
+                    }
+                    i--;
+                    strength_reduction++;
+                }
+
+                if (i < 1) && (i >= 0.5) {
+                    i=i * 100;
+                    roll = irandom(100);
+                    if (roll <= i) {
+                        strength_reduction+=1;
+                    }
+                }
+
+                strength_reduction = round(strength_reduction);
+                txt2 += "they suffer";
+
+                if (bombard_target_faction == 10) && (star.p_type[planet] == "Daemon") {
+                    strength_reduction=0;
+                }
+
+                var rel = 0;
+                if (strength_reduction != 0) && (target_strength != 0) {
+                    rel = ((target_strength - strength_reduction) / target_strength) * 100;
+                } else if (strength_reduction == 0){
+                    txt2 += " no losses from the bombardment.";
+                }
+         // Okay, I can see this needs tweaks, just, how can I make it that it checks for 3 conditions, instead of just 2?
+            // Would this work:
+            // if (rel>0 && rel<=20 && (target_strength-strength_reduction)>0){
+                //    txt2+=" minor losses from the bombardment, decreasing "+string(strength_reduction)+" stages.";
+            // ?
+                if ((target_strength - strength_reduction) <= 0){
+                    txt2+=" total annihilation from the bombardment and are wiped clean from the planet.";
+                } else {
+                    var _losses_text = "";
+                    if (rel > 0 && rel <= 20) {
+                        _losses_text = "minor losses";
+                    } else if (rel > 20 && rel <= 40) {
+                        _losses_text = "moderate losses";
+                    } else if (rel > 40 && rel <= 60) {
+                        _losses_text = "heavy losses";
+                    } else if (rel > 60 && (target_strength - strength_reduction) > 0) {
+                        _losses_text = "devastating losses";
+                    } else {
+                        _losses_text = "some losses";
+                    }
+                    txt2 += $" {_losses_text} from the bombardment, having presence decreased by {strength_reduction}.";
+                }
+
+                // 135; ?
+                if (bombard_target_faction >= 6){
+                    obj_controller.penitent_turn = 0;
+                    obj_controller.penitent_turnly = 0;
+                }
+
+                if (strength_reduction > 0) {
+                    // Faction 2.5 being renegades, interesting
+                    if (bombard_target_faction == 2.5) && (star.p_owner[planet] == eFACTION.Tau){
+                        var wib = "", wob = 0;
+
+                        txt2="##The renegade forces are poorly fortified; ";
+
+                        wob = action_score * 5000000 + choose(irandom(100000), irandom(100000) * -1);
+
+                        if (wob > star.p_pdf[planet]) {
+                            wob = star.p_pdf[planet];
+                        }
+
+                        rel = (star.p_pdf[planet] / wob) * 100;
+                        star.p_pdf[planet] -= wob;
+
+                        if (rel > 0) && (rel <= 20) {
+                            txt2+=" they suffer minor losses from the bombardment, "+string(scr_display_number(wob))+" purged.";
+                        } else if (rel > 20) && (rel <= 40) {
+                            txt2+=" they suffer moderate losses from the bombardment, "+string(scr_display_number(wob))+" purged.";
+                        } else if (rel > 40) && (rel <= 60) {
+                            txt2+=" they suffer heavy losses from the bombardment, "+string(scr_display_number(wob))+" purged.";
+                        } else if (rel > 60) && (star.p_pdf[planet] > 0) {
+                            txt2+=" they suffer devastating losses from the bombardment, "+string(scr_display_number(wob))+" purged.";
+                        } else if (wob > 0) && (star.p_pdf[planet] == 0) {
+                            txt2+=" they suffer total annihilation from the bombardment && are wiped clean from the planet.";
+                        }
+                    }
+
+                    switch(bombard_target_faction) {
+                        // case 1:
+                            // star.p_marines[planet]-=strength_reduction;
+                            // break;
+                        // case 2:
+                            // star.p_ig[planet]-=strength_reduction;
+                            // break;
+                        // case 3:
+                            // star.p_mechanicus[planet]-=strength_reduction;
+                            // break;
+                        // case 4:
+                            // star.p_inquisition[planet]-=strength_reduction;
+                            // break;
+                        case eFACTION.Ecclesiarchy:
+                            star.p_sisters[planet] -= strength_reduction;
+                            break;
+                        case eFACTION.Eldar:
+                            star.p_eldar[planet] -= strength_reduction;
+                            break;
+                        case eFACTION.Ork:
+                            star.p_orks[planet] -= strength_reduction;
+                            break;
+                        case eFACTION.Tau:
+                            star.p_tau[planet] -= strength_reduction;
+                            break;
+                        case eFACTION.Tyranids:
+                            star.p_tyranids[planet] -= strength_reduction;
+                            break;
+                         case eFACTION.Chaos:
+                            star.p_traitors[planet] -= strength_reduction;
+                            break;
+                        // case 11:
+                            // star.p_csm[planet]-=strength_reduction;
+                            // break;
+                        // case 12:
+                            // star.p_demons[planet]-=strength_reduction;
+                            // break;
+                         case eFACTION.Necrons:
+                            star.p_necrons[planet] -= strength_reduction;
+                            break;
+                    }
+                }
+            }
+        } else {
+            var bombard_protection = 1;
+            txt1 = "Torpedoes and Bombardment Cannons rain hell upon the space hulk";
+
+            reduced_bombard_score = action_score / 1.25; // fraction of bombardment score, TODO maybe we should make SHs more vulnerable to bombardment? They are out in space, and can be targeted with other weapons
+            strength_reduction = 0;
+            txt3 = "";
+
+            var rel = 0;
+
+            if (reduced_bombard_score != 0) {
+                rel = ((star.p_fortified[planet] - reduced_bombard_score) / star.p_fortified[planet]) * 100;
+            }
+
+            if (strength_reduction == 0) {
+                txt2 = "it suffers minimal damage from the bombardment.";
+            } else if (rel > 0) && (rel <= 20) {
+                txt2 = "it suffers minor damage from the bombardment, its integrity reduced by {100-rel}%";
+            } else if (rel > 20) && (rel <= 40) {
+                txt2 = "it suffers moderate damage from the bombardment, its integrity reduced by {100-rel}%";
+            } else if (rel > 40) && (rel <= 60) {
+                txt2 = "it suffers heavy damage from the bombardment, its integrity reduced by {100-rel}%";
+            } else if (rel > 60) && ((star.p_fortified[planet] - reduced_bombard_score) > 0) {
+                txt2 = "it suffers extensive damage from the bombardment, its integrity reduced by {100-rel}%";
+            } else if ((star.p_fortified[planet] - reduced_bombard_score) <= 0) {
+                txt2 = "it crumbles apart from the onslaught. It is no more."; // Potential TODO Consider adding salvage from the bombed wreckage
+            }
+
+            // DO EET
+            if (reduced_bombard_score > 0) {
+                star.p_fortified[planet] -= reduced_bombard_score;
+            }
+
+            if (star.p_fortified[planet] <= 0){
+                with(star) { instance_destroy(); }
+                instance_activate_object(obj_star_select);
+                with(obj_star_select) { instance_destroy(); }
+                obj_controller.sel_system_x = 0;
+                obj_controller.sel_system_y = 0;
+                obj_controller.popup = 0;
+                obj_controller.cooldown = 8;
+            }
+        }
+        var pip;
+        pip=instance_create(0, 0, obj_popup);
+        pip.title = "Bombard Results";
+        pip.text = txt1 + txt2 + txt3;
+    }
 
 	if (action_type=DropType.PurgeFire){// Burn baby burn
 	    var i=0;
