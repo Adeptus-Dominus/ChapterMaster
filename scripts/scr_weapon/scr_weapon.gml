@@ -1515,7 +1515,7 @@ global.weapons = {
 		"arp": 1,
 		"tags": ["force" ],
 		"specials": {
-			"psy_amplification": 25
+			"psychic_amplification": 25
 		},
 		"maintenance" : 0.1,
 	},
@@ -2353,7 +2353,7 @@ global.gear = {
 			"abbreviation": "PsyHd",
 			"description": "An arcane hood that protects Psykers from enemy psychic powers and enhances control of their psychic abilities.",
 			"specials": {
-				"psy_focus": 15
+				"psychic_focus": 15
 			},
 		},
 		"Rosarius": {

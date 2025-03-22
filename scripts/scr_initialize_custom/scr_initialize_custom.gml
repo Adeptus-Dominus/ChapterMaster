@@ -2386,9 +2386,7 @@ function scr_initialize_custom() {
 		case 3:
 			//TODO phychic powers need a redo but after weapon refactor
 			chapter_master.add_exp(550);
-			gear[company, 1] = "Psychic Hood";
-			var
-			let = "";
+			chapter_master_equip.gear = "Psychic Hood";
 			chapter_master.add_trait("favoured_by_the_warp");
 			chapter_master.psionic = choose(13, 14);
 			chapter_master.update_powers();

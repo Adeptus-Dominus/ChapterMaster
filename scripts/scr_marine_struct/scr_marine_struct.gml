@@ -1079,12 +1079,12 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		return _powers_learned;
 	};
 
-	static psionic_increase = function() {
+	static roll_psionic_increase = function() {
 		if (psionic < 12) {
-			var _exp_bonus = round((experience / psionic) / 2);
-			var _dice_roll = roll_personal_dice(5, 100, "high", self);
-			var _target_roll = 500 - _exp_bonus;
-			if (_dice_roll >= _target_roll) {
+			var _psionic_difficulty = (psionic * 50) - experience;
+
+			var _dice_roll = roll_personal_dice(1, _psionic_difficulty, "high", self);
+			if (_dice_roll == _psionic_difficulty) {
 				psionic++;
 				add_battle_log_message($"{name_role()} was touched by the warp!", 999, 135);
 			}
