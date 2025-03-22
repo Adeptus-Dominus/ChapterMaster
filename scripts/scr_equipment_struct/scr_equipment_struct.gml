@@ -424,18 +424,3 @@ function format_number_with_sign(number){
     return number > 0 ? "+" + string(number) : string(number);
 }
 
-//TODO: Make this into a universtal stat gatherting function from all gear, for any stat;
-function get_total_special_value(unit, special) {
-    var _total_special_value = 0;
-
-    var _all_data = [unit.get_armour_data(), unit.get_gear_data(), unit.get_mobility_data(), unit.get_weapon_one_data(), unit.get_weapon_two_data()];
-
-    for (var i = 0; i < array_length(_all_data); i++) {
-        var _equipment_piece = _all_data[i];
-        if (is_struct(_equipment_piece)) {
-            _total_special_value += _equipment_piece.special_value(special);
-        }
-    }
-
-    return _total_special_value;
-}

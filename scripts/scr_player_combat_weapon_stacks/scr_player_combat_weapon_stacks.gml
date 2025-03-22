@@ -192,7 +192,7 @@ function scr_player_combat_weapon_stacks() {
                                 cast_target -= 10;
                             }
                             if (obj_ncombat.global_perils > 0) {
-                                cast_target += obj_ncombat.global_perils * 10;
+                                cast_target += obj_ncombat.global_perils;
                             }
 
                             if (cast_dice >= cast_target) {

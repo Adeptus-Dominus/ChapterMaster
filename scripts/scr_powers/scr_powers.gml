@@ -2,13 +2,17 @@
 
 #macro PSY_DISCIPLINES_STARTING ["librarius", "biomancy", "pyromancy","telekinesis","rune_magic"]
 
-#macro PSY_PERILS_CHANCE_BASE 1
-#macro PSY_PERILS_CHANCE_LOW 1
+#macro PSY_PERILS_CHANCE_MIN 1
+#macro PSY_PERILS_CHANCE_BASE 10
+#macro PSY_PERILS_CHANCE_LOW 10
 
 #macro PSY_PERILS_STR_BASE 1
 #macro PSY_PERILS_STR_LOW 10
 #macro PSY_PERILS_STR_MED 20
 #macro PSY_PERILS_STR_HIGH 40
+
+#macro PSY_CAST_DIFFICULTY_MIN 1
+#macro PSY_CAST_DIFFICULTY_BASE 40
 
 global.disciplines_data = json_to_gamemaker(working_directory + "\\data\\psychic_disciplines.json", json_parse);
 global.powers_data = json_to_gamemaker(working_directory + "\\data\\psychic_powers.json", json_parse);
@@ -61,8 +65,8 @@ function scr_powers(caster_id) {
     } */
 
     // Gather the amplification stats (multiplier to power stats)
-    var _equipment_psychic_amplification = get_total_special_value(_unit, "psychic_amplification") / 100;
-    var _character_psychic_amplification = (_unit.psionic - 2) + (_unit_exp / 100);
+    var _equipment_psychic_amplification = _unit.gear_special_value("psychic_amplification") / 100;
+    var _character_psychic_amplification = _unit.psychic_amplification();
     var _total_psychic_amplification = 1 + _equipment_psychic_amplification + _character_psychic_amplification;
 
     // Gather power data
@@ -528,32 +532,10 @@ function match_power_prefix(power_prefix) {
 }
 
 function perils_test(_unit) {
-    var _roll_1d100 = roll_personal_dice(1, 100, "high", _unit);
-    var _perils_threshold = PSY_PERILS_CHANCE_BASE;
+    var _roll = roll_personal_dice(1, 1000, "high", _unit);
+    var _perils_threshold = _unit.perils_chance();
 
-    _perils_threshold += obj_ncombat.global_perils;
-
-    _perils_threshold = max(_perils_threshold, PSY_PERILS_CHANCE_BASE);
-
-    if (_unit.has_trait("warp_tainted")) {
-        if (_roll_1d100 <= _perils_threshold) {
-            var _second_roll = roll_personal_dice(1, 100, "high", _unit);
-            if (_second_roll > _roll_1d100) {
-                _roll_1d100 = _second_roll;
-            }
-        }
-    }
-
-    if (_unit.has_trait("favoured_by_the_warp")) {
-        if (_roll_1d100 <= _perils_threshold) {
-            var _second_roll = roll_personal_dice(1, 100, "high", _unit);
-            if (_second_roll > _roll_1d100) {
-                _roll_1d100 = _second_roll;
-            }
-        }
-    }
-
-    return _roll_1d100 <= _perils_threshold;
+    return _roll <= _perils_threshold;
 }
 
 function roll_perils_strength(_unit) {
@@ -695,15 +677,15 @@ function find_valid_target(_power_data) {
 /// @param {struct} _unit - The caster unit
 /// @returns {bool} Whether the cast was successful
 function check_cast_success(_unit) {
-    var _equipment_psychic_focus = get_total_special_value(_unit, "psychic_focus");
+    var _equipment_psychic_focus = _unit.gear_special_value("psychic_focus");
+    var _attribute_psychic_focus = _unit.psychic_focus();
 
-    var _cast_difficulty = 40;  //TODO: Make this more dynamic;
-    _cast_difficulty -= _unit.experience * 0.05;
+    var _cast_difficulty = PSY_CAST_DIFFICULTY_BASE;  //TODO: Make this more dynamic;
     _cast_difficulty -= _equipment_psychic_focus;
-    _cast_difficulty -= _unit.wisdom * 0.4;
+    _cast_difficulty -= _attribute_psychic_focus;
 
     var _cast_roll = roll_personal_dice(1, 100, "high", _unit);
-    var _cast_successful = _cast_roll >= _cast_difficulty;
+    var _cast_successful = _cast_roll >= max(_cast_difficulty, PSY_CAST_DIFFICULTY_MIN);
 
     if (_cast_successful) {
         _unit.roll_psionic_increase();

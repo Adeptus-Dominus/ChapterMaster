@@ -329,9 +329,25 @@ if (menu==1 && (managing>0 || managing<0)){
                 var _psy_discipline_name = get_discipline_data(_psy_discipline, "name");
                 temp[119]=$"{unit.psionic}/{_psy_powers_count}";
 
-				var _tooltip = $"Main Discipline: {_psy_discipline_name}\n";
-                _tooltip += $"Psychic Rating: {unit.psionic}\n";
-                _tooltip += $"Known Powers: ";
+                var _tooltip = "";
+                _tooltip += $"Psychic Rating: {unit.psionic}";
+
+                var _equipment_psychic_amplification = unit.gear_special_value("psychic_amplification");
+                var _character_psychic_amplification = unit.psychic_amplification() * 100;
+                var _equipment_psychic_focus = unit.gear_special_value("psychic_focus");
+                var _character_psychic_focus = unit.psychic_focus();
+                var _perils_chance = unit.perils_chance() / 10;
+                _tooltip += $"\nAmplification from Equipment: {_equipment_psychic_amplification}%";
+                _tooltip += $"\nAmplification from Attributes: {_character_psychic_amplification}%";
+
+                _tooltip += $"\n\nInvocation Failure Chance: {max(PSY_CAST_DIFFICULTY_MIN, PSY_CAST_DIFFICULTY_BASE - _equipment_psychic_focus - _character_psychic_focus)}%";
+                _tooltip += $"\nFocus from Equipment: {_equipment_psychic_focus}%";
+                _tooltip += $"\nFocus from Attributes: {_character_psychic_focus}%";
+
+                _tooltip += $"\n\nPerils of the Warp Chance: {_perils_chance}%";
+
+                _tooltip += $"\n\nMain Discipline: {_psy_discipline_name}";
+                _tooltip += $"\nKnown Powers: ";
 				for (var i = 0; i < _psy_powers_count; i++) {
 					_tooltip += get_power_data(_psy_powers_known[i], "name");
 					if (i < _psy_powers_count - 1) {

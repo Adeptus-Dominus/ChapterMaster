@@ -1952,6 +1952,50 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		}
 	}
 
+	//TODO: Make this into a universal stat gathering function from all gear, for any stat;
+	static gear_special_value = function(special_id) {
+		var _total_special_value = 0;
+
+		var _all_data = [get_armour_data(), get_gear_data(), get_mobility_data(), get_weapon_one_data(), get_weapon_two_data()];
+
+		for (var i = 0; i < array_length(_all_data); i++) {
+			var _equipment_piece = _all_data[i];
+			if (is_struct(_equipment_piece)) {
+				_total_special_value += _equipment_piece.special_value(special_id);
+			}
+		}
+
+		return _total_special_value;
+	}
+
+	static psychic_amplification = function() {
+		return round((psionic - 2) + (experience / 100));
+	}
+
+	static psychic_focus = function() {
+		return round((experience * 0.05) + (wisdom * 0.4));
+	}
+
+	static perils_chance = function() {
+		var _perils_threshold = PSY_PERILS_CHANCE_BASE;
+
+		if (instance_exists(obj_ncombat)) {
+			_perils_threshold += obj_ncombat.global_perils;
+		}
+	
+		if (has_trait("warp_tainted")) {
+			_perils_threshold -= 5;
+		}
+	
+		if (has_trait("favoured_by_the_warp")) {
+			_perils_threshold -= 5;
+		}
+
+		_perils_threshold = max(_perils_threshold, PSY_PERILS_CHANCE_MIN);
+
+		return _perils_threshold;
+	}
+
 	static movement_after_math = function(end_company=company, end_slot=marine_number){
 		if (squad != "none"){
 			var squad_data = obj_ini.squads[squad];
