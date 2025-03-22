@@ -1,6 +1,6 @@
 //TODO: a bunch of stuff in this file and related to it uses strings, replace them with constants;
 
-#macro PSY_DISCIPLINES_STARTING ["librarius", "biomancy", "pyromancy","telekinesis","rune_magic"]
+#macro PSY_DISCIPLINES_STARTING ["librarius", "biomancy", "pyromancy", "telekinesis", "rune_magic"]
 
 #macro PSY_PERILS_CHANCE_MIN 1
 #macro PSY_PERILS_CHANCE_BASE 10
@@ -55,7 +55,6 @@ function scr_powers(caster_id) {
     var _known_powers = _unit.powers_known;
     var _power_id = select_psychic_power(_unit);
 
-
     //TODO: All tome related logic in this file has to be reworked;
     //! Tomes are broken, just don't bother with them atm;
     /* var _tome_data = process_tome_mechanics(_unit, caster_id);
@@ -109,7 +108,7 @@ function scr_powers(caster_id) {
 
         if ((_power_id == "force_dome") || (_power_id == "stormbringer")) {
             var _buff_casts = 8;
-            repeat (_buff_casts) {
+            repeat(_buff_casts) {
                 var _target_data = find_valid_target(_power_data);
                 _marine_index = _target_data.index;
                 _marine_column = _target_data.column;
@@ -131,7 +130,7 @@ function scr_powers(caster_id) {
             }
         } else if (_power_id == "fire_shield") {
             var _buff_casts = 9;
-            repeat (_buff_casts) {
+            repeat(_buff_casts) {
                 var _target_data = find_valid_target(_power_data);
                 _marine_index = _target_data.index;
                 _marine_column = _target_data.column;
@@ -143,7 +142,7 @@ function scr_powers(caster_id) {
             marine_iron[caster_id] += 1;
         } else if (_power_id == "endurance") {
             var _buff_casts = 5;
-            repeat (_buff_casts) {
+            repeat(_buff_casts) {
                 var _target_data = find_valid_target(_power_data);
                 _marine_index = _target_data.index;
                 _marine_column = _target_data.column;
@@ -153,7 +152,7 @@ function scr_powers(caster_id) {
             }
         } else if (_power_id == "hysterical_frenzy") {
             var _buff_casts = 5;
-            repeat (_buff_casts) {
+            repeat(_buff_casts) {
                 var _target_data = find_valid_target(_power_data);
                 _marine_index = _target_data.index;
                 _marine_column = _target_data.column;
@@ -559,7 +558,15 @@ function roll_perils_strength(_unit) {
 /// @param {real} _unit_id - The caster's ID
 /// @returns {struct} Tome-related data and modifiers
 function process_tome_mechanics(_unit, _unit_id) {
-    var _result = {has_tome: false, discipline: "", powers: [], perils_chance: 0, perils_strength: 0, using_tome: false, cast_flavour_text: ""};
+    var _result = {
+        has_tome: false,
+        discipline: "",
+        powers: [],
+        perils_chance: 0,
+        perils_strength: 0,
+        using_tome: false,
+        cast_flavour_text: ""
+    };
 
     var _unit_weapon_one_data = _unit.get_weapon_one_data();
     var _unit_weapon_two_data = _unit.get_weapon_two_data();
@@ -606,14 +613,17 @@ function process_tome_mechanics(_unit, _unit_id) {
 /// @param {struct} _power_data - Data about the power being used
 /// @returns {struct} The target information with column and index
 function find_valid_target(_power_data) {
-    var _result = {column: noone, index: undefined};
+    var _result = {
+        column: noone,
+        index: undefined
+    };
     var _target_vehicles = _power_data.target_type == "enemy_vehicle";
 
     // Create a priority queue for potential targets
     var _targets_queue = ds_priority_create();
 
     if (_power_data.type == "attack") {
-        with (obj_enunit) {
+        with(obj_enunit) {
             var _distance = point_distance(other.x, other.y, x, y) / 10;
             if (_distance <= _power_data.range) {
                 ds_priority_add(_targets_queue, id, _distance);
@@ -633,7 +643,7 @@ function find_valid_target(_power_data) {
             }
         }
     } else {
-        with (obj_pnunit) {
+        with(obj_pnunit) {
             var _distance = point_distance(other.x, other.y, x, y) / 10;
             if (_distance <= _power_data.range) {
                 ds_priority_add(_targets_queue, id, _distance);
@@ -680,7 +690,7 @@ function check_cast_success(_unit) {
     var _equipment_psychic_focus = _unit.gear_special_value("psychic_focus");
     var _attribute_psychic_focus = _unit.psychic_focus();
 
-    var _cast_difficulty = PSY_CAST_DIFFICULTY_BASE;  //TODO: Make this more dynamic;
+    var _cast_difficulty = PSY_CAST_DIFFICULTY_BASE; //TODO: Make this more dynamic;
     _cast_difficulty -= _equipment_psychic_focus;
     _cast_difficulty -= _attribute_psychic_focus;
 
@@ -696,7 +706,6 @@ function check_cast_success(_unit) {
 
     return _cast_successful;
 }
-
 
 /// @function select_psychic_power
 /// @param {struct} _unit - The caster unit
