@@ -2062,11 +2062,11 @@ global.gear = {
 				"artifact": 0
 			},
 			"melee_mod": {
-				"standard": 20,
-				"master_crafted": 25,
-				"artifact": 30
+				"standard": 5,
+				"master_crafted": 15,
+				"artifact": 25
 			},
-			"description": "A hastily assembled Power Armor that first started appearing during the Horus Heresy to act as a stopgap while new suits were produced and sent to loyalist legions. It excels in close combat but it has limited sensors for ranged combat.",
+			"description": " A patchwork of salvaged components and battlefield modifications, a relic of a galaxy torn asunder, this battle plate screams of betrayal, fire, and the unending war that brought Humanity to its knees. Each plate is a testament to the desperate struggle for survival during the Horus Heresy, bearing the scars of countless battles fought in the name of a dying Imperium. To wear this armor is to carry the weight of a shattered age, a constant reminder that even the Astartes were forged in the fires of galactic conflict and betrayal.",
 			"tags": ["power_armour"],
 			"maintenance" : 0.05,
 		},
