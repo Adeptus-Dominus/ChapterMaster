@@ -119,6 +119,7 @@ function basic_manage_settings(){
 	diplomacy=0; 
 	zoomed=0;  
 	view_squad=false; 	
+	scr_management(1);
     management_buttons = {
     	squad_toggle : new UnitButtonObject({
     		style : "pixel",
