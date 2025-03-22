@@ -926,7 +926,11 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 		}
 	};
 	static age = function(){
-		var real_age = obj_ini.age[company][marine_number];
+	    if (instance_exists(obj_controller)){
+		    var real_age = (obj_ini.age[company][marine_number] + (obj_controller.millenium * 1000) + obj_controller.year - 41735);
+		} else {
+		    var real_age = obj_ini.age[company][marine_number];
+		}
 		return real_age;
 	};// age
 
