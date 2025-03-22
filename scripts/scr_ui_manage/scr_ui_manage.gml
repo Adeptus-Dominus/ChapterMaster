@@ -71,6 +71,51 @@ function load_marines_into_ship(system, ship, units, reload=false) {
     }
 }
 
+function alternative_manage_views(x1, y1){
+	var _squad_button = management_buttons.squad_toggle;
+	_squad_button.update({
+		x1 : x1+5,
+		y1 : y1+6,
+		label : !obj_controller.view_squad && !obj_controller.company_report ? "Squad View" : "Company View",
+		keystroke : keyboard_check_pressed(ord("S"))
+	});
+
+	if (_squad_button.draw(!text_bar)){
+		view_squad = !view_squad
+		if (view_squad){
+			new_company_struct();
+		}
+	}	
+
+
+	if (!view_squad){
+		var _profile_toggle = management_buttons.profile_toggle;
+		_profile_toggle.update({
+			label : !unit_profile  ?  "Show Profile" : "Hide Profile",
+			x1 : _squad_button.x2,
+			y1 : _squad_button.y1,
+			keystroke : keyboard_check_pressed(ord("P"))
+		});
+		if (_profile_toggle.draw(!text_bar)){
+			unit_profile = !unit_profile
+
+		}
+
+		if (unit_profile){
+			var bio_toggle = management_buttons.bio_toggle;
+			bio_toggle.update({
+				label : !unit_bio  ?  "Show Bio" : "Hide Bio",
+				x1 : _profile_toggle.x2,
+				y1 : _profile_toggle.y1,
+				keystroke : keyboard_check_pressed(ord("B"))
+			});
+			if (bio_toggle.draw(!text_bar)){
+				unit_bio = !unit_bio
+			}
+		}							
+	}	
+}
+
 function scr_ui_manage() {
 	if (combat!=0) then exit;
 	// This is the draw script for showing the main management screen or individual company screens
@@ -243,50 +288,15 @@ function scr_ui_manage() {
 			var no_other_instances =  !instance_exists(obj_temp3) && !instance_exists(obj_popup);
 		    var stat_tool_tip_text;
 			var button_coords;
-			var _squad_button = management_buttons.squad_toggle;
-			_squad_button.update({
-				x1 : right_ui_block.x1+5,
-				y1 : right_ui_block.y1+6,
-				label : !obj_controller.view_squad && !obj_controller.company_report ? "Squad View" : "Company View",
-				keystroke : keyboard_check_pressed(ord("S"))
-			});
-
-			if (_squad_button.draw(!text_bar)){
-				view_squad = !view_squad
-				if (view_squad){
-					new_company_struct();
-				}
-			}	
-
-
-			if (!view_squad){
-				var _profile_toggle = management_buttons.profile_toggle;
-				_profile_toggle.update({
-					label : !unit_profile  ?  "Show Profile" : "Hide Profile",
-					x1 : _squad_button.x2,
-					y1 : _squad_button.y1,
-					keystroke : keyboard_check_pressed(ord("P"))
-				});
-				if (_profile_toggle.draw(!text_bar)){
-					unit_profile = !unit_profile
-	
-				}
-
-				if (unit_profile){
-					var bio_toggle = management_buttons.bio_toggle;
-					bio_toggle.update({
-						label : !unit_bio  ?  "Show Bio" : "Hide Bio",
-						x1 : _profile_toggle.x2,
-						y1 : _profile_toggle.y1,
-						keystroke : keyboard_check_pressed(ord("B"))
-					});
-					if (bio_toggle.draw(!text_bar)){
-						unit_bio = !unit_bio
-					}
-				}							
+			var _allow_alternative_views = managing >= 0;
+			if (!_allow_alternative_views){
+				_allow_alternative_views = selection_data.purpose_code=="manage";
+			}
+			if (_allow_alternative_views){
+				alternative_manage_views(right_ui_block.x1+5,right_ui_block.y1+6 );
 			}
 
-			if (managing<0 && selection_data.purpose_code!="manage") then unit_profile=true;
+			if (!_allow_alternative_views) then unit_profile=true;
 			//TODO Implement company report
 			/*var x6=x5+string_width(stat_tool_tip_text)+4;
 			var y6=y5+string_height(stat_tool_tip_text)+2;	    

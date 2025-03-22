@@ -817,6 +817,7 @@ if (fest_scheduled>0) and (fest_repeats>0){
 
 research_end();
 merge_ork_fleets();
+location_viewer.update_mission_log();
 //complex route plotting for player fleets
 return_lost_ships_chance();
 with (obj_p_fleet){

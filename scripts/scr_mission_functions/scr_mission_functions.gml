@@ -1,6 +1,10 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 
+
+function MissionHandler(planet, system) : PlanetData(planet, system) constructor{
+
+}
 function mission_name_key(mission){
 	var mission_key = {
 		"meeting_trap" : "Chaos Lord Meeting",
@@ -34,29 +38,31 @@ function mission_name_key(mission){
 		return "none"
 	}  
 }
-function scr_new_governor_mission(planet){
-	problem = "";
-	if p_owner[planet]!=eFACTION.Imperium then exit;
+function scr_new_governor_mission(planet, problem = ""){
+
+	if p_owner[planet] != eFACTION.Imperium then exit;
 	var planet_type= p_type[planet];
-	if (planet_type=="Death"){
-		problem = choose("hunt_beast", "provide_garrison");
-		accept_time = 6+irandom(30);
-	} else if (planet_type == "Hive"){
-		problem = choose("Show_of_power", "provide_garrison", "purge_enemies", "raid_black_market");
-	} else if (planet_type == "Temperate"){
-		problem = choose("provide_garrison", "train_forces", "join_parade");
-	}else if (planet_type == "Shrine"){
-		problem = choose("provide_garrison", "join_communion");
-	}else if (planet_type == "Ice"){
-		problem = choose("provide_garrison", "hunt_beast");
-	}else if (planet_type == "Lava"){
-		problem = choose("provide_garrison", "protect_raiders");
-	}else if (planet_type == "Agri"){
-		problem = choose("provide_garrison", "protect_raiders", "recover_artifacts");
-	}else if (planet_type == "Desert"){
-		problem = choose("provide_garrison", "protect_raiders", "recover_artifacts");
-	}else if (planet_type == "Feudal"){
-		problem = choose("hunt_beast", "protect_raiders");
+	if (problem == ""){
+		if (planet_type=="Death"){
+			problem = choose("hunt_beast", "provide_garrison");
+			accept_time = 6+irandom(30);
+		} else if (planet_type == "Hive"){
+			problem = choose("Show_of_power", "provide_garrison", "purge_enemies", "raid_black_market");
+		} else if (planet_type == "Temperate"){
+			problem = choose("provide_garrison", "train_forces", "join_parade");
+		}else if (planet_type == "Shrine"){
+			problem = choose("provide_garrison", "join_communion");
+		}else if (planet_type == "Ice"){
+			problem = choose("provide_garrison", "hunt_beast");
+		}else if (planet_type == "Lava"){
+			problem = choose("provide_garrison", "protect_raiders");
+		}else if (planet_type == "Agri"){
+			problem = choose("provide_garrison", "protect_raiders", "recover_artifacts");
+		}else if (planet_type == "Desert"){
+			problem = choose("provide_garrison", "protect_raiders", "recover_artifacts");
+		}else if (planet_type == "Feudal"){
+			problem = choose("hunt_beast", "protect_raiders");
+		}
 	}
 	var mission_data = {
 		stage : "preliminary",
@@ -83,31 +89,6 @@ function scr_new_governor_mission(planet){
 		add_new_problem(planet,problem, 20+irandom(20), ,mission_data);
 	}
 }
-
-
-function init_garrison_mission(planet, star, mission_slot){
-	var problems_data = star.p_problem_other_data[planet]
-	var mission_data = problems_data[mission_slot];
-	if (mission_data.stage == "preliminary"){
-		var numeral_name = planet_numeral_name(planet, star);
-		mission_data.stage = "active";
-		var garrison_length=(10+irandom(6));
-		star.p_timer[planet][mission_slot] = garrison_length;
-	    //pop.image="ancient_ruins";
-	    var gar_pop=instance_create(0,0,obj_popup);
-	    //TODO some new universal methods for popups
-	    gar_pop.title=$"Requested Garrison Provided to {numeral_name}";
-	    gar_pop.text=$"The govornor of {numeral_name} Thanks you for considering his request for a garrison, you agree that the garrison will remain for at least {garrison_length} months.";
-	    //pip.image="event_march"
-	    gar_pop.option1="Commence Garrison";
-        gar_pop.image="";
-        gar_pop.cooldown=8;
-        obj_controller.cooldown=8;	    
-	    scr_event_log("",$"Garrison commited to {numeral_name} for {garrison_length} months.", target.name);
-	}	
-}
-
-
 
 function init_beast_hunt_mission(planet, star, mission_slot){
 	var problems_data = star.p_problem_other_data[planet]
@@ -221,10 +202,10 @@ function complete_beast_hunt_mission(targ_planet, problem_index){
 					} else if (_tough_check[1]>=-10){
 						if (irandom(100)<_unit.luck){
 							_unit.add_or_sub_health(-100);
-							$"{_unit.name_role()} Was injured (health - 100)\n";
+							_unit_report_string += $"{_unit.name_role()} Was injured (health - 100)\n";
 						} else {
 							_unit.add_or_sub_health(-250);
-							$"{_unit.name_role()} Was Badly injured, it is unknown if he will recover (health - 250)\n";
+							_unit_report_string += $"{_unit.name_role()} Was Badly injured, it is unknown if he will recover (health - 250)\n";
 						}
 					}
 				}
@@ -238,7 +219,8 @@ function complete_beast_hunt_mission(targ_planet, problem_index){
         	}
         	_mission_string += $"\n{_unit_report_string}";
         } else {
-
+        	_mission_string = $"The mission was a failiure. The governor is disapointed and the legend of your chapter has undoubtedly been diminished";
+        	_mission_string += $"\n{_unit_report_string}";
         }
         scr_popup($"Beast Hunt on {planet_numeral_name(i)}",_mission_string,"","");
         remove_planet_problem(targ_planet, "hunt_beast");
@@ -265,20 +247,20 @@ function has_any_problem_planet(planet, star="none"){
 }
 
 function planet_problemless(planet, star="none"){
-	var has_problem = false;
+	var _problemless = true;
 	if (star=="none"){
 		for (var i=0;i<array_length(p_problem[planet]);i++){
 			if (p_problem[planet][i] != ""){
-				has_problem=true;
+				_problemless=false;
 				break;
 			}
 		}
 	} else {
 		with (star){
-			has_problem =  planet_problemless(planet);
+			_problemless =  planet_problemless(planet);
 		}
 	}
-	return !has_problem;
+	return _problemless;
 }
 
 /*
