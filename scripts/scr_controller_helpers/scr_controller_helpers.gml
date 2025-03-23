@@ -141,7 +141,6 @@ function basic_manage_settings() {
     diplomacy = 0;
     zoomed = 0;
     view_squad = false;
-    scr_management(1);
     management_buttons = {
         squad_toggle: new UnitButtonObject({
             style: "pixel",
@@ -166,6 +165,7 @@ function scr_toggle_manage() {
         with(obj_controller) {
             if (menu != 1) {
                 basic_manage_settings();
+                scr_management(1);
             } else if (menu == 1) {
                 menu = 0;
                 hide_banner = 0;

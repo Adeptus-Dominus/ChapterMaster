@@ -4,7 +4,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true) {
     var string_role = "";
     var health_string = "";
     var eventing = false;
-    jailed = false;
+    var jailed = false;
     var impossible = !is_struct(display_unit[selected]) && !is_array(display_unit[selected]);
     var is_man = false;
     if (man[selected] == "man" && is_struct(display_unit[selected])) {

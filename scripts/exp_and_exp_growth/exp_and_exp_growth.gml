@@ -243,7 +243,7 @@ function unit_stat_growth(grow_stat=false){
             return undefined;
         }
 	} else {
-		show_debug_message($"{total_traited}")
+		// show_debug_message($"{total_traited}")
 		return stat_gain_chances;
 
 	}

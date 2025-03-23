@@ -413,7 +413,7 @@ function ComplexSet(unit) constructor{
                             
                             var armour_sampler = shader_get_sampler_index(armour_texture, "armour_texture");
                             texture_set_stage(armour_sampler, tex_texture);
-                            show_debug_message($"{_tex_data.areas[t]}");
+                            // show_debug_message($"{_tex_data.areas[t]}");
                             var _replace_col = shader_get_uniform(armour_texture, "replace_colour");
                             shader_set_uniform_f_array(_replace_col, _tex_data.areas[t]);
                             draw_sprite(_sprite,choice ?? 0,x_surface_offset,y_surface_offset);    

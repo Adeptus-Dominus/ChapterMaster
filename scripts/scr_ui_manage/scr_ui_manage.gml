@@ -95,7 +95,7 @@ function alternative_manage_views(x1, y1) {
             y1: _squad_button.y1,
             keystroke: keyboard_check_pressed(ord("P"))
         });
-		if (_profile_toggle.draw(!text_bar)) {
+        if (_profile_toggle.draw(!text_bar)) {
             unit_profile = !unit_profile;
         }
 
@@ -441,193 +441,70 @@ function scr_ui_manage() {
             }
 
             // Stats
-            text = $"{selected_unit.bionics}"; // Bionics tracker
-            x1 = x_left + 110;
-            y1 = yy + 208;
-            x2 = x1 + string_width(text);
-            y2 = y1 + string_height(text);
-            x3 = x1 - 26;
-            y3 = y1 - 4;
+            // Bionics tracker
+            if (cn.temp[128] != "") {
+                text = cn.temp[128];
+                tooltip_text = cn.temp[129];
+                x1 = x_left + 110;
+                y1 = yy + 208;
+                x2 = x1 + string_width(text);
+                y2 = y1 + string_height(text);
+                x3 = x1 - 26;
+                y3 = y1 - 4;
 
-            draw_sprite_stretched(spr_icon_bionics, 0, x3, y3, 24, 24);
-            draw_text_outline(x1, y1, text);
-            var _body_parts = ARR_body_parts;
-            var _body_parts_display = ARR_body_parts_display;
-            bionic_tooltip = "Bionic Augmentation is something a unit can do to both enhance their capabilities, but also replace a missing limb to get back into the fight.";
-            bionic_tooltip += "\nThere is a limit of 10 Bionic augmentations. After that the damage is so extensive that a marine requires a dreadnought to keep going.";
-            bionic_tooltip += "\nFor everyone else? It's time for the emperor's mercy.";
-            bionic_tooltip += "\n\nCurrent Bionic Augmentations:\n";
-            for (var part = 0; part < array_length(_body_parts); part++) {
-                if (struct_exists(selected_unit.body[$ _body_parts[part]], "bionic")) {
-                    var part_display = _body_parts_display[part];
-                    bionic_tooltip += $"Bionic {part_display}";
-                    switch (part_display) {
-                        case "Left Leg":
-                        case "Right Leg":
-                            bionic_tooltip += $" (CON: +2 STR: +1 DEX: -2)\n";
-                            break;
-                        case "Left Eye":
-                        case "Right Eye":
-                            bionic_tooltip += $" (CON: +1 WIS: +1 DEX: +1)\n";
-                            break;
-                        case "Left Arm":
-                        case "Right Arm":
-                            bionic_tooltip += $" (CON: +2 STR: +2 WS: -1)\n";
-                            break;
-                        case "Torso":
-                            bionic_tooltip += $" (CON: +4 STR: +1 DEX: -1)\n";
-                            break;
-                        case "Throat":
-                            bionic_tooltip += $" (CHA: -1)\n";
-                            break;
-                        case "Jaw":
-                        case "Head":
-                            bionic_tooltip += $" (CON: +1)\n";
-                            break;
-                    }
-                }
-            }
-            if (bionic_tooltip != "") {
-                array_push(tooltip_drawing, [bionic_tooltip, [x3, y1, x2, y2], "Bionics Installed"]);
+                draw_sprite_stretched(spr_icon_bionics, 0, x3, y3, 24, 24);
+                draw_text_outline(x1, y1, text);
+                array_push(tooltip_drawing, [tooltip_text, [x3, y1, x2, y2], "Bionics Installed"]);
             }
 
-            text = $"{selected_unit.armour_calc()}"; // Armour Rating
-            var tooltip_text = "Reduces incoming damage at a flat rate. Certain enemies may attack in ways that may bypass your armor entirely, for example power weapons and some warp sorceries.\n\nContributing factors:\n";
-            var equipment_types = ["armour", "weapon_one", "weapon_two", "mobility", "gear"];
-            for (var i = 0; i < array_length(equipment_types); i++) {
-                var equipment_type = equipment_types[i];
-                var ac = 0;
-                var name = "";
-                switch (equipment_type) {
-                    case "armour":
-                        ac = selected_unit.get_armour_data("armour_value");
-                        name = selected_unit.get_armour_data("name");
-                        break;
-                    case "weapon_one":
-                        ac = selected_unit.get_weapon_one_data("armour_value");
-                        name = selected_unit.get_weapon_one_data("name");
-                        break;
-                    case "weapon_two":
-                        ac = selected_unit.get_weapon_two_data("armour_value");
-                        name = selected_unit.get_weapon_two_data("name");
-                        break;
-                    case "mobility":
-                        ac = selected_unit.get_mobility_data("armour_value");
-                        name = selected_unit.get_mobility_data("name");
-                        break;
-                    case "gear":
-                        ac = selected_unit.get_gear_data("armour_value");
-                        name = selected_unit.get_gear_data("name");
-                        break;
-                }
-                if (ac != 0) {
-                    tooltip_text += $"{name}: {ac}\n";
-                }
+            // Armour Rating
+            if (cn.temp[126] != "") {
+                text = cn.temp[126];
+                tooltip_text = cn.temp[127];
+                x1 = x_left + 20;
+                y1 = yy + 232;
+                x2 = x1 + string_width(text);
+                y2 = y1 + string_height(text);
+                x3 = x1 - 26;
+                y3 = y1 - 4;
+                draw_sprite_stretched(spr_icon_shield2, 0, x3, y3, 24, 24);
+                draw_text_outline(x1, y1, text);
+                array_push(tooltip_drawing, [tooltip_text, [x3, y1, x2, y2], "Armour Rating"]);
             }
-            if (obj_controller.stc_bonus[1] == 5 || obj_controller.stc_bonus[2] == 3) {
-                tooltip_text += $"STC Bonus: x1.05\n";
-            }
-            x1 = x_left + 20;
-            y1 = yy + 232;
-            x2 = x1 + string_width(text);
-            y2 = y1 + string_height(text);
-            x3 = x1 - 26;
-            y3 = y1 - 4;
-            draw_sprite_stretched(spr_icon_shield2, 0, x3, y3, 24, 24);
-            draw_text_outline(x1, y1, text);
-            array_push(tooltip_drawing, [tooltip_text, [x3, y1, x2, y2], "Armour Rating"]);
 
-            text = $"{round(selected_unit.hp())}/{round(selected_unit.max_health())}"; // Health Tracker
-            tooltip_text = $"A measure how much punishment the creature can take. Marines can go into the negatives and still survive, but they'll require a bionic to become fighting fit once more.\n\nContributing factors:\nCON: {round(100 * (1 + ((selected_unit.constitution - 40) * 0.025)))}\n";
-            for (var i = 0; i < array_length(equipment_types); i++) {
-                var equipment_type = equipment_types[i];
-                var hp_mod = 0;
-                var name = "";
-                switch (equipment_type) {
-                    case "armour":
-                        hp_mod = selected_unit.get_armour_data("hp_mod");
-                        name = selected_unit.get_armour_data("name");
-                        break;
-                    case "weapon_one":
-                        hp_mod = selected_unit.get_weapon_one_data("hp_mod");
-                        name = selected_unit.get_weapon_one_data("name");
-                        break;
-                    case "weapon_two":
-                        hp_mod = selected_unit.get_weapon_two_data("hp_mod");
-                        name = selected_unit.get_weapon_two_data("name");
-                        break;
-                    case "mobility":
-                        hp_mod = selected_unit.get_mobility_data("hp_mod");
-                        name = selected_unit.get_mobility_data("name");
-                        break;
-                    case "gear":
-                        hp_mod = selected_unit.get_gear_data("hp_mod");
-                        name = selected_unit.get_gear_data("name");
-                        break;
-                }
-                if (hp_mod != 0) {
-                    tooltip_text += $"{name}: {format_number_with_sign(hp_mod)}%\n";
-                }
+            // Health
+            if (cn.temp[124] != "") {
+                text = cn.temp[124];
+                tooltip_text = cn.temp[125];
+                x1 = x_left + 20;
+                y1 = yy + 208;
+                x2 = x1 + string_width(text);
+                y2 = y1 + string_height(text);
+                x3 = x1 - 26;
+                y3 = y1 - 4;
+                draw_sprite_stretched(spr_icon_health, 0, x3, y3, 24, 24);
+                draw_text_outline(x1, y1, text);
+                array_push(tooltip_drawing, [tooltip_text, [x3, y1, x2, y2], "Health"]);
             }
-            x1 = x_left + 20;
-            y1 = yy + 208;
-            x2 = x1 + string_width(text);
-            y2 = y1 + string_height(text);
-            x3 = x1 - 26;
-            y3 = y1 - 4;
-            draw_sprite_stretched(spr_icon_health, 0, x3, y3, 24, 24);
-            draw_text_outline(x1, y1, text);
-            array_push(tooltip_drawing, [tooltip_text, [x3, y1, x2, y2], "Health"]);
 
             // Experience
             if (cn.temp[113] != "") {
-                text = $"{cn.temp[113]}";
+                text = cn.temp[113];
+                tooltip_text = "A measureme of how battle-hardened the unit is. Provides a lot of various bonuses across the board.";
                 x1 = x_left + 20;
                 y1 = yy + 184;
                 x2 = x1 + string_width(text);
                 y2 = y1 + string_height(text);
                 x3 = x1 - 26;
                 y3 = y1 - 4;
-                tooltip_text = "A measureme of how battle-hardened the unit is. Provides a lot of various bonuses across the board.";
                 array_push(tooltip_drawing, [tooltip_text, [x3, y1, x2, y2], "Experience"]);
                 draw_sprite_stretched(spr_icon_veteran, 0, x_left - 6, yy + 180, 24, 24);
                 draw_text_outline(x1, y1, text);
             }
 
             if (cn.temp[118] != "") {
-                tooltip_text = "Health damage taken by the marine is reduced by this percentage. This happens after the flat reduction from armor.\n\nContributing factors:\n";
-                for (var i = 0; i < array_length(equipment_types); i++) {
-                    var equipment_type = equipment_types[i];
-                    var dr = 0;
-                    var name = "";
-                    switch (equipment_type) {
-                        case "armour":
-                            dr = selected_unit.get_armour_data("damage_resistance_mod");
-                            name = selected_unit.get_armour_data("name");
-                            break;
-                        case "weapon_one":
-                            dr = selected_unit.get_weapon_one_data("damage_resistance_mod");
-                            name = selected_unit.get_weapon_one_data("name");
-                            break;
-                        case "weapon_two":
-                            dr = selected_unit.get_weapon_two_data("damage_resistance_mod");
-                            name = selected_unit.get_weapon_two_data("name");
-                            break;
-                        case "mobility":
-                            dr = selected_unit.get_mobility_data("damage_resistance_mod");
-                            name = selected_unit.get_mobility_data("name");
-                            break;
-                        case "gear":
-                            dr = selected_unit.get_gear_data("damage_resistance_mod");
-                            name = selected_unit.get_gear_data("name");
-                            break;
-                    }
-                    if (dr != 0) {
-                        tooltip_text += $"{name}: {dr}%\n";
-                    }
-                }
-                text = $"{cn.temp[118]}"; // Damage Resistance
-                tooltip_text += string("CON: {0}%\nEXP: {1}%", round(selected_unit.constitution / 2), round(selected_unit.experience / 10));
+                text = cn.temp[118]; // Damage Resistance
+                tooltip_text = cn.temp[130];
                 x1 = x_left + 110;
                 y1 = yy + 232;
                 x2 = x1 + string_width(text);

@@ -545,11 +545,148 @@ try {
                 temp[117] = unit.ranged_attack();
                 // Damage Resistance
                 temp[118] = string(damage_res) + "%";
+                temp[130] = "Health damage taken by the marine is reduced by this percentage. This happens after the flat reduction from armor.\n\nContributing factors:\n";
+                var equipment_types = ["armour", "weapon_one", "weapon_two", "mobility", "gear"];
+                for (var i = 0; i < array_length(equipment_types); i++) {
+                    var equipment_type = equipment_types[i];
+                    var dr = 0;
+                    var name = "";
+                    switch (equipment_type) {
+                        case "armour":
+                            dr = unit.get_armour_data("damage_resistance_mod");
+                            name = unit.get_armour_data("name");
+                            break;
+                        case "weapon_one":
+                            dr = unit.get_weapon_one_data("damage_resistance_mod");
+                            name = unit.get_weapon_one_data("name");
+                            break;
+                        case "weapon_two":
+                            dr = unit.get_weapon_two_data("damage_resistance_mod");
+                            name = unit.get_weapon_two_data("name");
+                            break;
+                        case "mobility":
+                            dr = unit.get_mobility_data("damage_resistance_mod");
+                            name = unit.get_mobility_data("name");
+                            break;
+                        case "gear":
+                            dr = unit.get_gear_data("damage_resistance_mod");
+                            name = unit.get_gear_data("name");
+                            break;
+                    }
+                    if (dr != 0) {
+                        temp[130] += $"{name}: {dr}%\n";
+                    }
+                }
+                temp[130] += string("CON: {0}%\nEXP: {1}%", round(unit.constitution / 2), round(unit.experience / 10));
                 if (is_struct(temp[121])) {
                     try {
                         temp[121].destroy_image();
                     }
                     delete temp[121];
+                }
+                temp[124] = $"{round(unit.hp())}/{round(unit.max_health())}"; // Health Tracker
+                temp[125] = $"A measure how much punishment the creature can take. Marines can go into the negatives and still survive, but they'll require a bionic to become fighting fit once more.\n\nContributing factors:\nCON: {round(100 * (1 + ((unit.constitution - 40) * 0.025)))}\n";
+                for (var i = 0; i < array_length(equipment_types); i++) {
+                    var equipment_type = equipment_types[i];
+                    var hp_mod = 0;
+                    var name = "";
+                    switch (equipment_type) {
+                        case "armour":
+                            hp_mod = unit.get_armour_data("hp_mod");
+                            name = unit.get_armour_data("name");
+                            break;
+                        case "weapon_one":
+                            hp_mod = unit.get_weapon_one_data("hp_mod");
+                            name = unit.get_weapon_one_data("name");
+                            break;
+                        case "weapon_two":
+                            hp_mod = unit.get_weapon_two_data("hp_mod");
+                            name = unit.get_weapon_two_data("name");
+                            break;
+                        case "mobility":
+                            hp_mod = unit.get_mobility_data("hp_mod");
+                            name = unit.get_mobility_data("name");
+                            break;
+                        case "gear":
+                            hp_mod = unit.get_gear_data("hp_mod");
+                            name = unit.get_gear_data("name");
+                            break;
+                    }
+                    if (hp_mod != 0) {
+                        temp[125] += $"{name}: {format_number_with_sign(hp_mod)}%\n";
+                    }
+                }
+                temp[126] = $"{unit.armour_calc()}"; // Armour Rating
+                temp[127] = "Reduces incoming damage at a flat rate. Certain enemies may attack in ways that may bypass your armor entirely, for example power weapons and some warp sorceries.\n\nContributing factors:\n";
+                for (var i = 0; i < array_length(equipment_types); i++) {
+                    var equipment_type = equipment_types[i];
+                    var ac = 0;
+                    var name = "";
+                    switch (equipment_type) {
+                        case "armour":
+                            ac = unit.get_armour_data("armour_value");
+                            name = unit.get_armour_data("name");
+                            break;
+                        case "weapon_one":
+                            ac = unit.get_weapon_one_data("armour_value");
+                            name = unit.get_weapon_one_data("name");
+                            break;
+                        case "weapon_two":
+                            ac = unit.get_weapon_two_data("armour_value");
+                            name = unit.get_weapon_two_data("name");
+                            break;
+                        case "mobility":
+                            ac = unit.get_mobility_data("armour_value");
+                            name = unit.get_mobility_data("name");
+                            break;
+                        case "gear":
+                            ac = unit.get_gear_data("armour_value");
+                            name = unit.get_gear_data("name");
+                            break;
+                    }
+                    if (ac != 0) {
+                        temp[127] += $"{name}: {ac}\n";
+                    }
+                }
+                if (obj_controller.stc_bonus[1] == 5 || obj_controller.stc_bonus[2] == 3) {
+                    temp[127] += $"STC Bonus: x1.05\n";
+                }
+                temp[128] = $"{unit.bionics}";
+                var _body_parts = ARR_body_parts;
+                var _body_parts_display = ARR_body_parts_display;
+                temp[129] = "Bionic Augmentation is something a unit can do to both enhance their capabilities, but also replace a missing limb to get back into the fight.";
+                temp[129] += "\nThere is a limit of 10 Bionic augmentations. After that the damage is so extensive that a marine requires a dreadnought to keep going.";
+                temp[129] += "\nFor everyone else? It's time for the emperor's mercy.";
+                temp[129] += "\n\nCurrent Bionic Augmentations:\n";
+                for (var part = 0; part < array_length(_body_parts); part++) {
+                    if (struct_exists(unit.body[$ _body_parts[part]], "bionic")) {
+                        var part_display = _body_parts_display[part];
+                        temp[129] += $"Bionic {part_display}";
+                        switch (part_display) {
+                            case "Left Leg":
+                            case "Right Leg":
+                                temp[129] += $" (CON: +2 STR: +1 DEX: -2)\n";
+                                break;
+                            case "Left Eye":
+                            case "Right Eye":
+                                temp[129] += $" (CON: +1 WIS: +1 DEX: +1)\n";
+                                break;
+                            case "Left Arm":
+                            case "Right Arm":
+                                temp[129] += $" (CON: +2 STR: +2 WS: -1)\n";
+                                break;
+                            case "Torso":
+                                temp[129] += $" (CON: +4 STR: +1 DEX: -1)\n";
+                                break;
+                            case "Throat":
+                                temp[129] += $" (CHA: -1)\n";
+                                break;
+                            case "Jaw":
+                            case "Head":
+                                temp[129] += $" (CON: +1)\n";
+                                break;
+                        }
+                    }
                 }
                 temp[121] = unit.draw_unit_image();
 

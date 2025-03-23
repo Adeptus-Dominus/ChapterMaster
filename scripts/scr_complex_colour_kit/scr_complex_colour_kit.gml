@@ -456,7 +456,7 @@ function setup_complex_livery_shader(setup_role, game_setup=false, unit = "none"
     } else {
         shader_set_uniform_f_array(shader_get_uniform(full_livery_shader, "robes_colour_replace"), cloth_col);
     }
-    show_debug_message(data_set);
+    // show_debug_message(data_set);
     var _textures = {
 
     }
