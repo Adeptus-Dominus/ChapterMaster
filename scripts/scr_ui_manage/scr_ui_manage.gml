@@ -777,7 +777,7 @@ function scr_ui_manage() {
                         if (point_and_click([xx + 25, yy + 64, xx + 974, yy + 85])) {
                             var candidates = collect_role_group("captain_candidates");
                             group_selection(candidates, {
-                                purpose: $ "{scr_roman_numerals()[managing - 1]} Company Captain Candidates",
+                                purpose: $"{scr_roman_numerals()[managing - 1]} Company Captain Candidates",
                                 purpose_code: "captain_promote",
                                 number: 1,
                                 system: managing,
