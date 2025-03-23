@@ -18,6 +18,9 @@ function __init_external() {
     if (!directory_exists("Logs")) {
         directory_create("Logs");
     }
+    if (!directory_exists("Custom Files\\Custom Icons")) {
+        directory_create("Custom Files\\Custom Icons");
+    }
 
     #macro PATH_last_messages $"Logs/last_messages.log"
 

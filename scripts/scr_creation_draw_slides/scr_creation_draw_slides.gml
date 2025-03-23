@@ -186,7 +186,11 @@ function draw_chapter_select(){
 			if (chap.icon > global.normal_icons_count) {
 				if (string_starts_with(chap.icon_name, "custom")) {
 					var cuicon = obj_cuicons.spr_custom_icon[chap.icon - normal_and_builtin];
-					draw_sprite_stretched(cuicon, 0, grid.x1, grid.y1, grid.w, grid.h);
+                    if (cuicon != -1) {
+                        draw_sprite_stretched(cuicon, 0, grid.x1, grid.y1, grid.w, grid.h);
+                    } else {
+                        draw_sprite_stretched(spr_icon_chapters, 0, grid.x1, grid.y1, grid.w, grid.h);
+                    }
 				} else {
 					draw_sprite_stretched(spr_icon_chapters, chap.icon - global.normal_icons_count, grid.x1, grid.y1, grid.w, grid.h);
 				}
