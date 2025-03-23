@@ -176,9 +176,9 @@
         "name": "Telekinesis",
         "prefix": "TEL",
         "powers": [
+            "assail",
             "crush",
             "shockwave",
-            "wave_of_force",
             "telekinetic_dome",
             "spatial_distortion",
             "vortex_of_doom"

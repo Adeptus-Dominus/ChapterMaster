@@ -678,6 +678,22 @@ I see no reason to have these named structs, as their names are not used for any
             }
         }
     },
+    "assail": {
+        "name": "Assail",
+        "type": "attack",
+        "range": 6,
+        "target_type": "enemy_unit",
+        "max_kills": 3,
+        "magnitude": 100,
+        "armour_piercing": 0,
+        "flavour_text": {
+            "default": {
+                "text": [
+                    "- a boulder of rock raises from the ground and flies towards his foes."
+                ]
+            }
+        }
+    },
     "crush": {
         "name": "Crush",
         "type": "attack",
