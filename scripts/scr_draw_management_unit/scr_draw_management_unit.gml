@@ -5,14 +5,28 @@ function scr_draw_management_unit(selected, yy=0, xx=0, draw=true){
 	var string_role="";
 	var health_string="";
 	var eventing=false;
-	jailed = false;
-	var impossible = (!is_struct(display_unit[selected]) && !is_array(display_unit[selected]));
-	var is_man=false;
-    if (man[selected]=="man" && is_struct(display_unit[selected])){
-    	is_man = true;
-		unit = display_unit[selected];
-		if (unit.name()=="" || unit.base_group=="none"){
-			return "continue";
+	var jailed = false;
+	if (true) { // Static Display Info Cache Block
+	       var impossible = (!is_struct(display_unit[selected]) && !is_array(display_unit[selected]));
+	       var is_man = (man[selected] == "man" && is_struct(display_unit[selected]));
+	       if (is_man) {
+	           unit = display_unit[selected];
+	           if (unit.name() == "" || unit.base_group == "none") {
+	               return "continue";
+	           }
+	       }
+	       if (!global.cached_unit_display_info) {
+	           global.cached_unit_display_info = [];
+	       }
+	       if (!global.cached_unit_display_info[selected] || global.cached_unit_display_info[selected].needsUpdate) {
+	           scr_update_management_unit_info(selected);
+	       }
+	       var cache_info = global.cached_unit_display_info[selected];
+	       string_role = cache_info.string_role;
+	       unit_location_string = cache_info.unit_location_string;
+	       health_string = cache_info.health_string;
+	       var exp_string = cache_info.exp_string;
+	   }
 		}
 		var unit_specialist = is_specialist(unit.role());
 		var unit_location_string="";
@@ -472,4 +486,56 @@ function scr_draw_management_unit(selected, yy=0, xx=0, draw=true){
         }
     }
     if (!ma_view[selected]) return "continue";
+}
+
+function scr_get_unit_display_info(selected) {
+    // Ensure the global cache exists; if not, create it.
+    if (!global.cached_unit_display_info) {
+        global.cached_unit_display_info = [];
+    }
+    
+    // Retrieve the unit structure from the display_unit array.
+    var unit = display_unit[selected];
+    
+    // Compute the role string using the unit's name_role() method.
+    var string_role = unit.name_role();
+    
+    // Compute the unit location string based on marine_location() and assignment.
+    var unit_location_string = "";
+    if (unit.in_jail()) {
+        unit_location_string = "=Penitorium=";
+    } else {
+        var loc = unit.marine_location();
+        if (loc[0] == location_types.planet) {
+            // Combine the planet name (loc[2]) with its roman numeral representation.
+            unit_location_string = loc[2] + scr_roman(loc[1]);
+        } else if (loc[0] == location_types.ship) {
+            unit_location_string = obj_ini.ship[loc[1]];
+        } else {
+            unit_location_string = string(loc);
+        }
+        // Append the assignment if it's not "none".
+        var assignment = unit.assignment();
+        if (assignment != "none") {
+            unit_location_string += "(" + assignment + ")";
+        }
+    }
+    
+    // Compute the health percentage string using unit.hp() and unit.max_health()
+    var health_string = string(round((unit.hp() / unit.max_health()) * 100)) + "% HP";
+    
+    // Compute the EXP string using the global ma_exp value for the selected unit.
+    var exp_string = string(round(ma_exp[selected])) + " EXP";
+    
+    // Prepare an object containing the computed display information.
+    var info = {
+        string_role: string_role,
+        unit_location_string: unit_location_string,
+        health_string: health_string,
+        exp_string: exp_string
+    };
+    
+    // Cache the computed info for the unit and return it.
+    global.cached_unit_display_info[selected] = info;
+    return info;
 }
