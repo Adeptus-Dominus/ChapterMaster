@@ -436,7 +436,6 @@
     {"$GMIncludedFile":"","%Name":"resources.png","CopyToMask":-1,"filePath":"datafiles/images/ui","name":"resources.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"load_sets.json","CopyToMask":-1,"filePath":"datafiles/main/chapter_symbols","name":"load_sets.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"pauldron.png","CopyToMask":-1,"filePath":"datafiles/main/chapter_symbols/ultramarines","name":"pauldron.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
-    {"$GMIncludedFile":"","%Name":"pauldron.png","CopyToMask":-1,"filePath":"datafiles/main/chapter_symbols/Ultramarines","name":"pauldron.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"1.JSON","CopyToMask":-1,"filePath":"datafiles/main/chapters","name":"1.JSON","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"10.JSON","CopyToMask":-1,"filePath":"datafiles/main/chapters","name":"10.JSON","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"11.JSON","CopyToMask":-1,"filePath":"datafiles/main/chapters","name":"11.JSON","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
