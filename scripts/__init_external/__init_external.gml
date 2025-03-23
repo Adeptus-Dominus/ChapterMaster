@@ -22,6 +22,7 @@ function __init_external() {
         directory_create("Custom Files\\Custom Icons");
     }
 
+    #macro PATH_custom_icons $"Custom Files\\Custom Icons\\custom"
     #macro PATH_last_messages $"Logs/last_messages.log"
 
     var _log_file = file_text_open_write(PATH_last_messages);

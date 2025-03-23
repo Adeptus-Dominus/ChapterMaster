@@ -3,7 +3,7 @@ i = -1;
 repeat (300) {
     i += 1;
     if ((spr_custom[i] != 0) && sprite_exists(spr_custom_icon[i])) {
-        if (file_exists("Custom Files\\Custom Icons\\custom" + string(i) + ".png") && (spr_custom[i] > 0)) {
+        if (file_exists($"{PATH_custom_icons}{i}.png") && (spr_custom[i] > 0)) {
             sprite_delete(spr_custom_icon[i]);
             spr_custom_icon[i] = -1;
             spr_custom[i] = 0;
@@ -22,8 +22,8 @@ if ((custom_using > 0) || (room_get_name(room) == "Main_Menu")) {
         i += 1;
         spr_custom[i] = 0;
         spr_custom_icon[i] = -1;
-        if (file_exists("Custom Files\\Custom Icons\\custom" + string(i) + ".png")) {
-            spr_custom_icon[i] = sprite_add("Custom Files\\Custom Icons\\custom" + string(i) + ".png", 1, false, false, 0, 0);
+        if (file_exists($"{PATH_custom_icons}{i}.png")) {
+            spr_custom_icon[i] = sprite_add($"{PATH_custom_icons}{i}.png", 1, false, false, 0, 0);
             // if (file_exists(working_directory + "\icons\custom"+string(i)+".png")) then show_message("'working_directory + \icons\custom"+string(i)+".png' exists");
 
             // var fucking;fucking=spr_custom_icon[i];
