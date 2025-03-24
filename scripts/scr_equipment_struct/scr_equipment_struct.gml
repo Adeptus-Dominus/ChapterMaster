@@ -414,7 +414,7 @@ function quality_color(_item_quality) {
             return #40bfbf;
             break;
         case "exemplary":
-            return # 80 bf40;
+            return #80bf40;
             break;
     }
 }

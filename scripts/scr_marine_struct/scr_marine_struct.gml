@@ -18,8 +18,8 @@
 		the string (usually max) is guidance so in the instance of max it will pick the larger value of the mean and the gauss function return
 */
 // will swap these out for enums or some better method as i develop where this is going
-#macro ARR_body_parts["left_leg", "right_leg", "torso", "right_arm", "left_arm", "left_eye", "right_eye", "throat", "jaw", "head"]
-#macro ARR_body_parts_display["Left Leg", "Right Leg", "Torso", "Right Arm", "Left Arm", "Left Eye", "Right Eye", "Throat", "Jaw", "Head"]
+#macro ARR_body_parts ["left_leg", "right_leg", "torso", "right_arm", "left_arm", "left_eye", "right_eye", "throat", "jaw", "head"]
+#macro ARR_body_parts_display ["Left Leg", "Right Leg", "Torso", "Right Arm", "Left Arm", "Left Eye", "Right Eye", "Throat", "Jaw", "Head"]
 global.religions = {
     "imperial_cult": {
         "name": "Imperial Cult"
@@ -31,7 +31,7 @@ global.religions = {
         "name": "The Eight Fold Path"
     }
 };
-#macro ARR_power_armour["MK7 Aquila", "MK6 Corvus", "MK5 Heresy", "MK3 Iron Armour", "MK4 Maximus", "Power Armour"]
+#macro ARR_power_armour ["MK7 Aquila", "MK6 Corvus", "MK5 Heresy", "MK3 Iron Armour", "MK4 Maximus", "Power Armour"]
 enum location_types {
     planet,
     ship,
@@ -40,8 +40,8 @@ enum location_types {
     warp,
 }
 
-#macro ARR_psy_levels["Rho", "Pi", "Omicron", "Xi", "Nu", "Mu", "Lambda", "Kappa", "Iota", "Theta", "Eta", "Zeta", "Epsilon", "Delta", "Gamma", "Beta", "Alpha", "Alpha Plus", "Beta", "Gamma Plus"]
-#macro ARR_negative_psy_levels["Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega"]
+#macro ARR_psy_levels ["Rho", "Pi", "Omicron", "Xi", "Nu", "Mu", "Lambda", "Kappa", "Iota", "Theta", "Eta", "Zeta", "Epsilon", "Delta", "Gamma", "Beta", "Alpha", "Alpha Plus", "Beta", "Gamma Plus"]
+#macro ARR_negative_psy_levels ["Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega"]
 
 global.base_stats = {
     //tempory stats subject to change by anyone that wishes to try their luck
