@@ -93,7 +93,7 @@ function reset_combat_message_arrays(){
     }
 }
 if (timer_stage=1) or (timer_stage=5){
-    if (global_perils>0) then global_perils-=4;
+    if (global_perils>0) then global_perils-=10;
     if (global_perils<0) then global_perils=0;
     turns+=1;
     
@@ -123,7 +123,7 @@ if (timer_stage=1) or (timer_stage=5){
             turn_count++;
         }
     }
-    messages=0;messages_to_show=8;largest=0;random_messages=0;priority=0;messages_shown=0;
+    messages=0;messages_to_show = 24;largest=0;random_messages=0;priority=0;messages_shown=0;
     reset_combat_message_arrays();
     timer_stage=2;timer=0;done=0;messages_shown=0;    
 }
@@ -145,7 +145,7 @@ else if (timer_stage=3){
             obj_enunit.alarm[8]=4;
             turns+=1;
         }
-        var messages=0;messages_to_show=8;largest=0;random_messages=0;priority=0;messages_shown=0;
+        var messages=0;messages_to_show = 24;largest=0;random_messages=0;priority=0;messages_shown=0;
         reset_combat_message_arrays();
         timer_stage=4;timer=0;done=0;messages_shown=0;
     }
@@ -161,7 +161,7 @@ else if (timer_stage=3){
             obj_enunit.alarm[1]=1;
         }
         // alarm[9]=5;
-        var i;i=0;messages=0;messages_to_show=8;largest=0;random_messages=0;priority=0;messages_shown=0;
+        var i;i=0;messages=0;messages_to_show = 24;largest=0;random_messages=0;priority=0;messages_shown=0;
         reset_combat_message_arrays();
         timer_stage=4;timer=0;done=0;messages_shown=0;
     }

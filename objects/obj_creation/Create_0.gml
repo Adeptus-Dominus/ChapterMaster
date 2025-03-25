@@ -3,7 +3,11 @@
  * It contains data and logic for setting up custom chapters as well as populating the new game menu with data for pre-existing chapters.
  */
 keyboard_string="";
-
+try{
+    load_visual_sets();
+} catch(_exception){
+    handle_exception(_exception);
+}
 
 texturegroup_load("Defualt", true);
 
@@ -296,6 +300,10 @@ buttons = {
         {   
             str1 : "Wolf Cult",
             font : fnt_40k_14b,
+        },
+        {   
+            str1 : "Runic",
+            font : fnt_40k_14b,
         },                                                                                      
     ], "Chapter Visual Styles")  
 }
@@ -341,7 +349,7 @@ fleet_type=1;
 strength=5;
 cooperation=5;
 purity=5;
-stability=5;
+stability=90;
 
 
 var i = 9;
@@ -355,7 +363,7 @@ recruiting_exists=1;
 homeworld_exists=1;
 homeworld_rule=1;
 aspirant_trial=eTrials.BLOODDUEL;
-discipline="default";
+discipline="librarius";
 
 battle_cry="For the Emperor";
 
@@ -714,7 +722,7 @@ var all_advantages = [
         {
             name : "Ambushers",
             description : "Your chapter is especially trained with ambushing foes; they have a bonus to attack during the start of a battle.",
-            value : 20,
+            value : 30,
         },
         {
             name : "Boarders",
@@ -724,7 +732,7 @@ var all_advantages = [
         {
             name : "Bolter Drilling",
             description : "Bolter drills are sacred to your chapter; all marines have increased attack with Bolter weaponry.",
-            value : 25,
+            value : 40,
             meta : ["Weapon Specialty"]
         },
         {
@@ -735,13 +743,8 @@ var all_advantages = [
         {
             name : "Crafters",
             description : "Your chapter views artifacts as sacred; you start with better gear and maintain all equipment with more ease.",
-            value : 35,
+            value : 40,
             meta : ["Gear Quality"]
-        },
-        {
-            name : "Daemon Binders",
-            description : "Powers are replaced with a more powerful Witchfire variant.  Perils are also less likely to occur but are more disasterous when they do.",
-            value : 20,
         },
         {
             name : "Enemy: Eldar",
@@ -776,7 +779,7 @@ var all_advantages = [
         {
             name : "Enemy: Tyranids",
             description : "Tyranids are particularly hated by your chapter. A large number of your veterans and marines are tyrannic war veterans and when fighting Tyranids damage is increased.",
-            value : 25,
+            value : 20,
             meta : ["Main Enemy"],
         },
         {
@@ -788,7 +791,7 @@ var all_advantages = [
         {
             name : "Lightning Warriors",
             description : "Your chapter's style of warfare is built around the speedy execution of battle. Infantry have boosted attack at the cost of defense as well as two additional Land speeders and Biker squads.",
-            value : 35,
+            value : 30,
             meta : ["Doctrine"],
         },
         {
@@ -798,21 +801,26 @@ var all_advantages = [
             meta : ["Chapter Master"],
         },
         {
-            name : "Psyker Abundance",
-            description : "The Psyker mutation runs rampant in your chapter.  Librarians train in 60% the normal time and receive bonus experience.",
-            value : 30,
+            name : "Warp Touched", //TODO: This is probably can be better handled as a positive seed mutation;
+            description : "Psychic mutations run rampant in your chapter. You have more marines with high psychic rating and aspirants are also more likely to be capable of harnessing powers of the warp.",
+            value : 20,
             meta : ["Psyker Views","Librarians"],
-        }, 
+        },
+        {
+            name : "Favoured By The Warp",
+            description : "Many marines in your chapter are favoured by the powers of the warp, making perils of the warp happen less frequently for them.",
+            value : 20,
+        },
         {
             name : "Reverent Guardians",
             description : "Your chapter places great faith in the Imperial Cult; you start with more Chaplains and any Ecclesiarchy disposition increases are enhanced.",
-            value : 25,
+            value : 20,
             meta : ["Faith","Imperium Trust"],
         },
         {
             name : "Tech-Brothers",
             description : "Your chapter has better ties to the mechanicus; you have more techmarines and higher mechanicus disposition.",
-            value : 25,
+            value : 20,
             meta : ["Mechanicus Faith"],
         }, 
         {
@@ -823,12 +831,12 @@ var all_advantages = [
         {
             name : "Siege Masters",
             description : "Your chapter is familiar with the ins-and-outs of fortresses.  They are better at defending and attacking fortifications. And better at garrisoning",
-            value : 15,
+            value : 20,
         },
         {
             name : "Devastator Doctrine",
             description : "The steady advance of overwhelming firepower is your chapters combat doctrine each company has an additional Devastator squad, all infantry have boosted defence, and heavy weapons have increased attack.",
-            value : 30,
+            value : 40,
             meta : ["Doctrine"],
         },
         {
@@ -846,13 +854,13 @@ var all_advantages = [
         {
             name : "Medicae Primacy",
             description : "Your chapter reveres its Apothecarion above all of it's specialist; You start with more Apothecaries.",
-            value : 25,
+            value : 20,
             meta : ["Apothecaries"]
         },
         {
             name : "Ryzan Patronage",
             description : "Your chapter has strong ties to the Forgeworld of Ryza as a result your Techmarines are privy to the secrets of their Techpriests enhancing your Plasma and Las weaponry.",
-            value : 25,
+            value : 40,
             meta : ["Weapon Specialty"] 
         },                                                                                                                                                                             
     ]
@@ -899,13 +907,13 @@ var all_disadvantages = [
     {
         name : "Fresh Blood",
         description : "Due to being newly created your chapter has little special wargear or psykers.",
-        value : 30,
+        value : 20,
         meta : ["Status"],
     }, 
     {
         name : "Never Forgive",
         description : "In the past traitors broke off from your chapter.  They harbor incriminating secrets or heritical beliefs, and as thus, must be hunted down whenever possible.",
-        value : 15,
+        value : 20,
     },
     {
         name : "Shitty Luck",
@@ -915,7 +923,7 @@ var all_disadvantages = [
     {
         name : "Sieged",
         description : "A recent siege has reduced the number of your marines greatly.  You retain a normal amount of equipment but some is damaged.",
-        value : 30,
+        value : 40,
         meta : ["Status"],
     },
     {
@@ -933,7 +941,7 @@ var all_disadvantages = [
     {
         name : "Tech-Heresy",
         description : "Your chapter does things that makes the Mechanicus upset.  Mechanicus disposition is lowered and you have less Tech Marines. You start as a tech heretic tolerant chapter",
-        value : 30,
+        value : 20,
         meta : ["Mechanicus Faith"],
     },
     {
@@ -942,20 +950,20 @@ var all_disadvantages = [
         value : 10,
     },
     {
-        name : "Warp Touched",
-        description : "Demons seem attracted to your chapter; perils of the warp happen more frequently and with more disasterous results.",
-        value : 10,
+        name : "Warp Tainted",
+        description : "Your chapter is tainted by the warp. Many of your marines are afflicted with it, making getting caught in perils of the warp less likely, but when caught - the results are devastating.",
+        value : 20,
     },
     {
         name : "Psyker Intolerant",
         description : "Witches are hated by your chapter.  You cannot create Librarians but gain a little bonus attack against psykers.",
-        value : 20,
+        value : 30,
         meta : ["Psyker Views"],
     },
     {
         name : "Obliterated",
         description : "A recent string of unfortunate events has left your chapter decimated. You have very little left, will your story continue?",
-        value : 60,
+        value : 80,
         meta : ["Status"],
     },
     {
@@ -967,32 +975,32 @@ var all_disadvantages = [
     {
         name : "Enduring Angels",
         description : "The Chapter's journey thus far has been arduous & unforgiving leaving them severely understrength yet not out of the fight. You begin with 5 fewer company's",
-        value : 50,
+        value : 30,
         meta : ["Status"],
     },
     {
         name : "Serpents Delight",
         description : "Sleeper cells infiltrated your chapter. When they rose up for the decapitation strike,they slew the 5 most experienced company's and many of the HQ staff before being defeated",
-        value : 70,
+        value : 50,
         meta : ["Status"],
     },
     {
         name : "Weakened Apothecarion",
         description : "Many of your chapter's Apothecaries have fallen in recent battles whether due to their incompetence or deliberate targetting.",
-        value : 25,
+        value : 20,
         meta : ["Apothecaries"],
     },
     {
         name : "Small Reclusiam",
         description : "Your chapter cares little for its reclusiam compared to other chapters fewer marines have shown the desire to be chaplains.",
-        value : 25, 
+        value : 20, 
         meta : ["Faith"],
     },
     {
         name : "Barren Librarius",
         description : "Your chapter has a smaller Librarius compared to other chapters due to having fewer potent psykers.",
-        value : 25,
-        meta : ["Librarians"],
+        value : 20,
+        meta : ["Psyker Views","Librarians"],
     },
 ]
 

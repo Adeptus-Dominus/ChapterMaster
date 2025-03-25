@@ -90,10 +90,10 @@ function PlanetData(planet, system) constructor{
 	    planet_forces[7] =	system.p_orks[planet];
 	    planet_forces[8] =	system.p_tau[planet];
 	    planet_forces[9] =	system.p_tyranids[planet];
-		planet_forces[10] =	system.p_traitors[planet];   	
-	    planet_forces[11] =	system.p_chaos[planet]+ system.p_demons[planet];
-
-	    planet_forces[13] =	system.p_necrons[planet];
+		  planet_forces[10] = system.p_traitors[planet];   	
+	    planet_forces[11] = system.p_chaos[planet]; 
+      planet_forces[12] = system.p_demons[planet];
+	    planet_forces[13] = system.p_necrons[planet];
 	}catch(_exception){
 		handle_exception(_exception);
 	}
@@ -247,7 +247,7 @@ function PlanetData(planet, system) constructor{
 		}
 	} 
 
-	static guard_score_calc = function(){
+	static guard_score_calc = function(){ // TODO: Consider adding higher guard scores
 		guard_score = 0;
         if (guardsmen < 500 && guardsmen>0) {
 		    guard_score = 0.1;
@@ -627,43 +627,39 @@ function PlanetData(planet, system) constructor{
         
         
         draw_set_font(fnt_40k_14b);
-        draw_text(xx+349,yy+326,"Planet Forces");
-        draw_text(xx+535,yy+326,"Planet Features");
+        draw_text(xx+349,yy+326,"Planetary Presence");
+        draw_text(xx+535,yy+326,"Planetary Features");
         draw_set_font(fnt_40k_14);
         
         
-        var temp8="",t=-1;
-        repeat(8){
-            var ahuh,ahuh2,ahuh3;ahuh="";ahuh2=0;ahuh3=0;t+=1;
-            with (system){
-                if (t=0){ahuh="Adepta Sororitas: ";ahuh2=p_sisters[current_planet];}
-                if (t=1){ahuh="Ork Presence: ";ahuh2=p_orks[current_planet];}
-                if (t=2){ahuh="Tau Presence: ";ahuh2=p_tau[current_planet];}
-                if (t=3){ahuh="Tyranid Presence: ";ahuh2=p_tyranids[current_planet];}
-                if (t=4){ahuh="Traitor Presence: ";ahuh2=p_traitors[current_planet];} // if (ahuh2>6) then ahuh="Daemon Presence: ";}
-                if (t=5){ahuh="CSM Presence: ";ahuh2=p_chaos[current_planet];}
-                if (t=6){ahuh="Daemon Presence: ";ahuh2=p_demons[current_planet];}
-                if (t=7){ahuh="Necron Presence: ";ahuh2=p_necrons[current_planet];}
+        var presence_text = "";
+        var faction_names = ["Adeptas", "Orks", "Tau", "Tyranids", "Chaos", "Traitors", "Daemons", "Necrons"];
+        var faction_ids = ["p_sisters", "p_orks", "p_tau", "p_tyranids", "p_traitors", "p_chaos", "p_demons", "p_necrons"];
+        var blurbs = ["Marine", "Demi-Squad", "Squad", "Squads+", "Demi-Company", "Company", "Company+", "Companies++", "Chapter/2", "Chapter"];
+        
+        for (var t = 0; t < array_length(faction_names); t++) {
+            var faction = faction_names[t];
+            var faction_id = faction_ids[t];
+            var level = system[$ faction_id][current_planet];
+            var blurb = "";
+
+            // Special condition for "Cultists" -> "Daemons"
+            // if (faction_id == "p_chaos" && level > 6) {
+            //    faction = "Daemons";
+            // }
+
+            if (level >= 1 && level <= 10) {
+                blurb = blurbs[level - 1];
+            } else if (level > 10) {
+                blurb = blurbs[9];
             }
-            
-            if (t!=0){
-                if (ahuh2=1) then ahuh3="Marine";if (ahuh2=2) then ahuh3="Demi-Squad";
-                if (ahuh2=3) then ahuh3="Squad";if (ahuh2=4) then ahuh3="Squads+";
-                if (ahuh2=5) then ahuh3="Demi-Company";if (ahuh2=6) then ahuh3="Company";
-                if (ahuh2=7) then ahuh3="Company+";if (ahuh2=8) then ahuh3="Companies++";
-                if (ahuh2=9) then ahuh3="Chapter/2";if (ahuh2>=10) then ahuh3="Chapter";
-            } // Same between these 2 - need to decide by community vote
-            if (t=0){
-                if (ahuh2=1) then ahuh3="Marine";if (ahuh2=2) then ahuh3="Demi-Squad";
-                if (ahuh2=3) then ahuh3="Squad";if (ahuh2=4) then ahuh3="Squads+";
-                if (ahuh2=5) then ahuh3="Demi-Company";if (ahuh2=6) then ahuh3="Company";
-                if (ahuh2=7) then ahuh3="Company+";if (ahuh2=8) then ahuh3="Companies++";
-                if (ahuh2=9) then ahuh3="Chapter/2";if (ahuh2>=10) then ahuh3="Chapter";
+
+            if (faction != "" && level > 0) {
+                presence_text += $"{faction}: {blurb} ({level})\n";
             }
-            
-            if (ahuh!="") and (ahuh2>0) then temp8+=string(ahuh)+" "+string(ahuh3)+"#";
         }
-        draw_text(xx+349,yy+346,string_hash_to_newline(string(temp8)));
+
+        draw_text(xx+349,yy+346,string_hash_to_newline(string(presence_text)));
         
         
         var to_show=0,temp9="";t=-1;

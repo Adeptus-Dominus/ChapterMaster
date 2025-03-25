@@ -241,9 +241,22 @@ global.astartes_trait_dist = [
 			}
 		],
 		["paragon", [999,998]],
-		[
-			"warp_touched",[299,298]
+		["favoured_by_the_warp",
+			[299,298],
+			{
+				"disadvantage":[
+					"Favoured By The Warp",[10,9]
+				]
+			}
 		],
+		["warp_tainted",
+		[299,298],
+		{
+			"disadvantage":[
+				"Warp Tainted",[20,1]
+			]
+		}
+	],
 		["shitty_luck",
 			[99,98],
 			{
@@ -300,9 +313,8 @@ global.astartes_trait_dist = [
 			"zealous_faith",
 			[99,98],
 			{
-				"chapter_name":[
-					"Black Templars",
-					[300,200]
+				"advantage":[
+					"Psyker Intolerant",[300,200]
 				],
 				recruit_world_type: [
 					["Shrine", -15]

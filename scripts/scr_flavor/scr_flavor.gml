@@ -1,17 +1,39 @@
+/// @function add_battle_log_message
+/// @param {string} _message - The message text to add to the battle log
+/// @param {real} [_message_size=0] - The size/importance of the message (higher values = higher display priority; affects sorting order)
+/// @param {real} [_message_priority=0] - The priority level (affects sorting and text color: 0=normal, 135=blue, 134=purple)
+/// @returns {real} The index of the newly added message
+function add_battle_log_message(_message, _message_size = 0, _message_priority = 0) {
+	if (instance_exists(obj_ncombat)) {
+		obj_ncombat.messages++;
+		var _message_index = obj_ncombat.messages;
+		
+		obj_ncombat.message[_message_index] = _message;
+		obj_ncombat.message_sz[_message_index] = _message_size + (0.5 - (obj_ncombat.messages / 100));
+		obj_ncombat.message_priority[_message_index] = _message_priority;
+		
+		return _message_index;
+	}
+	return -1;
+}
+
+function display_battle_log_message() {
+    // Trigger the message processing alarm
+    obj_ncombat.alarm[3] = 5;
+}
+
 function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shots, casulties) {
 
 	// Generates flavor based on the damage and casualties from scr_shoot, only for the player
 
-	targeh = target_type;
 	var attack_message, kill_message, leader_message, targeh;
+	targeh = target_type;
 	leader_message = "";
 	attack_message = $"";
 	kill_message = "";
 
-	var weapon_name = "";
-	if (id_of_attacking_weapons > 0) {
-		weapon_name = wep[id_of_attacking_weapons];
-	}
+	var weapon_name = wep[id_of_attacking_weapons];
+
 	if (id_of_attacking_weapons = -51) then weapon_name = "Heavy Bolter Emplacemelse ent";
 	if (id_of_attacking_weapons = -52) then weapon_name = "Missile Launcher Emplacement";
 	if (id_of_attacking_weapons = -53) then weapon_name = "Missile Silo";
@@ -409,8 +431,7 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 	// 	obj_ncombat.dead_enemies = 0;
 	// }
 
-	var led = 0;
-	if (wep[id_of_attacking_weapons] == "Hammer of Wrath") then led = 2.1;
+	var message_priority = 0;
 	if (obj_ncombat.enemy <= 10) {
 		if (target_name = obj_controller.faction_leader[obj_ncombat.enemy]) { // Cleaning up the message for the enemy leader
 			leader_message = string_replace(leader_message, "a " + target_name, target_name);
@@ -420,46 +441,32 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 			if (enemy = 6) and (obj_controller.faction_gender[6] = 1) then leader_message = string_replace(leader_message, "it", "him");
 			if (enemy = 6) and (obj_controller.faction_gender[6] = 2) then leader_message = string_replace(leader_message, "it", "her");
 			if (enemy != 6) and (enemy != 5) then leader_message = string_replace(leader_message, "it", "him");
-			led = 5;
+			message_priority = 5;
+		}
+	}
+
+	var message_size = 0;
+	if (defenses == 1) {
+		message_size = 999;
+	} else if (casulties == 0) {
+		message_size = number_of_shots / 10;
+	} else {
+		if (target.dudes_vehicle[targeh] == 1) {
+			message_size = casulties * 10;
+		}
+		else {
+			message_size = casulties;
 		}
 	}
 
 	if (attack_message != "") {
-		obj_ncombat.messages += 1;
-		obj_ncombat.message[obj_ncombat.messages] = attack_message;
-
-		// show_message("Added to message slot: "+string(obj_ncombat.messages)+"#"+string(leader_message));
-		// show_message(string(obj_ncombat.message[obj_ncombat.messages]));
-
-		if (target.dudes_vehicle[targeh] = 1) then obj_ncombat.message_sz[obj_ncombat.messages] = max(number_of_shots, casulties * 10) + (0.5 - (obj_ncombat.messages / 100));
-		else {
-			obj_ncombat.message_sz[obj_ncombat.messages] = max(number_of_shots, casulties) + (0.5 - (obj_ncombat.messages / 100));
-		}
-
-		obj_ncombat.message_priority[obj_ncombat.messages] = led;
-		if (defenses = 1) then obj_ncombat.message_priority[obj_ncombat.messages] += 3;
-
-		obj_ncombat.alarm[3] = 2;
-		// need some method of determining who is firing
+		add_battle_log_message(attack_message, message_size, message_priority);
+		display_battle_log_message();
 	}
 
 	if (leader_message != "") {
-		obj_ncombat.messages += 1;
-		obj_ncombat.message[obj_ncombat.messages] = leader_message;
-
-		// show_message("Added to message slot: "+string(obj_ncombat.messages)+"#"+string(leader_message));
-		// show_message(string(obj_ncombat.message[obj_ncombat.messages]));
-
-		if (target.dudes_vehicle[targeh] = 1) then obj_ncombat.message_sz[obj_ncombat.messages] = max(number_of_shots, casulties * 10) + (0.5 - (obj_ncombat.messages / 100));
-		else {
-			obj_ncombat.message_sz[obj_ncombat.messages] = max(number_of_shots, casulties) + (0.5 - (obj_ncombat.messages / 100));
-		}
-
-		obj_ncombat.message_priority[obj_ncombat.messages] = led;
-		if (defenses = 1) then obj_ncombat.message_priority[obj_ncombat.messages] += 3;
-
-		obj_ncombat.alarm[3] = 2;
-		// need some method of determining who is firing
+		add_battle_log_message(leader_message, message_size, message_priority);
+		display_battle_log_message();
 	}
 
 }

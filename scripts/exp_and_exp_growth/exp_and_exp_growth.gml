@@ -243,7 +243,7 @@ function unit_stat_growth(grow_stat=false){
             return undefined;
         }
 	} else {
-		show_debug_message($"{total_traited}")
+		// show_debug_message($"{total_traited}")
 		return stat_gain_chances;
 
 	}
@@ -258,6 +258,10 @@ function add_unit_exp(add_val){
 		instace_stat_point_gains = handle_stat_growth(true);
 	}
 
-	_powers_learned = update_powers()
+	if (IsSpecialist("libs")) {
+		_powers_learned = update_powers()
+	}
+	role_refresh();
+
 	return [instace_stat_point_gains, _powers_learned];
 }

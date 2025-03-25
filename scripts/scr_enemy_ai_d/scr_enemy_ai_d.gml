@@ -53,15 +53,17 @@ function scr_enemy_ai_d() {
 	    }
     }
     for (var i=1;i<=planets;i++){
-        if (planet_problemless(i)) then continue;
         problem_count_down(i);
+        if (planet_problemless(i)) then continue;
         numeral_name = planet_numeral_name(i);
+
 	    if (has_problem_planet_and_time(i, "succession", 0)){
             var result,alert_text;
-            var dice1=d100_roll();
-            var dice2=d100_roll();
+            var dice1=roll_dice(1, 100);
+            var dice2=roll_dice(1, 100);
         
-            result="";alert_text="";
+            result="";
+            alert_text="";
             if (dice1<=(p_heresy[i]*2)) then result="chaos";
             if (dice2<=(p_influence[i][eFACTION.Tau]*2)) and (result="") then result="tau";
             if (result="") then result="imperial";
@@ -387,9 +389,13 @@ function scr_enemy_ai_d() {
         if (garrison_mission>-1){
             try_and_report_loop("complete garrison mission", complete_garrison_mission,true, [i,garrison_mission]);
         }
-        var beast_hunt = has_problem_planet_and_time(i,"hunt_beast", 0);
-        if (beast_hunt>-1){
-             try_and_report_loop("complete beast hunt mission", complete_beast_hunt_mission,true, [i,beast_hunt]);
+        var _beast_hunt = has_problem_planet_and_time(i,"hunt_beast", 0);
+        if (_beast_hunt>-1){
+            try{
+                complete_beast_hunt_mission(i,_beast_hunt);
+            } catch (_exception){
+                handle_exception(exception);
+            }
         }        
     
 	    if ((p_tyranids[i]=3) or (p_tyranids[i]=4)) and (p_population[i]>0){

@@ -13,7 +13,7 @@ uniform vec3 blend_colour;
 
 
 vec3 light_or_dark(vec3 m_colour, float shade) {
-    return vec3((m_colour.r * shade) + 0.001, m_colour.g * shade, m_colour.b * shade);
+    return vec3((clamp(m_colour.r * shade,0.01,0.99)) , (m_colour.g * shade), m_colour.b * shade);
 }
 
 void main() {

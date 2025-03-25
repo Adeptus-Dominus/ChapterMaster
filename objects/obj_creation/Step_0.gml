@@ -101,7 +101,7 @@ if (change_slide==35) or (change_slide==36) or (chapter_name=="Doom Benefactors"
         strength=5;
         cooperation=5;
         purity=5;
-        stability=5;
+        stability=90;
         for(var i=0; i<16; i++){
             adv[i]="";
             adv_num[i]=0;
@@ -117,7 +117,7 @@ if (change_slide==35) or (change_slide==36) or (chapter_name=="Doom Benefactors"
         homeworld_exists=1;
         homeworld_rule=1;
         aspirant_trial=eTrials.BLOODDUEL;
-        discipline="default";
+        discipline="librarius";
         battle_cry="For the Emperor";
         main_color=1;
         secondary_color=1;

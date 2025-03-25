@@ -11,8 +11,8 @@
         "icon_name": "da", // ? dunno what this is used for yet but the icon breaks if you dont use it 
         "fleet_type": 1, // 1= Homeworld, 2 = Fleet based, 3 = Penitent
         "strength": 10, // 1-10
-        "purity": 8, // 1-10
-        "stability": 10, // 1-10
+        "purity": 10, // 1-10
+        "stability": 96, // 1-99
         "cooperation": 5, // 1-10
         "homeworld_exists": 1, // 1 = true
         "recruiting_exists": 1, // 1 = true
@@ -21,7 +21,7 @@
         "homeworld_name": "The Rock",
         "recruiting": "Death", //"Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
         "recruiting_name": "Kimmeria",
-        "discipline": "default", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune Magick'
+        "discipline": "librarius", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune_magic'
         "aspirant_trial": "SURVIVAL", // ? need to find the best way to do this
         "advantages": [ //TODO something with these after rework of adv organisation
             "",

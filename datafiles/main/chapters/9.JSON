@@ -12,7 +12,7 @@
         "fleet_type": 1, // 1= Homeworld, 2 = Fleet based, 3 = Penitent
         "strength": 5, // 1-10
         "purity": 8, // 1-10
-        "stability": 4, // 1-10
+        "stability": 95, // 1-99
         "cooperation": 5, // 1-10
         "homeworld_exists": 1, // 1 = true
         "recruiting_exists": 1, // 1 = true
@@ -21,7 +21,7 @@
         "homeworld_name": "Deliverance",
         "recruiting": "Death", //"Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
         "recruiting_name": "",
-        "discipline": "default", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune Magick'
+        "discipline": "librarius", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune_magic'
         "aspirant_trial": "EXPOSURE", // ? need to find the best way to do this
         "advantages": [ //TODO something with these after rework of adv organisation
             "",
@@ -37,7 +37,7 @@
         "disadvantages": [
             "",
             "Splintered",
-            "",
+            "Black Rage",
             "",
             "",
             "",

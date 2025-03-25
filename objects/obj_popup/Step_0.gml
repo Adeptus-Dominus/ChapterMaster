@@ -488,8 +488,8 @@ try {
 
 		if (press > 0) {
 			var randa, randa2;
-			randa = d100_roll(true, 20);
-			randa2 = d100_roll(false);
+			randa = roll_dice(1, 100, "high");
+			randa2 = roll_dice(1, 100);
 		}
 
 		if (press == 1) {
@@ -772,13 +772,13 @@ try {
 
             _ruins.determine_race();
 
-            dice = d100_roll(true, 20);
+            dice = roll_dice(1, 100, "high");
             ruins_battle = dice <= 50;
 
             // ruins_battle=1;
 
             if (ruins_battle == 1) {
-                dice = d100_roll();
+                dice = roll_dice(1, 100, "low");
 
                 if (dice >= 0 && dice <= 60) {
                     battle_threat = 1;

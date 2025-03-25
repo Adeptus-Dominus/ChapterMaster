@@ -40,10 +40,11 @@ marine_attack=[];
 marine_ranged=[];
 marine_defense=[];
 marine_casting=[];
+marine_casting_cooldown=[];
 marine_local=[];
 ally=[];
 
-//
+//* Psychic power buffs
 // this would be set to the turns remaining
 // so long as >0 would apply an effect
 marine_mshield=[];

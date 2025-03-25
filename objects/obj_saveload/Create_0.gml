@@ -56,10 +56,10 @@ first_open=saves+1;
 
 
 
-img1=0;
-img2=0;
-img3=0;
-img4=0;
+img1=-1;
+img2=-1;
+img3=-1;
+img4=-1;
 
 
 

@@ -118,7 +118,7 @@ melee=scr_has_adv("Assault Doctrine");
 // 
 black_rage=scr_has_disadv("Black Rage");
 shitty_luck=scr_has_disadv("Shitty Luck");
-warp_touched=scr_has_disadv("Warp Touched");
+favoured_by_the_warp=scr_has_adv("Favoured By The Warp");
 lyman=obj_ini.lyman;// drop pod penalties
 omophagea=obj_ini.omophagea;// feast
 ossmodula=obj_ini.ossmodula;// small penalty to all

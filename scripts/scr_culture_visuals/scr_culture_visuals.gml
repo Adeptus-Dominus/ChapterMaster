@@ -17,6 +17,7 @@ function load_visual_sets(){
             if (directory_exists(_sepcific_vis_set)){
                 var _data_buffer = buffer_load($"{_sepcific_vis_set}\\data.json");
                 if (_data_buffer == -1) {
+                    buffer_delete(_data_buffer);
                     continue;
                 } else {
                     var _data_string = buffer_read(_data_buffer, buffer_string);
@@ -26,6 +27,84 @@ function load_visual_sets(){
                 }
             }
         }
+
+    }
+
+    load_symbol_sets(global.chapter_symbols, "chapter_symbols", ["pauldron", "knees"]);
+    load_symbol_sets(global.role_markings, "role_markings", ["pauldron", "knees"]);
+}
+
+function load_symbol_sets(global_area, main_key, sub_sets){
+    var _cons_directory = working_directory + $"\\main\\{main_key}";
+    if (directory_exists(_cons_directory)){
+        show_debug_message($"{_cons_directory}")
+        var _file_buffer = buffer_load($"{_cons_directory}\\load_sets.json");
+        if (_file_buffer == -1) {
+            throw (false);
+        }
+        var _json_string = buffer_read(_file_buffer, buffer_string);
+        buffer_delete(_file_buffer);
+        var _raw_data = json_parse(_json_string);
+        if (!is_array(_raw_data)){
+            throw ("use_sets.json File Wrong Format");
+        }
+        var _sprite_double_surface = surface_create(200,200);
+        for (var i=0;i<array_length(_raw_data);i++){
+            var _sepcific_vis_set = $"{_cons_directory}\\{_raw_data[i]}";
+            if (directory_exists(_sepcific_vis_set)){
+                for (var s=0;s<array_length(sub_sets);s++){
+                    var _sub = sub_sets[s];
+                    var sub_direct = $"{_sepcific_vis_set}\\{_sub}.png";
+                    load_new_icon(_sprite_double_surface,sub_direct, global_area[$ _sub], _raw_data[i]);
+                }
+            }
+        }
+        surface_free(_sprite_double_surface);    
+    }    
+}
+
+
+function load_new_icon(new_sprite_surface, path, add_place, key){
+    if (file_exists(path)){
+        var _new_sprite = sprite_add(path,1,0,0,0,0);
+        var _width = sprite_get_width(_new_sprite);
+        var _height = sprite_get_height(_new_sprite);
+        surface_resize(new_sprite_surface, _width, _height)
+        surface_set_target(new_sprite_surface);
+        draw_clear_alpha(c_white,0);
+        draw_sprite_ext(_new_sprite, 0, _width, 0, -1, 1, 0, c_white, 1);
+        surface_reset_target();
+        sprite_add_from_surface(_new_sprite, new_sprite_surface, 0, 0, _width, _height, 1, 0);
+        add_place[$ key] = _new_sprite;
+    }    
+}
+global.chapter_symbols  = {
+    pauldron : {
+        mantis_warriors : spr_mantis_warriors_icon,
+    },
+    knees : {
+
+    }
+}
+
+global.role_markings = {
+    pauldron : {
+    },
+    knees : {
+
+    }
+}
+global.squad_markings = {
+    pauldron : {
+    },
+    knees : {
+
+    }
+}
+global.company_markings = {
+    pauldron : {
+    },
+    knees : {
 
     }
 }
@@ -467,7 +546,7 @@ global.modular_drawing_items = [
         body_types :[0],
         position : "mouth_variants", 
         role_type : ["libs"],
-        chapter_adv : ["Daemon Binders"],    
+        chapter_disadv : ["Warp Tainted"],    
     },
     {
         sprite : spr_mk4_chest_fastenings,
@@ -502,7 +581,7 @@ global.modular_drawing_items = [
         sprite : spr_bonding_studs_right,
         body_types :[0],
         position : "right_pauldron_embeleshments",
-        armours : ["MK5 Heresy", "MK6 Corvus"]
+        armours : ["MK5 Heresy", "MK6 Corvus"],
     },
     {
         sprite : spr_bonding_studs_right,
@@ -585,13 +664,57 @@ global.modular_drawing_items = [
         body_types :[0],
         position : "crest",
         max_saturation : 30,
-    },                                                                  
+    },
+    {
+        cultures : ["Runic"],
+        sprite : spr_runes_hanging,
+        body_types :[0,2],
+        position : "purity_seals",
+    }, 
+    {
+        cultures : ["Wolf Cult"],
+        sprite : spr_mk7_wolf_cult_chest_variants,
+        body_types :[0],
+        position : "chest_variants",
+        armours : ["MK7 Aquila", "MK8 Errant", "Artificer Armour"],
+    },
+    {
+        cultures : ["Wolf Cult"],
+        sprite : spr_mk7_wolf_cult_belt,
+        body_types :[0],
+        position : "belt",
+        armours_exclude : ["MK3 Iron Armour"],      
+    }, 
+    {
+        cultures : ["Runic"],
+        sprite : spr_mk7_runic_belt,
+        body_types :[0],
+        position : "belt",
+        armours_exclude : ["MK3 Iron Armour"],      
+    }, 
+    {
+        cultures : ["Wolf Cult"],
+        sprite : spr_fur_tabbard,
+        body_types :[0, 2],
+        position : "tabbard",
+        max_saturation : 20,
+        armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour", "Tartaros","MK4 Maximus", "MK3 Iron Armour"], 
+    }, 
+    {
+        cultures : ["Runic"],
+        sprite : spr_mk3_runic_chest,
+        body_types :[0],
+        position : "chest_variants",
+        armours : ["MK3 Iron Armour"],      
+    }, 
+    {
+        sprite : spr_mk3_chest,
+        body_types :[0],
+        position : "chest_variants",
+        armours : ["MK3 Iron Armour"],      
+    },                                                                
 ];
-try{
-    load_visual_sets();
-} catch(_exception){
-    handle_exception(_exception);
-}
+
 
 function fetch_marine_components_to_memory(){
     array_foreach(global.modular_drawing_items, function(_element, _index){
@@ -599,7 +722,7 @@ function fetch_marine_components_to_memory(){
             sprite_prefetch(_element.sprite);
             if (struct_exists(_element, "overides")){
                 var _override_areas = struct_get_names(_element.overides);
-                for (var i = 0;i<array_length(_override_areas)i++){
+                for (var i = 0;i<array_length(_override_areas);i++){
                     sprite_prefetch(_element.overides[$_override_areas[i]]);
                 }
             }

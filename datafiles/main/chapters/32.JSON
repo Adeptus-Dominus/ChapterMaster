@@ -11,8 +11,8 @@
         "icon_name": "rs", // ? dunno what this is used for yet but the icon breaks if you dont use it 
         "fleet_type": 1, // 1= Homeworld, 2 = Fleet based, 3 = Penitent
         "strength": 1, // 1-10
-        "purity": 6, // 1-10
-        "stability": 4, // 1-10
+        "purity": 10, // 1-10
+        "stability": 86, // 1-99
         "cooperation": 1, // 1-10
         "homeworld_exists": 1, // 1 = true
         "recruiting_exists": 0, // 1 = true
@@ -22,7 +22,7 @@
         "recruit_home_relationship" : 0, //recruit from home planet
         "recruiting": "", //"Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
         "recruiting_name": "",
-        "discipline": "default", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune Magick'
+        "discipline": "librarius", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune Magick'
         "aspirant_trial": "SURVIVAL", // one of "BLOODDUEL" "HUNTING" "SURVIVAL" "EXPOSURE" "KNOWLEDGE" "CHALLENGE"  "APPRENTICESHIP" 
         "advantages": [ //TODO something with these after rework of adv organisation
             "",

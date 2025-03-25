@@ -59,10 +59,15 @@
         "flavour_text": "Walks in the footsteps of the Primarchs of old",
         "display_name": "Paragon"
     },
-    "warp_touched": {
-        "intelligence": 4,
+    "favoured_by_the_warp": {
+        "wisdom": 4,
+        "flavour_text": "Warp powers favour this marine for some reason",
+        "display_name": "Favoured By The Warp"
+    },
+    "warp_tainted": {
+        "luck": -2,
         "flavour_text": "Interacted with the warp in a way that has forever marked them",
-        "display_name": "Warp Touched"
+        "display_name": "Warp Tainted"
     },
     "lucky": {
         "luck": 4,

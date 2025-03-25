@@ -303,7 +303,7 @@ function player_retreat_from_fleet_combat(){
     p_strength+=mfleet.frigate_number*3;
     p_strength+=mfleet.capital_number*8;
 
-    _roll_100=d100_roll();
+    _roll_100=roll_dice(1, 100, "low");
     
 
     var _loc_star = star_by_name(obj_turn_end.battle_location[obj_turn_end.current_battle]);
@@ -341,7 +341,7 @@ function player_retreat_from_fleet_combat(){
     
     if (_roll_100!=-5){
         repeat(50){
-            diceh=d100_roll();
+            diceh=roll_dice(1, 100, "high");
             if (diceh<=ratio){
                 ratio-=100;
                 var onceh=0;
@@ -490,12 +490,21 @@ function fleet_full_ship_array(fleet="none", exclude_capitals=false, exclude_fri
 	return all_ships;
 }
 function set_fleet_location(location){
-	fleet_ships = fleet_full_ship_array();
+	var fleet_ships = fleet_full_ship_array();
 	var temp;
 	for (var i=0;i<array_length(fleet_ships);i++){
 		temp = fleet_ships[i];
 		if (temp>=0 && temp < array_length(obj_ini.ship_location)){
 			obj_ini.ship_location[temp] = location;
+		}
+	}
+	var unit;
+	for (var co=0;co<=obj_ini.companies;co++){
+		for (i=0;i<array_length(obj_ini.name[co]);i++){
+			unit = fetch_unit([co,i]);
+			if (array_contains(fleet_ships, unit.ship_location)){
+				obj_ini.loc[co][i]=location;
+			}
 		}
 	}
 }

@@ -31,7 +31,62 @@ function scr_has_style(style){
     // return false;
 }
 
-
+///@func sprite_get_uvs_transformed(sprite1, subimg1, sprite2, subimg2)
+///@desc Returns a transform array that can be used in a shader to align the UVs of sprite2 with sprite1 (takes cropping into account)
+///@param spr1 {Sprite} The sprite align the UVs to
+///@param subimg1 {real} The sprite subimage to align the UVs to
+///@param spr2 {Sprite} The sprite with UVs that will be aligned
+///@param subimg1 {real} The sprite subimage with UVs that will be aligned
+function sprite_get_uvs_transformed(_spr1, _subimg1, _spr2, _subimg2)
+{
+    //Get the uvs of the sprites
+    var _uv1 = sprite_get_uvs(_spr1, _subimg1);
+    var _uv2 = sprite_get_uvs(_spr2, _subimg2);
+    
+    //Naming convention for variables
+    //_{uv}_{value}_{coordinate_space}
+    
+    //Get the sprite normalized values for the left and top cropping 
+    var _uv1_crop_left_sprite_total = _uv1[4] / sprite_get_width(_spr1);
+    var _uv1_crop_top_sprite_total = _uv1[5] / sprite_get_height(_spr1);
+    var _uv2_crop_left_sprite_total = _uv2[4] / sprite_get_width(_spr2);
+    var _uv2_crop_top_sprite_total = _uv2[5] / sprite_get_height(_spr2);
+    //These are the left and top crop values as a percentage of the uncropped sprite size
+    
+    //Get the sprite size relative to the texture page
+    var _uv1_width_texture_page = _uv1[2] - _uv1[0];
+    var _uv1_height_texture_page = _uv1[3] - _uv1[1];
+    var _uv2_width_texture_page = _uv2[2] - _uv2[0];
+    var _uv2_height_texture_page = _uv2[3] - _uv2[1];
+    //These are the width and height values of the uncropped sprite sizes relative to the texture page
+    //Get the cropped size by subtracting the x1 from the x2 (texture page size)
+    //Scale it by the cropped value relative to the uncropped value
+    
+    //Get the uncropped sizes on the texture page
+    var _uv1_uncropped_width_texture_page = _uv1_width_texture_page / _uv1[6];
+    var _uv1_uncropped_height_texture_page = _uv1_height_texture_page / _uv1[7];
+    var _uv2_uncropped_width_texture_page = _uv2_width_texture_page / _uv2[6];
+    var _uv2_uncropped_height_texture_page = _uv2_height_texture_page / _uv2[7];
+    
+    //Get the uncropped coordinates relative to the texture page
+    var _uv1_x_texture_page = _uv1[0] - (_uv1_uncropped_width_texture_page * _uv1_crop_left_sprite_total);
+    var _uv1_y_texture_page = _uv1[1] - (_uv1_uncropped_height_texture_page * _uv1_crop_top_sprite_total);
+    var _uv2_x_texture_page = _uv2[0] - (_uv2_uncropped_width_texture_page * _uv2_crop_left_sprite_total);
+    var _uv2_y_texture_page = _uv2[1] - (_uv2_uncropped_height_texture_page * _uv2_crop_top_sprite_total);
+    //Get the x&y values by taking the cropped texture page coordinates and subtracting them by the crop amount(cropped sprite percentage) multiplied by the total sprite size(in the texture page)
+    
+    //Get the positional offsets
+    var _x_scale = _uv2_uncropped_width_texture_page / _uv1_uncropped_width_texture_page;
+    var _y_scale = _uv2_uncropped_height_texture_page / _uv1_uncropped_height_texture_page;
+    
+    var _x_offset = _uv2_x_texture_page - _uv1_x_texture_page * _x_scale;
+    var _y_offset = _uv2_y_texture_page - _uv1_y_texture_page * _y_scale;
+    //The script should return a value that transforms uv2 to match uv1 by addition and multiplication
+    //It is also inversely applicable to transform uv1 to uv2 by subtraction and division
+    
+    //Pack the values into an array and return it
+    return [_x_offset, _y_offset, _x_scale, _y_scale];
+}
 
 function ComplexSet(unit) constructor{
     overides = {
@@ -51,6 +106,7 @@ function ComplexSet(unit) constructor{
             chest_variants : spr_mk7_chest_variants,
             leg_variants  : spr_mk7_leg_variants,
             head : spr_mk7_head_variants,
+            knees : spr_mk7_complex_knees
     };
 
     _are_exceptions = false;
@@ -123,7 +179,10 @@ function ComplexSet(unit) constructor{
                     if (!_viable){
                         if (!check_exception("chapter_adv")){
                             continue;
-                        }                         
+                        }
+                        if (!check_exception("chapter_disadv")){
+                            continue;
+                        }
                     }                    
                 }
                 if (struct_exists(_mod, "roles")){
@@ -185,6 +244,21 @@ function ComplexSet(unit) constructor{
                         }                         
                     }
                }
+               if (struct_exists(_mod, "chapter_disadv")){
+                var _viable = false;
+                for (var a=0;a<array_length(_mod.chapter_disadv);a++){
+                    var _disadv = _mod.chapter_disadv[a];
+                    _viable = scr_has_disadv(_disadv);
+                    if (_viable){
+                        break;
+                    }
+                }
+                if (!_viable){
+                    if (!check_exception("chapter_disadv")){
+                        continue;
+                    }                         
+                }
+           }
                if (struct_exists(_mod, "stats")){
                     if (!stat_valuator(_mod.stats,unit)){
                         if (!check_exception("stats")){
@@ -312,22 +386,20 @@ function ComplexSet(unit) constructor{
                     shader_reset();
                     surface_set_target(base_component_surface);                          
                     shader_set(armour_texture);
-                    var _draw_sprite_uvs = sprite_get_uvs(_sprite, choice);
                     for (var i=0;i<array_length(_tex_names);i++){
                         var _tex_data = texture_draws[$ _tex_names[i]];
 
-                        var _tex_uvs =  sprite_get_uvs(_tex_data.texture, 0);
-                        var _scale_x = (_tex_uvs[2] - _tex_uvs[0]) / (_draw_sprite_uvs[2] - _draw_sprite_uvs[0]);
-                        var _scale_y = (_tex_uvs[1] - _tex_uvs[3]) / (_draw_sprite_uvs[1] - _draw_sprite_uvs[3]);
+                        tex_frame = 0;
+                        if (component_name == "left_pauldron_base"){
+                            tex_frame = 1;
+                        }
 
-                        var _shift_x = _tex_uvs[0] - (_draw_sprite_uvs[0] * _scale_x);
-                        var _shift_y = _tex_uvs[1] - (_draw_sprite_uvs[1] * _scale_y);
-
-                        var mask_transform_data = [_scale_x, _scale_y, _shift_x, _shift_y];
+                        var mask_transform_data = sprite_get_uvs_transformed(_sprite,choice,_tex_data.texture, tex_frame);
+ 
                         var mask_transform = shader_get_uniform(armour_texture, "mask_transform");
                         shader_set_uniform_f_array(mask_transform, mask_transform_data);
   
-                        var tex_texture = sprite_get_texture(_tex_data.texture, 0);
+                        var tex_texture = sprite_get_texture(_tex_data.texture, tex_frame);
                         if (struct_exists(_tex_data, "blend")){
                             var _blend = 1;
                         } else {
@@ -341,7 +413,7 @@ function ComplexSet(unit) constructor{
                             
                             var armour_sampler = shader_get_sampler_index(armour_texture, "armour_texture");
                             texture_set_stage(armour_sampler, tex_texture);
-                            show_debug_message($"{_tex_data.areas[t]}");
+                            // show_debug_message($"{_tex_data.areas[t]}");
                             var _replace_col = shader_get_uniform(armour_texture, "replace_colour");
                             shader_set_uniform_f_array(_replace_col, _tex_data.areas[t]);
                             draw_sprite(_sprite,choice ?? 0,x_surface_offset,y_surface_offset);    
@@ -466,6 +538,7 @@ function ComplexSet(unit) constructor{
                  "leg_variants",
                  "left_leg",
                  "right_leg",
+                 "knees",
                  "head",
                  "gorget",
                  "left_pauldron_base" ,  
@@ -591,6 +664,8 @@ function ComplexSet(unit) constructor{
                     left_trim :spr_mk7_left_trim,
                     right_trim: spr_mk7_right_trim,
                     head : spr_mk5_head_variants,
+                    chest_variants : spr_mk5_chest_variants,
+                    knees : spr_mk7_complex_knees
                 }); 
                 armour_type = ArmourType.Normal
                 /*if (scr_has_style("Prussian")){
@@ -624,7 +699,6 @@ function ComplexSet(unit) constructor{
                     mouth_variants: spr_mk3_mouth,
                     forehead : spr_mk3_forehead_variants,
                     belt : spr_mk3_belt,
-                    chest_variants : spr_mk3_chest,
                 });
                 armour_type = ArmourType.Normal
                 break;

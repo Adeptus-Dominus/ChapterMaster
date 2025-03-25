@@ -1392,7 +1392,7 @@ spec_train_data = [
         name : "Librarian",
         min_exp : 30,
         coord_offset : [0, -7],
-        req : [["psionic", 7, "exmore"]]
+        req : [["psionic", 1, "exmore"]]
     },
     {
         name : "Chaplain",

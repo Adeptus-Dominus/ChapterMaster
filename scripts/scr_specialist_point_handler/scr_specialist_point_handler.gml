@@ -383,7 +383,7 @@ function SpecialistPointHandler() constructor{
             _cur_slave = _slaves[i];
             if (_cur_slave.num>0){
                 _cur_slave.eta--;
-                if (irandom(100000)<=(10-obj_ini.stability)*_cur_slave.num){
+                if (irandom(100000)<=(100-obj_ini.stability)*_cur_slave.num){
                     _cur_slave.num--;
                     _lost_gene_slaves++;
                     scr_add_item("Gene Pod Incubator");

@@ -24,8 +24,6 @@ cd=0;
 owner  = eFACTION.Player;
 click_stall_timer=0;
 formation_set=0;
-big_boom=0;
-kamehameha=false;
 on_ship=false;
 alpha_strike=0;
 Warlord = 0;
@@ -115,7 +113,7 @@ player_defenses=0;player_silos=0;
 enemy_forces=0;enemy_max=0;
 hulk_forces=0;
 
-i=-1;messages=0;messages_to_show=4;messages_shown=0;
+i=-1;messages=0;messages_to_show=24;messages_shown=0;
 largest=0;priority=0;random_messages=0;dead_enemies=0;
 repeat(70){i+=1;
     lines[i]="";
@@ -130,7 +128,6 @@ repeat(70){i+=1;
     post_unit_lost[i]="";
     post_unit_veh[i]=0;
     post_units_lost[i]=0;
-    post_geneseed_recovered[i]=0;
     post_equipment_lost[i]="";
     post_equipments_lost[i]=0;
     
@@ -160,7 +157,6 @@ newline="";
 newline_color="";
 liness=0;
 world_size=0;
-gene_penalty=0;
 
 timer=0;
 timer_stage=0;
@@ -247,7 +243,7 @@ melee=0;if (scr_has_adv("Assault Doctrine")) then melee=1;
 // 
 black_rage=0;if (scr_has_disadv("Black Rage")){black_rage=1;red_thirst=1;}
 shitty_luck=0;if (scr_has_disadv("Shitty Luck")) then shitty_luck=1;
-warp_touched=0;if (scr_has_disadv("Warp Touched")) then warp_touched=1;
+favoured_by_the_warp=0;if (scr_has_adv("Favoured By The Warp")) then favoured_by_the_warp=1;
 
 
 lyman=obj_ini.lyman;// drop pod penalties

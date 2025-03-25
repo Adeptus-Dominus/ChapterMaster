@@ -35,7 +35,7 @@ varying vec4 v_vColour;
 
 
 vec3 light_or_dark(vec3 m_colour, float shade) {
-    return vec3((m_colour.r * shade) + 0.001, m_colour.g * shade, m_colour.b * shade);
+    return vec3((clamp(m_colour.r * shade,0.001,0.999)) , (m_colour.g * shade), m_colour.b * shade);
 }
 
 void main() {

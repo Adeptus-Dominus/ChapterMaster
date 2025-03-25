@@ -963,7 +963,7 @@ function scr_initialize_custom() {
 		terminator += 5;
 		tenth -= 5;
 	}
-	if scr_has_adv("Psyker Abundance") {
+	if scr_has_adv("Warp Touched") {
 		tenth -= 5;
 		epistolary += 1;
 		codiciery += 2;
@@ -2386,31 +2386,9 @@ function scr_initialize_custom() {
 		case 3:
 			//TODO phychic powers need a redo but after weapon refactor
 			chapter_master.add_exp(550);
-			gear[company, 1] = "Psychic Hood";
-			var
-			let = "";
-			letmax = 5;
-			chapter_master.add_trait("warp_touched");
-			chapter_master.psionic = choose(15, 16);
-			switch (obj_creation.discipline) {
-				case "default":
-					let = "D";
-					letmax = 7;
-					break;
-				case "biomancy":
-					let = "B";
-					break;
-				case "pyromancy":
-					let = "P";
-					break;
-				case "telekinesis":
-					let = "T";
-					break;
-				case "rune Magick":
-					let = "R";
-					break;
-			}
-			spe[company, 1] += string(let) + "0|";
+			chapter_master_equip.gear = "Psychic Hood";
+			chapter_master.add_trait("favoured_by_the_warp");
+			chapter_master.psionic = choose(13, 14);
 			chapter_master.update_powers();
 	}
 	mobi[company, 1] = mobi[100, 2];
@@ -2474,9 +2452,9 @@ function scr_initialize_custom() {
 		name[company, 5] = obj_creation.clibrarian;
 		var _clibrarian = add_unit_to_company("marine", company, 5, string("Chief {0}", roles.librarian), eROLE.Librarian, "default", "Plasma Pistol", "default", "default", _hq_armour);
 		_clibrarian.edit_corruption(0);
-		_clibrarian.psionic = choose(13, 14, 15, 16);
+		_clibrarian.psionic = choose(11, 12);
 		_clibrarian.update_powers();
-		_clibrarian.add_trait("warp_touched");
+		_clibrarian.add_trait("favoured_by_the_warp");
 		k+=1;
 		commands +=1;
 	}
@@ -2497,8 +2475,6 @@ function scr_initialize_custom() {
 		commands += 1;
 		man_size += 1;
 		var _epi = add_unit_to_company("marine", company, k, roles.librarian, eROLE.Librarian, "default", choose_weighted(weapon_weighted_lists.pistols));
-		_epi.psionic = choose(13, 14, 15, 16);
-		_epi.update_powers();
 	}
 	// Codiciery
 	repeat(codiciery) {
@@ -2506,8 +2482,6 @@ function scr_initialize_custom() {
 		commands += 1;
 		man_size += 1;
 		var _codi = add_unit_to_company("marine", company, k, "Codiciery", eROLE.Librarian, "default", choose_weighted(weapon_weighted_lists.pistols));
-		_codi.psionic = choose(11, 12, 13, 14, 15);
-		_codi.update_powers();
 	}
 
 	// Lexicanum
@@ -2516,8 +2490,6 @@ function scr_initialize_custom() {
 		commands += 1;
 		man_size += 1;
 		var _lexi = add_unit_to_company("marine", company, k, "Lexicanum", eROLE.Librarian, "default", choose_weighted(weapon_weighted_lists.pistols));
-		_lexi.psionic = choose(8, 9, 10, 11, 12, 13, 14);
-		_lexi.update_powers();
 	}
 
 	// Apothecaries in Apothecarion
@@ -3443,33 +3415,28 @@ function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1
 		spawn_unit.add_trait("soft_target");
 	}
 	if(role_id == eROLE.Librarian){
-		var let = "";
-		if (obj_creation.discipline = "default") {
-			let = "D";
+		if (scr_has_adv("Favoured By The Warp") && (roll_personal_dice(1, 6, "high", spawn_unit) >= 4)) {
+			spawn_unit.add_trait("favoured_by_the_warp");
+		} else if (roll_personal_dice(1, 10, "high", spawn_unit) == 10) {
+			spawn_unit.add_trait("favoured_by_the_warp");
 		}
-		if (obj_creation.discipline = "biomancy") {
-			let = "B";
-		}
-		if (obj_creation.discipline = "pyromancy") {
-			let = "P";
-		}
-		if (obj_creation.discipline = "telekinesis") {
-			let = "T";
-		}
-		if (obj_creation.discipline = "rune Magick") {
-			let = "R";
-		}
-		obj_ini.spe[company][slot] += string(let) + "0|";
 
-		spawn_unit.add_trait("warp_touched");
-		spawn_unit.psionic = choose(8, 9, 10, 11, 12, 13, 14);
+		if (role_name == obj_ini.role[100][eROLE.Librarian]) {
+			spawn_unit.psionic = irandom_range(8, 10);
+		} else if (role_name == "Codiciery") {
+			spawn_unit.psionic = irandom_range(5, 7);
+			if (roll_personal_dice(1, 6, "high", spawn_unit) < 4) {
+				spawn_unit.update_gear(obj_ini.gear[obj_ini.defaults_slot][eROLE.Tactical], false, false);
+			}
+			if (roll_personal_dice(1, 6, "high", spawn_unit) < 4) {
+				spawn_unit.update_weapon_one(choose("Force Axe", "Force Sword"), false, false);
+			}
+		} else if (role_name == "Lexicanum") {
+			spawn_unit.psionic = irandom_range(2, 4);
+			spawn_unit.update_weapon_one(choose("Force Axe", "Force Sword"), false, false);
+			spawn_unit.update_gear(obj_ini.gear[obj_ini.defaults_slot][eROLE.Tactical], false, false);
+		}
 		spawn_unit.update_powers();
-		if(scr_has_adv("Psyker Abundance")){
-			spawn_unit.add_exp(10);
-		}
-		if(scr_has_disadv("Barren Librarius")){
-			spawn_unit.psionic = choose(8, 9, 10, 11,);
-		}
 	}
 	
 	return spawn_unit;

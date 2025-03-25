@@ -19,5 +19,5 @@ void main()
     
     v_vColour = in_Colour;
     v_vTexcoord = in_TextureCoord;
-    v_vMaskCoord = v_vTexcoord * mask_transform.xy + mask_transform.zw;
+    v_vMaskCoord = v_vTexcoord * mask_transform.zw + mask_transform.xy;
 }

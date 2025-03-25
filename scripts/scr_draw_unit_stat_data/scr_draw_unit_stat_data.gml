@@ -6,7 +6,13 @@ function scr_draw_unit_stat_data(manage=false){
 	var stat_tool_tips = [];
 	var trait_tool_tips = [];
 	var unit_name = name();
-	var _psy_levels = ARR_psy_levels;
+	if (psionic < 0) {
+		var _psy_levels = ARR_negative_psy_levels;
+		var _psionic_assignment = _psy_levels[psionic * -1]
+	} else {
+		var _psy_levels = ARR_psy_levels
+		var _psionic_assignment = _psy_levels[psionic]
+	}
 
 	var data_block = {
 		x1: xx + 1008,
@@ -218,7 +224,7 @@ function scr_draw_unit_stat_data(manage=false){
 		array_push(data_lines, data_entry);
 		
 		data_entry = {};
-		data_entry.text = $"Assignment: {_psy_levels[psionic]} ({psionic})\n";
+		data_entry.text = $"Assignment: {_psionic_assignment} ({psionic})\n";
 		data_entry.tooltip = "The Imperium measures and records the psionic activity and power level of psychic individuals through a rating system called The Assignment. Comprised of a twenty-four point scale, The Assignment simplifies the comparison of psykers to aid Imperial authorities in recognizing possible threats.";
 		array_push(data_lines, data_entry);
 		

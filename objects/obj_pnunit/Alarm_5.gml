@@ -140,10 +140,22 @@ for (var i=0;i<array_length(unit_struct);i++){
             obj_controller.penitent_turnly=0;
         }
 
-        if  (obj_ini.race[marine_co[i],marine_id[i]]=1){
-            var age=obj_ini.age[marine_co[i],marine_id[i]];
-            if (age<=((obj_controller.millenium*1000)+obj_controller.year)-10) and (obj_ini.zygote=0) then obj_ncombat.seed_max+=1;
-            if (age<=((obj_controller.millenium*1000)+obj_controller.year)-5) then obj_ncombat.seed_max+=1;
+        if (obj_ini.race[marine_co[i], marine_id[i]] == 1) {
+            var _birthday = obj_ini.age[marine_co[i], marine_id[i]];
+            var _current_year = (obj_controller.millenium * 1000) + obj_controller.year;
+            var _harvestable_seed = 0;
+
+            if (_birthday <= (_current_year - 10) && obj_ini.zygote == 0) {
+                if (irandom_range(1, 20) > 1) {
+                    _harvestable_seed++;
+                }
+            }
+            if (_birthday <= (_current_year - 5)) {
+                if (irandom_range(1, 20) > 1) {
+                    _harvestable_seed++;
+                }
+            }
+            obj_ncombat.seed_max += _harvestable_seed;
         }
 
         var last=0;

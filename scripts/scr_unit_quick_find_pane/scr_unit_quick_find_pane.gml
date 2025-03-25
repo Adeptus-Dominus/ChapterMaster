@@ -23,7 +23,7 @@ function UnitQuickFindPanel() constructor{
 	    garrison_log = {};
 	    obj_controller.specialist_point_handler.calculate_research_points(false);
 	    var _ship_count = array_length(obj_ini.ship_carrying);
-	    show_debug_message(obj_controller.specialist_point_handler.point_breakdown);
+	    // show_debug_message(obj_controller.specialist_point_handler.point_breakdown);
 	    for (var co=0;co<=obj_ini.companies;co++){
 	    	for (var u=0;u<array_length(obj_ini.TTRPG[co]);u++){
 				/// @type {Struct.TTRPG_stats}

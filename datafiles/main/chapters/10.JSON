@@ -11,8 +11,8 @@
         "icon_name": "bt", // ? dunno what this is used for yet but the icon breaks if you dont use it 
         "fleet_type": 3, // 1= Homeworld, 2 = Fleet based, 3 = Penitent
         "strength": 5, // 1-10
-        "purity": 7, // 1-10
-        "stability": 10, // 1-10
+        "purity": 8, // 1-10
+        "stability": 96, // 1-99
         "cooperation": 5, // 1-10
         "homeworld_exists": 0, // 1 = true
         "recruiting_exists": 1, // 1 = true
@@ -22,7 +22,7 @@
         "recruit_home_relationship" : 2, //recruit from different system
         "recruiting": "", //"Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
         "recruiting_name": "",
-        "discipline": "default", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune Magick'
+        "discipline": "librarius", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune_magic'
         "aspirant_trial": "APPRENTICESHIP", // ? need to find the best way to do this
         "advantages": [ //TODO something with these after rework of adv organisation
             "",
