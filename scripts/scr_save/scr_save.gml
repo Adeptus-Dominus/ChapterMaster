@@ -475,14 +475,22 @@ function scr_save(save_part,save_id) {
 				}
 	        }
 	    }
-		log_message("Saving to slot "+string(save_id)+" - Squad Saving");
+		log_message("Saving to slot "+string(save_id)+" - Squad Saving Start");
 	    var squad_copies = [];
 		if (array_length(obj_ini.squads)> 0){
 			for (var i = 0;i < array_length(obj_ini.squads);i++){
-				array_push(squad_copies, obj_ini.squads[i].jsonify());
+				var _squad = obj_ini.squads[i].jsonify();
+				array_push(squad_copies, _squad);
 			}
 		}
-        ini_write_string("Mar","squads",base64_encode(json_stringify(squad_copies)));
+		squad_copies = json_stringify(squad_copies);
+		var _buffer = buffer_create(1, buffer_grow, 1);
+		buffer_write(_buffer, buffer_string, squad_copies);
+		var _squads_string = buffer_base64_encode(_buffer, 0, buffer_get_size(_buffer))
+		buffer_delete(_buffer);
+		log_message("Saving to slot "+string(save_id)+" - Squads Saving");
+        ini_write_string("Mar","squads" ,_squads_string);
+		log_message("Saving to slot "+string(save_id)+" - Squad Type Saving");
         ini_write_string("Mar","squad_types",base64_encode(json_stringify(obj_ini.squad_types)));
 
 	    coh=100;mah=-1;
