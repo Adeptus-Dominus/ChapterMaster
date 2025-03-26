@@ -1,5 +1,5 @@
 function load_marines_into_ship(system, ship, units, reload = false) {
-    var _load_into_ship = function(system, ship, units, size, loop, reload) {
+    static _load_into_ship = function(system, ship, units, size, loop, reload) {
         var load_from_star = star_by_name(system);
         if (is_struct(units[loop])) {
             units[loop].load_marine(sh_ide[ship], load_from_star);
@@ -34,27 +34,44 @@ function load_marines_into_ship(system, ship, units, reload = false) {
     for (var q = 0; q < array_length(units); q++) {
         if (man_sel[q] == 1) {
             var _unit_ship_id;
+            var _unit = units[q];
+            var _is_marine = !is_array(_unit);
             if (!reload) {
                 _unit_ship_id = ship;
             } else {
-                if (!is_array(units[q])) {
-                    _unit_ship_id = array_get_index(sh_uid, units[q].last_ship.uid);
+                if (_is_marine) {
+                    _unit_ship_id = array_get_index(sh_uid, _unit.last_ship.uid);
                 } else {
-                    var last_ship_data = fetch_deep_array(obj_ini.last_ship, units[q]);
+                    var last_ship_data = fetch_deep_array(obj_ini.last_ship, _unit);
                     _unit_ship_id = array_get_index(sh_uid, last_ship_data.uid);
                 }
             }
 
-            if (!is_array(units[q])) {
+            if (_is_marine) {
                 var _unit_size = man_size;
             } else {
                 var _vehic_size = scr_unit_size("", ma_role[q], true);
                 var _unit_size = _vehic_size;
             }
 
-            if (_unit_ship_id != undefined && ((sh_cargo[_unit_ship_id] + _unit_size) <= sh_cargo_max[_unit_ship_id])) {
-                _load_into_ship(system, _unit_ship_id, units, _unit_size, q, reload);
-                man_sel[q] = 0;
+            if (_unit_ship_id == undefined) {
+                if (reload){
+                    if (_is_marine){
+                        _unit.last_ship = {
+                            uid: "",
+                            name: ""
+                        };
+                    } else {
+                        set_vehicle_last_ship(_unit, true)
+                    }
+                }
+                continue;                
+            }
+            if (_unit_ship_id<array_length(sh_cargo_max)){
+                if (sh_cargo[_unit_ship_id] + _unit_size <= sh_cargo_max[_unit_ship_id]) {
+                    _load_into_ship(system, _unit_ship_id, units, _unit_size, q, reload);
+                    man_sel[q] = 0;
+                }
             }
         }
     }
