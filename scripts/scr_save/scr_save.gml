@@ -484,6 +484,8 @@ function scr_save(save_part,save_id) {
 			}
 		}
 		squad_copies = json_stringify(squad_copies);
+		// The buffer is needed here because without it the regular base64_encode() was going into stack overflow on 10 strength chapters;
+		//TODO: Integrate the buffer logic into some helper buffer_base64_encode() function, as the regular one is error prone;
 		var _buffer = buffer_create(1, buffer_grow, 1);
 		buffer_write(_buffer, buffer_string, squad_copies);
 		var _squads_string = buffer_base64_encode(_buffer, 0, buffer_get_size(_buffer))
