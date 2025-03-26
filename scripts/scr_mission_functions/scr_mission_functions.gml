@@ -104,7 +104,7 @@ function init_garrison_mission(planet, star, mission_slot){
 	    var gar_pop=instance_create(0,0,obj_popup);
 	    //TODO some new universal methods for popups
 	    gar_pop.title=$"Requested Garrison Provided to {numeral_name}";
-	    gar_pop.text=$"The govornor of {numeral_name} Thanks you for considering his request for a garrison, you agree that the garrison will remain for at least {garrison_length} months.";
+	    gar_pop.text=$"The governor of {numeral_name} Thanks you for considering his request for a garrison, you agree that the garrison will remain for at least {garrison_length} months.";
 	    //pip.image="event_march"
 	    gar_pop.option1="Commence Garrison";
         gar_pop.image="";
