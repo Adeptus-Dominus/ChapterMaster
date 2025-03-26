@@ -33,7 +33,7 @@ function load_marines_into_ship(system, ship, units, reload = false) {
 
     for (var q = 0; q < array_length(units); q++) {
         if (man_sel[q] == 1) {
-            var _unit_ship_id;
+            var _unit_ship_id = -1;
             var _unit = units[q];
             var _is_marine = !is_array(_unit);
             if (!reload) {
@@ -54,7 +54,7 @@ function load_marines_into_ship(system, ship, units, reload = false) {
                 var _unit_size = _vehic_size;
             }
 
-            if (_unit_ship_id == undefined) {
+            if (_unit_ship_id == -1) {
                 if (reload){
                     if (_is_marine){
                         _unit.last_ship = {
