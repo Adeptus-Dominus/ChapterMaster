@@ -258,3 +258,25 @@ function format_underscore_string(input_string) {
     
     return result;
 }
+
+/// @description This function will convert a string into a base64 format encoded string, using an intermediate buffer, to prevent stack overflow due to big input strings.
+/// @param {string} input_string
+/// @return {string}
+function base64_encode_advanced(input_string) {
+    var _buffer = buffer_create(1, buffer_grow, 1);
+    buffer_write(_buffer, buffer_string, input_string);
+    var _encoded_string = buffer_base64_encode(_buffer, 0, buffer_get_size(_buffer));
+    buffer_delete(_buffer);
+
+    return _encoded_string;
+}
+
+/// @description This function converts a single struct or a hierarchy of nested structs and arrays into a valid JSON string and then into a base64 format encoded string, using an intermediate buffer, to prevent stack overflow due to big input strings.
+/// @param {struct|array} _input
+/// @return {string}
+function jsonify_encode_advanced(_input) {
+    var _result = json_stringify(_input);
+    _result = base64_encode_advanced(_result);
+
+    return _result;
+}
