@@ -167,26 +167,38 @@ function UnitQuickFindPanel() constructor{
 			    draw_text(xx+160, yy+90+(20*i), cur_fleet.frigate_number);
 			    draw_text(xx+240, yy+90+(20*i), cur_fleet.escort_number);
 			    var _fleet_point_data = cur_fleet.point_breakdown;
+			    var _loc_display_string = "";
+			    var _zoomable_loc = true;
 			    if (cur_fleet.action == "Lost"){
-			    	draw_text(xx+310, yy+90+(20*i), "Lost");
+			    	_loc_display_string = "Lost";
+			    	_zoomable_loc = false;
 			    }
+			    else if (string_count("crusade", cur_fleet.action)){
+			    	_loc_display_string = "Crusading";
+			    	_zoomable_loc = false;
+			    }			    
 			    else if (cur_fleet.action=="move"){
-			    	draw_text(xx+310, yy+90+(20*i), "Warp Travel");
+			    	_loc_display_string = "Warp Travel";
 			    } else {
 			    	var _near_star = instance_nearest(cur_fleet.x, cur_fleet.y, obj_star);
-			    	draw_text(xx+310, yy+90+(20*i), _near_star.name);
+			    	_loc_display_string = _near_star.name;
+			    	
 			    	var _special_points = obj_controller.specialist_point_handler.point_breakdown.systems;
 			    	if (struct_exists(_special_points,_near_star)){
 						var _fleet_point_data = _special_points[$ _near_star.name][0];
 					}
 			    }
+			    draw_text(xx+310, yy+90+(20*i), _loc_display_string);
+
 			    var _fleet_coords = [xx+10, yy+90+(20*i)-2,xx+main_panel.width,yy+90+(20*i)+18];
 			    
-			    if (point_and_click([xx+10, yy+90+(20*i)-2,xx+main_panel.width,yy+90+(20*i)+18])){
-			    	travel_target = [cur_fleet.x, cur_fleet.y];
-			    	travel_increments = [(travel_target[0]-obj_controller.x)/15,(travel_target[1]-obj_controller.y)/15];
-			    	travel_time = 0;
-			    }
+			    if (_zoomable_loc){
+    			    if (point_and_click([xx+10, yy+90+(20*i)-2,xx+main_panel.width,yy+90+(20*i)+18])){
+    			    	travel_target = [cur_fleet.x, cur_fleet.y];
+    			    	travel_increments = [(travel_target[0]-obj_controller.x)/15,(travel_target[1]-obj_controller.y)/15];
+    			    	travel_time = 0;
+    			    }
+    			}
 
 			    if (scr_hit(_fleet_coords)){
 					detail_slate.draw(xx+main_panel.width-10,_fleet_coords[1]-20, 1.5, 1.5);

@@ -111,24 +111,27 @@ function scr_enemy_ai_d() {
         }
 
         if (has_problem_planet_and_time(i, "great_crusade", 0)>-1){
-            var flet,cont,dir;cont=0;
-            flet=instance_nearest(x,y,obj_p_fleet);
+            var dir;
+            var join_crusade=false;
+            var _player_fleet = instance_nearest(x,y,obj_p_fleet);
         
-            if (flet.action="") then cont=1;
-            if (cont=1) and (point_distance(x,y,flet.x,flet.y)<40) then cont=2;
+            if (_player_fleet.action=""){
+                if (point_distance(x, y, _player_fleet.x, _player_fleet.y)<10 ){
+                    join_crusade=true;
+                }
+            }
         
-            if (cont=2){
-                flet.action="crusade1";
+            if (join_crusade){
                 dir=point_direction(room_width/2,room_height/2,x,y);
-                flet.action_x=x+lengthdir_x(2000,dir);
-                flet.action_y=y+lengthdir_y(2000,dir);
-                // flet.action_eta=floor(random(8))+12;
-                flet.action_eta=floor(random(8))+2;
-                flet.alarm[4]=1;
+                with (_player_fleet){
+                    action_x=x+lengthdir_x(1200,dir);
+                    action_y=y+lengthdir_y(1200,dir);
+                    set_fleet_movement(false, "crusade1");
+                }
+
                 scr_alert("green","crusade","Fleet embarks upon Crusade.",x,y);
                 scr_event_log("","Fleet embarks upon Crusade.");
-            }
-            if (cont=1) or (cont=0){
+            }else {
                 // hit loyalty here
                 obj_controller.disposition[2]-=5;
                 obj_controller.disposition[4]-=10;
