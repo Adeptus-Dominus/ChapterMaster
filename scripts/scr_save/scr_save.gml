@@ -11,7 +11,7 @@ function ini_encode_and_json(ini_area, ini_code, value){
 /// @param {string} ini_code
 /// @param {struct|array} value
 function ini_encode_and_json_advanced(ini_area, ini_code, value){
-	return ini_write_string(ini_area, ini_code, jsonify_encode_advanced(value));
+	ini_write_string(ini_area, ini_code, jsonify_encode_advanced(value));
 }
 
 function scr_save(save_part,save_id) {
