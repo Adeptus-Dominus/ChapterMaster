@@ -495,7 +495,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.1300.0.775",
+    "IDEVersion":"2024.1300.0.781",
   },
   "name":"ChapterMaster",
   "resources":[
@@ -785,6 +785,7 @@
     {"id":{"name":"scr_ork_planet_functions","path":"scripts/scr_ork_planet_functions/scr_ork_planet_functions.yy",},},
     {"id":{"name":"scr_pen_And_paper","path":"scripts/scr_pen_And_paper/scr_pen_And_paper.yy",},},
     {"id":{"name":"scr_perils_table","path":"scripts/scr_perils_table/scr_perils_table.yy",},},
+    {"id":{"name":"scr_planet_heresy","path":"scripts/scr_planet_heresy/scr_planet_heresy.yy",},},
     {"id":{"name":"scr_planetary_feature","path":"scripts/scr_planetary_feature/scr_planetary_feature.yy",},},
     {"id":{"name":"scr_PlanetData","path":"scripts/scr_PlanetData/scr_PlanetData.yy",},},
     {"id":{"name":"scr_player_combat_weapon_stacks","path":"scripts/scr_player_combat_weapon_stacks/scr_player_combat_weapon_stacks.yy",},},
@@ -854,6 +855,7 @@
     {"id":{"name":"scr_unit_size","path":"scripts/scr_unit_size/scr_unit_size.yy",},},
     {"id":{"name":"scr_unit_spawn_functions","path":"scripts/scr_unit_spawn_functions/scr_unit_spawn_functions.yy",},},
     {"id":{"name":"scr_unit_traits","path":"scripts/scr_unit_traits/scr_unit_traits.yy",},},
+    {"id":{"name":"scr_uuid_generate","path":"scripts/scr_uuid_generate/scr_uuid_generate.yy",},},
     {"id":{"name":"scr_vehicle_count","path":"scripts/scr_vehicle_count/scr_vehicle_count.yy",},},
     {"id":{"name":"scr_vehicle_helpers","path":"scripts/scr_vehicle_helpers/scr_vehicle_helpers.yy",},},
     {"id":{"name":"scr_vehicle_order","path":"scripts/scr_vehicle_order/scr_vehicle_order.yy",},},

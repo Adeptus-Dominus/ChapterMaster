@@ -935,7 +935,7 @@ if (action=="" && _is_orbiting){
 }
 
 
-if (action="move") and (action_eta>5000){
+if (action=="move") and (action_eta>5000){
     var woop = instance_nearest(x,y,obj_star);
     if (woop.storm=0){
     	action_eta-=10000;

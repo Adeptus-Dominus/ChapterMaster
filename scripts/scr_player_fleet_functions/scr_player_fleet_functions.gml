@@ -586,13 +586,18 @@ function player_fleet_selected_count(fleet="none"){
 
 
 
-function get_nearest_player_fleet(nearest_x, nearest_y, is_static=false, is_moving=false){
+function get_nearest_player_fleet(nearest_x, nearest_y, is_static=false, is_moving=false, stop_complex_actions = true){
 	var chosen_fleet = "none";
 	if instance_exists(obj_p_fleet){
 		with(obj_p_fleet){
 			var viable = !(is_static && action!="");
 			if (viable && is_moving){
 				if (action!="move") then viable = false;
+			}
+			if (stop_complex_actions){
+				if (string_count("crusade", action) || action == "Lost"){
+					viable = false;
+				}
 			}
 			if (!viable) then continue;
 			if (point_in_rectangle(x, y, 0, 0, room_width, room_height)){

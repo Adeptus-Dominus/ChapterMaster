@@ -139,13 +139,13 @@ function is_orbiting(){
 	return false;
 }
 
-function set_fleet_movement(fastest_route = true){
+function set_fleet_movement(fastest_route = true, new_action="move"){
 
 	action = "";
 
 	if (action==""){
 		turns_static = 0;
-	    var sys, mine, fleet;
+	    var mine, fleet;
 	    var connected=0,cont=0,target_dist=0;
 	    if (fastest_route){
 	    	mine=instance_nearest(x,y,obj_star);
@@ -158,20 +158,25 @@ function set_fleet_movement(fastest_route = true){
 		    		complex_route = path;
 		    		action_x = targ.x;
 					action_y = targ.y;
-		    		set_fleet_movement(false);
+		    		set_fleet_movement(false, new_action);
 		    	} else {
-		    		set_fleet_movement(false);
+		    		set_fleet_movement(false, new_action);
 		    	}
 		    } else {
-		    	set_fleet_movement(false);
+		    	set_fleet_movement(false, new_action);
 		    }
 	    } else {
 
-		    sys=instance_nearest(action_x,action_y,obj_star);
+		    var _target_sys = instance_nearest(action_x,action_y,obj_star);
+		    var _target_is_sys = false;
+
+		    if (instance_exists(_target_sys)){
+		    	_target_is_sys = point_distance(_target_sys.x, _target_sys.y, action_x, action_y)<10;
+		    }
 
 		    mine=instance_nearest(x,y,obj_star);
 	        
-	        var eta = calculate_fleet_eta(x,y,action_x,action_y,action_spd,instance_exists(sys),is_orbiting(),warp_able);
+	        var eta = calculate_fleet_eta(x,y,action_x,action_y,action_spd,_target_is_sys,is_orbiting(),warp_able);
 	        action_eta = eta;
 	        if (action_eta<=0) or (owner  != eFACTION.Inquisition){
 	            action_eta=eta;
@@ -183,10 +188,9 @@ function set_fleet_movement(fastest_route = true){
 	        // action_x=sys.x;
 	        // action_y=sys.y;
 	        orbiting = false;
-	        action="move";
-	        
+	        action=new_action;
+	      	minimum_eta=1;
 	        if (minimum_eta>action_eta) and (minimum_eta>0) then action_eta=minimum_eta;
-	        minimum_eta=0;
 		}
 	}
 }

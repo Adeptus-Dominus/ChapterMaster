@@ -1,8 +1,19 @@
-
-
-function ini_encode_and_json(ini_area, ini_code,value){
-	return ini_write_string(ini_area,ini_code,base64_encode(json_stringify(value)));
+/// @description This function converts a single struct or a hierarchy of nested structs and arrays into a valid JSON string, then into a base64 format encoded string, and then write into an ini. If the input is big, consider using ini_encode_and_json_advanced() to avoid stack overflow.
+/// @param {string} ini_area
+/// @param {string} ini_code
+/// @param {struct|array} value
+function ini_encode_and_json(ini_area, ini_code, value){
+	ini_write_string(ini_area, ini_code, base64_encode(json_stringify(value)));
 }
+
+/// @description This function converts a single struct or a hierarchy of nested structs and arrays into a valid JSON string, then into a base64 format encoded string, using an intermediate buffer, to prevent stack overflow due to big input strings, and then write into an ini.
+/// @param {string} ini_area
+/// @param {string} ini_code
+/// @param {struct|array} value
+function ini_encode_and_json_advanced(ini_area, ini_code, value){
+	ini_write_string(ini_area, ini_code, jsonify_encode_advanced(value));
+}
+
 function scr_save(save_part,save_id) {
 	try{
 	var num=0,tot=0;
@@ -475,14 +486,18 @@ function scr_save(save_part,save_id) {
 				}
 	        }
 	    }
-		log_message("Saving to slot "+string(save_id)+" - Squad Saving");
+		log_message("Saving to slot "+string(save_id)+" - Squad Saving Start");
 	    var squad_copies = [];
 		if (array_length(obj_ini.squads)> 0){
 			for (var i = 0;i < array_length(obj_ini.squads);i++){
-				array_push(squad_copies, obj_ini.squads[i].jsonify());
+				var _squad = obj_ini.squads[i].jsonify();
+				array_push(squad_copies, _squad);
 			}
 		}
-        ini_write_string("Mar","squads",base64_encode(json_stringify(squad_copies)));
+		// The buffer is needed here because without it the regular base64_encode() was going into stack overflow on 10 strength chapters;
+		log_message("Saving to slot "+string(save_id)+" - Squads Saving");
+        ini_encode_and_json_advanced("Mar", "squads", squad_copies);
+		log_message("Saving to slot "+string(save_id)+" - Squad Type Saving");
         ini_write_string("Mar","squad_types",base64_encode(json_stringify(obj_ini.squad_types)));
 
 	    coh=100;mah=-1;
@@ -608,6 +623,4 @@ function scr_save(save_part,save_id) {
 	} catch(_exception){
         handle_exception(_exception);
     }
-
-
 }

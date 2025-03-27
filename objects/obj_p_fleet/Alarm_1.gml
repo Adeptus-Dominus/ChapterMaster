@@ -46,8 +46,7 @@ try_and_report_loop("player alarm 1",function(){
             action_x=x+lengthdir_x(600,dr);
             action_y=y+lengthdir_y(600,dr);
             action="crusade2";
-            action_eta=choose(3,4,5);
-            alarm[4]=1;
+            set_fleet_movement(false, "crusade2");
         }
         if (action_eta=0) and (action="crusade2"){
             with(obj_star){
@@ -64,8 +63,9 @@ try_and_report_loop("player alarm 1",function(){
             var ret=instance_nearest(x,y,obj_star);
             action_x=ret.x;
             action_y=ret.y;
-            action="crusade3";action_eta=floor(point_distance(x,y,ret.x,ret.y)/128)+1;
-            alarm[4]=1;instance_activate_object(obj_star);
+            action="crusade3";
+            set_fleet_movement(false, "crusade3");
+            instance_activate_object(obj_star);
         }
         if (action_eta=0) and (action="crusade3"){
             // Popup here
@@ -85,7 +85,13 @@ try_and_report_loop("player alarm 1",function(){
             orbiting=steh;
             // show_message("Present Fleets at alarm[1]: "+string(steh.present_fleets));
             
-            var b;b=0;repeat(4){b+=1;if (steh.p_first[b]<=5) and (steh.dispo[b]>-30) and (steh.dispo[b]<0) then steh.dispo[b]=min(obj_ini.imperium_disposition,obj_controller.disposition[2])+choose(-1,-2,-3,-4,0,1,2,3,4);}
+            var b=0;
+            for (var i=1;i<=steh.planets;i++){
+                if (steh.p_first[b]<=5) and (steh.dispo[b]>-30) and (steh.dispo[b]<0){
+                    steh.dispo[b]=min(obj_ini.imperium_disposition,obj_controller.disposition[2])+irandom(8)-4;
+                } 
+
+            }
             if (steh.p_owner[1]=5) or (steh.p_owner[2]=5) or (steh.p_owner[3]=5) or (steh.p_owner[4]=5){
                 if (obj_controller.faction_defeated[5]=0) and (obj_controller.known[eFACTION.Ecclesiarchy]=0) then obj_controller.known[eFACTION.Ecclesiarchy]=1;
             }

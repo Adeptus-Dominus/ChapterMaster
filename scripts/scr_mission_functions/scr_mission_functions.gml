@@ -90,6 +90,33 @@ function scr_new_governor_mission(planet, problem = ""){
 	}
 }
 
+
+
+function init_garrison_mission(planet, star, mission_slot){
+	var problems_data = star.p_problem_other_data[planet]
+	var mission_data = problems_data[mission_slot];
+	if (mission_data.stage == "preliminary"){
+		var numeral_name = planet_numeral_name(planet, star);
+		mission_data.stage = "active";
+		var garrison_length=(10+irandom(6));
+		star.p_timer[planet][mission_slot] = garrison_length;
+	    //pop.image="ancient_ruins";
+	    var gar_pop=instance_create(0,0,obj_popup);
+	    //TODO some new universal methods for popups
+	    gar_pop.title=$"Requested Garrison Provided to {numeral_name}";
+	    gar_pop.text=$"The governor of {numeral_name} Thanks you for considering his request for a garrison, you agree that the garrison will remain for at least {garrison_length} months.";
+	    //pip.image="event_march"
+	    gar_pop.option1="Commence Garrison";
+        gar_pop.image="";
+        gar_pop.cooldown=8;
+        obj_controller.cooldown=8;	    
+	    scr_event_log("",$"Garrison commited to {numeral_name} for {garrison_length} months.", target.name);
+	}	
+}
+
+
+
+
 function init_beast_hunt_mission(planet, star, mission_slot){
 	var problems_data = star.p_problem_other_data[planet]
 	var mission_data = problems_data[mission_slot];
