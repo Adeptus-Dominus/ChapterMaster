@@ -2172,10 +2172,10 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static psychic_focus = function() {
-        return round((experience * 0.05) + (wisdom * 0.4));
+        return round((wisdom * 0.4) + (experience * 0.05));
     };
 
-    static perils_chance = function() {
+    static perils_threshold = function() {
         var _perils_threshold = PSY_PERILS_CHANCE_BASE;
 
         if (instance_exists(obj_ncombat)) {
@@ -2194,6 +2194,53 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
         return _perils_threshold;
     };
+
+	static perils_strength = function() {
+		var _perils_strength = roll_personal_dice(1, 100, "low", self);
+	
+		// I hope you like demons
+		if (has_trait("warp_tainted")) {
+			var _second_roll = roll_personal_dice(1, 100, "high", self);
+			if (_second_roll > _perils_strength) {
+				_perils_strength = _second_roll;
+			}
+		}
+	
+		_perils_strength = max(_perils_strength, PSY_PERILS_STR_BASE);
+	
+		return _perils_strength;
+	}
+
+	static perils_test = function() {
+		var _roll = roll_personal_dice(1, 1000, "high", self);
+		var _perils_threshold = perils_threshold();
+	
+		return _roll <= _perils_threshold;
+	}
+
+	static psychic_focus_difficulty = function() {
+		var _cast_difficulty = PSY_CAST_DIFFICULTY_BASE;  //TODO: Make this more dynamic;
+		_cast_difficulty -= gear_special_value("psychic_focus");
+		_cast_difficulty -= psychic_focus();
+		_cast_difficulty = max(_cast_difficulty, PSY_CAST_DIFFICULTY_MIN);
+
+		return _cast_difficulty;
+	}
+
+	static psychic_focus_test = function() {
+		var _cast_roll = roll_personal_dice(1, 100, "high", self);
+		var _cast_difficulty = psychic_focus_difficulty();
+		var _test_successful = _cast_roll >= _cast_difficulty;
+
+		if (_test_successful) {
+			roll_psionic_increase();
+			if (roll_personal_dice(2, 10, "high", self) == 20) {
+				add_exp(max((_cast_difficulty / 30), 0));
+			}
+		}
+
+		return _test_successful;
+	}
 
     static movement_after_math = function(end_company = company, end_slot = marine_number) {
         if (squad != "none") {

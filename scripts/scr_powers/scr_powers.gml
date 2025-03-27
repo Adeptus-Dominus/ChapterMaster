@@ -84,7 +84,7 @@ function scr_powers(caster_id) {
     }
 
     // Casting fail/success bellow
-    var _cast_successful = check_cast_success(_unit);
+    var _cast_successful = _unit.psychic_focus_test();
     if (_cast_successful) {
         _cast_flavour_text = $"{_unit.name_role()} casts '{_power_name}'";
     } else {
@@ -275,10 +275,10 @@ function scr_powers(caster_id) {
 
     //* Perils happen bellow
     //TODO: Perhaps separate perils into a separate function;
-    var _perils_happened = perils_test(_unit);
+    var _perils_happened = _unit.perils_test();
 
     if (_perils_happened) {
-        var _perils_strength = roll_perils_strength(_unit);
+        var _perils_strength = _unit.perils_strength();
         _cast_flavour_text = $"{_unit.name_role()} suffers Perils of the Warp!  ";
         _power_flavour_text = scr_perils_table(_perils_strength, _unit, _selected_discipline, _power_id, caster_id);
 
@@ -523,29 +523,6 @@ function match_power_prefix(power_prefix) {
     }
 }
 
-function perils_test(_unit) {
-    var _roll = roll_personal_dice(1, 1000, "high", _unit);
-    var _perils_threshold = _unit.perils_chance();
-
-    return _roll <= _perils_threshold;
-}
-
-function roll_perils_strength(_unit) {
-    var _perils_strength = roll_personal_dice(1, 100, "low", _unit);
-
-    // I hope you like demons
-    if (_unit.has_trait("warp_tainted")) {
-        var _second_roll = roll_personal_dice(1, 100, "high", _unit);
-        if (_second_roll > _perils_strength) {
-            _perils_strength = _second_roll;
-        }
-    }
-
-    _perils_strength = max(_perils_strength, PSY_PERILS_STR_BASE);
-
-    return _perils_strength;
-}
-
 /// @function process_tome_mechanics
 /// @param {struct} _unit - The unit structure
 /// @param {real} _unit_id - The caster's ID
@@ -674,30 +651,6 @@ function find_valid_target(_power_data) {
     } else {
         return false;
     }
-}
-
-/// @function check_cast_success
-/// @param {struct} _unit - The caster unit
-/// @returns {bool} Whether the cast was successful
-function check_cast_success(_unit) {
-    var _equipment_psychic_focus = _unit.gear_special_value("psychic_focus");
-    var _attribute_psychic_focus = _unit.psychic_focus();
-
-    var _cast_difficulty = PSY_CAST_DIFFICULTY_BASE; //TODO: Make this more dynamic;
-    _cast_difficulty -= _equipment_psychic_focus;
-    _cast_difficulty -= _attribute_psychic_focus;
-
-    var _cast_roll = roll_personal_dice(1, 100, "high", _unit);
-    var _cast_successful = _cast_roll >= max(_cast_difficulty, PSY_CAST_DIFFICULTY_MIN);
-
-    if (_cast_successful) {
-        _unit.roll_psionic_increase();
-        if (roll_personal_dice(2, 10, "high", _unit) == 20) {
-            _unit.add_exp(max((_cast_difficulty / 30), 0));
-        }
-    }
-
-    return _cast_successful;
 }
 
 /// @function select_psychic_power
