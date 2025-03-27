@@ -1243,7 +1243,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         var _discipline_powers = get_discipline_data(obj_ini.psy_powers, "powers");
         _discipline_powers_max = array_length(_discipline_powers);
 
-        _powers_limit = floor(experience / 30);
+        _powers_limit = floor((intelligence - 26) / 2);
         _powers_known_count = string_count(string(_discipline_prefix), _abilities_string);
 
         while ((_powers_known_count < _powers_limit) && (_powers_known_count < _discipline_powers_max)) {
