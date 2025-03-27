@@ -28,15 +28,15 @@ function dec_to_hex() {
         }
     }
 
-    var dec, hex, _charactors, _selection, byte, hi, lo;
+    var dec, hex, _characters, _selection, byte, hi, lo;
     dec = argument0;
     if (dec) { hex = ""; } else { hex = "0"; }
-    _charactors = {
+    _characters = {
         numbers : "0123456789",
         uppercase : "ABCDEF"
 //        lowercase : "abcdef"
     };
-    _selection = $"{_charactors.numbers}{_charactors.uppercase}";
+    _selection = $"{_characters.numbers}{_characters.uppercase}";
     while (dec) {
         byte = dec & 255;
         hi = string_char_at(_selection, byte / 16 + 1);
