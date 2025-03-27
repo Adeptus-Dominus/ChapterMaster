@@ -1256,20 +1256,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             }
         }
 
-        return _powers_learned;
-    };
-
-    static roll_psionic_increase = function() {
-        if (psionic < 12) {
-            var _psionic_difficulty = (psionic * 50) - experience;
-
-            var _dice_roll = roll_personal_dice(1, _psionic_difficulty, "high", self);
-            if (_dice_roll == _psionic_difficulty) {
-                psionic++;
-                add_battle_log_message($"{name_role()} was touched by the warp!", 999, 135);
-            }
-        }
-    };
+		return _powers_learned;
+	};
 
     static roll_psionics = function() {
         var _dice_count = marine_ascension == "pre_game" ? 1 : 2;
@@ -2167,9 +2155,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         return _total_special_value;
     };
 
-    static psychic_amplification = function() {
-        return round((psionic - 2) + (experience / 100));
-    };
+	static psychic_amplification = function() {
+		return round((psionic - 2) + (experience * 0.01));
+	}
 
     static psychic_focus = function() {
         return round((wisdom * 0.4) + (experience * 0.05));
@@ -2235,12 +2223,36 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 		if (_test_successful) {
 			roll_psionic_increase();
 			if (roll_personal_dice(2, 10, "high", self) == 20) {
-				add_exp(max((_cast_difficulty / 30), 0));
+				add_exp(1 * (_cast_difficulty / 100));
 			}
 		}
 
 		return _test_successful;
 	}
+
+	static roll_psionic_increase = function() {
+		if (psionic < 12) {
+			var _psionic_difficulty = (psionic * 50) - experience;
+
+			var _dice_roll = roll_personal_dice(1, _psionic_difficulty, "high", self);
+			if (_dice_roll == _psionic_difficulty) {
+				psionic++;
+				add_battle_log_message($"{name_role()} was touched by the warp!", 999, 135);
+			}
+		}
+	};
+
+	static roll_psionic_increase = function() {
+		if (psionic < 12) {
+			var _psionic_difficulty = (psionic * 50) - experience;
+
+			var _dice_roll = roll_personal_dice(1, _psionic_difficulty, "high", self);
+			if (_dice_roll == _psionic_difficulty) {
+				psionic++;
+				add_battle_log_message($"{name_role()} was touched by the warp!", 999, 135);
+			}
+		}
+	};
 
     static movement_after_math = function(end_company = company, end_slot = marine_number) {
         if (squad != "none") {

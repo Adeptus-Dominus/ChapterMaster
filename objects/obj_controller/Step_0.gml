@@ -514,11 +514,11 @@ try {
                     var _character_psychic_focus = unit.psychic_focus();
                     var _perils_chance = unit.perils_threshold() / 10;
                     _tooltip += $"\nAmplification from Equipment: {_equipment_psychic_amplification}%";
-                    _tooltip += $"\nAmplification from Attributes: {_character_psychic_amplification}%";
+                    _tooltip += $"\nAmplification from Attributes (Psy Rating and EXP): {_character_psychic_amplification}%";
 
-                    _tooltip += $"\n\nInvocation Failure Chance: {unit.psychic_focus_difficulty()}%";
+                    _tooltip += $"\n\nFocus Success Chance: {100 - unit.psychic_focus_difficulty()}%";
                     _tooltip += $"\nFocus from Equipment: {_equipment_psychic_focus}%";
-                    _tooltip += $"\nFocus from Attributes: {_character_psychic_focus}%";
+                    _tooltip += $"\nFocus from Attributes (WIS and EXP): {_character_psychic_focus}%";
 
                     _tooltip += $"\n\nPerils of the Warp Chance: {_perils_chance}%";
 
