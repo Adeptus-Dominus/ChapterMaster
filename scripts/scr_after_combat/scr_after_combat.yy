@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"scr_distribute_experience",
+  "%Name":"scr_after_combat",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_distribute_experience",
+  "name":"scr_after_combat",
   "parent":{
     "name":"Combat",
     "path":"folders/Scripts/Combat.yy",
