@@ -62,19 +62,19 @@ function scr_uuid_generate() {
     for (var i = 0; i < array_length(uuid); i++) {
         _random = floor((_date + random(1) * 16)) % 16;
 
-        if (i != 12 && i != 16) {
+        switch i {
+        // Version bit
+        case 12:
+            uuid[i] = "4";
+            break;
+        // Variant bit (RFC 4122 variant 1)
+        case 16:
+            uuid[i] = dec_to_hex(_random & $3|$8);
+            break;
+        // Standard random bits
+        default:
             uuid[i] = dec_to_hex(_random);
-        } else {
-            switch i {
-            // version bit
-            case 12:
-                uuid[i] = "4";
-                break;
-            // variant bit, variant 1
-            case 16:
-                uuid[i] = dec_to_hex(_random & $3|$8);
-                break;
-            }
+            break;
         }
     }
 
