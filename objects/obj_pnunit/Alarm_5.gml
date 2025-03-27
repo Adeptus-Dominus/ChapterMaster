@@ -2,27 +2,19 @@ var _unit;
 
 if (obj_ncombat.defeat == 0) {
     var _current_exp;
-    var _exp_mod = 1;
-    var _unit_xp_data = [];
-    var _unit_recovery_score = obj_ncombat.unit_recovery_score;
 
     for (var i = 0; i < array_length(unit_struct); i++) {
         _unit = unit_struct[i];
         if (is_struct(_unit) && ally[i] == false) {
-            if (marine_dead[i] == 1 && marine_type[i] != "" && _unit_recovery_score > 0) { // Apothecaries saving marines
+            if (marine_dead[i] == 1 && marine_type[i] != "" && obj_ncombat.unit_recovery_score > 0) { // Apothecaries saving marines
                 obj_ncombat.unit_recovery_score -= 1;
-                _unit.update_health(irandom(20) - 10);
+                _unit.update_health(irandom_range(1, 20));
                 marine_dead[i] = false;
                 obj_ncombat.units_saved += 1;
             } 
             
             if (!marine_dead[i]) { // EXP allocation
-                _current_exp = _unit.experience;
-
-                _exp_mod = max(1 - (_current_exp / 200), 0.03);
-
-                _unit_xp_data = [_unit, _exp_mod];
-                array_push(obj_ncombat.end_alive_units, _unit_xp_data);
+                array_push(obj_ncombat.end_alive_units, _unit);
             }
         }
     }
