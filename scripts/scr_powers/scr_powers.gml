@@ -30,11 +30,6 @@ function scr_powers(caster_id) {
         exit;
     }
 
-    var _unit_role = _unit.role();
-    var _unit_exp = _unit.experience;
-    var _unit_weapon_one_data = _unit.get_weapon_one_data();
-    var _unit_weapon_two_data = _unit.get_weapon_two_data();
-    var _unit_gear = _unit.get_gear_data();
     var _unit_armour = _unit.get_armour_data();
     if (is_struct(_unit_armour)) {
         var _is_dread = _unit_armour.has_tag("dreadnought");
@@ -52,7 +47,6 @@ function scr_powers(caster_id) {
     var _casualties_flavour_text = "";
 
     // Decide what to cast
-    var _known_powers = _unit.powers_known;
     var _power_id = select_psychic_power(_unit);
 
     //TODO: All tome related logic in this file has to be reworked;
@@ -69,13 +63,12 @@ function scr_powers(caster_id) {
     var _total_psychic_amplification = 1 + _equipment_psychic_amplification + _character_psychic_amplification;
 
     // Gather power data
-    // var _power_struct = get_power_data(_power_id); // Not used atm
     var _power_data = get_power_data(_power_id);
     var _power_name = get_power_data(_power_id, "name");
     var _power_type = get_power_data(_power_id, "type");
     var _power_range = round(get_power_data(_power_id, "range") * _total_psychic_amplification);
     // var _power_target_type = get_power_data(_power_id, "target_type"); // Not used here
-    var _power_max_kills = round(get_power_data(_power_id, "max_kills") * _total_psychic_amplification);
+    var _power_additional_kills = get_power_data(_power_id, "additional_kills");
     var _power_magnitude = get_power_data(_power_id, "magnitude") * _total_psychic_amplification;
     var _power_armour_piercing = get_power_data(_power_id, "armour_piercing");
     // var _power_duration = get_power_data(_power_id, "duration"); // Not used atm
@@ -216,10 +209,10 @@ function scr_powers(caster_id) {
 
             // Calculate casualties based on damage and health
             var _casualties = 0;
-            if (_power_max_kills == -1) {
+            if (_power_additional_kills == -1) {
                 _casualties = floor(_final_damage / _target_unit_health);
             } else {
-                _casualties = min(floor(_final_damage / _target_unit_health), max(_power_max_kills, 1));
+                _casualties = min(floor(_final_damage / _target_unit_health), 1 + _power_additional_kills);
             }
 
             // Cap casualties at available entities and ensure non-negative
@@ -720,8 +713,11 @@ function select_psychic_power(_unit) {
         var _power_type = get_power_data(_known_powers[i], "type");
         if (_power_type == "attack") {
             var _power_magnitude = get_power_data(_known_powers[i], "magnitude");
-            var _power_max_kills = get_power_data(_known_powers[i], "max_kills");
-            var _power_priority = _power_magnitude + (_power_max_kills * roll_dice(1, 50));
+            var _power_additional_kills = get_power_data(_known_powers[i], "additional_kills");
+            if (_power_additional_kills == -1) {
+                _power_additional_kills = 10;
+            }
+            var _power_priority = _power_magnitude * (1 + (_power_additional_kills * irandom_range(0, 1)));
 
             ds_priority_add(_powers_priority_queue, _known_powers[i], _power_priority);
         }
