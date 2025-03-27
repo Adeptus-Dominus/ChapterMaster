@@ -49,7 +49,8 @@ if ((started=2) or (started=4)){
     // started=3;alarm[5]=3;obj_pnunit.alarm[4]=1;obj_pnunit.alarm[5]=2;obj_enunit.alarm[1]=3;
     started=3;
     // obj_pnunit.alarm[4]=2;obj_pnunit.alarm[5]=3;obj_enunit.alarm[1]=1;
-    total_battle_exp_gain = threat * 50;
+    var _quad_factor = 10;
+    total_battle_exp_gain = _quad_factor * sqr(threat);
     if (instance_exists(obj_enunit)){obj_enunit.alarm[1]=1;}
     instance_activate_object(obj_star);
     instance_activate_object(obj_event_log);

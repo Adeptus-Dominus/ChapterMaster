@@ -384,8 +384,8 @@ if (battle_special="fallen2") then reduce_power=false;
 if (battle_special="study2a") then reduce_power=false;
 if (battle_special="study2b") then reduce_power=false;
 if (defeat=0) and (reduce_power=true){
-    var enemy_power,new_power, power_reduction, final_pow, requisition_reward, power_fought;
-    enemy_power=0;new_power=0; power_reduction=0; requisition_reward=0; power_fought=0;
+    var enemy_power,new_power, power_reduction, final_pow, requisition_reward;
+    enemy_power=0;new_power=0; power_reduction=0; requisition_reward=0;
 
     if (enemy=2){
         enemy_power=battle_object.p_guardsmen[battle_id];
@@ -435,17 +435,15 @@ if (defeat=0) and (reduce_power=true){
     if (enemy!=2){
         if (dropping == true || defending == true) {
             power_reduction = 1;
-            power_fought = max(enemy_power - 1, 1); // Raiding generates enemies at -1 power, so less points
         } else {
             power_reduction = 2;
-            power_fought = enemy_power;
         }
         new_power = enemy_power - power_reduction;
         new_power = max(new_power, 0);
 
         // Give some money for killing enemies?
-        var reward_table = [0, 5, 10, 20, 40, 80, 160, 320];
-        requisition_reward = reward_table[power_fought];
+        var _quad_factor = 8;
+        requisition_reward = _quad_factor * sqr(threat);
         obj_controller.requisition += requisition_reward;
 
 		//(¿?) Ramps up threat/enemy presence in case enemy Type == "Daemon" (¿?)
