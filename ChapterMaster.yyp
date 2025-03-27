@@ -785,6 +785,7 @@
     {"id":{"name":"scr_ork_planet_functions","path":"scripts/scr_ork_planet_functions/scr_ork_planet_functions.yy",},},
     {"id":{"name":"scr_pen_And_paper","path":"scripts/scr_pen_And_paper/scr_pen_And_paper.yy",},},
     {"id":{"name":"scr_perils_table","path":"scripts/scr_perils_table/scr_perils_table.yy",},},
+    {"id":{"name":"scr_planet_heresy","path":"scripts/scr_planet_heresy/scr_planet_heresy.yy",},},
     {"id":{"name":"scr_planetary_feature","path":"scripts/scr_planetary_feature/scr_planetary_feature.yy",},},
     {"id":{"name":"scr_PlanetData","path":"scripts/scr_PlanetData/scr_PlanetData.yy",},},
     {"id":{"name":"scr_player_combat_weapon_stacks","path":"scripts/scr_player_combat_weapon_stacks/scr_player_combat_weapon_stacks.yy",},},

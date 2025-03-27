@@ -112,8 +112,14 @@ function PlanetData(planet, system) constructor{
         }
     }
 
+
     corruption = system.p_heresy[planet];
 
+    static alter_corruption = function(value){
+    	alter_planet_corruption(value, planet, system);
+    	corruption = system.p_heresy[planet];
+    }
+    
     is_heretic = system.p_hurssy[planet];
 
     heretic_timer = system.p_hurssy_time[planet];
@@ -133,6 +139,7 @@ function PlanetData(planet, system) constructor{
     static has_problem = function(problem){
     	has_problem_planet(planet, problem, system);
     }
+
 
     static name = function(){
     	var _name="";
