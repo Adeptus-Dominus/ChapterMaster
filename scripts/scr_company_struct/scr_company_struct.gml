@@ -272,8 +272,6 @@ function CompanyStruct(comp) constructor{
 					}
 
 		garrison_button.keystroke = press_exclusive(ord("G"));
-		previous_squad_button.keystroke = press_exclusive(vk_left);
-		next_squad_button.keystroke = press_exclusive(vk_tab);
 					if (array_contains(current_squad.class, "scout")) || (array_contains(current_squad.class, "bike")){
 						if (sabotage_button.draw()){
 							send_on_mission=true;
@@ -331,6 +329,8 @@ function CompanyStruct(comp) constructor{
 					}
 				}
 			}
+		previous_squad_button.keystroke = press_exclusive(vk_left);
+		next_squad_button.keystroke = press_exclusive(vk_tab);
 			//TODO compartmentalise drop down option logic
 			var deploy_text = "Squad will deploy in the";
 			if (current_squad.formation_place!=""){
