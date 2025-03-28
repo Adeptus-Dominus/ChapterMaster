@@ -16,22 +16,19 @@ if (turn_count >= 50){
 var roles = obj_ini.role[100];
 var ground_mission = (instance_exists(obj_ground_mission));
 
+
+
 if (obj_ncombat.defeat == 0) {
+    marines_to_recover = ds_priority_create();
+    vehicles_to_recover = ds_priority_create();
+
     with (obj_pnunit) {
         add_marines_to_recovery();
         add_vehicles_to_recovery();
     }
-}
 
-if (array_length(marines_to_recover) > 0) {
-    var _recovery_queue = ds_priority_create();
-
-    for (var i = 0; i < array_length(marines_to_recover); i++) {
-        ds_priority_add(_recovery_queue, marines_to_recover[i], marines_to_recover[i].priority);
-    }
-
-    while (!ds_priority_empty(_recovery_queue) && unit_recovery_score > 0) {
-        var _candidate = ds_priority_delete_max(_recovery_queue);
+    while (!ds_priority_empty(marines_to_recover) && unit_recovery_score > 0) {
+        var _candidate = ds_priority_delete_max(marines_to_recover);
         var _column_id = _candidate.column_id;
         var _unit_id = _candidate.id;
         _candidate.unit.update_health(irandom(10));
@@ -39,22 +36,13 @@ if (array_length(marines_to_recover) > 0) {
         unit_recovery_score -= 1;
         units_saved += 1;
     }
+    ds_priority_destroy(marines_to_recover);
 
-    ds_priority_destroy(_recovery_queue);
-}
-
-if (array_length(vehicles_to_recover) > 0) {
-    var _vehicle_recovery_queue = ds_priority_create();
-
-    for (var i = 0; i < array_length(vehicles_to_recover); i++) {
-        ds_priority_add(_vehicle_recovery_queue, vehicles_to_recover[i], vehicles_to_recover[i].priority);
-    }
-
-    while (!ds_priority_empty(_vehicle_recovery_queue) && vehicle_recovery_score > 0) {
-        var _candidate = ds_priority_delete_max(_vehicle_recovery_queue);
+    while (!ds_priority_empty(vehicles_to_recover) && vehicle_recovery_score > 0) {
+        var _candidate = ds_priority_delete_max(vehicles_to_recover);
         var _column_id = _candidate.column_id;
         var _unit_id = _candidate.id;
-
+    
         if (obj_controller.stc_bonus[3] = 4) {
             var _survival_roll = 80 + _candidate.priority;
             var _dice_roll = roll_dice(1, 100, "high");
@@ -66,16 +54,16 @@ if (array_length(vehicles_to_recover) > 0) {
                 continue;
             }
         }
-
+    
         _column_id.veh_hp[_unit_id] = 10;
         _column_id.veh_dead[_unit_id] = false;
         vehicle_recovery_score -= _candidate.priority;
         vehicles_saved++;
         vehicle_deaths--;
     }
-
-    ds_priority_destroy(_vehicle_recovery_queue);
+    ds_priority_destroy(vehicles_to_recover);
 }
+
 
 with (obj_pnunit) {
     after_battle_part1()
@@ -150,7 +138,8 @@ if (red_thirst>2){
     
     newline=voodoo;newline_color="red";
     scr_newtext();
-    newline=" ";scr_newtext();
+    newline=" ";
+    scr_newtext();
 }
 
 newline = " ";
@@ -177,6 +166,8 @@ if (vehicle_deaths > 0) {
 		}
 	}
     newline_color="red";
+    scr_newtext();
+    newline = " ";
     scr_newtext();
 }
 

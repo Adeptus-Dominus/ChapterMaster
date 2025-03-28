@@ -10,7 +10,7 @@ function add_marines_to_recovery() {
                     "column_id": id,
                     "priority": _unit.experience
                 };
-                array_push(obj_ncombat.marines_to_recover, _recovery_candidate);
+                ds_priority_add(obj_ncombat.marines_to_recover, _recovery_candidate, _recovery_candidate.priority);
             }
         }
     }
@@ -34,7 +34,7 @@ function add_vehicles_to_recovery() {
                 "column_id": id,
                 "priority": _vehicles_priority[$ veh_type[i]]
             };
-            array_push(obj_ncombat.vehicles_to_recover, _recovery_candidate);
+            ds_priority_add(obj_ncombat.vehicles_to_recover, _recovery_candidate, _recovery_candidate.priority);
         }
     }
 }
