@@ -2232,7 +2232,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
 	static roll_psionic_increase = function() {
 		if (psionic < 12) {
-			var _psionic_difficulty = (psionic * 50) - experience;
+			var _psionic_difficulty = max(1, (psionic * 50) - experience);
 
 			var _dice_roll = roll_personal_dice(1, _psionic_difficulty, "high", self);
 			if (_dice_roll == _psionic_difficulty) {
@@ -2241,7 +2241,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 			}
 		}
 	};
-
 	static roll_psionic_increase = function() {
 		if (psionic < 12) {
 			var _psionic_difficulty = (psionic * 50) - experience;
