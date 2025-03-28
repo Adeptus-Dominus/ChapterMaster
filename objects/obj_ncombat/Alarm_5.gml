@@ -16,11 +16,10 @@ if (turn_count >= 50){
 var roles = obj_ini.role[100];
 var ground_mission = (instance_exists(obj_ground_mission));
 
-
 if (obj_ncombat.defeat == 0) {
     with (obj_pnunit) {
-        add_marines_to_recovery(self);
-        add_vehicles_to_recovery(self);
+        add_marines_to_recovery();
+        add_vehicles_to_recovery();
     }
 }
 
@@ -43,7 +42,6 @@ if (array_length(marines_to_recover) > 0) {
 
     ds_priority_destroy(_recovery_queue);
 }
-
 
 if (array_length(vehicles_to_recover) > 0) {
     var _vehicle_recovery_queue = ds_priority_create();
@@ -170,7 +168,7 @@ if (vehicle_deaths > 0) {
 
 	for (var i = 0; i < array_length(post_unit_lost); i++) {
 		if ((post_unit_lost[i] != "") && (post_units_lost[i] > 0) && (post_unit_veh[i] == 1)) {
-			newline += $" x{post_units_lost[i]}";
+			newline += $" x{post_units_lost[i]} {post_unit_lost[i]}";
             if (i < array_length(post_unit_lost) - 1) {
                 newline += ",";
             } else {
@@ -209,7 +207,7 @@ if (post_equipment_lost[1]!=""){
 
 if (total_battle_exp_gain>0){
     with (obj_pnunit) {
-        assemble_alive_units(self);
+        assemble_alive_units();
     }
     average_battle_exp_gain = distribute_experience(end_alive_units, total_battle_exp_gain); // Due to cool alarm timer shitshow, I couldn't think of anything but to put it here.
     newline = $"Each marine gained {average_battle_exp_gain} experience, reduced by their total experience.";

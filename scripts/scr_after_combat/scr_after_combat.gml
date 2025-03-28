@@ -1,61 +1,51 @@
-function add_marines_to_recovery(player_column) {
-	if (instance_exists(player_column)) {
-		if (obj_ncombat.unit_recovery_score > 0) {
-			for (var i = 0; i < array_length(player_column.unit_struct); i++) {
-				var _unit = player_column.unit_struct[i];
-				if (is_struct(_unit) && player_column.ally[i] == false) {
-					if (player_column.marine_dead[i] == 1 && player_column.marine_type[i] != "") {
-                        var _recovery_candidate = {
-                            "id": i,
-                            "unit": _unit,
-                            "column_id": player_column.id,
-                            "priority": _unit.experience
-                        };
-                        array_push(obj_ncombat.marines_to_recover, _recovery_candidate);
-					}
-				}
-			}
-		}
-	}
-}
-
-function add_vehicles_to_recovery(player_column) {
-    if (instance_exists(player_column)) {
-        // Techmarines saving vehicles
-        if (obj_ncombat.vehicle_recovery_score > 0 && obj_ncombat.vehicle_deaths > 0) {
-            var _vehicles_priority = {
-                "Land Raider": 10,
-                "Predator": 5,
-                "Whirlwind": 4,
-                "Rhino": 3,
-                "Land Speeder": 3,
-                "Bike": 1
-            }
-
-            for (var i = 0; i < array_length(player_column.veh_dead); i++) {
-                if (struct_exists(_vehicles_priority, player_column.veh_type[i])) && (player_column.veh_dead[i]) && (!player_column.veh_ally[i] ) {
-                    if (player_column.veh_dead[i]) {
-                        var _recovery_candidate = {
-                            "id": i,
-                            "column_id": player_column.id,
-                            "priority": _vehicles_priority[$ player_column.veh_type[i]]
-                        };
-                        array_push(obj_ncombat.vehicles_to_recover, _recovery_candidate);
-                    }
-                }
+/// @mixin
+function add_marines_to_recovery() {
+    for (var i = 0; i < array_length(unit_struct); i++) {
+        var _unit = unit_struct[i];
+        if (is_struct(_unit) && ally[i] == false) {
+            if (marine_dead[i] == 1 && marine_type[i] != "") {
+                var _recovery_candidate = {
+                    "id": i,
+                    "unit": _unit,
+                    "column_id": id,
+                    "priority": _unit.experience
+                };
+                array_push(obj_ncombat.marines_to_recover, _recovery_candidate);
             }
         }
     }
 }
 
-function assemble_alive_units(player_column) {
-    if (instance_exists(player_column)) {
-        for (var i = 0; i < array_length(player_column.unit_struct); i++) {
-            var _unit = player_column.unit_struct[i];
-            if (is_struct(_unit) && player_column.ally[i] == false) {
-                if (!player_column.marine_dead[i]) {
-                    array_push(obj_ncombat.end_alive_units, _unit);
-                }
+/// @mixin
+function add_vehicles_to_recovery() {
+    var _vehicles_priority = {
+        "Land Raider": 10,
+        "Predator": 5,
+        "Whirlwind": 4,
+        "Rhino": 3,
+        "Land Speeder": 3,
+        "Bike": 1
+    }
+
+    for (var i = 0; i < array_length(veh_dead); i++) {
+        if (struct_exists(_vehicles_priority, veh_type[i])) && (veh_dead[i]) && (!veh_ally[i] ) {
+            var _recovery_candidate = {
+                "id": i,
+                "column_id": id,
+                "priority": _vehicles_priority[$ veh_type[i]]
+            };
+            array_push(obj_ncombat.vehicles_to_recover, _recovery_candidate);
+        }
+    }
+}
+
+/// @mixin
+function assemble_alive_units() {
+    for (var i = 0; i < array_length(unit_struct); i++) {
+        var _unit = unit_struct[i];
+        if (is_struct(_unit) && ally[i] == false) {
+            if (!marine_dead[i]) {
+                array_push(obj_ncombat.end_alive_units, _unit);
             }
         }
     }
