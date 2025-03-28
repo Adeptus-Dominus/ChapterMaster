@@ -65,91 +65,61 @@ for (var j = 0; j < 10; j++) {
 }
 // *** Enemy Forces Special Event ***
 // * Malcadon Spyrer *
-if (string_count("spyrer", battle_special) > 0) {
-	fortified = 0;
+if (battle_special != ""){
 	with(obj_enunit) {
 		instance_destroy();
 	}
-	u = instance_create(10, 240, obj_enunit);
-	enemy_dudes = "1";
-	u.dudes[1] = "Malcadon Spyrer";
-	u.dudes_num[1] = 1;
-	u.dudes_num[1] = 1;
-	enemies[1] = 1;
-	u.flank = 1;
 }
+if (string_count("spyrer", battle_special) > 0) {
+	fortified = 0;
+
+	u = instance_create(10, 240, obj_enunit);
+
+	add_enemy_row_item(u, "Malcadon Spyrer", 1, 1)
+	enemy_dudes = "1";
+}
+
 // * Small Fallen Group *
 if (battle_special = "fallen1") {
 	fortified = 0;
-	with(obj_enunit) {
-		instance_destroy();
-	}
 	u = instance_create(80, 240, obj_enunit);
+	add_enemy_row_item(u, "Fallen", 1);
 	enemy_dudes = "1";
-	u.dudes[1] = "Fallen";
-	u.dudes_num[1] = 1;
-	enemies[1] = 1;
 }
 // * Large Fallen Group *
 if (battle_special = "fallen2") {
 	fortified = 0;
-	with(obj_enunit) {
-		instance_destroy();
-	}
+
 	u = instance_create(80, 240, obj_enunit);
-	enemy_dudes = "1";
-	u.dudes[1] = "Fallen";
-	u.dudes_num[1] = choose(1, 1, 2, 2, 3);
-	enemies[1] = u.dudes_num[1];
+	add_enemy_row_item(u, "Fallen", choose(1, 1, 2, 2, 3));
 }
 // * Praetorian Servitor Group *
 if (string_count("mech", battle_special) > 0) {
 	fortified = 0;
-	with(obj_enunit) {
-		instance_destroy();
-	}
-	u = instance_create(xxx + 10, 240, obj_enunit);
-	enemy_dudes = "";
-	u.dudes[1] = "Thallax";
-	u.dudes_num[1] = 4;
-	enemies[1] = 4;
-	u.dudes[2] = "Praetorian Servitor";
-	u.dudes_num[2] = 6;
-	enemies[2] = 6;
+
+	u = new_enemy_row(false,1)
+
+	add_enemy_row_item(u, "Thallax", 4);
+	add_enemy_row_item(u, "Praetorian Servitor", 6);
 }
 // * Greater Daemon *
 if (battle_special = "ship_demon") {
 	fortified = 0;
-	with(obj_enunit) {
-		instance_destroy();
-	}
+
 	enemy = 10;
-	u = instance_create(10, 240, obj_enunit);
-	enemy_dudes = "1";
-	u.dudes[1] = choose("Greater Daemon of Khorne", "Greater Daemon of Slaanesh", "Greater Daemon of Tzeentch", "Greater Daemon of Nurgle");
-	u.dudes_num[1] = 1;
-	enemies[1] = 1;
-	u.flank = 1;
-	u.engaged = 1;
-	with(instance_nearest(x + 1000, 240, obj_pnunit)) {
-		engaged = 1;
-	}
+	new_enemy_row(false,1)
+	var _deamon = choose("Greater Daemon of Khorne", "Greater Daemon of Slaanesh", "Greater Daemon of Tzeentch", "Greater Daemon of Nurgle");
+	add_enemy_row_item(u, _deamon, 1);
 }
 // * Necron Wraith Group *
 if (battle_special = "wraith_attack") {
 	fortified = 0;
-	with(obj_enunit) {
-		instance_destroy();
-	}
+
 	u = instance_create(instance_nearest(x + 1000, 240, obj_pnunit)
 		.x + 10, 240, obj_enunit);
 	enemy_dudes = "2";
-	u.dudes[1] = "Necron Wraith";
-	u.dudes_num[1] = 1;
-	enemies[1] = 1;
-	u.dudes[2] = "Necron Wraith";
-	u.dudes_num[2] = 1;
-	enemies[2] = 1;
+	add_enemy_row_item(u, "Necron Wraith", 1);
+	add_enemy_row_item(u, "Necron Wraith", 2);
 	u.engaged = 1; // u.flank=1;
 	with(instance_nearest(x + 1000, 240, obj_pnunit)) {
 		engaged = 1;
@@ -158,35 +128,16 @@ if (battle_special = "wraith_attack") {
 // * Canoptek Spyder Group * 
 if (battle_special = "spyder_attack") {
 	fortified = 0;
-	with(obj_enunit) {
-		instance_destroy();
-	}
-	u = instance_create(instance_nearest(x + 1000, 240, obj_pnunit)
-		.x + 10, 240, obj_enunit);
-	enemy_dudes = "21";
-	u.dudes[1] = "Canoptek Spyder";
-	u.dudes_num[1] = 1;
-	enemies[1] = u.dudes[1];
-	u.dudes[2] = "Canoptek Scarab";
-	u.dudes_num[2] = 20;
-	enemies[2] = u.dudes[2];
-	u.engaged = 1; // u.flank=1;
-	with(instance_nearest(x + 1000, 240, obj_pnunit)) {
-		engaged = 1;
-	}
+
+	u = new_enemy_row(false, 1);
+	add_enemy_row_item(u, "Canoptek Spyder", 1);
+	add_enemy_row_item(u, "Canoptek Scarab", 20);
 }
 // * Tomb Stalker Group *
 if (battle_special = "stalker_attack") {
 	fortified = 0;
-	with(obj_enunit) {
-		instance_destroy();
-	}
-	u = instance_create(instance_nearest(x + 1000, 240, obj_pnunit)
-		.x + 10, 240, obj_enunit);
-	enemy_dudes = "1";
-	u.dudes[1] = "Tomb Stalker";
-	u.dudes_num[1] = 1;
-	enemies[1] = 1;
+	u = new_enemy_row(false, 1);
+	add_enemy_row_item(u, "Tomb Stalker", 1);
 	u.engaged = 1; // u.flank=1;
 	with(instance_nearest(x + 1000, 240, obj_pnunit)) {
 		engaged = 1;
@@ -195,25 +146,14 @@ if (battle_special = "stalker_attack") {
 // * Chaos Space Marine Elite Group *
 if (battle_special = "cs_meeting_battle5") or(battle_special = "cs_meeting_battle6") {
 	fortified = 0;
-	with(obj_enunit) {
-		instance_destroy();
-	}
-	u = instance_create(xxx + 20, 240, obj_enunit);
-	enemy_dudes = "";
-	u.dudes[1] = "Leader";
-	u.dudes_num[1] = 1;
-	enemies[1] = 1;
-	u.dudes[2] = "Greater Daemon of Tzeentch";
-	u.dudes_num[2] = 1;
-	enemies[2] = 1;
-	u.dudes[3] = "Greater Daemon of Slaanesh";
-	u.dudes_num[3] = 1;
-	enemies[3] = 1;
-	u = instance_create(xxx + 10, 240, obj_enunit);
-	enemy_dudes = "";
-	u.dudes[1] = "Venerable Chaos Terminator";
-	u.dudes_num[1] = 20;
-	enemies[1] = 20;
+
+	u = new_enemy_row(false, 2);  // First enemy row
+	add_enemy_row_item(u, "Leader", 1);
+	add_enemy_row_item(u, "Greater Daemon of Tzeentch", 1);
+	add_enemy_row_item(u, "Greater Daemon of Slaanesh", 1);
+
+	u = new_enemy_row(false, 1);  // Second enemy row
+	add_enemy_row_item(u, "Venerable Chaos Terminator", 20);
 }
 // * Chaos Space Marine Elite Company *
 if (battle_special = "cs_meeting_battle10") {
@@ -221,25 +161,14 @@ if (battle_special = "cs_meeting_battle10") {
 	with(obj_enunit) {
 		instance_destroy();
 	}
-	u = instance_create(xxx + 20, 240, obj_enunit);
-	enemy_dudes = "";
-	u.dudes[1] = "Greater Daemon of Tzeentch";
-	u.dudes_num[1] = 1;
-	enemies[1] = 1;
-	u.dudes[2] = "Greater Daemon of Slaanesh";
-	u.dudes_num[2] = 1;
-	enemies[2] = 1;
-	u.dudes[3] = "Venerable Chaos Terminator";
-	u.dudes_num[3] = 20;
-	enemies[3] = 20;
-	u = instance_create(xxx + 10, 240, obj_enunit);
-	enemy_dudes = "";
-	u.dudes[1] = "Venerable Chaos Chosen";
-	u.dudes_num[1] = 40;
-	enemies[1] = 40;
-	u.dudes[2] = "Helbrute";
-	u.dudes_num[2] = 3;
-	enemies[2] = 3;
+	u = new_enemy_row(false, 2);  // First enemy row
+	add_enemy_row_item(u, "Greater Daemon of Tzeentch", 1);
+	add_enemy_row_item(u, "Greater Daemon of Slaanesh", 1);
+	add_enemy_row_item(u, "Venerable Chaos Terminator", 20);
+
+	u = new_enemy_row(false, 1);  // Second enemy row
+	add_enemy_row_item(u, "Venerable Chaos Chosen", 40);
+	add_enemy_row_item(u, "Helbrute", 3);
 }
 // * Tomb world attack enemy setup *
 if (battle_special = "wake1_attack") {
@@ -273,58 +202,30 @@ if (battle_special = "space_hulk") {
 	// * Ork Space Hulk *
 	if (enemy = 7) {
 		modi = random_range(0.80, 1.20) + 1;
-		make = round(max(3, player_starting_dudes * modi)); //makes enemy forces in space hulks scale with big player forces
+		make = round(max(3, player_starting_dudes * modi)); // Scales enemy forces in space hulks
 
-		u = instance_create(instance_nearest(x - 1000, 240, obj_pnunit)
-			.x - 10, 240, obj_enunit);
-		u.dudes[1] = "Meganob"; // I think the proper unit should be "Ork Kommando", assuming it exists in the roster
-		u.dudes_num[1] = make;
-		enemies[1] = u.dudes[1];
-		u.engaged = 1;
-		u.flank = 1;
-		with(instance_nearest(x - 1000, 240, obj_pnunit)) {
-			engaged = 1;
-		}
+		u = new_enemy_row(true, 1); // Spawns a flanking enemy row
+		add_enemy_row_item(u, "Meganob", make);
 
-		u = instance_create(instance_nearest(x + 1000, 240, obj_pnunit)
-			.x + 20, 240, obj_enunit);
-		u.dudes[1] = "Slugga Boy";
-		u.dudes_num[1] = make;
-		enemies[1] = u.dudes[1];
-
-		u.dudes[2] = "Shoota Boy";
-		u.dudes_num[2] = make;
-		enemies[2] = u.dudes[2];
+		u = new_enemy_row(false, 2); // Spawns a standard (non-flanking) enemy row
+		add_enemy_row_item(u, "Slugga Boy", make);
+		add_enemy_row_item(u, "Shoota Boy", make);
 
 		hulk_forces = make * 3;
 	}
 	// * Genestealer Space Hulk *
 	if (enemy = 9) {
 		modi = random_range(0.80, 1.20) + 1;
-		make = round(max(3, player_starting_dudes * modi)) * 2;
+		make = round(max(3, player_starting_dudes * modi)) * 2; // Scales enemy forces
 
-		u = instance_create(instance_nearest(x - 1000, 240, obj_pnunit)
-			.x - 10, 240, obj_enunit);
-		u.dudes[1] = "Genestealer";
-		u.dudes_num[1] = round(make / 3);
-		enemies[1] = u.dudes[1];
-		u.engaged = 1;
-		u.flank = 1;
-		with(instance_nearest(x - 1000, 240, obj_pnunit)) {
-			engaged = 1;
-		}
+		u = new_enemy_row(true, 1); // Flanking enemy row on the left
+		add_enemy_row_item(u, "Genestealer", round(make / 3));
 
-		u = instance_create(instance_nearest(x + 1000, 240, obj_pnunit)
-			.x + 10, 240, obj_enunit);
-		u.dudes[1] = "Genestealer";
-		u.dudes_num[1] = round(make / 3);
-		enemies[1] = u.dudes[1];
+		u = new_enemy_row(false, 1); // Standard enemy row on the right
+		add_enemy_row_item(u, "Genestealer", round(make / 3));
 
-		u = instance_create(instance_nearest(x + 1000, 240, obj_pnunit)
-			.x + 50, 240, obj_enunit);
-		u.dudes[1] = "Genestealer";
-		u.dudes_num[1] = make - (round(make / 3) * 2);
-		enemies[1] = u.dudes[1];
+		u = new_enemy_row(false, 3); // Another enemy row further right
+		add_enemy_row_item(u, "Genestealer", make - (round(make / 3) * 2));
 
 		hulk_forces = make;
 	}
@@ -332,30 +233,16 @@ if (battle_special = "space_hulk") {
 	if (enemy = 10) {
 		var make, modi;
 		modi = random_range(0.80, 1.20) + 1;
-		make = round(max(3, player_starting_dudes * modi));
+		make = round(max(3, player_starting_dudes * modi)); // Scales enemy forces
 
-		u = instance_create(instance_nearest(x - 1000, 240, obj_pnunit)
-			.x - 10, 240, obj_enunit);
-		u.dudes[1] = "Chaos Terminator";
-		u.dudes_num[1] = round(make * 0.25);
-		enemies[1] = u.dudes[1];
-		u.engaged = 1;
-		u.flank = 1;
-		with(instance_nearest(x - 1000, 240, obj_pnunit)) {
-			engaged = 1;
-		}
+		u = new_enemy_row(true, 1); // Flanking enemy row on the left
+		add_enemy_row_item(u, "Chaos Terminator", round(make * 0.25));
 
-		u = instance_create(instance_nearest(x + 1000, 240, obj_pnunit)
-			.x + 10, 240, obj_enunit);
-		u.dudes[1] = "Chaos Space Marine";
-		u.dudes_num[1] = round(make * 0.25);
-		enemies[1] = u.dudes[1];
+		u = new_enemy_row(false, 1); // Standard enemy row on the right
+		add_enemy_row_item(u, "Chaos Space Marine", round(make * 0.25));
 
-		u = instance_create(instance_nearest(x + 1000, 240, obj_pnunit)
-			.x + 50, 240, obj_enunit);
-		u.dudes[1] = "Cultist";
-		u.dudes_num[1] = round(make * 0.5);
-		enemies[1] = u.dudes[1];
+		u = new_enemy_row(false, 3); // Another enemy row further right
+		add_enemy_row_item(u, "Cultist", round(make * 0.5));
 
 		hulk_forces = make;
 	}
@@ -366,197 +253,113 @@ if (battle_special = "space_hulk") {
 }
 // ** Story Reveal of a Chaos World **
 if (battle_special = "WL10_reveal") {
-	u = instance_nearest(xxx, 240, obj_enunit);
-	enemy_dudes = "3300";
+	u = new_enemy_row(false, 8); // Base enemy row
+	add_enemy_row_item(u, "Leader", 1);
+	add_enemy_row_item(u, "Greater Daemon of Tzeentch", 1);
+	add_enemy_row_item(u, "Greater Daemon of Slaanesh", 1);
+	add_enemy_row_item(u, "Venerable Chaos Terminator", 20);
+	add_enemy_row_item(u, "Venerable Chaos Chosen", 50);
+	// Skipped: "Chaos Basilisk", 18 (commented out)
 
-	u.dudes[1] = "Leader";
-	u.dudes_num[1] = 1;
+	u = new_enemy_row(false, 9); // One step right of the previous row
+	add_enemy_row_item(u, "Chaos Sorcerer", 4);
+	add_enemy_row_item(u, "Chaos Space Marine", 100);
+	add_enemy_row_item(u, "Havoc", 20);
+	add_enemy_row_item(u, "Raptor", 20);
+	add_enemy_row_item(u, "Bloodletter", 30);
+	// Skipped: "Chaos Leman Russ", 40 (commented out)
+	// Skipped: "Vindicator", 10 (commented out)
 
-	u.dudes[2] = "Greater Daemon of Tzeentch";
-	u.dudes_num[2] = 1;
+	u = new_enemy_row(false, 10); // Two steps right
+	add_enemy_row_item(u, "Rhino", 30);
+	add_enemy_row_item(u, "Defiler", 4);
+	add_enemy_row_item(u, "Heldrake", 2);
 
-	u.dudes[3] = "Greater Daemon of Slaanesh";
-	u.dudes_num[3] = 1;
+	u = new_enemy_row(false, 11); // Four steps right (was xxx + 30)
+	add_enemy_row_item(u, "Cultist Elite", 1500);
+	add_enemy_row_item(u, "Helbrute", 3);
+	// Skipped: "Predator", 6 (commented out)
+	// Skipped: "Vindicator", 3 (commented out)
+	// Skipped: "Land Raider", 2 (commented out)
 
-	u.dudes[4] = "Venerable Chaos Terminator";
-	u.dudes_num[4] = 20;
-
-	u.dudes[5] = "Venerable Chaos Chosen";
-	u.dudes_num[5] = 50;
-	// u.dudes[4]="Chaos Basilisk";u.dudes_num[4]=18;
-	instance_deactivate_object(u);
-
-	u = instance_nearest(xxx + 10, 240, obj_enunit);
-	// u.dudes[1]="Chaos Leman Russ";u.dudes_num[1]=40;
-	u.dudes[1] = "Chaos Sorcerer";
-	u.dudes_num[1] = 4;
-	u.dudes[2] = "Chaos Space Marine";
-	u.dudes_num[2] = 100;
-	u.dudes[3] = "Havoc";
-	u.dudes_num[3] = 20;
-	u.dudes[4] = "Raptor";
-	u.dudes_num[4] = 20;
-	u.dudes[5] = "Bloodletter";
-	u.dudes_num[5] = 30;
-	// u.dudes[3]="Vindicator";u.dudes_num[3]=10;
-	instance_deactivate_object(u);
-
-	u = instance_nearest(xxx + 20, 240, obj_enunit);
-	u.dudes[1] = "Rhino";
-	u.dudes_num[1] = 30;
-	u.dudes[2] = "Defiler";
-	u.dudes_num[2] = 4;
-	u.dudes[3] = "Heldrake";
-	u.dudes_num[3] = 2;
-	instance_deactivate_object(u);
-
-	u = instance_nearest(xxx + 30, 240, obj_enunit);
-	u.dudes[1] = "Cultist Elite";
-	u.dudes_num[1] = 1500;
-	// u.dudes[2]="Cultist Elite";u.dudes_num[2]=1500;
-	u.dudes[2] = "Helbrute";
-	u.dudes_num[2] = 3;
-	// u.dudes[3]="Predator";u.dudes_num[3]=6;
-	// u.dudes[4]="Vindicator";u.dudes_num[4]=3;
-	// u.dudes[5]="Land Raider";u.dudes_num[5]=2;
-	instance_deactivate_object(u);
-
-	u = instance_nearest(xxx + 40, 240, obj_enunit);
-	// u.dudes[1]="Mutant";u.dudes_num[1]=8000;
-	u.dudes[1] = "Cultist";
-	u.dudes_num[1] = 1500;
-	u.dudes[2] = "Helbrute";
-	u.dudes_num[2] = 3;
-	instance_deactivate_object(u);
+	u = new_enemy_row(false, 12); // Five steps right (was xxx + 40)
+	add_enemy_row_item(u, "Cultist", 1500);
+	add_enemy_row_item(u, "Helbrute", 3);
+	// Skipped: "Mutant", 8000 (commented out)
 }
 // ** Story late reveal of a Chaos World **
 if (battle_special = "WL10_later") {
-	u = instance_nearest(xxx, 240, obj_enunit);
-	enemy_dudes = "200";
+	u = new_enemy_row(false, 13);  // `xxx` = 8 steps
+	add_enemy_row_item(u, "Leader", 1);
+	add_enemy_row_item(u, "Greater Daemon of Tzeentch", 1);
+	add_enemy_row_item(u, "Greater Daemon of Slaanesh", 1);
+	add_enemy_row_item(u, "Venerable Chaos Terminator", 20);
+	add_enemy_row_item(u, "Venerable Chaos Chosen", 50);
+	// Skipped: "Chaos Basilisk", 18 (commented out)
 
-	u.dudes[1] = "Leader";
-	u.dudes_num[1] = 1;
-	u.dudes[2] = "Greater Daemon of Tzeentch";
-	u.dudes_num[2] = 1;
-	u.dudes[3] = "Greater Daemon of Slaanesh";
-	u.dudes_num[3] = 1;
-	u.dudes[4] = "Venerable Chaos Terminator";
-	u.dudes_num[4] = 20;
-	u.dudes[5] = "Venerable Chaos Chosen";
-	u.dudes_num[5] = 50;
-	// u.dudes[4]="Chaos Basilisk";u.dudes_num[4]=18;
-	instance_deactivate_object(u);
-
-	u = instance_nearest(xxx + 10, 240, obj_enunit);
-	// u.dudes[1]="Chaos Leman Russ";u.dudes_num[1]=40;
-	u.dudes[1] = "Chaos Sorcerer";
-	u.dudes_num[1] = 2;
-	u.dudes[1] = "Cultist";
-	u.dudes_num[1] = 100;
-	u.dudes[2] = "Helbrute";
-	u.dudes_num[2] = 1;
-	instance_deactivate_object(u);
+	u = new_enemy_row(false, 9);  // One step after `xxx`
+	add_enemy_row_item(u, "Chaos Sorcerer", 2);
+	add_enemy_row_item(u, "Cultist", 100);
+	add_enemy_row_item(u, "Helbrute", 1);
+	// Skipped: "Chaos Leman Russ", 40 (commented out)
 }
 // * Imperial Guard Force *
 if (enemy = 2) {
 	guard_total = threat;
 	guard_score = 10; // Okay, this creates a problem, as IG and PDF strength rating rules are a bit different to other factions
+		var f = 0, guar = threat / 10;
 
-	/*if (guard_total>=15000000) then guard_score=6;
-	if (guard_total<15000000) and (guard_total>=6000000) then guard_score=5;
-	if (guard_total<6000000) and (guard_total>=1000000) then guard_score=4;
-	if (guard_total<1000000) and (guard_total>=50000) then guard_score=3;
-	if (guard_total<50000) and (guard_total>=500) then guard_score=2;
-	if (guard_total<500) then guard_score=1;*/
+		// Guardsmen
+		u = new_enemy_row(false, 8); // xxx = 8 steps
+		add_enemy_row_item(u, "Imperial Guardsman", round(guar / 5));
 
-	// guard_effective=floor(guard_total)/8;
+		f = round(threat / 20000);
+		// Leman Russ Demolisher and Ogryn
+		if (f > 0) {
+		    u = new_enemy_row(false, 9); // Minimum 1 step from previous (8 → 9)
+		    add_enemy_row_item(u, "Leman Russ Demolisher", f);
+		    f = max(10, round(threat / 6650));
+		    add_enemy_row_item(u, "Ogryn", f);
+		}
 
-	var f = 0,
-		guar = threat / 10;
+		// Chimera and Leman Russ Battle Tank
+		f = max(1, round(threat / 10000));
+		u = new_enemy_row(false, 10); // Minimum 1 step from previous (9 → 10)
+		add_enemy_row_item(u, "Leman Russ Battle Tank", f);
+		f = max(1, round(threat / 20000));
+		add_enemy_row_item(u, "Chimera", f);
 
-	// Guardsmen
-	u = instance_create(xxx, 240, obj_enunit);
-	enemy_dudes = threat;
-	u.dudes[1] = "Imperial Guardsman";
-	u.dudes_num[1] = round(guar / 5);
-	enemies[1] = u.dudes[1];
-	instance_deactivate_object(u);
+		// More Guardsmen
+		u = new_enemy_row(false, 11);
+		add_enemy_row_item(u, "Imperial Guardsman", round(guar / 5));
 
-	f = round(threat / 20000);
-	// Leman Russ D and Ogryn
-	if (f > 0) {
-		u = instance_create(xxx + 10, 240, obj_enunit);
-		u.dudes[1] = "Leman Russ Demolisher";
-		u.dudes_num[1] = f;
-		enemies[1] = u.dudes[1];
-		f = max(10, round(threat / 6650));
-		u.dudes[2] = "Ogryn";
-		u.dudes_num[2] = f;
-		enemies[2] = u.dudes[2];
-		instance_deactivate_object(u);
-	}
+		u = new_enemy_row(false, 12);
+		add_enemy_row_item(u, "Imperial Guardsman", round(guar / 5));
 
-	// Chimera and Leman Russ
-	f = max(1, round(threat / 10000));
-	u = instance_create(xxx + 20, 240, obj_enunit);
-	u.dudes[1] = "Leman Russ Battle Tank";
-	u.dudes_num[1] = f;
-	enemies[1] = u.dudes[1];
-	f = max(1, round(threat / 20000));
-	u.dudes[2] = "Chimera";
-	u.dudes_num[2] = f;
-	enemies[2] = u.dudes[2];
-	instance_deactivate_object(u);
+		u = new_enemy_row(false, 13);
+		add_enemy_row_item(u, "Imperial Guardsman", round(guar / 5));
 
-	// More Guard
-	u = instance_create(xxx + 30, 240, obj_enunit);
-	u.dudes[1] = "Imperial Guardsman";
-	u.dudes_num[1] = round(guar / 5);
-	enemies[1] = u.dudes[1];
+		u = new_enemy_row(false, 14);
+		add_enemy_row_item(u, "Imperial Guardsman", round(guar / 5));
 
-	u = instance_create(xxx + 40, 240, obj_enunit);
-	u.dudes[1] = "Imperial Guardsman";
-	u.dudes_num[1] = round(guar / 5);
-	enemies[1] = u.dudes[1];
+		u = new_enemy_row(false, 15);
+		f = round(threat / 50000);
 
-	u = instance_create(xxx + 50, 240, obj_enunit);
-	u.dudes[1] = "Imperial Guardsman";
-	u.dudes_num[1] = round(guar / 5);
-	enemies[1] = u.dudes[1];
+		// Basilisk and Heavy Weapons
+		if (f > 0) {
+		    add_enemy_row_item(u, "Basilisk", f);
+		    add_enemy_row_item(u, "Heavy Weapons Team", round(threat / 10000));
+		} else {
+		    add_enemy_row_item(u, "Heavy Weapons Team", round(threat / 10000));
+		}
 
-	u = instance_create(xxx + 60, 240, obj_enunit);
-	u.dudes[1] = "Imperial Guardsman";
-	u.dudes_num[1] = round(guar / 5);
-	enemies[1] = u.dudes[1];
-
-	u = instance_create(xxx + 70, 240, obj_enunit);
-	f = round(threat / 50000);
-
-	// Basilisk and Heavy Weapons
-	if (f > 0) {
-		u.dudes[1] = "Basilisk";
-		u.dudes_num[1] = f;
-		enemies[1] = u.dudes[1];
-		u.dudes[2] = "Heavy Weapons Team";
-		u.dudes_num[2] = round(threat / 10000);
-		enemies[2] = u.dudes[2];
-	}
-	// Heavy Weapons
-	else {
-		u.dudes[1] = "Heavy Weapons Team";
-		u.dudes_num[1] = round(threat / 10000);
-		enemies[1] = u.dudes[1];
-	}
-
-	f = round(threat / 40000);
-	// Vendetta
-	if (f > 0) {
-		u = instance_create(0, 240, obj_enunit);
-		u.dudes[1] = "Vendetta";
-		u.dudes_num[1] = f;
-		u.flank = 1;
-		u.flyer = 1;
-	}
+		// Vendetta (flanking + flying)
+		f = round(threat / 40000);
+		if (f > 0) {
+		    u = new_enemy_row(true, 16); // Flanking enemy row, maintaining step order
+		    add_enemy_row_item(u, "Vendetta", f);
+		    u.flyer = 1;
+		}
 
 	/*u=instance_nearest(xxx,240,obj_enunit);enemy_dudes=threat;
 	u.dudes[1]="Imperial Guardsman";u.dudes_num[1]=floor(guard_effective*0.6);enemies[1]=u.dudes[1];

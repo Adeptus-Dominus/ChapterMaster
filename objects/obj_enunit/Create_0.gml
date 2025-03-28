@@ -30,42 +30,42 @@ averages=1;
 
 var i;i=0;
 i=0;
-repeat(1001){i+=1;
-    wep[i]="";
-    wep_num[i]=0;
-    combi[i]=0;
-    range[i]=0;
-    att[i]=0;
-    apa[i]=0;
-    ammo[i]=-1;
-    splash[i]=0;
-    wep_owner[i]="";
-    
-    dude_co[i]=0;
-    dude_id[i]=0;
-    
-    dudes[i]="";
-    dudes_special[i]="";
-    dudes_num[i]=0;
-    dudes_onum[i]=-1;
-    dudes_ac[i]=0;
-    dudes_hp[i]=0;
-    dudes_dr[i]=1;
-    dudes_vehicle[i]=0;
-    dudes_damage[i]=0;
-    dudes_exp[i]=0;
-    dudes_powers[i]="";
-    faith[i]=0;
-    
-    dudes_attack[i]=1;
-    dudes_ranged[i]=1;
-    dudes_defense[i]=1;
-    
-    dudes_wep1[i]="";
-    dudes_wep2[i]="";
-    dudes_gear[i]="";
-    dudges_mobi[i]="";
-}
+
+wep = [];
+wep_num = [];
+combi = [];
+range = [];
+att = [];
+apa = [];
+ammo = [];
+splash = [];
+wep_owner = [];
+
+dude_co = [];
+dude_id = [];
+
+dudes = [];
+dudes_special = [];
+dudes_num = [];
+dudes_onum = [];
+dudes_ac = [];
+dudes_hp = [];
+dudes_dr = [];
+dudes_vehicle = [];
+dudes_damage = [];
+dudes_exp = [];
+dudes_powers = [];
+faith = [];
+
+dudes_attack = [];
+dudes_ranged = [];
+dudes_defense = [];
+
+dudes_wep1 = [];
+dudes_wep2 = [];
+dudes_gear = [];
+dudges_mobi = [];
+
 
 alarm[1]=5;
 alarm[5]=6;
