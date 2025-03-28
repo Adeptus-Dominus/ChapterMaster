@@ -30,7 +30,7 @@
             "Enemy: Necrons",
             "Enemy: Orks",
             "Venerable Ancients",
-            "Psyker Abundance",
+            "Warp Touched",
             "Siege Masters",
             "",
             ""
@@ -78,6 +78,16 @@
                 "name": "Page"
             }
         },
+        "disposition": [
+            0, // nothing
+            44, // Progenitor faction
+            42, // Imperium
+            32, // Admech
+            20, //Inquisition
+            20, // Ecclesiarchy
+            0, // Astartes
+            0 // nothing
+        ],
         "full_liveries":[
             {
             "right_trim":8.0,
