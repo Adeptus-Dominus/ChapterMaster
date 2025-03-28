@@ -31,7 +31,7 @@ if (obj_ncombat.defeat == 0) {
         var _candidate = ds_priority_delete_max(marines_to_recover);
         var _column_id = _candidate.column_id;
         var _unit_id = _candidate.id;
-        _candidate.unit.update_health(irandom(10));
+        _candidate.unit.update_health(roll_personal_dice(1, 10, "high", _candidate.unit));
         _column_id.marine_dead[_unit_id] = false;
         unit_recovery_score -= 1;
         units_saved += 1;
@@ -47,7 +47,7 @@ if (obj_ncombat.defeat == 0) {
             var _survival_roll = 80 + _candidate.priority;
             var _dice_roll = roll_dice(1, 100, "high");
             if (_dice_roll >= _survival_roll) && (_column_id.veh_dead[_unit_id] != 2) {
-                _column_id.veh_hp[_unit_id] = 10;
+                _column_id.veh_hp[_unit_id] = roll_dice(1, 10, "high");
                 _column_id.veh_dead[_unit_id] = false;
                 vehicles_saved++;
                 vehicle_deaths--;
@@ -55,7 +55,7 @@ if (obj_ncombat.defeat == 0) {
             }
         }
     
-        _column_id.veh_hp[_unit_id] = 10;
+        _column_id.veh_hp[_unit_id] = roll_dice(1, 10, "high");
         _column_id.veh_dead[_unit_id] = false;
         vehicle_recovery_score -= _candidate.priority;
         vehicles_saved++;
