@@ -22,7 +22,7 @@ if (enemy_forces<=0) { // Combat for whatever reason sometimes bugs out when the
 if (started>=2) then instance_activate_object(obj_pnunit);
 
 if (started=3){
-    show_debug_message("start alarm7 runup");
+
     instance_activate_all();
     instance_activate_object(obj_pnunit);
     instance_activate_object(obj_enunit);

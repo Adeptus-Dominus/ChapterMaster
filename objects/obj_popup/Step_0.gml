@@ -760,7 +760,6 @@ try {
         var _explore_feature = obj_ground_mission.explore_feature;
         _explore_feature.suprise_attack();
         woopwoopwoop = 0;
-        show_debug_message("ruins combat");
         instance_destroy(self.id);
         instance_destroy();
         exit;

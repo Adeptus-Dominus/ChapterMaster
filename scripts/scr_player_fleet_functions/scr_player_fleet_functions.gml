@@ -90,7 +90,6 @@ function split_selected_into_new_fleet(start_fleet="none"){
 }
 
 function cancel_fleet_movement(){
-	show_debug_message("cancel");
 	var nearest_star = instance_nearest(x,y, obj_star);
     action="";
     x=nearest_star.x;
