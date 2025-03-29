@@ -655,9 +655,13 @@ function scr_ui_manage() {
                 var cap_slot = company_data.captain != "none";
                 var champ_slot = company_data.champion != "none";
                 var ancient_slot = company_data.ancient != "none";
+		var chaplain_slot = company_data.chaplain != "none";
+		var apothecary_slot = company_data.apothecary != "none";
+		var tech_marine_slot = company_data.tech_marine != "none";
+		var lib_slot = company_data.lib != "none";
             }
             for (var i = 0; i < repetitions; i++) {
-                if (managing > 0 && managing <= 10 && (!cap_slot || !champ_slot || !ancient_slot)) {
+                if (managing > 0 && managing <= 10 && (!cap_slot || !champ_slot || !ancient_slot || !chaplain_slot|| !tech_marine_slot || !apothecary_slot|| !lib_slot)) {
                     if (!cap_slot) {
                         draw_set_color(c_black);
                         draw_rectangle(xx + 25, yy + 64, xx + 974, yy + 85, 0);
@@ -746,6 +750,126 @@ function scr_ui_manage() {
                         }
                         yy += 20;
                         ancient_slot = true;
+                        continue;
+                    }
+                     if (!chaplain_slot) {
+                        draw_set_color(c_black);
+                        draw_rectangle(xx + 25, yy + 64, xx + 974, yy + 85, 0);
+                        draw_set_color(c_gray);
+                        draw_rectangle(xx + 25, yy + 64, xx + 974, yy + 85, 1);
+                        draw_set_halign(fa_center);
+                        draw_set_color(c_yellow);
+                        draw_text(xx + 500, yy + 66, "++New Chaplain Required++");
+                        draw_set_halign(fa_left);
+                        draw_set_color(c_gray);
+                        if (point_and_click([xx + 25, yy + 64, xx + 974, yy + 85])) {
+                            var search_params = {
+                                companies: managing
+                            };
+                            var candidates = collect_role_group("chap_candidates");
+                            group_selection(candidates, {
+                                purpose: $"{scr_roman_numerals()[managing - 1]} Company Chaplain Candidates",
+                                purpose_code: "chaplain_promote",
+                                number: 1,
+                                system: managing,
+                                feature: "none",
+                                planet: 0,
+                                selections: []
+                            });
+                            exit;
+                        }
+                        yy += 20;
+                        chaplain_slot = true;
+                        continue;
+                    }
+                    if (!apothecary_slot) {
+                        draw_set_color(c_black);
+                        draw_rectangle(xx + 25, yy + 64, xx + 974, yy + 85, 0);
+                        draw_set_color(c_gray);
+                        draw_rectangle(xx + 25, yy + 64, xx + 974, yy + 85, 1);
+                        draw_set_halign(fa_center);
+                        draw_set_color(c_yellow);
+                        draw_text(xx + 500, yy + 66, "++New Apothecary Required++");
+                        draw_set_halign(fa_left);
+                        draw_set_color(c_gray);
+                        if (point_and_click([xx + 25, yy + 64, xx + 974, yy + 85])) {
+                            var search_params = {
+                                companies: managing
+                            };
+                            var candidates = collect_role_group("apothecary_candidates");
+                            group_selection(candidates, {
+                                purpose: $"{scr_roman_numerals()[managing - 1]} Company Apothecary Candidates",
+                                purpose_code: "apothecary_promote",
+                                number: 1,
+                                system: managing,
+                                feature: "none",
+                                planet: 0,
+                                selections: []
+                            });
+                            exit;
+                        }
+                        yy += 20;
+                        apothecary_slot = true;
+                        continue;
+                    }
+                    if (!tech_marine_slot) {
+                        draw_set_color(c_black);
+                        draw_rectangle(xx + 25, yy + 64, xx + 974, yy + 85, 0);
+                        draw_set_color(c_gray);
+                        draw_rectangle(xx + 25, yy + 64, xx + 974, yy + 85, 1);
+                        draw_set_halign(fa_center);
+                        draw_set_color(c_yellow);
+                        draw_text(xx + 500, yy + 66, "++New Tech Marine Required++");
+                        draw_set_halign(fa_left);
+                        draw_set_color(c_gray);
+                        if (point_and_click([xx + 25, yy + 64, xx + 974, yy + 85])) {
+                            var search_params = {
+                                companies: managing
+                            };
+                            var candidates = collect_role_group("tech_marine_candidates");
+                            group_selection(candidates, {
+                                purpose: $"{scr_roman_numerals()[managing - 1]} Company Tech Marine Candidates",
+                                purpose_code: "tech_marine_promote",
+                                number: 1,
+                                system: managing,
+                                feature: "none",
+                                planet: 0,
+                                selections: []
+                            });
+                            exit;
+                        }
+                        yy += 20;
+                        tech_marine_slot = true;
+                        continue;
+                    }
+                    if (!lib_slot) {
+                        draw_set_color(c_black);
+                        draw_rectangle(xx + 25, yy + 64, xx + 974, yy + 85, 0);
+                        draw_set_color(c_gray);
+                        draw_rectangle(xx + 25, yy + 64, xx + 974, yy + 85, 1);
+                        draw_set_halign(fa_center);
+                        draw_set_color(c_yellow);
+                        draw_text(xx + 500, yy + 66, "++New Librarian Required++");
+                        draw_set_halign(fa_left);
+                        draw_set_color(c_gray);
+                        if (point_and_click([xx + 25, yy + 64, xx + 974, yy + 85])) {
+                            var search_params = {
+                                companies: managing
+                            };
+                            var candidates = collect_role_group("librarian_candidates");
+                            group_selection(candidates, {
+                                purpose: $"{scr_roman_numerals()[managing - 1]} Company Librarian Candidates",
+                                purpose_code: "librarian_promote",
+                                number: 1,
+                                system: managing,
+                                feature: "none",
+                                planet: 0,
+                                selections: []
+                            });
+                            exit;
+                        }
+                        yy += 20;
+                        lib_slot = true;
                         continue;
                     }
                 }

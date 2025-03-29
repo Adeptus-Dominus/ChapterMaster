@@ -83,6 +83,90 @@ function scr_manage_task_selector(){
 		                			update_general_manage_view();
 		                			exit;
 	                				break;
+								case "chaplain_promote":
+		                			unit = display_unit[i];
+		                			unit.squad="none";
+		                			var start_company = unit.company;
+		                			var end_company =  selection_data.system;
+		                			var endslot = 0;
+		                			for (i=0;i<array_length(obj_ini.name[end_company]);i++){
+		                				if (obj_ini.name[end_company][i]==""){
+		                					endslot=i;
+		                					break;
+		                				}
+		                			}
+		                			scr_move_unit_info(start_company, end_company, unit.marine_number,endslot);
+		                			with (obj_ini){
+		                				scr_company_order(start_company);
+		                				scr_company_order(end_company);
+		                			}
+		                			managing = end_company;
+		                			update_general_manage_view();
+		                			exit;
+	                				break;
+								case "apothecary_promote":
+		                			unit = display_unit[i];
+		                			unit.squad="none";
+		                			var start_company = unit.company;
+		                			var end_company =  selection_data.system;
+		                			var endslot = 0;
+		                			for (i=0;i<array_length(obj_ini.name[end_company]);i++){
+		                				if (obj_ini.name[end_company][i]==""){
+		                					endslot=i;
+		                					break;
+		                				}
+		                			}
+		                			scr_move_unit_info(start_company, end_company, unit.marine_number,endslot);
+		                			with (obj_ini){
+		                				scr_company_order(start_company);
+		                				scr_company_order(end_company);
+		                			}
+		                			managing = end_company;
+		                			update_general_manage_view();
+		                			exit;
+	                				break;
+								case "tech_marine_promote":
+		                			unit = display_unit[i];
+		                			unit.squad="none";
+		                			var start_company = unit.company;
+		                			var end_company =  selection_data.system;
+		                			var endslot = 0;
+		                			for (i=0;i<array_length(obj_ini.name[end_company]);i++){
+		                				if (obj_ini.name[end_company][i]==""){
+		                					endslot=i;
+		                					break;
+		                				}
+		                			}
+		                			scr_move_unit_info(start_company, end_company, unit.marine_number,endslot);
+		                			with (obj_ini){
+		                				scr_company_order(start_company);
+		                				scr_company_order(end_company);
+		                			}
+		                			managing = end_company;
+		                			update_general_manage_view();
+		                			exit;
+	                				break;
+								case "librarian_promote":
+		                			unit = display_unit[i];
+		                			unit.squad="none";
+		                			var start_company = unit.company;
+		                			var end_company =  selection_data.system;
+		                			var endslot = 0;
+		                			for (i=0;i<array_length(obj_ini.name[end_company]);i++){
+		                				if (obj_ini.name[end_company][i]==""){
+		                					endslot=i;
+		                					break;
+		                				}
+		                			}
+		                			scr_move_unit_info(start_company, end_company, unit.marine_number,endslot);
+		                			with (obj_ini){
+		                				scr_company_order(start_company);
+		                				scr_company_order(end_company);
+		                			}
+		                			managing = end_company;
+		                			update_general_manage_view();
+		                			exit;
+	                				break;
 	                			case "hunt_beast":
 	                			case "train_forces":
 	                				unit = display_unit[i];
