@@ -1032,9 +1032,8 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 	var b, goody, first;
 	b = 0;
 	goody = 0;
-	first = 0;
+	first = -1;
 	repeat(30) {
-		b += 1;
 		if (wep[b] = name) and(goody = 0) {
 			att[b] += atta * man_number;
 			apa[b] += arp * man_number;
@@ -1046,7 +1045,8 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 			if (wep_owner[b] != "") or(man_number > 1) then wep_owner[b] = "assorted";
 			if (wep_owner[b] = "") and(man_number = 1) then wep_owner[b] = man_type;
 		}
-		if (wep[b] = "") and(first = 0) then first = b;
+		if (wep[b] = "") and(first = -1) then first = b;
+		b += 1;
 	}
 	if (goody = 0) {
 		wep[first] = name;
@@ -1064,7 +1064,6 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 
 	/*
 	wep[i]="";
-	combi[i]=0;
 	range[i]=0;
 	att[i]=0;
 	apa[i]=0;

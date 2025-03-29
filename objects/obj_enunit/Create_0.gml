@@ -33,7 +33,6 @@ i=0;
 repeat(1001){i+=1;
     wep[i]="";
     wep_num[i]=0;
-    combi[i]=0;
     range[i]=0;
     att[i]=0;
     apa[i]=0;
