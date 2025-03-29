@@ -62,6 +62,7 @@ if (!engaged){ // Shooting
         }
 
         if ((range[i]==0)) {
+            log_error($"{wep[i]} has broken range! This shouldn't happen! Range: {range[i]}; Ammo: {ammo[i]}; Owner: {wep_owner[i]}");
             // show_debug_message($"A broken weapon was found! i:{i}; Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}; Ammo: {ammo[i]}");
             continue;
         }
@@ -77,14 +78,13 @@ if (!engaged){ // Shooting
         target_unit_index=0;
 
         if  (range[i] >= dist) { // The weapon is in range;
-            var _armour_piercing=false;
-            if (apa[i]>0) then _armour_piercing=true;// Determines if it is _armour_piercing or not
+            var _target_vehicles = apa[i] > 0 ? true : false; // AP weapons target vehicles
 
-            // if (string_count("Gauss",wep[i])>0) then _armour_piercing=true;
-            // if (wep[i]="Missile Launcher") or (wep[i]="Rokkit Launcha") or (wep[i]="Kannon") then _armour_piercing=true;
-            // if (wep[i]="Big Shoota") then _armour_piercing=false;
-            // if (wep[i]="Devourer") then _armour_piercing=false;
-            // if (wep[i]="Gauss Particle Cannon") or (wep[i]="Overcharged Gauss Cannon") or (wep[i]="Particle Whip") then _armour_piercing=true;
+            // if (string_count("Gauss",wep[i])>0) then _target_vehicles=true;
+            // if (wep[i]="Missile Launcher") or (wep[i]="Rokkit Launcha") or (wep[i]="Kannon") then _target_vehicles=true;
+            // if (wep[i]="Big Shoota") then _target_vehicles=false;
+            // if (wep[i]="Devourer") then _target_vehicles=false;
+            // if (wep[i]="Gauss Particle Cannon") or (wep[i]="Overcharged Gauss Cannon") or (wep[i]="Particle Whip") then _target_vehicles=true;
             
             // Weird alpha strike mechanic, that changes target unit index to CM;
             if ((wep[i]="Power Fist") or (wep[i]="Bolter")) and (obj_ncombat.alpha_strike>0) and (wep_num[i]>5){
@@ -111,7 +111,7 @@ if (!engaged){ // Shooting
             
             // AP weapons attacking vehicles and forts;
             var _no_vehicles_present = false;
-            if (_armour_piercing) {
+            if (_target_vehicles) {
                 var _shot = false;
                 if (!instance_exists(obj_nfort)) or (flank) {
                     if (block_has_armour(enemy)) or (enemy.veh_type[1]=="Defenses"){
@@ -138,7 +138,7 @@ if (!engaged){ // Shooting
                         }
                         if (!_shot) {
                             _no_vehicles_present = true;
-                            _armour_piercing = false;
+                            _target_vehicles = false;
                         }
                     }
                 } else {
@@ -152,7 +152,7 @@ if (!engaged){ // Shooting
             }
 
             // Non-AP weapons attacking normal units;
-            if ((!_armour_piercing) && ((!instance_exists(obj_nfort)) || flank)) {
+            if ((!_target_vehicles) && ((!instance_exists(obj_nfort)) || flank)) {
                 var _shot = false;
                 if (enemy.men > 0) {
                     // There are marines in the first column;
@@ -199,6 +199,7 @@ if (!engaged){ // Shooting
                 }
 
                 // We failed to find normal units to attack, attacking vehicles with a non-AP weapon;
+                //TODO: All of these code blocks should be functions instead;
                 if (!_shot && !_no_vehicles_present) {
                     if (!instance_exists(obj_nfort)) or (flank) {
                         if (block_has_armour(enemy)) or (enemy.veh_type[1]=="Defenses"){
