@@ -47,7 +47,7 @@ function sort_all_companies(){
 	}
 }
 function scr_company_order(company) {
-	try_and_report_loop("company order", function(company){
+	try_and_report_loop($"company order {company}", function(company){
 
 	// company : company number
 	// This sorts and crunches the marine variables for the company

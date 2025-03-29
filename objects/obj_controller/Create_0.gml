@@ -72,6 +72,8 @@
     
     The Machine God watches over you.
 */
+show_debug_message("Creating Controller");
+log_message("Creating Controller");
 marine_surface = surface_create(600, 600);
 scr_colors_initialize();
 is_test_map=false;
@@ -1794,3 +1796,87 @@ remov=string_length(string(temp[65])+string(temp[66])+string(temp[67])+string(te
 action_set_alarm(2, 0);
 
 instance_create(0,0,obj_tooltip );
+
+
+#region save/load serialization 
+
+/// Called from save function to take all object variables and convert them to a json savable format and return it 
+serialize = function(){
+    var object_ini = self;
+    
+    var save_data = {
+        obj: object_get_name(object_index),
+        x,
+        y,
+        chaos_gods,
+        master_of_forge,
+        stc_research,
+        production_research,
+        player_forge_data,
+        end_turn_insights,
+        recruit_data,
+        marines,
+        loyalty,
+        spec_train_data
+    }
+    var excluded_from_save = ["temp", "serialize", "deserialize", "build_chaos_gods", "company_data","menu_buttons",
+            "location_viewer", "production_research_pathways", "specialist_point_handler", "spec_train_data"]
+
+    /// Check all object variable values types and save the simple ones dynamically. 
+    /// simple types are numbers, strings, bools. arrays of only simple types are also considered simple. 
+    /// non-simple types are structs, functions, methods
+    /// functions and methods will be ignored completely, structs to be manually serialized/deserialised.
+    var all_names = struct_get_names(object_ini);
+    var _len = array_length(all_names);
+    for(var i = 0; i < _len; i++){
+        var var_name = all_names[i];
+        if(array_contains(excluded_from_save, var_name)){
+            continue;
+        }
+        if(struct_exists(save_data, var_name)){
+            continue; //already added above
+        }
+        if(string_starts_with(var_name, "restart_")){
+            continue;
+        }
+        if(is_numeric(object_ini[$var_name]) || is_string(object_ini[$var_name]) || is_bool(object_ini[$var_name])){
+            variable_struct_set(save_data, var_name, object_ini[$var_name]);
+        }
+        if(is_array(object_ini[$var_name])){
+            var _check_arr = object_ini[$var_name];
+            var _ok_array = true;
+            for(var j = 0; j < array_length(_check_arr); j++){
+                if(is_array(_check_arr[j])){
+                    // 2d array probably but check anyway
+                    for(var k = 0; k < array_length(_check_arr[j]); k++){
+                        if((is_numeric(_check_arr[j][k]) || is_string(_check_arr[j][k]) || is_bool(_check_arr[j][k])) == false){
+                            var type = typeof(_check_arr[j][k]);
+                            log_error($"Bad 2d array save: '{var_name}' internal type found was of type '{type}'");
+                            _ok_array = false;
+                            break;
+                        }
+                    }
+                } else {
+                    if((is_numeric(_check_arr[j]) || is_string(_check_arr[j]) || is_bool(_check_arr[j])) == false){
+                        var type = typeof(_check_arr[j]);
+                        log_error($"Bad array save: '{var_name}' internal type found was of type '{type}'");
+                        _ok_array = false;
+                        break;
+                    }
+                }
+            }
+            if(_ok_array){
+                variable_struct_set(save_data, var_name, object_ini[$var_name]);
+            }
+        }
+        if(is_struct(object_ini[$var_name])){
+            if(!struct_exists(save_data, var_name)){
+                log_warning($"obj_ini.serialze() - object contains struct variable '{var_name}' which has not been serialized. \n\tEnsure that serialization is written into the serialize and deserialization function if it is needed for this value, or that the variable is added to the ignore list to suppress this warning");
+            }
+        }
+    }
+    return save_data;
+}
+
+// Deserialization is done within scr_load
+#endregion

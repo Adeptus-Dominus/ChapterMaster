@@ -109,3 +109,137 @@ global.star_name_colors = [
 	#AD5272, //why 12 is skipped in general, we will never know
 	#80FF00 // Sleepy robots
 ]
+
+
+#region save/load serialization 
+
+/// Called from save function to take all object variables and convert them to a json savable format and return it 
+serialize = function(){
+    var object_star = self;
+
+    var planet_data = [];
+
+    for(var p = 1; p <= object_star.planets; p++){
+        planet_data[p] = {
+            dispo: object_star.dispo[p],
+            planet: object_star.planet[p],
+        };
+        var var_names = variable_struct_get_names(object_star);
+        for(var n = 0; n < array_length(var_names); n++){
+            var var_name = var_names[n];
+            if(string_starts_with(var_name, "p_")){
+                var val = object_star[$var_name][p];
+                variable_struct_set(planet_data[p], var_name, val);
+            }
+        }
+    }
+
+    var save_data = {
+        obj: object_get_name(object_index),
+        x,
+        y,
+        present_fleet: base64_encode(json_stringify(object_star.present_fleet)),
+        planet_data: planet_data
+    }
+      
+    var excluded_from_save = ["temp", "serialize", "deserialize", "arraysum"]
+
+    /// Check all object variable values types and save the simple ones dynamically. 
+    /// simple types are numbers, strings, bools. arrays of only simple types are also considered simple. 
+    /// non-simple types are structs, functions, methods
+    /// functions and methods will be ignored completely, structs to be manually serialized/deserialised.
+    var all_names = struct_get_names(object_star);
+    var _len = array_length(all_names);
+    for(var i = 0; i < _len; i++){
+        var var_name = all_names[i];
+        if(array_contains(excluded_from_save, var_name)){
+            continue;
+        }
+        if(string_starts_with(var_name, "p_")){
+            continue; //handled in planet_data above
+        }
+        if(struct_exists(save_data, var_name)){
+            continue; //already added above
+        }
+        if(is_numeric(object_star[$var_name]) || is_string(object_star[$var_name]) || is_bool(object_star[$var_name])){
+            variable_struct_set(save_data, var_name, object_star[$var_name]);
+        }
+        if(is_array(object_star[$var_name])){
+            var _check_arr = object_star[$var_name];
+            var _ok_array = true;
+            for(var j = 0; j < array_length(_check_arr); j++){
+                if(is_array(_check_arr[j])){
+                    // 2d array probably but check anyway
+                    for(var k = 0; k < array_length(_check_arr[j]); k++){
+                        if((is_numeric(_check_arr[j][k]) || is_string(_check_arr[j][k]) || is_bool(_check_arr[j][k])) == false){
+                            var type = typeof(_check_arr[j][k]);
+                            debugl($"Bad 2d array save: '{var_name}' internal type found was of type '{type}' - obj_star");
+                            _ok_array = false;
+                            break;
+                        }
+                    }
+                } else {
+                    if((is_numeric(_check_arr[j]) || is_string(_check_arr[j]) || is_bool(_check_arr[j])) == false){
+                        var type = typeof(_check_arr[j]);
+                        debugl($"Bad array save: '{var_name}' internal type found was of type '{type}' - obj_star");
+                        _ok_array = false;
+                        break;
+                    }
+                }
+            }
+            if(_ok_array){
+                variable_struct_set(save_data, var_name, object_star[$var_name]);
+            }
+        }
+        if(is_struct(object_star[$var_name])){
+            if(!struct_exists(save_data, var_name)){
+                debugl($"WARNING: obj_ini.serialze() - obj_star - object contains struct variable '{var_name}' which has not been serialized. \n\tEnsure that serialization is written into the serialize and deserialization function if it is needed for this value, or that the variable is added to the ignore list to suppress this warning");
+            }
+        }
+    }
+
+    return save_data;
+}
+
+function deserialize(save_data){
+    var exclusions = ["id", "present_fleet", "planet_data"]; // skip automatic setting of certain vars, handle explicitly later
+
+    // Automatic var setting
+    var all_names = struct_get_names(save_data);
+    var _len = array_length(all_names);
+    for(var i = 0; i < _len; i++){
+        var var_name = all_names[i];
+        if(array_contains(exclusions, var_name)){
+            continue;
+        }
+        var loaded_value =  struct_get(save_data, var_name);
+        variable_struct_set(self, var_name, loaded_value);	
+    }
+
+    // Set explicit vars here
+    if(struct_exists(save_data, "present_fleet")){
+        var encoded_fleet = save_data.present_fleet;
+        variable_struct_set(self, "present_fleet", json_parse(base64_decode(encoded_fleet)));
+    }
+
+    if(struct_exists(save_data, "planet_data")){
+        var planet_arr = save_data.planet_data;
+        var _len = array_length(planet_arr);
+        for(var p = 1; p < _len; p++){
+            var planet = planet_arr[p];
+            var var_names = struct_get_names(planet);
+            for(var v = 0; v < array_length(var_names); v++){
+                var var_name = var_names[v];
+                var val = planet[$var_name];
+                // var_name = "p_type"
+                // planet = {"p_type":"hive"};
+                // val = planet[$var_name] = "hive"
+
+                self[$var_name][p] = val;
+                // variable_struct_set(self, var_name, planet[$var_name]);
+            }
+        }
+    }
+}
+
+#endregion

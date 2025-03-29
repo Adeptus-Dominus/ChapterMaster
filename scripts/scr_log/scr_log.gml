@@ -1,6 +1,6 @@
 #macro STR_error_message_head $"Your game just encountered and caught an error!"
 #macro STR_error_message_head2 $"Your game just encountered a critical error! :("
-#macro STR_error_message_head3 $"Your game just encountered and caught an error! ({0})"
+#macro STR_error_message_head3 "Your game just encountered and caught an error! ({0})"
 #macro STR_error_message $"The error log is automatically copied into your clipboard and a copy is created at: \nC:>Users>(UserName)>AppData>Local>ChapterMaster>Logs\n\nPlease, follow these steps:\n1) Create a bug report on our 'Chapter Master Discord' server.\n2) Press CTRL+V to paste the error log.\n3) Title the report with the error log's first line.\n4) If the log isn't pasted, locate and attach the latest error log file.\n\nThank you!"
 #macro STR_error_message_ps $"P.S. You can ALT-TAB and try to continue playing, though it’s recommended to wait for a response in the bug-report forum."
 
