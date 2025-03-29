@@ -51,7 +51,6 @@ if ((started=2) or (started=4)){
     // obj_pnunit.alarm[4]=2;obj_pnunit.alarm[5]=3;obj_enunit.alarm[1]=1;
     if (instance_exists(obj_pnunit)){
         obj_pnunit.alarm[4]=2;
-        obj_pnunit.alarm[5]=3;
     }
     total_battle_exp_gain = threat * 50;
     if (instance_exists(obj_enunit)){obj_enunit.alarm[1]=1;}

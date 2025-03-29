@@ -6,7 +6,7 @@ battle_over=1;
 
 alarm[8]=999999;
 var line_break = "------------------------------------------------------------------------------";
-// show_message("Final Deaths: "+string(final_deaths));
+// show_message("Final Deaths: "+string(final_marine_deaths));
 
 
 if (turn_count >= 50){
@@ -15,33 +15,88 @@ if (turn_count >= 50){
 // check for wounded marines here to finish off, if defeated defending
 var roles = obj_ini.role[100];
 var ground_mission = (instance_exists(obj_ground_mission));
-if (final_deaths+final_command_deaths>0){
-    part1+=$"Marines Lost: {final_deaths+final_command_deaths}";
-    if (units_saved > 0){
-        part1+=$" ({roles[eROLE.Apothecary]}{apothecaries_alive>1?"s":""} prevented the death of {units_saved})";
+
+
+
+if (obj_ncombat.defeat == 0) {
+    marines_to_recover = ds_priority_create();
+    vehicles_to_recover = ds_priority_create();
+
+    with (obj_pnunit) {
+        add_marines_to_recovery();
+        add_vehicles_to_recovery();
     }
-    if (injured>0) then part8=$"Marines Critically Injured: {injured}";
+
+    while (!ds_priority_empty(marines_to_recover) && unit_recovery_score > 0) {
+        var _candidate = ds_priority_delete_max(marines_to_recover);
+        var _column_id = _candidate.column_id;
+        var _unit_id = _candidate.id;
+        _candidate.unit.update_health(roll_personal_dice(1, 10, "high", _candidate.unit));
+        _column_id.marine_dead[_unit_id] = false;
+        unit_recovery_score -= 1;
+        units_saved += 1;
+    }
+    ds_priority_destroy(marines_to_recover);
+
+    while (!ds_priority_empty(vehicles_to_recover) && vehicle_recovery_score > 0) {
+        var _candidate = ds_priority_delete_max(vehicles_to_recover);
+        var _column_id = _candidate.column_id;
+        var _unit_id = _candidate.id;
     
-    var i=0;
-    for (var i=1;i<array_length(post_unit_lost);i++){
-            if (post_unit_lost[i]!="") and (post_units_lost[i]>0) and (post_unit_veh[i]=0){
-            part2+=$"{post_units_lost[i]}x {post_unit_lost[i]},";
+        if (obj_controller.stc_bonus[3] = 4) {
+            var _survival_roll = 80 + _candidate.priority;
+            var _dice_roll = roll_dice(1, 100, "high");
+            if (_dice_roll >= _survival_roll) && (_column_id.veh_dead[_unit_id] != 2) {
+                _column_id.veh_hp[_unit_id] = roll_dice(1, 10, "high");
+                _column_id.veh_dead[_unit_id] = false;
+                vehicles_saved++;
+                vehicle_deaths--;
+                continue;
+            }
+        }
+    
+        _column_id.veh_hp[_unit_id] = roll_dice(1, 10, "high");
+        _column_id.veh_dead[_unit_id] = false;
+        vehicle_recovery_score -= _candidate.priority;
+        vehicles_saved++;
+        vehicle_deaths--;
+    }
+    ds_priority_destroy(vehicles_to_recover);
+}
+
+
+with (obj_pnunit) {
+    after_battle_part1()
+}
+
+var _total_deaths = (final_marine_deaths + final_command_deaths) - units_saved;
+if (_total_deaths > 0) {
+	newline = $"Marines lost: {_total_deaths}!";
+    if (array_length(post_unit_lost) > 0) {
+        for (var i = 0; i < array_length(post_unit_lost); i++) {
+            if ((post_unit_lost[i] != "") && (post_units_lost[i] > 0) && (post_unit_veh[i] == 0)) {
+                newline += $" {post_units_lost[i]}x {post_unit_lost[i]}";
+                if (i < array_length(post_unit_lost) - 1) {
+                    newline += ",";
+                } else {
+                    newline += ".";
+                }
+            }
         }
     }
-    part2=string_delete(part2,string_length(part2)-1,2);
-    part2+=".";i=0;
-    
-    if (injured>0){
-        newline=part8;
-        scr_newtext();
-    }
-    newline=part1;
-    scr_newtext();
-    newline=part2;
-    newline_color="red";
-    scr_newtext();
-    newline=" ";
-    scr_newtext();
+    newline_color = "red";
+	scr_newtext();
+}
+
+if (units_saved > 0) {
+	newline = $"{string_plural(roles[eROLE.Apothecary])} saved {units_saved} marines.";
+	scr_newtext();
+}
+
+if (injured > 0) {
+	newline = $"Marines critically injured: {injured}!";
+	newline_color = "red";
+	scr_newtext();
 }
 
 if (ground_mission){
@@ -64,7 +119,7 @@ if (obj_ini.doomed && !apothecaries_alive){
     part3=$"No able-bodied {roles[eROLE.Apothecary]}.  {seed_max} Gene-Seed lost.";
     newline=part3;scr_newtext();
     newline=" ";scr_newtext();
-}else if (apothecaries_alive>0 && final_deaths+final_command_deaths>0 && !obj_ini.doomed){
+}else if (apothecaries_alive>0 && final_marine_deaths+final_command_deaths>0 && !obj_ini.doomed){
     part3=$"Gene-Seed Recovered: {seed_saved}(";
     part3 += seed_saved ? $"{round((seed_saved/seed_max)*100)}" : "0";
     part3 += "%)";
@@ -83,27 +138,39 @@ if (red_thirst>2){
     
     newline=voodoo;newline_color="red";
     scr_newtext();
-    newline=" ";scr_newtext();
+    newline=" ";
+    scr_newtext();
 }
 
+newline = " ";
+scr_newtext();
 
-if (vehicle_deaths>0 || vehicles_saved>0){
-    part4="Vehicles Lost: "+string(vehicle_deaths);
-    if (techmarines_alive=1) then part4+=" ("+string(roles[16])+" prevented the destruction of "+string(vehicles_saved)+")";
-    if (techmarines_alive>1) then part4+=" ("+string(roles[16])+"s prevented the destruction of "+string(vehicles_saved)+")";
-    
-    var i;i=0;
-    repeat(30){i+=1;
-        if (post_unit_lost[i]!="") and (post_units_lost[i]>0) and (post_unit_veh[i]=1){
-            part5+=string(post_units_lost[i])+"x "+string(post_unit_lost[i])+", ";
-        }
-    }
-    part5=string_delete(part5,string_length(part5)-1,2);part5+=".";i=0;
-    
-    newline=part4;scr_newtext();
-    newline=part5;scr_newtext();
-    newline=" ";scr_newtext();
+
+
+if (vehicles_saved > 0) {
+    newline = $"{string_plural(roles[eROLE.Techmarine], techmarines_alive)} were able to recover {vehicles_saved} vehicles.";
+    scr_newtext();
 }
+
+if (vehicle_deaths > 0) {
+	newline = $"Vehicles Lost: {vehicle_deaths}.";
+
+	for (var i = 0; i < array_length(post_unit_lost); i++) {
+		if ((post_unit_lost[i] != "") && (post_units_lost[i] > 0) && (post_unit_veh[i] == 1)) {
+			newline += $" x{post_units_lost[i]} {post_unit_lost[i]}";
+            if (i < array_length(post_unit_lost) - 1) {
+                newline += ",";
+            } else {
+                newline += ".";
+            }
+		}
+	}
+    newline_color="red";
+    scr_newtext();
+    newline = " ";
+    scr_newtext();
+}
+
 
 
 if (post_equipment_lost[1]!=""){
@@ -126,7 +193,13 @@ if (post_equipment_lost[1]!=""){
     newline=" ";
     scr_newtext();
 }
+
+
+
 if (total_battle_exp_gain>0){
+    with (obj_pnunit) {
+        assemble_alive_units();
+    }
     average_battle_exp_gain = distribute_experience(end_alive_units, total_battle_exp_gain); // Due to cool alarm timer shitshow, I couldn't think of anything but to put it here.
     newline = $"Each marine gained {average_battle_exp_gain} experience, reduced by their total experience.";
     scr_newtext();
@@ -137,7 +210,7 @@ if (total_battle_exp_gain>0){
             if (i > 0) {
                 newline += ", ";
             }
-            newline += $"{upgraded_librarians[i].name()}";
+            newline += $"{upgraded_librarians[i].name_role()}";
         }
         newline += " learned new psychic powers after gaining enough experience."
         scr_newtext();
@@ -151,6 +224,7 @@ if (ground_mission){
 	obj_ground_mission.post_equipment_lost = post_equipment_lost
 	obj_ground_mission.post_equipments_lost = post_equipments_lost
 }
+
 if (slime>0){
     var compan_slime;
     compan_slime=0;

@@ -51,7 +51,7 @@ for (var i=0;i<array_length(unit_struct);i++){
                 obj_ncombat.vehicle_recovery_score += skill_level;
                 obj_ncombat.techmarines_alive++;
             }
-        } else if (marine_dead[i]>0) and (marine_dead[i]<2) and (unit.hp()>-25) and (marine_type[i]!="") and ((obj_ncombat.dropping+obj_ncombat.defeat)!=2){
+        } else if (marine_dead[i] == 1) and (unit.hp()>-25) and (marine_type[i]!="") and ((obj_ncombat.dropping+obj_ncombat.defeat)!=2){
             var rand1, survival;
             onceh=0;
             survival=40;
