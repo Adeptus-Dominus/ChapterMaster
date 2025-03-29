@@ -1960,9 +1960,9 @@ global.weapons = {
 	"Snazzgun": {
 		"abbreviation": "Snazz",
 		"attack": {
-			"standard": 80,
-			"master_crafted": 92,
-			"artifact": 104
+			"standard": 200,
+			"master_crafted": 230,
+			"artifact": 280
 		},
 		"ranged_hands": 1,
 		"ammo": 20,
@@ -1998,18 +1998,28 @@ global.gear = {
 			"abbreviation": "Artfcr",
 			"armour_value": {
 				"standard": 30,
-				"master_crafted": 34,
-				"artifact": 38
+				"master_crafted": 30, // This is already a custom suit of armor shouldnt Master crafted be its base state?
+				"artifact": 30
 			},
 			"ranged_mod": {
-				"standard": 5,
-				"master_crafted": 10,
-				"artifact": 15
+				"standard": 15,
+				"master_crafted": 20,
+				"artifact": 25
 			},
 			"melee_mod": {
-				"standard": 10,
-				"master_crafted": 15,
-				"artifact": 20
+				"standard": 15,
+				"master_crafted": 20,
+				"artifact": 25
+			},
+			"hp_mod":{
+				"standard": 15,
+				"master_crafted": 20,
+				"artifact": 25
+			},
+			"damage_resistance_mod": {
+				"standard": 15,
+				"master_crafted": 20,
+				"artifact": 25
 			},
 			"description": "A custom suit of power armored created by master artificiers and decorated without compare, this ancient Power Armour is beyond priceless. This suit's history is ancient and its users many.",
 			"tags": ["power_armour"],
@@ -2017,7 +2027,7 @@ global.gear = {
 		"Terminator Armour": {
 			"abbreviation": "Indmts",
 			"armour_value": {
-				"standard": 42,
+				"standard": 40,
 				"master_crafted": 46,
 				"artifact": 50
 			},
@@ -2027,9 +2037,19 @@ global.gear = {
 				"artifact": 0
 			},
 			"melee_mod": {
-				"standard": 20,
-				"master_crafted": 25,
-				"artifact": 30
+				"standard": 10,
+				"master_crafted": 15,
+				"artifact": 20
+			},
+			"hp_mod":{
+				"standard": 10,
+				"master_crafted": 15,
+				"artifact": 20
+			},
+			"damage_resistance_mod": {
+				"standard": 0,
+				"master_crafted": 5,
+				"artifact": 10
 			},
 			"melee_hands": 2,
 			"ranged_hands": 2,
@@ -2041,19 +2061,29 @@ global.gear = {
 		"Dreadnought": {
 			"abbreviation": "Drdnght",
 			"armour_value": {
-				"standard": 50,
+				"standard": 30,
 				"master_crafted": 55,
 				"artifact": 60
 			},
 			"ranged_mod": {
-				"standard": 0,
-				"master_crafted": 5, // Augmented
-				"artifact": 10 // Augmented
+				"standard": -10,
+				"master_crafted": 0,
+				"artifact": 10
 			},
 			"melee_mod": {
-				"standard": 0,
-				"master_crafted": 5, // Augmented
-				"artifact": 10 // Augmented
+				"standard": -10,
+				"master_crafted": 0,
+				"artifact": 10
+			},
+			"hp_mod":{
+				"standard": 30,
+				"master_crafted": 35,
+				"artifact": 60
+			},
+			"damage_resistance_mod": {
+				"standard": -30,
+				"master_crafted": -25,
+				"artifact": -20
 			},
 			"melee_hands": 8,
 			"ranged_hands": 8,
@@ -2064,19 +2094,24 @@ global.gear = {
 		"Tartaros": {
 			"abbreviation": "Tartrs",
 			"armour_value": {
-				"standard": 42,
+				"standard": 40,
 				"master_crafted": 46,
 				"artifact": 50
 			},
 			"ranged_mod": {
-				"standard": 0,
-				"master_crafted": 5, // Augmented
-				"artifact": 10 // Augmented
+				"standard": 10,
+				"master_crafted": 15, // Augmented
+				"artifact": 20 // Augmented
 			},
 			"melee_mod": {
-				"standard": 20,
-				"master_crafted": 25,
-				"artifact": 30
+				"standard": 10,
+				"master_crafted": 20,
+				"artifact": 25
+			},
+			"hp_mod":{
+				"standard": 5,
+				"master_crafted": 10,
+				"artifact": 15
 			},
 			"melee_hands": 2,
 			"ranged_hands": 2,
@@ -2093,14 +2128,24 @@ global.gear = {
 				"artifact": 50
 			},
 			"ranged_mod": {
-				"standard": 0,
-				"master_crafted": 5, // Augmented
-				"artifact": 10 // Augmented
+				"standard": -5,
+				"master_crafted": 0,
+				"artifact": 5
 			},
 			"melee_mod": {
-				"standard": 20,
-				"master_crafted": 25,
-				"artifact": 30,
+				"standard": -5,
+				"master_crafted": 0,
+				"artifact": 5
+			},
+			"hp_mod":{
+				"standard": 10,
+				"master_crafted": 15,
+				"artifact": 20
+			},
+			"damage_resistance_mod": {
+				"standard": 10,
+				"master_crafted": 15,
+				"artifact": 20
 			},
 			"melee_hands": 2,
 			"ranged_hands": 2,
@@ -2117,23 +2162,33 @@ global.gear = {
 				"artifact": 14
 			},
 			"ranged_mod": {
-				"standard": 15,
-				"master_crafted": 20, // Augmented
-				"artifact": 25 // Augmented
+				"standard": 10,
+				"master_crafted": 15, // Augmented
+				"artifact": 20 // Augmented
 			},
 			"melee_mod": {
 				"standard": 0,
 				"master_crafted": 5, // Augmented
 				"artifact": 10 // Augmented
 			},
+			"hp_mod":{
+				"standard": 0,
+				"master_crafted": 10,
+				"artifact": 0
+			},
+			"damage_resistance_mod": {
+				"standard": 0,
+				"master_crafted": 10,
+				"artifact": 0
+			},
 			"description": "A non-powered suit made up of carapace armour and ballistic nylon. Includes biohazard shielding, nutrient feed, and camouflage."
 		},
 		"MK3 Iron Armour": {
 			"abbreviation": "MK3",
 			"armour_value": {
-				"standard": 26,
-				"master_crafted": 29,
-				"artifact": 32
+				"standard": 22,
+				"master_crafted": 24,
+				"artifact": 28
 			},
 			"ranged_mod": {
 				"standard": -10,
@@ -2141,9 +2196,19 @@ global.gear = {
 				"artifact": 0
 			},
 			"melee_mod": {
+				"standard": 10,
+				"master_crafted": 10, // Augmented
+				"artifact": 15 // Augmented
+			},
+			"hp_mod":{
+				"standard": 10,
+				"master_crafted": 15,
+				"artifact": 20
+			},
+			"damage_resistance_mod": {
 				"standard": 0,
-				"master_crafted": 5, // Augmented
-				"artifact": 10 // Augmented
+				"master_crafted": 5,
+				"artifact": 10
 			},
 			"description": "An ancient set of Power Armor dating back to the early Great Crusade. The Mark III has heavier armor plating but is far heavier then its contemporaries.",
 			"tags": ["power_armour"],
@@ -2152,19 +2217,29 @@ global.gear = {
 		"MK4 Maximus": {
 			"abbreviation": "MK4",
 			"armour_value": {
-				"standard": 22,
-				"master_crafted": 25,
-				"artifact": 28
+				"standard": 17,
+				"master_crafted": 19,
+				"artifact": 23
 			},
 			"ranged_mod": {
-				"standard": 5,
-				"master_crafted": 10,
-				"artifact": 15
+				"standard": 10,
+				"master_crafted": 15,
+				"artifact": 20
 			},
 			"melee_mod": {
-				"standard": 5,
-				"master_crafted": 10, // Augmented
-				"artifact": 15 // Augmented
+				"standard": 10,
+				"master_crafted": 15, // Augmented
+				"artifact": 20 // Augmented
+			},
+			"hp_mod":{
+				"standard": 0,
+				"master_crafted": 5,
+				"artifact": 10
+			},
+			"damage_resistance_mod": {
+				"standard": 0,
+				"master_crafted": 10,
+				"artifact": 0
 			},
 			"description": "Power Armor dating back to the end of the Great Crusade. It is considered the pinnacle of Power Armor by some Astartes. However, the components are no longer reproducible, the knowledge having been lost to time.",
 			"tags": ["power_armour"],
@@ -2187,6 +2262,16 @@ global.gear = {
 				"master_crafted": 25,
 				"artifact": 30
 			},
+			"hp_mod":{
+				"standard": 0,
+				"master_crafted": 5,
+				"artifact": 10
+			},
+			"damage_resistance_mod": {
+				"standard": -5,
+				"master_crafted": 0,
+				"artifact": 5
+			},
 			"description": "A hastily assembled Power Armor that first started appearing during the Horus Heresy to act as a stopgap while new suits were produced and sent to loyalist legions. It excels in close combat but it has limited sensors for ranged combat.",
 			"tags": ["power_armour"],
 			"maintenance" : 0.05,
@@ -2196,17 +2281,27 @@ global.gear = {
 			"armour_value": {
 				"standard": 15,
 				"master_crafted": 17,
-				"artifact": 19
+				"artifact": 21
 			},
 			"ranged_mod": {
-				"standard": 15,
-				"master_crafted": 20, // Augmented
-				"artifact": 25 // Augmented
+				"standard": 10,
+				"master_crafted": 15, // Augmented
+				"artifact": 30 // Augmented
 			},
 			"melee_mod": {
 				"standard": 0,
 				"master_crafted": 5, // Augmented
 				"artifact": 10 // Augmented
+			},
+			"hp_mod":{
+				"standard": -5,
+				"master_crafted": 0,
+				"artifact": 5
+			},
+			"damage_resistance_mod": {
+				"standard": 0,
+				"master_crafted": 5,
+				"artifact": 5
 			},
 			"description": "A suit dating back to the Horus Heresy, first tested by the Raven Guard. It contains boosted olfactory and auditory sensors that increase the ranged accuracy of the wearer. This however makes it more fragile to an extent.",
 			"tags": ["power_armour"],
@@ -2215,9 +2310,9 @@ global.gear = {
 		"MK7 Aquila": {
 			"abbreviation": "MK7",
 			"armour_value": {
-				"standard": 17,
-				"master_crafted": 19,
-				"artifact": 21
+				"standard": 18,
+				"master_crafted": 20,
+				"artifact": 24
 			},
 			"ranged_mod": {
 				"standard": 0,
@@ -2229,6 +2324,16 @@ global.gear = {
 				"master_crafted": 5, // Augmented
 				"artifact": 10 // Augmented
 			},
+			"hp_mod":{
+				"standard": 0,
+				"master_crafted": 5,
+				"artifact": 10
+			},
+			"damage_resistance_mod": {
+				"standard": 0,
+				"master_crafted": 5,
+				"artifact": 10
+			},
 			"description": "The most common power armour of the Adeptus Astartes and the only power armour still widely manufactured by the Imperium.",
 			"tags": ["power_armour"],
 			"maintenance" : 0.01,
@@ -2236,8 +2341,8 @@ global.gear = {
 		"MK8 Errant": {
 			"abbreviation": "MK8",
 			"armour_value": {
-				"standard": 22,
-				"master_crafted": 24,
+				"standard": 20,
+				"master_crafted": 22,
 				"artifact": 26
 			},
 			"ranged_mod": {
@@ -2249,6 +2354,16 @@ global.gear = {
 				"standard": 0,
 				"master_crafted": 5, // Augmented
 				"artifact": 10 // Augmented
+			},
+			"hp_mod":{
+				"standard": 0,
+				"master_crafted": 5,
+				"artifact": 10
+			},
+			"damage_resistance_mod": {
+				"standard": 0,
+				"master_crafted": 5,
+				"artifact": 10
 			},
 			"description": "The newest and most advanced of the standard mark power armours as such production has not yet reached maximum capacity creating a supply shortage while chapters rush to get access to them.",
 			"tags": ["power_armour"],
