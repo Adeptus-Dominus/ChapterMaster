@@ -25,7 +25,7 @@ function SpecialistPointHandler() constructor{
                 if (!struct_exists(armoury_repairs, item)){
                     armoury_repairs[$ item] = count;
                 } else {
-                    armoury_repairs[$ item]+=count;
+                    armoury_repairs[$ item] += count;
                 }
             }
         }

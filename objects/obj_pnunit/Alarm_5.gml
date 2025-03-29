@@ -81,13 +81,13 @@ for (var i=0;i<array_length(unit_struct);i++){
     }
     if (_unit.base_group=="astartes"){
         if (marine_dead[i]=0) and (_unit.gene_seed_mutations.mucranoid==1) and (ally[i]=false){
-            var muck=floor(random(200))+1;
-            if (muck=50){    //slime is armour destroyed due to mucranoid
-                var _power_armour = ARR_power_armour;
-                if (array_contains(_power_armour,_unit.armour())){
-                    _unit.update_armour("", false, false);
+            var muck=roll_dice(1,100)
+            if (muck=25){    //slime  armour damaged due to mucranoid
+                if (_unit.armour != ""){
+                    obj_ncombat.slime++;
+                    obj_controller.specialist_point_handler.add_to_armoury_repair(_unit.armour());
                     obj_ncombat.mucra[marine_co[i]]=1;
-                    obj_ncombat.slime+=1;
+                    obj_ncombat.slime+=unit.get_armour_data("maintenance");
                 }
             }
         }
@@ -98,7 +98,7 @@ for (var i=0;i<array_length(unit_struct);i++){
             if (obj_ncombat.plasma_bomb=0) and (obj_ncombat.enemy=13) and (awake_tomb_world(obj_ncombat.battle_object.p_feature[obj_ncombat.battle_id])==1){
                 if (((obj_ncombat.battle_object.p_necrons[obj_ncombat.battle_id]-2)<3) and (obj_ncombat.dropping!=0)) or ((obj_ncombat.battle_object.p_necrons[obj_ncombat.battle_id]-1)<3){
                     obj_ncombat.plasma_bomb+=1;
-                    obj_ini.gear[marine_co[i],marine_id[i]]="";
+                    _unit.gear()="";
                 }
             }
         }

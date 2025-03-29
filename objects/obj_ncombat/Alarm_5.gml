@@ -152,15 +152,9 @@ if (ground_mission){
 	obj_ground_mission.post_equipments_lost = post_equipments_lost
 }
 if (slime>0){
-    var compan_slime;
-    compan_slime=0;
-    
-    var s1,s2,s3,s4;
-    s1="";s2="";s3="";s4="";
-    
-    i=-1;
-    
-    s1="Slime has short-circuited and destroyed "+string(slime);
+    var compan_slime = 0;
+
+    var slime_string=$"Fualty mucranoids and other afflictions have caused additional damage {slime} Forge Points will need to be allocated to repair damage";
     
     for (var i=0;i<=10;i++){
         if (mucra[i]){
@@ -173,11 +167,13 @@ if (slime>0){
         }
     }
     
-    s2=$" {slime==1?"suit":"suits"} of Power Armour.  {compan_slime>1?$"{s3} Companies":$"{s3} company"} {s4} has been effected.";
+    slime_string += $" {slime==1?"suit":"suits"} of Power Armour.  {compan_slime>1?$"{s3} Companies":$"{s3} company"} {s4} has been effected.";
     
-    s3=string_delete(s3,string_length(s3)-1,2);
+    string_delete(s3,string_length(s3)-1,2);
+
+    slime_string += s3;
     
-    newline=s1+s2+s3+s4;
+    newline=slime_string;
     newline_color="red";
     scr_newtext();
     newline=" ";
