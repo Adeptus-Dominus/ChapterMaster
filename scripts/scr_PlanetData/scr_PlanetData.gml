@@ -90,10 +90,10 @@ function PlanetData(planet, system) constructor{
 	    planet_forces[7] =	system.p_orks[planet];
 	    planet_forces[8] =	system.p_tau[planet];
 	    planet_forces[9] =	system.p_tyranids[planet];
-		planet_forces[10] =	system.p_traitors[planet];   	
-	    planet_forces[11] =	system.p_chaos[planet]+ system.p_demons[planet];
-
-	    planet_forces[13] =	system.p_necrons[planet];
+		  planet_forces[10] = system.p_traitors[planet];   	
+	    planet_forces[11] = system.p_chaos[planet]; 
+      planet_forces[12] = system.p_demons[planet];
+	    planet_forces[13] = system.p_necrons[planet];
 	}catch(_exception){
 		handle_exception(_exception);
 	}
@@ -254,7 +254,7 @@ function PlanetData(planet, system) constructor{
 		}
 	} 
 
-	static guard_score_calc = function(){
+	static guard_score_calc = function(){ // TODO: Consider adding higher guard scores
 		guard_score = 0;
         if (guardsmen < 500 && guardsmen>0) {
 		    guard_score = 0.1;
@@ -642,7 +642,7 @@ function PlanetData(planet, system) constructor{
         var presence_text = "";
         var faction_names = ["Adeptas", "Orks", "Tau", "Tyranids", "Chaos", "Traitors", "Daemons", "Necrons"];
         var faction_ids = ["p_sisters", "p_orks", "p_tau", "p_tyranids", "p_traitors", "p_chaos", "p_demons", "p_necrons"];
-        var blurbs = ["Minima", "Parvus", "Moderatus", "Significus", "Enormicus", "Extremis"];
+        var blurbs = ["Marine", "Demi-Squad", "Squad", "Squads+", "Demi-Company", "Company", "Company+", "Companies++", "Chapter/2", "Chapter"];
         
         for (var t = 0; t < array_length(faction_names); t++) {
             var faction = faction_names[t];
@@ -651,14 +651,14 @@ function PlanetData(planet, system) constructor{
             var blurb = "";
 
             // Special condition for "Cultists" -> "Daemons"
-            if (faction_id == "p_chaos" && level > 6) {
-                faction = "Daemons";
-            }
+            // if (faction_id == "p_chaos" && level > 6) {
+            //    faction = "Daemons";
+            // }
 
-            if (level >= 1 && level <= 6) {
+            if (level >= 1 && level <= 10) {
                 blurb = blurbs[level - 1];
-            } else if (level > 6) {
-                blurb = blurbs[5];
+            } else if (level > 10) {
+                blurb = blurbs[9];
             }
 
             if (faction != "" && level > 0) {
