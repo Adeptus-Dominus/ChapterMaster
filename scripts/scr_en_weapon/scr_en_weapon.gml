@@ -947,8 +947,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 			spli = 0;
 		}
 		if (name = "Gauss Flayer") {
-			atta = choose(50, 50, 50, 50, 50, 70);
-			atta = choose(30, 30, 30, 30, 30, 70);
+			atta = choose(30, 30, 30, 50, 50, 70);
 			rang = 6.1;
 			spli = 0;
 		}
