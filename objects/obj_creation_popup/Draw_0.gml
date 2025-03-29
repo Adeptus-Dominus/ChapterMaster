@@ -214,11 +214,9 @@ if (col_shift){
                         mobi: obj_creation.mobi[100][_role_id],
                         armour: obj_creation.armour[100][_role_id]
                     }
-                    show_debug_message($"Updating role {_role_id} from {obj_creation.custom_roles}");
                     variable_struct_set(obj_creation.custom_roles, possible_custom_roles[i][0], c_role);
                 }
             }
-            show_debug_message($"New obj_creation.custom_roles {obj_creation.custom_roles}");
 
             obj_creation.cooldown = 8000;
             instance_destroy();
@@ -226,7 +224,8 @@ if (col_shift){
 
         draw_set_halign(fa_left);
         if (scr_hit(434,591,594,709)=true){
-            tooltip="Gear";tooltip2="The equipment this Astartes Role defaults to.  Note that if defaults are set to expensive items the Astartes may instead be provided with more usual equipment.";
+            tooltip="Gear";
+            tooltip2="The equipment this Astartes Role defaults to.  Note that if defaults are set to expensive items the Astartes may instead be provided with more usual equipment.";
         }
     }
 }

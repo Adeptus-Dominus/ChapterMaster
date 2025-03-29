@@ -43,7 +43,7 @@ else if (flank=1){
 //In melee check
 engaged = point_distance(x,0,enemy.x,0)<=10 || !position_empty(x+flank?10:-10,y);
 
-show_debug_message($"enemy is in melee {engaged}")
+//show_debug_message($"enemy is in melee {engaged}")
 
 if (!engaged){// Shooting
     var i=0,dist=999,block=0;
@@ -240,7 +240,7 @@ else if ((engaged || enemy.engaged) and target_block_is_valid( enemy,obj_pnunit)
         
         
         if (apa[i]=0) or (apa[i]<att[i]) then no_ap+=1;
-        show_debug_message($"{range[i]},{att[i]},{apa[i]},{wep[i]},{enemy}")
+        //show_debug_message($"{range[i]},{att[i]},{apa[i]},{wep[i]},{enemy}")
         if  ((range[i]<=2) or ((floor(range[i])!=range[i]))){// Weapon meets preliminary checks
             if (apa[i]>0) then _armour_piercing=1;// Determines if it is _armour_piercing or not
             if (_armour_piercing) and (instance_exists(obj_nfort)) and (!flank){// Huff and puff and blow the wall down

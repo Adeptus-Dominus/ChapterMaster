@@ -22,7 +22,7 @@ if (enemy_forces<=0) { // Combat for whatever reason sometimes bugs out when the
 if (started>=2) then instance_activate_object(obj_pnunit);
 
 if (started=3){
-    show_debug_message("start alarm7 runup");
+
     instance_activate_all();
     instance_activate_object(obj_pnunit);
     instance_activate_object(obj_enunit);
@@ -93,7 +93,7 @@ function reset_combat_message_arrays(){
     }
 }
 if (timer_stage=1) or (timer_stage=5){
-    if (global_perils>0) then global_perils-=10;
+    if (global_perils>0) then global_perils-=1;
     if (global_perils<0) then global_perils=0;
     turns+=1;
     

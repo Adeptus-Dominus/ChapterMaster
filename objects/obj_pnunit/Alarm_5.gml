@@ -29,7 +29,7 @@ if (obj_ncombat.defeat == 0) {
 
     // Techmarines saving vehicles
     if (obj_ncombat.techmarines_alive > 0) {
-        show_debug_message($"vehicle_recovery_score: {obj_ncombat.vehicle_recovery_score}");
+        //show_debug_message($"vehicle_recovery_score: {obj_ncombat.vehicle_recovery_score}");
         var _dice_roll;
         var _survival_roll;
         var _dead_vehicles_pq = ds_priority_create();

@@ -174,8 +174,7 @@ function get_valid_player_ship(location="", name=""){
 }
 
 
-function loose_ship_to_warp_event(){
-	show_debug_message("RE: Ship Lost");   
+function loose_ship_to_warp_event(){  
 		
 	var eligible_fleets = [];
 	with(obj_p_fleet) {
@@ -185,7 +184,7 @@ function loose_ship_to_warp_event(){
 	}
 	
 	if(array_length(eligible_fleets) == 0) {
-		show_debug_message("RE: Ship Lost, couldn't find a player fleet");   
+		//show_debug_message("RE: Ship Lost, couldn't find a player fleet");   
 		exit;
 	}
 	

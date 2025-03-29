@@ -30,11 +30,6 @@ function scr_powers(caster_id) {
         exit;
     }
 
-    var _unit_role = _unit.role();
-    var _unit_exp = _unit.experience;
-    var _unit_weapon_one_data = _unit.get_weapon_one_data();
-    var _unit_weapon_two_data = _unit.get_weapon_two_data();
-    var _unit_gear = _unit.get_gear_data();
     var _unit_armour = _unit.get_armour_data();
     if (is_struct(_unit_armour)) {
         var _is_dread = _unit_armour.has_tag("dreadnought");
@@ -52,7 +47,6 @@ function scr_powers(caster_id) {
     var _casualties_flavour_text = "";
 
     // Decide what to cast
-    var _known_powers = _unit.powers_known;
     var _power_id = select_psychic_power(_unit);
 
     //TODO: All tome related logic in this file has to be reworked;
@@ -69,13 +63,12 @@ function scr_powers(caster_id) {
     var _total_psychic_amplification = 1 + _equipment_psychic_amplification + _character_psychic_amplification;
 
     // Gather power data
-    // var _power_struct = get_power_data(_power_id); // Not used atm
     var _power_data = get_power_data(_power_id);
     var _power_name = get_power_data(_power_id, "name");
     var _power_type = get_power_data(_power_id, "type");
     var _power_range = round(get_power_data(_power_id, "range") * _total_psychic_amplification);
     // var _power_target_type = get_power_data(_power_id, "target_type"); // Not used here
-    var _power_max_kills = round(get_power_data(_power_id, "max_kills") * _total_psychic_amplification);
+    var _power_additional_kills = get_power_data(_power_id, "additional_kills");
     var _power_magnitude = get_power_data(_power_id, "magnitude") * _total_psychic_amplification;
     var _power_armour_piercing = get_power_data(_power_id, "armour_piercing");
     // var _power_duration = get_power_data(_power_id, "duration"); // Not used atm
@@ -91,7 +84,7 @@ function scr_powers(caster_id) {
     }
 
     // Casting fail/success bellow
-    var _cast_successful = check_cast_success(_unit);
+    var _cast_successful = _unit.psychic_focus_test();
     if (_cast_successful) {
         _cast_flavour_text = $"{_unit.name_role()} casts '{_power_name}'";
     } else {
@@ -216,10 +209,10 @@ function scr_powers(caster_id) {
 
             // Calculate casualties based on damage and health
             var _casualties = 0;
-            if (_power_max_kills == -1) {
+            if (_power_additional_kills == -1) {
                 _casualties = floor(_final_damage / _target_unit_health);
             } else {
-                _casualties = min(floor(_final_damage / _target_unit_health), max(_power_max_kills, 1));
+                _casualties = min(floor(_final_damage / _target_unit_health), 1 + _power_additional_kills);
             }
 
             // Cap casualties at available entities and ensure non-negative
@@ -282,10 +275,10 @@ function scr_powers(caster_id) {
 
     //* Perils happen bellow
     //TODO: Perhaps separate perils into a separate function;
-    var _perils_happened = perils_test(_unit);
+    var _perils_happened = _unit.perils_test();
 
     if (_perils_happened) {
-        var _perils_strength = roll_perils_strength(_unit);
+        var _perils_strength = _unit.perils_strength();
         _cast_flavour_text = $"{_unit.name_role()} suffers Perils of the Warp!  ";
         _power_flavour_text = scr_perils_table(_perils_strength, _unit, _selected_discipline, _power_id, caster_id);
 
@@ -530,29 +523,6 @@ function match_power_prefix(power_prefix) {
     }
 }
 
-function perils_test(_unit) {
-    var _roll = roll_personal_dice(1, 1000, "high", _unit);
-    var _perils_threshold = _unit.perils_chance();
-
-    return _roll <= _perils_threshold;
-}
-
-function roll_perils_strength(_unit) {
-    var _perils_strength = roll_personal_dice(1, 100, "low", _unit);
-
-    // I hope you like demons
-    if (_unit.has_trait("warp_tainted")) {
-        var _second_roll = roll_personal_dice(1, 100, "high", _unit);
-        if (_second_roll > _perils_strength) {
-            _perils_strength = _second_roll;
-        }
-    }
-
-    _perils_strength = max(_perils_strength, PSY_PERILS_STR_BASE);
-
-    return _perils_strength;
-}
-
 /// @function process_tome_mechanics
 /// @param {struct} _unit - The unit structure
 /// @param {real} _unit_id - The caster's ID
@@ -683,30 +653,6 @@ function find_valid_target(_power_data) {
     }
 }
 
-/// @function check_cast_success
-/// @param {struct} _unit - The caster unit
-/// @returns {bool} Whether the cast was successful
-function check_cast_success(_unit) {
-    var _equipment_psychic_focus = _unit.gear_special_value("psychic_focus");
-    var _attribute_psychic_focus = _unit.psychic_focus();
-
-    var _cast_difficulty = PSY_CAST_DIFFICULTY_BASE; //TODO: Make this more dynamic;
-    _cast_difficulty -= _equipment_psychic_focus;
-    _cast_difficulty -= _attribute_psychic_focus;
-
-    var _cast_roll = roll_personal_dice(1, 100, "high", _unit);
-    var _cast_successful = _cast_roll >= max(_cast_difficulty, PSY_CAST_DIFFICULTY_MIN);
-
-    if (_cast_successful) {
-        _unit.roll_psionic_increase();
-        if (roll_personal_dice(2, 10, "high", _unit) == 20) {
-            _unit.add_exp(max((_cast_difficulty / 30), 0));
-        }
-    }
-
-    return _cast_successful;
-}
-
 /// @function select_psychic_power
 /// @param {struct} _unit - The caster unit
 /// @returns {string} The ID of the selected power
@@ -720,8 +666,11 @@ function select_psychic_power(_unit) {
         var _power_type = get_power_data(_known_powers[i], "type");
         if (_power_type == "attack") {
             var _power_magnitude = get_power_data(_known_powers[i], "magnitude");
-            var _power_max_kills = get_power_data(_known_powers[i], "max_kills");
-            var _power_priority = _power_magnitude + (_power_max_kills * roll_dice(1, 50));
+            var _power_additional_kills = get_power_data(_known_powers[i], "additional_kills");
+            if (_power_additional_kills == -1) {
+                _power_additional_kills = 10;
+            }
+            var _power_priority = _power_magnitude * (1 + (_power_additional_kills * irandom_range(0, 1)));
 
             ds_priority_add(_powers_priority_queue, _known_powers[i], _power_priority);
         }

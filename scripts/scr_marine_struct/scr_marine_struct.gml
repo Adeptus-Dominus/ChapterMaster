@@ -1243,7 +1243,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         var _discipline_powers = get_discipline_data(obj_ini.psy_powers, "powers");
         _discipline_powers_max = array_length(_discipline_powers);
 
-        _powers_limit = floor(experience / 30);
+        _powers_limit = max(0, floor((intelligence - 26) / 2));
         _powers_known_count = string_count(string(_discipline_prefix), _abilities_string);
 
         while ((_powers_known_count < _powers_limit) && (_powers_known_count < _discipline_powers_max)) {
@@ -1256,20 +1256,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             }
         }
 
-        return _powers_learned;
-    };
-
-    static roll_psionic_increase = function() {
-        if (psionic < 12) {
-            var _psionic_difficulty = (psionic * 50) - experience;
-
-            var _dice_roll = roll_personal_dice(1, _psionic_difficulty, "high", self);
-            if (_dice_roll == _psionic_difficulty) {
-                psionic++;
-                add_battle_log_message($"{name_role()} was touched by the warp!", 999, 135);
-            }
-        }
-    };
+		return _powers_learned;
+	};
 
     static roll_psionics = function() {
         var _dice_count = marine_ascension == "pre_game" ? 1 : 2;
@@ -2167,15 +2155,15 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         return _total_special_value;
     };
 
-    static psychic_amplification = function() {
-        return round((psionic - 2) + (experience / 100));
-    };
+	static psychic_amplification = function() {
+		return round((psionic - 2) + (experience * 0.01));
+	}
 
     static psychic_focus = function() {
-        return round((experience * 0.05) + (wisdom * 0.4));
+        return round((wisdom * 0.4) + (experience * 0.05));
     };
 
-    static perils_chance = function() {
+    static perils_threshold = function() {
         var _perils_threshold = PSY_PERILS_CHANCE_BASE;
 
         if (instance_exists(obj_ncombat)) {
@@ -2194,6 +2182,65 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
         return _perils_threshold;
     };
+
+	static perils_strength = function() {
+		var _perils_strength = roll_personal_dice(1, 100, "low", self);
+	
+		// I hope you like demons
+		if (has_trait("warp_tainted")) {
+			var _second_roll = roll_personal_dice(1, 100, "high", self);
+			if (_second_roll > _perils_strength) {
+				_perils_strength = _second_roll;
+			}
+		}
+	
+		_perils_strength = max(_perils_strength, PSY_PERILS_STR_BASE);
+	
+		return _perils_strength;
+	}
+
+	static perils_test = function() {
+		var _roll = roll_personal_dice(1, 1000, "high", self);
+		var _perils_threshold = perils_threshold();
+	
+		return _roll <= _perils_threshold;
+	}
+
+	static psychic_focus_difficulty = function() {
+		var _cast_difficulty = PSY_CAST_DIFFICULTY_BASE;  //TODO: Make this more dynamic;
+		_cast_difficulty -= gear_special_value("psychic_focus");
+		_cast_difficulty -= psychic_focus();
+		_cast_difficulty = max(_cast_difficulty, PSY_CAST_DIFFICULTY_MIN);
+
+		return _cast_difficulty;
+	}
+
+	static psychic_focus_test = function() {
+		var _cast_roll = roll_personal_dice(1, 100, "high", self);
+		var _cast_difficulty = psychic_focus_difficulty();
+		var _test_successful = _cast_roll >= _cast_difficulty;
+
+		if (_test_successful) {
+			roll_psionic_increase();
+			if (roll_personal_dice(2, 10, "high", self) == 20) {
+				add_exp(1 * (_cast_difficulty / 100));
+			}
+		}
+
+		return _test_successful;
+	}
+
+	static roll_psionic_increase = function() {
+		if (psionic < 12) {
+			var _psionic_difficulty = max(1, (psionic * 50) - experience);
+
+			var _dice_roll = roll_personal_dice(1, _psionic_difficulty, "high", self);
+			if (_dice_roll == _psionic_difficulty) {
+				psionic++;
+				add_battle_log_message($"{name_role()} was touched by the warp!", 999, 135);
+			}
+		}
+	};
 
     static movement_after_math = function(end_company = company, end_slot = marine_number) {
         if (squad != "none") {

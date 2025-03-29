@@ -636,7 +636,7 @@ function colour_picker(xx,yy, max_width=400) constructor{
             array_push(texture_coords, [[draw_x, draw_y , draw_x+_frame_width, draw_y+_frame_height],texture_names[i]]);
             draw_x += sprite_draw_args.frame_width
         }
-        show_debug_message("call create_texture_surface");
+        // show_debug_message("call create_texture_surface");
         surface_reset_target();
     }
 
