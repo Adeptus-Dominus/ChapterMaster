@@ -1,11 +1,6 @@
-var __b__;
-__b__ = action_if_number(obj_pnunit, 0, 2);
-if __b__
-{
-{
-
-
-
+if (!instance_exists(obj_pnunit)) {
+    exit;
+}
 
 var leftest,charge=0,enemy2=0,target_unit_index=0,unit;
 
@@ -428,7 +423,5 @@ var range_shooti;
 instance_activate_object(obj_pnunit);
 
 /* */
-}
-}
 }
 /*  */
