@@ -6,8 +6,8 @@ function distribute_experience(_units, _exp_amount) {
         var _individual_exp = _exp_amount / _eligible_units_count;
         _average_exp = _individual_exp;
         for (var i = 0; i < _eligible_units_count; i++) {
-            var _unit = _units[i][0];
-            var _exp_mod = _units[i][1];
+            var _unit = _units[i];
+            var _exp_mod = max(1 - (_unit.experience / 200), 0.1);
             var _exp_update_data = _unit.add_exp(_individual_exp*_exp_mod);
 
             var _powers_learned = _exp_update_data[1];
