@@ -1290,7 +1290,7 @@ if __b__ {
 			if (dudes[j] = "Leader") and(obj_controller.faction_gender[10] = 1) {
 				scr_en_weapon("Meltagun", true, dudes_num[j], dudes[j], j);
 				scr_en_weapon("Power Fist", true, dudes_num[j], dudes[j], j);
-				dudes_ac[j] = 20;
+				dudes_ac[j] = 30;
 				if (obj_ncombat.started = 0) or(dudes_num[j] > 1) {
 					dudes_hp[j] = 300;
 				}
@@ -1299,7 +1299,7 @@ if __b__ {
 			}
 			if (dudes[j] = "Leader") and(obj_controller.faction_gender[10] = 2) {
 				scr_en_weapon("Khorne Demon Melee", true, dudes_num[j] * 2, dudes[j], j);
-				dudes_ac[j] = 20;
+				dudes_ac[j] = 30;
 				if (obj_ncombat.started = 0) or(dudes_num[j] > 1) {
 					dudes_hp[j] = 300;
 				}
@@ -1310,7 +1310,7 @@ if __b__ {
 			if (dudes[j] = "Fallen") {
 				scr_en_weapon("Bolt Pistol", true, dudes_num[j], dudes[j], j);
 				scr_en_weapon("Power Weapon", true, dudes_num[j], dudes[j], j);
-				dudes_ac[j] = 20;
+				dudes_ac[j] = 30;
 				dudes_hp[j] = 120;
 				men += dudes_num[j];
 				dudes_dr[j] = 0.5;
@@ -1319,7 +1319,7 @@ if __b__ {
 			if (dudes[j] = "Chaos Lord") {
 				scr_en_weapon("Plasma Pistol", true, dudes_num[j], dudes[j], j);
 				scr_en_weapon("Power Weapon", true, dudes_num[j], dudes[j], j);
-				dudes_ac[j] = 20;
+				dudes_ac[j] = 30;
 				dudes_hp[j] = 150;
 				dudes_dr[j] = 0.5;
 				men += dudes_num[j];
@@ -1327,7 +1327,7 @@ if __b__ {
 			if (dudes[j] = "Chaos Sorcerer") {
 				scr_en_weapon("Plasma Pistol", true, dudes_num[j], dudes[j], j);
 				scr_en_weapon("Force Staff", true, dudes_num[j], dudes[j], j);
-				dudes_ac[j] = 20;
+				dudes_ac[j] = 30;
 				dudes_hp[j] = 100;
 				dudes_dr[j] = 0.5;
 				men += dudes_num[j];
@@ -1336,7 +1336,7 @@ if __b__ {
 				scr_en_weapon("Chainfist", true, dudes_num[j], dudes[j], j);
 				scr_en_weapon("Meltagun", true, dudes_num[j], dudes[j], j);
 				scr_en_weapon("Flamer", true, dudes_num[j], dudes[j], j);
-				dudes_ac[j] = 20;
+				dudes_ac[j] = 30;
 				dudes_hp[j] = 100;
 				dudes_dr[j] = 0.5;
 				men += dudes_num[j];
@@ -1511,7 +1511,7 @@ if __b__ {
 				scr_en_weapon("Lascannon", false, dudes_num[j] * 2, dudes[j], j);
 				scr_en_weapon("Twin Linked Lascannon", false, dudes_num[j], dudes[j], j);
 				dudes_ac[j] = 45;
-				dudes_hp[j] = 300;
+				dudes_hp[j] = 350;
 				dudes_dr[j] = 0.5;
 				veh += dudes_num[j];
 				dudes_vehicle[j] = 1;
