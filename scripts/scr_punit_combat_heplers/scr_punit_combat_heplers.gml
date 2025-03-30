@@ -203,16 +203,12 @@ function move_unit_block(direction, blocks = 1, allow_collision = false) {
 
 /// @mixin
 function move_enemy_block() {
-	var _local_fort = instance_exists(obj_nfort);
-	if (flank) {
-		if (!_local_fort) {
-			move_unit_block("west");
-		}
-	} else if (flank == 1) {
-		if (!_local_fort) {
-			move_unit_block("east");
-		}
+	if (instance_exists(obj_nfort)) {
+		exit;
 	}
+
+	var _direction = flank ? "east" : "west";
+	move_unit_block(_direction);
 }
 
 function move_enemy_blocks() {

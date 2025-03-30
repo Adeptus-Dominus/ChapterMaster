@@ -115,11 +115,9 @@ if (timer_stage=1) or (timer_stage=5){
 
     else if (enemy==6){
         if (instance_exists(obj_enunit)){
-            with (obj_enunit) {
-                alarm[1]=2;
-                move_enemy_blocks();
-                alarm[0]=3;
-            }
+            obj_enunit.alarm[1]=2;
+            move_enemy_blocks();
+            obj_enunit.alarm[0]=3;
         }
         if (instance_exists(obj_pnunit)){
             obj_pnunit.alarm[1]=1;
@@ -143,12 +141,10 @@ else if (timer_stage=3){
             turn_count++;
         }
         if (instance_exists(obj_enunit)){
-            with (obj_enunit) {
-                alarm[1]=2;
-                move_enemy_blocks();
-                alarm[0]=3;
-                alarm[8]=4;
-            }
+            obj_enunit.alarm[1]=2;
+            move_enemy_blocks();
+            obj_enunit.alarm[0]=3;
+            obj_enunit.alarm[8]=4;
             turns+=1;
         }
         var messages=0;messages_to_show = 24;largest=0;random_messages=0;priority=0;messages_shown=0;
