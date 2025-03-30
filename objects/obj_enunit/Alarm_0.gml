@@ -17,9 +17,6 @@ engaged = collision_point(x-10, y, obj_pnunit, 0, 1) || collision_point(x+10, y,
 // show_debug_message($"enemy is in melee {engaged}")
 
 if (!engaged){ // Shooting
-
-    if (!instance_exists(obj_pnunit)) then exit;
-
     for (var i=0;i<array_length(wep);i++){
         if (!instance_exists(obj_pnunit)) then exit;
 
