@@ -16,7 +16,7 @@ try {
     enemy2=enemy;
 
     if (obj_ncombat.defending=false) or (obj_ncombat.dropping=1){
-        move_unit_block();
+        move_unit_block("east");
     }
 
     if (!instance_exists(enemy)) then exit;

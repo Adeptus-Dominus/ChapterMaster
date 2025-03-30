@@ -116,6 +116,7 @@ if (timer_stage=1) or (timer_stage=5){
     else if (enemy==6){
         if (instance_exists(obj_enunit)){
             obj_enunit.alarm[1]=2;
+            move_enemy_blocks();
             obj_enunit.alarm[0]=3;
         }
         if (instance_exists(obj_pnunit)){
@@ -141,6 +142,7 @@ else if (timer_stage=3){
         }
         if (instance_exists(obj_enunit)){
             obj_enunit.alarm[1]=2;
+            move_enemy_blocks();
             obj_enunit.alarm[0]=3;
             obj_enunit.alarm[8]=4;
             turns+=1;

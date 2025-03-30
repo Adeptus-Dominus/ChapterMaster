@@ -181,29 +181,50 @@ function block_position_collision(position_x, position_y) {
 	}
 }
 
-function move_unit_block(direction = "east", blocks = 1, allow_collision = false, allow_passing = false) {
-	try {
-		distance = 10 * blocks;
-		if (direction == "east") {
-			var _new_pos = x + distance;
-			if (allow_collision == false) {
-				if (!block_position_collision(_new_pos, y)) {
-					x = _new_pos;
-				}
-			} else {
-				x = _new_pos;
-			}
-		} else if (direction == "west") {
-			var _new_pos = x - distance;
-			if (allow_collision == false) {
-				if (!block_position_collision(_new_pos, y)) {
-					x = _new_pos;
-				}
-			} else {
-				x = _new_pos;
-			}
+/// @mixin
+function move_unit_block(direction, blocks = 1, allow_collision = false) {
+    try {
+        var distance = 10 * blocks;
+        var _new_pos = x;
+        
+        if (direction == "east") {
+            _new_pos = x + distance;
+        } else if (direction == "west") {
+            _new_pos = x - distance;
+        }
+
+        if (allow_collision == true || !block_position_collision(_new_pos, y)) {
+			x = _new_pos;
+        }
+    } catch (_exception) {
+        handle_exception(_exception);
+    }
+}
+
+/// @mixin
+function move_enemy_block() {
+	var _local_fort = instance_exists(obj_nfort);
+	if (flank) {
+		if (!_local_fort) {
+			move_unit_block("west");
 		}
-	} catch (_exception) {
-		handle_exception(_exception);
+	} else if (flank == 1) {
+		if (!_local_fort) {
+			move_unit_block("east");
+		}
 	}
+}
+
+function move_enemy_blocks() {
+	var _enemy_movement_queue = ds_priority_create();
+	with (obj_enunit) {
+		ds_priority_add(_enemy_movement_queue, id, x);
+	}
+	while (!ds_priority_empty(_enemy_movement_queue)) {
+		var _enemy_block = ds_priority_delete_min(_enemy_movement_queue);
+		with (_enemy_block) {
+			move_enemy_block();
+		}
+	}
+	ds_priority_destroy(_enemy_movement_queue);
 }

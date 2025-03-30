@@ -1,43 +1,19 @@
+//* This alarm is responsible for the enemy target column selection;
+
 if (!instance_exists(obj_pnunit)) {
     exit;
 }
 
-var leftest,charge=0,enemy2=0,target_unit_index=0,unit;
-
-// with(obj_pnunit){if (x<-4000) or (defenses=1) then instance_deactivate_object(id);}
-
-var _local_fort = instance_exists(obj_nfort);
-if (!flank){
-    enemy=get_rightmost();// Right most enemy
-    enemy2=enemy;
-    if (enemy=="none"){
-        exit;
-    }
-    if (!_local_fort){
-        move_unit_block("west");
-    }
-    
-    //if (point_distance(x,0,enemy.x,0)<5) then x+=10;
-    // instance_activate_object(obj_cursor);
+enemy = flank ? get_leftmost() : get_rightmost();
+if (enemy == "none") {
+    exit;
 }
-else if (flank=1){
-    enemy=get_leftmost();
-    enemy2=enemy;
-    if (enemy=="none"){
-        exit;
-    }
-    // if (collision_point(x+10,y,obj_pnunit,0,1)) then engaged=1;
-    // if (!collision_point(x+10,y,obj_pnunit,0,1)) then engaged=0;
-    if (!_local_fort){
-        move_unit_block("east");
-    }
-    
-    // instance_activate_object(obj_cursor);
-}
+
+var target_unit_index = 0;
+var enemy2 = enemy;
 
 //In melee check
 engaged = collision_point(x-10, y, obj_pnunit, 0, 1) || collision_point(x+10, y, obj_pnunit, 0, 1);
-
 // show_debug_message($"enemy is in melee {engaged}")
 
 if (!engaged){ // Shooting
@@ -313,34 +289,35 @@ else if ((engaged || enemy.engaged) and target_block_is_valid( enemy,obj_pnunit)
 
 instance_activate_object(obj_pnunit);
 
-/* */
-__b__ = action_if_variable(image_index, -500, 0);
-if __b__
-{
+//TODO: Everything bellow has to be scrapped and reworked;
+//! Commented out stuff bellow, until I understand why it exists;
+/* __b__ = action_if_variable(image_index, -500, 0);
+if (__b__) {
+    var leftest, charge = 0,
+        enemy2 = 0;
 
+    with(obj_pnunit) {
+        if (x < -4000) {
+            instance_deactivate_object(id);
+        }
+    }
 
+    if (flank == 0) {
+        move_unit_block("west");
+        // instance_activate_object(obj_cursor);
+    }
+    if (flank == 1) {
+        enemy = instance_nearest(x, y, obj_pnunit); // Right most enemy
+        enemy2 = enemy;
+        // if (collision_point(x+10,y,obj_pnunit,0,1)) then engaged=1;
+        // if (!collision_point(x+10,y,obj_pnunit,0,1)) then engaged=0;
+        move_unit_block();
 
-
-var leftest,charge=0,enemy2=0;
-
-with(obj_pnunit){
-    if (x<-4000) then instance_deactivate_object(id);
-}
-
-if (flank=0){
-    move_unit_block("west");
-    // instance_activate_object(obj_cursor);
-}
-if (flank=1){
-    enemy=instance_nearest(x,y,obj_pnunit);// Right most enemy
-    enemy2=enemy;
-    // if (collision_point(x+10,y,obj_pnunit,0,1)) then engaged=1;
-    // if (!collision_point(x+10,y,obj_pnunit,0,1)) then engaged=0;
-    move_unit_block();
-    
-    if (!position_empty(x+10,y)) then engaged=1;// Quick smash
-    // instance_activate_object(obj_cursor);
-}
+        if (!position_empty(x + 10, y)) {
+            engaged = 1;
+        } // Quick smash
+        // instance_activate_object(obj_cursor);
+    }
 
 if (!collision_point(x+10,y,obj_pnunit,0,1)) and (!collision_point(x-10,y,obj_pnunit,0,1)) then engaged=0;
 if (collision_point(x+10,y,obj_pnunit,0,1)) or (collision_point(x-10,y,obj_pnunit,0,1)) then engaged=1;
@@ -419,9 +396,5 @@ var range_shooti;
 
 }
 
-
-instance_activate_object(obj_pnunit);
-
-/* */
-}
-/*  */
+    instance_activate_object(obj_pnunit);
+} */
