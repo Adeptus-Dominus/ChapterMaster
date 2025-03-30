@@ -14,7 +14,7 @@ global.weapons = {
 		},
 		"melee_hands": 0.9,
 		"ranged_hands": 1,
-		"tags": ["shield"],
+		"tags": ["shield","boarding 2"],
 		"hp_mod": {
 			"standard": 30,
 			"master_crafted": 35,
@@ -30,7 +30,7 @@ global.weapons = {
 			"artifact": 6
 		},
 		"melee_hands": 0.9,
-		"tags": ["shield","boarding"],
+		"tags": ["shield","boarding 3"],
 		"hp_mod": {
 			"standard": 15,
 			"master_crafted": 17.5,
@@ -58,25 +58,25 @@ global.weapons = {
 	"Combat Knife": {
 		"abbreviation": "CbKnf",
 		"attack": {
-			"standard": 50,
-			"master_crafted": 75,
-			"artifact": 100
+			"standard": 100,
+			"master_crafted": 125,
+			"artifact": 150
 		},
 		"description": "More of a sword than a knife, this tough and thick blade becomes a deadly weapon in the hand of an Astartes.",
 		"melee_hands": 0,
 		"ranged_hands": 0,
 		"ammo": 0,
 		"range": 1,
-		"spli": 1,
+		"spli": 2,
 		"arp": 0,
 		"tags": ["knife"],
 	},
 	"Chainsword": {
 		"abbreviation": "ChSwrd",
 		"attack": {
-			"standard": 130,
-			"master_crafted": 150,
-			"artifact": 200
+			"standard": 150,
+			"master_crafted": 180,
+			"artifact": 250
 		},
 		"description": "A standard Chainsword. It is popular among Assault Marines due to their raw power while maintaining speed.",
 		"melee_hands": 1,
@@ -90,9 +90,9 @@ global.weapons = {
 	"Chainaxe": {
 		"abbreviation": "ChAxe",
 		"attack": {
-			"standard": 110,
-			"master_crafted": 130,
-			"artifact": 150
+			"standard": 175,
+			"master_crafted": 225,
+			"artifact": 275
 		},
 		"melee_mod": {
 			"standard": 5,
@@ -104,7 +104,7 @@ global.weapons = {
 		"ranged_hands": 0,
 		"ammo": 0,
 		"range": 1,
-		"spli": 6,
+		"spli": 3,
 		"arp": 0,
 		"tags": ["chain", "axe", "dual", "savage", "boarding 2"],
 	},
@@ -131,9 +131,9 @@ global.weapons = {
 	"Eviscerator": {
 		"abbreviation": "Evisc",
 		"attack": {
-			"standard": 260,
-			"master_crafted": 290,
-			"artifact": 330
+			"standard": 250,
+			"master_crafted": 300,
+			"artifact": 350
 		},
 		"melee_mod": {
 			"standard": 2,
@@ -153,8 +153,8 @@ global.weapons = {
 		"abbreviation": "PwrSwrd",
 		"attack": {
 			"standard": 225,
-			"master_crafted": 260,
-			"artifact": 300
+			"master_crafted": 275,
+			"artifact": 325
 		},
 		"melee_mod": {
 			"standard": 1,
@@ -188,7 +188,7 @@ global.weapons = {
 		"ranged_hands": 0,
 		"ammo": 0,
 		"range": 1,
-		"spli": 6,
+		"spli": 3,
 		"arp": -1,
 		"special_properties": ["Parry"],
 		"tags": ["power", "spear", "martial"],
@@ -196,8 +196,8 @@ global.weapons = {
 	"Chainfist": {
 		"abbreviation": "ChFst",
 		"attack": {
-			"standard": 550,
-			"master_crafted": 600,
+			"standard": 400,
+			"master_crafted": 550,
 			"artifact": 700
 		},
 		"description": "Created by mounting a chainsword to a power fist, this weapon is easily able to carve through armoured bulkheads.",
@@ -205,7 +205,7 @@ global.weapons = {
 		"ranged_hands": 0,
 		"range": 1,
 		"spli": 4,
-		"tags": ["power","boarding 3", "chain", "fist", "dual", "siege", "savage"],
+		"tags": ["power","boarding 3", "chain", "fist", "siege", "savage"],
 		"arp": -2,
 	},
 	"Lascutter": {
@@ -245,9 +245,9 @@ global.weapons = {
 	"Power Axe": {
 		"abbreviation": "PwrAxe",
 		"attack": {
-			"standard": 200,
-			"master_crafted": 225,
-			"artifact": 300
+			"standard": 250,
+			"master_crafted": 300,
+			"artifact": 350
 		},
 		"melee_mod": {
 			"standard": 1,
@@ -259,7 +259,7 @@ global.weapons = {
 		"ranged_hands": 0,
 		"ammo": 0,
 		"range": 1,
-		"spli": 5,
+		"spli": 3,
 		"arp": -1,
 		"tags": ["power", "axe", "dual","savage", "boarding 2"],
 	},
@@ -276,12 +276,12 @@ global.weapons = {
 			"artifact": 1.2
 		},
 		"description": "A symbol that is equally weapon and holy icon given only to those trained by the Adeptus Mechanicus and have shown their devotion to the Omnissiah in battle.",
-		"melee_hands": 1,
+		"melee_hands": 1.5,
 		"ranged_hands": 0,
 		"ammo": 0,
 		"range": 1,
 		"spli": 5,
-		"arp": -1,
+		"arp": -2,
 		"tags": ["power", "axe", "savage", "boarding 3"],
 	},
 	"Executioner Power Axe": {
@@ -308,8 +308,8 @@ global.weapons = {
 	"Power Fist": {
 		"abbreviation": "PwrFst",
 		"attack": {
-			"standard": 450,
-			"master_crafted": 500,
+			"standard": 400,
+			"master_crafted": 450,
 			"artifact": 600
 		},
 		"melee_mod": {
@@ -329,8 +329,8 @@ global.weapons = {
 	"Power Fists": {
 		"abbreviation": "PwrFsts",
 		"attack": {
-			"standard": 900,
-			"master_crafted": 1000,
+			"standard": 800,
+			"master_crafted": 900,
 			"artifact": 1200
 		},
 		"description": "A large, ceramite clad gauntlets surrounded by power energy fields. Though cumbersome to use, they dish out tremendous damage to enemies, leaving very little behind.",
@@ -361,8 +361,8 @@ global.weapons = {
 	"Boltstorm Gauntlet": {
 		"abbreviation": "BlstGnt",
 		"attack": {
-			"standard": 450,
-			"master_crafted": 500,
+			"standard": 400,
+			"master_crafted": 450,
 			"artifact": 600
 		},
 		"description": "The Boltstorm Gauntlet is a Power Fists with an Integrated Bolter, so aside from being reinforced with a crackling power field and able to crush armour, bone and even thick vehicle plating, it is also capable of firing bolts at an astonishing rate",
@@ -378,8 +378,8 @@ global.weapons = {
 	"Assault Chainfist": {
 		"abbreviation": "AssltChFst",
 		"attack": {
-			"standard": 550,
-			"master_crafted": 600,
+			"standard": 400,
+			"master_crafted": 550,
 			"artifact": 700
 		},
 		"description": "Created by mounting a chainsword to a power fist, this weapon is easily able to carve through armoured bulkheads. Contains an integrated Assault Cannon",
@@ -394,9 +394,9 @@ global.weapons = {
 	"Lightning Claw": {
 		"abbreviation": "LghtClw",
 		"attack": {
-			"standard": 450,
-			"master_crafted": 500,
-			"artifact": 600
+			"standard": 375,
+			"master_crafted": 425,
+			"artifact": 575
 		},
 		"description": "Lightning claws are specialized close combat weapons with built-in disruptor fields. These lethal claws rip into infantry like butter, bringing terror to the foe.",
 		"melee_hands": 1.1,
@@ -432,9 +432,9 @@ global.weapons = {
 	"Thunder Hammer": {
 		"abbreviation": "ThndHmr",
 		"attack": {
-			"standard": 650,
-			"master_crafted": 750,
-			"artifact": 900
+			"standard": 500,
+			"master_crafted": 600,
+			"artifact": 750
 		},
 		"melee_mod": {
 			"standard": 1.3,
@@ -446,7 +446,7 @@ global.weapons = {
 		"ranged_hands": 1,
 		"ammo": 0,
 		"range": 1,
-		"spli": 10,
+		"spli": 3,
 		"arp": -2,
 		"maintenance" : 0.1,
 		"req_exp": 100,
@@ -455,9 +455,9 @@ global.weapons = {
 	"Heavy Thunder Hammer": {
 		"abbreviation": "HvyThndHmr",
 		"attack": {
-			"standard": 800,
-			"master_crafted": 950,
-			"artifact": 1100,
+			"standard": 700,
+			"master_crafted": 850,
+			"artifact": 1000,
 		},
 		"melee_mod": {
 			"standard": 1.3,
@@ -470,17 +470,17 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"arp": -2,
-		"spli": 15,
-    "maintenance" : 0.1,
+		"spli": 4,
+    	"maintenance" : 0.1,
 		"req_exp": 100,
     	"tags": ["heavy_melee", "power", "hammer", "siege", "savage"],
 	},
 	"Power Mace": {
 		"abbreviation": "PwrMace",
 		"attack": {
-			"standard": 600,
-			"master_crafted": 700,
-			"artifact": 800
+			"standard": 400,
+			"master_crafted": 450,
+			"artifact": 600
 		},
 		"melee_mod": {
 			"standard": 1.3,
@@ -493,16 +493,16 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"arp": -2,
-		"spli": 10,
+		"spli": 6,
 		"tags": ["power", "mace", "siege", "savage"],
 		"req_exp": 100,
 	},
 	"Mace of Absolution": {
 		"abbreviation": "AbsltMace",
 		"attack": {
-			"standard": 600,
-			"master_crafted": 700,
-			"artifact": 800
+			"standard": 400,
+			"master_crafted": 450,
+			"artifact": 600
 		},
 		"melee_mod": {
 			"standard": 1.3,
@@ -515,7 +515,7 @@ global.weapons = {
 		"ranged_hands": 2,
 		"ammo": 0,
 		"range": 1,
-		"spli": 10,
+		"spli": 6,
 		"arp": -2,
 		"tags": ["power", "mace", "siege", "pious", "savage"],
 		"req_exp": 100,
@@ -544,9 +544,9 @@ global.weapons = {
 	"Crozius Arcanum": {
 		"abbreviation": "Crzus",
 		"attack": {
-			"standard": 200,
-			"master_crafted": 250,
-			"artifact": 325
+			"standard": 250,
+			"master_crafted": 300,
+			"artifact": 400
 		},
 		"melee_mod": {
 			"standard": 1,
@@ -565,9 +565,9 @@ global.weapons = {
 	"Relic Blade": {
 		"abbreviation": "RlcBld",
 		"attack": {
-			"standard": 850,
-			"master_crafted": 950,
-			"artifact": 1100
+			"standard": 600,
+			"master_crafted": 750,
+			"artifact": 900
 		},
 		"melee_mod": {
 			"standard": 1,
@@ -619,6 +619,23 @@ global.weapons = {
 		"maintenance" : 0.1,
 		"tags": ["bolt", "pistol", "boarding 2"],
 	},
+	"Shotgun": {
+		"abbreviation": "Shotgun",
+		"attack": {
+			"standard": 250,
+			"master_crafted": 300,
+			"artifact": 350
+		},
+		"description": "An Astartes Shotgun capable of firing slug and other specialist munitions deadly up close but loses effectiveness at range.",
+		"melee_hands": 0,
+		"ranged_hands": 1,
+		"ammo": 10,
+		"range": 4.1,
+		"spli": 8,
+		"arp": 0,
+		"maintenance" : 0.1,
+		"tags": ["bolt", "pistol", "boarding 2"],
+	},
 	"Webber": {
 		"abbreviation": "Webbr",
 		"attack": {
@@ -638,8 +655,8 @@ global.weapons = {
 	"Grav-Pistol": {
 		"abbreviation": "GrvPstl",
 		"attack": {
-			"standard": 300,
-			"master_crafted": 350,
+			"standard": 250,
+			"master_crafted": 300,
 			"artifact": 425
 		},
 		"description": "A smaller version of the Grav-Gun which utilises the gravitic reaction principle most commonly seen powering grav-vehicles such as the Land Speeder.",
@@ -655,9 +672,9 @@ global.weapons = {
 	"Integrated-Grav": {
 		"abbreviation": "IntGrv",
 		"attack": {
-			"standard": 500,
-			"master_crafted": 550,
-			"artifact": 625
+			"standard": 400,
+			"master_crafted": 450,
+			"artifact": 600
 		},
 		"description": "",
 		"melee_hands": 0,
@@ -671,9 +688,9 @@ global.weapons = {
 	"Grav-Gun": {
 		"abbreviation": "GrvGn",
 		"attack": {
-			"standard": 500,
-			"master_crafted": 550,
-			"artifact": 625
+			"standard": 400,
+			"master_crafted": 450,
+			"artifact": 600
 		},
 		"description": "A medium-sized weapon which utilises the gravitic reaction principle most commonly seen powering grav-vehicles such as the Land Speeder.",
 		"melee_hands": 1,
@@ -688,9 +705,9 @@ global.weapons = {
 	"Grav-Cannon": {
 		"abbreviation": "GrvCan",
 		"attack": {
-			"standard": 800,
-			"master_crafted": 850,
-			"artifact": 960
+			"standard": 600,
+			"master_crafted": 700,
+			"artifact": 850
 		},
 		"description": "A bigger version of the Grav-Gun which utilises the gravitic reaction principle most commonly seen powering grav-vehicles such as the Land Speeder.",
 		"melee_hands": 1,
@@ -705,16 +722,16 @@ global.weapons = {
 	"Underslung Bolter": {
 		"abbreviation": "UndBltr",
 		"attack": {
-			"standard": 100,
-			"master_crafted": 125,
-			"artifact": 150
+			"standard": 150,
+			"master_crafted": 200,
+			"artifact": 300
 		},
 		"description": "A compact, secondary Bolter weapon often attached under the barrel of a larger firearm. It allows for rapid fire in close quarters combat.",
 		"melee_hands": 0,
 		"ranged_hands": 1,
 		"ammo": 0,
 		"range": 10,
-		"spli": 2,
+		"spli": 3,
 		"arp": 0,
 		"tags": ["bolt", "attached"]
 	},
@@ -722,8 +739,8 @@ global.weapons = {
 		"abbreviation": "StlkBltr",
 		"attack": {
 			"standard": 180,
-			"master_crafted": 200,
-			"artifact": 240
+			"master_crafted": 250,
+			"artifact": 380
 		},
 		"description": "The Stalker Bolter is a scoped long-range variant of the standard Bolter. Depending on the specific modifications made by the wielder, the Stalker Bolter can serve as a precision battle rifle or a high-powered sniper weapon.",
 		"melee_hands": 0,
@@ -731,7 +748,7 @@ global.weapons = {
 		"ammo": 20,
 		"range": 16,
 		"spli": 3,
-		"arp": -1,
+		"arp": 0,
 		"tags": ["bolt", "precision"]
 	},
 	"Bolter": {
@@ -761,7 +778,7 @@ global.weapons = {
 		"melee_hands": 1,
 		"ranged_hands": 2.25,
 		"ammo": 8,
-		"range": 2,
+		"range": 4,
 		"spli": 20,
 		"arp": -1,
 		"tags": ["flame", "heavy_ranged", "boarding 3"]
@@ -839,7 +856,7 @@ global.weapons = {
 		"melee_hands": 0,
 		"ranged_hands": 0,
 		"ammo": 5,
-		"range": 2.1,
+		"range": 3.1,
 		"spli": 1,
 		"arp": 1,
 		"tags": ["melta"]
@@ -847,9 +864,9 @@ global.weapons = {
 	"Meltagun": {
 		"abbreviation": "Mltgn",
 		"attack": {
-			"standard": 400,
-			"master_crafted": 475,
-			"artifact": 600
+			"standard": 350,
+			"master_crafted": 425,
+			"artifact": 550
 		},
 		"description": "A loud weapon that roars with fury, this gun vaporizes flesh and armor alike. Due to heat dissipation, it has only a short range.",
 		"melee_hands": 1,
@@ -863,9 +880,9 @@ global.weapons = {
 	"Multi-Melta": {
 		"abbreviation": "MltMelt",
 		"attack": {
-			"standard": 700,
-			"master_crafted": 800,
-			"artifact": 950
+			"standard": 500,
+			"master_crafted": 600,
+			"artifact": 700
 		},
 		"description": "Though bearing longer range than the Meltagun, this weapon's great size usually restricts it to vehicles though those with Power Armor can carry this cumbersome weapon into battle.",
 		"melee_hands": 1,
@@ -879,8 +896,8 @@ global.weapons = {
 	"Plasma Pistol": {
 		"abbreviation": "PlsmPstl",
 		"attack": {
-			"standard": 250,
-			"master_crafted": 290,
+			"standard": 220,
+			"master_crafted": 270,
 			"artifact": 320
 		},
 		"description": "A pistol variant of the plasma gun, this dangerous-to-use weapon has exceptional armor-piercing capabilities.",
@@ -895,9 +912,9 @@ global.weapons = {
 	"Plasma Cutter": { // Basically a dual-linked plasma pistol
 		"abbreviation": "PlsmCt",
 		"attack": {
-			"standard": 230,
-			"master_crafted": 260,
-			"artifact": 300
+			"standard": 220,
+			"master_crafted": 270,
+			"artifact": 320
 		},
 		"description": "While actually intended to be used on the battlefield as a tool to repair damaged war machines, the Plasma Cutter is equally adept at slicing through even terminator armour with its intense, constant beam of superheated plasma.",
 		"melee_hands": 0,
@@ -927,41 +944,41 @@ global.weapons = {
 	"Integrated-Plasma": {
 		"abbreviation": "IntPls",
 		"attack": {
-			"standard": 350,
-			"master_crafted": 400,
-			"artifact": 475
+			"standard": 300,
+			"master_crafted": 350,
+			"artifact": 450
 		},
 		"description": "",
 		"melee_hands": 0,
 		"ranged_hands": 0,
 		"ammo": 6,
 		"range": 10,
-		"spli": 2,
-		"arp": -1,
-		"tags": ["plasma"]
+		"spli": 4,
+		"arp": -2,
+		"tags": ["plasma","energy"]
 	},
 	"Plasma Gun": {
 		"abbreviation": "PlsmGn",
 		"attack": {
-			"standard": 350,
-			"master_crafted": 400,
-			"artifact": 475
+			"standard": 300,
+			"master_crafted": 350,
+			"artifact": 450
 		},
 		"description": "A two-handed weapon that launches blobs of plasma at the target. They are considered both sacred and dangerous, overheating through rapid firing of the weapon. Overheating can result in detonation of the weapon, killing the wielder.",
 		"melee_hands": 0,
 		"ranged_hands": 2,
 		"ammo": 16,
 		"range": 10,
-		"spli": 3,
+		"spli": 4,
 		"arp": -2,
 		"tags": ["plasma", "energy", "boarding 1"]
 	},
 	"Plasma Cannon": {
 		"abbreviation": "PlsmCan",
 		"attack": {
-			"standard": 700,
-			"master_crafted": 800,
-			"artifact": 900
+			"standard": 450,
+			"master_crafted": 550,
+			"artifact": 750
 		},
 		"description": "A heavy variant of the plasma gun, its power output is significantly higher and its damage capability shows. However, it maintains the overheating risk of the Plasma Gun",
 		"melee_hands": 1,
@@ -975,9 +992,9 @@ global.weapons = {
 	"Sniper Rifle": {
 		"abbreviation": "SnprRfl",
 		"attack": {
-			"standard": 120,
-			"master_crafted": 150,
-			"artifact": 200
+			"standard": 180,
+			"master_crafted": 220,
+			"artifact": 320
 		},
 		"description": "The Sniper Rifle fires a solid shell over long range and boasts powerful telescopic sights to assist, allowing the user to target enemy weak points and distant foes.",
 		"melee_hands": 1,
@@ -985,7 +1002,7 @@ global.weapons = {
 		"ammo": 20,
 		"range": 14,
 		"spli": 1,
-		"arp": -1,
+		"arp": 0,
 		"tags": ["precision", "rifle"]
 	},
 	"Needle Sniper Rifle": {
@@ -1001,7 +1018,7 @@ global.weapons = {
 		"ammo": 20,
 		"range": 14,
 		"spli": 1,
-		"arp": -2,
+		"arp": -1,
 		"tags": ["precision", "rifle"]
 	},
 	"Assault Cannon": {
@@ -1047,7 +1064,7 @@ global.weapons = {
 		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 6,
-		"range": 15,
+		"range": 12,
 		"spli": 10,
 		"arp": -1,
 		
@@ -1064,7 +1081,7 @@ global.weapons = {
 		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 6,
-		"range": 15,
+		"range": 8,
 		"spli": 20,
 		"arp": -1,
 		"tags": ["heavy_ranged","explosive"]
@@ -1072,8 +1089,8 @@ global.weapons = {
 	"Lascannon": {
 		"abbreviation": "Lascnn",
 		"attack": {
-			"standard": 600,
-			"master_crafted": 700,
+			"standard": 450,
+			"master_crafted": 600,
 			"artifact": 900
 		},
 		"description": "A formidable laser weapon, the lascannon can pierce most vehicles or power armored targets from a tremendous range. The weapon is known for its reliability in combat.",
@@ -1105,15 +1122,15 @@ global.weapons = {
 		"abbreviation": "IntgBltr",
 		"attack": {
 			"standard": 150,
-			"master_crafted": 175,
-			"artifact": 200
+			"master_crafted": 200,
+			"artifact": 300
 		},
 		"description": "A Bolter that can be built directly into the structure of the vehicle, armor, another weapon or Dreadnought. When used as a weapon, it leaves both hands free, allowing to use any, even a twohanded weapon, efficiently.",
 		"melee_hands": 0,
 		"ranged_hands": 0,
 		"ammo": 8,
-		"range": 12,
-		"spli": 4,
+		"range": 10,
+		"spli": 5,
 		"arp": 0,
 		"tags": ["bolt"]
 	},
@@ -1152,9 +1169,9 @@ global.weapons = {
 	"Heavy Bolter": {
 		"abbreviation": "HvyBltr",
 		"attack": {
-			"standard": 300,
-			"master_crafted": 350,
-			"artifact": 390
+			"standard": 250,
+			"master_crafted": 300,
+			"artifact": 450
 		},
 		"description": "The Heavy Bolter is a heavy weapon that fires larger and more powerful bolt shells compared to the standard Bolter.",
 		"melee_hands": 1,
@@ -1348,7 +1365,7 @@ global.weapons = {
 	},
 	"Twin Linked Bolters": {
 		"attack": {
-			"standard": 225,
+			"standard": 275,
 			"master_crafted": 350,
 			"artifact": 450
 		},
@@ -1483,14 +1500,14 @@ global.weapons = {
 		"abbreviation": "HndFlmr",
 		"attack": {
 			"standard": 250,
-			"master_crafted": 275,
-			"artifact": 350
+			"master_crafted": 300,
+			"artifact": 450
 		},
 		"description": "Along with using a lower-capacity fuel tank it has much reduced range, which makes it suited for assault and close-combat purposes, incinerating foes at short range. The weapon is often used by assault squads.",
 		"melee_hands": 0,
 		"ranged_hands": 1,
 		"ammo": 4,
-		"range": 2.1,
+		"range": 3.1,
 		"spli": 8,
 		"arp": 0,
 		"tags": ["pistol", "flame", "boarding 2"]
@@ -1636,7 +1653,7 @@ global.weapons = {
 		"spli": 5,
 		"arp": -1,
 		"special_description": "Spell Damage +100%",
-"maintenance" : 0.1,
+		"maintenance" : 0.1,
 		"tags": ["force"]
 	},
 	"Force Sword": {
@@ -1658,16 +1675,15 @@ global.weapons = {
 		"range": 1,
 		"spli": 4,
 		"arp": -1,
-		"special_description": "Spell damage +25%",
 		"special_properties": ["Parry"],
-    "maintenance" : 0.1,
+    	"maintenance" : 0.1,
 		"tags": ["force", "sword", "martial", "boarding 1"],
 	},
 	"Force Axe": {
 		"attack": {
-			"standard": 200,
-			"master_crafted": 250,
-			"artifact": 350
+			"standard": 250,
+			"master_crafted": 300,
+			"artifact": 375
 		},
 		"melee_mod": {
 			"standard": 1,
@@ -1680,7 +1696,7 @@ global.weapons = {
 		"ranged_hands": 0,
 		"ammo": 0,
 		"range": 1,
-		"spli": 5,
+		"spli": 3,
 		"arp": -1,
 		"special_description": "Able to be dual-wielded, Spell damage +25%",
 		"tags": ["force", "axe", "dual", "savage", "boarding 2"],
