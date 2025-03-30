@@ -210,7 +210,7 @@ if (!engaged){ // Shooting
         // show_debug_message($"We didn't find a valid target! Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
     }
 }
-
+//TODO: The melee code was not refactored;
 else if ((engaged || enemy.engaged) and target_block_is_valid( enemy,obj_pnunit)){// Melee
     engaged=1;
     var i=0,dist=999,no_ap=1;
