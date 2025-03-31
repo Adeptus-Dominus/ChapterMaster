@@ -37,6 +37,7 @@ function ChapterData() constructor {
 	discipline = "librarius"; // todo convert to enum
 
 	full_liveries = "";
+	company_liveries = "";
 	complex_livery_data = complex_livery_default();
 
 
@@ -193,6 +194,8 @@ function scr_chapter_new(argument0) {
 
 	full_liveries = ""; // until chapter objects are in full use kicks off livery propogation
 
+	company_liveries = "";
+
 	// argument0 = chapter
 	obj_creation.use_chapter_object = false; // for the new json testing
 	var chapter_id = eCHAPTERS.UNKNOWN;
@@ -325,6 +328,7 @@ function scr_chapter_new(argument0) {
 
 		obj_creation.buttons.culture_styles.set(chapter_object.culture_styles);
 		obj_creation.full_liveries = chapter_object.full_liveries;
+		obj_creation.company_liveries = chapter_object.company_liveries;
 		obj_creation.complex_livery_data = chapter_object.complex_livery_data;
 		if (obj_creation.full_liveries!=""){
 			obj_creation.livery_picker.map_colour = full_liveries[0];
@@ -380,9 +384,24 @@ function scr_chapter_new(argument0) {
 		        lens_color:lens_color,
 		        weapon_color:weapon_color
 		    }
+		    livery_picker = new ColourItem(100,230);
+			if (company_liveries == ""){
+			    livery_picker.scr_unit_draw_data(-1);
+			    company_liveries = array_create(11,DeepCloneStruct(livery_picker.map_colour));
+			} else {
+				livery_picker.scr_unit_draw_data(-1);
+				var _all_maps = struct_get_names(livery_picker.map_colour);
+				for (var i=0;i<array_length(company_liveries);i++){
+					var _comp_data = company_liveries[i];
+					for (var s=0;s<array_length(_all_maps);s++){
+						var _name = _all_maps[s]
+						if !(struct_exists(_comp_data,_name )){
+							_comp_data[$ name] = livery_picker.map_colour[$ name];
+						}
+					}
+				}
+			}   
 			if (full_liveries==""){
-
-			    livery_picker = new ColourItem(100,230);
 			    livery_picker.scr_unit_draw_data();
 			    livery_picker.set_default_armour(struct_cols,col_special);
 			    full_liveries = array_create(21,variable_clone(livery_picker.map_colour)); 			    

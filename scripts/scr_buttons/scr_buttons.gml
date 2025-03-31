@@ -437,6 +437,7 @@ function radio_set(options_array, title)constructor{
 	y_gap = 5;
 	x1 = 0;
 	y1 = 0;
+	changed = false;
 	max_width = 0;
 	max_height = 0;
 	for (var i=0;i<array_length(options_array);i++){
@@ -448,7 +449,8 @@ function radio_set(options_array, title)constructor{
 	static update = item_data_updater;
 	static draw = function(){
 		draw_text(x1, y1, title);
-
+		changed = false;
+		var _start_current_selection = current_selection;
 		var _prev_x = x1;
 		var _prev_y = y1+string_height(title)+10;
 		var items_on_row = 0;
@@ -476,6 +478,9 @@ function radio_set(options_array, title)constructor{
 					items_on_row = 0;
 				}
 			}
+		}
+		if (_start_current_selection != current_selection){
+			changed = true;
 		}
 	}
 }
