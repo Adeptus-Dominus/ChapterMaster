@@ -238,3 +238,38 @@ function move_enemy_blocks() {
 	}
 	ds_priority_destroy(_enemy_movement_queue);
 }
+
+/// @mixin
+function string_unit_composition() {
+    var _composition_string = "";
+
+	_composition_string = $"{unit_count}x Total; ";
+	if (men > 0) {
+		_composition_string += $"{string_plural_count("Normal Unit", men)}; ";
+	}
+	if (medi > 0) {
+		_composition_string += $"{string_plural_count("Big Unit", medi)}; ";
+	}
+	if (dreads > 0) {
+		_composition_string += $"{string_plural_count("Walker", dreads)}; ";
+	}
+	if (veh > 0) {
+		_composition_string += $"{string_plural_count("Vehicle", veh)}; ";
+	}
+	_composition_string += $"\n";
+
+    var dudes_len = array_length(dudes_num);
+    for(var i = 0; i < dudes_len; i++) {
+        if (dudes_num[i] == 0) {
+            continue;
+        }
+        _composition_string += $"{dudes_num[i]}x {dudes[i]}";
+        if (i < dudes_len - 1) {
+            _composition_string += ", ";
+        } else {
+            _composition_string += ". ";
+        }
+    }
+
+	return _composition_string;
+}

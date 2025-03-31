@@ -129,7 +129,7 @@ if (!engaged){ // Shooting
                     continue;
                 } else if (instance_number(obj_pnunit) > 1) {
                     // There were no marines in the first column, looking behind;
-                    var _column_size_value = (enemy.veh * 2.5) + (enemy.dreads * 2) + (enemy.men * 0.5);
+                    var _column_size_value = enemy.column_size;
                     var x2 = enemy.x;
 
                     repeat (instance_number(obj_pnunit) - 1) {
@@ -145,7 +145,7 @@ if (!engaged){ // Shooting
                             break;
                         }
             
-                        var _back_column_size_value = (enemy2.veh * 2.5) + (enemy2.dreads * 2) + (enemy2.men * 0.5);
+                        var _back_column_size_value = enemy2.column_size;
                         if (_back_column_size_value < _column_size_value) {
                             // show_debug_message($"Protection value is too big!");
                             continue;

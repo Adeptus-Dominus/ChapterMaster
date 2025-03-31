@@ -45,6 +45,16 @@ function string_plural(_string, _variable = 2) {
     }
 }
 
+/// @function string_plural_count
+/// @description This function formats a string into a plural form by adding affixes following common rules, and adds the x(variable) text at the start.
+/// @param {string} _string
+/// @param {real} _variable Variable to check if more than 1 before converting to plural, and add at the start.
+/// @returns {string} Modified string.
+function string_plural_count(_string, _variable) {
+    var _modified_string = $"{_variable}x {string_plural(_string, _variable)}";
+    return _modified_string;
+}
+
 /// @function string_truncate
 /// @description Truncates a string to fit within a specified pixel width, appending "..." if the string was truncated.
 /// @param {string} _string

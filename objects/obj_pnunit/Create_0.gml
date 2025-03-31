@@ -10,11 +10,16 @@ attacked_dudes=0;
 dreads=0;
 jetpack_destroy=0;
 defenses=0;
-highlight=0;
-highlight2=0;
-highlight3="";
-siz = 0;
-x_offset = 0;
+
+unit_count=0;
+unit_count_old=0;
+composition_string="";
+
+column_size = 0;
+
+centerline_offset = 0;
+pos = 880;
+draw_size = 0;
 // let="";let=string_delete(obj_ini.psy_powers,2,string_length(obj_ini.psy_powers)-1);let=string_upper(let);
 // LET might be different for each marine; need a way of determining this
 

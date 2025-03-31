@@ -11,9 +11,16 @@ flank=0;
 flyer=0;// Works same as flank, but does not get denoted as such
 neww=0;
 
-highlight=0;
-highlight2=0;
-highlight3="";
+column_size=0;
+
+unit_count=0;
+unit_count_old=0;
+composition_string="";
+
+pos = 880;
+centerline_offset = 0;
+draw_size = 0;
+
 
 enemy=0;
 enemy2=0;
@@ -72,7 +79,3 @@ if (obj_ncombat.enemy=1) then alarm[6]=10;
 
 // if (obj_ncombat.enemy=1){alarm[1]=8;alarm[5]=10;}
 
-
-pos = 0;
-diff = 0;
-siz = 0;
