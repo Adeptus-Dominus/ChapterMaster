@@ -31,7 +31,8 @@ if (obj_ncombat.defeat == 0) {
         var _candidate = ds_priority_delete_max(marines_to_recover);
         var _column_id = _candidate.column_id;
         var _unit_id = _candidate.id;
-        _candidate.unit.update_health(roll_personal_dice(1, 10, "high", _candidate.unit));
+        var _unit = _candidate.unit;
+        _unit.update_health(roll_personal_dice(1, 10, "high", _unit));
         _column_id.marine_dead[_unit_id] = false;
         unit_recovery_score -= 1;
         units_saved += 1;
@@ -41,22 +42,22 @@ if (obj_ncombat.defeat == 0) {
     while (!ds_priority_empty(vehicles_to_recover) && vehicle_recovery_score > 0) {
         var _candidate = ds_priority_delete_max(vehicles_to_recover);
         var _column_id = _candidate.column_id;
-        var _unit_id = _candidate.id;
+        var _vehicle_id = _candidate.id;
     
         if (obj_controller.stc_bonus[3] = 4) {
             var _survival_roll = 80 + _candidate.priority;
             var _dice_roll = roll_dice(1, 100, "high");
-            if (_dice_roll >= _survival_roll) && (_column_id.veh_dead[_unit_id] != 2) {
-                _column_id.veh_hp[_unit_id] = roll_dice(1, 10, "high");
-                _column_id.veh_dead[_unit_id] = false;
+            if (_dice_roll >= _survival_roll) && (_column_id.veh_dead[_vehicle_id] != 2) {
+                _column_id.veh_hp[_vehicle_id] = roll_dice(1, 10, "high");
+                _column_id.veh_dead[_vehicle_id] = false;
                 vehicles_saved++;
                 vehicle_deaths--;
                 continue;
             }
         }
     
-        _column_id.veh_hp[_unit_id] = roll_dice(1, 10, "high");
-        _column_id.veh_dead[_unit_id] = false;
+        _column_id.veh_hp[_vehicle_id] = roll_dice(1, 10, "high");
+        _column_id.veh_dead[_vehicle_id] = false;
         vehicle_recovery_score -= _candidate.priority;
         vehicles_saved++;
         vehicle_deaths--;
@@ -72,16 +73,15 @@ with (obj_pnunit) {
 var _total_deaths = (final_marine_deaths + final_command_deaths) - units_saved;
 if (_total_deaths > 0) {
 	newline = $"Marines lost: {_total_deaths}!";
-    if (array_length(post_unit_lost) > 0) {
-        for (var i = 0; i < array_length(post_unit_lost); i++) {
-            if ((post_unit_lost[i] != "") && (post_units_lost[i] > 0) && (post_unit_veh[i] == 0)) {
-                newline += $" {post_units_lost[i]}x {post_unit_lost[i]}";
-                if (i < array_length(post_unit_lost) - 1) {
-                    newline += ",";
-                } else {
-                    newline += ".";
-                }
-            }
+    var _units_lost = struct_get_names(units_lost_counts);
+    for (var i = 0; i < array_length(_units_lost); i++) {
+        var _unit_role = _units_lost[i];
+        var _lost_count = units_lost_counts[$ _unit_role];
+        newline += $" {_lost_count}x {_unit_role}";
+        if (i < array_length(_units_lost) - 1) {
+            newline += ",";
+        } else {
+            newline += ".";
         }
     }
     newline_color = "red";
@@ -155,16 +155,18 @@ if (vehicles_saved > 0) {
 if (vehicle_deaths > 0) {
 	newline = $"Vehicles Lost: {vehicle_deaths}.";
 
-	for (var i = 0; i < array_length(post_unit_lost); i++) {
-		if ((post_unit_lost[i] != "") && (post_units_lost[i] > 0) && (post_unit_veh[i] == 1)) {
-			newline += $" x{post_units_lost[i]} {post_unit_lost[i]}";
-            if (i < array_length(post_unit_lost) - 1) {
-                newline += ",";
-            } else {
-                newline += ".";
-            }
-		}
-	}
+    var _vehicles_lost = struct_get_names(vehicles_lost_counts);
+    for (var i = 0; i < array_length(_vehicles_lost); i++) {
+        var _vehicle_type = _vehicles_lost[i];
+        var _lost_count = vehicles_lost_counts[$ _vehicle_type];
+        newline += $" {_lost_count}x {_vehicle_type}";
+        if (i < array_length(_vehicles_lost) - 1) {
+            newline += ",";
+        } else {
+            newline += ".";
+        }
+    }
+
     newline_color="red";
     scr_newtext();
     newline = " ";

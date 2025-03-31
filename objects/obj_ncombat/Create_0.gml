@@ -117,6 +117,10 @@ hulk_forces=0;
 
 i=-1;messages=0;messages_to_show=24;messages_shown=0;
 largest=0;priority=0;random_messages=0;dead_enemies=0;
+
+units_lost_counts = {};
+vehicles_lost_counts = {};
+
 repeat(70){i+=1;
     lines[i]="";
     lines_color[i]="";
@@ -127,9 +131,6 @@ repeat(70){i+=1;
     dead_ene[i]="";
     dead_ene_n[i]=0;
     
-    post_unit_lost[i]="";
-    post_unit_veh[i]=0;
-    post_units_lost[i]=0;
     post_equipment_lost[i]="";
     post_equipments_lost[i]=0;
     

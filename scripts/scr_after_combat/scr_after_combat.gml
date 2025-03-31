@@ -211,15 +211,12 @@ function after_battle_part1() {
             }
 
             var last=0;
-            for (var o=1;o<array_length(obj_ncombat.post_unit_lost);o++){
-                if (obj_ncombat.post_unit_lost[o]=_unit.role()){
-                    obj_ncombat.post_units_lost[o]+=1;
-                    break;
-                }else if (obj_ncombat.post_unit_lost[o]=""){
-                    obj_ncombat.post_unit_lost[o]=marine_type[i];
-                    obj_ncombat.post_units_lost[o]=1;
-                    break;
-                }
+    
+            var _unit_role = _unit.role();
+            if (!struct_exists(obj_ncombat.units_lost_counts, _unit_role)) {
+                obj_ncombat.units_lost_counts._unit_role = 1;
+            } else {
+                obj_ncombat.units_lost_counts._unit_role++;
             }
 
             // Determine which companies to crunch
@@ -388,21 +385,11 @@ function after_battle_part1() {
         if ((veh_dead[i]=1) or (obj_ncombat.defeat!=0)) and (veh_type[i]!="") and (veh_ally[i]=false){
             obj_ncombat.vehicle_deaths+=1;
 
-            var last=0,o=0;
-            for (var o=0;o<array_length(obj_ncombat.post_unit_lost);o++){
-                if (last=0){
-                    o+=1;
-                    if (obj_ncombat.post_unit_lost[o]=veh_type[i]){
-                        last=1;
-                        obj_ncombat.post_units_lost[o]+=1;
-                    }
-                    else if (obj_ncombat.post_unit_lost[o]="") and (last=0){
-                        last=o;
-                        obj_ncombat.post_unit_lost[o]=veh_type[i];
-                        obj_ncombat.post_units_lost[o]=1;
-                        obj_ncombat.post_unit_veh[o]=1;
-                    }
-                }
+            var _vehicle_type = _veh_type[i];
+            if (!struct_exists(obj_ncombat.vehicles_lost_counts, _vehicle_type)) {
+                obj_ncombat.vehicles_lost_counts._vehicle_type = 1;
+            } else {
+                obj_ncombat.vehicles_lost_counts._vehicle_type++;
             }
 
             // Determine which companies to crunch
