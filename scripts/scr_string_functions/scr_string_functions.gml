@@ -50,8 +50,9 @@ function string_plural(_string, _variable = 2) {
 /// @param {string} _string
 /// @param {real} _variable Variable to check if more than 1 before converting to plural, and add at the start.
 /// @returns {string} Modified string.
-function string_plural_count(_string, _variable) {
-    var _modified_string = $"{_variable}x {string_plural(_string, _variable)}";
+function string_plural_count(_string, _variable, _use_x = true) {
+    var _x = _use_x ? "x" : "";
+    var _modified_string = $"{_variable}{_x} {string_plural(_string, _variable)}";
     return _modified_string;
 }
 

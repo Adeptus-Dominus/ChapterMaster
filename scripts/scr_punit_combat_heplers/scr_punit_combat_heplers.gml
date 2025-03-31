@@ -258,18 +258,8 @@ function block_composition_string() {
 	}
 	_composition_string += $"\n";
 
-    var dudes_len = array_length(dudes_num);
-    for(var i = 0; i < dudes_len; i++) {
-        if (dudes_num[i] == 0) {
-            continue;
-        }
-        _composition_string += $"{dudes_num[i]}x {dudes[i]}";
-        if (i < dudes_len - 1) {
-            _composition_string += ", ";
-        } else {
-            _composition_string += ". ";
-        }
-    }
+
+	_composition_string += arrays_to_string_with_counts(dudes, dudes_num, true, false);
 
 	return _composition_string;
 }

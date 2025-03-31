@@ -98,7 +98,7 @@ function array_to_string_list(_array, _pop_last = false) {
 /// @description Converts an array into a string, with "," after each member and "and" before the last one.
 /// @param {array} _strings_array An array of strings.
 /// @return {string}
-function array_to_string_order(_strings_array) {
+function array_to_string_order(_strings_array, _use_and = false, _dot_end = true) {
     var result = "";
     var length = array_length(_strings_array);
 
@@ -110,16 +110,35 @@ function array_to_string_order(_strings_array) {
         // Check if it's the last string
         if (i < length - 1) {
             // If it's the second last item, add " and " before the last one
-            if (i == length - 2) {
+            if (_use_and && i == length - 2) {
                 result += " and ";
             } else {
                 result += ", ";
             }
-        }
+        } else if (_dot_end) {
+			result += ".";
+		}
     }
 
     return result;
 }
+
+
+function arrays_to_string_with_counts(_names_array, _counts_array, _exclude_null = false, _dot_end = true) {
+    var _array_length = array_length(_names_array);
+	var _result_string = "";
+
+    for(var i = 0; i < _array_length; i++) {
+        if (_exclude_null && _counts_array[i] == 0) {
+            continue;
+        }
+        _result_string += string_plural_count(_names_array[i], _counts_array[i]);
+		_result_string += smart_delimeter_sign(_array_length, i, _dot_end);
+    }
+
+	return _result_string;
+}
+
 /// @function alter_deep_array
 /// @description Modifies a value in a deeply nested array structure.
 /// @param {array} array The array to modify
@@ -148,3 +167,19 @@ function fetch_deep_array(array, accessors){
 	return _array_step;
 }
 
+/// @description Choose either `.` or `,` based on the array lengh and current loop iteration.
+/// @param {array|real} _array_or_length
+/// @param {real} _loop_iteration
+/// @return {string}
+function smart_delimeter_sign(_array_or_length, _loop_iteration, _dot_end = true) {
+    var _delimeter = "";
+	var _array_length = is_array(_array_or_length) ? array_length(_array_or_length) : _array_or_length;
+
+    if (_loop_iteration < _array_length - 1) {
+        _delimeter += ", ";
+    } else if (_dot_end) {
+        _delimeter += ".";
+    }
+
+    return _delimeter;
+}

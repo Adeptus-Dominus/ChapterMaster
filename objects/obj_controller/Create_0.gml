@@ -1534,12 +1534,12 @@ vih=string_pos(",",temp[njm]);
 temp[njm]=string_delete(temp[njm],vih,1);
 njm+=1;
 temp[njm] = "Specialist branches staffed by";
-if (techa > 0) then temp[njm] += $", {techa} {string_plural(obj_ini.role[100][16], techa)}";
-if (old_dudes > 0) then temp[njm] += $", {old_dudes} {string_plural(obj_ini.role[100][14], old_dudes)}";
-if (apotha > 0) then temp[njm] += $", {apotha} {string_plural(obj_ini.role[100][15], apotha)}";
-if (libra > 0) then temp[njm] += $", {libra} {string_plural(obj_ini.role[100,17], libra)}";
-if (coda > 0) then temp[njm] += $", {coda} {string_plural("Codiciery", coda)}";
-if (lexa > 0) then temp[njm] += $", {lexa} {string_plural("Lexicanum", lexa)}.";
+if (techa > 0) then temp[njm] += $", {string_plural_count(obj_ini.role[100][16], techa)}";
+if (old_dudes > 0) then temp[njm] += $", {string_plural_count(obj_ini.role[100][14], old_dudes)}";
+if (apotha > 0) then temp[njm] += $", {string_plural_count(obj_ini.role[100][15], apotha)}";
+if (libra > 0) then temp[njm] += $", {string_plural_count(obj_ini.role[100,17], libra)}";
+if (coda > 0) then temp[njm] += $", {string_plural_count("Codiciery", coda)}";
+if (lexa > 0) then temp[njm] += $", {string_plural_count("Lexicanum", lexa)}.";
 
 vih=string_pos(",",temp[njm]);
 temp[njm]=string_delete(temp[njm],vih,1);
@@ -1608,30 +1608,30 @@ for(var company=0; company<10; company++){
         else{temp[njm]="";}
     }
     
-    if (capt > 0) then temp[njm] += $", {capt} {string_plural(obj_ini.role[100][5], capt)}";
-    if (chap > 0) then temp[njm] += $", {chap} {string_plural(obj_ini.role[100][14], chap)}";
-    if (apoth > 0) then temp[njm] += $", {apoth} {string_plural(obj_ini.role[100][15], apoth)}";
-    if (techa > 0) then temp[njm] += $", {techa} {string_plural(obj_ini.role[100][16], techa)}";
-    if (standard > 0) then temp[njm] += $", {standard} {string_plural(obj_ini.role[100][11], standard)}";
-    if (champ > 0) then temp[njm] += $", {champ} {string_plural(obj_ini.role[100][7], champ)}";
-    if (lib > 0) then temp[njm] += $", {lib} {string_plural(obj_ini.role[100][17], lib)}";
+    if (capt > 0) then temp[njm] += $", {string_plural_count(obj_ini.role[100][5], capt)}";
+    if (chap > 0) then temp[njm] += $", {string_plural_count(obj_ini.role[100][14], chap)}";
+    if (apoth > 0) then temp[njm] += $", {string_plural_count(obj_ini.role[100][15], apoth)}";
+    if (techa > 0) then temp[njm] += $", {string_plural_count(obj_ini.role[100][16], techa)}";
+    if (standard > 0) then temp[njm] += $", {string_plural_count(obj_ini.role[100][11], standard)}";
+    if (champ > 0) then temp[njm] += $", {string_plural_count(obj_ini.role[100][7], champ)}";
+    if (lib > 0) then temp[njm] += $", {string_plural_count(obj_ini.role[100][17], lib)}";
 
-    if (serg > 0) then temp[njm] += $", {serg} {string_plural(obj_ini.role[100][18], serg)}";
-    if (vet_serg > 0) then temp[njm] += $", {vet_serg} {string_plural(obj_ini.role[100][19], vet_serg)}";
-    if (termi > 0) then temp[njm] += $", {termi} {string_plural(obj_ini.role[100][4], termi)}";
-    if (veter > 0) then temp[njm] += $", {veter} {string_plural(obj_ini.role[100][3], veter)}";
-    if (tact > 0) then temp[njm] += $", {tact} {string_plural(obj_ini.role[100][8], tact)}";
-    if (assa > 0) then temp[njm] += $", {assa} {string_plural(obj_ini.role[100][10], assa)}";
-    if (deva > 0) then temp[njm] += $", {deva} {string_plural(obj_ini.role[100][9], deva)}";
-    if (scou > 0) then temp[njm] += $", {scou} {string_plural(obj_ini.role[100][12], scou)}";
-    if (dread > 0) then temp[njm] += $", {dread} {string_plural(obj_ini.role[100][6], dread)}";
+    if (serg > 0) then temp[njm] += $", {string_plural_count(obj_ini.role[100][18], serg)}";
+    if (vet_serg > 0) then temp[njm] += $", {string_plural_count(obj_ini.role[100][19], vet_serg)}";
+    if (termi > 0) then temp[njm] += $", {string_plural_count(obj_ini.role[100][4], termi)}";
+    if (veter > 0) then temp[njm] += $", {string_plural_count(obj_ini.role[100][3], veter)}";
+    if (tact > 0) then temp[njm] += $", {string_plural_count(obj_ini.role[100][8], tact)}";
+    if (assa > 0) then temp[njm] += $", {string_plural_count(obj_ini.role[100][10], assa)}";
+    if (deva > 0) then temp[njm] += $", {string_plural_count(obj_ini.role[100][9], deva)}";
+    if (scou > 0) then temp[njm] += $", {string_plural_count(obj_ini.role[100][12], scou)}";
+    if (dread > 0) then temp[njm] += $", {string_plural_count(obj_ini.role[100][6], dread)}";
     
-    if (raider > 0) then temp[njm] += $", {raider} {string_plural("Land Raider", raider)}";
-    if (pred > 0) then temp[njm] += $", {pred} {string_plural("Predator", pred)}";
-    if (whirl > 0) then temp[njm] += $", {whirl} {string_plural("Whirlwind", whirl)}";
-    if (rhino > 0) then temp[njm] += $", {rhino} {string_plural("Rhino", rhino)}";
-    if (speeder > 0) then temp[njm] += $", {speeder} {string_plural("Land Speeder", speeder)}";
-    if (bike > 0) then temp[njm] += $", {bike} {string_plural("Attack Bike", bike)}";
+    if (raider > 0) then temp[njm] += $", {string_plural_count("Land Raider", raider)}";
+    if (pred > 0) then temp[njm] += $", {string_plural_count("Predator", pred)}";
+    if (whirl > 0) then temp[njm] += $", {string_plural_count("Whirlwind", whirl)}";
+    if (rhino > 0) then temp[njm] += $", {string_plural_count("Rhino", rhino)}";
+    if (speeder > 0) then temp[njm] += $", {string_plural_count("Land Speeder", speeder)}";
+    if (bike > 0) then temp[njm] += $", {string_plural_count("Attack Bike", bike)}";
     
     if (string_length(temp[njm])>0) then temp[njm]+=".";
     
@@ -1647,13 +1647,7 @@ temp[60] = $"{temp[59]}\n\n{temp[34]}\n\n{temp[35]}##{temp[36]}##{temp[37]}##{te
 
 
 temp[61]="\n\nYour armamentarium contains some spare equipment- \n";
-for(var u=0; u<=30; u++){
-    if (obj_ini.equipment[u]!="") then temp[61]+=$"{obj_ini.equipment_number[u]} {string_plural(obj_ini.equipment[u], obj_ini.equipment_number[u])}, ";
-    if (obj_ini.equipment[u]=="") and (obj_ini.equipment[u-1]!=""){
-        temp[61]=string_delete(temp[61],string_length(temp[61]),3);
-        temp[61]+=".";
-    }
-}
+temp[61] += arrays_to_string_with_counts(obj_ini.equipment, obj_ini.equipment_number, true, true);
 
 
 temp[62]="##Your fleet contains ";
@@ -1685,7 +1679,7 @@ for(var mm=0; mm<array_length(obj_ini.ship); mm++){
     codex_discovered[mm]=0;
 }
 
-temp[62]+=string(ships)+$" {string_plural("warship")}-\n";
+temp[62]+=$" {string_plural_count("warship", ships)}-\n";
 
 if (obj_ini.fleet_type != ePlayerBase.home_world || bb == 1) {
     temp[62] += $"Your flagship, Battle Barge {obj_ini.ship[0]}.";
@@ -1693,19 +1687,19 @@ if (obj_ini.fleet_type != ePlayerBase.home_world || bb == 1) {
     bb--;
 }
 if (bb > 0) {
-    temp[62] += $"{bb} {string_plural("Battle Barge")}: {array_to_string_order(bb_names)}.";
+    temp[62] += $"{string_plural_count("Battle Barge", bb)}: {array_to_string_order(bb_names, true)}";
     temp[62] += "\n";
 }
 if (sk > 0) {
-    temp[62] += $"{sk} {string_plural("Strike Cruiser")}: {array_to_string_order(sk_names)}.";
+    temp[62] += $"{string_plural_count("Strike Cruiser", sk)}: {array_to_string_order(sk_names, true)}";
     temp[62] += "\n";
 }
 if (glad > 0) {
-    temp[62] += $"{glad} {string_plural("Gladius Escort")}: {array_to_string_order(glad_names)}.";
+    temp[62] += $"{string_plural_count("Gladius Escort", glad)}: {array_to_string_order(glad_names, true)}";
     temp[62] += "\n";
 }
 if (hunt > 0) {
-    temp[62] += $"{hunt} {string_plural("Hunter Escort")}: {array_to_string_order(hunt_names)}.";
+    temp[62] += $"{string_plural_count("Hunter Escort", hunt)}: {array_to_string_order(hunt_names, true)}";
     temp[62] += "\n";
 }
 

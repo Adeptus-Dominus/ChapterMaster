@@ -39,11 +39,10 @@ function Roster() constructor{
         var _roster_types = struct_get_names(selected_roster);
         for (var i=0;i<array_length(_roster_types);i++){
             var _roster_type_name = _roster_types[i];
-            if (selected_roster[$_roster_type_name] == 1){
-                roster_string += $"1 {_roster_type_name}{i==array_length(_roster_types)-1?"":", "}";
-            } else {
-            	roster_string += $"{selected_roster[$_roster_type_name]} {string_plural(_roster_type_name)}{i==array_length(_roster_types)-1?"":", "}";
-            }
+            var _roster_type_count = selected_roster[$_roster_type_name];
+
+            roster_string += $"{string_plural_count(_roster_type_name, _roster_type_count)}";
+            roster_string += smart_delimeter_sign(_roster_types, i, false);
         }
     }
      static add_role_to_roster = function(role){
@@ -216,22 +215,20 @@ function Roster() constructor{
         var _roster_types = struct_get_names(selected_local_roster);
         for (var i=0;i<array_length(_roster_types);i++){
             var _roster_type_name = _roster_types[i];
-            if (selected_roster[$_roster_type_name] == 1){
-                roster_local_string += $"1 {_roster_type_name}{i==array_length(_roster_types)-1?"":", "}";
-            } else {
-            	roster_local_string += $"{selected_local_roster[$_roster_type_name]} {string_plural(_roster_type_name)}{i==array_length(_roster_types)-1?"":", "}";
-            }
+            var _roster_type_count = selected_roster[$_roster_type_name];
+
+            roster_string += $"{string_plural_count(_roster_type_name, _roster_type_count)}";
+            roster_string += smart_delimeter_sign(_roster_types, i, false);
         }
         roster_local_string+="\n"
         roster_local_string += "Remaining\n";
         var _roster_types = struct_get_names(possible_local_roster);
         for (var i=0;i<array_length(_roster_types);i++){
             var _roster_type_name = _roster_types[i];
-            if (selected_roster[$_roster_type_name] == 1){
-                roster_local_string += $"1 {_roster_type_name}{i==array_length(_roster_types)-1?"":", "}";
-            } else {
-            	roster_local_string += $"{possible_local_roster[$_roster_type_name]} {string_plural(_roster_type_name)}{i==array_length(_roster_types)-1?"":", "}";
-            }
+            var _roster_type_count = selected_roster[$_roster_type_name];
+
+            roster_string += $"{string_plural_count(_roster_type_name, _roster_type_count)}";
+            roster_string += smart_delimeter_sign(_roster_types, i, false);
         }          	
     }
 

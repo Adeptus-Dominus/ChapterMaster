@@ -100,7 +100,7 @@ if (_total_deaths > 0 || injured > 0 || units_saved > 0) {
 	scr_newtext();
 
     if (units_saved > 0) {
-        newline = $"{units_saved}x were saved by the {string_plural(roles[eROLE.Apothecary])}.";
+        newline = $"{units_saved}x were saved by the {string_plural(roles[eROLE.Apothecary], apothecaries_alive)}.";
         scr_newtext();
     }
     if (injured > 0) {
@@ -207,15 +207,9 @@ if (vehicle_deaths > 0) {
 if (post_equipment_lost[1]!=""){
     part6="Equipment Lost: ";
     
-    var i=0;
-    for (var i=0;i<array_length(post_equipment_lost);i++){
-        if (post_equipment_lost[i]!="") and (post_equipments_lost[i]>0){
-            part7+=string(post_equipments_lost[i])+"x "+string(post_equipment_lost[i])+", ";
-        }
-    }
-    part7=string_delete(part7,string_length(part7)-1,2);part7+=".";i=0;
+    part7 += arrays_to_string_with_counts(post_equipment_lost, post_equipments_lost, true, false);
 	if (ground_mission){
-        part7 += "Some may be recoverable"
+        part7 += " Some may be recoverable."
     }
     newline=part6;
     scr_newtext();

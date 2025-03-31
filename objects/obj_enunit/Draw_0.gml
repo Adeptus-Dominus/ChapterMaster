@@ -25,19 +25,18 @@ if (draw_size > 0){
             if (obj_ncombat.enemy!=1){
                 composition_string += block_composition_string();
             } else {
-                var variety, variety_num, stop, sofar, compl, vas;
-                stop = 0;
+                var variety, variety_num, sofar, compl;
                 variety = [];
                 variety_num = [];
                 sofar = 0;
                 compl = "";
-                vas = "";
         
                 var variety_len = array_length(variety);
                 for (var q = 0; q < variety_len; q++) {
                     variety[q] = "";
                     variety_num[q] = 0;
                 }
+
                 var dudes_len = array_length(dudes);
                 for (var q = 0; q < dudes_len; q++) {
                     if (dudes[q] != "") and(string_count(string(dudes[q]) + "|", compl) = 0) {
@@ -47,6 +46,7 @@ if (draw_size > 0){
                         sofar += 1;
                     }
                 }
+
                 var dudes_len = array_length(dudes);
                 for (var q = 0; q < dudes_len; q++) {
                     if (dudes[q] != "") {
@@ -55,19 +55,9 @@ if (draw_size > 0){
                             if (dudes[q] = variety[i]) then variety_num[i] += dudes_num[q];
                         }
                     }
-        
                 }
-                stop = 0;
-                var variety_num_len = array_length(variety_num);
-                for (var i = 0; i < variety_num_len; i++) {
-                    if (stop = 0) {
-                        if (variety_num[i] > 0) and(variety_num[i + 1] > 0) then composition_string += string(variety_num[i]) + "x " + string(variety[i]) + ", ";
-                        if (variety_num[i] > 0) and(variety_num[i + 1] <= 0) {
-                            composition_string += string(variety_num[i]) + "x " + string(variety[i]) + ".  ";
-                            stop = 1;
-                        }
-                    }
-                }
+
+                _composition_string += arrays_to_string_with_counts(variety, variety_num, true);
             } 
         }
 

@@ -526,9 +526,7 @@ try {
                     _tooltip += $"\nKnown Powers: ";
                     for (var i = 0; i < _psy_powers_count; i++) {
                         _tooltip += get_power_data(_psy_powers_known[i], "name");
-                        if (i < _psy_powers_count - 1) {
-                            _tooltip += ", ";
-                        }
+                        _tooltip += smart_delimeter_sign(_psy_powers_count, i, false);
                     }
                     temp[123] = _tooltip;
                 }
