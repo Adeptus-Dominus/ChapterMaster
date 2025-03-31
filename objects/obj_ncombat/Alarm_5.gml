@@ -442,7 +442,7 @@ if (defeat=0) and (reduce_power=true){
         new_power = max(new_power, 0);
 
         // Give some money for killing enemies?
-        var _quad_factor = 8;
+        var _quad_factor = 6;
         requisition_reward = _quad_factor * sqr(threat);
         obj_controller.requisition += requisition_reward;
 
