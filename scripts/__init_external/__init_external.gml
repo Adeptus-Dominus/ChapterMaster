@@ -39,7 +39,7 @@ function __init_external() {
         var _build_date = _parsed_json[$ "build_date"];
         var _version = _parsed_json[$ "version"];
         var _commit_hash = _parsed_json[$ "commit_hash"];
-        global.build_date = _build_date;
+
         if (string_char_at(_version, 1) != "v") {
             if (string_count("compile-", _version) > 0 || string_count("release-", _version) > 0) {
                 var _format_version = string_delete(_version, 1, 8);
@@ -47,13 +47,11 @@ function __init_external() {
                 _format_version = _parts[0] + "." + _parts[1];
                 _version = _format_version;
             }
-            if (_commit_hash != "") {
-                _version += $"/{_commit_hash}";
-            }
-            _version = $"dev-{_version}";
         } else {
             _version = string_delete(_version, 1, 1);
         }
+
+        global.build_date = _build_date;
         global.game_version = _version;
         global.commit_hash = _commit_hash;
     }
