@@ -34,6 +34,7 @@ if (obj_ncombat.defeat == 0) {
         var _column_id = _candidate.column_id;
         var _unit_id = _candidate.id;
         var _unit = _candidate.unit;
+        var _unit_role = _unit.role();
         var _constitution_test_mod = _unit.hp() * -1;
         var _constitution_test = global.character_tester.standard_test(_unit, "constitution", _constitution_test_mod);
 
@@ -41,7 +42,13 @@ if (obj_ncombat.defeat == 0) {
             _unit.update_health(_constitution_test[1]);
             _column_id.marine_dead[_unit_id] = false;
             unit_recovery_score--;
-            units_saved++;
+            units_saved_count++;
+
+            if (!struct_exists(obj_ncombat.units_saved_counts, _unit_role)) {
+                obj_ncombat.units_saved_counts[$ _unit_role] = 1;
+            } else {
+                obj_ncombat.units_saved_counts[$ _unit_role]++;
+            }
             continue;
         }
 
@@ -64,15 +71,22 @@ if (obj_ncombat.defeat == 0) {
         var _candidate = ds_priority_delete_max(vehicles_to_recover);
         var _column_id = _candidate.column_id;
         var _vehicle_id = _candidate.id;
+        var _vehicle_type = _column_id.veh_type[_vehicle_id];
     
         if (obj_controller.stc_bonus[3] = 4) {
-            var _survival_roll = 80 + _candidate.priority;
+            var _survival_roll = 70 + _candidate.priority;
             var _dice_roll = roll_dice(1, 100, "high");
             if (_dice_roll >= _survival_roll) && (_column_id.veh_dead[_vehicle_id] != 2) {
                 _column_id.veh_hp[_vehicle_id] = roll_dice(1, 10, "high");
                 _column_id.veh_dead[_vehicle_id] = false;
-                vehicles_saved++;
+                vehicles_saved_count++;
                 vehicle_deaths--;
+
+                if (!struct_exists(obj_ncombat.vehicles_saved_counts, _vehicle_type)) {
+                    obj_ncombat.vehicles_saved_counts[$ _vehicle_type] = 1;
+                } else {
+                    obj_ncombat.vehicles_saved_counts[$ _vehicle_type]++;
+                }
                 continue;
             }
         }
@@ -81,8 +95,14 @@ if (obj_ncombat.defeat == 0) {
             _column_id.veh_hp[_vehicle_id] = roll_dice(1, 10, "high");
             _column_id.veh_dead[_vehicle_id] = false;
             vehicle_recovery_score -= _candidate.priority;
-            vehicles_saved++;
+            vehicles_saved_count++;
             vehicle_deaths--;
+
+            if (!struct_exists(obj_ncombat.vehicles_saved_counts, _vehicle_type)) {
+                obj_ncombat.vehicles_saved_counts[$ _vehicle_type] = 1;
+            } else {
+                obj_ncombat.vehicles_saved_counts[$ _vehicle_type]++;
+            }
         }
     }
     ds_priority_destroy(vehicles_to_recover);
@@ -94,15 +114,26 @@ with (obj_pnunit) {
 }
 
 var _total_deaths = final_marine_deaths + final_command_deaths;
-if (_total_deaths > 0 || injured > 0 || units_saved > 0) {
-    newline = $"{_total_deaths + injured + units_saved}x units were critically injured.";
+if (_total_deaths > 0 || injured > 0 || units_saved_count > 0) {
+    newline = $"{_total_deaths + injured + units_saved_count}x units were critically injured.";
     newline_color = "red";
 	scr_newtext();
 
-    if (units_saved > 0) {
-        newline = $"{units_saved}x were saved by the {string_plural(roles[eROLE.Apothecary], apothecaries_alive)}.";
+    if (units_saved_count > 0) {
+        var _units_saved_string = "";
+        var _unit_roles = struct_get_names(units_saved_counts);
+
+        for (var i = 0; i < array_length(_unit_roles); i++) {
+            var _unit_role = _unit_roles[i];
+            var _saved_count = units_saved_counts[$ _unit_role];
+            _units_saved_string += $"{string_plural_count(_unit_role, _saved_count)}";
+            _units_saved_string += smart_delimeter_sign(_unit_roles, i, false);
+        }
+
+        newline = $"{units_saved_count}x were saved by the {string_plural(roles[eROLE.Apothecary], apothecaries_alive)}. ({_units_saved_string})";
         scr_newtext();
     }
+
     if (injured > 0) {
         newline = $"{injured}x survived thanks to the Sus-an Membrane.";
         newline_color = "red";
@@ -110,21 +141,22 @@ if (_total_deaths > 0 || injured > 0 || units_saved > 0) {
     }
 
     if (_total_deaths > 0) {
-        newline = $"{_total_deaths}x units succumbed to their wounds!";
+        var _units_lost_string = "";
         var _unit_roles = struct_get_names(units_lost_counts);
         for (var i = 0; i < array_length(_unit_roles); i++) {
             var _unit_role = _unit_roles[i];
             var _lost_count = units_lost_counts[$ _unit_role];
-            newline += $" {_lost_count}x {_unit_role}";
-            if (i < array_length(_unit_roles) - 1) {
-                newline += ",";
-            } else {
-                newline += ".";
-            }
+            _units_lost_string += $"{string_plural_count(_unit_role, _lost_count)}";
+            _units_lost_string += smart_delimeter_sign(_unit_roles, i, false);
         }
-        newline_color = "red";
+        newline += $"{_total_deaths} units succumbed to their wounds! ({_units_lost_string})";
+        newline_color="red";
         scr_newtext();
+
     }
+
+    newline = " ";
+        scr_newtext();
 }
 
 
@@ -176,28 +208,42 @@ scr_newtext();
 
 
 
-if (vehicles_saved > 0) {
-    newline = $"{string_plural(roles[eROLE.Techmarine], techmarines_alive)} were able to recover {vehicles_saved} vehicles.";
+if (vehicles_saved_count > 0 || vehicle_deaths > 0) {
+	newline = $"{string_plural_count("Vehicle", vehicle_deaths + vehicles_saved_count)} were critically damaged during battle.";
+    newline_color="red";
     scr_newtext();
-}
 
-if (vehicle_deaths > 0) {
-	newline = $"Vehicles Lost: {vehicle_deaths}.";
+    if (vehicles_saved_count > 0) {
+        var _vehicles_saved_string = "";
+        var _vehicle_types = struct_get_names(vehicles_saved_counts);
 
+        for (var i = 0; i < array_length(_vehicle_types); i++) {
+            var _vehicle_type = _vehicle_types[i];
+            var _saved_count = vehicles_saved_counts[$ _vehicle_type];
+            _vehicles_saved_string += $"{string_plural_count(_vehicle_type, _saved_count)}";
+            _vehicles_saved_string += smart_delimeter_sign(_vehicle_types, i, false);
+        }
+
+        newline = $"{string_plural(roles[eROLE.Techmarine], techmarines_alive)} were able to restore {vehicles_saved_count}. ({_vehicles_saved_string})";
+        scr_newtext();
+    }
+
+    if (vehicle_deaths > 0) {
+        var _vehicles_lost_string = "";
     var _vehicle_types = struct_get_names(vehicles_lost_counts);
+
     for (var i = 0; i < array_length(_vehicle_types); i++) {
         var _vehicle_type = _vehicle_types[i];
         var _lost_count = vehicles_lost_counts[$ _vehicle_type];
-        newline += $" {_lost_count}x {_vehicle_type}";
-        if (i < array_length(_vehicle_types) - 1) {
-            newline += ",";
-        } else {
-            newline += ".";
+            _vehicles_lost_string += $"{string_plural_count(_vehicle_type, _lost_count)}";
+            _vehicles_lost_string += smart_delimeter_sign(_vehicle_types, i, false);
         }
-    }
 
+        newline += $"{vehicle_deaths} were lost forever. ({_vehicles_lost_string})";
     newline_color="red";
     scr_newtext();
+    }
+
     newline = " ";
     scr_newtext();
 }

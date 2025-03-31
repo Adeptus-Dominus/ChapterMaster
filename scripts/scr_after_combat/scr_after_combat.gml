@@ -74,7 +74,7 @@ function add_vehicles_to_recovery() {
     }
 
     for (var i = 0; i < array_length(veh_dead); i++) {
-        if (veh_dead[i]) && (!veh_ally[i]) {
+        if (veh_dead[i] && !veh_ally[i] && veh_type[i] != "") {
             var _priority = 1;
             if (struct_exists(_vehicles_priority, veh_type[i])) {
                 _priority = _vehicles_priority[$ veh_type[i]];
@@ -202,18 +202,21 @@ function after_battle_part2() {
                 var _birthday = obj_ini.age[marine_co[i], marine_id[i]];
                 var _current_year = (obj_controller.millenium * 1000) + obj_controller.year;
                 var _harvestable_seed = 0;
+                var _total_seed = 0;
 
                 if (_birthday <= (_current_year - 10) && obj_ini.zygote == 0) {
+                    _total_seed++;
                     if (irandom_range(1, 20) > 1) {
                         _harvestable_seed++;
                     }
                 }
                 if (_birthday <= (_current_year - 5)) {
+                    _total_seed++;
                     if (irandom_range(1, 20) > 1) {
                         _harvestable_seed++;
                     }
                 }
-                obj_ncombat.seed_max += _harvestable_seed;
+                obj_ncombat.seed_max += _total_seed;
             }
 
             var last=0;
