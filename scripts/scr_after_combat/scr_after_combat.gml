@@ -53,7 +53,7 @@ function add_marines_to_recovery() {
                     "id": i,
                     "unit": _unit,
                     "column_id": id,
-                    "priority": _unit.experience
+                    "priority": _priority
                 };
 
                 ds_priority_add(obj_ncombat.marines_to_recover, _recovery_candidate, _recovery_candidate.priority);
