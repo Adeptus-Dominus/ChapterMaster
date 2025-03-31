@@ -141,13 +141,12 @@ function after_battle_part2() {
         }
         if (_unit.base_group=="astartes"){
             if (marine_dead[i]=0) and (_unit.gene_seed_mutations.mucranoid==1) and (ally[i]=false){
-                var muck=floor(random(200))+1;
-                if (muck=50){    //slime is armour destroyed due to mucranoid
-                    var _power_armour = ARR_power_armour;
-                    if (array_contains(_power_armour,_unit.armour())){
-                        _unit.update_armour("", false, false);
+                var muck=roll_personal_dice(1,100,"high",_unit);
+                if (muck==1){    //slime  armour damaged due to mucranoid
+                    if (_unit.armour != ""){
+                        obj_controller.specialist_point_handler.add_to_armoury_repair(_unit.armour());
                         obj_ncombat.mucra[marine_co[i]]=1;
-                        obj_ncombat.slime+=1;
+                        obj_ncombat.slime+=_unit.get_armour_data("maintenance");
                     }
                 }
             }
