@@ -384,7 +384,7 @@ function after_battle_part2() {
         if ((veh_dead[i]=1) or (obj_ncombat.defeat!=0)) and (veh_type[i]!="") and (veh_ally[i]=false){
             obj_ncombat.vehicle_deaths+=1;
 
-            var _vehicle_type = _veh_type[i];
+            var _vehicle_type = veh_type[i];
             if (!struct_exists(obj_ncombat.vehicles_lost_counts, _vehicle_type)) {
                 obj_ncombat.vehicles_lost_counts[$ _vehicle_type] = 1;
             } else {
