@@ -15,11 +15,20 @@ if (draw_size > 0){
         draw_set_color(c_gray);
     }
 
-    var _hit = scr_hit(pos+(centerline_offset*2),450-(draw_size/2),pos+(centerline_offset*2)+10,450+(draw_size/2)) && obj_ncombat.fadein<=0;
+    var _draw_coords = {
+        x1: pos + (centerline_offset * 2),
+        y1: 450 - (draw_size / 2),
+        x2: pos + (centerline_offset * 2) + 10,
+        y2: 450 + (draw_size / 2)
+    };
+
+    var _hit = scr_hit(_draw_coords.x1, _draw_coords.y1, _draw_coords.x2, _draw_coords.y2) && obj_ncombat.fadein <= 0;
+
     if (_hit) {
         draw_set_alpha(0.8);
     }
-    draw_rectangle(pos+(centerline_offset*2),450-(draw_size/2),pos+(centerline_offset*2)+10,450+(draw_size/2),0);
+    draw_rectangle(_draw_coords.x1, _draw_coords.y1, _draw_coords.x2, _draw_coords.y2, 0);
+
     if (_hit) {
         if (unit_count != unit_count_old) {
             unit_count_old = unit_count;
@@ -27,7 +36,7 @@ if (draw_size > 0){
         }
         draw_set_alpha(1);
         draw_set_color(38144);
-        draw_line_width(pos+(centerline_offset*2)+5,450,817,685, 2);
+        draw_line_width(_draw_coords.x1+5,450,817,685, 2);
         draw_set_font(fnt_40k_14b);
         draw_text(817,688,"Row Composition:");
         draw_set_font(fnt_40k_14);
