@@ -80,7 +80,6 @@ if (obj_ncombat.defeat == 0) {
                 _column_id.veh_hp[_vehicle_id] = roll_dice(1, 10, "high");
                 _column_id.veh_dead[_vehicle_id] = false;
                 vehicles_saved_count++;
-                vehicle_deaths--;
 
                 if (!struct_exists(obj_ncombat.vehicles_saved_counts, _vehicle_type)) {
                     obj_ncombat.vehicles_saved_counts[$ _vehicle_type] = 1;
@@ -96,7 +95,6 @@ if (obj_ncombat.defeat == 0) {
             _column_id.veh_dead[_vehicle_id] = false;
             vehicle_recovery_score -= _candidate.priority;
             vehicles_saved_count++;
-            vehicle_deaths--;
 
             if (!struct_exists(obj_ncombat.vehicles_saved_counts, _vehicle_type)) {
                 obj_ncombat.vehicles_saved_counts[$ _vehicle_type] = 1;
@@ -114,8 +112,9 @@ with (obj_pnunit) {
 }
 
 var _total_deaths = final_marine_deaths + final_command_deaths;
-if (_total_deaths > 0 || injured > 0 || units_saved_count > 0) {
-    newline = $"{_total_deaths + injured + units_saved_count}x units were critically injured.";
+var _total_injured = _total_deaths + injured + units_saved_count;
+if (_total_injured > 0) {
+    newline = $"{string_plural_count("unit", _total_injured)} {smart_verb("was", _total_injured)} critically injured.";
     newline_color = "red";
 	scr_newtext();
 
@@ -130,7 +129,7 @@ if (_total_deaths > 0 || injured > 0 || units_saved_count > 0) {
             _units_saved_string += smart_delimeter_sign(_unit_roles, i, false);
         }
 
-        newline = $"{units_saved_count}x were saved by the {string_plural(roles[eROLE.Apothecary], apothecaries_alive)}. ({_units_saved_string})";
+        newline = $"{units_saved_count}x {smart_verb("was", units_saved_count)} saved by the {string_plural(roles[eROLE.Apothecary], apothecaries_alive)}. ({_units_saved_string})";
         scr_newtext();
     }
 
@@ -156,7 +155,7 @@ if (_total_deaths > 0 || injured > 0 || units_saved_count > 0) {
     }
 
     newline = " ";
-        scr_newtext();
+    scr_newtext();
 }
 
 
@@ -166,30 +165,26 @@ if (ground_mission){
 	}
 };
 
-seed_saved = (min(seed_max, apothecaries_alive * 40));
-if (obj_ini.doomed) then seed_saved=0;
-if (seed_saved>0) then obj_controller.gene_seed+=seed_saved;
+if (seed_lost > 0) {
+    if (obj_ini.doomed) {
+        newline = $"Chapter mutation prevents retrieving gene-seed. {seed_lost} gene-seed lost.";
+        scr_newtext();
+    } else if (!apothecaries_alive) {
+        newline = $"No able-bodied {roles[eROLE.Apothecary]}. {seed_lost} gene-seed lost.";
+        scr_newtext();
+    } else {
+        seed_saved = min(seed_harvestable, apothecaries_alive * 40);
+        newline = $"{seed_saved} gene-seed was recovered; {seed_lost - seed_harvestable} was lost due damage; {seed_harvestable - seed_saved} was left to rot;";
+        scr_newtext();
+    }
 
-if (obj_ini.doomed && !apothecaries_alive){
-    part3=$"Chapter Mutation prevents retrieving Gene-Seed.  {seed_max} Gene-Seed lost.";
-    newline=part3;
-    scr_newtext();
-    newline=" ";
-    scr_newtext();
-}else if (!apothecaries_alive && !obj_ini.doomed){
-    part3=$"No able-bodied {roles[eROLE.Apothecary]}.  {seed_max} Gene-Seed lost.";
-    newline=part3;scr_newtext();
-    newline=" ";scr_newtext();
-}else if (apothecaries_alive>0 && final_marine_deaths+final_command_deaths>0 && !obj_ini.doomed){
-    part3=$"Gene-Seed Recovered: {seed_saved}(";
-    part3 += seed_saved ? $"{round((seed_saved/seed_max)*100)}" : "0";
-    part3 += "%)";
-    newline=part3;
-    scr_newtext();
-    newline=" ";
+    if (seed_saved > 0) {
+        obj_controller.gene_seed += seed_saved;
+    }
+
+    newline = " ";
     scr_newtext();
 }
-
 
 if (red_thirst>2){
     var voodoo="";
@@ -207,9 +202,9 @@ newline = " ";
 scr_newtext();
 
 
-
-if (vehicles_saved_count > 0 || vehicle_deaths > 0) {
-	newline = $"{string_plural_count("Vehicle", vehicle_deaths + vehicles_saved_count)} were critically damaged during battle.";
+var _total_damaged_count = vehicle_deaths + vehicles_saved_count;
+if (_total_damaged_count > 0) {
+	newline = $"{string_plural_count("vehicle", _total_damaged_count)} {smart_verb("was", _total_damaged_count)} critically damaged during battle.";
     newline_color="red";
     scr_newtext();
 
@@ -224,24 +219,24 @@ if (vehicles_saved_count > 0 || vehicle_deaths > 0) {
             _vehicles_saved_string += smart_delimeter_sign(_vehicle_types, i, false);
         }
 
-        newline = $"{string_plural(roles[eROLE.Techmarine], techmarines_alive)} were able to restore {vehicles_saved_count}. ({_vehicles_saved_string})";
+        newline = $"{string_plural(roles[eROLE.Techmarine], techmarines_alive)} {smart_verb("was", techmarines_alive)} able to restore {vehicles_saved_count}. ({_vehicles_saved_string})";
         scr_newtext();
     }
 
     if (vehicle_deaths > 0) {
         var _vehicles_lost_string = "";
-    var _vehicle_types = struct_get_names(vehicles_lost_counts);
+        var _vehicle_types = struct_get_names(vehicles_lost_counts);
 
-    for (var i = 0; i < array_length(_vehicle_types); i++) {
-        var _vehicle_type = _vehicle_types[i];
-        var _lost_count = vehicles_lost_counts[$ _vehicle_type];
+        for (var i = 0; i < array_length(_vehicle_types); i++) {
+            var _vehicle_type = _vehicle_types[i];
+            var _lost_count = vehicles_lost_counts[$ _vehicle_type];
             _vehicles_lost_string += $"{string_plural_count(_vehicle_type, _lost_count)}";
             _vehicles_lost_string += smart_delimeter_sign(_vehicle_types, i, false);
         }
 
-        newline += $"{vehicle_deaths} were lost forever. ({_vehicles_lost_string})";
-    newline_color="red";
-    scr_newtext();
+        newline += $"{vehicle_deaths} {smart_verb("was", vehicle_deaths)} lost forever. ({_vehicles_lost_string})";
+        newline_color="red";
+        scr_newtext();
     }
 
     newline = " ";
@@ -915,7 +910,7 @@ if (endline=0){
 if (defeat=1){
 	player_forces=0;
 	if (ground_mission){
-		obj_ground_mission.recoverable_gene_seed = seed_max;
+		obj_ground_mission.recoverable_gene_seed = seed_lost;
 	}
 	
 }

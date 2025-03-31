@@ -201,22 +201,24 @@ function after_battle_part2() {
             if (obj_ini.race[marine_co[i], marine_id[i]] == 1) {
                 var _birthday = obj_ini.age[marine_co[i], marine_id[i]];
                 var _current_year = (obj_controller.millenium * 1000) + obj_controller.year;
-                var _harvestable_seed = 0;
-                var _total_seed = 0;
+                var _seed_harvestable = 0;
+                var _seed_lost = 0;
 
                 if (_birthday <= (_current_year - 10) && obj_ini.zygote == 0) {
-                    _total_seed++;
-                    if (irandom_range(1, 20) > 1) {
-                        _harvestable_seed++;
+                    _seed_lost++;
+                    if (irandom_range(1, 10) > 1) {
+                        _seed_harvestable++;
                     }
                 }
                 if (_birthday <= (_current_year - 5)) {
-                    _total_seed++;
-                    if (irandom_range(1, 20) > 1) {
-                        _harvestable_seed++;
+                    _seed_lost++;
+                    if (irandom_range(1, 10) > 1) {
+                        _seed_harvestable++;
                     }
                 }
-                obj_ncombat.seed_max += _total_seed;
+
+                obj_ncombat.seed_harvestable += _seed_harvestable;
+                obj_ncombat.seed_lost += _seed_lost;
             }
 
             var last=0;

@@ -281,3 +281,32 @@ function base64_encode_advanced(input_string) {
 
     return _encoded_string;
 }
+
+/// @param {string} _verb The verb to be transformed (e.g., "was", "is", "has", etc.).
+/// @param {number} _variable A value determining singular (1) or plural (any value other than 1).
+/// @returns {string}
+function smart_verb(_verb, _variable) {
+    var _result = _verb;
+
+    if (_variable != 1) {
+        switch (_verb) {
+            case "was":
+                _result = "were";
+                break;
+            case "is":
+                _result = "are";
+                break;
+            case "has":
+                _result = "have";
+                break;
+            case "do":
+                _result = "do";
+                break;
+            default:
+                _result = _verb;
+                break;
+        }
+    }
+
+    return _result;
+}

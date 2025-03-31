@@ -226,7 +226,7 @@ function Roster() constructor{
         var _roster_types = struct_get_names(possible_local_roster);
         for (var i=0;i<array_length(_roster_types);i++){
             var _roster_type_name = _roster_types[i];
-            var _roster_type_count = selected_roster[$_roster_type_name];
+            var _roster_type_count = possible_local_roster[$_roster_type_name];
 
             roster_local_string += $"{string_plural_count(_roster_type_name, _roster_type_count)}";
             roster_local_string += smart_delimeter_sign(_roster_types, i, false);
