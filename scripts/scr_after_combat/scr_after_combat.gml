@@ -74,13 +74,21 @@ function add_vehicles_to_recovery() {
     }
 
     for (var i = 0; i < array_length(veh_dead); i++) {
-        if (struct_exists(_vehicles_priority, veh_type[i])) && (veh_dead[i]) && (!veh_ally[i] ) {
+        if (veh_dead[i]) && (!veh_ally[i]) {
+            var _priority = 1;
+            if (struct_exists(_vehicles_priority, veh_type[i])) {
+                _priority = _vehicles_priority[$ veh_type[i]];
+            }
+
             var _recovery_candidate = {
                 "id": i,
                 "column_id": id,
-                "priority": _vehicles_priority[$ veh_type[i]]
+                "priority": _priority
             };
+
             ds_priority_add(obj_ncombat.vehicles_to_recover, _recovery_candidate, _recovery_candidate.priority);
+        } else {
+            continue;
         }
     }
 }
