@@ -758,7 +758,7 @@ function ComplexSet(unit) constructor{
 
         }
         var type = unit.get_body_data("type","cloak");
-        if (type != "none" && (armour_type == ArmourType.Normal || armour_type == ArmourType.Terminator)) {
+        if (type != "none" && armour_type != ArmourType.Scout ) {
             static _cloaks = {
                 "scale":spr_cloak_scale,
                 "pelt":spr_cloak_fur,
