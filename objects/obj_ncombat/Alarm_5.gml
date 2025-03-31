@@ -93,36 +93,39 @@ with (obj_pnunit) {
     after_battle_part2();
 }
 
-if (units_saved > 0) {
-	newline = $"{units_saved}x were critically injured, but {string_plural(roles[eROLE.Apothecary])} were able to save them!";
-    newline_color = "red";
-	scr_newtext();
-}
-
-if (injured > 0) {
-	newline = $"{injured}x marines were critically injured, but barerly survived, thanks to the Sus-an Membrane!";
-	newline_color = "red";
-	scr_newtext();
-}
-
 var _total_deaths = final_marine_deaths + final_command_deaths;
-if (_total_deaths > 0) {
-	newline = $"{_total_deaths}x units succumbed to their wounds!";
-    var _unit_roles = struct_get_names(units_lost_counts);
-    for (var i = 0; i < array_length(_unit_roles); i++) {
-        var _unit_role = _unit_roles[i];
-        var _lost_count = units_lost_counts[$ _unit_role];
-        newline += $" {_lost_count}x {_unit_role}";
-        if (i < array_length(_unit_roles) - 1) {
-            newline += ",";
-        } else {
-            newline += ".";
-        }
-    }
+if (_total_deaths > 0 || injured > 0 || units_saved > 0) {
+    newline = $"{_total_deaths + injured + units_saved}x units were critically injured.";
     newline_color = "red";
 	scr_newtext();
-}
 
+    if (units_saved > 0) {
+        newline = $"{units_saved}x were saved by the {string_plural(roles[eROLE.Apothecary])}.";
+        scr_newtext();
+    }
+    if (injured > 0) {
+        newline = $"{injured}x survived thanks to the Sus-an Membrane.";
+        newline_color = "red";
+        scr_newtext();
+    }
+
+    if (_total_deaths > 0) {
+        newline = $"{_total_deaths}x units succumbed to their wounds!";
+        var _unit_roles = struct_get_names(units_lost_counts);
+        for (var i = 0; i < array_length(_unit_roles); i++) {
+            var _unit_role = _unit_roles[i];
+            var _lost_count = units_lost_counts[$ _unit_role];
+            newline += $" {_lost_count}x {_unit_role}";
+            if (i < array_length(_unit_roles) - 1) {
+                newline += ",";
+            } else {
+                newline += ".";
+            }
+        }
+        newline_color = "red";
+        scr_newtext();
+    }
+}
 
 
 if (ground_mission){
