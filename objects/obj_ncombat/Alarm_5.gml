@@ -32,7 +32,10 @@ if (obj_ncombat.defeat == 0) {
         var _column_id = _candidate.column_id;
         var _unit_id = _candidate.id;
         var _unit = _candidate.unit;
-        _unit.update_health(roll_personal_dice(1, 10, "high", _unit));
+        var _constitution_test_mod = _unit.hp() * -1;
+        var _constitution_test = global.character_tester.standard_test(_unit, "constitution", _constitution_test_mod);
+
+        _unit.update_health(_constitution_test[1]);
         _column_id.marine_dead[_unit_id] = false;
         unit_recovery_score -= 1;
         units_saved += 1;

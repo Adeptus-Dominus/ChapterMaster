@@ -51,15 +51,15 @@ for (var i=0;i<array_length(unit_struct);i++){
                 obj_ncombat.vehicle_recovery_score += skill_level;
                 obj_ncombat.techmarines_alive++;
             }
-        } else if (marine_dead[i] == 1) and (unit.hp()>-25) and (marine_type[i]!="") and ((obj_ncombat.dropping+obj_ncombat.defeat)!=2){
-            var rand1, survival;
-            onceh=0;
-            survival=40;
-            if (obj_ncombat.membrane=1) then survival-=20;
-            rand1=floor(random(100))+1;
-            skill_level = irandom(unit.luck);
-            rand1-=skill_level;
-            if (rand1<=survival) and (marine_dead[i]!=2){
+        } else if (marine_dead[i] == 1) and (marine_type[i]!="") and ((obj_ncombat.dropping+obj_ncombat.defeat)!=2){
+            var survival_mod = unit.luck * -1;
+            if (obj_ncombat.membrane == 1) {
+                survival_mod += 20;
+            } 
+            survival_mod += unit.hp() * -1;
+
+            var survival_test = global.character_tester.standard_test(unit, "constitution", survival_mod);
+            if (survival_test[0]) {
                 // show_message(string(marine_type[i])+" mans up#Roll: "+string(rand1)+"#Needed: "+string(survival)+"-");
                 marine_dead[i]=0;
                 //unit.update_health(2);
