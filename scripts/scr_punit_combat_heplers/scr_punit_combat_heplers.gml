@@ -174,7 +174,7 @@ function calculate_block_distances(first_block, second_block) {
 }
 
 /// @description Check if the current position of the unit block collides with the other.
-/// @param {string} position_x X position of the unit block
+/// @param {real} position_x X position of the unit block
 /// @param {real} position_y Y position of the unit block
 /// @return {bool}
 function block_position_collision(position_x, position_y) {
