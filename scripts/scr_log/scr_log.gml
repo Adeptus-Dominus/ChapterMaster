@@ -39,7 +39,7 @@ function handle_error(_header, _message, _stacktrace="", _critical = false, _rep
         _report_title += "\n";
     }
 
-    var _commit_history_link = $"https://github.com/Adeptus-Dominus/ChapterMaster/commits/{_commit_hash}";
+    var _commit_history_link = $"https://github.com/Adeptus-Dominus/ChapterMaster/commits/{global.commit_hash}";
 
     create_error_file($"{_report_title}{_full_message}\n{_commit_history_link}");
     show_debug_message(_full_message);
@@ -69,7 +69,9 @@ function handle_exception(_exception, custom_title=STR_error_message_head, criti
     var _stacktrace = array_to_string_list(_exception.stacktrace);
     var _critical = critical ? "CRASH! " : "";
     var _build_date = global.build_date == "unknown build" ? "" : $"/{global.build_date}";
-    var _report_title = $"{_critical}[{global.game_version}{_build_date}] {_exception.stacktrace[0]}";
+    var _problem_line = clean_stacktrace_line(_exception.stacktrace[0]);
+    var _report_title = $"{_critical}[{global.game_version}{_build_date}] {_problem_line}";
+
     handle_error(_header, _message, _stacktrace, critical, _report_title);
 }
 
@@ -128,4 +130,19 @@ function format_time(_time) {
         _time = $"0{_time}"
     }
     return string(_time);
+}
+
+/// @description Cleans up a stack trace line string by removing the "anon@number@", "gml_Object_" and "gml_Script_".
+/// @param {string} _stacktrace_line - The stack trace line string to be cleaned.
+/// @returns {string}
+function clean_stacktrace_line(_stacktrace_line) {
+    _stacktrace_line = string_replace(_stacktrace_line, "gml_Object_", "");
+    _stacktrace_line = string_replace(_stacktrace_line, "gml_Script_", "");
+
+    if (string_count("@", _stacktrace_line) == 2) {
+        var split_parts = string_split(_stacktrace_line, "@");
+        _stacktrace_line = split_parts[0] + split_parts[2];
+    }
+
+    return _stacktrace_line;
 }
