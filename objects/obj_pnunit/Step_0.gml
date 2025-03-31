@@ -5,6 +5,5 @@ array_resize(lost, 0);
 array_resize(lost_num, 0);
 
 
-column_size = (men*0.5)+(medi)+(dreads*2)+(veh*2.5);
-
-unit_count = men + medi + dreads + veh;
+update_block_size();
+update_block_unit_count();

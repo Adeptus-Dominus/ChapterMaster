@@ -32,21 +32,10 @@ if (draw_size > 0){
     if (_hit) {
         if (unit_count != unit_count_old) {
             unit_count_old = unit_count;
-            composition_string = string_unit_composition();
+            composition_string = block_composition_string();
         }
-        draw_set_alpha(1);
-        draw_set_color(38144);
-        draw_line_width(_draw_coords.x1+5,450,817,685, 2);
-        draw_set_font(fnt_40k_14b);
-        draw_text(817,688,"Row Composition:");
-        draw_set_font(fnt_40k_14);
-        draw_text_ext(817,710,composition_string,-1,758);   
+        draw_block_composition(_draw_coords.x1, composition_string);
     }
 
-    if (obj_ncombat.fadein > 0) {
-        draw_set_color(c_black);
-        draw_set_alpha(obj_ncombat.fadein/30);
-        draw_rectangle(822,239,1574,662,0);
-        draw_set_alpha(1);
-    }
+    draw_block_fadein()
 }
