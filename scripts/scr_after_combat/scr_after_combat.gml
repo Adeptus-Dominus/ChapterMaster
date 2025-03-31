@@ -120,8 +120,8 @@ function distribute_experience(_units, _exp_amount) {
     return _average_exp;
 }
 
-
-function after_battle_part1() {
+/// @mixin
+function after_battle_part2() {
     var _unit;
 
     for (var i=0;i<array_length(unit_struct);i++){
@@ -166,7 +166,6 @@ function after_battle_part1() {
 
         var destroy;destroy=0;
         if ((marine_dead[i]>0) or (obj_ncombat.defeat!=0)) and (marine_type[i]!="") and (ally[i]=false){
-
             var comm=false;
             if (_unit.IsSpecialist("standard",true)){
                 obj_ncombat.final_command_deaths+=1;
@@ -214,9 +213,9 @@ function after_battle_part1() {
     
             var _unit_role = _unit.role();
             if (!struct_exists(obj_ncombat.units_lost_counts, _unit_role)) {
-                obj_ncombat.units_lost_counts._unit_role = 1;
+                obj_ncombat.units_lost_counts[$ _unit_role] = 1;
             } else {
-                obj_ncombat.units_lost_counts._unit_role++;
+                obj_ncombat.units_lost_counts[$ _unit_role]++;
             }
 
             // Determine which companies to crunch
@@ -387,14 +386,73 @@ function after_battle_part1() {
 
             var _vehicle_type = _veh_type[i];
             if (!struct_exists(obj_ncombat.vehicles_lost_counts, _vehicle_type)) {
-                obj_ncombat.vehicles_lost_counts._vehicle_type = 1;
+                obj_ncombat.vehicles_lost_counts[$ _vehicle_type] = 1;
             } else {
-                obj_ncombat.vehicles_lost_counts._vehicle_type++;
+                obj_ncombat.vehicles_lost_counts[$ _vehicle_type]++;
             }
 
             // Determine which companies to crunch
             obj_ncombat.crunch[veh_co[i]]=1;
 
         }
+    }
+}
+
+/// @mixin
+function after_battle_part1() {
+    var unit;
+    var skill_level;
+    for (var i=0;i<array_length(unit_struct);i++){
+        unit = unit_struct[i];
+        if (!is_struct(unit))then continue;
+        if (marine_type[i]!="") and (unit.hp()<-3000) and (obj_ncombat.defeat=0){
+            marine_dead[i]=0;
+            //unit.add_or_sub_health(5000);
+        }// For incapitated
+        
+        if (ally[i]=false){
+            if (obj_ncombat.dropping=1) and (obj_ncombat.defeat=1) and (marine_dead[i]<2) then marine_dead[i]=1;
+            if (obj_ncombat.dropping=0) and (obj_ncombat.defeat=1) and (marine_dead[i]<2){
+                marine_dead[i]=2;
+                marine_hp[i]=-50;
+            }
+            
+        
+            if (marine_type[i]!="") and (obj_ncombat.defeat=1) and (marine_dead[i]<2){
+                marine_dead[i]=1;
+                marine_hp[i]=-50;
+            }
+            if (veh_type[i]!="") and (obj_ncombat.defeat=1){
+                veh_dead[i]=1;
+                veh_hp[i]=-200;
+            }
+            
+            if (!marine_dead[i]){
+                // Apothecaries for saving marines;
+                if (unit.IsSpecialist("apoth", true)) {
+                    skill_level = unit.intelligence * 0.0125;
+                    if (marine_gear[i]=="Narthecium"){
+                        skill_level*=2;
+                        obj_ncombat.apothecaries_alive++;
+                    } 
+                    skill_level += random(unit.luck*0.05);
+                    obj_ncombat.unit_recovery_score += skill_level;
+                }
+
+                // Techmarines for saving vehicles;
+                if (unit.IsSpecialist("forge", true)) {
+                    skill_level = unit.technology / 10;
+                    if (marine_mobi[i]=="Servo-arm") {
+                        skill_level *= 1.5; 
+                    } else if (marine_mobi[i]=="Servo-harness") {
+                        skill_level *= 2;
+                    }
+                    skill_level += random(unit.luck / 2);
+                    obj_ncombat.vehicle_recovery_score += skill_level;
+                    obj_ncombat.techmarines_alive++;
+                }
+            }
+        }
+        
     }
 }

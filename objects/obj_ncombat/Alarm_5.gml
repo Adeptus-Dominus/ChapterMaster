@@ -16,7 +16,9 @@ if (turn_count >= 50){
 var roles = obj_ini.role[100];
 var ground_mission = (instance_exists(obj_ground_mission));
 
-
+with (obj_pnunit) {
+    after_battle_part1();
+}
 
 if (obj_ncombat.defeat == 0) {
     marines_to_recover = ds_priority_create();
@@ -27,7 +29,7 @@ if (obj_ncombat.defeat == 0) {
         add_vehicles_to_recovery();
     }
 
-    while (!ds_priority_empty(marines_to_recover) && unit_recovery_score > 0) {
+    while (!ds_priority_empty(marines_to_recover)) {
         var _candidate = ds_priority_delete_max(marines_to_recover);
         var _column_id = _candidate.column_id;
         var _unit_id = _candidate.id;
@@ -35,14 +37,30 @@ if (obj_ncombat.defeat == 0) {
         var _constitution_test_mod = _unit.hp() * -1;
         var _constitution_test = global.character_tester.standard_test(_unit, "constitution", _constitution_test_mod);
 
-        _unit.update_health(_constitution_test[1]);
-        _column_id.marine_dead[_unit_id] = false;
-        unit_recovery_score -= 1;
-        units_saved += 1;
+        if (unit_recovery_score > 0) {
+            _unit.update_health(_constitution_test[1]);
+            _column_id.marine_dead[_unit_id] = false;
+            unit_recovery_score--;
+            units_saved++;
+            continue;
+        }
+
+        if (_unit.base_group == "astartes") {
+            if (!_unit.gene_seed_mutations[$ "membrane"]) {
+                var survival_mod = _unit.luck * -1;
+                survival_mod += _unit.hp() * -1;
+    
+                var survival_test = global.character_tester.standard_test(_unit, "constitution", survival_mod);
+                if (survival_test[0]) {
+                    _column_id.marine_dead[_unit_id] = false;
+                    injured++;
+                }
+            }
+        }
     }
     ds_priority_destroy(marines_to_recover);
 
-    while (!ds_priority_empty(vehicles_to_recover) && vehicle_recovery_score > 0) {
+    while (!ds_priority_empty(vehicles_to_recover)) {
         var _candidate = ds_priority_delete_max(vehicles_to_recover);
         var _column_id = _candidate.column_id;
         var _vehicle_id = _candidate.id;
@@ -59,29 +77,43 @@ if (obj_ncombat.defeat == 0) {
             }
         }
     
-        _column_id.veh_hp[_vehicle_id] = roll_dice(1, 10, "high");
-        _column_id.veh_dead[_vehicle_id] = false;
-        vehicle_recovery_score -= _candidate.priority;
-        vehicles_saved++;
-        vehicle_deaths--;
+        if (vehicle_recovery_score > 0) {
+            _column_id.veh_hp[_vehicle_id] = roll_dice(1, 10, "high");
+            _column_id.veh_dead[_vehicle_id] = false;
+            vehicle_recovery_score -= _candidate.priority;
+            vehicles_saved++;
+            vehicle_deaths--;
+        }
     }
     ds_priority_destroy(vehicles_to_recover);
 }
 
 
 with (obj_pnunit) {
-    after_battle_part1()
+    after_battle_part2();
 }
 
-var _total_deaths = (final_marine_deaths + final_command_deaths) - units_saved;
+if (units_saved > 0) {
+	newline = $"{units_saved}x were critically injured, but {string_plural(roles[eROLE.Apothecary])} were able to save them!";
+    newline_color = "red";
+	scr_newtext();
+}
+
+if (injured > 0) {
+	newline = $"{injured}x marines were critically injured, but barerly survived, thanks to the Sus-an Membrane!";
+	newline_color = "red";
+	scr_newtext();
+}
+
+var _total_deaths = final_marine_deaths + final_command_deaths;
 if (_total_deaths > 0) {
-	newline = $"Marines lost: {_total_deaths}!";
-    var _units_lost = struct_get_names(units_lost_counts);
-    for (var i = 0; i < array_length(_units_lost); i++) {
-        var _unit_role = _units_lost[i];
+	newline = $"{_total_deaths}x units succumbed to their wounds!";
+    var _unit_roles = struct_get_names(units_lost_counts);
+    for (var i = 0; i < array_length(_unit_roles); i++) {
+        var _unit_role = _unit_roles[i];
         var _lost_count = units_lost_counts[$ _unit_role];
         newline += $" {_lost_count}x {_unit_role}";
-        if (i < array_length(_units_lost) - 1) {
+        if (i < array_length(_unit_roles) - 1) {
             newline += ",";
         } else {
             newline += ".";
@@ -91,16 +123,7 @@ if (_total_deaths > 0) {
 	scr_newtext();
 }
 
-if (units_saved > 0) {
-	newline = $"{string_plural(roles[eROLE.Apothecary])} saved {units_saved} marines.";
-	scr_newtext();
-}
 
-if (injured > 0) {
-	newline = $"Marines critically injured: {injured}!";
-	newline_color = "red";
-	scr_newtext();
-}
 
 if (ground_mission){
 	if (apothecaries_alive < 0){
@@ -158,12 +181,12 @@ if (vehicles_saved > 0) {
 if (vehicle_deaths > 0) {
 	newline = $"Vehicles Lost: {vehicle_deaths}.";
 
-    var _vehicles_lost = struct_get_names(vehicles_lost_counts);
-    for (var i = 0; i < array_length(_vehicles_lost); i++) {
-        var _vehicle_type = _vehicles_lost[i];
+    var _vehicle_types = struct_get_names(vehicles_lost_counts);
+    for (var i = 0; i < array_length(_vehicle_types); i++) {
+        var _vehicle_type = _vehicle_types[i];
         var _lost_count = vehicles_lost_counts[$ _vehicle_type];
         newline += $" {_lost_count}x {_vehicle_type}";
-        if (i < array_length(_vehicles_lost) - 1) {
+        if (i < array_length(_vehicle_types) - 1) {
             newline += ",";
         } else {
             newline += ".";
