@@ -95,15 +95,32 @@ slate_panel.inside_method = function(){
                 }
 
                 draw_text(xx+1447,yy+y2,cost);// Requisition
+
                 if (!obj_controller.in_forge ){
+                    draw_sprite(spr_buy_tiny,0,xx+1530,yy+y2+2);
                     if (obj_controller.requisition< cost) then draw_set_alpha(0.25);
+                    draw_set_alpha(1);
+
+                    draw_sprite(spr_sell_tiny,0,xx+1480,yy+y2+2);
+                    if (point_and_click([xx + 1480, yy + y2 + 2, xx + 1530, yy + y2 + 14]) && shop != "warships" && shop != "vehicles") {
+                        var sell_count = 1;
+                        if (keyboard_check(vk_shift)) {
+                            sell_count = 5;
+                        }
+    
+                        if ((item_stocked[i] >= sell_count)) {
+                            scr_add_item(item[i], (sell_count * -1));
+                            item_stocked[i] += (sell_count * -1);
+                            click2 = 1;
+                            var sell_price = (item_cost[i] * 0.9) * sell_count;
+                            obj_controller.requisition += sell_price;
+                        }
+                    }
                 }
 
-                draw_sprite(spr_build_tiny2,0,xx+1530,yy+y2+2);
-
-                draw_set_alpha(1);
-                var clicked =(point_in_rectangle(mouse_x, mouse_y, xx+1520, yy+y2+2, xx+1580, yy+y2+18)&& mouse_check_button_pressed(mb_left));
+                var clicked = (point_and_click([xx+1520, yy+y2+2, xx+1570, yy+y2+14]));
                 if (obj_controller.in_forge){
+                    draw_sprite(spr_build_tiny,0,xx+1530,yy+y2+2);
                     if (clicked){
                         if (array_length(obj_controller.specialist_point_handler.forge_queue)<20){
                             var new_queue_item = {
@@ -157,7 +174,7 @@ slate_panel.inside_method = function(){
                     }
 
                     obj_controller.cooldown=8000;
-                }               
+                }
             }
             if (!obj_controller.in_forge && nobuy[i]=1) ||  (obj_controller.in_forge && forge_cost[i]=0){
                 draw_set_alpha(1);
