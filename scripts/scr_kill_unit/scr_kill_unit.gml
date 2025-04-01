@@ -15,6 +15,7 @@ function scr_kill_unit(company, unit_slot){
     	scr_loyalty("Lost Standard","+");
     }
     _unit.remove_from_squad();
+    struct_remove(obj_ini.UUID_marine, _unit.UUID)
 	scr_wipe_unit(company, unit_slot)
 }
 
@@ -32,7 +33,7 @@ function scr_wipe_unit(company, unit_slot){
 	obj_ini.age[company][unit_slot]=0;
 	obj_ini.mobi[company][unit_slot]="";
 	obj_ini.bio[company][unit_slot]="";
-	obj_ini.TTRPG[company][unit_slot].base_group="none";	
+    obj_ini.TTRPG[company][unit_slot] = new TTRPG_stats("chapter", company, unit_slot, "blank"); // create new empty unit structure
 }
 
 function kill_and_recover(company, unit_slot, equipment=true, gene_seed_collect=true){
