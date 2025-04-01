@@ -347,6 +347,28 @@ function scr_load(save_part, save_id) {
 	            obj_ini.mobi[coh,mah]=ini_read_string("Mar","mb"+string(coh)+"."+string(mah),"");	
 	        }
 
+            for (coh = 0; coh <= 10; coh++) {
+                for (mah = 0; mah <= 500; mah++) {
+                    obj_ini.TTRPG[coh, mah] = new TTRPG_stats("chapter", coh, mah, "blank");
+                }
+            }
+
+            // We need to move these functions in these marine structs into a seperate struct
+            var _UUID_marine_temp = return_json_from_ini("Mar", "UUID_marine", {});
+            var _UUID_names = struct_get_names(_UUID_marine_temp);
+            var _UUID_count = array_length(_UUID_names);
+            for (var i = 0; i < _UUID_count; i++) {
+                var _string_UUID = _UUID_names[i];
+                var _UUID_marine = new TTRPG_stats("chapter", 0, 0, "blank");
+                _UUID_marine.load_json_data(_UUID_marine_temp[$ _string_UUID]);
+                struct_set(obj_ini.UUID_marine, _string_UUID, _UUID_marine)
+
+                var _UUID_root = obj_ini.UUID_marine[$ _string_UUID];
+                var _comp = _UUID_root.company;
+                var _mar = _UUID_root.marine_number;
+                obj_ini.TTRPG[_comp][_mar] = _UUID_root;
+            }
+
 			// TODO: When modding support is implemented, uncomment this init. Otherwise traits are initialized at compile.
 	       	// initialize_marine_traits();
 	        for (coh=0;coh<=10;coh++){
@@ -380,7 +402,6 @@ function scr_load(save_part, save_id) {
                     obj_ini.age[coh,mah]=ini_read_real("Mar","ag"+string(coh)+"."+string(mah),0);
                     obj_ini.spe[coh,mah]=ini_read_string("Mar","spe"+string(coh)+"."+string(mah),"");
                     obj_ini.god[coh,mah]=ini_read_real("Mar","god"+string(coh)+"."+string(mah),0);
-                    load_marine_struct(coh,mah);
                     unit = obj_ini.TTRPG[coh,mah];
 					if (string_length(unit.weapon_one()) != 0 && string_length(string_digits(unit.weapon_one())) == string_length(unit.weapon_one())) {
 						obj_ini.wep1[coh, mah] = real(obj_ini.wep1[coh, mah]);

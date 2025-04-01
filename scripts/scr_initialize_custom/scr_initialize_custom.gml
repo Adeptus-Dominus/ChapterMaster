@@ -2256,7 +2256,9 @@ function scr_initialize_custom() {
 	loc[company, 1] = home_name;
 	name[company, 1] = obj_creation.chapter_master_name;
 	role[company, 1] = "Chapter Master";
-	TTRPG[company, 1] = new TTRPG_stats("chapter", company, 1, "chapter_master");
+    var _marine_ttrpg = new TTRPG_stats("chapter", company, 1, "chapter_master");
+    struct_set(UUID_marine, _marine_ttrpg.UUID, _marine_ttrpg)
+    TTRPG[company, 1] = UUID_marine[$ _marine_ttrpg.UUID];
 	var chapter_master = TTRPG[company, 1];
 	var chapter_master_equip = {}
 	switch (master_melee) {
@@ -2958,7 +2960,9 @@ function scr_initialize_custom() {
 				k += 1;
 				commands += 1; // Company Chaplain
 				race[company][k] = 1;
-				TTRPG[company][k] = new TTRPG_stats("chapter", company, k);
+                var _marine_ttrpg = new TTRPG_stats("chapter", company, k);
+                struct_set(UUID_marine, _marine_ttrpg.UUID, _marine_ttrpg )
+                TTRPG[company][k] = UUID_marine[$ _marine_ttrpg.UUID];
 				loc[company][k] = home_name;
 				role[company][k] = roles.chaplain;
 				wep1[company][k] = wep1[defaults_slot, eROLE.Chaplain];
@@ -3352,7 +3356,10 @@ function add_veh_to_company(name, company, slot, wep1, wep2, wep3, upgrade, acce
 /// Use "" if you want to set weapons and gear via squad layouts.
 /// "default" will set it to the value in the default slot for the given role, see `load_default_gear`
 function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1="default", wep2="default", gear="default", mobi="default", armour="default"){
-	obj_ini.TTRPG[company][slot] = new TTRPG_stats("chapter", company, slot, ttrpg_name);
+    var _marine_ttrpg = new TTRPG_stats("chapter", company, slot, ttrpg_name);
+    struct_set(obj_ini.UUID_marine, _marine_ttrpg.UUID, _marine_ttrpg)
+
+    obj_ini.TTRPG[company][slot] = obj_ini.UUID_marine[$ _marine_ttrpg.UUID];
 	obj_ini.race[company][slot] = 1;
 	obj_ini.loc[company][slot] = obj_ini.home_name;
 	obj_ini.role[company][slot] = role_name;
