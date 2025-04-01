@@ -200,9 +200,39 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true) {
         // Squads
         var sqi = "";
         draw_set_color(c_black);
-        var squad_colours = [c_teal, c_red, c_green, c_orange, c_aqua, c_fuchsia, c_green, c_blue, c_fuchsia, c_maroon];
+        var squad_colours = [
+        #ff0000,    // Red (HSL: 0, 100%, 50%)
+        #ff8000,    // Orange (HSL: 30, 100%, 50%)
+        #ffff00,    // Yellow (HSL: 60, 100%, 50%)
+        #00ff00,    // Green (HSL: 120, 100%, 50%)
+        #00ffff,    // Cyan (HSL: 180, 100%, 50%)
+        #0080ff,    // Light Blue (HSL: 210, 100%, 50%)
+        #0000ff,    // Blue (HSL: 240, 100%, 50%)
+        #8000ff,    // Purple (HSL: 270, 100%, 50%)
+        #ff00ff,    // Magenta (HSL: 300, 100%, 50%)
+
+        #b20000,    // Red (HSL: 0, 100%, 25%)
+        #b26e00,    // Orange (HSL: 30, 100%, 25%)
+        #b2b200,    // Yellow (HSL: 60, 100%, 25%)
+        #00b200,    // Green (HSL: 120, 100%, 25%)
+        #00b2b2,    // Cyan (HSL: 180, 100%, 25%)
+        #004db2,    // Light Blue (HSL: 210, 100%, 25%)
+        #0000b2,    // Blue (HSL: 240, 100%, 25%)
+        #4d00b2,    // Purple (HSL: 270, 100%, 25%)
+        #b200b2,    // Magenta (HSL: 300, 100%, 25%)
+
+        #ff4d4d,    // Red (HSL: 0, 50%, 50%)
+        #ffb84d,    // Orange (HSL: 30, 50%, 50%)
+        #ffff66,    // Yellow (HSL: 60, 50%, 50%)
+        #66ff66,    // Green (HSL: 120, 50%, 50%)
+        #66ffff,    // Cyan (HSL: 180, 50%, 50%)
+        #6680ff,    // Light Blue (HSL: 210, 50%, 50%)
+        #6666ff,    // Blue (HSL: 240, 50%, 50%)
+        #b366ff,    // Purple (HSL: 270, 50%, 50%)
+        #ff66ff,    // Magenta (HSL: 300, 50%, 50%)
+        ];
         if (squad[selected] != -1) {
-            var _squad_modulo = squad[selected] % 10;
+            var _squad_modulo = squad[selected] % array_length(squad_colours);
             draw_set_color(squad_colours[_squad_modulo]);
         }
 
