@@ -1,0 +1,299 @@
+{
+    "Combat Knife": {
+        "value": 1
+    },
+    "Chainsword": {
+        "value": 4
+    },
+    "Chainaxe": {
+        "value": 10
+    },
+    "Power Axe": {
+        "value": 40,
+        "research_required": {
+            "power_fields": 2
+        },
+        "no_buy": true
+    },
+    "Power Sword": {
+        "value": 25,
+        "research_required": {
+            "power_fields": 2
+        },
+        "no_buy": true
+    },
+    "Power Spear": {
+        "value": 40,
+        "research_required": {
+            "power_fields": 2
+        },
+        "no_buy": true
+    },
+    "Crozius Arcanum": {
+        "value": 75,
+        "research_required": {
+            "power_fields": 2
+        },
+        "no_buy": true
+    },
+    "Power Fist": {
+        "value": 60,
+        "research_required": {
+            "power_fields": 2
+        },
+        "no_buy": true
+    },
+    "Boltstorm Gauntlet": {
+        "value": 90,
+        "research_required": {
+            "power_fields": 2,
+            "bolt": 2
+        },
+        "no_buy": true
+    },
+    "Power Mace": {
+        "value": 50,
+        "research_required": {
+            "power_fields": 2
+        },
+        "no_buy": true
+    },
+    "Mace of Absolution": {
+        "value": 70,
+        "research_required": {
+            "power_fields": 2
+        }
+    },
+    "Lightning Claw": {
+        "value": 90,
+        "research_required": {
+            "power_fields": 2
+        },
+        "no_buy": true
+    },
+    "Chainfist": {
+        "value": 75,
+        "research_required": {
+            "power_fields": 2,
+            "chain": 1
+        },
+        "no_buy": true
+    },
+    "Force Staff": {
+        "value": 70,
+        "research_required": {
+            "psi": 1
+        },
+        "no_buy": true
+    },
+    "Force Sword": {
+        "value": 55,
+        "research_required": {
+            "psi": 1
+        },
+        "no_buy": true
+    },
+    "Force Axe": {
+        "value": 60,
+        "research_required": {
+            "psi": 1
+        },
+        "no_buy": true
+    },
+    "Thunder Hammer": {
+        "value": 90,
+        "research_required": {
+            "power_fields": 2
+        },
+        "no_buy": true
+    },
+    "Heavy Thunder Hammer": {
+        "value": 135,
+        "research_required": {
+            "power_fields": 2
+        },
+        "no_buy": true
+    },
+    "Lascutter": {
+        "value": 15
+    },
+    "Boarding Shield": {
+        "value": 20
+    },
+    "Storm Shield": {
+        "value": 50,
+        "research_required": {
+            "power_fields": 2
+        },
+        "no_buy": true
+    },
+    "Company Standard": {
+        "value": 0,
+        "no_buy": true
+    },
+    "Bolt Pistol": {
+        "value": 5
+    },
+    "Bolter": {
+        "value": 10
+    },
+    "Stalker Pattern Bolter": {
+        "value": 80
+    },
+    "Combiflamer": {
+        "value": 35,
+        "research_required": {
+            "bolt": 1,
+            "flame": 1
+        },
+        "no_buy": true
+    },
+    "Combiplasma": {
+        "value": 110,
+        "research_required": {
+            "bolt": 1,
+            "plasma": 1
+        },
+        "no_buy": true
+    },
+    "Combimelta": {
+        "value": 40,
+        "research_required": {
+            "bolt": 1,
+            "melta": 1
+        },
+        "no_buy": true
+    },
+    "Combigrav": {
+        "value": 110,
+        "research_required": {
+            "bolt": 1,
+            "grav": 1
+        },
+        "no_buy": true
+    },
+    "Heavy Bolter": {
+        "value": 50,
+        "research_required": {
+            "bolt": 2
+        },
+        "no_buy": true
+    },
+    "Storm Bolter": {
+        "value": 50,
+        "research_required": {
+            "bolt": 2
+        },
+        "no_buy": true
+    },
+    "Infernus Pistol": {
+        "value": 12,
+        "research_required": {
+            "flame": 1
+        }
+    },
+    "Hand Flamer": {
+        "value": 12,
+        "research_required": {
+            "flame": 1
+        }
+    },
+    "Flamer": {
+        "value": 25,
+        "research_required": {
+            "flame": 1
+        },
+        "no_buy": true
+    },
+    "Heavy Flamer": {
+        "value": 40,
+        "research_required": {
+            "flame": 1
+        },
+        "no_buy": true
+    },
+    "Incinerator": {
+        "value": 0,
+        "research_required": {
+            "flame": 1
+        },
+        "no_buy": true
+    },
+    "Meltagun": {
+        "value": 30,
+        "research_required": {
+            "melta": 0
+        },
+        "no_buy": true
+    },
+    "Multi-Melta": {
+        "value": 60,
+        "research_required": {
+            "melta": 0
+        },
+        "no_buy": true
+    },
+    "Plasma Pistol": {
+        "value": 60,
+        "research_required": {
+            "plasma": 1
+        },
+        "no_buy": true
+    },
+    "Plasma Gun": {
+        "value": 100,
+        "research_required": {
+            "plasma": 1
+        },
+        "no_buy": true
+    },
+    "Plasma Cannon": {
+        "value": 300,
+        "research_required": {
+            "plasma": 1
+        },
+        "no_buy": true
+    },
+    "Grav-Pistol": {
+        "value": 60,
+        "research_required": {
+            "grav": 1
+        },
+        "no_buy": true
+    },
+    "Grav-Gun": {
+        "value": 100,
+        "research_required": {
+            "grav": 1
+        },
+        "no_buy": true
+    },
+    "Grav-Cannon": {
+        "value": 300,
+        "research_required": {
+            "grav": 1
+        },
+        "no_buy": true
+    },
+    "Archeotech Laspistol": {
+        "value": 0,
+        "no_buy": true
+    },
+    "Hellrifle": {
+        "value": 0,
+        "no_buy": true
+    },
+    "Sniper Rifle": {
+        "value": 10
+    },
+    "Missile Launcher": {
+        "value": 70
+    },
+    "Lascannon": {
+        "value": 70,
+        "research_required": {
+            "las": 1
+        },
+        "no_buy": true
+    }
+}
