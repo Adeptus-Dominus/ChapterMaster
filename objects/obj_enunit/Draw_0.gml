@@ -8,21 +8,18 @@ if (draw_size > 0){
         centerline_offset=x-obj_centerline.x;
     }
 
-    var _draw_coords = {
-        x1: pos + (centerline_offset * 2),
-        y1: 450 - (draw_size / 2),
-        x2: pos + (centerline_offset * 2) + 10,
-        y2: 450 + (draw_size / 2)
-    };
+    x1 = pos + (centerline_offset * 2);
+    y1 = 450 - (draw_size / 2);
+    x2 = pos + (centerline_offset * 2) + 10;
+    y2 = 450 + (draw_size / 2);
 
-    var _hit = scr_hit(_draw_coords.x1, _draw_coords.y1, _draw_coords.x2, _draw_coords.y2) && obj_ncombat.fadein <= 0;
-
-    if (_hit) {
+    if (hit()) {
         draw_set_alpha(0.8);
     }
-    draw_rectangle(_draw_coords.x1, _draw_coords.y1, _draw_coords.x2, _draw_coords.y2, 0);
 
-    if (_hit) {
+    draw_rectangle(x1, y1, x2, y2, 0);
+
+    if (hit()) {
         if (unit_count != unit_count_old) {
             unit_count_old = unit_count;
             if (obj_ncombat.enemy!=1){
@@ -74,7 +71,7 @@ if (draw_size > 0){
             } 
         }
 
-        draw_block_composition(_draw_coords.x1, composition_string);
+        draw_block_composition(x1, composition_string);
     }
 
     draw_block_fadein();

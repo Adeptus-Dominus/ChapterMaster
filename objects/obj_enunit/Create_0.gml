@@ -20,7 +20,10 @@ composition_string="";
 pos = 880;
 centerline_offset = 0;
 draw_size = 0;
-
+x1 = pos + (centerline_offset * 2);
+y1 = 450 - (draw_size / 2);
+x2 = pos + (centerline_offset * 2) + 10;
+y2 = 450 + (draw_size / 2);
 
 enemy=0;
 enemy2=0;
@@ -79,3 +82,7 @@ if (obj_ncombat.enemy=1) then alarm[6]=10;
 
 // if (obj_ncombat.enemy=1){alarm[1]=8;alarm[5]=10;}
 
+
+hit = function() {
+    return scr_hit(x1, y1, x2, y2) && obj_ncombat.fadein <= 0;
+};

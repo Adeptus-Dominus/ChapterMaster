@@ -20,6 +20,11 @@ column_size = 0;
 centerline_offset = 0;
 pos = 880;
 draw_size = 0;
+x1 = pos + (centerline_offset * 2);
+y1 = 450 - (draw_size / 2);
+x2 = pos + (centerline_offset * 2) + 10;
+y2 = 450 + (draw_size / 2);
+
 // let="";let=string_delete(obj_ini.psy_powers,2,string_length(obj_ini.psy_powers)-1);let=string_upper(let);
 // LET might be different for each marine; need a way of determining this
 
@@ -117,3 +122,7 @@ hostile_splash=0;
 alarm[1]=4;
 
 action_set_alarm(1, 3);
+
+hit = function() {
+    return scr_hit(x1, y1, x2, y2) && obj_ncombat.fadein <= 0;
+};
