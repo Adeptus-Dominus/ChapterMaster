@@ -104,7 +104,7 @@ slate_panel.inside_method = function(){
 
                     draw_sprite(spr_sell_tiny,0,xx+1480,yy+y2+2);
                     if (scr_hit(xx + 1480, yy + y2 + 2, xx + 1530, yy + y2 + 14) && shop != "warships" && shop != "vehicles") {
-                        var _sell_mod = 0.9;
+                        var _sell_mod = SHOP_SELL_MOD;
                         tooltip = $"You sell items for {_sell_mod * 100}% of their original price.";
                         tooltip_show=1;
                         if (scr_click_left) {

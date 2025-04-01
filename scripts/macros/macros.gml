@@ -8,6 +8,7 @@
 #macro TIME_1 $"{format_time(current_hour)}:{format_time(current_minute)}:{format_time(current_second)}"
 #macro CM_GREEN_COLOR #34bc75
 #macro CM_RED_COLOR #bf4040
+#macro SHOP_SELL_MOD 0.9
 
 enum luck {
     bad = -1,
