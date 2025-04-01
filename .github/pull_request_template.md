@@ -1,6 +1,6 @@
 <!--- Make use of markdown lists. They make stuff much easier to read through. -->
 ### Purpose
-<!-- With a few sentences, describe why you decieded to make these changes/additions. -->
+<!-- With a few sentences, describe why you decided to make these changes/additions. -->
 - Self-descreptive.
 
 ### Describe your changes/additions
