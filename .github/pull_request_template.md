@@ -5,7 +5,7 @@
 
 ### Describe your changes/additions
 <!-- What your changes do and how. No need to get too technical. Some stuff from this list will also be used for the player release notes. -->
-- Self-descreptive.
+- Self-descriptive.
 
 ### What can/needs to be improved/changed
 <!-- Is there anything that you think can/needs to be improved, or perhaps done using a different approach. -->
