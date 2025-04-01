@@ -4,7 +4,7 @@
 - Self-descriptive.
 
 ### Describe your changes/additions
-<!-- What you changes do and how. No need to get too technical. Some stuff from this list will also be used for the player release notes. -->
+<!-- What your changes do and how. No need to get too technical. Some stuff from this list will also be used for the player release notes. -->
 - Self-descreptive.
 
 ### What can/needs to be improved/changed
