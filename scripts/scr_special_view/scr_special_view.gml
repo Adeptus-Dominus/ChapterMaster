@@ -85,10 +85,10 @@ function scr_special_view(command_group) {
 	v=0;
 	squads=0;
 	if (command_group==15) or (command_group==0){// Armamentarium
-		var chaps = collect_role_group([SPECIALISTS_TECHS,true]);
-		for (var i=0;i<array_length(chaps);i++){
-			unit = chaps[i];
-			add_man_to_manage_arrays(chaps[i]);
+		var techs = collect_role_group([SPECIALISTS_TECHS,true]);
+		for (var i=0;i<array_length(techs);i++){
+			unit = techs[i];
+			add_man_to_manage_arrays(techs[i]);
 		}
 	}
 
