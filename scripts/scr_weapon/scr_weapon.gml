@@ -1964,9 +1964,9 @@ global.weapons = {
 	"Choppa": {
 		"abbreviation": "Chop",
 		"attack": {
-			"standard": 28,
-			"master_crafted": 32,
-			"artifact": 36
+			"standard": 100,
+			"master_crafted": 125,
+			"artifact": 200
 		},
 		"melee_hands": 1,
 		"range": 1,
@@ -2043,9 +2043,9 @@ global.gear = {
 		"Terminator Armour": {
 			"abbreviation": "Indmts",
 			"armour_value": {
-				"standard": 40,
-				"master_crafted": 46,
-				"artifact": 50
+				"standard": 30,
+				"master_crafted": 36,
+				"artifact": 40
 			},
 			"ranged_mod": {
 				"standard": -10,
@@ -2077,9 +2077,9 @@ global.gear = {
 		"Dreadnought": {
 			"abbreviation": "Drdnght",
 			"armour_value": {
-				"standard": 30,
-				"master_crafted": 55,
-				"artifact": 60
+				"standard": 40,
+				"master_crafted": 45,
+				"artifact": 50
 			},
 			"ranged_mod": {
 				"standard": -10,
@@ -2096,11 +2096,6 @@ global.gear = {
 				"master_crafted": 35,
 				"artifact": 60
 			},
-			"damage_resistance_mod": {
-				"standard": -30,
-				"master_crafted": -25,
-				"artifact": -20
-			},
 			"melee_hands": 8,
 			"ranged_hands": 8,
 			"description": "A massive war-machine that can be piloted by an honored Astarte, who otherwise would have fallen in combat. Some of the Astartes consider this a fate worse than death",
@@ -2110,9 +2105,9 @@ global.gear = {
 		"Tartaros": {
 			"abbreviation": "Tartrs",
 			"armour_value": {
-				"standard": 40,
-				"master_crafted": 46,
-				"artifact": 50
+				"standard": 30,
+				"master_crafted": 36,
+				"artifact": 40
 			},
 			"ranged_mod": {
 				"standard": 10,
@@ -2139,9 +2134,9 @@ global.gear = {
 		"Cataphractii Pattern Terminator": {
 			"abbreviation": "Catphr",
 			"armour_value": {
-				"standard": 42,
-				"master_crafted": 46,
-				"artifact": 50
+				"standard": 32,
+				"master_crafted": 38,
+				"artifact": 42
 			},
 			"ranged_mod": {
 				"standard": -5,
