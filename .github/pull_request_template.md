@@ -1,7 +1,7 @@
 <!--- Make use of markdown lists. They make stuff much easier to read through. -->
 ### Purpose
 <!-- With a few sentences, describe why you decided to make these changes/additions. -->
-- Self-descreptive.
+- Self-descriptive.
 
 ### Describe your changes/additions
 <!-- What you changes do and how. No need to get too technical. Some stuff from this list will also be used for the player release notes. -->
