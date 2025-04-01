@@ -261,6 +261,7 @@ if (slime>0){
 
     var slime_string=$"Fualty mucranoids and other afflictions have caused additional damage {slime} Forge Points will need to be allocated to repair damage";
     
+    /*var s3 = "";
     for (var i=0;i<=10;i++){
         if (mucra[i]){
             compan_slime+=1;
@@ -270,13 +271,10 @@ if (slime>0){
                 s3+=$"HQ, ";
             }
         }
-    }
+    }*/
     
-    slime_string += $" {slime==1?"suit":"suits"} of Power Armour.  {compan_slime>1?$"{s3} Companies":$"{s3} company"} {s4} has been effected.";
+    //slime_string += $" {slime==1?"suit":"suits"} of Power Armour.  {compan_slime>1?$"{s3} Companies":$"{s3} company"} has been effected.";
     
-    string_delete(s3,string_length(s3)-1,2);
-
-    slime_string += s3;
     
     newline=slime_string;
     newline_color="red";
