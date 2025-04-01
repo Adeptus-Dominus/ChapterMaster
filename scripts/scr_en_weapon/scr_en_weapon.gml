@@ -131,7 +131,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 
 		if (obj_ncombat.enemy = 3) {
 			if (name = "Phased Plasma-fusil") {
-				atta = 100;
+				atta = 80;
 				arp = -2;
 				rang = 7.1;
 				spli = 3;
@@ -153,20 +153,20 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 		if (obj_ncombat.enemy = 6) {
 
 			if (argument0 = "Fusion Gun"){
-				atta = 200;
+				atta = 180;
 				arp = 1;
 				rang = 2;
 				amm = 4;
 			}
 
 			if (argument0 = "Firepike") {
-				atta = 300;
+				atta = 150;
 				arp = 1;
 				rang = 4;
 				amm = 4;
 			}
 			if (argument0 = "Singing Spear") {
-				atta = 120;
+				atta = 150;
 				arp = -1;
 				rang = 1;
 				spli = 3;
@@ -178,7 +178,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				spli = 3;
 			}
 			if (argument0 = "Witchblade") {
-				atta = 100;
+				atta = 130;
 				arp = -1;
 				rang = 1;
 			}
@@ -210,17 +210,17 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				rang = 25;
 			}
 			if (argument0 = "Shuriken Catapult") {
-				atta = 70;
-				arp = -1;
-				rang = 2;
-			}
-			if (argument0 = "Twin Linked Shuriken Catapult") {
 				atta = 50;
 				arp = -1;
 				rang = 2;
 			}
+			if (argument0 = "Twin Linked Shuriken Catapult") {
+				atta = 100;
+				arp = -1;
+				rang = 2;
+			}
 			if (argument0 = "Avenger Shuriken Catapult") {
-				atta = 40;
+				atta = 90;
 				arp = -1;
 				rang = 3;
 			}
@@ -236,7 +236,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				rang = 2.1;
 			}
 			if (argument0 = "Executioner") {
-				atta = 200;
+				atta = 150;
 				arp = -2;
 				rang = 1;
 			}
@@ -252,7 +252,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				rang = 1;
 			}
 			if (argument0 = "Biting Blade") {
-				atta = 150;
+				atta = 125;
 				arp = -1;
 				rang = 1;
 				spli = 3;
@@ -280,14 +280,14 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				rang = 2;
 			}
 			if (argument0 = "Reaper Launcher") {
-				atta = 200;
+				atta = 120;
 				arp = -2;
 				rang = 20;
 				amm = 8;
 				spli = 3;
 			}
 			if (argument0 = "Tempest Launcher") {
-				atta = 350;
+				atta = 200;
 				arp = -1;
 				rang = 15;
 				amm = 8;
@@ -302,7 +302,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 			if (argument0 = "Fusion Pistol") {
 				atta = 125;
 				arp = 1;
-				rang = 1.1;
+				rang = 2.1;
 				amm = 4;
 			}
 			if (argument0 = "Plasma Pistol") {
@@ -311,7 +311,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				rang = 3.1;
 			}
 			if (argument0 = "Harlequin's Kiss") {
-				atta = 350;
+				atta = 250;
 				arp = 1;
 				rang = 1;
 				amm = 1;
@@ -322,7 +322,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				rang = 2.1;
 			}
 			if (argument0 = "Pulse Laser") {
-				atta = 150;
+				atta = 120;
 				arp = -1;
 				rang = 15;
 			}
@@ -332,7 +332,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				rang = 8;
 			}
 			if (argument0 = "Shuriken Cannon") {
-				atta = 300;
+				atta = 160;
 				arp = -1;
 				rang = 3;
 			}
@@ -343,8 +343,8 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				spli = 1;
 			}
 			if (argument0 = "Twin Linked Doomweaver") {
-				atta = 400;
-				arp = 1;
+				atta = 250;
+				arp = -2;
 				rang = 2;
 				spli = 2;
 			} // Also create difficult terrain?
@@ -384,47 +384,47 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 		if (obj_ncombat.enemy = 7) {
 
 			if (argument0 = "Choppa") {
-				atta = 140;
+				atta = 100;
 				arp = 0;
 				rang = 1;
 				spli = 3;
 			}
 			if (argument0 = "Power Klaw") {
-				atta = 300;
+				atta = 160;
 				arp = -2;
 				rang = 1;
 				spli = 3;
 			}
 			if (argument0 = "Slugga") {
-				atta = 120;
+				atta = 80;
 				arp = 0;
 				rang = 3.1;
 				amm = 4;
 				spli = 3;
 			}
 			if (argument0 = "Tankbusta Bomb") {
-				atta = 400;
+				atta = 150;
 				arp = 1;
 				rang = 1;
 				amm = 1;
 				spli = 1;
 			}
 			if (argument0 = "Big Shoota") {
-				atta = 110;
+				atta = 80;
 				arp = -1;
 				rang = 6;
 				amm = 30;
 				spli = 5;
 			}
 			if (argument0 = "Dakkagun") {
-				atta = 220;
+				atta = 140;
 				arp = -1;
 				rang = 8;
 				amm = 20;
 				spli = 10;
 			}
 			if (argument0 = "Deffgun") {
-				atta = 250;
+				atta = 150;
 				arp = -2;
 				rang = 8;
 				amm = 20;
@@ -462,14 +462,14 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				spli = 3;
 			}
 			if (argument0 = "Skorcha") {
-				atta = 250;
+				atta = 200;
 				arp = -2;
 				rang = 2;
 				amm = 6;
 				spli = 3;
 			}
 			if (argument0 = "Rokkit Launcha") {
-				atta = 300;
+				atta = 125;
 				arp = 1;
 				rang = 15;
 				spli = 3;
@@ -485,7 +485,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 
 		if (obj_ncombat.enemy = 8) {
 			if (name = "Fusion Blaster") {
-				atta = 200;
+				atta = 150;
 				arp = 1;
 				rang = 2;
 				amm = 4;
@@ -496,19 +496,19 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				rang = 10;
 			}
 			if (name = "Cyclic Ion Blaster") {
-				atta = 180;
+				atta = 80;
 				arp = -1;
 				rang = 6;
 				spli = 3;
 			} // x6
 			if (name = "Burst Rifle") {
 				atta = 130;
-				arp = -1;
+				arp = 0;
 				rang = 16;
 				spli = 3;
 			}
 			if (name = "Missile Pod") {
-				atta = 160;
+				atta = 150;
 				arp = -1;
 				rang = 15;
 				amm = 6;
@@ -521,7 +521,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 			}
 			if (name = "Small Railgun") {
 				atta = 150;
-				arp = -2;
+				arp = 1;
 				rang = 18;
 				spli = 1;
 			}
@@ -532,7 +532,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 			}
 			if (name = "Rail Rifle") {
 				atta = 80;
-				arp = 1;
+				arp = -2;
 				rang = 14;
 			}
 			if (name = "Kroot Rifle") {
@@ -546,7 +546,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				rang = 2.1;
 			}
 			if (name = "Railgun") {
-				atta = 400;
+				atta = 250;
 				arp = 1;
 				rang = 20;
 			}
@@ -556,7 +556,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 
 			if (argument0 = "Bonesword") {
 				atta = 120;
-				arp = 1;
+				arp = -2;
 				rang = 1;
 				spli = 3;
 			}
@@ -583,39 +583,41 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				spli = 3;
 			}
 			if (argument0 = "Devourer") {
-				atta = 150;
-				arp = 0;
+				atta = 120;
+				arp = -1;
 				rang = 5;
+				spli = 3
 				if (obj_ini.preomnor = 1) {
 					atta = 180;
 				}
 			}
 			if (argument0 = "Zoanthrope Blast") {
-				atta = 400;
+				atta = 250;
 				arp = 1;
 				rang = 6;
+				spli = 1;
 			}
 			if (argument0 = "Carnifex Claws") {
-				atta = 300;
+				atta = 200;
 				arp = 1;
 				rang = 1;
 				spli = 3;
 			}
 			if (argument0 = "Venom Cannon") {
-				atta = 200;
+				atta = 100;
 				arp = 1;
 				rang = 5;
 			}
 			if (argument0 = "Deathspitter") {
 				atta = 100;
-				arp = -2;
+				arp = -1;
 				rang = 2.1;
 				if (obj_ini.preomnor = 1) {
 					atta = 150;
 				}
 			}
 			if (argument0 = "Fleshborer") {
-				atta = 80;
+				atta = 70;
 				arp = 0;
 				rang = 2.1;
 				if (obj_ini.preomnor = 1) {
@@ -628,7 +630,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				rang = 1;
 			}
 			if (argument0 = "Genestealer Claws") {
-				atta = 90;
+				atta = 70;
 				arp = -2;
 				rang = 1;
 			}
@@ -638,7 +640,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				rang = 2;
 			}
 			if (argument0 = "Autogun") {
-				atta = 20;
+				atta = 60;
 				arp = 0;
 				rang = 6;
 				amm = 12;
@@ -650,7 +652,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				rang = 1;
 			}
 			if (argument0 = "Flesh Hooks") {
-				atta = 50;
+				atta = 100;
 				arp = 0;
 				rang = 2;
 				amm = 1;
@@ -676,7 +678,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				rang = 1;
 			}
 			if (argument0 = "Force Weapon") {
-				atta = 400;
+				atta = 250;
 				arp = -1;
 				rang = 1;
 			}
@@ -700,7 +702,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				spli = 3;
 			}
 			if (argument0 = "Heavy Flamer") {
-				atta = 250;
+				atta = 200;
 				arp = -1;
 				rang = 2.1;
 				amm = 6;
@@ -718,15 +720,15 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				arp = 0;
 				rang = 12;
 				amm = 15;
-				if (obj_ncombat.enemy = 5) then atta = 120;
+				if (obj_ncombat.enemy = 5) then atta = 80;
 			} // Bursts
 			if (argument0 = "Power Fist") {
-				atta = 425;
+				atta = 250;
 				arp = -2;
 				rang = 1;
 			}
 			if (argument0 = "Possessed Claws") {
-				atta = 250;
+				atta = 150;
 				arp = -1;
 				rang = 1;
 				spli = 3;
@@ -736,28 +738,31 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				arp = -1;
 				rang = 20;
 				amm = 4;
-				spli = 3;
 			}
 			if (argument0 = "Chainsword") {
 				atta = 120;
 				arp = 0;
 				rang = 1;
+				spli = 4;
 			}
 			if (argument0 = "Bolt Pistol") {
 				atta = 100;
 				arp = 0;
 				rang = 3.1;
 				amm = 18;
+				spli = 1;
 			}
 			if (argument0 = "Chainaxe") {
 				atta = 140;
 				arp = 0;
 				rang = 1;
+				spli = 3;
 			}
 			if (argument0 = "Poisoned Chainsword") {
 				atta = 150;
 				arp = 0;
 				rang = 1;
+				spli = 1;
 				if (obj_ini.preomnor = 1) {
 					atta = 180;
 				}
@@ -766,18 +771,20 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				atta = 150;
 				arp = -1;
 				rang = 3;
-				spli = 3;
+				spli = 6;
 			}
 			if (argument0 = "Rubric Bolter") {
 				atta = 150;
 				arp = -1;
 				rang = 12;
 				amm = 15;
+				spli = 5;
 			} // Bursts
 			if (argument0 = "Witchfire") {
 				atta = 200;
 				arp = -2;
 				rang = 5.1;
+				spli = 1;
 			}
 			if (argument0 = "Autogun") {
 				atta = 60;
@@ -797,6 +804,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				arp = 1;
 				rang = 20;
 				amm = 8;
+				spli = 1;
 			}
 			if (argument0 = "Twin Linked Heavy Bolters") {
 				atta = 240;
@@ -847,7 +855,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				spli = 12;
 			}
 			if (argument0 = "Baleflame") {
-				atta = 350;
+				atta = 225;
 				arp = -2;
 				rang = 2;
 			}
@@ -873,7 +881,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				spli = 0;
 			}
 			if (name = "Ogryn Melee") {
-				atta = 150;
+				atta = 90;
 				arp = -2;
 				rang = 1;
 			}
@@ -906,12 +914,12 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				rang = 2;
 			}
 			if (argument0 = "Seraphim Pistols") {
-				atta = 200;
+				atta = 120;
 				arp = -1;
 				rang = 4;
 			}
 			if (argument0 = "Laser Mace") {
-				atta = 200;
+				atta = 150;
 				arp = -1;
 				rang = 5.1;
 				amm = 3;
@@ -963,25 +971,25 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 				spli = 0;
 			}
 			if (name = "Gauss Flayer") {
-				atta = 70;
+				atta = 50;
 				arp = -1;
 				rang = 6.1;
-				spli = 0;
+				spli = 1;
 			}
 			if (name = "Gauss Blaster") {
-				atta = 120;
+				atta = 80;
 				arp = -1;
 				rang = 6.1;
 				spli = 0;
 			}
 			if (name = "Gauss Cannon") {
-				atta = 180;
+				atta = 120;
 				arp = -2;
 				rang = 10;
 				spli = 3;
 			}
 			if (name = "Gauss Particle Cannon") {
-				atta = 300;
+				atta = 250;
 				arp = -2;
 				rang = 10.1;
 				spli = 3;
