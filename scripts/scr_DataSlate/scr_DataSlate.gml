@@ -84,6 +84,8 @@ function DataSlate(data = {}) constructor {
     };
 
     static draw = function(xx = -1, yy = -1, scale_x = 1, scale_y = 1) {
+        add_draw_return_values();
+
         if (xx != -1) {
             XX = xx;
         }
@@ -178,6 +180,8 @@ function DataSlate(data = {}) constructor {
         }
         x2 = XX + width;
         y2 = YY + height;
+
+        pop_draw_return_values();
     };
 
     static draw_cut = function(xx, yy, scale_x = 1, scale_y = 1, middle_percent = percent_cut) {

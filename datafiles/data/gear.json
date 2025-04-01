@@ -10,7 +10,10 @@
             "standard": 30,
             "master_crafted": 50,
             "artifact": 50
-        }
+        },
+        "value": 5,
+        "requires_to_build": [],
+        "renegade": false
     },
     "Narthecium": {
         "abbreviation": "Nrthcm",
@@ -22,14 +25,20 @@
             "standard": 0,
             "master_crafted": 5,
             "artifact": 10
-        }
+        },
+        "value": 10,
+        "requires_to_build": [],
+        "renegade": false
     },
     "Psychic Hood": {
         "abbreviation": "PsyHd",
         "description": "An arcane hood that protects Psykers from enemy psychic powers and enhances control of their psychic abilities.",
         "specials": {
             "psychic_focus": 15
-        }
+        },
+        "value": 100,
+        "requires_to_build": [],
+        "renegade": false
     },
     "Rosarius": {
         "abbreviation": "Rsrius",
@@ -43,7 +52,10 @@
             "standard": 5,
             "master_crafted": 10,
             "artifact": 10
-        }
+        },
+        "value": 100,
+        "requires_to_build": [],
+        "renegade": false
     },
     "Iron Halo": {
         "abbreviation": "IrnHalo",
@@ -52,7 +64,10 @@
             "standard": 35,
             "master_crafted": 40,
             "artifact": 45
-        }
+        },
+        "value": 300,
+        "requires_to_build": [],
+        "renegade": false
     },
     "Combat Shield": {
         "description": "A lighter, more maneuverable version of a Storm Shield. Due to its flexibility, Combat Shields leave other hand of a Space Marine free to use other hand-to-hand weaponry.",
@@ -68,17 +83,26 @@
             "standard": 10,
             "master_crafted": 15,
             "artifact": 20
-        }
+        },
+        "value": 15,
+        "requires_to_build": [],
+        "renegade": false
     },
     "Plasma Bomb": {
         "abbreviation": "PlBomb",
         "special_properties": ["Structure Destroyer"],
-        "description": "A special plasma charge, this bomb can be used to seal underground caves or destroy enemy structures."
+        "description": "A special plasma charge, this bomb can be used to seal underground caves or destroy enemy structures.",
+        "value": 175,
+        "requires_to_build": [],
+        "renegade": false
     },
     "Exterminatus": {
         "abbreviation": "Extrmnts",
         "special_properties": ["Planet Destroyer"],
-        "description": "A weapon of the Emperor, and His divine judgment, this weapon can be placed upon a planet to obliterate it entirely."
+        "description": "A weapon of the Emperor, and His divine judgment, this weapon can be placed upon a planet to obliterate it entirely.",
+        "value": 2500,
+        "requires_to_build": [],
+        "renegade": false
     },
     "Smoke Launchers": {
         "description": "Useful for providing concealment in open terrain, these launchers project wide-spectrum concealing smoke to prevent accurate targeting of the vehicle.",
@@ -134,6 +158,9 @@
     },
     "Gene Pod Incubator": {
         "abbreviation": "GenePod",
-        "description": "Required to house gene slaves in order to generate new gene seed for the chapter."
+        "description": "Required to house gene slaves in order to generate new gene seed for the chapter.",
+        "value": 8,
+        "requires_to_build": [],
+        "renegade": false
     }
 }

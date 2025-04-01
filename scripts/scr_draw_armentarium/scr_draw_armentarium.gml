@@ -152,9 +152,9 @@ function scr_draw_armentarium() {
         draw_set_halign(fa_left);
         draw_set_color(c_gray);
         draw_set_font(fnt_40k_30b);
-        var header = in_forge ? "Forge" : "Armamentarium";
+        var header = obj_shop.in_forge ? "Forge" : "Armamentarium";
         draw_text_transformed(xx + 336 + 16, yy + 66, string_hash_to_newline(header), 1, 1, 0);
-        if (!in_forge) {
+        if (!obj_shop.in_forge) {
             draw_set_font(fnt_40k_30b);
             draw_text_transformed(xx + 336 + 16, yy + 100, string_hash_to_newline("Forge Master " + string(obj_ini.name[0][1])), 0.6, 0.6, 0);
         }
@@ -191,7 +191,7 @@ function scr_draw_armentarium() {
     draw_set_alpha(1);
     draw_set_color(c_gray);
 
-    if (!in_forge) {
+    if (!obj_shop.in_forge) {
         draw_set_alpha(1);
 
         draw_set_font(fnt_40k_12);
@@ -296,7 +296,7 @@ function scr_draw_armentarium() {
             0
         ];
         if (forge_button.draw_shutter(forge_buttons[0] + 60, forge_buttons[1], "Enter Forge", 0.5)) {
-            in_forge = true;
+            obj_shop.in_forge = true;
         }
         draw_set_font(fnt_40k_30b);
         draw_set_halign(fa_center);
@@ -474,7 +474,7 @@ function scr_draw_armentarium() {
         //draw_rectangle(xx + 359, yy + 66, xx + 886, yy + 818, 0);
 
         if (point_and_click(draw_unit_buttons([xx + 359, yy + 77], "<-- Overview", [1, 1], c_red))) {
-            in_forge = false;
+            obj_shop.in_forge = false;
         }
 
         specialist_point_handler.draw_forge_queue(xx + 359, yy + 107);

@@ -451,7 +451,7 @@ function SpecialistPointHandler() constructor {
     };
 
     static scr_evaluate_forge_item_completion = function(item) {
-        if (is_string(item.name)) {
+        if (item.type == "normal") {
             var _vehicles = [
                 "Rhino",
                 "Predator",
@@ -472,7 +472,7 @@ function SpecialistPointHandler() constructor {
                 }
                 scr_popup("Forge Completed", $"{item.name} X{item.count} construction finished Vehicles Waiting at hanger on {build_loc[0]} {build_loc[1]}", "", "");
             }
-        } else if (is_array(item.name)) {
+        } else if (item.type == "research") {
             scr_advance_research(item);
         }
     };

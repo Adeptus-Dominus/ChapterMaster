@@ -1,4 +1,6 @@
 {
+    //30k Weapons
+    //Volkite Pack
     "Volkite Culverin": {
         "abbreviation": "VolkCul",
         "attack": {
@@ -385,7 +387,9 @@
             "standard": 30,
             "master_crafted": 35,
             "artifact": 40
-        }
+        },
+        "value": 50,
+        "requires_to_build": ["power_field_cooling"]
     },
     "Boarding Shield": {
         "description": "Protects twice as well when boarding. Used in siege or boarding operations, this shield offers additional protection.  It may be used with a 2-handed ranged weapon.",
@@ -404,7 +408,8 @@
             "standard": 15,
             "master_crafted": 17.5,
             "artifact": 20
-        }
+        },
+        "value": 20
     },
     "Archeotech Laspistol": {
         "attack": {
@@ -425,7 +430,9 @@
             "ancient",
             "las",
             "energy"
-        ]
+        ],
+        "value": 0,
+        "no_buying": true
     },
     "Combat Knife": {
         "abbreviation": "CbKnf",
@@ -443,7 +450,8 @@
         "arp": 1,
         "tags": [
             "knife"
-        ]
+        ],
+        "value": 1
     },
     "Chainsword": {
         "abbreviation": "ChSwrd",
@@ -464,7 +472,8 @@
             "sword",
             "savage",
             "boarding 1"
-        ]
+        ],
+        "value": 4
     },
     "Chainaxe": {
         "abbreviation": "ChAxe",
@@ -491,7 +500,8 @@
             "dual",
             "savage",
             "boarding 2"
-        ]
+        ],
+        "value": 10
     },
     "Company Standard": {
         "abbreviation": "CmpStnd",
@@ -517,7 +527,9 @@
         "tags": [
             "banner"
         ],
-        "recovery_chance": 99
+        "recovery_chance": 99,
+        "value": 0,
+        "no_buying": true
     },
     "Eviscerator": {
         "abbreviation": "Evisc",
@@ -571,7 +583,9 @@
             "sword",
             "martial",
             "boarding 1"
-        ]
+        ],
+        "value": 25,
+        "requires_to_build": ["power_field_cooling"]
     },
     "Power Spear": {
         "abbreviation": "PwrSpear",
@@ -599,7 +613,9 @@
             "power",
             "spear",
             "martial"
-        ]
+        ],
+        "value": 40,
+        "requires_to_build": ["power_field_cooling"]
     },
     "Xenophase Blade": {
         "abbreviation": "XenoPhs",
@@ -649,7 +665,9 @@
             "siege",
             "savage"
         ],
-        "arp": 3
+        "arp": 3,
+        "value": 75,
+        "requires_to_build": ["power_field_cooling", "adamantine_links"]
     },
     "Lascutter": {
         "abbreviation": "Lasct",
@@ -666,7 +684,8 @@
             "las",
             "boarding 3",
             "siege"
-        ]
+        ],
+        "value": 15
     },
     "Power Weapon": {
         "abbreviation": "PwrWpn",
@@ -680,7 +699,6 @@
             "master_crafted": 1.1,
             "artifact": 1.1
         },
-        // "description": "An makeshift power weapon made by Astartes during long term deployment behind enemy lines or when cut from supply lines for long periods of time.",
         "melee_hands": 1.1,
         "ranged_hands": 0,
         "ammo": 0,
@@ -716,7 +734,9 @@
             "dual",
             "savage",
             "boarding 2"
-        ]
+        ],
+        "value": 40,
+        "requires_to_build": ["power_field_cooling"]
     },
     "Omnissian Axe": {
         "abbreviation": "OmnAxe",
@@ -797,7 +817,9 @@
             "savage",
             "boarding 2"
         ],
-        "arp": 3
+        "arp": 3,
+        "value": 60,
+        "requires_to_build": ["power_field_cooling"]
     },
     "Power Fists": {
         "abbreviation": "PwrFsts",
@@ -861,7 +883,12 @@
             "fist",
             "savage",
             "boarding 2"
-        ]
+        ],
+        "value": 90,
+        "requires_to_build": {
+            "power_fields": 2,
+            "bolt": 2
+        }
     },
     "Assault Chainfist": {
         "abbreviation": "AssltChFst",
@@ -908,7 +935,9 @@
             "boarding 2",
             "martial"
         ],
-        "arp": 2
+        "arp": 2,
+        "value": 90,
+        "requires_to_build": ["power_field_cooling"]
     },
     "Dreadnought Lightning Claw": {
         "abbreviation": "LghtClw",
@@ -991,7 +1020,9 @@
             "siege",
             "savage",
             "boarding 2"
-        ]
+        ],
+        "value": 90,
+        "requires_to_build": ["power_field_cooling"]
     },
     "Heavy Thunder Hammer": {
         "abbreviation": "HvyThndHmr",
@@ -1020,7 +1051,9 @@
             "hammer",
             "siege",
             "savage"
-        ]
+        ],
+        "value": 135,
+        "requires_to_build": ["power_field_cooling"]
     },
     "Power Mace": {
         "abbreviation": "PwrMace",
@@ -1047,7 +1080,9 @@
             "siege",
             "savage"
         ],
-        "req_exp": 100
+        "req_exp": 100,
+        "value": 50,
+        "requires_to_build": ["power_field_cooling"]
     },
     "Mace of Absolution": {
         "abbreviation": "AbsltMace",
@@ -1076,7 +1111,10 @@
             "pious",
             "savage"
         ],
-        "req_exp": 100
+        "req_exp": 100,
+        "value": 70,
+        "requires_to_build": ["power_field_cooling"],
+        "no_buying": true
     },
     "Tome": {
         "abbreviation": "Tome",
@@ -1127,7 +1165,10 @@
             "pious",
             "savage",
             "boarding 2"
-        ]
+        ],
+        "value": 75,
+        "requires_to_build": ["power_field_cooling"],
+        "sellers": ["ecclesiarchy"]
     },
     "Relic Blade": {
         "abbreviation": "RlcBld",
@@ -1176,7 +1217,8 @@
             "bolt",
             "pistol",
             "boarding 1"
-        ]
+        ],
+        "value": 5
     },
     "Wrist-Mounted Storm Bolter": {
         "abbreviation": "WrstBlt",
@@ -1253,7 +1295,9 @@
         "tags": [
             "grav",
             "pistol"
-        ]
+        ],
+        "value": 60,
+        "requires_to_build": ["gravitic_reaction_principle"]
     },
     "Integrated-Grav": {
         "abbreviation": "IntGrv",
@@ -1290,7 +1334,9 @@
         "tags": [
             "grav"
         ],
-        "maintenance": 0.5
+        "maintenance": 0.5,
+        "value": 100,
+        "requires_to_build": ["gravitic_reaction_principle"]
     },
     "Grav-Cannon": {
         "abbreviation": "GrvCan",
@@ -1310,7 +1356,9 @@
             "grav",
             "heavy_ranged"
         ],
-        "maintenance": 0.8
+        "maintenance": 0.8,
+        "value": 300,
+        "requires_to_build": ["gravitic_reaction_principle"]
     },
     "Underslung Bolter": {
         "abbreviation": "UndBltr",
@@ -1348,7 +1396,8 @@
         "tags": [
             "bolt",
             "precision"
-        ]
+        ],
+        "value": 80
     },
     "Bolter": {
         "abbreviation": "Bltr",
@@ -1367,7 +1416,8 @@
         "tags": [
             "bolt",
             "boarding 1"
-        ]
+        ],
+        "value": 10
     },
     "Heavy Flamer": {
         "abbreviation": "HvyFlmr",
@@ -1387,7 +1437,9 @@
             "flame",
             "heavy_ranged",
             "boarding 3"
-        ]
+        ],
+        "value": 40,
+        "requires_to_build": ["promethium_tank_brazing"]
     },
     "CCW Heavy Flamer": {
         "abbreviation": "CCWHvyFlmr",
@@ -1504,7 +1556,9 @@
         "tags": [
             "melta",
             "boarding 3"
-        ]
+        ],
+        "value": 30,
+        "requires_to_build": ["atomic_chamber_construction"]
     },
     "Multi-Melta": {
         "abbreviation": "MltMelt",
@@ -1525,7 +1579,9 @@
             "heavy_ranged",
             "dreadnought",
             "boarding 1"
-        ]
+        ],
+        "value": 60,
+        "requires_to_build": ["atomic_chamber_construction"]
     },
     "Plasma Pistol": {
         "abbreviation": "PlsmPstl",
@@ -1546,10 +1602,11 @@
             "energy",
             "pistol",
             "boarding 1"
-        ]
+        ],
+        "value": 60,
+        "requires_to_build": ["plasma_coil_magnetization"]
     },
     "Plasma Cutter": {
-        // Basically a dual-linked plasma pistol
         "abbreviation": "PlsmCt",
         "attack": {
             "standard": 220,
@@ -1587,7 +1644,9 @@
             "melta",
             "pistol",
             "boarding 2"
-        ]
+        ],
+        "value": 12,
+        "requires_to_build": ["promethium_tank_brazing"]
     },
     "Integrated-Plasma": {
         "abbreviation": "IntPls",
@@ -1626,7 +1685,9 @@
             "plasma",
             "energy",
             "boarding 1"
-        ]
+        ],
+        "value": 100,
+        "requires_to_build": ["plasma_coil_magnetization"]
     },
     "Plasma Cannon": {
         "abbreviation": "PlsmCan",
@@ -1647,7 +1708,9 @@
             "energy",
             "heavy_ranged",
             "dreadnought"
-        ]
+        ],
+        "value": 300,
+        "requires_to_build": ["plasma_coil_magnetization"]
     },
     "Sniper Rifle": {
         "abbreviation": "SnpRfl",
@@ -1666,7 +1729,8 @@
         "tags": [
             "precision",
             "rifle"
-        ]
+        ],
+        "value": 10
     },
     "Deathwatch Sniper Rifle": {
         "abbreviation": "DwSnpRfl",
@@ -1766,7 +1830,8 @@
             "heavy_ranged",
             "explosive",
             "dreadnought"
-        ]
+        ],
+        "value": 70
     },
     "Cyclone Missile Launcher": {
         "abbreviation": "CycLnch",
@@ -1805,7 +1870,9 @@
             "heavy_ranged",
             "las",
             "energy"
-        ]
+        ],
+        "value": 70,
+        "requires_to_build": ["light_condensement_chamber"]
     },
     "Conversion Beam Projector": {
         "abbreviation": "CnvBmPrj",
@@ -1924,7 +1991,9 @@
         "tags": [
             "heavy_ranged",
             "bolt"
-        ]
+        ],
+        "value": 50,
+        "requires_to_build": ["projectile_propellant_purification"]
     },
     "Infernus Heavy Bolter": {
         "abbreviation": "InfrHvyBltr",
@@ -2366,7 +2435,9 @@
         "tags": [
             "bolt",
             "boarding 2"
-        ]
+        ],
+        "value": 50,
+        "requires_to_build": ["projectile_propellant_purification"]
     },
     "Hand Flamer": {
         "abbreviation": "HndFlmr",
@@ -2386,7 +2457,9 @@
             "pistol",
             "flame",
             "boarding 2"
-        ]
+        ],
+        "value": 12,
+        "requires_to_build": ["promethium_tank_brazing"]
     },
     "Flamer": {
         "abbreviation": "Flmr",
@@ -2411,7 +2484,8 @@
         "tags": [
             "flame",
             "boarding 2"
-        ]
+        ],
+        "requires_to_build": ["promethium_tank_brazing"]
     },
     "Integrated-Flamer": {
         "attack": {
@@ -2453,7 +2527,9 @@
             "combi",
             "bolt",
             "boarding 2"
-        ]
+        ],
+        "value": 35,
+        "requires_to_build": ["promethium_tank_brazing", "hardened_barrel_boring"]
     },
     "Combiplasma": {
         "abbreviation": "CmbPlsm",
@@ -2475,7 +2551,9 @@
         "tags": [
             "combi",
             "bolt"
-        ]
+        ],
+        "value": 110,
+        "requires_to_build": ["plasma_coil_magnetization", "hardened_barrel_boring"]
     },
     "Combigrav": {
         "abbreviation": "CmbGrv",
@@ -2497,7 +2575,9 @@
         "tags": [
             "combi",
             "bolt"
-        ]
+        ],
+        "value": 110,
+        "requires_to_build": ["gravitic_reaction_principle", "hardened_barrel_boring"]
     },
     "Combimelta": {
         "abbreviation": "CmbMlt",
@@ -2520,7 +2600,9 @@
             "combi",
             "bolt",
             "boarding 3"
-        ]
+        ],
+        "value": 40,
+        "requires_to_build": ["atomic_chamber_construction", "hardened_barrel_boring"]
     },
     "Incinerator": {
         "attack": {
@@ -2539,7 +2621,9 @@
         "tags": [
             "flame",
             "boarding 3"
-        ]
+        ],
+        "value": 35,
+        "requires_to_build": ["promethium_tank_brazing"]
     },
     "Force Staff": {
         "attack": {
@@ -2565,9 +2649,12 @@
         "maintenance": 0.1,
         "tags": [
             "force"
-        ]
+        ],
+        "value": 70,
+        "requires_to_build": ["psionic_resonance_valves"]
     },
     "Force Sword": {
+        "abbreviation": "FrcSwrd",
         "attack": {
             "standard": 225,
             "master_crafted": 270,
@@ -2578,7 +2665,6 @@
             "master_crafted": 1.1,
             "artifact": 1.2
         },
-        "abbreviation": "FrcSwrd",
         "description": "The Force Sword is a psychically-attuned close combat weapon that is only fully effective in the hands of a psyker.",
         "melee_hands": 1,
         "ranged_hands": 0,
@@ -2595,9 +2681,12 @@
             "sword",
             "martial",
             "boarding 1"
-        ]
+        ],
+        "value": 55,
+        "requires_to_build": ["psionic_resonance_valves"]
     },
     "Force Axe": {
+        "abbreviation": "FrcAxe",
         "attack": {
             "standard": 250,
             "master_crafted": 300,
@@ -2608,7 +2697,6 @@
             "master_crafted": 1.1,
             "artifact": 1.2
         },
-        "abbreviation": "FrcAxe",
         "description": "The Force Axe is a psychically-attuned close combat weapon that is only fully effective in the hands of a psyker.",
         "melee_hands": 1,
         "ranged_hands": 0,
@@ -2623,7 +2711,9 @@
             "dual",
             "savage",
             "boarding 2"
-        ]
+        ],
+        "value": 60,
+        "requires_to_build": ["psionic_resonance_valves"]
     },
     "Twin Linked Lascannon Turret": {
         "attack": {
@@ -2887,7 +2977,9 @@
             "rifle",
             "arcane"
         ],
-        "ranged_hands": 1
+        "ranged_hands": 1,
+        "value": 0,
+        "no_buying": true
     },
     // Eldar weapons
     "Ranger Long Rifle": {

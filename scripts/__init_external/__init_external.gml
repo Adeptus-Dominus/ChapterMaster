@@ -99,4 +99,6 @@ function __init_external() {
         "gear": json_to_gamemaker(working_directory + "\\data\\gear.json", json_parse),
         "mobility": json_to_gamemaker(working_directory + "\\data\\mobility.json", json_parse),
     };
+    global.vehicles = json_to_gamemaker(working_directory + "\\data\\vehicles.json", json_parse);
+    global.vehicle_gear = json_to_gamemaker(working_directory + "\\data\\vehicle_gear.json", json_parse);
 }

@@ -55,19 +55,8 @@ function unit_forge_point_generation(turn_end = false) {
 }
 
 function scr_advance_research(research) {
-    if (research.name[0] == "research") {
-        var tier_depth = array_length(research.name[2]);
-        var tier_names = research.name[2];
-        var player_research = obj_controller.production_research;
-        if (tier_depth == 1) {
-            player_research[$ tier_names[0]][0]++;
-        } else if (tier_depth == 2) {
-            player_research[$ tier_names[0]][1][$ tier_names[1]][0]++;
-        } else if (tier_depth == 3) {
-            player_research[$ tier_names[0]][1][$ tier_names[1]][1][$ tier_names[2]][0]++;
-        }
-        scr_popup("Research Completed", $"Research of {research.name[1]} complete", "", "");
-    }
+    array_push(obj_controller.technologies_known, research);
+    scr_popup("Research Completed", $"Research of {research} complete", "", "");
 }
 
 function research_end() {

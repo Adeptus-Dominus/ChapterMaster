@@ -47,7 +47,10 @@
             "artifact": 25
         },
         "description": "A custom suit of power armored created by master artificiers and decorated without compare, this ancient Power Armour is beyond priceless. This suit's history is ancient and its users many.",
-        "tags": ["power_armour"]
+        "tags": ["power_armour"],
+        "value": 150,
+        "requires_to_build": ["lightened_ceramite_compound", "ceramite_void_hardening", "enhanced_nerve_interfacing", "advanced_servo_motors"],
+        "renegade_buy": false
     },
     "Terminator Armour": {
         "abbreviation": "Indmts",
@@ -81,7 +84,10 @@
         "description": "Terminator Armour is the strongest and most powerful armour designed by humanity, available only to the veterans of the Adeptus Astartes. The Indomitus Pattern is the most widespread and versatile pattern as of M41.",
         "tags": ["terminator"],
         "req_exp": 100,
-        "maintenance": 1
+        "maintenance": 1,
+        "value": 200,
+        "requires_to_build": ["ceramite_void_hardening", "enhanced_nerve_interfacing", "advanced_servo_motors"],
+        "renegade_buy": false
     },
     "Dreadnought": {
         "abbreviation": "Drdnght",
@@ -179,7 +185,10 @@
         "description": "This pattern is possibly considered the most advanced form of Terminator Armour, providing greater mobility for the wearer compared to the Indomitus with no loss in durability. In the M41 considered to be incredibly rare with wars being fought to secure more suits.",
         "tags": ["terminator"],
         "req_exp": 100,
-        "maintenance": 3
+        "maintenance": 3,
+        "value": 250,
+        "requires_to_build": ["ceramite_void_hardening", "enhanced_nerve_interfacing", "advanced_servo_motors"],
+        "renegade_buy": false
     },
     "Cataphractii": {
         "abbreviation": "Catphr",
@@ -242,7 +251,10 @@
             "master_crafted": 10,
             "artifact": 0
         },
-        "description": "A non-powered suit made up of carapace armour and ballistic nylon. Includes biohazard shielding, nutrient feed, and camouflage."
+        "description": "A non-powered suit made up of carapace armour and ballistic nylon. Includes biohazard shielding, nutrient feed, and camouflage.",
+        "value": 5,
+        "requires_to_build": [],
+        "renegade_buy": true
     },
     "MK3 Iron Armour": {
         "abbreviation": "MK3",
@@ -273,7 +285,10 @@
         },
         "description": "An ancient set of Power Armor dating back to the early Great Crusade. The Mark III has heavier armor plating but is far heavier then its contemporaries.",
         "tags": ["power_armour"],
-        "maintenance": 0.3
+        "maintenance": 0.3,
+        "value": 125,
+        "requires_to_build": ["ceramite_casting_chambers"],
+        "renegade_buy": false
     },
     "MK4 Maximus": {
         "abbreviation": "MK4",
@@ -299,7 +314,10 @@
         },
         "description": "Power Armor dating back to the end of the Great Crusade. It is considered the pinnacle of Power Armor by some Astartes. However, the components are no longer reproducible, the knowledge having been lost to time.",
         "tags": ["power_armour"],
-        "maintenance": 0.4
+        "maintenance": 0.4,
+        "value": 125,
+        "requires_to_build": ["advanced_ceramite_bonding", "armour_stealth"],
+        "renegade_buy": false
     },
     "MK5 Heresy": {
         "abbreviation": "MK5",
@@ -330,7 +348,10 @@
         },
         "description": "A hastily assembled Power Armor that first started appearing during the Horus Heresy to act as a stopgap while new suits were produced and sent to loyalist legions. It excels in close combat but it has limited sensors for ranged combat.",
         "tags": ["power_armour"],
-        "maintenance": 0.05
+        "maintenance": 0.05,
+        "value": 45,
+        "requires_to_build": ["ceramite_casting_chambers"],
+        "renegade_buy": true
     },
     "MK6 Corvus": {
         "abbreviation": "MK6",
@@ -361,7 +382,10 @@
         },
         "description": "A suit dating back to the Horus Heresy, first tested by the Raven Guard. It contains boosted olfactory and auditory sensors that increase the ranged accuracy of the wearer. This however makes it more fragile to an extent.",
         "tags": ["power_armour"],
-        "maintenance": 0.05
+        "maintenance": 0.05,
+        "value": 35,
+        "requires_to_build": ["ceramite_casting_chambers", "advanced_servo_motors"],
+        "renegade_buy": false
     },
     "MK7 Aquila": {
         "abbreviation": "MK7",
@@ -392,7 +416,10 @@
         },
         "description": "The most common power armour of the Adeptus Astartes and the only power armour still widely manufactured by the Imperium.",
         "tags": ["power_armour"],
-        "maintenance": 0.01
+        "maintenance": 0.01,
+        "value": 20,
+        "requires_to_build": ["ceramite_casting_chambers"],
+        "renegade_buy": false
     },
     "MK8 Errant": {
         "abbreviation": "MK8",
@@ -423,7 +450,10 @@
         },
         "description": "The newest and most advanced of the standard mark power armours as such production has not yet reached maximum capacity creating a supply shortage while chapters rush to get access to them.",
         "tags": ["power_armour"],
-        "maintenance": 0.02
+        "maintenance": 0.02,
+        "value": 100,
+        "requires_to_build": ["advanced_ceramite_bonding"],
+        "renegade_buy": false
     },
     "MK10 Tacticus": {
         "abbreviation": "MK10",

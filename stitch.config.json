@@ -15,6 +15,14 @@
           "base" : "color:#808080;"
         },
         {
+          "pattern": "\\bwarn(ing)?\\b",
+          "base": "color: #FFD900"
+        },
+        {
+          "pattern": "\\berror\\b",
+          "base": "color: #FF0000"
+        },
+        {
           "pattern": "^(?<time>[^|]+)\\|\\s(?<level>DEBUG)\\s\\|\\s(?<caller>[^>]+)>>(?<msg>.*)",
           "styles": {
             "time": "color: #66b3ff",

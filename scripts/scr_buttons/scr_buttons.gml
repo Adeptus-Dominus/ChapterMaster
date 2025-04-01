@@ -1239,7 +1239,7 @@ function list_traveler(list, cur_val, move_up_coords, move_down_coords) {
 /// @param {real} _y The default Y coordinate for the button.
 /// @param {Constant.VirtualKey} _hot_key The keyboard constant used for Alt + Key activation.
 /// @param {function} _on_click The callback function to execute upon activation.
-function MainMenuButton(_sprite = spr_ui_but_1, _sprite_hover = spr_ui_hov_1, _x = 0, _y = 0, _hot_key = -1, _on_click) constructor {
+function MainMenuButton(_sprite = spr_ui_but_1, _sprite_hover = spr_ui_hov_1, _x = 0, _y = 0, _hot_key = -1, _on_click = undefined) constructor {
     base_sprite = _sprite;
     hover_sprite = _sprite_hover;
     xx = _x;
