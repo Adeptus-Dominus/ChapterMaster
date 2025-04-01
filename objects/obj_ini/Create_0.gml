@@ -76,6 +76,10 @@ repeat(11){
     }
 }
 
+UUID_marine = {};
+UUID_vehicle = {};
+UUID_ship = {};
+
 /*if (obj_creation.fleet_type=3){
     obj_controller.penitent=1;
     obj_controller.penitent_max=(obj_creation.maximum_size*1000)+300;

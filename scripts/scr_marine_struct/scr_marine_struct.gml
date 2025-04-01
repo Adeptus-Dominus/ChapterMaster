@@ -404,6 +404,10 @@ global.base_stats = {
 };
 
 function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}) constructor {
+    UUID = "";
+    if (class != "blank") {
+        UUID = $"U{scr_uuid_generate()}";
+    }
     constitution = 0;
     strength = 0;
     luck = 0;
