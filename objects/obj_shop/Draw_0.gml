@@ -103,18 +103,23 @@ slate_panel.inside_method = function(){
                     draw_set_alpha(1);
 
                     draw_sprite(spr_sell_tiny,0,xx+1480,yy+y2+2);
-                    if (point_and_click([xx + 1480, yy + y2 + 2, xx + 1530, yy + y2 + 14]) && shop != "warships" && shop != "vehicles") {
-                        var sell_count = 1;
-                        if (keyboard_check(vk_shift)) {
-                            sell_count = 5;
-                        }
-    
-                        if ((item_stocked[i] >= sell_count)) {
-                            scr_add_item(item[i], (sell_count * -1));
-                            item_stocked[i] += (sell_count * -1);
-                            click2 = 1;
-                            var sell_price = (item_cost[i] * 0.9) * sell_count;
-                            obj_controller.requisition += sell_price;
+                    if (scr_hit(xx + 1480, yy + y2 + 2, xx + 1530, yy + y2 + 14) && shop != "warships" && shop != "vehicles") {
+                        var _sell_mod = 0.9;
+                        tooltip = $"You sell items for {_sell_mod * 100}% of their original price.";
+                        tooltip_show=1;
+                        if (scr_click_left) {
+                            var sell_count = 1;
+                            if (keyboard_check(vk_shift)) {
+                                sell_count = 5;
+                            }
+        
+                            if ((item_stocked[i] >= sell_count)) {
+                                scr_add_item(item[i], (sell_count * -1));
+                                item_stocked[i] += (sell_count * -1);
+                                click2 = 1;
+                                var sell_price = (item_cost[i] * _sell_mod) * sell_count;
+                                obj_controller.requisition += sell_price;
+                            }
                         }
                     }
                 }
