@@ -123,7 +123,12 @@ function array_to_string_order(_strings_array, _use_and = false, _dot_end = true
     return result;
 }
 
-
+/// @description Converts two parallel arrays into a formatted string with pluralized counts
+/// @param {array} _names_array Array of strings representing item names
+/// @param {array} _counts_array Array of integers representing counts for each name
+/// @param {bool} _exclude_null Whether to exclude entries with zero count
+/// @param {bool} _dot_end Whether to end the string with a period
+/// @return {string}
 function arrays_to_string_with_counts(_names_array, _counts_array, _exclude_null = false, _dot_end = true) {
     var _array_length = array_length(_names_array);
 	var _result_string = "";
@@ -167,9 +172,10 @@ function fetch_deep_array(array, accessors){
 	return _array_step;
 }
 
-/// @description Choose either `.` or `,` based on the array lengh and current loop iteration.
-/// @param {array|real} _array_or_length
-/// @param {real} _loop_iteration
+/// @description Choose either `.` or `,` based on the array length and current loop iteration.
+/// @param {array|real} _array_or_length Array or its length.
+/// @param {real} _loop_iteration Current loop iteration.
+/// @param {bool} _dot_end Whether to end with a period for the last element
 /// @return {string}
 function smart_delimeter_sign(_array_or_length, _loop_iteration, _dot_end = true) {
     var _delimeter = "";

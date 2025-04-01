@@ -282,6 +282,7 @@ function base64_encode_advanced(input_string) {
     return _encoded_string;
 }
 
+/// @description Transforms a verb based on the plurality of a variable.
 /// @param {string} _verb The verb to be transformed (e.g., "was", "is", "has", etc.).
 /// @param {number} _variable A value determining singular (1) or plural (any value other than 1).
 /// @returns {string}
