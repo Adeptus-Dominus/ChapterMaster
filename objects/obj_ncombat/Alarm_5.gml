@@ -257,28 +257,11 @@ if (ground_mission){
 }
 
 if (slime>0){
-    var compan_slime = 0;
-
-    var slime_string=$"Fualty mucranoids and other afflictions have caused additional damage {slime} Forge Points will need to be allocated to repair damage";
-    
-    /*var s3 = "";
-    for (var i=0;i<=10;i++){
-        if (mucra[i]){
-            compan_slime+=1;
-            if (i>0){
-                s3+=$"{i}, ";
-            } else {
-                s3+=$"HQ, ";
-            }
-        }
-    }*/
-    
-    //slime_string += $" {slime==1?"suit":"suits"} of Power Armour.  {compan_slime>1?$"{s3} Companies":$"{s3} company"} has been effected.";
-    
-    
+    var slime_string=$"Faulty Mucranoid and other afflictions have caused damage to the equipment. {slime} Forge Points will be allocated for repairs.";    
     newline=slime_string;
     newline_color="red";
     scr_newtext();
+
     newline=" ";
     scr_newtext();
 }
