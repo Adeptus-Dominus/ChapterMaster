@@ -2,38 +2,7 @@ draw_size = min(400, column_size);
 
 if (draw_size > 0){
     draw_set_alpha(1);
-    switch (obj_ncombat.enemy) {
-        case 2:
-            draw_set_color(8307806);
-            break;
-        case 3:
-            draw_set_color(16512);
-            break;
-        case 5:
-            draw_set_color(c_silver);
-            break;
-        case 6:
-            draw_set_color(33023);
-            break;
-        case 7:
-            draw_set_color(38144);
-            break;
-        case 8:
-            draw_set_color(117758);
-            break;
-        case 9:
-            draw_set_color(7492269);
-            break;
-        case 10:
-            draw_set_color(c_purple);
-            break;
-        case 13:
-            draw_set_color(65408);
-            break;
-        default:
-            draw_set_color(c_maroon);
-            break;
-    }
+    draw_set_color(global.star_name_colors[obj_ncombat.enemy]);
 
     if (instance_exists(obj_centerline)){
         centerline_offset=x-obj_centerline.x;
