@@ -21,7 +21,8 @@ slate_panel.inside_method = function(){
         draw_text(xx+1280+10.5+string_width("Stocked"),yy+159.5,string_hash_to_newline("MC"));
         }
     }
-    draw_text(xx+1430.5,yy+159.5,string_hash_to_newline("Cost"));
+    draw_text(xx+1410,yy+159,string_hash_to_newline("Cost"));
+    draw_text(xx+1410.5,yy+159.5,string_hash_to_newline("Cost"));
     draw_set_color(c_gray);
 
 
@@ -70,7 +71,7 @@ slate_panel.inside_method = function(){
                 if (obj_controller.in_forge){
                     draw_sprite_ext(
                                 spr_forge_points_icon,0, 
-                                xx+1430,
+                                xx+1410,
                                 yy+y2+3, 
                                 0.3, 
                                 0.3, 
@@ -78,7 +79,7 @@ slate_panel.inside_method = function(){
                                 c_white,
                                 1); 
                 } else{
-                    draw_sprite_ext(spr_requisition,0,xx+1430,yy+y2+6,1,1,0,c_white,1);
+                    draw_sprite_ext(spr_requisition,0,xx+1410,yy+y2+6,1,1,0,c_white,1);
                 }            
     			draw_set_color(16291875)
                 if (obj_controller.in_forge){
@@ -94,7 +95,7 @@ slate_panel.inside_method = function(){
                     if (keyboard_check(vk_shift)) then cost*=5;
                 }
 
-                draw_text(xx+1447,yy+y2,cost);// Requisition
+                draw_text(xx+1427,yy+y2,cost);// Requisition
 
                 if (!obj_controller.in_forge ){
                     draw_sprite(spr_buy_tiny,0,xx+1530,yy+y2+2);
