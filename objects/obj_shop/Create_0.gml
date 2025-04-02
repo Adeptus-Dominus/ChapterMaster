@@ -101,21 +101,21 @@ if (shop = "equipment") {
             continue; 
         } 
 
-        var weapon_shop_data_struct = global.weapons_shop_data[$ weapon_name];
+        var weapon_shop_data = global.weapons_shop_data[$ weapon_name];
 
-        if (struct_exists(weapon_shop_data_struct, "research_required")) {
-
-        }
-
-        if (struct_exists(weapon_shop_data_struct, "no_buy")) {
-            nobuy[i] = weapon_shop_data_struct[$ "no_buy"];
+        if (struct_exists(weapon_shop_data, "no_buy")) {
+            nobuy[i] = weapon_shop_data[$ "no_buy"];
         }
 
         item[i] = weapon_name; 
         item_stocked[i] = scr_item_count(weapon_name); 
         mc_stocked[i] = scr_item_count(item[i], "master_crafted"); 
-        item_cost[i] = weapon_shop_data_struct[$ "value"]; 
-        forge_cost[i] = item_cost[i] * 10; 
+        item_cost[i] = weapon_shop_data[$ "value"];
+        if (obj_controller.in_forge) {
+            if (!noforge[i]) {
+                forge_cost[i] = item_cost[i] * 10; 
+            }
+        }
     } 
 } else if (shop = "equipment2") {
     i = 0;
