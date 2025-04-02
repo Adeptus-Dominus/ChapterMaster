@@ -107,7 +107,7 @@ slate_panel.inside_method = function(){
                         var _sell_mod = SHOP_SELL_MOD;
                         tooltip = $"You sell items for {_sell_mod * 100}% of their original price.";
                         tooltip_show=1;
-                        if (scr_click_left) {
+                        if (scr_click_left()) {
                             var sell_count = keyboard_check(vk_shift) ? 5 : 1;
                             sell_item(i, sell_count, _sell_mod)
                         }
