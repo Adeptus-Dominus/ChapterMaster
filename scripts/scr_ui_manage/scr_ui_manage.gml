@@ -170,6 +170,7 @@ function alternative_manage_views(x1, y1) {
     }
 }
 
+/// @mixin
 function scr_ui_manage() {
     if (combat != 0) {
         exit;
@@ -684,153 +685,133 @@ function scr_ui_manage() {
         potential_tooltip = [];
         health_tooltip = [];
         promotion_tooltip = [];
-        var repetitions = min(man_max, man_see);
 
         //tooltip text to tell you if a unit is eligible for special roles
 
         if (!obj_controller.view_squad) {
+            var repetitions = min(man_max, man_see);
             man_count = 0;
+
+            var _specialist_slots = [
+                {
+                    search_params: {},
+                    role_group_params: {
+                        group: "captain_candidates",
+                        location: "",
+                        opposite: false
+                    },
+                    purpose: $"{scr_roman_numerals()[managing - 1]} Company Captain Candidates",
+                    purpose_code: "captain_promote",
+                    button_text: "New Captain Required",
+                    unit_check: "captain"
+                },
+                {
+                    search_params: {
+                        stat: [["weapon_skill", 44, "more"]]
+                    },
+                    role_group_params: {
+                        group: [SPECIALISTS_STANDARD, true, true],
+                        location: "",
+                        opposite: true
+                    },
+                    purpose: $"{scr_roman_numerals()[managing - 1]} Champion Candidates",
+                    purpose_code: "champion_promote",
+                    button_text: "Champion Required",
+                    unit_check: "champion"
+                },
+                {
+                    search_params: {
+                        companies: managing
+                    },
+                    role_group_params: {
+                        group: [SPECIALISTS_STANDARD, true, true],
+                        location: "",
+                        opposite: true
+                    },
+                    purpose: $"{scr_roman_numerals()[managing - 1]} Company Ancient Candidates",
+                    purpose_code: "ancient_promote",
+                    button_text: "Ancient Required",
+                    unit_check: "ancient"
+                },
+                {
+                    search_params: {
+                        companies: [managing, 0]
+                    },
+                    role_group_params: {
+                        group: [SPECIALISTS_CHAPLAINS, false, false],
+                        location: "",
+                        opposite: false
+                    },
+                    purpose: $"{scr_roman_numerals()[managing - 1]} Company Chaplain Candidates",
+                    purpose_code: "chaplain_promote",
+                    button_text: "Chaplain Required",
+                    unit_check: "chaplain"
+                },
+                {
+                    search_params: {
+                        companies: [managing, 0]
+                    },
+                    role_group_params: {
+                        group: [SPECIALISTS_APOTHECARIES, false, false],
+                        location: "",
+                        opposite: false
+                    },
+                    purpose: $"{scr_roman_numerals()[managing - 1]} Company Apothecary Candidates",
+                    purpose_code: "apothecary_promote",
+                    button_text: "Apothecary Required",
+                    unit_check: "apothecary"
+                },
+                {
+                    search_params: {
+                        companies: [managing, 0]
+                    },
+                    role_group_params: {
+                        group: [SPECIALISTS_TECHS, false, false],
+                        location: "",
+                        opposite: false
+                    },
+                    purpose: $"{scr_roman_numerals()[managing - 1]} Company Tech Marine Candidates",
+                    purpose_code: "tech_marine_promote",
+                    button_text: "Tech Marine Required",
+                    unit_check: "tech_marine"
+                },
+                {
+                    search_params: {
+                        companies: [managing, 0]
+                    },
+                    role_group_params: {
+                        group: [SPECIALISTS_LIBRARIANS, false, false],
+                        location: "",
+                        opposite: false
+                    },
+                    purpose: $"{scr_roman_numerals()[managing - 1]} Company Librarian Candidates",
+                    purpose_code: "librarian_promote",
+                    button_text: "Librarian Required",
+                    unit_check: "lib"
+                }
+            ];
+
+            command_slots_count = array_length(_specialist_slots);
+
             if (managing > 0 && managing <= 10) {
-                var captain_exists = company_data.captain != "none";
-                var champion_exists = company_data.champion != "none";
-                var ancient_exists = company_data.ancient != "none";
-        		var chaplain_exists = company_data.chaplain != "none";
-        		var apothecary_exists = company_data.apothecary != "none";
-        		var techmarine_exists = company_data.tech_marine != "none";
-        		var librarian_exists = company_data.lib != "none";
-            }
-            var _clicked = false;
-            for (var i = 0; i < repetitions; i++) {
-                if (managing > 0 && managing <= 10 && (!captain_exists || !champion_exists || !ancient_exists || !chaplain_exists || !techmarine_exists || !apothecary_exists || !librarian_exists)) {
-                    if (!captain_exists) {
-                        _clicked = role_slot_draw(xx, yy, "Captain Required");
+                for (var r = 0; r < array_length(_specialist_slots); r++) {
+                    var role = _specialist_slots[r];
+                    if (company_data[$ role.unit_check] == "none") {
+                        var _clicked = role_slot_draw(xx, yy, role.button_text);
                         if (_clicked) {
-                            role_slot_assign({}, {
-                                group: SPECIALISTS_CAPTAIN_CANDIDATES,
-                                location: "",
-                                opposite: false
-                            }, $"{scr_roman_numerals()[managing - 1]} Company Captain Candidates", "captain_promote");
+                            role_slot_assign(role.search_params, role.role_group_params, role.purpose, role.purpose_code);
                         }
                         yy += 20;
-                        captain_exists = true;
                         if (managing == -1) {
                             exit;
                         }
-                        continue;
-                    }
-                    if (!champion_exists) {
-                        _clicked = role_slot_draw(xx, yy, "Champion Required");
-                        if (_clicked) {
-                            role_slot_assign({
-                                companies: managing,
-                                "stat": [
-                                    ["weapon_skill", 44, "more"]
-                                ]
-                            }, {
-                                group: [SPECIALISTS_STANDARD, true, true],
-                                location: "",
-                                opposite: true
-                            }, $"{scr_roman_numerals()[managing - 1]} Champion Candidates", "champion_promote");
-                        }
-                        yy += 20;
-                        champion_exists = true;
-                        if (managing == -1) {
-                            exit;
-                        }
-                        continue;
-                    }
-                    if (!ancient_exists) {
-                        _clicked = role_slot_draw(xx, yy, "Ancient Required");
-                        if (_clicked) {
-                            role_slot_assign({
-                                companies: managing
-                            }, {
-                                group: [SPECIALISTS_STANDARD, true, true],
-                                location: "",
-                                opposite: true
-                            }, $"{scr_roman_numerals()[managing - 1]} Company Ancient Candidates", "ancient_promote");
-                        }
-                        yy += 20;
-                        ancient_exists = true;
-                        if (managing == -1) {
-                            exit;
-                        }
-                        continue;
-                    }
-                    if (!chaplain_exists) {
-                        _clicked = role_slot_draw(xx, yy, "Chaplain Required");
-                        if (_clicked) {
-                            role_slot_assign({
-                                companies: [managing, 0]
-                            }, {
-                                group: [SPECIALISTS_CHAPLAINS, false, false],
-                                location: "",
-                                opposite: false
-                            }, $"{scr_roman_numerals()[managing - 1]} Company Chaplain Candidates", "chaplain_promote");
-                        }
-                        yy += 20;
-                        chaplain_exists = true;
-                        if (managing == -1) {
-                            exit;
-                        }
-                        continue;
-                    }
-                    if (!apothecary_exists) {
-                        _clicked = role_slot_draw(xx, yy, "Apothecary Required");
-                        if (_clicked) {
-                            role_slot_assign({
-                                companies: [managing, 0]
-                            }, {
-                                group: [SPECIALISTS_APOTHECARIES, false, false],
-                                location: "",
-                                opposite: false
-                            }, $"{scr_roman_numerals()[managing - 1]} Company Apothecary Candidates", "apothecary_promote");
-                        }
-                        yy += 20;
-                        apothecary_exists = true;
-                        if (managing == -1) {
-                            exit;
-                        }
-                        continue;
-                    }
-                    if (!techmarine_exists) {
-                        _clicked = role_slot_draw(xx, yy, "Tech Marine Required");
-                        if (_clicked) {
-                            role_slot_assign({
-                                companies: [managing, 0]
-                            }, {
-                                group: [SPECIALISTS_TECHS, false, false],
-                                location: "",
-                                opposite: false
-                            }, $"{scr_roman_numerals()[managing - 1]} Company Tech Marine Candidates", "tech_marine_promote");
-                        }
-                        yy += 20;
-                        techmarine_exists = true;
-                        if (managing == -1) {
-                            exit;
-                        }
-                        continue;
-                    }
-                    if (!librarian_exists) {
-                        _clicked = role_slot_draw(xx, yy, "Librarian Required");
-                        if (_clicked) {
-                            role_slot_assign({
-                                companies: [managing, 0]
-                            }, {
-                                group: [SPECIALISTS_LIBRARIANS, false, false],
-                                location: "",
-                                opposite: false
-                            }, $"{scr_roman_numerals()[managing - 1]} Company Librarian Candidates", "librarian_promote");
-                        }
-                        yy += 20;
-                        librarian_exists = true;
-                        if (managing == -1) {
-                            exit;
-                        }
-                        continue;
+                        repetitions--;
                     }
                 }
-                
+            }
+
+            for (var i = 0; i < max(0, repetitions); i++) {
+
                 if (sel >= array_length(display_unit)) {
                     break;
                 }

@@ -65,7 +65,7 @@ function scr_manage_task_selector(){
 		                				scr_company_order(unit.company);
 		                			}
 
-		                			managing = unit.company;
+		                			managing = selection_data.system;
 		                			update_general_manage_view();
 		                			exit;
 	                				break;
@@ -79,7 +79,7 @@ function scr_manage_task_selector(){
 		                				scr_company_order(unit.company);
 		                			}
 
-		                			managing = unit.company;
+		                			managing = selection_data.system;
 		                			update_general_manage_view();
 		                			exit;
 	                				break;

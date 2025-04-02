@@ -186,9 +186,9 @@ function scr_special_view(command_group) {
 	}
 
 	man_current=0;
-	man_max=array_length(display_unit)+2;
+	man_max=array_length(display_unit)+command_slots_count;
 	man_see=38-4;
-	if (man_max>=man_see) then man_max+=2;
+	if (man_max>=man_see) then man_max+=command_slots_count;
 	// if (command_group=13) then man_max+=2;
 
 
