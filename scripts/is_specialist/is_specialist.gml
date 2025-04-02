@@ -349,6 +349,9 @@ function collect_by_religeon(religion, sub_cult="", location=""){
 	return _units;
 }
 
+/// @description Processes the selection of units based on group parameters and updates controller data
+/// @param {array} group The array of units to process for selection
+/// @param {struct} selection_data Data structure containing selection parameters and state
 function group_selection(group, selection_data) {
     try {
         var unit, s, unit_location;
