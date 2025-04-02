@@ -310,7 +310,7 @@ function scr_save(save_part,save_id) {
 	    ini_write_real("Controller","trimmed",obj_controller.trim);
 	    ini_write_real("Controller","skin_color",obj_ini.skin_color);
 
-	    ini_write_string("Controller","production_research",base64_encode(json_stringify(obj_controller.production_research)));
+	    ini_write_string("Controller","technologies_known",base64_encode(json_stringify(obj_controller.technologies_known)));
 	    ini_write_string("Controller","forge_queue",base64_encode(json_stringify(obj_controller.specialist_point_handler.forge_queue)));
 	    ini_write_string("Controller","stc_research",base64_encode(json_stringify(obj_controller.stc_research)));
 
