@@ -6,10 +6,7 @@ try {
     var romanNumerals = scr_roman_numerals();
     var unit;
     var unit_armour, complete;
-	gaga = giga
-	if gaga = maga {
 
-	}
     if (engage == true) {
         for (var co = 0; co <= obj_ini.companies; co++) {
             var i = 0;
