@@ -108,18 +108,8 @@ slate_panel.inside_method = function(){
                         tooltip = $"You sell items for {_sell_mod * 100}% of their original price.";
                         tooltip_show=1;
                         if (scr_click_left) {
-                            var sell_count = 1;
-                            if (keyboard_check(vk_shift)) {
-                                sell_count = 5;
-                            }
-        
-                            if ((item_stocked[i] >= sell_count)) {
-                                scr_add_item(item[i], (sell_count * -1));
-                                item_stocked[i] += (sell_count * -1);
-                                click2 = 1;
-                                var sell_price = (item_cost[i] * _sell_mod) * sell_count;
-                                obj_controller.requisition += sell_price;
-                            }
+                            var sell_count = keyboard_check(vk_shift) ? 5 : 1;
+                            sell_item(i, sell_count, _sell_mod)
                         }
                     }
                 }
