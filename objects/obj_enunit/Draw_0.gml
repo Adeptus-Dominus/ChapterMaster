@@ -2,7 +2,7 @@ draw_size = min(400, column_size);
 
 if (draw_size > 0){
     draw_set_alpha(1);
-    draw_set_color(global.star_name_colors[obj_ncombat.enemy]);
+    draw_set_color(column_draw_colour);
 
     if (instance_exists(obj_centerline)){
         centerline_offset=x-obj_centerline.x;

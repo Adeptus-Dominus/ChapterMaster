@@ -24,6 +24,12 @@ x1 = pos + (centerline_offset * 2);
 y1 = 450 - (draw_size / 2);
 x2 = pos + (centerline_offset * 2) + 10;
 y2 = 450 + (draw_size / 2);
+if (obj_ncombat.enemy < array_length(global.star_name_colors) && obj_ncombat.enemy >= 0) {
+    column_draw_colour = global.star_name_colors[obj_ncombat.enemy];
+} else {
+    column_draw_colour = c_dkgrey;
+}
+
 
 enemy=0;
 enemy2=0;
