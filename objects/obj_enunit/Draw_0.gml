@@ -23,7 +23,7 @@ if (draw_size > 0){
         if (unit_count != unit_count_old) {
             unit_count_old = unit_count;
             if (obj_ncombat.enemy!=1){
-                composition_string += block_composition_string();
+                composition_string = block_composition_string();
             } else {
                 var variety, variety_num, sofar, compl;
                 variety = [];
@@ -57,7 +57,7 @@ if (draw_size > 0){
                     }
                 }
 
-                _composition_string += arrays_to_string_with_counts(variety, variety_num, true);
+                composition_string = arrays_to_string_with_counts(variety, variety_num, true);
             } 
         }
 
