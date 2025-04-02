@@ -306,6 +306,7 @@ function other_manage_data() {
                 }
             }
         }
+
         if (_squads == 0) {
             _squads += 1;
             _squad_members = 1;
@@ -313,7 +314,7 @@ function other_manage_data() {
             squad[v] = _squads;
             _squad_loc = _unit_loc;
         }
-        var _company_promotion_limits = [0, 100, 65, 65, 65, 65, 45, 45, 35, 25, 0];
+
         if ((ma_role[v] == obj_ini.role[100][3]) || (ma_role[v] == obj_ini.role[100][4])) {
             if ((_unit.company == 1) && (ma_exp[v] >= 140)) {
                 ma_promote[v] = 1;
@@ -328,8 +329,9 @@ function other_manage_data() {
         } else if (_unit.role() == obj_ini.role[100][16]) {
             ma_promote[v] = 1;
         }
-        var _target_company = 0;
-        if (_unit.IsSpecialist(SPECIALISTS_RANK_AND_FILE)) {
+
+        if (_unit.company > -1 && _unit.IsSpecialist(SPECIALISTS_RANK_AND_FILE)) {
+			var _target_company = 0;
             if (_unit.company >= 8) {
                 _target_company = _unit.company - 1;
             } else if (_unit.company >= 6) {
@@ -337,6 +339,8 @@ function other_manage_data() {
             } else if (_unit.company >= 2) {
                 _target_company = 1;
             }
+
+			var _company_promotion_limits = [0, 100, 65, 65, 65, 65, 45, 45, 35, 25, 0];
             var _promotion_limit = _company_promotion_limits[_target_company];
             if (_unit.experience >= _promotion_limit && _promotion_limit > 0) {
                 ma_promote[v] = 1;
@@ -345,6 +349,7 @@ function other_manage_data() {
                 ma_promote[v] = 10;
             }
         }
+
         if ((!obj_controller.command_set[2]) && (!ma_promote[v])) {
             ma_promote[v] = 1;
         }
