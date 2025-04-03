@@ -173,16 +173,16 @@ function EquipmentStruct(item_data, core_type,quality="none") constructor{
                             array_push(special_properties_array, special_properties[k]);
                         }
                     }
-                    if (arp=1){
+                    if (arp=4){
                         array_push(special_properties_array, "Anti Vehicle")
                     } 
-                    else if (arp=0){
+                    else if (arp=1){
                         array_push(special_properties_array, "Low Penetration")
                     }
-					else if (arp=-1){
+					else if (arp=2){
                         array_push(special_properties_array, "Medium Penetration")
                     }
-					else if (arp=-2){
+					else if (arp=3){
                         array_push(special_properties_array, "High Penetration")
                     }
                     if (array_length(second_profiles)>0){
