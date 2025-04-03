@@ -1804,7 +1804,8 @@ get_command_slots_data = function(){
         },
         {
             search_params: {
-                stat: [["weapon_skill", 44, "more"]]
+                stat: [["weapon_skill", 44, "more"]],
+                companies: managing
             },
             role_group_params: {
                 group: [SPECIALISTS_STANDARD, true, true],
