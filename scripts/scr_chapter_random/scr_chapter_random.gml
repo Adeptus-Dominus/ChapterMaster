@@ -392,7 +392,7 @@ function scr_chapter_random(argument0) {
     obj_creation.livery_picker = new ColourItem(100,230);
     obj_creation.livery_picker.scr_unit_draw_data();
     obj_creation.livery_picker.set_default_armour(struct_cols,col_special);
-    obj_creation.full_liveries = array_create(21,DeepCloneStruct(obj_creation.livery_picker.map_colour)); 			    
+    obj_creation.full_liveries = array_create(21,variable_clone(obj_creation.livery_picker.map_colour)); 			    
     obj_creation.full_liveries[eROLE.Librarian] = obj_creation.livery_picker.set_default_librarian(struct_cols);
 
     obj_creation.full_liveries[eROLE.Chaplain] = obj_creation.livery_picker.set_default_chaplain(struct_cols);

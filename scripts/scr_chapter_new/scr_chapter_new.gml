@@ -385,7 +385,7 @@ function scr_chapter_new(argument0) {
 			    livery_picker = new ColourItem(100,230);
 			    livery_picker.scr_unit_draw_data();
 			    livery_picker.set_default_armour(struct_cols,col_special);
-			    full_liveries = array_create(21,DeepCloneStruct(livery_picker.map_colour)); 			    
+			    full_liveries = array_create(21,variable_clone(livery_picker.map_colour)); 			    
 			    full_liveries[eROLE.Librarian] = livery_picker.set_default_librarian(struct_cols);
 
 			    full_liveries[eROLE.Chaplain] = livery_picker.set_default_chaplain(struct_cols);
@@ -397,7 +397,7 @@ function scr_chapter_new(argument0) {
 			    livery_picker.set_default_armour(struct_cols,col_special); 			
 			} else {
 				if (array_length(full_liveries) != 21){
-					full_liveries = array_create(21,DeepCloneStruct(full_liveries[0])); 
+					full_liveries = array_create(21,variable_clone(full_liveries[0])); 
 					struct_cols.left_pauldron = full_liveries[0].left_pauldron;
 				    full_liveries[eROLE.Librarian] = livery_picker.set_default_librarian(struct_cols);
 
