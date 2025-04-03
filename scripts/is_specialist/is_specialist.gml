@@ -415,8 +415,7 @@ function group_selection(group, selection_data) {
             }
             other_manage_data();
             man_current = 0;
-            man_max = array_length(display_unit) + 2;
-            man_see = 38 - 4;
+            man_max = MANAGE_MAN_MAX;
         }
     } catch (_exception) {
         //handle and send player back to map

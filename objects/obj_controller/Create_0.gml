@@ -467,7 +467,6 @@ managing=0;
 formating=0;
 man_current=0;
 man_max=0;
-man_see=0;
 command_slots_count=0;
 ship_current=0;
 ship_max=0;

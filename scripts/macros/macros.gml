@@ -8,6 +8,8 @@
 #macro TIME_1 $"{format_time(current_hour)}:{format_time(current_minute)}:{format_time(current_second)}"
 #macro CM_GREEN_COLOR #34bc75
 #macro CM_RED_COLOR #bf4040
+#macro MANAGE_MAN_SEE 34
+#macro MANAGE_MAN_MAX array_length(obj_controller.display_unit) + obj_controller.command_slots_count
 
 enum luck {
     bad = -1,

@@ -215,8 +215,7 @@ function scr_company_view(company) {
     }
 
     man_current = 0;
-    man_max = array_length(display_unit) + 2;
-    man_see = 38 - 4;
+    man_max = MANAGE_MAN_MAX;
     other_manage_data();
 }
 

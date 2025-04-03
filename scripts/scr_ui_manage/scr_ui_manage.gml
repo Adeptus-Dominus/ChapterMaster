@@ -205,7 +205,6 @@ function scr_ui_manage() {
             man_size = 0;
         }
         var unit, x1, x2, x3, y1, y2, y3, text;
-        var romanNumerals = scr_roman_numerals();
         var tooltip_text = "", bionic_tooltip = "", tooltip_drawing = [];
         var invalid_locations = ["Mechanicus Vessel", "Terra"];
 
@@ -226,7 +225,7 @@ function scr_ui_manage() {
             if (managing > 20) {
                 c = managing - 10;
             } else if ((managing >= 1) && (managing <= 10)) {
-                fx = romanNumerals[managing - 1] + " Company";
+                fx = int_to_roman(managing) + " Company";
                 c = managing;
             } else if (managing > 10) {
                 switch (managing) {
@@ -689,7 +688,7 @@ function scr_ui_manage() {
         //tooltip text to tell you if a unit is eligible for special roles
 
         if (!obj_controller.view_squad) {
-            var repetitions = min(man_max, man_see);
+            var repetitions = min(man_max, MANAGE_MAN_SEE);
             man_count = 0;
 
             var _specialist_slots = [
@@ -700,7 +699,7 @@ function scr_ui_manage() {
                         location: "",
                         opposite: false
                     },
-                    purpose: $"{scr_roman_numerals()[managing - 1]} Company Captain Candidates",
+                    purpose: $"{int_to_roman(managing)} Company Captain Candidates",
                     purpose_code: "captain_promote",
                     button_text: "New Captain Required",
                     unit_check: "captain"
@@ -714,7 +713,7 @@ function scr_ui_manage() {
                         location: "",
                         opposite: true
                     },
-                    purpose: $"{scr_roman_numerals()[managing - 1]} Champion Candidates",
+                    purpose: $"{int_to_roman(managing)} Company Champion Candidates",
                     purpose_code: "champion_promote",
                     button_text: "Champion Required",
                     unit_check: "champion"
@@ -728,7 +727,7 @@ function scr_ui_manage() {
                         location: "",
                         opposite: true
                     },
-                    purpose: $"{scr_roman_numerals()[managing - 1]} Company Ancient Candidates",
+                    purpose: $"{int_to_roman(managing)} Company Ancient Candidates",
                     purpose_code: "ancient_promote",
                     button_text: "Ancient Required",
                     unit_check: "ancient"
@@ -742,7 +741,7 @@ function scr_ui_manage() {
                         location: "",
                         opposite: false
                     },
-                    purpose: $"{scr_roman_numerals()[managing - 1]} Company Chaplain Candidates",
+                    purpose: $"{int_to_roman(managing)} Company Chaplain Candidates",
                     purpose_code: "chaplain_promote",
                     button_text: "Chaplain Required",
                     unit_check: "chaplain"
@@ -756,7 +755,7 @@ function scr_ui_manage() {
                         location: "",
                         opposite: false
                     },
-                    purpose: $"{scr_roman_numerals()[managing - 1]} Company Apothecary Candidates",
+                    purpose: $"{int_to_roman(managing)} Company Apothecary Candidates",
                     purpose_code: "apothecary_promote",
                     button_text: "Apothecary Required",
                     unit_check: "apothecary"
@@ -770,7 +769,7 @@ function scr_ui_manage() {
                         location: "",
                         opposite: false
                     },
-                    purpose: $"{scr_roman_numerals()[managing - 1]} Company Tech Marine Candidates",
+                    purpose: $"{int_to_roman(managing)} Company Tech Marine Candidates",
                     purpose_code: "tech_marine_promote",
                     button_text: "Tech Marine Required",
                     unit_check: "tech_marine"
@@ -784,7 +783,7 @@ function scr_ui_manage() {
                         location: "",
                         opposite: false
                     },
-                    purpose: $"{scr_roman_numerals()[managing - 1]} Company Librarian Candidates",
+                    purpose: $"{int_to_roman(managing)} Company Librarian Candidates",
                     purpose_code: "librarian_promote",
                     button_text: "Librarian Required",
                     unit_check: "lib"
@@ -829,7 +828,7 @@ function scr_ui_manage() {
                     }
                 } else if (i == repetitions - 1) {
                     if (point_in_rectangle(mouse_x, mouse_y, xx + 25 + 8, yy + 64, xx + 974, yy + 85) && mouse_check_button(mb_left)) {
-                        man_current = man_current < man_max - man_see ? man_current + 1 : man_current == (man_max - man_see);
+                        man_current = man_current < man_max - MANAGE_MAN_SEE ? man_current + 1 : man_current == (man_max - MANAGE_MAN_SEE);
                         man_current++;
                     }
                 }
@@ -1274,7 +1273,7 @@ function scr_ui_manage() {
         // Draw companies
         if (managing > 0) {
             if (managing >= 1 && managing <= 10) {
-                fx = scr_roman_numerals()[managing - 1] + " Company";
+                fx = int_to_roman(managing) + " Company";
             } else if (managing > 10) {
                 switch (managing) {
                     case 11:
