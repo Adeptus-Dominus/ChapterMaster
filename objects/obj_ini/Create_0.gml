@@ -198,7 +198,7 @@ deserialize = function(save_data){
     if(struct_exists(save_data, "full_liveries")){
         variable_struct_set(obj_ini, "full_liveries", save_data.full_liveries)
     } else {
-        variable_struct_set(obj_ini, "full_liveries", array_create(21,DeepCloneStruct(livery_picker.map_colour)));
+        variable_struct_set(obj_ini, "full_liveries", array_create(21,variable_clone(livery_picker.map_colour)));
     }
 
     if(struct_exists(save_data, "complex_livery_data")){

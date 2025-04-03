@@ -126,11 +126,11 @@ function single_loc_point_data(){
 function system_point_data_spawn(){
 	var _single_point_pos = single_loc_point_data();
  	return [
-				DeepCloneStruct(_single_point_pos),
-				DeepCloneStruct(_single_point_pos),
-				DeepCloneStruct(_single_point_pos),
-				DeepCloneStruct(_single_point_pos),
-				DeepCloneStruct(_single_point_pos),
+				variable_clone(_single_point_pos),
+				variable_clone(_single_point_pos),
+				variable_clone(_single_point_pos),
+				variable_clone(_single_point_pos),
+				variable_clone(_single_point_pos),
 			];
 }
 
@@ -270,13 +270,13 @@ function apothecary_simple(){
 			_point_breakdown.heal_points_use = _point_breakdown.heal_points - _loc_heal_points;
 			_point_breakdown.forge_points_use = _point_breakdown.forge_points - _loc_forge_points;	
 			if (cur_system!=""){
-				point_breakdown.systems[$ cur_system.name][p] = DeepCloneStruct(_point_breakdown);
+				point_breakdown.systems[$ cur_system.name][p] = variable_clone(_point_breakdown);
 			} else if (p==0 && (string_count("ref instance", _cur_loc))){
 				try {
 					var _instance_int = real(string_replace(_cur_loc, "ref instance ", ""));
 					if (instance_exists(_instance_int)){
 						var _instance = _instance_int;
-						_instance.point_breakdown = DeepCloneStruct(_point_breakdown);
+						_instance.point_breakdown = variable_clone(_point_breakdown);
 					}
 				}catch(_exception) {
 					handle_exception(_exception);

@@ -833,6 +833,7 @@
     {"id":{"name":"scr_start_allow","path":"scripts/scr_start_allow/scr_start_allow.yy",},},
     {"id":{"name":"scr_start_load","path":"scripts/scr_start_load/scr_start_load.yy",},},
     {"id":{"name":"scr_string_functions","path":"scripts/scr_string_functions/scr_string_functions.yy",},},
+    {"id":{"name":"scr_struct_functions","path":"scripts/scr_struct_functions/scr_struct_functions.yy",},},
     {"id":{"name":"scr_system_search_helpers","path":"scripts/scr_system_search_helpers/scr_system_search_helpers.yy",},},
     {"id":{"name":"scr_system_spawn_functions","path":"scripts/scr_system_spawn_functions/scr_system_spawn_functions.yy",},},
     {"id":{"name":"scr_target","path":"scripts/scr_target/scr_target.yy",},},

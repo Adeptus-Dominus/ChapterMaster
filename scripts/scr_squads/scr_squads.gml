@@ -169,7 +169,7 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 			 if (struct_exists(unit_squad_data,"loadout")){						//find out if the unit type for the squad has optional equipment thresholds
 				if (struct_exists(unit_squad_data[$ "loadout"],"option")){
 					if (optional_load == "none"){
-					  	optional_load = DeepCloneStruct(unit_squad_data[$ "loadout"][$ "option"]);			//create a fulfillment object for optional loadouts
+					  	optional_load = variable_clone(unit_squad_data[$ "loadout"][$ "option"]);			//create a fulfillment object for optional loadouts
 
 					  	optional_loadout_slots = struct_get_names(optional_load);
 
@@ -186,7 +186,7 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 				//if there are required loadout items
 				if (struct_exists(unit_squad_data[$ "loadout"],"required")){	//find out if the unit type for the squad has required  equipment thresholds
 					if (required_load == "none"){
-					  	required_load = DeepCloneStruct(unit_squad_data[$ "loadout"][$ "required"]);
+					  	required_load = variable_clone(unit_squad_data[$ "loadout"][$ "required"]);
 					  	required_loadout_slots = struct_get_names(required_load);
 						for (load_out_name = 0; load_out_name < array_length(required_loadout_slots);load_out_name++){
 							load_out_slot = required_loadout_slots[load_out_name];
@@ -443,7 +443,7 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 		var names = variable_struct_get_names(copy_struct); // get all keys within structure
 		for (var name = 0; name < array_length(names); name++) { //loop through keys to find which ones are methods as they can't be saved as a json string
 			if (!is_method(copy_struct[$ names[name]])){
-				copy_part = DeepCloneStruct(copy_struct[$ names[name]])
+				copy_part = variable_clone(copy_struct[$ names[name]])
 				variable_struct_set(new_struct, names[name],copy_part); //if key value is not a method add to copy structure
 			}
 		}
