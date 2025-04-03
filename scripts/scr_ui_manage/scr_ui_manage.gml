@@ -93,7 +93,7 @@ function load_marines_into_ship(system, ship, units, reload = false) {
 /// @param {struct} role_group_params - Parameters defining the role group
 /// @param {string} purpose - Display purpose for the selection
 /// @param {string} purpose_code - Code that identifies the selection’s purpose
-function role_slot_assign(search_params, role_group_params, purpose, purpose_code){
+function command_slot_prompt(search_params, role_group_params, purpose, purpose_code){
     var candidates = collect_role_group(role_group_params.group, role_group_params.location, role_group_params.opposite, search_params);
     group_selection(candidates, {
         purpose: purpose,
@@ -110,7 +110,7 @@ function role_slot_assign(search_params, role_group_params, purpose, purpose_cod
 /// @param {number} xx - X coordinate for the UI element
 /// @param {number} yy - Y coordinate for the UI element
 /// @param {string} slot_text - The prompt text displayed in the UI
-function role_slot_draw(xx, yy, slot_text){
+function command_slot_draw(xx, yy, slot_text){
     draw_set_color(c_black);
     draw_rectangle(xx + 25, yy + 64, xx + 974, yy + 85, 0);
     draw_set_color(c_gray);
@@ -697,9 +697,9 @@ function scr_ui_manage() {
                 for (var r = 0; r < array_length(_command_slots_data); r++) {
                     var role = _command_slots_data[r];
                     if (company_data[$ role.unit_check] == "none") {
-                        var _clicked = role_slot_draw(xx, yy, role.button_text);
+                        var _clicked = command_slot_draw(xx, yy, role.button_text);
                         if (_clicked) {
-                            role_slot_assign(role.search_params, role.role_group_params, role.purpose, role.purpose_code);
+                            command_slot_prompt(role.search_params, role.role_group_params, role.purpose, role.purpose_code);
                         }
                         yy += 20;
                         if (managing == -1) {
