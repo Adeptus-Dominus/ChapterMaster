@@ -390,7 +390,9 @@ function scr_enemy_ai_b() {
 	        		 if (p_owner[s]=8) then tau_chance+=5;
 	        	}
 				
-	            if (flit.owner = eFACTION.Tau){tau_chance+=(flit.image_index*5)-5;}
+				if (flit != "none" && flit.owner = eFACTION.Tau){
+					tau_chance += (flit.image_index * 5) - 5;
+				}
             
             
 	            if (tau_chance>=95){/*obj_controller.x=self.x;obj_controller.y=self.y;show_message(string(tau_chance)+" |"+string(p_orks[i])+"|"+string(p_traitors[i]));*/}
