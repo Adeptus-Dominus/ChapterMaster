@@ -691,110 +691,11 @@ function scr_ui_manage() {
             var repetitions = min(man_max, MANAGE_MAN_SEE);
             man_count = 0;
 
-            var _specialist_slots = [
-                {
-                    search_params: {},
-                    role_group_params: {
-                        group: "captain_candidates",
-                        location: "",
-                        opposite: false
-                    },
-                    purpose: $"{int_to_roman(managing)} Company Captain Candidates",
-                    purpose_code: "captain_promote",
-                    button_text: "New Captain Required",
-                    unit_check: "captain"
-                },
-                {
-                    search_params: {
-                        stat: [["weapon_skill", 44, "more"]]
-                    },
-                    role_group_params: {
-                        group: [SPECIALISTS_STANDARD, true, true],
-                        location: "",
-                        opposite: true
-                    },
-                    purpose: $"{int_to_roman(managing)} Company Champion Candidates",
-                    purpose_code: "champion_promote",
-                    button_text: "Champion Required",
-                    unit_check: "champion"
-                },
-                {
-                    search_params: {
-                        companies: managing
-                    },
-                    role_group_params: {
-                        group: [SPECIALISTS_STANDARD, true, true],
-                        location: "",
-                        opposite: true
-                    },
-                    purpose: $"{int_to_roman(managing)} Company Ancient Candidates",
-                    purpose_code: "ancient_promote",
-                    button_text: "Ancient Required",
-                    unit_check: "ancient"
-                },
-                {
-                    search_params: {
-                        companies: [managing, 0]
-                    },
-                    role_group_params: {
-                        group: [SPECIALISTS_CHAPLAINS, false, false],
-                        location: "",
-                        opposite: false
-                    },
-                    purpose: $"{int_to_roman(managing)} Company Chaplain Candidates",
-                    purpose_code: "chaplain_promote",
-                    button_text: "Chaplain Required",
-                    unit_check: "chaplain"
-                },
-                {
-                    search_params: {
-                        companies: [managing, 0]
-                    },
-                    role_group_params: {
-                        group: [SPECIALISTS_APOTHECARIES, false, false],
-                        location: "",
-                        opposite: false
-                    },
-                    purpose: $"{int_to_roman(managing)} Company Apothecary Candidates",
-                    purpose_code: "apothecary_promote",
-                    button_text: "Apothecary Required",
-                    unit_check: "apothecary"
-                },
-                {
-                    search_params: {
-                        companies: [managing, 0]
-                    },
-                    role_group_params: {
-                        group: [SPECIALISTS_TECHS, false, false],
-                        location: "",
-                        opposite: false
-                    },
-                    purpose: $"{int_to_roman(managing)} Company Tech Marine Candidates",
-                    purpose_code: "tech_marine_promote",
-                    button_text: "Tech Marine Required",
-                    unit_check: "tech_marine"
-                },
-                {
-                    search_params: {
-                        companies: [managing, 0]
-                    },
-                    role_group_params: {
-                        group: [SPECIALISTS_LIBRARIANS, false, false],
-                        location: "",
-                        opposite: false
-                    },
-                    purpose: $"{int_to_roman(managing)} Company Librarian Candidates",
-                    purpose_code: "librarian_promote",
-                    button_text: "Librarian Required",
-                    unit_check: "lib"
-                }
-            ];
-
-            command_slots_count = array_length(_specialist_slots);
+            command_slots_data = get_command_slots_data();
 
             if (managing > 0 && managing <= 10) {
-                for (var r = 0; r < array_length(_specialist_slots); r++) {
-                    var role = _specialist_slots[r];
+                for (var r = 0; r < array_length(command_slots_data); r++) {
+                    var role = command_slots_data[r];
                     if (company_data[$ role.unit_check] == "none") {
                         var _clicked = role_slot_draw(xx, yy, role.button_text);
                         if (_clicked) {
