@@ -2,7 +2,7 @@
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 function scr_manage_task_selector(){
 	if (exit_button.draw_shutter(xx+400,yy+70, "Exit", 0.5, true)){
-			if (selection_data.purpose_code=="captain_promote"){
+			if (is_real(selection_data.system) && selection_data.system <= 10 && selection_data.system >= 0){
 		        managing = selection_data.system;
 				update_general_manage_view();
 			} else {
