@@ -691,11 +691,11 @@ function scr_ui_manage() {
             var repetitions = min(man_max, MANAGE_MAN_SEE);
             man_count = 0;
 
-            command_slots_data = get_command_slots_data();
+            var _command_slots_data = get_command_slots_data();
 
             if (managing > 0 && managing <= 10) {
-                for (var r = 0; r < array_length(command_slots_data); r++) {
-                    var role = command_slots_data[r];
+                for (var r = 0; r < array_length(_command_slots_data); r++) {
+                    var role = _command_slots_data[r];
                     if (company_data[$ role.unit_check] == "none") {
                         var _clicked = role_slot_draw(xx, yy, role.button_text);
                         if (_clicked) {
