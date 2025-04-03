@@ -1,15 +1,11 @@
-global.weapons_shop_data = json_to_gamemaker(working_directory + "\\data\\weapons_shop_data.jsonc", json_parse);
-global.technology_shop_data = json_to_gamemaker(working_directory + "\\data\\technology_shop_data.jsonc", json_parse);
-global.gear_shop_data = json_to_gamemaker(working_directory + "\\data\\gear_shop_data.jsonc", json_parse);
-global.armour_shop_data = json_to_gamemaker(working_directory + "\\data\\armour_shop_data.jsonc", json_parse);
-
 hover = 0;
 shop = "weapons";
 in_forge = false;
 click = 0;
 click2 = 0;
 discount_rogue_trader = 1;
-discount_stc = 1;
+forge_cost_mod = 1;
+discount_stc = 0;
 construction_started = 0;
 eta = 0;
 target_comp = obj_controller.new_vehicles;
@@ -126,6 +122,10 @@ if (shop == "weapons") {
             }
         }
     }
+
+    var disc = obj_controller.stc_wargear * 5;
+    item_cost_tooltip_info += $"Wargear STC: -{disc}%\n";
+    forge_cost_mod -= disc;
 } else if (shop == "armour") {
     var _armour_names = variable_struct_get_names(global.gear[$ "armour"]);
     for (var i = 0; i < array_length(_armour_names); ++i) {
@@ -160,6 +160,9 @@ if (shop == "weapons") {
             }
         }
     }
+    var disc = obj_controller.stc_wargear * 5;
+    item_cost_tooltip_info += $"Wargear STC: -{disc}%\n";
+    forge_cost_mod -= disc;
 } else if (shop == "gear") {
     var _gear_names = variable_struct_get_names(global.gear[$ "gear"]);
     for (var i = 0; i < array_length(_gear_names); ++i) {
@@ -195,644 +198,57 @@ if (shop == "weapons") {
             }
         }
     }
+    var disc = obj_controller.stc_wargear * 5;
+    item_cost_tooltip_info += $"Wargear STC: -{disc}%\n";
+    forge_cost_mod -= disc;
 } else if (shop == "vehicles") {
-    var player_hanger = min(array_length(obj_controller.player_forge_data.vehicle_hanger), 1);
+    var _gear_names = variable_struct_get_names(global.gear[$ "gear"]);
+    for (var i = 0; i < array_length(_gear_names); ++i) {
+        var _gear_name = _gear_names[i];
+        if (!struct_exists(global.gear_shop_data, _gear_name)) {
+            continue;
+        }
 
-    i = 0;
+        var _gear_shop_data = global.gear_shop_data[$ _gear_name];
+        if (struct_exists(_gear_shop_data, "no_buy")) {
+            no_buying[i] = _gear_shop_data[$ "no_buy"];
+        }
 
-    i += 1;
-    item_name[i] = "Rhino";
-    item_stocked[i] = scr_vehicle_count(item_name[i], "");
-    forge_cost[i] = 1500 * player_hanger;
-    buy_cost[i] = 120;
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
+        item_name[i] = _gear_name;
+        tooltip_override[i] = facility_data[$ "description"];
+        item_stocked[i] = scr_item_count(_gear_name);
+        mc_stocked[i] = scr_item_count(item_name[i], "master_crafted");
+        buy_cost[i] = _gear_shop_data[$ "value"];
 
-    i += 1;
-    item_name[i] = "Predator";
-    item_stocked[i] = scr_vehicle_count(item_name[i], "");
-    forge_cost[i] = 3000 * player_hanger;
-    buy_cost[i] = 240;
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Autocannon Turret";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    buy_cost[i] = 30;
-    if (research[$ "bolt"][0] > 2) {
-        forge_cost[i] = 150 * player_hanger;
-    }
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Twin Linked Lascannon Turret";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    buy_cost[i] = 60;
-    if (research[$ "las"][0] > 1) {
-        forge_cost[i] = 400 * player_hanger;
-    }
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Heavy Bolter Sponsons";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    buy_cost[i] = 38;
-    forge_cost[i] = 100 * player_hanger;
-    if (research[$ "bolt"][0] > 2) {
-        forge_cost[i] = 100 * player_hanger;
-    }
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Heavy Flamer Sponsons";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    buy_cost[i] = 50;
-    forge_cost[i] = 150 * player_hanger;
-    if (research[$ "flame"][0] < 1) {
-        forge_cost[i] = 0;
-    }
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Lascannon Sponsons";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    buy_cost[i] = 60;
-    if (research[$ "las"][0] > 1) {
-        forge_cost[i] = 300;
-    }
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-
-    i += 1;
-    item_name[i] = "Land Raider";
-    item_stocked[i] = scr_vehicle_count(item_name[i], "");
-    no_buying[i] = 1;
-    if (obj_controller.stc_vehicles >= 6) {
-        no_buying[i] = 0;
-        buy_cost[i] = 500;
-        forge_cost[i] = 4500 * player_hanger;
-    }
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Twin Linked Heavy Bolter Mount";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    buy_cost[i] = 28;
-    if (research[$ "bolt"][0] > 2) {
-        forge_cost[i] = 250 * player_hanger;
-    }
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Quad Linked Heavy Bolter Sponsons";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    buy_cost[i] = 60;
-    if (research[$ "bolt"][0] > 3) {
-        forge_cost[i] = 350 * player_hanger;
-    }
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Twin Linked Assault Cannon Mount";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    buy_cost[i] = 60;
-    if (research[$ "bolt"][0] > 3) {
-        forge_cost[i] = 400 * player_hanger;
-    }
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Flamestorm Cannon Sponsons";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    buy_cost[i] = 100;
-    forge_cost[i] = 300 * player_hanger;
-    if (research[$ "flame"][0] < 1) {
-        forge_cost[i] = 0;
-    }
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Hurricane Bolter Sponsons";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    buy_cost[i] = 70;
-    if (research[$ "bolt"][0] > 3) {
-        forge_cost[i] = 300 * player_hanger;
-    }
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Twin Linked Lascannon Sponsons";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    buy_cost[i] = 120;
-    if (research[$ "las"][0] > 1) {
-        forge_cost[i] = 250 * player_hanger;
-    }
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-
-    i += 1;
-    item_name[i] = "Whirlwind";
-    item_stocked[i] = scr_vehicle_count(item_name[i], "");
-    buy_cost[i] = 180;
-    forge_cost[i] = 2000 * player_hanger;
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "HK Missile";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    buy_cost[i] = 10;
-    forge_cost[i] = 250 * player_hanger;
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-
-    i += 1;
-    item_name[i] = "Land Speeder";
-    item_stocked[i] = scr_vehicle_count(item_name[i], "");
-    no_buying[i] = 1;
-    if (obj_controller.stc_vehicles >= 6) {
-        no_buying[i] = 0;
-        buy_cost[i] = 120;
-        forge_cost[i] = 700 * player_hanger;
-    }
-
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Twin Linked Bolters";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    buy_cost[i] = 8;
-    if (research[$ "bolt"][0] >= 2) {
-        forge_cost[i] = 150 * player_hanger;
-    }
-    i += 1;
-    item_name[i] = "Bike";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    buy_cost[i] = 35;
-    forge_cost[i] = 150 * player_hanger;
-    i += 1;
-    item_name[i] = "Dreadnought";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    no_buying[i] = 1; // if (renegade=1){no_buying[i]=1;buy_cost[i]=0;}
-    if (research[$ "armour"][1].stealth[0] > 0 && research[$ "armour"][1][$ "armour"][0] > 1 && obj_controller.stc_wargear >= 6) {
-        forge_cost[i] = 3000;
-    } else {
-        tooltip_override[i] = "requires : \n";
-        if (research[$ "armour"][1].stealth[0] < 1) {
-            tooltip_override[i] += $"     {global.technology_shop_data[$ "
-            armour "][1].stealth[0][0]}\n";
-            for (var r = research[$ "armour"][1][$ "armour"][0]; r < 2; r++) {
-                tooltip_override[i] += $"     {global.technology_shop_data[$ "
-                armour "][1][$ "
-                armour "][0][r]}\n";
+        if (in_forge) {
+            if (struct_exists(_gear_shop_data, "requires")) {
+                var _required_names = _gear_shop_data[$ "requires"];
+                for (var r = 0; r < array_length(_required_names); r++) {
+                    var _required_name = _required_names[r];
+                    if (!array_contains(obj_controller.technologies_known, _required_name)) {
+                        no_forging[i] = true;
+                        break;
+                    }
+                }
+            }
+            if (!no_forging[i]) {
+                forge_cost[i] = buy_cost[i] * 10;
             }
         }
-        mk_4_tool_tip = tooltip_override[i];
-        tooltip_override[i] += $"STC wargear component 6";
-    }
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Close Combat Weapon";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    buy_cost[i] = 45;
-    forge_cost[i] = 200 * player_hanger;
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
     }
 
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Force Staff";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    if (in_forge) {
-        if (research[$ "psi"][0] < 1) {
-            no_forging[i] = true;
-        }
-    }
-    buy_cost[i] = 80;
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
+    discount_stc = obj_controller.stc_vehicles * 3;
+    var _player_hangers = array_length(obj_controller.player_forge_data.vehicle_hanger);
+    var _hangar_discount = _player_hangers * 3;
 
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Twin Linked Heavy Bolter";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    buy_cost[i] = 110;
-    if (research[$ "bolt"][0] > 2) {
-        forge_cost[i] = 150 * player_hanger;
-    }
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Twin Linked Lascannon";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    buy_cost[i] = 110;
-    if (research[$ "las"][0] > 1) {
-        forge_cost[i] = 150 * player_hanger;
-    }
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Autocannon";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    buy_cost[i] = 80;
-    if (research[$ "bolt"][0] > 2) {
-        forge_cost[i] = 150;
-    }
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Inferno Cannon";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    buy_cost[i] = 115;
-    forge_cost[i] = 250 * player_hanger;
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Dreadnought Lightning Claw";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    buy_cost[i] = 185;
-    forge_cost[i] = 250 * player_hanger;
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Assault Cannon";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    buy_cost[i] = 75;
-    if (research[$ "bolt"][0] > 2) {
-        forge_cost[i] = 350;
-    }
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Dreadnought Power Claw";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    buy_cost[i] = 150;
-    forge_cost[i] = 200 * player_hanger;
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Whirlwind Missiles";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    buy_cost[i] = 90;
-    forge_cost[i] = 250 * player_hanger;
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Heavy Conversion Beam Projector";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    forge_cost[i] = 350 * player_hanger;
-    no_buying[i] = 1;
-    if (renegade == 1) {
-        buy_cost[i] = 0;
-    }
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Plasma Destroyer Turret";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    forge_cost[i] = 400 * player_hanger;
-    no_buying[i] = 1;
-    if (renegade == 1) {
-        buy_cost[i] = 0;
-    }
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Flamestorm Cannon Turret";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    forge_cost[i] = 400 * player_hanger;
-    no_buying[i] = 1;
-    if (renegade == 1) {
-        buy_cost[i] = 0;
-    }
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Magna-Melta Turret";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    forge_cost[i] = 400 * player_hanger;
-    no_buying[i] = 1;
-    if (renegade == 1) {
-        buy_cost[i] = 0;
-    }
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Neutron Blaster Turret";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    forge_cost[i] = 450 * player_hanger;
-    no_buying[i] = 1;
-    if (renegade == 1) {
-        buy_cost[i] = 0;
-    }
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Volkite Saker Turret";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    forge_cost[i] = 400 * player_hanger;
-    no_buying[i] = 1;
-    if (renegade == 1) {
-        buy_cost[i] = 0;
-    }
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Volkite Culverin Sponsons";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    forge_cost[i] = 350 * player_hanger;
-    no_buying[i] = 1;
-    if (renegade == 1) {
-        buy_cost[i] = 0;
-    }
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Twin Linked Volkite Culverin Sponsons";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    forge_cost[i] = 400 * player_hanger;
-    no_buying[i] = 1;
-    if (renegade == 1) {
-        buy_cost[i] = 0;
-    }
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Twin Linked Multi-Melta Sponsons";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    buy_cost[i] = 200;
-    forge_cost[i] = 200 * player_hanger;
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Twin Linked Heavy Flamer Sponsons";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    forge_cost[i] = 200 * player_hanger;
-    buy_cost[i] = 150;
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Reaper Autocannon Mount";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    forge_cost[i] = 250 * player_hanger;
-    no_buying[i] = 1;
-    if (renegade == 1) {
-        buy_cost[i] = 0;
-    }
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Void Shield";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    no_buying[i] = 1;
-    if (obj_controller.stc_vehicles >= 6) {
-        no_buying[i] = 0;
-        buy_cost[i] = 500;
-        forge_cost[i] = 2000 * player_hanger;
-    }
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Lucifer Pattern Engine";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    no_buying[i] = 1;
-    if (obj_controller.stc_vehicles >= 6) {
-        no_buying[i] = 0;
-        buy_cost[i] = 90;
-        forge_cost[i] = 1250 * player_hanger;
-    }
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Artificer Hull";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    no_buying[i] = 1;
-    if (obj_controller.stc_vehicles >= 3) {
-        no_buying[i] = 0;
-        buy_cost[i] = 200;
-        forge_cost[i] = 1000 * player_hanger;
-    }
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Armoured Ceramite";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    buy_cost[i] = 120;
-    if (obj_controller.stc_vehicles >= 3) {
-        buy_cost[i] = 200;
-        forge_cost[i] = 500 * player_hanger;
-    }
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Heavy Armour";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    buy_cost[i] = 50;
-    if (obj_controller.stc_vehicles >= 3) {
-        buy_cost[i] = 200;
-        forge_cost[i] = 250 * player_hanger;
-    }
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Smoke Launchers";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    buy_cost[i] = 10;
-    if (obj_controller.stc_vehicles >= 3) {
-        buy_cost[i] = 200;
-        forge_cost[i] = 250 * player_hanger;
-    }
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Dozer Blades";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    buy_cost[i] = 10;
-    if (obj_controller.stc_vehicles >= 3) {
-        buy_cost[i] = 200;
-        forge_cost[i] = 200 * player_hanger;
-    }
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Searchlight";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    buy_cost[i] = 15;
-    if (obj_controller.stc_vehicles >= 3) {
-        buy_cost[i] = 200;
-        forge_cost[i] = 250 * player_hanger;
-    }
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Frag Assault Launchers";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    buy_cost[i] = 30;
-    if (obj_controller.stc_vehicles >= 3) {
-        buy_cost[i] = 200;
-        forge_cost[i] = 250 * player_hanger;
-    }
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
+    item_cost_tooltip_info += $"Vehicle STC: -{discount_stc}%\n";
+    item_cost_tooltip_info += $"Hangars: -{_hangar_discount}%\n";
+    forge_cost_mod -= discount_stc;
+    forge_cost_mod -= _hangar_discount;
 } else if (shop == "warships") {
-    i = 0;
-
-    i += 1;
-    item_name[i] = "Battle Barge";
-    item_stocked[i] = scr_ship_count(item_name[i]);
-    buy_cost[i] = 20000;
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-
-    i += 1;
-    item_name[i] = "Strike Cruiser";
-    item_stocked[i] = scr_ship_count(item_name[i]);
-    buy_cost[i] = 8000;
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-
-    i += 1;
-    item_name[i] = "Gladius";
-    item_stocked[i] = scr_ship_count(item_name[i]);
-    buy_cost[i] = 2250;
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-
-    i += 1;
-    item_name[i] = "Hunter";
-    item_stocked[i] = scr_ship_count(item_name[i]);
-    buy_cost[i] = 3000;
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
-
-    i += 1;
-    x_mod[i] = 9;
-    item_name[i] = "Cyclonic Torpedo";
-    item_stocked[i] = scr_item_count(item_name[i]);
-    no_buying[i] = 1;
-    if (renegade == 1) {
-        no_buying[i] = 1;
-        buy_cost[i] = 0;
-    }
+    discount_stc = obj_controller.stc_ships * 5;
+    item_cost_tooltip_info += $"Ship STC: -{discount_stc}%\n";
+    forge_cost_mod -= discount_stc;
 } else if (shop == "production") {
     var facilities_names = variable_struct_get_names(global.technology_shop_data);
     for (var i = 0; i < array_length(facilities_names); i++) {
@@ -953,22 +369,5 @@ for (var i = 0; i < array_length(buy_cost); i++) {
     buy_cost[i] *= min(best_modifier * forge_master_cha_modifier, discount_rogue_trader);
     buy_cost[i] = max(round(buy_cost[i]), 1);
 
-    if ((shop == "weapons") || (shop == "armour")) {
-        var disc = obj_controller.stc_wargear * 5;
-        item_cost_tooltip_info += $"Wargear STC: -{disc}%\n";
-        discount_stc -= disc;
-    }
-
-    if (shop == "vehicles") {
-        var disc = obj_controller.stc_vehicles * 5;
-        item_cost_tooltip_info += $"Vehicle STC: -{disc}%\n";
-        discount_stc -= disc;
-    }
-
-    if (shop == "warships") {
-        var disc = obj_controller.stc_ships * 5;
-        item_cost_tooltip_info += $"Ship STC: -{disc}%\n";
-        discount_stc -= disc;
-    }
-    forge_cost[i] *= discount_stc;
+    forge_cost[i] *= forge_cost_mod;
 }
