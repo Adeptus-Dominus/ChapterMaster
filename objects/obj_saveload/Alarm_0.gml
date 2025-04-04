@@ -48,7 +48,6 @@ if (save_part == 2) {
 }
 
 if (save_part == 1) {
-	if (file_exists("save" + string(save_number) + ".json")) {
 	if (file_exists($"save{save_number}.json")) {
 		file_delete($"save{save_number}.json");
 	}
@@ -60,6 +59,7 @@ if (save_part == 1) {
 	trickle = 2;
 	txt = "Preparing";
 }
+
 if (load_part==6){
     txt="Praise to the Machine God";
     if (global.restart>0) then txt="Praise be to the Emperor";
