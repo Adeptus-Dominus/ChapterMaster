@@ -448,7 +448,7 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 			}
 		}
 		if(stringify){
-			return json_stringify(new_struct);
+			return json_stringify(new_struct, true);
 		} else {
 			return new_struct;
 		}

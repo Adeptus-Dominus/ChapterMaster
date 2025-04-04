@@ -1476,42 +1476,10 @@ serialize = function(){
     }
     var excluded_from_save = ["temp", "serialize", "deserialize", "build_chaos_gods", "company_data","menu_buttons",
             "location_viewer", "production_research_pathways", "specialist_point_handler", "spec_train_data"]
+    var excluded_from_save_start = ["restart_"];
 
-    /// Check all object variable values types and save the simple ones dynamically. 
-    /// simple types are numbers, strings, bools. arrays of only simple types are also considered simple. 
-    /// non-simple types are structs, functions, methods
-    /// functions and methods will be ignored completely, structs to be manually serialized/deserialised.
-    var all_names = struct_get_names(object_controller);
-    var _len = array_length(all_names);
-    for(var i = 0; i < _len; i++){
-        var var_name = all_names[i];
-        if(array_contains(excluded_from_save, var_name)){
-            continue;
-        }
-        if(struct_exists(save_data, var_name)){
-            continue; //already added above
-        }
-        if(string_starts_with(var_name, "restart_")){
-            continue;
-        }
-        if(is_basic_variable(object_controller[$var_name])){
-            variable_struct_set(save_data, var_name, object_controller[$var_name]);
-        }
-        if(is_array(object_controller[$var_name])){
-            var _check_arr = object_controller[$var_name];
-            var _ok_array = is_basic_array(_check_arr, 2);
-            if(!_ok_array){
-                log_warning($"Bad array save: '{var_name}' internal type found was not a simple type and should probably have it's own serialize functino - obj_controller");
-            } else {
-                variable_struct_set(save_data, var_name, object_controller[$var_name]);
-            }
-        }
-        if(is_struct(object_controller[$var_name])){
-            if(!struct_exists(save_data, var_name)){
-                log_warning($"obj_ini.serialze() - object contains struct variable '{var_name}' which has not been serialized. \n\tEnsure that serialization is written into the serialize and deserialization function if it is needed for this value, or that the variable is added to the ignore list to suppress this warning");
-            }
-        }
-    }
+    copy_serializable_fields(object_controller, save_data, excluded_from_save, excluded_from_save_start);
+
     return save_data;
 }
 
