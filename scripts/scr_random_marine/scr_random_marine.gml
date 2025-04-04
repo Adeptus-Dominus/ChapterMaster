@@ -146,6 +146,20 @@ function scr_random_marine(role, exp_req, search_params="none"){
                             continue;
                         }
                     }
+
+					if (struct_exists(search_params, "job")) {
+                        match = false;
+						if (unit.job == search_params[$ "job"]){
+							match = true;
+						}
+                        
+
+                        if (!match) {
+                            array_delete(marine_list, list_place, 1);
+                            comp_size--;
+                            continue;
+                        }
+                    }
             	}
             	//if match made exit loop and return unit
 	            if (match){
