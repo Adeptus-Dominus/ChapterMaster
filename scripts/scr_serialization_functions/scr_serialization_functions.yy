@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scr_serialization_functions",
   "parent":{
-    "name":"save_load",
-    "path":"folders/Scripts/save_load.yy",
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",
