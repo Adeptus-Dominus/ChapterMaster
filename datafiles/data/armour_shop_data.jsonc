@@ -1,52 +1,52 @@
 {
     "MK3 Iron Armour": {
         "value": 125,
-        "requires": ["ceramite_casting_chambers"],
+        "requires_to_build": ["ceramite_casting_chambers"],
         "renegade_buy": false
     },
     "MK4 Maximus": {
         "value": 125,
-        "requires": ["advanced_ceramite_bonding", "armour_stealth"],
+        "requires_to_build": ["advanced_ceramite_bonding", "armour_stealth"],
         "renegade_buy": false
     },
     "MK5 Heresy": {
         "value": 45,
-        "requires": ["ceramite_casting_chambers"],
+        "requires_to_build": ["ceramite_casting_chambers"],
         "renegade_buy": true
     },
     "MK6 Corvus": {
         "value": 35,
-        "requires": ["ceramite_casting_chambers", "advanced_servo_motors"],
+        "requires_to_build": ["ceramite_casting_chambers", "advanced_servo_motors"],
         "renegade_buy": false
     },
     "MK7 Aquila": {
         "value": 20,
-        "requires": ["ceramite_casting_chambers"],
+        "requires_to_build": ["ceramite_casting_chambers"],
         "renegade_buy": false
     },
     "MK8 Errant": {
         "value": 100,
-        "requires": ["advanced_ceramite_bonding"],
+        "requires_to_build": ["advanced_ceramite_bonding"],
         "renegade_buy": false
     },
     "Scout Armour": {
         "value": 5,
-        "requires": [],
+        "requires_to_build": [],
         "renegade_buy": true
     },
     "Artificer Armour": {
         "value": 150,
-        "requires": ["lightened_ceramite_compound", "ceramite_void_hardening", "enhanced_nerve_interfacing", "advanced_servo_motors"],
+        "requires_to_build": ["lightened_ceramite_compound", "ceramite_void_hardening", "enhanced_nerve_interfacing", "advanced_servo_motors"],
         "renegade_buy": false
     },
     "Terminator Armour": {
         "value": 200,
-        "requires": ["ceramite_void_hardening", "enhanced_nerve_interfacing", "advanced_servo_motors"],
+        "requires_to_build": ["ceramite_void_hardening", "enhanced_nerve_interfacing", "advanced_servo_motors"],
         "renegade_buy": false
     },
     "Tartaros": {
         "value": 250,
-        "requires": ["ceramite_void_hardening", "enhanced_nerve_interfacing", "advanced_servo_motors"],
+        "requires_to_build": ["ceramite_void_hardening", "enhanced_nerve_interfacing", "advanced_servo_motors"],
         "renegade_buy": false
     }
 }
