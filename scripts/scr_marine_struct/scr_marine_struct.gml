@@ -2269,7 +2269,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 }
 
-function jsonify_marine_struct(company, marine) {
+function jsonify_marine_struct(company, marine, stringify=true) {
     var copy_marine_struct = obj_ini.TTRPG[company, marine]; //grab marine structure
     var new_marine = {};
     var copy_part;
@@ -2282,7 +2282,11 @@ function jsonify_marine_struct(company, marine) {
             delete copy_part;
         }
     }
-    return json_stringify(new_marine);
+    if(stringify){
+        return json_stringify(new_marine);
+    } else {
+        return new_marine;
+    }
 }
 
 /// @param {Array<Real>} unit where unit[0] is company and unit[1] is the position

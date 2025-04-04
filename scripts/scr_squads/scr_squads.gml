@@ -154,6 +154,8 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 			in future i'd like to tailer these to marine skill sets e.g the marines with the best ranged stats get given the best ranged equipment	
 		*/
 	static sort_squad_loadout = function(from_armoury=true, to_armoury=true){
+		var unit;
+
 		var required_load, unit_type, load_out_name, load_out_areas, load_out_slot,load_item, optional_load, item_to_add;
 		squad_unit_types = find_squad_unit_types();
 		var full_squad_data =  obj_ini.squad_types[$ type];
@@ -434,7 +436,7 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 		life_members++;
 	}
 	// for saving squads
-	static jsonify = function(){
+	static jsonify = function(stringify = true){
 		var copy_struct = self; //grab marine structure
 		var new_struct = {};
 		var copy_part;
@@ -445,7 +447,11 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 				variable_struct_set(new_struct, names[name],copy_part); //if key value is not a method add to copy structure
 			}
 		}
-		return json_stringify(new_struct);
+		if(stringify){
+			return json_stringify(new_struct);
+		} else {
+			return new_struct;
+		}
 	}
 
 	//function for loading in squad save data
@@ -462,6 +468,7 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 		var locations = [];
 		var system = ""
 		var unit_loc;
+		var unit;
 		var same_system = true;
 		var same_loc_type = true;
 		var loc_type = false;
@@ -534,6 +541,7 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 	//this means the highest ranking dude in a squad will always be the squad leader
 	//failing that the highest experience dude
 	static determine_leader = function(){
+		var unit;
 		var member_length = array_length(members);
 		var hierarchy = role_hierarchy();
 		var leader_hier_pos=array_length(hierarchy);
@@ -607,6 +615,7 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 	}
 
 	static member_loop = function(member_func, data_pack){
+		var unit;
 		member_length = array_length(members);
 		for (var i=0;i<member_length;i++){
 			unit = fetch_unit(members[i]);

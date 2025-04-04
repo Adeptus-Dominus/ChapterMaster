@@ -72,6 +72,8 @@
     
     The Machine God watches over you.
 */
+show_debug_message("Creating Controller");
+log_message("Creating Controller");
 marine_surface = surface_create(600, 600);
 scr_colors_initialize();
 is_test_map=false;
@@ -1344,6 +1346,179 @@ try{
 catch(_exception){
     global.star_name_colors[1] = make_color_rgb(col_r[1],col_g[1],col_b[1]);
 }
+
+get_command_slots_data = function(){
+    var _command_slots_data = [
+        {
+            search_params: {},
+            role_group_params: {
+                group: "captain_candidates",
+                location: "",
+                opposite: false
+            },
+            purpose: $"{int_to_roman(managing)} Company Captain Candidates",
+            purpose_code: "captain_promote",
+            button_text: "New Captain Required",
+            unit_check: "captain"
+        },
+        {
+            search_params: {
+                stat: [["weapon_skill", 44, "more"]],
+                companies: managing
+            },
+            role_group_params: {
+                group: [SPECIALISTS_STANDARD, true, true],
+                location: "",
+                opposite: true
+            },
+            purpose: $"{int_to_roman(managing)} Company Champion Candidates",
+            purpose_code: "champion_promote",
+            button_text: "Champion Required",
+            unit_check: "champion"
+        },
+        {
+            search_params: {
+                companies: managing
+            },
+            role_group_params: {
+                group: [SPECIALISTS_STANDARD, true, true],
+                location: "",
+                opposite: true
+            },
+            purpose: $"{int_to_roman(managing)} Company Ancient Candidates",
+            purpose_code: "ancient_promote",
+            button_text: "Ancient Required",
+            unit_check: "ancient"
+        },
+        {
+            search_params: {
+                companies: [managing, 0]
+            },
+            role_group_params: {
+                group: [SPECIALISTS_CHAPLAINS, false, false],
+                location: "",
+                opposite: false
+            },
+            purpose: $"{int_to_roman(managing)} Company Chaplain Candidates",
+            purpose_code: "chaplain_promote",
+            button_text: "Chaplain Required",
+            unit_check: "chaplain"
+        },
+        {
+            search_params: {
+                companies: [managing, 0]
+            },
+            role_group_params: {
+                group: [SPECIALISTS_APOTHECARIES, false, false],
+                location: "",
+                opposite: false
+            },
+            purpose: $"{int_to_roman(managing)} Company Apothecary Candidates",
+            purpose_code: "apothecary_promote",
+            button_text: "Apothecary Required",
+            unit_check: "apothecary"
+        },
+        {
+            search_params: {
+                companies: [managing, 0]
+            },
+            role_group_params: {
+                group: [SPECIALISTS_TECHS, false, false],
+                location: "",
+                opposite: false
+            },
+            purpose: $"{int_to_roman(managing)} Company Tech Marine Candidates",
+            purpose_code: "tech_marine_promote",
+            button_text: "Tech Marine Required",
+            unit_check: "tech_marine"
+        },
+        {
+            search_params: {
+                companies: [managing, 0]
+            },
+            role_group_params: {
+                group: [SPECIALISTS_LIBRARIANS, false, false],
+                location: "",
+                opposite: false
+            },
+            purpose: $"{int_to_roman(managing)} Company Librarian Candidates",
+            purpose_code: "librarian_promote",
+            button_text: "Librarian Required",
+            unit_check: "lib"
+        }
+    ];
+    
+    return _command_slots_data;
+}
+
+command_slots_count=array_length(get_command_slots_data());
+
+#region save/load serialization 
+
+/// Called from save function to take all object variables and convert them to a json savable format and return it 
+serialize = function(){
+    var object_controller = self;
+    
+    var save_data = {
+        obj: object_get_name(object_index),
+        x,
+        y,
+        chaos_gods,
+        master_of_forge,
+        stc_research,
+        production_research,
+        player_forge_data,
+        end_turn_insights,
+        recruit_data,
+        marines,
+        loyalty,
+        spec_train_data
+    }
+    var excluded_from_save = ["temp", "serialize", "deserialize", "build_chaos_gods", "company_data","menu_buttons",
+            "location_viewer", "production_research_pathways", "specialist_point_handler", "spec_train_data"]
+
+    /// Check all object variable values types and save the simple ones dynamically. 
+    /// simple types are numbers, strings, bools. arrays of only simple types are also considered simple. 
+    /// non-simple types are structs, functions, methods
+    /// functions and methods will be ignored completely, structs to be manually serialized/deserialised.
+    var all_names = struct_get_names(object_controller);
+    var _len = array_length(all_names);
+    for(var i = 0; i < _len; i++){
+        var var_name = all_names[i];
+        if(array_contains(excluded_from_save, var_name)){
+            continue;
+        }
+        if(struct_exists(save_data, var_name)){
+            continue; //already added above
+        }
+        if(string_starts_with(var_name, "restart_")){
+            continue;
+        }
+        if(is_basic_variable(object_controller[$var_name])){
+            variable_struct_set(save_data, var_name, object_controller[$var_name]);
+        }
+        if(is_array(object_controller[$var_name])){
+            var _check_arr = object_controller[$var_name];
+            var _ok_array = is_basic_array(_check_arr, 2);
+            if(!_ok_array){
+                log_warning($"Bad array save: '{var_name}' internal type found was not a simple type and should probably have it's own serialize functino - obj_controller");
+            } else {
+                variable_struct_set(save_data, var_name, object_controller[$var_name]);
+            }
+        }
+        if(is_struct(object_controller[$var_name])){
+            if(!struct_exists(save_data, var_name)){
+                log_warning($"obj_ini.serialze() - object contains struct variable '{var_name}' which has not been serialized. \n\tEnsure that serialization is written into the serialize and deserialization function if it is needed for this value, or that the variable is added to the ignore list to suppress this warning");
+            }
+        }
+    }
+    return save_data;
+}
+
+// Deserialization is done within scr_load
+#endregion
+
+
 // ** Loads the game **
 if (global.load>0){
     load_game=global.load;
@@ -1360,6 +1535,18 @@ if (global.load>0){
     if (global.restart>0) then log_message("Restarting Game");
     exit;
 }
+
+///! ************************************************************ */
+///! ************************************************************ */
+///! ************************************************************ */
+///! NOTHING BEYOND THIS POINT WILL BE SET AFTER A LOAD FROM SAVE */
+///! ************************************************************ */
+///! ************************************************************ */
+///! ************************************************************ */
+///! ************************************************************ */
+
+
+
 
 var xx,yy,me,dist,go,planet;
 global.custom=1;
@@ -1784,112 +1971,10 @@ if (welcome_pages>=5){
     }
 }
 remov=string_length(string(temp[65])+string(temp[66])+string(temp[67])+string(temp[68])+string(temp[69]))+1;
-action_set_alarm(2, 0);
 
 instance_create(0,0,obj_tooltip );
 
-get_command_slots_data = function(){
-    var _command_slots_data = [
-        {
-            search_params: {},
-            role_group_params: {
-                group: "captain_candidates",
-                location: "",
-                opposite: false
-            },
-            purpose: $"{int_to_roman(managing)} Company Captain Candidates",
-            purpose_code: "captain_promote",
-            button_text: "New Captain Required",
-            unit_check: "captain"
-        },
-        {
-            search_params: {
-                stat: [["weapon_skill", 44, "more"]],
-                companies: managing
-            },
-            role_group_params: {
-                group: [SPECIALISTS_STANDARD, true, true],
-                location: "",
-                opposite: true
-            },
-            purpose: $"{int_to_roman(managing)} Company Champion Candidates",
-            purpose_code: "champion_promote",
-            button_text: "Champion Required",
-            unit_check: "champion"
-        },
-        {
-            search_params: {
-                companies: managing
-            },
-            role_group_params: {
-                group: [SPECIALISTS_STANDARD, true, true],
-                location: "",
-                opposite: true
-            },
-            purpose: $"{int_to_roman(managing)} Company Ancient Candidates",
-            purpose_code: "ancient_promote",
-            button_text: "Ancient Required",
-            unit_check: "ancient"
-        },
-        {
-            search_params: {
-                companies: [managing, 0]
-            },
-            role_group_params: {
-                group: [SPECIALISTS_CHAPLAINS, false, false],
-                location: "",
-                opposite: false
-            },
-            purpose: $"{int_to_roman(managing)} Company Chaplain Candidates",
-            purpose_code: "chaplain_promote",
-            button_text: "Chaplain Required",
-            unit_check: "chaplain"
-        },
-        {
-            search_params: {
-                companies: [managing, 0]
-            },
-            role_group_params: {
-                group: [SPECIALISTS_APOTHECARIES, false, false],
-                location: "",
-                opposite: false
-            },
-            purpose: $"{int_to_roman(managing)} Company Apothecary Candidates",
-            purpose_code: "apothecary_promote",
-            button_text: "Apothecary Required",
-            unit_check: "apothecary"
-        },
-        {
-            search_params: {
-                companies: [managing, 0]
-            },
-            role_group_params: {
-                group: [SPECIALISTS_TECHS, false, false],
-                location: "",
-                opposite: false
-            },
-            purpose: $"{int_to_roman(managing)} Company Tech Marine Candidates",
-            purpose_code: "tech_marine_promote",
-            button_text: "Tech Marine Required",
-            unit_check: "tech_marine"
-        },
-        {
-            search_params: {
-                companies: [managing, 0]
-            },
-            role_group_params: {
-                group: [SPECIALISTS_LIBRARIANS, false, false],
-                location: "",
-                opposite: false
-            },
-            purpose: $"{int_to_roman(managing)} Company Librarian Candidates",
-            purpose_code: "librarian_promote",
-            button_text: "Librarian Required",
-            unit_check: "lib"
-        }
-    ];
-    
-    return _command_slots_data;
-}
+action_set_alarm(2, 0);
 
-command_slots_count=array_length(get_command_slots_data());
+
+//**! DO NOT PUT THINGS AT THE BOTTOM OF THIS FILE IF YOU NEED THEM TO WORK AFTER LOADING FROM A SAVE, SEE LINE 1550 -ish   */

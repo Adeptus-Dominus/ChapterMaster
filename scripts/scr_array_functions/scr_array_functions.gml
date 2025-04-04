@@ -189,3 +189,27 @@ function smart_delimeter_sign(_array_or_length, _loop_iteration, _dot_end = true
 
     return _delimeter;
 }
+
+/// @description Checks whether an array is "simple," meaning it does not exceed a specified depth and contains only simple variables. Recursively evaluates nested arrays.
+/// @param {array} _array - The array to check.
+/// @param {real} _max_depth - The maximum allowed depth for the array.
+/// @param {real} _current_depth (DON'T PASS ANYTHING) The current recursion depth, used internally.
+/// @returns {bool}
+function is_basic_array(_array, _max_depth = 1, _current_depth = 1) {
+    if (_current_depth > _max_depth) {
+        return false;
+    }
+
+    for (var i = 0, _len = array_length(_array); i < _len; i++) {
+        var _var = _array[i];
+        if (is_array(_var)) {
+            if (!is_basic_array(_var, _max_depth, _current_depth + 1)) {
+                return false;
+            }
+        } else if (!is_basic_variable(_var)) {
+            return false;
+        }
+    }
+
+    return true;
+}

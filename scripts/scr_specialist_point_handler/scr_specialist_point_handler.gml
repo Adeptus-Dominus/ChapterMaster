@@ -84,7 +84,7 @@ function SpecialistPointHandler() constructor{
         forge_string += $"Techmarines: +{floor(forge_points)}#";
         forge_points-=tech_points_used;        
         forge_string += $"Vehicle Repairs:#";
-        forge_string += $"   Combat Repairs : {forge_veh_maintenance.repairs}\n";
+        forge_string += $"   Combat Repairs : {forge_veh_maintenance.repairs}#";
         if (struct_exists(forge_veh_maintenance, "land_raider")){
             forge_string += $"   Land Raider Maintenance: -{forge_veh_maintenance.land_raider}#";
             forge_points-=forge_veh_maintenance.land_raider;

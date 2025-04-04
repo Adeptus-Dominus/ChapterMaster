@@ -495,7 +495,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.1300.0.781",
+    "IDEVersion":"2024.1300.0.785",
   },
   "name":"ChapterMaster",
   "resources":[
@@ -736,6 +736,7 @@
     {"id":{"name":"scr_fleet_functions","path":"scripts/scr_fleet_functions/scr_fleet_functions.yy",},},
     {"id":{"name":"scr_forge_world_functions","path":"scripts/scr_forge_world_functions/scr_forge_world_functions.yy",},},
     {"id":{"name":"scr_garrison","path":"scripts/scr_garrison/scr_garrison.yy",},},
+    {"id":{"name":"scr_general_variable_functions","path":"scripts/scr_general_variable_functions/scr_general_variable_functions.yy",},},
     {"id":{"name":"scr_get_diag_integer","path":"scripts/scr_get_diag_integer/scr_get_diag_integer.yy",},},
     {"id":{"name":"scr_get_diag_string","path":"scripts/scr_get_diag_string/scr_get_diag_string.yy",},},
     {"id":{"name":"scr_get_item_names","path":"scripts/scr_get_item_names/scr_get_item_names.yy",},},
