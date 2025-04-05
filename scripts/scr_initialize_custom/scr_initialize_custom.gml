@@ -39,20 +39,19 @@ enum ePROGENITOR {
     RANDOM,
 }
 
-#macro WEAPON_LIST_RANGED_HEAVY ["Heavy Bolter", "Heavy Bolter", "Missile Launcher", "Missile Launcher", "Multi-Melta", "Lascannon", "Plasma Cannon", "Grav-Cannon"]
-#macro WEAPON_LIST_RANGED_SPECIAL ["Flamer", "Flamer", "Meltagun", "Meltagun", "Plasma Gun", "Grav-Gun"]
-#macro WEAPON_LIST_RANGED_COMBI ["Storm Bolter", "Storm Bolter", "Storm Bolter", "Combiflamer", "Combiflamer", "Combiplasma", "Combigrav", "Combimelta"]
+#macro WEAPON_LIST_RANGED_HEAVY ["Heavy Bolter", "Heavy Bolter", "Missile Launcher", "Missile Launcher", "Lascannon", "Plasma Cannon", "Multi-Melta", "Grav-Cannon"]
+#macro WEAPON_LIST_RANGED_SPECIAL ["Flamer", "Flamer", "Plasma Gun", "Meltagun", "Grav-Gun"]
+#macro WEAPON_LIST_RANGED_COMBI ["Storm Bolter", "Storm Bolter", "Storm Bolter", "Combiflamer", "Combiflamer", "Combiplasma", "Combimelta", "Combigrav"]
 #macro WEAPON_LIST_RANGED_PISTOLS ["Bolt Pistol", "Bolt Pistol", "Bolt Pistol", "Plasma Pistol", "Plasma Pistol", "Grav-Pistol"]
-#macro WEAPON_LIST_RANGED_VANGUARD ["Bolt Pistol", "Bolt Pistol", "Bolt Pistol", "Bolt Pistol", "Plasma Pistol", "Plasma Pistol", "Grav-Pistol"]
 #macro WEAPON_LIST_RANGED_STERNGUARD array_concat(["Bolter", "Bolter", "Bolter"], WEAPON_LIST_RANGED_COMBI)
 #macro WEAPON_LIST_RANGED array_concat(WEAPON_LIST_RANGED_PISTOLS, WEAPON_LIST_RANGED_STERNGUARD, WEAPON_LIST_RANGED_COMBI)
 
-#macro WEAPON_LIST_MELEE_BASIC ["Chainsword", "Chainsword", "Chainsword", "Chainaxe", "Chainaxe"]
+#macro WEAPON_LIST_MELEE_BASIC ["Chainsword", "Chainsword", "Chainaxe"]
 #macro WEAPON_LIST_MELEE_1H ["Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Power Sword", "Power Sword", "Power Sword", "Lightning Claw", "Lightning Claw", "Lightning Claw", "Power Fist", "Power Fist", "Thunder Hammer"]
-#macro WEAPON_LIST_MELEE_HEAVY ["Eviscerator"]
+#macro WEAPON_LIST_MELEE_HEAVY ["Eviscerator", "Eviscerator", "Eviscerator", "Eviscerator", "Eviscerator", "Heavy Thunder Hammer"]
 #macro WEAPON_LIST_MELEE_VANGUARD ["Chainsword", "Chainsword", "Chainsword", "Power Sword", "Power Axe", "Lightning Claw", "Lightning Claw", "Power Fist", "Power Fist", "Thunder Hammer"]
 
-#macro WEAPON_LIST_WEIGHTED_RANGED_PISTOLS [["Bolt Pistol", 4], ["Hand Flamer", 2], ["Plasma Pistol", 2], ["Grav-Pistol", 1]]
+#macro WEAPON_LIST_WEIGHTED_RANGED_PISTOLS [["Bolt Pistol", 4], ["Plasma Pistol", 2], ["Grav-Pistol", 1]]
 
 function progenitor_map(){
     var founding_chapters = [
