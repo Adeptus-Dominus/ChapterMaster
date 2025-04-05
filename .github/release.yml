@@ -1,15 +1,16 @@
 changelog:
+  exclude:
+    labels:
+      - "Action: Hide"
+
   categories:
     - title: Possibly Breaking Changes
       labels:
-        - "Breaking!"
+        - "Type: Breaking"
         
     - title: New/Changed
       labels:
         - "Type: Feature"
-        - "Enhancement"
-        - "Balance"
-        - "Misc Change"
         
     - title: Fixes
       labels:
@@ -26,8 +27,6 @@ changelog:
         - "Type: Refactor"
         - "Type: Performance"
         - "Type: Code Style"
-        - "Type: Docs"
-        - "Type: CI"
         
     - title: Other Changes
       labels:
