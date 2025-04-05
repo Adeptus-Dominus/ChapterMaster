@@ -15,7 +15,9 @@ Follow the general GameMaker convention of using type prefixes in file names.
 All variable names, function names, etc., should use `snake_case` unless stated otherwise.
 
 **Local Variables**:
-- Recommended to have a `_` prefix, which can ease readability, and prevent namespace clashes with instance variables and scripts.
+- Recommended to have a `_` prefix.
+  - Ease readability.
+  - Prevent namespace clashes with instance variables and scripts.
 - Example: `var _example_e1`.
 
 **Instance Variables**:
@@ -28,11 +30,13 @@ All variable names, function names, etc., should use `snake_case` unless stated 
 
 ### Functions
 **Scripts and Methods** don’t need prefixes but:
-- Use at least two words, to avoid overlap with simple instance variables (`draw_something()` vs `draw()`).
+- Use at least two words (`draw_something()` vs `draw()`).
+  - To avoid overlap with simple instance variables.
 - Name them as actions where possible (`create_green_apple()` vs. `green_apple()`).
 - Preferably have a group prefix at the start (`string_convert`, `fleet_explode`).
 - As scripts are global in scope, be wary of namespace collisions with absolutely everything in the project (fun).
-- Preferably store scripts in the grouped script files (`scr_string_functions.gml`, `scr_array_functions.gml`, etc). Don't create a separate file for each script.
+- Preferably store scripts in library-like files (`scr_string_functions.gml`, `scr_array_functions.gml`, etc).
+- Don't create a separate file for every single small script.
 
 ### Constants
 **Macros**:
