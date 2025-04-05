@@ -1898,7 +1898,7 @@ function scr_initialize_custom() {
 			}],
 			["type_data", {
 				"display_data": $"{roles.assault} {squad_name}",
-				"formation_options": ["assault"],
+				"formation_options": ["assault", "tactical", "devastator", "scout"],
 			}]
 		],
 
