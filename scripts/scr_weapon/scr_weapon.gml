@@ -634,7 +634,6 @@ global.weapons = {
 		"range": 4.1,
 		"spli": 8,
 		"arp": 1,
-		"maintenance" : 0.1,
 		"tags": ["boarding 2"],
 	},
 	"Webber": {
