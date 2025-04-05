@@ -82,6 +82,7 @@ function scr_ui_display_weapons(left_or_right, current_armor, equiped_weapon, cu
             "Grav-Gun":spr_weapon_grav_gun,
             "Missile Launcher":spr_weapon_missile,
             "Hand Flamer":spr_weapon_hand_flamer,
+			"Shotgun":spr_weapon_shotgun
         }
         var normal_ranged_names = struct_get_names(normal_ranged);
         for (var i=0;i<array_length(normal_ranged_names);i++){
