@@ -12,22 +12,23 @@
 Follow the general GameMaker convention of using type prefixes in file names.
 
 ### Names:
-All variable names, function names, etc., should use `snake_case` unless otherwise specified.
+All variable names, function names, etc., should use `snake_case` unless stated otherwise.
 
-- **Local** variables are recommended to have a `_` prefix, which can ease readability.
+- **Local** variables are recommended to have a `_` prefix, which can ease readability, and prevent namespace clashes with instance variables and functions.
   - Example: `var _example_e1`.
 
 - **Global** variables require no additional prefix, as they already use `global.`.
   - Example: `global.example_e1`.
 
 - **Functions** don’t need prefixes but should:
-  - Use at least two words to avoid overlap with instance variables (e.g., `draw_something()`).
-  - Name functions as actions where possible (`draw_something()` vs. `green_apple()`).
+  - Use at least two words to avoid overlap with most instance variables (e.g., `draw_something()`).
+  - Be named as actions where possible (`create_green_apple()` vs. `green_apple()`).
+  - Preferably have a group prefix at the start (`string_convert`, `fleet_explode`).
+  - As functions are global in scope, be vary of namespace collision with all instance variables in the project (fun).
 
 - **Macro** constants:
   - To denote their group, use a short prefix in all caps (e.g., `PREFIX_`).
-  - After the prefix, use `snake_case`.
-  - Examples: `COL_bright_red`, `DIR_left`.
+  - The rest should be in all caps `SNAKE_CASE`.
 
 - **Enum** constants:
   - Enum names should start with an `e` prefix and be in all caps.
@@ -51,9 +52,13 @@ All variable names, function names, etc., should use `snake_case` unless otherwi
 
 ### Formatters:
 > [!WARNING]
-> JavaScript formatters may break `$"something {variable}"` syntax by adding a space after `$`. Manually correct this as needed.
+> JavaScript formatters break `$"something {variable}"` syntax by adding a space after `$`. Manually correct this as needed.
 
-- You can use [this](https://beautifier.io/) JavaScript formatter with:
+- There is a great GameMaker tailored formatter, that formats most of the stuff that can get ugly, called [Gobo](https://github.com/Pizzaandy/Gobo/)
+  - Disable tab indent and set it to 4 spaces.
+  - Set max line width to something like 9999, to prevent condition checks from breaking into unreadable multiple lines.
+  - The above step will format structs into a single line, so you'll have to use a JS formatter afterwards to fix this.
+- You can use [this](https://beautifier.io/) JavaScript formatter to fix broken structs, with:
   - Indent with 4 spaces.
   - Allow unlimited newlines between tokens.
   - Don't wrap lines.
