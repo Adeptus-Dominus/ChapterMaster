@@ -1,0 +1,193 @@
+{
+    "Combat Knife": {
+        "value": 1
+    },
+    "Chainsword": {
+        "value": 4
+    },
+    "Chainaxe": {
+        "value": 10
+    },
+    "Power Axe": {
+        "value": 40,
+        "requires_to_build_to_build": ["power_field_cooling"]
+    },
+    "Power Sword": {
+        "value": 25,
+        "requires_to_build_to_build": ["power_field_cooling"]
+    },
+    "Power Spear": {
+        "value": 40,
+        "requires_to_build_to_build": ["power_field_cooling"]
+    },
+    "Crozius Arcanum": {
+        "value": 75,
+        "requires_to_build_to_build": ["power_field_cooling"],
+        "sellers": ["Ecclesiarchy"]
+    },
+    "Power Fist": {
+        "value": 60,
+        "requires_to_build_to_build": ["power_field_cooling"]
+    },
+    "Boltstorm Gauntlet": {
+        "value": 90,
+        "requires_to_build_to_build": {
+            "power_fields": 2,
+            "bolt": 2
+        }
+    },
+    "Power Mace": {
+        "value": 50,
+        "requires_to_build_to_build": ["power_field_cooling"]
+    },
+    "Mace of Absolution": {
+        "value": 70,
+        "requires_to_build_to_build": ["power_field_cooling"],
+        "no_buying": true
+    },
+    "Lightning Claw": {
+        "value": 90,
+        "requires_to_build_to_build": ["power_field_cooling"]
+    },
+    "Chainfist": {
+        "value": 75,
+        "requires_to_build_to_build": ["power_field_cooling", "adamantine_links"]
+    },
+    "Force Staff": {
+        "value": 70,
+        "requires_to_build_to_build": ["psionic_resonance_valves"]
+    },
+    "Force Sword": {
+        "value": 55,
+        "requires_to_build_to_build": ["psionic_resonance_valves"]
+    },
+    "Force Axe": {
+        "value": 60,
+        "requires_to_build_to_build": ["psionic_resonance_valves"]
+    },
+    "Thunder Hammer": {
+        "value": 90,
+        "requires_to_build_to_build": ["power_field_cooling"]
+    },
+    "Heavy Thunder Hammer": {
+        "value": 135,
+        "requires_to_build_to_build": ["power_field_cooling"]
+    },
+    "Lascutter": {
+        "value": 15
+    },
+    "Boarding Shield": {
+        "value": 20
+    },
+    "Storm Shield": {
+        "value": 50,
+        "requires_to_build_to_build": ["power_field_cooling"]
+    },
+    "Company Standard": {
+        "value": 0,
+        "no_buying": true
+    },
+    "Bolt Pistol": {
+        "value": 5
+    },
+    "Bolter": {
+        "value": 10
+    },
+    "Stalker Pattern Bolter": {
+        "value": 80
+    },
+    "Combiflamer": {
+        "value": 35,
+        "requires_to_build_to_build": ["promethium_tank_brazing", "hardened_barrel_boring"]
+    },
+    "Combiplasma": {
+        "value": 110,
+        "requires_to_build_to_build": ["plasma_coil_magnetization", "hardened_barrel_boring"]
+    },
+    "Combimelta": {
+        "value": 40,
+        "requires_to_build_to_build": ["atomic_chamber_construction", "hardened_barrel_boring"]
+    },
+    "Combigrav": {
+        "value": 110,
+        "requires_to_build_to_build": ["gravitic_reaction_principle", "hardened_barrel_boring"]
+    },
+    "Heavy Bolter": {
+        "value": 50,
+        "requires_to_build_to_build": ["projectile_propellant_purification"]
+    },
+    "Storm Bolter": {
+        "value": 50,
+        "requires_to_build_to_build": ["projectile_propellant_purification"]
+    },
+    "Infernus Pistol": {
+        "value": 12,
+        "requires_to_build_to_build": ["promethium_tank_brazing"],
+    },
+    "Hand Flamer": {
+        "value": 12,
+        "requires_to_build_to_build": ["promethium_tank_brazing"],
+    },
+    "Flamer": {
+        "value": 25,
+        "requires_to_build_to_build": ["promethium_tank_brazing"]
+    },
+    "Heavy Flamer": {
+        "value": 40,
+        "requires_to_build_to_build": ["promethium_tank_brazing"]
+    },
+    "Incinerator": {
+        "value": 35,
+        "requires_to_build_to_build": ["promethium_tank_brazing"]
+    },
+    "Meltagun": {
+        "value": 30,
+        "requires_to_build_to_build": ["atomic_chamber_construction"]
+    },
+    "Multi-Melta": {
+        "value": 60,
+        "requires_to_build_to_build": ["atomic_chamber_construction"]
+    },
+    "Plasma Pistol": {
+        "value": 60,
+        "requires_to_build_to_build": ["plasma_coil_magnetization"]
+    },
+    "Plasma Gun": {
+        "value": 100,
+        "requires_to_build_to_build": ["plasma_coil_magnetization"]
+    },
+    "Plasma Cannon": {
+        "value": 300,
+        "requires_to_build_to_build": ["plasma_coil_magnetization"]
+    },
+    "Grav-Pistol": {
+        "value": 60,
+        "requires_to_build_to_build": ["gravitic_reaction_principle"]
+    },
+    "Grav-Gun": {
+        "value": 100,
+        "requires_to_build_to_build": ["gravitic_reaction_principle"]
+    },
+    "Grav-Cannon": {
+        "value": 300,
+        "requires_to_build_to_build": ["gravitic_reaction_principle"]
+    },
+    "Archeotech Laspistol": {
+        "value": 0,
+        "no_buying": true
+    },
+    "Hellrifle": {
+        "value": 0,
+        "no_buying": true
+    },
+    "Sniper Rifle": {
+        "value": 10
+    },
+    "Missile Launcher": {
+        "value": 70
+    },
+    "Lascannon": {
+        "value": 70,
+        "requires_to_build_to_build": ["light_condensement_chamber"]
+    }
+}
