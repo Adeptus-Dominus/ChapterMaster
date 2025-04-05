@@ -158,7 +158,7 @@ function scr_load(save_part, save_id) {
 	    //TODO allow methods to be passed as teh default to return_json_from_ini to optomise load speed
 	    var livery_picker = new ColourItem(0,0);
 		livery_picker.scr_unit_draw_data();
-	    obj_ini.full_liveries = return_json_from_ini("Ini", "full_liveries",array_create(21,DeepCloneStruct(livery_picker.map_colour)));
+	    obj_ini.full_liveries = return_json_from_ini("Ini", "full_liveries",array_create(21,variable_clone(livery_picker.map_colour)));
 	    obj_ini.culture_styles = return_json_from_ini("Ini", "styles", []);
 	    obj_ini.custom_advisors = return_json_from_ini("Ini", "custom_advisors",{});
 	    obj_ini.home_name=ini_read_string("Ini","home_name","Error");

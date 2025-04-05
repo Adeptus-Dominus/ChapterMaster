@@ -1250,7 +1250,7 @@ function scr_initialize_custom() {
 	full_liveries = obj_creation.full_liveries;
 	for (var i=1;i<array_length(full_liveries);i++){
 		if (!full_liveries[i].is_changed){
-			full_liveries[i] = DeepCloneStruct(full_liveries[0]);
+			full_liveries[i] = variable_clone(full_liveries[0]);
 		}
 	}
 	complex_livery_data = obj_creation.complex_livery_data;
@@ -3440,26 +3440,4 @@ function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1
 	}
 	
 	return spawn_unit;
-}
-
-//function for making deep copies of structs as gml has no function
-function DeepCloneStruct(clone_struct) {
-	if (is_array(clone_struct)) {
-		var len = array_length(clone_struct);
-		var arr = array_create(len);
-		for (var i = 0; i < len; ++i) {
-			arr[i] = DeepCloneStruct(clone_struct[i]);
-		}
-		return arr;
-	} else if (is_struct(clone_struct)) {
-		var stc = {};
-		var nms = variable_struct_get_names(clone_struct);
-		var len = array_length(nms);
-		for (var i = 0; i < len; ++i) {
-			var nm = nms[i];
-			stc[$nm] = DeepCloneStruct(clone_struct[$nm]);
-		}
-		return stc;
-	}
-	return clone_struct;
 }

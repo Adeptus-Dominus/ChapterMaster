@@ -214,7 +214,7 @@ function complete_beast_hunt_mission(targ_planet, problem_index){
 				if (!_success) then _success=true;
 			}
 			if (_unit_pass[0]){
-				var _start_stats = DeepCloneStruct(_unit.get_stat_line());
+				var _start_stats = variable_clone(_unit.get_stat_line());
 				_unit.add_trait("beast_slayer");
 				var end_stat = _unit.get_stat_line();
 				var _stat_diff = compare_stats(end_stat,_start_stats);

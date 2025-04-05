@@ -182,7 +182,7 @@ function ColourItem(xx,yy) constructor{
             set_pattern(struct_cols.main_color, lower_left);
             set_pattern(struct_cols.main_color, head_set);
         }
-        return DeepCloneStruct(map_colour);
+        return variable_clone(map_colour);
     }
 
     static set_default_techmarines = function(struct_cols){
@@ -191,7 +191,7 @@ function ColourItem(xx,yy) constructor{
         map_colour.right_pauldron = Colors.Red;   
         map_colour.left_pauldron = struct_cols.left_pauldron;
         map_colour.is_changed=true;
-        return DeepCloneStruct(map_colour);                       
+        return variable_clone(map_colour);                       
     }
 
     static set_default_apothecary = function(struct_cols){
@@ -200,7 +200,7 @@ function ColourItem(xx,yy) constructor{
         map_colour.right_pauldron = Colors.White;   
         map_colour.left_pauldron = struct_cols.left_pauldron;
         map_colour.is_changed=true;
-        return DeepCloneStruct(map_colour);                 
+        return variable_clone(map_colour);                 
     }
 
     static set_default_chaplain = function(struct_cols){
@@ -209,7 +209,7 @@ function ColourItem(xx,yy) constructor{
         map_colour.right_pauldron = Colors.Black;   
         map_colour.left_pauldron = struct_cols.left_pauldron;
         map_colour.is_changed=true;
-        return DeepCloneStruct(map_colour);                 
+        return variable_clone(map_colour);                 
     }
 
 
@@ -219,7 +219,7 @@ function ColourItem(xx,yy) constructor{
         map_colour.right_pauldron = Colors.Dark_Ultramarine;   
         map_colour.left_pauldron = struct_cols.left_pauldron;
         map_colour.is_changed=true;
-        return DeepCloneStruct(map_colour);                 
+        return variable_clone(map_colour);                 
     }
 
     colour_pick=false;
@@ -282,7 +282,7 @@ function ColourItem(xx,yy) constructor{
                     if (_reset){
                         map_colour[$ colour_pick.area] = colour_pick.chosen;
                         map_colour.is_changed = true;
-                        obj_creation.full_liveries[role_set] = DeepCloneStruct(map_colour);
+                        obj_creation.full_liveries[role_set] = variable_clone(map_colour);
                         delete dummy_image;
                         dummy_image = false;                        
                     }
