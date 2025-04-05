@@ -1,0 +1,825 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "properties": {
+        "$schema": {
+            "description": "The schema version, indicating which JSON schema draft is being used.",
+            "type": "string"
+        },
+        "chapter": {
+            "properties": {
+                "advantages": {
+                    "description": "An array of the chapter's advantages.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "maxItems": 9,
+                    "type": "array"
+                },
+                "artifact": {
+                    "description": "The chapter's collection of artifacts.",
+                    "items": {
+                        "properties": {
+                            "base_weapon_type": {
+                                "description": "Item type.",
+                                "type": "string"
+                            },
+                            "description": {
+                                "description": "A fluff description of the artifact.",
+                                "type": "string"
+                            },
+                            "name": {
+                                "description": "The name of the artifact.",
+                                "type": "string"
+                            },
+                            "slot": {
+                                "description": "The slot in which the artifact will be equipped.",
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "name",
+                            "description",
+                            "base_weapon_type",
+                            "slot"
+                        ],
+                        "type": "object"
+                    },
+                    "type": "array"
+                },
+                "aspirant_trial": {
+                    "description": "The trial an aspirant must undergo to join the chapter.",
+                    "enum": [
+                        "BLOODDUEL",
+                        "HUNTING",
+                        "SURVIVAL",
+                        "EXPOSURE",
+                        "KNOWLEDGE",
+                        "CHALLENGE",
+                        "APPRENTICESHIP"
+                    ],
+                    "type": "string"
+                },
+                "battle_cry": {
+                    "description": "The chapter's battle cry, a phrase or chant used in combat to rally warriors.",
+                    "type": "string"
+                },
+                "chapter_master": {
+                    "description": "Details about the chapter master, including skills, traits, and equipment.",
+                    "properties": {
+                        "armour": {
+                            "description": "The type of armor worn by the chapter master.",
+                            "type": "string"
+                        },
+                        "gear": {
+                            "description": "The specialized gear or equipment used by the chapter master.",
+                            "type": "string"
+                        },
+                        "melee": {
+                            "enum": [
+                                1,
+                                2,
+                                3,
+                                4,
+                                5,
+                                6,
+                                7,
+                                8
+                            ],
+                            "type": "integer"
+                        },
+                        "mobi": {
+                            "description": "The mobile unit or transport used by the chapter master.",
+                            "type": "string"
+                        },
+                        "name": {
+                            "description": "The name of the chapter master, the leader of the chapter.",
+                            "type": "string"
+                        },
+                        "ranged": {
+                            "enum": [
+                                1,
+                                2,
+                                3,
+                                4,
+                                5,
+                                6,
+                                7
+                            ],
+                            "type": "integer"
+                        },
+                        "specialty": {
+                            "description": "The specialty of the chapter master: 1 for Leader, 2 for Champion, 3 for Psyker.",
+                            "enum": [
+                                1,
+                                2,
+                                3
+                            ],
+                            "type": "integer"
+                        },
+                        "traits": {
+                            "description": "A list of traits of the chapter master.",
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "required": [
+                        "name",
+                        "specialty",
+                        "melee",
+                        "ranged",
+                        "traits",
+                        "gear",
+                        "mobi",
+                        "armour"
+                    ],
+                    "type": "object"
+                },
+                "colors": {
+                    "description": "Color details and special armor patterns for the chapter.",
+                    "properties": {
+                        "lens": {
+                            "description": "The color of the lenses on the marine's helmets.",
+                            "type": "string"
+                        },
+                        "main": {
+                            "description": "The primary color for the chapter's livery.",
+                            "type": "string"
+                        },
+                        "pauldron_l": {
+                            "description": "The color of the left pauldron for the chapter's marines.",
+                            "type": "string"
+                        },
+                        "pauldron_r": {
+                            "description": "The color of the right pauldron for the chapter's marines.",
+                            "type": "string"
+                        },
+                        "secondary": {
+                            "description": "The secondary color for the chapter's livery.",
+                            "type": "string"
+                        },
+                        "special": {
+                            "description": "An integer representing the special pattern of armor for the chapter. 0 is normal, 1 is 'Breastplate', 2 is 'Vertical', and 3 is 'Quadrant'.",
+                            "enum": [
+                                0,
+                                1,
+                                2,
+                                3
+                            ],
+                            "type": "integer"
+                        },
+                        "trim": {
+                            "description": "The color of the trim on the chapter's armor.",
+                            "type": "string"
+                        },
+                        "weapon": {
+                            "description": "The color of the chapter's weaponry.",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "main",
+                        "secondary",
+                        "pauldron_r",
+                        "pauldron_l",
+                        "trim",
+                        "lens",
+                        "weapon",
+                        "special"
+                    ],
+                    "type": "object"
+                },
+                "company_titles": {
+                    "description": "The titles of the chapter's companies.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "maxItems": 11,
+                    "minItems": 11,
+                    "type": "array"
+                },
+                "cooperation": {
+                    "description": "A rating of the chapter's cooperation, on a scale from 1 to 10.",
+                    "maximum": 10,
+                    "minimum": 1,
+                    "type": "integer"
+                },
+                "custom_roles": {
+                    "description": "Custom roles created for the chapter's forces, used to define special positions or functions.",
+                    "type": "object"
+                },
+                "custom_squads": {
+                    "description": "Custom squads created for the chapter's forces, used to define special unit configurations.",
+                    "type": "object"
+                },
+                "disadvantages": {
+                    "description": "A list of the chapter's disadvantages. There should be exactly 9 items.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "maxItems": 9,
+                    "minItems": 9,
+                    "type": "array"
+                },
+                "discipline": {
+                    "description": "The psychic discipline of the chapter.",
+                    "enum": [
+                        "default",
+                        "biomancy",
+                        "pyromancy",
+                        "telekinesis",
+                        "rune Magick"
+                    ],
+                    "type": "string"
+                },
+                "disposition": {
+                    "description": "Chapter's relationship with other factions. 0 - empty, 1 - progenitor chapter, 2 - imperium, 3 - admech, 4 - inquisition, 5 - ecclesiarchy, 6 - other chapters, 7 - empty.",
+                    "items": {
+                        "type": "integer"
+                    },
+                    "maxItems": 8,
+                    "minItems": 8,
+                    "type": "array"
+                },
+                "equal_specialists": {
+                    "description": "Distribute specialists (assaults, devastators, tactical) evenly across 8 companies? (1 for true, 0 for false).",
+                    "enum": [
+                        0,
+                        1
+                    ],
+                    "type": "integer"
+                },
+                "extra_equipment": {
+                    "description": "Additional equipment items used by the chapter.",
+                    "items": {
+                        "items": [
+                            {
+                                "description": "The name of the equipment item.",
+                                "type": "string"
+                            },
+                            {
+                                "description": "The quantity of the equipment item.",
+                                "type": "integer"
+                            }
+                        ],
+                        "type": "array"
+                    },
+                    "type": "array"
+                },
+                "extra_marines": {
+                    "description": "The number of Marines in each company within the chapter.",
+                    "properties": {
+                        "eighth": {
+                            "description": "The number of eighth companies in the chapter.",
+                            "type": "integer"
+                        },
+                        "fifth": {
+                            "description": "The number of fifth companies in the chapter.",
+                            "type": "integer"
+                        },
+                        "fourth": {
+                            "description": "The number of fourth companies in the chapter.",
+                            "type": "integer"
+                        },
+                        "ninth": {
+                            "description": "The number of ninth companies in the chapter.",
+                            "type": "integer"
+                        },
+                        "second": {
+                            "description": "The number of second companies in the chapter.",
+                            "type": "integer"
+                        },
+                        "seventh": {
+                            "description": "The number of seventh companies in the chapter.",
+                            "type": "integer"
+                        },
+                        "sixth": {
+                            "description": "The number of sixth companies in the chapter.",
+                            "type": "integer"
+                        },
+                        "tenth": {
+                            "description": "The number of tenth companies in the chapter.",
+                            "type": "integer"
+                        },
+                        "third": {
+                            "description": "The number of third companies in the chapter.",
+                            "type": "integer"
+                        }
+                    },
+                    "required": [
+                        "second",
+                        "third",
+                        "fourth",
+                        "fifth",
+                        "sixth",
+                        "seventh",
+                        "eighth",
+                        "ninth",
+                        "tenth"
+                    ],
+                    "type": "object"
+                },
+                "extra_ships": {
+                    "description": "Additional ships used by the chapter beyond its basic fleet.",
+                    "properties": {
+                        "battle_barges": {
+                            "description": "The number of battle barges the chapter possesses.",
+                            "type": "integer"
+                        },
+                        "gladius": {
+                            "description": "The number of Gladius-class strike cruisers the chapter possesses.",
+                            "type": "integer"
+                        },
+                        "hunters": {
+                            "description": "The number of Hunter-class ships the chapter possesses.",
+                            "type": "integer"
+                        },
+                        "strike_cruisers": {
+                            "description": "The number of Strike Cruisers the chapter possesses.",
+                            "type": "integer"
+                        }
+                    },
+                    "required": [
+                        "battle_barges",
+                        "gladius",
+                        "strike_cruisers",
+                        "hunters"
+                    ],
+                    "type": "object"
+                },
+                "extra_specialists": {
+                    "description": "Additional specialists in the chapter, including support and elite roles.",
+                    "properties": {
+                        "apothecary": {
+                            "description": "The number of Apothecaries the chapter possesses.",
+                            "type": "integer"
+                        },
+                        "assault": {
+                            "description": "The number of Assault Marines the chapter possesses.",
+                            "type": "integer"
+                        },
+                        "chaplains": {
+                            "description": "The number of Chaplains the chapter possesses.",
+                            "type": "integer"
+                        },
+                        "codiciery": {
+                            "description": "The number of Codiciers the chapter possesses.",
+                            "type": "integer"
+                        },
+                        "devastator": {
+                            "description": "The number of Devastator Marines the chapter possesses.",
+                            "type": "integer"
+                        },
+                        "epistolary": {
+                            "description": "The number of Epistolaries the chapter possesses.",
+                            "type": "integer"
+                        },
+                        "lexicanum": {
+                            "description": "The number of Lexicanums the chapter possesses.",
+                            "type": "integer"
+                        },
+                        "techmarines": {
+                            "description": "The number of Techmarines the chapter possesses.",
+                            "type": "integer"
+                        },
+                        "terminator": {
+                            "description": "The number of Terminators the chapter possesses.",
+                            "type": "integer"
+                        },
+                        "veteran": {
+                            "description": "The number of Veteran Marines the chapter possesses.",
+                            "type": "integer"
+                        }
+                    },
+                    "required": [
+                        "chaplains",
+                        "techmarines",
+                        "apothecary",
+                        "epistolary",
+                        "codiciery",
+                        "lexicanum",
+                        "terminator",
+                        "assault",
+                        "veteran",
+                        "devastator"
+                    ],
+                    "type": "object"
+                },
+                "extra_vehicles": {
+                    "description": "Additional vehicles used by the chapter, including transports and heavy support vehicles.",
+                    "properties": {
+                        "land_raider": {
+                            "description": "The number of Land Raider tanks the chapter possesses.",
+                            "type": "integer"
+                        },
+                        "land_speeder": {
+                            "description": "The number of Land Speeder vehicles the chapter possesses.",
+                            "type": "integer"
+                        },
+                        "predator": {
+                            "description": "The number of Predator tanks the chapter possesses.",
+                            "type": "integer"
+                        },
+                        "rhino": {
+                            "description": "The number of Rhino transports the chapter possesses.",
+                            "type": "integer"
+                        },
+                        "whirlwind": {
+                            "description": "The number of Whirlwind artillery vehicles the chapter possesses.",
+                            "type": "integer"
+                        }
+                    },
+                    "required": [
+                        "rhino",
+                        "whirlwind",
+                        "predator",
+                        "land_raider",
+                        "land_speeder"
+                    ],
+                    "type": "object"
+                },
+                "flagship_name": {
+                    "description": "The name of the flagship ship that leads the chapter's fleet.",
+                    "type": "string"
+                },
+                "flavor": {
+                    "description": "The lore or backstory of the chapter.",
+                    "type": "string"
+                },
+                "fleet_type": {
+                    "description": "The type of fleet the chapter uses. 1 is 'Homeworld', 2 is 'Fleet-based', and 3 is 'Penitent'.",
+                    "enum": [
+                        1,
+                        2,
+                        3
+                    ],
+                    "type": "integer"
+                },
+                "founding": {
+                    "description": "The ID of the founding chapter, 0 for unknown or none, 10 for random.",
+                    "type": "integer"
+                },
+                "homeworld": {
+                    "description": "The biome or type of the chapter's homeworld.",
+                    "enum": [
+                        "Lava",
+                        "Desert",
+                        "Forge",
+                        "Hive",
+                        "Death",
+                        "Agri",
+                        "Feudal",
+                        "Temperate",
+                        "Ice",
+                        "Dead",
+                        "Shrine"
+                    ],
+                    "type": "string"
+                },
+                "homeworld_exists": {
+                    "description": "Indicates whether the chapter has a homeworld (1 for true, 0 for false).",
+                    "enum": [
+                        0,
+                        1
+                    ],
+                    "type": "integer"
+                },
+                "homeworld_name": {
+                    "description": "The name of the homeworld planet. Leave blank to auto-generate.",
+                    "type": "string"
+                },
+                "homeworld_rule": {
+                    "description": "The type of governance for the chapter's homeworld. 1 is 'Governor', 2 is 'Countries', and 3 is 'Personal Rule'.",
+                    "enum": [
+                        1,
+                        2,
+                        3
+                    ],
+                    "type": "integer"
+                },
+                "icon": {
+                    "description": "An integer representing the chapter's icon number, e.g., 1 for Dark Angels.",
+                    "type": "integer"
+                },
+                "icon_name": {
+                    "description": "A string used for referencing the icon in the code. This might be an internal reference.",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "The unique identifier for the chapter.",
+                    "type": "integer"
+                },
+                "load_to_ships": {
+                    "description": "Details how squads and personnel are loaded onto ships during deployment.",
+                    "properties": {
+                        "escort_load": {
+                            "description": "The loading configuration for escort ships. 0 = No, 1 = Moderate, 2 = Full.",
+                            "enum": [
+                                0,
+                                1,
+                                2
+                            ],
+                            "type": "integer"
+                        },
+                        "split_scouts": {
+                            "description": "Indicates whether scouts are split across ships (1 for true, 0 for false).",
+                            "enum": [
+                                0,
+                                1
+                            ],
+                            "type": "integer"
+                        },
+                        "split_vets": {
+                            "description": "Indicates whether veteran squads are split across ships (1 for true, 0 for false).",
+                            "enum": [
+                                0,
+                                1
+                            ],
+                            "type": "integer"
+                        }
+                    },
+                    "required": [
+                        "escort_load",
+                        "split_scouts",
+                        "split_vets"
+                    ],
+                    "type": "object"
+                },
+                "mutations": {
+                    "description": "A list of genetic mutations that may be present in the chapter's gene-seed.",
+                    "properties": {
+                        "betchers": {
+                            "description": "Indicates the presence of the Betcher's Gland mutation (1 for true, 0 for false).",
+                            "type": "integer"
+                        },
+                        "catalepsean": {
+                            "description": "Indicates the presence of the Catalepsean mutation (1 for true, 0 for false).",
+                            "type": "integer"
+                        },
+                        "doomed": {
+                            "description": "Indicates whether the chapter suffers from the Doomed mutation (1 for true, 0 for false).",
+                            "type": "integer"
+                        },
+                        "lyman": {
+                            "description": "Indicates the presence of the Lyman's Ear mutation (1 for true, 0 for false).",
+                            "type": "integer"
+                        },
+                        "membrane": {
+                            "description": "Indicates the presence of the Membrane mutation (1 for true, 0 for false).",
+                            "type": "integer"
+                        },
+                        "mucranoid": {
+                            "description": "Indicates the presence of the Mucranoid mutation (1 for true, 0 for false).",
+                            "type": "integer"
+                        },
+                        "occulobe": {
+                            "description": "Indicates the presence of the Occulobe mutation (1 for true, 0 for false).",
+                            "type": "integer"
+                        },
+                        "omophagea": {
+                            "description": "Indicates the presence of the Omophagea mutation (1 for true, 0 for false).",
+                            "type": "integer"
+                        },
+                        "ossmodula": {
+                            "description": "Indicates the presence of the Ossmodula mutation (1 for true, 0 for false).",
+                            "type": "integer"
+                        },
+                        "preomnor": {
+                            "description": "Indicates the presence of the Preomnor organ mutation (1 for true, 0 for false).",
+                            "type": "integer"
+                        },
+                        "secretions": {
+                            "description": "Indicates the presence of the Sebaceous Secretions mutation (1 for true, 0 for false).",
+                            "type": "integer"
+                        },
+                        "voice": {
+                            "description": "Indicates the presence of the Voice organ mutation (1 for true, 0 for false).",
+                            "type": "integer"
+                        },
+                        "zygote": {
+                            "description": "Indicates the presence of the Zygote mutation (1 for true, 0 for false).",
+                            "type": "integer"
+                        }
+                    },
+                    "required": [
+                        "preomnor",
+                        "voice",
+                        "doomed",
+                        "lyman",
+                        "omophagea",
+                        "ossmodula",
+                        "membrane",
+                        "zygote",
+                        "betchers",
+                        "catalepsean",
+                        "secretions",
+                        "occulobe",
+                        "mucranoid"
+                    ],
+                    "type": "object"
+                },
+                "name": {
+                    "description": "The name of the chapter.",
+                    "type": "string"
+                },
+                "names": {
+                    "description": "The various specialist roles and their titles within the chapter.",
+                    "properties": {
+                        "admiral": {
+                            "description": "The title or name of the chapter's Admiral.",
+                            "type": "string"
+                        },
+                        "arsenalmaster": {
+                            "description": "The title or name of the chapter's Arsenal Master.",
+                            "type": "string"
+                        },
+                        "clibrarian": {
+                            "description": "The title or name of the chapter's Librarian.",
+                            "type": "string"
+                        },
+                        "fmaster": {
+                            "description": "The title or name of the chapter's Forge Master.",
+                            "type": "string"
+                        },
+                        "hapothecary": {
+                            "description": "The title or name of the chapter's Apothecary.",
+                            "type": "string"
+                        },
+                        "hchaplain": {
+                            "description": "The title or name of the chapter's Chaplain.",
+                            "type": "string"
+                        },
+                        "honorcapt": {
+                            "description": "The title or name of the chapter's Honor Captain.",
+                            "type": "string"
+                        },
+                        "lordexec": {
+                            "description": "The title or name of the chapter's Lord Executioner.",
+                            "type": "string"
+                        },
+                        "marchmaster": {
+                            "description": "The title or name of the chapter's Marchmaster.",
+                            "type": "string"
+                        },
+                        "recruiter": {
+                            "description": "The title or name of the chapter's Recruiter.",
+                            "type": "string"
+                        },
+                        "relmaster": {
+                            "description": "The title or name of the chapter's Relicmaster.",
+                            "type": "string"
+                        },
+                        "ritesmaster": {
+                            "description": "The title or name of the chapter's Ritesmaster.",
+                            "type": "string"
+                        },
+                        "victualler": {
+                            "description": "The title or name of the chapter's Victualler.",
+                            "type": "string"
+                        },
+                        "watchmaster": {
+                            "description": "The title or name of the chapter's Watchmaster.",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "hchaplain",
+                        "clibrarian",
+                        "fmaster",
+                        "hapothecary",
+                        "honorcapt",
+                        "watchmaster",
+                        "arsenalmaster",
+                        "admiral",
+                        "marchmaster",
+                        "ritesmaster",
+                        "victualler",
+                        "lordexec",
+                        "relmaster",
+                        "recruiter"
+                    ],
+                    "type": "object"
+                },
+                "origin": {
+                    "description": "The origin of the chapter, where 1 is 'Founding', 2 is 'Successor', 3 is 'Other/non-canon/fanmade', and 4 is 'Custom'.",
+                    "enum": [
+                        1,
+                        2,
+                        3,
+                        4
+                    ],
+                    "type": "integer"
+                },
+                "points": {
+                    "description": "The number of points assigned to the chapter, typically used for gameplay or balance.",
+                    "type": "integer"
+                },
+                "purity": {
+                    "description": "A rating of the chapter's purity, on a scale from 1 to 10.",
+                    "maximum": 10,
+                    "minimum": 1,
+                    "type": "integer"
+                },
+                "recruiting": {
+                    "description": "The biome or type of the planet used for recruiting.",
+                    "enum": [
+                        "Lava",
+                        "Desert",
+                        "Forge",
+                        "Hive",
+                        "Death",
+                        "Agri",
+                        "Feudal",
+                        "Temperate",
+                        "Ice",
+                        "Dead",
+                        "Shrine"
+                    ],
+                    "type": "string"
+                },
+                "recruiting_exists": {
+                    "description": "Indicates whether the chapter has a recruiting world (1 for true, 0 for false).",
+                    "enum": [
+                        0,
+                        1
+                    ],
+                    "type": "integer"
+                },
+                "recruiting_name": {
+                    "description": "The name of the recruiting planet. Leave blank to auto-generate.",
+                    "type": "string"
+                },
+                "splash": {
+                    "description": "An integer representing the image number for the chapter's splash art, e.g., 1 for Dark Angels.",
+                    "type": "integer"
+                },
+                "stability": {
+                    "description": "A rating of the chapter's stability, on a scale from 1 to 10.",
+                    "maximum": 10,
+                    "minimum": 1,
+                    "type": "integer"
+                },
+                "strength": {
+                    "description": "A rating of the chapter's strength, on a scale from 1 to 10.",
+                    "maximum": 10,
+                    "minimum": 1,
+                    "type": "integer"
+                },
+                "successors": {
+                    "description": "The number of successor chapters to this one. A value of 0 means no known successors.",
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "id",
+                "name",
+                "flavor",
+                "origin",
+                "points",
+                "founding",
+                "splash",
+                "icon",
+                "icon_name",
+                "fleet_type",
+                "strength",
+                "purity",
+                "stability",
+                "cooperation",
+                "homeworld_exists",
+                "recruiting_exists",
+                "homeworld_rule",
+                "homeworld",
+                "recruiting",
+                "discipline",
+                "aspirant_trial",
+                "advantages",
+                "disadvantages",
+                "colors",
+                "names",
+                "battle_cry",
+                "equal_specialists",
+                "load_to_ships",
+                "successors",
+                "mutations",
+                "disposition",
+                "chapter_master",
+                "artifact",
+                "company_titles",
+                "flagship_name",
+                "extra_ships",
+                "extra_specialists",
+                "extra_marines",
+                "extra_vehicles",
+                "extra_equipment",
+                "custom_roles",
+                "custom_squads"
+            ],
+            "type": "object"
+        }
+    },
+    "required": [
+        "chapter"
+    ],
+    "type": "object"
+}
