@@ -815,6 +815,7 @@
     {"id":{"name":"scr_save_controller","path":"scripts/scr_save_controller/scr_save_controller.yy",},},
     {"id":{"name":"scr_save","path":"scripts/scr_save/scr_save.yy",},},
     {"id":{"name":"scr_scrollbar","path":"scripts/scr_scrollbar/scr_scrollbar.yy",},},
+    {"id":{"name":"scr_serialization_functions","path":"scripts/scr_serialization_functions/scr_serialization_functions.yy",},},
     {"id":{"name":"scr_shader_initialize","path":"scripts/scr_shader_initialize/scr_shader_initialize.yy",},},
     {"id":{"name":"scr_ship_battle","path":"scripts/scr_ship_battle/scr_ship_battle.yy",},},
     {"id":{"name":"scr_ship_count","path":"scripts/scr_ship_count/scr_ship_count.yy",},},

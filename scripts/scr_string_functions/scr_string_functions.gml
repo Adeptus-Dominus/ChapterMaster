@@ -311,3 +311,16 @@ function smart_verb(_verb, _variable) {
 
     return _result;
 }
+
+/// @desc Checks if a string starts with any prefix in the given array.
+/// @param {string} _str - The string to check.
+/// @param {array<string>} _prefixes - An array of string prefixes to match against.
+/// @returns {boolean}
+function string_starts_with_any(_str, _prefixes) {
+    for (var i = 0, _len = array_length(_prefixes); i < _len; ++i) {
+        if (string_starts_with(_str, _prefixes[i])) {
+            return true;
+        }
+    }
+    return false;
+}
