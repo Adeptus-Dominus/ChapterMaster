@@ -1,42 +1,42 @@
 version: 1
 appendOnly: true
 labels:
-- label: "PR: Breaking\\!"
+- label: "Breaking\\!"
   title: "\\!"
-- label: "PR: Breaking\\!"
+- label: "Breaking\\!"
   body: "(?i)\\[breaking\\]"
 
-- label: "PR: Chore"
+- label: "Type: Chore"
   title: "^chore"
-- label: "PR: Chore"
+- label: "Type: Chore"
   body: "(?i)\\[chore\\]"
 
-- label: "PR: Docs"
+- label: "Type: Docs"
   title: "^docs"
-- label: "PR: Docs"
+- label: "Type: Docs"
   body: "(?i)(\\[docs\\]|\\[doc\\])"
 
-- label: "PR: Code Style"
+- label: "Type: Code Style"
   title: "^style"
-- label: "PR: Code Style"
+- label: "Type: Code Style"
   body: "(?i)\\[style\\]"
 
-- label: "PR: Feature"
+- label: "Type: Feature"
   title: "^feat"
-- label: "PR: Feature"
+- label: "Type: Feature"
   body: "(?i)(\\[feature\\]|\\[feat\\])"
 
-- label: "PR: Fix"
+- label: "Type: Fix"
   title: "^fix"
-- label: "PR: Fix"
+- label: "Type: Fix"
   body: "(?i)\\[fix\\]"
 
-- label: "PR: Refactor"
+- label: "Type: Refactor"
   title: "^refactor"
-- label: "PR: Refactor"
+- label: "Type: Refactor"
   body: "(?i)(\\[refactor\\]|\\[ref\\])"
 
-- label: "PR: Performance"
+- label: "Type: Performance"
   title: "^perf"
-- label: "PR: Performance"
+- label: "Type: Performance"
   body: "(?i)(\\[performance\\]|\\[perf\\])"
