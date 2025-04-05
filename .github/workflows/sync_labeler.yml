@@ -23,10 +23,20 @@ jobs:
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           sync-labels: true
+          configuration-path: .github/pr_labeler_files_changed.yml
+
       - name: "Size Based Labeler"
         uses: srvaroa/labeler@master
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         with:
-          config_path: .github/size_labeler.yml
+          config_path: .github/pr_labeler_size.yml
+          fail_on_error: true
+
+      - name: "Content Based Labeler"
+        uses: srvaroa/labeler@master
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        with:
+          config_path: .github/pr_labeler_contents.yml
           fail_on_error: true
