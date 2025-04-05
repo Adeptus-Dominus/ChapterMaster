@@ -1,9 +1,9 @@
 version: 1
 appendOnly: true
 labels:
-- label: "Breaking\\!"
+- label: "Type: Breaking"
   title: "\\!"
-- label: "Breaking\\!"
+- label: "Breaking"
   body: "(?i)\\[breaking\\]"
 
 - label: "Type: Chore"
