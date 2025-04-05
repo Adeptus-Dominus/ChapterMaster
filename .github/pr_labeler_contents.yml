@@ -3,7 +3,7 @@ appendOnly: true
 labels:
 - label: "Type: Breaking"
   title: "\\!"
-- label: "Breaking"
+- label: "Type: Breaking"
   body: "(?i)\\[breaking\\]"
 
 - label: "Type: Chore"
