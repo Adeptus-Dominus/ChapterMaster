@@ -20,15 +20,16 @@ All variable names, function names, etc., should use `snake_case` unless stated 
 - **Global** variables require no additional prefix, as they already use `global.`.
   - Example: `global.example_e1`.
 
-- **Functions** don’t need prefixes but should:
+- **Scripts and Methods** don’t need prefixes but should:
   - Use at least two words to avoid overlap with most instance variables (e.g., `draw_something()`).
   - Be named as actions where possible (`create_green_apple()` vs. `green_apple()`).
   - Preferably have a group prefix at the start (`string_convert`, `fleet_explode`).
-  - As functions are global in scope, be vary of namespace collision with all instance variables in the project (fun).
+  - As scripts are global in scope, be vary of namespace collision with absolutely everything in the project (fun).
 
 - **Macro** constants:
   - To denote their group, use a short prefix in all caps (e.g., `PREFIX_`).
   - The rest should be in all caps `SNAKE_CASE`.
+  - Example: `#macro COL_DARK_RED`.
 
 - **Enum** constants:
   - Enum names should start with an `e` prefix and be in all caps.
