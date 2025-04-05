@@ -50,7 +50,7 @@ try {
 	if ((image == "fuklaw") && (save > 0)) {
 		if (press == 1) {
 			var del = obj_saveload.save[save];
-			var _save_file = $"save{del}.ini";
+			var _save_file = $"save{del}.json";
 			if (file_exists(_save_file)) {
 				file_delete(_save_file);
 				if (file_exists($"save{del}log.ini")) {

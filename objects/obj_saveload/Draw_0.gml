@@ -151,20 +151,31 @@ if (menu=1) or (menu=2){// This is the other one
         
         draw_set_font(fnt_40k_30b);draw_set_halign(fa_center);
         
-        if (save[o]>0){
+        if (save[o] > 0) {
             // Delete Data
             draw_set_alpha(1);
-            draw_set_color(c_gray);draw_rectangle(x2+807,y2+113,x2+951,y2+146,0);
-            draw_set_color(c_black);draw_rectangle(x2+807,y2+113,x2+951,y2+146,1);
-            draw_text_transformed(x2+879,y2+117,string_hash_to_newline("Delete Game"),0.7,0.7,0);
-            if (scr_hit(x2+807,y2+113,x2+951,y2+146)=true){
-                draw_set_alpha(0.1);draw_set_color(c_white);draw_rectangle(x2+807,y2+113,x2+951,y2+146,0);draw_set_alpha(1);
-                if (mouse_left>=1) and (!instance_exists(obj_popup)) and (cooldown<=0){// Clear
-                    var com;com=instance_create(0,0,obj_popup);
-                    com.image="fuklaw";com.title="Delete Save Game?";
-                    com.text="Are you sure you wish to delete Save "+string(save[o])+"- "+string(save_chapter[save[o]])+"?";
-                    com.option1="Yes";com.option2="No";com.save=o;
-                    com.woopwoopwoop=menu;com.owner=top;
+            draw_set_color(c_gray);
+            draw_rectangle(x2 + 807, y2 + 113, x2 + 951, y2 + 146, 0);
+            draw_set_color(c_black);
+            draw_rectangle(x2 + 807, y2 + 113, x2 + 951, y2 + 146, 1);
+            draw_text_transformed(x2 + 879, y2 + 117, string_hash_to_newline("Delete Game"), 0.7, 0.7, 0);
+            if (scr_hit(x2 + 807, y2 + 113, x2 + 951, y2 + 146) == true) {
+                draw_set_alpha(0.1);
+                draw_set_color(c_white);
+                draw_rectangle(x2 + 807, y2 + 113, x2 + 951, y2 + 146, 0);
+                draw_set_alpha(1);
+                if ((mouse_left >= 1) && (!instance_exists(obj_popup)) && (cooldown <= 0)) {
+                    // Clear
+                    var com;
+                    com = instance_create(0, 0, obj_popup);
+                    com.image = "fuklaw";
+                    com.title = "Delete Save Game?";
+                    com.text = "Are you sure you wish to delete Save " + string(save[o]) + "- " + string(save_chapter[save[o]]) + "?";
+                    com.option1 = "Yes";
+                    com.option2 = "No";
+                    com.save = o;
+                    com.woopwoopwoop = menu;
+                    com.owner = top;
                 }
             }
         }
@@ -178,7 +189,7 @@ if (menu=1) or (menu=2){// This is the other one
             if (scr_hit(x2+977,y2+113,x2+1121,y2+146)=true){
                 draw_set_alpha(0.1);draw_set_color(c_white);draw_rectangle(x2+977,y2+113,x2+1121,y2+146,0);draw_set_alpha(1);
                 if (mouse_left>=1) and (!instance_exists(obj_popup)) and (cooldown<=0){
-                    if (file_exists("save"+string(save[o])+".ini")){// Resets the data
+                    if (file_exists("save"+string(save[o])+".json")){// Resets the data
                         global.restart=1;global.load=save[o];
                         menu=0;load_part=1;obj_cursor.image_alpha=0;splash=choose(0,1,2,3,4);
                         
@@ -212,7 +223,7 @@ if (menu=1) or (menu=2){// This is the other one
                 if (mouse_left>=1) and (!instance_exists(obj_popup)) and (cooldown<=0){// Load
                     global.load=save[o];menu=0;load_part=1;obj_cursor.image_alpha=0;splash=choose(0,1,2,3,4);
                     
-                    // show_message("loading 'save"+string(save[o])+".ini'");
+                    // show_message("loading 'save"+string(save[o])+".json'");
                     
                     if (instance_exists(obj_main_menu)){
                         with(obj_main_menu){
@@ -245,7 +256,7 @@ if (menu=1) or (menu=2){// This is the other one
                     if (instance_exists(obj_main_menu)){with(obj_main_menu){part_particles_clear(p_system);}}
                     
                     // If open slot then set the save.ini to the maximum
-                    if (!file_exists("save"+string(save[o])+".ini")) or (save[o]=0) and (onceh=0){
+                    if (!file_exists("save"+string(save[o])+".json")) or (save[o]=0) and (onceh=0){
                         save_part=1;menu=0;save_number=max_ini;obj_cursor.image_alpha=0;splash=choose(0,1,2,3,4);
                         with(obj_new_button){instance_destroy();}
                         with(obj_ingame_menu){instance_destroy();}
@@ -253,7 +264,7 @@ if (menu=1) or (menu=2){// This is the other one
                         alarm[0]=1;onceh=1;
                     }
                     // If file exists then overright
-                    if (file_exists("save"+string(save[o])+".ini")){file_delete("save"+string(save[o])+".ini");
+                    if (file_exists("save"+string(save[o])+".json")){file_delete("save"+string(save[o])+".json");
                         if (file_exists("screen"+string(save[o])+".png")) then file_delete("screen"+string(save[o])+".png");
                         save_part=1;menu=0;save_number=o;obj_cursor.image_alpha=0;splash=choose(0,1,2,3,4);
                         with(obj_new_button){instance_destroy();}
