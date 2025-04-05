@@ -1569,6 +1569,7 @@
     {"id":{"name":"spr_weapon_relbla","path":"sprites/spr_weapon_relbla/spr_weapon_relbla.yy",},},
     {"id":{"name":"spr_weapon_relic_blade","path":"sprites/spr_weapon_relic_blade/spr_weapon_relic_blade.yy",},},
     {"id":{"name":"spr_weapon_sbolter","path":"sprites/spr_weapon_sbolter/spr_weapon_sbolter.yy",},},
+    {"id":{"name":"spr_weapon_shotgun","path":"sprites/spr_weapon_shotgun/spr_weapon_shotgun.yy",},},
     {"id":{"name":"spr_weapon_skill_icon","path":"sprites/spr_weapon_skill_icon/spr_weapon_skill_icon.yy",},},
     {"id":{"name":"spr_weapon_sniper","path":"sprites/spr_weapon_sniper/spr_weapon_sniper.yy",},},
     {"id":{"name":"spr_weapon_stalker","path":"sprites/spr_weapon_stalker/spr_weapon_stalker.yy",},},
