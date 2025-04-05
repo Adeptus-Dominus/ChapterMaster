@@ -15,7 +15,7 @@ try {
     enemy=instance_nearest(0,y,obj_enunit);// Left most enemy
     enemy2=enemy;
 
-    if (obj_ncombat.defending=false) or (obj_ncombat.dropping=1){
+    if (obj_ncombat.dropping || (!obj_ncombat.defending && obj_ncombat.formation_set != 2)){
         move_unit_block("east");
     }
 
