@@ -1787,7 +1787,7 @@ function scr_initialize_custom() {
 			}],
 			["type_data", {
 				"display_data": $"{roles.devastator} {squad_name}",
-				"formation_options": ["devastator"],
+				"formation_options": ["devastator", "tactical", "assault", "scout"],
 			}]
 		],
 
@@ -1945,7 +1945,7 @@ function scr_initialize_custom() {
 			["type_data", {
 				"display_data": $"{roles.scout} {squad_name}",
 				"class": ["scout"],
-				"formation_options": ["scout"],
+				"formation_options": ["scout", "tactical", "assault", "devastator"],
 			}],
 		],
 
@@ -2148,7 +2148,7 @@ function scr_initialize_custom() {
 			}, ],
 			["type_data", {
 				"display_data": $"Breacher {squad_name}",
-				"formation_options": ["tactical"],
+				"formation_options": ["tactical", "assault", "devastator", "scout" ],
 			}]
 		])
 		variable_struct_set(st,"assault_squad", [
