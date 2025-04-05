@@ -39,22 +39,22 @@ enum ePROGENITOR {
     RANDOM,
 }
 
-#macro WEAPON_LIST_RANGED_HEAVY_TERMINATOR ["Heavy Flamer", "Heavy Flamer", "Assault Cannon", "Assault Cannon", "Multi-Melta", "Plasma Cannon", "Grav-Cannon"]
-#macro WEAPON_LIST_RANGED_HEAVY_LONG ["Heavy Bolter", "Heavy Bolter", "Heavy Bolter", "Missile Launcher", "Missile Launcher", "Lascannon", "Plasma Cannon", "Grav-Cannon"]
-#macro WEAPON_LIST_RANGED_HEAVY_ASSAULT ["Heavy Flamer", "Heavy Flamer", "Multi-Melta"]
+#macro WEAPON_LIST_RANGED_HEAVY_TERMINATOR ["Heavy Flamer", "Heavy Flamer", "Heavy Flamer", "Assault Cannon", "Assault Cannon", "Multi-Melta", "Plasma Cannon", "Grav-Cannon"]
+#macro WEAPON_LIST_RANGED_HEAVY_LONG ["Heavy Bolter", "Heavy Bolter", "Heavy Bolter", "Heavy Bolter", "Missile Launcher", "Missile Launcher", "Missile Launcher", "Lascannon", "Lascannon", "Plasma Cannon", "Grav-Cannon"]
+#macro WEAPON_LIST_RANGED_HEAVY_ASSAULT ["Heavy Flamer", "Heavy Flamer", "Heavy Flamer", "Multi-Melta"]
 #macro WEAPON_LIST_RANGED_HEAVY array_concat(WEAPON_LIST_RANGED_HEAVY_LONG, WEAPON_LIST_RANGED_HEAVY_ASSAULT)
 
 
-#macro WEAPON_LIST_RANGED_SPECIAL_LONG ["Plasma Gun", "Plasma Gun", "Grav-Gun"]
-#macro WEAPON_LIST_RANGED_SPECIAL_ASSAULT ["Flamer", "Flamer", "Meltagun"]
+#macro WEAPON_LIST_RANGED_SPECIAL_LONG ["Plasma Gun", "Plasma Gun", "Plasma Gun", "Grav-Gun"]
+#macro WEAPON_LIST_RANGED_SPECIAL_ASSAULT ["Flamer", "Flamer", "Flamer", "Meltagun"]
 #macro WEAPON_LIST_RANGED_SPECIAL array_concat(WEAPON_LIST_RANGED_SPECIAL_LONG, WEAPON_LIST_RANGED_SPECIAL_ASSAULT)
 
-#macro WEAPON_LIST_RANGED_COMBI_LONG ["Storm Bolter", "Storm Bolter", "Storm Bolter", "Combiplasma", "Combiplasma", "Combigrav"]
-#macro WEAPON_LIST_RANGED_COMBI_ASSAULT ["Combiflamer", "Combiflamer", "Combimelta"]
+#macro WEAPON_LIST_RANGED_COMBI_LONG ["Storm Bolter", "Storm Bolter", "Storm Bolter", "Storm Bolter", "Combiplasma", "Combiplasma", "Combigrav"]
+#macro WEAPON_LIST_RANGED_COMBI_ASSAULT ["Combiflamer", "Combiflamer", "Combiflamer", "Combimelta"]
 #macro WEAPON_LIST_RANGED_COMBI array_concat(WEAPON_LIST_RANGED_COMBI_LONG, WEAPON_LIST_RANGED_COMBI_ASSAULT)
 
 #macro WEAPON_LIST_RANGED_PISTOLS_LONG ["Bolt Pistol", "Bolt Pistol", "Bolt Pistol", "Plasma Pistol", "Plasma Pistol", "Grav-Pistol"]
-#macro WEAPON_LIST_RANGED_PISTOLS_ASSAULT ["Hand Flamer", "Hand Flamer", "Infernus Pistol"]
+#macro WEAPON_LIST_RANGED_PISTOLS_ASSAULT ["Hand Flamer", "Hand Flamer", "Hand Flamer", "Infernus Pistol"]
 #macro WEAPON_LIST_RANGED_PISTOLS array_concat(WEAPON_LIST_RANGED_PISTOLS_LONG, WEAPON_LIST_RANGED_PISTOLS_ASSAULT)
 
 #macro WEAPON_LIST_RANGED_STERNGUARD array_concat(["Bolter", "Bolter", "Bolter"], WEAPON_LIST_RANGED_COMBI)
