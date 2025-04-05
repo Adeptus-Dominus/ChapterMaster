@@ -39,12 +39,27 @@ enum ePROGENITOR {
     RANDOM,
 }
 
-#macro WEAPON_LIST_RANGED_HEAVY ["Heavy Bolter", "Heavy Bolter", "Missile Launcher", "Missile Launcher", "Lascannon", "Plasma Cannon", "Multi-Melta", "Grav-Cannon"]
-#macro WEAPON_LIST_RANGED_SPECIAL ["Flamer", "Flamer", "Plasma Gun", "Meltagun", "Grav-Gun"]
-#macro WEAPON_LIST_RANGED_COMBI ["Storm Bolter", "Storm Bolter", "Storm Bolter", "Combiflamer", "Combiflamer", "Combiplasma", "Combimelta", "Combigrav"]
-#macro WEAPON_LIST_RANGED_PISTOLS ["Bolt Pistol", "Bolt Pistol", "Bolt Pistol", "Plasma Pistol", "Plasma Pistol", "Grav-Pistol"]
+#macro WEAPON_LIST_RANGED_HEAVY_TERMINATOR ["Heavy Flamer", "Heavy Flamer", "Assault Cannon", "Assault Cannon", "Multi-Melta", "Plasma Cannon", "Grav-Cannon"]
+#macro WEAPON_LIST_RANGED_HEAVY_LONG ["Heavy Bolter", "Heavy Bolter", "Heavy Bolter", "Missile Launcher", "Missile Launcher", "Lascannon", "Plasma Cannon", "Grav-Cannon"]
+#macro WEAPON_LIST_RANGED_HEAVY_ASSAULT ["Heavy Flamer", "Heavy Flamer", "Multi-Melta"]
+#macro WEAPON_LIST_RANGED_HEAVY array_concat(WEAPON_LIST_RANGED_HEAVY_LONG, WEAPON_LIST_RANGED_HEAVY_ASSAULT)
+
+
+#macro WEAPON_LIST_RANGED_SPECIAL_LONG ["Plasma Gun", "Plasma Gun", "Grav-Gun"]
+#macro WEAPON_LIST_RANGED_SPECIAL_ASSAULT ["Flamer", "Flamer", "Meltagun"]
+#macro WEAPON_LIST_RANGED_SPECIAL array_concat(WEAPON_LIST_RANGED_SPECIAL_LONG, WEAPON_LIST_RANGED_SPECIAL_ASSAULT)
+
+#macro WEAPON_LIST_RANGED_COMBI_LONG ["Storm Bolter", "Storm Bolter", "Storm Bolter", "Combiplasma", "Combiplasma", "Combigrav"]
+#macro WEAPON_LIST_RANGED_COMBI_ASSAULT ["Combiflamer", "Combiflamer", "Combimelta"]
+#macro WEAPON_LIST_RANGED_COMBI array_concat(WEAPON_LIST_RANGED_COMBI_LONG, WEAPON_LIST_RANGED_COMBI_ASSAULT)
+
+#macro WEAPON_LIST_RANGED_PISTOLS_LONG ["Bolt Pistol", "Bolt Pistol", "Bolt Pistol", "Plasma Pistol", "Plasma Pistol", "Grav-Pistol"]
+#macro WEAPON_LIST_RANGED_PISTOLS_ASSAULT ["Hand Flamer", "Hand Flamer", "Infernus Pistol"]
+#macro WEAPON_LIST_RANGED_PISTOLS array_concat(WEAPON_LIST_RANGED_PISTOLS_LONG, WEAPON_LIST_RANGED_PISTOLS_ASSAULT)
+
 #macro WEAPON_LIST_RANGED_STERNGUARD array_concat(["Bolter", "Bolter", "Bolter"], WEAPON_LIST_RANGED_COMBI)
-#macro WEAPON_LIST_RANGED array_concat(WEAPON_LIST_RANGED_PISTOLS, WEAPON_LIST_RANGED_STERNGUARD, WEAPON_LIST_RANGED_COMBI)
+#macro WEAPON_LIST_RANGED array_concat(WEAPON_LIST_RANGED_PISTOLS_LONG, WEAPON_LIST_RANGED_STERNGUARD)
+
 
 #macro WEAPON_LIST_MELEE_BASIC ["Chainsword", "Chainsword", "Chainaxe"]
 #macro WEAPON_LIST_MELEE_1H ["Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Power Sword", "Power Sword", "Power Sword", "Lightning Claw", "Lightning Claw", "Lightning Claw", "Power Fist", "Power Fist", "Thunder Hammer"]
@@ -1567,9 +1582,21 @@ function scr_initialize_custom() {
 				"role": $"{roles.terminator} {roles.sergeant}",
 				"loadout": {
 					"required": {
-						"wep1": [wep1[defaults_slot][eROLE.Terminator], 1],
-						"wep2": [wep2[defaults_slot][eROLE.Terminator], 1],
+						"wep1": ["", 0],
+						"wep2": ["", 0],
 					},
+					"option": {
+						"wep1": [
+							[
+								["Power Fist", "Chainfist"], 1
+							],
+						],
+						"wep2": [
+							[
+								WEAPON_LIST_RANGED_COMBI, 1
+							],
+						]
+					}
 				}
 			}],
 			// Terminator
@@ -1579,7 +1606,7 @@ function scr_initialize_custom() {
 				"loadout": {
 					"required": {
 						"wep1": ["", 0],
-						"wep2": [wep2[100, 4], 3],
+						"wep2": ["", 0],
 					},
 					"option": {
 						"wep1": [
@@ -1589,9 +1616,14 @@ function scr_initialize_custom() {
 						],
 						"wep2": [
 							[
-								["Assault Cannon", "Heavy Flamer"], 1
+								WEAPON_LIST_RANGED_COMBI, 3
 							],
 						],
+						"wep2": [
+							[
+								WEAPON_LIST_RANGED_HEAVY_TERMINATOR, 1
+							],
+						]
 					}
 				}
 			}],
@@ -1775,7 +1807,7 @@ function scr_initialize_custom() {
 					"option": {
 						"wep1": [
 							[
-								WEAPON_LIST_RANGED_PISTOLS, 1
+								WEAPON_LIST_RANGED_PISTOLS_LONG, 1
 							],
 						],
 						"wep2": [
