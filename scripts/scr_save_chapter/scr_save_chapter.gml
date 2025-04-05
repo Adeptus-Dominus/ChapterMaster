@@ -48,6 +48,7 @@ function scr_save_chapter(chapter_id){
 		special: col_special
 	};
 	chap.full_liveries = full_liveries;
+	chap.company_liveries = company_liveries;
 	chap.complex_livery_data = complex_livery_data;
 	chap.names = {
 		hapothecary: hapothecary,

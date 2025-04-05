@@ -276,6 +276,7 @@ function scr_save(save_part,save_id) {
 
 	    // obj_ini
 	    ini_encode_and_json("Ini", "full_liveries", obj_ini.full_liveries);
+	    ini_encode_and_json("Ini", "company_liveries", obj_ini.company_liveries);
 	    ini_encode_and_json("Ini", "custom_advisors", obj_ini.custom_advisors);
 	    ini_encode_and_json("Ini", "styles", obj_ini.culture_styles);
 	    ini_write_string("Ini","home_name",obj_ini.home_name);
