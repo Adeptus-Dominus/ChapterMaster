@@ -1,6 +1,7 @@
 # How to style your code
 
 ## Required
+
 - Struct constructors (functions that return a struct) should always use `PascalCase`.\
   This prevents possible overlaps with variable names, which can cause errors with the YYC compiler.
 - Variable names, function names, etc., should never use `PascalCase`.\
@@ -9,9 +10,11 @@
 ## Recommended
 
 ### File names
+
 Follow the general GameMaker convention of using type prefixes in file names.
 
 ### Variable names
+
 All variable names, function names, etc., should use `snake_case` unless stated otherwise.
 
 **Local Variables**:
@@ -29,6 +32,7 @@ All variable names, function names, etc., should use `snake_case` unless stated 
 - Example: `global.example_e1`.
 
 ### Functions
+
 **Scripts and Methods** don’t need prefixes but:
 - Use at least two words (`draw_something()` vs `draw()`).
   - To avoid overlap with simple instance variables.
@@ -39,6 +43,7 @@ All variable names, function names, etc., should use `snake_case` unless stated 
 - Don't create a separate file for every single small script.
 
 ### Constants
+
 **Macros**:
 - To denote their group, use a short prefix in all caps (e.g., `PREFIX_`).
 - The rest should be in all caps `SNAKE_CASE`.
@@ -50,6 +55,7 @@ All variable names, function names, etc., should use `snake_case` unless stated 
 - Example: `enum eCOLORS` with entries `DarkRed`, `Blue`, etc.
 
 ### General Styling
+
 - Initialize variables when declaring them (`var variable = 0`).
 - Declare each variable on a new line, avoiding `var n1 = 0, n2 = 2...`.
 - Use `&&` and `||` instead of `and` and `or`.
@@ -65,6 +71,7 @@ All variable names, function names, etc., should use `snake_case` unless stated 
 - Use `++`/`--` instead of `+=1`/`-=1`.
 
 ### Formatters
+
 > [!WARNING]
 > Gobo formatter turns structs into single line abominations.\
 > Format with a JS formatter afterwards.
