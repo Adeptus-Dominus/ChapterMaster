@@ -1551,6 +1551,7 @@
     {"id":{"name":"spr_weapon_melta","path":"sprites/spr_weapon_melta/spr_weapon_melta.yy",},},
     {"id":{"name":"spr_weapon_missile","path":"sprites/spr_weapon_missile/spr_weapon_missile.yy",},},
     {"id":{"name":"spr_weapon_mmelta","path":"sprites/spr_weapon_mmelta/spr_weapon_mmelta.yy",},},
+    {"id":{"name":"spr_weapon_omnissian_axe","path":"sprites/spr_weapon_omnissian_axe/spr_weapon_omnissian_axe.yy",},},
     {"id":{"name":"spr_weapon_plasc","path":"sprites/spr_weapon_plasc/spr_weapon_plasc.yy",},},
     {"id":{"name":"spr_weapon_plasg","path":"sprites/spr_weapon_plasg/spr_weapon_plasg.yy",},},
     {"id":{"name":"spr_weapon_plasma_cannon_term","path":"sprites/spr_weapon_plasma_cannon_term/spr_weapon_plasma_cannon_term.yy",},},
