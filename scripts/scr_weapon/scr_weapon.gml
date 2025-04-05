@@ -284,6 +284,9 @@ global.weapons = {
 		"spli": 5,
 		"arp": 3,
 		"tags": ["power", "axe", "savage", "boarding 3"],
+		"specials": {
+			"combi_tool": 1
+		}
 	},
 	"Executioner Power Axe": {
 		"abbreviation": "ExPwrAxe",
@@ -2744,7 +2747,6 @@ global.gear = {
 		},
 		"Servo-arm": {
 			"abbreviation": "SrvArm",
-			"special_properties": ["Repairs Vehicles"],
 			"second_profiles": ["Servo-arm(M)"],
 			"description": "A manipulator mechandendrite, also known as a Servo-arm. This artificial limb is a great aid to help trained Techmarines repair damaged vehicles on the battlefield, yet may be used in melee combat, thanks to its considerable crushing power and weight.",
 			"damage_resistance_mod": {
@@ -2754,10 +2756,12 @@ global.gear = {
 			},
 			"melee_hands": -0.25,
 			"ranged_hands": -0.25,
+			"specials": {
+				"combi_tool": 1
+			}
 		},
 		"Servo-harness": {
 			"abbreviation": "SrvHrns",
-			"special_properties": ["Repairs Vehicles"],
 			"second_profiles": ["Servo-arm(M)", "Servo-arm(M)", "Flamer", "Plasma Cutter"],
 			"description": "A Servo-Harness is a special type of augmetic aid, often used by Chapter's Master of the Forge or his senior Techmarines. It consists of many blessed tools, two Servo-arms and a couple of deadly weapons. With it, one can make battlefield repairs on any vehicle, shore up defences, or even assist his battle-brothers in combat.",
 			"damage_resistance_mod": {
@@ -2767,6 +2771,9 @@ global.gear = {
 			},
 			"melee_hands": -0.5,
 			"ranged_hands": -0.5,
+			"specials": {
+				"combi_tool": 2
+			}
 		},
 		"Conversion Beamer Pack": {
 			"abbreviation": "CnvBmr",
