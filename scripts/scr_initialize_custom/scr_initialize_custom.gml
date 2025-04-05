@@ -1944,9 +1944,7 @@ function scr_initialize_custom() {
 						],
 						"wep2": [
 							[
-								["Flamer"], 2, {
-									"wep1":"",
-								}
+								["Flamer"], 2
 							]
 						]
 					}
