@@ -24,7 +24,7 @@ All variable names, function names, etc., should use `snake_case` unless stated 
   - Use at least two words to avoid overlap with most instance variables (e.g., `draw_something()`).
   - Be named as actions where possible (`create_green_apple()` vs. `green_apple()`).
   - Preferably have a group prefix at the start (`string_convert`, `fleet_explode`).
-  - As scripts are global in scope, be vary of namespace collision with absolutely everything in the project (fun).
+  - As scripts are global in scope, be wary of namespace collisions with absolutely everything in the project (fun).
 
 - **Macro** constants:
   - To denote their group, use a short prefix in all caps (e.g., `PREFIX_`).
@@ -55,7 +55,7 @@ All variable names, function names, etc., should use `snake_case` unless stated 
 > [!WARNING]
 > JavaScript formatters break `$"something {variable}"` syntax by adding a space after `$`. Manually correct this as needed.
 
-- There is a great GameMaker tailored formatter, that formats most of the stuff that can get ugly, called [Gobo](https://github.com/Pizzaandy/Gobo/)
+- There is a great GameMaker tailored formatter, that formats most of the elements that can get untidy, called [Gobo](https://github.com/Pizzaandy/Gobo/)
   - Disable tab indent and set it to 4 spaces.
   - Set max line width to something like 9999, to prevent condition checks from breaking into unreadable multiple lines.
   - The above step will format structs into a single line, so you'll have to use a JS formatter afterwards to fix this.
