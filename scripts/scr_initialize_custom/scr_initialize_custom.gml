@@ -57,14 +57,13 @@ enum ePROGENITOR {
 #macro WEAPON_LIST_RANGED_PISTOLS_ASSAULT ["Hand Flamer", "Hand Flamer", "Hand Flamer", "Infernus Pistol"]
 #macro WEAPON_LIST_RANGED_PISTOLS array_concat(WEAPON_LIST_RANGED_PISTOLS_LONG, WEAPON_LIST_RANGED_PISTOLS_ASSAULT)
 
-#macro WEAPON_LIST_RANGED_STERNGUARD array_concat(["Bolter", "Bolter", "Bolter"], WEAPON_LIST_RANGED_COMBI)
-#macro WEAPON_LIST_RANGED array_concat(WEAPON_LIST_RANGED_PISTOLS_LONG, WEAPON_LIST_RANGED_STERNGUARD)
+#macro WEAPON_LIST_RANGED_VETERAN array_concat(["Bolter", "Bolter", "Bolter"], WEAPON_LIST_RANGED_COMBI)
+#macro WEAPON_LIST_RANGED array_concat(WEAPON_LIST_RANGED_PISTOLS_LONG, WEAPON_LIST_RANGED_VETERAN)
 
 
 #macro WEAPON_LIST_MELEE_BASIC ["Chainsword", "Chainsword", "Chainaxe"]
 #macro WEAPON_LIST_MELEE_1H ["Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Power Sword", "Power Sword", "Power Sword", "Lightning Claw", "Lightning Claw", "Lightning Claw", "Power Fist", "Power Fist", "Thunder Hammer"]
 #macro WEAPON_LIST_MELEE_HEAVY ["Eviscerator", "Eviscerator", "Eviscerator", "Eviscerator", "Eviscerator", "Heavy Thunder Hammer"]
-#macro WEAPON_LIST_MELEE_VANGUARD ["Chainsword", "Chainsword", "Chainsword", "Power Sword", "Power Axe", "Lightning Claw", "Lightning Claw", "Power Fist", "Power Fist", "Thunder Hammer"]
 
 #macro WEAPON_LIST_WEIGHTED_RANGED_PISTOLS [["Bolt Pistol", 4], ["Plasma Pistol", 2], ["Grav-Pistol", 1]]
 
@@ -1551,7 +1550,7 @@ function scr_initialize_custom() {
 					"option": {
 						"wep1": [
 							[
-								WEAPON_LIST_RANGED_STERNGUARD, 5
+								WEAPON_LIST_RANGED_VETERAN, 5
 							],
 						],
 					}
@@ -1686,7 +1685,7 @@ function scr_initialize_custom() {
 					"option": {
 						"wep1": [
 							[
-								WEAPON_LIST_RANGED_STERNGUARD, 1
+								WEAPON_LIST_RANGED_VETERAN, 1
 							],
 						],
 					}
@@ -1704,7 +1703,7 @@ function scr_initialize_custom() {
 					"option": {
 						"wep1": [
 							[
-								WEAPON_LIST_RANGED_STERNGUARD, 7
+								WEAPON_LIST_RANGED_VETERAN, 7
 							],
 							[
 								WEAPON_LIST_RANGED_SPECIAL, 1
