@@ -43,8 +43,8 @@ All variable names, function names, etc., should use `snake_case` unless stated 
 - Indentation should be 4 spaces (avoid tabs).
 - End simple statements with semicolons.
 - For string interpolation choose one of these methods: 
-  - For big strings - [template strings](https://manual.gamemaker.io/beta/en/index.htm#t=GameMaker_Language%2FGML_Reference%2FStrings%2FStrings.htm) (`$"text {variable}"`), as they are easier to read, less typo-prone and convert `{variables}` to strings automatically.
-  - For small strings - [string()](https://manual.gamemaker.io/lts/en/GameMaker_Language/GML_Reference/Strings/string.htm) function (`string("text {0}", value_to_insert)`), as it may be easier to read in some cases.
+  - For general use - [template strings](https://manual.gamemaker.io/beta/en/index.htm#t=GameMaker_Language%2FGML_Reference%2FStrings%2FStrings.htm) (`$"text {variable}"`), as they are easier to read, less typo-prone and convert `{variables}` to strings automatically.
+  - For edge cases when you need to prepare a string with placeholders and later use with different variables - [string()](https://manual.gamemaker.io/lts/en/GameMaker_Language/GML_Reference/Strings/string.htm) function (`string("text {0}", value_to_insert)`).
 - Use parentheses to clarify conditions with mixed `&&` and `||` operators, ensuring consistent behavior across platforms.
   - Example (recommended for mixed operators): `if ((condition1 && condition2) || (condition3 && condition4))`
   - Simple sequences of the same operator (like `&&` alone) don’t need extra parentheses: `if (condition1 && condition2 && condition3)`
