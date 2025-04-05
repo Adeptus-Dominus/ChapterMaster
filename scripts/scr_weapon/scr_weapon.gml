@@ -635,7 +635,7 @@ global.weapons = {
 		"spli": 8,
 		"arp": 1,
 		"maintenance" : 0.1,
-		"tags": ["bolt", "boarding 2"],
+		"tags": ["boarding 2"],
 	},
 	"Webber": {
 		"abbreviation": "Webbr",
