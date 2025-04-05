@@ -6,15 +6,15 @@
 - changed-files:
   - any-glob-to-any-file: ['.github/*', '**/*.yml', '.gitattributes', '.gitignore']
 
-"JSON":
+"Area: JSON":
 - changed-files:
   - all-globs-to-any-file: ['**/*.json']
 
-"Audio":
+"Area: Audio":
 - changed-files:
   - any-glob-to-any-file: ['**/snd_*', '**/*.ogg', '**/*.wav']
 
-"Sprites":
+"Area: Sprites":
 - changed-files:
   - any-glob-to-any-file: ['**/*.png', '**/spr_*']
   
