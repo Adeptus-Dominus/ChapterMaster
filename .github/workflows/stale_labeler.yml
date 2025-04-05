@@ -1,20 +1,19 @@
-name: "Stale Labeler"
+name: "Mark stale issues and PRs"
 on:
-  # schedule:
-  #   - cron: "0 00 * * *"   # <=== Change this value
+  schedule:
+    - cron: '0 0 * * *'  # every day at midnight UTC
 
 jobs:
-  labeler:
-    name: Label Stale Things
-    permissions:
-      contents: read
-      pull-requests: write
+  stale:
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
     steps:
-      - name: "Run Srvaroa Labeler"
-        uses: srvaroa/labeler@master
-        env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      - uses: actions/stale@v9
         with:
-          config_path: .github/stale_labeler.yml
-          fail_on_error: true
+          stale-pr-message: "This PR is marked as stale, because it has been open for 7 days with no activity."
+          days-before-stale: 7
+          days-before-issue-stale: -1
+          days-before-close: -1
+          stale-pr-label: "Status: Stale"
