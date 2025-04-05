@@ -621,7 +621,7 @@ global.weapons = {
 		"tags": ["bolt", "pistol", "boarding 2"],
 	},
 	"Shotgun": {
-		"abbreviation": "Shotgun",
+		"abbreviation": "Shtgn",
 		"attack": {
 			"standard": 250,
 			"master_crafted": 300,

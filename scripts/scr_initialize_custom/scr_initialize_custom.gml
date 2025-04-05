@@ -1900,12 +1900,12 @@ function scr_initialize_custom() {
 					"loadout": {
 						"required": {
 							"wep1": ["", 0],
-							"wep2": ["Combat Knife", 9]
+							"wep2": ["Combat Knife", "max"]
 						},
 						"option": {
 							"wep1": [
 								[
-									["Bolter", "Sniper Rifle", "Bolter", "Sniper Rifle", "Stalker Pattern Bolter"], 9
+									["Bolter", "Bolter", "Shotgun", "Sniper Rifle", "Stalker Pattern Bolter"], 8
 								],
 								[
 									["Missile Launcher", "Heavy Bolter"], 1
