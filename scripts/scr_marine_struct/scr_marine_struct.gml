@@ -2299,8 +2299,16 @@ function jsonify_marine_struct(company, marine, stringify=true) {
     }
 }
 
-/// @param {Array<Real>} unit where unit[0] is company and unit[1] is the position
+#macro INI_UUNITROOT obj_ini.UUNITROOT
+#macro UUNITROOT UUID_marine
+/// DEPRECATED : @param {Array<Real>} unit where unit[0] is company and unit[1] is the position
+/// @param {<String>} unit where unit is a UUID
 /// @returns {Struct.TTRPG_stats} unit
-function fetch_unit(unit) {
-    return obj_ini.TTRPG[unit[0]][unit[1]];
+function fetch_unit(funit) {
+    gml_pragma("forceinline");
+    if (!is_string(funit)) {
+        return obj_ini.TTRPG[funit[0]][funit[1]];
+    } else {
+        return INI_UUNITROOT[$ funit];
+    }
 }
