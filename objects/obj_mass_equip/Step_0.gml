@@ -20,30 +20,38 @@ try {
                                 continue;
                             }
                         }
+
                         // ** Start Armour **
-                        var yes = false,
-                            done = "";
                         var unit_armour = unit.get_armour_data();
-                        if (is_struct(unit_armour)) {
-                            if (req_armour == "Power Armour") {
-                                yes = unit_armour.has_tags(["power_armour", "terminator"]);
-                            } else if (req_armour == "Terminator Armour") {
-                                yes = unit_armour.has_tag("terminator");
-                            } else if (req_armour == unit_armour.name) {
-                                yes = true;
+                        var has_valid_armour = is_struct(unit_armour);
+
+                        // Check if unit_armour is a struct and evaluate tag-based or name-based compatibility
+                        if (has_valid_armour) {
+                            switch (req_armour) {
+                                case "Power Armour":
+                                    has_valid_armour = unit_armour.has_tags(["power_armour", "terminator"]);
+                                    break;
+                                case "Terminator Armour":
+                                    has_valid_armour = unit_armour.has_tag("terminator");
+                                    break;
+                                default:
+                                    has_valid_armour = (req_armour == unit_armour.name);
                             }
                         }
-                        if (!is_string(unit.armour(true))) {
-                            yes = true;
-                        }
-                        if (yes == false) {
-                            complete = unit.update_armour(req_armour);
-                            if (complete != "complete" && req_armour == "Power Armour") {
+
+                        // Attempt to equip if not valid
+                        if (!has_valid_armour) {
+                            var result = unit.update_armour(req_armour);
+
+                            // Fallback: If request was for Power Armour but update failed, try Terminator
+                            if (result != "complete" && req_armour == "Power Armour") {
                                 unit.update_armour("Terminator Armour");
                             }
+
+                            // Refresh unit_armour after update
                             unit_armour = unit.get_armour_data();
                         }
-                        // ** End armour **
+                        // ** End Armour **
 
                         // ** Start Weapons **
                         if (unit.weapon_one() != req_wep1) {
