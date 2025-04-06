@@ -13,7 +13,7 @@
 
 ### Testing done
 <!-- Describe what steps you took to test that this PR resolved the bug or added the feature, and what tests you performed to make sure it didn't cause any regressions. -->
-- None and I understand the risks.
+- None, and I understand the risks.
 
 ### Related things and/or additional context
 <!-- Other PRs, Discord bug reports, messages, threads, outside docs, screenshots etc. -->

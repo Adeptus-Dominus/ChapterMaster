@@ -30,6 +30,6 @@ labels:
     above: 1599
     below: 3200
 
-- label: "Size: Warning!"
+- label: "Size: Warning"
   size:
     above: 3199

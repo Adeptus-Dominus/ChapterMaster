@@ -80,12 +80,10 @@ if (total_role_number > 0 && tab > 0) {
         eROLE.Librarian,
         eROLE.Sergeant,
         eROLE.VeteranSergeant,
+        eROLE.Dreadnought,
     ];
-    if (
-        // hand slots
-        (tab == 1 || tab ==2) &&
-        array_get_index(infanty_roles, obj_controller.settings) >= 0
-    ) {
+    // hand slots
+    if ((tab == 1 || tab ==2) && array_get_index(infanty_roles, obj_controller.settings) >= 0) {
         // Get all available hand weapons
         scr_get_item_names(
             item_name,
