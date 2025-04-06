@@ -49,8 +49,6 @@ repeat(200){i+=1;
 }
 
 var i=-1;
-init_player_fleet_arrays();
-ship_id = [];
 
 var v;
 var company=-1;
