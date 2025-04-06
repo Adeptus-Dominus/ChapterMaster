@@ -117,7 +117,7 @@ function scr_save(save_part,save_id) {
 
 			obj_saveload.save[save_id]=1;
 
-			var _gamesave_string = json_stringify(obj_saveload.GameSave);
+			var _gamesave_string = json_stringify(obj_saveload.GameSave, true);
 			var _gamesave_buffer = buffer_create(string_byte_length(_gamesave_string) + 1, buffer_fixed, 1);
 
 			var filename = $"save{save_id}.json";

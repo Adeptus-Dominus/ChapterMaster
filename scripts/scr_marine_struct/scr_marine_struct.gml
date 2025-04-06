@@ -2283,7 +2283,7 @@ function jsonify_marine_struct(company, marine, stringify=true) {
         }
     }
     if(stringify){
-        return json_stringify(new_marine);
+        return json_stringify(new_marine, true);
     } else {
         return new_marine;
     }

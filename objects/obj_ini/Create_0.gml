@@ -164,40 +164,10 @@ serialize = function(){
         save_data.last_ship = object_ini.last_ship;
     }
     
-    var excluded_from_save = ["temp", "serialize", "deserialize", "load_default_gear", "role_spawn_buffs", "TTRPG", "squads", "squad_types", "marines", "last_ship"]
+    var excluded_from_save = ["temp", "serialize", "deserialize", "load_default_gear", "role_spawn_buffs", "TTRPG", "squads", "squad_types", "marines", "last_ship"];
 
-    /// Check all object variable values types and save the simple ones dynamically. 
-    /// simple types are numbers, strings, bools. arrays of only simple types are also considered simple. 
-    /// non-simple types are structs, functions, methods
-    /// functions and methods will be ignored completely, structs to be manually serialized/deserialised.
-    var all_names = struct_get_names(object_ini);
-    var _len = array_length(all_names);
-    for(var i = 0; i < _len; i++){
-        var var_name = all_names[i];
-        if(array_contains(excluded_from_save, var_name)){
-            continue;
-        }
-        if(struct_exists(save_data, var_name)){
-            continue; //already added above
-        }
-        if(is_basic_variable(object_ini[$var_name])){
-            variable_struct_set(save_data, var_name, object_ini[$var_name]);
-        }
-        if(is_array(object_ini[$var_name])){
-            var _check_arr = object_ini[$var_name];
-            var _ok_array = is_basic_array(_check_arr, 2);
-            if(!_ok_array){
-                log_warning($"Bad array save: '{var_name}' internal type found was not a simple type and should probably have it's own serialize functino - obj_ini");
-            } else {
-                variable_struct_set(save_data, var_name, object_ini[$var_name]);
-            }
-        }
-        if(is_struct(object_ini[$var_name])){
-            if(!struct_exists(save_data, var_name)){
-                log_warning($"WARNING: obj_ini.serialze() - obj_ini - object contains struct variable '{var_name}' which has not been serialized. \n\tEnsure that serialization is written into the serialize and deserialization function if it is needed for this value, or that the variable is added to the ignore list to suppress this warning");
-            }
-        }
-    }
+    copy_serializable_fields(object_ini, save_data, excluded_from_save);
+
     return save_data;
 }
 
