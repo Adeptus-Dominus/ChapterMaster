@@ -53,11 +53,11 @@ repeat(201){i+=1;
 }
 i=0;
 repeat(100){i+=1;
-    if (file_exists($"save{i}.json")){
+    if (file_exists(string(PATH_save_files, i))){
         saves+=1;save[saves]=i;
     }
-    if (!file_exists($"save{i}.json")) and (i>0) and (max_ini=0) then max_ini=i;
-    if (file_exists($"save{i+1}.json")) and (max_ini>0) then max_ini=0;}
+    if (!file_exists(string(PATH_save_files, i))) and (i>0) and (max_ini=0) then max_ini=i;
+    if (file_exists(string(PATH_save_files, i + 1))) and (max_ini>0) then max_ini=0;}
 first_open=saves+1;
 
 
@@ -103,10 +103,18 @@ if (file_exists("saves.ini")){
     }
     
     
-    if (file_exists(working_directory + "\\screen"+string(save[1])+".png")) then img1=sprite_add(working_directory + "\\screen"+string(save[1])+".png",1,0,0,0,0);
-    if (file_exists(working_directory + "\\screen"+string(save[2])+".png")) then img2=sprite_add(working_directory + "\\screen"+string(save[2])+".png",1,0,0,0,0);
-    if (file_exists(working_directory + "\\screen"+string(save[3])+".png")) then img3=sprite_add(working_directory + "\\screen"+string(save[3])+".png",1,0,0,0,0);
-    if (file_exists(working_directory + "\\screen"+string(save[4])+".png")) then img4=sprite_add(working_directory + "\\screen"+string(save[4])+".png",1,0,0,0,0);
+    if (file_exists(string(PATH_save_previews, save[1]))) {
+        img1 = sprite_add(string(PATH_save_previews, save[1]), 1, 0, 0, 0, 0);
+    }
+    if (file_exists(string(PATH_save_previews, save[2]))) {
+        img2 = sprite_add(string(PATH_save_previews, save[2]), 1, 0, 0, 0, 0);
+    }
+    if (file_exists(string(PATH_save_previews, save[3]))) {
+        img3 = sprite_add(string(PATH_save_previews, save[3]), 1, 0, 0, 0, 0);
+    }
+    if (file_exists(string(PATH_save_previews, save[4]))) {
+        img4 = sprite_add(string(PATH_save_previews, save[4]), 1, 0, 0, 0, 0);
+    }
     
     
     ini_close();

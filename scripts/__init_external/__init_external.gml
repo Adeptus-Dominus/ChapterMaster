@@ -21,7 +21,12 @@ function __init_external() {
     if (!directory_exists("Custom Files\\Custom Icons")) {
         directory_create("Custom Files\\Custom Icons");
     }
+    if (!directory_exists("Save Files")) {
+        directory_create("Save Files");
+    }
 
+    #macro PATH_save_files "Save Files\\save{0}.json"
+    #macro PATH_save_previews "Save Files\\screen{0}.png"
     #macro PATH_custom_icons $"Custom Files\\Custom Icons\\custom"
     #macro PATH_last_messages $"Logs/last_messages.log"
 

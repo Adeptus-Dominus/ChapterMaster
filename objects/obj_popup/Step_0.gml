@@ -50,14 +50,15 @@ try {
 	if ((image == "fuklaw") && (save > 0)) {
 		if (press == 1) {
 			var del = obj_saveload.save[save];
-			var _save_file = $"save{del}.json";
+			var _save_file = string(PATH_save_files, del);
+			var _save_preview = string(PATH_save_previews, del);
 			if (file_exists(_save_file)) {
 				file_delete(_save_file);
 				if (file_exists($"save{del}log.ini")) {
 					file_delete($"save{del}log.ini");
 				}
-				if (file_exists($"screen{del}.png")) {
-					file_delete($"screen{del}.png");
+				if (file_exists(_save_preview)) {
+					file_delete(_save_preview);
 				}
 				with (obj_saveload) {
 					instance_destroy();

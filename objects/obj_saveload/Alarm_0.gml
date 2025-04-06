@@ -48,11 +48,11 @@ if (save_part == 2) {
 }
 
 if (save_part == 1) {
-	if (file_exists($"save{save_number}.json")) {
-		file_delete($"save{save_number}.json");
+	if (file_exists(string(PATH_save_files, save_number))) {
+		file_delete(string(PATH_save_files, save_number));
 	}
-	if (file_exists($"screen{save_number}.png")) {
-		file_delete($"screen{save_number}.png");
+	if (file_exists(string(PATH_save_previews, save_number))) {
+		file_delete(string(PATH_save_previews, save_number));
 	}
 	obj_saveload.save[save_number] = 0;
 	save_part += 1;
@@ -128,7 +128,7 @@ if (load_part == 2) {
 }
 
 if (load_part == 1) {
-	if (file_exists($"save{global.load}.json")) {
+	if (file_exists(string(PATH_save_files, global.load))) {
 		load_part += 1;
 		trickle = 2;
 		txt = "Preparing";

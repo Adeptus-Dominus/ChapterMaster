@@ -6,7 +6,7 @@ function load_marine_struct(company, marine, struct){
 };
 
 function scr_load(save_part, save_id) {
-	var filename = $"save{save_id}.json";
+	var filename = string(PATH_save_files, save_id);
 	if(file_exists(filename)){
 		var _gamesave_buffer = buffer_load(filename);
 		var _gamesave_string = buffer_read(_gamesave_buffer, buffer_string);
