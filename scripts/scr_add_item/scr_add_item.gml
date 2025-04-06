@@ -1,114 +1,99 @@
-function scr_add_item(item_name, number_of_items = 1, quality = "any", from_marine = false) {
-    if (item_name == "") {
-        exit;
-    }
-    var i, last_open, match_slot, open_slot = false, matched = false;
-    var ok = 0;
-
-    var last_slot = array_length(obj_ini.equipment);
-    for (i = 0; i < last_slot; i++) {
-        if ((obj_ini.equipment[i] == "") && (open_slot == false)) {
-            last_open = i;
-            open_slot = true;
-        }
-        if ((obj_ini.equipment[i] == item_name) && (obj_ini.equipment_condition[i] > 0) && (matched == false)) {
-            matched = true;
-            match_slot = i;
-            break;
-        }
+/// @description Adds or removes an item from the equipment struct, supporting quality levels and special keywords
+/// @param {string} _item_name The name of the item to add or remove
+/// @param {real} _quantity The number of items to add (positive) or remove (negative)
+/// @param {string} _quality The quality to add/remove: specific level, or "any", "best", or "worst" (default is "any")
+/// @return {string} Returns the affected quality string, or "no_item" if the operation failed
+function scr_add_item(_item_name, _quantity = 1, _quality = "any") {
+    if (_item_name == "" || _quantity == 0) {
+        return "no_item";
     }
 
-    if (matched) {
-        var start_count = obj_ini.equipment_number[match_slot];
-        if (start_count < 0) {
-            start_count = 0;
-            obj_ini.equipment_number[match_slot] = 0;
-        }
-        obj_ini.equipment_number[match_slot] += number_of_items;
+    // Normalize quality if adding
+    if (_quantity > 0 && _quality == "any") {
+        _quality = "standard";
+    }
 
-        if (number_of_items > 0) {
-            if (quality == "any") {
-                quality = "standard";
-            }
-            for (var q = start_count; q < obj_ini.equipment_number[match_slot]; q++) {
-                obj_ini.equipment_quality[match_slot][q] = quality;
-            }
-            // this is to make sure people can't de=equip items to get around maintenance values
-            if (instance_exists(obj_controller)) {
-                obj_controller.specialist_point_handler.add_to_armoury_repair(item_name, number_of_items);
-            }
-        } else if (number_of_items < 0) {
-            if (start_count == 0) {
-                return "no_item";
-            }
-            var end_count = obj_ini.equipment_number[match_slot];
-            if (end_count < 0) {
-                end_count = 0;
-            }
-            if (number_of_items == -1) {
-                if (quality == "any") {
-                    if (array_length(obj_ini.equipment_quality[match_slot]) > 0) {
-                        return array_pop(obj_ini.equipment_quality[match_slot]);
-                    } else {
-                        return "standard";
-                    }
-                } else {
-                    var quality_item_found = false;
-                    for (var q = 0; q < array_length(obj_ini.equipment_quality[match_slot]); q++) {
-                        if (obj_ini.equipment_quality[match_slot][q] == quality) {
-                            array_delete(obj_ini.equipment_quality[match_slot], q, 1);
-                            quality_item_found = true;
-                            break;
-                        }
-                        if (quality_item_found) {
-                            return quality;
-                        } else {
-                            obj_ini.equipment_number[match_slot]++;
-                            return "no_item";
-                        }
-                    }
-                }
-            } else {
-                for (var q = start_count - 1; q > end_count; q--) {
-                    array_delete(obj_ini.equipment_quality[match_slot], q, 1);
-                    if (q == 0) {
-                        break;
-                    }
-                }
-            }
+    // Create the item if it doesn't exist
+    if (!struct_exists(obj_ini.equipment, _item_name)) {
+		if (_quantity > 0) {
+			obj_ini.equipment[$ _item_name] = {
+				name: _item_name,
+				quantity: {}
+			};
+		} else {
+			return "no_item";
+		}
+    }
+
+    var _item_entry = obj_ini.equipment[$ _item_name];
+    var _quantities = struct_exists(_item_entry, "quantity") ? _item_entry.quantity : {};
+
+    // Adding items
+    if (_quantity > 0) {
+        if (!struct_exists(_quantities, _quality)) {
+            _quantities[$ _quality] = 0;
         }
-    } else if (open_slot) {
-        obj_ini.equipment[last_open] = item_name;
-        obj_ini.equipment_number[last_open] = number_of_items;
-        obj_ini.equipment_condition[last_open] = 100;
-        if (quality == "any") {
-            quality = "standard";
-        }
-        for (var q = 0; q < number_of_items; q++) {
-            obj_ini.equipment_quality[last_open][q] = quality;
-        }
-        if ((string_count("MK", item_name) > 0) || (string_count("Armour", item_name) > 0) || (item_name == "Tartaros")) {
-            obj_ini.equipment_type[last_open] = "armour";
-        }
-        if (string_count("Bolts", item_name) > 0) {
-            obj_ini.equipment_type[last_open] = "gear";
-        }
-    } else {
-        array_set(obj_ini.equipment, last_slot, item_name);
-        array_set(obj_ini.equipment_number, last_slot, number_of_items);
-        array_set(obj_ini.equipment_condition, last_slot, 100);
-        array_set(obj_ini.equipment_quality, last_slot, []);
-        if (quality == "any") {
-            quality = "standard";
-        }
-        for (var q = 0; q < number_of_items; q++) {
-            obj_ini.equipment_quality[last_slot][q] = quality;
-        }
-        if ((string_count("MK", item_name) > 0) || (string_count("Armour", item_name) > 0) || (item_name == "Tartaros")) {
-            obj_ini.equipment_type[last_slot] = "armour";
-        }
-        if (string_count("Bolts", item_name) > 0) {
-            obj_ini.equipment_type[last_slot] = "gear";
+
+        _quantities[$ _quality] += _quantity;
+
+        // Maintenance hook
+        if (instance_exists(obj_controller)) {
+            obj_controller.specialist_point_handler.add_to_armoury_repair(_item_name, _quantity);
         }
     }
+
+    // Removing items
+	else if (_quantity < 0) {
+		// Get list of existing qualities
+		var _available_qualities = variable_struct_get_names(_quantities);
+		if (array_length(_available_qualities) == 0) {
+			return "no_item";
+		}
+
+		// Handle special quality keywords
+		var _priority_list = ["standard", "exemplary", "master_crafted", "artificer", "artifact"];
+		switch (_quality) {
+			case "any":
+				_quality = array_random_element(_available_qualities); // random pick
+				break;
+
+			case "worst":
+				for (var i = 0; i < array_length(_priority_list); i++) {
+					if (array_contains(_available_qualities, _priority_list[i])) {
+						_quality = _priority_list[i];
+						break;
+					}
+				}
+				if (_quality == "worst") return "no_item"; // fallback, unchanged
+				break;
+		
+			case "best":
+				for (var i = array_length(_priority_list) - 1; i >= 0; i--) {
+					if (array_contains(_available_qualities, _priority_list[i])) {
+						_quality = _priority_list[i];
+						break;
+					}
+				}
+				if (_quality == "best") return "no_item"; // fallback, unchanged
+				break;
+		}
+
+		// Now actually remove
+		if (!struct_exists(_quantities, _quality) || _quantities[$ _quality] <= 0) {
+			return "no_item";
+		}
+
+		_quantities[$ _quality] += _quantity;
+
+		if (_quantities[$ _quality] <= 0) {
+			struct_remove(_quantities, _quality);
+		}
+
+		// If no more qualities, remove item
+		if (array_length(variable_struct_get_names(_quantities)) == 0) {
+			struct_remove(obj_ini.equipment, _item_name);
+		}
+
+		return _quality;
+	}
 }

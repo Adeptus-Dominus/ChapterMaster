@@ -1695,7 +1695,7 @@ temp[60] = $"{temp[59]}\n\n{temp[34]}\n\n{temp[35]}##{temp[36]}##{temp[37]}##{te
 
 
 temp[61]="\n\nYour armamentarium contains some spare equipment- \n";
-temp[61] += arrays_to_string_with_counts(obj_ini.equipment, obj_ini.equipment_number, true, true);
+temp[61] += equipment_struct_to_string(obj_ini.equipment, true, true);
 
 
 temp[62]="##Your fleet contains ";

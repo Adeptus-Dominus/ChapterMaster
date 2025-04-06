@@ -76,7 +76,7 @@ function scr_update_unit_armour(new_armour, from_armoury = true, to_armoury = tr
 			if (!is_string(armour(true))) {
 				obj_ini.artifact_equipped[armour(true)] = false;
 			} else {
-				scr_add_item(change_armour, 1, armour_quality, true);
+				scr_add_item(change_armour, 1, armour_quality);
 			}
 		} else if (!is_string(armour(true))) {
 			delete_artifact(armour(true)); // may trigger feedback loop if not handled with care

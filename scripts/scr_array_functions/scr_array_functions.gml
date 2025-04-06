@@ -144,6 +144,50 @@ function arrays_to_string_with_counts(_names_array, _counts_array, _exclude_null
 	return _result_string;
 }
 
+/// @description Converts the equipment struct into a formatted string with pluralized counts
+/// @param {struct} _equipment The equipment struct
+/// @param {bool} _exclude_null Whether to exclude entries with zero total
+/// @param {bool} _dot_end Whether to end the string with a period
+/// @return {string}
+function equipment_struct_to_string(_equipment, _exclude_null = false, _dot_end = true) {
+	var _names_array = [];
+	var _counts_array = [];
+
+	var _item_keys = variable_struct_get_names(_equipment);
+	var _count = 0;
+
+	for (var i = 0; i < array_length(_item_keys); i++) {
+		var _item_name = _item_keys[i];
+		var _item_data = _equipment[$ _item_name];
+
+		if (!is_struct(_item_data) || !struct_exists(_item_data, "quantity")) {
+			continue;
+		}
+
+		var _quantities = _item_data.quantity;
+		var _quality_keys = variable_struct_get_names(_quantities);
+		var _total = 0;
+
+		for (var q = 0; q < array_length(_quality_keys); q++) {
+			_total += _quantities[$ _quality_keys[q]];
+		}
+
+		if (_exclude_null && _total == 0) {
+			continue;
+		}
+
+		array_push(_names_array, _item_name);
+		array_push(_counts_array, _total);
+		_count++;
+	}
+
+	if (_count == 0) {
+		return "";
+	}
+
+	return arrays_to_string_with_counts(_names_array, _counts_array, false, _dot_end);
+}
+
 /// @function alter_deep_array
 /// @description Modifies a value in a deeply nested array structure.
 /// @param {array} array The array to modify

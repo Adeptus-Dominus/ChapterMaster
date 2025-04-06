@@ -34,13 +34,9 @@ home_planet = 2;
 artifact_struct = array_create(200);
 
 // Equipment- maybe the bikes should go here or something?          yes they should
+equipment = {};
 i=-1;
 repeat(200){i+=1;
-    equipment[i]="";
-    equipment_type[i]="";
-    equipment_number[i]=0;
-    equipment_condition[i]=100;
-    equipment_quality[i]=[];
     artifact[i]="";
     artifact_equipped[i]=false;
     artifact_tags[i]=[];
@@ -156,6 +152,7 @@ serialize = function(){
         artifact_struct: artifact_struct_trimmed,
         marine_structs: marines,
         squad_structs: squads,
+        equipment: equipment
         // marines,
         // squads
     }
