@@ -419,16 +419,17 @@ function ArtifactStruct(Index) constructor {
 
     static destroy_arti = function() {
         if (has_tag("daemonic")) {
-            if (ship_id()) {
-                var demonSummonChance = irandom(100) + 1;
+			var _ship_id = ship_id();
+            if (_ship_id > 0) {
+                var demonSummonChance = roll_dice(1, 100, "high");
 
-                if ((demonSummonChance <= 60) && (obj_ini.ship_carrying[ship_id] > 0)) {
+                if ((demonSummonChance <= 60) && (obj_ini.ship_carrying[_ship_id] > 0)) {
                     instance_create(0, 0, obj_ncombat);
                     obj_ncombat.battle_special = "ship_demon";
                     obj_ncombat.formation_set = 1;
                     obj_ncombat.enemy = 10;
-                    obj_ncombat.battle_id = obj_ini.artifact_sid[i] - 500;
-                    scr_ship_battle(obj_ini.artifact_sid[i] - 500, 999);
+                    obj_ncombat.battle_id = _ship_id;
+                    scr_ship_battle(_ship_id, 999);
                 }
             }
         }
