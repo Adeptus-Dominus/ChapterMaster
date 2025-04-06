@@ -1672,7 +1672,7 @@ item_cost_tooltip_info += $"Chapter tech approach (obj_controller.tech_status) :
 /// @returns {Boolean} Whether the sale was successful
 sell_item = function (item_index, sell_count, sell_modifier) {
     if (item_stocked[item_index] >= sell_count) {
-        scr_add_item(item[item_index], (-sell_count));
+        scr_add_item(item[item_index], (-sell_count), "standard");
         item_stocked[item_index] -= (sell_count);
         var sell_price = (item_cost[item_index] * sell_modifier) * sell_count;
         obj_controller.requisition += sell_price;
