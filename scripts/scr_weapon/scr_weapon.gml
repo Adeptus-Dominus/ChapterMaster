@@ -1,3 +1,13 @@
+global.weapons_shop_data = json_to_gamemaker(working_directory + "\\data\\weapons_shop_data.jsonc", json_parse);
+global.armour_shop_data = json_to_gamemaker(working_directory + "\\data\\armour_shop_data.jsonc", json_parse);
+global.gear_shop_data = json_to_gamemaker(working_directory + "\\data\\gear_shop_data.jsonc", json_parse);
+global.mobility_shop_data = json_to_gamemaker(working_directory + "\\data\\mobility_shop_data.jsonc", json_parse);
+global.vehicles_shop_data = json_to_gamemaker(working_directory + "\\data\\vehicles_shop_data.jsonc", json_parse);
+global.ships_shop_data = json_to_gamemaker(working_directory + "\\data\\ships_shop_data.jsonc", json_parse);
+global.technology_shop_data = json_to_gamemaker(working_directory + "\\data\\technology_shop_data.jsonc", json_parse);
+
+
+
 global.weapons = {
 	"Storm Shield": {
 		"description": "Protects twice as well when boarding. A powered shield that must be held with a hand.  While powered by the marines armour it shimmers with blue energy.",

@@ -572,46 +572,9 @@ player_forge_data = {
 }
 selection_data=false;
 selections = [];
-production_research = {
-    flame : [0,{}],
-    bolt : [1,{}],
-    plasma : [0,{}],
-    psi : [0,{}],
-    melta : [0,{}],
-    grav : [0,{}],
-    chasis : [0,{}],
-    chain :[0,{}],
-    power_fields:[1,{}],
-    las : [0,{}],
-    armour : [
-        0,
-        {
-            stealth : [0,{}],
-            armour : [0,{}],
-		}
-    ]
-}
 
-production_research_pathways ={
-    flame : [["Promethium Tank Brazing"],{}],
-    bolt : [["Hardened Barrel Boring", "Projectile Propellant Purification"],{}],
-    plasma : [[ "Plasma Coil Magnetization"],{}],
-    psi : [["Psionic Resonance Valves"],{}],
-    melta : [["Atomic Chamber Construction"],{}],
-    grav : [["Gravitic Reaction Principle"],{}],
-    chasis : [[],{}],
-    chain :[["Adamantine Links"],{}],
-    power_fields:[["Power Field Cooling", "Mono-molecular Edge Sheathing"],{}],
-    las : [["Light Condensement Chamber"],{}],
-    armour : 
-        [
-            ["Ceramite Casting Chambers", "Enhanced Nerve Interfacing"],
-            {
-                stealth : [["Advanced Servo Motors"],{}],
-                armour : [["Advanced Ceramite Bonding", "Lightened Ceramite Compound","Ceremite Void Hardening"],{}],
-            }
-        ]
-}
+technologies_known = [];
+
 // ** STC values **, 
 stc_wargear=0;
 stc_vehicles=0;
@@ -1013,6 +976,8 @@ imperial_factions = [
     eFACTION.Inquisition,
     eFACTION.Ecclesiarchy,
 ]
+faction = array_create(14, "");
+disposition = array_create(14, 0);
 faction[0]="";
 disposition[0]=0;
 faction[eFACTION.Player]="Player";
@@ -1080,6 +1045,9 @@ disposition_max[11]=0;
 disposition_max[12]=0;
 disposition_max[13]=0;
 // ** Sets up faction leader names as well as player faction stuff **
+faction_leader = array_create(14, "");
+faction_title = array_create(14, "");
+faction_status = array_create(14, "");
 faction_leader[0]="";
 faction_title[0]="";
 faction_status[0]="";

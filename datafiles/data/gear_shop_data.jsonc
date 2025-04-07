@@ -1,0 +1,72 @@
+{
+    "Jump Pack": {
+        "value": 20,
+        "requires_to_build": [],
+        "renegade": false
+    },
+    "Heavy Weapons Pack": {
+        "value": 25,
+        "requires_to_build": [],
+        "renegade": false
+    },
+    "Servo-harness": {
+        "value": 150,
+        "requires_to_build": [],
+        "renegade": false
+    },
+    "Conversion Beamer Pack": {
+        "value": 180,
+        "requires_to_build": ["plasma_coil_magnetization", "promethium_tank_brazing", "atomic_chamber_construction", "gravitic_reaction_principle"],
+        "renegade": false
+    },
+    "Servo-arm": {
+        "value": 30,
+        "requires_to_build": [],
+        "renegade": false
+    },
+    "Bionics": {
+        "value": 5,
+        "requires_to_build": [],
+        "renegade": false
+    },
+    "Narthecium": {
+        "value": 10,
+        "requires_to_build": [],
+        "renegade": false
+    },
+    "Psychic Hood": {
+        "value": 100,
+        "requires_to_build": [],
+        "renegade": false
+    },
+    "Combat Shield": {
+        "value": 15,
+        "requires_to_build": [],
+        "renegade": false
+    },
+    "Rosarius": {
+        "value": 100,
+        "requires_to_build": [],
+        "renegade": false
+    },
+    "Iron Halo": {
+        "value": 300,
+        "requires_to_build": [],
+        "renegade": false
+    },
+    "Plasma Bomb": {
+        "value": 175,
+        "requires_to_build": [],
+        "renegade": false
+    },
+    "Exterminatus": {
+        "value": 2500,
+        "requires_to_build": [],
+        "renegade": false
+    },
+    "Gene Pod Incubator": {
+        "value": 8,
+        "requires_to_build": [],
+        "renegade": false
+    }
+}
