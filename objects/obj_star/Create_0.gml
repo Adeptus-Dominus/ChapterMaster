@@ -139,14 +139,14 @@ serialize = function(){
         obj: object_get_name(object_index),
         x,
         y,
-        present_fleet: json_stringify(object_star.present_fleet, true),
+        present_fleet: object_star.present_fleet,
         planet_data: planet_data,
     }
     if(struct_exists(object_star, "system_garrison")){
-        save_data.system_garrison = json_stringify(object_star.system_garrison, true);
+        save_data.system_garrison = object_star.system_garrison;
     }
     if(struct_exists(object_star, "system_sabatours")){
-        save_data.system_sabatours = json_stringify(object_star.system_sabatours, true);
+        save_data.system_sabatours = object_star.system_sabatours;
     }
 
       
@@ -175,7 +175,7 @@ function deserialize(save_data){
 
     // Set explicit vars here
     if(struct_exists(save_data, "present_fleet")){
-        variable_struct_set(self, "present_fleet", json_parse(save_data.present_fleet));
+        variable_struct_set(self, "present_fleet", save_data.present_fleet);
     }
 
     if(struct_exists(save_data, "planet_data")){
@@ -198,10 +198,10 @@ function deserialize(save_data){
     }
 
      if(struct_exists(save_data, "system_sabatours")){
-        variable_struct_set(self, "system_sabatours", json_parse(save_data.system_sabatours));
+        variable_struct_set(self, "system_sabatours", save_data.system_sabatours);
     }
      if(struct_exists(save_data, "system_garrison")){
-        variable_struct_set(self, "system_garrison", json_parse(save_data.system_garrison));
+        variable_struct_set(self, "system_garrison", save_data.system_garrison);
     }
 
 }
