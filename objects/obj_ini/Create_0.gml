@@ -209,6 +209,7 @@ deserialize = function(save_data){
     }
 
     if(struct_exists(save_data, "marine_structs")){
+        obj_ini.TTRPG = array_create(11, []);
         var marines_encoded_arr = save_data.marine_structs;
         var _m_ar_len = array_length(marines_encoded_arr);
         for(var m = 0; m < _m_ar_len; m++){
