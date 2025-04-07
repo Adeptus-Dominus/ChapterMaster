@@ -46,11 +46,8 @@ function copy_serializable_fields(_source, _destination, _exclude = [], _exclude
 			}
 			continue;
 		}
-		
-		if (is_struct(_field_value) && !struct_exists(_destination, _field_name)) {
-			var _source_obj_name = struct_exists(_source, "object_index") ? object_get_name(_source.object_index) : "<non-instance>";
-			log_warning($"obj_ini.serialze() - {_source_obj_name} - object contains struct variable '{_field_name}' which has not been serialized. \n\tEnsure that serialization is written into the serialize and deserialization function if it is needed for this value, or that the variable is added to the ignore list to suppress this warning!");
-			continue;
-		}
+
+		var _source_obj_name = struct_exists(_source, "object_index") ? object_get_name(_source.object_index) : "<non-instance>";
+		log_warning($"{_source_obj_name} - '{_field_name}' key contains a {typeof(_field_value)} variable which has not been serialized. \n\tEnsure that serialization is written into the serialize and deserialization function if it is needed for this value, or that the variable is added to the ignore list to suppress this warning!");
 	}
 }
