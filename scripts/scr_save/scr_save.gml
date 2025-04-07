@@ -476,16 +476,12 @@ function scr_save(save_part,save_id) {
 	                ini_write_real("Mar",$"ag{coh}.{mah}",obj_ini.age[coh,mah]);
 	                ini_write_string("Mar",$"spe{coh}.{mah}",obj_ini.spe[coh,mah]);
 	                ini_write_real("Mar",$"god{coh}.{mah}",obj_ini.god[coh,mah]);
-					if (!is_struct(obj_ini.TTRPG[coh][mah])){
-						TTRPG[coh][mah] = new TTRPG_stats("chapter", coh,mah, "blank");
-					} else{
-						ini_write_string("Mar",$"Struct{coh}.{mah}",base64_encode(jsonify_marine_struct(coh,mah)));
-					}
 				} else {
 					if (mah>0) then break;
 				}
 	        }
 	    }
+        ini_encode_and_json_advanced("Mar", "UUID_marine", obj_ini.UUID_marine);
 		log_message("Saving to slot "+string(save_id)+" - Squad Saving Start");
 	    var squad_copies = [];
 		if (array_length(obj_ini.squads)> 0){

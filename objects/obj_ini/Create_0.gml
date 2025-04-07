@@ -53,8 +53,6 @@ repeat(200){i+=1;
 }
 
 var i=-1;
-init_player_fleet_arrays();
-ship_id = [];
 
 var v;
 var company=-1;
@@ -79,6 +77,10 @@ repeat(11){
         veh_uid[company,v]=0;
     }
 }
+
+UUID_marine = {};
+UUID_vehicle = {};
+UUID_ship = {};
 
 /*if (obj_creation.fleet_type=3){
     obj_controller.penitent=1;
