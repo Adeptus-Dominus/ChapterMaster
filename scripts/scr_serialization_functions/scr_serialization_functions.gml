@@ -16,6 +16,10 @@ function copy_serializable_fields(_source, _destination, _exclude = [], _exclude
 		var _field_name = _all_names[i];
 		var _field_value = _source[$ _field_name];
 
+		if (is_method(_field_value)) {
+			continue;
+		}
+
 		if (array_contains(_exclude, _field_name)) {
 			continue; // excluded by the full name
 		}
@@ -31,17 +35,17 @@ function copy_serializable_fields(_source, _destination, _exclude = [], _exclude
 		if (is_basic_variable(_field_value)) {
 			variable_struct_set(_destination, _field_name, _field_value);
 		}
-
+		
 		if (is_array(_field_value)) {
 			if (!is_basic_array(_field_value, 2)) {
 				var _source_obj_name = struct_exists(_source, "object_index") ? object_get_name(_source.object_index) : "<non-instance>";
-				log_warning($"Bad array save: '{_field_name}' internal type found was not a simple type and should probably have it's own serialize function - {_source_obj_name}");
+				log_warning($"Bad array save: '{_field_name}' internal type found was not a simple type and should probably have it's own serialize function - {_source_obj_name}!");
 			} else {
 				variable_struct_set(_destination, _field_name, _field_value);
 			}
 		} else if (is_struct(_field_value) && !struct_exists(_destination, _field_name)) {
 			var _source_obj_name = struct_exists(_source, "object_index") ? object_get_name(_source.object_index) : "<non-instance>";
-			log_warning($"obj_ini.serialze() - {_source_obj_name} - object contains struct variable '{_field_name}' which has not been serialized. \n\tEnsure that serialization is written into the serialize and deserialization function if it is needed for this value, or that the variable is added to the ignore list to suppress this warning");
+			log_warning($"obj_ini.serialze() - {_source_obj_name} - object contains struct variable '{_field_name}' which has not been serialized. \n\tEnsure that serialization is written into the serialize and deserialization function if it is needed for this value, or that the variable is added to the ignore list to suppress this warning!");
 		}
 	}
 }
