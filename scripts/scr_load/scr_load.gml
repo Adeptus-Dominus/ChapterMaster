@@ -6,6 +6,7 @@ function load_marine_struct(company, marine, struct){
 };
 
 function scr_load(save_part, save_id) {
+	var t1 = get_timer();
 	var filename = string(PATH_save_files, save_id);
 	if(file_exists(filename)){
 		var _gamesave_buffer = buffer_load(filename);
@@ -145,5 +146,7 @@ function scr_load(save_part, save_id) {
 		// room_goto(Game);
 	}
 
-
+	var t2 = get_timer();
+	var diff = (t2 - t1) / 1000000;
+	log_message($"Loading part {save_part} took {diff} seconds!");
 }

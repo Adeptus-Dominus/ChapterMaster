@@ -148,7 +148,6 @@ function scr_save(save_part,save_id) {
     }
 
 	var t2 = get_timer();
-
-	var diff = t2 - t1;
-	log_message($"scr_save save_part {save_part} took {diff} microseconds");
+	var diff = (t2 - t1) / 1000000;
+	log_message($"Saving part {save_part} took {diff} seconds!");
 }
