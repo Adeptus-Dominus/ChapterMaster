@@ -1519,7 +1519,6 @@
     {"id":{"name":"spr_weapon_boltpis","path":"sprites/spr_weapon_boltpis/spr_weapon_boltpis.yy",},},
     {"id":{"name":"spr_weapon_boltstorm_gauntlet_small","path":"sprites/spr_weapon_boltstorm_gauntlet_small/spr_weapon_boltstorm_gauntlet_small.yy",},},
     {"id":{"name":"spr_weapon_boltstorm_gauntlet","path":"sprites/spr_weapon_boltstorm_gauntlet/spr_weapon_boltstorm_gauntlet.yy",},},
-    {"id":{"name":"spr_weapon_boltstorm_gauntlets","path":"sprites/spr_weapon_boltstorm_gauntlets/spr_weapon_boltstorm_gauntlets.yy",},},
     {"id":{"name":"spr_weapon_chainfist_small","path":"sprites/spr_weapon_chainfist_small/spr_weapon_chainfist_small.yy",},},
     {"id":{"name":"spr_weapon_chainfist","path":"sprites/spr_weapon_chainfist/spr_weapon_chainfist.yy",},},
     {"id":{"name":"spr_weapon_chaxe","path":"sprites/spr_weapon_chaxe/spr_weapon_chaxe.yy",},},
