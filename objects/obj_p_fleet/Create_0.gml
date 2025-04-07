@@ -66,6 +66,7 @@ serialize = function(){
         obj: object_get_name(object_index),
         x,
         y,
+        point_breakdown: point_breakdown
     }
     var excluded_from_save = ["temp", "serialize", "deserialize"]
 
