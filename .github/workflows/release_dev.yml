@@ -84,7 +84,7 @@ jobs:
         name: Delete dev tag
         if: steps.check_dev_tag.outputs.exists == 'true'
         run: |
-          gh release delete dev/${{ github.ref_name }} -y --cleanup-tag
+          gh release delete "dev/${{ github.ref_name }}" -y --cleanup-tag
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
