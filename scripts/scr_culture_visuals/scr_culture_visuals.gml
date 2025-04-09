@@ -712,7 +712,14 @@ global.modular_drawing_items = [
         body_types :[0],
         position : "chest_variants",
         armours : ["MK3 Iron Armour"],      
-    },                                                                
+    },
+    {
+        sprite : spr_death_watch_pauldron,
+        chapter : "Deathwatch",
+        position : "left_pauldron_base",
+        body_types :[0],
+        prevent_others : true,
+    }                                                               
 ];
 
 

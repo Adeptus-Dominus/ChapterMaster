@@ -288,7 +288,15 @@ function ComplexSet(unit) constructor{
                             continue;
                         }
                     }
-                } 
+                }
+                if (struct_exists(_mod, "chapter")){
+                    var chap_name = instance_exists(obj_creation) ?obj_creation.chapter_name :  global.chapter_name;
+                    if (chap_name!=_mod.chapter){
+                        if (!check_exception("chapter")){
+                            continue;
+                        }
+                    }
+                }  
                 var _overides = "none";
                 if (struct_exists(_mod, "overides")){
                     _overides = _mod.overides;
