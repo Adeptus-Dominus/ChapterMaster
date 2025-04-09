@@ -12,7 +12,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 
 	// Determines combined damage for enemy battle blocks for a single weapon
 
-	var atta, arp, acr, rang, amm, spli, faith_bonus, i;
+	var atta, arp, acr, rang, amm, spli, i;
 	i = 0;
 	rang = 0;
 	atta = 0;
@@ -20,8 +20,9 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 	arp = 0;
 	acr = 0;
 	amm = -1;
-	faith_bonus = 0;
+	// faith_bonus = 0;
 	// var struct = gear_weapon_data("weapon",name);
+
 	if (string_count("elee", name) > 0) {
 		var to;
 		to = string_delete(name, 0, 5);
@@ -383,101 +384,107 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 	if (obj_ncombat.enemy = 7) {
 
 		if (argument0 = "Choppa") {
-			atta = 100;
-			arp = 0;
+			atta = 12;
+			arp = 4;
 			rang = 1;
-			spli = 3;
+			spli = 1;
 		}
 		if (argument0 = "Power Klaw") {
-			atta = 160;
-			arp = 1;
+			atta = 30;
+			arp = 20;
 			rang = 1;
-			spli = 3;
+			spli = 1;
 		}
 		if (argument0 = "Slugga") {
-			atta = 80;
+			atta = 20;
 			arp = 0;
 			rang = 3.1;
-			amm = 4;
+			amm = 6;
 			spli = 3;
 		}
 		if (argument0 = "Tankbusta Bomb") {
-			atta = 150;
-			arp = 1;
+			atta = 65;
+			arp = 16;
 			rang = 1;
 			amm = 1;
 			spli = 1;
 		}
 		if (argument0 = "Big Shoota") {
-			atta = 120;
+			atta = 24;
 			arp = 0;
-			rang = 6;
-			amm = 30;
-			spli = 5;
-		}
-		if (argument0 = "Dakkagun") {
-			atta = 140;
-			arp = 0;
-			rang = 8;
-			amm = 20;
+			rang = 13;
+			amm = 6;
 			spli = 10;
 		}
-		if (argument0 = "Deffgun") {
-			atta = 150;
-			arp = 1;
+		if (argument0 = "Dakkagun") {
+			atta = 24;
+			arp = 4;
 			rang = 8;
-			amm = 20;
-			spli = 1;
+			amm = 14;
+			spli = 7;
+		}
+		if (argument0 = "Deffgun") {
+			atta = 30;
+			arp = 4;
+			rang = 10;
+			amm = 6;
+			spli = 8;
 		}
 		if (argument0 = "Snazzgun") {
-			atta = 200;
-			arp = 0;
-			rang = 5;
-			spli = 0;
+			atta = 30;
+			arp = 5;
+			rang = 11;
+			amm = 10;
+			spli = 2;
 		}
 		if (argument0 = "Grot Blasta") {
-			atta = 50;
+			atta = 20;
 			arp = 0;
-			rang = 2;
-			amm = 6;
+			rang = 4;
+			amm = 5;
+			spli = 1;
 		}
 		if (argument0 = "Kannon") {
-			atta = 200;
-			arp = 1;
-			rang = 10.1;
-			amm = 5;
-			spli = 3;
+			atta = 54;
+			arp = 12;
+			rang = 20;
+			amm = 1;
+			spli = 5;
 		}
 		if (argument0 = "Shoota") {
-			atta = 80;
+			atta = 20;
 			arp = 0;
-			rang = 5;
+			amm = 10;
+			rang = 7;
+			spli = 3;
 		}
 		if (argument0 = "Burna") {
-			atta = 140;
-			arp = 0;
-			rang = 2;
-			amm = 4;
-			spli = 3;
+			atta = 22;
+			arp = 4;
+			rang = 3;
+			amm = 6;
+			spli = 6;
 		}
 		if (argument0 = "Skorcha") {
-			atta = 200;
-			arp = 1;
-			rang = 2;
+			atta = 25;
+			arp = 6;
+			rang = 4;
 			amm = 6;
-			spli = 3;
+			spli = 8;
 		}
 		if (argument0 = "Rokkit Launcha") {
-			atta = 125;
-			arp = 1;
-			rang = 15;
+			atta = 38;
+			arp = 6;
+			rang = 16;
 			spli = 3;
+			amm = 1;
 		}
 		if (argument0 = "Krooz Missile") {
-			atta = 250;
-			arp = 1;
-			rang = 15;
-			spli = 3;
+			atta = 48;
+			arp = 8;
+			rang = 18;
+			spli = 4;
+			amm = 1;
 		}
 
 	}
@@ -1037,8 +1044,8 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 		}
 	}
 
-	if (faith_bonus = 1) then atta = atta * 2;
-	if (faith_bonus = 2) then atta = atta * 3;
+	// if (faith_bonus = 1) then atta = atta * 2;
+	// if (faith_bonus = 2) then atta = atta * 3;
 	atta = round(atta * obj_ncombat.global_defense);
 	arp = round(arp * obj_ncombat.global_defense);
 
@@ -1057,7 +1064,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 	repeat(30) {
 		if (wep[b] = name) and(goody = 0) {
 			att[b] += atta * man_number;
-			apa[b] += arp * man_number;
+			apa[b] = arp;
 			range[b] = rang;
 			wep_num[b] += man_number;
 			if (obj_ncombat.started = 0) then ammo[b] = amm;
@@ -1073,7 +1080,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 		wep[first] = name;
 		splash[first] = spli;
 		att[first] += atta * man_number;
-		apa[first] += arp * man_number;
+		apa[first] = arp;
 		range[first] = rang;
 		wep_num[first] += man_number;
 		if (obj_ncombat.started = 0) then ammo[first] = amm;

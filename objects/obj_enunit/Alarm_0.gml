@@ -46,16 +46,10 @@ if (!engaged){ // Shooting
         target_unit_index=0;
 
         if  (range[i] >= dist) { // The weapon is in range;
-            var _target_vehicles = apa[i] > 0 ? true : false; // AP weapons target vehicles
-
-            // if (string_count("Gauss",wep[i])>0) then _target_vehicles=true;
-            // if (wep[i]="Missile Launcher") or (wep[i]="Rokkit Launcha") or (wep[i]="Kannon") then _target_vehicles=true;
-            // if (wep[i]="Big Shoota") then _target_vehicles=false;
-            // if (wep[i]="Devourer") then _target_vehicles=false;
-            // if (wep[i]="Gauss Particle Cannon") or (wep[i]="Overcharged Gauss Cannon") or (wep[i]="Particle Whip") then _target_vehicles=true;
+            var _target_vehicles = apa[i] > 6 ? true : false; // AP weapons target vehicles
             
             // Weird alpha strike mechanic, that changes target unit index to CM;
-            if ((wep[i]="Power Fist") or (wep[i]="Bolter")) and (obj_ncombat.alpha_strike>0) and (wep_num[i]>5){
+            if (obj_ncombat.alpha_strike>0) {
                 obj_ncombat.alpha_strike-=0.5;
                 
                 var cm_present = false;
@@ -211,7 +205,7 @@ if (!engaged){ // Shooting
     }
 }
 //TODO: The melee code was not refactored;
-else if ((engaged || enemy.engaged) and target_block_is_valid( enemy,obj_pnunit)){// Melee
+else if ((engaged || enemy.engaged) ) {// Melee
     engaged=1;
     var i=0,dist=999,no_ap=1;
     // dist=point_distance(x,y,enemy.x,enemy.y)/10;

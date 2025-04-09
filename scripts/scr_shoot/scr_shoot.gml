@@ -1,3 +1,4 @@
+/// @mixin
 function scr_shoot(weapon_index_position, target_object, target_type, damage_data, melee_or_ranged) {
     try {
         // weapon_index_position: Weapon number
@@ -7,203 +8,90 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
         // melee_or_ranged: melee or ranged
 
         // This massive clusterfuck of a script uses the newly determined weapon and target data to attack and assign damage
+
         for (var j = 1; j <= 100; j++) {
             obj_ncombat.dead_ene[j] = "";
             obj_ncombat.dead_ene_n[j] = 0;
         }
+
         obj_ncombat.dead_enemies = 0;
 
-        var hostile_type;
-        var hostile_damage;
-        var hostile_weapon;
-        var hostile_range;
-        var hostile_splash;
-        var aggregate_damage = att[weapon_index_position];
-        var armour_pierce = apa[weapon_index_position];
         if (obj_ncombat.wall_destroyed == 1) {
             exit;
         }
 
+        var _weapon_max_kills = splash[weapon_index_position];
+        var _total_damage = att[weapon_index_position];
+        var _weapon_ap = apa[weapon_index_position];
+        var _weapon_name = wep[weapon_index_position];
+        var _weapon_ammo = ammo[weapon_index_position];
+        var _shooter = wep_owner[weapon_index_position];
+        var _shooter_count = wep_num[weapon_index_position];
+        var _shot_count = _shooter_count * _weapon_max_kills;
+        var _weapon_damage_type = damage_data;
+        var _weapon_damage_per_hit = _total_damage / _shooter_count;
+
+        //* Enemy shooting
         if ((weapon_index_position >= 0) && instance_exists(target_object) && (owner == 2)) {
-            var stop, damage_type, doom;
-            var shots_fired = wep_num[weapon_index_position];
-            if (shots_fired == 0 || ammo[weapon_index_position] == 0) {
+            if (_shooter_count == 0 || _weapon_ammo == 0) {
                 exit;
-            }
-            doom = 0;
-            if ((shots_fired != 1) && (melee_or_ranged != "melee")) {
-                switch (obj_ncombat.enemy) {
-                    case eFACTION.Ecclesiarchy:
-                        doom = 0.3;
-                        break;
-                    case eFACTION.Eldar:
-                        doom = 0.4;
-                        break;
-                    case eFACTION.Ork:
-                        doom = 0.2;
-                        break;
-                    case eFACTION.Tau:
-                        doom = 0.4;
-                        break;
-                    case eFACTION.Tyranids:
-                        doom = 0.4;
-                        break;
-                }
-            }
-            if (obj_ncombat.enemy == 11) {
-                aggregate_damage = round(aggregate_damage * 1.15);
-                armour_pierce = round(armour_pierce * 1.15);
-            }
-            if ((obj_ncombat.enemy == 10) && (obj_ncombat.threat == 7)) {
-                doom = 1;
-            }
-
-            damage_type = "";
-            stop = 0;
-
-            if (ammo[weapon_index_position] > 0) {
+            } else if (_weapon_ammo > 0) {
                 ammo[weapon_index_position] -= 1;
             }
 
-            if (damage_data == "medi") {
-                damage_type = "att";
-                if (aggregate_damage < armour_pierce) {
-                    damage_type = "arp";
-                }
-            } else {
-                damage_type = damage_data;
+            if (_weapon_name == "Web Spinner") {
+                _weapon_damage_type = "status";
+            } else if (_weapon_damage_type == "medi") {
+                _weapon_damage_type = (_total_damage < _weapon_ap) ? "arp" : "att";
             }
-            if (wep[weapon_index_position] == "Web Spinner") {
-                damage_type = "status";
+        
+            var _weapon_data = {
+                name: _weapon_name,
+                damage: _weapon_damage_per_hit,
+                armour_pierce: _weapon_ap,
+                shot_count: _shooter_count,
+                type: melee_or_ranged,
+                target_type: 0
             }
 
-            var attack_count_mod = max(1, splash[weapon_index_position]);
-
-            if ((damage_type == "status") && (stop == 0) && (shots_fired > 0)) {
-                var damage_per_weapon = 0,
-                    hit_number = shots_fired;
-                if (melee_or_ranged != "wall") {
-                    shots_fired *= attack_count_mod;
-                }
-                if ((hit_number > 0) && (melee_or_ranged != "wall") && instance_exists(target_object)) {
-                    if (wep_owner[weapon_index_position] == "assorted") {
-                        target_object.hostile_shooters = 999;
-                    } else if (wep_owner[weapon_index_position] != "assorted") {
-                        target_object.hostile_shooters = 1;
-                    }
-                    hostile_damage = 0;
-                    hostile_weapon = wep[weapon_index_position];
-                    hostile_type = 1;
-                    hostile_range = range[weapon_index_position];
-                    hostile_splash = attack_count_mod;
-
-                    scr_clean(target_object, hostile_type, hit_number, hostile_damage, hostile_weapon, hostile_range, hostile_splash);
-                }
-            } else if ((damage_type == "att") && (aggregate_damage > 0) && (stop == 0) && (shots_fired > 0)) {
-                var damage_per_weapon, hit_number;
-
-                damage_per_weapon = aggregate_damage;
-
-                if (melee_or_ranged == "melee") {
-                    if (shots_fired > (target_object.men - target_object.dreads) * 2) {
-                        doom = ((target_object.men - target_object.dreads) * 2) / shots_fired;
-                    }
-                }
-
-                hit_number = shots_fired;
-
-                if ((doom != 0) && (shots_fired > 1)) {
-                    damage_per_weapon = floor((doom * damage_per_weapon));
-                    hit_number = floor(hit_number * doom);
-                }
-                if (melee_or_ranged != "wall") {
-                    shots_fired *= attack_count_mod;
-                }
-
-                if ((hit_number > 0) && (melee_or_ranged != "wall") && instance_exists(target_object)) {
-                    if (wep_owner[weapon_index_position] == "assorted") {
-                        target_object.hostile_shooters = 999;
-                    }
-                    if (wep_owner[weapon_index_position] != "assorted") {
-                        target_object.hostile_shooters = 1;
-                    }
-                    hostile_damage = damage_per_weapon / hit_number;
-                    hostile_weapon = wep[weapon_index_position];
-                    hostile_type = 1;
-                    hostile_range = range[weapon_index_position];
-                    hostile_splash = attack_count_mod;
-                    if (hostile_splash > 1) {
-                        hostile_damage += attack_count_mod * 3;
-                    }
-
-                    scr_clean(target_object, hostile_type, hit_number, hostile_damage, hostile_weapon, hostile_range, hostile_splash);
-                }
-            } else if (((damage_type == "arp") || (damage_type == "dread")) && (armour_pierce > 0) && (stop == 0) && (shots_fired > 0)) {
-                var damage_per_weapon, hit_number;
-                damage_per_weapon = aggregate_damage;
-                if (aggregate_damage == 0) {
-                    damage_per_weapon = shots_fired;
-                }
-				if (melee_or_ranged != "wall") {
-					shots_fired *= attack_count_mod;
-				}
-                if (melee_or_ranged == "melee") {
-                    if (shots_fired > ((target_object.veh + target_object.dreads) * 5)) {
-                        doom = ((target_object.veh + target_object.dreads) * 5) / shots_fired;
-                    }
-                }
-                hit_number = shots_fired;
-
-                if ((doom != 0) && (shots_fired > 1)) {
-                    damage_per_weapon = floor((doom * damage_per_weapon));
-                    hit_number = floor(hit_number * doom);
-                }
-
-                if (damage_per_weapon == 0) {
-                    damage_per_weapon = shots_fired * doom;
-                }
-
-                if (hit_number > 0 && instance_exists(target_object)) {
-                    hostile_weapon = wep[weapon_index_position];
-                    hostile_range = range[weapon_index_position];
-                    hostile_splash = attack_count_mod;
-                    hostile_damage = damage_per_weapon / hit_number;
-                    if (hostile_splash > 1) {
-                        hostile_damage += attack_count_mod * 3;
-                    }
+            switch (_weapon_damage_type) {
+                case "status":
+                    target_object.hostile_shooters = (_shooter == "assorted") ? 999 : 1;
+                    _weapon_data.damage = 0;
+                    _weapon_data.target_type = 1;
+                    scr_clean(target_object, _weapon_data);
+                    break;
+                case "att":
+                    _weapon_data.target_type = 1;
+                case "arp":
+                case "dread":
                     if (melee_or_ranged == "wall") {
-                        var dest = 0;
-
-                        hostile_damage -= target_object.ac[1];
-                        hostile_damage = max(0, hostile_damage);
-                        hostile_damage = round(hostile_damage) * hit_number;
-                        target_object.hp[1] -= hostile_damage;
-                        if (target_object.hp[1] <= 0) {
-                            dest = 1;
-                        }
-                        obj_nfort.hostile_weapons = hostile_weapon;
-                        obj_nfort.hostile_shots = hit_number;
-                        obj_nfort.hostile_damage = hostile_damage;
-
-                        scr_flavor2(dest, "wall", hostile_range, hostile_weapon, hit_number, hostile_splash);
+                        var _wall_weapon_damage = max(1, round(_weapon_damage_per_hit - target_object.ac[1])) * _shooter_count * max(1, _weapon_max_kills / 4);
+                        target_object.hp[1] -= _wall_weapon_damage;
+                
+                        obj_nfort.hostile_weapons = _weapon_name;
+                        obj_nfort.hostile_shots = _shooter_count;
+                        obj_nfort.hostile_weapon_damage = _wall_weapon_damage;
+                
+                        scr_flavor2((target_object.hp[1] <= 0), "wall", melee_or_ranged, _weapon_name, _shooter_count);
                     } else {
-                        target_object.hostile_shooters = (wep_owner[weapon_index_position] == "assorted") ? 999 : 1;
-                        hostile_type = 0;
+                        target_object.hostile_shooters = (_shooter == "assorted") ? 999 : 1;
 
-                        scr_clean(target_object, hostile_type, hit_number, hostile_damage, hostile_weapon, hostile_range, hostile_splash);
+                        scr_clean(target_object, _weapon_data);
                     }
-                }
+                    break;
             }
         }
 
+        //* Player shooting
         if (instance_exists(target_object) && (owner == eFACTION.Player)) {
-            // show_debug_message("{0}, {1}, {2}, {3}, {4}", wep_num[weapon_index_position], wep[weapon_index_position], splash[weapon_index_position], range[weapon_index_position], att[weapon_index_position])
+            // show_debug_message("{0}, {1}, {2}, {3}, {4}", _shooter_count, _weapon_name, _weapon_max_kills, _weapon_range, att[weapon_index_position])
             var shots_fired = 0;
             var stop = 0;
             var damage_type = "";
 
             if (weapon_index_position >= 0) {
-                shots_fired = wep_num[weapon_index_position];
+                shots_fired = _shooter_count;
             }
 
             if (shots_fired == 0) {
@@ -231,14 +119,14 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
             }
 
             if (weapon_index_position >= 0) {
-                if (ammo[weapon_index_position] == 0) {
+                if (_weapon_ammo == 0) {
                     stop = 1;
                 }
-                if (ammo[weapon_index_position] > 0) {
-                    ammo[weapon_index_position] -= 1;
+                if (_weapon_ammo > 0) {
+                    _weapon_ammo -= 1;
                 }
             }
-            if (wep[weapon_index_position] == "Missile Silo") {
+            if (_weapon_name == "Missile Silo") {
                 obj_ncombat.player_silos -= min(obj_ncombat.player_silos, 30);
             }
 
@@ -247,7 +135,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
             }
             if ((damage_data == "highest") && (weapon_index_position >= 0)) {
                 damage_type = "att";
-                if ((aggregate_damage >= 100) && (armour_pierce > 0)) {
+                if ((_total_damage >= 100) && (_weapon_ap > 0)) {
                     damage_type = "arp";
                 }
             }
@@ -266,7 +154,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                 var that_works = false;
 
                 if (weapon_index_position >= 0) {
-                    if ((aggregate_damage > 0) && (stop == 0)) {
+                    if ((_total_damage > 0) && (stop == 0)) {
                         that_works = true;
                     }
                 }
@@ -283,8 +171,8 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                     attack_count_mod = 0;
 
                     if (weapon_index_position >= 0) {
-                        damage_per_weapon = aggregate_damage / wep_num[weapon_index_position];
-                        ap = armour_pierce;
+                        damage_per_weapon = _total_damage / _shooter_count;
+                        ap = _weapon_ap;
                     } // Average damage
                     if (weapon_index_position < -40) {
                         wii = "";
@@ -293,17 +181,17 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                         if (weapon_index_position == -51) {
                             wii = "Heavy Bolter Emplacement";
                             at = 160;
-                            armour_pierce = 0;
+                            _weapon_ap = 0;
                         }
                         if (weapon_index_position == -52) {
                             wii = "Missile Launcher Emplacement";
                             at = 200;
-                            armour_pierce = -1;
+                            _weapon_ap = -1;
                         }
                         if (weapon_index_position == -53) {
                             wii = "Missile Silo";
                             at = 250;
-                            armour_pierce = 0;
+                            _weapon_ap = 0;
                         }
                     }
 
@@ -311,44 +199,44 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 
 					// Calculate final armor value based on armor piercing (AP) rating against target type
                     if (target_object.dudes_vehicle[target_type]) {
-                        if (armour_pierce == 4) {
+                        if (_weapon_ap == 4) {
                             target_armour_value = 0;
                         }
-                        if (armour_pierce == 3) {
+                        if (_weapon_ap == 3) {
                             target_armour_value = target_armour_value * 2;
                         }
-                        if (armour_pierce == 2) {
+                        if (_weapon_ap == 2) {
                             target_armour_value = target_armour_value * 4;
                         }
-                        if (armour_pierce == 1) {
+                        if (_weapon_ap == 1) {
                             target_armour_value = target_armour_value * 6;
                         }
                     } else {
-                        if (armour_pierce == 4) {
+                        if (_weapon_ap == 4) {
                             target_armour_value = 0;
                         }
-                        if (armour_pierce == 3) {
+                        if (_weapon_ap == 3) {
                             target_armour_value = target_armour_value * 1.5;
                         }
-                        if (armour_pierce == 2) {
+                        if (_weapon_ap == 2) {
                             target_armour_value = target_armour_value * 2;
                         }
-                        if (armour_pierce == 1) {
+                        if (_weapon_ap == 1) {
                             target_armour_value = target_armour_value * 3;
                         }
                     }
 
-                    attack_count_mod = max(1, splash[weapon_index_position]);
+                    attack_count_mod = max(1, _weapon_max_kills);
 
-                    final_hit_damage_value = damage_per_weapon - (target_armour_value * attack_count_mod); //damage armour reduction
+                    final_hit_weapon_damage_value = damage_per_weapon - (target_armour_value * attack_count_mod); //damage armour reduction
 
-                    final_hit_damage_value *= target_object.dudes_dr[target_type]; //damage_resistance mod
+                    final_hit_weapon_damage_value *= target_object.dudes_dr[target_type]; //damage_resistance mod
 
-                    if (final_hit_damage_value <= 0) {
-                        final_hit_damage_value = 0;
+                    if (final_hit_weapon_damage_value <= 0) {
+                        final_hit_weapon_damage_value = 0;
                     } // Average after armour
 
-                    c = shots_fired * final_hit_damage_value; // New damage
+                    c = shots_fired * final_hit_weapon_damage_value; // New damage
 
                     var casualties, onceh = 0,
                         ponies = 0;

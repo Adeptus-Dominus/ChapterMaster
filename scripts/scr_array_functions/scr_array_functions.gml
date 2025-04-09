@@ -1,5 +1,3 @@
-
-
 function array_iter_length(choice_array, offset, length){
 	if (length == 0){
 		if (offset==0){
@@ -256,4 +254,8 @@ function is_basic_array(_array, _max_depth = 1, _current_depth = 1) {
     }
 
     return true;
+}
+
+function array_empty(_array) {
+    return array_length(_array) == 0;
 }

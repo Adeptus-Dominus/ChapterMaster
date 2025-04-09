@@ -1,4 +1,4 @@
-function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapon, hostile_shots, hostile_splash) {
+function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapon, hostile_shots) {
 	// Generates flavor based on the damage and casualties from scr_shoot, only for the opponent
 
 	if (obj_ncombat.wall_destroyed = 1) then exit;
@@ -8,26 +8,22 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
 	m2 = "";
 	m3 = "";
 
-	var _hostile_range, _hostile_weapon, _hostile_shots;
-	_hostile_range = 0;
+	var _hostile_weapon, _hostile_shots;
 	_hostile_weapon = "";
 	_hostile_shots = 0;
 
 	if (target_type != "wall") {
-		_hostile_range = hostile_range;
 		_hostile_weapon = hostile_weapon;
 		_hostile_shots = hostile_shots;
 	} else if (target_type = "wall") and(instance_exists(obj_nfort)) {
 		var hehh;
 		hehh = "the fortification";
 
-		_hostile_range = 999;
 		_hostile_weapon = obj_nfort.hostile_weapons;
 		_hostile_shots = obj_nfort.hostile_shots;
 	}
 
 	if (_hostile_weapon = "Fleshborer") then _hostile_shots = _hostile_shots * 10;
-	if (hostile_splash = 1) then _hostile_shots = max(1, round(_hostile_shots / 3));
 
 	// show_message(string(hostile_weapon)+"|"+string(_hostile_weapon)+"#"+string(los)+"#"+string(los_num));
 
@@ -72,7 +68,7 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
 		if (_hostile_shots = 1) then m1 = "A Maulerfiend advances, wrenching and smashing its claws into " + string(target_type) + ".  ";
 	}
 
-	if (hostile_range > 1) {
+	if (hostile_range == "ranged") {
 		if (_hostile_weapon = "Big Shoota") {
 			m1 = string(_hostile_shots) + " " + string(_hostile_weapon) + "z roar and blast away at " + string(target_type) + ".  ";
 			flavor = 1;
