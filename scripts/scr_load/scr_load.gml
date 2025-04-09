@@ -69,7 +69,8 @@ function scr_load(save_part, save_id) {
 		/// for some reason, obj_controller having it's deserialize as part of 
 		/// the object doesnt want to work
 		with(obj_controller){
-			var exclusions = ["specialist_point_handler", "location_viewer", "id"]; // skip automatic setting of certain vars, handle explicitly later
+			var exclusions = ["specialist_point_handler", "location_viewer", "id",
+			 "techs","apoth","forge_queue","point_breakdowns","apothecary_points"]; // skip automatic setting of certain vars, handle explicitly later
 
 			// Automatic var setting
 			var all_names = struct_get_names(save_data);
@@ -88,6 +89,12 @@ function scr_load(save_part, save_id) {
 				}
 			}
 			specialist_point_handler = new SpecialistPointHandler();
+			specialist_point_handler.forge_queue = save_data.forge_queue;
+			specialist_point_handler.apoths = save_data.apoths;
+			specialist_point_handler.techs = save_data.techs;
+			specialist_point_handler.point_breakdown = save_data.point_breakdown;
+			specialist_point_handler.apothecary_points = save_data.apothecary_points;
+			specialist_point_handler.forge_points = save_data.forge_points;
 			specialist_point_handler.calculate_research_points();
 			location_viewer = new UnitQuickFindPanel();
 			scr_colors_initialize();
