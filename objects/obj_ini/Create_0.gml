@@ -152,7 +152,8 @@ serialize = function(){
         artifact_struct: artifact_struct_trimmed,
         marine_structs: marines,
         squad_structs: squads,
-        equipment: equipment
+        equipment: equipment,
+        gene_slaves: gene_slaves
         // marines,
         // squads
     }
@@ -249,6 +250,10 @@ deserialize = function(save_data){
                 array_push(obj_ini.artifact_struct, arti_struct); //load empty ones into the rest of the slots
             }
         }
+    }
+
+    if(struct_exists(save_data, "gene_slaves")){
+        variable_struct_set(obj_ini, "gene_slaves", save_data.gene_slaves);
     }
 }
 
