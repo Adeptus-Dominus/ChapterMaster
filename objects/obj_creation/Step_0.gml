@@ -236,7 +236,7 @@ if (array_length(col)>0){
 }
 if (company_liveries == ""){
     livery_picker.scr_unit_draw_data(-1);
-    company_liveries = array_create(11,DeepCloneStruct(livery_picker.map_colour));
+    company_liveries = array_create(11,variable_clone(livery_picker.map_colour));
 }
 
 if (full_liveries == ""){

@@ -283,9 +283,9 @@ function ColourItem(xx,yy) constructor{
                         map_colour[$ colour_pick.area] = colour_pick.chosen;
                         map_colour.is_changed = true;
                         if (!obj_creation.buttons.company_options_toggle.company_view){
-                            obj_creation.full_liveries[role_set] = DeepCloneStruct(map_colour);
+                            obj_creation.full_liveries[role_set] = variable_clone(map_colour);
                         } else {
-                            obj_creation.company_liveries[role_set] = DeepCloneStruct(map_colour);
+                            obj_creation.company_liveries[role_set] = variable_clone(map_colour);
                         }
                         delete dummy_image;
                         dummy_image = false;                        
@@ -412,7 +412,7 @@ function setup_complex_livery_shader(setup_role, unit = "none"){
     var _in_creation = instance_exists(obj_creation);
 
    if (_in_creation) {
-        var data_set = DeepCloneStruct(obj_creation.livery_picker.map_colour);
+        var data_set = variable_clone(obj_creation.livery_picker.map_colour);
         if (obj_creation.buttons.company_options_toggle.company_view){
             var _base = obj_creation.full_liveries[0];
             var _component_names = struct_get_names(_base);
@@ -449,7 +449,7 @@ function setup_complex_livery_shader(setup_role, unit = "none"){
             }       
         }
         if (unit != "none"){
-            data_set = DeepCloneStruct(data_set);
+            data_set = variable_clone(data_set);
             var _company_livery = obj_ini.company_liveries[unit.company];
             var _comp_names = struct_get_names(_company_livery);
             for (var i=0;i<array_length(_comp_names);i++){
