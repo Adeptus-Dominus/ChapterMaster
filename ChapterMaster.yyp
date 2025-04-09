@@ -1005,6 +1005,7 @@
     {"id":{"name":"spr_data_slate_back","path":"sprites/spr_data_slate_back/spr_data_slate_back.yy",},},
     {"id":{"name":"spr_data_slate_border","path":"sprites/spr_data_slate_border/spr_data_slate_border.yy",},},
     {"id":{"name":"spr_data_slate","path":"sprites/spr_data_slate/spr_data_slate.yy",},},
+    {"id":{"name":"spr_death_watch_pauldron","path":"sprites/spr_death_watch_pauldron/spr_death_watch_pauldron.yy",},},
     {"id":{"name":"spr_def_fortress","path":"sprites/spr_def_fortress/spr_def_fortress.yy",},},
     {"id":{"name":"spr_def_mine","path":"sprites/spr_def_mine/spr_def_mine.yy",},},
     {"id":{"name":"spr_def_platform","path":"sprites/spr_def_platform/spr_def_platform.yy",},},

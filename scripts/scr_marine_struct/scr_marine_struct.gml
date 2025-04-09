@@ -462,6 +462,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     turn_stat_gains = {};
     powers_known = [];
 
+    personal_livery = {};
+
     static set_exp = function(new_val) {
         experience = new_val;
         var _powers_learned = 0;
@@ -956,6 +958,10 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 religion_sub_cult = "The Promethean Cult";
             } else if (global.chapter_name == "Iron Hands" || obj_ini.progenitor == ePROGENITOR.IRON_HANDS) {
                 religion_sub_cult = "The Cult of Iron";
+            }
+
+            if (global.chapter_name == "Deathwatch"){
+                personal_livery.right_pauldron = irandom(30);
             }
 
             var _robe_chance = 5;
