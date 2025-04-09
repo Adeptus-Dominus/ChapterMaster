@@ -1,10 +1,10 @@
 /// @mixin
-function scr_shoot(weapon_index_position, target_object, target_type, damage_data, melee_or_ranged) {
+function scr_shoot(weapon_index_position, target_object, target_index, target_type, melee_or_ranged) {
     try {
         // weapon_index_position: Weapon number
         // target_object: Target object
-        // target_type: Target dudes
-        // damage_data: "att" or "arp" or "highest"
+        // target_index: Target dudes
+        // target_type: "att" or "arp" or "highest"
         // melee_or_ranged: melee or ranged
 
         // This massive clusterfuck of a script uses the newly determined weapon and target data to attack and assign damage
@@ -28,7 +28,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
         var _shooter = wep_owner[weapon_index_position];
         var _shooter_count = wep_num[weapon_index_position];
         var _shot_count = _shooter_count * _weapon_max_kills;
-        var _weapon_damage_type = damage_data;
+        var _weapon_damage_type = target_type;
         var _weapon_damage_per_hit = _total_damage / _shooter_count;
 
         //* Enemy shooting
@@ -42,27 +42,26 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
             if (_weapon_name == "Web Spinner") {
                 _weapon_damage_type = "status";
             } else if (_weapon_damage_type == "medi") {
-                _weapon_damage_type = (_total_damage < _weapon_ap) ? "arp" : "att";
+                _weapon_damage_type = _weapon_ap > 6 ? "arp" : "att";
             }
         
             var _weapon_data = {
                 name: _weapon_name,
                 damage: _weapon_damage_per_hit,
                 armour_pierce: _weapon_ap,
-                shot_count: _shooter_count,
-                type: melee_or_ranged,
-                target_type: 0
+                shot_count: _shot_count,
+                shooter_count: _shooter_count,
+                attack_type: melee_or_ranged,
+                target_type: target_type
             }
 
             switch (_weapon_damage_type) {
                 case "status":
                     target_object.hostile_shooters = (_shooter == "assorted") ? 999 : 1;
                     _weapon_data.damage = 0;
-                    _weapon_data.target_type = 1;
                     scr_clean(target_object, _weapon_data);
                     break;
                 case "att":
-                    _weapon_data.target_type = 1;
                 case "arp":
                 case "dread":
                     if (melee_or_ranged == "wall") {
@@ -108,9 +107,9 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 				}
 			}*/
 
-            while (target_type < array_length(target_object.dudes_hp)) {
-                if (target_object.dudes_hp[target_type] == 0) {
-                    target_type++;
+            while (target_index < array_length(target_object.dudes_hp)) {
+                if (target_object.dudes_hp[target_index] == 0) {
+                    target_index++;
                     stop = 1;
                 } else {
                     stop = 0;
@@ -130,16 +129,16 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                 obj_ncombat.player_silos -= min(obj_ncombat.player_silos, 30);
             }
 
-            if (damage_data != "highest") {
-                damage_type = damage_data;
+            if (target_type != "highest") {
+                damage_type = target_type;
             }
-            if ((damage_data == "highest") && (weapon_index_position >= 0)) {
+            if ((target_type == "highest") && (weapon_index_position >= 0)) {
                 damage_type = "att";
                 if ((_total_damage >= 100) && (_weapon_ap > 0)) {
                     damage_type = "arp";
                 }
             }
-            if (damage_data == "highest") {
+            if (target_type == "highest") {
                 if (weapon_index_position == -51 || weapon_index_position == -52 || weapon_index_position == -53) {
                     damage_type = "att";
                 }
@@ -195,10 +194,10 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                         }
                     }
 
-                    target_armour_value = target_object.dudes_ac[target_type];
+                    target_armour_value = target_object.dudes_ac[target_index];
 
 					// Calculate final armor value based on armor piercing (AP) rating against target type
-                    if (target_object.dudes_vehicle[target_type]) {
+                    if (target_object.dudes_vehicle[target_index]) {
                         if (_weapon_ap == 4) {
                             target_armour_value = 0;
                         }
@@ -230,7 +229,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 
                     final_hit_weapon_damage_value = damage_per_weapon - (target_armour_value * attack_count_mod); //damage armour reduction
 
-                    final_hit_weapon_damage_value *= target_object.dudes_dr[target_type]; //damage_resistance mod
+                    final_hit_weapon_damage_value *= target_object.dudes_dr[target_index]; //damage_resistance mod
 
                     if (final_hit_weapon_damage_value <= 0) {
                         final_hit_weapon_damage_value = 0;
@@ -241,21 +240,21 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                     var casualties, onceh = 0,
                         ponies = 0;
 
-                    casualties = min(floor(c / target_object.dudes_hp[target_type]), shots_fired * attack_count_mod);
+                    casualties = min(floor(c / target_object.dudes_hp[target_index]), shots_fired * attack_count_mod);
 
-                    ponies = target_object.dudes_num[target_type];
-                    if ((target_object.dudes_num[target_type] == 1) && ((target_object.dudes_hp[target_type] - c) <= 0)) {
+                    ponies = target_object.dudes_num[target_index];
+                    if ((target_object.dudes_num[target_index] == 1) && ((target_object.dudes_hp[target_index] - c) <= 0)) {
                         casualties = 1;
                     }
 
-                    if (target_object.dudes_num[target_type] - casualties < 0) {
-                        overkill = casualties - target_object.dudes_num[target_type];
-                        damage_remaining = c - (overkill * target_object.dudes_hp[target_type]);
+                    if (target_object.dudes_num[target_index] - casualties < 0) {
+                        overkill = casualties - target_object.dudes_num[target_index];
+                        damage_remaining = c - (overkill * target_object.dudes_hp[target_index]);
 
                         shots_remaining = round(damage_remaining / damage_per_weapon);
                     }
 
-                    if (target_object.dudes_num[target_type] - casualties < 0) {
+                    if (target_object.dudes_num[target_index] - casualties < 0) {
                         casualties = ponies;
                     }
                     if (casualties < 0) {
@@ -272,7 +271,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                                 if ((obj_ncombat.dead_ene[iii] == "") && (openz == 0)) {
                                     openz = iii;
                                 }
-                                if ((obj_ncombat.dead_ene[iii] == target_object.dudes[target_type]) && (found == 0)) {
+                                if ((obj_ncombat.dead_ene[iii] == target_object.dudes[target_index]) && (found == 0)) {
                                     found = iii;
                                     obj_ncombat.dead_ene_n[obj_ncombat.dead_enemies] += casualties;
                                 }
@@ -280,7 +279,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                         }
                         if (found == 0) {
                             obj_ncombat.dead_enemies += 1;
-                            obj_ncombat.dead_ene[openz] = string(target_object.dudes[target_type]);
+                            obj_ncombat.dead_ene[openz] = string(target_object.dudes[target_index]);
                             obj_ncombat.dead_ene_n[openz] = casualties;
                         }
                     }
@@ -291,23 +290,23 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                             if ((damage_remaining > 0) && (shots_remaining > 0)) {
                                 var godd;
                                 godd = 0;
-                                k = target_type;
+                                k = target_index;
 
                                 // Find similar target in this same group
                                 repeat(10) {
                                     k += 1;
                                     if (godd == 0) {
-                                        if ((target_object.dudes_num[k] > 0) && (target_object.dudes_vehicle[k] == target_object.dudes_vehicle[target_type])) {
+                                        if ((target_object.dudes_num[k] > 0) && (target_object.dudes_vehicle[k] == target_object.dudes_vehicle[target_index])) {
                                             godd = k;
                                         }
                                     }
                                 }
-                                k = target_type;
+                                k = target_index;
                                 if (godd == 0) {
                                     repeat(10) {
                                         k -= 1;
                                         if ((godd == 0) && (k >= 1)) {
-                                            if ((target_object.dudes_num[k] > 0) && (target_object.dudes_vehicle[k] == target_object.dudes_vehicle[target_type])) {
+                                            if ((target_object.dudes_num[k] > 0) && (target_object.dudes_vehicle[k] == target_object.dudes_vehicle[target_index])) {
                                                 godd = k;
                                             }
                                         }
@@ -428,14 +427,14 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                             }
                         }
                     } // End repeat 10
-                    scr_flavor(weapon_index_position, target_object, target_type, shots_fired - wep_rnum[weapon_index_position], casualties);
+                    scr_flavor(weapon_index_position, target_object, target_index, shots_fired - wep_rnum[weapon_index_position], casualties);
 
-                    if ((target_object.dudes_num[target_type] == 1) && (c > 0)) {
-                        target_object.dudes_hp[target_type] -= c;
+                    if ((target_object.dudes_num[target_index] == 1) && (c > 0)) {
+                        target_object.dudes_hp[target_index] -= c;
                     } // Need special flavor here for just damaging
 
                     if (casualties >= 1) {
-                        target_object.dudes_num[target_type] -= casualties;
+                        target_object.dudes_num[target_index] -= casualties;
                         obj_ncombat.enemy_forces -= casualties;
                     }
                 }

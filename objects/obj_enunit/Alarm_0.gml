@@ -18,8 +18,6 @@ engaged = collision_point(x-10, y, obj_pnunit, 0, 1) || collision_point(x+10, y,
 
 if (!engaged){ // Shooting
     for (var i=0;i<array_length(wep);i++){
-        if (!instance_exists(obj_pnunit)) then exit;
-
         if (wep[i]=="" || wep_num[i]==0) {
             continue;
         }
@@ -45,238 +43,147 @@ if (!engaged){ // Shooting
         dist=get_block_distance(enemy);  
         target_unit_index=0;
 
-        if  (range[i] >= dist) { // The weapon is in range;
-            var _target_vehicles = apa[i] > 6 ? true : false; // AP weapons target vehicles
+        if (range[i] >= dist) {
+            var _target_type  = apa[i] > 8 ? "arp" : "att";
+            var _weapon_type  = "ranged";
+            var _target_priority_queue = ds_priority_create();
             
-            // Weird alpha strike mechanic, that changes target unit index to CM;
-            if (obj_ncombat.alpha_strike>0) {
-                obj_ncombat.alpha_strike-=0.5;
-                
-                var cm_present = false;
-                var cm_index = -1;
-                var cm_block = false;
-                with(obj_pnunit){
-                    for (var u=0;u<array_length(unit_struct);u++){
-                        if (marine_type[u]="Chapter Master"){
-                            cm_present=true;
-                            cm_index = u;
-                            cm_block=id
+            // Alpha strike override
+            if (obj_ncombat.alpha_strike > 0) {
+                obj_ncombat.alpha_strike -= 0.5;
+                with (obj_pnunit) {
+                    for (var u = 0; u < array_length(unit_struct); u++) {
+                        if (marine_type[u] == "Chapter Master") {
+                            enemy = id;
+                            target_unit_index = u;
                         }
-                    }
-                }
-                if (cm_present){
-                    enemy=cm_block;
-                    target_unit_index=cm_index;
-                }
-            }
-            
-            
-            // AP weapons attacking vehicles and forts;
-            var _no_vehicles_present = false;
-            if (_target_vehicles) {
-                var _shot = false;
-                if (!instance_exists(obj_nfort)) or (flank) {
-                    if (block_has_armour(enemy)) or (enemy.veh_type[1]=="Defenses"){
-                        scr_shoot(i,enemy,target_unit_index,"arp","ranged");
-                        // show_debug_message($"I'm shooting at a vehicle! {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
-                        continue;
-                    } else if (instance_number(obj_pnunit)>1) and (obj_ncombat.enemy!=7) {
-                        var x2=enemy.x;
-                        repeat(instance_number(obj_pnunit)-1){
-                            x2 += flank == 0 ? -10 : 10;
-                            var enemy2=instance_nearest(x2,y,obj_pnunit);
-                            if (!target_block_is_valid(enemy2, obj_pnunit)) {
-                                continue;
-                            }
-                            if (range[i] < get_block_distance(enemy2)) {
-                                break;
-                            }
-                            if (block_has_armour(enemy2)) {
-                                scr_shoot(i,enemy2,target_unit_index,"arp","ranged");
-                                // show_debug_message($"I'm shooting at a vehicle in another row! {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
-                                _shot = true;
-                                break;
-                            }
-                        }
-                        if (!_shot) {
-                            _no_vehicles_present = true;
-                            _target_vehicles = false;
-                        }
-                    }
-                } else {
-                    enemy=instance_nearest(x,y,obj_nfort);
-                    if (range[i] >= get_block_distance(enemy)) {
-                        scr_shoot(i,enemy,1,"arp","wall");
-                        // show_debug_message($"I'm shooting at the fort! {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
-                        continue;
                     }
                 }
             }
-
-            // Non-AP weapons attacking normal units;
-            if ((!_target_vehicles) && ((!instance_exists(obj_nfort)) || flank)) {
-                var _shot = false;
-                if (enemy.men > 0) {
-                    // There are marines in the first column;
-                    scr_shoot(i, enemy, target_unit_index, "att", "ranged");
-                    // show_debug_message($"I'm shooting at a normal unit! {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
+        
+            // Scan potential targets
+            var _check_targets = [];
+            with (obj_pnunit) {
+                if (!target_block_is_valid(self, obj_pnunit)) {
                     continue;
-                } else if (instance_number(obj_pnunit) > 1) {
-                    // There were no marines in the first column, looking behind;
-                    var _column_size_value = enemy.column_size;
-                    var x2 = enemy.x;
-
-                    repeat (instance_number(obj_pnunit) - 1) {
-                        x2 += !flank ? 10 : -10;
-                        var enemy2 = instance_nearest(x2, y, obj_pnunit);
-                        if (!target_block_is_valid(enemy2, obj_pnunit)) {
-                            // show_debug_message($"The block is invalid!");
-                            continue;
-                        }
-
-                        if (range[i] < get_block_distance(enemy2)) {
-                            // show_debug_message($"The range is bad!");
-                            break;
-                        }
-            
-                        var _back_column_size_value = enemy2.column_size;
-                        if (_back_column_size_value < _column_size_value) {
-                            // show_debug_message($"Protection value is too big!");
-                            continue;
-                        } else {
-                            // Calculate chance of shots passing through to back row
-                            // Higher ratio of back column size to front column size increases pass-through chance
-                            // Maximum chance capped at 40% to ensure some protection remains
-                            var _pass_chance = ((_back_column_size_value / _column_size_value) - 1) * 100;
-                            if (irandom_range(1, 100) < min(_pass_chance, 80)) {
-                                // show_debug_message($"I failed the protection check!");
-                                continue;
-                            }
-                        }
-                        scr_shoot(i, enemy2, target_unit_index, "att", "ranged");
-                        // show_debug_message($"I'm shooting at a normal unit in another row! {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
-                        _shot = true;
-                        break;
-                    }
+                }
+                array_push(_check_targets, self.id);
+            }
+            var _fort_present = instance_exists(obj_nfort);
+        
+            for (var t = 0; t < array_length(_check_targets); t++) {
+                var enemy_block = _check_targets[t];
+        
+                var _distance = get_block_distance(enemy_block);
+                if (_distance > range[i]) {
+                    continue;
+                }
+        
+                // Distance weight (closer = higher priority)
+                var _distance_priority = _distance * 10;
+        
+                // Column size influence (bigger columns = higher threat?)
+                var _size_priority = min(1, enemy_block.column_size / wep_num[i]) * 100;
+        
+                // Target type match bonus
+                var _type_priority = 0;
+                if (_target_type == "arp") {
+                    _type_priority += block_type_size(enemy_block, "armour") / enemy_block.column_size;
+                } else if (_target_type == "att") {
+                    _type_priority += block_type_size(enemy_block, "men") / enemy_block.column_size;
+                    show_debug_message($"block_type_size: {block_type_size(enemy_block, "armour")}");
+                    show_debug_message($"column_size: {enemy_block.column_size}");
                 }
 
-                // We failed to find normal units to attack, attacking vehicles with a non-AP weapon;
-                //TODO: All of these code blocks should be functions instead;
-                if (!_shot && !_no_vehicles_present) {
-                    if (!instance_exists(obj_nfort)) or (flank) {
-                        if (block_has_armour(enemy)) or (enemy.veh_type[1]=="Defenses"){
-                            scr_shoot(i,enemy,target_unit_index,"att","ranged");
-                            // show_debug_message($"I'm shooting at a vehicle, because I can't find a normal unit! {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
-                            continue;
-                        } else if (instance_number(obj_pnunit)>1) and (obj_ncombat.enemy!=7) {
-                            var x2=enemy.x;
-                            repeat(instance_number(obj_pnunit)-1){
-                                x2 += flank == 0 ? -10 : 10;
-                                var enemy2=instance_nearest(x2,y,obj_pnunit);
-                                if (!target_block_is_valid(enemy2, obj_pnunit)) {
-                                    continue;
-                                }
-                                if (range[i] < get_block_distance(enemy2)) {
-                                    break;
-                                }
-                                if (block_has_armour(enemy2)) {
-                                    scr_shoot(i,enemy2,target_unit_index,"att","ranged");
-                                    // show_debug_message($"I'm shooting at a vehicle in another row, because I can't find a normal unit! {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
-                                    break;
-                                }
-                            }
-                        }
-                    } else {
-                        enemy=instance_nearest(x,y,obj_nfort);
-                        if (range[i] >= get_block_distance(enemy)) {
-                            scr_shoot(i,enemy,1,"att","wall");
-                            // show_debug_message($"I'm shooting at a fort, because I can't find a normal unit! {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
-                            continue;
-                        }
+                var priority = 0;
+                priority += 100 * _type_priority;
+                priority += _size_priority;
+                priority -= _distance_priority;
+
+                show_debug_message($"{wep[i]} priority {priority} _type_priority: {_type_priority} _size_priority: {_size_priority} _distance_priority: {_distance_priority}");
+                ds_priority_add(_target_priority_queue, enemy_block, priority);
+            }
+        
+            // Add fort as fallback target
+            if (_fort_present && !flank) {
+                var fort = instance_nearest(x, y, obj_nfort);
+                if (fort != noone) {
+                    var d = get_block_distance(fort);
+                    if (d <= range[i]) {
+                        var fort_priority = 9000;
+                        ds_priority_add(_target_priority_queue, fort, fort_priority);
                     }
                 }
             }
+        
+            // Shoot highest-priority target
+            if (!ds_priority_empty(_target_priority_queue)) {
+                var best_target = ds_priority_delete_max(_target_priority_queue);
+                var is_fort = (best_target.object_index == obj_nfort);
+                var _shoot_type = is_fort ? "wall" : _weapon_type;
+                var unit_index = is_fort ? 1 : target_unit_index;
+        
+                scr_shoot(i, best_target, unit_index, _target_type, "ranged");
+            } else {
+                log_error($"{wep[i]} didn't find a valid target! This shouldn't happen!");
+                show_debug_message($"We didn't find a valid target! Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
+            }
+        
+            ds_priority_destroy(_target_priority_queue);
         } else {
-            // show_debug_message($"I can't shoot, my range is too small! Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}");
+            show_debug_message($"I can't shoot, my range is too small! Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}");
             continue;  
         }
-        log_error($"{wep[i]} didn't find a valid target! This shouldn't happen!");
-        // show_debug_message($"We didn't find a valid target! Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
     }
-}
-//TODO: The melee code was not refactored;
-else if ((engaged || enemy.engaged) ) {// Melee
-    engaged=1;
-    var i=0,dist=999,no_ap=1;
-    // dist=point_distance(x,y,enemy.x,enemy.y)/10;
-    if !(instance_exists(obj_pnunit))then exit;
-    for (var i=0;i<array_length(wep);i++){
-        if (wep[i]=="" || wep_num[i]==0) then continue;
-        var _armour_piercing=0;
-        if (!instance_exists(obj_pnunit)) then exit;
-        if (!flank){
-            enemy=get_rightmost();
-            enemy2=enemy;
-            if (enemy=="none"){
-                exit;
-            }
-            dist=get_block_distance(enemy);
-        }
-        else if (flank){
-            enemy=get_leftmost();
-            enemy2=enemy;
-            if (enemy=="none"){
-                exit;
-            }                
-            dist=get_block_distance(enemy);
-        } 
-        
-        
-        if (apa[i]=0) or (apa[i]<att[i]) then no_ap+=1;
-        //show_debug_message($"{range[i]},{att[i]},{apa[i]},{wep[i]},{enemy}")
-        if  ((range[i]<=2) or ((floor(range[i])!=range[i]))){// Weapon meets preliminary checks
-            if (apa[i]>0) then _armour_piercing=1;// Determines if it is _armour_piercing or not
-            if (_armour_piercing) and (instance_exists(obj_nfort)) and (!flank){// Huff and puff and blow the wall down
-                enemy=instance_nearest(x,y,obj_nfort);
-                scr_shoot(i,enemy,1,"arp","wall");
-                continue;
-            }            
-            if (_armour_piercing){// Check for vehicles
-                var g=0,good=0,enemy2;
-                
-                if (block_has_armour(enemy)){
-                    // good=scr_target(enemy,"veh");// First target has vehicles, blow it to hell
-                    scr_shoot(i,enemy,1,"arp","melee");
-                    good = true;
-                }
-                if (!good) then _armour_piercing=0;// Fuck it, shoot at infantry
-            }
-            
-            if (!_armour_piercing) {// Check for men
-                // show_message(string(wep[i]));
-                var enemy2,g=0,good=0;
-                if ((enemy.men)){
-                    // good=scr_target(enemy,"men");// First target has vehicles, blow it to hell
-                    scr_shoot(i,enemy,1,"att","melee");
-                }
-                else if (block_has_armour(enemy)){
-                    scr_shoot(i,enemy,1,"arp","melee");// Swing anyways, maybe they'll get lucky
-                }
-            }
-   
-        }
-   
-    }
-    
-    
-    // if (no_ap=30) and (enemy.men=0) and (flank=0){// Next turn?
-        
-    // }
-    
-    
-    
 }
 
+//TODO: The melee code was not refactored;
+if (engaged) {     // Melee
+    for (var i = 0; i < array_length(wep); i++) {
+        if (wep[i]=="" || wep_num[i]==0) {
+            continue;
+        }
+
+        if ((range[i] >= 2) || (ammo[i]==0)) {
+            // show_debug_message($"A melee or no ammo weapon was found! Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}; Ammo: {ammo[i]}");
+            continue;
+        }
+
+        if ((range[i]==0)) {
+            log_error($"{wep[i]} has broken range! This shouldn't happen! Range: {range[i]}; Ammo: {ammo[i]}; Owner: {wep_owner[i]}");
+            // show_debug_message($"A broken weapon was found! i:{i}; Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}; Ammo: {ammo[i]}");
+            continue;
+        }
+
+        if (!target_block_is_valid(enemy,obj_pnunit)){
+            exit;
+        }
+
+        if (instance_exists(obj_nfort) && (!flank)) {
+            enemy = instance_nearest(x, y, obj_nfort);
+            scr_shoot(i, enemy, 1, "arp", "wall");
+            continue;
+        }
+
+        var _armour_piercing = apa[i] > 6 ? true : false;
+        if (_armour_piercing) {
+            // Check for vehicles
+            if (block_has_armour(enemy)) {
+                scr_shoot(i, enemy, 1, "arp", "melee");
+                continue;
+            }
+            _armour_piercing = false;
+        }
+
+        if (!_armour_piercing) {
+            if (enemy.men > 0) {
+                scr_shoot(i, enemy, 1, "att", "melee");
+            } else if (block_has_armour(enemy)) {
+                scr_shoot(i, enemy, 1, "arp", "melee");
+            }
+        }
+    }
+}
 
 instance_activate_object(obj_pnunit);
 

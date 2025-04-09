@@ -411,7 +411,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 		}
 		if (argument0 = "Big Shoota") {
 			atta = 24;
-			arp = 0;
+			arp = 4;
 			rang = 13;
 			amm = 6;
 			spli = 10;
@@ -432,7 +432,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 		}
 		if (argument0 = "Snazzgun") {
 			atta = 30;
-			arp = 5;
+			arp = 10;
 			rang = 11;
 			amm = 10;
 			spli = 2;
@@ -474,14 +474,14 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 		}
 		if (argument0 = "Rokkit Launcha") {
 			atta = 38;
-			arp = 6;
+			arp = 12;
 			rang = 16;
 			spli = 3;
 			amm = 1;
 		}
 		if (argument0 = "Krooz Missile") {
 			atta = 48;
-			arp = 8;
+			arp = 16;
 			rang = 18;
 			spli = 4;
 			amm = 1;

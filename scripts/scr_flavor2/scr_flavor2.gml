@@ -3,10 +3,10 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
 
 	if (obj_ncombat.wall_destroyed = 1) then exit;
 
-	var m1, m2, m3, mes;
+	var m1, m2, mes;
+	mes = "INVALID! lost_units_count:{lost_units_count} target_type:{target_type} hostile_range:{hostile_range} hostile_weapon:{hostile_weapon} hostile_shots:{hostile_shots}";
 	m1 = "";
 	m2 = "";
-	m3 = "";
 
 	var _hostile_weapon, _hostile_shots;
 	_hostile_weapon = "";
@@ -28,19 +28,6 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
 	// show_message(string(hostile_weapon)+"|"+string(_hostile_weapon)+"#"+string(los)+"#"+string(los_num));
 
 	var flavor = 0;
-
-	/*
-	if (lost_units_count="Venom Claws"){atta=200;arp=0;rang=1;spli=0;if (obj_ini.preomnor=1){atta=240;}}
-	if (lost_units_count="Web Spinner"){atta=40;arp=0;rang=2.1;spli=1;amm=1;}
-	if (lost_units_count="Warpsword"){atta=300;arp=200;rang=1;spli=1;}
-	if (lost_units_count="Iron Claw"){atta=300;arp=400;rang=1;spli=0;}
-	if (lost_units_count="Maulerfiend Claws"){atta=300;arp=300;rang=1;spli=1;}
-
-	if (lost_units_count="Eldritch Fire"){atta=80;arp=40;rang=5.1;}
-	if (lost_units_count="Khorne Demon Melee"){atta=350;arp=400;rang=1;spli=1;}
-	if (lost_units_count="Demon Melee"){atta=250;arp=300;rang=1;spli=1;}
-	if (lost_units_count="Lash Whip"){atta=80;arp=0;rang=2;}
-	*/
 
 	if (_hostile_weapon = "Daemonette Melee") {
 		flavor = 1;
@@ -91,8 +78,8 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
 		}
 		if (_hostile_weapon = "Kannon") {
 			flavor = 1;
-			if (_hostile_shots > 1) then m1 = string(_hostile_shots) + " " + string(_hostile_weapon) + "z belch out large caliber shells.  ";
-			if (_hostile_shots = 1) then m1 = "A " + string(_hostile_weapon) + "z belches out a large caliber shell.  ";
+			if (_hostile_shots > 1) then m1 = string(_hostile_shots) + " " + string(_hostile_weapon) + "z belch out large caliber shells at " + string(target_type) + ".  ";
+			if (_hostile_shots = 1) then m1 = "A " + string(_hostile_weapon) + "z belches out a large caliber shell at " + string(target_type) + ".  ";
 		}
 		if (_hostile_weapon = "Shoota") {
 			flavor = 1;
@@ -117,7 +104,7 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
 			ranz = choose(1, 2, 2, 3, 3);
 			if (ranz = 1) then m1 = string(_hostile_shots) + " rokkitz shoot at " + string(target_type) + ", the explosions disrupting.  ";
 			if (ranz = 2) then m1 = string(_hostile_shots) + " rokkitz scream upward and then fall upon " + string(target_type) + ".  ";
-			if (ranz = 3) then m1 = string(_hostile_shots) + " " + string(_hostile_weapon) + "z roar and fire their payloads.  ";
+			if (ranz = 3) then m1 = string(_hostile_shots) + " " + string(_hostile_weapon) + "z roar and fire their payloads at " + string(target_type) + ".  ";
 		}
 
 		if (_hostile_weapon = "Staff of Light Shooting") and(_hostile_shots = 1) {
@@ -382,15 +369,8 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
 		if (lost_units_count = 1) then m2 += " has been incapacitated.";
 	}
 
-	mes = m1 + m2 + m3;
-	// show_message(mes);
+	mes = m1 + m2;
 
-	if (string_length(mes) > 3) {
-		obj_ncombat.messages += 1;
-		obj_ncombat.message[obj_ncombat.messages] = mes;
-		obj_ncombat.message_sz[obj_ncombat.messages] = lost_units_count + (0.5 - (obj_ncombat.messages / 100));
-		obj_ncombat.message_priority[obj_ncombat.messages] = 0;
-		obj_ncombat.alarm[3] = 2;
-	}
-
+	add_battle_log_message(mes, lost_units_count);
+	display_battle_log_message();
 }

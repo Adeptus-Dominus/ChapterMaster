@@ -115,7 +115,7 @@ function scr_clean(target_object, weapon_data) {
     //
     // Parameters:
     // target_object: The obj_pnunit instance taking casualties. Represents the player's rank being attacked.
-    // target_is_infantry: Boolean-like value (1 for infantry, 0 for vehicles). Determines whether to process as infantry/dreadnoughts or vehicles.
+    // target_type: Boolean-like value (1 for infantry, 0 for vehicles). Determines whether to process as infantry/dreadnoughts or vehicles.
     // hostile_shots: The number of shots fired at the target. Represents the total hits from the attacking unit.
     // hostile_damage: The amount of damage per shot. This value is reduced by armor or damage resistance before being applied.
     // hostile_weapon: The name of the weapon used in the attack. Certain weapons have special effects that modify damage behavior.
@@ -131,15 +131,16 @@ function scr_clean(target_object, weapon_data) {
             var hostile_shots = weapon_data.shot_count;
             var hostile_damage = weapon_data.damage;
             var hostile_weapon = weapon_data.name;
-            var hostile_range = weapon_data.type;
-            var target_is_infantry = weapon_data.target_type;
-            var vehicle_hits = 0;
-            var man_hits = 0;
-            var total_hits = hostile_shots;
+            var hostile_range = weapon_data.attack_type;
+            var target_type = weapon_data.target_type;
+            var shooter_count = weapon_data.shooter_count;
+            var hits = 0;
             var unit_type = "";
             var valid_vehicles = [];
             var valid_marines = [];
+            var units_lost = 0;
 
+            // Find valid infantry targets
             for (var m = 0; m < array_length(unit_struct); m++) {
                 var unit = unit_struct[m];
                 if (is_struct(unit) && unit.hp() > 0 && marine_dead[m] == 0) {
@@ -154,35 +155,41 @@ function scr_clean(target_object, weapon_data) {
                     }
                 }
             }
+            valid_marines = array_shuffle(valid_marines);
 
-            // ### Vehicle Damage Processing ###
-            if (!target_is_infantry && (veh + dreads > 0)) {
-                // Find valid vehicle targets
-                for (var v = 0; v < veh; v++) {
-                    if (veh_hp[v] > 0 && veh_dead[v] == 0) {
-                        var _temp_struct = {
-                            index: v,
-                            type: "veh"
-                        };
-                        array_push(valid_vehicles, _temp_struct);
-                    }
+            // Find valid vehicle targets
+            for (var v = 0; v < veh; v++) {
+                if (veh_hp[v] > 0 && veh_dead[v] == 0) {
+                    var _temp_struct = {
+                        index: v,
+                        type: "veh"
+                    };
+                    array_push(valid_vehicles, _temp_struct);
                 }
-                valid_vehicles = array_shuffle(valid_vehicles);
+            }
+            valid_vehicles = array_shuffle(valid_vehicles);
 
-                // Apply damage for each hostile shot, until we run out of targets
-                for (var shot = 0; shot < total_hits; shot++) {
-                    if (array_empty(valid_vehicles)) {
-                        break;
-                    }
+            if (target_type == "arp" && array_empty(valid_vehicles)) {
+                target_type = "att";
+            } else if (target_type = "att" && array_empty(valid_marines)) {
+                target_type = "arp";
+            }
+
+            for (var shot = 0; shot < hostile_shots; shot++) {
+                // ### Vehicle Damage Processing ###
+                if (target_type == "arp" && !array_empty(valid_vehicles)) {
+                    // Apply damage for each hostile shot, until we run out of targets
+
+                    hits++;
 
                     // Select a random vehicle from the valid list
-                    var vehicle = array_random_element(valid_vehicles);
+                    var random_index = array_random_index(valid_vehicles);
+                    var vehicle = valid_vehicles[random_index];
                     var vehicle_id = vehicle.index;
                     var type = vehicle.type;
 
                     if (type == "veh") {
                         unit_type = veh_type[vehicle_id];
-                        vehicle_hits++;
 
                         // Apply damage
                         var _min_damage = enemy == 13 ? 1 : 0.25;
@@ -194,7 +201,6 @@ function scr_clean(target_object, weapon_data) {
 
                         veh_hp[vehicle_id] -= _modified_damage;
 
-                        var units_lost = 0;
                         // Check if the vehicle is destroyed
                         if (veh_hp[vehicle_id] <= 0 && veh_dead[vehicle_id] == 0) {
                             veh_dead[vehicle_id] = 1;
@@ -213,12 +219,9 @@ function scr_clean(target_object, weapon_data) {
                             // Remove dead vehicles from further hits
                             array_delete(valid_vehicles, vehicle_id, 1);
                         }
-                        // Flavor messages
-                        scr_flavor2(units_lost, unit_type, hostile_range, hostile_weapon, vehicle_hits);
                     } else {
                         var marine = unit_struct[vehicle_id];
                         unit_type = marine.role();
-                        vehicle_hits++;
 
                         // Apply damage
                         var _min_damage = enemy == 13 ? 1 : 0.25;
@@ -268,42 +271,28 @@ function scr_clean(target_object, weapon_data) {
                         marine.add_or_sub_health(-_modified_damage);
 
                         // Check if marine is dead
-                        var units_lost = 0;
                         if (check_dead_marines(marine, vehicle_id)) {
                             // Remove dead infantry from further hits
-                            array_delete(valid_vehicles, vehicle_id, 1);
+                            array_delete(valid_vehicles, random_index, 1);
                             units_lost++;
+                            if (array_empty(valid_vehicles)) {
+                                target_type = "att";
+                                continue;
+                            }
                         }
-
-                        // Flavor messages
-                        scr_flavor2(units_lost, unit_type, hostile_range, hostile_weapon, vehicle_hits);
-                    }
-
-                    if ((veh + dreads) <= 0) {
-                        break;
                     }
                 }
-            }
 
-            // ### Marine + Dreadnought Processing ###
-            if (target_is_infantry && (men > 0)) {
-                man_hits = total_hits - vehicle_hits;
-
-                // Find valid infantry targets
-                valid_marines = array_shuffle(valid_marines);
-
-                // Apply damage for each shot
-                for (var shot = 0; shot < man_hits; shot++) {
-                    if (array_empty(valid_marines)) {
-                        break; // No valid targets left
-                    }
+                // ### Marine + Dreadnought Processing ###
+                if (target_type == "att" && !array_empty(valid_marines)) {
+                    // Apply damage for each shot
+                    hits++;
 
                     // Select a random marine from the valid list
                     var random_index = array_random_index(valid_marines);
                     var marine_index = valid_marines[random_index];
                     var marine = unit_struct[marine_index];
                     unit_type = marine.role();
-                    var units_lost = 0;
 
                     // Apply damage
                     var _min_damage = enemy == 13 ? 1 : 0.25;
@@ -352,24 +341,26 @@ function scr_clean(target_object, weapon_data) {
                     // Check if marine is dead
                     if (check_dead_marines(marine, marine_index)) {
                         // Remove dead infantry from further hits
-                        array_delete(valid_marines, marine_index, 1);
+                        array_delete(valid_marines, random_index, 1);
                         units_lost++;
+                        if (array_empty(valid_marines)) {
+                            target_type = "arp";
+                            continue;
+                        }
                     }
+                }
 
-                    // Flavor messages
-                    scr_flavor2(units_lost, unit_type, hostile_range, hostile_weapon, man_hits);
-                    if (men <= 0) {
-                        break;
-                    }
+                // ### Cleanup ###
+                // If the target_object got wiped out, move it off-screen
+                if ((men + veh + dreads) <= 0) {
+                    x = -5000;
+                    instance_deactivate_object(id);
+                    break;
                 }
             }
 
-            // ### Cleanup ###
-            // If the target_object got wiped out, move it off-screen
-            if ((men + veh + dreads) <= 0) {
-                x = -5000;
-                instance_deactivate_object(id);
-            }
+            // Flavour battle-log message
+            scr_flavor2(units_lost, unit_type, hostile_range, hostile_weapon, shooter_count);
         }
     } catch (_exception) {
         handle_exception(_exception);

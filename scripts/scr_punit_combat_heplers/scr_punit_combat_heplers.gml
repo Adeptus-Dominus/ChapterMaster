@@ -115,6 +115,23 @@ function block_has_armour(target) {
 	}
 }
 
+function block_type_size(target, type) {
+	try {
+		if (type == "men") {
+			return (target.men * 0.5) + target.medi;
+		} else if (type == "veh") {
+			return (target.veh * 2.5);
+		} else if (type == "dread") {
+			return (target.dreads * 2);
+		} else if (type == "armour") {
+			return (target.veh * 2.5) + (target.dreads * 2);
+		}
+		return 0;
+	} catch (_exception) {
+		handle_exception(_exception);
+	}
+}
+
 function get_leftmost(block_type = obj_pnunit, include_flanking = true) {
 	try {
 		var left_most = "none";
@@ -150,7 +167,7 @@ function get_leftmost(block_type = obj_pnunit, include_flanking = true) {
 
 function get_block_distance(block) {
 	try {
-		return point_distance(x, y, block.x, block.y) / 10;
+		return round(point_distance(x, y, block.x, block.y) / 10);
 	} catch (_exception) {
 		handle_exception(_exception);
 	}
