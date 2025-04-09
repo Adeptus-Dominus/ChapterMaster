@@ -411,6 +411,7 @@ function setup_complex_livery_shader(setup_role, unit = "none"){
 
     var _in_creation = instance_exists(obj_creation);
 
+    var _is_unit = unit != "none";
    if (_in_creation) {
         var data_set = variable_clone(obj_creation.livery_picker.map_colour);
         if (obj_creation.buttons.company_options_toggle.company_view){
@@ -448,7 +449,7 @@ function setup_complex_livery_shader(setup_role, unit = "none"){
                 }
             }       
         }
-        if (unit != "none"){
+        if (_is_unit){
             data_set = variable_clone(data_set);
             var _company_livery = obj_ini.company_liveries[unit.company];
             var _comp_names = struct_get_names(_company_livery);
@@ -460,6 +461,13 @@ function setup_complex_livery_shader(setup_role, unit = "none"){
                 }
             } 
         }       
+    }
+    if (_is_unit){
+        var _names = struct_get_names(unit.personal_livery);
+        for (var i=0;i<array_length(_names);i++){
+            var _area = _names[i];
+            data_set[$ _area] = unit.personal_livery[$_area];
+        }
     }
 
     var spot_names = struct_get_names(data_set);
@@ -529,8 +537,7 @@ function setup_complex_livery_shader(setup_role, unit = "none"){
         var colour = data_set[$ spot_names[i]];
         
         if (!is_array(colour)){
-            var colour_set = [colours_instance.col_r[colour]/255, colours_instance.col_g[colour]/255, colours_instance.col_b[colour]/255];
-            shader_set_uniform_f_array(shader_get_uniform(full_livery_shader, spot_names[i]), colour_set);
+            set_complex_shader_area(spot_names[i], colour);
         } else {
             if (colour[0] == "texture"){
                 if (struct_exists(global.textures, colour[1])){
@@ -572,9 +579,7 @@ function setup_complex_livery_shader(setup_role, unit = "none"){
                         }                    
                     }
                 }
-                colour = _data.colour;      
-                var colour_set = [colours_instance.col_r[colour]/255, colours_instance.col_g[colour]/255, colours_instance.col_b[colour]/255];
-                shader_set_uniform_f_array(shader_get_uniform(full_livery_shader, spot_names[i]), colour_set);                
+                set_complex_shader_area(spot_names[i],_data.colour);               
             }
         }
     } 
@@ -582,14 +587,28 @@ function setup_complex_livery_shader(setup_role, unit = "none"){
     return _textures;   
 }
 
+
+function get_shader_colour_from_arrays(colour){
+    var colours_instance = instance_exists(obj_creation) ? obj_creation : obj_controller;
+    try {
+        var colour_set = [colours_instance.col_r[colour]/255, colours_instance.col_g[colour]/255, colours_instance.col_b[colour]/255];
+    } catch(_exception){
+        //handle_exception(_exception);
+        var colour_set = [0,0,0];
+    }
+
+    return colour_set;
+}
 function set_complex_shader_area(area, colour){
     if (is_array(area)){
         for (var i=0;i<array_length(area);i++){
             var small_area = area[i];
-            var colours_instance = instance_exists(obj_creation) ? obj_creation : obj_controller;
-            var colour_set = [colours_instance.col_r[colour]/255, colours_instance.col_g[colour]/255, colours_instance.col_b[colour]/255];
+            colour_set = get_shader_colour_from_arrays(colour)
             shader_set_uniform_f_array(shader_get_uniform(full_livery_shader, small_area), colour_set);
         }  
+    } else {
+        colour_set = get_shader_colour_from_arrays(colour)
+        shader_set_uniform_f_array(shader_get_uniform(full_livery_shader, area), colour_set);        
     }
 }
 

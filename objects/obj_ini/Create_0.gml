@@ -147,6 +147,7 @@ serialize = function(){
         y,
         custom_advisors,
         full_liveries: full_liveries,
+        company_liveries : company_liveries,
         complex_livery_data: complex_livery_data,
         squad_types: squad_types,
         artifact_struct: artifact_struct_trimmed,
@@ -169,7 +170,7 @@ serialize = function(){
 }
 
 deserialize = function(save_data){
-    var exclusions = ["complex_livery_data", "full_liveries", "squad_types", "marine_structs", "squad_structs"]; // skip automatic setting of certain vars, handle explicitly later
+    var exclusions = ["complex_livery_data", "full_liveries","company_liveries", "squad_types", "marine_structs", "squad_structs"]; // skip automatic setting of certain vars, handle explicitly later
 
     // Automatic var setting
     var all_names = struct_get_names(save_data);
@@ -197,6 +198,15 @@ deserialize = function(save_data){
     } else {
         variable_struct_set(obj_ini, "full_liveries", array_create(21,variable_clone(livery_picker.map_colour)));
     }
+
+    livery_picker.scr_unit_draw_data(-1);
+    if(struct_exists(save_data, "company_liveries")){
+        variable_struct_set(obj_ini, "company_liveries", save_data.company_liveries)
+    } else {
+        variable_struct_set(obj_ini, "company_liveries", array_create(11,variable_clone(livery_picker.map_colour)));
+    }
+
+    livery_picker.scr_unit_draw_data();
 
     if(struct_exists(save_data, "complex_livery_data")){
         variable_struct_set(obj_ini, "complex_livery_data", save_data.complex_livery_data);

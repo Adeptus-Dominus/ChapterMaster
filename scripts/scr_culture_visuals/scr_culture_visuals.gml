@@ -745,6 +745,10 @@ function DummyMarine()constructor{
         body = generate_marine_body();
         add_purity_seal_markers();
     }
+    personal_livery = {};
+    if (obj_creation.chapter_name == "Deathwatch"){
+        personal_livery.right_pauldron = irandom(30);
+    }
     update();
     static distribute_traits = scr_marine_trait_spawning;
     base_group="astartes";

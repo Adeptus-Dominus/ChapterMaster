@@ -394,13 +394,14 @@ function scr_chapter_new(argument0) {
 				for (var i=0;i<array_length(company_liveries);i++){
 					var _comp_data = company_liveries[i];
 					for (var s=0;s<array_length(_all_maps);s++){
-						var _name = _all_maps[s]
+						var _name = _all_maps[s];
 						if !(struct_exists(_comp_data,_name )){
-							_comp_data[$ name] = livery_picker.map_colour[$ name];
+							_comp_data[$ _name] = livery_picker.map_colour[$ _name];
 						}
 					}
 				}
-			}   
+			}  
+			livery_picker.scr_unit_draw_data();
 			if (full_liveries==""){
 			    livery_picker.scr_unit_draw_data();
 			    livery_picker.set_default_armour(struct_cols,col_special);
