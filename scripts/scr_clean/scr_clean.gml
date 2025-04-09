@@ -127,6 +127,8 @@ function scr_clean(target_object, weapon_data) {
                 exit;
             }
 
+            var _t_start = get_timer();
+            
             var armour_pierce = weapon_data.armour_pierce;
             var hostile_shots = weapon_data.shot_count;
             var hostile_damage = weapon_data.damage;
@@ -359,8 +361,19 @@ function scr_clean(target_object, weapon_data) {
                 }
             }
 
+            var _t_end = get_timer();
+            var _elapsed_ms = (_t_end - _t_start) / 1000;
+            show_debug_message($"⏱️ Clean Execution Time: {_elapsed_ms}ms");
+
+            show_debug_message($"Hits: {hits}");
+            show_debug_message($"Kills: {units_lost}");
+
             // Flavour battle-log message
+            var _t_start = get_timer();
             scr_flavor2(units_lost, unit_type, hostile_range, hostile_weapon, shooter_count);
+            var _t_end = get_timer();
+            var _elapsed_ms = (_t_end - _t_start) / 1000;
+            show_debug_message($"⏱️ Flavour Execution Time: {_elapsed_ms}ms");
         }
     } catch (_exception) {
         handle_exception(_exception);

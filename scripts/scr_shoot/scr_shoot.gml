@@ -27,7 +27,26 @@ function scr_shoot(weapon_index_position, target_object, target_index, target_ty
         var _weapon_ammo = ammo[weapon_index_position];
         var _shooter = wep_owner[weapon_index_position];
         var _shooter_count = wep_num[weapon_index_position];
-        var _shot_count = _shooter_count * _weapon_max_kills;
+
+        var _melee_accuracy_mod = 1;
+        var _ranged_accuracy_mod = 1;
+        switch (obj_ncombat.enemy) {
+            case eFACTION.Ork:
+                _melee_accuracy_mod = 0.7;
+                _ranged_accuracy_mod = 0.4;
+                break;
+            case eFACTION.Tau:
+                _melee_accuracy_mod = 0.5;
+                _ranged_accuracy_mod = 0.6;
+                break;
+            case eFACTION.Tyranids:
+                _melee_accuracy_mod = 0.6;
+                _ranged_accuracy_mod = 0.6;
+                break;
+        }
+        var _accuracy_mod = melee_or_ranged == "ranged" ? _ranged_accuracy_mod : _melee_accuracy_mod;
+
+        var _shot_count = _shooter_count * _weapon_max_kills * _accuracy_mod;
         var _weapon_damage_type = target_type;
         var _weapon_damage_per_hit = _total_damage / _shooter_count;
 

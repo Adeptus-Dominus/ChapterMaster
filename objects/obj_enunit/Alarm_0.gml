@@ -15,7 +15,7 @@ var enemy2 = enemy;
 //In melee check
 engaged = collision_point(x-10, y, obj_pnunit, 0, 1) || collision_point(x+10, y, obj_pnunit, 0, 1);
 // show_debug_message($"enemy is in melee {engaged}")
-
+var _t_start1 = get_timer();
 if (!engaged){ // Shooting
     for (var i=0;i<array_length(wep);i++){
         if (wep[i]=="" || wep_num[i]==0) {
@@ -60,6 +60,7 @@ if (!engaged){ // Shooting
                     }
                 }
             }
+            var _t_start = get_timer();
         
             // Scan potential targets
             var _check_targets = [];
@@ -69,8 +70,8 @@ if (!engaged){ // Shooting
                 }
                 array_push(_check_targets, self.id);
             }
-            var _fort_present = instance_exists(obj_nfort);
         
+            show_debug_message($"{wep[i]} IS HERE!");
             for (var t = 0; t < array_length(_check_targets); t++) {
                 var enemy_block = _check_targets[t];
         
@@ -80,42 +81,41 @@ if (!engaged){ // Shooting
                 }
         
                 // Distance weight (closer = higher priority)
-                var _distance_priority = _distance * 10;
+                var _distance_priority = _distance * 20;
         
                 // Column size influence (bigger columns = higher threat?)
-                var _size_priority = min(1, enemy_block.column_size / wep_num[i]) * 100;
+                var _overkill_protection = wep_num[i] / enemy_block.column_size;
         
                 // Target type match bonus
                 var _type_priority = 0;
                 if (_target_type == "arp") {
-                    _type_priority += block_type_size(enemy_block, "armour") / enemy_block.column_size;
+                    _type_priority = 50 * (block_type_size(enemy_block, "armour") / enemy_block.column_size);
                 } else if (_target_type == "att") {
-                    _type_priority += block_type_size(enemy_block, "men") / enemy_block.column_size;
-                    show_debug_message($"block_type_size: {block_type_size(enemy_block, "armour")}");
-                    show_debug_message($"column_size: {enemy_block.column_size}");
+                    _type_priority = 50 * (block_type_size(enemy_block, "men") / enemy_block.column_size);
                 }
 
                 var priority = 0;
-                priority += 100 * _type_priority;
-                priority += _size_priority;
+                priority += _type_priority;
+                priority -= _overkill_protection;
                 priority -= _distance_priority;
 
-                show_debug_message($"{wep[i]} priority {priority} _type_priority: {_type_priority} _size_priority: {_size_priority} _distance_priority: {_distance_priority}");
+                show_debug_message($"Priority: {priority} Matching Type: +{_type_priority} Overkill Debuff: -{_overkill_protection} Distance Debuff: -{_distance_priority}");
                 ds_priority_add(_target_priority_queue, enemy_block, priority);
             }
         
             // Add fort as fallback target
-            if (_fort_present && !flank) {
-                var fort = instance_nearest(x, y, obj_nfort);
-                if (fort != noone) {
-                    var d = get_block_distance(fort);
-                    if (d <= range[i]) {
-                        var fort_priority = 9000;
-                        ds_priority_add(_target_priority_queue, fort, fort_priority);
-                    }
+            var fort = instance_nearest(x, y, obj_nfort);
+            if (fort != noone && !flank) {
+                var d = get_block_distance(fort);
+                if (d <= range[i]) {
+                    var fort_priority = 9000;
+                    ds_priority_add(_target_priority_queue, fort, fort_priority);
                 }
             }
         
+            var _t_end = get_timer();
+            var _elapsed_ms = (_t_end - _t_start) / 1000;
+            show_debug_message($"⏱️ Execution Time: {_elapsed_ms}ms");
             // Shoot highest-priority target
             if (!ds_priority_empty(_target_priority_queue)) {
                 var best_target = ds_priority_delete_max(_target_priority_queue);
@@ -136,6 +136,10 @@ if (!engaged){ // Shooting
         }
     }
 }
+
+var _t_end1 = get_timer();
+var _elapsed_ms1 = (_t_end1 - _t_start1) / 1000;
+show_debug_message($"⏱️ Ranged Alarm Execution Time: {_elapsed_ms1}ms");
 
 //TODO: The melee code was not refactored;
 if (engaged) {     // Melee
@@ -165,23 +169,8 @@ if (engaged) {     // Melee
             continue;
         }
 
-        var _armour_piercing = apa[i] > 6 ? true : false;
-        if (_armour_piercing) {
-            // Check for vehicles
-            if (block_has_armour(enemy)) {
-                scr_shoot(i, enemy, 1, "arp", "melee");
-                continue;
-            }
-            _armour_piercing = false;
-        }
-
-        if (!_armour_piercing) {
-            if (enemy.men > 0) {
-                scr_shoot(i, enemy, 1, "att", "melee");
-            } else if (block_has_armour(enemy)) {
-                scr_shoot(i, enemy, 1, "arp", "melee");
-            }
-        }
+        var _attack_type = apa[i] > 8 ? "arp" : "att";
+        scr_shoot(i, enemy, 1, _attack_type, "melee");
     }
 }
 

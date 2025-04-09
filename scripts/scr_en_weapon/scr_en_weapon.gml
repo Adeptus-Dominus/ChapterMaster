@@ -438,11 +438,11 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 			spli = 2;
 		}
 		if (argument0 = "Grot Blasta") {
-			atta = 20;
+			atta = 14;
 			arp = 0;
-			rang = 4;
-			amm = 5;
-			spli = 1;
+			rang = 2;
+			amm = 4;
+			spli = 2;
 		}
 		if (argument0 = "Kannon") {
 			atta = 54;
