@@ -70,7 +70,7 @@ function scr_load(save_part, save_id) {
 		/// the object doesnt want to work
 		with(obj_controller){
 			var exclusions = ["specialist_point_handler", "location_viewer", "id",
-			 "techs","apoth","forge_queue","point_breakdowns","apothecary_points"]; // skip automatic setting of certain vars, handle explicitly later
+			 "techs","apoths","forge_queue","point_breakdown","apothecary_points", "forge_points"]; // skip automatic setting of certain vars, handle explicitly later
 
 			// Automatic var setting
 			var all_names = struct_get_names(save_data);
