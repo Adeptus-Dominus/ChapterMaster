@@ -719,6 +719,51 @@ global.modular_drawing_items = [
         position : "left_pauldron_base",
         body_types :[0],
         prevent_others : true,
+    },
+    {
+
+        weapon_map : "Assault Cannon",
+        position : "weapon",
+        display_type : "terminator_ranged";
+        weapon_data : {
+            arm_type : 1,
+            hand_type : 0,
+            sprite : spr_weapon_assca,            
+        }
+        body_types :[2],
+    },
+    {
+        weapon_map : "Heavy Flamer",
+        position : "weapon",
+        display_type : "terminator_ranged";
+        weapon_data : {
+            arm_type : 1,
+            hand_type : 0,
+            sprite : spr_weapon_hflamer_term,            
+        }
+        body_types :[2],
+    },
+    {
+        weapon_map : "Plasma Cannon",
+        position : "weapon",
+        display_type : "terminator_ranged";
+        weapon_data : {
+            arm_type : 1,
+            hand_type : 0,
+            sprite : spr_weapon_plasma_cannon_term,            
+        }
+        body_types :[2],
+    },
+    {
+        weapon_map : "Grav-Cannon",
+        position : "weapon",
+        weapon_data : {
+            arm_type : 1,
+            hand_type : 0,
+            display_type : "terminator_ranged",
+            sprite : spr_weapon_plasma_cannon_term,          
+        }
+        body_types :[2],
     }                                                               
 ];
 
@@ -761,7 +806,7 @@ function DummyMarine()constructor{
     static get_body_data = scr_get_body_data;
     traits = [];
     company = irandom_range(1,10);
-    static name_role= function(){
+    static name_role = function(){
         return "jeff";
     } 
     static role = function(){
@@ -883,12 +928,14 @@ function generate_marine_body(){
             personal_livery : irandom(100),
             pad_variation : irandom(100),
             variation : irandom(100),
+            weapon_variation: irandom(100),
         },
         "right_arm":{
             trim_variation : irandom(100),
             personal_livery : irandom(100),
             pad_variation : irandom(100),
-            variation : irandom(100),           
+            variation : irandom(100), 
+            weapon_variation: irandom(100),          
         }, 
         "left_eye":{
             variant : irandom(100),

@@ -195,52 +195,6 @@ function set_shader_array(shader_array) {
 
 /// @mixin
 function scr_draw_unit_image(_background = false) {
-    static draw_unit_hands = function(x_surface_offset, y_surface_offset, armour_type, specialist_colours, hide_bionics, right_left) {
-        shader_set(full_livery_shader);
-        if (arm_variant[right_left] == 1) {
-            return;
-        }
-
-        if (armour_type != ArmourType.None) {
-            var offset_x = x_surface_offset;
-            var offset_y = y_surface_offset;
-            switch (armour_type) {
-                case ArmourType.Terminator:
-                    var _hand_spr = spr_terminator_hands;
-                    break;
-                case ArmourType.Scout:
-                    var _hand_spr = spr_pa_hands;
-                    offset_y += 11;
-                    offset_x += ui_xmod[right_left];
-                default:
-                case ArmourType.Normal:
-                    var _hand_spr = spr_pa_hands;
-                    break;
-            }
-            if (hand_variant[right_left] > 0) {
-                var _spr_index = (hand_variant[right_left] - 1) * 2;
-                if (right_left == 2) {
-                    _spr_index += (specialist_colours >= 2) ? 1 : 0;
-                    draw_sprite_flipped(_hand_spr, _spr_index, offset_x, offset_y);
-                } else {
-                    draw_sprite(_hand_spr, _spr_index, offset_x, offset_y);
-                }
-            }
-            // Draw bionic hands
-            if (hand_variant[right_left] == 1) {
-                if (armour_type == ArmourType.Normal && !hide_bionics && struct_exists(body[$(right_left == 1 ? "right_arm" : "left_arm")], "bionic")) {
-                    var bionic_hand = body[$(right_left == 1 ? "right_arm" : "left_arm")][$ "bionic"];
-                    var bionic_spr_index = bionic_hand.variant * 2;
-                    if (right_left == 2) {
-                        bionic_spr_index += (specialist_colours >= 2) ? 1 : 0;
-                        draw_sprite_flipped(spr_bionics_hand, bionic_spr_index, offset_x, offset_y);
-                    } else {
-                        draw_sprite(spr_bionics_hand, bionic_spr_index, offset_x, offset_y);
-                    }
-                }
-            }
-        }
-    };
 
     var _role = active_roles();
     var complex_set = {};
@@ -752,59 +706,6 @@ function scr_draw_unit_image(_background = false) {
                     draw_sprite(spr_gear_combat_shield, 1, x_surface_offset + shield_offset_x, y_surface_offset + shield_offset_y);
                 } else {
                     draw_sprite(spr_gear_combat_shield, 0, x_surface_offset + shield_offset_x, y_surface_offset + shield_offset_y);
-                }
-            }
-
-            // Draw hands bellow the weapon sprite;
-            for (var i = 1; i <= 2; i++) {
-                if (!hand_on_top[i]) {
-                    draw_unit_hands(x_surface_offset, y_surface_offset, armour_type, specialist_colours, hide_bionics, i);
-                }
-            }
-
-            // // Draw weapons
-
-            if (!new_weapon_draw[1]) {
-                if ((ui_weapon[1] != 0) && sprite_exists(ui_weapon[1])) {
-                    if ((ui_twoh[1] == false) && (ui_twoh[2] == false)) {
-                        draw_sprite(ui_weapon[1], 0, x_surface_offset + ui_xmod[1], y_surface_offset + ui_ymod[1]);
-                    }
-                    if (ui_twoh[1] == true) {
-                        draw_sprite(ui_weapon[1], 0, x_surface_offset + ui_xmod[1], y_surface_offset + ui_ymod[1]);
-                        if (ui_force_both == true) {
-                            if (specialist_colours <= 1) {
-                                draw_sprite(ui_weapon[1], 0, x_surface_offset + ui_xmod[1], y_surface_offset + ui_ymod[1]);
-                            }
-                            if (specialist_colours >= 2) {
-                                draw_sprite(ui_weapon[1], 1, x_surface_offset + ui_xmod[1], y_surface_offset + ui_ymod[1]);
-                            }
-                        }
-                    }
-                }
-            } else {
-                if ((ui_weapon[1] != 0) && sprite_exists(ui_weapon[1])) {
-                    draw_sprite(ui_weapon[1], 0, x_surface_offset + ui_xmod[1], y_surface_offset + ui_ymod[1]);
-                }
-            }
-            if (!new_weapon_draw[2]) {
-                if ((ui_weapon[2] != 0) && sprite_exists(ui_weapon[2]) && (ui_twoh[1] == false || ui_force_both == true)) {
-                    if (ui_spec[2] == false) {
-                        draw_sprite(ui_weapon[2], 1, x_surface_offset + ui_xmod[2], y_surface_offset + ui_ymod[2]);
-                    }
-                    if (ui_spec[2] == true) {
-                        draw_sprite(ui_weapon[2], 1, x_surface_offset + ui_xmod[2], y_surface_offset + ui_ymod[2]);
-                    }
-                }
-            } else {
-                if ((ui_weapon[2] != 0) && sprite_exists(ui_weapon[2])) {
-                    draw_sprite_flipped(ui_weapon[2], 0, x_surface_offset + ui_xmod[2], y_surface_offset + ui_ymod[2]);
-                }
-            }
-
-            // Draw hands above the weapon sprite;
-            for (var i = 1; i <= 2; i++) {
-                if (hand_on_top[i]) {
-                    draw_unit_hands(x_surface_offset, y_surface_offset, armour_type, specialist_colours, hide_bionics, i);
                 }
             }
 
