@@ -63,7 +63,7 @@ function scr_creation(slide_num) {
 			    }
 			    livery_picker.scr_unit_draw_data();
 			    livery_picker.set_default_armour(struct_cols,col_special);
-			    full_liveries = array_create(21,DeepCloneStruct(livery_picker.map_colour));
+			    full_liveries = array_create(21,variable_clone(livery_picker.map_colour));
 			    full_liveries[eROLE.Librarian] = livery_picker.set_default_librarian(struct_cols);
 
 			    full_liveries[eROLE.Chaplain] = livery_picker.set_default_chaplain(struct_cols);

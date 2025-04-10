@@ -100,7 +100,7 @@ function check_dead_marines(unit_struct, unit_index) {
             obj_ncombat.red_thirst = 2;
         }
 
-        if (unit_struct.IsSpecialist("dreadnoughts")) {
+        if (unit_struct.IsSpecialist(SPECIALISTS_DREADNOUGHTS)) {
             dreads -= 1;
         } else {
             men -= 1;

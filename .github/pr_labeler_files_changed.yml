@@ -1,20 +1,20 @@
-"PR: Docs":
+"Type: Docs":
 - changed-files:
   - any-glob-to-any-file: ['docs/*', 'guides/*', '**/*.md']
 
-"PR: CI":
+"Type: CI":
 - changed-files:
   - any-glob-to-any-file: ['.github/*', '**/*.yml', '.gitattributes', '.gitignore']
 
-"PR: JSON":
+"Area: JSON":
 - changed-files:
   - all-globs-to-any-file: ['**/*.json']
 
-"PR: Audio":
+"Area: Audio":
 - changed-files:
   - any-glob-to-any-file: ['**/snd_*', '**/*.ogg', '**/*.wav']
 
-"PR: Sprites":
+"Area: Sprites":
 - changed-files:
   - any-glob-to-any-file: ['**/*.png', '**/spr_*']
   

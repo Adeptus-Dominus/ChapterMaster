@@ -45,6 +45,17 @@ function string_plural(_string, _variable = 2) {
     }
 }
 
+/// @function string_plural_count
+/// @description This function formats a string into a plural form by adding affixes following common rules, and adds the x(variable) text at the start.
+/// @param {string} _string
+/// @param {real} _variable Variable to check if more than 1 before converting to plural, and add at the start.
+/// @returns {string} Modified string.
+function string_plural_count(_string, _variable, _use_x = true) {
+    var _x = _use_x ? "x" : "";
+    var _modified_string = $"{_variable}{_x} {string_plural(_string, _variable)}";
+    return _modified_string;
+}
+
 /// @function string_truncate
 /// @description Truncates a string to fit within a specified pixel width, appending "..." if the string was truncated.
 /// @param {string} _string
@@ -269,4 +280,47 @@ function base64_encode_advanced(input_string) {
     buffer_delete(_buffer);
 
     return _encoded_string;
+}
+
+/// @description Transforms a verb based on the plurality of a variable.
+/// @param {string} _verb The verb to be transformed (e.g., "was", "is", "has", etc.).
+/// @param {number} _variable A value determining singular (1) or plural (any value other than 1).
+/// @returns {string}
+function smart_verb(_verb, _variable) {
+    var _result = _verb;
+
+    if (_variable != 1) {
+        switch (_verb) {
+            case "was":
+                _result = "were";
+                break;
+            case "is":
+                _result = "are";
+                break;
+            case "has":
+                _result = "have";
+                break;
+            case "do":
+                _result = "do";
+                break;
+            default:
+                _result = _verb;
+                break;
+        }
+    }
+
+    return _result;
+}
+
+/// @desc Checks if a string starts with any prefix in the given array.
+/// @param {string} _str - The string to check.
+/// @param {array<string>} _prefixes - An array of string prefixes to match against.
+/// @returns {boolean}
+function string_starts_with_any(_str, _prefixes) {
+    for (var i = 0, _len = array_length(_prefixes); i < _len; ++i) {
+        if (string_starts_with(_str, _prefixes[i])) {
+            return true;
+        }
+    }
+    return false;
 }

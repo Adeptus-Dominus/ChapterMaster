@@ -18,7 +18,7 @@ function create_boarding_craft(target_ship){
             boarders-=1;
             bear.boarders+=1;
             unit = fetch_unit([board_co[o] , board_id[o]]);
-            if (unit.IsSpecialist("apoth")){
+            if (unit.IsSpecialist(SPECIALISTS_APOTHECARIES)){
                 if (unit.gear()=="Narthecium") and (unit.hp()>=10) then bear.apothecary+=1;
             }
         }

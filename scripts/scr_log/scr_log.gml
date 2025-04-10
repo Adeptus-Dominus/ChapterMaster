@@ -1,6 +1,6 @@
 #macro STR_error_message_head $"Your game just encountered and caught an error!"
 #macro STR_error_message_head2 $"Your game just encountered a critical error! :("
-#macro STR_error_message_head3 $"Your game just encountered and caught an error! ({0})"
+#macro STR_error_message_head3 "Your game just encountered and caught an error! ({0})"
 #macro STR_error_message $"The error log is automatically copied into your clipboard and a copy is created at: \nC:>Users>(UserName)>AppData>Local>ChapterMaster>Logs\n\nPlease, follow these steps:\n1) Create a bug report on our 'Chapter Master Discord' server.\n2) Press CTRL+V to paste the error log.\n3) Title the report with the error log's first line.\n4) If the log isn't pasted, locate and attach the latest error log file.\n\nThank you!"
 #macro STR_error_message_ps $"P.S. You can ALT-TAB and try to continue playing, though it’s recommended to wait for a response in the bug-report forum."
 
@@ -26,11 +26,9 @@ function handle_error(_header, _message, _stacktrace="", _critical = false, _rep
     _full_message += $"{LB_92}\n";
     _full_message += $"{_header}\n\n";
     _full_message += $"Date-Time: {DATE_TIME_3}\n";
-    var _format_version = is_string(global.game_version) ? string_split(global.game_version, "/") :["Unknown Version"];
-    _full_message += $"Game Version: {_format_version[0]}\n";
-    _full_message += $"Build Date: {is_string(global.build_date) ? global.build_date : "Unknown Build Date"}\n";
-    var _commit_hash = is_string(global.commit_hash) ? global.commit_hash : "Unknown Commit Hash";
-    _full_message += $"Commit Hash: {_commit_hash}\n\n";
+    _full_message += $"Game Version: {global.game_version}\n";
+    _full_message += $"Build Date: {global.build_date}\n";
+    _full_message += $"Commit Hash: {global.commit_hash}\n\n";
     _full_message += $"Details:\n";
     _full_message += $"{_message}\n\n";
     _full_message += $"Stacktrace:\n";
@@ -41,7 +39,7 @@ function handle_error(_header, _message, _stacktrace="", _critical = false, _rep
         _report_title += "\n";
     }
 
-    var _commit_history_link = $"https://github.com/Adeptus-Dominus/ChapterMaster/commits/{_commit_hash}";
+    var _commit_history_link = $"https://github.com/Adeptus-Dominus/ChapterMaster/commits/{global.commit_hash}";
 
     create_error_file($"{_report_title}{_full_message}\n{_commit_history_link}");
     show_debug_message(_full_message);
@@ -69,7 +67,11 @@ function handle_exception(_exception, custom_title=STR_error_message_head, criti
     var _header = critical ? STR_error_message_head2 : custom_title;
     var _message = _exception.longMessage;
     var _stacktrace = array_to_string_list(_exception.stacktrace);
-    var _report_title = $"[{is_string(global.game_version)?global.game_version: " CM: Adeptus Dominus unknown version" }] {_exception.stacktrace[0]}";
+    var _critical = critical ? "CRASH! " : "";
+    var _build_date = global.build_date == "unknown build" ? "" : $"/{global.build_date}";
+    var _problem_line = clean_stacktrace_line(_exception.stacktrace[0]);
+    var _report_title = $"{_critical}[{global.game_version}{_build_date}] {_problem_line}";
+
     handle_error(_header, _message, _stacktrace, critical, _report_title);
 }
 
@@ -128,4 +130,19 @@ function format_time(_time) {
         _time = $"0{_time}"
     }
     return string(_time);
+}
+
+/// @description Cleans up a stack trace line string by removing the "anon@number@", "gml_Object_" and "gml_Script_".
+/// @param {string} _stacktrace_line - The stack trace line string to be cleaned.
+/// @returns {string}
+function clean_stacktrace_line(_stacktrace_line) {
+    _stacktrace_line = string_replace(_stacktrace_line, "gml_Object_", "");
+    _stacktrace_line = string_replace(_stacktrace_line, "gml_Script_", "");
+
+    if (string_count("@", _stacktrace_line) == 2) {
+        var split_parts = string_split(_stacktrace_line, "@");
+        _stacktrace_line = split_parts[0] + split_parts[2];
+    }
+
+    return _stacktrace_line;
 }

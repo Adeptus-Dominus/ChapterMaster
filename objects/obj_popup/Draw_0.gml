@@ -1572,7 +1572,7 @@ try {
 		}
 		draw_text(xx + 1470, yy + 210, string_hash_to_newline("HQ [" + string(check) + "]"));
 		check = " ";
-		// if (obj_controller.command_set[1]!=0 && !is_specialist(unit_role, "libs")){
+		// if (obj_controller.command_set[1]!=0 && !is_specialist(unit_role, SPECIALISTS_LIBRARIANS)){
 		for (i = 1; i <= 10; i++) {
 			var comp_data = company_promote_data[i - 1];
 			if (obj_controller.command_set[2] == 1) {

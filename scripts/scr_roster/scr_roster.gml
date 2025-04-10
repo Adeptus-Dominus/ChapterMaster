@@ -39,11 +39,10 @@ function Roster() constructor{
         var _roster_types = struct_get_names(selected_roster);
         for (var i=0;i<array_length(_roster_types);i++){
             var _roster_type_name = _roster_types[i];
-            if (selected_roster[$_roster_type_name] == 1){
-                roster_string += $"1 {_roster_type_name}{i==array_length(_roster_types)-1?"":", "}";
-            } else {
-            	roster_string += $"{selected_roster[$_roster_type_name]} {string_plural(_roster_type_name)}{i==array_length(_roster_types)-1?"":", "}";
-            }
+            var _roster_type_count = selected_roster[$_roster_type_name];
+
+            roster_string += $"{string_plural_count(_roster_type_name, _roster_type_count)}";
+            roster_string += smart_delimeter_sign(_roster_types, i, false);
         }
     }
      static add_role_to_roster = function(role){
@@ -216,22 +215,21 @@ function Roster() constructor{
         var _roster_types = struct_get_names(selected_local_roster);
         for (var i=0;i<array_length(_roster_types);i++){
             var _roster_type_name = _roster_types[i];
-            if (selected_roster[$_roster_type_name] == 1){
-                roster_local_string += $"1 {_roster_type_name}{i==array_length(_roster_types)-1?"":", "}";
-            } else {
-            	roster_local_string += $"{selected_local_roster[$_roster_type_name]} {string_plural(_roster_type_name)}{i==array_length(_roster_types)-1?"":", "}";
-            }
+            var _roster_type_count = selected_roster[$_roster_type_name];
+
+            roster_local_string += $"{string_plural_count(_roster_type_name, _roster_type_count)}";
+            roster_local_string += smart_delimeter_sign(_roster_types, i, false);
         }
+
         roster_local_string+="\n"
         roster_local_string += "Remaining\n";
         var _roster_types = struct_get_names(possible_local_roster);
         for (var i=0;i<array_length(_roster_types);i++){
             var _roster_type_name = _roster_types[i];
-            if (selected_roster[$_roster_type_name] == 1){
-                roster_local_string += $"1 {_roster_type_name}{i==array_length(_roster_types)-1?"":", "}";
-            } else {
-            	roster_local_string += $"{possible_local_roster[$_roster_type_name]} {string_plural(_roster_type_name)}{i==array_length(_roster_types)-1?"":", "}";
-            }
+            var _roster_type_count = possible_local_roster[$_roster_type_name];
+
+            roster_local_string += $"{string_plural_count(_roster_type_name, _roster_type_count)}";
+            roster_local_string += smart_delimeter_sign(_roster_types, i, false);
         }          	
     }
 
@@ -545,7 +543,7 @@ function add_unit_to_battle(unit,meeting, is_local){
 
         //librarium roles
 
-    }else if (unit.IsSpecialist("libs",true)){
+    }else if (unit.IsSpecialist(SPECIALISTS_LIBRARIANS,true)){
         col = obj_controller.bat_librarian_column;                  //librarium
         new_combat.librarians++;
         moov = 1;
@@ -557,7 +555,7 @@ function add_unit_to_battle(unit,meeting, is_local){
         col = obj_controller.bat_honor_column;
         new_combat.honors++;
 
-    } else if (unit.IsSpecialist("dreadnoughts")){
+    } else if (unit.IsSpecialist(SPECIALISTS_DREADNOUGHTS)){
         col = obj_controller.bat_dreadnought_column;                //dreadnoughts
         new_combat.dreadnoughts++;
     }else if (_unit_role = obj_ini.role[100][4]) {         //terminators
@@ -575,7 +573,7 @@ function add_unit_to_battle(unit,meeting, is_local){
         }
     }
 
-    if (_unit_role = _role[15]) or (_unit_role = _role[14]) or (unit.IsSpecialist("trainee")) {
+    if (_unit_role = _role[15]) or (_unit_role = _role[14]) or (unit.IsSpecialist(SPECIALISTS_TRAINEES)) {
         if (_unit_role = string(_role[14]) + " Aspirant") {
             col = obj_controller.bat_tactical_column;
             new_combat.tacticals++;
@@ -623,7 +621,7 @@ function add_unit_to_battle(unit,meeting, is_local){
             new_combat.chapter_master_psyker = 0;
         }
     }
-    if (unit.IsSpecialist("heads")){
+    if (unit.IsSpecialist(SPECIALISTS_HEADS)){
         col = obj_controller.bat_command_column;
         new_combat.important_dudes++;                       
     };

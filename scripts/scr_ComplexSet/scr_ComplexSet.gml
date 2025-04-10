@@ -758,7 +758,7 @@ function ComplexSet(unit) constructor{
 
         }
         var type = unit.get_body_data("type","cloak");
-        if (type != "none") {
+        if (type != "none" && armour_type != ArmourType.Scout ) {
             static _cloaks = {
                 "scale":spr_cloak_scale,
                 "pelt":spr_cloak_fur,
@@ -774,7 +774,7 @@ function ComplexSet(unit) constructor{
         assign_modulars();
     }
 
-     if (unit.IsSpecialist("forge")){
+     if (unit.IsSpecialist(SPECIALISTS_TECHS)){
         if array_contains(["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"], unit_armour){
             if (unit.has_trait("tinkerer")){
                 add_group({

@@ -860,7 +860,13 @@ var all_advantages = [
             description : "Your chapter has strong ties to the Forgeworld of Ryza as a result your Techmarines are privy to the secrets of their Techpriests enhancing your Plasma and Las weaponry.",
             value : 40,
             meta : ["Weapon Specialty"] 
-        },                                                                                                                                                                             
+        },
+        {
+            name: "Elite Guard",
+            description: "Your chapter is an elite fighting force comprised almost exclusively of Veterans. All Tactical Marines are replaced by Veterans.",
+            value: 150,
+            meta: ["Specialists"]
+        }                                                                                                                                                                   
     ]
 
 

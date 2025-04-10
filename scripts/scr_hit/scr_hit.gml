@@ -91,5 +91,5 @@ function mouse_distance_less(xx, yy, distance){
 
 function return_mouse_consts_tooltip(){
 	var consts = return_mouse_consts();
-	return [consts[0]+20, consts[1]]
+	return [consts[0], consts[1]]
 }

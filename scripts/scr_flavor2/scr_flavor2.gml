@@ -314,7 +314,7 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
         units_lost = lost_num[role_index];
         if (unit_role != "" && units_lost > 0) {
             special = (
-                is_specialist(unit_role, "heads") ||
+                is_specialist(unit_role, SPECIALISTS_HEADS) ||
                 unit_role == "Chapter Master" ||
                 unit_role == "Venerable " + string(obj_ini.role[100][6]) ||
                 unit_role == obj_ini.role[100][5] ||
@@ -355,7 +355,7 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
 		var lis, y1, y2;
 		lis = string_rpos(", ", m2);
 		m2 = string_delete(m2, lis, 3); // This clears the last ', ' and replaces it with the end statement
-		if (lost_units_count > 1) then m2 += " have been lost.";
+		if (lost_units_count > 0) then m2 += " critically damaged.";
 
 		// show_message(m2);
 
@@ -376,8 +376,7 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
 		var lis, y1, y2;
 		lis = string_rpos(", ", m2);
 		m2 = string_delete(m2, lis, 3);
-		if (lost_units_count > 1) then m2 += " have been lost.";
-		if (lost_units_count = 1) then m2 += " has been lost.";
+		if (lost_units_count > 0) then m2 += " critically damaged.";
 	}
 	if (string_count(", ", m2) = 1) and(unce = 0) and(hostile_weapon = "Web Spinner") {
 		var lis, y1, y2;

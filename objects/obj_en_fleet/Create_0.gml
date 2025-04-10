@@ -69,3 +69,49 @@ escort_health=100;
 
 alarm[8]=1;
 
+#region save/load serialization 
+
+/// Called from save function to take all object variables and convert them to a json savable format and return it 
+serialize = function(){
+    var object_fleet = self;
+    
+    var save_data = {
+        obj: object_get_name(object_index),
+        x,
+        y,
+    }
+    
+    var excluded_from_save = ["temp", "serialize", "deserialize", "cargo_data"]
+
+    copy_serializable_fields(object_fleet, save_data, excluded_from_save);
+
+    return save_data;
+}
+deserialize = function(save_data){
+    var exclusions = ["id"]; // skip automatic setting of certain vars, handle explicitly later
+
+    // Automatic var setting
+    var all_names = struct_get_names(save_data);
+    var _len = array_length(all_names);
+    for(var i = 0; i < _len; i++){
+        var var_name = all_names[i];
+        if(array_contains(exclusions, var_name)){
+            continue;
+        }
+        var loaded_value = struct_get(save_data, var_name);
+        // show_debug_message($"en_fleet {en_fleet_instance.id}  - var: {var_name}  -  val: {loaded_value}");
+        try {
+            variable_struct_set(self, var_name, loaded_value);	
+        } catch (e){
+            show_debug_message(e);
+        }
+    }
+
+    if(save_data.orbiting != 0){
+        var nearest_star = instance_nearest(x, y, obj_star);
+        orbiting = nearest_star;
+        // show_debug_message($"p_fleet id {id} deserialized: {self}");
+    }
+}
+
+#endregion

@@ -182,7 +182,7 @@ function scr_draw_unit_stat_data(manage=false){
 	// forge_box.x_mid = (forge_box.x1 + forge_box.x2) / 2;
 	// forge_box.y_mid = (forge_box.y1 + forge_box.y2) / 2;
 	// //draw_rectangle(data_block.x_mid+1,data_block.y_mid+2,data_block.x_mid+1,data_block.y_mid+34, 0);
-	// var is_forge = IsSpecialist("forge");
+	// var is_forge = IsSpecialist(SPECIALISTS_TECHS);
 	// if (is_forge){
 	// 	draw_set_color(c_gray);
 	// 	draw_rectangle(forge_box.x1,forge_box.y1,forge_box.x2,forge_box.y2, 1);
@@ -197,7 +197,7 @@ function scr_draw_unit_stat_data(manage=false){
 
 	//var warp_box_size = tooltip_draw(stat_square.x1,stat_square.y1+56,$"Warp Level:{psionic}");
 	//draw_set_color(c_red);
-	//if (IsSpecialist("forge")){
+	//if (IsSpecialist(SPECIALISTS_TECHS)){
 	//	tooltip_draw(stat_square.x1,stat_square.y1+45+warp_box_size[1],$"Forge Points:{forge_point_generation()}");
 	//}
 	// draw_line(stat_block.x1, yy+519, stat_block.x1, yy+957);	

@@ -17,7 +17,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 	if (feature.f_type == P_features.Forge){
 		var _worker_caps = [2,4,8];
 		worker_capacity = _worker_caps[feature.size-1];	
-		techs = collect_role_group("forge", obj_star_select.target.name);
+		techs = collect_role_group(SPECIALISTS_TECHS, obj_star_select.target.name);
 		feature.techs_working = 0;
 		for (var i=0;i<array_length(techs);i++){
 			var _cur_tech = techs[i];
@@ -259,7 +259,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 						help = $"A task best suited to the more knowledgable or wise of your Commanders"
 						button_text = "Assign Officer";
 						button_function = function(){
-							var dudes = collect_role_group("captain_candidates", obj_star_select.target.name);
+							var dudes = collect_role_group(SPECIALISTS_CAPTAIN_CANDIDATES, obj_star_select.target.name);
 							group_selection(dudes,{
 								purpose:"Select Officer",
 								purpose_code : feature.problem,

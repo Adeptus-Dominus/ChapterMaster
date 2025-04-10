@@ -98,7 +98,7 @@ function scr_emmisary_diplomacy_routes(){
 			cooldown=8000;
 			diplomacy_pathway = "sacrifice_lib";
             //grab a random librarian
-            var lib = scr_random_marine("lib",0);
+            var lib = scr_random_marine(SPECIALISTS_LIBRARIANS,0);
             if (lib!="none"){
                 var chapter_master = obj_ini.TTRPG[0][1];
                 var dead_lib = obj_ini.TTRPG[lib[0],lib[1]];

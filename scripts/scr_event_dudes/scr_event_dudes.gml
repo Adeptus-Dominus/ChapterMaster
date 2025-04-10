@@ -59,7 +59,7 @@ function scr_event_dudes(do_action, is_planet, system_name, location_id) {
 	        // Don't compile a list and create an array in obj_event instead
 	        if (adding=true) and (do_action=1){
 	            var speshul=false;
-            		if (unit.IsSpecialist("heads")) then speshul=true;
+            		if (unit.IsSpecialist(SPECIALISTS_HEADS)) then speshul=true;
                 
 	                if (speshul=true){
 	                    obj_event.avatars+=1;

@@ -50,14 +50,15 @@ try {
 	if ((image == "fuklaw") && (save > 0)) {
 		if (press == 1) {
 			var del = obj_saveload.save[save];
-			var _save_file = $"save{del}.ini";
+			var _save_file = string(PATH_save_files, del);
+			var _save_preview = string(PATH_save_previews, del);
 			if (file_exists(_save_file)) {
 				file_delete(_save_file);
 				if (file_exists($"save{del}log.ini")) {
 					file_delete($"save{del}log.ini");
 				}
-				if (file_exists($"screen{del}.png")) {
-					file_delete($"screen{del}.png");
+				if (file_exists(_save_preview)) {
+					file_delete(_save_preview);
 				}
 				with (obj_saveload) {
 					instance_destroy();
@@ -1878,7 +1879,7 @@ try {
 	if (image == "new_forge_master") {
 		if (pathway == "") {
 			obj_controller.complex_event = true;
-			techs = collect_role_group("forge");
+			techs = collect_role_group(SPECIALISTS_TECHS);
 			charisma_pick = 0;
 			experience_pick = 0;
 			talent_pick = 0;
@@ -2006,7 +2007,7 @@ try {
 		}
 		if (pathway == "tech_aftermath") {
 			var tech, t, i, check_tech, location_techs, location_heretics, delete_positions, heretic_data = [0, 0, 0], loyal_data = [0, 0, 0];
-			techs = collect_role_group("forge");
+			techs = collect_role_group(SPECIALISTS_TECHS);
 			var tech_count = array_length(techs);
 			for (i = 0; i < tech_count; i++) {
 				delete_positions = [];

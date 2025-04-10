@@ -28,6 +28,8 @@ on_ship=false;
 alpha_strike=0;
 Warlord = 0;
 total_battle_exp_gain=0;
+marines_to_recover = 0;
+vehicles_to_recover = 0;
 end_alive_units = [];
 average_battle_exp_gain=0;
 upgraded_librarians=[];
@@ -115,6 +117,10 @@ hulk_forces=0;
 
 i=-1;messages=0;messages_to_show=24;messages_shown=0;
 largest=0;priority=0;random_messages=0;dead_enemies=0;
+
+units_lost_counts = {};
+vehicles_lost_counts = {};
+
 repeat(70){i+=1;
     lines[i]="";
     lines_color[i]="";
@@ -125,9 +131,6 @@ repeat(70){i+=1;
     dead_ene[i]="";
     dead_ene_n[i]=0;
     
-    post_unit_lost[i]="";
-    post_unit_veh[i]=0;
-    post_units_lost[i]=0;
     post_equipment_lost[i]="";
     post_equipments_lost[i]=0;
     
@@ -143,15 +146,18 @@ vehicle_recovery_score=0;
 injured=0;
 command_injured=0;
 seed_saved=0;
-seed_max=0;
-units_saved=0;
+seed_lost=0;
+seed_harvestable=0;
+units_saved_count=0;
+units_saved_counts={};
+vehicles_saved_counts={};
 command_saved=0;
-vehicles_saved=0;
-final_deaths=0;
+vehicles_saved_count=0;
+vehicles_saved_counts={};
+final_marine_deaths=0;
 final_command_deaths=0;
 vehicle_deaths=0;
 casualties=0;
-command_casualties=0;
 dead_jims=0;
 newline="";
 newline_color="";

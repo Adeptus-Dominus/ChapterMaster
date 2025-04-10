@@ -15,7 +15,7 @@ if (menu==1) and (managing>0){
         if (man_sel[f]==1){
             if (man[f]=="man"){
                 unit = display_unit[f];
-                if (ma_promote[f]==0 && (!unit.IsSpecialist("rank_and_file")) && (!unit.IsSpecialist("squad_leaders")) && (!unit.IsSpecialist("veterans"))) then sel_promoting=-1;
+                if (ma_promote[f]==0 && (!unit.IsSpecialist(SPECIALISTS_RANK_AND_FILE)) && (!unit.IsSpecialist(SPECIALISTS_SQUAD_LEADERS)) && (!unit.IsSpecialist(SPECIALISTS_VETERANS))) then sel_promoting=-1;
             }
             
             if (ma_role[f]=="Ork Sniper") or (ma_role[f]=="Flash Git") or (ma_role[f]=="Crusader") or (ma_role[f]=="Skitarii") then otha=1;

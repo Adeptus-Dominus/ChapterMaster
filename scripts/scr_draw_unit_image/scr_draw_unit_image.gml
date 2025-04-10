@@ -324,7 +324,7 @@ function scr_draw_unit_image(_background = false) {
             // // Honour Guard
             // else if (unit_role==obj_ini.role[100,2]){unit_specialization=14;}
             // Chaplain
-            if (is_specialist(unit_role, "chap", true)) {
+            if (is_specialist(unit_role, SPECIALISTS_CHAPLAINS, true)) {
                 if (unit_chapter == "Iron Hands") {
                     unit_specialization = UnitSpecialization.IronFather;
                 } else if (unit_chapter == "Space Wolves") {
@@ -333,21 +333,21 @@ function scr_draw_unit_image(_background = false) {
                     unit_specialization = UnitSpecialization.Chaplain;
                 }
             } else // Techmarine
-                if (is_specialist(unit_role, "forge", true)) {
+                if (is_specialist(unit_role, SPECIALISTS_TECHS, true)) {
                     if (unit_chapter == "Iron Hands") {
                         unit_specialization = UnitSpecialization.IronFather;
                     } else {
                         unit_specialization = UnitSpecialization.Techmarine;
                     }
                 } else // Apothecary
-                    if (is_specialist(unit_role, "apoth", true)) {
+                    if (is_specialist(unit_role, SPECIALISTS_APOTHECARIES, true)) {
                         if (unit_chapter == "Space Wolves") {
                             unit_specialization = UnitSpecialization.WolfPriest;
                         } else {
                             unit_specialization = UnitSpecialization.Apothecary;
                         }
                     } else // Librarian
-                        if (is_specialist(unit_role, "libs", true)) {
+                        if (is_specialist(unit_role, SPECIALISTS_LIBRARIANS, true)) {
                             unit_specialization = UnitSpecialization.Librarian;
                         } else // Death Company
                             if (unit_role == "Death Company") {

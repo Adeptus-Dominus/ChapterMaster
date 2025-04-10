@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"scr_distribute_experience",
+  "%Name":"scr_serialization_functions",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_distribute_experience",
+  "name":"scr_serialization_functions",
   "parent":{
-    "name":"Combat",
-    "path":"folders/Scripts/Combat.yy",
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

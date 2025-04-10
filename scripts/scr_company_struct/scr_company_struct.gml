@@ -145,6 +145,10 @@ function CompanyStruct(comp) constructor{
 	captain = "none";
 	champion = "none";
 	ancient = "none";
+    chaplain = "none";
+    apothecary = "none";
+	tech_marine = "none";
+	lib = "none";
 
 	static reset_squad_surface = function(){
 		if (is_array(squad_draw_surfaces)){
@@ -177,6 +181,19 @@ function CompanyStruct(comp) constructor{
 					ancient = unit;
 				} else if (unit.role() == role_set[eROLE.Champion]){
 					champion = unit;
+				} else {
+					if (unit.IsSpecialist(SPECIALISTS_CHAPLAINS)) {
+						chaplain = unit;
+					}
+					if (unit.IsSpecialist(SPECIALISTS_APOTHECARIES)) {
+						apothecary = unit;
+					}
+					if (unit.IsSpecialist(SPECIALISTS_TECHS)) {
+						tech_marine = unit;
+					}
+					if (unit.IsSpecialist(SPECIALISTS_LIBRARIANS)) {
+						lib = unit;
+					}
 				}
 			}
 		}

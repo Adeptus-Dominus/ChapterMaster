@@ -89,10 +89,10 @@ function unit_stat_growth(grow_stat=false){
 	};
 
 	var group_growths = [
-		["forge" , "technology"],
-		["libs" , "intelligence"],
-		["chap" , "charisma"],
-		["apoth" , "intelligence"],
+		[SPECIALISTS_TECHS , "technology"],
+		[SPECIALISTS_LIBRARIANS , "intelligence"],
+		[SPECIALISTS_CHAPLAINS , "charisma"],
+		[SPECIALISTS_APOTHECARIES , "intelligence"],
 	];
 
 	var role_growth = [
@@ -258,7 +258,7 @@ function add_unit_exp(add_val){
 		instace_stat_point_gains = handle_stat_growth(true);
 	}
 
-	if (IsSpecialist("libs")) {
+	if (IsSpecialist(SPECIALISTS_LIBRARIANS)) {
 		_powers_learned = update_powers()
 	}
 	role_refresh();
