@@ -5,7 +5,6 @@ if (!instance_exists(obj_cuicons)){
 }
 
 global.save_version=0;
-global.game_seed=0;
 global.cheat_req=false;
 global.cheat_gene=false;
 global.cheat_disp=false;

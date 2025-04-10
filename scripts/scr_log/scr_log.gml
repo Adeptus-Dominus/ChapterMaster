@@ -12,6 +12,7 @@ function create_error_file(_message) {
         file_text_write_string(_log_file, _message);
         file_text_close(_log_file);
     }
+    copy_last_messages_file();
 }
 
 /// @description Creates a copy of the last_messages.log file, with the current date in the name, in the same folder.
@@ -81,7 +82,6 @@ function handle_error(_header, _message, _stacktrace="", _critical = false, _rep
     }
 
     create_error_file(_error_file_text);
-    copy_last_messages_file();
     show_debug_message($"{_header_section}{_error_section}{_footer_section}");
 
     var _clipboard_message = "";
