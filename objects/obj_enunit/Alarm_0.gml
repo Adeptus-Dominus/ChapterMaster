@@ -15,6 +15,7 @@ var enemy2 = enemy;
 //In melee check
 engaged = collision_point(x-10, y, obj_pnunit, 0, 1) || collision_point(x+10, y, obj_pnunit, 0, 1);
 // show_debug_message($"enemy is in melee {engaged}")
+
 var _t_start1 = get_timer();
 if (!engaged){ // Shooting
     for (var i=0;i<array_length(wep);i++){
@@ -40,7 +41,7 @@ if (!engaged){ // Shooting
             }
         }
 
-        dist=get_block_distance(enemy);  
+        var dist = get_block_distance(enemy);  
         target_unit_index=0;
 
         if (range[i] >= dist) {
@@ -81,25 +82,30 @@ if (!engaged){ // Shooting
                 }
         
                 // Distance weight (closer = higher priority)
-                var _distance_priority = _distance * 20;
+                var _distance_bonus = (range[i] - _distance - 1) * 20;
         
                 // Column size influence (bigger columns = higher threat?)
-                var _overkill_protection = wep_num[i] / enemy_block.column_size;
+                var _doomstack_malus = wep_num[i] / enemy_block.column_size;
+
+                // Column size influence (bigger columns = higher threat?)
+                var _size_bonus = enemy_block.column_size / 10;
         
                 // Target type match bonus
-                var _type_priority = 0;
+                var _type_bonus = 0;
                 if (_target_type == "arp") {
-                    _type_priority = 50 * (block_type_size(enemy_block, "armour") / enemy_block.column_size);
+                    _type_bonus = 20 * (block_type_size(enemy_block, "armour") / enemy_block.column_size);
                 } else if (_target_type == "att") {
-                    _type_priority = 50 * (block_type_size(enemy_block, "men") / enemy_block.column_size);
+                    _type_bonus = 20 * (block_type_size(enemy_block, "men") / enemy_block.column_size);
                 }
 
                 var priority = 0;
-                priority += _type_priority;
-                priority -= _overkill_protection;
-                priority -= _distance_priority;
+                priority += _type_bonus;
+                priority += _size_bonus;
+                priority -= _doomstack_malus;
+                priority += _distance_bonus;
+                priority *= random_range(0.5, 1.5);
 
-                show_debug_message($"Priority: {priority} Matching Type: +{_type_priority} Overkill Debuff: -{_overkill_protection} Distance Debuff: -{_distance_priority}");
+                show_debug_message($"Priority: {priority}\n Type: +{_type_bonus}\n Size: +{_size_bonus}\n Doomstack: -{_doomstack_malus}\n Distance: +{_distance_bonus}\n");
                 ds_priority_add(_target_priority_queue, enemy_block, priority);
             }
         
@@ -160,7 +166,10 @@ if (engaged) {     // Melee
         }
 
         if (!target_block_is_valid(enemy,obj_pnunit)){
-            exit;
+            enemy = flank == 0 ? get_rightmost() : get_leftmost();
+            if (!target_block_is_valid(enemy,obj_pnunit)){
+                exit;
+            }
         }
 
         if (instance_exists(obj_nfort) && (!flank)) {
@@ -176,112 +185,4 @@ if (engaged) {     // Melee
 
 instance_activate_object(obj_pnunit);
 
-//TODO: Everything bellow has to be scrapped and reworked;
-//! Commented out stuff bellow, until I understand why it exists;
-/* __b__ = action_if_variable(image_index, -500, 0);
-if (__b__) {
-    var leftest, charge = 0,
-        enemy2 = 0;
-
-    with(obj_pnunit) {
-        if (x < -4000) {
-            instance_deactivate_object(id);
-        }
-    }
-
-    if (flank == 0) {
-        move_unit_block("west");
-        // instance_activate_object(obj_cursor);
-    }
-    if (flank == 1) {
-        enemy = instance_nearest(x, y, obj_pnunit); // Right most enemy
-        enemy2 = enemy;
-        // if (collision_point(x+10,y,obj_pnunit,0,1)) then engaged=1;
-        // if (!collision_point(x+10,y,obj_pnunit,0,1)) then engaged=0;
-        move_unit_block();
-
-        if (!position_empty(x + 10, y)) {
-            engaged = 1;
-        } // Quick smash
-        // instance_activate_object(obj_cursor);
-    }
-
-if (!collision_point(x+10,y,obj_pnunit,0,1)) and (!collision_point(x-10,y,obj_pnunit,0,1)) then engaged=0;
-if (collision_point(x+10,y,obj_pnunit,0,1)) or (collision_point(x-10,y,obj_pnunit,0,1)) then engaged=1;
-
-
-
-var range_shooti;
-
-    i=0;
-    
-    
-    repeat(30){i+=1;
-
-
-    
-    dist=floor(point_distance(enemy2.x,enemy2.y,x,y)/10);
-    
-    
-    
-    
-    
-    range_shoot="";
-    
-    if (wep[i]!="") and (range[i]>=dist) and (ammo[i]!=0){
-        if (range[i]!=1) and (engaged=0) then range_shoot="ranged";
-        if ((range[i]!=floor(range[i])) or (range[i]=1)) and (engaged=1) then range_shoot="melee";
-    }
-    
-    
-    
-    
-    
-    
-    
-    if (wep[i]!="") and (range_shoot="ranged") and (range[i]>=dist){// Weapon meets preliminary checks
-        var _armour_piercing;_armour_piercing=0;if (apa[i]>att[i]) then _armour_piercing=1;// Determines if it is _armour_piercing or not
-        
-        // if (wep[i]="Missile Launcher") then _armour_piercing=1;
-        
-        if (string_count("Gauss",wep[i])>0) then _armour_piercing=1;
-        
-        if (wep[i]="Missile Launcher") or (wep[i]="Rokkit Launcha") or (wep[i]="Kannon") then _armour_piercing=1;
-        if (wep[i]="Big Shoota") then _armour_piercing=0;if (wep[i]="Devourer") then _armour_piercing=0;
-        if (wep[i]="Gauss Particle Cannon") or (wep[i]="Overcharged Gauss Cannon") or (wep[i]="Particle Whip") then _armour_piercing=1;
-        
-        
-        if (instance_exists(enemy2)){
-            if (enemy2.veh+enemy2.dreads>0) and (enemy2.men=0) and (apa[i]>10) then _armour_piercing=1;
-            
-            if (_armour_piercing=1) and (once_only=0){// Check for vehicles
-                var g,good;g=0;good=0;
-                
-                if (enemy.veh>0){
-                    // good=scr_target(enemy,"veh");// First target has vehicles, blow it to hell
-                    scr_shoot(i,enemy2,good,"arp","ranged");
-                }
-                if (good=0) and (instance_number(obj_pnunit)>1){// First target does not have vehicles, cycle through objects to find one that has vehicles
-                    var x2;x2=enemy2.x;
-                    repeat(instance_number(obj_enunit)-1){
-                        if (good=0){
-                            x2+=10;enemy2=instance_nearest(x2,y,obj_pnunit);
-                            if (enemy2.veh+enemy2.dreads>0) and (good=0){
-                                good=scr_target(enemy2,"veh");// This target has vehicles, blow it to hell
-                                scr_shoot(i,enemy2,good,"arp","ranged");once_only=1;
-                            }
-                        }
-                    }
-                }
-                if (good=0) then _armour_piercing=0;// Fuck it, shoot at infantry
-            }
-        }
-
-    }
-
-
-
-}
-
-    instance_activate_object(obj_pnunit);
-} */
+//! Here was some stuff that depended on image_index here, that got deleted, because I couldn't figure out why it exists;
