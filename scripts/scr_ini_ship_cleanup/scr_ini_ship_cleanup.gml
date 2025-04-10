@@ -1,29 +1,30 @@
-function scr_kill_ship(UUID) {
+function scr_kill_ship(fUUID) {
     try {
         with(obj_ini) {
-            var _ship_struct = struct_get(USHIPROOT, UUID);
-            var _units_on_ship = _ship_struct.cargo.marine_list;
+            var _ship_struct = fetch_ship(fUUID);
+            var _units_on_ship = _ship_struct.cargo.unit_list;
             for (var i = 0; i < array_length(_units_on_ship); i++) {
                 var _unit = fetch_unit(_units_on_ship[i]);
                 if (!(irandom(_unit.luck) - 3)) {
-                    scr_kill_unit(_units_on_ship[i]);
+                    scr_kill_unit(_units_on_ship[i], undefined);
                     array_remove(_units_on_ship, i, 1);
                     i--;
                 }
             }
             for (var co = 0; co <= companies; co++) {
-                for (var i = 0; i < array_length(veh_role[co]); i++){
-                    if (veh_lid[co][i] == UUID) {
+                for (var i = 0; i < array_length(veh_role[co]); i++) {
+                    if (veh_lid[co][i] == fUUID) {
                         reset_vehicle_variable_arrays(co, i);
                     }
                 }
             }
-            var _ship_loc = _ship_struct.location
+            var _ship_loc = _ship_struct.location;
             var in_warp = _ship_struct.location == "Warp";
             var _available_ships = [];
             var _ship_fleet = find_ships_fleet(UUID);
+            var _nearest_star = "none";
             if (!in_warp) {
-                var _nearest_star = star_by_name(_ship_loc);
+                _nearest_star = star_by_name(_ship_loc);
             }
 
             if (_ship_fleet != "none") {
@@ -31,8 +32,8 @@ function scr_kill_ship(UUID) {
                 _available_ships = fleet_full_ship_array(_ship_fleet);
             }
 
-            for (var i = 0; i < array_length(_available_ships); i++){
-                var _cur_ship = USHIPROOT[$ _available_ships[i]];
+            for (var i = 0; i < array_length(_available_ships); i++) {
+                var _cur_ship = fetch_ship(_available_ships[i]);
                 var _max_space = _cur_ship.cargo.capacity;
                 for (var f = 0; f < array_length(_units_on_ship); f++) {
                     if (_cur_ship.cargo.carrying < _max_space) {
@@ -48,7 +49,6 @@ function scr_kill_ship(UUID) {
                     }
                 }
             }
-            scr_uuid_delete_ship(UUID);
 
             if (!in_warp && _nearest_star != "none") {
                 for (var i = 0; i < array_length(_units_on_ship); i++) {
@@ -60,8 +60,9 @@ function scr_kill_ship(UUID) {
             }
 
             for (var i = 0; i < array_length(_units_on_ship); i++){
-                scr_kill_unit(_units_on_ship[i]);
+                scr_kill_unit(_units_on_ship[i], undefined);
             }
+            scr_uuid_delete_ship(UUID);
         }
     } catch(_exception) {
         handle_exception(_exception);

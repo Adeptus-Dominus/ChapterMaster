@@ -172,7 +172,7 @@ function Roster() constructor{
         _button.squad = squad_id;
         array_push(squad_buttons, _button);
     }
-    static new_ship_button = function(display, ship_id){
+    static new_ship_button = function(display, fship_UUID){
         var _button = new ToggleButton();
         _button.str1 = display;
         _button.text_halign = fa_center;
@@ -180,7 +180,7 @@ function Roster() constructor{
         _button.button_color = CM_GREEN_COLOR;
         _button.width = string_width(display)+10;
         _button.active = false;
-        _button.ship_id = ship_id;
+        _button.ship_UUID = fship_UUID;
         array_push(ships, _button);
     }
 
@@ -343,10 +343,10 @@ function Roster() constructor{
         }
         var _ships = get_player_ships(roster_location);
         var _ship_index;
-        for (var s=0;s<array_length(_ships);s++){
-            _ship_index = _ships[s];
-            if (obj_ini.ship_carrying[_ship_index]>0){
-                new_ship_button(obj_ini.ship[_ship_index],_ship_index);
+        for (var s = 0; s < array_length(_ships); s++) {
+            _ship_struct = fetch_ship(_ships[s]);
+            if (_ship_struct.cargo.carrying > 0) {
+                new_ship_button(_ship_struct.name, _ships[s]);
             }
         }
     }

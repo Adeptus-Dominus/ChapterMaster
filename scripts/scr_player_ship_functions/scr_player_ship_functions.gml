@@ -165,9 +165,11 @@ function new_player_ship_defaults() {
         cargo : {
             capacity : 0,
             carrying : 0,
-            marine_list : [],
+            unit_list : [],
+            vehicle_list : [],
             contents : ""
-        }
+        },
+        lost : 0
     }
 
     return _ship;
@@ -289,7 +291,7 @@ function new_player_ship(type, start_loc="home", new_name=""){
             "Weapons Battery",
             "Thunderhawk Launch Bays",
             "Torpedo Tubes",
-            "Macro Bombardment"
+            "Macro Bombardment Cannons"
         ];
 
         _ship.weapons.facing = [
@@ -384,7 +386,7 @@ function new_player_ship(type, start_loc="home", new_name=""){
         _ship.armor.front = 8;
         _ship.armor.other = 8;
 
-        _ship.weapons.count = 4;
+        _ship.weapons.count = 5;
         _ship.weapons.name = [
             "",
             "Lance Battery",

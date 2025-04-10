@@ -695,14 +695,13 @@ for(var i=0; i<501; i++){
 // ship management arrays
 // they are used to display a paginated subset of ships
 // at a particular location for the load to ship screen.
-sh_ide = []
-sh_uid = []
-sh_name = []
-sh_class = []
-sh_loc = []
-sh_hp = []
-sh_cargo = []
-sh_cargo_max = []
+sh_uuid = [];
+sh_name = [];
+sh_class = [];
+sh_loc = [];
+sh_hp = [];
+sh_cargo = [];
+sh_cargo_max = [];
 reset_manage_arrays();
 alll=0;
 //
