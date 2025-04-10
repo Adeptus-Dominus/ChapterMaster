@@ -496,10 +496,12 @@ function ComplexSet(unit) constructor{
             }
         }
     }; 
-    static draw_unit_hands = function(x_surface_offset, y_surface_offset, armour_type, specialist_colours, hide_bionics, right_left) {
-        if (arm_variant[right_left] == 1) {
+    static draw_unit_hands = function(right_left) {
+        var _arm_data = arms_data[_right_left];
+        if (_arm_data.arm_type == 1) {
             return;
         }
+        var _hand = _arm_data.hand_type;
 
         if (armour_type != ArmourType.None) {
             var offset_x = x_surface_offset;
@@ -511,15 +513,15 @@ function ComplexSet(unit) constructor{
                 case ArmourType.Scout:
                     var _hand_spr = spr_pa_hands;
                     offset_y += 11;
-                    offset_x += ui_xmod[right_left];
+                    offset_x += _arm_data.ui_xmod;
                 default:
                 case ArmourType.Normal:
                     var _hand_spr = spr_pa_hands;
                     break;
             }
-            if (hand_variant[right_left] > 0) {
-                var _spr_index = (hand_variant[right_left] - 1) * 2;
-                if (right_left == 2) {
+            if (_arm_data.hand_type > 0) {
+                var _spr_index = (_arm_data.hand_type - 1) * 2;
+                if (right_left == 1) {
                     _spr_index += (specialist_colours >= 2) ? 1 : 0;
                     draw_sprite_flipped(_hand_spr, _spr_index, offset_x, offset_y);
                 } else {
@@ -527,11 +529,11 @@ function ComplexSet(unit) constructor{
                 }
             }
             // Draw bionic hands
-            if (hand_variant[right_left] == 1) {
+            if (_arm_data.hand_type == 1) {
                 if (armour_type == ArmourType.Normal && !hide_bionics && struct_exists(body[$(right_left == 1 ? "right_arm" : "left_arm")], "bionic")) {
                     var bionic_hand = body[$(right_left == 1 ? "right_arm" : "left_arm")][$ "bionic"];
                     var bionic_spr_index = bionic_hand.variant * 2;
-                    if (right_left == 2) {
+                    if (right_left == 1) {
                         bionic_spr_index += (specialist_colours >= 2) ? 1 : 0;
                         draw_sprite_flipped(spr_bionics_hand, bionic_spr_index, offset_x, offset_y);
                     } else {
@@ -547,53 +549,48 @@ function ComplexSet(unit) constructor{
         for (var i = 0; i <= 1; i++) {
             var _arm_data = arms_data[_right_left];
             if (!_arm_data.hand_on_top) {
-                draw_unit_hands(x_surface_offset, y_surface_offset, armour_type, specialist_colours, hide_bionics, i);
+                draw_unit_hands(i);
             }
         }
 
         // // Draw weapons
 
-        if (!new_weapon_draw[1]) {
-            if ((ui_weapon[1] != 0) && sprite_exists(ui_weapon[1])) {
-                if ((ui_twoh[1] == false) && (ui_twoh[2] == false)) {
-                    draw_sprite(ui_weapon[1], 0, x_surface_offset + ui_xmod[1], y_surface_offset + ui_ymod[1]);
+        if (!weapon_right.new_weapon_draw) {
+            if ((weapon_right.sprite != 0) && sprite_exists(weapon_right.sprite)) {
+                if ((weapon_right.ui_twoh == false && weapon_left.ui_twoh == false)) {
+                    draw_sprite(weapon_right.sprite, 0, x_surface_offset + weapon_right.ui_xmod, y_surface_offset + weapon_right.ui_ymod);
                 }
-                if (ui_twoh[1] == true) {
-                    draw_sprite(ui_weapon[1], 0, x_surface_offset + ui_xmod[1], y_surface_offset + ui_ymod[1]);
+                if (weapon_right.ui_twoh == true) {
+                    draw_sprite(weapon_right.sprite, 0, x_surface_offset + weapon_right.ui_xmod, y_surface_offset + weapon_right.ui_ymod);
                     if (ui_force_both == true) {
-                        if (specialist_colours <= 1) {
-                            draw_sprite(ui_weapon[1], 0, x_surface_offset + ui_xmod[1], y_surface_offset + ui_ymod[1]);
-                        }
-                        if (specialist_colours >= 2) {
-                            draw_sprite(ui_weapon[1], 1, x_surface_offset + ui_xmod[1], y_surface_offset + ui_ymod[1]);
-                        }
+                        draw_sprite(weapon_right.sprite, 0, x_surface_offset + weapon_right.ui_xmod, y_surface_offset + weapon_right.ui_ymod);
                     }
                 }
             }
         } else {
-            if ((ui_weapon[1] != 0) && sprite_exists(ui_weapon[1])) {
-                draw_sprite(ui_weapon[1], 0, x_surface_offset + ui_xmod[1], y_surface_offset + ui_ymod[1]);
+            if ((weapon_right.sprite != 0) && sprite_exists(weapon_right.sprite)) {
+                draw_sprite(weapon_right.sprite, 0, x_surface_offset + weapon_right.ui_xmod, y_surface_offset + weapon_right.ui_ymod);
             }
         }
-        if (!new_weapon_draw[2]) {
-            if ((ui_weapon[2] != 0) && sprite_exists(ui_weapon[2]) && (ui_twoh[1] == false || ui_force_both == true)) {
-                if (ui_spec[2] == false) {
-                    draw_sprite(ui_weapon[2], 1, x_surface_offset + ui_xmod[2], y_surface_offset + ui_ymod[2]);
+        if (!weapon_left.new_weapon_draw) {
+            if ((weapon_left.sprite != 0) && sprite_exists(weapon_left.sprite) && (weapon_right.ui_twoh == false || ui_force_both == true)) {
+                if (weapon_left.ui_spec == false) {
+                    draw_sprite(weapon_left.sprite, 1, x_surface_offset + weapon_left.ui_xmod, y_surface_offset + weapon_left.ui_ymod);
                 }
-                if (ui_spec[2] == true) {
-                    draw_sprite(ui_weapon[2], 1, x_surface_offset + ui_xmod[2], y_surface_offset + ui_ymod[2]);
+                else if (weapon_left.ui_spec == true) {
+                    draw_sprite(weapon_left.sprite, 1, x_surface_offset + weapon_left.ui_xmod, y_surface_offset + weapon_left.ui_ymod);
                 }
             }
         } else {
-            if ((ui_weapon[2] != 0) && sprite_exists(ui_weapon[2])) {
-                draw_sprite_flipped(ui_weapon[2], 0, x_surface_offset + ui_xmod[2], y_surface_offset + ui_ymod[2]);
+            if ((weapon_left.sprite != 0) && sprite_exists(weapon_left.sprite)) {
+                draw_sprite_flipped(weapon_left.sprite, 0, x_surface_offset + weapon_left.ui_xmod, y_surface_offset + weapon_left.ui_ymod);
             }
         }
 
         // Draw hands above the weapon sprite;
         for (var i = 1; i <= 2; i++) {
             if (hand_on_top[i]) {
-                draw_unit_hands(x_surface_offset, y_surface_offset, armour_type, specialist_colours, hide_bionics, i);
+                draw_unit_hands(i);
             }
         }        
     }
@@ -614,7 +611,7 @@ function ComplexSet(unit) constructor{
         arms_data = [weapon_right, weapon_left];
         for (var i=0;i<=1;i++){
             var _arm = arms_data[0];
-            var _defualts = ["hand_on_top", "ui_xmod", "ui_ymod", "hand_type", "arm_type", "ui_weapon", "new_weapon_draw"];
+            var _defualts = ["hand_on_top", "ui_xmod", "ui_ymod", "hand_type", "arm_type", "ui_weapon", "new_weapon_draw", "ui_twoh", "ui_spec"];
             for (var s=0;s<array_length(_defualts);s++){
                 if (!struct_exists(_arm, _defualts[s])){
                     _arm[$_defualts[s]] = 0;

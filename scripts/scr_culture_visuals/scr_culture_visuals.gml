@@ -724,8 +724,8 @@ global.modular_drawing_items = [
 
         weapon_map : "Assault Cannon",
         position : "weapon",
-        display_type : "terminator_ranged";
         weapon_data : {
+            display_type : "terminator_ranged";
             arm_type : 1,
             hand_type : 0,
             sprite : spr_weapon_assca,            
@@ -735,7 +735,6 @@ global.modular_drawing_items = [
     {
         weapon_map : "Heavy Flamer",
         position : "weapon",
-        display_type : "terminator_ranged";
         weapon_data : {
             arm_type : 1,
             hand_type : 0,
@@ -746,8 +745,9 @@ global.modular_drawing_items = [
     {
         weapon_map : "Plasma Cannon",
         position : "weapon",
-        display_type : "terminator_ranged";
+        
         weapon_data : {
+            display_type : "terminator_ranged";
             arm_type : 1,
             hand_type : 0,
             sprite : spr_weapon_plasma_cannon_term,            
@@ -764,13 +764,26 @@ global.modular_drawing_items = [
             sprite : spr_weapon_plasma_cannon_term,          
         }
         body_types :[2],
-    }                                                               
+    },
+    {
+    {
+        weapon_map : "Power Fist",
+        position : "weapon",
+        weapon_data : {
+            arm_type : 1,
+            ui_spec : true,
+            display_type : "terminator_fist",
+            sprite : spr_weapon_powfist4,          
+        }
+        body_types :[2],
+    },
+    }                                                              
 ];
 
 
 function fetch_marine_components_to_memory(){
     array_foreach(global.modular_drawing_items, function(_element, _index){
-        if (sprite_exists((_element.sprite))){
+        if (_element.position != "weapon" && sprite_exists((_element.sprite))){
             sprite_prefetch(_element.sprite);
             if (struct_exists(_element, "overides")){
                 var _override_areas = struct_get_names(_element.overides);
