@@ -4,7 +4,7 @@ function scr_crusade() {
 	// Think it is ran in the obj_p_fleet object when arriving back from crusade
 
 	var unit;
-	var co=0,i=0,apoth=0,death_determination=0,death_determination_2=0,roll3=0,type="",artifacts=0,clean=0;good=0;seed=0;marines_lost=0;
+	var co=0,i=0,apoth=0,death_determination=0,death_determination_2=0,roll3=0,type="",artifacts=0,clean=0, dead;seed=0;marines_lost=0;
 	var heroics_strings=[];
 	
 	//index 1: death_determine 1 //index 2: death_determine 2 /index 3: apoth_recovery
@@ -32,15 +32,15 @@ function scr_crusade() {
 	for (co=0;co<=10;co++){
 		clean[co]=0;
 	}
-	var total_ship_id=array_concat(capital_num,frigate_num,escort_num);
+    var fleet_ship_UUIDs = fleet_full_ship_array();
 
 	for (co=0;co<=10;co++){
 	    for (i=0;i<=500;i++){
-        	good=0;dead=false;
+            dead = false;
         	if (obj_ini.name[co][i]=="") then continue;
         		unit=fetch_unit([co, i]);
-        		if (unit.ship_location==-1) then continue;
-            if (array_contains(total_ship_id,unit.ship_location)){
+        		if (unit.ship_location == "") { continue; }
+            if (array_contains(fleet_ship_UUIDs, unit.ship_location)) {
             	unit=obj_ini.TTRPG[co][i];
                 death_determination=floor(random(100))+1;
                 //specialist trait greatly reduces death risk
@@ -52,7 +52,6 @@ function scr_crusade() {
                 //more generalised trait bonus mainly linked to chapter advantage of same name
                 if (unit.has_trait("slow_and_purposeful")) then death_determination-=10;
             
-                var dead=false;
                 if (death_determination>death_data[0] || death_determination_2>death_data[1]){
                 	dead=true;
 	                if (unit.role()==obj_ini.role[100][5]){
@@ -79,7 +78,9 @@ function scr_crusade() {
 	           	}
                 if (dead){               	
                     var man_size=0;
-                    obj_ini.ship_carrying[unit.ship_location]-=unit.get_unit_size();
+                    var _ship_struct = fetch_ship(unit.ship_location);
+                    _ship_struct.cargo.carrying -= unit.get_unit_size();
+                    array_delete(_ship_struct.cargo.unit_list, array_get_index(_ship_struct.cargo.unit_list, unit.ship_location), 1);
                 	if (unit.IsSpecialist(SPECIALISTS_STANDARD,true)){
                 		obj_controller.command--;
                 	} else {

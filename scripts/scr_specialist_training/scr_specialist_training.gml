@@ -394,13 +394,15 @@ function techmarine_training(){
 
 	                // Remove from ship
                     if (obj_controller.faction_status[eFACTION.Mechanicus] != "War") {
-                        if (unit.ship_location>-1){
-                            var man_size=unit.get_unit_size();
-                            obj_ini.ship_carrying[unit.ship_location]-=man_size;
+                        if (unit.ship_location != "") {
+                            var man_size = unit.get_unit_size();
+                            var _ship_struct = fetch_ship(unit.ship_location);
+                            _ship_struct.carrying -= man_size;
+                            array_delete(_ship_struct.cargo.unit_list, array_get_index(_ship_struct.cargo.unit_list, unit.ship_location), 1);
                         }
-                        obj_ini.loc[0][open_slot]="Terra";
-                        unit.planet_location=4;
-                        unit.ship_location=-1;
+                        obj_ini.loc[0][open_slot] = "Terra";
+                        unit.planet_location = 4;
+                        unit.ship_location = "";
                     }
 	                unit.update_weapon_one("");
 	                unit.update_weapon_two("");
