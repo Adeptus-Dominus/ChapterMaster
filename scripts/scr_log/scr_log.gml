@@ -8,10 +8,17 @@
 /// @param {string} _message - The message to log.
 function create_error_file(_message) {
     if (string_length(_message) > 0) {
-        var _date_time = $"{DATE_TIME_1}";
-        var _log_file = file_text_open_write("Logs/" + $"{_date_time}_error.log");
+        var _log_file = file_text_open_write($"Logs/{DATE_TIME_1}_error.log");
         file_text_write_string(_log_file, _message);
         file_text_close(_log_file);
+    }
+    copy_last_messages_file();
+}
+
+/// @description Creates a copy of the last_messages.log file, with the current date in the name, in the same folder.
+function copy_last_messages_file() {
+    if (file_exists(PATH_last_messages)) {
+        file_copy(PATH_last_messages, $"Logs/{DATE_TIME_1}_messages.log");
     }
 }
 
@@ -23,31 +30,66 @@ function create_error_file(_message) {
 /// @param {string} _report_title - Optional. Preset title for the bug report.
 function handle_error(_header, _message, _stacktrace="", _critical = false, _report_title="") {
     var _full_message = "";
-    _full_message += $"{LB_92}\n";
-    _full_message += $"{_header}\n\n";
-    _full_message += $"Date-Time: {DATE_TIME_3}\n";
-    _full_message += $"Game Version: {global.game_version}\n";
-    _full_message += $"Build Date: {global.build_date}\n";
-    _full_message += $"Commit Hash: {global.commit_hash}\n\n";
-    _full_message += $"Details:\n";
-    _full_message += $"{_message}\n\n";
-    _full_message += $"Stacktrace:\n";
-    _full_message += $"{_stacktrace}\n";
-    _full_message += $"{LB_92}";
+    var _header_section = "";
+    var _info_section = "";
+    var _save_section = "";
+    var _error_section = "";
+    var _footer_section = "";
+
+    _header_section += $"{LB_92}\n";
+    _header_section += $"{_header}\n\n";
+    _full_message += _header_section;
+
+    // _info_section += $"Operating System: {os_type_format(os_type)}\n"; // Uncomment this when we start compiling for different platforms;
+    _info_section += $"Date-Time: {DATE_TIME_3}\n";
+    _info_section += $"Game Version: {global.game_version}\n";
+    _info_section += $"Build Date: {global.build_date}\n";
+    _info_section += $"Commit Hash: {global.commit_hash}\n\n";
+    _full_message += _info_section;
+
+    if (global.chapter_name != "None") {
+        _save_section += $"Chapter Name: {global.chapter_name}\n";
+    }
+    if (instance_exists(obj_controller)) {
+        _save_section += $"Current Turn: {obj_controller.turn}\n";
+    }
+    if (global.game_seed != 0) {
+        _save_section += $"Game Seed: {global.game_seed}\n";
+    }
+    if (_save_section != "") {
+        _full_message += "Save Details:\n";
+        _full_message += $"{_save_section}\n";
+    }
+
+    _error_section += "Error Details:\n";
+    _error_section += $"{_message}\n\n";
+    _error_section += "Stacktrace:\n";
+    _error_section += $"{_stacktrace}\n";
+    _full_message += _error_section;
+
+    _footer_section += $"{LB_92}";
+    _full_message += _footer_section;
 
     if (_report_title != "") {
         _report_title += "\n";
     }
 
-    var _commit_history_link = $"https://github.com/Adeptus-Dominus/ChapterMaster/commits/{global.commit_hash}";
+    var _error_file_text = $"{_report_title}{_full_message}";
+    var _commit_history_link = "";
+    if (global.commit_hash != "unknown hash") {
+        _commit_history_link = $"https://github.com/Adeptus-Dominus/ChapterMaster/commits/{global.commit_hash}";
+        _error_file_text += $"\n{_commit_history_link}";
+    }
 
-    create_error_file($"{_report_title}{_full_message}\n{_commit_history_link}");
-    show_debug_message(_full_message);
+    create_error_file(_error_file_text);
+    show_debug_message($"{_header_section}{_error_section}{_footer_section}");
 
     var _clipboard_message = "";
     _clipboard_message += $"{_report_title}";
     _clipboard_message += $"{markdown_codeblock(_full_message, "log")}\n";
-    _clipboard_message += $"{_commit_history_link}";
+    if (_commit_history_link != "") {
+        _clipboard_message += $"\n{_commit_history_link}";
+    }
     clipboard_set_text(_clipboard_message);
 
     var _player_message = "";
@@ -145,4 +187,31 @@ function clean_stacktrace_line(_stacktrace_line) {
     }
 
     return _stacktrace_line;
+}
+
+/// @description Formats the GM constant to a readable OS name.
+/// @param {string} _os_type - GM constant for the OS.
+/// @returns {string}
+function os_type_format(_os_type) {
+    var _os_type_dictionary = {
+        os_windows: "Windows OS",
+        os_gxgames: "GX.games",
+        os_linux: "Linux",
+        os_macosx: "macOS X",
+        os_ios: "iOS",
+        os_tvos: "Apple tvOS",
+        os_android: "Android",
+        os_ps4: "Sony PlayStation 4",
+        os_ps5: "Sony PlayStation 5",
+        os_gdk: "Microsoft GDK",
+        os_xboxseriesxs: "Xbox Series X/S",
+        os_switch: "Nintendo Switch",
+        os_unknown: "Unknown OS"
+    };
+
+    if (struct_exists(_os_type_dictionary, _os_type)) {
+        return _os_type_dictionary[$ _os_type];
+    } else {
+        return _os_type_dictionary.os_unknown;
+    }
 }
