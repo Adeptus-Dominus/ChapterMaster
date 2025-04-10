@@ -45,8 +45,18 @@ function EquipmentStruct(item_data, core_type, quality_request = "none") constru
 
     // Placeholder maintenance values;
     if (maintenance == 0) {
-        if (has_tags(["heavy_ranged", "power", "plasma", "melta"])) {
-            maintenance += 0.05;
+        maintenance = 0.01;
+
+        if (has_tags(["heavy_ranged"])) {
+            maintenance += 0.02;
+        }
+        
+        if (has_tags(["power", "plasma", "melta", "grav"])) {
+            maintenance += 0.02;
+        }
+
+        if (has_tags(["power_armour"])) {
+            maintenance += 0.02;
         }
     }
 

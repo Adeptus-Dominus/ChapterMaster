@@ -74,9 +74,9 @@ global.weapons = {
 	"Chainsword": {
 		"abbreviation": "ChSwrd",
 		"attack": {
-			"standard": 150,
-			"master_crafted": 180,
-			"artifact": 250
+			"standard": 18,
+			"master_crafted": 28,
+			"artifact": 38
 		},
 		"description": "A standard Chainsword. It is popular among Assault Marines due to their raw power while maintaining speed.",
 		"melee_hands": 1,
@@ -84,7 +84,7 @@ global.weapons = {
 		"ammo": 0,
 		"range": 1,
 		"spli": 4,
-		"arp": 1,
+		"arp": 6,
 		"tags": ["chain", "sword","savage", "boarding 1"],
 	},
 	"Chainaxe": {
@@ -615,17 +615,17 @@ global.weapons = {
 	"Bolt Pistol": {
 		"abbreviation": "BltPstl",
 		"attack": {
-			"standard": 150,
-			"master_crafted": 175,
-			"artifact": 200
+			"standard": 30,
+			"master_crafted": 40,
+			"artifact": 50
 		},
 		"description": "A smaller, more compact version of the venerable Boltgun. This model is produced in the standard Godwyn pattern.",
 		"melee_hands": 0,
 		"ranged_hands": 1,
-		"ammo": 18,
+		"ammo": 7,
 		"range": 4.1,
 		"spli": 2,
-		"arp": 1,
+		"arp": 8,
 		"tags": ["bolt", "pistol", "boarding 1"],
 	},
 	"Wrist-Mounted Storm Bolter": {
@@ -779,17 +779,17 @@ global.weapons = {
 	"Bolter": {
 		"abbreviation": "Bltr",
 		"attack": {
-			"standard": 150,
-			"master_crafted": 175,
-			"artifact": 200
+			"standard": 30,
+			"master_crafted": 40,
+			"artifact": 50
 		},
 		"description": "A standard Bolter, a two-handed firearm that launches rocket propelled projectiles that detonate after penetrating the target. It is a versatile and iconic weapon of Adeptus Astartes, their resounding detonations carry the Emperor's Wrath.",
 		"melee_hands": 1,
 		"ranged_hands": 2,
-		"ammo": 16,
-		"range": 10,
-		"spli": 5,
-		"arp": 1,
+		"ammo": 10,
+		"range": 11,
+		"spli": 3,
+		"arp": 8,
 		"tags": ["bolt", "boarding 1"]
 	},
 	"Heavy Flamer": {
@@ -1194,17 +1194,17 @@ global.weapons = {
 	"Heavy Bolter": {
 		"abbreviation": "HvyBltr",
 		"attack": {
-			"standard": 250,
-			"master_crafted": 300,
-			"artifact": 450
+			"standard": 35,
+			"master_crafted": 45,
+			"artifact": 55
 		},
 		"description": "The Heavy Bolter is a heavy weapon that fires larger and more powerful bolt shells compared to the standard Bolter.",
 		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 10,
-		"range": 14,
-		"spli": 12,
-		"arp": 2,
+		"range": 16,
+		"spli": 6,
+		"arp": 10,
 		"tags": ["heavy_ranged", "bolt"]
 	},
 	"Infernus Heavy Bolter": {

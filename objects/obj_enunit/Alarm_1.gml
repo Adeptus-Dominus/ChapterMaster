@@ -241,7 +241,6 @@ if __b__ {
 		att[i] = 0;
 		apa[i] = 0;
 		wep_num[i] = 0;
-		wep_rnum[i] = 0;
 	}
 	i = 0;
 

@@ -89,7 +89,6 @@ i=-1;
 repeat(71){i+=1;
     wep[i]="";
     wep_num[i]=0;
-    wep_rnum[i]=0;
     range[i]=0;
     att[i]=0;
     apa[i]=0;

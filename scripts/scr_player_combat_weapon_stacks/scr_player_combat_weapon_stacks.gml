@@ -115,7 +115,6 @@ function scr_player_combat_weapon_stacks() {
         att[i]=0;
         apa[i]=0;
         wep_num[i]=0;
-        wep_rnum[i]=0;
         // if (wep_owner[i]!="") and (wep_num[i]>1) then wep_owner[i]="assorted";// What if they are using two ranged weapons?  Hmmmmm?
     }
 
