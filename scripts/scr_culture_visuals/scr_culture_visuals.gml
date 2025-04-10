@@ -802,6 +802,11 @@ function DummyMarine()constructor{
             } else {
                 _armour = _last_armour;
             }
+            if (!buttons.company_options_toggle.company_view){
+                if (!array_contains(armours, _armour)){
+                   _armour =  "MK7 Aquila";
+                }
+            }
         }
         last_armour = _armour;
         return _armour;
