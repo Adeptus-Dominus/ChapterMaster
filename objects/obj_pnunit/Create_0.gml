@@ -81,7 +81,6 @@ repeat(1500){i+=1;
     veh_upgrade[i]="";
     veh_acc[i]="";
     veh_dead[i]=0;
-    veh_hp_multiplier[i]=1;
     veh_local[i]=0;
     veh_ally[i]=false;
 }

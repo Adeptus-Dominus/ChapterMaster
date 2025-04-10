@@ -3088,7 +3088,6 @@ if (player_defenses + player_silos > 0) {
 		u.veh_hp[i] = 1000;
 		u.veh_ac[i] = 1000;
 		u.veh_dead[i] = 0;
-		u.veh_hp_multiplier[i] = 1;
 	}
 
 	u.veh_wep1[1] = "Heavy Bolter Emplacement";

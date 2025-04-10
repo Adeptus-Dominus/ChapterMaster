@@ -46,7 +46,10 @@ for (var i=0;i<array_length(veh_type);i++){
         //
         destroy_vehicle(veh_co[i],veh_id[i]);
     }
-    if (veh_dead[i]=0) and (veh_type[i]!="") and (veh_ally[i]=false){obj_ini.veh_hp[veh_co[i],veh_id[i]]=veh_hp[i]/veh_hp_multiplier[i];}
+
+    if ((veh_dead[i] == 0) && (veh_type[i] != "") && (veh_ally[i] == false)) {
+        obj_ini.veh_hp[veh_co[i]][veh_id[i]] = veh_hp[i];
+    }
 }
 
 /* */
