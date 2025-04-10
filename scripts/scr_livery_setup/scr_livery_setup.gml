@@ -509,11 +509,11 @@ function scr_livery_setup(){
                         var pp=instance_create(0,0,obj_creation_popup);
                         pp.type=role_id+100;
                         cooldown=8000;
-                        full_liveries[livery_picker.role_set] = DeepCloneStruct(livery_picker.map_colour);
+                        full_liveries[livery_picker.role_set] = variable_clone(livery_picker.map_colour);
                         livery_picker.role_set = role_id;
                         livery_picker.map_colour = full_liveries[role_id];
                         if (!livery_picker.map_colour.is_changed){
-                            livery_picker.map_colour = DeepCloneStruct(full_liveries[0]);
+                            livery_picker.map_colour = variable_clone(full_liveries[0]);
                         }
                         livery_picker.shuffle_dummy();
                         livery_picker.reset_image();
@@ -533,7 +533,7 @@ function scr_livery_setup(){
     }
     if (livery_picker.role_set!=0){
     	if (point_and_click(draw_unit_buttons([20, 50], $"Return to default Livery"))){
-            full_liveries[livery_picker.role_set] = DeepCloneStruct(livery_picker.map_colour);
+            full_liveries[livery_picker.role_set] = variable_clone(livery_picker.map_colour);
             livery_picker.map_colour = full_liveries[0];
             livery_picker.role_set = 0;   		
     	}

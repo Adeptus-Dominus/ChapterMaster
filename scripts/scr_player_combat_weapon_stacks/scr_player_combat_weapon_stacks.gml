@@ -66,7 +66,7 @@ function player_head_role_stack(stack_index, unit) {
     if (!array_contains(wep_solo[stack_index], unit.name())) then array_push(wep_solo[stack_index], unit.name());
 }
 
-
+/// @mixin
 function scr_player_combat_weapon_stacks() {
     if (defenses=1){
         var i=0;
@@ -173,26 +173,17 @@ function scr_player_combat_weapon_stacks() {
                     add_second_profiles_to_stack(armour_item);
                 }
 
-                if (unit.IsSpecialist("libs", true) || (unit.role() == "Chapter Master" && obj_ncombat.chapter_master_psyker == 1)) {
+                if (unit.IsSpecialist(SPECIALISTS_LIBRARIANS, true) || (unit.role() == "Chapter Master" && obj_ncombat.chapter_master_psyker == 1)) {
                     if (marine_casting_cooldown[g] == 0) {
-                        var known_powers = unit.specials();
-                        if (is_string(known_powers) && string_length(known_powers) > 0) {
+                        if (array_length(unit.powers_known) > 0) {
                             if (marine_casting[g] == true) {
                                 marine_casting[g] = false;
                             }
 
-                            var cast_target = 100;
-                            var cast_dice = roll_dice(1, cast_target);
-
-                            cast_target -= (unit.psionic * 2) + (unit.experience / 10);
+                            var cast_target = unit.perils_threshold() * 2;
+                            var cast_dice = roll_dice(1, 100);
                             if (unit.has_trait("warp_tainted")) {
-                                cast_target -= 20;
-                            }
-                            if (unit.has_trait("favoured_by_the_warp")) {
-                                cast_target -= 10;
-                            }
-                            if (obj_ncombat.global_perils > 0) {
-                                cast_target += obj_ncombat.global_perils;
+                                cast_dice += 40;
                             }
 
                             if (cast_dice >= cast_target) {
@@ -360,7 +351,7 @@ function scr_add_unit_to_roster(unit, is_local=false,is_ally=false){
     if (is_local){
         local_forces=true;
     }
-    if (unit.IsSpecialist("dreadnoughts")){
+    if (unit.IsSpecialist(SPECIALISTS_DREADNOUGHTS)){
         dreads++;
     } else {
         men++;

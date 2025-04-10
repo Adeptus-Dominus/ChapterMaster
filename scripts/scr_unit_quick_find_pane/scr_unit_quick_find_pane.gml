@@ -44,9 +44,9 @@ function UnitQuickFindPanel() constructor{
 	    				array_push(garrison_log[$ unit_location[2]].units, unit);
 	    			}
 	    			group = garrison_log[$ unit_location[2]];
-	    			if (unit.IsSpecialist("apoth")){
+	    			if (unit.IsSpecialist(SPECIALISTS_APOTHECARIES)){
 						group.healers++;
-	    			} else if (unit.IsSpecialist("forge")){
+	    			} else if (unit.IsSpecialist(SPECIALISTS_TECHS)){
 						group.techies++;
 	    			}
 	    		} else if (unit_location[0]==location_types.ship){
@@ -766,7 +766,7 @@ function promote_selection(){
 
         var god=0,nuuum=0;
         for(var f=1; f<array_length(display_unit); f++){
-            if ((ma_promote[f]>=1 || is_specialist(ma_role[f], "rank_and_file")  || is_specialist(ma_role[f], "squad_leaders")) && man_sel[f]==1){
+            if ((ma_promote[f]>=1 || is_specialist(ma_role[f], SPECIALISTS_RANK_AND_FILE)  || is_specialist(ma_role[f], SPECIALISTS_SQUAD_LEADERS)) && man_sel[f]==1){
                 nuuum+=1;
                 if (pip.min_exp==0) then pip.min_exp=ma_exp[f];
                 pip.min_exp=min(ma_exp[f],pip.min_exp);

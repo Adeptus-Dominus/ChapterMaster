@@ -255,7 +255,7 @@ try {
     obj_controller.x=view_x;
     obj_controller.y=view_y;
     obj_controller.combat=0;
-    obj_controller.marines-=final_deaths;
+    obj_controller.marines-=final_marine_deaths;
     obj_controller.command-=final_command_deaths;
     
     instance_activate_all();
@@ -266,9 +266,9 @@ try {
     
     
     
-        if (defeat=1) and (final_deaths+final_command_deaths>=10) then scr_recent("battle_defeat", $"{enemy}, {final_deaths+final_command_deaths}");
+        if (defeat=1) and (final_marine_deaths+final_command_deaths>=10) then scr_recent("battle_defeat", $"{enemy}, {final_marine_deaths+final_command_deaths}");
     } else {
-        scr_recent("battle_defeat",$"{enemy}, {final_deaths+final_command_deaths}");
+        scr_recent("battle_defeat",$"{enemy}, {final_marine_deaths+final_command_deaths}");
     }
     
     

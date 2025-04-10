@@ -78,7 +78,7 @@ function scr_crusade() {
                 if (dead){               	
                     var man_size=0;
                     obj_ini.ship_carrying[unit.ship_location]-=unit.get_unit_size();
-                	if (unit.IsSpecialist("standard",true)){
+                	if (unit.IsSpecialist(SPECIALISTS_STANDARD,true)){
                 		obj_controller.command--;
                 	} else {
                 		obj_controller.marines--;
@@ -89,7 +89,7 @@ function scr_crusade() {
                     scr_kill_unit(co,i);
                     seed+=2;
                 } else {
-                	if (unit.IsSpecialist("apoth")) and (obj_ini.gear[co][i]="Narthecium") then apoth++;
+                	if (unit.IsSpecialist(SPECIALISTS_APOTHECARIES)) and (obj_ini.gear[co][i]="Narthecium") then apoth++;
                 	unit.add_exp(irandom(death_data[3][0])+death_data[3][1]);
                 
                     if (irandom(99)==1 && irandom(20)<unit.luck){

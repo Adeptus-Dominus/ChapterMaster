@@ -1,35 +1,32 @@
 changelog:
   exclude:
     labels:
-      - "PR: Chore"
-      
+      - "Action: Hide"
+
   categories:
     - title: Possibly Breaking Changes
       labels:
-        - "PR: Breaking!"
+        - "Type: Breaking"
         
     - title: New/Changed
       labels:
-        - "PR: Feature"
-        - "PR: Enhancement"
-        - "PR: Balance"
-        - "PR: Misc Change"
+        - "Type: Feature"
         
     - title: Fixes
       labels:
-        - "PR: Fix"
+        - "Type: Fix"
         
-    - title: Under The Hood - Important!
+    - title: Under The Hood - Big!
       labels:
-        - "PR: Major Code Changes"
+        - "Size: Warning"
+        - "Size: Epic"
+        - "Size: Huge"
         
     - title: Under The Hood
       labels:
-        - "PR: Refactor"
-        - "PR: Performance"
-        - "PR: Code Style"
-        - "PR: Docs"
-        - "PR: CI"
+        - "Type: Refactor"
+        - "Type: Performance"
+        - "Type: Code Style"
         
     - title: Other Changes
       labels:

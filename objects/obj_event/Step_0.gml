@@ -92,7 +92,7 @@ if (ticked=1){// Select a random marine and have them perform an action
     repeat(20){
         if (good=false){
             good=true;ide=floor(random(attendants))+1;
-            if (unit.IsSpecialist("heads")) then good=false;
+            if (unit.IsSpecialist(SPECIALISTS_HEADS)) then good=false;
         }
     }
     if (good=false) then good=true;

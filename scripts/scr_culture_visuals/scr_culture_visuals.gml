@@ -199,7 +199,7 @@ global.modular_drawing_items = [
         cultures : ["Mechanical Cult"],
         assign_by_rank : 2,
         sprite : spr_metal_tabbard,
-        role_type : ["forge"],
+        role_type : [SPECIALISTS_TECHS],
         body_types :[0],
         position : "tabbard",
         allow_either : ["cultures", "role_type"],
@@ -222,7 +222,7 @@ global.modular_drawing_items = [
         cultures : ["Mechanical Cult"],
         assign_by_rank : 2,
         sprite : spr_terminator_metal_tabbard,
-        role_type : ["forge"],
+        role_type : [SPECIALISTS_TECHS],
         body_types :[2],
         position : "tabbard",
         allow_either : ["cultures", "role_type"],       
@@ -315,20 +315,20 @@ global.modular_drawing_items = [
         sprite : spr_gear_librarian,
         body_types :[0],
         position : "right_pauldron_icons",
-        role_type : ["libs"],
+        role_type : [SPECIALISTS_LIBRARIANS],
     },
     {
         sprite : spr_gear_librarian_term,
         body_types :[2],
         position : "right_pauldron_icons",
-        role_type : ["libs"],
+        role_type : [SPECIALISTS_LIBRARIANS],
     },
     {
         sprite : spr_roman_centurian_crest,
         body_types :[0],
         cultures : ["Roman", "Greek", "Gladiator"],
         position : "crest",
-        role_type : ["captain_candidates"],
+        role_type : [SPECIALISTS_CAPTAIN_CANDIDATES],
         assign_by_rank : 2,
     },
     {
@@ -407,14 +407,14 @@ global.modular_drawing_items = [
         sprite : spr_skulls_belt,
         body_types :[0],
         position : "belt",
-        role_type : ["chap"],
+        role_type : [SPECIALISTS_CHAPLAINS],
         armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"],  
     },
     {
         sprite : spr_tech_belt,
         body_types :[0],
         position : "belt",
-        role_type : ["forge"],
+        role_type : [SPECIALISTS_TECHS],
         armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"],  
     },     
     {
@@ -545,7 +545,7 @@ global.modular_drawing_items = [
         sprite : spr_gear_hood2,
         body_types :[0],
         position : "mouth_variants", 
-        role_type : ["libs"],
+        role_type : [SPECIALISTS_LIBRARIANS],
         chapter_disadv : ["Warp Tainted"],    
     },
     {
@@ -597,7 +597,7 @@ global.modular_drawing_items = [
         position : "head",
         prevent_others : true,
         ban : ["mouth_variants"],
-        role_type : ["chap"],
+        role_type : [SPECIALISTS_CHAPLAINS],
     },
     {
         cultures : ["Wolf Cult"],
@@ -606,7 +606,7 @@ global.modular_drawing_items = [
         position : "head",
         prevent_others : true,
         ban : ["mouth_variants"],
-        role_type : ["chap"],
+        role_type : [SPECIALISTS_CHAPLAINS],
     },
     {   
         sprite : spr_chaplain_term_helm,
@@ -614,7 +614,7 @@ global.modular_drawing_items = [
         position : "head",
         prevent_others : true,
         ban : ["mouth_variants"],
-        role_type : ["chap"],
+        role_type : [SPECIALISTS_CHAPLAINS],
     },
     {
         sprite : spr_chaplain_helm,
@@ -622,7 +622,7 @@ global.modular_drawing_items = [
         position : "head",
         prevent_others : true,
         ban : ["mouth_variants"],
-        role_type : ["chap"],
+        role_type : [SPECIALISTS_CHAPLAINS],
     }, 
     {
         cultures : ["Feral", "Wolf Cult"],
@@ -801,8 +801,8 @@ function DummyMarine()constructor{
             return mobi[100][livery_picker.role_set > 0  ? livery_picker.role_set :eROLE.Tactical];
         }
     }
-    static IsSpecialist = function(search_type="standard",include_trainee=false){
-        return is_specialist(role(), search_type,include_trainee)
+    static IsSpecialist = function(search_type=SPECIALISTS_STANDARD,include_trainee=false, include_heads=true){
+        return is_specialist(role(), search_type,include_trainee, include_heads);
     }
     static has_trait = marine_has_trait;
 

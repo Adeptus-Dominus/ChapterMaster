@@ -1,0 +1,42 @@
+version: 1
+appendOnly: true
+labels:
+- label: "Type: Breaking"
+  title: "\\!"
+- label: "Type: Breaking"
+  body: "(?i)\\[breaking\\]"
+
+- label: "Type: Chore"
+  title: "^chore"
+- label: "Type: Chore"
+  body: "(?i)\\[chore\\]"
+
+- label: "Type: Docs"
+  title: "^docs"
+- label: "Type: Docs"
+  body: "(?i)(\\[docs\\]|\\[doc\\])"
+
+- label: "Type: Code Style"
+  title: "^style"
+- label: "Type: Code Style"
+  body: "(?i)\\[style\\]"
+
+- label: "Type: Feature"
+  title: "^feat"
+- label: "Type: Feature"
+  body: "(?i)(\\[feature\\]|\\[feat\\])"
+
+- label: "Type: Fix"
+  title: "^fix"
+- label: "Type: Fix"
+  body: "(?i)\\[fix\\]"
+
+- label: "Type: Refactor"
+  title: "^refactor"
+- label: "Type: Refactor"
+  body: "(?i)(\\[refactor\\]|\\[ref\\])"
+
+- label: "Type: Performance"
+  title: "^perf"
+- label: "Type: Performance"
+  body: "(?i)(\\[performance\\]|\\[perf\\])"

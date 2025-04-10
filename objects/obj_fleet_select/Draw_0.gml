@@ -48,7 +48,6 @@ if (player_fleet.just_left){
     }
 
     if (point_and_click(cancel_button)){
-        show_debug_message("cancel fleet")
         with (player_fleet){
             cancel_fleet_movement();
         }

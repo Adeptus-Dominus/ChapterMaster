@@ -6,9 +6,9 @@ for (o=0;o<array_length(origin.board_co);o++){
     i=origin.board_id[o];
     unit = fetch_unit([co, i]);
     if (unit.hp()<=-15) and (obj_ini.race[co][i]=1) and (unit.name()!=""){
-        var seed_max=0;
+        var seed_lost=0;
         if (apothecary<=0){
-            if (unit.IsSpecialist("standard")){
+            if (unit.IsSpecialist(SPECIALISTS_STANDARD)){
                 obj_fleet.fallen_command+=1;
             }else {
                 obj_fleet.fallen+=1;
@@ -17,8 +17,8 @@ for (o=0;o<array_length(origin.board_co);o++){
             if (apothecary_had>0){
                 if (unit.base_group=="astartes"){
                     var age=obj_ini.age[co][i];
-                    if (age<=((obj_controller.millenium*1000)+obj_controller.year)-10) and (obj_ini.zygote=0) then seed_max+=1;
-                    if (age<=((obj_controller.millenium*1000)+obj_controller.year)-5) then seed_max+=1;
+                    if (age<=((obj_controller.millenium*1000)+obj_controller.year)-10) and (obj_ini.zygote=0) then seed_lost+=1;
+                    if (age<=((obj_controller.millenium*1000)+obj_controller.year)-5) then seed_lost+=1;
                 }
             }
             
@@ -31,7 +31,7 @@ for (o=0;o<array_length(origin.board_co);o++){
             
             scr_kill_unit(co,i)
             
-            if (obj_fleet.capital+obj_fleet.frigate+obj_fleet.escort>0) then obj_controller.gene_seed+=seed_max;
+            if (obj_fleet.capital+obj_fleet.frigate+obj_fleet.escort>0) then obj_controller.gene_seed+=seed_lost;
         }else if (apothecary>0){
             unit.add_or_sub_health(irandom_range(9,14));
             apothecary-=0.5;

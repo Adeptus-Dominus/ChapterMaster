@@ -361,7 +361,7 @@ if (point_in_rectangle(mouse_x, mouse_y, xx+1465, yy+499,xx+1576,yy+518)){// Pro
                             }
                             mem_unit=obj_ini.TTRPG[target_comp][mahreens];
                             mem_unit.squad = move_squad; 
-                            if (!mem_unit.IsSpecialist("squad_leaders")){
+                            if (!mem_unit.IsSpecialist(SPECIALISTS_SQUAD_LEADERS)){
                                 mem_unit.update_role(role_name[target_role]);
                                 mem_unit.alter_equipment({
                                     "wep1":req_wep1,

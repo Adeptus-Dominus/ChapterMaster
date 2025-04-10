@@ -78,7 +78,10 @@ function specialistfunct (specialist, req_exp) {
 // Returns: Array containing company and position of selected marine, or "none" if no suitable marine found
 function spec_data_set(specialist) {
     var _data = spec_train_data[specialist];
-    var _search = { "stat": _data.req };
+    var _search = {
+		"stat": _data.req,
+		"job": "none"
+	};
 
     if (obj_controller.tagged_training == true) {
         _search.role_tag = _data.name;

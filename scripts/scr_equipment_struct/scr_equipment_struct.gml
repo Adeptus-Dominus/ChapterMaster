@@ -194,14 +194,9 @@ function EquipmentStruct(item_data, core_type, quality_request = "none") constru
                         }
                     }
 
-                    if (array_length(special_properties_array) > 0) {
-                        var special_properties_string = "";
-                        for (var j = 0; j < array_length(special_properties_array); j++) {
-                            special_properties_string += special_properties_array[j];
-                            if (j < array_length(special_properties_array) - 1) {
-                                special_properties_string += ", ";
-                            }
-                        }
+                    var _array_length = array_length(special_properties_array);
+                    if (_array_length > 0) {
+                        var special_properties_string = array_to_string_order(special_properties_array, false, false);
                         item_desc_tooltip += $"#Properties:#{special_properties_string}#";
                     }
                     break;

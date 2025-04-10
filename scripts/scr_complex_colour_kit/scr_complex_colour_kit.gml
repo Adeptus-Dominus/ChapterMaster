@@ -182,7 +182,7 @@ function ColourItem(xx,yy) constructor{
             set_pattern(struct_cols.main_color, lower_left);
             set_pattern(struct_cols.main_color, head_set);
         }
-        return DeepCloneStruct(map_colour);
+        return variable_clone(map_colour);
     }
 
     static set_default_techmarines = function(struct_cols){
@@ -191,7 +191,7 @@ function ColourItem(xx,yy) constructor{
         map_colour.right_pauldron = Colors.Red;   
         map_colour.left_pauldron = struct_cols.left_pauldron;
         map_colour.is_changed=true;
-        return DeepCloneStruct(map_colour);                       
+        return variable_clone(map_colour);                       
     }
 
     static set_default_apothecary = function(struct_cols){
@@ -200,7 +200,7 @@ function ColourItem(xx,yy) constructor{
         map_colour.right_pauldron = Colors.White;   
         map_colour.left_pauldron = struct_cols.left_pauldron;
         map_colour.is_changed=true;
-        return DeepCloneStruct(map_colour);                 
+        return variable_clone(map_colour);                 
     }
 
     static set_default_chaplain = function(struct_cols){
@@ -209,7 +209,7 @@ function ColourItem(xx,yy) constructor{
         map_colour.right_pauldron = Colors.Black;   
         map_colour.left_pauldron = struct_cols.left_pauldron;
         map_colour.is_changed=true;
-        return DeepCloneStruct(map_colour);                 
+        return variable_clone(map_colour);                 
     }
 
 
@@ -219,7 +219,7 @@ function ColourItem(xx,yy) constructor{
         map_colour.right_pauldron = Colors.Dark_Ultramarine;   
         map_colour.left_pauldron = struct_cols.left_pauldron;
         map_colour.is_changed=true;
-        return DeepCloneStruct(map_colour);                 
+        return variable_clone(map_colour);                 
     }
 
     colour_pick=false;
@@ -282,7 +282,7 @@ function ColourItem(xx,yy) constructor{
                     if (_reset){
                         map_colour[$ colour_pick.area] = colour_pick.chosen;
                         map_colour.is_changed = true;
-                        obj_creation.full_liveries[role_set] = DeepCloneStruct(map_colour);
+                        obj_creation.full_liveries[role_set] = variable_clone(map_colour);
                         delete dummy_image;
                         dummy_image = false;                        
                     }
@@ -411,14 +411,14 @@ function setup_complex_livery_shader(setup_role, game_setup=false, unit = "none"
         var _full_liveries = obj_ini.full_liveries;
         var _roles = obj_ini.role[100];
         var data_set = obj_ini.full_liveries[0];
-        if (is_specialist(setup_role, "libs")){
+        if (is_specialist(setup_role, SPECIALISTS_LIBRARIANS)){
             data_set = _full_liveries[eROLE.Librarian];
-        } else if (is_specialist(setup_role, "heads")){
-            if (is_specialist(setup_role, "apoth")){
+        } else if (is_specialist(setup_role, SPECIALISTS_HEADS)){
+            if (is_specialist(setup_role, SPECIALISTS_APOTHECARIES)){
                 data_set = _full_liveries[eROLE.Apothecary];
-            } else if (is_specialist(setup_role, "forge")){
+            } else if (is_specialist(setup_role, SPECIALISTS_TECHS)){
                 data_set = _full_liveries[eROLE.Techmarine];
-            }else if (is_specialist(setup_role, "chap")){
+            }else if (is_specialist(setup_role, SPECIALISTS_CHAPLAINS)){
                 data_set = _full_liveries[eROLE.Chaplain];
             }
         } else {
@@ -636,7 +636,7 @@ function colour_picker(xx,yy, max_width=400) constructor{
             array_push(texture_coords, [[draw_x, draw_y , draw_x+_frame_width, draw_y+_frame_height],texture_names[i]]);
             draw_x += sprite_draw_args.frame_width
         }
-        show_debug_message("call create_texture_surface");
+        // show_debug_message("call create_texture_surface");
         surface_reset_target();
     }
 

@@ -22,7 +22,7 @@ if (enemy_forces<=0) { // Combat for whatever reason sometimes bugs out when the
 if (started>=2) then instance_activate_object(obj_pnunit);
 
 if (started=3){
-    show_debug_message("start alarm7 runup");
+
     instance_activate_all();
     instance_activate_object(obj_pnunit);
     instance_activate_object(obj_enunit);
@@ -49,11 +49,8 @@ if ((started=2) or (started=4)){
     // started=3;alarm[5]=3;obj_pnunit.alarm[4]=1;obj_pnunit.alarm[5]=2;obj_enunit.alarm[1]=3;
     started=3;
     // obj_pnunit.alarm[4]=2;obj_pnunit.alarm[5]=3;obj_enunit.alarm[1]=1;
-    if (instance_exists(obj_pnunit)){
-        obj_pnunit.alarm[4]=2;
-        obj_pnunit.alarm[5]=3;
-    }
-    total_battle_exp_gain = (threat * threat) * 10; // Values should be: 10, 40, 90, 160, 250, 360, 490, 640, 810, 1000
+    var _quad_factor = 10;
+    total_battle_exp_gain = _quad_factor * sqr(threat);
     if (instance_exists(obj_enunit)){obj_enunit.alarm[1]=1;}
     instance_activate_object(obj_star);
     instance_activate_object(obj_event_log);
@@ -93,7 +90,7 @@ function reset_combat_message_arrays(){
     }
 }
 if (timer_stage=1) or (timer_stage=5){
-    if (global_perils>0) then global_perils-=10;
+    if (global_perils>0) then global_perils-=1;
     if (global_perils<0) then global_perils=0;
     turns+=1;
     
@@ -116,6 +113,7 @@ if (timer_stage=1) or (timer_stage=5){
     else if (enemy==6){
         if (instance_exists(obj_enunit)){
             obj_enunit.alarm[1]=2;
+            move_enemy_blocks();
             obj_enunit.alarm[0]=3;
         }
         if (instance_exists(obj_pnunit)){
@@ -141,6 +139,7 @@ else if (timer_stage=3){
         }
         if (instance_exists(obj_enunit)){
             obj_enunit.alarm[1]=2;
+            move_enemy_blocks();
             obj_enunit.alarm[0]=3;
             obj_enunit.alarm[8]=4;
             turns+=1;

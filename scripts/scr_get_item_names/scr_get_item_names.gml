@@ -428,42 +428,55 @@ function push_tank_accessory_item_names(_item_names, _is_land_raider=false, _is_
 /// @param {bool} _with_none - Include "(None)" in the list.
 /// @param {bool} _with_any - Include "(any)" in the list.
 /// @returns {array} item_names - The filtered list of equipment names.
-function get_filtered_equipment_item_names(_item_names, _equip_category, _melee_or_ranged, _is_master_crafted=false, _required_tags=undefined, _excluded_tags=undefined, _with_none=false, _with_any=false) {
+function get_filtered_equipment_item_names(_item_names, _equip_category, _melee_or_ranged, _is_master_crafted = false, _required_tags = undefined, _excluded_tags = undefined, _with_none = false, _with_any = false) {
     get_none_or_any_item_names(_item_names, _with_none, _with_any);
 
-    var matched_indexes = [];
+    var _matched_names = [];
+    var _equipment_keys = variable_struct_get_names(obj_ini.equipment);
 
-    for (var _i = 0; _i < array_length(obj_ini.equipment); _i++) {
-        if (_is_master_crafted && !array_contains(obj_ini.equipment_quality[_i], "master_crafted")) {
+    for (var i = 0; i < array_length(_equipment_keys); i++) {
+        var _item_name = _equipment_keys[i];
+        var _item_struct = obj_ini.equipment[$ _item_name];
+
+        if (!is_struct(_item_struct) || !is_struct(_item_struct.quantity)) {
             continue;
         }
 
-        var equip_data = gear_weapon_data(_equip_category, obj_ini.equipment[_i]);
-        if (!is_struct(equip_data) || obj_ini.equipment_number[_i] <= 0) {
+        if (_is_master_crafted && scr_item_count(_item_name, "master_crafted") <= 0) {
             continue;
         }
 
+        if (scr_item_count(_item_name, "any") <= 0) {
+            continue;
+        }
+
+        var equip_data = gear_weapon_data(_equip_category, _item_name);
+        if (!is_struct(equip_data)) {
+            continue;
+        }
+
+        // Melee or ranged filter
         if (_melee_or_ranged != undefined) {
             if ((_melee_or_ranged && equip_data.range > 1.1) || (!_melee_or_ranged && equip_data.range <= 1.1)) {
                 continue;
             }
         }
 
-        // Check required tags
+        // Required tags
         var valid = true;
         if (_required_tags != undefined) {
-            for (var _t = 0; _t < array_length(_required_tags); _t++) {
-                if (!equip_data.has_tag(_required_tags[_t])) {
+            for (var t = 0; t < array_length(_required_tags); t++) {
+                if (!equip_data.has_tag(_required_tags[t])) {
                     valid = false;
                     break;
                 }
             }
         }
 
-        // Check excluded tags
+        // Excluded tags
         if (valid && _excluded_tags != undefined) {
-            for (var _t = 0; _t < array_length(_excluded_tags); _t++) {
-                if (equip_data.has_tag(_excluded_tags[_t])) {
+            for (var t = 0; t < array_length(_excluded_tags); t++) {
+                if (equip_data.has_tag(_excluded_tags[t])) {
                     valid = false;
                     break;
                 }
@@ -471,17 +484,18 @@ function get_filtered_equipment_item_names(_item_names, _equip_category, _melee_
         }
 
         if (valid) {
-            array_push(matched_indexes, _i);
+            array_push(_matched_names, _item_name);
         }
     }
 
+    // Append matched item names to the output array
     var initial_size = array_length(_item_names);
-    array_resize(_item_names, initial_size + array_length(matched_indexes));
+    array_resize(_item_names, initial_size + array_length(_matched_names));
 
     var index = initial_size;
-    for (var j = 0; j < array_length(matched_indexes); j++) {
-        var equip_index = matched_indexes[j];
-        var equip_data = gear_weapon_data(_equip_category, obj_ini.equipment[equip_index]);
+    for (var j = 0; j < array_length(_matched_names); j++) {
+        var _item_name = _matched_names[j];
+        var equip_data = gear_weapon_data(_equip_category, _item_name);
         _item_names[@ index++] = equip_data.name;
     }
 

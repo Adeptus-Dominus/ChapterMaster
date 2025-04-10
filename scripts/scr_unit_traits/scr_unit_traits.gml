@@ -516,7 +516,7 @@ function scr_marine_trait_spawning(distribution_set){
 				add_trait(distribution_set[i][0])
 			}
 		} else if (array_length(distribution_set[i])==3){  //trait has conditions
-			var dist_modifiers = DeepCloneStruct(distribution_set[i][2]);
+			var dist_modifiers = variable_clone(distribution_set[i][2]);
 			var dist_rate=[];
 			array_copy(dist_rate, 0, distribution_set[i][1], 0, array_length(distribution_set[i][1]));
 			if (struct_exists(dist_modifiers, "disadvantage")){

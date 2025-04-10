@@ -37,7 +37,7 @@ function return_lost_ship(){
 				obj_ini.ship_hp[_return_id] *= random_range(0.2,0.8);
 				_text += $"Reports indicate it has suffered damage as a result of it's time in the warp";
 			} else if (_return_defect>70){
-				var techs = collect_role_group("forge", [_star.name, 0, _return_id]);
+				var techs = collect_role_group(SPECIALISTS_TECHS, [_star.name, 0, _return_id]);
 				if (array_length(techs)){
 					_text += $"One of the ships main reactors sufered a malfunction and the ships tech staff died to a man attempting to contain the damage";
 					for (var i=0; i<array_length(techs);i++){
@@ -174,8 +174,7 @@ function get_valid_player_ship(location="", name=""){
 }
 
 
-function loose_ship_to_warp_event(){
-	show_debug_message("RE: Ship Lost");   
+function loose_ship_to_warp_event(){  
 		
 	var eligible_fleets = [];
 	with(obj_p_fleet) {
@@ -185,7 +184,7 @@ function loose_ship_to_warp_event(){
 	}
 	
 	if(array_length(eligible_fleets) == 0) {
-		show_debug_message("RE: Ship Lost, couldn't find a player fleet");   
+		//show_debug_message("RE: Ship Lost, couldn't find a player fleet");   
 		exit;
 	}
 	

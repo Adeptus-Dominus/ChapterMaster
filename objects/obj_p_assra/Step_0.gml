@@ -293,7 +293,7 @@ if (boarding=true) and (board_cooldown>=0) and (instance_exists(target)) and (in
                     
                     if (unit.hp()<=0){
                         boarders_dead+=1;
-                        if (unit.IsSpecialist("apoth") && unit.gear()=="Narthecium"){
+                        if (unit.IsSpecialist(SPECIALISTS_APOTHECARIES) && unit.gear()=="Narthecium"){
                             apothecary-=1;
                             apothecary_had-=1;
                         }

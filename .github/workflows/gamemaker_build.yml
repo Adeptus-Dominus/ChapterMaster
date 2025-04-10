@@ -91,7 +91,6 @@ jobs:
         name: Setup Igor
         uses: bscotch/igor-setup@v1.1.0
         with:
-          runtime-version: 2024.1300.0.781
           target-yyp: ${{ steps.find_yyp.outputs.yyp-path }}
           access-key: ${{ secrets.GM_ACCESS_KEY }}
           

@@ -66,7 +66,7 @@ function player_recruit_planet_selection(){
             draw_unit_buttons(_refresh_rec_name_btn,"?", [1,1], 38144,,fnt_40k_14b);
             if(point_and_click(_refresh_rec_name_btn)){
                 var _new_rec_name = global.name_generator.generate_star_name();
-                show_debug_message($"regen name of recruiting_name from {recruiting_name} to {_new_rec_name}");
+                //show_debug_message($"regen name of recruiting_name from {recruiting_name} to {_new_rec_name}");
                 recruiting_name = _new_rec_name;
             }
         }
@@ -115,7 +115,7 @@ function scr_creation_home_planet_create(){
             draw_unit_buttons(_refresh_hw_name_btn,"?", [1,1], 38144,,fnt_40k_14b);
             if(point_and_click(_refresh_hw_name_btn)){
                 var _new_hw_name = global.name_generator.generate_star_name();
-                show_debug_message($"regen name of homeworld from {homeworld_name} to {_new_hw_name}");
+                //show_debug_message($"regen name of homeworld from {homeworld_name} to {_new_hw_name}");
                 homeworld_name = _new_hw_name;
             }
         }

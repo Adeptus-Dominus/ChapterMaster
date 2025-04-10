@@ -50,10 +50,10 @@ function scr_drop_fiddle(argument0, argument1, argument2, argument3) {
 					if (obj_ini.role[comp][i] == "Champion") then champions++;
 	
 					if (obj_ini.role[comp][i] == obj_ini.role[100][5]) then capts++;
-					if (unit.IsSpecialist("chap", true)) then chaplains++;
-					if (unit.IsSpecialist("libs", true)) then psykers++;
-					if (unit.IsSpecialist("apoth", true)) then apothecaries++;
-					if (unit.IsSpecialist("forge", true)) then techmarines++;
+					if (unit.IsSpecialist(SPECIALISTS_CHAPLAINS, true)) then chaplains++;
+					if (unit.IsSpecialist(SPECIALISTS_LIBRARIANS, true)) then psykers++;
+					if (unit.IsSpecialist(SPECIALISTS_APOTHECARIES, true)) then apothecaries++;
+					if (unit.IsSpecialist(SPECIALISTS_TECHS, true)) then techmarines++;
 	
 					if (obj_ini.role[comp][i] == "Death Company" && string_count("Dreadnought", obj_ini.armour[comp][i]) == 0) then mahreens++;
 					if (obj_ini.role[comp][i] == obj_ini.role[100][4]) then terminators++;
@@ -118,10 +118,10 @@ function scr_drop_fiddle(argument0, argument1, argument2, argument3) {
 					if (obj_ini.role[comp][i] == "Champion") then champions--;
 	
 					if (obj_ini.role[comp][i] == obj_ini.role[100][5]) then capts--;
-					if (unit.IsSpecialist("chap", true)) then chaplains--;
-					if (unit.IsSpecialist("libs", true)) then psykers--;
-					if (unit.IsSpecialist("apoth", true)) then apothecaries--;
-					if (unit.IsSpecialist("forge", true)) then techmarines--;
+					if (unit.IsSpecialist(SPECIALISTS_CHAPLAINS, true)) then chaplains--;
+					if (unit.IsSpecialist(SPECIALISTS_LIBRARIANS, true)) then psykers--;
+					if (unit.IsSpecialist(SPECIALISTS_APOTHECARIES, true)) then apothecaries--;
+					if (unit.IsSpecialist(SPECIALISTS_TECHS, true)) then techmarines--;
 	
 					if (obj_ini.role[comp][i] == "Death Company" && string_count("Dreadnought", obj_ini.armour[comp][i]) == 0) then mahreens--;
 					if (obj_ini.role[comp][i] == obj_ini.role[100][4]) then terminators--;
