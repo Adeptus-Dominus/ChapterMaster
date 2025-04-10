@@ -298,9 +298,8 @@ function scr_clean(target_object, weapon_data) {
 
                     // Apply damage
                     var _min_damage = enemy == 13 ? 1 : 0.25;
-                    var _random_damage_mod_min = 0.5;
-                    var _dice_sides = 100;
-                    var _random_damage_mod = _random_damage_mod_min + (roll_dice(1, _dice_sides, "low") / _dice_sides);
+                    var _dice_sides = 200;
+                    var _random_damage_mod = roll_dice(1, _dice_sides, "low") / _dice_sides;
                     var _armour_points = marine_ac[marine_index] - armour_pierce;
                     var _modified_damage = max(_min_damage, (hostile_damage * _random_damage_mod) - _armour_points);
 
