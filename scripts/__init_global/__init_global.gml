@@ -7,4 +7,7 @@ function __init_global() {
     draw_set_colour(c_black);
 
     initialize_marine_traits();
+
+    global.chapter_name = "None";
+    global.game_seed = 0;
 }
