@@ -1440,33 +1440,18 @@ if (enemy = 7) {
 	}
 	// Large Ork Army
 	if (threat = 6) {
-		u = instance_nearest(xxx, 240, obj_enunit);
 		enemy_dudes = "a WAAAAGH!! of 11000";
 
-		u.dudes[1] = "Slugga Boy";
-		u.dudes_num[1] = 1200;
-		u.dudes[2] = "Ard Boy";
-		u.dudes_num[2] = 600;
-		u.dudes[3] = "Gretchin";
-		u.dudes_num[3] = 2000;
-		u.dudes[4] = "Tank Busta";
-		u.dudes_num[4] = 100;
+		u = instance_nearest(xxx, 240, obj_enunit);
+		u.dudes[1] = "Mekboy";
+		u.dudes_num[1] = 6;
+		u.dudes[2] = "Flash Git";
+		u.dudes_num[2] = 50;
+		u.dudes[3] = "Kommando";
+		u.dudes_num[3] = 20;
 		instance_deactivate_object(u);
 
 		u = instance_nearest(xxx + 10, 240, obj_enunit);
-		u.dudes[1] = "Deff Dread";
-		u.dudes_num[1] = 40;
-		u.dudes[2] = "Battlewagon";
-		u.dudes_num[2] = 18;
-		u.dudes[3] = "Mekboy";
-		u.dudes_num[3] = 6;
-		u.dudes[4] = "Flash Git";
-		u.dudes_num[4] = 50;
-		u.dudes[5] = "Kommando";
-		u.dudes_num[5] = 20;
-		instance_deactivate_object(u);
-
-		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		u.dudes[1] = "Slugga Boy";
 		u.dudes_num[1] = 1200;
 		u.dudes[2] = "Ard Boy";
@@ -1477,20 +1462,16 @@ if (enemy = 7) {
 		u.dudes_num[4] = 100;
 		instance_deactivate_object(u);
 
-		u = instance_nearest(xxx + 30, 240, obj_enunit);
-		u.dudes[1] = "Deff Dread";
-		u.dudes_num[1] = 40;
-		u.dudes[2] = "Battlewagon";
-		u.dudes_num[2] = 18;
-		u.dudes[3] = "Mekboy";
-		u.dudes_num[3] = 6;
-		u.dudes[4] = "Flash Git";
-		u.dudes_num[4] = 50;
-		u.dudes[5] = "Kommando";
-		u.dudes_num[5] = 20;
+		u = instance_nearest(xxx + 20, 240, obj_enunit);
+		u.dudes[1] = "Mekboy";
+		u.dudes_num[1] = 6;
+		u.dudes[2] = "Flash Git";
+		u.dudes_num[2] = 50;
+		u.dudes[3] = "Kommando";
+		u.dudes_num[3] = 20;
 		instance_deactivate_object(u);
 
-		u = instance_nearest(xxx + 40, 240, obj_enunit);
+		u = instance_nearest(xxx + 30, 240, obj_enunit);
 		u.dudes[1] = "Big Warboss";
 		u.dudes_num[1] = 1;
 		// Spawn Leader
@@ -1508,6 +1489,14 @@ if (enemy = 7) {
 		u.dudes_num[4] = 900;
 		u.dudes[5] = "Shoota Boy";
 		u.dudes_num[5] = 2000;
+		instance_deactivate_object(u);
+
+		u = instance_nearest(xxx + 40, 240, obj_enunit);
+		u.dudes[1] = "Deff Dread";
+		u.dudes_num[1] = 36;
+		u.dudes[2] = "Battlewagon";
+		u.dudes_num[2] = 220;
+		instance_deactivate_object(u);
 	}
 }
 
