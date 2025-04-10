@@ -18,7 +18,7 @@ function create_error_file(_message) {
 /// @description Creates a copy of the last_messages.log file, with the current date in the name, in the same folder.
 function copy_last_messages_file() {
     if (file_exists(PATH_last_messages)) {
-        file_copy(PATH_last_messages, "Logs/" + $"{DATE_TIME_1}_messages.log")
+        file_copy(PATH_last_messages, $"Logs/{DATE_TIME_1}_messages.log");
     }
 }
 
