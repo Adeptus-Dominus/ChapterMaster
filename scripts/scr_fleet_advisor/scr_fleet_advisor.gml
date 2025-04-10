@@ -139,96 +139,99 @@ function scr_fleet_advisor(){
 
         var _row_height = 20;
         var _row_gap = 2;
-        for (var i = ship_current; i < ship_current + 34; i++) {
-            if (i>= array_length(obj_ini.ship)) then continue;
-            if (obj_ini.ship[i] != "") {
-                var _row_y = _columns[$ "name"].y1 + _row_height + (i * (_row_height + _row_gap));
-                draw_rectangle(xx + 950, _row_y, xx + 1546, _row_y + _row_height, 1);
+        var _ship_UUIDs = struct_get_names(INI_USHIPROOT);
+        var _ship_count = array_length(_ship_UUIDs);
+        var _scroll_max = ship_current + 34;
+        var _loop = _ship_count > _scroll_max ? _scroll_max : ship_current + abs(_scroll_max - _ship_count);
+        for (var i = ship_current; i < _loop; i++) {
+            var _ship_struct = fetch_ship(_ship_UUIDs[i]);
+            var _row_y = _columns[$ "name"].y1 + _row_height + (i * (_row_height + _row_gap));
+            draw_rectangle(xx + 950, _row_y, xx + 1546, _row_y + _row_height, 1);
 
-                var _goto_button = {
-                    x1: _columns.location.x1 - 20,
-                    y1: _row_y + 4,
-                    sprite: spr_view_small,
-                    click: function() {
-                        return point_and_click([x1, y1, x2, y2]);
-                    }
-                };
-                with(_goto_button) {
-                    w = sprite_get_width(sprite);
-                    h = sprite_get_height(sprite);
-                    x2 = x1 + w;
-                    y2 = y1 + h;
-                    draw_sprite(sprite, 0, x1, y1);
+            var _goto_button = {
+                x1: _columns.location.x1 - 20,
+                y1: _row_y + 4,
+                sprite: spr_view_small,
+                click: function() {
+                    return point_and_click([x1, y1, x2, y2]);
                 }
+            };
+            with(_goto_button) {
+                w = sprite_get_width(sprite);
+                h = sprite_get_height(sprite);
+                x2 = x1 + w;
+                y2 = y1 + h;
+                draw_sprite(sprite, 0, x1, y1);
+            }
 
-                with(_columns) {
-                    name.contents = string_truncate(obj_ini.ship[i], _columns.name.w - 6);
-                    class.contents = obj_ini.ship_class[i];
-                    location.contents = obj_ini.ship_location[i];
-                    hp.contents = $"{round(obj_ini.ship_hp[i] / obj_ini.ship_maxhp[i] * 100)}%";
-                    carrying.contents = $"{obj_ini.ship_carrying[i]}/{obj_ini.ship_capacity[i]}";
-                }
+            with(_columns) {
+                name.contents = string_truncate(ship_struct.name, _columns.name.w - 6);
+                class.contents = obj_ini.ship_class[i];
+                location.contents = obj_ini.ship_location[i];
+                hp.contents = $"{round(_ship_struct.health.hp / _ship_struct.health.maxhp * 100)}%";
+                carrying.contents = $"{_ship_struct.cargo.carrying} / {_ship_struct.cargo.capacity}";
+            }
 
-                for (var g = 0; g < array_length(_columns_array); g++) {
-                    with(_columns[$ _columns_array[g]]) {
-                        draw_set_halign(h_align);
-                        switch (h_align) {
-                            case fa_right:
-                                draw_text(x2, _row_y, contents);
-                                break;
-                            case fa_center:
-                                draw_text((x1 + x2) / 2, _row_y, contents);
-                                break;
-                            case fa_left:
-                            default:
-                                draw_text(x1, _row_y, contents);
-                                break;
-                            }
-                    }
-                }
-
-                if scr_hit(xx + 950, _row_y, xx + 1546, _row_y + _row_height) {
-                    if (cn.temp[101] != obj_ini.ship[i]) {
-                        cn.temp[101] = obj_ini.ship[i];
-                        cn.temp[102] = obj_ini.ship_class[i];
-
-                        cn.temp[103] = string(obj_ini.ship_hp[i]);
-                        cn.temp[104] = string(obj_ini.ship_maxhp[i]);
-                        cn.temp[105] = string(obj_ini.ship_shields[i] * 100);
-
-                        cn.temp[106] = string(obj_ini.ship_speed[i]);
-
-                        cn.temp[107] = string(obj_ini.ship_front_armour[i]);
-                        cn.temp[108] = string(obj_ini.ship_other_armour[i]);
-
-                        cn.temp[109] = string(obj_ini.ship_turrets[i]);
-
-                        var facing_length = array_length(obj_ini.ship_wep_facing[i]);
-                        var wep_length = array_length(obj_ini.ship_wep[i]);
-                        var max_weapons = min(facing_length, wep_length, 5);
-
-                        for (var s = 1; s < max_weapons; s++) {
-                            cn.temp[110+((s-1)*2)] = obj_ini.ship_wep[i][s];
-                            cn.temp[110+((s-1)*2)+1] = obj_ini.ship_wep_facing[i][s];
+            for (var g = 0; g < array_length(_columns_array); g++) {
+                with(_columns[$ _columns_array[g]]) {
+                    draw_set_halign(h_align);
+                    switch (h_align) {
+                        case fa_right:
+                            draw_text(x2, _row_y, contents);
+                            break;
+                        case fa_center:
+                            draw_text((x1 + x2) / 2, _row_y, contents);
+                            break;
+                        case fa_left:
+                        default:
+                            draw_text(x1, _row_y, contents);
+                            break;
                         }
-
-                        cn.temp[118] = $"{obj_ini.ship_carrying[i]}/{obj_ini.ship_capacity[i]}";
-                        cn.temp[119] = "";
-                        if (obj_ini.ship_carrying[i] > 0) then cn.temp[119] = scr_ship_occupants(i);
                     }
-                    tooltip_draw($"Carrying ({cn.temp[118]}): {cn.temp[119]}");
-                    if (_goto_button.click()) {
-                        with(obj_p_fleet) {
-                            var _fleet_ships = fleet_full_ship_array();
-                            if (array_contains(_fleet_ships, i)){
-                                obj_controller.x = x;
-                                obj_controller.y = y;
-                                obj_controller.menu = 0;
-                                with(obj_fleet_show) {
-                                    instance_destroy();
-                                }  
-                                instance_create(x, y, obj_fleet_show);                              
+                }
+
+            if scr_hit(xx + 950, _row_y, xx + 1546, _row_y + _row_height) {
+                if (cn.temp[100] != _ship_struct.UUID) {
+                    cn.temp[100] = _ship_struct.UUID;
+                    cn.temp[101] = _ship_struct.name;
+                    cn.temp[102] = _ship_struct.class;
+
+                    cn.temp[103] = string(_ship_struct.health.hp);
+                    cn.temp[104] = string(_ship_struct.health.maxhp);
+                    cn.temp[105] = string(_ship_struct.health.shields * 100);
+
+                    cn.temp[106] = string(_ship_struct.speed);
+
+                    cn.temp[107] = string(_ship_struct.armor.front);
+                    cn.temp[108] = string(_ship_struct.armor.other);
+
+                    cn.temp[109] = string(_ship_struct.weapons.turrets);
+
+                    var wep_length = array_length(_ship_struct.weapons.name);
+                    var max_weapons = min(_ship_struct.weapons.count, 5);
+
+                    for (var s = 1; s <= max_weapons; s++) {
+                        cn.temp[110+((s-1)*2)] = _ship_struct.weapons.name[s];
+                        cn.temp[110+((s-1)*2)+1] = _ship_struct.weapons.facing[s];
+                    }
+
+                    var _ship_carrying = _ship_struct.cargo.carrying;
+                    cn.temp[118] = $"{_ship_carrying} / {_ship_struct.cargo.capacity}";
+                    cn.temp[119] = "";
+                    if (_ship_carrying > 0) { cn.temp[119] = scr_ship_occupants(i); }
+                }
+                tooltip_draw($"Carrying ({cn.temp[118]}): {cn.temp[119]}");
+                if (_goto_button.click()) {
+                    with(obj_p_fleet) {
+                        var _fleet_ships = fleet_full_ship_array();
+                        if (array_contains(_fleet_ships, i)){
+                            obj_controller.x = x;
+                            obj_controller.y = y;
+                            obj_controller.menu = 0;
+                            with(obj_fleet_show) {
+                                instance_destroy();
                             }
+                            instance_create(x, y, obj_fleet_show);
                         }
                     }
                 }

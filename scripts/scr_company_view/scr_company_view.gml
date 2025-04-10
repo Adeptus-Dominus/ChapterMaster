@@ -1,7 +1,6 @@
 function reset_ship_manage_arrays() {
     with (obj_controller) {
-        sh_ide = [];
-        sh_uid = [];
+        sh_uuid = [];
         sh_name = [];
         sh_class = [];
         sh_loc = [];

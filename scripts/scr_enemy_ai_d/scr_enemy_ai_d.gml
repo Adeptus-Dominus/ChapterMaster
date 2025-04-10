@@ -254,12 +254,13 @@ function scr_enemy_ai_d() {
                             unit.ship_location=-1;
                             techs_taken+=1;
                         }
-                        if (unit.ship_location>-1){
-                            ship_planet=obj_ini.ship_location[unit.ship_location];
-                            if (ship_planet=name){
-                                obj_ini.ship_carrying[unit.ship_location]-=scr_unit_size(obj_ini.armour[com][ide],obj_ini.role[com][ide],true);
-                                obj_ini.loc[com][ide]="Mechanicus Vessel";unit.planet_location=0;unit.ship_location=0;
-                                techs_taken+=1;
+                        if (unit.ship_location != "") {
+                            var _ship_struct = fetch_ship(unit.ship_location);
+                            ship_planet = _ship_struct.location;
+                            if (ship_planet = name) {
+                                _ship_struct.cargo.carrying -= scr_unit_size(obj_ini.armour[com][ide], obj_ini.role[com][ide], true);
+                                obj_ini.loc[com][ide]="Mechanicus Vessel"; unit.planet_location = 0; unit.ship_location = "";
+                                techs_taken += 1;
                             }
                         }
                     }
