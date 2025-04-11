@@ -19,7 +19,7 @@
         "homeworld_rule": 1, // 1 = Govenor, 2 = Countries, 3 = Personal Rule
         "homeworld": "", // "Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
         "homeworld_name": "",
-        "recruit_home_relationship" : 2, //recruit from different system
+        "recruit_home_relationship": 2, //recruit from different system
         "recruiting": "", //"Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
         "recruiting_name": "",
         "discipline": "librarius", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune_magic'
@@ -57,7 +57,7 @@
             "special": 0, // 0 - normal, 1 - Breastplate, 2 - Vertical, 3 - Quadrant
             //"trim_on": 0 // 0 no, 1 yes for special trim colours 
         },
-        "culture_styles" : [
+        "culture_styles": [
             "Knightly",
             "Crusader"
         ],
@@ -83,8 +83,8 @@
         "equal_specialists": 0,
         "load_to_ships": {
             "escort_load": 2, // 0 no, 2 yes, 1 doesnt do anything :)
-            "split_scouts": 0, // 0 no, 1 yes
-            "split_vets": 0 // 0 no, 1 yes
+            "split_scouts": 1, // 0 no, 1 yes
+            "split_vets": 1 // 0 no, 1 yes
         },
         "successors": 0, //total number of successor chapters
         "mutations": {
@@ -230,7 +230,16 @@
             },
             "veteran": {
                 "name": "Sword Brother"
-            }
+            },
+            // "sergeant": {
+            //     "name": "Sword Brother"
+            // },
+            // "veteran_sergeant": {
+            //     "name": "Sword Brother"
+            // },
+            // "tactical": {
+            //     "name": "Initiate"
+            // }
         },
         /**
         * * Custom squad roles, loadouts and formations
@@ -262,6 +271,137 @@
         *   - type_data: names the squad, allows certain formations ? idk what that does yet
         */
         "squad_name": "Squad",
-        "custom_squads": {}
+        "custom_squads": {
+            // Crusader Squad
+            "tactical_squad": [
+                // Sergeant
+                [
+                    "Sergeant",
+                    {
+                        "max": 1,
+                        "min": 1,
+                        "role": "Sword Brother",
+                        "loadout": {
+                            "required": {
+                                "wep1": [
+                                    "Power Sword",
+                                    1
+                                ],
+                                "wep2": [
+                                    "Plasma Pistol",
+                                    1
+                                ]
+                            }
+                        }
+                    }
+                ],
+                // Initiate
+                [
+                    "Tactical",
+                    {
+                        "max": 9,
+                        "min": 4,
+                        "role": "Initiate",
+                        "loadout": {
+                            "required": {
+                                "wep1": [
+                                    "Chainsword",
+                                    3
+                                ],
+                                "wep2": [
+                                    "Bolt Pistol",
+                                    3
+                                ]
+                            },
+                            "option": {
+                                "wep1": [
+                                    [
+                                        [
+                                            "Flamer",
+                                            "Flamer",
+                                            "Flamer",
+                                            "Meltagun",
+                                            "Meltagun",
+                                            "Plasma Gun"
+                                        ],
+                                        1
+                                    ],
+                                    [
+                                        [
+                                            "Heavy Bolter",
+                                            "Heavy Bolter",
+                                            "Heavy Bolter",
+                                            "Heavy Bolter",
+                                            "Missile Launcher",
+                                            "Missile Launcher",
+                                            "Multi-Melta",
+                                            "Lascannon"
+                                        ],
+                                        1,
+                                        {
+                                            "wep2": "Combat Knife",
+                                            "mobi": "Heavy Weapons Pack",
+                                        }
+                                    ],
+                                    [
+                                        [
+                                            "Bolter",
+                                            "Bolter",
+                                            "Bolter",
+                                            "Bolter",
+                                            "Bolter",
+                                            "Bolter",
+                                            "Storm Bolter",
+                                            "Storm Bolter",
+                                            "Storm Bolter",
+                                            "Combiflamer",
+                                            "Combiflamer",
+                                            "Plasma Pistol"
+                                        ],
+                                        4,
+                                        {
+                                            "wep2": "Chainsword"
+                                        }
+                                    ],
+                                ],
+                            }
+                        }
+                    }
+                ],
+                // Neophyte
+                [
+                    "Scout",
+                    {
+                        "max": 10,
+                        "min": 0,
+                        "role": "Neophyte",
+                        "loadout": {
+                            "required": {
+                                "wep1": [
+                                    "Bolter",
+                                    10
+                                ],
+                                "wep2": [
+                                    "Combat Knife",
+                                    10
+                                ]
+                            }
+                        }
+                    }
+                ],
+                [
+                    "type_data",
+                    {
+                        "display_data": "Crusader Squad",
+                        "formation_options": [
+                            "tactical",
+                            "assault",
+                            "devastator",
+                            "scout"
+                        ]
+                    }
+                ]
+            ],
+        }
     }
 }
