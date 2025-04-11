@@ -132,19 +132,57 @@ function scr_livery_setup(){
         draw_text(444,252,string_hash_to_newline("Color swap shader#did not compile"));
     }
 
+    var comp_toggle = buttons.company_options_toggle;
+    var company_radio = buttons.company_liveries_choice;
+    var comp_change = false;
+    comp_toggle.update({
+        x1 : 50,
+        y1 : 80
+    }) ;
+    if (comp_toggle.draw()){
+        comp_toggle.company_view = !comp_toggle.company_view;
+        if (!comp_toggle.company_view){
+            company_liveries[livery_picker.role_set] = variable_clone(livery_picker.map_colour);
+            livery_picker.role_set = 0;
+        } else {
+            full_liveries[livery_picker.role_set] = variable_clone(livery_picker.map_colour);
+            livery_picker.role_set = company_radio.current_selection;
+        }
+        livery_picker.shuffle_dummy();
+        livery_picker.reset_image();        
+    }
+
     draw_set_font(fnt_40k_30b);
     draw_set_halign(fa_center);
     draw_set_alpha(1);
     draw_set_color(38144);
-    var liv_string = $"Full Livery \n{livery_picker.role_set == 0? "default" :role[100][livery_picker.role_set]}";
-    draw_text(160, 100, liv_string);    
-    
+    if (!comp_toggle.company_view){
+        var liv_string = $"Full Livery \n{livery_picker.role_set == 0? "default" :role[100][livery_picker.role_set]}";
+        draw_text(160, 100, liv_string);  
+    } else {
+        company_radio.update({
+            max_width : 350,
+            x1 : 20,
+            y1 : 50,
+            allow_changes : true
+        })
+        company_radio.draw();
+        if (company_radio.changed){
+            company_liveries[livery_picker.role_set] = variable_clone(livery_picker.map_colour);
+            livery_picker.role_set = company_radio.current_selection;
+            livery_picker.map_colour = company_liveries[livery_picker.role_set];
+            livery_picker.shuffle_dummy();
+            livery_picker.reset_image();
+        }    
+    }  
+
     draw_set_color(38144);
     draw_set_halign(fa_left);
     draw_text_transformed(580,118,"Battle Cry:",0.6,0.6,0);
     draw_set_font(fnt_40k_14b);
-
     battle_cry = text_bars.battle_cry.draw((battle_cry));
+
+
     
     draw_rectangle(445, 200, 1125, 202, 0)
     
@@ -509,14 +547,16 @@ function scr_livery_setup(){
                         var pp=instance_create(0,0,obj_creation_popup);
                         pp.type=role_id+100;
                         cooldown=8000;
-                        full_liveries[livery_picker.role_set] = variable_clone(livery_picker.map_colour);
-                        livery_picker.role_set = role_id;
-                        livery_picker.map_colour = full_liveries[role_id];
-                        if (!livery_picker.map_colour.is_changed){
-                            livery_picker.map_colour = variable_clone(full_liveries[0]);
+                        if (!comp_toggle.company_view){
+                            full_liveries[livery_picker.role_set] = variable_clone(livery_picker.map_colour);
+                            livery_picker.role_set = role_id;
+                            livery_picker.map_colour = full_liveries[role_id];
+                            if (!livery_picker.map_colour.is_changed){
+                                livery_picker.map_colour = variable_clone(full_liveries[0]);
+                            }
+                            livery_picker.shuffle_dummy();
+                            livery_picker.reset_image();
                         }
-                        livery_picker.shuffle_dummy();
-                        livery_picker.reset_image();
                     }
                 }
             }
@@ -531,12 +571,14 @@ function scr_livery_setup(){
             }
         }
     }
-    if (livery_picker.role_set!=0){
-    	if (point_and_click(draw_unit_buttons([20, 50], $"Return to default Livery"))){
-            full_liveries[livery_picker.role_set] = variable_clone(livery_picker.map_colour);
-            livery_picker.map_colour = full_liveries[0];
-            livery_picker.role_set = 0;   		
-    	}
+    if (!comp_toggle.company_view){
+        if (livery_picker.role_set!=0){
+        	if (point_and_click(draw_unit_buttons([20, 50], $"Return to default Livery"))){
+                full_liveries[livery_picker.role_set] = variable_clone(livery_picker.map_colour);
+                livery_picker.map_colour = full_liveries[0];
+                livery_picker.role_set = 0;   		
+        	}
+        }
     }
     
     

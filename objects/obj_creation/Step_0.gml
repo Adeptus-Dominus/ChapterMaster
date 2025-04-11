@@ -234,6 +234,11 @@ if (array_length(col)>0){
         color_to_weapon = "";
     }
 }
+if (company_liveries == ""){
+    livery_picker.scr_unit_draw_data(-1);
+    company_liveries = array_create(11,variable_clone(livery_picker.map_colour));
+}
+
 if (full_liveries == ""){
     var struct_cols = {
         main_color :main_color,

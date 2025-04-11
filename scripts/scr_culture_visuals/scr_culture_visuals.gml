@@ -712,7 +712,14 @@ global.modular_drawing_items = [
         body_types :[0],
         position : "chest_variants",
         armours : ["MK3 Iron Armour"],      
-    },                                                                
+    },
+    {
+        sprite : spr_death_watch_pauldron,
+        chapter : "Deathwatch",
+        position : "left_pauldron_base",
+        body_types :[0],
+        prevent_others : true,
+    }                                                               
 ];
 
 
@@ -738,6 +745,10 @@ function DummyMarine()constructor{
         body = generate_marine_body();
         add_purity_seal_markers();
     }
+    personal_livery = {};
+    if (obj_creation.chapter_name == "Deathwatch"){
+        personal_livery.right_pauldron = irandom(30);
+    }
     update();
     static distribute_traits = scr_marine_trait_spawning;
     base_group="astartes";
@@ -755,7 +766,11 @@ function DummyMarine()constructor{
     } 
     static role = function(){
         with (obj_creation){
-            return role[100][livery_picker.role_set > 0  ? livery_picker.role_set :eROLE.Tactical];
+            if (!buttons.company_options_toggle.company_view){
+                return role[100][livery_picker.role_set > 0  ? livery_picker.role_set :eROLE.Tactical];
+            }else {
+                return role[100][eROLE.Tactical];
+            }
         }
     } 
     static weapon_one = function(){
@@ -786,6 +801,11 @@ function DummyMarine()constructor{
                 }
             } else {
                 _armour = _last_armour;
+            }
+            if (!buttons.company_options_toggle.company_view){
+                if (!array_contains(armours, _armour)){
+                   _armour =  "MK7 Aquila";
+                }
             }
         }
         last_armour = _armour;
