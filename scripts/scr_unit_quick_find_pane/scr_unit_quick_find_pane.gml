@@ -173,7 +173,7 @@ function UnitQuickFindPanel() constructor{
 			    	_loc_display_string = "Lost";
 			    	_zoomable_loc = false;
 			    }
-			    else if (string_count("crusade", cur_fleet.action)){
+			    else if (string_count("crusade", cur_fleet.action)){ // Not sure if related to 714 issue
 			    	_loc_display_string = "Crusading";
 			    	_zoomable_loc = false;
 			    }			    
