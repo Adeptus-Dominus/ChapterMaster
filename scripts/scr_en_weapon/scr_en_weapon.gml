@@ -20,6 +20,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 	arp = 0;
 	acr = 0;
 	amm = -1;
+	var reload = -1;
 	// faith_bonus = 0;
 	// var struct = gear_weapon_data("weapon",name);
 
@@ -401,6 +402,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 			rang = 3.1;
 			amm = 6;
 			spli = 3;
+			reload = 1;
 		}
 		if (argument0 = "Tankbusta Bomb") {
 			atta = 65;
@@ -408,6 +410,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 			rang = 1;
 			amm = 1;
 			spli = 1;
+			reload = -1;
 		}
 		if (argument0 = "Big Shoota") {
 			atta = 24;
@@ -415,6 +418,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 			rang = 13;
 			amm = 6;
 			spli = 10;
+			reload = 1;
 		}
 		if (argument0 = "Dakkagun") {
 			atta = 24;
@@ -422,6 +426,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 			rang = 8;
 			amm = 14;
 			spli = 7;
+			reload = 3;
 		}
 		if (argument0 = "Deffgun") {
 			atta = 30;
@@ -429,6 +434,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 			rang = 10;
 			amm = 6;
 			spli = 8;
+			reload = 2;
 		}
 		if (argument0 = "Snazzgun") {
 			atta = 30;
@@ -436,6 +442,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 			rang = 11;
 			amm = 10;
 			spli = 2;
+			reload = 2;
 		}
 		if (argument0 = "Grot Blasta") {
 			atta = 14;
@@ -443,6 +450,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 			rang = 2;
 			amm = 4;
 			spli = 2;
+			reload = 2;
 		}
 		if (argument0 = "Kannon") {
 			atta = 54;
@@ -450,6 +458,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 			rang = 20;
 			amm = 1;
 			spli = 5;
+			reload = 1;
 		}
 		if (argument0 = "Shoota") {
 			atta = 20;
@@ -457,6 +466,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 			amm = 10;
 			rang = 7;
 			spli = 3;
+			reload = 1;
 		}
 		if (argument0 = "Burna") {
 			atta = 22;
@@ -464,6 +474,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 			rang = 3;
 			amm = 6;
 			spli = 6;
+			reload = 2;
 		}
 		if (argument0 = "Skorcha") {
 			atta = 25;
@@ -471,22 +482,14 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 			rang = 4;
 			amm = 6;
 			spli = 8;
+			reload = 2;
 		}
 		if (argument0 = "Rokkit Launcha") {
 			atta = 21;
 			arp = 12;
 			rang = 16;
 			spli = 1;
-			amm = 1;
 		}
-		if (argument0 = "Krooz Missile") {
-			atta = 48;
-			arp = 16;
-			rang = 18;
-			spli = 4;
-			amm = 1;
-		}
-
 	}
 
 	if (obj_ncombat.enemy = 8) {
@@ -1055,7 +1058,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 		if (rang > 1) and(floor(rang) == rang) then atta = round(atta * dudes_ranged[group]);
 	}
 
-	if (is_man = false) then amm = -1;
+	if (is_man = false && amm > 0) then amm *= 2;
 
 	var b, goody, first;
 	b = 0;
@@ -1067,7 +1070,9 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 			apa[b] = arp;
 			range[b] = rang;
 			wep_num[b] += man_number;
-			if (obj_ncombat.started = 0) then ammo[b] = amm;
+			if (obj_ncombat.started = 0) then ammo_max[b] = amm;
+			if (obj_ncombat.started = 0) then ammo_current[b] = amm;
+			if (obj_ncombat.started = 0) then ammo_reload[b] = reload;
 			goody = 1;
 
 			if (wep_owner[b] != "") or(man_number > 1) then wep_owner[b] = "assorted";
@@ -1083,7 +1088,9 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 		apa[first] = arp;
 		range[first] = rang;
 		wep_num[first] += man_number;
-		if (obj_ncombat.started = 0) then ammo[first] = amm;
+		if (obj_ncombat.started = 0) then ammo_max[first] = amm;
+		if (obj_ncombat.started = 0) then ammo_current[first] = amm;
+		if (obj_ncombat.started = 0) then ammo_reload[first] = reload;
 		goody = 1;
 
 		if (man_number = 1) then wep_owner[first] = man_type;

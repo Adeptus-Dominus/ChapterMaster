@@ -34,7 +34,17 @@ function add_data_to_stack (stack_index, weapon, unit_damage=false, head_role=fa
     wep_num[stack_index]++;
     splash[stack_index]=weapon.spli;
     wep[stack_index]=weapon.name;
-    if (obj_ncombat.started=0) then ammo[stack_index]=weapon.ammo;
+    if (struct_exists(weapon, "reload")) {
+        ammo_reload[stack_index]=weapon.reload;
+    } else {
+        ammo_reload[stack_index]=-1;
+    }
+
+    if (obj_ncombat.started == 0) {
+        ammo_reload_current[stack_index]=-1;
+        ammo_max[stack_index]=weapon.ammo;
+        ammo_current[stack_index]=weapon.ammo;
+    }
 
     if (unit!="none"){//this stops a potential infinite loop of secondary profiles
         add_second_profiles_to_stack(weapon, head_role, unit);
@@ -77,7 +87,7 @@ function scr_player_combat_weapon_stacks() {
         range[i]=99;
         att[i]=160*wep_num[i];
         apa[i]=0;
-        ammo[i]=-1;
+        ammo_max[i]=-1;
         splash[i]=1;
 
         i+=1;
@@ -86,7 +96,7 @@ function scr_player_combat_weapon_stacks() {
         range[i]=99;
         att[i]=200*wep_num[i];
         apa[i]=120*wep_num[i];
-        ammo[i]=-1;
+        ammo_max[i]=-1;
         splash[i]=1;
 
         i+=1;
@@ -95,7 +105,7 @@ function scr_player_combat_weapon_stacks() {
         range[i]=99;
         att[i]=350*wep_num[i];
         apa[i]=200*wep_num[i];
-        ammo[i]=-1;
+        ammo_max[i]=-1;
         splash[i]=1;
 
         var rightest=instance_nearest(2000,240,obj_pnunit);
@@ -232,7 +242,7 @@ function scr_player_combat_weapon_stacks() {
                             player_head_role_stack(weapon_stack_index,unit);
                          }
                         if (floor(primary_melee.range)<=1 && primary_melee.ammo == 0){
-                            ammo[weapon_stack_index]=-1; //no ammo limit
+                            ammo_max[weapon_stack_index]=-1; //no ammo limit
                         }
                     }
                 }

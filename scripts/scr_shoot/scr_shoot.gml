@@ -1,3 +1,6 @@
+#macro DEBUG_WEAPON_RELOADING true
+#macro DEBUG_PLAYER_TARGET_SELECTION true
+
 /// @mixin
 function scr_shoot(weapon_index_position, target_object, target_index, target_type, melee_or_ranged) {
     try {
@@ -27,21 +30,52 @@ function scr_shoot(weapon_index_position, target_object, target_index, target_ty
         }
         obj_ncombat.dead_enemies = 0;
 
-        var _weapon_max_kills = splash[weapon_index_position];
-        var _total_damage = att[weapon_index_position];
-        var _weapon_ap = apa[weapon_index_position];
-        var _weapon_name = wep[weapon_index_position];
-        var _weapon_ammo = ammo[weapon_index_position];
-        var _shooter = wep_owner[weapon_index_position];
-        var _shooter_count = wep_num[weapon_index_position];
+        var wi = weapon_index_position;
+        var _weapon_max_kills = splash[wi];
+        var _total_damage = att[wi];
+        var _weapon_ap = apa[wi];
+        var _weapon_name = wep[wi];
+        var _shooter = wep_owner[wi];
+        var _shooter_count = wep_num[wi];
         var _shot_count = _shooter_count * _weapon_max_kills;
         var _weapon_damage_type = target_type;
         var _weapon_damage_per_hit = _total_damage / _shooter_count;
 
-        if (_weapon_ammo == 0 || _shooter_count <= 0 || _total_damage <= 0) {
+        if (_shooter_count <= 0 || _total_damage <= 0) {
             exit;
-        } else {
-            ammo[weapon_index_position] -= 1;
+        }
+
+        if (DEBUG_WEAPON_RELOADING) {
+            show_debug_message($"Weapon Name: {_weapon_name}\n Max Ammo: {ammo_max[wi]}\n Current Ammo: {ammo_current[wi]}\n Reload Time: {ammo_reload[wi]}\n Current Reload: {ammo_reload_current[wi]}");
+        }
+
+        if (ammo_max[wi] != -1) {
+            if (ammo_current[wi] == 0 && ammo_reload[wi] != -1) {
+                if (ammo_reload_current[wi] == -1) {
+                    if (DEBUG_WEAPON_RELOADING) {
+                        show_debug_message($"{_weapon_name} is reloading! Will finish in {ammo_reload[wi]} turns!");
+                    }
+                    ammo_reload_current[wi] = ammo_reload[wi];
+                    ammo_reload_current[wi]--;
+                    continue;
+                } else if (ammo_reload_current[wi] == 0) {
+                    if (DEBUG_WEAPON_RELOADING) {
+                        show_debug_message($"{_weapon_name} reloaded! Setting ammo to {ammo_max[wi]}!");
+                    }
+                    ammo_current[wi] = ammo_max[wi];
+                    ammo_reload_current[wi] = -1;
+                } else {
+                    if (DEBUG_WEAPON_RELOADING) {
+                        show_debug_message($"{_weapon_name} is still reloading! {ammo_reload_current[wi]} turns left!");
+                    }
+                    ammo_reload_current[wi]--;
+                    continue;
+                }
+            }
+
+            if (ammo_current[wi] > 0) {
+                ammo_current[wi]--;
+            }
         }
 
         //* Enemy shooting
@@ -120,8 +154,15 @@ function scr_shoot(weapon_index_position, target_object, target_index, target_ty
                     }
                 }
                 if (target_index == -1) {
+                    if (DEBUG_PLAYER_TARGET_SELECTION) {
+                        show_debug_message($"{_weapon_name} found no valid targets in the enemy column to attack!");
+                    }
                     exit;
                 }
+            }
+
+            if (DEBUG_PLAYER_TARGET_SELECTION) {
+                show_debug_message($"{_weapon_name} is attacking {target_object.dudes[target_index]}");
             }
 
             if (_weapon_name == "Missile Silo") {
@@ -129,10 +170,13 @@ function scr_shoot(weapon_index_position, target_object, target_index, target_ty
             }
 
             // Normal shooting
-            var _target_armour_value = target_object.dudes_ac[target_index];
-            var _damage_per_weapon = max(0.5, _weapon_damage_per_hit - max(0, _target_armour_value - _weapon_ap));
-            _damage_per_weapon *= target_object.dudes_dr[target_index];
-            _total_damage = _damage_per_weapon * _shooter_count;
+            var _min_damage = 0.25;
+            var _dice_sides = 200;
+            var _random_damage_mod = roll_dice(1, _dice_sides, "low") / _dice_sides;
+            var _armour_points = max(0, target_object.dudes_ac[target_index] - _weapon_ap);
+            var _weapon_damage_per_hit = (_weapon_damage_per_hit * _random_damage_mod) - _armour_points;
+            _weapon_damage_per_hit = max(_min_damage, _weapon_damage_per_hit * target_object.dudes_dr[target_index]);
+            _total_damage = _weapon_damage_per_hit * _shooter_count;
 
             var _dudes_num = target_object.dudes_num[target_index];
             var _unit_hp = target_object.dudes_hp[target_index];
@@ -145,6 +189,10 @@ function scr_shoot(weapon_index_position, target_object, target_index, target_ty
             }
 
             if (_casualties > 0) {
+                if (DEBUG_PLAYER_TARGET_SELECTION) {
+                    show_debug_message($"{_weapon_name} attacked {target_object.dudes[target_index]} and destroyed {_casualties}!");
+                }
+
                 var found = -1;
                 var openz = -1;
                 for (var i = 0, _dead_ene = array_length(obj_ncombat.dead_ene); i < _dead_ene; i++) {
@@ -167,9 +215,13 @@ function scr_shoot(weapon_index_position, target_object, target_index, target_ty
                     obj_ncombat.dead_ene[openz] = string(target_object.dudes[target_index]);
                     obj_ncombat.dead_ene_n[openz] = _casualties;
                 }
+            } else {
+                if (DEBUG_PLAYER_TARGET_SELECTION) {
+                    show_debug_message($"{_weapon_name} attacked {target_object.dudes[target_index]} but dealt no damage!");
+                }
             }
 
-            scr_flavor(weapon_index_position, target_object, target_index, _shooter_count, _casualties);
+            scr_flavor(wi, target_object, target_index, _shooter_count, _casualties);
 
             if (_casualties > 0) {
                 target_object.dudes_num[target_index] -= _casualties;

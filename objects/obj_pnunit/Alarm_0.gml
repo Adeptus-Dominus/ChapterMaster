@@ -1,3 +1,10 @@
+// Useful functions:
+// scr_target
+// get_rightmost
+// move_unit_block
+// gear_weapon_data
+// scr_shoot
+
 try {
     // with(obj_enunit){show_message(string(dudes[1])+"|"+string(dudes_num[1])+"|"+string(men+medi)+"|"+string(dudes_hp[1]));}
 
@@ -68,7 +75,7 @@ engaged = collision_point(x-14, y, obj_enunit, 0, 1) || collision_point(x+14, y,
             }
 
             
-            if (range[i]>=dist) and (ammo[i]!=0 || range[i]==1){
+            if (range[i]>=dist) {
                 if (range[i]!=1) and (engaged=0) then range_shoot="ranged";
                 if ((range[i]!=floor(range[i]) || floor(range[i])=1) && engaged=1) then range_shoot="melee";
             }
@@ -222,11 +229,5 @@ engaged = collision_point(x-14, y, obj_enunit, 0, 1) || collision_point(x+14, y,
         }
     }
 } catch (_exception) {
-    // show_debug_message($"known_powers: {known_powers}");
-    // show_debug_message($"buff_powers: {buff_powers}");
-    // show_debug_message($"buff_cast: {buff_cast}");
-    // show_debug_message($"power_index: {power_index}");
-    // show_debug_message($"known_attack_powers: {known_attack_powers}");
-    // show_debug_message($"known_buff_powers: {known_buff_powers}");
     handle_exception(_exception);
 }
