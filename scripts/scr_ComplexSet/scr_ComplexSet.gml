@@ -129,9 +129,9 @@ function ComplexSet(unit) constructor{
         }
     }  
 
-    left_arm_data  : [];
+    left_arm_data  = [];
 
-    right_arm_data : [];
+    right_arm_data = [];
     
     static assign_modulars = function(){
         var modulars = global.modular_drawing_items;
@@ -324,7 +324,7 @@ function ComplexSet(unit) constructor{
                     if (unit.weapon_one() == _weapon_map){
                         array_push(right_arm_data , _mod.weapon_data);
                     } else if( unit.weapon_one() == _weapon_map){
-                        array_push(left_arm_data =,_mod.weapon_data); 
+                        array_push(left_arm_data ,_mod.weapon_data); 
                     }
                 } else {
                    if (!struct_exists(_mod, "assign_by_rank")){
@@ -468,7 +468,6 @@ function ComplexSet(unit) constructor{
        
             for (var _right_left = 0; _right_left <= 1; _right_left++) {
                 var _arm_data = arms_data[_right_left];
-                arm_data.arm_type
                 var _variant = unit.arm_variant[_right_left];
                 if (_variant == 0) then continue;
 
@@ -497,7 +496,7 @@ function ComplexSet(unit) constructor{
         }
     }; 
     static draw_unit_hands = function(right_left) {
-        var _arm_data = arms_data[_right_left];
+        var _arm_data = arms_data[right_left];
         if (_arm_data.arm_type == 1) {
             return;
         }
@@ -547,7 +546,7 @@ function ComplexSet(unit) constructor{
 
         // Draw hands bellow the weapon sprite;
         for (var i = 0; i <= 1; i++) {
-            var _arm_data = arms_data[_right_left];
+            var _arm_data = arms_data[i];
             if (!_arm_data.hand_on_top) {
                 draw_unit_hands(i);
             }
@@ -588,8 +587,9 @@ function ComplexSet(unit) constructor{
         }
 
         // Draw hands above the weapon sprite;
-        for (var i = 1; i <= 2; i++) {
-            if (hand_on_top[i]) {
+        for (var i = 0; i <= 1; i++) {
+            var _arm_data = arms_data[i];
+            if (_arm_data.hand_on_top) {
                 draw_unit_hands(i);
             }
         }        
@@ -605,17 +605,59 @@ function ComplexSet(unit) constructor{
         draw_cloaks();
          //draw_unit_arms(x_surface_offset, y_surface_offset, armour_type, specialist_colours, hide_bionics, complex_set);
 
-        weapon_left = left_arm_data[variation_map.left_weapon % array_length(left_arm_data)];
-        weapon_right = right_arm_data[variation_map.right_weapon % array_length(right_arm_data)];
+         if (array_length(left_arm_data)){
+            weapon_left = left_arm_data[variation_map.left_weapon % array_length(left_arm_data)];
+         } else {
+            weapon_left = {};
+         }
+         if (array_length(right_arm_data)){
+            weapon_right = right_arm_data[variation_map.right_weapon % array_length(right_arm_data)];
+         } else {
+            weapon_right = {};
+         }
 
         arms_data = [weapon_right, weapon_left];
         for (var i=0;i<=1;i++){
-            var _arm = arms_data[0];
-            var _defualts = ["hand_on_top", "ui_xmod", "ui_ymod", "hand_type", "arm_type", "ui_weapon", "new_weapon_draw", "ui_twoh", "ui_spec"];
+            var _arm = arms_data[i];
+            var _defualts = ["hand_on_top", "ui_xmod", "ui_ymod", "hand_type", "arm_type", "ui_weapon", "new_weapon_draw", "ui_twoh", "ui_spec", "sprite"];
             for (var s=0;s<array_length(_defualts);s++){
                 if (!struct_exists(_arm, _defualts[s])){
                     _arm[$_defualts[s]] = 0;
                 }
+            }
+            if (armour_type == ArmourType.Terminator && !array_contains(["terminator_ranged", "terminator_melee","terminator_fist"],_arm.display_type)){
+                ui_ymod[i] -= 20;
+                if (_arm.display_type == "normal_ranged") {
+                    _arm.ui_xmod -= 24;
+                    _arm.ui_ymod += 24;
+                }
+                if (_arm.display_type == "melee_onehand" && equiped_weapon != "Company Standard") {
+                    arm_variant[i] = 2;
+                    hand_variant[i] = 2;
+                    ui_xmod[i] -= 14;
+                    ui_ymod[i] += 23;
+                }
+
+                if (_arm.display_type == "melee_twohand") {
+                    weapon_right.arm_type = 2;
+                    weapon_left.arm_type = 2;
+                    weapon_right.hand_type = 3;
+                    weapon_left.hand_type = 4;
+                    ui_ymod[left_or_right] += 25;
+                }
+
+                if (_arm.display_type == "ranged_twohand") {
+                    weapon_right.arm_type = 2;
+                    weapon_left.arm_type = 2;
+                    weapon_right.hand_type = 0;
+                    weapon_left.hand_type = 0;
+                    _arm.ui_ymod += 15;
+                }
+
+                /*if (array_contains(["Chainaxe", "Power Axe", "Crozius Arcanum", "Power Mace", "Mace of Absolution", "Relic Blade"], equiped_weapon)) {
+                    hand_variant[left_or_right] = 3;
+                    arm_variant[left_or_right] = 3;
+                }*/
             }
         }
         draw_unit_arms();
