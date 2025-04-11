@@ -33,7 +33,7 @@ if (_is_orbiting) {
 			_is_orbiting=false;
 		}
 	}
-	if (instance_exists(obj_crusade)){
+	if (instance_exists(obj_crusade)){ // Issue 714
 		try{
 			fleet_respond_crusade();
 		} catch(_exception) {

@@ -537,7 +537,7 @@ function scr_end_turn() {
                     if (instance_exists(obj_en_fleet)) {
                         obj_en_fleet.alarm[1] = 1;
                     }
-                    if (instance_exists(obj_crusade)) {
+                    if (instance_exists(obj_crusade)) { // Issue 714
                         obj_crusade.alarm[0] = 2;
                     }
 

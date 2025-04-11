@@ -277,7 +277,7 @@ if (menu==20) and (diplomacy>0) or ((diplomacy<-5) and (diplomacy>-6)) and (cool
             }
             if (liscensing==2) and (repair_ships==0){
                 cooldown=8;
-                var cru=instance_create(mouse_x,mouse_y,obj_crusade);
+                var cru=instance_create(mouse_x,mouse_y,obj_crusade); // This seems relevant
                 cru.owner=diplomacy;
                 cru.placing=true;
                 diplomacy=0;
@@ -350,7 +350,7 @@ if (menu==20) and (diplomacy>0) or ((diplomacy<-5) and (diplomacy>-6)) and (cool
                 trade_theirs[1]="Requisition";
                 trade_theirs[2]="Recruiting Planet";
                 trade_theirs[3]="License: Repair";
-                trade_theirs[4]="License: Crusade";
+                trade_theirs[4]="License: Crusade"; // TODO: Rename here, issue 714
             }
             // Mechanicus trade goods
             if (diplomacy==3){
