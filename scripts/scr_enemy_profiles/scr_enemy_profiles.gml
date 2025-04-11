@@ -1,14 +1,379 @@
 global.profiles = {
+// Faction 1 is player, skipping it;
+// Faction 2 is Imperium (Imperial Guard + Navy)
+	"Imperial Guardsman" : {
+
+	}
+
+	"Heavy Weapons Team" : {
+
+	}
+
+	"Ogryn" : {
+
+	}
+
+	"Chimera" : {
+
+	}
+
+	"Basilisk" : {
+
+	}
+
+	"Leman Russ Battle Tank" : {
+
+	}
+
+	"Leman Russ Demolisher" : {
+
+	}
+
+	"Vendetta" : {
+
+	}
+// TODO: add missing stuff, like Sentinels
+// Faction 3 is Adeptus Mechanicus, TODO: create a proper Admech Roster
+	"Thallax" : {
+
+	}
+
+	"Praetorian Servitor" : {
+	
+	}
+// Faction 4 is Inquisition, TODO: create a proper inquisition roster
+// Faction 5 is Ecclesiarchy
+	"Leader" : {
+
+	}
+	"Palatine" : {
+
+	}
+	"Priest" : {
+
+	}
+	"Arco-Flagellent" : {
+
+	}
+	"Celestian" : {
+
+	}
+	"Mistress" : {
+	}
+	"Sister Repentia" : {
+	}
+	"Battle Sister" : {
+	}
+	"Seraphim" : {
+	}
+	"Dominion" : {
+	}
+	"Retributor" : {
+	}
+	"Follower" : {
+	}
+	"Rhino" : {
+	}
+	"Chimera" : {
+	}
+	"Immolator" : {
+	}
+	"Exorcist" : {
+	}
+	"Penitent Engine" : {
+	}
+// Faction 6 is Eldar
+	"Leader" : {
+	}
+	"Autarch" : {
+	}
+	"Farseer" : {
+	}
+	"Warlock" : {
+	}
+	"Avatar" : {
+	}
+	"Mighty Avatar" : {
+	}
+	"Godly Avatar" : {
+	}
+	"Ranger" : {
+	}
+	"Pathfinder" : {
+	}
+	"Dire Avenger" : {
+	}
+	"Dire Avenger Exarch" : {
+	}
+	"Howling Banshee" : {
+	}
+	"Howling Banshee Exarch" : {
+	}
+	"Striking Scorpion" : {
+	}
+	"Striking Scorpion Exarch" : {
+	}
+	"Fire Dragon" : {
+	}
+	"Fire Dragon Exarch" : {
+	}
+	"Warp Spider" : {
+	}
+	"Warp Spider Exarch" : {
+	}
+	"Dark Reaper" : {
+	}
+	"Dark Reaper Exarch" : {
+	}
+	"Shining Spear" : {
+	}
+	"Guardian" : {
+	}
+	"Grav Platform" : {
+	}
+	"Trouper" : {
+	}
+	"Athair" : {
+	}
+	"Wraithguard" : {
+	}
+	"Vyper" : {
+	}
+	"Falcon" : {
+	}
+	"Fire Prism" : {
+	}
+	"Nightspinner" : {
+	}
+	"Wraithlord" : {
+	}
+	"Phantom Titan" : {
+	}
+// Can't help but wonder - what were the Duke's priorities, that he gave a faction such a huge roster, which you would basically never meet?
+// Faction 7 is Orks
+	"Leader" : {
+	}
+	"Minor Warboss" : {
+	}
+	"Warboss" : {
+	}
+	"Big Warboss" : {
+	}
+	"Gretchin" : {
+	}
+	"Slugga Boy" : {
+	}
+	"Shoota Boy" : {
+	}
+	"Mekboy" : {
+	}
+	"Meganob" : {
+	}
+	"Flash Git" : {
+	}
+	"Cybork" : {
+	}
+	"Ard Boy" : {
+	}
+	"Kommando" : {
+	}
+	"Burna Boy" : {
+	}
+	"Tankbusta" : {
+	}
+	"Stormboy" : {
+	}
+	"Battlewagon" : {
+	}
+	"Deff Dread" : {
+	}
+// Faction 8 is T'au
+	"XV8 Commander" : {
+	}
+	"XV8 Bodyguard" : {
+	}
+	"XV8 Crisis" : {
+	}
+	"XV8 (Brightknife)" : {
+	}
+	"Shield Drone" : {
+	}
+	"XV88 Broadside" : {
+	}
+	"XV25 Stealthsuit" : {
+	}
+	"Fire Warrior" : {
+	}
+	"Pathfinder" : {
+	}
+	"Kroot" : {
+	}
+	"Vespid" : {
+	}
+	"Devilfish" : {
+	}
+	"Hammerhead" : {
+	}
+// Faction 9 is Tyranids
+	"Hive Tyrant" : {
+	}
+	"Tyrant Guard" : {
+	}
+	"Tyranid Warrior" : {
+	}
+	"Zoanthrope" : {
+	}
+	"Carnifex" : {
+	}
+	"Termagaunt" : {
+	}
+	"Hormagaunt" : {
+	}
+	"Cultist" : {
+	}
+	"Genestealer" : {
+	}
+	"Genestealer Patriarch" : {
+	}
+	"Armoured Limousine" : {
+	}
+	"Lictor" : {
+	}
+// Faction 10 is Traitors/Heretics
+	"Leader" : {
+	}
+	"Fallen" : {
+	}
+	"Chaos Lord" : {
+	}
+	"Cultist" : {
+
+	}
+	"Arch Heretic" : {
+	}
+	"Cultist Elite" : {
+	}
+	"Mutant" : {
+	}
+	"Daemonhost" : {
+	}
+	"Technical" : {
+	}
+	"Chaos Leman Russ" : {
+	}
+	"Chaos Basilisk" : {
+	}
+// Faction 11 is Chaos Space Marines
+	"Leader" : {
+	}
+	"Chaos Sorcerer" : {
+	}
+	"Warpsmith" : {
+	}
+	"Chaos Terminator" : {
+	}
+	"Venerable Chaos Terminator" : {
+	}
+	"World Eaters Terminator" : {
+	}
+	"Obliterator" : {
+	}
+	"Chaos Space Marine" : {
+	}
+	"Havoc" : {
+	}
+	"Raptor" : {
+	}
+	"World Eater" : {
+	}
+	"World Eaters Veteran" : {
+	}
+	"Khorne Berzerker" : {
+	}
+	"Plague Marine" : {
+	}
+	"Noise Marine" : {
+	}
+	"Rubric Marine" : {
+	}
+	"Rubric Sorcerer" : {
+	}
+	"Rhino" : {
+	}
+	"Predator" : {
+	}
+	"Vindicator" : {
+	}
+	"Land Raider" : {
+	}
+	"Defiler" : {
+	}
+// Faction 12 is Daemons
 	"Greater Daemon of Tzeentch" : {
 
 	}
-
-	"Chaos Terminator": {
-
+	"Greater Daemon of Khorne" : {
 	}
-	 "Cultist":{
+	"Greater Daemon of Slaanesh" : {
+	}
+	"Greater Daemon of Nurgle" : {
+	}
+	"Bloodletter" : {
+	}
+	"Daemonette" : {
+	}
+	"Pink Horror" : {
+	}
+	"Plaguebearer" : {
+	}
+	"Helbrute" : {
+	}
+	"Soul Grinder" : {
+	}
+	"Maulerfiend" : {
+	}
+// Units that may belong to 10, 11 or 12 faction
+	"Chaos Chosen" : {
+	}
+	"Venerable Chaos Chosen" : {
+	}
+	"Possessed" : {
+	}
+	"Heldrake" : {
+	}
+	"Hellbrute" : {
+	}
+	"Daemonhost" : {
+	}
 
-	 }
+	"Malcadon Spyrer" : {
+	}
+// Faction 13 is Necrons
+	"Necron Overlord" : {
+	}
+	"Lychguard" : {
+	}
+	"Flayed One" : {
+	}
+	"Necron Warrior" : {
+	}
+	"Necron Immortal" : {
+	}
+	"Necron Wraith" : {
+	}
+	"Necron Destroyer" : {
+	}
+	"Tomb Stalker" : {
+	}
+	"Canoptek Spyder" : {
+	}
+	"Canoptek Scarab" : {
+	}
+	"Necron Monolith" : {
+	}
+	"Doomsday Arc" : {
+	}
+
 }
 
 
