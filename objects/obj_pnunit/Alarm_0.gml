@@ -19,11 +19,10 @@ try {
         move_unit_block("east");
     }
 
-    if (!instance_exists(enemy)) then exit;
-    if (collision_point(x+10,y,obj_enunit,0,1)) or (collision_point(x-10,y,obj_enunit,0,1)) then engaged=1;
-    if (!collision_point(x+10,y,obj_enunit,0,1)) and (!collision_point(x-10,y,obj_enunit,0,1)) then engaged=0;
+if (!instance_exists(enemy)) then exit;
+engaged = collision_point(x-14, y, obj_enunit, 0, 1) || collision_point(x+14, y, obj_enunit, 0, 1); 
 
-    var once_only;once_only=0;
+    var once_only=0;
     var range_shoot="";
     var dist=point_distance(x,y,enemy.x,enemy.y)/10;
 

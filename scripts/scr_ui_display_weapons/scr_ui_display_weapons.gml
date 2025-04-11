@@ -68,6 +68,7 @@ function scr_ui_display_weapons(left_or_right, current_armor, equiped_weapon, cu
             "Infernus Pistol":spr_weapon_inferno,
             "Bolter":spr_weapon_bolter,
             "Storm Bolter":spr_weapon_sbolter,
+            "Wrist-Mounted Storm Bolter":spr_weapon_sbolter,
             "Plasma Pistol":spr_weapon_plasp,
             "Plasma Gun":spr_weapon_plasg,
             "Flamer":spr_weapon_flamer,
@@ -81,6 +82,7 @@ function scr_ui_display_weapons(left_or_right, current_armor, equiped_weapon, cu
             "Grav-Gun":spr_weapon_grav_gun,
             "Missile Launcher":spr_weapon_missile,
             "Hand Flamer":spr_weapon_hand_flamer,
+			"Shotgun":spr_weapon_shotgun
         }
         var normal_ranged_names = struct_get_names(normal_ranged);
         for (var i=0;i<array_length(normal_ranged_names);i++){
@@ -128,6 +130,7 @@ function scr_ui_display_weapons(left_or_right, current_armor, equiped_weapon, cu
             "Power Spear":spr_weapon_powspear,
             "Thunder Hammer":spr_weapon_thhammer,
             "Power Axe":spr_weapon_powaxe,
+            "Omnissian Axe":spr_weapon_powaxe,
 			"Crozius Arcanum":spr_weapon_crozarc,
             "Chainaxe":spr_weapon_chaxe,
             "Force Staff":spr_weapon_frcstaff,
@@ -138,7 +141,8 @@ function scr_ui_display_weapons(left_or_right, current_armor, equiped_weapon, cu
             "Power Mace":spr_weapon_powmace,
             "Mace of Absolution":spr_weapon_mace_of_absolution,
             "Shock Maul":spr_weapon_powmaul,
-            "Xenophase Blade": spr_weapon_xenophase_blade_var1
+            "Xenophase Blade": spr_weapon_xenophase_blade_var1,
+			"Omnissian Axe":spr_weapon_omnissian_axe
         }
         var melee_weapons_names=struct_get_names(melee_weapons);
         var wep_
@@ -191,6 +195,7 @@ function scr_ui_display_weapons(left_or_right, current_armor, equiped_weapon, cu
     if (!sprite_found){
         var special_ranged ={
             "Sniper Rifle":spr_weapon_sniper,
+            "Needle Sniper Rifle":spr_weapon_sniper,
             "Autocannon":spr_weapon_autocannon2,
         }
         var special_ranged_names=struct_get_names(special_ranged);
@@ -326,13 +331,13 @@ function scr_ui_display_weapons(left_or_right, current_armor, equiped_weapon, cu
         hand_variant[left_or_right] = 3;
     }
 
-    if (array_contains(["Sniper Rifle", "Force Staff", "Power Sword", "Thunder Hammer", "Autocannon", "Combat Knife", "Power Spear", "Chainsword", "Force Sword", "Xenophase Blade"], equiped_weapon)) {
+    if (array_contains(["Sniper Rifle", "Needle Sniper Rifle", "Force Staff", "Power Sword", "Thunder Hammer", "Autocannon", "Combat Knife", "Power Spear", "Chainsword", "Force Sword", "Xenophase Blade", "Omnissian Axe"], equiped_weapon)) {
         hand_variant[left_or_right] = 2;
         hand_on_top[left_or_right] = true;
     }
 
     // New weapon draw method
-    if (array_contains(["Force Staff", "Mace of Absolution", "Power Mace", "Power Axe", "Power Sword", "Autocannon", "Combat Knife", "Power Spear", "Shock Maul", "Chainsword", "Chainaxe", "Force Sword", "Force Axe", "Xenophase Blade"], equiped_weapon)) {
+    if (array_contains(["Force Staff", "Mace of Absolution", "Power Mace", "Power Axe", "Power Sword", "Autocannon", "Combat Knife", "Power Spear", "Shock Maul", "Chainsword", "Chainaxe", "Force Sword", "Force Axe", "Xenophase Blade", "Omnissian Axe"], equiped_weapon)) {
         new_weapon_draw[left_or_right] = true;
     }
 
