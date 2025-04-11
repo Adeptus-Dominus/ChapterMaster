@@ -489,7 +489,7 @@ function setup_complex_livery_shader(setup_role, unit = "none"){
                 }
             }
             var _choice = cloth_variation%array_length(_distinct_colours);
-            show_debug_message($"{_choice}")
+            // show_debug_message($"{_choice}")
             set_complex_shader_area(["robes_colour_replace"], _distinct_colours[_choice]);   
         }else {
             shader_set_uniform_f_array(shader_get_uniform(full_livery_shader, "robes_colour_replace"), cloth_col);
@@ -497,7 +497,7 @@ function setup_complex_livery_shader(setup_role, unit = "none"){
     } else {
         shader_set_uniform_f_array(shader_get_uniform(full_livery_shader, "robes_colour_replace"), cloth_col);
     }
-    show_debug_message(data_set);
+    // show_debug_message(data_set);
     var _textures = {
 
     }
