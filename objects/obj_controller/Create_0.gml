@@ -463,6 +463,7 @@ gene_sold=0;
 gene_xeno=0;
 gene_tithe=24;
 gene_iou=0;
+draw_helms = true;
 
 // ** Sets default views and in game values on creation **
 managing=0;

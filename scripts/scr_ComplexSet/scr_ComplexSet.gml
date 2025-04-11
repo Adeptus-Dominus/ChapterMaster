@@ -129,10 +129,8 @@ function ComplexSet(unit) constructor{
         }
     }    
     
-    static assign_modulars = function(){
-        var modulars = global.modular_drawing_items;
+    static assign_modulars = function(modulars = global.modular_drawing_items){
         var _mod = {};
-
 
         try{
             for (var i=0; i<array_length(modulars);i++){
@@ -507,7 +505,9 @@ function ComplexSet(unit) constructor{
         }else if(unit_role==_role[eROLE.Veteran] || (unit_role==_role[eROLE.Terminator] && unit.company == 1)){
             _complex_helm = _comp_helms.veteran;
         }
-        if (is_struct(_complex_helm) && struct_exists(self, "head")){
+        if (is_struct(_complex_helm) 
+            && struct_exists(self, "head") 
+            && (instance_exists(obj_creation) ? obj_creation.draw_helms : obj_controller.draw_helms)){
             complex_helms(_complex_helm);
         }
 

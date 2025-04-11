@@ -374,7 +374,7 @@ function ColourItem(xx,yy) constructor{
         			colour_pick.title = _body_loc;
         		}
         	}
-            if (!colour_return){
+            if (colour_return != false){
                 if (hover_pos != colour_return[0]){
                     map_colour[$ colour_return[0]] = colour_return[1];
                     colour_return = false;
@@ -492,8 +492,10 @@ function setup_complex_livery_shader(setup_role, unit = "none"){
                     array_push(_distinct_colours, _colour);
                 }
             }
-            var _choice = cloth_variation%array_length(_distinct_colours);
-            show_debug_message($"{_choice}")
+            if (array_length(_distinct_colours)){
+                var _choice = cloth_variation%array_length(_distinct_colours);
+            }
+            //show_debug_message($"{_choice}")
             set_complex_shader_area(["robes_colour_replace"], _distinct_colours[_choice]);   
         }else {
             shader_set_uniform_f_array(shader_get_uniform(full_livery_shader, "robes_colour_replace"), cloth_col);
