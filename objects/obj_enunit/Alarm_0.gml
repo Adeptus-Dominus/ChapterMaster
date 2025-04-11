@@ -12,7 +12,6 @@ if (enemy == "none") {
 }
 
 var target_unit_index = 0;
-var enemy2 = enemy;
 
 //In melee check
 engaged = collision_point(x - 10, y, obj_pnunit, 0, 1) || collision_point(x + 10, y, obj_pnunit, 0, 1);
@@ -146,7 +145,7 @@ if (!engaged) {
                 var _shoot_type = is_fort ? "wall" : _weapon_type;
                 var unit_index = is_fort ? 1 : target_unit_index;
 
-                scr_shoot(i, best_target, unit_index, _target_type, "ranged");
+                scr_shoot(i, best_target, unit_index, _target_type, _shoot_type);
             } else {
                 log_error($"{wep[i]} didn't find a valid target! This shouldn't happen!");
                 if (DEBUG_COLUMN_PRIORITY) {
