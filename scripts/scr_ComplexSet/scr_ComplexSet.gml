@@ -363,7 +363,6 @@ function ComplexSet(unit) constructor{
         chest_fastening : unit.get_body_data("chest_fastening","torso"),
     }
 
-    static base_component_surface = surface_create(600, 600);
     static draw_component = function(component_name, texture_draws={}){
         if (array_contains(banned, component_name)){
             return "banned component";
@@ -391,11 +390,8 @@ function ComplexSet(unit) constructor{
                  if (array_length(_tex_names)){
                     var _return_surface = surface_get_target();                    
                     surface_reset_target();                   
+                    var base_component_surface = surface_create(600, 600);
                     shader_reset();
-
-                    if (!surface_exists(base_component_surface)) {
-                        base_component_surface = surface_create(600, 600);
-                    }
                     surface_set_target(base_component_surface);                          
                     shader_set(armour_texture);
                     for (var i=0;i<array_length(_tex_names);i++){
@@ -484,9 +480,6 @@ function ComplexSet(unit) constructor{
     static draw = function(){
         var _final_surface = surface_get_target();
         surface_reset_target();
-        if (!surface_exists(prep_surface)) {
-            prep_surface = surface_create(600, 600);
-        }
         surface_set_target(prep_surface); 
          
 
@@ -588,7 +581,9 @@ function ComplexSet(unit) constructor{
          surface_set_target(_final_surface);       
          draw_surface(prep_surface, 0, 0);
          delete texture_draws;
-        set_and_clear_surface(prep_surface);
+        surface_set_target(prep_surface);
+        draw_clear_alpha(c_white,0);
+        surface_reset_target(); 
         shader_set(full_livery_shader);    
     }
     static purity_seals_and_hangings = function(){
@@ -970,6 +965,15 @@ function ComplexSet(unit) constructor{
             //shader_set_uniform_f_array(shader_get_uniform(helm_shader, "replace_colour"), get_shader_array(data.helm_secondary));
             //draw_sprite(spr_helm_stripe, data.helm_pattern==1?0:1, 0, 0);
             surface_reset_target();
+            //shader_reset();
+
+            //var _swaps = [
+            //    make_colour_rgb(0, 0, 128),
+            //    make_colour_rgb(0, 0, 255),
+            //    make_colour_rgb(128, 64, 255),
+            //    make_colour_rgb(64, 128, 255),
+            //];
+            //blend_mode_custom(_decoration_surface,_head_surface,_swaps);
 
             head = sprite_create_from_surface(_head_surface, 0, 0, _surface_width, 60, false, false, 0, 0);
             set_and_clear_surface(_head_surface);
@@ -981,4 +985,87 @@ function ComplexSet(unit) constructor{
 }
 
 
+
+/// blend_mode_custom(source_surface, destination_surface)
+function blend_mode_custom(source_surface, destination_surface, allowed_cross_colours) {
+    // Set the target for reading the destination surface
+    surface_set_target(destination_surface);
+
+    // Get surface size
+    var _surface_width = surface_get_width(destination_surface);
+    var _surface_height = surface_get_height(destination_surface);
+
+    var allowed_colour_r=[];
+    var allowed_colour_g=[];
+    var allowed_colour_b=[];
+    for (var i = 0; i < array_length(allowed_cross_colours); i++) {
+        var allowed_color = allowed_cross_colours[i];
+        array_push(allowed_colour_r, color_get_red(allowed_color));
+        array_push(allowed_colour_g, color_get_green(allowed_color));
+        array_push(allowed_colour_b, color_get_blue(allowed_color));
+    }
+
+    // Loop through each pixel
+    for (var _y = 0; _y < _surface_height; _y++) {
+        var had_colour_this_row = false;
+        for (var _x = 75; _x < 90; _x++) {
+            
+            // Get the destination pixel color
+
+            var col = surface_getpixel_ext(destination_surface, _x, _y)
+            var _alpha = (col >> 24) & 255;
+            if (_alpha<58){
+                
+                if (_x>=80){
+                    break;
+                };
+                continue;
+            } 
+            var dest_color = surface_getpixel(destination_surface, _x, _y);
+
+            var scource_alpha = (surface_getpixel_ext(source_surface, _x, _y) >>24 &255);
+            if (scource_alpha<58){
+                if (had_colour_this_row){
+                    break;
+                } else {
+                    continue;
+                }
+            } else {
+                had_colour_this_row = true;
+            }
+            // Extract RGB components
+            var dest_r = color_get_red(dest_color);
+            var dest_g = color_get_green(dest_color);
+            var dest_b = color_get_blue(dest_color);
+            
+            // Check if destination color matches allowed colors
+            var is_allowed = false;
+            for (var i = 0; i < array_length(allowed_cross_colours); i++) {
+                var allowed_color = allowed_cross_colours[i];
+                if (dest_r!=allowed_colour_r[i]) then continue;
+                if (dest_g!=allowed_colour_g[i]) then continue;
+                if (dest_b!=allowed_colour_b[i]) then continue;
+                is_allowed = true;
+                break;
+            }
+            if (!is_allowed) then continue;
+            
+            // Get the source pixel
+            var src_color = surface_getpixel(source_surface, _x, _y);
+            var src_r = color_get_red(src_color);
+            var src_g = color_get_green(src_color);
+            var src_b = color_get_blue(src_color);
+            
+            // Apply the blending logic
+
+            var final_color = make_color_rgb(src_r, src_g, src_b);
+            // Draw the blended pixel
+            draw_set_color(final_color);
+            draw_point(_x, _y);                 
+        }
+    }
+
+    // Reset the target
+    surface_reset_target();
+}
 
