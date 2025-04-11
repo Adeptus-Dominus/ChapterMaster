@@ -354,23 +354,27 @@ function ColourItem(xx,yy) constructor{
             hover_pos = false;
         	var map_names = struct_get_names(image_location_maps);
         	for (var i=0;i<array_length(map_names);i++){
-        		if (!is_array(image_location_maps[$map_names[i]])) then continue;
-        		var rel_position = coord_relevative_positions(image_location_maps[$map_names[i]],xx, yy);
-        		if (scr_hit(rel_position)){
-                    if (struct_exists(name_maps, map_names[i])){
-                        tooltip_draw(name_maps[$ map_names[i]]);
+                var _body_loc = map_names[i];
+                var _body_loc_coords = image_location_maps[$_body_loc];
+        		if (!is_array(_body_loc_coords)){
+                    continue;
+                }
+        		var _rel_position = coord_relevative_positions(_body_loc_coords,xx, yy);
+        		if (scr_hit(_rel_position)){
+                    if (struct_exists(name_maps, _body_loc)){
+                        tooltip_draw(name_maps[$ _body_loc]);
                     } else{
-                        tooltip_draw(map_names[i]);
+                        tooltip_draw(_body_loc);
                     }
-                    hover_pos = map_names[i];
+                    hover_pos = _body_loc;
         		}
-        		if (point_and_click(rel_position)){
+        		if (point_and_click(_rel_position)){
         			colour_pick = new colour_picker(20, yy+350, 350);
-        			colour_pick.area = map_names[i];
-        			colour_pick.title = map_names[i];
+        			colour_pick.area = _body_loc;
+        			colour_pick.title = _body_loc;
         		}
         	}
-            if (colour_return != false){
+            if (!colour_return){
                 if (hover_pos != colour_return[0]){
                     map_colour[$ colour_return[0]] = colour_return[1];
                     colour_return = false;

@@ -49,7 +49,6 @@ function set_and_clear_surface(_surface) {
     surface_set_target(_surface);
     draw_clear_alpha(c_white, 0);
     surface_reset_target();
-    surface_free(_surface);
 }
 
 function UnitImage(unit_surface) constructor {
