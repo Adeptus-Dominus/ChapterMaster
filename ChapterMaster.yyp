@@ -728,6 +728,7 @@
     {"id":{"name":"scr_enemy_ai_c","path":"scripts/scr_enemy_ai_c/scr_enemy_ai_c.yy",},},
     {"id":{"name":"scr_enemy_ai_d","path":"scripts/scr_enemy_ai_d/scr_enemy_ai_d.yy",},},
     {"id":{"name":"scr_enemy_ai_e","path":"scripts/scr_enemy_ai_e/scr_enemy_ai_e.yy",},},
+    {"id":{"name":"scr_enemy_profiles","path":"scripts/scr_enemy_profiles/scr_enemy_profiles.yy",},},
     {"id":{"name":"scr_equipment_struct","path":"scripts/scr_equipment_struct/scr_equipment_struct.yy",},},
     {"id":{"name":"scr_event_dudes","path":"scripts/scr_event_dudes/scr_event_dudes.yy",},},
     {"id":{"name":"scr_event_gossip","path":"scripts/scr_event_gossip/scr_event_gossip.yy",},},
