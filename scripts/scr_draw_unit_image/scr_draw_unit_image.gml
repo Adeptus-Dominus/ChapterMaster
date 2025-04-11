@@ -858,6 +858,10 @@ function scr_draw_unit_image(_background = false) {
         }
     }
     surface_reset_target();
+    /*shader_set_uniform_i(shader_get_uniform(sReplaceColor, "u_blend_modes"), 2);                
+    texture_set_stage(shader_get_sampler_index(sReplaceColor, "armour_texture"), sprite_get_texture(spr_leopard_sprite, 0)); */
+    //draw_surface(unit_surface, xx+_x1-x_surface_offset,yy+_y1-y_surface_offset);
+    //surface_free(unit_surface);
     shader_reset();
     var _complex_sprite_names = struct_get_names(complex_set);
     for (var i = 0; i < array_length(_complex_sprite_names); i++) {
