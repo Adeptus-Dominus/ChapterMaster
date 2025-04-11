@@ -31,21 +31,11 @@ try {
         }
     }
 
-    if (instance_number(obj_enunit) != 1) {
-        obj_ncombat.flank_x = self.x;
-        with (obj_enunit) {
-            if (x < (obj_ncombat.flank_x - 20)) {
-                instance_deactivate_object(id);
-            }
-        }
+    if (!instance_exists(obj_enunit)) {
+        exit;
     }
 
     enemy = instance_nearest(0, y, obj_enunit);
-    var enemy2 = enemy;
-
-    if (!instance_exists(enemy)) {
-        exit;
-    }
 
     if (obj_ncombat.dropping || (!obj_ncombat.defending && obj_ncombat.formation_set != 2)) {
         move_unit_block("east");
@@ -53,218 +43,172 @@ try {
 
     engaged = collision_point(x - 10, y, obj_enunit, 0, 1) || collision_point(x + 10, y, obj_enunit, 0, 1);
 
-    var once_only = 0;
-    var range_shoot = "";
-    var dist = point_distance(x, y, enemy.x, enemy.y) / 10;
-
-    for (var i = 0; i < array_length(wep); i++) {
-        if (wep[i] == "") {
-            continue;
-        }
-        weapon_data = gear_weapon_data("weapon", wep[i]);
-        once_only = 0;
-        enemy = instance_nearest(0, y, obj_enunit);
-        enemy2 = enemy;
-        if (enemy.men + enemy.veh + enemy.medi <= 0) {
-            var x5 = enemy.x;
-            with (enemy) {
-                instance_destroy();
-            }
-            enemy = instance_nearest(0, y, obj_enunit);
-            enemy2 = enemy;
-        }
-
-        if (range[i] >= dist) {
-            if ((range[i] != 1) && (engaged == 0)) {
-                range_shoot = "ranged";
-            }
-            if ((range[i] != floor(range[i]) || floor(range[i]) == 1) && engaged == 1) {
-                range_shoot = "melee";
-            }
-        }
-
-        if ((range_shoot == "ranged") && (range[i] >= dist)) {
-            // Weapon meets preliminary checks
-            var ap = 0;
-            if (apa[i] > att[i]) {
-                ap = 1;
-            } // Determines if it is AP or not
-            if (wep[i] == "Missile Launcher") {
-                ap = 1;
-            }
-            if (string_count("Lascan", wep[i]) > 0) {
-                ap = 1;
-            }
-            if ((instance_number(obj_enunit) == 1) && (obj_enunit.men == 0) && (obj_enunit.veh > 0)) {
-                ap = 1;
-            }
-
-            if (instance_exists(enemy)) {
-                if ((obj_enunit.veh > 0) && (obj_enunit.men == 0) && (apa[i] > 10)) {
-                    ap = 1;
-                }
-
-                if ((ap == 1) && (once_only == 0)) {
-                    // Check for vehicles
-                    var enemy2, g = 0, good = 0;
-
-                    if (enemy.veh > 0) {
-                        good = scr_target(enemy, "veh"); // First target has vehicles, blow it to hell
-                        scr_shoot(i, enemy, good, "arp", "ranged");
-                    }
-                    if ((good == 0) && (instance_number(obj_enunit) > 1)) {
-                        // First target does not have vehicles, cycle through objects to find one that has vehicles
-                        var x2 = enemy.x;
-                        repeat (instance_number(obj_enunit) - 1) {
-                            if (good == 0) {
-                                x2 += 10;
-                                enemy2 = instance_nearest(x2, y, obj_enunit);
-                                if ((enemy2.veh > 0) && (good == 0)) {
-                                    good = scr_target(enemy2, "veh"); // This target has vehicles, blow it to hell
-                                    scr_shoot(i, enemy2, good, "arp", "ranged");
-                                    once_only = 1;
-                                }
-                            }
-                        }
-                    }
-                    if (good == 0) {
-                        ap = 0;
-                    } // Fuck it, shoot at infantry
-                }
-            }
-
-            if (instance_exists(enemy) && (once_only == 0)) {
-                if ((enemy.medi > 0) && (enemy.veh == 0)) {
-                    good = scr_target(enemy, "medi"); // First target has vehicles, blow it to hell
-                    scr_shoot(i, enemy, good, "medi", "ranged");
-
-                    if ((good == 0) && (instance_number(obj_enunit) > 1)) {
-                        // First target does not have vehicles, cycle through objects to find one that has vehicles
-                        var x2 = enemy.x;
-                        repeat (instance_number(obj_enunit) - 1) {
-                            if (good == 0) {
-                                x2 += 10;
-                                enemy2 = instance_nearest(x2, y, obj_enunit);
-                                if ((enemy2.veh > 0) && (good == 0)) {
-                                    good = scr_target(enemy2, "medi"); // This target has vehicles, blow it to hell
-                                    scr_shoot(i, enemy2, good, "medi", "ranged");
-                                    once_only = 1;
-                                }
-                            }
-                        }
-                    }
-                    if (good == 0) {
-                        ap = 0;
-                    } // Next up is infantry
-                    // Was previously ap=1;
-                }
-            }
-
-            if (instance_exists(enemy)) {
-                if ((ap == 0) && (once_only == 0)) {
-                    // Check for men
-                    var g, good, enemy2;
-                    g = 0;
-                    good = 0;
-
-                    if (enemy.men + enemy.medi > 0) {
-                        good = scr_target(enemy, "men"); // First target has vehicles, blow it to hell
-                        scr_shoot(i, enemy, good, "att", "ranged");
-                    }
-                    if ((good == 0) && (instance_number(obj_enunit) > 1)) {
-                        // First target does not have vehicles, cycle through objects to find one that has vehicles
-                        var x2;
-                        x2 = enemy.x;
-                        repeat (instance_number(obj_enunit) - 1) {
-                            if (good == 0) {
-                                x2 += 10;
-                                enemy2 = instance_nearest(x2, y, obj_enunit);
-                                if ((enemy2.men > 0) && (good == 0)) {
-                                    good = scr_target(enemy2, "men"); // This target has vehicles, blow it to hell
-                                    scr_shoot(i, enemy2, good, "att", "ranged");
-                                    once_only = 1;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        } else if ((range_shoot == "melee") && ((range[i] == 1) || (range[i] != floor(range[i])))) {
-            // Weapon meets preliminary checks
-            var ap = 0;
-            if (apa[i] == 1) {
-                ap = 1;
-            } // Determines if it is AP or not
-
-            if ((enemy.men == 0) && (apa[i] == 0) && (att[i] >= 80)) {
-                apa[i] = floor(att[i] / 2);
-                ap = 1;
-            }
-
-            if ((apa[i] == 1) && (once_only == 0)) {
-                // Check for vehicles
-                var enemy2, g = 0, good = 0;
-
-                if (enemy.veh > 0) {
-                    good = scr_target(enemy, "veh"); // First target has vehicles, blow it to hell
-                    if (range[i] == 1) {
-                        scr_shoot(i, enemy, good, "arp", "melee");
-                    }
-                }
-                if (good != 0) {
-                    once_only = 1;
-                }
-                if ((good == 0) && (att[i] > 0)) {
-                    ap = 0;
-                } // Fuck it, shoot at infantry
-            }
-
-            if ((enemy.veh == 0) && (enemy.medi > 0) && (once_only == 0)) {
-                // Check for vehicles
-                var enemy2, g = 0, good = 0;
-
-                if (enemy.medi > 0) {
-                    good = scr_target(enemy, "medi"); // First target has vehicles, blow it to hell
-                    if (range[i] == 1) {
-                        scr_shoot(i, enemy, good, "medi", "melee");
-                    }
-                }
-                if (good != 0) {
-                    once_only = 1;
-                }
-                if ((good == 0) && (att[i] > 0)) {
-                    ap = 0;
-                } // Fuck it, shoot at infantry
-            }
-
-            if ((ap == 0) && (once_only == 0)) {
-                // Check for men
-                var g = 0, good = 0, enemy2;
-
-                if ((enemy.men > 0) && (once_only == 0)) {
-                    // show_message(string(wep[i])+" attacking");
-                    good = scr_target(enemy, "men");
-                    if (range[i] == 1) {
-                        scr_shoot(i, enemy, good, "att", "melee");
-                    }
-                }
-                if (good != 0) {
-                    once_only = 1;
-                }
-            }
-        }
+    if (DEBUG_COLUMN_PRIORITY) {
+        var _t_start1 = get_timer();
     }
 
-    instance_activate_object(obj_enunit);
-
-    if (instance_exists(obj_enunit)) {
+    if (!engaged) {
         for (var i = 0; i < array_length(unit_struct); i++) {
             if (marine_dead[i] == 0 && marine_casting[i] == true) {
                 var caster_id = i;
                 scr_powers(caster_id);
+                exit;
+            }
+        }
+
+        // Shooting
+        for (var i = 0; i < array_length(wep); i++) {
+            if (wep[i] == "" || wep_num[i] == 0) {
+                continue;
+            }
+    
+            if (range[i] == 1) {
+                // show_debug_message($"A melee or no ammo weapon was found! Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}; Ammo: {ammo[i]}");
+                continue;
+            }
+    
+            if (range[i] == 0) {
+                log_error($"{wep[i]} has broken range! This shouldn't happen! Range: {range[i]}; Ammo: {ammo[i]}; Owner: {wep_owner[i]}");
+                // show_debug_message($"A broken weapon was found! i:{i}; Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}; Ammo: {ammo[i]}");
+                continue;
+            }
+    
+            if (!target_block_is_valid(enemy, obj_enunit)) {
+                enemy = instance_nearest(0, y, obj_enunit);
+                if (!target_block_is_valid(enemy, obj_enunit)) {
+                    exit;
+                }
+            }
+    
+            var dist = get_block_distance(enemy);
+    
+            if (range[i] >= dist) {
+                var _target_type = apa[i] > 8 ? "arp" : "att";
+                var _weapon_type = "ranged";
+                var _target_priority_queue = ds_priority_create();
+    
+                if (DEBUG_COLUMN_PRIORITY) {
+                    var _t_start = get_timer();
+                }
+    
+                // Scan potential targets
+                var _check_targets = [];
+                with (obj_enunit) {
+                    if (!target_block_is_valid(self, obj_enunit)) {
+                        continue;
+                    }
+                    array_push(_check_targets, self.id);
+                }
+    
+                if (DEBUG_COLUMN_PRIORITY) {
+                    show_debug_message($"{wep[i]} IS HERE!");
+                }
+    
+                for (var t = 0; t < array_length(_check_targets); t++) {
+                    var enemy_block = _check_targets[t];
+    
+                    var _distance = get_block_distance(enemy_block);
+                    if (_distance > range[i]) {
+                        continue;
+                    }
+    
+                    // Distance weight (closer = higher priority)
+                    var _distance_bonus = (range[i] - _distance - 1) * 20;
+    
+                    // Column size influence (bigger columns = higher threat?)
+                    var _doomstack_malus = wep_num[i] / enemy_block.column_size;
+    
+                    // Column size influence (bigger columns = higher threat?)
+                    var _size_bonus = enemy_block.column_size / 10;
+    
+                    // Target type match bonus
+                    var _type_bonus = 0;
+                    if (_target_type == "arp") {
+                        _type_bonus = 20 * (block_type_size(enemy_block, "armour") / enemy_block.column_size);
+                    } else if (_target_type == "att") {
+                        _type_bonus = 20 * (block_type_size(enemy_block, "men") / enemy_block.column_size);
+                    }
+    
+                    var priority = 0;
+                    priority += _type_bonus;
+                    priority += _size_bonus;
+                    priority -= _doomstack_malus;
+                    priority += _distance_bonus;
+                    priority *= random_range(0.5, 1.5);
+    
+                    if (DEBUG_COLUMN_PRIORITY) {
+                        show_debug_message($"Priority: {priority}\n Type: +{_type_bonus}\n Size: +{_size_bonus}\n Doomstack: -{_doomstack_malus}\n Distance: +{_distance_bonus}\n");
+                    }
+                    ds_priority_add(_target_priority_queue, enemy_block, priority);
+                }
+        
+                if (DEBUG_COLUMN_PRIORITY) {
+                    var _t_end = get_timer();
+                    var _elapsed_ms = (_t_end - _t_start) / 1000;
+                    show_debug_message($"⏱️ Execution Time: {_elapsed_ms}ms");
+                }
+    
+                // Shoot highest-priority target
+                if (!ds_priority_empty(_target_priority_queue)) {
+                    var best_target = ds_priority_delete_max(_target_priority_queue);
+                    var unit_index = 0;
+    
+                    scr_shoot(i, best_target, unit_index, _target_type, _weapon_type);
+                } else {
+                    log_error($"{wep[i]} didn't find a valid target! This shouldn't happen!");
+                    if (DEBUG_COLUMN_PRIORITY) {
+                        show_debug_message($"We didn't find a valid target! Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
+                    }
+                }
+    
+                ds_priority_destroy(_target_priority_queue);
+            } else {
+                if (DEBUG_COLUMN_PRIORITY) {
+                    show_debug_message($"I can't shoot, my range is too small! Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}");
+                }
+                continue;
             }
         }
     }
+    
+    if (DEBUG_COLUMN_PRIORITY) {
+        var _t_end1 = get_timer();
+        var _elapsed_ms1 = (_t_end1 - _t_start1) / 1000;
+        show_debug_message($"⏱️ Ranged Alarm Execution Time: {_elapsed_ms1}ms");
+    }
+    
+    //TODO: The melee code was not refactored;
+    if (engaged) {
+        // Melee
+        for (var i = 0; i < array_length(wep); i++) {
+            if (wep[i] == "" || wep_num[i] == 0) {
+                continue;
+            }
+    
+            if (range[i] >= 2) {
+                // show_debug_message($"A melee or no ammo weapon was found! Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}; Ammo: {ammo[i]}");
+                continue;
+            }
+    
+            if (range[i] == 0) {
+                log_error($"{wep[i]} has broken range! This shouldn't happen! Range: {range[i]}; Ammo: {ammo[i]}; Owner: {wep_owner[i]}");
+                // show_debug_message($"A broken weapon was found! i:{i}; Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}; Ammo: {ammo[i]}");
+                continue;
+            }
+    
+            if (!target_block_is_valid(enemy, obj_enunit)) {
+                enemy = instance_nearest(0, y, obj_enunit);
+                if (!target_block_is_valid(enemy, obj_enunit)) {
+                    exit;
+                }
+            }
+    
+            var _attack_type = apa[i] > 8 ? "arp" : "att";
+            scr_shoot(i, enemy, 0, _attack_type, "melee");
+        }
+    }
+    
+    instance_activate_object(obj_enunit);
 } catch (_exception) {
     handle_exception(_exception);
 }

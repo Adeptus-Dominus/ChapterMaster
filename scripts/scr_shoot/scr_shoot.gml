@@ -145,20 +145,12 @@ function scr_shoot(weapon_index_position, target_object, target_index, target_ty
 
         //* Player shooting
         if (owner == eFACTION.Player) {
-            if (target_object.dudes_hp[target_index] <= 0) {
-                target_index = -1;
-                for (var i = 0, dudes_len = array_length(target_object.dudes); i < dudes_len; i++) {
-                    if (target_object.dudes_hp[i] > 0) {
-                        target_index = i;
-                        break;
-                    }
+            target_index = scr_target(target_object, _weapon_damage_type);
+            if (target_index == -1) {
+                if (DEBUG_PLAYER_TARGET_SELECTION) {
+                    show_debug_message($"{_weapon_name} found no valid targets in the enemy column to attack!");
                 }
-                if (target_index == -1) {
-                    if (DEBUG_PLAYER_TARGET_SELECTION) {
-                        show_debug_message($"{_weapon_name} found no valid targets in the enemy column to attack!");
-                    }
-                    exit;
-                }
+                exit;
             }
 
             if (DEBUG_PLAYER_TARGET_SELECTION) {
