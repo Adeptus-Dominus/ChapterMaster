@@ -15,45 +15,46 @@ var target_unit_index = 0;
 var enemy2 = enemy;
 
 //In melee check
-engaged = collision_point(x-10, y, obj_pnunit, 0, 1) || collision_point(x+10, y, obj_pnunit, 0, 1);
+engaged = collision_point(x - 10, y, obj_pnunit, 0, 1) || collision_point(x + 10, y, obj_pnunit, 0, 1);
 // show_debug_message($"enemy is in melee {engaged}")
 
 if (DEBUG_COLUMN_PRIORITY) {
     var _t_start1 = get_timer();
 }
 
-if (!engaged){ // Shooting
-    for (var i=0;i<array_length(wep);i++){
-        if (wep[i]=="" || wep_num[i]==0) {
+if (!engaged) {
+    // Shooting
+    for (var i = 0; i < array_length(wep); i++) {
+        if (wep[i] == "" || wep_num[i] == 0) {
             continue;
         }
 
-        if ((range[i]==1)) {
+        if (range[i] == 1) {
             // show_debug_message($"A melee or no ammo weapon was found! Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}; Ammo: {ammo[i]}");
             continue;
         }
 
-        if ((range[i]==0)) {
+        if (range[i] == 0) {
             log_error($"{wep[i]} has broken range! This shouldn't happen! Range: {range[i]}; Ammo: {ammo[i]}; Owner: {wep_owner[i]}");
             // show_debug_message($"A broken weapon was found! i:{i}; Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}; Ammo: {ammo[i]}");
             continue;
         }
 
-        if (!target_block_is_valid(enemy,obj_pnunit)){
+        if (!target_block_is_valid(enemy, obj_pnunit)) {
             enemy = flank == 0 ? get_rightmost() : get_leftmost();
-            if (!target_block_is_valid(enemy,obj_pnunit)){
+            if (!target_block_is_valid(enemy, obj_pnunit)) {
                 exit;
             }
         }
 
-        var dist = get_block_distance(enemy);  
-        target_unit_index=0;
+        var dist = get_block_distance(enemy);
+        target_unit_index = 0;
 
         if (range[i] >= dist) {
-            var _target_type  = apa[i] > 8 ? "arp" : "att";
-            var _weapon_type  = "ranged";
+            var _target_type = apa[i] > 8 ? "arp" : "att";
+            var _weapon_type = "ranged";
             var _target_priority_queue = ds_priority_create();
-            
+
             // Alpha strike override
             if (obj_ncombat.alpha_strike > 0) {
                 obj_ncombat.alpha_strike -= 0.5;
@@ -70,7 +71,7 @@ if (!engaged){ // Shooting
             if (DEBUG_COLUMN_PRIORITY) {
                 var _t_start = get_timer();
             }
-        
+
             // Scan potential targets
             var _check_targets = [];
             with (obj_pnunit) {
@@ -79,28 +80,28 @@ if (!engaged){ // Shooting
                 }
                 array_push(_check_targets, self.id);
             }
-        
+
             if (DEBUG_COLUMN_PRIORITY) {
                 show_debug_message($"{wep[i]} IS HERE!");
             }
 
             for (var t = 0; t < array_length(_check_targets); t++) {
                 var enemy_block = _check_targets[t];
-        
+
                 var _distance = get_block_distance(enemy_block);
                 if (_distance > range[i]) {
                     continue;
                 }
-        
+
                 // Distance weight (closer = higher priority)
                 var _distance_bonus = (range[i] - _distance - 1) * 20;
-        
+
                 // Column size influence (bigger columns = higher threat?)
                 var _doomstack_malus = wep_num[i] / enemy_block.column_size;
 
                 // Column size influence (bigger columns = higher threat?)
                 var _size_bonus = enemy_block.column_size / 10;
-        
+
                 // Target type match bonus
                 var _type_bonus = 0;
                 if (_target_type == "arp") {
@@ -121,7 +122,7 @@ if (!engaged){ // Shooting
                 }
                 ds_priority_add(_target_priority_queue, enemy_block, priority);
             }
-        
+
             // Add fort as fallback target
             var fort = instance_nearest(x, y, obj_nfort);
             if (fort != noone && !flank) {
@@ -131,7 +132,7 @@ if (!engaged){ // Shooting
                     ds_priority_add(_target_priority_queue, fort, fort_priority);
                 }
             }
-        
+
             if (DEBUG_COLUMN_PRIORITY) {
                 var _t_end = get_timer();
                 var _elapsed_ms = (_t_end - _t_start) / 1000;
@@ -141,10 +142,10 @@ if (!engaged){ // Shooting
             // Shoot highest-priority target
             if (!ds_priority_empty(_target_priority_queue)) {
                 var best_target = ds_priority_delete_max(_target_priority_queue);
-                var is_fort = (best_target.object_index == obj_nfort);
+                var is_fort = best_target.object_index == obj_nfort;
                 var _shoot_type = is_fort ? "wall" : _weapon_type;
                 var unit_index = is_fort ? 1 : target_unit_index;
-        
+
                 scr_shoot(i, best_target, unit_index, _target_type, "ranged");
             } else {
                 log_error($"{wep[i]} didn't find a valid target! This shouldn't happen!");
@@ -152,13 +153,13 @@ if (!engaged){ // Shooting
                     show_debug_message($"We didn't find a valid target! Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
                 }
             }
-        
+
             ds_priority_destroy(_target_priority_queue);
         } else {
             if (DEBUG_COLUMN_PRIORITY) {
                 show_debug_message($"I can't shoot, my range is too small! Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}");
             }
-            continue;  
+            continue;
         }
     }
 }
@@ -170,9 +171,10 @@ if (DEBUG_COLUMN_PRIORITY) {
 }
 
 //TODO: The melee code was not refactored;
-if (engaged) {     // Melee
+if (engaged) {
+    // Melee
     for (var i = 0; i < array_length(wep); i++) {
-        if (wep[i]=="" || wep_num[i]==0) {
+        if (wep[i] == "" || wep_num[i] == 0) {
             continue;
         }
 
@@ -181,15 +183,15 @@ if (engaged) {     // Melee
             continue;
         }
 
-        if ((range[i]==0)) {
+        if (range[i] == 0) {
             log_error($"{wep[i]} has broken range! This shouldn't happen! Range: {range[i]}; Ammo: {ammo[i]}; Owner: {wep_owner[i]}");
             // show_debug_message($"A broken weapon was found! i:{i}; Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}; Ammo: {ammo[i]}");
             continue;
         }
 
-        if (!target_block_is_valid(enemy,obj_pnunit)){
+        if (!target_block_is_valid(enemy, obj_pnunit)) {
             enemy = flank == 0 ? get_rightmost() : get_leftmost();
-            if (!target_block_is_valid(enemy,obj_pnunit)){
+            if (!target_block_is_valid(enemy, obj_pnunit)) {
                 exit;
             }
         }
@@ -207,4 +209,4 @@ if (engaged) {     // Melee
 
 instance_activate_object(obj_pnunit);
 
-//! Here was some stuff that depended on image_index here, that got deleted, because I couldn't figure out why it exists;
+//! Here was some stuff that depended on image_index here, that got deleted, because I couldn't figure out why it exists; 
