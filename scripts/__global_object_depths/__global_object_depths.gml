@@ -91,7 +91,7 @@ function __global_object_depths() {
     global.__objectDepths[80] = -21000; // obj_event
     global.__objectDepths[81] = -900; // obj_event_log
     global.__objectDepths[82] = -1002; // obj_shop
-    global.__objectDepths[83] = -1; // obj_crusade
+    global.__objectDepths[83] = -1; // obj_crusade // Might be related to issue 714
     global.__objectDepths[84] = 0; // obj_star
     global.__objectDepths[85] = -1; // obj_star_event
     global.__objectDepths[86] = -999999999; // obj_halp
@@ -181,7 +181,7 @@ function __global_object_depths() {
     global.__objectNames[80] = "obj_event";
     global.__objectNames[81] = "obj_event_log";
     global.__objectNames[82] = "obj_shop";
-    global.__objectNames[83] = "obj_crusade";
+    global.__objectNames[83] = "obj_crusade"; // Might be related to issue 714
     global.__objectNames[84] = "obj_star";
     global.__objectNames[85] = "obj_star_event";
     global.__objectNames[86] = "obj_halp";
