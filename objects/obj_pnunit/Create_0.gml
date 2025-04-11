@@ -67,44 +67,39 @@ marine_dome=[];
 marine_spatial=[];
 marine_dementia=[];
 
-var i;i=-1;
-repeat(1500){i+=1;
-    //
-    veh_co[i]=0;
-    veh_id[i]=0;
-    veh_type[i]="";
-    veh_hp[i]=0;
-    veh_ac[i]=0;
-    veh_wep1[i]="";
-    veh_wep2[i]="";
-    veh_wep3[i]="";
-    veh_upgrade[i]="";
-    veh_acc[i]="";
-    veh_dead[i]=0;
-    veh_local[i]=0;
-    veh_ally[i]=false;
-}
+var _vehicles_size = 1500;
+veh_co = array_create(_vehicles_size, 0);
+veh_id = array_create(_vehicles_size, 0);
+veh_type = array_create(_vehicles_size, "");
+veh_hp = array_create(_vehicles_size, 0);
+veh_ac = array_create(_vehicles_size, 0);
+veh_wep1 = array_create(_vehicles_size, "");
+veh_wep2 = array_create(_vehicles_size, "");
+veh_wep3 = array_create(_vehicles_size, "");
+veh_upgrade = array_create(_vehicles_size, "");
+veh_acc = array_create(_vehicles_size, "");
+veh_dead = array_create(_vehicles_size, 0);
+veh_local = array_create(_vehicles_size, 0);
+veh_ally = array_create(_vehicles_size, false);
 
-i=-1;
-repeat(71){i+=1;
-    wep[i]="";
-    wep_num[i]=0;
-    range[i]=0;
-    att[i]=0;
-    apa[i]=0;
-    ammo_current[i]=0;
-    ammo_max[i]=-1;
-    ammo_reload_current[i]=-1;
-    ammo_reload[i]=-1;
-    splash[i]=0;
-    wep_owner[i]="";
-    wep_solo[i]=[];
-    wep_title[i]="";
+var _dudes_size = 72;
+wep = array_create(_dudes_size, "");
+wep_num = array_create(_dudes_size, 0);
+range = array_create(_dudes_size, 0);
+att = array_create(_dudes_size, 0);
+apa = array_create(_dudes_size, 0);
+ammo_current = array_create(_dudes_size, 0);
+ammo_max = array_create(_dudes_size, -1);
+ammo_reload_current = array_create(_dudes_size, -1);
+ammo_reload = array_create(_dudes_size, -1);
+splash = array_create(_dudes_size, 0);
+wep_owner = array_create(_dudes_size, "");
+wep_solo = array_create(_dudes_size, []);
+wep_title = array_create(_dudes_size, "");
+dudes = array_create(_dudes_size, "");
+dudes_num = array_create(_dudes_size, 0);
+dudes_vehicle = array_create(_dudes_size, 0);
 
-    dudes[i]="";
-    dudes_num[i]=0;
-    dudes_vehicle[i]=0;
-}
 
 // These arrays are the losses on any one frame.
 // Let them resize as required.
