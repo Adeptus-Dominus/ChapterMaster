@@ -1445,6 +1445,7 @@
     {"id":{"name":"spr_star_pulse","path":"sprites/spr_star_pulse/spr_star_pulse.yy",},},
     {"id":{"name":"spr_star_screen","path":"sprites/spr_star_screen/spr_star_screen.yy",},},
     {"id":{"name":"spr_star","path":"sprites/spr_star/spr_star.yy",},},
+    {"id":{"name":"spr_storm_tall","path":"sprites/spr_storm_tall/spr_storm_tall.yy",},},
     {"id":{"name":"spr_strength_icon","path":"sprites/spr_strength_icon/spr_strength_icon.yy",},},
     {"id":{"name":"spr_sw_mk5_helm","path":"sprites/spr_sw_mk5_helm/spr_sw_mk5_helm.yy",},},
     {"id":{"name":"spr_sw_mk6_helm","path":"sprites/spr_sw_mk6_helm/spr_sw_mk6_helm.yy",},},

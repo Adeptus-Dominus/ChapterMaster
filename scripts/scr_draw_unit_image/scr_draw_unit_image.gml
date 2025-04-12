@@ -225,17 +225,6 @@ function scr_draw_unit_image(_background = false) {
 
     try {
         if ((name_role() != "") && (base_group == "astartes")) {
-            for (var i = 1; i <= 2; i++) {
-                ui_weapon[i] = spr_weapon_blank;
-                arm_variant[i] = 1;
-                hand_variant[i] = 1;
-                hand_on_top[i] = false;
-                ui_spec[i] = false;
-                ui_twoh[i] = false;
-                ui_xmod[i] = 0;
-                ui_ymod[i] = 0;
-                new_weapon_draw[i] = false;
-            }
             var draw_backpack = true;
             var pauldron_trim = false;
             var armour_bypass = false;
@@ -367,15 +356,6 @@ function scr_draw_unit_image(_background = false) {
 
             draw_backpack = armour_type == ArmourType.Normal;
 
-            if (armour_type != ArmourType.Dreadnought && armour_type != ArmourType.None) {
-                if (weapon_one() != "") {
-                    scr_ui_display_weapons(1, unit_armour, weapon_one(), armour_type);
-                }
-
-                if ((weapon_two() != "") && (ui_twoh[1] == false)) {
-                    scr_ui_display_weapons(2, unit_armour, weapon_two(), armour_type);
-                }
-            }
 
             //if(shader_is_compiled(sReplaceColor)){
             //shader_set(sReplaceColor);
@@ -388,19 +368,6 @@ function scr_draw_unit_image(_background = false) {
 
             pauldron_trim = _controller ? obj_controller.trim : obj_creation.trim;
             //TODO complex shader means no need for all this edge case stuff
-
-            // Blood Angels Death Company Marines
-            if (unit_specialization == UnitSpecialization.DeathCompany) {
-                shader_array_set[ShaderType.Body] = Colors.Black;
-                shader_array_set[ShaderType.Helmet] = Colors.Black;
-                shader_array_set[ShaderType.LeftPauldron] = Colors.Black;
-                shader_array_set[ShaderType.Lens] = Colors.Red;
-                shader_array_set[ShaderType.Trim] = Colors.Black;
-                shader_array_set[ShaderType.RightPauldron] = Colors.Black;
-                shader_array_set[ShaderType.Weapon] = Colors.Dark_Red;
-                pauldron_trim = 0;
-                specialist_colours = 0;
-            }
 
             // Dark Angels Deathwing
             if (unit_special_colours == UnitSpecialColours.Deathwing) {

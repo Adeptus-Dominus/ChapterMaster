@@ -1345,7 +1345,7 @@ global.modular_drawing_items = [
             display_type: "normal_fist",
             ui_spec : false,
             arm_type : 1,
-            sprite: spr_weapon_xenophase_blade_var1
+            sprite: spr_weapon_powfist
         },
         body_types: [0, 1]
     },
