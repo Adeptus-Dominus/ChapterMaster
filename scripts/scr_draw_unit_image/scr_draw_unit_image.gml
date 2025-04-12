@@ -238,7 +238,6 @@ function scr_draw_unit_image(_background = false) {
                 new_weapon_draw[i] = false;
             }
             var draw_backpack = true;
-            var ui_force_both = false;
             var pauldron_trim = false;
             var armour_bypass = false;
             var hide_bionics = false;

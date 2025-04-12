@@ -323,7 +323,7 @@ function ComplexSet(unit) constructor{
                     var _weapon_map = _mod.weapon_map;
                     if (unit.weapon_one() == _weapon_map){
                         array_push(right_arm_data , _mod.weapon_data);
-                    } else if( unit.weapon_one() == _weapon_map){
+                    } else if( unit.weapon_two() == _weapon_map){
                         array_push(left_arm_data ,_mod.weapon_data); 
                     }
                 } else {
@@ -468,8 +468,8 @@ function ComplexSet(unit) constructor{
        
             for (var _right_left = 0; _right_left <= 1; _right_left++) {
                 var _arm_data = arms_data[_right_left];
-                var _variant = unit.arm_variant[_right_left];
-                if (_variant == 0) then continue;
+                var _variant = _arm_data.arm_type;
+                if (_variant == 0 && _arm_data.sprite != 0) then continue;
 
                 var _arm_string = _right_left == 0 ? "right_arm" : "left_arm";
                 var _bionic_arm = unit.get_body_data("bionic", _arm_string);
@@ -518,25 +518,23 @@ function ComplexSet(unit) constructor{
                     var _hand_spr = spr_pa_hands;
                     break;
             }
-            if (_arm_data.hand_type > 0) {
-                var _spr_index = (_arm_data.hand_type - 1) * 2;
+            if (_hand > 0) {
+                var _spr_index = (_hand - 1) * 2;
                 if (right_left == 1) {
-                    _spr_index += (specialist_colours >= 2) ? 1 : 0;
-                    draw_sprite_flipped(_hand_spr, _spr_index, offset_x, offset_y);
+                    draw_sprite_flipped(0, _spr_index, offset_x, offset_y);
                 } else {
-                    draw_sprite(_hand_spr, _spr_index, offset_x, offset_y);
+                    draw_sprite(0, _spr_index, offset_x, offset_y);
                 }
             }
             // Draw bionic hands
-            if (_arm_data.hand_type == 1) {
-                if (armour_type == ArmourType.Normal && !hide_bionics && struct_exists(body[$(right_left == 1 ? "right_arm" : "left_arm")], "bionic")) {
-                    var bionic_hand = body[$(right_left == 1 ? "right_arm" : "left_arm")][$ "bionic"];
+            if (_hand == 1) {
+                if (armour_type == ArmourType.Normal && !hide_bionics && struct_exists(body[$(right_left == 0 ? "right_arm" : "left_arm")], "bionic")) {
+                    var bionic_hand = body[$(right_left == 0 ? "right_arm" : "left_arm")][$ "bionic"];
                     var bionic_spr_index = bionic_hand.variant * 2;
                     if (right_left == 1) {
-                        bionic_spr_index += (specialist_colours >= 2) ? 1 : 0;
-                        draw_sprite_flipped(spr_bionics_hand, bionic_spr_index, offset_x, offset_y);
+                        draw_sprite_flipped(spr_bionics_hand, 0, offset_x, offset_y);
                     } else {
-                        draw_sprite(spr_bionics_hand, bionic_spr_index, offset_x, offset_y);
+                        draw_sprite(spr_bionics_hand, 0, offset_x, offset_y);
                     }
                 }
             }
@@ -561,9 +559,9 @@ function ComplexSet(unit) constructor{
                 }
                 if (weapon_right.ui_twoh == true) {
                     draw_sprite(weapon_right.sprite, 0, x_surface_offset + weapon_right.ui_xmod, y_surface_offset + weapon_right.ui_ymod);
-                    if (ui_force_both == true) {
+                    /*if (ui_force_both == true) {
                         draw_sprite(weapon_right.sprite, 0, x_surface_offset + weapon_right.ui_xmod, y_surface_offset + weapon_right.ui_ymod);
-                    }
+                    }*/
                 }
             }
         } else {
@@ -571,8 +569,9 @@ function ComplexSet(unit) constructor{
                 draw_sprite(weapon_right.sprite, 0, x_surface_offset + weapon_right.ui_xmod, y_surface_offset + weapon_right.ui_ymod);
             }
         }
+        show_debug_message(weapon_left);
         if (!weapon_left.new_weapon_draw) {
-            if ((weapon_left.sprite != 0) && sprite_exists(weapon_left.sprite) && (weapon_right.ui_twoh == false || ui_force_both == true)) {
+            if ((weapon_left.sprite != 0) && sprite_exists(weapon_left.sprite) && (weapon_right.ui_twoh == false)) {
                 if (weapon_left.ui_spec == false) {
                     draw_sprite(weapon_left.sprite, 1, x_surface_offset + weapon_left.ui_xmod, y_surface_offset + weapon_left.ui_ymod);
                 }
@@ -615,27 +614,27 @@ function ComplexSet(unit) constructor{
          } else {
             weapon_right = {};
          }
-
+         show_debug_message(weapon_left);
         arms_data = [weapon_right, weapon_left];
         for (var i=0;i<=1;i++){
             var _arm = arms_data[i];
-            var _defualts = ["hand_on_top", "ui_xmod", "ui_ymod", "hand_type", "arm_type", "ui_weapon", "new_weapon_draw", "ui_twoh", "ui_spec", "sprite"];
+            var _defualts = ["hand_on_top", "ui_xmod", "ui_ymod", "hand_type", "arm_type", "ui_weapon", "new_weapon_draw", "ui_twoh", "ui_spec", "sprite", "display_type"];
             for (var s=0;s<array_length(_defualts);s++){
                 if (!struct_exists(_arm, _defualts[s])){
                     _arm[$_defualts[s]] = 0;
                 }
             }
             if (armour_type == ArmourType.Terminator && !array_contains(["terminator_ranged", "terminator_melee","terminator_fist"],_arm.display_type)){
-                ui_ymod[i] -= 20;
+                _arm.ui_ymod -= 20;
                 if (_arm.display_type == "normal_ranged") {
                     _arm.ui_xmod -= 24;
                     _arm.ui_ymod += 24;
                 }
                 if (_arm.display_type == "melee_onehand" && equiped_weapon != "Company Standard") {
-                    arm_variant[i] = 2;
-                    hand_variant[i] = 2;
-                    ui_xmod[i] -= 14;
-                    ui_ymod[i] += 23;
+                    _arm.arm_type = 2;
+                    _arm.hand_type = 2;
+                    _arm.ui_xmod -= 14;
+                    _arm.ui_ymod += 23;
                 }
 
                 if (_arm.display_type == "melee_twohand") {
