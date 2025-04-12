@@ -1,4 +1,4 @@
-#macro DEBUG_COLUMN_PRIORITY false
+#macro DEBUG_COLUMN_PRIORITY_ENEMY false
 
 //* This alarm is responsible for the enemy target column selection;
 
@@ -6,7 +6,9 @@ if (!instance_exists(obj_pnunit)) {
     exit;
 }
 
-enemy = flank ? get_leftmost() : get_rightmost();
+var _block_direction = flank ? get_rightmost : get_leftmost;
+
+enemy = _block_direction();
 if (enemy == "none") {
     exit;
 }
@@ -17,7 +19,7 @@ var target_unit_index = 0;
 engaged = collision_point(x - 10, y, obj_pnunit, 0, 1) || collision_point(x + 10, y, obj_pnunit, 0, 1);
 // show_debug_message($"enemy is in melee {engaged}")
 
-if (DEBUG_COLUMN_PRIORITY) {
+if (DEBUG_COLUMN_PRIORITY_ENEMY) {
     var _t_start1 = get_timer();
 }
 
@@ -40,7 +42,7 @@ if (!engaged) {
         }
 
         if (!target_block_is_valid(enemy, obj_pnunit)) {
-            enemy = flank == 0 ? get_rightmost() : get_leftmost();
+            enemy = _block_direction();
             if (!target_block_is_valid(enemy, obj_pnunit)) {
                 exit;
             }
@@ -67,7 +69,7 @@ if (!engaged) {
                 }
             }
 
-            if (DEBUG_COLUMN_PRIORITY) {
+            if (DEBUG_COLUMN_PRIORITY_ENEMY) {
                 var _t_start = get_timer();
             }
 
@@ -80,7 +82,7 @@ if (!engaged) {
                 array_push(_check_targets, self.id);
             }
 
-            if (DEBUG_COLUMN_PRIORITY) {
+            if (DEBUG_COLUMN_PRIORITY_ENEMY) {
                 show_debug_message($"{wep[i]} IS HERE!");
             }
 
@@ -116,7 +118,7 @@ if (!engaged) {
                 priority += _distance_bonus;
                 priority *= random_range(0.5, 1.5);
 
-                if (DEBUG_COLUMN_PRIORITY) {
+                if (DEBUG_COLUMN_PRIORITY_ENEMY) {
                     show_debug_message($"Priority: {priority}\n Type: +{_type_bonus}\n Size: +{_size_bonus}\n Doomstack: -{_doomstack_malus}\n Distance: +{_distance_bonus}\n");
                 }
                 ds_priority_add(_target_priority_queue, enemy_block, priority);
@@ -132,7 +134,7 @@ if (!engaged) {
                 }
             }
 
-            if (DEBUG_COLUMN_PRIORITY) {
+            if (DEBUG_COLUMN_PRIORITY_ENEMY) {
                 var _t_end = get_timer();
                 var _elapsed_ms = (_t_end - _t_start) / 1000;
                 show_debug_message($"⏱️ Execution Time: {_elapsed_ms}ms");
@@ -148,14 +150,14 @@ if (!engaged) {
                 scr_shoot(i, best_target, unit_index, _target_type, _shoot_type);
             } else {
                 log_error($"{wep[i]} didn't find a valid target! This shouldn't happen!");
-                if (DEBUG_COLUMN_PRIORITY) {
+                if (DEBUG_COLUMN_PRIORITY_ENEMY) {
                     show_debug_message($"We didn't find a valid target! Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
                 }
             }
 
             ds_priority_destroy(_target_priority_queue);
         } else {
-            if (DEBUG_COLUMN_PRIORITY) {
+            if (DEBUG_COLUMN_PRIORITY_ENEMY) {
                 show_debug_message($"I can't shoot, my range is too small! Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}");
             }
             continue;
@@ -163,7 +165,7 @@ if (!engaged) {
     }
 }
 
-if (DEBUG_COLUMN_PRIORITY) {
+if (DEBUG_COLUMN_PRIORITY_ENEMY) {
     var _t_end1 = get_timer();
     var _elapsed_ms1 = (_t_end1 - _t_start1) / 1000;
     show_debug_message($"⏱️ Ranged Alarm Execution Time: {_elapsed_ms1}ms");
@@ -189,20 +191,22 @@ if (engaged) {
         }
 
         if (!target_block_is_valid(enemy, obj_pnunit)) {
-            enemy = flank == 0 ? get_rightmost() : get_leftmost();
+            log_error($"One invalid player block was found!");
+            enemy = _block_direction();
             if (!target_block_is_valid(enemy, obj_pnunit)) {
+                log_error($"A second invalid player block was found!");
                 exit;
             }
         }
-
+        
         if (instance_exists(obj_nfort) && (!flank)) {
             enemy = instance_nearest(x, y, obj_nfort);
-            scr_shoot(i, enemy, 1, "arp", "wall");
+            scr_shoot(i, enemy, 0, "arp", "wall");
             continue;
         }
 
         var _attack_type = apa[i] > 8 ? "arp" : "att";
-        scr_shoot(i, enemy, 1, _attack_type, "melee");
+        scr_shoot(i, enemy, 0, _attack_type, "melee");
     }
 }
 

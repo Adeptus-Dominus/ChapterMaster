@@ -1,5 +1,5 @@
-#macro DEBUG_WEAPON_RELOADING true
-#macro DEBUG_PLAYER_TARGET_SELECTION true
+#macro DEBUG_WEAPON_RELOADING false
+#macro DEBUG_PLAYER_TARGET_SELECTION false
 
 /// @mixin
 function scr_shoot(weapon_index_position, target_object, target_index, target_type, melee_or_ranged) {

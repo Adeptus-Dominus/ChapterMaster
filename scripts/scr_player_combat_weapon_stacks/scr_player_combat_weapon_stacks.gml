@@ -131,8 +131,33 @@ function scr_player_combat_weapon_stacks() {
     var dreaded=false, unit;
 
     var mobi_item;
-    for (g=0;g<array_length(unit_struct);g++) {
+    var _unit_struct_len = array_length(unit_struct);
+    for (g=0;g<_unit_struct_len;g++) {
         unit = unit_struct[g];
+
+        //* Buffs
+        if (marine_mshield[g] > 0) {
+            marine_mshield[g] -= 1;
+        }
+        if (marine_quick[g] > 0) {
+            marine_quick[g] -= 1;
+        }
+        if (marine_might[g] > 0) {
+            marine_might[g] -= 1;
+        }
+        if (marine_fiery[g] > 0) {
+            marine_fiery[g] -= 1;
+        }
+        if (marine_fshield[g] > 0) {
+            marine_fshield[g] -= 1;
+        }
+        if (marine_dome[g] > 0) {
+            marine_dome[g] -= 1;
+        }
+        if (marine_spatial[g] > 0) {
+            marine_spatial[g] -= 1;
+        }
+
         if (is_struct(unit)) {
             if (unit.hp()>0) then marine_dead[g]=0;
             if (unit.hp()>0 && marine_dead[g]!=true){

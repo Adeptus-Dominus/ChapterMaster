@@ -1,39 +1,4 @@
-#macro DEBUG_TARGET_SELECTION false
-
-/// @function check_dead_marines
-/// @description Checks if the marine is dead and then runs various related code
-/// @mixin
-function check_dead_marines(unit_struct, unit_index) {
-    var unit_lost = false;
-
-    if (unit_struct.hp() <= 0 && marine_dead[unit_index] < 1) {
-        marine_dead[unit_index] = 1;
-        unit_lost = true;
-        obj_ncombat.player_forces -= 1;
-
-        // Record loss
-        var existing_index = array_get_index(lost, marine_type[unit_index]);
-        if (existing_index != -1) {
-            lost_num[existing_index] += 1;
-        } else {
-            array_push(lost, marine_type[unit_index]);
-            array_push(lost_num, 1);
-        }
-
-        // Check red thirst threadhold
-        if (obj_ncombat.red_thirst == 1 && marine_type[unit_index] != "Death Company" && ((obj_ncombat.player_forces / obj_ncombat.player_max) < 0.9)) {
-            obj_ncombat.red_thirst = 2;
-        }
-
-        if (unit_struct.IsSpecialist(SPECIALISTS_DREADNOUGHTS)) {
-            dreads -= 1;
-        } else {
-            men -= 1;
-        }
-    }
-
-    return unit_lost;
-}
+#macro DEBUG_ENEMY_TARGET_SELECTION false
 
 function scr_clean(target_object, weapon_data) {
     // Converts enemy scr_shoot damage into player marine or vehicle casualties.
@@ -52,8 +17,9 @@ function scr_clean(target_object, weapon_data) {
                 exit;
             }
 
-            if (DEBUG_TARGET_SELECTION) {
+            if (DEBUG_ENEMY_TARGET_SELECTION) {
                 var _t_start = get_timer();
+                show_debug_message($"Weapon: {weapon_data.name}");
             }
             
             var armour_pierce = weapon_data.armour_pierce;
@@ -285,7 +251,7 @@ function scr_clean(target_object, weapon_data) {
                 }
             }
 
-            if (DEBUG_TARGET_SELECTION) {
+            if (DEBUG_ENEMY_TARGET_SELECTION) {
                 var _t_end = get_timer();
                 var _elapsed_ms = (_t_end - _t_start) / 1000;
                 show_debug_message($"⏱️ Clean Execution Time: {_elapsed_ms}ms");
@@ -295,11 +261,11 @@ function scr_clean(target_object, weapon_data) {
             }
 
             // Flavour battle-log message
-            if (DEBUG_TARGET_SELECTION) {
+            if (DEBUG_ENEMY_TARGET_SELECTION) {
                 var _t_start = get_timer();
             }
             scr_flavor2(units_lost, unit_type, hostile_range, hostile_weapon, shooter_count);
-            if (DEBUG_TARGET_SELECTION) {
+            if (DEBUG_ENEMY_TARGET_SELECTION) {
                 var _t_end = get_timer();
                 var _elapsed_ms = (_t_end - _t_start) / 1000;
                 show_debug_message($"⏱️ Flavour Execution Time: {_elapsed_ms}ms");
@@ -308,6 +274,41 @@ function scr_clean(target_object, weapon_data) {
     } catch (_exception) {
         handle_exception(_exception);
     }
+}
+
+/// @function check_dead_marines
+/// @description Checks if the marine is dead and then runs various related code
+/// @mixin
+function check_dead_marines(unit_struct, unit_index) {
+    var unit_lost = false;
+
+    if (unit_struct.hp() <= 0 && marine_dead[unit_index] < 1) {
+        marine_dead[unit_index] = 1;
+        unit_lost = true;
+        obj_ncombat.player_forces -= 1;
+
+        // Record loss
+        var existing_index = array_get_index(lost, marine_type[unit_index]);
+        if (existing_index != -1) {
+            lost_num[existing_index] += 1;
+        } else {
+            array_push(lost, marine_type[unit_index]);
+            array_push(lost_num, 1);
+        }
+
+        // Check red thirst threadhold
+        if (obj_ncombat.red_thirst == 1 && marine_type[unit_index] != "Death Company" && ((obj_ncombat.player_forces / obj_ncombat.player_max) < 0.9)) {
+            obj_ncombat.red_thirst = 2;
+        }
+
+        if (unit_struct.IsSpecialist(SPECIALISTS_DREADNOUGHTS)) {
+            dreads -= 1;
+        } else {
+            men -= 1;
+        }
+    }
+
+    return unit_lost;
 }
 
 /// @function compress_enemy_array

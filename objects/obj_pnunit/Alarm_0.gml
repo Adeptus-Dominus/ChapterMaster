@@ -1,3 +1,5 @@
+#macro DEBUG_COLUMN_PRIORITY_PLAYER true
+
 // Useful functions:
 // scr_target
 // get_rightmost
@@ -6,31 +8,6 @@
 // scr_shoot
 
 try {
-    //* Buffs
-    for (var i = 0; i < array_length(unit_struct); i++) {
-        if (marine_mshield[i] > 0) {
-            marine_mshield[i] -= 1;
-        }
-        if (marine_quick[i] > 0) {
-            marine_quick[i] -= 1;
-        }
-        if (marine_might[i] > 0) {
-            marine_might[i] -= 1;
-        }
-        if (marine_fiery[i] > 0) {
-            marine_fiery[i] -= 1;
-        }
-        if (marine_fshield[i] > 0) {
-            marine_fshield[i] -= 1;
-        }
-        if (marine_dome[i] > 0) {
-            marine_dome[i] -= 1;
-        }
-        if (marine_spatial[i] > 0) {
-            marine_spatial[i] -= 1;
-        }
-    }
-
     if (!instance_exists(obj_enunit)) {
         exit;
     }
@@ -43,7 +20,7 @@ try {
 
     engaged = collision_point(x - 10, y, obj_enunit, 0, 1) || collision_point(x + 10, y, obj_enunit, 0, 1);
 
-    if (DEBUG_COLUMN_PRIORITY) {
+    if (DEBUG_COLUMN_PRIORITY_PLAYER) {
         var _t_start1 = get_timer();
     }
 
@@ -52,7 +29,6 @@ try {
             if (marine_dead[i] == 0 && marine_casting[i] == true) {
                 var caster_id = i;
                 scr_powers(caster_id);
-                exit;
             }
         }
 
@@ -87,7 +63,7 @@ try {
                 var _weapon_type = "ranged";
                 var _target_priority_queue = ds_priority_create();
     
-                if (DEBUG_COLUMN_PRIORITY) {
+                if (DEBUG_COLUMN_PRIORITY_PLAYER) {
                     var _t_start = get_timer();
                 }
     
@@ -100,7 +76,7 @@ try {
                     array_push(_check_targets, self.id);
                 }
     
-                if (DEBUG_COLUMN_PRIORITY) {
+                if (DEBUG_COLUMN_PRIORITY_PLAYER) {
                     show_debug_message($"{wep[i]} IS HERE!");
                 }
     
@@ -136,13 +112,13 @@ try {
                     priority += _distance_bonus;
                     priority *= random_range(0.5, 1.5);
     
-                    if (DEBUG_COLUMN_PRIORITY) {
+                    if (DEBUG_COLUMN_PRIORITY_PLAYER) {
                         show_debug_message($"Priority: {priority}\n Type: +{_type_bonus}\n Size: +{_size_bonus}\n Doomstack: -{_doomstack_malus}\n Distance: +{_distance_bonus}\n");
                     }
                     ds_priority_add(_target_priority_queue, enemy_block, priority);
                 }
         
-                if (DEBUG_COLUMN_PRIORITY) {
+                if (DEBUG_COLUMN_PRIORITY_PLAYER) {
                     var _t_end = get_timer();
                     var _elapsed_ms = (_t_end - _t_start) / 1000;
                     show_debug_message($"⏱️ Execution Time: {_elapsed_ms}ms");
@@ -156,14 +132,14 @@ try {
                     scr_shoot(i, best_target, unit_index, _target_type, _weapon_type);
                 } else {
                     log_error($"{wep[i]} didn't find a valid target! This shouldn't happen!");
-                    if (DEBUG_COLUMN_PRIORITY) {
+                    if (DEBUG_COLUMN_PRIORITY_PLAYER) {
                         show_debug_message($"We didn't find a valid target! Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
                     }
                 }
     
                 ds_priority_destroy(_target_priority_queue);
             } else {
-                if (DEBUG_COLUMN_PRIORITY) {
+                if (DEBUG_COLUMN_PRIORITY_PLAYER) {
                     show_debug_message($"I can't shoot, my range is too small! Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}");
                 }
                 continue;
@@ -171,7 +147,7 @@ try {
         }
     }
     
-    if (DEBUG_COLUMN_PRIORITY) {
+    if (DEBUG_COLUMN_PRIORITY_PLAYER) {
         var _t_end1 = get_timer();
         var _elapsed_ms1 = (_t_end1 - _t_start1) / 1000;
         show_debug_message($"⏱️ Ranged Alarm Execution Time: {_elapsed_ms1}ms");
