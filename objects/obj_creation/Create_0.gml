@@ -102,7 +102,7 @@ if (nope!=1){
 	audio_sound_gain(snd_diboz,0.25*master_volume*music_volume,2000);
 }
 
-global.load=0;
+global.load=-1;
 planet_types = ARR_planet_types;
 skip=false;
 premades=true;
@@ -151,6 +151,8 @@ heheh=0;
 icons_top=1;
 icons_max=0;
 turn_selection_change=false;
+draw_helms = true;
+
 buttons = {
     home_world_recruit_share : new ToggleButton(),
     complex_homeworld : new ToggleButton({

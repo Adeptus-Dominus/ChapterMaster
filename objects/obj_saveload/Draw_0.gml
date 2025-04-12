@@ -8,27 +8,10 @@ xx=__view_get( e__VW.XView, 0 )+0;yy=__view_get( e__VW.YView, 0 )+0;
 if (instance_exists(obj_main_menu)){xx=0;yy=0;}
 
 
+if(autosaving){
+    exit;
+}
 
-
-// if /*(menu=0) and */(save_part+load_part>0){// This is the loading bar
-
-/*if (save_part+load_part>0){
-    draw_set_color(0);
-    draw_rectangle(0,0,room_width,room_height,0);
-    draw_sprite(spr_saveload,0,xx,yy+345);
-    
-    draw_set_color(50688);draw_rectangle(xx+74,yy+147,xx+566,yy+202,0);
-    draw_set_color(c_gray);draw_rectangle(min(xx+74+((bar/100)*492),xx+566),yy+147,xx+566,yy+202,0);
-    draw_set_color(38144);draw_rectangle(xx+74,yy+147,xx+566,yy+202,1);
-    
-    draw_set_halign(fa_center);draw_set_font(fnt_large);
-    if (save_part>0) then draw_text_transformed(xx+320,yy+94,"Saving",2,1.5,0);
-    if (load_part>0) and (global.restart=0) then draw_text_transformed(xx+320,yy+94,"Loading",2,1.5,0);
-    if (load_part>0) and (global.restart>0) then draw_text_transformed(xx+320,yy+94,"Restarting",2,1.5,0);
-    
-    draw_set_font(fnt_menu);
-    draw_text(xx+320,yy+209,string(txt));
-}*/
 
 
 if (save_part+load_part>0){
@@ -47,20 +30,6 @@ if (save_part+load_part>0){
     if (load_part>0) and (global.restart=0) then draw_sprite(spr_load_text,0,xx+1068,yy+821);
     if (load_part>0) and (global.restart>0) then draw_sprite(spr_load_text,2,xx+1068,yy+821);
     
-    /*draw_rectangle(0,0,room_width,room_height,0);
-    draw_sprite(spr_saveload,0,xx,yy+345);
-    
-    draw_set_color(50688);draw_rectangle(xx+74,yy+147,xx+566,yy+202,0);
-    draw_set_color(c_gray);draw_rectangle(min(xx+74+((bar/100)*492),xx+566),yy+147,xx+566,yy+202,0);
-    draw_set_color(38144);draw_rectangle(xx+74,yy+147,xx+566,yy+202,1);
-    
-    draw_set_halign(fa_center);draw_set_font(fnt_large);
-    if (save_part>0) then draw_text_transformed(xx+320,yy+94,"Saving",2,1.5,0);
-    if (load_part>0) and (global.restart=0) then draw_text_transformed(xx+320,yy+94,"Loading",2,1.5,0);
-    if (load_part>0) and (global.restart>0) then draw_text_transformed(xx+320,yy+94,"Restarting",2,1.5,0);
-    
-    draw_set_font(fnt_menu);
-    draw_text(xx+320,yy+209,string(txt));*/
 }
 
 
@@ -88,7 +57,7 @@ if (menu=1) or (menu=2){// This is the other one
     
     var o,x2,y2,s;o=top;x2=__view_get( e__VW.XView, 0 )+32;y2=__view_get( e__VW.YView, 0 )+166;s=0;
     repeat(4){
-        if ((save[o]>0) or ((first_open=o) and (menu=1)) or (global.load=o) or (save_number=o)) and (save_number=0){s=save[o];
+        if ((save[o]>=0) or ((first_open=o) and (menu=1)) or (global.load=o) or (save_number=o)) and (save_number=0){s=save[o];
             draw_set_font(fnt_40k_30b);
             draw_set_halign(fa_left);
             draw_set_color(0);
@@ -112,8 +81,12 @@ if (menu=1) or (menu=2){// This is the other one
                 debug="Save:"+string(save[o])+", array position:"+string(o)+", turn:"+string(save_turn[o]);
             }
             draw_sprite(spr_save_data,0,x2,y2);
-            
-            draw_text_transformed(x2+23,y2+62,string_hash_to_newline(o),1.1,1.1,0);
+            if(o == 0){
+                //autosave
+                draw_text_transformed(x2+23,y2+62,string_hash_to_newline("A"),1.1,1.1,0);
+            } else {
+                draw_text_transformed(x2+23,y2+62,string_hash_to_newline(o),1.1,1.1,0);
+            }
             draw_text_transformed(x2+270,y2+10,string_hash_to_newline("Chapter"),0.9,0.9,0);
             draw_text_transformed(x2+774,y2+10,string_hash_to_newline("Marines"),0.9,0.9,0);
             draw_text_transformed(x2+1024,y2+10,string_hash_to_newline("Turn"),0.9,0.9,0);
@@ -151,7 +124,7 @@ if (menu=1) or (menu=2){// This is the other one
         
         draw_set_font(fnt_40k_30b);draw_set_halign(fa_center);
         
-        if (save[o] > 0) {
+        if (save[o] >= 0) {
             // Delete Data
             draw_set_alpha(1);
             draw_set_color(c_gray);
@@ -181,7 +154,7 @@ if (menu=1) or (menu=2){// This is the other one
         }
         
         
-        if (menu=2) and (save[o]>0){// Restart
+        if (menu=2) and (save[o]>=0){// Restart
             draw_set_alpha(1);
             draw_set_color(c_gray);draw_rectangle(x2+977,y2+113,x2+1121,y2+146,0);
             draw_set_color(c_black);draw_rectangle(x2+977,y2+113,x2+1121,y2+146,1);

@@ -27,7 +27,7 @@ draw_set_font(fnt_cul_14);
 draw_set_alpha(1);
 
 
-if (!global.load && (obj_controller.zoomed || in_camera_view(star_box_shape()))) {
+if (global.load == -1 && (obj_controller.zoomed || in_camera_view(star_box_shape()))) {
     
     if (garrison){
         draw_sprite(spr_new_resource,3,x-30,y+15);
