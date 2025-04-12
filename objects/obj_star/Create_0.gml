@@ -4,7 +4,7 @@ space_hulk=0;
 old_x=0;
 old_y=0;
 
-if (((x>=(room_width-150)) and (y<=450)) or (y<100)) and (global.load==0){// was 300
+if (((x>=(room_width-150)) and (y<=450)) or (y<100)) and (global.load==-1){// was 300
     instance_destroy();
 }
 
@@ -19,7 +19,7 @@ image_alpha=0;
 x2=0;
 y2=0;
 warp_lanes=[];
-if (global.load==0) then alarm[0]=1;
+if (global.load==-1) then alarm[0]=1;
 storm=0;
 storm_image=0;
 trader=0;

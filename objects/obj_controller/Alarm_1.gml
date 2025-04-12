@@ -495,7 +495,7 @@ for(var i=0; i<100; i++){
 }
 // End craftworld
 
-if (!instance_exists(obj_saveload)) and (instance_exists(obj_creation)) and (global.load=0){
+if (!instance_exists(obj_saveload)) and (instance_exists(obj_creation)) and (global.load==-1){
     for(var i=1; i<=10; i++){
         if (obj_creation.world[i]!=""){
             var _wanted_worlds = [];
