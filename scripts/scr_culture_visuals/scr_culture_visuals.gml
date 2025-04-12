@@ -1516,7 +1516,22 @@ global.modular_drawing_items = [
             ui_spec : true
         },
         body_types: [0, 1, 2],
-    }                                                                   
+    },
+    {
+        position: "bare_head",
+        body_types: [0, 1, 2],
+        sprite: spr_bare_heads,
+    },
+    {
+        position: "bare_neck",
+        body_types: [0, 1, 2],
+        sprite: spr_bare_necks,
+    }, 
+    {
+        position: "bare_eyes",
+        body_types: [0, 1, 2],
+        sprite: spr_bare_eyes,
+    }                                                                      
 ];
 
 
@@ -1737,8 +1752,4 @@ function add_purity_seal_markers (){
         body[$ "right_leg"][$ "purity_seal"] = [irandom(100),irandom(100),irandom(100),irandom(100)];
     }       
 }
-
-
-
-
 

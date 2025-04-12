@@ -94,6 +94,8 @@ function ComplexSet(unit) constructor{
     };
     unit_armour = unit.armour();
     self.unit = unit;
+    draw_helms = instance_exists(obj_creation) ? obj_creation.draw_helms : obj_controller.draw_helms);
+    //draw_helms = false;
     static mk7_bits = {
             armour : spr_mk7_complex,
             backpack : spr_mk7_complex_backpack,
@@ -363,6 +365,9 @@ function ComplexSet(unit) constructor{
         robe : unit.get_body_data("tabbard_variation","torso"),
         crest : unit.get_body_data("crest_variation","head"),
         head : unit.get_body_data("variation","head"),
+        bare_head : unit.get_body_data("variation","head"),
+        bare_neck : unit.get_body_data("variation","head"),
+        bare_eyes : unit.get_body_data("variation","head"),
         mouth_variants:unit.get_body_data("variant","jaw"),
         left_eye : unit.get_body_data("variant","left_eye"),
         right_eye : unit.get_body_data("variant","right_eye"),
@@ -624,7 +629,7 @@ function ComplexSet(unit) constructor{
          } else {
             weapon_right = {};
          }
-         show_debug_message(weapon_left);
+
         arms_data = [weapon_right, weapon_left];
         for (var i=0;i<=1;i++){
             var _arm = arms_data[i];
@@ -692,8 +697,7 @@ function ComplexSet(unit) constructor{
             _complex_helm = _comp_helms.veteran;
         }
         if (is_struct(_complex_helm) 
-            && struct_exists(self, "head") 
-            && (instance_exists(obj_creation) ? obj_creation.draw_helms : obj_controller.draw_helms)){
+            && struct_exists(self, "head") && draw_helms){
             complex_helms(_complex_helm);
         }
 
@@ -706,7 +710,9 @@ function ComplexSet(unit) constructor{
                  "thorax_variants",
                  "leg_variants",
                  "left_leg",
+                 "left_shin",
                  "right_leg",
+                 "right_shin",
                  "tabbard",
                  "robe",                 
                  "belt",                 
@@ -738,7 +744,9 @@ function ComplexSet(unit) constructor{
                  "chest_fastening",
                  "leg_variants",
                  "left_leg",
+                 "left_shin",
                  "right_leg",
+                 "right_shin",
                  "knees",
                  "head",
                  "gorget",
@@ -1099,15 +1107,20 @@ function ComplexSet(unit) constructor{
     };
 
     static draw_head = function(texture_draws={}){
-        var choice;
-        if (struct_exists(self, "head")){
-            draw_component("crest",texture_draws);
-            draw_component("head",texture_draws);
-            draw_component("forehead",texture_draws);
-            draw_component("mouth_variants",texture_draws);
-            draw_component("left_eye",texture_draws);
-            draw_component("right_eye",texture_draws);
-            draw_component("crown",texture_draws);                                                                                
+        if (draw_helms){
+            if (struct_exists(self, "head")){
+                draw_component("crest",texture_draws);
+                draw_component("head",texture_draws);
+                draw_component("forehead",texture_draws);
+                draw_component("mouth_variants",texture_draws);
+                draw_component("left_eye",texture_draws);
+                draw_component("right_eye",texture_draws);
+                draw_component("crown",texture_draws);                                                                                
+            }
+        } else {
+            draw_component("bare_neck",texture_draws);
+            draw_component("bare_head",texture_draws);
+            draw_component("bare_eyes",texture_draws);
         }
     }
 
