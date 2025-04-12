@@ -135,9 +135,10 @@ function scr_save(save_part,save_id, autosaving = false) {
 
 			obj_saveload.save[save_id]=1;
 
-			var _gamesave_string = json_stringify(obj_saveload.GameSave, true);
+			var _gamesave_string = json_stringify(obj_saveload.GameSave, !autosaving);
 			var _gamesave_buffer = buffer_create(string_byte_length(_gamesave_string) + 1, buffer_fixed, 1);
 
+			
 			var filename;
 			if(!autosaving){
 				filename = string(PATH_save_files, save_id);

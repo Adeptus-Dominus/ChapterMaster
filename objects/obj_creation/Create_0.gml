@@ -102,7 +102,7 @@ if (nope!=1){
 	audio_sound_gain(snd_diboz,0.25*master_volume*music_volume,2000);
 }
 
-global.load=0;
+global.load=-1;
 planet_types = ARR_planet_types;
 skip=false;
 premades=true;

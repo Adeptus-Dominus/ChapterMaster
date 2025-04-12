@@ -134,12 +134,3 @@ if (load_part == 1) {
 		txt = "Preparing";
 	}
 }
-
-if(autosaving){
-	if(file_exists(string(PATH_autosave_file))){
-		file_delete(string(PATH_autosave_file));
-		with(obj_controller){
-			scr_save(0, 0, true);
-		}
-	}
-}

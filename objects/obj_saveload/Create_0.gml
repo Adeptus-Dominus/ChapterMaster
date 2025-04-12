@@ -78,7 +78,7 @@ if (file_exists("saves.ini")){
 
     i=-1;
     repeat(200){i+=1;
-        if (save[i]>0){
+        if (save[i]>=0){
             if (ini_section_exists(string(save[i]))){
                 save_turn[save[i]]=ini_read_real(string(save[i]),"turn",0);
                 save_chapter[save[i]]=ini_read_string(string(save[i]),"chapter_name","Error");

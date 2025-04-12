@@ -95,10 +95,6 @@ recruit_trial = 0;
 recruiting_type="Death";
 
 gene_slaves = [];
-/* if (global.load=0){
-    if (obj_creation.custom>0) then scr_initialize_custom();
-    if (obj_creation.custom=0) then scr_initialize_standard();
-}*/
 
 adv = [];
 dis = [];
@@ -106,7 +102,7 @@ dis = [];
 
 if (instance_exists(obj_creation)) then custom=obj_creation.custom;
 
-if (global.load=0) then scr_initialize_custom();
+if (global.load==-1) then scr_initialize_custom();
 
 #region save/load serialization 
 

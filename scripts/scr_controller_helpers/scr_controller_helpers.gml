@@ -487,11 +487,10 @@ function scr_end_turn() {
                     }
                     obj_saveload.autosaving = true;
                     scr_save(0,0,true);
-                    obj_controller.invis=false;
-                    obj_controller.zui=1;
                     screen_save(string(PATH_save_previews, 0));
-
-                    // obj_saveload.autosaving = false;
+                    obj_controller.menu=0;
+                    obj_controller.zui=0;
+                    obj_controller.invis=false;
                     with(obj_saveload){
                         instance_destroy();
                     }
