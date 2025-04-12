@@ -57,7 +57,7 @@ function find_stack_index (weapon_name, head_role=false, unit="none"){
     for (var stack_index=1;stack_index<array_length(wep);stack_index++){
         allow = false
         if (is_struct(unit)){
-            allow = (head_role && ( wep_title[stack_index] == unit.role())) && (wep[stack_index]==weapon_name);
+            allow = (head_role && (wep_title[stack_index] == unit.role())) && (wep[stack_index]==weapon_name);
         }
         if (!allow){
             allow = ((wep[stack_index]=="" || (wep[stack_index]==weapon_name && !head_role)) && wep_title[stack_index]=="");
@@ -72,8 +72,8 @@ function find_stack_index (weapon_name, head_role=false, unit="none"){
 }
 
 function player_head_role_stack(stack_index, unit) {
-    wep_title[stack_index]=unit.role();
-    if (!array_contains(wep_solo[stack_index], unit.name())) then array_push(wep_solo[stack_index], unit.name());
+    wep_title[stack_index] = unit.role();
+    wep_solo[stack_index] = unit.name();
 }
 
 /// @mixin

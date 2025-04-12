@@ -22,6 +22,7 @@ function display_battle_log_message() {
     obj_ncombat.alarm[3] = 5;
 }
 
+/// @mixin
 function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shots, casulties) {
 
 	// Generates flavor based on the damage and casualties from scr_shoot, only for the player
@@ -50,24 +51,12 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 		target_name = obj_controller.faction_leader[obj_ncombat.enemy];
 	}
 
-	var character_shot = false,
-		unit_name = "",
-		cm_kill = 0;
+	var character_shot = false;
+	var unit_name = "";
 
-
-	 if (id_of_attacking_weapons > 0) {
-	 	if (array_length(wep_solo[id_of_attacking_weapons]) > 0) {
+		if (wep_solo[id_of_attacking_weapons] != "") {
+			unit_name = $"{wep_title[id_of_attacking_weapons]} {wep_solo[id_of_attacking_weapons]}";
 	 		character_shot = true;
-	 		full_names = wep_solo[id_of_attacking_weapons];
-	 		if (wep_title[id_of_attacking_weapons] != "") {
-	 			if (array_length(full_names) == 1) {
-	 				unit_name = wep_title[id_of_attacking_weapons] + " " + wep_solo[id_of_attacking_weapons][0];
-	 			} else {
-	 				unit_name = wep_title[id_of_attacking_weapons] + "'s"
-	 			}
-	 		}
-	 		if (wep_solo[id_of_attacking_weapons][0] == obj_ini.master_name) then cm_kill = 1;
-	 	}
 	 }
 
 	if (obj_ncombat.battle_special = "WL10_reveal") or (obj_ncombat.battle_special = "WL10_later") {

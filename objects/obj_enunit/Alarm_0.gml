@@ -6,7 +6,7 @@ if (!instance_exists(obj_pnunit)) {
     exit;
 }
 
-var _block_direction = flank ? get_rightmost : get_leftmost;
+var _block_direction = flank ? get_leftmost : get_rightmost;
 
 enemy = _block_direction();
 if (enemy == "none") {
@@ -42,8 +42,10 @@ if (!engaged) {
         }
 
         if (!target_block_is_valid(enemy, obj_pnunit)) {
+            log_error($"Invalid player block was found by a ranged enemy!");
             enemy = _block_direction();
             if (!target_block_is_valid(enemy, obj_pnunit)) {
+                log_error($"Two invalid player blocks were found by a ranged enemy! Exiting!");
                 exit;
             }
         }
@@ -191,12 +193,8 @@ if (engaged) {
         }
 
         if (!target_block_is_valid(enemy, obj_pnunit)) {
-            log_error($"One invalid player block was found!");
-            enemy = _block_direction();
-            if (!target_block_is_valid(enemy, obj_pnunit)) {
-                log_error($"A second invalid player block was found!");
-                exit;
-            }
+            log_error($"Invalid player block was found by a melee enemy!");
+            exit;
         }
         
         if (instance_exists(obj_nfort) && (!flank)) {

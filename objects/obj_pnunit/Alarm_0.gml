@@ -173,10 +173,7 @@ try {
             }
     
             if (!target_block_is_valid(enemy, obj_enunit)) {
-                enemy = instance_nearest(0, y, obj_enunit);
-                if (!target_block_is_valid(enemy, obj_enunit)) {
-                    exit;
-                }
+                exit;
             }
     
             var _attack_type = apa[i] > 8 ? "arp" : "att";
