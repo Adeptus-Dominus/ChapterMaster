@@ -72,6 +72,16 @@ if (settings=1){
         if (scr_hit(xx+626,yy+426,xx+626+32,yy+426+32)=true){
             if (settings_fullscreen=1) and (onceh=0){onceh=1;cooldown=8000;settings_fullscreen=0;window_set_fullscreen(false);change_volume=2;}
             if (settings_fullscreen=0) and (onceh=0){onceh=1;cooldown=8000;settings_fullscreen=1;window_set_fullscreen(true);change_volume=2;}
+            ini_open("saves.ini");
+            ini_write_real("Settings", "fullscreen", settings_fullscreen);
+            ini_close();
+        }
+        if (scr_hit(xx+680,yy+485,xx+680+32,yy+485+32)=true){
+            if (settings_autosave=1) and (onceh=0){onceh=1;cooldown=8000;settings_autosave=0;}
+            if (settings_autosave=0) and (onceh=0){onceh=1;cooldown=8000;settings_autosave=1;}
+            ini_open("saves.ini");
+            ini_write_real("Settings", "settings_autosave", settings_autosave);
+            ini_close();
         }
         // if (scr_hit(xx+622,yy+426+59,xx+622+32,yy+426+32+59)=true){
         //     if (large_text=1) and (onceh=0){onceh=1;cooldown=8000;large_text=0;change_volume=2;}
