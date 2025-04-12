@@ -1531,7 +1531,33 @@ global.modular_drawing_items = [
         position: "bare_eyes",
         body_types: [0, 1, 2],
         sprite: spr_bare_eyes,
-    }                                                                      
+    } ,
+    {
+        position: "left_shin",
+        body_types: [0, 1, 2],
+        sprite: spr_indomitus_left_shin,
+        armours : ["Terminator Armour"],
+    }, 
+    {
+        position: "right_shin",
+        body_types: [0, 1, 2],
+        sprite: spr_indomitus_right_shin,
+        armours : ["Terminator Armour"],
+    }, 
+    {
+        position: "left_knee",
+        body_types: [0, 1, 2],
+        sprite: spr_indomitus_left_knee_crux,
+        max_saturation : 30,
+        armours : ["Terminator Armour"],
+    }, 
+    {
+        position: "right_knee",
+        body_types: [0, 1, 2],
+        sprite: spr_indomitus_right_knee_crux,
+        armours : ["Terminator Armour"],
+        max_saturation : 30,
+    }                                                                       
 ];
 
 
@@ -1676,9 +1702,11 @@ function generate_marine_body(){
     var _body = {
         "left_leg":{
             leg_variants: irandom(100),
+            shin_variant : irandom(100),
         }, 
         "right_leg":{
             leg_variants: irandom(100),
+            shin_variant : irandom(100),
         }, 
         "torso":{
             cloth:{

@@ -94,7 +94,7 @@ function ComplexSet(unit) constructor{
     };
     unit_armour = unit.armour();
     self.unit = unit;
-    draw_helms = instance_exists(obj_creation) ? obj_creation.draw_helms : obj_controller.draw_helms);
+    draw_helms = instance_exists(obj_creation) ? obj_creation.draw_helms : obj_controller.draw_helms;
     //draw_helms = false;
     static mk7_bits = {
             armour : spr_mk7_complex,
@@ -346,6 +346,10 @@ function ComplexSet(unit) constructor{
         leg_variants : unit.get_body_data("leg_variants","left_leg"),
         left_leg : unit.get_body_data("leg_variants","left_leg"),
         right_leg : unit.get_body_data("leg_variants","right_leg"),
+        left_shin : unit.get_body_data("shin_variant","left_leg"),
+        right_shin: unit.get_body_data("shin_variant","right_leg"), 
+        left_knee : unit.get_body_data("knee_variant","left_leg"),  
+        right_knee : unit.get_body_data("knee_variant","right_leg"),         
         left_trim : unit.get_body_data("trim_variation","left_arm"),
         right_trim : unit.get_body_data("trim_variation","right_arm"),
         left_arm : unit.get_body_data("variation","left_arm"),
@@ -360,7 +364,6 @@ function ComplexSet(unit) constructor{
         right_pauldron_hangings: unit.get_body_data("pad_variation","right_arm"),
         left_pauldron_hangings: unit.get_body_data("pad_variation","left_arm"),                          
         left_personal_livery : unit.get_body_data("personal_livery","left_arm"),
-        left_knee : unit.company,
         tabbard : unit.get_body_data("tabbard_variation","torso"),
         robe : unit.get_body_data("tabbard_variation","torso"),
         crest : unit.get_body_data("crest_variation","head"),
@@ -713,6 +716,8 @@ function ComplexSet(unit) constructor{
                  "left_shin",
                  "right_leg",
                  "right_shin",
+                 "left_knee",
+                 "right_knee",
                  "tabbard",
                  "robe",                 
                  "belt",                 
@@ -730,7 +735,6 @@ function ComplexSet(unit) constructor{
                  "left_pauldron_embeleshments",
                  "right_pauldron_hangings",
                  "left_pauldron_hangings",
-                 "left_knee",
                  "left_personal_livery",             
              ];            
          } else {
@@ -746,8 +750,10 @@ function ComplexSet(unit) constructor{
                  "left_leg",
                  "left_shin",
                  "right_leg",
-                 "right_shin",
+                 "right_shin",                
                  "knees",
+                 "left_knee",
+                 "right_knee",                 
                  "head",
                  "gorget",
                  "left_pauldron_base" ,  
@@ -760,7 +766,6 @@ function ComplexSet(unit) constructor{
                  "left_pauldron_embeleshments",
                  "right_pauldron_hangings",
                  "left_pauldron_hangings",
-                 "left_knee",
                  "tabbard",
                  "robe",
                  "belt",

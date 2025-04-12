@@ -3,8 +3,8 @@
   "%Name":"spr_indomitus_right_leg_bionic",
   "bboxMode":0,
   "bbox_bottom":260,
-  "bbox_left":11,
-  "bbox_right":169,
+  "bbox_left":14,
+  "bbox_right":81,
   "bbox_top":35,
   "collisionKind":1,
   "collisionTolerance":0,
@@ -13,7 +13,6 @@
   "For3D":false,
   "frames":[
     {"$GMSpriteFrame":"","%Name":"4bc0c5a9-ad91-4ba4-bcc8-3c39fcaa1d70","name":"4bc0c5a9-ad91-4ba4-bcc8-3c39fcaa1d70","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"123f4180-69ae-4875-8703-380e64f7a533","name":"123f4180-69ae-4875-8703-380e64f7a533","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -50,7 +49,7 @@
     },
     "eventStubScript":null,
     "eventToFunction":{},
-    "length":2.0,
+    "length":1.0,
     "lockOrigin":false,
     "moments":{
       "$KeyframeStore<MomentsEventKeyframe>":"",
@@ -74,9 +73,6 @@
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
                 "0":{"$SpriteFrameKeyframe":"","Id":{"name":"4bc0c5a9-ad91-4ba4-bcc8-3c39fcaa1d70","path":"sprites/spr_indomitus_right_leg_bionic/spr_indomitus_right_leg_bionic.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"7b971e5d-63dc-464f-a2a5-601dd3c60196","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"123f4180-69ae-4875-8703-380e64f7a533","path":"sprites/spr_indomitus_right_leg_bionic/spr_indomitus_right_leg_bionic.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"1109d240-a929-4f29-8cab-a0afa7cffd9b","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,
