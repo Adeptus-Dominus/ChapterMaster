@@ -137,16 +137,19 @@ function scr_livery_setup(){
     var comp_change = false;
     comp_toggle.update({
         x1 : 50,
-        y1 : 80
-    }) ;
+        y1 : 76
+    });
+    draw_set_halign(fa_center);
     if (comp_toggle.draw()){
         comp_toggle.company_view = !comp_toggle.company_view;
         if (!comp_toggle.company_view){
             company_liveries[livery_picker.role_set] = variable_clone(livery_picker.map_colour);
             livery_picker.role_set = 0;
+            livery_picker.map_colour = full_liveries[livery_picker.role_set];
         } else {
             full_liveries[livery_picker.role_set] = variable_clone(livery_picker.map_colour);
             livery_picker.role_set = company_radio.current_selection;
+            livery_picker.map_colour = company_liveries[livery_picker.role_set];
         }
         livery_picker.shuffle_dummy();
         livery_picker.reset_image();        
@@ -163,7 +166,7 @@ function scr_livery_setup(){
         company_radio.update({
             max_width : 350,
             x1 : 20,
-            y1 : 50,
+            y1 : 60,
             allow_changes : true
         })
         company_radio.draw();

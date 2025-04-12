@@ -463,6 +463,7 @@ gene_sold=0;
 gene_xeno=0;
 gene_tithe=24;
 gene_iou=0;
+draw_helms = true;
 
 // ** Sets default views and in game values on creation **
 managing=0;
@@ -1366,7 +1367,14 @@ serialize = function(){
         recruit_data,
         marines,
         loyalty,
-        spec_train_data
+        spec_train_data,
+        forge_queue: specialist_point_handler.forge_queue,
+        techs: specialist_point_handler.techs,
+        apoths: specialist_point_handler.apoths,
+        forge_points: specialist_point_handler.forge_points,
+        point_breakdown: specialist_point_handler.point_breakdown,
+        apothecary_points: specialist_point_handler.apothecary_points,
+
     }
     var excluded_from_save = ["temp", "serialize", "deserialize", "build_chaos_gods", "company_data","menu_buttons",
             "location_viewer", "production_research_pathways", "specialist_point_handler", "spec_train_data"]

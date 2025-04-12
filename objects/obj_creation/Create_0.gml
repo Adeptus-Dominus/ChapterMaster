@@ -151,6 +151,8 @@ heheh=0;
 icons_top=1;
 icons_max=0;
 turn_selection_change=false;
+draw_helms = true;
+
 buttons = {
     home_world_recruit_share : new ToggleButton(),
     complex_homeworld : new ToggleButton({
