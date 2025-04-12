@@ -1163,6 +1163,34 @@ global.modular_drawing_items = [
         body_types: [0, 1, 2]
     },
     {
+        weapon_map: "Power Sword",
+        position: "weapon",
+        cultures : ["Mongol"],
+        weapon_data: {
+            hand_on_top: true,
+            display_type: "melee_onehand",
+            sprite: spr_weapon_sword_turk,
+            hand_type : 2,
+            hand_on_top : true,
+            new_weapon_draw : true,
+        },
+        body_types: [0, 1, 2]
+    },
+    {
+        weapon_map: "Power Sword",
+        position: "weapon",
+        cultures : ["Mongol"],
+        weapon_data: {
+            hand_on_top: true,
+            display_type: "melee_onehand",
+            sprite: spr_weapon_sword_oriental,
+            hand_type : 2,
+            hand_on_top : true,
+            new_weapon_draw : true,
+        },
+        body_types: [0, 1, 2]
+    },
+    {
         weapon_map: "Eldar Power Sword",
         position: "weapon",
         weapon_data: {
@@ -1440,6 +1468,28 @@ global.modular_drawing_items = [
         weapon_data: {
             display_type: "shield",
             sprite: spr_weapon_storm,
+            arm_type : 2,
+            ui_spec : true
+        },
+        body_types: [0, 1, 2],
+    },
+    {
+        weapon_map: "Storm Shield",
+        position: "weapon",
+        weapon_data: {
+            display_type: "shield",
+            sprite: spr_weapon_storm_tall,
+            arm_type : 2,
+            ui_spec : true
+        },
+        body_types: [0, 1, 2],
+    },
+    {
+        weapon_map: "Storm Shield",
+        position: "weapon",
+        weapon_data: {
+            display_type: "shield",
+            sprite: spr_weapon_storm_tall_2,
             arm_type : 2,
             ui_spec : true
         },
