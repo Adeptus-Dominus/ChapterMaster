@@ -54,7 +54,11 @@ if (!engaged) {
         target_unit_index = 0;
 
         if (range[i] >= dist) {
-            var _target_type = apa[i] > 8 ? "arp" : "att";
+            if (DEBUG_COLUMN_PRIORITY_ENEMY) {
+                show_debug_message($"{wep[i]} IS SHOOTING!");
+            }
+
+            var _target_type = apa[i] > 10 ? "arp" : "att";
             var _weapon_type = "ranged";
             var _target_priority_queue = ds_priority_create();
 
@@ -82,10 +86,6 @@ if (!engaged) {
                     continue;
                 }
                 array_push(_check_targets, self.id);
-            }
-
-            if (DEBUG_COLUMN_PRIORITY_ENEMY) {
-                show_debug_message($"{wep[i]} IS HERE!");
             }
 
             for (var t = 0; t < array_length(_check_targets); t++) {
@@ -197,17 +197,19 @@ if (engaged) {
             exit;
         }
         
+        if (DEBUG_COLUMN_PRIORITY_ENEMY) {
+            show_debug_message($"{wep[i]} IS IN MELEE!");
+        }
+
         if (instance_exists(obj_nfort) && (!flank)) {
             enemy = instance_nearest(x, y, obj_nfort);
             scr_shoot(i, enemy, 0, "arp", "wall");
             continue;
         }
 
-        var _attack_type = apa[i] > 8 ? "arp" : "att";
+        var _attack_type = apa[i] > 10 ? "arp" : "att";
         scr_shoot(i, enemy, 0, _attack_type, "melee");
     }
 }
-
-instance_activate_object(obj_pnunit);
 
 //! Here was some stuff that depended on image_index here, that got deleted, because I couldn't figure out why it exists; 

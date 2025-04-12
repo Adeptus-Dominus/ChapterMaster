@@ -1,4 +1,4 @@
-#macro DEBUG_COLUMN_PRIORITY_PLAYER true
+#macro DEBUG_COLUMN_PRIORITY_PLAYER false
 
 // Useful functions:
 // scr_target
@@ -59,7 +59,7 @@ try {
             var dist = get_block_distance(enemy);
     
             if (range[i] >= dist) {
-                var _target_type = apa[i] > 8 ? "arp" : "att";
+                var _target_type = apa[i] > 10 ? "arp" : "att";
                 var _weapon_type = "ranged";
                 var _target_priority_queue = ds_priority_create();
     
@@ -176,12 +176,10 @@ try {
                 exit;
             }
     
-            var _attack_type = apa[i] > 8 ? "arp" : "att";
+            var _attack_type = apa[i] > 10 ? "arp" : "att";
             scr_shoot(i, enemy, 0, _attack_type, "melee");
         }
     }
-    
-    instance_activate_object(obj_enunit);
 } catch (_exception) {
     handle_exception(_exception);
 }

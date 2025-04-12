@@ -1,4 +1,4 @@
-function scr_target(battle_block, man_or_vehicle) {
+function scr_target(battle_block, man_or_vehicle = "any") {
 	var _biggest_target = -1;
 	var _priority_queue = ds_priority_create();
 	var _target = -1;

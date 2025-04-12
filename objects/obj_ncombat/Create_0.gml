@@ -116,28 +116,25 @@ enemy_forces=0;enemy_max=0;
 hulk_forces=0;
 
 i=-1;messages=0;messages_to_show=24;messages_shown=0;
-largest=0;priority=0;random_messages=0;dead_enemies=0;
+largest=0;priority=0;random_messages=0;
 
 units_lost_counts = {};
 vehicles_lost_counts = {};
 
-repeat(70){i+=1;
-    lines[i]="";
-    lines_color[i]="";
-    message[i]="";
-    message_sz[i]=0;
-    message_priority[i]=0;
-    dead_jim[i]="";
-    dead_ene[i]="";
-    dead_ene_n[i]=0;
-    
-    post_equipment_lost[i]="";
-    post_equipments_lost[i]=0;
-    
-    crunch[i]=0;
-    
-    if (i<=10) then mucra[i]=0;
-}
+var _messages_size = 70;
+lines = array_create(_messages_size, "");
+lines_color = array_create(_messages_size, "");
+message = array_create(_messages_size, "");
+message_sz = array_create(_messages_size, 0);
+message_priority = array_create(_messages_size, 0);
+dead_jim = array_create(_messages_size, "");
+
+post_equipment_lost = array_create(_messages_size, "");
+post_equipments_lost = array_create(_messages_size, 0);
+
+crunch = array_create(_messages_size, 0);
+mucra = array_create(11, 0);
+
 slime=0;
 unit_recovery_score=0;
 apothecaries_alive=0;

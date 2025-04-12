@@ -24,12 +24,6 @@ function scr_shoot(weapon_index_position, target_object, target_index, target_ty
             exit;
         }
 
-        for (var j = 1; j <= 100; j++) {
-            obj_ncombat.dead_ene[j] = "";
-            obj_ncombat.dead_ene_n[j] = 0;
-        }
-        obj_ncombat.dead_enemies = 0;
-
         var wi = weapon_index_position;
         var _weapon_max_kills = splash[wi];
         var _total_damage = att[wi];
@@ -147,10 +141,14 @@ function scr_shoot(weapon_index_position, target_object, target_index, target_ty
         if (owner == eFACTION.Player) {
             target_index = scr_target(target_object, _weapon_damage_type);
             if (target_index == -1) {
-                if (DEBUG_PLAYER_TARGET_SELECTION) {
-                    show_debug_message($"{_weapon_name} found no valid targets in the enemy column to attack!");
+                target_index = scr_target(target_object);
+                if (target_index == -1) {
+                    if (DEBUG_PLAYER_TARGET_SELECTION) {
+                        show_debug_message($"{_weapon_name} found no valid targets in the enemy column to attack!");
+                    }
+                    log_error($"{_weapon_name} found no valid targets in the enemy column to attack!");
+                    exit;
                 }
-                exit;
             }
 
             if (DEBUG_PLAYER_TARGET_SELECTION) {
@@ -166,9 +164,9 @@ function scr_shoot(weapon_index_position, target_object, target_index, target_ty
             var _dice_sides = 200;
             var _random_damage_mod = roll_dice(1, _dice_sides, "low") / _dice_sides;
             var _armour_points = max(0, target_object.dudes_ac[target_index] - _weapon_ap);
-            var _weapon_damage_per_hit = (_weapon_damage_per_hit * _random_damage_mod) - _armour_points;
+            _weapon_damage_per_hit = (_weapon_damage_per_hit * _random_damage_mod) - _armour_points;
             _weapon_damage_per_hit = max(_min_damage, _weapon_damage_per_hit * target_object.dudes_dr[target_index]);
-            _total_damage = _weapon_damage_per_hit * _shooter_count;
+            _total_damage = _weapon_damage_per_hit * _shot_count;
 
             var _dudes_num = target_object.dudes_num[target_index];
             var _unit_hp = target_object.dudes_hp[target_index];
@@ -183,29 +181,6 @@ function scr_shoot(weapon_index_position, target_object, target_index, target_ty
             if (_casualties > 0) {
                 if (DEBUG_PLAYER_TARGET_SELECTION) {
                     show_debug_message($"{_weapon_name} attacked {target_object.dudes[target_index]} and destroyed {_casualties}!");
-                }
-
-                var found = -1;
-                var openz = -1;
-                for (var i = 0, _dead_ene = array_length(obj_ncombat.dead_ene); i < _dead_ene; i++) {
-                    if (obj_ncombat.dead_ene[i] == "") {
-                        if (openz == -1) {
-                            openz = i;
-                        }
-                    }
-    
-                    if (obj_ncombat.dead_ene[i] == target_object.dudes[target_index]) {
-                        found = i;
-                        break;
-                    }
-                }
-
-                if (found != -1) {
-                    obj_ncombat.dead_ene_n[found] += _casualties;
-                } else if (openz != -1) {
-                    obj_ncombat.dead_enemies += 1;
-                    obj_ncombat.dead_ene[openz] = string(target_object.dudes[target_index]);
-                    obj_ncombat.dead_ene_n[openz] = _casualties;
                 }
             } else {
                 if (DEBUG_PLAYER_TARGET_SELECTION) {

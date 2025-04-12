@@ -56,8 +56,8 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 
 		if (wep_solo[id_of_attacking_weapons] != "") {
 			unit_name = $"{wep_title[id_of_attacking_weapons]} {wep_solo[id_of_attacking_weapons]}";
-	 		character_shot = true;
-	 }
+			character_shot = true;
+		}
 
 	if (obj_ncombat.battle_special = "WL10_reveal") or (obj_ncombat.battle_special = "WL10_later") {
 		if (target_name = "Veteran Chaos Terminator") and (target_name > 0) then obj_ncombat.chaos_angry += casulties * 2;
@@ -390,35 +390,6 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 			}
 		}
 	}
-
-	// if (string_length(attack_message+kill_message+p3)<8) then show_message(weapon_name+" is not displaying anything");
-
-	// I don't understand what this was supposed to do either.
-	// if (obj_ncombat.dead_enemies != 0){
-	// 	for (var i = 1; i < array_length_1d(obj_ncombat.dead_ene); i++) {
-	// 		if (obj_ncombat.dead_ene[i] != "") {
-	// 			if (obj_ncombat.dead_enemies == 1) {
-	// 				kill_message += obj_ncombat.dead_ene[i] + " unit has been eliminated.";
-	// 			} else if (obj_ncombat.dead_enemies == 2) {
-	// 				if (i == 1) {
-	// 					kill_message += obj_ncombat.dead_ene[i] + " and ";
-	// 				} else {
-	// 					kill_message += obj_ncombat.dead_ene[i] + " units have been eliminated.";
-	// 				}
-	// 			} else if (obj_ncombat.dead_enemies > 2) {
-	// 				if (i == 1) {
-	// 					kill_message += obj_ncombat.dead_ene[i] + ", ";
-	// 				} else if (i == obj_ncombat.dead_enemies) {
-	// 					kill_message += "and " + obj_ncombat.dead_ene[i] + " units have been eliminated.";
-	// 				} else {
-	// 					kill_message += obj_ncombat.dead_ene[i] + ", ";
-	// 				}
-	// 			}
-	// 		}
-	// 		obj_ncombat.dead_ene[i] = "";
-	// 	}
-	// 	obj_ncombat.dead_enemies = 0;
-	// }
 
 	var message_priority = 0;
 	if (obj_ncombat.enemy <= 10) {
