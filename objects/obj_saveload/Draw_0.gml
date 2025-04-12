@@ -8,6 +8,9 @@ xx=__view_get( e__VW.XView, 0 )+0;yy=__view_get( e__VW.YView, 0 )+0;
 if (instance_exists(obj_main_menu)){xx=0;yy=0;}
 
 
+if(autosaving){
+    exit;
+}
 
 
 // if /*(menu=0) and */(save_part+load_part>0){// This is the loading bar

@@ -13,6 +13,7 @@ effect_volume=ini_read_real("Settings","effect_volume",1);
 music_volume=ini_read_real("Settings","music_volume",1);
 large_text=ini_read_real("Settings","large_text",0);
 settings_heresy=ini_read_real("Settings","settings_heresy",0);
+settings_autosave=ini_read_real("Settings", "settings_autosave", 1);
 settings_fullscreen=ini_read_real("Settings","fullscreen",1);
 settings_window_data=ini_read_string("Settings","window_data","fullscreen");
 ini_close();

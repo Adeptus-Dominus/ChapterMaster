@@ -25,8 +25,8 @@ if (settings=1){
     draw_text(xx+493,yy+281,string_hash_to_newline("Effects Volume"));
     draw_text(xx+493,yy+339,string_hash_to_newline("Music Volume"));
     draw_text(xx+493,yy+423,string_hash_to_newline("Full Screen?:"));
+    draw_text(xx+493,yy+483,string_hash_to_newline("Enable Autosaves?:"));
     // draw_text(xx+493,yy+423+59,string_hash_to_newline("Large Text?:"));
-    // draw_text(xx+493,yy+483+59,string_hash_to_newline("Heresy?:"));
     
     draw_set_color(0);// 264 long
     draw_rectangle(xx+710,yy+224,xx+974,yy+254,0);
@@ -58,7 +58,7 @@ if (settings=1){
     
     bar=settings_fullscreen;draw_sprite(spr_creation_check,bar,xx+626,yy+426);
     // bar=large_text;draw_sprite(spr_creation_check,bar,xx+622,yy+426+59);
-    // bar=settings_heresy;draw_sprite(spr_creation_check,bar,xx+590,yy+485+59);
+    bar=settings_autosave;draw_sprite(spr_creation_check,bar,xx+680,yy+485);
     
     
     if (cooldown<=0) and (mouse_left=1){var onceh;onceh=0;

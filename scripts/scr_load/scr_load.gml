@@ -35,10 +35,6 @@ function scr_load(save_part, save_id) {
 		} else {
 			global.chapter_icon_sprite = spr_icon_chapters;
 		}
-
-		// global.icon = globals.icon;
-		
-
 	}
 
 

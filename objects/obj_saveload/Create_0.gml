@@ -12,6 +12,8 @@ menu=0;// 1 : save, 2: load
 save_part=0;
 load_part=0;
 save_number=0;
+/// set to true before calling alarm[0] to run autosave behaviour
+autosaving=false;
 /// number of frames between load sections to draw the progress bar
 trickle=0;
 txt="";
@@ -30,7 +32,7 @@ splash=choose(0,1,2,3,4);
 
 debug="";
 
-top=1;
+top=0;
 
 if (instance_exists(obj_controller)){
     if (obj_controller.zoomed=1){
