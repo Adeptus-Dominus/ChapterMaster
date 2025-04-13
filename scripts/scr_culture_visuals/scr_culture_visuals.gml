@@ -807,7 +807,7 @@ function DummyMarine()constructor{
     } 
     static role = function(){
         with (obj_creation){
-            if (!buttons.company_options_toggle.company_view){
+            if (buttons.company_options_toggle.company_view){
                 return role[100][livery_picker.role_set > 0  ? livery_picker.role_set :eROLE.Tactical];
             }else {
                 return role[100][eROLE.Tactical];

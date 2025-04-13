@@ -8,6 +8,10 @@ function load_marine_struct(company, marine, struct){
 function scr_load(save_part, save_id) {
 	var t1 = get_timer();
 	var filename = string(PATH_save_files, save_id);
+	if(save_id == 0){
+		filename = string(PATH_autosave_file);
+		log_message("Loading from Autosave");
+	}
 	if(file_exists(filename)){
 		var _gamesave_buffer = buffer_load(filename);
 		var _gamesave_string = buffer_read(_gamesave_buffer, buffer_string);
@@ -26,7 +30,11 @@ function scr_load(save_part, save_id) {
 		global.chapter_icon_sprite = spr_icon_chapters;
 		global.chapter_icon_frame = globals.chapter_icon_frame;
 		global.chapter_icon_path = globals.chapter_icon_path;
-		global.chapter_icon_filename = globals.chapter_icon_filename;
+		if(struct_exists(globals, "chapter_icon_filename")){
+			global.chapter_icon_filename = globals.chapter_icon_filename;
+		} else {
+			global.chapter_icon_filename = "cust";//dunno why this isn't always set
+		}
 	    global.icon_name=globals.icon_name;
 		global.chapter_name = globals.chapter_name;
 		global.custom = globals.custom;
@@ -35,10 +43,6 @@ function scr_load(save_part, save_id) {
 		} else {
 			global.chapter_icon_sprite = spr_icon_chapters;
 		}
-
-		// global.icon = globals.icon;
-		
-
 	}
 
 
@@ -147,7 +151,7 @@ function scr_load(save_part, save_id) {
 
 	    obj_saveload.alarm[1]=5;
 	    obj_controller.invis=false;
-	    global.load=0;
+	    global.load=-1;
 	    scr_image("force",-50,0,0,0,0);
 	    log_message("Loading completed");
 		// room_goto(Game);

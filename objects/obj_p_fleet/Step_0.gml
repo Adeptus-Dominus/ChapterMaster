@@ -10,7 +10,7 @@ action_spd = calculate_action_speed();
 
 if (ii_check=0){set_player_fleet_image()}
 
-if (global.load>0) and (sprite_index!=spr_fleet_tiny) then sprite_index=spr_fleet_tiny;
+if (global.load>=0) and (sprite_index!=spr_fleet_tiny) then sprite_index=spr_fleet_tiny;
 
 if (fix>-1) then fix-=1;
 if (fix=0) and (action==""){
