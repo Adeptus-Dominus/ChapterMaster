@@ -721,803 +721,6 @@ global.modular_drawing_items = [
         prevent_others : true,
     },
     {
-
-        weapon_map : "Assault Cannon",
-        position : "weapon",
-        weapon_data : {
-            display_type : "terminator_ranged",
-            arm_type : 1,
-            hand_type : 0,
-            sprite : spr_weapon_assca,            
-        },
-        body_types :[2],
-    },
-    {
-        weapon_map : "Heavy Flamer",
-        position : "weapon",
-        weapon_data : {
-            arm_type : 1,
-            hand_type : 0,
-            sprite : spr_weapon_hflamer_term,            
-        },
-        body_types :[2],
-    },
-    {
-        weapon_map : "Plasma Cannon",
-        position : "weapon",
-        
-        weapon_data : {
-            display_type : "terminator_ranged",
-            arm_type : 1,
-            hand_type : 0,
-            sprite : spr_weapon_plasma_cannon_term,            
-        },
-        body_types :[2],
-    },
-    {
-        weapon_map : "Grav-Cannon",
-        position : "weapon",
-        weapon_data : {
-            arm_type : 1,
-            hand_type : 0,
-            display_type : "terminator_ranged",
-            sprite : spr_weapon_plasma_cannon_term,          
-        },
-        body_types :[2],
-    },
-    {
-        weapon_map : "Power Fist",
-        position : "weapon",
-        weapon_data : {
-            arm_type : 1,
-            ui_spec : true,
-            display_type : "terminator_fist",
-            sprite : spr_weapon_powfist4,          
-        },
-        body_types :[2],
-    },
-    {
-        weapon_map : "Lightning Claw",
-        position : "weapon",
-        weapon_data : {
-            arm_type : 1,
-            ui_spec : true,
-            display_type : "terminator_fist",
-            sprite : spr_weapon_lightning2,          
-        },
-        body_types :[2],
-    }, 
-
-    {
-        weapon_map : "Chainfist",
-        position : "weapon",
-        weapon_data : {
-            arm_type : 1,
-            ui_spec : true,
-            display_type : "terminator_fist",
-            sprite : spr_weapon_chainfist,          
-        },
-        body_types :[2],
-    },  
-    {
-        weapon_map : "Boltstorm Gauntlet",
-        position : "weapon",
-        weapon_data : {
-            arm_type : 1,
-            ui_spec : true,
-            display_type : "terminator_fist",
-            sprite : spr_weapon_boltstorm_gauntlet,          
-        },
-        body_types :[2],
-    },
-    {
-        weapon_map : "Bolt Pistol",
-        position : "weapon",
-        weapon_data : {
-            arm_type : 1,
-            ui_spec : false,
-            display_type : "normal_ranged",
-            sprite : spr_weapon_boltpis,  
-            new_weapon_draw : true,        
-        },
-        body_types :[0,1,2],
-    }, 
-    {
-        weapon_map : "Infernus Pistol",
-        position : "weapon",
-        weapon_data : {
-            arm_type : 1,
-            ui_spec : false,
-            display_type : "normal_ranged",
-            sprite : spr_weapon_inferno,  
-            new_weapon_draw : true,        
-        },
-        body_types :[0,1,2],
-    },
-    {
-        weapon_map : "Bolter",
-        position : "weapon",
-        weapon_data : {
-            arm_type : 1,
-            ui_spec : false,
-            display_type : "normal_ranged",
-            sprite : spr_weapon_bolter,  
-            new_weapon_draw : true,        
-        },
-        body_types :[0,1,2],
-    }, 
-    {
-        weapon_map : "Storm Bolter",
-        position : "weapon",
-        weapon_data : {
-            arm_type : 1,
-            ui_spec : false,
-            display_type : "normal_ranged",
-            sprite : spr_weapon_sbolter,  
-            new_weapon_draw : true,        
-        },
-        body_types :[0,1,2],
-    },
-    {
-        weapon_map : "Plasma Gun",
-        position : "weapon",
-        weapon_data : {
-            arm_type : 1,
-            ui_spec : false,
-            display_type : "normal_ranged",
-            sprite : spr_weapon_plasg,  
-            new_weapon_draw : true,        
-        },
-        body_types :[0,1,2],
-    }, 
-    {
-        weapon_map : "Plasma Pistol",
-        position : "weapon",
-        weapon_data : {
-            arm_type : 1,
-            ui_spec : false,
-            display_type : "normal_ranged",
-            sprite : spr_weapon_plasp,  
-            new_weapon_draw : true,        
-        },
-        body_types :[0,1,2],
-    },
-    {
-        weapon_map : "Meltagun",
-        position : "weapon",
-        weapon_data : {
-            arm_type : 1,
-            ui_spec : false,
-            display_type : "normal_ranged",
-            sprite : spr_weapon_melta,  
-            new_weapon_draw : true,        
-        },
-        body_types :[0,1,2],
-    }, 
-    {
-        weapon_map : "Flamer",
-        position : "weapon",
-        weapon_data : {
-            arm_type : 1,
-            ui_spec : false,
-            display_type : "normal_ranged",
-            sprite : spr_weapon_flamer,  
-            new_weapon_draw : true,        
-        },
-        body_types :[0,1,2],
-    },
-    {
-        weapon_map :  "Stalker Pattern Bolter",
-        position : "weapon",
-        weapon_data : {
-            arm_type : 1,
-            ui_spec : false,
-            display_type : "normal_ranged",
-            sprite : spr_weapon_stalker,  
-            new_weapon_draw : true,        
-        },
-        body_types :[0,1,2],
-    }, 
-    {
-        weapon_map : "Combiplasma",
-        position : "weapon",
-        weapon_data : {
-            arm_type : 1,
-            ui_spec : false,
-            display_type : "normal_ranged",
-            sprite : spr_weapon_complas,  
-            new_weapon_draw : true,        
-        },
-        body_types :[0,1,2],
-    },
-    {
-        weapon_map :   "Combiflamer",
-        position : "weapon",
-        weapon_data : {
-            arm_type : 1,
-            ui_spec : false,
-            display_type : "normal_ranged",
-            sprite : spr_weapon_comflamer,  
-            new_weapon_draw : true,        
-        },
-        body_types :[0,1,2],
-    },
-    {
-        weapon_map : "Combigrav",
-        position : "weapon",
-        weapon_data : {
-            arm_type : 1,
-            ui_spec : false,
-            display_type : "normal_ranged",
-            sprite : spr_weapon_comgrav,  
-            new_weapon_draw : true,        
-        },
-        body_types :[0,1,2],
-    },
-    {
-        weapon_map :   "Combimelta",
-        position : "weapon",
-        weapon_data : {
-            arm_type : 1,
-            ui_spec : false,
-            display_type : "normal_ranged",
-            sprite : spr_weapon_commelta,  
-            new_weapon_draw : true,        
-        },
-        body_types :[0,1,2],
-    },
-    {
-        weapon_map : "Grav-Pistol",
-        position : "weapon",
-        weapon_data : {
-            arm_type : 1,
-            ui_spec : false,
-            display_type : "normal_ranged",
-            sprite : spr_weapon_grav_pistol,  
-            new_weapon_draw : true,        
-        },
-        body_types :[0,1,2],
-    },
-    {
-        weapon_map :   "Grav-Gun",
-        position : "weapon",
-        weapon_data : {
-            arm_type : 1,
-            ui_spec : false,
-            display_type : "normal_ranged",
-            sprite : spr_weapon_grav_gun,  
-            new_weapon_draw : true,        
-        },
-        body_types :[0,1,2],
-    }, 
-    {
-        weapon_map : "Hand Flamer",
-        position : "weapon",
-        weapon_data : {
-            arm_type : 1,
-            ui_spec : false,
-            display_type : "normal_ranged",
-            sprite : spr_weapon_hand_flamer,  
-            new_weapon_draw : true,        
-        },
-        body_types :[0,1,2],
-    },
-    {
-        weapon_map :   "Missile Launcher",
-        position : "weapon",
-        weapon_data : {
-            arm_type : 1,
-            ui_spec : false,
-            display_type : "normal_ranged",
-            sprite : spr_weapon_missile,  
-            new_weapon_draw : true,        
-        },
-        body_types :[0,1,2],
-    },
-    {
-        weapon_map :   "Heavy Bolter",
-        position : "weapon",
-        weapon_data : {
-            ui_spec : true,
-            display_type : "ranged_twohand",
-            sprite : spr_weapon_hbolt,  
-            ui_twoh : true,        
-        },
-        body_types :[0,1,2],
-    },
-    {
-        weapon_map :   "Lascannon",
-        position : "weapon",
-        weapon_data : {
-            ui_spec : true,
-            display_type : "ranged_twohand",
-            sprite : spr_weapon_lasca,  
-            ui_twoh : true,        
-        },
-        body_types :[0,1,2],
-    },
-    {
-        weapon_map :   "Multi-Melta",
-        position : "weapon",
-        weapon_data : {
-            ui_spec : true,
-            display_type : "ranged_twohand",
-            sprite : spr_weapon_mmelta,  
-            ui_twoh : true,        
-        },
-        body_types :[0,1,2],
-    },
-    {
-        weapon_map :   "Heavy Flamer",
-        position : "weapon",
-        weapon_data : {
-            ui_spec : true,
-            display_type : "ranged_twohand",
-            sprite : spr_weapon_hflamer,  
-            ui_twoh : true,        
-        },
-        body_types :[0,1,2],
-    },
-    {
-        weapon_map :   "Plasma Cannon",
-        position : "weapon",
-        weapon_data : {
-            ui_spec : true,
-            display_type : "ranged_twohand",
-            sprite : spr_weapon_plasc,  
-            ui_twoh : true,        
-        },
-        body_types :[0,1,2],
-    },
-
-    {
-        weapon_map :   "Grav-Cannon",
-        position : "weapon",
-        weapon_data : {
-            ui_spec : true,
-            display_type : "ranged_twohand",
-            sprite : spr_weapon_grav_cannon,  
-            ui_twoh : true,        
-        },
-        body_types :[0,1,2],
-    },
-    {
-        weapon_map :   "Infernus Heavy Bolter",
-        position : "weapon",
-        weapon_data : {
-            ui_spec : true,
-            display_type : "ranged_twohand",
-            sprite : spr_weapon_infernus_hbolt,  
-            ui_twoh : true,        
-        },
-        body_types :[0,1,2],
-    },
-    {
-        weapon_map :   "Company Standard",
-        position : "weapon",
-        cultures : ["Knightly"],
-        weapon_data : {
-            hand_on_top : true,
-            display_type : "melee_onehand",
-            sprite : spr_da_standard,         
-        },
-        body_types :[0,1,2],
-    }, 
-    {
-        weapon_map :   "Company Standard",
-        position : "weapon",
-        weapon_data : {
-            hand_on_top : true,
-            display_type : "melee_onehand",
-            sprite : spr_weapon_standard2,         
-        },
-        body_types :[0,1,2],
-    }, 
-    {
-        weapon_map :   "Chainsword",
-        position : "weapon",
-        weapon_data : {
-            hand_on_top : true,
-            display_type : "melee_onehand",
-            sprite : spr_weapon_chsword,
-            hand_type : 2,
-            hand_on_top : true, 
-            new_weapon_draw : true,        
-        },
-        body_types :[0,1,2],
-    }, 
-    {
-        weapon_map :   "Company Standard",
-        position : "weapon",
-        weapon_data : {
-            hand_on_top : true,
-            display_type : "melee_onehand",
-            sprite : spr_weapon_standard2,         
-        },
-        body_types :[0,1,2],
-    }, 
-    {
-        weapon_map: "Combat Knife",
-        position: "weapon",
-        weapon_data: {
-            hand_on_top: true,
-            display_type: "melee_onehand",
-            sprite: spr_weapon_knife,
-            hand_type : 2,
-            hand_on_top : true,
-            new_weapon_draw : true,
-        },
-        body_types: [0, 1, 2]
-    },
-    {
-        weapon_map: "Power Sword",
-        position: "weapon",
-        weapon_data: {
-            hand_on_top: true,
-            display_type: "melee_onehand",
-            sprite: spr_weapon_powswo,
-            hand_type : 2,
-            hand_on_top : true,
-            new_weapon_draw : true,
-        },
-        body_types: [0, 1, 2]
-    },
-    {
-        weapon_map: "Power Sword",
-        position: "weapon",
-        cultures : ["Mongol"],
-        weapon_data: {
-            hand_on_top: true,
-            display_type: "melee_onehand",
-            sprite: spr_weapon_sword_turk,
-            hand_type : 2,
-            hand_on_top : true,
-            new_weapon_draw : true,
-        },
-        body_types: [0, 1, 2]
-    },
-    {
-        weapon_map: "Power Sword",
-        position: "weapon",
-        cultures : ["Mongol"],
-        weapon_data: {
-            hand_on_top: true,
-            display_type: "melee_onehand",
-            sprite: spr_weapon_sword_oriental,
-            hand_type : 2,
-            hand_on_top : true,
-            new_weapon_draw : true,
-        },
-        body_types: [0, 1, 2]
-    },
-    {
-        weapon_map: "Eldar Power Sword",
-        position: "weapon",
-        weapon_data: {
-            hand_on_top: true,
-            display_type: "melee_onehand",
-            sprite: spr_weapon_eldsword
-        },
-        body_types: [0, 1, 2]
-    },
-    {
-        weapon_map: "Power Spear",
-        position: "weapon",
-        weapon_data: {
-            hand_on_top: true,
-            display_type: "melee_onehand",
-            sprite: spr_weapon_powspear,
-            hand_type : 2,
-            hand_on_top : true,
-            new_weapon_draw : true,
-        },
-        body_types: [0, 1, 2]
-    },
-    {
-        weapon_map: "Thunder Hammer",
-        position: "weapon",
-        weapon_data: {
-            hand_on_top: true,
-            display_type: "melee_onehand",
-            sprite: spr_weapon_thhammer,
-            hand_type : 2,
-            hand_on_top : true,
-        },
-        body_types: [0, 1, 2]
-    },
-    {
-        weapon_map: "Power Axe",
-        position: "weapon",
-        weapon_data: {
-            hand_on_top: true,
-            display_type: "melee_onehand",
-            hand_type : 2,
-            sprite: spr_weapon_powaxe,
-            new_weapon_draw : true,
-        },
-        body_types: [0, 1, 2]
-    },
-    {
-        weapon_map: "Crozius Arcanum",
-        position: "weapon",
-        weapon_data: {
-            hand_on_top: true,
-            display_type: "melee_onehand",
-            sprite: spr_weapon_crozarc
-        },
-        body_types: [0, 1, 2]
-    },
-    {
-        weapon_map: "Chainaxe",
-        position: "weapon",
-        weapon_data: {
-            hand_on_top: true,
-            display_type: "melee_onehand",
-            hand_type : 2,
-            sprite: spr_weapon_chaxe,
-            new_weapon_draw : true,
-        },
-        body_types: [0, 1, 2]
-    },
-    {
-        weapon_map: "Force Staff",
-        position: "weapon",
-        weapon_data: {
-            hand_on_top: true,
-            display_type: "melee_onehand",
-            sprite: spr_weapon_frcstaff,
-            hand_type : 2,
-            hand_on_top : true,
-            new_weapon_draw : true,
-        },
-        body_types: [0, 1, 2]
-    },
-    {
-        weapon_map: "Force Sword",
-        position: "weapon",
-        weapon_data: {
-            hand_on_top: true,
-            display_type: "melee_onehand",
-            sprite: spr_weapon_powswo,
-            hand_type : 2,
-            hand_on_top : true,
-            new_weapon_draw : true,
-        },
-        body_types: [0, 1, 2]
-    },
-    {
-        weapon_map: "Force Axe",
-        position: "weapon",
-        weapon_data: {
-            hand_on_top: true,
-            display_type: "melee_onehand",
-            sprite: spr_weapon_powaxe,
-            hand_type : 2,
-            new_weapon_draw : true,
-        },
-        body_types: [0, 1, 2]
-    },
-    {
-        weapon_map: "Relic Blade",
-        position: "weapon",
-        weapon_data: {
-            hand_on_top: true,
-            display_type: "melee_onehand",
-            sprite: spr_weapon_relic_blade
-        },
-        body_types: [0, 1, 2]
-    },
-    {
-        weapon_map: "Eviscerator",
-        position: "weapon",
-        weapon_data: {
-            hand_on_top: true,
-            display_type: "melee_onehand",
-            sprite: spr_weapon_evisc
-        },
-        body_types: [0, 1, 2]
-    },
-    {
-        weapon_map: "Power Mace",
-        position: "weapon",
-        weapon_data: {
-            hand_on_top: true,
-            display_type: "melee_onehand",
-            sprite: spr_weapon_powmace,
-            hand_type : 2,
-            new_weapon_draw : true,
-        },
-        body_types: [0, 1, 2]
-    },
-    {
-        weapon_map: "Mace of Absolution",
-        position: "weapon",
-        weapon_data: {
-            hand_on_top: true,
-            display_type: "melee_onehand",
-            sprite: spr_weapon_mace_of_absolution,
-            hand_type : 2,
-            new_weapon_draw : true,
-        },
-        body_types: [0, 1, 2]
-    },
-    {
-        weapon_map: "Shock Maul",
-        position: "weapon",
-        weapon_data: {
-            hand_on_top: true,
-            display_type: "melee_onehand",
-            hand_type : 2,
-            sprite: spr_weapon_powmaul,
-            new_weapon_draw : true,
-        },
-        body_types: [0, 1, 2]
-    },
-    {
-        weapon_map: "Xenophase Blade",
-        position: "weapon",
-        weapon_data: {
-            hand_on_top: true,
-            display_type: "melee_onehand",
-            sprite: spr_weapon_xenophase_blade_var1,
-            hand_type : 2,
-            hand_on_top : true,
-            new_weapon_draw : true,
-        },
-        body_types: [0, 1, 2]
-    }, 
-    {
-        weapon_map: "Power Fist",
-        position: "weapon",
-        weapon_data: {
-            display_type: "normal_fist",
-            ui_spec : false,
-            arm_type : 1,
-            sprite: spr_weapon_powfist
-        },
-        body_types: [0, 1]
-    },
-    {
-        weapon_map: "Lightning Claw",
-        position: "weapon",
-        weapon_data: {
-            display_type: "normal_fist",
-            ui_spec: false,
-            arm_type: 1,
-            sprite: spr_weapon_lightning1
-        },
-        body_types: [0, 1]
-    },
-    {
-        weapon_map: "Boltstorm Gauntlet",
-        position: "weapon",
-        weapon_data: {
-            display_type: "normal_fist",
-            ui_spec: false,
-            arm_type: 1,
-            sprite: spr_weapon_boltstorm_gauntlet_small
-        },
-        body_types: [0, 1]
-    },
-    {
-        weapon_map: "Chainfist",
-        position: "weapon",
-        weapon_data: {
-            display_type: "normal_fist",
-            ui_spec: false,
-            arm_type: 1,
-            sprite: spr_weapon_chainfist_small
-        },
-        body_types: [0, 1]
-    },
-    {
-        weapon_map: "Assault Chainfist",
-        position: "weapon",
-        weapon_data: {
-            display_type: "normal_fist",
-            ui_spec: false,
-            arm_type: 1,
-            sprite: spr_weapon_chainfist_small
-        },
-        body_types: [0, 1]
-    }, 
-    {
-        weapon_map: "Heavy Thunder Hammer",
-        position: "weapon",
-        weapon_data: {
-            display_type: "melee_twohand",
-            arm_type: 0,
-            sprite: spr_weapon_hthhammer,
-            hand_on_top : true,
-            ui_spec : true,
-            ui_twoh : true,
-        },
-        body_types: [0, 1,2]
-    },
-    {
-        weapon_map: "Sniper Rifle",
-        position: "weapon",
-        weapon_data: {
-            display_type: "melee_twohand",
-            sprite: spr_weapon_sniper,
-            ui_spec : true,
-            new_weapon_draw : true,
-            hand_type : 2,
-            hand_on_top : true,
-        },
-        body_types: [0, 1, 2],
-    },
-    {
-        weapon_map: "Autocannon",
-        position: "weapon",
-        weapon_data: {
-            display_type: "melee_twohand",
-            sprite: spr_weapon_autocannon2,
-            ui_spec : true,
-            new_weapon_draw : true,
-            hand_type : 2,
-            hand_on_top : true,
-            new_weapon_draw : true,
-        },
-        body_types: [0, 1, 2],
-    },
-    {
-        weapon_map: "Storm Shield",
-        position: "weapon",
-        cultures : ["knightly"],
-        weapon_data: {
-            display_type: "shield",
-            sprite: spr_weapon_storm,
-            arm_type : 2,
-            ui_spec : true
-        },
-        body_types: [0, 1, 2],
-    },
-    {
-        weapon_map: "Storm Shield",
-        position: "weapon",
-        weapon_data: {
-            display_type: "shield",
-            sprite: spr_weapon_storm_tall,
-            arm_type : 2,
-            ui_spec : true
-        },
-        body_types: [0, 1, 2],
-    },
-    {
-        weapon_map: "Storm Shield",
-        position: "weapon",
-        weapon_data: {
-            display_type: "shield",
-            sprite: spr_weapon_storm_tall_2,
-            arm_type : 2,
-            ui_spec : true
-        },
-        body_types: [0, 1, 2],
-    },
-    {
-        weapon_map: "Boarding Shield",
-        position: "weapon",
-        weapon_data: {
-            display_type: "shield",
-            sprite: spr_weapon_boarding,
-            arm_type : 2,
-            ui_spec : true
-        },
-        body_types: [0, 1, 2],
-    }, 
-    {
-        weapon_map: "Storm Shield",
-        position: "weapon",
-        weapon_data: {
-            display_type: "shield",
-            sprite: spr_weapon_storm2,
-            arm_type : 2,
-            ui_spec : true
-        },
-        body_types: [0, 1, 2],
-    },
-    {
         position: "bare_head",
         body_types: [0, 1, 2],
         sprite: spr_bare_heads,
@@ -1779,5 +982,796 @@ function add_purity_seal_markers (){
     if (irandom(3)==0){
         body[$ "right_leg"][$ "purity_seal"] = [irandom(100),irandom(100),irandom(100),irandom(100)];
     }       
+}
+
+global.weapon_visual_data = {
+  "Assault Cannon": [{
+    weapon_map: "Assault Cannon",
+    position: "weapon",
+    weapon_data: {
+      display_type: "terminator_ranged",
+      arm_type: 1,
+      hand_type: 0,
+      sprite: spr_weapon_assca
+    },
+    body_types: [2]
+  }],
+  "Heavy Flamer": [{
+    weapon_map: "Heavy Flamer",
+    position: "weapon",
+    weapon_data: {
+      arm_type: 1,
+      hand_type: 0,
+      sprite: spr_weapon_hflamer_term
+    },
+    body_types: [2]
+  }],
+  "Plasma Cannon": [{
+    weapon_map: "Plasma Cannon",
+    position: "weapon",
+    weapon_data: {
+      display_type: "terminator_ranged",
+      arm_type: 1,
+      hand_type: 0,
+      sprite: spr_weapon_plasma_cannon_term
+    },
+    body_types: [2]
+  }],
+  "Grav-Cannon": [{
+    weapon_map: "Grav-Cannon",
+    position: "weapon",
+    weapon_data: {
+      arm_type: 1,
+      hand_type: 0,
+      display_type: "terminator_ranged",
+      sprite: spr_weapon_plasma_cannon_term
+    },
+    body_types: [2]
+  }],
+  "Power Fist": [{
+    weapon_map: "Power Fist",
+    position: "weapon",
+    weapon_data: {
+      arm_type: 1,
+      ui_spec: true,
+      display_type: "terminator_fist",
+      sprite: spr_weapon_powfist4
+    },
+    body_types: [2]
+  }],
+  "Lightning Claw": [{
+    weapon_map: "Lightning Claw",
+    position: "weapon",
+    weapon_data: {
+      arm_type: 1,
+      ui_spec: true,
+      display_type: "terminator_fist",
+      sprite: spr_weapon_lightning2
+    },
+    body_types: [2]
+  }],
+  "Chainfist": [{
+    weapon_map: "Chainfist",
+    position: "weapon",
+    weapon_data: {
+      arm_type: 1,
+      ui_spec: true,
+      display_type: "terminator_fist",
+      sprite: spr_weapon_chainfist
+    },
+    body_types: [2]
+  }],
+  "Boltstorm Gauntlet": [{
+    weapon_map: "Boltstorm Gauntlet",
+    position: "weapon",
+    weapon_data: {
+      arm_type: 1,
+      ui_spec: true,
+      display_type: "terminator_fist",
+      sprite: spr_weapon_boltstorm_gauntlet
+    },
+    body_types: [2]
+  }],
+  "Bolt Pistol": [{
+    weapon_map: "Bolt Pistol",
+    position: "weapon",
+    weapon_data: {
+      arm_type: 1,
+      ui_spec: false,
+      display_type: "normal_ranged",
+      sprite: spr_weapon_boltpis,
+      new_weapon_draw: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Infernus Pistol": [{
+    weapon_map: "Infernus Pistol",
+    position: "weapon",
+    weapon_data: {
+      arm_type: 1,
+      ui_spec: false,
+      display_type: "normal_ranged",
+      sprite: spr_weapon_inferno,
+      new_weapon_draw: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Bolter": [{
+    weapon_map: "Bolter",
+    position: "weapon",
+    weapon_data: {
+      arm_type: 1,
+      ui_spec: false,
+      display_type: "normal_ranged",
+      sprite: spr_weapon_bolter,
+      new_weapon_draw: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Storm Bolter": [{
+    weapon_map: "Storm Bolter",
+    position: "weapon",
+    weapon_data: {
+      arm_type: 1,
+      ui_spec: false,
+      display_type: "normal_ranged",
+      sprite: spr_weapon_sbolter,
+      new_weapon_draw: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Plasma Gun": [{
+    weapon_map: "Plasma Gun",
+    position: "weapon",
+    weapon_data: {
+      arm_type: 1,
+      ui_spec: false,
+      display_type: "normal_ranged",
+      sprite: spr_weapon_plasg,
+      new_weapon_draw: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Plasma Pistol": [{
+    weapon_map: "Plasma Pistol",
+    position: "weapon",
+    weapon_data: {
+      arm_type: 1,
+      ui_spec: false,
+      display_type: "normal_ranged",
+      sprite: spr_weapon_plasp,
+      new_weapon_draw: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Meltagun": [{
+    weapon_map: "Meltagun",
+    position: "weapon",
+    weapon_data: {
+      arm_type: 1,
+      ui_spec: false,
+      display_type: "normal_ranged",
+      sprite: spr_weapon_melta,
+      new_weapon_draw: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Flamer": [{
+    weapon_map: "Flamer",
+    position: "weapon",
+    weapon_data: {
+      arm_type: 1,
+      ui_spec: false,
+      display_type: "normal_ranged",
+      sprite: spr_weapon_flamer,
+      new_weapon_draw: true
+    },
+    body_types: [0, 1, 2]
+  }],
+"Stalker Pattern Bolter": [{
+    weapon_map: "Stalker Pattern Bolter",
+    position: "weapon",
+    weapon_data: {
+      arm_type: 1,
+      ui_spec: false,
+      display_type: "normal_ranged",
+      sprite: spr_weapon_stalker,
+      new_weapon_draw: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Combiplasma": [{
+    weapon_map: "Combiplasma",
+    position: "weapon",
+    weapon_data: {
+      arm_type: 1,
+      ui_spec: false,
+      display_type: "normal_ranged",
+      sprite: spr_weapon_complas,
+      new_weapon_draw: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Combiflamer": [{
+    weapon_map: "Combiflamer",
+    position: "weapon",
+    weapon_data: {
+      arm_type: 1,
+      ui_spec: false,
+      display_type: "normal_ranged",
+      sprite: spr_weapon_comflamer,
+      new_weapon_draw: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Combigrav": [{
+    weapon_map: "Combigrav",
+    position: "weapon",
+    weapon_data: {
+      arm_type: 1,
+      ui_spec: false,
+      display_type: "normal_ranged",
+      sprite: spr_weapon_comgrav,
+      new_weapon_draw: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Combimelta": [{
+    weapon_map: "Combimelta",
+    position: "weapon",
+    weapon_data: {
+      arm_type: 1,
+      ui_spec: false,
+      display_type: "normal_ranged",
+      sprite: spr_weapon_commelta,
+      new_weapon_draw: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Grav-Pistol": [{
+    weapon_map: "Grav-Pistol",
+    position: "weapon",
+    weapon_data: {
+      arm_type: 1,
+      ui_spec: false,
+      display_type: "normal_ranged",
+      sprite: spr_weapon_grav_pistol,
+      new_weapon_draw: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Grav-Gun": [{
+    weapon_map: "Grav-Gun",
+    position: "weapon",
+    weapon_data: {
+      arm_type: 1,
+      ui_spec: false,
+      display_type: "normal_ranged",
+      sprite: spr_weapon_grav_gun,
+      new_weapon_draw: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Hand Flamer": [{
+    weapon_map: "Hand Flamer",
+    position: "weapon",
+    weapon_data: {
+      arm_type: 1,
+      ui_spec: false,
+      display_type: "normal_ranged",
+      sprite: spr_weapon_hand_flamer,
+      new_weapon_draw: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Missile Launcher": [{
+    weapon_map: "Missile Launcher",
+    position: "weapon",
+    weapon_data: {
+      arm_type: 1,
+      ui_spec: false,
+      display_type: "normal_ranged",
+      sprite: spr_weapon_missile,
+      new_weapon_draw: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Heavy Bolter": [{
+    weapon_map: "Heavy Bolter",
+    position: "weapon",
+    weapon_data: {
+      ui_spec: true,
+      display_type: "ranged_twohand",
+      sprite: spr_weapon_hbolt,
+      ui_twoh: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Lascannon": [{
+    weapon_map: "Lascannon",
+    position: "weapon",
+    weapon_data: {
+      ui_spec: true,
+      display_type: "ranged_twohand",
+      sprite: spr_weapon_lasca,
+      ui_twoh: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Multi-Melta": [{
+    weapon_map: "Multi-Melta",
+    position: "weapon",
+    weapon_data: {
+      ui_spec: true,
+      display_type: "ranged_twohand",
+      sprite: spr_weapon_mmelta,
+      ui_twoh: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Heavy Flamer": [{
+    weapon_map: "Heavy Flamer",
+    position: "weapon",
+    weapon_data: {
+      ui_spec: true,
+      display_type: "ranged_twohand",
+      sprite: spr_weapon_hflamer,
+      ui_twoh: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Plasma Cannon": [{
+    weapon_map: "Plasma Cannon",
+    position: "weapon",
+    weapon_data: {
+      ui_spec: true,
+      display_type: "ranged_twohand",
+      sprite: spr_weapon_plasc,
+      ui_twoh: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Grav-Cannon": [{
+    weapon_map: "Grav-Cannon",
+    position: "weapon",
+    weapon_data: {
+      ui_spec: true,
+      display_type: "ranged_twohand",
+      sprite: spr_weapon_grav_cannon,
+      ui_twoh: true
+    },
+    body_types: [0, 1, 2]
+  }],
+"Eviscerator": [{
+    weapon_map: "Eviscerator",
+    position: "weapon",
+    weapon_data: {
+      hand_on_top: true,
+      display_type: "melee_onehand",
+      sprite: spr_weapon_evisc
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Power Mace": [{
+    weapon_map: "Power Mace",
+    position: "weapon",
+    weapon_data: {
+      hand_on_top: true,
+      display_type: "melee_onehand",
+      sprite: spr_weapon_powmace,
+      hand_type: 2,
+      new_weapon_draw: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Mace of Absolution": [{
+    weapon_map: "Mace of Absolution",
+    position: "weapon",
+    weapon_data: {
+      hand_on_top: true,
+      display_type: "melee_onehand",
+      sprite: spr_weapon_mace_of_absolution,
+      hand_type: 2,
+      new_weapon_draw: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Shock Maul": [{
+    weapon_map: "Shock Maul",
+    position: "weapon",
+    weapon_data: {
+      hand_on_top: true,
+      display_type: "melee_onehand",
+      sprite: spr_weapon_powmaul,
+      hand_type: 2,
+      new_weapon_draw: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Xenophase Blade": [{
+    weapon_map: "Xenophase Blade",
+    position: "weapon",
+    weapon_data: {
+      hand_on_top: true,
+      display_type: "melee_onehand",
+      sprite: spr_weapon_xenophase_blade_var1,
+      hand_type: 2,
+      new_weapon_draw: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Power Fist": [{
+    weapon_map: "Power Fist",
+    position: "weapon",
+    weapon_data: {
+      display_type: "normal_fist",
+      ui_spec: false,
+      arm_type: 1,
+      sprite: spr_weapon_powfist
+    },
+    body_types: [0, 1]
+  }],
+  "Lightning Claw": [{
+    weapon_map: "Lightning Claw",
+    position: "weapon",
+    weapon_data: {
+      display_type: "normal_fist",
+      ui_spec: false,
+      arm_type: 1,
+      sprite: spr_weapon_lightning1
+    },
+    body_types: [0, 1]
+  }],
+  "Boltstorm Gauntlet": [{
+    weapon_map: "Boltstorm Gauntlet",
+    position: "weapon",
+    weapon_data: {
+      display_type: "normal_fist",
+      ui_spec: false,
+      arm_type: 1,
+      sprite: spr_weapon_boltstorm_gauntlet_small
+    },
+    body_types: [0, 1]
+  }],
+  "Chainfist": [{
+    weapon_map: "Chainfist",
+    position: "weapon",
+    weapon_data: {
+      display_type: "normal_fist",
+      ui_spec: false,
+      arm_type: 1,
+      sprite: spr_weapon_chainfist_small
+    },
+    body_types: [0, 1]
+  }],
+  "Assault Chainfist": [{
+    weapon_map: "Assault Chainfist",
+    position: "weapon",
+    weapon_data: {
+      display_type: "normal_fist",
+      ui_spec: false,
+      arm_type: 1,
+      sprite: spr_weapon_chainfist_small
+    },
+    body_types: [0, 1]
+  }],
+  "Heavy Thunder Hammer": [{
+    weapon_map: "Heavy Thunder Hammer",
+    position: "weapon",
+    weapon_data: {
+      display_type: "melee_twohand",
+      sprite: spr_weapon_hthhammer,
+      arm_type: 0,
+      hand_on_top: true,
+      ui_spec: true,
+      ui_twoh: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Sniper Rifle": [{
+    weapon_map: "Sniper Rifle",
+    position: "weapon",
+    weapon_data: {
+      display_type: "melee_twohand",
+      sprite: spr_weapon_sniper,
+      ui_spec: true,
+      new_weapon_draw: true,
+      hand_type: 2,
+      hand_on_top: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Autocannon": [{
+    weapon_map: "Autocannon",
+    position: "weapon",
+    weapon_data: {
+      display_type: "melee_twohand",
+      sprite: spr_weapon_autocannon2,
+      ui_spec: true,
+      new_weapon_draw: true,
+      hand_type: 2,
+      hand_on_top: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Storm Shield": [
+    {
+      weapon_map: "Storm Shield",
+      position: "weapon",
+      cultures: ["knightly"],
+      weapon_data: {
+        display_type: "shield",
+        sprite: spr_weapon_storm,
+        arm_type: 2,
+        ui_spec: true
+      },
+      body_types: [0, 1, 2]
+    },
+    {
+      weapon_map: "Storm Shield",
+      position: "weapon",
+      weapon_data: {
+        display_type: "shield",
+        sprite: spr_weapon_storm_tall,
+        arm_type: 2,
+        ui_spec: true
+      },
+      body_types: [0, 1, 2]
+    },
+    {
+      weapon_map: "Storm Shield",
+      position: "weapon",
+      weapon_data: {
+        display_type: "shield",
+        sprite: spr_weapon_storm_tall_2,
+        arm_type: 2,
+        ui_spec: true
+      },
+      body_types: [0, 1, 2]
+    },
+    {
+      weapon_map: "Storm Shield",
+      position: "weapon",
+      weapon_data: {
+        display_type: "shield",
+        sprite: spr_weapon_storm2,
+        arm_type: 2,
+        ui_spec: true
+      },
+      body_types: [0, 1, 2]
+    }
+  ],
+  "Boarding Shield": [{
+    weapon_map: "Boarding Shield",
+    position: "weapon",
+    weapon_data: {
+      display_type: "shield",
+      sprite: spr_weapon_boarding,
+      arm_type: 2,
+      ui_spec: true
+    },
+    body_types: [0, 1, 2]
+  }],
+ "Infernus Heavy Bolter": [{
+    weapon_map: "Infernus Heavy Bolter",
+    position: "weapon",
+    weapon_data: {
+      ui_spec: true,
+      display_type: "ranged_twohand",
+      sprite: spr_weapon_infernus_hbolt,
+      ui_twoh: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Company Standard": [
+    {
+      weapon_map: "Company Standard",
+      position: "weapon",
+      cultures: ["Knightly"],
+      weapon_data: {
+        hand_on_top: true,
+        display_type: "melee_onehand",
+        sprite: spr_da_standard
+      },
+      body_types: [0, 1, 2]
+    },
+    {
+      weapon_map: "Company Standard",
+      position: "weapon",
+      weapon_data: {
+        hand_on_top: true,
+        display_type: "melee_onehand",
+        sprite: spr_weapon_standard2
+      },
+      body_types: [0, 1, 2]
+    },
+    {
+      weapon_map: "Company Standard",
+      position: "weapon",
+      weapon_data: {
+        hand_on_top: true,
+        display_type: "melee_onehand",
+        sprite: spr_weapon_standard2
+      },
+      body_types: [0, 1, 2]
+    }
+  ],
+  "Chainsword": [{
+    weapon_map: "Chainsword",
+    position: "weapon",
+    weapon_data: {
+      hand_on_top: true,
+      display_type: "melee_onehand",
+      sprite: spr_weapon_chsword,
+      hand_type: 2,
+      new_weapon_draw: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Combat Knife": [{
+    weapon_map: "Combat Knife",
+    position: "weapon",
+    weapon_data: {
+      hand_on_top: true,
+      display_type: "melee_onehand",
+      sprite: spr_weapon_knife,
+      hand_type: 2,
+      new_weapon_draw: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Power Sword": [
+    {
+      weapon_map: "Power Sword",
+      position: "weapon",
+      weapon_data: {
+        hand_on_top: true,
+        display_type: "melee_onehand",
+        sprite: spr_weapon_powswo,
+        hand_type: 2,
+        new_weapon_draw: true
+      },
+      body_types: [0, 1, 2]
+    },
+    {
+      weapon_map: "Power Sword",
+      position: "weapon",
+      cultures: ["Mongol"],
+      weapon_data: {
+        hand_on_top: true,
+        display_type: "melee_onehand",
+        sprite: spr_weapon_sword_turk,
+        hand_type: 2,
+        new_weapon_draw: true
+      },
+      body_types: [0, 1, 2]
+    },
+    {
+      weapon_map: "Power Sword",
+      position: "weapon",
+      cultures: ["Mongol"],
+      weapon_data: {
+        hand_on_top: true,
+        display_type: "melee_onehand",
+        sprite: spr_weapon_sword_oriental,
+        hand_type: 2,
+        new_weapon_draw: true
+      },
+      body_types: [0, 1, 2]
+    }
+  ],
+  "Eldar Power Sword": [{
+    weapon_map: "Eldar Power Sword",
+    position: "weapon",
+    weapon_data: {
+      hand_on_top: true,
+      display_type: "melee_onehand",
+      sprite: spr_weapon_eldsword
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Power Spear": [{
+    weapon_map: "Power Spear",
+    position: "weapon",
+    weapon_data: {
+      hand_on_top: true,
+      display_type: "melee_onehand",
+      sprite: spr_weapon_powspear,
+      hand_type: 2,
+      new_weapon_draw: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Thunder Hammer": [{
+    weapon_map: "Thunder Hammer",
+    position: "weapon",
+    weapon_data: {
+      hand_on_top: true,
+      display_type: "melee_onehand",
+      sprite: spr_weapon_thhammer,
+      hand_type: 2
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Power Axe": [{
+    weapon_map: "Power Axe",
+    position: "weapon",
+    weapon_data: {
+      hand_on_top: true,
+      display_type: "melee_onehand",
+      sprite: spr_weapon_powaxe,
+      hand_type: 2,
+      new_weapon_draw: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Crozius Arcanum": [{
+    weapon_map: "Crozius Arcanum",
+    position: "weapon",
+    weapon_data: {
+      hand_on_top: true,
+      display_type: "melee_onehand",
+      sprite: spr_weapon_crozarc
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Chainaxe": [{
+    weapon_map: "Chainaxe",
+    position: "weapon",
+    weapon_data: {
+      hand_on_top: true,
+      display_type: "melee_onehand",
+      sprite: spr_weapon_chaxe,
+      hand_type: 2,
+      new_weapon_draw: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Force Staff": [{
+    weapon_map: "Force Staff",
+    position: "weapon",
+    weapon_data: {
+      hand_on_top: true,
+      display_type: "melee_onehand",
+      sprite: spr_weapon_frcstaff,
+      hand_type: 2,
+      new_weapon_draw: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Force Sword": [{
+    weapon_map: "Force Sword",
+    position: "weapon",
+    weapon_data: {
+      hand_on_top: true,
+      display_type: "melee_onehand",
+      sprite: spr_weapon_powswo,
+      hand_type: 2,
+      new_weapon_draw: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Force Axe": [{
+    weapon_map: "Force Axe",
+    position: "weapon",
+    weapon_data: {
+      hand_on_top: true,
+      display_type: "melee_onehand",
+      sprite: spr_weapon_powaxe,
+      hand_type: 2,
+      new_weapon_draw: true
+    },
+    body_types: [0, 1, 2]
+  }],
+  "Relic Blade": [{
+    weapon_map: "Relic Blade",
+    position: "weapon",
+    weapon_data: {
+      hand_on_top: true,
+      display_type: "melee_onehand",
+      sprite: spr_weapon_relic_blade
+    },
+    body_types: [0, 1, 2]
+  }]
 }
 

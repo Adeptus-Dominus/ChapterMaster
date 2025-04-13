@@ -323,7 +323,8 @@ function ComplexSet(unit) constructor{
                     var _weapon_map = _mod.weapon_map;
                     if (unit.weapon_one() == _weapon_map){
                         array_push(right_arm_data , _mod.weapon_data);
-                    } else if( unit.weapon_two() == _weapon_map){
+                    }
+                    if( unit.weapon_two() == _weapon_map){
                         array_push(left_arm_data ,_mod.weapon_data); 
                     }
                 } else {
@@ -985,6 +986,14 @@ function ComplexSet(unit) constructor{
             
         }         
         assign_modulars();
+        if (struct_exists(global.weapon_visual_data, unit.weapon_one())){
+            assign_modulars(global.weapon_visual_data[$ unit.weapon_one()]);
+        }
+        if (unit.weapon_one() != unit.weapon_two()){
+            if (struct_exists(global.weapon_visual_data, unit.weapon_two())){
+                assign_modulars(global.weapon_visual_data[$ unit.weapon_two()]);
+            }
+        }
     }
 
      if (unit.IsSpecialist(SPECIALISTS_TECHS)){
