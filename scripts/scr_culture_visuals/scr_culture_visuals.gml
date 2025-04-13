@@ -1005,6 +1005,17 @@ global.weapon_visual_data = {
       sprite: spr_weapon_hflamer_term
     },
     body_types: [2]
+  },
+  {
+    weapon_map: "Heavy Flamer",
+    position: "weapon",
+    weapon_data: {
+      ui_spec: true,
+      display_type: "ranged_twohand",
+      sprite: spr_weapon_hflamer,
+      ui_twoh: true
+    },
+    body_types: [0, 1]
   }],
   "Plasma Cannon": [{
     weapon_map: "Plasma Cannon",
@@ -1016,6 +1027,17 @@ global.weapon_visual_data = {
       sprite: spr_weapon_plasma_cannon_term
     },
     body_types: [2]
+  },
+  {
+    weapon_map: "Plasma Cannon",
+    position: "weapon",
+    weapon_data: {
+      ui_spec: true,
+      display_type: "ranged_twohand",
+      sprite: spr_weapon_plasc,
+      ui_twoh: true
+    },
+    body_types: [0, 1]
   }],
   "Grav-Cannon": [{
     weapon_map: "Grav-Cannon",
@@ -1305,28 +1327,6 @@ global.weapon_visual_data = {
       ui_spec: true,
       display_type: "ranged_twohand",
       sprite: spr_weapon_mmelta,
-      ui_twoh: true
-    },
-    body_types: [0, 1, 2]
-  }],
-  "Heavy Flamer": [{
-    weapon_map: "Heavy Flamer",
-    position: "weapon",
-    weapon_data: {
-      ui_spec: true,
-      display_type: "ranged_twohand",
-      sprite: spr_weapon_hflamer,
-      ui_twoh: true
-    },
-    body_types: [0, 1, 2]
-  }],
-  "Plasma Cannon": [{
-    weapon_map: "Plasma Cannon",
-    position: "weapon",
-    weapon_data: {
-      ui_spec: true,
-      display_type: "ranged_twohand",
-      sprite: spr_weapon_plasc,
       ui_twoh: true
     },
     body_types: [0, 1, 2]
