@@ -142,7 +142,7 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 	case P_features.OrkWarboss:
 		player_hidden = 1;
 		planet_display= "Ork Warboss";
-		Warboss = "alive"
+		Warboss = "alive";
 		break;
 	case P_features.Monastery:
 		planet_display="Fortress Monastary";
@@ -152,11 +152,13 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 		break;
 	case P_features.Recruiting_World:
 		planet_display="Recruitment";
-		player_hidden = 0
+		player_hidden = 0;
+        recruit_type = 0;
+        recruit_cost = 0;
 		break;
 	default:
 		player_hidden = 1;
-		planet_display = 0
+		planet_display = 0;
 	}
 	static load_json_data = function(data){
 		 var names = variable_struct_get_names(data);

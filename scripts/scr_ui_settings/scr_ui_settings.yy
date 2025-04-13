@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "scr_ui_settings",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "Interface",
-    "path": "folders/Scripts/Interface.yy",
+  "$GMScript":"v1",
+  "%Name":"scr_ui_settings",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_ui_settings",
+  "parent":{
+    "name":"Interface",
+    "path":"folders/Scripts/Interface.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

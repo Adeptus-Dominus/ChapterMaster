@@ -43,9 +43,9 @@ if (menu==12) and (cooldown<=0) and (penitorium>0){
         }
         penitorium=0;
         var p=0;
-        for(var c=0; c<11; c++){
-            for(var e=1; e<=250; e++){
-                if (obj_ini.god[c,e]>=10){
+        for (var c = 0; c < 11; c++){
+            for (var e = 0; e < array_length(obj_ini.god[c]); e++){
+                if (obj_ini.god[c,e] == 10){
                     p+=1;
                     penit_co[p]=c;
                     penit_id[p]=e;
@@ -59,10 +59,9 @@ if (menu==12) and (cooldown<=0) and (penitorium>0){
 // ** Recruitement **
 else if (menu==15) and (cooldown<=0){
     if (mouse_x>=xx+748) and (mouse_x<xx+772){
-        if (mouse_y>=yy+355) and (mouse_y<yy+373) and (recruiting<5) and (gene_seed>0) and (obj_ini.doomed==0) and (string_count("|",recruiting_worlds)>0) and (penitent==0){
+        if (mouse_y>=yy+355) and (mouse_y<yy+373) and (recruiting<1) and (gene_seed>0) and (obj_ini.doomed==0) and (penitent==0){
             cooldown=8000;
             recruiting+=1;
-            income_recruiting-=2*(string_count("|",recruiting_worlds));
             scr_income();
         }
         if (mouse_y>=yy+395) and (mouse_y<yy+413) and (training_apothecary<6){
@@ -80,12 +79,19 @@ else if (menu==15) and (cooldown<=0){
             training_psyker+=1;
             scr_income();
         }
-        if (mouse_y>=yy+455) and (mouse_y<yy+473) and (training_techmarine<6){
-            cooldown=8000;
-            var pid=scr_role_count("Techmarine","");
-            if (pid>=((disposition[3]/2)+5)) then training_techmarine=0;
-            if (pid<((disposition[3]/2)+5)){
-                training_techmarine+=1;
+        if ((mouse_y >= yy + 455) && (mouse_y < yy + 473) && (training_techmarine < 6)) {
+            cooldown = 8000;
+            if (obj_controller.faction_status[eFACTION.Mechanicus] != "War") {
+                var _chapter_tech_count = scr_role_count("Techmarine", "");
+                if (_chapter_tech_count >= ((disposition[3] / 2) + 5)) {
+                    training_techmarine = 0;
+                }
+                if (_chapter_tech_count < ((disposition[3] / 2) + 5)) {
+                    training_techmarine += 1;
+                    scr_income();
+                }
+            } else {
+                training_techmarine += 1;
                 scr_income();
             }
         }
@@ -94,7 +100,6 @@ else if (menu==15) and (cooldown<=0){
         if (mouse_y>=yy+355) and (mouse_y<yy+373) and (recruiting>0){
             cooldown=8000;
             recruiting-=1;
-            income_recruiting+=2*(string_count("|",obj_controller.recruiting_worlds));
             scr_income();
         }
         if (mouse_y>=yy+395) and (mouse_y<yy+413) and (training_apothecary>0){

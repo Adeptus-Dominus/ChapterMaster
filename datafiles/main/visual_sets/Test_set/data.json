@@ -1,0 +1,9 @@
+[
+	{
+		"name" : "test_sprite",
+		"data" : {
+			"body_types" :[0],
+			"position" : "head",        
+    	},
+	}
+]

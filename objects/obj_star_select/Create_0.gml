@@ -13,6 +13,7 @@ ork=0;
 tau=0;
 chaos=0;
 p_data = new PlanetData(0, target);
+has_player_forces = array_sum(target.p_player);
 torpedo = scr_item_count("Cyclonic Torpedo");
 
 feature= "";
@@ -32,6 +33,59 @@ colonist_button.update({
 colonist_button.bind_method = function(){
     var doner = array_random_element(obj_star_select.potential_doners);
     new_colony_fleet(doner[0],doner[1],target.id,obj_controller.selecting_planet,"bolster_population");
+};
+
+recruiting_button = new PurchaseButton(0);
+recruiting_button.update({
+	tooltip : "Enable recruiting",
+	label : "Recruiting",
+	target : target,
+});
+recruiting_button.bind_method = function(){
+    if (!p_data.has_feature(P_features.Recruiting_World)) {
+        p_data.add_feature(P_features.Recruiting_World);
+        obj_controller.recruiting_worlds += $"{planet_numeral_name(obj_controller.selecting_planet, target)}|";
+    } else {
+        delete_features(target.p_feature[obj_controller.selecting_planet], P_features.Recruiting_World);
+        obj_controller.recruiting_worlds=string_replace(obj_controller.recruiting_worlds,string(target.name)+" "+scr_roman(obj_controller.selecting_planet)+"|","");
+    }
+};
+
+recruitment_type_button = new PurchaseButton(0);
+recruitment_type_button.update({
+	tooltip : "Change recruitment type",
+	label : "Recruitment Type",
+	target : target,
+});
+recruitment_type_button.bind_method = function(){
+    var _recruit_world = p_data.get_features(P_features.Recruiting_World)[0];
+    if (_recruit_world.recruit_type < 1) {
+        _recruit_world.recruit_type++
+    } else {
+        _recruit_world.recruit_type--
+    }
+};
+
+recruitment_costdown_button = new PurchaseButton(0);
+recruitment_costdown_button.update({
+	tooltip : "Deaccelerate recruitment",
+	label : "RQD",
+	target : target,
+});
+recruitment_costdown_button.bind_method = function(){
+    var _recruit_world = p_data.get_features(P_features.Recruiting_World)[0];
+    _recruit_world.recruit_cost--
+};
+
+recruitment_costup_button = new PurchaseButton(0);
+recruitment_costup_button.update({
+	tooltip : "Accelerate recruitment with req",
+	label : "RQU",
+	target : target,
+});
+recruitment_costup_button.bind_method = function(){
+    var _recruit_world = p_data.get_features(P_features.Recruiting_World)[0];
+    _recruit_world.recruit_cost++
 };
 
 buttons_selected = false;

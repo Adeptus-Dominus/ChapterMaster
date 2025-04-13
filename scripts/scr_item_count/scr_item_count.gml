@@ -1,26 +1,28 @@
-function scr_item_count(item_type, quality="any") {
+/// @description Returns the total quantity of an item, optionally filtered by quality
+/// @param {string} _item_name The name of the item to count
+/// @param {string} _quality The quality to count ("any", or specific like "standard", "master_crafted", etc.)
+/// @return {real} The total count of the item at the specified quality
+function scr_item_count(_item_name, _quality = "any") {
+    var _count = 0;
 
-	// This script checks the equipment variables for the named item and returns the combined quantity
+    if (!struct_exists(obj_ini.equipment, _item_name)) {
+        return 0;
+    }
 
-	var von=0;
-	for (var i=0;i<array_length(obj_ini.equipment);i++){
-	   if (obj_ini.equipment[i]==item_type){
-	   		/*in theory we should be able to break here but there seems
-	   		to be the implication that an equipment item can be in the 
-	   		equipemnt list more than once so will have to leave till I can
-	   		find where stuff is added
-	   		*/
+    var _equipment_entry = obj_ini.equipment[$ _item_name];
+    var _equipment_counts = _equipment_entry.quantity;
 
-	   		if (quality=="any"){
-	   			von+=obj_ini.equipment_number[i];
-	   		} else {
-	   			for (var q=0;q<array_length(obj_ini.equipment_quality[i]);q++){
-	   				if (obj_ini.equipment_quality[i][q] == quality) then von++;
-	   			}
-	   		}
-	   }
-	}
-	return(von);
+    if (_quality == "any" || _quality == "best" || _quality == "worst") {
+        var _qualities = variable_struct_get_names(_equipment_counts);
+        for (var i = 0; i < array_length(_qualities); i++) {
+            _quality = _qualities[i];
+            _count += _equipment_counts[$ _quality];
+        }
+    } else {
+        if (struct_exists(_equipment_counts, _quality)) {
+            _count = _equipment_counts[$ _quality];
+        }
+    }
 
-
+    return _count;
 }

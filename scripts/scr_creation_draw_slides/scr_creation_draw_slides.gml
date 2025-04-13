@@ -186,7 +186,11 @@ function draw_chapter_select(){
 			if (chap.icon > global.normal_icons_count) {
 				if (string_starts_with(chap.icon_name, "custom")) {
 					var cuicon = obj_cuicons.spr_custom_icon[chap.icon - normal_and_builtin];
-					draw_sprite_stretched(cuicon, 0, grid.x1, grid.y1, grid.w, grid.h);
+                    if (cuicon != -1) {
+                        draw_sprite_stretched(cuicon, 0, grid.x1, grid.y1, grid.w, grid.h);
+                    } else {
+                        draw_sprite_stretched(spr_icon_chapters, 0, grid.x1, grid.y1, grid.w, grid.h);
+                    }
 				} else {
 					draw_sprite_stretched(spr_icon_chapters, chap.icon - global.normal_icons_count, grid.x1, grid.y1, grid.w, grid.h);
 				}
@@ -232,6 +236,7 @@ function draw_chapter_select(){
 					global.chapter_id = chap.id;
 					change_slide = 1;
 					goto_slide = 2;
+					custom = 2;
 					scr_chapter_new(chap.id);
 				} else {
 					global.chapter_id = chap.id;
@@ -299,7 +304,7 @@ function draw_chapter_select(){
 	grid.new_cell();
 
 	i = 1001;
-	repeat (2) {
+    for (var c = 1001; c < 1003; c++) {
 		grid.new_cell();
 
 		draw_sprite(spr_creation_icon, 0, grid.x1, grid.y1);
@@ -321,12 +326,12 @@ function draw_chapter_select(){
 				icon_name = "da";
 				change_slide = 1;
 				goto_slide = 2;
-				if (i == 1001) {
-					custom = 2;
+				if (c == 1001) {
+                    custom = 2;
 					scr_chapter_random(0);
 				}
-				if (i == 1002) {
-					custom = 1;
+				if (c == 1002) {
+                    custom = 1;
 					scr_chapter_random(1);
 				}
 			}
@@ -494,45 +499,68 @@ function draw_chapter_trait_select(){
         draw_line(445,291,1125,291);
         
         draw_set_halign(fa_center);
-        draw_text_transformed(800,301,string_hash_to_newline("Chapter Stats"),0.6,0.6,0);
-        draw_set_halign(fa_right);
+        draw_text_transformed(800,301,"Chapter Stats",0.6,0.6,0);
+        draw_set_halign(fa_left);
         
-        draw_text_transformed(617,332,$"Strength ({strength})",0.5,0.5,0);
-        draw_text_transformed(617,387,$"Cooperation ({cooperation})",0.5,0.5,0);
-        draw_text_transformed(617,442,$"GeneSeed Purity ({purity})",0.5,0.5,0);
-        draw_text_transformed(617,497,$"GeneSeed Stability ({stability})",0.5,0.5,0);
-        var arrow_buttons_controls = [strength, cooperation, purity, stability]
-        for (var i=0;i<4;i++){
-            if (custom=2) then draw_sprite_stretched(spr_arrow,0,625,325+(i*55),32,32);
-            if (scr_hit(625,325+(i*55),657,357+(i*55))){
-                obj_cursor.image_index=1;
-                if (cooldown<=0) and (custom=2) and (arrow_buttons_controls[i]>1) and (mouse_left>=1){
-                    arrow_buttons_controls[i]-=1;
-                    points-=10;
-                    cooldown=8000;
+        var _strength_ratings = ["", "Decimated", "Reduced", "Reduced", "Reduced", "Average", "Above Average", "Above Average", "Considerable", "Considerable", "Overwhelming"];
+        var _cooperation_ratings = ["", "Antagonistic", "Uncooperative", "Uncooperative", "Uncooperative", "Neutral", "Trusted", "Trusted", "Trusted", "Trusted", "Exemplary"];
+        var _geneseed_ratings = ["", "Abnormal", "Horrible", "Horrible", "Bad", "Bad", "Mediocre", "Mediocre", "Good", "Good", "Perfect"];
+        draw_text_transformed(505, 332, $"Strength: {_strength_ratings[strength]} ({strength})", 0.5, 0.5, 0);
+        draw_text_transformed(505, 387, $"Cooperation: {_cooperation_ratings[cooperation]}  ({cooperation})", 0.5, 0.5, 0);
+        draw_text_transformed(505, 442, $"Gene-Seed Purity: {_geneseed_ratings[purity]} ({purity})", 0.5, 0.5, 0);
+        draw_text_transformed(505, 497, $"Gene-Seed Stability: ({stability}%)", 0.5, 0.5, 0);
+        
+        var arrow_buttons_controls = [strength, cooperation, purity, stability];
+        var score_costs = [10, 10, 10, 1];
+        var scores_max = [10, 10, 10, 99];
+        var scores_min = [1, 1, 1, 1];
+        var click_change = keyboard_check(vk_control) ? 10 : 1;
+        if (custom == 2) {
+            for (var i = 0; i < 4; i++) {
+                draw_sprite_stretched(spr_arrow, 0, 436, 325 + (i * 55), 32, 32);
+                if (scr_hit(436, 325 + (i * 55), 436 + sprite_get_width(spr_arrow), 357 + (i * 55))) {
+                    obj_cursor.image_index = 1;
+                    tooltip = "Decrease";
+                    tooltip2 = "(Hold Ctrl to decrease by 10)";
+                    if (scr_click_left() && (arrow_buttons_controls[i] - click_change) >= scores_min[i]) {
+                        arrow_buttons_controls[i] -= click_change;
+                        points -= score_costs[i] * click_change;
+                    }
+                }
+                draw_sprite_stretched(spr_arrow, 1, 470, 325 + (i * 55), 32, 32);
+                if (scr_hit(470, 325 + (i * 55), 470 + sprite_get_width(spr_arrow), 357 + (i * 55))) {
+                    obj_cursor.image_index = 1;
+                    tooltip = "Increase";
+                    tooltip2 = "(Hold Ctrl to increase by 10)";
+                    if (scr_click_left() && (arrow_buttons_controls[i] + click_change) <= scores_max[i] && (points + (score_costs[i] * click_change) <= maxpoints)) {
+                        arrow_buttons_controls[i] += click_change;
+                        points += score_costs[i] * click_change;
+                    }
                 }
             }
-            if (custom=2) then draw_sprite_stretched(spr_arrow,1,1135,325+(i*55),32,32);
-            if (scr_hit(1135,325+(i*55),1167,357+(i*55))){
-                obj_cursor.image_index=1;
-                if (cooldown<=0) and (custom=2) and (arrow_buttons_controls[i]<10) and (points+10<=maxpoints) and (mouse_left>=1){
-                    arrow_buttons_controls[i]+=1;
-                    points+=10;
-                    cooldown=8000;
-                }
-            }
-            draw_rectangle(668,330+(i*55),1125,351+(i*55),1);   
-            draw_rectangle(668,330+(i*55),668+(arrow_buttons_controls[i]*45.7),351+(i*55),0);     
         }
+
         strength = arrow_buttons_controls[0];
         cooperation = arrow_buttons_controls[1];
         purity = arrow_buttons_controls[2];
         stability = arrow_buttons_controls[3];
         
-        if (scr_hit(532,325,1166,357)){tooltip="Strength";tooltip2="How many companies your chapter begins with.  For every score below five a company will be removed; conversely, each score higher grants 50 additional astartes.";}
-        if (scr_hit(486,380,1166,412)){tooltip="Cooperation";tooltip2="How diplomatic your chapter is.  A low score will lower starting dispositions of Imperial factions and make disposition increases less likely to occur.";}
-        if (scr_hit(442,435,1166,467)){tooltip="Purity";tooltip2="A measure of how pure and mutation-free your chapter's gene-seed is.  A perfect score means no mutations must be chosen.  The lower the score, the more mutations.";}
-        if (scr_hit(423,490,1166,522)){tooltip="Stability";tooltip2="A measure of how easily new mutations and corruption can occur with your chapter-gene seed.  A perfect score makes the gene-seed almost perfectly stable.";}
+        if (scr_hit(505, 325, 800, 357)) {
+            tooltip = "Strength";
+            tooltip2 = "How many marines your chapter has. \nFor every score below five a company will be removed; conversely, each score higher grants 50 additional astartes.";
+        }
+        if (scr_hit(505, 380, 800, 412)) {
+            tooltip = "Cooperation";
+            tooltip2 = "How diplomatic your chapter is. \nA low score will lower starting dispositions of Imperial factions and make disposition increases less likely to occur.";
+        }
+        if (scr_hit(505, 435, 800, 467)) {
+            tooltip = "Gene-Seed Purity";
+            tooltip2 = "How many inherent mutations your gene-seed has. \nEach score below ten means one mutations will need to be chosen.";
+        }
+        if (scr_hit(505, 490, 800, 522)) {
+            tooltip = "Gene-Seed Stability";
+            tooltip2 = "How easily new mutations and corruption can occur with your chapter's gene seed. \nAffects the amount of random mutations your existing marines have, and the amount new aspirants get after the implantation is finished.";
+        }
     }
     
     if (popup!="icons"){

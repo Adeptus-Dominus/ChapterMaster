@@ -23,7 +23,7 @@ function UnitQuickFindPanel() constructor{
 	    garrison_log = {};
 	    obj_controller.specialist_point_handler.calculate_research_points(false);
 	    var _ship_count = array_length(obj_ini.ship_carrying);
-	    show_debug_message(obj_controller.specialist_point_handler.point_breakdown);
+	    // show_debug_message(obj_controller.specialist_point_handler.point_breakdown);
 	    for (var co=0;co<=obj_ini.companies;co++){
 	    	for (var u=0;u<array_length(obj_ini.TTRPG[co]);u++){
 				/// @type {Struct.TTRPG_stats}
@@ -44,9 +44,9 @@ function UnitQuickFindPanel() constructor{
 	    				array_push(garrison_log[$ unit_location[2]].units, unit);
 	    			}
 	    			group = garrison_log[$ unit_location[2]];
-	    			if (unit.IsSpecialist("apoth")){
+	    			if (unit.IsSpecialist(SPECIALISTS_APOTHECARIES)){
 						group.healers++;
-	    			} else if (unit.IsSpecialist("forge")){
+	    			} else if (unit.IsSpecialist(SPECIALISTS_TECHS)){
 						group.techies++;
 	    			}
 	    		} else if (unit_location[0]==location_types.ship){
@@ -167,26 +167,38 @@ function UnitQuickFindPanel() constructor{
 			    draw_text(xx+160, yy+90+(20*i), cur_fleet.frigate_number);
 			    draw_text(xx+240, yy+90+(20*i), cur_fleet.escort_number);
 			    var _fleet_point_data = cur_fleet.point_breakdown;
+			    var _loc_display_string = "";
+			    var _zoomable_loc = true;
 			    if (cur_fleet.action == "Lost"){
-			    	draw_text(xx+310, yy+90+(20*i), "Lost");
+			    	_loc_display_string = "Lost";
+			    	_zoomable_loc = false;
 			    }
+			    else if (string_count("crusade", cur_fleet.action)){
+			    	_loc_display_string = "Crusading";
+			    	_zoomable_loc = false;
+			    }			    
 			    else if (cur_fleet.action=="move"){
-			    	draw_text(xx+310, yy+90+(20*i), "Warp Travel");
+			    	_loc_display_string = "Warp Travel";
 			    } else {
 			    	var _near_star = instance_nearest(cur_fleet.x, cur_fleet.y, obj_star);
-			    	draw_text(xx+310, yy+90+(20*i), _near_star.name);
+			    	_loc_display_string = _near_star.name;
+			    	
 			    	var _special_points = obj_controller.specialist_point_handler.point_breakdown.systems;
 			    	if (struct_exists(_special_points,_near_star)){
 						var _fleet_point_data = _special_points[$ _near_star.name][0];
 					}
 			    }
+			    draw_text(xx+310, yy+90+(20*i), _loc_display_string);
+
 			    var _fleet_coords = [xx+10, yy+90+(20*i)-2,xx+main_panel.width,yy+90+(20*i)+18];
 			    
-			    if (point_and_click([xx+10, yy+90+(20*i)-2,xx+main_panel.width,yy+90+(20*i)+18])){
-			    	travel_target = [cur_fleet.x, cur_fleet.y];
-			    	travel_increments = [(travel_target[0]-obj_controller.x)/15,(travel_target[1]-obj_controller.y)/15];
-			    	travel_time = 0;
-			    }
+			    if (_zoomable_loc){
+    			    if (point_and_click([xx+10, yy+90+(20*i)-2,xx+main_panel.width,yy+90+(20*i)+18])){
+    			    	travel_target = [cur_fleet.x, cur_fleet.y];
+    			    	travel_increments = [(travel_target[0]-obj_controller.x)/15,(travel_target[1]-obj_controller.y)/15];
+    			    	travel_time = 0;
+    			    }
+    			}
 
 			    if (scr_hit(_fleet_coords)){
 					detail_slate.draw(xx+main_panel.width-10,_fleet_coords[1]-20, 1.5, 1.5);
@@ -442,7 +454,7 @@ function exit_adhoc_manage(){
 	if (struct_exists(location_viewer.garrison_log, selection_data.system.name)){
 		var sys_name = selection_data.system.name;
 		group_selection(location_viewer.garrison_log[$sys_name].units,selection_data);
-		company_data={};
+		new_company_struct();
 	} else {
 		exit_adhoc_manage();		
 	} 	
@@ -698,6 +710,16 @@ function unload_selection(){
         var unload_star = star_by_name(selecting_location);
         if (unload_star != "none"){
             if (unload_star.space_hulk!=1){
+                for (var t = 0; t < array_length(display_unit); t++) {
+                    if (man_sel[t] == 1) {
+                    	var _unit = display_unit[t];
+                        if (is_array(_unit)) {
+                        	set_vehicle_last_ship(_unit);
+                        } else {
+                        	_unit.set_last_ship();
+                        }
+                    }
+                }
                 boba=instance_create(unload_star.x,unload_star.y,obj_star_select);
                 boba.loading=1;
                 // selecting location is the ship right now; get it's orbit location
@@ -744,7 +766,7 @@ function promote_selection(){
 
         var god=0,nuuum=0;
         for(var f=1; f<array_length(display_unit); f++){
-            if ((ma_promote[f]>=1 || is_specialist(ma_role[f], "rank_and_file")  || is_specialist(ma_role[f], "squad_leaders")) && man_sel[f]==1){
+            if ((ma_promote[f]>=1 || is_specialist(ma_role[f], SPECIALISTS_RANK_AND_FILE)  || is_specialist(ma_role[f], SPECIALISTS_SQUAD_LEADERS)) && man_sel[f]==1){
                 nuuum+=1;
                 if (pip.min_exp==0) then pip.min_exp=ma_exp[f];
                 pip.min_exp=min(ma_exp[f],pip.min_exp);
@@ -777,7 +799,7 @@ function setup_planet_mission_group(){
 
 
 function planet_selection_action(){
-	var garrison_assignment = (obj_controller.managing>0 && obj_controller.view_squad && loading);
+	var garrison_assignment = obj_controller.view_squad && loading;
 	var xx=__view_get( e__VW.XView, 0 )+0;
 	var yy=__view_get( e__VW.YView, 0 )+0;
 	if (instance_exists(target)){

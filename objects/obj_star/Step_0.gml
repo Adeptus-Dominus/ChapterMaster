@@ -1,5 +1,5 @@
 // Sets up the images for each system and planet
-if (global.load>0){
+if (global.load>=0){
     sprite_index=spr_star;
     if (star=="orange1") then image_index=0;
     if (star=="orange2") then image_index=1;

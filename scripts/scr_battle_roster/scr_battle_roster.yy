@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "scr_battle_roster",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "Combat",
-    "path": "folders/Scripts/Combat.yy",
+  "$GMScript":"v1",
+  "%Name":"scr_battle_roster",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_battle_roster",
+  "parent":{
+    "name":"Combat",
+    "path":"folders/Scripts/Combat.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

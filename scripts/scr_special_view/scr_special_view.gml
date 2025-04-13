@@ -56,7 +56,7 @@ function scr_special_view(command_group) {
 	}
 
 	if (command_group==12) or (command_group==0){// Apothecarion
-		var apothecaries = collect_role_group(["apoth",true]);
+		var apothecaries = collect_role_group([SPECIALISTS_APOTHECARIES,true]);
 		for (var i=0;i<array_length(apothecaries);i++){
 			unit = apothecaries[i];
 			add_man_to_manage_arrays(apothecaries[i]);
@@ -66,7 +66,7 @@ function scr_special_view(command_group) {
 
 	v=0;
 	if (command_group==13) or (command_group==0){// Librarium
-		var libs = collect_role_group(["libs",true]);
+		var libs = collect_role_group([SPECIALISTS_LIBRARIANS,true]);
 		for (var i=0;i<array_length(libs);i++){
 			unit = libs[i];
 			add_man_to_manage_arrays(libs[i]);
@@ -75,7 +75,7 @@ function scr_special_view(command_group) {
 
 	v=0;
 	if (command_group==14) or (command_group==0){// Reclusium
-		var chaps = collect_role_group(["chap",true]);
+		var chaps = collect_role_group([SPECIALISTS_CHAPLAINS,true]);
 		for (var i=0;i<array_length(chaps);i++){
 			unit = chaps[i];
 			add_man_to_manage_arrays(chaps[i]);
@@ -85,10 +85,10 @@ function scr_special_view(command_group) {
 	v=0;
 	squads=0;
 	if (command_group==15) or (command_group==0){// Armamentarium
-		var chaps = collect_role_group(["forge",true]);
-		for (var i=0;i<array_length(chaps);i++){
-			unit = chaps[i];
-			add_man_to_manage_arrays(chaps[i]);
+		var techs = collect_role_group([SPECIALISTS_TECHS,true]);
+		for (var i=0;i<array_length(techs);i++){
+			unit = techs[i];
+			add_man_to_manage_arrays(techs[i]);
 		}
 	}
 
@@ -186,9 +186,7 @@ function scr_special_view(command_group) {
 	}
 
 	man_current=0;
-	man_max=array_length(display_unit)+2;
-	man_see=38-4;
-	if (man_max>=man_see) then man_max+=2;
+	man_max=MANAGE_MAN_MAX;
 	// if (command_group=13) then man_max+=2;
 
 

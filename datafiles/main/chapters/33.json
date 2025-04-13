@@ -1,0 +1,1755 @@
+{
+    "chapter": {
+        "id": 33,
+        "name": "Deathwatch",
+        "flavor": "Known as the Shield that Slays, they are the Chamber Militant of the Ordo Xenos, charged with protecting it in its search of information, containment, and ultimate destruction of all xeno species. Consisting of Battle-Brothers drawn from many Chapters, the Deathwatch operates from Watch Fortresses and Watch Stations across the whole of the Imperium.",
+        "origin": 3, // 1 - Founding, 2 - Successor, 3 - Other/non-canon/fanmade, 4 - Custom
+        "points": 150,
+        "founding": 0, // The id of the founding chapter, 0 for unknown or none, 10 for random
+        "splash": 33, // in \images\creation\chapters\splash folder, the img number, 1 being Dark Angels etc.
+        "icon": 33, // in \images\creation\chapters\icons folder, the icon number, 1 being Dark Angels etc.
+        "icon_name": "dw", // ? dunno what this is used for yet but the icon breaks if you dont use it 
+        "fleet_type": 1, // 1= Homeworld, 2 = Fleet based, 3 = Penitent
+        "strength": 1, // 1-10
+        "purity": 10, // 1-10
+        "stability": 96, // 1-10
+        "cooperation": 5, // 1-10
+        "homeworld_exists": 1, // 1 = true
+        "recruiting_exists": 0, // 1 = true
+        "homeworld_rule": 1, // 1 = Govenor, 2 = Countries, 3 = Personal Rule
+        "homeworld": "Dead", // one of  "Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
+        "homeworld_name": "", // Homeworld Planet name, leave blank to autogenerate
+        "recruiting": "Death", // one of "Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
+        "recruiting_name": "", // Recruiting Planet name, leave blank to autogenerate
+        "discipline": "librarius", // one of 'librarius' 'biomancy' 'pyromancy' 'telekinesis' 'rune Magick'
+        "aspirant_trial": "SURVIVAL", // one of "BLOODDUEL" "HUNTING" "SURVIVAL" "EXPOSURE" "KNOWLEDGE" "CHALLENGE"  "APPRENTICESHIP" 
+        "advantages": [
+            "", // leave the first entry blank for now
+            "Enemy: Eldar",
+            "Enemy: Necrons",
+            "Enemy: Orks",
+            "Enemy: Tau",
+            "Enemy: Tyranids",
+            "Elite Guard",
+            "",
+            ""
+        ],
+        "disadvantages": [
+            "", // leave the first entry blank for now
+            "Splintered",
+            "Tech-Heresy",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        ],
+        "colors": {
+            "main": "Black",
+            "secondary": "Black",
+            "pauldron_r": "Black",
+            "pauldron_l": "Silver",
+            "trim": "Dark Gold",
+            "lens": "Red",
+            "weapon": "Dark Red",
+            "special": 0 // 0 - normal, 1 - Breastplate, 2 - Vertical, 3 - Quadrant
+            //"trim_on": 0 // 0 no, 1 yes for pauldron trim colours. Trim colour will still be used for certain complex livery items 
+        },
+        "complex_livery_data": {
+            "sgt": {
+                "helm_pattern": 0,
+                "helm_primary": 8,
+                "helm_secondary": 8,
+                "helm_detail": 8,
+                "helm_lens": 9
+            },
+            "vet_sgt": {
+                "helm_pattern": 0,
+                "helm_primary": 8,
+                "helm_secondary": 8,
+                "helm_detail": 8,
+                "helm_lens": 9
+            },
+            "captain": {
+                "helm_pattern": 0,
+                "helm_primary": 8,
+                "helm_secondary": 8,
+                "helm_detail": 8,
+                "helm_lens": 9
+            },
+            "veteran": {
+                "helm_pattern": 0,
+                "helm_primary": 8,
+                "helm_secondary": 8,
+                "helm_detail": 8,
+                "helm_lens": 9
+            }
+        },
+        "names": {
+            //Chapter Staff
+            "hchaplain": "", // Head Chaplain
+            "clibrarian": "", // Chief Librarian
+            "fmaster": "", // Forge Master
+            "hapothecary": "", // Head Apothecary
+            //Company Captains 1 - 10
+            "honorcapt": "",
+            "watchmaster": "",
+            "arsenalmaster": "",
+            "admiral": "",
+            "marchmaster": "",
+            "ritesmaster": "",
+            "victualler": "",
+            "lordexec": "",
+            "relmaster": "",
+            "recruiter": ""
+        },
+        "battle_cry": "For the Emperor!",
+        "equal_specialists": 0, // 0 if no, 1 if yes. If yes, will distribute specialist roles like Assaults and Devastators equally between companies. Otherwise all Assaults go in Company 8 and all Devastators in Company 9
+        "load_to_ships": {
+            "escort_load": 2, // 0 no, 2 yes, 1 doesnt do anything :)
+            "split_scouts": 0, // 0 no, 1 yes. If yes, splits scouts between companies equally. Otherwise all scouts are kept in 10th Company.
+            "split_vets": 1 // 0 no, 1 yes. If yes, all veterans are distrubuted equally between companies. Otherwise all veterans are kept in the 1st Company
+        },
+        "successors": 0, //total number of successor chapters
+        "mutations": {
+            "preomnor": 0,
+            "voice": 0,
+            "doomed": 0,
+            "lyman": 0,
+            "omophagea": 0,
+            "ossmodula": 0,
+            "membrane": 0,
+            "zygote": 0,
+            "betchers": 0,
+            "catalepsean": 0,
+            "secretions": 0,
+            "occulobe": 0,
+            "mucranoid": 0
+        },
+        "disposition": [
+            0, // nothing
+            0, // Progenitor faction
+            50, // Imperium
+            50, // Admech
+            70, //Inquisition
+            50, // Ecclesiarchy
+            60, // Astartes
+            0 // nothing
+        ],
+        "chapter_master": {
+            "name": "",
+            "specialty": 1, //1 Leader, 2 Champion, 3 Psyker,
+            "melee": 5, // 1 twin power fists ... 8 force staff
+            "ranged": 2, // 1 boltstorm gauntlets ... 7 storm shield
+            // All chapter masters have the trait `Lead by Example` by default
+            "traits": [
+                ""
+            ],
+            "gear": "",
+            "mobi": "",
+            "armour": "" // default is Artificer armour, only needed to set if changing to something else.
+        },
+        "artifact": [
+            {
+                "name": "The Thief of Secrets",
+                "base_weapon_type": "Power Sword",
+                "description": "The power sword known as the Thief of Secrets is inhabited by a machine spirit that has an unquenchable thirst for knowledge. When it tastes the vital fluids of an enemy, those liquids are absorbed into the blade and codified by the honeycombed array of logicum cells within. The biological secrets of the impaled creature are then analysed by the blade’s machine spirit, allowing its wielder to exploit the stolen knowledge from that point on.",
+                "slot": "wep1"
+            }
+        ],
+        "company_titles": [
+            "",
+            "Watch Company Primus",
+            "Watch Company Secundus",
+            "Watch Company Tertius",
+            "Watch Company Quartus",
+            "Watch Company Quintus",
+            "",
+            "",
+            "",
+            "",
+            ""
+        ],
+        "flagship_name": "", // leave blank to autogenerate
+        /**
+        * * Default fleet composition
+        * * Homeworld 
+        * - 2 Battle Barges, 8 Strike cruisers, 7 Gladius, 3 Hunters
+        * * Fleet based and Penitent 
+        * - 4 Battle Barges, 3 Strike Cruisers, 7 Gladius, 3 Hunters
+        * 
+        * use negative numbers to subtract ships
+        * * Stacks with advantages/disadvantages
+        */
+        "extra_ships": {
+            "battle_barges": -1,
+            "strike_cruisers": -4,
+            "gladius": 0,
+            "hunters": 0
+        },
+        /**
+        * * Default HQ Layout (Does not include company specialists)
+        * - 8 Chaplains, 8 Techmarines, 8 Apothecary, 2 Epistolary (librarian), 
+        * - 2 Codiciery, 4 Lexicanum
+        * * Default Company specialists (divided based on `load_to_ships.split_vets` setting)
+        * - 20 Terminators, 85 Veterans, 20 Devastators, 20 Assault
+        * Use negative numbers to subtract
+        * * Stacks with advantages/disadvantages
+        */
+        "extra_specialists": {
+            "chaplains": 0,
+            "techmarines": 0,
+            "apothecary": 0,
+            "epistolary": 0,
+            "epistolary_per_company": 1,
+            "codiciery": 0,
+            "lexicanum": 0,
+            "terminator": -21,
+            "assault": -10,
+            "veteran": -20,
+            "devastator": -10
+        },
+        /**
+        * * Default Marine strength
+        * - 100 marines per company
+        * use negative numbers to subtract
+        * * Stacks with strength for non-founding chapters only
+        */
+        "extra_marines": {
+            "second": -55,
+            "third": -55,
+            "fourth": -55,
+            "fifth": -55,
+            "sixth": -200,
+            "seventh": -200,
+            "eighth": -200,
+            "ninth": -200,
+            "tenth": -200
+        },
+        "extra_vehicles": {
+            "rhino": 0,
+            "whirlwind": 0,
+            "predator": 0,
+            "land_raider": 0,
+            "land_speeder": 0
+        },
+        /** Add extra starting items ["Item Name", Number to add] */
+        "extra_equipment": [
+            [
+                "Stalker Pattern Bolter",
+                20
+            ]
+        ],
+        /** 
+        * Provide a place to change the default name and equipment preferences of roles for this chapter
+        * `custom_roles` should be used for specialist/leadership type roles, 
+        * To affect an entire squad, see `custom_squads` below
+        */
+        "custom_roles": {
+            // "honour_guard": {
+            //     "name": "Honour Guard",
+            //     "wep1": "Power Sword",
+            //     "wep2": "Bolter"
+            // },
+            // "veteran": {
+            //     "name": "Veteran",
+            //     "wep1": "Chainaxe"
+            // },
+            "captain": {
+                "name": "Watch Captain",
+                "wep1": "Power Sword",
+                "wep2": "Infernus Pistol"
+            }
+            // "tactical": {
+            //     "name": "Tactical"
+            // },
+            // "devastator": {
+            //     "name": "Devastator"
+            // },
+            // "assault": {
+            //     "name": "Assault",
+            //     "wep1": "Chainsword"
+            // },
+            // "scout": {
+            //     "name": "Scout",
+            //     "wep1": "Sniper Rifle"
+            // },
+            // "chaplain": {
+            //     "name": "Chaplain",
+            // },
+            // "techmarine": {
+            //     "name": "Techmarine",
+            //     "wep1": "Power Axe"
+            // },
+            // "apothecary": {
+            //     "name": "Apothecary",
+            //     "wep1": "Power Axe"
+            // },
+            // "librarian": {
+            //     "name": "Librarian",
+            //     "wep1": "Force Staff"
+            // },
+            // "sergeant": {
+            //     "name": "Sergeant",
+            //     "wep1": "Chainaxe"
+            // },
+            // "veteran_sergeant": {
+            //     "name": "Veteran Sergeant",
+            //     "wep1": "Chainaxe"
+            // }
+        },
+        /**
+        * * Custom squad roles, loadouts and formations
+        * When companies are made, squads are formed based on these rules: 
+        * - squad name: one of captain, terminator, terminator_assault, sternguard_veteran,
+                vanguard_veteran, devastator, tactical, assault, scout, scout_sniper
+        * - squad array layout [Role, Role, ...Role, type_data]
+        * - each element of the array is a default Role, and their settings.
+            - if you changed the role using `custom_roles` you need to reference the role with this new name
+            - for non-leader roles it is better to change the name of the role in the squad layout instead
+        * - unit layout [Role Name, Settings Struct]
+        * - settings struct: 
+        *   - max: The most amount of this unit is allowed per squad
+        *   - min: The squad can't be formed unless at least 1 of this unit is in it
+        *   - role: The name of the unit when it is a member of the squad. This is where you rename roles e.g. 
+                "Terminator" > "Deathwing Terminator" 
+        **  - loadout: Struct containing Required and Optional weaponry this unit can equip 
+                a required loadout always follows this syntax <loadout_slot>:[<loadout_item>,<required number>]
+				so "wep1":["Bolter",4], will mean four marines are always equipped with 4 bolters in the wep1 slot
+        *       option loadouts follow the following syntax <loudout_slot>:[[<loadout_item_list>],<allowed_number>]
+				for example [["Flamer", "Meltagun"],1], means the role can have a max of one flamer or meltagun
+					[["Plasma Pistol","Bolt Pistol"], 4] means the role can have a mix of 4 plasma pistols and bolt pistols on top
+						of all required loadout options
+                - wep1: right hand weapon
+                - wep2: left hand weapon
+                - mobi: Mobility item, e.g. Jump Packs. 
+                - armour: required armour 
+                - gear: special equipment needed for certain roles, like a Roasrius or Narthecium
+        *   - type_data: names the squad, allows certain formations 
+        */
+        "squad_name": "Kill Team",
+        "custom_squads": {
+            "tactical_squad": [
+                [ // Aquila Kill Team - All-rounder
+                    "Veteran",
+                    {
+                        "max": 9,
+                        "min": 4,
+                        "loadout": {
+                            "required": {
+                                "wep1": [
+                                    "Stalker Pattern Bolter",
+                                    4
+                                ],
+                                "wep2": [
+                                    "Combat Knife",
+                                    7
+                                ]
+                            },
+                            "option": {
+                                "wep1": [
+                                    [
+                                        [
+                                            "Flamer",
+                                            "Flamer",
+                                            "Flamer",
+                                            "Meltagun",
+                                            "Meltagun",
+                                            "Plasma Gun"
+                                        ],
+                                        2
+                                    ],
+                                    [
+                                        [
+                                            "Infernus Heavy Bolter",
+                                            "Infernus Heavy Bolter",
+                                            "Infernus Heavy Bolter",
+                                            "Infernus Heavy Bolter",
+                                            "Missile Launcher",
+                                            "Missile Launcher",
+                                            "Multi-Melta",
+                                            "Lascannon"
+                                        ],
+                                        2,
+                                        {
+                                            "wep2": "Combat Knife",
+                                            "mobi": "Heavy Weapons Pack",
+                                        }
+                                    ],
+                                    [
+                                        [
+                                            "Bolter"
+                                        ],
+                                        1
+                                    ]
+                                ],
+                            }
+                        }
+                    }
+                ],
+                [
+                    "Sergeant",
+                    {
+                        "max": 1,
+                        "min": 1,
+                        "role": "Aquila Watch Sergeant",
+                        "loadout": {
+                            "required": {
+                                "wep1": [
+                                    "",
+                                    0
+                                ],
+                                "wep2": [
+                                    "",
+                                    0
+                                ]
+                            },
+                            "option": {
+                                "wep1": [
+                                    [
+                                        [
+                                            "Power Sword",
+                                            "Power Sword",
+                                            "Power Sword",
+                                            "Power Axe",
+                                            "Xenophase Blade"
+                                        ],
+                                        1
+                                    ]
+                                ],
+                                "wep2": [
+                                    [
+                                        [
+                                            "Bolt Pistol",
+                                            "Infernus Pistol",
+                                            "Plasma Pistol"
+                                        ],
+                                        1
+                                    ],
+                                ],
+                            }
+                        }
+                    }
+                ],
+                [
+                    "type_data",
+                    {
+                        "display_data": "Aquila Kill Team",
+                        "formation_options": [
+                            "tactical",
+                            "assault",
+                            "devastator",
+                            "scout"
+                        ],
+                    }
+                ]
+            ],
+            "devastator_squad": [
+                [ // Venator Kill team - Heavy Weapon + Bikers
+                    "Devastator",
+                    {
+                        "max": 9,
+                        "min": 4,
+                        "loadout": {
+                            "required": {
+                                "wep1": [
+                                    "Bolter",
+                                    5
+                                ],
+                                "wep2": [
+                                    "Combat Knife",
+                                    9
+                                ],
+                                "mobi": [
+                                    "Bike",
+                                    5
+                                ],
+                            },
+                            "option": {
+                                "wep1": [
+                                    [
+                                        [
+                                            "Infernus Heavy Bolter",
+                                            "Infernus Heavy Bolter",
+                                            "Infernus Heavy Bolter",
+                                            "Missile Launcher",
+                                            "Missile Launcher",
+                                            "Multi-Melta",
+                                            "Lascannon"
+                                        ],
+                                        4,
+                                        {
+                                            "mobi": "Heavy Weapons Pack",
+                                        }
+                                    ]
+                                ]
+                            }
+                        }
+                    }
+                ],
+                [
+                    "Sergeant",
+                    {
+                        "max": 1,
+                        "min": 1,
+                        "role": "Venator Watch Sergeant",
+                        "loadout": {
+                            "required": {
+                                "mobi": [
+                                    "",
+                                    1
+                                ],
+                            },
+                            "option": {
+                                "wep1": [
+                                    [
+                                        [
+                                            "Infernus Pistol",
+                                            "Bolt Pistol",
+                                            "Plasma Pistol"
+                                        ],
+                                        1
+                                    ]
+                                ],
+                                "wep2": [
+                                    [
+                                        [
+                                            "Chainsword",
+                                            "Power Sword",
+                                            "Power Axe"
+                                        ],
+                                        1
+                                    ]
+                                ]
+                            }
+                        }
+                    }
+                ],
+                [
+                    "type_data",
+                    {
+                        "display_data": "Venator Kill Team",
+                        "formation_options": [
+                            "devastator"
+                        ]
+                    }
+                ]
+            ],
+            "assault_squad": [
+                [ // Dominatus Kill Team - Airborne Assault
+                    "Assault",
+                    {
+                        "max": 9,
+                        "min": 4,
+                        "loadout": {
+                            "required": {
+                                "wep1": [
+                                    "Chainsword",
+                                    2
+                                ],
+                                "wep2": [
+                                    "Bolt Pistol",
+                                    2
+                                ]
+                            },
+                            "option": {
+                                "wep1": [
+                                    [
+                                        [
+                                            "Eviscerator",
+                                            "Power Spear"
+                                        ],
+                                        4,
+                                        {
+                                            "wep2": ""
+                                        }
+                                    ],
+                                    [
+                                        [
+                                            "Power Sword",
+                                            "Power Axe"
+                                        ],
+                                        3
+                                    ]
+                                ],
+                                "wep2": [
+                                    [
+                                        [
+                                            "Plasma Pistol",
+                                            "Hand Flamer",
+                                            "Infernus Pistol"
+                                        ],
+                                        3
+                                    ]
+                                ]
+                            }
+                        }
+                    }
+                ],
+                [
+                    "Sergeant",
+                    {
+                        "max": 1,
+                        "min": 1,
+                        "role": "Dominatus Watch Sergeant",
+                        "loadout": {
+                            "required": {
+                                "wep1": [
+                                    "Power Sword",
+                                    1
+                                ],
+                                "wep2": [
+                                    "Infernus Pistol",
+                                    1
+                                ],
+                                "gear": [
+                                    "Combat Shield",
+                                    1
+                                ]
+                            }
+                        }
+                    }
+                ],
+                [
+                    "type_data",
+                    {
+                        "display_data": "Dominatus Kill Team",
+                        "formation_options": [
+                            "assault"
+                        ]
+                    }
+                ]
+            ],
+            "sternguard_veteran_squad": [
+                // Proteus Kill Team - Versatile 
+                [
+                    "Veteran",
+                    {
+                        "max": 9,
+                        "min": 4,
+                        "role": "Vanguard Veteran",
+                        "loadout": {
+                            "required": {
+                                "wep1": [
+                                    "",
+                                    0
+                                ],
+                                "wep2": [
+                                    "Combat Knife",
+                                    9
+                                ],
+                            },
+                            "option": {
+                                "wep1": [
+                                    [
+                                        [
+                                            "Stalker Pattern Bolter",
+                                            "Storm Bolter"
+                                        ],
+                                        5
+                                    ],
+                                    [
+                                        [
+                                            "Combiflamer"
+                                        ],
+                                        2
+                                    ],
+                                    [
+                                        [
+                                            "Flamer",
+                                            "Flamer",
+                                            "Flamer",
+                                            "Meltagun",
+                                            "Meltagun",
+                                            "Plasma Gun"
+                                        ],
+                                        1
+                                    ],
+                                    [
+                                        [
+                                            "Infernus Heavy Bolter",
+                                            "Infernus Heavy Bolter",
+                                            "Infernus Heavy Bolter",
+                                            "Missile Launcher",
+                                            "Missile Launcher",
+                                            "Multi-Melta",
+                                            "Lascannon"
+                                        ],
+                                        1
+                                    ],
+                                ]
+                            }
+                        }
+                    }
+                ],
+                // Sternguard Veteran Sergeant
+                [
+                    "Veteran Sergeant",
+                    {
+                        "max": 1,
+                        "min": 1,
+                        "role": "Proteus Watch Sergeant",
+                        "loadout": {
+                            "required": {
+                                "wep1": [
+                                    "Stalker Pattern Bolter",
+                                    1
+                                ],
+                                "wep2": [
+                                    "Xenophase Blade",
+                                    1
+                                ]
+                            }
+                        }
+                    }
+                ],
+                [
+                    "type_data",
+                    {
+                        "display_data": "Proteus Kill Team",
+                        "formation_options": [
+                            "veteran",
+                            "assault",
+                            "devastator",
+                            "scout",
+                            "tactical"
+                        ],
+                    }
+                ]
+            ],
+            "vanguard_veteran_squad": [
+                // Malleus Kill Team - Anti Vehicle / Anti Large
+                // Vanguard Veteran Sergeant
+                [
+                    "Veteran Sergeant",
+                    {
+                        "max": 1,
+                        "min": 1,
+                        "role": "Malleus Watch Sergeant",
+                        "loadout": {
+                            "required": {
+                                "wep1": [
+                                    "Stalker Pattern Bolter",
+                                    1
+                                ],
+                                "wep2": [
+                                    "Combat Knife",
+                                    1
+                                ]
+                            }
+                        }
+                    }
+                ],
+                // Vanguard Veterans
+                [
+                    "Veteran",
+                    {
+                        "max": 4,
+                        "min": 1,
+                        "role": "Vanguard Veteran",
+                        "loadout": {
+                            "required": {
+                                "wep1": [
+                                    "",
+                                    0
+                                ],
+                                "wep2": [
+                                    "",
+                                    0
+                                ]
+                            },
+                            "option": {
+                                "wep1": [
+                                    [
+                                        [
+                                            "Infernus Heavy Bolter",
+                                            "Infernus Heavy Bolter",
+                                            "Infernus Heavy Bolter",
+                                            "Infernus Heavy Bolter",
+                                            "Missile Launcher",
+                                            "Missile Launcher",
+                                            "Multi-Melta",
+                                            "Lascannon"
+                                        ],
+                                        3
+                                    ],
+                                    [
+                                        [
+                                            "Stalker Pattern Bolter"
+                                        ],
+                                        2,
+                                        {
+                                            "wep2": "Combat Knife"
+                                        }
+                                    ]
+                                ]
+                            }
+                        }
+                    }
+                ],
+                [
+                    "Terminator",
+                    {
+                        "max": 4,
+                        "min": 1,
+                        "role": "Terminator",
+                        "loadout": {
+                            "required": {
+                                "wep1": [
+                                    "Plasma Cannon",
+                                    1
+                                ]
+                            },
+                            "option": {
+                                "wep1": [
+                                    [
+                                        [
+                                            "Heavy Thunder Hammer"
+                                        ],
+                                        1
+                                    ],
+                                    [
+                                        [
+                                            "Lascannon"
+                                        ],
+                                        1
+                                    ],
+                                    [
+                                        [
+                                            "Multi-Melta"
+                                        ],
+                                        1
+                                    ],
+                                ],
+                            }
+                        }
+                    }
+                ],
+                [
+                    "type_data",
+                    {
+                        "display_data": "Malleus Kill Team",
+                        "formation_options": [
+                            "devastator",
+                            "veteran",
+                            "assault",
+                            "scout",
+                            "tactical",
+                            "terminator"
+                        ]
+                    }
+                ]
+            ],
+            "terminator_squad": [
+                // Purgatus Kill Team - Librarian Led assassins
+                // Librarian Leader
+                [
+                    "Librarian",
+                    {
+                        "max": 1,
+                        "min": 1,
+                        "role": "Purgatus Watch Sergeant"
+                    }
+                ],
+                // Terminator
+                [
+                    "Terminator",
+                    {
+                        "max": 4,
+                        "min": 1,
+                        "loadout": {
+                            "required": {
+                                "wep1": [
+                                    "",
+                                    0
+                                ],
+                                "wep2": [
+                                    "",
+                                    0
+                                ],
+                            },
+                            "option": {
+                                "wep1": [
+                                    [
+                                        [
+                                            "Power Fist",
+                                            "Power Sword"
+                                        ],
+                                        2,
+                                        {
+                                            "wep2": "Storm Bolter"
+                                        }
+                                    ],
+                                ],
+                                "wep2": [
+                                    [
+                                        [
+                                            "Assault Cannon",
+                                            "Heavy Flamer",
+                                            "Lascannon"
+                                        ],
+                                        2
+                                    ],
+                                ],
+                            }
+                        }
+                    }
+                ],
+                // Vanguard Veteran
+                [
+                    "Veteran",
+                    {
+                        "max": 5,
+                        "min": 1,
+                        "role": "Vanguard Veteran",
+                        "loadout": {
+                            "required": {
+                                "wep1": [
+                                    "",
+                                    0
+                                ],
+                                "wep2": [
+                                    "",
+                                    0
+                                ],
+                            },
+                            "option": {
+                                "wep1": [
+                                    [
+                                        [
+                                            "Stalker Pattern Bolter"
+                                        ],
+                                        3,
+                                        {
+                                            "wep2": "Combat Knife"
+                                        }
+                                    ],
+                                    [
+                                        [
+                                            "Sniper Rifle"
+                                        ],
+                                        1,
+                                        {
+                                            "wep2": "Combat Knife"
+                                        }
+                                    ],
+                                    [
+                                        [
+                                            "Power Sword"
+                                        ],
+                                        1,
+                                        {
+                                            "wep2": "Bolt Pistol"
+                                        }
+                                    ]
+                                ]
+                            }
+                        }
+                    }
+                ],
+                [
+                    "type_data",
+                    {
+                        "display_data": "Purgatus Kill Team",
+                        "formation_options": [
+                            "terminator",
+                            "veteran",
+                            "assault",
+                            "devastator",
+                            "scout",
+                            "tactical"
+                        ],
+                    }
+                ]
+            ],
+            "terminator_assault_squad": [
+                // Furor Kill Team - Swarm Slayers
+                // Assault Terminator Sergeant
+                [
+                    "Veteran Sergeant",
+                    {
+                        "max": 1,
+                        "min": 1,
+                        "role": "Furor Watch Sergeant",
+                        "loadout": {
+                            "required": {
+                                "wep1": [
+                                    "Thunder Hammer",
+                                    1
+                                ],
+                                "wep2": [
+                                    "Storm Shield",
+                                    1
+                                ]
+                            }
+                        }
+                    }
+                ],
+                // Assault Terminator
+                [
+                    "Terminator",
+                    {
+                        "max": 4,
+                        "min": 1,
+                        "role": "Assault Terminator",
+                        "loadout": {
+                            "required": {
+                                "wep1": [
+                                    "Thunder Hammer",
+                                    1
+                                ],
+                                "wep2": [
+                                    "Storm Shield",
+                                    1
+                                ],
+                            },
+                            "option": {
+                                "wep1": [
+                                    [
+                                        [
+                                            "Lightning Claw"
+                                        ],
+                                        1,
+                                        {
+                                            "wep2": "Lightning Claw",
+                                        }
+                                    ],
+                                    [
+                                        [
+                                            "Heavy Thunder Hammer",
+                                        ],
+                                        1
+                                    ],
+                                    [
+                                        [
+                                            "Assault Cannon",
+                                            "Heavy Flamer"
+                                        ],
+                                        1
+                                    ]
+                                ]
+                            }
+                        }
+                    }
+                ],
+                // Vanguard Veteran
+                [
+                    "Veteran",
+                    {
+                        "max": 4,
+                        "min": 1,
+                        "role": "Vanguard Veteran",
+                        "loadout": {
+                            "required": {
+                                "wep1": [
+                                    "Infernus Heavy Bolter",
+                                    1
+                                ],
+                                "wep2": [
+                                    "",
+                                    0
+                                ]
+                            },
+                            "option": {
+                                "wep1": [
+                                    [
+                                        [
+                                            "Hand Flamer",
+                                        ],
+                                        2,
+                                        {
+                                            "wep2": "Chainsword"
+                                        }
+                                    ],
+                                    [
+                                        [
+                                            "Thunder Hammer",
+                                        ],
+                                        1
+                                    ],
+                                    [
+                                        [
+                                            "Bolt Pistol",
+                                        ],
+                                        1,
+                                        {
+                                            "wep2": "Power Sword"
+                                        }
+                                    ]
+                                ],
+                            }
+                        }
+                    }
+                ],
+                [
+                    "type_data",
+                    {
+                        "display_data": "Furor Kill Team",
+                        "formation_options": [
+                            "assault",
+                            "terminator",
+                            "veteran",
+                            "devastator",
+                            "scout",
+                            "tactical"
+                        ],
+                    }
+                ]
+            ]
+        },
+        "full_liveries": [
+            {
+                "right_pauldron": 8.0,
+                "left_arm": 1.0,
+                "is_changed": true,
+                "right_arm": 8.0,
+                "left_trim": 1.0,
+                "left_leg_lower": 8.0,
+                "left_leg_upper": 8.0,
+                "right_trim": 1.0,
+                "left_leg_knee": 8.0,
+                "right_leg_lower": 8.0,
+                "right_leg_upper": 8.0,
+                "right_leg_knee": 8.0,
+                "metallic_trim": 20.0,
+                "left_chest": 8.0,
+                "right_chest": 8.0,
+                "left_thorax": 0.0,
+                "right_thorax": 0.0,
+                "left_pauldron": 1.0,
+                "left_hand": 1.0,
+                "right_hand": 8.0,
+                "left_head": 8.0,
+                "right_head": 8.0,
+                "left_muzzle": 8.0,
+                "right_muzzle": 8.0,
+                "eye_lense": 9.0,
+                "right_backpack": 8.0,
+                "left_backpack": 8.0,
+                "weapon_primary": 11.0,
+                "weapon_secondary": 11.0
+            },
+            {
+                "right_pauldron": 8.0,
+                "left_arm": 1.0,
+                "is_changed": true,
+                "right_arm": 8.0,
+                "left_trim": 1.0,
+                "left_leg_lower": 8.0,
+                "left_leg_upper": 8.0,
+                "right_trim": 1.0,
+                "left_leg_knee": 8.0,
+                "right_leg_lower": 8.0,
+                "right_leg_upper": 8.0,
+                "right_leg_knee": 8.0,
+                "metallic_trim": 20.0,
+                "left_chest": 8.0,
+                "right_chest": 8.0,
+                "left_thorax": 0.0,
+                "right_thorax": 0.0,
+                "left_hand": 1.0,
+                "left_pauldron": 1.0,
+                "right_hand": 8.0,
+                "left_head": 8.0,
+                "right_head": 8.0,
+                "left_muzzle": 8.0,
+                "right_muzzle": 8.0,
+                "eye_lense": 9.0,
+                "right_backpack": 8.0,
+                "left_backpack": 8.0,
+                "weapon_primary": 11.0,
+                "weapon_secondary": 11.0
+            },
+            {
+                "right_pauldron": 8.0,
+                "left_arm": 1.0,
+                "is_changed": true,
+                "right_arm": 8.0,
+                "left_trim": 1.0,
+                "left_leg_lower": 8.0,
+                "left_leg_upper": 8.0,
+                "right_trim": 1.0,
+                "left_leg_knee": 8.0,
+                "right_leg_lower": 8.0,
+                "right_leg_upper": 8.0,
+                "right_leg_knee": 8.0,
+                "metallic_trim": 20.0,
+                "left_chest": 8.0,
+                "right_chest": 8.0,
+                "left_thorax": 0.0,
+                "right_thorax": 0.0,
+                "left_hand": 1.0,
+                "left_pauldron": 1.0,
+                "right_hand": 8.0,
+                "left_head": 8.0,
+                "right_head": 8.0,
+                "left_muzzle": 8.0,
+                "right_muzzle": 8.0,
+                "eye_lense": 9.0,
+                "right_backpack": 8.0,
+                "left_backpack": 8.0,
+                "weapon_primary": 11.0,
+                "weapon_secondary": 11.0
+            },
+            {
+                "right_pauldron": 8.0,
+                "left_arm": 1.0,
+                "is_changed": true,
+                "right_arm": 8.0,
+                "left_trim": 1.0,
+                "left_leg_lower": 8.0,
+                "left_leg_upper": 8.0,
+                "right_trim": 1.0,
+                "left_leg_knee": 8.0,
+                "right_leg_lower": 8.0,
+                "right_leg_upper": 8.0,
+                "right_leg_knee": 8.0,
+                "metallic_trim": 20.0,
+                "left_chest": 8.0,
+                "right_chest": 8.0,
+                "left_thorax": 0.0,
+                "right_thorax": 0.0,
+                "left_hand": 1.0,
+                "left_pauldron": 1.0,
+                "right_hand": 8.0,
+                "left_head": 8.0,
+                "right_head": 8.0,
+                "left_muzzle": 8.0,
+                "right_muzzle": 8.0,
+                "eye_lense": 9.0,
+                "right_backpack": 8.0,
+                "left_backpack": 8.0,
+                "weapon_primary": 11.0,
+                "weapon_secondary": 11.0
+            },
+            {
+                "right_pauldron": 8.0,
+                "left_arm": 1.0,
+                "is_changed": true,
+                "right_arm": 8.0,
+                "left_trim": 1.0,
+                "left_leg_lower": 8.0,
+                "left_leg_upper": 8.0,
+                "right_trim": 1.0,
+                "left_leg_knee": 8.0,
+                "right_leg_lower": 8.0,
+                "right_leg_upper": 8.0,
+                "right_leg_knee": 8.0,
+                "metallic_trim": 20.0,
+                "left_chest": 8.0,
+                "right_chest": 8.0,
+                "left_thorax": 0.0,
+                "right_thorax": 0.0,
+                "left_hand": 1.0,
+                "left_pauldron": 1.0,
+                "right_hand": 8.0,
+                "left_head": 8.0,
+                "right_head": 8.0,
+                "left_muzzle": 8.0,
+                "right_muzzle": 8.0,
+                "eye_lense": 9.0,
+                "right_backpack": 8.0,
+                "left_backpack": 8.0,
+                "weapon_primary": 11.0,
+                "weapon_secondary": 11.0
+            },
+            {
+                "right_pauldron": 8.0,
+                "left_arm": 1.0,
+                "is_changed": true,
+                "right_arm": 8.0,
+                "left_trim": 1.0,
+                "left_leg_lower": 8.0,
+                "left_leg_upper": 8.0,
+                "right_trim": 1.0,
+                "left_leg_knee": 8.0,
+                "right_leg_lower": 8.0,
+                "right_leg_upper": 8.0,
+                "right_leg_knee": 8.0,
+                "metallic_trim": 20.0,
+                "left_chest": 8.0,
+                "right_chest": 8.0,
+                "left_thorax": 0.0,
+                "right_thorax": 0.0,
+                "left_hand": 1.0,
+                "left_pauldron": 1.0,
+                "right_hand": 8.0,
+                "left_head": 8.0,
+                "right_head": 8.0,
+                "left_muzzle": 8.0,
+                "right_muzzle": 8.0,
+                "eye_lense": 9.0,
+                "right_backpack": 8.0,
+                "left_backpack": 8.0,
+                "weapon_primary": 11.0,
+                "weapon_secondary": 11.0
+            },
+            {
+                "right_pauldron": 8.0,
+                "left_arm": 1.0,
+                "is_changed": true,
+                "right_arm": 8.0,
+                "left_trim": 1.0,
+                "left_leg_lower": 8.0,
+                "left_leg_upper": 8.0,
+                "right_trim": 1.0,
+                "left_leg_knee": 8.0,
+                "right_leg_lower": 8.0,
+                "right_leg_upper": 8.0,
+                "right_leg_knee": 8.0,
+                "metallic_trim": 20.0,
+                "left_chest": 8.0,
+                "right_chest": 8.0,
+                "left_thorax": 0.0,
+                "right_thorax": 0.0,
+                "left_hand": 1.0,
+                "left_pauldron": 1.0,
+                "right_hand": 8.0,
+                "left_head": 8.0,
+                "right_head": 8.0,
+                "left_muzzle": 8.0,
+                "right_muzzle": 8.0,
+                "eye_lense": 9.0,
+                "right_backpack": 8.0,
+                "left_backpack": 8.0,
+                "weapon_primary": 11.0,
+                "weapon_secondary": 11.0
+            },
+            {
+                "right_pauldron": 8.0,
+                "left_arm": 1.0,
+                "is_changed": true,
+                "right_arm": 8.0,
+                "left_trim": 1.0,
+                "left_leg_lower": 8.0,
+                "left_leg_upper": 8.0,
+                "right_trim": 1.0,
+                "left_leg_knee": 8.0,
+                "right_leg_lower": 8.0,
+                "right_leg_upper": 8.0,
+                "right_leg_knee": 8.0,
+                "metallic_trim": 20.0,
+                "left_chest": 8.0,
+                "right_chest": 8.0,
+                "left_thorax": 0.0,
+                "right_thorax": 0.0,
+                "left_hand": 1.0,
+                "left_pauldron": 1.0,
+                "right_hand": 8.0,
+                "left_head": 8.0,
+                "right_head": 8.0,
+                "left_muzzle": 8.0,
+                "right_muzzle": 8.0,
+                "eye_lense": 9.0,
+                "right_backpack": 8.0,
+                "left_backpack": 8.0,
+                "weapon_primary": 11.0,
+                "weapon_secondary": 11.0
+            },
+            {
+                "right_pauldron": 8.0,
+                "left_arm": 1.0,
+                "is_changed": true,
+                "right_arm": 8.0,
+                "left_trim": 1.0,
+                "left_leg_lower": 8.0,
+                "left_leg_upper": 8.0,
+                "right_trim": 1.0,
+                "left_leg_knee": 8.0,
+                "right_leg_lower": 8.0,
+                "right_leg_upper": 8.0,
+                "right_leg_knee": 8.0,
+                "metallic_trim": 20.0,
+                "left_chest": 8.0,
+                "right_chest": 8.0,
+                "left_thorax": 0.0,
+                "right_thorax": 0.0,
+                "left_hand": 1.0,
+                "left_pauldron": 1.0,
+                "right_hand": 8.0,
+                "left_head": 8.0,
+                "right_head": 8.0,
+                "left_muzzle": 8.0,
+                "right_muzzle": 8.0,
+                "eye_lense": 9.0,
+                "right_backpack": 8.0,
+                "left_backpack": 8.0,
+                "weapon_primary": 11.0,
+                "weapon_secondary": 11.0
+            },
+            {
+                "right_pauldron": 8.0,
+                "left_arm": 1.0,
+                "is_changed": true,
+                "right_arm": 8.0,
+                "left_trim": 1.0,
+                "left_leg_lower": 8.0,
+                "left_leg_upper": 8.0,
+                "right_trim": 1.0,
+                "left_leg_knee": 8.0,
+                "right_leg_lower": 8.0,
+                "right_leg_upper": 8.0,
+                "right_leg_knee": 8.0,
+                "metallic_trim": 20.0,
+                "left_chest": 8.0,
+                "right_chest": 8.0,
+                "left_thorax": 0.0,
+                "right_thorax": 0.0,
+                "left_hand": 1.0,
+                "left_pauldron": 1.0,
+                "right_hand": 8.0,
+                "left_head": 8.0,
+                "right_head": 8.0,
+                "left_muzzle": 8.0,
+                "right_muzzle": 8.0,
+                "eye_lense": 9.0,
+                "right_backpack": 8.0,
+                "left_backpack": 8.0,
+                "weapon_primary": 11.0,
+                "weapon_secondary": 11.0
+            },
+            {
+                "right_pauldron": 8.0,
+                "left_arm": 1.0,
+                "is_changed": true,
+                "right_arm": 8.0,
+                "left_trim": 1.0,
+                "left_leg_lower": 8.0,
+                "left_leg_upper": 8.0,
+                "right_trim": 1.0,
+                "left_leg_knee": 8.0,
+                "right_leg_lower": 8.0,
+                "right_leg_upper": 8.0,
+                "right_leg_knee": 8.0,
+                "metallic_trim": 20.0,
+                "left_chest": 8.0,
+                "right_chest": 8.0,
+                "left_thorax": 0.0,
+                "right_thorax": 0.0,
+                "left_hand": 1.0,
+                "left_pauldron": 1.0,
+                "right_hand": 8.0,
+                "left_head": 8.0,
+                "right_head": 8.0,
+                "left_muzzle": 8.0,
+                "right_muzzle": 8.0,
+                "eye_lense": 9.0,
+                "right_backpack": 8.0,
+                "left_backpack": 8.0,
+                "weapon_primary": 11.0,
+                "weapon_secondary": 11.0
+            },
+            {
+                "right_pauldron": 8.0,
+                "left_arm": 1.0,
+                "is_changed": true,
+                "right_arm": 8.0,
+                "left_trim": 1.0,
+                "left_leg_lower": 8.0,
+                "left_leg_upper": 8.0,
+                "right_trim": 1.0,
+                "left_leg_knee": 8.0,
+                "right_leg_lower": 8.0,
+                "right_leg_upper": 8.0,
+                "right_leg_knee": 8.0,
+                "metallic_trim": 20.0,
+                "left_chest": 8.0,
+                "right_chest": 8.0,
+                "left_thorax": 0.0,
+                "right_thorax": 0.0,
+                "left_hand": 1.0,
+                "left_pauldron": 1.0,
+                "right_hand": 8.0,
+                "left_head": 8.0,
+                "right_head": 8.0,
+                "left_muzzle": 8.0,
+                "right_muzzle": 8.0,
+                "eye_lense": 9.0,
+                "right_backpack": 8.0,
+                "left_backpack": 8.0,
+                "weapon_primary": 11.0,
+                "weapon_secondary": 11.0
+            },
+            {
+                "right_pauldron": 8.0,
+                "left_arm": 1.0,
+                "is_changed": true,
+                "right_arm": 8.0,
+                "left_trim": 1.0,
+                "left_leg_lower": 8.0,
+                "left_leg_upper": 8.0,
+                "right_trim": 1.0,
+                "left_leg_knee": 8.0,
+                "right_leg_lower": 8.0,
+                "right_leg_upper": 8.0,
+                "right_leg_knee": 8.0,
+                "metallic_trim": 20.0,
+                "left_chest": 8.0,
+                "right_chest": 8.0,
+                "left_thorax": 0.0,
+                "right_thorax": 0.0,
+                "left_hand": 1.0,
+                "left_pauldron": 1.0,
+                "right_hand": 8.0,
+                "left_head": 8.0,
+                "right_head": 8.0,
+                "left_muzzle": 8.0,
+                "right_muzzle": 8.0,
+                "eye_lense": 9.0,
+                "right_backpack": 8.0,
+                "left_backpack": 8.0,
+                "weapon_primary": 11.0,
+                "weapon_secondary": 11.0
+            },
+            {
+                "right_pauldron": 8.0,
+                "left_arm": 1.0,
+                "is_changed": true,
+                "right_arm": 8.0,
+                "left_trim": 1.0,
+                "left_leg_lower": 8.0,
+                "left_leg_upper": 8.0,
+                "right_trim": 1.0,
+                "left_leg_knee": 8.0,
+                "right_leg_lower": 8.0,
+                "right_leg_upper": 8.0,
+                "right_leg_knee": 8.0,
+                "metallic_trim": 20.0,
+                "left_chest": 8.0,
+                "right_chest": 8.0,
+                "left_thorax": 0.0,
+                "right_thorax": 0.0,
+                "left_hand": 1.0,
+                "left_pauldron": 1.0,
+                "right_hand": 8.0,
+                "left_head": 8.0,
+                "right_head": 8.0,
+                "left_muzzle": 8.0,
+                "right_muzzle": 8.0,
+                "eye_lense": 9.0,
+                "right_backpack": 8.0,
+                "left_backpack": 8.0,
+                "weapon_primary": 11.0,
+                "weapon_secondary": 11.0
+            },
+            {
+                "right_pauldron": 8,
+                "left_arm": 8,
+                "is_changed": true,
+                "right_arm": 8,
+                "left_trim": 11.0,
+                "left_leg_lower": 8,
+                "left_leg_upper": 8,
+                "right_trim": 11.0,
+                "left_leg_knee": 8,
+                "right_leg_lower": 8,
+                "right_leg_upper": 8,
+                "right_leg_knee": 8,
+                "metallic_trim": 11.0,
+                "left_chest": 8,
+                "right_chest": 8,
+                "left_thorax": 0.0,
+                "right_thorax": 0.0,
+                "left_hand": 8,
+                "left_pauldron": 1.0,
+                "right_hand": 8,
+                "left_head": 8,
+                "right_head": 8,
+                "left_muzzle": 8,
+                "right_muzzle": 8,
+                "eye_lense": 9,
+                "right_backpack": 8,
+                "left_backpack": 8,
+                "weapon_primary": 8.0,
+                "weapon_secondary": 8.0
+            },
+            {
+                "right_pauldron": 0,
+                "left_arm": 0,
+                "is_changed": true,
+                "right_arm": 0,
+                "left_trim": 11.0,
+                "left_leg_lower": 0,
+                "left_leg_upper": 0,
+                "right_trim": 11.0,
+                "left_leg_knee": 0,
+                "right_leg_lower": 0,
+                "right_leg_upper": 0,
+                "right_leg_knee": 0,
+                "metallic_trim": 11.0,
+                "left_chest": 0,
+                "right_chest": 0,
+                "left_thorax": 0.0,
+                "right_thorax": 0.0,
+                "left_hand": 0,
+                "left_pauldron": 1.0,
+                "right_hand": 0,
+                "left_head": 0,
+                "right_head": 0,
+                "left_muzzle": 0,
+                "right_muzzle": 0,
+                "eye_lense": 9,
+                "right_backpack": 0,
+                "left_backpack": 0,
+                "weapon_primary": 8.0,
+                "weapon_secondary": 8.0
+            },
+            {
+                "right_pauldron": 9,
+                "left_arm": 9,
+                "is_changed": true,
+                "right_arm": 9,
+                "left_trim": 11.0,
+                "left_leg_lower": 9,
+                "left_leg_upper": 9,
+                "right_trim": 11.0,
+                "left_leg_knee": 9,
+                "right_leg_lower": 9,
+                "right_leg_upper": 9,
+                "right_leg_knee": 9,
+                "metallic_trim": 11.0,
+                "left_chest": 9,
+                "right_chest": 9,
+                "left_thorax": 0.0,
+                "right_thorax": 0.0,
+                "left_hand": 9,
+                "left_pauldron": 1.0,
+                "right_hand": 9,
+                "left_head": 9,
+                "right_head": 9,
+                "left_muzzle": 9,
+                "right_muzzle": 9,
+                "eye_lense": 23,
+                "right_backpack": 9,
+                "left_backpack": 9,
+                "weapon_primary": 8.0,
+                "weapon_secondary": 8.0
+            },
+            {
+                "right_pauldron": 34,
+                "left_arm": 34,
+                "is_changed": true,
+                "right_arm": 34,
+                "left_trim": 11.0,
+                "left_leg_lower": 34,
+                "left_leg_upper": 34,
+                "right_trim": 11.0,
+                "left_leg_knee": 34,
+                "right_leg_lower": 34,
+                "right_leg_upper": 34,
+                "right_leg_knee": 34,
+                "metallic_trim": 11.0,
+                "left_chest": 34,
+                "right_chest": 34,
+                "left_thorax": 0.0,
+                "right_thorax": 0.0,
+                "left_hand": 34,
+                "left_pauldron": 1.0,
+                "right_hand": 34,
+                "left_head": 34,
+                "right_head": 34,
+                "left_muzzle": 34,
+                "right_muzzle": 34,
+                "eye_lense": 28,
+                "right_backpack": 34,
+                "left_backpack": 34,
+                "weapon_primary": 8.0,
+                "weapon_secondary": 8.0
+            },
+            {
+                "right_pauldron": 8.0,
+                "left_arm": 1.0,
+                "is_changed": true,
+                "right_arm": 8.0,
+                "left_trim": 1.0,
+                "left_leg_lower": 8.0,
+                "left_leg_upper": 8.0,
+                "right_trim": 1.0,
+                "left_leg_knee": 8.0,
+                "right_leg_lower": 8.0,
+                "right_leg_upper": 8.0,
+                "right_leg_knee": 8.0,
+                "metallic_trim": 20.0,
+                "left_chest": 8.0,
+                "right_chest": 8.0,
+                "left_thorax": 0.0,
+                "right_thorax": 0.0,
+                "left_hand": 1.0,
+                "left_pauldron": 1.0,
+                "right_hand": 8.0,
+                "left_head": 8.0,
+                "right_head": 8.0,
+                "left_muzzle": 8.0,
+                "right_muzzle": 8.0,
+                "eye_lense": 9.0,
+                "right_backpack": 8.0,
+                "left_backpack": 8.0,
+                "weapon_primary": 11.0,
+                "weapon_secondary": 11.0
+            },
+            {
+                "right_pauldron": 8.0,
+                "left_arm": 1.0,
+                "is_changed": true,
+                "right_arm": 8.0,
+                "left_trim": 1.0,
+                "left_leg_lower": 8.0,
+                "left_leg_upper": 8.0,
+                "right_trim": 1.0,
+                "left_leg_knee": 8.0,
+                "right_leg_lower": 8.0,
+                "right_leg_upper": 8.0,
+                "right_leg_knee": 8.0,
+                "metallic_trim": 20.0,
+                "left_chest": 8.0,
+                "right_chest": 8.0,
+                "left_thorax": 0.0,
+                "right_thorax": 0.0,
+                "left_hand": 1.0,
+                "left_pauldron": 1.0,
+                "right_hand": 8.0,
+                "left_head": 8.0,
+                "right_head": 8.0,
+                "left_muzzle": 8.0,
+                "right_muzzle": 8.0,
+                "eye_lense": 9.0,
+                "right_backpack": 8.0,
+                "left_backpack": 8.0,
+                "weapon_primary": 11.0,
+                "weapon_secondary": 11.0
+            },
+            {
+                "right_pauldron": 8.0,
+                "left_arm": 1.0,
+                "is_changed": true,
+                "right_arm": 8.0,
+                "left_trim": 1.0,
+                "left_leg_lower": 8.0,
+                "left_leg_upper": 8.0,
+                "right_trim": 1.0,
+                "left_leg_knee": 8.0,
+                "right_leg_lower": 8.0,
+                "right_leg_upper": 8.0,
+                "right_leg_knee": 8.0,
+                "metallic_trim": 20.0,
+                "left_chest": 8.0,
+                "right_chest": 8.0,
+                "left_thorax": 0.0,
+                "right_thorax": 0.0,
+                "left_hand": 1.0,
+                "left_pauldron": 1.0,
+                "right_hand": 8.0,
+                "left_head": 8.0,
+                "right_head": 8.0,
+                "left_muzzle": 8.0,
+                "right_muzzle": 8.0,
+                "eye_lense": 9.0,
+                "right_backpack": 8.0,
+                "left_backpack": 8.0,
+                "weapon_primary": 11.0,
+                "weapon_secondary": 11.0
+            }
+        ],
+    }
+}

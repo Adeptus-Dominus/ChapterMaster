@@ -262,7 +262,8 @@ function scr_enemy_ai_c() {
 	            var cor;cor=floor(image_index)+1;
             
 	            if (p_type[kay]="Shrine") then cor=round(cor/3);
-	            if (p_type[kay]!="Dead"){p_heresy[kay]+=cor;if (p_heresy[kay]>=70) and (p_traitors[kay]<2) then p_traitors[kay]+=1;}
+	            if (p_type[kay]!="Dead"){alter_planet_corruption(cor, kay);
+                    if (p_heresy[kay]>=70) and (p_traitors[kay]<2) then p_traitors[kay]+=1;}
 	        }
 	        i+=1;
 	    }// End repeat

@@ -1,10 +1,20 @@
 
 scr_image("loading",-50,0,0,0,0);
+GameSave = {};
+GameSave.Stars = [];
+GameSave.PlayerFleet = [];
+GameSave.EnemyFleet = [];
+GameSave.Ini = {};
+GameSave.Controller = {};
+GameSave.EventLog = [];
 
 menu=0;// 1 : save, 2: load
 save_part=0;
 load_part=0;
 save_number=0;
+/// set to true before calling alarm[0] to run autosave behaviour
+autosaving=false;
+/// number of frames between load sections to draw the progress bar
 trickle=0;
 txt="";
 hide=0;
@@ -22,7 +32,7 @@ splash=choose(0,1,2,3,4);
 
 debug="";
 
-top=1;
+top=0;
 
 if (instance_exists(obj_controller)){
     if (obj_controller.zoomed=1){
@@ -45,21 +55,20 @@ repeat(201){i+=1;
 }
 i=0;
 repeat(100){i+=1;
-    if (file_exists("save"+string(i)+".ini")){
+    if (file_exists(string(PATH_save_files, i))){
         saves+=1;save[saves]=i;
     }
-    if (!file_exists("save"+string(i)+".ini")) and (i>0) and (max_ini=0) then max_ini=i;
-    if (file_exists("save"+string(i+1)+".ini")) and (max_ini>0) then max_ini=0;
-}
+    if (!file_exists(string(PATH_save_files, i))) and (i>0) and (max_ini=0) then max_ini=i;
+    if (file_exists(string(PATH_save_files, i + 1))) and (max_ini>0) then max_ini=0;}
 first_open=saves+1;
 
 
 
 
-img1=0;
-img2=0;
-img3=0;
-img4=0;
+img1=-1;
+img2=-1;
+img3=-1;
+img4=-1;
 
 
 
@@ -69,7 +78,7 @@ if (file_exists("saves.ini")){
 
     i=-1;
     repeat(200){i+=1;
-        if (save[i]>0){
+        if (save[i]>=0){
             if (ini_section_exists(string(save[i]))){
                 save_turn[save[i]]=ini_read_real(string(save[i]),"turn",0);
                 save_chapter[save[i]]=ini_read_string(string(save[i]),"chapter_name","Error");
@@ -96,10 +105,18 @@ if (file_exists("saves.ini")){
     }
     
     
-    if (file_exists(working_directory + "\\screen"+string(save[1])+".png")) then img1=sprite_add(working_directory + "\\screen"+string(save[1])+".png",1,0,0,0,0);
-    if (file_exists(working_directory + "\\screen"+string(save[2])+".png")) then img2=sprite_add(working_directory + "\\screen"+string(save[2])+".png",1,0,0,0,0);
-    if (file_exists(working_directory + "\\screen"+string(save[3])+".png")) then img3=sprite_add(working_directory + "\\screen"+string(save[3])+".png",1,0,0,0,0);
-    if (file_exists(working_directory + "\\screen"+string(save[4])+".png")) then img4=sprite_add(working_directory + "\\screen"+string(save[4])+".png",1,0,0,0,0);
+    if (file_exists(string(PATH_save_previews, save[1]))) {
+        img1 = sprite_add(string(PATH_save_previews, save[1]), 1, 0, 0, 0, 0);
+    }
+    if (file_exists(string(PATH_save_previews, save[2]))) {
+        img2 = sprite_add(string(PATH_save_previews, save[2]), 1, 0, 0, 0, 0);
+    }
+    if (file_exists(string(PATH_save_previews, save[3]))) {
+        img3 = sprite_add(string(PATH_save_previews, save[3]), 1, 0, 0, 0, 0);
+    }
+    if (file_exists(string(PATH_save_previews, save[4]))) {
+        img4 = sprite_add(string(PATH_save_previews, save[4]), 1, 0, 0, 0, 0);
+    }
     
     
     ini_close();

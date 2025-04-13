@@ -90,7 +90,7 @@ function scr_random_event(execute_now) {
 					[
 						EVENT.warp_storms,
 						EVENT.enemy_forces,
-						//EVENT.crusade, // Reportly breaks often because of lack of imperial fleets and eats player ships // TODO LOW CRUSADE_EVENT // fix
+						EVENT.crusade, // Reportly breaks often because of lack of imperial fleets and eats player ships // TODO LOW CRUSADE_EVENT // fix
 						EVENT.enemy, // Save-scumming event, Should probably base this on something else than tech-scavs
 						EVENT.mutation,
 						EVENT.ship_lost, // Another save-scumming event, mainly due to rarity of player ships

@@ -8,7 +8,13 @@ function scr_unit_detail_text(){
 	var unit_role = role();
 	var body_augmentations = {mutations:[], bionics:[[],[]]}
 	var body_bionics = get_body_data("bionic");
-	var _phy_levels = ARR_psy_levels;
+	if (psionic < 0) {
+		var _psy_levels = ARR_negative_psy_levels;
+		var _psionic_assignment = _psy_levels[psionic * -1]
+	} else {
+		var _psy_levels = ARR_psy_levels
+		var _psionic_assignment = _psy_levels[psionic]
+	}
 	var _body_parts = ARR_body_parts;
 	var _body_parts_display = ARR_body_parts_display;
 	if(base_group == "astartes"){
@@ -65,48 +71,60 @@ function scr_unit_detail_text(){
 		}
 
 		// Psyker text
-		unit_data_string += $"Has an Assignment rating of {_phy_levels[psionic]} ({psionic}) ";
-		var is_lib = array_contains(["Lexicanum", "Codiciery",obj_ini.role[100,17]], role());
-		if (psionic<2){
-			unit_data_string += "and as such has almost no presence in the warp.";
+		unit_data_string += $"Has an Assignment rating of {_psionic_assignment} ({psionic}) ";
+		var is_lib = array_contains(["Lexicanum", "Codiciery",obj_ini.role[100,17]], role()) || role() == "Chapter Master";
+		if (psionic<-6){
+			unit_data_string += ", so inert in the Warp as to actually exhibit negative psychic influence upon others.";
+		} else if(psionic<0){
+			unit_data_string += ", psionically-dense, oblivious to warp fluctuations and psychic probing.";
+		} else if(psionic==0){
+			unit_data_string += ", no manifestation of psychic talent.";
+		} else if (psionic==1){
+			unit_data_string += ", second of the two so-called inert psychic levels.";
 		} else if(psionic<8){
-			unit_data_string += "and a limited presence in the warp causing them to be more prone to attacks from the immaterium.";
+			unit_data_string += ", unconscious and minor level of psionic brain activity, causing them to be more prone to attacks from the immaterium.";
+			if (is_astartes){
+				if (!is_lib){
+					unit_data_string += "\n";
+					unit_data_string += "It's recommended to send them to the Librarium, however they are unlikely to exceed the role of Lexicanum or Codiciery in their current state.";
+				}
+			}
 		} else if(psionic<11){
-			unit_data_string += "and therefore is considered to be a low level psyker with conscious levels of psionic talent.";
+			unit_data_string += ", therefore is considered to be a true psyker, with conscious levels of psionic talent.";
 			if (is_astartes){
 				if (!is_lib){
 					unit_data_string += "\n";
-					unit_data_string += "He would be eligible for a role in the Librarium however is unlikely to ever exceed the role of Lexicanum.";
+					unit_data_string += "Their uncontrolled powers are a threat to the chapter. They must be sent to the Librarium.";
 				}
 			}
-		}else if(psionic<13){
-			unit_data_string += "and has a very high level of mental psychic activity, making them a potent psyker, their presence in the warp is obvious to the daemons of the immaterium.";
+		} else if (psionic<13){
+			unit_data_string += ", a very high level of mental psychic activity, making them a potent psyker. Their presence in the warp is obvious to the daemons of the immaterium.";
 			if (is_astartes){
 				if (!is_lib){
 					unit_data_string += "\n";
-					unit_data_string += " He would be eligible for a role in the Librarium capable of wielding his power to good effect.";
+					unit_data_string += "Their existence outside of the Librarium is an extreme threat. Deal with it, or the consequences may be devastating.";
 				}
 			}
-		}else if(psionic<15){
-			unit_data_string += ", occurring in approximately one-per-billion human births, they are a very potent psyker.";
+		}else if (psionic<17){
+			unit_data_string += ", occurring in approximately one-per-billion human births. They are an extremely potent psyker.";
 			if (is_astartes){
 				if (!is_lib){
 					unit_data_string += "\n";
-					unit_data_string += " He would be eligible for a role in the Librarium And should be enrolled at once in order to train his abilities and stop his untrained mind causing damage to the chapter.";
+					unit_data_string += "They have to be sent to the Librarium, or your chapter may soon see its end, at the hands of a chaos god.";
 				} else {
 					unit_data_string += "\n";
-					unit_data_string += " His rare talent is of great benefit to the chapter and could one day be a candidate for Chief of the librariam.";
+					unit_data_string += "His rare talent is of great benefit to the chapter and could one day be a candidate for Chief of the Librariam.";
 				}
 			}		       				       			
-		} else if(psionic<15){
-			unit_data_string += ", exceedingly rare and dangerous but unfathomably powerful.";
+		} else {
+			unit_data_string += ". State of mind of such psykers always has a perceivable level of dementation or insanity.";
 			if (is_astartes){
 				unit_data_string += "\n"
-				unit_data_string += " Their talents are both a great boon and huge risk to the chapter.";
+				unit_data_string += "Their talents are both a great boon and huge risk to the chapter.";
 				if (!is_lib){
-					unit_data_string += " He must brought into the guided sphere of the librarium immediately or else dealt with by other methods for the good of the chapter.";
+					unit_data_string += "He must brought into the guided sphere of the librarium immediately or else dealt with by other methods for the good of the chapter.";
 				} else {
-					unit_data_string += " His rare talent is of great benefit to the chapter and will likely one day be a candidate for Chief of the librariam if he does not succumb to either the material or immaterium.";
+					unit_data_string += "His rare talent is of great benefit to the chapter and will likely one day be a candidate for Chief of the librariam if he does not succumb to either the material or immaterium.";
 				}
 			}
 		}
@@ -237,7 +255,7 @@ function scr_unit_detail_text(){
 			unit_data_string+= "\nHis strength greatly exceeds that of the standard astartes allowing him to wield weapons that normally require two hands in one."
 		} 
 		// Technology text
-		if(!array_contains(traits, "mars_trained")){
+		if (!has_trait("mars_trained") && !has_trait("chapter_trained_tech")) {
 			if (technology >= 35){
 				unit_data_string +="\nDisplays a talent with technology that might make him suited to a role within the armentarium.";
 			} else if (technology <= 25){

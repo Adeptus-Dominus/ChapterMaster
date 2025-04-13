@@ -253,7 +253,7 @@ function scr_librarium(){
                     }
 
                     if (artifact_gift.draw_shutter(xx + 575, yy + 770, "GIFT", 0.3, true)){
-                        show_debug_message("Clicked");
+                        //show_debug_message("Clicked");
                         var chick=false;
                         //list of all giftable factions enum numbers
                         var giftable_factions = [eFACTION.Imperium, eFACTION.Mechanicus,eFACTION.Inquisition,eFACTION.Ecclesiarchy,eFACTION.Eldar,eFACTION.Tau]

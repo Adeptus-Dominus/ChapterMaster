@@ -11,52 +11,100 @@ enum eTrials{
 #macro ARR_recruitment_pace [" is currently halted."," is advancing sluggishly."," is advancing slowly."," is advancing moderately fast."," is advancing fast."," is advancing frenetically."," is advancing as fast as possible."]
 
 #macro ARR_recruitement_rate  ["HALTED","SLUGGISH","SLOW","MODERATE","FAST","FRENETIC","MAXIMUM",]
-
 #macro ARR_recruitment_rates  ["halted","sluggish","slow","moderate","fast","frenetic","hereticly fast"]
+
+#macro ARR_neophyte_rate  ["HALTED","ONGOING"]
+#macro ARR_neophyte_rates  ["halted","ongoing"]
 #macro ARR_apothecary_training_tiers [0,0.8,0.9,1,1.5,2,4 ]
 #macro ARR_chaplain_training_tiers  [0,0.8,0.9, 1,1.5,2,4]
 #macro ARR_techmarine_training_tiers  [0,1,2,4, 6,10,14]
 
-function find_recruit_success_chance(local_apothecary_points, planet_type){
-	var recruit_type = scr_trial_data(obj_controller.recruit_trial);
-	var recruit_chance_array = [0, 1000, 900, 800, 700, 600, 500];
+function find_recruit_success_chance(local_apothecary_points, system, planet, ui=0) {
+    var p_data = new PlanetData(planet, system);
+    var _recruit_world = p_data.get_features(P_features.Recruiting_World)[0];
+    var _recruit_cost = _recruit_world.recruit_cost;
+
+    var recruit_type = scr_trial_data(obj_controller.recruit_trial);
     var planet_type_recruit_chance = {
-        "Hive" : 30,
-        "Temperate" : 20,
-        "Feudal" : 20,
-        "Forge" : 15,
-        "Shrine" : 15,
-        "Desert" : 15,
-        "Ice" : 15,
-        "Agri" : 15,
-        "Death" : 15,
-        "Lava" : 15,
-    }
-    recruit_chance = 0;
-    if (obj_controller.recruiting>0){
-        var recruit_chance = recruit_chance_array[obj_controller.recruiting];
-    }    
-     var recruit_chance_total = 0;
-    if (struct_exists(planet_type_recruit_chance, planet_type)){
-        recruit_chance_total = planet_type_recruit_chance[$ planet_type]+local_apothecary_points;
-        if (struct_exists(recruit_type, "recruit_count_modifier")){
-            var modded=false;
-            var count_mod = recruit_type.recruit_count_modifier;
-            if (struct_exists(count_mod, "planets")){
-                if (struct_exists(count_mod.planets, planet_type)){
-                    recruit_chance_total*=(count_mod.planets[$planet_type]);
-                    modded=true;
-                }
+        "Hive": 30,
+        "Temperate": 20,
+        "Feudal": 20,
+        "Forge": 15,
+        "Shrine": 15,
+        "Desert": 15,
+        "Ice": 15,
+        "Agri": 15,
+        "Death": 15,
+        "Lava": 15,
+    };
+    var recruit_chance = 0;
+    if (local_apothecary_points > 0) {
+        if (ui == 0) {
+            if (_recruit_cost > 0 && obj_controller.requisition >= (_recruit_cost * 2)) {
+                obj_controller.requisition-=_recruit_cost * 2;
+            } else {
+                _recruit_world.recruit_cost=0;
             }
-            if (!modded && struct_exists(count_mod, "base")){
-                recruit_chance_total*=count_mod.base;
+        }
+
+        if (p_data.at_war(0, 1, 1) && p_data.player_disposition < 0) {
+            recruit_chance = 3000
+        } else if (p_data.at_war(0, 0, 0) && p_data.player_disposition < 0) {
+            recruit_chance = 2000
+        } else {
+            var _frictious = (p_data.at_war(0, 1, 1) && p_data.player_disposition <= 50);
+            var _disp_mod = -((_frictious ? 30 : 10) * p_data.player_disposition);
+            var _faction_disp_mod = !_frictious ? 2000 : 3000;
+            var _recruit_cost_mod = -_recruit_cost*100;
+
+            var recruit_chance = _disp_mod + _recruit_cost_mod + _faction_disp_mod
+        };
+
+        if (_recruit_world.recruit_type == 1) {
+            recruit_chance = recruit_chance/2;
+            if (recruit_chance < 300) {
+                recruit_chance = 300;
+            }
+            if (ui == 0) {
+                if (scr_has_adv("Ambushers")) {
+                    var droll = irandom(400)
+                } else {
+                    var droll = irandom(100)
+                }
+
+                if (droll == 0) {
+                    var _planet_name = p_data.name
+                    scr_alert(#FF9900, "DIPLOMATIC DISASTER", $"Apothecaries at {_planet_name} has been spotted doing suspicious activities!", system.x, system.y)
+                    scr_event_log(#FF9900, $"Apothecaries at {_planet_name} has been spotted doing suspicious activities!", system.name)
+                    system.dispo[planet]-=25;
+                    if (p_data.current_owner != eFACTION.Player) {
+                        obj_controller.disposition[p_data.current_owner]-=5;
+                    }
+                }
             }
         }
     }
-    if (recruit_chance!=0){
-		var _success_chance = recruit_chance_total/recruit_chance;   	
-    } else{
-    	_success_chance = 0;
+    var recruit_chance_total = 0;
+    if (struct_exists(planet_type_recruit_chance, p_data.planet_type)) {
+        recruit_chance_total = planet_type_recruit_chance[$ p_data.planet_type] + local_apothecary_points;
+        if (struct_exists(recruit_type, "recruit_count_modifier")) {
+            var modded = false;
+            var count_mod = recruit_type.recruit_count_modifier;
+            if (struct_exists(count_mod, "planets")) {
+                if (struct_exists(count_mod.planets, p_data.planet_type)) {
+                    recruit_chance_total *= count_mod.planets[$ p_data.planet_type];
+                    modded = true;
+                }
+            }
+            if (!modded && struct_exists(count_mod, "base")) {
+                recruit_chance_total *= count_mod.base;
+            }
+        }
+    }
+    if (recruit_chance != 0) {
+        var _success_chance = recruit_chance_total / recruit_chance;
+    } else {
+        var _success_chance = 0;
     }
     return _success_chance;
 }
@@ -122,21 +170,22 @@ function find_recruit_corruption(planet_type){
 }
 
 // to be run in teh scope of the PlanetData struct
-function planet_training_sequence(local_apothecary_points){
-
+function planet_training_sequence(local_apothecary_points) {
     var thirdpop = max_population / 3;
-    var halfpop = max_population / 2;	
+    var halfpop = max_population / 2;
 
-	if (planet_feature_bool(features, P_features.Recruiting_World)) and(obj_controller.gene_seed > 0) and(current_owner <= 5) and(obj_controller.faction_status[current_owner] != "War") {
+    if (obj_controller.faction_status[eFACTION.Imperium] != "War" && current_owner <= 5) || (obj_controller.faction_status[eFACTION.Imperium] == "War") {
         var _planet_population = population;
         if (large_population) {
             _planet_population *= 1000000000;
-        }		
-	    if (_planet_population >= 50 && obj_controller.recruiting) {
-	        // Commenting this for now, looks like debug code
-	        //scr_alert("green","owner", "Recruitment is slowed due to lack of population on our recruitment worlds",0,0);
-	        var recruit_type = scr_trial_data(obj_controller.recruit_trial);
-	        if (!large_population) then population-= 1;
+        }
+        if (_planet_population >= 50 && obj_controller.recruiting) {
+            // Commenting this for now, looks like debug code
+            //scr_alert("green","owner", "Recruitment is slowed due to lack of population on our recruitment worlds",0,0);
+            var recruit_type = scr_trial_data(obj_controller.recruit_trial);
+            if (!large_population) {
+                population -= 1;
+            }
 
 	        var recruit_chance = 999;
 	        var aspirant = 0;
@@ -145,95 +194,93 @@ function planet_training_sequence(local_apothecary_points){
 	        var months_to_neo = 72;
 	        var dista = 0;
 	        var onceh = 0;
-	        
-	        var _recruit_chance = find_recruit_success_chance(local_apothecary_points, planet_type)
-	        aspirant = random(1)<_recruit_chance;
 
-	        // if a planet type has less than half it's max pop, you get 20% less spacey marines
-	        if (_planet_population <= halfpop) {
-	            recruit_chance += 1.2;
-	           // scr_alert("red", "owner", "The populations you attain aspirants from are less populant than required, chances of recruiting aspirants is 20% lower", 0, 0);
-	        }
+            var _recruit_chance = find_recruit_success_chance(local_apothecary_points, system, planet);
+            aspirant = random(1) < _recruit_chance;
 
-	        // This is the area has trial types that don't care about planet type 
-	        // xp is given in a latter if loop
-	        if (struct_exists(recruit_type, "seed_waste")){
-	            if (obj_controller.recruiting > 0) {
-	                if (random(1)<recruit_type.seed_waste){
-	                    obj_controller.gene_seed--;
-	                    //TODO make more informative
-	                    scr_alert("red", "owner", "Blood Duels are efficient in time, but costly in risk with gene material. Gene-seed has been lost.", 0, 0);
-	                }
-	            }
-	        }
-	        if (struct_exists(recruit_type, "train_time")){
-	            var train_time_data =  recruit_type.train_time;
-	            var chosen_time = false;
-	            if (struct_exists(train_time_data, "planets")){
-	                if (struct_exists(train_time_data.planets, planet_type)){
-	                    months_to_neo = irandom_range(train_time_data.planets[$planet_type][0], train_time_data.planets[$planet_type][1]);
-	                    chosen_time=true;
-	                }
-	            }
-	            if (!chosen_time && struct_exists(train_time_data, "base")){
-	                if (train_time_data.base[0]!=0 && train_time_data.base[1]!=0){
-	                    months_to_neo = irandom_range(train_time_data.base[0], train_time_data.base[1]);
-	                }
-	            }
-	        }
-	        var new_recruit_exp = irandom(5);
-	        if (struct_exists(recruit_type, "exp_bonus")){
-	            var chosen_exp = false;
-	            var exp_bonus_data =  recruit_type.exp_bonus;
-	            if (struct_exists(exp_bonus_data, "planets")){
-	                if (struct_exists(exp_bonus_data.planets, planet_type)){
-	                    new_recruit_exp += irandom_range(exp_bonus_data.planets[$planet_type][0], exp_bonus_data.planets[$planet_type][1]);
-	                    chosen_exp = true;
-	                }
-	            }
-	            if (!chosen_exp && struct_exists(exp_bonus_data, "base")){
-	                if (exp_bonus_data.base[0]!=0 && exp_bonus_data.base[1]!=0){
-	                    if (array_length(exp_bonus_data.base)>2){
-	                        if (random(1)<exp_bonus_data.base[2]){
-	                             new_recruit_exp += irandom_range(exp_bonus_data.base[0], exp_bonus_data.base[1]);
-	                        }
-	                    } else {
-	                        new_recruit_exp = irandom_range(exp_bonus_data.base[0], exp_bonus_data.base[1]);
-	                    }
-	                }                            
-	            }
-	        }
-	        //new_recruit_corruption
+            // if a planet type has less than half it's max pop, you get 20% less spacey marines
+            if (_planet_population <= halfpop) {
+                recruit_chance += 1.2;
+                // scr_alert("red", "owner", "The populations you attain aspirants from are less populant than required, chances of recruiting aspirants is 20% lower", 0, 0);
+            }
 
-	        // xp gain for the recruit is here
-	        // as well as planet type buffs or nerfs
-	        if (aspirant) {
+            // This is the area has trial types that don't care about planet type
+            // xp is given in a latter if loop
+            if (struct_exists(recruit_type, "seed_waste")) {
+                if (obj_controller.recruiting > 0) {
+                    if (random(1) < recruit_type.seed_waste) {
+                        obj_controller.gene_seed--;
+                        //TODO make more informative
+                        scr_alert("red", "owner", "Blood Duels are efficient in time, but costly in risk with gene material. Gene-seed has been lost.", 0, 0);
+                    }
+                }
+            }
+            if (struct_exists(recruit_type, "train_time")) {
+                var train_time_data = recruit_type.train_time;
+                var chosen_time = false;
+                if (struct_exists(train_time_data, "planets")) {
+                    if (struct_exists(train_time_data.planets, planet_type)) {
+                        months_to_neo = irandom_range(train_time_data.planets[$ planet_type][0], train_time_data.planets[$ planet_type][1]);
+                        chosen_time = true;
+                    }
+                }
+                if (!chosen_time && struct_exists(train_time_data, "base")) {
+                    if (train_time_data.base[0] != 0 && train_time_data.base[1] != 0) {
+                        months_to_neo = irandom_range(train_time_data.base[0], train_time_data.base[1]);
+                    }
+                }
+            }
+            var new_recruit_exp = irandom(5);
+            if (struct_exists(recruit_type, "exp_bonus")) {
+                var chosen_exp = false;
+                var exp_bonus_data = recruit_type.exp_bonus;
+                if (struct_exists(exp_bonus_data, "planets")) {
+                    if (struct_exists(exp_bonus_data.planets, planet_type)) {
+                        new_recruit_exp += irandom_range(exp_bonus_data.planets[$ planet_type][0], exp_bonus_data.planets[$ planet_type][1]);
+                        chosen_exp = true;
+                    }
+                }
+                if (!chosen_exp && struct_exists(exp_bonus_data, "base")) {
+                    if (exp_bonus_data.base[0] != 0 && exp_bonus_data.base[1] != 0) {
+                        if (array_length(exp_bonus_data.base) > 2) {
+                            if (random(1) < exp_bonus_data.base[2]) {
+                                new_recruit_exp += irandom_range(exp_bonus_data.base[0], exp_bonus_data.base[1]);
+                            }
+                        } else {
+                            new_recruit_exp = irandom_range(exp_bonus_data.base[0], exp_bonus_data.base[1]);
+                        }
+                    }
+                }
+            }
+            //new_recruit_corruption
 
-	            var i = 0;
-	            var new_recruit = 0;
+            // xp gain for the recruit is here
+            // as well as planet type buffs or nerfs
+            if (aspirant) {
+                var i = 0;
+                var new_recruit = 0;
 
-	            // gets the next empty recruit space on the array
-	            if (new_recruit_exp >= 40) then new_recruit_exp = 38;// we don't want immediate battle bros
+                // gets the next empty recruit space on the array
+                if (new_recruit_exp >= 40) {
+                    new_recruit_exp = 38;
+                } // we don't want immediate battle bros
 
-	            for (var i=0;i<array_length(obj_controller.recruit_training);i++) {
-	                if (obj_controller.recruit_training[i]<1 || months_to_neo<obj_controller.recruit_training[i]){
-	                    obj_controller.gene_seed -= 1;
-	                    array_insert(obj_controller.recruit_corruption, i, new_recruit_corruption);
-	                    array_insert(obj_controller.recruit_distance , i, 0);
-	                    array_insert(obj_controller.recruit_training, i, months_to_neo);
-	                    array_insert(obj_controller.recruit_exp, i, new_recruit_exp); 
-	                    array_insert(obj_controller.recruit_name, i, global.name_generator.generate_space_marine_name());    
-	                    array_insert(obj_controller.recruit_data, i, {"recruit_data":{
-	                        recruit_world :planet_type ,
-	                        aspirant_trial :obj_controller.recruit_trial ,
-	                    }});                                                                                                   
-	                    break;
-	                }
-	            }
-	        }
-	        // End aspirant!=0
-	    } // End pop>50
-	} // End recruiting possible	
+                for (var i = 0; i < array_length(obj_controller.recruit_training); i++) {
+                    if (obj_controller.recruit_training[i] < 1 || months_to_neo < obj_controller.recruit_training[i]) {
+                        obj_controller.gene_seed -= 1;
+                        array_insert(obj_controller.recruit_corruption, i, new_recruit_corruption);
+                        array_insert(obj_controller.recruit_distance, i, 0);
+                        array_insert(obj_controller.recruit_training, i, months_to_neo);
+                        array_insert(obj_controller.recruit_exp, i, new_recruit_exp);
+                        array_insert(obj_controller.recruit_name, i, global.name_generator.generate_space_marine_name());
+                        array_insert(obj_controller.recruit_data, i, {"recruit_data": {recruit_world: planet_type, aspirant_trial: obj_controller.recruit_trial}});
+                        break;
+                    }
+                }
+            }
+            // End aspirant!=0
+        } // End pop>50
+    } // End recruiting possible
 }
 
 function scr_trial_data(wanted=-1){
@@ -646,18 +693,14 @@ function scr_draw_recruit_advisor(){
 		}
 
 		if (gene_seed > 0) {
-			var _recruit_rates = ARR_recruitment_rates;
+			var _recruit_rates = ARR_neophyte_rates;
 			var _cur_recruit_rate = $"The recruitment is {_recruit_rates[recruiting]}";
 			if ((recruiting == 0) && (marines >= 1000)) {
 				blurp += $"\n{_cur_recruit_rate}. You must only give me the word and I can begin further increasing our numbers... though this would violate the Codex Astartes.";
 			} else if ((recruiting == 0) && (marines < 1000)) {
 				blurp += $"\n{_cur_recruit_rate}. You must only give me the word and I can begin further increasing our numbers.";
-			} else if (recruiting > 0 && recruiting < 3) {
-				blurp += $"\n{_cur_recruit_rate}. With an increase of funding I could vastly increase the rate.";
-			} else if (recruiting == 3) {
-				blurp += $"\n{_cur_recruit_rate}. Everything is progressing as expected.";
-			} else if (recruiting >= 4) {
-				blurp += $"\n{_cur_recruit_rate}. Give me the word when we have enough Neophytes being trained.";
+			} else if (recruiting == 1) {
+				blurp += $"\n{_cur_recruit_rate}.";
 			}
 		}
 	}
@@ -672,9 +715,9 @@ function scr_draw_recruit_advisor(){
 	
 	if (recruiting > 0) {
 		if ((string_count("|", obj_controller.recruiting_worlds) == 1)) {
-			blurp += $"\nWe're recruiting from one world - {obj_ini.recruiting_name}. Perhaps we should speak with a planetary governor to acquire another.";
+			blurp += $"\nWe're recruiting from one world - {obj_ini.recruiting_name}.";
 		} else if ((string_count("|", obj_controller.recruiting_worlds) == 2)) {
-			blurp += "\nWe're recruiting from two worlds. Finding recruits is vastly accelerated but incurring more expenses.";
+			blurp += "\nWe're recruiting from two worlds. Finding recruits is vastly accelerated.";
 		} else if ((string_count("|", obj_controller.recruiting_worlds) > 2)) {
 			blurp += "\nWe're recruiting from several worlds.";
 		}
@@ -691,22 +734,14 @@ function scr_draw_recruit_advisor(){
 
     // draw_line(xx+216,yy+252,xx+597,yy+252);draw_line(xx+216,yy+292,xx+597,yy+292);
 
+    var _neophyte_rate = ARR_neophyte_rate;
     var blur = "",
         amo = 0;
     // ** Normal recruiting **
     draw_set_color(16291875);
-    if (recruiting = 1) then amo = -2;
-    if (recruiting = 2) then amo = -4;
-    if (recruiting = 3) then amo = -6;
-    if (recruiting = 4) then amo = -8;
-    if (recruiting = 5) then amo = -10;
-    if (recruiting = 6) then amo = -20;
-    amo = amo * (string_count("|", obj_controller.recruiting_worlds));
-    if (amo != 0) then draw_sprite(spr_requisition, 0, xx + 336 + 16, yy + 356);
-    if (recruiting != 0) then draw_text(xx + 351 + 16, yy + 354, string_hash_to_newline(string(amo)));
     draw_set_color(c_gray);
-    if (recruiting >= 0) and(recruiting <= 6){
-    	blur = _recruit_rate[recruiting];
+    if (recruiting >= 0) and(recruiting <= 1){
+       blur = _neophyte_rate[recruiting];
     }
     draw_text(xx + 407, yy + 354, string_hash_to_newline("Space Marine Recruiting: " + string(blur)));
     draw_text(xx + 728, yy + 354, string_hash_to_newline("[-] [+]"));

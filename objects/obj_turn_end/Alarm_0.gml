@@ -6,22 +6,6 @@ combating=0;
 
 var i;
 
-/*repeat(10){
-    i=0;
-    repeat(20){
-        i+=1;
-        if (battle[i]=1) and (battle[i+1]=1) and (battle_world[i]<5) and (battle_world[i+1]=-50){
-            battle[999]=battle[i];battle_location[999]=battle[i];battle_world[999]=battle_world[i];
-            battle_opponent[999]=battle_opponent[i];battle_object[999]=battle_object[i];battle_pobject[999]=battle_pobject[i];// Store current
-            
-            battle[i]=battle[i+1];battle_location[i]=battle[i+1];battle_world[i]=battle_world[i+1];
-            battle_opponent[i]=battle_opponent[i+1];battle_object[i]=battle_object[i+1];battle_pobject[i]=battle_pobject[i+1];// Current = Current +1
-            
-            battle[i+1]=battle[999];battle_location[i+1]=battle[999];battle_world[i+1]=battle_world[999];
-            battle_opponent[i+1]=battle_opponent[999];battle_object[i+1]=battle_object[999];battle_pobject[i+1]=battle_pobject[999];// Current +1 = Stored
-        }
-    }
-}*/
 
 i=50;
 repeat(50){

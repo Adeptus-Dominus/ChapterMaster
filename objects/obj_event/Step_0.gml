@@ -92,7 +92,7 @@ if (ticked=1){// Select a random marine and have them perform an action
     repeat(20){
         if (good=false){
             good=true;ide=floor(random(attendants))+1;
-            if (unit.IsSpecialist("heads")) then good=false;
+            if (unit.IsSpecialist(SPECIALISTS_HEADS)) then good=false;
         }
     }
     if (good=false) then good=true;
@@ -321,10 +321,10 @@ if (ticked=1){// Select a random marine and have them perform an action
         
         
         if (attend_corrupted[ide]=0){
-            if (array_contains(obj_ini.artifact_tags[obj_controller.fest_display], "Chaos")){
+            if (array_contains(obj_ini.artifact_tags[obj_controller.fest_display], "chaos")){
                 unit.corruption+=choose(1,2,3,4);
             }
-            if (array_contains(obj_ini.artifact_tags[obj_controller.fest_display], "Daemon")){
+            if (array_contains(obj_ini.artifact_tags[obj_controller.fest_display], "daemonic")){
                 unit.corruption+=choose(6,7,8,9);
             }
             attend_corrupted[ide]=1;

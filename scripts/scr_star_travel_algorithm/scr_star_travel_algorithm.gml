@@ -115,3 +115,9 @@ function determine_warp_join(star_a, star_b){
 	}
 	return lane_strength;
 }
+
+
+function get_viable_travel_time(time_abundance, start_x,start_y, xx,yy,fleet, start_from_star=false){
+	var alg_calc = new FastestRouteAlgorithm(start_x,start_y, xx,yy,fleet, start_from_star);
+	return alg_calc.final_route_info[1] + time_abundance;
+}

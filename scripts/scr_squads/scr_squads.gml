@@ -154,6 +154,8 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 			in future i'd like to tailer these to marine skill sets e.g the marines with the best ranged stats get given the best ranged equipment	
 		*/
 	static sort_squad_loadout = function(from_armoury=true, to_armoury=true){
+		var unit;
+
 		var required_load, unit_type, load_out_name, load_out_areas, load_out_slot,load_item, optional_load, item_to_add;
 		squad_unit_types = find_squad_unit_types();
 		var full_squad_data =  obj_ini.squad_types[$ type];
@@ -167,7 +169,7 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 			 if (struct_exists(unit_squad_data,"loadout")){						//find out if the unit type for the squad has optional equipment thresholds
 				if (struct_exists(unit_squad_data[$ "loadout"],"option")){
 					if (optional_load == "none"){
-					  	optional_load = DeepCloneStruct(unit_squad_data[$ "loadout"][$ "option"]);			//create a fulfillment object for optional loadouts
+					  	optional_load = variable_clone(unit_squad_data[$ "loadout"][$ "option"]);			//create a fulfillment object for optional loadouts
 
 					  	optional_loadout_slots = struct_get_names(optional_load);
 
@@ -184,7 +186,7 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 				//if there are required loadout items
 				if (struct_exists(unit_squad_data[$ "loadout"],"required")){	//find out if the unit type for the squad has required  equipment thresholds
 					if (required_load == "none"){
-					  	required_load = DeepCloneStruct(unit_squad_data[$ "loadout"][$ "required"]);
+					  	required_load = variable_clone(unit_squad_data[$ "loadout"][$ "required"]);
 					  	required_loadout_slots = struct_get_names(required_load);
 						for (load_out_name = 0; load_out_name < array_length(required_loadout_slots);load_out_name++){
 							load_out_slot = required_loadout_slots[load_out_name];
@@ -434,18 +436,22 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 		life_members++;
 	}
 	// for saving squads
-	static jsonify = function(){
+	static jsonify = function(stringify = true){
 		var copy_struct = self; //grab marine structure
 		var new_struct = {};
 		var copy_part;
 		var names = variable_struct_get_names(copy_struct); // get all keys within structure
 		for (var name = 0; name < array_length(names); name++) { //loop through keys to find which ones are methods as they can't be saved as a json string
 			if (!is_method(copy_struct[$ names[name]])){
-				copy_part = DeepCloneStruct(copy_struct[$ names[name]])
+				copy_part = variable_clone(copy_struct[$ names[name]])
 				variable_struct_set(new_struct, names[name],copy_part); //if key value is not a method add to copy structure
 			}
 		}
-		return json_stringify(new_struct);
+		if(stringify){
+			return json_stringify(new_struct, true);
+		} else {
+			return new_struct;
+		}
 	}
 
 	//function for loading in squad save data
@@ -462,6 +468,7 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 		var locations = [];
 		var system = ""
 		var unit_loc;
+		var unit;
 		var same_system = true;
 		var same_loc_type = true;
 		var loc_type = false;
@@ -534,6 +541,7 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 	//this means the highest ranking dude in a squad will always be the squad leader
 	//failing that the highest experience dude
 	static determine_leader = function(){
+		var unit;
 		var member_length = array_length(members);
 		var hierarchy = role_hierarchy();
 		var leader_hier_pos=array_length(hierarchy);
@@ -580,7 +588,7 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 		var remove_sgt;
 		if (sgt!="none"){
 			remove_sgt = fetch_unit(sgt);
-			if (remove_sgt.IsSpecialist("squad_leaders")){
+			if (remove_sgt.IsSpecialist(SPECIALISTS_SQUAD_LEADERS)){
 				var replace_role = remove_sgt.role();
 				remove_sgt.update_role(new_sgt.role());
 				//TODO centralise loyalty changes for role changes in the update_role method
@@ -607,6 +615,7 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 	}
 
 	static member_loop = function(member_func, data_pack){
+		var unit;
 		member_length = array_length(members);
 		for (var i=0;i<member_length;i++){
 			unit = fetch_unit(members[i]);
@@ -651,14 +660,14 @@ function game_start_squads(){
 		create_squad("command_squad", company);
 		last_squad_count = array_length(obj_ini.squads);
 		while (last_squad_count == array_length(obj_ini.squads)){ ///keep making tact squads for as long as there are enough tact marines
-			if (scr_has_adv("Lightning Warriors")) {
+			if (scr_has_adv("Boarders")) {
 				last_squad_count = (array_length(obj_ini.squads) + 1);
 				if(last_squad_count%2 == 0){		
 					create_squad("tactical_squad", company);
 				}else{
-					create_squad("bikers", company);
+					create_squad("breachers", company);
 				}
-			}else{
+			} else {
 				last_squad_count = (array_length(obj_ini.squads) + 1);
 				create_squad("tactical_squad", company);
 			}
@@ -670,14 +679,14 @@ function game_start_squads(){
 		}		
 		last_squad_count = array_length(obj_ini.squads);
 		while (last_squad_count == array_length(obj_ini.squads)){
-			if (scr_has_adv("Boarders")) {
+			if (scr_has_adv("Lightning Warriors")) {
 				last_squad_count = (array_length(obj_ini.squads) + 1);
 				if(last_squad_count%2 == 0){		
 					create_squad("assault_squad", company);
 				}else{
-					create_squad("breachers", company);
+					create_squad("bikers", company);
 				}
-			}else{
+			} else {
 				last_squad_count = (array_length(obj_ini.squads) + 1);
 				create_squad("assault_squad", company);
 			}

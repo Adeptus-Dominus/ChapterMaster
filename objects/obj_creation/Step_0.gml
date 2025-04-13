@@ -101,7 +101,7 @@ if (change_slide==35) or (change_slide==36) or (chapter_name=="Doom Benefactors"
         strength=5;
         cooperation=5;
         purity=5;
-        stability=5;
+        stability=90;
         for(var i=0; i<16; i++){
             adv[i]="";
             adv_num[i]=0;
@@ -117,7 +117,7 @@ if (change_slide==35) or (change_slide==36) or (chapter_name=="Doom Benefactors"
         homeworld_exists=1;
         homeworld_rule=1;
         aspirant_trial=eTrials.BLOODDUEL;
-        discipline="default";
+        discipline="librarius";
         battle_cry="For the Emperor";
         main_color=1;
         secondary_color=1;
@@ -234,6 +234,11 @@ if (array_length(col)>0){
         color_to_weapon = "";
     }
 }
+if (company_liveries == ""){
+    livery_picker.scr_unit_draw_data(-1);
+    company_liveries = array_create(11,variable_clone(livery_picker.map_colour));
+}
+
 if (full_liveries == ""){
     var struct_cols = {
         main_color :main_color,
@@ -246,7 +251,7 @@ if (full_liveries == ""){
     }
     livery_picker.scr_unit_draw_data();
     livery_picker.set_default_armour(struct_cols,col_special);
-    full_liveries = array_create(21,DeepCloneStruct(livery_picker.map_colour));
+    full_liveries = array_create(21,variable_clone(livery_picker.map_colour));
     full_liveries[eROLE.Librarian] = livery_picker.set_default_librarian(struct_cols);
 
     full_liveries[eROLE.Chaplain] = livery_picker.set_default_chaplain(struct_cols);

@@ -1,11 +1,40 @@
+function build_new_navy_fleet(construction_forge){
+	    new_navy_fleet=instance_create(construction_forge.x,construction_forge.y,obj_en_fleet);
+
+	    with(new_navy_fleet){
+    	    owner=eFACTION.Imperium;
+    	    
+    	    capital_number=0;
+    	    frigate_number=0;
+    	    escort_number=1;
+    	    home_x=x;
+    	    home_y=y;
+    	    warp_able = true;
+    	    with (construction_forge){present_fleet[2]+=1;}
+    	    orbiting=construction_forge;
+    	    navy=1;
+    	    
+    	    var total_ships=0;
+    	    total_ships+=capital_number-1;
+    	    total_ships+=round((frigate_number/2));
+    	    total_ships+=round((escort_number/4));
+    	    if (total_ships<=1) and (capital_number+frigate_number+escort_number>0) then total_ships=1;
+    	    choose_fleet_sprite_image()
+    	    image_index=total_ships;
+    	    image_speed=0;
+    	    
+    	    trade_goods="building_ships";
+    	}
+}
+
+
+
 function new_navy_ships_forge(){
     if (trade_goods=="building_ships"){
         var onceh=0,advance=false,p=0;
     
         p=0;
-        if (!instance_exists(orbiting) && action==""){
-            orbiting = instance_nearest(x,y, obj_star);
-        }
+        is_orbiting();
         for (var p=1;p<=orbiting.planets;p++){
             if (orbiting.p_type[p]="Forge"){
                 //if no non-imperium,player, or eldar aligned fleets or ground forces, continue
@@ -43,7 +72,7 @@ function new_navy_ships_forge(){
             image_index=ii<=1?1:ii;
         }
     
-        if (capital_number=1) and (frigate_number>=5) and (escort_number>=12){
+        if (capital_number>=1) and (frigate_number>=5) and (escort_number>=12){
             var i=0;
             repeat(capital_number){i+=1;
                 capital_max_imp[i]=(((floor(random(15))+1)*1000000)+15000000)*2;

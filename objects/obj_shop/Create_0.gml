@@ -175,7 +175,6 @@ if (shop = "equipment") {
     if (rene = 1) {
         nobuy[i] = 1;
         item_cost[i] = 0;
-		forge_cost[i] = 0;
     }
 	/*i += 1;
 	item[i] = "Executioner Power Axe";
@@ -836,7 +835,7 @@ if (research.armour[1].stealth[0] > 0 && research.armour[1].armour[0] > 1 && obj
     item[i] = "Iron Halo";
     item_stocked[i] = scr_item_count(item[i]);
     forge_cost[i] = 2000;
-    item_cost[i] = 250;
+    item_cost[i] = 300;
     if (rene = 1) {
         nobuy[i] = 1;
         item_cost[i] = 0;
@@ -952,9 +951,12 @@ if (shop = "vehicles") {
     if (obj_controller.stc_vehicles >= 6) {
         nobuy[i] = 0;
         item_cost[i] = 500;
-		forge_cost[i] = 4500*player_hanger;
+        forge_cost[i] = 4500*player_hanger;
     }
-	if (rene=1){nobuy[i]=1;item_cost[i]=0; forge_cost[i] = 0;}
+    if (rene=1) {
+        nobuy[i]=1;
+        item_cost[i]=0;
+    }
     i += 1;
     x_mod[i] = 9;
     item[i] = "Twin Linked Heavy Bolter Mount";
@@ -1170,7 +1172,6 @@ if (research.armour[1].stealth[0] > 0 && research.armour[1].armour[0] > 1 && obj
 	nobuy[i] = 1;
     if (rene = 1) {
         item_cost[i] = 0;
-		forge_cost[i] = 0;
     }
 	i += 1;
     x_mod[i] = 9;
@@ -1180,7 +1181,6 @@ if (research.armour[1].stealth[0] > 0 && research.armour[1].armour[0] > 1 && obj
 	nobuy[i] = 1;
     if (rene = 1) {
         item_cost[i] = 0;
-		forge_cost[i] = 0;
     }
     i += 1;
     x_mod[i] = 9;
@@ -1190,7 +1190,6 @@ if (research.armour[1].stealth[0] > 0 && research.armour[1].armour[0] > 1 && obj
 	nobuy[i] = 1;
     if (rene = 1) {
         item_cost[i] = 0;
-		forge_cost[i] = 0;
     }
 	i += 1;
     x_mod[i] = 9;
@@ -1200,7 +1199,6 @@ if (research.armour[1].stealth[0] > 0 && research.armour[1].armour[0] > 1 && obj
 	nobuy[i] = 1;
     if (rene = 1) {
         item_cost[i] = 0;
-		forge_cost[i] = 0;
     }
 	i += 1;
     x_mod[i] = 9;
@@ -1210,7 +1208,6 @@ if (research.armour[1].stealth[0] > 0 && research.armour[1].armour[0] > 1 && obj
 	nobuy[i] = 1;
     if (rene = 1) {
         item_cost[i] = 0;
-		forge_cost[i] = 0;
     }
 	i += 1;
     x_mod[i] = 9;
@@ -1220,7 +1217,6 @@ if (research.armour[1].stealth[0] > 0 && research.armour[1].armour[0] > 1 && obj
 	nobuy[i] = 1;
     if (rene = 1) {
         item_cost[i] = 0;
-		forge_cost[i] = 0;
     }
 	i += 1;
     x_mod[i] = 9;
@@ -1230,7 +1226,6 @@ if (research.armour[1].stealth[0] > 0 && research.armour[1].armour[0] > 1 && obj
 	nobuy[i] = 1;
     if (rene = 1) {
         item_cost[i] = 0;
-		forge_cost[i] = 0;
     }
 	i += 1;
     x_mod[i] = 9;
@@ -1240,7 +1235,6 @@ if (research.armour[1].stealth[0] > 0 && research.armour[1].armour[0] > 1 && obj
 	nobuy[i] = 1;
     if (rene = 1) {
         item_cost[i] = 0;
-		forge_cost[i] = 0;
     }
 	i += 1;
     x_mod[i] = 9;
@@ -1251,7 +1245,6 @@ if (research.armour[1].stealth[0] > 0 && research.armour[1].armour[0] > 1 && obj
     if (rene = 1) {
         nobuy[i] = 1;
         item_cost[i] = 0;
-		forge_cost[i] = 0;
     }
 	i += 1;
     x_mod[i] = 9;
@@ -1262,7 +1255,6 @@ if (research.armour[1].stealth[0] > 0 && research.armour[1].armour[0] > 1 && obj
     if (rene = 1) {
         nobuy[i] = 1;
         item_cost[i] = 0;
-		forge_cost[i] = 0;
     }
 	i += 1;
     x_mod[i] = 9;
@@ -1272,7 +1264,6 @@ if (research.armour[1].stealth[0] > 0 && research.armour[1].armour[0] > 1 && obj
 	nobuy[i] = 1;
     if (rene = 1) {
         item_cost[i] = 0;
-		forge_cost[i] = 0;
     }
     i += 1;
     x_mod[i] = 9;
@@ -1287,7 +1278,6 @@ if (research.armour[1].stealth[0] > 0 && research.armour[1].armour[0] > 1 && obj
     if (rene = 1) {
         nobuy[i] = 1;
         item_cost[i] = 0;
-		forge_cost[i] = 0;
     }
     i += 1;
     x_mod[i] = 9;
@@ -1302,7 +1292,6 @@ if (research.armour[1].stealth[0] > 0 && research.armour[1].armour[0] > 1 && obj
    if (rene = 1) {
         nobuy[i] = 1;
         item_cost[i] = 0;
-		forge_cost[i] = 0;
     }
     i += 1;
     x_mod[i] = 9;
@@ -1317,7 +1306,6 @@ if (research.armour[1].stealth[0] > 0 && research.armour[1].armour[0] > 1 && obj
     if (rene = 1) {
         nobuy[i] = 1;
         item_cost[i] = 0;
-		forge_cost[i] = 0;
     }
     i += 1;
     x_mod[i] = 9;

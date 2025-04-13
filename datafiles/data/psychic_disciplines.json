@@ -1,0 +1,203 @@
+{
+    "example": {
+        "name": "",
+        "prefix": "",
+        "description": "",
+        "powers": [],
+        "perils_chance": 0,
+        "perils_strength": 0,
+        "sourcery": false,
+        "tags": []
+    },
+    "minor_nu": {
+        "name": "Minor Not Nurgle",
+        "prefix": "MFAL",
+        "powers": [
+            "wave_of_entropy",
+            "insect_swarm",
+            "blood_dementia"
+        ],
+        "perils_chance": 0.10,
+        "perils_strength": 10,
+        "sourcery": true,
+        "tags": ["PRE", "FALL"]
+    },
+    "minor_nu_daemon": {
+        "name": "Minor Nurgle",
+        "prefix": "MNUR",
+        "powers": [
+            "wave_of_entropy",
+            "insect_swarm",
+            "blood_dementia",
+            "putrid_vomit"
+        ],
+        "perils_chance": 0.30,
+        "perils_strength": 30,
+        "sourcery": true,
+        "tags": ["NURGLE"]
+    },
+    "minor_tz_daemon": {
+        "name": "Minor Tzeentch",
+        "prefix": "MTZE",
+        "powers": [
+            "wave_of_change",
+            "warp_bolts",
+            "warp_beam",
+            "iron_arm"
+        ],
+        "perils_chance": 0.30,
+        "perils_strength": 30,
+        "sourcery": true,
+        "tags": ["MIN", "TZEENTCH"]
+    },
+    "minor_sl_daemon": {
+        "name": "Minor Slaanesh",
+        "prefix": "MSLA",
+        "powers": [
+            "warp_bolts",
+            "rainbow_beam",
+            "hysterical_frenzy",
+            "symphony_of_pain"
+        ],
+        "perils_chance": 0.30,
+        "perils_strength": 30,
+        "sourcery": true,
+        "tags": ["SLAANESH"]
+    },
+    "minor_default": {
+        "name": "Minor Librarius",
+        "prefix": "MLIB",
+        "powers": [
+            "avenge",
+            "spatial_distortion",
+            "stormbringer"
+        ],
+        "perils_chance": 0,
+        "perils_strength": 0,
+        "tags": ["GLOW", "GOLD", "ADAMANTINE"]
+    },
+    "minor_telekinesis": {
+        "name": "Minor Telekinesis",
+        "prefix": "MTEL",
+        "powers": [
+            "spatial_distortion",
+            "telekinetic_dome",
+            "vortex_of_doom"
+        ],
+        "perils_chance": 0,
+        "perils_strength": 0,
+        "tags": ["CRU"]
+    },
+    "minor_biomancy": {
+        "name": "Minor Biomancy",
+        "prefix": "MBIO",
+        "powers": [
+            "haemorrhage",
+            "regenerate",
+            "iron_arm",
+            "insect_swarm"
+        ],
+        "perils_chance": 0.10,
+        "perils_strength": 10,
+        "tags": ["THI"]
+    },
+    "minor_pyromancy": {
+        "name": "Minor Pyromancy",
+        "prefix": "MPYR",
+        "powers": [
+            "inferno",
+            "sun_burst",
+            "molten_beam"
+        ],
+        "perils_chance": 0,
+        "perils_strength": 0,
+        "tags": ["SAL", "BUR"]
+    },
+    "minor_what_the_fuck_man": {
+        "name": "Occultism",
+        "prefix": "OCC",
+        "powers": [
+            "blood_dementia",
+            "spatial_distortion",
+            "haemorrhage"
+        ],
+        "perils_chance": 0.20,
+        "perils_strength": 20,
+        "sourcery": true,
+        "tags": ["TENTACLES"]
+    },
+    "hacks": {
+        "name": "Hacks",
+        "prefix": "Z",
+        "powers": [
+            "gather_energy"
+        ]
+    },
+    "rune_magic": {
+        "name": "Rune Magick",
+        "prefix": "RUN",
+        "powers": [
+            "living_lightning",
+            "murderous_hurricane",
+            "stormbringer",
+            "fury_of_the_wolf_spirits",
+            "thunderclap",
+            "spatial_distortion"
+        ],
+        "description": "Summons Deadly Elements and Feral Spirits."
+    },
+    "biomancy": {
+        "name": "Biomancy",
+        "prefix": "BIO",
+        "powers": [
+            "minor_smite",
+            "blood_boil",
+            "iron_arm",
+            "endurance",
+            "regenerate",
+            "haemorrhage"
+        ],
+        "description": "Manipulates Biology to Buff or Heal."
+    },
+    "pyromancy": {
+        "name": "Pyromancy",
+        "prefix": "PYR",
+        "powers": [
+            "breathe_fire",
+            "fiery_form",
+            "fire_shield",
+            "inferno",
+            "sun_burst",
+            "molten_beam"
+        ],
+        "description": "Unleashes Blasts and Walls of Flame."
+    },
+    "telekinesis": {
+        "name": "Telekinesis",
+        "prefix": "TEL",
+        "powers": [
+            "assail",
+            "crush",
+            "shockwave",
+            "telekinetic_dome",
+            "spatial_distortion",
+            "vortex_of_doom"
+        ],
+        "description": "Manipulates Gravity to Throw or Shield."
+    },
+    "librarius": {
+        "name": "Librarius",
+        "prefix": "LIB",
+        "powers": [
+            "minor_smite",
+            "smite",
+            "force_dome",
+            "machine_curse",
+            "avenge",
+            "quickening",
+            "might_of_the_ancients",
+            "vortex_of_doom"
+        ],
+        "description": "All about battle and smashing foes or protecting allies."
+    }
+}

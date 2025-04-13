@@ -12,7 +12,7 @@
         "fleet_type": 2, // 1= Homeworld, 2 = Fleet based, 3 = Penitent
         "strength": 5, // 1-10
         "purity": 8, // 1-10
-        "stability": 4, // 1-10
+        "stability": 92, // 1-99
         "cooperation": 5, // 1-10
         "homeworld_exists": 0, // 1 = true
         "recruiting_exists": 0, // 1 = true
@@ -22,7 +22,7 @@
         "recruit_home_relationship" : 2, //recruit from different system
         "recruiting": "Death", // one of "Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
         "recruiting_name": "", // Recruiting Planet name, leave blank to autogenerate
-        "discipline": "default", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune Magick'
+        "discipline": "librarius", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune_magic'
         "aspirant_trial": "CHALLENGE", // one of "BLOODDUEL" "HUNTING" "SURVIVAL" "EXPOSURE" "KNOWLEDGE" "CHALLENGE"  "APPRENTICESHIP" 
         "advantages": [
             "", // leave the first entry blank for now
@@ -39,7 +39,7 @@
             "", // leave the first entry blank for now
             "Splintered",
             "Suspicious",
-            "",
+            "Black Rage",
             "",
             "",
             "",

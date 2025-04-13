@@ -241,95 +241,123 @@ function scr_check_for_ruins_exploration(select_planet, star){
 
 // show_message("so far so good, defeat:"+string(defeat));
 
-function scr_ruins_combat_end(){
-	var _star=0;
-	ruins_battle = choose(6,7,9,10,11,12);
+function scr_ruins_combat_end() {
+    var _star = 0;
+    ruins_battle = choose(6,7,9,10,11,12);
 
-	_star=star_by_name(obj_ground_mission.battle_loc);
-	var location_id = obj_ground_mission.loc;
-	var _battle_threat = obj_ground_mission.battle_threat;
-	if (obj_ground_mission.defeat=0){
-	    //TODO centralise d100 rolls
-	    var dice=irandom(100)+1;
-	    if (scr_has_adv("Shitty Luck")) then dice+=10;
-	    if (dice<(_battle_threat*10)){
-	        if (ruins_race=5){
-	            obj_controller.disposition[5]+=2;
-	            
-	            if (scr_has_adv("Reverent Guardians")) then obj_controller.disposition[5]+=1;
+    _star = star_by_name(obj_ground_mission.battle_loc);
+    var planet = obj_ground_mission.num;
+    var _battle_threat = obj_ground_mission.battle_threat;
+    if (obj_ground_mission.defeat == 0){
+        var dice=roll_dice(1, 100, "low");
 
-	        }
-	        
-	        
-	        
-	        if (ruins_race<5){
-	            var di=choose(2,4);
-	            if (di=2) then obj_controller.disposition[2]+=2;
-	            if (di=4) then obj_controller.disposition[4]+=1;
-	        }
-	        if (ruins_race=6){
-	            if (ruins_battle=6) then obj_controller.disposition[6]-=5;
-	            if (ruins_battle=11) then obj_controller.disposition[6]+=2;
-	            if (ruins_battle=12) then obj_controller.disposition[6]+=4;
-	        }
-	    }
-	}
-	else if (obj_ground_mission.defeat=1){
-	    var dice=irandom(100)+1;
-	    if (scr_has_adv("Shitty Luck")) then dice+=10;
-	    if (dice<(_battle_threat*10)){
-	        if (ruins_race=5) then obj_controller.disposition[5]-=2;
-	        if (ruins_race<5){
-	            var di=choose(2,4);
-	            if (di=2) then obj_controller.disposition[2]-=2;
-	            if (di=4) then obj_controller.disposition[4]-=1;
-	        }
-	    }
-	    var pop=instance_create(0,0,obj_popup);
-	    if (ruins_battle=10){
-	        _star.p_traitors[location_id]=_battle_threat+1;
-	        _star.p_heresy[location_id]+=10;
-	}
-	    else if (ruins_battle=11){
-	        _star.p_traitors[location_id]=_battle_threat+1;
-	        _star.p_heresy[location_id]+=25;
-	    }
-	    else if (ruins_battle=12){
-	        _star.p_demons[location_id]=_battle_threat+1;
-	        _star.p_heresy[location_id]+=40;
-	    }
-	    
-	    pop.title="Ancient Ruins";
-	    pop.text="Your forces within the ancient ruins have been surrounded and destroyed, down to the last man. An immediate expedition must be launched to recover and honour them as well as secure any geneseed or equipment not destroyed";
-	    if (ruins_battle=10) then pop.text+="Now that they have been discovered, scans indicate the heretics and mutants are leaving the structures en masse.  ";
-	    if (ruins_battle=11) then pop.text+="Now that they have been discovered, scans indicate the chaos space marines are leaving the structures, intent on doing damage.  ";
-	    if (ruins_battle=12) then pop.text+="Scans indicate the foul daemons are leaving the structures en masse, intent on doing damage.  "
-	    if (ruins_battle=6) then pop.text+="Now that they have been discovered, the Eldar seem to have vanished without a trace.  Scans reveal nothing.";
-		forces_defeated();
-		var equip_lost = obj_ground_mission.post_equipment_lost;
-		var equip_count_lost = obj_ground_mission.equip_count_lost;
-		if (equip_lost[1]!=""){
-		    var i=0;
-		    repeat(50){i+=1;
-		        if (equip_lost[i]!="") and (equip_count_lost[i]>0){
-					var _new_equip = floor(equip_count_lost[i]/2)
-					if (_new_equip == 0) then _new_equip++
-					array_push(recoverables, [equip_lost[i],_new_equip])
-		        }
-		    }
-		    gene_recoverables = obj_ground_mission.recoverable_gene_seed;
-			if (gene_recoverables > 0){
-				gene_recoverables = floor(gene_recoverables/2)
-				if (gene_recoverables == 0) then gene_recoverables++;
-				gene_recoverables = gene_recoverables;
-			}
-			if (array_length(recoverables)>0){
-				unrecovered_items=true;
-			}
-		}
-	}
+        if (dice < (_battle_threat*10)){
+            if (ruins_race == eFACTION.Ecclesiarchy){
+                obj_controller.disposition[5]+=2;
+
+                if (scr_has_adv("Reverent Guardians")) {
+                    obj_controller.disposition[5]+=1;
+                }
+
+            }
 
 
-	if (obj_ground_mission.defeat=0) then scr_ruins_reward(_star,location_id,self);
 
+            if (ruins_race < 5) {
+                var di = choose(eFACTION.Imperium, eFACTION.Inquisition);
+                switch (di) {
+                case eFACTION.Imperium:
+                    obj_controller.disposition[eFACTION.Imperium]+=2;
+                    break;
+                case eFACTION.Inquisition:
+                    obj_controller.disposition[eFACTION.Inquisition]+=1;
+                    break;
+                }
+            } else if (ruins_race == eFACTION.Eldar) {
+                switch (ruins_battle) {
+                case 6:
+                    obj_controller.disposition[eFACTION.Eldar]-=5;
+                    break;
+                case 11:
+                    obj_controller.disposition[eFACTION.Eldar]+=2;
+                    break;
+                case 12:
+                    obj_controller.disposition[eFACTION.Eldar]+=4;
+                    break;
+                }
+            }
+        }
+
+        scr_ruins_reward(_star,planet,self);
+    } else if (obj_ground_mission.defeat == 1) {
+        var dice=roll_dice(1, 100, "low");
+
+        if (dice < (_battle_threat*10)){
+            if (ruins_race == eFACTION.Ecclesiarchy) {
+                obj_controller.disposition[5]-=2;
+            } else if (ruins_race < 5){
+                var di=choose(eFACTION.Imperium, eFACTION.Inquisition);
+                switch (di) {
+                case eFACTION.Imperium:
+                    obj_controller.disposition[eFACTION.Imperium]-=2;
+                    break;
+                case eFACTION.Inquisition:
+                    obj_controller.disposition[eFACTION.Inquisition]-=1;
+                    break;
+                }
+            }
+        }
+        var pop=instance_create(0,0,obj_popup);
+        switch (ruins_battle) {
+        case 10:
+            _star.p_traitors[planet]=_battle_threat+1;
+            _star.p_heresy[planet]+=10;
+            break;
+        case 11:
+            _star.p_traitors[planet]=_battle_threat+1;
+            _star.p_heresy[planet]+=25;
+            break;
+        case 12:
+            _star.p_demons[planet]=_battle_threat+1;
+            _star.p_heresy[planet]+=40;
+            break;
+        }
+
+        pop.title="Ancient Ruins";
+        pop.text="Your forces within the ancient ruins have been surrounded and destroyed, down to the last man. An immediate expedition must be launched to recover and honour them as well as secure any geneseed or equipment not destroyed";
+        switch (ruins_battle) {
+        case 10:
+            pop.text+="Now that they have been discovered, scans indicate the heretics and mutants are leaving the structures en masse.  ";
+            break;
+        case 11:
+            pop.text+="Now that they have been discovered, scans indicate the chaos space marines are leaving the structures, intent on doing damage.  ";
+            break;
+        case 12:
+            pop.text+="Scans indicate the foul daemons are leaving the structures en masse, intent on doing damage.  ";
+            break;
+        case 6:
+            pop.text+="Now that they have been discovered, the Eldar seem to have vanished without a trace.  Scans reveal nothing.";
+        }
+        forces_defeated();
+        var equip_lost = obj_ground_mission.post_equipment_lost;
+        var equip_count_lost = obj_ground_mission.post_equipments_lost;
+        if (equip_lost[1]!=""){
+            for (var i = 0; i < array_length(equip_lost); i++) { // glorified repeat loop, fix later
+                if (equip_lost[i]!="") and (equip_count_lost[i]>0) {
+                    var _new_equip = floor(equip_count_lost[i]/2);
+                    if (_new_equip == 0) {
+                        _new_equip++;
+                    }
+                    array_push(recoverables, [equip_lost[i],_new_equip])
+                }
+            }
+            recoverable_gene_seed = obj_ground_mission.recoverable_gene_seed;
+            if (recoverable_gene_seed > 1) {
+                recoverable_gene_seed = floor(recoverable_gene_seed/2);
+            }
+            if (array_length(recoverables) > 0) {
+                unrecovered_items=true;
+            }
+        }
+    }
 }

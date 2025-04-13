@@ -53,138 +53,8 @@ try_and_report_loop("chaos_spread", function(){
 });
 
 // ** Build new Imperial Ships **
-try_and_report_loop("imperial ship build", function(){
-    imp_ships=0;
-    with(obj_en_fleet){
-        if (owner==eFACTION.Imperium){
-            obj_controller.imp_ships+=capital_number;
-            obj_controller.imp_ships+=frigate_number/2;
-            obj_controller.imp_ships+=escort_number/4;
-        }
-    }
-    var imperium_worlds=[];
-    var mechanicus_worlds=[];
+build_planet_defence_fleets();
 
-    with(obj_star){
-        //empty object simply acts as a counter for the number of imperial systems
-        if (owner == eFACTION.Imperium){
-            array_push(imperium_worlds, id);
-        }else if (owner == eFACTION.Mechanicus){
-            array_push(mechanicus_worlds, id);
-        }
-        //unknown function of temp5 same as temp6 but for mechanicus worlds
-        if (space_hulk==1) or (craftworld==1){x-=20000;y-=20000;}
-    }
-    // Former: var sha;sha=instance_number(obj_temp6)*1.3;
-    var mechanicus_world_total = array_length(mechanicus_worlds);
-
-    var ship_allowance=array_length(imperium_worlds)*(0.65+(mechanicus_world_total*3));// new
-
-            /*in order for new ships to spawn the number of total imperial ships must be smaller than 
-             one third of the total imperial star systems*/
-    if (mechanicus_world_total>0) and (imp_ships<ship_allowance){
-        var rando=irandom(100)+1, rando2=choose(1,2,2,3,3,3);
-        var forge=array_random_element(mechanicus_worlds);
-        
-        //the less mechanicus forge worlds the less likely to spawn a new fleet
-        if (rando<=(12)*mechanicus_world_total){
-            var new_defense_fleet=instance_create(forge.x,forge.y,obj_en_fleet);
-            new_defense_fleet.owner= eFACTION.Imperium;
-            new_defense_fleet.sprite_index=spr_fleet_imperial;
-            switch(rando2){
-                case 1:
-                    new_defense_fleet.capital_number=1;
-                    break;
-                case 2:
-                    new_defense_fleet.frigate_number=1;
-                    break;
-                case 3:
-                    new_defense_fleet.escort_number=1;
-                break;
-            }
-            new_defense_fleet.trade_goods="merge";
-    		
-    		var system_4 = [];
-    		var system_3 = [];
-    		var system_other = [];
-    		
-            with(obj_star) {
-                if (x>10) and (y>10) and ((owner==eFACTION.Imperium) or (owner==eFACTION.Mechanicus)){
-                    var system_fleet_elements=0;
-    				
-    				var fleet_types = [
-    					eFACTION.Player,
-    					eFACTION.Imperium,
-    					eFACTION.Mechanicus,
-    					eFACTION.Inquisition,
-    					eFACTION.Ecclesiarchy,
-    					eFACTION.Eldar,
-    					eFACTION.Ork,
-    					eFACTION.Tau,
-    					eFACTION.Tyranids,
-    					eFACTION.Chaos,
-    					eFACTION.Necrons
-    				];
-    				
-                    system_fleet_elements = array_sum(present_fleet)
-
-    				var coords = [x,y];
-    				
-                    if (system_fleet_elements==0) {
-                        switch(planets){
-                            case 4:
-                                array_push(system_4, coords);
-                                break;
-                            case 3:
-                                array_push(system_3, coords);
-                                break;
-    						default:
-    							if (p_type[1]!="Dead") {
-    								array_push(system_other, coords);
-    							}
-                                break;
-                        }
-                    };
-                }
-            }
-    		
-            var targeted=false;
-            var target;
-    		//shuffle the contents, if any
-    		array_shuffle_ext(system_4);
-    		array_shuffle_ext(system_3);
-    		array_shuffle_ext(system_other);
-
-            if (targeted) {
-    			target = array_pop(system_4)
-                targeted=true;
-    		}
-    		if (targeted) {
-    			target = array_pop(system_3)
-                targeted=true;
-    		}
-    		if (targeted) {
-    			target = array_pop(system_other)
-                targeted=true;
-    		}
-
-            if (targeted){ 
-                new_defense_fleet.action_x=target[0];
-                new_defense_fleet.action_y=target[1];
-                with (new_defense_fleet){
-                    set_fleet_movement();
-                }
-            }
-        }
-    }
-
-    instance_activate_object(obj_star);
-    with(obj_star){
-        if (x<-10000){x+=20000;y+=20000;}
-        if (x<-10000){x+=20000;y+=20000;}
-    }
-
-});
 apothecary_training();
 chaplain_training();
 librarian_training();
@@ -381,9 +251,9 @@ if (gene_xeno>0){
     }
 }
 var p=0,penitorium=0, unit;
-for(var c=0; c<11; c++){
-    for(var e=1; e<=array_length(obj_ini.god); e++){
-        if (obj_ini.god[c,e]>=10){
+for (var c = 0; c < 11; c++){
+    for (var e = 0; e < array_length(obj_ini.god[c]); e++){
+        if (obj_ini.god[c][e] == 10){
             unit=fetch_unit([c,e]);
             p+=1;
             penit_co[p]=c;
@@ -947,6 +817,7 @@ if (fest_scheduled>0) and (fest_repeats>0){
 
 research_end();
 merge_ork_fleets();
+location_viewer.update_mission_log();
 //complex route plotting for player fleets
 return_lost_ships_chance();
 with (obj_p_fleet){
@@ -956,3 +827,8 @@ with (obj_p_fleet){
 }
 
 });
+
+
+instance_activate_object(obj_star);
+instance_activate_object(obj_en_fleet);
+
