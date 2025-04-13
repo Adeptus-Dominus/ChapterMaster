@@ -831,11 +831,12 @@
                     {
                         "display_data": "Malleus Kill Team",
                         "formation_options": [
+                            "devastator",
                             "veteran",
                             "assault",
-                            "devastator",
                             "scout",
-                            "tactical"
+                            "tactical",
+                            "terminator"
                         ]
                     }
                 ]
@@ -1086,9 +1087,9 @@
                     {
                         "display_data": "Furor Kill Team",
                         "formation_options": [
+                            "assault",
                             "terminator",
                             "veteran",
-                            "assault",
                             "devastator",
                             "scout",
                             "tactical"

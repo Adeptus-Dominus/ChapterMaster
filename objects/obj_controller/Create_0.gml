@@ -335,6 +335,7 @@ music_volume=ini_read_real("Settings","music_volume",1);
 large_text=ini_read_real("Settings","large_text",0);
 settings_heresy=ini_read_real("Settings","settings_heresy",0);
 settings_fullscreen=ini_read_real("Settings","fullscreen",1);
+settings_autosave=ini_read_real("Settings","settings_autosave",1);
 settings_window_data=ini_read_string("Settings","window_data","fullscreen");
 if (is_test_map) then global.cheat_debug=true;
 ini_close();
@@ -1289,7 +1290,7 @@ other1="";
 // ** Sets up bonuses once chapter is created **
 if (instance_exists(obj_ini)){
     // General setup
-    if (global.load==0){
+    if (global.load==-1){
         // Tolerant trait
         if (scr_has_disadv("Tolerant")) {
             obj_controller.disposition[6]+=5;
@@ -1390,7 +1391,7 @@ serialize = function(){
 
 
 // ** Loads the game **
-if (global.load>0){
+if (global.load>=0){
     load_game=global.load;
     successor_chapters=0;
     instance_create(0,0,obj_saveload);
@@ -1549,7 +1550,7 @@ marines+=obj_ini.sixths+obj_ini.sevenths+obj_ini.eighths+obj_ini.ninths+obj_ini.
 command=0;
 command=obj_ini.commands;
 // Removes the command marines from marine count
-if (global.load==0) then marines-=command;
+if (global.load==-1) then marines-=command;
 // **** INTRO SCREEN ****
 temp[30]=string(check_number)+" "+string(year_fraction)+" "+string(year)+".M"+string(millenium);// Date
 temp[31]=string_upper(adept_name);// Adept name
