@@ -15,7 +15,6 @@ if (nope!=1){audio_sound_gain(snd_battle,0.25*obj_controller.master_volume*obj_c
 
 
 //limit on the size of the players forces allowed
-enter_pressed = 0
 man_size_limit = 0;
 man_limit_reached = false;
 man_size_count = 0;
@@ -24,12 +23,12 @@ cd=0;
 owner  = eFACTION.Player;
 click_stall_timer=0;
 formation_set=0;
+big_boom=0;
+kamehameha=false;
 on_ship=false;
 alpha_strike=0;
 Warlord = 0;
 total_battle_exp_gain=0;
-marines_to_recover = 0;
-vehicles_to_recover = 0;
 end_alive_units = [];
 average_battle_exp_gain=0;
 upgraded_librarians=[];
@@ -115,12 +114,8 @@ player_defenses=0;player_silos=0;
 enemy_forces=0;enemy_max=0;
 hulk_forces=0;
 
-i=-1;messages=0;messages_to_show=24;messages_shown=0;
+i=-1;messages=0;messages_to_show=4;messages_shown=0;
 largest=0;priority=0;random_messages=0;dead_enemies=0;
-
-units_lost_counts = {};
-vehicles_lost_counts = {};
-
 repeat(70){i+=1;
     lines[i]="";
     lines_color[i]="";
@@ -131,6 +126,10 @@ repeat(70){i+=1;
     dead_ene[i]="";
     dead_ene_n[i]=0;
     
+    post_unit_lost[i]="";
+    post_unit_veh[i]=0;
+    post_units_lost[i]=0;
+    post_geneseed_recovered[i]=0;
     post_equipment_lost[i]="";
     post_equipments_lost[i]=0;
     
@@ -146,23 +145,21 @@ vehicle_recovery_score=0;
 injured=0;
 command_injured=0;
 seed_saved=0;
-seed_lost=0;
-seed_harvestable=0;
-units_saved_count=0;
-units_saved_counts={};
-vehicles_saved_counts={};
+seed_max=0;
+units_saved=0;
 command_saved=0;
-vehicles_saved_count=0;
-vehicles_saved_counts={};
-final_marine_deaths=0;
+vehicles_saved=0;
+final_deaths=0;
 final_command_deaths=0;
 vehicle_deaths=0;
 casualties=0;
+command_casualties=0;
 dead_jims=0;
 newline="";
 newline_color="";
 liness=0;
 world_size=0;
+gene_penalty=0;
 
 timer=0;
 timer_stage=0;
@@ -196,7 +193,6 @@ vet_sgts=0;
 rhinos=0;
 predators=0;
 land_raiders=0;
-land_speeders=0;
 whirlwinds=0;
 
 big_mofo=10;
@@ -249,7 +245,7 @@ melee=0;if (scr_has_adv("Assault Doctrine")) then melee=1;
 // 
 black_rage=0;if (scr_has_disadv("Black Rage")){black_rage=1;red_thirst=1;}
 shitty_luck=0;if (scr_has_disadv("Shitty Luck")) then shitty_luck=1;
-favoured_by_the_warp=0;if (scr_has_adv("Favoured By The Warp")) then favoured_by_the_warp=1;
+warp_touched=0;if (scr_has_disadv("Warp Touched")) then warp_touched=1;
 
 
 lyman=obj_ini.lyman;// drop pod penalties

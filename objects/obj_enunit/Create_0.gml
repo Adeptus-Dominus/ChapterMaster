@@ -11,25 +11,9 @@ flank=0;
 flyer=0;// Works same as flank, but does not get denoted as such
 neww=0;
 
-column_size=0;
-
-unit_count=0;
-unit_count_old=0;
-composition_string="";
-
-pos = 880;
-centerline_offset = 0;
-draw_size = 0;
-x1 = pos + (centerline_offset * 2);
-y1 = 450 - (draw_size / 2);
-x2 = pos + (centerline_offset * 2) + 10;
-y2 = 450 + (draw_size / 2);
-if (obj_ncombat.enemy < array_length(global.star_name_colors) && obj_ncombat.enemy >= 0) {
-    column_draw_colour = global.star_name_colors[obj_ncombat.enemy];
-} else {
-    column_draw_colour = c_dkgrey;
-}
-
+highlight=0;
+highlight2=0;
+highlight3="";
 
 enemy=0;
 enemy2=0;
@@ -49,6 +33,7 @@ i=0;
 repeat(1001){i+=1;
     wep[i]="";
     wep_num[i]=0;
+    combi[i]=0;
     range[i]=0;
     att[i]=0;
     apa[i]=0;
@@ -89,6 +74,6 @@ if (obj_ncombat.enemy=1) then alarm[6]=10;
 // if (obj_ncombat.enemy=1){alarm[1]=8;alarm[5]=10;}
 
 
-hit = function() {
-    return scr_hit(x1, y1, x2, y2) && obj_ncombat.fadein <= 0;
-};
+pos = 0;
+diff = 0;
+siz = 0;

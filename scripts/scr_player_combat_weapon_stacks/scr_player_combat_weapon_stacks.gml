@@ -1,22 +1,16 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 
-function add_second_profiles_to_stack(weapon, head_role = false, unit = "none") {
-    if (array_length(weapon.second_profiles) > 0) {
-        //for adding in intergrated weaponry
-        var _secondary_profile;
-        for (var p = 0; p < array_length(weapon.second_profiles); p++) {
-            if (is_string(weapon.second_profiles[p])) {
-                _secondary_profile = gear_weapon_data("weapon", weapon.second_profiles[p], "all");
-            } else {
-                _secondary_profile = weapon.second_profiles[p];
-            }
-            if (!is_struct(_secondary_profile)) {
-                continue;
-            }
-            var wep_index = find_stack_index(_secondary_profile.name, head_role, unit);
-            if (wep_index > -1) {
-                add_data_to_stack(wep_index, _secondary_profile);
+function add_second_profiles_to_stack (weapon,head_role=false, unit="none"){
+    if (array_length(weapon.second_profiles)>0){//for adding in intergrated weaponry
+        var secondary_profile;
+        for (var p=0;p<array_length(weapon.second_profiles);p++){
+
+            secondary_profile = gear_weapon_data("weapon",weapon.second_profiles[p],"all");
+            if (!is_struct(secondary_profile)) then continue;
+            var wep_index =  find_stack_index(secondary_profile.name, head_role,unit);
+            if (wep_index>-1){
+                add_data_to_stack(wep_index,secondary_profile);
             }
         }
     }
@@ -66,7 +60,7 @@ function player_head_role_stack(stack_index, unit) {
     if (!array_contains(wep_solo[stack_index], unit.name())) then array_push(wep_solo[stack_index], unit.name());
 }
 
-/// @mixin
+
 function scr_player_combat_weapon_stacks() {
     if (defenses=1){
         var i=0;
@@ -125,6 +119,9 @@ function scr_player_combat_weapon_stacks() {
     for (g=0;g<array_length(unit_struct);g++) {
         unit = unit_struct[g];
         if (is_struct(unit)) {
+            if (marine_casting[g]>=0) then marine_casting[g]=0;
+            if (marine_casting[g]<0) then marine_casting[g]+=1;//timer for libs to be able to cast
+
             if (unit.hp()>0) then marine_dead[g]=0;
             if (unit.hp()>0 && marine_dead[g]!=true){
                 var head_role = unit.IsSpecialist();
@@ -151,7 +148,7 @@ function scr_player_combat_weapon_stacks() {
                 if (unit.mobility_item() != "Bike" && unit.mobility_item() != "") {
                     if (is_struct(mobi_item)){
                         if (mobi_item.has_tag("jump")) {
-                            var stack_index = find_stack_index("Hammer of Wrath", head_role, unit);
+                            var stack_index = find_stack_index("hammer_of_wrath", head_role, unit);
                             if (stack_index > -1){
                                 add_data_to_stack(stack_index, unit.hammer_of_wrath(), false, head_role, unit);
                                 ammo[stack_index] = -1;
@@ -164,7 +161,7 @@ function scr_player_combat_weapon_stacks() {
                 }
 
                 if (is_struct(mobi_item)){
-                    add_second_profiles_to_stack(mobi_item);
+                   add_second_profiles_to_stack(mobi_item);
                 }
                 if (is_struct(gear_item)){
                     add_second_profiles_to_stack(gear_item);
@@ -173,25 +170,17 @@ function scr_player_combat_weapon_stacks() {
                     add_second_profiles_to_stack(armour_item);
                 }
 
-                if (unit.IsSpecialist(SPECIALISTS_LIBRARIANS, true) || (unit.role() == "Chapter Master" && obj_ncombat.chapter_master_psyker == 1)) {
-                    if (marine_casting_cooldown[g] == 0) {
-                        if (array_length(unit.powers_known) > 0) {
-                            if (marine_casting[g] == true) {
-                                marine_casting[g] = false;
-                            }
+                if (unit.IsSpecialist("libs",true)||(unit.role()=="Chapter Master" && obj_ncombat.chapter_master_psyker=1)){
+                    var cast_dice=irandom(99)+1;
+                    if (scr_has_disadv("Warp Touched")) then cast_dice-=5;
 
-                            var cast_target = unit.perils_threshold() * 2;
-                            var cast_dice = roll_dice(1, 100);
-                            if (unit.has_trait("warp_tainted")) {
-                                cast_dice += 40;
-                            }
+                    cast_dice-=(unit.psionic+(unit.experience/60))
 
-                            if (cast_dice >= cast_target) {
-                                marine_casting[g] = true;
-                            }
-                        }
-                    } else {
-                        marine_casting_cooldown[g]--;
+                    if (cast_dice<=50) then marine_casting[g]=1;
+
+                    if (marine_type[g]="Chapter Master") and (obj_ncombat.chapter_master_psyker=1){
+                        if (cast_dice<=66) then marine_casting[g]=1;
+                        if (obj_ncombat.big_boom>0) and (obj_ncombat.kamehameha=true) then marine_casting[g]=1;
                     }
                 }
 
@@ -212,7 +201,7 @@ function scr_player_combat_weapon_stacks() {
                         dudes_num[open]=1;
                     }
                 }
-                if (marine_casting[g] == false){
+                if (marine_casting[g]!=1){
                     var weapon_stack_index=0;
                     var primary_ranged = unit.ranged_damage_data[3];//collect unit ranged data
                     var weapon_stack_index = find_stack_index(primary_ranged.name, head_role, unit);
@@ -333,8 +322,7 @@ function scr_add_unit_to_roster(unit, is_local=false,is_ally=false){
     array_push(marine_ac, unit.armour_calc());
     array_push(marine_attack, unit.melee_attack());
     array_push(marine_local, is_local);
-    array_push(marine_casting, false);
-    array_push(marine_casting_cooldown, 0);
+    array_push(marine_casting, 0);
     array_push(marine_defense, 1);
 
     array_push(marine_dead, 0);
@@ -351,7 +339,7 @@ function scr_add_unit_to_roster(unit, is_local=false,is_ally=false){
     if (is_local){
         local_forces=true;
     }
-    if (unit.IsSpecialist(SPECIALISTS_DREADNOUGHTS)){
+    if (unit.IsSpecialist("dreadnoughts")){
         dreads++;
     } else {
         men++;

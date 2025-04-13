@@ -1,5 +1,5 @@
 
-screen_save(string(PATH_save_previews, save_number));
+screen_save("screen"+string(save_number)+".png");
 
 alarm[3]=1;
 

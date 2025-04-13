@@ -20,7 +20,6 @@ for (var i=0;i<array_length(queue);i++){
 	var _screen_hpadding = 60;
 	var _header_h=0;
 	var _header_w=0;
-	var _cursor_offset = 20;
 
 	// Remember global variables
 	var _curr_font = draw_get_font();
@@ -69,16 +68,12 @@ for (var i=0;i<array_length(queue);i++){
 
 	// Check if the tooltip goes over the right part of the screen and flip left if so
 	if (_rect_x + _rect_w > display_get_gui_width() - _screen_hpadding) {
-		_rect_x = _coords[0] - _rect_w - _cursor_offset;
-	} else {
-		_rect_x += _cursor_offset;
+		_rect_x = _coords[0] - _rect_w - _screen_hpadding;
 	}
 
 	// Check if the tooltip goes over the bottom part of the screen and flip up if so
 	if (_rect_y + _rect_h > display_get_gui_height() - _screen_vpadding) {
-		_rect_y = _coords[1] - _rect_h - _cursor_offset;
-	} else {
-		_rect_y += _cursor_offset;
+		_rect_y = max(_screen_vpadding, _coords[1] - _rect_h - _screen_vpadding);
 	}
 
 	// Draw the tooltip background

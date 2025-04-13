@@ -11,8 +11,8 @@
         "icon_name": "sd", // ? dunno what this is used for yet but the icon breaks if you dont use it 
         "fleet_type": 2, // 1= Homeworld, 2 = Fleet based, 3 = Penitent
         "strength": 2, // 1-10
-        "purity": 9, // 1-10
-        "stability": 76, // 1-99
+        "purity": 10, // 1-10
+        "stability": 2, // 1-10
         "cooperation": 2, // 1-10
         "homeworld_exists": 0, // 1 = true
         "recruiting_exists": 1, // 1 = true
@@ -21,14 +21,14 @@
         "homeworld_name": "Entymion", // Homeworld Planet name, leave blank to autogenerate
         "recruiting": "Death", // one of "Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
         "recruiting_name": "", // Recruiting Planet name, leave blank to autogenerate
-        "discipline": "librarius", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune_magic'
+        "discipline": "default", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune Magick'
         "aspirant_trial": "CHALLENGE", // one of "BLOODDUEL" "HUNTING" "SURVIVAL" "EXPOSURE" "KNOWLEDGE" "CHALLENGE"  "APPRENTICESHIP" 
         "advantages": [
             "", // leave the first entry blank for now
             "Assault Doctrine",
             "Boarders",
             "Kings of Space",
-            "",
+            "Daemon Binders",
             "",
             "",
             "",
@@ -37,7 +37,7 @@
         "disadvantages": [
             "", // leave the first entry blank for now
             "Suspicious",
-            "Warp Tainted",
+            "",
             "",
             "",
             "",
@@ -113,7 +113,7 @@
             "melee": 8, // 1 twin power fists ... 8 force staff
             "ranged": 3, // 1 boltstorm gauntlets ... 7 storm shield
             // All chapter masters have the trait `Lead by Example` by default
-            "traits": ["warp_tainted"],
+            "traits": [],
             "gear": "",
             "mobi": "",
             "armour": "" // default is Artificer armour, only needed to set if changing to something else.
@@ -206,7 +206,31 @@
         * `custom_roles` should be used for specialist/leadership type roles, 
         * To affect an entire squad, see `custom_squads` below
         */
-
+        "custom_roles": {
+            "terminator": {
+                "name": "Red Brother"
+            },
+            "captain": {
+                "name": "Company Master",
+                "wep1": "Eviscerator"
+            },
+            "veteran_sergeant": {
+                "name": "Veteran Strike Leader",
+                "wep1": "Power Axe"
+            },
+            "tactical": {
+                "name": "Void Brother",
+                "wep2": "Chainaxe"
+            },
+            "assault": {
+                "name": "Devourer",
+                "wep1": "Chainaxe"
+            },
+            "sergeant": {
+                "name": "Strike Leader",
+                "wep1": "Chainaxe"
+            }
+        },
         /**
         * * Custom squad roles, loadouts and formations
         * When companies are made, squads are formed based on these rules: 

@@ -39,10 +39,11 @@ function Roster() constructor{
         var _roster_types = struct_get_names(selected_roster);
         for (var i=0;i<array_length(_roster_types);i++){
             var _roster_type_name = _roster_types[i];
-            var _roster_type_count = selected_roster[$_roster_type_name];
-
-            roster_string += $"{string_plural_count(_roster_type_name, _roster_type_count)}";
-            roster_string += smart_delimeter_sign(_roster_types, i, false);
+            if (selected_roster[$_roster_type_name] == 1){
+                roster_string += $"1 {_roster_type_name}{i==array_length(_roster_types)-1?"":", "}";
+            } else {
+            	roster_string += $"{selected_roster[$_roster_type_name]} {string_plural(_roster_type_name)}{i==array_length(_roster_types)-1?"":", "}";
+            }
         }
     }
      static add_role_to_roster = function(role){
@@ -127,17 +128,17 @@ function Roster() constructor{
 		    	 	_add = true;
 		    	 }
 		   	} else {
-                if (!array_contains(_valid_companies, _unit[0])) then continue;
+                 if (!array_contains(_valid_companies, _unit[0])) then continue;
                 var _role = obj_ini.veh_role[_unit[0]][_unit[1]];
 		   		var _vehic_lid = obj_ini.veh_lid[_unit[0]][_unit[1]];
                 if (array_contains(_valid_vehicles, _role)){
     		   		if (_vehic_lid>-1){
     		    	 	if (array_contains(_valid_ship ,_vehic_lid)){
     		    	 		_add = true;  	 		
+    		    	 	} else if (local_button.active){
+    		    	 		_add = true;
     		    	 	}
-    		   		}else if (local_button.active){
-                        _add = true;
-                    }
+    		   		}
                 }
 		   	}
 
@@ -215,21 +216,22 @@ function Roster() constructor{
         var _roster_types = struct_get_names(selected_local_roster);
         for (var i=0;i<array_length(_roster_types);i++){
             var _roster_type_name = _roster_types[i];
-            var _roster_type_count = selected_roster[$_roster_type_name];
-
-            roster_local_string += $"{string_plural_count(_roster_type_name, _roster_type_count)}";
-            roster_local_string += smart_delimeter_sign(_roster_types, i, false);
+            if (selected_roster[$_roster_type_name] == 1){
+                roster_local_string += $"1 {_roster_type_name}{i==array_length(_roster_types)-1?"":", "}";
+            } else {
+            	roster_local_string += $"{selected_local_roster[$_roster_type_name]} {string_plural(_roster_type_name)}{i==array_length(_roster_types)-1?"":", "}";
+            }
         }
-
         roster_local_string+="\n"
         roster_local_string += "Remaining\n";
         var _roster_types = struct_get_names(possible_local_roster);
         for (var i=0;i<array_length(_roster_types);i++){
             var _roster_type_name = _roster_types[i];
-            var _roster_type_count = possible_local_roster[$_roster_type_name];
-
-            roster_local_string += $"{string_plural_count(_roster_type_name, _roster_type_count)}";
-            roster_local_string += smart_delimeter_sign(_roster_types, i, false);
+            if (selected_roster[$_roster_type_name] == 1){
+                roster_local_string += $"1 {_roster_type_name}{i==array_length(_roster_types)-1?"":", "}";
+            } else {
+            	roster_local_string += $"{possible_local_roster[$_roster_type_name]} {string_plural(_roster_type_name)}{i==array_length(_roster_types)-1?"":", "}";
+            }
         }          	
     }
 
@@ -483,9 +485,7 @@ function setup_battle_formations(){
     obj_controller.bat_dreadnought_column = obj_controller.bat_drea_for[new_combat.formation_set];
     obj_controller.bat_rhino_column = obj_controller.bat_rhin_for[new_combat.formation_set];
     obj_controller.bat_predator_column = obj_controller.bat_pred_for[new_combat.formation_set];
-    obj_controller.bat_landraider_column = obj_controller.bat_landraid_for[new_combat.formation_set];
-    obj_controller.bat_landspeeder_column = obj_controller.bat_landspee_for[new_combat.formation_set];
-    obj_controller.bat_whirlwind_column = obj_controller.bat_whirl_for[new_combat.formation_set];
+    obj_controller.bat_landraider_column = obj_controller.bat_land_for[new_combat.formation_set];
     obj_controller.bat_scout_column = obj_controller.bat_scou_for[new_combat.formation_set];  
 }
 
@@ -543,7 +543,7 @@ function add_unit_to_battle(unit,meeting, is_local){
 
         //librarium roles
 
-    }else if (unit.IsSpecialist(SPECIALISTS_LIBRARIANS,true)){
+    }else if (unit.IsSpecialist("libs",true)){
         col = obj_controller.bat_librarian_column;                  //librarium
         new_combat.librarians++;
         moov = 1;
@@ -555,7 +555,7 @@ function add_unit_to_battle(unit,meeting, is_local){
         col = obj_controller.bat_honor_column;
         new_combat.honors++;
 
-    } else if (unit.IsSpecialist(SPECIALISTS_DREADNOUGHTS)){
+    } else if (unit.IsSpecialist("dreadnoughts")){
         col = obj_controller.bat_dreadnought_column;                //dreadnoughts
         new_combat.dreadnoughts++;
     }else if (_unit_role = obj_ini.role[100][4]) {         //terminators
@@ -573,7 +573,7 @@ function add_unit_to_battle(unit,meeting, is_local){
         }
     }
 
-    if (_unit_role = _role[15]) or (_unit_role = _role[14]) or (unit.IsSpecialist(SPECIALISTS_TRAINEES)) {
+    if (_unit_role = _role[15]) or (_unit_role = _role[14]) or (unit.IsSpecialist("trainee")) {
         if (_unit_role = string(_role[14]) + " Aspirant") {
             col = obj_controller.bat_tactical_column;
             new_combat.tacticals++;
@@ -621,7 +621,7 @@ function add_unit_to_battle(unit,meeting, is_local){
             new_combat.chapter_master_psyker = 0;
         }
     }
-    if (unit.IsSpecialist(SPECIALISTS_HEADS)){
+    if (unit.IsSpecialist("heads")){
         col = obj_controller.bat_command_column;
         new_combat.important_dudes++;                       
     };
@@ -697,12 +697,8 @@ function add_vehicle_to_battle(company, veh_index, is_local){
             col = obj_controller.bat_landraider_column;
             new_combat.land_raiders++;
             break;
-            case "Land Speeder":
-            col = obj_controller.bat_landspeeder_column;
-            new_combat.land_speeders++;
-            break;
          case "Whirlwind":
-            col = obj_controller.bat_whirlwind_column;
+            col = 1;
             new_combat.whirlwinds++;
             break;                                    
     }

@@ -1,13 +1,11 @@
 {
-  "$GMScript":"v1",
-  "%Name":"d3d_set_fog",
-  "isCompatibility":true,
-  "isDnD":false,
-  "name":"d3d_set_fog",
-  "parent":{
-    "name":"d3d",
-    "path":"folders/Scripts/compatibility/d3d.yy",
+  "resourceType": "GMScript",
+  "resourceVersion": "1.0",
+  "name": "d3d_set_fog",
+  "isCompatibility": true,
+  "isDnD": false,
+  "parent": {
+    "name": "d3d",
+    "path": "folders/Scripts/compatibility/d3d.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
 }

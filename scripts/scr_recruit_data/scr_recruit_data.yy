@@ -1,13 +1,11 @@
 {
-  "$GMScript":"v1",
-  "%Name":"scr_recruit_data",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"scr_recruit_data",
-  "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+  "resourceType": "GMScript",
+  "resourceVersion": "1.0",
+  "name": "scr_recruit_data",
+  "isCompatibility": false,
+  "isDnD": false,
+  "parent": {
+    "name": "Scripts",
+    "path": "folders/Scripts.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
 }

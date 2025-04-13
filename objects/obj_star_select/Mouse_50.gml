@@ -43,7 +43,7 @@ if (mouse_x>=xx+274) and (mouse_y>=yy+426) and (mouse_x<xx+337) and (mouse_y<yy+
     } else {
         sel_plan=0;
         obj_controller.cooldown=8000;
-        if (obj_controller.menu=1 && obj_controller.view_squad){
+        if (obj_controller.menu=1 && obj_controller.managing>0 && obj_controller.view_squad){
             var company_data = obj_controller.company_data;
             var squad_index = company_data.company_squads[company_data.cur_squad];
             var current_squad=obj_ini.squads[squad_index];

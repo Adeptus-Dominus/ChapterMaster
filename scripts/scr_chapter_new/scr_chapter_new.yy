@@ -1,13 +1,11 @@
 {
-  "$GMScript":"v1",
-  "%Name":"scr_chapter_new",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"scr_chapter_new",
-  "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+  "resourceType": "GMScript",
+  "resourceVersion": "1.0",
+  "name": "scr_chapter_new",
+  "isCompatibility": false,
+  "isDnD": false,
+  "parent": {
+    "name": "Scripts",
+    "path": "folders/Scripts.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
 }

@@ -1,7 +1,7 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 function scr_livery_setup(){
-  draw_set_font(fnt_40k_30b);
+ draw_set_font(fnt_40k_30b);
     draw_set_halign(fa_center);
     draw_set_alpha(1);
     draw_set_color(38144);
@@ -131,61 +131,27 @@ function scr_livery_setup(){
     }else{
         draw_text(444,252,string_hash_to_newline("Color swap shader#did not compile"));
     }
-
-    var comp_toggle = buttons.company_options_toggle;
-    var company_radio = buttons.company_liveries_choice;
-    var comp_change = false;
-    comp_toggle.update({
-        x1 : 50,
-        y1 : 76
-    });
-    draw_set_halign(fa_center);
-    if (comp_toggle.draw()){
-        comp_toggle.company_view = !comp_toggle.company_view;
-        if (!comp_toggle.company_view){
-            company_liveries[livery_picker.role_set] = variable_clone(livery_picker.map_colour);
-            livery_picker.role_set = 0;
-            livery_picker.map_colour = full_liveries[livery_picker.role_set];
-        } else {
-            full_liveries[livery_picker.role_set] = variable_clone(livery_picker.map_colour);
-            livery_picker.role_set = company_radio.current_selection;
-            livery_picker.map_colour = company_liveries[livery_picker.role_set];
-        }
-        livery_picker.shuffle_dummy();
-        livery_picker.reset_image();        
-    }
-
-    draw_set_font(fnt_40k_30b);
-    draw_set_halign(fa_center);
-    draw_set_alpha(1);
-    draw_set_color(38144);
-    if (!comp_toggle.company_view){
-        var liv_string = $"Full Livery \n{livery_picker.role_set == 0? "default" :role[100][livery_picker.role_set]}";
-        draw_text(160, 100, liv_string);  
-    } else {
-        company_radio.update({
-            max_width : 350,
-            x1 : 20,
-            y1 : 60,
-            allow_changes : true
-        })
-        company_radio.draw();
-        if (company_radio.changed){
-            company_liveries[livery_picker.role_set] = variable_clone(livery_picker.map_colour);
-            livery_picker.role_set = company_radio.current_selection;
-            livery_picker.map_colour = company_liveries[livery_picker.role_set];
-            livery_picker.shuffle_dummy();
-            livery_picker.reset_image();
-        }    
-    }  
-
+    var liv_string = $"Full Livery \n{livery_picker.role_set == 0? "default" :role[100][livery_picker.role_set]}";
+    draw_text(160, 100, liv_string);    
+    
     draw_set_color(38144);
     draw_set_halign(fa_left);
     draw_text_transformed(580,118,"Battle Cry:",0.6,0.6,0);
     draw_set_font(fnt_40k_14b);
-    battle_cry = text_bars.battle_cry.draw((battle_cry));
-
-
+    if (text_selected!="battle_cry") or (custom<2) then draw_text_ext(580,144,string_hash_to_newline(string(battle_cry)+"!"),-1,580);
+    if (custom>1){
+        if (text_selected="battle_cry") and (text_bar>30) then draw_text_ext(580,144,string_hash_to_newline(string(battle_cry)+"!"),-1,580);
+        if (text_selected="battle_cry") and (text_bar<=30) then draw_text_ext(580,144,string_hash_to_newline(string(battle_cry)+"|!"),-1,580);
+        var str_width=max(580,string_width_ext(string_hash_to_newline(battle_cry),-1,580));
+        var hei=string_height_ext(string_hash_to_newline(battle_cry),-1,580);
+        if (scr_hit(580-2,144-2,582+str_width,146+hei)){obj_cursor.image_index=2;
+            if (mouse_left>=1) and (cooldown<=0) and (!instance_exists(obj_creation_popup)){text_selected="battle_cry";cooldown=8000;keyboard_string=battle_cry;}
+        }
+        if (text_selected="battle_cry") then battle_cry=keyboard_string;
+        draw_rectangle(580-2,144-2,582+580,146+hei,1);
+    }
+    
+    
     
     draw_rectangle(445, 200, 1125, 202, 0)
     
@@ -550,15 +516,11 @@ function scr_livery_setup(){
                         var pp=instance_create(0,0,obj_creation_popup);
                         pp.type=role_id+100;
                         cooldown=8000;
-                        if (!comp_toggle.company_view){
-                            full_liveries[livery_picker.role_set] = variable_clone(livery_picker.map_colour);
-                            livery_picker.role_set = role_id;
-                            livery_picker.map_colour = full_liveries[role_id];
-                            if (!livery_picker.map_colour.is_changed){
-                                livery_picker.map_colour = variable_clone(full_liveries[0]);
-                            }
-                            livery_picker.shuffle_dummy();
-                            livery_picker.reset_image();
+                        full_liveries[livery_picker.role_set] = DeepCloneStruct(livery_picker.map_colour);
+                        livery_picker.role_set = role_id;
+                        livery_picker.map_colour = full_liveries[role_id];
+                        if (!livery_picker.map_colour.is_changed){
+                            livery_picker.map_colour = DeepCloneStruct(full_liveries[0]);
                         }
                     }
                 }
@@ -574,14 +536,12 @@ function scr_livery_setup(){
             }
         }
     }
-    if (!comp_toggle.company_view){
-        if (livery_picker.role_set!=0){
-        	if (point_and_click(draw_unit_buttons([20, 50], $"Return to default Livery"))){
-                full_liveries[livery_picker.role_set] = variable_clone(livery_picker.map_colour);
-                livery_picker.map_colour = full_liveries[0];
-                livery_picker.role_set = 0;   		
-        	}
-        }
+    if (livery_picker.role_set!=0){
+    	if (point_and_click(draw_unit_buttons([20, 50], $"Return to default Livery"))){
+            full_liveries[livery_picker.role_set] = DeepCloneStruct(livery_picker.map_colour);
+            livery_picker.map_colour = full_liveries[0];
+            livery_picker.role_set = 0;   		
+    	}
     }
     
     
@@ -670,10 +630,7 @@ function scr_livery_setup(){
     
     if (!instance_exists(obj_creation_popup)){
     
-        if (scr_hit(540,547,800,725)){
-            tooltip="Advisor Names";
-            tooltip2="The names of your main Advisors.  They provide useful information and reports on the divisions of your Chapter.";
-        }
+        if (scr_hit(540,547,800,725)){tooltip="Advisor Names";tooltip2="The names of your main Advisors.  They provide useful information and reports on the divisions of your Chapter.";}
     
         draw_text_transformed(444,550,string_hash_to_newline("Advisor Names"),0.6,0.6,0);
         draw_set_font(fnt_40k_14b);
@@ -687,8 +644,7 @@ function scr_livery_setup(){
         draw_set_halign(fa_left);
         
         if (race[100,15]!=0){
-            draw_set_color(38144);
-            if (hapothecary="") then draw_set_color(c_red);
+            draw_set_color(38144);if (hapothecary="") then draw_set_color(c_red);
             if (text_selected!="apoth") or (custom<2) then draw_text_ext(600,575,string_hash_to_newline(string(hapothecary)),-1,580);
             if (custom>1){
                 if (text_selected="capoth") and (text_bar>30) then draw_text_ext(600,575,string_hash_to_newline(string(hapothecary)),-1,580);
@@ -824,20 +780,7 @@ function scr_livery_setup(){
             }
         }
         
+        
+    
     }
-
-    right_data_slate.inside_method = function() {
-        var _cultures = buttons.culture_styles;
-        _cultures.x1 = right_data_slate.XX+30;
-        _cultures.y1 = right_data_slate.YY+80
-        _cultures.max_width = right_data_slate.width-120;
-        _cultures.on_change = function(){
-            var _picker = obj_creation.livery_picker;
-            _picker.shuffle_dummy();
-            _picker.reset_image();
-        }
-        _cultures.draw();
-    }
-
-    right_data_slate.draw(1210, 5,0.45, 1);
 }

@@ -84,7 +84,7 @@ function SpecialistPointHandler() constructor{
         forge_string += $"Techmarines: +{floor(forge_points)}#";
         forge_points-=tech_points_used;        
         forge_string += $"Vehicle Repairs:#";
-        forge_string += $"   Combat Repairs : {forge_veh_maintenance.repairs}#";
+        forge_string += $"   Combat Repairs : {forge_veh_maintenance.repairs}\n";
         if (struct_exists(forge_veh_maintenance, "land_raider")){
             forge_string += $"   Land Raider Maintenance: -{forge_veh_maintenance.land_raider}#";
             forge_points-=forge_veh_maintenance.land_raider;
@@ -163,22 +163,22 @@ function SpecialistPointHandler() constructor{
             return;
         }
         array_push(techs, unit);
-        if (unit.technology > 40 && unit.hp() > 0){
-            research_points += unit.technology - 40;
-            var _forge_point_gen = unit.forge_point_generation(false);
+        if (unit.technology>40 && unit.hp() > 0){
+            research_points += unit.technology-40;
+            var _forge_point_gen=unit.forge_point_generation(true);
             var _unit_forge_gen_data = _forge_point_gen[1];
-            if (struct_exists(_unit_forge_gen_data, "crafter")) { crafters++; }
-            if (struct_exists(_unit_forge_gen_data, "at_forge")){
+            if (struct_exists(_unit_forge_gen_data,"crafter")) then crafters++;
+            if (struct_exists(_unit_forge_gen_data,"at_forge")){
                 at_forge++;
-                master_craft_chance += (unit.experience / 50);
+                master_craft_chance += (unit.experience/50);
             }
             forge_points += _forge_point_gen[0];
-            var _tech_array_id = array_length(techs) - 1;
-            if (unit.has_trait("tech_heretic")) {
+            var _tech_array_id = array_length(techs)-1;
+            if (unit.has_trait("tech_heretic")){
                 array_push(heretics, _tech_array_id);
             }
-            if (unit.IsSpecialist(SPECIALISTS_HEADS)) {
-                forge_master = _tech_array_id;
+            if (unit.IsSpecialist("heads")){
+                forge_master=_tech_array_id;
             }  
         }
     }
@@ -188,8 +188,8 @@ function SpecialistPointHandler() constructor{
             return;
         }
         if (unit.hp() > 0){
-            var _apoth_point_gen=unit.apothecary_point_generation(false);
-            apothecary_points += _apoth_point_gen[0];
+        	var _apoth_point_gen=unit.apothecary_point_generation(true);
+        	apothecary_points += _apoth_point_gen[0];
         }
     }
 
@@ -383,7 +383,7 @@ function SpecialistPointHandler() constructor{
             _cur_slave = _slaves[i];
             if (_cur_slave.num>0){
                 _cur_slave.eta--;
-                if (irandom(100000)<=(100-obj_ini.stability)*_cur_slave.num){
+                if (irandom(100000)<=(10-obj_ini.stability)*_cur_slave.num){
                     _cur_slave.num--;
                     _lost_gene_slaves++;
                     scr_add_item("Gene Pod Incubator");
@@ -440,7 +440,7 @@ function SpecialistPointHandler() constructor{
                 scr_forge_item(item);
             } else {
                 repeat(item.count){
-                    var vehicle = scr_add_vehicle(item.name,obj_controller.new_vehicles,"standard","standard","standard","standard","standard");
+                    var vehicle = scr_add_vehicle(item.name,9,"standard","standard","standard","standard","standard");
                     var build_loc = array_random_element(obj_controller.player_forge_data.vehicle_hanger);
                     obj_ini.veh_loc[vehicle[0]][vehicle[1]] = build_loc[0];
                     obj_ini.veh_wid[vehicle[0]][vehicle[1]] = build_loc[1];

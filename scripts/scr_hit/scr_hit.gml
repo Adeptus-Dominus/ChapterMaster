@@ -12,11 +12,6 @@ function scr_hit(x1=0, y1=0, x2=0, y2=0) {
 
 }
 
-function scr_hit_relative(x1, relative = [0,0]){
-	var mouse_consts = return_mouse_consts();
-	return point_in_rectangle(mouse_consts[0],mouse_consts[1],relative[0] + x1[0],relative[1] + x1[1],relative[0] + x1[2],relative[1] + x1[3]);
-}
-
 /// @function point_and_click
 /// @description Returns true if left mouse button was clicked on the desired rectangle area.
 /// @param {array} rect x1, y1, x2, y2 array.
@@ -91,5 +86,5 @@ function mouse_distance_less(xx, yy, distance){
 
 function return_mouse_consts_tooltip(){
 	var consts = return_mouse_consts();
-	return [consts[0], consts[1]]
+	return [consts[0]+20, consts[1]]
 }

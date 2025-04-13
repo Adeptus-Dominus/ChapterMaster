@@ -12,7 +12,7 @@
         "fleet_type": 1, // 1= Homeworld, 2 = Fleet based, 3 = Penitent
         "strength": 5, // 1-10
         "purity": 9, // 1-10
-        "stability": 94, // 1-99
+        "stability": 9, // 1-10
         "cooperation": 7, // 1-10
         "homeworld_exists": 1, // 1 = true
         "recruiting_exists": 0, // 1 = true
@@ -22,12 +22,12 @@
         "recruit_home_relationship" : 1, //recruit from different system
         "recruiting": "", //"Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
         "recruiting_name": "",
-        "discipline": "librarius", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune_magic'
+        "discipline": "default", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune Magick'
         "aspirant_trial": "BLOODDUEL", // ? need to find the best way to do this
         "advantages": [ //TODO something with these after rework of adv organisation
             "",
             "Assault Doctrine",
-            "Warp Touched",
+            "Psyker Abundance",
             "Reverent Guardians",
             "",
             "",

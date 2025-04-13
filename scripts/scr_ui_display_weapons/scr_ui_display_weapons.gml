@@ -101,7 +101,6 @@ function scr_ui_display_weapons(left_or_right, current_armor, equiped_weapon, cu
             "Heavy Flamer":spr_weapon_hflamer,
 			"Plasma Cannon":spr_weapon_plasc,
             "Grav-Cannon":spr_weapon_grav_cannon,
-            "Infernus Heavy Bolter": spr_weapon_infernus_hbolt, 
         }
         var heavy_ranged_names=struct_get_names(heavy_ranged);
         for (var i=0;i<array_length(heavy_ranged_names);i++){
@@ -118,7 +117,7 @@ function scr_ui_display_weapons(left_or_right, current_armor, equiped_weapon, cu
         var standards = {
             "Dark Angels" : spr_da_standard,
         }
-        var chap_name = instance_exists(obj_creation) ? obj_creation.chapter_name : global.chapter_name;
+        var chap_name = global.chapter_name;
         var melee_weapons ={
             "Company Standard":struct_exists(standards, chap_name) ? standards[$ chap_name] :spr_weapon_standard2,
             "Chainsword":spr_weapon_chsword,
@@ -137,8 +136,7 @@ function scr_ui_display_weapons(left_or_right, current_armor, equiped_weapon, cu
             "Eviscerator":spr_weapon_evisc,
             "Power Mace":spr_weapon_powmace,
             "Mace of Absolution":spr_weapon_mace_of_absolution,
-            "Shock Maul":spr_weapon_powmaul,
-            "Xenophase Blade": spr_weapon_xenophase_blade_var1
+            "Show Maul":spr_weapon_powmaul,
         }
         var melee_weapons_names=struct_get_names(melee_weapons);
         var wep_
@@ -326,13 +324,13 @@ function scr_ui_display_weapons(left_or_right, current_armor, equiped_weapon, cu
         hand_variant[left_or_right] = 3;
     }
 
-    if (array_contains(["Sniper Rifle", "Force Staff", "Power Sword", "Thunder Hammer", "Autocannon", "Combat Knife", "Power Spear", "Chainsword", "Force Sword", "Xenophase Blade"], equiped_weapon)) {
+    if (array_contains(["Sniper Rifle", "Force Staff", "Power Sword", "Thunder Hammer", "Autocannon", "Combat Knife", "Power Spear", "Chainsword", "Force Sword"], equiped_weapon)) {
         hand_variant[left_or_right] = 2;
         hand_on_top[left_or_right] = true;
     }
 
     // New weapon draw method
-    if (array_contains(["Force Staff", "Mace of Absolution", "Power Mace", "Power Axe", "Power Sword", "Autocannon", "Combat Knife", "Power Spear", "Shock Maul", "Chainsword", "Chainaxe", "Force Sword", "Force Axe", "Xenophase Blade"], equiped_weapon)) {
+    if (array_contains(["Force Staff", "Mace of Absolution", "Power Mace", "Power Axe", "Power Sword", "Autocannon", "Combat Knife", "Power Spear", "Shock Maul", "Chainsword", "Chainaxe", "Force Sword", "Force Axe"], equiped_weapon)) {
         new_weapon_draw[left_or_right] = true;
     }
 

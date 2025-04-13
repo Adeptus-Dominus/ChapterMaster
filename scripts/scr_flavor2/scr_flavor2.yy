@@ -1,13 +1,11 @@
 {
-  "$GMScript":"v1",
-  "%Name":"scr_flavor2",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"scr_flavor2",
-  "parent":{
-    "name":"Combat",
-    "path":"folders/Scripts/Combat.yy",
+  "resourceType": "GMScript",
+  "resourceVersion": "1.0",
+  "name": "scr_flavor2",
+  "isCompatibility": false,
+  "isDnD": false,
+  "parent": {
+    "name": "Combat",
+    "path": "folders/Scripts/Combat.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
 }

@@ -121,16 +121,14 @@ function scr_management(argument0) {
 	    if (num[1]>0){
 			q++;
 			obj_managment_panel.line[q]=string(nam[1]);
-			// obj_managment_panel.italic[q]=1;
-			obj_managment_panel.bold[q]=1;
+			obj_managment_panel.italic[q]=1; obj_managment_panel.bold[q]=1;
 		}
 	    if (num[2]>0){
 			q++;
-			obj_managment_panel.line[q]=string_plural_count(nam[2], num[2], false);
+			obj_managment_panel.line[q]=string(num[2])+"x "+string(nam[2]);
 		}
 
-	    // obj_managment_panel.italic[1]=1;
-		obj_managment_panel.bold[q]=1;
+	    obj_managment_panel.italic[1]=1; obj_managment_panel.bold[q]=1;
 		instance_activate_object(obj_managment_panel);
     
 	    // ll=0;ll2=0;repeat(200){ll2++;if (obj_ini.role[company,ll2]=role_names[eROLE.HonourGuard]) then ll++;}
@@ -168,16 +166,15 @@ function scr_management(argument0) {
 		
 	    if (num[1]>0){
 			q++;obj_managment_panel.line[q]=string(nam[1]);
-			// obj_managment_panel.italic[q]=1;
-			obj_managment_panel.bold[q]=1;
+			obj_managment_panel.italic[q]=1; obj_managment_panel.bold[q]=1;
 		}
 	    if (num[2]>0){
 			q++;
-			obj_managment_panel.line[q]=string_plural_count(nam[2], num[2], false);
+			obj_managment_panel.line[q]=string(num[2])+"x "+string(nam[2]);
 		}
 	    if (num[3]>0){
 			q++;
-			obj_managment_panel.line[q]=string_plural_count(nam[3], num[3], false);
+			obj_managment_panel.line[q]=string(num[3])+"x "+string(nam[3]);
 		}
 	    // if (num[4]>0){q++;obj_managment_panel.line[q]=string(num[4])+"x "+string(nam[4]);}
 	    instance_activate_object(obj_managment_panel);
@@ -214,8 +211,7 @@ function scr_management(argument0) {
 	    if (num[1]>0){
 			q++;
 			obj_managment_panel.line[q]=string(nam[1]);
-			// obj_managment_panel.italic[q]=1;
-			obj_managment_panel.bold[q]=1;
+			obj_managment_panel.italic[q]=1; obj_managment_panel.bold[q]=1;
 		}
 		
 		// TODO add specific Space Wolves and successor chapter logic for Master of Sanctity
@@ -225,11 +221,11 @@ function scr_management(argument0) {
 	    if (chapter_name!="Iron Hands"){
 	        if (num[2]>0){
 				q++;
-				obj_managment_panel.line[q]=string_plural_count(nam[2], num[2], false);
+				obj_managment_panel.line[q]=string(num[2])+"x "+string(nam[2]);
 			}
 	        if (num[3]>0){
 				q++;
-				obj_managment_panel.line[q]=string_plural_count(nam[3], num[3], false);
+				obj_managment_panel.line[q]=string(num[3])+"x "+string(nam[3]);
 			}
 	    }
 	    instance_activate_object(obj_managment_panel);
@@ -271,23 +267,22 @@ function scr_management(argument0) {
 	    if (num[1]>0){
 			q++;
 			obj_managment_panel.line[q]=string(nam[1]);
-			// obj_managment_panel.italic[q]=1;
-			obj_managment_panel.bold[q]=1;
+			obj_managment_panel.italic[q]=1; obj_managment_panel.bold[q]=1;
 		}
 		
 	    if (num[2]>0){
 			q++;
-			obj_managment_panel.line[q]=string_plural_count(nam[2], num[2], false);
+			obj_managment_panel.line[q]=string(num[2])+"x "+string(nam[2]);
 		}
 		
 	    if (num[3]>0){
 			q++;
-			obj_managment_panel.line[q]=string_plural_count(nam[3], num[3], false);
+			obj_managment_panel.line[q]=string(num[3])+"x "+string(nam[3]);
 		}
 		
 	    if (num[4]>0){
 			q++;
-			obj_managment_panel.line[q]=string_plural_count(nam[4], num[4], false);
+			obj_managment_panel.line[q]=string(num[4])+"x "+string(nam[4]);
 		}
 		
 	    instance_activate_object(obj_managment_panel);
@@ -321,36 +316,34 @@ function scr_management(argument0) {
     
 			if (unit.role() == "Lexicanum") then num[4] += 1;
     
-			if (unit.role() == string(role_names[eROLE.Librarian]) + " Aspirant") then num[5] += 1;
+			if (unit.role() == string(role_names[eROLE.Apothecary]) + " Aspirant") then num[5] += 1;
 		}
 		
 	    with(obj_managment_panel){if (manage!=obj_controller.temp[71]) then instance_deactivate_object(id);}
 		
 	    if (num[1]>0){
 			q++;
-			obj_managment_panel.line[q]=string(nam[1]);
-			// obj_managment_panel.italic[q]=1;
-			obj_managment_panel.bold[q]=1;
+			obj_managment_panel.line[q]=string(nam[1]);obj_managment_panel.italic[q]=1; obj_managment_panel.bold[q]=1;
 		}
 		
 	    if (num[2]>0){
 			q++;
-			obj_managment_panel.line[q]=string_plural_count(nam[2], num[2], false);
+			obj_managment_panel.line[q]=string(num[2])+"x "+string(nam[2]);
 		}
 		
 	    if (num[3]>0){
 			q++;
-			obj_managment_panel.line[q]=string_plural_count(nam[3], num[3], false);
+			obj_managment_panel.line[q]=string(num[3])+"x "+string(nam[3]);
 		}
 		
 	    if (num[4]>0){
 			q++;
-			obj_managment_panel.line[q]=string_plural_count(nam[4], num[4], false);
+			obj_managment_panel.line[q]=string(num[4])+"x "+string(nam[4]);
 		}
 		
 	    if (num[5]>0){
 			q++;
-			obj_managment_panel.line[q]=string_plural_count(nam[5], num[5], false);
+			obj_managment_panel.line[q]=string(num[5])+"x "+string(nam[5]);
 		}
 		
 	    instance_activate_object(obj_managment_panel);
@@ -436,10 +429,12 @@ function scr_management(argument0) {
 							q += 1;
 							if (d == 1) {
 								obj_managment_panel.line[q] = string(nam[d]);
-								// obj_managment_panel.italic[q] = 1;
+								obj_managment_panel.italic[q] = 1;
 								obj_managment_panel.bold[q] = 1;
-							} else {
-								obj_managment_panel.line[q] = string_plural_count(nam[d], num[d], false);
+							} else if (num[d] > 1){
+								obj_managment_panel.line[q] = string(num[d]) + " " + string_plural(nam[d]);
+							} else{
+								obj_managment_panel.line[q] = string(nam[d]);
 							}
 					}
 			}

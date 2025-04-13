@@ -1,13 +1,11 @@
 {
-  "$GMScript":"v1",
-  "%Name":"scr_colors_initialize",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"scr_colors_initialize",
-  "parent":{
-    "name":"Sys",
-    "path":"folders/Scripts/Sys.yy",
+  "resourceType": "GMScript",
+  "resourceVersion": "1.0",
+  "name": "scr_colors_initialize",
+  "isCompatibility": false,
+  "isDnD": false,
+  "parent": {
+    "name": "Sys",
+    "path": "folders/Scripts/Sys.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
 }

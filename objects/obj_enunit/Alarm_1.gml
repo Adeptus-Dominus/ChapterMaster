@@ -248,19 +248,18 @@ if __b__ {
 
 	repeat(700) {
 		g += 1;
-		// Why was this here? And why was it later checked, if it always would be false?;
-		// marine_casting[g] = false;
+		marine_casting[g] = 0;
 
 		if ((dudes[g] != "") and(dudes_num[g] > 0)) and(dudes_hp[g] > 0) {
 			// if (marine_hp[g]>0) then men+=1;
 
 			/*
-			scr_en_weapon
-			argument0: name
-			argument1: man?
-			argument2: number
-			argument3: owner
-			argument4: dudes number
+			//scr_infantry_weapon
+			// argument0: name
+			// argument1: man?
+			// argument2: number
+			// argument3: owner
+			// argument4: dudes number
 			*/
 
 			if (dudes[g] = obj_ini.role[100][6]) or(dudes[g] = "Venerable " + obj_ini.role[100][6]) and(dudes_hp[g] > 0) {
@@ -269,7 +268,7 @@ if __b__ {
 			}
 			if (dudes_mobi[g] = "Bike") then scr_en_weapon("Twin Linked Bolters", false, 1, dudes[g], g);
 			if (dudes_mobi[g] != "Bike") and(dudes_mobi[g] != "") {
-				if (string_count("Jump Pack", marine_mobi[g]) > 0) then scr_en_weapon("Hammer of Wrath", false, 1, dudes[g], g);
+				if (string_count("Jump Pack", marine_mobi[g]) > 0) then scr_en_weapon("hammer_of_wrath", false, 1, dudes[g], g);
 			}
 
 			if (dudes_mobi[g] = "Servo-arm") then scr_en_weapon("Servo-arm(M)", false, 1, dudes[g], g);
@@ -278,6 +277,24 @@ if __b__ {
 				scr_en_weapon("Flamer", false, 1, dudes[g], g);
 				scr_en_weapon("Plasma Cutter", false, 1, dudes[g], g);
 			}
+
+			/*if (marine_casting[g]>-1){
+			    var cast_dice;cast_dice=floor(random(100))+1;
+			    
+			    if (obj_ini.dis[1]="Warp Touched") then cast_dice-=5;
+			    if (obj_ini.dis[2]="Warp Touched") then cast_dice-=5;
+			    if (obj_ini.dis[3]="Warp Touched") then cast_dice-=5;
+			    if (obj_ini.dis[4]="Warp Touched") then cast_dice-=5;
+			    
+			    if (marine_type[g]="Lexicanum") and (cast_dice<=20) then marine_casting[g]=1;
+			    if (marine_type[g]="Codiciery") and (cast_dice<=25) then marine_casting[g]=1;
+			    if (marine_type[g]=obj_ini.role[100,17]) and (cast_dice<=25) then marine_casting[g]=1;
+			    if (marine_type[g]="Chief "+string(obj_ini.role[100,17])) and (cast_dice<=80) then marine_casting[g]=1;
+			    if (marine_type[g]="Chapter Master") and (obj_ncombat.chapter_master_psyker=1){
+			        if (cast_dice<=66) then marine_casting[g]=1;
+			        if (obj_ncombat.big_boom>0) and (obj_ncombat.kamehameha=true) then marine_casting[g]=1;
+			    }
+			}*/
 
 			var j, good, open;
 			j = 0;
@@ -295,14 +312,14 @@ if __b__ {
 				// if (good=0) and (open!=0){dudes[open]=marine_type[g];dudes_num[open]=1;}
 			}
 
-			if (dudes_wep1[g] != "") and (marine_casting[g] == false) { // Do not add weapons to the roster while casting     
+			if (dudes_wep1[g] != "") and(marine_casting[g] != 1) { // Do not add weapons to the roster while casting     
 				if ((dudes[g] != "Chapter Master")) then scr_en_weapon(string(dudes_wep1[g]), false, 1, dudes[g], g);
 
 				if (dudes_wep1[g] = "Close Combat Weapon") then scr_en_weapon("CCW Heavy Flamer", true, 1, dudes[g], g);
 				if (string_count("UBOLT", dudes_wep1[g]) > 0) then scr_en_weapon("Underslung Bolter", false, 1, dudes[g], g);
 				if (string_count("UFL", dudes_wep1[g]) > 0) then scr_en_weapon("Underslung Flamer", false, 1, dudes[g], g);
 			}
-			if (dudes_wep2[g] != "") and (marine_casting[g] == false) {
+			if (dudes_wep2[g] != "") and(marine_casting[g] != 1) {
 				if ((dudes[g] != "Chapter Master")) then scr_en_weapon(string(dudes_wep2[g]), false, 1, dudes[g], g);
 
 				if (dudes_wep2[g] = "Close Combat Weapon") then scr_en_weapon("CCW Heavy Flamer", true, 1, dudes[g], g);

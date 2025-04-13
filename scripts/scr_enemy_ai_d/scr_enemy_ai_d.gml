@@ -53,17 +53,15 @@ function scr_enemy_ai_d() {
 	    }
     }
     for (var i=1;i<=planets;i++){
-        problem_count_down(i);
         if (planet_problemless(i)) then continue;
+        problem_count_down(i);
         numeral_name = planet_numeral_name(i);
-
 	    if (has_problem_planet_and_time(i, "succession", 0)){
             var result,alert_text;
-            var dice1=roll_dice(1, 100);
-            var dice2=roll_dice(1, 100);
+            var dice1=d100_roll();
+            var dice2=d100_roll();
         
-            result="";
-            alert_text="";
+            result="";alert_text="";
             if (dice1<=(p_heresy[i]*2)) then result="chaos";
             if (dice2<=(p_influence[i][eFACTION.Tau]*2)) and (result="") then result="tau";
             if (result="") then result="imperial";
@@ -111,27 +109,24 @@ function scr_enemy_ai_d() {
         }
 
         if (has_problem_planet_and_time(i, "great_crusade", 0)>-1){
-            var dir;
-            var join_crusade=false;
-            var _player_fleet = instance_nearest(x,y,obj_p_fleet);
+            var flet,cont,dir;cont=0;
+            flet=instance_nearest(x,y,obj_p_fleet);
         
-            if (_player_fleet.action=""){
-                if (point_distance(x, y, _player_fleet.x, _player_fleet.y)<10 ){
-                    join_crusade=true;
-                }
-            }
+            if (flet.action="") then cont=1;
+            if (cont=1) and (point_distance(x,y,flet.x,flet.y)<40) then cont=2;
         
-            if (join_crusade){
+            if (cont=2){
+                flet.action="crusade1";
                 dir=point_direction(room_width/2,room_height/2,x,y);
-                with (_player_fleet){
-                    action_x=x+lengthdir_x(1200,dir);
-                    action_y=y+lengthdir_y(1200,dir);
-                    set_fleet_movement(false, "crusade1");
-                }
-
+                flet.action_x=x+lengthdir_x(2000,dir);
+                flet.action_y=y+lengthdir_y(2000,dir);
+                // flet.action_eta=floor(random(8))+12;
+                flet.action_eta=floor(random(8))+2;
+                flet.alarm[4]=1;
                 scr_alert("green","crusade","Fleet embarks upon Crusade.",x,y);
                 scr_event_log("","Fleet embarks upon Crusade.");
-            }else {
+            }
+            if (cont=1) or (cont=0){
                 // hit loyalty here
                 obj_controller.disposition[2]-=5;
                 obj_controller.disposition[4]-=10;
@@ -392,13 +387,9 @@ function scr_enemy_ai_d() {
         if (garrison_mission>-1){
             try_and_report_loop("complete garrison mission", complete_garrison_mission,true, [i,garrison_mission]);
         }
-        var _beast_hunt = has_problem_planet_and_time(i,"hunt_beast", 0);
-        if (_beast_hunt>-1){
-            try{
-                complete_beast_hunt_mission(i,_beast_hunt);
-            } catch (_exception){
-                handle_exception(exception);
-            }
+        var beast_hunt = has_problem_planet_and_time(i,"hunt_beast", 0);
+        if (beast_hunt>-1){
+             try_and_report_loop("complete beast hunt mission", complete_beast_hunt_mission,true, [i,beast_hunt]);
         }        
     
 	    if ((p_tyranids[i]=3) or (p_tyranids[i]=4)) and (p_population[i]>0){

@@ -1,139 +1,21 @@
 
-function new_company_struct(){
-	with (obj_controller){
-		if (struct_exists(company_data,"company")){
-			company_data.garbage_collect();
-			delete company_data;
-		}
-		company_data = new CompanyStruct(managing);
-
-	}
-}
 function CompanyStruct(comp) constructor{
 	company = comp;
 	company_squads = [];
-	static garbage_collect = function(){
-		reset_squad_surface();
-		delete next_squad_button;
-		delete mass_equip_toggle;
-		delete previous_squad_button;
-		delete reset_loadout_button;
-		delete sabotage_button;
-		delete garrison_button;
-	}
+
 	static squad_search = function(){
-		var _squads = obj_ini.squads;
-		if (company>=0){
-			company_squads = [];
-			var cur_squad;
-			for (var i=0;i<array_length(_squads);i++){
-				cur_squad = _squads[i];
-				if (cur_squad.base_company != company) then continue;
-				cur_squad.update_fulfilment();
-				if (array_length(_squads[i].members)>0 && _squads[i].base_company == company){
-					array_push(company_squads,i);
-				}
-			}
-		} else if (company == -1){
-			var _disp_units = obj_controller.display_unit;
-			for (var i=0; i<array_length(_disp_units); i++){
-				var unit = _disp_units[i];
-				if (!is_array(unit)){
-					if (unit.squad != "none"){
-						if (array_contains(company_squads, unit.squad)) then continue;
-						if (unit.squad < array_length(_squads)){
-							var cur_squad = _squads[unit.squad];
-							cur_squad.update_fulfilment();
-							if (array_length(cur_squad.members)>0){
-								array_push(company_squads,unit.squad);
-							}
-						} else {
-							unit.squad = "none";
-						}
-					}
-				}
+		company_squads = [];
+		var cur_squad;
+		for (var i=0;i<array_length(obj_ini.squads);i++){
+			cur_squad = obj_ini.squads[i];
+			if (cur_squad.base_company != company) then continue;
+			cur_squad.update_fulfilment();
+			if (array_length(obj_ini.squads[i].members)>0 && obj_ini.squads[i].base_company == company){
+				array_push(company_squads,i);
 			}
 		}
 	}
-	var xx=__view_get( e__VW.XView, 0 )+0;
-	var yy=__view_get( e__VW.YView, 0 )+0;	
-	center_width = [580,1005];
-	center_height = [144,957];
 
-	previous_squad_button = new UnitButtonObject({
-		x1 : xx+center_width[0],
-		y1 : yy+center_height[0]+6,
-		color:c_red,
-		label : "<--",
-                tooltip : "Press Left arrow to toggle"
-	});
-
-	next_squad_button = new UnitButtonObject({
-		x1 : xx+center_width[1]-44,
-		y1 : yy+center_height[0]+6,
-		color:c_red,
-		label : "-->",
-                tooltip : "Press tab to toggle"
-	});
-
-	garrison_button = new UnitButtonObject({
-		x1 : xx+center_width[0]+5, 
-		y1 : yy+center_height[0]+150,
-		color:c_red,
-		label : "Garrison Duty",
-		tooltip : "Having squads assigned to Garrison Duty will increase relations with a planet over time, it will also bolster planet defence forces in case of attack, and reduce corruption growth. Press G to toggle"
-	});
-
-	sabotage_button = new UnitButtonObject({
-		x1 : garrison_button.x2+5, 
-		y1 : yy+center_height[0]+150,
-		color:c_red,
-		label : "Sabotage",
-		tooltip : "Sabotage missions can reduce enemy growth while avoiding direct enemy contact however they are not without risk."
-	});
-
-	reset_loadout_button = new UnitButtonObject({
-		x1 : xx+center_width[0]+5, 
-		y1 : yy+center_height[0]+330,
-		color:c_green,
-		label : "Reset Squad Loadout",
-	});
-
-	mass_equip_toggle = new ToggleButton({
-		x1 : xx+center_width[0]+5, 
-		y1 : yy+center_height[0]+380,
-		button_color:c_green,
-		text_color : c_green,
-		str1 : "Allow mass equip",
-	});
-	mass_equip_toggle.update();
-
-
-	static send_squad_on_mission  = function(mission_type, star){
-		with (star){
-
-			var unload_squad=instance_create(x,y,obj_star_select);
-			unload_squad.target=self;
-			unload_squad.loading=1;
-			unload_squad.loading_name=name;
-			//unload_squad.loading_name=name;
-			unload_squad.depth=-10000;
-			unload_squad.mission=mission_type;
-			scr_company_load(name);
-			break;
-		}
-		
-	}
-
-	next_squad = function(up = true){
-		if (up){
-			cur_squad = cur_squad+1>=array_length(company_squads) ? 0 : cur_squad+1;
-		} else {
-			cur_squad = (cur_squad-1<0) ? array_length(company_squads)-1 : cur_squad-1;
-		}
-		member = grab_current_squad().members[0];
-		obj_controller.temp[120] = fetch_unit(member);			
-	}
 	squad_search();
 
 	cur_squad = 0;
@@ -145,11 +27,6 @@ function CompanyStruct(comp) constructor{
 	captain = "none";
 	champion = "none";
 	ancient = "none";
-    chaplain = "none";
-    apothecary = "none";
-	tech_marine = "none";
-	lib = "none";
-
 	static reset_squad_surface = function(){
 		if (is_array(squad_draw_surfaces)){
 			for (var i=0;i<array_length(squad_draw_surfaces);i++){
@@ -181,19 +58,6 @@ function CompanyStruct(comp) constructor{
 					ancient = unit;
 				} else if (unit.role() == role_set[eROLE.Champion]){
 					champion = unit;
-				} else {
-					if (unit.IsSpecialist(SPECIALISTS_CHAPLAINS)) {
-						chaplain = unit;
-					}
-					if (unit.IsSpecialist(SPECIALISTS_APOTHECARIES)) {
-						apothecary = unit;
-					}
-					if (unit.IsSpecialist(SPECIALISTS_TECHS)) {
-						tech_marine = unit;
-					}
-					if (unit.IsSpecialist(SPECIALISTS_LIBRARIANS)) {
-						lib = unit;
-					}
 				}
 			}
 		}
@@ -209,20 +73,18 @@ function CompanyStruct(comp) constructor{
 	}
 
 	static draw_squad_view = function(){
-		center_width = [580,1005];
-		center_height = [144,957];
 		var xx=__view_get( e__VW.XView, 0 )+0;
 		var yy=__view_get( e__VW.YView, 0 )+0;
     	var member;
     	selected_unit=obj_controller.temp[120];
 		if (array_length(company_squads) > 0){
-			if (selected_unit.company == company || company ==-1){
+			if (selected_unit.company == company){
     			if (company_squads[cur_squad] != selected_unit.squad){
     				var squad_found =false
     				for (var i =0;i<array_length(company_squads);i++){
     					if (company_squads[i] == selected_unit.squad){
     						cur_squad = i;
-    						squad_found = true;
+    						squad_found =true;
     						break;
     					}
     				}
@@ -245,19 +107,24 @@ function CompanyStruct(comp) constructor{
 			var x_mod=0,y_mod=0;
 			var member_width=0, member_height=0;
 			var x_overlap_mod =0;
-			var bound_width = center_width;
-			var bound_height = center_height;
+			var bound_width = [580,1005];
+			var bound_height = [144,957];
 			draw_set_halign(fa_left);
-
-			if (array_length(company_squads) > 0){
-				if (previous_squad_button.draw()){
-					next_squad(false);
-				}
-				if (next_squad_button.draw()){
-					next_squad();				
-				}
+			var arrow="<--";
+			var button = draw_unit_buttons([xx+bound_width[0], yy+bound_height[0]+6], arrow,[1.5,1.5],c_red,,,,true);
+			if (point_and_click(button) && array_length(company_squads) > 0){
+				cur_squad = (cur_squad-1<0) ? 0 : cur_squad-1;
+				member = grab_current_squad().members[0];
+				obj_controller.temp[120] = fetch_unit(member);
 			}
-					
+			arrow="-->";
+			draw_set_halign(fa_right);
+			button = draw_unit_buttons([xx+bound_width[1]-44,yy+bound_height[0]+6], arrow,[1.5,1.5],c_red,,,,true);
+			if (point_and_click(button) && array_length(company_squads) > 0){
+				cur_squad = cur_squad+1>=array_length(company_squads) ? 0 : cur_squad+1;
+				member = grab_current_squad().members[0];
+				obj_controller.temp[120] = fetch_unit(member);
+			}						
 			draw_set_color(c_gray);
 			draw_set_alpha(1);				
 			draw_set_halign(fa_center);
@@ -278,26 +145,48 @@ function CompanyStruct(comp) constructor{
 			draw_text_transformed(xx+bound_width[0]+5, yy+bound_height[0]+100, $"Squad Location : {squad_loc.text}",1,1,0);
 			var send_on_mission=false, mission_type;
 			if (current_squad.assignment == "none"){
-
-				draw_text_transformed(xx+bound_width[0]+5, yy+bound_height[0]+125, $"Squad has no current assignments",1,1,0);
-
+				var button_row_offset = 0;
+				draw_text_transformed(xx+bound_width[0]+5, yy+bound_height[0]+125, $"Squad has no current assigments",1,1,0);
+				tooltip_text="Garrison Duty";
 				var _squad_sys = squad_loc.system;
 				if (squad_loc.same_system) and (_squad_sys!="Warp" && _squad_sys!="Lost"){
-					if (garrison_button.draw()){
-						send_on_mission=true;
-						mission_type="garrison";
-					}
-
-		garrison_button.keystroke = press_exclusive(ord("G"));
-					if (array_contains(current_squad.class, "scout")) || (array_contains(current_squad.class, "bike")){
-						if (sabotage_button.draw()){
+					button_row_offset+=string_width(tooltip_text)+6;
+					button = draw_unit_buttons([xx+bound_width[0]+5, yy+bound_height[0]+150], tooltip_text,[1,1],c_red,,,,true);
+					if(scr_hit(button)){
+						tooltip_text = "Having squads assigned to Garrison Duty will increase relations with a planet over time, it will also bolster planet defence forces in case of attack, and reduce corruption growth.";
+						tooltip_draw(tooltip_text, 150, [xx+bound_width[0]+5, yy+bound_height[0]+200]);
+						if (scr_click_left()){
 							send_on_mission=true;
-							mission_type="sabotage";
+							mission_type="garrison";
+						}
+					}
+					if (array_contains(current_squad.class, "scout")) || (array_contains(current_squad.class, "bike")){
+						tooltip_text="Sabotage";
+						button = draw_unit_buttons([button[2] + 4, yy+bound_height[0]+150], tooltip_text,[1,1],c_red,,,,true);
+						if (scr_hit(button)){
+							tooltip_text = "Sabotage missions can reduce enemy growth while avoiding direct enemy contact however they are not without risk.";
+							tooltip_draw(tooltip_text, 150, [xx+bound_width[0]+5+button_row_offset, yy+bound_height[0]+200]);
+							if (scr_click_left()){
+								send_on_mission=true;
+								mission_type="sabotage";
+							}
 						}
 					}
 				}
 				if (send_on_mission){
-					send_squad_on_mission(mission_type,star_by_name(squad_loc.system));					
+					with (obj_star){
+						if (name == squad_loc.system){
+							var unload_squad=instance_create(x,y,obj_star_select);
+							unload_squad.target=self;
+							unload_squad.loading=1;
+							unload_squad.loading_name=name;
+							//unload_squad.loading_name=name;
+							unload_squad.depth=-10000;
+							unload_squad.mission=mission_type;
+							scr_company_load(name);
+							break;
+						}
+					}								
 				}
 				bound_height[0] += 180;
 			} else {
@@ -306,7 +195,7 @@ function CompanyStruct(comp) constructor{
 					draw_text_transformed(xx+bound_width[0]+5, yy+bound_height[0]+125, $"Assignment : {cur_assignment.type}",1,1,0);
 					var tooltip_text =  "Cancel Assignment"
 					var cancel_but = draw_unit_buttons([xx+bound_width[0]+5, yy+bound_height[0]+150],tooltip_text,[1,1],c_red,,,,true);
-					if(point_and_click(cancel_but) || keyboard_check_pressed(ord("C"))){
+					if(point_and_click(cancel_but)){
 						var cancel_system=noone;
 						with (obj_star){
 							if (name == squad_loc.system){
@@ -346,8 +235,6 @@ function CompanyStruct(comp) constructor{
 					}
 				}
 			}
-		previous_squad_button.keystroke = press_exclusive(vk_left);
-		next_squad_button.keystroke = press_exclusive(vk_tab);
 			//TODO compartmentalise drop down option logic
 			var deploy_text = "Squad will deploy in the";
 			if (current_squad.formation_place!=""){
@@ -386,17 +273,19 @@ function CompanyStruct(comp) constructor{
 				}
 				bound_height[0] += button[3] - button[1];
 			}
-
-			if (reset_loadout_button.draw()){
+			button = draw_unit_buttons([xx+bound_width[0]+5, yy+bound_height[0]+150],"Reset Squad Loadout",[1,1],c_green,,,,true);
+			if (point_and_click(button)){
 				current_squad.sort_squad_loadout();
 				reset_squad_surface();
 			}
-
-			mass_equip_toggle.active = current_squad.allow_bulk_swap;
-			mass_equip_toggle.clicked();
-			mass_equip_toggle.draw();
-			current_squad.allow_bulk_swap = mass_equip_toggle.active;
-		
+			var _button_text = current_squad.allow_bulk_swap ? "Exclude from mass" : "Allow mass";
+			button = draw_unit_buttons([xx+bound_width[0]+5, yy+bound_height[0]+200],_button_text,[1,1],c_green,,,,true);
+			if (point_and_click(button)){
+				current_squad.allow_bulk_swap = !current_squad.allow_bulk_swap;
+			}
+			if (scr_hit(button)){
+				tooltip_draw("Enable to stop this squad from being included in mass equipment changes in chapter settings");
+			}		
 			
 			if (unit_rollover){
 				if (scr_hit(xx+25, yy+144, xx+925, yy+981)){

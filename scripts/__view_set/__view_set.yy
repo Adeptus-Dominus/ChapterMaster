@@ -1,13 +1,11 @@
 {
-  "$GMScript":"v1",
-  "%Name":"__view_set",
-  "isCompatibility":true,
-  "isDnD":false,
-  "name":"__view_set",
-  "parent":{
-    "name":"view",
-    "path":"folders/Scripts/compatibility/view.yy",
+  "resourceType": "GMScript",
+  "resourceVersion": "1.0",
+  "name": "__view_set",
+  "isCompatibility": true,
+  "isDnD": false,
+  "parent": {
+    "name": "view",
+    "path": "folders/Scripts/compatibility/view.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
 }

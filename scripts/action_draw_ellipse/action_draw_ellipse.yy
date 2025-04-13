@@ -1,13 +1,11 @@
 {
-  "$GMScript":"v1",
-  "%Name":"action_draw_ellipse",
-  "isCompatibility":true,
-  "isDnD":false,
-  "name":"action_draw_ellipse",
-  "parent":{
-    "name":"action",
-    "path":"folders/Scripts/compatibility/action.yy",
+  "resourceType": "GMScript",
+  "resourceVersion": "1.0",
+  "name": "action_draw_ellipse",
+  "isCompatibility": true,
+  "isDnD": false,
+  "parent": {
+    "name": "action",
+    "path": "folders/Scripts/compatibility/action.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
 }

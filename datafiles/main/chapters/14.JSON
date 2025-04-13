@@ -10,25 +10,25 @@
         "icon": 14, // in \images\creation\chapters\icons folder, the icon number, 1 being Dark Angels etc.
         "icon_name": "lam", // ? dunno what this is used for yet but the icon breaks if you dont use it 
         "fleet_type": 3, // 1= Homeworld, 2 = Fleet based, 3 = Penitent
-        "strength": 1, // 1-10
-        "purity": 9, // 1-10
-        "stability": 90, // 1-99
-        "cooperation": 1, // 1-10
+        "strength": 5, // 1-10
+        "purity": 8, // 1-10
+        "stability": 4, // 1-10
+        "cooperation": 5, // 1-10
         "homeworld_exists": 0, // 1 = true
         "recruiting_exists": 1, // 1 = true
         "homeworld_rule": 1, // 1 = Govenor, 2 = Countries, 3 = Personal Rule
-        "homeworld": "Feudal", // one of  "Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
-        "homeworld_name": "", // Homeworld Planet name, leave blank to autogenerate
+        "homeworld": "Dead", // one of  "Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
+        "homeworld_name": "Lacrima Vex", // Homeworld Planet name, leave blank to autogenerate
         "recruit_home_relationship" : 2, //recruit from different system
-        "recruiting": "Feudal", // one of "Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
+        "recruiting": "Death", // one of "Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
         "recruiting_name": "", // Recruiting Planet name, leave blank to autogenerate
-        "discipline": "librarius", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune_magic'
+        "discipline": "default", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune Magick'
         "aspirant_trial": "CHALLENGE", // one of "BLOODDUEL" "HUNTING" "SURVIVAL" "EXPOSURE" "KNOWLEDGE" "CHALLENGE"  "APPRENTICESHIP" 
         "advantages": [
             "", // leave the first entry blank for now
             "Assault Doctrine",
             "Boarders",
-            "Tech-Scavengers",
+            "",
             "",
             "",
             "",
@@ -37,7 +37,7 @@
         ],
         "disadvantages": [
             "", // leave the first entry blank for now
-            "Black Rage",
+            "Suspicious",
             "Shitty Luck",
             "Sieged",
             "Poor Equipment",
@@ -136,7 +136,7 @@
             "9th Company",
             "10th Company"
         ],
-        "flagship_name": "Mater Lachrymarum", // leave blank to autogenerate
+        "flagship_name": "Flagship Name", // leave blank to autogenerate
         /**
         * * Default fleet composition
         * * Homeworld 
@@ -148,7 +148,7 @@
         * * Stacks with advantages/disadvantages
         */
         "extra_ships": {
-            "battle_barges": -3,
+            "battle_barges": -2,
             "gladius": -5,
             "strike_cruisers": -1,
             "hunters": -2
@@ -163,10 +163,16 @@
         * * Stacks with advantages/disadvantages
         */
         "extra_specialists": {
-            "terminator": -5,
-            "veteran": 55,
-            "devastators": 10,
-            "assault": 10
+            "chaplains": -4,
+            "techmarines": -4,
+            "apothecary": -4,
+            "epistolary": 1,
+            "codiciery": 1,
+            "lexicanum": 2,
+            "terminator": -15,
+            "assault": 0,
+            "veteran": 10,
+            "devastator": 0
         },
         /**
         * * Default Marine strength
@@ -175,9 +181,9 @@
         * * Stacks with strength for non-founding chapters only
         */
         "extra_marines": {
-            "second": 30,
-            "third": 30,
-            "fourth": -100,
+            "second": 0,
+            "third": 0,
+            "fourth": 0,
             "fifth": -100,
             "sixth": -100,
             "seventh": -100,
@@ -205,10 +211,53 @@
         * To affect an entire squad, see `custom_squads` below
         */
         "custom_roles": {
-            "apothecary": {
-                "name": "Sanguinary Priest",
-                "wep1": "Power Axe"
-            }
+            // "honour_guard": {
+            //     "armour": "MK6 Corvus"
+            // },
+            // "veteran": {
+            //     "armour": "MK6 Corvus"
+            // },
+            // "captain": {
+            //     "name": "Captain",
+            //     "wep1": "Power Sword"
+            // },
+            // "tactical": {
+            //     "name": "Tactical"
+            // },
+            // "devastator": {
+            //     "name": "Devastator"
+            // },
+            // "assault": {
+            //     "name": "Assault",
+            //     "wep1": "Chainsword"
+            // },
+            // "scout": {
+            //     "name": "Scout",
+            //     "wep1": "Sniper Rifle"
+            // },
+            // "chaplain": {
+            //     "name": "Chaplain",
+            // },
+            // "techmarine": {
+            //     "name": "Techmarine",
+            //     "wep1": "Power Axe"
+            // },
+            // "apothecary": {
+            //     "name": "Apothecary",
+            //     "wep1": "Power Axe"
+            // },
+            // "librarian": {
+            //     "name": "Librarian",
+            //     "wep1": "Force Staff"
+            // },
+            // "sergeant": {
+            //     "name": "Sergeant",
+            //     "wep1": "Chainaxe"
+            // },
+            // "veteran_sergeant": {
+            //     "name": "Veteran Sergeant",
+            //     "wep1": "Chainaxe"
+            // }
         },
         /**
         * * Custom squad roles, loadouts and formations

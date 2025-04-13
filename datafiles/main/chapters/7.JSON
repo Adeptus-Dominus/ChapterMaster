@@ -12,7 +12,7 @@
         "fleet_type": 1, // 1= Homeworld, 2 = Fleet based, 3 = Penitent
         "strength": 5, // 1-10
         "purity": 10, // 1-10
-        "stability": 96, // 1-99
+        "stability": 10, // 1-10
         "cooperation": 10, // 1-10
         "homeworld_exists": 1, // 1 = true
         "recruiting_exists": 1, // 1 = true
@@ -23,7 +23,7 @@
         "home_planets":3,
         "recruiting": "Death", //"Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
         "recruiting_name": "Parmenio",
-        "discipline": "librarius", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune_magic'
+        "discipline": "default", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune Magick'
         "aspirant_trial": "EXPOSURE", // ? need to find the best way to do this
         "advantages": [ //TODO something with these after rework of adv organisation
             "",
@@ -58,10 +58,6 @@
             "special": 0, // 0 - normal, 1 - Breastplate, 2 - Vertical, 3 - Quadrant
             //"trim_on": 0 // 0 no, 1 yes for special trim colours 
         },
-        "culture_styles" : [
-            "Roman",
-            "Ultra"
-        ],
         "names": {
             //Chapter Staff
             "hchaplain": "Ortan Cassius",
@@ -229,22 +225,6 @@
             "land_speeder": 0
         },
         /** Add extra starting items ["Item Name", Number to add] */
-        "full_liveries":[
-           { "left_pauldron" : [ "icon",{ "icon" : "ultramarines", "colour" : 34, "type" : 2 } ], "right_pauldron" : 34, "is_changed" : 1, "left_leg_lower" : 34, "left_leg_upper" : 34, "left_leg_knee" : 34, "right_leg_lower" : 34, "right_leg_upper" : 34, "right_leg_knee" : 34, "metallic_trim" : 12, "left_chest" : 34, "right_chest" : 34, "left_thorax" : 0, "right_thorax" : 0, "left_hand" : 34, "right_hand" : 34, "left_head" : 34, "right_head" : 34, "left_muzzle" : 34, "right_muzzle" : 34, "eye_lense" : 9, "right_backpack" : 34, "left_backpack" : 34, "weapon_primary" : 9, "weapon_secondary" : 9, "company_marks" : 0, "company_marks_loc" : 0, "left_arm" : 34, "right_arm" : 34, "left_trim" : 12, "right_trim" : 12 },
-        ],
-        "company_liveries" : [
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-        ],       
         "extra_equipment": [
             // [
             //     "Bolter",

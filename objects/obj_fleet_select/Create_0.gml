@@ -51,30 +51,8 @@ selection_window.inside_method = function(){
     		fleet_all = fleet_all==1?0:1;
     		fleet_all_click=true;  		
     	}
-
-        var math_string = (string_width("Manage Units")/2)+6
-        if (point_and_click(draw_unit_buttons([center_draw-math_string, yy+height-50], "Manage Units",[1,1],c_blue))){
-            var fleet_array = fleet_full_ship_array(current_fleet);
-            var fleet_marines_temp = [];
-            var fleet_marines = [];
-            for (var i = 0; i < array_length(fleet_array); i++) {
-                fleet_marines_temp = collect_role_group("all", ["", 0, fleet_array[i]]);
-                array_copy(fleet_marines, array_length(fleet_marines), fleet_marines_temp, 0, array_length(fleet_marines_temp));
-            }
-
-            group_selection(fleet_marines,{
-                purpose:"Ship Management",
-                purpose_code : "manage",
-                number:0,
-                system:0,
-                feature:"none",
-                planet : 0,
-                selections : []
-            });
-        }
     }
-
-	draw_set_halign(fa_center);
+	draw_set_halign(fa_center);	    	
 	var ship_type,current_ship, sel_set, full_id;
 	if (screen_expansion>0){
 	    for(var j=0; j<(escorts+frigates+capitals); j++){

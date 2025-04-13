@@ -57,7 +57,6 @@ function player_home_star(home_planet){
 
         p_type[home_planet]=obj_ini.home_type;
         planet[home_planet]=1;
-        obj_ini.home_planet = home_planet;
 
         if (obj_ini.home_name!="random"){
             array_push(global.name_generator.star_used_names, obj_ini.home_name);
@@ -89,16 +88,6 @@ function player_home_star(home_planet){
         if (global.chapter_name!="Lamenters") then obj_controller.recruiting_worlds+=string(name)+" I|";
         
         p_player[home_planet]=obj_ini.man_size;
-
-		var unit;
-		for (var co=0;co<=obj_ini.companies;co++){
-			for (i=0;i<array_length(obj_ini.name[co]);i++){
-				unit = fetch_unit([co,i]);
-				if (obj_ini.loc[co][i] == name){
-					unit.planet_location = home_planet;
-				}
-			}
-		}
 }
 
 

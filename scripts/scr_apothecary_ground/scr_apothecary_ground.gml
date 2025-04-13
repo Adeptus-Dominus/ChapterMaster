@@ -28,11 +28,11 @@ function calculate_full_chapter_spread(){
 	    		}
 	    	}
 	        tech_points_used += _unit.equipment_maintenance_burden();
-		    _is_tech = (_unit.IsSpecialist(SPECIALISTS_TECHS));
+		    _is_tech = (_unit.IsSpecialist("forge"));
 		    if (_is_tech){
 		    	add_forge_points_to_stack(_unit);
 		    }
-		    is_healer = (((_unit.IsSpecialist(SPECIALISTS_APOTHECARIES,true) && _unit.gear()=="Narthecium") || (_unit.role()=="Sister Hospitaler")) && _unit.hp()>=10);
+		    is_healer = (((_unit.IsSpecialist("apoth",true) && _unit.gear()=="Narthecium") || (_unit.role()=="Sister Hospitaler")) && _unit.hp()>=10);
 		    if (is_healer){
 		    	add_apoth_points_to_stack(_unit);
 		    }
@@ -126,11 +126,11 @@ function single_loc_point_data(){
 function system_point_data_spawn(){
 	var _single_point_pos = single_loc_point_data();
  	return [
-				variable_clone(_single_point_pos),
-				variable_clone(_single_point_pos),
-				variable_clone(_single_point_pos),
-				variable_clone(_single_point_pos),
-				variable_clone(_single_point_pos),
+				DeepCloneStruct(_single_point_pos),
+				DeepCloneStruct(_single_point_pos),
+				DeepCloneStruct(_single_point_pos),
+				DeepCloneStruct(_single_point_pos),
+				DeepCloneStruct(_single_point_pos),
 			];
 }
 
@@ -159,7 +159,8 @@ function apothecary_simple(){
 				var _training_ground = system_feature_bool(self.p_feature, P_features.Recruiting_World);
 				if (_training_ground){
                     obj_controller.recruiting = 0;
-                    scr_alert("red", "recruiting", "The Chapter has run out of gene-seed!", 0, 0);
+                    obj_controller.income_recruiting = 0;
+                    scr_alert("red", "recruiting", "The Chapter has run out of gene-seed!", 0, 0);		
 				}
 			}
 		}
@@ -270,13 +271,13 @@ function apothecary_simple(){
 			_point_breakdown.heal_points_use = _point_breakdown.heal_points - _loc_heal_points;
 			_point_breakdown.forge_points_use = _point_breakdown.forge_points - _loc_forge_points;	
 			if (cur_system!=""){
-				point_breakdown.systems[$ cur_system.name][p] = variable_clone(_point_breakdown);
+				point_breakdown.systems[$ cur_system.name][p] = DeepCloneStruct(_point_breakdown);
 			} else if (p==0 && (string_count("ref instance", _cur_loc))){
 				try {
 					var _instance_int = real(string_replace(_cur_loc, "ref instance ", ""));
 					if (instance_exists(_instance_int)){
 						var _instance = _instance_int;
-						_instance.point_breakdown = variable_clone(_point_breakdown);
+						_instance.point_breakdown = DeepCloneStruct(_point_breakdown);
 					}
 				}catch(_exception) {
 					handle_exception(_exception);

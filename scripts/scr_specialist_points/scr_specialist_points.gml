@@ -2,7 +2,7 @@
 
 
 function unit_apothecary_points_gen(turn_end=false){
-    var _trained_person = IsSpecialist(SPECIALISTS_APOTHECARIES);
+    var _trained_person = IsSpecialist("apoth");
     var reasons = {};
     var points = 0;
     if (_trained_person){
@@ -13,7 +13,7 @@ function unit_apothecary_points_gen(turn_end=false){
 }
 
 function unit_forge_point_generation(turn_end=false){
-    var _trained_person = IsSpecialist(SPECIALISTS_TECHS);
+    var _trained_person = IsSpecialist("forge");
     var crafter = has_trait("crafter");
     var reasons = {};
     var points = 0;

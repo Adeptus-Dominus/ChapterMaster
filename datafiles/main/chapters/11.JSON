@@ -12,7 +12,7 @@
         "fleet_type": 2, // 1= Homeworld, 2 = Fleet based, 3 = Penitent
         "strength": 5, // 1-10
         "purity": 10, // 1-10
-        "stability": 99, // 1-99
+        "stability": 10, // 1-10
         "cooperation": 2, // 1-10
         "homeworld_exists": 0, // 1 = true
         "recruiting_exists": 1, // 1 = true
@@ -21,7 +21,7 @@
         "homeworld_name": "", // Homeworld Planet name, leave blank to autogenerate
         "recruiting": "Death", // one of "Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
         "recruiting_name": "", // Recruiting Planet name, leave blank to autogenerate
-        "discipline": "librarius", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune_magic'
+        "discipline": "default", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune Magick'
         "aspirant_trial": "CHALLENGE", // one of "BLOODDUEL" "HUNTING" "SURVIVAL" "EXPOSURE" "KNOWLEDGE" "CHALLENGE"  "APPRENTICESHIP" 
         "advantages": [
             "", // leave the first entry blank for now
@@ -56,9 +56,6 @@
             "special": 0, // 0 - normal, 1 - Breastplate, 2 - Vertical, 3 - Quadrant
             //"trim_on": 1 // 0 no, 1 yes for pauldron trim colours. Trim colour will still be used for certain complex livery items 
         },
-        "culture_styles" : [
-            "Greek",
-        ],
         "names": {
             //Chapter Staff
             "hchaplain": "Ivanus Enkomi", // Head Chaplain

@@ -5,6 +5,13 @@ if (battle_special = "cs_meeting_battle5") then alpha_strike = 1;
 
 instance_activate_object(obj_enunit);
 
+// Checks if Chapter master is a psyker and then casts a pskychic power (kamehameha)
+if (chapter_master_psyker = true) and(obj_ini.psy_powers = "default") {
+	var yeo = false;
+	if (scr_has_adv("Paragon")) then yeo = true;
+	if (yeo = true) then kamehameha = true;
+}
+
 // show_message("Leader?: "+string(leader));
 
 // if (enemy=1) then show_message("exiting obj_ncombat_Alarm 0_2 due to enemy=1");

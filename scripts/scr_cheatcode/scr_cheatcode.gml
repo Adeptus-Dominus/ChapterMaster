@@ -116,19 +116,13 @@ function scr_cheatcode(argument0) {
 					var last_artifact = scr_add_artifact("good", "inquisition", 0, obj_ini.ship[0], 501);
 					break;
 				case "govmission":
-					var problem = "";
-					if (array_length(cheat_arguments)){
-						if (cheat_arguments[0] != "1"){
-							problem = cheat_arguments[0]
-						}
-					} 
 					with (obj_star) {
 						for (var i = 1; i <= planets; i++) {
 							var existing_problem = false; //has_any_problem_planet(i);
 							if (!existing_problem) {
 								if (p_owner[i] == eFACTION.Imperium) {
 									show_debug_message("mission");
-									scr_new_governor_mission(i, problem);
+									scr_new_governor_mission(i);
 								}
 							}
 						}

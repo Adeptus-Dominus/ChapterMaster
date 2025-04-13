@@ -7,9 +7,9 @@ function scr_chaos_alliance_test() {
 	accept_chance+=(obj_controller.marines*0.00375);
 	accept_chance+=(obj_controller.command*0.00375);
 	
-	if (scr_has_disadv("Warp Tainted")) then accept_chance+=2;
+	if (scr_has_adv("Daemon Binders")) then accept_chance+=2;
 	if (scr_has_disadv("Suspicious")) then accept_chance+=1;
-	if (scr_has_adv("Warp Touched")) then accept_chance+=1;
+	if (scr_has_adv("Psyker Abundance")) then accept_chance+=1;
 
 	if (scr_has_adv("Reverent Guardians")) then accept_chance-=2;
 	if (scr_has_disadv("Never Forgive")) then accept_chance-=2;

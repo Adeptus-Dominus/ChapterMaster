@@ -284,8 +284,8 @@ if (boarding=true) and (board_cooldown>=0) and (instance_exists(target)) and (in
                 
                     
                     // End, do the damage
-                    if (arp=1) then hurt=max(0,attack*(1-dr));
-                    if (arp=0) then hurt=max(0,(attack-ac)*(1-dr));
+                    if (arp=1) then hurt=max(0,attack*dr);
+                    if (arp=0) then hurt=max(0,(attack-ac)*dr);
                     
                     repeat(hits){
                         unit.add_or_sub_health(-hurt);
@@ -293,7 +293,7 @@ if (boarding=true) and (board_cooldown>=0) and (instance_exists(target)) and (in
                     
                     if (unit.hp()<=0){
                         boarders_dead+=1;
-                        if (unit.IsSpecialist(SPECIALISTS_APOTHECARIES) && unit.gear()=="Narthecium"){
+                        if (unit.IsSpecialist("apoth") && unit.gear()=="Narthecium"){
                             apothecary-=1;
                             apothecary_had-=1;
                         }

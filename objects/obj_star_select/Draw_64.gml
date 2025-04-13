@@ -126,25 +126,7 @@ if (global.cheat_debug && obj_controller.selecting_planet && !loading)
         }
     }
 
-if (obj_controller.menu == 0) {
-    if (has_player_forces && point_and_click(draw_unit_buttons([125, 200], "Manage Units",[1,1],c_blue))) {
-        var _viewer = obj_controller.location_viewer
-        _viewer.update_garrison_log();
-        var _unit_dispersement = _viewer.garrison_log;
-        var _sys_name = target.name;
-        if (struct_exists(_unit_dispersement, target.name)){
-            group_selection(_unit_dispersement[$ _sys_name].units,{
-                purpose:$"{target.name} Management",
-                purpose_code : "manage",
-                number:0,
-                system:target.id,
-                feature:"none",
-                planet : 0,
-                selections : []
-            });
-        }
-    }
-}
+
 
 if (loading!=0){
     draw_set_font(fnt_40k_14);
@@ -166,14 +148,11 @@ if (obj_controller.selecting_planet!=0){
     }
 // Buttons that are available
     if (!buttons_selected){
-        if (obj_controller.faction_status[eFACTION.Imperium] != "War" && p_data.current_owner > 5) || (obj_controller.faction_status[eFACTION.Imperium] == "War" && p_data.at_war(0, 1, 1) && p_data.player_disposition <= 50) {
-            var is_enemy=true;
-        } else {
-            var is_enemy=false;
-        }
-
+        var is_enemy=false;
         if (p_data.planet>0){
             if (target.present_fleet[1]=0)/* and (target.p_type[obj_controller.selecting_planet]!="Dead")*/{
+                is_enemy = p_data.at_war();
+
                 if (p_data.player_forces>0){
                     if (is_enemy){
                         button1="Attack";
@@ -182,7 +161,9 @@ if (obj_controller.selecting_planet!=0){
                 }
             }
             if (target.present_fleet[1]>0)/* and (target.p_type[obj_controller.selecting_planet]!="Dead")*/{
-                if (is_enemy) {
+                is_enemy = p_data.at_war();
+
+                if (is_enemy){
                     button1="Attack";
                     button2="Raid";
                     button3="Bombard";
@@ -298,65 +279,17 @@ if (obj_controller.selecting_planet!=0){
     } else if (population){
         garrison_data_slate.title = "Population Report";
         garrison_data_slate.inside_method = function(){
-            draw_set_color(c_gray);
             var xx = garrison_data_slate.XX;
             var yy = garrison_data_slate.YY;                
             var cur_planet = obj_controller.selecting_planet;
             var half_way =  garrison_data_slate.height/2;
-            var spacing_x = 100
-            var spacing_y = 65
             draw_set_halign(fa_left);
-            if (!target.space_hulk) {
-                if (obj_controller.faction_status[eFACTION.Imperium] != "War" && p_data.current_owner <= 5) || (obj_controller.faction_status[eFACTION.Imperium] == "War") {
-                    colonist_button.update({
-                        x1:xx+35,
-                        y1:half_way,
-                        allow_click : array_length(potential_doners),
-                    });
-                    colonist_button.draw();
-
-                    recruiting_button.update({
-                        x1:xx+(spacing_x*2)+15,
-                        y1:half_way,
-                        allow_click : true,
-                    });
-                    recruiting_button.draw();
-                    if (p_data.has_feature(P_features.Recruiting_World)) {
-                        var _recruit_world = p_data.get_features(P_features.Recruiting_World)[0];
-                        if (_recruit_world.recruit_type == 0) && (obj_controller.faction_status[p_data.current_owner] != "War" && obj_controller.faction_status[p_data.current_owner] != "Antagonism" || p_data.player_disposition >= 50) {
-                            draw_text(xx+(spacing_x*3)+35, half_way-20, "Open: Voluntery");
-                        } else if (_recruit_world.recruit_type == 0 && p_data.player_disposition <= 50) {
-                            draw_text(xx+(spacing_x*3)+35, half_way-20, "Covert: Voluntery");
-                        } else {
-                            draw_text(xx+(spacing_x*3)+35, half_way-20, "Abduct");
-                        }
-                        recruitment_type_button.update({
-                            x1:xx+(spacing_x*3)+35,
-                            y1:half_way,
-                            allow_click : true,
-                        });
-                        recruitment_type_button.draw();
-
-                        draw_text(xx+(spacing_x*3)-15, half_way+(spacing_y)-20, $"Req:{_recruit_world.recruit_cost * 2}");
-                        if (_recruit_world.recruit_cost > 0) {
-                            recruitment_costdown_button.update({
-                                x1:xx+(spacing_x*2)+35,
-                                y1:half_way+(spacing_y),
-                                allow_click : true,
-                            });
-                            recruitment_costdown_button.draw();
-                        }
-                        if (_recruit_world.recruit_cost < 5) {
-                            recruitment_costup_button.update({
-                                x1:xx+(spacing_x*3)+35,
-                                y1:half_way+(spacing_y),
-                                allow_click : true,
-                            });
-                            recruitment_costup_button.draw();
-                        }
-                    }
-                }
-            }
+            colonist_button.update({
+                x1:xx+20,
+                y1:yy+half_way,
+                allow_click : array_length(potential_doners),
+            });     
+            colonist_button.draw();
 
         }
         garrison_data_slate.draw(344+main_data_slate.width-4, 160, 0.6, 0.6);          
@@ -438,29 +371,20 @@ if (obj_controller.selecting_planet!=0){
                 }
             }
         }else if (current_button=="+Recruiting"){
-            if (obj_controller.recruiting_worlds_bought > 0 && p_data.current_owner <= 5 && !p_data.at_war()) {
-                if (!p_data.has_feature(P_features.Recruiting_World)) {
-                    if (obj_controller.faction_status[eFACTION.Imperium] == "War") {
-                        obj_controller.recruiting_worlds_bought -= 1;
+            if (obj_controller.recruiting_worlds_bought>0) and (target.p_owner[obj_controller.selecting_planet]<=5) and (obj_controller.faction_status[target.p_owner[obj_controller.selecting_planet]]!="War"){
+                if (planet_feature_bool(target.p_feature[obj_controller.selecting_planet],P_features.Recruiting_World)==0){
+                    obj_controller.recruiting_worlds_bought-=1;
+                    array_push(target.p_feature[obj_controller.selecting_planet] ,new NewPlanetFeature(P_features.Recruiting_World))
+                    
+                    if (obj_controller.selecting_planet){
+                         obj_controller.recruiting_worlds+=planet_numeral_name(obj_controller.selecting_planet,target);
                     }
-                    array_push(target.p_feature[obj_controller.selecting_planet], new NewPlanetFeature(P_features.Recruiting_World));
-
-                    if (obj_controller.selecting_planet) {
-                        obj_controller.recruiting_worlds += planet_numeral_name(obj_controller.selecting_planet, target);
-                    }
-                    if (obj_controller.recruiting_worlds_bought == 0) {
-                        if (button1 == "+Recruiting") {
-                            button1 = "";
-                        }
-                        if (button2 == "+Recruiting") {
-                            button2 = "";
-                        }
-                        if (button3 == "+Recruiting") {
-                            button3 = "";
-                        }
-                        if (button4 == "+Recruiting") {
-                            button4 = "";
-                        }
+                    obj_controller.income_recruiting=(obj_controller.recruiting*-2)*string_count("|",obj_controller.recruiting_worlds);
+                    if (obj_controller.recruiting_worlds_bought=0){
+                        if (button1=="+Recruiting") then button1="";
+                        if (button2=="+Recruiting") then button2="";
+                        if (button3=="+Recruiting") then button3="";
+                        if (button4=="+Recruiting") then button4="";
                     }
                     // 135 ; popup?
                 }

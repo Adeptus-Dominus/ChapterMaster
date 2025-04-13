@@ -193,113 +193,18 @@ try {
 
 		draw_rectangle(445, 200, 1125, 202, true);
 
-		draw_set_halign(fa_center);
 		draw_set_font(fnt_40k_30b);
-		draw_text_transformed(800, 210, string_hash_to_newline("Gene-Seed Mutations"), 0.6, 0.6, 0);
-		if (purity == 10) {
-			draw_text_transformed(800, 230, $"The gene-seed is perfectly pure", 0.5, 0.5, 0);
-		} else {
-			if (mutations > mutations_selected) {
-				draw_text_transformed(800, 230, $"Select {mutations - mutations_selected} more, according to your purity score", 0.5, 0.5, 0);
-			} else {
-				draw_text_transformed(800, 230, $"The gene-seed is mutated enough", 0.5, 0.5, 0);
-				draw_set_alpha(0.5);
-			}
+		draw_text_transformed(503, 210, string_hash_to_newline("Gene-Seed Mutations"), 0.6, 0.6, 0);
+		if (mutations > mutations_selected) {
+			draw_text_transformed(585, 230, $"Select {mutations - mutations_selected} More", 0.5, 0.5, 0);
 		}
-		draw_set_halign(fa_left);
 
 		var x1, y1, spac = 34;
 
-		if (custom < 2 || purity == 10) {
+		if (custom < 2) {
 			draw_set_alpha(0.5);
 		}
-		var mutations_defects = [{
-			t_tip: "Anemic Preomnor",
-			t_tip2: "Your Astartes lack the detoxifying gland called the Preomnor- they are more susceptible to poisons and toxins.",
-			data: preomnor,
-			mutation_points: 1
-		}, {
-			t_tip: "Disturbing Voice",
-			t_tip2: "Your Astartes have a voice like a creaking door or a rumble.  Decreases Imperium and Imperial Guard disposition.",
-			data: voice,
-			mutation_points: 1,
-			disposition: [
-				[eFACTION.Imperium, -8]
-			]
-		}, {
-			t_tip: "Doomed",
-			t_tip2: "Your Chapter cannot make more Astartes until enough research is generated.  Counts as four mutations.",
-			data: doomed,
-			mutation_points: 4,
-			disposition: [
-				[eFACTION.Imperium, -8],
-				[6, 8]
-			]
-		}, {
-			t_tip: "Faulty Lyman's Ear",
-			t_tip2: "Lacking a working Lyman's ear, all deep-striked Astartes receive moderate penalties to both attack and defense.",
-			data: lyman,
-			mutation_points: 1
-		}, {
-			t_tip: "Hyper-Stimulated Omophagea",
-			t_tip2: "After every battle the Astartes have a chance to feast upon their fallen enemies, or seldom, their allies.",
-			data: omophagea,
-			mutation_points: 1
-		}, {
-			t_tip: "Hyperactive Ossmodula",
-			t_tip2: "Instead of wound tissue bone is generated; Apothecaries must spend twice the normal time healing your Astartes.",
-			data: ossmodula,
-			mutation_points: 1
-		}, {
-			t_tip: "Lost Zygote",
-			t_tip2: "One of the Zygotes is faulty or missing.  The Astartes only have one each and generate half the normal Gene-Seed.",
-			data: zygote,
-			mutation_points: 2
-		}, {
-			t_tip: "Inactive Sus-an Membrane",
-			t_tip2: "Your Astartes do not have a Sus-an Membrane; they cannot enter suspended animation and receive more casualties as a result.",
-			data: membrane,
-			mutation_points: 1
-		}, {
-			t_tip: "Missing Betchers Gland",
-			t_tip2: "Your Astartes cannot spit acid, and as a result, have slightly less attack in melee combat.",
-			data: betchers,
-			mutation_points: 1
-		}, {
-			t_tip: "Mutated Catalepsean Node",
-			t_tip2: "Your Astartes have reduced awareness when tired. Slightly less attack in ranged and melee combat.",
-			data: catalepsean,
-			mutation_points: 1
-		}, {
-			t_tip: "Oolitic Secretions",
-			t_tip2: "Either by secretions or radiation, your Astartes have an unusual or strange skin color.  Decreases disposition.",
-			data: secretions,
-			mutation_points: 1,
-			disposition: [
-				[eFACTION.Imperium, -8]
-			]
-		}, {
-			t_tip: "Oversensitive Occulobe",
-			t_tip2: "Your Astartes are no longer immune to stun grenades, bright lights, and have a massive penalty during morning battles.",
-			data: occulobe,
-			mutation_points: 1,
-			disposition: [
-				[eFACTION.Imperium, -8]
-			]
-		}, {
-			t_tip: "Rampant Mucranoid",
-			t_tip2: "Your Astartes' Mucranoid cannot be turned off; the slime lowers most dispositions and occasionally damages their armour.",
-			data: mucranoid,
-			mutation_points: 1,
-			disposition: [
-				[1, -4],
-				[eFACTION.Imperium, -8],
-				[3, -4],
-				[4, -4],
-				[5, -4],
-				[6, -4]
-			]
-		}];
+		var mutations_defects = [{t_tip: "Anemic Preomnor", t_tip2: "Your Astartes lack the detoxifying gland called the Preomnor- they are more susceptible to poisons and toxins.", data: preomnor, mutation_points: 1}, {t_tip: "Disturbing Voice", t_tip2: "Your Astartes have a voice like a creaking door or a rumble.  Decreases Imperium and Imperial Guard disposition.", data: voice, mutation_points: 1, disposition: [[eFACTION.Imperium, -8]]}, {t_tip: "Doomed", t_tip2: "Your Chapter cannot make more Astartes until enough research is generated.  Counts as four mutations.", data: doomed, mutation_points: 4, disposition: [[eFACTION.Imperium, -8], [6, 8]]}, {t_tip: "Faulty Lyman's Ear", t_tip2: "Lacking a working Lyman's ear, all deep-striked Astartes recieve moderate penalties to both attack and defense.", data: lyman, mutation_points: 1}, {t_tip: "Hyper-Stimulated Omophagea", t_tip2: "After every battle the Astartes have a chance to feast upon their fallen enemies, or seldom, their allies.", data: omophagea, mutation_points: 1}, {t_tip: "Hyperactive Ossmodula", t_tip2: "Instead of wound tissue bone is generated; Apothecaries must spend twice the normal time healing your Astartes.", data: ossmodula, mutation_points: 1}, {t_tip: "Lost Zygote", t_tip2: "One of the Zygotes is faulty or missing.  The Astartes only have one each and generate half the normal Gene-Seed.", data: zygote, mutation_points: 2}, {t_tip: "Inactive Sus-an Membrane", t_tip2: "Your Astartes do not have a Sus-an Membrane; they cannot enter suspended animation and recieve more casualties as a result.", data: membrane, mutation_points: 1}, {t_tip: "Missing Betchers Gland", t_tip2: "Your Astartes cannot spit acid, and as a result, have slightly less attack in melee combat.", data: betchers, mutation_points: 1}, {t_tip: "Mutated Catalepsean Node", t_tip2: "Your Astartes have reduced awareness when tired. Slightly less attack in ranged and melee combat.", data: catalepsean, mutation_points: 1}, {t_tip: "Oolitic Secretions", t_tip2: "Either by secretions or radiation, your Astartes have an unusual or strange skin color.  Decreases disposition.", data: secretions, mutation_points: 1, disposition: [[eFACTION.Imperium, -8]]}, {t_tip: "Oversensitive Occulobe", t_tip2: "Your Astartes are no longer immune to stun grenades, bright lights, and have a massive penalty during morning battles.", data: occulobe, mutation_points: 1, disposition: [[eFACTION.Imperium, -8]]}, {t_tip: "Rampant Mucranoid", t_tip2: "Your Astartes' Mucranoid cannot be turned off; the slime lowers most dispositions and occasionally damages their armour.", data: mucranoid, mutation_points: 1, disposition: [[1, -4], [eFACTION.Imperium, -8], [3, -4], [4, -4], [5, -4], [6, -4]]}];
 		x1 = 450;
 		y1 = 260;
 		for (var i = 0; i < array_length(mutations_defects); i++) {
@@ -358,8 +263,7 @@ try {
 		draw_line(445, 507, 1125, 507);
 
 		draw_set_font(fnt_40k_30b);
-		draw_set_halign(fa_center);
-		draw_text_transformed(800, 515, string_hash_to_newline("Starting Disposition"), 0.6, 0.6, 0);
+		draw_text_transformed(444, 515, string_hash_to_newline("Starting Disposition"), 0.6, 0.6, 0);
 
 		draw_set_font(fnt_40k_14b);
 		draw_set_halign(fa_right);

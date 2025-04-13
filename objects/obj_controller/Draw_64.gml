@@ -1,5 +1,6 @@
 /// @description Insert description here
 // You can write your code in this editor
+
 // Draws the main UI menu. The function is used to highlight if you selected something in the menu
 if instance_exists
 var l_hei=37,l_why=0;
@@ -7,7 +8,7 @@ var l_hei=37,l_why=0;
 if (instance_exists(obj_saveload)) then exit;
 if (instance_exists(obj_ncombat)) then exit;
 if (instance_exists(obj_fleet)) then exit;
-if (global.load>=0) then exit;
+if (global.load>0) then exit;
 if (invis==true) then exit;
 
 if (is_test_map==true){
@@ -20,9 +21,10 @@ if (is_test_map==true){
 
 var xx = 0;
 var yy = 0;
+
 // Main UI
 if (!zoomed && !zui){
-    draw_sprite(spr_new_ui,menu==0,0,0);
+    draw_sprite(spr_new_ui,0,0,0);
     draw_set_color(c_white);
 
     menu_buttons.chapter_manage.draw(34,838+y_slide, "Chapter Management",1,1,145)
@@ -88,15 +90,7 @@ if (!zoomed && !zui){
         draw_text(998,17.5,string_hash_to_newline("Renegade"));
         draw_set_color(38144);
     }
-    if (menu==0){
-        if (obj_controller.imp_ships == 0 && obj_controller.turn<2){
-            sector_imperial_fleet_strength();
-        }
-        draw_text(850, 60, $"Sector Fleet Strength {imp_ships}/{max_fleet_strength}");
-        if (scr_hit([700, 60, 1000, 80])){
-            tooltip_draw("The relative strength of the imperial navy and defence fleet forces and their max supported strength. Increase The number of imperial aligned planets and active forge worlds to increase the limit")
-        }
-    }    // Checks if the chapter name is less than 140 chars, adjusts chapter_master_name_width accordingly
+    // Checks if the chapter name is less than 140 chars, adjusts chapter_master_name_width accordingly
     var chapter_master_name_width=1;
     for(var i=0; i<10; i++){
         if ((string_width(string_hash_to_newline(string(global.chapter_name)))*chapter_master_name_width)>140) then chapter_master_name_width-=0.1;

@@ -1,13 +1,11 @@
 {
-  "$GMScript":"v1",
-  "%Name":"NameGenerator",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"NameGenerator",
-  "parent":{
-    "name":"Names",
-    "path":"folders/Scripts/Names.yy",
+  "resourceType": "GMScript",
+  "resourceVersion": "1.0",
+  "name": "NameGenerator",
+  "isCompatibility": false,
+  "isDnD": false,
+  "parent": {
+    "name": "Names",
+    "path": "folders/Scripts/Names.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
 }

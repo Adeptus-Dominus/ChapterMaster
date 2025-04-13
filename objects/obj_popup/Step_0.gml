@@ -50,15 +50,14 @@ try {
 	if ((image == "fuklaw") && (save > 0)) {
 		if (press == 1) {
 			var del = obj_saveload.save[save];
-			var _save_file = string(PATH_save_files, del);
-			var _save_preview = string(PATH_save_previews, del);
+			var _save_file = $"save{del}.ini";
 			if (file_exists(_save_file)) {
 				file_delete(_save_file);
 				if (file_exists($"save{del}log.ini")) {
 					file_delete($"save{del}log.ini");
 				}
-				if (file_exists(_save_preview)) {
-					file_delete(_save_preview);
+				if (file_exists($"screen{del}.png")) {
+					file_delete($"screen{del}.png");
 				}
 				with (obj_saveload) {
 					instance_destroy();
@@ -323,7 +322,7 @@ try {
 				} else if ((press == 2) && (mission == "meeting_1")) {
 					obj_controller.complex_event = true;
 					obj_controller.current_eventing = "chaos_meeting_1";
-					text = $"{global.chapter_name} signal your readiness to the heretic.  Nearly twenty minutes of following the man passes before {global.chapter_name} all enter an ordinary-looking structure.  Down, within the basement, {global.chapter_name} then pass into the entrance of a tunnel.  As the trek downward continues more and more heretics appear- cultists, renegades that appear to be from the local garrison, and occasionally even the fallen of your kind.  Overall the heretics seem well supplied and equip.  This observation is interrupted as your group enters into a larger chamber, revealing a network of tunnels and what appears to be ancient catacombs.  Bones of the ancient dead, the forgotten, litter the walls and floor.  And the chamber seems to open up wider, and wider, until {global.chapter_name} find yourself within a hall.  Within this hall, waiting for {global.chapter_name}, are several dozen Chaos Terminators, a Greater Daemon of Tzeentch and Slaanesh, and Chaos Lord " + string(obj_controller.faction_leader[eFACTION.Chaos]) + ".";
+					text = "mission_star signal your readiness to the heretic.  Nearly twenty minutes of following the man passes before mission_star all enter an ordinary-looking structure.  Down, within the basement, mission_star then pass into the entrance of a tunnel.  As the trek downward continues more and more heretics appear- cultists, renegades that appear to be from the local garrison, and occasionally even the fallen of your kind.  Overall the heretics seem well supplied and equip.  This observation is interrupted as your group enters into a larger chamber, revealing a network of tunnels and what appears to be ancient catacombs.  Bones of the ancient dead, the forgotten, litter the walls and floor.  And the chamber seems to open up wider, and wider, until mission_star find yourself within a hall.  Within this hall, waiting for mission_star, are several dozen Chaos Terminators, a Greater Daemon of Tzeentch and Slaanesh, and Chaos Lord " + string(obj_controller.faction_leader[eFACTION.Chaos]) + ".";
 					option1 = "";
 					option2 = "";
 					option3 = "";
@@ -341,7 +340,7 @@ try {
 					}
 					obj_controller.complex_event = true;
 					obj_controller.current_eventing = "chaos_trap";
-					text = $"{global.chapter_name} signal your readiness to the heretic.  Nearly twenty minutes of following the man passes before {global.chapter_name} all enter an ordinary-looking structure.  Down, within the basement, {global.chapter_name} then pass into the entrance of a tunnel.  As the trek downward continues more and more heretics appear- cultists, renegades that appear to be from the local garrison, and occasionally even the fallen of your kind.  Overall the heretics seem well supplied and equip.  This observation is interrupted as your group enters into a larger chamber, revealing a network of tunnels and what appears to be ancient catacombs.  Bones of the ancient dead, the forgotten, litter the walls and floor.  And the chamber seems to open up wider, and wider, until {global.chapter_name} find yourself within a hall.  Within this hall, waiting for {global.chapter_name}, are several dozen Chaos Terminators, a handful of Helbrute, and many more Chaos Space Marines.  The Chaos Lord is nowhere to be seen.  It is a trap.";
+					text = "mission_star signal your readiness to the heretic.  Nearly twenty minutes of following the man passes before mission_star all enter an ordinary-looking structure.  Down, within the basement, mission_star then pass into the entrance of a tunnel.  As the trek downward continues more and more heretics appear- cultists, renegades that appear to be from the local garrison, and occasionally even the fallen of your kind.  Overall the heretics seem well supplied and equip.  This observation is interrupted as your group enters into a larger chamber, revealing a network of tunnels and what appears to be ancient catacombs.  Bones of the ancient dead, the forgotten, litter the walls and floor.  And the chamber seems to open up wider, and wider, until mission_star find yourself within a hall.  Within this hall, waiting for mission_star, are several dozen Chaos Terminators, a handful of Helbrute, and many more Chaos Space Marines.  The Chaos Lord is nowhere to be seen.  It is a trap.";
 					option1 = "";
 					option2 = "";
 					option3 = "";
@@ -404,10 +403,10 @@ try {
 					repeat (700) {
 						ide += 1;
 						if ((attend_corrupted[ide] == 0) && (attend_id[ide] > 0)) {
-							if (string_count("chaos", obj_ini.artifact_tags[obj_controller.fest_display]) > 0) {
+							if (string_count("Chaos", obj_ini.artifact_tags[obj_controller.fest_display]) > 0) {
 								obj_ini.TTRPG[attend_co[ide], attend_id[ide]].corruption += choose(1, 2, 3, 4);
 							}
-							if (string_count("daemonic", obj_ini.artifact_tags[obj_controller.fest_display]) > 0) {
+							if (string_count("Daem", obj_ini.artifact_tags[obj_controller.fest_display]) > 0) {
 								obj_ini.TTRPG[attend_co[ide], attend_id[ide]].corruption += choose(6, 7, 8, 9);
 							}
 							attend_corrupted[ide] = 1;
@@ -466,7 +465,7 @@ try {
 			option1 = "";
 			option2 = "";
 			loc = "";
-			text = $"All Chaos and Daemonic Artifacts present have been handed over to the Inquisitor.  They remain seething, but your destruction has been stalled.  Or so {global.chapter_name} imagine.";
+			text = "All Chaos and Daemonic Artifacts present have been handed over to the Inquisitor.  They remain seething, but your destruction has been stalled.  Or so mission_star imagine.";
 			exit;
 		}
 
@@ -489,8 +488,11 @@ try {
 
 		if (press > 0) {
 			var randa, randa2;
-			randa = roll_dice(1, 100, "high");
-			randa2 = roll_dice(1, 100);
+			randa = floor(random(100)) + 1;
+			randa2 = floor(random(100)) + 1;
+			if (scr_has_disadv("Shitty Luck")) {
+				randa -= 20;
+			}
 		}
 
 		if (press == 1) {
@@ -516,12 +518,13 @@ try {
 			new_target.dispo[planet] = 70 + floor(random_range(5, 15)) + 1;
 			scr_event_log("", "Planetary Governor of " + string(new_target.name) + " " + scr_roman(planet) + " assassinated.  A more suitable Governor is installed.");
 			if (randa2 <= (10 * estimate)) {
-                for (var i = 0; i < array_length(obj_controller.event); i++) {
-                    if (obj_controller.event[i] == "") {
-                        var ev = i;
-                        break;
-                    }
-                }
+				var v = 0, ev = 0;
+				repeat (99) {
+					v += 1;
+					if ((ev == 0) && (obj_controller.event[v] == "")) {
+						ev = v;
+					}
+				}
 				obj_controller.event[ev] = "governor_assassination_1|" + string(new_target.name) + "|" + string(planet) + "|";
 				obj_controller.event_duration[ev] = ((choose(1, 2, 3, 4, 5, 6) + choose(1, 2, 3, 4, 5, 6)) * 6) + choose(-3, -2, -1, 0, 1, 2, 3);
 			}
@@ -539,12 +542,13 @@ try {
 			new_target.dispo[planet] = 101;
 			scr_event_log("", "Planetary Governor of " + string(new_target.name) + " " + scr_roman(planet) + " assassinated.  One of your Chapter Serfs take their position.");
 			if (randa2 <= (25 * estimate)) {
-                for (var i = 0; i < array_length(obj_controller.event); i++) {
-                    if (obj_controller.event[i] == "") {
-                        var ev = i;
-                        break;
-                    }
-                }
+				var v = 0, ev = 0;
+				repeat (99) {
+					v += 1;
+					if ((ev == 0) && (obj_controller.event[v] == "")) {
+						ev = v;
+					}
+				}
 				obj_controller.event[ev] = "governor_assassination_2|" + string(new_target.name) + "|" + string(planet) + "|";
 				obj_controller.event_duration[ev] = (choose(1, 2) * 6) + choose(-3, -2, -1, 0, 1, 2, 3);
 			}
@@ -660,7 +664,7 @@ try {
 					if (eh > 0) {
 						if (find_problem_planet(that, "", tempy) > 0) {
 							add_new_problem(that, "mech_tomb1", 17, tempy);
-							text = $"The Adeptus Mechanicus await your forces at " + string(tempy.name) + " " + scr_roman(that) + $".  They are expecting at least two squads of Astartes and have placed the testing on hold until their arrival.  {global.chapter_name} have 16 months to arrive.";
+							text = "The Adeptus Mechanicus await your forces at " + string(tempy.name) + " " + scr_roman(that) + ".  They are expecting at least two squads of Astartes and have placed the testing on hold until their arrival.  mission_star have 16 months to arrive.";
 							scr_event_log("", "Mechanicus Mission Accepted: At least two squads of marines are expected at " + string(tempy.name) + " " + scr_roman(that) + " within 16 months.", tempy.name);
 							new_star_event_marker("green");
 							title = "Mechanicus Mission Accepted";
@@ -754,135 +758,149 @@ try {
 		}
 	}
 
-    if (image == "ancient_ruins" && woopwoopwoop && move_to_next_stage()) {
-        instance_deactivate_all(true);
-        instance_activate_object(obj_ground_mission);
-        instance_activate_object(obj_popup);
-        var _explore_feature = obj_ground_mission.explore_feature;
-        _explore_feature.suprise_attack();
-        woopwoopwoop = 0;
-        instance_destroy(self.id);
-        instance_destroy();
-        exit;
-    } else if (image == "ancient_ruins" && option1 != "" && instance_exists(obj_ground_mission)) {
-        if (press == 1) {
-            // Begin
-            var _ruins = obj_ground_mission.explore_feature;
-            var ruins_battle = 0, ruins_fact = 0, ruins_disp = 0, ruins_reward = 0, dice, battle_threat = 0;
+	if (image == "ancient_ruins" && woopwoopwoop && move_to_next_stage()) {
+		instance_deactivate_all(true);
+		instance_activate_object(obj_ground_mission);
+		instance_activate_object(obj_popup);
+		var _explore_feature = obj_ground_mission.explore_feature;
+		_explore_feature.suprise_attack();
+		woopwoopwoop = 0;
+		show_debug_message("ruins combat");
+		instance_destroy(self.id);
+		instance_destroy();
+		exit;
+	} else if (image == "ancient_ruins" && option1 != "" && instance_exists(obj_ground_mission)) {
+		if (press == 1) {
+			// Begin
+			var _ruins = obj_ground_mission.explore_feature;
+			var ruins_battle = 0, ruins_fact = 0, ruins_disp = 0, ruins_reward = 0, dice, battle_threat = 0;
 
-            _ruins.determine_race();
+			_ruins.determine_race();
 
-            dice = roll_dice(1, 100, "high");
-            ruins_battle = dice <= 50;
+			dice = floor(random(100)) + 1;
+			var shit_luck = scr_has_disadv("Shitty Luck");
+			var pass_mark = shit_luck ? 66 : 50;
+			ruins_battle = dice <= pass_mark;
 
-            // ruins_battle=1;
+			// ruins_battle=1;
 
-            if (ruins_battle == 1) {
-                dice = roll_dice(1, 100, "low");
+			if (ruins_battle == 1) {
+				dice = floor(random(100)) + 1;
+				if (shit_luck) {
+					dice += 10;
+				}
 
-                if (dice >= 0 && dice <= 60) {
-                    battle_threat = 1;
-                } else if (dice > 60 && dice <= 90) {
-                    battle_threat = 2;
-                } else if (dice < 99) {
-                    battle_threat = 3;
-                } else {
-                    battle_threat = 4;
-                }
+				battle_threat = 4;
+				if ((dice > 0) && (dice <= 60)) {
+					battle_threat = 1;
+				}
+				if ((dice > 60) && (dice <= 90)) {
+					battle_threat = 2;
+				}
+				if ((dice > 90) && (dice <= 99)) {
+					battle_threat = 3;
+				}
 
-                switch (_ruins.ruins_race) {
-                case eFACTION.Player:
-                case eFACTION.Imperium:
-                case eFACTION.Chaos:
-                    ruins_battle = choose(10, 10, 10, 10, 11, 11, 12);
-                    break;
-                case eFACTION.Ecclesiarchy:
-                    ruins_battle = 10;
-                    break;
-                case eFACTION.Eldar:
-                    ruins_battle = choose(6, 6, 10, 10, 10, 12);
-                    break;
-                default:
-                    ruins_battle = choose(6, 10, 12);
-                    break;
-                }
+				if ((_ruins.ruins_race == 1) || (_ruins.ruins_race == 2) || (_ruins.ruins_race == 10)) {
+					ruins_battle = choose(10, 10, 10, 10, 11, 11, 12);
+				}
+				if (_ruins.ruins_race == 5) {
+					ruins_battle = 10;
+				}
+				if (_ruins.ruins_race == 6) {
+					ruins_battle = choose(6, 6, 10, 10, 10, 12);
+				}
+				if (ruins_battle == 1) {
+					ruins_battle = choose(6, 10, 12);
+				}
+				obj_ground_mission.ruins_race = _ruins.ruins_race;
+				obj_ground_mission.ruins_battle = ruins_battle;
+				obj_ground_mission.battle_threat = battle_threat;
 
-                obj_ground_mission.ruins_race = _ruins.ruins_race;
-                obj_ground_mission.ruins_battle = ruins_battle;
-                obj_ground_mission.battle_threat = battle_threat;
+				option1 = "";
+				option2 = "";
+				option3 = "";
+				text = "Your marines descended into the ancient ruins, mapping them out as they go.  They quickly determine the ruins were once ";
+				if (_ruins.ruins_race == 1) {
+					text += "a Space Marine fortification from earlier times.";
+				}
+				if (_ruins.ruins_race == 2) {
+					text += "golden-age Imperial ruins, lost to time.";
+				}
+				if (_ruins.ruins_race == 5) {
+					text += "a magnificent temple of the Imperial Cult.";
+				}
+				if (_ruins.ruins_race == 6) {
+					text += "Eldar colonization structures from an unknown time.";
+				}
+				if (_ruins.ruins_race == 10) {
+					text += "golden-age Imperial ruins, since decorated with spikes and bones.";
+				}
+				if (_ruins.failed_exploration == 1) {
+					text += "mission_star see the scarring in the walls and round impacts where your brothers died to clense this place of it's foul inhabitants";
+				}
+				text += "  Unfortunantly, it's too late before your Battle Brothers discern the ruins are still inhabited.  Shapes begin to descend upon them from all directions, masked in the shadows.";
 
-                option1 = "";
-                option2 = "";
-                option3 = "";
-                text = "Your marines descended into the ancient ruins, mapping them out as they go.  They quickly determine the ruins were once ";
-                switch (_ruins.ruins_race) {
-                case eFACTION.Player:
-                    text += "a Space Marine fortification from earlier times.";
-                    break;
-                case eFACTION.Imperium:
-                    text += "golden-age Imperial ruins, lost to time.";
-                    break;
-                case eFACTION.Ecclesiarchy:
-                    text += "a magnificent temple of the Imperial Cult.";
-                    break;
-                case eFACTION.Eldar:
-                    text += "Eldar colonization structures from an unknown time.";
-                    break;
-                case eFACTION.Chaos:
-                    text += "golden-age Imperial ruins, since decorated with spikes and bones.";
-                    break;
-                }
-
-                if (_ruins.failed_exploration == 1) {
-                    text += $"{global.chapter_name} see the scarring in the walls and round impacts where your brothers died to clense this place of it's foul inhabitants";
-                }
-                text += "  Unfortunantly, it's too late before your Battle Brothers discern the ruins are still inhabited.  Shapes begin to descend upon them from all directions, masked in the shadows.";
-
-                cooldown = 15;
-                woopwoopwoop = 1;
-                exit;
-            } else {
-                var obj = obj_ground_mission.obj;
-                instance_activate_object(obj_star);
-                scr_ruins_reward(star_by_name(obj_ground_mission.battle_loc), obj_ground_mission.num, obj_ground_mission.explore_feature);
-                instance_destroy();
-                exit;
-            }
-        }
-        if (press == 2) {
-            // Nothing
-            obj_controller.cooldown = 10;
-            obj_controller.menu = 1;
-            // obj_controller.managing=manag;
-            with (obj_controller) {
-                scr_ui_refresh()
-                update_general_manage_view();
-            }
-            with (obj_ground_mission) {
-                instance_destroy();
-            }
-            instance_destroy();
-            exit;
-        }
-        if (press == 3) {
-            // Return to ship, exit
-            scr_return_ship(obj_ini.ship[obj_ground_mission.ship_id], obj_ground_mission, obj_ground_mission.num);
-            var man_size, ship_id, comp, plan, i;
-            ship_id = 0;
-            man_size = 0;
-            comp = 0;
-            plan = 0;
-            ship_id = obj_ground_mission.ship_id;
-            obj_controller.menu = 0;
-            obj_controller.managing = 0;
-            obj_controller.cooldown = 10;
-            with (obj_ground_mission) {
-                instance_destroy();
-            }
-            instance_destroy();
-            exit;
-        }
-    }
+				cooldown = 15;
+				woopwoopwoop = 1;
+				exit;
+			}
+			if (ruins_battle == 0) {
+				var obj = obj_ground_mission.obj;
+				instance_activate_object(obj_star);
+				scr_ruins_reward(star_by_name(obj_ground_mission.battle_loc), obj_ground_mission.num, obj_ground_mission.explore_feature);
+				instance_destroy();
+				exit;
+			}
+		}
+		if (press == 2) {
+			// Nothing
+			obj_controller.cooldown = 10;
+			obj_controller.menu = 1;
+			// obj_controller.managing=manag;
+			with (obj_controller) {
+				var i = -1;
+				man_size = 0;
+				selecting_location = "";
+				selecting_types = "";
+				selecting_ship = -1;
+				sel_uid = 0;
+				reset_manage_arrays();
+				alll = 0;
+				update_general_manage_view();
+			}
+			with (obj_ground_mission) {
+				instance_destroy();
+			}
+			instance_destroy();
+			exit;
+		}
+		if (press == 3) {
+			// Return to ship, exit
+			scr_return_ship(obj_ground_mission.loc, obj_ground_mission, obj_ground_mission.num);
+			var man_size, ship_id, comp, plan, i;
+			i = 0;
+			ship_id = 0;
+			man_size = 0;
+			comp = 0;
+			plan = 0;
+			repeat (30) {
+				i += 1;
+				if (obj_ini.ship[i] == obj_ground_mission.loc) {
+					ship_id = i;
+				}
+			}
+			i = 0;
+			obj_controller.menu = 0;
+			obj_controller.managing = 0;
+			obj_controller.cooldown = 10;
+			with (obj_ground_mission) {
+				instance_destroy();
+			}
+			instance_destroy();
+			exit;
+		}
+	}
 
 	if (image == "stc") {
 		if ((ma_co > 0) && (ma_id == 0)) {
@@ -894,11 +912,18 @@ try {
 			if (press == 2) {
 				scr_return_ship(obj_ground_mission.loc, obj_ground_mission, obj_ground_mission.num);
 				var man_size, ship_id, comp, plan, i;
+				i = 0;
 				ship_id = 0;
 				man_size = 0;
 				comp = 0;
 				plan = 0;
-				ship_id = array_get_index(obj_ini.ship, obj_ground_mission.loc);
+				repeat (30) {
+					i += 1;
+					if (obj_ini.ship[i] == obj_ground_mission.loc) {
+						ship_id = i;
+					}
+				}
+				i = 0;
 				obj_controller.menu = 0;
 				obj_controller.managing = 0;
 				obj_controller.cooldown = 10;
@@ -1317,7 +1342,7 @@ try {
 			var mission_star = star_by_name(obj_controller.temp[200]);
 			if (add_new_problem(planet, "recon", estimate, mission_star)) {
 				title = "Inquisition Mission Demand";
-				text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  {global.chapter_name} are to land Astartes on {mission_star.name} {scr_roman(planet)} to investigate the planet within {estimate} months.";
+				text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  mission_star are to land Astartes on {mission_star.name} {scr_roman(planet)} to investigate the planet within {estimate} months.";
 				with (mission_star) {
 					new_star_event_marker("green");
 				}
@@ -1348,12 +1373,12 @@ try {
 					if (mission == "purge") {
 						scr_event_log("", $"Inquisition Mission Accepted: The nobles of {mission_star.name} {scr_roman(planet)} must be selectively purged within {estimate} months.", mission_star.name);
 						if (demand) {
-							text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  {global.chapter_name} are to selectively purge the Nobles on {mission_star.name} {scr_roman(onceh)} within {estimate} months.";
+							text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  mission_star are to selectively purge the Nobles on {mission_star.name} {scr_roman(onceh)} within {estimate} months.";
 						}
 					} else if (mission == "cleanse") {
 						scr_event_log("", $"Inquisition Mission Accepted: The mutants beneath {planet_numeral_name(planet, mission_star)} must be cleansed by fire within {estimate} months.", mission_star.name);
 						if (demand) {
-							text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  {global.chapter_name} are to cleanse by fire the mutants in Hive {planet_numeral_name(planet, mission_star)} within {estimate} months.";
+							text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  mission_star are to cleanse by fire the mutants in Hive {planet_numeral_name(planet, mission_star)} within {estimate} months.";
 						}
 					} else if (mission == "inquisitor") {
 						scr_event_log("", $"Inquisition Mission Accepted: A radical Inquisitor enroute to {mission_star.name} must be removed.  Estimated arrival in {estimate} months.", mission_star.name);
@@ -1368,16 +1393,16 @@ try {
 							text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  An out of control Spyrer on Hive {mission_star.name} {scr_roman(onceh)} must be removed within {estimate} months.";
 						}
 					} else if (mission == "necron") {
-						scr_event_log("", $"Inquisition Mission Accepted: {global.chapter_name} have been given a Bomb to seal the Necron Tomb on {mission_star.name} {scr_roman(planet)}.", mission_star.name);
+						scr_event_log("", $"Inquisition Mission Accepted: mission_star have been given a Bomb to seal the Necron Tomb on {mission_star.name} {scr_roman(planet)}.", mission_star.name);
 
 						image = "necron_cave";
 						title = "New Equipment";
 						fancy_title = 0;
 						text_center = 0;
-						text = $"{global.chapter_name} have been provided with 1x Plasma Bomb in order to complete the mission.";
+						text = "mission_star have been provided with 1x Plasma Bomb in order to complete the mission.";
 
 						if (demand) {
-							text = $"The Inquisition demands that your Chapter demonstrate its loyalty.  {global.chapter_name} have been given a Plasma Bomb to seal the Necron Tomb on {mission_star.name} {scr_roman(onceh)}.  It is expected to be completed within {estimate} months.";
+							text = $"The Inquisition demands that your Chapter demonstrate its loyalty.  mission_star have been given a Plasma Bomb to seal the Necron Tomb on {mission_star.name} {scr_roman(onceh)}.  It is expected to be completed within {estimate} months.";
 						}
 						option1 = "";
 						option2 = "";
@@ -1393,10 +1418,10 @@ try {
 						title = "New Equipment";
 						fancy_title = 0;
 						text_center = 0;
-						text = $"{global.chapter_name} have been provided with 4x Astartes Webbers in order to complete the mission.";
+						text = "mission_star have been provided with 4x Astartes Webbers in order to complete the mission.";
 
 						if (demand) {
-							text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  {global.chapter_name} are to capture a Gaunt organism and return it, unharmed- 4x Webbers have been provided for this purpose.";
+							text = "The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  mission_star are to capture a Gaunt organism and return it, unharmed- 4x Webbers have been provided for this purpose.";
 						}
 
 						option1 = "";
@@ -1421,10 +1446,10 @@ try {
 
 						if (demand) {
 							title = "Inquisition Mission Demand";
-							text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  {global.chapter_name} are to capture the Tau Ethereal somewhere within the {mission_star.name} system.";
+							text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  mission_star are to capture the Tau Ethereal somewhere within the {mission_star.name} system.";
 						}
 						if (mission_star.p_problem[planet, 1] == "recon") {
-							scr_event_log("", $"Inquisition Mission Accepted: The Inquisition wish for {global.chapter_name} to capture the Tau Ethereal somewhere within {mission_star.name}.", mission_star.name);
+							scr_event_log("", $"Inquisition Mission Accepted: The Inquisition wish for mission_star to capture the Tau Ethereal somewhere within {mission_star.name}.", mission_star.name);
 						}
 					}
 				}
@@ -1558,17 +1583,28 @@ try {
 				}
 			}
 			if (obj_ini.fleet_type != ePlayerBase.home_world) {
-				var last_artifact = scr_add_artifact("random", "", 4, obj_ini.ship[0], 501);
+				scr_add_artifact("random", "", 4, obj_ini.ship[0], 501);
 			}
 			if (obj_ini.fleet_type == ePlayerBase.home_world) {
-				var last_artifact = scr_add_artifact("random", "", 4, obj_ini.home_name, 2);
+				scr_add_artifact("random", "", 4, obj_ini.home_name, 2);
+			}
+			var i, last_artifact;
+			i = 0;
+			last_artifact = 0;
+			repeat (100) {
+				if (last_artifact == 0) {
+					i += 1;
+					if (obj_ini.artifact[i] == "") {
+						last_artifact = i - 1;
+					}
+				}
 			}
 			option1 = "";
 			option2 = "";
 			option3 = "";
 			title = "Inquisition Mission Completed";
 			text = "Your ship sends over a boarding party, who retrieve the offered artifact- ";
-			text += $" some form of {obj_ini.artifact[last_artifact]}.  Once it is safely stowed away your ship is then ordered to fire.  The Inquisitor's own seems to hesitate an instant before banking away, but is quickly destroyed.";
+			text += " some form of " + string(obj_ini.artifact[last_artifact]) + ".  Once it is safely stowed away your ship is then ordered to fire.  The Inquisitor's own seems to hesitate an instant before banking away, but is quickly destroyed.";
 			image = "exploding_ship";
 			option1 = "";
 			option2 = "";
@@ -1616,7 +1652,7 @@ try {
 
 			if (offer == 1) {
 				title = "Artifact Offered";
-				text = "The Inquisitor claims that this is a massive misunderstanding, and " + string(gender) + " wishes to prove " + string(gender2) + $" innocence.  If {global.chapter_name} allow their ship to leave " + string(gender) + $" will give {global.chapter_name} an artifact.";
+				text = "The Inquisitor claims that this is a massive misunderstanding, and " + string(gender) + " wishes to prove " + string(gender2) + " innocence.  If mission_star allow their ship to leave " + string(gender) + " will give mission_star an artifact.";
 				option1 = "Destroy their vessel";
 				option2 = "Take the artifact and then destroy them";
 				option3 = "Take the artifact and spare them";
@@ -1625,7 +1661,7 @@ try {
 
 			if (offer == 2) {
 				title = "Mercy Plea";
-				text = "The Inquisitor claims that " + string(gender) + $" has key knowledge that would grant the Imperium vital power over the forces of Chaos.  If {global.chapter_name} allow " + string(gender2) + " ship to leave the forces of Chaos within this sector will be weakened.";
+				text = "The Inquisitor claims that " + string(gender) + " has key knowledge that would grant the Imperium vital power over the forces of Chaos.  If mission_star allow " + string(gender2) + " ship to leave the forces of Chaos within this sector will be weakened.";
 				option1 = "Destroy their vessel";
 				option2 = "Search their ship";
 				option3 = "Spare them";
@@ -1656,7 +1692,7 @@ try {
 				}
 				title = "Inquisition Mission Completed";
 				image = "exploding_ship";
-				text = $"{global.chapter_name} allow communications.  As soon as the vox turns on {global.chapter_name} hear a sickly, hateful voice.  They begin to speak of the inevitable death of your marines, the fall of all that is and ever shall be, and " + string(gender2) + " Lord of Decay.  Their ship is fired upon and destroyed without hesitation.";
+				text = "mission_star allow communications.  As soon as the vox turns on mission_star hear a sickly, hateful voice.  They begin to speak of the inevitable death of your marines, the fall of all that is and ever shall be, and " + string(gender2) + " Lord of Decay.  Their ship is fired upon and destroyed without hesitation.";
 				option1 = "";
 				option2 = "";
 				option3 = "";
@@ -1735,17 +1771,28 @@ try {
 				}
 			}
 			if (obj_ini.fleet_type != ePlayerBase.home_world) {
-				var last_artifact = scr_add_artifact("random", "", 4, obj_ini.ship[0], 501);
+				scr_add_artifact("random", "", 4, obj_ini.ship[0], 501);
 			}
 			if (obj_ini.fleet_type == ePlayerBase.home_world) {
-				var last_artifact = scr_add_artifact("random", "", 4, obj_ini.home_name, 2);
+				scr_add_artifact("random", "", 4, obj_ini.home_name, 2);
+			}
+			var i, last_artifact;
+			i = 0;
+			last_artifact = 0;
+			repeat (100) {
+				if (last_artifact == 0) {
+					i += 1;
+					if (obj_ini.artifact[i] == "") {
+						last_artifact = i - 1;
+					}
+				}
 			}
 			option1 = "";
 			option2 = "";
 			option3 = "";
 			title = "Inquisition Mission Completed";
 			text = "Your ship sends over a boarding party, who retrieve the offered artifact- ";
-			text += $" some form of {obj_ini.artifact[last_artifact]}.  As promised {global.chapter_name} allow the Inquisitor to leave, hoping for the best.  What's the worst that could happen?";
+			text += " some form of " + string(obj_ini.artifact[last_artifact]) + ".  As promised mission_star allow the Inquisitor to leave, hoping for the best.  What's the worst that could happen?";
 			image = "artifact_recovered";
 			option1 = "";
 			option2 = "";
@@ -1753,12 +1800,13 @@ try {
 			scr_event_log("", "Artifact Recovered from radical Inquisitor.");
 			scr_event_log("", "Inquisition Mission Completed: The radical Inquisitor has been purged.");
 
-            for (var i = 0; i < array_length(obj_controller.event); i++) {
-                if (obj_controller.event[i] == "") {
-                    var ev = i;
-                    break;
-                }
-            }
+			var v = 0, ev = 0;
+			repeat (99) {
+				v += 1;
+				if ((ev == 0) && (obj_controller.event[v] == "")) {
+					ev = v;
+				}
+			}
 			obj_controller.event[ev] = "inquisitor_spared1";
 			obj_controller.event_duration[ev] = floor(random_range(6, 18)) + 1;
 
@@ -1776,7 +1824,7 @@ try {
 				}
 			}
 			title = "Inquisition Mission Completed";
-			text = $"{global.chapter_name} allow the Inquisitor to leave, trusting in their words.  If they truly do have key information it is a risk {global.chapter_name} are willing to take.  What's the worst that could happen?";
+			text = "mission_star allow the Inquisitor to leave, trusting in their words.  If they truly do have key information it is a risk mission_star are willing to take.  What's the worst that could happen?";
 			image = "artifact_recovered";
 			option1 = "";
 			option2 = "";
@@ -1784,12 +1832,13 @@ try {
 
 			scr_event_log("", "Inquisition Mission Completed?: The radical Inquisitor has been allowed to flee in order to weaken the forces of Chaos, as they promised.");
 
-            for (var i = 0; i < array_length(obj_controller.event); i++) {
-                if (obj_controller.event[i] == "") {
-                    var ev = i;
-                    break;
-                }
-            }
+			var v = 0, ev = 0;
+			repeat (99) {
+				v += 1;
+				if ((ev == 0) && (obj_controller.event[v] == "")) {
+					ev = v;
+				}
+			}
 			obj_controller.event[ev] = "inquisitor_spared2";
 			obj_controller.event_duration[ev] = floor(random_range(6, 18)) + 1;
 
@@ -1879,7 +1928,7 @@ try {
 	if (image == "new_forge_master") {
 		if (pathway == "") {
 			obj_controller.complex_event = true;
-			techs = collect_role_group(SPECIALISTS_TECHS);
+			techs = collect_role_group("forge");
 			charisma_pick = 0;
 			experience_pick = 0;
 			talent_pick = 0;
@@ -2007,7 +2056,7 @@ try {
 		}
 		if (pathway == "tech_aftermath") {
 			var tech, t, i, check_tech, location_techs, location_heretics, delete_positions, heretic_data = [0, 0, 0], loyal_data = [0, 0, 0];
-			techs = collect_role_group(SPECIALISTS_TECHS);
+			techs = collect_role_group("forge");
 			var tech_count = array_length(techs);
 			for (i = 0; i < tech_count; i++) {
 				delete_positions = [];

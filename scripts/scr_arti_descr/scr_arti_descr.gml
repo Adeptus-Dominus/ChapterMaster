@@ -145,8 +145,8 @@ function scr_arti_descr() {
 	}
 
 	if (has_tag("MINOR")){other_data+="It is more crude and utilitarian than one might expect from an artifact.";}
-	if (has_tag("chaos")){p4="It bears the taint of Chaos.";}
-	if (has_tag("daemonic")){p4="It is infested with a Daemonic entity. Destroying it, may cause the entity to materialize.";}
+	if (has_tag("Chaos")){p4="It bears the taint of Chaos.";}
+	if (has_tag("Daemonic")){p4="It is infested with a Daemonic entity.";}
 
 	final_description+=mission_data;
 	if (basic_asthetic!="") then final_description+=$"  {basic_asthetic}";

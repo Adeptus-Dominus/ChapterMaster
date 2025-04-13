@@ -1,13 +1,11 @@
 {
-  "$GMScript":"v1",
-  "%Name":"scr_gov_disp",
-  "isCompatibility":false,
-  "isDnD":false,
-  "name":"scr_gov_disp",
-  "parent":{
-    "name":"Diplomacy",
-    "path":"folders/Scripts/Diplomacy.yy",
+  "resourceType": "GMScript",
+  "resourceVersion": "1.0",
+  "name": "scr_gov_disp",
+  "isCompatibility": false,
+  "isDnD": false,
+  "parent": {
+    "name": "Diplomacy",
+    "path": "folders/Scripts/Diplomacy.yy",
   },
-  "resourceType":"GMScript",
-  "resourceVersion":"2.0",
 }

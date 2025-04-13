@@ -34,8 +34,6 @@ function scr_save_chapter(chapter_id){
 
 	chap.advantages = adv;
 	chap.disadvantages = dis;
-
-	chap.culture_styles = buttons.culture_styles.selections();
 	chap.colors = {
 		main: col[main_color],
 		secondary: col[secondary_color],
@@ -48,7 +46,6 @@ function scr_save_chapter(chapter_id){
 		special: col_special
 	};
 	chap.full_liveries = full_liveries;
-	chap.company_liveries = company_liveries;
 	chap.complex_livery_data = complex_livery_data;
 	chap.names = {
 		hapothecary: hapothecary,
