@@ -94,8 +94,8 @@ function ComplexSet(unit) constructor{
     };
     unit_armour = unit.armour();
     self.unit = unit;
-    draw_helms = instance_exists(obj_creation) ? obj_creation.draw_helms : obj_controller.draw_helms;
-    //draw_helms = false;
+    //draw_helms = instance_exists(obj_creation) ? obj_creation.draw_helms : obj_controller.draw_helms;
+    draw_helms = false;
     static mk7_bits = {
             armour : spr_mk7_complex,
             backpack : spr_mk7_complex_backpack,
@@ -668,7 +668,7 @@ function ComplexSet(unit) constructor{
                     weapon_left.arm_type = 2;
                     weapon_right.hand_type = 3;
                     weapon_left.hand_type = 4;
-                    ui_ymod[left_or_right] += 25;
+                    _arm.ui_ymod += 25;
                 }
 
                 if (_arm.display_type == "ranged_twohand") {
@@ -1124,6 +1124,19 @@ function ComplexSet(unit) constructor{
 
     };
 
+    static skin_tones = {
+        standard : [
+            [1.0, 218.0/255.0, 179.0/255.0],
+            [1.0, 192.0/255.0, 134.0/255.0],
+            [252.0/255.0, 206.0/255.0, 159.0/255.0],
+            [254.0/255.0, 206.0/255.0, 163.0/255.0],
+            [255.0/255.0, 221.0/255.0, 191.0/255.0],
+            [230.0/255.0, 177.0/255.0, 131.0/255.0],
+            [255.0/255.0, 205.0/255.0, 163.0/255.0],
+            [57.0/255.0, 37.0/255.0, 17.0/255.0],
+        ],
+        coal :  [34.0/255.0, 34.0/255.0, 34.0/255.0],
+    }
     static draw_head = function(texture_draws={}){
         if (draw_helms){
             if (struct_exists(self, "head")){
@@ -1136,6 +1149,9 @@ function ComplexSet(unit) constructor{
                 draw_component("crown",texture_draws);                                                                                
             }
         } else {
+            shader_set(skin_tone_shader);
+            var _skin_colour = skin_tones.standard[array_length(skin_tones.standard)%variation_map.bare_head];
+            shader_set_uniform_f_array(shader_get_uniform(skin_tone_shader, "skin"), _skin_colour);
             draw_component("bare_neck",texture_draws);
             draw_component("bare_head",texture_draws);
             draw_component("bare_eyes",texture_draws);

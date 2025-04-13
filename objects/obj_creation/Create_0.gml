@@ -267,7 +267,7 @@ buttons = {
             font : fnt_40k_14b
         },
         {
-            str1 : "Ganger (cthonian)",
+            str1 : "Cthonian",
             font : fnt_40k_14b
         },
         {
