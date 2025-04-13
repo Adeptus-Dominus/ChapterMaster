@@ -135,7 +135,7 @@ function ComplexSet(unit) constructor{
 
     right_arm_data = [];
     
-    static assign_modulars = function(modulars = global.modular_drawing_items){
+    static assign_modulars = function(modulars = global.modular_drawing_items, position=false){
         var _mod = {};
 
         try{
@@ -319,13 +319,15 @@ function ComplexSet(unit) constructor{
                 }
 
 
-                if (_mod.position == "weapon"){
-                    var _weapon_map = _mod.weapon_map;
-                    if (unit.weapon_one() == _weapon_map){
-                        array_push(right_arm_data , _mod.weapon_data);
-                    }
-                    if( unit.weapon_two() == _weapon_map){
-                        array_push(left_arm_data ,_mod.weapon_data); 
+                if (position != false){
+                    if (position ==  "weapon"){
+                        var _weapon_map = _mod.weapon_map;
+                        if (unit.weapon_one() == _weapon_map){
+                            array_push(right_arm_data , _mod.weapon_data);
+                        }
+                        if( unit.weapon_two() == _weapon_map){
+                            array_push(left_arm_data ,_mod.weapon_data); 
+                        }
                     }
                 } else {
                    if (!struct_exists(_mod, "assign_by_rank")){
@@ -986,14 +988,16 @@ function ComplexSet(unit) constructor{
             
         }         
         assign_modulars();
-        if (struct_exists(global.weapon_visual_data, unit.weapon_one())){
-            assign_modulars(global.weapon_visual_data[$ unit.weapon_one()]);
+        var wep_opts = format_weapon_visuals(unit.weapon_one());
+        if (array_length(wep_opts)){
+            assign_modulars(wep_opts, "weapon");
         }
-        if (unit.weapon_one() != unit.weapon_two()){
-            if (struct_exists(global.weapon_visual_data, unit.weapon_two())){
-                assign_modulars(global.weapon_visual_data[$ unit.weapon_two()]);
-            }
-        }
+         if (unit.weapon_one() != unit.weapon_two()){
+            var wep_opts = format_weapon_visuals(unit.weapon_two());
+            if (array_length(wep_opts)){
+                assign_modulars(wep_opts, "weapon");
+            }            
+         }
     }
 
      if (unit.IsSpecialist(SPECIALISTS_TECHS)){
