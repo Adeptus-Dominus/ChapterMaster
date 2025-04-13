@@ -601,6 +601,10 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         unit_health = min(unit_health, max_health());
     };
 
+    static restore_max_health = function() {
+        unit_health = max_health();
+    };
+
     static healing = function(apoth) {
         if (hp() <= 0) {
             exit;
@@ -674,19 +678,15 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     static update_mobility_item = scr_update_unit_mobility_item;
 
     static max_health = function(base = false) {
-        var max_h = 100 * (1 + ((constitution - 40) * 0.05));
+        var _max_health = 1 + (constitution * 3);
         if (!base) {
-            max_h += gear_weapon_data("armour", armour(), "hp_mod");
-            max_h += gear_weapon_data("gear", gear(), "hp_mod");
-            max_h += gear_weapon_data("mobility", mobility_item(), "hp_mod");
-            max_h += gear_weapon_data("weapon", weapon_one(), "hp_mod");
-            max_h += gear_weapon_data("weapon", weapon_two(), "hp_mod");
+            _max_health += gear_weapon_data("armour", armour(), "hp_mod");
+            _max_health += gear_weapon_data("gear", gear(), "hp_mod");
+            _max_health += gear_weapon_data("mobility", mobility_item(), "hp_mod");
+            _max_health += gear_weapon_data("weapon", weapon_one(), "hp_mod");
+            _max_health += gear_weapon_data("weapon", weapon_two(), "hp_mod");
         }
-        return max_h;
-    };
-
-    static increase_max_health = function(increase) {
-        return max_health() + (increase * (1 + ((constitution - 40) * 0.05))); //calculate the effect of unit_health buffs
+        return _max_health;
     };
 
     // used both to load unit data from save and to add preset base_stats
@@ -1122,7 +1122,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     static update_gear = scr_update_unit_gear;
 
     if (base_group != "none") {
-        update_health(max_health()); //set marine unit_health to max
+        restore_max_health(); //set marine unit_health to max
     }
 
     static weapon_one = function(raw = false) {
@@ -1356,7 +1356,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         damage_res += get_mobility_data("damage_resistance_mod");
         damage_res += get_weapon_one_data("damage_resistance_mod");
         damage_res += get_weapon_two_data("damage_resistance_mod");
-        damage_res = min(75, damage_res + floor((constitution * 0.005) * 100));
+        damage_res = min(75, damage_res + floor((constitution * 0.0025) * 100));
         return damage_res;
     };
 
@@ -1417,9 +1417,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     static ranged_attack = function(weapon_slot = 0) {
         encumbered_ranged = false;
         //base modifyer based on unit skill set
-        ranged_att = 100 * ((ballistic_skill / 50) + (dexterity / 400) + (experience / 500));
+        ranged_att = 100 * ((ballistic_skill / 50) + (dexterity / 400));
         var final_range_attack = 0;
-        var explanation_string = $"Stat Mod: x{ranged_att / 100}#  BS: x{ballistic_skill / 50}#  DEX: x{dexterity / 400}#  EXP: x{experience / 500}#";
+        var explanation_string = $"Stat Mod: x{ranged_att / 100}#  BS: x{ballistic_skill / 50}#  DEX: x{dexterity / 400}#";
         //determine capavbility to weild bulky weapons
         var carry_data = ranged_hands_limit();
 
@@ -1677,10 +1677,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         var basic_wep_string = $"{primary_weapon.name}: {primary_weapon.attack}#";
         explanation_string = basic_wep_string + explanation_string;
         
-        _melee_mod += (weapon_skill / 100) + (experience / 500);
+        _melee_mod += (weapon_skill / 100);
         explanation_string += $"#Stats:#";
         explanation_string += $"  WS: {_format_sign((weapon_skill / 100) * 100)}%#";
-        explanation_string += $"  EXP: {_format_sign((experience / 500) * 100)}%#";
         
         if (primary_weapon.has_tag("martial") || primary_weapon.has_tag("savage")) {
             var bonus_modifier = 0;
@@ -1713,7 +1712,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             if (has_force_weapon()) {
                 var psychic_bonus = psionic * 20;
                 psychic_bonus *= 0.5 + (wisdom / 100);
-                psychic_bonus *= 0.5 + (experience / 100);
                 psychic_bonus *= IsSpecialist(SPECIALISTS_LIBRARIANS) ? 1 : 0.25;
                 psychic_bonus = round(psychic_bonus);
                 primary_weapon.attack += psychic_bonus;
@@ -2190,11 +2188,11 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
 	static psychic_amplification = function() {
-		return round((psionic - 2) + (experience * 0.01));
+		return round(psionic - 2);
 	}
 
     static psychic_focus = function() {
-        return round((wisdom * 0.4) + (experience * 0.05));
+        return round(wisdom * 0.4);
     };
 
     static perils_threshold = function() {
@@ -2266,7 +2264,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
 	static roll_psionic_increase = function() {
 		if (psionic < 12) {
-			var _psionic_difficulty = max(1, (psionic * 50) - experience);
+			var _psionic_difficulty = max(1, (psionic * 50) - wisdom);
 
 			var _dice_roll = roll_personal_dice(1, _psionic_difficulty, "high", self);
 			if (_dice_roll == _psionic_difficulty) {

@@ -96,7 +96,7 @@ function scr_clean(target_object, weapon_data) {
                         veh_hp[vehicle_id] -= _modified_damage;
 
                         // Check if the vehicle is destroyed
-                        if (veh_hp[vehicle_id] <= 0 && veh_dead[vehicle_id] == 0) {
+                        if (veh_hp[vehicle_id] <= 0) {
                             veh_dead[vehicle_id] = 1;
                             units_lost++;
                             obj_ncombat.player_forces -= 1;
