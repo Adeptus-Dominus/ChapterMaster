@@ -755,7 +755,7 @@ global.weapons = {
 		"melee_hands": 0,
 		"ranged_hands": 3,
 		"ammo": 10,
-		"reload": 4,
+		"reload": -1,
 		"range": 6,
 		"spli": 12,
 		"arp": 16,
@@ -1152,9 +1152,21 @@ global.weapons = {
 		"tags": ["vehicle","heavy_ranged", "indirect"]
 	},
 	"HK Missile": {
+		"attack": {
+			"standard": 65,
+			"master_crafted": 65,
+			"artifact": 65
+		},
 		"abbreviation": "HKMssl",
 		"description": "A single shot hunter killer	missile that serves as a powerful anti armour/aircraft deterent.",
-		"tags": ["HK"]
+		"melee_hands": 0,
+		"ranged_hands": 0,
+		"ammo": 1,
+		"reload": -1,
+		"range": 30,
+		"spli": 1,
+		"arp": 16,
+		"tags": ["vehicle","heavy_ranged"]
 	},
 	"Twin Linked Heavy Bolter Mount": {
 		"attack": {

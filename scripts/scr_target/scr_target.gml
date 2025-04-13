@@ -26,6 +26,7 @@ function scr_target(battle_block, man_or_vehicle = "any") {
 	if (!ds_priority_empty(_priority_queue)) {
 		_biggest_target = ds_priority_delete_max(_priority_queue);
 	}
+
 	ds_priority_destroy(_priority_queue);
 
 	return _biggest_target;

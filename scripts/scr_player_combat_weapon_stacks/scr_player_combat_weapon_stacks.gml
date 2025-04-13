@@ -23,24 +23,21 @@ function add_second_profiles_to_stack(weapon, head_role = false, unit = "none") 
 }
 
 
-function add_data_to_stack (stack_index, weapon, unit_damage=false, head_role=false, unit="none"){
-    if (unit_damage){
+function add_data_to_stack (stack_index, weapon, unit_damage=0, head_role=false, unit="none"){
+    if (unit_damage > 0){
         att[stack_index]+=unit_damage;
     } else {
         att[stack_index]+=weapon.attack;
     }
-    apa[stack_index]=weapon.arp;
-    range[stack_index]=weapon.range;
     wep_num[stack_index]++;
-    splash[stack_index]=weapon.spli;
-    wep[stack_index]=weapon.name;
-    if (struct_exists(weapon, "reload")) {
-        ammo_reload[stack_index]=weapon.reload;
-    } else {
-        ammo_reload[stack_index]=-1;
-    }
 
-    if (obj_ncombat.started == 0) {
+    if (!obj_ncombat.started) {
+        splash[stack_index]=weapon.spli;
+        wep[stack_index]=weapon.name;
+        apa[stack_index]=weapon.arp;
+        range[stack_index]=weapon.range;
+
+        ammo_reload[stack_index]=weapon.reload;
         ammo_reload_current[stack_index]=-1;
         ammo_max[stack_index]=weapon.ammo;
         ammo_current[stack_index]=weapon.ammo;
@@ -263,9 +260,11 @@ function scr_player_combat_weapon_stacks() {
                         if (range[weapon_stack_index]>1.9) then continue//creates secondary weapon stack for close combat ranged weaponry use
                         primary_melee.range=1;
                         add_data_to_stack(weapon_stack_index,primary_melee,unit.melee_damage_data[0], head_role,unit);
+
                         if (head_role){
                             player_head_role_stack(weapon_stack_index,unit);
-                         }
+                        }
+
                         if (floor(primary_melee.range)<=1 && primary_melee.ammo == 0){
                             ammo_max[weapon_stack_index]=-1; //no ammo limit
                         }

@@ -44,6 +44,7 @@ try {
             }
     
             if (range[i] == 0) {
+                show_debug_message($"{wep[i]} has broken range! This shouldn't happen!");
                 log_error($"{wep[i]} has broken range! This shouldn't happen! Range: {range[i]}; Ammo: {ammo[i]}; Owner: {wep_owner[i]}");
                 // show_debug_message($"A broken weapon was found! i:{i}; Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}; Ammo: {ammo[i]}");
                 continue;
@@ -167,6 +168,7 @@ try {
             }
     
             if (range[i] == 0) {
+                show_debug_message($"{wep[i]} has broken range! This shouldn't happen!");
                 log_error($"{wep[i]} has broken range! This shouldn't happen! Range: {range[i]}; Ammo: {ammo[i]}; Owner: {wep_owner[i]}");
                 // show_debug_message($"A broken weapon was found! i:{i}; Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}; Ammo: {ammo[i]}");
                 continue;

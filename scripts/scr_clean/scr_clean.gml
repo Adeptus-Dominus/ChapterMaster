@@ -121,7 +121,7 @@ function scr_clean(target_object, weapon_data) {
                         var _min_damage = enemy == 13 ? 1 : 0.25;
                         var _dice_sides = 200;
                         var _random_damage_mod = roll_dice(1, _dice_sides, "low") / _dice_sides;
-                        var _armour_points = max(0, marine_ac[marine_index] - armour_pierce);
+                        var _armour_points = max(0, marine_ac[vehicle_id] - armour_pierce);
                         var _modified_damage = (hostile_damage * _random_damage_mod) - _armour_points;
 
                         if (_modified_damage > 0) {

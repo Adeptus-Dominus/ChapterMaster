@@ -172,12 +172,6 @@ function scr_shoot(weapon_index_position, target_object, target_index, target_ty
             var _unit_hp = target_object.dudes_hp[target_index];
             var _casualties = min(_shot_count, _dudes_num, floor(_total_damage / _unit_hp));
 
-            var _used_damage = _casualties * _unit_hp;
-            var _leftover_damage = _total_damage - _used_damage;
-            if (_leftover_damage > 0) {
-                target_object.dudes_hp[target_index] -= _leftover_damage;
-            }
-
             if (_casualties > 0) {
                 if (DEBUG_PLAYER_TARGET_SELECTION) {
                     show_debug_message($"{_weapon_name} attacked {target_object.dudes[target_index]} and destroyed {_casualties}!");
