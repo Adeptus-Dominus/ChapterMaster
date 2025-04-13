@@ -309,3 +309,79 @@ function update_block_size() {
 function update_block_unit_count() {
 	unit_count = men + medi + dreads + veh;
 }
+
+function get_valid_weapons(_range_min, _range_max) {
+    var valid = [];
+
+    for (var i = 0; i < array_length(wep); i++) {
+        if (wep[i] == "" || wep_num[i] == 0) {
+            continue;
+        }
+
+        if (range[i] == 0) {
+            log_error($"{wep[i]} has broken range! This shouldn't happen! Range: {range[i]}; Ammo: {ammo[i]}; Owner: {wep_owner[i]}");
+            // show_debug_message($"A broken weapon was found! i:{i}; Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}; Ammo: {ammo[i]}");
+            continue;
+        }
+
+        if (range[i] < _range_min || range[i] > _range_max) {
+            continue;
+        }
+
+        array_push(valid, i);
+    }
+
+    return valid;
+}
+
+function get_alpha_strike_target() {
+    if (obj_ncombat.alpha_strike <= 0) {
+        return -1;
+    }
+
+    obj_ncombat.alpha_strike -= 0.5;
+    with (obj_pnunit) {
+        for (var u = 0; u < array_length(unit_struct); u++) {
+            if (marine_type[u] == "Chapter Master") {
+                return [id, u];
+            }
+        }
+    }
+
+    return -1;
+}
+
+function get_target_priority(_wep_index, _block, _needed_type) {
+    var _distance = get_block_distance(_block);
+    var _size = _block.column_size;
+
+    // Distance weight (closer = higher priority)
+    var _distance_bonus = (range[_wep_index] - _distance - 1) * 20;
+
+    // Column size influence (bigger columns = higher threat?)
+    var _doomstack_malus = wep_num[_wep_index] / _size;
+
+    // Column size influence (bigger columns = higher threat?)
+    var _size_bonus = _size / 10;
+
+    // Target type match bonus
+    var _type_bonus = 0;
+    if (_needed_type == "arp") {
+        _type_bonus = 20 * (block_type_size(_block, "armour") / _size);
+    } else if (_needed_type == "att") {
+        _type_bonus = 20 * (block_type_size(_block, "men") / _size);
+    }
+
+    var _priority = 0;
+    _priority += _type_bonus;
+    _priority += _size_bonus;
+    _priority -= _doomstack_malus;
+    _priority += _distance_bonus;
+    _priority *= random_range(0.5, 1.5);
+
+    if (DEBUG_COLUMN_PRIORITY_ENEMY) {
+        show_debug_message($"Priority: {_priority}\n Type: +{_type_bonus}\n Size: +{_size_bonus}\n Doomstack: -{_doomstack_malus}\n Distance: +{_distance_bonus}\n");
+    }
+
+    return _priority;
+}

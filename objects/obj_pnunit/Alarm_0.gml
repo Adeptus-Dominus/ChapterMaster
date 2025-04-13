@@ -33,23 +33,8 @@ try {
         }
 
         // Shooting
-        for (var i = 0; i < array_length(wep); i++) {
-            if (wep[i] == "" || wep_num[i] == 0) {
-                continue;
-            }
-    
-            if (range[i] == 1) {
-                // show_debug_message($"A melee or no ammo weapon was found! Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}; Ammo: {ammo[i]}");
-                continue;
-            }
-    
-            if (range[i] == 0) {
-                show_debug_message($"{wep[i]} has broken range! This shouldn't happen!");
-                log_error($"{wep[i]} has broken range! This shouldn't happen! Range: {range[i]}; Ammo: {ammo[i]}; Owner: {wep_owner[i]}");
-                // show_debug_message($"A broken weapon was found! i:{i}; Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}; Ammo: {ammo[i]}");
-                continue;
-            }
-    
+        var _ranged_weapons = get_valid_weapons(2, 999);
+        for (var i = 0, _ranged_len = array_length(_ranged_weapons); i < _ranged_len; i++) {
             if (!target_block_is_valid(enemy, obj_enunit)) {
                 enemy = instance_nearest(0, y, obj_enunit);
                 if (!target_block_is_valid(enemy, obj_enunit)) {
@@ -85,38 +70,11 @@ try {
                     var enemy_block = _check_targets[t];
     
                     var _distance = get_block_distance(enemy_block);
-                    if (_distance > range[i]) {
-                        continue;
+                    if (_distance <= range[i]) {
+
+                        var _priority = get_target_priority(i, enemy_block, _target_type);
+                        ds_priority_add(_target_priority_queue, enemy_block, _priority);
                     }
-    
-                    // Distance weight (closer = higher priority)
-                    var _distance_bonus = (range[i] - _distance - 1) * 20;
-    
-                    // Column size influence (bigger columns = higher threat?)
-                    var _doomstack_malus = wep_num[i] / enemy_block.column_size;
-    
-                    // Column size influence (bigger columns = higher threat?)
-                    var _size_bonus = enemy_block.column_size / 10;
-    
-                    // Target type match bonus
-                    var _type_bonus = 0;
-                    if (_target_type == "arp") {
-                        _type_bonus = 20 * (block_type_size(enemy_block, "armour") / enemy_block.column_size);
-                    } else if (_target_type == "att") {
-                        _type_bonus = 20 * (block_type_size(enemy_block, "men") / enemy_block.column_size);
-                    }
-    
-                    var priority = 0;
-                    priority += _type_bonus;
-                    priority += _size_bonus;
-                    priority -= _doomstack_malus;
-                    priority += _distance_bonus;
-                    priority *= random_range(0.5, 1.5);
-    
-                    if (DEBUG_COLUMN_PRIORITY_PLAYER) {
-                        show_debug_message($"Priority: {priority}\n Type: +{_type_bonus}\n Size: +{_size_bonus}\n Doomstack: -{_doomstack_malus}\n Distance: +{_distance_bonus}\n");
-                    }
-                    ds_priority_add(_target_priority_queue, enemy_block, priority);
                 }
         
                 if (DEBUG_COLUMN_PRIORITY_PLAYER) {
@@ -146,34 +104,15 @@ try {
                 continue;
             }
         }
-    }
-    
-    if (DEBUG_COLUMN_PRIORITY_PLAYER) {
-        var _t_end1 = get_timer();
-        var _elapsed_ms1 = (_t_end1 - _t_start1) / 1000;
-        show_debug_message($"⏱️ Ranged Alarm Execution Time: {_elapsed_ms1}ms");
-    }
-    
-    //TODO: The melee code was not refactored;
-    if (engaged) {
+        if (DEBUG_COLUMN_PRIORITY_PLAYER) {
+            var _t_end1 = get_timer();
+            var _elapsed_ms1 = (_t_end1 - _t_start1) / 1000;
+            show_debug_message($"⏱️ Ranged Alarm Execution Time: {_elapsed_ms1}ms");
+        }
+    } else {
         // Melee
-        for (var i = 0; i < array_length(wep); i++) {
-            if (wep[i] == "" || wep_num[i] == 0) {
-                continue;
-            }
-    
-            if (range[i] >= 2) {
-                // show_debug_message($"A melee or no ammo weapon was found! Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}; Ammo: {ammo[i]}");
-                continue;
-            }
-    
-            if (range[i] == 0) {
-                show_debug_message($"{wep[i]} has broken range! This shouldn't happen!");
-                log_error($"{wep[i]} has broken range! This shouldn't happen! Range: {range[i]}; Ammo: {ammo[i]}; Owner: {wep_owner[i]}");
-                // show_debug_message($"A broken weapon was found! i:{i}; Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}; Ammo: {ammo[i]}");
-                continue;
-            }
-    
+        var _melee_weapons = get_valid_weapons(1, 2);
+        for (var i = 0, _wep_len = array_length(_melee_weapons); i < _wep_len; i++) {
             if (!target_block_is_valid(enemy, obj_enunit)) {
                 exit;
             }
