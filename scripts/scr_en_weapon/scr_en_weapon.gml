@@ -1,3 +1,4 @@
+/// @mixin
 function scr_en_weapon(name, is_man, man_number, man_type, group) {
 
 	// check if double ranged/melee

@@ -116,13 +116,10 @@ function scr_player_combat_weapon_stacks() {
     men=0;
     dreads=0;
     for (i=0;i<array_length(att);i++) {
-        // dudes[i]="";
         dudes_num[i]=0;
-        // dudes_vehicle[i]=0;
         att[i]=0;
         apa[i]=0;
         wep_num[i]=0;
-        // if (wep_owner[i]!="") and (wep_num[i]>1) then wep_owner[i]="assorted";// What if they are using two ranged weapons?  Hmmmmm?
     }
 
     var dreaded=false, unit;

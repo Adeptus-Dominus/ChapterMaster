@@ -10,8 +10,6 @@ repeat(20) {
 	apa[i] = 0;
 	wep_num[i] = 0;
 	wep_owner[i] = "";
-
-	// if (wep_owner[i]!="") and (wep_num[i]>1) then wep_owner[i]="";// What if they are using two ranged weapons?  Hmmmmm?
 }
 i = 0;
 // men=0;veh=0;
@@ -610,7 +608,6 @@ if __b__ {
 			dudes[j] = "";
 			dudes_num[j] = 0;
 		}
-		if (dudes_num[j] > 0) and(dudes_onum[j] = -1) then dudes_onum[j] = dudes_num[j];
 		if (faith[j] > 0) then dudes_dr[j] = max(0.65, dudes_dr[j] + 0.15);
 	}
 

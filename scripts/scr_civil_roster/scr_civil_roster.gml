@@ -203,7 +203,6 @@ function scr_civil_roster(_unit_location, _target_location, _is_planet) {
 	                targ.dudes_num[targ.men]=1;
 	                targ.dudes_hp[targ.men]=unit.hp();
 	                targ.dudes_exp[targ.men]=unit.experience;
-	                targ.dudes_powers[targ.men]=deploying_unit.spe[cooh,va];
 	                targ.dudes_wep1[targ.men]=deploying_unit.wep1[cooh,va];
 	                targ.dudes_wep2[targ.men]=deploying_unit.wep2[cooh,va];
 	                targ.dudes_gear[targ.men]=deploying_unit.gear[cooh,va];
