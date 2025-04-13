@@ -89,23 +89,13 @@ function scr_load(save_part, save_id) {
 				}
 			}
 			specialist_point_handler = new SpecialistPointHandler();
-			if(struct_exists(save_data, "forge_queue")){
-				specialist_point_handler.forge_queue = save_data.forge_queue;
-			}
-			if(struct_exists(save_data, "apoths")){
-				specialist_point_handler.apoths = save_data.apoths;
-			}
-			if(struct_exists(save_data, "techs")){
-				specialist_point_handler.techs = save_data.techs;
-			}
-			if(struct_exists(save_data, "point_breakdown")){
-				specialist_point_handler.point_breakdown = save_data.point_breakdown;
-			}
-			if(struct_exists(save_data, "apothecary_points")){
-				specialist_point_handler.apothecary_points = save_data.apothecary_points;
-			}
-			if(struct_exists(save_data, "forge_points")){
-				specialist_point_handler.forge_points = save_data.forge_points;
+			// Transfer properties from save data to handler with null-checking
+			var properties = ["forge_queue", "apoths", "techs", "point_breakdown", "apothecary_points", "forge_points"];
+			for (var i = 0; i < array_length(properties); i++) {
+				var prop = properties[i];
+				if (struct_exists(save_data, prop)) {
+					variable_struct_set(specialist_point_handler, prop, variable_struct_get(save_data, prop));
+				}
 			}
 			specialist_point_handler.calculate_research_points();
 			location_viewer = new UnitQuickFindPanel();
