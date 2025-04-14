@@ -71,26 +71,6 @@ function scr_shoot(_weapon_stack, _target_object, _target_index) {
 
         //* Enemy shooting
         if (owner == 2) {
-            var _melee_accuracy_mod = 1;
-            var _ranged_accuracy_mod = 1;
-            switch (obj_ncombat.enemy) {
-                case eFACTION.Ork:
-                    _melee_accuracy_mod = 0.7;
-                    _ranged_accuracy_mod = 0.4;
-                    break;
-                case eFACTION.Tau:
-                    _melee_accuracy_mod = 0.5;
-                    _ranged_accuracy_mod = 0.6;
-                    break;
-                case eFACTION.Tyranids:
-                    _melee_accuracy_mod = 0.6;
-                    _ranged_accuracy_mod = 0.6;
-                    break;
-            }
-
-            var _accuracy_mod = _weapon_stack.range >= 2 ? _ranged_accuracy_mod : _melee_accuracy_mod;
-            _shot_count *= _accuracy_mod;
-
             if (_target_type == eTARGET_TYPE.FORTIFICATION) {
                 var _wall_weapon_damage = max(1, round(_weapon_attack - _target_object.ac[1])) * _shooter_count * max(1, _weapon_shot_count / 4);
                 _target_object.hp[1] -= _wall_weapon_damage;
@@ -131,8 +111,8 @@ function scr_shoot(_weapon_stack, _target_object, _target_index) {
 
             // Normal shooting
             var _min_damage = 0.25;
-            var _dice_sides = 200;
-            var _random_damage_mod = roll_dice(1, _dice_sides, "low") / 100;
+            var _dice_sides = 50;
+            var _random_damage_mod = roll_dice(4, _dice_sides, "low") / 100;
             var _armour_points = max(0, _target_object.dudes_ac[_target_index] - _weapon_piercing);
             _weapon_attack = (_weapon_attack * _random_damage_mod) - _armour_points;
             _weapon_attack = max(_min_damage, _weapon_attack * _target_object.dudes_dr[_target_index]);

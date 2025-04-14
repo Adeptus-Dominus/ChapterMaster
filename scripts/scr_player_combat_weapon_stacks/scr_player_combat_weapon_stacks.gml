@@ -60,7 +60,6 @@ function add_data_to_stack (weapon, unit_damage=0, head_role=false, unit="none")
 			_weapon_stack.ammo_reload = weapon.reload;
 		}
 	
-        show_debug_message($"weapon: {weapon}");
 		struct_set(_stack_type, weapon.name, _weapon_stack);
 	}
 

@@ -19,7 +19,6 @@ function scr_clean(target_object, weapon_data) {
 
             if (DEBUG_ENEMY_TARGET_SELECTION) {
                 var _t_start = get_timer();
-                show_debug_message($"Weapon: {weapon_data.name}");
             }
             
             var armour_pierce = weapon_data.piercing;
@@ -30,6 +29,26 @@ function scr_clean(target_object, weapon_data) {
             var target_type = weapon_data.target_type;
             var shooter_count = weapon_data.weapon_count;
             var hostile_shots = weapon_shot_count * shooter_count;
+
+            var _melee_accuracy_mod = 1;
+            var _ranged_accuracy_mod = 1;
+            switch (obj_ncombat.enemy) {
+                case eFACTION.Ork:
+                    _melee_accuracy_mod = 0.7;
+                    _ranged_accuracy_mod = 0.4;
+                    break;
+                case eFACTION.Tau:
+                    _melee_accuracy_mod = 0.5;
+                    _ranged_accuracy_mod = 0.6;
+                    break;
+                case eFACTION.Tyranids:
+                    _melee_accuracy_mod = 0.6;
+                    _ranged_accuracy_mod = 0.6;
+                    break;
+            }
+
+            var _accuracy_mod = hostile_range >= 2 ? _ranged_accuracy_mod : _melee_accuracy_mod;
+            hostile_shots *= _accuracy_mod;
 
             var hits = 0;
             var unit_type = "";
@@ -66,6 +85,16 @@ function scr_clean(target_object, weapon_data) {
             }
             valid_vehicles = array_shuffle(valid_vehicles);
 
+            if (DEBUG_ENEMY_TARGET_SELECTION) {
+                var _t_end = get_timer();
+                var _elapsed_ms = (_t_end - _t_start) / 1000;
+                show_debug_message($"⏱️ {hostile_weapon} enemy target validation took: {_elapsed_ms}ms");
+            }
+
+            if (DEBUG_ENEMY_TARGET_SELECTION) {
+                var _t_start = get_timer();
+            }
+
             if (target_type == eTARGET_TYPE.ARMOUR && array_empty(valid_vehicles)) {
                 target_type = eTARGET_TYPE.NORMAL;
             } else if (target_type = eTARGET_TYPE.NORMAL && array_empty(valid_marines)) {
@@ -90,8 +119,8 @@ function scr_clean(target_object, weapon_data) {
 
                         // Apply damage
                         var _min_damage = enemy == 13 ? 1 : 0.25;
-                        var _dice_sides = 200;
-                        var _random_damage_mod = roll_dice(1, _dice_sides, "low") / 100;
+                        var _dice_sides = 50;
+                        var _random_damage_mod = roll_dice(4, _dice_sides, "low") / 100;
                         var _armour_points = max(0, veh_ac[vehicle_id] - armour_pierce);
                         var _modified_damage = max(_min_damage, (hostile_damage * _random_damage_mod) - _armour_points);
 
@@ -113,7 +142,7 @@ function scr_clean(target_object, weapon_data) {
                             }
 
                             // Remove dead vehicles from further hits
-                            array_delete(valid_vehicles, vehicle_id, 1);
+                            array_delete(valid_vehicles, random_index, 1);
                         }
                     } else {
                         // ### Dreadnought Processing ###
@@ -122,8 +151,8 @@ function scr_clean(target_object, weapon_data) {
 
                         // Apply damage
                         var _min_damage = enemy == 13 ? 1 : 0.25;
-                        var _dice_sides = 200;
-                        var _random_damage_mod = roll_dice(1, _dice_sides, "low") / 100;
+                        var _dice_sides = 50;
+                        var _random_damage_mod = roll_dice(4, _dice_sides, "low") / 100;
                         var _armour_points = max(0, marine_ac[vehicle_id] - armour_pierce);
                         var _modified_damage = (hostile_damage * _random_damage_mod) - _armour_points;
 
@@ -192,8 +221,8 @@ function scr_clean(target_object, weapon_data) {
 
                     // Apply damage
                     var _min_damage = enemy == 13 ? 1 : 0.25;
-                    var _dice_sides = 200;
-                    var _random_damage_mod = roll_dice(1, _dice_sides, "low") / 100;
+                    var _dice_sides = 50;
+                    var _random_damage_mod = roll_dice(4, _dice_sides, "low") / 100;
                     var _armour_points = max(0, marine_ac[marine_index] - armour_pierce);
                     var _modified_damage = max(_min_damage, (hostile_damage * _random_damage_mod) - _armour_points);
 
@@ -257,22 +286,13 @@ function scr_clean(target_object, weapon_data) {
             if (DEBUG_ENEMY_TARGET_SELECTION) {
                 var _t_end = get_timer();
                 var _elapsed_ms = (_t_end - _t_start) / 1000;
-                show_debug_message($"⏱️ Clean Execution Time: {_elapsed_ms}ms");
-    
+                show_debug_message($"⏱️ {hostile_weapon} enemy damage allocation  took: {_elapsed_ms}ms");
                 show_debug_message($"Hits: {hits}");
                 show_debug_message($"Kills: {units_lost}");
             }
 
             // Flavour battle-log message
-            if (DEBUG_ENEMY_TARGET_SELECTION) {
-                var _t_start = get_timer();
-            }
             scr_flavor2(units_lost, unit_type, hostile_range, hostile_weapon, shooter_count);
-            if (DEBUG_ENEMY_TARGET_SELECTION) {
-                var _t_end = get_timer();
-                var _elapsed_ms = (_t_end - _t_start) / 1000;
-                show_debug_message($"⏱️ Flavour Execution Time: {_elapsed_ms}ms");
-            }
         }
     } catch (_exception) {
         handle_exception(_exception);

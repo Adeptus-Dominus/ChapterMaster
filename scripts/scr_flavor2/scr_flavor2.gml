@@ -371,7 +371,7 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
 
 	mes = m1 + m2;
 
-	var _message_priority = lost_units_count <= 0 ? hostile_shots : lost_units_count;
+	var _message_priority = lost_units_count <= 0 ? hostile_shots / 100 : lost_units_count;
 	add_battle_log_message(mes, _message_priority);
 	display_battle_log_message();
 }
