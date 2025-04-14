@@ -156,8 +156,39 @@ function ComplexSet(unit) constructor{
                     }
                 }
                 if (struct_exists(_mod, "max_saturation")){
+                   var _max_sat = _mod.max_saturation;
+                }
+               if (struct_exists(_mod, "exp")){
+                    var _exp_data = _mod.exp;
+                    var _min = 0;
+                    if (struct_exists(_exp_data, "min")){
+                        _min = _exp_data.min;
+                        if (unit.experience < _exp_data.min){
+                            if (!check_exception("min_exp")){
+                                continue;
+                            }
+                        }
+                    }
+                    if (struct_exists(_exp_data, "scale")){
+                        var _m_exp = _exp_data.exp_scale_max;
+                        var _increment_count = _mod.max_saturation/5;
+                        var _increments = (_m_exp - _min) / _increment_count;
+                        var _sat_roof = _mod.max_saturation;
+                        var _mar_exp = unit.experience;
+
+                        if (_mar_exp >= _m_exp){
+                            spawn_chance = _mod.max_saturation
+                        } else {
+                            var calc_exp = _mar_exp - _min;
+                            var _inc_point = floor(_mar_exp / _increments);
+                            _max_sat = _inc_point * 5;
+                        }
+                        
+                    }
+               }
+                if (struct_exists(_mod, "max_saturation")){
                     if (struct_exists(variation_map, _mod.position)){
-                        if (variation_map[$_mod.position]>=_mod.max_saturation){
+                        if (variation_map[$_mod.position]>=_max_sat){
                             if (!check_exception("max_saturation")){
                                 continue;
                             }
@@ -222,15 +253,6 @@ function ComplexSet(unit) constructor{
                         if (!check_exception("armours_exclude")){
                             continue;
                         }                     
-                    }
-               }
-               if (struct_exists(_mod, "exp")){
-                    if (struct_exists(_mod.exp, "min")){
-                        if (unit.experience < _mod.exp.min){
-                            if (!check_exception("min_exp")){
-                                continue;
-                            }
-                        }
                     }
                }
                if (struct_exists(_mod, "chapter_adv")){
@@ -317,7 +339,39 @@ function ComplexSet(unit) constructor{
                         }
                     }
                 }
+                if (struct_exists(_mod, "assign_by_rank")){
 
+                    var _area = _mod.position;
+                    var _status_level = _mod.assign_by_rank;
+                    var _roles = active_roles();
+                    var tiers = [
+                        ["Chapter Master"],
+                        ["Forge Master", "Master of Sanctity","Master of the Apothecarion",string("Chief {0}",_roles[eROLE.Librarian])],
+                        [_roles[eROLE.Captain], _roles[eROLE.HonourGuard]],
+                        [_roles[eROLE.Champion]],
+                        [_roles[eROLE.Ancient],_roles[eROLE.VeteranSergeant]],
+                        [ _roles[eROLE.Terminator]],
+                        [_roles[eROLE.Veteran], _roles[eROLE.Sergeant],_roles[eROLE.Chaplain],_roles[eROLE.Apothecary],_roles[eROLE.Techmarine],_roles[eROLE.Librarian]],
+                        ["Codiciery", "Lexicanum",_roles[eROLE.Tactical],_roles[eROLE.Assault],_roles[eROLE.Devastator]],
+                        [_roles[eROLE.Scout],]
+                    ];
+
+                    var _unit_tier = 8;
+                    if (_unit_tier==8){
+                        for (var t=0;t<array_length(tiers);t++){
+                            var tier = tiers[t];
+                            if (array_contains(tier, unit.role())){
+                                _unit_tier = t;
+                            }
+                        }
+                    }
+                    if (_unit_tier>=_status_level){
+                        var variation_tier = (_unit_tier - _status_level)+1;
+                        if (variation_map[$ _area] % variation_tier != 0){
+                            continue;
+                        }                        
+                    }
+                }
 
                 if (position != false){
                     if (position ==  "weapon"){
@@ -330,11 +384,7 @@ function ComplexSet(unit) constructor{
                         }
                     }
                 } else {
-                   if (!struct_exists(_mod, "assign_by_rank")){
-                       add_to_area(_mod.position, _mod.sprite,_overides)
-                   } else {
-                        add_relative_to_status(_mod.position, _mod.sprite, _mod.assign_by_rank,_overides);
-                   }                    
+                    add_to_area(_mod.position, _mod.sprite,_overides)
                 }        
             }
         }
@@ -1087,39 +1137,6 @@ function ComplexSet(unit) constructor{
         }
     }
 
-    static add_relative_to_status = function(area, add_sprite, status_level, overide_data="none"){
-    	var _roles = active_roles();
-    	var tiers = [
-    		["Chapter Master"],
-    		["Forge Master", "Master of Sanctity","Master of the Apothecarion",string("Chief {0}",_roles[eROLE.Librarian])],
-    		[_roles[eROLE.Captain], _roles[eROLE.HonourGuard]],
-    		[_roles[eROLE.Champion]],
-    		[_roles[eROLE.Ancient],_roles[eROLE.VeteranSergeant]],
-    		[ _roles[eROLE.Terminator]],
-    		[_roles[eROLE.Veteran], _roles[eROLE.Sergeant],_roles[eROLE.Chaplain],_roles[eROLE.Apothecary],_roles[eROLE.Techmarine],_roles[eROLE.Librarian]],
-    		["Codiciery", "Lexicanum",_roles[eROLE.Tactical],_roles[eROLE.Assault],_roles[eROLE.Devastator]],
-    		[_roles[eROLE.Scout],]
-    	];
-
-    	var _unit_tier = 8;
-    	if (_unit_tier==8){
-	    	for (var i=0;i<array_length(tiers);i++){
-	    		var tier = tiers[i];
-	    		if (array_contains(tier, unit.role())){
-	    			_unit_tier = i;
-	    		}
-	    	}
-	    }
-    	if (_unit_tier<=status_level){
-    		add_to_area(area, add_sprite, overide_data);
-    	} else {
-    		var variation_tier = (_unit_tier - status_level)+1;
-    		if (variation_map[$ area] % variation_tier == 0){
-    			add_to_area(area, add_sprite, overide_data);
-    		}
-    	}
-    }
-
     position_overides = {
 
     };
@@ -1150,11 +1167,12 @@ function ComplexSet(unit) constructor{
             }
         } else {
             shader_set(skin_tone_shader);
-            var _skin_colour = skin_tones.standard[array_length(skin_tones.standard)%variation_map.bare_head];
+            var _skin_colour = skin_tones.standard[variation_map.bare_head % array_length(skin_tones.standard)];
             shader_set_uniform_f_array(shader_get_uniform(skin_tone_shader, "skin"), _skin_colour);
             draw_component("bare_neck",texture_draws);
             draw_component("bare_head",texture_draws);
             draw_component("bare_eyes",texture_draws);
+            shader_set(full_livery_shader);
         }
     }
 

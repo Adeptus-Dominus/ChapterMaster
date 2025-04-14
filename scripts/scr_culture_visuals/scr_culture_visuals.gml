@@ -363,7 +363,14 @@ global.modular_drawing_items = [
         body_types :[0],
         position : "forehead",
         armours : ["MK6 Corvus"],    
-    },    
+    }, 
+    {
+        cultures : ["Cthonian"],
+        sprite : spr_mk6_cthonian_heads,
+        body_types :[0],
+        position : "head",
+        armours : ["MK6 Corvus"],    
+    },     
     {
         sprite : spr_mk7_complex_crux_belt,
         body_types :[0, 2],
@@ -443,6 +450,30 @@ global.modular_drawing_items = [
     {
         cultures : ["Roman", "Gladiator"],
         sprite : spr_roman_tabbard,
+        body_types :[0, 2],
+        position : "tabbard",
+        max_saturation : 50,
+        assign_by_rank : 3,
+        exp : {
+            min : 50,
+        },
+        armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour", "Tartaros","MK4 Maximus", "MK3 Iron Armour"], 
+    },
+    {
+        cultures : ["Cthonian"],
+        sprite : spr_cthonian_tabbard,
+        body_types :[0, 2],
+        position : "tabbard",
+        max_saturation : 50,
+        assign_by_rank : 3,
+        exp : {
+            min : 50,
+        },
+        armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour", "Tartaros","MK4 Maximus", "MK3 Iron Armour"], 
+    },
+    {
+        cultures : ["Cthonian", "Prussian"],
+        sprite : spr_chain_mail_tabbard,
         body_types :[0, 2],
         position : "tabbard",
         max_saturation : 50,
@@ -565,30 +596,58 @@ global.modular_drawing_items = [
         position : "right_pauldron_base",
     },
     {
+        cultures : ["Cthonian"],
+        max_saturation : 30,
+        sprite : spr_left_pauldron_chainmail,
+        body_types :[0],
+        position : "left_pauldron_base",
+    } ,
+    {
+        cultures : ["Cthonian"],
+        max_saturation : 30,
+        sprite : spr_right_pauldron_chainmail,
+        body_types :[0],
+        position : "right_pauldron_base",
+    },
+    {
+        sprite : spr_bonding_studs_left,
+        body_types :[0],
+        position : "left_pauldron_embeleshments",
+        max_saturation : 15,
+        armours_exclude : ["MK5 Heresy", "MK6 Corvus"]
+    },
+    {
+        sprite : spr_bonding_studs_right,
+        body_types :[0],
+        position : "right_pauldron_embeleshments",
+        max_saturation : 15,
+        armours_exclude : ["MK5 Heresy", "MK6 Corvus"]
+    },
+    {
         sprite : spr_bonding_studs_left,
         body_types :[0],
         position : "left_pauldron_embeleshments",
         armours : ["MK5 Heresy", "MK6 Corvus"]
     },
     {
-        sprite : spr_bonding_studs_left,
+        sprite : spr_bonding_studs_right,
+        body_types :[0],
+        position : "right_pauldron_embeleshments",
+        armours : ["MK5 Heresy", "MK6 Corvus"]
+    },
+    {
+        cultures : ["Cthonian"],
+        sprite : spr_pauldron_spikes_left,
         body_types :[0],
         position : "left_pauldron_embeleshments",
-        max_saturation : 15,
-        armours_exclude : ["MK5 Heresy", "MK6 Corvus"]
+        max_saturation : 30,
     },
     {
-        sprite : spr_bonding_studs_right,
+        cultures : ["Cthonian"],
+        sprite : spr_pauldron_spikes_right,
         body_types :[0],
         position : "right_pauldron_embeleshments",
-        armours : ["MK5 Heresy", "MK6 Corvus"],
-    },
-    {
-        sprite : spr_bonding_studs_right,
-        body_types :[0],
-        position : "right_pauldron_embeleshments",
-        max_saturation : 15,
-        armours_exclude : ["MK5 Heresy", "MK6 Corvus"]
+        max_saturation : 30,
     },
     {
         cultures : ["Wolf Cult"],
@@ -723,12 +782,12 @@ global.modular_drawing_items = [
     {
         position: "bare_head",
         body_types: [0, 1, 2],
-        sprite: spr_bare_heads,
+        sprite: spr_bare_heads_colourable,
     },
     {
         position: "bare_neck",
         body_types: [0, 1, 2],
-        sprite: spr_bare_necks,
+        sprite: spr_bare_neck_colourable,
     }, 
     {
         position: "bare_eyes",
