@@ -30,7 +30,7 @@ if (!engaged) {
     }
 
     // Shooting
-    var _ranged_weapons = get_valid_weapon_stacks(weapon_stacks_normal, 2, 999);
+    var _ranged_weapons = array_concat(get_valid_weapon_stacks(weapon_stacks_normal, 2, 999), get_valid_weapon_stacks_unique(weapon_stacks_unique, 2, 999), get_valid_weapon_stacks(weapon_stacks_vehicle, 2, 999));
     for (var i = 0, _ranged_len = array_length(_ranged_weapons); i < _ranged_len; i++) {
         var _weapon_stack = _ranged_weapons[i];
 
@@ -44,8 +44,6 @@ if (!engaged) {
         }
 
         var dist = get_block_distance(enemy);
-        _target_unit_index = get_alpha_strike_target();
-
         if (_weapon_stack.range >= dist) {
             if (DEBUG_COLUMN_PRIORITY_ENEMY) {
                 show_debug_message($"{_weapon_stack.weapon_name} IS SHOOTING!");
@@ -93,13 +91,18 @@ if (!engaged) {
             // Shoot highest-priority target
             if (!ds_priority_empty(_target_priority_queue)) {
                 var _best_target = ds_priority_delete_max(_target_priority_queue);
-                var _is_fort = _best_target.object_index == obj_nfort;
-                var _unit_index = _is_fort ? 1 : _target_unit_index;
 
-                scr_shoot(_weapon_stack, _best_target, _unit_index);
+                var _is_fort = _best_target.object_index == obj_nfort;
+                if (_is_fort) {
+                    _target_unit_index = 1;
+                    _weapon_stack.target_type = eTARGET_TYPE.FORTIFICATION;
+                }
+
+                scr_shoot(_weapon_stack, _best_target, _target_unit_index);
             } else {
                 log_error($"{_weapon_stack.weapon_name} didn't find a valid target! This shouldn't happen!");
             }
+
             ds_priority_destroy(_target_priority_queue);
         } else {
             if (DEBUG_COLUMN_PRIORITY_ENEMY) {
@@ -119,7 +122,7 @@ if (!engaged) {
     }
 
     // Melee
-    var _melee_weapons = get_valid_weapon_stacks(weapon_stacks_normal, 1, 2);
+    var _melee_weapons = array_concat(get_valid_weapon_stacks(weapon_stacks_normal, 1, 2), get_valid_weapon_stacks_unique(weapon_stacks_unique, 1, 2), get_valid_weapon_stacks(weapon_stacks_vehicle, 1, 999));
     for (var i = 0, _wep_len = array_length(_melee_weapons); i < _wep_len; i++) {
         var _weapon_stack = _melee_weapons[i];
 
@@ -134,11 +137,11 @@ if (!engaged) {
 
         if (instance_exists(obj_nfort) && (!flank)) {
             enemy = instance_nearest(x, y, obj_nfort);
-            scr_shoot(_weapon_stack, enemy, 0);
-            continue;
+            _target_unit_index = 1;
+            _weapon_stack.target_type = eTARGET_TYPE.FORTIFICATION;
         }
 
-        scr_shoot(_weapon_stack, enemy, 0);
+        scr_shoot(_weapon_stack, enemy, _target_unit_index);
     }
 
     if (DEBUG_COLUMN_PRIORITY_ENEMY) {
