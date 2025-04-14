@@ -82,20 +82,11 @@ veh_dead = array_create(_vehicles_size, 0);
 veh_local = array_create(_vehicles_size, 0);
 veh_ally = array_create(_vehicles_size, false);
 
+weapon_stacks_normal = {};
+weapon_stacks_vehicle = {};
+weapon_stacks_unique = {};
+
 var _dudes_size = 72;
-wep = array_create(_dudes_size, "");
-wep_num = array_create(_dudes_size, 0);
-range = array_create(_dudes_size, 0);
-att = array_create(_dudes_size, 0);
-apa = array_create(_dudes_size, 0);
-ammo_current = array_create(_dudes_size, 0);
-ammo_max = array_create(_dudes_size, -1);
-ammo_reload_current = array_create(_dudes_size, -1);
-ammo_reload = array_create(_dudes_size, -1);
-splash = array_create(_dudes_size, 0);
-wep_owner = array_create(_dudes_size, "");
-wep_solo = array_create(_dudes_size, "");
-wep_title = array_create(_dudes_size, "");
 dudes = array_create(_dudes_size, "");
 dudes_num = array_create(_dudes_size, 0);
 dudes_vehicle = array_create(_dudes_size, 0);

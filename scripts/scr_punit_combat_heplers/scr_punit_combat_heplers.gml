@@ -310,26 +310,30 @@ function update_block_unit_count() {
 	unit_count = men + medi + dreads + veh;
 }
 
-function get_valid_weapons(_range_min, _range_max) {
+function get_valid_weapon_stacks(_stacks_struct, _range_min, _range_max) {
     var valid = [];
 
-    for (var i = 0; i < array_length(wep); i++) {
-        if (wep[i] == "" || wep_num[i] == 0) {
+	var _weapon_stack_names = struct_get_names(_stacks_struct);
+	var _struct_len = array_length(_weapon_stack_names);
+	for (var i = 0; i < _struct_len; i++){
+		var _weapon_stack_name = _weapon_stack_names[i];
+		var _weapon_stack = _stacks_struct[$ _weapon_stack_name];
+
+		if (_weapon_stack.weapon_name == "" || _weapon_stack.weapon_count == 0) {
             continue;
         }
 
-        if (range[i] == 0) {
-            log_error($"{wep[i]} has broken range! This shouldn't happen! Range: {range[i]}; Ammo: {ammo[i]}; Owner: {wep_owner[i]}");
-            // show_debug_message($"A broken weapon was found! i:{i}; Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}; Ammo: {ammo[i]}");
+        if (_weapon_stack.range == 0) {
+            log_error($"{_weapon_stack.weapon_name} has broken range! This shouldn't happen!");
             continue;
         }
 
-        if (range[i] < _range_min || range[i] > _range_max) {
+        if (_weapon_stack.range < _range_min || _weapon_stack.range > _range_max) {
             continue;
         }
 
-        array_push(valid, i);
-    }
+        array_push(valid, _weapon_stack);
+	}
 
     return valid;
 }
@@ -351,24 +355,24 @@ function get_alpha_strike_target() {
     return -1;
 }
 
-function get_target_priority(_wep_index, _block, _needed_type) {
+function get_target_priority(_weapon_stack, _block) {
     var _distance = get_block_distance(_block);
     var _size = _block.column_size;
 
     // Distance weight (closer = higher priority)
-    var _distance_bonus = (range[_wep_index] - _distance - 1) * 20;
+    var _distance_bonus = (_weapon_stack.range - _distance - 1) * 20;
 
     // Column size influence (bigger columns = higher threat?)
-    var _doomstack_malus = wep_num[_wep_index] / _size;
+    var _doomstack_malus = _weapon_stack.weapon_count / _size;
 
     // Column size influence (bigger columns = higher threat?)
     var _size_bonus = _size / 10;
 
     // Target type match bonus
     var _type_bonus = 0;
-    if (_needed_type == "arp") {
+    if (_weapon_stack.target_type == 1) {
         _type_bonus = 20 * (block_type_size(_block, "armour") / _size);
-    } else if (_needed_type == "att") {
+    } else {
         _type_bonus = 20 * (block_type_size(_block, "men") / _size);
     }
 

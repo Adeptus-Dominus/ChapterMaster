@@ -4,13 +4,11 @@ g = 0;
 men = 0;
 veh = 0;
 medi = 0;
-repeat(20) {
-	i += 1;
-	att[i] = 0;
-	apa[i] = 0;
-	wep_num[i] = 0;
-	wep_owner[i] = "";
-}
+
+weapon_stacks_normal = {};
+weapon_stacks_vehicle = {};
+weapon_stacks_unique = {};
+
 i = 0;
 // men=0;veh=0;
 
@@ -57,15 +55,6 @@ repeat(700) {
 }
 j = 0;
 
-/*var no_ap;no_ap=0;
-
-repeat(18){j+=1;
-    if (apa[j]=0) then no_ap+=1;
-}
-
-if (no_ap=18){
-    if (dudes_veh
-}*/
 
 repeat(20) {
 	j += 1;
@@ -234,13 +223,6 @@ if __b__ {
 	var i, g;
 	i = 0;
 	g = 0;
-	repeat(100) {
-		i += 1;
-		att[i] = 0;
-		apa[i] = 0;
-		wep_num[i] = 0;
-	}
-	i = 0;
 
 	var dreaded;
 	dreaded = false;

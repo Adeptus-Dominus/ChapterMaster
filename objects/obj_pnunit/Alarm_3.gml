@@ -88,28 +88,29 @@ try {
     
     // Right here execute some sort of check- if left is open, and engaged, and enemy is only vehicles, and no weapons to hurt them...
     
-    if (instance_exists(obj_enunit)){
-        if (collision_point(x+10,y,obj_enunit,0,1)) and (!collision_point(x-10,y,obj_pnunit,0,1)){
-            var neares=instance_nearest(x+10,y,obj_enunit);
+    //! This doesn't work very well, so I'll comment it out for now, as I don't want to bother fixing it atm
+    // if (instance_exists(obj_enunit)){
+    //     if (collision_point(x+10,y,obj_enunit,0,1)) and (!collision_point(x-10,y,obj_pnunit,0,1)){
+    //         var neares=instance_nearest(x+10,y,obj_enunit);
             
-            if (neares.men=0) and (neares.veh>0){
-                var norun;
-                norun=0;
+    //         if (neares.men=0) and (neares.veh>0){
+    //             var norun;
+    //             norun=0;
                 
-                var i;i=0;
-                repeat(20){i+=1;
-                    if (apa[i]>=30) then norun=1;
-                }
+    //             var i;i=0;
+    //             repeat(20){i+=1;
+    //                 if (apa[i]>=30) then norun=1;
+    //             }
                 
                 
-                if (norun=0){
-                    x-=10;
-                    engaged=0;
-                }
+    //             if (norun=0){
+    //                 x-=10;
+    //                 engaged=0;
+    //             }
             
-            }
-        }
-    }
+    //         }
+    //     }
+    // }
     
     /* */
     /*  */

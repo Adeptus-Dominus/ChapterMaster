@@ -44,19 +44,11 @@ averages=1;
 
 // x determines column; maybe every 10 or so?
 
-var _enemy_size = 1002;
-wep = array_create(_enemy_size, "");
-wep_num = array_create(_enemy_size, 0);
-range = array_create(_enemy_size, 0);
-att = array_create(_enemy_size, 0);
-apa = array_create(_enemy_size, 0);
-ammo_current = array_create(_enemy_size, 0);
-ammo_max = array_create(_enemy_size, -1);
-ammo_reload_current = array_create(_enemy_size, -1);
-ammo_reload = array_create(_enemy_size, -1);
-splash = array_create(_enemy_size, 0);
-wep_owner = array_create(_enemy_size, "");
+weapon_stacks_normal = {};
+weapon_stacks_vehicle = {};
+weapon_stacks_unique = {};
 
+var _enemy_size = 1002;
 dude_co = array_create(_enemy_size, 0);
 dude_id = array_create(_enemy_size, 0);
 

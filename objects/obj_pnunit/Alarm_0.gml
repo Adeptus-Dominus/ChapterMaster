@@ -33,7 +33,7 @@ try {
         }
 
         // Shooting
-        var _ranged_weapons = get_valid_weapons(2, 999);
+        var _ranged_weapons = get_valid_weapon_stacks(weapon_stacks_normal, 2, 999);
         for (var i = 0, _ranged_len = array_length(_ranged_weapons); i < _ranged_len; i++) {
             if (!target_block_is_valid(enemy, obj_enunit)) {
                 enemy = instance_nearest(0, y, obj_enunit);
@@ -42,11 +42,10 @@ try {
                 }
             }
     
+            var _weapon_stack = _ranged_weapons[i];
             var dist = get_block_distance(enemy);
     
-            if (range[i] >= dist) {
-                var _target_type = apa[i] > 10 ? "arp" : "att";
-                var _weapon_type = "ranged";
+            if (_weapon_stack.range >= dist) {
                 var _target_priority_queue = ds_priority_create();
     
                 if (DEBUG_COLUMN_PRIORITY_PLAYER) {
@@ -62,17 +61,17 @@ try {
                     array_push(_check_targets, self.id);
                 }
     
-                if (DEBUG_COLUMN_PRIORITY_PLAYER) {
-                    show_debug_message($"{wep[i]} IS HERE!");
-                }
+                // if (DEBUG_COLUMN_PRIORITY_PLAYER) {
+                //     show_debug_message($"{wep[i]} IS HERE!");
+                // }
     
                 for (var t = 0; t < array_length(_check_targets); t++) {
                     var enemy_block = _check_targets[t];
     
                     var _distance = get_block_distance(enemy_block);
-                    if (_distance <= range[i]) {
+                    if (_distance <= _weapon_stack.range) {
 
-                        var _priority = get_target_priority(i, enemy_block, _target_type);
+                        var _priority = get_target_priority(_weapon_stack, enemy_block);
                         ds_priority_add(_target_priority_queue, enemy_block, _priority);
                     }
                 }
@@ -88,20 +87,20 @@ try {
                     var best_target = ds_priority_delete_max(_target_priority_queue);
                     var unit_index = 0;
     
-                    scr_shoot(i, best_target, unit_index, _target_type, _weapon_type);
+                    scr_shoot(_weapon_stack, best_target, unit_index);
                 } else {
-                    log_error($"{wep[i]} didn't find a valid target! This shouldn't happen!");
-                    if (DEBUG_COLUMN_PRIORITY_PLAYER) {
-                        show_debug_message($"We didn't find a valid target! Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
-                    }
+                    log_error($"{_weapon_stack.weapon_name} didn't find a valid target! This shouldn't happen!");
+                    // if (DEBUG_COLUMN_PRIORITY_PLAYER) {
+                    //     show_debug_message($"We didn't find a valid target! Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
+                    // }
                 }
     
                 ds_priority_destroy(_target_priority_queue);
             } else {
-                if (DEBUG_COLUMN_PRIORITY_PLAYER) {
-                    show_debug_message($"I can't shoot, my range is too small! Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}");
-                }
-                continue;
+                // if (DEBUG_COLUMN_PRIORITY_PLAYER) {
+                //     show_debug_message($"I can't shoot, my range is too small! Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}");
+                // }
+                // continue;
             }
         }
         if (DEBUG_COLUMN_PRIORITY_PLAYER) {
@@ -111,14 +110,14 @@ try {
         }
     } else {
         // Melee
-        var _melee_weapons = get_valid_weapons(1, 2);
+        var _melee_weapons = get_valid_weapon_stacks(weapon_stacks_normal, 1, 2);
         for (var i = 0, _wep_len = array_length(_melee_weapons); i < _wep_len; i++) {
             if (!target_block_is_valid(enemy, obj_enunit)) {
                 exit;
             }
     
-            var _attack_type = apa[i] > 10 ? "arp" : "att";
-            scr_shoot(i, enemy, 0, _attack_type, "melee");
+            var _weapon_stack = _melee_weapons[i];
+            scr_shoot(_weapon_stack, enemy, 0);
         }
     }
 } catch (_exception) {

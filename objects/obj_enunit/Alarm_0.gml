@@ -30,8 +30,10 @@ if (!engaged) {
     }
 
     // Shooting
-    var _ranged_weapons = get_valid_weapons(2, 999);
+    var _ranged_weapons = get_valid_weapon_stacks(weapon_stacks_normal, 2, 999);
     for (var i = 0, _ranged_len = array_length(_ranged_weapons); i < _ranged_len; i++) {
+        var _weapon_stack = _ranged_weapons[i];
+
         if (!target_block_is_valid(enemy, obj_pnunit)) {
             log_error($"Invalid player block was found by a ranged enemy!");
             enemy = _block_direction();
@@ -44,13 +46,11 @@ if (!engaged) {
         var dist = get_block_distance(enemy);
         _target_unit_index = get_alpha_strike_target();
 
-        if (range[i] >= dist) {
+        if (_weapon_stack.range >= dist) {
             if (DEBUG_COLUMN_PRIORITY_ENEMY) {
-                show_debug_message($"{wep[i]} IS SHOOTING!");
+                show_debug_message($"{_weapon_stack.weapon_name} IS SHOOTING!");
             }
 
-            var _target_type = apa[i] > 10 ? "arp" : "att";
-            var _weapon_type = "ranged";
             var _target_priority_queue = ds_priority_create();
 
             if (DEBUG_COLUMN_PRIORITY_ENEMY) {
@@ -69,8 +69,8 @@ if (!engaged) {
                 var _block = _targets[t];
                 var _distance = get_block_distance(_block);
 
-                if (_distance <= range[i]) {
-                    var _priority = get_target_priority(i, _block, _target_type);
+                if (_distance <= _weapon_stack.range) {
+                    var _priority = get_target_priority(_weapon_stack, _block);
                     ds_priority_add(_target_priority_queue, _block, _priority);
                 }
             }
@@ -79,7 +79,7 @@ if (!engaged) {
             var fort = instance_nearest(x, y, obj_nfort);
             if (fort != noone && !flank) {
                 var d = get_block_distance(fort);
-                if (d <= range[i]) {
+                if (d <= _weapon_stack.range) {
                     ds_priority_add(_target_priority_queue, fort, 999);
                 }
             }
@@ -94,20 +94,16 @@ if (!engaged) {
             if (!ds_priority_empty(_target_priority_queue)) {
                 var _best_target = ds_priority_delete_max(_target_priority_queue);
                 var _is_fort = _best_target.object_index == obj_nfort;
-                var _shoot_type = _is_fort ? "wall" : _weapon_type;
                 var _unit_index = _is_fort ? 1 : _target_unit_index;
 
-                scr_shoot(i, _best_target, _unit_index, _target_type, _shoot_type);
+                scr_shoot(_weapon_stack, _best_target, _unit_index);
             } else {
-                log_error($"{wep[i]} didn't find a valid target! This shouldn't happen!");
-                if (DEBUG_COLUMN_PRIORITY_ENEMY) {
-                    show_debug_message($"We didn't find a valid target! Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
-                }
+                log_error($"{_weapon_stack.weapon_name} didn't find a valid target! This shouldn't happen!");
             }
             ds_priority_destroy(_target_priority_queue);
         } else {
             if (DEBUG_COLUMN_PRIORITY_ENEMY) {
-                show_debug_message($"I can't shoot, my range is too small! Weapon: {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}; Range: {range[i]}");
+                show_debug_message($"I can't shoot, my range is too small! Weapon: {_weapon_stack.weapon_name};");
             }
             continue;
         }
@@ -123,25 +119,26 @@ if (!engaged) {
     }
 
     // Melee
-    var _melee_weapons = get_valid_weapons(1, 2);
+    var _melee_weapons = get_valid_weapon_stacks(weapon_stacks_normal, 1, 2);
     for (var i = 0, _wep_len = array_length(_melee_weapons); i < _wep_len; i++) {
+        var _weapon_stack = _melee_weapons[i];
+
         if (!target_block_is_valid(enemy, obj_pnunit)) {
             log_error($"Invalid player block was found by a melee enemy!");
             exit;
         }
         
         if (DEBUG_COLUMN_PRIORITY_ENEMY) {
-            show_debug_message($"{wep[i]} IS IN MELEE!");
+            show_debug_message($"{_weapon_stack.weapon_name} IS IN MELEE!");
         }
 
         if (instance_exists(obj_nfort) && (!flank)) {
             enemy = instance_nearest(x, y, obj_nfort);
-            scr_shoot(i, enemy, 0, "arp", "wall");
+            scr_shoot(_weapon_stack, enemy, 0);
             continue;
         }
 
-        var _attack_type = apa[i] > 10 ? "arp" : "att";
-        scr_shoot(i, enemy, 0, _attack_type, "melee");
+        scr_shoot(_weapon_stack, enemy, 0);
     }
 
     if (DEBUG_COLUMN_PRIORITY_ENEMY) {

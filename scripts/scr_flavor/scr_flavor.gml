@@ -23,21 +23,23 @@ function display_battle_log_message() {
 }
 
 /// @mixin
-function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shots, casulties) {
+function scr_flavor(_weapon_stack, _target_object, _target_i, casulties) {
 
 	// Generates flavor based on the damage and casualties from scr_shoot, only for the player
 
-	var attack_message, kill_message, leader_message, targeh;
-	targeh = target_type;
+	var attack_message, kill_message, leader_message;
 	leader_message = "";
 	attack_message = $"";
 	kill_message = "";
 
-	var weapon_name = wep[id_of_attacking_weapons];
+	var weapon_name = _weapon_stack.weapon_name;
+	var number_of_shots = _weapon_stack.weapon_count
+	var target = _target_object;
+	var targeh = _target_i;
 
-	if (id_of_attacking_weapons = -51) then weapon_name = "Heavy Bolter Emplacemelse ent";
-	if (id_of_attacking_weapons = -52) then weapon_name = "Missile Launcher Emplacement";
-	if (id_of_attacking_weapons = -53) then weapon_name = "Missile Silo";
+	// if (id_of_attacking_weapons = -51) then weapon_name = "Heavy Bolter Emplacemelse ent";
+	// if (id_of_attacking_weapons = -52) then weapon_name = "Missile Launcher Emplacement";
+	// if (id_of_attacking_weapons = -53) then weapon_name = "Missile Silo";
 
 	var weapon_data = gear_weapon_data("weapon", weapon_name, "all");
 	if (!is_struct(weapon_data)) {
@@ -54,8 +56,8 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 	var character_shot = false;
 	var unit_name = "";
 
-		if (wep_solo[id_of_attacking_weapons] != "") {
-			unit_name = $"{wep_title[id_of_attacking_weapons]} {wep_solo[id_of_attacking_weapons]}";
+		if (array_length(_weapon_stack.owners) == 1) {
+			unit_name = $"{_weapon_stack.owners[0]}";
 			character_shot = true;
 		}
 
