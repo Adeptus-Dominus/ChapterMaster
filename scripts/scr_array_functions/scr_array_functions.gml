@@ -259,3 +259,26 @@ function is_basic_array(_array, _max_depth = 1, _current_depth = 1) {
 function array_empty(_array) {
     return array_length(_array) == 0;
 }
+
+/// @description Deletes the first array element that matches the requested value. Returns whenever it succeeded or not.
+/// @param {array} _array - The array to check.
+/// @param {real} _element_value - Value to find and delete.
+function array_delete_ext(_array, _element_value) {
+	var _pos = array_get_index(_array, _element_value);
+	if (_pos != -1) {
+		array_delete(_array, _pos, 1);
+		return true;
+	}
+	return false;
+}
+
+/// @description Pushes a new element to an array, if the array doesn't already contain it. Returns whenever it succeeded or not.
+/// @param {array} _array - The array to push to.
+/// @param {real} _element_value - The element.
+function array_push_unique(_array, _element_value) {
+	if (!array_contains(_array, _element_value)) {
+		array_push(_array, _element_value);
+		return true;
+	}
+	return false;
+}

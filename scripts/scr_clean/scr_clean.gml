@@ -23,12 +23,14 @@ function scr_clean(target_object, weapon_data) {
             }
             
             var armour_pierce = weapon_data.piercing;
-            var hostile_shots = weapon_data.shot_count;
+            var weapon_shot_count = weapon_data.shot_count;
             var hostile_damage = weapon_data.attack;
             var hostile_weapon = weapon_data.weapon_name;
             var hostile_range = weapon_data.range;
             var target_type = weapon_data.target_type;
             var shooter_count = weapon_data.weapon_count;
+            var hostile_shots = weapon_shot_count * shooter_count;
+
             var hits = 0;
             var unit_type = "";
             var valid_vehicles = [];
@@ -64,15 +66,15 @@ function scr_clean(target_object, weapon_data) {
             }
             valid_vehicles = array_shuffle(valid_vehicles);
 
-            if (target_type == 1 && array_empty(valid_vehicles)) {
-                target_type = 0;
-            } else if (target_type = 0 && array_empty(valid_marines)) {
-                target_type = 1;
+            if (target_type == eTARGET_TYPE.ARMOUR && array_empty(valid_vehicles)) {
+                target_type = eTARGET_TYPE.NORMAL;
+            } else if (target_type = eTARGET_TYPE.NORMAL && array_empty(valid_marines)) {
+                target_type = eTARGET_TYPE.ARMOUR;
             }
 
             for (var shot = 0; shot < hostile_shots; shot++) {
                 // ### Vehicle Damage Processing ###
-                if (target_type == 1 && !array_empty(valid_vehicles)) {
+                if (target_type == eTARGET_TYPE.ARMOUR && !array_empty(valid_vehicles)) {
                     // Apply damage for each hostile shot, until we run out of targets
 
                     hits++;
@@ -89,7 +91,7 @@ function scr_clean(target_object, weapon_data) {
                         // Apply damage
                         var _min_damage = enemy == 13 ? 1 : 0.25;
                         var _dice_sides = 200;
-                        var _random_damage_mod = roll_dice(1, _dice_sides, "low") / _dice_sides;
+                        var _random_damage_mod = roll_dice(1, _dice_sides, "low") / 100;
                         var _armour_points = max(0, veh_ac[vehicle_id] - armour_pierce);
                         var _modified_damage = max(_min_damage, (hostile_damage * _random_damage_mod) - _armour_points);
 
@@ -114,13 +116,14 @@ function scr_clean(target_object, weapon_data) {
                             array_delete(valid_vehicles, vehicle_id, 1);
                         }
                     } else {
+                        // ### Dreadnought Processing ###
                         var marine = unit_struct[vehicle_id];
                         unit_type = marine.role();
 
                         // Apply damage
                         var _min_damage = enemy == 13 ? 1 : 0.25;
                         var _dice_sides = 200;
-                        var _random_damage_mod = roll_dice(1, _dice_sides, "low") / _dice_sides;
+                        var _random_damage_mod = roll_dice(1, _dice_sides, "low") / 100;
                         var _armour_points = max(0, marine_ac[vehicle_id] - armour_pierce);
                         var _modified_damage = (hostile_damage * _random_damage_mod) - _armour_points;
 
@@ -169,15 +172,15 @@ function scr_clean(target_object, weapon_data) {
                             array_delete(valid_vehicles, random_index, 1);
                             units_lost++;
                             if (array_empty(valid_vehicles)) {
-                                target_type = 0;
+                                target_type = eTARGET_TYPE.NORMAL;
                                 continue;
                             }
                         }
                     }
                 }
 
-                // ### Marine + Dreadnought Processing ###
-                if (target_type == 0 && !array_empty(valid_marines)) {
+                // ### Marine Processing ###
+                if (target_type == eTARGET_TYPE.NORMAL && !array_empty(valid_marines)) {
                     // Apply damage for each shot
                     hits++;
 
@@ -190,7 +193,7 @@ function scr_clean(target_object, weapon_data) {
                     // Apply damage
                     var _min_damage = enemy == 13 ? 1 : 0.25;
                     var _dice_sides = 200;
-                    var _random_damage_mod = roll_dice(1, _dice_sides, "low") / _dice_sides;
+                    var _random_damage_mod = roll_dice(1, _dice_sides, "low") / 100;
                     var _armour_points = max(0, marine_ac[marine_index] - armour_pierce);
                     var _modified_damage = max(_min_damage, (hostile_damage * _random_damage_mod) - _armour_points);
 
@@ -236,7 +239,7 @@ function scr_clean(target_object, weapon_data) {
                         array_delete(valid_marines, random_index, 1);
                         units_lost++;
                         if (array_empty(valid_marines)) {
-                            target_type = 1;
+                            target_type = eTARGET_TYPE.ARMOUR;
                             continue;
                         }
                     }

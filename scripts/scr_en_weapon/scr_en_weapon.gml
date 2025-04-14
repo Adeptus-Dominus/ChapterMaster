@@ -383,21 +383,21 @@ function scr_en_weapon(_weapon_name, is_man, man_number, man_type, group) {
 	if (obj_ncombat.enemy = 7) {
 
 		if (argument0 = "Choppa") {
-			_attack = 12;
+			_attack = 16;
 			_piercing = 4;
 			_range = 1;
-			_shot_count = 1;
+			_shot_count = 2;
 		}
 		if (argument0 = "Power Klaw") {
-			_attack = 30;
+			_attack = 22;
 			_piercing = 20;
 			_range = 1;
-			_shot_count = 1;
+			_shot_count = 2;
 		}
 		if (argument0 = "Slugga") {
 			_attack = 20;
 			_piercing = 0;
-			_range = 3.1;
+			_range = 2;
 			_ammo = 6;
 			_shot_count = 3;
 			_reload = 1;
@@ -413,10 +413,10 @@ function scr_en_weapon(_weapon_name, is_man, man_number, man_type, group) {
 		if (argument0 = "Big Shoota") {
 			_attack = 24;
 			_piercing = 4;
-			_range = 13;
+			_range = 8;
 			_ammo = 6;
 			_shot_count = 10;
-			_reload = 1;
+			_reload = 2;
 		}
 		if (argument0 = "Dakkagun") {
 			_attack = 24;
@@ -451,7 +451,7 @@ function scr_en_weapon(_weapon_name, is_man, man_number, man_type, group) {
 			_reload = 2;
 		}
 		if (argument0 = "Kannon") {
-			_attack = 54;
+			_attack = 45;
 			_piercing = 12;
 			_range = 20;
 			_ammo = 1;
@@ -483,8 +483,8 @@ function scr_en_weapon(_weapon_name, is_man, man_number, man_type, group) {
 			_reload = 2;
 		}
 		if (argument0 = "Rokkit Launcha") {
-			_attack = 21;
-			_piercing = 12;
+			_attack = 45;
+			_piercing = 18;
 			_range = 16;
 			_shot_count = 1;
 		}
@@ -1062,12 +1062,7 @@ function scr_en_weapon(_weapon_name, is_man, man_number, man_type, group) {
 	}
 
 	var _stack_type = {};
-	if (is_man && man_number == 1) {
-		if (!struct_exists(weapon_stacks_unique, man_type)) {
-			struct_set(weapon_stacks_unique, man_type, {});
-		}
-		_stack_type = weapon_stacks_unique[$ man_type];
-	} else if (is_man) {
+	if (is_man) {
 		_stack_type = weapon_stacks_normal;
 	} else {
 		_stack_type = weapon_stacks_vehicle;
@@ -1097,8 +1092,4 @@ function scr_en_weapon(_weapon_name, is_man, man_number, man_type, group) {
 	
 		struct_set(_stack_type, _weapon_name, _weapon_stack);
 	}
-
-	show_debug_message($"weapon_stacks_unique: {weapon_stacks_unique}");
-	show_debug_message($"weapon_stacks_normal: {weapon_stacks_normal}");
-	show_debug_message($"weapon_stacks_vehicle: {weapon_stacks_vehicle}");
 }

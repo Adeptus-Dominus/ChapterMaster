@@ -91,7 +91,7 @@ function scr_shoot(_weapon_stack, _target_object, _target_index) {
             var _accuracy_mod = _weapon_stack.range >= 2 ? _ranged_accuracy_mod : _melee_accuracy_mod;
             _shot_count *= _accuracy_mod;
 
-            if (_target_type == "wall") {
+            if (_target_type == eTARGET_TYPE.FORTIFICATION) {
                 var _wall_weapon_damage = max(1, round(_weapon_attack - _target_object.ac[1])) * _shooter_count * max(1, _weapon_shot_count / 4);
                 _target_object.hp[1] -= _wall_weapon_damage;
         
@@ -132,7 +132,7 @@ function scr_shoot(_weapon_stack, _target_object, _target_index) {
             // Normal shooting
             var _min_damage = 0.25;
             var _dice_sides = 200;
-            var _random_damage_mod = roll_dice(1, _dice_sides, "low") / _dice_sides;
+            var _random_damage_mod = roll_dice(1, _dice_sides, "low") / 100;
             var _armour_points = max(0, _target_object.dudes_ac[_target_index] - _weapon_piercing);
             _weapon_attack = (_weapon_attack * _random_damage_mod) - _armour_points;
             _weapon_attack = max(_min_damage, _weapon_attack * _target_object.dudes_dr[_target_index]);

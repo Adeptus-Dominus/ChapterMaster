@@ -1,3 +1,10 @@
+enum eTARGET_TYPE {
+    NORMAL,
+    ARMOUR,
+    LEADER,
+    FORTIFICATION,
+}
+
 function WeaponStack(_name) constructor {
     weapon_name = _name;
     weapon_count = 0;
@@ -10,7 +17,11 @@ function WeaponStack(_name) constructor {
     ammo_reload = 0;
     shot_count = 0;
     owners = [];
-    target_type = 0; // 0 men, 1 vehicle, 2 leaders?
+    target_type = eTARGET_TYPE.NORMAL;
+
+    static total_attack = function() {
+        return attack * weapon_count;
+    };
 }
 
 function UnitStack(_name) constructor {

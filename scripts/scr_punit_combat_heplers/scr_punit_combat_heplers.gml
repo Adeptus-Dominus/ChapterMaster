@@ -311,31 +311,79 @@ function update_block_unit_count() {
 }
 
 function get_valid_weapon_stacks(_stacks_struct, _range_min, _range_max) {
-    var valid = [];
-
-	var _weapon_stack_names = struct_get_names(_stacks_struct);
-	var _struct_len = array_length(_weapon_stack_names);
-	for (var i = 0; i < _struct_len; i++){
-		var _weapon_stack_name = _weapon_stack_names[i];
-		var _weapon_stack = _stacks_struct[$ _weapon_stack_name];
-
-		if (_weapon_stack.weapon_name == "" || _weapon_stack.weapon_count == 0) {
-            continue;
-        }
-
-        if (_weapon_stack.range == 0) {
-            log_error($"{_weapon_stack.weapon_name} has broken range! This shouldn't happen!");
-            continue;
-        }
-
-        if (_weapon_stack.range < _range_min || _weapon_stack.range > _range_max) {
-            continue;
-        }
-
-        array_push(valid, _weapon_stack);
+	try {
+		var valid = [];
+	
+		var _weapon_stack_names = struct_get_names(_stacks_struct);
+		var _struct_len = array_length(_weapon_stack_names);
+		for (var i = 0; i < _struct_len; i++){
+			var _weapon_stack_name = _weapon_stack_names[i];
+			var _weapon_stack = _stacks_struct[$ _weapon_stack_name];
+		
+			if (_weapon_stack.weapon_name == "" || _weapon_stack.weapon_count == 0) {
+				continue;
+			}
+	
+			if (_weapon_stack.range == 0) {
+				log_error($"{_weapon_stack.weapon_name} has broken range! This shouldn't happen!");
+				continue;
+			}
+	
+			if (_weapon_stack.range < _range_min || _weapon_stack.range > _range_max) {
+				continue;
+			}
+	
+			array_push(valid, _weapon_stack);
+		}
+	
+		return valid;
+	} catch (_exception) {
+		show_debug_message($"_stacks_struct: {_stacks_struct}");
+		show_debug_message($"_weapon_stack: {_weapon_stack}");
+		handle_exception(_exception);
 	}
+}
 
-    return valid;
+function get_valid_weapon_stacks_unique(_stacks_struct, _range_min, _range_max) {
+	try {
+		var valid = [];
+	
+		var _unique_names = struct_get_names(_stacks_struct);
+		var _unique_len = array_length(_unique_names);
+		for (var u = 0; u < _unique_len; u++){
+			var _unique_name = _unique_names[u];
+			var _unique_stack = _stacks_struct[$ _unique_name];
+		
+			var _weapon_stack_names = struct_get_names(_unique_stack);
+			var _stacks_len = array_length(_weapon_stack_names);
+			for (var i = 0; i < _stacks_len; i++){
+				var _weapon_stack_name = _weapon_stack_names[i];
+				var _weapon_stack = _unique_stack[$ _weapon_stack_name];
+
+				if (_weapon_stack.weapon_name == "" || _weapon_stack.weapon_count == 0) {
+					continue;
+				}
+		
+				if (_weapon_stack.range == 0) {
+					log_error($"{_weapon_stack.weapon_name} has broken range! This shouldn't happen!");
+					continue;
+				}
+		
+				if (_weapon_stack.range < _range_min || _weapon_stack.range > _range_max) {
+					continue;
+				}
+		
+				array_push(valid, _weapon_stack);
+			}
+		}
+	
+		return valid;
+	} catch (_exception) {
+		show_debug_message($"_stacks_struct: {_stacks_struct}");
+		show_debug_message($"_unique_stack: {_unique_stack}");
+		show_debug_message($"_weapon_stack: {_weapon_stack}");
+		handle_exception(_exception);
+	}
 }
 
 function get_alpha_strike_target() {
@@ -370,7 +418,7 @@ function get_target_priority(_weapon_stack, _block) {
 
     // Target type match bonus
     var _type_bonus = 0;
-    if (_weapon_stack.target_type == 1) {
+    if (_weapon_stack.target_type == eTARGET_TYPE.ARMOUR) {
         _type_bonus = 20 * (block_type_size(_block, "armour") / _size);
     } else {
         _type_bonus = 20 * (block_type_size(_block, "men") / _size);
