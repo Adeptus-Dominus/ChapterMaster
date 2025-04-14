@@ -67,7 +67,6 @@ faith = array_create(_enemy_size, 0);
 
 dudes_attack = array_create(_enemy_size, 1);
 dudes_ranged = array_create(_enemy_size, 1);
-dudes_defense = array_create(_enemy_size, 1);
 
 dudes_wep1 = array_create(_enemy_size, "");
 dudes_wep2 = array_create(_enemy_size, "");

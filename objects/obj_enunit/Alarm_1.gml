@@ -28,7 +28,6 @@ repeat(700) {
 		dudes_damage[j] = 0;
 		dudes_attack[j] = 1;
 		dudes_ranged[j] = 1;
-		dudes_defense[j] = 1;
 	}
 	if (dudes[j] = "") and(dudes[j + 1] != "") {
 		dudes[j] = dudes[j + 1] dudes_special[j] = dudes_special[j + 1];
@@ -39,7 +38,6 @@ repeat(700) {
 		dudes_damage[j] = dudes_damage[j + 1];
 		dudes_attack[j] = dudes_attack[j + 1];
 		dudes_ranged[j] = dudes_ranged[j + 1];
-		dudes_defense[j] = dudes_defense[j + 1];
 
 		dudes[j + 1] = "";
 		dudes_special[j + 1] = "";
