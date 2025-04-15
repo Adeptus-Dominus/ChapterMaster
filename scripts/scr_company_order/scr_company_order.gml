@@ -245,8 +245,7 @@ function scr_company_order(company) {
 	var squad_builder = [
 		["tactical_squad",_roles[eROLE.Tactical],5],
 		["devastator_squad",_roles[eROLE.Devastator],5],
-		["sternguard_veteran_squad",_roles[eROLE.Veteran],5],
-		["vanguard_veteran_squad",_roles[eROLE.Veteran],5],
+		["veteran_squad",_roles[eROLE.Veteran],5],
 		["terminator_squad",_roles[eROLE.Terminator],4],
 		["terminator_assault_squad",_roles[eROLE.Terminator],4],
 		["assault_squad",_roles[eROLE.Assault],5],
