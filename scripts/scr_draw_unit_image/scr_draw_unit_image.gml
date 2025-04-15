@@ -360,13 +360,13 @@ function scr_draw_unit_image(_background = false) {
                     }
             }
             // Blood Angels gold
-            if ((unit_role == _role[eROLE.HonourGuard] || unit_role == obj_ini.role[100][eROLE.ChapterMaster]) && (unit_chapter == "Blood Angels")) {
+            if ((unit_role == _role[eROLE.HonourGuard] || unit_role == _role[eROLE.ChapterMaster]) && (unit_chapter == "Blood Angels")) {
                 unit_special_colours = UnitSpecialColours.Gold;
             }
             // Sets up the description for the equipement of current marine
 
             if (scr_has_adv("Reverent Guardians")) {
-                if (array_contains([UnitSpecialization.Chaplain, UnitSpecialization.WolfPriest, UnitSpecialization.Librarian], unit_specialization) || unit_role == obj_ini.role[100][eROLE.ChapterMaster]) {
+                if (array_contains([UnitSpecialization.Chaplain, UnitSpecialization.WolfPriest, UnitSpecialization.Librarian], unit_specialization) || unit_role == _role[eROLE.ChapterMaster]) {
                     reverent_guardians = true;
                 }
             }
@@ -544,7 +544,7 @@ function scr_draw_unit_image(_background = false) {
             }
 
             if (armour_type == ArmourType.None) {
-                if (unit_role == obj_ini.role[100][eROLE.ChapterMaster] && unit_chapter == "Doom Benefactors") {
+                if (unit_role == _role[eROLE.ChapterMaster] && unit_chapter == "Doom Benefactors") {
                     skin_color = 6;
                 }
 
