@@ -599,12 +599,12 @@ try {
     }
     
     if (battle_special="space_hulk") and (defeat=0) and (hulk_treasure>0){
-        var shi=0,loc="";
+        var shi="",loc="";
 
         var shiyp=instance_nearest(battle_object.x,battle_object.y,obj_p_fleet);
         if (shiyp.x == battle_object.x && shiyp.y ==battle_object.y){
             shi = fleet_full_ship_array(shiyp)[0];
-            loc = obj_ini.ship[shi];
+            loc = fetch_ship(shi).name;
         }
         
         if (hulk_treasure=1){// Requisition
@@ -617,7 +617,7 @@ try {
             pop.text="Your battle brothers have located several luxury goods and coginators within the Space Hulk.  They are salvaged and returned to the ship, granting "+string(reqi)+" Requisition.";
         }else if (hulk_treasure=2){// Artifact
             //TODO this will eeroniously put artifacts in the wrong place but will resolve crashes
-            var last_artifact = scr_add_artifact("random","random",4,loc,shi+500);
+            var last_artifact = scr_add_artifact("random", "random", 4, loc, shi);
             var i=0;
 
             var pop=instance_create(0,0,obj_popup);

@@ -373,7 +373,7 @@ function group_selection(group, selection_data) {
             man_size = 0;
             selecting_location = "";
             selecting_types = "";
-            selecting_ship = -1;
+            selecting_ship = "";
             selecting_planet = 0;
             sel_uid = 0;
             reset_manage_arrays();

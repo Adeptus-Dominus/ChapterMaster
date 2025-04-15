@@ -827,12 +827,16 @@ function scr_initialize_custom() {
 	// log_message(ship_summary_str);
 	// show_debug_message(ship_summary_str);
 
-	if (battle_barges>=1){
-	 	for (v=0;v<battle_barges;v++){
-	 		var new_ship = new_player_ship("Battle Barge", "home");
-		    if (flagship_name!="") and (v=0) then ship[new_ship]=flagship_name;
-		}
-	}
+    var _barge_temp = 0;
+    if (obj_creation.fleet_type != ePlayerBase.home_world) {
+        var new_ship = new_player_ship("Battle Barge", , flagship_name);
+        flagship_UUID = new_ship.UUID;
+        _barge_temp = 1;
+    }
+
+    for (v = _barge_temp; v < battle_barges; v++) {
+        new_player_ship("Battle Barge");
+    }
 
 	for(var i=0;i<strike_cruisers;i++){
 		new_player_ship("Strike Cruiser");
