@@ -292,9 +292,9 @@ function draw_block_composition(_x1, _composition_string) {
 }
 
 function draw_block_fadein() {
-	if (obj_ncombat.fadein > 0) {
+	if (obj_ncombat.fading_strength > 0) {
 		draw_set_color(c_black);
-		draw_set_alpha(obj_ncombat.fadein/30);
+		draw_set_alpha(obj_ncombat.fading_strength);
 		draw_rectangle(822,239,1574,662,0);
 		draw_set_alpha(1);
 	}

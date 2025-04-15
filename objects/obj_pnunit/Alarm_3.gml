@@ -1,6 +1,6 @@
 try {
     
-    if (obj_ncombat.started=0){
+    if (obj_ncombat.started=eBATTLE_STAGE.Creation){
         if (men+dreads+veh<=0){
             //show_debug_message($"column destroyed {x}")
             instance_destroy();
@@ -70,7 +70,6 @@ try {
             if (r_lost>0){
                 obj_ncombat.newline=miss;
                 obj_ncombat.newline_color="red";
-                obj_ncombat.timer_pause=2;
                 with(obj_ncombat){
                     scr_newtext();
                 }
@@ -80,7 +79,7 @@ try {
     
     
     
-    if (obj_ncombat.started>=1){
+    if (obj_ncombat.started>=eBATTLE_STAGE.Start){
         
         // Should probably have the option under deployment to say 'Should Assault Marines enter the fray with vehicles?'   [ ]
     }

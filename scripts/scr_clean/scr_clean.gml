@@ -133,12 +133,10 @@ function scr_clean(target_object, weapon_data) {
                             obj_ncombat.player_forces -= 1;
 
                             // Record loss
-                            var existing_index = array_get_index(lost, veh_type[vehicle_id]);
-                            if (existing_index != -1) {
-                                lost_num[existing_index] += 1;
+                            if (struct_exists(lost_units, veh_type[vehicle_id])) {
+                                lost_units[$ veh_type[vehicle_id]]++;
                             } else {
-                                array_push(lost, veh_type[vehicle_id]);
-                                array_push(lost_num, 1);
+                                lost_units[$ veh_type[vehicle_id]] = 1;
                             }
 
                             // Remove dead vehicles from further hits
@@ -311,12 +309,10 @@ function check_dead_marines(unit_struct, unit_index) {
         obj_ncombat.player_forces -= 1;
 
         // Record loss
-        var existing_index = array_get_index(lost, marine_type[unit_index]);
-        if (existing_index != -1) {
-            lost_num[existing_index] += 1;
+        if (struct_exists(lost_units, marine_type[unit_index])) {
+            lost_units[$ marine_type[unit_index]]++;
         } else {
-            array_push(lost, marine_type[unit_index]);
-            array_push(lost_num, 1);
+            lost_units[$ marine_type[unit_index]] = 1;
         }
 
         // Check red thirst threadhold

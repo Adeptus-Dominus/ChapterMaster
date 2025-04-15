@@ -56,7 +56,7 @@ j = 0;
 
 repeat(20) {
 	j += 1;
-	if (obj_ncombat.started = 0) {
+	if (obj_ncombat.started == eBATTLE_STAGE.Creation) {
 		if (dudes[j] = "Malcadon Spyrer") {
 			dudes_ac[j] = 35;
 			dudes_hp[j] = 200;
@@ -68,7 +68,7 @@ repeat(20) {
 		scr_en_weapon("Venom Claws", true, dudes_num[j], dudes[j], j);
 	}
 
-	if ((obj_ncombat.started = 0) or(neww = 1)) or(dudes_num[j] > 1) {
+	if ((obj_ncombat.started == eBATTLE_STAGE.Creation) or(neww = 1)) or(dudes_num[j] > 1) {
 		if (dudes[j] = "Greater Daemon of Khorne") {
 			dudes_ac[j] = 12;
 			dudes_hp[j] = 700;
@@ -80,7 +80,7 @@ repeat(20) {
 		medi += dudes_num[j];
 		if (obj_ncombat.battle_special = "ship_demon") then dudes_dr[j] = 0.65;
 	}
-	if ((obj_ncombat.started = 0) or(neww = 1)) or(dudes_num[j] > 1) {
+	if ((obj_ncombat.started == eBATTLE_STAGE.Creation) or(neww = 1)) or(dudes_num[j] > 1) {
 		if (dudes[j] = "Greater Daemon of Slaanesh") {
 		dudes_ac[j] = 10;
 		dudes_hp[j] = 500;
@@ -93,7 +93,7 @@ repeat(20) {
 		dudes_dr[j] = 0.25;
 		medi += dudes_num[j];
 	}
-	if ((obj_ncombat.started = 0) or(neww = 1)) or(dudes_num[j] > 1) {
+	if ((obj_ncombat.started == eBATTLE_STAGE.Creation) or(neww = 1)) or(dudes_num[j] > 1) {
 		if (dudes[j] = "Greater Daemon of Nurgle") {
 			dudes_ac[j] = 8;
 			dudes_hp[j] = 900;
@@ -106,7 +106,7 @@ repeat(20) {
 		dudes_dr[j] = 0.6;
 		medi += dudes_num[j];
 	}
-	if ((obj_ncombat.started = 0) or(neww = 1)) or(dudes_num[j] > 1) {
+	if ((obj_ncombat.started == eBATTLE_STAGE.Creation) or(neww = 1)) or(dudes_num[j] > 1) {
 		if (dudes[j] = "Greater Daemon of Tzeentch") {
 			dudes_ac[j] = 10;
 			dudes_hp[j] = 600;
@@ -293,10 +293,6 @@ if __b__ {
 
 	// Right here should be retreat- if important units are exposed they should try to hop left
 
-	/*if (dudes_num[1]=0) and (obj_ncombat.started=0){
-	    instance_destroy();
-	    exit;
-	}*/
 
 	if (men > 0) and(alarm[5] > 0) then alarm[5] = -1;
 	instance_activate_object(obj_enunit);
@@ -426,7 +422,7 @@ if __b__ {
 			scr_en_weapon("Laser Mace", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Infernus Pistol", true, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 10;
-			if (obj_ncombat.started = 0) or(dudes_num[j] > 1) {
+			if (obj_ncombat.started == eBATTLE_STAGE.Creation) or(dudes_num[j] > 1) {
 				dudes_hp[j] = 200;
 			}
 			men += dudes_num[j];
@@ -562,7 +558,7 @@ if __b__ {
 			scr_en_weapon("Exorcist Missile Launcher", false, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Storm Bolter", false, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 40;
-			if (obj_ncombat.started = 0) or(dudes_num[j] > 1) {
+			if (obj_ncombat.started == eBATTLE_STAGE.Creation) or(dudes_num[j] > 1) {
 				dudes_hp[j] = 200;
 			}
 			dudes_dr[j] = 0.55;
@@ -876,7 +872,7 @@ if __b__ {
 			scr_en_weapon("Rokkit Launcha", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Big Shoota", true, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 12;
-			if (obj_ncombat.started = 0) or(dudes_num[j] > 1) {
+			if (obj_ncombat.started == eBATTLE_STAGE.Creation) or(dudes_num[j] > 1) {
 				dudes_hp[j] = 600;
 			}
 			veh += dudes_num[j];
@@ -887,7 +883,7 @@ if __b__ {
 			scr_en_weapon("Choppa", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Big Shoota", true, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 8;
-			if (obj_ncombat.started = 0) or(dudes_num[j] > 1) {
+			if (obj_ncombat.started == eBATTLE_STAGE.Creation) or(dudes_num[j] > 1) {
 				dudes_hp[j] = 150;
 				dudes_dr[j] = 0.75;
 			}
@@ -897,7 +893,7 @@ if __b__ {
 			scr_en_weapon("Power Klaw", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Rokkit Launcha", true, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 12;
-			if (obj_ncombat.started = 0) or(dudes_num[j] > 1) {
+			if (obj_ncombat.started == eBATTLE_STAGE.Creation) or(dudes_num[j] > 1) {
 				dudes_hp[j] = 200;
 				dudes_dr[j] = 0.75;
 			}
@@ -907,7 +903,7 @@ if __b__ {
 			scr_en_weapon("Power Klaw", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Rokkit Launcha", true, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 12;
-			if (obj_ncombat.started = 0) or(dudes_num[j] > 1) {
+			if (obj_ncombat.started == eBATTLE_STAGE.Creation) or(dudes_num[j] > 1) {
 				dudes_hp[j] = 300;
 				dudes_dr[j] = 0.5;
 			}
@@ -1248,7 +1244,7 @@ if __b__ {
 				scr_en_weapon("Meltagun", true, dudes_num[j], dudes[j], j);
 				scr_en_weapon("Power Fist", true, dudes_num[j], dudes[j], j);
 				dudes_ac[j] = 30;
-				if (obj_ncombat.started = 0) or(dudes_num[j] > 1) {
+				if (obj_ncombat.started == eBATTLE_STAGE.Creation) or(dudes_num[j] > 1) {
 					dudes_hp[j] = 300;
 				}
 				men += dudes_num[j];
@@ -1257,7 +1253,7 @@ if __b__ {
 			if (dudes[j] = "Leader") and(obj_controller.faction_gender[10] = 2) {
 				scr_en_weapon("Khorne Demon Melee", true, dudes_num[j] * 2, dudes[j], j);
 				dudes_ac[j] = 30;
-				if (obj_ncombat.started = 0) or(dudes_num[j] > 1) {
+				if (obj_ncombat.started == eBATTLE_STAGE.Creation) or(dudes_num[j] > 1) {
 					dudes_hp[j] = 300;
 				}
 				men += dudes_num[j];
@@ -1606,7 +1602,7 @@ if __b__ {
 		if (dudes[j] = "Necron Overlord") {
 			scr_en_weapon("Staff of Light", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Staff of Light Shooting", true, dudes_num[j], dudes[j], j);
-			if (obj_ncombat.started = 0) or(dudes_num[j] > 1) {
+			if (obj_ncombat.started == eBATTLE_STAGE.Creation) or(dudes_num[j] > 1) {
 				dudes_ac[j] = 12;
 				dudes_hp[j] = 300;
 				dudes_dr[j] = 0.5;
@@ -1647,7 +1643,7 @@ if __b__ {
 
 		if (dudes[j] = "Necron Wraith") {
 			scr_en_weapon("Wraith Claws", true, dudes_num[j], dudes[j], j);
-			if (obj_ncombat.started = 0) or(dudes_num[j] > 1) {
+			if (obj_ncombat.started == eBATTLE_STAGE.Creation) or(dudes_num[j] > 1) {
 				dudes_ac[j] = 10;
 				dudes_hp[j] = 200;
 			}
@@ -1667,7 +1663,7 @@ if __b__ {
 			scr_en_weapon("Gauss Particle Cannon", false, dudes_num[j] * 1, dudes[j], j);
 			scr_en_weapon("Overcharged Gauss Cannon", false, dudes_num[j] * 2, dudes[j], j);
 			scr_en_weapon("Claws", false, dudes_num[j] * 5, dudes[j], j);
-			if (obj_ncombat.started = 0) or(dudes_num[j] > 1) {
+			if (obj_ncombat.started == eBATTLE_STAGE.Creation) or(dudes_num[j] > 1) {
 				dudes_ac[j] = 40;
 				dudes_hp[j] = 600;
 			}
@@ -1677,7 +1673,7 @@ if __b__ {
 		}
 		if (dudes[j] = "Canoptek Spyder") {
 			scr_en_weapon("Claws", false, dudes_num[j] * 2, dudes[j], j);
-			if (obj_ncombat.started = 0) or(dudes_num[j] > 1) {
+			if (obj_ncombat.started == eBATTLE_STAGE.Creation) or(dudes_num[j] > 1) {
 				dudes_ac[j] = 30;
 				dudes_hp[j] = 300;
 			}
@@ -1743,7 +1739,7 @@ if (men + veh + medi <= 0) {
 	exit;
 }
 
-if (obj_ncombat.started = 0) {
+if (obj_ncombat.started == eBATTLE_STAGE.Creation) {
 	obj_ncombat.enemy_forces += self.men + self.veh + self.medi;
 }
 engaged = (collision_point(x + 12, y, obj_pnunit, 0, 1)) or(collision_point(x - 12, y, obj_pnunit, 0, 1));

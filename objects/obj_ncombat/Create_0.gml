@@ -15,14 +15,10 @@ if (nope!=1){audio_sound_gain(snd_battle,0.25*obj_controller.master_volume*obj_c
 
 
 //limit on the size of the players forces allowed
-enter_pressed = 0
 man_size_limit = 0;
 man_limit_reached = false;
 man_size_count = 0;
-fack=0;
-cd=0;
 owner  = eFACTION.Player;
-click_stall_timer=0;
 formation_set=0;
 on_ship=false;
 alpha_strike=0;
@@ -56,16 +52,13 @@ battle_id=0;
 battle_object=0;
 battle_special="";
 defeat=0;
-defeat_message=0;
+battle_ended=false;
 red_thirst=0;
-fugg=0;fugg2=0;
 battle_over=0;
-done=0;
 
 captured_gaunt=0;
 ethereal=0;
 hulk_treasure=0;
-four_show=0;
 chaos_angry=0;
 
 leader=0;
@@ -97,10 +90,11 @@ obj_pnunit.alarm[3]=1;
 alarm[2]=8;
 
 
-started=0;
+started=eBATTLE_STAGE.Creation;
 charged=0;
 
-fadein=40;
+fading_strength = 1;
+
 enemy=0;
 threat=0;
 fortified=0;
@@ -115,11 +109,12 @@ player_defenses=0;player_silos=0;
 enemy_forces=0;enemy_max=0;
 hulk_forces=0;
 
-i=-1;messages=0;messages_to_show=24;messages_shown=0;
-largest=0;priority=0;random_messages=0;
+messages_shown=0;
 
 units_lost_counts = {};
 vehicles_lost_counts = {};
+
+messages_queue = ds_priority_create();
 
 var _messages_size = 70;
 lines = array_create(_messages_size, "");
@@ -127,7 +122,6 @@ lines_color = array_create(_messages_size, "");
 message = array_create(_messages_size, "");
 message_sz = array_create(_messages_size, 0);
 message_priority = array_create(_messages_size, 0);
-dead_jim = array_create(_messages_size, "");
 
 post_equipment_lost = array_create(_messages_size, "");
 post_equipments_lost = array_create(_messages_size, 0);
@@ -155,18 +149,12 @@ final_marine_deaths=0;
 final_command_deaths=0;
 vehicle_deaths=0;
 casualties=0;
-dead_jims=0;
 newline="";
 newline_color="";
 liness=0;
 world_size=0;
 
-timer=0;
-timer_stage=0;
-timer_speed=0;
-timer_maxspeed=1;
-timer_pause=-1;
-turns=1;
+battle_stage=eBATTLE_TURN.Creation;
 
 
 // 

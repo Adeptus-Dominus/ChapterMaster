@@ -1,25 +1,55 @@
-/// @function add_battle_log_message
+#macro BATTLELOG_MAX_PER_TURN 24
+
+function queue_enemy_force_health() {
+	var _text = "";
+
+	if (enemy_forces > 0) {
+		_text = $"Enemy Forces at {string(max(1, round((enemy_forces / enemy_max) * 100)))}%";
+	} else {
+		_text = "Enemy Forces Defeated";
+	}
+
+	queue_battlelog_message(_text, 999, "yellow");
+}
+
+function queue_player_force_health() {
+	var _text = "";
+
+	if (player_forces > 0) {
+		_text = $"${global.chapter_name} at {string(round((player_forces / player_max) * 100))}%";
+	} else {
+		_text = $"${global.chapter_name} Defeated";
+	}
+
+	queue_battlelog_message(_text, 999, "yellow");
+}
+
+
+function display_message_queue() {
+	while (!ds_priority_empty(messages_queue) && messages_shown < BATTLELOG_MAX_PER_TURN) {
+        var _message = ds_priority_delete_max(messages_queue);
+        newline = _message.message;
+        newline_color = _message.color;
+        messages_shown += 1;
+        scr_newtext();
+    }
+    ds_priority_clear(messages_queue);
+}
+
+/// @function queue_battlelog_message
 /// @param {string} _message - The message text to add to the battle log
 /// @param {real} [_message_size=0] - The size/importance of the message (higher values = higher display priority; affects sorting order)
 /// @param {real} [_message_priority=0] - The priority level (affects sorting and text color: 0=normal, 135=blue, 134=purple)
 /// @returns {real} The index of the newly added message
-function add_battle_log_message(_message, _message_size = 0, _message_priority = 0) {
+function queue_battlelog_message(_message, _message_priority = 0, _message_color = COL_GREEN) {
 	if (instance_exists(obj_ncombat)) {
-		obj_ncombat.messages++;
-		var _message_index = obj_ncombat.messages;
-		
-		obj_ncombat.message[_message_index] = _message;
-		obj_ncombat.message_sz[_message_index] = _message_size + (0.5 - (obj_ncombat.messages / 100));
-		obj_ncombat.message_priority[_message_index] = _message_priority;
-		
-		return _message_index;
-	}
-	return -1;
-}
+		var _message_struct = {
+			message: _message,
+			color: _message_color
+		}
 
-function display_battle_log_message() {
-    // Trigger the message processing alarm
-    obj_ncombat.alarm[3] = 5;
+		ds_priority_add(obj_ncombat.messages_queue, _message_struct, _message_priority)
+	}
 }
 
 /// @mixin
@@ -422,13 +452,10 @@ function scr_flavor(_weapon_stack, _target_object, _target_i, casulties) {
 	}
 
 	if (attack_message != "") {
-		add_battle_log_message(attack_message, message_size, message_priority);
-		display_battle_log_message();
+		queue_battlelog_message(attack_message, message_size);
 	}
 
 	if (leader_message != "") {
-		add_battle_log_message(leader_message, message_size, message_priority);
-		display_battle_log_message();
+		queue_battlelog_message(leader_message, message_size);
 	}
-
 }

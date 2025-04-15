@@ -81,5 +81,5 @@ if (obj_ncombat.enemy=1) then alarm[6]=10;
 
 
 hit = function() {
-    return scr_hit(x1, y1, x2, y2) && obj_ncombat.fadein <= 0;
+    return scr_hit(x1, y1, x2, y2) && obj_ncombat.fading == false;
 };

@@ -2269,7 +2269,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 			var _dice_roll = roll_personal_dice(1, _psionic_difficulty, "high", self);
 			if (_dice_roll == _psionic_difficulty) {
 				psionic++;
-				add_battle_log_message($"{name_role()} was touched by the warp!", 999, 135);
+				queue_battlelog_message($"{name_role()} was touched by the warp!", 999, 135);
 			}
 		}
 	};

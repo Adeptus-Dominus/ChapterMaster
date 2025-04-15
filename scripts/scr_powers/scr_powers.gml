@@ -90,7 +90,7 @@ function scr_powers(caster_id) {
     } else {
         _cast_flavour_text = $"{_unit.name_role()} failed to cast {_power_name}!";
         _battle_log_message = _cast_flavour_text;
-        add_battle_log_message(_battle_log_message, 999, 137);
+        queue_battlelog_message(_battle_log_message, 999, COL_RED);
     }
 
     //* Buff powers casting code
@@ -167,7 +167,7 @@ function scr_powers(caster_id) {
         }
 
         _battle_log_message = _cast_flavour_text + _power_flavour_text;
-        add_battle_log_message(_battle_log_message, 999, 135);
+        queue_battlelog_message(_battle_log_message, 999, COL_BRIGHT_GREEN);
     } else if (_power_type == "attack" && _cast_successful) {
         //* Attack power casting
         //TODO: separate the code bellow into a separate function;
@@ -268,7 +268,7 @@ function scr_powers(caster_id) {
                         _battle_log_priority = _casualties * 3; // More casualties = higher priority messages
                     }
                 }
-                add_battle_log_message(_battle_log_message, _battle_log_priority, 134);
+                queue_battlelog_message(_battle_log_message, _battle_log_priority, COL_PURPLE);
             }
         }
     }
@@ -286,10 +286,8 @@ function scr_powers(caster_id) {
         check_dead_marines(_unit, caster_id);
 
         _battle_log_message = _cast_flavour_text + _power_flavour_text;
-        add_battle_log_message(_battle_log_message, 999, 137);
+        queue_battlelog_message(_battle_log_message, 999, COL_RED);
     }
-
-    display_battle_log_message();
 }
 
 /// @desc Function to get requested data from the disciplines_data structure. Returns The requested data, or undefined if not found.

@@ -4,7 +4,6 @@ var part1="",part2="",part3="",part4="",part9="";
 var part5="",part6="",part7="",part8="",part10="";
 battle_over=1;
 
-alarm[8]=999999;
 var line_break = "------------------------------------------------------------------------------";
 // show_message("Final Deaths: "+string(final_marine_deaths));
 

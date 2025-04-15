@@ -95,8 +95,7 @@ dudes_vehicle = array_create(_dudes_size, 0);
 // These arrays are the losses on any one frame.
 // Let them resize as required.
 // Hardcoded lengths lead to bounds issues when hardcoded values disagree.
-lost = [];
-lost_num = [];
+lost_units = {};
 
 hostile_shots=0;
 hostile_shooters=0;
@@ -109,5 +108,5 @@ hostile_splash=0;
 alarm[1]=4;
 
 hit = function() {
-    return scr_hit(x1, y1, x2, y2) && obj_ncombat.fadein <= 0;
+    return scr_hit(x1, y1, x2, y2) && obj_ncombat.fading_strength == 0;
 };
