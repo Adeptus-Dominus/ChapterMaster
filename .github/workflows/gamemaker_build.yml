@@ -1,5 +1,15 @@
 name: Build GameMaker Project
 on:
+  workflow_dispatch:
+    inputs:
+      yyc:
+        required: false
+        type: boolean
+        default: false
+      development:
+        required: false
+        type: boolean
+        default: true
   workflow_call:
     inputs:
       yyc:
