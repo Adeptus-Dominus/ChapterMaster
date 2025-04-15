@@ -183,6 +183,44 @@ global.modular_drawing_items = [
         body_types :[0],
         position : "crest",
     },
+
+    {
+        cultures : ["Cthonian", "Gothic"],
+        sprite : spr_chap_trim_left,
+        body_types :[0],
+        position : "left_trim",
+        max_saturation : 80,
+        exp : {
+            scale : true,
+            exp_scale_max : 300,
+        }
+    },
+    {
+        cultures : ["Cthonian", "Gothic"],
+        sprite : spr_chap_trim_right,
+        body_types :[0],
+        position : "right_trim",
+        max_saturation : 80,
+        exp : {
+            scale : true,
+            exp_scale_max : 300,
+        }        
+    },
+    {
+        cultures : ["Cthonian", "Gothic"],
+        sprite : spr_chap_trim_left,
+        body_types :[0],
+        position : "left_trim",
+        role_type : [SPECIALISTS_CHAPLAINS],
+    },
+    {
+        cultures : ["Cthonian", "Gothic"],
+        sprite : spr_chap_trim_right,
+        body_types :[0],
+        position : "right_trim",
+        role_type : [SPECIALISTS_CHAPLAINS],
+    },
+
     {
         cultures : ["Mongol"],
         sprite : spr_mongol_hat,
@@ -641,6 +679,8 @@ global.modular_drawing_items = [
         body_types :[0],
         position : "left_pauldron_embeleshments",
         max_saturation : 30,
+        traits : ["blunt", "cunning", "brute"],
+        allow_either : ["cultures", "traits"],
     },
     {
         cultures : ["Cthonian"],
@@ -648,6 +688,9 @@ global.modular_drawing_items = [
         body_types :[0],
         position : "right_pauldron_embeleshments",
         max_saturation : 30,
+        traits : ["blunt", "cunning", "brute"],
+        allow_either : ["cultures", "traits"],
+
     },
     {
         cultures : ["Wolf Cult"],
@@ -796,26 +839,53 @@ global.modular_drawing_items = [
     } ,
     {
         position: "left_shin",
-        body_types: [0, 1, 2],
+        body_types: [ 2],
         sprite: spr_indomitus_left_shin,
         armours : ["Terminator Armour"],
     }, 
     {
         position: "right_shin",
-        body_types: [0, 1, 2],
+        body_types: [2],
         sprite: spr_indomitus_right_shin,
         armours : ["Terminator Armour"],
     }, 
     {
+        cultures : ["Cthonian"],
+        traits : ["blunt", "cunning", "brute"],
+        allow_either : ["cultures", "traits"],
+        position: "left_shin",
+        body_types: [0],
+        sprite: spr_left_shin_spikes,
+        max_saturation : 80,
+        exp : {
+            scale : true,
+            exp_scale_max : 300,
+        }
+    }, 
+    {
+        position: "right_shin",
+        body_types: [0],
+        sprite: spr_right_shin_spikes,
+        traits : ["blunt", "cunning", "brute"],
+        allow_either : ["cultures", "traits"],   
+        cultures : ["Cthonian"],
+        max_saturation : 80,
+        exp : {
+            scale : true,
+            exp_scale_max : 300,
+        }
+
+    }, 
+    {
         position: "left_knee",
-        body_types: [0, 1, 2],
+        body_types: [ 2],
         sprite: spr_indomitus_left_knee_crux,
         max_saturation : 30,
         armours : ["Terminator Armour"],
     }, 
     {
         position: "right_knee",
-        body_types: [0, 1, 2],
+        body_types: [ 2],
         sprite: spr_indomitus_right_knee_crux,
         armours : ["Terminator Armour"],
         max_saturation : 30,

@@ -94,8 +94,8 @@ function ComplexSet(unit) constructor{
     };
     unit_armour = unit.armour();
     self.unit = unit;
-    //draw_helms = instance_exists(obj_creation) ? obj_creation.draw_helms : obj_controller.draw_helms;
-    draw_helms = false;
+    draw_helms = instance_exists(obj_creation) ? obj_creation.draw_helms : obj_controller.draw_helms;
+    //draw_helms = false;
     static mk7_bits = {
             armour : spr_mk7_complex,
             backpack : spr_mk7_complex_backpack,
