@@ -163,52 +163,11 @@ function imperial_navy_bombard(){
                 }
             
                 if (bombard>0){
-                    scare=(capital_number*3)+frigate_number;
-                
-                
-                
-                    // Eh heh heh
-                    if (onceh<2) and (orbiting.p_tyranids[bombard]>0){
-                        if (scare>2) then scare=2;if (scare<1) then scare=0;
-                        orbiting.p_tyranids[bombard]-=2;onceh=2;
-                    }
-                    if (onceh<2) and (orbiting.p_orks[bombard]>0){
-                        if (scare>2) then scare=2;if (scare<1) then scare=0;
-                        orbiting.p_orks[bombard]-=2;onceh=2;
-                    }
-                    if (onceh<2) and (orbiting.p_owner[bombard]=8) and (orbiting.p_tau[bombard]>0){
-                        if (scare>2) then scare=2;if (scare<1) then scare=0;
-                        orbiting.p_tau[bombard]-=2;onceh=2;
-                    
-                        if (orbiting.p_large[bombard]=0) then kill=scare*15000000;// Population if normal
-                        if (orbiting.p_large[bombard]=1) then kill=scare*0.15;// Population if large
-                    }
-                    if (onceh<2) and (orbiting.p_owner[bombard]=8) and (orbiting.p_pdf[bombard]>0){
-                        wob=scare*5000000+choose(floor(random(100000)),floor(random(100000))*-1);
-                        orbiting.p_pdf[bombard]-=wob;
-                        if (orbiting.p_pdf[bombard]<0) then orbiting.p_pdf[bombard]=0;
-                    
-                        if (orbiting.p_large[bombard]=0) then kill=scare*15000000;// Population if normal
-                        if (orbiting.p_large[bombard]=1) then kill=scare*0.15;// Population if large
-                    }
-                    if (onceh<2) and (orbiting.p_owner[bombard]=10){
-                        if (scare>2) then scare=2;if (scare<1) then scare=0;
-                    
-                        if (onceh!=2) and (orbiting.p_chaos[bombard]>0){orbiting.p_chaos[bombard]=max(0,orbiting.p_traitors[bombard]-1);onceh=2;}
-                        if (onceh!=2) and (orbiting.p_traitors[bombard]>0){orbiting.p_traitors[bombard]=max(0,orbiting.p_traitors[bombard]-2);onceh=2;}
-                    
-                        if (orbiting.p_large[bombard]=0) then kill=scare*15000000;// Population if normal
-                        if (orbiting.p_large[bombard]=1) then kill=scare*0.15;// Population if large
-                        if (orbiting.p_heresy[bombard]>0) then orbiting.p_heresy[bombard]=max(0,orbiting.p_heresy[bombard]-5);
-                    }
-                
-                    orbiting.p_population[bombard]-=kill;
-                    if (orbiting.p_population[bombard]<0) then orbiting.p_population[bombard]=0;
-                    if (orbiting.p_pdf[bombard]<0) then orbiting.p_pdf[bombard]=0;
-                
-                    if (orbiting.p_population[bombard]+orbiting.p_pdf[bombard]<=0) and (orbiting.p_owner[bombard]=1) and (obj_controller.faction_status[eFACTION.Imperium]="War"){
-                        if (planet_feature_bool(orbiting.p_feature[bombard],P_features.Monastery)==0){orbiting.p_owner[bombard]=2;orbiting.dispo[bombard]=-50;}
-                    }
+
+                	var _p_data = new PlanetData(bombard, orbiting);
+                	scare=(capital_number*3)+frigate_number;
+                	_p_data.suffer_bombard(scare);
+                   
                     exit;
                 }
             }

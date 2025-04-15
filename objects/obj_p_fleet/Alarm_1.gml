@@ -14,11 +14,19 @@ try_and_report_loop("player alarm 1",function(){
         if (spid.vision=0) then spid.vision=1;
         orbiting=spid;
         
-        if (orbiting!=0) and (instance_exists(orbiting) and (orbiting.visited == 0)){
-    		for (var planet_num = 1; planet_num < orbiting.planets; planet_num += 1){
-    			if (array_length(orbiting.p_feature[planet_num])!=0) then with(orbiting){scr_planetary_feature(planet_num);}
-    		}
-    		orbiting.visited = 1;
+        if (orbiting!=0) and (instance_exists(orbiting)){
+            if ((orbiting.visited == 0)){
+                for (var planet_num = 1; planet_num < orbiting.planets; planet_num += 1){
+                    if (array_length(orbiting.p_feature[planet_num])!=0) then with(orbiting){scr_planetary_feature(planet_num);}
+                }
+                orbiting.visited = 1;
+            }
+    		
+            for (var i=1;i<=orbiting.planets;i++){
+                if (orbiting.p_owner[b]<=5) and (orbiting.dispo[b]>-30) and (orbiting.dispo[b]<0){
+                    orbiting.dispo[b]=min(obj_ini.imperium_disposition,obj_controller.disposition[orbiting.p_owner[b]])+irandom(8)-4;
+                } 
+            }
         }
     }
 

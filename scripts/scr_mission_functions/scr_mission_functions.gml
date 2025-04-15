@@ -179,7 +179,7 @@ function complete_garrison_mission(targ_planet, problem_index){
             }
             scr_popup($"Agreed Garrison of {planet_numeral_name(targ_planet)} complete",_mission_string,"","");
         } else {
-            dispo[targ_planet] -= 20;
+        	planet.add_disposition(-20);
             scr_popup($"Agreed Garrison of {planet_numeral_name(targ_planet)}",$"your agreed garrison of  {planet_numeral_name(targ_planet)} was cut short by your chapter the planetary governor has expressed his displeasure (disposition -20)","","");
         }
         remove_planet_problem(targ_planet, "provide_garrison");
