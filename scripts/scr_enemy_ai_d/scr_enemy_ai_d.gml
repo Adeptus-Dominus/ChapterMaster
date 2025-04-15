@@ -216,8 +216,7 @@ function scr_enemy_ai_d() {
                         scr_event_log("","Mechanicus Mission Completed: The Mechanicus research team on "+string(name)+" "+scr_roman(i)+" have completed their work.");
                     }
                     if (reward=2){
-                        if (obj_ini.fleet_type=ePlayerBase.home_world) then scr_add_artifact("random","",0,obj_ini.home_name,2);
-                        if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("random","",0,obj_ini.ship[0],501);
+                        scr_add_artifact("random", "", 0);
                         text="The Mechanicus Research team on planet "+string(name)+" "+scr_roman(i)+" have completed their work without any major setbacks.  Pleased with your astartes' work, they have granted your Chapter an artifact, to be used as you see fit.";
                         scr_event_log("","Mechanicus Mission Completed: The Mechanicus research team on "+string(name)+" "+scr_roman(i)+" have completed their work.");
                         scr_event_log("","Artifact gifted from Mechanicus.");

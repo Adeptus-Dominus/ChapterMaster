@@ -80,7 +80,7 @@ function load_marines_into_ship(system, ship, units, reload = false) {
         menu = 1;
     }
     cooldown = 8;
-    selecting_ship = -1;
+    selecting_ship = "";
     if (managing == -1 && obj_controller.selection_data.purpose != "Ship Management") {
         update_garrison_manage();
     }
@@ -198,7 +198,7 @@ function scr_ui_manage() {
         }
         if (man_size < 1) {
             selecting_location = "";
-            selecting_ship = -1;
+            selecting_ship = "";
             selecting_planet = 0;
             man_size = 0;
         }
@@ -1087,7 +1087,7 @@ function scr_ui_manage() {
                 button.label = "Move Ship";
                 button.keystroke = keyboard_check(vk_shift) && keyboard_check_pressed(ord("M"));
                 button.tooltip = "Press Shift M";
-                var moveship_possible = !array_contains(invalid_locations, selecting_location) && man_size > 0 && selecting_ship > -1;
+                var moveship_possible = !array_contains(invalid_locations, selecting_location) && man_size > 0 && selecting_ship != "";
                 if (moveship_possible) {
                     button.alpha = 1;
                     if (button.draw()) {

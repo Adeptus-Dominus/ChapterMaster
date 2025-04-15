@@ -256,7 +256,7 @@ function loose_ship_to_warp_event(){
 }
 
 //TODO make method for setting ship weaponry
-function new_player_ship(type, start_loc="home", new_name=""){
+function new_player_ship(type, start_loc = "home", new_name = "") {
     var _ship_names = [];
     var _ship = new_player_ship_defaults();
     var _ship_UUIDs = struct_get_names(INI_USHIPROOT);
@@ -264,10 +264,12 @@ function new_player_ship(type, start_loc="home", new_name=""){
     for (var i = 0; i < _ship_count; i++) {
         array_push(_ship_names, INI_USHIPROOT[$ _ship_UUIDs[i]].name)
     }
-    
-    for(var k = 0; k <= 200; k++){
-        new_name = global.name_generator.generate_imperial_ship_name();
-        if (!array_contains(_ship_names, new_name)) { break };
+
+    if (new_name != "") {
+        for (var k = 0; k <= 200; k++) {
+            new_name = global.name_generator.generate_imperial_ship_name();
+            if (!array_contains(_ship_names, new_name)) { break };
+        }
     }
 
     if (start_loc == "home") { start_loc = obj_ini.home_name; }
@@ -412,7 +414,7 @@ function new_player_ship(type, start_loc="home", new_name=""){
 
     struct_set(USHIPROOT, _ship.UUID, _ship)
 
-    return _ship.UUID;
+    return INI_USHIPROOT[$ _ship.UUID];
 }
 
 function ship_class_name(UUID) {

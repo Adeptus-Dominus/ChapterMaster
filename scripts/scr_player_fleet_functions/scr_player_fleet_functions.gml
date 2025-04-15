@@ -383,7 +383,7 @@ function player_retreat_from_fleet_combat() {
     }
 }
 
-function fleet_full_ship_array(fleet="none", exclude_capitals=false, exclude_frigates = false, exclude_escorts = false) {
+function fleet_full_ship_array(fleet = "none", exclude_capitals = false, exclude_frigates = false, exclude_escorts = false) {
     var all_ships = [];
     var capital_array = [], frigate_array = [], escort_array = [];
     if (fleet == "none") {

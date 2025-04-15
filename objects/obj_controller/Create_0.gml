@@ -548,7 +548,7 @@ tagged_training=0;
 
 // ** Default menu items **
 selecting_planet=0;
-selecting_ship=-1;
+selecting_ship = "";
 fleet_minimized=0;
 fleet_all=1;
 unload=0;
@@ -1250,6 +1250,7 @@ faction_defeated[13]=0;
 battle_cry="For the Emperor";
 fortress_name="";
 flagship_name="";
+flagship_UUID = "";
 home_name="";
 home_type="";
 recruiting_name="";
@@ -1314,7 +1315,7 @@ if (instance_exists(obj_ini)){
         }
         if (global.chapter_name=="Blood Ravens"){
             for(var i=0; i<3; i++){
-                scr_add_artifact("random_nodemon","",0,obj_ini.ship[0],501);
+                scr_add_artifact("random_nodemon", "", 0);
             }
         }
         // TODO should add special bonus to different chapters based on lore
@@ -1708,25 +1709,28 @@ temp[62]="##Your fleet contains ";
 var bb=0,sk=0,glad=0,hunt=0,ships=0,bb_names=[],sk_names=[],glad_names=[],hunt_names=[];
 
 codex[0]="";codex_discovered[0]=0;
-for(var mm=0; mm<array_length(obj_ini.ship); mm++){
-    if (obj_ini.ship[mm]!=""){
-        ships++;
-        if (obj_ini.ship_class[mm] == "Battle Barge") {
-            bb++;
-            array_push(bb_names, string(obj_ini.ship[mm]));
-        }
-        if (obj_ini.ship_class[mm] == "Strike Cruiser") {
-            sk++;
-            array_push(sk_names, string(obj_ini.ship[mm]));
-        }
-        if (obj_ini.ship_class[mm] == "Gladius") {
-            glad++;
-            array_push(glad_names, string(obj_ini.ship[mm]));
-        }
-        if (obj_ini.ship_class[mm] == "Hunter") {
-            hunt++;
-            array_push(hunt_names, string(obj_ini.ship[mm]));
-        }
+var _ship_UUIDs = struct_get_names(INI_USHIPROOT);
+var _ship_count = array_length(_ship_UUIDs);
+for (var mm = 0; mm < _ship_count; mm++) {
+    ships++;
+    var _ship_struct = fetch_ship(_ship_UUIDs[mm]);
+    switch _ship_struct.class {
+    case "Battle Barge":
+        bb++;
+        array_push(bb_names, _ship_struct.name);
+        break;
+    case "Strike Cruiser":
+        sk++;
+        array_push(sk_names, _ship_struct.name);
+        break;
+    case "Gladius":
+        glad++;
+        array_push(glad_names, _ship_struct.name);
+        break;
+    case "Hunter":
+        hunt++;
+        array_push(hunt_names, _ship_struct.name);
+        break;
     }
     codex[mm]="";
     codex_discovered[mm]=0;
@@ -1735,7 +1739,7 @@ for(var mm=0; mm<array_length(obj_ini.ship); mm++){
 temp[62]+=$" {string_plural_count("warship", ships)}-\n";
 
 if (obj_ini.fleet_type != ePlayerBase.home_world || bb == 1) {
-    temp[62] += $"Your flagship, Battle Barge {obj_ini.ship[0]}.";
+    temp[62] += $"Your flagship, Battle Barge {fetch_ship(flagship_UUID).name}.";
     temp[62] += "\n";
     bb--;
 }

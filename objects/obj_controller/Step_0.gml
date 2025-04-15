@@ -771,9 +771,13 @@ try {
                 acted = 2;
             }
         }
-        for (var i = 1; i < array_length(obj_ini.ship); i++) {
-            if ((obj_ini.ship_location[i] != "Warp") && (obj_ini.ship_location[i] != "Lost")) {
-                obj_ini.ship_hp[i] = obj_ini.ship_maxhp[i];
+
+        var _ship_UUIDs = struct_get_names(INI_USHIPROOT);
+        var _ship_count = array_length(_ship_UUIDs);
+        for (var i = 0; i < _ship_count; i++) {
+            var _ship_struct = fetch_ship(_ship_UUIDs[i]);
+            if ((_ship_struct.location != "Warp") && (_ship_struct.location != "Lost")) {
+                _ship_struct.health.hp = _ship_struct.health.maxhp;
             }
         }
         // TODO need something here to veryify that the ships are within a friendly star system
@@ -781,14 +785,23 @@ try {
     // Unloads units from a ship
     if (unload > 0) {
         cooldown = 8;
-        var b = selecting_ship;
+        var _ship_struct;
+        if (selecting_ship != "") {
+            _ship_struct = fetch_ship(selecting_ship);
+        }
 
         var unit, company, unit_id;
+        if (_ship_struct == undefined) {
+            for (var q = 0; q < array_length(display_unit); q++) {
+                if (ma_lid[q] != "") {
+                    _ship_struct = fetch_ship(ma_lid[q]);
+                    break;
+                }
+            }
+        }
+
         for (var q = 0; q < array_length(display_unit); q++) {
             if ((man[q] == "man") && (ma_loc[q] == selecting_location) && (ma_wid[q] < 1) && (man_sel[q] != 0)) {
-                if (b == -1) {
-                    b = ma_lid[q];
-                }
                 unit = display_unit[q];
                 if (!is_struct(unit)) {
                     continue;
@@ -798,27 +811,22 @@ try {
                 }
                 unit_id = unit.marine_number;
                 company = unit.company;
-                obj_ini.loc[company][unit_id] = obj_ini.ship_location[b];
-                unit.ship_location = -1;
+                obj_ini.loc[company][unit_id] = _ship_struct.location;
+                unit.ship_location = "";
                 unit.planet_location = unload;
-                obj_ini.uid[company][unit_id] = 0;
 
-                ma_loc[q] = obj_ini.ship_location[b];
-                ma_lid[q] = -1;
+                ma_loc[q] = _ship_struct.location;
+                ma_lid[q] = "";
                 ma_wid[q] = unload;
             } else if ((man[q] == "vehicle") && (ma_loc[q] == selecting_location) && (ma_wid[q] < 1) && (man_sel[q] != 0)) {
-                if (b == -1) {
-                    b = ma_lid[q];
-                }
                 var unit_id = display_unit[q][1];
                 var company = display_unit[q][0];
-                obj_ini.veh_loc[company][unit_id] = obj_ini.ship_location[b];
-                obj_ini.veh_lid[company][unit_id] = -1;
+                obj_ini.veh_loc[company][unit_id] = _ship_struct.location;
+                obj_ini.veh_lid[company][unit_id] = "";
                 obj_ini.veh_wid[company][unit_id] = unload;
-                obj_ini.veh_uid[company][unit_id] = 0;
 
-                ma_loc[q] = obj_ini.ship_location[b];
-                ma_lid[q] = -1;
+                ma_loc[q] = _ship_struct.location;
+                ma_lid[q] = "";
                 ma_wid[q] = unload;
             }
         }
@@ -826,9 +834,7 @@ try {
         for (var i = 0; i < array_length(display_unit); i++) {
             man_sel[i] = 0;
         }
-        if (b > -1 && b < array_length(obj_ini.ship_carrying)) {
-            obj_ini.ship_carrying[b] -= man_size;
-        }
+        _ship_struct.cargo.carrying -= man_size;
         reset_ship_manage_arrays();
         cooldown = 10;
         sel_loading = -1;
@@ -839,11 +845,11 @@ try {
         }
     }
     // Resets selections
-    if ((managing > 0) && (man_size == 0) && ((selecting_location != "") || (selecting_types != "") || (selecting_planet != 0) || (selecting_ship != -1))) {
+    if ((managing > 0) && (man_size == 0) && ((selecting_location != "") || (selecting_types != "") || (selecting_planet != 0) || (selecting_ship != ""))) {
         selecting_location = "";
         selecting_types = "";
         selecting_planet = 0;
-        selecting_ship = -1;
+        selecting_ship = "";
     }
 
     if ((marines <= 0) && (alarm[7] == -1) && (!instance_exists(obj_fleet_controller)) && (!instance_exists(obj_ncombat))) {
