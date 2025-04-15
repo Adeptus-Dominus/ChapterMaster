@@ -90,7 +90,7 @@ function scr_load(save_part, save_id) {
 			}
 			specialist_point_handler = new SpecialistPointHandler();
 			// Transfer properties from save data to handler with null-checking
-			var properties = ["forge_queue", "apoths", "techs", "point_breakdown", "apothecary_points", "forge_points"];
+			var properties = ["forge_queue"];
 			for (var i = 0; i < array_length(properties); i++) {
 				var prop = properties[i];
 				if (struct_exists(save_data, prop)) {
