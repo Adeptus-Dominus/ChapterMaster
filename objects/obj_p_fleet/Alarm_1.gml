@@ -21,12 +21,8 @@ try_and_report_loop("player alarm 1",function(){
                 }
                 orbiting.visited = 1;
             }
-    		
-            for (var i=1;i<=orbiting.planets;i++){
-                if (orbiting.p_owner[b]<=5) and (orbiting.dispo[b]>-30) and (orbiting.dispo[b]<0){
-                    orbiting.dispo[b]=min(obj_ini.imperium_disposition,obj_controller.disposition[orbiting.p_owner[b]])+irandom(8)-4;
-                } 
-            }
+            
+    		meet_system_governors(orbiting);
         }
     }
 
@@ -86,20 +82,14 @@ try_and_report_loop("player alarm 1",function(){
             // Check to see if there are already player ships in the spot where this object will move to
             // If yes, combine the two of them
             
-            var steh;
-            steh=instance_nearest(action_x,action_y,obj_star);
+            var steh=instance_nearest(action_x,action_y,obj_star);
             if (steh.vision=0) then steh.vision=1;
             steh.present_fleet[1]+=1;
             orbiting=steh;
             // show_message("Present Fleets at alarm[1]: "+string(steh.present_fleets));
             
-            var b=0;
-            for (var i=1;i<=steh.planets;i++){
-                if (steh.p_first[b]<=5) and (steh.dispo[b]>-30) and (steh.dispo[b]<0){
-                    steh.dispo[b]=min(obj_ini.imperium_disposition,obj_controller.disposition[2])+irandom(8)-4;
-                } 
+            meet_system_governors(steh);
 
-            }
             if (steh.p_owner[1]=5) or (steh.p_owner[2]=5) or (steh.p_owner[3]=5) or (steh.p_owner[4]=5){
                 if (obj_controller.faction_defeated[5]=0) and (obj_controller.known[eFACTION.Ecclesiarchy]=0) then obj_controller.known[eFACTION.Ecclesiarchy]=1;
             }
