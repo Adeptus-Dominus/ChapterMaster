@@ -1084,7 +1084,7 @@ function scr_en_weapon(_weapon_name, is_man, man_number, man_type, group) {
 		_weapon_stack.shot_count = _shot_count;
 		array_push(_weapon_stack.owners, man_type);
 	
-		if (obj_ncombat.started == eBATTLE_STAGE.Creation) {
+		if (obj_ncombat.battle_stage == eBATTLE_STAGE.Creation) {
 			_weapon_stack.ammo_max = _ammo;
 			_weapon_stack.ammo_current = _ammo;
 			_weapon_stack.ammo_reload = _reload;

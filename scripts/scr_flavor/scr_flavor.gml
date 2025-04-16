@@ -4,24 +4,24 @@ function queue_enemy_force_health() {
 	var _text = "";
 
 	if (enemy_forces > 0) {
-		_text = $"Enemy Forces at {string(max(1, round((enemy_forces / enemy_max) * 100)))}%";
+		_text = $"The enemy forces are at {string(max(1, round((enemy_forces / enemy_max) * 100)))}% strength!";
 	} else {
-		_text = "Enemy Forces Defeated";
+		_text = "The enemy forces are defeated!";
 	}
 
-	queue_battlelog_message(_text, 999, "yellow");
+	queue_battlelog_message(_text, -50, "yellow");
 }
 
 function queue_player_force_health() {
 	var _text = "";
 
 	if (player_forces > 0) {
-		_text = $"${global.chapter_name} at {string(round((player_forces / player_max) * 100))}%";
+		_text = $"The {global.chapter_name} are at {string(round((player_forces / player_max) * 100))}% strength!";
 	} else {
-		_text = $"${global.chapter_name} Defeated";
+		_text = $"The {global.chapter_name} are defeated!";
 	}
 
-	queue_battlelog_message(_text, 999, "yellow");
+	queue_battlelog_message(_text, -50, "yellow");
 }
 
 
@@ -33,6 +33,7 @@ function display_message_queue() {
         messages_shown += 1;
         scr_newtext();
     }
+	messages_shown = 0;
     ds_priority_clear(messages_queue);
 }
 
@@ -105,7 +106,7 @@ function scr_flavor(_weapon_stack, _target_object, _target_i, casulties) {
 	if (weapon_data.has_tag("bolt")) {
 		flavoured = true;
 		if (!character_shot) {
-			if (obj_ncombat.bolter_drilling == 1) {
+			if (scr_has_adv("Bolter Drilling")) {
 				attack_message += "With perfect accuracy ";
 			}
 			if (number_of_shots < 200) {
@@ -429,10 +430,10 @@ function scr_flavor(_weapon_stack, _target_object, _target_i, casulties) {
 			leader_message = string_replace(leader_message, "a " + target_name, target_name);
 			leader_message = string_replace(leader_message, "the " + target_name, target_name);
 			leader_message = string_replace(leader_message, target_name + " ranks , inflicting {casulties}", target_name);
-			if (enemy = 5) then leader_message = string_replace(leader_message, "it", "her");
-			if (enemy = 6) and (obj_controller.faction_gender[6] = 1) then leader_message = string_replace(leader_message, "it", "him");
-			if (enemy = 6) and (obj_controller.faction_gender[6] = 2) then leader_message = string_replace(leader_message, "it", "her");
-			if (enemy != 6) and (enemy != 5) then leader_message = string_replace(leader_message, "it", "him");
+			if (obj_ncombat.enemy = 5) then leader_message = string_replace(leader_message, "it", "her");
+			if (obj_ncombat.enemy = 6) and (obj_controller.faction_gender[6] = 1) then leader_message = string_replace(leader_message, "it", "him");
+			if (obj_ncombat.enemy = 6) and (obj_controller.faction_gender[6] = 2) then leader_message = string_replace(leader_message, "it", "her");
+			if (obj_ncombat.enemy != 6) and (obj_ncombat.enemy != 5) then leader_message = string_replace(leader_message, "it", "him");
 			message_priority = 5;
 		}
 	}

@@ -54,7 +54,7 @@ function add_data_to_stack (weapon, unit_damage=0, head_role=false, unit="none")
 		_weapon_stack.shot_count = weapon.spli;
 		array_push(_weapon_stack.owners, _owner_name);
 	
-		if (obj_ncombat.started == eBATTLE_STAGE.Creation) {
+		if (obj_ncombat.battle_stage == eBATTLE_STAGE.Creation) {
 			_weapon_stack.ammo_max = weapon.ammo;
 			_weapon_stack.ammo_current = weapon.ammo;
 			_weapon_stack.ammo_reload = weapon.reload;
@@ -284,7 +284,7 @@ function scr_player_combat_weapon_stacks() {
 
 
 
-    if (dudes_num[1]=0) and (obj_ncombat.started == eBATTLE_STAGE.Creation){
+    if (dudes_num[1]=0) and (obj_ncombat.battle_stage == eBATTLE_STAGE.Creation){
         instance_destroy();
         exit;
     }
@@ -305,17 +305,6 @@ function scr_player_combat_weapon_stacks() {
             }
         }
     }
-}
-
-function set_up_player_blocks_turn(){
-    if (instance_exists(obj_pnunit)){
-        with (obj_pnunit){
-            alarm[3]=2;
-            wait_and_execute(3, scr_player_combat_weapon_stacks);
-            alarm[0]=4;
-        }
-    }
-    turn_count++;        
 }
 
 function scr_add_unit_to_roster(unit, is_local=false,is_ally=false){

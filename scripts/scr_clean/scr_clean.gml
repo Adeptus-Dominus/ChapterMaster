@@ -118,7 +118,7 @@ function scr_clean(target_object, weapon_data) {
                         unit_type = veh_type[vehicle_id];
 
                         // Apply damage
-                        var _min_damage = enemy == 13 ? 1 : 0.25;
+                        var _min_damage = obj_ncombat.enemy == 13 ? 1 : 0.25;
                         var _dice_sides = 50;
                         var _random_damage_mod = roll_dice(4, _dice_sides, "low") / 100;
                         var _armour_points = max(0, veh_ac[vehicle_id] - armour_pierce);
@@ -148,7 +148,7 @@ function scr_clean(target_object, weapon_data) {
                         unit_type = marine.role();
 
                         // Apply damage
-                        var _min_damage = enemy == 13 ? 1 : 0.25;
+                        var _min_damage = obj_ncombat.enemy == 13 ? 1 : 0.25;
                         var _dice_sides = 50;
                         var _random_damage_mod = roll_dice(4, _dice_sides, "low") / 100;
                         var _armour_points = max(0, marine_ac[vehicle_id] - armour_pierce);
@@ -218,7 +218,7 @@ function scr_clean(target_object, weapon_data) {
                     unit_type = marine.role();
 
                     // Apply damage
-                    var _min_damage = enemy == 13 ? 1 : 0.25;
+                    var _min_damage = obj_ncombat.enemy == 13 ? 1 : 0.25;
                     var _dice_sides = 50;
                     var _random_damage_mod = roll_dice(4, _dice_sides, "low") / 100;
                     var _armour_points = max(0, marine_ac[marine_index] - armour_pierce);
@@ -313,11 +313,6 @@ function check_dead_marines(unit_struct, unit_index) {
             lost_units[$ marine_type[unit_index]]++;
         } else {
             lost_units[$ marine_type[unit_index]] = 1;
-        }
-
-        // Check red thirst threadhold
-        if (obj_ncombat.red_thirst == 1 && marine_type[unit_index] != "Death Company" && ((obj_ncombat.player_forces / obj_ncombat.player_max) < 0.9)) {
-            obj_ncombat.red_thirst = 2;
         }
 
         if (unit_struct.IsSpecialist(SPECIALISTS_DREADNOUGHTS)) {

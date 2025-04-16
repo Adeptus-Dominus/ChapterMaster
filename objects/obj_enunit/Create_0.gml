@@ -31,8 +31,7 @@ if (obj_ncombat.enemy < array_length(global.star_name_colors) && obj_ncombat.ene
 }
 
 
-enemy=0;
-enemy2=0;
+target_block = noone;
 
 
 
@@ -73,13 +72,10 @@ dudes_wep2 = array_create(_enemy_size, "");
 dudes_gear = array_create(_enemy_size, "");
 dudges_mobi = array_create(_enemy_size, "");
 
-alarm[1]=5;
-alarm[5]=6;
-if (obj_ncombat.enemy=1) then alarm[6]=10;
 
 // if (obj_ncombat.enemy=1){alarm[1]=8;alarm[5]=10;}
 
 
 hit = function() {
-    return scr_hit(x1, y1, x2, y2) && obj_ncombat.fading == false;
+    return scr_hit(x1, y1, x2, y2) && obj_ncombat.fading_strength == false;
 };

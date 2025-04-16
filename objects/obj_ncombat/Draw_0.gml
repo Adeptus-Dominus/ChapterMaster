@@ -79,11 +79,11 @@ repeat (45) {
 draw_set_color(38144);
 draw_set_halign(fa_center);
 
-if (started == eBATTLE_STAGE.Creation) {
+if (battle_stage == eBATTLE_STAGE.Start) {
     draw_text(400, 860, string_hash_to_newline("[Press Enter to Begin]"));
-} else if (started == eBATTLE_STAGE.PlayerWinEnd || started == eBATTLE_STAGE.EnemyWinEnd) {
+} else if (battle_stage == eBATTLE_STAGE.PlayerWinEnd || battle_stage == eBATTLE_STAGE.EnemyWinEnd) {
     draw_text(400, 860, string_hash_to_newline("[Press Enter to Exit]"));
-} else if (battle_stage == eBATTLE_TURN.PlayerEnd || battle_stage == eBATTLE_TURN.EnemyEnd) {
+} else if (turn_stage == eBATTLE_TURN.PlayerStart || turn_stage == eBATTLE_TURN.EnemyStart) {
     draw_text(400, 860, string_hash_to_newline("[Press Enter to Continue]"));
 }
 
