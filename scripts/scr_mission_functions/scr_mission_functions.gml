@@ -135,7 +135,7 @@ function init_beast_hunt_mission(planet, star, mission_slot){
 	    gar_pop.option1="Happy Hunting";
         gar_pop.image="";
         gar_pop.cooldown=8;
-        obj_controller.cooldown=8;	    
+        obj_controller.cooldown=20;	    
 	    scr_event_log("",$"Beast hunters deployed to {numeral_name} for {_mission_length} months.", star.name);
 	}	
 }
@@ -156,7 +156,7 @@ function init_train_forces_mission(planet, star, mission_slot, marine){
 	    //TODO some new universal methods for popups
 	    gar_pop.title=$"Training forces on   {numeral_name} begins";
 	    gar_pop.text=$"{marine.name_role()} Has taken leave of his current post in order to aid the governor of {numeral_name} and his pdf commanders with training local forces and bolstering defences.";
-	    var _is_cap = role_compare(marine, eRole.Captain);
+	    var _is_cap = role_compare(marine, eROLE.Captain);
 
 	    if (_is_cap){
 	    	gar_pop.text += "the governor seems to be impressed that such a high ranking officer has been assigned to his request (disp +3)";
@@ -167,7 +167,7 @@ function init_train_forces_mission(planet, star, mission_slot, marine){
 	    gar_pop.option1="Good luck {marine.name()}";
         gar_pop.image="";
         gar_pop.cooldown=8;
-        obj_controller.cooldown=8;	    
+        obj_controller.cooldown=20;	    
 	    scr_event_log("",$"{marine.name_role()} deployed to {numeral_name} for {_mission_length} months.", star.name);
 	}	
 }
