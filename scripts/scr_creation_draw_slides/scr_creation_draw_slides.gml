@@ -97,7 +97,6 @@ function draw_chapter_select(){
 			draw_rectangle_color_simple(grid.x1, grid.y1, grid.x2, grid.y2, 0, c_white, 0.1);
 			// Click
 			if (grid.clicked()) {
-				cooldown = 8000;
 				chapter_name = chap.name;
 				if (!chap.disabled) {
 					if (scr_chapter_new(chapter_name)) {
@@ -147,7 +146,6 @@ function draw_chapter_select(){
 			draw_rectangle_color_simple(grid.x1, grid.y1, grid.x2, grid.y2, 0, c_white, 0.1);
 			//Click
 			if (grid.clicked()) {
-				cooldown = 8000;
 				chapter_name = chap.name;
 				if (!chap.disabled) {
 					if (scr_chapter_new(chapter_name)) {
@@ -231,7 +229,6 @@ function draw_chapter_select(){
 						global.chapter_icon_path = $"creation/chapters/icons";
 						global.chapter_icon_filename = chap.icon;
 					}
-					cooldown = 8000;
 					chapter_name = chap.name;
 					global.chapter_id = chap.id;
 					change_slide = 1;
@@ -240,7 +237,6 @@ function draw_chapter_select(){
 					scr_chapter_new(chap.id);
 				} else {
 					global.chapter_id = chap.id;
-					cooldown = 8000;
 					change_slide = 1;
 					goto_slide = 2;
 					custom = 2;
@@ -277,7 +273,6 @@ function draw_chapter_select(){
 			draw_rectangle_color_simple(grid.x1, grid.y1, grid.x2, grid.y2, 0, c_white, 0.1);
 			//Click
 			if (grid.clicked()) {
-				cooldown = 8000;
 				chapter_name = chap.name;
 				if (!chap.disabled) {
 					if (scr_chapter_new(chapter_name)) {
@@ -321,7 +316,6 @@ function draw_chapter_select(){
 			}
 			draw_rectangle_color_simple(grid.x1, grid.y1, grid.x2, grid.y2, 0, c_white, 0.1);
 			if (grid.clicked()) {
-				cooldown = 8000;
 				icon = 1;
 				icon_name = "da";
 				change_slide = 1;
@@ -421,7 +415,7 @@ function draw_chapter_trait_select(){
         if (text_selected="chapter") and (text_bar<=30) then draw_text(805,80,string_hash_to_newline(string(chapter_name)+"|"));
         if (scr_text_hit(800,80,true,chapter_name)){
             obj_cursor.image_index=2;
-            if (cooldown<=0) and (mouse_left>=1){text_selected="chapter";cooldown=8000;keyboard_string=chapter_name;}
+            if (scr_click_left()){text_selected="chapter";keyboard_string=chapter_name;}
         }
         if (text_selected="chapter") then chapter_name=keyboard_string;
         draw_set_alpha(0.75);draw_rectangle(580,80,1020,118,1);draw_set_alpha(1);
@@ -434,8 +428,8 @@ function draw_chapter_trait_select(){
     obj_cursor.image_index=0;
     if (custom>0) and (restarted=0){
         if (scr_hit(436,74,436+128,74+128)) and (popup=""){obj_cursor.image_index=1;
-            if (cooldown<=0) and (mouse_left=1){
-                popup="icons";cooldown=8000;
+            if (scr_click_left()){
+                popup="icons";
             }
         }
     }
@@ -472,7 +466,7 @@ function draw_chapter_trait_select(){
         yar=0;
         if (fleet_type=1) then yar=1;
         draw_sprite(spr_creation_check,yar,519,239);yar=0;
-        if (scr_hit(519,239,519+32,239+32)) and (cooldown<=0) and (mouse_left>=1) and (custom=2){cooldown=8000;
+        if (scr_hit(519,239,519+32,239+32)) and (scr_click_left()) and (custom=2){
             if (points+20<=maxpoints) and (fleet_type=3){points+=20;fleet_type=1;}
             if (fleet_type=2){fleet_type=1;}
         }
@@ -481,7 +475,7 @@ function draw_chapter_trait_select(){
         yar=0;
         if (fleet_type=2) then yar=1;
         draw_sprite(spr_creation_check,yar,771,239);yar=0;
-        if (scr_hit(771,239,771+32,239+32)) and (cooldown<=0) and (mouse_left>=1) and (custom=2){cooldown=8000;
+        if (scr_hit(771,239,771+32,239+32)) and (scr_click_left()) and (custom=2){
             if (points+20<=maxpoints) and (fleet_type=3){points+=20;fleet_type=2;}
             if (fleet_type=1){fleet_type=2;}
         }
@@ -490,7 +484,7 @@ function draw_chapter_trait_select(){
         yar=0;
         if (fleet_type=3) then yar=1;
         draw_sprite(spr_creation_check,yar,958,239);yar=0;
-        if (scr_hit(958,239,958+32,239+32)) and (cooldown<=0) and (mouse_left>=1) and (custom=2){if (fleet_type!=3) then points-=20;fleet_type=3;cooldown=8000;}
+        if (scr_hit(958,239,958+32,239+32)) and (scr_click_left()) and (custom=2){if (fleet_type!=3) then points-=20;fleet_type=3;}
         draw_text_transformed(990,239,"Penitent",0.6,0.6,0);
         draw_set_alpha(1);
         
@@ -571,7 +565,7 @@ function draw_chapter_trait_select(){
     
     
     if (popup!="icons"){
-        var advantage_click = (mouse_left>=1  && cooldown<=0  &&  custom>1);
+        var advantage_click = (scr_click_left()  &&  custom>1);
         draw_set_halign(fa_left);
         draw_set_font(fnt_40k_30b);
         draw_text_transformed(436,564,"Chapter Advantages",0.5,0.5,0);
@@ -603,7 +597,7 @@ function draw_chapter_trait_select(){
                 if (advantage_click){
                     if (points<maxpoints) and (adv_num[i]=0) and (popup=""){
                         popup="advantages";
-                        cooldown=8000;
+                        
                         temp=i;
                     }
                     var removable=false;
@@ -617,7 +611,7 @@ function draw_chapter_trait_select(){
                         var cur_ad = obj_creation.all_advantages[adv_num[i]]
                         cur_ad.remove(i);
 
-                        cooldown=8000;
+                        
                     }
                 }              
             }
@@ -648,7 +642,7 @@ function draw_chapter_trait_select(){
                 if (advantage_click){
                     if ((dis_num[slot]=0) and (popup="")){
                         popup="disadvantages";
-                        cooldown=8000;
+                        
                         temp=slot;
                     }
                     var removable=false;
@@ -663,7 +657,7 @@ function draw_chapter_trait_select(){
                         var cur_dis = obj_creation.all_disadvantages[dis_num[slot]];
                         cur_dis.remove(slot);
 
-                        cooldown=8000;
+                        
                     }   
                 }             
             }
@@ -703,8 +697,7 @@ function draw_chapter_trait_select(){
             draw_set_color(38144);
             draw_set_alpha(1);
             
-            if (mouse_left=1) and (cooldown<=0){
-                cooldown=8000;
+            if (scr_click_left()){
                 popup="";
             }
         }
@@ -755,8 +748,7 @@ function draw_chapter_trait_select(){
                     draw_set_alpha(1);
                     draw_set_color(38144);
                     
-                    if (mouse_left=1) and (cooldown<=0){
-                        cooldown=8000;
+                    if (scr_click_left()){
                         popup="";
                         icon=ic;
                         icon_name="";
@@ -819,8 +811,8 @@ function draw_chapter_trait_select(){
         }
         
         
-        if (scr_hit(x3,y3+bs,x4,y4+bs)) and (cooldown<=0) and (scrollbar_engaged<=0) and (mouse_left=1){// Click within the scrollbar grip area
-            scrollbar_engaged=mouse_y-(y3+bs);cooldown=8000;
+        if (scr_hit(x3,y3+bs,x4,y4+bs)) and (scrollbar_engaged<=0) and (scr_click_left()){// Click within the scrollbar grip area
+            scrollbar_engaged=mouse_y-(y3+bs);
         }
         
         
@@ -875,8 +867,8 @@ function draw_chapter_trait_select(){
                 
                 // Cancel button
                 var coords = [column.x1,column.y1+gap,column.x1+adv_width,column.y1+column.h+gap];
-                if (point_and_click(coords)) and (cooldown<=0) and (adv_name="Cancel"){
-                    cooldown=8000;
+                if (point_and_click(coords)) and (adv_name="Cancel"){
+                    
                     popup="";
                 }
                 // Tooltips
@@ -888,9 +880,9 @@ function draw_chapter_trait_select(){
                     draw_text(column.x1,column.y1+gap,adv_name);
                 }
                 //Click on advantage
-                if (point_and_click(coords)) and (cooldown<=0)  and (array_contains(adv, adv_name) == false){
+                if (point_and_click(coords))  and (array_contains(adv, adv_name) == false){
                     if (disable=0){
-                        cooldown=8000;
+                        
                         advantage_local_var.add(temp);
                         popup="";
                     }
@@ -948,8 +940,8 @@ function draw_chapter_trait_select(){
                 // Cancel button
                 var coords = [column.x1,column.y1+gap,column.x1+dis_width,column.y1+column.h+gap];
 
-                if (point_and_click(coords)) and (cooldown<=0) and (dis_name="Cancel"){
-                    cooldown=8000;
+                if (point_and_click(coords)) and (dis_name="Cancel"){
+                    
                     popup="";
                 }
                 //Tooltip
@@ -961,9 +953,9 @@ function draw_chapter_trait_select(){
                     draw_text(column.x1,column.y1+gap,dis_name);
                 }
                 //Click on disadvantage
-                if (point_and_click(coords)) and (cooldown<=0)  and (array_contains(dis, dis_name) == false){
+                if (point_and_click(coords)) and (array_contains(dis, dis_name) == false){
                     if (disable==false){
-                        cooldown=8000;
+                        
                         popup="";
                         disadvantage_local_var.add(temp);
                     }
@@ -971,13 +963,13 @@ function draw_chapter_trait_select(){
             }
         }
     }
-    if (popup!="") and ((mouse_left>=1) or (mouse_right=1)) and (cooldown<=0){
+    if (popup!="" and scr_click_left()){
         if ((mouse_x<445) or (mouse_x>1125) or (mouse_y<200) or (mouse_y>552)) and (popup!="icons"){
-            cooldown=8000;
+            
             popup="";
         }
         if ((mouse_x<445) or (mouse_x>1125) or (mouse_y<200) or (mouse_y>719)) and (popup="icons"){
-            cooldown=8000;
+            
             popup="";
         }
     }

@@ -446,7 +446,6 @@ ui_ranged_penalty=0;
 current_target=false;
 click=0;
 click2=0;
-mouse_left=0;
 dropdown_open=0;
 scrollbar_engaged=0;
 born_leader=0;

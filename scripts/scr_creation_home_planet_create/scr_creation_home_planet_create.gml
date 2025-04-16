@@ -50,9 +50,8 @@ function player_recruit_planet_selection(){
         if (text_selected="recruiting_name") and (text_bar<=30) then draw_text_transformed(1044+333,398,$"{recruiting_name}|",0.5,0.5,0);
         if (scr_text_hit(1044+333,398,true,recruiting_name)){
             obj_cursor.image_index=2;
-            if (cooldown<=0) and (mouse_left>=1){
+            if (scr_click_left()){
                 text_selected="recruiting_name";
-                cooldown=8000;
                 keyboard_string=recruiting_name;
             }
         }
@@ -101,9 +100,8 @@ function scr_creation_home_planet_create(){
 
             if (scr_text_hit(644,398,true,homeworld_name)){
                 obj_cursor.image_index=2;
-                if (cooldown<=0) and (mouse_left>=1){
+                if (scr_click_left()){
                 	text_selected="home_name";
-                	cooldown=8000;
                 	keyboard_string=homeworld_name;
                 }
             }
@@ -145,9 +143,8 @@ function scr_creation_home_planet_create(){
             if (text_selected="flagship_name") and (text_bar<=30) then draw_text_transformed(644,398,flagship_name+"|",0.5,0.5,0);
             if (scr_text_hit(644,398,true,flagship_name)){
                 obj_cursor.image_index=2;
-                if (cooldown<=0) and (mouse_left>=1){
+                if (scr_click_left()){
                     text_selected="flagship_name";
-                    cooldown=8000;
                     keyboard_string=flagship_name;
                 }
             }

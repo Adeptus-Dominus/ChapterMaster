@@ -24,7 +24,7 @@ if (effect=13){var butt;
     butt.depth=-20010;butt.button_text="Back";butt.button_id=1;butt.scaling=1.5;butt.target=25;
     settings=1;cooldown=8;
 }
-if (effect=14){instance_create(0,0,obj_fade);fading=0.1;}
+// if (effect=14){instance_create(0,0,obj_fade);fading=0.1;}
 if (effect=15){
     if (instance_exists(obj_controller)){obj_controller.cooldown=8000;}
     with(obj_new_button){if (target>=10) then instance_destroy();}

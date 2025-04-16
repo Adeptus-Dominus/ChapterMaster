@@ -74,8 +74,6 @@ if (change_slide>=100) then change_slide=-1;
 // Sets up a new chapter with default options
 if (change_slide==35) or (change_slide==36) or (chapter_name=="Doom Benefactors") or (chapter_string=="Doom Benefactors"){
     if (goto_slide==1){
-        mouse_left=0;
-        mouse_right=0;
         highlight=0;
         highlighting=0;
         old_highlight=0;

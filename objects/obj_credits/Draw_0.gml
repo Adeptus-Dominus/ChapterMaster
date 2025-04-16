@@ -59,7 +59,7 @@ var bhih;bhih=0;
 if (scr_hit(319,307,393,324)=false) and (obj_main_menu.browser=1) then obj_main_menu.browser=0;
 if (scr_hit(319,307,393,324)=true){
     bhih=1;
-    if (obj_main_menu.browser=0) and (mouse_left=1){
+    if (obj_main_menu.browser=0) and (scr_click_left()){
         /*switch(show_question("Open your browser?")) {
         case 1:*/
         // url_open_ext( 'http://planetofthebrandons.com/donate.html', '_blank');browser=1;

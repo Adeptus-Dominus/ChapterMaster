@@ -84,3 +84,11 @@ if (line=0) and (floor(random(freq))=3) then line=1;
 
 /* */
 /*  */
+
+if (scr_click_left()) {
+    if (highlighted == true) {
+        if (target > 10) {
+            obj_ingame_menu.effect = self.target;
+        }
+    }
+}

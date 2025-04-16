@@ -10,7 +10,6 @@ highlighted=false;
 
 target=0;
 return_button=0;
-mouse_left=0;
 
 
 

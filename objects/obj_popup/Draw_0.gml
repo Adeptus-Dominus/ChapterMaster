@@ -1578,7 +1578,7 @@ try {
 			}
 			var select_text = $"{romanNumerals[i - 1]} [{check}]";
 			draw_text(xx + comp_data[0], yy + comp_data[1], select_text);
-			if (mouse_check_button_pressed(mb_left) && point_in_rectangle(mouse_x, mouse_y, xx + comp_data[0], yy + comp_data[1], xx + comp_data[0] + 90, yy + comp_data[1] + 20)) {
+			if (point_and_click([xx + comp_data[0], yy + comp_data[1], xx + comp_data[0] + 90, yy + comp_data[1] + 20])) {
 				target_comp = i;
 				target_role = 0;
 				get_unit_promotion_options();
@@ -1602,7 +1602,7 @@ try {
 						draw_set_alpha(0.25);
 					}
 					draw_text(xx + 1030 + role_x, yy + 310 + role_y, string_hash_to_newline(string(role_name[r]) + " [" + string(check) + "]"));
-					if (mouse_check_button_pressed(mb_left) && point_in_rectangle(mouse_x, mouse_y, xx + 1030 + role_x, yy + 310 + role_y, xx + 1180 + role_x, yy + 330 + role_y)) {
+					if (point_and_click([xx + 1030 + role_x, yy + 310 + role_y, xx + 1180 + role_x, yy + 330 + role_y])) {
 						if (min_exp >= role_exp[r]) {
 							target_role = r;
 							calculate_equipment_needs();
