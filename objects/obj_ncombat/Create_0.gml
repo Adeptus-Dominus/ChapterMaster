@@ -1,3 +1,5 @@
+#macro BATTLELOG_MAX_PER_TURN 24
+
 if (instance_number(obj_ncombat) > 1) {
     instance_destroy();
 }
@@ -130,14 +132,14 @@ messages_shown = 0;
 units_lost_counts = {};
 vehicles_lost_counts = {};
 
-messages_queue = ds_priority_create();
-
 var _messages_size = 70;
 lines = array_create(_messages_size, "");
-lines_color = array_create(_messages_size, "");
+lines_color = array_create(_messages_size, COL_GREEN);
 message = array_create(_messages_size, "");
-message_sz = array_create(_messages_size, 0);
-message_priority = array_create(_messages_size, 0);
+messages_queue = ds_queue_create();
+newline = "";
+newline_color = COL_GREEN;
+liness = 0;
 
 post_equipment_lost = array_create(_messages_size, "");
 post_equipments_lost = array_create(_messages_size, 0);
@@ -165,9 +167,6 @@ final_marine_deaths = 0;
 final_command_deaths = 0;
 vehicle_deaths = 0;
 casualties = 0;
-newline = "";
-newline_color = "";
-liness = 0;
 world_size = 0;
 
 turn_stage = eBATTLE_TURN.PlayerStart;
@@ -305,3 +304,52 @@ if (obj_ini.occulobe) {
 
 enemy_dudes = "";
 global_defense = 2 - global_defense;
+
+queue_force_health = function() {
+	var _text = "";
+
+    if (turn_stage == eBATTLE_TURN.PlayerStart) {
+        if (player_forces > 0) {
+            _text = $"The {global.chapter_name} are at {string(round((player_forces / player_max) * 100))}% strength!";
+        } else {
+            _text = $"The {global.chapter_name} are defeated!";
+        }
+    } else {
+        if (enemy_forces > 0) {
+            _text = $"The enemy forces are at {string(max(1, round((enemy_forces / enemy_max) * 100)))}% strength!";
+        } else {
+            _text = "The enemy forces are defeated!";
+        }
+    }
+
+    if (_text != "") {
+        queue_battlelog_message(_text, COL_YELLOW);
+    }
+}
+
+/// @function queue_battlelog_message
+/// @param {string} _message - The message text to add to the battle log
+/// @param _message_color - Hexadecimal/CSS colour/constant color.
+/// @returns {real} The index of the newly added message
+queue_battlelog_message = function(_message, _message_color = COL_GREEN) {
+	if (instance_exists(obj_ncombat)) {
+		var _message_struct = {
+			message: _message,
+			color: _message_color
+		}
+
+		ds_queue_enqueue(obj_ncombat.messages_queue, _message_struct)
+	}
+}
+
+display_message_queue = function() {
+	while (!ds_queue_empty(messages_queue) && messages_shown < BATTLELOG_MAX_PER_TURN) {
+        var _message = ds_queue_dequeue(messages_queue);
+        newline = _message.message;
+        newline_color = _message.color;
+        messages_shown += 1;
+        scr_newtext();
+    }
+	messages_shown = 0;
+    ds_queue_clear(messages_queue);
+}

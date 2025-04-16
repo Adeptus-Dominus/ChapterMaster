@@ -8,7 +8,7 @@ function scr_lines_increase(argument0) {
 	        lines[lin]=lines[lin+1];
 	        lines_color[lin]=lines_color[lin+1];
         
-	        if (string_count("Defeated",lines[lin])=1) then lines_color[lin]="yellow";
+	        if (string_count("Defeated",lines[lin])=1) then lines_color[lin]=COL_YELLOW;
 	        // lines[lin-1]=lines[lin];
 	    }
 	}

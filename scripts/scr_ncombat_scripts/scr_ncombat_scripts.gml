@@ -1,3 +1,19 @@
+enum eBATTLE_TURN {
+    PlayerStart,
+    PlayerEnd,
+    EnemyStart,
+    EnemyEnd,
+}
+
+enum eBATTLE_STAGE {
+    Creation,
+    Main,
+    PlayerWinStart,
+    PlayerWinEnd,
+    EnemyWinStart,
+    EnemyWinEnd
+}
+
 // alarm_0
 /// @mixin
 function ncombat_enemy_stacks_init() {
@@ -3735,7 +3751,7 @@ function ncombat_battle_start() {
     if ((obj_ini.occulobe) && (battle_special != "space_hulk")) {
         if ((time == 5) || (time == 6)) {
             newline = "The morning light of dawn is blinding your marines!";
-            newline_color = "red";
+            newline_color = COL_RED;
             scr_newtext();
         }
     }
@@ -4179,7 +4195,7 @@ function ncombat_battle_end() {
     var _total_injured = _total_deaths + injured + units_saved_count;
     if (_total_injured > 0) {
         newline = $"{string_plural_count("unit", _total_injured)} {smart_verb("was", _total_injured)} critically injured.";
-        newline_color = "red";
+        newline_color = COL_RED;
         scr_newtext();
 
         if (units_saved_count > 0) {
@@ -4199,7 +4215,7 @@ function ncombat_battle_end() {
 
         if (injured > 0) {
             newline = $"{injured}x survived thanks to the Sus-an Membrane.";
-            newline_color = "red";
+            newline_color = COL_RED;
             scr_newtext();
         }
 
@@ -4213,7 +4229,7 @@ function ncombat_battle_end() {
                 _units_lost_string += smart_delimeter_sign(_unit_roles, i, false);
             }
             newline += $"{_total_deaths} units succumbed to their wounds! ({_units_lost_string})";
-            newline_color = "red";
+            newline_color = COL_RED;
             scr_newtext();
         }
 
@@ -4258,7 +4274,7 @@ function ncombat_battle_end() {
         }
 
         newline = voodoo;
-        newline_color = "red";
+        newline_color = COL_RED;
         scr_newtext();
         newline = " ";
         scr_newtext();
@@ -4270,7 +4286,7 @@ function ncombat_battle_end() {
     var _total_damaged_count = vehicle_deaths + vehicles_saved_count;
     if (_total_damaged_count > 0) {
         newline = $"{string_plural_count("vehicle", _total_damaged_count)} {smart_verb("was", _total_damaged_count)} critically damaged during battle.";
-        newline_color = "red";
+        newline_color = COL_RED;
         scr_newtext();
 
         if (vehicles_saved_count > 0) {
@@ -4300,7 +4316,7 @@ function ncombat_battle_end() {
             }
 
             newline += $"{vehicle_deaths} {smart_verb("was", vehicle_deaths)} lost forever. ({_vehicles_lost_string})";
-            newline_color = "red";
+            newline_color = COL_RED;
             scr_newtext();
         }
 
@@ -4355,7 +4371,7 @@ function ncombat_battle_end() {
     if (slime > 0) {
         var slime_string = $"Faulty Mucranoid and other afflictions have caused damage to the equipment. {slime} Forge Points will be allocated for repairs.";
         newline = slime_string;
-        newline_color = "red";
+        newline_color = COL_RED;
         scr_newtext();
 
         newline = " ";
@@ -4439,7 +4455,7 @@ function ncombat_battle_end() {
         part10 += string(ex) + "%";
         newline = part10;
         if (ex == 100) {
-            newline_color = "red";
+            newline_color = COL_RED;
         }
         scr_newtext();
 
@@ -4460,7 +4476,7 @@ function ncombat_battle_end() {
             if (loot == 1) {
                 newline = "Resources have been recovered.";
             }
-            newline_color = "yellow";
+            newline_color = COL_YELLOW;
             scr_newtext();
         }
     }
@@ -4472,7 +4488,7 @@ function ncombat_battle_end() {
         if (defeat == 1) {
             newline = "Failed to clear Ancient Ruins.";
         }
-        newline_color = "yellow";
+        newline_color = COL_YELLOW;
         scr_newtext();
     }
 
@@ -4705,7 +4721,7 @@ function ncombat_battle_end() {
 
         if ((enemy == 8) && (ethereal > 0) && (defeat == 0)) {
             newline = "Tau Ethereal Captured";
-            newline_color = "yellow";
+            newline_color = COL_YELLOW;
             scr_newtext();
         }
 
@@ -4719,13 +4735,13 @@ function ncombat_battle_end() {
                 // scr_check_equip("Plasma Bomb",battle_loc,battle_id,1);
                 // scr_check_equip("Plasma Bomb","","",1);
                 newline = "Plasma Bomb used to seal the Necron Tomb.";
-                newline_color = "yellow";
+                newline_color = COL_YELLOW;
                 scr_newtext();
                 seal_tomb_world(battle_object.p_feature[battle_id]);
             }
 
             if (plasma_bomb <= 0) {
-                battle_object.p_necrons[battle_id] = 3; // newline_color="yellow";
+                battle_object.p_necrons[battle_id] = 3; // newline_color=COL_YELLOW;
                 if (dropping != 0) {
                     newline = "Deep Strike Ineffective; Plasma Bomb required";
                 }
@@ -4753,7 +4769,7 @@ function ncombat_battle_end() {
         var bombs;bombs=scr_check_equip("Plasma Bomb",battle_loc,battle_id,0);
         if (bombs>0){
             scr_check_equip("Plasma Bomb",battle_loc,battle_id,1);
-            newline="Plasma Bomb used to seal the Necron Tomb.";newline_color="yellow";scr_newtext();
+            newline="Plasma Bomb used to seal the Necron Tomb.";newline_color=COL_YELLOW;scr_newtext();
             if (battle_object.p_feature[battle_id]="Awakened Necron Tomb") then battle_object.p_feature[battle_id]="Necron Tomb";
         }
     }*/
@@ -4806,7 +4822,7 @@ function ncombat_battle_end() {
         var nep;
         nep = false;
         newline = "The enemy Leader has been killed!";
-        newline_color = "yellow";
+        newline_color = COL_YELLOW;
         scr_newtext();
         newline = line_break;
         scr_newtext();
@@ -4894,11 +4910,11 @@ function ncombat_battle_end() {
                 obj_controller.disposition[2] -= 2;
                 if (allies == 1) {
                     newline = "Local PDF have been eaten!";
-                    newline_color = "red";
+                    newline_color = COL_RED;
                     scr_newtext();
                 } else if (allies == 2) {
                     newline = "Local Guardsmen have been eaten!";
-                    newline_color = "red";
+                    newline_color = COL_RED;
                     scr_newtext();
                 }
             }
@@ -4940,7 +4956,7 @@ function ncombat_battle_end() {
                         remove = obj_controller.inquisitor[inquisitor_ship.inquisitor];
                         scr_event_log("red", $"Your Astartes consume {msg}.");
                     }
-                    newline_color = "red";
+                    newline_color = COL_RED;
                     scr_newtext();
                     if (obj_controller.inquisitor_type[remove] == "Ordo Hereticus") {
                         scr_loyalty("Inquisitor Killer", "+");
@@ -5002,7 +5018,7 @@ function ncombat_battle_end() {
 
     if ((exterminatus > 0) && (dropping != 0)) {
         newline = "Exterminatus has been succesfully placed.";
-        newline_color = "yellow";
+        newline_color = COL_YELLOW;
         endline = 0;
         scr_newtext();
     }
@@ -5028,7 +5044,7 @@ function ncombat_battle_end() {
 
             scr_event_log("red", newline, battle_object.name);
             instance_activate_object(obj_event_log);
-            newline_color = "red";
+            newline_color = COL_RED;
             scr_newtext();
 
             var lasers_lost, defenses_lost, silos_lost;
@@ -5082,7 +5098,7 @@ function ncombat_battle_end() {
             battle_object.p_silo[obj_ncombat.battle_id] -= silos_lost;
             battle_object.p_lasers[obj_ncombat.battle_id] -= lasers_lost;
             if (defenses_lost + silos_lost + lasers_lost > 0) {
-                newline_color = "red";
+                newline_color = COL_RED;
                 scr_newtext();
             }
 
@@ -5119,14 +5135,13 @@ function ncombat_battle_end() {
     instance_deactivate_object(obj_star);
     instance_deactivate_object(obj_ground_mission);
 
-    show_debug_message($"{battle_stage}");
     /* */
     /*  */
 }
 
 // alarm_7
 /// @mixin
-function ncombat_special_battle() {
+function ncombat_special_end() {
     try {
         // show_debug_message("alarm 7 start");
         audio_stop_sound(snd_battle);

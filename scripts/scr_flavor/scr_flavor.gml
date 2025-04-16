@@ -1,58 +1,3 @@
-#macro BATTLELOG_MAX_PER_TURN 24
-
-function queue_enemy_force_health() {
-	var _text = "";
-
-	if (enemy_forces > 0) {
-		_text = $"The enemy forces are at {string(max(1, round((enemy_forces / enemy_max) * 100)))}% strength!";
-	} else {
-		_text = "The enemy forces are defeated!";
-	}
-
-	queue_battlelog_message(_text, -50, "yellow");
-}
-
-function queue_player_force_health() {
-	var _text = "";
-
-	if (player_forces > 0) {
-		_text = $"The {global.chapter_name} are at {string(round((player_forces / player_max) * 100))}% strength!";
-	} else {
-		_text = $"The {global.chapter_name} are defeated!";
-	}
-
-	queue_battlelog_message(_text, -50, "yellow");
-}
-
-
-function display_message_queue() {
-	while (!ds_priority_empty(messages_queue) && messages_shown < BATTLELOG_MAX_PER_TURN) {
-        var _message = ds_priority_delete_max(messages_queue);
-        newline = _message.message;
-        newline_color = _message.color;
-        messages_shown += 1;
-        scr_newtext();
-    }
-	messages_shown = 0;
-    ds_priority_clear(messages_queue);
-}
-
-/// @function queue_battlelog_message
-/// @param {string} _message - The message text to add to the battle log
-/// @param {real} [_message_size=0] - The size/importance of the message (higher values = higher display priority; affects sorting order)
-/// @param {real} [_message_priority=0] - The priority level (affects sorting and text color: 0=normal, 135=blue, 134=purple)
-/// @returns {real} The index of the newly added message
-function queue_battlelog_message(_message, _message_priority = 0, _message_color = COL_GREEN) {
-	if (instance_exists(obj_ncombat)) {
-		var _message_struct = {
-			message: _message,
-			color: _message_color
-		}
-
-		ds_priority_add(obj_ncombat.messages_queue, _message_struct, _message_priority)
-	}
-}
-
 /// @mixin
 function scr_flavor(_weapon_stack, _target_object, _target_i, casulties) {
 
@@ -424,7 +369,6 @@ function scr_flavor(_weapon_stack, _target_object, _target_i, casulties) {
 		}
 	}
 
-	var message_priority = 0;
 	if (obj_ncombat.enemy <= 10) {
 		if (target_name = obj_controller.faction_leader[obj_ncombat.enemy]) { // Cleaning up the message for the enemy leader
 			leader_message = string_replace(leader_message, "a " + target_name, target_name);
@@ -434,29 +378,20 @@ function scr_flavor(_weapon_stack, _target_object, _target_i, casulties) {
 			if (obj_ncombat.enemy = 6) and (obj_controller.faction_gender[6] = 1) then leader_message = string_replace(leader_message, "it", "him");
 			if (obj_ncombat.enemy = 6) and (obj_controller.faction_gender[6] = 2) then leader_message = string_replace(leader_message, "it", "her");
 			if (obj_ncombat.enemy != 6) and (obj_ncombat.enemy != 5) then leader_message = string_replace(leader_message, "it", "him");
-			message_priority = 5;
 		}
 	}
 
-	var message_size = 0;
-	if (defenses == 1) {
-		message_size = 999;
-	} else if (casulties == 0) {
-		message_size = number_of_shots / 10;
-	} else {
-		if (target.dudes_vehicle[targeh] == 1) {
-			message_size = casulties * 10;
-		}
-		else {
-			message_size = casulties;
-		}
+	var message_color = COL_DARK_GREEN;
+	if (defenses == 1 || casulties != 0) {
+		message_color = COL_BRIGHT_GREEN;
 	}
 
 	if (attack_message != "") {
-		queue_battlelog_message(attack_message, message_size);
+		obj_ncombat.queue_battlelog_message(attack_message, message_color);
 	}
 
 	if (leader_message != "") {
-		queue_battlelog_message(leader_message, message_size);
+		message_color = COL_BRIGHT_GREEN;
+		obj_ncombat.queue_battlelog_message(leader_message, message_color);
 	}
 }

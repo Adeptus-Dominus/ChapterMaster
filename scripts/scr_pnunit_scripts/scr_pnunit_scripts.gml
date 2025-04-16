@@ -218,16 +218,12 @@ function pnunit_battle_effects() {
                 }
 
                 if (r_lost > 0) {
-                    obj_ncombat.newline = miss;
-                    obj_ncombat.newline_color = "red";
-                    with (obj_ncombat) {
-                        scr_newtext();
-                    }
+                    obj_ncombat.queue_battlelog_message(miss, COL_RED);
                 }
             }
         }
 
-        if (obj_ncombat.battle_stage >= eBATTLE_STAGE.Start) {
+        if (obj_ncombat.battle_stage >= eBATTLE_STAGE.Main) {
             // Should probably have the option under deployment to say 'Should Assault Marines enter the fray with vehicles?'   [ ]
         }
 

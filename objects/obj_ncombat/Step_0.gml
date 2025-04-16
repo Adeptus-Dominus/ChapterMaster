@@ -1,19 +1,3 @@
-enum eBATTLE_TURN {
-    PlayerStart,
-    PlayerEnd,
-    EnemyStart,
-    EnemyEnd,
-}
-
-enum eBATTLE_STAGE {
-    Creation,
-    Start,
-    PlayerWinStart,
-    PlayerWinEnd,
-    EnemyWinStart,
-    EnemyWinEnd
-}
-
 if (fading_strength > 0) {
     fading_strength -= 0.05;
 }
@@ -60,7 +44,7 @@ if (battle_stage == eBATTLE_STAGE.Creation) {
 
     ncombat_ally_init();
 
-    battle_stage = eBATTLE_STAGE.Start;
+    battle_stage = eBATTLE_STAGE.Main;
 
     if (obj_ncombat.enemy == 30 || battle_special == "ship_demon") {
         turn_stage = eBATTLE_TURN.PlayerEnd;
@@ -71,7 +55,7 @@ if (keyboard_check_pressed(vk_enter) && fading_strength == 0) {
     if (turn_stage == eBATTLE_TURN.PlayerStart || turn_stage == eBATTLE_TURN.EnemyStart) {
         turn_count++;
         global_perils -= 1;
-        queue_battlelog_message($"Turn {turn_count}", 1, "yellow");
+        queue_battlelog_message($"Turn {turn_count}", COL_YELLOW);
         resolve_battle_state();
         display_message_queue();
     
@@ -86,8 +70,6 @@ if (keyboard_check_pressed(vk_enter) && fading_strength == 0) {
                 }
             }
             display_message_queue();
-            queue_player_force_health();
-            display_message_queue();
         }
 
         if (turn_stage == eBATTLE_TURN.PlayerStart) {
@@ -100,9 +82,10 @@ if (keyboard_check_pressed(vk_enter) && fading_strength == 0) {
                 enunit_enemy_profiles_init();
             }
             display_message_queue();
-            queue_enemy_force_health();
-            display_message_queue();
         }
+
+        queue_force_health();
+        display_message_queue();
 
         turn_stage = (turn_stage == eBATTLE_TURN.PlayerStart) ? eBATTLE_TURN.PlayerEnd : eBATTLE_TURN.EnemyEnd;
     }
@@ -147,7 +130,7 @@ if (keyboard_check_pressed(vk_enter) && fading_strength == 0) {
             pnunit_dying_process();
         }
 
-        ncombat_special_battle();
+        ncombat_special_end();
     }
 }
 

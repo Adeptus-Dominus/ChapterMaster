@@ -7,7 +7,6 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
 	_message = $"INVALID! lost_units_count:{lost_units_count} target_type:{target_type} hostile_range:{hostile_range} hostile_weapon:{hostile_weapon} hostile_shots:{hostile_shots}";
 	_attack_text = "";
 	_loss_text = "";
-	var _message_color = COL_GREEN;
 
 	var _hostile_weapon, _hostile_shots;
 	_hostile_weapon = "";
@@ -271,12 +270,12 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
 		}
 
 		if (string_length(_message) > 3) {
-			queue_battlelog_message(_message, 999, COL_RED);
+			obj_ncombat.queue_battlelog_message(_message, COL_RED);
 		}
 		if (obj_nfort.hp[1] <= 0) {
 			s = 0;
 			him = 0;
-			queue_battlelog_message("The fortified wall has been breached!", 999, COL_RED);
+			obj_ncombat.queue_battlelog_message("The fortified wall has been breached!", COL_RED);
 			obj_ncombat.wall_destroyed = 1;
 			with(obj_nfort) {
 				instance_destroy();
@@ -299,6 +298,7 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
 		}
 	}
 
+	var _message_color = COL_GREEN;
 	if (loss_list != " ") {
 		if (hostile_weapon == "Web Spinner") {
 			loss_list += (lost_units_count == 1) ? " has been incapacitated." : " have been incapacitated.";
@@ -313,6 +313,6 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
 	_message = _attack_text + _loss_text;
 
 
-	var _message_priority = lost_units_count <= 0 ? hostile_shots / 100 : lost_units_count;
-	queue_battlelog_message(_message, _message_priority, _message_color);
+	// var _message_priority = lost_units_count <= 0 ? hostile_shots / 100 : lost_units_count;
+	obj_ncombat.queue_battlelog_message(_message, _message_color);
 }
