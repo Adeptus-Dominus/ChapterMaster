@@ -166,8 +166,8 @@ function init_train_forces_mission(planet, star, mission_slot, marine){
 	    //pip.image="event_march"
 	    gar_pop.option1="Good luck {marine.name()}";
         gar_pop.image="";
-        gar_pop.cooldown=8;
-        obj_controller.cooldown=20;	    
+        gar_pop.cooldown=500;
+        obj_controller.cooldown=500;	    
 	    scr_event_log("",$"{marine.name_role()} deployed to {numeral_name} for {_mission_length} months.", star.name);
 	}	
 }
@@ -282,12 +282,13 @@ function complete_train_forces_mission(targ_planet, problem_index){
 						}
 					}
         			if (_hard_loss){
-        				_mission_string += "His particulary grueling regimes and standards imposed upon the senior officers of the pdf caused friction with physical injury being caused to one officer";
+        				_mission_string += $"His particulary grueling regimes and standards imposed upon the senior officers of the pdf caused friction with physical injury being caused to one officer";
         				disp_loss = - 25;
         				_mission_string += "(disposition -25)";
         			}
         		}
         	}
+        	scr_popup($"Training Forces on {planet_numeral_name(i)}",_mission_string,"","");
         	remove_planet_problem(targ_planet, "train_forces");
         	_trainer.job = "none";
         }
