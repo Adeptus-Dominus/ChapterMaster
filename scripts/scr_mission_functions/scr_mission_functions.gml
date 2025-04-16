@@ -141,7 +141,7 @@ function init_beast_hunt_mission(planet, star, mission_slot){
 }
 
 function role_compare(unit, role){
-	return unit.role() == obj_ini.role[100][eRole.Captain];
+	return unit.role() == obj_ini.role[100][role];
 }
 function init_train_forces_mission(planet, star, mission_slot, marine){
 	var _pdata = new PlanetData(planet, star);
@@ -242,7 +242,7 @@ function complete_train_forces_mission(targ_planet, problem_index){
         			var _cult = planet.get_features(P_features.Gene_Stealer_Cult)[0];
         			if (_cult.hiding){
         				delete_feature(_cult);
-        				_mission_string += $"fortune has smiled on this mission, {_trainer.name_role()}'s abilities as a Veteran of dealing with the Tyranids came in handy and in a short period was able to discerne the existencee of a cult. He was able to organise those  he considered to be still loyal to rally an extermiation of the cult, reeports suggest he was so successful as to have completely wiped the genestealer presence from the planet";
+        				_mission_string += $"Fortune has smiled on this mission, {_trainer.name_role()}'s abilities as a Veteran of dealing with the Tyranids came in handy and in a short period was able to discern the existencee of a cult. He was able to organise those  he considered to be still loyal to rally an extermiation of the cult, reeports suggest he was so successful as to have completely wiped the genestealer presence from the planet";
         			}
         		}
         	}
@@ -254,7 +254,7 @@ function complete_train_forces_mission(targ_planet, problem_index){
         	if (_brute){
         		_wis_test_difficulty-=10;
         	}
-        	_unit_pass = _tester.standard_test(_unit, "wisdom",10, "beast");
+        	_unit_pass = _tester.standard_test(_trainer, "wisdom",10, "beast");
         	if (_unit_pass[0]){
         		var _new_pdf = planet.recruit_pdf((_unit_pass[1]/10));//this will approximate podf improvement for the time being
         		_mission_string += "Training of the Pdf went well and improved the quality of the pdf as well as porviding a big recruitment imvprovement for the planet {_new_pdf} new pdf were recruited";

@@ -397,7 +397,7 @@ function scr_enemy_ai_d() {
             try{
                 complete_beast_hunt_mission(i,_beast_hunt);
             } catch (_exception){
-                handle_exception(exception);
+                handle_exception(_exception);
             }
         }
 
@@ -406,7 +406,7 @@ function scr_enemy_ai_d() {
             try{
                 complete_train_forces_mission(i,train_forces);
             } catch (_exception){
-                handle_exception(exception);
+                handle_exception(_exception);
             }
         }             
     
