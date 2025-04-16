@@ -255,7 +255,7 @@ function complete_train_forces_mission(targ_planet, problem_index){
         		_wis_test_difficulty-=10;
         	}
         	_unit_pass = _tester.standard_test(_unit, "wisdom",10, "beast");
-        	if (≈){
+        	if (_unit_pass[0]){
         		var _new_pdf = planet.recruit_pdf((_unit_pass[1]/10));//this will approximate podf improvement for the time being
         		_mission_string += "Training of the Pdf went well and improved the quality of the pdf as well as porviding a big recruitment imvprovement for the planet {_new_pdf} new pdf were recruited";
         		if (_siege_master){
@@ -274,19 +274,22 @@ function complete_train_forces_mission(targ_planet, problem_index){
         		_mission_string+= "He failed to work effectivly with the existing chain of command";
 
         		if (disp_loss<-20){
-        			var hard_loss_traits = ["harshborn", "feral", "zealous_faith", "blood_for_blood", "blunt","brute", "brawler"];
-        			var hard_loss = false;
-        			for (var i=0;i<array_length(hard_loss_traits);i++){
-        				if (array_contains(_trainer.traits, hard_loss_traits[i])){
-        					hard_loss = true;
+        			var _hard_loss_traits = ["harshborn", "feral", "zealous_faith", "blood_for_blood", "blunt","brute", "brawler"];
+        			var _hard_loss = false;
+        			for (var i=0;i<array_length(_hard_loss_traits);i++){
+        				if (array_contains(_trainer.traits, _hard_loss_traits[i])){
+        					_hard_loss = true;
 						}
 					}
-        			if (hard_loss){
+        			if (_hard_loss){
         				_mission_string += "His particulary grueling regimes and standards imposed upon the senior officers of the pdf caused friction with physical injury being caused to one officer";
         				disp_loss = - 25;
+        				_mission_string += "(disposition -25)";
         			}
         		}
         	}
+        	remove_planet_problem(targ_planet, "train_forces");
+        	_trainer.job = "none";
         }
 	 }
 }
