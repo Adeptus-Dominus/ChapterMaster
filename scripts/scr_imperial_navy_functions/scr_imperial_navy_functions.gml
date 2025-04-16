@@ -166,7 +166,7 @@ function imperial_navy_bombard(){
 
                 	var _p_data = new PlanetData(bombard, orbiting);
                 	scare=(capital_number*3)+frigate_number;
-                	_p_data.suffer_bombard(scare);
+                	_p_data.suffer_navy_bombard(scare);
                    
                     exit;
                 }
