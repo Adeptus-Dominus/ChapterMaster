@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"scr_vehicle_weapon",
+  "%Name":"scr_ncombat_scripts",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_vehicle_weapon",
+  "name":"scr_ncombat_scripts",
   "parent":{
     "name":"Combat",
     "path":"folders/Scripts/Combat.yy",

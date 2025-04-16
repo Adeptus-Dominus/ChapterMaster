@@ -31,8 +31,7 @@ if (obj_ncombat.enemy < array_length(global.star_name_colors) && obj_ncombat.ene
 }
 
 
-enemy=0;
-enemy2=0;
+target_block = noone;
 
 
 
@@ -44,51 +43,39 @@ averages=1;
 
 // x determines column; maybe every 10 or so?
 
-var i;i=0;
-i=0;
-repeat(1001){i+=1;
-    wep[i]="";
-    wep_num[i]=0;
-    range[i]=0;
-    att[i]=0;
-    apa[i]=0;
-    ammo[i]=-1;
-    splash[i]=0;
-    wep_owner[i]="";
-    
-    dude_co[i]=0;
-    dude_id[i]=0;
-    
-    dudes[i]="";
-    dudes_special[i]="";
-    dudes_num[i]=0;
-    dudes_onum[i]=-1;
-    dudes_ac[i]=0;
-    dudes_hp[i]=0;
-    dudes_dr[i]=1;
-    dudes_vehicle[i]=0;
-    dudes_damage[i]=0;
-    dudes_exp[i]=0;
-    dudes_powers[i]="";
-    faith[i]=0;
-    
-    dudes_attack[i]=1;
-    dudes_ranged[i]=1;
-    dudes_defense[i]=1;
-    
-    dudes_wep1[i]="";
-    dudes_wep2[i]="";
-    dudes_gear[i]="";
-    dudges_mobi[i]="";
-}
+weapon_stacks_normal = {};
+weapon_stacks_vehicle = {};
+weapon_stacks_unique = {};
 
-alarm[1]=5;
-alarm[5]=6;
-if (obj_ncombat.enemy=1) then alarm[6]=10;
+var _enemy_size = 1002;
+dude_co = array_create(_enemy_size, 0);
+dude_id = array_create(_enemy_size, 0);
+
+dudes = array_create(_enemy_size, "");
+dudes_special = array_create(_enemy_size, "");
+dudes_num = array_create(_enemy_size, 0);
+dudes_onum = array_create(_enemy_size, -1);
+dudes_ac = array_create(_enemy_size, 0);
+dudes_hp = array_create(_enemy_size, 0);
+dudes_dr = array_create(_enemy_size, 1);
+dudes_vehicle = array_create(_enemy_size, 0);
+dudes_damage = array_create(_enemy_size, 0);
+dudes_exp = array_create(_enemy_size, 0);
+dudes_powers = array_create(_enemy_size, "");
+faith = array_create(_enemy_size, 0);
+
+dudes_attack = array_create(_enemy_size, 1);
+dudes_ranged = array_create(_enemy_size, 1);
+
+dudes_wep1 = array_create(_enemy_size, "");
+dudes_wep2 = array_create(_enemy_size, "");
+dudes_gear = array_create(_enemy_size, "");
+dudges_mobi = array_create(_enemy_size, "");
+
 
 // if (obj_ncombat.enemy=1){alarm[1]=8;alarm[5]=10;}
 
 
 hit = function() {
-    return scr_hit(x1, y1, x2, y2) && obj_ncombat.fadein <= 0;
+    return scr_hit(x1, y1, x2, y2) && obj_ncombat.fading_strength == false;
 };

@@ -1,42 +1,21 @@
-/// @function add_battle_log_message
-/// @param {string} _message - The message text to add to the battle log
-/// @param {real} [_message_size=0] - The size/importance of the message (higher values = higher display priority; affects sorting order)
-/// @param {real} [_message_priority=0] - The priority level (affects sorting and text color: 0=normal, 135=blue, 134=purple)
-/// @returns {real} The index of the newly added message
-function add_battle_log_message(_message, _message_size = 0, _message_priority = 0) {
-	if (instance_exists(obj_ncombat)) {
-		obj_ncombat.messages++;
-		var _message_index = obj_ncombat.messages;
-		
-		obj_ncombat.message[_message_index] = _message;
-		obj_ncombat.message_sz[_message_index] = _message_size + (0.5 - (obj_ncombat.messages / 100));
-		obj_ncombat.message_priority[_message_index] = _message_priority;
-		
-		return _message_index;
-	}
-	return -1;
-}
-
-function display_battle_log_message() {
-    // Trigger the message processing alarm
-    obj_ncombat.alarm[3] = 5;
-}
-
-function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shots, casulties) {
+/// @mixin
+function scr_flavor(_weapon_stack, _target_object, _target_i, casulties) {
 
 	// Generates flavor based on the damage and casualties from scr_shoot, only for the player
 
-	var attack_message, kill_message, leader_message, targeh;
-	targeh = target_type;
+	var attack_message, kill_message, leader_message;
 	leader_message = "";
 	attack_message = $"";
 	kill_message = "";
 
-	var weapon_name = wep[id_of_attacking_weapons];
+	var weapon_name = _weapon_stack.weapon_name;
+	var number_of_shots = _weapon_stack.weapon_count
+	var target = _target_object;
+	var targeh = _target_i;
 
-	if (id_of_attacking_weapons = -51) then weapon_name = "Heavy Bolter Emplacemelse ent";
-	if (id_of_attacking_weapons = -52) then weapon_name = "Missile Launcher Emplacement";
-	if (id_of_attacking_weapons = -53) then weapon_name = "Missile Silo";
+	// if (id_of_attacking_weapons = -51) then weapon_name = "Heavy Bolter Emplacemelse ent";
+	// if (id_of_attacking_weapons = -52) then weapon_name = "Missile Launcher Emplacement";
+	// if (id_of_attacking_weapons = -53) then weapon_name = "Missile Silo";
 
 	var weapon_data = gear_weapon_data("weapon", weapon_name, "all");
 	if (!is_struct(weapon_data)) {
@@ -50,25 +29,13 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 		target_name = obj_controller.faction_leader[obj_ncombat.enemy];
 	}
 
-	var character_shot = false,
-		unit_name = "",
-		cm_kill = 0;
+	var character_shot = false;
+	var unit_name = "";
 
-
-	 if (id_of_attacking_weapons > 0) {
-	 	if (array_length(wep_solo[id_of_attacking_weapons]) > 0) {
-	 		character_shot = true;
-	 		full_names = wep_solo[id_of_attacking_weapons];
-	 		if (wep_title[id_of_attacking_weapons] != "") {
-	 			if (array_length(full_names) == 1) {
-	 				unit_name = wep_title[id_of_attacking_weapons] + " " + wep_solo[id_of_attacking_weapons][0];
-	 			} else {
-	 				unit_name = wep_title[id_of_attacking_weapons] + "'s"
-	 			}
-	 		}
-	 		if (wep_solo[id_of_attacking_weapons][0] == obj_ini.master_name) then cm_kill = 1;
-	 	}
-	 }
+		if (array_length(_weapon_stack.owners) == 1) {
+			unit_name = $"{_weapon_stack.owners[0]}";
+			character_shot = true;
+		}
 
 	if (obj_ncombat.battle_special = "WL10_reveal") or (obj_ncombat.battle_special = "WL10_later") {
 		if (target_name = "Veteran Chaos Terminator") and (target_name > 0) then obj_ncombat.chaos_angry += casulties * 2;
@@ -84,7 +51,7 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 	if (weapon_data.has_tag("bolt")) {
 		flavoured = true;
 		if (!character_shot) {
-			if (obj_ncombat.bolter_drilling == 1) {
+			if (scr_has_adv("Bolter Drilling")) {
 				attack_message += "With perfect accuracy ";
 			}
 			if (number_of_shots < 200) {
@@ -402,71 +369,29 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 		}
 	}
 
-	// if (string_length(attack_message+kill_message+p3)<8) then show_message(weapon_name+" is not displaying anything");
-
-	// I don't understand what this was supposed to do either.
-	// if (obj_ncombat.dead_enemies != 0){
-	// 	for (var i = 1; i < array_length_1d(obj_ncombat.dead_ene); i++) {
-	// 		if (obj_ncombat.dead_ene[i] != "") {
-	// 			if (obj_ncombat.dead_enemies == 1) {
-	// 				kill_message += obj_ncombat.dead_ene[i] + " unit has been eliminated.";
-	// 			} else if (obj_ncombat.dead_enemies == 2) {
-	// 				if (i == 1) {
-	// 					kill_message += obj_ncombat.dead_ene[i] + " and ";
-	// 				} else {
-	// 					kill_message += obj_ncombat.dead_ene[i] + " units have been eliminated.";
-	// 				}
-	// 			} else if (obj_ncombat.dead_enemies > 2) {
-	// 				if (i == 1) {
-	// 					kill_message += obj_ncombat.dead_ene[i] + ", ";
-	// 				} else if (i == obj_ncombat.dead_enemies) {
-	// 					kill_message += "and " + obj_ncombat.dead_ene[i] + " units have been eliminated.";
-	// 				} else {
-	// 					kill_message += obj_ncombat.dead_ene[i] + ", ";
-	// 				}
-	// 			}
-	// 		}
-	// 		obj_ncombat.dead_ene[i] = "";
-	// 	}
-	// 	obj_ncombat.dead_enemies = 0;
-	// }
-
-	var message_priority = 0;
 	if (obj_ncombat.enemy <= 10) {
 		if (target_name = obj_controller.faction_leader[obj_ncombat.enemy]) { // Cleaning up the message for the enemy leader
 			leader_message = string_replace(leader_message, "a " + target_name, target_name);
 			leader_message = string_replace(leader_message, "the " + target_name, target_name);
 			leader_message = string_replace(leader_message, target_name + " ranks , inflicting {casulties}", target_name);
-			if (enemy = 5) then leader_message = string_replace(leader_message, "it", "her");
-			if (enemy = 6) and (obj_controller.faction_gender[6] = 1) then leader_message = string_replace(leader_message, "it", "him");
-			if (enemy = 6) and (obj_controller.faction_gender[6] = 2) then leader_message = string_replace(leader_message, "it", "her");
-			if (enemy != 6) and (enemy != 5) then leader_message = string_replace(leader_message, "it", "him");
-			message_priority = 5;
+			if (obj_ncombat.enemy = 5) then leader_message = string_replace(leader_message, "it", "her");
+			if (obj_ncombat.enemy = 6) and (obj_controller.faction_gender[6] = 1) then leader_message = string_replace(leader_message, "it", "him");
+			if (obj_ncombat.enemy = 6) and (obj_controller.faction_gender[6] = 2) then leader_message = string_replace(leader_message, "it", "her");
+			if (obj_ncombat.enemy != 6) and (obj_ncombat.enemy != 5) then leader_message = string_replace(leader_message, "it", "him");
 		}
 	}
 
-	var message_size = 0;
-	if (defenses == 1) {
-		message_size = 999;
-	} else if (casulties == 0) {
-		message_size = number_of_shots / 10;
-	} else {
-		if (target.dudes_vehicle[targeh] == 1) {
-			message_size = casulties * 10;
-		}
-		else {
-			message_size = casulties;
-		}
+	var message_color = COL_DARK_GREEN;
+	if (defenses == 1 || casulties != 0) {
+		message_color = COL_BRIGHT_GREEN;
 	}
 
 	if (attack_message != "") {
-		add_battle_log_message(attack_message, message_size, message_priority);
-		display_battle_log_message();
+		obj_ncombat.queue_battlelog_message(attack_message, message_color);
 	}
 
 	if (leader_message != "") {
-		add_battle_log_message(leader_message, message_size, message_priority);
-		display_battle_log_message();
+		message_color = COL_BRIGHT_GREEN;
+		obj_ncombat.queue_battlelog_message(leader_message, message_color);
 	}
-
 }

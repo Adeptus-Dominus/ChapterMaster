@@ -11,7 +11,8 @@ function EquipmentStruct(item_data, core_type, quality_request = "none") constru
     attack = 0;
     melee_hands = 0;
     ranged_hands = 0;
-    ammo = 0;
+    ammo = -1;
+    reload = -1;
     range = 0;
     spli = 0;
     arp = 0;
@@ -45,8 +46,18 @@ function EquipmentStruct(item_data, core_type, quality_request = "none") constru
 
     // Placeholder maintenance values;
     if (maintenance == 0) {
-        if (has_tags(["heavy_ranged", "power", "plasma", "melta"])) {
-            maintenance += 0.05;
+        maintenance = 0.01;
+
+        if (has_tags(["heavy_ranged"])) {
+            maintenance += 0.02;
+        }
+        
+        if (has_tags(["power", "plasma", "melta", "grav"])) {
+            maintenance += 0.02;
+        }
+
+        if (has_tags(["power_armour"])) {
+            maintenance += 0.02;
         }
     }
 
@@ -132,7 +143,7 @@ function EquipmentStruct(item_data, core_type, quality_request = "none") constru
                     }
                     break;
                 case "ammo":
-                    if (ammo != 0) {
+                    if (ammo > 0) {
                         item_desc_tooltip += $"Ammo: {ammo}#";
                     }
                     break;

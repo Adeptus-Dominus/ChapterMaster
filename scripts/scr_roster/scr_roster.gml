@@ -721,31 +721,26 @@ function add_vehicle_to_battle(company, veh_index, is_local){
 
 
     if (obj_ini.veh_role[company][v] = "Land Speeder") {
-    targ.veh_hp[targ.veh] = obj_ini.veh_hp[company][v] * 2.5;
-        targ.veh_hp_multiplier[targ.veh] = 2.5;
-        targ.veh_ac[targ.veh] = 20;
+        targ.veh_hp[targ.veh] = obj_ini.veh_hp[company][v] * 3;
+        targ.veh_ac[targ.veh] = 60;
     }
     else if (obj_ini.veh_role[company][v] = "Rhino") or(obj_ini.veh_role[company][v] = "Whirlwind") {
-        targ.veh_hp[targ.veh] = obj_ini.veh_hp[company][v] * 3;
-        targ.veh_hp_multiplier[targ.veh] = 3;
-        targ.veh_ac[targ.veh] = 35;
+        targ.veh_hp[targ.veh] = obj_ini.veh_hp[company][v] * 2.5;
+        targ.veh_ac[targ.veh] = 62;
     }
     else if (obj_ini.veh_role[company][v] = "Predator") {
-        targ.veh_hp[targ.veh] = obj_ini.veh_hp[company][v] * 3;
-        targ.veh_hp_multiplier[targ.veh] = 3;
-        targ.veh_ac[targ.veh] = 40;
+        targ.veh_hp[targ.veh] = obj_ini.veh_hp[company][v] * 4;
+        targ.veh_ac[targ.veh] = 84;
     }
     else if (obj_ini.veh_role[company][v] = "Land Raider") {
-        targ.veh_hp[targ.veh] = obj_ini.veh_hp[company][v] * 5;
-        targ.veh_hp_multiplier[targ.veh] = 5;
-        targ.veh_ac[targ.veh] = 50;
+        targ.veh_hp[targ.veh] = obj_ini.veh_hp[company][v] * 4.5;
+        targ.veh_ac[targ.veh] = 100;
     }
 
     // STC Bonuses
     if (targ.veh_type[targ.veh] != "") {
         if (obj_controller.stc_bonus[3] = 1) {
             targ.veh_hp[targ.veh] = round(targ.veh_hp[targ.veh] * 1.1);
-            targ.veh_hp_multiplier[targ.veh] = targ.veh_hp_multiplier[targ.veh] * 1.1;
         }
         if (obj_controller.stc_bonus[3] = 2) {
             //TODO reimplement STC bonus for ranged vehicle weapons
@@ -757,7 +752,6 @@ function add_vehicle_to_battle(company, veh_index, is_local){
         }
         if (obj_controller.stc_bonus[4] = 1) {
             targ.veh_hp[targ.veh] = round(targ.veh_hp[targ.veh] * 1.1);
-            targ.veh_hp_multiplier[targ.veh] = targ.veh_hp_multiplier[targ.veh] * 1.1;
         }
         if (obj_controller.stc_bonus[4] = 2) {
             targ.veh_ac[targ.veh] = round(targ.veh_ac[targ.veh] * 1.1);
