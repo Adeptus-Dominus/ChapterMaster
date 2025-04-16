@@ -267,9 +267,8 @@ function scr_ui_manage() {
             draw_rectangle(xx + 800 - (bar_wid / 2), yy + 108, xx + 800 + (bar_wid / 2), yy + 100 + string_h, 1);
             click_check = point_and_click([xx + 800 - (bar_wid / 2), yy + 108, xx + 800 + (bar_wid / 2), yy + 100 + string_h]);
             obj_cursor.image_index = 0;
-            if (!click_check) {
-                text_bar = false;
-            } else if (click_check) {
+            text_bar = false;
+            if (click_check) {
                 obj_cursor.image_index = 2;
                 text_bar = true;
                 keyboard_string = obj_ini.company_title[managing];

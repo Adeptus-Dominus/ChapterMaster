@@ -502,7 +502,7 @@ try {
 			}
 			draw_sprite(spr_creation_check, yar, x6, y6);
 			yar = 0;
-			if (scr_hit(x6, y6, x6 + 32, y6 + 32) && scr_click_left() && (custom > 0) && (restarted == 0) && (!instance_exists(obj_creation_popup))) {
+			if (point_and_click([x6, y6, x6 + 32, y6 + 32]) && (custom > 0) && (restarted == 0) && (!instance_exists(obj_creation_popup))) {
 				var onceh;
 				onceh = 0;
 				if ((chapter_master_melee == melee_choice_order) && (onceh == 0)) {
@@ -585,7 +585,7 @@ try {
 
 			draw_sprite(spr_creation_check, chapter_master_specialty == h, x6, y6 + 214);
 
-			if (scr_hit(x6, y6 + 214, x6 + 32, y6 + 32 + 214) && scr_click_left() && (custom > 1) && (restarted == 0) && (nope == 0)) {
+			if (point_and_click([x6, y6 + 214, x6 + 32, y6 + 32 + 214]) && (custom > 1) && (restarted == 0) && (nope == 0)) {
 				var onceh = 0;
 				if ((chapter_master_specialty != h) && (onceh == 0)) {
 					chapter_master_specialty = h;
@@ -735,14 +735,12 @@ try {
 				draw_set_alpha(1);
 			}
 			draw_sprite(spr_creation_arrow, 4, 927 + 64, 761);
-			if ((popup == "") && ((change_slide >= 70) || (change_slide <= 0)) && (scr_click_left())) {
-				if (scr_hit(927 + 64 + 12, 761 + 12, 927 + 128 - 12, 761 + 64 - 12)) {
-					scr_creation(2);
-					scr_creation(3);
-					scr_creation(4);
-					scr_creation(5);
-					scr_creation(6);
-				}
+			if ((popup == "") && ((change_slide >= 70) || (change_slide <= 0)) && (point_and_click([927 + 64 + 12, 761 + 12, 927 + 128 - 12, 761 + 64 - 12]))) {
+				scr_creation(2);
+				scr_creation(3);
+				scr_creation(4);
+				scr_creation(5);
+				scr_creation(6);
 			}
 		}
 		draw_set_alpha(1);
