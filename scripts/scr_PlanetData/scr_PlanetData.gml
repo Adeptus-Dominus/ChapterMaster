@@ -12,6 +12,7 @@ function PlanetData(planet, system) constructor{
         system.dispo[planet] = 100;
     }
 //
+	static large_pop_conversion = 1000000000;
 
     self.planet = planet;
     self.system = system;
@@ -46,7 +47,7 @@ function PlanetData(planet, system) constructor{
     //assumes a large pop figure and changes down if small pop planet
     static population_small_conversion= function(pop_value){
     	if (!large_population){
-    		pop_value *= 100000000;
+    		pop_value *= large_pop_conversion;
     	}
     	return pop_value;
     }
@@ -103,6 +104,16 @@ function PlanetData(planet, system) constructor{
     	fortification_level = system.p_fortified[planet];
     }
 
+    static recruit_pdf = function(percentage_pop){
+    	var new_pdf = population * (percentage_pop/100);
+    	edit_population(new_pdf*-1);
+    	if (large_population){
+    		new_pdf *= large_pop_conversion;
+    	}
+    	pdf += new_pdf;
+    	system.p_pdf[planet] = pdf;
+    	return new_pdf;
+    }
     star_station = system.p_station[planet];
     pdf_loss_reduction = 0;
 
@@ -213,6 +224,10 @@ function PlanetData(planet, system) constructor{
   		return _select_features;
     }
 
+    static delete_feature = function(feature){
+    	delete_features(system.p_feature[planet], feature);
+    }
+
     static get_local_apothecary_points = function() {
         var _system_point_use = obj_controller.specialist_point_handler.point_breakdown.systems;
         var _spare_apoth_points = 0;
@@ -271,7 +286,7 @@ function PlanetData(planet, system) constructor{
 		        }
 		        if (_starship.funds_spent>=_target_spend && _starship.engineer_score>=2000){// u2=tar;
 		        	//TODO refactor into general new ship logic
-		            delete_features(features,P_features.Starship);
+		            delete_feature(P_features.Starship);
 		        
 		            var locy=$"{name()}";
 		        

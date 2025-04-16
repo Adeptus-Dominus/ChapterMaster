@@ -168,7 +168,6 @@ function scr_manage_task_selector(){
 		                			exit;
 	                				break;
 	                			case "hunt_beast":
-	                			case "train_forces":
 	                				unit = display_unit[i];
 	                				unit.job = {
 	                					type:selection_data.purpose_code, 
@@ -176,7 +175,16 @@ function scr_manage_task_selector(){
 	                					location:selection_data.system.name
 	                				};
 	                				unit.unload(selection_data.planet, selection_data.system);
-	            					break;										
+	            					break;	
+	            				case "train_forces":
+	                				unit = display_unit[i];
+	                				unit.job = {
+	                					type:selection_data.purpose_code, 
+	                					planet:selection_data.planet, 
+	                					location:selection_data.system.name
+	                				};
+	                				unit.unload(selection_data.planet, selection_data.system);
+	                				init_train_forces_mission(selection_data.planet, selection_data.system,problem_slot, marine);            		                		            												
 	                		}		                		
 	                	} else {
 	                		switch(selection_data.purpose_code){
@@ -202,7 +210,7 @@ function scr_manage_task_selector(){
 	                	case "hunt_beast":
 							var problem_slot = selection_data.array_slot;
 							init_beast_hunt_mission(selection_data.planet, selection_data.system,problem_slot);
-							break;                		                		
+							break;  
 	                }
 	                exit_adhoc_manage();
 	                exit;			

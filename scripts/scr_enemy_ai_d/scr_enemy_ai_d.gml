@@ -399,7 +399,16 @@ function scr_enemy_ai_d() {
             } catch (_exception){
                 handle_exception(exception);
             }
-        }        
+        }
+
+        var train_forces = has_problem_planet_and_time(i,"train_forces", 0);
+        if (train_forces>-1){
+            try{
+                complete_train_forces_mission(i,train_forces);
+            } catch (_exception){
+                handle_exception(exception);
+            }
+        }             
     
 	    if ((p_tyranids[i]=3) or (p_tyranids[i]=4)) and (p_population[i]>0){
 	        if (!(has_problem_planet(i, "Hive Fleet"))){
