@@ -273,7 +273,7 @@ function complete_train_forces_mission(targ_planet, problem_index){
 
         		_mission_string+= "He failed to work effectively with the existing chain of command";
 
-        		if (disp_loss<-20){
+        		if (_unit_pass[1]<-20){
         			var _hard_loss_traits = ["harshborn", "feral", "zealous_faith", "blood_for_blood", "blunt","brute", "brawler"];
         			var _hard_loss = false;
         			for (var i=0;i<array_length(_hard_loss_traits);i++){
