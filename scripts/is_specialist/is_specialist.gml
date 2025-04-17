@@ -352,6 +352,12 @@ function collect_by_religeon(religion, sub_cult="", location=""){
 /// @description Processes the selection of units based on group parameters and updates controller data
 /// @param {array} group The array of units to process for selection
 /// @param {struct} selection_data Data structure containing selection parameters and state
+
+enum MissionSelectType {
+	Units,
+	Squads
+}
+
 function group_selection(group, selection_data) {
     try {
         var unit, s, unit_location;
@@ -369,6 +375,9 @@ function group_selection(group, selection_data) {
             exit_button = new ShutterButton();
             proceed_button = new ShutterButton();
             selection_data.start_count = 0;
+            if (!struct_exists(selection_data, "select_type")){
+            	selection_data.select_type = MissionSelectType.Units;
+            }
             // Resets selections for next turn
             man_size = 0;
             selecting_location = "";
@@ -416,6 +425,10 @@ function group_selection(group, selection_data) {
             other_manage_data();
             man_current = 0;
             man_max = MANAGE_MAN_MAX;
+
+            if (selection_data.select_type == MissionSelectType.Squads){
+            	new_company_struct();
+            }
         }
     } catch (_exception) {
         //handle and send player back to map

@@ -106,12 +106,26 @@ function CompanyStruct(comp) constructor{
 		text_color : c_green,
 		str1 : "Allow mass equip",
 	});
+
 	mass_equip_toggle.update();
+
+	squad_selection_mode = (obj_controller.managing<0 && obj_controller.selection_data.select_type==MissionSelectType.Squads);
+
+	if (squad_selection_mode){
+		select_squad_button = new UnitButtonObject({
+			x1 : xx+center_width[0]+5, 
+			y1 : yy+center_height[0]+150,
+			color:c_red,
+			label : "Select Squad",
+			tooltip : obj_controller.selection_data.purpose
+		});
+
+		selected_squads = [];
+	}
 
 
 	static send_squad_on_mission  = function(mission_type, star){
 		with (star){
-
 			var unload_squad=instance_create(x,y,obj_star_select);
 			unload_squad.target=self;
 			unload_squad.loading=1;
@@ -123,6 +137,78 @@ function CompanyStruct(comp) constructor{
 			break;
 		}
 		
+	}
+
+	static draw_squad_assignment_options = function(){
+		if (current_squad.assignment == "none"){
+
+			draw_text_transformed(xx+bound_width[0]+5, yy+bound_height[0]+125, $"Squad has no current assignments",1,1,0);
+
+			var _squad_sys = squad_loc.system;
+			if (squad_loc.same_system) and (_squad_sys!="Warp" && _squad_sys!="Lost"){
+				if (garrison_button.draw()){
+					send_on_mission=true;
+					mission_type="garrison";
+				}
+
+				garrison_button.keystroke = press_exclusive(ord("G"));
+				if (array_contains(current_squad.class, "scout")) || (array_contains(current_squad.class, "bike")){
+					if (sabotage_button.draw()){
+						send_on_mission=true;
+						mission_type="sabotage";
+					}
+				}
+			}
+			if (send_on_mission){
+				send_squad_on_mission(mission_type,star_by_name(squad_loc.system));					
+			}
+			bound_height[0] += 180;
+		} else {
+			if (is_struct(current_squad.assignment)){
+				var cur_assignment = current_squad.assignment
+				draw_text_transformed(xx+bound_width[0]+5, yy+bound_height[0]+125, $"Assignment : {cur_assignment.type}",1,1,0);
+				var tooltip_text =  "Cancel Assignment"
+				var cancel_but = draw_unit_buttons([xx+bound_width[0]+5, yy+bound_height[0]+150],tooltip_text,[1,1],c_red,,,,true);
+				if(point_and_click(cancel_but) || keyboard_check_pressed(ord("C"))){
+					var cancel_system=noone;
+					with (obj_star){
+						if (name == squad_loc.system){
+							cancel_system=self;
+						}
+					}
+					if (cancel_system!=noone){
+						var planet = current_squad.assignment.ident;
+						var operation;
+						for (var i=0;i<array_length(cancel_system.p_operatives[planet]);i++){
+							operation = cancel_system.p_operatives[planet][i];
+							if (operation.type=="squad" && operation.reference ==company_squads[cur_squad]){
+								array_delete(cancel_system.p_operatives[planet], i, 1);
+							}
+						}
+					}
+					current_squad.assignment = "none";
+				}
+				bound_height[0] += 180;
+				if (cur_assignment.type == "garrison"){
+					var garrison_but = draw_unit_buttons([cancel_but[2]+10, cancel_but[1]],"View Garrison",[1,1],c_red,,,,true);
+					if (point_and_click(garrison_but)){
+						var garrrison_star =  star_by_name(cur_assignment.location);
+						obj_controller.view_squad = false;
+						if (garrrison_star!="none"){
+							scr_toggle_manage();
+			                obj_controller.x = garrrison_star.x;
+			                obj_controller.y = garrrison_star.y;
+			                obj_controller.selection_data =  {
+			                	system : garrrison_star.id,
+			                	planet:cur_assignment.ident,
+			                	feature:"",
+			                }
+			                garrrison_star.alarm[3] = 4;
+			            }
+					}
+				}
+			}
+		}
 	}
 
 	next_squad = function(up = true){
@@ -211,8 +297,8 @@ function CompanyStruct(comp) constructor{
 	static draw_squad_view = function(){
 		center_width = [580,1005];
 		center_height = [144,957];
-		var xx=__view_get( e__VW.XView, 0 )+0;
-		var yy=__view_get( e__VW.YView, 0 )+0;
+		xx=__view_get( e__VW.XView, 0 )+0;
+		yy=__view_get( e__VW.YView, 0 )+0;
     	var member;
     	selected_unit=obj_controller.temp[120];
 		if (array_length(company_squads) > 0){
@@ -245,8 +331,8 @@ function CompanyStruct(comp) constructor{
 			var x_mod=0,y_mod=0;
 			var member_width=0, member_height=0;
 			var x_overlap_mod =0;
-			var bound_width = center_width;
-			var bound_height = center_height;
+			bound_width = center_width;
+			bound_height = center_height;
 			draw_set_halign(fa_left);
 
 			if (array_length(company_squads) > 0){
@@ -268,86 +354,44 @@ function CompanyStruct(comp) constructor{
 
 			draw_set_halign(fa_left);
 			//should be moved elsewhere for efficiency
-			var squad_leader = current_squad.determine_leader();
+			squad_leader = current_squad.determine_leader();
 			if (squad_leader != "none"){
 				var leader_text = $"Squad Leader : {fetch_unit(squad_leader).name_role()}"
 				draw_text_transformed(xx+bound_width[0]+5, yy+bound_height[0]+50, leader_text,1,1,0);
 			}
-			var squad_loc = current_squad.squad_loci();
+			squad_loc = current_squad.squad_loci();
 			draw_text_transformed(xx+bound_width[0]+5, yy+bound_height[0]+75, $"Squad Members : {current_squad.life_members}",1,1,0);
 			draw_text_transformed(xx+bound_width[0]+5, yy+bound_height[0]+100, $"Squad Location : {squad_loc.text}",1,1,0);
 			var send_on_mission=false, mission_type;
-			if (current_squad.assignment == "none"){
 
-				draw_text_transformed(xx+bound_width[0]+5, yy+bound_height[0]+125, $"Squad has no current assignments",1,1,0);
-
-				var _squad_sys = squad_loc.system;
-				if (squad_loc.same_system) and (_squad_sys!="Warp" && _squad_sys!="Lost"){
-					if (garrison_button.draw()){
-						send_on_mission=true;
-						mission_type="garrison";
-					}
-
-		garrison_button.keystroke = press_exclusive(ord("G"));
-					if (array_contains(current_squad.class, "scout")) || (array_contains(current_squad.class, "bike")){
-						if (sabotage_button.draw()){
-							send_on_mission=true;
-							mission_type="sabotage";
-						}
-					}
-				}
-				if (send_on_mission){
-					send_squad_on_mission(mission_type,star_by_name(squad_loc.system));					
-				}
-				bound_height[0] += 180;
+			if (!squad_selection_mode){
+				draw_squad_assignment_options();
 			} else {
-				if (is_struct(current_squad.assignment)){
-					var cur_assignment = current_squad.assignment
-					draw_text_transformed(xx+bound_width[0]+5, yy+bound_height[0]+125, $"Assignment : {cur_assignment.type}",1,1,0);
-					var tooltip_text =  "Cancel Assignment"
-					var cancel_but = draw_unit_buttons([xx+bound_width[0]+5, yy+bound_height[0]+150],tooltip_text,[1,1],c_red,,,,true);
-					if(point_and_click(cancel_but) || keyboard_check_pressed(ord("C"))){
-						var cancel_system=noone;
-						with (obj_star){
-							if (name == squad_loc.system){
-								cancel_system=self;
-							}
-						}
-						if (cancel_system!=noone){
-							var planet = current_squad.assignment.ident;
-							var operation;
-							for (var i=0;i<array_length(cancel_system.p_operatives[planet]);i++){
-								operation = cancel_system.p_operatives[planet][i];
-								if (operation.type=="squad" && operation.reference ==company_squads[cur_squad]){
-									array_delete(cancel_system.p_operatives[planet], i, 1);
-								}
-							}
-						}
-						current_squad.assignment = "none";
-					}
-					bound_height[0] += 180;
-					if (cur_assignment.type == "garrison"){
-						var garrison_but = draw_unit_buttons([cancel_but[2]+10, cancel_but[1]],"View Garrison",[1,1],c_red,,,,true);
-						if (point_and_click(garrison_but)){
-							var garrrison_star =  star_by_name(cur_assignment.location);
-							obj_controller.view_squad = false;
-							if (garrrison_star!="none"){
-								scr_toggle_manage();
-				                obj_controller.x = garrrison_star.x;
-				                obj_controller.y = garrrison_star.y;
-				                obj_controller.selection_data =  {
-				                	system : garrrison_star.id,
-				                	planet:cur_assignment.ident,
-				                	feature:"",
-				                }
-				                garrrison_star.alarm[3] = 4;
-				            }
-						}
+				var _select_action = false;
+				if (array_contains(selected_squads, company_squads[cur_squad])){
+					select_squad_button.update({
+						color:c_red,
+						label : "De-select Squad",
+					});
+				} else {
+
+					select_squad_button.update({
+						color:c_green,
+						label : "Select Squad",
+					});
+					_select_action = true;
+				}
+				if (select_squad_button.draw()){
+					if (_select_action){
+						array_push(selected_squads, company_squads[cur_squad])
+					} else {
+						array_delete(selected_squads, array_find_value(selected_squads, company_squads[cur_squad]), 1);
 					}
 				}
 			}
-		previous_squad_button.keystroke = press_exclusive(vk_left);
-		next_squad_button.keystroke = press_exclusive(vk_tab);
+			
+			previous_squad_button.keystroke = press_exclusive(vk_left);
+			next_squad_button.keystroke = press_exclusive(vk_tab);
 			//TODO compartmentalise drop down option logic
 			var deploy_text = "Squad will deploy in the";
 			if (current_squad.formation_place!=""){
