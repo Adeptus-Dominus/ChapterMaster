@@ -19,7 +19,6 @@ function mission_name_key(mission){
 		"recon" : "Recon Mission for Inquisitor",
 		"cleanse" : "Cleanse Planet for Inquisitor",
 		"tyranid_org" : "Capture Tyranid for Inquisitor",
-		"recon" : "Recon Mission for Inquisitor",
 		"bomb" : "Bombard World for inquisitor",
 		"great_crusade": "Answer Crusade Muster Call",
 		"harlequins" : "Harlequin presence Report",
@@ -154,7 +153,7 @@ function init_train_forces_mission(planet, star, mission_slot, marine){
 	    //pop.image="ancient_ruins";
 	    var gar_pop=instance_create(0,0,obj_popup);
 	    //TODO some new universal methods for popups
-	    gar_pop.title=$"Training forces on   {numeral_name} begins";
+	    gar_pop.title=$"Training forces on {numeral_name} begins";
 	    gar_pop.text=$"{marine.name_role()} Has taken leave of his current post in order to aid the governor of {numeral_name} and his pdf commanders with training local forces and bolstering defences.";
 	    var _is_cap = role_compare(marine, eROLE.Captain);
 
@@ -241,7 +240,7 @@ function complete_train_forces_mission(targ_planet, problem_index){
         		if (planet.has_feature(P_features.Gene_Stealer_Cult)){
         			var _cult = planet.get_features(P_features.Gene_Stealer_Cult)[0];
         			if (_cult.hiding){
-        				delete_feature(_cult);
+        				planet.delete_feature(P_features.Gene_Stealer_Cult);
         				_mission_string += $"Fortune has smiled on this mission, {_trainer.name_role()}'s abilities as a Veteran of dealing with the Tyranids came in handy and in a short period was able to discern the existencee of a cult. He was able to organise those  he considered to be still loyal to rally an extermiation of the cult, reeports suggest he was so successful as to have completely wiped the genestealer presence from the planet";
         			}
         		}
