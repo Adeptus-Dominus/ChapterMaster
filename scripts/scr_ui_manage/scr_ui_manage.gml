@@ -136,10 +136,12 @@ function alternative_manage_views(x1, y1) {
         keystroke: keyboard_check_pressed(ord("S"))
     });
 
-    if (_squad_button.draw(!text_bar)) {
-        view_squad = !view_squad;
-        if (view_squad) {
-            new_company_struct();
+    if (managing < 0 && selection_data.select_type != MissionSelectType.Squads) {
+        if (_squad_button.draw(!text_bar)) {
+            view_squad = !view_squad;
+            if (view_squad) {
+                new_company_struct();
+            }
         }
     }
 
@@ -251,6 +253,9 @@ function scr_ui_manage() {
         } else if (managing < 0) {
             if (struct_exists(selection_data, "purpose")) {
                 draw_text(xx + 800, yy + 74, $"{selection_data.purpose}");
+            }
+            if (selection_data.select_type == MissionSelectType.Squads){
+                view_squad = true;
             }
         }
 

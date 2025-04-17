@@ -429,11 +429,11 @@ try {
         // title / text / image / speshul
         var cur_star = obj_turn_end.battle_object[obj_turn_end.current_battle];
         var planet = obj_turn_end.battle_world[obj_turn_end.current_battle]
-        var planet_string = scr_roman_numerals()[planet-1];
+        var _planet_string = scr_roman_numerals()[planet-1];
             
         remove_planet_problem(planet ,"spyrer",cur_star)
         
-        var tixt=$"The Spyrer on {cur_star.name} {planet_string} has been removed.  The citizens and craftsman may sleep more soundly, the Inquisition likely pleased."
+        var tixt=$"The Spyrer on {cur_star.name} {_planet_string} has been removed.  The citizens and craftsman may sleep more soundly, the Inquisition likely pleased."
     
         scr_popup("Inquisition Mission Completed",tixt,"spyrer","");
         
@@ -444,9 +444,29 @@ try {
         scr_gov_disp(cur_star.name,planet,choose(1,2,3,4));
         
         instance_deactivate_object(obj_star);
+    } else if ((string_count("protect_raiders",battle_special)>0)){
+        instance_activate_object(obj_star);
+        // show_message(obj_turn_end.current_battle);
+        // show_message(obj_turn_end.battle_world[obj_turn_end.current_battle]);
+        // title / text / image / speshul
+        var cur_star = obj_turn_end.battle_object[obj_turn_end.current_battle];
+        var planet = obj_turn_end.battle_world[obj_turn_end.current_battle]
+        var _planet = new PlanetData(planet,cur_star);
+        var _planet_string = _planet.name();
+            
+        _planet.remove_problem("protect_raiders");
+        _planet.add_disposition(15);
+        var _special_reward = 0;
+        var tixt=$"The Raiding forces on {cur_star.name} {_planet_string} have been removed.  The citizens and craftsman may sleep more soundly. (planet disp +15)"
+    
+        scr_popup("Planet Protected",tixt,"protect_raiders","");
+    
+        scr_event_log("","Governor Completed: Raiding forces on {cur_star.name} {_planet_string} have been removed.", cur_star.name);
+        
+        instance_deactivate_object(obj_star);        
     }
     
-    if ((string_count("fallen",battle_special)>0)) and (defeat=0){
+    else if ((string_count("fallen",battle_special)>0)) and (defeat=0){
         var fallen=0;
         with (obj_turn_end){
             remove_planet_problem(battle_world[current_battle], "fallen", battle_object[current_battle])
@@ -454,10 +474,12 @@ try {
             tixt+=scr_roman(battle_world[current_battle]);
             scr_event_log("",$"Mission Succesful: {tixt} have been captured or purged.");
             tixt+=$" have been captured or purged.  They shall be brought to the Chapter {obj_ini.role[100][14]}s posthaste, in order to account for their sins.  ";
-            var ran;ran=choose(1,1,2,3);
-            if (ran=1) then tixt+="Suffering is the beginning to penance.";
-            if (ran=2) then tixt+="Their screams shall be the harbringer of their contrition.";
-            if (ran=3) then tixt+="The shame they inflicted upon us shall be written in their flesh.";
+            var _tex_options = [
+                "Suffering is the beginning to penance.",
+                "Their screams shall be the harbringer of their contrition.",
+                "The shame they inflicted upon us shall be written in their flesh."
+            ]
+            tixt = _tex_options[choose(0,0,1,2)];
             scr_popup("Hunt the Fallen Completed",tixt,"fallen","");        
         }
     }
@@ -525,7 +547,8 @@ try {
                 obj_turn_end.combating=0;// obj_turn_end.alarm[1]=1;
             }
             var pip;pip=instance_create(0,0,obj_popup);
-            pip.title="Enemies Vanquished";pip.text="Not only have you killed the Chaos Lord, "+string(obj_controller.faction_leader[eFACTION.Chaos])+", but also all of your battle brothers that questioned your rule.  As you stand, alone, among the broken corpses of your enemies you begin to question what exactly it is that you accomplished.  No matter the results, you feel as though your actions have been noticed.";
+            pip.title="Enemies Vanquished";
+            pip.text="Not only have you killed the Chaos Lord, "+string(obj_controller.faction_leader[eFACTION.Chaos])+", but also all of your battle brothers that questioned your rule.  As you stand, alone, among the broken corpses of your enemies you begin to question what exactly it is that you accomplished.  No matter the results, you feel as though your actions have been noticed.";
         }
     }
     

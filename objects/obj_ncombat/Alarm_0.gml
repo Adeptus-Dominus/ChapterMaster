@@ -78,6 +78,11 @@ if (string_count("spyrer", battle_special) > 0) {
 	enemies[1] = 1;
 	u.flank = 1;
 }
+
+if (battle_special == "protect_raiders") > 0) {
+	fortified = 0;
+	threat = 3;
+}
 // * Small Fallen Group *
 if (battle_special = "fallen1") {
 	fortified = 0;

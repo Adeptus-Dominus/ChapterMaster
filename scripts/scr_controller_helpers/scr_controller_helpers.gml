@@ -83,9 +83,12 @@ function scr_change_menu(specific_area_function) {
             with(obj_fleet_select) {
                 instance_destroy();
             }
-            with(obj_popup) {
-                instance_destroy();
+            if (close_popups){
+                with(obj_popup) {
+                    instance_destroy();
+                }
             }
+            close_popups = true;
             specific_area_function();
         }
     }

@@ -711,6 +711,7 @@ sel_owner=0;
 sel_system_x=0;
 sel_system_y=0;
 popup_master_crafted=0;
+close_popups = true;
 // ** Sets starting turn **
 turn=1;
 // turn=40;
