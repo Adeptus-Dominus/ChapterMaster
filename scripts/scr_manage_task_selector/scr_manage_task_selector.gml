@@ -32,7 +32,19 @@ function task_selector_squad_manage(){
 		var _squad = obj_ini.squads[company_data.selected_squads[i]];
 		switch(selection_data.purpose_code){
 			case "protect_raiders":
-				
+				instance_create(0,0,obj_ncombat);
+		        obj_ncombat.enemy=eFACTION.Eldar;
+		        obj_ncombat.battle_object = selection_data.system;
+		        obj_ncombat.battle_loc = selection_data.system.name);
+		        obj_ncombat.battle_id = selection_data.planet;
+		        obj_ncombat.battle_special = "protect_raiders";
+		        _roster = new Roster();
+			    with (_roster){
+			    	rester.selected_units=_squad.get_squad_structs();
+		            setup_battle_formations();
+		            add_to_battle();
+			    }
+			    delete _roster;
 		}
 	}
 }

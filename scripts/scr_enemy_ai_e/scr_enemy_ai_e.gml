@@ -502,7 +502,6 @@ function scr_enemy_ai_e() {
                     }
                 }
             }
-
         }
         if (p_player[run] > 0) and(has_problem_planet(run,"bomb")) {
             var have_bomb;
