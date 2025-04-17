@@ -254,7 +254,7 @@ function complete_train_forces_mission(targ_planet, problem_index){
         	if (_brute){
         		_wis_test_difficulty-=10;
         	}
-        	_unit_pass = _tester.standard_test(_trainer, "wisdom",10);
+        	_unit_pass = _tester.standard_test(_trainer, "wisdom",_wis_test_difficulty);
         	if (_unit_pass[0]){
         		var _new_pdf = planet.recruit_pdf((_unit_pass[1]/10));//this will approximate podf improvement for the time being
         		_mission_string += $"Training of the Pdf went well and improved the quality of the pdf as well as providing sizeable big recruitment improvement for the planet {_new_pdf} new pdf were recruited";
