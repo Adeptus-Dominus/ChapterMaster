@@ -164,7 +164,7 @@ function init_train_forces_mission(planet, star, mission_slot, marine){
 	    }
 
 	    //pip.image="event_march"
-	    gar_pop.option1="Good luck {marine.name()}";
+	    gar_pop.option1=$"Good luck {marine.name()}";
         gar_pop.image="";
         gar_pop.cooldown=500;
         obj_controller.cooldown=500;	    
@@ -287,6 +287,7 @@ function complete_train_forces_mission(targ_planet, problem_index){
         				_mission_string += "(disposition -25)";
         			}
         		}
+        		plant.add_disposition(disp_loss);
         	}
         	scr_popup($"Training Forces on {planet_numeral_name(i)}",_mission_string,"","");
         	remove_planet_problem(targ_planet, "train_forces");
