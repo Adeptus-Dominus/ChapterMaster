@@ -186,6 +186,10 @@ function PlanetData(planet, system) constructor{
     	has_problem_planet(planet, problem, system);
     }
 
+    static remove_problem = function(problem){
+    	remove_planet_problem(planet ,problem,system)
+    }
+
 
     static name = function(){
     	var _name="";
