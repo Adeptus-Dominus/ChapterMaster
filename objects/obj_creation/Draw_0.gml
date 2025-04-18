@@ -763,7 +763,7 @@ try {
 		}
 
 		if ((popup == "") && ((change_slide >= 70) || (change_slide <= 0))) {
-			if ((mouse_x > 925) && (mouse_y > 756) && (mouse_x < 997) && (mouse_y < 824) && (scr_click_left()) && (!instance_exists(obj_creation_popup))) {
+			if (point_and_click([925, 756, 997, 824]) && !instance_exists(obj_creation_popup)) {
 				// Next slide
 				if (slide >= 2 && slide <= 6) {
 					scr_creation(slide);
