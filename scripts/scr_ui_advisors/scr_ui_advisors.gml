@@ -647,7 +647,7 @@ function scr_ui_advisors() {
         draw_rectangle(xx + 217, yy + 380, xx + 617, yy + 411, 1);
 
         draw_set_font(fnt_large);
-        draw_text_transformed(xx + 410, yy + 29, "Chapter Master", 0.5, 0.5, 0);
+        draw_text_transformed(xx + 410, yy + 29, obj_ini.role[100][eROLE.ChapterMaster], 0.5, 0.5, 0);
 
         draw_set_font(fnt_fancy);
         draw_text_transformed(xx + 410, yy + 40, string_hash_to_newline(string(obj_ini.master_name)), 1.5, 1.5, 0);

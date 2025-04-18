@@ -53,7 +53,7 @@ function scr_marine_spawn_age(){
 			_apply_gauss = true;
 			break;
 		// HQ only
-		case "Chapter Master":
+		case obj_ini.role[100][eROLE.ChapterMaster]:
 			_minimum_age = 250;
 			_maximum_age = 350;
 			_apply_gauss = true;
@@ -262,7 +262,7 @@ function scr_marine_game_spawn_constructions(){
 		bionic_count = choose(2,3,4,5);
 	}
 	switch(role()){
-		case obj_ini.role[100][5]:  //captain
+		case obj_ini.role[100][eROLE.Captain]:  //captain
 			if(old_guard>=80 || company == 1){
 				bionic_count = choose(0,0,1,2,3)
 			} else {
@@ -287,7 +287,7 @@ function scr_marine_game_spawn_constructions(){
 				}
 			}
 			break;
-		case  obj_ini.role[100][15]:  //apothecary
+		case  obj_ini.role[100][eROLE.Apothecary]:  //apothecary
 			if company > 0 {
 				if(old_guard>=80 || company == 1){
 					bionic_count = choose(0,0,1,2,3)
@@ -301,7 +301,7 @@ function scr_marine_game_spawn_constructions(){
 				intelligence=40;
 			}
 			break;
-		case obj_ini.role[100][11]: // Ancient
+		case obj_ini.role[100][eROLE.Ancient]: // Ancient
 			if(old_guard>=50 || company == 1){
 				bionic_count = choose(0,0,1,2,3)
 			} else{
@@ -314,12 +314,12 @@ function scr_marine_game_spawn_constructions(){
 				}
 			}			
 			break;
-		case  obj_ini.role[100][8]:		//tacticals
+		case  obj_ini.role[100][eROLE.Tactical]:		//tacticals
 			break;
-		case  obj_ini.role[100][9]: 		//devastators	
+		case  obj_ini.role[100][eROLE.Devastator]: 		//devastators	
 			break;
-		case  obj_ini.role[100][4]:			
-		case  obj_ini.role[100][3]: //veterans
+		case  obj_ini.role[100][eROLE.Terminator]:			
+		case  obj_ini.role[100][eROLE.Veteran]: //veterans
 			if (_chap_name=="Ultramarines" || scr_has_adv("Enemy: Tyranids")){
 				if (choose(true,false)){
 					add_trait("tyrannic_vet");
@@ -328,7 +328,7 @@ function scr_marine_game_spawn_constructions(){
 			}
 
 			break;
-		case obj_ini.role[100][16]: //techmarines
+		case obj_ini.role[100][eROLE.Techmarine]: //techmarines
 			if ((old_guard >= 90 && company > 0 && company < 6) || company == 1){
 				bionic_count = choose(1,2,3,4,5)
 			} else if (company > 0 && company < 6){
@@ -382,10 +382,10 @@ function scr_marine_game_spawn_constructions(){
 			}
 			religion = "cult_mechanicus"
 			break;
-		case  obj_ini.role[100][12]: //scouts
+		case  obj_ini.role[100][eROLE.Scout]: //scouts
 			bionic_count = choose(0,0,0,0,0,0,0,0,0,0,0,1);
 			break;
-		case  obj_ini.role[100][14]:  //chaplain
+		case  obj_ini.role[100][eROLE.Chaplain]:  //chaplain
 			if company > 0 {
 				if(old_guard>=80 || company == 1){
 					bionic_count = choose(0,0,1,2,3)

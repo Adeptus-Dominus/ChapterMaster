@@ -44,7 +44,7 @@ function scr_random_marine(role, exp_req, search_params="none"){
 
 	        	//check correct search param roles
 	        	unit_role = unit.role()
-	        	if (unit_role == "Chapter Master"){
+	        	if (unit_role == obj_ini.role[100][eROLE.ChapterMaster]){
 	        		array_delete(marine_list, list_place ,1);
 					comp_size--;
 					continue;	        		

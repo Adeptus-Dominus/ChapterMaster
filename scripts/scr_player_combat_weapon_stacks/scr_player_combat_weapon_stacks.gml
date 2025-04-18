@@ -173,7 +173,7 @@ function scr_player_combat_weapon_stacks() {
                     add_second_profiles_to_stack(armour_item);
                 }
 
-                if (unit.IsSpecialist(SPECIALISTS_LIBRARIANS, true) || (unit.role() == "Chapter Master" && obj_ncombat.chapter_master_psyker == 1)) {
+                if (unit.IsSpecialist(SPECIALISTS_LIBRARIANS, true) || (unit.role() == obj_ini.role[100][eROLE.ChapterMaster] && obj_ncombat.chapter_master_psyker == 1)) {
                     if (marine_casting_cooldown[g] == 0) {
                         if (array_length(unit.powers_known) > 0) {
                             if (marine_casting[g] == true) {

@@ -136,7 +136,7 @@ function scr_dialogue(diplo_keyphrase) {
         
 	    // Option4 here if all the right conditions are met
 	    var born=false;
-		for(var ii=1; i<=200; i++){if (obj_ini.role[0,ii]="Chapter Master") and (string_count("$",obj_ini.spe[0,ii])>0) then born=true;}
+		for(var ii=1; i<=200; i++){if (obj_ini.role[0,ii]==obj_ini.role[100][eROLE.ChapterMaster]) and (string_count("$",obj_ini.spe[0,ii])>0) then born=true;}
     
 	    if (obj_ini.TTRPG[0][3].corruption>=50) and (born=true){
 	        diplo_option[4]="Right now I need my Master of Sanctity at my side, trusting that his Chapter Master is doing what is best, what is necessary for the Chapter, during this dangerous moment. All will be made clear in time, I promise you brother. This is the right path.";
@@ -309,7 +309,7 @@ function scr_dialogue(diplo_keyphrase) {
     
 	    var born=false;
 		for(var ii=1; ii<200; ii++){
-			if (obj_ini.role[0,ii]=="Chapter Master") then obj_ini.TTRPG[0][ii].corruption+=floor(random_range(30,50));
+			if (obj_ini.role[0,ii]==obj_ini.role[100][eROLE.ChapterMaster]) then obj_ini.TTRPG[0][ii].corruption+=floor(random_range(30,50));
 		}
 	    obj_controller.chaos_rating+=1;
     
@@ -1776,7 +1776,7 @@ function scr_dialogue(diplo_keyphrase) {
 				if (scr_has_adv("Enemy: Eldar")){
 					diplo_text+="This is our home, Mon'keigh.  Leave it in peace or feel the full wrath of Kaela Mensha Khaine.";
 				} else {
-					if (obj_ini.tolerant==1){
+					if (scr_has_disadv("Tolerant")){
 						diplo_text+="Your future is clouded, human.  Will you be a tool, or a thorn in our side?";
 					} else {
 						diplo_text+="Another repulsive Mon'keigh.  Leave the Eldar alone, primitive.  You have no idea what you face.";
@@ -1785,7 +1785,7 @@ function scr_dialogue(diplo_keyphrase) {
 	        }
 			// * Running into eldar ships *
 	        if (string_count("2",diplo_keyphrase)>0){
-	            if (obj_ini.tolerant==1) and (!scr_has_adv("Enemy: Eldar")){
+	            if (scr_has_disadv("Tolerant")) and (!scr_has_adv("Enemy: Eldar")){
 					diplo_text+="This meeting is long since due.  I pray that you pull back your forces, "+string(obj_ini.master_name)+".  None of this concerns you.";
 				} else {
 					diplo_text+="You do not understand that which you trifle with.  Leave or be eradicated.";
@@ -1796,7 +1796,7 @@ function scr_dialogue(diplo_keyphrase) {
 				if (scr_has_adv("Enemy: Eldar")){
 					diplo_text+="Another repulsive Mon'keigh.  Leave the Eldar alone, primitive, you have no idea what you face.";
 				} else {
-					if (obj_ini.tolerant==1) {
+					if (scr_has_disadv("Tolerant")) {
 						diplo_text+="We have been expecting you, "+string(obj_ini.master_name)+".";
 					} else {
 						diplo_text+="The skeins have foretold of our meeting, Space Marine.";
@@ -2263,7 +2263,7 @@ function scr_dialogue(diplo_keyphrase) {
 			if (scr_has_adv("Enemy: Orks")){
 				diplo_text+="Oi Beaky! I ain't heard your name round here before! If ya eva get bored of havin' your ‘ead attached to your shouldas, good old "+string(faction_leader[diplomacy])+" can sort dat out for ya!";
 			} else {
-				if (obj_ini.tolerant==1){
+				if (scr_has_disadv("Tolerant")){
 					diplo_text+="You seem good for a scrap, ya beaky faced ponce! Bring your lads down my way some time and we'll have one!";
 				} else {
 					diplo_text+="All you space marines seem da same ta me. I reckon we'll be seein' each other soon enough...";

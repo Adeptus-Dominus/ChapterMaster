@@ -369,7 +369,7 @@ function scr_company_order(company) {
 function role_hierarchy(){
 	var _roles = obj_ini.role[100];
 	var hierarchy = [
-			"Chapter Master",
+			obj_ini.role[100][eROLE.ChapterMaster],
 			"Forge Master",
 			"Master of Sanctity",
 			"Master of the Apothecarion",

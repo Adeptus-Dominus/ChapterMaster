@@ -173,7 +173,7 @@ function scr_ship_battle(target_ship_id, cooridor_width) {
                         }
                     }
 
-                    if (unit.role() == "Chapter Master") {
+                    if (unit.role() == obj_ini.role[100][eROLE.ChapterMaster]) {
                         col = obj_controller.bat_command_column;
                         obj_ncombat.important_dudes += 1;
                         obj_ncombat.big_mofo = 1;

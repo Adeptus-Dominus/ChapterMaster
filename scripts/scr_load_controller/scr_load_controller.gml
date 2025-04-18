@@ -94,10 +94,10 @@ function scr_load_controller(save_id){
 	    obj_controller.tau_stars=ini_read_real("Controller","tau_stars",0);
 	    obj_controller.tau_messenger=ini_read_real("Controller","tau_messenger",0);
 	    obj_controller.fleet_all=ini_read_real("Controller","fleet_all",0);
-	    obj_ini.tolerant=ini_read_real("Controller","tolerant",0);
+	    // obj_ini.tolerant=ini_read_real("Controller","tolerant",0);
 	    obj_ini.stability=ini_read_real("Controller","stability",90);
 	    obj_ini.purity=ini_read_real("Controller","purity",5);
-	    obj_controller.tolerant=ini_read_real("Controller","tolerant",0);
+	    // obj_controller.tolerant=ini_read_real("Controller","tolerant",0);
 	    obj_controller.unload=ini_read_real("Controller","unload",0);
 	    obj_controller.diplomacy=0;
 	    obj_controller.trading=0;

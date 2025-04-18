@@ -19,12 +19,11 @@
         "homeworld_rule": 3, // 1 = Govenor, 2 = Countries, 3 = Personal Rule
         "homeworld": "Feudal", // "Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
         "homeworld_name": "Chogoris",
-        "recruit_home_relationship" : 0, //recruit from home planet
+        "recruit_home_relationship": 0, //recruit from home planet
         "recruiting": "", //"Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
         "recruiting_name": "",
         "discipline": "rune_magic", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune_magic'
         "aspirant_trial": "SURVIVAL", // ? need to find the best way to do this
-
         "advantages": [ //TODO something with these after rework of adv organisation
             "",
             "Lightning Warriors",
@@ -58,7 +57,7 @@
             "special": 0, // 0 - normal, 1 - Breastplate, 2 - Vertical, 3 - Quadrant
             //"trim_on": 0 // 0 no, 1 yes for special trim colours // todo update ref for new name
         },
-        "culture_styles" : [
+        "culture_styles": [
             "Mongol",
         ],
         "names": {
@@ -214,6 +213,9 @@
         * for combat roles, `custom_squads` should probably? be used instead 
         */
         "custom_roles": {
+            "chapter_master": {
+                "name": "Great Khan"
+            },
             "honour_guard": {
                 "name": "Keshig",
                 "wep1": "Power Sword",

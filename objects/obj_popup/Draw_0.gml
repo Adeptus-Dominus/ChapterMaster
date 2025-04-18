@@ -821,15 +821,6 @@ try {
 				draw_set_color(c_gray);
 				draw_set_alpha(1);
 
-				/*
-            if (string_count("Chapter Master",temp1)>0){
-                draw_text_transformed(xx+27+16,unit_y+64,string(temp1),0.7,0.7,0);draw_text_transformed(xx+28+16,unit_y+64,string(temp1),0.7,0.7,0);
-                draw_text_transformed(xx+27+16,unit_y+65,string(temp1),0.7,0.7,0);draw_text_transformed(xx+28+16,unit_y+65,string(temp1),0.7,0.7,0);
-                // draw inspect icon
-                draw_sprite(spr_inspect_small,0,xx+27,unit_y+68);
-            }
-            */
-
 				draw_text_transformed(unit_x + 271, unit_y + 151, string_hash_to_newline(string(temp2)), 1, 1, 0);
 				if ((obj_controller.man[sel] == "man") && (obj_controller.ma_lid[sel] == -1)) {
 					draw_text_transformed(unit_x + 271, unit_y + 151, string_hash_to_newline(string(temp2)), 1, 1, 0);
@@ -958,7 +949,7 @@ try {
 					unit = obj_ini.TTRPG[target_comp][obj_controller.ide[i]];
 					if (arti.has_tag("daemonic") || arti.has_tag("chaos")) {
 						unit.corruption += irandom(10 + 2);
-						if (unit.role() == "Chapter Master") {
+						if (unit.role() == obj_ini.role[100][eROLE.ChapterMaster]) {
 							dwarn = true;
 						}
 					}

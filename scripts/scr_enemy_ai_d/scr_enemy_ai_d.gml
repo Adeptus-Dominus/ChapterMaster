@@ -469,7 +469,7 @@ function scr_enemy_ai_d() {
                 var q=0,q2=0;
                 repeat(90){
                     if (q2=0){q+=1;
-                        if (obj_ini.role[0,q]="Chapter Master"){q2=q;
+                        if (obj_ini.role[0,q]==obj_ini.role[100][eROLE.ChapterMaster]){q2=q;
                             if (string_count("0",obj_ini.spe[0,q2])>0) then yep2=true;
                         }
                     }

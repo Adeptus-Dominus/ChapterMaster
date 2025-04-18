@@ -27,7 +27,7 @@ function scr_unit_size(armour, role, other_factors, mobility=false) {
 
     var vehicle_size_map = get_vehicle_size_map();
 
-    if (role == "Chapter Master") {
+    if (role == obj_ini.role[100][eROLE.ChapterMaster]) {
         _size++;
     } else if (ds_map_exists(vehicle_size_map, role)) {
         _size = vehicle_size_map[? role];

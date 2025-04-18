@@ -19,7 +19,7 @@
         "homeworld_rule": 2, // 1 = Govenor, 2 = Countries, 3 = Personal Rule
         "homeworld": "Ice", // "Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
         "homeworld_name": "Fenris",
-        "recruit_home_relationship" : 0, //recruit from home planet
+        "recruit_home_relationship": 0, //recruit from home planet
         "recruiting": "", //"Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
         "recruiting_name": "",
         "discipline": "rune_magic", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune_magic'
@@ -147,7 +147,7 @@
             "The Blackmanes",
             ""
         ],
-       "culture_styles" : [
+        "culture_styles": [
             "Feral",
             "Wolf Cult",
             "Runic"
@@ -229,6 +229,9 @@
         * for combat roles, `custom_squads` should probably? be used instead 
         */
         "custom_roles": {
+            "chapter_master": {
+                "name": "Great Wolf"
+            },
             "honour_guard": {
                 "name": "Wolf Guard",
                 "wep1": "Power Axe",

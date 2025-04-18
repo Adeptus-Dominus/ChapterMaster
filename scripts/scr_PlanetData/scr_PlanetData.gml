@@ -28,8 +28,43 @@ function PlanetData(planet, system) constructor{
     is_craftworld = system.craftworld;
     is_hulk = system.space_hulk;
 
-    static set_player_disposition = function(){
+    static set_player_disposition = function(new_dispo){
+    	player_disposition = new_dispo;
         system.dispo[planet] = player_disposition;
+    }
+
+    static set_population = function(new_population){
+    	population = new_population;
+    	system.p_population[planet] = population;
+    }
+
+    static edit_population = function(edit_val){
+    	population = population + edit_val >= 0 ? population + edit_val : 0;
+    	system.p_population[planet] = population;
+    }
+
+    //assumes a large pop figure and changes down if small pop planet
+    static population_small_conversion= function(pop_value){
+    	if (!large_population){
+    		pop_value *= 100000000;
+    	}
+    	return pop_value;
+    }
+
+    static return_to_first_owner = function(allow_player = false){
+    	if (!allow_player && origional_owner == eFACTION.Player){
+    		system.p_owner[planet]= eFACTION.Imperium;
+    	} else {
+    		system.p_owner[planet] = origional_owner;
+    	}
+    	current_owner = origional_owner;
+    }
+
+    static add_disposition = function(alteration){
+    	var _new_dispo = clamp(player_disposition+alteration, 0, 100);
+    	player_disposition = _new_dispo;
+    	system.dispo[planet] = player_disposition;
+
     }
 
     static display_population = function(){
@@ -585,8 +620,7 @@ function PlanetData(planet, system) constructor{
                         alter_fortification(1);
                         
                         if (player_disposition>0) and (player_disposition<=100){
-                            player_disposition=min(100,player_disposition+(9-fortification_level));
-                            set_player_disposition();
+                        	add_disposition(9-fortification_level);
                         }
                     }
                     
@@ -770,4 +804,56 @@ function PlanetData(planet, system) constructor{
             }*/
         }		
 	}
+
+	static suffer_navy_bombard = function(strength){
+                
+                
+    	var kill = 0;
+        // Eh heh heh
+        if  (planet_forces[eFACTION.Tyranids]>0){
+            strength = strength>2 ? 2 : 0;
+            system.p_tyranids[planet]-=2;
+        }
+        else if  (planet_forces[eFACTION.Ork]>0){
+            if (strength>2) then strength=2;if (strength<1) then strength=0;
+            system.p_orks[planet]-=2;
+        }
+        else if  (current_owner=eFACTION.Tau) and (planet_forces[eFACTION.Tau]>0){
+            strength = strength>2 ? 2 : 0;
+            system.p_tau[planet]-=2;
+        	
+        	kill = large_population ? strength*0.15 : strength*15000000
+        }
+        else if  (current_owner=8) and (pdf>0){
+            wob=strength*(irandom_range(49, 51) * 100000);
+            system.p_pdf[planet]-=wob;
+            if (pdf<0){
+            	system.p_pdf[planet]=0;
+            }
+        	
+        	kill = large_population ? strength*0.15 : strength*15000000
+        }
+        else if  (current_owner=10){
+
+        	strength = strength>2 ? 2 : 0;
+        
+            if  (system.p_chaos[planet]>0){
+            	system.p_chaos[planet]=max(0,system.p_traitors[planet]-1);
+            } else if  (system.p_traitors[planet]>0){
+            	system.p_traitors[planet]=max(0,system.p_traitors[planet]-2);
+            }
+        	kill = strength * population_small_conversion(0.15);
+            if (system.p_heresy[planet]>0) then system.p_heresy[planet]=max(0,system.p_heresy[planet]-5);
+        }
+    	edit_population(kill*-1);
+        if (system.p_pdf[planet]<0) then system.p_pdf[planet]=0;
+    
+        if (population+pdf<=0) and (current_owner=1) and (obj_controller.faction_status[eFACTION.Imperium]="War"){
+            if (planet_feature_bool(system.p_feature[planet],P_features.Monastery)==0){
+            	current_owner=2;
+            	add_disposition(-50);
+            }
+        }		
+	}
+
 }

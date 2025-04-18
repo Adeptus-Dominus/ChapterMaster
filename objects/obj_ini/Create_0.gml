@@ -13,7 +13,6 @@ heh1=0;heh2=0;
 
 // strin="";
 // strin2="";
-tolerant=0;
 companies=10;
 progenitor=ePROGENITOR.NONE;
 aspirant_trial = 0;

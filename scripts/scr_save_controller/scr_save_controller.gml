@@ -41,7 +41,7 @@ function scr_save_controller(save_id){
     ini_write_real("Controller","tau_stars",obj_controller.tau_stars);
     ini_write_real("Controller","tau_messenger",obj_controller.tau_messenger);
     ini_write_real("Controller","fleet_all",obj_controller.fleet_all);
-    ini_write_real("Controller","tolerant",obj_ini.tolerant);
+    // ini_write_real("Controller","tolerant",obj_ini.tolerant);
     ini_write_real("Controller","stability",obj_ini.stability);
     ini_write_real("Controller","purity",obj_ini.purity);
     ini_write_real("Controller","unload",obj_controller.unload);

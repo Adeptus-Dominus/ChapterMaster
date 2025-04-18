@@ -483,17 +483,19 @@ function scr_end_turn() {
                 if (ok == 1) {
                     if(settings_autosave == true){
                         // Autosave
-                        if(!instance_exists(obj_saveload)){
-                            instance_create(0,0,obj_saveload);
-                        }
-                        obj_saveload.autosaving = true;
-                        scr_save(0,0,true);
-                        screen_save(string(PATH_save_previews, 0));
-                        obj_controller.menu=0;
-                        obj_controller.zui=0;
-                        obj_controller.invis=false;
-                        with(obj_saveload){
-                            instance_destroy();
+                        if(obj_controller.turn % 10 == 0){// save every 10 turns
+                            if(!instance_exists(obj_saveload)){
+                                instance_create(0,0,obj_saveload);
+                            }
+                            obj_saveload.autosaving = true;
+                            scr_save(0,0,true);
+                            screen_save(string(PATH_save_previews, 0));
+                            obj_controller.menu=0;
+                            obj_controller.zui=0;
+                            obj_controller.invis=false;
+                            with(obj_saveload){
+                                instance_destroy();
+                            }
                         }
                         
                     }

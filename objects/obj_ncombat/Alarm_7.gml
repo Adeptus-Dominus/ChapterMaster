@@ -64,8 +64,8 @@ try {
                 var i=0,ii=0,otm,good=0,master_present=0;
                 var run=0,s=0,chaos_meeting=0;
                 
-                var master_index = array_get_index(obj_ini.role[0], "Chapter Master");
-                chaos_meeting=fetch_unit([0,master_index]).planet_location;            
+                var master_index = array_get_index(obj_ini.role[0], obj_ini.role[100][eROLE.ChapterMaster]);
+                chaos_meeting=fetch_unit([0,master_index]).planet_location;
                 
                 // show_message("meeting planet:"+string(chaos_meeting));
                 for (var co=0;co<=10;co++){
@@ -75,7 +75,7 @@ try {
                         if (unit.role()=="" || obj_ini.loc[co][i]!=name) then continue;
                         if (unit.planet_location==floor(chaos_meeting)) then good+=1;
                         if (obj_ini.role[co][i]!=obj_ini.role[100][6]) and (obj_ini.role[co][i]!="Venerable "+string(obj_ini.role[100][6])) then good+=1;
-                        if (string_count("Dread",obj_ini.armour[co][i])=0) or (obj_ini.role[co][i]="Chapter Master") then good+=1;
+                        if (string_count("Dread",obj_ini.armour[co][i])=0) or (obj_ini.role[co][i]==obj_ini.role[100][eROLE.ChapterMaster]) then good+=1;
                         
                         // if (good>=3) then show_message(string(obj_ini.role[co][i])+": "+string(co)+"."+string(i));
                         
@@ -85,7 +85,7 @@ try {
                             obj_temp_meeting.present[otm]=1;
                             obj_temp_meeting.co[otm]=co;
                             obj_temp_meeting.ide[otm]=i;
-                            if (obj_ini.role[co][i]="Chapter Master") then master_present=1;
+                            if (obj_ini.role[co][i]==obj_ini.role[100][eROLE.ChapterMaster]) then master_present=1;
                         }
                     }
                 }

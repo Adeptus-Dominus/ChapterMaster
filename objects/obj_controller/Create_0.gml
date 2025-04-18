@@ -550,7 +550,6 @@ selecting_planet=0;
 selecting_ship=-1;
 fleet_minimized=0;
 fleet_all=1;
-tolerant=0;
 unload=0;
 new_vehicles=1;
 menu=500;
@@ -1370,11 +1369,6 @@ serialize = function(){
         loyalty,
         spec_train_data,
         forge_queue: specialist_point_handler.forge_queue,
-        techs: specialist_point_handler.techs,
-        apoths: specialist_point_handler.apoths,
-        forge_points: specialist_point_handler.forge_points,
-        point_breakdown: specialist_point_handler.point_breakdown,
-        apothecary_points: specialist_point_handler.apothecary_points,
 
     }
     var excluded_from_save = ["temp", "serialize", "deserialize", "build_chaos_gods", "company_data","menu_buttons",
@@ -1564,22 +1558,23 @@ var njm=34,com=0,vih=0,word="",masta=0,forga=0,chapla=0,apa=0,liba=0,techa=0,lib
 
 var honoh=0,termi=0,veter=0,capt=0,chap=0,apoth=0,stand=0,dread=0,champ=0,tact=0,assa=0,deva=0,rhino=0,speeder=0,raider=0,standard=0,bike=0,scou=0,whirl=0,pred=0,lib=0,serg=0,vet_serg=0;
 for(var mm=0; mm<=100; mm++){
-    if (obj_ini.role[com,mm]=="Chapter Master") then masta=1;
+    if (obj_ini.role[com,mm]==obj_ini.role[100][eROLE.ChapterMaster]) then masta=1;
     if (obj_ini.role[com,mm]=="Forge Master") then forga=1;
     if (obj_ini.role[com,mm]=="Master of Sanctity") then chapla=1;
     if (obj_ini.role[com,mm]=="Master of the Apothecarion") then apa=1;
-    if (obj_ini.role[com,mm]=="Chief "+string(obj_ini.role[100,17])) then liba=1;
-    if (obj_ini.role[com,mm]==obj_ini.role[100][16]) then techa+=1;
-    if (obj_ini.role[com,mm]==obj_ini.role[100,17]) then libra+=1;
+    if (obj_ini.role[com,mm]=="Chief "+string(obj_ini.role[100][eROLE.Librarian])) then liba=1;
+    if (obj_ini.role[com,mm]==obj_ini.role[100][eROLE.Techmarine]) then techa+=1;
+    if (obj_ini.role[com,mm]==obj_ini.role[100][eROLE.Librarian]) then libra+=1;
     if (obj_ini.role[com,mm]=="Codiciery") then coda+=1;
     if (obj_ini.role[com,mm]=="Lexicanum") then lexa+=1;
-    if (obj_ini.role[com,mm]==obj_ini.role[100][14]) then old_dudes+=1;
-    if (obj_ini.role[com,mm]==obj_ini.role[100][15]) then apotha+=1;
-    if (obj_ini.role[com,mm]==obj_ini.role[100][2]) then honoh+=1;
+    if (obj_ini.role[com,mm]==obj_ini.role[100][eROLE.Chaplain]) then old_dudes+=1;
+    if (obj_ini.role[com,mm]==obj_ini.role[100][eROLE.Apothecary]) then apotha+=1;
+    if (obj_ini.role[com,mm]==obj_ini.role[100][eROLE.HonourGuard]) then honoh+=1;
 }
 
 temp[njm]="Command staff made of";
 
+// Command staff names start at index 1 rather than 0 to align with the chapter company structure
 if (masta == 1) then temp[njm] += $", your majesty Chapter Master {obj_ini.name[com][0]}";
 if (forga == 1) then temp[njm] += $", Forge Master {obj_ini.name[com][1]}";
 if (chapla == 1) then temp[njm] += $", Master of Sanctity {obj_ini.name[com][2]}";

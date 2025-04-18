@@ -32,7 +32,7 @@ try {
                 if (obj_ncombat.player_forces<(obj_ncombat.player_max/10)) then r_roll-=350;
                 
                 
-                if (marine_dead[raar]=0) and (marine_type[raar]!="Death Company") and (marine_type[raar]!="Chapter Master") and (r_roll<=4){
+                if (marine_dead[raar]=0) and (marine_type[raar]!="Death Company") and (marine_type[raar]!=obj_ini.role[100][eROLE.ChapterMaster]) and (r_roll<=4){
                     r_lost+=1;
                     marine_type[raar]="Death Company";
                     //marine_attack[raar]+=1;

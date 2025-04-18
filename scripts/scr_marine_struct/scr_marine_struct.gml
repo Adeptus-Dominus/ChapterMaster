@@ -659,7 +659,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         /*if (mobi == "Jump Pack"){
 			sz++;
 		}*/
-        if (unit_role == "Chapter Master") {
+        if (unit_role == obj_ini.role[100][eROLE.ChapterMaster]) {
             sz++;
         }
         size = sz;
