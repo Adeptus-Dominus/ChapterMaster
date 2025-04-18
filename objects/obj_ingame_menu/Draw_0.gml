@@ -1,5 +1,4 @@
 
-if (yam<1) then exit;
 
 if (settings=1){
     var xx,yy;

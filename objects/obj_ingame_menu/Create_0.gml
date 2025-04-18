@@ -1,9 +1,4 @@
 
-yam=0;
-if (instance_exists(obj_controller)){
-    obj_controller.cooldown=50000;
-    yam=999;
-}
 fading=0;
 effect=0;
 settings=0;
