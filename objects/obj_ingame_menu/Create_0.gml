@@ -77,5 +77,5 @@ if (room_get_name(room)="Main_Menu"){
     butt.target = 25;
 }
 
-
+global.ui_click_lock = true;
 
