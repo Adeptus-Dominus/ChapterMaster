@@ -183,6 +183,44 @@ global.modular_drawing_items = [
         body_types :[0],
         position : "crest",
     },
+
+    {
+        cultures : ["Cthonian", "Gothic"],
+        sprite : spr_chap_trim_left,
+        body_types :[0],
+        position : "left_trim",
+        max_saturation : 80,
+        exp : {
+            scale : true,
+            exp_scale_max : 300,
+        }
+    },
+    {
+        cultures : ["Cthonian", "Gothic"],
+        sprite : spr_chap_trim_right,
+        body_types :[0],
+        position : "right_trim",
+        max_saturation : 80,
+        exp : {
+            scale : true,
+            exp_scale_max : 300,
+        }        
+    },
+    {
+        cultures : ["Cthonian", "Gothic"],
+        sprite : spr_chap_trim_left,
+        body_types :[0],
+        position : "left_trim",
+        role_type : [SPECIALISTS_CHAPLAINS],
+    },
+    {
+        cultures : ["Cthonian", "Gothic"],
+        sprite : spr_chap_trim_right,
+        body_types :[0],
+        position : "right_trim",
+        role_type : [SPECIALISTS_CHAPLAINS],
+    },
+
     {
         cultures : ["Mongol"],
         sprite : spr_mongol_hat,
@@ -363,7 +401,14 @@ global.modular_drawing_items = [
         body_types :[0],
         position : "forehead",
         armours : ["MK6 Corvus"],    
-    },    
+    }, 
+    {
+        cultures : ["Cthonian"],
+        sprite : spr_mk6_cthonian_heads,
+        body_types :[0],
+        position : "head",
+        armours : ["MK6 Corvus"],    
+    },     
     {
         sprite : spr_mk7_complex_crux_belt,
         body_types :[0, 2],
@@ -443,6 +488,30 @@ global.modular_drawing_items = [
     {
         cultures : ["Roman", "Gladiator"],
         sprite : spr_roman_tabbard,
+        body_types :[0, 2],
+        position : "tabbard",
+        max_saturation : 50,
+        assign_by_rank : 3,
+        exp : {
+            min : 50,
+        },
+        armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour", "Tartaros","MK4 Maximus", "MK3 Iron Armour"], 
+    },
+    {
+        cultures : ["Cthonian"],
+        sprite : spr_cthonian_tabbard,
+        body_types :[0, 2],
+        position : "tabbard",
+        max_saturation : 50,
+        assign_by_rank : 3,
+        exp : {
+            min : 50,
+        },
+        armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour", "Tartaros","MK4 Maximus", "MK3 Iron Armour"], 
+    },
+    {
+        cultures : ["Cthonian", "Prussian"],
+        sprite : spr_chain_mail_tabbard,
         body_types :[0, 2],
         position : "tabbard",
         max_saturation : 50,
@@ -565,30 +634,63 @@ global.modular_drawing_items = [
         position : "right_pauldron_base",
     },
     {
+        cultures : ["Cthonian"],
+        max_saturation : 30,
+        sprite : spr_left_pauldron_chainmail,
+        body_types :[0],
+        position : "left_pauldron_base",
+    } ,
+    {
+        cultures : ["Cthonian"],
+        max_saturation : 30,
+        sprite : spr_right_pauldron_chainmail,
+        body_types :[0],
+        position : "right_pauldron_base",
+    },
+    {
+        sprite : spr_bonding_studs_left,
+        body_types :[0],
+        position : "left_pauldron_embeleshments",
+        max_saturation : 15,
+        armours_exclude : ["MK5 Heresy", "MK6 Corvus"]
+    },
+    {
+        sprite : spr_bonding_studs_right,
+        body_types :[0],
+        position : "right_pauldron_embeleshments",
+        max_saturation : 15,
+        armours_exclude : ["MK5 Heresy", "MK6 Corvus"]
+    },
+    {
         sprite : spr_bonding_studs_left,
         body_types :[0],
         position : "left_pauldron_embeleshments",
         armours : ["MK5 Heresy", "MK6 Corvus"]
     },
     {
-        sprite : spr_bonding_studs_left,
+        sprite : spr_bonding_studs_right,
+        body_types :[0],
+        position : "right_pauldron_embeleshments",
+        armours : ["MK5 Heresy", "MK6 Corvus"]
+    },
+    {
+        cultures : ["Cthonian"],
+        sprite : spr_pauldron_spikes_left,
         body_types :[0],
         position : "left_pauldron_embeleshments",
-        max_saturation : 15,
-        armours_exclude : ["MK5 Heresy", "MK6 Corvus"]
+        max_saturation : 30,
+        traits : ["blunt", "cunning", "brute"],
+        allow_either : ["cultures", "traits"],
     },
     {
-        sprite : spr_bonding_studs_right,
+        cultures : ["Cthonian"],
+        sprite : spr_pauldron_spikes_right,
         body_types :[0],
         position : "right_pauldron_embeleshments",
-        armours : ["MK5 Heresy", "MK6 Corvus"],
-    },
-    {
-        sprite : spr_bonding_studs_right,
-        body_types :[0],
-        position : "right_pauldron_embeleshments",
-        max_saturation : 15,
-        armours_exclude : ["MK5 Heresy", "MK6 Corvus"]
+        max_saturation : 30,
+        traits : ["blunt", "cunning", "brute"],
+        allow_either : ["cultures", "traits"],
+
     },
     {
         cultures : ["Wolf Cult"],
@@ -719,13 +821,78 @@ global.modular_drawing_items = [
         position : "left_pauldron_base",
         body_types :[0],
         prevent_others : true,
-    }                                                               
+    },
+    {
+        position: "bare_head",
+        sprite: spr_bare_heads_colourable,
+    },
+    {
+        position: "bare_neck",
+        sprite: spr_bare_neck_colourable,
+    }, 
+    {
+        position: "bare_eyes",
+        sprite: spr_bare_eyes,
+    } ,
+    {
+        position: "left_shin",
+        body_types: [ 2],
+        sprite: spr_indomitus_left_shin,
+        armours : ["Terminator Armour"],
+    }, 
+    {
+        position: "right_shin",
+        body_types: [2],
+        sprite: spr_indomitus_right_shin,
+        armours : ["Terminator Armour"],
+    }, 
+    {
+        cultures : ["Cthonian"],
+        traits : ["blunt", "cunning", "brute"],
+        allow_either : ["cultures", "traits"],
+        position: "left_shin",
+        body_types: [0],
+        sprite: spr_left_shin_spikes,
+        max_saturation : 80,
+        exp : {
+            scale : true,
+            exp_scale_max : 300,
+        }
+    }, 
+    {
+        position: "right_shin",
+        body_types: [0],
+        sprite: spr_right_shin_spikes,
+        traits : ["blunt", "cunning", "brute"],
+        allow_either : ["cultures", "traits"],   
+        cultures : ["Cthonian"],
+        max_saturation : 80,
+        exp : {
+            scale : true,
+            exp_scale_max : 300,
+        }
+
+    }, 
+    {
+        position: "left_knee",
+        body_types: [ 2],
+        sprite: spr_indomitus_left_knee_crux,
+        max_saturation : 30,
+        armours : ["Terminator Armour"],
+    }, 
+    {
+        position: "right_knee",
+        body_types: [ 2],
+        sprite: spr_indomitus_right_knee_crux,
+        armours : ["Terminator Armour"],
+        max_saturation : 30,
+    }                                                                       
 ];
 
 
 function fetch_marine_components_to_memory(){
     array_foreach(global.modular_drawing_items, function(_element, _index){
-        if (sprite_exists((_element.sprite))){
+        if (_element.position != "weapon" && sprite_exists((_element.sprite))){
             sprite_prefetch(_element.sprite);
             if (struct_exists(_element, "overides")){
                 var _override_areas = struct_get_names(_element.overides);
@@ -761,7 +928,7 @@ function DummyMarine()constructor{
     static get_body_data = scr_get_body_data;
     traits = [];
     company = irandom_range(1,10);
-    static name_role= function(){
+    static name_role = function(){
         return "jeff";
     } 
     static role = function(){
@@ -864,9 +1031,11 @@ function generate_marine_body(){
     var _body = {
         "left_leg":{
             leg_variants: irandom(100),
+            shin_variant : irandom(100),
         }, 
         "right_leg":{
             leg_variants: irandom(100),
+            shin_variant : irandom(100),
         }, 
         "torso":{
             cloth:{
@@ -888,12 +1057,14 @@ function generate_marine_body(){
             personal_livery : irandom(100),
             pad_variation : irandom(100),
             variation : irandom(100),
+            weapon_variation: irandom(100),
         },
         "right_arm":{
             trim_variation : irandom(100),
             personal_livery : irandom(100),
             pad_variation : irandom(100),
-            variation : irandom(100),           
+            variation : irandom(100), 
+            weapon_variation: irandom(100),          
         }, 
         "left_eye":{
             variant : irandom(100),
@@ -939,7 +1110,734 @@ function add_purity_seal_markers (){
     }       
 }
 
+function format_weapon_visuals(weapon_name){
+    if (struct_exists(global.weapon_visual_data, weapon_name)){
+        weapon_visual_data = global.weapon_visual_data[$ weapon_name];
+    } else {
+        return [];
+    }
+    var base_data = variable_clone(weapon_visual_data.base);
+    base_data.weapon_map = weapon_name;
+    base_data.position = "weapon";
+    var return_options = [];
+    for (var i=0;i<array_length(weapon_visual_data.variants);i++){
+        var _variant = weapon_visual_data.variants[i];
+        var new_obj = variable_clone(base_data);
+        var variant_keys = struct_get_names(_variant);
+        var sprite = _variant.sprite
+        for (var k=0;k<array_length(variant_keys);k++){
+            var key = variant_keys[k];
+            if (key != "weapon_data" && key != "sprite"){
+                new_obj[$key] = _variant[$key];
+            } else if (key == "weapon_data"){
+                if (struct_exists(_variant, "weapon_data")){
+                    var data_names = struct_get_names(_variant.weapon_data)
+                    for (var n=0;n<array_length(data_names);n++){
+                        var _name = data_names[n];
+                        new_obj.weapon_data[$ _name] = _variant.weapon_data[$ _name];
+                    }
+                }
+            }
+            new_obj.weapon_data.sprite = _variant.sprite;
+        }
+        array_push(return_options, new_obj);
+    }
+    return return_options;
+}
+global.weapon_visual_data = {
+  "Assault Cannon": {
+    base : {
+        weapon_data:{
+            display_type: "terminator_ranged",
+            arm_type: 1,
+            hand_type: 0,  
+        },
+        body_types: [2]  
+    },
+    variants : [{
+      sprite: spr_weapon_assca,
+    }],
+    },
+"Heavy Flamer": {
+  base: {
+    weapon_data: {
+      arm_type: 1,
+      hand_type: 0
+    },
+    body_types: [2]
+  },
+  variants: [{
+    sprite: spr_weapon_hflamer_term
+  }, {
+    weapon_data: {
+      display_type: "ranged_twohand",
+    },
+    sprite: spr_weapon_hflamer,
+    body_types: [0, 1]
+  }]
+},
+"Bolt Pistol": {
+  base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_boltpis,
+  }]
+},
 
+"Infernus Pistol": {
+  base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_inferno,
+  }]
+},
 
+"Bolter": {
+  base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_bolter,
+  }]
+},
 
+"Storm Bolter": {
+  base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_sbolter,
+  }]
+},
+
+"Plasma Gun": {
+  base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true      
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_plasg,
+  }]
+},
+
+"Plasma Pistol": {
+  base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true      
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_plasp,
+  }]
+},
+
+"Meltagun": {
+  base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true      
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_melta,
+  }]
+},
+
+"Flamer": {
+  base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true      
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_flamer,
+  }]
+},
+
+"Stalker Pattern Bolter": {
+  base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true      
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_stalker,
+  }]
+},
+
+"Combiplasma": {
+  base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_complas,
+  }]
+},
+
+"Combiflamer": {
+  base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_comflamer,
+  }]
+},
+
+"Combigrav": {
+  base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_comgrav,
+  }]
+},
+
+"Combimelta": {
+  base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_commelta,
+  }]
+},
+
+"Grav-Pistol": {
+  base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_grav_pistol,
+  }]
+},
+
+"Grav-Gun": {
+  base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_grav_gun,
+  }]
+},
+
+"Hand Flamer": {
+  base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_hand_flamer,
+  }]
+},
+
+"Missile Launcher": {
+  base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_missile,
+  }]
+},
+"Plasma Cannon": {
+  base: {
+    weapon_data: {
+      display_type: "terminator_ranged",
+    },
+    body_types: [2]
+  },
+  variants: [
+    {
+      sprite: spr_weapon_plasma_cannon_term
+    },
+    {
+      display_type: "ranged_twohand",
+      sprite: spr_weapon_plasc,
+      body_types: [0, 1]
+    }
+  ]
+},
+
+"Grav-Cannon": {
+  base: {
+    weapon_data: {
+      display_type: "terminator_ranged",
+    },
+    body_types: [2]
+  },
+  variants: [
+    {
+      sprite: spr_weapon_plasma_cannon_term
+    },
+    {
+      display_type: "ranged_twohand",
+      sprite: spr_weapon_grav_cannon,
+    }
+  ]
+},
+
+"Power Fist": {
+  base: {
+    weapon_data: {
+      display_type: "terminator_fist",
+    },
+    body_types: [2]
+  },
+  variants: [
+    {
+      sprite: spr_weapon_powfist4
+    },
+    {
+      sprite: spr_weapon_powfist,
+      body_types: [0, 1],
+      weapon_data: {
+          display_type: "normal_fist",
+      }
+    }
+  ]
+},
+
+"Lightning Claw": {
+  base: {
+    weapon_data: {
+      display_type: "terminator_fist",
+    },
+    body_types: [2]
+  },
+  variants: [
+    {
+      sprite: spr_weapon_lightning2
+    },
+
+    {
+      sprite: spr_weapon_lightning1,
+      body_types: [0, 1],
+      weapon_data: {
+        display_type: "normal_fist",
+      }
+    }
+  ]
+},
+"Boltstorm Gauntlet": {
+  base: {
+    weapon_data: {
+      display_type: "normal_fist",
+      arm_type: 1
+    },
+    body_types: [0, 1]
+  },
+  variants: [
+    {
+      sprite: spr_weapon_boltstorm_gauntlet_small,
+    },
+    {
+        sprite: spr_weapon_boltstorm_gauntlet,
+        body_types: [2],
+        weapon_data: {
+            display_type: "terminator_fist",
+        }
+    }
+  ]
+},
+ "Xenophase Blade": {
+  base: {
+    weapon_data: {
+      display_type: "melee_onehand",
+      hand_type: 2,
+      new_weapon_draw: true
+    },
+  },
+  variants: [
+    {
+      sprite: spr_weapon_xenophase_blade_var1
+    }
+  ]
+},
+
+"Chainfist": {
+  base: {
+    weapon_data: {
+      display_type: "normal_fist",
+      arm_type: 1
+    },
+    body_types: [0, 1]
+  },
+  variants: [
+    {
+      sprite: spr_weapon_chainfist_small
+    },
+    {
+      sprite: spr_weapon_chainfist,
+        weapon_data: {
+          display_type: "terminator_fist",
+        },
+        body_types: [2]
+    }
+  ]
+},
+
+"Assault Chainfist": {
+  base: {
+    weapon_data: {
+      display_type: "normal_fist",
+      arm_type: 1
+    },
+    body_types: [0, 1]
+  },
+  variants: [
+    {
+      sprite: spr_weapon_chainfist_small
+    }
+  ]
+},
+
+"Heavy Thunder Hammer": {
+  base: {
+    weapon_data: {
+      display_type: "melee_twohand",
+      hand_type : 0,
+      ui_twoh: true
+    },
+  },
+  variants: [
+    {
+      sprite: spr_weapon_hthhammer
+    }
+  ]
+},
+
+"Sniper Rifle": {
+  base: {
+    weapon_data: {
+      display_type: "melee_twohand",
+      new_weapon_draw: true,
+    },
+  },
+  variants: [
+    {
+      sprite: spr_weapon_sniper
+    }
+  ]
+},
+
+"Autocannon": {
+  base: {
+    weapon_data: {
+      display_type: "melee_twohand",
+      new_weapon_draw: true,
+    },
+  },
+  variants: [
+    {
+      sprite: spr_weapon_autocannon2
+    }
+  ]
+},
+
+"Storm Shield": {
+  base: {
+    weapon_data: {
+      display_type: "shield",
+    },
+  },
+  variants: [
+    {
+      cultures: ["Knightly"],
+      sprite: spr_weapon_storm
+    },
+    {
+      sprite: spr_weapon_storm_tall
+    },
+    {
+      sprite: spr_weapon_storm_tall_2
+    },
+    {
+      sprite: spr_weapon_storm2
+    }
+  ]
+},
+
+"Boarding Shield": {
+  base: {
+    weapon_data: {
+      display_type: "shield",
+    },
+  },
+  variants: [
+    {
+      sprite: spr_weapon_boarding
+    }
+  ]
+},
+
+"Infernus Heavy Bolter": {
+  base: {
+    weapon_data: {
+      display_type: "ranged_twohand",
+    },
+  },
+  variants: [
+    {
+      sprite: spr_weapon_infernus_hbolt
+    }
+  ]
+},
+
+"Company Standard": {
+  base: {
+    weapon_data: {
+      hand_on_top: true,
+      display_type: "melee_onehand"
+    },
+  },
+  variants: [
+    {
+      cultures: ["Knightly"],
+      sprite: spr_da_standard
+    },
+    {
+      sprite: spr_weapon_standard2
+    },
+  ]
+},
+
+"Chainsword": {
+  base: {
+    weapon_data: {
+      display_type: "melee_onehand",
+      hand_type: 2,
+      new_weapon_draw: true
+    },
+  },
+  variants: [
+    {
+      sprite: spr_weapon_chsword
+    }
+  ]
+},
+
+"Combat Knife": {
+  base: {
+    weapon_data: {
+      display_type: "melee_onehand",
+      hand_type: 2,
+      new_weapon_draw: true
+    },
+  },
+  variants: [
+    {
+      sprite: spr_weapon_knife
+    }
+  ]
+},
+
+"Power Sword": {
+  base: {
+    weapon_data: {
+      display_type: "melee_onehand",
+      hand_type: 2,
+      new_weapon_draw: true
+    },
+  },
+  variants: [
+    {
+      sprite: spr_weapon_powswo
+    },
+    {
+      cultures: ["Mongol"],
+      sprite: spr_weapon_sword_turk
+    },
+    {
+      cultures: ["Mongol"],
+      sprite: spr_weapon_sword_oriental
+    }
+  ]
+},
+
+"Eldar Power Sword": {
+  base: {
+    weapon_data: {
+      hand_on_top: true,
+      display_type: "melee_onehand"
+    },
+  },
+  variants: [
+    {
+      sprite: spr_weapon_eldsword
+    }
+  ]
+},
+
+"Power Spear": {
+  base: {
+    weapon_data: {
+      display_type: "melee_onehand",
+      hand_type: 2,
+      new_weapon_draw: true
+    },
+  },
+  variants: [
+    {
+      sprite: spr_weapon_powspear
+    }
+  ]
+},
+
+"Thunder Hammer": {
+  base: {
+    weapon_data: {
+      display_type: "melee_onehand",
+      hand_type: 2
+    },
+  },
+  variants: [
+    {
+      sprite: spr_weapon_thhammer
+    }
+  ]
+},
+
+"Power Axe": {
+  base: {
+    weapon_data: {
+      display_type: "melee_onehand",
+      hand_type: 2,
+      new_weapon_draw: true
+    },
+  },
+  variants: [
+    {
+      sprite: spr_weapon_powaxe
+    }
+  ]
+},
+
+"Crozius Arcanum": {
+  base: {
+    weapon_data: {
+      hand_on_top: true,
+      display_type: "melee_onehand"
+    },
+  },
+  variants: [
+    {
+      sprite: spr_weapon_crozarc
+    }
+  ]
+},
+
+"Chainaxe": {
+  base: {
+    weapon_data: {
+      display_type: "melee_onehand",
+      hand_type: 2,
+      new_weapon_draw: true
+    },
+  },
+  variants: [
+    {
+      sprite: spr_weapon_chaxe
+    }
+  ]
+},
+
+"Force Staff": {
+  base: {
+    weapon_data: {
+      display_type: "melee_onehand",
+      hand_type: 2,
+      new_weapon_draw: true
+    },
+  },
+  variants: [
+    {
+      sprite: spr_weapon_frcstaff
+    }
+  ]
+},
+
+"Force Sword": {
+  base: {
+    weapon_data: {
+      display_type: "melee_onehand",
+      hand_type: 2,
+      new_weapon_draw: true
+    },
+  },
+  variants: [
+    {
+      sprite: spr_weapon_powswo
+    }
+  ]
+},
+
+"Force Axe": {
+  base: {
+    weapon_data: {
+      display_type: "melee_onehand",
+      hand_type: 2,
+      new_weapon_draw: true
+    },
+  },
+  variants: [
+    {
+      sprite: spr_weapon_powaxe
+    }
+  ]
+},
+
+"Relic Blade": {
+  base: {
+    weapon_data: {
+      hand_on_top: true,
+      display_type: "melee_onehand"
+    },
+  },
+  variants: [
+    {
+      sprite: spr_weapon_relic_blade
+    }
+  ]
+}
+}
 

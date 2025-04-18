@@ -2479,7 +2479,7 @@ function scr_initialize_custom() {
 	var companies = {
 		first: {
 			coy: 1,
-			total: 100,
+			total: veteran + terminator,
 			veterans: veteran,
 			terminators: terminator,
 			tacticals: 0,

@@ -94,6 +94,8 @@ function ComplexSet(unit) constructor{
     };
     unit_armour = unit.armour();
     self.unit = unit;
+    draw_helms = instance_exists(obj_creation) ? obj_creation.draw_helms : obj_controller.draw_helms;
+    //draw_helms = false;
     static mk7_bits = {
             armour : spr_mk7_complex,
             backpack : spr_mk7_complex_backpack,
@@ -127,9 +129,13 @@ function ComplexSet(unit) constructor{
         } else {
             return false;
         }
-    }    
+    }  
+
+    left_arm_data  = [];
+
+    right_arm_data = [];
     
-    static assign_modulars = function(modulars = global.modular_drawing_items){
+    static assign_modulars = function(modulars = global.modular_drawing_items, position=false){
         var _mod = {};
 
         try{
@@ -150,21 +156,56 @@ function ComplexSet(unit) constructor{
                     }
                 }
                 if (struct_exists(_mod, "max_saturation")){
+                   var _max_sat = _mod.max_saturation;
+                }
+               if (struct_exists(_mod, "exp")){
+                    var _exp_data = _mod.exp;
+                    var _min = 0;
+                    if (struct_exists(_exp_data, "min")){
+                        _min = _exp_data.min;
+                        if (unit.experience < _exp_data.min){
+                            if (!check_exception("min_exp")){
+                                continue;
+                            }
+                        }
+                    }
+                    if (struct_exists(_exp_data, "scale")){
+                        var _m_exp = _exp_data.exp_scale_max;
+                        var _increment_count = _mod.max_saturation/5;
+                        var _increments = (_m_exp - _min) / _increment_count;
+                        var _sat_roof = _mod.max_saturation;
+                        var _mar_exp = unit.experience;
+
+                        if (_mar_exp >= _m_exp){
+                            spawn_chance = _mod.max_saturation
+                        } else {
+                            var calc_exp = _mar_exp - _min;
+                            var _inc_point = floor(_mar_exp / _increments);
+                            _max_sat = _inc_point * 5;
+                        }
+                        
+                    }
+               }
+                if (struct_exists(_mod, "max_saturation")){
                     if (struct_exists(variation_map, _mod.position)){
-                        if (variation_map[$_mod.position]>=_mod.max_saturation){
+                        if (variation_map[$_mod.position]>=_max_sat){
                             if (!check_exception("max_saturation")){
                                 continue;
                             }
                         }
                     }
                 }
-               if (struct_exists(_mod, "body_types")){
-                    if (!array_contains(_mod.body_types, armour_type)){
-                        if (!check_exception("body_types")){
-                            continue;
-                        }                    
-                    }
-               }                
+                if (!struct_exists(_mod, "body_types")){
+                    _mod.body_types = [0,1,2];
+                }
+
+
+                if (!array_contains(_mod.body_types, armour_type)){
+                    if (!check_exception("body_types")){
+                        continue;
+                    }                    
+                }
+            
                 if (struct_exists(_mod, "role_type")){
                     var _viable = false;
                     for (var a=0;a<array_length(_mod.role_type);a++){
@@ -216,15 +257,6 @@ function ComplexSet(unit) constructor{
                         if (!check_exception("armours_exclude")){
                             continue;
                         }                     
-                    }
-               }
-               if (struct_exists(_mod, "exp")){
-                    if (struct_exists(_mod.exp, "min")){
-                        if (unit.experience < _mod.exp.min){
-                            if (!check_exception("min_exp")){
-                                continue;
-                            }
-                        }
                     }
                }
                if (struct_exists(_mod, "chapter_adv")){
@@ -294,7 +326,8 @@ function ComplexSet(unit) constructor{
                             continue;
                         }
                     }
-                }  
+                }
+
                 var _overides = "none";
                 if (struct_exists(_mod, "overides")){
                     _overides = _mod.overides;
@@ -309,12 +342,54 @@ function ComplexSet(unit) constructor{
                             }
                         }
                     }
-                }                       
-               if (!struct_exists(_mod, "assign_by_rank")){
-                   add_to_area(_mod.position, _mod.sprite,_overides)
-               } else {
-                    add_relative_to_status(_mod.position, _mod.sprite, _mod.assign_by_rank,_overides);
-               }
+                }
+                if (struct_exists(_mod, "assign_by_rank")){
+
+                    var _area = _mod.position;
+                    var _status_level = _mod.assign_by_rank;
+                    var _roles = active_roles();
+                    var tiers = [
+                        ["Chapter Master"],
+                        ["Forge Master", "Master of Sanctity","Master of the Apothecarion",string("Chief {0}",_roles[eROLE.Librarian])],
+                        [_roles[eROLE.Captain], _roles[eROLE.HonourGuard]],
+                        [_roles[eROLE.Champion]],
+                        [_roles[eROLE.Ancient],_roles[eROLE.VeteranSergeant]],
+                        [ _roles[eROLE.Terminator]],
+                        [_roles[eROLE.Veteran], _roles[eROLE.Sergeant],_roles[eROLE.Chaplain],_roles[eROLE.Apothecary],_roles[eROLE.Techmarine],_roles[eROLE.Librarian]],
+                        ["Codiciery", "Lexicanum",_roles[eROLE.Tactical],_roles[eROLE.Assault],_roles[eROLE.Devastator]],
+                        [_roles[eROLE.Scout],]
+                    ];
+
+                    var _unit_tier = 8;
+                    if (_unit_tier==8){
+                        for (var t=0;t<array_length(tiers);t++){
+                            var tier = tiers[t];
+                            if (array_contains(tier, unit.role())){
+                                _unit_tier = t;
+                            }
+                        }
+                    }
+                    if (_unit_tier>=_status_level){
+                        var variation_tier = (_unit_tier - _status_level)+1;
+                        if (variation_map[$ _area] % variation_tier != 0){
+                            continue;
+                        }                        
+                    }
+                }
+
+                if (position != false){
+                    if (position ==  "weapon"){
+                        var _weapon_map = _mod.weapon_map;
+                        if (unit.weapon_one() == _weapon_map){
+                            array_push(right_arm_data , _mod.weapon_data);
+                        }
+                        if( unit.weapon_two() == _weapon_map){
+                            array_push(left_arm_data ,_mod.weapon_data); 
+                        }
+                    }
+                } else {
+                    add_to_area(_mod.position, _mod.sprite,_overides)
+                }        
             }
         }
     }
@@ -328,6 +403,10 @@ function ComplexSet(unit) constructor{
         leg_variants : unit.get_body_data("leg_variants","left_leg"),
         left_leg : unit.get_body_data("leg_variants","left_leg"),
         right_leg : unit.get_body_data("leg_variants","right_leg"),
+        left_shin : unit.get_body_data("shin_variant","left_leg"),
+        right_shin: unit.get_body_data("shin_variant","right_leg"), 
+        left_knee : unit.get_body_data("knee_variant","left_leg"),  
+        right_knee : unit.get_body_data("knee_variant","right_leg"),         
         left_trim : unit.get_body_data("trim_variation","left_arm"),
         right_trim : unit.get_body_data("trim_variation","right_arm"),
         left_arm : unit.get_body_data("variation","left_arm"),
@@ -342,11 +421,13 @@ function ComplexSet(unit) constructor{
         right_pauldron_hangings: unit.get_body_data("pad_variation","right_arm"),
         left_pauldron_hangings: unit.get_body_data("pad_variation","left_arm"),                          
         left_personal_livery : unit.get_body_data("personal_livery","left_arm"),
-        left_knee : unit.company,
         tabbard : unit.get_body_data("tabbard_variation","torso"),
         robe : unit.get_body_data("tabbard_variation","torso"),
         crest : unit.get_body_data("crest_variation","head"),
         head : unit.get_body_data("variation","head"),
+        bare_head : unit.get_body_data("variation","head"),
+        bare_neck : unit.get_body_data("variation","head"),
+        bare_eyes : unit.get_body_data("variation","head"),
         mouth_variants:unit.get_body_data("variant","jaw"),
         left_eye : unit.get_body_data("variant","left_eye"),
         right_eye : unit.get_body_data("variant","right_eye"),
@@ -359,6 +440,8 @@ function ComplexSet(unit) constructor{
         cloak_trim : unit.get_body_data("image_1","cloak"),
         backpack_augment : unit.get_body_data("backpack_augment_variation","torso"),
         chest_fastening : unit.get_body_data("chest_fastening","torso"),
+        left_weapon : unit.get_body_data("weapon_variation","left_arm"),
+        right_weapon : unit.get_body_data("weapon_variation","right_arm"),
     }
 
     static base_component_surface = surface_create(600, 600);
@@ -450,25 +533,26 @@ function ComplexSet(unit) constructor{
         var _bionic_options = [];
         if (array_contains([ArmourType.Normal, ArmourType.Terminator, ArmourType.Scout], armour_type)) {
        
-            for (var _right_left = 1; _right_left <= 2; _right_left++) {
-                var _variant = unit.arm_variant[_right_left];
-                if (_variant == 0) then continue;
+            for (var _right_left = 0; _right_left <= 1; _right_left++) {
+                var _arm_data = arms_data[_right_left];
+                var _variant = _arm_data.arm_type;
+                if (_variant == 0 && _arm_data.sprite != 0) then continue;
 
-                var _arm_string = _right_left == 1 ? "right_arm" : "left_arm";
+                var _arm_string = _right_left == 0 ? "right_arm" : "left_arm";
                 var _bionic_arm = unit.get_body_data("bionic", _arm_string);
                 _bio = [];
                 if (ArmourType.Terminator == armour_type){
                     if (_variant == 2){
-                        _bio = ["", spr_terminator_complex_arms_upper_right, spr_terminator_complex_arms_upper_left];
+                        _bio = [spr_terminator_complex_arms_upper_right, spr_terminator_complex_arms_upper_left];
                     } else if (_variant == 3){
-                        _bio = ["", spr_terminator_complex_arm_hidden_right, spr_terminator_complex_arm_hidden_left];
+                        _bio = [spr_terminator_complex_arm_hidden_right, spr_terminator_complex_arm_hidden_left];
                     }
                 }                
                 if (_bionic_arm && !array_length(_bio)){
                     if (armour_type == ArmourType.Normal){
-                        var _bio = ["", spr_bionic_right_arm, spr_bionic_left_arm];
+                        var _bio = [spr_bionic_right_arm, spr_bionic_left_arm];
                     } else if (armour_type == ArmourType.Terminator){
-                        _bio = ["", spr_indomitus_right_arm_bionic, spr_indomitus_left_arm_bionic];
+                        _bio = [spr_indomitus_right_arm_bionic, spr_indomitus_left_arm_bionic];
                     }
                 }
                 if (array_length(_bio)){
@@ -477,8 +561,141 @@ function ComplexSet(unit) constructor{
                 draw_component(_arm_string);
             }
         }
-    };   
+    }; 
+    static draw_unit_hands = function(right_left) {
+        var _arm_data = arms_data[right_left];
+        if (_arm_data.arm_type == 1) {
+            return;
+        }
+        var _hand = _arm_data.hand_type;
+
+        if (armour_type != ArmourType.None) {
+            var offset_x = x_surface_offset;
+            var offset_y = y_surface_offset;
+            switch (armour_type) {
+                case ArmourType.Terminator:
+                    var _hand_spr = spr_terminator_hands;
+                    break;
+                case ArmourType.Scout:
+                    var _hand_spr = spr_pa_hands;
+                    offset_y += 11;
+                    offset_x += _arm_data.ui_xmod;
+                    break;
+                default:
+                case ArmourType.Normal:
+                    var _hand_spr = spr_pa_hands;
+                    break;
+            }
+            if (_hand > 0) {
+                var _spr_index = (_hand - 1) * 2;
+                if (right_left == 1) {
+                    draw_sprite_flipped(_hand_spr, _spr_index, offset_x, offset_y);
+                } else {
+                    draw_sprite(_hand_spr, _spr_index, offset_x, offset_y);
+                }
+            }
+            // Draw bionic hands
+            if (_hand == 1) {
+                if (armour_type == ArmourType.Normal && !hide_bionics && struct_exists(body[$(right_left == 0 ? "right_arm" : "left_arm")], "bionic")) {
+                    var bionic_hand = body[$(right_left == 0 ? "right_arm" : "left_arm")][$ "bionic"];
+                    var bionic_spr_index = bionic_hand.variant * 2;
+                    if (right_left == 1) {
+                        draw_sprite_flipped(spr_bionics_hand, 0, offset_x, offset_y);
+                    } else {
+                        draw_sprite(spr_bionics_hand, 0, offset_x, offset_y);
+                    }
+                }
+            }
+        }
+    };
+    static draw_weapon_and_hands = function(){
+
+        // Draw hands bellow the weapon sprite;
+        if (!weapon_right.ui_twoh && !weapon_left.ui_twoh){
+            for (var i = 0; i <= 1; i++) {
+                var _arm_data = arms_data[i];
+                if (!_arm_data.hand_on_top) {
+                    draw_unit_hands(i);
+                }
+            }
+        }
+
+        // // Draw weapons
+
+        if (!weapon_right.new_weapon_draw) {
+            if ((weapon_right.sprite != 0) && sprite_exists(weapon_right.sprite)) {
+                if ((weapon_right.ui_twoh == false && weapon_left.ui_twoh == false)) {
+                    draw_sprite(weapon_right.sprite, 0, x_surface_offset + weapon_right.ui_xmod, y_surface_offset + weapon_right.ui_ymod);
+                }
+                if (weapon_right.ui_twoh == true) {
+                    draw_sprite(weapon_right.sprite, 0, x_surface_offset + weapon_right.ui_xmod, y_surface_offset + weapon_right.ui_ymod);
+                    /*if (ui_force_both == true) {
+                        draw_sprite(weapon_right.sprite, 0, x_surface_offset + weapon_right.ui_xmod, y_surface_offset + weapon_right.ui_ymod);
+                    }*/
+                }
+            }
+        } else {
+            if ((weapon_right.sprite != 0) && sprite_exists(weapon_right.sprite)) {
+                draw_sprite(weapon_right.sprite, 0, x_surface_offset + weapon_right.ui_xmod, y_surface_offset + weapon_right.ui_ymod);
+            }
+        }
+
+        if (!weapon_left.new_weapon_draw) {
+            if ((weapon_left.sprite != 0) && sprite_exists(weapon_left.sprite) && (weapon_right.ui_twoh == false)) {
+                if (weapon_left.ui_spec == false) {
+                    draw_sprite(weapon_left.sprite, 1, x_surface_offset + weapon_left.ui_xmod, y_surface_offset + weapon_left.ui_ymod);
+                }
+                else if (weapon_left.ui_spec == true) {
+                    draw_sprite(weapon_left.sprite, 1, x_surface_offset + weapon_left.ui_xmod, y_surface_offset + weapon_left.ui_ymod);
+                }
+            }
+        } else {
+            if ((weapon_left.sprite != 0) && sprite_exists(weapon_left.sprite) && (weapon_right.ui_twoh == false)) {
+                draw_sprite_flipped(weapon_left.sprite, 0, x_surface_offset + weapon_left.ui_xmod, y_surface_offset + weapon_left.ui_ymod);
+            }
+        }
+        if (!weapon_right.ui_twoh && !weapon_left.ui_twoh){
+            for (var i = 0; i <= 1; i++) {
+                var _arm_data = arms_data[i];
+                if (_arm_data.hand_on_top) {
+                    draw_unit_hands(i);
+                }
+            } 
+        }
+
+        // Draw hands above the weapon sprite;       
+    }
     static prep_surface = surface_create(600, 600);
+    static weapon_preset_data = {
+        "shield" : {
+            arm_type: 2,
+            ui_spec: true
+        },
+        "ranged_twohand" :{
+            ui_spec: true,
+            ui_twoh: true,
+        },
+        "normal_ranged" : {
+            arm_type: 1,
+        },
+        "terminator_ranged" : {
+          arm_type: 1,
+          hand_type: 0            
+        },
+        "terminator_fist" :{
+            arm_type: 1,
+            ui_spec: true
+        },
+        "melee_onehand" : {
+            hand_on_top: true,
+        },
+        "melee_twohand" :{
+          ui_spec: true,
+          new_weapon_draw: true,
+          hand_type: 2,
+          hand_on_top: true            
+        }
+    }
     static draw = function(){
         var _final_surface = surface_get_target();
         surface_reset_target();
@@ -491,6 +708,82 @@ function ComplexSet(unit) constructor{
         var texture_draws = setup_complex_livery_shader(unit.role(),unit);
         draw_cloaks();
          //draw_unit_arms(x_surface_offset, y_surface_offset, armour_type, specialist_colours, hide_bionics, complex_set);
+
+         if (array_length(left_arm_data)){
+            weapon_left = variable_clone(left_arm_data[variation_map.left_weapon % array_length(left_arm_data)]);
+         } else {
+            weapon_left = {};
+         }
+         if (array_length(right_arm_data)){
+            weapon_right = variable_clone(right_arm_data[variation_map.right_weapon % array_length(right_arm_data)]);
+         } else {
+            weapon_right = {};
+         }
+
+        arms_data = [weapon_right, weapon_left];
+        for (var i=0;i<=1;i++){
+            var _arm = arms_data[i];
+            var _wep = i==0 ? unit.weapon_one() : unit.weapon_two();
+            if (struct_exists(_arm, "display_type")){
+                if (struct_exists(weapon_preset_data, _arm.display_type)){
+                    var _preset = weapon_preset_data[$ _arm.display_type];
+                    var _preset_keys = struct_get_names(_preset);
+                    for (var s=0;s<array_length(_preset_keys);s++){
+                        var _set = _preset_keys[s];
+                        if (!struct_exists(_arm, _set)){
+                            _arm[$ _set] = _preset[$ _set];
+                        }
+                    }
+                }
+            }
+            var _defualts = ["hand_on_top", "ui_xmod", "ui_ymod", "hand_type", "arm_type", "ui_weapon", "new_weapon_draw", "ui_twoh", "ui_spec", "sprite", "display_type"];
+            for (var s=0;s<array_length(_defualts);s++){
+                if (!struct_exists(_arm, _defualts[s])){
+                    _arm[$_defualts[s]] = 0;
+                }
+            }
+            if (armour_type == ArmourType.Terminator && !array_contains(["terminator_ranged", "terminator_melee","terminator_fist"],_arm.display_type)){
+                _arm.ui_ymod -= 20;
+                if (_arm.display_type == "normal_ranged") {
+                    if (_arm.new_weapon_draw){
+                        _arm.ui_xmod += 24;
+                    } else {
+                        _arm.ui_xmod -= 24;
+                    }
+                    _arm.ui_ymod += 24;
+                }
+                if (_arm.display_type == "melee_onehand" && (_wep != "Company Standard")) {
+                    _arm.arm_type = 2;
+                    _arm.hand_type = 2;
+                    _arm.ui_xmod -= 14;
+                    _arm.ui_ymod += 23;
+                }
+
+                if (_arm.display_type == "melee_twohand") {
+                    weapon_right.arm_type = 2;
+                    weapon_left.arm_type = 2;
+                    weapon_right.hand_type = 3;
+                    weapon_left.hand_type = 4;
+                    _arm.ui_ymod += 25;
+                }
+
+                if (_arm.display_type == "ranged_twohand") {
+                    weapon_right.arm_type = 2;
+                    weapon_left.arm_type = 2;
+                    weapon_right.hand_type = 0;
+                    weapon_left.hand_type = 0;
+                    _arm.ui_ymod += 15;
+                }
+
+                if (array_contains(["Chainaxe", "Power Axe", "Crozius Arcanum", "Power Mace", "Mace of Absolution", "Relic Blade"], _wep)) {
+                    _arm.hand_type = 3;
+                    _arm.arm_type = 3;
+                }
+            }else if (armour_type == ArmourType.Scout){
+                _arm.ui_xmod += 4;
+                _arm.ui_ymod += 11;
+            }
+        }
         draw_unit_arms();
         var _complex_helm = false;
         var unit_role = unit.role();
@@ -506,8 +799,7 @@ function ComplexSet(unit) constructor{
             _complex_helm = _comp_helms.veteran;
         }
         if (is_struct(_complex_helm) 
-            && struct_exists(self, "head") 
-            && (instance_exists(obj_creation) ? obj_creation.draw_helms : obj_controller.draw_helms)){
+            && struct_exists(self, "head") && draw_helms){
             complex_helms(_complex_helm);
         }
 
@@ -520,7 +812,11 @@ function ComplexSet(unit) constructor{
                  "thorax_variants",
                  "leg_variants",
                  "left_leg",
+                 "left_shin",
                  "right_leg",
+                 "right_shin",
+                 "left_knee",
+                 "right_knee",
                  "tabbard",
                  "robe",                 
                  "belt",                 
@@ -538,7 +834,6 @@ function ComplexSet(unit) constructor{
                  "left_pauldron_embeleshments",
                  "right_pauldron_hangings",
                  "left_pauldron_hangings",
-                 "left_knee",
                  "left_personal_livery",             
              ];            
          } else {
@@ -552,8 +847,12 @@ function ComplexSet(unit) constructor{
                  "chest_fastening",
                  "leg_variants",
                  "left_leg",
+                 "left_shin",
                  "right_leg",
+                 "right_shin",                
                  "knees",
+                 "left_knee",
+                 "right_knee",                 
                  "head",
                  "gorget",
                  "left_pauldron_base" ,  
@@ -566,7 +865,6 @@ function ComplexSet(unit) constructor{
                  "left_pauldron_embeleshments",
                  "right_pauldron_hangings",
                  "left_pauldron_hangings",
-                 "left_knee",
                  "tabbard",
                  "robe",
                  "belt",
@@ -582,6 +880,7 @@ function ComplexSet(unit) constructor{
             
          }
          purity_seals_and_hangings();
+         draw_weapon_and_hands();
 
         shader_reset();
          surface_reset_target();
@@ -785,6 +1084,16 @@ function ComplexSet(unit) constructor{
             
         }         
         assign_modulars();
+        var wep_opts = format_weapon_visuals(unit.weapon_one());
+        if (array_length(wep_opts)){
+            assign_modulars(wep_opts, "weapon");
+        }
+         if (unit.weapon_one() != unit.weapon_two()){
+            var wep_opts = format_weapon_visuals(unit.weapon_two());
+            if (array_length(wep_opts)){
+                assign_modulars(wep_opts, "weapon");
+            }            
+         }
     }
 
      if (unit.IsSpecialist(SPECIALISTS_TECHS)){
@@ -874,53 +1183,42 @@ function ComplexSet(unit) constructor{
         }
     }
 
-    static add_relative_to_status = function(area, add_sprite, status_level, overide_data="none"){
-    	var _roles = active_roles();
-    	var tiers = [
-    		[_roles[eROLE.ChapterMaster]],
-    		["Forge Master", "Master of Sanctity","Master of the Apothecarion",string("Chief {0}",_roles[eROLE.Librarian])],
-    		[_roles[eROLE.Captain], _roles[eROLE.HonourGuard]],
-    		[_roles[eROLE.Champion]],
-    		[_roles[eROLE.Ancient],_roles[eROLE.VeteranSergeant]],
-    		[ _roles[eROLE.Terminator]],
-    		[_roles[eROLE.Veteran], _roles[eROLE.Sergeant],_roles[eROLE.Chaplain],_roles[eROLE.Apothecary],_roles[eROLE.Techmarine],_roles[eROLE.Librarian]],
-    		["Codiciery", "Lexicanum",_roles[eROLE.Tactical],_roles[eROLE.Assault],_roles[eROLE.Devastator]],
-    		[_roles[eROLE.Scout],]
-    	];
-
-    	var _unit_tier = 8;
-    	if (_unit_tier==8){
-	    	for (var i=0;i<array_length(tiers);i++){
-	    		var tier = tiers[i];
-	    		if (array_contains(tier, unit.role())){
-	    			_unit_tier = i;
-	    		}
-	    	}
-	    }
-    	if (_unit_tier<=status_level){
-    		add_to_area(area, add_sprite, overide_data);
-    	} else {
-    		var variation_tier = (_unit_tier - status_level)+1;
-    		if (variation_map[$ area] % variation_tier == 0){
-    			add_to_area(area, add_sprite, overide_data);
-    		}
-    	}
-    }
-
     position_overides = {
 
     };
 
+    static skin_tones = {
+        standard : [
+            [1.0, 218.0/255.0, 179.0/255.0],
+            [1.0, 192.0/255.0, 134.0/255.0],
+            [252.0/255.0, 206.0/255.0, 159.0/255.0],
+            [254.0/255.0, 206.0/255.0, 163.0/255.0],
+            [255.0/255.0, 221.0/255.0, 191.0/255.0],
+            [230.0/255.0, 177.0/255.0, 131.0/255.0],
+            [255.0/255.0, 205.0/255.0, 163.0/255.0],
+            [57.0/255.0, 37.0/255.0, 17.0/255.0],
+        ],
+        coal :  [34.0/255.0, 34.0/255.0, 34.0/255.0],
+    }
     static draw_head = function(texture_draws={}){
-        var choice;
-        if (struct_exists(self, "head")){
-            draw_component("crest",texture_draws);
-            draw_component("head",texture_draws);
-            draw_component("forehead",texture_draws);
-            draw_component("mouth_variants",texture_draws);
-            draw_component("left_eye",texture_draws);
-            draw_component("right_eye",texture_draws);
-            draw_component("crown",texture_draws);                                                                                
+        if (draw_helms){
+            if (struct_exists(self, "head")){
+                draw_component("crest",texture_draws);
+                draw_component("head",texture_draws);
+                draw_component("forehead",texture_draws);
+                draw_component("mouth_variants",texture_draws);
+                draw_component("left_eye",texture_draws);
+                draw_component("right_eye",texture_draws);
+                draw_component("crown",texture_draws);                                                                                
+            }
+        } else {
+            shader_set(skin_tone_shader);
+            var _skin_colour = skin_tones.standard[variation_map.bare_head % array_length(skin_tones.standard)];
+            shader_set_uniform_f_array(shader_get_uniform(skin_tone_shader, "skin"), _skin_colour);
+            draw_component("bare_neck",texture_draws);
+            draw_component("bare_head",texture_draws);
+            draw_component("bare_eyes",texture_draws);
+            shader_set(full_livery_shader);
         }
     }
 
