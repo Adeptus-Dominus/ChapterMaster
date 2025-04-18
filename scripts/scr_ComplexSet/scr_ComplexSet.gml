@@ -195,13 +195,17 @@ function ComplexSet(unit) constructor{
                         }
                     }
                 }
-               if (struct_exists(_mod, "body_types")){
-                    if (!array_contains(_mod.body_types, armour_type)){
-                        if (!check_exception("body_types")){
-                            continue;
-                        }                    
-                    }
-               }                
+                if (!struct_exists(_mod, "body_types")){
+                    _mod.body_types = [0,1,2];
+                }
+
+
+                if (!array_contains(_mod.body_types, armour_type)){
+                    if (!check_exception("body_types")){
+                        continue;
+                    }                    
+                }
+            
                 if (struct_exists(_mod, "role_type")){
                     var _viable = false;
                     for (var a=0;a<array_length(_mod.role_type);a++){
@@ -662,6 +666,36 @@ function ComplexSet(unit) constructor{
         // Draw hands above the weapon sprite;       
     }
     static prep_surface = surface_create(600, 600);
+    static weapon_preset_data = {
+        "shield" : {
+            arm_type: 2,
+            ui_spec: true
+        },
+        "ranged_twohand" :{
+            ui_spec: true,
+            ui_twoh: true,
+        },
+        "normal_ranged" : {
+            arm_type: 1,
+        },
+        "terminator_ranged" : {
+          arm_type: 1,
+          hand_type: 0            
+        },
+        "terminator_fist" :{
+            arm_type: 1,
+            ui_spec: true
+        },
+        "melee_onehand" : {
+            hand_on_top: true,
+        },
+        "melee_twohand" :{
+          ui_spec: true,
+          new_weapon_draw: true,
+          hand_type: 2,
+          hand_on_top: true            
+        }
+    }
     static draw = function(){
         var _final_surface = surface_get_target();
         surface_reset_target();
@@ -690,6 +724,18 @@ function ComplexSet(unit) constructor{
         for (var i=0;i<=1;i++){
             var _arm = arms_data[i];
             var _wep = i==0 ? unit.weapon_one() : unit.weapon_two();
+            if (struct_exists(_arm, "display_type")){
+                if (struct_exists(weapon_preset_data, _arm.display_type)){
+                    var _preset = weapon_preset_data[$ _arm.display_type];
+                    var _preset_keys = struct_get_names(_preset);
+                    for (var s=0;s<array_length(_preset_keys);s++){
+                        var _set = _preset_keys[s];
+                        if (!struct_exists(_arm, _set)){
+                            _arm[$ _set] = _preset[$ _set];
+                        }
+                    }
+                }
+            }
             var _defualts = ["hand_on_top", "ui_xmod", "ui_ymod", "hand_type", "arm_type", "ui_weapon", "new_weapon_draw", "ui_twoh", "ui_spec", "sprite", "display_type"];
             for (var s=0;s<array_length(_defualts);s++){
                 if (!struct_exists(_arm, _defualts[s])){

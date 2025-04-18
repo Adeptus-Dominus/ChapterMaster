@@ -824,17 +824,14 @@ global.modular_drawing_items = [
     },
     {
         position: "bare_head",
-        body_types: [0, 1, 2],
         sprite: spr_bare_heads_colourable,
     },
     {
         position: "bare_neck",
-        body_types: [0, 1, 2],
         sprite: spr_bare_neck_colourable,
     }, 
     {
         position: "bare_eyes",
-        body_types: [0, 1, 2],
         sprite: spr_bare_eyes,
     } ,
     {
@@ -1173,9 +1170,7 @@ global.weapon_visual_data = {
     sprite: spr_weapon_hflamer_term
   }, {
     weapon_data: {
-      ui_spec: true,
       display_type: "ranged_twohand",
-      ui_twoh: true
     },
     sprite: spr_weapon_hflamer,
     body_types: [0, 1]
@@ -1185,11 +1180,8 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "normal_ranged",
-      arm_type: 1,
-      ui_spec: false,
       new_weapon_draw: true
     },
-    body_types: [0, 1, 2]
   },
   variants: [{
     sprite: spr_weapon_boltpis,
@@ -1200,11 +1192,8 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "normal_ranged",
-      arm_type: 1,
-      ui_spec: false,
       new_weapon_draw: true
     },
-    body_types: [0, 1, 2]
   },
   variants: [{
     sprite: spr_weapon_inferno,
@@ -1215,11 +1204,8 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "normal_ranged",
-      arm_type: 1,
-      ui_spec: false,
       new_weapon_draw: true
     },
-    body_types: [0, 1, 2]
   },
   variants: [{
     sprite: spr_weapon_bolter,
@@ -1230,11 +1216,8 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "normal_ranged",
-      arm_type: 1,
-      ui_spec: false,
       new_weapon_draw: true
     },
-    body_types: [0, 1, 2]
   },
   variants: [{
     sprite: spr_weapon_sbolter,
@@ -1245,11 +1228,8 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "normal_ranged",
-      arm_type: 1,
-      ui_spec: false,
       new_weapon_draw: true      
     },
-    body_types: [0, 1, 2]
   },
   variants: [{
     sprite: spr_weapon_plasg,
@@ -1260,11 +1240,8 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "normal_ranged",
-      arm_type: 1,
-      ui_spec: false,
       new_weapon_draw: true      
     },
-    body_types: [0, 1, 2]
   },
   variants: [{
     sprite: spr_weapon_plasp,
@@ -1275,11 +1252,8 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "normal_ranged",
-      arm_type: 1,
-      ui_spec: false,
       new_weapon_draw: true      
     },
-    body_types: [0, 1, 2]
   },
   variants: [{
     sprite: spr_weapon_melta,
@@ -1290,11 +1264,8 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "normal_ranged",
-      arm_type: 1,
-      ui_spec: false,
       new_weapon_draw: true      
     },
-    body_types: [0, 1, 2]
   },
   variants: [{
     sprite: spr_weapon_flamer,
@@ -1305,11 +1276,8 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "normal_ranged",
-      arm_type: 1,
-      ui_spec: false,
       new_weapon_draw: true      
     },
-    body_types: [0, 1, 2]
   },
   variants: [{
     sprite: spr_weapon_stalker,
@@ -1320,11 +1288,8 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "normal_ranged",
-      arm_type: 1,
-      ui_spec: false,
       new_weapon_draw: true
     },
-    body_types: [0, 1, 2]
   },
   variants: [{
     sprite: spr_weapon_complas,
@@ -1335,11 +1300,8 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "normal_ranged",
-      arm_type: 1,
-      ui_spec: false,
       new_weapon_draw: true
     },
-    body_types: [0, 1, 2]
   },
   variants: [{
     sprite: spr_weapon_comflamer,
@@ -1350,11 +1312,8 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "normal_ranged",
-      arm_type: 1,
-      ui_spec: false,
       new_weapon_draw: true
     },
-    body_types: [0, 1, 2]
   },
   variants: [{
     sprite: spr_weapon_comgrav,
@@ -1365,11 +1324,8 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "normal_ranged",
-      arm_type: 1,
-      ui_spec: false,
       new_weapon_draw: true
     },
-    body_types: [0, 1, 2]
   },
   variants: [{
     sprite: spr_weapon_commelta,
@@ -1380,11 +1336,8 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "normal_ranged",
-      arm_type: 1,
-      ui_spec: false,
       new_weapon_draw: true
     },
-    body_types: [0, 1, 2]
   },
   variants: [{
     sprite: spr_weapon_grav_pistol,
@@ -1395,11 +1348,8 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "normal_ranged",
-      arm_type: 1,
-      ui_spec: false,
       new_weapon_draw: true
     },
-    body_types: [0, 1, 2]
   },
   variants: [{
     sprite: spr_weapon_grav_gun,
@@ -1410,11 +1360,8 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "normal_ranged",
-      arm_type: 1,
-      ui_spec: false,
       new_weapon_draw: true
     },
-    body_types: [0, 1, 2]
   },
   variants: [{
     sprite: spr_weapon_hand_flamer,
@@ -1425,11 +1372,8 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "normal_ranged",
-      arm_type: 1,
-      ui_spec: false,
       new_weapon_draw: true
     },
-    body_types: [0, 1, 2]
   },
   variants: [{
     sprite: spr_weapon_missile,
@@ -1439,8 +1383,6 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "terminator_ranged",
-      arm_type: 1,
-      hand_type: 0
     },
     body_types: [2]
   },
@@ -1449,10 +1391,8 @@ global.weapon_visual_data = {
       sprite: spr_weapon_plasma_cannon_term
     },
     {
-      ui_spec: true,
       display_type: "ranged_twohand",
       sprite: spr_weapon_plasc,
-      ui_twoh: true,
       body_types: [0, 1]
     }
   ]
@@ -1462,8 +1402,6 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "terminator_ranged",
-      arm_type: 1,
-      hand_type: 0
     },
     body_types: [2]
   },
@@ -1472,11 +1410,8 @@ global.weapon_visual_data = {
       sprite: spr_weapon_plasma_cannon_term
     },
     {
-      ui_spec: true,
       display_type: "ranged_twohand",
       sprite: spr_weapon_grav_cannon,
-      ui_twoh: true,
-      body_types: [0, 1, 2]
     }
   ]
 },
@@ -1485,8 +1420,6 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "terminator_fist",
-      arm_type: 1,
-      ui_spec: true
     },
     body_types: [2]
   },
@@ -1499,7 +1432,6 @@ global.weapon_visual_data = {
       body_types: [0, 1],
       weapon_data: {
           display_type: "normal_fist",
-          ui_spec: false,        
       }
     }
   ]
@@ -1509,8 +1441,6 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "terminator_fist",
-      arm_type: 1,
-      ui_spec: true
     },
     body_types: [2]
   },
@@ -1524,7 +1454,6 @@ global.weapon_visual_data = {
       body_types: [0, 1],
       weapon_data: {
         display_type: "normal_fist",
-        ui_spec: false,
       }
     }
   ]
@@ -1534,8 +1463,6 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "terminator_fist",
-      arm_type: 1,
-      ui_spec: true
     },
     body_types: [2]
   },
@@ -1550,8 +1477,6 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "terminator_fist",
-      arm_type: 1,
-      ui_spec: true
     },
     body_types: [2]
   },
@@ -1564,12 +1489,10 @@ global.weapon_visual_data = {
  "Xenophase Blade": {
   base: {
     weapon_data: {
-      hand_on_top: true,
       display_type: "melee_onehand",
       hand_type: 2,
       new_weapon_draw: true
     },
-    body_types: [0, 1, 2]
   },
   variants: [
     {
@@ -1582,7 +1505,6 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "normal_fist",
-      ui_spec: false,
       arm_type: 1
     },
     body_types: [0, 1]
@@ -1598,7 +1520,6 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "normal_fist",
-      ui_spec: false,
       arm_type: 1
     },
     body_types: [0, 1]
@@ -1614,7 +1535,6 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "normal_fist",
-      ui_spec: false,
       arm_type: 1
     },
     body_types: [0, 1]
@@ -1630,12 +1550,9 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "melee_twohand",
-      arm_type: 0,
-      hand_on_top: true,
-      ui_spec: true,
+      hand_type : 0,
       ui_twoh: true
     },
-    body_types: [0, 1, 2]
   },
   variants: [
     {
@@ -1648,12 +1565,8 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "melee_twohand",
-      ui_spec: true,
       new_weapon_draw: true,
-      hand_type: 2,
-      hand_on_top: true
     },
-    body_types: [0, 1, 2]
   },
   variants: [
     {
@@ -1666,12 +1579,8 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "melee_twohand",
-      ui_spec: true,
       new_weapon_draw: true,
-      hand_type: 2,
-      hand_on_top: true
     },
-    body_types: [0, 1, 2]
   },
   variants: [
     {
@@ -1684,10 +1593,7 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "shield",
-      arm_type: 2,
-      ui_spec: true
     },
-    body_types: [0, 1, 2]
   },
   variants: [
     {
@@ -1710,10 +1616,7 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "shield",
-      arm_type: 2,
-      ui_spec: true
     },
-    body_types: [0, 1, 2]
   },
   variants: [
     {
@@ -1725,11 +1628,8 @@ global.weapon_visual_data = {
 "Infernus Heavy Bolter": {
   base: {
     weapon_data: {
-      ui_spec: true,
       display_type: "ranged_twohand",
-      ui_twoh: true
     },
-    body_types: [0, 1, 2]
   },
   variants: [
     {
@@ -1744,7 +1644,6 @@ global.weapon_visual_data = {
       hand_on_top: true,
       display_type: "melee_onehand"
     },
-    body_types: [0, 1, 2]
   },
   variants: [
     {
@@ -1763,12 +1662,10 @@ global.weapon_visual_data = {
 "Chainsword": {
   base: {
     weapon_data: {
-      hand_on_top: true,
       display_type: "melee_onehand",
       hand_type: 2,
       new_weapon_draw: true
     },
-    body_types: [0, 1, 2]
   },
   variants: [
     {
@@ -1780,12 +1677,10 @@ global.weapon_visual_data = {
 "Combat Knife": {
   base: {
     weapon_data: {
-      hand_on_top: true,
       display_type: "melee_onehand",
       hand_type: 2,
       new_weapon_draw: true
     },
-    body_types: [0, 1, 2]
   },
   variants: [
     {
@@ -1797,12 +1692,10 @@ global.weapon_visual_data = {
 "Power Sword": {
   base: {
     weapon_data: {
-      hand_on_top: true,
       display_type: "melee_onehand",
       hand_type: 2,
       new_weapon_draw: true
     },
-    body_types: [0, 1, 2]
   },
   variants: [
     {
@@ -1825,7 +1718,6 @@ global.weapon_visual_data = {
       hand_on_top: true,
       display_type: "melee_onehand"
     },
-    body_types: [0, 1, 2]
   },
   variants: [
     {
@@ -1837,12 +1729,10 @@ global.weapon_visual_data = {
 "Power Spear": {
   base: {
     weapon_data: {
-      hand_on_top: true,
       display_type: "melee_onehand",
       hand_type: 2,
       new_weapon_draw: true
     },
-    body_types: [0, 1, 2]
   },
   variants: [
     {
@@ -1854,11 +1744,9 @@ global.weapon_visual_data = {
 "Thunder Hammer": {
   base: {
     weapon_data: {
-      hand_on_top: true,
       display_type: "melee_onehand",
       hand_type: 2
     },
-    body_types: [0, 1, 2]
   },
   variants: [
     {
@@ -1870,12 +1758,10 @@ global.weapon_visual_data = {
 "Power Axe": {
   base: {
     weapon_data: {
-      hand_on_top: true,
       display_type: "melee_onehand",
       hand_type: 2,
       new_weapon_draw: true
     },
-    body_types: [0, 1, 2]
   },
   variants: [
     {
@@ -1890,7 +1776,6 @@ global.weapon_visual_data = {
       hand_on_top: true,
       display_type: "melee_onehand"
     },
-    body_types: [0, 1, 2]
   },
   variants: [
     {
@@ -1902,12 +1787,10 @@ global.weapon_visual_data = {
 "Chainaxe": {
   base: {
     weapon_data: {
-      hand_on_top: true,
       display_type: "melee_onehand",
       hand_type: 2,
       new_weapon_draw: true
     },
-    body_types: [0, 1, 2]
   },
   variants: [
     {
@@ -1919,12 +1802,10 @@ global.weapon_visual_data = {
 "Force Staff": {
   base: {
     weapon_data: {
-      hand_on_top: true,
       display_type: "melee_onehand",
       hand_type: 2,
       new_weapon_draw: true
     },
-    body_types: [0, 1, 2]
   },
   variants: [
     {
@@ -1936,12 +1817,10 @@ global.weapon_visual_data = {
 "Force Sword": {
   base: {
     weapon_data: {
-      hand_on_top: true,
       display_type: "melee_onehand",
       hand_type: 2,
       new_weapon_draw: true
     },
-    body_types: [0, 1, 2]
   },
   variants: [
     {
@@ -1953,12 +1832,10 @@ global.weapon_visual_data = {
 "Force Axe": {
   base: {
     weapon_data: {
-      hand_on_top: true,
       display_type: "melee_onehand",
       hand_type: 2,
       new_weapon_draw: true
     },
-    body_types: [0, 1, 2]
   },
   variants: [
     {
@@ -1973,7 +1850,6 @@ global.weapon_visual_data = {
       hand_on_top: true,
       display_type: "melee_onehand"
     },
-    body_types: [0, 1, 2]
   },
   variants: [
     {
