@@ -19,10 +19,10 @@ void main()
     if (col_orig.rgb== vec3(1.0, 218.0/255.0, 179.0/255.0).rgb){
         col.rgb = skin.rgb;
     }
-    else if (col_orig.rgb== vec3(209.0/255.0, 179/255.0, 146.0/255.0).rgb){
+    else if (col_orig.rgb== vec3(209.0/255.0, 179.0/255.0, 146.0/255.0).rgb){
         col.rgb = light_or_dark(skin.rgb, 0.8);
     }
-    else if (col_orig.rgb== vec3(186.0/255.0, 159.0/255.0, 130.0.0/255.0).rgb){
+    else if (col_orig.rgb== vec3(186.0/255.0, 159.0/255.0, 130.0/255.0).rgb){
         col.rgb = light_or_dark(skin.rgb, 0.7);
     }
     gl_FragColor = v_vColour * col;
