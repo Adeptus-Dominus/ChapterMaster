@@ -1458,31 +1458,24 @@ global.weapon_visual_data = {
     }
   ]
 },
-
-"Chainfist": {
-  base: {
-    weapon_data: {
-      display_type: "terminator_fist",
-    },
-    body_types: [2]
-  },
-  variants: [
-    {
-      sprite: spr_weapon_chainfist
-    }
-  ]
-},
-
 "Boltstorm Gauntlet": {
   base: {
     weapon_data: {
-      display_type: "terminator_fist",
+      display_type: "normal_fist",
+      arm_type: 1
     },
-    body_types: [2]
+    body_types: [0, 1]
   },
   variants: [
     {
-      sprite: spr_weapon_boltstorm_gauntlet
+      sprite: spr_weapon_boltstorm_gauntlet_small,
+    },
+    {
+        sprite: spr_weapon_boltstorm_gauntlet,
+        body_types: [2],
+        weapon_data: {
+            display_type: "terminator_fist",
+        }
     }
   ]
 },
@@ -1501,21 +1494,6 @@ global.weapon_visual_data = {
   ]
 },
 
-"Boltstorm Gauntlet": {
-  base: {
-    weapon_data: {
-      display_type: "normal_fist",
-      arm_type: 1
-    },
-    body_types: [0, 1]
-  },
-  variants: [
-    {
-      sprite: spr_weapon_boltstorm_gauntlet_small
-    }
-  ]
-},
-
 "Chainfist": {
   base: {
     weapon_data: {
@@ -1527,6 +1505,13 @@ global.weapon_visual_data = {
   variants: [
     {
       sprite: spr_weapon_chainfist_small
+    },
+    {
+      sprite: spr_weapon_chainfist,
+        weapon_data: {
+          display_type: "terminator_fist",
+        },
+        body_types: [2]
     }
   ]
 },
@@ -1597,7 +1582,7 @@ global.weapon_visual_data = {
   },
   variants: [
     {
-      cultures: ["knightly"],
+      cultures: ["Knightly"],
       sprite: spr_weapon_storm
     },
     {
@@ -1653,9 +1638,6 @@ global.weapon_visual_data = {
     {
       sprite: spr_weapon_standard2
     },
-    {
-      sprite: spr_weapon_standard2
-    }
   ]
 },
 

@@ -25,5 +25,5 @@ void main()
     else if (col_orig.rgb== vec3(186.0/255.0, 159.0/255.0, 130.0.0/255.0).rgb){
         col.rgb = light_or_dark(skin.rgb, 0.7);
     }
-    gl_FragColor = v_vColour * texture2D( gm_BaseTexture, v_vTexcoord );
+    gl_FragColor = v_vColour * col;
 }
