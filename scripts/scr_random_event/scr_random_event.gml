@@ -224,25 +224,7 @@ function scr_random_event(execute_now) {
 
 	if (chosen_event == EVENT.strange_behavior){
 		//TODO this event currenlty dose'nt do anything but now we have marine structs there is lots of potential here
-		log_message("RE: Strange Behavior");
-	    var marine_and_company = scr_random_marine("",0);
-		if(marine_and_company == "none")
-		{
-			log_error("RE: Strange Behavior, couldn't pick a space marine");
-			exit;
-		}
-		var marine=marine_and_company[1];
-		var company=marine_and_company[0];
-		var unit = fetch_unit(marine_and_company);
-		var role=obj_ini.role[company][marine];
-		var text = unit.name_role();
-		var company_text = scr_convert_company_to_string(company);
-		if(company_text != ""){
-			company_text = "("+company_text+")";
-			text += company_text;
-		}
-		text += " is behaving strangely.";
-		scr_alert("color","lol",text,0,0);
+		init_marine_acting_strange()
 		evented=true;
 	}
 	
@@ -319,7 +301,7 @@ function scr_random_event(execute_now) {
 			company_text = "("+company_text+")";
 		}
 		text += company_text;
-		text += " has distinguished himself.##He is up for review to be promoted.";
+		text += " has distinguished himself.##He åis up for review to be promoted.";
 		
 		if (company != 10){
 			unit.add_exp(10);
@@ -758,110 +740,8 @@ function scr_random_event(execute_now) {
 			evented = true;
 	    }
     
-	}
-
-	else if (chosen_event == EVENT.mechanicus_mission) {
-		log_message("RE: Mechanicus Mission");
-		var mechanicus_missions = []
-		
-		var stars = scr_get_stars();
-		var mechanicus_have_forge_world = array_any(stars,
-			function(star,index){
-				return scr_star_has_planet_with_type(star,"Forge") && scr_star_has_planet_with_owner(star,3);
-		});
-		
-		if(mechanicus_have_forge_world){
-			array_push(mechanicus_missions, MECHANICUS_MISSION.bionics);
-			if (scr_role_count(obj_ini.role[100][16],"") >= 6) {
-				array_push(mechanicus_missions, MECHANICUS_MISSION.land_raider);
-			}
-		}
-		
-			
-		with(obj_star){
-			if(scr_star_has_planet_with_feature(id,P_features.Necron_Tomb)) and (awake_necron_Star(id)!= 0){
-				var planet = scr_get_planet_with_feature(id, P_features.Necron_Tomb);
-				if(scr_is_planet_owned_by_allies(self, planet)){
-					array_push(mechanicus_missions, MECHANICUS_MISSION.necron_study);
-					break;
-				}
-			}
-		}
-		
-	    if (obj_controller.disposition[3]>=70) {
-			array_push(mechanicus_missions, MECHANICUS_MISSION.mars_voyage);
-		}
-    
-		var mission_count = array_length(mechanicus_missions);
-		if(mission_count == 0){
-			log_error("RE: Mechanicus Mission, couldn't pick mission");
-			exit;
-		}
-		
-		var chosen_mission = mechanicus_missions[irandom(mission_count-1)];
-		
-	    if (chosen_mission == MECHANICUS_MISSION.bionics || chosen_mission == MECHANICUS_MISSION.land_raider || chosen_mission == MECHANICUS_MISSION.mars_voyage){
-        
-			stars = scr_get_stars();
-			var valid_stars = array_filter_ext(stars,
-				function(star, index){
-					var planet = scr_get_planet_with_feature(star, P_features.Mechanicus_Forge);
-					if(planet != -1){
-						return star.p_owner[planet] == eFACTION.Mechanicus;
-					}
-					return false;
-			});
-
-			if(valid_stars == 0){
-				log_error("RE: Mechanicus Mission, couldn't find a mechanicus forge world");
-				exit;
-			}
-
-			var star = stars[irandom(valid_stars-1)];
-			
-			
-	        if (chosen_mission == MECHANICUS_MISSION.land_raider){
-	            var text="The Adeptus Mechanicus are trusting you with a special mission.  They wish for you to bring a Land Raider and six "+string(obj_ini.role[100][16])+" to a Forge World in "+ string(star.name) + " for testing and training, for a duration of 24 months. You have four years to complete this.  Can your chapter handle this mission?";
-	            scr_popup("Mechanicus Mission",text,"mechanicus","mech_raider!0!|"+string(star.name)+"|");
-				evented = true;
-	        }
-	        else if (chosen_mission == MECHANICUS_MISSION.bionics) {
-	            var text="The Adeptus Mechanicus are trusting you with a special mission.  They desire a squad of Astartes with bionics to stay upon a Forge World in "+ string(star.name) + " for testing, for a duration of 24 months.  You have four years to complete this.  Can your chapter handle this mission?";
-	            scr_popup("Mechanicus Mission",text,"mechanicus","mech_bionics!0!|"+string(star.name)+"|");
-				evented = true;
-	        }
-	        else {
-	            var text="The local Adeptus Mechanicus are preparing to embark on a voyage to Mars, to delve into the catacombs in search of lost technology.  Due to your close relations they have made the offer to take some of your "+string(obj_ini.role[100][16])+"s with them.  Can your chapter handle this mission?";
-	            scr_popup("Mechanicus Mission",text,"mechanicus","mech_mars|"+string(star.name)+"|");
-				evented = true;
-	        }
-	    }
-    
-	    else if (chosen_mission==MECHANICUS_MISSION.necron_study) {
-			log_message("RE: Necron Tomb Study");
-			
-			stars = scr_get_stars();
-			var valid_stars = array_filter_ext(stars, 
-			function(star,index) {
-				if(scr_star_has_planet_with_feature(star,P_features.Necron_Tomb)) and (awake_necron_Star(star)!= 0){
-					var planet = scr_get_planet_with_feature(star, "Necron Tomb");
-					if(scr_is_planet_owned_by_allies(star, planet)) {
-						return true;
-					}
-				}
-				return false;
-			});
-			
-			if(valid_stars == 0) {
-				log_error("RE: Necron Tomb Study, coudln't find a tomb world under imperium control");
-				exit;
-			}
-			
-			var star = stars[irandom(valid_stars-1)]; 
-			var text="Mechanicus Techpriests have established a research site on a Necron Tomb World in the " + string(star.name)+ " system.  They are requesting some of your forces to provide security for the research team until the tests may be completed.  Further information is on a need-to-know basis.  Can your chapter handle this mission?";
-	            scr_popup("Mechanicus Mission",text,"mechanicus","mech_tomb|"+string(star.name)+"|");
-				evented = true;
-	    }
+	} else if (chosen_event == EVENT.mechanicus_mission) {
+		spawn_mechanicus_mission()
 	}
     
 	else if (chosen_event == EVENT.inquisition_planet) {

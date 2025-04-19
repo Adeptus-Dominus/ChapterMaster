@@ -101,11 +101,10 @@ function scr_star_has_planet_with_type(star, type){
 
 function scr_get_planet_with_owner(star, owner){
 	for(var i = 1; i <= star.planets; i++){
-		if(star.p_owner[i] == owner)
-			{
-				return i;
-			}
+		if (star.p_owner[i] == owner){
+			return i;
 		}
+	}
 	return -1;
 }
 
@@ -113,16 +112,32 @@ function scr_star_has_planet_with_owner(star, owner){
 	return scr_get_planet_with_owner(star,owner) != -1;
 }
 
-function scr_get_stars(shuffled=false, ownership=[]) {
+function scr_get_stars(shuffled=false, ownership=[], types = []) {
 	var stars = [];
 	var _owner_sort = array_length(ownership);
+	var _types_sort = array_length(types);
 	with(obj_star){
-		if (!_owner_sort){
-			array_push(stars,id);
+		if (!_owner_sort && !_types_sort){
+			var _add = true;
 		} else {
-			if (array_contains(ownership,owner)){
-				array_push(stars,id);
+			var _add = true
+			if (_owner_sort && !array_contains(ownership,owner)){
+				_add = false
 			}
+			if (_add && _types_sort){
+				for (var i=1;i<=planets;i++){
+					array_delete_value(types, p_type[i]);
+					if (!array_length(types)){
+						break;
+					}
+				}
+				if (array_length(types)){
+					_add = false;
+				}				
+			}
+		}
+		if (_add){
+			array_push(stars,id);
 		}
 	}
 	if (shuffled){

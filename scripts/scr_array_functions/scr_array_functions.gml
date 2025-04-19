@@ -61,6 +61,14 @@ function array_replace_value(choice_array, value, r_value){
 	}
 }
 
+function array_delete_value(choice_array, value){
+	var _index = array_find_value(choice_array, value);
+	while (_index>-1){
+		array_delete(choice_array, _index, 1);
+		_index = array_find_value(choice_array, value);
+	}
+}
+
 function array_random_element(choice_array){
 	return choice_array[irandom(array_length(choice_array) - 1)];
 }
