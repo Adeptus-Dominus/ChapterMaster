@@ -1196,28 +1196,56 @@ function scr_initialize_custom() {
 		}
 	}
 
-	if(struct_exists(obj_creation, "extra_specialists")){
+	if (struct_exists(obj_creation, "extra_specialists")) {
 		var c_specialists = obj_creation.extra_specialists;
 		var c_specialist_names = struct_get_names(c_specialists);
-		for(var s = 0; s < array_length(c_specialist_names); s++){
+		for (var s = 0; s < array_length(c_specialist_names); s++) {
 			var s_name = c_specialist_names[s];
 			var s_val = struct_get(c_specialists, s_name);
 			// show_debug_message($"updating specialist {s_name} with {s_val})");
-			switch (s_name){
-				case "chaplains": chaplains = chaplains + real(s_val); break;
-				case "chaplains_per_company": chaplains_per_company = chaplains_per_company + real(s_val); break;
-				case "techmarines": techmarines  = techmarines  + real(s_val); break;
-				case "techmarines_per_company": techmarines_per_company = techmarines_per_company + real(s_val); break;
-				case "apothecary": apothecary = apothecary  + real(s_val); break;
-				case "apothecary_per_company": apothecary_per_company = apothecary_per_company + real(s_val); break;
-				case "epistolary": epistolary = epistolary  + real(s_val); break;
-				case "epistolary_per_company": epistolary_per_company = epistolary_per_company + real(s_val); break;
-				case "codiciery": codiciery  = codiciery + real(s_val); break;
-				case "lexicanum": lexicanum  = lexicanum + real(s_val); break;
-				case "terminator": terminator  = terminator + real(s_val); break;
-				case "assault": assault = assault + real(s_val); break;
-				case "veteran": veteran = veteran + real(s_val); break;
-				case "devastator": devastator = devastator + real(s_val); break;
+			switch (s_name) {
+				case "chaplains":
+					chaplains = chaplains + real(s_val);
+					break;
+				case "chaplains_per_company":
+					chaplains_per_company = chaplains_per_company + real(s_val);
+					break;
+				case "techmarines":
+					techmarines = techmarines + real(s_val);
+					break;
+				case "techmarines_per_company":
+					techmarines_per_company = techmarines_per_company + real(s_val);
+					break;
+				case "apothecary":
+					apothecary = apothecary + real(s_val);
+					break;
+				case "apothecary_per_company":
+					apothecary_per_company = apothecary_per_company + real(s_val);
+					break;
+				case "epistolary":
+					epistolary = epistolary + real(s_val);
+					break;
+				case "epistolary_per_company":
+					epistolary_per_company = epistolary_per_company + real(s_val);
+					break;
+				case "codiciery":
+					codiciery = codiciery + real(s_val);
+					break;
+				case "lexicanum":
+					lexicanum = lexicanum + real(s_val);
+					break;
+				case "terminator":
+					terminator = terminator + real(s_val);
+					break;
+				case "assault":
+					assault = assault + real(s_val);
+					break;
+				case "veteran":
+					veteran = veteran + real(s_val);
+					break;
+				case "devastator":
+					devastator = devastator + real(s_val);
+					break;
 			}
 		}
 	}
@@ -2829,7 +2857,7 @@ function scr_initialize_custom() {
 					commands++;
 					_rolename = roles.captain;
 					_erole = eROLE.Captain;
-					_wep1 = choose_weighted(weapon_weighted_lists.pistols);
+					_wep2 = choose_weighted(weapon_weighted_lists.pistols);
 					if(equal_specialists == false && _coy.coy == 8){
 						_mobi = "Jump Pack"
 					}
@@ -2963,6 +2991,10 @@ function scr_initialize_custom() {
 					}
 				break;
 				case "predators":
+					_is_vehicle = true;
+					_rolename = "Predator";
+					_erole = eROLE.Predator;
+					var variant = choose(1,1,2,3);
 					// 1st company relic predators
 					if(_coy.coy == 1){
 						_upgrade = "Artificer Hull";
