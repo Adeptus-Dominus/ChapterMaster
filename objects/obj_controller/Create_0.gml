@@ -446,7 +446,6 @@ ui_ranged_penalty=0;
 current_target=false;
 click=0;
 click2=0;
-mouse_left=0;
 dropdown_open=0;
 scrollbar_engaged=0;
 born_leader=0;
@@ -711,6 +710,7 @@ sel_owner=0;
 sel_system_x=0;
 sel_system_y=0;
 popup_master_crafted=0;
+close_popups = true;
 // ** Sets starting turn **
 turn=1;
 // turn=40;

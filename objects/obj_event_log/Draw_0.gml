@@ -84,11 +84,10 @@ if (__b__) {
     }
     if (scr_hit(xx + 1104, yy + 72, xx + 1137, yy + 105) = true) {
         draw_sprite(spr_help_exit, 1, xx + 1104, yy + 72);
-        if (obj_controller.mouse_left = 1) and(obj_controller.cooldown <= 0) {
+        if (scr_click_left()) {
             with(obj_controller) {
                 menu = 0;
                 onceh = 1;
-                cooldown = 8000;
                 click = 1;
                 hide_banner = 0;
             }
@@ -122,8 +121,7 @@ if (__b__) {
                 draw_set_alpha(0.2);
                 draw_rectangle(x1, y1, x1 + 198, y1 + 22, 0);
                 draw_set_alpha(1);
-                if (obj_controller.mouse_left = 1) and(obj_controller.cooldown <= 0) {
-                    obj_controller.cooldown = 8000;
+                if (scr_click_left()) {
                     topic = topics[t];
                     ini_open("main\\help.ini");
                     info = ini_read_string(string(t), "info", "");

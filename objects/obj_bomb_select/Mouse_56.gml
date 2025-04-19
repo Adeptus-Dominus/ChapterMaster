@@ -11,7 +11,7 @@ if (__b__){
     var why=0,onceh=0, ship=0;
 
     bomb_score=0;
-    for(var i=0; i<array_length(ship_ide) i++){
+    for(var i=0; i<array_length(ship_ide); i++){
         if (ship_all[i]==1){
             if (obj_ini.ship_class[ship_ide[i]]=="Battle Barge") then bomb_score+=3;
             if (obj_ini.ship_class[ship_ide[i]]=="Strike Cruiser") then bomb_score+=1;
@@ -19,8 +19,5 @@ if (__b__){
     }
 
     // TODO Need to change max_ships to something more meaningful to make sure that SOMETHING is dropping
-    if (obj_controller.cooldown<=0){
-        
-    }
     instance_activate_object(obj_star_select);
 }
