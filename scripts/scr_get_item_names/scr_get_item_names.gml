@@ -99,7 +99,7 @@ function push_marine_armour_item_names(_item_names) {
     _item_names[@ index++] = "MK7 Aquila";
     _item_names[@ index++] = "MK8 Errant";
     _item_names[@ index++] = "Artificer Armour";
-    _item_names[@ index++] = "Any Terminator Armour";
+    _item_names[@ index++] = STR_ANY_TERMINATOR_ARMOUR;
     _item_names[@ index++] = "Terminator Armour";
     _item_names[@ index++] = "Tartaros"; // 13
 }

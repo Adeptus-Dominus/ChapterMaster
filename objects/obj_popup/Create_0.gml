@@ -313,7 +313,7 @@ calculate_equipment_needs =  function (){
                         have_armour_num += 1;
                     }
                 }
-                if (req_armour == "Any Terminator Armour") {
+                if (req_armour == STR_ANY_TERMINATOR_ARMOUR) {
                     if (unit_armour.has_tag("terminator")) {
                         have_armour_num += 1;
                     }
@@ -341,7 +341,7 @@ calculate_equipment_needs =  function (){
             for (i=0;i<array_length(_armour_list);i++){
                 have_armour_num+=scr_item_count(_armour_list[i]);
             }
-        }else if (req_armour="Any Terminator Armour"){
+        }else if (req_armour=STR_ANY_TERMINATOR_ARMOUR){
             var _armour_list = LIST_TERMINATOR_ARMOUR;
             for (i=0;i<array_length(_armour_list);i++){
                 have_armour_num+=scr_item_count(_armour_list[i]);

@@ -15,7 +15,7 @@ function scr_update_unit_armour(new_armour, from_armoury = true, to_armoury = tr
 
 	if (new_armour == STR_ANY_POWER_ARMOUR) {
 		armour_list = LIST_BASIC_POWER_ARMOUR;
-	} else if (new_armour == "Any Terminator Armour") {
+	} else if (new_armour == STR_ANY_TERMINATOR_ARMOUR) {
 		armour_list = LIST_TERMINATOR_ARMOUR;
 	}
 
@@ -49,7 +49,7 @@ function scr_update_unit_armour(new_armour, from_armoury = true, to_armoury = tr
 			return "no change";
 		}
 		
-		if ((_old_armour_data.has_tag("terminator") && new_armour == "Any Terminator Armour") && same_quality) {
+		if ((_old_armour_data.has_tag("terminator") && new_armour == STR_ANY_TERMINATOR_ARMOUR) && same_quality) {
 			return "no change";
 		}
 	}
