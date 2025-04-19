@@ -37,19 +37,42 @@ function point_and_click(rect, cooldown = 60, lock_bypass = false) {
 	}
 
 	var controller_exist = instance_exists(obj_controller);
+	var main_menu_exists = instance_exists(obj_main_menu);
+	var creation_screen_exists = instance_exists(obj_creation);
 	if (controller_exist && obj_controller.cooldown > 0) {
 		log_warning("Ignored click for cooldown, {obj_controller.cooldown} steps remaining!");
 		log_warning($"Click callstack: \n{array_to_string_list(debug_get_callstack(), true)}");
 		return false;
+	} else if (main_menu_exists) {
+		if (main_menu_exists) {
+			if (obj_main_menu.cooldown > 0) {
+				log_warning($"Ignored click for cooldown, {obj_main_menu.cooldown} steps remaining!");
+				log_warning($"Click callstack: \n{array_to_string_list(debug_get_callstack(), true)}");
+				return false;
+			}
+		} else if (creation_screen_exists) {
+			if (obj_creation.cooldown > 0) {
+				log_warning($"Ignored click for cooldown, {obj_creation.cooldown} steps remaining!");
+				log_warning($"Click callstack: \n{array_to_string_list(debug_get_callstack(), true)}");
+				return false;
+			}
+		}
 	}
 
 	var mouse_consts = return_mouse_consts();
-	var click_check = point_in_rectangle(mouse_consts[0], mouse_consts[1], rect[0], rect[1],rect[2], rect[3]);
-	if (controller_exist && click_check && cooldown > 0) {
+	var point_check = point_in_rectangle(mouse_consts[0], mouse_consts[1], rect[0], rect[1],rect[2], rect[3]);
+	if (point_check && cooldown > 0) {
+		if (controller_exist) {
+			obj_controller.cooldown = cooldown * delta_time/1000000;
+		}  if (main_menu_exists) {
+			obj_main_menu.cooldown = cooldown * delta_time/1000000;
+		} else if (creation_screen_exists) {
+			obj_creation.cooldown = cooldown * delta_time/1000000;
+		}
 		// log_message("scr_click_left: clicked and set cooldown!");
 		// show_debug_message($"{array_to_string_list(debug_get_callstack())}");
-		obj_controller.cooldown = cooldown * delta_time/1000000;
 	}
+
 	if(is_debug_overlay_open()){
 		show_debug_message($"mouse coords x: {mouse_consts[0]} y: {mouse_consts[1]}")
 	}
@@ -76,6 +99,26 @@ function scr_click_left(cooldown = 60, lock_bypass = false){
 		// log_message("scr_click_left: clicked and set cooldown!");
 		// show_debug_message($"{array_to_string_list(debug_get_callstack())}");
 		obj_controller.cooldown = cooldown * delta_time/1000000;
+	} else if (!controller_exist) {
+		var main_menu_exists = instance_exists(obj_main_menu);
+		var creation_screen_exists = instance_exists(obj_creation);
+		if (main_menu_exists) {
+			if (obj_main_menu.cooldown > 0) {
+				log_warning($"Ignored click for cooldown, {obj_main_menu.cooldown} steps remaining!");
+				log_warning($"Click callstack: \n{array_to_string_list(debug_get_callstack(), true)}");
+				return false;
+			} else if (cooldown > 0) {
+				obj_main_menu.cooldown = cooldown * delta_time/1000000;
+			}
+		} else if (creation_screen_exists) {
+			if (obj_creation.cooldown > 0) {
+				log_warning($"Ignored click for cooldown, {obj_creation.cooldown} steps remaining!");
+				log_warning($"Click callstack: \n{array_to_string_list(debug_get_callstack(), true)}");
+				return false;
+			} else if (cooldown > 0) {
+				obj_creation.cooldown = cooldown * delta_time/1000000;
+			}
+		}
 	}
 
 	return mouse_clicked;
@@ -92,6 +135,26 @@ function mouse_button_held(_button = mb_left) {
 		log_warning($"Ignored click for cooldown, {obj_controller.cooldown} steps remaining!");
 		log_warning($"Click callstack: \n{array_to_string_list(debug_get_callstack(), true)}");
 		return false;
+	} else if (!controller_exist) {
+		var main_menu_exists = instance_exists(obj_main_menu);
+		var creation_screen_exists = instance_exists(obj_creation);
+		if (main_menu_exists) {
+			if (obj_main_menu.cooldown > 0) {
+				log_warning($"Ignored click for cooldown, {obj_main_menu.cooldown} steps remaining!");
+				log_warning($"Click callstack: \n{array_to_string_list(debug_get_callstack(), true)}");
+				return false;
+			} else if (cooldown > 0) {
+				obj_main_menu.cooldown = cooldown * delta_time/1000000;
+			}
+		} else if (creation_screen_exists) {
+			if (obj_creation.cooldown > 0) {
+				log_warning($"Ignored click for cooldown, {obj_creation.cooldown} steps remaining!");
+				log_warning($"Click callstack: \n{array_to_string_list(debug_get_callstack(), true)}");
+				return false;
+			} else if (cooldown > 0) {
+				obj_creation.cooldown = cooldown * delta_time/1000000;
+			}
+		}
 	}
 
 	return mouse_held;
