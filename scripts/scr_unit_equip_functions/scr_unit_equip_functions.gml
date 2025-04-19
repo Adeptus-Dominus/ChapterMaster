@@ -1,5 +1,4 @@
-// Script assets have changed for v2.3.0 see
-// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
+/// @mixin
 function scr_update_unit_armour(new_armour, from_armoury = true, to_armoury = true, quality = "any") {
 	var is_artifact = !is_string(new_armour);
 	var artifact_id = 0;
@@ -45,11 +44,11 @@ function scr_update_unit_armour(new_armour, from_armoury = true, to_armoury = tr
 	}
 
 	if (is_struct(_old_armour_data)) {
-		if ((_old_armour_data.has_tag("power_armour") && new_armour == STR_ANY_POWER_ARMOUR) && same_quality) {
+		if ((array_contains(LIST_BASIC_POWER_ARMOUR, _old_armour_data.name) && new_armour == STR_ANY_POWER_ARMOUR) && same_quality) {
 			return "no change";
 		}
 		
-		if ((_old_armour_data.has_tag("terminator") && new_armour == STR_ANY_TERMINATOR_ARMOUR) && same_quality) {
+		if ((array_contains(LIST_TERMINATOR_ARMOUR, _old_armour_data.name) && new_armour == STR_ANY_TERMINATOR_ARMOUR) && same_quality) {
 			return "no change";
 		}
 	}

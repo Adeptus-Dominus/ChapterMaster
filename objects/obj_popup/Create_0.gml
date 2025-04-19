@@ -308,14 +308,16 @@ calculate_equipment_needs =  function (){
             unit_armour = gear_weapon_data("armour", obj_controller.ma_armour[i]);
             unit_wep_one = gear_weapon_data("weapon", obj_controller.ma_wep1[i]);
             if (obj_controller.man[i]!="") and (obj_controller.man_sel[i]) and (obj_controller.ma_promote[i]) and (obj_controller.ma_exp[i]>=min_exp){
-                if (req_armour == STR_ANY_POWER_ARMOUR && is_struct(unit_armour)) {
-                    if (unit_armour.has_tag("power_armour")) {
-                        have_armour_num += 1;
+                if (is_struct(unit_armour)) {
+                    if (req_armour == STR_ANY_POWER_ARMOUR) {
+                        if (array_contains(LIST_BASIC_POWER_ARMOUR, unit_armour.name)) {
+                            have_armour_num += 1;
+                        }
                     }
-                }
-                if (req_armour == STR_ANY_TERMINATOR_ARMOUR) {
-                    if (unit_armour.has_tag("terminator")) {
-                        have_armour_num += 1;
+                    if (req_armour == STR_ANY_TERMINATOR_ARMOUR) {
+                        if (array_contains(LIST_TERMINATOR_ARMOUR, unit_armour.name)) {
+                            have_armour_num += 1;
+                        }
                     }
                 }
                 

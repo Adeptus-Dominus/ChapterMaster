@@ -29,10 +29,10 @@ try {
                         if (has_valid_armour) {
                             switch (req_armour) {
                                 case STR_ANY_POWER_ARMOUR:
-                                    has_valid_armour = unit_armour.has_tag("power_armour");
+                                    has_valid_armour = array_contains(LIST_BASIC_POWER_ARMOUR, unit_armour.name);
                                     break;
                                 case STR_ANY_TERMINATOR_ARMOUR:
-                                    has_valid_armour = unit_armour.has_tag("terminator");
+                                    has_valid_armour = array_contains(LIST_TERMINATOR_ARMOUR, unit_armour.name);
                                     break;
                                 default:
                                     has_valid_armour = req_armour == unit_armour.name;
