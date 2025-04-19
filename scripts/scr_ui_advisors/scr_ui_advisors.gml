@@ -10,7 +10,7 @@ function scr_ui_advisors() {
     blurp = "";
     eta = 0;
 
-    // This script draws all of the ADVISOR screens
+    // This script draws all of the ADVISOR screens/////////
 
     // ** Fleet **
     if (menu = 16) {

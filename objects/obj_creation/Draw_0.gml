@@ -630,6 +630,24 @@ try {
 				}
 			}
 		}
+		
+		if (custom<=0) {
+			draw_rectangle(1000, 135, 1180, 170, 1);
+			draw_text_transformed(1090, 140, string("Edit Chapter"), 0.6, 0.6, 0);
+			draw_set_font(fnt_40k_14b);
+			if (scr_hit(1000, 135, 1180, 170)) {
+				tooltip = "Do you want to edit your chapter?";
+				tooltip2 = "Click to edit chapter";
+				if (mouse_left >= 1) {
+					slide=2
+					change_slide=1;
+					goto_slide=2;
+					custom=2;
+				}
+			}
+		}
+		
+		
 	}
 
 	/* */
