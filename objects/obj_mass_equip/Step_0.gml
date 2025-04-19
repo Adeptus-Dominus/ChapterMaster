@@ -57,7 +57,7 @@ try {
                         if (unit.weapon_one() != req_wep1) {
                             if (is_string(unit.weapon_one(true))) {
                                 if (can_assign_weapon(unit, req_wep1)) {
-                                    unit.update_weapon_two(req_wep1);
+                                    unit.update_weapon_one(req_wep1);
                                 }
                             }
                         }
