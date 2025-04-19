@@ -69,8 +69,8 @@ if (settings=1){
         if (scr_hit(xx+981,yy+339,xx+981+32,yy+339+32)=true) and (music_volume<1.3){change_volume=1;music_volume+=0.1;}
         
         if (scr_hit(xx+626,yy+426,xx+626+32,yy+426+32)=true){
-            if (settings_fullscreen=1) and (onceh=0){onceh=1;settings_fullscreen=0;window_set_fullscreen(false);change_volume=2;}
-            if (settings_fullscreen=0) and (onceh=0){onceh=1;settings_fullscreen=1;window_set_fullscreen(true);change_volume=2;}
+            if (settings_fullscreen=1){settings_fullscreen=0;window_set_fullscreen(false);change_volume=2;}
+           else  if (settings_fullscreen=0){settings_fullscreen=1;window_set_fullscreen(true);change_volume=2;}
             ini_open("saves.ini");
             ini_write_real("Settings", "fullscreen", settings_fullscreen);
             ini_close();
