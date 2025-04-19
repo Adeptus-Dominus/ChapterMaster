@@ -427,11 +427,16 @@ if (defeat=0) and (reduce_power=true){
     }
     else if (enemy=10){
         enemy_power=battle_object.p_traitors[battle_id];
-        part10="Heretic";if (threat=7) then part10="Daemon";
+        part10="Heretic"; // if (threat=7) then part10="Daemon";
     }
     else if (enemy=11){
         enemy_power=battle_object.p_chaos[battle_id];
-        part10="Chaos Space Marine";}
+        part10="Chaos Space Marine";
+    }
+    else if (enemy=12){
+        enemy_power=battle_object.p_demons[battle_id];
+        part10="Daemon";
+    }
     else if (enemy=13){
         enemy_power=battle_object.p_necrons[battle_id];
         part10="Necrons";
@@ -454,13 +459,13 @@ if (defeat=0) and (reduce_power=true){
         new_power = max(new_power, 0);
 
         // Give some money for killing enemies?
-        var _quad_factor = 6;
+        var _quad_factor = 10;
         requisition_reward = _quad_factor * sqr(threat);
         obj_controller.requisition += requisition_reward;
 
 		//(¿?) Ramps up threat/enemy presence in case enemy Type == "Daemon" (¿?)
 		//Does the inverse check/var assignment 10 lines above
-        if (part10="Daemon") then new_power=7;
+        // if (part10="Daemon") then new_power=7;
         if (enemy=9) and (new_power==0){
             var battle_planet = battle_id;
             with (battle_object){
@@ -527,6 +532,7 @@ if (defeat=0) and (reduce_power=true){
     else if (enemy=9){battle_object.p_tyranids[battle_id]=new_power;}
     else if (enemy=10){battle_object.p_traitors[battle_id]=new_power;}
     else if (enemy=11){battle_object.p_chaos[battle_id]=new_power;}
+    else if (enemy=12){battle_object.p_demons[battle_id]=new_power;}
     else if (enemy=13){battle_object.p_necrons[battle_id]=new_power;}
 
     if (enemy!=2) and (string_count("cs_meeting_battle",battle_special)=0){
