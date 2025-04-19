@@ -286,7 +286,7 @@ function complete_train_forces_mission(targ_planet, problem_index){
         				_mission_string += "(disposition -25)";
         			}
         		}
-        		plant.add_disposition(disp_loss);
+        		planet.add_disposition(disp_loss);
         	}
         	scr_popup($"Training Forces on {planet_numeral_name(i)}",_mission_string,"","");
         	remove_planet_problem(targ_planet, "train_forces");
