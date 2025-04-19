@@ -41,7 +41,7 @@ if (obj_controller.faction_gender[10]==1) and (obj_controller.known[eFACTION.Cha
 
 with(obj_star){
     if (p_owner[1]==1) or (p_owner[2]==1) or (p_owner[3]==1) or (p_owner[4]==1){
-        var heh=instance_create(x,y,obj_crusade);
+        var heh=instance_create(x,y,obj_crusade); // This seems relevant for 714
         heh.radius=64;
         heh.duration=9999;
         heh.show=false;
