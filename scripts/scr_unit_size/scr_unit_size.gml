@@ -20,7 +20,7 @@ function scr_unit_size(armour, role, other_factors, mobility=false) {
     // TODO is_bulky should be in the armour's struct
     if (string_count("Dread", armour) > 0) {
         _size += 5;
-    } else if (array_contains(ARR_terminator_armour, armour)) {
+    } else if (array_contains(LIST_TERMINATOR_ARMOUR, armour)) {
         _size++;
     };
 

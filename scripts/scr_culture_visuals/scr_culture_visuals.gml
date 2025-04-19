@@ -955,7 +955,7 @@ function DummyMarine()constructor{
     }  
     last_armour = "MK7 Aquila";
     static armour = function(){
-        var armours = ARR_basic_power_armour;
+        var armours = LIST_BASIC_POWER_ARMOUR;
         var _last_armour = last_armour;
         with (obj_creation){
             if (!livery_picker.freeze_armour){

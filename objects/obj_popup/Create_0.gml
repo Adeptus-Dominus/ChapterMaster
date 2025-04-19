@@ -337,12 +337,12 @@ calculate_equipment_needs =  function (){
 
         // This checks to see if there is any more in the armoury
         if (req_armour==STR_ANY_POWER_ARMOUR){
-            var _armour_list = ARR_basic_power_armour;
+            var _armour_list = LIST_BASIC_POWER_ARMOUR;
             for (i=0;i<array_length(_armour_list);i++){
                 have_armour_num+=scr_item_count(_armour_list[i]);
             }
         }else if (req_armour="Any Terminator Armour"){
-            var _armour_list = ARR_terminator_armour;
+            var _armour_list = LIST_TERMINATOR_ARMOUR;
             for (i=0;i<array_length(_armour_list);i++){
                 have_armour_num+=scr_item_count(_armour_list[i]);
             }

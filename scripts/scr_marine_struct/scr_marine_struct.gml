@@ -31,8 +31,7 @@ global.religions = {
         "name": "The Eight Fold Path"
     }
 };
-#macro ARR_basic_power_armour ["MK7 Aquila", "MK6 Corvus", "MK8 Errant", "MK4 Maximus", "MK3 Iron Armour", "Power Armour"]
-#macro ARR_terminator_armour ["Terminator Armour", "Tartaros"]
+
 enum location_types {
     planet,
     ship,
@@ -652,7 +651,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         sz = 1;
         if (string_count("Dread", arm) > 0) {
             sz += 5;
-        } else if (array_contains(ARR_terminator_armour, arm)) {
+        } else if (array_contains(LIST_TERMINATOR_ARMOUR, arm)) {
             sz += 1;
         }
         //var mobi =  mobility_item();

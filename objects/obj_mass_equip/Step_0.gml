@@ -170,11 +170,11 @@ try {
                         var yes = false;
 
                         if (req_armour == STR_ANY_POWER_ARMOUR) {
-                            if (array_contains(ARR_basic_power_armour, obj_ini.armour[co][i])) {
+                            if (array_contains(LIST_BASIC_POWER_ARMOUR, obj_ini.armour[co][i])) {
                                 yes = true;
                             }
                         } else if (req_armour == STR_ANY_TERMINATOR_ARMOUR) {
-                            if (array_contains(ARR_terminator_armour, obj_ini.armour[co][i])) {
+                            if (array_contains(LIST_TERMINATOR_ARMOUR, obj_ini.armour[co][i])) {
                                 yes = true;
                             }
                         }
@@ -221,12 +221,12 @@ try {
         have_wep2_num += scr_item_count(req_wep2);
 
         if (req_armour == STR_ANY_POWER_ARMOUR) {
-            for (var g = 0; g < array_length(ARR_basic_power_armour); g++) {
-                have_armour_num += scr_item_count(ARR_basic_power_armour[g]);
+            for (var g = 0; g < array_length(LIST_BASIC_POWER_ARMOUR); g++) {
+                have_armour_num += scr_item_count(LIST_BASIC_POWER_ARMOUR[g]);
             }
         } else if (req_armour == STR_ANY_TERMINATOR_ARMOUR) {
-            for (var g = 0; g < array_length(ARR_terminator_armour); g++) {
-                have_armour_num += scr_item_count(ARR_terminator_armour[g]);
+            for (var g = 0; g < array_length(LIST_TERMINATOR_ARMOUR); g++) {
+                have_armour_num += scr_item_count(LIST_TERMINATOR_ARMOUR[g]);
             }
         } else {
             have_armour_num += scr_item_count(req_armour);

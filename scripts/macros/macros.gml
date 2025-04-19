@@ -14,6 +14,10 @@
 #macro STR_ANY_POWER_ARMOUR "Any Power Armour"
 #macro STR_ANY_TERMINATOR_ARMOUR "Any Terminator Armour"
 
+// Basic, because we don't include Artificer Armour
+#macro LIST_BASIC_POWER_ARMOUR ["MK7 Aquila", "MK6 Corvus", "MK5 Heresy", "MK8 Errant", "MK4 Maximus", "MK3 Iron Armour","Power Armour"]
+#macro LIST_TERMINATOR_ARMOUR ["Terminator Armour", "Tartaros"]
+
 enum luck {
     bad = -1,
     neutral = 0,

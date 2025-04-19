@@ -14,22 +14,26 @@ function scr_update_unit_armour(new_armour, from_armoury = true, to_armoury = tr
 	}
 
 	if (new_armour == STR_ANY_POWER_ARMOUR) {
-		armour_list = ARR_basic_power_armour;
+		armour_list = LIST_BASIC_POWER_ARMOUR;
 	} else if (new_armour == "Any Terminator Armour") {
-		armour_list = ARR_terminator_armour;
+		armour_list = LIST_TERMINATOR_ARMOUR;
 	}
 
 	if (array_length(armour_list) > 0) {
-		var armour_found = false;
-		for (var pa = 0; pa < array_length(armour_list); pa++) {
-			if (scr_item_count(armour_list[pa]) > 0 || !from_armoury) {
-				new_armour = armour_list[pa];
-				armour_found = true;
-				break;
+		if (from_armoury) {
+			var armour_found = false;
+			for (var pa = 0; pa < array_length(armour_list); pa++) {
+				if (scr_item_count(armour_list[pa]) > 0) {
+					new_armour = armour_list[pa];
+					armour_found = true;
+					break;
+				}
 			}
-		}
-		if (!armour_found) {
-			return "no_items";
+			if (!armour_found) {
+				return "no_items";
+			}
+		} else {
+			new_armour = array_random_element(armour_list);
 		}
 	}
 
