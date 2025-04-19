@@ -1,4 +1,5 @@
 {
+    "$schema": "./chapter_schema.json",
     "chapter": {
         "id": 10,
         "name": "Black Templars",
@@ -54,7 +55,7 @@
             "trim": "Silver",
             "lens": "Dark Red",
             "weapon": "Black",
-            "special": 0, // 0 - normal, 1 - Breastplate, 2 - Vertical, 3 - Quadrant
+            "special": 0 // 0 - normal, 1 - Breastplate, 2 - Vertical, 3 - Quadrant
             //"trim_on": 0 // 0 no, 1 yes for special trim colours 
         },
         "culture_styles": [
@@ -130,11 +131,13 @@
             "armour": "",
             "bionics": 0
         },
-        "artifact": {
-            "name": "Sword of the High Marshalls",
-            "description": "A relic blade forged from the shards of Rogal Dorn's shattered sword passed down by the High Marshalls as a sign of office",
-            "base_weapon_type": "Relic Blade"
-        },
+        "artifact": [
+            {
+                "name": "Sword of the High Marshalls",
+                "description": "A relic blade forged from the shards of Rogal Dorn's shattered sword passed down by the High Marshalls as a sign of office",
+                "base_weapon_type": "Relic Blade"
+            }
+        ],
         "company_titles": [
             "",
             "",
