@@ -489,7 +489,7 @@ function scr_livery_setup(){
             yar = complex_depth_selection==(i) ? 1 : 0;
             if (custom<2) then draw_set_alpha(0.5);
             draw_sprite(spr_creation_check,yar,cur_button.cords[0],cur_button.cords[1]);
-             if (scr_hit(cur_button.cords[0],cur_button.cords[1],cur_button.cords[0]+32,cur_button.cords[1]+32) and allow_colour_click){
+             if (point_and_click([cur_button.cords[0],cur_button.cords[1],cur_button.cords[0]+32,cur_button.cords[1]+32]) and allow_colour_click){
                     
                     var onceh=0;
                     if (complex_depth_selection=i) and (onceh=0){complex_depth_selection=0;onceh=1;}
@@ -597,7 +597,7 @@ function scr_livery_setup(){
     	tooltip="Specialist Distribution";
     	tooltip2=$"Check if you wish for your Companies to be uniform and each contain {role[100][10]}s and {role[100][9]}s.";
     }
-    if (scr_hit(860,650,860+32,650+32) and allow_colour_click){
+    if (point_and_click([860,650,860+32,650+32]) and allow_colour_click){
         
         var onceh=0;
         equal_specialists = !equal_specialists;
@@ -611,7 +611,7 @@ function scr_livery_setup(){
     	tooltip="Load to Ships";
     	tooltip2="Check to have your Astartes automatically loaded into ships when the game starts.";
     }
-    if (scr_hit(860,645+40,860+32,645+32+40) and (scr_click_left()) and (!instance_exists(obj_creation_popup))){
+    if (point_and_click([860,645+40,860+32,645+32+40]) and (!instance_exists(obj_creation_popup))){
         var onceh=0;
         load_to_ships[0] = !load_to_ships[0];
     }
@@ -638,7 +638,7 @@ function scr_livery_setup(){
 		}
 		draw_sprite(spr_creation_check,yar,860,645+80);yar=0;
     	if (scr_hit(860,645+80,1005,645+32+80)) and (!instance_exists(obj_creation_popup)){tooltip="Distribute Scouts";tooltip2="Check to have your Scouts split across ships in the fleet.";}
-    	if (scr_hit(860,645+80,860+32,645+32+80)) and (scr_click_left()) and (!instance_exists(obj_creation_popup)){
+    	if (point_and_click([860,645+80,860+32,645+32+80])) and (!instance_exists(obj_creation_popup)){
              load_to_ships[1] = !load_to_ships[1];  		 
     	}
     	draw_text_transformed(860+30,645+4+80,"Distribute Scouts",0.4,0.4,0);	
@@ -651,7 +651,7 @@ function scr_livery_setup(){
     	if (scr_hit(1010,645+80,1150,645+32+80)) and (!instance_exists(obj_creation_popup)){
             tooltip="Distribute Veterans";tooltip2="Check to have your Veterans split across the fleet.";
         }
-    	if (scr_hit(1010,645+80,1020+32,645+32+80)) and (scr_click_left()) and (!instance_exists(obj_creation_popup)){
+    	if (point_and_click([1010,645+80,1020+32,645+32+80])) and (!instance_exists(obj_creation_popup)){
     		var onceh=0;
              load_to_ships[2] = !load_to_ships[2] 		 
     	}
@@ -691,7 +691,8 @@ function scr_livery_setup(){
                 if (text_selected="capoth") and (text_bar>30) then draw_text_ext(600,575,string_hash_to_newline(string(hapothecary)),-1,580);
                 if (text_selected="capoth") and (text_bar<=30) then draw_text_ext(600,575,string_hash_to_newline(string(hapothecary)+"|"),-1,580);
                 var str_width,hei;str_width=0;hei=string_height_ext(string_hash_to_newline(hapothecary),-2,580);
-                if (scr_hit(600,575,785,575+hei)){obj_cursor.image_index=2;
+                if (scr_hit(600,575,785,575+hei)){
+                    obj_cursor.image_index=2;
                     if (scr_click_left()) and (!instance_exists(obj_creation_popup)){
                         text_selected="capoth";
                         keyboard_string=hapothecary;

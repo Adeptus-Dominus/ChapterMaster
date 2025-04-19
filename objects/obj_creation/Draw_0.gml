@@ -35,7 +35,7 @@ try {
 		draw_line(xx + 30, yy + 70 + (slate3 * 36), xx + 790, yy + 70 + (slate3 * 36));
 	}
 
-	allow_colour_click = scr_click_left() && (custom > 1) && (!instance_exists(obj_creation_popup));
+	allow_colour_click = (custom > 1) && (!instance_exists(obj_creation_popup));
 
 	draw_set_alpha(slate4 / 30);
 	if (slate4 > 0) {
