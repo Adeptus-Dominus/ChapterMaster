@@ -81,7 +81,7 @@ function scr_add_artifact(artifact_type, artifact_tags, is_identified, artifact_
     if ((base_type == "Armour") && (base_type_detail == "")) {
         if (rand2 <= 70) {
             var _armour_list = LIST_BASIC_POWER_ARMOUR;
-            base_type_detail = _armour_list[irandom(array_length(_armour_list) - 1)];
+            base_type_detail = array_random_element(_armour_list);
         } else if (rand2 <= 80) {
             var _armour_list = LIST_TERMINATOR_ARMOUR;
             base_type_detail = _armour_list[irandom(array_length(_armour_list) - 1)];
