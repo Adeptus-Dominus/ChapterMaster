@@ -3,8 +3,7 @@
 function scr_update_unit_armour(new_armour, from_armoury = true, to_armoury = true, quality = "any") {
 	var is_artifact = !is_string(new_armour);
 	var artifact_id = 0;
-	var change_armour = armour();
-	var require_carpace = false;
+	var _old_armour = armour();
 	var armour_list = [];
 	var same_quality = quality == "any" || quality == armour_quality;
 	var unequipping = new_armour == "";
@@ -14,32 +13,10 @@ function scr_update_unit_armour(new_armour, from_armoury = true, to_armoury = tr
 		new_armour = obj_ini.artifact[artifact_id];
 	}
 
-	var _new_armour_data = gear_weapon_data("armour", new_armour);
-	var _old_armour_data = gear_weapon_data("armour", change_armour);
-
-	if (!is_struct(_new_armour_data) && !is_artifact && !unequipping) {
-		return "invalid item";
-	}
-
-	var _new_power_armour = is_struct(_new_armour_data) && _new_armour_data.has_tag("power_armour");
-	var _old_power_armour = is_struct(_old_armour_data) && _old_armour_data.has_tag("power_armour");
-
-	if ((change_armour == new_armour || (_old_power_armour && _new_power_armour && new_armour == "Power Armour")) && same_quality) {
-		return "no change";
-	}
-
-	if (_new_power_armour) {
-		require_carpace = true;
-		if (new_armour == "Power Armour") {
-			armour_list = ARR_power_armour;
-		}
-	} else if (new_armour == "Terminator Armour") {
-		require_carpace = true;
-		armour_list = ["Terminator Armour", "Tartarus"];
-	}
-
-	if (require_carpace && !get_body_data("black_carapace", "torso")) {
-		return "needs_carapace";
+	if (new_armour == STR_ANY_POWER_ARMOUR) {
+		armour_list = ARR_basic_power_armour;
+	} else if (new_armour == "Any Terminator Armour") {
+		armour_list = ARR_terminator_armour;
 	}
 
 	if (array_length(armour_list) > 0) {
@@ -53,6 +30,34 @@ function scr_update_unit_armour(new_armour, from_armoury = true, to_armoury = tr
 		}
 		if (!armour_found) {
 			return "no_items";
+		}
+	}
+
+	var _new_armour_data = gear_weapon_data("armour", new_armour);
+	var _old_armour_data = gear_weapon_data("armour", _old_armour);
+
+	if (!is_struct(_new_armour_data) && !is_artifact && !unequipping) {
+		return "invalid item";
+	}
+
+	if (is_struct(_old_armour_data)) {
+		if ((_old_armour_data.has_tag("power_armour") && new_armour == STR_ANY_POWER_ARMOUR) && same_quality) {
+			return "no change";
+		}
+		
+		if ((_old_armour_data.has_tag("terminator") && new_armour == "Any Terminator Armour") && same_quality) {
+			return "no change";
+		}
+	}
+
+	if (_old_armour == new_armour && same_quality) {
+		return "no change";
+	}
+
+	if (is_struct(_new_armour_data)) {
+		var require_carpace = _new_armour_data.has_tag("power_armour") || _new_armour_data.has_tag("terminator");
+		if (require_carpace && !get_body_data("black_carapace", "torso")) {
+			return "needs_carapace";
 		}
 	}
 
@@ -71,12 +76,12 @@ function scr_update_unit_armour(new_armour, from_armoury = true, to_armoury = tr
 		quality = (quality == "any") ? "standard" : quality;
 	}
 
-	if (change_armour != "") {
+	if (_old_armour != "") {
 		if (to_armoury) {
 			if (!is_string(armour(true))) {
 				obj_ini.artifact_equipped[armour(true)] = false;
 			} else {
-				scr_add_item(change_armour, 1, armour_quality);
+				scr_add_item(_old_armour, 1, armour_quality);
 			}
 		} else if (!is_string(armour(true))) {
 			delete_artifact(armour(true)); // may trigger feedback loop if not handled with care

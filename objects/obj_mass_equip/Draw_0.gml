@@ -166,7 +166,7 @@ if (total_role_number > 0 && tab > 0) {
                     case 3:
                         obj_ini.armour[100, role] = buh;
                         // No bikes or jump packs for Terminators
-                        if (buh == "Terminator Armour") {
+                        if (array_contains(ARR_terminator_armour, buh) || buh == STR_ANY_TERMINATOR_ARMOUR) {
                             obj_ini.mobi[100, role] = "";
                         }
                         break;

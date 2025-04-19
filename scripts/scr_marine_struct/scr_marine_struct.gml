@@ -31,7 +31,8 @@ global.religions = {
         "name": "The Eight Fold Path"
     }
 };
-#macro ARR_power_armour ["MK7 Aquila", "MK6 Corvus", "MK5 Heresy", "MK3 Iron Armour", "MK4 Maximus", "Power Armour"]
+#macro ARR_basic_power_armour ["MK7 Aquila", "MK6 Corvus", "MK8 Errant", "MK4 Maximus", "MK3 Iron Armour", "Power Armour"]
+#macro ARR_terminator_armour ["Terminator Armour", "Tartaros"]
 enum location_types {
     planet,
     ship,
@@ -85,7 +86,7 @@ global.base_stats = {
             }
         },
         start_gear: {
-            "armour": "Power Armour",
+            "armour": STR_ANY_POWER_ARMOUR,
             "wep1": "Chainsword",
             "wep2": "Chainsword"
         },
@@ -114,7 +115,7 @@ global.base_stats = {
             }
         },
         start_gear: {
-            "armour": "Power Armour",
+            "armour": STR_ANY_POWER_ARMOUR,
             "wep1": "Bolter",
             "wep2": "Chainsword"
         }, // Scouts should probably have access only to scout armour, and perhaps some stuff from hirelings
@@ -143,7 +144,7 @@ global.base_stats = {
             }
         },
         start_gear: {
-            "armour": "Power Armour",
+            "armour": STR_ANY_POWER_ARMOUR,
             "wep1": "Bolter",
             "wep2": "Chainsword"
         },
@@ -649,10 +650,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         var arm = armour();
         var sz = 0;
         sz = 1;
-        var bulky_armour = ["Terminator Armour", "Tartaros"];
         if (string_count("Dread", arm) > 0) {
             sz += 5;
-        } else if (array_contains(bulky_armour, arm)) {
+        } else if (array_contains(ARR_terminator_armour, arm)) {
             sz += 1;
         }
         //var mobi =  mobility_item();

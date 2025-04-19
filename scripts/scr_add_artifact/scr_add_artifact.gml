@@ -80,10 +80,11 @@ function scr_add_artifact(artifact_type, artifact_tags, is_identified, artifact_
 
     if ((base_type == "Armour") && (base_type_detail == "")) {
         if (rand2 <= 70) {
-            var _power_armour = ARR_power_armour;
-            base_type_detail = _power_armour[irandom(array_length(_power_armour) - 1)];
+            var _armour_list = ARR_basic_power_armour;
+            base_type_detail = _armour_list[irandom(array_length(_armour_list) - 1)];
         } else if (rand2 <= 80) {
-            base_type_detail = choose("Terminator Armour", "Tartaros");
+            var _armour_list = ARR_terminator_armour;
+            base_type_detail = _armour_list[irandom(array_length(_armour_list) - 1)];
         } else if (rand2 <= 90) {
             base_type_detail = "Dreadnought Armour";
         } else if (rand2 <= 100) {

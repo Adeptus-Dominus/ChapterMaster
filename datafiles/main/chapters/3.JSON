@@ -236,7 +236,7 @@
                 "name": "Wolf Guard",
                 "wep1": "Power Axe",
                 "wep2": "Bolter",
-                "armour": "Power Armour"
+                "armour": "Any Power Armour"
             },
             "veteran": {
                 "name": "Veteran",

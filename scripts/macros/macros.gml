@@ -11,6 +11,9 @@
 #macro MANAGE_MAN_SEE 34
 #macro MANAGE_MAN_MAX array_length(obj_controller.display_unit) + 7
 
+#macro STR_ANY_POWER_ARMOUR "Any Power Armour"
+#macro STR_ANY_TERMINATOR_ARMOUR "Any Terminator Armour"
+
 enum luck {
     bad = -1,
     neutral = 0,

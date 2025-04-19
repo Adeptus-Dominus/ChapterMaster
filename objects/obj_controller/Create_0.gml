@@ -196,7 +196,7 @@ for(var i=100; i<103; i++){
     obj_controller.r_role[i,3]="Veteran";
     obj_controller.r_wep1[i,3]="Chainsword";
     obj_controller.r_wep2[i,3]="Bolter";
-    obj_controller.r_armour[i,3]="Power Armour";
+    obj_controller.r_armour[i,3]=STR_ANY_POWER_ARMOUR;
     obj_controller.r_mobi[i,3]="";
     obj_controller.r_gear[i,3]="";
     
@@ -210,7 +210,7 @@ for(var i=100; i<103; i++){
     obj_controller.r_role[i,5]="Captain";
     obj_controller.r_wep1[i,5]="Power Sword";
     obj_controller.r_wep2[i,5]="Bolt Pistol";
-    obj_controller.r_armour[i,5]="Power Armour";
+    obj_controller.r_armour[i,5]=STR_ANY_POWER_ARMOUR;
     obj_controller.r_mobi[i,5]="";
     obj_controller.r_gear[i,5]="Iron Halo";
     
@@ -224,35 +224,35 @@ for(var i=100; i<103; i++){
     obj_controller.r_role[i,7]="Champion";
     obj_controller.r_wep1[i,7]="Power Sword";
     obj_controller.r_wep2[i,7]="Bolt Pistol";
-    obj_controller.r_armour[i,7]="Power Armour";
+    obj_controller.r_armour[i,7]=STR_ANY_POWER_ARMOUR;
     obj_controller.r_mobi[i,7]="";
     obj_controller.r_gear[i,7]="Combat Shield";
     
     obj_controller.r_role[i,8]="Tactical Marine";
     obj_controller.r_wep1[i,8]="Bolter";
     obj_controller.r_wep2[i,8]="Combat Knife";
-    obj_controller.r_armour[i,8]="Power Armour";
+    obj_controller.r_armour[i,8]=STR_ANY_POWER_ARMOUR;
     obj_controller.r_mobi[i,8]="";
     obj_controller.r_gear[i,8]="";
     
     obj_controller.r_role[i,9]="Devastator Marine";
     obj_controller.r_wep1[i,9]="";
     obj_controller.r_wep2[i,9]="Combat Knife";
-    obj_controller.r_armour[i,9]="Power Armour";
+    obj_controller.r_armour[i,9]=STR_ANY_POWER_ARMOUR;
     obj_controller.r_mobi[i,9]="";
     obj_controller.r_gear[i,9]="";
     
     obj_controller.r_role[i,10]="Assault Marine";
     obj_controller.r_wep1[i,10]="Chainsword";
     obj_controller.r_wep2[i,10]="Bolt Pistol";
-    obj_controller.r_armour[i,10]="Power Armour";
+    obj_controller.r_armour[i,10]=STR_ANY_POWER_ARMOUR;
     obj_controller.r_mobi[i,10]="Jump Pack";
     obj_controller.r_gear[i,10]="";
     
     obj_controller.r_role[i,11]="Ancient";
     obj_controller.r_wep1[i,11]="Company Standard";
     obj_controller.r_wep2[i,11]="Power Sword";
-    obj_controller.r_armour[i,11]="Power Armour";
+    obj_controller.r_armour[i,11]=STR_ANY_POWER_ARMOUR;
     obj_controller.r_mobi[i,11]="";
     obj_controller.r_gear[i,11]="";
 
@@ -266,14 +266,14 @@ for(var i=100; i<103; i++){
     obj_controller.r_role[i,14]="Chaplain";
     obj_controller.r_wep1[i,14]="Power Sword";
     obj_controller.r_wep2[i,14]="Bolt Pistol";
-    obj_controller.r_armour[i,14]="Power Armour";
+    obj_controller.r_armour[i,14]=STR_ANY_POWER_ARMOUR;
     obj_controller.r_gear[i,14]="Rosarius";
     obj_controller.r_mobi[i,14]="";
     
     obj_controller.r_role[i,15]="Apothecary";
     obj_controller.r_wep1[i,15]="Chainsword";
     obj_controller.r_wep2[i,15]="Bolt Pistol";
-    obj_controller.r_armour[i,15]="Power Armour";
+    obj_controller.r_armour[i,15]=STR_ANY_POWER_ARMOUR;
     obj_controller.r_gear[i,15]="Narthecium";
     obj_controller.r_mobi[i,15]="";
     
@@ -287,21 +287,21 @@ for(var i=100; i<103; i++){
     obj_controller.r_role[i,17]="Librarian";
     obj_controller.r_wep1[i,17]="Force Staff";
     obj_controller.r_wep2[i,17]="Storm Bolter";
-    obj_controller.r_armour[i,17]="Power Armour";
+    obj_controller.r_armour[i,17]=STR_ANY_POWER_ARMOUR;
     obj_controller.r_gear[i,17]="Psychic Hood";
     obj_controller.r_mobi[i,17]="";
                 
     obj_controller.r_role[i,18]="Sergeant";
     obj_controller.r_wep1[i,18]="Chainsword";
     obj_controller.r_wep2[i,18]="Storm Bolter";
-    obj_controller.r_armour[i,18]="Power Armour";
+    obj_controller.r_armour[i,18]=STR_ANY_POWER_ARMOUR;
     obj_controller.r_gear[i,18]="";
     obj_controller.r_mobi[i,18]=""; 
 
     obj_controller.r_role[i,19]="Veteran Sergeant";
     obj_controller.r_wep1[i,19]="Chainsword";
     obj_controller.r_wep2[i,19]="Storm Bolter";
-    obj_controller.r_armour[i,19]="Power Armour";
+    obj_controller.r_armour[i,19]=STR_ANY_POWER_ARMOUR;
     obj_controller.r_gear[i,19]="";
     obj_controller.r_mobi[i,19]="";                     
 } // 100 is defaults, 101 is the allowable starting equipment

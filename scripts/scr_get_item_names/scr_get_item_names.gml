@@ -84,12 +84,13 @@ function push_marine_melee_weapons_item_names(_item_names) {
 /// @param {array} _item_names - The list to append to.
 /// @returns {void}
 function push_marine_armour_item_names(_item_names) {
-    var item_count = 11;
+    var item_count = 13;
     var initial_size = array_length(_item_names);
     array_resize(_item_names, initial_size + item_count);
 
     var index = initial_size;
     _item_names[@ index++] = "Scout Armour";
+    _item_names[@ index++] = STR_ANY_POWER_ARMOUR;
     _item_names[@ index++] = "Power Armour";
     _item_names[@ index++] = "MK3 Iron Armour";
     _item_names[@ index++] = "MK4 Maximus";
@@ -98,8 +99,9 @@ function push_marine_armour_item_names(_item_names) {
     _item_names[@ index++] = "MK7 Aquila";
     _item_names[@ index++] = "MK8 Errant";
     _item_names[@ index++] = "Artificer Armour";
+    _item_names[@ index++] = "Any Terminator Armour";
     _item_names[@ index++] = "Terminator Armour";
-    _item_names[@ index++] = "Tartaros"; // 11
+    _item_names[@ index++] = "Tartaros"; // 13
 }
 
 /// @description This function appends the list of marine gear items to the given list.

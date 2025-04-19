@@ -1385,27 +1385,27 @@ function scr_initialize_custom() {
 	}
 	var _hi_qual_armour = "Artificer Armour";
 	if(scr_has_disadv("Poor Equipment")){
-		_hi_qual_armour = "Power Armour";
+		_hi_qual_armour = STR_ANY_POWER_ARMOUR;
 	}
 
 	load_default_gear(eROLE.ChapterMaster, "Chapter Master", "Power Sword", "Bolt Pistol", _hi_qual_armour, "","Iron Halo");
 	load_default_gear(eROLE.HonourGuard, "Honour Guard", "Power Sword", "Bolter", _hi_qual_armour, "", "");
-	load_default_gear(eROLE.Veteran, "Veteran", "Combiflamer", "Combat Knife","Power Armour", "", "");
+	load_default_gear(eROLE.Veteran, "Veteran", "Combiflamer", "Combat Knife",STR_ANY_POWER_ARMOUR, "", "");
 	load_default_gear(eROLE.Terminator, "Terminator", "Power Fist", "Storm Bolter", "Terminator Armour", "", "");
-	load_default_gear(eROLE.Captain, "Captain", "Power Sword", "Bolt Pistol", "Power Armour", "", "Iron Halo");
+	load_default_gear(eROLE.Captain, "Captain", "Power Sword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Iron Halo");
 	load_default_gear(eROLE.Dreadnought, "Dreadnought", "Close Combat Weapon", "Lascannon", "Dreadnought", "", "");
-	load_default_gear(eROLE.Champion, "Champion", "Power Sword", "Bolt Pistol", "Power Armour", "", "Combat Shield");
-	load_default_gear(eROLE.Tactical, "Tactical", "Bolter", "Combat Knife", "Power Armour", "", "");
-	load_default_gear(eROLE.Devastator, "Devastator", "", "Combat Knife", "Power Armour", "", "");
-	load_default_gear(eROLE.Assault, "Assault", "Chainsword", "Bolt Pistol", "Power Armour", "Jump Pack", "");
-	load_default_gear(eROLE.Ancient, "Ancient", "Company Standard", "Bolt Pistol", "Power Armour", "", "");
+	load_default_gear(eROLE.Champion, "Champion", "Power Sword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Combat Shield");
+	load_default_gear(eROLE.Tactical, "Tactical", "Bolter", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
+	load_default_gear(eROLE.Devastator, "Devastator", "", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
+	load_default_gear(eROLE.Assault, "Assault", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "Jump Pack", "");
+	load_default_gear(eROLE.Ancient, "Ancient", "Company Standard", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "");
 	load_default_gear(eROLE.Scout, "Scout", "Bolter", "Combat Knife", "Scout Armour", "", "");
-	load_default_gear(eROLE.Chaplain, "Chaplain", "Crozius Arcanum", "Bolt Pistol", "Power Armour", "", "Rosarius");
-	load_default_gear(eROLE.Apothecary, "Apothecary", "Chainsword", "Bolt Pistol", "Power Armour", "", "Narthecium");
+	load_default_gear(eROLE.Chaplain, "Chaplain", "Crozius Arcanum", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Rosarius");
+	load_default_gear(eROLE.Apothecary, "Apothecary", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Narthecium");
 	load_default_gear(eROLE.Techmarine, "Techmarine", "Power Axe", "Bolt Pistol", _hi_qual_armour, "Servo-arm", "");
-	load_default_gear(eROLE.Librarian, "Librarian", "Force Staff", "Bolt Pistol", "Power Armour", "", "Psychic Hood");
-	load_default_gear(eROLE.Sergeant, "Sergeant", "Chainsword", "Bolt Pistol", "Power Armour", "", "");
-	load_default_gear(eROLE.VeteranSergeant, "Veteran Sergeant", "Chainsword", "Plasma Pistol", "Power Armour", "", "");
+	load_default_gear(eROLE.Librarian, "Librarian", "Force Staff", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Psychic Hood");
+	load_default_gear(eROLE.Sergeant, "Sergeant", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "");
+	load_default_gear(eROLE.VeteranSergeant, "Veteran Sergeant", "Chainsword", "Plasma Pistol", STR_ANY_POWER_ARMOUR, "", "");
  	
 
 	if(struct_exists(obj_creation, "custom_roles")){
@@ -2780,9 +2780,9 @@ function scr_initialize_custom() {
 					_erole = eROLE.Devastator;
 					if (wep1[defaults_slot, eROLE.Devastator] == "Heavy Ranged") {
 						_wep1 = choose("Multi-Melta", "Lascannon", "Missile Launcher", "Heavy Bolter");
-					} 
+					}
 					break;
-				case "scouts": 
+				case "scouts":
 					_rolename = roles.scout;
 					_erole = eROLE.Scout;
 					break;
@@ -2793,23 +2793,23 @@ function scr_initialize_custom() {
 					}
 					_erole = eROLE.Dreadnought;
 					if(_coy.coy == 9) {
-						_wep1 = "Missile Launcher"; 
+						_wep1 = "Missile Launcher";
 					}
 					if(_coy.coy == 1){
 						_wep2 = "Plasma Cannon"
 					}
 					break;
-				
-				// VETERANS 
+			
+				// VETERANS
 				case "veterans":
 					_rolename = roles.veteran;
 					_erole = eROLE.Veteran;
-				break;
-
+					break;
+			
 				case "terminators":
 					_rolename = roles.terminator;
 					_erole = eROLE.Terminator;
-				break;
+					break;
 
 
 				// SPECIALISTS
@@ -2876,7 +2876,7 @@ function scr_initialize_custom() {
 							}
 						}
 					}
-					break; 
+					break;
 				case "librarians":
 					commands++;
 					_rolename = roles.librarian;
@@ -2908,8 +2908,8 @@ function scr_initialize_custom() {
 						_wep1 = "default";
 					}
 					break;
-
-				// VEHICLES 
+			
+				// VEHICLES
 				case "rhinos":
 					_is_vehicle = true;
 					_rolename = "Rhino";
@@ -2961,7 +2961,7 @@ function scr_initialize_custom() {
 						_wep3 =  "Storm Bolter";
 						_accessory = "Frag Assault Launchers";
 					}
-				break;
+					break;
 				case "predators":
 					// 1st company relic predators
 					if(_coy.coy == 1){
@@ -2973,25 +2973,25 @@ function scr_initialize_custom() {
 								_wep2 = "Lascannon Sponsons";
 								_wep3 = "HK Missile";
 								_accessory = "Searchlight";
-							break;
-							case 2: 
+								break;
+							case 2:
 								_wep1 = "Heavy Conversion Beamer Turret";
 								_wep2 = "Lascannon Sponsons";
 								_wep3 = "HK Missile";
 								_accessory = "Searchlight";
-							break;
-							case 3: 
+								break;
+							case 3:
 								_wep1 = "Flamestorm Cannon Turret";
 								_wep2 = "Heavy Flamer Sponsons";
 								_wep3 = "Storm Bolter";
 								_accessory = "Dozer Blades";
-							break;
+								break;
 							case 4:
 								_wep1 = "Magna-Melta Turret";
 								_wep2 = "Heavy Flamer Sponsons";
 								_wep3 = "Storm Bolter";
 								_accessory = "Dozer Blades";
-							break;
+								break;
 						}
 					} else {
 						//9th company and extras
@@ -3009,8 +3009,8 @@ function scr_initialize_custom() {
 							_accessory = "Dozer Blades";
 						}
 					}
-				break;
-			}
+					break;
+			}			
 			repeat(_count){
 				if(_is_vehicle){
 					add_veh_to_company(_rolename, _coy.coy, v, _wep1, _wep2, _wep3, _upgrade, _accessory);

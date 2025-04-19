@@ -276,7 +276,7 @@ calculate_equipment_needs =  function (){
             req_mobi="";
             req_mobi_num=0;
         } else if (rall=obj_ini.role[100][11]){
-            req_armour="Power Armour";
+            req_armour=STR_ANY_POWER_ARMOUR;
             req_armour_num=units;
             req_wep2="Company Standard";
             req_wep2_num=units;
@@ -308,11 +308,17 @@ calculate_equipment_needs =  function (){
             unit_armour = gear_weapon_data("armour", obj_controller.ma_armour[i]);
             unit_wep_one = gear_weapon_data("weapon", obj_controller.ma_wep1[i]);
             if (obj_controller.man[i]!="") and (obj_controller.man_sel[i]) and (obj_controller.ma_promote[i]) and (obj_controller.ma_exp[i]>=min_exp){
-                if (req_armour="Power Armour" && is_struct(unit_armour)){
-                    if(unit_armour.has_tag("power_armour")) then have_armour_num+=1;
+                if (req_armour == STR_ANY_POWER_ARMOUR && is_struct(unit_armour)) {
+                    if (unit_armour.has_tag("power_armour")) {
+                        have_armour_num += 1;
+                    }
                 }
-                if (req_armour="Terminator Armour"){if (obj_controller.ma_armour[i]="Terminator Armour") or (obj_controller.ma_armour[i]="Tartaros") then have_armour_num+=1;}
-
+                if (req_armour == "Any Terminator Armour") {
+                    if (unit_armour.has_tag("terminator")) {
+                        have_armour_num += 1;
+                    }
+                }
+                
                 if (obj_controller.ma_wep1[i]=req_wep1) or (obj_controller.ma_wep2[i]=req_wep1) then have_wep1_num+=1;
                 if (obj_controller.ma_wep2[i]=req_wep2) or (obj_controller.ma_wep1[i]=req_wep2) then have_wep2_num+=1;
 
@@ -330,14 +336,16 @@ calculate_equipment_needs =  function (){
         }// End Repeat
 
         // This checks to see if there is any more in the armoury
-        if (req_armour=="Power Armour"){
-            var _power_armour = ARR_power_armour;
-            for (i=0;i<array_length(_power_armour);i++){
-                have_armour_num+=scr_item_count(_power_armour[i]);
+        if (req_armour==STR_ANY_POWER_ARMOUR){
+            var _armour_list = ARR_basic_power_armour;
+            for (i=0;i<array_length(_armour_list);i++){
+                have_armour_num+=scr_item_count(_armour_list[i]);
             }
-        }else if (req_armour="Terminator Armour"){
-            have_armour_num+=scr_item_count("Terminator Armour");
-            have_armour_num+=scr_item_count("Tartaros");
+        }else if (req_armour="Any Terminator Armour"){
+            var _armour_list = ARR_terminator_armour;
+            for (i=0;i<array_length(_armour_list);i++){
+                have_armour_num+=scr_item_count(_armour_list[i]);
+            }
         }else if (req_armour="Dreadnought"){
             have_armour_num+=scr_item_count("Dreadnought")
         } else {
