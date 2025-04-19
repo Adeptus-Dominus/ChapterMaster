@@ -76,8 +76,7 @@ if (settings=1){
             ini_close();
         }
         if (scr_hit(xx+680,yy+485,xx+680+32,yy+485+32)=true){
-            if (settings_autosave=1) and (onceh=0){onceh=1;settings_autosave=0;}
-            if (settings_autosave=0) and (onceh=0){onceh=1;settings_autosave=1;}
+            settings_autosave =  !settings_autosave;
             ini_open("saves.ini");
             ini_write_real("Settings", "settings_autosave", settings_autosave);
             ini_close();
