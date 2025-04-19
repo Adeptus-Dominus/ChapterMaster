@@ -270,13 +270,18 @@ for (var c = 0; c < 11; c++){
     }
 }
 // STC Bonuses
-if (obj_controller.stc_ships>=6){
+if (obj_controller.stc_ships >= 6) {
     //self healing ships logic
-    for (var v=0; v<array_length(obj_ini.ship_hp); v++){
-        if (obj_ini.ship[v]=="" || obj_ini.ship_hp[v]<0) then continue;
-        if (obj_ini.ship_hp[v]<obj_ini.ship_maxhp[v]){
-            var _max = obj_ini.ship_maxhp[v];
-            obj_ini.ship_hp[v] = min(_max,obj_ini.ship_hp[v]+round(_max*0.06));
+    var _ship_UUIDs = struct_get_names(INI_USHIPROOT);
+    var _ship_count = array_length(_ship_UUIDs);
+    for (var v = 0; v < _ship_count; v++) {
+        var _ship_struct = fetch_ship(_ship_UUIDs[v]);
+        var _health = _ship_struct.health
+        if (_health.hp < 0) { continue; }
+
+        var _max = _health.maxhp;
+        if (_health.hp < _max) {
+            _health.hp = min(_max, _health.hp + round(_max * 0.06));
         }
     }
 }
@@ -612,12 +617,15 @@ for(var i=1; i<=99; i++){
                     // Creates the ship
                     var last_ship = new_player_ship(new_ship_event, ship_spawn.system.name);
 
-                    add_ship_to_fleet(last_ship, _new_player_fleet)
+                    add_ship_to_fleet(last_ship, _new_player_fleet);
 
                     // show_message(string(obj_ini.ship_class[last_ship])+":"+string(obj_ini.ship[last_ship]));
 
-                    if (obj_ini.ship_size[last_ship]!=1) then scr_popup("Ship Constructed",$"Your new {obj_ini.ship_class[last_ship]} '{obj_ini.ship[last_ship]}' has finished being constructed.  It is orbiting {ship_spawn.system.name} and awaits its maiden voyage.","shipyard","");
-                    if (obj_ini.ship_size[last_ship]==1) then scr_popup("Ship Constructed",$"Your new {obj_ini.ship_class[last_ship]} Escort '{obj_ini.ship[last_ship]}' has finished being constructed.  It is orbiting {ship_spawn.system.name} and awaits its maiden voyage.","shipyard","");
+                    if (last_ship.size != 1) {
+                        scr_popup("Ship Constructed", $"Your new {last_ship.class} '{last_ship.name}' has finished being constructed.  It is orbiting {ship_spawn.system.name} and awaits its maiden voyage.", "shipyard", "");
+                    } else {
+                        scr_popup("Ship Constructed", $"Your new {last_ship.class} Escort '{last_ship.name}' has finished being constructed.  It is orbiting {ship_spawn.system.name} and awaits its maiden voyage.", "shipyard", "");
+                    }
                     var bob=instance_create(ship_spawn.system.x+16,ship_spawn.system.y-24,obj_star_event);
                     bob.image_alpha=1;
                     bob.image_speed=1;
@@ -680,13 +688,7 @@ for(var i=1; i<=99; i++){
                 if (item=="Artifact"){
                     var last_artifact=0;
                     scr_event_log("",string(obj_ini.role[100][16])+" "+string(marine_name)+" constructs an Artifact.");
-                    if (obj_ini.fleet_type==ePlayerBase.home_world){
-                        last_artifact =  scr_add_artifact("random_nodemon","",0,obj_ini.home_name,2);
-                    } else {
-                        if (obj_ini.fleet_type != ePlayerBase.home_world){
-                            last_artifact = scr_add_artifact("random_nodemon","",0,obj_ini.ship_location[0],501);
-                        }
-                    }
+                    last_artifact = scr_add_artifact("random_nodemon", "", 0);
 
                     tixt+=$"some form of divine inspiration has seemed to have taken hold of him.  An artifact {obj_ini.artifact[last_artifact]} has been crafted.";
                 }

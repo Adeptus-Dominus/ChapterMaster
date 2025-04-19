@@ -2,9 +2,9 @@ function load_marines_into_ship(system, ship, units, reload = false) {
     static _load_into_ship = function(system, ship, units, size, loop, reload) {
         var load_from_star = star_by_name(system);
         if (is_struct(units[loop])) {
-            units[loop].load_marine(sh_ide[ship], load_from_star);
+            units[loop].load_marine(sh_uuid[ship], load_from_star);
             ma_loc[loop] = sh_loc[ship];
-            ma_lid[loop] = sh_ide[ship];
+            ma_lid[loop] = sh_uuid[ship];
             ma_wid[loop] = 0;
         } else if (is_array(units[loop]) && ma_loc[loop] == system && sh_loc[ship] == system) {
             var vehicle = units[loop];
@@ -13,18 +13,19 @@ function load_marines_into_ship(system, ship, units, reload = false) {
             var start_ship = _get(obj_ini.veh_lid, vehicle);
             var start_planet = _get(obj_ini.veh_wid, vehicle);
             ma_loc[loop] = sh_loc[ship];
-            ma_lid[loop] = sh_ide[ship];
+            ma_lid[loop] = sh_uuid[ship];
             ma_wid[loop] = 0;
             _set(obj_ini.veh_loc, vehicle, sh_name[ship]);
-            _set(obj_ini.veh_lid, vehicle, sh_ide[ship]);
+            _set(obj_ini.veh_lid, vehicle, sh_uuid[ship]);
             _set(obj_ini.veh_wid, vehicle, 0);
-            _set(obj_ini.veh_uid, vehicle, sh_uid[ship]);
-            obj_ini.ship_carrying[sh_ide[ship]] += size;
+            var _ship_struct = fetch_ship(sh_uuid[ship]);
+            _ship_struct.cargo.carrying += size;
 
             if (start_planet) {
                 load_from_star.p_player[start_planet] -= size;
             } else if (start_ship) {
-                obj_ini.ship_carrying[start_ship] -= size;
+                var _start_ship_struct = fetch_ship(start_ship);
+                _start_ship_struct.cargo.carrying -= size;
             }
 
             set_vehicle_last_ship(vehicle, true);
@@ -37,13 +38,13 @@ function load_marines_into_ship(system, ship, units, reload = false) {
             var _unit = units[q];
             var _is_marine = !is_array(_unit);
             if (!reload) {
-                _unit_ship_id = ship;
+                _unit_ship_uuid = ship;
             } else {
                 if (_is_marine) {
-                    _unit_ship_id = array_get_index(sh_uid, _unit.last_ship.uid);
+                    _unit_ship_uuid = array_get_index(sh_uuid, _unit.last_ship);
                 } else {
                     var last_ship_data = fetch_deep_array(obj_ini.last_ship, _unit);
-                    _unit_ship_id = array_get_index(sh_uid, last_ship_data.uid);
+                    _unit_ship_uuid = array_get_index(sh_uuid, last_ship_data);
                 }
             }
 
@@ -54,20 +55,17 @@ function load_marines_into_ship(system, ship, units, reload = false) {
                 var _unit_size = _vehic_size;
             }
 
-            if (_unit_ship_id == -1) {
-                if (reload){
-                    if (_is_marine){
-                        _unit.last_ship = {
-                            uid: "",
-                            name: ""
-                        };
+            if (_unit_ship_id == "") {
+                if (reload) {
+                    if (_is_marine) {
+                        _unit.last_ship = "";
                     } else {
                         set_vehicle_last_ship(_unit, true)
                     }
                 }
                 continue;                
             }
-            if (_unit_ship_id<array_length(sh_cargo_max)){
+            if (_unit_ship_id < array_length(sh_cargo_max)) {
                 if (sh_cargo[_unit_ship_id] + _unit_size <= sh_cargo_max[_unit_ship_id]) {
                     _load_into_ship(system, _unit_ship_id, units, _unit_size, q, reload);
                     man_sel[q] = 0;
@@ -82,7 +80,7 @@ function load_marines_into_ship(system, ship, units, reload = false) {
         menu = 1;
     }
     cooldown = 8;
-    selecting_ship = -1;
+    selecting_ship = "";
     if (managing == -1 && obj_controller.selection_data.purpose != "Ship Management") {
         update_garrison_manage();
     }
@@ -200,7 +198,7 @@ function scr_ui_manage() {
         }
         if (man_size < 1) {
             selecting_location = "";
-            selecting_ship = -1;
+            selecting_ship = "";
             selecting_planet = 0;
             man_size = 0;
         }
@@ -944,7 +942,7 @@ function scr_ui_manage() {
                     button.alpha = 1;
                     if (button.draw()) {
                         scr_company_load(selecting_location);
-                        load_marines_into_ship(selecting_location, sh_ide, display_unit, true);
+                        load_marines_into_ship(selecting_location, sh_uuid, display_unit, true);
                     }
                 } else {
                     button.alpha = 0.5;
@@ -1089,7 +1087,7 @@ function scr_ui_manage() {
                 button.label = "Move Ship";
                 button.keystroke = keyboard_check(vk_shift) && keyboard_check_pressed(ord("M"));
                 button.tooltip = "Press Shift M";
-                var moveship_possible = !array_contains(invalid_locations, selecting_location) && man_size > 0 && selecting_ship > -1;
+                var moveship_possible = !array_contains(invalid_locations, selecting_location) && man_size > 0 && selecting_ship != "";
                 if (moveship_possible) {
                     button.alpha = 1;
                     if (button.draw()) {

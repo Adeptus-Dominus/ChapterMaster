@@ -1,11 +1,11 @@
 
 scr_return_ship(loc,self,num);
 
-var man_size,ship_id,comp,planet,i;
-i=0;ship_id=0;man_size=0;comp=0;planet=0;
-ship_id = get_valid_player_ship("", loc);
+var man_size,_ship_UUID,comp,planet,i;
+i=0;_ship_UUID="";man_size=0;comp=0;planet=0;
+_ship_UUID = get_valid_player_ship(loc);
 planet=instance_nearest(x,y,obj_star);
-var last_artifact = scr_add_artifact("random","random",4,loc,ship_id+500);
+var last_artifact = scr_add_artifact("random", "random", 4, fetch_ship(_ship_UUID).name, _ship_UUID);
 
 var i=0;
 

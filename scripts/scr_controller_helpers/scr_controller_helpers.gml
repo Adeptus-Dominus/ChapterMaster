@@ -368,52 +368,50 @@ function scr_toggle_fleet_area() {
                     temp[i] = "";
                 }
 
-                var g = 0,
-                    u = 0,
+                var _pass_struct = {},
+                    _highest = 0,
                     m = 0,
-                    d = 0;
+                    _low_health = 0;
                 temp[37] = 0;
                 temp[38] = 0;
                 temp[39] = 0;
-                for (var i = 0; i < array_length(obj_ini.ship); i++) {
-                    if (obj_ini.ship[i] != "") {
-                        if (obj_ini.ship_size[i] == 3) {
-                            temp[37]++;
-                        }
-                        if (obj_ini.ship_size[i] == 2) {
-                            temp[38]++;
-                        }
-                        if (obj_ini.ship_size[i] == 1) {
-                            temp[39]++;
-                        }
+                temp[41] = "1";
+
+                var ship_UUIDs = struct_get_names(INI_USHIPROOT);
+                var ship_count = array_length(ship_UUIDs);
+                for (var i = 0; i < ship_count; i++) {
+                    var _ship_struct = fetch_ship(ship_UUIDs[i]);
+                    switch _ship_struct.size {
+                    case 3:
+                        temp[37]++;
+                        break;
+                    case 2:
+                        temp[38]++;
+                        break;
+                    case 1:
+                        temp[39]++;
+                        break;
                     }
+
+                    var _health = _ship_struct.health.hp / _ship_struct.health.maxhp;
+                    if (_health < _highest) {
+                        _pass_struct = _ship_struct;
+                        _highest = _health;
+                    }
+
+                    if (_health < 0.25) {
+                        _low_health += 1;
+                    }
+
+                    m = i;
                 }
 
-                g = 0;
-                temp[41] = "1";
-                for (var i = 0; i < array_length(obj_ini.ship); i++) {
-                    if ((g != 0) && (obj_ini.ship[i] != "")) {
-                        if ((obj_ini.ship_hp[i] / obj_ini.ship_maxhp[i]) < u) {
-                            g = i;
-                            u = obj_ini.ship_hp[i] / obj_ini.ship_maxhp[i];
-                        }
-                    }
-                    if ((g == 0) && (obj_ini.ship[i] != "")) {
-                        g = i;
-                        u = obj_ini.ship_hp[i] / obj_ini.ship_maxhp[i];
-                    }
-                    if (obj_ini.ship[i] != "") {
-                        m = i;
-                    }
-                    if ((obj_ini.ship[i] != "") && ((obj_ini.ship_hp[i] / obj_ini.ship_maxhp[i]) < 0.25)) {
-                        d += 1;
-                    }
+                if (_pass_struct != {}) {
+                    temp[40] = $"{_pass_struct.class} '{_pass_struct.name}'";
+                    temp[41] = string(_highest);
+                    temp[42] = string(_low_health);
                 }
-                if (g != 0) {
-                    temp[40] = string(obj_ini.ship_class[g]) + " '" + string(obj_ini.ship[g]) + "'";
-                    temp[41] = string(u);
-                    temp[42] = string(d);
-                }
+
                 man_max = m;
                 man_current = 0;
             } else if (menu == 16) {

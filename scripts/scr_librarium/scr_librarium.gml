@@ -341,24 +341,19 @@ function scr_librarium(){
         draw_set_color(881503);
         draw_set_halign(fa_center);
 
-        if (instance_exists(obj_p_fleet)) {
+        if (obj_controller.artifacts > 0 && instance_exists(obj_p_fleet)) {
             with(obj_p_fleet) {
-                var good = 0;
-                if (obj_controller.artifacts>0){
-                    for (var i = 1; i <= 20; i++) {
-                        if (i <= 9 && i<array_length(capital_num)) {
-                            if (capital_num[i] = obj_ini.artifact_sid[obj_controller.menu_artifact] - 500) then good = 1;
-                        }
-                        if (i<array_length(frigate_num)){
-                            if (frigate_num[i] = obj_ini.artifact_sid[obj_controller.menu_artifact] - 500) then good = 1;
-                        }
-                        if (i<array_length(escort_num)){
-                            if (escort_num[i] = obj_ini.artifact_sid[obj_controller.menu_artifact] - 500) then good = 1;
+                if (capital_number > 0) {
+                    var _ship_hash = variable_get_hash(obj_ini.artifact_sid[obj_controller.menu_artifact].ship);
+                    var _ships = [capital, frigate, escort];
+                    var _ships_count = array_length(_ships);
+                    for (var i = 0; i < _ships_count; i++) {
+                        if (struct_exists(_ships[i], _ship_hash)) {
+                            obj_controller.identifiable = 1;
+                            break;
                         }
                     }
                 }
-                if (good = 1) and(capital_number > 0) then good = 2;
-                if (good = 2) then obj_controller.identifiable = 1;
             }
         }
 }

@@ -195,25 +195,27 @@ function set_fleet_movement(fastest_route = true, new_action="move"){
 	}
 }
 
-
 //TODO build into unit struct
 function load_unit_to_fleet(fleet, unit){
-	var loaded = false;
-	var all_ships = fleet_full_ship_array(fleet);
+    var loaded = false;
+    var all_ships = fleet_full_ship_array(fleet);
 
-	for (var i=0;i<array_length(all_ships);i++){
-		var ship_ident = all_ships[i];
-		  if (obj_ini.ship_capacity[ship_ident]>obj_ini.ship_carrying[ship_ident]){
-		  	obj_ini.ship_carrying[ship_ident]+=unit.size;
-		  	unit.planet_location=0;
-		  	obj_ini.loc[unit.company][unit.marine_number]=obj_ini.ship_location[ship_ident];
-		  	unit.ship_location=ship_ident;
-		  	loaded=true;
-		  	break
-		  }
-	}
-	return loaded;
+    for (var i = 0; i < array_length(all_ships); i++) {
+        var _ship = all_ships[i];
+        var _ship_struct = fetch_ship(_ship);
+        if (_ship_struct.cargo.capacity > _ship_struct.cargo.carrying) {
+            _ship_struct.cargo.carrying += unit.size;
+            unit.planet_location = 0;
+            obj_ini.loc[unit.company][unit.marine_number] = _ship_struct.location;
+            unit.ship_location = _ship;
+            array_push(_ship_struct.cargo.unit_list, unit.UUID);
+            loaded = true;
+            break;
+        }
+    }
+    return loaded;
 }
+
 function calculate_fleet_eta(xx,yy,xxx,yyy, fleet_speed,star1=true, star2=true,warp_able=false){
 	var warp_lane = false;
 	eta = 0;

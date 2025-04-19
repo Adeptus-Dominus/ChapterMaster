@@ -14,15 +14,17 @@ function UnitQuickFindPanel() constructor{
 
 	view_area = "fleets";
 	static update_garrison_log = function(){
-		try{
-		for (var i = 0;i<array_length(obj_ini.ship_carrying); i++){
-			obj_ini.ship_carrying[i]=0
+		try {
+        var _ship_UUIDs = struct_get_names(INI_USHIPROOT);
+        var _ship_count = array_length(_ship_UUIDs);
+		for (var i = 0; i < _ship_count; i++) {
+            var _ship_struct = fetch_ship(_ship_UUIDs[i]);
+            _ship_struct.cargo.carrying = 0;
 		};
 		var unit, unit_location, group;
 		delete garrison_log;
 	    garrison_log = {};
 	    obj_controller.specialist_point_handler.calculate_research_points(false);
-	    var _ship_count = array_length(obj_ini.ship_carrying);
 	    // show_debug_message(obj_controller.specialist_point_handler.point_breakdown);
 	    for (var co=0;co<=obj_ini.companies;co++){
 	    	for (var u=0;u<array_length(obj_ini.TTRPG[co]);u++){
@@ -49,10 +51,11 @@ function UnitQuickFindPanel() constructor{
 	    			} else if (unit.IsSpecialist(SPECIALISTS_TECHS)){
 						group.techies++;
 	    			}
-	    		} else if (unit_location[0]==location_types.ship){
-	    			if (unit.ship_location<_ship_count && unit.ship_location>-1){
-	    				obj_ini.ship_carrying[unit.ship_location]+=unit.get_unit_size();
-	    			}
+                } else if (unit_location[0] == location_types.ship) {
+                    if (unit.ship_location != "") {
+                        var _ship_struct = fetch_ship(unit.ship_location);
+                        _ship_struct.cargo.carrying[unit.ship_location] += unit.get_unit_size();
+                    }
 	    		}
 	    	}
 	    	try{
@@ -74,9 +77,10 @@ function UnitQuickFindPanel() constructor{
 		    				array_push(garrison_log[$ unit_location].units, unit);
 		    				garrison_log[$ unit_location].vehicles++;
 		    			}
-		    		} else if (obj_ini.veh_lid[co][u]>-1){
-		    			obj_ini.ship_carrying[obj_ini.veh_lid[co][u]]+=scr_unit_size("",obj_ini.veh_role[co][u],true);
-		    		}
+                    } else if (obj_ini.veh_lid[co][u] >- 1) {
+                        var _ship_struct = fetch_ship(obj_ini.veh_lid[co][u]);
+                        _ship_struct.cargo.carrying += scr_unit_size("", obj_ini.veh_role[co][u], true);
+                    }
 		    	}
 		    }catch(_exception){
 				handle_exception(_exception);
@@ -533,7 +537,7 @@ function toggle_selection_borders(){
         	if (is_struct(display_unit[p])){
                 var unit=display_unit[p];
                 var mar_id = unit.marine_number;
-                if (unit.ship_location>-1) and (obj_ini.loc[unit.company][mar_id]!="Mechanicus Vessel"){
+                if (unit.ship_location != "") && (obj_ini.loc[unit.company][mar_id] != "Mechanicus Vessel") {
                 	unit.is_boarder = !unit.is_boarder;
                 }
             }
@@ -703,8 +707,8 @@ function load_selection(){
 
 function unload_selection(){
 	//show_debug_message("{0},{1},{2}",obj_controller.selecting_ship,man_size,selecting_location);
-    if (man_size>0) and (obj_controller.selecting_ship>=0) and (!instance_exists(obj_star_select)) 
-    and (selecting_location!="Terra" && selecting_location!="Mechanicus Vessel" && selecting_location!="Warp" && selecting_location!="Lost") {
+    if (man_size > 0) && (obj_controller.selecting_ship != "") && (!instance_exists(obj_star_select))
+    && (selecting_location != "Terra" && selecting_location != "Mechanicus Vessel" && selecting_location != "Warp" && selecting_location != "Lost") {
         cooldown=8000;
         var boba=0;
         var unload_star = star_by_name(selecting_location);
@@ -726,7 +730,8 @@ function unload_selection(){
                 boba.loading_name=selecting_location;
                 boba.depth=self.depth-50;
                 // sel_uid=obj_ini.ship_uid[selecting_ship];
-                scr_company_load(obj_ini.ship_location[selecting_ship]);
+                var _ship_struct = fetch_ship(selecting_ship);
+                scr_company_load(_ship_struct.location);
             }
         }
     }	

@@ -55,7 +55,7 @@ function scr_ruins_reward(star_system, planet, _ruins) {
 	}
 	else if (loot="artifact"){
 		if (_chosen_ship>-1){
-	        var last_artifact = scr_add_artifact("random", "random", 4, planet, _chosen_ship + 500);
+            var last_artifact = scr_add_artifact("random", "random", 4, fetch_ship(_chosen_ship).name, _chosen_ship);
 	    
 		    scr_event_log("","Artifact recovered from Ancient Ruins.");
 		    var pop = instance_create(0,0,obj_popup);

@@ -213,7 +213,7 @@ if (mouse_x>=xx+1465) and (mouse_y>=yy+499) and (mouse_x<xx+1576) and (mouse_y<y
             man_size=0;
             selecting_location="";
             selecting_types="";
-            selecting_ship=-1;
+            selecting_ship = "";
             
             if (obj_controller.managing>0){
                 reset_manage_arrays();
@@ -416,7 +416,7 @@ if (scr_hit(xx+1465, yy+499,xx+1576,yy+518)){// Promoting right here
             // man_current=0;
             var man_size=0;selecting_location="";
             selecting_types="";
-            selecting_ship=-1;
+            selecting_ship = "";
             reset_manage_arrays();
             alll=0;
             update_general_manage_view();

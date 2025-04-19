@@ -12,7 +12,7 @@ function find_open_artifact_slot() {
     return last_artifact;
 }
 
-function scr_add_artifact(artifact_type, artifact_tags, is_identified, artifact_location, ship_id) {
+function scr_add_artifact(artifact_type, artifact_tags, is_identified, artifact_location = "", fship_UUID = "") {
     last_artifact = find_open_artifact_slot();
     if (last_artifact == -1) {
         exit;
@@ -251,13 +251,16 @@ function scr_add_artifact(artifact_type, artifact_tags, is_identified, artifact_
     }
     // show_message(string(t3));
 
+    var planet_num = 0;
     if (artifact_location == "") {
         if (obj_ini.fleet_type == ePlayerBase.home_world) {
             artifact_location = obj_ini.home_name;
-            ship_id = 2;
+            planet_num = 2;
+            fship_UUID = "";
         } else {
-            artifact_location = obj_ini.ship[0];
-            ship_id = 501;
+            var _ship_struct = fetch_ship(obj_controller.flagship_UUID);
+            artifact_location = _ship_struct.name;
+            fship_UUID = _ship_struct.UUID;
         }
     }
     obj_ini.artifact[last_artifact] = base_type_detail;
@@ -268,7 +271,10 @@ function scr_add_artifact(artifact_type, artifact_tags, is_identified, artifact_
     obj_ini.artifact_identified[last_artifact] = is_identified;
     obj_ini.artifact_condition[last_artifact] = 100;
     obj_ini.artifact_loc[last_artifact] = artifact_location;
-    obj_ini.artifact_sid[last_artifact] = ship_id;
+    obj_ini.artifact_sid[last_artifact] = {
+        ship : fship_UUID,
+        planet : planet_num
+    };
     obj_ini.artifact_quality[last_artifact] = "artifact";
     obj_ini.artifact_equipped[last_artifact] = false;
     obj_ini.artifact_struct[last_artifact] = new ArtifactStruct(last_artifact);
@@ -300,11 +306,6 @@ function ArtifactStruct(Index) constructor {
         return obj_ini.artifact_loc[index];
     };
 
-    //combination of what is normally lid and wid
-    static sid = function() {
-        return obj_ini.artifact_sid[index];
-    };
-
     static can_equip = function() {
         _can_equip = true;
         var none_equips = ["Statue", "Casket", "Chalice", "Robot"];
@@ -315,31 +316,45 @@ function ArtifactStruct(Index) constructor {
     };
 
     static ship_id = function() {
-        return obj_ini.artifact_sid[index] - 500;
+        return obj_ini.artifact_sid[index].ship;
     };
 
-    static set_ship_id = function(ship_id) {
-        obj_ini.artifact_sid[index] = ship_id + 500;
+    static planet_id = function() {
+        return obj_ini.artifact_sid[index].planet;
+    }
+
+    static set_ship_id = function(fship_UUID) {
+        obj_ini.artifact_loc[index] = fetch_ship(fship_UUID).name;
+        obj_ini.artifact_sid[index] = {
+            ship : fship_UUID,
+            planet : 0
+        };
+    };
+
+    static set_planet_id = function(name, id) {
+        obj_ini.artifact_loc[index] = name;
+        obj_ini.artifact_sid[index] = {
+            ship : "",
+            planet : id
+        };
     };
 
     static location_string = function() {
-        if (sid() >= 500) {
-            return obj_ini.ship[ship_id()];
+        var _UUID = ship_id();
+        if (_UUID != "") {
+            return fetch_ship(_UUID).name;
         } else {
-            return $"{loc()} {sid()}";
+            return $"{loc()} {planet_id()}";
         }
     };
 
     static is_identifiable = function() {
         var identifiable = false;
+        var _UUID = ship_id();
         if (loc() == obj_ini.home_name) {
             identifiable = 1;
-        }
-        if (sid() >= 500) {
-            if (obj_ini.ship_location[ship_id()] == obj_ini.home_name) {
-                identifiable = 1;
-            }
-            if (obj_ini.ship_class[ship_id()] == "Battle Barge") {
+        } else if (_UUID != "") {
+            if (fetch_ship(_UUID).class == "Battle Barge") {
                 identifiable = 1;
             }
         }
@@ -420,11 +435,12 @@ function ArtifactStruct(Index) constructor {
 
     static destroy_arti = function() {
         if (has_tag("daemonic")) {
-			var _ship_id = ship_id();
-            if (_ship_id > 0) {
+            var _ship_id = ship_id();
+            if (_ship_id != "") {
+                var _ship_struct = fetch_ship(_ship_id);
                 var demonSummonChance = roll_dice(1, 100, "high");
 
-                if ((demonSummonChance <= 60) && (obj_ini.ship_carrying[_ship_id] > 0)) {
+                if ((demonSummonChance <= 60) && (_ship_struct.cargo.carrying > 0)) {
                     instance_create(0, 0, obj_ncombat);
                     obj_ncombat.battle_special = "ship_demon";
                     obj_ncombat.formation_set = 1;
@@ -587,7 +603,7 @@ function delete_artifact(index) {
             artifact_identified[index] = 0;
             artifact_condition[index] = 0;
             artifact_loc[index] = "";
-            artifact_sid[index] = 0;
+            artifact_sid[index] = {};
             artifact_equipped[index] = false;
             artifact_struct[index] = new ArtifactStruct(index);
         }
