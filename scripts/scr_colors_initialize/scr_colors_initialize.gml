@@ -19,7 +19,6 @@ enum Colors {
     Deathwing,
     Bone,
     Yellow,
-    Imperial_Fists,
     Dark_Gold,
     Copper,
     Lime,
@@ -37,6 +36,7 @@ enum Colors {
     Dark_Ultramarine,
     Purple,
     Pink,
+    Imperial_Fists
 }
 function scr_colors_initialize() {
 
@@ -61,7 +61,6 @@ function scr_colors_initialize() {
         ["Deathwing", 218, 184, 143],
         ["Bone", 245, 236, 205],
         ["Yellow", 255, 220, 0],
-        ["Imperial Fists", 255, 200, 0],
         ["Dark Gold", 204, 150, 38],
         ["Copper", 184, 115, 51],
         ["Lime", 0, 190, 0],
@@ -79,6 +78,7 @@ function scr_colors_initialize() {
         ["Dark Ultramarine", 31, 74, 127],
         ["Purple", 117, 0, 217],
         ["Pink", 255, 0, 198],
+        ["Imperial Fists", 255, 200, 0]
     ];
 
 	global.colors_count = array_length(colors_array);
