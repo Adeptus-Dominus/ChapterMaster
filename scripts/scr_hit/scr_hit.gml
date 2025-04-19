@@ -143,16 +143,12 @@ function mouse_button_held(_button = mb_left) {
 				log_warning($"Ignored click for cooldown, {obj_main_menu.cooldown} steps remaining!");
 				log_warning($"Click callstack: \n{array_to_string_list(debug_get_callstack(), true)}");
 				return false;
-			} else if (cooldown > 0) {
-				obj_main_menu.cooldown = cooldown * delta_time/1000000;
 			}
 		} else if (creation_screen_exists) {
 			if (obj_creation.cooldown > 0) {
 				log_warning($"Ignored click for cooldown, {obj_creation.cooldown} steps remaining!");
 				log_warning($"Click callstack: \n{array_to_string_list(debug_get_callstack(), true)}");
 				return false;
-			} else if (cooldown > 0) {
-				obj_creation.cooldown = cooldown * delta_time/1000000;
 			}
 		}
 	}
