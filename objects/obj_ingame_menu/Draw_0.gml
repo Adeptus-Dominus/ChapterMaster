@@ -60,7 +60,7 @@ if (settings=1){
     bar=settings_autosave;draw_sprite(spr_creation_check,bar,xx+680,yy+485);
     
     
-    if (scr_click_left(,true)){var onceh;onceh=0;
+    if (scr_click_left(,true)){
         if (scr_hit(xx+671,yy+223,xx+671+32,yy+223+32)=true) and (master_volume>0){change_volume=1;master_volume-=0.1;}
         if (scr_hit(xx+671,yy+281,xx+671+32,yy+281+32)=true) and (effect_volume>0){change_volume=1;effect_volume-=0.1;}
         if (scr_hit(xx+671,yy+339,xx+671+32,yy+339+32)=true) and (music_volume>0){change_volume=1;music_volume-=0.1;}
