@@ -960,7 +960,7 @@ function DummyMarine()constructor{
         with (obj_creation){
             if (!livery_picker.freeze_armour){
                 var _armour  = armour[100][livery_picker.role_set > 0  ? livery_picker.role_set : eROLE.Tactical];
-                if (array_contains(armours, _armour)){
+                if (array_contains(armours, _armour) || _armour == STR_ANY_POWER_ARMOUR){
                      _armour = array_random_element(armours);
                 }
                 if (_armour == "Power Armour"){
