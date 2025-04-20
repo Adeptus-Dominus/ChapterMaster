@@ -168,3 +168,91 @@ function scr_save(save_part,save_id, autosaving = false) {
 		log_message($"Autosaving took {diff} seconds!");
 	}
 }
+
+/// Testing/debugging function that uses easily parsed ini format so that the test runner can
+/// check things like number of marines per company per role, requistion, forge points etc
+function scr_dump_stats(){
+	var _marine_totals = {
+		company_0: {
+			total: 0,
+			chapter_master: 0,
+			honour_guard: 0,
+			veteran: 0,
+			terminator: 0,
+			captain: 0,
+			ancient: 0,
+			champion: 0,
+			apothecary: 0,
+			chaplain: 0,
+			librarian: 0,
+			tactical: 0,
+			assault: 0,
+			devastator: 0,
+			scout: 0,
+			dreadnought: 0,
+		}
+	}
+	for(var c = 1; c < 11; c++){
+		_marine_totals[$$"company_{c}"] = variable_clone(_marine_totals.company_0);
+	}
+
+	for(var coy = 0; coy < 11; coy++){
+		for(var m = 0; m < 500; m++){
+			if(obj_ini.name[coy][m] != ""){
+				var _unit = fetch_unit([coy,m]);
+				if(_unit == ""){
+					continue;
+				}
+				var _propname = $"company_{coy}";
+				_marine_totals[$_propname][$"total"] += 1;
+				switch(_unit.role()){
+					case obj_ini.role[100][eROLE.Ancient]: _marine_totals[$_propname][$"ancient"] += 1; break;
+					case obj_ini.role[100][eROLE.Apothecary]: _marine_totals[$_propname][$"apothecary"] += 1; break;
+					case obj_ini.role[100][eROLE.ChapterMaster]: _marine_totals[$_propname][$"chapter_master"] += 1; break;
+					case obj_ini.role[100][eROLE.Veteran]: _marine_totals[$_propname][$"veteran"] += 1; break;
+					case obj_ini.role[100][eROLE.Terminator]: _marine_totals[$_propname][$"terminator"] += 1; break;
+					case obj_ini.role[100][eROLE.Tactical]: _marine_totals[$_propname][$"tactical"] += 1; break;
+					case obj_ini.role[100][eROLE.Assault]: _marine_totals[$_propname][$"assault"] += 1; break;
+					case obj_ini.role[100][eROLE.Devastator]: _marine_totals[$_propname][$"devastator"] += 1; break;
+					case obj_ini.role[100][eROLE.Scout]: _marine_totals[$_propname][$"scout"] += 1; break;
+					case obj_ini.role[100][eROLE.Captain]: _marine_totals[$_propname][$"captain"] += 1; break;
+					case obj_ini.role[100][eROLE.Champion]: _marine_totals[$_propname][$"champion"] += 1; break;
+					case obj_ini.role[100][eROLE.Chaplain]: _marine_totals[$_propname][$"chaplain"] += 1; break;
+					case obj_ini.role[100][eROLE.Dreadnought]: _marine_totals[$_propname][$"dreadnought"] += 1; break;
+					case obj_ini.role[100][eROLE.Librarian]: _marine_totals[$_propname][$"librarian"] += 1; break;
+					case "Codiciery": _marine_totals[$_propname][$"librarian"] += 1; break;
+					case "Lexicanum": _marine_totals[$_propname][$"librarian"] += 1; break;
+				}
+			}
+		}
+	}
+
+	// todo
+	var _ship_totals = {
+		battle_barge: 0,
+		strike_cruiser: 0,
+		hunter: 0,
+		gladius: 0
+	}
+
+	
+
+	ini_open("gamestats.ini");
+	ini_write_real("Resources", "requisition", obj_controller.requisition);
+	ini_write_real("Resources", "forge_points", obj_controller.forge_points);
+	ini_write_real("Resources", "apothecary_recruit_points", obj_controller.apothecary_recruit_points);
+	ini_write_real("Resources", "marines", obj_controller.marines);
+
+
+	for(var c = 0; c < 11; c ++){
+		var stats = _marine_totals[$$"company_{c}"];
+		var _role_names = struct_get_names(stats);
+		var _role_len = array_length(_role_names);
+		for (var k = 0; k < _role_len; k++){
+			var _role_name = _role_names[k];
+			var _val = stats[$_role_name];
+			ini_write_real($"Marines.Coy{c}", _role_name, _val);
+		}
+	}
+	ini_close();
+}

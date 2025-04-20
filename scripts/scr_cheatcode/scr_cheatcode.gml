@@ -296,6 +296,9 @@ function scr_cheatcode(argument0) {
 					var _fleet = get_nearest_player_fleet(0,0);
 					add_ship_to_fleet(new_player_ship("Gloriana"),_fleet);
 					break;
+				case "dumpstats":
+					scr_dump_stats();
+					break;
 
 			}
 		}
