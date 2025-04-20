@@ -48,7 +48,7 @@ jobs:
     if: needs.build_needed.outputs.needed == 'true'
     outputs:
       tag_name: ${{ steps.tag_info.outputs.tag_name }}
-      build_date: ${{ steps.tag_info.outputs.tag_name }}
+      build_date: ${{ steps.tag_info.outputs.build_date }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -112,9 +112,16 @@ jobs:
           name: built-file
           path: ./build_output
 
+      - name: Debug tag and commit
+        run: |
+          echo "Tag name: ${{ needs.prepare_release.outputs.tag_name }}"
+          echo "Target commitish: ${{ github.ref_name }}"
+          git show-ref | grep ${{ needs.prepare_release.outputs.tag_name }} || echo "Tag not found yet"
+          git rev-parse ${{ github.ref_name }} || echo "Commit not resolved"
+
       - id: create_release
         name: Create a release and upload the build
-        uses: softprops/action-gh-release@v2.0.9
+        uses: softprops/action-gh-release@v2.2.2
         with:
           name: ChapterMaster ${{ needs.prepare_release.outputs.tag_name }}
           tag_name: ${{ needs.prepare_release.outputs.tag_name }}
