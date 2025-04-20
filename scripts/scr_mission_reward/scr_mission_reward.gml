@@ -197,7 +197,10 @@ function scr_mission_reward(mission, star, planet) {
 	        	if (_unit.bionics > 0){
 		        	_unit.update_health(irandom_range(2,80));
 
-		        	unit.update_loyalty(-20);
+		        	if (!_unit.has_trait("flesh_is_weak")){
+		        		_unit.update_loyalty(-20);
+		        	}
+
 		        	repeat(choose(2,3,4)){
 		        		_unit.add_bionics()
 		        	}

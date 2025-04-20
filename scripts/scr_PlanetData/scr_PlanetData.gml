@@ -196,9 +196,9 @@ function PlanetData(planet, system) constructor{
 
     static name = function(){
     	var _name="";
-    	with (system){
-    		_name =  planet_numeral_name(planet);
-    	}
+
+    	_name =  planet_numeral_name(planet, system);
+
     	return _name;
     }
 

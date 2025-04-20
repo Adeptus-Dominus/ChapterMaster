@@ -1,5 +1,5 @@
 function mechanicus_missions_end_turn(planet){	
-	var raider_planet_slot = has_problem_planet(planet,"mech_raider");
+	var raider_planet_slot = has_problem_planet_with_time(planet,"mech_raider");
     if (raider_planet_slot>-1){
     	var _techs = collect_role_group(SPECIALISTS_TECHS, [name, planet, -1]);
         var _lr_count = scr_vehicle_count("Land Raider",[name, planet, -1]);
@@ -13,7 +13,7 @@ function mechanicus_missions_end_turn(planet){
         	}
         }     	
     }
-    var bionics_planet_slot = has_problem_planet(planet,"mech_bionics");
+    var bionics_planet_slot = has_problem_planet_with_time(planet,"mech_bionics");
     if (bionics_planet_slot>-1){
         check1=scr_bionics_count("star",string(name),planet,"number");
         if (check1>=10){
@@ -308,6 +308,7 @@ function mechanicus_mission_procedures(){
 			if (_star != "none") {
 				var _forge_planet = scr_get_planet_with_type(_star, "Forge");
 				var _planet = new PlanetData(_forge_planet, _star);
+
 				if (_planet.current_owner == 3 && _forge_planet) {
 					var _mission_loc = _planet.name();
 					if (mission == "mech_raider") {
@@ -322,7 +323,7 @@ function mechanicus_mission_procedures(){
 							completion: 0, 
 							required_months :24
 						})
-						text = $"The Adeptus Mechanicus await your forces at {_mission_loc}.  They are expecting ten Astartes with bionics.";
+						text = $"The Adeptus Mechanicus await your forces at {_mission_loc}.  They are expecting ten Astartes with bionics. (Beneficial traits: Weakness of Flesh )";
 						scr_event_log("", $"Mechanicus Mission Accepted: Ten Astartes with bionics are to be stationed at {_mission_loc} for 24 months for testing purposes.", _star.name);
 					} else if (mission == "mech_mars") {
 						_planet.add_problem("mech_mars", 31 )
