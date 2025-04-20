@@ -67,12 +67,6 @@ jobs:
           echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
           echo "build_date=$DATE_TAG" >> $GITHUB_OUTPUT
 
-      - name: Debug tag and commit
-        run: |
-          echo "Tag name: ${{ steps.tag_info.outputs.tag_name }}"
-          echo "Target commitish: ${{ github.ref_name }}"
-          git rev-parse ${{ github.ref_name }} || echo "Commit not resolved"
-
       - name: Cleanup old releases
         run: |
           # tag_name looks like: branch-name/date
@@ -105,7 +99,7 @@ jobs:
     name: Build
     uses: ./.github/workflows/gamemaker_build.yml
     secrets: inherit
-    needs: prepare_release
+    needs: [prepare_release, build_needed]
     if: needs.build_needed.outputs.needed == 'true'
     with:
       yyc: ${{ github.event.inputs.compiler == 'YYC' }}
@@ -127,12 +121,6 @@ jobs:
         with:
           name: built-file
           path: ./build_output
-
-      - name: Debug tag and commit 2
-        run: |
-          echo "Tag name: ${{ steps.tag_info.outputs.tag_name }}"
-          echo "Target commitish: ${{ github.ref_name }}"
-          git rev-parse ${{ github.ref_name }} || echo "Commit not resolved"
 
       - id: create_release
         name: Create a release and upload the build
