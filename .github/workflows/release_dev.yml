@@ -29,40 +29,52 @@ jobs:
       - name: Check commit type
         id: commit_check
         run: |
-          COMMIT_MESSAGE=$(git log -1 --pretty=%B)
-          echo "Merge commit message: $COMMIT_MESSAGE"
+          # Always set needed=false initially, then change to true if conditions met
+          echo "needed=false" >> $GITHUB_OUTPUT
 
-          EXCLUDE_PATTERN="^(docs|chore|style|ci)"
-          
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
             echo "Manually triggered, forcing build."
             echo "needed=true" >> $GITHUB_OUTPUT
-
-          elif echo "$COMMIT_MESSAGE" | grep -Eq "$EXCLUDE_PATTERN"; then
-            echo "Commit message matches excluded pattern, skipping build."
-            echo "needed=false" >> $GITHUB_OUTPUT
-            exit 0
-          
-          elif [ "${{ github.event_name }}" == "schedule" ]; then
-            HEAD_COMMIT=$(git rev-parse HEAD)
-            LATEST_TAG_COMMIT=$(git rev-list -n 1 "$(git describe --tags --abbrev=0)")
-          
-            echo "HEAD commit: $HEAD_COMMIT"
-            echo "Latest tag commit: $LATEST_TAG_COMMIT"
-          
-            if [ "$HEAD_COMMIT" = "$LATEST_TAG_COMMIT" ]; then
-              echo "No new commits since last tag. Skipping build."
-              echo "needed=false" >> $GITHUB_OUTPUT
-              exit 0
-            else
-              echo "New commits found. Build is needed."
-              echo "needed=true" >> $GITHUB_OUTPUT
-            fi
-          else
-            echo "Fallback exit!"
-            echo "needed=false" >> $GITHUB_OUTPUT
             exit 0
           fi
+
+          COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+          echo "Commit message: $COMMIT_MESSAGE"
+
+          # Check commit message pattern only if not manually triggered
+          EXCLUDE_PATTERN="^(docs|chore|style|ci)"
+          if echo "$COMMIT_MESSAGE" | grep -Eq "$EXCLUDE_PATTERN"; then
+            echo "Commit message matches excluded pattern, skipping build."
+            # needed remains false
+            exit 0
+          fi
+
+          # Handle schedule trigger - build only if new commits since last tag
+          if [ "${{ github.event_name }}" == "schedule" ]; then
+            # Ensure we have tags fetched
+            git fetch --tags --force
+            LATEST_TAG_COMMIT=$(git rev-list -n 1 $(git describe --tags --abbrev=0 2>/dev/null) 2>/dev/null || echo "no-tags") # Handle case with no tags
+            HEAD_COMMIT=$(git rev-parse HEAD)
+
+            echo "HEAD commit: $HEAD_COMMIT"
+            echo "Latest tag commit: $LATEST_TAG_COMMIT"
+
+            if [ "$LATEST_TAG_COMMIT" = "no-tags" ]; then
+                echo "No tags found. Build is needed."
+                echo "needed=true" >> $GITHUB_OUTPUT
+            elif [ "$HEAD_COMMIT" = "$LATEST_TAG_COMMIT" ]; then
+                echo "No new commits since last tag. Skipping build."
+                # needed remains false
+            else
+                echo "New commits found. Build is needed."
+                echo "needed=true" >> $GITHUB_OUTPUT
+            fi
+            exit 0 # Exit after schedule check
+          fi
+
+          # If it wasn't workflow_dispatch, schedule, or an excluded commit type, then build
+          echo "Commit type requires build."
+          echo "needed=true" >> $GITHUB_OUTPUT
 
   prepare_release:
     name: Prepare the tags
@@ -96,27 +108,24 @@ jobs:
           TAG_NAME="${{ steps.tag_info.outputs.tag_name }}"
           BRANCH_SUFFIX="${TAG_NAME%%/*}"
           PREFIX="${BRANCH_SUFFIX}/"
-      
+
           echo "Checking releases with prefix: $PREFIX"
-      
+
+          # Get tags starting with the prefix, sort reverse chronologically (best effort with default sort)
+          # Using gh release list is more reliable than just git tags if releases exist
           TAGS=$(gh release list --limit 100 | awk '{print $1}' | grep "^${PREFIX}" | sort -r)
-      
+
           COUNT=0
+          RELEASES_TO_KEEP=10 # How many releases per branch prefix to keep
           for TAG in $TAGS; do
             COUNT=$((COUNT + 1))
-            if [ $COUNT -gt 10 ]; then
+            if [ $COUNT -gt $RELEASES_TO_KEEP ]; then
               echo "Deleting old release+tag: $TAG"
-              gh release delete "$TAG" -y --cleanup-tag
+              gh release delete "$TAG" -y --cleanup-tag || echo "Failed to delete release $TAG, maybe already deleted?"
             fi
           done
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Debug tag and commit 2
-        run: |
-          echo "Tag name: ${{ steps.tag_info.outputs.tag_name }}"
-          echo "Target commitish: ${{ github.ref_name }}"
-          git rev-parse ${{ github.ref_name }} || echo "Commit not resolved"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needs permissions to delete releases/tags
 
   gamemaker_build:
     name: Build
@@ -125,7 +134,7 @@ jobs:
     needs: [prepare_release, build_needed]
     if: needs.build_needed.outputs.needed == 'true'
     with:
-      yyc: ${{ env.COMPILER == 'YYC' }}
+      yyc: ${{ (github.event.inputs.compiler || 'YYC') == 'YYC' }}
       build_date: ${{ needs.prepare_release.outputs.build_date }}
 
   release:
@@ -134,11 +143,6 @@ jobs:
     needs: [prepare_release, gamemaker_build]
     if: needs.build_needed.outputs.needed == 'true'
     steps:
-      - uses: actions/checkout@v4
-        with:
-          lfs: true
-          fetch-depth: 0
-
       - name: Download built file artifact
         uses: actions/download-artifact@v4
         with:
@@ -148,12 +152,14 @@ jobs:
       - id: create_release
         name: Create a release and upload the build
         uses: softprops/action-gh-release@v2.2.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Implicitly available but good practice to list
         with:
-          name: ChapterMaster ${{ needs.prepare_release.outputs.tag_name | replace('/', '-') }}
+          name: ChapterMaster ${{ replace(needs.prepare_release.outputs.tag_name, '/', '-') }}
           tag_name: ${{ needs.prepare_release.outputs.tag_name }}
           prerelease: true
           generate_release_notes: true
-          make_latest: true
+          make_latest: false
           target_commitish: ${{ github.ref_name }}
           files: |
             ./build_output/${{ needs.gamemaker_build.outputs.built_file }}/*
