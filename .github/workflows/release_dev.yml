@@ -41,22 +41,14 @@ jobs:
             echo "needed=true" >> $GITHUB_OUTPUT
           fi
 
-  gamemaker_build:
-    name: Build
-    uses: ./.github/workflows/gamemaker_build.yml
-    secrets: inherit
-    needs: build_needed
-    if: needs.build_needed.outputs.needed == 'true'
-    with:
-      yyc: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.compiler == 'YYC' || github.event_name != 'workflow_dispatch' }}
-
   prepare_release:
     name: Prepare the tags
     runs-on: ubuntu-latest
-    needs: gamemaker_build
+    needs: build_needed
     if: needs.build_needed.outputs.needed == 'true'
     outputs:
       tag_name: ${{ steps.tag_info.outputs.tag_name }}
+      build_date: ${{ steps.tag_info.outputs.tag_name }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -66,9 +58,10 @@ jobs:
         id: tag_info
         run: |
           BRANCH_SUFFIX="${GITHUB_REF_NAME##*/}"
-          DATE_TAG=$(date -u +"%y-%m-%d-%H-%M")
+          DATE_TAG=$(date -u +"%y-%m-%d-%H%M")
           TAG_NAME="$BRANCH_SUFFIX/$DATE_TAG"
           echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+          echo "build_date=$DATE_TAG" >> $GITHUB_OUTPUT
 
       - name: Cleanup old releases
         run: |
@@ -92,10 +85,20 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+  gamemaker_build:
+    name: Build
+    uses: ./.github/workflows/gamemaker_build.yml
+    secrets: inherit
+    needs: prepare_release
+    if: needs.build_needed.outputs.needed == 'true'
+    with:
+      yyc: ${{ github.event.inputs.compiler == 'YYC' }}
+      build_date: ${{ needs.prepare_release.outputs.build_date }}
+
   release:
     name: Release
     runs-on: windows-2022
-    needs: [gamemaker_build, prepare_release]
+    needs: gamemaker_build
     if: needs.build_needed.outputs.needed == 'true'
     steps:
       - uses: actions/checkout@v4
