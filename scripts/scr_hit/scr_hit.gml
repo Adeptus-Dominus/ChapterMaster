@@ -64,17 +64,26 @@ function point_and_click(rect, cooldown = 60, lock_bypass = false) {
 	if (point_check && cooldown > 0) {
 		if (controller_exist) {
 			obj_controller.cooldown = cooldown * delta_time/1000000;
+			if(is_debug_overlay_open()){
+				show_debug_message($"Cooldown Set! {array_to_string_list(debug_get_callstack(), true)}");
+			}
 		}  if (main_menu_exists) {
 			obj_main_menu.cooldown = cooldown * delta_time/1000000;
+			if(is_debug_overlay_open()){
+				show_debug_message($"Cooldown Set! {array_to_string_list(debug_get_callstack(), true)}");
+			}
 		} else if (creation_screen_exists) {
 			obj_creation.cooldown = cooldown * delta_time/1000000;
+			if(is_debug_overlay_open()){
+				show_debug_message($"Cooldown Set! {array_to_string_list(debug_get_callstack(), true)}");
+			}
 		}
 		// log_message("scr_click_left: clicked and set cooldown!");
 		// show_debug_message($"{array_to_string_list(debug_get_callstack())}");
 	}
 
 	if(is_debug_overlay_open()){
-		show_debug_message($"mouse coords x: {mouse_consts[0]} y: {mouse_consts[1]}")
+		show_debug_message($"Mouse Clicked at: x: {mouse_consts[0]} y: {mouse_consts[1]} {array_to_string_list(debug_get_callstack(), true)}!");
 	}
 
 	return true;
@@ -99,6 +108,9 @@ function scr_click_left(cooldown = 60, lock_bypass = false){
 		// log_message("scr_click_left: clicked and set cooldown!");
 		// show_debug_message($"{array_to_string_list(debug_get_callstack())}");
 		obj_controller.cooldown = cooldown * delta_time/1000000;
+		if(is_debug_overlay_open()){
+			show_debug_message($"Cooldown Set! {array_to_string_list(debug_get_callstack(), true)}");
+		}
 	} else if (!controller_exist) {
 		var main_menu_exists = instance_exists(obj_main_menu);
 		var creation_screen_exists = instance_exists(obj_creation);
@@ -109,6 +121,9 @@ function scr_click_left(cooldown = 60, lock_bypass = false){
 				return false;
 			} else if (cooldown > 0) {
 				obj_main_menu.cooldown = cooldown * delta_time/1000000;
+				if(is_debug_overlay_open()){
+					show_debug_message($"Cooldown Set! {array_to_string_list(debug_get_callstack(), true)}");
+				}
 			}
 		} else if (creation_screen_exists) {
 			if (obj_creation.cooldown > 0) {
@@ -117,8 +132,15 @@ function scr_click_left(cooldown = 60, lock_bypass = false){
 				return false;
 			} else if (cooldown > 0) {
 				obj_creation.cooldown = cooldown * delta_time/1000000;
+				if(is_debug_overlay_open()){
+					show_debug_message($"Cooldown Set! {array_to_string_list(debug_get_callstack(), true)}");
+				}
 			}
 		}
+	}
+
+	if(is_debug_overlay_open()){
+		show_debug_message($"Mouse Clicked! {array_to_string_list(debug_get_callstack(), true)}");
 	}
 
 	return mouse_clicked;

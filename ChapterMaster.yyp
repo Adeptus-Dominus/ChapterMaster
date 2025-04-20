@@ -590,6 +590,7 @@
     {"id":{"name":"obj_p_th","path":"objects/obj_p_th/obj_p_th.yy",},},
     {"id":{"name":"obj_p1_bullet_miss","path":"objects/obj_p1_bullet_miss/obj_p1_bullet_miss.yy",},},
     {"id":{"name":"obj_p1_bullet","path":"objects/obj_p1_bullet/obj_p1_bullet.yy",},},
+    {"id":{"name":"obj_persistent","path":"objects/obj_persistent/obj_persistent.yy",},},
     {"id":{"name":"obj_planet_map","path":"objects/obj_planet_map/obj_planet_map.yy",},},
     {"id":{"name":"obj_pnunit","path":"objects/obj_pnunit/obj_pnunit.yy",},},
     {"id":{"name":"obj_popup_dialogue","path":"objects/obj_popup_dialogue/obj_popup_dialogue.yy",},},
