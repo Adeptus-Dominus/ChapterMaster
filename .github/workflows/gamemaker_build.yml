@@ -15,6 +15,7 @@ on:
       build_date:
         required: true
         type: string
+        default: "unknown"
 
 jobs:
   build:
@@ -37,7 +38,7 @@ jobs:
 
           Write-Output "GITHUB_EVENT_NAME is: $env:GITHUB_EVENT_NAME"
 
-          if ($env:GITHUB_EVENT_NAME -eq "workflow_dispatch") {
+          if (-not "${{ inputs.build_date }}") {
             $BuildDate = (Get-Date).ToString("yyyy-MM-dd-HHmm")
             Write-Output "No build date provided. Using current date: $BuildDate"
           } else {
