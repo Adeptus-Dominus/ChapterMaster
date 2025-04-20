@@ -10,11 +10,15 @@ on:
         options:
           - YYC
           - VM
+  schedule:
+    - cron: "0 0 * * *"
 
 jobs:
   build_needed:
     name: Build needed?
     runs-on: ubuntu-latest
+    env:
+      COMPILER: ${{ github.event.inputs.compiler || 'YYC' }}
     outputs:
       needed: ${{ steps.commit_check.outputs.needed }}  # Output for skipping
     steps:
@@ -22,23 +26,42 @@ jobs:
         with:
           lfs: true
 
-      - name: Check commit
+      - name: Check commit type
         id: commit_check
         run: |
           COMMIT_MESSAGE=$(git log -1 --pretty=%B)
           echo "Merge commit message: $COMMIT_MESSAGE"
 
           EXCLUDE_PATTERN="^(docs|chore|style|ci)"
-
+          
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
             echo "Manually triggered, forcing build."
             echo "needed=true" >> $GITHUB_OUTPUT
+
           elif echo "$COMMIT_MESSAGE" | grep -Eq "$EXCLUDE_PATTERN"; then
             echo "Commit message matches excluded pattern, skipping build."
             echo "needed=false" >> $GITHUB_OUTPUT
             exit 0
+          
+          elif [ "${{ github.event_name }}" == "schedule" ]; then
+            HEAD_COMMIT=$(git rev-parse HEAD)
+            LATEST_TAG_COMMIT=$(git rev-list -n 1 "$(git describe --tags --abbrev=0)")
+          
+            echo "HEAD commit: $HEAD_COMMIT"
+            echo "Latest tag commit: $LATEST_TAG_COMMIT"
+          
+            if [ "$HEAD_COMMIT" = "$LATEST_TAG_COMMIT" ]; then
+              echo "No new commits since last tag. Skipping build."
+              echo "needed=false" >> $GITHUB_OUTPUT
+              exit 0
+            else
+              echo "New commits found. Build is needed."
+              echo "needed=true" >> $GITHUB_OUTPUT
+            fi
           else
-            echo "needed=true" >> $GITHUB_OUTPUT
+            echo "Fallback exit!"
+            echo "needed=false" >> $GITHUB_OUTPUT
+            exit 0
           fi
 
   prepare_release:
@@ -102,7 +125,7 @@ jobs:
     needs: [prepare_release, build_needed]
     if: needs.build_needed.outputs.needed == 'true'
     with:
-      yyc: ${{ github.event.inputs.compiler == 'YYC' }}
+      yyc: ${{ env.COMPILER == 'YYC' }}
       build_date: ${{ needs.prepare_release.outputs.build_date }}
 
   release:
