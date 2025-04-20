@@ -1,18 +1,15 @@
 function scr_target(_battle_block, _target_type = -1) {
-	var _biggest_target = -1;
+	var _biggest_target = noone;
 	var _priority_queue = ds_priority_create();
-	var _dudes_names = _battle_block.dudes;
-	var _dudes_hps = _battle_block.dudes_hp;
-	var _dudes_nums = _battle_block.dudes_num;
-	var _dudes_vehicles = _battle_block.dudes_vehicle;
+	var _unit_stacks = _battle_block.unit_stacks;
 
-	for (var i = 0, dudes_len = array_length(_dudes_names); i < dudes_len; i++) {
-		if (_dudes_hps[i] <= 0 || _dudes_names[i] == "") {
-			continue;
-		}
+	for (var i = 0, dudes_len = array_length(_unit_stacks); i < dudes_len; i++) {
+		var _unit_stack = _unit_stacks[i];
+		var _unit_stack_count = _unit_stack.count;
+		var _unit_stack_type = _unit_stack.unit_type;
 
-		if (_target_type == -1 || _dudes_vehicles[i] == _target_type) {
-			ds_priority_add(_priority_queue, i, _dudes_nums[i]);
+		if (_target_type == -1 || _unit_stack_type == _target_type) {
+			ds_priority_add(_priority_queue, _unit_stack, _unit_stack_count);
 		}
 	}
 

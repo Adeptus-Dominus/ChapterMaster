@@ -1,0 +1,84 @@
+{
+    "orks_6": {
+        "name": "Huge Ork Army",
+        "description": "A huge army of green gigachads.",
+        "columns": [
+            {
+                "units": [
+                    {
+                        "name": "deff_dread",
+                        "count": 36
+                    },
+                    {
+                        "name": "battlewagon",
+                        "count": 220
+                    }
+                ],
+                "squads": [
+                    {
+                        "name": "gretchins",
+                        "count": 70
+                    },
+                    {
+                        "name": "tankbustas",
+                        "count": 6
+                    },
+                    {
+                        "name": "meganobz",
+                        "count": 8
+                    }
+                ]
+            },
+            {
+                "squads": [
+                    {
+                        "name": "slugga_boyz",
+                        "count": 40
+                    },
+                    {
+                        "name": "ard_boyz",
+                        "count": 20
+                    }
+                ]
+            },
+            {
+                "squads": [
+                    {
+                        "name": "slugga_boyz",
+                        "count": 20
+                    },
+                    {
+                        "name": "ard_boyz",
+                        "count": 30
+                    },
+                    {
+                        "name": "shoota_boyz",
+                        "count": 60
+                    }
+                ]
+            },
+            {
+                "units": [
+                    {
+                        "name": "mekboy",
+                        "count": 6
+                    },
+                    {
+                        "name": "warboss",
+                        "count": 1
+                    }
+                ],
+                "squads": [
+                    {
+                        "name": "flash_gitz",
+                        "count": 5
+                    },
+                    {
+                        "name": "kommandos",
+                        "count": 2
+                    }
+                ]
+            }
+        ]
+    }
+}

@@ -29,16 +29,22 @@ function string_plural(_string, _variable = 2) {
         return _string;
     }
 
-    var _last_char = string_char_at(_string, string_length(_string));
-    var _last_two_chars = string_copy(_string, string_length(_string) - 1, 2);
-    if (_last_char == "y") {
-        return string_copy(_string, 1, string_length(_string) - 1) + "ies";
+    var _len = string_length(_string);
+    var _last_char = string_char_at(_string, _len);
+    var _second_last_char = string_char_at(_string, _len - 1);
+    var _last_two_chars = string_copy(_string, _len - 1, 2);
+
+    if (_last_char == "y" && !string_pos(_second_last_char, "aeiou")) {
+        return string_copy(_string, 1, _len - 1) + "ies";
     }
-    else if (array_contains(["s", "x", "z", "ch", "sh"], _last_char)) {
+    else if (array_contains(["s", "x", "z"], _last_char) || array_contains(["ch", "sh"], _last_two_chars)) {
         return _string + "es";
     }
-    else if (_last_char == "f" || _last_two_chars == "fe") {
-        return string_copy(_string, 1, string_length(_string) - string_length(_last_two_chars)) + "ves";
+    else if (_last_char == "f") {
+        return string_copy(_string, 1, _len - 1) + "ves";
+    }
+    else if (_last_two_chars == "fe") {
+        return string_copy(_string, 1, _len - 2) + "ves";
     }
     else {
         return _string + "s";

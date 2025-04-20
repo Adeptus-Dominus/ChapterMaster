@@ -71,7 +71,7 @@ function scr_shoot(_weapon_stack, _target_object, _target_index) {
 
         //* Enemy shooting
         if (owner == 2) {
-            if (_target_type == eTARGET_TYPE.FORTIFICATION) {
+            if (_target_type == eTARGET_TYPE.Fortification) {
                 var _wall_weapon_damage = max(1, round(_weapon_attack - _target_object.ac[1])) * _shooter_count * max(1, _weapon_shot_count / 4);
                 _target_object.hp[1] -= _wall_weapon_damage;
         
@@ -89,10 +89,10 @@ function scr_shoot(_weapon_stack, _target_object, _target_index) {
 
         //* Player shooting
         if (owner == eFACTION.Player) {
-            _target_index = scr_target(_target_object, _target_type);
-            if (_target_index == -1) {
-                _target_index = scr_target(_target_object);
-                if (_target_index == -1) {
+            var _target_stack = scr_target(_target_object, _target_type);
+            if (_target_stack == noone) {
+                _target_stack = scr_target(_target_object);
+                if (_target_stack == noone) {
                     // if (DEBUG_PLAYER_TARGET_SELECTION) {
                     //     show_debug_message($"{_weapon_name} found no valid targets in the enemy column to attack!");
                     // }
@@ -102,7 +102,7 @@ function scr_shoot(_weapon_stack, _target_object, _target_index) {
             }
 
             // if (DEBUG_PLAYER_TARGET_SELECTION) {
-            //     show_debug_message($"{_weapon_name} is attacking {_target_object.dudes[_target_index]}");
+            //     show_debug_message($"{_weapon_name} is attacking {_target_object.dudes[_target_stack]}");
             // }
 
             if (_weapon_name == "Missile Silo") {
@@ -113,30 +113,36 @@ function scr_shoot(_weapon_stack, _target_object, _target_index) {
             var _min_damage = 0.25;
             var _dice_sides = 50;
             var _random_damage_mod = roll_dice(4, _dice_sides, "low") / 100;
-            var _armour_points = max(0, _target_object.dudes_ac[_target_index] - _weapon_piercing);
-            _weapon_attack = (_weapon_attack * _random_damage_mod) - _armour_points;
-            _weapon_attack = max(_min_damage, _weapon_attack * _target_object.dudes_dr[_target_index]);
-            var _total_attack = _weapon_attack * _shot_count;
+            var _armour_points = max(0, _target_stack.armour - _weapon_piercing);
+            var _modified_weapon_attack = (_weapon_attack * _random_damage_mod) - _armour_points;
+            _modified_weapon_attack = max(_min_damage, _modified_weapon_attack * _target_stack.resistance);
+            var _total_attack = _modified_weapon_attack * _shot_count;
 
-            var _dudes_num = _target_object.dudes_num[_target_index];
-            var _unit_hp = _target_object.dudes_hp[_target_index];
-            var _casualties = min(_shot_count, _dudes_num, floor(_total_attack / _unit_hp));
+            var _unit_hp = _target_stack.unit_health;
+            var _remaining_count = _target_stack.unit_count;
 
-            // if (_casualties > 0) {
-            //     if (DEBUG_PLAYER_TARGET_SELECTION) {
-            //         show_debug_message($"{_weapon_name} attacked {_target_object.dudes[_target_index]} and destroyed {_casualties}!");
-            //     }
-            // } else {
-            //     if (DEBUG_PLAYER_TARGET_SELECTION) {
-            //         show_debug_message($"{_weapon_name} attacked {_target_object.dudes[_target_index]} but dealt no damage!");
-            //     }
-            // }
+            // Estimate casualties
+            var _casualties = min(floor(_total_attack / _unit_hp), _remaining_count);
+            _target_stack.unit_count -= _casualties;
+            obj_ncombat.enemy_forces -= _casualties;
+            var _leftover_damage = _total_attack - (_casualties * _unit_hp);
 
-            scr_flavor(_weapon_stack, _target_object, _target_index, _casualties);
+            // Apply leftover damage to current unit
+            _target_stack.health_current -= _leftover_damage;
+            if (_target_stack.health_current <= 0) {
+                if (_target_stack.unit_count > 1) {
+                    _target_stack.health_current = _target_stack.unit_health;
+                } else {
+                    _target_stack.health_current = 0;
+                }
+                _target_stack.unit_count--;
+                obj_ncombat.enemy_forces--;
+                _casualties++;
+            }
+
+            scr_flavor(_weapon_stack, _target_object, _target_stack, _casualties);
 
             if (_casualties > 0) {
-                _target_object.dudes_num[_target_index] -= _casualties;
-                obj_ncombat.enemy_forces -= _casualties;
                 compress_enemy_array(_target_object);
                 destroy_empty_column(_target_object);
             }

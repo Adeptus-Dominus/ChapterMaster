@@ -1,4 +1,4 @@
-draw_size = min(400, column_size);
+draw_size = column_size * obj_ncombat.battlefield_scale;
 
 if (draw_size > 0){
     draw_set_alpha(1);
@@ -20,13 +20,13 @@ if (draw_size > 0){
     x2 = pos + (centerline_offset * 2) + 10;
     y2 = 450 + (draw_size / 2);
 
-    if (hit()) {
+    if (is_mouse_over()) {
         draw_set_alpha(0.8);
     }
 
     draw_rectangle(x1, y1, x2, y2, 0);
 
-    if (hit()) {
+    if (is_mouse_over()) {
         if (unit_count != unit_count_old) {
             unit_count_old = unit_count;
             composition_string = block_composition_string();

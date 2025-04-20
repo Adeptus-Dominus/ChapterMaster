@@ -353,3 +353,8 @@ display_message_queue = function() {
 	messages_shown = 0;
     ds_queue_clear(messages_queue);
 }
+
+enemy_force_composition = {};
+
+battlefield_scale = 0.1;
+biggest_block_size = 0;

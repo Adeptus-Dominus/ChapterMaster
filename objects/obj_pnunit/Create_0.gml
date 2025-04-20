@@ -105,6 +105,6 @@ hostile_unit="";
 hostile_type=0;
 hostile_splash=0;
 
-hit = function() {
+is_mouse_over = function() {
     return scr_hit(x1, y1, x2, y2) && obj_ncombat.fading_strength == 0;
 };

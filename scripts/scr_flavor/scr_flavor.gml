@@ -44,7 +44,7 @@ function scr_flavor(_weapon_stack, _target_object, _target_i, casulties) {
 		if (target_name = "Greater Daemon of Tzeentch") then obj_ncombat.chaos_angry += casulties * 5;
 	}
 
-	if (target.flank = 1) and (target.flyer = 0) then target_name = "flanking " + target_name;
+	if (target.flank = 1) then target_name = "flanking " + target_name;
 
 	var flavoured = false;
 

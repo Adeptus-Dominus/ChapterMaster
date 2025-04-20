@@ -31,7 +31,6 @@ function scr_en_weapon(_weapon_name, is_man, man_number, man_type, group) {
 		_shot_count = 3;
 	}
 
-	//if (obj_ncombat.enemy=5) then faith_bonus=faith[man_type];
 
 	if (_weapon_name = "Venom Claws") {
 		_attack = 200;
@@ -1049,13 +1048,13 @@ function scr_en_weapon(_weapon_name, is_man, man_number, man_type, group) {
 	// if (faith_bonus = 2) then _attack = _attack * 3;
 	_attack = round(_attack * obj_ncombat.global_defense);
 	
-	if (obj_ncombat.enemy == 1) {
-		if (_range <= 1 || floor(_range) != _range) {
-			_attack = round(_attack * dudes_attack[group]);
-		} else if (_range > 1 && floor(_range) == _range) {
-			_attack = round(_attack * dudes_ranged[group]);
-		}
-	}
+	// if (obj_ncombat.enemy == 1) {
+	// 	if (_range <= 1 || floor(_range) != _range) {
+	// 		_attack = round(_attack * dudes_attack[group]);
+	// 	} else if (_range > 1 && floor(_range) == _range) {
+	// 		_attack = round(_attack * dudes_ranged[group]);
+	// 	}
+	// }
 	
 	if (!is_man && _ammo > 0) {
 		_ammo *= 2;

@@ -82,11 +82,11 @@ function ncombat_enemy_stacks_init() {
             u.maxhp[1] = u.hp[1];
         }
 
-        for (var j = 0; j < 10; j++) {
-            i -= 1;
-            u = instance_create(i * 10, 240, obj_enunit);
-            u.column = i - ((xxx / 10) - 10);
-        }
+        // for (var j = 0; j < 10; j++) {
+        //     i -= 1;
+        //     u = instance_create(i * 10, 240, obj_enunit);
+        //     u.column = i - ((xxx / 10) - 10);
+        // }
         // *** Enemy Forces Special Event ***
         // * Malcadon Spyrer *
         if (string_count("spyrer", battle_special) > 0) {
@@ -566,7 +566,6 @@ function ncombat_enemy_stacks_init() {
                 u.dudes[1] = "Vendetta";
                 u.dudes_num[1] = f;
                 u.flank = 1;
-                u.flyer = 1;
             }
 
             /*u=instance_nearest(xxx,240,obj_enunit);enemy_dudes=threat;
@@ -580,38 +579,44 @@ function ncombat_enemy_stacks_init() {
         if (threat>1){u.dudes[3]="Leman Russ Battle Tank";u.dudes_num[3]=min(1000,floor(guard_effective*0.1));enemies[3]=u.dudes[3];}*/
         }
 
+
+        // Was overwriting shit with no conditionals
+        // Harlequin Group
+        // if (threat == 1) {
+        //     u = instance_nearest(xxx, 240, obj_enunit);
+        //     enemy_dudes = "9";
+
+        //     u.dudes[1] = "Athair";
+        //     u.dudes_num[1] = 1;
+        //     enemies[1] = u.dudes[1];
+        //     u.dudes[2] = "Warlock";
+        //     u.dudes_num[2] = 2;
+        //     enemies[2] = u.dudes[2];
+        //     u.dudes[3] = "Trouper";
+        //     u.dudes_num[3] = 6;
+        //     enemies[3] = u.dudes[3];
+        // }
+
+        // Was overwriting shit with no conditionals
+        // Ranger Group 
+        // if (threat == 1) {
+        //     u = instance_nearest(xxx, 240, obj_enunit);
+        //     enemy_dudes = "20";
+
+        //     u.dudes[1] = "Pathfinder";
+        //     u.dudes_num[1] = 1;
+        //     enemies[1] = u.dudes[1];
+        //     u.dudes[2] = "Ranger";
+        //     u.dudes_num[2] = 10;
+        //     enemies[2] = u.dudes[2];
+        //     u.dudes[3] = "Striking Scorpian";
+        //     u.dudes_num[3] = 10;
+        //     enemies[3] = u.dudes[3];
+        // }
+
+
         // ** Aeldar Force **
         if (enemy == 6) {
-            // Ranger Group
-            if (threat == 1) {
-                u = instance_nearest(xxx, 240, obj_enunit);
-                enemy_dudes = "20";
-
-                u.dudes[1] = "Pathfinder";
-                u.dudes_num[1] = 1;
-                enemies[1] = u.dudes[1];
-                u.dudes[2] = "Ranger";
-                u.dudes_num[2] = 10;
-                enemies[2] = u.dudes[2];
-                u.dudes[3] = "Striking Scorpian";
-                u.dudes_num[3] = 10;
-                enemies[3] = u.dudes[3];
-            }
-            // Harlequin Group
-            if (threat == 1) {
-                u = instance_nearest(xxx, 240, obj_enunit);
-                enemy_dudes = "9";
-
-                u.dudes[1] = "Athair";
-                u.dudes_num[1] = 1;
-                enemies[1] = u.dudes[1];
-                u.dudes[2] = "Warlock";
-                u.dudes_num[2] = 2;
-                enemies[2] = u.dudes[2];
-                u.dudes[3] = "Trouper";
-                u.dudes_num[3] = 6;
-                enemies[3] = u.dudes[3];
-            }
             // Craftworld Small Group
             if (threat == 1) {
                 u = instance_nearest(xxx, 240, obj_enunit);
@@ -647,15 +652,12 @@ function ncombat_enemy_stacks_init() {
 
                 u.dudes[1] = "Dire Avenger";
                 u.dudes_num[1] = 56;
-                u.dudes_special[1] = "shimmershield";
                 u.dudes[2] = "Dire Avenger Exarch";
                 u.dudes_num[2] = 4;
-                u.dudes_special[2] = "shimmershield";
                 u.dudes[3] = "Autarch";
                 u.dudes_num[3] = 1;
                 u.dudes[4] = "Farseer";
                 u.dudes_num[4] = 1;
-                u.dudes_special[4] = "farseer_powers";
                 u.dudes[5] = "Night Spinner";
                 u.dudes_num[5] = 1;
                 // Spawn leader
@@ -674,16 +676,12 @@ function ncombat_enemy_stacks_init() {
                 u.dudes_num[2] = 1;
                 u.dudes[3] = "Warp Spider";
                 u.dudes_num[3] = 7;
-                u.dudes_special[3] = "warp_jump";
                 u.dudes[4] = "Warp Spider Exarch";
                 u.dudes_num[4] = 1;
-                u.dudes_special[4] = "warp_jump";
                 u.dudes[5] = "Howling Banshee";
                 u.dudes_num[5] = 9;
-                u.dudes_special[5] = "banshee_mask";
                 u.dudes[6] = "Howling Banshee Exarch";
                 u.dudes_num[6] = 1;
-                u.dudes_special[6] = "banshee_mask";
                 u.dudes[7] = "Striking Scorpian";
                 u.dudes_num[7] = 9;
                 u.dudes[8] = "Striking Scorpian Exarch";
@@ -701,15 +699,12 @@ function ncombat_enemy_stacks_init() {
 
                 u.dudes[1] = "Dire Avenger";
                 u.dudes_num[1] = 140;
-                u.dudes_special[1] = "shimmershield";
                 u.dudes[2] = "Dire Avenger Exarch";
                 u.dudes_num[2] = 10;
-                u.dudes_special[2] = "shimmershield";
                 u.dudes[3] = "Autarch";
                 u.dudes_num[3] = 1;
                 u.dudes[4] = "Farseer";
                 u.dudes_num[4] = 1;
-                u.dudes_special[4] = "farseer_powers";
                 // Spawn Leader
                 if (leader == 1) {
                     u.dudes[4] = "Leader";
@@ -730,16 +725,12 @@ function ncombat_enemy_stacks_init() {
                 u.dudes_num[2] = 2;
                 u.dudes[3] = "Warp Spider";
                 u.dudes_num[3] = 18;
-                u.dudes_special[3] = "warp_jump";
                 u.dudes[4] = "Warp Spider Exarch";
                 u.dudes_num[4] = 2;
-                u.dudes_special[4] = "warp_jump";
                 u.dudes[5] = "Howling Banshee";
                 u.dudes_num[5] = 28;
-                u.dudes_special[5] = "banshee_mask";
                 u.dudes[6] = "Howling Banshee Exarch";
                 u.dudes_num[6] = 2;
-                u.dudes_special[6] = "banshee_mask";
                 u.dudes[7] = "Striking Scorpian";
                 u.dudes_num[7] = 19;
                 u.dudes[8] = "Striking Scorpian Exarch";
@@ -763,15 +754,12 @@ function ncombat_enemy_stacks_init() {
 
                 u.dudes[1] = "Dire Avenger";
                 u.dudes_num[1] = 280;
-                u.dudes_special[1] = "shimmershield";
                 u.dudes[2] = "Dire Avenger Exarch";
                 u.dudes_num[2] = 20;
-                u.dudes_special[2] = "shimmershield";
                 u.dudes[3] = "Autarch";
                 u.dudes_num[3] = 3;
                 u.dudes[4] = "Farseer";
                 u.dudes_num[4] = 2;
-                u.dudes_special[4] = "farseer_powers";
                 // Spawn Leader
                 if (leader == 1) {
                     u.dudes[4] = "Leader";
@@ -805,16 +793,12 @@ function ncombat_enemy_stacks_init() {
                 u.dudes_num[2] = 4;
                 u.dudes[3] = "Warp Spider";
                 u.dudes_num[3] = 36;
-                u.dudes_special[3] = "warp_jump";
                 u.dudes[4] = "Warp Spider Exarch";
                 u.dudes_num[4] = 4;
-                u.dudes_special[4] = "warp_jump";
                 u.dudes[5] = "Howling Banshee";
                 u.dudes_num[5] = 36;
-                u.dudes_special[5] = "banshee_mask";
                 u.dudes[6] = "Howling Banshee Exarch";
                 u.dudes_num[6] = 4;
-                u.dudes_special[6] = "banshee_mask";
                 u.dudes[7] = "Striking Scorpian";
                 u.dudes_num[7] = 38;
                 u.dudes[8] = "Striking Scorpian Exarch";
@@ -840,15 +824,12 @@ function ncombat_enemy_stacks_init() {
 
                 u.dudes[1] = "Dire Avenger";
                 u.dudes_num[1] = 450;
-                u.dudes_special[1] = "shimmershield";
                 u.dudes[2] = "Dire Avenger Exarch";
                 u.dudes_num[2] = 50;
-                u.dudes_special[2] = "shimmershield";
                 u.dudes[3] = "Autarch";
                 u.dudes_num[3] = 5;
                 u.dudes[4] = "Farseer";
                 u.dudes_num[4] = 3;
-                u.dudes_special[4] = "farseer_powers";
                 // Spawn Leader
                 if (leader == 1) {
                     u.dudes[4] = "Leader";
@@ -882,16 +863,12 @@ function ncombat_enemy_stacks_init() {
                 u.dudes_num[2] = 8;
                 u.dudes[3] = "Warp Spider";
                 u.dudes_num[3] = 72;
-                u.dudes_special[3] = "warp_jump";
                 u.dudes[4] = "Warp Spider Exarch";
                 u.dudes_num[4] = 8;
-                u.dudes_special[4] = "warp_jump";
                 u.dudes[5] = "Howling Banshee";
                 u.dudes_num[5] = 72;
-                u.dudes_special[5] = "banshee_mask";
                 u.dudes[6] = "Howling Banshee Exarch";
                 u.dudes_num[6] = 8;
-                u.dudes_special[6] = "banshee_mask";
                 u.dudes[7] = "Striking Scorpian";
                 u.dudes_num[7] = 72;
                 u.dudes[8] = "Striking Scorpian Exarch";
@@ -917,15 +894,12 @@ function ncombat_enemy_stacks_init() {
 
                 u.dudes[1] = "Dire Avenger";
                 u.dudes_num[1] = 540;
-                u.dudes_special[1] = "shimmershield";
                 u.dudes[2] = "Dire Avenger Exarch";
                 u.dudes_num[2] = 60;
-                u.dudes_special[2] = "shimmershield";
                 u.dudes[3] = "Autarch";
                 u.dudes_num[3] = 8;
                 u.dudes[4] = "Farseer";
                 u.dudes_num[4] = 4;
-                u.dudes_special[4] = "farseer_powers";
                 // Spawn Leader
                 if (leader == 1) {
                     u.dudes[4] = "Leader";
@@ -961,16 +935,12 @@ function ncombat_enemy_stacks_init() {
                 u.dudes_num[2] = 16;
                 u.dudes[3] = "Warp Spider";
                 u.dudes_num[3] = 144;
-                u.dudes_special[3] = "warp_jump";
                 u.dudes[4] = "Warp Spider Exarch";
                 u.dudes_num[4] = 16;
-                u.dudes_special[4] = "warp_jump";
                 u.dudes[5] = "Howling Banshee";
                 u.dudes_num[5] = 144;
-                u.dudes_special[5] = "banshee_mask";
                 u.dudes[6] = "Howling Banshee Exarch";
                 u.dudes_num[6] = 16;
-                u.dudes_special[6] = "banshee_mask";
                 u.dudes[7] = "Striking Scorpian";
                 u.dudes_num[7] = 144;
                 u.dudes[8] = "Striking Scorpian Exarch";
@@ -1455,63 +1425,16 @@ function ncombat_enemy_stacks_init() {
             }
             // Large Ork Army
             if (threat == 6) {
-                enemy_dudes = "a WAAAAGH!! of 11000";
-
-                u = instance_nearest(xxx, 240, obj_enunit);
-                u.dudes[1] = "Mekboy";
-                u.dudes_num[1] = 6;
-                u.dudes[2] = "Flash Git";
-                u.dudes_num[2] = 50;
-                u.dudes[3] = "Kommando";
-                u.dudes_num[3] = 20;
-                instance_deactivate_object(u);
-
-                u = instance_nearest(xxx + 10, 240, obj_enunit);
-                u.dudes[1] = "Slugga Boy";
-                u.dudes_num[1] = 1200;
-                u.dudes[2] = "Ard Boy";
-                u.dudes_num[2] = 600;
-                u.dudes[3] = "Gretchin";
-                u.dudes_num[3] = 2000;
-                u.dudes[4] = "Tank Busta";
-                u.dudes_num[4] = 100;
-                instance_deactivate_object(u);
-
-                u = instance_nearest(xxx + 20, 240, obj_enunit);
-                u.dudes[1] = "Mekboy";
-                u.dudes_num[1] = 6;
-                u.dudes[2] = "Flash Git";
-                u.dudes_num[2] = 50;
-                u.dudes[3] = "Kommando";
-                u.dudes_num[3] = 20;
-                instance_deactivate_object(u);
-
-                u = instance_nearest(xxx + 30, 240, obj_enunit);
-                u.dudes[1] = "Big Warboss";
-                u.dudes_num[1] = 1;
-                // Spawn Leader
-                if (leader == 1) {
-                    u.dudes[1] = "Leader";
-                    u.dudes_num[1] = 1;
-                    enemies[1] = 1;
-                    enemies_num[1] = 1;
+                enemy_force_composition = global.army_profiles[$ "orks_6"];
+                enemy_dudes = enemy_force_composition.description;
+                var _block_count = array_length(enemy_force_composition.columns);
+                for (var b = 0; b < _block_count; b++) {
+                    var _pos = 160 + (b * 10);
+                    var _block = instance_create(_pos, 240, obj_enunit);
+                    _block.copy_block_composition(enemy_force_composition.columns[b]);
+                    enemy_forces += _block.unit_count();
                 }
-                u.dudes[2] = "Meganob";
-                u.dudes_num[2] = 80;
-                u.dudes[3] = "Slugga Boy";
-                u.dudes_num[3] = 600;
-                u.dudes[4] = "Ard Boy";
-                u.dudes_num[4] = 900;
-                u.dudes[5] = "Shoota Boy";
-                u.dudes_num[5] = 2000;
-                instance_deactivate_object(u);
-
-                u = instance_nearest(xxx + 40, 240, obj_enunit);
-                u.dudes[1] = "Deff Dread";
-                u.dudes_num[1] = 36;
-                u.dudes[2] = "Battlewagon";
-                u.dudes_num[2] = 220;
-                instance_deactivate_object(u);
+                show_debug_message($"enemy_forces: {enemy_forces}");
             }
         }
 
@@ -2183,7 +2106,6 @@ function ncombat_enemy_stacks_init() {
             // Chaos Daemons Army
             if (threat == 7) {
                 u = instance_nearest(xxx + 40, 240, obj_enunit);
-                u.neww = 1;
                 enemy_dudes = "";
 
                 u.dudes[1] = "Greater Daemon of Slaanesh";
@@ -2201,7 +2123,6 @@ function ncombat_enemy_stacks_init() {
                 instance_deactivate_object(u);
 
                 u = instance_nearest(xxx + 30, 240, obj_enunit);
-                u.neww = 1;
                 u.dudes[1] = "Greater Daemon of Khorne";
                 u.dudes_num[1] = 1;
                 u.dudes[2] = "Greater Daemon of Khorne";
@@ -2446,7 +2367,6 @@ function ncombat_enemy_stacks_init() {
                 u.dudes[1] = "Heldrake";
                 u.dudes_num[1] = 6;
                 u.flank = 1;
-                u.flyer = 1;
 
                 u = instance_create(0, 240, obj_enunit);
                 u.dudes[1] = "Chaos Terminator";
@@ -2693,7 +2613,6 @@ function ncombat_enemy_stacks_init() {
                 u.dudes[1] = "Heldrake";
                 u.dudes_num[1] = 6;
                 u.flank = 1;
-                u.flyer = 1;
 
                 u = instance_create(0, 240, obj_enunit);
                 u.dudes[1] = "World Eaters Terminator";
@@ -2788,7 +2707,6 @@ function ncombat_enemy_stacks_init() {
             if (threat == 4) {
                 u = instance_nearest(xxx + 40, 240, obj_enunit);
                 enemy_dudes = "400";
-                u.neww = 1;
 
                 u.dudes[1] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch"));
                 if (slaa) {
@@ -2829,7 +2747,6 @@ function ncombat_enemy_stacks_init() {
             if (threat == 5) {
                 u = instance_nearest(xxx + 40, 240, obj_enunit);
                 enemy_dudes = "1000";
-                u.neww = 1;
 
                 u.dudes[1] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
                 if (slaa) {
@@ -2874,7 +2791,6 @@ function ncombat_enemy_stacks_init() {
             if (threat == 6) {
                 u = instance_nearest(xxx + 40, 240, obj_enunit);
                 enemy_dudes = "2000";
-                u.neww = 1;
 
                 u.dudes[1] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
                 if (slaa) {
@@ -2896,7 +2812,6 @@ function ncombat_enemy_stacks_init() {
                 instance_deactivate_object(u);
 
                 u = instance_nearest(xxx + 30, 240, obj_enunit);
-                u.neww = 1;
                 u.dudes[1] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
                 if (slaa) {
                     u.dudes[1] = "Greater Daemon of Slaanesh";

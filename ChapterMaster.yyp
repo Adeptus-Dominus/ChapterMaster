@@ -115,9 +115,12 @@
   ],
   "ForcedPrefabProjectReferences":[],
   "IncludedFiles":[
+    {"$GMIncludedFile":"","%Name":"army_profiles.jsonc","CopyToMask":-1,"filePath":"datafiles/data","name":"army_profiles.jsonc","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"psychic_disciplines.json","CopyToMask":-1,"filePath":"datafiles/data","name":"psychic_disciplines.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"psychic_powers.json","CopyToMask":-1,"filePath":"datafiles/data","name":"psychic_powers.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"squad_profiles.jsonc","CopyToMask":-1,"filePath":"datafiles/data","name":"squad_profiles.jsonc","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"traits.json","CopyToMask":-1,"filePath":"datafiles/data","name":"traits.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"unit_profiles.jsonc","CopyToMask":-1,"filePath":"datafiles/data","name":"unit_profiles.jsonc","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"1.png","CopyToMask":-1,"filePath":"datafiles/images/advisor/splash","name":"1.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"11.png","CopyToMask":-1,"filePath":"datafiles/images/advisor/splash","name":"11.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"12.png","CopyToMask":-1,"filePath":"datafiles/images/advisor/splash","name":"12.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},

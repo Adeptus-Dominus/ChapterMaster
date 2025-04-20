@@ -49,15 +49,31 @@ function squeeze_map_forces() {
 	}
 }
 
-function target_block_is_valid(target, desired_type) {
+function pnunit_is_valid(target) {
 	try {
 		var _is_valid = false;
-		if (target == "none") {
-			return false;
-		}
 		if (instance_exists(target)) {
-			if (target.x > 0 && target.object_index == desired_type) {
+			if (target.x > 0 && target.object_index == obj_pnunit) {
 				if (target.men + target.veh + target.dreads > 0) {
+					_is_valid = true;
+				} else {
+					x = -5000;
+					instance_deactivate_object(id);
+				}
+			}
+		}
+		return _is_valid;
+	} catch (_exception) {
+		handle_exception(_exception);
+	}
+}
+
+function enunit_is_valid(target) {
+	try {
+		var _is_valid = false;
+		if (instance_exists(target)) {
+			if (target.x > 0 && target.object_index == obj_enunit) {
+				if (target.unit_count() > 0) {
 					_is_valid = true;
 				} else {
 					x = -5000;
@@ -230,17 +246,6 @@ function move_unit_block(direction, blocks = 1, allow_collision = false) {
     }
 }
 
-/// @description Attempts to move an enemy unit block, choosing direction based on whenever they are flanking or not, only if `obj_nfort` doesn't exists.
-/// @mixin
-function move_enemy_block() {
-	if (instance_exists(obj_nfort)) {
-		exit;
-	}
-
-	var _direction = flank ? "east" : "west";
-	move_unit_block(_direction);
-}
-
 /// @description Creates a priority queue of enemy units based on their x-position and then moves each with `move_enemy_block()`.
 function move_enemy_blocks() {
 	var _enemy_movement_queue = ds_priority_create();
@@ -254,6 +259,39 @@ function move_enemy_blocks() {
 		}
 	}
 	ds_priority_destroy(_enemy_movement_queue);
+}
+
+/// @description Attempts to move an enemy unit block, choosing direction based on whenever they are flanking or not, only if `obj_nfort` doesn't exists.
+/// @mixin
+function move_enemy_block() {
+	if (instance_exists(obj_nfort)) {
+		exit;
+	}
+
+	var _direction = flank ? "east" : "west";
+	move_unit_block(_direction);
+}
+
+function player_blocks_movement() {
+	if (instance_exists(obj_nfort)) {
+		exit;
+	}
+
+	if ((obj_ncombat.defending || obj_ncombat.formation_set == 2)) {
+		exit;
+	}
+
+	var _player_movement_queue = ds_priority_create();
+	with (obj_pnunit) {
+		ds_priority_add(_player_movement_queue, id, x);
+	}
+	while (!ds_priority_empty(_player_movement_queue)) {
+		var _player_block = ds_priority_delete_max(_player_movement_queue);
+		with (_player_block) {
+			move_unit_block("east");
+		}
+	}
+	ds_priority_destroy(_player_movement_queue);
 }
 
 /// @mixin
@@ -417,23 +455,23 @@ function get_target_priority(_weapon_stack, _block) {
     var _size_bonus = _size / 10;
 
     // Target type match bonus
-    var _type_bonus = 0;
-    if (_weapon_stack.target_type == eTARGET_TYPE.ARMOUR) {
-        _type_bonus = 20 * (block_type_size(_block, "armour") / _size);
-    } else {
-        _type_bonus = 20 * (block_type_size(_block, "men") / _size);
-    }
+    // var _type_bonus = 0;
+    // if (_weapon_stack.target_type == eTARGET_TYPE.Armour) {
+    //     _type_bonus = 20 * (block_type_size(_block, "armour") / _size);
+    // } else {
+    //     _type_bonus = 20 * (block_type_size(_block, "men") / _size);
+    // }
 
     var _priority = 0;
-    _priority += _type_bonus;
+    // _priority += _type_bonus;
     _priority += _size_bonus;
     _priority -= _doomstack_malus;
     _priority += _distance_bonus;
     _priority *= random_range(0.5, 1.5);
 
-    if (DEBUG_COLUMN_PRIORITY_ENEMY) {
-        show_debug_message($"Priority: {_priority}\n Type: +{_type_bonus}\n Size: +{_size_bonus}\n Doomstack: -{_doomstack_malus}\n Distance: +{_distance_bonus}\n");
-    }
+    // if (DEBUG_COLUMN_PRIORITY_ENEMY) {
+    //     show_debug_message($"Priority: {_priority}\n Type: +{_type_bonus}\n Size: +{_size_bonus}\n Doomstack: -{_doomstack_malus}\n Distance: +{_distance_bonus}\n");
+    // }
 
     return _priority;
 }

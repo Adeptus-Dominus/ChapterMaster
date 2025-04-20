@@ -95,15 +95,15 @@ function scr_clean(target_object, weapon_data) {
                 var _t_start = get_timer();
             }
 
-            if (target_type == eTARGET_TYPE.ARMOUR && array_empty(valid_vehicles)) {
-                target_type = eTARGET_TYPE.NORMAL;
-            } else if (target_type = eTARGET_TYPE.NORMAL && array_empty(valid_marines)) {
-                target_type = eTARGET_TYPE.ARMOUR;
+            if (target_type == eTARGET_TYPE.Armour && array_empty(valid_vehicles)) {
+                target_type = eTARGET_TYPE.Normal;
+            } else if (target_type = eTARGET_TYPE.Normal && array_empty(valid_marines)) {
+                target_type = eTARGET_TYPE.Armour;
             }
 
             for (var shot = 0; shot < hostile_shots; shot++) {
                 // ### Vehicle Damage Processing ###
-                if (target_type == eTARGET_TYPE.ARMOUR && !array_empty(valid_vehicles)) {
+                if (target_type == eTARGET_TYPE.Armour && !array_empty(valid_vehicles)) {
                     // Apply damage for each hostile shot, until we run out of targets
 
                     hits++;
@@ -199,7 +199,7 @@ function scr_clean(target_object, weapon_data) {
                             array_delete(valid_vehicles, random_index, 1);
                             units_lost++;
                             if (array_empty(valid_vehicles)) {
-                                target_type = eTARGET_TYPE.NORMAL;
+                                target_type = eTARGET_TYPE.Normal;
                                 continue;
                             }
                         }
@@ -207,7 +207,7 @@ function scr_clean(target_object, weapon_data) {
                 }
 
                 // ### Marine Processing ###
-                if (target_type == eTARGET_TYPE.NORMAL && !array_empty(valid_marines)) {
+                if (target_type == eTARGET_TYPE.Normal && !array_empty(valid_marines)) {
                     // Apply damage for each shot
                     hits++;
 
@@ -266,7 +266,7 @@ function scr_clean(target_object, weapon_data) {
                         array_delete(valid_marines, random_index, 1);
                         units_lost++;
                         if (array_empty(valid_marines)) {
-                            target_type = eTARGET_TYPE.ARMOUR;
+                            target_type = eTARGET_TYPE.Armour;
                             continue;
                         }
                     }
@@ -340,9 +340,6 @@ function compress_enemy_array(_target_column) {
             arr: dudes,
             def: ""
         }, {
-            arr: dudes_special,
-            def: ""
-        }, {
             arr: dudes_num,
             def: 0
         }, {
@@ -353,9 +350,6 @@ function compress_enemy_array(_target_column) {
             def: 0
         }, {
             arr: dudes_vehicle,
-            def: 0
-        }, {
-            arr: dudes_damage,
             def: 0
         }];
 

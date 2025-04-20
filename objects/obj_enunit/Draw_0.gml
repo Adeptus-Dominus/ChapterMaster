@@ -1,4 +1,4 @@
-draw_size = min(400, column_size);
+draw_size = column_size * obj_ncombat.battlefield_scale;
 
 if (draw_size > 0){
     draw_set_alpha(1);
@@ -13,52 +13,29 @@ if (draw_size > 0){
     x2 = pos + (centerline_offset * 2) + 10;
     y2 = 450 + (draw_size / 2);
 
-    if (hit()) {
+    if (is_mouse_over()) {
         draw_set_alpha(0.8);
     }
 
     draw_rectangle(x1, y1, x2, y2, 0);
 
-    if (hit()) {
-        if (unit_count != unit_count_old) {
-            unit_count_old = unit_count;
-            if (obj_ncombat.enemy!=1){
-                composition_string = block_composition_string();
-            } else {
-                var variety, variety_num, sofar, compl;
-                variety = [];
-                variety_num = [];
-                sofar = 0;
-                compl = "";
-        
-                var variety_len = array_length(variety);
-                for (var q = 0; q < variety_len; q++) {
-                    variety[q] = "";
-                    variety_num[q] = 0;
-                }
-
-                var dudes_len = array_length(dudes);
-                for (var q = 0; q < dudes_len; q++) {
-                    if (dudes[q] != "") and(string_count(string(dudes[q]) + "|", compl) = 0) {
-                        compl += string(dudes[q]) + "|";
-                        variety[sofar] = dudes[q];
-                        variety_num[sofar] = 0;
-                        sofar += 1;
-                    }
-                }
-
-                var dudes_len = array_length(dudes);
-                for (var q = 0; q < dudes_len; q++) {
-                    if (dudes[q] != "") {
-                        var variety_len = array_length(variety);
-                        for (var i = 0; i < variety_len; i++) {
-                            if (dudes[q] = variety[i]) then variety_num[i] += dudes_num[q];
-                        }
-                    }
-                }
-
-                composition_string = arrays_to_string_with_counts(variety, variety_num, true);
-            } 
+    if (is_mouse_over()) {
+        if (unit_count() != unit_count_old) {
+            unit_count_old = unit_count();
+            var _counts_array = [];
+            var _names_array = [];
+            var _types_array = [];
+    
+            var _unit_names = struct_get_names(unit_stacks);
+            var _unit_len = array_length(_unit_names);
+            for (var k = 0; k < _unit_len; k++){
+                var _unit_name = _unit_names[k];
+                var _unit = unit_stacks[$ _unit_name];
+                array_push(_names_array, _unit.display_name);
+                array_push(_counts_array, _unit.unit_count);
+            }
+    
+            composition_string = arrays_to_string_with_counts(_names_array, _counts_array, true);
         }
 
         draw_block_composition(x1, composition_string);

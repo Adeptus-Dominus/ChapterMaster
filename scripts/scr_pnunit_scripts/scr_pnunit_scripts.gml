@@ -17,10 +17,6 @@ function pnunit_target_and_shoot() {
 
         target_block = instance_nearest(0, y, obj_enunit);
 
-        if (obj_ncombat.dropping || (!obj_ncombat.defending && obj_ncombat.formation_set != 2)) {
-            move_unit_block("east");
-        }
-
         engaged = collision_point(x - 10, y, obj_enunit, 0, 1) || collision_point(x + 10, y, obj_enunit, 0, 1);
 
         if (DEBUG_COLUMN_PRIORITY_PLAYER) {
@@ -38,9 +34,9 @@ function pnunit_target_and_shoot() {
             // Shooting
             var _ranged_weapons = get_valid_weapon_stacks(weapon_stacks_normal, 2, 999);
             for (var i = 0, _ranged_len = array_length(_ranged_weapons); i < _ranged_len; i++) {
-                if (!target_block_is_valid(target_block, obj_enunit)) {
+                if (!enunit_is_valid(target_block)) {
                     target_block = instance_nearest(0, y, obj_enunit);
-                    if (!target_block_is_valid(target_block, obj_enunit)) {
+                    if (!enunit_is_valid(target_block,)) {
                         exit;
                     }
                 }
@@ -58,7 +54,7 @@ function pnunit_target_and_shoot() {
                     // Scan potential targets
                     var _check_targets = [];
                     with (obj_enunit) {
-                        if (!target_block_is_valid(self, obj_enunit)) {
+                        if (!enunit_is_valid(self)) {
                             continue;
                         }
                         array_push(_check_targets, self.id);
@@ -114,7 +110,7 @@ function pnunit_target_and_shoot() {
             // Melee
             var _melee_weapons = get_valid_weapon_stacks(weapon_stacks_normal, 1, 2);
             for (var i = 0, _wep_len = array_length(_melee_weapons); i < _wep_len; i++) {
-                if (!target_block_is_valid(target_block, obj_enunit)) {
+                if (!enunit_is_valid(target_block)) {
                     exit;
                 }
 

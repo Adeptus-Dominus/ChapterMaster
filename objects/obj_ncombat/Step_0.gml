@@ -2,27 +2,12 @@ if (fading_strength > 0) {
     fading_strength -= 0.05;
 }
 
-if (!battle_ended) {
-    with (obj_pnunit) {
-        target_block_is_valid(id, obj_pnunit);
-    }
-
-    with (obj_enunit) {
-        if (x < 0) {
-            instance_destroy();
-        } else {
-            var nearest = instance_nearest(x, y, obj_pnunit);
-            if (instance_exists(nearest)) {
-                if (point_distance(x, y, nearest.x, nearest.y) > 100) {
-                    instance_destroy();
-                }
-            }
-        }
-    }
-}
-
 if (wall_destroyed == true) {
     wall_destroyed = false;
+}
+
+if (biggest_block_size > 0) {
+    battlefield_scale = min(1, 400 / biggest_block_size);
 }
 
 if (battle_stage == eBATTLE_STAGE.Creation) {
@@ -34,6 +19,9 @@ if (battle_stage == eBATTLE_STAGE.Creation) {
 
     with (obj_enunit) {
         enunit_enemy_profiles_init();
+        if (column_size > obj_ncombat.biggest_block_size) {
+            obj_ncombat.biggest_block_size = column_size;
+        }
     }
 
     with (obj_pnunit) {
@@ -73,6 +61,7 @@ if (keyboard_check_pressed(vk_enter) && fading_strength == 0) {
         }
 
         if (turn_stage == eBATTLE_TURN.PlayerStart) {
+            player_blocks_movement();
             with (obj_pnunit) {
                 pnunit_battle_effects();
                 scr_player_combat_weapon_stacks();
@@ -91,6 +80,16 @@ if (keyboard_check_pressed(vk_enter) && fading_strength == 0) {
     }
 
     if (turn_stage == eBATTLE_TURN.EnemyEnd || turn_stage == eBATTLE_TURN.PlayerEnd) {
+        if (!battle_ended) {
+            with (obj_pnunit) {
+                pnunit_is_valid(id);
+            }
+        
+            with (obj_enunit) {
+                enunit_is_valid(id)
+            }
+        }
+
         if (turn_stage == eBATTLE_TURN.EnemyEnd) {
             turn_stage = eBATTLE_TURN.PlayerStart;
         }

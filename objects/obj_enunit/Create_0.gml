@@ -1,29 +1,18 @@
 
-unit="";
-men=0;
-veh=0;
-dreads=0;
-medi=0;
-owner = eFACTION.Imperium;
-engaged=0;
-hostile_splash=0;
+owner = -1;
 flank=0;
-flyer=0;// Works same as flank, but does not get denoted as such
-neww=0;
 
-column_size=0;
-
-unit_count=0;
 unit_count_old=0;
 composition_string="";
 
 pos = 880;
 centerline_offset = 0;
 draw_size = 0;
-x1 = pos + (centerline_offset * 2);
-y1 = 450 - (draw_size / 2);
-x2 = pos + (centerline_offset * 2) + 10;
-y2 = 450 + (draw_size / 2);
+x1 = 0;
+y1 = 0;
+x2 = 0;
+y2 = 0;
+
 if (obj_ncombat.enemy < array_length(global.star_name_colors) && obj_ncombat.enemy >= 0) {
     column_draw_colour = global.star_name_colors[obj_ncombat.enemy];
 } else {
@@ -33,49 +22,84 @@ if (obj_ncombat.enemy < array_length(global.star_name_colors) && obj_ncombat.ene
 
 target_block = noone;
 
-
-
-avg_attack=1;
-avg_ranged=1;
-avg_defense=1;
-averages=1;
-
-
-// x determines column; maybe every 10 or so?
-
 weapon_stacks_normal = {};
 weapon_stacks_vehicle = {};
 weapon_stacks_unique = {};
 
-var _enemy_size = 1002;
-dude_co = array_create(_enemy_size, 0);
-dude_id = array_create(_enemy_size, 0);
+unit_stacks = {};
 
-dudes = array_create(_enemy_size, "");
-dudes_special = array_create(_enemy_size, "");
-dudes_num = array_create(_enemy_size, 0);
-dudes_onum = array_create(_enemy_size, -1);
-dudes_ac = array_create(_enemy_size, 0);
-dudes_hp = array_create(_enemy_size, 0);
-dudes_dr = array_create(_enemy_size, 1);
-dudes_vehicle = array_create(_enemy_size, 0);
-dudes_damage = array_create(_enemy_size, 0);
-dudes_exp = array_create(_enemy_size, 0);
-dudes_powers = array_create(_enemy_size, "");
-faith = array_create(_enemy_size, 0);
+column_size = 0;
 
-dudes_attack = array_create(_enemy_size, 1);
-dudes_ranged = array_create(_enemy_size, 1);
+engaged = function() {
+    return collision_point(x - 10, y, obj_pnunit, 0, 1) || collision_point(x + 10, y, obj_pnunit, 0, 1);
+};
 
-dudes_wep1 = array_create(_enemy_size, "");
-dudes_wep2 = array_create(_enemy_size, "");
-dudes_gear = array_create(_enemy_size, "");
-dudges_mobi = array_create(_enemy_size, "");
-
-
-// if (obj_ncombat.enemy=1){alarm[1]=8;alarm[5]=10;}
-
-
-hit = function() {
+is_mouse_over = function() {
     return scr_hit(x1, y1, x2, y2) && obj_ncombat.fading_strength == false;
+};
+
+
+copy_block_composition = function(_composition) {
+    if (struct_exists(_composition, "units")) {
+        var _units = _composition.units;
+
+        var _units_len = array_length(_units);
+        for (var i = 0; i < _units_len; i++) {
+            var _unit = _units[i];
+            var _unit_name = _unit.name;
+            var _unit_struct = new EnemyUnitStack(_unit_name, _unit.count);
+            struct_set(unit_stacks, _unit_name, _unit_struct);
+            column_size += _unit_struct.unit_size * _unit.count;
+        }
+    }
+
+    if (struct_exists(_composition, "squads")) {
+        var _squads = _composition.squads;
+
+        var _squads_len = array_length(_squads);
+        for (var i = 0; i < _squads_len; i++) {
+            var _squad = _squads[i];
+        
+            var _squad_template = global.squad_profiles[$ _squad.name];
+            var _squad_units = _squad_template.members;
+            var _squad_count = _squad.count;
+            
+            var _unit_names = struct_get_names(_squad_units);
+            var _unit_len = array_length(_unit_names);
+            for (var k = 0; k < _unit_len; k++){
+                var _unit_name = _unit_names[k];
+                var _profile_name = _unit_name;
+                var _unit = _squad_units[$ _unit_name];
+
+                if (struct_exists(_unit, "display_name")) {
+                    _unit_name = _unit.display_name;
+                }
+
+                if (struct_exists(unit_stacks, _unit_name)) {
+                    unit_stacks[$ _unit_name].unit_count += _unit.count * _squad_count;
+                    column_size += unit_stacks[$ _unit_name].unit_size * _unit.count * _squad_count;
+                } else {
+                    var _unit_struct = new EnemyUnitStack(_profile_name, _unit.count * _squad_count);
+                    _unit_struct.weapons = _unit.weapons;
+                    struct_set(unit_stacks, _unit_name, _unit_struct);
+                    column_size += _unit_struct.unit_size * _unit.count * _squad_count;
+                }
+            }
+        }
+    }
+};
+
+
+unit_count = function() {
+    var _unit_count = 0;
+
+    var _unit_stack_names = struct_get_names(unit_stacks);
+    var _unit_stack_len = array_length(_unit_stack_names);
+    for (var k = 0; k < _unit_stack_len; k++){
+        var _unit_stack_name = _unit_stack_names[k];
+        var _unit_stack = unit_stacks[$ _unit_stack_name];
+        _unit_count += _unit_stack.unit_count;
+    }
+
+    return _unit_count;
 };

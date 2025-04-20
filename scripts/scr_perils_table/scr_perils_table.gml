@@ -217,7 +217,6 @@ function scr_perils_table(perils_strength, unit, psy_discipline, power_name, uni
 				d1.medi += 1;
 				obj_ncombat.enemy_forces += 1;
 				obj_ncombat.enemy_max += 1;
-				d1.neww = 1;
 				d1.alarm[1] = 1;
 
 				flavour_text2 += string(dem) + " has taken form.";

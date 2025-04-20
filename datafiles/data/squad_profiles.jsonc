@@ -1,0 +1,181 @@
+{
+    "flash_gitz": {
+        "display_name": "Flash Gitz",
+        "members": {
+            "flash_git": {
+                "count": 9,
+                "weapons": [
+                    "Snazzgun",
+                    "Stickkbombs"
+                ]
+            },
+            "kaptin": {
+                "count": 1,
+                "weapons": [
+                    "Snazzgun",
+                    "Stickkbombs"
+                ]
+            }
+        }
+    },
+    "kommandos": {
+        "display_name": "Kommandos",
+        "members": {
+            "kommando": {
+                "count": 14,
+                "weapons": [
+                    "Choppa",
+                    "Slugga",
+                    "Stickkbombs"
+                ]
+            },
+            "boss_nob": {
+                "count": 1,
+                "weapons": [
+                    "Choppa",
+                    "Slugga",
+                    "Stickkbombs"
+                ]
+            }
+        }
+    },
+    "slugga_boyz": {
+        "display_name": "Slugga Boyz",
+        "members": {
+            "ork_boy": {
+                "display_name": "Slugga Boy",
+                "count": 29,
+                "weapons": [
+                    "Choppa",
+                    "Slugga",
+                    "Stickkbombs"
+                ]
+            },
+            "boss_nob": {
+                "count": 1,
+                "weapons": [
+                    "Choppa",
+                    "Slugga",
+                    "Stickkbombs"
+                ]
+            }
+        }
+    },
+    "shoota_boyz": {
+        "display_name": "Shoota Boyz",
+        "members": {
+            "ork_boy": {
+                "display_name": "Shoota Boy",
+                "count": 29,
+                "weapons": [
+                    "Choppa",
+                    "Shoota",
+                    "Stickkbombs"
+                ]
+            },
+            "boss_nob": {
+                "count": 1,
+                "weapons": [
+                    "Choppa",
+                    "Shoota",
+                    "Stickkbombs"
+                ]
+            }
+        }
+    },
+    "ard_boyz": {
+        "display_name": "Ard Boyz",
+        "members": {
+            "ard_boy": {
+                "count": 29,
+                "weapons": [
+                    "Choppa",
+                    "Slugga",
+                    "Stickkbombs"
+                ]
+            },
+            "boss_nob": {
+                "count": 1,
+                "weapons": [
+                    "Choppa",
+                    "Slugga",
+                    "Stickkbombs"
+                ]
+            }
+        }
+    },
+    "gretchins": {
+        "display_name": "Gretchins",
+        "members": {
+            "gretchin": {
+                "count": 30,
+                "weapons": [
+                    "Grot Blasta"
+                ]
+            },
+            "ork_boy": {
+                "display_name": "Runtherds",
+                "count": 3,
+                "weapons": [
+                    "Grabba Stikk",
+                    "Slugga",
+                    "Stickkbombs"
+                ]
+            }
+        }
+    },
+    "tankbustas": {
+        "display_name": "Tankbustas",
+        "members": {
+            "tankbusta": {
+                "count": 14,
+                "weapons": [
+                    "Rokkit Launcha",
+                    "Tankbusta Bomb"
+                ]
+            },
+            "boss_nob": {
+                "count": 1,
+                "weapons": [
+                    "Choppa",
+                    "Rokkit Launcha",
+                    "Stikkbombs"
+                ]
+            }
+        }
+    },
+    "meganobz": {
+        "display_name": "Meganobz",
+        "members": {
+            "meganob": {
+                "count": 9,
+                "weapons": [
+                    "Twin-Linked Shoota",
+                    "Power Klaw",
+                    "Stikkbombs"
+                ]
+            },
+            "boss_meganob": {
+                "count": 1,
+                "weapons": [
+                    "Twin-Linked Shoota",
+                    "Power Klaw",
+                    "Stikkbombs"
+                ]
+            }
+        }
+    },
+    "warboss": {
+        "display_name": "Warboss",
+        "members": {
+            "warboss": {
+                "count": 1,
+                "weapons": [
+                    "Twin-Linked Shoota",
+                    "Power Klaw",
+                    "Stikkbombs"
+                ]
+            }
+        }
+    }
+}
