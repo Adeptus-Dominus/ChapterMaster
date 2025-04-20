@@ -73,7 +73,7 @@ jobs:
       - name: Cleanup old releases
         run: |
           # tag_name looks like: branch-name/date
-          TAG_NAME="${{ needs.prepare_release.outputs.tag_name }}"
+          TAG_NAME="${{ steps.tag_info.outputs.tag_name }}"
           BRANCH_SUFFIX="${TAG_NAME%%/*}"
           PREFIX="${BRANCH_SUFFIX}/"
       
@@ -113,7 +113,7 @@ jobs:
         name: Create a release and upload the build
         uses: softprops/action-gh-release@v2.0.9
         with:
-          name: ChapterMaster ${{ needs.gamemaker_build.outputs.suffix }}
+          name: ChapterMaster ${{ needs.prepare_release.outputs.tag_name }}
           tag_name: ${{ needs.prepare_release.outputs.tag_name }}
           prerelease: true
           generate_release_notes: true
