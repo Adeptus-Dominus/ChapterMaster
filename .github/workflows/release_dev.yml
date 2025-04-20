@@ -58,7 +58,7 @@ jobs:
         id: tag_info
         run: |
           BRANCH_SUFFIX="${GITHUB_REF_NAME##*/}"
-          DATE_TAG=$(date -u +"%y-%m-%d-%H%M")
+          DATE_TAG=$(date -u +"%Y-%m-%d-%H%M")
           TAG_NAME="$BRANCH_SUFFIX/$DATE_TAG"
 
           echo "Resolved DATE_TAG=$DATE_TAG"
@@ -126,7 +126,7 @@ jobs:
         name: Create a release and upload the build
         uses: softprops/action-gh-release@v2.2.2
         with:
-          name: ChapterMaster ${{ needs.prepare_release.outputs.tag_name }}
+          name: ChapterMaster ${{ needs.prepare_release.outputs.tag_name | replace('/', '-') }}
           tag_name: ${{ needs.prepare_release.outputs.tag_name }}
           prerelease: true
           generate_release_notes: true
