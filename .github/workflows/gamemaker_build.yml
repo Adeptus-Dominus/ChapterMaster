@@ -15,7 +15,6 @@ on:
       build_date:
         required: true
         type: string
-        default: "unknown"
 
 jobs:
   build:
