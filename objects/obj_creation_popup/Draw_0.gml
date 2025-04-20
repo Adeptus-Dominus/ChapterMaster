@@ -75,12 +75,10 @@ if (col_shift){
         
 
         if (point_and_click(draw_unit_buttons([700,550], "CANCEL",[1,1], 38144,, fnt_40k_14b, 1))){
-            obj_creation.cooldown=8000
             instance_destroy();
         }
 
-        if (!scr_hit(430,536,845,748) && mouse_check_button_pressed(mb_left) &&  obj_creation.cooldown == 0) {
-            obj_creation.cooldown = 8000;
+        if (!scr_hit(430,536,845,748) && scr_click_left()) {
             instance_destroy();
         }
         draw_set_alpha(1);
@@ -215,7 +213,6 @@ if (col_shift){
                 }
             }
 
-            obj_creation.cooldown = 8000;
             instance_destroy();
         }
 
@@ -332,7 +329,6 @@ if (target_gear > 0) {
 
     if (point_and_click(draw_unit_buttons([980,716], "CANCEL",[1,1], 38144,, fnt_40k_14b, 1))){
         target_gear=0;
-        obj_creation.cooldown=8000
     }
 }
 

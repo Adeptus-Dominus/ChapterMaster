@@ -18,7 +18,6 @@ autosaving=false;
 trickle=0;
 txt="";
 hide=0;
-cooldown=10;
 bar=0;
 slow=0;
 saves=0;
