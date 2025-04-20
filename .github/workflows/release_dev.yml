@@ -64,8 +64,8 @@ jobs:
           echo "Resolved DATE_TAG=$DATE_TAG"
           echo "Resolved BRANCH_SUFFIX=$BRANCH_SUFFIX"
           echo "Resolved TAG_NAME=$TAG_NAME"
-          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
-          echo "build_date=$DATE_TAG" >> $GITHUB_OUTPUT
+          echo "tag_name=$TAG_NAME" >> $GITHUB_ENV
+          echo "build_date=$DATE_TAG" >> $GITHUB_ENV
 
       - name: Cleanup old releases
         run: |
