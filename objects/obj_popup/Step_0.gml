@@ -618,7 +618,7 @@ try {
         */
 	}
 
-	if ((image == "mechanicus") && (title == "Mechanicus Mission") || (title == "Mechanicus Mission Accepted")) {
+	if (image == "mechanicus" && (title == "Mechanicus Mission" || title == "Mechanicus Mission Accepted")){
 		mechanicus_mission_procedures();
 	}
 

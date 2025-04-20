@@ -15,7 +15,7 @@ function mechanicus_missions_end_turn(planet){
     }
     var bionics_planet_slot = has_problem_planet_with_time(planet,"mech_bionics");
     if (bionics_planet_slot>-1){
-        check1=scr_bionics_count("star",string(name),planet,"number");
+        var check1=scr_bionics_count("star",string(name),planet,"number");
         if (check1>=10){
             var _prob_data = p_problem_other_data[planet][bionics_planet_slot];
         	var percent_complete = increment_mission_completion(_prob_data);
@@ -45,7 +45,7 @@ function mechanicus_missions_end_turn(planet){
                 if (battli=1) then obj_turn_end.battle_special[obj_turn_end.battles]="study2a";
                 if (battli=2) then obj_turn_end.battle_special[obj_turn_end.battles]="study2b";
             
-                if (obj_turn_end.battle_opponent[obj_turn_end.battles]=11){
+                if (obj_turn_end.battle_opponent[obj_turn_end.battles]==11){
                     if (planet_feature_bool(p_feature[planet],P_features.World_Eaters)==1){
                         obj_turn_end.battle_special[obj_turn_end.battles]="world_eaters";
                     }
@@ -246,7 +246,7 @@ function spawn_mechanicus_mission(){
 		var valid_stars = array_filter_ext(stars, 
 		function(star,index) {
 			if(scr_star_has_planet_with_feature(star,P_features.Necron_Tomb)) and (awake_necron_Star(star)!= 0){
-				var planet = scr_get_planet_with_feature(star, "Necron Tomb");
+				var planet = scr_get_planet_with_feature(star, P_features.Necron_Tomb);
 				if(scr_is_planet_owned_by_allies(star, planet)) {
 					return true;
 				}
@@ -328,7 +328,7 @@ function mechanicus_mission_procedures(){
 					} else if (mission == "mech_mars") {
 						_planet.add_problem("mech_mars", 31 )
 						text = $"The Adeptus Mechanicus await your {obj_ini.role[100][16]}s at {_mission_loc}.  They are willing to hold on the voyage for up to 12 months.";
-						scr_event_log("", $"Mechanicus Mission Accepted: {osbj_ini.role[100][16]}s are expected at {_mission_loc} within 30 months, for the voyage to Mars.", _star.name);
+						scr_event_log("", $"Mechanicus Mission Accepted: {obj_ini.role[100][16]}s are expected at {_mission_loc} within 30 months, for the voyage to Mars.", _star.name);
 					}
 					with (_star) {
 						new_star_event_marker("green");

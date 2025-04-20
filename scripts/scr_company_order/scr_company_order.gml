@@ -49,7 +49,7 @@ function sort_all_companies(){
 
 function sort_all_companies_to_map(map){
 	with (obj_ini){
-		for (var i=0;i<=array_length(map);i++){
+		for (var i=0;i<array_length(map);i++){
 			if (map[i]){
 				scr_company_order(i);
 			}
