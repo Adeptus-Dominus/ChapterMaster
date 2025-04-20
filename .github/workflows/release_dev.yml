@@ -10,9 +10,6 @@ on:
         options:
           - YYC
           - VM
-  push:
-    branches:
-      - release/0.9
 
 jobs:
   build_needed:
@@ -63,28 +60,32 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Check if dev tag exists
-        id: check_dev_tag
+      - name: Set tag name
+        id: tag_info
         run: |
-          if git rev-parse --verify "refs/tags/dev/${{ github.ref_name }}" >/dev/null 2>&1; then
-            echo "exists=true" >> $GITHUB_OUTPUT
-          else
-            echo "exists=false" >> $GITHUB_OUTPUT
-          fi
+          BRANCH_SUFFIX="${GITHUB_REF_NAME##*/}"
+          DATE_TAG=$(date -u +"%y-%m-%d")
+          TAG_NAME="$BRANCH_SUFFIX/$DATE_TAG"
+          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
 
-      - name: Move dev-old tag to dev
-        if: steps.check_dev_tag.outputs.exists == 'true'
+      - name: Cleanup old releases
         run: |
-          prev_sha=$(git rev-parse "refs/tags/dev/${{ github.ref_name }}")
-          echo "Updating dev-old/${{ github.ref_name }} to $prev_sha"
-          git tag -f "dev-old/${{ github.ref_name }}" "$prev_sha"
-          git push -f origin "refs/tags/dev-old/${{ github.ref_name }}"
-
-      - id: delete_release_tag
-        name: Delete dev tag
-        if: steps.check_dev_tag.outputs.exists == 'true'
-        run: |
-          gh release delete "dev/${{ github.ref_name }}" -y --cleanup-tag
+          BRANCH_SUFFIX="${{ steps.tag_info.outputs.tag_name%%/* }}"
+          PREFIX="${BRANCH_SUFFIX}/"
+      
+          echo "Checking releases with prefix: $PREFIX"
+      
+          # List matching tags/releases and sort newest first
+          TAGS=$(gh release list --limit 100 | awk '{print $1}' | grep "^${PREFIX}" | sort -r)
+      
+          COUNT=0
+          for TAG in $TAGS; do
+            COUNT=$((COUNT + 1))
+            if [ $COUNT -gt 10 ]; then
+              echo "Deleting old release+tag: $TAG"
+              gh release delete "$TAG" -y --cleanup-tag
+            fi
+          done
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -110,7 +111,7 @@ jobs:
         uses: softprops/action-gh-release@v2.0.9
         with:
           name: ChapterMaster ${{ needs.gamemaker_build.outputs.suffix }}
-          tag_name: dev/${{ github.ref_name }}
+          tag_name: ${{ steps.tag_info.outputs.tag_name }}
           prerelease: true
           generate_release_notes: true
           make_latest: true
