@@ -71,7 +71,6 @@ jobs:
         run: |
           echo "Tag name: ${{ steps.tag_info.outputs.tag_name }}"
           echo "Target commitish: ${{ github.ref_name }}"
-          git show-ref | grep ${{ steps.tag_info.outputs.tag_name }} || echo "Tag not found yet"
           git rev-parse ${{ github.ref_name }} || echo "Commit not resolved"
 
       - name: Cleanup old releases
@@ -96,6 +95,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Debug tag and commit 2
+        run: |
+          echo "Tag name: ${{ steps.tag_info.outputs.tag_name }}"
+          echo "Target commitish: ${{ github.ref_name }}"
+          git rev-parse ${{ github.ref_name }} || echo "Commit not resolved"
+
   gamemaker_build:
     name: Build
     uses: ./.github/workflows/gamemaker_build.yml
@@ -109,7 +114,7 @@ jobs:
   release:
     name: Release
     runs-on: windows-2022
-    needs: gamemaker_build
+    needs: [prepare_release, gamemaker_build]
     if: needs.build_needed.outputs.needed == 'true'
     steps:
       - uses: actions/checkout@v4
@@ -122,6 +127,12 @@ jobs:
         with:
           name: built-file
           path: ./build_output
+
+      - name: Debug tag and commit 2
+        run: |
+          echo "Tag name: ${{ steps.tag_info.outputs.tag_name }}"
+          echo "Target commitish: ${{ github.ref_name }}"
+          git rev-parse ${{ github.ref_name }} || echo "Commit not resolved"
 
       - id: create_release
         name: Create a release and upload the build
