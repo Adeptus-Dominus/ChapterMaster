@@ -35,6 +35,8 @@ jobs:
           # Generate current date-time directly in the format you want
           git fetch --tags
 
+          Write-Output "GITHUB_EVENT_NAME is: $env:GITHUB_EVENT_NAME"
+
           if ($env:GITHUB_EVENT_NAME -eq "workflow_dispatch") {
             $BuildDate = (Get-Date).ToString("yyyy-MM-dd-HHmm")
             Write-Output "No build date provided. Using current date: $BuildDate"
