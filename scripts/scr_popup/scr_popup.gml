@@ -18,5 +18,9 @@ function scr_popup(type, text, image, popup_special="") {
 	    pip.title=type;
 	    pip.text=text;
 	    pip.image=image;	
+	    if (is_struct(popup_special)){
+	    	show_debug_message(popup_special);
+	    	pip.pop_data = popup_special;
+	    }
 	}
 }

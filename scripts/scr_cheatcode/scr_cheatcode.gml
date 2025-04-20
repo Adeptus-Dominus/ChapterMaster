@@ -134,6 +134,10 @@ function scr_cheatcode(argument0) {
 						}
 					}
 					break;
+				case "mechmission":
+					show_debug_message("mech_mission");
+					spawn_mechanicus_mission();
+					break;
 				case "artifactpopulate":
 					with (obj_star) {
 						for (var i = 1; i <= planets; i++) {
