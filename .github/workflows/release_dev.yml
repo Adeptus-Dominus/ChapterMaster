@@ -172,7 +172,6 @@ jobs:
         with:
           name: ${{ steps.prep_release_name.outputs.release_name }}
           tag_name: ${{ needs.prepare_release.outputs.tag_name }}
-          target_commitish: ${{ needs.prepare_release.outputs.tag_name }}
           prerelease: true
           generate_release_notes: true
           make_latest: false
