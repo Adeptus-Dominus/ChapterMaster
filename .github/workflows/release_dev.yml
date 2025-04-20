@@ -139,9 +139,11 @@ jobs:
 
   release:
     name: Release
-    runs-on: windows-2022
+    runs-on: ubuntu-latest
     needs: [prepare_release, gamemaker_build]
     if: needs.build_needed.outputs.needed == 'true'
+    permissions:
+      contents: write # Needed for softprops/action-gh-release
     steps:
       - name: Download built file artifact
         uses: actions/download-artifact@v4
@@ -149,17 +151,32 @@ jobs:
           name: built-file
           path: ./build_output
 
+      - name: List downloaded files # Debug step
+        run: ls -R ./build_output
+
+      - name: Prepare Release Name
+        id: prep_release_name
+        run: |
+          rawTagName="${{ needs.prepare_release.outputs.tag_name }}"
+          # Use Bash parameter expansion: ${parameter//pattern/string}
+          # Replaces all occurrences of '/' with '-'
+          formattedTagName="${rawTagName//\//-}"
+          releaseName="ChapterMaster $formattedTagName"
+          echo "Calculated release name: $releaseName"
+          # Set the output using standard Bash redirection to the GITHUB_OUTPUT file
+          echo "release_name=$releaseName" >> $GITHUB_OUTPUT
+
       - id: create_release
         name: Create a release and upload the build
-        uses: softprops/action-gh-release@v2.2.2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Implicitly available but good practice to list
+        uses: softprops/action-gh-release@v2
         with:
-          name: ChapterMaster ${{ replace(needs.prepare_release.outputs.tag_name, '/', '-') }}
+          name: ${{ steps.prep_release_name.outputs.release_name }}
           tag_name: ${{ needs.prepare_release.outputs.tag_name }}
+          target_commitish: ${{ needs.prepare_release.outputs.tag_name }}
           prerelease: true
           generate_release_notes: true
           make_latest: false
-          target_commitish: ${{ github.ref_name }}
           files: |
-            ./build_output/${{ needs.gamemaker_build.outputs.built_file }}/*
+            ./build_output/* # Check if your artifact contents match this wildcard
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
