@@ -28,50 +28,56 @@ function mechanicus_missions_end_turn(planet){
     }
     var tomb2_planet_slot = has_problem_planet_with_time(planet,"mech_tomb2");
     if (tomb2_planet_slot>-1){
+    	var _mission_data = p_problem_other_data[planet][tomb2_planet_slot];
+    	_mission_data.turns++;
     	var battli=0;
-    	var roll1=floor(random(100))+1;
-    	var completion = p_problem_other_data[planet][tomb2_planet_slot].completion>0;
-    	if (completion>2){
-            if (roll1>=90) and (roll1<98) then battli=1;// oops
-            if (roll1>=98) then battli=2;// very oops, much necron, wow
-        
-            if (battli>0) and (p_player[planet]>0){// Quene the battle
-                obj_turn_end.battles+=1;
-                obj_turn_end.battle[obj_turn_end.battles]=1;
-                obj_turn_end.battle_world[obj_turn_end.battles]=planet;
-                obj_turn_end.battle_opponent[obj_turn_end.battles]=13;
-                obj_turn_end.battle_location[obj_turn_end.battles]=name;
-                obj_turn_end.battle_object[obj_turn_end.battles]=id;
-                if (battli=1) then obj_turn_end.battle_special[obj_turn_end.battles]="study2a";
-                if (battli=2) then obj_turn_end.battle_special[obj_turn_end.battles]="study2b";
-            
-                if (obj_turn_end.battle_opponent[obj_turn_end.battles]==11){
-                    if (planet_feature_bool(p_feature[planet],P_features.World_Eaters)==1){
-                        obj_turn_end.battle_special[obj_turn_end.battles]="world_eaters";
-                    }
-                }
-            }
-            if (battli>0) and (p_player[planet]<=0){// XDDDDD
-                scr_popup("Mechanicus Mission Failed","The Mechanicus Research team on planet "+string(name)+" "+scr_roman(planet)+" have been killed by Necrons in the absence of your astartes.  The Mechanicus are absolutely livid, doubly so because of the promised security they did not recieve.","","");
-                obj_controller.turns_ignored[3]+=choose(8,10,12,14,16,18,20,22,24);
-                obj_controller.disposition[3]-=25;
-                remove_planet_problem(planet,"mech_tomb2");
-            }
-    	}
-        if (completion>3) and (battli=0){// Done
+    	var _roll1 = roll_dice(1, 100+_mission_data.turns, "low");
+    	var completion = _mission_data.completion>0;
+
+    	if (roll1>98){
+	        if (roll1>=90) and (roll1<98) then battli=1;// oops
+	        if (roll1>=98) then battli=2;// very oops, much necron, wow
+	    
+	        if (battli>0) and (p_player[planet]>0){// Quene the battle
+	            obj_turn_end.battles+=1;
+	            obj_turn_end.battle[obj_turn_end.battles]=1;
+	            obj_turn_end.battle_world[obj_turn_end.battles]=planet;
+	            obj_turn_end.battle_opponent[obj_turn_end.battles]=13;
+	            obj_turn_end.battle_location[obj_turn_end.battles]=name;
+	            obj_turn_end.battle_object[obj_turn_end.battles]=id;
+	            if (battli=1) then obj_turn_end.battle_special[obj_turn_end.battles]="study2a";
+	            if (battli=2) then obj_turn_end.battle_special[obj_turn_end.battles]="study2b";
+	        
+	            if (obj_turn_end.battle_opponent[obj_turn_end.battles]==11){
+	                if (planet_feature_bool(p_feature[planet],P_features.World_Eaters)==1){
+	                    obj_turn_end.battle_special[obj_turn_end.battles]="world_eaters";
+	                }
+	            }
+	        }
+	        if (battli>0) and (p_player[planet]<=0){// XDDDDD
+	            scr_popup("Mechanicus Mission Failed","The Mechanicus Research team on planet "+string(name)+" "+scr_roman(planet)+" have been killed by Necrons in the absence of your astartes.  The Mechanicus are absolutely livid, doubly so because of the promised security they did not recieve.","","");
+	            obj_controller.turns_ignored[3]+=choose(8,10,12,14,16,18,20,22,24);
+	            obj_controller.disposition[3]-=25;
+	            remove_planet_problem(planet,"mech_tomb2");
+	        }
+	    }
+        else {// Done
             if scr_has_adv("Shitty Luck") then roll1+=15;
         
-            if (roll1>40) then scr_alert("","mission","Adeptus Mechanicus research within the Necron Tomb of "+string(name)+" "+scr_roman(planet)+" continues.",0,0);
+            if (roll1>20){
+				scr_alert("","mission","Adeptus Mechanicus research within the Necron Tomb of "+string(name)+" "+scr_roman(planet)+" continues.",0,0);
+            } 
         
-            if (roll1<=40){// Complete
-                var reward,text;reward=choose(1,1,2);
+            else if (roll1<=20){// Complete
+                var text ,reward=choose(1,1,2);
                 if (scr_has_adv("Tech-Brothers")) then reward=choose(1,2);
             
-                if (reward=1){obj_controller.requisition+=400;
+                if (reward==1){
+                	obj_controller.requisition+=400;
                     text="The Mechanicus Research team on planet "+string(name)+" "+scr_roman(planet)+" have completed their work without any major setbacks.  Pleased with your astartes' work, they have granted you 400 Requisition to be used as you see fit.";
                     scr_event_log("","Mechanicus Mission Completed: The Mechanicus research team on "+string(name)+" "+scr_roman(planet)+" have completed their work.");
                 }
-                if (reward=2){
+                else if (reward==2){
                     if (obj_ini.fleet_type=ePlayerBase.home_world) then scr_add_artifact("random","",0,obj_ini.home_name,2);
                     if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("random","",0,obj_ini.ship[0],501);
                     text="The Mechanicus Research team on planet "+string(name)+" "+scr_roman(planet)+" have completed their work without any major setbacks.  Pleased with your astartes' work, they have granted your Chapter an artifact, to be used as you see fit.";
@@ -88,9 +94,10 @@ function mechanicus_missions_end_turn(planet){
     }
     var tomb1_planet_slot = has_problem_planet_with_time(planet,"mech_tomb1");
     if (tomb1_planet_slot>-1){
-    	if (scr_marine_count(id,planet,20)>=20){
+    	var _marines  = collect_role_group("all", [name, planet, -1]);
+    	if (array_length(_marines)>=20){
     		remove_planet_problem(planet,"mech_tomb1");
-    		add_new_problem(planet, "mech_tomb2", 999,star="none", other_data={completion:0})
+    		add_new_problem(planet, "mech_tomb2", 999,star="none", other_data={turns:0})
             scr_popup("Mechanicus Research","The Mechanicus Research team on planet "+string(name)+" "+scr_roman(planet)+" has taken note of your Astartes and are now prepared to begin their research.  Your marines are to stay on the planet until further notice.","necron_cave","");
     	}
     }
