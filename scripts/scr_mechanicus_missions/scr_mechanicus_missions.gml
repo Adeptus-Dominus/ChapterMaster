@@ -170,7 +170,7 @@ function mechanicus_missions_end_turn(planet){
         remove_planet_problem(planet,"mech_raider");      	
     }
     if (has_problem_planet_and_time(planet,"mech_bionics", 0)>-1){
-        var alert_text="Mechanicus Mission Failed: Land Raider testing at "+string(name)+" "+scr_roman(planet)+".";
+        var alert_text="Mechanicus Mission Failed: bionics testing at "+string(name)+" "+scr_roman(planet)+".";
         scr_alert("red","mission_failed",alert_text,0,0);
         scr_event_log("red",alert_text);
         obj_controller.disposition[3]-=6; 
