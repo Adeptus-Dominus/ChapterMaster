@@ -17,7 +17,7 @@ function scr_clean(target_object, weapon_data) {
                 exit;
             }
 
-            if (DEBUG_ENEMY_TARGET_SELECTION) {
+            if (DEBUG_COMBAT_PERFORMANCE) {
                 var _t_start = get_timer();
             }
             
@@ -85,13 +85,13 @@ function scr_clean(target_object, weapon_data) {
             }
             valid_vehicles = array_shuffle(valid_vehicles);
 
-            if (DEBUG_ENEMY_TARGET_SELECTION) {
+            if (DEBUG_COMBAT_PERFORMANCE) {
                 var _t_end = get_timer();
                 var _elapsed_ms = (_t_end - _t_start) / 1000;
                 show_debug_message($"⏱️ {hostile_weapon} enemy target validation took: {_elapsed_ms}ms");
             }
 
-            if (DEBUG_ENEMY_TARGET_SELECTION) {
+            if (DEBUG_COMBAT_PERFORMANCE) {
                 var _t_start = get_timer();
             }
 
@@ -281,7 +281,7 @@ function scr_clean(target_object, weapon_data) {
                 }
             }
 
-            if (DEBUG_ENEMY_TARGET_SELECTION) {
+            if (DEBUG_COMBAT_PERFORMANCE) {
                 var _t_end = get_timer();
                 var _elapsed_ms = (_t_end - _t_start) / 1000;
                 show_debug_message($"⏱️ {hostile_weapon} enemy damage allocation  took: {_elapsed_ms}ms");

@@ -10,6 +10,7 @@
 #macro CM_RED_COLOR #bf4040
 #macro MANAGE_MAN_SEE 34
 #macro MANAGE_MAN_MAX array_length(obj_controller.display_unit) + 7
+#macro DEBUG_COMBAT_PERFORMANCE false
 
 enum luck {
     bad = -1,

@@ -108,7 +108,9 @@ function pnunit_target_and_shoot() {
 /// @mixin
 function pnunit_battle_effects() {
     try {
-        var _t_start_battle_effects = get_timer();
+        if (DEBUG_COMBAT_PERFORMANCE) {
+            var _t_start_battle_effects = get_timer();
+        }
         
         if (obj_ncombat.battle_stage == eBATTLE_STAGE.Creation) {
             if (men + dreads + veh <= 0) {
@@ -234,9 +236,11 @@ function pnunit_battle_effects() {
         /* */
         /*  */
         
-        var _t_end_battle_effects = get_timer();
-        var _elapsed_ms_battle_effects = (_t_end_battle_effects - _t_start_battle_effects) / 1000;
-        show_debug_message($"⏱️ Execution Time battle_effects: {_elapsed_ms_battle_effects}ms");
+        if (DEBUG_COMBAT_PERFORMANCE) {
+            var _t_end_battle_effects = get_timer();
+            var _elapsed_ms_battle_effects = (_t_end_battle_effects - _t_start_battle_effects) / 1000;
+            show_debug_message($"⏱️ Execution Time battle_effects: {_elapsed_ms_battle_effects}ms");
+        }
     } catch (_exception) {
         handle_exception(_exception);
     }
@@ -315,7 +319,9 @@ function pnunit_dying_process() {
 }
 
 function target_unit_stack(_battle_block, _target_type = -1) {
-    var _t_start_target_unit_stack = get_timer();
+    if (DEBUG_COMBAT_PERFORMANCE) {
+        var _t_start_target_unit_stack = get_timer();
+    }
 
 	var _biggest_target = noone;
 	var _priority_queue = ds_priority_create();
@@ -341,9 +347,11 @@ function target_unit_stack(_battle_block, _target_type = -1) {
 
 	ds_priority_destroy(_priority_queue);
 
-    var _t_end_target_unit_stack = get_timer();
-    var _elapsed_ms_target_unit_stack = (_t_end_target_unit_stack - _t_start_target_unit_stack) / 1000;
-    show_debug_message($"⏱️ Execution Time target_unit_stack: {_elapsed_ms_target_unit_stack}ms");
+    if (DEBUG_COMBAT_PERFORMANCE) {
+        var _t_end_target_unit_stack = get_timer();
+        var _elapsed_ms_target_unit_stack = (_t_end_target_unit_stack - _t_start_target_unit_stack) / 1000;
+        show_debug_message($"⏱️ Execution Time target_unit_stack: {_elapsed_ms_target_unit_stack}ms");
+    }
 
 	return _biggest_target;
 }

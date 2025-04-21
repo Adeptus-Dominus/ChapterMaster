@@ -71,7 +71,9 @@ function add_data_to_stack (weapon, unit_damage=0, head_role=false, unit="none")
 
 /// @mixin
 function scr_player_combat_weapon_stacks() {
-    var _t_start_player_weapon_stacks = get_timer();
+    if (DEBUG_COMBAT_PERFORMANCE) {
+        var _t_start_player_weapon_stacks = get_timer();
+    }
     
     if (defenses=1){
         var i=0;
@@ -280,9 +282,11 @@ function scr_player_combat_weapon_stacks() {
         }
     }
     
-    var _t_end_player_weapon_stacks = get_timer();
-    var _elapsed_ms_player_weapon_stacks = (_t_end_player_weapon_stacks - _t_start_player_weapon_stacks) / 1000;
-    show_debug_message($"⏱️ Execution Time player_weapon_stacks: {_elapsed_ms_player_weapon_stacks}ms");
+    if (DEBUG_COMBAT_PERFORMANCE) {
+        var _t_end_player_weapon_stacks = get_timer();
+        var _elapsed_ms_player_weapon_stacks = (_t_end_player_weapon_stacks - _t_start_player_weapon_stacks) / 1000;
+        show_debug_message($"⏱️ Execution Time player_weapon_stacks: {_elapsed_ms_player_weapon_stacks}ms");
+    }
 
 
     // Right here should be retreat- if important units are exposed they should try to hop left

@@ -150,228 +150,228 @@ function scr_en_weapon(_weapon_name, _unit_type, _weapon_count, _unit_name, _uni
 
 	if (obj_ncombat.enemy = 6) {
 
-		if (argument0 = "Fusion Gun"){
+		if (_weapon_name = "Fusion Gun"){
 			_attack = 180;
 			_piercing = 1;
 			_range = 2;
 			_ammo = 4;
 		}
 
-			if (argument0 = "Firepike") {
+			if (_weapon_name = "Firepike") {
 				_attack = 150;
 				_piercing = 1;
 				_range = 4;
 				_ammo = 4;
 			}
-		if (argument0 = "Singing Spear") {
+		if (_weapon_name = "Singing Spear") {
 			_attack = 150;
 			_piercing = 0;
 			_range = 1;
 			_shot_count = 3;
 		}
-		if (argument0 = "Singing Spear Throw") {
+		if (_weapon_name = "Singing Spear Throw") {
 			_attack = 120;
 			_piercing = 0;
 			_range = 2;
 			_shot_count = 3;
 		}
-		if (argument0 = "Witchblade") {
+		if (_weapon_name = "Witchblade") {
 			_attack = 130;
 			_piercing = 0;
 			_range = 1;
 		}
-		if (argument0 = "Psyshock") {
+		if (_weapon_name = "Psyshock") {
 			_attack = 50;
 			_piercing = 0;
 			_range = 2;
 		}
-		if (argument0 = "Wailing Doom") {
+		if (_weapon_name = "Wailing Doom") {
 			_attack = 200;
 			_piercing = 1;
 			_range = 1;
 			_shot_count = 3;
 		}
-		if (argument0 = "Avatar Smite") {
+		if (_weapon_name = "Avatar Smite") {
 			_attack = 300;
 			_piercing = 1;
 			_range = 2;
 			_ammo = 2;
 		}
-		if (argument0 = "Ranger Long Rifle") {
+		if (_weapon_name = "Ranger Long Rifle") {
 			_attack = 60;
 			_piercing = 0;
 			_range = 25;
 		}
-		if (argument0 = "Pathfinder Long Rifle") {
+		if (_weapon_name = "Pathfinder Long Rifle") {
 			_attack = 70;
 			_piercing = 0;
 			_range = 25;
 		}
-		if (argument0 = "Shuriken Catapult") {
+		if (_weapon_name = "Shuriken Catapult") {
 			_attack = 50;
 			_piercing = 0;
 			_range = 2;
 		}
-		if (argument0 = "Twin Linked Shuriken Catapult") {
+		if (_weapon_name = "Twin Linked Shuriken Catapult") {
 			_attack = 100;
 			_piercing = 0;
 			_range = 2;
 		}
-		if (argument0 = "Avenger Shuriken Catapult") {
+		if (_weapon_name = "Avenger Shuriken Catapult") {
 			_attack = 90;
 			_piercing = 0;
 			_range = 3;
 		}
-		if (argument0 = "Power Weapon") or(argument0 = "Power Blades") {
+		if (_weapon_name = "Power Weapon") or(_weapon_name = "Power Blades") {
 			_attack = 100;
 			_piercing = 1;
 			_range = 1;
 			_shot_count = 3;
 		}
-		if (argument0 = "Shuriken Pistol") {
+		if (_weapon_name = "Shuriken Pistol") {
 			_attack = 50;
 			_piercing = 0;
 			_range = 2.1;
 		}
-		if (argument0 = "Executioner") {
+		if (_weapon_name = "Executioner") {
 			_attack = 150;
 			_piercing = 1;
 			_range = 1;
 		}
-		if (argument0 = "Scorpion Chainsword") {
+		if (_weapon_name = "Scorpion Chainsword") {
 			_attack = 100;
 			_piercing = 0;
 			_range = 1;
 			_shot_count = 3;
 		}
-		if (argument0 = "Mandiblaster") {
+		if (_weapon_name = "Mandiblaster") {
 			_attack = 60;
 			_piercing = 0;
 			_range = 1;
 		}
-		if (argument0 = "Biting Blade") {
+		if (_weapon_name = "Biting Blade") {
 			_attack = 125;
 			_piercing = 0;
 			_range = 1;
 			_shot_count = 3;
 		}
-		if (argument0 = "Scorpian's Claw") {
+		if (_weapon_name = "Scorpian's Claw") {
 			_attack = 150;
 			_piercing = 1;
 			_range = 1;
 			_shot_count = 3;
 		}
-		if (argument0 = "Meltabomb") {
+		if (_weapon_name = "Meltabomb") {
 			_attack = 200;
 			_piercing = 1;
 			_range = 1;
 			_ammo = 1;
 		}
-		if (argument0 = "Deathspinner") {
+		if (_weapon_name = "Deathspinner") {
 			_attack = 125;
 			_piercing = 0;
 			_range = 2;
 		}
-		if (argument0 = "Dual Deathspinner") {
+		if (_weapon_name = "Dual Deathspinner") {
 			_attack = 250;
 			_piercing = 0;
 			_range = 2;
 		}
-		if (argument0 = "Reaper Launcher") {
+		if (_weapon_name = "Reaper Launcher") {
 			_attack = 120;
 			_piercing = 1;
 			_range = 20;
 			_ammo = 8;
 			_shot_count = 3;
 		}
-		if (argument0 = "Tempest Launcher") {
+		if (_weapon_name = "Tempest Launcher") {
 			_attack = 200;
 			_piercing = 0;
 			_range = 15;
 			_ammo = 8;
 			_shot_count = 9;
 		}
-		if (argument0 = "Laser Lance") {
+		if (_weapon_name = "Laser Lance") {
 			_attack = 180;
 			_piercing = 1;
 			_range = 2;
 			_shot_count = 3;
 		}
-		if (argument0 = "Fusion Pistol") {
+		if (_weapon_name = "Fusion Pistol") {
 			_attack = 125;
 			_piercing = 1;
 			_range = 2.1;
 			_ammo = 4;
 		}
-		if (argument0 = "Plasma Pistol") {
+		if (_weapon_name = "Plasma Pistol") {
 			_attack = 100;
 			_piercing = 1;
 			_range = 3.1;
 		}
-		if (argument0 = "Harlequin's Kiss") {
+		if (_weapon_name = "Harlequin's Kiss") {
 			_attack = 250;
 			_piercing = 1;
 			_range = 1;
 			_ammo = 1;
 		}
-		if (argument0 = "Wraithcannon") {
+		if (_weapon_name = "Wraithcannon") {
 			_attack = 200;
 			_piercing = 1;
 			_range = 2.1;
 		}
-		if (argument0 = "Pulse Laser") {
+		if (_weapon_name = "Pulse Laser") {
 			_attack = 120;
 			_piercing = 0;
 			_range = 15;
 		}
-		if (argument0 = "Bright Lance") {
+		if (_weapon_name = "Bright Lance") {
 			_attack = 200;
 			_piercing = 1;
 			_range = 8;
 		}
-		if (argument0 = "Shuriken Cannon") {
+		if (_weapon_name = "Shuriken Cannon") {
 			_attack = 160;
 			_piercing = 0;
 			_range = 3;
 		}
-		if (argument0 = "Prism Cannon") {
+		if (_weapon_name = "Prism Cannon") {
 			_attack = 400;
 			_piercing = 1;
 			_range = 20;
 				_shot_count = 1;
 		}
-		if (argument0 = "Twin Linked Doomweaver") {
+		if (_weapon_name = "Twin Linked Doomweaver") {
 			_attack = 250;
 			_piercing = 1;
 			_range = 2;
 				_shot_count = 2;
 		} // Also create difficult terrain?
-		if (argument0 = "Starcannon") {
+		if (_weapon_name = "Starcannon") {
 			_attack = 250;
 			_piercing = 1;
 			_range = 8;
 			_shot_count = 4;
 		}
-		if (argument0 = "Two Power Fists") {
+		if (_weapon_name = "Two Power Fists") {
 			_attack = 300;
 			_piercing = 1;
 			_range = 1;
 				_shot_count = 2;
 		}
-		if (argument0 = "Flamer") {
+		if (_weapon_name = "Flamer") {
 			_attack = 200;
 			_piercing = 0;
 			_range = 2;
 			_ammo = 4;
 			_shot_count = 3;
 		}
-		if (argument0 = "Titan Starcannon") {
+		if (_weapon_name = "Titan Starcannon") {
 			_attack = 500;
 			_piercing = 1;
 			_range = 4;
 			_shot_count = 8;
 		}
-		if (argument0 = "Phantom Pulsar") {
+		if (_weapon_name = "Phantom Pulsar") {
 			_attack = 500;
 			_piercing = 1;
 			_range = 20;
@@ -381,19 +381,19 @@ function scr_en_weapon(_weapon_name, _unit_type, _weapon_count, _unit_name, _uni
 
 	if (obj_ncombat.enemy = 7) {
 
-		if (argument0 = "Choppa") {
+		if (_weapon_name = "Choppa") {
 			_attack = 16;
 			_piercing = 4;
 			_range = 1;
 			_shot_count = 2;
 		}
-		if (argument0 = "Power Klaw") {
+		if (_weapon_name = "Power Klaw") {
 			_attack = 22;
 			_piercing = 20;
 			_range = 1;
 			_shot_count = 2;
 		}
-		if (argument0 = "Slugga") {
+		if (_weapon_name = "Slugga") {
 			_attack = 20;
 			_piercing = 0;
 			_range = 2;
@@ -401,7 +401,7 @@ function scr_en_weapon(_weapon_name, _unit_type, _weapon_count, _unit_name, _uni
 			_shot_count = 3;
 			_reload = 1;
 		}
-		if (argument0 = "Tankbusta Bomb") {
+		if (_weapon_name = "Tankbusta Bomb") {
 			_attack = 65;
 			_piercing = 16;
 			_range = 1;
@@ -409,7 +409,7 @@ function scr_en_weapon(_weapon_name, _unit_type, _weapon_count, _unit_name, _uni
 			_shot_count = 1;
 			_reload = -1;
 		}
-		if (argument0 = "Big Shoota") {
+		if (_weapon_name = "Big Shoota") {
 			_attack = 24;
 			_piercing = 4;
 			_range = 8;
@@ -417,7 +417,7 @@ function scr_en_weapon(_weapon_name, _unit_type, _weapon_count, _unit_name, _uni
 			_shot_count = 10;
 			_reload = 2;
 		}
-		if (argument0 = "Dakkagun") {
+		if (_weapon_name = "Dakkagun") {
 			_attack = 24;
 			_piercing = 4;
 			_range = 8;
@@ -425,7 +425,7 @@ function scr_en_weapon(_weapon_name, _unit_type, _weapon_count, _unit_name, _uni
 			_shot_count = 7;
 			_reload = 3;
 		}
-		if (argument0 = "Deffgun") {
+		if (_weapon_name = "Deffgun") {
 			_attack = 30;
 			_piercing = 4;
 			_range = 10;
@@ -433,7 +433,7 @@ function scr_en_weapon(_weapon_name, _unit_type, _weapon_count, _unit_name, _uni
 			_shot_count = 8;
 			_reload = 2;
 		}
-		if (argument0 = "Snazzgun") {
+		if (_weapon_name = "Snazzgun") {
 			_attack = 30;
 			_piercing = 10;
 			_range = 11;
@@ -441,7 +441,7 @@ function scr_en_weapon(_weapon_name, _unit_type, _weapon_count, _unit_name, _uni
 			_shot_count = 2;
 			_reload = 2;
 		}
-		if (argument0 = "Grot Blasta") {
+		if (_weapon_name = "Grot Blasta") {
 			_attack = 14;
 			_piercing = 0;
 			_range = 2;
@@ -449,7 +449,7 @@ function scr_en_weapon(_weapon_name, _unit_type, _weapon_count, _unit_name, _uni
 			_shot_count = 2;
 			_reload = 2;
 		}
-		if (argument0 = "Kannon") {
+		if (_weapon_name = "Kannon") {
 			_attack = 45;
 			_piercing = 12;
 			_range = 20;
@@ -457,7 +457,7 @@ function scr_en_weapon(_weapon_name, _unit_type, _weapon_count, _unit_name, _uni
 			_shot_count = 5;
 			_reload = 1;
 		}
-		if (argument0 = "Shoota") {
+		if (_weapon_name = "Shoota") {
 			_attack = 20;
 			_piercing = 0;
 			_ammo = 10;
@@ -465,7 +465,15 @@ function scr_en_weapon(_weapon_name, _unit_type, _weapon_count, _unit_name, _uni
 			_shot_count = 3;
 			_reload = 1;
 		}
-		if (argument0 = "Burna") {
+		if (_weapon_name = "Twin-Linked Shoota") {
+			_attack = 20;
+			_piercing = 0;
+			_ammo = 10;
+			_range = 7;
+			_shot_count = 3;
+			_reload = 1;
+		}
+		if (_weapon_name = "Burna") {
 			_attack = 22;
 			_piercing = 4;
 			_range = 3;
@@ -473,7 +481,7 @@ function scr_en_weapon(_weapon_name, _unit_type, _weapon_count, _unit_name, _uni
 			_shot_count = 6;
 			_reload = 2;
 		}
-		if (argument0 = "Skorcha") {
+		if (_weapon_name = "Skorcha") {
 			_attack = 25;
 			_piercing = 6;
 			_range = 4;
@@ -481,7 +489,7 @@ function scr_en_weapon(_weapon_name, _unit_type, _weapon_count, _unit_name, _uni
 			_shot_count = 8;
 			_reload = 2;
 		}
-		if (argument0 = "Rokkit Launcha") {
+		if (_weapon_name = "Rokkit Launcha") {
 			_attack = 45;
 			_piercing = 18;
 			_range = 16;
@@ -560,35 +568,35 @@ function scr_en_weapon(_weapon_name, _unit_type, _weapon_count, _unit_name, _uni
 
 	if (obj_ncombat.enemy = 9) {
 
-		if (argument0 = "Bonesword") {
+		if (_weapon_name = "Bonesword") {
 			_attack = 120;
 			_piercing = 1;
 			_range = 1;
 			_shot_count = 3;
 		}
-		if (argument0 = "Lash Whip") {
+		if (_weapon_name = "Lash Whip") {
 			_attack = 100;
 			_piercing = 0;
 			_range = 2;
 		}
-		if (argument0 = "Heavy Venom Cannon") {
+		if (_weapon_name = "Heavy Venom Cannon") {
 			_attack = 200;
 			_piercing = 1;
 			_range = 8;
 		}
-		if (argument0 = "Crushing Claws") {
+		if (_weapon_name = "Crushing Claws") {
 			_attack = 150;
 			_piercing = 1;
 			_range = 1;
 			_shot_count = 3;
 		}
-		if (argument0 = "Rending Claws") {
+		if (_weapon_name = "Rending Claws") {
 			_attack = 80;
 			_piercing = 1;
 			_range = 1;
 			_shot_count = 3;
 		}
-		if (argument0 = "Devourer") {
+		if (_weapon_name = "Devourer") {
 			_attack = 90;
 			_piercing = 0;
 			_range = 5;
@@ -597,24 +605,24 @@ function scr_en_weapon(_weapon_name, _unit_type, _weapon_count, _unit_name, _uni
 				_attack = 180;
 			}
 		}
-		if (argument0 = "Zoanthrope Blast") {
+		if (_weapon_name = "Zoanthrope Blast") {
 			_attack = 250;
 			_piercing = 1;
 			_range = 6;
 				_shot_count = 1;
 		}
-		if (argument0 = "Carnifex Claws") {
+		if (_weapon_name = "Carnifex Claws") {
 			_attack = 200;
 			_piercing = 1;
 			_range = 1;
 			_shot_count = 3;
 		}
-		if (argument0 = "Venom Cannon") {
+		if (_weapon_name = "Venom Cannon") {
 			_attack = 100;
 			_piercing = 1;
 			_range = 5;
 		}
-		if (argument0 = "Deathspitter") {
+		if (_weapon_name = "Deathspitter") {
 			_attack = 100;
 			_piercing = 0;
 			_range = 2.1;
@@ -622,7 +630,7 @@ function scr_en_weapon(_weapon_name, _unit_type, _weapon_count, _unit_name, _uni
 				_attack = 150;
 			}
 		}
-		if (argument0 = "Fleshborer") {
+		if (_weapon_name = "Fleshborer") {
 			_attack = 70;
 			_piercing = 0;
 			_range = 2.1;
@@ -630,34 +638,34 @@ function scr_en_weapon(_weapon_name, _unit_type, _weapon_count, _unit_name, _uni
 				_attack = 19;
 			}
 		}
-		if (argument0 = "Scything Talons") {
+		if (_weapon_name = "Scything Talons") {
 			_attack = 50;
 			_piercing = 0;
 			_range = 1;
 		}
-		if (argument0 = "Genestealer Claws") {
+		if (_weapon_name = "Genestealer Claws") {
 			_attack = 70;
 			_piercing = 1;
 			_range = 1;
 		}
-		if (argument0 = "Witchfire") {
+		if (_weapon_name = "Witchfire") {
 			_attack = 100;
 			_piercing = 1;
 			_range = 2;
 		}
-		if (argument0 = "Autogun") {
+		if (_weapon_name = "Autogun") {
 			_attack = 60;
 			_piercing = 0;
 			_range = 6;
 			_ammo = 12;
 			_shot_count = 3;
 		}
-		if (argument0 = "Lictor Claws") {
+		if (_weapon_name = "Lictor Claws") {
 			_attack = 300;
 			_piercing = 1;
 			_range = 1;
 		}
-		if (argument0 = "Flesh Hooks") {
+		if (_weapon_name = "Flesh Hooks") {
 			_attack = 100;
 			_piercing = 0;
 			_range = 2;
@@ -668,103 +676,103 @@ function scr_en_weapon(_weapon_name, _unit_type, _weapon_count, _unit_name, _uni
 
 	if (obj_ncombat.enemy >= 10) or(obj_ncombat.enemy = 2) or(obj_ncombat.enemy = 5) or(obj_ncombat.enemy = 1) {
 
-		if (argument0 = "Plasma Pistol") {
+		if (_weapon_name = "Plasma Pistol") {
 			_attack = 70;
 			_piercing = 1;
 			_range = 3.1;
 		}
-		if (argument0 = "Power Weapon") {
+		if (_weapon_name = "Power Weapon") {
 			_attack = 120;
 			_piercing = 1;
 			_range = 1;
 		}
-		if (argument0 = "Power Sword") {
+		if (_weapon_name = "Power Sword") {
 			_attack = 120;
 			_piercing = 1;
 			_range = 1;
 		}
-		if (argument0 = "Force Weapon") {
+		if (_weapon_name = "Force Weapon") {
 			_attack = 250;
 			_piercing = 1;
 			_range = 1;
 		}
-		if (argument0 = "Chainfist") {
+		if (_weapon_name = "Chainfist") {
 			_attack = 300;
 			_piercing = 1;
 			_range = 1;
 			_shot_count = 3;
 		}
-		if (argument0 = "Meltagun") {
+		if (_weapon_name = "Meltagun") {
 			_attack = 200;
 			_piercing = 1;
 			_range = 2;
 			_ammo = 4;
 		}
-		if (argument0 = "Flamer") {
+		if (_weapon_name = "Flamer") {
 			_attack = 160;
 			_piercing = 0;
 			_range = 2.1;
 			_ammo = 4;
 			_shot_count = 3;
 		}
-		if (argument0 = "Heavy Flamer") {
+		if (_weapon_name = "Heavy Flamer") {
 			_attack = 200;
 			_piercing = 0;
 			_range = 2.1;
 			_ammo = 6;
 			_shot_count = 3;
 		}
-		if (argument0 = "Combi-Flamer") {
+		if (_weapon_name = "Combi-Flamer") {
 			_attack = 160;
 			_piercing = 0;
 			_range = 2.1;
 			_ammo = 1;
 			_shot_count = 3;
 		}
-		if (argument0 = "Bolter") {
+		if (_weapon_name = "Bolter") {
 			_attack = 120;
 			_piercing = 0;
 			_range = 12;
 			_ammo = 15;
 			if (obj_ncombat.enemy = 5) then _attack = 80;
 		} // Bursts
-		if (argument0 = "Power Fist") {
+		if (_weapon_name = "Power Fist") {
 			_attack = 250;
 			_piercing = 1;
 			_range = 1;
 		}
-		if (argument0 = "Possessed Claws") {
+		if (_weapon_name = "Possessed Claws") {
 			_attack = 150;
 			_piercing = 0;
 			_range = 1;
 			_shot_count = 3;
 		}
-		if (argument0 = "Missile Launcher") {
+		if (_weapon_name = "Missile Launcher") {
 			_attack = 200;
 			_piercing = 0;
 			_range = 20;
 			_ammo = 4;
 		}
-		if (argument0 = "Chainsword") {
+		if (_weapon_name = "Chainsword") {
 			_attack = 120;
 			_piercing = 0;
 			_range = 1;
 			_shot_count = 4;
 		}
-		if (argument0 = "Bolt Pistol") {
+		if (_weapon_name = "Bolt Pistol") {
 			_attack = 100;
 			_piercing = 0;
 			_range = 3.1;
 			_ammo = 18;
 			_shot_count = 1;
 		}
-		if (argument0 = "Chainaxe") {
+		if (_weapon_name = "Chainaxe") {
 			_attack = 140;
 			_piercing = 0;
 			_range = 1;
 			_shot_count = 3;
 		}
-		if (argument0 = "Poisoned Chainsword") {
+		if (_weapon_name = "Poisoned Chainsword") {
 			_attack = 150;
 			_piercing = 0;
 			_range = 1;
@@ -773,105 +781,105 @@ function scr_en_weapon(_weapon_name, _unit_type, _weapon_count, _unit_name, _uni
 				_attack = 180;
 			}
 		}
-		if (argument0 = "Sonic Blaster") {
+		if (_weapon_name = "Sonic Blaster") {
 			_attack = 150;
 			_piercing = 0;
 			_range = 3;
 			_shot_count = 6;
 		}
-		if (argument0 = "Rubric Bolter") {
+		if (_weapon_name = "Rubric Bolter") {
 			_attack = 150;
 			_piercing = 0;
 			_range = 12;
 			_ammo = 15;
 			_shot_count = 5;
 		} // Bursts
-		if (argument0 = "Witchfire") {
+		if (_weapon_name = "Witchfire") {
 			_attack = 200;
 			_piercing = 1;
 			_range = 5.1;
 			_shot_count = 1;
 		}
-		if (argument0 = "Autogun") {
+		if (_weapon_name = "Autogun") {
 			_attack = 60;
 			_piercing = 0;
 			_range = 6;
 			_ammo = 12;
 		}
-		if (argument0 = "Storm Bolter") {
+		if (_weapon_name = "Storm Bolter") {
 			_attack = 180;
 			_piercing = 0;
 			_range = 8;
 			_ammo = 10;
 			_shot_count = 3;
 		}
-		if (argument0 = "Lascannon") {
+		if (_weapon_name = "Lascannon") {
 			_attack = 300;
 			_piercing = 1;
 			_range = 20;
 			_ammo = 8;
 			_shot_count = 1;
 		}
-		if (argument0 = "Twin Linked Heavy Bolters") {
+		if (_weapon_name = "Twin Linked Heavy Bolters") {
 			_attack = 240;
 			_piercing = 0;
 			_range = 16;
 			_shot_count = 3;
 		}
-		if (argument0 = "Twin-Linked Heavy Bolters") {
+		if (_weapon_name = "Twin-Linked Heavy Bolters") {
 			_attack = 240;
 			_piercing = 0;
 			_range = 16;
 			_shot_count = 3;
 		}
-		if (argument0 = "Twin Linked Lascannon") {
+		if (_weapon_name = "Twin Linked Lascannon") {
 			_attack = 600;
 			_piercing = 1;
 			_range = 20;
 			_shot_count = 2;
 		}
-		if (argument0 = "Twin-Linked Lascannon") {
+		if (_weapon_name = "Twin-Linked Lascannon") {
 			_attack = 600;
 			_piercing = 1;
 			_range = 20;
 			_shot_count = 2;
 		}
-		if (argument0 = "Battle Cannon") {
+		if (_weapon_name = "Battle Cannon") {
 			_attack = 300;
 			_piercing = 0;
 			_range = 12;
 		}
-		if (argument0 = "Demolisher Cannon") {
+		if (_weapon_name = "Demolisher Cannon") {
 			_attack = 500;
 			_piercing = 1;
 			_range = 2;
 			_shot_count = 8;
 			if (instance_exists(obj_nfort)) then _range = 5;
 		}
-		if (argument0 = "Earthshaker Cannon") {
+		if (_weapon_name = "Earthshaker Cannon") {
 			_attack = 250;
 			_piercing = 0;
 			_range = 12;
 			_shot_count = 8;
 		}
-		if (argument0 = "Havoc Launcher") {
+		if (_weapon_name = "Havoc Launcher") {
 			_attack = 300;
 			_piercing = 0;
 			_range = 12;
 			_shot_count = 12;
 		}
-		if (argument0 = "Baleflame") {
+		if (_weapon_name = "Baleflame") {
 			_attack = 225;
 			_piercing = 1;
 			_range = 2;
 		}
-		if (argument0 = "Defiler Claws") {
+		if (_weapon_name = "Defiler Claws") {
 			_attack = 350;
 			_piercing = 1;
 			_range = 1;
 			_shot_count = 3;
 		}
-		if (argument0 = "Reaper Autocannon") {
+		if (_weapon_name = "Reaper Autocannon") {
 			_attack = 320;
 			_piercing = 0;
 			_range = 18;
@@ -897,40 +905,40 @@ function scr_en_weapon(_weapon_name, _unit_type, _weapon_count, _unit_name, _uni
 			_range = 10;
 		}
 
-		if (argument0 = "Blessed Weapon") {
+		if (_weapon_name = "Blessed Weapon") {
 			_attack = 150;
 			_piercing = 1;
 			_range = 1;
 		}
-		if (argument0 = "Electro-Flail") {
+		if (_weapon_name = "Electro-Flail") {
 			_attack = 125;
 			_piercing = 0;
 			_range = 1;
 			_shot_count = 3;
 		}
-		if (argument0 = "Neural Whip") {
+		if (_weapon_name = "Neural Whip") {
 			_attack = 85;
 			_piercing = 0;
 			_range = 1;
 			_shot_count = 3
 		}
-		if (argument0 = "Sarissa") {
+		if (_weapon_name = "Sarissa") {
 			_attack = 65;
 			_piercing = 0;
 			_range = 2;
 		}
-		if (argument0 = "Seraphim Pistols") {
+		if (_weapon_name = "Seraphim Pistols") {
 			_attack = 120;
 			_piercing = 0;
 			_range = 4;
 		}
-		if (argument0 = "Laser Mace") {
+		if (_weapon_name = "Laser Mace") {
 			_attack = 150;
 			_piercing = 0;
 			_range = 5.1;
 			_ammo = 3;
 		}
-		if (argument0 = "Heavy Bolter") {
+		if (_weapon_name = "Heavy Bolter") {
 			_attack = 120;
 			_piercing = 0;
 			_range = 16;
@@ -1044,6 +1052,10 @@ function scr_en_weapon(_weapon_name, _unit_type, _weapon_count, _unit_name, _uni
 		}
 	}
 
+	if (_shot_count == 0) {
+		exit;
+	}
+
 	// if (faith_bonus = 1) then _attack = _attack * 2;
 	// if (faith_bonus = 2) then _attack = _attack * 3;
 	_attack = round(_attack * obj_ncombat.global_defense);
@@ -1056,7 +1068,7 @@ function scr_en_weapon(_weapon_name, _unit_type, _weapon_count, _unit_name, _uni
 	// 	}
 	// }
 	
-	if (!_unit_type && _ammo > 0) {
+	if (_unit_type == 1 && _ammo > 0) {
 		_ammo *= 2;
 	}
 

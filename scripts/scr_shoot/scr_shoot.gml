@@ -82,7 +82,6 @@ function scr_shoot(_weapon_stack, _target_object, _target_index) {
                 scr_flavor2((_target_object.hp[1] <= 0), _weapon_stack);
             } else {
                 _target_object.hostile_shooters = (_shooter == "Assorted") ? 999 : 1;
-
                 scr_clean(_target_object, _weapon_stack);
             }
         }
@@ -109,7 +108,9 @@ function scr_shoot(_weapon_stack, _target_object, _target_index) {
                 obj_ncombat.player_silos -= min(obj_ncombat.player_silos, 30);
             }
 
-            var _t_start_player_scr_shoot = get_timer();
+            if (DEBUG_COMBAT_PERFORMANCE) {
+                var _t_start_player_scr_shoot = get_timer();
+            }
             
             // Normal shooting
             var _min_damage = 0.25;
@@ -141,10 +142,18 @@ function scr_shoot(_weapon_stack, _target_object, _target_index) {
                 obj_ncombat.enemy_forces--;
                 _casualties++;
             }
+
+            _target_object.column_size -= _target_stack.unit_size * _casualties;
+
+            if (_target_stack.unit_count <= 0) {
+                struct_remove(_target_object.unit_stacks, _target_stack.unit_name);
+            }
             
-            var _t_end_player_scr_shoot = get_timer();
-            var _elapsed_ms_player_scr_shoot = (_t_end_player_scr_shoot - _t_start_player_scr_shoot) / 1000;
-            show_debug_message($"⏱️ Execution Time player_scr_shoot: {_elapsed_ms_player_scr_shoot}ms");
+            if (DEBUG_COMBAT_PERFORMANCE) {
+                var _t_end_player_scr_shoot = get_timer();
+                var _elapsed_ms_player_scr_shoot = (_t_end_player_scr_shoot - _t_start_player_scr_shoot) / 1000;
+                show_debug_message($"⏱️ Execution Time player_scr_shoot: {_elapsed_ms_player_scr_shoot}ms");
+            }
 
             scr_flavor(_weapon_stack, _target_object, _target_stack, _casualties);
 

@@ -1,5 +1,5 @@
 
-owner = -1;
+owner = 2;
 flank=0;
 
 unit_count_old=0;
@@ -40,7 +40,9 @@ is_mouse_over = function() {
 
 
 copy_block_composition = function(_composition) {
-    var _t_start_copy_block_composition = get_timer();
+    if (DEBUG_COMBAT_PERFORMANCE) {
+        var _t_start_copy_block_composition = get_timer();
+    }
     
     if (struct_exists(_composition, "units")) {
         var _units = _composition.units;
@@ -85,24 +87,40 @@ copy_block_composition = function(_composition) {
         }
     }
     
-    var _t_end_copy_block_composition = get_timer();
-    var _elapsed_ms_copy_block_composition = (_t_end_copy_block_composition - _t_start_copy_block_composition) / 1000;
-    show_debug_message($"⏱️ Execution Time copy_block_composition: {_elapsed_ms_copy_block_composition}ms");
+    if (DEBUG_COMBAT_PERFORMANCE) {
+        var _t_end_copy_block_composition = get_timer();
+        var _elapsed_ms_copy_block_composition = (_t_end_copy_block_composition - _t_start_copy_block_composition) / 1000;
+        show_debug_message($"⏱️ Execution Time copy_block_composition: {_elapsed_ms_copy_block_composition}ms");
+    }
 };
 
 assign_weapon_stacks = function() {
+    if (DEBUG_COMBAT_PERFORMANCE) {
+        var _t_start_enemy_weapon_stacks = get_timer();
+    }
+    
     var _unit_stack_names = struct_get_names(unit_stacks);
     var _unit_stack_len = array_length(_unit_stack_names);
     for (var k = 0; k < _unit_stack_len; k++){
         var _unit_stack_name = _unit_stack_names[k];
         var _unit_stack = unit_stacks[$ _unit_stack_name];
-        for (var w = 0; w < array_length(_unit_stack.weapons)) {
+        for (var w = 0; w < array_length(_unit_stack.weapons); w++) {
             scr_en_weapon(_unit_stack.weapons[w], _unit_stack.unit_type, _unit_stack.unit_count, _unit_stack_name, self);
         }
+    }
+    
+    if (DEBUG_COMBAT_PERFORMANCE) {
+        var _t_end_enemy_weapon_stacks = get_timer();
+        var _elapsed_ms_enemy_weapon_stacks = (_t_end_enemy_weapon_stacks - _t_start_enemy_weapon_stacks) / 1000;
+        show_debug_message($"⏱️ Execution Time enemy_weapon_stacks: {_elapsed_ms_enemy_weapon_stacks}ms");
     }
 }
 
 unit_count = function() {
+    if (DEBUG_COMBAT_PERFORMANCE) {
+        var _t_start_unit_count = get_timer();
+    }
+    
     var _unit_count = 0;
 
     var _unit_stack_names = struct_get_names(unit_stacks);
@@ -111,6 +129,12 @@ unit_count = function() {
         var _unit_stack_name = _unit_stack_names[k];
         var _unit_stack = unit_stacks[$ _unit_stack_name];
         _unit_count += _unit_stack.unit_count;
+    }
+    
+    if (DEBUG_COMBAT_PERFORMANCE) {
+        var _t_end_unit_count = get_timer();
+        var _elapsed_ms_unit_count = (_t_end_unit_count - _t_start_unit_count) / 1000;
+        show_debug_message($"⏱️ Execution Time unit_count: {_elapsed_ms_unit_count}ms");
     }
 
     return _unit_count;

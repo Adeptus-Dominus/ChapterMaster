@@ -357,4 +357,20 @@ display_message_queue = function() {
 enemy_force_composition = {};
 
 battlefield_scale = 0.1;
-biggest_block_size = 0;
+update_battlefield_scale = function() {
+    var _biggest_block_size = 0;
+
+    with (obj_pnunit) {
+        if (column_size > _biggest_block_size) {
+            _biggest_block_size = column_size;
+        }
+    }
+
+    with (obj_enunit) {
+        if (column_size > _biggest_block_size) {
+            _biggest_block_size = column_size;
+        }
+    }
+
+    battlefield_scale = min(1, 400 / _biggest_block_size);
+};

@@ -894,8 +894,7 @@
         "resistance": 0.75,
         "weapons": [
             "Twin-Linked Shoota",
-            "Power Klaw",
-            "Stikkbombs"
+            "Power Klaw"
         ],
         "unit_type": 1,
         "unit_size": 2
@@ -918,8 +917,7 @@
         "resistance": 1,
         "weapons": [
             "Choppa",
-            "Slugga",
-            "Stickkbombs"
+            "Slugga"
         ],
         "unit_type": 0,
         "unit_size": 1
@@ -931,8 +929,7 @@
     "resistance": 1,
     "weapons": [
         "Choppa",
-        "Shoota",
-        "Stickkbombs"
+        "Shoota"
     ],
     "unit_type": 0,
     "unit_size": 1
@@ -944,23 +941,21 @@
         "resistance": 0.75,
         "weapons": [
             "Choppa",
-            "Slugga",
-            "Stickkbombs"
+            "Slugga"
         ],
         "unit_type": 0,
         "unit_size": 1
     },
     "runtherd": {
     "display_name": "Runtherd",
-    "armour": 12,
-    "health": 100,
-    "resistance": 0.75,
+    "armour": 5,
+    "health": 60,
+    "resistance": 1,
     "weapons": [
-        "Grabba Stikk",
-        "Slugga",
-        "Stickkbombs"
+        "Choppa",
+        "Slugga"
     ],
-    "unit_type": 0,
+    "unit_type": 3,
     "unit_size": 1
     },
     "nob": {
@@ -982,8 +977,7 @@
         "resistance": 1,
         "weapons": [
             "Big Choppa",
-            "Twin-Linked Shoota",
-            "Stickkbombs"
+            "Twin-Linked Shoota"
         ],
         "unit_type": 3,
         "unit_size": 2
@@ -995,8 +989,7 @@
         "resistance": 0.6,
         "weapons": [
             "Twin-Linked Shoota",
-            "Power Klaw",
-            "Stikkbombs"
+            "Power Klaw"
         ],
         "unit_type": 1,
         "unit_size": 2
@@ -1008,8 +1001,7 @@
         "resistance": 0.6,
         "weapons": [
             "Twin-Linked Shoota",
-            "Power Klaw",
-            "Stikkbombs"
+            "Power Klaw"
         ],
         "unit_type": 3,
         "unit_size": 2
@@ -1020,8 +1012,7 @@
         "health": 100,
         "resistance": 1,
         "weapons": [
-            "Snazzgun",
-            "Stickkbombs"
+            "Snazzgun"
         ],
         "unit_type": 0,
         "unit_size": 1
@@ -1032,10 +1023,9 @@
     "health": 100,
     "resistance": 1,
     "weapons": [
-        "Snazzgun",
-        "Stickkbombs"
+        "Snazzgun"
     ],
-    "unit_type": 0,
+    "unit_type": 3,
     "unit_size": 1
     },
     "cybork": {
@@ -1057,8 +1047,7 @@
         "resistance": 0.9,
         "weapons": [
             "Choppa",
-            "Slugga",
-            "Stickkbombs"
+            "Slugga"
         ],
         "unit_type": 0,
         "unit_size": 1
@@ -1070,8 +1059,7 @@
         "resistance": 0.9,
         "weapons": [
             "Choppa",
-            "Slugga",
-            "Stickkbombs"
+            "Slugga"
         ],
         "unit_type": 0,
         "unit_size": 1

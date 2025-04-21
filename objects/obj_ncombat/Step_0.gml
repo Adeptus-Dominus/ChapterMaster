@@ -6,12 +6,10 @@ if (wall_destroyed == true) {
     wall_destroyed = false;
 }
 
-if (biggest_block_size > 0) {
-    battlefield_scale = min(1, 400 / biggest_block_size);
-}
-
 if (battle_stage == eBATTLE_STAGE.Creation) {
-    var _t_start_creation_stage = get_timer();
+    if (DEBUG_COMBAT_PERFORMANCE) {
+        var _t_start_creation_stage = get_timer();
+    }
     
     ncombat_enemy_stacks_init();
 
@@ -21,9 +19,6 @@ if (battle_stage == eBATTLE_STAGE.Creation) {
 
     with (obj_enunit) {
         enunit_enemy_profiles_init();
-        if (column_size > obj_ncombat.biggest_block_size) {
-            obj_ncombat.biggest_block_size = column_size;
-        }
     }
 
     with (obj_pnunit) {
@@ -34,20 +29,26 @@ if (battle_stage == eBATTLE_STAGE.Creation) {
 
     ncombat_ally_init();
 
+    update_battlefield_scale();
+
     battle_stage = eBATTLE_STAGE.Main;
 
     if (obj_ncombat.enemy == 30 || battle_special == "ship_demon") {
         turn_stage = eBATTLE_TURN.PlayerEnd;
     }
     
-    var _t_end_creation_stage = get_timer();
-    var _elapsed_ms_creation_stage = (_t_end_creation_stage - _t_start_creation_stage) / 1000;
-    show_debug_message($"⏱️ Execution Time creation_stage: {_elapsed_ms_creation_stage}ms");
+    if (DEBUG_COMBAT_PERFORMANCE) {
+        var _t_end_creation_stage = get_timer();
+        var _elapsed_ms_creation_stage = (_t_end_creation_stage - _t_start_creation_stage) / 1000;
+        show_debug_message($"⏱️ Execution Time creation_stage: {_elapsed_ms_creation_stage}ms");
+    }
 }
 
-if (keyboard_check_pressed(vk_enter) && fading_strength == 0) {
+if ((press_exclusive(vk_enter) || hold_exclusive(vk_enter)) && fading_strength == 0) {
     if (turn_stage == eBATTLE_TURN.PlayerStart || turn_stage == eBATTLE_TURN.EnemyStart) {
-        var _t_start_turn_start = get_timer();
+        if (DEBUG_COMBAT_PERFORMANCE) {
+            var _t_start_turn_start = get_timer();
+        }
         
         turn_count++;
         global_perils -= 1;
@@ -87,13 +88,17 @@ if (keyboard_check_pressed(vk_enter) && fading_strength == 0) {
 
         turn_stage = (turn_stage == eBATTLE_TURN.PlayerStart) ? eBATTLE_TURN.PlayerEnd : eBATTLE_TURN.EnemyEnd;
         
-        var _t_end_turn_start = get_timer();
-        var _elapsed_ms_turn_start = (_t_end_turn_start - _t_start_turn_start) / 1000;
-        show_debug_message($"⏱️ Execution Time turn_start: {_elapsed_ms_turn_start}ms");
+        if (DEBUG_COMBAT_PERFORMANCE) {
+            var _t_end_turn_start = get_timer();
+            var _elapsed_ms_turn_start = (_t_end_turn_start - _t_start_turn_start) / 1000;
+            show_debug_message($"⏱️ Execution Time turn_start: {_elapsed_ms_turn_start}ms");
+        }
     }
 
     if (turn_stage == eBATTLE_TURN.EnemyEnd || turn_stage == eBATTLE_TURN.PlayerEnd) {
-        var _t_start_turn_end = get_timer();
+        if (DEBUG_COMBAT_PERFORMANCE) {
+            var _t_start_turn_end = get_timer();
+        }
         
         if (!battle_ended) {
             with (obj_pnunit) {
@@ -105,6 +110,8 @@ if (keyboard_check_pressed(vk_enter) && fading_strength == 0) {
             }
         }
 
+        update_battlefield_scale();
+
         if (turn_stage == eBATTLE_TURN.EnemyEnd) {
             turn_stage = eBATTLE_TURN.PlayerStart;
         }
@@ -113,9 +120,11 @@ if (keyboard_check_pressed(vk_enter) && fading_strength == 0) {
             turn_stage = eBATTLE_TURN.EnemyStart;
         }
         
-        var _t_end_turn_end = get_timer();
-        var _elapsed_ms_turn_end = (_t_end_turn_end - _t_start_turn_end) / 1000;
-        show_debug_message($"⏱️ Execution Time turn_end: {_elapsed_ms_turn_end}ms");
+        if (DEBUG_COMBAT_PERFORMANCE) {
+            var _t_end_turn_end = get_timer();
+            var _elapsed_ms_turn_end = (_t_end_turn_end - _t_start_turn_end) / 1000;
+            show_debug_message($"⏱️ Execution Time turn_end: {_elapsed_ms_turn_end}ms");
+        }
     }
 
 
