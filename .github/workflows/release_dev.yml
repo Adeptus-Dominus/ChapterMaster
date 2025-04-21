@@ -176,6 +176,6 @@ jobs:
           generate_release_notes: true
           make_latest: false
           files: |
-            ./build_output/* # Check if your artifact contents match this wildcard
+            ./build_output/${{ needs.gamemaker_build.outputs.built_file }}/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
