@@ -34,5 +34,7 @@ function scr_unit_size(armour, role, other_factors, mobility=false) {
         show_debug_message($"Could not find size for vehicle '{role}'");
     }
 
+    ds_map_destroy(vehicle_size_map);
+
     return (_size);
 }
