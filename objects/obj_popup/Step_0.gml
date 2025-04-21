@@ -434,7 +434,7 @@ try {
 				scr_event_log("green", string(p1) + " on " + string(p3) + " ends.");
 			}
 			obj_controller.cooldown = 10;
-			if (number != 0) {
+			if (number != 0 && instance_exists(obj_turn_end)) {
 				obj_turn_end.alarm[1] = 4;
 			}
 			instance_destroy();
@@ -472,7 +472,7 @@ try {
 
 		if (press == 2) {
 			obj_controller.cooldown = 10;
-			if (number != 0) {
+			if (number != 0 && instance_exists(obj_turn_end)) {
 				obj_turn_end.alarm[1] = 4;
 			}
 			instance_destroy();
@@ -1434,7 +1434,7 @@ try {
 
 		obj_controller.cooldown = 10;
 		if (obj_controller.complex_event == false) {
-			if (number != 0) {
+			if (number != 0 && instance_exists(obj_turn_end)) {
 				obj_turn_end.alarm[1] = 4;
 			}
 			instance_destroy();
@@ -1623,7 +1623,7 @@ try {
 		obj_controller.cooldown = 10;
 
 		if (obj_controller.complex_event == false) {
-			if (number != 0) {
+			if (number != 0 && instance_exists(obj_turn_end)) {
 				obj_turn_end.alarm[1] = 4;
 			}
 			instance_destroy();
@@ -1778,7 +1778,7 @@ try {
 
 		obj_controller.cooldown = 10;
 		if (obj_controller.complex_event == false) {
-			if (number != 0) {
+			if (number != 0 && instance_exists(obj_turn_end)) {
 				obj_turn_end.alarm[1] = 4;
 			}
 			instance_destroy();

@@ -730,9 +730,7 @@ function ComplexSet(unit) constructor{
                     var _preset_keys = struct_get_names(_preset);
                     for (var s=0;s<array_length(_preset_keys);s++){
                         var _set = _preset_keys[s];
-                        if (!struct_exists(_arm, _set)){
-                            _arm[$ _set] = _preset[$ _set];
-                        }
+                        _arm[$ _set] = _preset[$ _set];
                     }
                 }
             }

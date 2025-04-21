@@ -758,7 +758,7 @@ function colour_picker(xx,yy, max_width=400) constructor{
                         draw_rectangle_array(box_coords, 0);
                         draw_set_alpha(1);
                         chosen = i;
-                        if (scr_click_left(box_coords)) {
+                        if (scr_click_left()) {
                             if (markings_options.current_selection == 0){
                                 count_destroy=true;
                             } else {

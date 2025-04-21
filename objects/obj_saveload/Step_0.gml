@@ -1,5 +1,4 @@
 
-if (cooldown>=0) then cooldown-=1;
 reset+=1;
 if (reset>=50){
     slow=0;reset=0;

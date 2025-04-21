@@ -1176,6 +1176,32 @@ global.weapon_visual_data = {
     body_types: [0, 1]
   }]
 },
+"Lascannon":{
+    base: {
+        body_types: [0, 1, 2],
+        weapon_data: {
+          display_type: "ranged_twohand",
+        },
+    },
+    variants: [
+        {
+            sprite: spr_weapon_lasca,
+        }
+    ],
+},
+"Multi-Melta" : {
+    base: {
+        body_types: [0, 1, 2],
+        weapon_data: {
+          display_type: "ranged_twohand",
+        },
+    },
+    variants: [
+        {
+            sprite: spr_weapon_mmelta,
+        }
+    ],       
+},
 "Bolt Pistol": {
   base: {
     weapon_data: {
@@ -1619,6 +1645,18 @@ global.weapon_visual_data = {
   variants: [
     {
       sprite: spr_weapon_infernus_hbolt
+    }
+  ]
+},
+"Heavy Bolter": {
+  base: {
+    weapon_data: {
+      display_type: "ranged_twohand",
+    },
+  },
+  variants: [
+    {
+      sprite: spr_weapon_hbolt
     }
   ]
 },
