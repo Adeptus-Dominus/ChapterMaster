@@ -89,9 +89,9 @@ function scr_shoot(_weapon_stack, _target_object, _target_index) {
 
         //* Player shooting
         if (owner == eFACTION.Player) {
-            var _target_stack = scr_target(_target_object, _target_type);
+            var _target_stack = target_unit_stack(_target_object, _target_type);
             if (_target_stack == noone) {
-                _target_stack = scr_target(_target_object);
+                _target_stack = target_unit_stack(_target_object);
                 if (_target_stack == noone) {
                     // if (DEBUG_PLAYER_TARGET_SELECTION) {
                     //     show_debug_message($"{_weapon_name} found no valid targets in the enemy column to attack!");
@@ -109,6 +109,8 @@ function scr_shoot(_weapon_stack, _target_object, _target_index) {
                 obj_ncombat.player_silos -= min(obj_ncombat.player_silos, 30);
             }
 
+            var _t_start_player_scr_shoot = get_timer();
+            
             // Normal shooting
             var _min_damage = 0.25;
             var _dice_sides = 50;
@@ -118,7 +120,7 @@ function scr_shoot(_weapon_stack, _target_object, _target_index) {
             _modified_weapon_attack = max(_min_damage, _modified_weapon_attack * _target_stack.resistance);
             var _total_attack = _modified_weapon_attack * _shot_count;
 
-            var _unit_hp = _target_stack.unit_health;
+            var _unit_hp = _target_stack.health;
             var _remaining_count = _target_stack.unit_count;
 
             // Estimate casualties
@@ -131,7 +133,7 @@ function scr_shoot(_weapon_stack, _target_object, _target_index) {
             _target_stack.health_current -= _leftover_damage;
             if (_target_stack.health_current <= 0) {
                 if (_target_stack.unit_count > 1) {
-                    _target_stack.health_current = _target_stack.unit_health;
+                    _target_stack.health_current = _target_stack.health;
                 } else {
                     _target_stack.health_current = 0;
                 }
@@ -139,13 +141,17 @@ function scr_shoot(_weapon_stack, _target_object, _target_index) {
                 obj_ncombat.enemy_forces--;
                 _casualties++;
             }
+            
+            var _t_end_player_scr_shoot = get_timer();
+            var _elapsed_ms_player_scr_shoot = (_t_end_player_scr_shoot - _t_start_player_scr_shoot) / 1000;
+            show_debug_message($"⏱️ Execution Time player_scr_shoot: {_elapsed_ms_player_scr_shoot}ms");
 
             scr_flavor(_weapon_stack, _target_object, _target_stack, _casualties);
 
-            if (_casualties > 0) {
-                compress_enemy_array(_target_object);
-                destroy_empty_column(_target_object);
-            }
+            // if (_casualties > 0) {
+            //     compress_enemy_array(_target_object);
+            //     destroy_empty_column(_target_object);
+            // }
         }
     } catch (_exception) {
         handle_exception(_exception);

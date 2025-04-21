@@ -40,6 +40,8 @@ is_mouse_over = function() {
 
 
 copy_block_composition = function(_composition) {
+    var _t_start_copy_block_composition = get_timer();
+    
     if (struct_exists(_composition, "units")) {
         var _units = _composition.units;
 
@@ -71,24 +73,34 @@ copy_block_composition = function(_composition) {
                 var _profile_name = _unit_name;
                 var _unit = _squad_units[$ _unit_name];
 
-                if (struct_exists(_unit, "display_name")) {
-                    _unit_name = _unit.display_name;
-                }
-
                 if (struct_exists(unit_stacks, _unit_name)) {
                     unit_stacks[$ _unit_name].unit_count += _unit.count * _squad_count;
                     column_size += unit_stacks[$ _unit_name].unit_size * _unit.count * _squad_count;
                 } else {
                     var _unit_struct = new EnemyUnitStack(_profile_name, _unit.count * _squad_count);
-                    _unit_struct.weapons = _unit.weapons;
                     struct_set(unit_stacks, _unit_name, _unit_struct);
                     column_size += _unit_struct.unit_size * _unit.count * _squad_count;
                 }
             }
         }
     }
+    
+    var _t_end_copy_block_composition = get_timer();
+    var _elapsed_ms_copy_block_composition = (_t_end_copy_block_composition - _t_start_copy_block_composition) / 1000;
+    show_debug_message($"⏱️ Execution Time copy_block_composition: {_elapsed_ms_copy_block_composition}ms");
 };
 
+assign_weapon_stacks = function() {
+    var _unit_stack_names = struct_get_names(unit_stacks);
+    var _unit_stack_len = array_length(_unit_stack_names);
+    for (var k = 0; k < _unit_stack_len; k++){
+        var _unit_stack_name = _unit_stack_names[k];
+        var _unit_stack = unit_stacks[$ _unit_stack_name];
+        for (var w = 0; w < array_length(_unit_stack.weapons)) {
+            scr_en_weapon(_unit_stack.weapons[w], _unit_stack.unit_type, _unit_stack.unit_count, _unit_stack_name, self);
+        }
+    }
+}
 
 unit_count = function() {
     var _unit_count = 0;

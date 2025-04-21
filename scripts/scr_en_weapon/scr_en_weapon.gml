@@ -1,15 +1,15 @@
 /// @mixin
-function scr_en_weapon(_weapon_name, is_man, man_number, man_type, group) {
+function scr_en_weapon(_weapon_name, _unit_type, _weapon_count, _unit_name, _unit_block) {
 
 	// check if double ranged/melee
 	// then add to that weapon
 
 	//scr_infantry_weapon
 	// _weapon_name: _weapon_name
-	// is_man: man?  //Probably used to differenciate internaly between trooper and vehicle weapons
-	// man_number: number
-	// man_type: owner
-	// group: current dudes block
+	// _unit_type: man?  //Probably used to differenciate internaly between trooper and vehicle weapons
+	// _weapon_count: number
+	// _unit_name: owner
+	// _unit_block: current dudes block
 
 	// Determines combined damage for enemy battle blocks for a single weapon
 
@@ -1050,18 +1050,18 @@ function scr_en_weapon(_weapon_name, is_man, man_number, man_type, group) {
 	
 	// if (obj_ncombat.enemy == 1) {
 	// 	if (_range <= 1 || floor(_range) != _range) {
-	// 		_attack = round(_attack * dudes_attack[group]);
+	// 		_attack = round(_attack * dudes_attack[_unit_block]);
 	// 	} else if (_range > 1 && floor(_range) == _range) {
-	// 		_attack = round(_attack * dudes_ranged[group]);
+	// 		_attack = round(_attack * dudes_ranged[_unit_block]);
 	// 	}
 	// }
 	
-	if (!is_man && _ammo > 0) {
+	if (!_unit_type && _ammo > 0) {
 		_ammo *= 2;
 	}
 
 	var _stack_type = {};
-	if (is_man) {
+	if (_unit_type) {
 		_stack_type = weapon_stacks_normal;
 	} else {
 		_stack_type = weapon_stacks_vehicle;
@@ -1069,19 +1069,19 @@ function scr_en_weapon(_weapon_name, is_man, man_number, man_type, group) {
 
 	if (struct_exists(_stack_type, _weapon_name)) {
 		var _weapon_stack = _stack_type[$ _weapon_name];
-		_weapon_stack.weapon_count += man_number;
+		_weapon_stack.weapon_count += _weapon_count;
 	
-		if (!array_contains(_weapon_stack.owners, man_type)) {
-			array_push(_weapon_stack.owners, man_type);
+		if (!array_contains(_weapon_stack.owners, _unit_name)) {
+			array_push(_weapon_stack.owners, _unit_name);
 		}
 	} else {
 		var _weapon_stack = new WeaponStack(_weapon_name);
 		_weapon_stack.attack = _attack;
 		_weapon_stack.piercing = _piercing;
 		_weapon_stack.range = _range;
-		_weapon_stack.weapon_count += man_number;
+		_weapon_stack.weapon_count += _weapon_count;
 		_weapon_stack.shot_count = _shot_count;
-		array_push(_weapon_stack.owners, man_type);
+		array_push(_weapon_stack.owners, _unit_name);
 	
 		if (obj_ncombat.battle_stage == eBATTLE_STAGE.Creation) {
 			_weapon_stack.ammo_max = _ammo;

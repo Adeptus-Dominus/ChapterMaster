@@ -1,5 +1,5 @@
 /// @mixin
-function scr_flavor(_weapon_stack, _target_object, _target_i, casulties) {
+function scr_flavor(_weapon_stack, _target_object, _target_stack, casulties) {
 
 	// Generates flavor based on the damage and casualties from scr_shoot, only for the player
 
@@ -10,8 +10,6 @@ function scr_flavor(_weapon_stack, _target_object, _target_i, casulties) {
 
 	var weapon_name = _weapon_stack.weapon_name;
 	var number_of_shots = _weapon_stack.weapon_count
-	var target = _target_object;
-	var targeh = _target_i;
 
 	// if (id_of_attacking_weapons = -51) then weapon_name = "Heavy Bolter Emplacemelse ent";
 	// if (id_of_attacking_weapons = -52) then weapon_name = "Missile Launcher Emplacement";
@@ -23,7 +21,7 @@ function scr_flavor(_weapon_stack, _target_object, _target_i, casulties) {
 		weapon_data.name = weapon_name;
 	}
 
-	var target_name = target.dudes[targeh];
+	var target_name = _target_stack.display_name;
 
 	if (target_name = "Leader") and (obj_ncombat.enemy <= 10) {
 		target_name = obj_controller.faction_leader[obj_ncombat.enemy];
@@ -44,7 +42,7 @@ function scr_flavor(_weapon_stack, _target_object, _target_i, casulties) {
 		if (target_name = "Greater Daemon of Tzeentch") then obj_ncombat.chaos_angry += casulties * 5;
 	}
 
-	if (target.flank = 1) then target_name = "flanking " + target_name;
+	if (_target_object.flank = 1) then target_name = "flanking " + target_name;
 
 	var flavoured = false;
 
@@ -55,7 +53,7 @@ function scr_flavor(_weapon_stack, _target_object, _target_i, casulties) {
 				attack_message += "With perfect accuracy ";
 			}
 			if (number_of_shots < 200) {
-				if (target.dudes_num[targeh] == 1) {
+				if (_target_stack.unit_count == 1) {
 					if (casulties == 0) {
 						attack_message += $"{number_of_shots} {weapon_name}s fire. The {target_name} is hit but survives.";
 					} else {
@@ -69,7 +67,7 @@ function scr_flavor(_weapon_stack, _target_object, _target_i, casulties) {
 					}
 				}
 			} else {
-				if (target.dudes_num[targeh] == 1) {
+				if (_target_stack.unit_count == 1) {
 					if (casulties == 0) {
 						attack_message += $"{number_of_shots} {weapon_name}s fire. Explosions rock the {target_name}'s armour but don't kill it.";
 					} else {
@@ -84,7 +82,7 @@ function scr_flavor(_weapon_stack, _target_object, _target_i, casulties) {
 				}
 			}
 		} else {
-			if (target.dudes_num[targeh] == 1) {
+			if (_target_stack.unit_count == 1) {
 				if (casulties == 0) {
 					attack_message += $"{string(unit_name)} fires his {weapon_name} at the {target_name} but fails to kill it.";
 				} else {
@@ -109,7 +107,7 @@ function scr_flavor(_weapon_stack, _target_object, _target_i, casulties) {
 			} else {
 				attack_message += $"A massive wave of {number_of_shots} Astartes rise, their Jump Packs a furious beast. They crash down, smashing their foe- ";
 			}
-			if (target.dudes_num[targeh] == 1) {
+			if (_target_stack.unit_count == 1) {
 				if (casulties == 0) {
 					attack_message += $"but the {target_name} endures the onslaught.";
 				} else {
@@ -123,7 +121,7 @@ function scr_flavor(_weapon_stack, _target_object, _target_i, casulties) {
 				}
 			}
 		} else {
-			if (target.dudes_num[targeh] == 1) {
+			if (_target_stack.unit_count == 1) {
 				attack_message += string(unit_name) + $" engages his Jump Pack, soaring and crashing into the {target_name}- ";
 				if (casulties == 0) {
 					attack_message += $"but it endures the onslaught.";
@@ -143,7 +141,7 @@ function scr_flavor(_weapon_stack, _target_object, _target_i, casulties) {
 	} else if (weapon_name == "Assault Cannon") {
 		flavoured = true;
 		if (!character_shot) {
-			if (target.dudes_num[targeh] == 1) {
+			if (_target_stack.unit_count == 1) {
 				if (casulties == 0) {
 					attack_message += $"{number_of_shots} {weapon_name}s roar, explosions clap across the armour of the {target_name} but it remains standing.";
 				} else {
@@ -157,7 +155,7 @@ function scr_flavor(_weapon_stack, _target_object, _target_i, casulties) {
 				}
 			}
 		} else {
-			if (target.dudes_num[targeh] == 1) {
+			if (_target_stack.unit_count == 1) {
 				if (casulties == 0) {
 					attack_message += $"{string(unit_name)} {weapon_name} fires but the {target_name} survives.";
 				} else {
@@ -175,7 +173,7 @@ function scr_flavor(_weapon_stack, _target_object, _target_i, casulties) {
 	} else if (weapon_name == "Missile Launcher") {
 		flavoured = true;
 		if (!character_shot) {
-			if (target.dudes_num[targeh] == 1) {
+			if (_target_stack.unit_count == 1) {
 				if (casulties == 0) {
 					attack_message = $"{number_of_shots} {weapon_name}s fire upon the {target_name} but it remains standing.";
 				} else {
@@ -189,7 +187,7 @@ function scr_flavor(_weapon_stack, _target_object, _target_i, casulties) {
 				}
 			}
 		} else {
-			if (target.dudes_num[targeh] == 1) {
+			if (_target_stack.unit_count == 1) {
 				if (casulties == 0) {
 					attack_message = $"{string(unit_name)} {weapon_name} fires upon the {target_name} but it survives.";
 				} else {
@@ -207,7 +205,7 @@ function scr_flavor(_weapon_stack, _target_object, _target_i, casulties) {
 	} else if (weapon_name == "Whirlwind Missiles") {
 		flavoured = true;
 		if (!character_shot) {
-			if (target.dudes_num[targeh] == 1) {
+			if (_target_stack.unit_count == 1) {
 				if (casulties == 0) {
 					attack_message = $"{number_of_shots} Whirlwinds fire upon the {target_name} but it remains standing.";
 				} else {
@@ -221,7 +219,7 @@ function scr_flavor(_weapon_stack, _target_object, _target_i, casulties) {
 				}
 			}
 		} else {
-			if (target.dudes_num[targeh] == 1) {
+			if (_target_stack.unit_count == 1) {
 				if (casulties == 0) {
 					attack_message = $"Whirlwind fires upon the {target_name} but it survives.";
 				} else {
@@ -257,25 +255,25 @@ function scr_flavor(_weapon_stack, _target_object, _target_i, casulties) {
 
 	} else if (weapon_data.has_tag("plasma")) {
 		flavoured = true;
-		if (target.dudes_num[targeh] = 1) and (casulties = 0) then attack_message = $"{number_of_shots} {weapon_name} shoot bolts of energy into a {target_name}, failing to kill it.";
-		if (target.dudes_num[targeh] = 1) and (casulties = 1) then attack_message = $"{number_of_shots} {weapon_name} overwhelm a {target_name} with bolts of energy, killing {casulties}.";
-		if (target.dudes_num[targeh] > 1) and (casulties = 0) then attack_message = $"{number_of_shots} {weapon_name} shoot bolts of energy into the {target_name} ranks, failing to kill any.";
-		if (target.dudes_num[targeh] > 1) and (casulties > 0) then attack_message = $"{number_of_shots} {weapon_name} shoot bolts of energy into the {target_name}, cleansing {casulties}.";
+		if (_target_stack.unit_count = 1) and (casulties = 0) then attack_message = $"{number_of_shots} {weapon_name} shoot bolts of energy into a {target_name}, failing to kill it.";
+		if (_target_stack.unit_count = 1) and (casulties = 1) then attack_message = $"{number_of_shots} {weapon_name} overwhelm a {target_name} with bolts of energy, killing {casulties}.";
+		if (_target_stack.unit_count > 1) and (casulties = 0) then attack_message = $"{number_of_shots} {weapon_name} shoot bolts of energy into the {target_name} ranks, failing to kill any.";
+		if (_target_stack.unit_count > 1) and (casulties > 0) then attack_message = $"{number_of_shots} {weapon_name} shoot bolts of energy into the {target_name}, cleansing {casulties}.";
 
 	} else if (weapon_data.has_tag("flame")) {
 		flavoured = true;
-		if (target.dudes_num[targeh] = 1) and (casulties = 0) then attack_message = $"{number_of_shots} {weapon_name} bathe the {target_name} in holy promethium, failing to kill it.";
-		if (target.dudes_num[targeh] = 1) and (casulties = 1) then attack_message = $"{number_of_shots} {weapon_name} flash-fry the {target_name} inside its armour, inflicting {casulties}.";
-		if (target.dudes_num[targeh] > 1) and (casulties = 0) then attack_message = $"{number_of_shots} {weapon_name} wash over the {target_name} ranks, failing to kill any.";
-		if (target.dudes_num[targeh] > 1) and (casulties > 0) then attack_message = $"{number_of_shots} {weapon_name} bathe the {target_name} ranks in holy promethium, cleansing {casulties}.";
+		if (_target_stack.unit_count = 1) and (casulties = 0) then attack_message = $"{number_of_shots} {weapon_name} bathe the {target_name} in holy promethium, failing to kill it.";
+		if (_target_stack.unit_count = 1) and (casulties = 1) then attack_message = $"{number_of_shots} {weapon_name} flash-fry the {target_name} inside its armour, inflicting {casulties}.";
+		if (_target_stack.unit_count > 1) and (casulties = 0) then attack_message = $"{number_of_shots} {weapon_name} wash over the {target_name} ranks, failing to kill any.";
+		if (_target_stack.unit_count > 1) and (casulties > 0) then attack_message = $"{number_of_shots} {weapon_name} bathe the {target_name} ranks in holy promethium, cleansing {casulties}.";
 
 	} else if (weapon_name = "Webber") {
 		flavoured = true;
 		if ((target_name = "Termagaunt") or (target_name = "Hormagaunt")) and (casulties > 0) then obj_ncombat.captured_gaunt += casulties;
-		if (target.dudes_num[targeh] = 1) and (casulties = 0) then attack_message = $"{number_of_shots} {weapon_name} spray ooze on the {target_name} but fail to immobilize it.";
-		if (target.dudes_num[targeh] = 1) and (casulties = 1) then attack_message = $"{number_of_shots} {weapon_name} spray ooze on the {target_name} and fully immobilize it.";
-		if (target.dudes_num[targeh] > 1) and (casulties = 0) then attack_message = $"{number_of_shots} {weapon_name} spray ooze on the {target_name} ranks, failing to immobilize any.";
-		if (target.dudes_num[targeh] > 1) and (casulties > 0) then attack_message = $"{number_of_shots} {weapon_name} spray ooze on the {target_name} ranks and immobilize {casulties} of them.";
+		if (_target_stack.unit_count = 1) and (casulties = 0) then attack_message = $"{number_of_shots} {weapon_name} spray ooze on the {target_name} but fail to immobilize it.";
+		if (_target_stack.unit_count = 1) and (casulties = 1) then attack_message = $"{number_of_shots} {weapon_name} spray ooze on the {target_name} and fully immobilize it.";
+		if (_target_stack.unit_count > 1) and (casulties = 0) then attack_message = $"{number_of_shots} {weapon_name} spray ooze on the {target_name} ranks, failing to immobilize any.";
+		if (_target_stack.unit_count > 1) and (casulties > 0) then attack_message = $"{number_of_shots} {weapon_name} spray ooze on the {target_name} ranks and immobilize {casulties} of them.";
 
 	} else if (weapon_name = "Close Combat Weapon") {
 		flavoured = true;
@@ -314,14 +312,14 @@ function scr_flavor(_weapon_stack, _target_object, _target_i, casulties) {
 
 	} else if (weapon_data.has_tag("power")) {
 		flavoured = true;
-		if (target.dudes_num[targeh] = 1) {
+		if (_target_stack.unit_count = 1) {
 			if (number_of_shots = 1) and (casulties = 0) then attack_message = $"A {target_name} is struck by a {weapon_name} but survives.";
 			if (number_of_shots = 1) and (casulties = 1) then attack_message = $"A {target_name} is struck down by a {weapon_name}.";
 
 			if (number_of_shots > 1) and (casulties = 0) then attack_message = $"A {target_name} is struck by {number_of_shots} {weapon_name}s but survives.";
 			if (number_of_shots > 1) and (casulties = 1) then attack_message = $"A {target_name} is struck down by {number_of_shots} {weapon_name}s.";
 		}
-		if (target.dudes_num[targeh] > 1) {
+		if (_target_stack.unit_count > 1) {
 			if (number_of_shots > 1) and (casulties = 0) then attack_message = $"{number_of_shots} {weapon_name}s crackle and spark, striking at the {target_name} ranks, inflicting no damage.";
 			if (number_of_shots > 1) and (casulties > 0) then attack_message = $"{number_of_shots} {weapon_name}s crackle and spark, hewing through the {target_name} ranks, {casulties} are cut down.";
 		}
@@ -331,7 +329,7 @@ function scr_flavor(_weapon_stack, _target_object, _target_i, casulties) {
 	if (flavoured == false) {
 		flavoured = true;
 		if (!character_shot) {
-			if (target.dudes_num[targeh] == 1) {
+			if (_target_stack.unit_count == 1) {
 				if (number_of_shots == 1 && casulties == 0) {
 					attack_message = $"A {target_name} is struck by {weapon_name} but survives.";
 				} else if (number_of_shots == 1 && casulties == 1) {
@@ -353,7 +351,7 @@ function scr_flavor(_weapon_stack, _target_object, _target_i, casulties) {
 				}
 			}
 		} else {
-			if (target.dudes_num[targeh] == 1) {
+			if (_target_stack.unit_count == 1) {
 				if (casulties == 0) {
 					attack_message = $"{string(unit_name)} {weapon_name} strikes at a {target_name} but fails to kill it.";
 				} else {

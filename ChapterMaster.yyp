@@ -845,7 +845,6 @@
     {"id":{"name":"scr_struct_functions","path":"scripts/scr_struct_functions/scr_struct_functions.yy",},},
     {"id":{"name":"scr_system_search_helpers","path":"scripts/scr_system_search_helpers/scr_system_search_helpers.yy",},},
     {"id":{"name":"scr_system_spawn_functions","path":"scripts/scr_system_spawn_functions/scr_system_spawn_functions.yy",},},
-    {"id":{"name":"scr_target","path":"scripts/scr_target/scr_target.yy",},},
     {"id":{"name":"scr_text_hit","path":"scripts/scr_text_hit/scr_text_hit.yy",},},
     {"id":{"name":"scr_thought","path":"scripts/scr_thought/scr_thought.yy",},},
     {"id":{"name":"scr_tooltip_draw","path":"scripts/scr_tooltip_draw/scr_tooltip_draw.yy",},},

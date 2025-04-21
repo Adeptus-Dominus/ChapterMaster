@@ -1,10 +1,10 @@
-#macro DEBUG_COLUMN_PRIORITY_PLAYER false
+#macro DEBUG_COLUMN_PRIORITY_PLAYER true
 
 // alarm_0
 /// @mixin
 function pnunit_target_and_shoot() {
     // Useful functions:
-    // scr_target
+    // target_unit_stack
     // get_rightmost
     // move_unit_block
     // gear_weapon_data
@@ -18,10 +18,6 @@ function pnunit_target_and_shoot() {
         target_block = instance_nearest(0, y, obj_enunit);
 
         engaged = collision_point(x - 10, y, obj_enunit, 0, 1) || collision_point(x + 10, y, obj_enunit, 0, 1);
-
-        if (DEBUG_COLUMN_PRIORITY_PLAYER) {
-            var _t_start1 = get_timer();
-        }
 
         if (!engaged) {
             for (var i = 0; i < array_length(unit_struct); i++) {
@@ -47,10 +43,6 @@ function pnunit_target_and_shoot() {
                 if (_weapon_stack.range >= dist) {
                     var _target_priority_queue = ds_priority_create();
 
-                    if (DEBUG_COLUMN_PRIORITY_PLAYER) {
-                        var _t_start = get_timer();
-                    }
-
                     // Scan potential targets
                     var _check_targets = [];
                     with (obj_enunit) {
@@ -74,12 +66,6 @@ function pnunit_target_and_shoot() {
                         }
                     }
 
-                    if (DEBUG_COLUMN_PRIORITY_PLAYER) {
-                        var _t_end = get_timer();
-                        var _elapsed_ms = (_t_end - _t_start) / 1000;
-                        show_debug_message($"⏱️ Execution Time: {_elapsed_ms}ms");
-                    }
-
                     // Shoot highest-priority target
                     if (!ds_priority_empty(_target_priority_queue)) {
                         var best_target = ds_priority_delete_max(_target_priority_queue);
@@ -100,11 +86,6 @@ function pnunit_target_and_shoot() {
                     // }
                     // continue;
                 }
-            }
-            if (DEBUG_COLUMN_PRIORITY_PLAYER) {
-                var _t_end1 = get_timer();
-                var _elapsed_ms1 = (_t_end1 - _t_start1) / 1000;
-                show_debug_message($"⏱️ Ranged Alarm Execution Time: {_elapsed_ms1}ms");
             }
         } else {
             // Melee
@@ -127,6 +108,8 @@ function pnunit_target_and_shoot() {
 /// @mixin
 function pnunit_battle_effects() {
     try {
+        var _t_start_battle_effects = get_timer();
+        
         if (obj_ncombat.battle_stage == eBATTLE_STAGE.Creation) {
             if (men + dreads + veh <= 0) {
                 //show_debug_message($"column destroyed {x}")
@@ -250,6 +233,10 @@ function pnunit_battle_effects() {
 
         /* */
         /*  */
+        
+        var _t_end_battle_effects = get_timer();
+        var _elapsed_ms_battle_effects = (_t_end_battle_effects - _t_start_battle_effects) / 1000;
+        show_debug_message($"⏱️ Execution Time battle_effects: {_elapsed_ms_battle_effects}ms");
     } catch (_exception) {
         handle_exception(_exception);
     }
@@ -325,4 +312,38 @@ function pnunit_dying_process() {
 
     /* */
     /*  */
+}
+
+function target_unit_stack(_battle_block, _target_type = -1) {
+    var _t_start_target_unit_stack = get_timer();
+
+	var _biggest_target = noone;
+	var _priority_queue = ds_priority_create();
+	var _unit_stacks = _battle_block.unit_stacks;
+
+    var _unit_stack_names = struct_get_names(_unit_stacks);
+    var _unit_stack_len = array_length(_unit_stack_names);
+    for (var k = 0; k < _unit_stack_len; k++){
+        var _unit_stack_name = _unit_stack_names[k];
+        var _unit_stack = _unit_stacks[$ _unit_stack_name];
+
+        var _unit_stack_count = _unit_stack.unit_count;
+		var _unit_stack_type = _unit_stack.unit_type;
+
+		if (_target_type == -1 || _unit_stack_type == _target_type) {
+			ds_priority_add(_priority_queue, _unit_stack, _unit_stack_count);
+		}
+	}
+
+	if (!ds_priority_empty(_priority_queue)) {
+		_biggest_target = ds_priority_delete_max(_priority_queue);
+	}
+
+	ds_priority_destroy(_priority_queue);
+
+    var _t_end_target_unit_stack = get_timer();
+    var _elapsed_ms_target_unit_stack = (_t_end_target_unit_stack - _t_start_target_unit_stack) / 1000;
+    show_debug_message($"⏱️ Execution Time target_unit_stack: {_elapsed_ms_target_unit_stack}ms");
+
+	return _biggest_target;
 }
