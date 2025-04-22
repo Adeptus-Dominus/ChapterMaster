@@ -419,7 +419,9 @@ for(var i=1; i<=4; i++){
         hyu+=1;
         p_owner[i]=9;
     }
-    if (p_first[i]<=5) and (dispo[i]>-5000) then dispo[i]=-20;
+    if (p_first[i]<=5) and (dispo[i]>-5000){
+        dispo[i]=-20;
+    }
 }
 if (hyu==0) and (owner == eFACTION.Tyranids) then owner = eFACTION.Imperium;
 

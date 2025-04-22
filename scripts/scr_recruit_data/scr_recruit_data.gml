@@ -75,8 +75,8 @@ function find_recruit_success_chance(local_apothecary_points, system, planet, ui
                 if (droll == 0) {
                     var _planet_name = p_data.name
                     scr_alert(#FF9900, "DIPLOMATIC DISASTER", $"Apothecaries at {_planet_name} has been spotted doing suspicious activities!", system.x, system.y)
-                    scr_event_log(#FF9900, $"Apothecaries at {_planet_name} has been spotted doing suspicious activities!", system.name)
-                    system.dispo[planet]-=25;
+                    scr_event_log(#FF9900, $"Apothecaries at {_planet_name} has been spotted doing suspicious activities!", system.name);
+                    p_data.add_disposition(-25);
                     if (p_data.current_owner != eFACTION.Player) {
                         obj_controller.disposition[p_data.current_owner]-=5;
                     }

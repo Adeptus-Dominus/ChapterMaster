@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"skin_tone_shader",
+  "name":"skin_tone_shader",
+  "parent":{
+    "name":"Shaders",
+    "path":"folders/Shaders.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}

@@ -12,11 +12,12 @@ menu=0;// 1 : save, 2: load
 save_part=0;
 load_part=0;
 save_number=0;
+/// set to true before calling alarm[0] to run autosave behaviour
+autosaving=false;
 /// number of frames between load sections to draw the progress bar
 trickle=0;
 txt="";
 hide=0;
-cooldown=10;
 bar=0;
 slow=0;
 saves=0;
@@ -24,13 +25,12 @@ highlighting=0;
 spr_screen=0;
 first_open=0;
 max_ini=0;
-mouse_left=0;
 reset=0;
 splash=choose(0,1,2,3,4);
 
 debug="";
 
-top=1;
+top=0;
 
 if (instance_exists(obj_controller)){
     if (obj_controller.zoomed=1){
@@ -76,7 +76,7 @@ if (file_exists("saves.ini")){
 
     i=-1;
     repeat(200){i+=1;
-        if (save[i]>0){
+        if (save[i]>=0){
             if (ini_section_exists(string(save[i]))){
                 save_turn[save[i]]=ini_read_real(string(save[i]),"turn",0);
                 save_chapter[save[i]]=ini_read_string(string(save[i]),"chapter_name","Error");

@@ -311,6 +311,17 @@ function scr_faction_string_name(faction){
 	return name;
 }
 
+function meet_system_governors(system){
+	with (system){
+        for (var i=1;i<=planets;i++){
+            if (p_first[i]<=5) and (dispo[i]>-30) and (dispo[i]<0){
+                dispo[i]=min(obj_ini.imperium_disposition,obj_controller.disposition[2])+irandom(8)-4;
+            } 
+
+        }
+	}
+}
+
 function scr_planet_image_numbers(p_type){
 	var image =0;
 	image_map = ["","Lava","Lava", "Desert","Forge","Hive","Death","Agri","Feudal","Temperate","Ice","Dead","Daemon","Craftworld","","Space Hulk", "", "Shrine"];

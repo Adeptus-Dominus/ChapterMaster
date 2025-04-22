@@ -107,7 +107,7 @@ function scr_restart_variables(saved_game) {
 					obj_restart_vars.r_role[i, 3] = "Veteran";
 					obj_restart_vars.r_wep1[i, 3] = "Chainsword";
 					obj_restart_vars.r_wep2[i, 3] = "Bolter";
-					obj_restart_vars.r_armour[i, 3] = "Power Armour";
+					obj_restart_vars.r_armour[i, 3] = STR_ANY_POWER_ARMOUR;
 					obj_restart_vars.r_mobi[i, 3] = "";
 					obj_restart_vars.r_gear[i, 3] = "";
 
@@ -123,7 +123,7 @@ function scr_restart_variables(saved_game) {
 					obj_restart_vars.r_role[i, 5] = "Captain";
 					obj_restart_vars.r_wep1[i, 5] = "Power Sword";
 					obj_restart_vars.r_wep2[i, 5] = "Bolt Pistol";
-					obj_restart_vars.r_armour[i, 5] = "Power Armour";
+					obj_restart_vars.r_armour[i, 5] = STR_ANY_POWER_ARMOUR;
 					obj_restart_vars.r_mobi[i, 5] = "";
 					obj_restart_vars.r_gear[i, 5] = "Iron Halo";
 
@@ -139,7 +139,7 @@ function scr_restart_variables(saved_game) {
 					obj_restart_vars.r_role[i, 7] = "Champion";
 					obj_restart_vars.r_wep1[i, 7] = "Power Sword";
 					obj_restart_vars.r_wep2[i, 7] = "Bolt Pistol";
-					obj_restart_vars.r_armour[i, 7] = "Power Armour";
+					obj_restart_vars.r_armour[i, 7] = STR_ANY_POWER_ARMOUR;
 					obj_restart_vars.r_mobi[i, 7] = "";
 					obj_restart_vars.r_gear[i, 7] = "Combat Shield";
 
@@ -147,7 +147,7 @@ function scr_restart_variables(saved_game) {
 					obj_restart_vars.r_role[i, 8] = "Tactical Marine";
 					obj_restart_vars.r_wep1[i, 8] = "Bolter";
 					obj_restart_vars.r_wep2[i, 8] = "Combat Knife";
-					obj_restart_vars.r_armour[i, 8] = "Power Armour";
+					obj_restart_vars.r_armour[i, 8] = STR_ANY_POWER_ARMOUR;
 					obj_restart_vars.r_mobi[i, 8] = "";
 					obj_restart_vars.r_gear[i, 8] = "";
 
@@ -155,7 +155,7 @@ function scr_restart_variables(saved_game) {
 					obj_restart_vars.r_role[i, 9] = "Devastator Marine";
 					obj_restart_vars.r_wep1[i, 9] = "";
 					obj_restart_vars.r_wep2[i, 9] = "Combat Knife";
-					obj_restart_vars.r_armour[i, 9] = "Power Armour";
+					obj_restart_vars.r_armour[i, 9] = STR_ANY_POWER_ARMOUR;
 					obj_restart_vars.r_mobi[i, 9] = "";
 					obj_restart_vars.r_gear[i, 9] = "";
 
@@ -163,14 +163,14 @@ function scr_restart_variables(saved_game) {
 					obj_restart_vars.r_role[i, 10] = "Assault Marine";
 					obj_restart_vars.r_wep1[i, 10] = "Chainsword";
 					obj_restart_vars.r_wep2[i, 10] = "Bolt Pistol";
-					obj_restart_vars.r_armour[i, 10] = "Power Armour";
+					obj_restart_vars.r_armour[i, 10] = STR_ANY_POWER_ARMOUR;
 					obj_restart_vars.r_mobi[i, 10] = "Jump Pack";
 					obj_restart_vars.r_gear[i, 10] = "";
 
 					obj_restart_vars.r_role[i, 11] = "Ancient";
 					obj_restart_vars.r_wep1[i, 11] = "Company Standard";
 					obj_restart_vars.r_wep2[i, 11] = "Power Sword";
-					obj_restart_vars.r_armour[i, 11] = "Power Armour";
+					obj_restart_vars.r_armour[i, 11] = STR_ANY_POWER_ARMOUR;
 					obj_restart_vars.r_mobi[i, 11] = "";
 					obj_restart_vars.r_gear[i, 11] = "";
 
@@ -186,7 +186,7 @@ function scr_restart_variables(saved_game) {
 					obj_restart_vars.r_role[i, 14] = "Chaplain";
 					obj_restart_vars.r_wep1[i, 14] = "Power Sword";
 					obj_restart_vars.r_wep2[i, 14] = "Bolt Pistol";
-					obj_restart_vars.r_armour[i, 14] = "Power Armour";
+					obj_restart_vars.r_armour[i, 14] = STR_ANY_POWER_ARMOUR;
 					obj_restart_vars.r_gear[i, 14] = "Rosarius";
 					obj_restart_vars.r_mobi[i, 14] = "";
 
@@ -194,7 +194,7 @@ function scr_restart_variables(saved_game) {
 					obj_restart_vars.r_role[i, 15] = "Apothecary";
 					obj_restart_vars.r_wep1[i, 15] = "Chainsword";
 					obj_restart_vars.r_wep2[i, 15] = "Bolt Pistol";
-					obj_restart_vars.r_armour[i, 15] = "Power Armour";
+					obj_restart_vars.r_armour[i, 15] = STR_ANY_POWER_ARMOUR;
 					obj_restart_vars.r_gear[i, 15] = "Narthecium";
 					obj_restart_vars.r_mobi[i, 15] = "";
 
@@ -210,7 +210,7 @@ function scr_restart_variables(saved_game) {
 					obj_restart_vars.r_role[i, 17] = "Librarian";
 					obj_restart_vars.r_wep1[i, 17] = "Force Staff";
 					obj_restart_vars.r_wep2[i, 17] = "Bolt Pistol";
-					obj_restart_vars.r_armour[i, 17] = "Power Armour";
+					obj_restart_vars.r_armour[i, 17] = STR_ANY_POWER_ARMOUR;
 					obj_restart_vars.r_gear[i, 17] = "Psychic Hood";
 					obj_restart_vars.r_mobi[i, 17] = "";
 
@@ -218,7 +218,7 @@ function scr_restart_variables(saved_game) {
 					obj_restart_vars.r_role[i, 18] = "Sergeant";
 					obj_restart_vars.r_wep1[i, 18] = "Chainsword";
 					obj_restart_vars.r_wep2[i, 18] = "Storm Bolter";
-					obj_restart_vars.r_armour[i, 18] = "Power Armour";
+					obj_restart_vars.r_armour[i, 18] = STR_ANY_POWER_ARMOUR;
 					obj_restart_vars.r_gear[i, 18] = "";
 					obj_restart_vars.r_mobi[i, 18] = "";
 
@@ -226,7 +226,7 @@ function scr_restart_variables(saved_game) {
 					obj_restart_vars.r_role[i, 19] = "Veteran Sergeant";
 					obj_restart_vars.r_wep1[i, 19] = "Chainsword";
 					obj_restart_vars.r_wep2[i, 19] = "Storm Bolter";
-					obj_restart_vars.r_armour[i, 19] = "Power Armour";
+					obj_restart_vars.r_armour[i, 19] = STR_ANY_POWER_ARMOUR;
 					obj_restart_vars.r_gear[i, 19] = "";
 					obj_restart_vars.r_mobi[i, 19] = "";
 				}
@@ -345,7 +345,7 @@ function scr_restart_variables(saved_game) {
 				obj_controller.r_role[i, 3] = "Veteran";
 				obj_controller.r_wep1[i, 3] = "Chainsword";
 				obj_controller.r_wep2[i, 3] = "Bolter";
-				obj_controller.r_armour[i, 3] = "Power Armour";
+				obj_controller.r_armour[i, 3] = STR_ANY_POWER_ARMOUR;
 				obj_controller.r_mobi[i, 3] = "";
 				obj_controller.r_gear[i, 3] = "";
 
@@ -361,7 +361,7 @@ function scr_restart_variables(saved_game) {
 				obj_controller.r_role[i, 5] = "Captain";
 				obj_controller.r_wep1[i, 5] = "Power Sword";
 				obj_controller.r_wep2[i, 5] = "Bolt Pistol";
-				obj_controller.r_armour[i, 5] = "Power Armour";
+				obj_controller.r_armour[i, 5] = STR_ANY_POWER_ARMOUR;
 				obj_controller.r_mobi[i, 5] = "";
 				obj_controller.r_gear[i, 5] = "";
 
@@ -377,7 +377,7 @@ function scr_restart_variables(saved_game) {
 				obj_controller.r_role[i, 7] = "Champion";
 				obj_controller.r_wep1[i, 7] = "Power Sword";
 				obj_controller.r_wep2[i, 7] = "Bolt Pistol";
-				obj_controller.r_armour[i, 7] = "Power Armour";
+				obj_controller.r_armour[i, 7] = STR_ANY_POWER_ARMOUR;
 				obj_controller.r_mobi[i, 7] = "";
 				obj_controller.r_gear[i, 7] = "Combat Shield";
 
@@ -385,7 +385,7 @@ function scr_restart_variables(saved_game) {
 				obj_controller.r_role[i, 8] = "Tactical Marine";
 				obj_controller.r_wep1[i, 8] = "Bolter";
 				obj_controller.r_wep2[i, 8] = "Combat Knife";
-				obj_controller.r_armour[i, 8] = "Power Armour";
+				obj_controller.r_armour[i, 8] = STR_ANY_POWER_ARMOUR;
 				obj_controller.r_mobi[i, 8] = "";
 				obj_controller.r_gear[i, 8] = "";
 
@@ -393,7 +393,7 @@ function scr_restart_variables(saved_game) {
 				obj_controller.r_role[i, 9] = "Devastator Marine";
 				obj_controller.r_wep1[i, 9] = "";
 				obj_controller.r_wep2[i, 9] = "Combat Knife";
-				obj_controller.r_armour[i, 9] = "Power Armour";
+				obj_controller.r_armour[i, 9] = STR_ANY_POWER_ARMOUR;
 				obj_controller.r_mobi[i, 9] = "";
 				obj_controller.r_gear[i, 9] = "";
 
@@ -401,7 +401,7 @@ function scr_restart_variables(saved_game) {
 				obj_controller.r_role[i, 10] = "Assault Marine";
 				obj_controller.r_wep1[i, 10] = "Chainsword";
 				obj_controller.r_wep2[i, 10] = "Bolt Pistol";
-				obj_controller.r_armour[i, 10] = "Power Armour";
+				obj_controller.r_armour[i, 10] = STR_ANY_POWER_ARMOUR;
 				obj_controller.r_mobi[i, 10] = "Jump Pack";
 				obj_controller.r_gear[i, 10] = "";
 
@@ -417,7 +417,7 @@ function scr_restart_variables(saved_game) {
 				obj_controller.r_role[i, 14] = "Chaplain";
 				obj_controller.r_wep1[i, 14] = "Power Sword";
 				obj_controller.r_wep2[i, 14] = "Bolt Pistol";
-				obj_controller.r_armour[i, 14] = "Power Armour";
+				obj_controller.r_armour[i, 14] = STR_ANY_POWER_ARMOUR;
 				obj_controller.r_gear[i, 14] = "Rosarius";
 				obj_controller.r_mobi[i, 14] = "";
 
@@ -425,7 +425,7 @@ function scr_restart_variables(saved_game) {
 				obj_controller.r_role[i, 15] = "Apothecary";
 				obj_controller.r_wep1[i, 15] = "Chainsword";
 				obj_controller.r_wep2[i, 15] = "Bolt Pistol";
-				obj_controller.r_armour[i, 15] = "Power Armour";
+				obj_controller.r_armour[i, 15] = STR_ANY_POWER_ARMOUR;
 				obj_controller.r_gear[i, 15] = "Narthecium";
 				obj_controller.r_mobi[i, 15] = "";
 
@@ -441,7 +441,7 @@ function scr_restart_variables(saved_game) {
 				obj_controller.r_role[i, 17] = "Librarian";
 				obj_controller.r_wep1[i, 17] = "Force Staff";
 				obj_controller.r_wep2[i, 17] = "Bolt Pistol";
-				obj_controller.r_armour[i, 17] = "Power Armour";
+				obj_controller.r_armour[i, 17] = STR_ANY_POWER_ARMOUR;
 				obj_controller.r_gear[i, 17] = "Psychic Hood";
 				obj_controller.r_mobi[i, 17] = "";
 
@@ -449,7 +449,7 @@ function scr_restart_variables(saved_game) {
 				obj_controller.r_role[i, 18] = "Sergeant";
 				obj_controller.r_wep1[i, 18] = "Chainsword";
 				obj_controller.r_wep2[i, 18] = "Storm Bolter";
-				obj_controller.r_armour[i, 18] = "Power Armour";
+				obj_controller.r_armour[i, 18] = STR_ANY_POWER_ARMOUR;
 				obj_controller.r_gear[i, 18] = "";
 				obj_controller.r_mobi[i, 18] = "";
 
@@ -457,7 +457,7 @@ function scr_restart_variables(saved_game) {
 				obj_controller.r_role[i, 19] = "Veteran Sergeant";
 				obj_controller.r_wep1[i, 19] = "Chainsword";
 				obj_controller.r_wep2[i, 19] = "Storm Bolter";
-				obj_controller.r_armour[i, 19] = "Power Armour";
+				obj_controller.r_armour[i, 19] = STR_ANY_POWER_ARMOUR;
 				obj_controller.r_gear[i, 19] = "";
 				obj_controller.r_mobi[i, 19] = "";
 			}
@@ -625,7 +625,7 @@ function reset_creation_variables(){
 		role[i, 3] = "Veteran";
 		wep1[i, 3] = "Chainsword";
 		wep2[i, 3] = "Bolter";
-		armour[i, 3] = "Power Armour";
+		armour[i, 3] = STR_ANY_POWER_ARMOUR;
 
 		race[i, 4] = 1;
 		role[i, 4] = "Terminator";
@@ -637,7 +637,7 @@ function reset_creation_variables(){
 		role[i, 5] = "Captain";
 		wep1[i, 5] = "Power Sword";
 		wep2[i, 5] = "Bolt Pistol";
-		armour[i, 5] = "Power Armour";
+		armour[i, 5] = STR_ANY_POWER_ARMOUR;
 		gear[i, 5] = "Iron Halo";
 
 		race[i, 6] = 1;
@@ -650,26 +650,26 @@ function reset_creation_variables(){
 		role[i, 8] = "Tactical Marine";
 		wep1[i, 8] = "Bolter";
 		wep2[i, 8] = "Combat Knife";
-		armour[i, 8] = "Power Armour";
+		armour[i, 8] = STR_ANY_POWER_ARMOUR;
 
 		race[i, 9] = 1;
 		role[i, 9] = "Devastator Marine";
 		wep1[i, 9] = "";
 		wep2[i, 9] = "Combat Knife";
-		armour[i, 9] = "Power Armour";
+		armour[i, 9] = STR_ANY_POWER_ARMOUR;
 
 		race[i, 10] = 1;
 		role[i, 10] = "Assault Marine";
 		wep1[i, 10] = "Chainsword";
 		wep2[i, 10] = "Bolt Pistol";
-		armour[i, 10] = "Power Armour";
+		armour[i, 10] = STR_ANY_POWER_ARMOUR;
 		mobi[i, 10] = "Jump Pack";
 
 		race[i, 11] = 1;
 		role[i, 11] = "Ancient";
 		wep1[i, 11] = "Company Standard";
 		wep2[i, 11] = "Power Sword";
-		armour[i, 11] = "Power Armour";
+		armour[i, 11] = STR_ANY_POWER_ARMOUR;
 
 		race[i, 12] = 1;
 		role[i, 12] = "Scout";
@@ -681,14 +681,14 @@ function reset_creation_variables(){
 		role[i, 14] = "Chaplain";
 		wep1[i, 14] = "Power Sword";
 		wep2[i, 14] = "Bolt Pistol";
-		armour[i, 14] = "Power Armour";
+		armour[i, 14] = STR_ANY_POWER_ARMOUR;
 		gear[i, 14] = "Rosarius";
 
 		race[i, 15] = 1;
 		role[i, 15] = "Apothecary";
 		wep1[i, 15] = "Chainsword";
 		wep2[i, 15] = "Bolt Pistol";
-		armour[i, 15] = "Power Armour";
+		armour[i, 15] = STR_ANY_POWER_ARMOUR;
 		gear[i, 15] = "Narthecium";
 
 		race[i, 16] = 1;
@@ -703,21 +703,21 @@ function reset_creation_variables(){
 		role[i, 17] = "Librarian";
 		wep1[i, 17] = "Force Staff";
 		wep2[i, 17] = "Bolt Pistol";
-		armour[i, 17] = "Power Armour";
+		armour[i, 17] = STR_ANY_POWER_ARMOUR;
 		gear[i, 17] = "Psychic Hood";
 
 		race[i, 18] = 1;
 		role[i, 18] = "Sergeant";
 		wep1[i, 18] = "Chainsword";
 		wep2[i, 18] = "Storm Bolter";
-		armour[i, 18] = "Power Armour";
+		armour[i, 18] = STR_ANY_POWER_ARMOUR;
 		gear[i, 18] = "";
 
 		race[i, 19] = 1;
 		role[i, 19] = "Veteran Sergeant";
 		wep1[i, 19] = "Chainsword";
 		wep2[i, 19] = "Storm Bolter";
-		armour[i, 19] = "Power Armour";
+		armour[i, 19] = STR_ANY_POWER_ARMOUR;
 		gear[i, 19] = "";
 	}
 

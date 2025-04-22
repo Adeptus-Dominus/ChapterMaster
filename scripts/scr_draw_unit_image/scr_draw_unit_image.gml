@@ -49,7 +49,6 @@ function set_and_clear_surface(_surface) {
     surface_set_target(_surface);
     draw_clear_alpha(c_white, 0);
     surface_reset_target();
-    surface_free(_surface);
 }
 
 function UnitImage(unit_surface) constructor {
@@ -195,52 +194,6 @@ function set_shader_array(shader_array) {
 
 /// @mixin
 function scr_draw_unit_image(_background = false) {
-    static draw_unit_hands = function(x_surface_offset, y_surface_offset, armour_type, specialist_colours, hide_bionics, right_left) {
-        shader_set(full_livery_shader);
-        if (arm_variant[right_left] == 1) {
-            return;
-        }
-
-        if (armour_type != ArmourType.None) {
-            var offset_x = x_surface_offset;
-            var offset_y = y_surface_offset;
-            switch (armour_type) {
-                case ArmourType.Terminator:
-                    var _hand_spr = spr_terminator_hands;
-                    break;
-                case ArmourType.Scout:
-                    var _hand_spr = spr_pa_hands;
-                    offset_y += 11;
-                    offset_x += ui_xmod[right_left];
-                default:
-                case ArmourType.Normal:
-                    var _hand_spr = spr_pa_hands;
-                    break;
-            }
-            if (hand_variant[right_left] > 0) {
-                var _spr_index = (hand_variant[right_left] - 1) * 2;
-                if (right_left == 2) {
-                    _spr_index += (specialist_colours >= 2) ? 1 : 0;
-                    draw_sprite_flipped(_hand_spr, _spr_index, offset_x, offset_y);
-                } else {
-                    draw_sprite(_hand_spr, _spr_index, offset_x, offset_y);
-                }
-            }
-            // Draw bionic hands
-            if (hand_variant[right_left] == 1) {
-                if (armour_type == ArmourType.Normal && !hide_bionics && struct_exists(body[$(right_left == 1 ? "right_arm" : "left_arm")], "bionic")) {
-                    var bionic_hand = body[$(right_left == 1 ? "right_arm" : "left_arm")][$ "bionic"];
-                    var bionic_spr_index = bionic_hand.variant * 2;
-                    if (right_left == 2) {
-                        bionic_spr_index += (specialist_colours >= 2) ? 1 : 0;
-                        draw_sprite_flipped(spr_bionics_hand, bionic_spr_index, offset_x, offset_y);
-                    } else {
-                        draw_sprite(spr_bionics_hand, bionic_spr_index, offset_x, offset_y);
-                    }
-                }
-            }
-        }
-    };
 
     var _role = active_roles();
     var complex_set = {};
@@ -272,19 +225,7 @@ function scr_draw_unit_image(_background = false) {
 
     try {
         if ((name_role() != "") && (base_group == "astartes")) {
-            for (var i = 1; i <= 2; i++) {
-                ui_weapon[i] = spr_weapon_blank;
-                arm_variant[i] = 1;
-                hand_variant[i] = 1;
-                hand_on_top[i] = false;
-                ui_spec[i] = false;
-                ui_twoh[i] = false;
-                ui_xmod[i] = 0;
-                ui_ymod[i] = 0;
-                new_weapon_draw[i] = false;
-            }
             var draw_backpack = true;
-            var ui_force_both = false;
             var pauldron_trim = false;
             var armour_bypass = false;
             var hide_bionics = false;
@@ -320,9 +261,6 @@ function scr_draw_unit_image(_background = false) {
             var dev_trait = 0;
             static _body_parts = ARR_body_parts;
 
-            // if (unit_role=="Chapter Master"){unit_specialization=111;}
-            // // Honour Guard
-            // else if (unit_role==obj_ini.role[100,2]){unit_specialization=14;}
             // Chaplain
             if (is_specialist(unit_role, SPECIALISTS_CHAPLAINS, true)) {
                 if (unit_chapter == "Iron Hands") {
@@ -364,13 +302,13 @@ function scr_draw_unit_image(_background = false) {
                     }
             }
             // Blood Angels gold
-            if ((unit_role == _role[eROLE.HonourGuard] || unit_role == "Chapter Master") && (unit_chapter == "Blood Angels")) {
+            if ((unit_role == _role[eROLE.HonourGuard] || unit_role == _role[eROLE.ChapterMaster]) && (unit_chapter == "Blood Angels")) {
                 unit_special_colours = UnitSpecialColours.Gold;
             }
             // Sets up the description for the equipement of current marine
 
             if (scr_has_adv("Reverent Guardians")) {
-                if (array_contains([UnitSpecialization.Chaplain, UnitSpecialization.WolfPriest, UnitSpecialization.Librarian], unit_specialization) || unit_role == "Chapter Master") {
+                if (array_contains([UnitSpecialization.Chaplain, UnitSpecialization.WolfPriest, UnitSpecialization.Librarian], unit_specialization) || unit_role == _role[eROLE.ChapterMaster]) {
                     reverent_guardians = true;
                 }
             }
@@ -415,15 +353,6 @@ function scr_draw_unit_image(_background = false) {
 
             draw_backpack = armour_type == ArmourType.Normal;
 
-            if (armour_type != ArmourType.Dreadnought && armour_type != ArmourType.None) {
-                if (weapon_one() != "") {
-                    scr_ui_display_weapons(1, unit_armour, weapon_one(), armour_type);
-                }
-
-                if ((weapon_two() != "") && (ui_twoh[1] == false)) {
-                    scr_ui_display_weapons(2, unit_armour, weapon_two(), armour_type);
-                }
-            }
 
             //if(shader_is_compiled(sReplaceColor)){
             //shader_set(sReplaceColor);
@@ -436,19 +365,6 @@ function scr_draw_unit_image(_background = false) {
 
             pauldron_trim = _controller ? obj_controller.trim : obj_creation.trim;
             //TODO complex shader means no need for all this edge case stuff
-
-            // Blood Angels Death Company Marines
-            if (unit_specialization == UnitSpecialization.DeathCompany) {
-                shader_array_set[ShaderType.Body] = Colors.Black;
-                shader_array_set[ShaderType.Helmet] = Colors.Black;
-                shader_array_set[ShaderType.LeftPauldron] = Colors.Black;
-                shader_array_set[ShaderType.Lens] = Colors.Red;
-                shader_array_set[ShaderType.Trim] = Colors.Black;
-                shader_array_set[ShaderType.RightPauldron] = Colors.Black;
-                shader_array_set[ShaderType.Weapon] = Colors.Dark_Red;
-                pauldron_trim = 0;
-                specialist_colours = 0;
-            }
 
             // Dark Angels Deathwing
             if (unit_special_colours == UnitSpecialColours.Deathwing) {
@@ -548,7 +464,7 @@ function scr_draw_unit_image(_background = false) {
             }
 
             if (armour_type == ArmourType.None) {
-                if (unit_role == "Chapter Master" && unit_chapter == "Doom Benefactors") {
+                if (unit_role == _role[eROLE.ChapterMaster] && unit_chapter == "Doom Benefactors") {
                     skin_color = 6;
                 }
 
@@ -755,59 +671,6 @@ function scr_draw_unit_image(_background = false) {
                 }
             }
 
-            // Draw hands bellow the weapon sprite;
-            for (var i = 1; i <= 2; i++) {
-                if (!hand_on_top[i]) {
-                    draw_unit_hands(x_surface_offset, y_surface_offset, armour_type, specialist_colours, hide_bionics, i);
-                }
-            }
-
-            // // Draw weapons
-
-            if (!new_weapon_draw[1]) {
-                if ((ui_weapon[1] != 0) && sprite_exists(ui_weapon[1])) {
-                    if ((ui_twoh[1] == false) && (ui_twoh[2] == false)) {
-                        draw_sprite(ui_weapon[1], 0, x_surface_offset + ui_xmod[1], y_surface_offset + ui_ymod[1]);
-                    }
-                    if (ui_twoh[1] == true) {
-                        draw_sprite(ui_weapon[1], 0, x_surface_offset + ui_xmod[1], y_surface_offset + ui_ymod[1]);
-                        if (ui_force_both == true) {
-                            if (specialist_colours <= 1) {
-                                draw_sprite(ui_weapon[1], 0, x_surface_offset + ui_xmod[1], y_surface_offset + ui_ymod[1]);
-                            }
-                            if (specialist_colours >= 2) {
-                                draw_sprite(ui_weapon[1], 1, x_surface_offset + ui_xmod[1], y_surface_offset + ui_ymod[1]);
-                            }
-                        }
-                    }
-                }
-            } else {
-                if ((ui_weapon[1] != 0) && sprite_exists(ui_weapon[1])) {
-                    draw_sprite(ui_weapon[1], 0, x_surface_offset + ui_xmod[1], y_surface_offset + ui_ymod[1]);
-                }
-            }
-            if (!new_weapon_draw[2]) {
-                if ((ui_weapon[2] != 0) && sprite_exists(ui_weapon[2]) && (ui_twoh[1] == false || ui_force_both == true)) {
-                    if (ui_spec[2] == false) {
-                        draw_sprite(ui_weapon[2], 1, x_surface_offset + ui_xmod[2], y_surface_offset + ui_ymod[2]);
-                    }
-                    if (ui_spec[2] == true) {
-                        draw_sprite(ui_weapon[2], 1, x_surface_offset + ui_xmod[2], y_surface_offset + ui_ymod[2]);
-                    }
-                }
-            } else {
-                if ((ui_weapon[2] != 0) && sprite_exists(ui_weapon[2])) {
-                    draw_sprite_flipped(ui_weapon[2], 0, x_surface_offset + ui_xmod[2], y_surface_offset + ui_ymod[2]);
-                }
-            }
-
-            // Draw hands above the weapon sprite;
-            for (var i = 1; i <= 2; i++) {
-                if (hand_on_top[i]) {
-                    draw_unit_hands(x_surface_offset, y_surface_offset, armour_type, specialist_colours, hide_bionics, i);
-                }
-            }
-
             // if (reverent_guardians=1) then draw_sprite(spr_pack_brazier,1,x_surface_offset,y_surface_offset);
             if (armour_type == ArmourType.Dreadnought) {
                 var left_arm = dreadnought_sprite_components(weapon_two());
@@ -858,10 +721,6 @@ function scr_draw_unit_image(_background = false) {
         }
     }
     surface_reset_target();
-    /*shader_set_uniform_i(shader_get_uniform(sReplaceColor, "u_blend_modes"), 2);                
-    texture_set_stage(shader_get_sampler_index(sReplaceColor, "armour_texture"), sprite_get_texture(spr_leopard_sprite, 0)); */
-    //draw_surface(unit_surface, xx+_x1-x_surface_offset,yy+_y1-y_surface_offset);
-    //surface_free(unit_surface);
     shader_reset();
     var _complex_sprite_names = struct_get_names(complex_set);
     for (var i = 0; i < array_length(_complex_sprite_names); i++) {

@@ -46,7 +46,7 @@ function scr_special_view(command_group) {
 			if (unit.base_group!="astartes") and (unit.base_group!="none"){
 				yep=1;
 			}
-			if ((unit.role()=="Chapter Master") or (unit.role()==obj_ini.role[100][2])){
+			if ((unit.role()==obj_ini.role[100][eROLE.ChapterMaster] || unit.role()==obj_ini.role[100][eROLE.HonourGuard])){
 				yep=1;
 			}
 			if (yep==1){
@@ -144,18 +144,18 @@ function scr_special_view(command_group) {
 	            if (squad_typ==obj_ini.role[100][15]) then n=0;
 	            if (squad_typ==obj_ini.role[100][14]) then n=0;
 	            if (squad_typ==obj_ini.role[100,17]) then n=0;
-	            if (squad_typ=obj_ini.role[100][16]) then n=0;
-	            if (squad_typ="Codiciery") then n=0;
-	            if (squad_typ="Lexicanum") then n=0;
-	            if (squad_typ=ma_role[i]) then n=0;
-	            if (squad_typ=obj_ini.role[100,17]) and (ma_role[i]="Codiciery") then n=1;
-	            if (squad_typ="Codiciery") and (ma_role[i]="Lexicanum") then n=1;
+	            if (squad_typ==obj_ini.role[100][16]) then n=0;
+	            if (squad_typ=="Codiciery") then n=0;
+	            if (squad_typ=="Lexicanum") then n=0;
+	            if (squad_typ==ma_role[i]) then n=0;
+	            if (squad_typ==obj_ini.role[100][eROLE.Librarian]) and (ma_role[i]="Codiciery") then n=1;
+	            if (squad_typ=="Codiciery") and (ma_role[i]="Lexicanum") then n=1;
 
-	            if (squad_typ="Master of Sanctity") then n=1;
-	            if (squad_typ="Chief "+string(obj_ini.role[100,17])) then n=1;
-	            if (squad_typ="Forge Master") then n=1;
-	            if (squad_typ="Chapter Master") then n=1;
-	            if (squad_typ="Master of the Apothecarion") then n=1;
+	            if (squad_typ=="Master of Sanctity") then n=1;
+	            if (squad_typ=="Chief "+string(obj_ini.role[100][eROLE.Librarian])) then n=1;
+	            if (squad_typ=="Forge Master") then n=1;
+	            if (squad_typ==obj_ini.role[100][eROLE.ChapterMaster]) then n=1;
+	            if (squad_typ=="Master of the Apothecarion") then n=1;
 
 	            if (squad_members+1>10) then n=1;
 	            if ((ma_wid[i]+(ma_lid[i]/100))!=squad_loc) then n=1;

@@ -297,9 +297,10 @@ if (type=6) and (cooldown<=0){// Actually changing equipment right here
 
 
 
-if (point_in_rectangle(mouse_x, mouse_y, xx+1465, yy+499,xx+1576,yy+518)){// Promoting right here
+if (scr_hit(xx+1465, yy+499,xx+1576,yy+518)){// Promoting right here
     if (type=5) and (cooldown<=0) and (all_good=1) and (target_comp>=0) and (role_name[target_role]!=""){
-        cooldown=999;obj_controller.cooldown=8000;
+        cooldown=999;
+        obj_controller.cooldown=8000;
 
         var mahreens=0;i=-1;
 

@@ -231,6 +231,19 @@
         /** Add extra starting items ["Item Name", Number to add] */
         "full_liveries":[
            { "left_pauldron" : [ "icon",{ "icon" : "ultramarines", "colour" : 34, "type" : 2 } ], "right_pauldron" : 34, "is_changed" : 1, "left_leg_lower" : 34, "left_leg_upper" : 34, "left_leg_knee" : 34, "right_leg_lower" : 34, "right_leg_upper" : 34, "right_leg_knee" : 34, "metallic_trim" : 12, "left_chest" : 34, "right_chest" : 34, "left_thorax" : 0, "right_thorax" : 0, "left_hand" : 34, "right_hand" : 34, "left_head" : 34, "right_head" : 34, "left_muzzle" : 34, "right_muzzle" : 34, "eye_lense" : 9, "right_backpack" : 34, "left_backpack" : 34, "weapon_primary" : 9, "weapon_secondary" : 9, "company_marks" : 0, "company_marks_loc" : 0, "left_arm" : 34, "right_arm" : 34, "left_trim" : 12, "right_trim" : 12 },
+        ],
+        "company_liveries" : [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
         ],       
         "extra_equipment": [
             // [

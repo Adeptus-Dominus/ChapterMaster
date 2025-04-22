@@ -1,5 +1,3 @@
-
-mouse_left=1;
 if !(variable_instance_exists(self, "attack")){
     attack = 0;
 }

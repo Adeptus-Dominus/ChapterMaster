@@ -74,8 +74,6 @@ if (change_slide>=100) then change_slide=-1;
 // Sets up a new chapter with default options
 if (change_slide==35) or (change_slide==36) or (chapter_name=="Doom Benefactors") or (chapter_string=="Doom Benefactors"){
     if (goto_slide==1){
-        mouse_left=0;
-        mouse_right=0;
         highlight=0;
         highlighting=0;
         old_highlight=0;
@@ -234,6 +232,11 @@ if (array_length(col)>0){
         color_to_weapon = "";
     }
 }
+if (company_liveries == ""){
+    livery_picker.scr_unit_draw_data(-1);
+    company_liveries = array_create(11,variable_clone(livery_picker.map_colour));
+}
+
 if (full_liveries == ""){
     var struct_cols = {
         main_color :main_color,

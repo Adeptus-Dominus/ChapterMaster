@@ -35,7 +35,7 @@ try {
 		draw_line(xx + 30, yy + 70 + (slate3 * 36), xx + 790, yy + 70 + (slate3 * 36));
 	}
 
-	allow_colour_click = (cooldown <= 0) && (mouse_left >= 1) && (custom > 1) && (!instance_exists(obj_creation_popup));
+	allow_colour_click = (custom > 1) && (!instance_exists(obj_creation_popup));
 
 	draw_set_alpha(slate4 / 30);
 	if (slate4 > 0) {
@@ -69,8 +69,9 @@ try {
 		// if (icon<=20) then draw_sprite_stretched(spr_icon,icon,436,74,128,128);
 
 		var sprx = 436, spry = 74, sprw = 128, sprh = 128;
-
-		draw_sprite_stretched(global.chapter_icon_sprite, global.chapter_icon_frame, sprx, spry, sprw, sprh);
+		if (global.chapter_icon_sprite != -1){
+			draw_sprite_stretched(global.chapter_icon_sprite, global.chapter_icon_frame, sprx, spry, sprw, sprh);
+		}
 
 		obj_cursor.image_index = 0;
 		if (scr_hit(436, 74, 436 + 128, 74 + 128) && (popup == "")) {
@@ -132,8 +133,7 @@ try {
 
 					if (scr_hit(1164 - 194, 149, 1164 - 162, 193)) {
 						obj_cursor.image_index = 1;
-						if ((cooldown <= 0) && (mouse_left >= 1)) {
-							cooldown = 8000;
+						if (scr_click_left()) {
 							founding -= 1;
 							if (founding == 0) {
 								founding = 10;
@@ -142,8 +142,7 @@ try {
 					}
 					if (scr_hit(1164 - 144, 149, 1164 - 112, 193)) {
 						obj_cursor.image_index = 1;
-						if ((cooldown <= 0) && (mouse_left >= 1)) {
-							cooldown = 8000;
+						if (scr_click_left()) {
 							founding += 1;
 							if (founding == 11) {
 								founding = 1;
@@ -306,7 +305,6 @@ try {
 			mutation_data = mutations_defects[i];
 			draw_sprite(spr_creation_check, mutation_data.data, x1, y1);
 			if (point_and_click([x1, y1, x1 + 32, y1 + 32]) && allow_colour_click) {
-				cooldown = 8000;
 				var onceh = 0;
 				if (mutation_data.data) {
 					mutation_data.data = 0;
@@ -434,9 +432,8 @@ try {
 			hei = string_height(string_hash_to_newline(chapter_master_name));
 			if (scr_hit(580 - 2, 144 - 2, 582 + str_width, 146 + hei)) {
 				obj_cursor.image_index = 2;
-				if ((mouse_left >= 1) && (cooldown <= 0) && (!instance_exists(obj_creation_popup))) {
+				if (scr_click_left() && !instance_exists(obj_creation_popup)) {
 					text_selected = "cm";
-					cooldown = 8000;
 					keyboard_string = chapter_master_name;
 				}
 			}
@@ -506,8 +503,7 @@ try {
 			}
 			draw_sprite(spr_creation_check, yar, x6, y6);
 			yar = 0;
-			if (scr_hit(x6, y6, x6 + 32, y6 + 32) && (cooldown <= 0) && (mouse_left >= 1) && (custom > 0) && (restarted == 0) && (!instance_exists(obj_creation_popup))) {
-				cooldown = 8000;
+			if (point_and_click([x6, y6, x6 + 32, y6 + 32]) && (custom > 0) && (restarted == 0) && (!instance_exists(obj_creation_popup))) {
 				var onceh;
 				onceh = 0;
 				if ((chapter_master_melee == melee_choice_order) && (onceh == 0)) {
@@ -541,7 +537,6 @@ try {
 			draw_sprite(spr_creation_check, yar, x6, y6);
 			yar = 0;
 			if (point_and_click([x6, y6, x6 + 32, y6 + 32]) && (custom > 0) && (restarted == 0) && (!instance_exists(obj_creation_popup)) && (!array_contains([1, 2, 7], chapter_master_melee))) {
-				cooldown = 8000;
 				var onceh = 0;
 				if (chapter_master_ranged == ranged_choice_order) {
 					chapter_master_ranged = 0;
@@ -591,8 +586,7 @@ try {
 
 			draw_sprite(spr_creation_check, chapter_master_specialty == h, x6, y6 + 214);
 
-			if (scr_hit(x6, y6 + 214, x6 + 32, y6 + 32 + 214) && (cooldown <= 0) && (mouse_left >= 1) && (custom > 1) && (restarted == 0) && (nope == 0)) {
-				cooldown = 8000;
+			if (point_and_click([x6, y6 + 214, x6 + 32, y6 + 32 + 214]) && (custom > 1) && (restarted == 0) && (nope == 0)) {
 				var onceh = 0;
 				if ((chapter_master_specialty != h) && (onceh == 0)) {
 					chapter_master_specialty = h;
@@ -628,7 +622,7 @@ try {
 			if (scr_hit(_sc_box.x1, _sc_box.y1, _sc_box.x2, _sc_box.y2)) {
 				tooltip = "Do you want to save your chapter?";
 				tooltip2 = "Click to save your chapter";
-				if (mouse_left >= 1) {
+				if (scr_click_left()) {
 					scr_save_chapter(global.chapter_id);
 
 					tooltip = "Do you want to save your chapter?";
@@ -742,14 +736,12 @@ try {
 				draw_set_alpha(1);
 			}
 			draw_sprite(spr_creation_arrow, 4, 927 + 64, 761);
-			if ((popup == "") && ((change_slide >= 70) || (change_slide <= 0)) && (cooldown <= 0) && (scr_click_left())) {
-				if (scr_hit(927 + 64 + 12, 761 + 12, 927 + 128 - 12, 761 + 64 - 12)) {
-					scr_creation(2);
-					scr_creation(3);
-					scr_creation(4);
-					scr_creation(5);
-					scr_creation(6);
-				}
+			if ((popup == "") && ((change_slide >= 70) || (change_slide <= 0)) && (point_and_click([927 + 64 + 12, 761 + 12, 927 + 128 - 12, 761 + 64 - 12]))) {
+				scr_creation(2);
+				scr_creation(3);
+				scr_creation(4);
+				scr_creation(5);
+				scr_creation(6);
 			}
 		}
 		draw_set_alpha(1);
@@ -771,17 +763,16 @@ try {
 			q += 1;
 		}
 
-		if ((popup == "") && ((change_slide >= 70) || (change_slide <= 0)) && (cooldown <= 0)) {
-			if ((mouse_x > 925) && (mouse_y > 756) && (mouse_x < 997) && (mouse_y < 824) && (mouse_left >= 1) && (!instance_exists(obj_creation_popup))) {
+		if ((popup == "") && ((change_slide >= 70) || (change_slide <= 0))) {
+			if (point_and_click([925, 756, 997, 824]) && !instance_exists(obj_creation_popup)) {
 				// Next slide
 				if (slide >= 2 && slide <= 6) {
 					scr_creation(slide);
 				}
 			}
 
-			if (point_and_click([604, 756, 675, 824]) && (cooldown <= 0) && (!instance_exists(obj_creation_popup))) {
+			if (point_and_click([604, 756, 675, 824]) && (!instance_exists(obj_creation_popup))) {
 				// Previous slide
-				cooldown = 8000;
 				change_slide = 1;
 				goto_slide = slide - 1;
 				popup = "";

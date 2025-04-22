@@ -26,6 +26,7 @@ function __init_external() {
     }
 
     #macro PATH_save_files "Save Files\\save{0}.json"
+    #macro PATH_autosave_file "Save Files\\save0.json"
     #macro PATH_save_previews "Save Files\\screen{0}.png"
     #macro PATH_custom_icons $"Custom Files\\Custom Icons\\custom"
     #macro PATH_last_messages $"Logs/last_messages.log"

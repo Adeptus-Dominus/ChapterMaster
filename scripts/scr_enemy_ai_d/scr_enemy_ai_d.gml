@@ -397,9 +397,18 @@ function scr_enemy_ai_d() {
             try{
                 complete_beast_hunt_mission(i,_beast_hunt);
             } catch (_exception){
-                handle_exception(exception);
+                handle_exception(_exception);
             }
-        }        
+        }
+
+        var train_forces = has_problem_planet_and_time(i,"train_forces", 0);
+        if (train_forces>-1){
+            try{
+                complete_train_forces_mission(i,train_forces);
+            } catch (_exception){
+                handle_exception(_exception);
+            }
+        }             
     
 	    if ((p_tyranids[i]=3) or (p_tyranids[i]=4)) and (p_population[i]>0){
 	        if (!(has_problem_planet(i, "Hive Fleet"))){
@@ -469,7 +478,7 @@ function scr_enemy_ai_d() {
                 var q=0,q2=0;
                 repeat(90){
                     if (q2=0){q+=1;
-                        if (obj_ini.role[0,q]="Chapter Master"){q2=q;
+                        if (obj_ini.role[0,q]==obj_ini.role[100][eROLE.ChapterMaster]){q2=q;
                             if (string_count("0",obj_ini.spe[0,q2])>0) then yep2=true;
                         }
                     }

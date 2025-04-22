@@ -1,4 +1,4 @@
-/**
+ /**
  * * obj_creation is used as part of the main menu new game and chapter creation logic
  * It contains data and logic for setting up custom chapters as well as populating the new game menu with data for pre-existing chapters.
  */
@@ -102,7 +102,7 @@ if (nope!=1){
 	audio_sound_gain(snd_diboz,0.25*master_volume*music_volume,2000);
 }
 
-global.load=0;
+global.load=-1;
 planet_types = ARR_planet_types;
 skip=false;
 premades=true;
@@ -113,6 +113,7 @@ use_chapter_object = false;
 livery_picker = new ColourItem(100,230);
 livery_picker.scr_unit_draw_data();
 full_liveries = "";
+company_liveries = "";
 complex_livery=false;
 complex_selection = "sgt";
 complex_depth_selection = 0;
@@ -134,8 +135,6 @@ slate3=-2;
 slate4=0;
 slate5=0;
 slate6=0;
-mouse_left=0;
-mouse_right=0;
 change_slide=0;
 goto_slide=1;
 highlight=0;
@@ -150,6 +149,8 @@ heheh=0;
 icons_top=1;
 icons_max=0;
 turn_selection_change=false;
+draw_helms = true;
+
 buttons = {
     home_world_recruit_share : new ToggleButton(),
     complex_homeworld : new ToggleButton({
@@ -264,7 +265,7 @@ buttons = {
             font : fnt_40k_14b
         },
         {
-            str1 : "Ganger (cthonian)",
+            str1 : "Cthonian",
             font : fnt_40k_14b
         },
         {
@@ -303,7 +304,58 @@ buttons = {
             str1 : "Runic",
             font : fnt_40k_14b,
         },                                                                                      
-    ], "Chapter Visual Styles")  
+    ], "Chapter Visual Styles"),
+    company_options_toggle : new UnitButtonObject({
+        tooltip : "toggle between chapter or role settings",
+        label : "Company Settings",
+        company_view : false,
+    }),
+    company_liveries_choice : new radio_set([
+        {
+            str1 : "HQ",
+            font : fnt_40k_14b
+        },
+        {
+            str1 : "I",
+            font : fnt_40k_14b,
+        },
+        {
+            str1 : "II",
+            font : fnt_40k_14b
+        },
+        {
+            str1 : "III",
+            font : fnt_40k_14b
+        }, 
+        {
+            str1 : "IV",
+            font : fnt_40k_14b
+        },
+        {
+            str1 : "V",
+            font : fnt_40k_14b
+        },
+        {
+            str1 : "VI",
+            font : fnt_40k_14b
+        },
+        {
+            str1 : "VII",
+            font : fnt_40k_14b
+        },
+        {
+            str1 : "VIII",
+            font : fnt_40k_14b
+        },
+        {
+            str1 : "IX",
+            font : fnt_40k_14b
+        },
+        {
+            str1 : "X",
+            font : fnt_40k_14b
+        },                    
+    ], "Companies"),
 }
 
 with (buttons){
@@ -311,12 +363,14 @@ with (buttons){
     home_planets.current_selection = 1;
     home_warp.current_selection = 1;
     recruit_home_relationship.current_selection = 1;
+    company_liveries_choice.current_selection = 1;
 }
 
 text_bars = {
-    battle_cry : new TextBarArea(920,118, 540),
+    battle_cry : new TextBarArea(920,118, 450),
     admiral : new TextBarArea(890,685, 580,true),
 }
+
 scrollbar_engaged=0;
 
 text_selected="none";
@@ -1054,22 +1108,22 @@ function load_default_gear(_role_id, _role_name, _wep1, _wep2, _armour, _mobi, _
     race[defaults_slot, _role_id] = 1;
 }
 load_default_gear(eROLE.HonourGuard, "Honour Guard", "Power Sword", "Bolter", "Artificer Armour", "", "");
-load_default_gear(eROLE.Veteran, "Veteran", "Combiflamer", "Combat Knife", "Power Armour", "", "");
+load_default_gear(eROLE.Veteran, "Veteran", "Combiflamer", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
 load_default_gear(eROLE.Terminator, "Terminator", "Power Fist", "Storm Bolter", "Terminator Armour", "", "");
-load_default_gear(eROLE.Captain, "Captain", "Power Sword", "Bolt Pistol", "Power Armour", "", "Iron Halo");
+load_default_gear(eROLE.Captain, "Captain", "Power Sword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Iron Halo");
 load_default_gear(eROLE.Dreadnought, "Dreadnought", "Dreadnought Lightning Claw", "Lascannon", "Dreadnought", "", "");
-load_default_gear(eROLE.Champion, "Champion", "Power Sword", "Bolt Pistol", "Power Armour", "", "Combat Shield");
-load_default_gear(eROLE.Tactical, "Tactical", "Bolter", "Combat Knife", "Power Armour", "", "");
-load_default_gear(eROLE.Devastator, "Devastator", "", "Combat Knife", "Power Armour", "", "");
-load_default_gear(eROLE.Assault, "Assault", "Chainsword", "Bolt Pistol", "Power Armour", "Jump Pack", "");
-load_default_gear(eROLE.Ancient, "Ancient", "Company Standard", "Bolt Pistol", "Power Armour", "", "");
+load_default_gear(eROLE.Champion, "Champion", "Power Sword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Combat Shield");
+load_default_gear(eROLE.Tactical, "Tactical", "Bolter", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
+load_default_gear(eROLE.Devastator, "Devastator", "", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
+load_default_gear(eROLE.Assault, "Assault", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "Jump Pack", "");
+load_default_gear(eROLE.Ancient, "Ancient", "Company Standard", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "");
 load_default_gear(eROLE.Scout, "Scout", "Bolter", "Combat Knife", "Scout Armour", "", "");
-load_default_gear(eROLE.Chaplain, "Chaplain", "Crozius Arcanum", "Bolt Pistol", "Power Armour", "", "Rosarius");
-load_default_gear(eROLE.Apothecary, "Apothecary", "Chainsword", "Bolt Pistol", "Power Armour", "", "Narthecium");
+load_default_gear(eROLE.Chaplain, "Chaplain", "Crozius Arcanum", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Rosarius");
+load_default_gear(eROLE.Apothecary, "Apothecary", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Narthecium");
 load_default_gear(eROLE.Techmarine, "Techmarine", "Power Axe", "Bolt Pistol", "Artificer Armour", "Servo-arm", "");
-load_default_gear(eROLE.Librarian, "Librarian", "Force Staff", "Bolt Pistol", "Power Armour", "", "Psychic Hood");
-load_default_gear(eROLE.Sergeant, "Sergeant", "Chainsword", "Bolt Pistol", "Power Armour", "", "");
-load_default_gear(eROLE.VeteranSergeant, "Veteran Sergeant", "Chainsword", "Plasma Pistol", "Power Armour", "", "");
+load_default_gear(eROLE.Librarian, "Librarian", "Force Staff", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Psychic Hood");
+load_default_gear(eROLE.Sergeant, "Sergeant", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "");
+load_default_gear(eROLE.VeteranSergeant, "Veteran Sergeant", "Chainsword", "Plasma Pistol", STR_ANY_POWER_ARMOUR, "", "");
 
 builtin_icons = array_length(sprite_get_info(spr_icon_chapters).frames);
 normal_and_builtin = global.normal_icons_count + builtin_icons;

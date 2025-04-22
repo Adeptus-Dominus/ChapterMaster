@@ -267,6 +267,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 								system:planet_data.system,
 								feature:obj_star_select.feature,
 								planet : planet_data.planet,
+								array_slot : feature.array_position,
 								selections : []
 							});
 							destroy=true;

@@ -327,7 +327,7 @@ function setup_player_combat_ship(){
 	            // Loc 1: in transit
 	            // Loc >1: (instance_id), on enemy vessel 
 	            if (co==0 && master_present==0 && i<100){
-	                if (unit.role()=="Chapter Master" && unit.ship_location==ship_id){
+	                if (unit.role()==obj_ini.role[100][eROLE.ChapterMaster] && unit.ship_location==ship_id){
 	                    master_present=1;
 	                    obj_fleet.control=1;
 	                }            

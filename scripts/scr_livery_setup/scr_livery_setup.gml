@@ -132,19 +132,60 @@ function scr_livery_setup(){
         draw_text(444,252,string_hash_to_newline("Color swap shader#did not compile"));
     }
 
+    var comp_toggle = buttons.company_options_toggle;
+    var company_radio = buttons.company_liveries_choice;
+    var comp_change = false;
+    comp_toggle.update({
+        x1 : 50,
+        y1 : 76
+    });
+    draw_set_halign(fa_center);
+    if (comp_toggle.draw()){
+        comp_toggle.company_view = !comp_toggle.company_view;
+        if (!comp_toggle.company_view){
+            company_liveries[livery_picker.role_set] = variable_clone(livery_picker.map_colour);
+            livery_picker.role_set = 0;
+            livery_picker.map_colour = full_liveries[livery_picker.role_set];
+        } else {
+            full_liveries[livery_picker.role_set] = variable_clone(livery_picker.map_colour);
+            livery_picker.role_set = company_radio.current_selection;
+            livery_picker.map_colour = company_liveries[livery_picker.role_set];
+        }
+        livery_picker.shuffle_dummy();
+        livery_picker.reset_image();        
+    }
+
     draw_set_font(fnt_40k_30b);
     draw_set_halign(fa_center);
     draw_set_alpha(1);
     draw_set_color(38144);
-    var liv_string = $"Full Livery \n{livery_picker.role_set == 0? "default" :role[100][livery_picker.role_set]}";
-    draw_text(160, 100, liv_string);    
-    
+    if (!comp_toggle.company_view){
+        var liv_string = $"Full Livery \n{livery_picker.role_set == 0? "default" :role[100][livery_picker.role_set]}";
+        draw_text(160, 100, liv_string);  
+    } else {
+        company_radio.update({
+            max_width : 350,
+            x1 : 20,
+            y1 : 60,
+            allow_changes : true
+        })
+        company_radio.draw();
+        if (company_radio.changed){
+            company_liveries[livery_picker.role_set] = variable_clone(livery_picker.map_colour);
+            livery_picker.role_set = company_radio.current_selection;
+            livery_picker.map_colour = company_liveries[livery_picker.role_set];
+            livery_picker.shuffle_dummy();
+            livery_picker.reset_image();
+        }    
+    }  
+
     draw_set_color(38144);
     draw_set_halign(fa_left);
     draw_text_transformed(580,118,"Battle Cry:",0.6,0.6,0);
     draw_set_font(fnt_40k_14b);
-
     battle_cry = text_bars.battle_cry.draw((battle_cry));
+
+
     
     draw_rectangle(445, 200, 1125, 202, 0)
     
@@ -164,7 +205,7 @@ function scr_livery_setup(){
             if (custom<2) then draw_set_alpha(0.5);
             draw_sprite(spr_creation_check,yar,cur_button.cords[0],cur_button.cords[1]);
              if (scr_hit(cur_button.cords[0],cur_button.cords[1],cur_button.cords[0]+32,cur_button.cords[1]+32) and allow_colour_click){
-                    cooldown=8000;
+                    
                     var onceh=0;
                     if (col_special=i+1) and (onceh=0){col_special=0;onceh=1;}
                     if (col_special!=i+1) and (onceh=0){col_special=i+1;onceh=1;}
@@ -226,7 +267,7 @@ function scr_livery_setup(){
                 tooltip2=cur_button.tooltip2;
             }
             if (point_and_click(button_cords) && custom >= 2){
-                cooldown=8000;
+                
                 instance_destroy(obj_creation_popup);
                 var pp=instance_create(0,0,obj_creation_popup);
                 pp.type=i+1;
@@ -256,7 +297,7 @@ function scr_livery_setup(){
             if (custom<2) then draw_set_alpha(0.5);
             draw_sprite(spr_creation_check,yar,cur_button.cords[0],cur_button.cords[1]);
              if (point_and_click([cur_button.cords[0],cur_button.cords[1],cur_button.cords[0]+32,cur_button.cords[1]+32])){
-                cooldown=8000;
+                
                 var onceh=0;
                 if (cur_button.text!="Trim"){
                     if (col_special=i+1){
@@ -415,7 +456,7 @@ function scr_livery_setup(){
                  tooltip2=cur_button.tooltip2;
             }
             if (point_and_click(button_cords)){
-                cooldown=8000;
+                
                 instance_destroy(obj_creation_popup);
                 var pp=instance_create(0,0,obj_creation_popup);
                 pp.type=cur_button.type;
@@ -448,8 +489,8 @@ function scr_livery_setup(){
             yar = complex_depth_selection==(i) ? 1 : 0;
             if (custom<2) then draw_set_alpha(0.5);
             draw_sprite(spr_creation_check,yar,cur_button.cords[0],cur_button.cords[1]);
-             if (scr_hit(cur_button.cords[0],cur_button.cords[1],cur_button.cords[0]+32,cur_button.cords[1]+32) and allow_colour_click){
-                    cooldown=8000;
+             if (point_and_click([cur_button.cords[0],cur_button.cords[1],cur_button.cords[0]+32,cur_button.cords[1]+32]) and allow_colour_click){
+                    
                     var onceh=0;
                     if (complex_depth_selection=i) and (onceh=0){complex_depth_selection=0;onceh=1;}
                     else if (complex_depth_selection!=i) and (onceh=0){complex_depth_selection=i;onceh=1;}
@@ -504,19 +545,20 @@ function scr_livery_setup(){
                     draw_set_alpha(1);
                     tooltip=string(role[c][role_id])+" Settings";
                     tooltip2="Click to open the settings for this unit.";
-                    if (mouse_left>=1) and (custom>0) and (cooldown<=0) and (custom=2){
+                    if (custom>0) and (scr_click_left()) and (custom=2){
                         instance_destroy(obj_creation_popup);
                         var pp=instance_create(0,0,obj_creation_popup);
                         pp.type=role_id+100;
-                        cooldown=8000;
-                        full_liveries[livery_picker.role_set] = variable_clone(livery_picker.map_colour);
-                        livery_picker.role_set = role_id;
-                        livery_picker.map_colour = full_liveries[role_id];
-                        if (!livery_picker.map_colour.is_changed){
-                            livery_picker.map_colour = variable_clone(full_liveries[0]);
+                        if (!comp_toggle.company_view){
+                            full_liveries[livery_picker.role_set] = variable_clone(livery_picker.map_colour);
+                            livery_picker.role_set = role_id;
+                            livery_picker.map_colour = full_liveries[role_id];
+                            if (!livery_picker.map_colour.is_changed){
+                                livery_picker.map_colour = variable_clone(full_liveries[0]);
+                            }
+                            livery_picker.shuffle_dummy();
+                            livery_picker.reset_image();
                         }
-                        livery_picker.shuffle_dummy();
-                        livery_picker.reset_image();
                     }
                 }
             }
@@ -531,12 +573,14 @@ function scr_livery_setup(){
             }
         }
     }
-    if (livery_picker.role_set!=0){
-    	if (point_and_click(draw_unit_buttons([20, 50], $"Return to default Livery"))){
-            full_liveries[livery_picker.role_set] = variable_clone(livery_picker.map_colour);
-            livery_picker.map_colour = full_liveries[0];
-            livery_picker.role_set = 0;   		
-    	}
+    if (!comp_toggle.company_view){
+        if (livery_picker.role_set!=0){
+        	if (point_and_click(draw_unit_buttons([20, 50], $"Return to default Livery"))){
+                full_liveries[livery_picker.role_set] = variable_clone(livery_picker.map_colour);
+                livery_picker.map_colour = full_liveries[0];
+                livery_picker.role_set = 0;   		
+        	}
+        }
     }
     
     
@@ -553,8 +597,8 @@ function scr_livery_setup(){
     	tooltip="Specialist Distribution";
     	tooltip2=$"Check if you wish for your Companies to be uniform and each contain {role[100][10]}s and {role[100][9]}s.";
     }
-    if (scr_hit(860,650,860+32,650+32) and allow_colour_click){
-        cooldown=8000;
+    if (point_and_click([860,650,860+32,650+32]) and allow_colour_click){
+        
         var onceh=0;
         equal_specialists = !equal_specialists;
     }
@@ -567,8 +611,7 @@ function scr_livery_setup(){
     	tooltip="Load to Ships";
     	tooltip2="Check to have your Astartes automatically loaded into ships when the game starts.";
     }
-    if (scr_hit(860,645+40,860+32,645+32+40) and (cooldown<=0) and (mouse_left>=1) and (!instance_exists(obj_creation_popup))){
-        cooldown=8000;
+    if (point_and_click([860,645+40,860+32,645+32+40]) and (!instance_exists(obj_creation_popup))){
         var onceh=0;
         load_to_ships[0] = !load_to_ships[0];
     }
@@ -582,7 +625,7 @@ function scr_livery_setup(){
     	tooltip2="Check to have your Astartes automatically loaded into ships, except for Escorts, when the game starts.";
     }
     if (point_and_click([1010,645+40,1020+32,645+32+40]))  and (!instance_exists(obj_creation_popup)){
-        cooldown=8000;
+        
         load_to_ships[0] =  (load_to_ships[0]!=2) ? 2 : 0; 
 
     }
@@ -595,8 +638,7 @@ function scr_livery_setup(){
 		}
 		draw_sprite(spr_creation_check,yar,860,645+80);yar=0;
     	if (scr_hit(860,645+80,1005,645+32+80)) and (!instance_exists(obj_creation_popup)){tooltip="Distribute Scouts";tooltip2="Check to have your Scouts split across ships in the fleet.";}
-    	if (scr_hit(860,645+80,860+32,645+32+80)) and (cooldown<=0) and (mouse_left>=1) and (!instance_exists(obj_creation_popup)){
-    		 cooldown=8000;
+    	if (point_and_click([860,645+80,860+32,645+32+80])) and (!instance_exists(obj_creation_popup)){
              load_to_ships[1] = !load_to_ships[1];  		 
     	}
     	draw_text_transformed(860+30,645+4+80,"Distribute Scouts",0.4,0.4,0);	
@@ -609,8 +651,8 @@ function scr_livery_setup(){
     	if (scr_hit(1010,645+80,1150,645+32+80)) and (!instance_exists(obj_creation_popup)){
             tooltip="Distribute Veterans";tooltip2="Check to have your Veterans split across the fleet.";
         }
-    	if (scr_hit(1010,645+80,1020+32,645+32+80)) and (cooldown<=0) and (mouse_left>=1) and (!instance_exists(obj_creation_popup)){
-    		 cooldown=8000;var onceh=0;
+    	if (point_and_click([1010,645+80,1020+32,645+32+80])) and (!instance_exists(obj_creation_popup)){
+    		var onceh=0;
              load_to_ships[2] = !load_to_ships[2] 		 
     	}
     	draw_text_transformed(1010+30,645+4+80,"Distribute Veterans",0.4,0.4,0);	
@@ -649,10 +691,11 @@ function scr_livery_setup(){
                 if (text_selected="capoth") and (text_bar>30) then draw_text_ext(600,575,string_hash_to_newline(string(hapothecary)),-1,580);
                 if (text_selected="capoth") and (text_bar<=30) then draw_text_ext(600,575,string_hash_to_newline(string(hapothecary)+"|"),-1,580);
                 var str_width,hei;str_width=0;hei=string_height_ext(string_hash_to_newline(hapothecary),-2,580);
-                if (scr_hit(600,575,785,575+hei)){obj_cursor.image_index=2;
-                    if (mouse_left>=1) and (cooldown<=0) and (!instance_exists(obj_creation_popup)){
+                if (scr_hit(600,575,785,575+hei)){
+                    obj_cursor.image_index=2;
+                    if (scr_click_left()) and (!instance_exists(obj_creation_popup)){
                         text_selected="capoth";
-                        cooldown=8000;keyboard_string=hapothecary;
+                        keyboard_string=hapothecary;
                     }
                 }
                 if (text_selected="capoth") then hapothecary=keyboard_string;
@@ -676,7 +719,7 @@ function scr_livery_setup(){
                 if (text_selected="chap") and (text_bar<=30) then draw_text_ext(600,597,string_hash_to_newline(string(hchaplain)+"|"),-1,580);
                 var str_width,hei;str_width=0;hei=string_height_ext(string_hash_to_newline(hchaplain),-2,580);
                 if (scr_hit(600,597,785,597+hei)){obj_cursor.image_index=2;
-                    if (mouse_left>=1) and (cooldown<=0) and (!instance_exists(obj_creation_popup)){text_selected="chap";cooldown=8000;keyboard_string=hchaplain;}
+                    if (scr_click_left()) and (!instance_exists(obj_creation_popup)){text_selected="chap";keyboard_string=hchaplain;}
                 }
                 if (text_selected="chap") then hchaplain=keyboard_string;
                 draw_rectangle(600-1,597-1,785,597+hei,1);
@@ -699,7 +742,7 @@ function scr_livery_setup(){
                 if (text_selected="libra") and (text_bar<=30) then draw_text_ext(600,619,string_hash_to_newline(string(clibrarian)+"|"),-1,580);
                 var str_width,hei;str_width=0;hei=string_height_ext(string_hash_to_newline(clibrarian),-2,580);
                 if (scr_hit(600,619,785,619+hei)){obj_cursor.image_index=2;
-                    if (mouse_left>=1) and (cooldown<=0) and (!instance_exists(obj_creation_popup)){text_selected="libra";cooldown=8000;keyboard_string=clibrarian;}
+                    if (scr_click_left()) and (!instance_exists(obj_creation_popup)){text_selected="libra";keyboard_string=clibrarian;}
                 }
                 if (text_selected="libra") then clibrarian=keyboard_string;
                 draw_rectangle(600-1,619-1,785,619+hei,1);
@@ -722,7 +765,7 @@ function scr_livery_setup(){
                 if (text_selected="forge") and (text_bar<=30) then draw_text_ext(600,641,string_hash_to_newline(string(fmaster)+"|"),-1,580);
                 var str_width,hei;str_width=0;hei=string_height_ext(string_hash_to_newline(fmaster),-2,580);
                 if (scr_hit(600,641,785,641+hei)){obj_cursor.image_index=2;
-                    if (mouse_left>=1) and (cooldown<=0) and (!instance_exists(obj_creation_popup)){text_selected="forge";cooldown=8000;keyboard_string=fmaster;}
+                    if (scr_click_left()) and (!instance_exists(obj_creation_popup)){text_selected="forge";keyboard_string=fmaster;}
                 }
                 if (text_selected="forge") then fmaster=keyboard_string;
                 draw_rectangle(600-1,641-1,785,641+hei,1);
@@ -744,7 +787,7 @@ function scr_livery_setup(){
             if (text_selected="recr") and (text_bar<=30) then draw_text_ext(600,663,string_hash_to_newline(string(recruiter)+"|"),-1,580);
             var str_width,hei;str_width=0;hei=string_height_ext(string_hash_to_newline(recruiter),-2,580);
             if (scr_hit(600,663,785,663+hei)){obj_cursor.image_index=2;
-                if (mouse_left>=1) and (cooldown<=0) and (!instance_exists(obj_creation_popup)){text_selected="recr";cooldown=8000;keyboard_string=recruiter;}
+                if (scr_click_left()) and (!instance_exists(obj_creation_popup)){text_selected="recr";keyboard_string=recruiter;}
             }
             if (text_selected="recr") then recruiter=keyboard_string;
             draw_rectangle(600-1,663-1,785,663+hei,1);
@@ -765,7 +808,7 @@ function scr_livery_setup(){
             if (text_selected="admi") and (text_bar<=30) then draw_text_ext(600,685,string_hash_to_newline(string(admiral)+"|"),-1,580);
             var str_width,hei;str_width=0;hei=string_height_ext(string_hash_to_newline(admiral),-2,580);
             if (scr_hit(600,685,785,685+hei)){obj_cursor.image_index=2;
-                if (mouse_left>=1) and (cooldown<=0) and (!instance_exists(obj_creation_popup)){text_selected="admi";cooldown=8000;keyboard_string=admiral;}
+                if (scr_click_left()) and (!instance_exists(obj_creation_popup)){text_selected="admi";keyboard_string=admiral;}
             }
             if (text_selected="admi") then admiral=keyboard_string;
             draw_rectangle(600-1,685-1,785,685+hei,1);

@@ -15,4 +15,3 @@ fading=0;
 crap=0;
 oth=0;
 
-mouse_left=0;

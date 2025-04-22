@@ -1357,7 +1357,7 @@ function scr_random_event(execute_now) {
 	    var has_chief_psyker = scr_role_count("Chief "+string(obj_ini.role[100,17]),"") >= 1;
 		var cm_is_psyker = false;
 		for(var i = 1; i < 100; i++){
-			if (obj_ini.role[0,i] == "Chapter Master" && string_count("0",obj_ini.spe[0,i]) > 0) { 
+			if (obj_ini.role[0,i] == obj_ini.role[100][eROLE.ChapterMaster] && string_count("0",obj_ini.spe[0,i]) > 0) { 
 				cm_is_psyker = true;
 				break;
 			}

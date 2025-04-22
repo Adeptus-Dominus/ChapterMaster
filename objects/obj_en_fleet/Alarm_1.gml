@@ -64,13 +64,10 @@ if (navy && action=="") {
 	            trade_goods="recr";
 	            action="";
 	        } else { //this was always a dead path previously since tar could never be bigger than i, now it will
+	        	var _targ = new PlanetData(tar, orbiting);
 	            if (orbiting.p_owner[tar]=eFACTION.Player) and (orbiting.p_player[tar]=0) and (planet_feature_bool(orbiting.p_feature[tar],P_features.Monastery)==0){
-	                if (orbiting.p_first[tar] != eFACTION.Player) {
-						orbiting.p_owner[tar] = orbiting.p_first[tar];
-					} else {
-						orbiting.p_owner[tar]= eFACTION.Imperium;
-					}
-					orbiting.dispo[tar]=-50;
+	                _targ.return_to_first_owner();
+					_targ.add_disposition(-50);
 	                trade_goods="";
 					action="";
 	            }
@@ -117,7 +114,7 @@ if (navy && action=="") {
 	                }
                 
 	                if (bombard){
-						
+						var _orbiting_data = new PlanetData(bombard, orbiting);
 	                    scare=(capital_number*3)+frigate_number;
 
 	                    if (scare>2) then scare=2;
@@ -130,7 +127,7 @@ if (navy && action=="") {
 							kill=scare*15000000; // pop if small
 						}
 
-						var bombard_name = planet_numeral_name(bombard, orbiting);
+						var bombard_name = _orbiting_data.name();
 	                    var bombard_report_string=$"Imperial Battlefleet bombards {bombard_name}.";
 	                    var PDF_loses=min(orbiting.p_pdf[bombard],(scare*15000000)/2);
 						
@@ -166,12 +163,8 @@ if (navy && action=="") {
                     
 	                    if (orbiting.p_population[bombard]+orbiting.p_pdf[bombard]<=0) and (orbiting.p_owner[bombard]=eFACTION.Player){
 	                        if (planet_feature_bool(orbiting.p_feature[bombard], P_features.Monastery)==0) {
-	                            if (orbiting.p_first[bombard]!=eFACTION.Player) {
-									orbiting.p_owner[bombard]=orbiting.p_first[bombard];
-								} else {
-									orbiting.p_owner[bombard]=eFACTION.Imperium;
-								}
-								orbiting.dispo[bombard]=-50;
+	                            _orbiting_data.return_to_first_owner();
+								_orbiting_data.add_disposition(-50)
 	                        } else {
 	                            trade_goods="invade_player";
 	                        }
