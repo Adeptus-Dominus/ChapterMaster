@@ -1269,6 +1269,7 @@ function ComplexSet(unit) constructor{
 
             head = sprite_create_from_surface(_head_surface, 0, 0, _surface_width, 60, false, false, 0, 0);
             set_and_clear_surface(_head_surface);
+            surface_free(_head_surface);
             shader_set(full_livery_shader);
         }
     }

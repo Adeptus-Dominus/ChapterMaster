@@ -15,6 +15,7 @@ function scr_load(save_part, save_id) {
 	if(file_exists(filename)){
 		var _gamesave_buffer = buffer_load(filename);
 		var _gamesave_string = buffer_read(_gamesave_buffer, buffer_string);
+		buffer_delete(_gamesave_buffer);
 		var json_game_save = json_parse(_gamesave_string);
 	}
 
