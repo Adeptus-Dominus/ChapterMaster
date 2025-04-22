@@ -434,7 +434,6 @@ function draw_chapter_trait_select(){
             obj_cursor.image_index=1;
             if (scr_click_left()){
                 popup="icons";
-                show_debug_message($"icons");
             }
         }
     }
@@ -709,7 +708,6 @@ function draw_chapter_trait_select(){
             
             if (scr_click_left()){
                 popup="";
-                show_debug_message($"icons exit");
             }
         }
         
