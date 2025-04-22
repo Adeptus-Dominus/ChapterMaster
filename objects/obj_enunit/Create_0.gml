@@ -41,7 +41,7 @@ is_mouse_over = function() {
 
 copy_block_composition = function(_composition) {
     if (DEBUG_COMBAT_PERFORMANCE) {
-        var _t_start_copy_block_composition = get_timer();
+        stopwatch("copy_block_composition");
     }
     
     if (struct_exists(_composition, "units")) {
@@ -88,15 +88,13 @@ copy_block_composition = function(_composition) {
     }
     
     if (DEBUG_COMBAT_PERFORMANCE) {
-        var _t_end_copy_block_composition = get_timer();
-        var _elapsed_ms_copy_block_composition = (_t_end_copy_block_composition - _t_start_copy_block_composition) / 1000;
-        show_debug_message($"⏱️ Execution Time copy_block_composition: {_elapsed_ms_copy_block_composition}ms");
+        stopwatch("copy_block_composition");
     }
 };
 
 assign_weapon_stacks = function() {
     if (DEBUG_COMBAT_PERFORMANCE) {
-        var _t_start_enemy_weapon_stacks = get_timer();
+        stopwatch("assign_enemy_weapon_stacks");
     }
     
     var _unit_stack_names = struct_get_names(unit_stacks);
@@ -110,16 +108,14 @@ assign_weapon_stacks = function() {
     }
     
     if (DEBUG_COMBAT_PERFORMANCE) {
-        var _t_end_enemy_weapon_stacks = get_timer();
-        var _elapsed_ms_enemy_weapon_stacks = (_t_end_enemy_weapon_stacks - _t_start_enemy_weapon_stacks) / 1000;
-        show_debug_message($"⏱️ Execution Time enemy_weapon_stacks: {_elapsed_ms_enemy_weapon_stacks}ms");
+        stopwatch("assign_enemy_weapon_stacks");
     }
 }
 
 unit_count = function() {
-    if (DEBUG_COMBAT_PERFORMANCE) {
-        var _t_start_unit_count = get_timer();
-    }
+    // if (DEBUG_COMBAT_PERFORMANCE) {
+    //     stopwatch("unit_count");
+    // }
     
     var _unit_count = 0;
 
@@ -131,11 +127,9 @@ unit_count = function() {
         _unit_count += _unit_stack.unit_count;
     }
     
-    if (DEBUG_COMBAT_PERFORMANCE) {
-        var _t_end_unit_count = get_timer();
-        var _elapsed_ms_unit_count = (_t_end_unit_count - _t_start_unit_count) / 1000;
-        show_debug_message($"⏱️ Execution Time unit_count: {_elapsed_ms_unit_count}ms");
-    }
+    // if (DEBUG_COMBAT_PERFORMANCE) {
+    //     stopwatch("unit_count");
+    // }
 
     return _unit_count;
 };

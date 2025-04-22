@@ -8,7 +8,7 @@ if (wall_destroyed == true) {
 
 if (battle_stage == eBATTLE_STAGE.Creation) {
     if (DEBUG_COMBAT_PERFORMANCE) {
-        var _t_start_creation_stage = get_timer();
+        stopwatch("BATTLE_STAGE.Creation");
     }
     
     ncombat_enemy_stacks_init();
@@ -38,16 +38,14 @@ if (battle_stage == eBATTLE_STAGE.Creation) {
     }
     
     if (DEBUG_COMBAT_PERFORMANCE) {
-        var _t_end_creation_stage = get_timer();
-        var _elapsed_ms_creation_stage = (_t_end_creation_stage - _t_start_creation_stage) / 1000;
-        show_debug_message($"⏱️ Execution Time creation_stage: {_elapsed_ms_creation_stage}ms");
+        stopwatch("BATTLE_STAGE.Creation");
     }
 }
 
 if ((press_exclusive(vk_enter) || hold_exclusive(vk_enter)) && fading_strength == 0) {
     if (turn_stage == eBATTLE_TURN.PlayerStart || turn_stage == eBATTLE_TURN.EnemyStart) {
         if (DEBUG_COMBAT_PERFORMANCE) {
-            var _t_start_turn_start = get_timer();
+            stopwatch("BATTLE_TURN.Start");
         }
         
         turn_count++;
@@ -89,15 +87,13 @@ if ((press_exclusive(vk_enter) || hold_exclusive(vk_enter)) && fading_strength =
         turn_stage = (turn_stage == eBATTLE_TURN.PlayerStart) ? eBATTLE_TURN.PlayerEnd : eBATTLE_TURN.EnemyEnd;
         
         if (DEBUG_COMBAT_PERFORMANCE) {
-            var _t_end_turn_start = get_timer();
-            var _elapsed_ms_turn_start = (_t_end_turn_start - _t_start_turn_start) / 1000;
-            show_debug_message($"⏱️ Execution Time turn_start: {_elapsed_ms_turn_start}ms");
+            stopwatch("BATTLE_TURN.Start");
         }
     }
 
     if (turn_stage == eBATTLE_TURN.EnemyEnd || turn_stage == eBATTLE_TURN.PlayerEnd) {
         if (DEBUG_COMBAT_PERFORMANCE) {
-            var _t_start_turn_end = get_timer();
+            stopwatch("BATTLE_TURN.End");
         }
         
         if (!battle_ended) {
@@ -121,9 +117,7 @@ if ((press_exclusive(vk_enter) || hold_exclusive(vk_enter)) && fading_strength =
         }
         
         if (DEBUG_COMBAT_PERFORMANCE) {
-            var _t_end_turn_end = get_timer();
-            var _elapsed_ms_turn_end = (_t_end_turn_end - _t_start_turn_end) / 1000;
-            show_debug_message($"⏱️ Execution Time turn_end: {_elapsed_ms_turn_end}ms");
+            stopwatch("BATTLE_TURN.End");
         }
     }
 

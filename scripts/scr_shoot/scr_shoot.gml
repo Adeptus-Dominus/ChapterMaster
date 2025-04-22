@@ -109,7 +109,7 @@ function scr_shoot(_weapon_stack, _target_object, _target_index) {
             }
 
             if (DEBUG_COMBAT_PERFORMANCE) {
-                var _t_start_player_scr_shoot = get_timer();
+                stopwatch("player_scr_shoot");
             }
             
             // Normal shooting
@@ -150,9 +150,7 @@ function scr_shoot(_weapon_stack, _target_object, _target_index) {
             }
             
             if (DEBUG_COMBAT_PERFORMANCE) {
-                var _t_end_player_scr_shoot = get_timer();
-                var _elapsed_ms_player_scr_shoot = (_t_end_player_scr_shoot - _t_start_player_scr_shoot) / 1000;
-                show_debug_message($"⏱️ Execution Time player_scr_shoot: {_elapsed_ms_player_scr_shoot}ms");
+                stopwatch("player_scr_shoot");
             }
 
             scr_flavor(_weapon_stack, _target_object, _target_stack, _casualties);

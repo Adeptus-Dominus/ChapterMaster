@@ -18,7 +18,7 @@ function scr_clean(target_object, weapon_data) {
             }
 
             if (DEBUG_COMBAT_PERFORMANCE) {
-                var _t_start = get_timer();
+                stopwatch("player_units_validation");
             }
             
             var armour_pierce = weapon_data.piercing;
@@ -86,13 +86,11 @@ function scr_clean(target_object, weapon_data) {
             valid_vehicles = array_shuffle(valid_vehicles);
 
             if (DEBUG_COMBAT_PERFORMANCE) {
-                var _t_end = get_timer();
-                var _elapsed_ms = (_t_end - _t_start) / 1000;
-                show_debug_message($"⏱️ {hostile_weapon} enemy target validation took: {_elapsed_ms}ms");
+                stopwatch("player_units_validation");
             }
 
             if (DEBUG_COMBAT_PERFORMANCE) {
-                var _t_start = get_timer();
+                stopwatch("player_damage_allocation");
             }
 
             if (target_type == eTARGET_TYPE.Armour && array_empty(valid_vehicles)) {
@@ -282,11 +280,7 @@ function scr_clean(target_object, weapon_data) {
             }
 
             if (DEBUG_COMBAT_PERFORMANCE) {
-                var _t_end = get_timer();
-                var _elapsed_ms = (_t_end - _t_start) / 1000;
-                show_debug_message($"⏱️ {hostile_weapon} enemy damage allocation  took: {_elapsed_ms}ms");
-                show_debug_message($"Hits: {hits}");
-                show_debug_message($"Kills: {units_lost}");
+                stopwatch("player_damage_allocation");
             }
 
             // Flavour battle-log message
@@ -332,6 +326,10 @@ function check_dead_marines(unit_struct, unit_index) {
 function compress_enemy_array(_target_column) {
     if (!instance_exists(_target_column)) {
         return;
+    }
+
+    if (DEBUG_COMBAT_PERFORMANCE) {
+        stopwatch("compress_enemy_array");
     }
 
     with(_target_column) {
@@ -381,6 +379,10 @@ function compress_enemy_array(_target_column) {
                 pos++; // Move to next position
             }
         }
+    }
+
+    if (DEBUG_COMBAT_PERFORMANCE) {
+        stopwatch("compress_enemy_array");
     }
 }
 

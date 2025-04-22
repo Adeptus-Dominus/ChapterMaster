@@ -25,7 +25,7 @@ function enunit_target_and_shoot() {
 
     if (!engaged()) {
         if (DEBUG_COMBAT_PERFORMANCE) {
-            var _t_start1 = get_timer();
+            stopwatch("enunit_shooting");
         }
 
         // Shooting
@@ -47,7 +47,7 @@ function enunit_target_and_shoot() {
                 var _target_priority_queue = ds_priority_create();
 
                 if (DEBUG_COMBAT_PERFORMANCE) {
-                    var _t_start = get_timer();
+                    stopwatch("enunit_column_picking");
                 }
 
                 // Scan potential targets
@@ -78,9 +78,7 @@ function enunit_target_and_shoot() {
                 }
 
                 if (DEBUG_COMBAT_PERFORMANCE) {
-                    var _t_end = get_timer();
-                    var _elapsed_ms = (_t_end - _t_start) / 1000;
-                    show_debug_message($"⏱️ Execution Time: {_elapsed_ms}ms");
+                    stopwatch("enunit_column_picking");
                 }
 
                 // Shoot highest-priority target
@@ -111,13 +109,11 @@ function enunit_target_and_shoot() {
             }
         }
         if (DEBUG_COMBAT_PERFORMANCE) {
-            var _t_end1 = get_timer();
-            var _elapsed_ms1 = (_t_end1 - _t_start1) / 1000;
-            show_debug_message($"⏱️ Enemy Ranged Alarm Execution Time: {_elapsed_ms1}ms");
+            stopwatch("enunit_shooting");
         }
     } else {
         if (DEBUG_COMBAT_PERFORMANCE) {
-            var _t_start1 = get_timer();
+            stopwatch("enunit_melee");
         }
 
         // Melee
@@ -144,9 +140,7 @@ function enunit_target_and_shoot() {
         }
 
         if (DEBUG_COMBAT_PERFORMANCE) {
-            var _t_end1 = get_timer();
-            var _elapsed_ms1 = (_t_end1 - _t_start1) / 1000;
-            show_debug_message($"⏱️ Enemy Melee Alarm Execution Time: {_elapsed_ms1}ms");
+            stopwatch("enunit_melee");
         }
     }
     //! Here was some stuff that depended on image_index here, that got deleted, because I couldn't figure out why it exists;

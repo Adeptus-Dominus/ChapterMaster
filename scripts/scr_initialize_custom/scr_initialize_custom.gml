@@ -2062,30 +2062,7 @@ function scr_initialize_custom() {
 						],
 					}
 				}
-			}],
-			[roles.sergeant, {
-				"max": 1,
-				"min": 1, //sergeant
-				"loadout": {
-					"required": {
-						"wep1": ["Bolt Pistol", 0],
-						"wep2": ["Chainsword", 0],
-					},
-					"option": {
-						"wep1": [
-							[
-								["Power Sword", "Thunder Hammer", "Power Fist", "Chainsword"], 1
-							]
-						],
-						"wep2": [
-							[
-								["Plasma Pistol", "Combiflamer", "Meltagun"], 1
-							]
-						]
-					}
-				}
-			}
-		]
+			}]
 	}
 
 	if (scr_has_adv("Lightning Warriors")) {

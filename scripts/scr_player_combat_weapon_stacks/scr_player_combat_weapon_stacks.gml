@@ -72,7 +72,7 @@ function add_data_to_stack (weapon, unit_damage=0, head_role=false, unit="none")
 /// @mixin
 function scr_player_combat_weapon_stacks() {
     if (DEBUG_COMBAT_PERFORMANCE) {
-        var _t_start_player_weapon_stacks = get_timer();
+        stopwatch("scr_player_combat_weapon_stacks");
     }
     
     if (defenses=1){
@@ -283,9 +283,7 @@ function scr_player_combat_weapon_stacks() {
     }
     
     if (DEBUG_COMBAT_PERFORMANCE) {
-        var _t_end_player_weapon_stacks = get_timer();
-        var _elapsed_ms_player_weapon_stacks = (_t_end_player_weapon_stacks - _t_start_player_weapon_stacks) / 1000;
-        show_debug_message($"⏱️ Execution Time player_weapon_stacks: {_elapsed_ms_player_weapon_stacks}ms");
+        stopwatch("scr_player_combat_weapon_stacks");
     }
 
 
