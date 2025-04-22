@@ -88,12 +88,12 @@ function sprite_get_uvs_transformed(_spr1, _subimg1, _spr2, _subimg2)
     return [_x_offset, _y_offset, _x_scale, _y_scale];
 }
 
-function ComplexSet(unit) constructor{
+function ComplexSet(_unit) constructor{
     overides = {
 
     };
-    unit_armour = unit.armour();
-    self.unit = unit;
+    unit_armour = _unit.armour();
+    unit = _unit;
     draw_helms = instance_exists(obj_creation) ? obj_creation.draw_helms : obj_controller.draw_helms;
     //draw_helms = false;
     static mk7_bits = {

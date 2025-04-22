@@ -74,7 +74,6 @@
 */
 show_debug_message("Creating Controller");
 log_message("Creating Controller");
-marine_surface = surface_create(600, 600);
 scr_colors_initialize();
 is_test_map=false;
 target_navy_number=5;
