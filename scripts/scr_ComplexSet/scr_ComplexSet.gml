@@ -881,11 +881,11 @@ function ComplexSet(_unit) constructor{
 
         shader_reset();
          surface_reset_target();
-         surface_set_target(_final_surface);     
-         if (!surface_exists) {
+        if (!surface_exists(prep_surface) || !surface_exists(_final_surface)) {
             draw_sprite(spr_none, 0, 0, 0);
             exit;
          }
+         surface_set_target(_final_surface);     
          draw_surface(prep_surface, 0, 0);
         set_and_clear_surface(prep_surface);
         surface_free(prep_surface)
