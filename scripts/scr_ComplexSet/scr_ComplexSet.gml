@@ -883,6 +883,9 @@ function ComplexSet(_unit) constructor{
          surface_reset_target();
         if (!surface_exists(prep_surface) || !surface_exists(_final_surface)) {
             draw_sprite(spr_none, 0, 0, 0);
+            if (surface_exists(prep_surface)) {
+                surface_free(prep_surface);
+            }
             exit;
          }
          surface_set_target(_final_surface);     
