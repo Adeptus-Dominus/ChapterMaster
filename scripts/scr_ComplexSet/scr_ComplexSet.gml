@@ -665,7 +665,6 @@ function ComplexSet(_unit) constructor{
 
         // Draw hands above the weapon sprite;       
     }
-    static prep_surface = surface_create(600, 600);
     static weapon_preset_data = {
         "shield" : {
             arm_type: 2,
@@ -699,9 +698,7 @@ function ComplexSet(_unit) constructor{
     static draw = function(){
         var _final_surface = surface_get_target();
         surface_reset_target();
-        if (!surface_exists(prep_surface)) {
-            prep_surface = surface_create(600, 600);
-        }
+        var prep_surface = surface_create(600, 600);
         surface_set_target(prep_surface); 
          
 
@@ -880,12 +877,18 @@ function ComplexSet(_unit) constructor{
          purity_seals_and_hangings();
          draw_weapon_and_hands();
 
+         delete texture_draws;
+
         shader_reset();
          surface_reset_target();
-         surface_set_target(_final_surface);       
+         surface_set_target(_final_surface);     
+         if (!surface_exists) {
+            draw_sprite(spr_none, 0, 0, 0);
+            exit;
+         }
          draw_surface(prep_surface, 0, 0);
-         delete texture_draws;
         set_and_clear_surface(prep_surface);
+        surface_free(prep_surface)
         shader_set(full_livery_shader);    
     }
     static purity_seals_and_hangings = function(){
