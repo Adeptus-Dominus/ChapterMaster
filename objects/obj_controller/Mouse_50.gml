@@ -14,7 +14,7 @@ if (menu==12) and (cooldown<=0) and (penitorium>0){
                 cooldown=20;
                 var c=penit_co[qp],e=penit_id[qp];
 
-                if (obj_ini.role[c,e]="Chapter Master"){
+                if (obj_ini.role[c,e]==obj_ini.role[100][eROLE.ChapterMaster]){
                     tek="c";
                     alarm[7]=5;
                     global.defeat=3;

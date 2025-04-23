@@ -8,7 +8,7 @@ function add_marines_to_recovery() {
                 var _role_priority_bonus = 0;
                 var _chief_librarian = $"Chief {_roles[eROLE.Librarian]}";
                 switch (_unit.role()) {
-                    case "Chapter Master":
+                    case obj_ini.role[100][eROLE.ChapterMaster]:
                         _role_priority_bonus = 720;
                         break;
                     case "Forge Master":

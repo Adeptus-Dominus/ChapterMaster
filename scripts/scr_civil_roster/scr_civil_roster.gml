@@ -102,10 +102,10 @@ function scr_civil_roster(_unit_location, _target_location, _is_planet) {
 	            if (new_combat.battle_special="cs_meeting_battle5") then new_combat.fighting[cooh,va]=1;
 	            if (new_combat.battle_special="cs_meeting_battle6") then new_combat.fighting[cooh,va]=1;
 	            if (new_combat.battle_special="cs_meeting_battle7"){
-	                if (unit.role()!="Chapter Master") then new_combat.fighting[cooh,va]=-5;
+	                if (unit.role()!=obj_ini.role[100][eROLE.ChapterMaster]) then new_combat.fighting[cooh,va]=-5;
 	            }
             
-	            if (unit.role()="Chapter Master") then new_combat.fighting[cooh,va]=1;
+	            if (unit.role()=obj_ini.role[100][eROLE.ChapterMaster]) then new_combat.fighting[cooh,va]=1;
 	            if (new_combat.fighting[cooh,va]=1) then he_good=1;
 	            if (new_combat.fighting[cooh,va]=-5) then he_good=-1;
             
@@ -337,7 +337,7 @@ function scr_civil_roster(_unit_location, _target_location, _is_planet) {
 	                    if (deploying_unit.mobi[cooh,va]="Jump Pack") then col=obj_controller.bat_assault_column;
 	                }
                 
-	                if (unit.role()="Chapter Master"){
+	                if (unit.role()=obj_ini.role[100][eROLE.ChapterMaster]){
 	                    col=obj_controller.bat_command_column;new_combat.important_dudes+=1;new_combat.big_mofo=1;
 	                    if (string_count("0",deploying_unit.spe[cooh,va])>0) then new_combat.chapter_master_psyker=1;
 	                    else{new_combat.chapter_master_psyker=0;}

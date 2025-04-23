@@ -74,7 +74,6 @@
 */
 show_debug_message("Creating Controller");
 log_message("Creating Controller");
-marine_surface = surface_create(600, 600);
 scr_colors_initialize();
 is_test_map=false;
 target_navy_number=5;
@@ -196,7 +195,7 @@ for(var i=100; i<103; i++){
     obj_controller.r_role[i,3]="Veteran";
     obj_controller.r_wep1[i,3]="Chainsword";
     obj_controller.r_wep2[i,3]="Bolter";
-    obj_controller.r_armour[i,3]="Power Armour";
+    obj_controller.r_armour[i,3]=STR_ANY_POWER_ARMOUR;
     obj_controller.r_mobi[i,3]="";
     obj_controller.r_gear[i,3]="";
     
@@ -210,7 +209,7 @@ for(var i=100; i<103; i++){
     obj_controller.r_role[i,5]="Captain";
     obj_controller.r_wep1[i,5]="Power Sword";
     obj_controller.r_wep2[i,5]="Bolt Pistol";
-    obj_controller.r_armour[i,5]="Power Armour";
+    obj_controller.r_armour[i,5]=STR_ANY_POWER_ARMOUR;
     obj_controller.r_mobi[i,5]="";
     obj_controller.r_gear[i,5]="Iron Halo";
     
@@ -224,35 +223,35 @@ for(var i=100; i<103; i++){
     obj_controller.r_role[i,7]="Champion";
     obj_controller.r_wep1[i,7]="Power Sword";
     obj_controller.r_wep2[i,7]="Bolt Pistol";
-    obj_controller.r_armour[i,7]="Power Armour";
+    obj_controller.r_armour[i,7]=STR_ANY_POWER_ARMOUR;
     obj_controller.r_mobi[i,7]="";
     obj_controller.r_gear[i,7]="Combat Shield";
     
     obj_controller.r_role[i,8]="Tactical Marine";
     obj_controller.r_wep1[i,8]="Bolter";
     obj_controller.r_wep2[i,8]="Combat Knife";
-    obj_controller.r_armour[i,8]="Power Armour";
+    obj_controller.r_armour[i,8]=STR_ANY_POWER_ARMOUR;
     obj_controller.r_mobi[i,8]="";
     obj_controller.r_gear[i,8]="";
     
     obj_controller.r_role[i,9]="Devastator Marine";
     obj_controller.r_wep1[i,9]="";
     obj_controller.r_wep2[i,9]="Combat Knife";
-    obj_controller.r_armour[i,9]="Power Armour";
+    obj_controller.r_armour[i,9]=STR_ANY_POWER_ARMOUR;
     obj_controller.r_mobi[i,9]="";
     obj_controller.r_gear[i,9]="";
     
     obj_controller.r_role[i,10]="Assault Marine";
     obj_controller.r_wep1[i,10]="Chainsword";
     obj_controller.r_wep2[i,10]="Bolt Pistol";
-    obj_controller.r_armour[i,10]="Power Armour";
+    obj_controller.r_armour[i,10]=STR_ANY_POWER_ARMOUR;
     obj_controller.r_mobi[i,10]="Jump Pack";
     obj_controller.r_gear[i,10]="";
     
     obj_controller.r_role[i,11]="Ancient";
     obj_controller.r_wep1[i,11]="Company Standard";
     obj_controller.r_wep2[i,11]="Power Sword";
-    obj_controller.r_armour[i,11]="Power Armour";
+    obj_controller.r_armour[i,11]=STR_ANY_POWER_ARMOUR;
     obj_controller.r_mobi[i,11]="";
     obj_controller.r_gear[i,11]="";
 
@@ -266,14 +265,14 @@ for(var i=100; i<103; i++){
     obj_controller.r_role[i,14]="Chaplain";
     obj_controller.r_wep1[i,14]="Power Sword";
     obj_controller.r_wep2[i,14]="Bolt Pistol";
-    obj_controller.r_armour[i,14]="Power Armour";
+    obj_controller.r_armour[i,14]=STR_ANY_POWER_ARMOUR;
     obj_controller.r_gear[i,14]="Rosarius";
     obj_controller.r_mobi[i,14]="";
     
     obj_controller.r_role[i,15]="Apothecary";
     obj_controller.r_wep1[i,15]="Chainsword";
     obj_controller.r_wep2[i,15]="Bolt Pistol";
-    obj_controller.r_armour[i,15]="Power Armour";
+    obj_controller.r_armour[i,15]=STR_ANY_POWER_ARMOUR;
     obj_controller.r_gear[i,15]="Narthecium";
     obj_controller.r_mobi[i,15]="";
     
@@ -287,21 +286,21 @@ for(var i=100; i<103; i++){
     obj_controller.r_role[i,17]="Librarian";
     obj_controller.r_wep1[i,17]="Force Staff";
     obj_controller.r_wep2[i,17]="Storm Bolter";
-    obj_controller.r_armour[i,17]="Power Armour";
+    obj_controller.r_armour[i,17]=STR_ANY_POWER_ARMOUR;
     obj_controller.r_gear[i,17]="Psychic Hood";
     obj_controller.r_mobi[i,17]="";
                 
     obj_controller.r_role[i,18]="Sergeant";
     obj_controller.r_wep1[i,18]="Chainsword";
     obj_controller.r_wep2[i,18]="Storm Bolter";
-    obj_controller.r_armour[i,18]="Power Armour";
+    obj_controller.r_armour[i,18]=STR_ANY_POWER_ARMOUR;
     obj_controller.r_gear[i,18]="";
     obj_controller.r_mobi[i,18]=""; 
 
     obj_controller.r_role[i,19]="Veteran Sergeant";
     obj_controller.r_wep1[i,19]="Chainsword";
     obj_controller.r_wep2[i,19]="Storm Bolter";
-    obj_controller.r_armour[i,19]="Power Armour";
+    obj_controller.r_armour[i,19]=STR_ANY_POWER_ARMOUR;
     obj_controller.r_gear[i,19]="";
     obj_controller.r_mobi[i,19]="";                     
 } // 100 is defaults, 101 is the allowable starting equipment
@@ -446,7 +445,6 @@ ui_ranged_penalty=0;
 current_target=false;
 click=0;
 click2=0;
-mouse_left=0;
 dropdown_open=0;
 scrollbar_engaged=0;
 born_leader=0;
@@ -550,7 +548,6 @@ selecting_planet=0;
 selecting_ship=-1;
 fleet_minimized=0;
 fleet_all=1;
-tolerant=0;
 unload=0;
 new_vehicles=1;
 menu=500;
@@ -712,6 +709,7 @@ sel_owner=0;
 sel_system_x=0;
 sel_system_y=0;
 popup_master_crafted=0;
+close_popups = true;
 // ** Sets starting turn **
 turn=1;
 // turn=40;
@@ -1370,11 +1368,6 @@ serialize = function(){
         loyalty,
         spec_train_data,
         forge_queue: specialist_point_handler.forge_queue,
-        techs: specialist_point_handler.techs,
-        apoths: specialist_point_handler.apoths,
-        forge_points: specialist_point_handler.forge_points,
-        point_breakdown: specialist_point_handler.point_breakdown,
-        apothecary_points: specialist_point_handler.apothecary_points,
 
     }
     var excluded_from_save = ["temp", "serialize", "deserialize", "build_chaos_gods", "company_data","menu_buttons",
@@ -1564,22 +1557,23 @@ var njm=34,com=0,vih=0,word="",masta=0,forga=0,chapla=0,apa=0,liba=0,techa=0,lib
 
 var honoh=0,termi=0,veter=0,capt=0,chap=0,apoth=0,stand=0,dread=0,champ=0,tact=0,assa=0,deva=0,rhino=0,speeder=0,raider=0,standard=0,bike=0,scou=0,whirl=0,pred=0,lib=0,serg=0,vet_serg=0;
 for(var mm=0; mm<=100; mm++){
-    if (obj_ini.role[com,mm]=="Chapter Master") then masta=1;
+    if (obj_ini.role[com,mm]==obj_ini.role[100][eROLE.ChapterMaster]) then masta=1;
     if (obj_ini.role[com,mm]=="Forge Master") then forga=1;
     if (obj_ini.role[com,mm]=="Master of Sanctity") then chapla=1;
     if (obj_ini.role[com,mm]=="Master of the Apothecarion") then apa=1;
-    if (obj_ini.role[com,mm]=="Chief "+string(obj_ini.role[100,17])) then liba=1;
-    if (obj_ini.role[com,mm]==obj_ini.role[100][16]) then techa+=1;
-    if (obj_ini.role[com,mm]==obj_ini.role[100,17]) then libra+=1;
+    if (obj_ini.role[com,mm]=="Chief "+string(obj_ini.role[100][eROLE.Librarian])) then liba=1;
+    if (obj_ini.role[com,mm]==obj_ini.role[100][eROLE.Techmarine]) then techa+=1;
+    if (obj_ini.role[com,mm]==obj_ini.role[100][eROLE.Librarian]) then libra+=1;
     if (obj_ini.role[com,mm]=="Codiciery") then coda+=1;
     if (obj_ini.role[com,mm]=="Lexicanum") then lexa+=1;
-    if (obj_ini.role[com,mm]==obj_ini.role[100][14]) then old_dudes+=1;
-    if (obj_ini.role[com,mm]==obj_ini.role[100][15]) then apotha+=1;
-    if (obj_ini.role[com,mm]==obj_ini.role[100][2]) then honoh+=1;
+    if (obj_ini.role[com,mm]==obj_ini.role[100][eROLE.Chaplain]) then old_dudes+=1;
+    if (obj_ini.role[com,mm]==obj_ini.role[100][eROLE.Apothecary]) then apotha+=1;
+    if (obj_ini.role[com,mm]==obj_ini.role[100][eROLE.HonourGuard]) then honoh+=1;
 }
 
 temp[njm]="Command staff made of";
 
+// Command staff names start at index 1 rather than 0 to align with the chapter company structure
 if (masta == 1) then temp[njm] += $", your majesty Chapter Master {obj_ini.name[com][0]}";
 if (forga == 1) then temp[njm] += $", Forge Master {obj_ini.name[com][1]}";
 if (chapla == 1) then temp[njm] += $", Master of Sanctity {obj_ini.name[com][2]}";

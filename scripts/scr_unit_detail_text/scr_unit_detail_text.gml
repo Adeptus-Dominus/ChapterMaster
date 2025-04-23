@@ -72,7 +72,7 @@ function scr_unit_detail_text(){
 
 		// Psyker text
 		unit_data_string += $"Has an Assignment rating of {_psionic_assignment} ({psionic}) ";
-		var is_lib = array_contains(["Lexicanum", "Codiciery",obj_ini.role[100,17]], role()) || role() == "Chapter Master";
+		var is_lib = array_contains(["Lexicanum", "Codiciery",obj_ini.role[100,17]], role()) || role() == obj_ini.role[100][eROLE.ChapterMaster];
 		if (psionic<-6){
 			unit_data_string += ", so inert in the Warp as to actually exhibit negative psychic influence upon others.";
 		} else if(psionic<0){

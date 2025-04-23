@@ -41,8 +41,8 @@ function scr_scrollbar(argument0, argument1, argument2, argument3, argument4, ar
 	    if (!instance_exists(obj_controller)) and (instance_exists(obj_creation)){
         
 	        var checka=0;
-	        if (obj_creation.mouse_left=0) and (obj_creation.scrollbar_engaged=1) then obj_creation.scrollbar_engaged=0;
-	        if (obj_creation.mouse_left=1) and (mouse_x>=xx+argument0) and (mouse_y>=yy+argument1) and (mouse_x<xx+argument2) and (mouse_y<yy+argument3) then obj_creation.scrollbar_engaged=1;
+	        if (!mouse_button_held(mb_left)) and (obj_creation.scrollbar_engaged=1) then obj_creation.scrollbar_engaged=0;
+	        if (mouse_button_held(mb_left)) and (mouse_x>=xx+argument0) and (mouse_y>=yy+argument1) and (mouse_x<xx+argument2) and (mouse_y<yy+argument3) then obj_creation.scrollbar_engaged=1;
         
 	        checka=1;
         
@@ -77,8 +77,8 @@ function scr_scrollbar(argument0, argument1, argument2, argument3, argument4, ar
 	    if (instance_exists(obj_controller)){
         
 	        var checka=0;
-	        if (obj_controller.mouse_left=0) and (obj_controller.scrollbar_engaged=1) then obj_controller.scrollbar_engaged=0;
-	        if (obj_controller.mouse_left=1) and (mouse_x>=xx+argument0) and (mouse_y>=yy+argument1) and (mouse_x<xx+argument2) and (mouse_y<yy+argument3) then obj_controller.scrollbar_engaged=1;
+	        if (!mouse_button_held(mb_left)) and (obj_controller.scrollbar_engaged=1) then obj_controller.scrollbar_engaged=0;
+	        if (mouse_button_held(mb_left)) and (mouse_x>=xx+argument0) and (mouse_y>=yy+argument1) and (mouse_x<xx+argument2) and (mouse_y<yy+argument3) then obj_controller.scrollbar_engaged=1;
         
         
 	        if (obj_controller.managing>0 || obj_controller.managing=-1) and (obj_controller.menu!=30) and (obj_controller.man_max-MANAGE_MAN_SEE>-1){checka=1;}

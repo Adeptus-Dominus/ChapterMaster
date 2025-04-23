@@ -265,18 +265,13 @@ function scr_ui_manage() {
             }
             string_h = string_height("LOL");
             draw_rectangle(xx + 800 - (bar_wid / 2), yy + 108, xx + 800 + (bar_wid / 2), yy + 100 + string_h, 1);
-            click_check = scr_hit(xx + 800 - (bar_wid / 2), yy + 108, xx + 800 + (bar_wid / 2), yy + 100 + string_h);
+            click_check = point_and_click([xx + 800 - (bar_wid / 2), yy + 108, xx + 800 + (bar_wid / 2), yy + 100 + string_h]);
             obj_cursor.image_index = 0;
-            if ((!click_check) && (mouse_left == 1) && (!cooldown)) {
-                text_bar = false;
-            } else if (click_check) {
+            text_bar = false;
+            if (click_check) {
                 obj_cursor.image_index = 2;
-
-                if ((!cooldown) && (mouse_left == 1) && (!text_bar)) {
-                    cooldown = 8000;
-                    text_bar = true;
-                    keyboard_string = obj_ini.company_title[managing];
-                }
+                text_bar = true;
+                keyboard_string = obj_ini.company_title[managing];
             }
             draw_set_alpha(1);
 
@@ -831,11 +826,11 @@ function scr_ui_manage() {
                     continue;
                 }
                 if (i == 0) {
-                    if (point_in_rectangle(mouse_x, mouse_y, xx + 25 + 8, yy + 64, xx + 974, yy + 85) && mouse_check_button(mb_left)) {
+                    if (point_and_click([xx + 25 + 8, yy + 64, xx + 974, yy + 85])) {
                         man_current = man_current > 0 ? man_current - 1 : 0;
                     }
                 } else if (i == repetitions - 1) {
-                    if (point_in_rectangle(mouse_x, mouse_y, xx + 25 + 8, yy + 64, xx + 974, yy + 85) && mouse_check_button(mb_left)) {
+                    if (point_and_click([xx + 25 + 8, yy + 64, xx + 974, yy + 85])) {
                         man_current = man_current < man_max - MANAGE_MAN_SEE ? man_current + 1 : man_current == (man_max - MANAGE_MAN_SEE);
                         man_current++;
                     }
@@ -894,7 +889,7 @@ function scr_ui_manage() {
                 function gen_tooltip(tooltip_array) {
                     for (var i = 0; i < array_length(tooltip_array); i++) {
                         var tooltip = tooltip_array[i];
-                        if (point_in_rectangle(mouse_x, mouse_y, tooltip[1][0], tooltip[1][1], tooltip[1][2], tooltip[1][3])) {
+                        if (scr_hit(tooltip[1][0], tooltip[1][1], tooltip[1][2], tooltip[1][3])) {
                             tooltip_draw(tooltip[0]);
                         }
                     }
@@ -1225,13 +1220,14 @@ function scr_ui_manage() {
             if ((cn.temp[120].name() != "") && (cn.temp[120].race() != 0)) {
                 draw_set_alpha(1);
                 var xx = __view_get(e__VW.XView, 0) + 0, yy = __view_get(e__VW.YView, 0) + 0;
-                if ((scr_hit(xx + 1208, yy + 210, xx + 1374, yy + 210 + 272) || obj_controller.unit_profile) && !instance_exists(obj_temp3) && !instance_exists(obj_popup)) {
+                if ((obj_controller.unit_profile) && !instance_exists(obj_popup)) {
                     stats_displayed = true;
                     selected_unit.stat_display(true);
                     //tooltip_draw(stat_x, stat_y+string_height(stat_display),0,0,100,17);
                 } else {
                     stats_displayed = false;
                 }
+
                 with (obj_controller) {
                     if (view_squad && !instance_exists(obj_popup)) {
                         if (managing > 10) {

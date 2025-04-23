@@ -31,7 +31,7 @@ global.religions = {
         "name": "The Eight Fold Path"
     }
 };
-#macro ARR_power_armour ["MK7 Aquila", "MK6 Corvus", "MK5 Heresy", "MK3 Iron Armour", "MK4 Maximus", "Power Armour"]
+
 enum location_types {
     planet,
     ship,
@@ -85,7 +85,7 @@ global.base_stats = {
             }
         },
         start_gear: {
-            "armour": "Power Armour",
+            "armour": STR_ANY_POWER_ARMOUR,
             "wep1": "Chainsword",
             "wep2": "Chainsword"
         },
@@ -114,7 +114,7 @@ global.base_stats = {
             }
         },
         start_gear: {
-            "armour": "Power Armour",
+            "armour": STR_ANY_POWER_ARMOUR,
             "wep1": "Bolter",
             "wep2": "Chainsword"
         }, // Scouts should probably have access only to scout armour, and perhaps some stuff from hirelings
@@ -143,7 +143,7 @@ global.base_stats = {
             }
         },
         start_gear: {
-            "armour": "Power Armour",
+            "armour": STR_ANY_POWER_ARMOUR,
             "wep1": "Bolter",
             "wep2": "Chainsword"
         },
@@ -649,17 +649,16 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         var arm = armour();
         var sz = 0;
         sz = 1;
-        var bulky_armour = ["Terminator Armour", "Tartaros"];
         if (string_count("Dread", arm) > 0) {
             sz += 5;
-        } else if (array_contains(bulky_armour, arm)) {
+        } else if (array_contains(LIST_TERMINATOR_ARMOUR, arm)) {
             sz += 1;
         }
         //var mobi =  mobility_item();
         /*if (mobi == "Jump Pack"){
 			sz++;
 		}*/
-        if (unit_role == "Chapter Master") {
+        if (unit_role == obj_ini.role[100][eROLE.ChapterMaster]) {
             sz++;
         }
         size = sz;

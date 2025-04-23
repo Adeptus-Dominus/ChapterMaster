@@ -315,9 +315,9 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
         if (unit_role != "" && units_lost > 0) {
             special = (
                 is_specialist(unit_role, SPECIALISTS_HEADS) ||
-                unit_role == "Chapter Master" ||
-                unit_role == "Venerable " + string(obj_ini.role[100][6]) ||
-                unit_role == obj_ini.role[100][5] ||
+                unit_role == obj_ini.role[100][eROLE.ChapterMaster] ||
+                unit_role == "Venerable " + string(obj_ini.role[100][eROLE.Dreadnought]) ||
+                unit_role == obj_ini.role[100][eROLE.Captain] ||
                 obj_ncombat.player_max <= 6
             );
 

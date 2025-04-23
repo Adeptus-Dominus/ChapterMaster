@@ -18,7 +18,6 @@ autosaving=false;
 trickle=0;
 txt="";
 hide=0;
-cooldown=10;
 bar=0;
 slow=0;
 saves=0;
@@ -26,7 +25,6 @@ highlighting=0;
 spr_screen=0;
 first_open=0;
 max_ini=0;
-mouse_left=0;
 reset=0;
 splash=choose(0,1,2,3,4);
 

@@ -1,5 +1,4 @@
 
-if (yam<1) then exit;
 
 if (settings=1){
     var xx,yy;
@@ -61,35 +60,34 @@ if (settings=1){
     bar=settings_autosave;draw_sprite(spr_creation_check,bar,xx+680,yy+485);
     
     
-    if (cooldown<=0) and (mouse_left=1){var onceh;onceh=0;
-        if (scr_hit(xx+671,yy+223,xx+671+32,yy+223+32)=true) and (master_volume>0){cooldown=8000;change_volume=1;master_volume-=0.1;}
-        if (scr_hit(xx+671,yy+281,xx+671+32,yy+281+32)=true) and (effect_volume>0){cooldown=8000;change_volume=1;effect_volume-=0.1;}
-        if (scr_hit(xx+671,yy+339,xx+671+32,yy+339+32)=true) and (music_volume>0){cooldown=8000;change_volume=1;music_volume-=0.1;}
-        if (scr_hit(xx+981,yy+223,xx+981+32,yy+223+32)=true) and (master_volume<1.3){cooldown=8000;change_volume=1;master_volume+=0.1;}
-        if (scr_hit(xx+981,yy+281,xx+981+32,yy+281+32)=true) and (effect_volume<1.3){cooldown=8000;change_volume=1;effect_volume+=0.1;}
-        if (scr_hit(xx+981,yy+339,xx+981+32,yy+339+32)=true) and (music_volume<1.3){cooldown=8000;change_volume=1;music_volume+=0.1;}
+    if (scr_click_left(,true)){
+        if (scr_hit(xx+671,yy+223,xx+671+32,yy+223+32)=true) and (master_volume>0){change_volume=1;master_volume-=0.1;}
+        if (scr_hit(xx+671,yy+281,xx+671+32,yy+281+32)=true) and (effect_volume>0){change_volume=1;effect_volume-=0.1;}
+        if (scr_hit(xx+671,yy+339,xx+671+32,yy+339+32)=true) and (music_volume>0){change_volume=1;music_volume-=0.1;}
+        if (scr_hit(xx+981,yy+223,xx+981+32,yy+223+32)=true) and (master_volume<1.3){change_volume=1;master_volume+=0.1;}
+        if (scr_hit(xx+981,yy+281,xx+981+32,yy+281+32)=true) and (effect_volume<1.3){change_volume=1;effect_volume+=0.1;}
+        if (scr_hit(xx+981,yy+339,xx+981+32,yy+339+32)=true) and (music_volume<1.3){change_volume=1;music_volume+=0.1;}
         
         if (scr_hit(xx+626,yy+426,xx+626+32,yy+426+32)=true){
-            if (settings_fullscreen=1) and (onceh=0){onceh=1;cooldown=8000;settings_fullscreen=0;window_set_fullscreen(false);change_volume=2;}
-            if (settings_fullscreen=0) and (onceh=0){onceh=1;cooldown=8000;settings_fullscreen=1;window_set_fullscreen(true);change_volume=2;}
+            if (settings_fullscreen=1){settings_fullscreen=0;window_set_fullscreen(false);change_volume=2;}
+           else  if (settings_fullscreen=0){settings_fullscreen=1;window_set_fullscreen(true);change_volume=2;}
             ini_open("saves.ini");
             ini_write_real("Settings", "fullscreen", settings_fullscreen);
             ini_close();
         }
         if (scr_hit(xx+680,yy+485,xx+680+32,yy+485+32)=true){
-            if (settings_autosave=1) and (onceh=0){onceh=1;cooldown=8000;settings_autosave=0;}
-            if (settings_autosave=0) and (onceh=0){onceh=1;cooldown=8000;settings_autosave=1;}
+            settings_autosave =  !settings_autosave;
             ini_open("saves.ini");
             ini_write_real("Settings", "settings_autosave", settings_autosave);
             ini_close();
         }
         // if (scr_hit(xx+622,yy+426+59,xx+622+32,yy+426+32+59)=true){
-        //     if (large_text=1) and (onceh=0){onceh=1;cooldown=8000;large_text=0;change_volume=2;}
-        //     if (large_text=0) and (onceh=0){onceh=1;cooldown=8000;large_text=1;change_volume=2;}
+        //     if (large_text=1) and (onceh=0){onceh=1;large_text=0;change_volume=2;}
+        //     if (large_text=0) and (onceh=0){onceh=1;large_text=1;change_volume=2;}
         // }
         // if (scr_hit(xx+590,yy+485+59,xx+590+32,yy+485+32+59)=true){
-        //     if (settings_heresy=1) and (onceh=0){onceh=1;cooldown=8000;settings_heresy=0;change_volume=2;}
-        //     if (settings_heresy=0) and (onceh=0){onceh=1;cooldown=8000;settings_heresy=1;change_volume=2;}
+        //     if (settings_heresy=1) and (onceh=0){onceh=1;settings_heresy=0;change_volume=2;}
+        //     if (settings_heresy=0) and (onceh=0){onceh=1;settings_heresy=1;change_volume=2;}
         // }
     }
     

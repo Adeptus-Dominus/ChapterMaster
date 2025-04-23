@@ -296,14 +296,14 @@ if __b__ {
 			}
 
 			if (dudes_wep1[g] != "") and (marine_casting[g] == false) { // Do not add weapons to the roster while casting     
-				if ((dudes[g] != "Chapter Master")) then scr_en_weapon(string(dudes_wep1[g]), false, 1, dudes[g], g);
+				if ((dudes[g] != obj_ini.role[100][eROLE.ChapterMaster])) then scr_en_weapon(string(dudes_wep1[g]), false, 1, dudes[g], g);
 
 				if (dudes_wep1[g] = "Close Combat Weapon") then scr_en_weapon("CCW Heavy Flamer", true, 1, dudes[g], g);
 				if (string_count("UBOLT", dudes_wep1[g]) > 0) then scr_en_weapon("Underslung Bolter", false, 1, dudes[g], g);
 				if (string_count("UFL", dudes_wep1[g]) > 0) then scr_en_weapon("Underslung Flamer", false, 1, dudes[g], g);
 			}
 			if (dudes_wep2[g] != "") and (marine_casting[g] == false) {
-				if ((dudes[g] != "Chapter Master")) then scr_en_weapon(string(dudes_wep2[g]), false, 1, dudes[g], g);
+				if ((dudes[g] != obj_ini.role[100][eROLE.ChapterMaster])) then scr_en_weapon(string(dudes_wep2[g]), false, 1, dudes[g], g);
 
 				if (dudes_wep2[g] = "Close Combat Weapon") then scr_en_weapon("CCW Heavy Flamer", true, 1, dudes[g], g);
 				if (string_count("UBOLT", dudes_wep2[g]) > 0) then scr_en_weapon("Underslung Bolter", false, 1, dudes[g], g);

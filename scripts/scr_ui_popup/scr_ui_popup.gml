@@ -59,8 +59,7 @@ function scr_ui_popup() {
 					draw_rectangle(base_x1, base_y1 + y_offset, base_x2, base_y2 + y_offset, 0);
 					draw_set_alpha(1);
 		
-					if (obj_controller.mouse_left == 1 && obj_controller.cooldown <= 0) {
-						obj_controller.cooldown = 8000;
+					if (scr_click_left()) {
 						var base_options = {style: style.tag};
 						obj_temp_build.isnew = 0;
 						array_push(planet_upgrades, new NewPlanetFeature(P_features.Secret_Base, base_options));
@@ -132,8 +131,8 @@ function scr_ui_popup() {
 			                tooltip3=tooltip;
 			                tooltip4=tooltip2;
 			                tcost=cost;
-			                if (obj_controller.mouse_left==1) and (obj_controller.cooldown<=0) and (obj_controller.requisition>=tcost) and (alp!=0.33){
-			                    obj_controller.cooldown=8000;obj_controller.requisition-=tcost;
+			                if (scr_click_left()) and (obj_controller.requisition>=tcost) and (alp!=0.33){
+			                    obj_controller.requisition-=tcost;
 			                    if (r=1){
 			                    	s_base.forge=1;
 			                    	s_base.forge_data = new PlayerForge();
@@ -298,9 +297,8 @@ function scr_ui_popup() {
 	        if (scr_hit(xx+300,yy+45,xx+400,yy+65)=true){
 	            draw_set_alpha(0.2);draw_rectangle(xx+300,yy+45,xx+400,yy+65,0);draw_set_alpha(1);
             
-	            if (obj_controller.cooldown<=0) and (obj_controller.mouse_left=1) and (obj_controller.requisition>=1000){
+	            if (scr_click_left()) and (obj_controller.requisition>=1000){
 					obj_temp_build.isnew=1;
-	                obj_controller.cooldown=8000;
 	                obj_controller.requisition-=1000;
 	            }
 	        }draw_set_halign(fa_left);
@@ -317,9 +315,9 @@ function scr_ui_popup() {
 	            draw_rectangle(xx+300,yy+110,xx+400,yy+130,0);
 	            draw_set_alpha(1);
             
-	            if (obj_controller.cooldown<=0) and (obj_controller.mouse_left==1) and (obj_controller.requisition>=1500){
+	            if (scr_click_left()) and (obj_controller.requisition>=1500){
 	                array_push(planet_upgrades, new NewPlanetFeature(P_features.Arsenal));
-	                obj_controller.cooldown=8000;obj_controller.requisition-=1500;
+	                obj_controller.requisition-=1500;
 	            }
 	        }draw_set_halign(fa_left);
         
@@ -335,9 +333,9 @@ function scr_ui_popup() {
 	        if (scr_hit(xx+300,yy+175,xx+400,yy+195)){
 	            draw_set_alpha(0.2);draw_rectangle(xx+300,yy+175,xx+400,yy+195,0);draw_set_alpha(1);
             
-	            if (obj_controller.cooldown<=0) and (obj_controller.mouse_left=1) and (obj_controller.requisition>=4000){
+	            if (scr_click_left()) and (obj_controller.requisition>=4000){
 	                array_push(planet_upgrades, new NewPlanetFeature(P_features.Gene_Vault));
-	                obj_controller.cooldown=8000;obj_controller.requisition-=4000;
+	                obj_controller.requisition-=4000;
 	            }
 	        }draw_set_halign(fa_left);
         
@@ -355,8 +353,8 @@ function scr_ui_popup() {
 	        draw_set_alpha(0.2);
 	        draw_rectangle(xx+312-60,yy+388,xx+312+60,yy+420,0);draw_set_alpha(1);
         
-	        if (obj_controller.cooldown<=0) and (obj_controller.mouse_left=1){
-	            obj_controller.menu=0;obj_controller.cooldown=8000;
+	        if (scr_click_left()){
+	            obj_controller.menu=0;
 	        }
 
 	    }draw_set_halign(fa_left);
