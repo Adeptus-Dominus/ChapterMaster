@@ -8,3 +8,5 @@ for (var i=0;i<array_length(_star_arrays);i++){
 		sprite_delete(_star_arrays[i]);
 	}
 }
+
+ds_map_destroy(obj_controller.star_sprites);
