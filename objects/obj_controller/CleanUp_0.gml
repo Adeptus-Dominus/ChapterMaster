@@ -1,0 +1,1 @@
+global.name_generator = new NameGenerator();
