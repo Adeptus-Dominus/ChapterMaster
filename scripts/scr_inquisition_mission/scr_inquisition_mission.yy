@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scr_inquisition_mission",
   "parent":{
-    "name":"Turn",
-    "path":"folders/Scripts/Turn.yy",
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",
