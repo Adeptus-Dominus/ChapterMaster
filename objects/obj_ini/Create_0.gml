@@ -43,14 +43,12 @@ repeat(200){i+=1;
     artifact_condition[i]=100;
     artifact_quality[i]="artifact";
     artifact_loc[i]="";
-    artifact_sid[i]=0;// Over 500 : ship
+    artifact_sid[i] = {};// Over 500 : ship
     // Weapon           Unidentified
     artifact_struct[i] =  new ArtifactStruct(i);    
 }
 
 var i=-1;
-init_player_fleet_arrays();
-ship_id = [];
 
 var v;
 var company=-1;
@@ -75,6 +73,10 @@ repeat(11){
         veh_uid[company,v]=0;
     }
 }
+
+UUID_marine = {};
+UUID_vehicle = {};
+UUID_ship = {};
 
 /*if (obj_creation.fleet_type=3){
     obj_controller.penitent=1;

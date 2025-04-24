@@ -216,8 +216,7 @@ function scr_enemy_ai_d() {
                         scr_event_log("","Mechanicus Mission Completed: The Mechanicus research team on "+string(name)+" "+scr_roman(i)+" have completed their work.");
                     }
                     if (reward=2){
-                        if (obj_ini.fleet_type=ePlayerBase.home_world) then scr_add_artifact("random","",0,obj_ini.home_name,2);
-                        if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("random","",0,obj_ini.ship[0],501);
+                        scr_add_artifact("random", "", 0);
                         text="The Mechanicus Research team on planet "+string(name)+" "+scr_roman(i)+" have completed their work without any major setbacks.  Pleased with your astartes' work, they have granted your Chapter an artifact, to be used as you see fit.";
                         scr_event_log("","Mechanicus Mission Completed: The Mechanicus research team on "+string(name)+" "+scr_roman(i)+" have completed their work.");
                         scr_event_log("","Artifact gifted from Mechanicus.");
@@ -254,12 +253,13 @@ function scr_enemy_ai_d() {
                             unit.ship_location=-1;
                             techs_taken+=1;
                         }
-                        if (unit.ship_location>-1){
-                            ship_planet=obj_ini.ship_location[unit.ship_location];
-                            if (ship_planet=name){
-                                obj_ini.ship_carrying[unit.ship_location]-=scr_unit_size(obj_ini.armour[com][ide],obj_ini.role[com][ide],true);
-                                obj_ini.loc[com][ide]="Mechanicus Vessel";unit.planet_location=0;unit.ship_location=0;
-                                techs_taken+=1;
+                        if (unit.ship_location != "") {
+                            var _ship_struct = fetch_ship(unit.ship_location);
+                            ship_planet = _ship_struct.location;
+                            if (ship_planet = name) {
+                                _ship_struct.cargo.carrying -= scr_unit_size(obj_ini.armour[com][ide], obj_ini.role[com][ide], true);
+                                obj_ini.loc[com][ide]="Mechanicus Vessel"; unit.planet_location = 0; unit.ship_location = "";
+                                techs_taken += 1;
                             }
                         }
                     }

@@ -827,12 +827,16 @@ function scr_initialize_custom() {
 	// log_message(ship_summary_str);
 	// show_debug_message(ship_summary_str);
 
-	if (battle_barges>=1){
-	 	for (v=0;v<battle_barges;v++){
-	 		var new_ship = new_player_ship("Battle Barge", "home");
-		    if (flagship_name!="") and (v=0) then ship[new_ship]=flagship_name;
-		}
-	}
+    var _barge_temp = 0;
+    if (obj_creation.fleet_type != ePlayerBase.home_world) {
+        var new_ship = new_player_ship("Battle Barge", , flagship_name);
+        flagship_UUID = new_ship.UUID;
+        _barge_temp = 1;
+    }
+
+    for (v = _barge_temp; v < battle_barges; v++) {
+        new_player_ship("Battle Barge");
+    }
 
 	for(var i=0;i<strike_cruisers;i++){
 		new_player_ship("Strike Cruiser");
@@ -2731,7 +2735,7 @@ function scr_initialize_custom() {
 				_coy.assaults = assault;
 				_coy.devastators = devastator;
 			}
-			
+
 			if (real(_coy.coy) >= 6 && real(_coy.coy) <= 7){
 				if(equal_scouts){
 					if(companies.tenth.scouts > 10){ 
@@ -3252,8 +3256,11 @@ function add_veh_to_company(name, company, slot, wep1, wep2, wep3, upgrade, acce
 /// Use "" if you want to set weapons and gear via squad layouts.
 /// "default" will set it to the value in the default slot for the given role, see `load_default_gear`
 function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1="default", wep2="default", gear="default", mobi="default", armour="default"){
-	// log_message($"adding unit to company ttrpg_name {ttrpg_name}, company {company}, slot {slot}, role_name {role_name}, role_id {role_id}")
-	obj_ini.TTRPG[company][slot] = new TTRPG_stats("chapter", company, slot, ttrpg_name);
+    var spawn_unit = new TTRPG_stats("chapter", company, slot, ttrpg_name);
+    set_unit(spawn_unit.UUID, spawn_unit);
+
+    // log_message($"adding unit to company ttrpg_name {ttrpg_name}, company {company}, slot {slot}, role_name {role_name}, role_id {role_id}")
+    obj_ini.TTRPG[company][slot] = spawn_unit;
 	obj_ini.race[company][slot] = 1;
 	obj_ini.loc[company][slot] = obj_ini.home_name;
 	obj_ini.role[company][slot] = role_name;
@@ -3261,7 +3268,6 @@ function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1
 	if(obj_ini.name[company][slot] == ""){
 		obj_ini.name[company][slot] = global.name_generator.generate_space_marine_name();
 	}
-	var spawn_unit = fetch_unit([company,slot]);
 
 	if(wep1 != ""){
 		if(wep1 == "default"){

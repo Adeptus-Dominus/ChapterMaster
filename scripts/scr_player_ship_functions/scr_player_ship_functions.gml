@@ -1,3 +1,15 @@
+#macro INI_USHIPROOT obj_ini.USHIPROOT
+#macro USHIPROOT UUID_ship
+function fetch_ship(fUUID) {
+    gml_pragma("forceinline");
+    return struct_get(INI_USHIPROOT, fUUID);
+}
+
+function fetch_ship_from_hash(fUUID_hash) {
+    gml_pragma("forceinline");
+    return struct_get_from_hash(INI_USHIPROOT, fUUID_hash);
+}
+
 function return_lost_ships_chance(){
 	if (array_contains(obj_ini.ship_location, "Lost")){
 		if (roll_dice(1, 100, "high")>97){
@@ -113,66 +125,71 @@ function return_lost_ship(){
 	}
 }
 
-function get_player_ships(location="", name=""){
-	var _ships = [];
-	for (var i = 0;i<array_length(obj_ini.ship);i++){
-		if (obj_ini.ship[i] != ""){
-			if (location == ""){
-				array_push(_ships, i);
-			} else {
-				if (obj_ini.ship_location[i] == location){
-					array_push(_ships, i);
-				}
-			}
-		}
-	}
-	return _ships;
+function get_player_ships(location = "") {
+    var _ships = [];
+    var _ship_UUIDs = struct_get_names(INI_USHIPROOT);
+    var _ship_count = array_length(_ship_UUIDs);
+    for (var i = 0; i < _ship_count; i++){
+        if (location == "") {
+            _ships = _ship_UUIDs;
+        } else if (INI_USHIPROOT[$ _ship_UUIDs[i]].location == location) {
+            array_push(_ships, _ship_UUIDs[i]);
+        }
+    }
+    return _ships;
 }
 
-function new_player_ship_defaults(){
-	with (obj_ini){
-		array_push(ship, "");
-		array_push(ship_uid,0);
-		array_push(ship_owner,0);
-		array_push(ship_class, "");
-		array_push(ship_size,0);
-		array_push(ship_leadership,0);
-		array_push(ship_hp,0);
-		array_push(ship_maxhp,0);
-		array_push(ship_location, "");
-		array_push(ship_shields,0);
-		array_push(ship_conditions, "");
-		array_push(ship_speed,0);
-		array_push(ship_turning,0);
-		array_push(ship_front_armour,0);
-		array_push(ship_other_armour,0);
-		array_push(ship_weapons,0);
-		array_push(ship_wep, array_create(6,""));
-		array_push(ship_wep_facing, array_create(6,""));
-		array_push(ship_wep_condition, array_create(6,""));
-		array_push(ship_capacity,0);
-		array_push(ship_carrying,0);
-		array_push(ship_contents, "");
-		array_push(ship_turrets,0);
-	}
-	return array_length(obj_ini.ship)-1;
+function new_player_ship_defaults() {
+    var _ship = {
+        UUID : scr_uuid_generate(),
+        name : "",
+        owner : 1, //TODO: determine if this means the player or not
+        class : "",
+        size : 1,
+        leadership : 100,
+        location : "",
+        conditions : "",
+        speed : 0,
+        turning : 0,
+        health : {
+            maxhp : 0,
+            hp : 0,
+            shields : 0
+        },
+        armor : {
+            front : 0,
+            other : 0
+        },
+        weapons : {
+            count : 0,
+            name : array_create(6, ""),
+            facing : array_create(6, ""),
+            condition : array_create(6, ""),
+            turrets : 0
+        },
+        cargo : {
+            capacity : 0,
+            carrying : 0,
+            unit_list : [],
+            vehicle_list : [],
+            contents : ""
+        },
+        lost : 0
+    }
+
+    return _ship;
 }
 
-function get_valid_player_ship(location="", name=""){
-	for (var i = 0;i<array_length(obj_ini.ship);i++){
-		if (obj_ini.ship[i] != ""){
-			if (location == ""){
-				return i;
-			} else {
-				if (obj_ini.ship_location[i] == location){
-					return i;
-				}
-			}
-		}
-	}
-	return -1;
+function get_valid_player_ship(location = "") {
+    var _ship_UUIDs = struct_get_names(INI_USHIPROOT);
+    var _ship_count = array_length(_ship_UUIDs);
+    for (var i = 0; i < _ship_count; i++) {
+        if (location == "" || INI_USHIPROOT[$ _ship_UUIDs[i]].location == location) {
+            return _ship_UUIDs[i];
+        }
+    }
+    return -1;
 }
-
 
 function loose_ship_to_warp_event(){  
 		
@@ -244,206 +261,219 @@ function loose_ship_to_warp_event(){
 }
 
 //TODO make method for setting ship weaponry
-function new_player_ship(type, start_loc="home", new_name=""){
-    var ship_names="",index=0;
-    var index = new_player_ship_defaults();
-    
-    for(var k=0; k<=200; k++){
-        if (new_name==""){
-            new_name=global.name_generator.generate_imperial_ship_name();
-            if (array_contains(obj_ini.ship,new_name)) then new_name="";
-        } else {break};
+function new_player_ship(type, start_loc = "home", new_name = "") {
+    var _ship_names = [];
+    var _ship = new_player_ship_defaults();
+    var _ship_UUIDs = struct_get_names(INI_USHIPROOT);
+    var _ship_count = array_length(_ship_UUIDs);
+    for (var i = 0; i < _ship_count; i++) {
+        array_push(_ship_names, fetch_ship(_ship_UUIDs[i]).name);
     }
-    if (start_loc == "home") then start_loc = obj_ini.home_name;
-    obj_ini.ship[index]=new_name;
-    obj_ini.ship_uid[index]=floor(random(99999999))+1;
-    obj_ini.ship_owner[index]=1; //TODO: determine if this means the player or not
-    obj_ini.ship_size[index]=1;
-    obj_ini.ship_location[index]=start_loc;
-    obj_ini.ship_leadership[index]=100;	
-    if (string_count("Battle Barge",type)>0){
-        obj_ini.ship_class[index]="Battle Barge";
-        obj_ini.ship_size[index]=3;
-        obj_ini.ship_hp[index]=1200;
-        obj_ini.ship_maxhp[index]=1200;
-        obj_ini.ship_conditions[index]="";
-        obj_ini.ship_speed[index]=20;
-        obj_ini.ship_turning[index]=45;
-        obj_ini.ship_front_armour[index]=6;
-        obj_ini.ship_other_armour[index]=6;
-        obj_ini.ship_weapons[index]=5;
-        obj_ini.ship_shields[index]=12;
-        obj_ini.ship_wep[index,1]="Weapons Battery";
-        obj_ini.ship_wep_facing[index,1]="left";
-        obj_ini.ship_wep_condition[index,1]="";
-        obj_ini.ship_wep[index,2]="Weapons Battery";
-        obj_ini.ship_wep_facing[index,2]="right";
-        obj_ini.ship_wep_condition[index,2]="";
-        obj_ini.ship_wep[index,3]="Thunderhawk Launch Bays";
-        obj_ini.ship_wep_facing[index,3]="special";
-        obj_ini.ship_wep_condition[index,3]="";
-        obj_ini.ship_wep[index,4]="Torpedo Tubes";
-        obj_ini.ship_wep_facing[index,4]="front";
-        obj_ini.ship_wep_condition[index,4]="";
-        obj_ini.ship_wep[index,5]="Macro Bombardment Cannons";
-        obj_ini.ship_wep_facing[index,5]="most";
-        obj_ini.ship_wep_condition[index,5]="";
-        obj_ini.ship_capacity[index]=600;
-        obj_ini.ship_carrying[index]=0;
-        obj_ini.ship_contents[index]="";
-        obj_ini.ship_turrets[index]=3;
+
+    if (new_name != "") {
+        for (var k = 0; k <= 200; k++) {
+            new_name = global.name_generator.generate_imperial_ship_name();
+            if (!array_contains(_ship_names, new_name)) { break };
+        }
     }
-    if (string_count("Strike Cruiser",type)>0){
-        obj_ini.ship_class[index]="Strike Cruiser";
-        obj_ini.ship_size[index]=2;
-        obj_ini.ship_hp[index]=600;
-        obj_ini.ship_maxhp[index]=600;
-        obj_ini.ship_conditions[index]="";
-        obj_ini.ship_speed[index]=25;
-        obj_ini.ship_turning[index]=90;
-        obj_ini.ship_front_armour[index]=6;
-        obj_ini.ship_other_armour[index]=6;
-        obj_ini.ship_weapons[index]=4;
-        obj_ini.ship_shields[index]=6;
-        obj_ini.ship_wep[index,1]="Weapons Battery";
-        obj_ini.ship_wep_facing[index,1]="left";
-        obj_ini.ship_wep_condition[index,1]="";
-        obj_ini.ship_wep[index,2]="Weapons Battery";
-        obj_ini.ship_wep_facing[index,2]="right";
-        obj_ini.ship_wep_condition[index,2]="";
-        obj_ini.ship_wep[index,3]="Thunderhawk Launch Bays";
-        obj_ini.ship_wep_facing[index,3]="special";
-        obj_ini.ship_wep_condition[index,3]="";
-        obj_ini.ship_wep[index,4]="Bombardment Cannons";
-        obj_ini.ship_wep_facing[index,4]="most";
-        obj_ini.ship_wep_condition[index,4]="";
-        obj_ini.ship_capacity[index]=250;
-        obj_ini.ship_carrying[index]=0;
-        obj_ini.ship_contents[index]="";
-        obj_ini.ship_turrets[index]=1;
+
+    if (start_loc == "home") { start_loc = obj_ini.home_name; }
+    _ship.name = new_name;
+    _ship.location = start_loc;
+    if (string_count("Battle Barge", type) > 0){
+        _ship.class = "Battle Barge";
+        _ship.size = 3;
+        _ship.health.maxhp = 1200;
+        _ship.health.hp = _ship.health.maxhp;
+        _ship.health.shields = 12;
+        _ship.speed = 20;
+        _ship.turning = 45;
+        _ship.armor.front = 6;
+        _ship.armor.other = 6;
+
+        _ship.weapons.count = 5;
+        _ship.weapons.name = [
+            "",
+            "Weapons Battery",
+            "Weapons Battery",
+            "Thunderhawk Launch Bays",
+            "Torpedo Tubes",
+            "Macro Bombardment Cannons"
+        ];
+
+        _ship.weapons.facing = [
+            "",
+            "left",
+            "right",
+            "special",
+            "front",
+            "most"
+        ];
+        _ship.weapons.turrets = 3;
+
+        _ship.cargo.capacity = 600;
     }
-    if (string_count("Gladius",type)>0){
-        obj_ini.ship_class[index]="Gladius";
-        obj_ini.ship_hp[index]=200;
-        obj_ini.ship_maxhp[index]=200;
-        obj_ini.ship_conditions[index]="";
-        obj_ini.ship_speed[index]=30;
-        obj_ini.ship_turning[index]=90;
-        obj_ini.ship_front_armour[index]=5;
-        obj_ini.ship_other_armour[index]=5;
-        obj_ini.ship_weapons[index]=1;
-        obj_ini.ship_shields[index]=1;
-        obj_ini.ship_wep[index,1]="Weapons Battery";
-        obj_ini.ship_wep_facing[index,1]="most";
-        obj_ini.ship_wep_condition[index,1]="";
-        obj_ini.ship_capacity[index]=30;
-        obj_ini.ship_carrying[index]=0;
-        obj_ini.ship_contents[index]="";
-        obj_ini.ship_turrets[index]=1;
+
+    if (string_count("Strike Cruiser", type) > 0) {
+        _ship.class = "Strike Cruiser";
+        _ship.size = 2;
+        _ship.health.maxhp = 600;
+        _ship.health.shields = 6;
+        _ship.speed = 25;
+        _ship.turning = 90;
+        _ship.armor.front = 6;
+        _ship.armor.other = 6;
+
+        _ship.weapons.count = 4;
+        _ship.weapons.name = [
+            "",
+            "Weapons Battery",
+            "Weapons Battery",
+            "Thunderhawk Launch Bays",
+            "Bombardment Cannons",
+            ""
+        ];
+
+        _ship.weapons.facing = [
+            "",
+            "left",
+            "right",
+            "special",
+            "most",
+            ""
+        ];
+        _ship.weapons.turrets = 1;
+
+        _ship.cargo.capacity = 250;
     }
-    if (string_count("Hunter",type)>0){
-        obj_ini.ship_class[index]="Hunter";
-        obj_ini.ship_hp[index]=200;
-        obj_ini.ship_maxhp[index]=200;
-        obj_ini.ship_conditions[index]="";
-        obj_ini.ship_speed[index]=30;
-        obj_ini.ship_turning[index]=90;
-        obj_ini.ship_front_armour[index]=5;
-        obj_ini.ship_other_armour[index]=5;
-        obj_ini.ship_weapons[index]=2;
-        obj_ini.ship_shields[index]=1;
-        obj_ini.ship_wep[index,1]="Torpedoes";
-        obj_ini.ship_wep_facing[index,1]="front";
-        obj_ini.ship_wep_condition[index,1]="";
-        obj_ini.ship_wep[index,2]="Weapons Battery";
-        obj_ini.ship_wep_facing[index,2]="most";
-        obj_ini.ship_wep_condition[index,2]="";
-        obj_ini.ship_capacity[index]=25;
-        obj_ini.ship_carrying[index]=0;
-        obj_ini.ship_contents[index]="";
-        obj_ini.ship_turrets[index]=1;
+
+    if (string_count("Gladius", type) > 0) {
+        _ship.class = "Gladius";
+        _ship.health.maxhp = 200;
+        _ship.health.shields = 1;
+        _ship.speed = 30;
+        _ship.turning = 90;
+        _ship.armor.front = 5;
+        _ship.armor.other = 5;
+
+        _ship.weapons.count = 1;
+        _ship.weapons.name[1] = "Weapons Battery";
+        _ship.weapons.facing[1] = "most";
+        _ship.weapons.turrets = 1;
+
+        _ship.cargo.capacity = 30;
     }
-    if (string_count("Gloriana",type)>0){
-		obj_ini.ship[index]=new_name;
-        obj_ini.ship_size[index]=3;
-    
-        obj_ini.ship_class[index]="Gloriana";
-    
-        obj_ini.ship_hp[index]=2400;
-        obj_ini.ship_maxhp[index]=2400;
-        obj_ini.ship_conditions[index]="";
-        obj_ini.ship_speed[index]=25;
-        obj_ini.ship_turning[index]=60;
-        obj_ini.ship_front_armour[index]=8;
-        obj_ini.ship_other_armour[index]=8;
-        obj_ini.ship_weapons[index]=4;
-        obj_ini.ship_shields[index]=24;
-        obj_ini.ship_wep[index,1]="Lance Battery";
-        obj_ini.ship_wep_facing[index,1]="most";
-        obj_ini.ship_wep_condition[index,1]="";
-        obj_ini.ship_wep[index,2]="Lance Battery";
-		obj_ini.ship_wep_facing[index,2]="most";
-        obj_ini.ship_wep_condition[index,2]="";
-        obj_ini.ship_wep[index,3]="Lance Battery";
-        obj_ini.ship_wep_facing[index,3]="most";
-        obj_ini.ship_wep_condition[index,3]="";
-        obj_ini.ship_wep[index,4]="Plasma Cannon";
-        obj_ini.ship_wep_facing[index,4]="front";
-        obj_ini.ship_wep_condition[index,4]="";
-        obj_ini.ship_wep[index,5]="Macro Bombardment Cannons";
-        obj_ini.ship_wep_facing[index,5]="most";
-        obj_ini.ship_wep_condition[index,5]="";               
-        obj_ini.ship_capacity[index]=800;
-        obj_ini.ship_carrying[index]=0;
-        obj_ini.ship_contents[index]="";
-        obj_ini.ship_turrets[index]=8;
+
+    if (string_count("Hunter", type) > 0) {
+        _ship.class = "Hunter";
+        _ship.health.maxhp = 200;
+        _ship.health.shields = 1;
+        _ship.speed = 30;
+        _ship.turning = 90;
+        _ship.armor.front = 5;
+        _ship.armor.other = 5;
+
+        _ship.weapons.count = 2;
+        _ship.weapons.name[1] = "Torpedoes";
+        _ship.weapons.facing[1] = "front";
+        _ship.weapons.name[2] = "Weapons Battery";
+        _ship.weapons.facing[2] = "most";
+        _ship.weapons.turrets = 1;
+
+        _ship.cargo.capacity = 25;
     }
-    return index;
+
+    if (string_count("Gloriana", type) > 0) {
+        _ship.class = "Gloriana";
+        _ship.size = 3;
+        _ship.health.maxhp = 2400;
+        _ship.health.shields = 24;
+        _ship.speed = 25;
+        _ship.turning = 60;
+        _ship.armor.front = 8;
+        _ship.armor.other = 8;
+
+        _ship.weapons.count = 5;
+        _ship.weapons.name = [
+            "",
+            "Lance Battery",
+            "Lance Battery",
+            "Lance Battery",
+            "Plasma Cannon",
+            "Macro Bombardment Cannons",
+        ];
+
+        _ship.weapons.facing = [
+            "",
+            "most",
+            "most",
+            "most",
+            "front",
+            "most"
+        ];
+        _ship.weapons.turrets = 8;
+
+        _ship.cargo.capacity = 800;
+    }
+    _ship.health.hp = _ship.health.maxhp;
+
+    struct_set(USHIPROOT, _ship.UUID, _ship);
+
+    return _ship;
 }
 
-function ship_class_name(index){
-	var _ship_name = obj_ini.ship[index];
-	var _ship_class = obj_ini.ship_class[index];	
-	return $"{_ship_class} '{_ship_name}'";
+function ship_class_name(UUID) {
+    var _ship_struct = fetch_ship(UUID);
+
+    var _ship_name = _ship_struct.name;
+    var _ship_class = _ship_struct.class;
+    return $"{_ship_class} '{_ship_name}'";
 }
 
-function player_ships_class(index){
-	var _escorts = ["Escort", "Hunter", "Gladius"];
-	var _capitals = ["Gloriana", "Battle Barge", "Capital"];
-	var _frigates = ["Strike Cruiser", "Frigate"];	
-	var _ship_name_class = obj_ini.ship_class[index];
-	if (array_contains(_escorts, _ship_name_class)){
-		return "escort";
-	} else if (array_contains(_capitals, _ship_name_class)){
-		return "capital";
-	}else if (array_contains(_frigates, _ship_name_class)){
-		return "frigate";
-	}
-	return _ship_name_class;
+function player_ships_class(UUID) {
+    var _escorts = ["Escort", "Hunter", "Gladius"];
+    var _capitals = ["Gloriana", "Battle Barge", "Capital"];
+    var _frigates = ["Strike Cruiser", "Frigate"];
+    var _ship_struct = fetch_ship(UUID);
+    var _ship_class = _ship_struct.class;
+
+    if (array_contains(_escorts, _ship_class)) {
+        return "escort";
+    } else if (array_contains(_capitals, _ship_class)) {
+        return "capital";
+    } else if (array_contains(_frigates, _ship_class)) {
+        return "frigate";
+    }
+
+    return _ship_class;
 }
 
-function ship_bombard_score(ship_id){
-	var _bomb_score = 0;
-	static weapon_bomb_scores = {
-		"Bombardment Cannons" : {
-			value : 1,
-		},
-		"Macro Bombardment Cannons" : {
-			value : 2,
-		},
-		"Plasma Cannon" : {
-			value : 4
-		},
-		"Torpedo Tubes" : {
-			value : 1
-		}
-	}
-	for (var b=0;b<array_length(obj_ini.ship_wep[ship_id]);b++){
-		var _wep = obj_ini.ship_wep[ship_id][b];
-		if (struct_exists(weapon_bomb_scores, _wep)){
-			_bomb_score += weapon_bomb_scores[$ _wep].value;
-		}
-	}
+function ship_bombard_score(UUID) {
+    var _ship_struct = fetch_ship(UUID);
 
-	return _bomb_score;	
+    var _bomb_score = 0;
+    var weapon_bomb_scores = {
+        "Bombardment Cannons" : {
+            value : 1,
+        },
+        "Macro Bombardment Cannons" : {
+            value : 2,
+        },
+        "Plasma Cannon" : {
+            value : 4
+        },
+        "Torpedo Tubes" : {
+            value : 1
+        }
+    };
+
+    var _array_count = array_length(_ship_struct.weapons.name);
+    for (var b = 0; b < _array_count; b++) {
+        var _wep = _ship_struct.weapons.name[b];
+        if (struct_exists(weapon_bomb_scores, _wep)){
+            _bomb_score += weapon_bomb_scores[$ _wep].value;
+        }
+    }
+
+    return _bomb_score;
 }

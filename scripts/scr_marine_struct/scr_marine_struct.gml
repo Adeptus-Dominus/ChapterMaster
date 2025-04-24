@@ -404,6 +404,10 @@ global.base_stats = {
 };
 
 function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}) constructor {
+    UUID = "";
+    if (class != "blank") {
+        UUID = $"U{scr_uuid_generate()}";
+    }
     constitution = 0;
     strength = 0;
     luck = 0;
@@ -422,10 +426,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         planet_location = obj_ini.home_planet;
     }
     ship_location = -1;
-    last_ship = {
-        uid: "",
-        name: ""
-    };
+    last_ship = "";
     religion = "none";
     master_loyalty = 0;
     job = "none";
@@ -1005,10 +1006,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             break;
     }
 
-    static race = function() {
-        return obj_ini.race[company][marine_number];
-    }; //get race
-
     static update_loyalty = function(change_value) {
         loyalty = clamp(loyalty + change_value, 0, 100);
     };
@@ -1125,7 +1122,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     is_boarder = false;
 
     gear_quality = "standard";
-    static update_gear = scr_update_unit_gear;
 
     if (base_group != "none") {
         update_health(max_health()); //set marine unit_health to max
@@ -1332,7 +1328,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
     static race = function() {
         return obj_ini.race[company][marine_number];
-    };
+    }; //get race
 
     //get equipment data methods by deafult they garb all equipment data and return an equipment struct e.g new EquipmentStruct(item_data, core_type,quality="none")
     static get_armour_data = function(type = "all") {
@@ -1867,7 +1863,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         var location_type = planet_location;
         if (location_type > 0) {
             //if marine is on planet
-            location_id = location_type; //planet_number marine is on
+            location_id = string(location_type); //planet_number marine is on
             location_type = location_types.planet; //state marine is on planet
             if (obj_ini.loc[company][marine_number] == "home") {
                 obj_ini.loc[company][marine_number] = obj_ini.home_name;
@@ -1875,12 +1871,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             location_name = obj_ini.loc[company][marine_number]; //system marine is in
         } else {
             location_type = location_types.ship; //marine is on ship
-            location_id = ship_location; //ship array position
-            if (location_id < array_length(obj_ini.ship_location)) {
-                location_name = obj_ini.ship_location[location_id]; //location of ship
-            } else {
-                location_name = location_name == obj_ini.loc[company][marine_number];
-            }
+            location_id = ship_location; //ship UUID
+            location_name = fetch_ship(ship_location).location; //location of ship
         }
         return [location_type, location_id, location_name];
     };
@@ -1907,11 +1899,12 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         return $"{scr_roman_numerals()[company - 1]}";
     };
 
-    static load_marine = function(ship, star = "none") {
+    static load_marine = function(fUUID, star = "none") {
         get_unit_size(); // make sure marines size given it's current equipment is correct
         var current_location = marine_location();
         var system = current_location[2];
-        var target_ship_location = obj_ini.ship_location[ship];
+        var _ship_struct = fetch_ship(fUUID);
+        var target_ship_location = _ship_struct.location;
         set_last_ship();
         if (assignment() != "none") {
             return "on assignment";
@@ -1926,10 +1919,10 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 system = obj_ini.home_name;
             }
             //check if ship is in the same location as marine and has enough space;
-            if ((target_ship_location == system) && ((obj_ini.ship_carrying[ship] + size) <= obj_ini.ship_capacity[ship])) {
+            if ((target_ship_location == system) && ((_ship_struct.cargo.carrying + size) <= _ship_struct.cargo.capacity)) {
                 planet_location = 0; //mark marine as no longer on planet
-                ship_location = ship; //id of ship marine is now loaded on
-                obj_ini.ship_carrying[ship] += size; //update ship capacity
+                ship_location = fUUID; //id of ship marine is now loaded on
+                _ship_struct.cargo.carrying += size; //update ship capacity
 
                 if (star == "none") {
                     star = star_by_name(system);
@@ -1943,37 +1936,35 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         } else if (current_location[0] == location_types.ship) {
             //with this addition marines can now be moved between ships freely as long as they are in the same system
             var off_loading_ship = current_location[1];
-            if ((obj_ini.ship_location[ship] == obj_ini.ship_location[off_loading_ship]) && ((obj_ini.ship_carrying[ship] + size) <= obj_ini.ship_capacity[ship])) {
-                obj_ini.ship_carrying[off_loading_ship] -= size; // remove from previous ship capacity
+            var _off_ship_struct = fetch_ship(off_loading_ship);
+            if ((target_ship_location == _off_ship_struct.location) && ((_ship_struct.cargo.carrying + size) <= _ship_struct.cargo.capacity)) {
+                _off_ship_struct.cargo.carrying -= size; // remove from previous ship capacity
                 ship_location = ship; // change marine location to new ship
-                obj_ini.ship_carrying[ship] += size; //add marine capacity to new ship
+                _ship_struct.cargo.carrying += size; //add marine capacity to new ship
             }
         }
     };
 
     static set_last_ship = function() {
         if (ship_location > -1) {
-            last_ship.uid = obj_ini.ship_uid[ship_location];
-            last_ship.name = obj_ini.ship[ship_location];
+            last_ship = ship_location;
         } else {
-            last_ship = {
-                uid: "",
-                name: ""
-            };
+            last_ship = "";
         }
     };
 
     static unload = function(planet_number, system) {
         var current_location = marine_location();
-        set_last_ship();
         if (current_location[0] == location_types.ship) {
             if (!array_contains(["Warp", "Terra", "Mechanicus Vessel", "Lost"], current_location[2]) && current_location[2] == system.name) {
-                obj_ini.loc[company][marine_number] = obj_ini.ship_location[current_location[1]];
+                set_last_ship();
+                var _ship_struct = fetch_ship(current_location[1]);
+                obj_ini.loc[company][marine_number] = _ship_struct.location;
                 planet_location = planet_number;
                 ship_location = -1;
                 get_unit_size();
                 system.p_player[planet_number] += size;
-                obj_ini.ship_carrying[current_location[1]] -= size;
+                _ship_struct.cargo.carrying -= size;
             }
         } else {
             ship_location = -1;
@@ -2295,8 +2286,36 @@ function jsonify_marine_struct(company, marine, stringify=true) {
     }
 }
 
-/// @param {Array<Real>} unit where unit[0] is company and unit[1] is the position
+#macro INI_UUNITROOT obj_ini.UUNITROOT
+#macro UUNITROOT UUID_marine
+/// DEPRECATED : @param {Array<Real>} unit where unit[0] is company and unit[1] is the position
+/// @param {<String>} funit where unit is a UUID
 /// @returns {Struct.TTRPG_stats} unit
-function fetch_unit(unit) {
-    return obj_ini.TTRPG[unit[0]][unit[1]];
+function fetch_unit(funit) {
+    gml_pragma("forceinline");
+    if (!is_string(funit)) {
+        return obj_ini.TTRPG[funit[0]][funit[1]];
+    } else {
+        return struct_get(INI_UUNITROOT, funit);
+    }
+}
+
+/// @param {<String>} funit where unit is a hash of a UUID
+/// @returns {Struct.TTRPG_stats} unit
+function fetch_unit_from_hash(funit) {
+    gml_pragma("forceinline");
+    return struct_get_from_hash(INI_UUNITROOT, funit);
+}
+
+/// @param {<String>} funit where unit is a UUID
+function set_unit(funit, fdata) {
+    gml_pragma("forceinline");
+    struct_set(INI_UUNITROOT, funit, fdata);
+}
+
+/// @param {<String>} funit where unit is a hash of a UUID
+/// @param {<Any>} fdata data for variable
+function set_unit_from_hash(funit, fdata) {
+    gml_pragma("forceinline");
+    struct_set_from_hash(INI_UUNITROOT, funit, fdata);
 }
