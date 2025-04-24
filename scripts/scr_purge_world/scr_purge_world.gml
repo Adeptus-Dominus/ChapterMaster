@@ -330,12 +330,12 @@ function scr_purge_world(star, planet, action_type, action_score) {
 	        pip.title="Purge Results";
 	        pip.text=txt2;
 	    }
-	    /*if (isquest=1){// DO EET
+	    if (isquest==1){// DO EET
 	        var pip;pip=instance_create(0,0,obj_popup);
 	        pip.title="Inquisition Mission Completed";
 	        pip.text=txt1;pip.image="inquisition";
-	        scr_event_log("","Inquisition Mission Completed: The unruly nobles of "+string(star.name)+" "+string(scr_roman(planet))+" have been silenced.");
-	    }*/
+	        // scr_event_log("","Inquisition Mission Completed: The unruly nobles of "+string(star.name)+" "+string(scr_roman(planet))+" have been silenced.");
+	    }
 	}
 
 

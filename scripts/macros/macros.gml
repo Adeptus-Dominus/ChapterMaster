@@ -33,7 +33,8 @@ enum INQUISITION_MISSION {
     artifact,
     tomb_world,
     tyranid_organism,
-    ethereal
+    ethereal,
+    demon_world
 }
 
 enum EVENT {

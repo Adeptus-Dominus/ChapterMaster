@@ -44,7 +44,6 @@ successor_y = 250;
 custom_y = 463;
 /// y coord of Other section heading
 other_y = 593;
-marine_surface = surface_create(600, 600);
 var show_debug = false;
 if(show_debug){
     show_debug_overlay(true);

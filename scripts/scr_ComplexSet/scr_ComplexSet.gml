@@ -88,12 +88,12 @@ function sprite_get_uvs_transformed(_spr1, _subimg1, _spr2, _subimg2)
     return [_x_offset, _y_offset, _x_scale, _y_scale];
 }
 
-function ComplexSet(unit) constructor{
+function ComplexSet(_unit) constructor{
     overides = {
 
     };
-    unit_armour = unit.armour();
-    self.unit = unit;
+    unit_armour = _unit.armour();
+    unit = _unit;
     draw_helms = instance_exists(obj_creation) ? obj_creation.draw_helms : obj_controller.draw_helms;
     //draw_helms = false;
     static mk7_bits = {
@@ -665,7 +665,6 @@ function ComplexSet(unit) constructor{
 
         // Draw hands above the weapon sprite;       
     }
-    static prep_surface = surface_create(600, 600);
     static weapon_preset_data = {
         "shield" : {
             arm_type: 2,
@@ -699,9 +698,7 @@ function ComplexSet(unit) constructor{
     static draw = function(){
         var _final_surface = surface_get_target();
         surface_reset_target();
-        if (!surface_exists(prep_surface)) {
-            prep_surface = surface_create(600, 600);
-        }
+        var prep_surface = surface_create(600, 600);
         surface_set_target(prep_surface); 
          
 
@@ -880,12 +877,21 @@ function ComplexSet(unit) constructor{
          purity_seals_and_hangings();
          draw_weapon_and_hands();
 
+         delete texture_draws;
+
         shader_reset();
          surface_reset_target();
-         surface_set_target(_final_surface);       
+        if (!surface_exists(prep_surface) || !surface_exists(_final_surface)) {
+            draw_sprite(spr_none, 0, 0, 0);
+            if (surface_exists(prep_surface)) {
+                surface_free(prep_surface);
+            }
+            exit;
+         }
+         surface_set_target(_final_surface);     
          draw_surface(prep_surface, 0, 0);
-         delete texture_draws;
         set_and_clear_surface(prep_surface);
+        surface_free(prep_surface)
         shader_set(full_livery_shader);    
     }
     static purity_seals_and_hangings = function(){
@@ -1269,6 +1275,7 @@ function ComplexSet(unit) constructor{
 
             head = sprite_create_from_surface(_head_surface, 0, 0, _surface_width, 60, false, false, 0, 0);
             set_and_clear_surface(_head_surface);
+            surface_free(_head_surface);
             shader_set(full_livery_shader);
         }
     }

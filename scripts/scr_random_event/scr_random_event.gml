@@ -96,7 +96,7 @@ function scr_random_event(execute_now) {
 						EVENT.ship_lost, // Another save-scumming event, mainly due to rarity of player ships
 						//EVENT.chaos_invasion, // Spawns Chaos fleets way too close to player owned worlds with no warning and usually lots of big ships, save-scum galore and encourages fleet-based chapters // TODO LOW INVASION_EVENT // Make them spawn way farther with more warning, make them have a different goal or remove this event entirely
 						EVENT.necron_awaken, // Inquisitor check for this is inverted
-						//EVENT.fallen, // Event mission cannot be completed and never expires // TODO LOW FALLEN_EVENT // fix
+						EVENT.fallen, // Event mission cannot be completed and never expires // TODO LOW FALLEN_EVENT // fix
 					];
 				}
 	
@@ -716,11 +716,15 @@ function scr_random_event(execute_now) {
 			var valid_stars = array_filter_ext(stars, function(star, index) {
 				for(var i = 1; i <= star.planets; i++){
 					if(star.p_owner[i]==eFACTION.Tau && star.p_tau[i] >= 4) {
+
+
+
 						return true;
 					}
 				}
 				return false;
 			});
+
 			if(valid_stars == 0){
 				exit;
 			}
@@ -742,48 +746,11 @@ function scr_random_event(execute_now) {
     
 	} else if (chosen_event == EVENT.mechanicus_mission) {
 		spawn_mechanicus_mission()
+
 	}
     
-	else if (chosen_event == EVENT.inquisition_planet) {
-		var stars = scr_get_stars();
-		var valid_stars = array_filter_ext(stars,
-		function(star,index){			
-			if(scr_star_has_planet_with_feature(star, "????")){
-				var fleet = instance_nearest(star.x,star.y,obj_p_fleet);
-				if(fleet == undefined || point_distance(star.x,star.y,fleet.x,fleet.y)>=160){
-					return true;
-				}
-				return false;
-			}
-			return false;
-		});
-		
-		if (valid_stars == 0){
-			log_error("RE: Investigate Planet, couldn't find a star");
-			exit;
-		}
-	    	
-		var star = stars[irandom(valid_stars-1)];
-		var planet = scr_get_planet_with_feature(star, P_features.Ancient_Ruins);
-		if (planet == -1){
-			log_error("RE: Investigate Planet, couldn't pick a planet");
-			exit;
-		}
-
-		
-		var eta = infinity;
-	    with(obj_p_fleet){
-			if (action!=""){
-				continue;
-			}
-			eta = min(eta, scr_mission_eta(star.x,star.y,1));
-		}
-		eta = min(max(3,eta),100); 
-		
-		var text="The Inquisition wishes for you to investigate " + string(star.name) + " " + scr_roman(planet) + ".";
-		text+="  Boots are expected to be planted on its surface over the course of your investigation.";
-	    text += " You have " + string(eta) + " months to complete this task.";
-	    scr_popup("Inquisition Recon",text,"inquisition","recon|"+string(star.name)+"|"+string(planet)+"|"+string(eta)+"|");
+	else if (chosen_event == EVENT.inquisition_planet || chosen_event == EVENT.inquisition_mission) {
+		scr_inquisition_mission(chosen_event);
 	    evented = true;
 	}
 
@@ -1257,42 +1224,8 @@ function scr_random_event(execute_now) {
 	}
 	
 	else if(chosen_event == EVENT.fallen){
-		log_message("RE: Hunt the Fallen");
-		var stars = scr_get_stars();
-		var valid_stars = array_filter_ext(stars,
-			function(star,index){
-				return scr_star_has_planet_with_owner(star,2);
-		});
-		
-		if(valid_stars == 0)
-		{
-			log_error("RE: Hunt the Fallen, coulnd't find a star");
-			exit;
-		}
-		
-		var star_index = irandom(valid_stars-1);
-		var star = stars[star_index];
-		var planet = scr_get_planet_with_owner(star,2);
-		var eta = scr_mission_eta(star.x,star.y, 1);
-		
-		var assigned_problem = false;
-		
-		add_new_problem(planet, "fallen", eta,star)
-		
-		if(!assigned_problem) {
-			log_error("RE: Hunt the Fallen, coulnd't assign a problem to the planet");
-			exit;
-		}
-		
-		var text = "Sources indicate one of the Fallen may be upon "+string(star.name)+" "+string(scr_roman(planet))+".  We have "+string(eta)+" months to send out a strike team and scour the planet.  Any longer and any Fallen that might be there will have escaped.";
-		scr_popup("Hunt the Fallen",text,"fallen","");
-		scr_event_log("","Sources indicate one of the Fallen may be upon "+string(star.name)+" "+string(scr_roman(planet))+".  We have "+string(eta)+" months to investigate.");
-		var star_alert = instance_create(star.x+16,star.y-24,obj_star_event);
-		star_alert.image_alpha=1;
-		star_alert.image_speed=1;
-		star_alert.col="purple";
+		event_fallen();
 		evented = true;
-
 	}
 
 	if(evented) {
@@ -1314,5 +1247,45 @@ function scr_random_event(execute_now) {
 	//with(obj_en_fleet){if (x<-10000){x+=20000;y+=20000;}}
 	//with(obj_star){if (x<-10000){x+=20000;y+=20000;}}
 
+
+}
+
+
+function event_fallen(){
+	log_message("RE: Hunt the Fallen");
+	var stars = scr_get_stars();
+	var valid_stars = array_filter_ext(stars,
+		function(star,index){
+			return scr_star_has_planet_with_owner(star, eFACTION.Imperium);
+	});
+	
+	if(valid_stars == 0)
+	{
+		log_error("RE: Hunt the Fallen, coulnd't find a star");
+		exit;
+	}
+	log_message($"Fallen: valid_stars {valid_stars}")
+	
+	var star = choose_array(stars);
+	var planet = scr_get_planet_with_owner(star,eFACTION.Imperium);
+	var eta = scr_mission_eta(star.x,star.y, 1);
+
+	log_message($"Fallen: found star {star.name} planet {planet} as candidate")
+	
+	var assigned_problem = add_new_problem(planet, "fallen", eta,star)
+	log_message($"assigned_problem {assigned_problem}")
+
+	if(!assigned_problem) {
+		log_error("RE: Hunt the Fallen, coulnd't assign a problem to the planet");
+		return;
+	}
+	
+	var text = "Sources indicate one of the Fallen may be upon "+string(star.name)+" "+string(scr_roman(planet))+".  We have "+string(eta)+" months to send out a strike team and scour the planet.  Any longer and any Fallen that might be there will have escaped.";
+	scr_popup("Hunt the Fallen",text,"fallen","");
+	scr_event_log("","Sources indicate one of the Fallen may be upon "+string(star.name)+" "+string(scr_roman(planet))+".  We have "+string(eta)+" months to investigate.");
+	var star_alert = instance_create(star.x+16,star.y-24,obj_star_event);
+	star_alert.image_alpha=1;
+	star_alert.image_speed=1;
+	star_alert.col="purple";
 
 }

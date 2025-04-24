@@ -760,6 +760,7 @@
     {"id":{"name":"scr_ini_ship_cleanup","path":"scripts/scr_ini_ship_cleanup/scr_ini_ship_cleanup.yy",},},
     {"id":{"name":"scr_initialize_custom","path":"scripts/scr_initialize_custom/scr_initialize_custom.yy",},},
     {"id":{"name":"scr_inquisition_fleet_functions","path":"scripts/scr_inquisition_fleet_functions/scr_inquisition_fleet_functions.yy",},},
+    {"id":{"name":"scr_inquistion_mission","path":"scripts/scr_inquistion_mission/scr_inquistion_mission.yy",},},
     {"id":{"name":"scr_item_count","path":"scripts/scr_item_count/scr_item_count.yy",},},
     {"id":{"name":"scr_json_functions","path":"scripts/scr_json_functions/scr_json_functions.yy",},},
     {"id":{"name":"scr_keyboard_helpers","path":"scripts/scr_keyboard_helpers/scr_keyboard_helpers.yy",},},

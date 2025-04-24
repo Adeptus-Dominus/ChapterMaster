@@ -1114,11 +1114,11 @@ try {
 					}
 
 					instance_activate_object(obj_star);
-					mission_star = star_by_name(obj_controller.temp[200]);
-
+					mission_star = star_by_name(obj_temp8.loc);
 					var ppp = 0;
-					remove_planet_problem(planet, "bomb", mission_star);
-					mission_star.p_feature[planet][search_planet_features(mission_star.p_feature[planet], P_features.Necron_Tomb)[0]].sealed = 1;
+					remove_planet_problem(planet, "necron", mission_star);
+					seal_tomb_world(mission_star.p_feature[planet]);
+					// mission_star.p_feature[planet][search_planet_features(mission_star.p_feature[planet], P_features.Necron_Tomb)[0]].sealed = 1;
 					with (obj_temp8) {
 						instance_destroy();
 					}
@@ -1231,7 +1231,9 @@ try {
 				}
 				scr_event_log("", $"Inquisition Mission Accepted: The Inquisition wish for Astartes to land on and investigate {mission_star.name} {scr_roman(planet)} within {estimate} months.", mission_star.name);
 			}
-		} else if ((mission != "") && (title == "Inquisition Mission")) {
+		}
+		
+		if ((mission != "") && (title == "Inquisition Mission")) {
 			obj_controller.temp[200] = string(loc);
 			var mission_star, onceh;
 			mission_star = 0;
@@ -1248,10 +1250,12 @@ try {
 						mission_is_go = true;
 					}
 				}
+
 				if (mission_is_go) {
 					if (demand) {
 						title = "Inquisition Mission Demand";
 					}
+
 
 					if (mission == "purge") {
 						scr_event_log("", $"Inquisition Mission Accepted: The nobles of {mission_star.name} {scr_roman(planet)} must be selectively purged within {estimate} months.", mission_star.name);
@@ -1331,8 +1335,13 @@ try {
 							title = "Inquisition Mission Demand";
 							text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  {global.chapter_name} are to capture the Tau Ethereal somewhere within the {mission_star.name} system.";
 						}
-						if (mission_star.p_problem[planet, 1] == "recon") {
+						if (has_problem_star("recon", mission_star)) {
 							scr_event_log("", $"Inquisition Mission Accepted: The Inquisition wish for {global.chapter_name} to capture the Tau Ethereal somewhere within {mission_star.name}.", mission_star.name);
+						}
+					} else if (mission == "demon_world"){
+						scr_event_log("", $"Inquisition Mission Accepted: The demon world of {mission_star.name} {scr_roman(planet)} will be purged by your hand.", mission_star.name);
+						if (demand) {
+							text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  An out of control Demon World {mission_star.name} {scr_roman(onceh)} must be cleansed within {estimate} months.";
 						}
 					}
 				}

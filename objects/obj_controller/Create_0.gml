@@ -74,7 +74,6 @@
 */
 show_debug_message("Creating Controller");
 log_message("Creating Controller");
-marine_surface = surface_create(600, 600);
 scr_colors_initialize();
 is_test_map=false;
 target_navy_number=5;
@@ -98,6 +97,9 @@ chapter_made = 0;
 obj_cuicons.alarm[1]=1; // Clean up custom icons
 map_scale = 1;
 scale_mod = 1;
+
+star_sprites = ds_map_create();
+
 
 diplomacy_pathway = "";
 option_selections=[];

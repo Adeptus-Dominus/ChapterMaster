@@ -273,12 +273,10 @@ function seal_tomb_world(planet){
 	 var tombs = search_planet_features(planet, P_features.Necron_Tomb);
 	 if (array_length(tombs)>0){
 		 for (var tomb =0;tomb<array_length(tombs);tomb++){
-			 if (planet[tombs[tomb]].awake == 1){
-				awake_tomb = 1;
-				planet[tombs[tomb]].awake = 0;
-				planet[tombs[tomb]].sealed = 1;
-				planet[tombs[tomb]].planet_display = "Sealed Necron Tomb";
-			 }
+			awake_tomb = 1;
+			planet[tombs[tomb]].awake = 0;
+			planet[tombs[tomb]].sealed = 1;
+			planet[tombs[tomb]].planet_display = "Sealed Necron Tomb";
 			 if (awake_tomb = 1) then break;
 		 }
 	 }

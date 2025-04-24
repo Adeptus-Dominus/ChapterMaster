@@ -142,6 +142,7 @@ function scr_enemy_ai_d() {
             }
         	remove_planet_problem(i, "great_crusade");
         }
+
         mechanicus_missions_end_turn(i);
         if (has_problem_planet_and_time(i,"bomb", 0)>-1){
 
@@ -153,7 +154,7 @@ function scr_enemy_ai_d() {
         
             p_necrons[i]=4;
             if (awake_tomb_world(p_feature[i])==0) then awaken_tomb_world(p_feature[i]);
-        	remove_planet_problem(i,"bomb"); 
+        	remove_planet_problem(i,"necron"); 
             // scr_alert("red","mission_failed",alert_text,0,0);
             obj_controller.disposition[4]-=8;
         }

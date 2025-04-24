@@ -504,9 +504,11 @@ function scr_enemy_ai_e() {
             }
 
         }
-        if (p_player[run] > 0) and(has_problem_planet(run,"bomb")) {
+        if (p_player[run] > 0 && has_problem_planet(run,"necron")) {
+            log_message($"player on planet with necron mission {name} planet: {run}")
             var have_bomb;
             have_bomb = scr_check_equip("Plasma Bomb", name, run, 0);
+            log_message($"have bomb? {have_bomb} ")
             if (have_bomb > 0) {
                 var tixt;
                 tixt = "Your marines on " + planet_numeral_name(run);
