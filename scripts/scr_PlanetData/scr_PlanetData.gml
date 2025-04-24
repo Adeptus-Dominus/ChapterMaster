@@ -16,6 +16,8 @@ function PlanetData(planet, system) constructor{
 
     self.planet = planet;
     self.system = system;
+    x = system.x;
+    y = system.y;
     player_disposition = system.dispo[planet];
     planet_type = system.p_type[planet];
     operatives = system.p_operatives[planet];
@@ -45,7 +47,7 @@ function PlanetData(planet, system) constructor{
     }
 
     //assumes a large pop figure and changes down if small pop planet
-    static population_small_conversion= function(pop_value){
+    static population_small_conversion = function(pop_value){
     	if (!large_population){
     		pop_value *= large_pop_conversion;
     	}
@@ -144,6 +146,88 @@ function PlanetData(planet, system) constructor{
 		handle_exception(_exception);
 	}
 
+	static add_forces = function(faction, val){
+		planet_forces[faction] = clamp(planet_forces[faction]+val,0,12);
+		var _new_val = planet_forces[faction];
+		switch (faction){
+			case eFACTION.Ork:
+				system.p_orks[0] = _new_val;
+				break;
+		}
+	}
+
+    static grow_ork_forces = function(){
+        var contin=0;
+        var rando=roll_dice(1,100);// This part handles the spreading
+        // if (rando<30){
+        var _non_deads = planets_without_type("dead", system);
+        if (array_length(_non_deads)>0 && rando>40){
+            var _ork_spread_planet = array_random_element(_non_deads);
+            var _orks = planet_forces[eFACTION.Ork]
+            var _ork_target = system.p_orks[_ork_spread_planet];
+            var _spread_orks = (current_owner==eFACTION.Ork &&  ((pdf + guardsmen + planet_forces[8] + planet_forces[10]+planet_forces[1]) == 0 ));
+            if (_spread_orks){
+                if (_orks<5 && _ork_target<2) then  system.p_orks[_ork_spread_planet]++;
+                if (_orks>4 && _ork_target<3){
+                    system.p_orks[_ork_spread_planet]++;
+                    if (_ork_target<3){
+                        system.p_orks[_ork_spread_planet]++;
+                        add_forces(eFACTION.Ork, -1);
+                    }
+
+                }
+
+            }
+        }
+        contin=0;
+        rando=roll_dice(1,100);// This part handles the ship building
+        if (population>0 && pdf==0 && guardsmen==0 && planet_forces[10]==0) and (planet_forces[eFACTION.Tau]==0){
+        	if (!large_population){
+				set_population(population*0.97);
+			}else {
+				edit_population(-0.01);
+			}
+        	
+        };
+    
+        var enemies_present=false;
+        with (system){
+	        for (var n=0;n<array_length(_non_deads);n++){
+	        	var plan=_non_deads[n];
+
+	            if (planets>=1) and ((p_pdf[plan]>0) or (p_guardsmen[plan]>0) or (p_traitors[plan]>0) or (p_tau[plan]>0)){
+	            	enemies_present=true;
+	            }
+	        }
+	    }
+
+        if (!enemies_present){
+            rando=roll_dice(1,100, "low");
+            if (obj_controller.known[eFACTION.Ork]>0) then rando-=10;// Empire bonus, was 15 before
+        
+            // Check for industrial facilities
+            if (planet_type!="Dead" && planet_type!="Lava" && planet_forces[eFACTION.Ork]>=4){// Used to not have Ice either
+
+                if (instance_exists(obj_p_fleet)){
+                    var ppp=instance_nearest(x,y,obj_p_fleet);
+                    if (point_distance(x,y,ppp.x,ppp.y)<50) and (ppp.action=""){
+                    	exit;
+                    };
+                }   
+                var _ork_fleet = scr_orbiting_fleet(eFACTION.Ork, system); 
+                if (_ork_fleet=="none"){
+                	if (rando<=25){
+                		new_ork_fleet(x,y);
+                	}
+                } else {
+
+                	build_new_ork_ships_to_fleet(system, planet, _ork_fleet);
+
+                }              
+            } 
+        }
+    
+    }
     deamons = system.p_demons[planet];
     chaos_forces = system.p_chaos[planet];
 
@@ -215,7 +299,9 @@ function PlanetData(planet, system) constructor{
     }
 
     static add_feature = function(feature_type){
-    	array_push(system.p_feature[planet], new NewPlanetFeature(feature_type));
+    	var new_feature =  new NewPlanetFeature(feature_type);
+    	array_push(system.p_feature[planet], new_feature);
+    	return new_feature;
     }
 
     static has_upgrade = function(feature){

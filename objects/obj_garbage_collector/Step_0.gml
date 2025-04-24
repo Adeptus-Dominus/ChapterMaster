@@ -4,7 +4,7 @@ if (gc_timer > 0) {
 } else {
 
 
-    gc_timer = 50; // Default is every frame, so de-facto 1;
+    gc_timer = 50000; // Default is every frame, so de-facto 1;
     gc_collect();
 
     wait_and_execute(0, function(){
