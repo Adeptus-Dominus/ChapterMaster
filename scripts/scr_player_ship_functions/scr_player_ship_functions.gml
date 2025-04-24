@@ -2,7 +2,12 @@
 #macro USHIPROOT UUID_ship
 function fetch_ship(fUUID) {
     gml_pragma("forceinline");
-    return INI_USHIPROOT[$ fUUID];
+    return struct_get(INI_USHIPROOT, fUUID);
+}
+
+function fetch_ship_from_hash(fUUID_hash) {
+    gml_pragma("forceinline");
+    return struct_get_from_hash(INI_USHIPROOT, fUUID_hash);
 }
 
 function return_lost_ships_chance(){
@@ -262,7 +267,7 @@ function new_player_ship(type, start_loc = "home", new_name = "") {
     var _ship_UUIDs = struct_get_names(INI_USHIPROOT);
     var _ship_count = array_length(_ship_UUIDs);
     for (var i = 0; i < _ship_count; i++) {
-        array_push(_ship_names, INI_USHIPROOT[$ _ship_UUIDs[i]].name)
+        array_push(_ship_names, fetch_ship(_ship_UUIDs[i]).name);
     }
 
     if (new_name != "") {
@@ -412,9 +417,9 @@ function new_player_ship(type, start_loc = "home", new_name = "") {
     }
     _ship.health.hp = _ship.health.maxhp;
 
-    struct_set(USHIPROOT, _ship.UUID, _ship)
+    struct_set(USHIPROOT, _ship.UUID, _ship);
 
-    return INI_USHIPROOT[$ _ship.UUID];
+    return _ship;
 }
 
 function ship_class_name(UUID) {

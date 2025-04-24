@@ -19,8 +19,7 @@ function scr_move_unit_info(start_company,end_company, start_slot, end_slot, eva
         obj_ini.god[end_company][end_slot]=obj_ini.god[start_company][start_slot];
         obj_ini.age[end_company][end_slot]=obj_ini.age[start_company][start_slot];
         obj_ini.mobi[end_company][end_slot]=obj_ini.mobi[start_company][start_slot];
-        obj_ini.TTRPG[end_company][end_slot] = new TTRPG_stats("chapter", end_company, end_slot, "blank"); // create new empty unit structure
-        obj_ini.TTRPG[end_company][end_slot] = obj_ini.TTRPG[start_company][start_slot];                //load in originoal marine data
+        obj_ini.TTRPG[end_company][end_slot] = unit; //load in originoal marine data
         obj_ini.TTRPG[end_company][end_slot].company = end_company;
         obj_ini.TTRPG[end_company][end_slot].marine_number = end_slot;
 

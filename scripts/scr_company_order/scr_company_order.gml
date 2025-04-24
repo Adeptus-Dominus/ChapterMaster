@@ -36,7 +36,7 @@ function temp_marine_variables(co, unit_num){
 		array_push(temp_mobi,mobi[co][unit_num]);
 		array_push(temp_spe,spe[co][unit_num]);
 		array_push(temp_god,god[co][unit_num]);
-        array_push(temp_UUID, TTRPG[co][unit_num].UUID);
+        array_push(temp_struct, TTRPG[co][unit_num]);
 		scr_wipe_unit(co,unit_num);
 }
 function sort_all_companies(){
@@ -74,7 +74,7 @@ function scr_company_order(company) {
     temp_age=[];
     temp_spe=[];
     temp_god=[];
-    temp_UUID=[];
+    temp_struct=[];
 
 
 	/*takes a template of a role, required role number and if there are enough 
@@ -328,6 +328,9 @@ function scr_company_order(company) {
 
 	// Return here
 	for (i=0;i<array_length(temp_name);i++){
+            unit = temp_struct[i];
+            unit.company = co;
+            unit.marine_number = i;
 	        race[co][i]=temp_race[i];
 	        loc[co][i]=temp_loc[i];
 	        name[co][i]=temp_name[i];
@@ -340,10 +343,7 @@ function scr_company_order(company) {
 	        age[co][i]=temp_age[i];
 	        spe[co][i]=temp_spe[i];
 	        god[co][i]=temp_god[i];
-			obj_ini.TTRPG[co][i] = obj_ini.UUID_marine[$ temp_UUID[i]];
-			unit = fetch_unit([co, i]);
-			unit.company = co;
-			unit.marine_number = i;
+            obj_ini.TTRPG[co][i] = unit;
 			unit.movement_after_math();
 	}
 /*	i=0;repeat(300){i+=1;

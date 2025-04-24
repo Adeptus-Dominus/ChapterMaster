@@ -2296,6 +2296,26 @@ function fetch_unit(funit) {
     if (!is_string(funit)) {
         return obj_ini.TTRPG[funit[0]][funit[1]];
     } else {
-        return INI_UUNITROOT[$ funit];
+        return struct_get(INI_UUNITROOT, funit);
     }
+}
+
+/// @param {<String>} funit where unit is a hash of a UUID
+/// @returns {Struct.TTRPG_stats} unit
+function fetch_unit_from_hash(funit) {
+    gml_pragma("forceinline");
+    return struct_get_from_hash(INI_UUNITROOT, funit);
+}
+
+/// @param {<String>} funit where unit is a UUID
+function set_unit(funit, fdata) {
+    gml_pragma("forceinline");
+    struct_set(INI_UUNITROOT, funit, fdata);
+}
+
+/// @param {<String>} funit where unit is a hash of a UUID
+/// @param {<Any>} fdata data for variable
+function set_unit_from_hash(funit, fdata) {
+    gml_pragma("forceinline");
+    struct_set_from_hash(INI_UUNITROOT, funit, fdata);
 }

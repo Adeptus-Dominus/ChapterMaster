@@ -122,28 +122,28 @@ function merge_player_fleets(main_fleet, merge_fleet) {
 }
 
 function move_ship_between_player_fleets(out_fleet, in_fleet, fUUID) {
-    var fUUID_hash = variable_get_hash(fUUID);
+    var _UUID_hash = variable_get_hash(fUUID);
     var _class = player_ships_class(fUUID);
     switch _class {
     case "capital":
-        struct_set_from_hash(in_fleet.capital, _fUUID_hash, out_fleet.capital[$ fUUID]);
-        in_fleet.capital_number--;
+        struct_set_from_hash(in_fleet.capital, _UUID_hash, struct_get_from_hash(out_fleet.capital, _UUID_hash));
+        in_fleet.capital_number++;
 
-        struct_remove_from_hash(out_fleet.capital, _fUUID_hash);
+        struct_remove_from_hash(out_fleet.capital, _UUID_hash);
         out_fleet.capital_number--;
         break;
     case "frigate":
-        struct_set_from_hash(in_fleet.frigate, _fUUID_hash, out_fleet.frigate[$ fUUID]);
-        in_fleet.frigate_number--;
+        struct_set_from_hash(in_fleet.frigate, _UUID_hash, struct_get_from_hash(out_fleet.frigate, _UUID_hash));
+        in_fleet.frigate_number++;
 
-        struct_remove_from_hash(out_fleet.frigate, _fUUID_hash);
+        struct_remove_from_hash(out_fleet.frigate, _UUID_hash);
         out_fleet.frigate_number--;
         break;
     case "escort":
-        struct_set_from_hash(in_fleet.escort, _fUUID_hash, out_fleet.escort[$ fUUID]);
-        in_fleet.escort_number--;
+        struct_set_from_hash(in_fleet.escort, _UUID_hash, struct_get_from_hash(out_fleet.escort, _UUID_hash));
+        in_fleet.escort_number++;
 
-        struct_remove_from_hash(out_fleet.escort, _fUUID_hash);
+        struct_remove_from_hash(out_fleet.escort, _UUID_hash);
         out_fleet.escort_number--;
         break;
     }

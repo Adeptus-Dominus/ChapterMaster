@@ -250,8 +250,8 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
 				}
 			}			
 		}
-        struct_set(UUID_marine, unit.UUID, unit)
-        obj_ini.TTRPG[target_company][good] = UUID_marine[$ unit.UUID];
+        set_unit(unit.UUID, unit);
+        obj_ini.TTRPG[target_company][good] = unit;
 		unit.add_exp(spawn_exp);
 		unit.allocate_unit_to_fresh_spawn(home_spot);
 		unit.update_role(man_role);	
