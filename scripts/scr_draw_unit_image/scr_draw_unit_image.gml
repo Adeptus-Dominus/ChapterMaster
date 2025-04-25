@@ -733,6 +733,7 @@ function scr_draw_unit_image(_background = false) {
     }
 
     var _complete_sprite = sprite_create_from_surface(unit_surface, 0, 0, 600, 600, true, false, 0, 0);
+    set_and_clear_surface(unit_surface);
     surface_free(unit_surface);
 
     return new UnitImage(_complete_sprite);
