@@ -39,7 +39,7 @@
   "origin":9,
   "parent":{
     "name":"Deprecated",
-    "path":"folders/Sprites/Deprecated.yy",
+    "path":"folders/Sprites/Unused/Deprecated.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

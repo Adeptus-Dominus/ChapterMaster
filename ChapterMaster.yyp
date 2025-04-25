@@ -79,7 +79,7 @@
     {"$GMFolder":"","%Name":"decorations","folderPath":"folders/Sprites/Marine Viewer/decorations.yy","name":"decorations","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"cloaks","folderPath":"folders/Sprites/Marine Viewer/decorations/cloaks.yy","name":"cloaks","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"images","folderPath":"folders/Sprites/Marine Viewer/decorations/cloaks/images.yy","name":"images","resourceType":"GMFolder","resourceVersion":"2.0",},
-    {"$GMFolder":"","%Name":"Deprecated","folderPath":"folders/Sprites/Deprecated.yy","name":"Deprecated","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"Deprecated","folderPath":"folders/Sprites/Unused/Deprecated.yy","name":"Deprecated","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"dreadnought","folderPath":"folders/Sprites/Marine Viewer/dreadnought.yy","name":"dreadnought","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"gear","folderPath":"folders/Sprites/Marine Viewer/gear.yy","name":"gear","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"standards","folderPath":"folders/Sprites/Marine Viewer/gear/standards.yy","name":"standards","resourceType":"GMFolder","resourceVersion":"2.0",},
@@ -1719,7 +1719,7 @@
   "templateType":null,
   "TextureGroups":[
     {"$GMTextureGroup":"","%Name":"Default","autocrop":true,"border":2,"compressFormat":"bz2","customOptions":"","directory":"","groupParent":null,"isScaled":true,"loadType":"default","mipsToGenerate":0,"name":"Default","resourceType":"GMTextureGroup","resourceVersion":"2.0","targets":-1,},
-    {"$GMTextureGroup":"","%Name":"Deprecated","autocrop":true,"border":2,"compressFormat":"bz2","customOptions":"","directory":"textures/deprecated","groupParent":null,"isScaled":true,"loadType":"dynamicpages","mipsToGenerate":0,"name":"Deprecated","resourceType":"GMTextureGroup","resourceVersion":"2.0","targets":-1,},
+    {"$GMTextureGroup":"","%Name":"Unused","autocrop":true,"border":2,"compressFormat":"bz2","customOptions":"","directory":"textures/deprecated","groupParent":null,"isScaled":true,"loadType":"dynamicpages","mipsToGenerate":0,"name":"Unused","resourceType":"GMTextureGroup","resourceVersion":"2.0","targets":-1,},
     {"$GMTextureGroup":"","%Name":"MarineViewer","autocrop":true,"border":2,"compressFormat":"bz2","customOptions":"","directory":"","groupParent":null,"isScaled":true,"loadType":"default","mipsToGenerate":0,"name":"MarineViewer","resourceType":"GMTextureGroup","resourceVersion":"2.0","targets":-1,},
     {"$GMTextureGroup":"","%Name":"NavalCombat","autocrop":true,"border":2,"compressFormat":"bz2","customOptions":"","directory":"","groupParent":null,"isScaled":true,"loadType":"default","mipsToGenerate":0,"name":"NavalCombat","resourceType":"GMTextureGroup","resourceVersion":"2.0","targets":-1,},
   ],

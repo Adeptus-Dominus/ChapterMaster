@@ -29,7 +29,7 @@
   "origin":9,
   "parent":{
     "name":"Deprecated",
-    "path":"folders/Sprites/Deprecated.yy",
+    "path":"folders/Sprites/Unused/Deprecated.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",
@@ -90,8 +90,8 @@
   "swatchColours":null,
   "swfPrecision":2.525,
   "textureGroupId":{
-    "name":"Deprecated",
-    "path":"texturegroups/Deprecated",
+    "name":"Unused",
+    "path":"texturegroups/Unused",
   },
   "type":0,
   "VTile":false,
