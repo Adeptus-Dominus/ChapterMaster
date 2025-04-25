@@ -12,8 +12,17 @@ function new_ork_fleet(xx,yy){
 
 function orks_end_turn_growth(){
     for (i=1;i<=planets;i++){
-        if (!p_orks[i]) then continue;
         var _pdata = new PlanetData(i, self);
+        if (!p_orks[i]){
+            var _strongholds = _pdata.get_features(P_features.OrkStronghold);
+            for (var s=0;s<array_length(_strongholds);s++){
+                var _hold = _strongholds[s];
+                _hold.tier -= 0.01;
+                if (_hold.tier<=0){
+                   _pdata.delete_feature(P_features.OrkStronghold);
+                }
+            }
+        };
         _pdata.grow_ork_forces()
     }
 }
@@ -111,15 +120,18 @@ function ork_fleet_arrive_target(){
         }
         if (ork_attack_planet>0) then p_tyranids[ork_attack_planet]-=_ork_fleet.capital_number+(_ork_fleet.frigate_number/2);
 
+        var _pdata = new PlanetData(ork_attack_planet, self);
+
+        //generate refugee ships to spread tyranids
         if (p_tyranids[ork_attack_planet]<=0){
             if (planet_feature_bool(p_feature[ork_attack_planet], P_features.Gene_Stealer_Cult)){
-                delete_features(p_feature[ork_attack_planet], P_features.Gene_Stealer_Cult);
+                _pdata.delete_feature(P_features.Gene_Stealer_Cult);
                 adjust_influence(eFACTION.Tyranids, -25, ork_attack_planet);
                 var nearest_imperial = nearest_star_with_ownership(x,y,eFACTION.Imperium, self.id);
                 if (nearest_imperial != "none"){
                     var targ_planet = scr_get_planet_with_owner(nearest_imperial,eFACTION.Imperium);
                     if (targ_planet==-1) then targ_planet = irandom_range(1, nearest_imperial.planets);
-                    new_colony_fleet(self.id, ork_attack_planet, nearest_imperial.id, targ_planet, "refugee");
+                    _pdata.send_colony_ship(nearest_imperial.id, targ_planet, "refugee");
                 }
             }
         }
@@ -144,21 +156,23 @@ function ork_fleet_arrive_target(){
                         }
                         aler=1;
                     }                    
-                } else {
-                    var new_wagh_star = distance_removed_star(x,y, choose(2,3,4,5));
-                    if (instance_exists(new_wagh_star)){
-                        with (_ork_fleet){
-                            action_x=new_wagh_star.x;
-                            action_y=new_wagh_star.y;
-                            action = "";
-                            set_fleet_movement();
-                        }
-                    }                    
                 }
             }
         }
     
-        if (aler>0) then scr_alert("green","owner",$"Ork ships have crashed across the {name} system.",x,y);
+        if (aler>0){
+            scr_alert("green","owner",$"Ork ships have crashed across the {name} system.",x,y);
+        } else {
+            var new_wagh_star = distance_removed_star(x,y, choose(2,3,4,5));
+            if (instance_exists(new_wagh_star)){
+                with (_ork_fleet){
+                    action_x=new_wagh_star.x;
+                    action_y=new_wagh_star.y;
+                    action = "";
+                    set_fleet_movement();
+                }
+            }                    
+        }
 
 
     }// End _allow_landingng portion of code

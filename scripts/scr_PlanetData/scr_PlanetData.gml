@@ -54,6 +54,10 @@ function PlanetData(planet, system) constructor{
     	return pop_value;
     }
 
+    static send_colony_ship = function(target, targ_planet, type){
+        new_colony_fleet(system, planet, target, targ_planet, type);
+    }
+
     static return_to_first_owner = function(allow_player = false){
     	if (!allow_player && origional_owner == eFACTION.Player){
     		system.p_owner[planet]= eFACTION.Imperium;
@@ -161,13 +165,21 @@ function PlanetData(planet, system) constructor{
         var rando=roll_dice(1,100);// This part handles the spreading
         // if (rando<30){
         var _non_deads = planets_without_type("dead", system);
+
+        var _has_warboss = has_feature(P_features.OrkWarboss);
+        var _has_stronghold = has_feature(P_features.OrkStronghold);
+        var _stronghold = get_features(P_features.OrkStronghold)[0];
+
+        if (_has_warboss){
+            var _warboss = get_features(P_features.OrkWarboss)[0];
+        }
         if (array_length(_non_deads)>0 && rando>40){
             var _ork_spread_planet = array_random_element(_non_deads);
             var _orks = planet_forces[eFACTION.Ork]
             var _ork_target = system.p_orks[_ork_spread_planet];
             var _spread_orks = (current_owner==eFACTION.Ork &&  ((pdf + guardsmen + planet_forces[8] + planet_forces[10]+planet_forces[1]) == 0 ));
             if (_spread_orks){
-                if (_orks<5 && _ork_target<2) then  system.p_orks[_ork_spread_planet]++;
+                if (_ork_max<5 && _ork_target<2) then  system.p_orks[_ork_spread_planet]++;
                 if (_orks>4 && _ork_target<3){
                     system.p_orks[_ork_spread_planet]++;
                     if (_ork_target<3){
@@ -193,7 +205,7 @@ function PlanetData(planet, system) constructor{
         var enemies_present=false;
         with (system){
 	        for (var n=0;n<array_length(_non_deads);n++){
-	        	var plan=_non_deads[n];
+	        	var plan = _non_deads[n];
 
 	            if (planets>=1) and ((p_pdf[plan]>0) or (p_guardsmen[plan]>0) or (p_traitors[plan]>0) or (p_tau[plan]>0)){
 	            	enemies_present=true;
@@ -201,8 +213,31 @@ function PlanetData(planet, system) constructor{
 	        }
 	    }
 
+        if (_has_warboss && !_has_stronghold){
+            rando=roll_dice(1,100, "low");
+            if (rando<30){
+                new_feature(P_features.OrkStronghold);
+            }
+        } else {
+            if (_has_stronghold){
+                growth = 0.01;
+                if (_has_warboss){
+                    growth *= 2;
+                }
+                if (_stronghold.tier<planet_forces[eFACTION.Ork]){
+                    _stronghold.tier += growth;
+                }
+            }
+        }
+
         if (!enemies_present){
             rando=roll_dice(1,100, "low");
+            if (_has_warboss){
+                rando -= 5;
+            }
+            if (_has_stronghold){
+                rando -= floor(_stronghold.tier)*5;
+            }
             if (obj_controller.known[eFACTION.Ork]>0) then rando-=10;// Empire bonus, was 15 before
         
             // Check for industrial facilities
@@ -320,6 +355,8 @@ function PlanetData(planet, system) constructor{
     static delete_feature = function(feature){
     	delete_features(system.p_feature[planet], feature);
     }
+
+    static bombard = scr_bomb_world;
 
     static get_local_apothecary_points = function() {
         var _system_point_use = obj_controller.specialist_point_handler.point_breakdown.systems;

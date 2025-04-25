@@ -26,7 +26,7 @@ enum P_features {
 			Forge,
 			Gene_Stealer_Cult,
 			Mission,
-			Ork_Stronghold
+			OrkStronghold
 
 	};
 	
@@ -143,6 +143,11 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 		player_hidden = 1;
 		planet_display= "Ork Warboss";
 		Warboss = "alive";
+		break;
+	case P_features.OrkStronghold:
+		player_hidden = 1;
+		planet_display= "Ork Stronghold";
+		tier = 1;
 		break;
 	case P_features.Monastery:
 		planet_display="Fortress Monastary";
