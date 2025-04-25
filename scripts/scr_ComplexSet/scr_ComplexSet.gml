@@ -789,8 +789,7 @@ function ComplexSet(_unit) constructor{
         }else if(unit_role==_role[eROLE.Veteran] || (unit_role==_role[eROLE.Terminator] && unit.company == 1)){
             _complex_helm = _comp_helms.veteran;
         }
-        if (is_struct(_complex_helm) 
-            && struct_exists(self, "head") && draw_helms && !sprite_exists(head)){
+        if (is_struct(_complex_helm) && struct_exists(self, "head") && draw_helms) {
             complex_helms(_complex_helm);
         }
 
@@ -1267,6 +1266,10 @@ function ComplexSet(_unit) constructor{
             //shader_set_uniform_f_array(shader_get_uniform(helm_shader, "replace_colour"), get_shader_array(data.helm_secondary));
             //draw_sprite(spr_helm_stripe, data.helm_pattern==1?0:1, 0, 0);
             surface_reset_target();
+
+            if (sprite_exists(head)) {
+                sprite_delete(head);
+            }
 
             head = sprite_create_from_surface(_head_surface, 0, 0, _surface_width, 60, false, false, 0, 0);
             surface_clear_and_free(_head_surface);
