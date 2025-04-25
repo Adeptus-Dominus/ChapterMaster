@@ -26,7 +26,7 @@
   "origin":0,
   "parent":{
     "name":"data_slate_icons",
-    "path":"folders/Sprites/New UI/data_slate_icons.yy",
+    "path":"folders/Sprites/UI/New UI/data_slate_icons.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

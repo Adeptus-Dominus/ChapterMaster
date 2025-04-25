@@ -27,7 +27,7 @@
   "origin":0,
   "parent":{
     "name":"tooltips",
-    "path":"folders/Sprites/New UI/tooltips.yy",
+    "path":"folders/Sprites/UI/New UI/tooltips.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

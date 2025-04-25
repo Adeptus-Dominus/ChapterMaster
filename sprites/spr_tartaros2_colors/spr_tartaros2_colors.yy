@@ -35,8 +35,8 @@
   "nineSlice":null,
   "origin":9,
   "parent":{
-    "name":"body_types",
-    "path":"folders/Sprites/Marine Viewer/body_types.yy",
+    "name":"Deprecated",
+    "path":"folders/Sprites/Deprecated.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",
@@ -121,8 +121,8 @@
   "swatchColours":null,
   "swfPrecision":2.525,
   "textureGroupId":{
-    "name":"Default",
-    "path":"texturegroups/Default",
+    "name":"Deprecated",
+    "path":"texturegroups/Deprecated",
   },
   "type":0,
   "VTile":false,
