@@ -519,7 +519,7 @@ function ComplexSet(_unit) constructor{
                     draw_surface(base_component_surface, 0, 0);
                     surface_reset_target();
 
-                    set_and_clear_surface(base_component_surface);
+                    clear_and_free_surface(base_component_surface);
 
                     surface_set_target(_return_surface);             
                  } else {
@@ -890,8 +890,7 @@ function ComplexSet(_unit) constructor{
          }
          surface_set_target(_final_surface);     
          draw_surface(prep_surface, 0, 0);
-        set_and_clear_surface(prep_surface);
-        surface_free(prep_surface)
+        clear_and_free_surface(prep_surface);
         shader_set(full_livery_shader);    
     }
     static purity_seals_and_hangings = function(){
@@ -1274,8 +1273,7 @@ function ComplexSet(_unit) constructor{
             surface_reset_target();
 
             head = sprite_create_from_surface(_head_surface, 0, 0, _surface_width, 60, false, false, 0, 0);
-            set_and_clear_surface(_head_surface);
-            surface_free(_head_surface);
+            clear_and_free_surface(_head_surface);
             shader_set(full_livery_shader);
         }
     }

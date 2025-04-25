@@ -45,7 +45,7 @@ enum ArmourType {
     None,
 }
 
-function set_and_clear_surface(_surface) {
+function clear_and_free_surface(_surface) {
     surface_set_target(_surface);
     draw_clear_alpha(c_white, 0);
     surface_reset_target();
@@ -733,7 +733,7 @@ function scr_draw_unit_image(_background = false) {
     }
 
     var _complete_sprite = sprite_create_from_surface(unit_surface, 0, 0, 600, 600, true, false, 0, 0);
-    set_and_clear_surface(unit_surface);
+    clear_and_free_surface(unit_surface);
     surface_free(unit_surface);
 
     return new UnitImage(_complete_sprite);
