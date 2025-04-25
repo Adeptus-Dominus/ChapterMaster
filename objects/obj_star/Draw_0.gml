@@ -86,7 +86,7 @@ if (global.load == -1 && (obj_controller.zoomed || in_camera_view(star_box_shape
         stored_owner = owner;
         var _new_sprite = sprite_create_from_surface(star_tag_surface, 0, 0, surface_get_width(star_tag_surface), surface_get_height(star_tag_surface), false, false, 0, 0);
         ds_map_set(obj_controller.star_sprites, name, _new_sprite);
-        surface_free(star_tag_surface)
+        surface_clear_and_free(star_tag_surface)
     } 
     var _sprite = ds_map_find_value(obj_controller.star_sprites, name)
     draw_sprite_ext(_sprite, 0,  x-(64*scale), y, scale, scale, 1, c_white, 1);

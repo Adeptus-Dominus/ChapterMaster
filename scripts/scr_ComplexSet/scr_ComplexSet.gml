@@ -444,7 +444,6 @@ function ComplexSet(_unit) constructor{
         right_weapon : unit.get_body_data("weapon_variation","right_arm"),
     }
 
-    static base_component_surface = surface_create(600, 600);
     static draw_component = function(component_name, texture_draws={}){
         if (array_contains(banned, component_name)){
             return "banned component";
@@ -474,9 +473,7 @@ function ComplexSet(_unit) constructor{
                     surface_reset_target();                   
                     shader_reset();
 
-                    if (!surface_exists(base_component_surface)) {
-                        base_component_surface = surface_create(600, 600);
-                    }
+                    var base_component_surface = surface_create(600, 600);
                     surface_set_target(base_component_surface);                          
                     shader_set(armour_texture);
                     for (var i=0;i<array_length(_tex_names);i++){
@@ -518,8 +515,7 @@ function ComplexSet(_unit) constructor{
                     draw_sprite(_sprite,choice ?? 0,x_surface_offset,y_surface_offset);
                     draw_surface(base_component_surface, 0, 0);
                     surface_reset_target();
-
-                    clear_and_free_surface(base_component_surface);
+                    surface_clear_and_free(base_component_surface);
 
                     surface_set_target(_return_surface);             
                  } else {
@@ -794,7 +790,7 @@ function ComplexSet(_unit) constructor{
             _complex_helm = _comp_helms.veteran;
         }
         if (is_struct(_complex_helm) 
-            && struct_exists(self, "head") && draw_helms){
+            && struct_exists(self, "head") && draw_helms && !sprite_exists(head)){
             complex_helms(_complex_helm);
         }
 
@@ -884,13 +880,13 @@ function ComplexSet(_unit) constructor{
         if (!surface_exists(prep_surface) || !surface_exists(_final_surface)) {
             draw_sprite(spr_none, 0, 0, 0);
             if (surface_exists(prep_surface)) {
-                surface_free(prep_surface);
+                surface_clear_and_free(prep_surface);
             }
             exit;
          }
          surface_set_target(_final_surface);     
          draw_surface(prep_surface, 0, 0);
-        clear_and_free_surface(prep_surface);
+        surface_clear_and_free(prep_surface);
         shader_set(full_livery_shader);    
     }
     static purity_seals_and_hangings = function(){
@@ -1273,7 +1269,7 @@ function ComplexSet(_unit) constructor{
             surface_reset_target();
 
             head = sprite_create_from_surface(_head_surface, 0, 0, _surface_width, 60, false, false, 0, 0);
-            clear_and_free_surface(_head_surface);
+            surface_clear_and_free(_head_surface);
             shader_set(full_livery_shader);
         }
     }
