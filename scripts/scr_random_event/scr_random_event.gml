@@ -47,18 +47,11 @@ function scr_random_event(execute_now) {
 		}
 		else {
 			var player_luck;
-			var has_bad_luck = scr_has_disadv("Shitty Luck");
-			var luck_roll = irandom(100);
-			if (has_bad_luck){
-				if (luck_roll<=30) then player_luck=luck.good;
-			    if (luck_roll>30) and (luck_roll<45) then player_luck=luck.neutral;
-				if (luck_roll>=45) then player_luck=luck.bad;
-			}
-			else{
-			    if (luck_roll<=45) then player_luck=luck.good;
-			    if (luck_roll>45) and (luck_roll<55) then player_luck=luck.neutral;
-				if (luck_roll>=55) then player_luck=luck.bad;
-			}
+			var luck_roll = roll_dice_chapter(1, 100, "low");
+
+			if (luck_roll<=45) then player_luck=luck.good;
+			if (luck_roll>45) and (luck_roll<55) then player_luck=luck.neutral;
+			if (luck_roll>=55) then player_luck=luck.bad;
 
 		
 				var events;
@@ -330,14 +323,11 @@ function scr_random_event(execute_now) {
 
         
 	    var crafted_object;
-	    var craft_roll=irandom(100);
+	    var craft_roll=roll_dice_chapter(1, 100, "low");
 		var heritical_item = false;
         
 		//this bit should be improved, idk what duke was checking for here
 		//TODO make craft chance reflective of crafters skill, rewards players for having skilled tech area
-        if (scr_has_disadv("Shitty Luck")) {
-			craft_roll+=20;
-		}
         if (scr_has_disadv("Tech-Heresy")) {
 			craft_roll+=20;
 		}
@@ -981,9 +971,10 @@ function scr_random_event(execute_now) {
 		
 		time=irandom_range(6,24);
 	    if (scr_has_disadv("Shitty Luck")){
-			own=1;
-		}
-		else {
+			own=choose(1,2,0,0,0);
+		} else if (scr_has_adv("Great Luck")) {
+			own=choose(1,1,2,2,0);
+		} else {
 			own=choose(1,1,2,0,0);
 		}
 		
@@ -1016,11 +1007,12 @@ function scr_random_event(execute_now) {
 	else if (chosen_event == EVENT.enemy_forces){
 		log_message("RE: Enemy Forces");
 		var own;
-	    if (scr_has_disadv("Shitty Luck")) {
-			own=1;
-		}
-		else{
-			own=choose(1,1,2,2,3);
+	    if (scr_has_disadv("Shitty Luck")){
+			own=choose(1,1,1,1,1,1,2,2,3);
+		} else if (scr_has_adv("Great Luck")) {
+			own=choose(1,1,1,2,2,2,2,3,3);
+		} else {
+			own=choose(1,1,1,2,2,3);
 		}
 		
 		var star_id = scr_random_find(own,true,"","");

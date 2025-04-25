@@ -3316,9 +3316,9 @@ function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1
 		spawn_unit.add_trait("soft_target");
 	}
 	if(role_id == eROLE.Librarian){
-		if (scr_has_adv("Favoured By The Warp") && (roll_personal_dice(1, 6, "high", spawn_unit) >= 4)) {
+		if (scr_has_adv("Favoured By The Warp") && (roll_dice_unit(1, 6, "high", spawn_unit) >= 4)) {
 			spawn_unit.add_trait("favoured_by_the_warp");
-		} else if (roll_personal_dice(1, 10, "high", spawn_unit) == 10) {
+		} else if (roll_dice_unit(1, 10, "high", spawn_unit) == 10) {
 			spawn_unit.add_trait("favoured_by_the_warp");
 		}
 
@@ -3326,10 +3326,10 @@ function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1
 			spawn_unit.psionic = irandom_range(8, 10);
 		} else if (role_name == "Codiciery") {
 			spawn_unit.psionic = irandom_range(5, 7);
-			if (roll_personal_dice(1, 6, "high", spawn_unit) < 4) {
+			if (roll_dice_unit(1, 6, "high", spawn_unit) < 4) {
 				spawn_unit.update_gear(obj_ini.gear[obj_ini.defaults_slot][eROLE.Tactical], false, false);
 			}
-			if (roll_personal_dice(1, 6, "high", spawn_unit) < 4) {
+			if (roll_dice_unit(1, 6, "high", spawn_unit) < 4) {
 				spawn_unit.update_weapon_one(choose("Force Axe", "Force Sword"), false, false);
 			}
 		} else if (role_name == "Lexicanum") {

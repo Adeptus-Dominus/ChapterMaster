@@ -72,11 +72,8 @@ function scr_enemy_ai_b() {
                     }
                 }
 
-                var fleet_spawn_chance = irandom(99) + 1;
+                var fleet_spawn_chance = roll_dice_chapter(1, 100, "high");
                 onceh = 0;
-                if (scr_has_disadv("Shitty Luck")) {
-                    fleet_spawn_chance -= 5;
-                }
 
                 if (fleet_spawn_chance <= 15) {
                     if (present_fleet[eFACTION.Necrons] > 0) {

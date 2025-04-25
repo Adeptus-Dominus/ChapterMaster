@@ -1,6 +1,6 @@
 function return_lost_ships_chance(){
 	if (array_contains(obj_ini.ship_location, "Lost")){
-		if (roll_dice(1, 100, "high")>97){
+		if (roll_dice_chapter(1, 100, "high")>97){
 			return_lost_ship();
 		}
 	}
@@ -30,7 +30,7 @@ function return_lost_ship(){
 			add_ship_to_fleet(_return_id, _new_fleet);
 		}
 
-		var _return_defect = roll_dice(1, 100, "high");
+		var _return_defect = roll_dice_chapter(1, 100, "high");
 		var _text = $"The ship {obj_ini.ship[_return_id]} has returned to real space and is now orbiting the {_star.name} system\n";
 		if (_return_defect<90){
 			if (_return_defect>80){
@@ -85,7 +85,7 @@ function return_lost_ship(){
 				}
 				scr_kill_ship(_return_id);
 				var _chaos_fleet = spawn_chaos_fleet_at_system(_star);
-				var fleet_strength = ((100 - roll_dice(1, 100, "low"))/10)+3;
+				var fleet_strength = ((100 - roll_dice_chapter(1, 100, "low"))/10)+3;
 				distribute_strength_to_fleet(fleet_strength, _chaos_fleet);
 				with (_new_fleet){
 					instance_destroy();

@@ -111,24 +111,46 @@ function print_stat_diffs(diffs){
 	return _diff_string;
 }
 
-
-/// @description Roll a custom dice, influenced by the chapter' luck, return sum of all rolls.
+/// @description repeat(x){irandom_range(1, y)} with a nice name, return sum of all rolls.
 /// @param {real} dices - how many dices to roll.
 /// @param {real} faces - how many faces each dice has.
-/// @param {real} player_benefit_at - will the player benefit from low or high rolls, for the luck logic.
 /// @returns {real}
-function roll_dice(dices = 1, faces = 6, player_benefit_at = "none") {
+function roll_dice(dices = 1, faces = 6) {
 	var _total_roll = 0;
 	var _roll = 0;
 
 	repeat (dices) {
 		_roll = irandom_range(1, faces);
 
-		if (scr_has_disadv("Shitty Luck") && player_benefit_at != "none") {
+		_total_roll += _roll;
+	}
+
+	return _total_roll;
+}
+
+/// @description Roll a custom dice, influenced by the chapter' luck, return sum of all rolls.
+/// @param {real} dices - how many dices to roll.
+/// @param {real} faces - how many faces each dice has.
+/// @param {real} player_benefit_at - will the player benefit from low or high rolls, for the luck logic.
+/// @returns {real}
+function roll_dice_chapter(dices = 1, faces = 6, player_benefit_at) {
+	var _total_roll = 0;
+	var _roll = 0;
+
+	repeat (dices) {
+		_roll = roll_dice(1, faces);
+
+		if (scr_has_disadv("Shitty Luck")) {
 			if (player_benefit_at == "high" && _roll > (faces / 2)) {
-				_roll = irandom_range(1, faces);
+				_roll = roll_dice(1, faces);
 			} else if (player_benefit_at == "low" && _roll < (faces / 2 + 1)) {
-				_roll = irandom_range(1, faces);
+				_roll = roll_dice(1, faces);
+			}
+		} else if (scr_has_adv("Great Luck")) {
+			if (player_benefit_at == "high" && _roll < (faces / 2 + 1)) {
+				_roll = roll_dice(1, faces);
+			} else if (player_benefit_at == "low" && _roll > (faces / 2)) {
+				_roll = roll_dice(1, faces);
 			}
 		}
 
@@ -144,7 +166,7 @@ function roll_dice(dices = 1, faces = 6, player_benefit_at = "none") {
 /// @param {real} player_benefit_at - will the player benefit from low or high rolls, for the luck logic.
 /// @param {struct} unit - unit struct.
 /// @returns {real}
-function roll_personal_dice(dices = 1, faces = 6, player_benefit_at = "none", unit) {
+function roll_dice_unit(dices = 1, faces = 6, player_benefit_at, unit) {
 	var _total_roll = 0;
 	var _roll = 0;
 
@@ -157,9 +179,9 @@ function roll_personal_dice(dices = 1, faces = 6, player_benefit_at = "none", un
 
 			if (luck_chance <= unit.luck) {
 				if (player_benefit_at == "high" && _roll > (faces / 2)) {
-					_roll = irandom_range(1, faces);
+					_roll = roll_dice(1, faces);
 				} else if (player_benefit_at == "low" && _roll < (faces / 2 + 1)) {
-					_roll = irandom_range(1, faces);
+					_roll = roll_dice(1, faces);
 				}
 			}
 		}

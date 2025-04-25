@@ -41,13 +41,11 @@ function scr_enemy_ai_a() {
 	// checking for inquisition dead world inspections here
 	if (present_fleet[eFACTION.Player]>=0) and (present_fleet[eFACTION.Inquisition]==0){
 	    var chapter_asset_discovery,yep=0,stop=false;
-   
-	    var shitty = scr_has_disadv("Shitty Luck");
-    
+       
 	    if (present_fleet[1]=0){
-	    	chapter_asset_discovery = irandom_range(1, shitty?800:2000);
+	    	chapter_asset_discovery = roll_dice_chapter(20, 100, "high");
 	    } else {
-	    	chapter_asset_discovery = irandom_range(1, shitty?50:200);
+	    	chapter_asset_discovery = roll_dice_chapter(2, 100, "high");
 	    }
     
 	    // 137 ; chapter_asset_discovery=floor(random(20))+1;

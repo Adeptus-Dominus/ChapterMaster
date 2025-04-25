@@ -138,11 +138,8 @@ function scr_add_artifact(artifact_type, artifact_tags, is_identified, artifact_
         }
     }
 
-    rand2 = floor(random(100)) + 1;
+    rand2 = roll_dice_chapter(1, 100, "low");
     good = 0;
-    if (scr_has_disadv("Shitty Luck")) {
-        rand2 = min(rand2 + 20, 100);
-    }
     if (rand2 <= 70) {
         t3 = "";
     } else if (rand2 <= 90 && artifact_type != "random_nodemon") {
@@ -422,7 +419,7 @@ function ArtifactStruct(Index) constructor {
         if (has_tag("daemonic")) {
 			var _ship_id = ship_id();
             if (_ship_id > 0) {
-                var demonSummonChance = roll_dice(1, 100, "high");
+                var demonSummonChance = roll_dice_chapter(1, 100, "high");
 
                 if ((demonSummonChance <= 60) && (obj_ini.ship_carrying[_ship_id] > 0)) {
                     instance_create(0, 0, obj_ncombat);
