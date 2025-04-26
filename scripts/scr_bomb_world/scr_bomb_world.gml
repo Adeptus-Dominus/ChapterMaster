@@ -119,7 +119,7 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
 	    roll=0;
     	var bombard_protect_scores = [4, 0.9, 0.75, 0.5, 0.34];
     	bombard_protection = clamp(bombard_protection, 0, 4);
-    	i = bombard_protect_scores[bombard_protection];
+    	i *= bombard_protect_scores[bombard_protection];
 	    // 0 No protection, Nids out in the open use this
 	     //1:  Poor protection, PDF/Renegades and Ecclesiarchy use it,
 	    // 2: Competent protection - IG, standard chaos forces and Orks
