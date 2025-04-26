@@ -230,10 +230,9 @@ function init_ork_waagh(){
             var  _waaagh_star = array_random_element(ork_waagh_activity);
 
             var _pdata = new PlanetData(_waaagh_star[1], _waaagh_star[0]);
-
             var _boss = _pdata.add_feature(P_features.OrkWarboss);
 
-            if (_pdata.forces[eFACTION.Ork]<4){
+            if (_pdata.planet_forces[eFACTION.Ork] < 4) {
                 _pdata.add_forces(eFACTION.Ork, 2);
             }
         }
