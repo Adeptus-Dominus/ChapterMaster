@@ -155,7 +155,7 @@ function PlanetData(planet, system) constructor{
 		var _new_val = planet_forces[faction];
 		switch (faction){
 			case eFACTION.Ork:
-				system.p_orks[0] = _new_val;
+				system.p_orks[planet] = _new_val;
 				break;
 		}
 	}
@@ -179,6 +179,9 @@ function PlanetData(planet, system) constructor{
             var _ork_target = system.p_orks[_ork_spread_planet];
             var _spread_orks = (current_owner==eFACTION.Ork &&  ((pdf + guardsmen + planet_forces[8] + planet_forces[10]+planet_forces[1]) == 0 ));
             if (_spread_orks){
+                // determine maximum Ork presence on the source planet
+                var _ork_max = planet_forces[eFACTION.Ork];
+
                 if (_ork_max<5 && _ork_target<2) then  system.p_orks[_ork_spread_planet]++;
                 if (_orks>4 && _ork_target<3){
                     system.p_orks[_ork_spread_planet]++;
@@ -186,7 +189,6 @@ function PlanetData(planet, system) constructor{
                         system.p_orks[_ork_spread_planet]++;
                         add_forces(eFACTION.Ork, -1);
                     }
-
                 }
 
             }
