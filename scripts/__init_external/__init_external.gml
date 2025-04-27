@@ -48,11 +48,12 @@ function __init_external() {
         while (_file != "") {
             var _file_path = _icon_paths[i] + _file;
             var _sprite  = sprite_add(_file_path, 1, false, true, 0, 0);
-            var _icon_name = string_delete(_file, string_length(_file) - 3, 4);  
-            var _icon_replaced = ds_map_replace(global.chapter_icons_map, _icon_name, _sprite);
-            if (_icon_replaced) {
+            var _icon_name = string_delete(_file, string_length(_file) - 3, 4);
+            if (ds_map_exists(global.chapter_icons_map, _icon_name)) {
+                sprite_delete(global.chapter_icons_map[? _icon_name]);
                 log_message($"A duplicate {_icon_name} icon replaced another existing one with the same name!");
             }
+            ds_map_replace(global.chapter_icons_map, _icon_name, _sprite);
             _file = file_find_next();  
         }
         file_find_close();
