@@ -109,7 +109,6 @@ try {
 					obj_cursor.image_index = 1;
 					if (scr_click_left()) {
 						founding--;
-						show_debug_message($"founding: {founding}");
 						if (founding == -1) {
 							founding = ePROGENITOR.RANDOM;
 						}
