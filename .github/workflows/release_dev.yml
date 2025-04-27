@@ -24,57 +24,45 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          fetch-depth: 0
+          fetch-tags: true
           lfs: true
 
-      - name: Check commit type
+      - name: Check commit range
         id: commit_check
         run: |
-          # Always set needed=false initially, then change to true if conditions met
+          # default to no build
           echo "needed=false" >> $GITHUB_OUTPUT
 
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            echo "Manually triggered, forcing build."
+          # manual override
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "Manually triggered → build." 
             echo "needed=true" >> $GITHUB_OUTPUT
             exit 0
           fi
 
-          COMMIT_MESSAGE=$(git log -1 --pretty=%B)
-          echo "Commit message: $COMMIT_MESSAGE"
-
-          # Check commit message pattern only if not manually triggered
-          EXCLUDE_PATTERN="^(docs|chore|style|ci)"
-          if echo "$COMMIT_MESSAGE" | grep -Eq "$EXCLUDE_PATTERN"; then
-            echo "Commit message matches excluded pattern, skipping build."
-            # needed remains false
-            exit 0
+          # determine commit range since last tag
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          if [ -n "$LAST_TAG" ]; then
+            RANGE="$LAST_TAG..HEAD"
+          else
+            RANGE="HEAD"
           fi
+          echo "Commit range: $RANGE"
 
-          # Handle schedule trigger - build only if new commits since last tag
-          if [ "${{ github.event_name }}" == "schedule" ]; then
-            # Ensure we have tags fetched
-            git fetch --tags --force
-            LATEST_TAG_COMMIT=$(git rev-list -n 1 $(git describe --tags --abbrev=0 2>/dev/null) 2>/dev/null || echo "no-tags") # Handle case with no tags
-            HEAD_COMMIT=$(git rev-parse HEAD)
+          # collect all commit messages in range
+          ALL_MSGS=$(git log $RANGE --pretty=%B)
+          echo "Messages in range:"
+          echo "$ALL_MSGS"
 
-            echo "HEAD commit: $HEAD_COMMIT"
-            echo "Latest tag commit: $LATEST_TAG_COMMIT"
-
-            if [ "$LATEST_TAG_COMMIT" = "no-tags" ]; then
-                echo "No tags found. Build is needed."
-                echo "needed=true" >> $GITHUB_OUTPUT
-            elif [ "$HEAD_COMMIT" = "$LATEST_TAG_COMMIT" ]; then
-                echo "No new commits since last tag. Skipping build."
-                # needed remains false
-            else
-                echo "New commits found. Build is needed."
-                echo "needed=true" >> $GITHUB_OUTPUT
-            fi
-            exit 0 # Exit after schedule check
+          # only skip if every message matches exclude pattern
+          EXCLUDE="^(docs|chore|style|ci)"
+          if echo "$ALL_MSGS" | grep -vEq "$EXCLUDE"; then
+            echo "Found non-excluded commit → build needed."
+            echo "needed=true" >> $GITHUB_OUTPUT
+          else
+            echo "All commits are docs/chore/style/ci → skipping build."
           fi
-
-          # If it wasn't workflow_dispatch, schedule, or an excluded commit type, then build
-          echo "Commit type requires build."
-          echo "needed=true" >> $GITHUB_OUTPUT
 
   prepare_release:
     name: Prepare the tags
