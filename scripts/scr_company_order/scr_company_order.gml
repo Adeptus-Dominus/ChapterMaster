@@ -10,7 +10,7 @@ function temp_marine_variables(co, unit_num){
 				try{
 					if (is_array(squad_member)){
 						if (squad_member[0] == unit.company) and (squad_member[1] == unit.marine_number){
-							squads[unit.squad].members[r] = [co,array_length(temp_name)];
+							squads[unit.squad].members[r] = [co,array_length(temp_name)-1];
 							found = true;
 							break;
 						}
