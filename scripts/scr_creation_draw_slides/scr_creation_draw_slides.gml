@@ -390,7 +390,7 @@ function draw_chapter_select(){
 	}
 }
 
-
+/// @mixin
 function draw_chapter_trait_select(){
    draw_set_color(38144);
     draw_set_font(fnt_40k_30b);
@@ -707,7 +707,7 @@ function draw_chapter_trait_select(){
         draw_set_halign(fa_left);
 
         if (!surface_exists(chapter_icons_surface)) {
-            chapter_icons_surface = surface_create(700, 1500);
+            chapter_icons_surface = surface_create(700, ceil(array_length(global.chapter_icons_array) / 6) * 110);
         }
 
         surface_set_target(chapter_icons_surface);
