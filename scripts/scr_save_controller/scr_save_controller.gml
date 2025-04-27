@@ -12,6 +12,7 @@ function scr_save_controller(save_id){
     ini_write_real("Save","play_time",play_time);
     ini_write_real("Save","game_seed",global.game_seed);
     ini_write_real("Save","use_custom_icon",obj_ini.use_custom_icon);
+    ini_write_real("Controller", "enemies_cleared_count", obj_controller.enemies_cleared_count);
 
    
     // obj_controller variables here
