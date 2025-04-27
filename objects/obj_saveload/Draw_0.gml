@@ -64,17 +64,7 @@ if (menu=1) or (menu=2){// This is the other one
             
             draw_rectangle(x2+56,y2+5,x2+238,y2+123,0);
             draw_rectangle(x2+258,y2+25,x2+1480,y2+80,0);
-            
-            /*if (file_exists("screen"+string(o)+".png")) and (instance_exists(spr_screen[o])){
-                draw_sprite_stretched(spr_screen[o],0,x2+64,y2+28,166,94);
-            }*/
-            
-            if (o=top) and (save[o]!=0) and (img1!=0) and (sprite_exists(img1)){draw_sprite_stretched(img1,0,x2+64,y2+28,166,94);}
-            if (o=top+1) and (save[o]!=0) and (img2!=0) and (sprite_exists(img2)){draw_sprite_stretched(img2,0,x2+64,y2+28,166,94);}
-            if (o=top+2) and (save[o]!=0) and (img3!=0) and (sprite_exists(img3)){draw_sprite_stretched(img3,0,x2+64,y2+28,166,94);}
-            if (o=top+3) and (save[o]!=0) and (img4!=0) and (sprite_exists(img4)){draw_sprite_stretched(img4,0,x2+64,y2+28,166,94);}
-            
-            
+
             var high;high=0;
             if (scr_hit(x2,y2,x2+1526,y2+149)){
                 // high=1;
@@ -97,6 +87,9 @@ if (menu=1) or (menu=2){// This is the other one
                 draw_text_transformed(x2+270,y2+48,string_hash_to_newline(string(save_chapter[save[o]])+" ("+string(save_date[save[o]])+")"),0.7,0.7,0);
                 draw_text_transformed(x2+774,y2+48,string_hash_to_newline(string(save_marines[save[o]])),0.7,0.7,0);
                 draw_text_transformed(x2+1024,y2+48,string_hash_to_newline(string(save_turn[save[o]])),0.7,0.7,0);
+                var _chapter_icon = scr_load_chapter_icon(save_icon[save[o]]);
+                var _icon_size = 94;
+                draw_sprite_stretched(_chapter_icon, 0, x2+147 - (_icon_size / 2), y2+28, _icon_size, _icon_size);
                 var ohboy,result,tsec,tmin,thour,tday;
                 ohboy=save_time[save[o]];result="";
                 tsec=0;tmin=0;thour=0;tday=0;
@@ -238,9 +231,6 @@ if (menu=1) or (menu=2){// This is the other one
                     // If file exists then overright
                     if (file_exists(string(PATH_save_files, save[o]))) {
                         file_delete(string(PATH_save_files, save[o]));
-                        if (file_exists(string(PATH_save_previews, save[o]))) {
-                            file_delete(string(PATH_save_previews, save[o]));
-                        }
                         save_part = 1;
                         menu = 0;
                         save_number = o;

@@ -126,6 +126,7 @@ function scr_save(save_part,save_id, autosaving = false) {
 			ini_write_string(string(save_id),"date",svd);
 			ini_write_real(string(save_id),"time",obj_controller.play_time);
 			ini_write_real(string(save_id),"seed",global.game_seed);
+			ini_write_string(string(save_id),"icon_name", global.chapter_icon.name);
 			ini_close();
 			log_message($"Saving to slot {save_id} - saves.ini saving complete!");
 

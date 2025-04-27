@@ -27,7 +27,6 @@ function __init_external() {
 
     #macro PATH_save_files "Save Files\\save{0}.json"
     #macro PATH_autosave_file "Save Files\\save0.json"
-    #macro PATH_save_previews "Save Files\\screen{0}.png"
     #macro PATH_custom_icons "Custom Files\\Custom Icons\\"
     #macro PATH_chapter_icons working_directory + "\\images\\creation\\chapters\\icons\\"
     #macro PATH_included_icons working_directory + "\\images\\creation\\customicons\\"

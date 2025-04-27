@@ -51,9 +51,6 @@ if (save_part == 1) {
 	if (file_exists(string(PATH_save_files, save_number))) {
 		file_delete(string(PATH_save_files, save_number));
 	}
-	if (file_exists(string(PATH_save_previews, save_number))) {
-		file_delete(string(PATH_save_previews, save_number));
-	}
 	obj_saveload.save[save_number] = 0;
 	save_part += 1;
 	trickle = 2;
