@@ -88,7 +88,7 @@ try {
 			} else if (founding == ePROGENITOR.RANDOM) {
 				_chapter_icon = global.chapter_icons_map[? "random"]
 			} else {
-				_chapter_icon = global.chapter_icons_map[? founding_chapters[founding - 1].icon];
+				_chapter_icon = global.chapter_icons_map[? founding_chapters[founding - 1].icon_name];
 			}
 
 			draw_set_alpha(0.33);

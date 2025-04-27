@@ -533,7 +533,7 @@ function ChapterDataLite(_id, _origin,_progenitor, _name , _tooltip, _icon_name 
     disabled = false;
     json = false;
     loaded = true;
-    icon = _icon_name;
+    icon_name = _icon_name;
     splash = _id;
 }
 
@@ -619,7 +619,7 @@ for(var c = 1; c < 40; c++){
             json_chapter.flavor,
         );
         all_chapters[c].json = true;
-        all_chapters[c].icon = json_chapter.icon_name;
+        all_chapters[c].icon_name = json_chapter.icon_name;
         all_chapters[c].splash = json_chapter.splash;
         all_chapters[c].loaded = true;
         all_chapters[c].disabled = false;

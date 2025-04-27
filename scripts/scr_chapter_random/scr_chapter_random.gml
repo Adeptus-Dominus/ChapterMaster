@@ -434,9 +434,4 @@ function scr_chapter_random(argument0) {
 
 	if (argument0=1) then other1=founding;
 	if (argument0=0) then fleet_type=choose(1,2);
-
-	
-	cooldown=8000;
-
-
 }

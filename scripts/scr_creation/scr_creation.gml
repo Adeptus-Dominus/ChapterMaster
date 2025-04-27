@@ -20,9 +20,9 @@ function scr_creation(slide_num) {
 	
 	show_debug_message($"calling scr_creation with input {slide_num}");
 	if (slide_num=2 && custom>0){
-	    if (name_bad=1){cooldown=8000;/*(sound_play(bad);*/}
+	    if (name_bad=1){/*(sound_play(bad);*/}
 	    if (name_bad=0){
-	        change_slide=1;goto_slide=3;cooldown=8000;race[100,17]=1;
+	        change_slide=1;goto_slide=3;race[100,17]=1;
 	        if (scr_has_disadv("Psyker Intolerant")) then race[100,17]=0;
 	    }
 	}
@@ -30,7 +30,6 @@ function scr_creation(slide_num) {
 	if (slide_num=2 && custom==0){
 	    change_slide=1;
 	    goto_slide=3;
-	    cooldown=8000;
 	    race[100,eROLE.Chaplain]=1;
 		race[100,eROLE.Librarian]=1;
 	    if(scr_has_disadv("Psyker Intolerant")){
@@ -45,7 +44,6 @@ function scr_creation(slide_num) {
 	if (slide_num==3 ){
 	    change_slide=1;
 	    goto_slide=4;
-	    cooldown=8000;
 	    alarm[0]=1;
     
 	    if (slide_num=3){
@@ -81,7 +79,6 @@ function scr_creation(slide_num) {
 	    if (custom == 0 || (hapothecary!="" && hchaplain!="" && clibrarian!="" && fmaster!="" && recruiter!="" && admiral!="" && battle_cry!="")){
 	        change_slide=1;
 	        goto_slide=5;
-	        cooldown=8000;
         
 	        if (custom=2){
 	            mutations_selected=0;
@@ -178,7 +175,6 @@ function scr_creation(slide_num) {
 	    if (custom=0 || mutations<=mutations_selected){
 			change_slide=1;
 			goto_slide=6;
-			cooldown=8000;
 		}
 	}
 

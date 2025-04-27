@@ -9,7 +9,7 @@ function ChapterData() constructor {
 	founding = ePROGENITOR.NONE;
 	successors = 0;
 	splash = 0;
-	icon = "unknown";
+	icon_name = "unknown";
 	aspirant_trial = eTrials.BLOODDUEL;
 	fleet_type = ePlayerBase.none;
 	strength = 0;
@@ -299,7 +299,7 @@ function scr_chapter_new(argument0) {
 		obj_creation.homeworld_rule = chapter_object.homeworld_rule;
 		obj_creation.chapter_name = chapter_object.name;
 
-		obj_creation.icon = chapter_object.icon;
+		obj_creation.icon = chapter_object.icon_name;
 		obj_creation.fleet_type = chapter_object.fleet_type;
 		obj_creation.strength = chapter_object.strength;
 		obj_creation.purity = chapter_object.purity;
