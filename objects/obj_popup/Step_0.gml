@@ -1364,15 +1364,6 @@ try {
 						if (obj_ini.home_type == "Lava") {
 							image = "fortress_lava";
 						}
-						// if (obj_ini.icon_name == "dorf1") {
-						// 	image = "fortress_dorf";
-						// }
-						// if (obj_ini.icon_name == "dorf2") {
-						// 	image = "fortress_dorf";
-						// }
-						// if (obj_ini.icon_name == "dorf3") {
-						// 	image = "fortress_dorf";
-						// }
 						last_artifact = scr_add_artifact("good", "inquisition", 0, obj_ini.home_name, 2);
 					} else if (obj_ini.fleet_type != ePlayerBase.home_world) {
 						image = "artifact_given";

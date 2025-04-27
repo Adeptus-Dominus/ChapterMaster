@@ -28,8 +28,30 @@ function __init_external() {
     #macro PATH_save_files "Save Files\\save{0}.json"
     #macro PATH_autosave_file "Save Files\\save0.json"
     #macro PATH_save_previews "Save Files\\screen{0}.png"
-    #macro PATH_custom_icons $"Custom Files\\Custom Icons\\custom"
-    #macro PATH_last_messages $"Logs/last_messages.log"
+    #macro PATH_custom_icons "Custom Files\\Custom Icons\\"
+    #macro PATH_chapter_icons working_directory + "\\images\\creation\\chapters\\icons\\"
+    #macro PATH_included_icons working_directory + "\\images\\creation\\customicons\\"
+    #macro PATH_last_messages "Logs/last_messages.log"
+
+    global.chapter_icons_map = ds_map_create();
+    global.chapter_icons_array = [];
+
+    var _icon_paths = [PATH_chapter_icons, PATH_included_icons, PATH_custom_icons];
+    for (var i = 0; i < array_length(_icon_paths); i++) {
+        var _file_wildcard = _icon_paths[i] + "*.png";
+        var _file = file_find_first(_file_wildcard, fa_none);  
+        while (_file != "") {
+            var _file_path = _icon_paths[i] + _file;
+            var _sprite  = sprite_add(_file_path, 1, false, true, 0, 0);
+            var _icon_name = string_delete(_file, string_length(_file) - 3, 4);  
+            ds_map_add(global.chapter_icons_map, _icon_name, _sprite);
+            array_push(global.chapter_icons_array, _icon_name);
+            _file = file_find_next();  
+        }
+        file_find_close();
+    }
+
+    array_sort(global.chapter_icons_array, true);
 
     var _log_file = file_text_open_write(PATH_last_messages);
     file_text_close(_log_file);

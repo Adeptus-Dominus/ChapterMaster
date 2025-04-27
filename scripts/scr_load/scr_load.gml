@@ -28,7 +28,7 @@ function scr_load(save_part, save_id) {
 		log_message("Loading GLOBALS");
 		// Globals
 		var globals = obj_saveload.GameSave.Save;
-		scr_load_chapter_icon(globals.chapter_icon_type, globals.chapter_icon_id, true);
+		scr_load_chapter_icon(globals.chapter_icon, true);
 		global.chapter_name = globals.chapter_name;
 		global.custom = globals.custom;
 		

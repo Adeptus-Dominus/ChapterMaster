@@ -1275,11 +1275,11 @@ function scr_initialize_custom() {
 
 
 	if (obj_creation.custom == 0) {
-		if (veteran >= 20) and(global.founding = 0) {
+		if (veteran >= 20) and(global.founding = ePROGENITOR.NONE) {
 			veteran -= 20;
 			terminator += 20;
 		}
-		if (veteran >= 10) and(global.founding != 0) and(global.chapter_name != "Lamenters") {
+		if (veteran >= 10) and(global.founding != ePROGENITOR.NONE) and(global.chapter_name != "Lamenters") {
 			veteran -= 10;
 			terminator += 10;
 		}

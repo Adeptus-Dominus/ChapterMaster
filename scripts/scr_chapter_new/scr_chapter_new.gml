@@ -6,11 +6,10 @@ function ChapterData() constructor {
 	points = 0;
 	flavor = "";
 	origin = eCHAPTER_ORIGINS.NONE;
-	founding = eCHAPTERS.UNKNOWN;
+	founding = ePROGENITOR.NONE;
 	successors = 0;
 	splash = 0;
-	icon = 0;
-	icon_type = "chapters";
+	icon = "unknown";
 	aspirant_trial = eTrials.BLOODDUEL;
 	fleet_type = ePlayerBase.none;
 	strength = 0;

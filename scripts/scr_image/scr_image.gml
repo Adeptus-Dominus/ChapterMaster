@@ -605,51 +605,20 @@ function scr_image_cache(path, image_id, use_app_data=false) {
 
 /// @description Simplified handling of chapter icon stuff for both Creation and player chapter icon 
 /// attempting to keep things consistent and easy through save/load and etc 
-/// @param {"chapters"|"game"|"player"} _type chapters is for premade chapter icons, in images/creation/chapters/icons. Game for builtin icons in creation/customicons. player for Custom Icons in appdata folder
-/// @param {Real} _id the id corresponding to file name e.g. "1.png" _id = 1
 /// @param {Bool} update_global_var set to true when wanting to update the player's icon, false if you just want to return the sprite for further use
-function scr_load_chapter_icon(_type, _id, update_global_var = false){
-	var iconPath = "";
-    var iconSprite = -1;
-    
-    switch(_type) {
-        case "chapters":
-            // These are built into the game, reference by name
-            iconSprite = scr_image_cache("creation/chapters/icons", _id);
-            break;
-            
-        case "game":
-            // These are built into the game, reference by name
-            iconSprite = scr_image_cache("creation/customicons", _id);
-            break;
-            
-        case "player":
-            // These are external files, need to be loaded from disk
-            iconPath = $"{PATH_custom_icons}{_id}.png";
-			if(!file_exists(iconPath)){
-				log_warning($"Attempted to retrieve a player custom sprite at filepath {iconPath} but found nothing");
-				iconSprite = scr_load_chapter_icon("game", 0);
-				break;
-			}
-            
-            // Create a unique sprite name based on the custom icon ID
-			iconSprite = scr_image_cache($"{PATH_custom_icons}", _id, true);
-			
-            // Check if sprite is already loaded
-            if (!sprite_exists(iconSprite)) {
-				log_warning($"Attempted to set sprite for a player custom sprite as {iconSprite} but no sprite found");
-                iconSprite = scr_load_chapter_icon("game", 0); // should load red (?) icon from customicons folder
-            }
-            break;
-    }
-	if(update_global_var){
-		global.chapter_icon.sprite = iconSprite;
-		global.chapter_icon.icon_id = _id;
-		global.chapter_icon.type = _type;
-		show_debug_message($"Updated global chapter icons {_type} {_id} - {iconSprite}")
+function scr_load_chapter_icon(_name, update_global_var = false){
+
+	if (!ds_map_exists(global.chapter_icons_map, _name)) {
+		_name = "unknown";
+	}
+
+	var _icon_sprite = global.chapter_icons_map[? _name];
+
+	if (update_global_var) {
+		global.chapter_icon.name = _name;
+		global.chapter_icon.sprite = _icon_sprite;
 	}
     
     // Return the loaded sprite
-    return iconSprite;
-
+    return _icon_sprite;
 }

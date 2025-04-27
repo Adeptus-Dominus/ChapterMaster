@@ -194,6 +194,10 @@ function scr_creation(slide_num) {
 				audio_sound_gain(snd_royal,0.25*master_volume*music_volume,2000);
 			}
         
+			if (founding == ePROGENITOR.RANDOM) {
+				founding = irandom_range(ePROGENITOR.NONE, ePROGENITOR.RAVEN_GUARD);
+			}
+
 	        if (founding == eCHAPTERS.SALAMANDERS || global.chapter_id == eCHAPTERS.SALAMANDERS) {
 				obj_ini.skin_color=1;
 			} 

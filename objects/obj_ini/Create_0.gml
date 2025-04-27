@@ -3,8 +3,7 @@
 show_debug_message("Creating obj_ini");
 
 // // normal stuff
-use_custom_icon=0;
-icon=0;
+icon="unknown";
 
 specials=0;firsts=0;seconds=0;thirds=0;fourths=0;fifths=0;
 sixths=0;sevenths=0;eighths=0;ninths=0;tenths=0;commands=0;
