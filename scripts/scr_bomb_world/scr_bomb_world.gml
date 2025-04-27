@@ -273,8 +273,9 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
     
 	    if (pop_after==0 && pop_before>0){
 	        if (current_owner=2) and (obj_controller.faction_status[eFACTION.Imperium]!="War"){
-	            if (planet_type="Temperate") or (planet_type="Hive") or (planet_type="Desert"){
-	                obj_controller.audiences+=1;obj_controller.audien[obj_controller.audiences]=2;
+	            if (planet_type="Temperate" || planet_type="Hive" || planet_type="Desert"){
+	                obj_controller.audiences+=1;
+	                obj_controller.audien[obj_controller.audiences]=2;
 	                obj_controller.audien_topic[obj_controller.audiences]="bombard_angry";
 	            }
 	            if (planet_type="Temperate"){ 

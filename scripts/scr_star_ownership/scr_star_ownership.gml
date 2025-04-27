@@ -25,15 +25,19 @@ function scr_star_ownership(argument0) {
 	    	if (p_owner[run]=10) then p_owner[run]=2;}
 	    if (p_type[run]="Daemon") then p_owner[run]=10;
 
+	    var _nid_chosen = false;
     	if (planet_feature_bool(p_feature[run], P_features.Gene_Stealer_Cult)){
     		if (p_influence[run][eFACTION.Tyranids]>50){
     			p_owner[run]=9;
     			tyranids_owner+=1;
+    			_nid_chosen = true;
     		}
     	} else if (p_tyranids[run]>=5) and (p_population[run]=0){
 	    	p_owner[run]=9;
 	    	tyranids_owner+=1;
-	    }else if (p_type[run]!="Dead"){
+	    	_nid_chosen = true;
+	    }
+	    if (p_type[run]!="Dead" && !_nid_chosen){
 		    if (p_owner[run]=eFACTION.Player) then player_owner+=1;
 		    if (p_owner[run]=eFACTION.Imperium)  then imperium_owner+=1;
 		    if (p_owner[run]=eFACTION.Mechanicus)  then forge_owner+=1;

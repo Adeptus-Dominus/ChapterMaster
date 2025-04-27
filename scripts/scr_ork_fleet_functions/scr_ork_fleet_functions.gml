@@ -27,58 +27,6 @@ function orks_end_turn_growth(){
     }
 }
 
-function build_new_ork_ships_to_fleet(star, planet, fleet){
-    with (fleet){
-    // Increase ship number for this object?
-        var rando=irandom(101);
-        if (obj_controller.known[eFACTION.Ork]>0) then rando-=10;
-        var _planet_type = star.p_type[planet];
-        if (_planet_type=="Forge"){
-            rando-=20;
-        } else if (_planet_type=="Hive"){
-            rando-=10;
-        }else if (_planet_type=="Shrine" || _planet_type=="Temperate"){
-            rando-=5;
-        }
-        if (rando<=15){// was 25
-            rando=choose(1,1,1,1,1,1,1,3,3,3,3);
-            if (capital_number<=0) then rando = 3;
-            if (rando=1) then capital_number+=1;
-            // if (rando=2) then fleet.frigate_number+=1;
-            if (rando=3) then escort_number+=1;
-        }
-        var ii=0;
-        ii+=capital_number;
-        ii+=round((frigate_number/2));
-        ii+=round((escort_number/4));
-        if (ii<=1) then ii=1;
-        image_index=ii;	
-    	//if big enough flee bugger off to new star
-        if (image_index>=5){
-        	instance_deactivate_object(star);
-            with(obj_star){
-            	if (is_dead_star()){
-            		instance_deactivate_object(id);
-            	} else {
-                    if (owner == eFACTION.Ork || array_contains(p_owner, eFACTION.Ork)){
-                        instance_deactivate_object(id);
-                    }            		
-            	}
-            }
-        	var new_wagh_star = instance_nearest(x,y,obj_star);
-            if (instance_exists(new_wagh_star)){
-                action_x=new_wagh_star.x;
-                action_y=new_wagh_star.y;
-                action = "";
-                set_fleet_movement();
-            }
-        
-        }
-    	instance_activate_object(obj_star);
-    }
-}
-
-
 
 function ork_fleet_move(){
     
@@ -145,7 +93,7 @@ function ork_fleet_arrive_target(){
                     
 
                         if (fleet_has_cargo("ork_warboss",_ork_fleet)){
-                            array_push(p_feature[i], _ork_fleet.carg_data.ork_warboss);
+                            array_push(p_feature[i], _ork_fleet.cargo_data.ork_warboss);
                             p_orks[i]=6;
                         }
 
@@ -196,13 +144,13 @@ function merge_ork_fleets(){
     }
 }
 
-function init_ork_waagh(){
+function init_ork_waagh(overide = false){
     var waaagh=roll_dice(1,100);
 
     var _ork_stars = scr_get_stars(false,[eFACTION.Ork]);
 
-    var _ork_star_count= array_length(_ork_stars);
-    if (_ork_star_count>=5 && waaagh<=_ork_star_count && obj_controller.known[eFACTION.Ork]==0)/* or (obj_controller.is_test_map=true)*/{
+    var _ork_star_count = array_length(_ork_stars);
+    if (_ork_star_count>=5 && (waaagh<=_ork_star_count || overide) && obj_controller.known[eFACTION.Ork]==0)/* or (obj_controller.is_test_map=true)*/{
         obj_controller.known[eFACTION.Ork]=0.5;
         //set an alarm for all ork controlled planets
 
@@ -211,6 +159,7 @@ function init_ork_waagh(){
         scr_event_log("red","Ork WAAAAGH! begins.");
         
         var ork_waagh_activity = [];
+        var _any_ork_star = [];
         for (var p=0;p<array_length(_ork_stars);p++){
             with(_ork_stars[p]){
                 var _rand_planet=irandom_range(1, planets)
@@ -221,20 +170,29 @@ function init_ork_waagh(){
                             array_push(ork_waagh_activity, [id,_rand_planet]);
                         }
                     }
+                    if (p_orks[i]>0){
+                        array_push(_any_ork_star, [id, i]);
+                    }
                 }
             }
         }
 
         if (array_length(ork_waagh_activity)){
 
-            var  _waaagh_star = array_random_element(ork_waagh_activity);
+            var _waaagh_star = array_random_element(ork_waagh_activity);
 
-            var _pdata = new PlanetData(_waaagh_star[1], _waaagh_star[0]);
-            var _boss = _pdata.add_feature(P_features.OrkWarboss);
+        } else {
+            var _waaagh_star = array_random_element(_any_ork_star);
+        }
+        var _pdata = new PlanetData(_waaagh_star[1], _waaagh_star[0]);
+        var _boss = _pdata.add_feature(P_features.OrkWarboss);
+        if (overide){
+            _boss.player_hidden = false;
+            scr_event_log("red","boss on {_pdata.name()}", _pdata.system.name);
+        }
 
-            if (_pdata.planet_forces[eFACTION.Ork] < 4) {
-                _pdata.add_forces(eFACTION.Ork, 2);
-            }
+        if (_pdata.planet_forces[eFACTION.Ork] < 4) {
+            _pdata.add_forces(eFACTION.Ork, 2);
         }
 
     }
