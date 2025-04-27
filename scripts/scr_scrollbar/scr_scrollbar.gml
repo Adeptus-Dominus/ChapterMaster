@@ -130,15 +130,15 @@ function scr_scrollbar(argument0, argument1, argument2, argument3, argument4, ar
 }
 
 
-function ScrollableContainer(_view_width, _view_height) constructor {
+function ScrollableContainer(_width, _height) constructor {
     surface = -1;
-    content_width = 0;
-    content_height = 0;
+    surface_width = 0;
+    surface_height = 0;
     
-    view_width = _view_width;
-    view_height = _view_height;
+    width = _width;
+    height = _height;
+
     scroll_offset = 0;
-    
     scrollbar_width = 20;
     dragging = false;
     drag_offset = 0;
@@ -146,17 +146,30 @@ function ScrollableContainer(_view_width, _view_height) constructor {
     pos_x = 0;
     pos_y = 0;
     
-    static resize = function(_width, _height) {
-		view_width = _width;
-		view_height = _height;
+    static start_draw_to_surface = function(_height) {
+        if (!surface_exists(surface)) {
+            surface = surface_create(width, _height);
+			surface_width = surface_get_width(surface);
+            surface_height = surface_get_height(surface);
+        }
+		surface_set_target(surface);
+        draw_clear_alpha(c_white, 0);
     };
 
-    static update_surface = function(_surf) {
-        if (surface_exists(_surf)) {
-            surface = _surf;
-            content_width = surface_get_width(_surf);
-            content_height = surface_get_height(_surf);
-        }
+	static stop_draw_to_surface = function() {
+        surface_reset_target();
+    };
+
+	static cleanup = function() {
+        if (!surface_exists(surface)) {
+			return;
+		}
+		surface_clear_and_free(surface);
+    };
+
+    static resize = function(_width, _height) {
+		width = _width;
+		height = _height;
     };
     
     static update = function() {
@@ -164,37 +177,40 @@ function ScrollableContainer(_view_width, _view_height) constructor {
 			return;
 		}
         
-        var grip_height = max((view_height / content_height) * view_height, 32);
-        var scroll_area = view_height - grip_height;
-        var grip_y = (scroll_offset / (content_height - view_height)) * scroll_area;
+        var grip_height = max((height / surface_height) * height, 32);
+        var scroll_area = height - grip_height;
+        var grip_y = (scroll_offset / (surface_height - height)) * scroll_area;
         
-        var grip_x1 = pos_x + view_width - scrollbar_width;
-        var grip_x2 = pos_x + view_width;
+        var grip_x1 = pos_x + width - scrollbar_width;
+        var grip_x2 = pos_x + width;
         var grip_y1 = pos_y + grip_y;
         var grip_y2 = grip_y1 + grip_height;
         
-        var mx = return_mouse_consts()[0];
-        var my = return_mouse_consts()[1];
+        var _mouse_y = return_mouse_consts()[1];
         
         // Dragging
         if (mouse_check_button(mb_left)) {
             if (dragging) {
-                var new_grip_y = clamp(my - pos_y - drag_offset, 0, scroll_area);
-                scroll_offset = (new_grip_y / scroll_area) * (content_height - view_height);
+                var new_grip_y = clamp(_mouse_y - pos_y - drag_offset, 0, scroll_area);
+                scroll_offset = (new_grip_y / scroll_area) * (surface_height - height);
             } 
             else if (scr_hit(grip_x1, grip_y1, grip_x2, grip_y2)) {
                 dragging = true;
-                drag_offset = my - grip_y1;
+                drag_offset = _mouse_y - grip_y1;
             }
         } else {
             dragging = false;
         }
         
         // Mouse wheel (scroll up / down)
-        if (mouse_wheel_up()) scroll_offset -= 64;
-        if (mouse_wheel_down()) scroll_offset += 64;
+		var _scroll_speed = surface_height * 0.05;
+        if (mouse_wheel_up()) {
+			scroll_offset -= _scroll_speed;
+		} else if (mouse_wheel_down()) {
+			scroll_offset += _scroll_speed;
+		}
         
-        scroll_offset = clamp(scroll_offset, 0, content_height - view_height);
+        scroll_offset = clamp(scroll_offset, 0, surface_height - height);
     };
     
     static draw = function(_x, _y) {
@@ -207,25 +223,29 @@ function ScrollableContainer(_view_width, _view_height) constructor {
 
         update(); // Self-manages mouse & scroll logic
         
-        var grip_height = max((view_height / content_height) * view_height, 32);
-        var scroll_area = view_height - grip_height;
-        var grip_y = (scroll_offset / (content_height - view_height)) * scroll_area;
+        var grip_height = max((height / surface_height) * height, 32);
+        var scroll_area = height - grip_height;
+        var grip_y = (scroll_offset / (surface_height - height)) * scroll_area;
         
         // Draw content
-        draw_surface_part(surface, 0, scroll_offset, view_width - scrollbar_width, view_height, pos_x, pos_y);
+        draw_surface_part(surface, 0, scroll_offset, width - scrollbar_width, height, pos_x, pos_y);
         
         // Draw scrollbar background
-        draw_set_color(c_white);
-        draw_rectangle(pos_x + view_width - scrollbar_width, pos_y, pos_x + view_width, pos_y + view_height, false);
+        draw_set_color(c_black);
+        draw_rectangle(pos_x + width - scrollbar_width, pos_y, pos_x + width, pos_y + height, false);
         
         // Draw scrollbar grip
-        draw_set_color(c_gray);
-        draw_rectangle(pos_x + view_width - scrollbar_width, pos_y + grip_y, pos_x + view_width, pos_y + grip_y + grip_height, false);
+        draw_set_color(CM_GREEN_COLOR);
+        draw_rectangle(pos_x + width - scrollbar_width, pos_y + grip_y, pos_x + width, pos_y + grip_y + grip_height, false);
         
         draw_set_color(c_white); // Reset color after
     };
     
     static get_scroll_offset = function() {
         return scroll_offset;
+    };
+
+	static reset_scroll_offset = function() {
+        scroll_offset = 0;
     };
 }

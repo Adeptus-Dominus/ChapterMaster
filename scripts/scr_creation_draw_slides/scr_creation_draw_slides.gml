@@ -708,18 +708,14 @@ function draw_chapter_trait_select(){
 
         var icons_per_row = 6; // how many icons per row
 
-        if (!surface_exists(chapter_icons_surface)) {
-            chapter_icons_surface = surface_create(700, ceil(array_length(global.chapter_icons_array) / icons_per_row) * 110);
-        }
-
-        surface_set_target(chapter_icons_surface);
-        draw_clear_alpha(c_white, 0);
+        var _surface_height = ceil(array_length(global.chapter_icons_array) / icons_per_row) * 110;
+        chapter_icons_container.start_draw_to_surface(_surface_height);
         
         // repeat here
         
         var x3_start = 0;
         var y3_start = 0;
-        
+
         for (var i = 0, l = array_length(global.chapter_icons_array); i < l; i++) {
             var _icon_name = global.chapter_icons_array[i];
             var _icon_sprite = global.chapter_icons_map[? _icon_name];
@@ -747,11 +743,11 @@ function draw_chapter_trait_select(){
                 if (scr_click_left()) {
                     popup = "";
                     scr_load_chapter_icon(_icon_name, true);
+                    chapter_icons_container.reset_scroll_offset();
                 }
             }
         }
-        surface_reset_target();
-        chapter_icons_container.update_surface(chapter_icons_surface);
+        chapter_icons_container.stop_draw_to_surface();
         chapter_icons_container.draw(445, 245);
     }
     

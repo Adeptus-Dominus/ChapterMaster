@@ -368,7 +368,6 @@ text_bars = {
 scrollbar_engaged=0;
 
 chapter_icons_container = new ScrollableContainer(700, 430);
-chapter_icons_surface = -1;
 
 text_selected="none";
 text_bar=0;
