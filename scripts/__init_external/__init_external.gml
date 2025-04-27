@@ -40,7 +40,6 @@ function __init_external() {
         sprite: -1
     }
     global.chapter_icons_map = ds_map_create();
-    global.chapter_icons_array = [];
 
     var _icon_paths = [PATH_chapter_icons, PATH_included_icons, PATH_custom_icons];
     for (var i = 0; i < array_length(_icon_paths); i++) {
@@ -50,13 +49,16 @@ function __init_external() {
             var _file_path = _icon_paths[i] + _file;
             var _sprite  = sprite_add(_file_path, 1, false, true, 0, 0);
             var _icon_name = string_delete(_file, string_length(_file) - 3, 4);  
-            ds_map_add(global.chapter_icons_map, _icon_name, _sprite);
-            array_push(global.chapter_icons_array, _icon_name);
+            var _icon_replaced = ds_map_replace(global.chapter_icons_map, _icon_name, _sprite);
+            if (_icon_replaced) {
+                log_message($"A duplicate {_icon_name} icon replaced another existing one with the same name!");
+            }
             _file = file_find_next();  
         }
         file_find_close();
     }
 
+    global.chapter_icons_array = ds_map_keys_to_array(global.chapter_icons_map);
     array_sort(global.chapter_icons_array, true);
 
     var _log_file = file_text_open_write(PATH_last_messages);
