@@ -706,8 +706,10 @@ function draw_chapter_trait_select(){
         draw_set_font(fnt_40k_14b);
         draw_set_halign(fa_left);
 
+        var icons_per_row = 6; // how many icons per row
+
         if (!surface_exists(chapter_icons_surface)) {
-            chapter_icons_surface = surface_create(700, ceil(array_length(global.chapter_icons_array) / 6) * 110);
+            chapter_icons_surface = surface_create(700, ceil(array_length(global.chapter_icons_array) / icons_per_row) * 110);
         }
 
         surface_set_target(chapter_icons_surface);
@@ -717,7 +719,6 @@ function draw_chapter_trait_select(){
         
         var x3_start = 0;
         var y3_start = 0;
-        var icons_per_row = 6; // how many icons per row
         
         for (var i = 0, l = array_length(global.chapter_icons_array); i < l; i++) {
             var _icon_name = global.chapter_icons_array[i];
