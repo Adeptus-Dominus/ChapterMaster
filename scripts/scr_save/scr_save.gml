@@ -41,7 +41,7 @@ function scr_save(save_part,save_id, autosaving = false) {
 				version: global.game_version,
 				play_time: play_time,
 				game_seed: global.game_seed,
-				chapter_icon: global.chapter_icon.name,
+				icon_name: global.chapter_icon.name,
 				date: string(month)+"/"+string(day)+"/"+string(year)+" ("+string(hour)+":"+string(minute)+" "+string(pm)+")",
 				founding: obj_ini.progenitor,
 				custom: global.custom,

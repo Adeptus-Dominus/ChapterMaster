@@ -384,7 +384,6 @@ role_names_all="";
 chapter_name="Unnamed";
 chapter_string="Unnamed";
 chapter_year=0;
-icon="unknown";
 /// @instancevar {Real} custom 0 if premade, 1 if random, 2 if custom
 custom=0;
 /// @instancevar {Enum.ePROGENITOR} founding 

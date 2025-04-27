@@ -6,7 +6,6 @@ if (slide==1){
         scr_chapter_new(chapter_name);
         keyboard_string="";
         if (chapter_name!="nopw_nopw"){
-            icon=25;
             custom=0;
             change_slide=1;
             goto_slide=2;
@@ -67,7 +66,6 @@ if (change_slide==35) or (change_slide==36) or (chapter_name=="Doom Benefactors"
         
         chapter_name="Unnamed";
         chapter_string="Unnamed";
-        icon="unknown";
         custom=0;
         founding=ePROGENITOR.NONE;
         points=0;

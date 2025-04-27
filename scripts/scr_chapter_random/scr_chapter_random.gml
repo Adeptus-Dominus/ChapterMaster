@@ -23,7 +23,6 @@ function scr_chapter_random(argument0) {
 	phrase1="";phrase2="";
 
 	chapter_name="Unnamed";chapter_string="Unnamed";
-	icon="unknown";
 	founding=ePROGENITOR.NONE;
 	found_secret=0;
 	points=0;maxpoints=100;

@@ -8,14 +8,6 @@ global.cheat_disp=false;
 global.cheat_debug=false;
 global.language="en";
 
-global.chapter_icon = {
-    // sprite filename, without the extension
-    name: "",
-    /// the sprite id once loaded from file
-    sprite: -1
-}
-
-
 window_data="fullscreen";
 window_old="fullscreen";
 

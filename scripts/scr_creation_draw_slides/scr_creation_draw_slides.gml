@@ -103,8 +103,6 @@ function draw_chapter_select(){
 				if (!chap.disabled) {
 					if (scr_chapter_new(chapter_name)) {
                         scr_load_chapter_icon(chap.icon_name, true);
-
-						icon = chap.icon_name;
 						custom = 0;
 						change_slide = 1;
 						goto_slide = 2;
@@ -149,8 +147,6 @@ function draw_chapter_select(){
 				if (!chap.disabled) {
 					if (scr_chapter_new(chapter_name)) {
                         scr_load_chapter_icon(chap.icon_name, true);
-
-						icon = chap.icon_name;
 						custom = 0;
 						change_slide = 1;
 						goto_slide = 2;
@@ -255,8 +251,6 @@ function draw_chapter_select(){
 						// global.chapter_icon_path = $"creation/chapters/icons";
 						// global.chapter_icon_filename = chap.icon_name;
 						global.chapter_id = chap.id;
-
-						icon = chap.icon_name;
 						custom = 0;
 						change_slide = 1;
 						goto_slide = 2;
@@ -292,8 +286,7 @@ function draw_chapter_select(){
         draw_rectangle_color_simple(grid.x1, grid.y1, grid.x2, grid.y2, 0, c_white, 0.1);
 
         if (grid.clicked()) {
-            icon = "unknown";
-            scr_load_chapter_icon(icon, true);
+            scr_load_chapter_icon("unknown", true);
             change_slide = 1;
             goto_slide = 2;
             custom = 2;
@@ -321,7 +314,6 @@ function draw_chapter_select(){
         draw_rectangle_color_simple(grid.x1, grid.y1, grid.x2, grid.y2, 0, c_white, 0.1);
 
         if (grid.clicked()) {
-            icon = "random";
             scr_load_chapter_icon(array_random_element(global.chapter_icons_array), true);
             change_slide = 1;
             goto_slide = 2;
@@ -753,7 +745,6 @@ function draw_chapter_trait_select(){
 
                 if (scr_click_left()) {
                     popup = "";
-                    icon = _icon_name;
                     scr_load_chapter_icon(_icon_name, true);
                 }
             }

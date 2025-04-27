@@ -16,7 +16,7 @@ function scr_restart_variables(saved_game) {
 					obj_restart_vars.restart_title[i] = obj_ini.company_title[i];
 				}
 
-				obj_restart_vars.restart_icon = icon;
+				obj_restart_vars.restart_icon = global.chapter_icon.name;
 				obj_restart_vars.restart_powers = psy_powers;
 
 				for (var ad = 0; ad < 5; ad++) {
@@ -730,7 +730,7 @@ function reset_creation_variables(){
 		company_title[i] = obj_restart_vars.restart_title[i];
 	}
 
-	icon = obj_restart_vars.restart_icon;
+	global.chapter_icon.name = obj_restart_vars.restart_icon;
 	discipline = obj_restart_vars.restart_powers;
 
 	for (var ad = 0; ad < 5; ad++) {

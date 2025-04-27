@@ -299,7 +299,7 @@ function scr_chapter_new(argument0) {
 		obj_creation.homeworld_rule = chapter_object.homeworld_rule;
 		obj_creation.chapter_name = chapter_object.name;
 
-		obj_creation.icon = chapter_object.icon_name;
+		global.chapter_icon.name = chapter_object.icon_name;
 		obj_creation.fleet_type = chapter_object.fleet_type;
 		obj_creation.strength = chapter_object.strength;
 		obj_creation.purity = chapter_object.purity;

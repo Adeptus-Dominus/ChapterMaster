@@ -33,6 +33,12 @@ function __init_external() {
     #macro PATH_included_icons working_directory + "\\images\\creation\\customicons\\"
     #macro PATH_last_messages "Logs/last_messages.log"
 
+    global.chapter_icon = {
+        // sprite filename, without the extension
+        name: "",
+        /// the sprite id once loaded from file
+        sprite: -1
+    }
     global.chapter_icons_map = ds_map_create();
     global.chapter_icons_array = [];
 

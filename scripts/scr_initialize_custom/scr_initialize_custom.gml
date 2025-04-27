@@ -720,7 +720,6 @@ function scr_initialize_custom() {
 	flagship_name = obj_creation.flagship_name;
 	obj_creation.restart_flagship_name = flagship_name;
 	sector_name = global.name_generator.generate_sector_name();
-	icon = obj_creation.icon;
 	man_size = 0;
 	psy_powers = obj_creation.discipline;
 
@@ -1289,7 +1288,6 @@ function scr_initialize_custom() {
 
 
 
-	icon = obj_creation.icon;
 	battle_cry = obj_creation.battle_cry;
 	home_name = obj_creation.homeworld_name;
 
