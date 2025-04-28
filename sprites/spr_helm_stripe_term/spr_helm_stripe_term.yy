@@ -10,7 +10,7 @@
   "collisionTolerance":0,
   "DynamicTexturePage":false,
   "edgeFiltering":false,
-  "For3D":true,
+  "For3D":false,
   "frames":[
     {"$GMSpriteFrame":"","%Name":"f9679102-ac16-49be-81c7-a76859c91828","name":"f9679102-ac16-49be-81c7-a76859c91828","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
     {"$GMSpriteFrame":"","%Name":"f16d60e8-3436-42e4-8ada-e41323378a0d","name":"f16d60e8-3436-42e4-8ada-e41323378a0d","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
@@ -86,8 +86,8 @@
   "swatchColours":null,
   "swfPrecision":2.525,
   "textureGroupId":{
-    "name":"Default",
-    "path":"texturegroups/Default",
+    "name":"MarineViewer",
+    "path":"texturegroups/MarineViewer",
   },
   "type":0,
   "VTile":false,

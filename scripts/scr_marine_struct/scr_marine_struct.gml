@@ -1875,7 +1875,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             location_name = obj_ini.loc[company][marine_number]; //system marine is in
         } else {
             location_type = location_types.ship; //marine is on ship
-            location_id = ship_location; //ship array position
+            location_id = ship_location > -1 ? ship_location : 0; //ship array position
             if (location_id < array_length(obj_ini.ship_location)) {
                 location_name = obj_ini.ship_location[location_id]; //location of ship
             } else {

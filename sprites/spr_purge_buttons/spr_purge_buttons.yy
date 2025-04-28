@@ -26,7 +26,7 @@
   "origin":0,
   "parent":{
     "name":"Purge",
-    "path":"folders/Sprites/New UI/Purge.yy",
+    "path":"folders/Sprites/UI/New UI/Purge.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

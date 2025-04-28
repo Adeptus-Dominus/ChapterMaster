@@ -12,7 +12,7 @@ var sprx = 728,
     sprw = 135,
     sprh = 135
 
-draw_sprite_stretched(global.chapter_icon_sprite, global.chapter_icon_frame, sprx, spry, sprw, sprh);
+draw_sprite_stretched(global.chapter_icon.sprite, 0, sprx, spry, sprw, sprh);
 
 
 draw_set_color(c_black);

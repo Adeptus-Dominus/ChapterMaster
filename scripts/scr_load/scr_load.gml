@@ -28,22 +28,10 @@ function scr_load(save_part, save_id) {
 		log_message("Loading GLOBALS");
 		// Globals
 		var globals = obj_saveload.GameSave.Save;
-		global.chapter_icon_sprite = spr_icon_chapters;
-		global.chapter_icon_frame = globals.chapter_icon_frame;
-		global.chapter_icon_path = globals.chapter_icon_path;
-		if(struct_exists(globals, "chapter_icon_filename")){
-			global.chapter_icon_filename = globals.chapter_icon_filename;
-		} else {
-			global.chapter_icon_filename = "cust";//dunno why this isn't always set
-		}
-	    global.icon_name=globals.icon_name;
+		scr_load_chapter_icon(globals.icon_name, true);
 		global.chapter_name = globals.chapter_name;
 		global.custom = globals.custom;
-		if(global.chapter_icon_path != "Error" && global.chapter_icon_path != "") {
-			global.chapter_icon_sprite = scr_image_cache(global.chapter_icon_path, global.chapter_icon_filename);
-		} else {
-			global.chapter_icon_sprite = spr_icon_chapters;
-		}
+		
 	}
 
 

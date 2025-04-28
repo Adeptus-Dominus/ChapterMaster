@@ -7,8 +7,7 @@
         "points": 150,
         "founding": 0, // The id of the founding chapter, 0 for unknown or none
         "splash": 2,
-        "icon": 2, // in \images\creation\creation_icons.png, the index from the left, 0 being blank square and 1 being dark angels etc
-        "icon_name": "ws", // ? dunno what this is used for yet but the icon breaks if you dont use it 
+        "icon_name": "white_scars",
         "fleet_type": 1, // 1= Homeworld, 2 = Fleet based, 3 = Penitent
         "strength": 5, // 1-10
         "purity": 10, // 1-10

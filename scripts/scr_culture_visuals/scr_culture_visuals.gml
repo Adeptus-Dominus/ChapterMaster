@@ -59,7 +59,7 @@ function load_symbol_sets(global_area, main_key, sub_sets){
                 }
             }
         }
-        surface_free(_sprite_double_surface);    
+        surface_clear_and_free(_sprite_double_surface);    
     }    
 }
 

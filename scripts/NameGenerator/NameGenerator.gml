@@ -83,8 +83,8 @@ function NameGenerator() constructor {
 					array_copy(names, 0, used_names, 0, used_names_length);
 					array_delete(used_names, 0, used_names_length);
 				} else {
-					log_message($"Used up all {entity_name} names, generating generic name");
-					return $"{entity_name} {used_names_length + ++star_names_generic_counter}";
+					log_error($"Used up all {entity_name} names. Generating a generic name. used_names_length = {used_names_length}; star_names_generic_counter = {star_names_generic_counter}.");
+					return $"{entity_name} {used_names_length + (star_names_generic_counter++)}";
 				}
 			}
 

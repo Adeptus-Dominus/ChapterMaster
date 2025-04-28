@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":0,
   "parent":{
-    "name":"mk_7_complex",
-    "path":"folders/Sprites/Marine Viewer/body_types/mk_7_complex.yy",
+    "name":"Unused",
+    "path":"folders/Sprites/Unused.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",
@@ -83,8 +83,8 @@
   "swatchColours":null,
   "swfPrecision":2.525,
   "textureGroupId":{
-    "name":"Default",
-    "path":"texturegroups/Default",
+    "name":"Unused",
+    "path":"texturegroups/Unused",
   },
   "type":0,
   "VTile":false,

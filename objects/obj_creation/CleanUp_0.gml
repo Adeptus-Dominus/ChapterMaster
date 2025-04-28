@@ -1,0 +1,1 @@
+chapter_icons_container.cleanup();

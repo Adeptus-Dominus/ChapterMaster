@@ -7,8 +7,7 @@
         "points": 150,
         "founding": 0, // The id of the founding chapter, 0 for unknown or none, 10 for random
         "splash": 1, // in \images\creation\chapters\splash folder, the img number, 1 being Dark Angels etc.
-        "icon": 1, // in \images\creation\chapters\icons folder, the icon number, 1 being Dark Angels etc.
-        "icon_name": "aa", // ? dunno what this is used for yet but the icon breaks if you dont use it 
+        "icon_name": "unknown",
         "fleet_type": 1, // 1= Homeworld, 2 = Fleet based, 3 = Penitent
         "strength": 5, // 1-10
         "purity": 5, // 1-10

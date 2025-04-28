@@ -10,7 +10,7 @@
   "collisionTolerance":0,
   "DynamicTexturePage":false,
   "edgeFiltering":false,
-  "For3D":true,
+  "For3D":false,
   "frames":[
     {"$GMSpriteFrame":"","%Name":"ebd378bb-3414-47cd-913e-98f9b2d84e58","name":"ebd378bb-3414-47cd-913e-98f9b2d84e58","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
     {"$GMSpriteFrame":"","%Name":"e1576158-84f7-41d2-a0d5-619c7102a3ed","name":"e1576158-84f7-41d2-a0d5-619c7102a3ed","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
@@ -40,8 +40,8 @@
   "nineSlice":null,
   "origin":0,
   "parent":{
-    "name":"body_types",
-    "path":"folders/Sprites/Marine Viewer/body_types.yy",
+    "name":"Deprecated",
+    "path":"folders/Sprites/Unused/Deprecated.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",
@@ -141,8 +141,8 @@
   "swatchColours":null,
   "swfPrecision":2.525,
   "textureGroupId":{
-    "name":"Default",
-    "path":"texturegroups/Default",
+    "name":"Unused",
+    "path":"texturegroups/Unused",
   },
   "type":0,
   "VTile":false,

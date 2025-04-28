@@ -45,7 +45,7 @@
   "origin":0,
   "parent":{
     "name":"textures",
-    "path":"folders/Sprites/textures.yy",
+    "path":"folders/Sprites/Marine Viewer/textures.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

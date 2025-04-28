@@ -47,33 +47,37 @@ if (audien[1]=0) or (current_audience>audiences){
         pip.title=popup_type[current_popup];
         pip.text=popup_text[current_popup];
         pip.image=popup_image[current_popup];
-        if (popup_special[current_popup]!="") and ((pip.image="inquisition") or (pip.image="necron_cave")) and (popup_special[current_popup]!="1") and (popup_special[current_popup]!="2") and (pip.image!="tech_build") and (popup_special[current_popup]!="contraband") and (string_count("mech_",popup_special[current_popup])=0) and (string_count("meeting",popup_special[current_popup])=0){
-            explode_script(popup_special[current_popup],"|");
-            pip.mission=string(explode[0]);
-            pip.loc=string(explode[1]);
-            pip.planet=real(explode[2]);
-            pip.estimate=real(explode[3]);
+        if (is_struct(popup_special[current_popup])){
+            pip.pop_data = popup_special[current_popup];
+        } else {
+            if (popup_special[current_popup]!="") and ((pip.image="inquisition") or (pip.image="necron_cave")) and (popup_special[current_popup]!="1") and (popup_special[current_popup]!="2") and (pip.image!="tech_build") and (popup_special[current_popup]!="contraband") and (string_count("mech_",popup_special[current_popup])=0) and (string_count("meeting",popup_special[current_popup])=0){
+                explode_script(popup_special[current_popup],"|");
+                pip.mission=string(explode[0]);
+                pip.loc=string(explode[1]);
+                pip.planet=real(explode[2]);
+                pip.estimate=real(explode[3]);
+            }
+            if (string_count("target_marine",popup_special[current_popup])>0){
+                var aa;
+                explode_script(popup_special[current_popup],"|");
+                aa=string(explode[0]);
+                pip.ma_name=string(explode[1]);
+                pip.ma_co=real(explode[2]);
+                pip.ma_id=real(explode[3]);
+            }
+            if (string_count("mech_",popup_special[current_popup])>0){
+                explode_script(popup_special[current_popup],"|");
+                pip.mission=string(explode[0]);
+                pip.loc=string(explode[1]);
+                // "mech_raider!0!|"+string(you2.name));        "mech_bionics!0!|"+string(you2.name));
+            }
+            if (string_count("meeting_",popup_special[current_popup])>0){
+                pip.mission=popup_special[current_popup];
+            }
+            if (popup_special[current_popup]="contraband") then pip.loc="contraband";
+            if (popup_special[current_popup]="1") then pip.planet=1;
+            if (popup_special[current_popup]="2") then pip.planet=2;
         }
-        if (string_count("target_marine",popup_special[current_popup])>0){
-            var aa;
-            explode_script(popup_special[current_popup],"|");
-            aa=string(explode[0]);
-            pip.ma_name=string(explode[1]);
-            pip.ma_co=real(explode[2]);
-            pip.ma_id=real(explode[3]);
-        }
-        if (string_count("mech_",popup_special[current_popup])>0){
-            explode_script(popup_special[current_popup],"|");
-            pip.mission=string(explode[0]);
-            pip.loc=string(explode[1]);
-            // "mech_raider!0!|"+string(you2.name));        "mech_bionics!0!|"+string(you2.name));
-        }
-        if (string_count("meeting_",popup_special[current_popup])>0){
-            pip.mission=popup_special[current_popup];
-        }
-        if (popup_special[current_popup]="contraband") then pip.loc="contraband";
-        if (popup_special[current_popup]="1") then pip.planet=1;
-        if (popup_special[current_popup]="2") then pip.planet=2;
         pip.number=1;
         
         

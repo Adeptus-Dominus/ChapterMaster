@@ -336,9 +336,9 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
                 if (him != -1) { // found a valid unit
                     obj_ncombat.dead_jims += 1;
                     if (marine_type[him] == obj_ini.role[100][5]) {
-                        obj_ncombat.dead_jim[obj_ncombat.dead_jims] = $"A {marine_type[him]} has been critically injured!";
+                        obj_ncombat.dead_jim[obj_ncombat.dead_jims] = $"A {marine_type[him]} has been lost!";
                     } else {
-                        obj_ncombat.dead_jim[obj_ncombat.dead_jims] = $"{unit_struct[him].name_role()} has been critically injured!";
+                        obj_ncombat.dead_jim[obj_ncombat.dead_jims] = $"{unit_struct[him].name_role()} has been lost!";
                     }
                 }
             }
@@ -355,7 +355,7 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
 		var lis, y1, y2;
 		lis = string_rpos(", ", m2);
 		m2 = string_delete(m2, lis, 3); // This clears the last ', ' and replaces it with the end statement
-		if (lost_units_count > 0) then m2 += " critically damaged.";
+		if (lost_units_count > 0) then m2 += " lost.";
 
 		// show_message(m2);
 
@@ -376,7 +376,7 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
 		var lis, y1, y2;
 		lis = string_rpos(", ", m2);
 		m2 = string_delete(m2, lis, 3);
-		if (lost_units_count > 0) then m2 += " critically damaged.";
+		if (lost_units_count > 0) then m2 += " lost.";
 	}
 	if (string_count(", ", m2) = 1) and(unce = 0) and(hostile_weapon = "Web Spinner") {
 		var lis, y1, y2;

@@ -27,9 +27,39 @@ function __init_external() {
 
     #macro PATH_save_files "Save Files\\save{0}.json"
     #macro PATH_autosave_file "Save Files\\save0.json"
-    #macro PATH_save_previews "Save Files\\screen{0}.png"
-    #macro PATH_custom_icons $"Custom Files\\Custom Icons\\custom"
-    #macro PATH_last_messages $"Logs/last_messages.log"
+    #macro PATH_custom_icons "Custom Files\\Custom Icons\\"
+    #macro PATH_chapter_icons working_directory + "\\images\\creation\\chapters\\icons\\"
+    #macro PATH_included_icons working_directory + "\\images\\creation\\customicons\\"
+    #macro PATH_last_messages "Logs/last_messages.log"
+
+    global.chapter_icon = {
+        // sprite filename, without the extension
+        name: "",
+        /// the sprite id once loaded from file
+        sprite: -1
+    }
+    global.chapter_icons_map = ds_map_create();
+
+    var _icon_paths = [PATH_chapter_icons, PATH_included_icons, PATH_custom_icons];
+    for (var i = 0; i < array_length(_icon_paths); i++) {
+        var _file_wildcard = _icon_paths[i] + "*.png";
+        var _file = file_find_first(_file_wildcard, fa_none);  
+        while (_file != "") {
+            var _file_path = _icon_paths[i] + _file;
+            var _sprite  = sprite_add(_file_path, 1, false, true, 0, 0);
+            var _icon_name = string_delete(_file, string_length(_file) - 3, 4);
+            if (ds_map_exists(global.chapter_icons_map, _icon_name)) {
+                sprite_delete(global.chapter_icons_map[? _icon_name]);
+                log_message($"A duplicate {_icon_name} icon replaced another existing one with the same name!");
+            }
+            ds_map_replace(global.chapter_icons_map, _icon_name, _sprite);
+            _file = file_find_next();  
+        }
+        file_find_close();
+    }
+
+    global.chapter_icons_array = ds_map_keys_to_array(global.chapter_icons_map);
+    array_sort(global.chapter_icons_array, true);
 
     var _log_file = file_text_open_write(PATH_last_messages);
     file_text_close(_log_file);

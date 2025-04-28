@@ -27,7 +27,7 @@
   "origin":0,
   "parent":{
     "name":"Icons",
-    "path":"folders/Sprites/New UI/Icons.yy",
+    "path":"folders/Sprites/UI/New UI/Icons.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

@@ -17,6 +17,17 @@ function scr_popup(type, text, image, popup_special="") {
 	    var pip=instance_create(0,0,obj_popup);
 	    pip.title=type;
 	    pip.text=text;
+
 	    pip.image=image;	
+	    if (is_struct(popup_special)){
+	    	show_debug_message(popup_special);
+	    	pip.pop_data = popup_special;
+	    } else if(popup_special != ""){// this is only relevant for forcing missions through cheatcodes
+			      explode_script(popup_special,"|");
+            pip.mission=string(explode[0]);
+            pip.loc=string(explode[1]);
+            pip.planet=real(explode[2]);
+            pip.estimate=real(explode[3]);
+		}
 	}
 }

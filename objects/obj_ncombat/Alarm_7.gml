@@ -324,7 +324,7 @@ try {
             with(obj_star){if (name!=obj_ncombat.battle_loc) then instance_deactivate_object(id);}
             with(obj_star){
                 var planet = obj_ncombat.battle_id;
-                if (remove_planet_problem(planet,"bomb")){
+                if (remove_planet_problem(planet,"necron")){
                     p_necrons[planet]=4;
                 }
                 if (awake_tomb_world(p_feature[planet])==0) then awaken_tomb_world(p_feature[planet])
@@ -381,18 +381,20 @@ try {
                         with(obj_star){if (name!=obj_temp8.loc) then instance_deactivate_object(id);}
                         with(obj_star){if (name=obj_temp8.loc) then instance_create(x,y,obj_temp5);}
                         
-                        you=instance_nearest(obj_temp5.x,obj_temp5.y,obj_star);onceh=0;
-                        
+                        var star = star_by_name(obj_temp8.loc)
+                        var planet = obj_temp8.wid
                         // show_message(you.name);
                         
                         // show_message("TEMP5: "+string(instance_number(obj_temp5))+"#Star: "+string(you));
                         
                         var ppp;ppp=0;
-                        remove_planet_problem(obj_temp8.wid, "bomb", you);
+                        remove_planet_problem(planet, "necron", star);
+					    seal_tomb_world(star.p_feature[planet]);
+
     
                         pip.option1="";pip.option2="";pip.option3="";
-                        scr_event_log("","Inquisition Mission Completed: Your Astartes have sealed the Necron Tomb on "+string(you.name)+" "+string(scr_roman(obj_temp8.wid))+".");
-                        scr_gov_disp(you.name,obj_temp8.wid,choose(1,2,3,4,5));
+                        scr_event_log("","Inquisition Mission Completed: Your Astartes have sealed the Necron Tomb on "+string(star.name)+" "+string(scr_roman(planet))+".");
+                        scr_gov_disp(star.name,planet,choose(1,2,3,4,5));
                         
                         if (!instance_exists(obj_temp8)){
                             pip.loc=battle_loc;

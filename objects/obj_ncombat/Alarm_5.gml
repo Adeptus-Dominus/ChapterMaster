@@ -115,7 +115,6 @@ var _total_deaths = final_marine_deaths + final_command_deaths;
 var _total_injured = _total_deaths + injured + units_saved_count;
 if (_total_injured > 0) {
     newline = $"{string_plural_count("unit", _total_injured)} {smart_verb("was", _total_injured)} critically injured.";
-    newline_color = "red";
 	scr_newtext();
 
     if (units_saved_count > 0) {
@@ -204,8 +203,7 @@ scr_newtext();
 
 var _total_damaged_count = vehicle_deaths + vehicles_saved_count;
 if (_total_damaged_count > 0) {
-	newline = $"{string_plural_count("vehicle", _total_damaged_count)} {smart_verb("was", _total_damaged_count)} critically damaged during battle.";
-    newline_color="red";
+	newline = $"{string_plural_count("vehicle", _total_damaged_count)} {smart_verb("was", _total_damaged_count)} disabled during battle.";
     scr_newtext();
 
     if (vehicles_saved_count > 0) {

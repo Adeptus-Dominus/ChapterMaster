@@ -26,7 +26,7 @@
   "origin":0,
   "parent":{
     "name":"Menu and Load",
-    "path":"folders/Sprites/New UI/Menu and Load.yy",
+    "path":"folders/Sprites/UI/New UI/Menu and Load.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",
