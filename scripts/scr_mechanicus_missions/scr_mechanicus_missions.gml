@@ -178,6 +178,7 @@ function mechanicus_missions_end_turn(planet){
 
 
 function spawn_mechanicus_mission(){
+	var evented = false;
 	log_message("RE: Mechanicus Mission");
 	var mechanicus_missions = []
 	
@@ -271,7 +272,9 @@ function spawn_mechanicus_mission(){
 		var text=$"Mechanicus Techpriests have established a research site on a Necron Tomb World in the {star.name} system.  They are requesting some of your forces to provide security for the research team until the tests may be completed.  Further information is on a need-to-know basis.  Can your chapter handle this mission?";
             scr_popup("Mechanicus Mission",text,"mechanicus",_mission_data);
 			evented = true;
-    }	
+    }
+
+    return evented;	
 }
 
 function mechanicus_mission_procedures(){

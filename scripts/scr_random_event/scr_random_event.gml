@@ -1,3 +1,171 @@
+function random_event_chart(player_luck=-1){
+
+	if (player_luck == -1){
+		var luck_roll = roll_dice_chapter(1, 100, "low");
+
+		if (luck_roll<=45) then player_luck=luck.good;
+		if (luck_roll>45) and (luck_roll<55) then player_luck=luck.neutral;
+		if (luck_roll>=55) then player_luck=luck.bad;
+	}
+
+
+	var events;
+	if(player_luck == luck.good){
+		events = 
+		[
+			EVENT.space_hulk,
+			EVENT.promotion,
+			EVENT.strange_building,
+			EVENT.sororitas,
+			EVENT.rogue_trader,
+			EVENT.inquisition_mission,
+			EVENT.inquisition_planet,
+			EVENT.mechanicus_mission
+		];
+	}
+	else if(player_luck == luck.neutral){
+		events = 
+		[
+			EVENT.strange_behavior,
+			EVENT.fleet_delay,
+			EVENT.harlequins,
+			EVENT.succession_war,
+			EVENT.random_fun,
+		];
+	}
+	else if(player_luck == luck.bad){
+		events = 
+		[
+			EVENT.warp_storms,
+			EVENT.enemy_forces,
+			EVENT.crusade, // Reportly breaks often because of lack of imperial fleets and eats player ships // TODO LOW CRUSADE_EVENT // fix
+			EVENT.enemy, // Save-scumming event, Should probably base this on something else than tech-scavs
+			EVENT.mutation,
+			EVENT.ship_lost, // Another save-scumming event, mainly due to rarity of player ships
+			//EVENT.chaos_invasion, // Spawns Chaos fleets way too close to player owned worlds with no warning and usually lots of big ships, save-scum galore and encourages fleet-based chapters // TODO LOW INVASION_EVENT // Make them spawn way farther with more warning, make them have a different goal or remove this event entirely
+			EVENT.necron_awaken, // Inquisitor check for this is inverted
+			EVENT.fallen, // Event mission cannot be completed and never expires // TODO LOW FALLEN_EVENT // fix
+		];
+	}
+
+	var events_count = array_length(events);
+	var events_total = events_count;
+	var events_share = array_create(events_count, 1);
+
+	for(var i = 0; i < events_count; i++){
+		var curr_event = events[i];			
+		
+		//DEBUG-INI (EVENTS DEBUG CODE - 1)
+		//Comment/delete this when not debugging events
+		//List of possible events above
+		/*curr_event =  EVENT.necron_awaken
+		events_count = 1
+		events_total = events_count;
+		events_share = array_create(events_count, 1);*/
+		//DEBUG-FIN (EVENTS DEBUG CODE - 1)
+		
+		switch (curr_event){
+			case EVENT.inquisition_planet:
+				if (known[eFACTION.Inquisition]==0 || obj_controller.faction_status[eFACTION.Inquisition]=="War") {
+					events_share[i] -= 1;
+					events_total -= 1;
+				}
+				break;
+			case EVENT.inquisition_mission:
+				if (known[eFACTION.Inquisition]==0 || obj_controller.disposition[4] < 0 || obj_controller.faction_status[eFACTION.Inquisition] == "War") {
+					events_share[i] -= 1;
+					events_total -= 1;
+				}
+				break;
+			case EVENT.mechanicus_mission:
+				if (known[eFACTION.Mechanicus] == 0 || obj_controller.disposition[3] < 50 || obj_controller.faction_status[eFACTION.Mechanicus] == "War") {
+					events_share[i] -= 1;
+					events_total -= 1;
+				}
+				else if(scr_has_adv("Tech-Brothers")){
+					events_share[i] += 2;
+					events_total += 2;
+				}
+				break;
+			case EVENT.enemy:
+				if(scr_has_adv("Scavangers")){
+					events_share[i] += 2;
+					events_total += 2;
+				}
+				break;
+			case EVENT.mutation:
+				if(gene_seed < 5){
+					events_share[i] -= 1;
+					events_total -= 1;
+				}
+				break;
+			case EVENT.necron_awaken:
+				if((known[eFACTION.Inquisition] == 0)){
+					events_share[i] -= 1;
+					events_total -= 1;
+				}
+				break;
+			case EVENT.crusade:
+				if (obj_controller.faction_status[eFACTION.Imperium] == "War"){
+					events_share[i] -= 1;
+					events_total -= 1;
+				}
+				break;
+			case EVENT.fleet_delay:
+				var has_moving_fleet = false;
+				with(obj_p_fleet){
+					if(action=="move")
+					{
+						has_moving_fleet = true;
+						break;
+					}
+				}
+				if(!has_moving_fleet){
+					events_share[i] -= 1;
+					events_total -= 1;
+				}
+				break;
+			case EVENT.ship_lost:
+				var has_moving_fleet = false;
+				with(obj_p_fleet){
+					if(action=="move")
+					{
+						has_moving_fleet = true;
+						break;
+					}
+				}
+				if(!has_moving_fleet){
+					events_share[i] -= 1;
+					events_total -= 1;
+				}
+				break;
+			case EVENT.fallen:
+				if(!scr_has_disadv("Never Forgive"))
+				{
+					events_share[i] -= 1;
+					events_total -= 1;
+				}
+		}
+	}
+
+	chosen_event = irandom(events_total);
+	for(var i = 0; i < events_count; i++){
+		chosen_event -= events_share[i];
+		if(chosen_event <= 0)
+		{
+			chosen_event = events[i];
+			break;
+		}
+	}
+	//DEBUG-INI (EVENTS DEBUG CODE - 2)
+	//Comment/delete this when not debugging events
+	//If event on the switch above, (EVENTS DEBUG CODE - 1) var should be set to event too.
+	/*chosen_event =  EVENT.necron_awaken*/
+	//DEBUG-FIN (EVENTS DEBUG CODE - 2)
+	return chosen_event;
+}
+
+
 function scr_random_event(execute_now) {
 
 	var evented = false;
@@ -22,7 +190,7 @@ function scr_random_event(execute_now) {
 	//        exit;
 	//    }
 	//}
-	var chosen_event;
+	var chosen_event=EVENT.none;
 
 	var inquisition_mission_roll = roll_dice(1,100);
 	var force_inquisition_mission = false;
@@ -33,187 +201,53 @@ function scr_random_event(execute_now) {
 	if (force_inquisition_mission && random_event_next == EVENT.none) {
 		chosen_event = EVENT.inquisition_mission;
 	}
-	else {
-		if(execute_now){
-			var random_event_roll = irandom(100);
-		    if ((last_event+30)<=turn) then random_event_roll=1;// If 30 turns without random event then do one
+	else if (execute_now && ((last_event+20)<=turn)) && ((turn-15)<last_event)){
+
+		var random_event_roll = roll_dice(1,100);
+		random_event_roll -= ((turn - last_event)/5){
 			if (random_event_roll>5) then exit;// Frequency of events
-			if ((turn-15)<last_event) then exit;// Minimum interval between
 		}
-		
+
 		if(random_event_next != EVENT.none) {
 			chosen_event = random_event_next;
 		}
 		else {
-			var player_luck;
-			var luck_roll = roll_dice_chapter(1, 100, "low");
-
-			if (luck_roll<=45) then player_luck=luck.good;
-			if (luck_roll>45) and (luck_roll<55) then player_luck=luck.neutral;
-			if (luck_roll>=55) then player_luck=luck.bad;
-
-		
-				var events;
-				if(player_luck == luck.good){
-					events = 
-					[
-						EVENT.space_hulk,
-						EVENT.promotion,
-						EVENT.strange_building,
-						EVENT.sororitas,
-						EVENT.rogue_trader,
-						EVENT.inquisition_mission,
-						EVENT.inquisition_planet,
-						EVENT.mechanicus_mission
-					];
-				}
-				else if(player_luck == luck.neutral){
-					events = 
-					[
-						EVENT.strange_behavior,
-						EVENT.fleet_delay,
-						EVENT.harlequins,
-						EVENT.succession_war,
-						EVENT.random_fun,
-					];
-				}
-				else if(player_luck == luck.bad){
-					events = 
-					[
-						EVENT.warp_storms,
-						EVENT.enemy_forces,
-						EVENT.crusade, // Reportly breaks often because of lack of imperial fleets and eats player ships // TODO LOW CRUSADE_EVENT // fix
-						EVENT.enemy, // Save-scumming event, Should probably base this on something else than tech-scavs
-						EVENT.mutation,
-						EVENT.ship_lost, // Another save-scumming event, mainly due to rarity of player ships
-						//EVENT.chaos_invasion, // Spawns Chaos fleets way too close to player owned worlds with no warning and usually lots of big ships, save-scum galore and encourages fleet-based chapters // TODO LOW INVASION_EVENT // Make them spawn way farther with more warning, make them have a different goal or remove this event entirely
-						EVENT.necron_awaken, // Inquisitor check for this is inverted
-						EVENT.fallen, // Event mission cannot be completed and never expires // TODO LOW FALLEN_EVENT // fix
-					];
-				}
-	
-				var events_count = array_length(events);
-				var events_total = events_count;
-				var events_share = array_create(events_count, 1);
-	
-				for(var i = 0; i < events_count; i++){
-					var curr_event = events[i];			
-					
-					//DEBUG-INI (EVENTS DEBUG CODE - 1)
-					//Comment/delete this when not debugging events
-					//List of possible events above
-					/*curr_event =  EVENT.necron_awaken
-					events_count = 1
-					events_total = events_count;
-					events_share = array_create(events_count, 1);*/
-					//DEBUG-FIN (EVENTS DEBUG CODE - 1)
-					
-					switch (curr_event){
-						case EVENT.inquisition_planet:
-							if (known[eFACTION.Inquisition]==0 || obj_controller.faction_status[eFACTION.Inquisition]=="War") {
-								events_share[i] -= 1;
-								events_total -= 1;
-							}
-							break;
-						case EVENT.inquisition_mission:
-							if (known[eFACTION.Inquisition]==0 || obj_controller.disposition[4] < 0 || obj_controller.faction_status[eFACTION.Inquisition] == "War") {
-								events_share[i] -= 1;
-								events_total -= 1;
-							}
-							break;
-						case EVENT.mechanicus_mission:
-							if (known[eFACTION.Mechanicus] == 0 || obj_controller.disposition[3] < 50 || obj_controller.faction_status[eFACTION.Mechanicus] == "War") {
-								events_share[i] -= 1;
-								events_total -= 1;
-							}
-							else if(scr_has_adv("Tech-Brothers")){
-								events_share[i] += 2;
-								events_total += 2;
-							}
-							break;
-						case EVENT.enemy:
-							if(scr_has_adv("Scavangers")){
-								events_share[i] += 2;
-								events_total += 2;
-							}
-							break;
-						case EVENT.mutation:
-							if(gene_seed < 5){
-								events_share[i] -= 1;
-								events_total -= 1;
-							}
-							break;
-						case EVENT.necron_awaken:
-							if((known[eFACTION.Inquisition] == 0)){
-								events_share[i] -= 1;
-								events_total -= 1;
-							}
-							break;
-						case EVENT.crusade:
-							if (obj_controller.faction_status[eFACTION.Imperium] == "War"){
-								events_share[i] -= 1;
-								events_total -= 1;
-							}
-							break;
-						case EVENT.fleet_delay:
-							var has_moving_fleet = false;
-							with(obj_p_fleet){
-								if(action=="move")
-								{
-									has_moving_fleet = true;
-									break;
-								}
-							}
-							if(!has_moving_fleet){
-								events_share[i] -= 1;
-								events_total -= 1;
-							}
-							break;
-						case EVENT.ship_lost:
-							var has_moving_fleet = false;
-							with(obj_p_fleet){
-								if(action=="move")
-								{
-									has_moving_fleet = true;
-									break;
-								}
-							}
-							if(!has_moving_fleet){
-								events_share[i] -= 1;
-								events_total -= 1;
-							}
-							break;
-						case EVENT.fallen:
-							if(!scr_has_disadv("Never Forgive"))
-							{
-								events_share[i] -= 1;
-								events_total -= 1;
-							}
-					}
-				}
-	
-				chosen_event = irandom(events_total);
-				for(var i = 0; i < events_count; i++){
-					chosen_event -= events_share[i];
-					if(chosen_event <= 0)
-					{
-						chosen_event = events[i];
-						break;
-					}
-				}
-				//DEBUG-INI (EVENTS DEBUG CODE - 2)
-				//Comment/delete this when not debugging events
-				//If event on the switch above, (EVENTS DEBUG CODE - 1) var should be set to event too.
-				/*chosen_event =  EVENT.necron_awaken*/
-				//DEBUG-FIN (EVENTS DEBUG CODE - 2)
+			chosen_event = random_event_chart();
 		}
 	}
+	if (chosen_event!=EVENT.none){
+		if (!execute_now){
+			random_event_next = chosen_event;
+			exit;
+		} else {
+			execute_event(chosen_event)
+		}
 	
-	if (!execute_now){
-		random_event_next = chosen_event;
-		exit;
+		if(evented) {
+			if(force_inquisition_mission && chosen_event == EVENT.inquisition_mission) {
+				last_mission=turn;
+			}
+			else {
+				last_event=turn;
+				if (random_event_next != EVENT.none){
+					random_event_next = EVENT.none;
+				}
+			}
+		}
 	}
 
+
+	// these shouldn't be needed anymore, the old code moved object to hide them sometimes
+	//instance_activate_object(obj_p_fleet);
+	//with(obj_p_fleet){if (x<-10000){x+=20000;y+=20000;}}
+	//with(obj_en_fleet){if (x<-10000){x+=20000;y+=20000;}}
+	//with(obj_star){if (x<-10000){x+=20000;y+=20000;}}
+
+
+}
+
+function execute_event(chosen_event){
+	var evented = false;
 	if (chosen_event == EVENT.strange_behavior){
 		//TODO this event currenlty dose'nt do anything but now we have marine structs there is lots of potential here
 		init_marine_acting_strange()
@@ -432,9 +466,8 @@ function scr_random_event(execute_now) {
 			}
 		}
     
-	} else if (chosen_event == EVENT.mechanicus_mission) {
-		spawn_mechanicus_mission()
-		evented = true;
+	 else if (chosen_event == EVENT.mechanicus_mission) {
+		evented = spawn_mechanicus_mission();
 
 	}
     
@@ -918,30 +951,8 @@ function scr_random_event(execute_now) {
 		event_fallen();
 		evented = true;
 	}
-
-	if(evented) {
-		if(force_inquisition_mission && chosen_event == EVENT.inquisition_mission) {
-			last_mission=turn;
-		}
-		else {
-			last_event=turn;
-			if (random_event_next != EVENT.none){
-				random_event_next = EVENT.none;
-			}
-		}
-	}
-
-
-	// these shouldn't be needed anymore, the old code moved object to hide them sometimes
-	//instance_activate_object(obj_p_fleet);
-	//with(obj_p_fleet){if (x<-10000){x+=20000;y+=20000;}}
-	//with(obj_en_fleet){if (x<-10000){x+=20000;y+=20000;}}
-	//with(obj_star){if (x<-10000){x+=20000;y+=20000;}}
-
-
+	return evented;	
 }
-
-
 function event_fallen(){
 	log_message("RE: Hunt the Fallen");
 	var stars = scr_get_stars();
