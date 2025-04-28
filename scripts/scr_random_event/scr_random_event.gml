@@ -201,7 +201,7 @@ function scr_random_event(execute_now) {
 	if (force_inquisition_mission && random_event_next == EVENT.none) {
 		chosen_event = EVENT.inquisition_mission;
 	}
-	else if (execute_now && ((last_event+20)<=turn)) && ((turn-15)<last_event)){
+	else if (execute_now && ((last_event+20)<=turn) && ((turn-15)<last_event)){
 
 		var random_event_roll = roll_dice(1,100);
 		random_event_roll -= ((turn - last_event)/5){
