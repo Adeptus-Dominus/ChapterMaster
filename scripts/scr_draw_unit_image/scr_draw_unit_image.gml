@@ -45,14 +45,15 @@ enum ArmourType {
     None,
 }
 
-function set_and_clear_surface(_surface) {
+function surface_clear_and_free(_surface) {
     surface_set_target(_surface);
     draw_clear_alpha(c_white, 0);
     surface_reset_target();
+    surface_free(_surface);
 }
 
-function UnitImage(unit_surface) constructor {
-    u_surface = unit_surface;
+function UnitImage(_unit_sprite) constructor {
+    unit_sprite = _unit_sprite;
 
     static draw = function(xx, yy, _background = false) {
         if (_background) {
@@ -61,8 +62,8 @@ function UnitImage(unit_surface) constructor {
             draw_rectangle_color_simple(xx - 2, yy - 2, xx + 166 + 2, yy + 2 + 271, 1, c_black);
             draw_rectangle_color_simple(xx - 3, yy - 3, xx + 166 + 3, yy + 3 + 271, 1, c_gray);
         }
-        if (sprite_exists(u_surface)) {
-            draw_sprite(u_surface, 0, xx - 200, yy - 90);
+        if (sprite_exists(unit_sprite)) {
+            draw_sprite(unit_sprite, 0, xx - 200, yy - 90);
         }
     };
 
@@ -73,14 +74,14 @@ function UnitImage(unit_surface) constructor {
             draw_rectangle_color_simple(xx - 2 + left, yy - 2 + top, xx + width + 2, yy + 2 + height, 1, c_black);
             draw_rectangle_color_simple(xx - 3 + left, yy - 3 + top, xx + width + 3, yy + 3 + height, 1, c_gray);
         }
-        if (sprite_exists(u_surface)) {
-            draw_sprite_part(u_surface, 0, left + 200, top + 90, width, height, xx, yy);
+        if (sprite_exists(unit_sprite)) {
+            draw_sprite_part(unit_sprite, 0, left + 200, top + 90, width, height, xx, yy);
         }
     };
 
     static destroy_image = function() {
-        if (sprite_exists(u_surface)) {
-            sprite_delete(u_surface);
+        if (sprite_exists(unit_sprite)) {
+            sprite_delete(unit_sprite);
         }
     };
 }
@@ -207,14 +208,7 @@ function scr_draw_unit_image(_background = false) {
     var _controller = instance_exists(obj_controller);
     var _creation = instance_exists(obj_creation);
 
-    var unit_surface = _controller ? obj_controller.marine_surface : obj_creation.marine_surface;
-    if (!surface_exists(unit_surface)) {
-        var _obj = _controller ? obj_controller : obj_creation;
-        with(_obj) {
-            marine_surface = surface_create(600, 600);
-            unit_surface = marine_surface;
-        }
-    }
+    var unit_surface = surface_create(600, 600);
     surface_set_target(unit_surface);
     draw_clear_alpha(c_black, 0); //RESET surface
     draw_set_font(fnt_40k_14b);
@@ -732,6 +726,15 @@ function scr_draw_unit_image(_background = false) {
             }
         }
     }
+
     delete complex_set;
-    return new UnitImage(sprite_create_from_surface(unit_surface, 0, 0, 600, 600, true, false, 0, 0));
+
+    if (!surface_exists(unit_surface)) {
+        return new UnitImage(spr_none);
+    }
+
+    var _complete_sprite = sprite_create_from_surface(unit_surface, 0, 0, 600, 600, true, false, 0, 0);
+    surface_clear_and_free(unit_surface);
+
+    return new UnitImage(_complete_sprite);
 }

@@ -304,7 +304,7 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
 			loss_list += (lost_units_count == 1) ? " has been incapacitated." : " have been incapacitated.";
 			_message_color = COL_BRIGHT_GREEN;
 		} else {
-			loss_list += " critically damaged.";
+			loss_list += " lost.";
 			_message_color = COL_RED;
 		}
 	}

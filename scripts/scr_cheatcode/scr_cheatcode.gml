@@ -134,6 +134,47 @@ function scr_cheatcode(argument0) {
 						}
 					}
 					break;
+
+				case "mechmission":
+					show_debug_message("mech_mission");
+					spawn_mechanicus_mission();
+          break;
+
+				case "inquismission": 
+					var mission = cheat_arguments[0];
+					switch (mission){
+						case "1": //default 
+							scr_inquisition_mission(EVENT.inquisition_mission);
+						break;
+						case "planet":
+							scr_inquisition_mission(EVENT.inquisition_planet);
+						break;
+						case "spyrer": 
+							scr_inquisition_mission(EVENT.inquisition_mission, INQUISITION_MISSION.spyrer);
+						break;
+						case "artifact": 
+							scr_inquisition_mission(EVENT.inquisition_mission, INQUISITION_MISSION.artifact);
+						break;
+						case "inquisitor": 
+							scr_inquisition_mission(EVENT.inquisition_mission, INQUISITION_MISSION.inquisitor);
+						break;
+						case "purge": 
+							scr_inquisition_mission(EVENT.inquisition_mission, INQUISITION_MISSION.purge);
+						break;
+						case "tomb_world": 
+							scr_inquisition_mission(EVENT.inquisition_mission, INQUISITION_MISSION.tomb_world);
+						break;
+						case "tyranid_organism": 
+							scr_inquisition_mission(EVENT.inquisition_mission, INQUISITION_MISSION.tyranid_organism);
+						break;
+						case "demon": 
+							scr_inquisition_mission(EVENT.inquisition_mission, INQUISITION_MISSION.demon_world);
+						break;
+						default: 
+							scr_inquisition_mission(EVENT.inquisition_mission);
+						break;
+					}
+					break;
 				case "artifactpopulate":
 					with (obj_star) {
 						for (var i = 1; i <= planets; i++) {
@@ -168,6 +209,8 @@ function scr_cheatcode(argument0) {
 						new_inquisitor_inspection();
 					} else if (cheat_arguments[0] == "slaughtersong") {
 						create_starship_event();
+					} else if (cheat_arguments[0] == "fallen"){
+						event_fallen();
 					} else {
 						with (obj_controller) {
 							scr_random_event(false);

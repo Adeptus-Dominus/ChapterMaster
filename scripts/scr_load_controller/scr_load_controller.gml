@@ -46,11 +46,10 @@ function scr_load_controller(save_id){
 		// TODO make it either throw error (if version is wrong) or try to upgrade the saved game data and version
 	    global.save_version=ini_read_string("Save","version",0);
 	    global.game_seed=ini_read_real("Save","game_seed",0);
-	    obj_ini.use_custom_icon=ini_read_real("Save","use_custom_icon",0);
 
 	    obj_controller.play_time=ini_read_real("Save","play_time",0);
 
-	    obj_ini.progenitor=ini_read_real("Save","founding",0);
+	    obj_ini.progenitor=ini_read_real("Save","founding",ePROGENITOR.NONE);
 	    // global.founding_secret=ini_read_string("Save","founding_secret","Error");
 	    global.custom=ini_read_real("Save","custom",1);
 	    stars=ini_read_real("Save","stars",0);

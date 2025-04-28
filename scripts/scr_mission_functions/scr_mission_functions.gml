@@ -10,19 +10,13 @@ function mission_name_key(mission){
 		"meeting_trap" : "Chaos Lord Meeting",
 		"meeting" : "Chaos Lord Meeting",
 		"succession" : "War of succession",
-		"spyrer" : "Kill Spyrer for Inquisitor",
 		"mech_raider" : "Provide Land Raider to Mechanicus",
 		"mech_bionics" : "Provide Bionic Augmented marines to study",
 		"mech_mars" : "Send Techmarines to mars",
 		"mech_tomb1": "Explore Mechanicus Tomb",
 		"fallen" : "Find Chapter Fallen",
-		"recon" : "Recon Mission for Inquisitor",
-		"cleanse" : "Cleanse Planet for Inquisitor",
-		"tyranid_org" : "Capture Tyranid for Inquisitor",
-		"bomb" : "Bombard World for inquisitor",
 		"great_crusade": "Answer Crusade Muster Call",
 		"harlequins" : "Harlequin presence Report",
-		"artifact_loan" : "Safeguard Artifact for the inquisition",
 		"fund_elder" : "provide assistance to Eldar",
 		"provide_garrison" : "Provision Garrison",
 		"hunt_beast" : "Hunt Beasts",
@@ -30,7 +24,20 @@ function mission_name_key(mission){
 		"join_communion" : "Join Planetary Religious Celebration",
 		"join_parade" : "Join Parade on Planet Surface",
 		"recover_artifacts" : "Recover Artifacts",
-		"train_forces" : "Train Planet Forces"
+		"train_forces" : "Train Planet Forces",
+		// Inquisition missions
+		"spyrer" : "Kill Spyrer for Inquisitor",
+		"inquisitor": "Radical Inquisitor Arriving",
+		"recon" : "Recon Mission for Inquisitor",
+		"cleanse" : "Cleanse Planet for Inquisitor",
+		"purge": "Purge Leadership for Inquisitor",
+		"tyranid_org" : "Capture Tyranid for Inquisitor",
+		// "bomb" : "Bombard World for Inquisitor",
+		"artifact_loan" : "Safeguard Artifact for the Inquisition",
+		"necron": "Bomb Necron Tomb for Inquisitor",
+		"ethereal": "Capture Ethereal for Inquisitor",
+		"demon_world": "Clear Demon World for Inquisitor"
+		
 	}
 	if (struct_exists(mission_key, mission)){
 		return mission_key[$ mission];
@@ -90,7 +97,26 @@ function scr_new_governor_mission(planet, problem = ""){
 	}
 }
 
+function init_marine_acting_strange(){
+	log_message("RE: Strange Behavior");
+    var marine_and_company = scr_random_marine("",0);
+	if(marine_and_company == "none")
+	{
+		log_error("RE: Strange Behavior, couldn't pick a space marine");
+		exit;
+	}
 
+	var unit = fetch_unit(marine_and_company);
+	var role=unit.role();
+	var text = unit.name_role();
+	var company_text = scr_convert_company_to_string(unit.company);
+	if(company_text != ""){
+		company_text = "("+company_text+")";
+		text += company_text;
+	}
+	text += " is behaving strangely.";
+	scr_alert("color","lol",text,0,0);
+}
 
 function init_garrison_mission(planet, star, mission_slot){
 	var problems_data = star.p_problem_other_data[planet]
@@ -556,7 +582,7 @@ function problem_count_down(planet, count_change=1){
 function add_new_problem(planet, problem, timer,star="none", other_data={}){
 	var problem_added=false;
 	if (star=="none"){
-		for (var i=0;i<array_length(p_problem[planet]);i++){
+		for (var i=1;i<array_length(p_problem[planet]);i++){
 			if (p_problem[planet][i] ==""){
 				p_problem[planet][i]= problem;
 				p_problem_other_data[planet][i]=other_data;
@@ -573,6 +599,14 @@ function add_new_problem(planet, problem, timer,star="none", other_data={}){
 	return 	problem_added;
 }
 
+
+function increment_mission_completion(mission_data){
+	if (!struct_exists(mission_data, "completion")){
+		mission_data.completion = 0;
+	}
+	mission_data.completion++;
+	return (mission_data.completion/mission_data.required_months)*100;
+}
 //search problem data for a given and key and iff applicable value on that key
 //TODO increase filtering and search options
 function problem_has_key_and_value(planet, problem,key,value="",star="none"){

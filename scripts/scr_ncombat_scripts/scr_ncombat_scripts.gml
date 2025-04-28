@@ -4076,9 +4076,9 @@ function ncombat_battle_end() {
 
             if (obj_controller.stc_bonus[3] == 4) {
                 var _survival_roll = 70 + _candidate.priority;
-                var _dice_roll = roll_dice(1, 100, "high");
+                var _dice_roll = roll_dice_chapter(1, 100, "high");
                 if ((_dice_roll >= _survival_roll) && (_column_id.veh_dead[_vehicle_id] != 2)) {
-                    _column_id.veh_hp[_vehicle_id] = roll_dice(1, 10, "high");
+                    _column_id.veh_hp[_vehicle_id] = roll_dice_chapter(1, 10, "high");
                     _column_id.veh_dead[_vehicle_id] = false;
                     vehicles_saved_count++;
 
@@ -4092,7 +4092,7 @@ function ncombat_battle_end() {
             }
 
             if (vehicle_recovery_score > 0) {
-                _column_id.veh_hp[_vehicle_id] = roll_dice(1, 10, "high");
+                _column_id.veh_hp[_vehicle_id] = roll_dice_chapter(1, 10, "high");
                 _column_id.veh_dead[_vehicle_id] = false;
                 vehicle_recovery_score -= _candidate.priority;
                 vehicles_saved_count++;
@@ -4205,7 +4205,7 @@ function ncombat_battle_end() {
 
     var _total_damaged_count = vehicle_deaths + vehicles_saved_count;
     if (_total_damaged_count > 0) {
-        newline = $"{string_plural_count("vehicle", _total_damaged_count)} {smart_verb("was", _total_damaged_count)} critically damaged during battle.";
+        newline = $"{string_plural_count("vehicle", _total_damaged_count)} {smart_verb("was", _total_damaged_count)} disabled during battle.";
         newline_color = COL_RED;
         scr_newtext();
 
@@ -4357,7 +4357,7 @@ function ncombat_battle_end() {
 
 
     if ((defeat == 0) && (battle_special == "space_hulk")) {
-        var enemy_power = 0, loot = 0, dicey = floor(random(100)) + 1, ex = 0;
+        var enemy_power = 0, loot = 0, dicey = roll_dice_chapter(1, 100, "low"), ex = 0;
 
         if (enemy == 7) {
             enemy_power = battle_object.p_orks[battle_id];
@@ -4379,9 +4379,6 @@ function ncombat_battle_end() {
         }
         scr_newtext();
 
-        if (scr_has_disadv("Shitty Luck")) {
-            dicey = dicey * 1.5;
-        }
         // show_message("Roll Under: "+string(enemy_power*10)+", Roll: "+string(dicey));
 
         if (dicey <= (enemy_power * 10)) {
@@ -4776,7 +4773,7 @@ function ncombat_battle_end() {
     inq_eated = false;
 
     if (obj_ini.omophagea) {
-        var eatme = floor(random(100)) + 1;
+        var eatme = roll_dice_chapter(1, 100, "high");
         if ((enemy == 13) || (enemy == 9) || (battle_special == "ship_demon")) {
             eatme += 100;
         }
@@ -4785,10 +4782,6 @@ function ncombat_battle_end() {
         }
 
         eatme -= lost_to_black_rage * 6;
-
-        if (scr_has_disadv("Shitty Luck")) {
-            eatme -= 10;
-        }
 
         if (allies > 0) {
             obj_controller.disposition[2] -= choose(1, 0, 0);
@@ -4822,10 +4815,7 @@ function ncombat_battle_end() {
             scr_newtext();
 
             // check for pdf/guardsmen
-            eatme = floor(random(100)) + 1;
-            if (scr_has_disadv("Shitty Luck")) {
-                eatme -= 10;
-            }
+            eatme = roll_dice_chapter(1, 100, "high");
             if ((eatme <= 10) && (allies > 0)) {
                 obj_controller.disposition[2] -= 2;
                 if (allies == 1) {
@@ -4840,10 +4830,7 @@ function ncombat_battle_end() {
             }
 
             // check for inquisitor
-            eatme = floor(random(100)) + 1;
-            if (scr_has_disadv("Shitty Luck")) {
-                eatme -= 5;
-            }
+            eatme = roll_dice_chapter(1, 100, "high");;
             if ((eatme <= 40) && (present_inquisitor == 1)) {
                 var thatta = 0, remove = 0, i = 0;
                 obj_controller.disposition[4] -= 10;
@@ -5450,7 +5437,7 @@ function ncombat_special_end() {
                 }
                 with (obj_star) {
                     var planet = obj_ncombat.battle_id;
-                    if (remove_planet_problem(planet, "bomb")) {
+                    if (remove_planet_problem(planet, "necron")) {
                         p_necrons[planet] = 4;
                     }
                     if (awake_tomb_world(p_feature[planet]) == 0) {
@@ -5528,22 +5515,21 @@ function ncombat_special_end() {
                                 }
                             }
     
-                            you = instance_nearest(obj_temp5.x, obj_temp5.y, obj_star);
-                            onceh = 0;
+                            var star = star_by_name(obj_temp8.loc)
+                            var planet = obj_temp8.wid
     
                             // show_message(you.name);
     
                             // show_message("TEMP5: "+string(instance_number(obj_temp5))+"#Star: "+string(you));
     
-                            var ppp;
-                            ppp = 0;
-                            remove_planet_problem(obj_temp8.wid, "bomb", you);
-    
-                            pip.option1 = "";
-                            pip.option2 = "";
-                            pip.option3 = "";
-                            scr_event_log("", "Inquisition Mission Completed: Your Astartes have sealed the Necron Tomb on " + string(you.name) + " " + string(scr_roman(obj_temp8.wid)) + ".");
-                            scr_gov_disp(you.name, obj_temp8.wid, choose(1, 2, 3, 4, 5));
+                            var ppp;ppp=0;
+                            remove_planet_problem(planet, "necron", star);
+                            seal_tomb_world(star.p_feature[planet]);
+
+        
+                            pip.option1="";pip.option2="";pip.option3="";
+                            scr_event_log("","Inquisition Mission Completed: Your Astartes have sealed the Necron Tomb on "+string(star.name)+" "+string(scr_roman(planet))+".");
+                            scr_gov_disp(star.name,planet,choose(1,2,3,4,5));
     
                             if (!instance_exists(obj_temp8)) {
                                 pip.loc = battle_loc;
@@ -5642,11 +5628,7 @@ function ncombat_special_end() {
         }
     
         if ((enemy == 1) && (on_ship == true) && (defeat == 0)) {
-            var diceh = floor(random(100)) + 1;
-    
-            if (scr_has_disadv("Shitty Luck")) {
-                diceh -= 15;
-            }
+            var diceh=roll_dice_chapter(1, 100, "high");
     
             if (diceh <= 15) {
                 var ship, ship_hp, i = -1;

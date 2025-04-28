@@ -15,9 +15,8 @@ function scr_check_equip(search_item, system, planet_or_ship_id, remove_item) {
 	    for (var i=1;i<=500;i++){
     		if (obj_ini.name[c][i]=="") then continue;
     		marine_present=false;
-
 	    	if (!instance_exists(obj_ncombat)){ 
-	    		unit = obj_ini.TTRPG[c][i];
+				unit = obj_ini.TTRPG[c][i];
 		        if (system!="") and (planet_or_ship_id>0){
 		            if (unit.is_at_location(system,planet_or_ship_id,-1)){
 		            	marine_present=true;
@@ -28,41 +27,45 @@ function scr_check_equip(search_item, system, planet_or_ship_id, remove_item) {
 		            	marine_present=true;
 		            }
 		        }
-	    	} else  if (obj_ncombat.fighting[c][i]==1){
-	    		marine_present=true;
+	    	} else {
+				try {
+					if (obj_ncombat.fighting[c][i]==1){
+						marine_present=true;
+					} 
+				} catch (_){}
 	    	}
 	    	if (marine_present){
 	    		if (unit.weapon_one()==search_item){
 	    			if (remove_item>0){
 	    				unit.update_weapon_one("",false,false);
-	    				have++;
 	    				remove_item-=1
 	    			}
+					have++;
 	    		}
 	    		if (unit.weapon_two()==search_item){
 	    			if (remove_item>0){
 	    				unit.update_weapon_two("",false,false);
-	    				have++;
 	    				remove_item-=1
 	    			}
+					have++;
 	    		} else if (unit.armour()==search_item){
 	    			if (remove_item>0){
 	    				unit.update_armour("",false,false);
 	    				remove_item-=1
-	    				have++;
 	    			}
+					have++;
 	    		} else if(unit.mobility_item()==search_item){
 	    			if (remove_item>0){
 	    				unit.update_mobility_item("",false,false);
 	    				remove_item-=1
-	    				have++;
 	    			}
+					have++;
 	    		}else if(unit.gear()==search_item){
 	    			if (remove_item>0){
 	    				unit.update_gear("",false,false);
 	    				remove_item-=1
-	    				have++;
 	    			}
+					have++;
 	    		}  	    		
 	    	}
 	    }

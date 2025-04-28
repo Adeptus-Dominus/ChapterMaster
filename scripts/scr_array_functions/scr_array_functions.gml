@@ -59,6 +59,15 @@ function array_replace_value(choice_array, value, r_value){
 	}
 }
 
+function array_delete_value(choice_array, value){
+	// Iterate backwards to avoid index shifting problems
+	for (var i = array_length(choice_array) - 1; i >= 0; i--) {
+		if (choice_array[i] == value) {
+			array_delete(choice_array, i, 1);
+		}
+	}
+}
+
 function array_random_element(choice_array){
 	return choice_array[irandom(array_length(choice_array) - 1)];
 }

@@ -41,12 +41,7 @@ function scr_save(save_part,save_id, autosaving = false) {
 				version: global.game_version,
 				play_time: play_time,
 				game_seed: global.game_seed,
-				use_custom_icon: obj_ini.use_custom_icon,
-				chapter_icon_sprite: global.chapter_icon_sprite,
-				chapter_icon_frame: global.chapter_icon_frame,
-				chapter_icon_path: global.chapter_icon_path,
-				icon_name: global.icon_name,
-				chapter_icon_filename: global.chapter_icon_filename,
+				icon_name: global.chapter_icon.name,
 				date: string(month)+"/"+string(day)+"/"+string(year)+" ("+string(hour)+":"+string(minute)+" "+string(pm)+")",
 				founding: obj_ini.progenitor,
 				custom: global.custom,
@@ -55,6 +50,7 @@ function scr_save(save_part,save_id, autosaving = false) {
 				en_fleets: instance_number(obj_en_fleet),
 				sod: random_get_seed(),
 			}
+
 			log_message($"Saving to slot {save_id} - GameSave struct created!");
 			
 			/// STARS
@@ -130,6 +126,7 @@ function scr_save(save_part,save_id, autosaving = false) {
 			ini_write_string(string(save_id),"date",svd);
 			ini_write_real(string(save_id),"time",obj_controller.play_time);
 			ini_write_real(string(save_id),"seed",global.game_seed);
+			ini_write_string(string(save_id),"icon_name", global.chapter_icon.name);
 			ini_close();
 			log_message($"Saving to slot {save_id} - saves.ini saving complete!");
 

@@ -750,8 +750,6 @@ function scr_initialize_custom() {
 	flagship_name = obj_creation.flagship_name;
 	obj_creation.restart_flagship_name = flagship_name;
 	sector_name = global.name_generator.generate_sector_name();
-	icon = obj_creation.icon;
-	icon_name = obj_creation.icon_name;
 	man_size = 0;
 	psy_powers = obj_creation.discipline;
 
@@ -1306,11 +1304,11 @@ function scr_initialize_custom() {
 
 
 	if (obj_creation.custom == 0) {
-		if (veteran >= 20) and(global.founding = 0) {
+		if (veteran >= 20) and(global.founding = ePROGENITOR.NONE) {
 			veteran -= 20;
 			terminator += 20;
 		}
-		if (veteran >= 10) and(global.founding != 0) and(global.chapter_name != "Lamenters") {
+		if (veteran >= 10) and(global.founding != ePROGENITOR.NONE) and(global.chapter_name != "Lamenters") {
 			veteran -= 10;
 			terminator += 10;
 		}
@@ -1320,8 +1318,6 @@ function scr_initialize_custom() {
 
 
 
-	icon = obj_creation.icon;
-	icon_name = obj_creation.icon_name;
 	battle_cry = obj_creation.battle_cry;
 	home_name = obj_creation.homeworld_name;
 
@@ -3281,9 +3277,9 @@ function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1
 		spawn_unit.add_trait("soft_target");
 	}
 	if(role_id == eROLE.Librarian){
-		if (scr_has_adv("Favoured By The Warp") && (roll_personal_dice(1, 6, "high", spawn_unit) >= 4)) {
+		if (scr_has_adv("Favoured By The Warp") && (roll_dice_unit(1, 6, "high", spawn_unit) >= 4)) {
 			spawn_unit.add_trait("favoured_by_the_warp");
-		} else if (roll_personal_dice(1, 10, "high", spawn_unit) == 10) {
+		} else if (roll_dice_unit(1, 10, "high", spawn_unit) == 10) {
 			spawn_unit.add_trait("favoured_by_the_warp");
 		}
 
@@ -3291,10 +3287,10 @@ function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1
 			spawn_unit.psionic = irandom_range(8, 10);
 		} else if (role_name == "Codiciery") {
 			spawn_unit.psionic = irandom_range(5, 7);
-			if (roll_personal_dice(1, 6, "high", spawn_unit) < 4) {
+			if (roll_dice_unit(1, 6, "high", spawn_unit) < 4) {
 				spawn_unit.update_gear(obj_ini.gear[obj_ini.defaults_slot][eROLE.Tactical], false, false);
 			}
-			if (roll_personal_dice(1, 6, "high", spawn_unit) < 4) {
+			if (roll_dice_unit(1, 6, "high", spawn_unit) < 4) {
 				spawn_unit.update_weapon_one(choose("Force Axe", "Force Sword"), false, false);
 			}
 		} else if (role_name == "Lexicanum") {

@@ -1220,6 +1220,14 @@ function scr_ui_manage() {
             if ((cn.temp[120].name() != "") && (cn.temp[120].race() != 0)) {
                 draw_set_alpha(1);
                 var xx = __view_get(e__VW.XView, 0) + 0, yy = __view_get(e__VW.YView, 0) + 0;
+                if ((obj_controller.unit_profile) && !instance_exists(obj_popup)) {
+                    stats_displayed = true;
+                    selected_unit.stat_display(true);
+                    //tooltip_draw(stat_x, stat_y+string_height(stat_display),0,0,100,17);
+                } else {
+                    stats_displayed = false;
+                }
+
                 with (obj_controller) {
                     if (view_squad && !instance_exists(obj_popup)) {
                         if (managing > 10) {

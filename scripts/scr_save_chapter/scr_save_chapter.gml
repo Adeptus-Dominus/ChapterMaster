@@ -10,9 +10,7 @@ function scr_save_chapter(chapter_id){
 	chap.flavor = "Your Chapter";
 	chap.founding = founding;
 	chap.origin = eCHAPTER_ORIGINS.CUSTOM;
-	chap.icon = icon;
-
-	chap.icon_name = obj_creation.icon_name;
+	chap.icon_name = global.chapter_icon.name;
 
 	chap.aspirant_trial = aspirant_trial;
 	chap.fleet_type = fleet_type;

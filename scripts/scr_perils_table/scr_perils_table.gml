@@ -4,7 +4,7 @@ function scr_perils_table(perils_strength, unit, psy_discipline, power_name, uni
 		[
 			1,
 			function(perils_strength, unit, psy_discipline, power_name, unit_id) {
-				unit.corruption += roll_dice(1, 6, "low");
+				unit.corruption += roll_dice_chapter(1, 6, "low");
 				var flavour_text2 = "He begins to gibber as psychic backlash overtakes him.";
 				return flavour_text2;
 			}
@@ -12,7 +12,7 @@ function scr_perils_table(perils_strength, unit, psy_discipline, power_name, uni
 		[
 			5,
 			function(perils_strength, unit, psy_discipline, power_name, unit_id) {
-				marine_casting_cooldown[unit_id] += roll_dice(1, 6, "low");
+				marine_casting_cooldown[unit_id] += roll_dice_chapter(1, 6, "low");
 				var flavour_text2 = "His mind is burned fiercely by the warp.";
 				return flavour_text2;
 			}
@@ -20,9 +20,9 @@ function scr_perils_table(perils_strength, unit, psy_discipline, power_name, uni
 		[
 			15,
 			function(perils_strength, unit, psy_discipline, power_name, unit_id) {
-				var _cooldown = roll_dice(1, 6, "low");
+				var _cooldown = roll_dice_chapter(1, 6, "low");
 				marine_casting_cooldown[unit_id] += _cooldown;
-				var _cooldown2 = roll_dice(1, 6, "low");
+				var _cooldown2 = roll_dice_chapter(1, 6, "low");
 				if (men > 0) {
 					repeat (6) {
 						var t = irandom(men - 1); // Random value from 0 to men-1
@@ -38,7 +38,7 @@ function scr_perils_table(perils_strength, unit, psy_discipline, power_name, uni
 		[
 			20,
 			function(perils_strength, unit, psy_discipline, power_name, unit_id) {
-				unit.add_or_sub_health(roll_dice(1, 50, "low") * -1);
+				unit.add_or_sub_health(roll_dice_chapter(1, 50, "low") * -1);
 				switch (psy_discipline) {
 					case "biomancy":
 						var flavour_text2 = "The psychic blast he had prepared runs loose, boiling his own blood!";
@@ -60,7 +60,7 @@ function scr_perils_table(perils_strength, unit, psy_discipline, power_name, uni
 			30,
 			function(perils_strength, unit, psy_discipline, power_name, unit_id) {
 				marine_casting_cooldown[unit_id] += 20;
-				unit.corruption += roll_dice(1, 6, "low");
+				unit.corruption += roll_dice_chapter(1, 6, "low");
 				var flavour_text2 = $"His mind is seared by the warp, now unable to cast more powers for {marine_casting_cooldown[unit_id]} hours.";
 				return flavour_text2;
 			}
@@ -69,13 +69,13 @@ function scr_perils_table(perils_strength, unit, psy_discipline, power_name, uni
 			40,
 			function(perils_strength, unit, psy_discipline, power_name, unit_id) {
 				var flavour_text2 = "Capricious voices eminate from the surrounding area, whispering poisonous lies and horrible truths.";
-				unit.corruption += roll_dice(1, 10, "low");
+				unit.corruption += roll_dice_chapter(1, 10, "low");
 				if (men > 0) {
 					repeat (6) {
 						var t = irandom(men - 1); // Random value from 0 to men-1
 						if (marine_type[t] != "") {
 							var _ally = unit_struct[t];
-							_ally.corruption += roll_dice(1, 10, "low");
+							_ally.corruption += roll_dice_chapter(1, 10, "low");
 						}
 					}
 				}
@@ -138,12 +138,12 @@ function scr_perils_table(perils_strength, unit, psy_discipline, power_name, uni
 			60,
 			function(perils_strength, unit, psy_discipline, power_name, unit_id) {
 				var flavour_text2 = "There is a massive explosion of warp energy which injures him and several other marines!";
-				unit.add_or_sub_health(roll_dice(1, 50, "low") * -1);
+				unit.add_or_sub_health(roll_dice_chapter(1, 50, "low") * -1);
 				if (men > 0) {
 					repeat (6) {
 						var t = irandom(men - 1); // Random value from 0 to men-1
 						if (marine_type[t] != "") {
-							marine_hp[t] -= roll_dice(1, 50, "low");
+							marine_hp[t] -= roll_dice_chapter(1, 50, "low");
 						}
 					}
 				}
@@ -161,12 +161,12 @@ function scr_perils_table(perils_strength, unit, psy_discipline, power_name, uni
 		[
 			80,
 			function(perils_strength, unit, psy_discipline, power_name, unit_id) {
-				unit.add_or_sub_health(roll_dice(5, 10, "low") * -1);
+				unit.add_or_sub_health(roll_dice_chapter(5, 10, "low") * -1);
 				if (men > 0) {
 					repeat (6) {
 						var t = irandom(men - 1); // Random value from 0 to men-1
 						if (marine_type[t] != "") {
-							marine_hp[t] -= roll_dice(1, 50, "low");
+							marine_hp[t] -= roll_dice_chapter(1, 50, "low");
 						}
 					}
 				}
@@ -180,7 +180,7 @@ function scr_perils_table(perils_strength, unit, psy_discipline, power_name, uni
 			function(perils_strength, unit, psy_discipline, power_name, unit_id) {
 				var flavour_text2;
 				marine_casting_cooldown[unit_id] += 999;
-				unit.corruption += roll_dice(5, 10, "low");
+				unit.corruption += roll_dice_chapter(5, 10, "low");
 				flavour_text2 = "The marine's flesh begins to twist and rip, seemingly turning inside out.  His form looms up, and up, and up.  Within seconds a Greater Daemon of ";
 
 				var dem = choose("Slaanesh", "Nurgle", "Tzeentch");

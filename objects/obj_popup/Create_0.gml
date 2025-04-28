@@ -24,7 +24,7 @@ option1enter=false;
 option2enter=false;
 option3enter=false;
 option4enter=false;
-
+pop_data = {};
 amount=0;
 save=0;
 loc="";

@@ -44,7 +44,7 @@
   },
   "origin":0,
   "parent":{
-    "name":"ranged",
+    "name":"heavy_ranged",
     "path":"folders/Sprites/Marine Viewer/weapons/heavy_ranged.yy",
   },
   "preMultiplyAlpha":false,
@@ -102,8 +102,8 @@
   "swatchColours":null,
   "swfPrecision":0.5,
   "textureGroupId":{
-    "name":"Default",
-    "path":"texturegroups/Default",
+    "name":"MarineViewer",
+    "path":"texturegroups/MarineViewer",
   },
   "type":0,
   "VTile":false,

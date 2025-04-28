@@ -118,7 +118,7 @@ function scr_clean(target_object, weapon_data) {
                         // Apply damage
                         var _min_damage = obj_ncombat.enemy == 13 ? 1 : 0.25;
                         var _dice_sides = 50;
-                        var _random_damage_mod = roll_dice(4, _dice_sides, "low") / 100;
+                        var _random_damage_mod = roll_dice_chapter(4, _dice_sides, "low") / 100;
                         var _armour_points = max(0, veh_ac[vehicle_id] - armour_pierce);
                         var _modified_damage = max(_min_damage, (hostile_damage * _random_damage_mod) - _armour_points);
 
@@ -148,7 +148,7 @@ function scr_clean(target_object, weapon_data) {
                         // Apply damage
                         var _min_damage = obj_ncombat.enemy == 13 ? 1 : 0.25;
                         var _dice_sides = 50;
-                        var _random_damage_mod = roll_dice(4, _dice_sides, "low") / 100;
+                        var _random_damage_mod = roll_dice_chapter(4, _dice_sides, "low") / 100;
                         var _armour_points = max(0, marine_ac[vehicle_id] - armour_pierce);
                         var _modified_damage = (hostile_damage * _random_damage_mod) - _armour_points;
 
@@ -218,7 +218,7 @@ function scr_clean(target_object, weapon_data) {
                     // Apply damage
                     var _min_damage = obj_ncombat.enemy == 13 ? 1 : 0.25;
                     var _dice_sides = 50;
-                    var _random_damage_mod = roll_dice(4, _dice_sides, "low") / 100;
+                    var _random_damage_mod = roll_dice_chapter(4, _dice_sides, "low") / 100;
                     var _armour_points = max(0, marine_ac[marine_index] - armour_pierce);
                     var _modified_damage = max(_min_damage, (hostile_damage * _random_damage_mod) - _armour_points);
 

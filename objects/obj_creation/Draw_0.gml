@@ -65,12 +65,13 @@ try {
 		}
 
 		draw_set_color(0);
-		// draw_rectangle(436,74,436+128,74+128,0);
-		// if (icon<=20) then draw_sprite_stretched(spr_icon,icon,436,74,128,128);
 
 		var sprx = 436, spry = 74, sprw = 128, sprh = 128;
-		if (global.chapter_icon_sprite != -1){
-			draw_sprite_stretched(global.chapter_icon_sprite, global.chapter_icon_frame, sprx, spry, sprw, sprh);
+		if (global.chapter_icon.sprite != -1){
+			draw_sprite_stretched(global.chapter_icon.sprite, 0, sprx, spry, sprw, sprh);
+		} else {
+			// red (?)
+			draw_sprite_stretched(global.chapter_icons_map[? "unknown"], 0, sprx, spry, sprw, sprh);
 		}
 
 		obj_cursor.image_index = 0;
@@ -78,75 +79,47 @@ try {
 			obj_cursor.image_index = 1;
 			tooltip = "Chapter Icon";
 			tooltip2 = "Your Chapter's icon.  Click to edit.";
-
-			/*if (cooldown<=0) and (mouse_left=1){
-            popup="icons";cooldown=8000;
-        }*/
 		}
 
-		var i;
-		i = 0;
-		repeat (290) {
-			i += 1;
-			if ((icon_name == "custom" + string(i)) && (obj_cuicons.spr_custom[i] > 0)) {
-				if (sprite_exists(obj_cuicons.spr_custom_icon[i])) {
-					draw_sprite_stretched(obj_cuicons.spr_custom_icon[i], 0, 436, 74, 128, 128);
-
-					// obj_cuicons.spr_custom_icon[ic-78]
-				}
+		if (slide == eCREATIONSLIDES.CHAPTERTRAITS) {
+			var _chapter_icon;
+			if (founding == ePROGENITOR.NONE) {
+				_chapter_icon = global.chapter_icons_map[? "unknown"];
+			} else if (founding == ePROGENITOR.RANDOM) {
+				_chapter_icon = global.chapter_icons_map[? "random"]
+			} else {
+				_chapter_icon = global.chapter_icons_map[? founding_chapters[founding - 1].icon_name];
 			}
-		}
 
-		// draw_set_color(c_orange);
-		// draw_text(436+64,74-30,string(icon_name));
+			draw_set_alpha(0.33);
+			draw_sprite_stretched(_chapter_icon, 0, 1164 - 128, 74, 128, 128);
+			draw_set_alpha(1);
 
-		if (slide == 2) {
-			/*if (scr_hit(548,149,584,193)){obj_cursor.image_index=1;
-            if (cooldown<=0) and (mouse_left>=1){cooldown=8000;scr_icon("-");}
-        }
-        if (scr_hit(595,149,634,193)){obj_cursor.image_index=1;
-            if (cooldown<=0) and (mouse_left>=1){cooldown=8000;scr_icon("+");}
-        }*/
+			draw_set_font(fnt_40k_30b);
+			if (scr_hit(1164 - 128, 74, 1164, 74 + 128)) {
+				tooltip = "Founding Chapter";
+				tooltip2 = "The parent Chapter whos Gene-Seed your own originates from.";
+			}
 
-			if (founding != 0) {
-				draw_set_font(fnt_40k_30b);
-				// draw_text_transformed(
+			if (custom > 1) {
+				draw_sprite_stretched(spr_creation_arrow, 0, 1164 - 194, 160, 32, 32);
+				draw_sprite_stretched(spr_creation_arrow, 1, 1164 - 144, 160, 32, 32);
 
-				draw_set_alpha(0.33);
-				// if (founding<10) then draw_sprite_stretched(spr_icon,founding,1164-128,74,128,128);
-				if (founding < 10) {
-					scr_image("creation/chapters/icons", founding, 1164 - 128, 74, 128, 128);
-				}
-				if (founding == 10) {
-					draw_sprite_stretched(spr_icon_chapters, 0, 1164 - 128, 74, 128, 128);
-				}
-				draw_set_alpha(1);
-
-				if (scr_hit(1164 - 128, 74, 1164, 74 + 128)) {
-					tooltip = "Founding Chapter";
-					tooltip2 = "The parent Chapter whos Gene-Seed your own originates from.";
-				}
-
-				if (custom > 1) {
-					draw_sprite_stretched(spr_creation_arrow, 0, 1164 - 194, 160, 32, 32);
-					draw_sprite_stretched(spr_creation_arrow, 1, 1164 - 144, 160, 32, 32);
-
-					if (scr_hit(1164 - 194, 149, 1164 - 162, 193)) {
-						obj_cursor.image_index = 1;
-						if (scr_click_left()) {
-							founding -= 1;
-							if (founding == 0) {
-								founding = 10;
-							}
+				if (scr_hit(1164 - 194, 149, 1164 - 162, 193)) {
+					obj_cursor.image_index = 1;
+					if (scr_click_left()) {
+						founding--;
+						if (founding == -1) {
+							founding = ePROGENITOR.RANDOM;
 						}
 					}
-					if (scr_hit(1164 - 144, 149, 1164 - 112, 193)) {
-						obj_cursor.image_index = 1;
-						if (scr_click_left()) {
-							founding += 1;
-							if (founding == 11) {
-								founding = 1;
-							}
+				}
+				if (scr_hit(1164 - 144, 149, 1164 - 112, 193)) {
+					obj_cursor.image_index = 1;
+					if (scr_click_left()) {
+						founding++;
+						if (founding == 11) {
+							founding = ePROGENITOR.NONE;
 						}
 					}
 				}
@@ -366,7 +339,7 @@ try {
 		draw_text(650, 575, string_hash_to_newline("Adeptus Mechanicus (" + string(disposition[3]) + ")"));
 		draw_text(650, 600, string_hash_to_newline("Ecclesiarchy (" + string(disposition[5]) + ")"));
 		draw_text(650, 625, string_hash_to_newline("Inquisition (" + string(disposition[4]) + ")"));
-		if (founding != 0) {
+		if (founding != ePROGENITOR.NONE) {
 			draw_text(650, 650, string_hash_to_newline("Progenitor (" + string(disposition[1]) + ")"));
 		}
 		draw_text(650, 675, "Adeptus Astartes (" + string(disposition[6]) + ")");
@@ -375,7 +348,7 @@ try {
 		draw_rectangle(655, 552 + 25, 1150, 567 + 25, 1);
 		draw_rectangle(655, 552 + 50, 1150, 567 + 50, 1);
 		draw_rectangle(655, 552 + 75, 1150, 567 + 75, 1);
-		if (founding != 0) {
+		if (founding != ePROGENITOR.NONE) {
 			draw_rectangle(655, 552 + 100, 1150, 567 + 100, 1);
 		}
 		draw_rectangle(655, 552 + 125, 1150, 567 + 125, 1);
@@ -391,7 +364,7 @@ try {
 		if (disposition[4] > 0) {
 			draw_rectangle(655, 552 + 75, 655 + (disposition[4] * 4.95), 567 + 75, 0);
 		}
-		if ((disposition[1] > 0) && (founding != 0)) {
+		if ((disposition[1] > 0) && (founding != ePROGENITOR.NONE)) {
 			draw_rectangle(655, 552 + 100, 655 + (disposition[1] * 4.95), 567 + 100, 0);
 		}
 		if (disposition[6] > 0) {

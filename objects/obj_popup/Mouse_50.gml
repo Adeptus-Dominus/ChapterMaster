@@ -125,7 +125,7 @@ if (mouse_x>=xx+1465) and (mouse_y>=yy+499) and (mouse_x<xx+1576) and (mouse_y<y
         var unit, move_squad, move_members, moveable, squad;
         for (w=0;w<array_length(obj_controller.display_unit);w++){
             if (obj_controller.man_sel[w]==1){
-                if (obj_controller.man[w]=="man"&&is_struct(obj_controller.display_unit[w])){
+                if (obj_controller.man[w]=="man"&& is_struct(obj_controller.display_unit[w])){
                     moveable=true;
                     unit = obj_controller.display_unit[w];
                     if (unit.squad != "none"){   // this evaluates if you are tryin to move a whole squad and if so moves teh squad to a new company
@@ -147,6 +147,7 @@ if (mouse_x>=xx+1465) and (mouse_y>=yy+499) and (mouse_x<xx+1576) and (mouse_y<y
                         //move squad
                         if (moveable){
                             for (var mem = 0;mem<array_length(move_members);mem++){
+                                obj_controller.man_sel[w+mem] = 0;
                                 var member_unit = fetch_unit(move_members[mem]);
                                 scr_move_unit_info(member_unit.company,target_comp,member_unit.marine_number,mahreens, false);
                                 obj_ini.TTRPG[target_comp][mahreens].squad = move_squad;
@@ -154,7 +155,6 @@ if (mouse_x>=xx+1465) and (mouse_y>=yy+499) and (mouse_x<xx+1576) and (mouse_y<y
                                 squad.members[mem][1] = mahreens;
                                 mahreens++;
                             }
-                            w+=mem-2;
                             squad.base_company = target_comp;
                         }
                     } else {moveable=false}
