@@ -105,7 +105,8 @@ function scr_cheatcode(argument0) {
 				case "chaosfleetspawn":
 					spawn_chaos_warlord();
 					break;
-				case "waagh":
+				case "waaagh":
+
 					init_ork_waagh(true);
 					break;
 				case "neworkfleet":
