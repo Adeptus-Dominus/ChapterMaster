@@ -356,7 +356,7 @@ function PlanetData(planet, system) constructor{
                 _ork_fleet.cargo_data.ork_warboss = _warboss;
                 delete_feature(P_features.OrkWarboss);
                 if (!_warboss.player_hidden){
-                     scr_alert("red","ork",$"{obj_controller.faction_leader[0]} departs {name()} as his waagh gains momentum",0,0);
+                     scr_alert("red","ork",$"{obj_controller.faction_leader[0]} departs {name()} as his waaagh gains momentum",0,0);
                 }
             }
         }
