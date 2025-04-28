@@ -40,10 +40,6 @@ is_mouse_over = function() {
 
 
 copy_block_composition = function(_composition) {
-    if (DEBUG_COMBAT_PERFORMANCE) {
-        stopwatch("copy_block_composition");
-    }
-    
     if (struct_exists(_composition, "units")) {
         var _units = _composition.units;
 
@@ -85,10 +81,6 @@ copy_block_composition = function(_composition) {
                 }
             }
         }
-    }
-    
-    if (DEBUG_COMBAT_PERFORMANCE) {
-        stopwatch("copy_block_composition");
     }
 };
 

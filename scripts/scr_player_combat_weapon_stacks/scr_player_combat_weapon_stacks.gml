@@ -71,10 +71,6 @@ function add_data_to_stack (weapon, unit_damage=0, head_role=false, unit="none")
 
 /// @mixin
 function scr_player_combat_weapon_stacks() {
-    if (DEBUG_COMBAT_PERFORMANCE) {
-        stopwatch("scr_player_combat_weapon_stacks");
-    }
-    
     if (defenses=1){
         var i=0;
 
@@ -280,10 +276,6 @@ function scr_player_combat_weapon_stacks() {
                 }
             }
         }
-    }
-    
-    if (DEBUG_COMBAT_PERFORMANCE) {
-        stopwatch("scr_player_combat_weapon_stacks");
     }
 
 

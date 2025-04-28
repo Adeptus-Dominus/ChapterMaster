@@ -13,8 +13,14 @@ if (battle_stage == eBATTLE_STAGE.Creation) {
     
     ncombat_enemy_stacks_init();
 
+    if (DEBUG_COMBAT_PERFORMANCE) {
+        stopwatch("scr_player_combat_weapon_stacks");
+    }
     with (obj_pnunit) {
         scr_player_combat_weapon_stacks();
+    }
+    if (DEBUG_COMBAT_PERFORMANCE) {
+        stopwatch("scr_player_combat_weapon_stacks");
     }
 
     with (obj_enunit) {
@@ -60,9 +66,24 @@ if ((press_exclusive(vk_enter) || hold_exclusive(vk_enter)) && fading_strength =
                     enunit_enemy_profiles_init();
                 }
                 move_enemy_blocks();
+                
+                if (DEBUG_COMBAT_PERFORMANCE) {
+                    stopwatch("enunit_create_weapon_stacks");
+                }
                 with (obj_enunit) {
                     assign_weapon_stacks();
+                }
+                if (DEBUG_COMBAT_PERFORMANCE) {
+                    stopwatch("enunit_create_weapon_stacks");
+                }
+                if (DEBUG_COMBAT_PERFORMANCE) {
+                    stopwatch("enunit_target_and_shoot");
+                }
+                with (obj_enunit) {
                     enunit_target_and_shoot();
+                }
+                if (DEBUG_COMBAT_PERFORMANCE) {
+                    stopwatch("enunit_target_and_shoot");
                 }
             }
             display_message_queue();
@@ -70,10 +91,16 @@ if ((press_exclusive(vk_enter) || hold_exclusive(vk_enter)) && fading_strength =
 
         if (turn_stage == eBATTLE_TURN.PlayerStart) {
             player_blocks_movement();
+            if (DEBUG_COMBAT_PERFORMANCE) {
+                stopwatch("pnunit_stacking_shooting");
+            }
             with (obj_pnunit) {
                 pnunit_battle_effects();
                 scr_player_combat_weapon_stacks();
                 pnunit_target_and_shoot();
+            }
+            if (DEBUG_COMBAT_PERFORMANCE) {
+                stopwatch("pnunit_stacking_shooting");
             }
             with (obj_enunit) {
                 enunit_enemy_profiles_init();

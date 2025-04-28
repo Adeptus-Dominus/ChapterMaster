@@ -1428,13 +1428,18 @@ function ncombat_enemy_stacks_init() {
                 enemy_force_composition = global.army_profiles[$ "orks_6"];
                 enemy_dudes = enemy_force_composition.description;
                 var _block_count = array_length(enemy_force_composition.columns);
+                if (DEBUG_COMBAT_PERFORMANCE) {
+                    stopwatch("ncombat_create_enemy_army");
+                }
                 for (var b = 0; b < _block_count; b++) {
                     var _pos = 160 + (b * 10);
                     var _block = instance_create(_pos, 240, obj_enunit);
                     _block.copy_block_composition(enemy_force_composition.columns[b]);
                     enemy_forces += _block.unit_count();
                 }
-                show_debug_message($"enemy_forces: {enemy_forces}");
+                if (DEBUG_COMBAT_PERFORMANCE) {
+                    stopwatch("ncombat_create_enemy_army");
+                }
             }
         }
 

@@ -24,10 +24,6 @@ function enunit_target_and_shoot() {
     // show_debug_message($"target_block is in melee {engaged}")
 
     if (!engaged()) {
-        if (DEBUG_COMBAT_PERFORMANCE) {
-            stopwatch("enunit_shooting");
-        }
-
         // Shooting
         var _ranged_weapons = array_concat(get_valid_weapon_stacks(weapon_stacks_normal, 2, 999), get_valid_weapon_stacks_unique(weapon_stacks_unique, 2, 999), get_valid_weapon_stacks(weapon_stacks_vehicle, 2, 999));
         for (var i = 0, _ranged_len = array_length(_ranged_weapons); i < _ranged_len; i++) {
@@ -108,14 +104,7 @@ function enunit_target_and_shoot() {
                 continue;
             }
         }
-        if (DEBUG_COMBAT_PERFORMANCE) {
-            stopwatch("enunit_shooting");
-        }
     } else {
-        if (DEBUG_COMBAT_PERFORMANCE) {
-            stopwatch("enunit_melee");
-        }
-
         // Melee
         var _melee_weapons = array_concat(get_valid_weapon_stacks(weapon_stacks_normal, 1, 2), get_valid_weapon_stacks_unique(weapon_stacks_unique, 1, 2), get_valid_weapon_stacks(weapon_stacks_vehicle, 1, 999));
         for (var i = 0, _wep_len = array_length(_melee_weapons); i < _wep_len; i++) {
@@ -137,10 +126,6 @@ function enunit_target_and_shoot() {
             }
 
             scr_shoot(_weapon_stack, target_block, _target_unit_index);
-        }
-
-        if (DEBUG_COMBAT_PERFORMANCE) {
-            stopwatch("enunit_melee");
         }
     }
     //! Here was some stuff that depended on image_index here, that got deleted, because I couldn't figure out why it exists;
