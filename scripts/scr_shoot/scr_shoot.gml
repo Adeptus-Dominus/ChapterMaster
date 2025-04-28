@@ -88,10 +88,10 @@ function scr_shoot(_weapon_stack, _target_object, _target_index) {
 
         //* Player shooting
         if (owner == eFACTION.Player) {
-            var _target_stack = target_unit_stack(_target_object, _target_type);
-            if (_target_stack == noone) {
-                _target_stack = target_unit_stack(_target_object);
-                if (_target_stack == noone) {
+            var _target_squad = target_enemy_squad(_target_object, _target_type);
+            if (_target_squad == noone) {
+                _target_squad = target_enemy_squad(_target_object);
+                if (_target_squad == noone) {
                     // if (DEBUG_PLAYER_TARGET_SELECTION) {
                     //     show_debug_message($"{_weapon_name} found no valid targets in the enemy column to attack!");
                     // }
@@ -100,16 +100,14 @@ function scr_shoot(_weapon_stack, _target_object, _target_index) {
                 }
             }
 
+            var _target_stack = target_enemy_stack(_target_squad);
+
             // if (DEBUG_PLAYER_TARGET_SELECTION) {
-            //     show_debug_message($"{_weapon_name} is attacking {_target_object.dudes[_target_stack]}");
+            //     show_debug_message($"{_weapon_name} is attacking {_target_object.dudes[_target_squad]}");
             // }
 
             if (_weapon_name == "Missile Silo") {
                 obj_ncombat.player_silos -= min(obj_ncombat.player_silos, 30);
-            }
-
-            if (DEBUG_COMBAT_PERFORMANCE) {
-                stopwatch("player_scr_shoot");
             }
             
             // Normal shooting
@@ -146,11 +144,10 @@ function scr_shoot(_weapon_stack, _target_object, _target_index) {
             _target_object.column_size -= _target_stack.unit_size * _casualties;
 
             if (_target_stack.unit_count <= 0) {
-                struct_remove(_target_object.unit_stacks, _target_stack.unit_name);
-            }
-            
-            if (DEBUG_COMBAT_PERFORMANCE) {
-                stopwatch("player_scr_shoot");
+                array_delete(_target_squad.member_stacks, array_get_index(_target_squad.member_stacks, _target_stack), 1);
+                if (array_length(_target_squad.member_stacks) <= 0) {
+                    array_delete(_target_object.unit_squads, array_get_index(_target_object.unit_squads, _target_squad), 1);
+                }
             }
 
             scr_flavor(_weapon_stack, _target_object, _target_stack, _casualties);

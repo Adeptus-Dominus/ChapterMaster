@@ -1,5 +1,5 @@
 /// @mixin
-function scr_en_weapon(_weapon_name, _unit_type, _weapon_count, _unit_name, _unit_block) {
+function scr_en_weapon(_weapon_name, _unit_type, _weapon_count, _unit_name) {
 
 	// check if double ranged/melee
 	// then add to that weapon
@@ -961,35 +961,19 @@ function scr_en_weapon(_weapon_name, _unit_type, _weapon_count, _unit_name, _uni
 		_ammo *= 2;
 	}
 
-	var _stack_type = {};
-	if (_unit_type) {
-		_stack_type = weapon_stacks_normal;
-	} else {
-		_stack_type = weapon_stacks_vehicle;
+	var _weapon_stack = new WeaponStack(_weapon_name);
+	_weapon_stack.attack = _attack;
+	_weapon_stack.piercing = _piercing;
+	_weapon_stack.range = _range;
+	_weapon_stack.weapon_count += _weapon_count;
+	_weapon_stack.shot_count = _shot_count;
+	array_push(_weapon_stack.owners, _unit_name);
+
+	if (obj_ncombat.battle_stage == eBATTLE_STAGE.Creation) {
+		_weapon_stack.ammo_max = _ammo;
+		_weapon_stack.ammo_current = _ammo;
+		_weapon_stack.ammo_reload = _reload;
 	}
 
-	if (struct_exists(_stack_type, _weapon_name)) {
-		var _weapon_stack = _stack_type[$ _weapon_name];
-		_weapon_stack.weapon_count += _weapon_count;
-	
-		if (!array_contains(_weapon_stack.owners, _unit_name)) {
-			array_push(_weapon_stack.owners, _unit_name);
-		}
-	} else {
-		var _weapon_stack = new WeaponStack(_weapon_name);
-		_weapon_stack.attack = _attack;
-		_weapon_stack.piercing = _piercing;
-		_weapon_stack.range = _range;
-		_weapon_stack.weapon_count += _weapon_count;
-		_weapon_stack.shot_count = _shot_count;
-		array_push(_weapon_stack.owners, _unit_name);
-	
-		if (obj_ncombat.battle_stage == eBATTLE_STAGE.Creation) {
-			_weapon_stack.ammo_max = _ammo;
-			_weapon_stack.ammo_current = _ammo;
-			_weapon_stack.ammo_reload = _reload;
-		}
-	
-		struct_set(_stack_type, _weapon_name, _weapon_stack);
-	}
+	array_push(weapon_stacks_normal, _weapon_stack);
 }

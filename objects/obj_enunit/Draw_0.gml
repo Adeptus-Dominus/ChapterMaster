@@ -26,13 +26,10 @@ if (draw_size > 0){
             var _names_array = [];
             var _types_array = [];
     
-            var _unit_names = struct_get_names(unit_stacks);
-            var _unit_len = array_length(_unit_names);
-            for (var k = 0; k < _unit_len; k++){
-                var _unit_name = _unit_names[k];
-                var _unit = unit_stacks[$ _unit_name];
-                array_push(_names_array, _unit.display_name);
-                array_push(_counts_array, _unit.unit_count);
+            for (var i = 0, l = array_length(unit_squads); i < l; i++){
+                var _unit_squad = unit_squads[i];
+                array_push(_names_array, _unit_squad.display_name);
+                array_push(_counts_array, _unit_squad.member_count);
             }
     
             composition_string = arrays_to_string_with_counts(_names_array, _counts_array, true);

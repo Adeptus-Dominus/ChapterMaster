@@ -308,23 +308,40 @@ function pnunit_dying_process() {
     /*  */
 }
 
-function target_unit_stack(_battle_block, _target_type = -1) {
+function target_enemy_squad(_battle_block, _target_type = -1) {
 	var _biggest_target = noone;
 	var _priority_queue = ds_priority_create();
-	var _unit_stacks = _battle_block.unit_stacks;
+	var _unit_squads = _battle_block.unit_squads;
 
-    var _unit_stack_names = struct_get_names(_unit_stacks);
-    var _unit_stack_len = array_length(_unit_stack_names);
-    for (var k = 0; k < _unit_stack_len; k++){
-        var _unit_stack_name = _unit_stack_names[k];
-        var _unit_stack = _unit_stacks[$ _unit_stack_name];
+    for (var i = 0, l = array_length(_unit_squads); i < l; i++){
+        var _unit_squad = _unit_squads[i];
 
-        var _unit_stack_count = _unit_stack.unit_count;
-		var _unit_stack_type = _unit_stack.unit_type;
+        var _unit_stack_count = _unit_squad.member_count;
+		var _unit_stack_type = _unit_squad.squad_type;
 
 		if (_target_type == -1 || _unit_stack_type == _target_type) {
-			ds_priority_add(_priority_queue, _unit_stack, _unit_stack_count);
+			ds_priority_add(_priority_queue, _unit_squad, _unit_stack_count);
 		}
+	}
+
+	if (!ds_priority_empty(_priority_queue)) {
+		_biggest_target = ds_priority_delete_max(_priority_queue);
+	}
+
+	ds_priority_destroy(_priority_queue);
+
+	return _biggest_target;
+}
+
+function target_enemy_stack(_squad) {
+	var _biggest_target = noone;
+	var _priority_queue = ds_priority_create();
+	var _unit_stacks = _squad.member_stacks;
+
+    for (var i = 0, l = array_length(_unit_stacks); i < l; i++){
+        var _unit_stack = _unit_stacks[i];
+        var _unit_count = _unit_stack.unit_count;
+        ds_priority_add(_priority_queue, _unit_stack, _unit_count);
 	}
 
 	if (!ds_priority_empty(_priority_queue)) {

@@ -25,7 +25,7 @@ function enunit_target_and_shoot() {
 
     if (!engaged()) {
         // Shooting
-        var _ranged_weapons = array_concat(get_valid_weapon_stacks(weapon_stacks_normal, 2, 999), get_valid_weapon_stacks_unique(weapon_stacks_unique, 2, 999), get_valid_weapon_stacks(weapon_stacks_vehicle, 2, 999));
+        var _ranged_weapons = weapon_stacks_normal;
         for (var i = 0, _ranged_len = array_length(_ranged_weapons); i < _ranged_len; i++) {
             var _weapon_stack = _ranged_weapons[i];
 
@@ -106,7 +106,7 @@ function enunit_target_and_shoot() {
         }
     } else {
         // Melee
-        var _melee_weapons = array_concat(get_valid_weapon_stacks(weapon_stacks_normal, 1, 2), get_valid_weapon_stacks_unique(weapon_stacks_unique, 1, 2), get_valid_weapon_stacks(weapon_stacks_vehicle, 1, 999));
+        var _melee_weapons = weapon_stacks_normal;
         for (var i = 0, _wep_len = array_length(_melee_weapons); i < _wep_len; i++) {
             var _weapon_stack = _melee_weapons[i];
 
@@ -134,7 +134,7 @@ function enunit_target_and_shoot() {
 // Previosly alarm_1
 /// @mixin
 function enunit_enemy_profiles_init() {
-    weapon_stacks_normal = {};
+    weapon_stacks_normal = [];
     weapon_stacks_vehicle = {};
     weapon_stacks_unique = {};
 }
