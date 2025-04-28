@@ -258,6 +258,10 @@ function PlanetData(planet, system) constructor{
                 }
                 if (planet_type == "Forge"){
                     rando-=80;
+                } else if (planet_type == "Hive" || planet_type == "Temperate"){
+                	rando-=30;
+                }else if (planet_type == "Agri"){
+                	rando-=10;
                 }
                 var _ork_fleet = scr_orbiting_fleet(eFACTION.Ork, system); 
                 if (_ork_fleet=="none"){
