@@ -1947,32 +1947,181 @@ global.weapons = {
 		"tags": ["power", "sword", "elder", "xenos"],
 	},
 	// Ork weapons
-	"Choppa": {
-		"abbreviation": "Chop",
+	"Rokkit Launcha": {
 		"attack": {
-			"standard": 100,
-			"master_crafted": 125,
-			"artifact": 200
+			"standard": 45,
+			"master_crafted": 45,
+			"artifact": 45
 		},
-		"melee_hands": 1,
+		"range": 16,
+		"spli": 1,
+		"arp": 18
+	},
+
+	"Kannon": {
+		"attack": {
+			"standard": 45,
+			"master_crafted": 45,
+			"artifact": 45
+		},
+		"range": 20,
+		"spli": 5,
+		"arp": 12
+	},
+
+	"Shoota": {
+		"attack": {
+			"standard": 20,
+			"master_crafted": 20,
+			"artifact": 20
+		},
+		"range": 7,
+		"spli": 3,
+		"arp": 0
+	},
+
+	"Twin-Linked Shoota": {
+		"attack": {
+			"standard": 20,
+			"master_crafted": 20,
+			"artifact": 20
+		},
+		"range": 7,
+		"spli": 3,
+		"arp": 0
+	},
+
+	"Burna": {
+		"attack": {
+			"standard": 22,
+			"master_crafted": 22,
+			"artifact": 22
+		},
+		"range": 3,
+		"spli": 6,
+		"arp": 4
+	},
+
+	"Skorcha": {
+		"attack": {
+			"standard": 25,
+			"master_crafted": 25,
+			"artifact": 25
+		},
+		"range": 4,
+		"spli": 8,
+		"arp": 6
+	},
+
+	"Choppa": {
+		"attack": {
+			"standard": 16,
+			"master_crafted": 16,
+			"artifact": 16
+		},
+		"range": 1,
+		"spli": 2,
+		"arp": 4
+	},
+
+	"Big Choppa": {
+		"attack": {
+			"standard": 22,
+			"master_crafted": 22,
+			"artifact": 22
+		},
 		"range": 1,
 		"spli": 3,
-		"tags": ["axe"]
+		"arp": 4
 	},
-	"Snazzgun": {
-		"abbreviation": "Snazz",
+
+	"Power Klaw": {
 		"attack": {
-			"standard": 200,
-			"master_crafted": 230,
-			"artifact": 280
+			"standard": 22,
+			"master_crafted": 22,
+			"artifact": 22
 		},
-		"ranged_hands": 1,
-		"ammo": 20,
-		"range": 3.1,
-		"spli": 3,
-		"arp": 1,
-		"tags": ["rifle"]
+		"range": 1,
+		"spli": 2,
+		"arp": 20
 	},
+
+	"Slugga": {
+		"attack": {
+			"standard": 20,
+			"master_crafted": 20,
+			"artifact": 20
+		},
+		"range": 2,
+		"spli": 3,
+		"arp": 0
+	},
+
+	"Tankbusta Bomb": {
+		"attack": {
+			"standard": 65,
+			"master_crafted": 65,
+			"artifact": 65
+		},
+		"range": 1,
+		"spli": 1,
+		"arp": 16
+	},
+
+	"Big Shoota": {
+		"attack": {
+			"standard": 24,
+			"master_crafted": 24,
+			"artifact": 24
+		},
+		"range": 8,
+		"spli": 10,
+		"arp": 4
+	},
+
+	"Dakkagun": {
+		"attack": {
+			"standard": 24,
+			"master_crafted": 24,
+			"artifact": 24
+		},
+		"range": 8,
+		"spli": 7,
+		"arp": 4
+	},
+
+	"Deffgun": {
+		"attack": {
+			"standard": 30,
+			"master_crafted": 30,
+			"artifact": 30
+		},
+		"range": 10,
+		"spli": 8,
+		"arp": 4
+	},
+
+	"Snazzgun": {
+		"attack": {
+			"standard": 30,
+			"master_crafted": 30,
+			"artifact": 30
+		},
+		"range": 11,
+		"spli": 2,
+		"arp": 10
+	},
+
+	"Grot Blasta": {
+		"attack": {
+			"standard": 14,
+			"master_crafted": 14,
+			"artifact": 14
+		},
+		"range": 2,
+		"spli": 2,
+		"arp": 0
+	}
 }
 global.gear = {
 	"armour": {

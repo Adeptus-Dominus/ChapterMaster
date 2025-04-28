@@ -23,7 +23,7 @@ function scr_en_weapon(_weapon_name, _unit_type, _weapon_count, _unit_name, _uni
 	// faith_bonus = 0;
 	// var struct = gear_weapon_data("weapon",_weapon_name);
 
-	if (string_count("elee", _weapon_name) > 0) {
+	/* if (string_count("elee", _weapon_name) > 0) {
 		_weapon_name = string_delete(_weapon_name, 0, 5);
 		_attack = 10;
 		_piercing = 0;
@@ -376,124 +376,6 @@ function scr_en_weapon(_weapon_name, _unit_type, _weapon_count, _unit_name, _uni
 			_piercing = 1;
 			_range = 20;
 			_shot_count = 3;
-		}
-	}
-
-	if (obj_ncombat.enemy = 7) {
-
-		if (_weapon_name = "Choppa") {
-			_attack = 16;
-			_piercing = 4;
-			_range = 1;
-			_shot_count = 2;
-		}
-		if (_weapon_name = "Power Klaw") {
-			_attack = 22;
-			_piercing = 20;
-			_range = 1;
-			_shot_count = 2;
-		}
-		if (_weapon_name = "Slugga") {
-			_attack = 20;
-			_piercing = 0;
-			_range = 2;
-			_ammo = 6;
-			_shot_count = 3;
-			_reload = 1;
-		}
-		if (_weapon_name = "Tankbusta Bomb") {
-			_attack = 65;
-			_piercing = 16;
-			_range = 1;
-			_ammo = 1;
-			_shot_count = 1;
-			_reload = -1;
-		}
-		if (_weapon_name = "Big Shoota") {
-			_attack = 24;
-			_piercing = 4;
-			_range = 8;
-			_ammo = 6;
-			_shot_count = 10;
-			_reload = 2;
-		}
-		if (_weapon_name = "Dakkagun") {
-			_attack = 24;
-			_piercing = 4;
-			_range = 8;
-			_ammo = 14;
-			_shot_count = 7;
-			_reload = 3;
-		}
-		if (_weapon_name = "Deffgun") {
-			_attack = 30;
-			_piercing = 4;
-			_range = 10;
-			_ammo = 6;
-			_shot_count = 8;
-			_reload = 2;
-		}
-		if (_weapon_name = "Snazzgun") {
-			_attack = 30;
-			_piercing = 10;
-			_range = 11;
-			_ammo = 10;
-			_shot_count = 2;
-			_reload = 2;
-		}
-		if (_weapon_name = "Grot Blasta") {
-			_attack = 14;
-			_piercing = 0;
-			_range = 2;
-			_ammo = 4;
-			_shot_count = 2;
-			_reload = 2;
-		}
-		if (_weapon_name = "Kannon") {
-			_attack = 45;
-			_piercing = 12;
-			_range = 20;
-			_ammo = 1;
-			_shot_count = 5;
-			_reload = 1;
-		}
-		if (_weapon_name = "Shoota") {
-			_attack = 20;
-			_piercing = 0;
-			_ammo = 10;
-			_range = 7;
-			_shot_count = 3;
-			_reload = 1;
-		}
-		if (_weapon_name = "Twin-Linked Shoota") {
-			_attack = 20;
-			_piercing = 0;
-			_ammo = 10;
-			_range = 7;
-			_shot_count = 3;
-			_reload = 1;
-		}
-		if (_weapon_name = "Burna") {
-			_attack = 22;
-			_piercing = 4;
-			_range = 3;
-			_ammo = 6;
-			_shot_count = 6;
-			_reload = 2;
-		}
-		if (_weapon_name = "Skorcha") {
-			_attack = 25;
-			_piercing = 6;
-			_range = 4;
-			_ammo = 6;
-			_shot_count = 8;
-			_reload = 2;
-		}
-		if (_weapon_name = "Rokkit Launcha") {
-			_attack = 45;
-			_piercing = 18;
-			_range = 16;
-			_shot_count = 1;
 		}
 	}
 
@@ -1050,7 +932,14 @@ function scr_en_weapon(_weapon_name, _unit_type, _weapon_count, _unit_name, _uni
 			_range = 6.1;
 			_shot_count = 3;
 		}
-	}
+	} */
+
+	var _weapon_struct = global.weapons[$ _weapon_name];
+
+	_attack = _weapon_struct.attack.standard;
+	_piercing = _weapon_struct.arp;
+	_range = _weapon_struct.range;
+	_shot_count = _weapon_struct.spli;
 
 	if (_shot_count == 0) {
 		exit;
