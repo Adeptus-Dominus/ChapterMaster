@@ -875,7 +875,6 @@
     {"id":{"name":"scr_roster","path":"scripts/scr_roster/scr_roster.yy",},},
     {"id":{"name":"scr_ruins_reward","path":"scripts/scr_ruins_reward/scr_ruins_reward.yy",},},
     {"id":{"name":"scr_save_chapter","path":"scripts/scr_save_chapter/scr_save_chapter.yy",},},
-    {"id":{"name":"scr_save_controller","path":"scripts/scr_save_controller/scr_save_controller.yy",},},
     {"id":{"name":"scr_save","path":"scripts/scr_save/scr_save.yy",},},
     {"id":{"name":"scr_scrollbar","path":"scripts/scr_scrollbar/scr_scrollbar.yy",},},
     {"id":{"name":"scr_serialization_functions","path":"scripts/scr_serialization_functions/scr_serialization_functions.yy",},},

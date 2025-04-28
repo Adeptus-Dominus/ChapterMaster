@@ -24,7 +24,7 @@ function scr_random_event(execute_now) {
 	//}
 	var chosen_event;
 
-	var inquisition_mission_roll = irandom(100);
+	var inquisition_mission_roll = roll_dice(1,100);
 	var force_inquisition_mission = false;
 	if (((last_mission+50) <= turn) && (inquisition_mission_roll <= 5) && (known[eFACTION.Inquisition] != 0) && (obj_controller.faction_status[eFACTION.Inquisition] != "War")){
 		force_inquisition_mission = true;
@@ -34,8 +34,7 @@ function scr_random_event(execute_now) {
 		chosen_event = EVENT.inquisition_mission;
 	}
 	else {
-		if(execute_now)
-		{
+		if(execute_now){
 			var random_event_roll = irandom(100);
 		    if ((last_event+30)<=turn) then random_event_roll=1;// If 30 turns without random event then do one
 			if (random_event_roll>5) then exit;// Frequency of events
@@ -435,6 +434,7 @@ function scr_random_event(execute_now) {
     
 	} else if (chosen_event == EVENT.mechanicus_mission) {
 		spawn_mechanicus_mission()
+		evented = true;
 
 	}
     
