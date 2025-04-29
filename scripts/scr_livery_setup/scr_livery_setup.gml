@@ -536,7 +536,7 @@ function scr_livery_setup(){
                 draw_set_color(38144);
                 draw_rectangle(xxx,yyy,1150,yyy+20,1);
                 draw_set_color(38144);
-                draw_text(xxx,yyy,string_hash_to_newline(role[c,role_id]));
+                draw_text(xxx,yyy,role[100,role_id]);
                 if (scr_hit(xxx,yyy,1150,yyy+20)) and ((!instance_exists(obj_creation_popup)) || ((instance_exists(obj_creation_popup) and obj_creation_popup.target_gear=0))) {
 
                     draw_set_alpha(custom==2?0.2:0.1);
