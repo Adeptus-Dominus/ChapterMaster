@@ -44,9 +44,9 @@ labels:
 - label: "Type: Revert"
   title: "^revert"
 - label: "Type: Revert"
-  body: "(?i)(\\[revert\\]|\\[revert\\])"
+  body: "(?i)\\[revert\\]"
 
 - label: "Type: Build"
   title: "^build"
 - label: "Type: Build"
-  body: "(?i)(\\[build\\]|\\[build\\])"
+  body: "(?i)\\[build\\]"
