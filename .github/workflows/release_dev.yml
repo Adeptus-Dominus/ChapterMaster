@@ -11,7 +11,7 @@ on:
           - YYC
           - VM
   schedule:
-    - cron: "0 22 * * *"
+    - cron: "0 22 * * *" # every day at 22:00 UTC
 
 jobs:
   build_needed:
