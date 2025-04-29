@@ -720,6 +720,7 @@
     {"id":{"name":"object_get_depth","path":"scripts/object_get_depth/object_get_depth.yy",},},
     {"id":{"name":"relative_direction","path":"scripts/relative_direction/relative_direction.yy",},},
     {"id":{"name":"scr_add_artifact","path":"scripts/scr_add_artifact/scr_add_artifact.yy",},},
+    {"id":{"name":"scr_tyranid_fleet_functions","path":"scripts/scr_tyranid_fleet_functions/scr_tyranid_fleet_functions.yy",},},
     {"id":{"name":"scr_add_corruption","path":"scripts/scr_add_corruption/scr_add_corruption.yy",},},
     {"id":{"name":"scr_add_item","path":"scripts/scr_add_item/scr_add_item.yy",},},
     {"id":{"name":"scr_add_man","path":"scripts/scr_add_man/scr_add_man.yy",},},

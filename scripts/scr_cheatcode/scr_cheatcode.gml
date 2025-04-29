@@ -142,7 +142,7 @@ function scr_cheatcode(argument0) {
 				case "mechmission":
 					show_debug_message("mech_mission");
 					spawn_mechanicus_mission();
-          break;
+          			break;
 
 				case "inquismission": 
 					var mission = cheat_arguments[0];
@@ -343,16 +343,15 @@ function scr_cheatcode(argument0) {
 					var _fleet = get_nearest_player_fleet(0,0);
 					add_ship_to_fleet(new_player_ship("Gloriana"),_fleet);
 					break;
-        if (cheatcode_string=="nidinvasion"){
-            with (obj_star){
-                if (system_feature_bool(p_feature,P_features.Gene_Stealer_Cult)){
-                    summon_new_hive_fleet();
-                }
+        		case "nidinvasion":
+		            with (obj_star){
+		                if (system_feature_bool(p_feature,P_features.Gene_Stealer_Cult)){
+		                    summon_new_hive_fleet();
+		                }
+		            }
+		            break;
             }
         }
-
-			}
-		}
 	} catch(_exception) {
 		show_debug_message(_exception.longMessage);
 	}
