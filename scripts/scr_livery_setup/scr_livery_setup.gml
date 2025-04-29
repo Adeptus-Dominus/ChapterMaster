@@ -735,7 +735,10 @@ function scr_livery_setup(){
         }
         
     }
-
+    draw_set_font(fnt_40k_14b);
+    draw_set_halign(fa_left);
+    draw_set_alpha(1);
+    draw_set_color(38144);
     right_data_slate.inside_method = function() {
         var _cultures = buttons.culture_styles;
         _cultures.x1 = right_data_slate.XX+30;

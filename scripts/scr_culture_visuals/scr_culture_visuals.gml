@@ -1442,6 +1442,7 @@ global.weapon_visual_data = {
           display_type: "ranged_twohand",
       },
       sprite: spr_weapon_grav_cannon,
+      body_types: [0,1]
     }
   ]
 },
@@ -1739,13 +1740,14 @@ global.weapon_visual_data = {
     base: {
     weapon_data: {
       display_type: "melee_onehand",
-      hand_type: 2,
+      hand_type: 0,
       new_weapon_draw: true
     }, 
+   },
      variants: [{
-        sprite: spr_weapon_powswo
+        sprite: spr_weapon_evisc
      }]
-}
+},
 
 "Eldar Power Sword": {
   base: {
