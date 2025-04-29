@@ -256,7 +256,7 @@ global.astartes_trait_dist = [
 				"Warp Tainted",[20,1]
 			]
 		}
-	],
+		],
 		["shitty_luck",
 			[99,98],
 			{
@@ -267,7 +267,12 @@ global.astartes_trait_dist = [
 		],
 		[
 			"lucky",
-			[99,98]
+			[99,98],
+			{
+				"advantage":[
+					"Great Luck",[3,2]
+				]
+			}
 		],
 		["natural_leader",
 			[199,198],

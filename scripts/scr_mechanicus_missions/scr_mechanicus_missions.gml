@@ -31,7 +31,7 @@ function mechanicus_missions_end_turn(planet){
     	var _mission_data = p_problem_other_data[planet][tomb2_planet_slot];
     	_mission_data.turns++;
     	var battli=0;
-    	var _roll1 = roll_dice(1, 100+_mission_data.turns, "low");
+    	var _roll1 = roll_dice_chapter(1, 100+_mission_data.turns, "low");
     	var completion = _mission_data.completion>0;
 
     	if (roll1>98){
@@ -61,9 +61,7 @@ function mechanicus_missions_end_turn(planet){
 	            remove_planet_problem(planet,"mech_tomb2");
 	        }
 	    }
-        else {// Done
-            if scr_has_adv("Shitty Luck") then roll1+=15;
-        
+        else {// Done        
             if (roll1>20){
 				scr_alert("","mission","Adeptus Mechanicus research within the Necron Tomb of "+string(name)+" "+scr_roman(planet)+" continues.",0,0);
             } 

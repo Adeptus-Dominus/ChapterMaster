@@ -10,10 +10,8 @@ function scr_ruins_reward(star_system, planet, _ruins) {
 	// star_system: world object
 	// planet: planet
 	// ruins_type: ruins_type
-	var dice=floor(random(100))+1;
+	var dice=roll_dice_chapter(1, 100, "high");
 	var loot="";
-
-	if (scr_has_disadv("Shitty Luck")) then dice-=10;
 
 	if (dice>0) and (dice<=35) then loot="req";// 
 	if (dice>35) and (dice<=50) then loot="gear";// 

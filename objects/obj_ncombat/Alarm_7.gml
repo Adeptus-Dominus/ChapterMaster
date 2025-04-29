@@ -482,10 +482,8 @@ try {
     
     
     if (enemy=1) and (on_ship=true) and (defeat=0){
-        var diceh=floor(random(100))+1;
-        
-        if(scr_has_disadv("Shitty Luck")) then diceh-=15;
-        
+        var diceh=roll_dice_chapter(1, 100, "high");
+                
         if (diceh<=15){
             var ship,ship_hp,i=-1;
             for (var i=0;i<array_length(obj_ini.ship);i++){

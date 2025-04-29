@@ -118,12 +118,8 @@ if (turn=240) and (global.chapter_name="Lamenters"){
 // ** Battlefield Loot **
 if (scr_has_adv("Tech-Scavengers")){
     var lroll1,lroll2,loot="";
-    lroll1=floor(random(100))+1;
-    lroll2=floor(random(100))+1;
-    if (scr_has_disadv("Shitty Luck")){
-        lroll1+=2;
-        lroll2+=25;
-    }
+    lroll1=roll_dice_chapter(1, 100, "low");
+    lroll2=roll_dice_chapter(1, 100, "low");
     if (lroll1<=5){
         loot=choose("Chainsword","Bolt Pistol","Combat Knife","Narthecium");
         if (lroll2<=80) then loot=choose("Power Sword","Storm Bolter");
@@ -631,9 +627,7 @@ for(var i=1; i<=99; i++){
             }
             // Spare the inquisitor
             if (string_count("inquisitor_spared",event[i])>0){
-                var diceh=floor(random(100))+1;
-
-                if (scr_has_disadv("Shitty Luck")) then diceh-=25;
+                var diceh=roll_dice_chapter(1, 100, "high");
 
                 if (diceh<=25){
                     alarm[8]=1;

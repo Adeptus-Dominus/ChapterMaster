@@ -22,9 +22,7 @@ function scr_mission_reward(mission, star, planet) {
 	    repeat(11){com+=1;i=0;
 	        repeat(300){i+=1;
 	            if (obj_ini.role[com][i]=obj_ini.role[100][16]) and (obj_ini.loc[com][i]="Mechanicus Vessel"){
-	                roll2=floor(random(100))+1;
-					
-					if(scr_has_disadv("Shitty Luck")) then roll2-=10; 
+	                roll2=roll_dice_chapter(1, 100, "high");
 
 	                if (roll2<=50){obj_controller.command-=1;techs_lost+=1;
 	                    kill_and_recover(com, i, true, false);
@@ -93,8 +91,8 @@ function scr_mission_reward(mission, star, planet) {
 
 	if (mission="mech_raider"){
 	    var roll1,result;
-	    roll1=floor(random(100))+1;result="";
-	    if (scr_has_disadv("Shitty Luck")) then roll1+=20;
+	    roll1=roll_dice_chapter(1, 100, "low")
+		result="";
 
 	    if (roll1<=33) then result="New";
 	    if (roll1>33) and (roll1<=66) then result="Land Raider";
@@ -151,8 +149,8 @@ function scr_mission_reward(mission, star, planet) {
 
 	if (mission="mech_bionics"){
 	    var roll1,result;
-	    roll1=floor(random(100))+1;result="";
-	    if (scr_has_disadv("Shitty Luck")) then roll1+=20;
+	    roll1=roll_dice_chapter(1, 100, "low")
+		result="";
 
 	    if (roll1<=33) then result="Requisition";
 	    if (roll1>33) and (roll1<=66) then result="Bionics";

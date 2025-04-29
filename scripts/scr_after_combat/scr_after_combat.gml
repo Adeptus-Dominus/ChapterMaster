@@ -141,7 +141,7 @@ function after_battle_part2() {
         }
         if (_unit.base_group=="astartes"){
             if (marine_dead[i]=0) and (_unit.gene_seed_mutations.mucranoid==1) and (ally[i]=false){
-                var muck=roll_personal_dice(1,100,"high",_unit);
+                var muck=roll_dice_unit(1,100,"high",_unit);
                 if (muck==1){    //slime  armour damaged due to mucranoid
                     if (_unit.armour != ""){
                         obj_controller.specialist_point_handler.add_to_armoury_repair(_unit.armour());

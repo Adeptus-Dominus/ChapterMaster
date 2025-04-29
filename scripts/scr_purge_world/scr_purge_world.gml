@@ -230,31 +230,26 @@ function scr_purge_world(star, planet, action_type, action_score) {
 
 
 	if (action_type=DropType.PurgeAssassinate){
-	    var dis,chance,siz_penalty,aroll,o,yep,ambush;
-	    aroll=floor(random(100))+1;dis=0;chance=0;siz_penalty=0;o=0;yep=0;ambush=false;
+		var aroll=roll_dice_chapter(1, 100, "high");
+		var chance = 100;
+		// var siz_penalty=0;
+		var o=0;
+		var yep=0;
     
-	    // Base
-	    dis=star.dispo[planet];
-	    if (dis<=20) then chance=75;
-	    if (dis>20) and (dis<40) then chance=40;
-	    if (dis>40) and (dis<70) then chance=15;
-	    if (dis>70) then chance=0;
-    
+		// Disposition
+		aroll += floor(star.dispo[planet] / 10);
+
 	    // Advantages
-		if(scr_has_adv("Ambushers")) then ambush=true;
-		if(scr_has_adv("Lightning Warriors")) then chance+=5;
-		if(scr_has_disadv("Shitty Luck")) then chance+=20;
+		if(scr_has_adv("Ambushers")) then aroll+=10;
+		if(scr_has_adv("Lightning Warriors")) then aroll+=5;
 
-	    // Size
-	    if ((action_score > 5) && (action_score <= 10)) { siz_penalty = 5; }
-	    if ((action_score > 10) && (action_score <= 20)) { siz_penalty = 20; }
-	    if ((action_score > 20) && (action_score <= 50)) { siz_penalty = 30; }
-	    if ((action_score > 50) && (action_score <= 100)) { siz_penalty = 50; }
-	    if ((action_score > 100) && (action_score <= 200)) { siz_penalty = 75; }
-	    if (action_score > 200) { siz_penalty = 125; }
-
-	    // Ambushers go!
-	    if (ambush=true) then chance=round(chance/2);
+	    // Size - unused
+	    // if ((action_score > 5) && (action_score <= 10)) { siz_penalty = 5; }
+	    // if ((action_score > 10) && (action_score <= 20)) { siz_penalty = 20; }
+	    // if ((action_score > 20) && (action_score <= 50)) { siz_penalty = 30; }
+	    // if ((action_score > 50) && (action_score <= 100)) { siz_penalty = 50; }
+	    // if ((action_score > 100) && (action_score <= 200)) { siz_penalty = 75; }
+	    // if (action_score > 200) { siz_penalty = 125; }
     
 	    var spec1=0,spec2=0,txt=""; // TODO consider making it a battle with Planetary governor's guards
 	    txt="Your Astartes descend upon the surface of "+string(star.name)+" "+string(scr_roman(planet))+" and plot the movements and schedule of the governor.  ";    
@@ -296,10 +291,9 @@ function scr_purge_world(star, planet, action_type, action_score) {
     
 	    // Result-  this is the multiplier for the chance of discovery with the inquisition, can also be used to determine
 	    // the new Governor disposition if they are the official successor
-	    if (aroll<=chance){// Discovered
+	    if (aroll < chance){// Discovered
 	        pip.estimate=2;
-	    }
-	    if (aroll>chance){// Success
+	    } else if (aroll >= chance){// Success
 	        pip.estimate=1;
 	    }
 	    // If there are enemy non-chaos forces then they may be used as a cover

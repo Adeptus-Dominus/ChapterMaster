@@ -570,7 +570,7 @@ function process_tome_mechanics(_unit, _unit_id) {
             // Apply corruption based on perils chance
             if (_result.perils_chance > 0) {
                 if ((_tome_roll > 90) && (_result.perils_chance > 0)) {
-                    _unit.corruption += roll_personal_dice(1, 6, "low", _unit);
+                    _unit.corruption += roll_dice_unit(1, 6, "low", _unit);
                 }
             }
         }

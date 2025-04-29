@@ -907,7 +907,13 @@ var all_advantages = [
             description: "Your chapter is an elite fighting force comprised almost exclusively of Veterans. All Tactical Marines are replaced by Veterans.",
             value: 150,
             meta: ["Specialists"]
-        }                                                                                                                                                                   
+        },
+        {
+            name : "Great Luck",
+            description: "This is actually really helpful and beneficial for your chapter. Trust me.",
+            value: 20,
+            meta: ["Luck"]
+        },                                                                                                                                                           
     ]
 
 
@@ -962,8 +968,9 @@ var all_disadvantages = [
     },
     {
         name : "Shitty Luck",
-        description: "This is actually really helpful and beneficial for your chapter.  Trust me.",
+        description: "This is actually really bad for your chapter. Trust me.",
         value: 20,
+        meta: ["Luck"]
     },
     {
         name : "Sieged",
