@@ -1417,7 +1417,9 @@ global.weapon_visual_data = {
       sprite: spr_weapon_plasma_cannon_term
     },
     {
-      display_type: "ranged_twohand",
+       weapon_data: {
+          display_type: "ranged_twohand",
+      },
       sprite: spr_weapon_plasc,
       body_types: [0, 1]
     }
@@ -1436,7 +1438,9 @@ global.weapon_visual_data = {
       sprite: spr_weapon_plasma_cannon_term
     },
     {
-      display_type: "ranged_twohand",
+       weapon_data: {
+          display_type: "ranged_twohand",
+      },
       sprite: spr_weapon_grav_cannon,
     }
   ]
@@ -1731,6 +1735,17 @@ global.weapon_visual_data = {
     }
   ]
 },
+"Eviscerator" : {
+    base: {
+    weapon_data: {
+      display_type: "melee_onehand",
+      hand_type: 2,
+      new_weapon_draw: true
+    }, 
+     variants: [{
+        sprite: spr_weapon_powswo
+     }]
+}
 
 "Eldar Power Sword": {
   base: {
@@ -1779,7 +1794,8 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "melee_onehand",
-      hand_type: 2,
+      hand_type: 3,
+      arm_type : 3,
       new_weapon_draw: true
     },
   },
@@ -1789,12 +1805,44 @@ global.weapon_visual_data = {
     }
   ]
 },
+"Power Mace": {
+  base: {
+    weapon_data: {
+      display_type: "melee_onehand",
+      hand_type: 3,
+      arm_type : 3,
+      new_weapon_draw: true
+    },
+  },
+  variants: [
+    {
+      sprite: spr_weapon_powmace
+    },
+  ]
+},
+"Mace of Absolution": {
+  base: {
+    weapon_data: {
+      display_type: "melee_onehand",
+      hand_type: 3,
+      arm_type : 3,
+      new_weapon_draw: true
+    },
+  },
+  variants: [
+    {
+      sprite: spr_weapon_powmace
+    }
+  ]
+},
 
 "Crozius Arcanum": {
   base: {
     weapon_data: {
       hand_on_top: true,
-      display_type: "melee_onehand"
+      display_type: "melee_onehand",
+      hand_type: 3,
+      arm_type : 3,      
     },
   },
   variants: [
@@ -1808,7 +1856,8 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "melee_onehand",
-      hand_type: 2,
+      hand_type: 3,
+      arm_type : 3,
       new_weapon_draw: true
     },
   },
@@ -1868,7 +1917,9 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       hand_on_top: true,
-      display_type: "melee_onehand"
+      display_type: "melee_onehand",
+      hand_type: 3,
+      arm_type : 3,      
     },
   },
   variants: [
