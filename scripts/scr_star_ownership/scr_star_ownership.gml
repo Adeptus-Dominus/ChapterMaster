@@ -12,11 +12,20 @@ function scr_star_ownership(argument0) {
     		if (dispo[run]<95 && !planet_feature_bool(p_feature[run], P_features.Monastery)){
     			p_owner[run]=2;
     		}
-    	}		
-	    if (p_owner[run]=7) and (p_orks[run]=0){
-	    	p_owner[run]=p_first[run];
+    	}
+    	var _set_to_first = false;	
+	    if (p_owner[run]=7 && p_orks[run]=0 && p_type[run]!="Dead"){
+	    	_set_to_first = true;
 	    }
-	    if (p_type[run]="Dead") and (p_owner[run]!=2) and (p_first[run]!=1) and (p_first[run]!=5){
+	    if (_set_to_first){
+	    	var _first = p_first[run];
+	    	if (p_first[run] == eFACTION.Ork && p_orks[planet] <= 0){
+	    		p_owner[run]=2;
+	    	} else {
+	    		p_owner[run]=p_first[run];
+	    	}
+	    }
+	    if (p_type[run]=="Dead") and (p_owner[run]!=2) and (p_first[run]!=1) and (p_first[run]!=5){
 	    	p_owner[run]=2;
 	    }
 	    if (p_owner[run]=8) and (p_tau[run]=0) and (p_pdf[run]=0){
@@ -75,7 +84,8 @@ function scr_star_ownership(argument0) {
 	                if (randoo=4){
 	                    p_type[run]="Daemon";
 	                    p_fortified[run]=6;
-	                    p_traitors[run]=7;p_owner[run]=10;
+	                    p_traitors[run]=7;
+	                    p_owner[run]=10;
 	                    delete_features(p_feature[run],P_features.Daemonic_Incursion);
 	                }
 	            }

@@ -94,7 +94,7 @@ ai_d=-1;
 ai_e=-1;
 
 global.star_name_colors = [
-	38144,
+	c_gray,
 	c_white, //player
 	c_gray, //imperium
 	c_red, // toaster fuckers

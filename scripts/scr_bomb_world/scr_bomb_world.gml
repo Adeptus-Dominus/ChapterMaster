@@ -7,9 +7,9 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
 	// TODO - update descriptions below, once we get Surface to Orbit weaponry into the game
 
 	var txt1=choose("Your cruiser and larger ship", "The heavens rumble and thunder as your ship"); // TODO - add more variation, for different planets, perhaps different ships, CMs positioning, planetary features and other factors
-	if (ships_selected>1) then txt1+="s";
+	if (obj_bomb_select.ships_selected>1) then txt1+="s";
 	txt1+=choose(" position themselves over the target in close orbit, and unleash", " unload");
-	if (ships_selected=1) then txt1+="s";
+	if (obj_bomb_select.ships_selected=1) then txt1+="s";
 	txt1+= $" annihilation upon {name()}. Even from space the explosions can be seen, {choose("tearing ground", "hammering", "battering", "thundering")} across the planet's surface.";
 
 	kill = population_small_conversion(0.15);
@@ -357,10 +357,10 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
 
 
 
-	sh_target.acted=5;
-	with(obj_bomb_select){instance_destroy();}
-	instance_destroy();
-
+	obj_bomb_select.sh_target.acted=5;
+	with(obj_bomb_select){
+		instance_destroy();
+	}
 	// show_message("Pop: "+string(pop_before)+" -> "+string(pop_after)+"#killed: "+string(kill)+"#Heresy: "+string(heres_before)+" -> "+string(heres_after));
 
 
