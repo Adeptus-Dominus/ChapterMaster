@@ -539,7 +539,11 @@ function ComplexSet(_unit) constructor {
 					} else if (_variant == 3) {
 						_bio = [spr_terminator_complex_arm_hidden_right, spr_terminator_complex_arm_hidden_left];
 					}
-				}
+				} else {
+                    if (_variant == 2 || _variant == 3){
+                        continue;
+                    }
+                }
 				if (_bionic_arm && !array_length(_bio)) {
 					if (armour_type == ArmourType.Normal) {
 						var _bio = [spr_bionic_right_arm, spr_bionic_left_arm];
@@ -773,11 +777,6 @@ function ComplexSet(_unit) constructor {
 					weapon_right.hand_type = 0;
 					weapon_left.hand_type = 0;
 					_arm.ui_ymod += 15;
-				}
-
-				if (array_contains(["Chainaxe", "Power Axe", "Crozius Arcanum", "Power Mace", "Mace of Absolution", "Relic Blade"], _wep)) {
-					_arm.hand_type = 3;
-					_arm.arm_type = 3;
 				}
 			} else if (armour_type == ArmourType.Scout) {
 				_arm.ui_xmod += 4;

@@ -182,6 +182,7 @@ function ColourItem(xx,yy) constructor{
             set_pattern(struct_cols.main_color, lower_left);
             set_pattern(struct_cols.main_color, head_set);
         }
+        reset_image();
         return variable_clone(map_colour);
     }
 
