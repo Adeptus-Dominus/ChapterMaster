@@ -9,12 +9,16 @@ function scr_star_ownership(argument0) {
 	repeat(planets){
 		run+=1;
     	if (p_owner[run]=eFACTION.Player){
-    		if (dispo[run]<90 && !planet_feature_bool(p_feature[run], P_features.Monastery)){
+    		if (dispo[run]<95 && !planet_feature_bool(p_feature[run], P_features.Monastery)){
     			p_owner[run]=2;
     		}
     	}		
-	    if (p_type[run]="Dead") and (p_owner[run]!=2) and (p_first[run]!=1) and (p_first[run]!=5) then p_owner[run]=2;
-	    if (p_owner[run]=7) and (p_orks[run]=0) then p_owner[run]=p_first[run];
+	    if (p_owner[run]=7) and (p_orks[run]=0){
+	    	p_owner[run]=p_first[run];
+	    }
+	    if (p_type[run]="Dead") and (p_owner[run]!=2) and (p_first[run]!=1) and (p_first[run]!=5){
+	    	p_owner[run]=2;
+	    }
 	    if (p_owner[run]=8) and (p_tau[run]=0) and (p_pdf[run]=0){
 	    	p_owner[run]=2;
 	    	p_influence[run][eFACTION.Tau]=round(p_influence[run][eFACTION.Tau]/2);
