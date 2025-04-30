@@ -101,7 +101,7 @@ function scr_inquisition_mission(event, forced_mission = -1){
 		//	}
 		//}
 		
-		var chosen_mission = choose_array(inquisition_missions);
+		var chosen_mission = array_random_element(inquisition_missions);
         if(forced_mission != -1){
             chosen_mission = forced_mission;
         }
@@ -122,7 +122,7 @@ function scr_inquisition_mission(event, forced_mission = -1){
 }
 
 function mission_inquisition_demon_world(demon_worlds){
-    var star = choose_array(demon_worlds);
+    var star = array_random_element(demon_worlds);
     var planet = -1;
     for(var i = 1; i <= star.planets; i++){
         if(star.p_demons[i] > 1){
@@ -169,7 +169,7 @@ function mission_inquisition_ethereal(){
 
 function mission_inquisition_tyranid_organism(worlds){
     log_message("RE: Gaunt Capture");
-    var star = choose_array(worlds);
+    var star = array_random_element(worlds);
     var planet = -1;
     for(var i = 1; i <= star.planets; i++){
         if(star.p_tyranids[i] > 4){
@@ -181,15 +181,15 @@ function mission_inquisition_tyranid_organism(worlds){
     var eta = scr_mission_eta(star.x, star.y, 1);
     var eta = min(max(eta,6),50);
 
-    var text="An Inquisitor is trusting you with a special mission.  The planet " + string(star.name) + " " + scr_roman(planet);
+    var text=$"An Inquisitor is trusting you with a special mission.  The planet {star.name} {planet}";
     text+=" is ripe with Tyranid organisms.  They require that you capture one of the Gaunt species for research purposes.  Can your chapter handle this mission?";
-    scr_popup("Inquisition Mission",text,"inquisition","tyranid_org|"+string(star.name)+"|"+string(planet)+"|"+string(eta+1)+"|");
+    scr_popup("Inquisition Mission",text,"inquisition",$"tyranid_org|{star.name}|{planet}|{eta+1}|");
 
 }
 
 function mission_inquisition_tomb_world(tomb_worlds){
     log_message("RE: Necron Tomb Bombing");
-    var star = choose_array(tomb_worlds)
+    var star = array_random_element(tomb_worlds)
     var planet = scr_get_planet_with_feature(star, P_features.Necron_Tomb);
     var eta = scr_mission_eta(star.x, star.y,1)
     

@@ -48,7 +48,3 @@ function choose_weighted_range(_choices) {
         }
     }
 }
-
-function choose_array(choice_array){
-    return choice_array[irandom(array_length(choice_array)-1)];
-}

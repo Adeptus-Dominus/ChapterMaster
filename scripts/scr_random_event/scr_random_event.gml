@@ -204,9 +204,10 @@ function scr_random_event(execute_now) {
 	else if (execute_now && ((last_event+20)<=turn) && ((turn-15)<last_event)){
 
 		var random_event_roll = roll_dice(1,100);
-		random_event_roll -= ((turn - last_event)/5){
-			if (random_event_roll>5) then exit;// Frequency of events
-		}
+		random_event_roll -= ((turn - last_event)/5);
+
+		if (random_event_roll>5) then exit;// Frequency of events
+		
 
 		if(random_event_next != EVENT.none) {
 			chosen_event = random_event_next;
@@ -220,7 +221,7 @@ function scr_random_event(execute_now) {
 			random_event_next = chosen_event;
 			exit;
 		} else {
-			execute_event(chosen_event)
+			evented = execute_event(chosen_event)
 		}
 	
 		if(evented) {
@@ -968,7 +969,7 @@ function event_fallen(){
 	}
 	log_message($"Fallen: valid_stars {valid_stars}")
 	
-	var star = choose_array(stars);
+	var star = array_random_element(stars);
 	var planet = scr_get_planet_with_owner(star,eFACTION.Imperium);
 	var eta = scr_mission_eta(star.x,star.y, 1);
 

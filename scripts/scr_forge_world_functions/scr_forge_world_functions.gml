@@ -61,7 +61,7 @@ function imperial_navy_fleet_construction(){
 	// After initial navy fleet construction fleet growth is handled in obj_en_fleet.alarm_5
 		if (array_length(forge_systems)){
 		    var construction_forge,new_navy_fleet;
-		    construction_forge=choose_array(forge_systems);
+		    construction_forge=array_random_element(forge_systems);
 		    build_new_navy_fleet(construction_forge)
 		}
 	}
