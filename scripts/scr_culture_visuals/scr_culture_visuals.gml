@@ -1904,13 +1904,14 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "melee_onehand",
-      hand_type: 2,
+      hand_type: 3,
+      arm_type : 3,
       new_weapon_draw: true
     },
   },
   variants: [
     {
-      sprite: spr_weapon_powaxe
+      sprite: spr_weapon_frcaxe,
     }
   ]
 },
