@@ -756,9 +756,11 @@ function ComplexSet(_unit) constructor {
 					}
 					_arm.ui_ymod += 24;
 				}
-				if (_arm.display_type == "melee_onehand" && (_wep != "Company Standard")) {
-					_arm.arm_type = 2;
-					_arm.hand_type = 2;
+				if (_arm.display_type == "melee_onehand" && _wep != "Company Standard" ) {
+                    if (!_arm.hand_type){
+    					_arm.arm_type = 2;
+    					_arm.hand_type = 2;
+                    }
 					_arm.ui_xmod -= 14;
 					_arm.ui_ymod += 23;
 				}
