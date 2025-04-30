@@ -31,6 +31,31 @@ function plus_or_minus_clamp(figure, variation, bottom,top){
 	return clamp(plus_or_minus_rand(figure, variation), bottom,top);
 }
 
+function tyranid_fleet_planet_action(){
+
+    var is_dead=false;
+    with (orbiting){
+    	is_dead = is_dead_star();
+        if (!is_dead) {  		
+            for (var i=1;i<planets;i++){
+            	if (planet_feature_bool(p_feature[i], P_features.Gene_Stealer_Cult)){
+            		if (p_influence[i][eFACTION.Tyranids]>50){
+            			var alert = $"The Genestealer Cult on {planet_numeral_name(i)} is exceedingly thorough, there is almost no resistance as the swarm descends and what little resistance remains is quickly quelled by infiltrators, most of the populations willingly offer themselves to their new gods jumping into acid vats to form biomass for their newly arrived gods or otherwise allowing themselves to be devoured by the teaming ripper swarms";
+            			scr_popup("Tyranids",alert,"","");
+            			scr_alert("red","owner",$"Tyranid swarms begin the process of stripping {planet_numeral_name(i)} for biomass",x,y);
+            		} else {
+            			scr_alert("red","owner",$"The pdf of {planet_numeral_name(i)} is badly degraded by genestealer cult forces as the hive fleet decends",x,y);
+            			scr_popup("Tyranids",scr_alert,"","");
+            			p_pdf[i]*=(p_influence[i][eFACTION.Tyranids]/100);
+            		}
+            		delete_features(p_feature[i],  P_features.Gene_Stealer_Cult);
+            	}
+            }
+        }   	
+    }
+    organise_tyranid_fleet_bio();	
+}
+
 function summon_new_hive_fleet(){
 	var start_coords = find_nearest_edge_coords(x,y);
 
