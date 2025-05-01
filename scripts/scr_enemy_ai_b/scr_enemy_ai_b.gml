@@ -309,58 +309,7 @@ function scr_enemy_ai_b() {
             }
 		}
 		// Genestealer cults grow in number
-		if (planet_feature_bool(p_feature[i], P_features.Gene_Stealer_Cult)) {
-            var cult = return_planet_features(p_feature[i], P_features.Gene_Stealer_Cult)[0];
-            cult.cult_age++;
-            adjust_influence(eFACTION.Tyranids, cult.cult_age / 100, i);
-            var planet_garrison = system_garrison[i - 1];
-            if (cult.hiding) {
-                var find_nid_chance = 50 - planet_garrison.total_garrison;
-                if (p_influence[i][eFACTION.Tyranids] > 50) {
-                    var find_cult_chance = irandom(50);
-                    var alert_text = $"A hidden Genestealer Cult in {name} Has suddenly burst forth from hiding!";
-                    if (planet_garrison.garrison_force) {
-                        var alert_text = $"A hidden Genestealer Cult in {name} Has been discovered by marine garrison!";
-                        find_cult_chance -= 25;
-                    }
-                    if (find_cult_chance < 1) {
-                        cult.hiding = false;
-                        scr_popup("System Lost", alert_text, "Genestealer Cult", "");
-                        owner = eFACTION.Tyranids;
-                        scr_event_log("red", $"A hidden Genestealer Cult in {name} {i} has Started a revolt.", name);
-                        p_tyranids[i] += 1;
-                    }
-                }
-			}
-            if ((!cult.hiding) && (p_tyranids[i] <= 3) && (p_type[i] != "Space Hulk") && (p_influence[i][eFACTION.Tyranids] > 10)) {
-                var spread = 0;
-                rando = irandom(150);
-                rando -= p_influence[i][eFACTION.Tyranids];
-                if (rando <= 15) {
-                    spread = 1;
-                }
-
-                if ((p_type[i] == "Lava") && (p_tyranids[i] == 2)) {
-                    spread = 0;
-                }
-                if (((p_type[i] == "Ice") || (p_type[i] == "Desert")) && (p_tyranids[i] == 3)) {
-                    spread = 0;
-                }
-		      
-                if (spread == 1) {
-                    p_tyranids[i] += 1;
-                }
-            }
-            if (p_influence[i][eFACTION.Tyranids] > 55) {
-                p_owner[i] = eFACTION.Tyranids;
-            }
-        } else if (p_influence[i][eFACTION.Tyranids] > 5) {
-            adjust_influence(eFACTION.Tyranids, -1, i);
-            if ((irandom(200) + (p_influence[i][eFACTION.Tyranids] / 10)) > 195) {
-                array_push(p_feature[i], new NewPlanetFeature(P_features.Gene_Stealer_Cult));
-            }
-        }
-
+		genestealer_cult_end_turn_growth(i);
 
         // Spread influence on controlled sector
         if ((p_type[i] != "Space Hulk") && (p_type[i] != "Dead")) {

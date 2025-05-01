@@ -735,6 +735,7 @@
     {"id":{"name":"scr_array_functions","path":"scripts/scr_array_functions/scr_array_functions.yy",},},
     {"id":{"name":"scr_arti_descr","path":"scripts/scr_arti_descr/scr_arti_descr.yy",},},
     {"id":{"name":"scr_audience","path":"scripts/scr_audience/scr_audience.yy",},},
+    {"id":{"name":"scr_automated_ship_combat_functions","path":"scripts/scr_automated_ship_combat_functions/scr_automated_ship_combat_functions.yy",},},
     {"id":{"name":"scr_battle_allies","path":"scripts/scr_battle_allies/scr_battle_allies.yy",},},
     {"id":{"name":"scr_battle_roster","path":"scripts/scr_battle_roster/scr_battle_roster.yy",},},
     {"id":{"name":"scr_battle_sort","path":"scripts/scr_battle_sort/scr_battle_sort.yy",},},

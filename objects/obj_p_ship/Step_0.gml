@@ -68,11 +68,7 @@ if (hp<=0) and (x>-5000){
     x=-7000;y=room_height/2;
 }
 if (hp>0) and (instance_exists(target)){
-    for (var i=0;i<array_length(cooldown);i++){
-        if (cooldown[i]>0){
-            cooldown[i]--;
-        }
-    }
+    cooldown_ship_weapons();
 
     if (class="Apocalypse Class Battleship") or (class="Gloriana"){
         o_dist=500;
@@ -94,31 +90,28 @@ if (hp>0) and (instance_exists(target)){
         o_dist=64;
         action="flank";
     }
+
+    closing_distance = o_dist;
+
     // if (class!="big") then flank!!!!
     
     
     dist=point_distance(x,y,target.x,target.y)-(max(sprite_get_width(sprite_index),sprite_get_height(sprite_index)));
+    target_distance = dist;
     
     // STC Bonuses
-    var ts;ts=0.2;if (obj_controller.stc_bonus[5]=3) then ts+=0.1;
+    turning_speed = 0.2;
+    if (obj_controller.stc_bonus[5]=3){
+        turning_speed+=0.1;
+    }
     
     
     if (paction!="move") and (paction!="attack_move") and (paction!="turn") and (paction!="attack_turn"){
         if (target!=0) and (action="attack"){
-            direction=turn_towards_point(direction,x,y,target.x,target.y,ts/2);
+            direction=turn_towards_point(direction,x,y,target.x,target.y,turning_speed/2);
         }
-        if (target!=0) and (action="broadside") and (dist>o_dist){
-            if (y>=target.y) then dist=point_distance(x,y,target.x+lengthdir_x(64,target.direction-180),target.y+lengthdir_y(128,target.direction-90))-(max(sprite_get_width(sprite_index),sprite_get_height(sprite_index)));
-            if (y<target.y) then dist=point_distance(x,y,target.x+lengthdir_x(64,target.direction-180),target.y+lengthdir_y(128,target.direction+90))-(max(sprite_get_width(sprite_index),sprite_get_height(sprite_index)));
-            if (y>target.y) and (dist>o_dist) then direction=turn_towards_point(direction,x+lengthdir_x(64,target.direction-180),y,target.x,target.y+lengthdir_y(128,target.direction-90),ts);
-            if (y<target.y) and (dist>o_dist) then direction=turn_towards_point(direction,x+lengthdir_x(64,target.direction-180),y,target.x,target.y+lengthdir_y(128,target.direction+90),ts);
-        }
-        if (target!=0) and (action="flank") and (dist>o_dist){
-            if (y>=target.y) then dist=point_distance(x,y,target.x+lengthdir_x(64,target.direction-180),target.y+lengthdir_y(128,target.direction-90))-(max(sprite_get_width(sprite_index),sprite_get_height(sprite_index)));
-            if (y<target.y) then dist=point_distance(x,y,target.x+lengthdir_x(64,target.direction-180),target.y+lengthdir_y(128,target.direction+90))-(max(sprite_get_width(sprite_index),sprite_get_height(sprite_index)));
-            if (y>target.y) and (dist>o_dist) then direction=turn_towards_point(direction,x,y,target.x,target.y,ts);
-            if (y<target.y) and (dist>o_dist) then direction=turn_towards_point(direction,x,y,target.x,target.y,ts);
-        }
+        broadside_movement();
+        flank_movement();
     }
     
     // STC Bonuses
@@ -126,10 +119,10 @@ if (hp>0) and (instance_exists(target)){
     if (obj_controller.stc_bonus[6]=3){speed_up=0.008;speed_down=0.037;}
     
     if (paction="turn") or (paction="attack_turn"){
-        direction=turn_towards_point(direction,x,y,target_x,target_y,ts/2);
+        direction=turn_towards_point(direction,x,y,target_x,target_y,turning_speed/2);
         dist=point_distance(x,y,target_x,target_y);
-        if (y>target_y) then direction=turn_towards_point(direction,x,y,target_x,target_y,ts);
-        if (y<target_y) then direction=turn_towards_point(direction,x,y,target_x,target_y,ts);
+        if (y>target_y) then direction=turn_towards_point(direction,x,y,target_x,target_y,turning_speed);
+        if (y<target_y) then direction=turn_towards_point(direction,x,y,target_x,target_y,turning_speed);
         if (speed>0) then speed-=speed_down;
         
         if (direction-point_direction(x,y,target_x,target_y)<=2) and (direction-point_direction(x,y,target_x,target_y)>=-2){
@@ -153,10 +146,10 @@ if (hp>0) and (instance_exists(target)){
         }
     }
     if (paction="move") or (paction="attack_move"){
-        direction=turn_towards_point(direction,x,y,target_x,target_y,ts/2);
+        direction=turn_towards_point(direction,x,y,target_x,target_y,turning_speed/2);
         var dist;dist=point_distance(x,y,target_x,target_y);
-        if (y>target_y) then direction=turn_towards_point(direction,x,y,target_x,target_y,ts);
-        if (y<target_y) then direction=turn_towards_point(direction,x,y,target_x,target_y,ts);
+        if (y>target_y) then direction=turn_towards_point(direction,x,y,target_x,target_y,turning_speed);
+        if (y<target_y) then direction=turn_towards_point(direction,x,y,target_x,target_y,turning_speed);
         
         if (paction="attack_move") and (instance_exists(obj_en_ship)){
             if (!instance_exists(target)) then target=instance_nearest(x,y,obj_en_ship);

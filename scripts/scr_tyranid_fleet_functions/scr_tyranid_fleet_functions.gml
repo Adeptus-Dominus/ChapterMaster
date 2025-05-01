@@ -92,6 +92,56 @@ function summon_new_hive_fleet(){
     }
 }
 
+function star_biomass_value(star){
+	var _bio_val = 0;
+	for (var i=0;i<array_length(planets);i++){
+		if (p_large[i]){
+			_bio_val += _bio_val;
+		} else {
+			if (p_type[i] == "Death" || p_type[i] == "Agri"){
+				_bio_val++;
+			}
+		}
+		var _cults = return_planet_features(p_features[i], P_features.Gene_Stealer_Cult)
+		if (array_length(_cults)){
+			var _cult = _cults[0];
+			_bio_val++;
+			_bio_val += (p_influence[i][eFACTION.Tyranids]/20);
+		}
+	}
+	return _bio_val;
+}
+
+function sort_planets_by_biomass_potential(){
+	var _stars = scr_get_stars();
+	var _star_count = array_length(_stars);
+
+	var _bio_vals = {};
+	for (var i=0;i<_star_count;i++){
+		var _star = _stars[i];
+		_bio_vals[$ _star.name] = star_biomass_value(star);
+	}
+
+	for (var i=0;i<_star_count;i++){
+		var _swaps = false
+		for (var s=0;s<_star_count;s++){
+			var _star = _stars[s];
+			var _star2 = _stars[s + 1];
+			var _bio = _bio_vals[$ _star.name];
+			var _bio2 = _bio_vals[$ _star2.name]
+			if (_bio2>_bio){
+				var _temp = _star;
+				_stars[s] = _star2;
+				_stars[s + 1] = _temp;
+				_swaps = true;
+			}
+		}
+		if (!true){
+			break;
+		}
+	}
+}
+
 function organise_tyranid_fleet_bio(){
 	if (capital_number*2>frigate_number){
             capital_number-=1;
@@ -121,29 +171,30 @@ function organise_tyranid_fleet_bio(){
         
         
 
-        var n=false;
+        var _is_dead=false;
         with (orbiting){
-        	n = is_dead_star();
+        	_is_dead = is_dead_star();
         }
         
-        if (n){
-            var xx,yy,good, plin, plin2;
-            xx=0;yy=0;good=0;plin=0;plin2=0;
+        if (_is_dead){
+
+            var xx=0,yy=0,good=0,plin=0,plin2=0;
+            var _split_fleet = false;
+            if (capital_number>5){
+            	_split_fleet=true;
+            }
             
-            if (capital_number>5) then n=5;
-            
-            instance_deactivate_object(orbiting);
             
             repeat(100){
                 if (good!=5){
                     xx=self.x+random_range(-300,300);
                     yy=self.y+random_range(-300,300);
                     if (good=0) then plin=instance_nearest(xx,yy,obj_star);
-                    if (good=1) and (n=5) then plin2=instance_nearest(xx,yy,obj_star);
+                    if (good=1) and (_is_dead=5) then plin2=instance_nearest(xx,yy,obj_star);
                     
                     good = !array_contains(plin.p_type, "dead");
 
-                    if (good=1) and (n=5){
+                    if (good=1) and (_is_dead=5){
                         if (!instance_exists(plin2)) then break;
                         if (!array_contains(plin.p_type, "dead")) then good++
                         
@@ -175,7 +226,7 @@ function organise_tyranid_fleet_bio(){
                     }
                     
                     
-                    if (good=1) and (instance_exists(plin)){action_x=plin.x;action_y=plin.y;alarm[4]=1;if (n!=5) then good=5;}
+                    if (good=1) and (instance_exists(plin)){action_x=plin.x;action_y=plin.y;alarm[4]=1;if (_is_dead!=5) then good=5;}
                 }
             }
             instance_activate_object(obj_star);
