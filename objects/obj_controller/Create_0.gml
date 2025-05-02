@@ -803,25 +803,27 @@ recruit_training[0]=0;
 recruit_exp[0]=0;
 recruit_data[0]={};
 
-for(var i=0; i<501; i++){
-    
-    // For loyalty penalties
-    if (i<=50){
-        loyal[i]="";
-        loyal_num[i]=0;// If less than 1 and greater than 0; that x100 is the chance for discovery
-        loyal_time[i]=0;
-    }
-    if (i<=10){
-        inquisitor_gender[i]=choose(0,0,0,1,1,1,1); // 4:3 chance of male Inquisitor
-        inquisitor_type[i]=choose("Ordo Malleus","Ordo Xenos","Ordo Hereticus","Ordo Hereticus","Ordo Hereticus","Ordo Hereticus","Ordo Hereticus","Ordo Hereticus");
-        inquisitor[i]=global.name_generator.generate_imperial_name(inquisitor_gender[i]);// For 'random inquisitor wishes to inspect your fleet
-    }
-    if (i<60){
-        quest[i]="";// 300req
-        quest_faction[i]=0;// 6
-        quest_end[i]=0;// like 4 or so after the turn this is created
-    }
+// ** Sets loyalty variables **
+loyal = array_create(51, "");
+loyal_num = array_create(51, 0);
+loyal_time = array_create(51, 0);
+
+// ** Sets quest variables **
+quest = array_create(60, "");
+quest_faction = array_create(60, 0);
+quest_end = array_create(60, 0);
+
+// ** Sets inquisitor variables **
+inquisitor_gender = array_create(11, 0);
+inquisitor_type = array_create(11, "");
+inquisitor = array_create(11, "");
+
+for (var i = 0, l = array_length(inquisitor_gender); i < l; i++) {
+    inquisitor_gender[i] = choose(0, 0, 0, 1, 1, 1, 1);
+    inquisitor_type[i] = choose("Ordo Malleus", "Ordo Xenos", "Ordo Hereticus", "Ordo Hereticus", "Ordo Hereticus", "Ordo Hereticus", "Ordo Hereticus", "Ordo Hereticus");
+    inquisitor[i] = global.name_generator.generate_imperial_name(inquisitor_gender[i]);
 }
+
 // ** Sets diplomacy variables **
 diplo_last="";
 diplo_text="";
