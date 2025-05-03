@@ -36,7 +36,7 @@ turrets=0;
 fighters=0;
 bombers=0;
 thunderhawks=0;
-
+weapons = [];
 for(var i=0; i<8; i++){
     weapon[i]="";
     weapon_facing[i]="";
@@ -48,4 +48,4 @@ for(var i=0; i<8; i++){
     weapon_minrange[i]=0;
 }
 
-action_set_alarm(1, 0);
+assign_ship_stats();

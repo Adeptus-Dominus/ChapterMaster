@@ -233,47 +233,9 @@ function organise_tyranid_fleet_bio(){
         }
     }
 
-function nid_ship_weapons_set(weapon,slot){
-	var weapons = {
-		"Feeder Tendrils":{
-			weapon_facing : "most",
-			weapon_dam : 12,
-			weapon_range : 160,
-			weapon_cooldown : 30,
-		},
-		"Bio-Plasma Discharge":{
-			weapon_facing : "most",
-			weapon_dam : 10,
-			weapon_range : 260,
-			weapon_cooldown : 30,
-		},
-		"Pyro-Acid Battery":{
-			weapon_facing : "front",
-			weapon_dam : 18,
-			weapon_range : 500,
-			weapon_cooldown : 40,
-		},
-		"Launch Glands":{
-			weapon_facing : "special",
-			weapon_dam : 9999,
-			weapon_range : 6,
-			weapon_cooldown : 120,
-		},						
-	}
-	if (struct_exists(weapons, weapon)){
-		var wep_choice = weapons[$ weapon];
-	    weapon[slot]=weapon;
-	    weapon_facing[slot]=wep_choice.weapon_facing;
-	    weapon_dam[slot]=wep_choice.weapon_dam;
-	    weapon_range[slot]=wep_choice.weapon_range;
-	    weapon_cooldown[slot]=wep_choice.weapon_cooldown;		
-	}
-}
-
-
 
 function set_nid_ships(){
-	if (class="Leviathan"){
+	if (class=="Leviathan"){
 	    sprite_index=spr_ship_leviathan;
 	    ship_size=3;
 	    name="";
@@ -289,13 +251,25 @@ function set_nid_ships(){
 	    turrets=3;
 	    capacity=0;
 	    carrying=0;
-	    nid_ship_weapons_set("Feeder Tendrils", 1);
-	    nid_ship_weapons_set("Bio-Plasma Discharge", 2);
-	    nid_ship_weapons_set("Pyro-Acid Battery", 3);
-	    nid_ship_weapons_set("Launch Glands", 4);
-	}
+	    add_weapon_to_ship("Feeder Tendrils" : {dam : 12, range :160});
+	    add_weapon_to_ship("Bio-Plasma Discharge" : {
+	        dam : 10, 
+	        range : 260,
+	        cooldown : 10,
+	        facing : "most",
+	    });
 
-	else if (class="Razorfiend"){
+	    add_weapon_to_ship("Pyro-Acid Battery" : {
+	        dam : 18, 
+	        range : 500,
+	        cooldown : 40,
+	        facing : "front",
+	    });
+
+	    add_weapon_to_ship("Launch Glands");
+
+	}else 
+	if (class=="Razorfiend"){
 	    sprite_index=spr_ship_razorfiend;
 	    ship_size=2;
 	    name="";
@@ -308,25 +282,16 @@ function set_nid_ships(){
 	    armour_front=5;
 	    armour_other=4;
 	    weapons=3;
-	    turrets=2;capacity=0;carrying=0;
-	    weapon[1]="Pyro-Acid Battery";
-	    weapon_facing[1]="front";
-	    weapon_dam[1]=12;
-	    weapon_range[1]=300;
-	    weapon_cooldown[1]=30;
-	    weapon[2]="Feeder Tendrils";
-	    weapon_facing[2]="most";
-	    weapon_dam[2]=8;
-	    weapon_range[2]=100;
-	    weapon_cooldown[2]=30;
-	    weapon[3]="Massive Claws";
-	    weapon_facing[3]="most";
-	    weapon_dam[3]=20;
-	    weapon_range[3]=64;
-	    weapon_cooldown[3]=60;
-	}
+	    turrets=2;
+	    capacity=0;
+	    carrying=0;
 
-	if (class="Stalker"){
+	    add_weapon_to_ship("Pyro-Acid Battery" , {dam : 12, facing : "front"});
+	    add_weapon_to_ship("Feeder Tendrils");
+	    add_weapon_to_ship("Massive Claws");
+
+	}else 
+	if (class=="Stalker"){
 	    sprite_index=spr_ship_stalker;
 	    ship_size=1;
 	    name="";
@@ -339,25 +304,15 @@ function set_nid_ships(){
 	    armour_front=5;
 	    armour_other=4;
 	    weapons=1;
-	    turrets=0;capacity=0;carrying=0;
-	    weapon[1]="Pyro-Acid Battery";
-	    weapon_facing[1]="front";
-	    weapon_dam[1]=8;
-	    weapon_range[1]=300;
-	    weapon_cooldown[1]=60;
-	    weapon[2]="Feeder Tendrils";
-	    weapon_facing[2]="most";
-	    weapon_dam[2]=8;
-	    weapon_range[2]=100;
-	    weapon_cooldown[2]=30;
-	    weapon[3]="Bio-Plasma Discharge";
-	    weapon_facing[3]="front";
-	    weapon_dam[3]=6;
-	    weapon_range[3]=200;
-	    weapon_cooldown[3]=60;
-	}
+	    turrets=0;
+	    capacity=0;
+	    carrying=0;
+	    add_weapon_to_ship("Pyro-acid Battery", {cooldown : 60});
+	    add_weapon_to_ship("Feeder Tendrils", {cooldown : 20});
+	    add_weapon_to_ship("Bio-Plasma Discharge");
 
-	else if (class="Prowler"){
+	}else 
+	if (class=="Prowler"){
 	    sprite_index=spr_ship_prowler;
 	    ship_size=1;
 	    name="";
@@ -370,34 +325,11 @@ function set_nid_ships(){
 	    armour_front=5;
 	    armour_other=4;
 	    weapons=1;
-	    turrets=0;capacity=0;carrying=0;
-	    weapon[1]="Pyro-acid Battery";
-	    weapon_facing[1]="most";
-	    weapon_dam[1]=8;
-	    weapon_range[1]=300;
-	    weapon_cooldown[1]=30;
-	    weapon[2]="Feeder Tendrils";
-	    weapon_facing[2]="most";
-	    weapon_dam[2]=8;
-	    weapon_range[2]=100;
-	    weapon_cooldown[1]=30;
+	    turrets=0;
+	    capacity=0;
+	    carrying=0;
+	    add_weapon_to_ship("Pyro-acid Battery");
+	    add_weapon_to_ship("Feeder Tendrils");
 	}
-
-
-
-
-    var i=0;
-    repeat(2){
-        i+=1;
-        if (obj_fleet.en_mutation[i]=="Spore Clouds") then shields=shields+100;
-        if (obj_fleet.en_mutation[i]=="Health"){
-        	hp=floor(hp*1.1);
-            maxhp=hp;
-        }
-        if (obj_fleet.en_mutation[i]=="Armour") then armour_front+=1;
-        if (obj_fleet.en_mutation[i]=="Speed") then speed_bonus=speed_bonus*1.1;
-        if (obj_fleet.en_mutation[i]=="Turn") then turn_bonus=1.2;
-        if (obj_fleet.en_mutation[i]=="Turret") then turrets+=1;
-    }
 
 }

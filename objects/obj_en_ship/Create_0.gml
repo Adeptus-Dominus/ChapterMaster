@@ -53,5 +53,4 @@ repeat(6){i+=1;
     weapon_range[i]=0;
     weapon_minrange[i]=0;
 }
-
-action_set_alarm(1, 0);
+assign_ship_stats();
