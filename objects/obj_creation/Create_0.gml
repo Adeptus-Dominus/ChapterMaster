@@ -9,8 +9,6 @@ try{
     handle_exception(_exception);
 }
 
-global.name_generator = new NameGenerator();
-
 #region Global Settings: volume, fullscreen etc
 ini_open("saves.ini");
 master_volume=ini_read_real("Settings","master_volume",1);
