@@ -10,8 +10,11 @@ sel_x2=0;
 sel_y2=0;
 
 // if (x<0) then ship_id=2;
-
-action="";paction="";
+location_target = new GlowDot();
+location_target.flash_modifier = 30
+draw_targets = false;
+action="";
+paction="";
 action_dis=0;
 action_dir=0;
 action_fac=0;
@@ -21,6 +24,7 @@ if (instance_exists(obj_en_ship)){
     target=instance_nearest(x,y,obj_en_ship);
 }
 
+bullets_for = [];
 target_l=0;
 target_r=0;
 target_x=0;

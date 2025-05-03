@@ -10,8 +10,7 @@ if (board_cooldown>=0) then board_cooldown-=1;
 
 // Need to every couple of seconds check this
 // with obj_en_ship if not big then disable, check nearest, and activate once more
-
-
+draw_targets = false;
 if (instance_exists(target)){if ((target.x<3) and (target.y<3)) or (target.hp<0) then target=-50;}
 if (!instance_exists(target)) or (target=-50){
     with(obj_en_ship){if ((x<3) and (y<3)) or (hp<=0) then instance_deactivate_object(id);}
@@ -54,11 +53,11 @@ if (hp<=0) and (x>-5000){
         ex.image_xscale=2;ex.image_yscale=2;
         ex.image_speed=0.75;*/
         
-        var husk;husk=instance_create(x,y,obj_en_husk);
+        var husk=instance_create(x,y,obj_en_husk);
         husk.sprite_index=sprite_index;husk.direction=direction;
         husk.image_angle=image_angle;husk.depth=depth;husk.image_speed=0;
         repeat(choose(4,5,6)){
-            var explo;explo=instance_create(x,y,obj_explosion);
+            var explo=instance_create(x,y,obj_explosion);
             explo.image_xscale=0.5;explo.image_yscale=0.5;
             explo.x+=random_range(sprite_width*0.25,sprite_width*-0.25);
             explo.y+=random_range(sprite_width*0.25,sprite_width*-0.25);
@@ -68,6 +67,7 @@ if (hp<=0) and (x>-5000){
     x=-7000;y=room_height/2;
 }
 if (hp>0) and (instance_exists(target)){
+    is_targeted();
     cooldown_ship_weapons();
 
     if (class="Apocalypse Class Battleship") or (class="Gloriana"){
@@ -113,10 +113,17 @@ if (hp>0) and (instance_exists(target)){
         broadside_movement();
         flank_movement();
     }
+
+    if (draw_targets != false;){
+        dist=point_distance(x,y,draw_targets[0], draw_targets[1]);i
+    }
     
     // STC Bonuses
     var speed_up, speed_down;speed_up=0.005;speed_down=0.025;
-    if (obj_controller.stc_bonus[6]=3){speed_up=0.008;speed_down=0.037;}
+    if (obj_controller.stc_bonus[6]=3){
+        speed_up=0.008;
+        speed_down=0.037;
+    }
     
     if (paction="turn") or (paction="attack_turn"){
         direction=turn_towards_point(direction,x,y,target_x,target_y,turning_speed/2);
@@ -132,17 +139,18 @@ if (hp>0) and (instance_exists(target)){
     }
     
     if (paction!="move") and (paction!="turn") and (paction!="attack_move") and (paction!="attack_turn"){
-        if (action="attack"){
-            if (dist>o_dist) and (speed<(max_speed)) then speed+=speed_up;
-            if (dist<o_dist) and (speed>0) then speed-=speed_down;
-        }
-        if (action="broadside"){
-            if (dist>o_dist) and (speed<(max_speed)) then speed+=speed_up;
-            if (dist<o_dist) and (speed>0) then speed-=speed_down;
-        }
-        if (action="flank"){// flank here
-            if (dist>o_dist) and (speed<(max_speed)) then speed+=speed_up;
-            if (dist<o_dist) and (speed>0) then speed-=speed_down;
+
+        var _start_slowing = start_slowing_telemetry(dist, speed_down);
+        if (_start_slowing){
+            speed-=speed_down;
+        } else {
+            if (action="attack"){
+                if (dist>o_dist) and (speed<(max_speed)) then speed+=speed_up;
+            } else if (action="broadside"){
+                if (dist>o_dist) and (speed<(max_speed)) then speed+=speed_up;
+            } else if (action="flank"){// flank here
+                if (dist>o_dist) and (speed<(max_speed)) then speed+=speed_up;
+            }
         }
     }
     if (paction="move") or (paction="attack_move"){
@@ -182,7 +190,8 @@ if (hp>0) and (instance_exists(target)){
         if (dist>64) and (dist<300){
             bull=instance_create(x,y,obj_p_round);
             bull.direction=point_direction(x,y,targe.x,targe.y);
-            bull.speed=20;bull.dam=3;
+            bull.speed=20;
+            bull.dam=3;
             bull.image_xscale=0.5;
             bull.image_yscale=0.5;
             turret_cool=floor(60/turrets);

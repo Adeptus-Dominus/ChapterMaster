@@ -12,6 +12,9 @@ hostile=1;
 lightning=0;
 whip=0;
 bridge=0;
+draw_targets = false;
+bullets_for = [];
+
 
 cooldown[0]=0;
 cooldown[1]=0;

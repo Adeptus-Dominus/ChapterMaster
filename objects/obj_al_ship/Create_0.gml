@@ -5,10 +5,11 @@ action="";
 direction=0;
 target=-50;
 if (instance_exists(obj_en_ship)){target=instance_nearest(x,y,obj_en_ship);}
+draw_targets = false;
 
 target_l=0;
 target_r=0;
-
+bullets_for = [];
 turn_bonus=1;
 speed_bonus=1;
 

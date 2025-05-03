@@ -20,15 +20,42 @@ function broadside_movement(){
 }
 
 function flank_movement(){
-    if (target!=0) and (action="flank") and (target_distance>closing_distance){
+	var _normal_target = false;
+    if (target!=0 && action=="flank"){
+    	if (!under_fire){
+    		var _rel_direction = point_direction(target.x, target.y, x, y) - target.direction;
+
+    		if (abs(_rel_direction) < 135){
+	    		var _target_lock = point_on_circle(target.x, target.y, 6, target.direction + _rel_direction > 0 ?135 : -135);
+    			draw_targets = _target_lock;
+    		    direction = turn_towards_point(direction, x,y,_target_lock[0],_target_lock[1],turning_speed);
+    		} else {
+    			_normal_target = true;
+    		}
+    	} else {
+    		_normal_target = true;
+	    }
+    }
+    if (_normal_target ){
         if (y>=target.y) then target_distance=point_distance(x,y,target.x+lengthdir_x(64,target.direction-180),target.y+lengthdir_y(128,target.direction-90))-(max(sprite_get_width(sprite_index),sprite_get_height(sprite_index)));
         if (y<target.y) then target_distance=point_distance(x,y,target.x+lengthdir_x(64,target.direction-180),target.y+lengthdir_y(128,target.direction+90))-(max(sprite_get_width(sprite_index),sprite_get_height(sprite_index)));
         if (y>target.y) and (target_distance>closing_distance) then direction=turn_towards_point(direction,x,y,target.x,target.y,turning_speed);
-        if (y<target.y) and (target_distance>closing_distance) then direction=turn_towards_point(direction,x,y,target.x,target.y,turning_speed);
-    }	
+        if (y<target.y) and (target_distance>closing_distance) then direction=turn_towards_point(direction,x,y,target.x,target.y,turning_speed);    	
+    }
 }
 
-function calculate_closing_distance_and_base_attack(){
+function start_slowing_telemetry(distance_to_target, deceleration){
+	var _start_slowing = false;
+    if (speed>0){
+        var _time_to_stop = (speed/deceleration);
+        var _distance_traveled_while_slowing = speed*_time_to_stop+ ((1/2) * deceleration * sqr(_time_to_stop));
+        
+        if (distance_to_target - _distance_traveled_while_slowing < closing_distance){
+            _start_slowing = true;
+        }
+    }
+
+    return 	_start_slowing;
 
 }
 
@@ -82,7 +109,7 @@ function destroy_ship_and_leave_husk(){
 //                  [4..64] divisible by 4, default 24, real (optional)
 //
 /// GMLscripts.com/license
-function draw_arc(x1,y1,x2,y2,x3,y3,x4,y4,precision){
+function draw_arc(x1,y1,x2,y2,x3,y3,x4,y4,precision=24){
     if (precision == 0) precision = 24;
     var res,xm,ym,xr,yr,r,a1,a2,sx,sy,a;
     res = 360 / min(max(4,4*(precision div 4)),64);
@@ -116,36 +143,71 @@ function facing_weapon_angle(facing){
 	switch (facing){
 		case "right":
 			_direct_+=90;
+			break;
 		case "left":
 			_direct_-=90;
+			break;
 		default:
 			break;
 	}
+	return _direct_;
 }
 
 function radians(deg){
 	return deg * pi/180;
 }
-function
-function draw_weapon_firing_arc(wep_id){
-	var _tangent_direction  = facing_weapon_angle(weapon_facing[wep_id]);
-	var max_distance = weapon_range[wep_id];
-	var _angle_radians = radians(_tangent_direction);
-	var _final_x = x + (max_distance * cos(_angle_radians));
-	var _final_y = y + (max_distance * sin(_angle_radians));
 
-	var _start_draw_rad = 
-	var _start_x = 
-	draw_arc(x, y, _final_x,_final_y )
+function point_on_circle(start_x, start_y, radius, angle){
+	var _angle_radians = radians(angle);
+	var _final_x = start_x + (radius * cos(_angle_radians));
+	var _final_y = start_y + (radius * sin(_angle_radians));
+	return [_final_x, _final_y];
 }
+
+function draw_weapon_firing_arc(wep_id){
+
+	var _tangent_direction  = facing_weapon_angle(weapon_facing[wep_id]);
+	var _max_distance = weapon_range[wep_id];
+
+	var _left = x - _max_distance;
+	var _top  = y - _max_distance;
+	var _right = x + _max_distance;
+	var _bottom = y + _max_distance;
+
+	var _final = point_on_circle(x, y, _max_distance, _tangent_direction);
+
+	var _start = point_on_circle(x, y, _max_distance, _tangent_direction+20);
+
+	var _end = point_on_circle(x, y, _max_distance, _tangent_direction-20);
+
+	draw_arc(_left, _top, _right,_bottom,  _start[0], _start[1], _end[0], _end[1]);
+	draw_line(x, y, _start[0], _start[1]);
+	draw_line(x, y, _end[0], _end[1]);
+}
+
+function is_targeted(){
+	var bullets = array_length(bullets_for);
+	under_fire = false;
+	for (var i=bullets-1;i>-1;i--){
+		var _bullet = bullets_for[i];
+		if (!instance_exists(_bullet)){
+			array_delete(bullets_for, i, 1);
+		} else {
+			under_fire = true;
+		}
+		break;
+	}
+}
+
 function create_ship_projectile(wep_id){
 	var wep = weapon[wep_id];
 	var facing=weapon_facing[wep_id],ammo=weapon_ammo[wep_id],range=weapon_range[wep_id];
 	var dam=weapon_dam[wep_id];
-	if (string_count("orpedo",wep)=0) and (string_count("Interceptor",wep)=0) and (string_count("ommerz",wep)=0) and (string_count("Claws",wep)=0) and (string_count("endrils",wep)=0) and (ok=3) and (owner != eFACTION.Necrons){
+	if (string_count("orpedo",wep)=0) and (string_count("Interceptor",wep)=0) and (string_count("ommerz",wep)=0) and (string_count("Claws",wep)=0) and (string_count("endrils",wep)=0) && (owner != eFACTION.Necrons){
         bull=instance_create(x+lengthdir_x(32,direction),y+lengthdir_y(32,direction),obj_en_round);
         bull.speed=20;
         bull.dam=dam;
+        array_push(target.bullets_for, bull.id);
         if (targe=target) then bull.direction=point_direction(x+lengthdir_x(32,direction),y+lengthdir_y(32,direction),target.x,target.y);
         if (facing!="front"){
         	bull.direction=point_direction(x+lengthdir_x(32,direction),y+lengthdir_y(32,direction),target.x,target.y);
@@ -201,7 +263,7 @@ function create_ship_projectile(wep_id){
         }
         
     }
-    if (string_count("orpedo",wep)=1) and (ok=3) and (owner != eFACTION.Necrons){
+    if (string_count("orpedo",wep)=1)  and (owner != eFACTION.Necrons){
         if (class!="Ravager"){
             bull=instance_create(x,y+lengthdir_y(-30,direction+90),obj_en_round);
             bull.speed=10;
@@ -246,7 +308,7 @@ function create_ship_projectile(wep_id){
         if (target.shields>0) then target.shields-=dam;
         if (target.shields<=0) then target.hp-=dam;
     }
-    if (wep="Star Pulse Generator") and (ok=3) and (instance_exists(target)){
+    if (wep="Star Pulse Generator") and (instance_exists(target)){
         bull=instance_create(x+lengthdir_x(32,direction),y+lengthdir_y(32,direction),obj_en_pulse);
         bull.speed=20;
         if (targe=target) then bull.direction=point_direction(x+lengthdir_x(32,direction),y+lengthdir_y(32,direction),target.x,target.y);
@@ -259,11 +321,11 @@ function create_ship_projectile(wep_id){
     
     
     
-    if ((string_count("Claws",wep)=1) or (string_count("endrils",wep)=1)) and (ok=3){
+    if ((string_count("Claws",wep)=1) or (string_count("endrils",wep)=1)) {
         if (target.shields<=0) then target.hp-=weapon_dam[wep_id];
         if (target.shields>0) then target.shields-=weapon_dam[wep_id];
     }
-    if ((string_count("Interceptor",wep)=1) or (string_count("ommerz",wep)=1) or (string_count("Manta",wep)=1) or (string_count("Glands",wep)=1) or (string_count("Eldar Launch",wep)=1)) and (ok=3){
+    if ((string_count("Interceptor",wep)=1) or (string_count("ommerz",wep)=1) or (string_count("Manta",wep)=1) or (string_count("Glands",wep)=1) or (string_count("Eldar Launch",wep)=1)){
         bull=instance_create(x,y+lengthdir_y(-30,direction+90),obj_en_in);
         bull.direction=self.direction;
         bull.owner=self.owner;
@@ -272,16 +334,21 @@ function create_ship_projectile(wep_id){
 
 
 function fire_ship_weapon(wep_id){
+	draw_set_alpha(1);
+	draw_set_color(c_red); 
+	draw_weapon_firing_arc(wep_id);
 	var wep = weapon[wep_id];
 	var facing=weapon_facing[wep_id],ammo=weapon_ammo[wep_id],range=weapon_range[wep_id];
 	var dam=weapon_dam[wep_id];
 
     //weapon[wep_id]=0;weapon_ammo[wep_id]=0;weapon_range[wep_id]=0;
     facing = weapon_facing[wep_id];
-    if (cooldown[wep_id]<=0) and (weapon[wep_id]!="") and (weapon_ammo[wep_id]>0) then ok=1;
+    var ok = false;
+    if (cooldown[wep_id]<=0 && weapon[wep_id]!="" && weapon_ammo[wep_id]>0) then ok=1;
      if (!ok) {
      	return 0;
      }
+     front = true;
     targe=target;
     if (facing="front") and (front=1) then ok=2;
     if (facing="most") then ok=2;
@@ -313,11 +380,6 @@ function fire_ship_weapon(wep_id){
         cooldown[wep_id]=weapon_cooldown[wep_id];
         wep=weapon[wep_id];
         dam=weapon_dam[wep_id];
-        
-        // if (f=3) and (ship_id=2) then show_message("ammo: "+string(ammo)+" | range: "+string(range));
-        
-        if (ammo<0) then ok=0;
-        ok=3;
         
         create_ship_projectile(wep_id);
     }

@@ -39,6 +39,7 @@ if (hp<=0){
 }
 
 if (hp>0) and (instance_exists(obj_p_ship)){
+    is_targeted();
 
     if (class="Apocalypse Class Battleship"){o_dist=500;action="attack";spid=20;}
     if (class="Nemesis Class Fleet Carrier"){o_dist=1000;action="attack";spid=20;}
@@ -114,14 +115,19 @@ if (hp>0) and (instance_exists(obj_p_ship)){
         
     }*/
     
-    
-    if (action="attack"){
-        if (dist>o_dist) and (speed<((spid)/10)) then speed+=0.005;
-        if (dist<o_dist) and (speed>0) then speed-=0.025;
-    }
-    if (action="broadside"){
-        if (dist>o_dist) and (speed<((spid)/10)) then speed+=0.005;
-        if (dist<o_dist) and (speed>0) then speed-=0.025;
+    var speed_down = 0.025;
+    var _start_slowing = start_slowing_telemetry(dist, speed_down);
+    if (_start_slowing && owner != eFACTION.Tyranids){
+        speed-=speed_down;
+    } else {        
+        if (action="attack"){
+            if (target_distance>o_dist) and (speed<((spid)/10)) then speed+=0.005;
+            if (target_distance<o_dist) and (speed>0) then speed-=0.025;
+        }
+        if (action="broadside"){
+            if (target_distance>o_dist) and (speed<((spid)/10)) then speed+=0.005;
+            if (target_distance<o_dist) and (speed>0) then speed-=0.025;
+        }
     }
     
 

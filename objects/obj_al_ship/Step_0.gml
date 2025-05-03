@@ -42,6 +42,7 @@ if (!__b__){
     }
     // While ship is alive, attack
     if (hp>0) and (instance_exists(obj_en_ship)){
+        is_targeted();
         // TODO on another PR we need to redo how combat works, currently its just "attack" perhaps we can have more precise choise based AI with
         // simpler patterns?
         if (class=="Apocalypse Class Battleship"){
@@ -155,13 +156,19 @@ if (!__b__){
             // direction=turn_towards_point(direction,x+lengthdir_x(128,target.direction-90),y,target.x,target.y+lengthdir_y(128,target.direction-90),.2)
         }*/
         // Controls speed based on action
-        if (action="attack"){
-            if (target_distance>o_dist) and (speed<((spid)/10)) then speed+=0.005;
-            if (target_distance<o_dist) and (speed>0) then speed-=0.025;
-        }
-        if (action="broadside"){
-            if (target_distance>o_dist) and (speed<((spid)/10)) then speed+=0.005;
-            if (target_distance<o_dist) and (speed>0) then speed-=0.025;
+        var speed_down = 0.025;
+        var _start_slowing = start_slowing_telemetry(dist, speed_down);
+        if (_start_slowing){
+            speed-=speed_down;
+        } else {        
+            if (action="attack"){
+                if (target_distance>o_dist) and (speed<((spid)/10)) then speed+=0.005;
+                if (target_distance<o_dist) and (speed>0) then speed-=0.025;
+            }
+            if (action="broadside"){
+                if (target_distance>o_dist) and (speed<((spid)/10)) then speed+=0.005;
+                if (target_distance<o_dist) and (speed>0) then speed-=0.025;
+            }
         }
         if (speed<0) then speed=speed*0.9;
         // Weapon reloads
