@@ -21,27 +21,11 @@ if (class=="Apocalypse Class Battleship"){
     turrets=4;
     capacity=150;
     carrying=0;
-    weapon[1]="Lance Battery";
-    weapon_facing[1]="left";
-    weapon_dam[1]=14;
-    weapon_range[1]=300;
-    weapon_cooldown[1]=30;
-    weapon[2]="Lance Battery";
-    weapon_facing[2]="right";
-    weapon_dam[2]=14;
-    weapon_range[2]=300;
-    weapon_cooldown[2]=30;
-    weapon[3]="Nova Cannon";
-    weapon_facing[3]="front";
-    weapon_dam[3]=34;
-    weapon_range[3]=1500;
-    weapon_minrange[3]=300;
-    weapon_cooldown[3]=120;
-    weapon[4]="Weapons Battery";
-    weapon_facing[4]="most";
-    weapon_dam[4]=14;
-    weapon_range[4]=600;
-    weapon_cooldown[4]=20;
+
+    add_weapon_to_ship("Lance Battery", {facing:"left"});
+    add_weapon_to_ship("Lance Battery", {facing:"right"});
+    add_weapon_to_ship("Nova Cannon");
+    add_weapon_to_ship("Weapons Battery");
 }else 
 if (class=="Nemesis Class Fleet Carrier"){
     sprite_index=spr_ship_nem;
@@ -59,22 +43,10 @@ if (class=="Nemesis Class Fleet Carrier"){
     turrets=5;
     capacity=100;
     carrying=24;
-    weapon[1]="Interceptor Launch Bays";
-    weapon_facing[1]="special";
-    weapon_range[1]=9999;
-    weapon_ammo[1]=6;
-    weapon_cooldown[1]=120;
-    weapon[2]="Interceptor Launch Bays";
-    weapon_facing[2]="special";
-    weapon_range[2]=9999;
-    weapon_ammo[2]=6;
-    weapon_cooldown[2]=120;
-    cooldown[2]=30;
-    weapon[3]="Lance Battery";
-    weapon_facing[3]="front";
-    weapon_dam[3]=14;
-    weapon_range[3]=300;
-    weapon_cooldown[3]=30;
+    add_weapon_to_ship("Interceptor Launch Bays");
+    add_weapon_to_ship("Interceptor Launch Bays");
+    add_weapon_to_ship("Lance Battery");
+
 }else 
 if (class=="Avenger Class Grand Cruiser"){
     sprite_index=spr_ship_aven;
@@ -91,12 +63,7 @@ if (class=="Avenger Class Grand Cruiser"){
     weapons=2;
     turrets=3;
     capacity=50;
-    carrying=0;
-    weapon[1]="Lance Battery";
-    weapon_facing[1]="most";
-    weapon_dam[1]=14;
-    weapon_range[1]=300;
-    weapon_cooldown[1]=25;
+    add_weapon_to_ship("Lance Battery", {cooldown:30});
 }else 
 if (class=="Sword Class Frigate"){
     sprite_index=spr_ship_sword;
@@ -114,11 +81,7 @@ if (class=="Sword Class Frigate"){
     turrets=2;
     capacity=50;
     carrying=0;
-    weapon[1]="Weapons Battery";
-    weapon_facing[1]="most";
-    weapon_dam[1]=8;
-    weapon_range[1]=300;
-    weapon_cooldown[1]=20;
+    add_weapon_to_ship("Weapons Battery", {weapon_range:300});
 }
 // ** Eldar **
 if (class=="Void Stalker"){
@@ -136,23 +99,10 @@ if (class=="Void Stalker"){
     weapons=3;
     turrets=4;
     capacity=150;
-    carrying=0;
-    weapon[1]="Eldar Launch Bay";
-    weapon_facing[1]="special";
-    weapon_dam[1]=0;
-    weapon_range[1]=9999;
-    weapon_cooldown[1]=90;
-    weapon_ammo[1]=4;
-    weapon[2]="Weapons Battery";
-    weapon_facing[2]="most";
-    weapon_dam[2]=14;
-    weapon_range[2]=600;
-    weapon_cooldown[2]=30;
-    weapon[3]="Pulsar Lances";
-    weapon_facing[3]="most";
-    weapon_dam[3]=10;
-    weapon_range[3]=600;
-    weapon_cooldown[3]=10;
+
+    add_weapon_to_ship("Weapons Battery");
+    add_weapon_to_ship("Eldar Launch Bay");
+    add_weapon_to_ship("Pulsar Lances");
 }else 
 if (class=="Shadow Class"){
     sprite_index=spr_ship_shadow;
@@ -816,11 +766,9 @@ if (class=="Stalker"){
     turrets=0;
     capacity=0;
     carrying=0;
-    weapon[1]="Pyro-Acid Battery";
-    weapon_facing[1]="front";
-    weapon_dam[1]=8;
-    weapon_range[1]=300;
-    weapon_cooldown[1]=60;
+    add_weapon_to_ship("Pyro-acid Battery", {cooldown : 60});
+    add_weapon_to_ship("Feeder Tendrils", {cooldown : 20});
+
     weapon[2]="Feeder Tendrils";
     weapon_facing[2]="most";
     weapon_dam[2]=8;
@@ -848,16 +796,8 @@ if (class=="Prowler"){
     turrets=0;
     capacity=0;
     carrying=0;
-    weapon[1]="Pyro-acid Battery";
-    weapon_facing[1]="most";
-    weapon_dam[1]=8;
-    weapon_range[1]=300;
-    weapon_cooldown[1]=30;
-    weapon[2]="Feeder Tendrils";
-    weapon_facing[2]="most";
-    weapon_dam[2]=8;
-    weapon_range[2]=100;
-    weapon_cooldown[1]=30;
+    add_weapon_to_ship("Pyro-acid Battery");
+    add_weapon_to_ship("Feeder Tendrils");
 }
 
 if (owner == eFACTION.Tyranids){

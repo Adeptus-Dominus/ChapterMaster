@@ -23,6 +23,7 @@ target=-50;
 if (instance_exists(obj_en_ship)){
     target=instance_nearest(x,y,obj_en_ship);
 }
+turn_bonus = false;
 
 bullets_for = [];
 target_l=0;

@@ -49,20 +49,7 @@ if (hp<=0) and (x>-5000){
     
     image_alpha=0.5;
     if (obj_fleet.start!=0){
-        /*ex=instance_create(x,y,obj_explosion);
-        ex.image_xscale=2;ex.image_yscale=2;
-        ex.image_speed=0.75;*/
-        
-        var husk=instance_create(x,y,obj_en_husk);
-        husk.sprite_index=sprite_index;husk.direction=direction;
-        husk.image_angle=image_angle;husk.depth=depth;husk.image_speed=0;
-        repeat(choose(4,5,6)){
-            var explo=instance_create(x,y,obj_explosion);
-            explo.image_xscale=0.5;explo.image_yscale=0.5;
-            explo.x+=random_range(sprite_width*0.25,sprite_width*-0.25);
-            explo.y+=random_range(sprite_width*0.25,sprite_width*-0.25);
-        }
-        
+        destroy_ship_and_leave_husk();
     }
     x=-7000;y=room_height/2;
 }
@@ -84,7 +71,7 @@ if (hp>0) and (instance_exists(target)){
     }
    else  if (class="Battle Barge") or (class="Strike Cruiser"){
         o_dist=300;
-        action="attack";
+        action="broadside";
     }
     else if (class="Hunter") or (class="Gladius"){
         o_dist=64;
@@ -114,8 +101,8 @@ if (hp>0) and (instance_exists(target)){
         flank_movement();
     }
 
-    if (draw_targets != false;){
-        dist=point_distance(x,y,draw_targets[0], draw_targets[1]);i
+    if (draw_targets != false){
+        dist=point_distance(x,y,draw_targets[0], draw_targets[1]);
     }
     
     // STC Bonuses
@@ -210,7 +197,9 @@ if (hp>0) and (instance_exists(target)){
     targe=instance_nearest(xx,yy,obj_en_ship);
     if (instance_exists(targe)){
         rdir=point_direction(x,y,target.x,target.y);
-        if (rdir>45) and (rdir<=135) and (targe!=target){target_r=targe;right=1;}
+        if (rdir>45) and (rdir<=135) and (targe!=target){
+            target_r=targe;right=1;
+        }
         if (rdir>225) and (rdir<=315) and (targe!=target) and (targe!=target_r){target_l=targe;left=1;}    
         if (collision_line(x,y,x+lengthdir_x(2000,direction),y+lengthdir_y(2000,direction),obj_en_ship,0,1)) then front=1;
         

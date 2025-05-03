@@ -2,6 +2,7 @@
 
 
 function broadside_movement(){
+	var _target_direction = target.direction;
     if (target!=0) and (action="broadside") and (target_distance>closing_distance){
         if (y>=target.y){
         	target_distance=point_distance(x,y,target.x+lengthdir_x(64,target.direction-180),target.y+lengthdir_y(128,target.direction-90))-(max(sprite_get_width(sprite_index),sprite_get_height(sprite_index)));
@@ -24,11 +25,18 @@ function flank_movement(){
     if (target!=0 && action=="flank"){
     	if (!under_fire){
     		var _rel_direction = point_direction(target.x, target.y, x, y) - target.direction;
-
-    		if (abs(_rel_direction) < 135){
-	    		var _target_lock = point_on_circle(target.x, target.y, 6, target.direction + _rel_direction > 0 ?135 : -135);
+    		if (abs(_rel_direction) < 105){
+    			var _attack_angle = target.direction + ((_rel_direction > 0) ? 105 : -105);
+    			if (_attack_angle > 360){
+    				_attack_angle -= 360;
+    			} else if (_attack_angle< 0){
+    				_attack_angle = 360 -_attack_angle;
+    			}
+    			var _flank_margin = closing_distance*2
+	    		var _target_lock = [target.x + lengthdir_x(_flank_margin, _attack_angle), target.y + lengthdir_y(_flank_margin, _attack_angle)]
     			draw_targets = _target_lock;
     		    direction = turn_towards_point(direction, x,y,_target_lock[0],_target_lock[1],turning_speed);
+    		    closing_distance = 0;
     		} else {
     			_normal_target = true;
     		}
@@ -153,36 +161,30 @@ function facing_weapon_angle(facing){
 	return _direct_;
 }
 
-function radians(deg){
-	return deg * pi/180;
-}
-
 function point_on_circle(start_x, start_y, radius, angle){
-	var _angle_radians = radians(angle);
+	var _angle_radians = degtorad(angle);
 	var _final_x = start_x + (radius * cos(_angle_radians));
 	var _final_y = start_y + (radius * sin(_angle_radians));
 	return [_final_x, _final_y];
 }
 
 function draw_weapon_firing_arc(wep_id){
+    var _tangent_direction  = facing_weapon_angle(weapon_facing[wep_id]);
+    var _max_distance = weapon_range[wep_id];
 
-	var _tangent_direction  = facing_weapon_angle(weapon_facing[wep_id]);
-	var _max_distance = weapon_range[wep_id];
+    var _left = x - _max_distance;
+    var _top  = y - _max_distance;
+    var _right = x + _max_distance;
+    var _bottom = y + _max_distance;
 
-	var _left = x - _max_distance;
-	var _top  = y - _max_distance;
-	var _right = x + _max_distance;
-	var _bottom = y + _max_distance;
+    var _start_x = x + lengthdir_x(_max_distance, _tangent_direction - 20);
+    var _start_y = y + lengthdir_y(_max_distance, _tangent_direction - 20);
+    var _end_x   = x + lengthdir_x(_max_distance, _tangent_direction + 20);
+    var _end_y   = y + lengthdir_y(_max_distance, _tangent_direction + 20);
 
-	var _final = point_on_circle(x, y, _max_distance, _tangent_direction);
-
-	var _start = point_on_circle(x, y, _max_distance, _tangent_direction+20);
-
-	var _end = point_on_circle(x, y, _max_distance, _tangent_direction-20);
-
-	draw_arc(_left, _top, _right,_bottom,  _start[0], _start[1], _end[0], _end[1]);
-	draw_line(x, y, _start[0], _start[1]);
-	draw_line(x, y, _end[0], _end[1]);
+    draw_arc(_left, _top, _right, _bottom, _start_x, _start_y, _end_x, _end_y);
+    draw_line(x, y, _start_x, _start_y);
+    draw_line(x, y, _end_x, _end_y);
 }
 
 function is_targeted(){
@@ -194,8 +196,8 @@ function is_targeted(){
 			array_delete(bullets_for, i, 1);
 		} else {
 			under_fire = true;
+			break;
 		}
-		break;
 	}
 }
 
@@ -203,11 +205,11 @@ function create_ship_projectile(wep_id){
 	var wep = weapon[wep_id];
 	var facing=weapon_facing[wep_id],ammo=weapon_ammo[wep_id],range=weapon_range[wep_id];
 	var dam=weapon_dam[wep_id];
+	var bull = -1;
 	if (string_count("orpedo",wep)=0) and (string_count("Interceptor",wep)=0) and (string_count("ommerz",wep)=0) and (string_count("Claws",wep)=0) and (string_count("endrils",wep)=0) && (owner != eFACTION.Necrons){
         bull=instance_create(x+lengthdir_x(32,direction),y+lengthdir_y(32,direction),obj_en_round);
         bull.speed=20;
         bull.dam=dam;
-        array_push(target.bullets_for, bull.id);
         if (targe=target) then bull.direction=point_direction(x+lengthdir_x(32,direction),y+lengthdir_y(32,direction),target.x,target.y);
         if (facing!="front"){
         	bull.direction=point_direction(x+lengthdir_x(32,direction),y+lengthdir_y(32,direction),target.x,target.y);
@@ -329,6 +331,9 @@ function create_ship_projectile(wep_id){
         bull=instance_create(x,y+lengthdir_y(-30,direction+90),obj_en_in);
         bull.direction=self.direction;
         bull.owner=self.owner;
+    }
+    if (instance_exists(bull)){
+    	array_push(target.bullets_for, bull.id);
     }	
 }
 
@@ -336,7 +341,6 @@ function create_ship_projectile(wep_id){
 function fire_ship_weapon(wep_id){
 	draw_set_alpha(1);
 	draw_set_color(c_red); 
-	draw_weapon_firing_arc(wep_id);
 	var wep = weapon[wep_id];
 	var facing=weapon_facing[wep_id],ammo=weapon_ammo[wep_id],range=weapon_range[wep_id];
 	var dam=weapon_dam[wep_id];
@@ -385,7 +389,97 @@ function fire_ship_weapon(wep_id){
     }
 }
 
+global.ship_weapons_stats = {
+	"Lance Battery" : {
+		range : 300,
+		dam : 14, 
+		facing : "front",
+		firing_arc : 12.5
+	}
+	"Nova Cannon": {
+		range : 1500,
+		dam : 34, 
+		facing : "front",
+		minrange : 300,
+		cooldown : 120,	
+		minrange : 300,
+	},
+	"Weapons Battery" : {
+		facing : "most",
+		cooldown : 20,
+		dam : 20,
+		firing_arc : 5,
+	},
 
+	"Interceptor Launch Bays" : {
+		facing : "special",
+		weapon_range : 9999,
+		ammo : 6,
+		cooldown , 120,
+	},
+	"Eldar Launch Bay" : {
+		facing : "special",
+		weapon_range : 9999,
+		ammo : 4,
+		cooldown , 90,
+	},
+	"Pulsar Lances":{
+		facing : "most",
+		dam : 10,
+		weapon_cooldown : 10,
+	},
+	"Pyro-acid Battery" : {
+		facing : "most",
+		dam : 8,
+		range : 300,
+	},
+	"Feeder Tendrils" : {
+		facing : "most",
+		dam : 8,
+		range : 100,
+	},
+	"Bio-Plasma Discharge":{
+		range : 200,
+	}
+}
+
+global.ship_defualts  = {
+	range : 600,
+	facing : "front",
+	cooldown : 30,
+	minrange : 0,
+	dam : 0,
+	firing_arc : 12.5,
+	ship : 0,
+	ammo : -1,
+
+}
+function move_data_to_current_scope(struct, overide=true){
+	var _data_names = struct_get_names(struct);
+	for (var i=0;i<array_length(_data_names);i++){
+		if (overide){
+			self[$_data_names[i]] = struct[$ _data_names[i]];
+		} else {
+			if (!struct_exists(self, _data_names[i])){
+				self[$_data_names[i]] = struct[$ _data_names[i]];
+			}
+		}
+	}
+}
+function ShipWeapon(weapon_name, overide_data={}) constructor{
+	if (struct_exists(ship_weapons_stats, weapon_name)){
+		var _wep_data = ship_weapons_stats[$ weapon_name];
+		move_data_to_current_scope(_wep_data);
+	}
+	move_data_to_current_scope(overide_data);
+	move_data_to_current_scope(global.ship_defualts, false);
+	name = weapon_name;
+}
+
+function add_weapon_to_ship(weapon_name, overide_data={}){
+	overide_data.ship = id;
+	array_push(weapons, new ShipWeapon(weapon_name, overide_data));
+}
 
 
 
