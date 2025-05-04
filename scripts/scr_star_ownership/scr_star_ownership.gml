@@ -19,7 +19,7 @@ function scr_star_ownership(argument0) {
 	    }
 	    if (_set_to_first){
 	    	var _first = p_first[run];
-	    	if (p_first[run] == eFACTION.Ork && p_orks[planet] <= 0){
+	    	if (p_first[run] == eFACTION.Ork && p_orks[run] <= 0){
 	    		p_owner[run]=2;
 	    	} else {
 	    		p_owner[run]=p_first[run];
