@@ -212,6 +212,7 @@ function facing_weapon_angle(facing){
 		default:
 			break;
 	}
+
 	return _direct_;
 }
 
@@ -226,9 +227,82 @@ function ShipWeapon(weapon_name, overide_data={}) constructor{
 	cooldown_timer = 0;
 
 	target = 0;
-	find_direction = 
-	static find_target = function(){
+	static fire = function(){
+		draw_set_alpha(1);
+		draw_set_color(c_red);
+		if (cooldown_timer <= 0 && instance_exists(target) && (ammo == -1 || ammo>0)){
+			if (ammo>0){
+				ammo--;
+			}
+		}
+	}
 
+	static find_target = function(){
+		if (instance_exists(ship)){
+			var _shoot_angle = 0;
+			with (ship)(
+				_shoot_angle = facing_weapon_angle(facing);
+			);
+			if (_shoot_angle > 360){
+				_shoot_angle -= 360;
+			} else if (_shoot_angle< 0){
+				_shoot_angle = 360 -_shoot_angle;
+			}
+			with (ship)
+			if (ship.object_index == obj_p_ship || ship.object_index == obj_al_ship){
+				var _enemies = instance_number(obj_en_ship);
+				for (var i=0;i<_enemies;i++){
+					var _targ = instance_nearest(ship.x, ship.y, obj_en_ship);
+					if (_targ.hp<=0){
+						instance_deactivate_object(_targ.id);
+						continue;
+					}
+					var _distance = point_distance(_targ.x, targ.y, x,y);
+					if (_distance > range){
+						break;
+					}
+					if (minrange>0 && _distance<minrange){
+						instance_deactivate_object(_targ.id);
+						continue;
+					}
+					var _rel_direction = point_direction(_targ.x, _targ.y, x, y);
+					if (_rel_direction < (_shoot_angle + firing_arc) && _rel_direction > (_shoot_angle - firing_arc)){
+						target = _targ;
+						break;
+					}
+				}
+				instance_activate_object(obj_en_ship);
+			} else if (ship.object_index == obj_en_ship){
+				var _enemies = instance_number(obj_p_ship) + instance_number(obj_al_ship);
+				for (var i=0;i<_enemies;i++){
+					var _targ = instance_nearest(ship.x, ship.y, obj_p_ship);
+					var targ_2 = instance_nearest(ship.x, ship.y, obj_al_ship);
+					if (point_distance(targ_2.x, targ_2.y, x,y)<point_distance(_targ.x, _targ.y, x,y)){
+						_targ = targ_2;
+					}
+					if (_targ.hp<=0){
+						instance_deactivate_object(_targ.id);
+						continue;
+					}
+					var _distance = point_distance(_targ.x, targ.y, x,y);
+					if (_distance > range){
+						break;
+					}
+					if (minrange>0 && _distance<minrange){
+						instance_deactivate_object(_targ.id);
+						continue;
+					}
+					var _rel_direction = point_direction(_targ.x, _targ.y, x, y);
+					if (_rel_direction < (_shoot_angle + firing_arc) && _rel_direction > (_shoot_angle - firing_arc)){
+						target = _targ;
+						break;
+					}					
+				}
+				instance_activate_object(obj_p_ship);
+				instance_activate_object(obj_al_ship);
+			}
+		}
+		parent.object_index== obj_enemy
 	}
 	static draw_weapon_firing_arc = function{
 		var _tangent_direction = 0;
