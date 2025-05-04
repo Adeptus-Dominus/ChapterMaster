@@ -316,7 +316,7 @@ function target_enemy_squad(_battle_block, _target_type = -1) {
     for (var i = 0, l = array_length(_unit_squads); i < l; i++){
         var _unit_squad = _unit_squads[i];
 
-        var _unit_stack_count = _unit_squad.member_count;
+        var _unit_stack_count = _unit_squad.unit_count;
 		var _unit_stack_type = _unit_squad.squad_type;
 
 		if (_target_type == -1 || _unit_stack_type == _target_type) {

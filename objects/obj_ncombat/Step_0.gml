@@ -36,7 +36,7 @@ if (battle_stage == eBATTLE_STAGE.Creation) {
     battle_stage = eBATTLE_STAGE.Main;
 
     if (obj_ncombat.enemy == 30 || battle_special == "ship_demon") {
-        turn_stage = eBATTLE_TURN.PlayerEnd;
+        turn_side = eBATTLE_ALLEGIANCE.Enemy;
     }
     
     if (DEBUG_COMBAT_PERFORMANCE) {
@@ -45,7 +45,7 @@ if (battle_stage == eBATTLE_STAGE.Creation) {
 }
 
 if ((press_exclusive(vk_enter) || hold_exclusive(vk_enter)) && fading_strength == 0) {
-    if (turn_stage == eBATTLE_TURN.PlayerStart || turn_stage == eBATTLE_TURN.EnemyStart) {
+    if (turn_phase == eBATTLE_TURN_PHASE.Movement) {
         if (DEBUG_COMBAT_PERFORMANCE) {
             stopwatch("BATTLE_TURN.Start");
         }
@@ -56,7 +56,7 @@ if ((press_exclusive(vk_enter) || hold_exclusive(vk_enter)) && fading_strength =
         resolve_battle_state();
         display_message_queue();
     
-        if (turn_stage == eBATTLE_TURN.EnemyStart) {
+        if (turn_side == eBATTLE_ALLEGIANCE.Enemy) {
             battlefield.move_enemies();
             if (instance_exists(obj_enunit)) {                
                 if (DEBUG_COMBAT_PERFORMANCE) {
@@ -81,7 +81,7 @@ if ((press_exclusive(vk_enter) || hold_exclusive(vk_enter)) && fading_strength =
             display_message_queue();
         }
 
-        if (turn_stage == eBATTLE_TURN.PlayerStart) {
+        if (turn_side == eBATTLE_ALLEGIANCE.Player) {
             player_blocks_movement();
             if (DEBUG_COMBAT_PERFORMANCE) {
                 stopwatch("pnunit_stacking_shooting");
@@ -103,14 +103,14 @@ if ((press_exclusive(vk_enter) || hold_exclusive(vk_enter)) && fading_strength =
         queue_force_health();
         display_message_queue();
 
-        turn_stage = (turn_stage == eBATTLE_TURN.PlayerStart) ? eBATTLE_TURN.PlayerEnd : eBATTLE_TURN.EnemyEnd;
+        turn_phase = eBATTLE_TURN_PHASE.Morale;
         
         if (DEBUG_COMBAT_PERFORMANCE) {
             stopwatch("BATTLE_TURN.Start");
         }
     }
 
-    if (turn_stage == eBATTLE_TURN.EnemyEnd || turn_stage == eBATTLE_TURN.PlayerEnd) {
+    if (turn_phase == eBATTLE_TURN_PHASE.Morale) {
         if (DEBUG_COMBAT_PERFORMANCE) {
             stopwatch("BATTLE_TURN.End");
         }
@@ -127,12 +127,12 @@ if ((press_exclusive(vk_enter) || hold_exclusive(vk_enter)) && fading_strength =
 
         update_battlefield_scale();
 
-        if (turn_stage == eBATTLE_TURN.EnemyEnd) {
-            turn_stage = eBATTLE_TURN.PlayerStart;
+        if (turn_side == eBATTLE_ALLEGIANCE.Enemy) {
+            turn_side == eBATTLE_ALLEGIANCE.Player;
         }
 
-        if (turn_stage == eBATTLE_TURN.PlayerEnd) {
-            turn_stage = eBATTLE_TURN.EnemyStart;
+        if (turn_side == eBATTLE_ALLEGIANCE.Player) {
+            turn_side == eBATTLE_ALLEGIANCE.Enemy;
         }
         
         if (DEBUG_COMBAT_PERFORMANCE) {
@@ -142,8 +142,6 @@ if ((press_exclusive(vk_enter) || hold_exclusive(vk_enter)) && fading_strength =
 
 
     if ((battle_stage == eBATTLE_STAGE.PlayerWinStart) || (battle_stage == eBATTLE_STAGE.EnemyWinStart)) {
-        instance_activate_object(obj_pnunit);
-        instance_activate_object(obj_enunit);
         battle_stage = eBATTLE_STAGE.PlayerWinEnd;
         var _quad_factor = 10;
         total_battle_exp_gain = _quad_factor * sqr(threat);
@@ -162,8 +160,6 @@ if ((press_exclusive(vk_enter) || hold_exclusive(vk_enter)) && fading_strength =
 
     if (battle_stage == eBATTLE_STAGE.PlayerWinEnd) {
         instance_activate_all();
-        instance_activate_object(obj_pnunit);
-        instance_activate_object(obj_enunit);
         instance_destroy(obj_popup);
         instance_destroy(obj_star_select);
         with (obj_pnunit) {
@@ -175,18 +171,12 @@ if ((press_exclusive(vk_enter) || hold_exclusive(vk_enter)) && fading_strength =
 }
 
 function resolve_battle_state() {
-    if (enemy_forces <= 0 || !instance_exists(obj_enunit)) {
+    if (enemy_forces <= 0) {
         battle_ended = true;
         battle_stage = eBATTLE_STAGE.PlayerWinStart;
-        instance_activate_object(obj_pnunit);
-        turn_stage = eBATTLE_TURN.EnemyStart;
-    } else if (player_forces <= 0 || !instance_exists(obj_pnunit)) {
-        show_debug_message($"enemy_forces: {player_forces}");
-        show_debug_message($"obj_enunit count: {instance_number(obj_pnunit)}}");
+    } else if (player_forces <= 0) {
         battle_ended = true;
         battle_stage = eBATTLE_STAGE.EnemyWinStart;
         defeat = 1;
-        instance_activate_object(obj_pnunit);
-        turn_stage = eBATTLE_TURN.EnemyEnd;
     }
 }

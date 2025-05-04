@@ -81,15 +81,15 @@ function scr_clean(target_object, weapon_data) {
             }
             valid_vehicles = array_shuffle(valid_vehicles);
 
-            if (target_type == eTARGET_TYPE.Armour && array_empty(valid_vehicles)) {
-                target_type = eTARGET_TYPE.Normal;
-            } else if (target_type = eTARGET_TYPE.Normal && array_empty(valid_marines)) {
-                target_type = eTARGET_TYPE.Armour;
+            if (target_type == eUNIT_TYPE.Vehicle && array_empty(valid_vehicles)) {
+                target_type = eUNIT_TYPE.Infantry;
+            } else if (target_type = eUNIT_TYPE.Normal && array_empty(valid_marines)) {
+                target_type = eUNIT_TYPE.Vehicle;
             }
 
             for (var shot = 0; shot < hostile_shots; shot++) {
                 // ### Vehicle Damage Processing ###
-                if (target_type == eTARGET_TYPE.Armour && !array_empty(valid_vehicles)) {
+                if (target_type == eUNIT_TYPE.Vehicle && !array_empty(valid_vehicles)) {
                     // Apply damage for each hostile shot, until we run out of targets
 
                     hits++;
@@ -185,7 +185,7 @@ function scr_clean(target_object, weapon_data) {
                             array_delete(valid_vehicles, random_index, 1);
                             units_lost++;
                             if (array_empty(valid_vehicles)) {
-                                target_type = eTARGET_TYPE.Normal;
+                                target_type = eUNIT_TYPE.Infantry;
                                 continue;
                             }
                         }
@@ -193,7 +193,7 @@ function scr_clean(target_object, weapon_data) {
                 }
 
                 // ### Marine Processing ###
-                if (target_type == eTARGET_TYPE.Normal && !array_empty(valid_marines)) {
+                if (target_type == eUNIT_TYPE.Infantry && !array_empty(valid_marines)) {
                     // Apply damage for each shot
                     hits++;
 
@@ -252,7 +252,7 @@ function scr_clean(target_object, weapon_data) {
                         array_delete(valid_marines, random_index, 1);
                         units_lost++;
                         if (array_empty(valid_marines)) {
-                            target_type = eTARGET_TYPE.Armour;
+                            target_type = eUNIT_TYPE.Vehicle;
                             continue;
                         }
                     }

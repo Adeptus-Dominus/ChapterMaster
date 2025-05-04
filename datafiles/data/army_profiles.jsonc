@@ -2,7 +2,7 @@
     "orks_6": {
         "display_name": "Huge Ork Army",
         "description": "A huge army of green gigachads.",
-        "units": [
+        "squads": [
             {
                 "name": "deff_dread",
                 "count": 36
@@ -18,11 +18,9 @@
             {
                 "name": "warboss",
                 "count": 1
-            }
-        ],
-        "squads": [
+            },
             {
-                "name": "gretchins",
+                "name": "gretchin",
                 "count": 70
             },
             {

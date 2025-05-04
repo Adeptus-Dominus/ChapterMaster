@@ -430,7 +430,7 @@ function get_target_priority(_weapon_stack, _block) {
 
     // Target type match bonus
     // var _type_bonus = 0;
-    // if (_weapon_stack.target_type == eTARGET_TYPE.Armour) {
+    // if (_weapon_stack.target_type == eUNIT_TYPE.Armour) {
     //     _type_bonus = 20 * (block_type_size(_block, "armour") / _size);
     // } else {
     //     _type_bonus = 20 * (block_type_size(_block, "men") / _size);

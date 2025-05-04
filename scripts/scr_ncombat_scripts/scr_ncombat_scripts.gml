@@ -1,8 +1,10 @@
-enum eBATTLE_TURN {
-    PlayerStart,
-    PlayerEnd,
-    EnemyStart,
-    EnemyEnd,
+enum eBATTLE_TURN_PHASE {
+    Movement,
+    Psychic,
+    Shooting,
+    Charge,
+    Fight,
+    Morale,
 }
 
 enum eBATTLE_STAGE {
@@ -1427,10 +1429,7 @@ function ncombat_enemy_stacks_init() {
             if (threat == 6) {
                 enemy_force.name = "orks_6";
                 enemy_force.copy_profile();
-                enemy_force.spawn_squads();
-                enemy_dudes = enemy_force.profile.description;
-                var _cell = ds_grid_get(battlefield, 0, 0);
-                var _cell = ds_grid_get(battlefield, 1, 0);
+                enemy_force.spawn_forces();
             }
         }
 
@@ -3490,7 +3489,7 @@ function ncombat_battle_start() {
     }
 
     if ((battle_special == "ruins") || (battle_special == "ruins_eldar")) {
-        newline = "The enemy forces are made up of " + string(enemy_dudes);
+        newline = "The enemy forces are made up of " + string(enemy_force.unit_count);
 
         if (enemy == 6) {
             newline += " Craftworld Eldar.";
@@ -3528,7 +3527,7 @@ function ncombat_battle_start() {
         // if (rand=3) then p1="Advancing upon your forces are ";
     }
 
-    // p1+=string(enemy_dudes);// The number descriptor*/
+    // p1+=string(enemy_force.unit_count);// The number descriptor*/
 
     if (enemy == 2) {
         p1 = "Opposing your forces are a total of " + scr_display_number(floor(guard_effective)) + " Guardsmen, including Heavy Weapons and Armour.";
@@ -3564,7 +3563,7 @@ function ncombat_battle_start() {
         rand = choose(1, 2, 3);
         if (rand < 4) {
             p1 = "Howls and grunts ring from the surrounding terrain as the Orks announce their presence.  ";
-            p2 = string(enemy_dudes) + ", the bloodthirsty horde advances toward your Marines, ecstatic in their anticipation of carnage.  ";
+            p2 = string(enemy_force.unit_count) + ", the bloodthirsty horde advances toward your Marines, ecstatic in their anticipation of carnage.  ";
             p3 = p2;
             p2 = string_delete(p2, 2, 999);
             p3 = string_delete(p3, 1, 1);
@@ -3572,7 +3571,7 @@ function ncombat_battle_start() {
         }
     }
     if ((enemy == 7) && (dropping == 1)) {
-        p1 = "The " + string(enemy_dudes) + "-some Orks howl and roar at the oncoming marines.  Many of the beasts fire their weapons, more or less spraying rounds aimlessly into the sky.";
+        p1 = "The " + string(enemy_force.unit_count) + "-some Orks howl and roar at the oncoming marines.  Many of the beasts fire their weapons, more or less spraying rounds aimlessly into the sky.";
     }
 
     if ((enemy == 8) && (dropping == 0)) {
@@ -3584,7 +3583,7 @@ function ncombat_battle_start() {
         rand = choose(1, 2, 3);
     }
     if ((enemy == 9) && (dropping == 1)) {
-        p1 = "The " + string(enemy_dudes) + "-some Tyranids hiss and chitter as your marines rain down.  Blasts of acid and spikes fill the sky, but none seem to quite find their mark.";
+        p1 = "The " + string(enemy_force.unit_count) + "-some Tyranids hiss and chitter as your marines rain down.  Blasts of acid and spikes fill the sky, but none seem to quite find their mark.";
     }
 
     if ((enemy == 10) && (dropping == 0)) {
@@ -3617,7 +3616,7 @@ function ncombat_battle_start() {
         rand = choose(1, 2, 3);
         if (rand < 4) {
             p1 = "Dirt crunches beneath the feet of the Necrons as they make their silent advance.  ";
-            p2 = string(enemy_dudes) + ", the souless xeno advance toward your Marines, silent and pulsing with green energy.  ";
+            p2 = string(enemy_force.unit_count) + ", the souless xeno advance toward your Marines, silent and pulsing with green energy.  ";
             p3 = p2;
             p2 = string_delete(p2, 2, 999);
             p3 = string_delete(p3, 1, 1);

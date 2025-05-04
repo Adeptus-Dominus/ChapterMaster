@@ -76,7 +76,7 @@ function enunit_target_and_shoot() {
                     var _is_fort = _best_target.object_index == obj_nfort;
                     if (_is_fort) {
                         _target_unit_index = 1;
-                        _weapon_stack.target_type = eTARGET_TYPE.Fortification;
+                        _weapon_stack.target_type = eUNIT_TYPE.Fortification;
                     }
 
                     if (DEBUG_COLUMN_PRIORITY_ENEMY) {
@@ -114,7 +114,7 @@ function enunit_target_and_shoot() {
             if (instance_exists(obj_nfort) && (!flank)) {
                 target_block = instance_nearest(x, y, obj_nfort);
                 _target_unit_index = 1;
-                _weapon_stack.target_type = eTARGET_TYPE.Fortification;
+                _weapon_stack.target_type = eUNIT_TYPE.Fortification;
             }
 
             scr_shoot(_weapon_stack, target_block, _target_unit_index);

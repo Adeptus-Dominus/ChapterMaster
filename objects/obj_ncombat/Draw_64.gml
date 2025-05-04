@@ -97,7 +97,7 @@ if (battle_stage == eBATTLE_STAGE.Main) {
     draw_text(400, 860, "[Press Enter to Begin]");
 } else if (battle_stage == eBATTLE_STAGE.PlayerWinEnd || battle_stage == eBATTLE_STAGE.EnemyWinEnd) {
     draw_text(400, 860, "[Press Enter to Exit]");
-} else if (turn_stage == eBATTLE_TURN.PlayerStart || turn_stage == eBATTLE_TURN.EnemyStart) {
+} else if (turn_phase == eBATTLE_TURN_PHASE.Movement) {
     draw_text(400, 860, "[Press Enter to Continue]");
 }
 

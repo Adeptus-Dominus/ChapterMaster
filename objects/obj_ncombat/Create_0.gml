@@ -167,7 +167,8 @@ vehicle_deaths = 0;
 casualties = 0;
 world_size = 0;
 
-turn_stage = eBATTLE_TURN.PlayerStart;
+turn_phase = eBATTLE_TURN_PHASE.Movement;
+turn_side = eBATTLE_ALLEGIANCE.Player;
 
 //
 
@@ -303,27 +304,27 @@ if (obj_ini.occulobe) {
 enemy_dudes = "";
 global_defense = 2 - global_defense;
 
-enemy_force = new EnemyArmy("", false);
-player_force = new PlayerArmy();
+enemy_force = new BattleArmy("", false);
+player_force = new BattleArmy(global.chapter_name, false);
 
 queue_force_health = function() {
 	var _text = "";
 
-    if (turn_stage == eBATTLE_TURN.PlayerStart) {
-        if (player_forces > 0) {
-            _text = $"The {global.chapter_name} are at {string(round((player_forces / player_max) * 100))}% strength!";
+    if (turn_phase == eBATTLE_TURN_PHASE.Movement) {
+        if (turn_side == eBATTLE_ALLEGIANCE.Player) {
+            if (player_forces > 0) {
+                _text = $"The {global.chapter_name} are at {string(round((player_forces / player_max) * 100))}% strength!";
+            } else {
+                _text = $"The {global.chapter_name} are defeated!";
+            }
         } else {
-            _text = $"The {global.chapter_name} are defeated!";
+            if (enemy_forces > 0) {
+                _text = $"The enemy forces are at {string(max(1, round((enemy_forces / enemy_max) * 100)))}% strength!";
+            } else {
+                _text = "The enemy forces are defeated!";
+            }
         }
-    } else {
-        if (enemy_forces > 0) {
-            _text = $"The enemy forces are at {string(max(1, round((enemy_forces / enemy_max) * 100)))}% strength!";
-        } else {
-            _text = "The enemy forces are defeated!";
-        }
-    }
 
-    if (_text != "") {
         queue_battlelog_message(_text, COL_YELLOW);
     }
 }
@@ -367,56 +368,5 @@ update_battlefield_scale = function() {
 
     battlefield_scale = min(1, 400 / _biggest_block_size);
 };
-
-
-
-function BattlefieldGridCell() constructor {
-    terrain = 0;
-    capacity = 1000;
-    player_units = [];
-    player_squads = [];
-    enemy_units = [];
-    enemy_squads = [];
-
-    reset = function() {
-        terrain = 0;
-        capacity = 1000;
-        player_units = [];
-        player_squads = [];
-        enemy_units = [];
-        enemy_squads = [];
-    }
-}
-
-function BattlefieldGrid(_width, _height) constructor {
-    width = _width;
-    height = _height;
-    data = array_create(_width * _height, new BattlefieldGridCell());
-    size = array_length(data);
-    
-    static index = function(_x, _y) {
-        return _x + _y * width;
-    };
-    
-    static set = function(_x, _y, _value) {
-        if (_x >= 0 && _x < width && _y >= 0 && _y < height) {
-            data[index(_x, _y)] = _value;
-        }
-    };
-    
-    static get = function(_x, _y) {
-        if (_x >= 0 && _x < width && _y >= 0 && _y < height) {
-            return data[index(_x, _y)];
-        }
-        return undefined;
-    };
-    
-    static clear = function(_value) {
-        var _size = array_length(data);
-        for (var _i = 0; _i < _size; _i++) {
-            data[_i].reset();
-        }
-    };
-}
 
 battlefield = new BattlefieldGrid(100, 1);

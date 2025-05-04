@@ -71,7 +71,7 @@ function scr_shoot(_weapon_stack, _target_object, _target_index) {
 
         //* Enemy shooting
         if (owner == 2) {
-            if (_target_type == eTARGET_TYPE.Fortification) {
+            if (_target_type == eUNIT_TYPE.Fortification) {
                 var _wall_weapon_damage = max(1, round(_weapon_attack - _target_object.ac[1])) * _shooter_count * max(1, _weapon_shot_count / 4);
                 _target_object.hp[1] -= _wall_weapon_damage;
         

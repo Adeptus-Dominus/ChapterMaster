@@ -50,7 +50,7 @@ copy_block_composition = function(_composition) {
             var _unit_name = _unit.name;
             var _unit_count = _unit.count;
             repeat (_unit_count) {
-                var _unit_struct = new EnemyUnit(_unit_name);
+                var _unit_struct = new BattleUnit(_unit_name);
                 array_push(units, _unit_struct);
                 column_size += _unit_struct.unit_size;
             }
@@ -64,7 +64,7 @@ copy_block_composition = function(_composition) {
             var _squad_name = _squad.name;
             var _squad_count = _squad.count;
             repeat (_squad_count) {
-                var _squad_struct = new EnemySquad(_squad_name);
+                var _squad_struct = new BattleSquad(_squad_name);
                 array_push(unit_squads, _squad_struct);
                 column_size += _squad_struct.squad_size;
             }
@@ -93,7 +93,7 @@ unit_count = function() {
 
     for (var i = 0, l = array_length(unit_squads); i < l; i++){
         var _unit_squad = unit_squads[i];
-        _unit_count += _unit_squad.member_count;
+        _unit_count += _unit_squad.unit_count;
     }
     
     // if (DEBUG_COMBAT_PERFORMANCE) {
