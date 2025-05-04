@@ -1,15 +1,19 @@
 global.ship_weapons_stats = {
 	"Lance Battery" : {
 		range : 300,
-		dam : 14, 
+		dam : 14,
+		cooldown : 15,
 		facing : "front",
-		firing_arc : 12.5,
+		firing_arc : 25,
 		img : spr_ground_las,
 	},
 	"Plasma Cannon" : {
 		img : spr_ground_plasma,
 		draw_scale : 3,
 		bullet_speed : 15,
+		dam : 30,
+		firing_arc : 3,
+		Plasma bombard_value :4,	
 	},
 	"Nova Cannon": {
 		range : 1500,
@@ -52,6 +56,7 @@ global.ship_weapons_stats = {
 		range : 2000,
 		cooldown : 120,
 		firing_arc : 4,
+		bombard_value :1,	
 	},
 
 	"Macro Bombardment Cannons" : {
@@ -59,7 +64,8 @@ global.ship_weapons_stats = {
 		dam : 50,
 		range : 600,
 		cooldown : 2000,
-		firing_arc : 3,		
+		firing_arc : 3,	
+		bombard_value :2,	
 	},
 
 	"Torpedoes" :{
@@ -71,6 +77,7 @@ global.ship_weapons_stats = {
 		barrel_count : 1,
 		img:spr_torpedo,
 		draw_scale : 3,
+		bombard_value :1,	
 	},
 
 	"Interceptor Launch Bays" : {

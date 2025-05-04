@@ -15,6 +15,8 @@ global.ship_weapon_defualts  = {
 	barrel_count : 1,
 	melee : false,
 	accuracy : 98,
+	condition : "fuly_functional",
+	bombard_value : 0
 }
 function move_data_to_current_scope(struct, overide=true){
 	var _data_names = struct_get_names(struct);
@@ -261,4 +263,8 @@ function ShipWeapon(weapon_name, overide_data={}) constructor{
 function add_weapon_to_ship(weapon_name, overide_data={}){
 	overide_data.ship = id;
 	array_push(weapons, new ShipWeapon(weapon_name, overide_data));
+}
+
+function add_weapon_to_ini_ship(index,weapon_name, overide_data={}){
+	array_push(obj_ini.ship_weapons[index], new ShipWeapon(weapon_name, overide_data));
 }

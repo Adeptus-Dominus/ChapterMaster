@@ -30,9 +30,6 @@ function add_fleet_ships_to_combat(fleet, combat){
 	        array_push(combat.ship_other_armour, obj_ini.ship_other_armour[_ship_id]);
 	        array_push(combat.ship_weapons, obj_ini.ship_weapons[_ship_id]);
 	        
-	        array_push(combat.ship_wep, obj_ini.ship_wep[_ship_id]);
-	        array_push(combat.ship_wep_facing, obj_ini.ship_wep_facing[_ship_id]);
-	        array_push(combat.ship_wep_condition, obj_ini.ship_wep_condition[_ship_id]);
 	        
 	        array_push(combat.ship_capacity, obj_ini.ship_capacity[_ship_id]);
 	        array_push(combat.ship_carrying, obj_ini.ship_carrying[_ship_id]);
@@ -162,26 +159,9 @@ function setup_player_combat_ship(){
 	turrets=0;
 	ship_colour=obj_controller.body_colour_replace;
 	max_speed = obj_ini.ship_speed[ship_id];
-    weps = obj_ini.ship_wep[ship_id];
     
-    weapons = [];
-    for (var i=0;i<array_length(weps);i++){
-    	if (weps[i] != ""){
-    		var _detailed = {};
-    		if (weps[i] == "Torpedoes"){
-    			if (class=="Battle Barge"){
-    				_detailed.barrel_count = 4;
-    			}
-    		}
-    		if (obj_ini.ship_wep_facing[ship_id][i] != ""){
-				_detailed.facing = obj_ini.ship_wep_facing[ship_id][i]
-    		}
-    		if (obj_ini.ship_wep_condition[ship_id][i] != ""){
-				_detailed.condition = obj_ini.ship_wep_condition[ship_id][i]
-    		}
-    		add_weapon_to_ship(weps[i],_detailed);
-    	}
-    }
+    weapons = obj_ini.ship_weapons;
+
 
 
 	if (class="Battle Barge"){

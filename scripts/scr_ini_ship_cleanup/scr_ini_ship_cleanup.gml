@@ -92,9 +92,7 @@ function scr_kill_ship(index){
 			array_delete(ship_other_armour,index,1);
 			array_delete(ship_weapons,index,1);
 
-			array_delete(ship_wep ,index,1);
-			array_delete(ship_wep_condition,index,1);
-			array_delete(ship_wep_facing,index,1);
+			array_delete(ship_weapons ,index,1);
 
 			array_delete(ship_capacity,index,1);
 			array_delete(ship_carrying,index,1);

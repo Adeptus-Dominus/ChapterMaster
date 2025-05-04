@@ -19,11 +19,8 @@ function init_player_fleet_arrays(){
 
 	ship_front_armour=[];
 	ship_other_armour=[];
-	ship_weapons=[];
 
-	ship_wep = array_create(6, "");
-	ship_wep_facing=array_create(6, "");
-	ship_wep_condition=array_create(6, "");
+	ship_weapons 0= [];
 
 	ship_capacity=[];
 	ship_carrying=[];

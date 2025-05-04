@@ -140,6 +140,8 @@ function sort_planets_by_biomass_potential(){
 			break;
 		}
 	}
+
+	return _stars;
 }
 
 function organise_tyranid_fleet_bio(){
