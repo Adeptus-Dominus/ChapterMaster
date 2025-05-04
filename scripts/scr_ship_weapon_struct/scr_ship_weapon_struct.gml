@@ -78,6 +78,7 @@ function ShipWeapon(weapon_name, overide_data={}) constructor{
 				target : target,
 				target_x:target.x,
 				target_y:target.y,
+				sprite_index : img,
 			} 
 
 			_bullet = instance_create_layer(
