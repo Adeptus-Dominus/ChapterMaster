@@ -106,7 +106,7 @@ if (enemy=9){
 }
 
 if (enemy=10){
-    var i;i=0;i=en_frigate;
+    var i=0;i=en_frigate;
     
     if (en_capital>0){en_column[1]="Desecrator";en_num[1]=en_capital;en_size[1]=3;}
     
@@ -116,7 +116,11 @@ if (enemy=10){
     
     if (i>0){en_column[4]="Daemon";en_num[4]=i;i-=en_num[4];en_size[4]=2;}// en_num[3]+=en_num[2]+1;
     
-    if (en_escort>0){en_column[5]="Iconoclast";en_num[5]=en_escort;en_size[5]=1;}// en_num[5]+=en_num[4]+1;
+    if (en_escort>0){
+        en_column[5]="Iconoclast";
+        en_num[5]=en_escort;
+        en_size[5]=1;
+    }// en_num[5]+=en_num[4]+1;
 }
 
 

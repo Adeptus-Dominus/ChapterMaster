@@ -93,9 +93,10 @@ function destroy_ship_and_leave_husk(){
             explo.x+=random_range(sprite_width*0.25,sprite_width*-0.25);
             explo.y+=random_range(sprite_width*0.25,sprite_width*-0.25);
         }
+    } else {
+        if (owner == eFACTION.Tyranids) then effect_create_above(ef_firework,x,y,1,c_purple);
     }
-    if (owner == eFACTION.Tyranids) then effect_create_above(ef_firework,x,y,1,c_purple);
-    instance_destroy();	
+    instance_destroy(); 
 }
 
 /// draw_arc(x1,y1,x2,y2,x3,y3,x4,y4,precision)

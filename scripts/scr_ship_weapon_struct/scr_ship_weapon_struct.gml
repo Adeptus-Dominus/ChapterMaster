@@ -14,7 +14,7 @@ global.ship_weapon_defualts  = {
 	draw_scale : 1.5,
 	barrel_count : 1,
 	melee : false,
-
+	accuracy : 98,
 }
 function move_data_to_current_scope(struct, overide=true){
 	var _data_names = struct_get_names(struct);
@@ -231,7 +231,7 @@ function ShipWeapon(weapon_name, overide_data={}) constructor{
 	    var _bottom = y + _max_distance;
 
 	    if (facing == "most"){
-	    	firing_arc = 135;
+	    	firing_arc = 110;
 	    }
 	    draw_set_color(38144);
 

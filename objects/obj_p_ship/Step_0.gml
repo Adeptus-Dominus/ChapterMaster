@@ -192,9 +192,6 @@ if (hp>0) and (instance_exists(target)){
 
 
 
-
-
-
 /* */
 
 //Deploy boarding craft logic
@@ -202,7 +199,11 @@ if (instance_exists(obj_en_ship)) and (boarders>0) and (board_cooldown<=0) and (
     var eh=0,te=0;
     repeat(2){
         eh+=1;te=0;
-        if (eh=1) and (board_capital=true){if (instance_exists(obj_en_capital)) then te=instance_nearest(x,y,obj_en_capital);}
+        if (eh=1) and (board_capital=true){
+            if (instance_exists(obj_en_capital)){
+                te=instance_nearest(x,y,obj_en_capital);
+            }
+        }
         if (eh=2) and (board_frigate=true){if (instance_exists(obj_en_cruiser)) then te=instance_nearest(x,y,obj_en_cruiser);}
         if (te!=0) and (instance_exists(te)){
             if (point_distance(x,y,te.x,te.y)<=428){

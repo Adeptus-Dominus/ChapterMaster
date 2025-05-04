@@ -56,18 +56,18 @@ global.ship_weapons_stats = {
 
 	"Macro Bombardment Cannons" : {
 		facing : "front",
-		dam : 20,
+		dam : 50,
 		range : 600,
-		cooldown : 120,
+		cooldown : 2000,
 		firing_arc : 3,		
 	},
 
 	"Torpedoes" :{
 		dam : 12,
-		range : 1000, 
+		range : 2000, 
 		cooldown : 90,
 		bullet_speed : 10,
-		barrel_count : 4,
+		barrel_count : 1,
 		img:spr_torpedo,
 	},
 

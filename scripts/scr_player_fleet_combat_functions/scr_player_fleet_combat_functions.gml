@@ -168,6 +168,11 @@ function setup_player_combat_ship(){
     for (var i=0;i<array_length(weps);i++){
     	if (weps[i] != ""){
     		var _detailed = {};
+    		if (weps[i] == "Torpedoes"){
+    			if (class=="Battle Barge"){
+    				_detailed.barrel_count = 4;
+    			}
+    		}
     		if (obj_ini.ship_wep_facing[ship_id][i] != ""){
 				_detailed.facing = obj_ini.ship_wep_facing[ship_id][i]
     		}
