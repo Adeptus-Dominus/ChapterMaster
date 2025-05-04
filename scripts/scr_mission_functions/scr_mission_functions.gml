@@ -285,11 +285,11 @@ function complete_train_forces_mission(targ_planet, problem_index){
         		var _new_pdf = planet.recruit_pdf((_unit_pass[1]/10));//this will approximate podf improvement for the time being
         		_mission_string += $"Training of the Pdf went well and improved the quality of the pdf as well as providing sizeable big recruitment improvement for the planet {_new_pdf} new pdf were recruited";
         		if (_siege_master){
-        			_mission_string += "{_trainer.name()}s trained eye as a Siege Master also allowed him to make several improvements to the planets fortifications (fortification +1)";
+        			_mission_string += $"{_trainer.name()}s trained eye as a Siege Master also allowed him to make several improvements to the planets fortifications (fortification +1)";
         			planet.alter_fortification(1);
         } else {
             if (roll_dice(1, 100) > 98 && _trainer.intelligence > 45){
-                _mission_string += "{_trainer.name()} has proven themselves a great strategist when it comes to defensive structures beyond previousy known ";
+                _mission_string += $"{_trainer.name()} has proven themselves a great strategist when it comes to defensive structures beyond previousy known ";
                 var _start_stats = variable_clone(_trainer.get_stat_line());
                 _trainer.add_trait("siege_master");
                 var end_stat = _trainer.get_stat_line();
