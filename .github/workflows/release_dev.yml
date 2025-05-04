@@ -90,6 +90,44 @@ jobs:
           echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
           echo "build_date=$DATE_TAG" >> $GITHUB_OUTPUT
 
+      - name: Cleanup old releases (debug mode)
+        run: |
+          set -euo pipefail
+      
+          #— Produce TAG_NAME earlier in your workflow:
+          TAG_NAME="${{ steps.tag_info.outputs.tag_name }}"
+          echo "DEBUG: TAG_NAME='${TAG_NAME}'"
+      
+          BRANCH_SUFFIX="${TAG_NAME%%/*}"
+          PREFIX="${BRANCH_SUFFIX}/"
+          echo "DEBUG: PREFIX='${PREFIX}'"
+      
+          echo "All releases:"
+          gh release list --limit 100 | awk '{print $1}'
+      
+          echo "Releases matching prefix:"
+          MATCHING=$(gh release list --limit 100 | awk '{print $1}' | grep "^${PREFIX}" || true)
+          echo "$MATCHING" | cat -n
+      
+          # Only delete if we actually matched anything
+          if [ -n "$MATCHING" ]; then
+            COUNT=0
+            KEEP=10
+            IFS=$'\n'
+            for TAG in $MATCHING; do
+              COUNT=$((COUNT+1))
+              if [ "$COUNT" -gt "$KEEP" ]; then
+                echo "Deleting: $TAG"
+                # gh release delete "$TAG" --cleanup-tag -y
+              fi
+            done
+            unset IFS
+          else
+            echo "No releases to delete for prefix '$PREFIX'"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Cleanup old releases
         run: |
           # tag_name looks like: branch-name/date
