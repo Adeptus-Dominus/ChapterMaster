@@ -3,7 +3,13 @@ global.ship_weapons_stats = {
 		range : 300,
 		dam : 14, 
 		facing : "front",
-		firing_arc : 12.5
+		firing_arc : 12.5,
+		img : spr_ground_las,
+	}
+	"Plasma Cannon" : {
+		img : spr_ground_plasma,
+		draw_scale : 3,
+		bullet_speed : 15,
 	}
 	"Nova Cannon": {
 		range : 1500,
@@ -12,6 +18,7 @@ global.ship_weapons_stats = {
 		minrange : 300,
 		cooldown : 120,	
 		minrange : 300,
+		draw_scale: 2,
 	},
 	"Weapons Battery" : {
 		facing : "most",
@@ -51,6 +58,9 @@ global.ship_weapons_stats = {
 		dam : 12,
 		range : 450, 
 		cooldown : 90,
+		bullet_speed : 10,
+		barrel_count : 4,
+		img:spr_torpedo,
 	},
 
 	"Interceptor Launch Bays" : {
@@ -81,17 +91,21 @@ global.ship_weapons_stats = {
 		facing : "most",
 		dam : 10,
 		weapon_cooldown : 10,
+		img: spr_ground_las,
 	},
 	"Pyro-acid Battery" : {
 		facing : "most",
 		dam : 8,
 		range : 300,
+		img : spr_glob,
+		draw_scale : 2,
 	},
 	"Feeder Tendrils" : {
 		facing : "most",
 		dam : 8,
 		range : 100,
 		firing_arc : 50,
+		melee : true,
 	},
 	"Bio-Plasma Discharge":{
 		range : 200,
@@ -103,11 +117,12 @@ global.ship_weapons_stats = {
 		dam : 20,
 		range : 64,
 		cooldown : 60,
+		melee : true,
 	},
 	"Launch Glands" : {
 		facing : "special",
 		weapon_range : 9999,
-		ammo : 6,
+		ammo : 20,
 		cooldown , 120,		
 	},
 	"Gravitic launcher" : {
@@ -115,29 +130,34 @@ global.ship_weapons_stats = {
 		range : 400,
 		minrange : 200,
 		cooldown:30,
+		draw_scale:2,
 	},
 	"Railgun Battery": {
 		facing : "most"
 		dam :12,
 		range : 450,
 		cooldown:30,
+		img : spr_railgun,
 	},
 	"Ion Cannons": {
 		facing : "most"
 		dam :8,
 		range : 300,
 		cooldown:15,
+		img : spr_pulse,
 	},
 	"Lightning Arc" : {
 		facing : "most",
-		dam : 0,
+		dam : 20,
 		range : 300,
 		cooldown : 15,
+		damage_type:"shields"
 	},
 	"Star Pulse Generator": {
 		dam : 0,
 		range : 220,
-		cooldown : 210
+		cooldown : 210,
+		img : spr_pulse
 	},
 	"Gauss Particle Whip":{
 		dam : 30,
@@ -146,7 +166,7 @@ global.ship_weapons_stats = {
 	}
 }
 
-global.ship_defualts  = {
+global.ship_weapon_defualts  = {
 	range : 600,
 	facing : "front",
 	cooldown : 30,
@@ -158,6 +178,10 @@ global.ship_defualts  = {
 	bullet_speed : 20,
 	bullet_obj : obj_en_round,
 	img : spr_round,
+	damage_type : "full",
+	draw_scale : 1.5,
+	barrel_count : 1,
+	melee : false,
 
 }
 function move_data_to_current_scope(struct, overide=true){
@@ -182,6 +206,9 @@ function facing_weapon_angle(facing){
 		case "left":
 			_direct_-=90;
 			break;
+		case "rear":
+			_direct_ -= 180;
+			break;
 		default:
 			break;
 	}
@@ -194,7 +221,7 @@ function ShipWeapon(weapon_name, overide_data={}) constructor{
 		move_data_to_current_scope(_wep_data);
 	}
 	move_data_to_current_scope(overide_data);
-	move_data_to_current_scope(global.ship_defualts, false);
+	move_data_to_current_scope(global.ship_weapon_defualts, false);
 	name = weapon_name;
 	cooldown_timer = 0;
 
@@ -202,6 +229,47 @@ function ShipWeapon(weapon_name, overide_data={}) constructor{
 	find_direction = 
 	static find_target = function(){
 
+	}
+	static draw_weapon_firing_arc = function{
+		var _tangent_direction = 0;
+		var _facing = facing
+		if (instance_exists(ship)){
+			with (ship){
+				_tangent_direction  = facing_weapon_angle(_facing);
+			}
+		}
+	    var _max_distance = range;
+
+	    var _left = x - _max_distance;
+	    var _top  = y - _max_distance;
+	    var _right = x + _max_distance;
+	    var _bottom = y + _max_distance;
+
+	    if (facing == "most"){
+	    	firing_arc = 135;
+	    }
+	    draw_set_color(38144);
+
+	    var _start_x = x + lengthdir_x(_max_distance, _tangent_direction - firing_arc);
+	    var _start_y = y + lengthdir_y(_max_distance, _tangent_direction - firing_arc);
+	    var _end_x   = x + lengthdir_x(_max_distance, _tangent_direction + firing_arc);
+	    var _end_y   = y + lengthdir_y(_max_distance, _tangent_direction + firing_arc);
+
+	    draw_arc(_left, _top, _right, _bottom, _start_x, _start_y, _end_x, _end_y);
+	    draw_line(x, y, _start_x, _start_y);
+	    draw_line(x, y, _end_x, _end_y);
+
+	    if (minrange > 0){
+	    	draw_set_color(c_red);
+		    var _start_x = x + lengthdir_x(minrange, _tangent_direction - firing_arc);
+		    var _start_y = y + lengthdir_y(minrange, _tangent_direction - firing_arc);
+		    var _end_x   = x + lengthdir_x(minrange, _tangent_direction + firing_arc);
+		    var _end_y   = y + lengthdir_y(minrange, _tangent_direction + firing_arc);
+
+		    draw_arc(_left, _top, _right, _bottom, _start_x, _start_y, _end_x, _end_y);
+		    draw_line(x, y, _start_x, _start_y);
+		    draw_line(x, y, _end_x, _end_y);	    	
+	    }
 	}
 }
 
@@ -506,7 +574,7 @@ function assign_ship_stats(){
 	    capacity=50;
 	    carrying=0;
 	    add_weapon_to_ship("Gunz Battery");
-	    add_weapon_to_ship("Torpedoes", {range : 300, cooldown:120});
+	    add_weapon_to_ship("Torpedoes", {range : 300, cooldown:120,barrel_count:2});
 	}
 	// ** Tau **
 	if (class=="Custodian"){
@@ -783,11 +851,12 @@ function assign_ship_stats(){
 	    capacity=250;
 	    carrying=0;
 	    
-	    add_weapon_to_ship("Lightning Arc");
+	    add_weapon_to_ship("Lightning Arc", {dam : 10});
 	    
 	}
 
-	if (class="Jackal Class"){ship_size=2;
+	if (class="Jackal Class"){
+		ship_size=2;
 	    sprite_index=spr_ship_jackal;
 
 	    name="";
@@ -805,11 +874,12 @@ function assign_ship_stats(){
 	    capacity=25;
 	    carrying=0;
 	    
-	    add_weapon_to_ship("Lightning Arc", range :250);
+	    add_weapon_to_ship("Lightning Arc", {dam : 10,range :250});
 	    
 	}
 
-	if (class="Dirge Class"){ship_size=2;
+	if (class="Dirge Class"){
+		ship_size=2;
 	    sprite_index=spr_ship_dirge;
 
 	    name="";
@@ -827,12 +897,7 @@ function assign_ship_stats(){
 	    capacity=25;
 	    carrying=0;
 	    
-	    weapon[1]="Lightning Arc";
-	    weapon_facing[1]="most";
-	    weapon_dam[1]=0;
-	    weapon_range[1]=250;
-	    weapon_cooldown[1]=15;
-	    
+	    add_weapon_to_ship("Lightning Arc",  {dam : 10,range :250});
 	}
 
 

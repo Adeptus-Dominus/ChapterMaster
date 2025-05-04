@@ -153,25 +153,6 @@ function point_on_circle(start_x, start_y, radius, angle){
 	return [_final_x, _final_y];
 }
 
-function draw_weapon_firing_arc(wep_id){
-    var _tangent_direction  = facing_weapon_angle(weapon_facing[wep_id]);
-    var _max_distance = weapon_range[wep_id];
-
-    var _left = x - _max_distance;
-    var _top  = y - _max_distance;
-    var _right = x + _max_distance;
-    var _bottom = y + _max_distance;
-
-    var _start_x = x + lengthdir_x(_max_distance, _tangent_direction - 20);
-    var _start_y = y + lengthdir_y(_max_distance, _tangent_direction - 20);
-    var _end_x   = x + lengthdir_x(_max_distance, _tangent_direction + 20);
-    var _end_y   = y + lengthdir_y(_max_distance, _tangent_direction + 20);
-
-    draw_arc(_left, _top, _right, _bottom, _start_x, _start_y, _end_x, _end_y);
-    draw_line(x, y, _start_x, _start_y);
-    draw_line(x, y, _end_x, _end_y);
-}
-
 function is_targeted(){
 	var bullets = array_length(bullets_for);
 	under_fire = false;
@@ -199,98 +180,10 @@ function create_ship_projectile(wep_id){
         if (facing!="front"){
         	bull.direction=point_direction(x+lengthdir_x(32,direction),y+lengthdir_y(32,direction),target.x,target.y);
         }
-        if (string_count("ova",wep)=1){
-        	bull.image_xscale=2;
-        	bull.image_yscale=2;
-        }
-        else if (string_count("eavy Gunz",wep)=1){
-        	bull.image_xscale=1.5;
-        	bull.image_yscale=1.5;
-        }
-        else if (string_count("Lance",wep)=1){
-        	bull.sprite_index=spr_ground_las;
-        	bull.image_xscale=1.5;
-        	bull.image_yscale=1.5;
-        }
-        else if (string_count("Ion",wep)=1){
-        	bull.sprite_index=spr_pulse;
-        	bull.image_xscale=1.5;
-        	bull.image_yscale=1.5;
-        }
-        else if (string_count("Rail",wep)=1){
-        	bull.sprite_index=spr_railgun;
-        	bull.image_xscale=1.5;
-        	bull.image_yscale=1.5;
-        }
-        else if (string_count("Gravitic",wep)=1){
-        	bull.image_xscale=2;
-        	bull.image_yscale=2;
-        }
-        else if (string_count("Plasma",wep)=1){
-        	bull.sprite_index=spr_ground_plasma;
-        	bull.image_xscale=2;
-        	bullimage_yscale=2;
-        	bull.speed=15;
-        }
-        else if (string_count("Pyro-Acid",wep)=1){
-        	bull.sprite_index=spr_glob;
-        	bull.image_xscale=2;
-        	bullimage_yscale=2;
-        }
         
-        if (string_count("Weapons",wep)=1) and (owner = eFACTION.Eldar){
-        	bull.sprite_index=spr_ground_las;
-        	bull.image_xscale=2;
-        	bull.image_yscale=2;
-        }
-        if (string_count("Pulse",wep)=1) and (owner = eFACTION.Eldar){
-        	bull.sprite_index=spr_pulse;
-        	bull.image_xscale=1.5;
-        	bull.image_yscale=1.5;
-        }
-        
-    }
-    if (string_count("orpedo",wep)=1)  and (owner != eFACTION.Necrons){
-        if (class!="Ravager"){
-            bull=instance_create(x,y+lengthdir_y(-30,direction+90),obj_en_round);
-            bull.speed=10;
-            bull.direction=direction;
-            bull.sprite_index=spr_torpedo;
-            bull.dam=dam;
-        }
-        bull=instance_create(x,y+lengthdir_y(-10,direction+90),obj_en_round);
-        bull.speed=10;
-        bull.direction=direction;
-        bull.sprite_index=spr_torpedo;
-        bull.dam=dam;
-        bull=instance_create(x,y+lengthdir_y(10,direction+90),obj_en_round);
-        bull.speed=10;
-        bull.direction=direction;
-        bull.sprite_index=spr_torpedo;
-        bull.dam=dam;
-        
-        if (class!="Ravager"){
-            bull=instance_create(x,y+lengthdir_y(30,direction+90),obj_en_round);
-            bull.speed=10;
-            bull.direction=direction;
-            bull.sprite_index=spr_torpedo;
-            bull.dam=dam;
-        }
         
     }
     
-    if (wep="Lightning Arc"){lightning=10;
-        if (target.shields>0){
-            if (class="Cairn Class") or (class="Reaper Class") then target.shields-=20;
-            else{target.shields-=20;
-            }
-        }
-        if (target.shields<=0){
-            if (class="Cairn Class") or (class="Reaper Class") then target.hp-=10;
-            else{target.hp-=10;
-            }
-        }
-    }
     if (wep="Gauss Particle Whip"){whip=15;
         if (target.shields>0) then target.shields-=dam;
         if (target.shields<=0) then target.hp-=dam;

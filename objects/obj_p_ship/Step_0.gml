@@ -257,10 +257,6 @@ if (hp>0) and (instance_exists(target)){
                             bull.image_xscale=2;
                             bull.image_yscale=2;
                         }
-                        if (wep="Plasma Cannon"){
-                            bull.sprite_index=spr_ground_plasma;
-                            bull.image_xscale=3;bull.image_yscale=3;
-                        }
                     }
                     if (string_count("orpedo",wep)=1) and (ok=3){
                         

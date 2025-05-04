@@ -29,11 +29,11 @@ if (selected=1){
     }
     
     draw_set_alpha(1);
-    for (var i=0;i<array_length(weapon);i++){
-        if ( weapon[i]!=""){
-            draw_weapon_firing_arc(i);
-        }
+    for (var i=0;i<array_length(weapons);i++){
+        var _wep = weapons[i];
+        _wep.draw_weapon_firing_arc();
     }
+
     if (draw_targets != false){
         location_target.draw(draw_targets[0],draw_targets[1]);
     }
