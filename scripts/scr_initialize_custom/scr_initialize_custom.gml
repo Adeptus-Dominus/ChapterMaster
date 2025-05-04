@@ -2798,8 +2798,13 @@ function scr_initialize_custom() {
 			switch (_role) {
 				// MAINLINE
 				case "tacticals":
-					_rolename = roles.tactical;
-					_erole = eROLE.Tactical;
+					if(scr_has_adv("Elite Guard")){
+						_rolename = roles.veteran;
+						_erole = eROLE.Veteran;
+					} else {
+						_rolename = roles.tactical;
+						_erole = eROLE.Tactical;
+					}
 					break;
 				case "assaults":
 					_rolename = roles.assault;
