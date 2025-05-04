@@ -147,7 +147,8 @@ if (hp>0) and (instance_exists(obj_p_ship)){
             bull=instance_create(x,y,obj_en_round);
             bull.direction=point_direction(x,y,targe.x,targe.y);
             if (owner = eFACTION.Tyranids) then bull.sprite_index=spr_glob;
-            bull.speed=20;bull.dam=3;
+            bull.speed=20;
+            bull.dam=3;
             bull.image_xscale=0.5;
             bull.image_yscale=0.5;turret_cool=floor(60/turrets);
             if (owner = eFACTION.Necrons){

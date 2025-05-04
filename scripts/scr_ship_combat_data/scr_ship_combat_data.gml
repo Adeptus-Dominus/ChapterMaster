@@ -21,13 +21,13 @@ global.ship_weapons_stats = {
 		draw_scale: 2,
 	},
 	"Weapons Battery" : {
-		facing : "most",
+		facing : "front",
 		cooldown : 20,
-		dam : 20,
+		dam : 18,
 		firing_arc : 5,
 	},
 	"Light Weapons Battery" : {
-		facing : "most",
+		facing : "front",
 		range : 300,
 		cooldown : 30,
 		dam : 8,
@@ -41,7 +41,7 @@ global.ship_weapons_stats = {
 		firing_arc : 15,
 	},
 	"Heavy Gunz" : {
-		weapon_facing : "most",
+		weapon_facing : "front",
 		dam : 12,
 		range : 200,
 		cooldown : 40,
@@ -104,7 +104,7 @@ global.ship_weapons_stats = {
 		cooldown: 90,		
 	},
 	"Pulsar Lances":{
-		facing : "most",
+		facing : "front",
 		dam : 10,
 		weapon_cooldown : 10,
 		img: spr_ground_las,
@@ -150,14 +150,14 @@ global.ship_weapons_stats = {
 		draw_scale:2,
 	},
 	"Railgun Battery": {
-		facing : "most",
+		facing : "front",
 		dam :12,
 		range : 450,
 		cooldown:30,
 		img : spr_railgun,
 	},
 	"Ion Cannons": {
-		facing : "most",
+		facing : "front",
 		dam :8,
 		range : 300,
 		cooldown:15,
