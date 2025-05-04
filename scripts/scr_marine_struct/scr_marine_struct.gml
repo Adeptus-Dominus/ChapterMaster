@@ -71,7 +71,7 @@ global.base_stats = {
         dexterity: [40, 3],
         intelligence: [40, 3],
         wisdom: [40, 3],
-        charisma: [30, 5],
+        charisma: [32, 6],
         religion: "imperial_cult",
         piety: [30, 3],
         luck: 10,
