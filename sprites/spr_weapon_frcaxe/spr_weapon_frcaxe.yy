@@ -19,9 +19,7 @@
   "height":231,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"82896c01-c57a-4f3e-aaec-0eeef167272b","blendMode":0,"displayName":"pasteLayer","isLocked":false,"name":"82896c01-c57a-4f3e-aaec-0eeef167272b","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
-    {"$GMImageLayer":"","%Name":"bcdeeaea-bd2e-4d52-922e-d0a45b7927aa","blendMode":0,"displayName":"pasteLayer","isLocked":false,"name":"bcdeeaea-bd2e-4d52-922e-d0a45b7927aa","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
-    {"$GMImageLayer":"","%Name":"0c267638-f831-4e2d-8146-4a23edcc004b","blendMode":0,"displayName":"default","isLocked":false,"name":"0c267638-f831-4e2d-8146-4a23edcc004b","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"ea93f36a-f600-49c5-852d-94e130eda274","blendMode":0,"displayName":"default","isLocked":false,"name":"ea93f36a-f600-49c5-852d-94e130eda274","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
   "name":"spr_weapon_frcaxe",
   "nineSlice":null,
