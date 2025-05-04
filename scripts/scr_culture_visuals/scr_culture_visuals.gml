@@ -1833,7 +1833,7 @@ global.weapon_visual_data = {
   },
   variants: [
     {
-      sprite: spr_weapon_powmace
+      sprite: spr_weapon_mace_of_absolution
     }
   ]
 },
