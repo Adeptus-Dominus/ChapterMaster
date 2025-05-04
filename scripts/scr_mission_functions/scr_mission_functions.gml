@@ -287,17 +287,18 @@ function complete_train_forces_mission(targ_planet, problem_index){
         		if (_siege_master){
         			_mission_string += "{_trainer.name()}s trained eye as a Siege Master also allowed him to make several improvements to the planets fortifications (fortification +1)";
         			planet.alter_fortification(1);
-        		} else {
-        			if (roll_dice(1, 100) > 98 && _trainer.intelligence > 45){
-        				_mission_string += "{_trainer.name()} has proven themselves a great strategist when it comes to defensive structures beyond previousy known ";
-						var _start_stats = variable_clone(_trainer.get_stat_line());
-						_trainer.add_trait("siege_master");
-						var end_stat = _trainer.get_stat_line();
-						var _stat_diff = compare_stats(end_stat,_start_stats); 
-						_unit_report_string += $"{_trainer.name_role()} Has gained the trait {global.trait_list.siege_master.display_name}, {(print_stat_diffs(_stat_diff))}\n"; 
-						      				
-        			}
-        		}
+        } else {
+            if (roll_dice(1, 100) > 98 && _trainer.intelligence > 45){
+                _mission_string += "{_trainer.name()} has proven themselves a great strategist when it comes to defensive structures beyond previousy known ";
+                var _start_stats = variable_clone(_trainer.get_stat_line());
+                _trainer.add_trait("siege_master");
+                var end_stat = _trainer.get_stat_line();
+                var _stat_diff = compare_stats(end_stat,_start_stats); 
+                _unit_report_string += $"{_trainer.name_role()} Has gained the trait {global.trait_list.siege_master.display_name}, {(print_stat_diffs(_stat_diff))}\n"; 
+                _mission_string += "The new insights have allowed for minor improvements to planetary fortifications (fortification +1)";
+                planet.alter_fortification(1);
+            }
+        }
         	} else {
         		disp_loss = -5;
         		_mission_string += "The orgional training mission was a failiure"
