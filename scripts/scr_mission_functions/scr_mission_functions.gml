@@ -257,6 +257,7 @@ function complete_train_forces_mission(targ_planet, problem_index){
         var _mission_string = "";
         var _trainer = collect_role_group("all",[name,targ_planet,0], false, man_conditions);
         if (array_length(_trainer)){
+        	var _unit_report_string = "";
         	var _tester = global.character_tester;
         	var _wis_test_difficulty = -20;
         	_trainer = _trainer[0];
@@ -285,8 +286,17 @@ function complete_train_forces_mission(targ_planet, problem_index){
         		_mission_string += $"Training of the Pdf went well and improved the quality of the pdf as well as providing sizeable big recruitment improvement for the planet {_new_pdf} new pdf were recruited";
         		if (_siege_master){
         			_mission_string += "{_trainer.name()}s trained eye as a Siege Master also allowed him to make several improvements to the planets fortifications (fortification +1)";
-
         			planet.alter_fortification(1);
+        		} else {
+        			if (roll_dice(1, 100) > 98 && _trainer.intelligence > 45){
+        				_mission_string += "{_trainer.name()} has proven themselves a great strategist when it comes to defensive structures beyond previousy known ";
+						var _start_stats = variable_clone(_trainer.get_stat_line());
+						_trainer.add_trait("siege_master");
+						var end_stat = _trainer.get_stat_line();
+						var _stat_diff = compare_stats(end_stat,_start_stats); 
+						_unit_report_string += $"{_trainer.name_role()} Has gained the trait {global.trait_list.siege_master.display_name}, {(print_stat_diffs(_stat_diff))}\n"; 
+						      				
+        			}
         		}
         	} else {
         		disp_loss = -5;
@@ -314,7 +324,8 @@ function complete_train_forces_mission(targ_planet, problem_index){
         		}
         		planet.add_disposition(disp_loss);
         	}
-        	scr_popup($"Training Forces on {planet_numeral_name(i)}",_mission_string,"","");
+        	_mission_string += $"\n{_unit_report_string}";
+        	scr_popup($"Training Forces on {planet.name()}",_mission_string,"","");
         	remove_planet_problem(targ_planet, "train_forces");
         	_trainer.job = "none";
         }
