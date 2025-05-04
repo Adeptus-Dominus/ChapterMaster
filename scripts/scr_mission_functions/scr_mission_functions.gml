@@ -288,7 +288,7 @@ function complete_train_forces_mission(targ_planet, problem_index){
         			_mission_string += $"{_trainer.name()}s trained eye as a Siege Master also allowed him to make several improvements to the planets fortifications (fortification +1)";
         			planet.alter_fortification(1);
         } else {
-            if (roll_dice(1, 100) > 98 && _trainer.intelligence > 45){
+            if (roll_dice(1, 100) > 75 && _trainer.intelligence > 45){
                 _mission_string += $"{_trainer.name()} has proven themselves a great strategist when it comes to defensive structures beyond previousy known ";
                 var _start_stats = variable_clone(_trainer.get_stat_line());
                 _trainer.add_trait("siege_master");
