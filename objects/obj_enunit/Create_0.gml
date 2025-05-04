@@ -26,6 +26,8 @@ weapon_stacks_normal = [];
 weapon_stacks_vehicle = {};
 weapon_stacks_unique = {};
 
+composition_map = new CountingMap();
+
 unit_squads = [];
 units = [];
 
@@ -73,8 +75,8 @@ copy_block_composition = function(_composition) {
 assign_weapon_stacks = function() {
     for (var i = 0, l = array_length(unit_squads); i < l; i++){
         var _unit_squad = unit_squads[i];
-        for (var s = 0, l2 = array_length(_unit_squad.member_stacks); s < l2; s++) {
-            var _member_stack = _unit_squad.member_stacks[s];
+        for (var s = 0, l2 = array_length(_unit_squad.units); s < l2; s++) {
+            var _member_stack = _unit_squad.units[s];
             for (var w = 0, l3 = array_length(_member_stack.weapons); w < l3; w++) {
                 scr_en_weapon(_member_stack.weapons[w], _member_stack.unit_type, _member_stack.unit_count, _member_stack.display_name);
             }

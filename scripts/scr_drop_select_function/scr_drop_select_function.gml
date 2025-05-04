@@ -268,7 +268,7 @@ function drop_select_draw() {
                     obj_ncombat.dropping = 1 - attack;
                     obj_ncombat.attacking = attack;
                     obj_ncombat.enemy = attacking;
-                    obj_ncombat.formation_set = formation_possible[formation_current];
+                    obj_ncombat.player_formation = formation_possible[formation_current];
                     obj_ncombat.defending = false;
                     obj_ncombat.local_forces = roster.local_button.active;
 

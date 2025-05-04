@@ -144,8 +144,8 @@ function scr_shoot(_weapon_stack, _target_object, _target_index) {
             _target_object.column_size -= _target_stack.unit_size * _casualties;
 
             if (_target_stack.unit_count <= 0) {
-                array_delete(_target_squad.member_stacks, array_get_index(_target_squad.member_stacks, _target_stack), 1);
-                if (array_length(_target_squad.member_stacks) <= 0) {
+                array_delete(_target_squad.units, array_get_index(_target_squad.units, _target_stack), 1);
+                if (array_length(_target_squad.units) <= 0) {
                     array_delete(_target_object.unit_squads, array_get_index(_target_object.unit_squads, _target_squad), 1);
                 }
             }

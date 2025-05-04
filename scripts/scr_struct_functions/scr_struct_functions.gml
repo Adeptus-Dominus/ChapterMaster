@@ -34,7 +34,7 @@ function CountingMap() constructor {
 
         for (var i = 0; i < array_length(keys); i++) {
             var key = keys[i];
-            result += $"{map[$ key]}x {key}{smart_delimeter_sign(keys, i, false)}";
+            result += $"{string_plural_count(key, map[$ key])}{smart_delimeter_sign(keys, i, false)}";
         }
 
         return result;
@@ -46,6 +46,10 @@ function CountingMap() constructor {
 
     static get = function(_key) {
         return struct_exists(map, _key) ? map[$ _key] : 0;
+    };
+
+    static clear = function() {
+        map = {};
     };
 }
 

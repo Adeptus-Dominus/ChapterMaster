@@ -246,38 +246,12 @@ function move_unit_block(direction, blocks = 1, allow_collision = false) {
     }
 }
 
-/// @description Creates a priority queue of enemy units based on their x-position and then moves each with `move_enemy_block()`.
-function move_enemy_blocks() {
-	var _enemy_movement_queue = ds_priority_create();
-	with (obj_enunit) {
-		ds_priority_add(_enemy_movement_queue, id, x);
-	}
-	while (!ds_priority_empty(_enemy_movement_queue)) {
-		var _enemy_block = ds_priority_delete_min(_enemy_movement_queue);
-		with (_enemy_block) {
-			move_enemy_block();
-		}
-	}
-	ds_priority_destroy(_enemy_movement_queue);
-}
-
-/// @description Attempts to move an enemy unit block, choosing direction based on whenever they are flanking or not, only if `obj_nfort` doesn't exists.
-/// @mixin
-function move_enemy_block() {
-	if (instance_exists(obj_nfort)) {
-		exit;
-	}
-
-	var _direction = flank ? "east" : "west";
-	move_unit_block(_direction);
-}
-
 function player_blocks_movement() {
 	if (instance_exists(obj_nfort)) {
 		exit;
 	}
 
-	if ((obj_ncombat.defending || obj_ncombat.formation_set == 2)) {
+	if ((obj_ncombat.defending || obj_ncombat.player_formation == 2)) {
 		exit;
 	}
 
@@ -425,11 +399,11 @@ function get_valid_weapon_stacks_unique(_stacks_struct, _range_min, _range_max) 
 }
 
 function get_alpha_strike_target() {
-    if (obj_ncombat.alpha_strike <= 0) {
+    if (obj_ncombat.enemy_alpha_strike <= 0) {
         return -1;
     }
 
-    obj_ncombat.alpha_strike -= 0.5;
+    obj_ncombat.enemy_alpha_strike -= 0.5;
     with (obj_pnunit) {
         for (var u = 0; u < array_length(unit_struct); u++) {
             if (marine_type[u] == "Chapter Master") {

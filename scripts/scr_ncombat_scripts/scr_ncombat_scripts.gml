@@ -21,7 +21,7 @@ function ncombat_enemy_stacks_init() {
 
     try {
         if (battle_special == "cs_meeting_battle5") {
-            alpha_strike = 1;
+            enemy_alpha_strike = 1;
         }
 
         instance_activate_object(obj_enunit);
@@ -1425,21 +1425,12 @@ function ncombat_enemy_stacks_init() {
             }
             // Large Ork Army
             if (threat == 6) {
-                enemy_force_composition = global.army_profiles[$ "orks_6"];
-                enemy_dudes = enemy_force_composition.description;
-                var _block_count = array_length(enemy_force_composition.columns);
-                if (DEBUG_COMBAT_PERFORMANCE) {
-                    stopwatch("ncombat_create_enemy_army");
-                }
-                for (var b = 0; b < _block_count; b++) {
-                    var _pos = 160 + (b * 10);
-                    var _block = instance_create(_pos, 240, obj_enunit);
-                    _block.copy_block_composition(enemy_force_composition.columns[b]);
-                    enemy_forces += _block.unit_count();
-                }
-                if (DEBUG_COMBAT_PERFORMANCE) {
-                    stopwatch("ncombat_create_enemy_army");
-                }
+                enemy_force.name = "orks_6";
+                enemy_force.copy_profile();
+                enemy_force.spawn_squads();
+                enemy_dudes = enemy_force.profile.description;
+                var _cell = ds_grid_get(battlefield, 0, 0);
+                var _cell = ds_grid_get(battlefield, 1, 0);
             }
         }
 
@@ -5627,7 +5618,7 @@ function ncombat_special_end() {
             }
         }
     
-        if ((enemy == 1) && (on_ship == true) && (defeat == 0)) {
+        if ((enemy == 1) && (defeat == 0)) {
             var diceh=roll_dice_chapter(1, 100, "high");
     
             if (diceh <= 15) {

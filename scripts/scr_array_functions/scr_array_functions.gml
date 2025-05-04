@@ -136,7 +136,7 @@ function array_to_string_order(_strings_array, _use_and = false, _dot_end = true
 /// @param {bool} _exclude_null Whether to exclude entries with zero count
 /// @param {bool} _dot_end Whether to end the string with a period
 /// @return {string}
-function arrays_to_string_with_counts(_names_array, _counts_array, _exclude_null = false, _dot_end = true) {
+function arrays_to_string_with_counts(_names_array, _counts_array, _exclude_null = false, _dot_end = true, convert_plural = true) {
     var _array_length = array_length(_names_array);
 	var _result_string = "";
 
@@ -144,7 +144,9 @@ function arrays_to_string_with_counts(_names_array, _counts_array, _exclude_null
         if (_exclude_null && _counts_array[i] == 0) {
             continue;
         }
-        _result_string += string_plural_count(_names_array[i], _counts_array[i]);
+
+		var _function = convert_plural ? string_plural_count : string_with_count;
+        _result_string += _function(_names_array[i], _counts_array[i]);
 		_result_string += smart_delimeter_sign(_array_length, i, _dot_end);
     }
 

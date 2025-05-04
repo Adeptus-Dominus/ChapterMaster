@@ -22,17 +22,19 @@ if (draw_size > 0){
     if (is_mouse_over()) {
         if (unit_count() != unit_count_old) {
             unit_count_old = unit_count();
-            var _counts_array = [];
-            var _names_array = [];
-            var _types_array = [];
+            composition_map.clear();
     
+            for (var i = 0, l = array_length(units); i < l; i++){
+                var _unit = units[i];
+                composition_map.add($"{_unit.display_name}");
+            }
+
             for (var i = 0, l = array_length(unit_squads); i < l; i++){
                 var _unit_squad = unit_squads[i];
-                array_push(_names_array, _unit_squad.display_name);
-                array_push(_counts_array, _unit_squad.member_count);
+                composition_map.add($"{_unit_squad.display_name} Squad");
             }
     
-            composition_string = arrays_to_string_with_counts(_names_array, _counts_array, true);
+            composition_string = composition_map.get_total_string();
         }
 
         draw_block_composition(x1, composition_string);

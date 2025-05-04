@@ -24,23 +24,23 @@ function scr_civil_roster(_unit_location, _target_location, _is_planet) {
 
 	// Formation here
 	
-	obj_controller.bat_devastator_column=obj_controller.bat_deva_for[new_combat.formation_set];
-	obj_controller.bat_assault_column=obj_controller.bat_assa_for[new_combat.formation_set];
-	obj_controller.bat_tactical_column=obj_controller.bat_tact_for[new_combat.formation_set];
-	obj_controller.bat_veteran_column=obj_controller.bat_vete_for[new_combat.formation_set];
-	obj_controller.bat_hire_column=obj_controller.bat_hire_for[new_combat.formation_set];
-	obj_controller.bat_librarian_column=obj_controller.bat_libr_for[new_combat.formation_set];
-	obj_controller.bat_command_column=obj_controller.bat_comm_for[new_combat.formation_set];
-	obj_controller.bat_techmarine_column=obj_controller.bat_tech_for[new_combat.formation_set];
-	obj_controller.bat_terminator_column=obj_controller.bat_term_for[new_combat.formation_set];
-	obj_controller.bat_honor_column=obj_controller.bat_hono_for[new_combat.formation_set];
-	obj_controller.bat_dreadnought_column=obj_controller.bat_drea_for[new_combat.formation_set];
-	obj_controller.bat_rhino_column=obj_controller.bat_rhin_for[new_combat.formation_set];
-	obj_controller.bat_predator_column=obj_controller.bat_pred_for[new_combat.formation_set];
-	obj_controller.bat_landraider_column=obj_controller.bat_landraid_for[new_combat.formation_set];
-	obj_controller.bat_landspeeder_column = obj_controller.bat_landspee_for[new_combat.formation_set];
-    obj_controller.bat_whirlwind_column = obj_controller.bat_whirl_for[new_combat.formation_set];
-	obj_controller.bat_scout_column=obj_controller.bat_scou_for[new_combat.formation_set];
+	obj_controller.bat_devastator_column=obj_controller.bat_deva_for[new_combat.player_formation];
+	obj_controller.bat_assault_column=obj_controller.bat_assa_for[new_combat.player_formation];
+	obj_controller.bat_tactical_column=obj_controller.bat_tact_for[new_combat.player_formation];
+	obj_controller.bat_veteran_column=obj_controller.bat_vete_for[new_combat.player_formation];
+	obj_controller.bat_hire_column=obj_controller.bat_hire_for[new_combat.player_formation];
+	obj_controller.bat_librarian_column=obj_controller.bat_libr_for[new_combat.player_formation];
+	obj_controller.bat_command_column=obj_controller.bat_comm_for[new_combat.player_formation];
+	obj_controller.bat_techmarine_column=obj_controller.bat_tech_for[new_combat.player_formation];
+	obj_controller.bat_terminator_column=obj_controller.bat_term_for[new_combat.player_formation];
+	obj_controller.bat_honor_column=obj_controller.bat_hono_for[new_combat.player_formation];
+	obj_controller.bat_dreadnought_column=obj_controller.bat_drea_for[new_combat.player_formation];
+	obj_controller.bat_rhino_column=obj_controller.bat_rhin_for[new_combat.player_formation];
+	obj_controller.bat_predator_column=obj_controller.bat_pred_for[new_combat.player_formation];
+	obj_controller.bat_landraider_column=obj_controller.bat_landraid_for[new_combat.player_formation];
+	obj_controller.bat_landspeeder_column = obj_controller.bat_landspee_for[new_combat.player_formation];
+    obj_controller.bat_whirlwind_column = obj_controller.bat_whirl_for[new_combat.player_formation];
+	obj_controller.bat_scout_column=obj_controller.bat_scou_for[new_combat.player_formation];
 
 	var co, v, meeting, he_good,unit;
 	co=0;v=0;meeting=true;he_good=false;

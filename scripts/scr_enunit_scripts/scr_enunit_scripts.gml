@@ -42,10 +42,6 @@ function enunit_target_and_shoot() {
             if (_weapon_stack.range >= dist) {
                 var _target_priority_queue = ds_priority_create();
 
-                if (DEBUG_COMBAT_PERFORMANCE) {
-                    stopwatch("enunit_column_picking");
-                }
-
                 // Scan potential targets
                 var _targets = [];
                 with (obj_pnunit) {
@@ -71,10 +67,6 @@ function enunit_target_and_shoot() {
                     if (d <= _weapon_stack.range) {
                         ds_priority_add(_target_priority_queue, fort, 999);
                     }
-                }
-
-                if (DEBUG_COMBAT_PERFORMANCE) {
-                    stopwatch("enunit_column_picking");
                 }
 
                 // Shoot highest-priority target
@@ -129,12 +121,4 @@ function enunit_target_and_shoot() {
         }
     }
     //! Here was some stuff that depended on image_index here, that got deleted, because I couldn't figure out why it exists;
-}
-
-// Previosly alarm_1
-/// @mixin
-function enunit_enemy_profiles_init() {
-    weapon_stacks_normal = [];
-    weapon_stacks_vehicle = {};
-    weapon_stacks_unique = {};
 }

@@ -885,7 +885,8 @@
             "Big Shoota"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "unit_size": 1,
+        "movement": 1
     },
     "warboss": {
         "display_name": "Warboss",
@@ -897,7 +898,8 @@
             "Power Klaw"
         ],
         "unit_type": 1,
-        "unit_size": 2
+        "unit_size": 2,
+        "movement": 1
     },
     "gretchin": {
         "display_name": "Gretchin",
@@ -908,7 +910,8 @@
             "Grot Blasta"
         ],
         "unit_type": 1,
-        "unit_size": 0.5
+        "unit_size": 0.5,
+        "movement": 1
     },
     "slugga_boy": {
         "display_name": "Slugga Boy",
@@ -920,19 +923,21 @@
             "Slugga"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "unit_size": 1,
+        "movement": 1
     },
     "shoota_boy": {
-    "display_name": "Shoota Boy",
-    "armour": 5,
-    "health": 60,
-    "resistance": 1,
-    "weapons": [
-        "Choppa",
-        "Shoota"
-    ],
-    "unit_type": 0,
-    "unit_size": 1
+        "display_name": "Shoota Boy",
+        "armour": 5,
+        "health": 60,
+        "resistance": 1,
+        "weapons": [
+            "Choppa",
+            "Shoota"
+        ],
+        "unit_type": 0,
+        "unit_size": 1,
+        "movement": 1
     },
     "mekboy": {
         "display_name": "Mekboy",
@@ -944,19 +949,21 @@
             "Slugga"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "unit_size": 1,
+        "movement": 1
     },
     "runtherd": {
-    "display_name": "Runtherd",
-    "armour": 5,
-    "health": 60,
-    "resistance": 1,
-    "weapons": [
-        "Choppa",
-        "Slugga"
-    ],
-    "unit_type": 3,
-    "unit_size": 1
+        "display_name": "Runtherd",
+        "armour": 5,
+        "health": 60,
+        "resistance": 1,
+        "weapons": [
+            "Choppa",
+            "Slugga"
+        ],
+        "unit_type": 3,
+        "unit_size": 1,
+        "movement": 1
     },
     "nob": {
         "display_name": "Nob",
@@ -968,7 +975,8 @@
             "Big Shoota"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "unit_size": 1,
+        "movement": 1
     },
     "boss_nob": {
         "display_name": "Boss Nob",
@@ -980,7 +988,8 @@
             "Twin-Linked Shoota"
         ],
         "unit_type": 3,
-        "unit_size": 2
+        "unit_size": 2,
+        "movement": 1
     },
     "meganob": {
         "display_name": "Meganob",
@@ -992,7 +1001,8 @@
             "Power Klaw"
         ],
         "unit_type": 1,
-        "unit_size": 2
+        "unit_size": 2,
+        "movement": 1
     },
     "boss_meganob": {
         "display_name": "Boss Meganob",
@@ -1004,7 +1014,8 @@
             "Power Klaw"
         ],
         "unit_type": 3,
-        "unit_size": 2
+        "unit_size": 2,
+        "movement": 1
     },
     "flash_git": {
         "display_name": "Flash Git",
@@ -1015,18 +1026,20 @@
             "Snazzgun"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "unit_size": 1,
+        "movement": 1
     },
     "kaptin": {
-    "display_name": "Kaptin",
-    "armour": 8,
-    "health": 100,
-    "resistance": 1,
-    "weapons": [
-        "Snazzgun"
-    ],
-    "unit_type": 3,
-    "unit_size": 1
+        "display_name": "Kaptin",
+        "armour": 8,
+        "health": 100,
+        "resistance": 1,
+        "weapons": [
+            "Snazzgun"
+        ],
+        "unit_type": 3,
+        "unit_size": 1,
+        "movement": 1
     },
     "cybork": {
         "display_name": "Cybork",
@@ -1038,7 +1051,8 @@
             "Big Shoota"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "unit_size": 1,
+        "movement": 1
     },
     "ard_boy": {
         "display_name": "Ard Boy",
@@ -1050,7 +1064,8 @@
             "Slugga"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "unit_size": 1,
+        "movement": 1
     },
     "kommando": {
         "display_name": "Kommando",
@@ -1062,7 +1077,8 @@
             "Slugga"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "unit_size": 1,
+        "movement": 1
     },
     "burna_boy": {
         "display_name": "Burna Boy",
@@ -1074,7 +1090,8 @@
             "Burna"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "unit_size": 1,
+        "movement": 1
     },
     "tankbusta": {
         "display_name": "Tankbusta",
@@ -1086,7 +1103,8 @@
             "Tankbusta Bomb"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "unit_size": 1,
+        "movement": 1
     },
     "stormboy": {
         "display_name": "Stormboy",
@@ -1101,7 +1119,8 @@
             "jump"
         ],
         "unit_type": 1,
-        "unit_size": 2
+        "unit_size": 2,
+        "movement": 1
     },
     "battlewagon": {
         "display_name": "Battlewagon",
@@ -1116,7 +1135,8 @@
             "Rokkit Launcha"
         ],
         "unit_type": 0,
-        "unit_size": 10
+        "unit_size": 10,
+        "movement": 1
     },
     "deff_dread": {
         "display_name": "Deff Dread",
@@ -1130,7 +1150,8 @@
             "Power Klaw"
         ],
         "unit_type": 0,
-        "unit_size": 10
+        "unit_size": 10,
+        "movement": 1
     },
     "xv8_commander": {
         "display_name": "XV8 Commander",

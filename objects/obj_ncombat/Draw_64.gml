@@ -19,7 +19,7 @@ draw_set_alpha(0.5);
 draw_rectangle(0 + l, 0 + l, 800 - l, 900 - l, 1);
 l += 1;
 draw_set_alpha(0.25);
-draw_rectangle(0 + l, 0 + l, 6800 - l, 900 - l, 1);
+draw_rectangle(0 + l, 0 + l, 1600 - l, 900 - l, 1);
 
 l = 0;
 draw_set_alpha(1);
@@ -33,6 +33,38 @@ draw_rectangle(818 + l, 235 + l, 1578 - l, 666 - l, 1);
 l += 1;
 draw_set_alpha(0.25);
 draw_rectangle(818 + l, 235 + l, 1578 - l, 666 - l, 1);
+draw_set_alpha(1);
+
+var cell_width = 6;
+var cell_height = 426;
+
+// Assuming `my_grid` is your custom grid struct
+for (var _x = 0; _x < ds_grid_width(battlefield); _x++) {
+    for (var _y = 0; _y < ds_grid_height(battlefield); _y++) {
+        var _screen_x = 822 + _x * cell_width + _x;
+        var _screen_y = 239 + _y * cell_height;
+
+        // Draw cell rectangle
+        draw_set_alpha(0.25);
+        draw_set_color(c_gray);
+        draw_rectangle(_screen_x, _screen_y, _screen_x + cell_width, _screen_y + cell_height, true);
+
+        // Get cell data
+        var _cell = ds_grid_get(battlefield, _x, _y);
+
+        // Determine item count
+        var _item_count = (is_array(_cell)) ? array_length(_cell) : 0;
+
+        // Change color if occupied
+        if (_item_count > 0) {
+            draw_set_alpha(1);
+            draw_set_color(c_green);
+            draw_rectangle(_screen_x, _screen_y, _screen_x + cell_width, _screen_y + cell_height, false);
+        }
+    }
+}
+
+draw_set_color(c_white); // Reset color to default after
 
 l = 0;
 draw_set_alpha(1);

@@ -23,10 +23,6 @@ if (battle_stage == eBATTLE_STAGE.Creation) {
         stopwatch("scr_player_combat_weapon_stacks");
     }
 
-    with (obj_enunit) {
-        enunit_enemy_profiles_init();
-    }
-
     with (obj_pnunit) {
         pnunit_battle_effects();
     }
@@ -61,12 +57,8 @@ if ((press_exclusive(vk_enter) || hold_exclusive(vk_enter)) && fading_strength =
         display_message_queue();
     
         if (turn_stage == eBATTLE_TURN.EnemyStart) {
-            if (instance_exists(obj_enunit)) {
-                with (obj_enunit) {
-                    enunit_enemy_profiles_init();
-                }
-                move_enemy_blocks();
-                
+            battlefield.move_enemies();
+            if (instance_exists(obj_enunit)) {                
                 if (DEBUG_COMBAT_PERFORMANCE) {
                     stopwatch("enunit_create_weapon_stacks");
                 }

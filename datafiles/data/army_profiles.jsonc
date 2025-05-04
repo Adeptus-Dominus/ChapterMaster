@@ -1,83 +1,57 @@
 {
     "orks_6": {
-        "name": "Huge Ork Army",
+        "display_name": "Huge Ork Army",
         "description": "A huge army of green gigachads.",
-        "columns": [
+        "units": [
             {
-                "units": [
-                    {
-                        "name": "deff_dread",
-                        "count": 36
-                    },
-                    {
-                        "name": "battlewagon",
-                        "count": 220
-                    }
-                ],
-                "squads": [
-                    {
-                        "name": "gretchins",
-                        "count": 70
-                    },
-                    {
-                        "name": "tankbustas",
-                        "count": 6
-                    },
-                    {
-                        "name": "meganobz",
-                        "count": 8
-                    }
-                ]
+                "name": "deff_dread",
+                "count": 36
             },
             {
-                "squads": [
-                    {
-                        "name": "slugga_boyz",
-                        "count": 40
-                    },
-                    {
-                        "name": "ard_boyz",
-                        "count": 20
-                    }
-                ]
+                "name": "battlewagon",
+                "count": 220
             },
             {
-                "squads": [
-                    {
-                        "name": "slugga_boyz",
-                        "count": 20
-                    },
-                    {
-                        "name": "ard_boyz",
-                        "count": 30
-                    },
-                    {
-                        "name": "shoota_boyz",
-                        "count": 60
-                    }
-                ]
+                "name": "mekboy",
+                "count": 6
             },
             {
-                "units": [
-                    {
-                        "name": "mekboy",
-                        "count": 6
-                    },
-                    {
-                        "name": "warboss",
-                        "count": 1
-                    }
-                ],
-                "squads": [
-                    {
-                        "name": "flash_gitz",
-                        "count": 5
-                    },
-                    {
-                        "name": "kommandos",
-                        "count": 2
-                    }
-                ]
+                "name": "warboss",
+                "count": 1
+            }
+        ],
+        "squads": [
+            {
+                "name": "gretchins",
+                "count": 70
+            },
+            {
+                "name": "tankbustas",
+                "count": 6
+            },
+            {
+                "name": "meganobz",
+                "count": 8
+            },
+            {
+                "name": "slugga_boyz",
+                "count": 60
+            },
+            {
+                "name": "ard_boyz",
+                "count": 50
+            },
+            {
+                "name": "shoota_boyz",
+                "count": 60
+            },
+            {
+                "name": "flash_gitz",
+                "count": 5
+            },
+            {
+                "name": "kommandos",
+                "count": 2
             }
         ]
     }

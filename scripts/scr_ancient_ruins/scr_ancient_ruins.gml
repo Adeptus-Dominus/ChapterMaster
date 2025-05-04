@@ -61,7 +61,7 @@ function scr_ruins_suprise_attack_player(){
 		obj_ncombat.attacking=0;
 		obj_ncombat.enemy=obj_ground_mission.ruins_battle;
 		obj_ncombat.threat=obj_ground_mission.battle_threat;
-		obj_ncombat.formation_set=1;
+		obj_ncombat.player_formation=1;
 		instance_destroy(obj_popup);
 		instance_destroy(obj_star_select);	
 	} catch (_exception) {

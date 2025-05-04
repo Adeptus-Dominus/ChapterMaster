@@ -62,6 +62,17 @@ function string_plural_count(_string, _variable, _use_x = true) {
     return _modified_string;
 }
 
+/// @function string_plural_count
+/// @description This function adds the x(variable) text at the start.
+/// @param {string} _string
+/// @param {real} _variable Variable to add at the start.
+/// @returns {string} Modified string.
+function string_with_count(_string, _variable, _use_x = true) {
+    var _x = _use_x ? "x" : "";
+    var _modified_string = $"{_variable}{_x} {_string}";
+    return _modified_string;
+}
+
 /// @function string_truncate
 /// @description Truncates a string to fit within a specified pixel width, appending "..." if the string was truncated.
 /// @param {string} _string

@@ -16,10 +16,6 @@ function scr_clean(target_object, weapon_data) {
             if (obj_ncombat.wall_destroyed == 1) {
                 exit;
             }
-
-            if (DEBUG_COMBAT_PERFORMANCE) {
-                stopwatch("player_units_validation");
-            }
             
             var armour_pierce = weapon_data.piercing;
             var weapon_shot_count = weapon_data.shot_count;
@@ -84,14 +80,6 @@ function scr_clean(target_object, weapon_data) {
                 }
             }
             valid_vehicles = array_shuffle(valid_vehicles);
-
-            if (DEBUG_COMBAT_PERFORMANCE) {
-                stopwatch("player_units_validation");
-            }
-
-            if (DEBUG_COMBAT_PERFORMANCE) {
-                stopwatch("player_damage_allocation");
-            }
 
             if (target_type == eTARGET_TYPE.Armour && array_empty(valid_vehicles)) {
                 target_type = eTARGET_TYPE.Normal;
@@ -277,10 +265,6 @@ function scr_clean(target_object, weapon_data) {
                     instance_deactivate_object(id);
                     break;
                 }
-            }
-
-            if (DEBUG_COMBAT_PERFORMANCE) {
-                stopwatch("player_damage_allocation");
             }
 
             // Flavour battle-log message

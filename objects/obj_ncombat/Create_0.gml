@@ -1,4 +1,4 @@
-#macro BATTLELOG_MAX_PER_TURN 24
+#macro BATTLELOG_MAX_PER_TURN 40
 
 if (instance_number(obj_ncombat) > 1) {
     instance_destroy();
@@ -29,10 +29,8 @@ if (nope != 1) {
 man_size_limit = 0;
 man_limit_reached = false;
 man_size_count = 0;
-owner = eFACTION.Player;
-formation_set = 0;
-on_ship = false;
-alpha_strike = 0;
+player_formation = 0;
+enemy_alpha_strike = 0;
 Warlord = 0;
 total_battle_exp_gain = 0;
 marines_to_recover = 0;
@@ -305,6 +303,9 @@ if (obj_ini.occulobe) {
 enemy_dudes = "";
 global_defense = 2 - global_defense;
 
+enemy_force = new EnemyArmy("", false);
+player_force = new PlayerArmy();
+
 queue_force_health = function() {
 	var _text = "";
 
@@ -354,8 +355,6 @@ display_message_queue = function() {
     ds_queue_clear(messages_queue);
 }
 
-enemy_force_composition = {};
-
 battlefield_scale = 0.1;
 update_battlefield_scale = function() {
     var _biggest_block_size = 0;
@@ -366,11 +365,58 @@ update_battlefield_scale = function() {
         }
     }
 
-    with (obj_enunit) {
-        if (column_size > _biggest_block_size) {
-            _biggest_block_size = column_size;
-        }
-    }
-
     battlefield_scale = min(1, 400 / _biggest_block_size);
 };
+
+
+
+function BattlefieldGridCell() constructor {
+    terrain = 0;
+    capacity = 1000;
+    player_units = [];
+    player_squads = [];
+    enemy_units = [];
+    enemy_squads = [];
+
+    reset = function() {
+        terrain = 0;
+        capacity = 1000;
+        player_units = [];
+        player_squads = [];
+        enemy_units = [];
+        enemy_squads = [];
+    }
+}
+
+function BattlefieldGrid(_width, _height) constructor {
+    width = _width;
+    height = _height;
+    data = array_create(_width * _height, new BattlefieldGridCell());
+    size = array_length(data);
+    
+    static index = function(_x, _y) {
+        return _x + _y * width;
+    };
+    
+    static set = function(_x, _y, _value) {
+        if (_x >= 0 && _x < width && _y >= 0 && _y < height) {
+            data[index(_x, _y)] = _value;
+        }
+    };
+    
+    static get = function(_x, _y) {
+        if (_x >= 0 && _x < width && _y >= 0 && _y < height) {
+            return data[index(_x, _y)];
+        }
+        return undefined;
+    };
+    
+    static clear = function(_value) {
+        var _size = array_length(data);
+        for (var _i = 0; _i < _size; _i++) {
+            data[_i].reset();
+        }
+    };
+}
+
+battlefield = new BattlefieldGrid(100, 1);

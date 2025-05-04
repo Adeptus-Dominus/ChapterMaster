@@ -936,44 +936,18 @@ function scr_en_weapon(_weapon_name, _unit_type, _weapon_count, _unit_name) {
 
 	var _weapon_struct = global.weapons[$ _weapon_name];
 
-	_attack = _weapon_struct.attack.standard;
-	_piercing = _weapon_struct.arp;
-	_range = _weapon_struct.range;
-	_shot_count = _weapon_struct.spli;
-
-	if (_shot_count == 0) {
+	if (_weapon_struct == undefined) {
 		exit;
 	}
 
-	// if (faith_bonus = 1) then _attack = _attack * 2;
-	// if (faith_bonus = 2) then _attack = _attack * 3;
-	_attack = round(_attack * obj_ncombat.global_defense);
-	
-	// if (obj_ncombat.enemy == 1) {
-	// 	if (_range <= 1 || floor(_range) != _range) {
-	// 		_attack = round(_attack * dudes_attack[_unit_block]);
-	// 	} else if (_range > 1 && floor(_range) == _range) {
-	// 		_attack = round(_attack * dudes_ranged[_unit_block]);
-	// 	}
-	// }
-	
-	if (_unit_type == 1 && _ammo > 0) {
-		_ammo *= 2;
-	}
-
-	var _weapon_stack = new WeaponStack(_weapon_name);
-	_weapon_stack.attack = _attack;
-	_weapon_stack.piercing = _piercing;
-	_weapon_stack.range = _range;
-	_weapon_stack.weapon_count += _weapon_count;
-	_weapon_stack.shot_count = _shot_count;
+	var _weapon_stack = new WeaponStack(_weapon_struct);
 	array_push(_weapon_stack.owners, _unit_name);
 
-	if (obj_ncombat.battle_stage == eBATTLE_STAGE.Creation) {
-		_weapon_stack.ammo_max = _ammo;
-		_weapon_stack.ammo_current = _ammo;
-		_weapon_stack.ammo_reload = _reload;
-	}
+	// if (obj_ncombat.battle_stage == eBATTLE_STAGE.Creation) {
+	// 	_weapon_stack.ammo_max = _ammo;
+	// 	_weapon_stack.ammo_current = _ammo;
+	// 	_weapon_stack.ammo_reload = _reload;
+	// }
 
 	array_push(weapon_stacks_normal, _weapon_stack);
 }

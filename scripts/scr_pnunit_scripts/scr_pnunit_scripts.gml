@@ -336,7 +336,7 @@ function target_enemy_squad(_battle_block, _target_type = -1) {
 function target_enemy_stack(_squad) {
 	var _biggest_target = noone;
 	var _priority_queue = ds_priority_create();
-	var _unit_stacks = _squad.member_stacks;
+	var _unit_stacks = _squad.units;
 
     for (var i = 0, l = array_length(_unit_stacks); i < l; i++){
         var _unit_stack = _unit_stacks[i];
