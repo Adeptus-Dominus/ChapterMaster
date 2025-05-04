@@ -66,9 +66,11 @@ global.ship_weapons_stats = {
 		dam : 12,
 		range : 2000, 
 		cooldown : 90,
+		ammo : 3,
 		bullet_speed : 10,
 		barrel_count : 1,
 		img:spr_torpedo,
+		draw_scale : 3,
 	},
 
 	"Interceptor Launch Bays" : {

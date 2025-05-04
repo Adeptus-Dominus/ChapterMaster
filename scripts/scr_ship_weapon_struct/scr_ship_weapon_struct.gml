@@ -126,8 +126,8 @@ function ShipWeapon(weapon_name, overide_data={}) constructor{
 		var _launch_y = ship.y;
 
 		if (ship.ai_type = "player" ){
-            bull=instance_create(_launch_x,_launch_y,obj_p_th);
-            bull.direction=ship.direction;
+            var _flyer=instance_create(_launch_x,_launch_y,obj_p_th);
+            _flyer.direction=ship.direction;
 		}else if (ship.ai_type = "allies"){
 			var _flyer = instance_create(_launch_x,_launch_y,obj_al_in);
 	        _flyer.direction=self.direction;
