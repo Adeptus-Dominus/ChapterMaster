@@ -7,11 +7,20 @@ if (control=1) then instance_activate_object(obj_cursor);
 
 
 if (enemy=2){
-    if (en_escort>0){en_column[4]="Sword Class Frigate";en_num[4]=en_escort;en_size[4]=1;}
+    if (en_escort>0){
+        en_column[4]="Sword Class Frigate";
+        en_num[4]=en_escort;
+        en_size[4]=1;
+    }
     
-    if (en_frigate>0){en_column[3]="Avenger Class Grand Cruiser";en_num[3]=en_frigate;en_size[3]=2;}
+    if (en_frigate>0){
+        en_column[3]="Avenger Class Grand Cruiser";
+        en_num[3]=en_frigate;
+        en_size[3]=2;
+    }
         
-    var i;i=0;i=en_capital;
+    var i=0;
+    i=en_capital;
     if (i>0){
         en_column[2]="Apocalypse Class Battleship";en_num[2]=floor(random(i))+1;
         if (en_num[2]<(en_capital*0.6)) then en_num[2]=round(en_capital*0.6);

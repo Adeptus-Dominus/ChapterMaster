@@ -251,15 +251,15 @@ function set_nid_ships(){
 	    turrets=3;
 	    capacity=0;
 	    carrying=0;
-	    add_weapon_to_ship("Feeder Tendrils" : {dam : 12, range :160});
-	    add_weapon_to_ship("Bio-Plasma Discharge" : {
+	    add_weapon_to_ship("Feeder Tendrils" , {dam : 12, range :160});
+	    add_weapon_to_ship("Bio-Plasma Discharge" , {
 	        dam : 10, 
 	        range : 260,
 	        cooldown : 10,
 	        facing : "most",
 	    });
 
-	    add_weapon_to_ship("Pyro-Acid Battery" : {
+	    add_weapon_to_ship("Pyro-Acid Battery" , {
 	        dam : 18, 
 	        range : 500,
 	        cooldown : 40,

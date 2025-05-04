@@ -79,7 +79,7 @@ function cooldown_ship_weapons(){
 function destroy_ship_and_leave_husk(){
     image_alpha=0.5;
     
-    if (owner != eFACTION.Tyranids){
+    if (ai_type == "player" || owner != eFACTION.Tyranids){
         husk=instance_create(x,y,obj_en_husk);
         husk.sprite_index=sprite_index;
         husk.direction=direction;
@@ -167,54 +167,14 @@ function is_targeted(){
 	}
 }
 
-function create_ship_projectile(wep_id){
-	var wep = weapon[wep_id];
-	var facing=weapon_facing[wep_id],ammo=weapon_ammo[wep_id],range=weapon_range[wep_id];
-	var dam=weapon_dam[wep_id];
-	var bull = -1;
-	if (string_count("orpedo",wep)=0) and (string_count("Interceptor",wep)=0) and (string_count("ommerz",wep)=0) and (string_count("Claws",wep)=0) and (string_count("endrils",wep)=0) && (owner != eFACTION.Necrons){
-        bull=instance_create(x+lengthdir_x(32,direction),y+lengthdir_y(32,direction),obj_en_round);
-        bull.speed=20;
-        bull.dam=dam;
-        if (targe=target) then bull.direction=point_direction(x+lengthdir_x(32,direction),y+lengthdir_y(32,direction),target.x,target.y);
-        if (facing!="front"){
-        	bull.direction=point_direction(x+lengthdir_x(32,direction),y+lengthdir_y(32,direction),target.x,target.y);
-        }
-        
-        
-    }
-    
-    if (wep="Gauss Particle Whip"){whip=15;
-        if (target.shields>0) then target.shields-=dam;
-        if (target.shields<=0) then target.hp-=dam;
-    }
-    if (wep="Star Pulse Generator") and (instance_exists(target)){
-        bull=instance_create(x+lengthdir_x(32,direction),y+lengthdir_y(32,direction),obj_en_pulse);
-        bull.speed=20;
-        if (targe=target) then bull.direction=point_direction(x+lengthdir_x(32,direction),y+lengthdir_y(32,direction),target.x,target.y);
-        if (facing!="front"){
-        	bull.direction=point_direction(x+lengthdir_x(32,direction),y+lengthdir_y(32,direction),target.x,target.y);
-        }
-        bull.target_x=target.x;
-        bull.target_y=target.y;
-    }
-    
-    
-    
-    if ((string_count("Claws",wep)=1) or (string_count("endrils",wep)=1)) {
-        if (target.shields<=0) then target.hp-=weapon_dam[wep_id];
-        if (target.shields>0) then target.shields-=weapon_dam[wep_id];
-    }
-    if ((string_count("Interceptor",wep)=1) or (string_count("ommerz",wep)=1) or (string_count("Manta",wep)=1) or (string_count("Glands",wep)=1) or (string_count("Eldar Launch",wep)=1)){
-        bull=instance_create(x,y+lengthdir_y(-30,direction+90),obj_en_in);
-        bull.direction=self.direction;
-        bull.owner=self.owner;
-    }
-    if (instance_exists(bull)){
-    	array_push(target.bullets_for, bull.id);
-    }	
-}
+function ship_shoot_weapons(){
+    for (var i=0;i<array_length(weapons);i++){
+        var _wep = weapons[i];
+        _wep.find_target();
+        _wep.fire();
 
+    }
+}
 
 function fire_ship_weapon(wep_id){
 	draw_set_alpha(1);

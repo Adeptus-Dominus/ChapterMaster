@@ -5,12 +5,12 @@ global.ship_weapons_stats = {
 		facing : "front",
 		firing_arc : 12.5,
 		img : spr_ground_las,
-	}
+	},
 	"Plasma Cannon" : {
 		img : spr_ground_plasma,
 		draw_scale : 3,
 		bullet_speed : 15,
-	}
+	},
 	"Nova Cannon": {
 		range : 1500,
 		dam : 34, 
@@ -46,17 +46,25 @@ global.ship_weapons_stats = {
 		range : 200,
 		cooldown : 40,
 	},
-	"Bombardment Cannon"{
+	"Bombardment Cannon":{
 		facing : "front",
 		dam : 12,
-		range : 450,
+		range : 2000,
 		cooldown : 120,
 		firing_arc : 4,
 	},
 
+	"Macro Bombardment Cannons" : {
+		facing : "front",
+		dam : 20,
+		range : 600,
+		cooldown : 120,
+		firing_arc : 3,		
+	},
+
 	"Torpedoes" :{
 		dam : 12,
-		range : 450, 
+		range : 1000, 
 		cooldown : 90,
 		bullet_speed : 10,
 		barrel_count : 4,
@@ -67,26 +75,32 @@ global.ship_weapons_stats = {
 		facing : "special",
 		weapon_range : 9999,
 		ammo : 6,
-		cooldown , 120,
+		cooldown : 120,
+	},
+	"Thunderhawk Launch Bays" : {
+		facing : "special",
+		weapon_range : 9999,
+		ammo : 6,
+		cooldown : 120,		
 	},
 	"Fighta Bommerz":{
 		facing : "special",
 		weapon_range : 9999,
 		ammo : 8,
-		cooldown , 90,		
-	}
+		cooldown : 90,		
+	},
 	"Eldar Launch Bay" : {
 		facing : "special",
 		weapon_range : 9999,
 		ammo : 4,
-		cooldown , 90,
+		cooldown: 90,
 	},
 	"Manta Launch Bay" : {
 		facing : "special",
 		weapon_range : 9999,
 		ammo : 4,
-		cooldown , 90,		
-	}
+		cooldown: 90,		
+	},
 	"Pulsar Lances":{
 		facing : "most",
 		dam : 10,
@@ -123,7 +137,8 @@ global.ship_weapons_stats = {
 		facing : "special",
 		weapon_range : 9999,
 		ammo : 20,
-		cooldown , 120,		
+		cooldown: 120,	
+		obj_en_in,	
 	},
 	"Gravitic launcher" : {
 		dam : 12,
@@ -133,14 +148,14 @@ global.ship_weapons_stats = {
 		draw_scale:2,
 	},
 	"Railgun Battery": {
-		facing : "most"
+		facing : "most",
 		dam :12,
 		range : 450,
 		cooldown:30,
 		img : spr_railgun,
 	},
 	"Ion Cannons": {
-		facing : "most"
+		facing : "most",
 		dam :8,
 		range : 300,
 		cooldown:15,
@@ -157,45 +172,18 @@ global.ship_weapons_stats = {
 		dam : 0,
 		range : 220,
 		cooldown : 210,
-		img : spr_pulse
+		img : spr_pulse,
+		speed : 20,
 	},
 	"Gauss Particle Whip":{
 		dam : 30,
 		range: 450,
 		cooldown : 90,
+		melee : true,
 	}
 }
 
-global.ship_weapon_defualts  = {
-	range : 600,
-	facing : "front",
-	cooldown : 30,
-	minrange : 0,
-	dam : 0,
-	firing_arc : 12.5,
-	ship : 0,
-	ammo : -1,
-	bullet_speed : 20,
-	bullet_obj : obj_en_round,
-	img : spr_round,
-	damage_type : "full",
-	draw_scale : 1.5,
-	barrel_count : 1,
-	melee : false,
 
-}
-function move_data_to_current_scope(struct, overide=true){
-	var _data_names = struct_get_names(struct);
-	for (var i=0;i<array_length(_data_names);i++){
-		if (overide){
-			self[$_data_names[i]] = struct[$ _data_names[i]];
-		} else {
-			if (!struct_exists(self, _data_names[i])){
-				self[$_data_names[i]] = struct[$ _data_names[i]];
-			}
-		}
-	}
-}
 
 function facing_weapon_angle(facing){
 	var _direct_ = direction;
@@ -216,142 +204,6 @@ function facing_weapon_angle(facing){
 	return _direct_;
 }
 
-function ShipWeapon(weapon_name, overide_data={}) constructor{
-	if (struct_exists(ship_weapons_stats, weapon_name)){
-		var _wep_data = ship_weapons_stats[$ weapon_name];
-		move_data_to_current_scope(_wep_data);
-	}
-	move_data_to_current_scope(overide_data);
-	move_data_to_current_scope(global.ship_weapon_defualts, false);
-	name = weapon_name;
-	cooldown_timer = 0;
-
-	target = 0;
-	static fire = function(){
-		draw_set_alpha(1);
-		draw_set_color(c_red);
-		if (cooldown_timer <= 0 && instance_exists(target) && (ammo == -1 || ammo>0)){
-			if (ammo>0){
-				ammo--;
-			}
-		}
-	}
-
-	static find_target = function(){
-		if (instance_exists(ship)){
-			var _shoot_angle = 0;
-			with (ship)(
-				_shoot_angle = facing_weapon_angle(facing);
-			);
-			if (_shoot_angle > 360){
-				_shoot_angle -= 360;
-			} else if (_shoot_angle< 0){
-				_shoot_angle = 360 -_shoot_angle;
-			}
-			with (ship)
-			if (ship.object_index == obj_p_ship || ship.object_index == obj_al_ship){
-				var _enemies = instance_number(obj_en_ship);
-				for (var i=0;i<_enemies;i++){
-					var _targ = instance_nearest(ship.x, ship.y, obj_en_ship);
-					if (_targ.hp<=0){
-						instance_deactivate_object(_targ.id);
-						continue;
-					}
-					var _distance = point_distance(_targ.x, targ.y, x,y);
-					if (_distance > range){
-						break;
-					}
-					if (minrange>0 && _distance<minrange){
-						instance_deactivate_object(_targ.id);
-						continue;
-					}
-					var _rel_direction = point_direction(_targ.x, _targ.y, x, y);
-					if (_rel_direction < (_shoot_angle + firing_arc) && _rel_direction > (_shoot_angle - firing_arc)){
-						target = _targ;
-						break;
-					}
-				}
-				instance_activate_object(obj_en_ship);
-			} else if (ship.object_index == obj_en_ship){
-				var _enemies = instance_number(obj_p_ship) + instance_number(obj_al_ship);
-				for (var i=0;i<_enemies;i++){
-					var _targ = instance_nearest(ship.x, ship.y, obj_p_ship);
-					var targ_2 = instance_nearest(ship.x, ship.y, obj_al_ship);
-					if (point_distance(targ_2.x, targ_2.y, x,y)<point_distance(_targ.x, _targ.y, x,y)){
-						_targ = targ_2;
-					}
-					if (_targ.hp<=0){
-						instance_deactivate_object(_targ.id);
-						continue;
-					}
-					var _distance = point_distance(_targ.x, targ.y, x,y);
-					if (_distance > range){
-						break;
-					}
-					if (minrange>0 && _distance<minrange){
-						instance_deactivate_object(_targ.id);
-						continue;
-					}
-					var _rel_direction = point_direction(_targ.x, _targ.y, x, y);
-					if (_rel_direction < (_shoot_angle + firing_arc) && _rel_direction > (_shoot_angle - firing_arc)){
-						target = _targ;
-						break;
-					}					
-				}
-				instance_activate_object(obj_p_ship);
-				instance_activate_object(obj_al_ship);
-			}
-		}
-		parent.object_index== obj_enemy
-	}
-	static draw_weapon_firing_arc = function{
-		var _tangent_direction = 0;
-		var _facing = facing
-		if (instance_exists(ship)){
-			with (ship){
-				_tangent_direction  = facing_weapon_angle(_facing);
-			}
-		}
-	    var _max_distance = range;
-
-	    var _left = x - _max_distance;
-	    var _top  = y - _max_distance;
-	    var _right = x + _max_distance;
-	    var _bottom = y + _max_distance;
-
-	    if (facing == "most"){
-	    	firing_arc = 135;
-	    }
-	    draw_set_color(38144);
-
-	    var _start_x = x + lengthdir_x(_max_distance, _tangent_direction - firing_arc);
-	    var _start_y = y + lengthdir_y(_max_distance, _tangent_direction - firing_arc);
-	    var _end_x   = x + lengthdir_x(_max_distance, _tangent_direction + firing_arc);
-	    var _end_y   = y + lengthdir_y(_max_distance, _tangent_direction + firing_arc);
-
-	    draw_arc(_left, _top, _right, _bottom, _start_x, _start_y, _end_x, _end_y);
-	    draw_line(x, y, _start_x, _start_y);
-	    draw_line(x, y, _end_x, _end_y);
-
-	    if (minrange > 0){
-	    	draw_set_color(c_red);
-		    var _start_x = x + lengthdir_x(minrange, _tangent_direction - firing_arc);
-		    var _start_y = y + lengthdir_y(minrange, _tangent_direction - firing_arc);
-		    var _end_x   = x + lengthdir_x(minrange, _tangent_direction + firing_arc);
-		    var _end_y   = y + lengthdir_y(minrange, _tangent_direction + firing_arc);
-
-		    draw_arc(_left, _top, _right, _bottom, _start_x, _start_y, _end_x, _end_y);
-		    draw_line(x, y, _start_x, _start_y);
-		    draw_line(x, y, _end_x, _end_y);	    	
-	    }
-	}
-}
-
-function add_weapon_to_ship(weapon_name, overide_data={}){
-	overide_data.ship = id;
-	array_push(weapons, new ShipWeapon(weapon_name, overide_data));
-}
-
 
 function assign_ship_stats(){
 	if (class="Apocalypse Class Battleship"){
@@ -366,7 +218,6 @@ function assign_ship_stats(){
 	    leadership=90;
 	    armour_front=6;
 	    armour_other=5;
-	    weapons=4;
 	    turrets=4;
 	    capacity=150;
 	    carrying=0;
@@ -378,8 +229,8 @@ function assign_ship_stats(){
 	    
 	}
 
-	if (class="Nemesis Class Fleet Carrier"){sprite_index=spr_ship_nem;
-	    sprite_index=spr_ship_nem;
+	if (class="Nemesis Class Fleet Carrier"){
+		sprite_index=spr_ship_nem;
 	    ship_size=3;
 	    name="";
 	    hp=1000;
@@ -390,7 +241,6 @@ function assign_ship_stats(){
 	    leadership=85;
 	    armour_front=5;
 	    armour_other=5;
-	    weapons=3;
 	    turrets=5;
 	    capacity=100;
 	    carrying=24;
@@ -400,7 +250,7 @@ function assign_ship_stats(){
 	    
 	}
 
-	if (class="Avenger Class Grand Cruiser"){sprite_index=spr_ship_aven;
+	if (class="Avenger Class Grand Cruiser"){
 	    sprite_index=spr_ship_aven;
 	    ship_size=2;
 	    name="";
@@ -412,7 +262,6 @@ function assign_ship_stats(){
 	    leadership=85;
 	    armour_front=5;
 	    armour_other=5;
-	    weapons=2;
 	    turrets=3;
 	    capacity=50;
 	    add_weapon_to_ship("Lance Battery", {cooldown:30});
@@ -421,7 +270,7 @@ function assign_ship_stats(){
 	    
 	}
 
-	if (class="Sword Class Frigate"){sprite_index=spr_ship_sword;
+	if (class="Sword Class Frigate"){
 	    sprite_index=spr_ship_sword;
 	    ship_size=1;
 	    name="";
@@ -433,7 +282,6 @@ function assign_ship_stats(){
 	    leadership=80;
 	    armour_front=5;
 	    armour_other=5;
-	    weapons=1;
 	    turrets=2;
 	    capacity=50;
 	    carrying=0;
@@ -457,7 +305,6 @@ function assign_ship_stats(){
 	    leadership=100;
 	    armour_front=5;
 	    armour_other=4;
-	    weapons=3;
 	    turrets=4;
 	    capacity=150;
 
@@ -479,7 +326,6 @@ function assign_ship_stats(){
 	    leadership=90;
 	    armour_front=5;
 	    armour_other=4;
-	    weapons=2;
 	    turrets=3;
 	    capacity=100;
 	    carrying=0;
@@ -500,7 +346,6 @@ function assign_ship_stats(){
 	    leadership=90;
 	    armour_front=5;
 	    armour_other=4;
-	    weapons=3;
 	    turrets=2;
 	    capacity=50;
 	    carrying=0;
@@ -524,7 +369,6 @@ function assign_ship_stats(){
 	    leadership=90;
 	    armour_front=5;
 	    armour_other=4;
-	    weapons=3;
 	    turrets=2;
 	    capacity=50;
 	    carrying=0;
@@ -549,7 +393,6 @@ function assign_ship_stats(){
 	    leadership=100;
 	    armour_front=6;
 	    armour_other=5;
-	    weapons=5;
 	    turrets=3;
 	    capacity=250;
 	    carrying=0;
@@ -563,26 +406,25 @@ function assign_ship_stats(){
 	}
 
 	if (class="Gorbag's Revenge"){
-    sprite_index=spr_ship_gorbag;
-    ship_size=3;
-    name="";
-    hp=1200;
-    maxhp=1200;
-    conditions="";
-    shields=200;
-    maxshields=200;
-    leadership=100;
-    armour_front=6;
-    armour_other=5;
-    weapons=5;
-    turrets=3;
-    capacity=250;
-    carrying=0;
-    add_weapon_to_ship("Gunz Battery");
-    add_weapon_to_ship("Torpedoes", {dam:12, range:300, cooldown:120});
-    
-    add_weapon_to_ship("Fighta Bommerz": {ammo : 3});
-    add_weapon_to_ship("Fighta Bommerz": {ammo : 3});
+	    sprite_index=spr_ship_gorbag;
+	    ship_size=3;
+	    name="";
+	    hp=1200;
+	    maxhp=1200;
+	    conditions="";
+	    shields=200;
+	    maxshields=200;
+	    leadership=100;
+	    armour_front=6;
+	    armour_other=5;
+	    turrets=3;
+	    capacity=250;
+	    carrying=0;
+	    add_weapon_to_ship("Gunz Battery");
+	    add_weapon_to_ship("Torpedoes", {dam:12, range:300, cooldown:120});
+	    
+	    add_weapon_to_ship("Fighta Bommerz", {ammo : 3});
+	    add_weapon_to_ship("Fighta Bommerz", {ammo : 3});
 	    
 	}
 
@@ -600,7 +442,6 @@ function assign_ship_stats(){
 	    leadership=100;
 	    armour_front=6;
 	    armour_other=5;
-	    weapons=3;
 	    turrets=3;
 	    capacity=250;
 	    carrying=0;
@@ -621,7 +462,6 @@ function assign_ship_stats(){
 	    leadership=100;
 	    armour_front=6;
 	    armour_other=5;
-	    weapons=5;
 	    turrets=3;
 	    capacity=250;
 	    carrying=0;
@@ -643,7 +483,6 @@ function assign_ship_stats(){
 	    leadership=80;
 	    armour_front=6;
 	    armour_other=4;
-	    weapons=2;
 	    turrets=2;
 	    capacity=50;
 	    carrying=0;
@@ -663,7 +502,6 @@ function assign_ship_stats(){
 	    leadership=100;
 	    armour_front=6;
 	    armour_other=5;
-	    weapons=4;
 	    turrets=5;
 	    capacity=1000;
 	    carrying=0;
@@ -685,7 +523,6 @@ function assign_ship_stats(){
 	    leadership=90;
 	    armour_front=6;
 	    armour_other=5;
-	    weapons=4;
 	    turrets=3;
 	    capacity=250;
 	    carrying=0;
@@ -706,7 +543,6 @@ function assign_ship_stats(){
 	    leadership=100;
 	    armour_front=6;
 	    armour_other=5;
-	    weapons=4;
 	    turrets=2;
 	    capacity=100;
 	    carrying=0;
@@ -726,7 +562,6 @@ function assign_ship_stats(){
 	    leadership=80;
 	    armour_front=5;
 	    armour_other=4;
-	    weapons=2;
 	    turrets=1;
 	    capacity=50;
 	    carrying=0;
@@ -746,7 +581,6 @@ function assign_ship_stats(){
 	    leadership=80;
 	    armour_front=5;
 	    armour_other=4;
-	    weapons=2;
 	    turrets=2;
 	    capacity=50;
 	    carrying=0;
@@ -789,7 +623,6 @@ function assign_ship_stats(){
 	    leadership=85;
 	    armour_front=5;
 	    armour_other=5;
-	    weapons=2;
 	    turrets=3;
 	    capacity=50;
 	    carrying=0;
@@ -810,7 +643,6 @@ function assign_ship_stats(){
 	    leadership=85;
 	    armour_front=5;
 	    armour_other=5;
-	    weapons=3;
 	    turrets=3;
 	    capacity=50;
 	    carrying=0;
@@ -838,7 +670,6 @@ function assign_ship_stats(){
 	    leadership=80;
 	    armour_front=7;
 	    armour_other=4;
-	    weapons=1;
 	    turrets=2;
 	    capacity=50;
 	    carrying=0;
@@ -866,7 +697,6 @@ function assign_ship_stats(){
 	    
 	    armour_front=5;
 	    armour_other=5;
-	    weapons=3;
 	    turrets=5;
 	    capacity=800;
 	    carrying=0;
@@ -896,7 +726,6 @@ function assign_ship_stats(){
 	    
 	    armour_front=5;
 	    armour_other=5;
-	    weapons=3;
 	    turrets=4;
 	    capacity=500;
 	    carrying=0;
@@ -920,7 +749,6 @@ function assign_ship_stats(){
 	    
 	    armour_front=5;
 	    armour_other=5;
-	    weapons=1;
 	    turrets=2;
 	    capacity=250;
 	    carrying=0;
@@ -943,7 +771,6 @@ function assign_ship_stats(){
 	    
 	    armour_front=4;
 	    armour_other=4;
-	    weapons=1;
 	    turrets=2;
 	    capacity=25;
 	    carrying=0;
@@ -966,7 +793,6 @@ function assign_ship_stats(){
 	    
 	    armour_front=4;
 	    armour_other=4;
-	    weapons=1;
 	    turrets=2;
 	    capacity=25;
 	    carrying=0;

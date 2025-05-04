@@ -133,8 +133,6 @@ if (hp>0) and (instance_exists(obj_p_ship)){
 
     if (speed<0) then speed=speed*0.9;
 
-    cooldown_ship_weapons();
-
     if (turret_cool>0) then turret_cool-=1;
 
     
@@ -159,32 +157,8 @@ if (hp>0) and (instance_exists(obj_p_ship)){
             bull.direction+=choose(random(10),1*-(random(10)));
         }
     }
-    targe=0;rdir=0;dirr="";dist=9999;
-    
-    
-    xx=lengthdir_x(64,direction+90);
-    yy=lengthdir_y(64,direction+90);
-    
-    var front, right, left, rear;
-    front=0;right=0;left=0;rear=0;
-    
-    targe=instance_nearest(xx,yy,obj_p_ship);
-    rdir=point_direction(x,y,target.x,target.y);
-    // if (rdir>45) and (rdir<=135) and (targe!=target){target_r=targe;right=1;}
-    // if (rdir>225) and (rdir<=315) and (targe!=target) and (targe!=target_r){target_l=targe;left=1;}   
-    target_l=instance_nearest(x+lengthdir_x(64,direction+90),y+lengthdir_y(64,direction+90),obj_p_ship);
-    target_r=instance_nearest(x+lengthdir_x(64,direction+270),y+lengthdir_y(64,direction+270),obj_p_ship);
-     
-    if (collision_line(x,y,x+lengthdir_x(2000,direction),y+lengthdir_y(2000,direction),obj_p_ship,0,1)) then front=1;
-    
-    
-    var f, facing, ammo, range, wep, dam, gg;f=0;facing="";ammo=0;range=0;wep="";dam=0;gg=0;
-    
-    lightning=0;
-    
-    for (var i=0;i<array_length(weapon);i++){
-        fire_ship_weapon(i);
-    }
+
+    ship_shoot_weapons();
     
 }
 
@@ -262,13 +236,7 @@ if (hp>0) and (instance_exists(obj_p_ship)){
     
     
     if (y<-2000) or (y>room_height+2000) or (x<-2000) or (x>room_width+2000) then hp=-50;
-    
-    
-    if (cooldown[1]>0) then cooldown[1]-=1;
-    if (cooldown[2]>0) then cooldown[2]-=1;
-    if (cooldown[3]>0) then cooldown[3]-=1;
-    if (cooldown[4]>0) then cooldown[4]-=1;
-    if (cooldown[5]>0) then cooldown[5]-=1;
+
     if (turret_cool>0) then turret_cool-=1;
 
     
@@ -288,31 +256,8 @@ if (hp>0) and (instance_exists(obj_p_ship)){
             bull.direction+=choose(random(10),1*-(random(10)));
         }
     }
-    targe=0;rdir=0;dirr="";dist=9999;
-    
-    
-    xx=lengthdir_x(64,direction+90);
-    yy=lengthdir_y(64,direction+90);
-    
-    var front, right, left, rear;
-    front=0;right=0;left=0;rear=0;
-    
-    targe=instance_nearest(xx,yy,obj_p_ship);
-    rdir=point_direction(x,y,target.x,target.y);
-    // if (rdir>45) and (rdir<=135) and (targe!=target){target_r=targe;right=1;}
-    // if (rdir>225) and (rdir<=315) and (targe!=target) and (targe!=target_r){target_l=targe;left=1;}   
-    target_l=instance_nearest(x+lengthdir_x(64,direction+90),y+lengthdir_y(64,direction+90),obj_p_ship);
-    target_r=instance_nearest(x+lengthdir_x(64,direction+270),y+lengthdir_y(64,direction+270),obj_p_ship);
-     
-    if (collision_line(x,y,x+lengthdir_x(2000,direction),y+lengthdir_y(2000,direction),obj_p_ship,0,1)) then front=1;
-    
-    
-    var f, facing, ammo, range, wep, dam, gg;f=0;facing="";ammo=0;range=0;wep="";dam=0;gg=0;
-    
-    
-    for (var i=0;i<array_length(weapon);i++){
-        fire_ship_weapon(i);
-    }
+
+    ship_shoot_weapons();
     
     
 }

@@ -887,6 +887,7 @@
     {"id":{"name":"scr_ship_combat_data","path":"scripts/scr_ship_combat_data/scr_ship_combat_data.yy",},},
     {"id":{"name":"scr_ship_count","path":"scripts/scr_ship_count/scr_ship_count.yy",},},
     {"id":{"name":"scr_ship_occupants","path":"scripts/scr_ship_occupants/scr_ship_occupants.yy",},},
+    {"id":{"name":"scr_ship_weapon_struct","path":"scripts/scr_ship_weapon_struct/scr_ship_weapon_struct.yy",},},
     {"id":{"name":"scr_shoot","path":"scripts/scr_shoot/scr_shoot.yy",},},
     {"id":{"name":"scr_special_view","path":"scripts/scr_special_view/scr_special_view.yy",},},
     {"id":{"name":"scr_specialist_point_handler","path":"scripts/scr_specialist_point_handler/scr_specialist_point_handler.yy",},},

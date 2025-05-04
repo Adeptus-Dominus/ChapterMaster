@@ -282,7 +282,7 @@ function new_player_ship(type, start_loc="home", new_name=""){
         obj_ini.ship_wep[index,3]="Thunderhawk Launch Bays";
         obj_ini.ship_wep_facing[index,3]="special";
         obj_ini.ship_wep_condition[index,3]="";
-        obj_ini.ship_wep[index,4]="Torpedo Tubes";
+        obj_ini.ship_wep[index,4]="Torpedoes";
         obj_ini.ship_wep_facing[index,4]="front";
         obj_ini.ship_wep_condition[index,4]="";
         obj_ini.ship_wep[index,5]="Macro Bombardment Cannons";
@@ -434,7 +434,7 @@ function ship_bombard_score(ship_id){
 		"Plasma Cannon" : {
 			value : 4
 		},
-		"Torpedo Tubes" : {
+		"Torpedoes" : {
 			value : 1
 		}
 	}

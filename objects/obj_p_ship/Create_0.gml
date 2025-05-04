@@ -47,13 +47,15 @@ shields=1;
 maxshields=1;
 armour_front=0;
 armour_other=0;
-weapons=0;
+weapons=[];
 turrets=0;
 fighters=0;
 bombers=0;
 thunderhawks=0;
 boarders=0;
 board_cooldown=0;
+
+ai_type = "player";
 
 weapon = array_create(8, "");
 weapon_facing=array_create(8, "");
