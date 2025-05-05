@@ -67,14 +67,6 @@ function start_slowing_telemetry(distance_to_target, deceleration){
 
 }
 
-function cooldown_ship_weapons(){
-	for (var i=0;i<array_length(cooldown);i++){
-        if (cooldown[i]>0){
-            cooldown[i]--;
-        }
-    }
-}
-
 
 function destroy_ship_and_leave_husk(){
     image_alpha=0.5;

@@ -13,7 +13,7 @@ global.ship_weapons_stats = {
 		bullet_speed : 15,
 		dam : 30,
 		firing_arc : 3,
-		Plasma bombard_value :4,	
+		bombard_value :4,	
 	},
 	"Nova Cannon": {
 		range : 1500,

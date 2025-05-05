@@ -160,9 +160,10 @@ function setup_player_combat_ship(){
 	ship_colour=obj_controller.body_colour_replace;
 	max_speed = obj_ini.ship_speed[ship_id];
     
-    weapons = obj_ini.ship_weapons;
-
-
+    weapons = obj_ini.ship_weapons[ship_id];
+    for (var i=0;i<array_length(weapons);i++){
+    	weapons[i].ship = id;
+    }
 
 	if (class="Battle Barge"){
 	    turrets=3;

@@ -268,7 +268,6 @@ function new_player_ship(type, start_loc="home", new_name=""){
         obj_ini.ship_turning[index]=45;
         obj_ini.ship_front_armour[index]=6;
         obj_ini.ship_other_armour[index]=6;
-        obj_ini.ship_weapons[index]=5;
         obj_ini.ship_shields[index]=12;
         add_weapon_to_ini_ship(index, "Weapons Battery", {facing : "left"});
         add_weapon_to_ini_ship(index, "Weapons Battery", {facing : "right"});
@@ -312,7 +311,6 @@ function new_player_ship(type, start_loc="home", new_name=""){
         obj_ini.ship_turning[index]=90;
         obj_ini.ship_front_armour[index]=5;
         obj_ini.ship_other_armour[index]=5;
-        obj_ini.ship_weapons[index]=1;
         obj_ini.ship_shields[index]=1;
         add_weapon_to_ini_ship(index, "Light Weapons Battery");
 
@@ -330,7 +328,6 @@ function new_player_ship(type, start_loc="home", new_name=""){
         obj_ini.ship_turning[index]=90;
         obj_ini.ship_front_armour[index]=5;
         obj_ini.ship_other_armour[index]=5;
-        obj_ini.ship_weapons[index]=2;
         obj_ini.ship_shields[index]=1;
         add_weapon_to_ini_ship(index, "Torpedoes");
         add_weapon_to_ini_ship(index, "Light Weapons Battery");
@@ -353,7 +350,7 @@ function new_player_ship(type, start_loc="home", new_name=""){
         obj_ini.ship_turning[index]=60;
         obj_ini.ship_front_armour[index]=8;
         obj_ini.ship_other_armour[index]=8;
-        obj_ini.ship_weapons[index]=4;
+
         obj_ini.ship_shields[index]=24;
         add_weapon_to_ini_ship(index, "Lance Battery", {facing : "right"});
         add_weapon_to_ini_ship(index, "Lance Battery",{facing : "left"});

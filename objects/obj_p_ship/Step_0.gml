@@ -55,7 +55,6 @@ if (hp<=0) and (x>-5000){
 }
 if (hp>0) and (instance_exists(target)){
     is_targeted();
-    cooldown_ship_weapons();
 
     if (class="Apocalypse Class Battleship") or (class="Gloriana"){
         o_dist=500;
