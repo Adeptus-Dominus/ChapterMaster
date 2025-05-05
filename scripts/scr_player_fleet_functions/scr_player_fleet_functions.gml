@@ -22,6 +22,7 @@ function init_player_fleet_arrays(){
 
 	ship_weapons = [];
 
+	ship_data = [];
 	ship_capacity=[];
 	ship_carrying=[];
 	ship_contents=[];

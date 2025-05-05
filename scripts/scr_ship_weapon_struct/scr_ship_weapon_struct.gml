@@ -18,18 +18,7 @@ global.ship_weapon_defualts  = {
 	condition : "fuly_functional",
 	bombard_value : 0
 }
-function move_data_to_current_scope(struct, overide=true){
-	var _data_names = struct_get_names(struct);
-	for (var i=0;i<array_length(_data_names);i++){
-		if (overide){
-			self[$_data_names[i]] = struct[$ _data_names[i]];
-		} else {
-			if (!struct_exists(self, _data_names[i])){
-				self[$_data_names[i]] = struct[$ _data_names[i]];
-			}
-		}
-	}
-}
+
 
 function ShipWeapon(weapon_name, overide_data={}) constructor{
 	if (struct_exists(global.ship_weapons_stats, weapon_name)){
@@ -132,12 +121,12 @@ function ShipWeapon(weapon_name, overide_data={}) constructor{
             _flyer.direction=ship.direction;
 		}else if (ship.ai_type = "allies"){
 			var _flyer = instance_create(_launch_x,_launch_y,obj_al_in);
-	        _flyer.direction=self.direction;
-	        _flyer.owner=self.owner;		
+	        _flyer.direction=ship.direction;
+	        _flyer.owner=ship.owner;		
 		} else {
 			var _flyer = instance_create(_launch_x,_launch_y,obj_en_in);
-	        _flyer.direction=self.direction;
-	        _flyer.owner=self.owner;	
+	        _flyer.direction=ship.direction;
+	        _flyer.owner=ship.owner;	
 		}
 	}
 

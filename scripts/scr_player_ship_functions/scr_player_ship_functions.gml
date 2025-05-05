@@ -151,6 +151,7 @@ function new_player_ship_defaults(){
 		array_push(ship_carrying,0);
 		array_push(ship_contents, "");
 		array_push(ship_turrets,0);
+		array_push(ship_data,new ShipStruct());
 	}
 	return array_length(obj_ini.ship)-1;
 }
@@ -240,6 +241,10 @@ function loose_ship_to_warp_event(){
 	}	
 }
 
+function ShipStruct() constructor{
+	features = [];
+}
+
 //TODO make method for setting ship weaponry
 function new_player_ship(type, start_loc="home", new_name=""){
     var ship_names="",index=0;
@@ -248,8 +253,12 @@ function new_player_ship(type, start_loc="home", new_name=""){
     for(var k=0; k<=200; k++){
         if (new_name==""){
             new_name=global.name_generator.generate_imperial_ship_name();
-            if (array_contains(obj_ini.ship,new_name)) then new_name="";
-        } else {break};
+            if (array_contains(obj_ini.ship,new_name)){
+            	new_name="";
+            }
+        } else {
+        	break
+        };
     }
     if (start_loc == "home") then start_loc = obj_ini.home_name;
     obj_ini.ship[index]=new_name;
@@ -269,8 +278,8 @@ function new_player_ship(type, start_loc="home", new_name=""){
         obj_ini.ship_front_armour[index]=6;
         obj_ini.ship_other_armour[index]=6;
         obj_ini.ship_shields[index]=12;
-        add_weapon_to_ini_ship(index, "Weapons Battery", {facing : "left"});
-        add_weapon_to_ini_ship(index, "Weapons Battery", {facing : "right"});
+        add_weapon_to_ini_ship(index, "Weapons Battery", {facing : "left", firing_arc: 20});
+        add_weapon_to_ini_ship(index, "Weapons Battery", {facing : "right", firing_arc: 20});
         add_weapon_to_ini_ship(index, "Light Weapons Battery", {facing : "front"});
         add_weapon_to_ini_ship(index, "Thunderhawk Launch Bays");
         add_weapon_to_ini_ship(index, "Macro Bombardment Cannons");
