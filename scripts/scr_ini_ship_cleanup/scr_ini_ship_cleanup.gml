@@ -52,7 +52,25 @@ function scr_kill_ship(index){
 						array_delete(_units_on_ship, 0, 1);
 					}
 				}
-			}				
+			}	
+			var _index = index;
+			with (obj_p_fleet){
+				for (var i=0;i<array_length(escort_num);i++){
+					if (escort_num[i] >_index ){
+						escort_num[i]--;
+					}
+				}
+				for (var i=0;i<array_length(capital_num);i++){
+					if (capital_num[i] >_index ){
+						capital_num[i]--;
+					}					
+				}
+				for (var i=0;i<array_length(frigate_num);i++){
+					if (frigate_num[i] >_index ){
+						frigate_num[i]--;
+					}					
+				}								
+			}						
 			array_delete(ship,index,1);
 			array_delete(ship_uid,index,1);
 			array_delete(ship_owner,index,1);
