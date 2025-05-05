@@ -16,10 +16,12 @@ function PlanetData(planet, system) constructor{
 
     self.planet = planet;
     self.system = system;
+    x = system.x;
+    y = system.y;
     player_disposition = system.dispo[planet];
     planet_type = system.p_type[planet];
     operatives = system.p_operatives[planet];
-    features =system.p_feature[planet];
+    features = system.p_feature[planet];
     current_owner = system.p_owner[planet];
     origional_owner = system.p_first[planet];
     population = system.p_population[planet];
@@ -45,11 +47,15 @@ function PlanetData(planet, system) constructor{
     }
 
     //assumes a large pop figure and changes down if small pop planet
-    static population_small_conversion= function(pop_value){
+    static population_small_conversion = function(pop_value){
     	if (!large_population){
     		pop_value *= large_pop_conversion;
     	}
     	return pop_value;
+    }
+
+    static send_colony_ship = function(target, targ_planet, type){
+        new_colony_fleet(system, planet, target, targ_planet, type);
     }
 
     static return_to_first_owner = function(allow_player = false){
@@ -144,6 +150,223 @@ function PlanetData(planet, system) constructor{
 		handle_exception(_exception);
 	}
 
+	static add_forces = function(faction, val){
+		planet_forces[faction] = clamp(planet_forces[faction]+val,0,12);
+		var _new_val = planet_forces[faction];
+		switch (faction){
+			case eFACTION.Ork:
+				system.p_orks[planet] = _new_val;
+				break;
+		}
+	}
+
+    static grow_ork_forces = function(){
+        var contin=0;
+        var rando=roll_dice(1,100);// This part handles the spreading
+        // if (rando<30){
+        var _non_deads = planets_without_type("dead", system);
+
+        var _has_warboss = has_feature(P_features.OrkWarboss);
+        var _has_stronghold = has_feature(P_features.OrkStronghold);
+        var _build_ships = false;
+        if (_has_stronghold){
+            var _stronghold = get_features(P_features.OrkStronghold)[0];
+        }
+
+        if (_has_warboss){
+            var _warboss = get_features(P_features.OrkWarboss)[0];
+            _warboss.turns_static++;
+        }
+        if (array_length(_non_deads)>0 && rando>40){
+            var _ork_spread_planet = array_random_element(_non_deads);
+            var _orks = planet_forces[eFACTION.Ork]
+            var _ork_target = system.p_orks[_ork_spread_planet];
+            var _spread_orks = (current_owner==eFACTION.Ork &&  ((pdf + guardsmen + planet_forces[8] + planet_forces[10]+planet_forces[1]) == 0 ));
+            if (_spread_orks){
+                // determine maximum Ork presence on the source planet
+                var _ork_max = planet_forces[eFACTION.Ork];
+
+                if (_ork_max<5 && _ork_target<2) then  system.p_orks[_ork_spread_planet]++;
+                if (_orks>4 && _ork_target<3){
+                    system.p_orks[_ork_spread_planet]++;
+                    if (_ork_target<3){
+                        system.p_orks[_ork_spread_planet]++;
+                        add_forces(eFACTION.Ork, -1);
+                    }
+                }
+
+            }
+        }
+        contin=0;
+        rando=roll_dice(1,100);// This part handles the ship building
+        if (population>0 && pdf==0 && guardsmen==0 && planet_forces[10]==0) and (planet_forces[eFACTION.Tau]==0){
+        	if (!large_population){
+				set_population(population*0.97);
+			}else {
+				edit_population(-0.01);
+			}
+        	
+        };
+    
+        var enemies_present=false;
+        with (system){
+	        for (var n=0;n<array_length(_non_deads);n++){
+	        	var plan = _non_deads[n];
+
+	            if (planets>=1) and ((p_pdf[plan]>0) or (p_guardsmen[plan]>0) or (p_traitors[plan]>0) or (p_tau[plan]>0)){
+	            	enemies_present=true;
+	            }
+	        }
+	    }
+
+        if (_has_warboss && !_has_stronghold){
+            rando=roll_dice(1,100, "low");
+            if (rando<30){
+                add_feature(P_features.OrkStronghold);
+            }
+        } else {
+            if (_has_stronghold){
+                growth = 0.01;
+                if (_has_warboss){
+                    growth *= 2;
+                }
+                if (_stronghold.tier<planet_forces[eFACTION.Ork]){
+                    _stronghold.tier += growth;
+                }
+            }
+        }
+
+        if (!enemies_present){
+            rando=roll_dice(1,200, "low");
+            if (_has_warboss){
+                rando -= 20;
+            }
+            if (_has_stronghold){
+                rando -= _stronghold.tier*5;
+            }
+            if (obj_controller.known[eFACTION.Ork]>0) then rando-=10;// Empire bonus, was 15 before
+        
+            // Check for industrial facilities
+            var fleet_buildable = ((planet_type!="Dead" && planet_type!="Lava") || _has_warboss || _has_stronghold);
+            if (fleet_buildable && planet_forces[eFACTION.Ork]>=4){// Used to not have Ice either
+
+                if (instance_exists(obj_p_fleet)){
+                    var ppp=instance_nearest(x,y,obj_p_fleet);
+                    if (point_distance(x,y,ppp.x,ppp.y)<50) and (ppp.action=""){
+                    	exit;
+                    };
+                }
+                if (planet_type == "Forge"){
+                    rando-=80;
+                } else if (planet_type == "Hive" || planet_type == "Temperate"){
+                	rando-=30;
+                }else if (planet_type == "Agri"){
+                	rando-=10;
+                }
+                var _ork_fleet = scr_orbiting_fleet(eFACTION.Ork, system); 
+                if (_ork_fleet=="none"){
+                	if (rando<=20){
+                		new_ork_fleet(x,y);
+                	}
+                } else {
+
+                	_build_ships = true;
+
+                }              
+            } 
+        }
+        if (_build_ships){
+            var _pdata = self;
+            with (_ork_fleet){
+            // Increase ship number for this object?
+                var rando=irandom(101);
+                if (obj_controller.known[eFACTION.Ork]>0) then rando-=10;
+                var _planet_type = _pdata.planet_type;
+                if (_planet_type=="Forge"){
+                    rando-=20;
+                } else if (_planet_type=="Hive"){
+                    rando-=10;
+                }else if (_planet_type=="Shrine" || _planet_type=="Temperate"){
+                    rando-=5;
+                }
+                if (rando<=15){// was 25
+                    rando=choose(1,1,1,1,1,1,1,2,2,2);
+                    var _big_stronghold = false
+                    if (_has_stronghold){
+                        if (_stronghold.tier>=2){
+                            _big_stronghold = true;
+                        }
+                    }
+                    if (_planet_type=="Forge" || _big_stronghold || _has_warboss){
+                        if (!irandom(10)){
+                            rando = 3;
+                        }
+                    }else if (_has_stronghold || _planet_type=="Hive"){
+                        if (!irandom(30)){
+                            rando = 3;
+                        }
+                    }
+                    if (capital_number<=0){
+                        rando = 3;
+                    }
+                    switch(rando){
+                        case 3:
+                            capital_number+=1;
+                            break;
+                        case 2:
+                            frigate_number+=1;
+                            break;
+                        case 1:
+                            escort_number+=1;
+                            break;
+
+                    }
+                }
+                var ii=0;
+                ii+=capital_number;
+                ii+=round((frigate_number/2));
+                ii+=round((escort_number/4));
+                if (ii<=1) then ii=1;
+                image_index=ii; 
+                //if big enough flee bugger off to new star
+                if (image_index>=5){
+                    instance_deactivate_object(_pdata.system);
+                    with(obj_star){
+                        if (is_dead_star()){
+                            instance_deactivate_object(id);
+                        } else {
+                            if (owner == eFACTION.Ork || array_contains(p_owner, eFACTION.Ork)){
+                                instance_deactivate_object(id);
+                            }                   
+                        }
+                    }
+                    var new_wagh_star = instance_nearest(x,y,obj_star);
+                    if (instance_exists(new_wagh_star)){
+                        action_x=new_wagh_star.x;
+                        action_y=new_wagh_star.y;
+                        action = "";
+                        set_fleet_movement();
+                    }
+                
+                }
+                instance_activate_object(obj_star);
+            }
+        }
+        if (_has_warboss){
+            rando=roll_dice(1,100)+10;
+            var _ork_fleet = scr_orbiting_fleet(eFACTION.Ork, system);
+            if (_ork_fleet!="none" && rando <  _warboss.turns_static){
+                _warboss.turns_static = 0;
+                _ork_fleet.cargo_data.ork_warboss = _warboss;
+                delete_feature(P_features.OrkWarboss);
+                if (!_warboss.player_hidden){
+                     scr_alert("red","ork",$"{obj_controller.faction_leader[0]} departs {name()} as his waaagh gains momentum",0,0);
+                }
+            }
+        }
+    
+    }
+
     deamons = system.p_demons[planet];
     chaos_forces = system.p_chaos[planet];
 
@@ -215,7 +438,9 @@ function PlanetData(planet, system) constructor{
     }
 
     static add_feature = function(feature_type){
-    	array_push(system.p_feature[planet], new NewPlanetFeature(feature_type));
+    	var new_feature =  new NewPlanetFeature(feature_type);
+    	array_push(system.p_feature[planet], new_feature);
+    	return new_feature;
     }
 
     static has_upgrade = function(feature){
@@ -234,6 +459,8 @@ function PlanetData(planet, system) constructor{
     static delete_feature = function(feature){
     	delete_features(system.p_feature[planet], feature);
     }
+
+    static bombard = scr_bomb_world;
 
     static get_local_apothecary_points = function() {
         var _system_point_use = obj_controller.specialist_point_handler.point_breakdown.systems;

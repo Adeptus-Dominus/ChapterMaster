@@ -105,6 +105,10 @@ function scr_cheatcode(argument0) {
 				case "chaosfleetspawn":
 					spawn_chaos_warlord();
 					break;
+				case "waaagh":
+
+					init_ork_waagh(true);
+					break;
 				case "neworkfleet":
 					var p_fleet = get_largest_player_fleet();
 					with (instance_nearest(p_fleet.x, p_fleet.y, obj_star)) {

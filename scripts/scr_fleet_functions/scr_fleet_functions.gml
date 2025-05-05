@@ -377,7 +377,7 @@ function scr_orbiting_fleet(faction, system="none"){
 	var xx = system == "none" ? x : system.x;
 	var yy = system == "none" ? y : system.y;
 	with (obj_en_fleet){
-		if (x=xx && y==yy){
+		if (x==xx && y==yy){
 			var _valid = false;
 			if (_faction_list){
 				_valid = array_contains(faction, owner);

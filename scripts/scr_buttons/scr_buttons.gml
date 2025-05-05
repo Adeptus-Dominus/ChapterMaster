@@ -437,6 +437,7 @@ function radio_set(options_array, title)constructor{
 	y_gap = 5;
 	x1 = 0;
 	y1 = 0;
+	draw_title = true;
 	changed = false;
 	max_width = 0;
 	max_height = 0;
@@ -448,7 +449,10 @@ function radio_set(options_array, title)constructor{
 
 	static update = item_data_updater;
 	static draw = function(){
-		draw_text(x1, y1, title);
+		if (draw_title){
+			draw_text(x1, y1, title);
+		}
+
 		changed = false;
 		var _start_current_selection = current_selection;
 		var _prev_x = x1;

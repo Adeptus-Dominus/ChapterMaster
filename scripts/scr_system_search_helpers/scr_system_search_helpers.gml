@@ -77,6 +77,24 @@ function scr_get_planet_with_type(star, type){
 	return -1;
 }
 
+function stars_with_faction_fleets(search_faction){
+    var _stars_with_fleets = {};
+    with (obj_en_fleet){
+        if (owner != search_faction) then continue;
+        if (capital_number+frigate_number+escort_number <= 0){
+            instance_destroy();
+            continue;
+        }
+        if (is_orbiting()){
+            if (struct_exists(_stars_with_fleets, orbiting.name)){
+                array_push(_stars_with_fleets[$orbiting.name],id);
+            } else {
+                _stars_with_fleets[$ orbiting.name] = [id];
+            }
+        }
+    }
+    return _stars_with_fleets;	
+}
 
 function planets_without_type(type,star="none"){
 	var return_planets = [];

@@ -219,7 +219,7 @@ if (max_ships>0)and (instance_exists(obj_star_select)){
                 }
             }                        
             // Start bombardment here
-            scr_bomb_world(p_data.system,p_data.planet,target,bomb_score,str);
+            p_data.bombard(target,bomb_score,str);
         }        
     }
     var cancel_button = draw_unit_buttons([bomb_window.x2-166, bomb_window.y2-40],"Cancel",[1,1],#34bc75,fa_center,fnt_40k_14b);

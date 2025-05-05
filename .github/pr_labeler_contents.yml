@@ -40,3 +40,13 @@ labels:
   title: "^perf"
 - label: "Type: Performance"
   body: "(?i)(\\[performance\\]|\\[perf\\])"
+
+- label: "Type: Revert"
+  title: "^revert"
+- label: "Type: Revert"
+  body: "(?i)\\[revert\\]"
+
+- label: "Type: Build"
+  title: "^build"
+- label: "Type: Build"
+  body: "(?i)\\[build\\]"
