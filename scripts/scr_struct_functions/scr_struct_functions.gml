@@ -8,6 +8,31 @@ function DeepCloneStruct(clone_struct) {
     return variable_clone(clone_struct);
 }
 
+function struct_load(_destination, _origin) {
+    try {
+        var _keys = struct_get_names(_origin);
+        for (var k = 0, l = array_length(_keys); k < l; k++){
+            var _key = _keys[k];
+            if (!struct_exists(_destination, _key)) {
+                log_error($"A key {_key} doesn't exist at destination!")
+            }
+    
+            var _value = _origin[$ _key];    
+            struct_set(_destination, _key, _value);
+        }
+    } catch (_exception) {
+        handle_exception(_exception);
+    }
+}
+
+function struct_overwrite(_destination, _origin) {
+    var _keys = struct_get_names(_origin);
+    for (var k = 0, l = array_length(_keys); k < l; k++){
+        var _key = _keys[k];
+        var _value = _origin[$ _key];
+        struct_set(_destination, _key, _value);
+    }
+}
 
 function CountingMap() constructor {
     map = {};

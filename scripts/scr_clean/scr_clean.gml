@@ -83,7 +83,7 @@ function scr_clean(target_object, weapon_data) {
 
             if (target_type == eUNIT_TYPE.Vehicle && array_empty(valid_vehicles)) {
                 target_type = eUNIT_TYPE.Infantry;
-            } else if (target_type = eUNIT_TYPE.Normal && array_empty(valid_marines)) {
+            } else if (target_type = eUNIT_TYPE.Infantry && array_empty(valid_marines)) {
                 target_type = eUNIT_TYPE.Vehicle;
             }
 

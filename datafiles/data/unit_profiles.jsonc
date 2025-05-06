@@ -2,122 +2,122 @@
     "malcadon_spyrer": {
         "display_name": "Malcadon Spyrer",
         "armour": 35,
-        "health": 200,
+        "health_points": 200,
         "resistance": 1,
         "weapons": [
             "Web Spinner",
             "Venom Claws"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "greater_daemon_of_khorne": {
         "display_name": "Greater Daemon of Khorne",
         "armour": 12,
-        "health": 700,
+        "health_points": 700,
         "resistance": 0.5,
         "weapons": [
             "Khorne Demon Melee"
         ],
         "unit_type": 1,
-        "unit_size": 3
+        "size": 3
     },
     "greater_daemon_of_slaanesh": {
         "display_name": "Greater Daemon of Slaanesh",
         "armour": 10,
-        "health": 500,
+        "health_points": 500,
         "resistance": 0.25,
         "weapons": [
             "Demon Melee",
             "Lash Whip"
         ],
         "unit_type": 1,
-        "unit_size": 3
+        "size": 3
     },
     "greater_daemon_of_nurgle": {
         "display_name": "Greater Daemon of Nurgle",
         "armour": 8,
-        "health": 900,
+        "health_points": 900,
         "resistance": 0.6,
         "weapons": [
             "Demon Melee",
             "Nurgle Vomit"
         ],
         "unit_type": 1,
-        "unit_size": 3
+        "size": 3
     },
     "greater_daemon_of_tzeentch": {
         "display_name": "Greater Daemon of Tzeentch",
         "armour": 10,
-        "health": 600,
+        "health_points": 600,
         "resistance": 0.75,
         "weapons": [
             "Demon Melee",
             "Witchfire"
         ],
         "unit_type": 1,
-        "unit_size": 3
+        "size": 3
     },
     "bloodletter": {
         "display_name": "Bloodletter",
         "armour": 10,
-        "health": 200,
+        "health_points": 200,
         "resistance": 0.4,
         "weapons": [
             "Bloodletter Melee"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "daemonette": {
         "display_name": "Daemonette",
         "armour": 8,
-        "health": 150,
+        "health_points": 150,
         "resistance": 0.3,
         "weapons": [
             "Daemonette Melee"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "pink_horror": {
         "display_name": "Pink Horror",
         "armour": 8,
-        "health": 100,
+        "health_points": 100,
         "resistance": 0.5,
         "weapons": [
             "Eldritch Fire"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "plaguebearer": {
         "display_name": "Plaguebearer",
         "armour": 5,
-        "health": 300,
+        "health_points": 300,
         "resistance": 0.4,
         "weapons": [
             "Plaguebearer Melee"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "helbrute": {
         "display_name": "Helbrute",
         "armour": 40,
-        "health": 300,
+        "health_points": 300,
         "resistance": 0.5,
         "weapons": [
             "Power Fist",
             "Multi-Melta"
         ],
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "soul_grinder": {
         "display_name": "Soul Grinder",
         "armour": 30,
-        "health": 350,
+        "health_points": 350,
         "resistance": 0.5,
         "weapons": [
             "Warpsword",
@@ -125,103 +125,103 @@
             "Battle Cannon"
         ],
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "maulerfiend": {
         "display_name": "Maulerfiend",
         "armour": 30,
-        "health": 250,
+        "health_points": 250,
         "resistance": 0.5,
         "weapons": [
             "Maulerfiend Claws"
         ],
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "imperial_guardsman": {
         "display_name": "Imperial Guardsman",
         "armour": 40,
-        "health": 5,
+        "health_points": 5,
         "resistance": 1,
         "weapons": [],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "heavy_weapons_team": {
         "display_name": "Heavy Weapons Team",
         "armour": 10,
-        "health": 100,
+        "health_points": 100,
         "resistance": 0.9,
         "weapons": [
             "Heavy Bolter"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "ogryn": {
         "display_name": "Ogryn",
         "armour": 10,
-        "health": 120,
+        "health_points": 120,
         "resistance": 0.75,
         "weapons": [
             "Ripper Gun",
             "Ogryn Melee"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "chimera": {
         "display_name": "Chimera",
         "armour": 40,
-        "health": 200,
+        "health_points": 200,
         "resistance": 0.75,
         "weapons": [
             "Multi-Laster",
             "Heavy Bolter"
         ],
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "basilisk": {
         "display_name": "Basilisk",
         "armour": 20,
-        "health": 150,
+        "health_points": 150,
         "resistance": 1,
         "weapons": [
             "Earthshaker Cannon",
             "Storm Bolter"
         ],
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "leman_russ_battle_tank": {
         "display_name": "Leman Russ Battle Tank",
         "armour": 45,
-        "health": 250,
+        "health_points": 250,
         "resistance": 0.25,
         "weapons": [
             "Battle Cannon",
             "Lascannon"
         ],
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "leman_russ_demolisher": {
         "display_name": "Leman Russ Demolisher",
         "armour": 40,
-        "health": 250,
+        "health_points": 250,
         "resistance": 0.25,
         "weapons": [
             "Demolisher Cannon",
             "Lascannon"
         ],
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "vendetta": {
         "display_name": "Vendetta",
         "armour": 20,
-        "health": 300,
+        "health_points": 300,
         "resistance": 0.25,
         "weapons": [
             "Twin-Linked Lascannon",
@@ -229,35 +229,35 @@
             "Twin-Linked Lascannon"
         ],
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "thallax": {
         "display_name": "Thallax",
         "armour": 30,
-        "health": 80,
+        "health_points": 80,
         "resistance": 1,
         "weapons": [
             "Lightning Gun",
             "Thallax Melee"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "praetorian_servitor": {
         "display_name": "Praetorian Servitor",
         "armour": 25,
-        "health": 150,
+        "health_points": 150,
         "resistance": 1,
         "weapons": [
             "Phased Plasma-fusil"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "adeptas_leader": {
         "display_name": "Adeptas Leader",
         "armour": 10,
-        "health": 200,
+        "health_points": 200,
         "resistance": 0.25,
         "weapons": [
             "Blessed Weapon",
@@ -265,80 +265,80 @@
             "Infernus Pistol"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "palatine": {
         "display_name": "Palatine",
         "armour": 10,
-        "health": 100,
+        "health_points": 100,
         "resistance": 0.5,
         "weapons": [
             "Plasma Pistol",
             "Power Weapon"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "priest": {
         "display_name": "Priest",
         "armour": 0,
-        "health": 50,
+        "health_points": 50,
         "resistance": 0.5,
         "weapons": [
             "Laspistol"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "arco_flagellent": {
         "display_name": "Arco-Flagellent",
         "armour": 0,
-        "health": 150,
+        "health_points": 150,
         "resistance": 0.7,
         "weapons": [
             "Electro-Flail"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "celestian": {
         "display_name": "Celestian",
         "armour": 10,
-        "health": 60,
+        "health_points": 60,
         "resistance": 0.5,
         "weapons": [
             "Bolter",
             "Chainsword"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "mistress": {
         "display_name": "Mistress",
         "armour": 10,
-        "health": 60,
+        "health_points": 60,
         "resistance": 0.5,
         "weapons": [
             "Neural Whip"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "sister_repentia": {
         "display_name": "Sister Repentia",
         "armour": 0,
-        "health": 75,
+        "health_points": 75,
         "resistance": 0.75,
         "weapons": [
             "Eviscerator"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "battle_sister": {
         "display_name": "Battle Sister",
         "armour": 10,
-        "health": 60,
+        "health_points": 60,
         "resistance": 0.75,
         "weapons": [
             "Bolter",
@@ -346,36 +346,36 @@
             "Sarissa"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "seraphim": {
         "display_name": "Seraphim",
         "armour": 10,
-        "health": 60,
+        "health_points": 60,
         "resistance": 0.6,
         "weapons": [
             "Seraphim Pistols",
             "Chainsword"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "dominion": {
         "display_name": "Dominion",
         "armour": 10,
-        "health": 60,
+        "health_points": 60,
         "resistance": 0.75,
         "weapons": [
             "Meltagun",
             "Meltabomb"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "retributor": {
         "display_name": "Retributor",
         "armour": 10,
-        "health": 60,
+        "health_points": 60,
         "resistance": 0.6,
         "weapons": [
             "Heavy Bolter",
@@ -383,71 +383,71 @@
             "Bolt Pistol"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "follower": {
         "display_name": "Follower",
         "armour": 0,
-        "health": 30,
+        "health_points": 30,
         "resistance": 1,
         "weapons": [
             "Laspistol",
             "melee0.5"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "adeptas_rhino": {
         "display_name": "Adeptas Rhino",
         "armour": 40,
-        "health": 200,
+        "health_points": 200,
         "resistance": 0.75,
         "weapons": [
             "Storm Bolter",
             "Storm Bolter"
         ],
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "adeptas_chimera": {
         "display_name": "Adeptas Chimera",
         "armour": 40,
-        "health": 200,
+        "health_points": 200,
         "resistance": 0.75,
         "weapons": [
             "Heavy Flamer",
             "Heavy Flamer"
         ],
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "immolator": {
         "display_name": "Immolator",
         "armour": 40,
-        "health": 300,
+        "health_points": 300,
         "resistance": 0.35,
         "weapons": [
             "Twin Linked Heavy Flamers"
         ],
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "exorcist": {
         "display_name": "Exorcist",
         "armour": 40,
-        "health": 200,
+        "health_points": 200,
         "resistance": 0.55,
         "weapons": [
             "Exorcist Missile Launcher",
             "Storm Bolter"
         ],
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "penitent_engine": {
         "display_name": "Penitent Engine",
         "armour": 35,
-        "health": 150,
+        "health_points": 150,
         "resistance": 0.5,
         "weapons": [
             "Close Combat Weapon",
@@ -455,43 +455,43 @@
             "Heavy Flamer"
         ],
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "eldar_leader": {
         "display_name": "Eldar Leader",
         "armour": 10,
-        "health": 150,
+        "health_points": 150,
         "resistance": 0.5,
         "weapons": [
             "Singing Spear",
             "Singing Spear Throw"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "autarch": {
         "display_name": "Autarch",
         "armour": 12,
-        "health": 150,
+        "health_points": 150,
         "resistance": 0.75,
         "weapons": [
             "Power Weapon",
             "Fusion Gun"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "farseer": {
         "display_name": "Farseer",
         "armour": 10,
-        "health": 120,
+        "health_points": 120,
         "resistance": 0.6,
         "weapons": [
             "Singing Spear",
             "Singing Spear Throw"
         ],
         "unit_type": 0,
-        "unit_size": 1,
+        "size": 1,
         "abilities": [
             "farseer_powers"
         ]
@@ -499,86 +499,86 @@
     "warlock": {
         "display_name": "Warlock",
         "armour": 10,
-        "health": 80,
+        "health_points": 80,
         "resistance": 0.75,
         "weapons": [
             "Witchblade",
             "Psyshock"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "avatar": {
         "display_name": "Avatar",
         "armour": 40,
-        "health": 300,
+        "health_points": 300,
         "resistance": 0.55,
         "weapons": [
             "Wailing Doom",
             "Avatar Smite"
         ],
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "mighty_avatar": {
         "display_name": "Mighty Avatar",
         "armour": 50,
-        "health": 450,
+        "health_points": 450,
         "resistance": 0.5,
         "weapons": [
             "Wailing Doom",
             "Avatar Smite"
         ],
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "godly_avatar": {
         "display_name": "Godly Avatar",
         "armour": 60,
-        "health": 600,
+        "health_points": 600,
         "resistance": 0.4,
         "weapons": [
             "Wailing Doom",
             "Avatar Smite"
         ],
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "ranger": {
         "display_name": "Ranger",
         "armour": 8,
-        "health": 40,
+        "health_points": 40,
         "resistance": 0.9,
         "weapons": [
             "Ranger Long Rifle",
             "Shuriken Pistol"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "eldar_pathfinder": {
         "display_name": "Eldar Pathfinder",
         "armour": 8,
-        "health": 60,
+        "health_points": 60,
         "resistance": 0.8,
         "weapons": [
             "Pathfinder Long Rifle",
             "Melee1"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "dire_avenger": {
         "display_name": "Dire Avenger",
         "armour": 10,
-        "health": 40,
+        "health_points": 40,
         "resistance": 1,
         "weapons": [
             "Avenger Shuriken Catapult",
             "Melee1"
         ],
         "unit_type": 0,
-        "unit_size": 1,
+        "size": 1,
         "abilities": [
             "shimmershield"
         ]
@@ -586,13 +586,13 @@
     "dire_avenger_exarch": {
         "display_name": "Dire Avenger Exarch",
         "armour": 10,
-        "health": 70,
+        "health_points": 70,
         "resistance": 1,
         "weapons": [
             "Power Weapon"
         ],
         "unit_type": 0,
-        "unit_size": 1,
+        "size": 1,
         "abilities": [
             "shimmershield"
         ]
@@ -600,14 +600,14 @@
     "howling_banshee": {
         "display_name": "Howling Banshee",
         "armour": 8,
-        "health": 40,
+        "health_points": 40,
         "resistance": 0.8,
         "weapons": [
             "Power Weapon",
             "Shuriken Pistol"
         ],
         "unit_type": 0,
-        "unit_size": 1,
+        "size": 1,
         "abilities": [
             "banshee_mask"
         ]
@@ -615,13 +615,13 @@
     "howling_banshee_exarch": {
         "display_name": "Howling Banshee Exarch",
         "armour": 10,
-        "health": 60,
+        "health_points": 60,
         "resistance": 0.75,
         "weapons": [
             "Executioner"
         ],
         "unit_type": 0,
-        "unit_size": 1,
+        "size": 1,
         "abilities": [
             "banshee_mask"
         ]
@@ -629,7 +629,7 @@
     "striking_scorpion": {
         "display_name": "Striking Scorpion",
         "armour": 8,
-        "health": 60,
+        "health_points": 60,
         "resistance": 1,
         "weapons": [
             "Scorpion Chainsword",
@@ -637,12 +637,12 @@
             "Mandiblaster"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "striking_scorpion_exarch": {
         "display_name": "Striking Scorpion Exarch",
         "armour": 10,
-        "health": 80,
+        "health_points": 80,
         "resistance": 1,
         "weapons": [
             "Biting Blade",
@@ -650,12 +650,12 @@
             "Mandiblaster"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "fire_dragon": {
         "display_name": "Fire Dragon",
         "armour": 12,
-        "health": 40,
+        "health_points": 40,
         "resistance": 1,
         "weapons": [
             "Fusion Gun",
@@ -663,30 +663,30 @@
             "Melee1"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "fire_dragon_exarch": {
         "display_name": "Fire Dragon Exarch",
         "armour": 12,
-        "health": 60,
+        "health_points": 60,
         "resistance": 1,
         "weapons": [
             "Firepike",
             "Power Weapon"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "warp_spider": {
         "display_name": "Warp Spider",
         "armour": 8,
-        "health": 40,
+        "health_points": 40,
         "resistance": 0.9,
         "weapons": [
             "Deathspinner"
         ],
         "unit_type": 0,
-        "unit_size": 1,
+        "size": 1,
         "abilities": [
             "warp_jump"
         ]
@@ -694,14 +694,14 @@
     "warp_spider_exarch": {
         "display_name": "Warp Spider Exarch",
         "armour": 10,
-        "health": 60,
+        "health_points": 60,
         "resistance": 0.8,
         "weapons": [
             "Dual Deathspinners",
             "Powerblades"
         ],
         "unit_type": 0,
-        "unit_size": 1,
+        "size": 1,
         "abilities": [
             "warp_jump"
         ]
@@ -709,113 +709,113 @@
     "dark_reaper": {
         "display_name": "Dark Reaper",
         "armour": 10,
-        "health": 40,
+        "health_points": 40,
         "resistance": 1,
         "weapons": [
             "Reaper Launcher",
             "Melee1"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "dark_reaper_exarch": {
         "display_name": "Dark Reaper Exarch",
         "armour": 10,
-        "health": 50,
+        "health_points": 50,
         "resistance": 1,
         "weapons": [
             "Tempest Launcher",
             "Melee1"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "shining_spear": {
         "display_name": "Shining Spear",
         "armour": 10,
-        "health": 75,
+        "health_points": 75,
         "resistance": 0.8,
         "weapons": [
             "Laser Lance",
             "Twin Linked Shuriken Catapult"
         ],
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "guardian": {
         "display_name": "Guardian",
         "armour": 8,
-        "health": 30,
+        "health_points": 30,
         "resistance": 1,
         "weapons": [
             "Shuriken Catapult",
             "Melee1"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "grav_platform": {
         "display_name": "Grav Platform",
         "armour": 10,
-        "health": 60,
+        "health_points": 60,
         "resistance": 1,
         "weapons": [
             "Pulse Laser"
         ],
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "trouper": {
         "display_name": "Trouper",
         "armour": 8,
-        "health": 50,
+        "health_points": 50,
         "resistance": 0.25,
         "weapons": [
             "Power Weapon",
             "Fusion Pistol"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "athair": {
         "display_name": "Athair",
         "armour": 8,
-        "health": 75,
+        "health_points": 75,
         "resistance": 0.25,
         "weapons": [
             "Plasma Pistol",
             "Harlequin's Kiss"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "wraithguard": {
         "display_name": "Wraithguard",
         "armour": 15,
-        "health": 125,
+        "health_points": 125,
         "resistance": 0.7,
         "weapons": [
             "Wraithcannon"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "vyper": {
         "display_name": "Vyper",
         "armour": 40,
-        "health": 100,
+        "health_points": 100,
         "resistance": 0.8,
         "weapons": [
             "Twin Linked Shuriken Catapult",
             "Pulse Laser"
         ],
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "falcon": {
         "display_name": "Falcon",
         "armour": 40,
-        "health": 200,
+        "health_points": 200,
         "resistance": 0.6,
         "weapons": [
             "Pulse Laser",
@@ -823,35 +823,35 @@
             "Bright Lance"
         ],
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "fire_prism": {
         "display_name": "Fire Prism",
         "armour": 40,
-        "health": 200,
+        "health_points": 200,
         "resistance": 0.5,
         "weapons": [
             "Twin Linked Shuriken Catapult",
             "Prism Cannon"
         ],
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "nightspinner": {
         "display_name": "Nightspinner",
         "armour": 40,
-        "health": 200,
+        "health_points": 200,
         "resistance": 0.6,
         "weapons": [
             "Twin Linked Doomweaver"
         ],
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "wraithlord": {
         "display_name": "Wraithlord",
         "armour": 40,
-        "health": 200,
+        "health_points": 200,
         "resistance": 0.5,
         "weapons": [
             "Two Power Fists",
@@ -859,12 +859,12 @@
             "Starcannon"
         ],
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "phantom_titan": {
         "display_name": "Phantom Titan",
         "armour": 50,
-        "health": 800,
+        "health_points": 800,
         "resistance": 0.35,
         "weapons": [
             "Two Power Fists",
@@ -872,244 +872,230 @@
             "Titan Starcannon"
         ],
         "unit_type": 0,
-        "unit_size": 10
-    },
-    "ork_leader": {
-        "display_name": "Ork Leader",
-        "armour": 12,
-        "health": 600,
-        "resistance": 0.5,
-        "weapons": [
-            "Power Klaw",
-            "Rokkit Launcha",
-            "Big Shoota"
-        ],
-        "unit_type": 0,
-        "unit_size": 1,
-        "movement": 1
+        "size": 10
     },
     "warboss": {
         "display_name": "Warboss",
         "armour": 12,
-        "health": 200,
+        "health_points": 200,
         "resistance": 0.75,
         "weapons": [
             "Twin-Linked Shoota",
             "Power Klaw"
         ],
         "unit_type": 1,
-        "unit_size": 2,
-        "movement": 1
+        "size": 2,
+        "movement": 6
     },
     "gretchin": {
         "display_name": "Gretchin",
         "armour": 0,
-        "health": 15,
+        "health_points": 15,
         "resistance": 1,
         "weapons": [
             "Grot Blasta"
         ],
         "unit_type": 1,
-        "unit_size": 0.5,
-        "movement": 1
+        "size": 0.5,
+        "movement": 6
     },
     "slugga_boy": {
         "display_name": "Slugga Boy",
         "armour": 5,
-        "health": 60,
+        "health_points": 60,
         "resistance": 1,
         "weapons": [
             "Choppa",
             "Slugga"
         ],
         "unit_type": 0,
-        "unit_size": 1,
-        "movement": 1
+        "size": 1,
+        "movement": 6
     },
     "shoota_boy": {
         "display_name": "Shoota Boy",
         "armour": 5,
-        "health": 60,
+        "health_points": 60,
         "resistance": 1,
         "weapons": [
             "Choppa",
             "Shoota"
         ],
         "unit_type": 0,
-        "unit_size": 1,
-        "movement": 1
+        "size": 1,
+        "movement": 6
     },
     "mekboy": {
         "display_name": "Mekboy",
         "armour": 12,
-        "health": 100,
+        "health_points": 100,
         "resistance": 0.75,
         "weapons": [
             "Choppa",
             "Slugga"
         ],
         "unit_type": 0,
-        "unit_size": 1,
-        "movement": 1
+        "size": 1,
+        "movement": 6
     },
     "runtherd": {
         "display_name": "Runtherd",
         "armour": 5,
-        "health": 60,
+        "health_points": 60,
         "resistance": 1,
         "weapons": [
             "Choppa",
             "Slugga"
         ],
         "unit_type": 3,
-        "unit_size": 1,
-        "movement": 1
+        "size": 1,
+        "movement": 6
     },
     "nob": {
         "display_name": "Nob",
         "armour": 5,
-        "health": 150,
+        "health_points": 150,
         "resistance": 1,
         "weapons": [
             "Power Klaw",
             "Big Shoota"
         ],
         "unit_type": 0,
-        "unit_size": 1,
-        "movement": 1
+        "size": 1,
+        "movement": 6
     },
     "boss_nob": {
         "display_name": "Boss Nob",
         "armour": 7,
-        "health": 200,
+        "health_points": 200,
         "resistance": 1,
         "weapons": [
             "Big Choppa",
             "Twin-Linked Shoota"
         ],
         "unit_type": 3,
-        "unit_size": 2,
-        "movement": 1
+        "size": 2,
+        "movement": 6
     },
     "meganob": {
         "display_name": "Meganob",
         "armour": 12,
-        "health": 150,
+        "health_points": 150,
         "resistance": 0.6,
         "weapons": [
             "Twin-Linked Shoota",
             "Power Klaw"
         ],
         "unit_type": 1,
-        "unit_size": 2,
-        "movement": 1
+        "size": 2,
+        "movement": 5
     },
     "boss_meganob": {
         "display_name": "Boss Meganob",
         "armour": 12,
-        "health": 150,
+        "health_points": 150,
         "resistance": 0.6,
         "weapons": [
             "Twin-Linked Shoota",
             "Power Klaw"
         ],
         "unit_type": 3,
-        "unit_size": 2,
-        "movement": 1
+        "size": 2,
+        "movement": 5
     },
     "flash_git": {
         "display_name": "Flash Git",
         "armour": 8,
-        "health": 100,
+        "health_points": 100,
         "resistance": 1,
         "weapons": [
             "Snazzgun"
         ],
         "unit_type": 0,
-        "unit_size": 1,
-        "movement": 1
+        "size": 1,
+        "movement": 6
     },
     "kaptin": {
         "display_name": "Kaptin",
         "armour": 8,
-        "health": 100,
+        "health_points": 100,
         "resistance": 1,
         "weapons": [
             "Snazzgun"
         ],
         "unit_type": 3,
-        "unit_size": 1,
-        "movement": 1
+        "size": 1,
+        "movement": 6
     },
     "cybork": {
         "display_name": "Cybork",
         "armour": 8,
-        "health": 125,
+        "health_points": 125,
         "resistance": 0.75,
         "weapons": [
             "Power Klaw",
             "Big Shoota"
         ],
         "unit_type": 0,
-        "unit_size": 1,
-        "movement": 1
+        "size": 1,
+        "movement": 6
     },
     "ard_boy": {
         "display_name": "Ard Boy",
         "armour": 8,
-        "health": 80,
+        "health_points": 80,
         "resistance": 0.9,
         "weapons": [
             "Choppa",
             "Slugga"
         ],
         "unit_type": 0,
-        "unit_size": 1,
-        "movement": 1
+        "size": 1,
+        "movement": 6
     },
     "kommando": {
         "display_name": "Kommando",
         "armour": 10,
-        "health": 125,
+        "health_points": 125,
         "resistance": 0.9,
         "weapons": [
             "Choppa",
             "Slugga"
         ],
         "unit_type": 0,
-        "unit_size": 1,
-        "movement": 1
+        "size": 1,
+        "movement": 6
     },
     "burna_boy": {
         "display_name": "Burna Boy",
         "armour": 5,
-        "health": 80,
+        "health_points": 80,
         "resistance": 1,
         "weapons": [
             "Choppa",
             "Burna"
         ],
         "unit_type": 0,
-        "unit_size": 1,
-        "movement": 1
+        "size": 1,
+        "movement": 6
     },
     "tankbusta": {
         "display_name": "Tankbusta",
         "armour": 5,
-        "health": 80,
+        "health_points": 80,
         "resistance": 1,
         "weapons": [
             "Rokkit Launcha",
             "Tankbusta Bomb"
         ],
         "unit_type": 0,
-        "unit_size": 1,
-        "movement": 1
+        "size": 1,
+        "movement": 6
     },
     "stormboy": {
         "display_name": "Stormboy",
         "armour": 5,
-        "health": 80,
+        "health_points": 80,
         "resistance": 1,
         "weapons": [
             "Choppa",
@@ -1119,13 +1105,13 @@
             "jump"
         ],
         "unit_type": 1,
-        "unit_size": 2,
-        "movement": 1
+        "size": 2,
+        "movement": 12
     },
     "battlewagon": {
         "display_name": "Battlewagon",
         "armour": 80,
-        "health": 800,
+        "health_points": 800,
         "resistance": 1,
         "weapons": [
             "Kannon",
@@ -1135,13 +1121,13 @@
             "Rokkit Launcha"
         ],
         "unit_type": 0,
-        "unit_size": 10,
-        "movement": 1
+        "size": 10,
+        "movement": 10
     },
     "deff_dread": {
         "display_name": "Deff Dread",
         "armour": 60,
-        "health": 500,
+        "health_points": 500,
         "resistance": 1,
         "weapons": [
             "Big Shoota",
@@ -1150,13 +1136,13 @@
             "Power Klaw"
         ],
         "unit_type": 0,
-        "unit_size": 10,
-        "movement": 1
+        "size": 10,
+        "movement": 8
     },
     "xv8_commander": {
         "display_name": "XV8 Commander",
         "armour": 12,
-        "health": 300,
+        "health_points": 300,
         "resistance": 0.5,
         "weapons": [
             "Plasma Rifle",
@@ -1164,149 +1150,149 @@
             "Cyclic Ion Blaster"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "xv8_bodyguard": {
         "display_name": "XV8 Bodyguard",
         "armour": 10,
-        "health": 200,
+        "health_points": 200,
         "resistance": 0.75,
         "weapons": [
             "Plasma Rifle",
             "Burst Rifle"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "xv8_crisis": {
         "display_name": "XV8 Crisis",
         "armour": 10,
-        "health": 150,
+        "health_points": 150,
         "resistance": 0.75,
         "weapons": [
             "Plasma Rifle",
             "Missile Pod"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "xv8_(brightknife)": {
         "display_name": "XV8 (Brightknife)",
         "armour": 10,
-        "health": 150,
+        "health_points": 150,
         "resistance": 0.75,
         "weapons": [
             "Fusion Blaster",
             "Fusion Blaster"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "shield_drone": {
         "display_name": "Shield Drone",
         "armour": 8,
-        "health": 50,
+        "health_points": 50,
         "resistance": 1,
         "weapons": [],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "xv88_broadside": {
         "display_name": "XV88 Broadside",
         "armour": 12,
-        "health": 225,
+        "health_points": 225,
         "resistance": 0.75,
         "weapons": [
             "Smart Missile System",
             "Small Railgun"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "xv25_stealthsuit": {
         "display_name": "XV25 Stealthsuit",
         "armour": 8,
-        "health": 50,
+        "health_points": 50,
         "resistance": 0.75,
         "weapons": [
             "Burst Rifle"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "fire_warrior": {
         "display_name": "Fire Warrior",
         "armour": 8,
-        "health": 30,
+        "health_points": 30,
         "resistance": 1,
         "weapons": [
             "Pulse Rifle"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "tau_pathfinder": {
         "display_name": "Tau Pathfinder",
         "armour": 8,
-        "health": 30,
+        "health_points": 30,
         "resistance": 1,
         "weapons": [
             "Rail Rifle"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "kroot": {
         "display_name": "Kroot",
         "armour": 5,
-        "health": 30,
+        "health_points": 30,
         "resistance": 1,
         "weapons": [
             "Kroot Rifle",
             "Melee2"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "vespid": {
         "display_name": "Vespid",
         "armour": 5,
-        "health": 50,
+        "health_points": 50,
         "resistance": 1,
         "weapons": [
             "Vespid Crystal",
             "Melee2"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "devilfish": {
         "display_name": "Devilfish",
         "armour": 30,
-        "health": 150,
+        "health_points": 150,
         "resistance": 0.75,
         "weapons": [
             "Smart Missile System"
         ],
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "hammerhead": {
         "display_name": "Hammerhead",
         "armour": 30,
-        "health": 150,
+        "health_points": 150,
         "resistance": 0.75,
         "weapons": [
             "Railgun",
             "Smart Missile System"
         ],
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "hive_tyrant": {
         "display_name": "Hive Tyrant",
         "armour": 20,
-        "health": 400,
+        "health_points": 400,
         "resistance": 0.5,
         "weapons": [
             "Bonesword",
@@ -1314,115 +1300,115 @@
             "Heavy Venom Cannon"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "tyrant_guard": {
         "display_name": "Tyrant Guard",
         "armour": 12,
-        "health": 200,
+        "health_points": 200,
         "resistance": 0.6,
         "weapons": [
             "Crushing Claws"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "tyranid_warrior": {
         "display_name": "Tyranid Warrior",
         "armour": 8,
-        "health": 100,
+        "health_points": 100,
         "resistance": 0.9,
         "weapons": [
             "Rending Claws",
             "Devourer"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "zoanthrope": {
         "display_name": "Zoanthrope",
         "armour": 8,
-        "health": 300,
+        "health_points": 300,
         "resistance": 0.25,
         "weapons": [
             "Zoanthrope Blast"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "carnifex": {
         "display_name": "Carnifex",
         "armour": 20,
-        "health": 300,
+        "health_points": 300,
         "resistance": 0.75,
         "weapons": [
             "Carnifex Claws",
             "Venom Cannon"
         ],
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "termagaunt": {
         "display_name": "Termagaunt",
         "armour": 5,
-        "health": 25,
+        "health_points": 25,
         "resistance": 1,
         "weapons": [
             "Fleshborer"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "hormagaunt": {
         "display_name": "Hormagaunt",
         "armour": 5,
-        "health": 25,
+        "health_points": 25,
         "resistance": 1,
         "weapons": [
             "Scything Talons"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "cultist": {
         "display_name": "Cultist",
         "armour": 0,
-        "health": 35,
+        "health_points": 35,
         "resistance": 1,
         "weapons": [
             "Autogun",
             "melee0.5"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "genestealer": {
         "display_name": "Genestealer",
         "armour": 5,
-        "health": 75,
+        "health_points": 75,
         "resistance": 1,
         "weapons": [
             "Genestealer Claws"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "genestealer_patriarch": {
         "display_name": "Genestealer Patriarch",
         "armour": 8,
-        "health": 300,
+        "health_points": 300,
         "resistance": 0.6,
         "weapons": [
             "Genestealer Claws",
             "Witchfire"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "armoured_limousine": {
         "display_name": "Armoured Limousine",
         "armour": 10,
-        "health": 150,
+        "health_points": 150,
         "resistance": 0.75,
         "weapons": [
             "Autogun",
@@ -1431,19 +1417,19 @@
             "Autogun"
         ],
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "lictor": {
         "display_name": "Lictor",
         "armour": 8,
-        "health": 300,
+        "health_points": 300,
         "resistance": 0.6,
         "weapons": [
             "Lictor Claws",
             "Flesh Hooks"
         ],
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "chaos_leader": {
         "display_name": "Chaos Leader",
@@ -1452,7 +1438,7 @@
             "Power Fist"
         ],
         "armour": 30,
-        "health": 300,
+        "health_points": 300,
         "resistance": 0.75
     },
     "chaos_daemonlord": {
@@ -1461,7 +1447,7 @@
             "Khorne Demon Melee"
         ],
         "armour": 30,
-        "health": 300,
+        "health_points": 300,
         "resistance": 0.75
     },
     "fallen": {
@@ -1471,7 +1457,7 @@
             "Power Weapon"
         ],
         "armour": 30,
-        "health": 120,
+        "health_points": 120,
         "resistance": 0.5
     },
     "chaos_lord": {
@@ -1481,7 +1467,7 @@
             "Power Weapon"
         ],
         "armour": 30,
-        "health": 150,
+        "health_points": 150,
         "resistance": 0.5
     },
     "chaos_sorcerer": {
@@ -1491,7 +1477,7 @@
             "Force Staff"
         ],
         "armour": 30,
-        "health": 100,
+        "health_points": 100,
         "resistance": 0.5
     },
     "warpsmith": {
@@ -1502,7 +1488,7 @@
             "Flamer"
         ],
         "armour": 30,
-        "health": 100,
+        "health_points": 100,
         "resistance": 0.5
     },
     "chaos_terminator": {
@@ -1513,7 +1499,7 @@
             "Combi-Flamer"
         ],
         "armour": 40,
-        "health": 100,
+        "health_points": 100,
         "resistance": 0.5
     },
     "venerable_chaos_terminator": {
@@ -1524,7 +1510,7 @@
             "Combi-Flamer"
         ],
         "armour": 40,
-        "health": 120,
+        "health_points": 120,
         "resistance": 0.4
     },
     "world_eaters_terminator": {
@@ -1534,7 +1520,7 @@
             "Meltagun"
         ],
         "armour": 40,
-        "health": 120,
+        "health_points": 120,
         "resistance": 0.4
     },
     "obliterator": {
@@ -1544,7 +1530,7 @@
             "Obliterator Weapon"
         ],
         "armour": 40,
-        "health": 200,
+        "health_points": 200,
         "resistance": 0.5
     },
     "chaos_chosen": {
@@ -1554,7 +1540,7 @@
             "Chainsword"
         ],
         "armour": 20,
-        "health": 125,
+        "health_points": 125,
         "resistance": 0.85
     },
     "venerable_chaos_chosen": {
@@ -1564,7 +1550,7 @@
             "Chainsword"
         ],
         "armour": 20,
-        "health": 125,
+        "health_points": 125,
         "resistance": 0.75
     },
     "possessed": {
@@ -1573,7 +1559,7 @@
             "Possessed Claws"
         ],
         "armour": 17,
-        "health": 150,
+        "health_points": 150,
         "resistance": 0.5
     },
     "chaos_space_marine": {
@@ -1583,7 +1569,7 @@
             "Chainsword"
         ],
         "armour": 20,
-        "health": 100,
+        "health_points": 100,
         "resistance": 0.9
     },
     "havoc": {
@@ -1593,7 +1579,7 @@
             "Melee1"
         ],
         "armour": 20,
-        "health": 100,
+        "health_points": 100,
         "resistance": 0.9
     },
     "raptor": {
@@ -1603,9 +1589,9 @@
             "Bolt Pistol"
         ],
         "armour": 20,
-        "health": 100,
+        "health_points": 100,
         "resistance": 0.75,
-        "special": "Jump Pack"
+        "abilities": ["jump"]
     },
     "world_eater": {
         "display_name": "World Eater",
@@ -1614,7 +1600,7 @@
             "Chainaxe"
         ],
         "armour": 20,
-        "health": 100,
+        "health_points": 100,
         "resistance": 0.75
     },
     "world_eaters_veteran": {
@@ -1624,7 +1610,7 @@
             "Chainaxe"
         ],
         "armour": 20,
-        "health": 100,
+        "health_points": 100,
         "resistance": 0.7
     },
     "khorne_berzerker": {
@@ -1634,7 +1620,7 @@
             "Bolt Pistol"
         ],
         "armour": 20,
-        "health": 100,
+        "health_points": 100,
         "resistance": 0.65
     },
     "plague_marine": {
@@ -1644,7 +1630,7 @@
             "Poison Chainsword"
         ],
         "armour": 20,
-        "health": 150,
+        "health_points": 150,
         "resistance": 0.5
     },
     "noise_marine": {
@@ -1654,7 +1640,7 @@
             "Melee1"
         ],
         "armour": 20,
-        "health": 100,
+        "health_points": 100,
         "resistance": 0.75
     },
     "rubric_marine": {
@@ -1664,7 +1650,7 @@
             "Melee1"
         ],
         "armour": 20,
-        "health": 125,
+        "health_points": 125,
         "resistance": 0.65
     },
     "rubric_sorcerer": {
@@ -1674,7 +1660,7 @@
             "Force Staff"
         ],
         "armour": 20,
-        "health": 150,
+        "health_points": 150,
         "resistance": 0.5
     },
     "chaos_cultist": {
@@ -1684,7 +1670,7 @@
             "melee0.5"
         ],
         "armour": 5,
-        "health": 35
+        "health_points": 35
     },
     "hellbrute": {
         "display_name": "Hellbrute",
@@ -1693,10 +1679,10 @@
             "Meltagun"
         ],
         "armour": 40,
-        "health": 300,
+        "health_points": 300,
         "resistance": 0.5,
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "rhino": {
         "display_name": "Rhino",
@@ -1704,10 +1690,10 @@
             "Storm Bolter"
         ],
         "armour": 40,
-        "health": 200,
+        "health_points": 200,
         "resistance": 0.75,
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "predator": {
         "display_name": "Predator",
@@ -1716,10 +1702,10 @@
             "Twin Linked Lascannon"
         ],
         "armour": 45,
-        "health": 350,
+        "health_points": 350,
         "resistance": 0.5,
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "vindicator": {
         "display_name": "Vindicator",
@@ -1728,10 +1714,10 @@
             "Havoc Launcher"
         ],
         "armour": 45,
-        "health": 300,
+        "health_points": 300,
         "resistance": 0.5,
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "land_raider": {
         "display_name": "Land Raider",
@@ -1740,10 +1726,10 @@
             "Twin Linked Lascannon"
         ],
         "armour": 50,
-        "health": 400,
+        "health_points": 400,
         "resistance": 0.25,
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "heldrake": {
         "display_name": "Heldrake",
@@ -1751,10 +1737,10 @@
             "Baleflame"
         ],
         "armour": 50,
-        "health": 400,
+        "health_points": 400,
         "resistance": 0.25,
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "defiler": {
         "display_name": "Defiler",
@@ -1765,10 +1751,10 @@
             "Flamer"
         ],
         "armour": 40,
-        "health": 300,
+        "health_points": 300,
         "resistance": 0.5,
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "arch_heretic": {
         "display_name": "Arch Heretic",
@@ -1777,7 +1763,7 @@
             "Plasma Pistol"
         ],
         "armour": 8,
-        "health": 40,
+        "health_points": 40,
         "resistance": 0.75
     },
     "cultist_elite": {
@@ -1787,7 +1773,7 @@
             "Chainaxe"
         ],
         "armour": 8,
-        "health": 40,
+        "health_points": 40,
         "resistance": 0.9
     },
     "mutant": {
@@ -1796,7 +1782,7 @@
             "Flesh Hooks"
         ],
         "armour": 0,
-        "health": 30
+        "health_points": 30
     },
     "daemonhost": {
         "display_name": "Daemonhost",
@@ -1805,7 +1791,7 @@
             "Daemonhost_Powers"
         ],
         "armour": 8,
-        "health": 300,
+        "health_points": 300,
         "resistance": 0.5
     },
     "possessed_alt": {
@@ -1814,7 +1800,7 @@
             "Possessed Claws"
         ],
         "armour": 8,
-        "health": 100,
+        "health_points": 100,
         "resistance": 0.75
     },
     "technical": {
@@ -1824,10 +1810,10 @@
             "Heavy Bolter"
         ],
         "armour": 10,
-        "health": 100,
+        "health_points": 100,
         "resistance": 0.75,
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "chaos_leman_russ": {
         "display_name": "Chaos Leman Russ",
@@ -1836,10 +1822,10 @@
             "Heavy Bolter"
         ],
         "armour": 45,
-        "health": 250,
+        "health_points": 250,
         "resistance": 0.25,
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "chaos_basilisk": {
         "display_name": "Chaos Basilisk",
@@ -1848,9 +1834,9 @@
             "Heavy Bolter"
         ],
         "armour": 20,
-        "health": 150,
+        "health_points": 150,
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "necron_overlord": {
         "display_name": "Necron Overlord",
@@ -1859,10 +1845,10 @@
             "Staff of Light Shooting"
         ],
         "armour": 12,
-        "health": 300,
+        "health_points": 300,
         "resistance": 0.5,
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "lychguard": {
         "display_name": "Lychguard",
@@ -1870,10 +1856,10 @@
             "Warscythe"
         ],
         "armour": 12,
-        "health": 100,
+        "health_points": 100,
         "resistance": 0.75,
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "flayed_one": {
         "display_name": "Flayed One",
@@ -1881,10 +1867,10 @@
             "Melee5"
         ],
         "armour": 8,
-        "health": 75,
+        "health_points": 75,
         "resistance": 0.9,
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "necron_warrior": {
         "display_name": "Necron Warrior",
@@ -1893,10 +1879,10 @@
             "Melee3"
         ],
         "armour": 8,
-        "health": 75,
+        "health_points": 75,
         "resistance": 0.9,
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "necron_immortal": {
         "display_name": "Necron Immortal",
@@ -1905,10 +1891,10 @@
             "Melee3"
         ],
         "armour": 8,
-        "health": 75,
+        "health_points": 75,
         "resistance": 0.85,
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "necron_wraith": {
         "display_name": "Necron Wraith",
@@ -1916,10 +1902,10 @@
             "Wraith Claws"
         ],
         "armour": 10,
-        "health": 200,
+        "health_points": 200,
         "resistance": 0.75,
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "necron_destroyer": {
         "display_name": "Necron Destroyer",
@@ -1928,10 +1914,10 @@
             "Melee3"
         ],
         "armour": 25,
-        "health": 175,
+        "health_points": 175,
         "resistance": 0.5,
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "tomb_stalker": {
         "display_name": "Tomb Stalker",
@@ -1941,10 +1927,10 @@
             "Claws"
         ],
         "armour": 40,
-        "health": 600,
+        "health_points": 600,
         "resistance": 0.5,
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "canoptek_spyder": {
         "display_name": "Canoptek Spyder",
@@ -1952,10 +1938,10 @@
             "Claws"
         ],
         "armour": 30,
-        "health": 300,
+        "health_points": 300,
         "resistance": 0.75,
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "canoptek_scarab": {
         "display_name": "Canoptek Scarab",
@@ -1963,10 +1949,10 @@
             "Melee3"
         ],
         "armour": 8,
-        "health": 30,
+        "health_points": 30,
         "resistance": 0.75,
         "unit_type": 0,
-        "unit_size": 1
+        "size": 1
     },
     "necron_monolith": {
         "display_name": "Necron Monolith",
@@ -1975,10 +1961,10 @@
             "Particle Whip"
         ],
         "armour": 50,
-        "health": 500,
+        "health_points": 500,
         "resistance": 0.25,
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     },
     "doomsday_arc": {
         "display_name": "Doomsday Arc",
@@ -1987,9 +1973,9 @@
             "Doomsday Cannon"
         ],
         "armour": 40,
-        "health": 350,
+        "health_points": 350,
         "resistance": 0.5,
         "unit_type": 0,
-        "unit_size": 10
+        "size": 10
     }
 }

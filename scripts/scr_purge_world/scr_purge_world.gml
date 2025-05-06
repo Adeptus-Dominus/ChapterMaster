@@ -47,7 +47,7 @@ function scr_purge_world(star, planet, action_type, action_score) {
 			obj_ncombat.battle_special="WL10_later";
             scr_battle_allies();
             setup_battle_formations();
-            roster.add_to_battle();
+            // roster.add_to_battle();
 	    }
 	}
 

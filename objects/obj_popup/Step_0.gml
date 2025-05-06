@@ -1168,7 +1168,7 @@ try {
 			        update_roster();
 			        if (array_length(selected_units)){  
 			            setup_battle_formations();
-			            add_to_battle();
+			            // add_to_battle();
 			        }               
 			    }
 			    delete _roster				

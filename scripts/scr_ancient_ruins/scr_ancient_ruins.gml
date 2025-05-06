@@ -40,7 +40,7 @@ function scr_ruins_suprise_attack_player(){
 	        selected_units = _units;
 			if (array_length(selected_units)){	
 	            setup_battle_formations();
-	            add_to_battle();
+	            // add_to_battle();
 	        } else {
 	        	instance_destroy(obj_ncombat);
 	        	instance_destroy(obj_pnunit);

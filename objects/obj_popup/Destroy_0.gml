@@ -24,7 +24,7 @@ if (image="chaos_symbol") and (title="Concealed Heresy") and (instance_exists(ob
         obj_ncombat.battle_special="WL10_reveal";    
         scr_battle_allies();
         setup_battle_formations();
-        roster.add_to_battle();        
+        // roster.add_to_battle();        
     }
 }
 

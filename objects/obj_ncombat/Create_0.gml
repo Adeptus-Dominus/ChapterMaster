@@ -53,12 +53,12 @@ instance_activate_object(obj_cursor);
 instance_activate_object(obj_ini);
 instance_activate_object(obj_img);
 
-var i, u;
-i = 11;
-repeat (10) {
-    i -= 1; // This creates the objects to then be filled in
-    u = instance_create(i * 10, 240, obj_pnunit);
-}
+// var i, u;
+// i = 11;
+// repeat (10) {
+//     i -= 1; // This creates the objects to then be filled in
+//     u = instance_create(i * 10, 240, obj_pnunit);
+// }
 
 instance_create(0, 0, obj_centerline);
 
@@ -305,7 +305,9 @@ enemy_dudes = "";
 global_defense = 2 - global_defense;
 
 enemy_force = new BattleArmy("", false);
+enemy_force.allegiance = eBATTLE_ALLEGIANCE.Enemy;
 player_force = new BattleArmy(global.chapter_name, false);
+player_force.allegiance = eBATTLE_ALLEGIANCE.Player;
 
 queue_force_health = function() {
 	var _text = "";
@@ -356,17 +358,38 @@ display_message_queue = function() {
     ds_queue_clear(messages_queue);
 }
 
-battlefield_scale = 0.1;
-update_battlefield_scale = function() {
-    var _biggest_block_size = 0;
+battlefield_grid = new BattlefieldGrid(100, 1);
 
-    with (obj_pnunit) {
-        if (column_size > _biggest_block_size) {
-            _biggest_block_size = column_size;
+function SimplePanel(_x1, _y1, _x2, _y2) constructor {
+    x1 = _x1;
+    y1 = _y1;
+    x2 = _x2;
+    y2 = _y2;
+    x3 = (x1 + x2) / 2;
+    y3 = (y1 + y2) / 2;
+    back_colour = c_black;
+    border_colour = COL_GREEN;
+
+    static draw = function() {
+        draw_set_color(back_colour);
+        draw_rectangle(x1, y1, x2, y2, false);
+
+        draw_set_color(border_colour);
+        var _offset_step = 3 / (4 - 1);
+        var _alpha_step = 1.0 / (4);
+        for (var i = 0; i < 4; i++) {
+            var _current_offset = round(i * _offset_step);
+            var _current_alpha = 1.0 - (i * _alpha_step);
+            _current_alpha = clamp(_current_alpha, 0, 1);
+
+            draw_set_alpha(_current_alpha);
+
+            draw_rectangle(x1 + _current_offset, y1 + _current_offset, x2 - _current_offset, y2 - _current_offset, true);
         }
-    }
+        draw_set_alpha(1);
+        draw_set_color(c_white);
+    };
+}
 
-    battlefield_scale = min(1, 400 / _biggest_block_size);
-};
-
-battlefield = new BattlefieldGrid(100, 1);
+message_log = new SimplePanel(22, 22, 800, 878);
+battle_view = new SimplePanel(822, 22, 1578, 878);

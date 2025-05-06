@@ -1,0 +1,50 @@
+{
+    "battleline": {
+        "display_name": "Battleline",
+        "spawn_position": "center",
+        "preferred_distance": "mixed",
+        "description": ""
+    },
+    "fire_support": {
+        "display_name": "Fire Support",
+        "spawn_position": "back",
+        "preferred_distance": "ranged",
+        "description": ""
+    },
+    "assault": {
+        "display_name": "Assault",
+        "spawn_position": "front",
+        "preferred_distance": "melee",
+        "description": ""
+    },
+    "command": {
+        "display_name": "Command",
+        "spawn_position": "back",
+        "preferred_distance": "back",
+        "description": ""
+    },
+    "artillery": {
+        "display_name": "Artillery",
+        "spawn_position": "back",
+        "preferred_distance": "ranged",
+        "description": ""
+    },
+    "fortification": {
+        "display_name": "Fortification",
+        "spawn_position": "front",
+        "preferred_distance": "none",
+        "description": ""
+    },
+    "anti_armour": {
+        "display_name": "Anti-Armour",
+        "spawn_position": "back",
+        "preferred_distance": "ranged",
+        "description": ""
+    },
+    "transport": {
+        "display_name": "Transport",
+        "spawn_position": "center",
+        "preferred_distance": "ranged",
+        "description": ""
+    }
+}

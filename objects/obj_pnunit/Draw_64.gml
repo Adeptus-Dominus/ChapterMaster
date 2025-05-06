@@ -1,4 +1,4 @@
-draw_size = column_size * obj_ncombat.battlefield_scale;
+draw_size = column_size;
 
 if (draw_size > 0){
     draw_set_alpha(1);

@@ -40,12 +40,12 @@ function ncombat_enemy_stacks_init() {
             ally = 3;
             ally_forces = 1;
         }
-        instance_activate_object(obj_pnunit);
-        if (!instance_exists(obj_pnunit)) {
-            exit;
-        }
-        xxx = instance_nearest(1000, 240, obj_pnunit);
-        xxx = xxx.x + 80;
+        // instance_activate_object(obj_pnunit);
+        // if (!instance_exists(obj_pnunit)) {
+        //     exit;
+        // }
+        // xxx = instance_nearest(1000, 240, obj_pnunit);
+        xxx = 80;
 
         if ((string_count("spyrer", battle_special) > 0) || (string_count("fallen", battle_special) > 0) || (string_count("mech", battle_special) > 0) || (battle_special == "space_hulk") || (battle_special == "study2a") || (battle_special == "study2b")) {
             fortified = 0;
@@ -1429,7 +1429,13 @@ function ncombat_enemy_stacks_init() {
             if (threat == 6) {
                 enemy_force.name = "orks_6";
                 enemy_force.copy_profile();
-                enemy_force.spawn_forces();
+                if (DEBUG_COMBAT_PERFORMANCE) {
+                    stopwatch("enemy_squad_spawning");
+                }
+                enemy_force.spawn_squads();
+                if (DEBUG_COMBAT_PERFORMANCE) {
+                    stopwatch("enemy_squad_spawning");
+                }
             }
         }
 
@@ -3489,7 +3495,7 @@ function ncombat_battle_start() {
     }
 
     if ((battle_special == "ruins") || (battle_special == "ruins_eldar")) {
-        newline = "The enemy forces are made up of " + string(enemy_force.unit_count);
+        newline = "The enemy forces are made up of " + string(enemy_force.get_unit_count());
 
         if (enemy == 6) {
             newline += " Craftworld Eldar.";
@@ -3563,7 +3569,7 @@ function ncombat_battle_start() {
         rand = choose(1, 2, 3);
         if (rand < 4) {
             p1 = "Howls and grunts ring from the surrounding terrain as the Orks announce their presence.  ";
-            p2 = string(enemy_force.unit_count) + ", the bloodthirsty horde advances toward your Marines, ecstatic in their anticipation of carnage.  ";
+            p2 = string(enemy_force.get_unit_count()) + ", the bloodthirsty horde advances toward your Marines, ecstatic in their anticipation of carnage.  ";
             p3 = p2;
             p2 = string_delete(p2, 2, 999);
             p3 = string_delete(p3, 1, 1);
@@ -3571,7 +3577,7 @@ function ncombat_battle_start() {
         }
     }
     if ((enemy == 7) && (dropping == 1)) {
-        p1 = "The " + string(enemy_force.unit_count) + "-some Orks howl and roar at the oncoming marines.  Many of the beasts fire their weapons, more or less spraying rounds aimlessly into the sky.";
+        p1 = "The " + string(enemy_force.get_unit_count()) + "-some Orks howl and roar at the oncoming marines.  Many of the beasts fire their weapons, more or less spraying rounds aimlessly into the sky.";
     }
 
     if ((enemy == 8) && (dropping == 0)) {
@@ -3583,7 +3589,7 @@ function ncombat_battle_start() {
         rand = choose(1, 2, 3);
     }
     if ((enemy == 9) && (dropping == 1)) {
-        p1 = "The " + string(enemy_force.unit_count) + "-some Tyranids hiss and chitter as your marines rain down.  Blasts of acid and spikes fill the sky, but none seem to quite find their mark.";
+        p1 = "The " + string(enemy_force.get_unit_count()) + "-some Tyranids hiss and chitter as your marines rain down.  Blasts of acid and spikes fill the sky, but none seem to quite find their mark.";
     }
 
     if ((enemy == 10) && (dropping == 0)) {
@@ -3616,7 +3622,7 @@ function ncombat_battle_start() {
         rand = choose(1, 2, 3);
         if (rand < 4) {
             p1 = "Dirt crunches beneath the feet of the Necrons as they make their silent advance.  ";
-            p2 = string(enemy_force.unit_count) + ", the souless xeno advance toward your Marines, silent and pulsing with green energy.  ";
+            p2 = string(enemy_force.get_unit_count()) + ", the souless xeno advance toward your Marines, silent and pulsing with green energy.  ";
             p3 = p2;
             p2 = string_delete(p2, 2, 999);
             p3 = string_delete(p3, 1, 1);

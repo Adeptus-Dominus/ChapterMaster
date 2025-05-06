@@ -378,7 +378,7 @@ function drop_select_draw() {
 
                     scr_battle_allies();
                     setup_battle_formations();
-                    roster.add_to_battle();
+                    // roster.add_to_battle();
                 } else if (purge > 1) {
                     draw_set_alpha(0.2);
                     draw_rectangle(954, 556, 1043, 579, 0);
