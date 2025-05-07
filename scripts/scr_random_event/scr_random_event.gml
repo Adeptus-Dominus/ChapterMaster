@@ -945,13 +945,9 @@ function scr_random_event(execute_now) {
 function event_fallen(){
 	log_message("RE: Hunt the Fallen");
 	var stars = scr_get_stars();
-	var valid_stars = array_filter_ext(stars,
-		function(star,index){
-			return scr_star_has_planet_with_owner(star, eFACTION.Imperium);
-	});
+	var valid_stars = scr_get_stars(false, [eFACTION.Imperium]);
 	
-	if(valid_stars == 0)
-	{
+	if (array_length(valid_stars) == 0){
 		log_error("RE: Hunt the Fallen, coulnd't find a star");
 		exit;
 	}
@@ -961,22 +957,24 @@ function event_fallen(){
 	var planet = scr_get_planet_with_owner(star,eFACTION.Imperium);
 	var eta = scr_mission_eta(star.x,star.y, 1);
 
-	log_message($"Fallen: found star {star.name} planet {planet} as candidate")
-	
-	var assigned_problem = add_new_problem(planet, "fallen", eta,star)
-	log_message($"assigned_problem {assigned_problem}")
+	if (planet>0){
+		log_message($"Fallen: found star {star.name} planet {planet} as candidate")
+		
+		var assigned_problem = add_new_problem(planet, "fallen", eta,star)
+		log_message($"assigned_problem {assigned_problem}")
 
-	if(!assigned_problem) {
-		log_error("RE: Hunt the Fallen, coulnd't assign a problem to the planet");
-		return;
+		if (!assigned_problem) {
+			log_error("RE: Hunt the Fallen, coulnd't assign a problem to the planet");
+			return;
+		}
+		
+		var text = "Sources indicate one of the Fallen may be upon "+string(star.name)+" "+string(scr_roman(planet))+".  We have "+string(eta)+" months to send out a strike team and scour the planet.  Any longer and any Fallen that might be there will have escaped.";
+		scr_popup("Hunt the Fallen",text,"fallen","");
+		scr_event_log("","Sources indicate one of the Fallen may be upon "+string(star.name)+" "+string(scr_roman(planet))+".  We have "+string(eta)+" months to investigate.");
+		var star_alert = instance_create(star.x+16,star.y-24,obj_star_event);
+		star_alert.image_alpha=1;
+		star_alert.image_speed=1;
+		star_alert.col="purple";
 	}
-	
-	var text = "Sources indicate one of the Fallen may be upon "+string(star.name)+" "+string(scr_roman(planet))+".  We have "+string(eta)+" months to send out a strike team and scour the planet.  Any longer and any Fallen that might be there will have escaped.";
-	scr_popup("Hunt the Fallen",text,"fallen","");
-	scr_event_log("","Sources indicate one of the Fallen may be upon "+string(star.name)+" "+string(scr_roman(planet))+".  We have "+string(eta)+" months to investigate.");
-	var star_alert = instance_create(star.x+16,star.y-24,obj_star_event);
-	star_alert.image_alpha=1;
-	star_alert.image_speed=1;
-	star_alert.col="purple";
 
 }
