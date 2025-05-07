@@ -2819,6 +2819,7 @@ function scr_initialize_custom() {
 					}
 					break;
 				case "scouts":
+                    _unit_type = "scout";                    
 					_rolename = roles.scout;
 					_erole = eROLE.Scout;
 					break;
@@ -2974,9 +2975,6 @@ function scr_initialize_custom() {
 						_wep2 = wep2[defaults_slot][eROLE.Terminator];
 					}
 					break;
-                case "scouts":
-                    _unit_type = "scout";
-                    break;
 
 			
 				// VEHICLES
@@ -3091,7 +3089,7 @@ function scr_initialize_custom() {
 					v++;
 					man_size += 10;
 				} else {
-					add_unit_to_company(c, _coy.coy, k, _rolename, _erole, _wep1,_wep2, _gear,_mobi,_armour);
+					add_unit_to_company(_unit_type, _coy.coy, k, _rolename, _erole, _wep1,_wep2, _gear,_mobi,_armour);
 					k++;
 					man_size++;
 					if(_is_terminator(_armour)){
