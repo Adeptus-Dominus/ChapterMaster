@@ -2819,6 +2819,7 @@ function scr_initialize_custom() {
 					}
 					break;
 				case "scouts":
+                    _unit_type = "scout";                    
 					_rolename = roles.scout;
 					_erole = eROLE.Scout;
 					break;
@@ -2974,6 +2975,7 @@ function scr_initialize_custom() {
 						_wep2 = wep2[defaults_slot][eROLE.Terminator];
 					}
 					break;
+
 			
 				// VEHICLES
 				case "rhinos":
