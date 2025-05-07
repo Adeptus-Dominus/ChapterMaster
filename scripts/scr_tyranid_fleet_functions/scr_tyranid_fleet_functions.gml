@@ -42,6 +42,7 @@ function tyranid_fleet_planet_action(){
             		if (p_influence[i][eFACTION.Tyranids]>50){
             			var alert = $"The Genestealer Cult on {planet_numeral_name(i)} is exceedingly thorough, there is almost no resistance as the swarm descends and what little resistance remains is quickly quelled by infiltrators, most of the populations willingly offer themselves to their new gods jumping into acid vats to form biomass for their newly arrived gods or otherwise allowing themselves to be devoured by the teaming ripper swarms";
             			scr_popup("Tyranids",alert,"","");
+            			p_pdf[i] = 0;
             			scr_alert("red","owner",$"Tyranid swarms begin the process of stripping {planet_numeral_name(i)} for biomass",x,y);
             		} else {
             			scr_alert("red","owner",$"The pdf of {planet_numeral_name(i)} is badly degraded by genestealer cult forces as the hive fleet decends",x,y);
@@ -56,7 +57,7 @@ function tyranid_fleet_planet_action(){
     organise_tyranid_fleet_bio();	
 }
 
-function summon_new_hive_fleet(){
+function summon_new_hive_fleet(capitals = 5,frigates = 0, escorts = 0, biomass = 1000){
 	var start_coords = find_nearest_edge_coords(x,y);
 
 	if (start_coords[0] != 0 && start_coords[0]!= room_width){
@@ -78,18 +79,66 @@ function summon_new_hive_fleet(){
 		}
 	}
 
-	fleet=instance_create(start_coords[0],start_coords[1],obj_en_fleet);
-	fleet.action_x=x;
-	fleet.action_y=y;
-    with (fleet){
+	var _fleet=new_tyranid_fleet(start_coords[0],start_coords[1], capitals, frigates, escorts, biomass);
+	_fleet.action_x = x;
+	_fleet.action_y = y;
+    set_fleet_movement();
+    return _fleet
+}
+
+function hive_fleet_arrives_from_out_of_system(){
+    if (has_problem_planet_and_time(i,"Hive Fleet", 3)>-1){
+        var _chief_lib=scr_role_count("Chief "+string(obj_ini.role[100,17]),,"units");
+        var _has_chief_lib = array_length(_chief_lib);
+        if (_has_chief_lib){
+        	_chief_lib = _chief_lib[0];
+        }
+    
+        var _master_psy = false;
+
+        var _intolerant = scr_has_disadv("Psyker Intolerant");
+        
+        if (obj_controller.known[eFACTION.Tyranids]=0 && _has_chief_lib && !_intolerant){
+            scr_popup("Shadow in the Warp",$"Chief {_chief_lib.name_role()} reports a disturbance in the warp.  He claims it is like a shadow.","shadow","");
+            scr_event_log("red",$"Chief {_chief_lib.name_role()} reports a disturbance in the warp.  He claims it is like a shadow.");
+        }
+        if (!obj_controller.known[eFACTION.Tyranids] && !_has_chief_lib  && !_intolerant){
+            var q=0,q2=0;
+            repeat(90){
+                if (q2=0){
+                	q+=1;
+                    if (obj_ini.role[0,q]==obj_ini.role[100][eROLE.ChapterMaster]){q2=q;
+                        if (string_count("0",obj_ini.spe[0,q2])>0) then _master_psy=true;
+                    }
+                }
+            }
+            if (_master_psy=true){
+                scr_popup("Shadow in the Warp","You are distracted and bothered by a nagging sensation in the warp.  It feels as though a shadow descends upon your sector.","shadow","");
+                scr_event_log("red","You sense a disturbance in the warp.  It feels something like a massive shadow.");
+            }
+        }
+    
+        g=50;
+        i=50;
+        obj_controller.known[eFACTION.Tyranids]=1;
+    }	
+}
+
+function new_tyranid_fleet(xx, yy, capitals = 5,frigates = 0, escorts = 0, fleet_biomass = 1000){
+	var _fleet = instance_create(xx, yy,obj_en_fleet);
+	var _mass = fleet_biomass
+	with (_fleet){
 	    owner = eFACTION.Tyranids;
-	    sprite_index=spr_fleet_tyranid;
-	    image_index=1;
-	    capital_number=5;
-	    action="";    	
+	    sprite_index = spr_fleet_tyranid;
+	    image_index = 1;
+	    capital_number = capitals;
+	    frigate_number = frigates;
+	    escort_number = escorts;
+	    action = "";    	
     	action_spd = 10;
-    	set_fleet_movement();
-    }
+    	biomass = _mass;
+	}
+	return _fleet;
 }
 
 function star_biomass_value(star){
@@ -113,35 +162,35 @@ function star_biomass_value(star){
 }
 
 function sort_planets_by_biomass_potential(){
-	var _stars = scr_get_stars();
-	var _star_count = array_length(_stars);
+    var _stars = scr_get_stars();
+    var _star_count = array_length(_stars);
 
-	var _bio_vals = {};
-	for (var i=0;i<_star_count;i++){
-		var _star = _stars[i];
-		_bio_vals[$ _star.name] = star_biomass_value(star);
-	}
+    var _bio_vals = {};
+    for (var i = 0; i < _star_count; i++){
+        var _star = _stars[i];
+        _bio_vals[$ _star.name] = star_biomass_value(_star);
+    }
 
-	for (var i=0;i<_star_count;i++){
-		var _swaps = false
-		for (var s=0;s<_star_count;s++){
-			var _star = _stars[s];
-			var _star2 = _stars[s + 1];
-			var _bio = _bio_vals[$ _star.name];
-			var _bio2 = _bio_vals[$ _star2.name]
-			if (_bio2>_bio){
-				var _temp = _star;
-				_stars[s] = _star2;
-				_stars[s + 1] = _temp;
-				_swaps = true;
-			}
-		}
-		if (!true){
-			break;
-		}
-	}
+    for (var i = 0; i < _star_count; i++){
+        var _swaps = false;
+        for (var s = 0; s < _star_count - 1; s++){
+            var _star = _stars[s];
+            var _star2 = _stars[s + 1];
+            var _bio = _bio_vals[$ _star.name];
+            var _bio2 = _bio_vals[$ _star2.name];
+            if (_bio2 > _bio){
+                var _temp = _star;
+                _stars[s] = _star2;
+                _stars[s + 1] = _temp;
+                _swaps = true;
+            }
+        }
+        if (!_swaps){
+            break;
+        }
+    }
 
-	return _stars;
+    return _stars;
 }
 
 function organise_tyranid_fleet_bio(){
@@ -253,7 +302,10 @@ function set_nid_ships(){
 	    turrets=3;
 	    capacity=0;
 	    carrying=0;
-	    add_weapon_to_ship("Feeder Tendrils" , {dam : 12, range :160});
+	    add_weapon_to_ship("Feeder Tendrils" , {
+	    	dam : 12, 
+	    	range :160
+	    });
 	    add_weapon_to_ship("Bio-Plasma Discharge" , {
 	        dam : 10, 
 	        range : 260,

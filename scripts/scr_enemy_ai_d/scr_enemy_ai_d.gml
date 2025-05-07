@@ -243,91 +243,26 @@ function scr_enemy_ai_d() {
             }
         }             
     
-	    if ((p_tyranids[i]=3) or (p_tyranids[i]=4)) and (p_population[i]>0){
+	    if (p_tyranids[i] > 3 && planet_feature_bool(p_feature[i], P_features.Gene_Stealer_Cult) && obj_controller.turn > 120){
 	        if (!(has_problem_planet(i, "Hive Fleet"))){
-	            var roll=irandom_range(100,300);
+	            var roll=irandom_range(0,300);
 	            var cont=0;
         
             
 	            if (p_tyranids[i]=3) and (roll<=5) then cont=1;
 	            if (p_tyranids[i]=4) and (roll<=8) then cont=1;
             
-            	var firstest=open_problem_slot(i);
-	            if (cont=1 && firstest>-1){
-
-	                p_problem[i][firstest]="Hive Fleet";
-	                p_timer[i][firstest]=irandom_range(60,120)+1;
-	                p_timer[i][firstest]+=irandom_range(80,120)+1;
-	                // p_timer[i][firstest]=floor(random_range(3,6))+1;
-	                // show_message("Hive Fleet Destination: "+string(name)+"#ETA: "+string(p_timer[i][firstest]));
-                
-                
-	                var fleet, xx, yy;
-	                xx=random_range(room_width*1.25,room_width*2);
-                    xx=choose(xx*-1,xx);
-                    xx=x+xx;
-	                yy=random_range(room_height*1.25,room_height*2);
-                    yy=choose(yy*-1,yy);
-                    yy=y+yy;
-	                fleet=instance_create(xx,yy,obj_en_fleet);
-	                fleet.owner = eFACTION.Tyranids;
-	                fleet.sprite_index=spr_fleet_tyranid;
-	                fleet.image_speed=0;
-                
-	                fleet.capital_number=choose(7,8,9);
-	                fleet.frigate_number=round(random_range(6,12));
-	                fleet.escort_number=round(random_range(12,27));
-                
-	                /*fleet.capital_number=choose(5,6);
-	                fleet.frigate_number=round(random_range(4,8));
-	                fleet.escort_number=round(random_range(8,18));*/
-                
-	                fleet.image_index=floor((fleet.capital_number)+(fleet.frigate_number/2)+(fleet.escort_number/4));
-	                fleet.image_alpha=0;
-                
-	                fleet.action_x=x;
-	                fleet.action_y=y;
-                
-	                fleet.action_eta=p_timer[i][firstest];
-	                fleet.action="move";
+	            if (cont = 1 && firstest > -1){
+                    var _capitals = choose(7,8,9);
+                    var _frigates = irandom_range(6,12);
+                    var _escorts = irandom_range(12,27);
+                    var _fleet = summon_new_hive_fleet(_capitals, _frigates, _escorts);
+                    add_new_problem(i, "Hive Fleet", _fleet.eta, self, {});
 	            }
-            
-    
 	        }
     
 	    }
-
-        if (has_problem_planet_and_time(i,"Hive Fleet", 3)>-1){
-            var woop=scr_role_count("Chief "+string(obj_ini.role[100,17]),"");
-        
-            var o,yep,yep2;o=0;yep=true;yep2=false;
-            if (scr_has_disadv("Psyker Intolerant")) then yep=false;
-            
-            if (obj_controller.known[eFACTION.Tyranids]=0) and (woop!=0) and (yep!=false){
-                scr_popup("Shadow in the Warp",$"Chief {obj_ini.role[100,17]} "+string(obj_ini.name[0,5])+" reports a disturbance in the warp.  He claims it is like a shadow.","shadow","");
-                scr_event_log("red",$"Chief {obj_ini.role[100,17]} reports a disturbance in the warp.  He claims it is like a shadow.");
-            }
-            if (obj_controller.known[eFACTION.Tyranids]=0) and (woop=0) and (yep!=false){
-                var q=0,q2=0;
-                repeat(90){
-                    if (q2=0){q+=1;
-                        if (obj_ini.role[0,q]==obj_ini.role[100][eROLE.ChapterMaster]){q2=q;
-                            if (string_count("0",obj_ini.spe[0,q2])>0) then yep2=true;
-                        }
-                    }
-                }
-                if (yep2=true){
-                    scr_popup("Shadow in the Warp","You are distracted and bothered by a nagging sensation in the warp.  It feels as though a shadow descends upon your sector.","shadow","");
-                    scr_event_log("red","You sense a disturbance in the warp.  It feels something like a massive shadow.");
-                }
-            }
-        
-        
-        
-            g=50;
-            i=50;
-            obj_controller.known[eFACTION.Tyranids]=1;
-        }
+        hive_fleet_arrives_from_out_of_system();
 	}
 	
 
@@ -346,11 +281,12 @@ function scr_enemy_ai_d() {
 	    }
 	}
 
-
-	// Colonists Colonize
-
-	with(obj_star){if (x<-10000){x+=20000;y+=20000;}}
-	with(obj_star){if (x<-10000){x+=20000;y+=20000;}}
+	with(obj_star){
+        if (x<-10000){
+            x+=20000;
+            y+=20000;
+        }
+    }
 
     var already_enroute = false;
     var cur_star = id;
