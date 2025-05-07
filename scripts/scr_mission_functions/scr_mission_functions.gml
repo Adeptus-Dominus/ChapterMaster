@@ -594,7 +594,7 @@ function problem_count_down(planet, count_change=1){
 function add_new_problem(planet, problem, timer,star="none", other_data={}){
 	var problem_added=false;
 	if (star=="none"){
-		for (var i=1;i<array_length(p_problem[planet]);i++){
+		for (var i=0;i<array_length(p_problem[planet]);i++){
 			if (p_problem[planet][i] ==""){
 				p_problem[planet][i]= problem;
 				p_problem_other_data[planet][i]=other_data;
