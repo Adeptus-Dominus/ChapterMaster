@@ -7,12 +7,18 @@ if (dam<=4){
     if (instance_exists(obj_p_small)){
         th=instance_nearest(x,y,obj_p_small);
         thd=point_distance(x,y,th.x,th.y);
-        if (thd<6){th.hp-=(self.dam-1);instance_destroy();}
+        if (thd<6){
+            th.hp-=(self.dam-1);
+            new ShipWeaponExplosion(explosion_sprite, x,y, image_xscale);
+        }
     }
     if (instance_exists(obj_al_in)){
         th=instance_nearest(x,y,obj_al_in);
         thd=point_distance(x,y,th.x,th.y);
-        if (thd<6){th.hp-=(self.dam-1);instance_destroy();}
+        if (thd<6){
+            th.hp-=(self.dam-1);
+            new ShipWeaponExplosion(explosion_sprite, x,y, image_xscale);
+        }
     }
 }
 

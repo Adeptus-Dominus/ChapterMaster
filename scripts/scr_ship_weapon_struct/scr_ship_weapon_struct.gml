@@ -16,9 +16,28 @@ global.ship_weapon_defualts  = {
 	melee : false,
 	accuracy : 98,
 	condition : "fuly_functional",
+	explosion_sprite : spr_explosion,
 	bombard_value : 0
 }
 
+function ShipWeaponExplosion(explosion_sprite, x, y, scale = 1) constructor{
+	self.x = x;
+	self.y = y;
+	self.scale = scale;
+	bang_sprite = explosion_sprite;
+	animation_frames = sprite_get_number(bang_sprite);
+	 current_index = 0;
+	 static draw = function(){
+	 	draw_sprite_ext(bang_sprite,floor(current_index),x,  y,1*scale,1*scale,0,c_white,1);
+	 	current_index += 0.1;
+	 	if (floor(current_index) > animation_frames){
+	 		return -1;
+	 	}
+	 	return 1;
+	 }
+
+	 array_push(obj_fleet.explosions, self);
+}
 
 function ShipWeapon(weapon_name, overide_data={}) constructor{
 	if (struct_exists(global.ship_weapons_stats, weapon_name)){
@@ -70,6 +89,7 @@ function ShipWeapon(weapon_name, overide_data={}) constructor{
 				target_x:target.x,
 				target_y:target.y,
 				sprite_index : img,
+				explosion_sprite : explosion_sprite,
 			} 
 
 			_bullet = instance_create_layer(
@@ -131,7 +151,6 @@ function ShipWeapon(weapon_name, overide_data={}) constructor{
 	}
 
 	static find_target = function(){
-		show_debug_message("targeting");
 		x = ship.x;
 		y = ship.y;
 		var _shoot_angle = weapon_direction();
@@ -141,7 +160,7 @@ function ShipWeapon(weapon_name, overide_data={}) constructor{
 			_shoot_angle = 360 -_shoot_angle;
 		}
 		if (ship.ai_type == "player" || ship.ai_type == "allies"){
-			show_debug_message("player");
+
 			var _enemies = instance_number(obj_en_ship);
 			for (var i=0;i<_enemies;i++){
 				var _targ = instance_nearest(ship.x, ship.y, obj_en_ship);
@@ -166,7 +185,6 @@ function ShipWeapon(weapon_name, overide_data={}) constructor{
 			}
 			instance_activate_object(obj_en_ship);
 		} else if (ship.ai_type = "enemy"){
-			show_debug_message("enemy");
 			var _enemies = instance_number(obj_p_ship) + instance_number(obj_al_ship);
 			for (var i=0;i<_enemies;i++){
 				var _targ = instance_nearest(ship.x, ship.y, obj_p_ship);
@@ -204,7 +222,6 @@ function ShipWeapon(weapon_name, overide_data={}) constructor{
 			instance_activate_object(obj_p_ship);
 			instance_activate_object(obj_al_ship);
 		}
-		show_debug_message($"targeting2 {target}/");
 	}
 	static draw_weapon_firing_arc = function(){
 		var _tangent_direction =  weapon_direction();

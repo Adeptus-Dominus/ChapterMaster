@@ -20,8 +20,12 @@ if (instance_exists(target)){
     
     if (action="shoot") and (cooldown1<=0){
         var bull;cooldown1=30;
-        bull=instance_create(x,y,obj_p_round);bull.direction=self.direction;
-        bull.speed=20;bull.image_xscale=0.5;bull.image_yscale=0.5;bull.dam=3;
+        bull=instance_create(x,y,obj_p_round);
+        bull.direction=self.direction;
+        bull.speed=20;bull.image_xscale=0.5;
+        bull.image_yscale=0.5;
+        bull.dam=3;
+        bull.explosion_sprite = spr_explosion;   
     }
     
     

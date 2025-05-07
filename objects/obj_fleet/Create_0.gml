@@ -3,12 +3,17 @@
 instance_activate_object(obj_controller);
 log_message("Fleet Combat Started");
 
-beg=0;fallen=0;fallen_command=0;
+beg=0;fallen=0;
+fallen_command=0;
 obj_controller.cooldown=20;
-sel_x1=0;sel_y1=0;control=0;
+sel_x1=0;
+sel_y1=0;control=0;
 ships_selected=0;
 battle_special="";
-csm_exp=0;star_name="";
+csm_exp=0;
+star_name="";
+
+explosions = [];
 
 // woohoo=0;
 left_down=0;

@@ -182,6 +182,7 @@ if (hp>0) and (instance_exists(target)){
             bull.image_yscale=0.5;
             turret_cool=floor(60/turrets);
             bull.direction+=choose(random(3),1*-(random(3)));
+            bull.explosion_sprite = spr_explosion;   
         }
     }
     ship_shoot_weapons();

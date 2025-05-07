@@ -82,7 +82,10 @@ function summon_new_hive_fleet(capitals = 5,frigates = 0, escorts = 0, biomass =
 	var _fleet=new_tyranid_fleet(start_coords[0],start_coords[1], capitals, frigates, escorts, biomass);
 	_fleet.action_x = x;
 	_fleet.action_y = y;
-    set_fleet_movement();
+	with(_fleet){
+    	set_fleet_movement();
+	}
+
     return _fleet
 }
 
@@ -244,19 +247,24 @@ function organise_tyranid_fleet_bio(){
         	array_push(_planets, i);
         }
         _planets = array_shuffle(_planets);
+        capitals_engaged = 0;
         for (var i=0;i<array_length(orbiting.planets);i++){
+        	if (capitals_engaged >= capital_number){
+        		break;
+        	}
         	var _planet = _planets[i];
-        	if (orbiting.p_pdf[_planet] > 0 || orbiting.p_guardsmen[_planet])
-        }        
-        with (orbiting){
-        	for (var i=1;i<planets;i++){
-        		if (capitals_engaged=caps) then break;
-        		if (p_type[i]!="Dead"){
-        			p_tyranids[4]=5;
-        			capitals_engaged+=1;
+        	if (orbiting.p_tyranids[_planet] < 6 && biomass > 0){
+        		var _all_except_nids = planet_all_forces(orbiting, _planet) - orbiting.p_tyranids[_planet];
+        		if (orbiting.p_pdf[_planet] > 0 || orbiting.p_guardsmen[_planet] || _all_except_nids>0){
+        			for (var n=0;orbiting.p_tyranids[_planet]<6 && biomass>9;n++){
+        				orbiting.p_tyranids[_planet]++;
+        				biomass -=10;
+        			}
+        			capitals_engaged++;
         		}
         	}
-        }
+        	
+        }        
     }
     
     

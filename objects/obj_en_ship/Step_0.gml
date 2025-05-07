@@ -146,7 +146,9 @@ if (hp>0) and (instance_exists(obj_p_ship)){
         if (dist>64) and (dist<300){
             bull=instance_create(x,y,obj_en_round);
             bull.direction=point_direction(x,y,targe.x,targe.y);
-            if (owner = eFACTION.Tyranids) then bull.sprite_index=spr_glob;
+            if (owner = eFACTION.Tyranids){
+                bull.sprite_index=spr_glob;
+            }
             bull.speed=20;
             bull.dam=3;
             bull.image_xscale=0.5;
@@ -156,6 +158,8 @@ if (hp>0) and (instance_exists(obj_p_ship)){
                 bull.image_yscale=1;
             }
             bull.direction+=choose(random(10),1*-(random(10)));
+
+            bull.explosion_sprite = spr_explosion;        
         }
     }
 
