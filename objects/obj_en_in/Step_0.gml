@@ -21,12 +21,17 @@ if (instance_exists(target)){
     if (action="bank") and (dist>300) then action="close";
         
     if (action="shoot") and (cooldown1<=0){
-        var bull;cooldown1=30;if (owner = eFACTION.Tau) then cooldown1=20;
+        var bull;
+		cooldown1=30;
+		if (owner = eFACTION.Tau) then cooldown1=20;
         bull=instance_create(x,y,obj_en_round);bull.direction=self.direction;
         if (owner = eFACTION.Tau) or (owner = eFACTION.Eldar) then bull.sprite_index=spr_pulse;
         if (owner = eFACTION.Tyranids) then bull.sprite_index=spr_glob;
-        bull.speed=20;bull.image_xscale=0.5;bull.image_yscale=0.5;bull.dam=3;
+        bull.speed=20;
+        bull.image_xscale=0.5;
+        bull.image_yscale=0.5;bull.dam=3;
         if (owner = eFACTION.Ork) then bull.dam=2;
+        bull.explosion_sprite = spr_explosion;  
     }
 }
 

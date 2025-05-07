@@ -157,7 +157,7 @@ function khorne_fleet_cargo(){
                         if (chase_fleet != "none") and (action == "") {
                         	var intercept_time = fleet_intercept_time_calculate(chase_fleet);
                         	if (chase_fleet.action!=""){
-                        		if (intercept_time<=chase_fleet.eta){
+                        		if (intercept_time<=chase_fleet._eta){
                         			target = chase_fleet;
                         			chase_fleet_target_set();
                         			target_chosen=true;
@@ -220,6 +220,7 @@ function spawn_chaos_fleet_at_system(system){
 }
 function spawn_chaos_warlord(){
 	with (obj_controller){
+
 		with(obj_turn_end){
 			audiences+=1;
 			audien[audiences]=10;
@@ -255,6 +256,7 @@ function spawn_chaos_warlord(){
 		    frigate_number=20;
 		    escort_number=40;
 		}
+
 		var rep, filtered_array, candidate_systems;
 		candidate_systems = [];
 	    with(obj_star){

@@ -12,6 +12,9 @@ hostile=1;
 lightning=0;
 whip=0;
 bridge=0;
+draw_targets = false;
+bullets_for = [];
+
 
 cooldown[0]=0;
 cooldown[1]=0;
@@ -32,13 +35,13 @@ shields=1;
 maxshields=1;
 armour_front=0;
 armour_other=0;
-weapons=0;
+weapons=[];
 turrets=0;
 
 turn_bonus=1;
 speed_bonus=1;
 
-
+ai_type = "enemy";
 var i;i=-1;
 repeat(6){i+=1;
     weapon[i]="";
@@ -50,5 +53,3 @@ repeat(6){i+=1;
     weapon_range[i]=0;
     weapon_minrange[i]=0;
 }
-
-action_set_alarm(1, 0);
