@@ -6,6 +6,7 @@ global.ship_weapons_stats = {
 		facing : "front",
 		firing_arc : 25,
 		img : spr_ground_las,
+		explosion_sprite : spr_explosion3,
 	},
 	"Plasma Cannon" : {
 		img : spr_ground_plasma,
@@ -13,7 +14,8 @@ global.ship_weapons_stats = {
 		bullet_speed : 15,
 		dam : 30,
 		firing_arc : 3,
-		bombard_value :4,	
+		bombard_value :4,
+		explosion_sprite : spr_explosion_plas,
 	},
 	"Nova Cannon": {
 		range : 1500,
@@ -29,6 +31,7 @@ global.ship_weapons_stats = {
 		cooldown : 20,
 		dam : 18,
 		firing_arc : 5,
+		explosion_sprite : spr_explosion2,
 	},
 	"Light Weapons Battery" : {
 		facing : "front",
@@ -36,6 +39,7 @@ global.ship_weapons_stats = {
 		cooldown : 30,
 		dam : 8,
 		firing_arc : 8,
+		explosion_sprite : spr_explosion2,
 	},
 	"Gunz Battery" : {
 		facing : "front",
@@ -43,6 +47,7 @@ global.ship_weapons_stats = {
 		cooldown : 30,
 		dam : 8,
 		firing_arc : 15,
+		explosion_sprite : spr_explosion2,
 	},
 	"Heavy Gunz" : {
 		weapon_facing : "front",
@@ -115,6 +120,7 @@ global.ship_weapons_stats = {
 		dam : 10,
 		weapon_cooldown : 10,
 		img: spr_ground_las,
+		explosion_sprite :spr_explosion_plas,
 	},
 	"Pyro-acid Battery" : {
 		facing : "most",
@@ -134,6 +140,7 @@ global.ship_weapons_stats = {
 		range : 200,
 		cooldown : 60,
 		dam : 6,
+		explosion_sprite :spr_explosion3,
 	},
 	"Massive Claws" : {
 		facing :"most",
@@ -162,6 +169,7 @@ global.ship_weapons_stats = {
 		range : 450,
 		cooldown:30,
 		img : spr_railgun,
+		explosion_sprite :spr_explosion_plas,
 	},
 	"Ion Cannons": {
 		facing : "front",
@@ -169,6 +177,7 @@ global.ship_weapons_stats = {
 		range : 300,
 		cooldown:15,
 		img : spr_pulse,
+		explosion_sprite :spr_explosion_plas,
 	},
 	"Lightning Arc" : {
 		facing : "most",
@@ -183,6 +192,7 @@ global.ship_weapons_stats = {
 		cooldown : 210,
 		img : spr_pulse,
 		speed : 20,
+		explosion_sprite :spr_explosion_plas,
 	},
 	"Gauss Particle Whip":{
 		dam : 30,
