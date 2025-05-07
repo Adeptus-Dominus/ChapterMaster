@@ -52,6 +52,7 @@ function scr_livery_setup(){
     draw_set_halign(fa_center);
     if (comp_toggle.draw()){
         comp_toggle.company_view = !comp_toggle.company_view;
+        livery_picker.colour_pick=false;
         if (!comp_toggle.company_view){
             company_liveries[livery_picker.role_set] = variable_clone(livery_picker.map_colour);
             livery_picker.role_set = 0;
@@ -405,7 +406,10 @@ function scr_livery_setup(){
                     
                     var onceh=0;
                     if (complex_depth_selection=i) and (onceh=0){complex_depth_selection=0;onceh=1;}
-                    else if (complex_depth_selection!=i) and (onceh=0){complex_depth_selection=i;onceh=1;}
+                    else if (complex_depth_selection!=i) and (onceh=0){
+                        complex_depth_selection=i;
+                        onceh=1;
+                    }
              }
              draw_text_transformed(cur_button.cords[0]+30,cur_button.cords[1]+4,cur_button.text,0.4,0.4,0);
         }                                           
@@ -470,6 +474,7 @@ function scr_livery_setup(){
                             }
                             livery_picker.shuffle_dummy();
                             livery_picker.reset_image();
+                            livery_picker.colour_pick=false;
                         }
                     }
                 }

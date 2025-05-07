@@ -677,6 +677,9 @@ function colour_picker(xx,yy, max_width=400) constructor{
     static create_texture_surface = function(texture_set, sprite_draw_args){
         var texture_names = struct_get_names(texture_set);
         var total_width = sprite_draw_args.frame_width * array_length(texture_names);
+        if (sprite_draw_args.frame_height <= 0 || total_width <= 0){
+            exit;
+        }
 
         _texture_offset = [0,0];
         texture_coords = [];
