@@ -154,7 +154,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 				}
 				body = $"The Cult of {feature.name} {control_string}";
 				break;				
-			case P_features.Victory_Shrine:
+			case P_features.VictoryShrine:
 				draw_text_transformed(xx+(area_width/2), yy +10, "Victory Shrine", 2, 2, 0);
 				draw_set_halign(fa_left);
 				draw_set_color(c_gray);				

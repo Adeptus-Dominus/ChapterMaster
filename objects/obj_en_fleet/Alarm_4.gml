@@ -11,10 +11,13 @@ if (action!=""){
     mine=instance_nearest(x,y,obj_star);
     if (mine.x=sys.x2) and (mine.y=sys.y2) then connected=1;
     
-    var eta;eta=0;
-    eta=floor(point_distance(x,y,action_x,action_y)/action_spd)+1;
-    if (connected=0) then eta=eta*2;
-    if (connected=1) then connected=1;
+    var _eta=0;
+    _eta=floor(point_distance(x,y,action_x,action_y)/action_spd)+1;
+    if (connected=0){
+        _eta=_eta*2;
+    } else {
+        connected=1;
+    }
     
     if (owner=eFACTION.Inquisition) and (action_eta<2) then action_eta=2;
     // action_x=sys.x;
@@ -62,7 +65,7 @@ if (action==""){
     
     if (cont=20){// Move the entire fleet, don't worry about the other crap
         turns_static = 0;
-        var eta=0;
+        var _eta=0;
         
         if (trade_goods!="") and (owner != eFACTION.Tyranids) and (owner != eFACTION.Chaos) and (string_count("Inqis",trade_goods)=0) and (string_count("merge",trade_goods)=0)and (string_count("_her",trade_goods)=0) and (trade_goods!="cancel_inspection") and (trade_goods!="return"){
             if (scr_valid_fleet_target(target)){
@@ -78,12 +81,12 @@ if (action==""){
             }
         }
         
-        eta=floor(point_distance(x,y,action_x,action_y)/action_spd)+1;
-        if (connected=0) then eta=eta*2;
+        _eta=floor(point_distance(x,y,action_x,action_y)/action_spd)+1;
+        if (connected=0) then _eta=_eta*2;
         if (connected=1) then connected=1;
         
         if (action_eta<=0) or (owner  != eFACTION.Inquisition){
-            action_eta=eta;
+            action_eta=_eta;
             if (owner  = eFACTION.Inquisition) and (action_eta<2) and (string_count("_her",trade_goods)=0) then action_eta=2;
         }
         

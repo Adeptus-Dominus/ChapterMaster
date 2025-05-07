@@ -137,28 +137,38 @@ function new_tyranid_fleet(xx, yy, capitals = 5,frigates = 0, escorts = 0, fleet
 	    action = "";    	
     	action_spd = 10;
     	biomass = _mass;
+    	warp_able = false;
 	}
 	return _fleet;
 }
 
-function star_biomass_value(star){
+function star_biomass_value(star, fleet=false){
 	var _bio_val = 0;
-	for (var i=0;i<array_length(planets);i++){
-		if (p_large[i]){
-			_bio_val += _bio_val;
-		} else {
-			if (p_type[i] == "Death" || p_type[i] == "Agri"){
+	if (is_dead_star(star)){
+		_bio_val = -1;
+	} else {
+		for (var i=0;i<array_length(star.planets);i++){
+			if (p_large[i]){
+				_bio_val += _bio_val;
+			} else {
+				if (p_type[i] == "Death" || p_type[i] == "Agri"){
+					_bio_val++;
+				}
+			}
+			var _cults = return_planet_features(p_features[i], P_features.Gene_Stealer_Cult)
+			if (array_length(_cults)){
+				var _cult = _cults[0];
 				_bio_val++;
+				_bio_val += (p_influence[i][eFACTION.Tyranids]/20);
 			}
 		}
-		var _cults = return_planet_features(p_features[i], P_features.Gene_Stealer_Cult)
-		if (array_length(_cults)){
-			var _cult = _cults[0];
-			_bio_val++;
-			_bio_val += (p_influence[i][eFACTION.Tyranids]/20);
-		}
+		_bio_val*=20;
 	}
-	return _bio_val;
+	if (instance_exists(fleet)){
+		var _travel_time = calculate_fleet_eta(x,y,visit_star.x,visit_star.y, fleet.ship_speed, true, true, fleet.warp_able);
+	}
+	bio_val -= _travel_timel;
+	return bio_val;
 }
 
 function sort_planets_by_biomass_potential(){
@@ -190,99 +200,85 @@ function sort_planets_by_biomass_potential(){
         }
     }
 
-    return _stars;
+    return [_stars, _bio_vals];
+}
+
+function split_off_new_nid_splinter(){
+	var _systems = sort_planets_by_biomass_potential();
+	var _bio = _systems[1];
+	_systems = _systems[0];
+	var _target = _systems[irandom(2)];
+	var _new_fleet = new_tyranid_fleet(x, y, 4,0,0,100);
+	biomass -= 500;
+                        
+	_new_fleet.action_x=_target.x;
+	_new_fleet.action_y=_target.y;
+	with (new_fleet){
+		set_fleet_movement();
+	}
+
 }
 
 function organise_tyranid_fleet_bio(){
+	if (capital_number < 5 && biomass > 300){
+		capital_number++;
+		biomass -= 100;
+	}
 	if (capital_number*2>frigate_number){
-            capital_number-=1;
-            frigate_number+=2;
+        capital_number-=1;
+        frigate_number+=2;
+    }
+    
+    if (capital_number*4>escort_number){
+        var rand=choose(1,2,3,4);
+        if (rand=4) then escort_number+=1;
+    }
+    
+    
+    
+    if (capital_number>0){
+        var capitals_engaged=0;
+        var caps = capital_number;
+        var _planets = [];
+        for (var i=1;i<=array_length(orbiting.planets);i++){
+        	array_push(_planets, i);
         }
-        
-        if (capital_number*4>escort_number){
-            var rand=choose(1,2,3,4);
-            if (rand=4) then escort_number+=1;
-        }
-        
-        
-        
-        if (capital_number>0){
-            var capitals_engaged=0;
-            var caps = capital_number;
-            with (orbiting){
-            	for (var i=1;i<planets;i++){
-            		if (capitals_engaged=caps) then break;
-            		if (p_type[i]!="Dead"){
-            			p_tyranids[4]=5;
-            			capitals_engaged+=1;
-            		}
-            	}
-            }
-        }
-        
-        
-
-        var _is_dead=false;
+        _planets = array_shuffle(_planets);
+        for (var i=0;i<array_length(orbiting.planets);i++){
+        	var _planet = _planets[i];
+        	if (orbiting.p_pdf[_planet] > 0 || orbiting.p_guardsmen[_planet])
+        }        
         with (orbiting){
-        	_is_dead = is_dead_star();
-        }
-        
-        if (_is_dead){
-
-            var xx=0,yy=0,good=0,plin=0,plin2=0;
-            var _split_fleet = false;
-            if (capital_number>5){
-            	_split_fleet=true;
-            }
-            
-            
-            repeat(100){
-                if (good!=5){
-                    xx=self.x+random_range(-300,300);
-                    yy=self.y+random_range(-300,300);
-                    if (good=0) then plin=instance_nearest(xx,yy,obj_star);
-                    if (good=1) and (_is_dead=5) then plin2=instance_nearest(xx,yy,obj_star);
-                    
-                    good = !array_contains(plin.p_type, "dead");
-
-                    if (good=1) and (_is_dead=5){
-                        if (!instance_exists(plin2)) then break;
-                        if (!array_contains(plin.p_type, "dead")) then good++
-                        
-                        var new_fleet;
-                        new_fleet=instance_create(x,y,obj_en_fleet);
-                        new_fleet.capital_number=floor(capital_number*0.4);
-                        new_fleet.frigate_number=floor(frigate_number*0.4);
-                        new_fleet.escort_number=floor(escort_number*0.4);
-                        
-                        capital_number-=new_fleet.capital_number;
-                        frigate_number-=new_fleet.frigate_number;
-                        escort_number-=new_fleet.escort_number;
-                        
-                        new_fleet.owner=eFACTION.Tyranids;
-                        new_fleet.sprite_index=spr_fleet_tyranid;
-                        new_fleet.image_index=1;
-                        
-                        /*with(new_fleet){
-                            var ii;ii=0;ii+=capital_number;ii+=round((frigate_number/2));ii+=round((escort_number/4));
-                            if (ii<=1) then ii=1;image_index=ii;
-                        }*/
-                        
-                        new_fleet.action_x=plin2.x;
-                        new_fleet.action_y=plin2.y;
-                       with (new_fleet){
-					    	set_fleet_movement();
-					    }
-                        break;
-                    }
-                    
-                    
-                    if (good=1) and (instance_exists(plin)){action_x=plin.x;action_y=plin.y;alarm[4]=1;if (_is_dead!=5) then good=5;}
-                }
-            }
-            instance_activate_object(obj_star);
+        	for (var i=1;i<planets;i++){
+        		if (capitals_engaged=caps) then break;
+        		if (p_type[i]!="Dead"){
+        			p_tyranids[4]=5;
+        			capitals_engaged+=1;
+        		}
+        	}
         }
     }
+    
+    
+
+    var _is_dead=false;
+    with (orbiting){
+    	_is_dead = is_dead_star();
+    }
+    
+    if (_is_dead){
+
+        var xx=0,yy=0,good=0,plin=0,plin2=0;
+        var _split_fleet = false;
+        if (bio_mass > 1000){
+        	_split_fleet=true;
+        }
+
+        if (split_fleet){
+        	split_off_new_nid_splinter();
+        }
+    }
+}
 
 
 function set_nid_ships(){

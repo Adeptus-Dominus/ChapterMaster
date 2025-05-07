@@ -157,7 +157,7 @@ function khorne_fleet_cargo(){
                         if (chase_fleet != "none") and (action == "") {
                         	var intercept_time = fleet_intercept_time_calculate(chase_fleet);
                         	if (chase_fleet.action!=""){
-                        		if (intercept_time<=chase_fleet.eta){
+                        		if (intercept_time<=chase_fleet._eta){
                         			target = chase_fleet;
                         			chase_fleet_target_set();
                         			target_chosen=true;

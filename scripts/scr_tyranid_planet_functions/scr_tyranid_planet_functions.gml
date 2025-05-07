@@ -5,29 +5,29 @@ function tyranids_planet_biomass_extraction(){
 	    if (p_tyranids[planet]>=5) and (planets>=planet) and (p_player[planet]+p_orks[planet]+p_guardsmen[planet]+p_pdf[planet]+p_chaos[planet]=0){
 	        var ship=scr_orbiting_fleet(eFACTION.Tyranids);
 	        if (ship!="none" && p_type[planet]!="Dead" && ship.capital_number){
-	            if (planet_feature_bool(p_feature[planet], P_features.Reclamation_pools) ==1){
+	            if (planet_feature_bool(p_feature[planet], P_features.Reclamationpools) ==1){
 	                p_tyranids[planet]=0;
 	                if (p_type[planet]="Death") or (p_type[planet]="Hive") then ship.capital_number+=choose(0,1,1);
 	                ship.capital_number+=1;
 	                ship.escort_number+=3;
 	                ship.image_index=floor((ship.capital_number)+(ship.frigate_number/2)+(ship.escort_number/4));
 	                p_type[planet]="Dead";
-					delete_features(p_feature[planet], P_features.Reclamation_pools);// show_message("D");
+					delete_features(p_feature[planet], P_features.Reclamationpools);// show_message("D");
 					if (is_dead_star()) then image_alpha=0.33;
                 
 	                // if image_alpha = 0.33 then send the ship somewhere new
                 
 	            }
-	            if (planet_feature_bool(p_feature[planet], P_features.Capillary_Towers)==1) and (p_type[planet]!="Dead"){
+	            if (planet_feature_bool(p_feature[planet], P_features.CapillaryTowers)==1) and (p_type[planet]!="Dead"){
 	            	p_population[planet]=floor(p_population[planet]*0.3);
 	            }
-	            if (planet_feature_bool(p_feature[planet], P_features.Capillary_Towers)==1) and (p_type[planet]!="Dead"){
+	            if (planet_feature_bool(p_feature[planet], P_features.CapillaryTowers)==1) and (p_type[planet]!="Dead"){
 	                p_feature[planet]=[];
-					array_push(p_feature[planet],  new NewPlanetFeature(P_features.Reclamation_pools));
+					array_push(p_feature[planet],  new NewPlanetFeature(P_features.Reclamationpools));
 	                p_population[planet]=0;// show_message("C");
 	            }
-	            if (planet_feature_bool(p_feature[planet], P_features.Capillary_Towers)==0) and (planet_feature_bool(p_feature[planet], P_features.Reclamation_pools)==0) and (p_type[planet]!="Dead"){
-					array_push(p_feature[planet], new NewPlanetFeature(P_features.Capillary_Towers));// show_message("B");
+	            if (planet_feature_bool(p_feature[planet], P_features.CapillaryTowers)==0) and (planet_feature_bool(p_feature[planet], P_features.Reclamationpools)==0) and (p_type[planet]!="Dead"){
+					array_push(p_feature[planet], new NewPlanetFeature(P_features.CapillaryTowers));// show_message("B");
 	            }
 
 	        }
@@ -37,7 +37,7 @@ function tyranids_planet_biomass_extraction(){
 
 function deploy_reclamation_pools(planet){
     if (p_pdf[planet] <= 0){
-        new NewPlanetFeature(P_features.Reclamation_pools);
+        new NewPlanetFeature(P_features.Reclamationpools);
         array_push(p_feature[planet], )
     }
 }

@@ -257,7 +257,7 @@ function scr_enemy_ai_d() {
                     var _frigates = irandom_range(6,12);
                     var _escorts = irandom_range(12,27);
                     var _fleet = summon_new_hive_fleet(_capitals, _frigates, _escorts);
-                    add_new_problem(i, "Hive Fleet", _fleet.eta, self, {});
+                    add_new_problem(i, "Hive Fleet", _fleet.action_eta, self, {});
 	            }
 	        }
     
