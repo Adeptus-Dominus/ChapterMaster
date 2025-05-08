@@ -1735,7 +1735,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                     secondary_modifier = 0;
                 } else {
                     secondary_modifier = 0.6;
-                    side_arm_data = "Pistol: x0.8";
+                    side_arm_data = "Pistol: x0.6";
                 }
             } else if (secondary_weapon.has_tag("flame")) {
                 secondary_modifier = 0.3;
