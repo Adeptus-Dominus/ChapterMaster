@@ -1550,6 +1550,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 explanation_string += $"Secondary: +{second_attack}#";
             }
         }
+        final_range_attack = floor(final_range_attack * range_multiplyer);
         ranged_damage_data = [final_range_attack, explanation_string, carry_data, primary_weapon, secondary_weapon];
         return ranged_damage_data;
     };
