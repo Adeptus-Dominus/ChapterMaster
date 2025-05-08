@@ -39,6 +39,36 @@ enum ePROGENITOR {
     RANDOM,
 }
 
+#macro WEAPON_LIST_RANGED_HEAVY_TERMINATOR ["Heavy Flamer", "Heavy Flamer", "Heavy Flamer", "Assault Cannon", "Assault Cannon", "Multi-Melta", "Plasma Cannon", "Grav-Cannon"]
+#macro WEAPON_LIST_RANGED_HEAVY_LONG ["Heavy Bolter", "Heavy Bolter", "Heavy Bolter", "Heavy Bolter", "Missile Launcher", "Missile Launcher", "Missile Launcher", "Lascannon", "Lascannon", "Plasma Cannon", "Grav-Cannon"]
+#macro WEAPON_LIST_RANGED_HEAVY_ASSAULT ["Heavy Flamer", "Heavy Flamer", "Heavy Flamer", "Multi-Melta"]
+#macro WEAPON_LIST_RANGED_HEAVY array_concat(WEAPON_LIST_RANGED_HEAVY_LONG, WEAPON_LIST_RANGED_HEAVY_ASSAULT)
+#macro WEAPON_LIST_RANGED_HEAVY_VETERAN ["Heavy Bolter", "Heavy Bolter", "Missile Launcher", "Lascannon", "Lascannon", "Multi-Melta", "Plasma Cannon", "Grav-Cannon"]
+
+#macro WEAPON_LIST_RANGED_SPECIAL_LONG ["Plasma Gun", "Plasma Gun", "Plasma Gun", "Grav-Gun"]
+#macro WEAPON_LIST_RANGED_SPECIAL_ASSAULT ["Flamer", "Flamer", "Flamer", "Meltagun"]
+#macro WEAPON_LIST_RANGED_SPECIAL array_concat(WEAPON_LIST_RANGED_SPECIAL_LONG, WEAPON_LIST_RANGED_SPECIAL_ASSAULT)
+
+#macro WEAPON_LIST_RANGED_COMBI_LONG ["Storm Bolter", "Storm Bolter", "Storm Bolter", "Storm Bolter", "Combiplasma", "Combiplasma", "Combigrav"]
+#macro WEAPON_LIST_RANGED_COMBI_ASSAULT ["Combiflamer", "Combiflamer", "Combiflamer", "Combimelta"]
+#macro WEAPON_LIST_RANGED_COMBI array_concat(WEAPON_LIST_RANGED_COMBI_LONG, WEAPON_LIST_RANGED_COMBI_ASSAULT)
+
+#macro WEAPON_LIST_RANGED_PISTOLS_LONG ["Bolt Pistol", "Bolt Pistol", "Bolt Pistol", "Plasma Pistol", "Plasma Pistol", "Grav-Pistol"]
+#macro WEAPON_LIST_RANGED_PISTOLS_ASSAULT ["Hand Flamer", "Hand Flamer", "Hand Flamer", "Infernus Pistol"]
+#macro WEAPON_LIST_RANGED_PISTOLS array_concat(WEAPON_LIST_RANGED_PISTOLS_LONG, WEAPON_LIST_RANGED_PISTOLS_ASSAULT)
+
+#macro WEAPON_LIST_RANGED_VETERAN array_concat(["Bolter", "Bolter", "Bolter"], WEAPON_LIST_RANGED_COMBI)
+#macro WEAPON_LIST_RANGED array_concat(WEAPON_LIST_RANGED_PISTOLS_LONG, WEAPON_LIST_RANGED_VETERAN)
+
+
+#macro WEAPON_LIST_MELEE_BASIC ["Chainsword", "Chainsword", "Chainaxe"]
+#macro WEAPON_LIST_MELEE_1H ["Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Chainsword", "Power Sword", "Power Sword", "Power Sword", "Lightning Claw", "Lightning Claw", "Lightning Claw", "Power Fist", "Power Fist", "Thunder Hammer"]
+#macro WEAPON_LIST_MELEE_HEAVY ["Eviscerator", "Eviscerator", "Eviscerator", "Eviscerator", "Eviscerator", "Heavy Thunder Hammer"]
+#macro WEAPON_LIST_MELEE_VETERAN ["Chainsword", "Chainsword", "Chainsword", "Power Sword", "Power Sword", "Power Sword", "Lightning Claw", "Lightning Claw", "Lightning Claw", "Power Fist", "Power Fist", "Thunder Hammer"]
+
+
+#macro WEAPON_LIST_WEIGHTED_RANGED_PISTOLS [["Bolt Pistol", 4], ["Plasma Pistol", 2], ["Grav-Pistol", 1]]
+
 function progenitor_map(){
     var founding_chapters = [
         "",
@@ -1426,7 +1456,7 @@ function scr_initialize_custom() {
 	load_default_gear(eROLE.Scout, "Scout", "Bolter", "Combat Knife", "Scout Armour", "", "");
 	load_default_gear(eROLE.Chaplain, "Chaplain", "Crozius Arcanum", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Rosarius");
 	load_default_gear(eROLE.Apothecary, "Apothecary", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Narthecium");
-	load_default_gear(eROLE.Techmarine, "Techmarine", "Power Axe", "Bolt Pistol", _hi_qual_armour, "Servo-arm", "");
+	load_default_gear(eROLE.Techmarine, "Techmarine", "Omnissian Axe", "Bolt Pistol", _hi_qual_armour, "Servo-arm", "");
 	load_default_gear(eROLE.Librarian, "Librarian", "Force Staff", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Psychic Hood");
 	load_default_gear(eROLE.Sergeant, "Sergeant", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "");
 	load_default_gear(eROLE.VeteranSergeant, "Veteran Sergeant", "Chainsword", "Plasma Pistol", STR_ANY_POWER_ARMOUR, "", "");
@@ -1593,8 +1623,15 @@ function scr_initialize_custom() {
 				"min": 0,
 				"loadout": {
 					"required": {
-						"wep1": [wep1[defaults_slot][eROLE.Veteran], 5],
-						"wep2": [wep2[defaults_slot][eROLE.Veteran], 5],
+						"wep1": ["", 0],
+						"wep2": ["Combat Knife", max],
+					},
+					"option": {
+						"wep1": [
+							[
+								WEAPON_LIST_RANGED_VETERAN, 5
+							],
+						],
 					}
 				},
 				"role": $"Company {roles.veteran}"
@@ -1623,9 +1660,21 @@ function scr_initialize_custom() {
 				"role": $"{roles.terminator} {roles.sergeant}",
 				"loadout": {
 					"required": {
-						"wep1": [wep1[defaults_slot][eROLE.Terminator], 1],
-						"wep2": [wep2[defaults_slot][eROLE.Terminator], 1],
+						"wep1": ["", 0],
+						"wep2": ["", 0],
 					},
+					"option": {
+						"wep1": [
+							[
+								["Power Fist", "Chainfist"], 1
+							],
+						],
+						"wep2": [
+							[
+								WEAPON_LIST_RANGED_COMBI, 1
+							],
+						]
+					}
 				}
 			}],
 			// Terminator
@@ -1635,7 +1684,7 @@ function scr_initialize_custom() {
 				"loadout": {
 					"required": {
 						"wep1": ["", 0],
-						"wep2": [wep2[100, 4], 3],
+						"wep2": ["", 0],
 					},
 					"option": {
 						"wep1": [
@@ -1645,9 +1694,14 @@ function scr_initialize_custom() {
 						],
 						"wep2": [
 							[
-								["Assault Cannon", "Heavy Flamer"], 1
+								WEAPON_LIST_RANGED_COMBI, 3
 							],
 						],
+						"wep2": [
+							[
+								WEAPON_LIST_RANGED_HEAVY_TERMINATOR, 1
+							],
+						]
 					}
 				}
 			}],
@@ -1697,12 +1751,11 @@ function scr_initialize_custom() {
 			}]
 		],
 
-		"sternguard_veteran_squad": [
-			// Sternguard Veteran
-			[roles.veteran, {
-				"max": 9,
-				"min": 4,
-				"role": $"Sternguard {roles.veteran}",
+		"veteran_squad": [
+			[roles.veteran_sergeant, {
+				"max": 1,
+				"min": 1,
+				"role": $"{roles.veteran_sergeant}",
 				"loadout": {
 					"required": {
 						"wep1": ["", 0],
@@ -1711,92 +1764,40 @@ function scr_initialize_custom() {
 					"option": {
 						"wep1": [
 							[
-								["Bolter", "Stalker Pattern Bolter", "Storm Bolter"], 5
+								WEAPON_LIST_RANGED_VETERAN, 1
 							],
-							[
-								["Combiflamer"], 2
-							],
-							[
-								weapon_lists.special_weapons, 1
-							],
-							[
-								weapon_lists.heavy_weapons, 1, {
-									"wep2":"Combat Knife",
-									"mobi":"Heavy Weapons Pack",
-								}
-							],
-						]
+						],
 					}
-				}
+				},
 			}],
-			// Sternguard Veteran Sergeant
-			[roles.veteran_sergeant, {
-				"max": 1,
-				"min": 1,
-				"role": $"Sternguard {roles.veteran_sergeant}",
-				"loadout": {
-					"required": {
-						"wep1": ["Stalker Pattern Bolter", 1],
-						"wep2": [wep2[100][eROLE.Veteran], 1],
-					},
-				}
-			}],
-			["type_data", {
-				"display_data": $"Sternguard {roles.veteran} {squad_name}",
-				"formation_options": ["veteran", "assault", "devastator", "scout", "tactical"],
-			}]
-		],
-
-		"vanguard_veteran_squad": [
-			// Vanguard Veterans
 			[roles.veteran, {
 				"max": 9,
 				"min": 4,
-				"role": $"Vanguard {roles.veteran}",
+				"role": $"{roles.veteran}",
 				"loadout": {
 					"required": {
 						"wep1": ["", 0],
-						"wep2": ["Bolt Pistol", 4],
-						"mobi": ["Jump Pack", 9]
+						"wep2": ["Combat Knife", max],
 					},
 					"option": {
 						"wep1": [
 							[
-								["Chainsword", "Power Sword", "Power Axe", "Lightning Claw"], 6
+								WEAPON_LIST_RANGED_VETERAN, 7
 							],
 							[
-								["Power Fist"], 2
+								WEAPON_LIST_RANGED_SPECIAL, 1
 							],
 							[
-								["Thunder Hammer"], 1
-							],
+								WEAPON_LIST_RANGED_HEAVY, 1, {
+									"mobi": "Heavy Weapons Pack",
+								}
+							]
 						],
-						"wep2": [
-							[
-								["Storm Shield"], 2,
-							],
-							[
-								["Plasma Pistol"], 3
-							],
-						]
 					}
-				}
-			}],
-			// Vanguard Veteran Sergeant
-			[roles.veteran_sergeant, {
-				"max": 1,
-				"min": 1,
-				"role": $"Vanguard {roles.veteran_sergeant}",
-				"loadout": {
-					"required": {
-						"wep1": ["Thunder Hammer", 1],
-						"wep2": ["Storm Shield", 1],
-						"mobi": ["Jump Pack", 1]
-					},
-				}
-			}],
+				},
+			}, ],
 			["type_data", {
-				"display_data": $"Vanguard {roles.veteran} {squad_name}",
+				"display_data": $"{roles.veteran} {squad_name}",
 				"formation_options": ["veteran", "assault", "devastator", "scout", "tactical"],
 			}]
 		],
@@ -1815,7 +1816,7 @@ function scr_initialize_custom() {
 						"option": {
 							"wep1": [
 								[
-									weapon_lists.heavy_weapons, 4, {
+									WEAPON_LIST_RANGED_HEAVY, 4, {
 										"mobi":"Heavy Weapons Pack",
 									}
 								],
@@ -1830,19 +1831,15 @@ function scr_initialize_custom() {
 				"role": $"{roles.devastator} {roles.sergeant}",
 				"loadout": {
 					"required": {
-						"mobi": ["", 1],
+						"wep2": ["Combat Knife", 1],
+						"mobi": ["", 0]
 					},
 					"option": {
 						"wep1": [
 							[
-								weapon_lists.pistols, 1
+								WEAPON_LIST_RANGED, 1
 							],
-						],
-						"wep2": [
-							[
-								weapon_lists.melee_weapons, 1
-							],
-						],
+						]
 					}
 				}
 			}],
@@ -1864,10 +1861,10 @@ function scr_initialize_custom() {
 					"option": {
 						"wep1": [
 							[
-								weapon_lists.special_weapons, 1
+								WEAPON_LIST_RANGED_SPECIAL, 1
 							],
 							[
-								weapon_lists.heavy_weapons, 1, {
+								WEAPON_LIST_RANGED_HEAVY, 1, {
 									"wep2":"Combat Knife",
 									"mobi":"Heavy Weapons Pack",
 								}
@@ -1883,17 +1880,17 @@ function scr_initialize_custom() {
 				"loadout": {
 					"required": {
 						"wep1": ["", 0],
-						"wep2": ["Chainsword", 1]
+						"wep2": ["", 0]
 					},
 					"option": {
 						"wep1": [
 							[
-								weapon_lists.pistols, 1
+								WEAPON_LIST_RANGED_PISTOLS_LONG, 1
 							],
 						],
 						"wep2": [
 							[
-								weapon_lists.melee_weapons, 1
+								WEAPON_LIST_MELEE_BASIC, 1
 							],
 						],
 					}
@@ -1927,7 +1924,7 @@ function scr_initialize_custom() {
 						],
 						"wep2": [
 							[
-								["Plasma Pistol", "Flamer"], 2
+								["Flamer", "Flamer", "Flamer", "Plasma Pistol"], 2
 							]
 						]
 					}
@@ -1946,12 +1943,12 @@ function scr_initialize_custom() {
 					"option": {
 						"wep1": [
 							[
-								weapon_lists.pistols, 1
+								WEAPON_LIST_RANGED_PISTOLS, 1
 							],
 						],
 						"wep2": [
 							[
-								weapon_lists.melee_weapons, 1
+								WEAPON_LIST_MELEE_1H, 1
 							],
 						],
 					}
@@ -1969,13 +1966,13 @@ function scr_initialize_custom() {
 					"min": 4,
 					"loadout": {
 						"required": {
-							"wep1": [wep1[100][12], 6],
-							"wep2": [wep2[100][12], 9]
+							"wep1": ["", 0],
+							"wep2": ["Combat Knife", max]
 						},
 						"option": {
 							"wep1": [
 								[
-									["Bolter", "Stalker Pattern Bolter"], 2
+									["Bolter", "Bolter", "Shotgun", "Sniper Rifle", "Stalker Pattern Bolter"], 8
 								],
 								[
 									["Missile Launcher", "Heavy Bolter"], 1
@@ -1988,15 +1985,14 @@ function scr_initialize_custom() {
 					"max": 1,
 					"min": 1,
 					"loadout": {
+						"required": {
+							"wep1": ["", 0],
+							"wep2": ["Combat Knife", 1]
+						},
 						"option": {
 							"wep1": [
 								[
-									["Bolt Pistol", "Bolt Pistol", "Plasma Pistol", "Bolter", "Bolter", "Stalker Pattern Bolter"], 1
-								]
-							],
-							"wep2": [
-								[
-									["Power Sword", "Chainsword", "Power Axe"], 1
+									WEAPON_LIST_RANGED, 1
 								]
 							]
 						}
@@ -2009,45 +2005,6 @@ function scr_initialize_custom() {
 				"formation_options": ["scout", "tactical", "assault", "devastator"],
 			}],
 		],
-
-		"scout_sniper_squad": [
-			[roles.scout,
-				{
-					"max": 9,
-					"min": 4,
-					"loadout": {
-						"required": {
-							"wep1": ["Sniper Rifle", 8],
-							"wep2": ["Combat Knife", 9]
-						},
-						"option": {
-							"wep1": [
-								[
-									["Missile Launcher"], 1
-								]						
-							],
-						}
-					},
-					"role": $"{roles.scout} Sniper",
-				}],
-			[roles.sergeant, {
-					"max": 1,
-					"min": 1,
-					"loadout": {
-						"required": {
-							"wep1": ["Sniper Rifle", 1],
-							"wep2": ["Combat Knife", 1]
-						},
-					},
-					"role": $"Sniper {roles.sergeant}",
-				}
-			],
-			["type_data", {
-				"display_data": $"{roles.scout} Sniper {squad_name}",
-				"class": ["scout"],
-				"formation_options": ["scout"],
-			}],
-		]
 	};
 
 	// show_debug_message($"squads object for chapter {chapter_name}");
@@ -2077,16 +2034,15 @@ function scr_initialize_custom() {
 	// show_debug_message($"roles object for chapter {chapter_name} after setting from obj");
 	// show_debug_message($"{st}");
 
-	if (scr_has_adv("Crafters")) { //salamanders squads
-		variable_struct_set(st, "assault_squad", [
+	if (global.chapter_name == "Salamanders") {
+		st[$ "assault_squad"][0] = 
 			[roles.assault, {
 				"max": 9,
 				"min": 4,
-				"loadout": { //assault_marine
+				"loadout": {
 					"required": {
-						"wep1": [wep1[100, 10], 4],
-						"wep2": [wep2[100, 10], 4],
-						"gear": ["Combat Shield", 4]
+						"wep1": [wep1[100, 10], 5],
+						"wep2": [wep2[100, 10], 5],
 					},
 					"option": {
 						"wep1": [
@@ -2102,35 +2058,9 @@ function scr_initialize_custom() {
 						],
 					}
 				}
-			}],
-			[roles.sergeant, {
-				"max": 1,
-				"min": 1, //sergeant
-				"loadout": {
-					"required": {
-						"wep1": ["Bolt Pistol", 0],
-						"wep2": ["Chainsword", 0],
-					},
-					"option": {
-						"wep1": [
-							[
-								["Power Sword", "Thunder Hammer", "Power Fist", "Chainsword"], 1
-							]
-						],
-						"wep2": [
-							[
-								["Plasma Pistol", "Combiflamer", "Meltagun"], 1
-							]
-						]
-					}
-				},
-				"role": $"{roles.sergeant} {roles.assault}"
-			}],
-			["type_data", {
-				"display_data": $"{roles.assault} {squad_name}"
 			}]
-		])
 	}
+
 	if (scr_has_adv("Lightning Warriors")) {
 		variable_struct_set(st, "bikers", [
 			[roles.assault, {
@@ -2164,6 +2094,7 @@ function scr_initialize_custom() {
 			}]
 		])
 	}
+
 	if (scr_has_adv("Boarders")) {
 		variable_struct_set(st, "breachers", [
 			[roles.tactical, {
@@ -2180,10 +2111,10 @@ function scr_initialize_custom() {
 					"option": {
 						"wep1": [
 							[
-								["Flamer", "Grav-Gun", "Meltagun", "Lascutter"], 2,
+								["Flamer", "Flamer", "Flamer", "Grav-Gun", "Meltagun", "Lascutter"], 2,
 							],
 						]
-								}
+					}
 				},
 				"role": $"Breacher"
 			}],
@@ -2200,7 +2131,7 @@ function scr_initialize_custom() {
 					"option": {
 						"wep1": [
 							[
-								["Bolter", "Bolter", "Bolter", "Combiflamer"], 1
+								WEAPON_LIST_RANGED_COMBI, 1
 							]
 						],
 					}
@@ -2212,58 +2143,92 @@ function scr_initialize_custom() {
 				"formation_options": ["tactical", "assault", "devastator", "scout" ],
 			}]
 		])
-		variable_struct_set(st,"assault_squad", [
-			[roles.assault, {
-				"max": 9,
-				"min": 4,
-				"loadout": {
-					"required": {
-						"wep1": [wep1[100, 10], 7],
-						"wep2": [wep2[100, 10], 7],
-					},
-					"option": {
-						"wep1": [
-							[
-								weapon_lists.melee_weapons, 2
-							],
-						],
-						"wep2": [
-							[
-								["Plasma Pistol", "Flamer"], 2
-							]
-						]
-					}
-				}
-			}],
-			[roles.sergeant, {
+	}
+
+	if (scr_has_adv("Assault Doctrine")) {
+		variable_struct_set(st, "veteran_squad", [
+			[roles.veteran_sergeant, {
 				"max": 1,
 				"min": 1,
-				"role": $"{roles.assault} {roles.sergeant}",
+				"role": $"{roles.veteran_sergeant}",
 				"loadout": {
 					"required": {
 						"wep1": ["", 0],
 						"wep2": ["", 0],
-						"gear": ["Combat Shield", 1]
+						"mobi": ["Jump Pack", max],
+						"gear": ["Combat Shield", max]
 					},
 					"option": {
 						"wep1": [
 							[
-								weapon_lists.pistols, 1
+								WEAPON_LIST_RANGED_PISTOLS, 1
 							],
 						],
 						"wep2": [
 							[
-								weapon_lists.melee_weapons, 1
+								WEAPON_LIST_MELEE_VETERAN, 1
+							],
+						]
+					}
+				},
+			}],
+			[roles.veteran, {
+				"max": 9,
+				"min": 4,
+				"role": $"{roles.veteran}",
+				"loadout": {
+					"required": {
+						"wep1": ["", 0],
+						"wep2": ["", 0],
+						"mobi": ["Jump Pack", max],
+						"gear": ["Combat Shield", max]
+					},
+					"option": {
+						"wep1": [
+							[
+								WEAPON_LIST_RANGED_PISTOLS, 9
 							],
 						],
+						"wep2": [
+							[
+								WEAPON_LIST_MELEE_VETERAN, 9
+							],
+						]
 					}
-				}
-			}],
+				},
+			}, ],
 			["type_data", {
-				"display_data": $"{roles.assault} {squad_name}",
-				"formation_options": ["assault"],
+				"display_data": $"{roles.veteran} {squad_name}",
+				"formation_options": ["veteran", "assault", "devastator", "scout", "tactical"],
 			}]
 		])
+	}
+
+	if (scr_has_adv("Devastator Doctrine")) {
+		st[$ "veteran_squad"][1] =
+			[roles.veteran, {
+				"max": 9,
+				"min": 4,
+				"role": $"{roles.veteran}",
+				"loadout": {
+					"required": {
+						"wep1": ["", 0],
+						"wep2": ["Combat Knife", max],
+					},
+					"option": {
+						"wep1": [
+							[
+								WEAPON_LIST_RANGED_VETERAN, 5
+							],
+							[
+								WEAPON_LIST_RANGED_HEAVY_VETERAN, 4, {
+									"mobi": "Heavy Weapons Pack",
+								}
+							]
+						],
+					}
+				},
+			}, ]
 	}
 
 
@@ -2379,7 +2344,7 @@ function scr_initialize_custom() {
 
 	// Forge Master
 	name[company, 1] = obj_creation.fmaster;
-	var _forge_master = add_unit_to_company("marine", company, 1, "Forge Master", eROLE.Techmarine, "Infernus Pistol", "Power Axe", "default", "Servo-harness", _hq_armour);
+	var _forge_master = add_unit_to_company("marine", company, 1, "Forge Master", eROLE.Techmarine, "Infernus Pistol", "Omnissian Axe", "default", "Servo-harness", _hq_armour);
 	if (_forge_master.technology < 40) {
 		_forge_master.technology = 40;
 	}
@@ -2436,7 +2401,7 @@ function scr_initialize_custom() {
 		k += 1;
 		commands += 1;
 		man_size += 1;
-		add_unit_to_company("marine", company, k, roles.techmarine, eROLE.Techmarine, "default", choose_weighted(weapon_weighted_lists.pistols));
+		add_unit_to_company("marine", company, k, roles.techmarine, eROLE.Techmarine, "default", choose_weighted(WEAPON_LIST_WEIGHTED_RANGED_PISTOLS));
 	}
 
 	// Librarians in the librarium
@@ -2444,14 +2409,14 @@ function scr_initialize_custom() {
 		k += 1;
 		commands += 1;
 		man_size += 1;
-		var _epi = add_unit_to_company("marine", company, k, roles.librarian, eROLE.Librarian, "default", choose_weighted(weapon_weighted_lists.pistols));
+		var _epi = add_unit_to_company("marine", company, k, roles.librarian, eROLE.Librarian, "default", choose_weighted(WEAPON_LIST_WEIGHTED_RANGED_PISTOLS));
 	}
 	// Codiciery
 	repeat(codiciery) {
 		k += 1;
 		commands += 1;
 		man_size += 1;
-		var _codi = add_unit_to_company("marine", company, k, "Codiciery", eROLE.Librarian, "default", choose_weighted(weapon_weighted_lists.pistols));
+		var _codi = add_unit_to_company("marine", company, k, "Codiciery", eROLE.Librarian, "default", choose_weighted(WEAPON_LIST_WEIGHTED_RANGED_PISTOLS));
 	}
 
 	// Lexicanum
@@ -2459,7 +2424,7 @@ function scr_initialize_custom() {
 		k += 1;
 		commands += 1;
 		man_size += 1;
-		var _lexi = add_unit_to_company("marine", company, k, "Lexicanum", eROLE.Librarian, "default", choose_weighted(weapon_weighted_lists.pistols));
+		var _lexi = add_unit_to_company("marine", company, k, "Lexicanum", eROLE.Librarian, "default", choose_weighted(WEAPON_LIST_WEIGHTED_RANGED_PISTOLS));
 	}
 
 	// Apothecaries in Apothecarion
@@ -2467,7 +2432,7 @@ function scr_initialize_custom() {
 		k += 1;
 		commands += 1;
 		man_size += 1;
-		add_unit_to_company("marine", company, k, roles.apothecary, eROLE.Apothecary,"Chainsword", choose_weighted(weapon_weighted_lists.pistols));
+		add_unit_to_company("marine", company, k, roles.apothecary, eROLE.Apothecary,"Chainsword", choose_weighted(WEAPON_LIST_WEIGHTED_RANGED_PISTOLS));
 	}
 
 	// Chaplains in Reclusium
@@ -2475,7 +2440,7 @@ function scr_initialize_custom() {
 		k += 1;
 		commands += 1;
 		man_size += 1;
-		add_unit_to_company("marine", company, k, roles.chaplain, eROLE.Chaplain,"default", choose_weighted(weapon_weighted_lists.pistols));
+		add_unit_to_company("marine", company, k, roles.chaplain, eROLE.Chaplain,"default", choose_weighted(WEAPON_LIST_WEIGHTED_RANGED_PISTOLS));
 	}
 
 	// Honour Guard
@@ -2888,7 +2853,7 @@ function scr_initialize_custom() {
 					commands++;
 					_rolename = roles.captain;
 					_erole = eROLE.Captain;
-					_wep2 = choose_weighted(weapon_weighted_lists.pistols);
+					_wep2 = choose_weighted(WEAPON_LIST_WEIGHTED_RANGED_PISTOLS);
 					if (equal_specialists == false && _coy.coy == 8) {
 						_mobi = "Jump Pack";
 					}
@@ -2902,7 +2867,7 @@ function scr_initialize_custom() {
 					commands++;
 					_rolename = roles.chaplain;
 					_erole = eROLE.Chaplain;
-					_wep2 = choose_weighted(weapon_weighted_lists.pistols);
+					_wep2 = choose_weighted(WEAPON_LIST_WEIGHTED_RANGED_PISTOLS);
 					if (equal_specialists == false && _coy.coy == 8) {
 						_mobi = "Jump Pack";
 					}

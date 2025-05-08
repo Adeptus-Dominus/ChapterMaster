@@ -17,7 +17,7 @@ if (battle_special=3.1){
     obj_ncombat.fortified=5;
     obj_ncombat.battle_special="mech_stc";
     obj_ncombat.threat=4;
-    obj_ncombat.formation_set=3;
+    obj_ncombat.player_formation=3;
     
     instance_deactivate_all(true);
     instance_activate_object(obj_ini);
@@ -33,7 +33,7 @@ if (battle_special=3.1){
         update_roster();
         if (array_length(selected_units)){  
             setup_battle_formations();
-            add_to_battle();
+            // add_to_battle();
         } else {
             instance_destroy(obj_ncombat);
             instance_activate_all();

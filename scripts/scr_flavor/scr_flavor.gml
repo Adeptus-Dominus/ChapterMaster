@@ -1,42 +1,19 @@
-/// @function add_battle_log_message
-/// @param {string} _message - The message text to add to the battle log
-/// @param {real} [_message_size=0] - The size/importance of the message (higher values = higher display priority; affects sorting order)
-/// @param {real} [_message_priority=0] - The priority level (affects sorting and text color: 0=normal, 135=blue, 134=purple)
-/// @returns {real} The index of the newly added message
-function add_battle_log_message(_message, _message_size = 0, _message_priority = 0) {
-	if (instance_exists(obj_ncombat)) {
-		obj_ncombat.messages++;
-		var _message_index = obj_ncombat.messages;
-		
-		obj_ncombat.message[_message_index] = _message;
-		obj_ncombat.message_sz[_message_index] = _message_size + (0.5 - (obj_ncombat.messages / 100));
-		obj_ncombat.message_priority[_message_index] = _message_priority;
-		
-		return _message_index;
-	}
-	return -1;
-}
-
-function display_battle_log_message() {
-    // Trigger the message processing alarm
-    obj_ncombat.alarm[3] = 5;
-}
-
-function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shots, casulties) {
+/// @mixin
+function scr_flavor(_weapon_stack, _target_object, _target_stack, casulties) {
 
 	// Generates flavor based on the damage and casualties from scr_shoot, only for the player
 
-	var attack_message, kill_message, leader_message, targeh;
-	targeh = target_type;
+	var attack_message, kill_message, leader_message;
 	leader_message = "";
 	attack_message = $"";
 	kill_message = "";
 
-	var weapon_name = wep[id_of_attacking_weapons];
+	var weapon_name = _weapon_stack.weapon_name;
+	var number_of_shots = _weapon_stack.weapon_count
 
-	if (id_of_attacking_weapons = -51) then weapon_name = "Heavy Bolter Emplacemelse ent";
-	if (id_of_attacking_weapons = -52) then weapon_name = "Missile Launcher Emplacement";
-	if (id_of_attacking_weapons = -53) then weapon_name = "Missile Silo";
+	// if (id_of_attacking_weapons = -51) then weapon_name = "Heavy Bolter Emplacemelse ent";
+	// if (id_of_attacking_weapons = -52) then weapon_name = "Missile Launcher Emplacement";
+	// if (id_of_attacking_weapons = -53) then weapon_name = "Missile Silo";
 
 	var weapon_data = gear_weapon_data("weapon", weapon_name, "all");
 	if (!is_struct(weapon_data)) {
@@ -44,31 +21,19 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 		weapon_data.name = weapon_name;
 	}
 
-	var target_name = target.dudes[targeh];
+	var target_name = _target_stack.display_name;
 
 	if (target_name = "Leader") and (obj_ncombat.enemy <= 10) {
 		target_name = obj_controller.faction_leader[obj_ncombat.enemy];
 	}
 
-	var character_shot = false,
-		unit_name = "",
-		cm_kill = 0;
+	var character_shot = false;
+	var unit_name = "";
 
-	// I don't understand how this part of code works, nor how it should work, but it doesn't seem to be working properly.
-	// if (id_of_attacking_weapons > 0) {
-	// 	if (array_length(wep_solo[id_of_attacking_weapons]) > 0) {
-	// 		character_shot = true;
-	// 		full_names = wep_solo[id_of_attacking_weapons];
-	// 		if (wep_title[id_of_attacking_weapons] != "") {
-	// 			if (array_length(full_names) == 1) {
-	// 				unit_name = wep_title[id_of_attacking_weapons] + " " + wep_solo[id_of_attacking_weapons][0];
-	// 			} else {
-	// 				unit_name = wep_title[id_of_attacking_weapons] + "'s"
-	// 			}
-	// 		}
-	// 		if (wep_solo[id_of_attacking_weapons][0] == obj_ini.master_name) then cm_kill = 1;
-	// 	}
-	// }
+		if (array_length(_weapon_stack.owners) == 1) {
+			unit_name = $"{_weapon_stack.owners[0]}";
+			character_shot = true;
+		}
 
 	if (obj_ncombat.battle_special = "WL10_reveal") or (obj_ncombat.battle_special = "WL10_later") {
 		if (target_name = "Veteran Chaos Terminator") and (target_name > 0) then obj_ncombat.chaos_angry += casulties * 2;
@@ -77,18 +42,18 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 		if (target_name = "Greater Daemon of Tzeentch") then obj_ncombat.chaos_angry += casulties * 5;
 	}
 
-	if (target.flank = 1) and (target.flyer = 0) then target_name = "flanking " + target_name;
+	if (_target_object.flank = 1) then target_name = "flanking " + target_name;
 
 	var flavoured = false;
 
 	if (weapon_data.has_tag("bolt")) {
 		flavoured = true;
 		if (!character_shot) {
-			if (obj_ncombat.bolter_drilling == 1) {
+			if (scr_has_adv("Bolter Drilling")) {
 				attack_message += "With perfect accuracy ";
 			}
 			if (number_of_shots < 200) {
-				if (target.dudes_num[targeh] == 1) {
+				if (_target_stack.unit_count == 1) {
 					if (casulties == 0) {
 						attack_message += $"{number_of_shots} {weapon_name}s fire. The {target_name} is hit but survives.";
 					} else {
@@ -102,7 +67,7 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 					}
 				}
 			} else {
-				if (target.dudes_num[targeh] == 1) {
+				if (_target_stack.unit_count == 1) {
 					if (casulties == 0) {
 						attack_message += $"{number_of_shots} {weapon_name}s fire. Explosions rock the {target_name}'s armour but don't kill it.";
 					} else {
@@ -117,7 +82,7 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 				}
 			}
 		} else {
-			if (target.dudes_num[targeh] == 1) {
+			if (_target_stack.unit_count == 1) {
 				if (casulties == 0) {
 					attack_message += $"{string(unit_name)} fires his {weapon_name} at the {target_name} but fails to kill it.";
 				} else {
@@ -142,7 +107,7 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 			} else {
 				attack_message += $"A massive wave of {number_of_shots} Astartes rise, their Jump Packs a furious beast. They crash down, smashing their foe- ";
 			}
-			if (target.dudes_num[targeh] == 1) {
+			if (_target_stack.unit_count == 1) {
 				if (casulties == 0) {
 					attack_message += $"but the {target_name} endures the onslaught.";
 				} else {
@@ -156,7 +121,7 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 				}
 			}
 		} else {
-			if (target.dudes_num[targeh] == 1) {
+			if (_target_stack.unit_count == 1) {
 				attack_message += string(unit_name) + $" engages his Jump Pack, soaring and crashing into the {target_name}- ";
 				if (casulties == 0) {
 					attack_message += $"but it endures the onslaught.";
@@ -176,7 +141,7 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 	} else if (weapon_name == "Assault Cannon") {
 		flavoured = true;
 		if (!character_shot) {
-			if (target.dudes_num[targeh] == 1) {
+			if (_target_stack.unit_count == 1) {
 				if (casulties == 0) {
 					attack_message += $"{number_of_shots} {weapon_name}s roar, explosions clap across the armour of the {target_name} but it remains standing.";
 				} else {
@@ -190,7 +155,7 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 				}
 			}
 		} else {
-			if (target.dudes_num[targeh] == 1) {
+			if (_target_stack.unit_count == 1) {
 				if (casulties == 0) {
 					attack_message += $"{string(unit_name)} {weapon_name} fires but the {target_name} survives.";
 				} else {
@@ -208,7 +173,7 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 	} else if (weapon_name == "Missile Launcher") {
 		flavoured = true;
 		if (!character_shot) {
-			if (target.dudes_num[targeh] == 1) {
+			if (_target_stack.unit_count == 1) {
 				if (casulties == 0) {
 					attack_message = $"{number_of_shots} {weapon_name}s fire upon the {target_name} but it remains standing.";
 				} else {
@@ -222,7 +187,7 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 				}
 			}
 		} else {
-			if (target.dudes_num[targeh] == 1) {
+			if (_target_stack.unit_count == 1) {
 				if (casulties == 0) {
 					attack_message = $"{string(unit_name)} {weapon_name} fires upon the {target_name} but it survives.";
 				} else {
@@ -240,7 +205,7 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 	} else if (weapon_name == "Whirlwind Missiles") {
 		flavoured = true;
 		if (!character_shot) {
-			if (target.dudes_num[targeh] == 1) {
+			if (_target_stack.unit_count == 1) {
 				if (casulties == 0) {
 					attack_message = $"{number_of_shots} Whirlwinds fire upon the {target_name} but it remains standing.";
 				} else {
@@ -254,7 +219,7 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 				}
 			}
 		} else {
-			if (target.dudes_num[targeh] == 1) {
+			if (_target_stack.unit_count == 1) {
 				if (casulties == 0) {
 					attack_message = $"Whirlwind fires upon the {target_name} but it survives.";
 				} else {
@@ -290,25 +255,25 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 
 	} else if (weapon_data.has_tag("plasma")) {
 		flavoured = true;
-		if (target.dudes_num[targeh] = 1) and (casulties = 0) then attack_message = $"{number_of_shots} {weapon_name} shoot bolts of energy into a {target_name}, failing to kill it.";
-		if (target.dudes_num[targeh] = 1) and (casulties = 1) then attack_message = $"{number_of_shots} {weapon_name} overwhelm a {target_name} with bolts of energy, killing {casulties}.";
-		if (target.dudes_num[targeh] > 1) and (casulties = 0) then attack_message = $"{number_of_shots} {weapon_name} shoot bolts of energy into the {target_name} ranks, failing to kill any.";
-		if (target.dudes_num[targeh] > 1) and (casulties > 0) then attack_message = $"{number_of_shots} {weapon_name} shoot bolts of energy into the {target_name}, cleansing {casulties}.";
+		if (_target_stack.unit_count = 1) and (casulties = 0) then attack_message = $"{number_of_shots} {weapon_name} shoot bolts of energy into a {target_name}, failing to kill it.";
+		if (_target_stack.unit_count = 1) and (casulties = 1) then attack_message = $"{number_of_shots} {weapon_name} overwhelm a {target_name} with bolts of energy, killing {casulties}.";
+		if (_target_stack.unit_count > 1) and (casulties = 0) then attack_message = $"{number_of_shots} {weapon_name} shoot bolts of energy into the {target_name} ranks, failing to kill any.";
+		if (_target_stack.unit_count > 1) and (casulties > 0) then attack_message = $"{number_of_shots} {weapon_name} shoot bolts of energy into the {target_name}, cleansing {casulties}.";
 
 	} else if (weapon_data.has_tag("flame")) {
 		flavoured = true;
-		if (target.dudes_num[targeh] = 1) and (casulties = 0) then attack_message = $"{number_of_shots} {weapon_name} bathe the {target_name} in holy promethium, failing to kill it.";
-		if (target.dudes_num[targeh] = 1) and (casulties = 1) then attack_message = $"{number_of_shots} {weapon_name} flash-fry the {target_name} inside its armour, inflicting {casulties}.";
-		if (target.dudes_num[targeh] > 1) and (casulties = 0) then attack_message = $"{number_of_shots} {weapon_name} wash over the {target_name} ranks, failing to kill any.";
-		if (target.dudes_num[targeh] > 1) and (casulties > 0) then attack_message = $"{number_of_shots} {weapon_name} bathe the {target_name} ranks in holy promethium, cleansing {casulties}.";
+		if (_target_stack.unit_count = 1) and (casulties = 0) then attack_message = $"{number_of_shots} {weapon_name} bathe the {target_name} in holy promethium, failing to kill it.";
+		if (_target_stack.unit_count = 1) and (casulties = 1) then attack_message = $"{number_of_shots} {weapon_name} flash-fry the {target_name} inside its armour, inflicting {casulties}.";
+		if (_target_stack.unit_count > 1) and (casulties = 0) then attack_message = $"{number_of_shots} {weapon_name} wash over the {target_name} ranks, failing to kill any.";
+		if (_target_stack.unit_count > 1) and (casulties > 0) then attack_message = $"{number_of_shots} {weapon_name} bathe the {target_name} ranks in holy promethium, cleansing {casulties}.";
 
 	} else if (weapon_name = "Webber") {
 		flavoured = true;
 		if ((target_name = "Termagaunt") or (target_name = "Hormagaunt")) and (casulties > 0) then obj_ncombat.captured_gaunt += casulties;
-		if (target.dudes_num[targeh] = 1) and (casulties = 0) then attack_message = $"{number_of_shots} {weapon_name} spray ooze on the {target_name} but fail to immobilize it.";
-		if (target.dudes_num[targeh] = 1) and (casulties = 1) then attack_message = $"{number_of_shots} {weapon_name} spray ooze on the {target_name} and fully immobilize it.";
-		if (target.dudes_num[targeh] > 1) and (casulties = 0) then attack_message = $"{number_of_shots} {weapon_name} spray ooze on the {target_name} ranks, failing to immobilize any.";
-		if (target.dudes_num[targeh] > 1) and (casulties > 0) then attack_message = $"{number_of_shots} {weapon_name} spray ooze on the {target_name} ranks and immobilize {casulties} of them.";
+		if (_target_stack.unit_count = 1) and (casulties = 0) then attack_message = $"{number_of_shots} {weapon_name} spray ooze on the {target_name} but fail to immobilize it.";
+		if (_target_stack.unit_count = 1) and (casulties = 1) then attack_message = $"{number_of_shots} {weapon_name} spray ooze on the {target_name} and fully immobilize it.";
+		if (_target_stack.unit_count > 1) and (casulties = 0) then attack_message = $"{number_of_shots} {weapon_name} spray ooze on the {target_name} ranks, failing to immobilize any.";
+		if (_target_stack.unit_count > 1) and (casulties > 0) then attack_message = $"{number_of_shots} {weapon_name} spray ooze on the {target_name} ranks and immobilize {casulties} of them.";
 
 	} else if (weapon_name = "Close Combat Weapon") {
 		flavoured = true;
@@ -347,14 +312,14 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 
 	} else if (weapon_data.has_tag("power")) {
 		flavoured = true;
-		if (target.dudes_num[targeh] = 1) {
+		if (_target_stack.unit_count = 1) {
 			if (number_of_shots = 1) and (casulties = 0) then attack_message = $"A {target_name} is struck by a {weapon_name} but survives.";
 			if (number_of_shots = 1) and (casulties = 1) then attack_message = $"A {target_name} is struck down by a {weapon_name}.";
 
 			if (number_of_shots > 1) and (casulties = 0) then attack_message = $"A {target_name} is struck by {number_of_shots} {weapon_name}s but survives.";
 			if (number_of_shots > 1) and (casulties = 1) then attack_message = $"A {target_name} is struck down by {number_of_shots} {weapon_name}s.";
 		}
-		if (target.dudes_num[targeh] > 1) {
+		if (_target_stack.unit_count > 1) {
 			if (number_of_shots > 1) and (casulties = 0) then attack_message = $"{number_of_shots} {weapon_name}s crackle and spark, striking at the {target_name} ranks, inflicting no damage.";
 			if (number_of_shots > 1) and (casulties > 0) then attack_message = $"{number_of_shots} {weapon_name}s crackle and spark, hewing through the {target_name} ranks, {casulties} are cut down.";
 		}
@@ -364,7 +329,7 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 	if (flavoured == false) {
 		flavoured = true;
 		if (!character_shot) {
-			if (target.dudes_num[targeh] == 1) {
+			if (_target_stack.unit_count == 1) {
 				if (number_of_shots == 1 && casulties == 0) {
 					attack_message = $"A {target_name} is struck by {weapon_name} but survives.";
 				} else if (number_of_shots == 1 && casulties == 1) {
@@ -386,7 +351,7 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 				}
 			}
 		} else {
-			if (target.dudes_num[targeh] == 1) {
+			if (_target_stack.unit_count == 1) {
 				if (casulties == 0) {
 					attack_message = $"{string(unit_name)} {weapon_name} strikes at a {target_name} but fails to kill it.";
 				} else {
@@ -402,71 +367,29 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
 		}
 	}
 
-	// if (string_length(attack_message+kill_message+p3)<8) then show_message(weapon_name+" is not displaying anything");
-
-	// I don't understand what this was supposed to do either.
-	// if (obj_ncombat.dead_enemies != 0){
-	// 	for (var i = 1; i < array_length_1d(obj_ncombat.dead_ene); i++) {
-	// 		if (obj_ncombat.dead_ene[i] != "") {
-	// 			if (obj_ncombat.dead_enemies == 1) {
-	// 				kill_message += obj_ncombat.dead_ene[i] + " unit has been eliminated.";
-	// 			} else if (obj_ncombat.dead_enemies == 2) {
-	// 				if (i == 1) {
-	// 					kill_message += obj_ncombat.dead_ene[i] + " and ";
-	// 				} else {
-	// 					kill_message += obj_ncombat.dead_ene[i] + " units have been eliminated.";
-	// 				}
-	// 			} else if (obj_ncombat.dead_enemies > 2) {
-	// 				if (i == 1) {
-	// 					kill_message += obj_ncombat.dead_ene[i] + ", ";
-	// 				} else if (i == obj_ncombat.dead_enemies) {
-	// 					kill_message += "and " + obj_ncombat.dead_ene[i] + " units have been eliminated.";
-	// 				} else {
-	// 					kill_message += obj_ncombat.dead_ene[i] + ", ";
-	// 				}
-	// 			}
-	// 		}
-	// 		obj_ncombat.dead_ene[i] = "";
-	// 	}
-	// 	obj_ncombat.dead_enemies = 0;
-	// }
-
-	var message_priority = 0;
 	if (obj_ncombat.enemy <= 10) {
 		if (target_name = obj_controller.faction_leader[obj_ncombat.enemy]) { // Cleaning up the message for the enemy leader
 			leader_message = string_replace(leader_message, "a " + target_name, target_name);
 			leader_message = string_replace(leader_message, "the " + target_name, target_name);
 			leader_message = string_replace(leader_message, target_name + " ranks , inflicting {casulties}", target_name);
-			if (enemy = 5) then leader_message = string_replace(leader_message, "it", "her");
-			if (enemy = 6) and (obj_controller.faction_gender[6] = 1) then leader_message = string_replace(leader_message, "it", "him");
-			if (enemy = 6) and (obj_controller.faction_gender[6] = 2) then leader_message = string_replace(leader_message, "it", "her");
-			if (enemy != 6) and (enemy != 5) then leader_message = string_replace(leader_message, "it", "him");
-			message_priority = 5;
+			if (obj_ncombat.enemy = 5) then leader_message = string_replace(leader_message, "it", "her");
+			if (obj_ncombat.enemy = 6) and (obj_controller.faction_gender[6] = 1) then leader_message = string_replace(leader_message, "it", "him");
+			if (obj_ncombat.enemy = 6) and (obj_controller.faction_gender[6] = 2) then leader_message = string_replace(leader_message, "it", "her");
+			if (obj_ncombat.enemy != 6) and (obj_ncombat.enemy != 5) then leader_message = string_replace(leader_message, "it", "him");
 		}
 	}
 
-	var message_size = 0;
-	if (defenses == 1) {
-		message_size = 999;
-	} else if (casulties == 0) {
-		message_size = number_of_shots / 10;
-	} else {
-		if (target.dudes_vehicle[targeh] == 1) {
-			message_size = casulties * 10;
-		}
-		else {
-			message_size = casulties;
-		}
+	var message_color = COL_DARK_GREEN;
+	if (defenses == 1 || casulties != 0) {
+		message_color = COL_BRIGHT_GREEN;
 	}
 
 	if (attack_message != "") {
-		add_battle_log_message(attack_message, message_size, message_priority);
-		display_battle_log_message();
+		obj_ncombat.queue_battlelog_message(attack_message, message_color);
 	}
 
 	if (leader_message != "") {
-		add_battle_log_message(leader_message, message_size, message_priority);
-		display_battle_log_message();
+		message_color = COL_BRIGHT_GREEN;
+		obj_ncombat.queue_battlelog_message(leader_message, message_color);
 	}
-
 }

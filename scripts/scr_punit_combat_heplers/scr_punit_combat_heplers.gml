@@ -49,15 +49,31 @@ function squeeze_map_forces() {
 	}
 }
 
-function target_block_is_valid(target, desired_type) {
+function pnunit_is_valid(target) {
 	try {
 		var _is_valid = false;
-		if (target == "none") {
-			return false;
-		}
 		if (instance_exists(target)) {
-			if (target.x > 0 && target.object_index == desired_type) {
+			if (target.x > 0 && target.object_index == obj_pnunit) {
 				if (target.men + target.veh + target.dreads > 0) {
+					_is_valid = true;
+				} else {
+					x = -5000;
+					instance_deactivate_object(id);
+				}
+			}
+		}
+		return _is_valid;
+	} catch (_exception) {
+		handle_exception(_exception);
+	}
+}
+
+function enunit_is_valid(target) {
+	try {
+		var _is_valid = false;
+		if (instance_exists(target)) {
+			if (target.x > 0 && target.object_index == obj_enunit) {
+				if (target.unit_count() > 0) {
 					_is_valid = true;
 				} else {
 					x = -5000;
@@ -115,6 +131,23 @@ function block_has_armour(target) {
 	}
 }
 
+function block_type_size(target, type) {
+	try {
+		if (type == "men") {
+			return (target.men * 0.5) + target.medi;
+		} else if (type == "veh") {
+			return (target.veh * 2.5);
+		} else if (type == "dread") {
+			return (target.dreads * 2);
+		} else if (type == "armour") {
+			return (target.veh * 2.5) + (target.dreads * 2);
+		}
+		return 0;
+	} catch (_exception) {
+		handle_exception(_exception);
+	}
+}
+
 function get_leftmost(block_type = obj_pnunit, include_flanking = true) {
 	try {
 		var left_most = "none";
@@ -150,7 +183,7 @@ function get_leftmost(block_type = obj_pnunit, include_flanking = true) {
 
 function get_block_distance(block) {
 	try {
-		return point_distance(x, y, block.x, block.y) / 10;
+		return round(point_distance(x, y, block.x, block.y) / 10);
 	} catch (_exception) {
 		handle_exception(_exception);
 	}
@@ -213,30 +246,26 @@ function move_unit_block(direction, blocks = 1, allow_collision = false) {
     }
 }
 
-/// @description Attempts to move an enemy unit block, choosing direction based on whenever they are flanking or not, only if `obj_nfort` doesn't exists.
-/// @mixin
-function move_enemy_block() {
+function player_blocks_movement() {
 	if (instance_exists(obj_nfort)) {
 		exit;
 	}
 
-	var _direction = flank ? "east" : "west";
-	move_unit_block(_direction);
-}
-
-/// @description Creates a priority queue of enemy units based on their x-position and then moves each with `move_enemy_block()`.
-function move_enemy_blocks() {
-	var _enemy_movement_queue = ds_priority_create();
-	with (obj_enunit) {
-		ds_priority_add(_enemy_movement_queue, id, x);
+	if ((obj_ncombat.defending || obj_ncombat.player_formation == 2)) {
+		exit;
 	}
-	while (!ds_priority_empty(_enemy_movement_queue)) {
-		var _enemy_block = ds_priority_delete_min(_enemy_movement_queue);
-		with (_enemy_block) {
-			move_enemy_block();
+
+	var _player_movement_queue = ds_priority_create();
+	with (obj_pnunit) {
+		ds_priority_add(_player_movement_queue, id, x);
+	}
+	while (!ds_priority_empty(_player_movement_queue)) {
+		var _player_block = ds_priority_delete_max(_player_movement_queue);
+		with (_player_block) {
+			move_unit_block("east");
 		}
 	}
-	ds_priority_destroy(_enemy_movement_queue);
+	ds_priority_destroy(_player_movement_queue);
 }
 
 /// @mixin
@@ -275,9 +304,9 @@ function draw_block_composition(_x1, _composition_string) {
 }
 
 function draw_block_fadein() {
-	if (obj_ncombat.fadein > 0) {
+	if (obj_ncombat.fading_strength > 0) {
 		draw_set_color(c_black);
-		draw_set_alpha(obj_ncombat.fadein/30);
+		draw_set_alpha(obj_ncombat.fading_strength);
 		draw_rectangle(822,239,1574,662,0);
 		draw_set_alpha(1);
 	}
@@ -291,4 +320,132 @@ function update_block_size() {
 /// @mixin
 function update_block_unit_count() {
 	unit_count = men + medi + dreads + veh;
+}
+
+function get_valid_weapon_stacks(_stacks_struct, _range_min, _range_max) {
+	try {
+		var valid = [];
+	
+		var _weapon_stack_names = struct_get_names(_stacks_struct);
+		var _struct_len = array_length(_weapon_stack_names);
+		for (var i = 0; i < _struct_len; i++){
+			var _weapon_stack_name = _weapon_stack_names[i];
+			var _weapon_stack = _stacks_struct[$ _weapon_stack_name];
+		
+			if (_weapon_stack.weapon_name == "" || _weapon_stack.weapon_count == 0) {
+				continue;
+			}
+	
+			if (_weapon_stack.range == 0) {
+				log_error($"{_weapon_stack.weapon_name} has broken range! This shouldn't happen!");
+				continue;
+			}
+	
+			if (_weapon_stack.range < _range_min || _weapon_stack.range > _range_max) {
+				continue;
+			}
+	
+			array_push(valid, _weapon_stack);
+		}
+	
+		return valid;
+	} catch (_exception) {
+		show_debug_message($"_stacks_struct: {_stacks_struct}");
+		show_debug_message($"_weapon_stack: {_weapon_stack}");
+		handle_exception(_exception);
+	}
+}
+
+function get_valid_weapon_stacks_unique(_stacks_struct, _range_min, _range_max) {
+	try {
+		var valid = [];
+	
+		var _unique_names = struct_get_names(_stacks_struct);
+		var _unique_len = array_length(_unique_names);
+		for (var u = 0; u < _unique_len; u++){
+			var _unique_name = _unique_names[u];
+			var _unique_stack = _stacks_struct[$ _unique_name];
+		
+			var _weapon_stack_names = struct_get_names(_unique_stack);
+			var _stacks_len = array_length(_weapon_stack_names);
+			for (var i = 0; i < _stacks_len; i++){
+				var _weapon_stack_name = _weapon_stack_names[i];
+				var _weapon_stack = _unique_stack[$ _weapon_stack_name];
+
+				if (_weapon_stack.weapon_name == "" || _weapon_stack.weapon_count == 0) {
+					continue;
+				}
+		
+				if (_weapon_stack.range == 0) {
+					log_error($"{_weapon_stack.weapon_name} has broken range! This shouldn't happen!");
+					continue;
+				}
+		
+				if (_weapon_stack.range < _range_min || _weapon_stack.range > _range_max) {
+					continue;
+				}
+		
+				array_push(valid, _weapon_stack);
+			}
+		}
+	
+		return valid;
+	} catch (_exception) {
+		show_debug_message($"_stacks_struct: {_stacks_struct}");
+		show_debug_message($"_unique_stack: {_unique_stack}");
+		show_debug_message($"_weapon_stack: {_weapon_stack}");
+		handle_exception(_exception);
+	}
+}
+
+function get_alpha_strike_target() {
+    if (obj_ncombat.enemy_alpha_strike <= 0) {
+        return -1;
+    }
+
+    obj_ncombat.enemy_alpha_strike -= 0.5;
+    with (obj_pnunit) {
+        for (var u = 0; u < array_length(unit_struct); u++) {
+            if (marine_type[u] == "Chapter Master") {
+                return [id, u];
+            }
+        }
+    }
+
+    return -1;
+}
+
+function get_target_priority(_weapon_stack, _block) {
+    var _distance = get_block_distance(_block);
+    var _size = _block.column_size;
+
+    // Distance weight (closer = higher priority)
+    var _distance_bonus = (_weapon_stack.range - _distance - 1) * 20;
+
+    // Column size influence (bigger columns = higher threat?)
+    var _doomstack_malus = _weapon_stack.weapon_count / _size;
+
+    // Column size influence (bigger columns = higher threat?)
+    var _size_bonus = _size / 10;
+
+    // Target type match bonus
+    // var _type_bonus = 0;
+    // if (_weapon_stack.target_type == eUNIT_TYPE.Armour) {
+    //     _type_bonus = 20 * (block_type_size(_block, "armour") / _size);
+    // } else {
+    //     _type_bonus = 20 * (block_type_size(_block, "men") / _size);
+    // }
+
+    var _priority = 0;
+    // _priority += _type_bonus;
+    _priority += _size_bonus;
+    _priority -= _doomstack_malus;
+    _priority += _distance_bonus;
+    _priority *= random_range(0.5, 1.5);
+
+    // if (DEBUG_COLUMN_PRIORITY_ENEMY) {
+    //     show_debug_message($"Priority: {_priority}\n Type: +{_type_bonus}\n Size: +{_size_bonus}\n Doomstack: -{_doomstack_malus}\n Distance: +{_distance_bonus}\n");
+    // }
+
+    return _priority;
 }

@@ -1,0 +1,172 @@
+{
+    "flash_gitz": {
+        "display_name": "Flash Gitz",
+        "combat_role": "fire_support",
+        "keywords": [
+            "INFANTRY"
+        ],
+        "units": {
+            "flash_git": {
+                "count": 9
+            },
+            "kaptin": {
+                "count": 1
+            }
+        }
+    },
+    "kommandos": {
+        "display_name": "Kommandos",
+        "combat_role": "command",
+        "keywords": [
+            "INFANTRY"
+        ],
+        "units": {
+            "kommando": {
+                "count": 14
+            },
+            "boss_nob": {
+                "count": 1
+            }
+        }
+    },
+    "slugga_boyz": {
+        "display_name": "Slugga Boyz",
+        "combat_role": "battleline",
+        "keywords": [
+            "INFANTRY"
+        ],
+        "units": {
+            "slugga_boy": {
+                "count": 29
+            },
+            "boss_nob": {
+                "count": 1
+            }
+        }
+    },
+    "shoota_boyz": {
+        "display_name": "Shoota Boyz",
+        "combat_role": "battleline",
+        "keywords": [
+            "INFANTRY"
+        ],
+        "units": {
+            "shoota_boy": {
+                "count": 29
+            },
+            "boss_nob": {
+                "count": 1
+            }
+        }
+    },
+    "ard_boyz": {
+        "display_name": "Ard Boyz",
+        "combat_role": "assault",
+        "keywords": [
+            "INFANTRY"
+        ],
+        "units": {
+            "ard_boy": {
+                "count": 29
+            },
+            "boss_nob": {
+                "count": 1
+            }
+        }
+    },
+    "gretchin": {
+        "display_name": "Gretchin",
+        "combat_role": "assault",
+        "keywords": [
+            "INFANTRY"
+        ],
+        "units": {
+            "gretchin": {
+                "count": 30
+            },
+            "runtherd": {
+                "count": 3
+            }
+        }
+    },
+    "tankbustas": {
+        "display_name": "Tankbustas",
+        "combat_role": "anti_armour",
+        "keywords": [
+            "INFANTRY"
+        ],
+        "units": {
+            "tankbusta": {
+                "count": 14
+            },
+            "boss_nob": {
+                "count": 1
+            }
+        }
+    },
+    "meganobz": {
+        "display_name": "Meganobz",
+        "combat_role": "assault",
+        "keywords": [
+            "INFANTRY"
+        ],
+        "units": {
+            "meganob": {
+                "count": 9
+            },
+            "boss_meganob": {
+                "count": 1
+            }
+        }
+    },
+    "warboss": {
+        "display_name": "Warboss",
+        "combat_role": "command",
+        "keywords": [
+            "INFANTRY",
+            "CHARACTER"
+        ],
+        "units": {
+            "warboss": {
+                "count": 1
+            }
+        }
+    },
+    "deff_dread": {
+        "display_name": "Deff Dread",
+        "combat_role": "assault",
+        "keywords": [
+            "VEHICLE"
+        ],
+        "units": {
+            "deff_dread": {
+                "count": 1
+            }
+        }
+    },
+    "battlewagon": {
+        "display_name": "Battlewagon",
+        "combat_role": "transport",
+        "keywords": [
+            "VEHICLE"
+        ],
+        "units": {
+            "battlewagon": {
+                "count": 1
+            }
+        }
+    },
+    "mekboy": {
+        "display_name": "Mekboy",
+        "combat_role": "command",
+        "keywords": [
+            "INFANTRY",
+            "CHARACTER"
+        ],
+        "units": {
+            "mekboy": {
+                "count": 1
+            }
+        }
+    }
+}
