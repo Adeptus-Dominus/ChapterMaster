@@ -46,7 +46,7 @@ function scr_trade(argument0) {
 	        if (disposition[2]>=70) then their_worth+=trade_tnum[i]*2000;
 	    }
 	    if (trade_take[i]="License: Repair") then their_worth+=trade_tnum[i]*750;
-	    if (trade_take[i]="License: Crusade") then their_worth+=trade_tnum[i]*1500;
+	    if (trade_take[i]="License: Crusade") then their_worth+=trade_tnum[i]*1500; // Issue 714, rename here
     
 	    if (trade_take[i]="Terminator Armour") then their_worth+=trade_tnum[i]*400;
 	    if (trade_take[i]="Tartaros") then their_worth+=trade_tnum[i]*900;
@@ -173,7 +173,7 @@ function scr_trade(argument0) {
 	        if (trade_take[3]="Recruiting Planet") then recruiting_worlds_bought+=1;
 	        if (trade_take[4]="Recruiting Planet") then recruiting_worlds_bought+=1;
 	    }
-	    if (trade_take[1]="License: Crusade") or (trade_take[2]="License: Crusade") or (trade_take[3]="License: Crusade") or (trade_take[4]="License: Crusade"){
+	    if (trade_take[1]="License: Crusade") or (trade_take[2]="License: Crusade") or (trade_take[3]="License: Crusade") or (trade_take[4]="License: Crusade"){ // Issue 714
 	        obj_controller.liscensing=2;
 	    }
 	    if (trade_take[1]="Useful Information") or (trade_take[2]="Useful Information") or (trade_take[3]="Useful Information") or (trade_take[4]="Useful Information"){
