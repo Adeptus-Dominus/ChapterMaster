@@ -36,32 +36,55 @@ jobs:
 
           # manual override
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "Manually triggered → build." 
+            echo "Manually triggered → build."
             echo "needed=true" >> $GITHUB_OUTPUT
             exit 0
           fi
 
           # determine commit range since last tag
+          # Use 2>/dev/null to suppress error if no tags exist
           LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
           if [ -n "$LAST_TAG" ]; then
             RANGE="$LAST_TAG..HEAD"
+            echo "Checking commits in range: $RANGE (since last tag '$LAST_TAG')"
           else
-            RANGE="HEAD"
+            RANGE="HEAD" # If no tags, check all commits up to HEAD
+            echo "No previous tags found. Checking all commits up to HEAD."
           fi
-          echo "Commit range: $RANGE"
+
+          # Check if there are *any* commits in the range.
+          # git log -n 1 --format=%H will return the latest commit SHA if there's at least one.
+          # If the range is empty (HEAD is same as LAST_TAG), it returns nothing.
+          COMMITS_IN_RANGE=$(git log $RANGE -n 1 --format=%H 2>/dev/null || echo "")
+
+          if [ -z "$COMMITS_IN_RANGE" ]; then
+            echo "No new commits found in the range '$RANGE'. HEAD is likely the same as the last tag ($LAST_TAG)."
+            echo "Skipping build as no changes since the last tagged build."
+            # needed is already defaulted to false, so we just exit.
+            exit 0
+          fi
+
+          # If we reached here, there are new commits in the range.
+          echo "New commits found in range '$RANGE'. Checking their messages."
 
           # collect all commit messages in range
           ALL_MSGS=$(git log $RANGE --pretty=%B)
           echo "Messages in range:"
-          echo "$ALL_MSGS"
+          # Use sed to indent messages for clarity in logs
+          echo "$ALL_MSGS" | sed 's/^/  /'
 
-          # only skip if every message matches exclude pattern
+          # only build if at least one message does NOT match exclude pattern
+          # The -v option inverts the match; -E enables extended regex; -q suppresses output.
+          # The overall command exits successfully (0) if a non-matching line is found.
           EXCLUDE="^(docs|chore|style|ci)"
           if echo "$ALL_MSGS" | grep -vEq "$EXCLUDE"; then
-            echo "Found non-excluded commit → build needed."
+            echo "Found at least one commit message not matching the exclude pattern '$EXCLUDE'."
+            echo "Build needed."
             echo "needed=true" >> $GITHUB_OUTPUT
           else
-            echo "All commits are docs/chore/style/ci → skipping build."
+            echo "All new commit messages match the exclude pattern '$EXCLUDE'."
+            echo "Skipping build."
+            # needed is already defaulted to false.
           fi
 
   prepare_release:
@@ -90,66 +113,46 @@ jobs:
           echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
           echo "build_date=$DATE_TAG" >> $GITHUB_OUTPUT
 
-      - name: Cleanup old releases (debug mode)
-        run: |
-          set -euo pipefail
-      
-          #— Produce TAG_NAME earlier in your workflow:
-          TAG_NAME="${{ steps.tag_info.outputs.tag_name }}"
-          echo "DEBUG: TAG_NAME='${TAG_NAME}'"
-      
-          BRANCH_SUFFIX="${TAG_NAME%%/*}"
-          PREFIX="${BRANCH_SUFFIX}/"
-          echo "DEBUG: PREFIX='${PREFIX}'"
-      
-          echo "All releases:"
-          gh release list --limit 100 | awk '{print $1}'
-      
-          echo "Releases matching prefix:"
-          MATCHING=$(gh release list --limit 100 | awk '{print $1}' | grep "^${PREFIX}" || true)
-          echo "$MATCHING" | cat -n
-      
-          # Only delete if we actually matched anything
-          if [ -n "$MATCHING" ]; then
-            COUNT=0
-            KEEP=10
-            IFS=$'\n'
-            for TAG in $MATCHING; do
-              COUNT=$((COUNT+1))
-              if [ "$COUNT" -gt "$KEEP" ]; then
-                echo "Deleting: $TAG"
-                # gh release delete "$TAG" --cleanup-tag -y
-              fi
-            done
-            unset IFS
-          else
-            echo "No releases to delete for prefix '$PREFIX'"
-          fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Cleanup old releases
         run: |
-          # tag_name looks like: branch-name/date
+          set -euo pipefail # Exit immediately if a command exits with a non-zero status
+
+          # tag_name looks like: branch-name/date (e.g., main/2025-05-10-2220)
           TAG_NAME="${{ steps.tag_info.outputs.tag_name }}"
-          BRANCH_SUFFIX="${TAG_NAME%%/*}"
-          PREFIX="${BRANCH_SUFFIX}/"
 
-          echo "Checking releases with prefix: $PREFIX"
+          # Extract the branch prefix from the tag name (e.g., "main/")
+          # This assumes your tag format is always 'branch-name/date'
+          BRANCH_PREFIX="${TAG_NAME%%/*}/"
 
-          # Get tags starting with the prefix, sort reverse chronologically (best effort with default sort)
-          # Using gh release list is more reliable than just git tags if releases exist
-          TAGS=$(gh release list --limit 100 | awk '{print $1}' | grep "^${PREFIX}" | sort -r)
+          echo "Checking releases with prefix: $BRANCH_PREFIX"
+
+          # Get tag names starting with the prefix from the gh release list, sort reverse chronologically by tag name.
+          # Use || true at the end of the pipe to prevent the step from failing if no releases match the prefix
+          TAGS_TO_PROCESS=$(gh release list --limit 100 --json tagName | jq -r '.[].tagName' | grep "^${BRANCH_PREFIX}" | sort -r || true)
+
+          if [ -z "$TAGS_TO_PROCESS" ]; then
+            echo "No releases found matching prefix '${BRANCH_PREFIX}'. No cleanup needed."
+            exit 0
+          fi
 
           COUNT=0
           RELEASES_TO_KEEP=10 # How many releases per branch prefix to keep
-          for TAG in $TAGS; do
+          echo "Found releases matching prefix '${BRANCH_PREFIX}'. Will keep the latest $RELEASES_TO_KEEP."
+
+          IFS=$'\n' # Set IFS to newline to correctly iterate over tags
+          for TAG in $TAGS_TO_PROCESS; do
             COUNT=$((COUNT + 1))
             if [ $COUNT -gt $RELEASES_TO_KEEP ]; then
               echo "Deleting old release+tag: $TAG"
-              gh release delete "$TAG" -y --cleanup-tag || echo "Failed to delete release $TAG, maybe already deleted?"
+              # gh release delete "$TAG" -y --cleanup-tag command deletes the release AND the associated git tag
+              # Use || echo to log a non-fatal warning if deletion fails (e.g., release already gone)
+              # gh release delete "$TAG" -y --cleanup-tag || echo "Warning: Failed to delete release $TAG. It may have been deleted already."
+            else
+              echo "Keeping release+tag: $TAG (it's within the latest $RELEASES_TO_KEEP)"
             fi
           done
+          unset IFS # Reset IFS
+
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needs permissions to delete releases/tags
 
