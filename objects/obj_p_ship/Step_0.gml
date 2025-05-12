@@ -97,7 +97,7 @@ if (hp>0) and (instance_exists(target)){
             direction=turn_towards_point(direction,x,y,target.x,target.y,turning_speed/2);
         }
         broadside_movement();
-        flank_movement();
+        flank_behaviour();
     }
 
     if (draw_targets != false){

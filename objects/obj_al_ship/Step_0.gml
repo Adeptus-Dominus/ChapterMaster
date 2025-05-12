@@ -131,7 +131,7 @@ if (!__b__){
             direction=turn_towards_point(direction,x,y,target.x,target.y,.1);
         }
         broadside_movement();
-        flank_movement();
+        flank_behaviour();
         /*if (target!=0) and (action="broadside") and (o_dist>=dist){
             direction=turn_towards_point(direction,x+lengthdir_x(128,target.direction-90),y,target.x,target.y+lengthdir_y(128,target.direction-90),.2)
         }*/

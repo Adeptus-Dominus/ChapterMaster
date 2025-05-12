@@ -24,9 +24,19 @@ obj_controller.x=0;
 obj_controller.y=240;
 obj_controller.combat=1;
 is_zoomed=obj_controller.zoomed;
-start=0;combat_end=170;
+start=0;
+combat_end=170;
 
-if (obj_controller.zoomed=0) then with(obj_controller){scr_zoom();}
+fleet_select_box = false;
+
+if (obj_controller.zoomed=0){
+    set_zoom_to_default()
+} else {
+    with(obj_controller){
+        scr_zoom();
+     }
+     set_zoom_to_default();
+}
 
 enemy=0;
 enemy_status="attacking";

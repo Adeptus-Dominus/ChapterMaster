@@ -20,36 +20,109 @@ function broadside_movement(){
     }	
 }
 
-function flank_movement(){
+function return_longest_range_weapon(weapons, facing = "none"){
+    var _weapon = false;
+    for (var i=0;i<array_length(weapons);i++){
+        if (facing != "none" && weapons[i].facing != facing){
+            continue;
+        }
+        if (_weapon == false){
+            _weapon = weapons[i];
+        } else {
+            if (weapons[i].range > _weapon.range){
+                _weapon = weapons[i];
+            }
+        }
+    }
+    return _weapon;
+}
+
+function flank_direction_move(main_weapon = false){
+    var _rel_direction = point_direction(target.x, target.y, x, y) - target.direction;
+    if (abs(_rel_direction) < 105){
+        if (main_weapon == false){           
+            ship_rear_approach(_rel_direction);
+        } else {
+            if (point_distance(x, y, target.x, target.y) > main_weapon.range && abs(_rel_direction) <= main_weapon.firing_arc){
+                avoid_ship_weapon(main_weapon, rel_direction);
+            } else {
+                ship_rear_approach(_rel_direction);
+            }
+        }
+
+    } else {
+        defualt_target_movement();
+    }
+}
+
+function avoid_ship_weapon(weapon, rel_direction){
+    if (rel_direction){
+        var avoid_angle = target.direction + weapon.firing_arc;
+    } else {
+        var avoid_angle = target.direction - weapon.firing_arc;
+    }
+    var _sx = xm+lengthdir_x(weapon.range, avoid_angle);
+    var _sy = ym+lengthdir_y(weapon.range, avoid_angle);
+    draw_targets = [_sx, _sy];
+}
+
+function ship_rear_approach(rel_direction){
+    var _attack_angle = target.direction + ((rel_direction > 0) ? 105 : -105);
+    if (_attack_angle > 360){
+        _attack_angle -= 360;
+    } else if (_attack_angle< 0){
+        _attack_angle = 360 -_attack_angle;
+    }
+    var _flank_margin = closing_distance*2
+    var _target_lock = [target.x + lengthdir_x(_flank_margin, _attack_angle), target.y + lengthdir_y(_flank_margin, _attack_angle)]
+    draw_targets = _target_lock;
+    ship_turn_towards_point(_target_lock[0],_target_lock[1]);
+    closing_distance = 0;    
+}
+
+function get_out_of_weapon_firing_arc(weapon, weapon_owner){
+    var _rel_direction = point_direction(weapon_owner.x, weapon_owner.y, x, y) - weapon_owner.direction;
+    var _travel_direct = 0;
+    if (_rel_direction>0){
+        _travel_direct = weapon_owner.direction + weapon.firing_arc + 90;
+    } else {
+        _travel_direct = weapon_owner.direction - weapon.firing_arc  -  90;
+    }
+    var _target_lock = [x + lengthdir_x(1000, _travel_direct), y + lengthdir_y(1000, _travel_direct)]
+    ship_turn_towards_point(_target_lock[0],_target_lock[1]);
+    draw_targets = _target_lock;
+}
+
+function flank_behaviour(){
 	var _normal_target = false;
     if (target!=0 && action=="flank"){
+        var _target_main_weapon = return_longest_range_weapon(target.weapons, "front");
     	if (!under_fire){
-    		var _rel_direction = point_direction(target.x, target.y, x, y) - target.direction;
-    		if (abs(_rel_direction) < 105){
-    			var _attack_angle = target.direction + ((_rel_direction > 0) ? 105 : -105);
-    			if (_attack_angle > 360){
-    				_attack_angle -= 360;
-    			} else if (_attack_angle< 0){
-    				_attack_angle = 360 -_attack_angle;
-    			}
-    			var _flank_margin = closing_distance*2
-	    		var _target_lock = [target.x + lengthdir_x(_flank_margin, _attack_angle), target.y + lengthdir_y(_flank_margin, _attack_angle)]
-    			draw_targets = _target_lock;
-    		    direction = turn_towards_point(direction, x,y,_target_lock[0],_target_lock[1],turning_speed);
-    		    closing_distance = 0;
-    		} else {
-    			_normal_target = true;
-    		}
+            if (!_target_main_weapon){
+                flank_direction_move();
+            } else {
+                var _rel_direction = point_direction(target.x, target.y, x, y) - target.direction;
+                if (abs(_rel_direction) <= _target_main_weapon.firing_arc){
+                    get_out_of_weapon_firing_arc(_target_main_weapon, target);
+                } else {
+                    flank_direction_move();
+                }
+            }
     	} else {
+
     		_normal_target = true;
 	    }
     }
     if (_normal_target ){
-        if (y>=target.y) then target_distance=point_distance(x,y,target.x+lengthdir_x(64,target.direction-180),target.y+lengthdir_y(128,target.direction-90))-(max(sprite_get_width(sprite_index),sprite_get_height(sprite_index)));
-        if (y<target.y) then target_distance=point_distance(x,y,target.x+lengthdir_x(64,target.direction-180),target.y+lengthdir_y(128,target.direction+90))-(max(sprite_get_width(sprite_index),sprite_get_height(sprite_index)));
-        if (y>target.y) and (target_distance>closing_distance) then direction=turn_towards_point(direction,x,y,target.x,target.y,turning_speed);
-        if (y<target.y) and (target_distance>closing_distance) then direction=turn_towards_point(direction,x,y,target.x,target.y,turning_speed);    	
+        defualt_target_movement();
     }
+}
+
+function defualt_target_movement(){
+     if (y>=target.y) then target_distance=point_distance(x,y,target.x+lengthdir_x(64,target.direction-180),target.y+lengthdir_y(128,target.direction-90))-(max(sprite_get_width(sprite_index),sprite_get_height(sprite_index)));
+    if (y<target.y) then target_distance=point_distance(x,y,target.x+lengthdir_x(64,target.direction-180),target.y+lengthdir_y(128,target.direction+90))-(max(sprite_get_width(sprite_index),sprite_get_height(sprite_index)));
+    if (y>target.y) and (target_distance>closing_distance) then direction=turn_towards_point(direction,x,y,target.x,target.y,turning_speed);
+    if (y<target.y) and (target_distance>closing_distance) then direction=turn_towards_point(direction,x,y,target.x,target.y,turning_speed);     
 }
 
 function start_slowing_telemetry(distance_to_target, deceleration){

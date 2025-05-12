@@ -1,6 +1,6 @@
 global.ship_weapons_stats = {
 	"Lance Battery" : {
-		range : 300,
+		range : 900,
 		dam : 14,
 		cooldown : 15,
 		facing : "front",
@@ -25,6 +25,12 @@ global.ship_weapons_stats = {
 		cooldown : 120,	
 		minrange : 300,
 		draw_scale: 2,
+	},
+	"Macro Cannon" : {
+		facing : "front",
+		dam  : 4.5,
+		firing_arc : 5,
+		explosion_sprite : spr_explosion2,
 	},
 	"Weapons Battery" : {
 		facing : "front",
@@ -118,6 +124,7 @@ global.ship_weapons_stats = {
 	"Pulsar Lances":{
 		facing : "front",
 		dam : 10,
+		weapon_range : 800,
 		weapon_cooldown : 10,
 		img: spr_ground_las,
 		explosion_sprite :spr_explosion_plas,
@@ -333,7 +340,7 @@ function assign_ship_stats(){
 	    
 	}
 
-	if (class="Shadow Class"){sprite_index=spr_ship_shadow;
+	if (class="Shadow Class"){
 	    sprite_index=spr_ship_shadow;
 	    ship_size=3;
 	    name="";
@@ -353,7 +360,7 @@ function assign_ship_stats(){
 	    
 	}
 
-	if (class="Hellebore"){sprite_index=spr_ship_hellebore;
+	if (class="Hellebore"){
 	    sprite_index=spr_ship_hellebore;
 	    ship_size=1;
 	    name="";

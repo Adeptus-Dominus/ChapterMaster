@@ -278,8 +278,8 @@ function new_player_ship(type, start_loc="home", new_name=""){
         obj_ini.ship_front_armour[index]=6;
         obj_ini.ship_other_armour[index]=6;
         obj_ini.ship_shields[index]=12;
-        add_weapon_to_ini_ship(index, "Weapons Battery", {facing : "left", firing_arc: 20});
-        add_weapon_to_ini_ship(index, "Weapons Battery", {facing : "right", firing_arc: 20});
+        add_weapon_to_ini_ship(index, "Weapons Battery", {facing : "left", firing_arc: 30});
+        add_weapon_to_ini_ship(index, "Weapons Battery", {facing : "right", firing_arc: 30});
         add_weapon_to_ini_ship(index, "Light Weapons Battery", {facing : "front"});
         add_weapon_to_ini_ship(index, "Thunderhawk Launch Bays");
         add_weapon_to_ini_ship(index, "Macro Bombardment Cannons");
@@ -290,6 +290,7 @@ function new_player_ship(type, start_loc="home", new_name=""){
         obj_ini.ship_contents[index]="";
         obj_ini.ship_turrets[index]=3;
     }
+
     if (string_count("Strike Cruiser",type)>0){
         obj_ini.ship_class[index]="Strike Cruiser";
         obj_ini.ship_size[index]=2;
@@ -301,8 +302,20 @@ function new_player_ship(type, start_loc="home", new_name=""){
         obj_ini.ship_front_armour[index]=6;
         obj_ini.ship_other_armour[index]=6;
         obj_ini.ship_shields[index]=6;
-        add_weapon_to_ini_ship(index, "Weapons Battery", {facing : "left"});
-        add_weapon_to_ini_ship(index, "Weapons Battery", {facing : "right"});
+        obj_ini.ship_data[index].left_broad_positions = [[56, 16],[65, 16],[74,16],[83, 16]];
+        obj_ini.ship_data[index].right_broad_positions = [[56, 37],[65, 37],[74,37],[83, 37]];
+        var _broadsl = obj_ini.ship_data[index].left_broad_positions;
+        var _broadsr = obj_ini.ship_data[index].right_broad_positions;
+        for (var i=0;i<array_length(_broadsl);i++){
+        	add_weapon_to_ini_ship(index, "Macro Cannon", {
+        		facing : "left",
+        		ship_position : _broadsl[i],
+        	});
+        	add_weapon_to_ini_ship(index, "Macro Cannon", {
+        		facing : "right",
+        		ship_position : _broadsr[i],
+        	});
+        }
         add_weapon_to_ini_ship(index, "Thunderhawk Launch Bays");
         add_weapon_to_ini_ship(index, "Bombardment Cannons");
 

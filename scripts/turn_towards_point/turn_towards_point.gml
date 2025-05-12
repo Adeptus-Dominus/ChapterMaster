@@ -19,3 +19,7 @@ function turn_towards_point(current_angle, x1, y1, x2, y2, turn_speed) {
 
 
 }
+
+function ship_turn_towards_point(target_x,target_y){
+	direction = turn_towards_point(direction, x, y, target_x, target_y, turning_speed);
+}

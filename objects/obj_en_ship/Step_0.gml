@@ -76,7 +76,7 @@ if (hp>0) and (instance_exists(obj_p_ship)){
         direction=turn_towards_point(direction,x,y,target.x,target.y,.1);
     }
     broadside_movement();
-    flank_movement();
+    flank_behaviour();
     
     
     /*if (target!=0) and (action="broadside") and (o_dist>=dist){

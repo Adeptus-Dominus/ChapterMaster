@@ -29,7 +29,7 @@ function ShipWeaponExplosion(explosion_sprite, x, y, scale = 1) constructor{
 	 current_index = 0;
 	 static draw = function(){
 	 	draw_sprite_ext(bang_sprite,floor(current_index),x,  y,1*scale,1*scale,0,c_white,1);
-	 	current_index += 0.1;
+	 	current_index += 0.2;
 	 	if (floor(current_index) > animation_frames){
 	 		return -1;
 	 	}
@@ -150,9 +150,22 @@ function ShipWeapon(weapon_name, overide_data={}) constructor{
 		}
 	}
 
+	static calc_gun_position = function(){
+		if (struct_exists(self, "ship_position")){
+			var _ship_sprite = ship.sprite_index;
+			var _x_offset = sprite_get_xoffset(_ship_sprite);
+			var _y_offset = sprite_get_yoffset(_ship_sprite);
+			var _dist = point_distance(_x_offset, _y_offset, ship_position[0], ship_position[1]);
+			var _rel_direction = point_direction(_x_offset,_y_offset, ship_position[0], ship_position[1]);
+			x = ship.x + lengthdir_x(_dist ,  ship.direction+_rel_direction);
+			y = ship.y + lengthdir_y(_dist ,  ship.direction+_rel_direction);
+		} else {
+			x = ship.x;
+			y = ship.y;			
+		}
+	}
 	static find_target = function(){
-		x = ship.x;
-		y = ship.y;
+		calc_gun_position();
 		var _shoot_angle = weapon_direction();
 		if (_shoot_angle > 360){
 			_shoot_angle -= 360;
@@ -229,9 +242,7 @@ function ShipWeapon(weapon_name, overide_data={}) constructor{
 
 	    var _max_distance = range;
 
-	    x = ship.x;
-	    
-	    y = ship.y;
+		calc_gun_position();
 
 	    var _left = x - _max_distance;
 	    var _top  = y - _max_distance;
