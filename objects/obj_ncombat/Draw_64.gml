@@ -1,8 +1,4 @@
-draw_sprite(spr_rock_bg, 0, 0, 0);
-
 message_log.draw();
-battle_view.draw();
-battlefield_grid.draw();
 
 draw_set_font(fnt_40k_14);
 if ((display_p1 > 0) && (player_forces > 0)) {
@@ -23,6 +19,7 @@ for (var i = 0, l = array_length(lines); i < l; i++) {
     draw_text_ext(message_log.x1 + 6, message_log.y1 + 6 + (i * 18), lines[i], 1, _max_line_length);
 }
 
+draw_set_color(COL_YELLOW);
 var _turn_text = "";
 if (battle_stage == eBATTLE_STAGE.Main) {
     _turn_text = "[Press Enter to Begin]";

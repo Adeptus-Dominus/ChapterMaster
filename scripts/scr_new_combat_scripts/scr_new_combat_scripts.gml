@@ -145,56 +145,24 @@ function BattlefieldGrid(_width, _height) constructor {
         }
     };
 
-    static draw = function() {
-        var cell_width = 6;
-        var cell_height = 426;
+    static draw = function(_x1, _y1, _x2, _y2) {
+        var _cell_width = (_x2 - _x1) / width;
+        var _cell_height = (_y2 - _y1) / height;
 
-        var grid_start_x = 822;
-        var grid_start_y = 239;
-
-        var rect_padding_x = 1;
         for (var _x = 0; _x < width; _x++) {
             for (var _y = 0; _y < height; _y++) {
-                var _screen_x = grid_start_x + _x * cell_width + _x;
-                var _screen_y = grid_start_y + _y * cell_height;
+                var _cell_x1 = _x1 + _x * _cell_width;
+                var _cell_y1 = _y1 + _y * _cell_height;
+                var _cell_x2 = _cell_x1 + _cell_width;
+                var _cell_y2 = _cell_y1 + _cell_height;
 
                 draw_set_alpha(0.15);
                 draw_set_color(c_gray);
-                draw_rectangle(_screen_x, _screen_y, _screen_x + cell_width, _screen_y + cell_height, true);
+                draw_rectangle(_cell_x1, _cell_y1, _cell_x2, _cell_y2, true);
+                draw_set_alpha(1);
 
                 var _cell = get_cell(_x, _y);
-                var _occupants = _cell.occupants;
-                var _item_count = array_length(_occupants);
-
-                if (_item_count > 0) {
-                    draw_set_alpha(1);
-
-                    var total_stack_height = 0;
-                    for (var i = 0; i < _item_count; i++) {
-                        total_stack_height += _occupants[i].get_size();
-                    }
-
-                    var start_offset_y = (cell_height - total_stack_height) / 2;
-                    var _current_y = _screen_y + start_offset_y;
-
-                    for (var i = 0; i < _item_count; i++) {
-                        var _squad = _occupants[i];
-                        var _squad_visual_size = _squad.get_size();
-
-                        if (_squad.allegiance == eBATTLE_ALLEGIANCE.Player) {
-                            draw_set_color(c_blue);
-                        } else if (_squad.allegiance == eBATTLE_ALLEGIANCE.Enemy) {
-                            draw_set_color(c_red);
-                        } else {
-                            draw_set_color(c_gray);
-                        }
-
-                        draw_rectangle(_screen_x + rect_padding_x, _current_y, _screen_x + cell_width - rect_padding_x, _current_y + _squad_visual_size, false);
-                        draw_point_color((_screen_x + rect_padding_x) + (cell_width - 2 * rect_padding_x) / 2, _current_y + _squad_visual_size / 2, c_black);
-
-                        _current_y += _squad_visual_size;
-                    }
-                }
+                _cell.draw_contents(_cell_x1, _cell_y1, _cell_x2, _cell_y2);
             }
         }
 
@@ -208,10 +176,18 @@ function BattlefieldGridCell() constructor {
     capacity = -1;
     capacity_used = -1;
     occupants = [];
+    x1 = 0;
+    y1 = 0;
+    x2 = 0;
+    y2 = 0;
+    x3 = 0;
+    y3 = 0;
+
+    static default_size = 400;
 
     static reset = function() {
         // terrain = 0;
-        capacity = 400;
+        capacity = default_size;
         capacity_used = 0;
         occupants = [];
     };
@@ -235,6 +211,47 @@ function BattlefieldGridCell() constructor {
     static can_fit = function(_size) {
         return capacity_used + _size <= capacity;
     };
+
+    static draw_contents = function(_cell_x1, _cell_y1, _cell_x2, _cell_y2) {
+        var _cell_width = _cell_x2 - _cell_x1;
+        var _cell_height = _cell_y2 - _cell_y1;
+
+        var _item_count = array_length(occupants);
+        if (_item_count > 0) {
+            var _content_scale = _cell_height / default_size;
+
+            var _cell_padding_x = _cell_width * 0.1 * _content_scale;
+
+            var _total_squad_size = 0;
+            for (var i = 0; i < _item_count; i++) {
+                _total_squad_size += occupants[i].get_size();
+            }
+            _total_squad_size *= _content_scale;
+
+            var _current_y = _cell_y1 + ((_cell_height - _total_squad_size) / 2);
+
+            for (var i = 0; i < _item_count; i++) {
+                var _squad = occupants[i];
+                var _squad_size = _squad.get_size() * _content_scale;
+
+                if (_squad.allegiance == eBATTLE_ALLEGIANCE.Player) {
+                    draw_set_color(c_blue);
+                } else if (_squad.allegiance == eBATTLE_ALLEGIANCE.Enemy) {
+                    draw_set_color(c_red);
+                } else {
+                    draw_set_color(c_gray);
+                }
+
+                draw_rectangle(_cell_x1 + _cell_padding_x, _current_y, _cell_x2 - _cell_padding_x, _current_y + _squad_size, false);
+
+                _current_y += _squad_size;
+            }
+        }
+    };
+
+    static hovered_over = function() {
+        return scr_hit(x1, y1, x2, y2);
+    }
 }
 
 function BattleArmy(_name = "", _copy_profile = true) constructor {
