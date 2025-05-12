@@ -11,34 +11,16 @@ if (battle_stage == eBATTLE_STAGE.Creation) {
         stopwatch("BATTLE_STAGE.Creation");
     }
     
-    ncombat_enemy_stacks_init();
+    enemy_force.name = "orks_6";
+    enemy_force.copy_profile();
+    enemy_force.spawn_squads();
 
-    if (DEBUG_COMBAT_PERFORMANCE) {
-        stopwatch("scr_player_combat_weapon_stacks");
-    }
-    // with (obj_pnunit) {
-    //     scr_player_combat_weapon_stacks();
-    // }
 
-    if (DEBUG_COMBAT_PERFORMANCE) {
-        stopwatch("scr_player_combat_weapon_stacks");
-    }
-
-    // with (obj_pnunit) {
-    //     pnunit_battle_effects();
-    // }
-
-    // ncombat_battle_start();
-
-    // ncombat_ally_init();
-
-    // update_battlefield_scale();
+    player_force.name = "orks_6";
+    player_force.copy_profile();
+    player_force.spawn_squads();
 
     battle_stage = eBATTLE_STAGE.Main;
-
-    if (obj_ncombat.enemy == 30 || battle_special == "ship_demon") {
-        turn_side = eBATTLE_ALLEGIANCE.Enemy;
-    }
     
     if (DEBUG_COMBAT_PERFORMANCE) {
         stopwatch("BATTLE_STAGE.Creation");
@@ -48,108 +30,33 @@ if (battle_stage == eBATTLE_STAGE.Creation) {
 if ((press_exclusive(vk_enter) || hold_exclusive(vk_enter)) && fading_strength == 0) {
     if (turn_phase == eBATTLE_TURN_PHASE.Movement) {
         if (DEBUG_COMBAT_PERFORMANCE) {
-            stopwatch("BATTLE_TURN.Start");
+            stopwatch("Move Phase");
         }
         
         turn_count++;
         // global_perils -= 1;
         queue_battlelog_message($"Turn {turn_count}", COL_YELLOW);
-        // resolve_battle_state();
         display_message_queue();
-    
-        if (turn_side == eBATTLE_ALLEGIANCE.Enemy) {
-            if (DEBUG_COMBAT_PERFORMANCE) {
-                stopwatch("move_enemy_forces");
-            }
 
-            enemy_force.move_forces();
+        update_squads_array();
 
-            if (DEBUG_COMBAT_PERFORMANCE) {
-                stopwatch("move_enemy_forces");
-            }
+        squads_move();
 
-            // if (instance_exists(obj_enunit)) {                
-            //     if (DEBUG_COMBAT_PERFORMANCE) {
-            //         stopwatch("enunit_create_weapon_stacks");
-            //     }
-            //     with (obj_enunit) {
-            //         assign_weapon_stacks();
-            //     }
-            //     if (DEBUG_COMBAT_PERFORMANCE) {
-            //         stopwatch("enunit_create_weapon_stacks");
-            //     }
-            //     if (DEBUG_COMBAT_PERFORMANCE) {
-            //         stopwatch("enunit_target_and_shoot");
-            //     }
-            //     with (obj_enunit) {
-            //         enunit_target_and_shoot();
-            //     }
-            //     if (DEBUG_COMBAT_PERFORMANCE) {
-            //         stopwatch("enunit_target_and_shoot");
-            //     }
-            // }
-            // display_message_queue();
-        }
-
-        if (turn_side == eBATTLE_ALLEGIANCE.Player) {
-            // player_blocks_movement();
-            // if (DEBUG_COMBAT_PERFORMANCE) {
-            //     stopwatch("pnunit_stacking_shooting");
-            // }
-            // with (obj_pnunit) {
-            //     pnunit_battle_effects();
-            //     scr_player_combat_weapon_stacks();
-            //     pnunit_target_and_shoot();
-            // }
-            // if (DEBUG_COMBAT_PERFORMANCE) {
-            //     stopwatch("pnunit_stacking_shooting");
-            // }
-            // with (obj_enunit) {
-            //     enunit_enemy_profiles_init();
-            // }
-            // display_message_queue();
-        }
-
-        // queue_force_health();
-        // display_message_queue();
-
-        turn_phase = eBATTLE_TURN_PHASE.Morale;
+        turn_phase = eBATTLE_TURN_PHASE.Attack;
         
         if (DEBUG_COMBAT_PERFORMANCE) {
-            stopwatch("BATTLE_TURN.Start");
+            stopwatch("Move Phase");
         }
     }
 
+    if (turn_phase == eBATTLE_TURN_PHASE.Attack) {
+        squads_attack();
+
+        turn_phase = eBATTLE_TURN_PHASE.Morale;
+    }
+
     if (turn_phase == eBATTLE_TURN_PHASE.Morale) {
-        if (DEBUG_COMBAT_PERFORMANCE) {
-            stopwatch("BATTLE_TURN.End");
-        }
-        
-        // if (!battle_ended) {
-        //     with (obj_pnunit) {
-        //         pnunit_is_valid(id);
-        //     }
-        
-        //     with (obj_enunit) {
-        //         enunit_is_valid(id)
-        //     }
-        // }
-
-        // update_battlefield_scale();
-
-        if (turn_side == eBATTLE_ALLEGIANCE.Enemy) {
-            turn_side = eBATTLE_ALLEGIANCE.Player;
-        }
-
-        if (turn_side == eBATTLE_ALLEGIANCE.Player) {
-            turn_side = eBATTLE_ALLEGIANCE.Enemy;
-        }
-
         turn_phase = eBATTLE_TURN_PHASE.Movement;
-        
-        if (DEBUG_COMBAT_PERFORMANCE) {
-            stopwatch("BATTLE_TURN.End");
-        }
     }
 
 
@@ -157,9 +64,7 @@ if ((press_exclusive(vk_enter) || hold_exclusive(vk_enter)) && fading_strength =
         battle_stage = eBATTLE_STAGE.PlayerWinEnd;
         var _quad_factor = 10;
         total_battle_exp_gain = _quad_factor * sqr(threat);
-        with (obj_enunit) {
-            enunit_enemy_profiles_init();
-        }
+
         instance_activate_object(obj_star);
         instance_activate_object(obj_event_log);
         ncombat_battle_end();

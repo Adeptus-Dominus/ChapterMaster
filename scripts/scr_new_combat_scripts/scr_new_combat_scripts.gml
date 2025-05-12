@@ -103,7 +103,7 @@ function BattlefieldGrid(_width, _height) constructor {
         if (valid_cell(_x, _y)) {
             var _cell = cells[get_cell_index(_x, _y)];
             var _squad_size = _squad.get_size();
-            if (_cell.can_fit(_squad_size)) {
+            if (_cell.allegiance_match(_squad.allegiance) && _cell.can_fit(_squad_size)) {
                 var _old_location = _squad.location;
                 remove_squad(_old_location[0], _old_location[1], _squad);
                 add_squad(_x, _y, _squad);
@@ -206,7 +206,11 @@ function BattlefieldGridCell() constructor {
             }
         }
         return _filtered;
-    }
+    };
+
+    static allegiance_match = function(_allegiance) {
+        return array_length(occupants) == 0 || occupants[0].allegiance == _allegiance;
+    };
 
     static can_fit = function(_size) {
         return capacity_used + _size <= capacity;
@@ -251,7 +255,7 @@ function BattlefieldGridCell() constructor {
 
     static hovered_over = function() {
         return scr_hit(x1, y1, x2, y2);
-    }
+    };
 }
 
 function BattleArmy(_name = "", _copy_profile = true) constructor {
@@ -371,38 +375,6 @@ function BattleArmy(_name = "", _copy_profile = true) constructor {
 
         return true;
     };
-
-    static squad_initiative_sort = function(_squad_a, _squad_b) {
-        array_sort(squads, function(_squad_a, _squad_b) { 
-            return _squad_b.movement - _squad_a.movement;
-        });
-    }
-
-    static move_forces = function () {
-        if (array_length(squads) == 0) {
-            exit;
-        }
-
-        squad_initiative_sort();
-
-        for (var i = 0, l = array_length(squads); i < l; i++) {
-            var _squad = squads[i];
-            _squad.move();
-        }
-    };
-
-    static move_forces = function () {
-        if (array_length(squads) == 0) {
-            exit;
-        }
-
-        squad_initiative_sort();
-
-        for (var i = 0, l = array_length(squads); i < l; i++) {
-            var _squad = squads[i];
-            _squad.move();
-        }
-    };
 }
 
 function BattleSquad(_name, _copy_profile = true) constructor {
@@ -470,11 +442,35 @@ function BattleSquad(_name, _copy_profile = true) constructor {
         }
 
         var _movement_direction = (allegiance == eBATTLE_ALLEGIANCE.Player) ? 1 : -1;
-        for (var _movement_distance = movement; _movement_distance >= 1; _movement_distance--) {
-            var _movement_delta = _movement_direction * _movement_distance;
+        
+        var _max_movement = movement;
+        var _current_x = location[0];
+        var _current_y = location[1];
 
-            var _target_x = location[0] + _movement_delta;
-            var _target_y = location[1];
+        // Step 1: Check for hostile squads in the path
+        for (var i = 1; i <= movement; i++) {
+            var _check_x = _current_x + _movement_direction * i;
+            var _check_y = _current_y;
+
+            if (obj_ncombat.battlefield_grid.valid_cell(_check_x, _check_y)) {
+                var _cell = obj_ncombat.battlefield_grid.cells[obj_ncombat.battlefield_grid.get_cell_index(_check_x, _check_y)];
+                
+                // If a hostile squad is found
+                if (!_cell.allegiance_match(allegiance)) {
+                    _max_movement = i - 1; // Cap movement just before the enemy
+                    break;
+                }
+            } else {
+                _max_movement = i - 1; // Cap movement if out of bounds
+                break;
+            }
+        }
+
+        // Step 2: Try to move as far as allowed (from max_movement down to 1)
+        for (var _movement_distance = _max_movement; _movement_distance >= 1; _movement_distance--) {
+            var _movement_delta = _movement_direction * _movement_distance;
+            var _target_x = _current_x + _movement_delta;
+            var _target_y = _current_y;
 
             if (obj_ncombat.battlefield_grid.move_squad(_target_x, _target_y, self)) {
                 exit;

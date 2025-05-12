@@ -1,9 +1,7 @@
 enum eBATTLE_TURN_PHASE {
     Movement,
-    Shooting,
+    Attack,
     Psychic,
-    Charge,
-    Fight,
     Morale,
 }
 
@@ -1436,6 +1434,10 @@ function ncombat_enemy_stacks_init() {
                 if (DEBUG_COMBAT_PERFORMANCE) {
                     stopwatch("enemy_squad_spawning");
                 }
+
+                player_force.name = "orks_6";
+                player_force.copy_profile();
+                player_force.spawn_squads();
             }
         }
 

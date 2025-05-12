@@ -53,14 +53,6 @@ instance_activate_object(obj_cursor);
 instance_activate_object(obj_ini);
 instance_activate_object(obj_img);
 
-// var i, u;
-// i = 11;
-// repeat (10) {
-//     i -= 1; // This creates the objects to then be filled in
-//     u = instance_create(i * 10, 240, obj_pnunit);
-// }
-
-
 local_forces = 0;
 battle_loc = "";
 battle_climate = "";
@@ -167,7 +159,6 @@ casualties = 0;
 world_size = 0;
 
 turn_phase = eBATTLE_TURN_PHASE.Movement;
-turn_side = eBATTLE_ALLEGIANCE.Player;
 
 //
 
@@ -312,18 +303,15 @@ queue_force_health = function() {
 	var _text = "";
 
     if (turn_phase == eBATTLE_TURN_PHASE.Movement) {
-        if (turn_side == eBATTLE_ALLEGIANCE.Player) {
-            if (player_forces > 0) {
-                _text = $"The {global.chapter_name} are at {string(round((player_forces / player_max) * 100))}% strength!";
-            } else {
-                _text = $"The {global.chapter_name} are defeated!";
-            }
+        if (player_forces > 0) {
+            _text = $"The {global.chapter_name} are at {string(round((player_forces / player_max) * 100))}% strength!";
         } else {
-            if (enemy_forces > 0) {
-                _text = $"The enemy forces are at {string(max(1, round((enemy_forces / enemy_max) * 100)))}% strength!";
-            } else {
-                _text = "The enemy forces are defeated!";
-            }
+            _text = $"The {global.chapter_name} are defeated!";
+        }
+        if (enemy_forces > 0) {
+            _text = $"The enemy forces are at {string(max(1, round((enemy_forces / enemy_max) * 100)))}% strength!";
+        } else {
+            _text = "The enemy forces are defeated!";
         }
 
         queue_battlelog_message(_text, COL_YELLOW);
@@ -363,3 +351,44 @@ message_log = new SimplePanel(22, 22, 622, 622);
 message_log.alpha = 0.2;
 
 battle_view = new SimplePanel(22, 22, 1578, 878);
+
+all_squads = [];
+
+squad_initiative_sort = function() {
+    array_sort(all_squads, function(_squad_a, _squad_b) {
+        var _movement_diff =  _squad_b.movement - _squad_a.movement;
+        if (_movement_diff != 0) {
+            return _movement_diff;
+        } else {
+            return choose(-1, 1)
+        }
+    });
+};
+
+update_squads_array = function () {
+    all_squads = array_concat(player_force.squads, enemy_force.squads);
+}
+
+squads_move = function () {
+    if (array_length(all_squads) == 0) {
+        exit;
+    }
+
+    squad_initiative_sort();
+
+    for (var i = 0, l = array_length(all_squads); i < l; i++) {
+        var _squad = all_squads[i];
+        _squad.move();
+    }
+};
+
+squads_attack = function () {
+    if (array_length(all_squads) == 0) {
+        exit;
+    }
+
+    for (var i = 0, l = array_length(all_squads); i < l; i++) {
+        var _squad = all_squads[i];
+        _squad.attack();
+    }
+};

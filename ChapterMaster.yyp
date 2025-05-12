@@ -618,7 +618,6 @@
     {"id":{"name":"obj_en_round","path":"objects/obj_en_round/obj_en_round.yy",},},
     {"id":{"name":"obj_en_ship","path":"objects/obj_en_ship/obj_en_ship.yy",},},
     {"id":{"name":"obj_enemy_leftest","path":"objects/obj_enemy_leftest/obj_enemy_leftest.yy",},},
-    {"id":{"name":"obj_enunit","path":"objects/obj_enunit/obj_enunit.yy",},},
     {"id":{"name":"obj_event_log","path":"objects/obj_event_log/obj_event_log.yy",},},
     {"id":{"name":"obj_event","path":"objects/obj_event/obj_event.yy",},},
     {"id":{"name":"obj_explosion","path":"objects/obj_explosion/obj_explosion.yy",},},

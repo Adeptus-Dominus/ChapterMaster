@@ -15,7 +15,6 @@ function scr_civil_roster(_unit_location, _target_location, _is_planet) {
 	//???=obj_drop_select;
 	//???=obj_controller
 	//???=obj_pnunit
-	//???=obj_enunit
 	//--------------------------------------------------------------------------------------------------------------------
 
 	var stop,okay,sofar;
@@ -45,16 +44,6 @@ function scr_civil_roster(_unit_location, _target_location, _is_planet) {
 	co=0;v=0;meeting=true;he_good=false;
 
 	instance_activate_object(obj_pnunit);
-	instance_activate_object(obj_enunit);
-
-	if (new_combat.enemy=1){
-	    var i,u;i=11;
-	    repeat(10){i-=1;// This creates the objects to then be filled in
-	        u=instance_create(110+(i*10),240,obj_enunit);
-	    }
-	}
-
-	instance_activate_object(obj_enunit);
 
 	repeat(300){v+=1;he_good=0;
 
