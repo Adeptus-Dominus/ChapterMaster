@@ -4,13 +4,10 @@ if (draw_size > 0){
     draw_set_alpha(1);
     draw_set_color(column_draw_colour);
 
-    if (instance_exists(obj_centerline)){
-        centerline_offset=x-obj_centerline.x;
-    }
 
-    x1 = pos + (centerline_offset * 2);
+    x1 = pos ;
     y1 = 450 - (draw_size / 2);
-    x2 = pos + (centerline_offset * 2) + 10;
+    x2 = pos + 10;
     y2 = 450 + (draw_size / 2);
 
     if (is_mouse_over()) {

@@ -1,7 +1,7 @@
 enum eBATTLE_TURN_PHASE {
     Movement,
-    Psychic,
     Shooting,
+    Psychic,
     Charge,
     Fight,
     Morale,
@@ -5877,9 +5877,6 @@ function ncombat_special_end() {
             instance_destroy();
         }
         with (obj_nfort) {
-            instance_destroy();
-        }
-        with (obj_centerline) {
             instance_destroy();
         }
         obj_controller.new_buttons_hide = 0;

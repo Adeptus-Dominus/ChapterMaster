@@ -350,8 +350,6 @@ function BattleArmy(_name = "", _copy_profile = true) constructor {
 
                 // Attempt to place the squad at the current spawn X and Y=0
                 var _placed = false;
-                // Assuming squad size affects placement validation but not the starting cell for sequential placement
-                // The grid's add_squad method should handle multi-cell squads starting from the given coordinate
                 if (_battlefield.add_squad(_current_spawn_x, 0, _battle_squad)) {
                     array_push(squads, _battle_squad);
                     _placed = true;
@@ -367,7 +365,6 @@ function BattleArmy(_name = "", _copy_profile = true) constructor {
 
                 if (!_placed) {
                     show_error($"Warning: Could not place squad '{_squad_name}' for '{allegiance}' at ({_current_spawn_x}, 0)!", false);
-                    // The squad instance is not added to the army's list if not placed
                 }
             }
         }
@@ -380,6 +377,19 @@ function BattleArmy(_name = "", _copy_profile = true) constructor {
             return _squad_b.movement - _squad_a.movement;
         });
     }
+
+    static move_forces = function () {
+        if (array_length(squads) == 0) {
+            exit;
+        }
+
+        squad_initiative_sort();
+
+        for (var i = 0, l = array_length(squads); i < l; i++) {
+            var _squad = squads[i];
+            _squad.move();
+        }
+    };
 
     static move_forces = function () {
         if (array_length(squads) == 0) {

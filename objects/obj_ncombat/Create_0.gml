@@ -60,7 +60,6 @@ instance_activate_object(obj_img);
 //     u = instance_create(i * 10, 240, obj_pnunit);
 // }
 
-instance_create(0, 0, obj_centerline);
 
 local_forces = 0;
 battle_loc = "";

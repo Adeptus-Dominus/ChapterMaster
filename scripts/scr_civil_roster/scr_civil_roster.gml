@@ -16,7 +16,6 @@ function scr_civil_roster(_unit_location, _target_location, _is_planet) {
 	//???=obj_controller
 	//???=obj_pnunit
 	//???=obj_enunit
-	//???=obj_centerline
 	//--------------------------------------------------------------------------------------------------------------------
 
 	var stop,okay,sofar;
@@ -47,7 +46,6 @@ function scr_civil_roster(_unit_location, _target_location, _is_planet) {
 
 	instance_activate_object(obj_pnunit);
 	instance_activate_object(obj_enunit);
-	instance_activate_object(obj_centerline);
 
 	if (new_combat.enemy=1){
 	    var i,u;i=11;

@@ -397,7 +397,6 @@ function scr_dialogue(diplo_keyphrase) {
 	    instance_activate_object(obj_ini);
 	    instance_activate_object(obj_temp_meeting);
 	    instance_activate_object(obj_ncombat);
-	    instance_activate_object(obj_centerline);
 	    instance_activate_object(obj_pnunit);
 	    instance_activate_object(obj_enunit);
 

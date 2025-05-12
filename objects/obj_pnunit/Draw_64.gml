@@ -4,20 +4,15 @@ if (draw_size > 0){
     draw_set_alpha(1);
     draw_set_color(c_red);
 
-    if (instance_exists(obj_centerline)){
-        centerline_offset=x-obj_centerline.x;
-    }
-
     if (veh_type[1]=="Defenses"){
         draw_size=0;
         if (instance_exists(obj_nfort)) then draw_size=400;
-        centerline_offset=135;
         draw_set_color(c_gray);
     }
 
-    x1 = pos + (centerline_offset * 2);
+    x1 = pos;
     y1 = 450 - (draw_size / 2);
-    x2 = pos + (centerline_offset * 2) + 10;
+    x2 = pos + 10;
     y2 = 450 + (draw_size / 2);
 
     if (is_mouse_over()) {

@@ -6,7 +6,6 @@ unit_count_old=0;
 composition_string="";
 
 pos = 880;
-centerline_offset = 0;
 draw_size = 0;
 x1 = 0;
 y1 = 0;

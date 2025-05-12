@@ -17,12 +17,11 @@ composition_string="";
 
 column_size = 0;
 
-centerline_offset = 0;
 pos = 880;
 draw_size = 0;
-x1 = pos + (centerline_offset * 2);
+x1 = pos;
 y1 = 450 - (draw_size / 2);
-x2 = pos + (centerline_offset * 2) + 10;
+x2 = pos + 10;
 y2 = 450 + (draw_size / 2);
 
 // let="";let=string_delete(obj_ini.psy_powers,2,string_length(obj_ini.psy_powers)-1);let=string_upper(let);

@@ -596,7 +596,6 @@
     {"id":{"name":"obj_al_ship","path":"objects/obj_al_ship/obj_al_ship.yy",},},
     {"id":{"name":"obj_all_fleet","path":"objects/obj_all_fleet/obj_all_fleet.yy",},},
     {"id":{"name":"obj_bomb_select","path":"objects/obj_bomb_select/obj_bomb_select.yy",},},
-    {"id":{"name":"obj_centerline","path":"objects/obj_centerline/obj_centerline.yy",},},
     {"id":{"name":"obj_circular","path":"objects/obj_circular/obj_circular.yy",},},
     {"id":{"name":"obj_controller","path":"objects/obj_controller/obj_controller.yy",},},
     {"id":{"name":"obj_creation_popup","path":"objects/obj_creation_popup/obj_creation_popup.yy",},},
