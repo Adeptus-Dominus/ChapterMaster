@@ -750,14 +750,11 @@ trade_chip=0;
 trade_info=0;
 zui=0;
 // Variables for management
-for(var t=0; i<200; t++){
-    temp[t]="";
-}
-temp[90]=0;
-temp[9000]="";
-for(var t=4700; t<=4719; t++){
-    temp[t]=0;temp[t+100]=0;
-}
+var array_size = 9001;
+temp = array_create(array_size, 0);
+array_set_range(temp, 0, 199, "");
+temp[90] = 0;
+temp[9000] = "";
 // ** Resets all audiences **
 audiences=0;
 audien[0]=0;
