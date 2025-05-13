@@ -1510,7 +1510,7 @@ ork=1;
 eldar=1;
 // if tau = 1 then tau spawn. also does eldar 
 /*
-if (global.custom=eCHAPTER_TYPE.RANDOM){ 
+if (global.custom==eCHAPTER_TYPE.RANDOM){ 
     tau=choose(0,0,1);
     eldar=choose(0,1);
 }
