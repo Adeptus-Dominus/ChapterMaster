@@ -98,8 +98,6 @@ chapter_made = 0;
 map_scale = 1;
 scale_mod = 1;
 
-star_sprites = ds_map_create();
-
 
 diplomacy_pathway = "";
 option_selections=[];

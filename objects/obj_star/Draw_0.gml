@@ -43,8 +43,8 @@ if (global.load == -1 && (obj_controller.zoomed || in_camera_view(star_box_shape
         _reset = true;
     }
 
-    if (ds_map_exists(obj_controller.star_sprites, name)){
-        var _old_sprite = ds_map_find_value(obj_controller.star_sprites, name);
+    if (ds_map_exists(global.star_sprites, name)){
+        var _old_sprite = ds_map_find_value(global.star_sprites, name);
         if (sprite_exists(_old_sprite)){
             if (_reset){
                 sprite_delete(_old_sprite);
@@ -53,7 +53,7 @@ if (global.load == -1 && (obj_controller.zoomed || in_camera_view(star_box_shape
             _reset = true;
         }
         if (_reset){
-            ds_map_delete(obj_controller.star_sprites, name);
+            ds_map_delete(global.star_sprites, name);
         }
     } else {
         _reset = true;
@@ -84,10 +84,10 @@ if (global.load == -1 && (obj_controller.zoomed || in_camera_view(star_box_shape
         surface_reset_target();
         stored_owner = owner;
         var _new_sprite = sprite_create_from_surface(star_tag_surface, 0, 0, surface_get_width(star_tag_surface), surface_get_height(star_tag_surface), false, false, 0, 0);
-        ds_map_set(obj_controller.star_sprites, name, _new_sprite);
+        ds_map_set(global.star_sprites, name, _new_sprite);
         surface_clear_and_free(star_tag_surface)
     } 
-    var _sprite = ds_map_find_value(obj_controller.star_sprites, name)
+    var _sprite = ds_map_find_value(global.star_sprites, name)
     draw_sprite_ext(_sprite, 0,  x-(64*scale), y, scale, scale, 1, c_white, 1);
 }
 draw_set_valign(fa_top)
