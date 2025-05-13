@@ -67,8 +67,8 @@ if (boarding=true) and (board_cooldown>=0) and (instance_exists(target)) and (in
     board_cooldown-=1;
 
     if (board_cooldown=0){board_cooldown=60;
-        var o,challenge,difficulty,roll1,roll2,attack,arp,wep,ac,dr,co,i,hits,hurt,damaged_ship;
-        o=firstest-1;difficulty=50;challenge=0;roll1=0;roll2=0;attack=0;arp=0;wep="";hits=0;hurt=0;damaged_ship=0;
+        var o,challenge,boarding_odds,boarding_difficulty,boarding_advantage,boarding_disadvantage,gear_bonus,marine_bonus,outcome_roll,damage_roll,attack,arp,wep,ac,dr,co,i,hits,hurt,damaged_ship,bridge_damage;
+        o=firstest-1;boarding_odds=0;challenge=0;outcome_roll=0;damage_roll=0;attack=0;arp=0;wep="";hits=0;hurt=0;damaged_ship=0;bridge_damage=1;
         co=0;i=0;ac=0;dr=1;
         
         for (var o=0;o<array_length(origin.board_co);o++){
@@ -79,38 +79,61 @@ if (boarding=true) and (board_cooldown>=0) and (instance_exists(target)) and (in
         
             co=origin.board_co[o];
             i=origin.board_id[o];
-            difficulty=50;
             ac=0;
             dr=1;
             unit=fetch_unit([co,i]);
+            gear_bonus=0;
+            marine_bonus=0;
+			boarding_odds=50;
+            boarding_advantage=0;
+            boarding_disadvantage=0;
             if (unit.hp()>0){
                 
                 // Bonuses
-                difficulty+=unit.experience/20;
-                difficulty+=(1-(target.hp/target.maxhp))*33;
-                //TODO define tag for bording weapons
-                if (array_contains(["Chainfist","Meltagun","Lascutter","Boarding Shield"], unit.weapon_one())) then difficulty+=3;
-                if (array_contains(["Chainfist","Meltagun","Lascutter","Boarding Shield"], unit.weapon_two())) then difficulty+=3;
+                marine_bonus+=unit.experience/20;
+                marine_bonus+=(1-(target.hp/target.maxhp))*33; // if wounded marine will perform worse
 
-                if (scr_has_adv("Boarders")) then  difficulty+=7;
-                if (scr_has_adv("Assault Doctrine")) then  difficulty+=3;
-                if (scr_has_adv("Lightning Warriors")) then  difficulty+=3;
+                var _weapons = [unit.get_weapon_one_data(), unit.get_weapon_two_data()];
+                if (_weapons[0] == "" && _weapons[1] == "") {
+                    gear_bonus -= 10;
+                } else {
+                    for (var i = 0; i <= 1; i++) {
+                        var _weapon = _weapons[i];
+                        if (!is_struct(_weapon)) then break
+
+                        if (_weapon.has_tag("boarding 1")) {
+                            gear_bonus += 2;
+                        	bridge_damage = max(bridge_damage, 3);
+                        } else if (_weapon.has_tag("boarding 2")) {
+                            gear_bonus += 4;
+                        	bridge_damage = max(bridge_damage, 5);
+                        } else if (_weapon.has_tag("boarding 3")) {
+                            gear_bonus += 6;
+                        	bridge_damage = max(bridge_damage, 7);
+                        }
+                    }
+                }
+                if (scr_has_adv("Boarders")) then  marine_bonus+=7;
+                if (scr_has_adv("Assault Doctrine")) then  marine_bonus+=3;
+                if (scr_has_adv("Lightning Warriors")) then  marine_bonus+=3;
+
+                boarding_advantage+=(gear_bonus+marine_bonus)
 
                 // Penalties
-                if (unit.weapon_one()=="")then difficulty-=10;
-                if (unit.weapon_two()=="")then difficulty-=10;
                 if (unit.base_group == "astartes"){
-                    if (unit.gene_seed_mutations.occulobe==1) then difficulty-=5;
+                    if (unit.gene_seed_mutations.occulobe==1) then boarding_disadvantage-=5;
                 }
-                if (target.owner = eFACTION.Imperium) or ((target.owner = eFACTION.Chaos) and (obj_fleet.csm_exp=0)) then difficulty-=0;// Cultists/Pirates/Humans
-                if (target.owner  = eFACTION.Player) or (target.owner = eFACTION.Ecclesiarchy) or (target.owner = eFACTION.Ork) or (target.owner = eFACTION.Eldar) or (target.owner = eFACTION.Necrons) then difficulty-=10;
-                if (target.owner = eFACTION.Chaos) and (obj_fleet.csm_exp=1) then difficulty-=20;//       Veteran marines
-                if ((target.owner = eFACTION.Chaos) and (obj_fleet.csm_exp=2)) or (target.owner = eFACTION.Tyranids) then difficulty-=30;// Daemons, veteran CSM, tyranids
+                if (target.owner = eFACTION.Imperium) or ((target.owner = eFACTION.Chaos) and (obj_fleet.csm_exp=0)) then boarding_disadvantage-=0;// Cultists/Pirates/Humans
+                if (target.owner  = eFACTION.Player) or (target.owner = eFACTION.Ecclesiarchy) or (target.owner = eFACTION.Ork) or (target.owner = eFACTION.Eldar) or (target.owner = eFACTION.Necrons) then boarding_disadvantage-=10;
+                if (target.owner = eFACTION.Chaos) and (obj_fleet.csm_exp=1) then boarding_disadvantage-=20;//       Veteran marines
+                if ((target.owner = eFACTION.Chaos) and (obj_fleet.csm_exp=2)) or (target.owner = eFACTION.Tyranids) then boarding_disadvantage-=30;// Daemons, veteran CSM, tyranids
+
+                boarding_odds+=boarding_advantage+boarding_disadvantage;
+                boarding_odds=clamp(boarding_odds,0,100);
+                outcome_roll=floor(random(100))+1;
                 
-                roll1=floor(random(100))+1;
                 
-                
-                if (roll1<=difficulty){// Success
+                if (outcome_roll<=boarding_odds){// Success 
                     if (damage=true) and (steal=false){// Damaging
                         var to_bomb;to_bomb=false;
                         if (plasma_bomb=true) and (obj_ini.gear[co][i]="Plasma Bomb") then to_bomb=true;
@@ -124,39 +147,12 @@ if (boarding=true) and (board_cooldown>=0) and (instance_exists(target)) and (in
                             obj_ini.gear[co][i]="";
                         }
                     }
+
                     if (steal=true) and (damage=false){// Stealing
-                        var bridge_damage=0;
                         damaged_ship=max(1,damaged_ship);
-                        
-                        var we,whi,we1,we2;we="";
-						we1=unit.weapon_one();
-						we2=unit.weapon_two();
-						whi=0;
-                        
-                        bridge_damage=3;
-                        //TODO tagging system to slove this
-                        we="Heavy Thunder Hammer";
-                        if (we1=we) or (we2=we) then bridge_damage=max(bridge_damage,8);
-                        we="Eviscerator";
-                        if (we1=we) or (we2=we) then bridge_damage=max(bridge_damage,7);
-                        we="Chainfist";
-                        if (we1=we) or (we2=we) then bridge_damage=max(bridge_damage,7);
-                        we="Lascutter";
-                        if (we1=we) or (we2=we) then bridge_damage=max(bridge_damage,7);
-                        we="Meltagun";
-                        if (we1=we) or (we2=we) then bridge_damage=max(bridge_damage,7);
-                        we="Power Fist";
-                        if (we1=we) or (we2=we) then bridge_damage=max(bridge_damage,6);
-                        we="Thunder Hammer";
-                        if (we1=we) or (we2=we) then bridge_damage=max(bridge_damage,6);
-                        we="Plasma Gun";
-                        if (we1=we) or (we2=we) then bridge_damage=max(bridge_damage,5);
-                        we="Relic Blade";
-                        if (we1=we) or (we2=we) then bridge_damage=max(bridge_damage,4);
-                        if (string_pos("&",string(obj_ini.wep1[co][i])+string(obj_ini.wep2[co][i]))>0) then bridge_damage=9;
-                        
                         target.bridge-=bridge_damage;
                     }
+
                     if ((target.hp<=0) or (target.bridge<=0)){
                         var husk=instance_create(target.x,target.y,obj_en_husk);
                         
@@ -196,67 +192,67 @@ if (boarding=true) and (board_cooldown>=0) and (instance_exists(target)) and (in
                 }
                 
                 
-                if (roll1>difficulty){// FAILURE
+                if (outcome_roll>boarding_odds){// FAILURE
                     
                     ac=unit.armour_calc()
                     dr = unit.damage_resistance()/100
                     
-                    roll2=floor(random(100))+1;
+                    damage_roll=floor(random(100))+1;
                     
                     //TODO streamline enemy weapons
                     if (target.owner = eFACTION.Imperium) or (target.owner = eFACTION.Chaos) or (target.owner = eFACTION.Ecclesiarchy){
                         // Make worse for CSM
                         wep="Lasgun";
                         hits=1;
-                        if (roll2<=90) then hits=2;
-                        if (roll2<=75) then hits=3;
-                        if (roll2<=50){wep="Bolt Pistol";hits=1;}
-                        if (roll2<=40){wep="Bolter";hits=1;}
-                        if (roll2<=30){wep="Bolter";hits=2;}
-                        if (roll2<=20){wep="Heavy Bolter";hits=1;}
-                        if (roll2<=10){wep="Plasma Pistol";hits=1;}
-                        if (roll2<=5){wep="Meltagun";hits=1;}
+                        if (damage_roll<=90) then hits=2;
+                        if (damage_roll<=75) then hits=3;
+                        if (damage_roll<=50){wep="Bolt Pistol";hits=1;}
+                        if (damage_roll<=40){wep="Bolter";hits=1;}
+                        if (damage_roll<=30){wep="Bolter";hits=2;}
+                        if (damage_roll<=20){wep="Heavy Bolter";hits=1;}
+                        if (damage_roll<=10){wep="Plasma Pistol";hits=1;}
+                        if (damage_roll<=5){wep="Meltagun";hits=1;}
                     }
                     if (target.owner = eFACTION.Eldar){
                         wep="Shuriken Pistol";hits=1;
-                        if (roll2<=90) then hits=2;
-                        if (roll2<=75) then hits=3;
-                        if (roll2<=60){wep="Shuriken Catapult";hits=2;}
-                        if (roll2<=50){wep="Shuriken Catapult";hits=3;}
-                        if (roll2<=40){wep="Shuriken Catapult";hits=4;}
-                        if (roll2<=30){wep="Wraith Cannon";hits=1;}
-                        if (roll2<=20){wep="Singing Spear";hits=1;}
-                        if (roll2<=10){wep="Meltagun";hits=1;}
+                        if (damage_roll<=90) then hits=2;
+                        if (damage_roll<=75) then hits=3;
+                        if (damage_roll<=60){wep="Shuriken Catapult";hits=2;}
+                        if (damage_roll<=50){wep="Shuriken Catapult";hits=3;}
+                        if (damage_roll<=40){wep="Shuriken Catapult";hits=4;}
+                        if (damage_roll<=30){wep="Wraith Cannon";hits=1;}
+                        if (damage_roll<=20){wep="Singing Spear";hits=1;}
+                        if (damage_roll<=10){wep="Meltagun";hits=1;}
                     }
                     if (target.owner = eFACTION.Ork){
                         wep="Shoota";hits=1;
-                        if (roll2<=90) then hits=2;
-                        if (roll2<=75) then hits=3;
-                        if (roll2<=60) then hits=4;
-                        if (roll2<=50){wep="Dakkagun";hits=1;}
-                        if (roll2<=40){wep="Big Shoota";hits=1;}
-                        if (roll2<=30){wep="Big Shoota";hits=2;}
-                        if (roll2<=15){wep="Rokkit";hits=1;}
+                        if (damage_roll<=90) then hits=2;
+                        if (damage_roll<=75) then hits=3;
+                        if (damage_roll<=60) then hits=4;
+                        if (damage_roll<=50){wep="Dakkagun";hits=1;}
+                        if (damage_roll<=40){wep="Big Shoota";hits=1;}
+                        if (damage_roll<=30){wep="Big Shoota";hits=2;}
+                        if (damage_roll<=15){wep="Rokkit";hits=1;}
                     }
                     if (target.owner = eFACTION.Tau){
                         wep="Pulse Rifle";hits=1;
-                        if (roll2<=80) then hits=2;
-                        if (roll2<=65) then hits=3;
-                        if (roll2<=50) then hits=4;
-                        if (roll2<=40){wep="Missile Pod";hits=1;}
-                        if (roll2<=30){wep="Burst Rifle";hits=1;}
-                        if (roll2<=15){wep="Meltagun";hits=1;}
+                        if (damage_roll<=80) then hits=2;
+                        if (damage_roll<=65) then hits=3;
+                        if (damage_roll<=50) then hits=4;
+                        if (damage_roll<=40){wep="Missile Pod";hits=1;}
+                        if (damage_roll<=30){wep="Burst Rifle";hits=1;}
+                        if (damage_roll<=15){wep="Meltagun";hits=1;}
                     }
                     if (target.owner = eFACTION.Tyranids){
                         wep="Flesh Hooks";hits=1;
-                        if (roll2<=90) then hits=2;
-                        if (roll2<=75) then hits=3;
-                        if (roll2<=60){wep="Devourer";hits=2;}
-                        if (roll2<=50){wep="Devourer";hits=3;}
-                        if (roll2<=40){wep="Devourer";hits=4;}
-                        if (roll2<=30){wep="Venom Cannon";hits=1;}
-                        if (roll2<=20){wep="Lictor Claws";hits=1;}
-                        if (roll2<=10){wep="Zoanthrope Blast";hits=1;}
+                        if (damage_roll<=90) then hits=2;
+                        if (damage_roll<=75) then hits=3;
+                        if (damage_roll<=60){wep="Devourer";hits=2;}
+                        if (damage_roll<=50){wep="Devourer";hits=3;}
+                        if (damage_roll<=40){wep="Devourer";hits=4;}
+                        if (damage_roll<=30){wep="Venom Cannon";hits=1;}
+                        if (damage_roll<=20){wep="Lictor Claws";hits=1;}
+                        if (damage_roll<=10){wep="Zoanthrope Blast";hits=1;}
                     }
                     
                     if (wep="Lasgun"){attack=25;arp=0;}

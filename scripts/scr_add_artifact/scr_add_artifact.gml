@@ -424,7 +424,7 @@ function ArtifactStruct(Index) constructor {
                 if ((demonSummonChance <= 60) && (obj_ini.ship_carrying[_ship_id] > 0)) {
                     instance_create(0, 0, obj_ncombat);
                     obj_ncombat.battle_special = "ship_demon";
-                    obj_ncombat.formation_set = 1;
+                    obj_ncombat.player_formation = 1;
                     obj_ncombat.enemy = 10;
                     obj_ncombat.battle_id = _ship_id;
                     scr_ship_battle(_ship_id, 999);

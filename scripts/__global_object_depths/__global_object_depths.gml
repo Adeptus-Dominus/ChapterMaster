@@ -35,9 +35,7 @@ function __global_object_depths() {
     global.__objectDepths[24] = 3; // obj_en_pulse
     global.__objectDepths[25] = -50; // obj_explosion
     global.__objectDepths[26] = -25000; // obj_ncombat
-    global.__objectDepths[27] = -50000; // obj_centerline
     global.__objectDepths[28] = -30001; // obj_pnunit
-    global.__objectDepths[29] = -30000; // obj_enunit
     global.__objectDepths[30] = -30000; // obj_nfort
     global.__objectDepths[31] = 0; // obj_temp1
     global.__objectDepths[32] = 0; // obj_temp2
@@ -125,9 +123,7 @@ function __global_object_depths() {
     global.__objectNames[24] = "obj_en_pulse";
     global.__objectNames[25] = "obj_explosion";
     global.__objectNames[26] = "obj_ncombat";
-    global.__objectNames[27] = "obj_centerline";
     global.__objectNames[28] = "obj_pnunit";
-    global.__objectNames[29] = "obj_enunit";
     global.__objectNames[30] = "obj_nfort";
     global.__objectNames[31] = "obj_temp1";
     global.__objectNames[32] = "obj_temp2";

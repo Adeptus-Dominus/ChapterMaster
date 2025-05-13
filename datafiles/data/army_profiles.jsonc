@@ -1,0 +1,56 @@
+{
+    "orks_6": {
+        "display_name": "Huge Ork Army",
+        "description": "A huge army of green gigachads.",
+        "squads": [
+            {
+                "name": "deff_dread",
+                "count": 12
+            },
+            {
+                "name": "battlewagon",
+                "count": 90
+            },
+            {
+                "name": "mekboy",
+                "count": 6
+            },
+            {
+                "name": "warboss",
+                "count": 1
+            },
+            {
+                "name": "gretchin",
+                "count": 70
+            },
+            {
+                "name": "tankbustas",
+                "count": 6
+            },
+            {
+                "name": "meganobz",
+                "count": 8
+            },
+            {
+                "name": "slugga_boyz",
+                "count": 60
+            },
+            {
+                "name": "ard_boyz",
+                "count": 50
+            },
+            {
+                "name": "shoota_boyz",
+                "count": 60
+            },
+            {
+                "name": "flash_gitz",
+                "count": 5
+            },
+            {
+                "name": "kommandos",
+                "count": 2
+            }
+        ]
+    }
+}

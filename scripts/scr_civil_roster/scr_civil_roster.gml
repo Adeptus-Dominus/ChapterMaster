@@ -15,8 +15,6 @@ function scr_civil_roster(_unit_location, _target_location, _is_planet) {
 	//???=obj_drop_select;
 	//???=obj_controller
 	//???=obj_pnunit
-	//???=obj_enunit
-	//???=obj_centerline
 	//--------------------------------------------------------------------------------------------------------------------
 
 	var stop,okay,sofar;
@@ -24,39 +22,28 @@ function scr_civil_roster(_unit_location, _target_location, _is_planet) {
 
 	// Formation here
 	
-	obj_controller.bat_devastator_column=obj_controller.bat_deva_for[new_combat.formation_set];
-	obj_controller.bat_assault_column=obj_controller.bat_assa_for[new_combat.formation_set];
-	obj_controller.bat_tactical_column=obj_controller.bat_tact_for[new_combat.formation_set];
-	obj_controller.bat_veteran_column=obj_controller.bat_vete_for[new_combat.formation_set];
-	obj_controller.bat_hire_column=obj_controller.bat_hire_for[new_combat.formation_set];
-	obj_controller.bat_librarian_column=obj_controller.bat_libr_for[new_combat.formation_set];
-	obj_controller.bat_command_column=obj_controller.bat_comm_for[new_combat.formation_set];
-	obj_controller.bat_techmarine_column=obj_controller.bat_tech_for[new_combat.formation_set];
-	obj_controller.bat_terminator_column=obj_controller.bat_term_for[new_combat.formation_set];
-	obj_controller.bat_honor_column=obj_controller.bat_hono_for[new_combat.formation_set];
-	obj_controller.bat_dreadnought_column=obj_controller.bat_drea_for[new_combat.formation_set];
-	obj_controller.bat_rhino_column=obj_controller.bat_rhin_for[new_combat.formation_set];
-	obj_controller.bat_predator_column=obj_controller.bat_pred_for[new_combat.formation_set];
-	obj_controller.bat_landraider_column=obj_controller.bat_landraid_for[new_combat.formation_set];
-	obj_controller.bat_landspeeder_column = obj_controller.bat_landspee_for[new_combat.formation_set];
-    obj_controller.bat_whirlwind_column = obj_controller.bat_whirl_for[new_combat.formation_set];
-	obj_controller.bat_scout_column=obj_controller.bat_scou_for[new_combat.formation_set];
+	obj_controller.bat_devastator_column=obj_controller.bat_deva_for[new_combat.player_formation];
+	obj_controller.bat_assault_column=obj_controller.bat_assa_for[new_combat.player_formation];
+	obj_controller.bat_tactical_column=obj_controller.bat_tact_for[new_combat.player_formation];
+	obj_controller.bat_veteran_column=obj_controller.bat_vete_for[new_combat.player_formation];
+	obj_controller.bat_hire_column=obj_controller.bat_hire_for[new_combat.player_formation];
+	obj_controller.bat_librarian_column=obj_controller.bat_libr_for[new_combat.player_formation];
+	obj_controller.bat_command_column=obj_controller.bat_comm_for[new_combat.player_formation];
+	obj_controller.bat_techmarine_column=obj_controller.bat_tech_for[new_combat.player_formation];
+	obj_controller.bat_terminator_column=obj_controller.bat_term_for[new_combat.player_formation];
+	obj_controller.bat_honor_column=obj_controller.bat_hono_for[new_combat.player_formation];
+	obj_controller.bat_dreadnought_column=obj_controller.bat_drea_for[new_combat.player_formation];
+	obj_controller.bat_rhino_column=obj_controller.bat_rhin_for[new_combat.player_formation];
+	obj_controller.bat_predator_column=obj_controller.bat_pred_for[new_combat.player_formation];
+	obj_controller.bat_landraider_column=obj_controller.bat_landraid_for[new_combat.player_formation];
+	obj_controller.bat_landspeeder_column = obj_controller.bat_landspee_for[new_combat.player_formation];
+    obj_controller.bat_whirlwind_column = obj_controller.bat_whirl_for[new_combat.player_formation];
+	obj_controller.bat_scout_column=obj_controller.bat_scou_for[new_combat.player_formation];
 
 	var co, v, meeting, he_good,unit;
 	co=0;v=0;meeting=true;he_good=false;
 
 	instance_activate_object(obj_pnunit);
-	instance_activate_object(obj_enunit);
-	instance_activate_object(obj_centerline);
-
-	if (new_combat.enemy=1){
-	    var i,u;i=11;
-	    repeat(10){i-=1;// This creates the objects to then be filled in
-	        u=instance_create(110+(i*10),240,obj_enunit);
-	    }
-	}
-
-	instance_activate_object(obj_enunit);
 
 	repeat(300){v+=1;he_good=0;
 
@@ -203,7 +190,6 @@ function scr_civil_roster(_unit_location, _target_location, _is_planet) {
 	                targ.dudes_num[targ.men]=1;
 	                targ.dudes_hp[targ.men]=unit.hp();
 	                targ.dudes_exp[targ.men]=unit.experience;
-	                targ.dudes_powers[targ.men]=deploying_unit.spe[cooh,va];
 	                targ.dudes_wep1[targ.men]=deploying_unit.wep1[cooh,va];
 	                targ.dudes_wep2[targ.men]=deploying_unit.wep2[cooh,va];
 	                targ.dudes_gear[targ.men]=deploying_unit.gear[cooh,va];

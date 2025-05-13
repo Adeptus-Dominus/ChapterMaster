@@ -91,4 +91,6 @@ function __init_external() {
         global.game_version = _version;
         global.commit_hash = _commit_hash;
     }
+
+    load_unit_profiles();
 }

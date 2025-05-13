@@ -8,6 +8,31 @@ function DeepCloneStruct(clone_struct) {
     return variable_clone(clone_struct);
 }
 
+function struct_load(_destination, _origin) {
+    try {
+        var _keys = struct_get_names(_origin);
+        for (var k = 0, l = array_length(_keys); k < l; k++){
+            var _key = _keys[k];
+            if (!struct_exists(_destination, _key)) {
+                log_error($"A key {_key} doesn't exist at destination!")
+            }
+    
+            var _value = _origin[$ _key];    
+            struct_set(_destination, _key, _value);
+        }
+    } catch (_exception) {
+        handle_exception(_exception);
+    }
+}
+
+function struct_overwrite(_destination, _origin) {
+    var _keys = struct_get_names(_origin);
+    for (var k = 0, l = array_length(_keys); k < l; k++){
+        var _key = _keys[k];
+        var _value = _origin[$ _key];
+        struct_set(_destination, _key, _value);
+    }
+}
 
 function CountingMap() constructor {
     map = {};
@@ -34,7 +59,7 @@ function CountingMap() constructor {
 
         for (var i = 0; i < array_length(keys); i++) {
             var key = keys[i];
-            result += $"{map[$ key]}x {key}{smart_delimeter_sign(keys, i, false)}";
+            result += $"{string_plural_count(key, map[$ key])}{smart_delimeter_sign(keys, i, false)}";
         }
 
         return result;
@@ -47,4 +72,60 @@ function CountingMap() constructor {
     static get = function(_key) {
         return struct_exists(map, _key) ? map[$ _key] : 0;
     };
+
+    static clear = function() {
+        map = {};
+    };
+}
+
+function Set(_array = []) constructor {
+    data = ds_map_create();
+
+    for (var i = 0, l = array_length(_array); i < l; i++) {
+        ds_map_add(data, _array[i], true);
+    }
+
+    static add = function(_key) {
+        return ds_map_add(data, _key, true);
+    }
+
+    static remove = function(_key) {
+        ds_map_delete(data, _key);
+    }
+
+    static clear = function() {
+        ds_map_clear(data);
+    }
+
+    static has = function(_key) {
+        return ds_map_exists(data, _key);
+    }
+
+    static foreach = function(_callback) {
+        var _keys = keys();
+        for (var i = 0, l = array_length(_keys); i < l; i++) {
+            var _key = _keys[i];
+            _callback(_key);
+        }
+    }
+
+    static size = function() {
+        return ds_map_size(data);
+    }
+
+    static empty = function() {
+        return ds_map_empty(data);
+    }
+
+    static keys = function() {
+        return ds_map_keys_to_array(data);
+    }
+
+    static copy = function(_ds_set) {
+        ds_map_copy(_ds_set, data);
+    }
+
+    static destroy = function() {
+        ds_map_destroy(data);
+    }
 }

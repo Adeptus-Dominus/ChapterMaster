@@ -1,294 +1,394 @@
-if (instance_number(obj_ncombat)>1) then  instance_destroy();
+#macro BATTLELOG_MAX_PER_TURN 40
+
+if (instance_number(obj_ncombat) > 1) {
+    instance_destroy();
+}
 
 set_zoom_to_default();
-var co,i;co=-1;
-co=0;i=0;hue=0;
+var co, i;
+co = -1;
+co = 0;
+i = 0;
+hue = 0;
 
 turn_count = 0;
 log_message("Ground Combat Started");
 
 audio_stop_sound(snd_royal);
-audio_play_sound(snd_battle,0,true);
+audio_play_sound(snd_battle, 0, true);
 audio_sound_gain(snd_battle, 0, 0);
-var nope=0;if (obj_controller.master_volume=0) or (obj_controller.music_volume=0) then nope=1;
-if (nope!=1){audio_sound_gain(snd_battle,0.25*obj_controller.master_volume*obj_controller.music_volume,2000);}
-
+var nope = 0;
+if ((obj_controller.master_volume == 0) || (obj_controller.music_volume == 0)) {
+    nope = 1;
+}
+if (nope != 1) {
+    audio_sound_gain(snd_battle, 0.25 * obj_controller.master_volume * obj_controller.music_volume, 2000);
+}
 
 //limit on the size of the players forces allowed
-enter_pressed = 0
 man_size_limit = 0;
 man_limit_reached = false;
 man_size_count = 0;
-fack=0;
-cd=0;
-owner  = eFACTION.Player;
-click_stall_timer=0;
-formation_set=0;
-on_ship=false;
-alpha_strike=0;
+player_formation = 0;
+enemy_alpha_strike = 0;
 Warlord = 0;
-total_battle_exp_gain=0;
+total_battle_exp_gain = 0;
 marines_to_recover = 0;
 vehicles_to_recover = 0;
 end_alive_units = [];
-average_battle_exp_gain=0;
-upgraded_librarians=[];
+average_battle_exp_gain = 0;
+upgraded_librarians = [];
 
-view_x=obj_controller.x;view_y=obj_controller.y;
-obj_controller.x=0;obj_controller.y=0;
-if (obj_controller.zoomed==1){with(obj_controller){scr_zoom();}}
-xxx=200;
+view_x = obj_controller.x;
+view_y = obj_controller.y;
+obj_controller.x = 0;
+obj_controller.y = 0;
+if (obj_controller.zoomed == 1) {
+    with (obj_controller) {
+        scr_zoom();
+    }
+}
+xxx = 200;
 instance_activate_object(obj_cursor);
 instance_activate_object(obj_ini);
-instance_activate_object(obj_img)
+instance_activate_object(obj_img);
 
-var i,u;i=11;
-repeat(10){i-=1;// This creates the objects to then be filled in
-    u=instance_create(i*10,240,obj_pnunit);
-}
+local_forces = 0;
+battle_loc = "";
+battle_climate = "";
+battle_id = 0;
+battle_object = 0;
+battle_special = "";
+defeat = 0;
+battle_ended = false;
+battle_over = 0;
 
-instance_create(0,0,obj_centerline);
+lost_to_black_rage = 0;
 
-local_forces=0;
-battle_loc="";
-battle_climate="";
-battle_id=0;
-battle_object=0;
-battle_special="";
-defeat=0;
-defeat_message=0;
-red_thirst=0;
-fugg=0;fugg2=0;
-battle_over=0;
-done=0;
+captured_gaunt = 0;
+ethereal = 0;
+hulk_treasure = 0;
+chaos_angry = 0;
 
-captured_gaunt=0;
-ethereal=0;
-hulk_treasure=0;
-four_show=0;
-chaos_angry=0;
+leader = 0;
+allies = 0;
+present_inquisitor = 0;
+sorcery_seen = 0;
+inquisitor_ship = 0;
+guard_total = 0;
+guard_effective = 0;
+player_starting_dudes = 0;
+chapter_master_psyker = 0;
+guard_pre_forces = 0;
+ally = 0;
+ally_forces = 0;
+ally_special = 0;
 
-leader=0;
-thirsty=0;
-really_thirsty=0;
-allies=0;
-present_inquisitor=0;sorcery_seen=0;
-inquisitor_ship=0;
-guard_total=0;
-guard_effective=0;
-player_starting_dudes=0;
-chapter_master_psyker=0;
-guard_pre_forces=0;
-ally=0;
-ally_forces=0;
-ally_special=0;
+global_perils = 0;
+exterminatus = 0;
+plasma_bomb = 0;
 
-global_perils=0;
-exterminatus=0;
-plasma_bomb=0;
+display_p1 = 0;
+display_p1n = "";
+display_p2 = 0;
+display_p2n = "";
 
-display_p1=0;display_p1n="";
-display_p2=0;display_p2n="";
+battle_stage = eBATTLE_STAGE.Creation;
+charged = 0;
 
+fading_strength = 1;
 
-alarm[0]=2;
-alarm[1]=3;
-obj_pnunit.alarm[3]=1;
-alarm[2]=8;
+enemy = 0;
+threat = 0;
+fortified = 0;
+enemy_fortified = 0;
+wall_destroyed = 0;
+enem = "Orks";
+enem_sing = "Ork";
+flank_x = 0;
 
+player_forces = 0;
+player_max = 0;
+player_defenses = 0;
+player_silos = 0;
 
-started=0;
-charged=0;
+enemy_forces = 0;
+enemy_max = 0;
+hulk_forces = 0;
 
-fadein=40;
-enemy=0;
-threat=0;
-fortified=0;
-enemy_fortified=0;
-wall_destroyed=0;
-enem="Orks";enem_sing="Ork";
-flank_x=0;
-
-player_forces=0;player_max=0;
-player_defenses=0;player_silos=0;
-
-enemy_forces=0;enemy_max=0;
-hulk_forces=0;
-
-i=-1;messages=0;messages_to_show=24;messages_shown=0;
-largest=0;priority=0;random_messages=0;dead_enemies=0;
+messages_shown = 0;
 
 units_lost_counts = {};
 vehicles_lost_counts = {};
 
-repeat(70){i+=1;
-    lines[i]="";
-    lines_color[i]="";
-    message[i]="";
-    message_sz[i]=0;
-    message_priority[i]=0;
-    dead_jim[i]="";
-    dead_ene[i]="";
-    dead_ene_n[i]=0;
-    
-    post_equipment_lost[i]="";
-    post_equipments_lost[i]=0;
-    
-    crunch[i]=0;
-    
-    if (i<=10) then mucra[i]=0;
+var _messages_size = 70;
+lines = array_create(_messages_size, "");
+lines_color = array_create(_messages_size, COL_GREEN);
+message = array_create(_messages_size, "");
+messages_queue = ds_queue_create();
+newline = "";
+newline_color = COL_GREEN;
+liness = 0;
+
+post_equipment_lost = array_create(_messages_size, "");
+post_equipments_lost = array_create(_messages_size, 0);
+
+crunch = array_create(_messages_size, 0);
+mucra = array_create(11, 0);
+
+slime = 0;
+unit_recovery_score = 0;
+apothecaries_alive = 0;
+techmarines_alive = 0;
+vehicle_recovery_score = 0;
+injured = 0;
+command_injured = 0;
+seed_saved = 0;
+seed_lost = 0;
+seed_harvestable = 0;
+units_saved_count = 0;
+units_saved_counts = {};
+vehicles_saved_counts = {};
+command_saved = 0;
+vehicles_saved_count = 0;
+vehicles_saved_counts = {};
+final_marine_deaths = 0;
+final_command_deaths = 0;
+vehicle_deaths = 0;
+casualties = 0;
+world_size = 0;
+
+turn_phase = eBATTLE_TURN_PHASE.Movement;
+
+//
+
+scouts = 0;
+tacticals = 0;
+veterans = 0;
+devastators = 0;
+assaults = 0;
+librarians = 0;
+techmarines = 0;
+honors = 0;
+dreadnoughts = 0;
+terminators = 0;
+captains = 0;
+standard_bearers = 0;
+champions = 0;
+important_dudes = 0;
+chaplains = 0;
+apothecaries = 0;
+sgts = 0;
+vet_sgts = 0;
+
+rhinos = 0;
+predators = 0;
+land_raiders = 0;
+land_speeders = 0;
+whirlwinds = 0;
+
+big_mofo = 10;
+
+en_scouts = 0;
+en_tacticals = 0;
+en_sgts = 0;
+en_vet_sgts = 0;
+en_veterans = 0;
+en_devastators = 0;
+en_assaults = 0;
+en_librarians = 0;
+en_techmarines = 0;
+en_honors = 0;
+en_dreadnoughts = 0;
+en_terminators = 0;
+en_captains = 0;
+en_standard_bearers = 0;
+en_important_dudes = 0;
+en_chaplains = 0;
+en_apothecaries = 0;
+
+en_big_mofo = 10;
+en_important_dudes = 0;
+
+//
+
+defending = true; // 1 is defensive
+dropping = 0; // 0 is was on ground
+attacking = 0; // 1 means attacked from space/local
+time = irandom(24);
+
+global_melee = 1;
+global_attack = 1;
+global_defense = 1;
+
+// Advantage-based modifiers
+if (scr_has_adv("Ambushers")) {
+    global_attack *= 1.1;
 }
-slime=0;
-unit_recovery_score=0;
-apothecaries_alive=0;
-techmarines_alive=0;
-vehicle_recovery_score=0;
-injured=0;
-command_injured=0;
-seed_saved=0;
-seed_lost=0;
-seed_harvestable=0;
-units_saved_count=0;
-units_saved_counts={};
-vehicles_saved_counts={};
-command_saved=0;
-vehicles_saved_count=0;
-vehicles_saved_counts={};
-final_marine_deaths=0;
-final_command_deaths=0;
-vehicle_deaths=0;
-casualties=0;
-dead_jims=0;
-newline="";
-newline_color="";
-liness=0;
-world_size=0;
+if ((scr_has_adv("Enemy: Eldar")) && (enemy == eFACTION.Eldar)) {
+    global_attack *= 1.1;
+    global_defense *= 1.1;
+}
+if ((scr_has_adv("Enemy: Fallen")) && (enemy == eFACTION.Heretics)) {
+    global_attack *= 1.1;
+    global_defense *= 1.1;
+}
+if ((scr_has_adv("Enemy: Orks")) && (enemy == eFACTION.Ork)) {
+    global_attack *= 1.1;
+    global_defense *= 1.1;
+}
+if ((scr_has_adv("Enemy: Tau")) && (enemy == eFACTION.Tau)) {
+    global_attack *= 1.1;
+    global_defense *= 1.1;
+}
+if ((scr_has_adv("Enemy: Tyranids")) && (enemy == eFACTION.Tyranids)) {
+    global_attack *= 1.1;
+    global_defense *= 1.1;
+}
+if ((scr_has_adv("Enemy: Necrons")) && (enemy == eFACTION.Necrons)) {
+    global_attack *= 1.1;
+    global_defense *= 1.1;
+}
+if ((scr_has_adv("Siege Masters")) && (enemy_fortified >= 3) && (!defending)) {
+    global_attack *= 1.2;
+}
+if (scr_has_adv("Devastator Doctrine")) {
+    global_attack -= 0.1;
+    global_defense += 0.2;
+}
+if (scr_has_adv("Lightning Warriors")) {
+    global_attack += 0.2;
+    global_defense -= 0.1;
+}
+if (scr_has_adv("Assault Doctrine")) {
+    global_melee *= 1.15;
+}
 
-timer=0;
-timer_stage=0;
-timer_speed=0;
-timer_maxspeed=1;
-timer_pause=-1;
-turns=1;
+// Disadvantage-based modifiers
+if (scr_has_disadv("Shitty Luck")) {
+    global_defense *= 0.9;
+}
 
+// Organ rules
+if ((obj_ini.lyman) && (dropping)) {
+    global_attack *= 0.85;
+    global_defense *= 0.9;
+}
+if (obj_ini.ossmodula == 1) {
+    global_attack *= 0.95;
+    global_defense *= 0.95;
+}
+if (obj_ini.betchers) {
+    global_melee *= 0.95;
+}
+if (obj_ini.catalepsean) {
+    global_attack *= 0.95;
+}
+if (obj_ini.occulobe) {
+    if ((time == 5) || (time == 6)) {
+        global_attack *= 0.7;
+        global_defense *= 0.8;
+    }
+}
 
-// 
+enemy_dudes = "";
+global_defense = 2 - global_defense;
 
-scouts=0;
-tacticals=0;
-veterans=0;
-devastators=0;
-assaults=0;
-librarians=0;
-techmarines=0;
-honors=0;
-dreadnoughts=0;
-terminators=0;
-captains=0;
-standard_bearers=0;
-champions=0;
-important_dudes=0;
-chaplains=0;
-apothecaries=0;
-sgts=0;
-vet_sgts=0;
+enemy_force = new BattleArmy("", false);
+enemy_force.allegiance = eBATTLE_ALLEGIANCE.Enemy;
+player_force = new BattleArmy(global.chapter_name, false);
+player_force.allegiance = eBATTLE_ALLEGIANCE.Player;
 
-rhinos=0;
-predators=0;
-land_raiders=0;
-land_speeders=0;
-whirlwinds=0;
+queue_force_health = function() {
+	var _text = "";
 
-big_mofo=10;
+    if (turn_phase == eBATTLE_TURN_PHASE.Movement) {
+        if (player_forces > 0) {
+            _text = $"The {global.chapter_name} are at {string(round((player_forces / player_max) * 100))}% strength!";
+        } else {
+            _text = $"The {global.chapter_name} are defeated!";
+        }
+        if (enemy_forces > 0) {
+            _text = $"The enemy forces are at {string(max(1, round((enemy_forces / enemy_max) * 100)))}% strength!";
+        } else {
+            _text = "The enemy forces are defeated!";
+        }
 
+        queue_battlelog_message(_text, COL_YELLOW);
+    }
+}
 
+/// @function queue_battlelog_message
+/// @param {string} _message - The message text to add to the battle log
+/// @param _message_color - Hexadecimal/CSS colour/constant color.
+/// @returns {real} The index of the newly added message
+queue_battlelog_message = function(_message, _message_color = COL_GREEN) {
+	if (instance_exists(obj_ncombat)) {
+		var _message_struct = {
+			message: _message,
+			color: _message_color
+		}
 
+		ds_queue_enqueue(obj_ncombat.messages_queue, _message_struct)
+	}
+}
 
-en_scouts=0;
-en_tacticals=0;
-en_sgts=0;
-en_vet_sgts=0;
-en_veterans=0;
-en_devastators=0;
-en_assaults=0;
-en_librarians=0;
-en_techmarines=0;
-en_honors=0;
-en_dreadnoughts=0;
-en_terminators=0;
-en_captains=0;
-en_standard_bearers=0;
-en_important_dudes=0;
-en_chaplains=0;
-en_apothecaries=0;
+display_message_queue = function() {
+	while (!ds_queue_empty(messages_queue) && messages_shown < BATTLELOG_MAX_PER_TURN) {
+        var _message = ds_queue_dequeue(messages_queue);
+        newline = _message.message;
+        newline_color = _message.color;
+        messages_shown += 1;
+        scr_newtext();
+    }
+	messages_shown = 0;
+    ds_queue_clear(messages_queue);
+}
 
-en_big_mofo=10;
-en_important_dudes=0;
+battlefield_grid = new BattlefieldGrid(100, 1);
 
-// 
+message_log = new SimplePanel(22, 22, 622, 622);
+message_log.alpha = 0.2;
 
-defending=true;// 1 is defensive
-dropping=0;// 0 is was on ground
-attacking=0;// 1 means attacked from space/local
-time=floor(random(24))+1;
-terrain="";
-weather="";
+battle_view = new SimplePanel(22, 22, 1578, 878);
 
-ambushers=0;if (scr_has_adv("Ambushers")) then ambushers=1;
-bolter_drilling=0;if (scr_has_adv("Bolter Drilling")) then bolter_drilling=1;
-enemy_eldar=0;if (scr_has_adv("Enemy: Eldar")) then enemy_eldar=1;
-enemy_fallen=0;if (scr_has_adv("Enemy: Fallen")) then enemy_fallen=1;
-enemy_orks=0;if (scr_has_adv("Enemy: Orks")) then enemy_orks=1;
-enemy_tau=0;if (scr_has_adv("Enemy: Tau")) then enemy_tau=1;
-enemy_tyranids=0;if (scr_has_adv("Enemy: Tyranids")) then enemy_tyranids=1;
-enemy_necrons=0;if (scr_has_adv("Enemy: Necrons")) then enemy_necrons=1;
-lightning=0;if (scr_has_adv("Lightning Warriors")) then lightning=1;
-siege=0;if (scr_has_adv("Siege Masters")) then siege=1;
-slow=0;if (scr_has_adv("Devastator Doctrine")) then slow=1;
-melee=0;if (scr_has_adv("Assault Doctrine")) then melee=1;
-// 
-black_rage=0;if (scr_has_disadv("Black Rage")){black_rage=1;red_thirst=1;}
-shitty_luck=0;if (scr_has_disadv("Shitty Luck")) then shitty_luck=1;
-favoured_by_the_warp=0;if (scr_has_adv("Favoured By The Warp")) then favoured_by_the_warp=1;
+all_squads = [];
 
+squad_initiative_sort = function() {
+    array_sort(all_squads, function(_squad_a, _squad_b) {
+        var _movement_diff =  _squad_b.movement - _squad_a.movement;
+        if (_movement_diff != 0) {
+            return _movement_diff;
+        } else {
+            return choose(-1, 1)
+        }
+    });
+};
 
-lyman=obj_ini.lyman;// drop pod penalties
-omophagea=obj_ini.omophagea;// feast
-ossmodula=obj_ini.ossmodula;// small penalty to all
-membrane=obj_ini.membrane;// less chance of survival for wounded
-betchers=obj_ini.betchers;// slight melee penalty
-catalepsean=obj_ini.catalepsean;// minor global attack decrease
-occulobe=obj_ini.occulobe;// penalty if morning and susceptible to flash grenades
-mucranoid=obj_ini.mucranoid;// chance to short-circuit
-// 
-global_melee=1;
-global_bolter=1;
-global_attack=1;
-global_defense=1;
-// 
-if (ambushers=1) and (ambushers=999) then global_attack=global_attack*1.1;
-if (bolter_drilling=1) then global_bolter=global_bolter*1.1;
-if (enemy_eldar=1) and (enemy=6){global_attack=global_attack*1.1;global_defense=global_defense*1.1;}
-if (enemy_fallen=1) and (enemy=10){global_attack=global_attack*1.1;global_defense=global_defense*1.1;}
-if (enemy_orks=1) and (enemy=7){global_attack=global_attack*1.1;global_defense=global_defense*1.1;}
-if (enemy_tau=1) and (enemy=8){global_attack=global_attack*1.1;global_defense=global_defense*1.1;}
-if (enemy_tyranids=1) and (enemy=9){global_attack=global_attack*1.1;global_defense=global_defense*1.1;}
-if (enemy_necrons=1) and (enemy=13){global_attack=global_attack*1.1;global_defense=global_defense*1.1;}
+update_squads_array = function () {
+    all_squads = array_concat(player_force.squads, enemy_force.squads);
+}
 
-if (siege=1) and (enemy_fortified>=3) and (defending=false) then global_attack=global_attack*1.2;
+squads_move = function () {
+    if (array_length(all_squads) == 0) {
+        exit;
+    }
 
+    squad_initiative_sort();
 
-if (slow=1){global_attack-=0.1;global_defense+=0.2;}
-if (lightning=1){global_attack+=0.2;global_defense-=0.1;}
-if (melee=1) then global_melee=global_melee*1.15;
-// 
-if (shitty_luck=1) then global_defense=global_defense*0.9;
-if (lyman=1) and (dropping=1){global_attack=global_attack*0.85;global_defense=global_defense*0.9;}
-if (ossmodula=1){global_attack=global_attack*0.95;global_defense=global_defense*0.95;}
-if (betchers=1) then global_melee=global_melee*0.95;
-if (catalepsean=1){global_attack=global_attack*0.95;}
-if (occulobe=1){if (time=5) or (time=6){global_attack=global_attack*0.7;global_defense=global_defense*0.8;}}
+    for (var i = 0, l = array_length(all_squads); i < l; i++) {
+        var _squad = all_squads[i];
+        _squad.move();
+    }
+};
 
-enemy_dudes="";
-global_defense=2-global_defense;
+squads_attack = function () {
+    if (array_length(all_squads) == 0) {
+        exit;
+    }
 
+    for (var i = 0, l = array_length(all_squads); i < l; i++) {
+        var _squad = all_squads[i];
+        _squad.attack();
+    }
+};

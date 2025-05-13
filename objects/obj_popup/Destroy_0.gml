@@ -18,13 +18,13 @@ if (image="chaos_symbol") and (title="Concealed Heresy") and (instance_exists(ob
         obj_ncombat.dropping=0;
         obj_ncombat.attacking=10;
         obj_ncombat.enemy=10;
-        obj_ncombat.formation_set=2;
+        obj_ncombat.player_formation=2;
         obj_ncombat.leader=1;
         obj_ncombat.threat=5;
         obj_ncombat.battle_special="WL10_reveal";    
         scr_battle_allies();
         setup_battle_formations();
-        roster.add_to_battle();        
+        // roster.add_to_battle();        
     }
 }
 
@@ -99,9 +99,7 @@ if (instance_exists(obj_controller)){
         instance_activate_object(obj_ini);
         instance_activate_object(obj_temp_meeting);
         instance_activate_object(obj_ncombat);
-        instance_activate_object(obj_centerline);
         instance_activate_object(obj_pnunit);
-        instance_activate_object(obj_enunit);
         
         exit;
     }

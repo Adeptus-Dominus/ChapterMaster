@@ -17,12 +17,11 @@ composition_string="";
 
 column_size = 0;
 
-centerline_offset = 0;
 pos = 880;
 draw_size = 0;
-x1 = pos + (centerline_offset * 2);
+x1 = pos;
 y1 = 450 - (draw_size / 2);
-x2 = pos + (centerline_offset * 2) + 10;
+x2 = pos + 10;
 y2 = 450 + (draw_size / 2);
 
 // let="";let=string_delete(obj_ini.psy_powers,2,string_length(obj_ini.psy_powers)-1);let=string_upper(let);
@@ -67,49 +66,35 @@ marine_dome=[];
 marine_spatial=[];
 marine_dementia=[];
 
-var i;i=-1;
-repeat(1500){i+=1;
-    //
-    veh_co[i]=0;
-    veh_id[i]=0;
-    veh_type[i]="";
-    veh_hp[i]=0;
-    veh_ac[i]=0;
-    veh_wep1[i]="";
-    veh_wep2[i]="";
-    veh_wep3[i]="";
-    veh_upgrade[i]="";
-    veh_acc[i]="";
-    veh_dead[i]=0;
-    veh_hp_multiplier[i]=1;
-    veh_local[i]=0;
-    veh_ally[i]=false;
-}
+var _vehicles_size = 1500;
+veh_co = array_create(_vehicles_size, 0);
+veh_id = array_create(_vehicles_size, 0);
+veh_type = array_create(_vehicles_size, "");
+veh_hp = array_create(_vehicles_size, 0);
+veh_ac = array_create(_vehicles_size, 0);
+veh_wep1 = array_create(_vehicles_size, "");
+veh_wep2 = array_create(_vehicles_size, "");
+veh_wep3 = array_create(_vehicles_size, "");
+veh_upgrade = array_create(_vehicles_size, "");
+veh_acc = array_create(_vehicles_size, "");
+veh_dead = array_create(_vehicles_size, 0);
+veh_local = array_create(_vehicles_size, 0);
+veh_ally = array_create(_vehicles_size, false);
 
-i=-1;
-repeat(71){i+=1;
-    wep[i]="";
-    wep_num[i]=0;
-    wep_rnum[i]=0;
-    range[i]=0;
-    att[i]=0;
-    apa[i]=0;
-    ammo[i]=-1;
-    splash[i]=0;
-    wep_owner[i]="";
-    wep_solo[i]=[];
-    wep_title[i]="";
+weapon_stacks_normal = {};
+weapon_stacks_vehicle = {};
+weapon_stacks_unique = {};
 
-    dudes[i]="";
-    dudes_num[i]=0;
-    dudes_vehicle[i]=0;
-}
+var _dudes_size = 72;
+dudes = array_create(_dudes_size, "");
+dudes_num = array_create(_dudes_size, 0);
+dudes_vehicle = array_create(_dudes_size, 0);
+
 
 // These arrays are the losses on any one frame.
 // Let them resize as required.
 // Hardcoded lengths lead to bounds issues when hardcoded values disagree.
-lost = [];
-lost_num = [];
+lost_units = {};
 
 hostile_shots=0;
 hostile_shooters=0;
@@ -119,10 +104,6 @@ hostile_unit="";
 hostile_type=0;
 hostile_splash=0;
 
-alarm[1]=4;
-
-action_set_alarm(1, 3);
-
-hit = function() {
-    return scr_hit(x1, y1, x2, y2) && obj_ncombat.fadein <= 0;
+is_mouse_over = function() {
+    return scr_hit(x1, y1, x2, y2) && obj_ncombat.fading_strength == 0;
 };

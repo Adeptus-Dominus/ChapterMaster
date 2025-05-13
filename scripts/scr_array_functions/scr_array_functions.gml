@@ -1,5 +1,3 @@
-
-
 function array_iter_length(choice_array, offset, length){
 	if (length == 0){
 		if (offset==0){
@@ -138,7 +136,7 @@ function array_to_string_order(_strings_array, _use_and = false, _dot_end = true
 /// @param {bool} _exclude_null Whether to exclude entries with zero count
 /// @param {bool} _dot_end Whether to end the string with a period
 /// @return {string}
-function arrays_to_string_with_counts(_names_array, _counts_array, _exclude_null = false, _dot_end = true) {
+function arrays_to_string_with_counts(_names_array, _counts_array, _exclude_null = false, _dot_end = true, convert_plural = true) {
     var _array_length = array_length(_names_array);
 	var _result_string = "";
 
@@ -146,7 +144,9 @@ function arrays_to_string_with_counts(_names_array, _counts_array, _exclude_null
         if (_exclude_null && _counts_array[i] == 0) {
             continue;
         }
-        _result_string += string_plural_count(_names_array[i], _counts_array[i]);
+
+		var _function = convert_plural ? string_plural_count : string_with_count;
+        _result_string += _function(_names_array[i], _counts_array[i]);
 		_result_string += smart_delimeter_sign(_array_length, i, _dot_end);
     }
 
@@ -265,4 +265,31 @@ function is_basic_array(_array, _max_depth = 1, _current_depth = 1) {
     }
 
     return true;
+}
+
+function array_empty(_array) {
+    return array_length(_array) == 0;
+}
+
+/// @description Deletes the first array element that matches the requested value. Returns whenever it succeeded or not.
+/// @param {array} _array - The array to check.
+/// @param {real} _element_value - Value to find and delete.
+function array_delete_ext(_array, _element_value) {
+	var _pos = array_get_index(_array, _element_value);
+	if (_pos != -1) {
+		array_delete(_array, _pos, 1);
+		return true;
+	}
+	return false;
+}
+
+/// @description Pushes a new element to an array, if the array doesn't already contain it. Returns whenever it succeeded or not.
+/// @param {array} _array - The array to push to.
+/// @param {real} _element_value - The element.
+function array_push_unique(_array, _element_value) {
+	if (!array_contains(_array, _element_value)) {
+		array_push(_array, _element_value);
+		return true;
+	}
+	return false;
 }

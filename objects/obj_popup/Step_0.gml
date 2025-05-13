@@ -1168,7 +1168,7 @@ try {
 			        update_roster();
 			        if (array_length(selected_units)){  
 			            setup_battle_formations();
-			            add_to_battle();
+			            // add_to_battle();
 			        }               
 			    }
 			    delete _roster				
@@ -1192,7 +1192,7 @@ try {
 				obj_ncombat.attacking = 0;
 				obj_ncombat.enemy = 13;
 				obj_ncombat.threat = 1;
-				obj_ncombat.formation_set = 1;
+				obj_ncombat.player_formation = 1;
 
 				if (battle == 1) {
 					obj_ncombat.battle_special = "wraith_attack";

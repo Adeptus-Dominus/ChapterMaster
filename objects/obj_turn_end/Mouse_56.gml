@@ -145,9 +145,9 @@ __b__ = action_if_number(obj_popup, 0, 0);
         				
         				var _planet_data = new PlanetData(_planet, _battle_obj);
 				        if (tip="offensive"){
-				        	obj_ncombat.formation_set=1;
+				        	obj_ncombat.player_formation=1;
 				        } else if (tip="defensive"){
-				        	obj_ncombat.formation_set=2;
+				        	obj_ncombat.player_formation=2;
 				        }
         
         
@@ -194,7 +194,7 @@ __b__ = action_if_number(obj_popup, 0, 0);
 					        update_roster();
 					        if (array_length(selected_units)){  
 					            setup_battle_formations();
-					            add_to_battle();
+					            // add_to_battle();
 					        }              
 					    }
 					    delete _roster

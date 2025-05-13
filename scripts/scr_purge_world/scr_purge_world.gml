@@ -30,7 +30,7 @@ function scr_purge_world(star, planet, action_type, action_score) {
 			obj_ncombat.dropping=0;
 			obj_ncombat.attacking=10;
 			obj_ncombat.enemy=10;
-			obj_ncombat.formation_set=1;
+			obj_ncombat.player_formation=1;
 
 			/*
 			obj_ncombat.battle_object=p_target;
@@ -39,7 +39,7 @@ function scr_purge_world(star, planet, action_type, action_score) {
 			obj_ncombat.dropping=1-attack;
 			obj_ncombat.attacking=attack;
 			obj_ncombat.enemy=attacking;
-			obj_ncombat.formation_set=formation_possible[formation_current];
+			obj_ncombat.player_formation=formation_possible[formation_current];
 			*/
 
 			obj_ncombat.leader=1;
@@ -47,7 +47,7 @@ function scr_purge_world(star, planet, action_type, action_score) {
 			obj_ncombat.battle_special="WL10_later";
             scr_battle_allies();
             setup_battle_formations();
-            roster.add_to_battle();
+            // roster.add_to_battle();
 	    }
 	}
 

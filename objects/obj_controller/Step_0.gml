@@ -575,7 +575,7 @@ try {
                         temp[130] += $"{name}: {dr}%\n";
                     }
                 }
-                temp[130] += string("CON: {0}%\nEXP: {1}%", round(unit.constitution / 2), round(unit.experience / 10));
+                temp[130] += $"CON: {round(unit.constitution / 2)}%";
                 if (is_struct(temp[121])) {
                     try {
                         temp[121].destroy_image();

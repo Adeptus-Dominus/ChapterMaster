@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_enunit_scripts",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_enunit_scripts",
+  "parent":{
+    "name":"Combat",
+    "path":"folders/Scripts/Combat.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

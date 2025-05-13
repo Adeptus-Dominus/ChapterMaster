@@ -114,9 +114,9 @@ scr_convert_company_to_string(7, true, true); // 7th Reserve Company
 
 - once the game has finished it's fade in the player can then click to start the game as defined in obj_ncombat.keypress_13 line 57-66
 
-- this sets obj_ncombat.timer_stage to 1
+- this sets obj_ncombat.battle_stage to 1
 
-- once obj_ncombat.timer_stage == 1 the following happens obj_ncombat.keypress_13 line 81-113
+- once obj_ncombat.battle_stage == 1 the following happens obj_ncombat.keypress_13 line 81-113
 
 	- a bunch of alarms are set to run over the next 4 frames in this order
 
@@ -132,13 +132,13 @@ scr_convert_company_to_string(7, true, true); // 7th Reserve Company
  -  kicks of scr shoot and scr flavour by extension
 
 
-- then the timer_stage goes to 2 
+- then the battle_stage goes to 2 
 
 - while the timer stage is 2 it is waiting for a kerpress defined in obj_ncombat.keypress_13 which kicks of obj_ncombat.alarm[8]
 
-- obj_ncombat.alarm[8] is a timer that kicks the timer_stage up to 3
+- obj_ncombat.alarm[8] is a timer that kicks the battle_stage up to 3
 
-- now timer_stage is 3
+- now battle_stage is 3
 
 - fllowing alarms are set to run in this order again in obj_ncombat.keypress_13
 	- obj_pnunit.alarm[3]
@@ -153,9 +153,9 @@ scr_convert_company_to_string(7, true, true); // 7th Reserve Company
 
 - obj_pnunit.alarm[0] utilises the data from obj_pnunit.alarm[1] to acctually set player
 
-- timer_stage = 4 
+- battle_stage = 4 
 
-- this is functionally the same as timer_stage being 2 it's just a wating point to go to timer stage 1/5 (i giess sometimes the enmey can go twice?)
+- this is functionally the same as battle_stage being 2 it's just a wating point to go to timer stage 1/5 (i giess sometimes the enmey can go twice?)
 
 - this malarky continues unil there are either no active enunit or pnunit objects remaining
 

@@ -1,3 +1,12 @@
+#macro COL_YELLOW #e6bb3b
+#macro COL_RED #bf4040
+#macro COL_PURPLE #a5498e
+#macro COL_GREEN #50a076
+#macro COL_DARK_GREEN #4c8b6b
+#macro COL_BRIGHT_GREEN #5ec48f
+#macro COL_WHITE #e6e6e6
+#macro COL_BLUE #196be6
+
 enum Colors {
     White = 0,
     Silver,
