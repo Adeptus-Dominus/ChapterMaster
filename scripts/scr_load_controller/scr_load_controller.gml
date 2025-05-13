@@ -51,7 +51,7 @@ function scr_load_controller(save_id){
 
 	    obj_ini.progenitor=ini_read_real("Save","founding",ePROGENITOR.NONE);
 	    // global.founding_secret=ini_read_string("Save","founding_secret","Error");
-	    global.custom=ini_read_real("Save","custom",1);
+	    global.custom=ini_read_real("Save","custom", eCHAPTER_TYPE.RANDOM);
 	    stars=ini_read_real("Save","stars",0);
 	    // pfleets=ini_read_real("Save","p_fleets",0);
 	    // efleets=ini_read_real("Save","en_fleets",0);

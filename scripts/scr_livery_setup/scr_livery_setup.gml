@@ -119,9 +119,9 @@ function scr_livery_setup(){
     
     draw_set_font(fnt_40k_30b);
     draw_text_transformed(444,215,"Basic Livelry",0.6,0.6,0);
-    var button_alpha = custom < 2 ? 0.5 : 1;
+    var button_alpha = custom != eCHAPTER_TYPE.CUSTOM ? 0.5 : 1;
     var livery_swap_button = draw_unit_buttons([570,215], complex_livery? "Simple Livery":"Complex Livery",[1,1], 38144,, fnt_40k_14b, button_alpha);
-    if (point_and_click(livery_swap_button) && custom >= 2){
+    if (point_and_click(livery_swap_button) && custom == eCHAPTER_TYPE.CUSTOM){
         complex_livery=!complex_livery;
     }
     var str,str_width,hei,x8,y8;x8=0;y8=0;
@@ -130,7 +130,7 @@ function scr_livery_setup(){
     /*function draw_checkbox (cords, text, main_alpha, checked){
             draw_set_alpha(main_alpha);
             yar = col_special==(i+1) ?1:0;
-            if (custom<2) then draw_set_alpha(0.5);
+            if (custom!=eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.5);
             draw_sprite(spr_creation_check,yar,cur_button.cords[0],cur_button.cords[1]);
              if (scr_hit(cur_button.cords[0],cur_button.cords[1],cur_button.cords[0]+32,cur_button.cords[1]+32) and allow_colour_click){
                     
@@ -189,13 +189,13 @@ function scr_livery_setup(){
         var button_cords, cur_button;
         for (var i=0;i<array_length(button_data);i++){
             cur_button = button_data[i];
-            var button_alpha = custom < 2 ? 0.5 : 1;
+            var button_alpha = custom != eCHAPTER_TYPE.CUSTOM ? 0.5 : 1;
             button_cords = draw_unit_buttons(cur_button.cords, cur_button.text,[0.5,0.5], 38144,, fnt_40k_30b, button_alpha);
             if (scr_hit(button_cords[0],button_cords[1],button_cords[2],button_cords[3])){
                 tooltip=cur_button.tooltip;
                 tooltip2=cur_button.tooltip2+_tooltip_add_on;
             }
-            if (point_and_click(button_cords) && custom >= 2){
+            if (point_and_click(button_cords) && custom == eCHAPTER_TYPE.CUSTOM){
                 
                 instance_destroy(obj_creation_popup);
                 var pp=instance_create(0,0,obj_creation_popup);
@@ -221,7 +221,7 @@ function scr_livery_setup(){
         for (var i=0;i<array_length(livery_type_options);i++){
             cur_button = livery_type_options[i];
             yar = col_special==(i+1) ?1:0;
-            draw_set_alpha(custom<2 ? 0.5 : 1);
+            draw_set_alpha(custom != eCHAPTER_TYPE.CUSTOM ? 0.5 : 1);
             draw_sprite(spr_creation_check,yar,cur_button.cords[0],cur_button.cords[1]);
              if (point_and_click([cur_button.cords[0],cur_button.cords[1],cur_button.cords[0]+32,cur_button.cords[1]+32])){
                 
@@ -400,7 +400,7 @@ function scr_livery_setup(){
             cur_button = livery_type_options[i];
             draw_set_alpha(1);
             yar = complex_depth_selection==(i) ? 1 : 0;
-            if (custom<2) then draw_set_alpha(0.5);
+            if (custom != eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.5);
             draw_sprite(spr_creation_check,yar,cur_button.cords[0],cur_button.cords[1]);
              if (point_and_click([cur_button.cords[0],cur_button.cords[1],cur_button.cords[0]+32,cur_button.cords[1]+32]) and allow_colour_click){
                     
@@ -447,7 +447,7 @@ function scr_livery_setup(){
             
             draw_set_alpha(1);
             if (race[c,role_id]!=0){
-                if (custom<2) then draw_set_alpha(0.5);
+                if (custom != eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.5);
                 yyy+=spacing;
                 draw_set_color(38144);
                 draw_rectangle(xxx,yyy,1150,yyy+20,1);
@@ -455,13 +455,13 @@ function scr_livery_setup(){
                 draw_text(xxx,yyy,role[100,role_id]);
                 if (scr_hit(xxx,yyy,1150,yyy+20)) and ((!instance_exists(obj_creation_popup)) || ((instance_exists(obj_creation_popup) and obj_creation_popup.target_gear=0))) {
 
-                    draw_set_alpha(custom==2?0.2:0.1);
+                    draw_set_alpha(custom == eCHAPTER_TYPE.CUSTOM ? 0.2 : 0.1);
                     draw_set_color(c_white);
                     draw_rectangle(xxx,yyy,1150,yyy+20,0);
                     draw_set_alpha(1);
                     tooltip=string(role[c][role_id])+" Settings";
                     tooltip2="Click to open the settings for this unit.";
-                    if (custom>0) and (scr_click_left()) and (custom=2){
+                    if (scr_click_left() and custom==eCHAPTER_TYPE.CUSTOM){
                         instance_destroy(obj_creation_popup);
                         var pp=instance_create(0,0,obj_creation_popup);
                         pp.type=role_id+100;
@@ -506,7 +506,7 @@ function scr_livery_setup(){
     draw_set_alpha(1);
     draw_set_font(fnt_40k_30b);
     
-    if (custom<2) then draw_set_alpha(0.5);
+    if (custom != eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.5);
     yar=0;
     if (equal_specialists=1) then yar=1;
     draw_sprite(spr_creation_check,yar,860,645);yar=0;
@@ -603,8 +603,8 @@ function scr_livery_setup(){
         if (race[100,15]!=0){
             draw_set_color(38144);
             if (hapothecary="") then draw_set_color(c_red);
-            if (text_selected!="apoth") or (custom<2) then draw_text_ext(600,575,string_hash_to_newline(string(hapothecary)),-1,580);
-            if (custom>1){
+            if (text_selected!="apoth") or (custom != eCHAPTER_TYPE.CUSTOM) then draw_text_ext(600,575,string_hash_to_newline(string(hapothecary)),-1,580);
+            if (custom == eCHAPTER_TYPE.CUSTOM){
                 if (text_selected="capoth") and (text_bar>30) then draw_text_ext(600,575,string_hash_to_newline(string(hapothecary)),-1,580);
                 if (text_selected="capoth") and (text_bar<=30) then draw_text_ext(600,575,string_hash_to_newline(string(hapothecary)+"|"),-1,580);
                 var str_width,hei;str_width=0;hei=string_height_ext(string_hash_to_newline(hapothecary),-2,580);
@@ -630,8 +630,8 @@ function scr_livery_setup(){
         
         if (race[100,14]!=0){
             draw_set_color(38144);if (hchaplain="") then draw_set_color(c_red);
-            if (text_selected!="chap") or (custom<2) then draw_text_ext(600,597,string_hash_to_newline(string(hchaplain)),-1,580);
-            if (custom>1){
+            if (text_selected!="chap") or (custom != eCHAPTER_TYPE.CUSTOM) then draw_text_ext(600,597,string_hash_to_newline(string(hchaplain)),-1,580);
+            if (custom == eCHAPTER_TYPE.CUSTOM){
                 if (text_selected="chap") and (text_bar>30) then draw_text_ext(600,597,string_hash_to_newline(string(hchaplain)),-1,580);
                 if (text_selected="chap") and (text_bar<=30) then draw_text_ext(600,597,string_hash_to_newline(string(hchaplain)+"|"),-1,580);
                 var str_width,hei;str_width=0;hei=string_height_ext(string_hash_to_newline(hchaplain),-2,580);
@@ -653,8 +653,8 @@ function scr_livery_setup(){
         
         if (race[100,17]!=0){
             draw_set_color(38144);if (clibrarian="") then draw_set_color(c_red);
-            if (text_selected!="libra") or (custom<2) then draw_text_ext(600,619,string_hash_to_newline(string(clibrarian)),-1,580);
-            if (custom>1){
+            if (text_selected!="libra") or (custom != eCHAPTER_TYPE.CUSTOM) then draw_text_ext(600,619,string_hash_to_newline(string(clibrarian)),-1,580);
+            if (custom == eCHAPTER_TYPE.CUSTOM){
                 if (text_selected="libra") and (text_bar>30) then draw_text_ext(600,619,string_hash_to_newline(string(clibrarian)),-1,580);
                 if (text_selected="libra") and (text_bar<=30) then draw_text_ext(600,619,string_hash_to_newline(string(clibrarian)+"|"),-1,580);
                 var str_width,hei;str_width=0;hei=string_height_ext(string_hash_to_newline(clibrarian),-2,580);
@@ -676,8 +676,8 @@ function scr_livery_setup(){
         
         if (race[100,16]!=0){
             draw_set_color(38144);if (fmaster="") then draw_set_color(c_red);
-            if (text_selected!="forge") or (custom<2) then draw_text_ext(600,641,string_hash_to_newline(string(fmaster)),-1,580);
-            if (custom>1){
+            if (text_selected!="forge") or (custom != eCHAPTER_TYPE.CUSTOM) then draw_text_ext(600,641,string_hash_to_newline(string(fmaster)),-1,580);
+            if (custom == eCHAPTER_TYPE.CUSTOM){
                 if (text_selected="forge") and (text_bar>30) then draw_text_ext(600,641,string_hash_to_newline(string(fmaster)),-1,580);
                 if (text_selected="forge") and (text_bar<=30) then draw_text_ext(600,641,string_hash_to_newline(string(fmaster)+"|"),-1,580);
                 var str_width,hei;str_width=0;hei=string_height_ext(string_hash_to_newline(fmaster),-2,580);
@@ -698,8 +698,8 @@ function scr_livery_setup(){
         }
         
         draw_set_color(38144);if (recruiter="") then draw_set_color(c_red);
-        if (text_selected!="recr") or (custom<2) then draw_text_ext(600,663,string_hash_to_newline(string(recruiter)),-1,580);
-        if (custom>1){
+        if (text_selected!="recr") or (custom != eCHAPTER_TYPE.CUSTOM) then draw_text_ext(600,663,string_hash_to_newline(string(recruiter)),-1,580);
+        if (custom == eCHAPTER_TYPE.CUSTOM){
             if (text_selected="recr") and (text_bar>30) then draw_text_ext(600,663,string_hash_to_newline(string(recruiter)),-1,580);
             if (text_selected="recr") and (text_bar<=30) then draw_text_ext(600,663,string_hash_to_newline(string(recruiter)+"|"),-1,580);
             var str_width,hei;str_width=0;hei=string_height_ext(string_hash_to_newline(recruiter),-2,580);
@@ -719,8 +719,8 @@ function scr_livery_setup(){
         }
         
         draw_set_color(38144);if (admiral="") then draw_set_color(c_red);
-        if (text_selected!="admi") or (custom<2) then draw_text_ext(600,685,string_hash_to_newline(string(admiral)),-1,580);
-        if (custom>1){
+        if (text_selected!="admi") or (custom != eCHAPTER_TYPE.CUSTOM) then draw_text_ext(600,685,string_hash_to_newline(string(admiral)),-1,580);
+        if (custom == eCHAPTER_TYPE.CUSTOM){
             if (text_selected="admi") and (text_bar>30) then draw_text_ext(600,685,string_hash_to_newline(string(admiral)),-1,580);
             if (text_selected="admi") and (text_bar<=30) then draw_text_ext(600,685,string_hash_to_newline(string(admiral)+"|"),-1,580);
             var str_width,hei;str_width=0;hei=string_height_ext(string_hash_to_newline(admiral),-2,580);

@@ -461,7 +461,7 @@ function player_select_powers() {
         var _psy_info = get_discipline_data(discipline, "description");
         draw_text_transformed(440, 729, _psy_info, 0.5, 0.5, 0);
 
-        if (custom == 2) {
+        if (custom == eCHAPTER_TYPE.CUSTOM) {
             draw_sprite_stretched(spr_creation_arrow, 0, 437, 688, 32, 32);
             draw_sprite_stretched(spr_creation_arrow, 1, 475, 688, 32, 32);
             if (point_and_click([437, 688, 437 + 32, 688 + 32])) {

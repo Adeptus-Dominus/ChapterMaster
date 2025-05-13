@@ -1417,7 +1417,7 @@ if (global.load>=0){
 
 
 var xx,yy,me,dist,go,planet;
-global.custom=1;
+global.custom=eCHAPTER_TYPE.RANDOM;
 
 // ** Sets up base training level and trainees at game start **
 training_apothecary=0;
@@ -1510,7 +1510,7 @@ ork=1;
 eldar=1;
 // if tau = 1 then tau spawn. also does eldar 
 /*
-if (global.custom=1){ 
+if (global.custom=eCHAPTER_TYPE.RANDOM){ 
     tau=choose(0,0,1);
     eldar=choose(0,1);
 }

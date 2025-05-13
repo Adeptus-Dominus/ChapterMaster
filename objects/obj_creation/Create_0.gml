@@ -384,7 +384,7 @@ chapter_name="Unnamed";
 chapter_string="Unnamed";
 chapter_year=0;
 /// @instancevar {Real} custom 0 if premade, 1 if random, 2 if custom
-custom=0;
+custom=eCHAPTER_TYPE.PREMADE;
 /// @instancevar {Enum.ePROGENITOR} founding 
 founding=ePROGENITOR.NONE;
 chapter_tooltip="";

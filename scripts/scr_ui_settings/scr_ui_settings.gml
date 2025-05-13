@@ -834,13 +834,13 @@ function scr_ui_settings() {
         
 	        draw_set_alpha(1);
 	        if (obj_ini.race[100,ide]!=0){// Creates mass_equip here
-	            // if (custom<2) then draw_set_alpha(0.5);
+	            // if (custom!=eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.5);
 	            yyy+=31;
 				draw_set_color(c_gray);
 				draw_rectangle(xxx,yyy,xxx+289,yyy+20,0);
 	            draw_set_color(0);
 				draw_text(xxx,yyy,obj_ini.role[100,ide]);
-	            if (scr_hit(xxx,yyy,xxx+289,yyy+20)=true){/*if (custom=2) then draw_set_alpha(0.2);if (custom<2) then */
+	            if (scr_hit(xxx,yyy,xxx+289,yyy+20)=true){/*if (custom==eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.2);if (custom!=eCHAPTER_TYPE.CUSTOM) then */
 					draw_set_alpha(0.1);
 					draw_set_color(c_white);
 					draw_rectangle(xxx,yyy,xxx+289,yyy+20,0);
@@ -862,7 +862,7 @@ function scr_ui_settings() {
 		
 	    for (var ides=0; ides<=10; ides++){
 	        draw_set_alpha(1);
-	        // if (custom<2) then draw_set_alpha(0.5);
+	        // if (custom!=eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.5);
 	        yyy+=31;draw_set_color(c_gray);draw_rectangle(xxx,yyy,xxx+289,yyy+20,0);
 	        draw_set_color(0);
         
@@ -871,7 +871,7 @@ function scr_ui_settings() {
 	        if (ides>0) then shw=romanNumerals[ides - 1] + " Company";
 	        draw_text(xxx,yyy,string(shw));
         
-	        if (scr_hit(xxx,yyy,xxx+289,yyy+20)=true){/*if (custom=2) then draw_set_alpha(0.2);if (custom<2) then */
+	        if (scr_hit(xxx,yyy,xxx+289,yyy+20)=true){/*if (custom==eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.2);if (custom!=eCHAPTER_TYPE.CUSTOM) then */
 				draw_set_alpha(0.1);
 				draw_set_color(c_white);
 				draw_rectangle(xxx,yyy,xxx+289,yyy+20,0);
@@ -887,7 +887,7 @@ function scr_ui_settings() {
 
 	    for(var i=1; i<=11;i++){
 	        draw_set_alpha(1);
-	        // if (custom<2) then draw_set_alpha(0.5);
+	        // if (custom!=eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.5);
 	        yyy+=31;draw_set_color(c_gray);
         
 	        if (bat_formation[i]!="") then draw_rectangle(xxx,yyy,xxx+289,yyy+20,0);
@@ -910,7 +910,7 @@ function scr_ui_settings() {
         
 	        if (shw!="") or (isnew=true){
 				draw_text(xxx,yyy,string(shw));
-	            if (scr_hit(xxx,yyy,xxx+289,yyy+20)=true){/*if (custom=2) then draw_set_alpha(0.2);if (custom<2) then */
+	            if (scr_hit(xxx,yyy,xxx+289,yyy+20)=true){/*if (custom==eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.2);if (custom!=eCHAPTER_TYPE.CUSTOM) then */
 					draw_set_alpha(0.1);
 					draw_set_color(c_white);
 					draw_rectangle(xxx,yyy,xxx+289,yyy+20,0);

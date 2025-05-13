@@ -39,6 +39,12 @@ enum ePROGENITOR {
     RANDOM,
 }
 
+enum eCHAPTER_TYPE {
+    PREMADE,
+	RANDOM,
+    CUSTOM,
+}
+
 function progenitor_map(){
     var founding_chapters = [
         "",
@@ -107,7 +113,7 @@ function select_livery_data(livery_data, specific) {
 function helmet_livery(progenitor, specific = "none") {
     var livery_data;
 
-	if ((obj_creation.custom == 0) && (global.chapter_creation_object.origin == 1)) {
+	if ((obj_creation.custom == eCHAPTER_TYPE.PREMADE) && (global.chapter_creation_object.origin == 1)) {
 		progenitor = progenitor_map();
 	}
 
@@ -786,7 +792,7 @@ function scr_initialize_custom() {
 	* * Fleet based and Penitent 
 	* - 4 Battle Barges, 3 Strike Cruisers, 7 Gladius, 3 Hunters
 	*/
-	if (obj_creation.custom == 0) {
+	if (obj_creation.custom == eCHAPTER_TYPE.PREMADE) {
 		flagship_name = obj_creation.flagship_name;
 		if (obj_creation.fleet_type == ePlayerBase.home_world) {
 			battle_barges = 2;
@@ -1111,19 +1117,13 @@ function scr_initialize_custom() {
 	if(global.chapter_name == "Iron Hands"){
 		predator += 1;
 	}
-	
-	// Strength ratings are made up for founding chapters
-	if (progenitor > ePROGENITOR.NONE && progenitor < ePROGENITOR.RANDOM) {
+
+	if (obj_creation.custom != eCHAPTER_TYPE.PREMADE) {
 		if (obj_creation.strength <= 4) then ninth = 0;
 		if (obj_creation.strength <= 3) then eighth = 0;
 		if (obj_creation.strength <= 2) then seventh = 0;
 		if (obj_creation.strength <= 1) then sixth = 0;
 
-		var bonus_marines = 0;
-		if (obj_creation.strength > 5) then bonus_marines = (obj_creation.strength - 5) * 50;
-	}
-
-	if (obj_creation.custom != 0) {
 		var bonus_marines = 0;
 		if (obj_creation.strength > 5) then bonus_marines = (obj_creation.strength - 5) * 50;
 		if scr_has_disadv("Obliterated") then bonus_marines = (obj_creation.strength - 1) * 10;
@@ -1274,7 +1274,7 @@ function scr_initialize_custom() {
 	if(epistolary <= 0) {epistolary_per_company = 0};
 
 
-	if (obj_creation.custom == 0) {
+	if (obj_creation.custom == eCHAPTER_TYPE.PREMADE) {
 		if (veteran >= 20) and(global.founding = ePROGENITOR.NONE) {
 			veteran -= 20;
 			terminator += 20;
@@ -1552,7 +1552,7 @@ function scr_initialize_custom() {
 
 	*/
 	var squad_name = "Squad";
-	if(obj_creation.custom != 0){
+	if(obj_creation.custom != eCHAPTER_TYPE.PREMADE){
 		if (obj_ini.progenitor == ePROGENITOR.SPACE_WOLVES) {
 			squad_name = "Pack";
 		}
@@ -2484,7 +2484,7 @@ function scr_initialize_custom() {
 	if (scr_has_adv("Retinue of Renown")){
 		_honour_guard_count += 10;
 	} 
-	if (progenitor == ePROGENITOR.DARK_ANGELS && obj_creation.custom == 0) { 
+	if (progenitor == ePROGENITOR.DARK_ANGELS && obj_creation.custom == eCHAPTER_TYPE.PREMADE) { 
 		_honour_guard_count += 6; 
 	}
 	if (_honour_guard_count == 0) {
