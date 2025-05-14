@@ -32,9 +32,6 @@ function add_fleet_ships_to_combat(fleet, combat){
 	        array_push(combat.ship_other_armour, obj_ini.ship_other_armour[_ship_id]);
 	        array_push(combat.ship_weapons, obj_ini.ship_weapons[_ship_id]);
 	        
-	        array_push(combat.ship_capacity, obj_ini.ship_capacity[_ship_id]);
-	        array_push(combat.ship_carrying, obj_ini.ship_carrying[_ship_id]);
-	        array_push(combat.ship_contents, obj_ini.ship_contents[_ship_id]);
         } catch (_exception){
         	handle_exception(_exception);
         }		

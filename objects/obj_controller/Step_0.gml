@@ -826,8 +826,8 @@ try {
         for (var i = 0; i < array_length(display_unit); i++) {
             man_sel[i] = 0;
         }
-        if (b > -1 && b < array_length(obj_ini.ship_carrying)) {
-            obj_ini.ship_carrying[b] -= man_size;
+        if (b > -1 && b < array_length(obj_ini.ship_data)) {
+            obj_ini.ship_data.carrying -= man_size;
         }
         reset_ship_manage_arrays();
         cooldown = 10;

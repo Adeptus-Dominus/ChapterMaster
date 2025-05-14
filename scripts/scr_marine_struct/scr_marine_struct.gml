@@ -1929,10 +1929,10 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 system = obj_ini.home_name;
             }
             //check if ship is in the same location as marine and has enough space;
-            if ((target_ship_location == system) && ((obj_ini.ship_carrying[ship] + size) <= obj_ini.ship_capacity[ship])) {
+            if (target_ship_location == system && _ship.has_space(size)) {
                 planet_location = 0; //mark marine as no longer on planet
                 ship_location = ship; //id of ship marine is now loaded on
-                obj_ini.ship_carrying[ship] += size; //update ship capacity
+                _ship.carrying += size; //update ship capacity
 
                 if (star == "none") {
                     star = star_by_name(system);
@@ -1948,10 +1948,10 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             var off_loading_ship = current_location[1];
             var _ship = obj_ini.ship_data[ship];
             var _offload_ship = obj_ini.ship_data[off_loading_ship];
-            if ((_ship.location == _offload_ship.location) && ((obj_ini.ship_carrying[ship] + size) <= obj_ini.ship_capacity[ship])) {
-                obj_ini.ship_carrying[off_loading_ship] -= size; // remove from previous ship capacity
+            if ((_ship.location == _offload_ship.location && _ship.has_space(size)) {
+                oboff_loading_ship.carrying -= size; // remove from previous ship capacity
                 ship_location = ship; // change marine location to new ship
-                obj_ini.ship_carrying[ship] += size; //add marine capacity to new ship
+                _ship.carrying += size; //add marine capacity to new ship
             }
         }
     };
@@ -1979,7 +1979,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 ship_location = -1;
                 get_unit_size();
                 system.p_player[planet_number] += size;
-                obj_ini.ship_carrying[current_location[1]] -= size;
+                _ship.carrying -= size;
             }
         } else {
             ship_location = -1;

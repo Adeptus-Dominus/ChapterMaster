@@ -11,8 +11,6 @@ function scr_return_ship(ship_name, object, planet_number) {
 	}*/
 	i=0;
 
-	// Increase ship storage        ship_carrying[i]
-
 	var unit;
 	var return_planet = obj_controller.return_object;
 	with (object){
@@ -30,7 +28,8 @@ function scr_return_ship(ship_name, object, planet_number) {
 						obj_ini.veh_wid[unit[0]][unit[1]]=0;
 						var man_size =scr_unit_size("",obj_ini.veh_role[unit[0]][unit[1]], true);
 						return_planet.p_player[planet_number]-=man_size;
-						obj_ini.ship_carrying[return_place[i]]+=man_size;
+						var _ship = obj_ini.ship_data[return_place[i]];
+						_ship.carrying += man_size;
 					 }
 				}
 			}

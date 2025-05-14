@@ -167,7 +167,7 @@ function scr_fleet_advisor(){
                 class.contents = _ship.class;
                 location.contents = _ship.location;
                 hp.contents = $"{round(_ship.hp / _ship.max_hp * 100)}%";
-                carrying.contents = $"{obj_ini.ship_carrying[i]}/{obj_ini.ship_capacity[i]}";
+                carrying.contents = $"{_ship.carrying}/{_ship.capacity}";
             }
 
             for (var g = 0; g < array_length(_columns_array); g++) {
@@ -205,11 +205,11 @@ function scr_fleet_advisor(){
 
                     temp[109] = string(array_length(_struct.turrets));
 
-                    temp[110] = obj_ini.ship_weapons[i];
+                    temp[110] = _struct.weapons;
 
-                    temp[118] = $"{obj_ini.ship_carrying[i]}/{obj_ini.ship_capacity[i]}";
+                    temp[118] = $"{_struct.carrying}/{_struct.capacity}";
                     temp[119] = "";
-                    if (obj_ini.ship_carrying[i] > 0) then temp[119] = scr_ship_occupants(i);
+                    if (_struct.carrying > 0) then temp[119] = scr_ship_occupants(i);
                 }
                 tooltip_draw($"Carrying ({temp[118]}): {temp[119]}");
                 if (_goto_button.click()) {

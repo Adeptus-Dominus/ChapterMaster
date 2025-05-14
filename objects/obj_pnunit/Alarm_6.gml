@@ -17,7 +17,10 @@ for (var i=0;i<array_length(unit_struct);i++){
         man_size = unit.get_unit_size();
 
         if (unit.planet_location>0) then obj_ncombat.world_size+=man_size;
-        if (unit.ship_location>-1) then obj_ini.ship_carrying[unit.ship_location]-=man_size;
+        if (unit.ship_location>-1){
+            var _ship = obj_ini.ship_data[unit.ship_location]
+            _ship.carrying-=man_size;
+        }
         //
         scr_kill_unit(unit.company,unit.marine_number);
     }

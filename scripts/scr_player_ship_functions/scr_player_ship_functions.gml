@@ -149,8 +149,6 @@ function new_player_ship_defaults(){
 		array_push(ship_other_armour,0);
 		array_push(ship_weapons,[]);
 		array_push(ship_capacity,0);
-		array_push(ship_carrying,0);
-		array_push(ship_contents, "");
 		array_push(ship_data,new ShipStruct(class));
 	}
 	return array_length(obj_ini.ship)-1;
@@ -283,11 +281,11 @@ function new_player_ship(type, start_loc="home", new_name=""){
 	        add_weapon_to_ship("Macro Bombardment Cannons");
 	        add_weapon_to_ship("Torpedoes", {barrel_count:4});
 	        size = 3;
+	        capacity = 600;
        	}
 
-        obj_ini.ship_capacity[index]=600;
-        obj_ini.ship_carrying[index]=0;
-        obj_ini.ship_contents[index]="";
+        
+        
         _struct.turrets = [{},{},{}];
     }
 
@@ -319,11 +317,10 @@ function new_player_ship(type, start_loc="home", new_name=""){
 	        add_weapon_to_ship("Thunderhawk Launch Bays");
 	        add_weapon_to_ship("Bombardment Cannons");
 	        size = 2;
+	        capacity = 250;
 	    }
-
-        obj_ini.ship_capacity[index]=250;
-        obj_ini.ship_carrying[index]=0;
-        obj_ini.ship_contents[index]="";
+        
+        
         _struct.turrets = [{}];
     }
     if (string_count("Gladius",type)>0){
@@ -340,11 +337,10 @@ function new_player_ship(type, start_loc="home", new_name=""){
 	        add_weapon_to_ship("Light Weapons Battery");
 	        turrets = [{}];
 	        hp = 200;
-	        max_hp = 200;	        
+	        max_hp = 200;
+	        capacity = 30;	        
 	    }
-        obj_ini.ship_capacity[index]=30;
-        obj_ini.ship_carrying[index]=0;
-        obj_ini.ship_contents[index]="";
+        
         
     }
     if (string_count("Hunter",type)>0){
@@ -363,11 +359,10 @@ function new_player_ship(type, start_loc="home", new_name=""){
 	        turrets = [{}];
 	        hp = 200;
 	        max_hp = 200;
+	        capacity = 25;	
 	    }
 
-        obj_ini.ship_capacity[index]=25;
-        obj_ini.ship_carrying[index]=0;
-        obj_ini.ship_contents[index]="";
+        
     }
     if (string_count("Gloriana",type)>0){
 		obj_ini.ship[index]=new_name;
@@ -392,11 +387,10 @@ function new_player_ship(type, start_loc="home", new_name=""){
 	        turrets = [{},{},{},{},{},{},{},{}];
 	        hp = 2400;
 	        max_hp = 2400;	
-	        size = 3;        
+	        size = 3;
+	        capacity = 800;	    
 	    }          
-        obj_ini.ship_capacity[index]=800;
-        obj_ini.ship_carrying[index]=0;
-        obj_ini.ship_contents[index]="";
+        
     }
     return index;
 }

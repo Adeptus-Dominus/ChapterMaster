@@ -19,12 +19,14 @@ function load_marines_into_ship(system, ship, units, reload = false) {
             _set(obj_ini.veh_lid, vehicle, sh_ide[ship]);
             _set(obj_ini.veh_wid, vehicle, 0);
             _set(obj_ini.veh_uid, vehicle, sh_uid[ship]);
-            obj_ini.ship_carrying[sh_ide[ship]] += size;
+            var _ship = obj_ini.ship_data[sh_ide[ship]];
+            _ship.carrying += size;
 
             if (start_planet) {
                 load_from_star.p_player[start_planet] -= size;
             } else if (start_ship) {
-                obj_ini.ship_carrying[start_ship] -= size;
+                var _ship = obj_ini.ship_data[start_ship];
+                _ship.carrying -= size;
             }
 
             set_vehicle_last_ship(vehicle, true);

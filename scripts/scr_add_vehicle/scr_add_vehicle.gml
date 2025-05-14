@@ -31,12 +31,16 @@ function scr_add_vehicle(vehicle_type, target_company, weapon1, weapon2, weapon3
 
 			if (obj_ini.fleet_type != ePlayerBase.home_world) {
 				// Need a more elaborate ship_carrying += here for the different types of units
-				var first = 0, backup = 0, i = 0;
-				for (var i = 0; i < array_length(obj_ini.ship_class); i++) {
-					if ((obj_ini.ship_class[i] == "Battle Barge") && (first == 0) && (obj_ini.ship_capacity[i] > obj_ini.ship_carrying[i])) {
+				var first = -1, backup = -1, i = 0;
+				for (var i = 0; i < array_length(obj_ini.ship_data); i++) {
+					var _ship =  obj_ini.ship_data[i];
+					if (!_ship.has_space()){
+						continue;
+					}
+					if ((_ship.class == "Battle Barge") && (first == -1)) {
 						first = i;
 					}
-					if ((obj_ini.ship_class[i] == "Strike Cruiser") && (backup == 0) && (obj_ini.ship_capacity[i] > obj_ini.ship_carrying[i])) {
+					if ((_ship.class == "Strike Cruiser") && (backup == -1)) {
 						backup = i;
 					}
 				}
@@ -46,13 +50,13 @@ function scr_add_vehicle(vehicle_type, target_company, weapon1, weapon2, weapon3
 					obj_ini.veh_lid[target_company][good] = first;
 					obj_ini.veh_loc[target_company][good] = _ship.location;
 					obj_ini.veh_wid[target_company][good] = 0;
-					obj_ini.ship_carrying[first] += 1;
+					_ship.carrying += 1;
 				} else if ((first == 0) && (backup != 0)) {
 					var _ship = obj_ini.ship_data[backup];
 					obj_ini.veh_lid[target_company][good] = backup;
 					obj_ini.veh_loc[target_company][good] = _ship.location;
 					obj_ini.veh_wid[target_company][good] = 0;
-					obj_ini.ship_carrying[backup] += 1;
+					_ship.carrying += 1;
 				} else if ((first == 0) && (backup == 0)) {
 					obj_ini.veh_lid[target_company][good] = -1;
 					obj_ini.veh_loc[target_company][good] = "";

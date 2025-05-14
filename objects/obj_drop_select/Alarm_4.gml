@@ -27,7 +27,7 @@ if (sh_target!=-50){
         if (obj_ini.ship_carrying[_ship_id]>0){
             ship[i]=_ship.name;
             ship_use[i]=0;
-            ship_max[i]=obj_ini.ship_carrying[_ship_id];
+            ship_max[i]=_ship.carrying;
             ship_ide[i]=_ship_id;
             purge_a += ship_bombard_score(_ship_id);
             purge_b += ship_max[i];

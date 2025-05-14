@@ -13,9 +13,10 @@ bomb_b = _total_fleet_loaded;
 bomb_c = _total_fleet_loaded;
 
 for (var i=0;i<array_length(_ships);i++){
+    var _ship = obj_ini.ship_data[_ships[i]];
     if (ship_bombard_score(_ships[i]) > 0){
         array_push(ship_ide, _ships[i]);
-        array_push(ship_max, obj_ini.ship_carrying[_ships[i]]);
+        array_push(ship_max, _ship.carrying);
         array_push(ship, obj_ini.ship[_ships[i]]);
         array_push(ship_use, 0);
         array_push(ship_all, 0);

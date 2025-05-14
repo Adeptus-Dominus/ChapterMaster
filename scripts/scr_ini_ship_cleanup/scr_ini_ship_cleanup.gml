@@ -47,11 +47,12 @@ function scr_kill_ship(index){
 					continue;
 				}
 				var _cur_ship = _available_ships[i];
+				var _ship = ship_data[_cur_ship];
 				var f=0;
 				var _total_units = array_length(_units_on_ship);
-				while (ship_carrying[_cur_ship]<ship_capacity[_cur_ship] && f<_total_units && array_length(_units_on_ship)>0){
+				while (_ship.has_space() && f<_total_units && array_length(_units_on_ship)>0){
 					f++;
-					if (_units_on_ship[0].get_unit_size()+ship_carrying[_cur_ship]<=ship_capacity[_cur_ship]){
+					if (_ship.has_space(_units_on_ship[0].get_unit_size())){
 						_units_on_ship[0].load_marine(_cur_ship);
 						array_delete(_units_on_ship, 0, 1);
 					}
@@ -97,8 +98,6 @@ function scr_kill_ship(index){
 			array_delete(ship_weapons ,index,1);
 
 			array_delete(ship_capacity,index,1);
-			array_delete(ship_carrying,index,1);
-			array_delete(ship_contents,index,1);
 
 			if (!in_warp){
 				if (_nearest_star!="none"){

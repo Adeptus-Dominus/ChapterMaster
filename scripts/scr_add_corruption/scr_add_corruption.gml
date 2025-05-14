@@ -8,7 +8,10 @@ function scr_add_corruption(is_fleet, modifier_type) {
 	var shi,m,co,ide, unit;
 	shi=0;m=0;co=0;ide=0;
 	ships = [];
+
 	if (is_fleet=true){
+		var _ships = fleet_full_ship_array(sh_target);
+		
 		for (var i=0;i<capital_number;i++){
 			if (obj_ini.ship_carrying[capital_num[i]]>0) then array_push(ships, capital_num[i]);
 		}

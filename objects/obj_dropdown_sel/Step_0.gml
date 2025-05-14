@@ -159,9 +159,15 @@ if (option[1]=""){
         
         // Present ship options
         if (obj_controller.fest_planet=0){
-            repeat(70){q+=1;thatone=false;
-                if (obj_ini.ship[q]!="") and (obj_ini.ship_carrying[q]>0){
-                    works+=1;option[works]=obj_ini.ship[q];option_id[works]=q;options+=1;thatone=false;
+            for(q=0;q<array_length(obj_ini.ship_data);q++){
+                thatone=false;
+                var _ship = obj_ini.ship_data[q];
+                if (obj_ini.ship[q]!="") and (_ship.carrying){
+                    works+=1;
+                    option[works]=obj_ini.ship[q];
+                    option_id[works]=q;
+                    options+=1;
+                    thatone=false;
                 }
             }
         }

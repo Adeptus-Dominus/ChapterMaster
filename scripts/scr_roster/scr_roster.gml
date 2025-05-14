@@ -346,7 +346,8 @@ function Roster() constructor{
         var _ship_index;
         for (var s=0;s<array_length(_ships);s++){
             _ship_index = _ships[s];
-            if (obj_ini.ship_carrying[_ship_index]>0){
+            var _ship = obj_ini.ship_data[_ship_index];
+            if (_ship.carrying>0){
                 new_ship_button(obj_ini.ship[_ship_index],_ship_index);
             }
         }

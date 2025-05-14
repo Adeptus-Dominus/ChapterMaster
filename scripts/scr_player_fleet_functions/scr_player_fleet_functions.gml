@@ -24,8 +24,6 @@ function init_player_fleet_arrays(){
 
 	ship_data = [];
 	ship_capacity=[];
-	ship_carrying=[];
-	ship_contents=[];
 	ship_lost = [];	
 }
 function fleet_has_roles(fleet="none", roles){
@@ -614,8 +612,9 @@ function calculate_fleet_content_size(ship_array){
 	var total_content = 0;
 	for (var i=0;i<array_length(ship_array);i++){
 		var _ship_id  = ship_array[i];
-		if (_ship_id<array_length(obj_ini.ship)){
-			total_content += obj_ini.ship_carrying[_ship_id];
+		var _ship = obj_ini.ship_data[_ship_id];
+		if (_ship_id<array_length(obj_ini.ship_data)){
+			total_content += _ship.carrying;
 		}
 	}
 	return total_content;	

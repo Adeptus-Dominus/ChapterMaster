@@ -203,10 +203,10 @@ function load_unit_to_fleet(fleet, unit){
 
 	for (var i=0;i<array_length(all_ships);i++){
 		var ship_ident = all_ships[i];
-		  if (obj_ini.ship_capacity[ship_ident]>obj_ini.ship_carrying[ship_ident]){
-		  	obj_ini.ship_carrying[ship_ident]+=unit.size;
+		var _ship = obj_ini.ship_data[ship_ident];
+		  if (ship_ident.has_space(unit.size)){
+		  	_ship.carrying+=unit.size;
 		  	unit.planet_location=0;
-		  	var _ship = obj_ini.ship_data[ship_ident];
 		  	obj_ini.loc[unit.company][unit.marine_number]=_ship.location;
 		  	unit.ship_location=ship_ident;
 		  	loaded=true;

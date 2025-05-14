@@ -79,7 +79,8 @@ function scr_crusade() {
 	           	}
                 if (dead){               	
                     var man_size=0;
-                    obj_ini.ship_carrying[unit.ship_location]-=unit.get_unit_size();
+                    var _ship = obj_ini.ship_data[unit.ship_location];
+                    _ship.carrying-=unit.get_unit_size();
                 	if (unit.IsSpecialist(SPECIALISTS_STANDARD,true)){
                 		obj_controller.command--;
                 	} else {
