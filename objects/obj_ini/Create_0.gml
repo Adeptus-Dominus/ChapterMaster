@@ -131,6 +131,8 @@ serialize = function(){
             array_push(artifact_struct_trimmed, artifact_struct[i]);
         }
     }
+
+    var ship_structs = [];
     
 
     var save_data = {
@@ -146,7 +148,9 @@ serialize = function(){
         marine_structs: marines,
         squad_structs: squads,
         equipment: equipment,
-        gene_slaves: gene_slaves
+        gene_slaves: gene_slaves,
+        ship_weapons,
+        ship_data,
         // marines,
         // squads
     }
@@ -163,7 +167,7 @@ serialize = function(){
 }
 
 deserialize = function(save_data){
-    var exclusions = ["complex_livery_data", "full_liveries","company_liveries", "squad_types", "marine_structs", "squad_structs"]; // skip automatic setting of certain vars, handle explicitly later
+    var exclusions = ["complex_livery_data", "full_liveries","company_liveries", "squad_types", "marine_structs", "squad_structs", "ship_weapons","ship_data"]; // skip automatic setting of certain vars, handle explicitly later
 
     // Automatic var setting
     var all_names = struct_get_names(save_data);
@@ -250,6 +254,19 @@ deserialize = function(save_data){
                 array_push(obj_ini.artifact_struct, arti_struct);
             } else {
                 array_push(obj_ini.artifact_struct, arti_struct); //load empty ones into the rest of the slots
+            }
+        }
+    }
+
+    ship_weapons = [];
+    if (struct_exists(save_data, "ship_weapons")){
+        show_debug_message(save_data.ship_weapons);
+        var _wep_data = save_data.ship_weapons;
+        for (var i=0 ; i<array_length(_wep_data);i++){
+            array_push(ship_weapons,[]);
+            for (var w=0;w<array_length(_wep_data[i]);w++){
+                var _weapon = _wep_data[i][w];
+                array_push(ship_weapons[i], new ShipWeapon(_weapon.name, _weapon));
             }
         }
     }

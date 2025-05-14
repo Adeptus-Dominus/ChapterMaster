@@ -36,6 +36,7 @@ if (instance_exists(target)) {
         bull.image_xscale = 0.5;
         bull.image_yscale = 0.5;
         bull.dam = 3;
+        bull.explosion_sprite = spr_explosion;  
         if (owner == 7) then bull.dam = 2;
     }
 } else if (!instance_exists(target)) or (target.x <= -4000) {

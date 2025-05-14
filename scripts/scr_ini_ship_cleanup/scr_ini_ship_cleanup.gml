@@ -41,7 +41,9 @@ function scr_kill_ship(index){
 			}
 			_units_on_ship = array_shuffle(_units_on_ship);
 			for (var i=0;i<array_length(_available_ships);i++){
-				if (_available_ships[i]==index) then continue;
+				if (_available_ships[i]==index){
+					continue;
+				}
 				var _cur_ship = _available_ships[i];
 				var f=0;
 				var _total_units = array_length(_units_on_ship);
@@ -90,9 +92,7 @@ function scr_kill_ship(index){
 			array_delete(ship_other_armour,index,1);
 			array_delete(ship_weapons,index,1);
 
-			array_delete(ship_wep ,index,1);
-			array_delete(ship_wep_condition,index,1);
-			array_delete(ship_wep_facing,index,1);
+			array_delete(ship_weapons ,index,1);
 
 			array_delete(ship_capacity,index,1);
 			array_delete(ship_carrying,index,1);
@@ -122,7 +122,8 @@ function scr_ini_ship_cleanup() {
 	// If the ship is dead then make it fucking dead man
 	with(obj_ini){
 		if (array_length(ship)){
-			for (var i=array_length(ship)-1;i>=0;i--){
+			var _ships = array_length(ship)
+			for (var i=_ships-1;i>=0;i--){
 			    if (ship[i]!="") and (ship_hp[i]<=0){
 			        scr_kill_ship(i);
 			    }

@@ -80,7 +80,7 @@ function ork_ship_production(planet){
 }
 
 function kill_warboss(){
-	f_type = P_features.Victory_Shrine
+	f_type = P_features.VictoryShrine
 	planet_display= $"{obj_controller.faction_leader[eFACTION.Ork]} Death Place";
 	Warboss = "dead";
 	parade = false;

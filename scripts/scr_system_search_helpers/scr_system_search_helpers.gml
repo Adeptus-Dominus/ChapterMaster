@@ -430,3 +430,23 @@ function planet_has_forces(star, planet_id, faction, minimum_strength = 1){
 	}
 	return found;
 }
+
+
+function planet_all_forces(star, planet_id){
+	var forces_list;
+	with (star){
+		forces_list = [
+			p_tau[planet_id], 
+			p_tyranids[planet_id],
+			p_orks[planet_id],
+			p_eldar[planet_id],
+			p_necrons[planet_id],
+			p_demons[planet_id],
+			p_player[planet_id],
+			p_chaos[planet_id],
+			p_traitors[planet_id]
+
+		]
+	}
+	return array_sum(forces_list);
+}

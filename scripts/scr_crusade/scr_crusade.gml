@@ -177,7 +177,7 @@ function launch_crusade(){
 		}
 		var travel_leeway = 10;
 		if (_nearest_player_fleet.action == "move"){
-			travel_leeway += _nearest_player_fleet.eta;
+			travel_leeway += _nearest_player_fleet.action_eta;
 		}
 		var _eta = get_viable_travel_time(travel_leeway, _nearest_player_fleet.x, _nearest_player_fleet.y, star_id.x,star_id.y, _nearest_player_fleet,false)
 		scr_popup("Crusade",$"Fellow Astartes legions are preparing to embark on a Crusade to a nearby sector.  Your forces are expected at {star_id.name}; {_eta} months from now your ships there shall begin their journey.","crusade","");
