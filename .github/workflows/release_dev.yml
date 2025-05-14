@@ -124,21 +124,37 @@ jobs:
           # This assumes your tag format is always 'branch-name/date'
           BRANCH_PREFIX="${TAG_NAME%%/*}/"
 
-          echo "Checking releases with prefix: $BRANCH_PREFIX"
+          echo "Starting cleanup for releases with prefix: ${BRANCH_PREFIX}"
 
-          # Get tag names starting with the prefix from the gh release list, sort reverse chronologically by tag name.
+          # --- Added Step: List all tag names found before filtering ---
+          echo "--- All tag names found by 'gh release list --json tagName': ---"
+          # Get all tag names first
+          ALL_TAG_NAMES=$(gh release list --limit 100 --json tagName | jq -r '.[].tagName' || true)
+          if [ -z "$ALL_TAG_NAMES" ]; then
+            echo "No releases found at all."
+          else
+             echo "$ALL_TAG_NAMES" | cat -n # List all found tags with line numbers
+          fi
+          echo "-----------------------------------------------------------"
+
+
+          # Get tag names starting with the prefix, sort reverse chronologically by tag name.
+          # We use the previously fetched ALL_TAG_NAMES to avoid calling gh release list again
           # Use || true at the end of the pipe to prevent the step from failing if no releases match the prefix
-          TAGS_TO_PROCESS=$(gh release list --limit 100 --json tagName | jq -r '.[].tagName' | grep "^${BRANCH_PREFIX}" | sort -r || true)
+          TAGS_TO_PROCESS=$(echo "$ALL_TAG_NAMES" | grep "^${BRANCH_PREFIX}" | sort -r || true)
 
           if [ -z "$TAGS_TO_PROCESS" ]; then
             echo "No releases found matching prefix '${BRANCH_PREFIX}'. No cleanup needed."
             exit 0
           fi
 
-          COUNT=0
+          # --- The rest of the logic (count, keep, delete) remains the same ---
+          # Count the filtered tags
+          NUM_MATCHING=$(echo "$TAGS_TO_PROCESS" | wc -l)
           RELEASES_TO_KEEP=10 # How many releases per branch prefix to keep
-          echo "Found releases matching prefix '${BRANCH_PREFIX}'. Will keep the latest $RELEASES_TO_KEEP."
+          echo "Found ${NUM_MATCHING} releases matching prefix '${BRANCH_PREFIX}'. Will keep the latest $RELEASES_TO_KEEP."
 
+          COUNT=0
           IFS=$'\n' # Set IFS to newline to correctly iterate over tags
           for TAG in $TAGS_TO_PROCESS; do
             COUNT=$((COUNT + 1))
