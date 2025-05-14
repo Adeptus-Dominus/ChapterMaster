@@ -9,17 +9,19 @@ function add_fleet_ships_to_combat(fleet, combat){
 		try{
 			if (i>=array_length(_ships)) then break;
 			_ship_id = _ships[i];
+			var _ship_d = obj_ini.ship_data[i];
 			if (obj_ini.ship_hp[_ship_id]<=0 || obj_ini.ship[_ship_id]==""){
 				continue;
 			}
-	        if (obj_ini.ship_size[_ship_id]>=3) then combat.capital++;
-	        if (obj_ini.ship_size[_ship_id]==2) then combat.frigate++;
-	        if (obj_ini.ship_size[_ship_id]==1) then combat.escort++;
+	        if (_ship_d.size>=3) then combat.capital++;
+	        if (_ship_d.size==2) then combat.frigate++;
+	        if (_ship_d.size==1) then combat.escort++;
+
+	        array_push(combat.ship_data , _ship_d);
 	        
 	        array_push(combat.ship_class, player_ships_class(_ship_id));
 	        array_push(combat.ship, obj_ini.ship[_ship_id]);
 	        array_push(combat.ship_id, _ship_id);
-	        array_push(combat.ship_size, obj_ini.ship_size[_ship_id]);
 	        array_push(combat.ship_leadership, 100);
 	        array_push(combat.ship_hp, obj_ini.ship_hp[_ship_id]);
 	        array_push(combat.ship_maxhp, obj_ini.ship_maxhp[_ship_id]);
@@ -42,12 +44,13 @@ function add_fleet_ships_to_combat(fleet, combat){
 function sort_ships_into_columns(combat){
 	var col = 5;
 	with (combat){
-	    for (var k = 0;k<array_length(combat.ship_size);k++){// This determines the number of ships in each column
-            if ((combat.column[col]="capital" && combat.ship_size[k]>=3)) then combat.column_num[col]+=1;
-            if ((combat.column[col-1]="capital" && combat.ship_size[k]>=3)) then combat.column_num[col-1]+=1;
-            if ((combat.column[col-2]="capital" && combat.ship_size[k]>=3)) then combat.column_num[col-2]+=1;
-            if ((combat.column[col-3]="capital" && combat.ship_size[k]>=3)) then combat.column_num[col-3]+=1;
-            if ((combat.column[col-4]="capital" && combat.ship_size[k]>=3)) then combat.column_num[col-4]+=1;
+	    for (var k = 0;k<array_length(ship_data);k++){// This determines the number of ships in each column
+	    	var _ship = combat.ship_data[k];
+            if ((combat.column[col]="capital" && _ship.size[k]>=3)) then combat.column_num[col]+=1;
+            if ((combat.column[col-1]="capital" && _ship.size[k]>=3)) then combat.column_num[col-1]+=1;
+            if ((combat.column[col-2]="capital" && _ship.size[k]>=3)) then combat.column_num[col-2]+=1;
+            if ((combat.column[col-3]="capital" && _ship.size[k]>=3)) then combat.column_num[col-3]+=1;
+            if ((combat.column[col-4]="capital" && _ship.size[k]>=3)) then combat.column_num[col-4]+=1;
         
             if (combat.ship_class[k]=combat.column[col]) then combat.column_num[col]+=1;
             if (combat.ship_class[k]=combat.column[col-1]) then combat.column_num[col-1]+=1;
@@ -55,11 +58,11 @@ function sort_ships_into_columns(combat){
             if (combat.ship_class[k]=combat.column[col-3]) then combat.column_num[col-3]+=1;
             if (combat.ship_class[k]=combat.column[col-4]) then combat.column_num[col-4]+=1;
             
-            if ((combat.column[col]="escort" && combat.ship_size[k]=1)) then combat.column_num[col]+=1;
-            if ((combat.column[col-1]="escort" && combat.ship_size[k]=1)) then combat.column_num[col-1]+=1;
-            if ((combat.column[col-2]="escort" && combat.ship_size[k]=1)) then combat.column_num[col-2]+=1;
-            if ((combat.column[col-3]="escort" && combat.ship_size[k]=1)) then combat.column_num[col-3]+=1;
-            if ((combat.column[col-4]="escort" && combat.ship_size[k]=1)) then combat.column_num[col-4]+=1;
+            if ((combat.column[col]="escort" && _ship.size[k]=1)) then combat.column_num[col]+=1;
+            if ((combat.column[col-1]="escort" && _ship.size[k]=1)) then combat.column_num[col-1]+=1;
+            if ((combat.column[col-2]="escort" && _ship.size[k]=1)) then combat.column_num[col-2]+=1;
+            if ((combat.column[col-3]="escort" && _ship.size[k]=1)) then combat.column_num[col-3]+=1;
+            if ((combat.column[col-4]="escort" && _ship.size[k]=1)) then combat.column_num[col-4]+=1;
 	    }		
 	}
 

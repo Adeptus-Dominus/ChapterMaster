@@ -24,39 +24,17 @@ if (l_size>0) then l_size=l_size*-1;
 
 
 if (sh_target!=-50){
-    var tump = 0;
     var i = 0;
-    for (var q = 0; q < sh_target.capital_number; q++){
-        if (sh_target.capital[q]!="") and (obj_ini.ship_carrying[sh_target.capital_num[q]]>0){
-            ship[i]=sh_target.capital[i];
+    var _ships = fleet_full_ship_array(sh_target);
+    for (var q = 0; q < array_length(_ships); q++){
+        var _ship_id = _ships[q];
+        var _ship = _ships[_ship_id];
+        if (obj_ini.ship_carrying[_ship_id]>0){
+            ship[i]=_ship.name;
             ship_use[i]=0;
-            tump=sh_target.capital_num[i];
-            ship_max[i]=obj_ini.ship_carrying[tump];
-            ship_ide[i]=tump;
-            ship_size[i]=3;
+            ship_max[i]=obj_ini.ship_carrying[_ship_id];
+            ship_ide[i]=_ship_id;
             i+=1;
-        }
-    }
-    for (var q = 0; q < sh_target.frigate_number; q++) {
-        if (sh_target.frigate[q]!="") and (obj_ini.ship_carrying[sh_target.frigate_num[q]]>0){
-            ship[i]=sh_target.frigate[q];            
-            ship_use[i]=0;
-            tump=sh_target.frigate_num[q];
-            ship_max[i]=obj_ini.ship_carrying[tump];
-            ship_ide[i]=tump;
-            ship_size[i]=2;
-            i+=1;
-        }
-    }
-    for (var q = 0; q < sh_target.escort_number; q++) {
-        if (sh_target.escort[q]!="") and (obj_ini.ship_carrying[sh_target.escort_num[q]]>0){
-            ship[i]=sh_target.escort[q];
-            ship_use[i]=0;
-            tump=sh_target.escort_num[q];
-            ship_max[i]=obj_ini.ship_carrying[tump];
-            ship_ide[i]=tump;
-            ship_size[i]=1;
-            i+=1;
-        }
+        }        
     }
 }

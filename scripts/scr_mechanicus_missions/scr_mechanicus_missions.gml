@@ -116,7 +116,8 @@ function mechanicus_missions_end_turn(planet){
                         techs_taken+=1;
                     }
                     if (unit.ship_location>-1){
-                        ship_planet=obj_ini.ship_location[unit.ship_location];
+                    	var _ship = obj_ini.ship_data[unit.ship_location];
+                        ship_planet=_ship.location;
                         if (ship_planet=name){
                             obj_ini.ship_carrying[unit.ship_location]-=scr_unit_size(obj_ini.armour[com][ide],obj_ini.role[com][ide],true);
                             obj_ini.loc[com][ide]="Mechanicus Vessel";unit.planet_location=0;unit.ship_location=0;

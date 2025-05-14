@@ -306,7 +306,8 @@ function Roster() constructor{
         	 	 	if (obj_ini.veh_lid[co][i]>= array_length(obj_ini.ship_location)){
         	 	 		obj_ini.veh_lid[co][i] = -1;
         	 	 	}
-        	 	 	if (obj_ini.ship_location[obj_ini.veh_lid[co][i]] == roster_location){
+                    var _ship = obj_ini.ship_data[obj_ini.veh_lid[co][i]];
+        	 	 	if (_ship.location == roster_location){
         	 	 		_allow=true;
         	 	 	}
         	 	}

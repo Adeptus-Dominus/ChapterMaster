@@ -206,7 +206,8 @@ function load_unit_to_fleet(fleet, unit){
 		  if (obj_ini.ship_capacity[ship_ident]>obj_ini.ship_carrying[ship_ident]){
 		  	obj_ini.ship_carrying[ship_ident]+=unit.size;
 		  	unit.planet_location=0;
-		  	obj_ini.loc[unit.company][unit.marine_number]=obj_ini.ship_location[ship_ident];
+		  	var _ship = obj_ini.ship_data[ship_ident];
+		  	obj_ini.loc[unit.company][unit.marine_number]=_ship.location;
 		  	unit.ship_location=ship_ident;
 		  	loaded=true;
 		  	break

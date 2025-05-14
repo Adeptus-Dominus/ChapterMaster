@@ -1878,7 +1878,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             location_type = location_types.ship; //marine is on ship
             location_id = ship_location > -1 ? ship_location : 0; //ship array position
             if (location_id < array_length(obj_ini.ship_location)) {
-                location_name = obj_ini.ship_location[location_id]; //location of ship
+                var _ship = obj_ini.ship_data[location_id];
+                location_name = _ship.location; //location of ship
             } else {
                 location_name = location_name == obj_ini.loc[company][marine_number];
             }
@@ -1912,7 +1913,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         get_unit_size(); // make sure marines size given it's current equipment is correct
         var current_location = marine_location();
         var system = current_location[2];
-        var target_ship_location = obj_ini.ship_location[ship];
+        var _ship = obj_ini.ship_data[ship];
+        var target_ship_location = _ship.location;
         set_last_ship();
         if (assignment() != "none") {
             return "on assignment";
@@ -1944,7 +1946,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         } else if (current_location[0] == location_types.ship) {
             //with this addition marines can now be moved between ships freely as long as they are in the same system
             var off_loading_ship = current_location[1];
-            if ((obj_ini.ship_location[ship] == obj_ini.ship_location[off_loading_ship]) && ((obj_ini.ship_carrying[ship] + size) <= obj_ini.ship_capacity[ship])) {
+            var _ship = obj_ini.ship_data[ship];
+            var _offload_ship = obj_ini.ship_data[off_loading_ship];
+            if ((_ship.location == _offload_ship.location) && ((obj_ini.ship_carrying[ship] + size) <= obj_ini.ship_capacity[ship])) {
                 obj_ini.ship_carrying[off_loading_ship] -= size; // remove from previous ship capacity
                 ship_location = ship; // change marine location to new ship
                 obj_ini.ship_carrying[ship] += size; //add marine capacity to new ship
@@ -1969,7 +1973,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         set_last_ship();
         if (current_location[0] == location_types.ship) {
             if (!array_contains(["Warp", "Terra", "Mechanicus Vessel", "Lost"], current_location[2]) && current_location[2] == system.name) {
-                obj_ini.loc[company][marine_number] = obj_ini.ship_location[current_location[1]];
+                var _ship = obj_ini.ship_data[current_location[1]];
+                obj_ini.loc[company][marine_number] = _ship.location;
                 planet_location = planet_number;
                 ship_location = -1;
                 get_unit_size();
@@ -2032,7 +2037,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             }
         } else if (ship == -1 && planet == 0) {
             if (ship_location > -1) {
-                if (obj_ini.ship_location[ship_location] == location) {
+                var _ship = obj_ini.ship_data[ship_location];
+                if (_ship.location == location) {
                     is_at_loc = true;
                 }
             } else if (obj_ini.loc[company][marine_number] == location) {

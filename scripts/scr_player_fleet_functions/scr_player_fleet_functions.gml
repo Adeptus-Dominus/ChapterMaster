@@ -490,8 +490,9 @@ function set_fleet_location(location){
 	var temp;
 	for (var i=0;i<array_length(fleet_ships);i++){
 		temp = fleet_ships[i];
-		if (temp>=0 && temp < array_length(obj_ini.ship_location)){
-			obj_ini.ship_location[temp] = location;
+		if (temp>=0 && temp < array_length(obj_ini.ship_data)){
+			var _ship = obj_ini.ship_data[temp];
+			_ship.location = location;
 		}
 	}
 	var unit;

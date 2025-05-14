@@ -4,6 +4,7 @@ function scr_kill_ship(index){
 		with(obj_ini){
 			var _units_on_ship = [];
 			var _unit;
+			var _ship = ship_data[index];
 			for (var co=0;co<=companies;co++){
 				for (var i=0;i<array_length(name[co]);i++){
 					_unit = fetch_unit([co,i]);
@@ -29,11 +30,12 @@ function scr_kill_ship(index){
 					}
 				}
 			}
-			var in_warp = ship_location[index] == "Warp";
+
+			var in_warp = _ship.location == "Warp";
 			var _available_ships = [];
 			var _ship_fleet = find_ships_fleet(index);
 			if (!in_warp){
-				var _nearest_star = star_by_name(ship_location[index]);
+				var _nearest_star = star_by_name(_ship.location);
 			}
 			if (_ship_fleet!="none"){
 				delete_ship_from_fleet(index,_ship_fleet);

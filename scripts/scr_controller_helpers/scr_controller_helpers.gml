@@ -375,16 +375,19 @@ function scr_toggle_fleet_area() {
                 temp[37] = 0;
                 temp[38] = 0;
                 temp[39] = 0;
-                for (var i = 0; i < array_length(obj_ini.ship); i++) {
+                for (var i = 0; i < array_length(obj_ini.ship_data); i++) {
+                     var _ship = obj_ini.ship_data[i];
                     if (obj_ini.ship[i] != "") {
-                        if (obj_ini.ship_size[i] == 3) {
-                            temp[37]++;
-                        }
-                        if (obj_ini.ship_size[i] == 2) {
-                            temp[38]++;
-                        }
-                        if (obj_ini.ship_size[i] == 1) {
-                            temp[39]++;
+                        switch(_ship.size){
+                            case 3:
+                                temp[37]++;
+                                break;
+                            case 2:
+                                temp[38]++;
+                                break;
+                            case 1:
+                                temp[39]++;
+                                break;                                                                
                         }
                     }
                 }

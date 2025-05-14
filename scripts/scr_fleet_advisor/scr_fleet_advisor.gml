@@ -160,12 +160,13 @@ function scr_fleet_advisor(){
                 y2 = y1 + h;
                 draw_sprite(sprite, 0, x1, y1);
             }
+            var _ship = obj_ini.ship_data[i];
 
             with(_columns) {
                 name.contents = string_truncate(obj_ini.ship[i], _columns.name.w - 6);
-                class.contents = obj_ini.ship_class[i];
-                location.contents = obj_ini.ship_location[i];
-                hp.contents = $"{round(obj_ini.ship_hp[i] / obj_ini.ship_maxhp[i] * 100)}%";
+                class.contents = _ship.class;
+                location.contents = _ship.location;
+                hp.contents = $"{round(_ship.hp / _ship.max_hp * 100)}%";
                 carrying.contents = $"{obj_ini.ship_carrying[i]}/{obj_ini.ship_capacity[i]}";
             }
 

@@ -115,12 +115,13 @@ function return_lost_ship(){
 
 function get_player_ships(location="", name=""){
 	var _ships = [];
-	for (var i = 0;i<array_length(obj_ini.ship);i++){
+	for (var i = 0;i<array_length(obj_ini.ship_data);i++){
+		var _ship = obj_ini.ship_data[i];
 		if (obj_ini.ship[i] != ""){
 			if (location == ""){
 				array_push(_ships, i);
 			} else {
-				if (obj_ini.ship_location[i] == location){
+				if (_ship.location == location){
 					array_push(_ships, i);
 				}
 			}
@@ -156,12 +157,13 @@ function new_player_ship_defaults(){
 }
 
 function get_valid_player_ship(location="", name=""){
-	for (var i = 0;i<array_length(obj_ini.ship);i++){
+	for (var i = 0;i<array_length(obj_ini.ship_data);i++){
+		var _ship = obj_ini.ship_data[i];
 		if (obj_ini.ship[i] != ""){
 			if (location == ""){
 				return i;
 			} else {
-				if (obj_ini.ship_location[i] == location){
+				if (_ship.location == location){
 					return i;
 				}
 			}
@@ -240,21 +242,6 @@ function loose_ship_to_warp_event(){
 	}	
 }
 
-function ShipStruct() constructor{
-	features = [];
-	turrets = [];
-	weapons = [];
-	location = [];
-
-	static ship_self_heal = function(){
-        if (hp<0){
-        	exit;
-        } else if (hp<max_hp){
-            hp = min(max_hp,hp+round(max_hp*0.06));
-        }	
-	}
-}
-
 //TODO make method for setting ship weaponry
 function new_player_ship(type, start_loc="home", new_name=""){
     var ship_names="",index=0;
@@ -273,14 +260,11 @@ function new_player_ship(type, start_loc="home", new_name=""){
     if (start_loc == "home") then start_loc = obj_ini.home_name;
     obj_ini.ship[index]=new_name;
     obj_ini.ship_uid[index]=floor(random(99999999))+1;
-    obj_ini.ship_owner[index]=1; //TODO: determine if this means the player or not
-    obj_ini.ship_size[index]=1;
-    obj_ini.ship_location[index]=start_loc;
     obj_ini.ship_leadership[index]=100;	
     var _struct = obj_ini.ship_data[index];
+    _struct.location = start_loc;
     if (string_count("Battle Barge",type)>0){
         obj_ini.ship_class[index]="Battle Barge";
-        obj_ini.ship_size[index]=3;
         obj_ini.ship_hp[index]=1200;
         obj_ini.ship_maxhp[index]=1200;
         obj_ini.ship_conditions[index]="";
@@ -298,6 +282,7 @@ function new_player_ship(type, start_loc="home", new_name=""){
 	        add_weapon_to_ship("Thunderhawk Launch Bays");
 	        add_weapon_to_ship("Macro Bombardment Cannons");
 	        add_weapon_to_ship("Torpedoes", {barrel_count:4});
+	        size = 3;
        	}
 
         obj_ini.ship_capacity[index]=600;
@@ -308,7 +293,6 @@ function new_player_ship(type, start_loc="home", new_name=""){
 
     if (string_count("Strike Cruiser",type)>0){
         obj_ini.ship_class[index]="Strike Cruiser";
-        obj_ini.ship_size[index]=2;
         obj_ini.ship_hp[index]=600;
         obj_ini.ship_maxhp[index]=600;
         obj_ini.ship_conditions[index]="";
@@ -334,6 +318,7 @@ function new_player_ship(type, start_loc="home", new_name=""){
 	        }
 	        add_weapon_to_ship("Thunderhawk Launch Bays");
 	        add_weapon_to_ship("Bombardment Cannons");
+	        size = 2;
 	    }
 
         obj_ini.ship_capacity[index]=250;
@@ -386,8 +371,6 @@ function new_player_ship(type, start_loc="home", new_name=""){
     }
     if (string_count("Gloriana",type)>0){
 		obj_ini.ship[index]=new_name;
-        obj_ini.ship_size[index]=3;
-
     
         obj_ini.ship_class[index]="Gloriana";
     
@@ -407,8 +390,9 @@ function new_player_ship(type, start_loc="home", new_name=""){
 	        add_weapon_to_ship("Plasma Cannon");
 	        add_weapon_to_ship("Macro Bombardment Cannons");  
 	        turrets = [{},{},{},{},{},{},{},{}];
-	        hp = 2024000;
-	        max_hp = 200;	        
+	        hp = 2400;
+	        max_hp = 2400;	
+	        size = 3;        
 	    }          
         obj_ini.ship_capacity[index]=800;
         obj_ini.ship_carrying[index]=0;

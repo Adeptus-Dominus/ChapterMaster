@@ -18,54 +18,22 @@ if (sh_target!=-50){
     var tump;tump=0;
     
     var i, q, b;i=0;q=0;b=0;
-    repeat(sh_target.capital_number){
-        b+=1;
-        if (sh_target.capital[b]!=""){
-            i+=1;
-            ship[i]=sh_target.capital[i];
-            
+
+    var i = 0;
+    var _ships = fleet_full_ship_array(sh_target);
+    for (var q = 0; q < array_length(_ships); q++){
+        var _ship_id = _ships[q];
+        var _ship = _ships[_ship_id];
+        if (obj_ini.ship_carrying[_ship_id]>0){
+            ship[i]=_ship.name;
             ship_use[i]=0;
-            tump=sh_target.capital_num[i];
-            ship_max[i]=obj_ini.ship_carrying[tump];
-            ship_ide[i]=tump;
-            ship_size[i]=3;
-            
-            purge_a+=3;
-            purge_b+=ship_max[i];purge_c+=ship_max[i];
-        }
-    }
-    q=0;
-    repeat(sh_target.frigate_number){
-        q+=1;
-        if (sh_target.frigate[q]!=""){
+            ship_max[i]=obj_ini.ship_carrying[_ship_id];
+            ship_ide[i]=_ship_id;
+            purge_a += ship_bombard_score(_ship_id);
+            purge_b += ship_max[i];
+            purge_c += ship_max[i];
             i+=1;
-            ship[i]=sh_target.frigate[q];
-            
-            ship_use[i]=0;
-            tump=sh_target.frigate_num[q];
-            ship_max[i]=obj_ini.ship_carrying[tump];
-            ship_ide[i]=tump;
-            ship_size[i]=2;
-            
-            purge_a+=1;
-            purge_b+=ship_max[i];purge_c+=ship_max[i];
-        }
-    }
-    q=0;
-    repeat(sh_target.escort_number){
-        q+=1;
-        if (sh_target.escort[q]!="") and (obj_ini.ship_carrying[sh_target.escort_num[q]]>0){
-            i+=1;
-            ship[i]=sh_target.escort[q];
-            
-            ship_use[i]=0;
-            tump=sh_target.escort_num[q];
-            ship_max[i]=obj_ini.ship_carrying[tump];
-            ship_ide[i]=tump;
-            ship_size[i]=1;
-            
-            purge_b+=ship_max[i];purge_c+=ship_max[i];
-        }
+        }        
     }
 }
 

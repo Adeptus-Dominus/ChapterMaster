@@ -417,7 +417,8 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true) {
             if (ma_lid[selected] == -1) {
                 wrong_location = true;
             } else {
-                wrong_location = obj_ini.ship_location[ma_lid[selected]] != selecting_location;
+                var _ship = obj_ini.ship_data[ma_lid[selected]];
+                wrong_location =  _ship.location != selecting_location;
             }
         } else {
             wrong_location = ma_loc[selected] != selecting_location;
