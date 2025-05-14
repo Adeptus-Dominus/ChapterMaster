@@ -102,8 +102,8 @@ if (opened=1){
                             obj_controller.fest_sid=option_id[ii];
                             obj_controller.fest_wid=0;
                             if (option_id[ii]>0){
-                                if (obj_controller.fest_warp=0) and (obj_ini.ship_location[option_id[ii]]="Warp") then obj_controller.fest_warp=1;
-                                if (obj_controller.fest_warp=1) and (obj_ini.ship_location[option_id[ii]]!="Warp") then obj_controller.fest_warp=0;
+                                var _ship = obj_ini.ship_data[option_id[ii]];
+                                obj_controller.fest_warp = _ship.location == "Warp";
                                 obj_controller.fest_attend=scr_event_dudes(0,0,"",option_id[ii]);
                             }
                             if (option[ii]="None Selected"){obj_controller.fest_sid=0;obj_controller.fest_attend="";}

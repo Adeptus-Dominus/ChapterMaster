@@ -30,11 +30,9 @@ function add_fleet_ships_to_combat(fleet, combat){
 	        array_push(combat.ship_other_armour, obj_ini.ship_other_armour[_ship_id]);
 	        array_push(combat.ship_weapons, obj_ini.ship_weapons[_ship_id]);
 	        
-	        
 	        array_push(combat.ship_capacity, obj_ini.ship_capacity[_ship_id]);
 	        array_push(combat.ship_carrying, obj_ini.ship_carrying[_ship_id]);
 	        array_push(combat.ship_contents, obj_ini.ship_contents[_ship_id]);
-	        array_push(combat.ship_turrets, obj_ini.ship_turrets[_ship_id]);
         } catch (_exception){
         	handle_exception(_exception);
         }		
@@ -159,6 +157,7 @@ function setup_player_combat_ship(){
 	turrets=0;
 	ship_colour=obj_controller.body_colour_replace;
 	max_speed = obj_ini.ship_speed[ship_id];
+	ship_data = obj_ini.ship_data[ship_id];
     
     weapons = obj_ini.ship_weapons[ship_id];
     for (var i=0;i<array_length(weapons);i++){

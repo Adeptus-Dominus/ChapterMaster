@@ -97,7 +97,6 @@ function scr_kill_ship(index){
 			array_delete(ship_capacity,index,1);
 			array_delete(ship_carrying,index,1);
 			array_delete(ship_contents,index,1);
-			array_delete(ship_turrets,index,1);
 
 			if (!in_warp){
 				if (_nearest_star!="none"){

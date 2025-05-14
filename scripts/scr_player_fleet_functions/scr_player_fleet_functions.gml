@@ -26,7 +26,6 @@ function init_player_fleet_arrays(){
 	ship_capacity=[];
 	ship_carrying=[];
 	ship_contents=[];
-	ship_turrets=[];
 	ship_lost = [];	
 }
 function fleet_has_roles(fleet="none", roles){

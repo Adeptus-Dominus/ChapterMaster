@@ -1519,6 +1519,7 @@
     {"id":{"name":"spr_ship_veng","path":"sprites/spr_ship_veng/spr_ship_veng.yy",},},
     {"id":{"name":"spr_ship_void","path":"sprites/spr_ship_void/spr_ship_void.yy",},},
     {"id":{"name":"spr_ship_warden","path":"sprites/spr_ship_warden/spr_ship_warden.yy",},},
+    {"id":{"name":"spr_ship_weapon_macro_cannon","path":"sprites/spr_ship_weapon_macro_cannon/spr_ship_weapon_macro_cannon.yy",},},
     {"id":{"name":"spr_shutter_button","path":"sprites/spr_shutter_button/spr_shutter_button.yy",},},
     {"id":{"name":"spr_sister_hospitaler","path":"sprites/spr_sister_hospitaler/spr_sister_hospitaler.yy",},},
     {"id":{"name":"spr_sister_of_battle","path":"sprites/spr_sister_of_battle/spr_sister_of_battle.yy",},},

@@ -28,6 +28,7 @@ penitent_end=0;
 man_size=0;
 home_planet = 2;
 artifact_struct = array_create(200);
+flagship = 0;
 
 // Equipment- maybe the bikes should go here or something?          yes they should
 equipment = {};

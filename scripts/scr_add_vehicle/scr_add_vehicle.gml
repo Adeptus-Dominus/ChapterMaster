@@ -40,14 +40,17 @@ function scr_add_vehicle(vehicle_type, target_company, weapon1, weapon2, weapon3
 						backup = i;
 					}
 				}
+
 				if (first != 0) {
+					var _ship = obj_ini.ship_data[first];
 					obj_ini.veh_lid[target_company][good] = first;
-					obj_ini.veh_loc[target_company][good] = obj_ini.ship_location[first];
+					obj_ini.veh_loc[target_company][good] = _ship.location;
 					obj_ini.veh_wid[target_company][good] = 0;
 					obj_ini.ship_carrying[first] += 1;
 				} else if ((first == 0) && (backup != 0)) {
+					var _ship = obj_ini.ship_data[backup];
 					obj_ini.veh_lid[target_company][good] = backup;
-					obj_ini.veh_loc[target_company][good] = obj_ini.ship_location[backup];
+					obj_ini.veh_loc[target_company][good] = _ship.location;
 					obj_ini.veh_wid[target_company][good] = 0;
 					obj_ini.ship_carrying[backup] += 1;
 				} else if ((first == 0) && (backup == 0)) {

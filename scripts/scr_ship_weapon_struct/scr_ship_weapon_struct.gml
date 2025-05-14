@@ -235,10 +235,14 @@ function ShipWeapon(weapon_name, overide_data={}) constructor{
 			instance_activate_object(obj_p_ship);
 			instance_activate_object(obj_al_ship);
 		}
+		if (instance_exists(target)){
+			draw_set_color(c_red);
+			draw_line(x, y, target.x, target.y);
+		}
 	}
 	static draw_weapon_firing_arc = function(){
 		var _tangent_direction =  weapon_direction();
-		var _facing = facing
+		var _facing = facings
 
 	    var _max_distance = range;
 

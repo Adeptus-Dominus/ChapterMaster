@@ -268,12 +268,9 @@ for (var c = 0; c < 11; c++){
 // STC Bonuses
 if (obj_controller.stc_ships>=6){
     //self healing ships logic
-    for (var v=0; v<array_length(obj_ini.ship_hp); v++){
-        if (obj_ini.ship[v]=="" || obj_ini.ship_hp[v]<0) then continue;
-        if (obj_ini.ship_hp[v]<obj_ini.ship_maxhp[v]){
-            var _max = obj_ini.ship_maxhp[v];
-            obj_ini.ship_hp[v] = min(_max,obj_ini.ship_hp[v]+round(_max*0.06));
-        }
+    for (var v=0; v<array_length(obj_ini.ship_data); v++){
+        var _ship = obj_ini.ship_data[v];
+        _ship.ship_self_heal();
     }
 }
 
@@ -629,7 +626,8 @@ for(var i=1; i<=99; i++){
                         last_artifact =  scr_add_artifact("random_nodemon","",0,obj_ini.home_name,2);
                     } else {
                         if (obj_ini.fleet_type != ePlayerBase.home_world){
-                            last_artifact = scr_add_artifact("random_nodemon","",0,obj_ini.ship_location[0],501);
+                            var _ship = obj_ini.ship_data[0];
+                            last_artifact = scr_add_artifact("random_nodemon","",0,_ship.location,501);
                         }
                     }
 

@@ -333,10 +333,11 @@ function ArtifactStruct(Index) constructor {
             identifiable = 1;
         }
         if (sid() >= 500) {
-            if (obj_ini.ship_location[ship_id()] == obj_ini.home_name) {
+            var _ship = obj_ini.ship_data[ship_id()];
+            if (_ship.location == obj_ini.home_name) {
                 identifiable = 1;
             }
-            if (obj_ini.ship_class[ship_id()] == "Battle Barge") {
+            if (_ship.class == "Battle Barge") {
                 identifiable = 1;
             }
         }
