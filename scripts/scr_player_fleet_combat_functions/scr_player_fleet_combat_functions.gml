@@ -19,14 +19,7 @@ function add_fleet_ships_to_combat(fleet, combat){
 
 	        array_push(combat.ship_data , _ship_d);
 	        
-	        array_push(combat.ship_class, player_ships_class(_ship_id));
 	        array_push(combat.ship_id, _ship_id);
-	        array_push(combat.ship_leadership, 100);
-	        array_push(combat.ship_hp, _ship_d.hp);
-	        array_push(combat.ship_maxhp, _ship_d.max_hp);
-	        array_push(combat.ship_speed, obj_ini.ship_speed[_ship_id]);
-	        array_push(combat.ship_front_armour, _ship_d.front_armour);
-	        array_push(combat.ship_other_armour, _ship_d.side_armour);
 	        
         } catch (_exception){
         	handle_exception(_exception);
@@ -39,23 +32,23 @@ function sort_ships_into_columns(combat){
 	with (combat){
 	    for (var k = 0;k<array_length(ship_data);k++){// This determines the number of ships in each column
 	    	var _ship = combat.ship_data[k];
-            if ((combat.column[col]="capital" && _ship.size[k]>=3)) then combat.column_num[col]+=1;
-            if ((combat.column[col-1]="capital" && _ship.size[k]>=3)) then combat.column_num[col-1]+=1;
-            if ((combat.column[col-2]="capital" && _ship.size[k]>=3)) then combat.column_num[col-2]+=1;
-            if ((combat.column[col-3]="capital" && _ship.size[k]>=3)) then combat.column_num[col-3]+=1;
-            if ((combat.column[col-4]="capital" && _ship.size[k]>=3)) then combat.column_num[col-4]+=1;
+            if ((combat.column[col]="capital" || _ship.size>=3)) then combat.column_num[col]+=1;
+            if ((combat.column[col-1]="capital" || _ship.size>=3)) then combat.column_num[col-1]+=1;
+            if ((combat.column[col-2]="capital" || _ship.size>=3)) then combat.column_num[col-2]+=1;
+            if ((combat.column[col-3]="capital" || _ship.size>=3)) then combat.column_num[col-3]+=1;
+            if ((combat.column[col-4]="capital" || _ship.size>=3)) then combat.column_num[col-4]+=1;
         
-            if (combat.ship_class[k]=combat.column[col]) then combat.column_num[col]+=1;
-            if (combat.ship_class[k]=combat.column[col-1]) then combat.column_num[col-1]+=1;
-            if (combat.ship_class[k]=combat.column[col-2]) then combat.column_num[col-2]+=1;
-            if (combat.ship_class[k]=combat.column[col-3]) then combat.column_num[col-3]+=1;
-            if (combat.ship_class[k]=combat.column[col-4]) then combat.column_num[col-4]+=1;
+            if (_ship.class=combat.column[col]) then combat.column_num[col]+=1;
+            if (_ship.class=combat.column[col-1]) then combat.column_num[col-1]+=1;
+            if (_ship.class=combat.column[col-2]) then combat.column_num[col-2]+=1;
+            if (_ship.class=combat.column[col-3]) then combat.column_num[col-3]+=1;
+            if (_ship.class=combat.column[col-4]) then combat.column_num[col-4]+=1;
             
-            if ((combat.column[col]="escort" && _ship.size[k]=1)) then combat.column_num[col]+=1;
-            if ((combat.column[col-1]="escort" && _ship.size[k]=1)) then combat.column_num[col-1]+=1;
-            if ((combat.column[col-2]="escort" && _ship.size[k]=1)) then combat.column_num[col-2]+=1;
-            if ((combat.column[col-3]="escort" && _ship.size[k]=1)) then combat.column_num[col-3]+=1;
-            if ((combat.column[col-4]="escort" && _ship.size[k]=1)) then combat.column_num[col-4]+=1;
+            if ((combat.column[col]="escort" ||_ship.size=1)) then combat.column_num[col]+=1;
+            if ((combat.column[col-1]="escort"|| _ship.size=1)) then combat.column_num[col-1]+=1;
+            if ((combat.column[col-2]="escort" || _ship.size=1)) then combat.column_num[col-2]+=1;
+            if ((combat.column[col-3]="escort" || _ship.size=1)) then combat.column_num[col-3]+=1;
+            if ((combat.column[col-4]="escort" || _ship.size=1)) then combat.column_num[col-4]+=1;
 	    }		
 	}
 
@@ -96,19 +89,20 @@ function player_fleet_ship_spawner(){
 		    
 		    // show_message(string(column_num[col])+" "+string(column[col])+" X:"+string(x2));
 		    for (var k = 0;k<array_length(ship_id);k++){
-		        if (ship_class[k]==column[col] || (player_ships_class(ship_id[k])==column[col])){
+		    	var _ship = ship_data[k];
+		        if (_ship.class==column[col] || (player_ships_class(ship_id[k])==column[col])){
 		        	man=-1;
-		            if (sizz>=3 && ship_class[k]!="") {
+		            if (sizz>=3 && _ship.class!="") {
 		            	man=instance_create(x2,temp2,obj_p_capital);
 		            	man.ship_id=ship_id[k];
 		            	temp2+=hei;
 		            }
-		            if (sizz=2 && ship_class[k]!="") {
+		            if (sizz=2 && _ship.class!="") {
 		            	man=instance_create(x2,temp2,obj_p_cruiser);
 		            	man.ship_id=ship_id[k];
 		            	temp2+=hei;
 		            }
-		            if (sizz=1 && ship_class[k]!="") {
+		            if (sizz=1 && _ship.class!="") {
 		            	man=instance_create(x2,temp2,obj_p_escort);
 		            	man.ship_id=ship_id[k];
 		            	temp2+=hei;
@@ -146,13 +140,13 @@ function setup_player_combat_ship(){
 	class=ship_data.class;
 	hp=ship_data.hp
 	maxhp=ship_data.max_hp
-	shields=obj_ini.ship_shields[ship_id]*100;
+	shields=ship_data.shields*100;
 	maxshields=shields;
 	armour_front = ship_data.front_armour;
 	side_armour=ship_data.side_armour;
 	turrets=0;
 	ship_colour=obj_controller.body_colour_replace;
-	max_speed = obj_ini.ship_speed[ship_id];
+	max_speed = ship_data.max_speed;
 	
     for (var i=0;i<array_length(weapons);i++){
     	weapons[i].ship = id;

@@ -133,12 +133,6 @@ function get_player_ships(location="", name=""){
 
 function new_player_ship_defaults(){
 	with (obj_ini){
-		array_push(ship_uid,0);
-		array_push(ship_owner,0);
-		array_push(ship_class, "");
-		array_push(ship_leadership,0);
-		array_push(ship_location, "");
-		array_push(ship_shields,0);
 		array_push(ship_data,new ShipStruct(class));
 	}
 	return array_length(obj_ini.ship_data)-1;
@@ -247,14 +241,11 @@ function new_player_ship(type, start_loc="home", new_name=""){
         };
     }
     if (start_loc == "home") then start_loc = obj_ini.home_name;
-    obj_ini.ship_uid[index]=floor(random(99999999))+1;
-    obj_ini.ship_leadership[index]=100;	
     var _struct = obj_ini.ship_data[index];
     _struct.location = start_loc;
     _struct.name=new_name;
     _struct.class = type;
     if (string_count("Battle Barge",type)>0){
-        obj_ini.ship_shields[index]=12;
         with(_struct){
 	        left_broad_positions = [[56, 16],[65, 16],[74,16],[83, 16]];
 	        right_broad_positions = [[56, 37],[65, 37],[74,37],[83, 37]];        
@@ -272,6 +263,7 @@ function new_player_ship(type, start_loc="home", new_name=""){
 	        max_hp = 1200;
 	        side_armour = 6;
 	        rear_armour = 3;
+	        shields = 1;2
        	}
 
         
@@ -280,7 +272,6 @@ function new_player_ship(type, start_loc="home", new_name=""){
     }
 
     if (string_count("Strike Cruiser",type)>0){
-        obj_ini.ship_shields[index]=6;
         with(_struct){
 	        left_broad_positions = [[56, 16],[65, 16],[74,16],[83, 16]];
 	        right_broad_positions = [[56, 37],[65, 37],[74,37],[83, 37]];
@@ -306,14 +297,14 @@ function new_player_ship(type, start_loc="home", new_name=""){
 	       	max_hp = 600
 			front_armour = 6;
 			side_armour = 4;
-			rear_armour = 3;	       	
+			rear_armour = 3;
+			shields = 6;	       	
 	    }
         
         
         _struct.turrets = [{}];
     }
     if (string_count("Gladius",type)>0){
-        obj_ini.ship_shields[index]=1;
         with(_struct){
         	class = "Gladius";
 	        add_weapon_to_ship("Light Weapons Battery");
@@ -325,13 +316,13 @@ function new_player_ship(type, start_loc="home", new_name=""){
 	        max_speed = 30;
 			front_armour = 5;
 			side_armour = 4;
-			rear_armour = 1;	              
+			rear_armour = 1;
+			shields = 1;	              
 	    }
         
         
     }
     if (string_count("Hunter",type)>0){
-        obj_ini.ship_shields[index]=1;
         with(_struct){
         	class = "Hunter";
 	        add_weapon_to_ship("Torpedoes");
@@ -344,14 +335,14 @@ function new_player_ship(type, start_loc="home", new_name=""){
 	        max_speed = 33; 
 			front_armour = 4;
 			side_armour = 3;
-			rear_armour = 1;	            	
+			rear_armour = 1;
+			shields = 1;	            	
 	    }
 
         
     }
     if (string_count("Gloriana",type)>0){        
 
-        obj_ini.ship_shields[index]=24;
         with(_struct){
         	class = "Gloriana";
 	        add_weapon_to_ship("Lance Battery", {facing : "right"});
@@ -368,7 +359,8 @@ function new_player_ship(type, start_loc="home", new_name=""){
 	        max_speed = 23; 
 			front_armour = 6;
 			side_armour = 8;
-			rear_armour = 2;	            	    
+			rear_armour = 2;
+			shields = 24;	            	    
 	    }          
         
     }
@@ -384,7 +376,7 @@ function player_ships_class(index){
 	var _escorts = ["Escort", "Hunter", "Gladius"];
 	var _capitals = ["Gloriana", "Battle Barge", "Capital"];
 	var _frigates = ["Strike Cruiser", "Frigate"];	
-	var _ship_name_class = obj_ini.ship_class[index];
+	var _ship_name_class = fetch_ship(index).class;
 	if (array_contains(_escorts, _ship_name_class)){
 		return "escort";
 	} else if (array_contains(_capitals, _ship_name_class)){

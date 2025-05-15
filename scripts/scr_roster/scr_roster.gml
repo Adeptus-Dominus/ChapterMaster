@@ -414,14 +414,7 @@ function Roster() constructor{
         for (var i=0;i<array_length(ships);i++){
             if (ships[i].active){
                 var _id = ships[i].ship_id;
-                var _class = player_ships_class(ship_id);
-                if (obj_ini.ship_class[_id] == "Gloriana"){
-                    _purge_score += 4;
-                } else if (_class=="capital"){
-                    _purge_score += 3;
-                } else if( _class=="frigate"){
-                    _purge_score += 1;
-                }                      
+                _purge_score += ship_bombard_score(_id);                 
             }
         }  
         return _purge_score;       

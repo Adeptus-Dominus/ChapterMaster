@@ -36,13 +36,13 @@ function scr_special_view(command_group) {
 		for (var v = 0;v<array_length(obj_ini.TTRPG[0]);v++){
 			bad=0;
 			if (obj_ini.name[0][v]== ""){continue;}
-			if (obj_ini.TTRPG[0][v].ship_location>-1){
-			   	var ham=obj_ini.TTRPG[0][v].ship_location;
+			if (fetch_unit([0,v]).ship_location>-1){
+			   	var ham=fetch_unit([0,v]).ship_location;
 			   	var _ship = obj_ini.ship_data[ham];
 			   	if (_ship.location=="Lost") then continue;
 			}
 
-			unit = obj_ini.TTRPG[0][v];	    	
+			unit = fetch_unit([0,v]);	    	
 			var yep=0;
 			if (unit.base_group!="astartes") and (unit.base_group!="none"){
 				yep=1;

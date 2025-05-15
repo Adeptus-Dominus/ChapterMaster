@@ -2,18 +2,7 @@
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more informationype
 
 function init_player_fleet_arrays(){
-	ship_uid=[];
-	ship_owner=[];
-	ship_class=[];
-	ship_size=[];
-	ship_leadership=[];
-
-	ship_location=[];
-	ship_shields=[];
-	ship_speed=[];
-
 	ship_data = [];
-	ship_lost = [];	
 }
 function fleet_has_roles(fleet="none", roles){
 	var all_ships = fleet_full_ship_array(fleet);
@@ -251,23 +240,23 @@ function add_ship_to_fleet(index, fleet="none"){
 
 	var _ship = fetch_ship(index);
 	if (fleet=="none"){
-		if (array_contains(_capitals, obj_ini.ship_class[index])){
+		if (array_contains(_capitals, _ship.class)){
 			array_push(capital, _ship.name);
 			array_push(capital_num, index);
 			array_push(capital_sel, 0);
-			array_push(capital_uid, obj_ini.ship_uid[index]);
+			array_push(capital_uid, _ship.uid);
 			capital_number++;
-		} else if (array_contains(_frigates, obj_ini.ship_class[index])){
+		} else if (array_contains(_frigates, _ship.class)){
 			array_push(frigate, _ship.name);
 			array_push(frigate_num, index);
 			array_push(frigate_sel, 0);
-			array_push(frigate_uid, obj_ini.ship_uid[index]);
+			array_push(frigate_uid, _ship.uid);
 			frigate_number++;
-		} else if (array_contains(_escorts, obj_ini.ship_class[index])){
+		} else if (array_contains(_escorts, _ship.class)){
 			array_push(escort, _ship.name);
 			array_push(escort_num, index);
 			array_push(escort_sel, 0);
-			array_push(escort_uid, obj_ini.ship_uid[index]);
+			array_push(escort_uid, _ship.uid);
 			escort_number++;
 		}
 	} else {

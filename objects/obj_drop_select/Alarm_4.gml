@@ -24,7 +24,7 @@ if (sh_target!=-50){
     for (var q = 0; q < array_length(_ships); q++){
         var _ship_id = _ships[q];
         var _ship = _ships[_ship_id];
-        if (obj_ini.ship_carrying[_ship_id]>0){
+        if (_ship.carrying){
             ship[i]=_ship.name;
             ship_use[i]=0;
             ship_max[i]=_ship.carrying;

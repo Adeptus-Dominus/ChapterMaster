@@ -728,7 +728,7 @@ function unload_selection(){
                 // selecting location is the ship right now; get it's orbit location
                 boba.loading_name=selecting_location;
                 boba.depth=self.depth-50;
-                // sel_uid=obj_ini.ship_uid[selecting_ship];
+
                 var _ship = obj_ini.ship_data[selecting_ship];
                 scr_company_load(_ship.location);
             }

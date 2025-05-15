@@ -5,8 +5,9 @@ function scr_ship_count(wanted_ship_class) {
 
 	var count=0,i=0;
 
-	for (var i=0;i<array_length(obj_ini.ship_class);i++){
-		if (obj_ini.ship_class[i]=wanted_ship_class){
+	for (var i=0;i<array_length(obj_ini.ship_data);i++){
+		var _ship = fetch_ship(i);
+		if (_ship.class=wanted_ship_class){
 			count++;
 		}
 	}

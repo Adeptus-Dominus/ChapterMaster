@@ -28,6 +28,8 @@ function ShipStruct() constructor{
 	side_armour = 3;
 	rear_armour = 1;
 	name = "";
+	shields = 0;
+	uid = floor(random(99999999))+1;
 
 	static ship_hp_percentage = function(){
 		return (hp/max_hp )* 100

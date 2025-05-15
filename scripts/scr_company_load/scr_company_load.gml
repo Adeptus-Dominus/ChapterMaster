@@ -11,7 +11,7 @@ function scr_company_load(ship_loc) {
             array_push(sh_name, _ship.name);
             array_push(sh_class, _ship.class);
             array_push(sh_loc, _ship.location);
-            array_push(sh_uid, obj_ini.ship_uid[i]);
+            array_push(sh_uid, _ship.uid);
             array_push(sh_hp, $"{round(_ship.hp / _ship.max_hp) * 100}% HP")
             array_push(sh_cargo, _ship.carrying);
             array_push(sh_cargo_max, _ship.capacity);

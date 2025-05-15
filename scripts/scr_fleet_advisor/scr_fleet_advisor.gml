@@ -192,13 +192,13 @@ function scr_fleet_advisor(){
             var _struct = obj_ini.ship_data[i];
             if (temp[101] != _struct.name) {
                 temp[101] = _struct.name;
-                temp[102] = obj_ini.ship_class[i];
+                temp[102] = _struct.class;
 
                 temp[103] = _struct.hp;
                 temp[104] = _struct.max_hp;
-                temp[105] = string(obj_ini.ship_shields[i] * 100);
+                temp[105] = _struct.shields * 100;
 
-                temp[106] = string(obj_ini.ship_speed[i]);
+                temp[106] = string(_struct.max_speed);
 
                 temp[107] = string(_struct.front_armour);
                 temp[108] = string(_struct.side_armour);

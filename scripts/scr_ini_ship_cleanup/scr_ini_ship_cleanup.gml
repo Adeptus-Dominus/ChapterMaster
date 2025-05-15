@@ -77,14 +77,6 @@ function scr_kill_ship(index){
 				}								
 			}						
 			array_delete(ship,index,1);
-			array_delete(ship_uid,index,1);
-			array_delete(ship_owner,index,1);
-			array_delete(ship_class,index,1);
-			array_delete(ship_leadership,index,1);
-
-			array_delete(ship_location,index,1);
-			array_delete(ship_shields,index,1);
-			array_delete(ship_speed,index,1);
 
 			if (!in_warp){
 				if (_nearest_star!="none"){

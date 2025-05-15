@@ -30,7 +30,7 @@ function scr_add_vehicle(vehicle_type, target_company, weapon1, weapon2, weapon3
 			}
 
 			if (obj_ini.fleet_type != ePlayerBase.home_world) {
-				// Need a more elaborate ship_carrying += here for the different types of units
+				// Need a more elaborate carrying += here for the different types of units
 				var first = -1, backup = -1, i = 0;
 				for (var i = 0; i < array_length(obj_ini.ship_data); i++) {
 					var _ship =  obj_ini.ship_data[i];
