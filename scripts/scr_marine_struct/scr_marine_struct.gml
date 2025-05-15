@@ -1958,8 +1958,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
     static set_last_ship = function() {
         if (ship_location > -1) {
+            var _ship = fetch_ship(ship_location);
             last_ship.uid = obj_ini.ship_uid[ship_location];
-            last_ship.name = obj_ini.ship[ship_location];
+            last_ship.name = _ship.name;
         } else {
             last_ship = {
                 uid: "",

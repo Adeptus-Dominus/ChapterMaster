@@ -10,7 +10,7 @@ function add_fleet_ships_to_combat(fleet, combat){
 			if (i>=array_length(_ships)) then break;
 			_ship_id = _ships[i];
 			var _ship_d = obj_ini.ship_data[i];
-			if (obj_ini.ship_hp[_ship_id]<=0 || obj_ini.ship[_ship_id]==""){
+			if (_ship_d.hp<=0){
 				continue;
 			}
 	        if (_ship_d.size>=3) then combat.capital++;
@@ -20,17 +20,13 @@ function add_fleet_ships_to_combat(fleet, combat){
 	        array_push(combat.ship_data , _ship_d);
 	        
 	        array_push(combat.ship_class, player_ships_class(_ship_id));
-	        array_push(combat.ship, obj_ini.ship[_ship_id]);
 	        array_push(combat.ship_id, _ship_id);
 	        array_push(combat.ship_leadership, 100);
-	        array_push(combat.ship_hp, obj_ini.ship_hp[_ship_id]);
-	        array_push(combat.ship_maxhp, obj_ini.ship_maxhp[_ship_id]);
-	        array_push(combat.ship_conditions, obj_ini.ship_conditions[_ship_id]);
+	        array_push(combat.ship_hp, _ship_d.hp);
+	        array_push(combat.ship_maxhp, _ship_d.max_hp);
 	        array_push(combat.ship_speed, obj_ini.ship_speed[_ship_id]);
-	        array_push(combat.ship_turning, obj_ini.ship_turning[_ship_id]);
-	        array_push(combat.ship_front_armour, obj_ini.ship_front_armour[_ship_id]);
-	        array_push(combat.ship_other_armour, obj_ini.ship_other_armour[_ship_id]);
-	        array_push(combat.ship_weapons, obj_ini.ship_weapons[_ship_id]);
+	        array_push(combat.ship_front_armour, _ship_d.front_armour);
+	        array_push(combat.ship_other_armour, _ship_d.side_armour);
 	        
         } catch (_exception){
         	handle_exception(_exception);
@@ -143,23 +139,21 @@ function setup_player_combat_ship(){
 	cooldown4=0;
 	cooldown5=0;
 
-	weapons = [];
+	ship_data = obj_ini.ship_data[ship_id];
+	weapons = ship_data.weapons;
 
-	name=obj_ini.ship[ship_id];
-	class=obj_ini.ship_class[ship_id];
-	hp=obj_ini.ship_hp[ship_id]*1;
-	maxhp=obj_ini.ship_hp[ship_id]*1;
-	conditions=obj_ini.ship_conditions[ship_id];
+	name=ship_data.name;
+	class=ship_data.class;
+	hp=ship_data.hp
+	maxhp=ship_data.max_hp
 	shields=obj_ini.ship_shields[ship_id]*100;
 	maxshields=shields;
-	armour_front=obj_ini.ship_front_armour[ship_id];
-	armour_other=obj_ini.ship_other_armour[ship_id];
+	armour_front = ship_data.front_armour;
+	side_armour=ship_data.side_armour;
 	turrets=0;
 	ship_colour=obj_controller.body_colour_replace;
 	max_speed = obj_ini.ship_speed[ship_id];
-	ship_data = obj_ini.ship_data[ship_id];
-    
-    weapons = obj_ini.ship_weapons[ship_id];
+	
     for (var i=0;i<array_length(weapons);i++){
     	weapons[i].ship = id;
     }
@@ -203,10 +197,10 @@ function setup_player_combat_ship(){
 
 	// STC Bonuses
 	if (obj_controller.stc_bonus[5]=5){
-		armour_front=round(armour_front*1.1);armour_other=round(armour_other*1.1);
+		armour_front=round(armour_front*1.1);side_armour=round(side_armour*1.1);
 	}
 	if (obj_controller.stc_bonus[6]=2){
-		armour_front=round(armour_front*1.1);armour_other=round(armour_other*1.1);
+		armour_front=round(armour_front*1.1);side_armour=round(side_armour*1.1);
 	}
 
 

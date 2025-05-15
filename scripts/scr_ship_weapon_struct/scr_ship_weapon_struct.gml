@@ -284,8 +284,4 @@ function ShipWeapon(weapon_name, overide_data={}) constructor{
 function add_weapon_to_ship(weapon_name, overide_data={}){
 	overide_data.ship = id;
 	array_push(weapons, new ShipWeapon(weapon_name, overide_data));
-}
-
-function add_weapon_to_ini_ship(index,weapon_name, overide_data={}){
-	array_push(obj_ini.ship_weapons[index], new ShipWeapon(weapon_name, overide_data));
-}
+};

@@ -58,7 +58,7 @@ if (did){
     var fleet=instance_create(_current_system.x,_current_system.y,obj_p_fleet);
     fleet.owner  = eFACTION.Player;
     
-    for(var f=0; f<array_length(obj_ini.ship); f++){
+    for(var f=0; f<array_length(obj_ini.ship_data); f++){
         add_ship_to_fleet(f, fleet);
     }
     
@@ -546,26 +546,26 @@ obj_crusade.placing=1;scr_zoom();*/
 
 // scr_add_artifact("Weapon","",4,obj_ini.home_name,1);
 
-/*scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);
-scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);
-scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);
-scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);
-scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);
-scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);
-scr_add_artifact("good","daemonic",0,obj_ini.ship[0],501);*/
+/*scr_add_artifact("good","daemonic",0,obj_ini.ship_data[0].name,501);
+scr_add_artifact("good","daemonic",0,obj_ini.ship_data[0].name,501);
+scr_add_artifact("good","daemonic",0,obj_ini.ship_data[0].name,501);
+scr_add_artifact("good","daemonic",0,obj_ini.ship_data[0].name,501);
+scr_add_artifact("good","daemonic",0,obj_ini.ship_data[0].name,501);
+scr_add_artifact("good","daemonic",0,obj_ini.ship_data[0].name,501);
+scr_add_artifact("good","daemonic",0,obj_ini.ship_data[0].name,501);*/
 
 // scr_add_item("Cyclonic Torpedo",5);
 // scr_add_item("Exterminatus",5);
     
 if (is_test_map==true){
     // scr_add_item("Exterminatus",5);
-    /*scr_add_artifact("good","",0,obj_ini.ship[0],501);
-    scr_add_artifact("good","",0,obj_ini.ship[0],501);
-    scr_add_artifact("good","",0,obj_ini.ship[0],501);
-    scr_add_artifact("good","",0,obj_ini.ship[0],501);
-    scr_add_artifact("good","",0,obj_ini.ship[0],501);
-    scr_add_artifact("good","",0,obj_ini.ship[0],501);
-    scr_add_artifact("good","",0,obj_ini.ship[0],501);*/
+    /*scr_add_artifact("good","",0,obj_ini.ship_data[0].name,501);
+    scr_add_artifact("good","",0,obj_ini.ship_data[0].name,501);
+    scr_add_artifact("good","",0,obj_ini.ship_data[0].name,501);
+    scr_add_artifact("good","",0,obj_ini.ship_data[0].name,501);
+    scr_add_artifact("good","",0,obj_ini.ship_data[0].name,501);
+    scr_add_artifact("good","",0,obj_ini.ship_data[0].name,501);
+    scr_add_artifact("good","",0,obj_ini.ship_data[0].name,501);*/
 }
 
 with(obj_temp7){instance_destroy();}

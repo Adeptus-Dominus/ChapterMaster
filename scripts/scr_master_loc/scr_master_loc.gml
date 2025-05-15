@@ -13,9 +13,12 @@ function scr_master_loc() {
 	            if (good=true){
 	            	if (obj_ini.name[co][v] == "") then continue;
 	            	unit = fetch_unit([co, v]);
-	                if (unit.role()==obj_ini.role[100][eROLE.ChapterMaster]){
+	                if (unit.role()==obj_ini.role[100][eROLE.ChapterMastesr]){
 	                    if (unit.planet_location>0) and (unit.ship_location<0) then lick=string(obj_ini.loc[co][v])+"."+string(unit.planet_location);
-	                    if (unit.planet_location<=0) and (unit.ship_location>-1) then lick=string(obj_ini.ship[unit.ship_location]);
+	                    if (unit.planet_location<=0) and (unit.ship_location>-1){
+	                    	var _ship = fetch_ship(unit.ship_location)/
+	                    	lick=_ship.name;
+	                    }
 	                    if (lick!=""){return(lick);good=false;}
 	                }
 	            }

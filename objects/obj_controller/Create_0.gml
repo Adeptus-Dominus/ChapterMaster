@@ -1316,7 +1316,7 @@ if (instance_exists(obj_ini)){
         }
         if (global.chapter_name=="Blood Ravens"){
             for(var i=0; i<3; i++){
-                scr_add_artifact("random_nodemon","",0,obj_ini.ship[0],501);
+                scr_add_artifact("random_nodemon","",0,obj_ini.ship_data[0].name,501);
             }
         }
         // TODO should add special bonus to different chapters based on lore
@@ -1710,26 +1710,29 @@ temp[62]="##Your fleet contains ";
 var bb=0,sk=0,glad=0,hunt=0,ships=0,bb_names=[],sk_names=[],glad_names=[],hunt_names=[];
 
 codex[0]="";codex_discovered[0]=0;
-for(var mm=0; mm<array_length(obj_ini.ship); mm++){
-    if (obj_ini.ship[mm]!=""){
-        ships++;
-        if (obj_ini.ship_class[mm] == "Battle Barge") {
+for(var mm=0; mm<array_length(obj_ini.ship_data); mm++){
+    var _ship = obj_ini.ship_data[mm];
+
+    ships++;
+    switch(_ship.class){
+        case "Battle Barge":
             bb++;
-            array_push(bb_names, string(obj_ini.ship[mm]));
-        }
-        if (obj_ini.ship_class[mm] == "Strike Cruiser") {
+            array_push(bb_names, string(_ship.name));
+            break;
+         case "Strike Cruiser":
             sk++;
-            array_push(sk_names, string(obj_ini.ship[mm]));
-        }
-        if (obj_ini.ship_class[mm] == "Gladius") {
+            array_push(sk_names, string(_ship.name));
+            break; 
+         case "Gladius":
             glad++;
-            array_push(glad_names, string(obj_ini.ship[mm]));
-        }
-        if (obj_ini.ship_class[mm] == "Hunter") {
+            array_push(glad_names, string(_ship.name));
+            break; 
+         case "Gladius":
             hunt++;
-            array_push(hunt_names, string(obj_ini.ship[mm]));
-        }
+            array_push(hunt_names, string(_ship.name));
+            break;                                            
     }
+
     codex[mm]="";
     codex_discovered[mm]=0;
 }
@@ -1737,7 +1740,7 @@ for(var mm=0; mm<array_length(obj_ini.ship); mm++){
 temp[62]+=$" {string_plural_count("warship", ships)}-\n";
 
 if (obj_ini.fleet_type != ePlayerBase.home_world || bb == 1) {
-    temp[62] += $"Your flagship, Battle Barge {obj_ini.ship[0]}.";
+    temp[62] += $"Your flagship, Battle Barge {obj_ini.ship_data[0].name}.";
     temp[62] += "\n";
     bb--;
 }

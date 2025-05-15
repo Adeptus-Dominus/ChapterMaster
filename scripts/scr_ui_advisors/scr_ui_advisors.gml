@@ -151,8 +151,8 @@ function scr_ui_advisors() {
             if (fest_scheduled = 1) {
                 if (fest_type != "Chapter Relic") then blurp2 = "A " + string(fest_type) + " has been scheduled on ";
                 if (fest_type = "Chapter Relic") then blurp2 = "Chapter Relic construction has been scheduled on ";
-
-                if (fest_planet = 0) then blurp2 += string(obj_ini.ship[fest_sid]);
+                var _ship = fetch_ship(fest_sid);
+                if (fest_planet = 0) then blurp2 += _ship.name();
                 if (fest_planet > 0) then blurp2 += string(fest_star) + " " + scr_roman(fest_wid);
 
                 if (fest_honoring = 0) then blurp2 += ".  ";
@@ -663,9 +663,12 @@ function scr_ui_advisors() {
 
         draw_text_ext(xx + 222, yy + 216, string_hash_to_newline(string(tot_ki)), -1, 396);
         var unit = fetch_unit([0,1]);
-        if (unit.ship_location == -1) then draw_text(xx + 222, yy + 380, string_hash_to_newline("Current Location: " + string(obj_ini.loc[0, 1]) + " " + string(unit.planet_location) + "#Health: " + unit.hp() + "%"));
-        if (unit.ship_location>-1) then draw_text(xx + 222, yy + 380, string_hash_to_newline($"Current Location: Onboard {obj_ini.ship[unit.ship_location]}#Health: {unit.hp()}%"));
-        draw_text(xx + 222.5, yy + 380.5, string_hash_to_newline("Current Location:#Health:"));
+        if (unit.ship_location == -1){
+            draw_text(xx + 222, yy + 380, string_hash_to_newline("Current Location: " + string(obj_ini.loc[0, 1]) + " " + string(unit.planet_location) + "#Health: " + unit.hp() + "%"));
+        } else if (unit.ship_location>-1) {
+            var _ship = fetch_Ship(unit.ship_location);
+            draw_text(xx + 222, yy + 380, string_hash_to_newline($"Current Location: Onboard {_ship.name}#Health: {unit.hp()}%"));
+        }
 
         draw_sprite(spr_arrow, 0, xx + 217, yy + 32);
     }

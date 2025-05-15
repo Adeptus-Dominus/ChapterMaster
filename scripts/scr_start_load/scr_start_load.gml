@@ -239,16 +239,15 @@ function scr_start_load(fleet, load_from_star, load_options) {
 		with(obj_p_fleet){instance_destroy()};
 		for (var i=0;i<array_length(obj_ini.ship_data);i++){
 			var _ship = obj_ini.ship_data[i];
-			if (obj_ini.ship[i]!=""){
-				if (_ship.carrying == 0){
-					array_push(_empty_ships, i);
-				} else {
-					var _star = array_pop(_imperial_stars);
-					_new_fleet = instance_create(_star.x,_star.y,obj_p_fleet);
-					_new_fleet.owner  = eFACTION.Player;
-					add_ship_to_fleet(i,_new_fleet);	
-					array_push(_fleets, _new_fleet)		;		
-				}
+
+			if (_ship.carrying == 0){
+				array_push(_empty_ships, i);
+			} else {
+				var _star = array_pop(_imperial_stars);
+				_new_fleet = instance_create(_star.x,_star.y,obj_p_fleet);
+				_new_fleet.owner  = eFACTION.Player;
+				add_ship_to_fleet(i,_new_fleet);	
+				array_push(_fleets, _new_fleet)		;		
 			}
 		}
 		for (var i=0; i<array_length(_empty_ships); i++){

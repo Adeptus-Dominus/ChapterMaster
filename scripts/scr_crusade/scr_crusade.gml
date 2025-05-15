@@ -127,7 +127,7 @@ function scr_crusade() {
 	if (roll3<=10) then artifacts+=1;
 	if (artifacts>0) then repeat(artifacts){
 	    if (obj_ini.fleet_type=ePlayerBase.home_world) then scr_add_artifact("random","",4,obj_ini.home_name,2);
-	    if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("random","",4,obj_ini.ship[0],501);
+	    if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("random","",4,obj_ini.ship_data[0].name,501);
 	}
 
 

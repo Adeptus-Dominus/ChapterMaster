@@ -80,24 +80,11 @@ function scr_kill_ship(index){
 			array_delete(ship_uid,index,1);
 			array_delete(ship_owner,index,1);
 			array_delete(ship_class,index,1);
-			array_delete(ship_size,index,1);
 			array_delete(ship_leadership,index,1);
-			array_delete(ship_hp,index,1);
-			array_delete(ship_maxhp,index,1);
 
 			array_delete(ship_location,index,1);
 			array_delete(ship_shields,index,1);
-			array_delete(ship_conditions,index,1);
 			array_delete(ship_speed,index,1);
-			array_delete(ship_turning,index,1);
-
-			array_delete(ship_front_armour,index,1);
-			array_delete(ship_other_armour,index,1);
-			array_delete(ship_weapons,index,1);
-
-			array_delete(ship_weapons ,index,1);
-
-			array_delete(ship_capacity,index,1);
 
 			if (!in_warp){
 				if (_nearest_star!="none"){
@@ -124,9 +111,10 @@ function scr_ini_ship_cleanup() {
 		if (array_length(ship)){
 			var _ships = array_length(ship)
 			for (var i=_ships-1;i>=0;i--){
-			    if (ship[i]!="") and (ship_hp[i]<=0){
-			        scr_kill_ship(i);
-			    }
+				var _ship = fetch_ship(i);
+				if (_ship.hp<0){
+					scr_kill_ship(i);
+				}
 			}
 		}
 		sort_all_companies();

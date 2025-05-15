@@ -6,9 +6,6 @@ function scr_return_ship(ship_name, object, planet_number) {
 	var man_size,i;
 	i=0;man_size=0;
 
-	/*repeat(30){
-	    i+=1;if (obj_ini.ship[i]=ship_name) then ship_id=i;
-	}*/
 	i=0;
 
 	var unit;

@@ -61,7 +61,7 @@ if (action_if_number(obj_saveload, 0, 0)){
 
 
     var i=-1;
-    var _ship_index = array_length(obj_ini.ship);
+    var _ship_index = array_length(obj_ini.ship_data);
     ship=array_create(_ship_index, "");
     ship_size=array_create(_ship_index, 0);
     ship_all=array_create(_ship_index, 0);

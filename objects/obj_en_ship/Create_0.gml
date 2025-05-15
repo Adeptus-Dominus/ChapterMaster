@@ -34,7 +34,7 @@ conditions="";
 shields=1;
 maxshields=1;
 armour_front=0;
-armour_other=0;
+side_armour=0;
 weapons=[];
 turrets=0;
 

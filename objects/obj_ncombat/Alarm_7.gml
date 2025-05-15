@@ -1,4 +1,4 @@
-try {
+stry {
     // show_debug_message("alarm 7 start");
     audio_stop_sound(snd_battle);
     audio_play_sound(snd_royal,0,true);
@@ -486,19 +486,21 @@ try {
                 
         if (diceh<=15){
             var ship,ship_hp,i=-1;
-            for (var i=0;i<array_length(obj_ini.ship);i++){
-                ship[i]=obj_ini.ship[i];
-                ship_hp[i]=obj_ini.ship_hp[i];
+            for (var i=0;i<array_length(obj_ini.ship_data);i++){
+                var _ship = fetch_ship(i);
+                ship[i]=__ship.name;
+                ship_hp[i]=_ship.hp;
                 if (i=battle_id){
-                    obj_ini.ship_hp[i]=-50;
-                    scr_recent("ship_destroyed",obj_ini.ship[i],i);
+                    _ship.hp=-50;
+                    scr_recent("ship_destroyed",_ship.name,i);
                 }
             }
             var pop=instance_create(0,0,obj_popup);
+            var _ship = fetch_ship(battle_id);
             pop.image="";
             pop.title="Ship Destroyed";
-            pop.text="A handful of loyalist "+string(global.chapter_name)+" make a fighting retreat to the engine of the vessel, '"+string(obj_ini.ship[battle_id])+"', and then overload the main reactor.  Your ship explodes in a brilliant cloud of fire.";
-            scr_event_log("red","A handful of loyalist "+string(global.chapter_name)+" overload the main reactor of your vessel '"+string(obj_ini.ship[battle_id])+"'.");
+            pop.text=$"A handful of loyalist {global.chapter_name} make a fighting retreat to the engine of the vessel, '{_ship.name}', and then overload the main reactor.  Your ship explodes in a brilliant cloud of fire.";
+            scr_event_log("red",$"A handful of loyalist {global.chapter_name} make a fighting retreat to the engine of the vessel, '{_ship.name}'.");
             pop.mission="loyalist_destroy_ship";
 
             scr_ini_ship_cleanup();
@@ -584,15 +586,22 @@ try {
     if (battle_special="ship_demon"){
         if (defeat=1){
             var ship,ship_hp,i;i=-1;
-            repeat(51){i+=1;
-                ship[i]=obj_ini.ship[i];ship_hp[i]=obj_ini.ship_hp[i];
-                if (i=battle_id){obj_ini.ship_hp[i]=-50;scr_recent("ship_destroyed",obj_ini.ship[i],i);}
+            for (var i=0;i<array_length(obj_ini.ship_data);i++){
+                var _ship = fetch_ship(i);
+                ship = _ship.name;
+                ship_hp = _ship.hp;
+                if (i=battle_id){
+                    _ship.hp=-50;
+                    scr_recent("ship_destroyed",_ship.name,i);
+                }
             }
-            var pop;pop=instance_create(0,0,obj_popup);
+            var _ship = fetch_ship(battle_id);
+            var pop;pop=instance_cre
+            ate(0,0,obj_popup);
             pop.image="";
             pop.title="Ship Destroyed";
-            pop.text="The daemon has slayed all of your marines onboard.  It works its way to the engine of the vessel, '"+string(obj_ini.ship[battle_id])+"', and then tears into the main reactor.  Your ship explodes in a brilliant cloud of fire.";
-            scr_event_log("red","A daemon unbound from an Artifact wreaks havoc upon and destroys your vessel '"+string(obj_ini.ship[battle_id])+"'.");
+            pop.text="The daemon has slayed all of your marines onboard.  It works its way to the engine of the vessel, '"+string(_ship.name)+"', and then tears into the main reactor.  Your ship explodes in a brilliant cloud of fire.";
+            scr_event_log("red","A daemon unbound from an Artifact wreaks havoc upon and destroys your vessel '"+string(_ship.name)+"'.");
             
             scr_ini_ship_cleanup();
         }

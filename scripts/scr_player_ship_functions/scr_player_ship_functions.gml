@@ -9,6 +9,7 @@ function return_lost_ships_chance(){
 function return_lost_ship(){
 	var _return_id = get_valid_player_ship("Lost");
 	if (_return_id!=-1){
+		var _ship = fetch_ship(_return_id);
 		var _lost_fleet = "none";
 		with (obj_p_fleet){
 			if (action == "Lost"){
@@ -31,10 +32,10 @@ function return_lost_ship(){
 		}
 
 		var _return_defect = roll_dice_chapter(1, 100, "high");
-		var _text = $"The ship {obj_ini.ship[_return_id]} has returned to real space and is now orbiting the {_star.name} system\n";
+		var _text = $"The ship {_ship.name} has returned to real space and is now orbiting the {_star.name} system\n";
 		if (_return_defect<90){
 			if (_return_defect>80){
-				obj_ini.ship_hp[_return_id] *= random_range(0.2,0.8);
+				_ship.hp *= random_range(0.2,0.8);
 				_text += $"Reports indicate it has suffered damage as a result of it's time in the warp";
 			} else if (_return_defect>70){
 				var techs = collect_role_group(SPECIALISTS_TECHS, [_star.name, 0, _return_id]);
@@ -74,7 +75,7 @@ function return_lost_ship(){
 				}
 			}else if (_return_defect>20){
 				//This would be an awsome oppertunity and ideal kick off place to allow a redemtion arc either liberating the ship or some of your captured marines  gene seed other bits
-				_text += $"The fate of your ship {obj_ini.ship[_return_id]} has now become clear\n A Chaos fleet has warped into the {_star.name} system with your once prized ship now a part of it";
+				_text += $"The fate of your ship {_ship.name} has now become clear\n A Chaos fleet has warped into the {_star.name} system with your once prized ship now a part of it";
 				var _units = collect_role_group("all", [_star.name, 0, _return_id]);
 				if (array_length(_units)>0){
 					_text += $"You must assume the worst for your crew";
@@ -93,7 +94,7 @@ function return_lost_ship(){
 
 			} else{
 				var _units = collect_role_group("all", [_star.name, 0, _return_id]);
-				_text += $"The fate of your ship {obj_ini.ship[_return_id]} has now become clear. While it did not survive it's travels through the warp and tore itself apart somewhere in the  {_star.name} system. ";
+				_text += $"The fate of your ship {_ship.name} has now become clear. While it did not survive it's travels through the warp and tore itself apart somewhere in the  {_star.name} system. ";
 				scr_kill_ship(_return_id);
 				if (array_length(_units)>0){
 					_text += "Some of your astartes may have been able to jetison and survive the ships destruction";
@@ -117,53 +118,40 @@ function get_player_ships(location="", name=""){
 	var _ships = [];
 	for (var i = 0;i<array_length(obj_ini.ship_data);i++){
 		var _ship = obj_ini.ship_data[i];
-		if (obj_ini.ship[i] != ""){
-			if (location == ""){
+
+		if (location == ""){
+			array_push(_ships, i);
+		} else {
+			if (_ship.location == location){
 				array_push(_ships, i);
-			} else {
-				if (_ship.location == location){
-					array_push(_ships, i);
-				}
 			}
 		}
+
 	}
 	return _ships;
 }
 
 function new_player_ship_defaults(){
 	with (obj_ini){
-		array_push(ship, "");
 		array_push(ship_uid,0);
 		array_push(ship_owner,0);
 		array_push(ship_class, "");
-		array_push(ship_size,0);
 		array_push(ship_leadership,0);
-		array_push(ship_hp,0);
-		array_push(ship_maxhp,0);
 		array_push(ship_location, "");
 		array_push(ship_shields,0);
-		array_push(ship_conditions, "");
-		array_push(ship_speed,0);
-		array_push(ship_turning,0);
-		array_push(ship_front_armour,0);
-		array_push(ship_other_armour,0);
-		array_push(ship_weapons,[]);
-		array_push(ship_capacity,0);
 		array_push(ship_data,new ShipStruct(class));
 	}
-	return array_length(obj_ini.ship)-1;
+	return array_length(obj_ini.ship_data)-1;
 }
 
 function get_valid_player_ship(location="", name=""){
 	for (var i = 0;i<array_length(obj_ini.ship_data);i++){
 		var _ship = obj_ini.ship_data[i];
-		if (obj_ini.ship[i] != ""){
-			if (location == ""){
+		if (location == ""){
+			return i;
+		} else {
+			if (_ship.location == location){
 				return i;
-			} else {
-				if (_ship.location == location){
-					return i;
-				}
 			}
 		}
 	}
@@ -244,11 +232,14 @@ function loose_ship_to_warp_event(){
 function new_player_ship(type, start_loc="home", new_name=""){
     var ship_names="",index=0;
     var index = new_player_ship_defaults(class = "");
-    
+    var _names = [];
+    for (var i=0;i<array_length(obj_ini.ship_data);i++){
+    	array_push(_names, fetch_ship(i).name);
+    }
     for(var k=0; k<=200; k++){
         if (new_name==""){
             new_name=global.name_generator.generate_imperial_ship_name();
-            if (array_contains(obj_ini.ship,new_name)){
+            if (_names){
             	new_name="";
             }
         } else {
@@ -256,20 +247,13 @@ function new_player_ship(type, start_loc="home", new_name=""){
         };
     }
     if (start_loc == "home") then start_loc = obj_ini.home_name;
-    obj_ini.ship[index]=new_name;
     obj_ini.ship_uid[index]=floor(random(99999999))+1;
     obj_ini.ship_leadership[index]=100;	
     var _struct = obj_ini.ship_data[index];
     _struct.location = start_loc;
+    _struct.name=new_name;
+    _struct.class = type;
     if (string_count("Battle Barge",type)>0){
-        obj_ini.ship_class[index]="Battle Barge";
-        obj_ini.ship_hp[index]=1200;
-        obj_ini.ship_maxhp[index]=1200;
-        obj_ini.ship_conditions[index]="";
-        obj_ini.ship_speed[index]=20;
-        obj_ini.ship_turning[index]=45;
-        obj_ini.ship_front_armour[index]=6;
-        obj_ini.ship_other_armour[index]=6;
         obj_ini.ship_shields[index]=12;
         with(_struct){
 	        left_broad_positions = [[56, 16],[65, 16],[74,16],[83, 16]];
@@ -282,6 +266,12 @@ function new_player_ship(type, start_loc="home", new_name=""){
 	        add_weapon_to_ship("Torpedoes", {barrel_count:4});
 	        size = 3;
 	        capacity = 600;
+	        turning_speed = 0.2;
+	        max_speed = 20;
+	        hp = 1200;
+	        max_hp = 1200;
+	        side_armour = 6;
+	        rear_armour = 3;
        	}
 
         
@@ -290,14 +280,6 @@ function new_player_ship(type, start_loc="home", new_name=""){
     }
 
     if (string_count("Strike Cruiser",type)>0){
-        obj_ini.ship_class[index]="Strike Cruiser";
-        obj_ini.ship_hp[index]=600;
-        obj_ini.ship_maxhp[index]=600;
-        obj_ini.ship_conditions[index]="";
-        obj_ini.ship_speed[index]=25;
-        obj_ini.ship_turning[index]=90;
-        obj_ini.ship_front_armour[index]=6;
-        obj_ini.ship_other_armour[index]=6;
         obj_ini.ship_shields[index]=6;
         with(_struct){
 	        left_broad_positions = [[56, 16],[65, 16],[74,16],[83, 16]];
@@ -318,67 +300,60 @@ function new_player_ship(type, start_loc="home", new_name=""){
 	        add_weapon_to_ship("Bombardment Cannons");
 	        size = 2;
 	        capacity = 250;
+	       	turning_speed = 0.25;
+	       	max_speed = 25;
+	       	hp = 600;
+	       	max_hp = 600
+			front_armour = 6;
+			side_armour = 4;
+			rear_armour = 3;	       	
 	    }
         
         
         _struct.turrets = [{}];
     }
     if (string_count("Gladius",type)>0){
-        obj_ini.ship_class[index]="Gladius";
-        obj_ini.ship_hp[index]=200;
-        obj_ini.ship_maxhp[index]=200;
-        obj_ini.ship_conditions[index]="";
-        obj_ini.ship_speed[index]=30;
-        obj_ini.ship_turning[index]=90;
-        obj_ini.ship_front_armour[index]=5;
-        obj_ini.ship_other_armour[index]=5;
         obj_ini.ship_shields[index]=1;
         with(_struct){
+        	class = "Gladius";
 	        add_weapon_to_ship("Light Weapons Battery");
 	        turrets = [{}];
 	        hp = 200;
 	        max_hp = 200;
-	        capacity = 30;	        
+	        capacity = 30;	
+	        turning_speed = 0.3;
+	        max_speed = 30;
+			front_armour = 5;
+			side_armour = 4;
+			rear_armour = 1;	              
 	    }
         
         
     }
     if (string_count("Hunter",type)>0){
-        obj_ini.ship_class[index]="Hunter";
-        obj_ini.ship_hp[index]=200;
-        obj_ini.ship_maxhp[index]=200;
-        obj_ini.ship_conditions[index]="";
-        obj_ini.ship_speed[index]=30;
-        obj_ini.ship_turning[index]=90;
-        obj_ini.ship_front_armour[index]=5;
-        obj_ini.ship_other_armour[index]=5;
         obj_ini.ship_shields[index]=1;
         with(_struct){
+        	class = "Hunter";
 	        add_weapon_to_ship("Torpedoes");
 	        add_weapon_to_ship("Light Weapons Battery");
 	        turrets = [{}];
 	        hp = 200;
 	        max_hp = 200;
-	        capacity = 25;	
+	        capacity = 25;
+	        turning_speed = 0.3;
+	        max_speed = 33; 
+			front_armour = 4;
+			side_armour = 3;
+			rear_armour = 1;	            	
 	    }
 
         
     }
-    if (string_count("Gloriana",type)>0){
-		obj_ini.ship[index]=new_name;
-    
-        obj_ini.ship_class[index]="Gloriana";
-    
-        obj_ini.ship_hp[index]=2400;
-        obj_ini.ship_maxhp[index]=2400;
-        obj_ini.ship_conditions[index]="";
-        obj_ini.ship_speed[index]=25;
-        obj_ini.ship_turning[index]=60;
-        obj_ini.ship_front_armour[index]=8;
-        obj_ini.ship_other_armour[index]=8;
+    if (string_count("Gloriana",type)>0){        
 
         obj_ini.ship_shields[index]=24;
         with(_struct){
+        	class = "Gloriana";
 	        add_weapon_to_ship("Lance Battery", {facing : "right"});
 	        add_weapon_to_ship("Lance Battery",{facing : "left"});
 	        add_weapon_to_ship("Lance Battery",{facing : "front"});
@@ -388,7 +363,12 @@ function new_player_ship(type, start_loc="home", new_name=""){
 	        hp = 2400;
 	        max_hp = 2400;	
 	        size = 3;
-	        capacity = 800;	    
+	        capacity = 800;
+	        turning_speed = 0.23;
+	        max_speed = 23; 
+			front_armour = 6;
+			side_armour = 8;
+			rear_armour = 2;	            	    
 	    }          
         
     }
@@ -396,9 +376,8 @@ function new_player_ship(type, start_loc="home", new_name=""){
 }
 
 function ship_class_name(index){
-	var _ship_name = obj_ini.ship[index];
-	var _ship_class = obj_ini.ship_class[index];	
-	return $"{_ship_class} '{_ship_name}'";
+	var _ship = fetch_ship(index);	
+	return $"{_ship.class} '{_ship.name}'";
 }
 
 function player_ships_class(index){
@@ -419,8 +398,9 @@ function player_ships_class(index){
 function ship_bombard_score(ship_id){
 	var _bomb_score = 0;
 
-	for (var b=0;b<array_length(obj_ini.ship_weapons[ship_id]);b++){
-		_bomb_score += obj_ini.ship_weapons[ship_id].bombard_value;
+	var _weapons = obj_ini.ship_data[ship_id].weapons;
+	for (var b=0;b<array_length(_weapons);b++){
+		_bomb_score += _weapons.bombard_value;
 	}
 
 	return _bomb_score;	

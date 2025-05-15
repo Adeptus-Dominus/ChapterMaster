@@ -423,7 +423,7 @@ try {
 					p3 = string(obj_controller.fest_star) + " " + scr_roman(obj_controller.fest_wid);
 				}
 				if (p2 <= 0) {
-					p3 = +" the vessel '" + string(obj_ini.ship[obj_controller.fest_sid]) + "'";
+					p3 = +" the vessel '{obj_ini.ship_data[obj_controller.fest_sid].name}'";
 				}
 
 				scr_alert("green", "event", string(p1) + " on " + string(p3) + " ends.", 0, 0);
@@ -802,7 +802,7 @@ try {
 				man_size = 0;
 				comp = 0;
 				plan = 0;
-				ship_id = array_get_index(obj_ini.ship, obj_ground_mission.loc);
+				ship_id = get_ship_by_name(obj_ground_mission.loc);
 				obj_controller.menu = 0;
 				obj_controller.managing = 0;
 				obj_controller.cooldown = 10;
@@ -830,8 +830,7 @@ try {
 				comp = 0;
 				plan = 0;
 
-				ship_id = array_get_index(obj_ini.ship, obj_ground_mission.loc);
-
+				ship_id = get_ship_by_name(obj_ground_mission.loc);
 				obj_controller.menu = 0;
 				obj_controller.managing = 0;
 				obj_controller.cooldown = 10;
@@ -855,7 +854,7 @@ try {
 				man_size = 0;
 				comp = 0;
 				plan = 0;
-				ship_id = array_get_index(obj_ini.ship, obj_ground_mission.loc);
+				ship_id = get_ship_by_name(obj_ground_mission.loc);
 				obj_controller.menu = 0;
 				obj_controller.managing = 0;
 				obj_controller.cooldown = 10;
@@ -883,7 +882,7 @@ try {
 				man_size = 0;
 				comp = 0;
 				plan = 0;
-				ship_id = array_get_index(obj_ini.ship, obj_ground_mission.loc);
+				ship_id = get_ship_by_name(obj_ground_mission.loc);
 				obj_controller.menu = 0;
 				obj_controller.managing = 0;
 				obj_controller.cooldown = 10;
@@ -1363,7 +1362,7 @@ try {
 						last_artifact = scr_add_artifact("good", "inquisition", 0, obj_ini.home_name, 2);
 					} else if (obj_ini.fleet_type != ePlayerBase.home_world) {
 						image = "artifact_given";
-						last_artifact = scr_add_artifact("good", "inquisition", 0, obj_ini.ship[0], 501);
+						last_artifact = scr_add_artifact("good", "inquisition", 0, obj_ini.ship_data[0].name, 501);
 					}
 
 					title = "New Artifact";
@@ -1374,7 +1373,7 @@ try {
 						text += "within your Fortress Monastery.";
 					}
 					if (obj_ini.fleet_type != ePlayerBase.home_world) {
-						text += $"upon your ship '{obj_ini.ship[0]}'.";
+						text += $"upon your ship '{obj_ini.ship_data[0].name}'.";
 					}
 					scr_event_log("", "Inquisition Mission Accepted: The Inquisition has left an Artifact in your care.");
 
@@ -1462,7 +1461,7 @@ try {
 				}
 			}
 			if (obj_ini.fleet_type != ePlayerBase.home_world) {
-				var last_artifact = scr_add_artifact("random", "", 4, obj_ini.ship[0], 501);
+				var last_artifact = scr_add_artifact("random", "", 4, obj_ini.ship_data[0].name, 501);
 			}
 			if (obj_ini.fleet_type == ePlayerBase.home_world) {
 				var last_artifact = scr_add_artifact("random", "", 4, obj_ini.home_name, 2);
@@ -1585,7 +1584,7 @@ try {
 				man_size = 0;
 				comp = 0;
 				plan = 0;
-				ship_id = array_get_index(obj_ini.ship, obj_ground_mission.loc);
+				ship_id = get_ship_by_name(obj_ground_mission.loc);
 				obj_controller.menu = 0;
 				obj_controller.managing = 0;
 				obj_controller.cooldown = 10;
@@ -1605,7 +1604,7 @@ try {
 			man_size = 0;
 			comp = 0;
 			plan = 0;
-			ship_id = array_get_index(obj_ini.ship, obj_ground_mission.loc);
+			ship_id = get_ship_by_name(obj_ground_mission.loc);
 			obj_controller.menu = 0;
 			obj_controller.managing = 0;
 			obj_controller.cooldown = 10;
@@ -1639,7 +1638,7 @@ try {
 				}
 			}
 			if (obj_ini.fleet_type != ePlayerBase.home_world) {
-				var last_artifact = scr_add_artifact("random", "", 4, obj_ini.ship[0], 501);
+				var last_artifact = scr_add_artifact("random", "", 4, obj_ini.ship_data[0].name, 501);
 			}
 			if (obj_ini.fleet_type == ePlayerBase.home_world) {
 				var last_artifact = scr_add_artifact("random", "", 4, obj_ini.home_name, 2);
@@ -1708,7 +1707,7 @@ try {
 				man_size = 0;
 				comp = 0;
 				plan = 0;
-				ship_id = array_get_index(obj_ini.ship, obj_ground_mission.loc);
+				ship_id = get_ship_by_name(obj_ground_mission.loc);
 			}
 
 			if ((target_comp != 3) && (target_comp != 4)) {
@@ -1726,7 +1725,7 @@ try {
 				man_size = 0;
 				comp = 0;
 				plan = 0;
-				ship_id = array_get_index(obj_ini.ship, obj_ground_mission.loc);
+				ship_id = get_ship_by_name(obj_ground_mission.loc);
 				obj_controller.menu = 0;
 				obj_controller.managing = 0;
 				obj_controller.cooldown = 10;

@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"scr_dead_marines",
+  "%Name":"scr_destroy_vehicle",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_dead_marines",
+  "name":"scr_destroy_vehicle",
   "parent":{
     "name":"Combat",
     "path":"folders/Scripts/Combat.yy",

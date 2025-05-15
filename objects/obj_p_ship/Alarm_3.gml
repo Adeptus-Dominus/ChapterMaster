@@ -1,7 +1,8 @@
 
 if (hp<maxhp) and (ship_id!=0){
     obj_fleet.ships_damaged+=1;
-    obj_ini.ship_hp[self.ship_id]=hp;
+    var _ship = fetch_ship(ship_id);
+    _ship.hp = hp;
     
     if (hp<=0) then obj_fleet.ship_lost[ship_id]=1;
     

@@ -348,7 +348,7 @@ function Roster() constructor{
             _ship_index = _ships[s];
             var _ship = obj_ini.ship_data[_ship_index];
             if (_ship.carrying>0){
-                new_ship_button(obj_ini.ship[_ship_index],_ship_index);
+                new_ship_button(_ship.name,_ship_index);
             }
         }
     }

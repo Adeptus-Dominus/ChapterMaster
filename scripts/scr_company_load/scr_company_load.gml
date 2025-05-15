@@ -6,9 +6,9 @@ function scr_company_load(ship_loc) {
     var ships = array_length(obj_ini.ship_data);
     for (var i = 0; i < ships; i++) {
         var _ship = obj_ini.ship_data[selecting_ship];
-        if (obj_ini.ship[i] != "" && _ship.location == ship_loc){
+        if (_ship.location == ship_loc){
             array_push(sh_ide, i);
-            array_push(sh_name, obj_ini.ship[i]);
+            array_push(sh_name, _ship.name);
             array_push(sh_class, _ship.class);
             array_push(sh_loc, _ship.location);
             array_push(sh_uid, obj_ini.ship_uid[i]);

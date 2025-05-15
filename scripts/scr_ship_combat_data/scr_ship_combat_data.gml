@@ -243,7 +243,7 @@ function assign_ship_stats(){
 	    maxshields=400;
 	    leadership=90;
 	    armour_front=6;
-	    armour_other=5;
+	    side_armour=5;
 	    turrets=4;
 	    capacity=150;
 	    carrying=0;
@@ -266,7 +266,7 @@ function assign_ship_stats(){
 	    maxshields=400;
 	    leadership=85;
 	    armour_front=5;
-	    armour_other=5;
+	    side_armour=5;
 	    turrets=5;
 	    capacity=100;
 	    carrying=24;
@@ -287,7 +287,7 @@ function assign_ship_stats(){
 	    maxshields=300;
 	    leadership=85;
 	    armour_front=5;
-	    armour_other=5;
+	    side_armour=5;
 	    turrets=3;
 	    capacity=50;
 	    add_weapon_to_ship("Lance Battery", {cooldown:30});
@@ -307,7 +307,7 @@ function assign_ship_stats(){
 	    maxshields=100;
 	    leadership=80;
 	    armour_front=5;
-	    armour_other=5;
+	    side_armour=5;
 	    turrets=2;
 	    capacity=50;
 	    carrying=0;
@@ -330,7 +330,7 @@ function assign_ship_stats(){
 	    maxshields=300;
 	    leadership=100;
 	    armour_front=5;
-	    armour_other=4;
+	    side_armour=4;
 	    turrets=4;
 	    capacity=150;
 
@@ -351,7 +351,7 @@ function assign_ship_stats(){
 	    maxshields=200;
 	    leadership=90;
 	    armour_front=5;
-	    armour_other=4;
+	    side_armour=4;
 	    turrets=3;
 	    capacity=100;
 	    carrying=0;
@@ -371,7 +371,7 @@ function assign_ship_stats(){
 	    maxshields=200;
 	    leadership=90;
 	    armour_front=5;
-	    armour_other=4;
+	    side_armour=4;
 	    turrets=2;
 	    capacity=50;
 	    carrying=0;
@@ -394,7 +394,7 @@ function assign_ship_stats(){
 	    maxshields=200;
 	    leadership=90;
 	    armour_front=5;
-	    armour_other=4;
+	    side_armour=4;
 	    turrets=2;
 	    capacity=50;
 	    carrying=0;
@@ -418,7 +418,7 @@ function assign_ship_stats(){
 	    maxshields=200;
 	    leadership=100;
 	    armour_front=6;
-	    armour_other=5;
+	    side_armour=5;
 	    turrets=3;
 	    capacity=250;
 	    carrying=0;
@@ -442,7 +442,7 @@ function assign_ship_stats(){
 	    maxshields=200;
 	    leadership=100;
 	    armour_front=6;
-	    armour_other=5;
+	    side_armour=5;
 	    turrets=3;
 	    capacity=250;
 	    carrying=0;
@@ -467,7 +467,7 @@ function assign_ship_stats(){
 	    maxshields=200;
 	    leadership=100;
 	    armour_front=6;
-	    armour_other=5;
+	    side_armour=5;
 	    turrets=3;
 	    capacity=250;
 	    carrying=0;
@@ -487,7 +487,7 @@ function assign_ship_stats(){
 	    maxshields=200;
 	    leadership=100;
 	    armour_front=6;
-	    armour_other=5;
+	    side_armour=5;
 	    turrets=3;
 	    capacity=250;
 	    carrying=0;
@@ -508,7 +508,7 @@ function assign_ship_stats(){
 	    maxshields=100;
 	    leadership=80;
 	    armour_front=6;
-	    armour_other=4;
+	    side_armour=4;
 	    turrets=2;
 	    capacity=50;
 	    carrying=0;
@@ -527,7 +527,7 @@ function assign_ship_stats(){
 	    maxshields=200;
 	    leadership=100;
 	    armour_front=6;
-	    armour_other=5;
+	    side_armour=5;
 	    turrets=5;
 	    capacity=1000;
 	    carrying=0;
@@ -548,7 +548,7 @@ function assign_ship_stats(){
 	    maxshields=200;
 	    leadership=90;
 	    armour_front=6;
-	    armour_other=5;
+	    side_armour=5;
 	    turrets=3;
 	    capacity=250;
 	    carrying=0;
@@ -568,7 +568,7 @@ function assign_ship_stats(){
 	    maxshields=100;
 	    leadership=100;
 	    armour_front=6;
-	    armour_other=5;
+	    side_armour=5;
 	    turrets=2;
 	    capacity=100;
 	    carrying=0;
@@ -587,7 +587,7 @@ function assign_ship_stats(){
 	    maxshields=100;
 	    leadership=80;
 	    armour_front=5;
-	    armour_other=4;
+	    side_armour=4;
 	    turrets=1;
 	    capacity=50;
 	    carrying=0;
@@ -606,7 +606,7 @@ function assign_ship_stats(){
 	    maxshields=100;
 	    leadership=80;
 	    armour_front=5;
-	    armour_other=4;
+	    side_armour=4;
 	    turrets=2;
 	    capacity=50;
 	    carrying=0;
@@ -625,7 +625,7 @@ function assign_ship_stats(){
 	    maxshields=400;
 	    leadership=90;
 	    armour_front=7;
-	    armour_other=5;
+	    side_armour=5;
 	    weapons=5;
 	    turrets=4;
 	    capacity=150;
@@ -648,7 +648,7 @@ function assign_ship_stats(){
 	    maxshields=300;
 	    leadership=85;
 	    armour_front=5;
-	    armour_other=5;
+	    side_armour=5;
 	    turrets=3;
 	    capacity=50;
 	    carrying=0;
@@ -668,7 +668,7 @@ function assign_ship_stats(){
 	    maxshields=300;
 	    leadership=85;
 	    armour_front=5;
-	    armour_other=5;
+	    side_armour=5;
 	    turrets=3;
 	    capacity=50;
 	    carrying=0;
@@ -695,7 +695,7 @@ function assign_ship_stats(){
 	    maxshields=100;
 	    leadership=80;
 	    armour_front=7;
-	    armour_other=4;
+	    side_armour=4;
 	    turrets=2;
 	    capacity=50;
 	    carrying=0;
@@ -722,7 +722,7 @@ function assign_ship_stats(){
 	    leadership=100;
 	    
 	    armour_front=5;
-	    armour_other=5;
+	    side_armour=5;
 	    turrets=5;
 	    capacity=800;
 	    carrying=0;
@@ -751,7 +751,7 @@ function assign_ship_stats(){
 	    leadership=100;
 	    
 	    armour_front=5;
-	    armour_other=5;
+	    side_armour=5;
 	    turrets=4;
 	    capacity=500;
 	    carrying=0;
@@ -774,7 +774,7 @@ function assign_ship_stats(){
 	    leadership=100;
 	    
 	    armour_front=5;
-	    armour_other=5;
+	    side_armour=5;
 	    turrets=2;
 	    capacity=250;
 	    carrying=0;
@@ -796,7 +796,7 @@ function assign_ship_stats(){
 	    leadership=100;
 	    
 	    armour_front=4;
-	    armour_other=4;
+	    side_armour=4;
 	    turrets=2;
 	    capacity=25;
 	    carrying=0;
@@ -818,7 +818,7 @@ function assign_ship_stats(){
 	    leadership=100;
 	    
 	    armour_front=4;
-	    armour_other=4;
+	    side_armour=4;
 	    turrets=2;
 	    capacity=25;
 	    carrying=0;

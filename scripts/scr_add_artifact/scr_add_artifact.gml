@@ -253,7 +253,7 @@ function scr_add_artifact(artifact_type, artifact_tags, is_identified, artifact_
             artifact_location = obj_ini.home_name;
             ship_id = 2;
         } else {
-            artifact_location = obj_ini.ship[0];
+            artifact_location = obj_ini.ship_data[0].name;
             ship_id = 501;
         }
     }
@@ -321,7 +321,7 @@ function ArtifactStruct(Index) constructor {
 
     static location_string = function() {
         if (sid() >= 500) {
-            return obj_ini.ship[ship_id()];
+            return obj_ini.ship_data[ship_id()].name;
         } else {
             return $"{loc()} {sid()}";
         }
@@ -422,7 +422,8 @@ function ArtifactStruct(Index) constructor {
             if (_ship_id > 0) {
                 var demonSummonChance = roll_dice_chapter(1, 100, "high");
 
-                if ((demonSummonChance <= 60) && (obj_ini.ship_carrying[_ship_id] > 0)) {
+                var _ship = obj_ini.ship_data[_ship_id];
+                if (demonSummonChance <= 60 _ship.carrying) {
                     instance_create(0, 0, obj_ncombat);
                     obj_ncombat.battle_special = "ship_demon";
                     obj_ncombat.formation_set = 1;

@@ -86,11 +86,7 @@ if (hp>0) and (instance_exists(target)){
     target_distance = dist;
     
     // STC Bonuses
-    turning_speed = 0.2;
-    if (obj_controller.stc_bonus[5]=3){
-        turning_speed+=0.1;
-    }
-    
+    turning_speed = ship_data.calc_turn_speed();
     
     if (paction!="move") and (paction!="attack_move") and (paction!="turn") and (paction!="attack_turn"){
         if (target!=0) and (action="attack"){
@@ -104,12 +100,9 @@ if (hp>0) and (instance_exists(target)){
         dist=point_distance(x,y,draw_targets[0], draw_targets[1]);
     }
     
-    // STC Bonuses
-    var speed_up, speed_down;speed_up=0.005;speed_down=0.025;
-    if (obj_controller.stc_bonus[6]=3){
-        speed_up=0.008;
-        speed_down=0.037;
-    }
+    var speed_up = ship_data.final_acceleration();
+
+    var speed_down = ship_data.deceleration();
     
     if (paction="turn") or (paction="attack_turn"){
         direction=turn_towards_point(direction,x,y,target_x,target_y,turning_speed/2);

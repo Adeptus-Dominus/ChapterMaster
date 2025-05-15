@@ -301,7 +301,7 @@ function set_nid_ships(){
 	    maxshields=300;
 	    leadership=100;
 	    armour_front=7;
-	    armour_other=5;
+	    side_armour=5;
 	    weapons=5;
 	    turrets=3;
 	    capacity=0;
@@ -338,7 +338,7 @@ function set_nid_ships(){
 	    maxshields=200;
 	    leadership=100;
 	    armour_front=5;
-	    armour_other=4;
+	    side_armour=4;
 	    weapons=3;
 	    turrets=2;
 	    capacity=0;
@@ -360,7 +360,7 @@ function set_nid_ships(){
 	    maxshields=100;
 	    leadership=100;
 	    armour_front=5;
-	    armour_other=4;
+	    side_armour=4;
 	    weapons=1;
 	    turrets=0;
 	    capacity=0;
@@ -381,7 +381,7 @@ function set_nid_ships(){
 	    maxshields=100;
 	    leadership=100;
 	    armour_front=5;
-	    armour_other=4;
+	    side_armour=4;
 	    weapons=1;
 	    turrets=0;
 	    capacity=0;

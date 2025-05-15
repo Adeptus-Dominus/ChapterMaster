@@ -1,9 +1,9 @@
-function turn_towards_point(current_angle, x1, y1, x2, y2, turn_speed) {
+function turn_towards_point(current_angle, x1, y1, x2, y2, turning_speed) {
 	// turn_towards_point(currentAngle, x1, y1, x2, y2, speed);
 
 	var ca = degtorad(current_angle);
 
-	var sp = degtorad(turn_speed);
+	var sp = degtorad(turning_speed);
 
 	var a = arctan2(y1-y2, x2-x1) - ca;
 	while (a < -pi || a > pi)

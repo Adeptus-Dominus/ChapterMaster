@@ -29,7 +29,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true) {
                 //get roman numeral for system planet
                 unit_location_string += scr_roman(unit_location[1]);
             } else if (unit_location[0] == location_types.ship) {
-                unit_location_string = obj_ini.ship[unit_location[1]];
+                unit_location_string = obj_ini.ship_data[unit_location[1]].name;
             }
             assignment = unit.assignment();
             if (assignment != "none") {
@@ -90,7 +90,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true) {
             //numeral for vehicle planet
             unit_location_string += scr_roman(ma_wid[selected]);
         } else if (ma_lid[selected] > -1) {
-            unit_location_string = obj_ini.ship[ma_lid[selected]];
+            unit_location_string = obj_ini.ship_data[ma_lid[selected]].name;
         }
         health_string = string(round(ma_health[selected])) + "% HP";
         exp_string = "";

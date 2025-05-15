@@ -40,7 +40,7 @@ function scr_mission_reward(mission, star, planet) {
 	                if (roll2>=80) and (roll2<88) then found_requisition+=100;
 	                if (roll2>=88) and (roll2<96){
 	                    if (obj_ini.fleet_type=ePlayerBase.home_world) then scr_add_artifact("random","",4,obj_ini.home_name,2);
-	                    if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("random","",4,obj_ini.ship[0],501);
+	                    if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("random","",4,obj_ini.ship_data[0].name,501);
 	                    found_artifact+=1;
 	                }
 	                if (roll2>=96){
