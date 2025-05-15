@@ -17,7 +17,8 @@ try {
     }
     if (instance_number(obj_en_ship)<=0){
         with(obj_p_ship){
-            if (hp<=0) then scr_recent("ship_destroyed",obj_ini.ship[ship_id],ship_id);
+            var _ship = fetch_ship(ship_id);
+            if (hp<=0) then scr_recent("ship_destroyed",_ship.name,ship_id);
         }
     }
     

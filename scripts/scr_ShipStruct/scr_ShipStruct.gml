@@ -1,4 +1,4 @@
-function fetch_Ship(id){
+function fetch_ship(id){
 	return obj_ini.ship_data[id];
 }
 

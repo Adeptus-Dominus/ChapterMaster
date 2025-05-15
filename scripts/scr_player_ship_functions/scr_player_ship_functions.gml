@@ -1,7 +1,9 @@
 function return_lost_ships_chance(){
-	if (array_contains(obj_ini.ship_location, "Lost")){
-		if (roll_dice_chapter(1, 100, "high")>97){
-			return_lost_ship();
+	for (var i=0;i<array_length(obj_ini.ship_data);i++){
+		if (fetch_ship(i).location == "Lost"){
+			if (roll_dice_chapter(1, 100, "high")>97){
+				return_lost_ship();
+			}			
 		}
 	}
 }
@@ -131,7 +133,7 @@ function get_player_ships(location="", name=""){
 	return _ships;
 }
 
-function new_player_ship_defaults(){
+function new_player_ship_defaults(class){
 	with (obj_ini){
 		array_push(ship_data,new ShipStruct(class));
 	}
@@ -225,7 +227,7 @@ function loose_ship_to_warp_event(){
 //TODO make method for setting ship weaponry
 function new_player_ship(type, start_loc="home", new_name=""){
     var ship_names="",index=0;
-    var index = new_player_ship_defaults(class = "");
+    var index = new_player_ship_defaults(type);
     var _names = [];
     for (var i=0;i<array_length(obj_ini.ship_data);i++){
     	array_push(_names, fetch_ship(i).name);
@@ -233,7 +235,7 @@ function new_player_ship(type, start_loc="home", new_name=""){
     for(var k=0; k<=200; k++){
         if (new_name==""){
             new_name=global.name_generator.generate_imperial_ship_name();
-            if (_names){
+            if (array_contains(_names, new_name)){
             	new_name="";
             }
         } else {
@@ -263,7 +265,7 @@ function new_player_ship(type, start_loc="home", new_name=""){
 	        max_hp = 1200;
 	        side_armour = 6;
 	        rear_armour = 3;
-	        shields = 1;2
+	        shields = 1;
        	}
 
         
@@ -277,7 +279,7 @@ function new_player_ship(type, start_loc="home", new_name=""){
 	        right_broad_positions = [[56, 37],[65, 37],[74,37],[83, 37]];
 	        var _broadsl = left_broad_positions;
 	        var _broadsr = right_broad_positions;
-	        for (var i=0;i<arras_length(_broadsl);i++){
+	        for (var i=0;i<array_length(_broadsl);i++){
 	        	add_weapon_to_ship("Macro Cannon", {
 	        		facing : "left",
 	        		ship_position : _broadsl[i],
@@ -319,8 +321,6 @@ function new_player_ship(type, start_loc="home", new_name=""){
 			rear_armour = 1;
 			shields = 1;	              
 	    }
-        
-        
     }
     if (string_count("Hunter",type)>0){
         with(_struct){

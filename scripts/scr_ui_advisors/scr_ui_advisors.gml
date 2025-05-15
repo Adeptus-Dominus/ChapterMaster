@@ -97,15 +97,15 @@ function scr_ui_advisors() {
                 draw_set_halign(fa_left);
 
                 var behav = 0,
-                    r_eta = 0,unit;
+                    r_eta = 0,_unit;
 
                 for (var qp = 1; qp <= min(36, penitorium); qp++) {
-                    unit = obj_ini.TTRPG[penit_co[qp]][penit_id[qp]];
-                    if (unit.corruption > 0) then r_eta = round((unit.corruption * unit.corruption) / 50);
-                    if (unit.corruption >= 90) then r_eta = "Never";
-                    if (unit.corruption <= 0) then r_eta = "0";
+                    _unit = obj_ini.TTRPG[penit_co[qp]][penit_id[qp]];
+                    if (_unit.corruption > 0) then r_eta = round((_unit.corruption * _unit.corruption) / 50);
+                    if (_unit.corruption >= 90) then r_eta = "Never";
+                    if (_unit.corruption <= 0) then r_eta = "0";
                     draw_rectangle(xx + 947, yy + 100 + ((qp - 1) * 20), xx + 1577, yy + 100 + (qp * 20), 1);
-                    draw_text(xx + 950, yy + 100 + ((qp - 1) * 20), string_hash_to_newline(unit.name_role()));
+                    draw_text(xx + 950, yy + 100 + ((qp - 1) * 20), string_hash_to_newline(_unit.name_role()));
                     draw_text(xx + 1200, yy + 100 + ((qp - 1) * 20), string_hash_to_newline("ETA: " + string(r_eta)));
                     draw_text(xx + 1432, yy + 100 + ((qp - 1) * 20), string_hash_to_newline("[Execute]  [Release]"));
                 }
@@ -662,12 +662,12 @@ function scr_ui_advisors() {
 
 
         draw_text_ext(xx + 222, yy + 216, string_hash_to_newline(string(tot_ki)), -1, 396);
-        var unit = fetch_unit([0,1]);
-        if (unit.ship_location == -1){
-            draw_text(xx + 222, yy + 380, string_hash_to_newline("Current Location: " + string(obj_ini.loc[0, 1]) + " " + string(unit.planet_location) + "#Health: " + unit.hp() + "%"));
-        } else if (unit.ship_location>-1) {
-            var _ship = fetch_Ship(unit.ship_location);
-            draw_text(xx + 222, yy + 380, string_hash_to_newline($"Current Location: Onboard {_ship.name}#Health: {unit.hp()}%"));
+        var _unit = fetch_unit([0,1]);
+        if (_unit.ship_location == -1){
+            draw_text(xx + 222, yy + 380, string_hash_to_newline("Current Location: " + string(obj_ini.loc[0, 1]) + " " + string(_unit.planet_location) + "#Health: " + _unit.hp() + "%"));
+        } else if (_unit.ship_location>-1) {
+            var _ship = _unit.ship();
+            draw_text(xx + 222, yy + 380, string_hash_to_newline($"Current Location: Onboard {_ship.name}#Health: {_unit.hp()}%"));
         }
 
         draw_sprite(spr_arrow, 0, xx + 217, yy + 32);

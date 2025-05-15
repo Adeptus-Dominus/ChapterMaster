@@ -1,4 +1,4 @@
-s//TODO make enum to store menu area codes
+//TODO make enum to store menu area codes
 function scr_menu_clear_up(specific_area_function) {
     var spec_func = specific_area_function;
     with(obj_controller) {

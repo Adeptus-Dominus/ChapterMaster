@@ -1727,7 +1727,7 @@ for(var mm=0; mm<array_length(obj_ini.ship_data); mm++){
             glad++;
             array_push(glad_names, string(_ship.name));
             break; 
-         case "Gladius":
+         case "Hunter":
             hunt++;
             array_push(hunt_names, string(_ship.name));
             break;                                            

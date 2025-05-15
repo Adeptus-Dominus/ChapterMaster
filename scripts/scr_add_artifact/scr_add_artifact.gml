@@ -423,7 +423,7 @@ function ArtifactStruct(Index) constructor {
                 var demonSummonChance = roll_dice_chapter(1, 100, "high");
 
                 var _ship = obj_ini.ship_data[_ship_id];
-                if (demonSummonChance <= 60 _ship.carrying) {
+                if (demonSummonChance <= 60 && _ship.carrying) {
                     instance_create(0, 0, obj_ncombat);
                     obj_ncombat.battle_special = "ship_demon";
                     obj_ncombat.formation_set = 1;

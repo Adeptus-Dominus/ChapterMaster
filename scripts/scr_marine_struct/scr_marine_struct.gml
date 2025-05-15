@@ -422,6 +422,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         planet_location = obj_ini.home_planet;
     }
     ship_location = -1;
+    static ship = function(){
+        return fetch_ship(ship_location);
+    }
     last_ship = {
         uid: "",
         name: ""
@@ -1877,8 +1880,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         } else {
             location_type = location_types.ship; //marine is on ship
             location_id = ship_location > -1 ? ship_location : 0; //ship array position
-            if (location_id < array_length(obj_ini.ship_location)) {
-                var _ship = obj_ini.ship_data[location_id];
+            if (location_id < array_length(obj_ini.ship_data)) {
+                var _ship = ship();
                 location_name = _ship.location; //location of ship
             } else {
                 location_name = location_name == obj_ini.loc[company][marine_number];
@@ -1948,7 +1951,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             var off_loading_ship = current_location[1];
             var _ship = obj_ini.ship_data[ship];
             var _offload_ship = obj_ini.ship_data[off_loading_ship];
-            if ((_ship.location == _offload_ship.location && _ship.has_space(size)) {
+            if (_ship.location == _offload_ship.location && _ship.has_space(size)) {
                 oboff_loading_ship.carrying -= size; // remove from previous ship capacity
                 ship_location = ship; // change marine location to new ship
                 _ship.carrying += size; //add marine capacity to new ship

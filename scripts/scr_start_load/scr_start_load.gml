@@ -53,9 +53,9 @@ function scr_start_load(fleet, load_from_star, load_options) {
 	function load_vehicles(_companies, _equip ,_ship, size){
 			obj_ini.veh_wid[_companies, _equip] = 0;
 			obj_ini.veh_lid[_companies, _equip] = _ship;
-			var _ship = obj_ini.ship_data[_ship];
-			obj_ini.veh_loc[_companies, _equip] = _ship.location;	
-			_ship.carrying += size;
+			var _ship_s = obj_ini.ship_data[_ship];
+			obj_ini.veh_loc[_companies, _equip] = _ship_s.location;	
+			_ship_s.carrying += size;
 	}
     var  ship_size, _companies_loaded;
     _company_size = 0;

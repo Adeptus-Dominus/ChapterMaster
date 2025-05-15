@@ -1,4 +1,4 @@
-stry {
+try {
     // show_debug_message("alarm 7 start");
     audio_stop_sound(snd_battle);
     audio_play_sound(snd_royal,0,true);
@@ -613,7 +613,8 @@ stry {
         var shiyp=instance_nearest(battle_object.x,battle_object.y,obj_p_fleet);
         if (shiyp.x == battle_object.x && shiyp.y ==battle_object.y){
             shi = fleet_full_ship_array(shiyp)[0];
-            loc = obj_ini.ship[shi];
+            var _ship = fetch_ship(shi);
+            loc = _ship.name;
         }
         
         if (hulk_treasure=1){// Requisition

@@ -63,8 +63,12 @@ if (num>0){// Hmmmmmmm
             
             scr_return_ship(loc,id,num);
             var man_size,ship_id,comp,plan,i;
-            i=0;ship_id=0;man_size=0;comp=0;plan=0;
-            repeat(30){i+=1;if (obj_ini.ship[i]=loc) then ship_id=i;}i=0;
+            i=0;
+            ship_id=0;
+            man_size=0;
+            comp=0;
+            plan=0;
+            ship_id = get_ship_by_name(loc);
             obj_controller.menu=0;obj_controller.managing=0;
             obj_controller.cooldown=10;
             instance_destroy();exit;

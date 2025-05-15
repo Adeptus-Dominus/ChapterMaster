@@ -282,6 +282,9 @@ function ShipWeapon(weapon_name, overide_data={}) constructor{
 }
 
 function add_weapon_to_ship(weapon_name, overide_data={}){
-	overide_data.ship = id;
+	if (instance_exists(obj_fleet)){
+		overide_data.ship = id;
+	}
+
 	array_push(weapons, new ShipWeapon(weapon_name, overide_data));
 };

@@ -770,7 +770,8 @@ try {
         }
         if (press == 3) {
             // Return to ship, exit
-            scr_return_ship(obj_ini.ship[obj_ground_mission.ship_id], obj_ground_mission, obj_ground_mission.num);
+            var _ship = fetch_ship(obj_ground_mission.ship_id);
+            scr_return_ship(_ship.name, obj_ground_mission, obj_ground_mission.num);
             var man_size, ship_id, comp, plan, i;
             ship_id = 0;
             man_size = 0;
