@@ -50,8 +50,10 @@ All variable names, function names, etc., should use `snake_case` unless stated 
 - Example: `#macro COL_DARK_RED`.
 
 **Enums**:
-- Enum names should start with an `e` prefix and be in all caps `SNAKE_CASE`.
-- Enum entries should use `PascalCase`.
+ **Enums**:
+
+ - Enum names should start with an `e` prefix and be in all caps `SNAKE_CASE`.
+ - Enum entries should use `PascalCase`.
 - Example: `enum eCOLORS` with entries `DarkRed`, `Blue`, etc.
 
 ### General Styling
