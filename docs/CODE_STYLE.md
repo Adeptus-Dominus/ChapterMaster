@@ -45,6 +45,8 @@ All variable names, function names, etc., should use `snake_case` unless stated 
 ### Constants
 
 **Macros**:
+**Macros**:
+
 - Written in all caps `SNAKE_CASE`.
 - Try to denote their group using a short prefix (e.g., `PREFIX_`).
 - Example: `#macro COL_DARK_RED`.
