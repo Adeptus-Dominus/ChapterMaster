@@ -954,7 +954,7 @@ function merge_fleets(main_fleet, merge_fleet){
 	instance_destroy(merge_fleet.id);
 }
 
-function fleet_respond_crusade(){
+function fleet_respond_crusade(){ // Related to issue 714 maybe?
 	if (owner != eFACTION.Imperium) then exit;
 	if (!navy) then exit;
 	if (orbiting.owner > eFACTION.Ecclesiarchy) then exit;
