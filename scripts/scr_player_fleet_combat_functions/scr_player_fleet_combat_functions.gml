@@ -121,6 +121,15 @@ function player_fleet_ship_spawner(){
 	}// End repeat		
 }
 
+//data must have keys, shields, recharge, and reboot
+function ShipShieldGenerator(data){
+	move_data_to_current_scope(data);
+	destroyed = false;
+	disabled = false;
+	static step = function(){
+
+	}
+}
 
 function setup_player_combat_ship(){
 	action="";

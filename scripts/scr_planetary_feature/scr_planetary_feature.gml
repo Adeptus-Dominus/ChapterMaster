@@ -165,6 +165,9 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
         recruit_type = 0;
         recruit_cost = 0;
 		break;
+	case P_features.ShipDock:
+		player_hidden = 0;
+		size = 1;
 	default:
 		player_hidden = 1;
 		planet_display = 0;
@@ -272,7 +275,7 @@ function planet_player_hidden_feature(planet){
 
 function system_player_hidden_feature(system){
 	for (var i=1;i<=system.planets;i++){
-		if (planet_hidden_feature(system.p_feature[i])) then return true;
+		if (planet_player_hidden_feature(system.p_feature[i])) then return true;
 	}
 
 	return false;

@@ -18,27 +18,46 @@ try {
     if (instance_number(obj_en_ship)<=0){
         with(obj_p_ship){
             var _ship = fetch_ship(ship_id);
+            ship_data.hp = hp;
+            ship_data.weapons = weapons;
             if (hp<=0) then scr_recent("ship_destroyed",_ship.name,ship_id);
         }
     }
     
-    with (_player_battle_fleet){
-        scr_ini_ship_cleanup()
+    if (instance_exists(_player_battle_fleet)){
+        with (_player_battle_fleet){
+            scr_ini_ship_cleanup();
 
-        if (player_fleet_ship_count() == 0) then instance_destroy();            
+            if (player_fleet_ship_count() == 0){
+                instance_destroy();    
+            }        
+        }
     }
     
     var op,ii,killer,killer_tg;op=0;killer=0;killer_tg=0;ii=-50;
     
     
-    
-    
-    
-    if (player_started=0) and (instance_exists(obj_turn_end)) then with(obj_star){if (name!=obj_turn_end.battle_location[obj_turn_end.current_battle]){x-=10000;y-=10000;}}
-    if (player_started=1) then with(obj_star){if (id!=obj_fleet.ene_fleet){x-=10000;y-=10000;}}
+    if (!player_started && instance_exists(obj_turn_end)){
+        with(obj_star){
+            if (name!=obj_turn_end.battle_location[obj_turn_end.current_battle]){
+                x-=10000;
+                y-=10000;
+            }
+        }
+    } else {
+        with(obj_star){
+            if (id!=obj_fleet.ene_fleet){
+                x-=10000;y-=10000;
+            }
+        }
+    }
     ii=instance_nearest(room_width,room_height,obj_star);
     obj_controller.temp[1070]=ii.id;
-    with(obj_star){if (x<-5000) and (y<-5000){x+=10000;y+=10000;}}
+    
+    with(obj_star){
+        if (x<-5000) and (y<-5000){x+=10000;y+=10000;
+        }
+    }
     
     
     

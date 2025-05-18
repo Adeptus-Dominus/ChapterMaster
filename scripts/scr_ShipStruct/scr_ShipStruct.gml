@@ -29,6 +29,12 @@ function ShipStruct() constructor{
 	rear_armour = 1;
 	name = "";
 	shields = 0;
+	shields_damage = 0;
+	shields_recharge_rate = 0.2;
+	shields_reboot_time = 20;
+	captain = false;
+	engineer = false;
+
 	uid = floor(random(99999999))+1;
 
 	static ship_hp_percentage = function(){

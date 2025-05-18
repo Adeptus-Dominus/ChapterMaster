@@ -1,3 +1,14 @@
+function system_setup_controller(){
+	instance_activate_object(obj_star);
+	if (instance_exists(obj_ini)) and (global.load==-1){
+		wait_and_execute(2, scr_system_spawn, [], id);
+	    instance_activate_object(obj_star);
+	    instance_activate_all();
+	}
+
+}
+
+function scr_system_spawn(){
 // Sets up the sector spawn and assigns spawned enemies to the sector
 instance_activate_object(obj_star);
 instance_activate_all();
@@ -587,3 +598,5 @@ if (instance_exists(obj_temp7)){
 }*/
 
 // x=0;y=0;
+
+}
