@@ -46,7 +46,7 @@ function ShipStruct() constructor{
 
 	static deceleration = function(){
 		var _decel = final_acceleration()/2;
-		return deceleration;
+		return _decel;
 	}
 
 	static ship_self_heal = function(){
