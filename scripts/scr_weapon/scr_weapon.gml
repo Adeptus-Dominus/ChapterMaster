@@ -1060,7 +1060,7 @@ global.weapons = {
 		"range": 12,
 		"spli": 20,
 		"arp": 2,
-		"tags": ["heavy_ranged", "dreadnought"]
+		"tags": ["heavy_ranged", "terminator", "dreadnought"]
 	},
 	"Autocannon": {
 		"abbreviation": "Autocnn",
@@ -2797,7 +2797,8 @@ global.gear = {
 			"ranged_hands": -0.25,
 			"specials": {
 				"combi_tool": 1
-			}
+			},
+			"tags": ["terminator"]
 		},
 		"Servo-harness": {
 			"abbreviation": "SrvHrns",
@@ -2812,7 +2813,8 @@ global.gear = {
 			"ranged_hands": -0.5,
 			"specials": {
 				"combi_tool": 2
-			}
+			},
+			"tags": ["terminator"]
 		},
 		"Conversion Beamer Pack": {
 			"abbreviation": "CnvBmr",
@@ -2820,8 +2822,16 @@ global.gear = {
 			"description": "The Conversion Beam Projector is a heavy energy weapon that harnesses advanced technology to project a concentrated beam of destructive energy. Armor detonates as the matter that comproises it is transformed into pure energy.",
 			"melee_hands": -0.5,
 			"ranged_hands": -0.5,
+			"tags": ["terminator"]
 		},
-		
+		"Cyclone Missile System": {
+			"abbreviation": "CyclLnch",
+			"second_profiles": ["Cyclone Missile Launcher"],
+			"description": "Designed for use with Terminator armour. Valuable for their ability to launch missiles rapidly from the twin racks, this back-mounted missile system also makes up for some of Terminator armour's inflexibility by providing more options in combat.",
+			"melee_hands": -0.5,
+			"ranged_hands": -0.5,
+			"tags": ["terminator"]
+		},
 		// Add more mobility items as needed...
 	}
 }

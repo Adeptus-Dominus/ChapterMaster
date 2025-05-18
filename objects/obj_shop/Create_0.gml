@@ -541,21 +541,16 @@ if (shop = "equipment") {
     forge_cost[i] = 200;
     item_stocked[i] = scr_item_count(item[i]);
     item_cost[i] = 10;
-    i += 1;
+        i += 1;
     item[i] = "Needle Sniper Rifle";
-    forge_cost[i] = 500;
-    item_stocked[i] = scr_item_count(item[i]);
-    item_cost[i] = 200;
+        forge_cost[i] = 500;
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 200;
     i += 1;
     item[i] = "Missile Launcher";
     forge_cost[i] = 300;
     item_stocked[i] = scr_item_count(item[i]);
     item_cost[i] = 70;
-    i += 1;
-    item[i] = "Cyclone Missile Launcher";
-    forge_cost[i] = 350;
-    item_stocked[i] = scr_item_count(item[i]);
-    item_cost[i] = 150;
     i += 1;
     item[i] = "Lascannon";
     item_stocked[i] = scr_item_count(item[i]);
@@ -796,6 +791,13 @@ if (research.armour[1].stealth[0] > 0 && research.armour[1].armour[0] > 1 && obj
         nobuy[i] = 1;
         item_cost[i] = 0;
     }
+
+    i += 1;
+    x_mod[i] = 9;
+    item[i] = "Cyclone Missile System";
+    forge_cost[i] = 350;
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 150;
 
     i += 1;
     x_mod[i] = 9;

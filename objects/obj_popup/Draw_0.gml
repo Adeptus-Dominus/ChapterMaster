@@ -1269,6 +1269,8 @@ try {
 			var weapon_one_data = gear_weapon_data("weapon", n_wep1);
 			var weapon_two_data = gear_weapon_data("weapon", n_wep2);
 			var armour_data = gear_weapon_data("armour", n_armour);
+			var gear_data = gear_weapon_data("gear", n_gear);
+			var mobility_data = gear_weapon_data("mobility", n_mobi);
 
 			if ((target_comp == 1) && is_struct(weapon_one_data)) {
 				// Check numbers
@@ -1443,7 +1445,7 @@ try {
 					warning = "Dreadnoughts may not use infantry equipment.";
 				}
 			}
-			if ((target_comp == 5) && (n_mobi != "Assortment") && (n_mobi != ITEM_NAME_NONE)) {
+			if (target_comp == 5 && n_mobi != "Assortment" && n_mobi != ITEM_NAME_NONE && n_mobi != ITEM_NAME_ANY) {
 				// Check numbers
 				req_mobi_num = units;
 				have_mobi_num = 0;
@@ -1457,23 +1459,28 @@ try {
 				}
 				have_mobi_num += scr_item_count(n_mobi);
 
-				if (have_mobi_num >= req_mobi_num || n_mobi == ITEM_NAME_NONE) {
+
+				if (have_mobi_num >= req_mobi_num) {
 					n_good5 = 1;
-				}
-				if (have_mobi_num < req_mobi_num && (n_mobi != ITEM_NAME_ANY && n_mobi != ITEM_NAME_NONE)) {
+				} else {
 					n_good5 = 0;
 					warning = "Not enough " + string(n_mobi) + "; " + string(units - req_mobi_num) + " more are required.";
 				}
 
-				var terminator_mobi = ["", "Servo-arm", "Servo-harness", "Conversion Beamer Pack"];
-				if ((!array_contains(terminator_mobi, n_mobi)) && ((n_armour == "Terminator Armour") || (n_armour == "Tartaros"))) {
-					n_good5 = 0;
-					warning = "Cannot use this gear with Terminator Armour.";
-				}
-
-				if ((n_mobi != ITEM_NAME_NONE) && (n_mobi != "") && (n_armour == "Dreadnought")) {
-					n_good5 = 0;
-					warning = string(obj_ini.role[100][6]) + "s may not use mobility gear.";
+				if (is_struct(armour_data) && is_struct(mobility_data)) {
+					if (armour_data.has_tag("terminator") && !mobility_data.has_tag("terminator")){
+						n_good5 = 0;
+						warning = "Cannot use this with Terminator Armour.";
+					} else if (!armour_data.has_tag("terminator") && mobility_data.has_tag("terminator")){
+						n_good5 = 0;
+						warning = "Cannot use this without Terminator Armour.";
+					} else if (armour_data.has_tag("dreadnought") && !mobility_data.has_tag("dreadnought")) {
+						n_good5 = 0;
+						warning = "Cannot use this with Dreadnought Armour.";
+					} else if (!armour_data.has_tag("dreadnought") && mobility_data.has_tag("dreadnought")) {
+						n_good5 = 0;
+						warning = "Cannot use this without Dreadnought Armour.";
+					}
 				}
 			}
 		}

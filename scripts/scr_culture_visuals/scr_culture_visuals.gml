@@ -608,7 +608,14 @@ global.modular_drawing_items = [
         overides : {
             "chest_fastening" : spr_backpack_fastening,
         },        
-
+    },
+    {
+        sprite : spr_cyclone_launcher,
+        body_types :[2],
+        position : "backpack_augment",
+        equipped : {
+            "mobi" : "Cyclone Missile System"
+        },    
     },
     {
         sprite : spr_gear_hood2,
