@@ -1015,13 +1015,13 @@ global.weapons = {
 		"tags": ["plasma","energy","heavy_ranged", "dreadnought"]
 	},
 	"Sniper Rifle": {
-		"abbreviation": "SnprRfl",
+		"abbreviation": "SnpRfl",
 		"attack": {
 			"standard": 180,
 			"master_crafted": 220,
 			"artifact": 320
 		},
-		"description": "The Sniper Rifle fires a solid shell over long range and boasts powerful telescopic sights to assist, allowing the user to target enemy weak points and distant foes.",
+		"description": "A form of Needle sniper rifle. Boasts a powerful telescopic sight that allows the wielder to target enemy weak points and distant foes with extreme accuracy, firing slivers of crystallized toxins.",
 		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 20,
@@ -1030,14 +1030,14 @@ global.weapons = {
 		"arp": 1,
 		"tags": ["precision", "rifle"]
 	},
-	"Needle Sniper Rifle": {
-		"abbreviation": "NdlSnpr",
+	"Deathwatch Sniper Rifle": {
+		"abbreviation": "DwSnpRfl",
 		"attack": {
 			"standard": 250,
 			"master_crafted": 300,
 			"artifact": 350
 		},
-		"description": "The Needle Sniper Rifle is a deadly weapon that uses both directed lasers and crystallised neurotoxic needles to dispatch enemies, commonly favoured by assasins and Deathwatch scouts.",
+		"description": "A heavy Needler sniper rifle used by the Deathwatch for long-range anti-personnel and anti-materiel work. A highly-respected and revered weapon, it is often selected as the weapon of choice for snipers in many Deathwatch Kill-teams.",
 		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 20,

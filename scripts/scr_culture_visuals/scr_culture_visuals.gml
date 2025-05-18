@@ -1967,7 +1967,7 @@ global.weapon_visual_data = {
   ]
 },
 
-"Needle Sniper Rifle": {
+"Deathwatch Sniper Rifle": {
   base: {
     weapon_data: {
       display_type: "melee_twohand",
