@@ -83,9 +83,12 @@ function scr_change_menu(specific_area_function) {
             with(obj_fleet_select) {
                 instance_destroy();
             }
-            with(obj_popup) {
-                instance_destroy();
+            if (close_popups){
+                with(obj_popup) {
+                    instance_destroy();
+                }
             }
+            close_popups = true;
             specific_area_function();
         }
     }
@@ -481,6 +484,23 @@ function scr_end_turn() {
                 }
 
                 if (ok == 1) {
+                    if(settings_autosave == true){
+                        // Autosave
+                        if(obj_controller.turn % 10 == 0){// save every 10 turns
+                            if(!instance_exists(obj_saveload)){
+                                instance_create(0,0,obj_saveload);
+                            }
+                            obj_saveload.autosaving = true;
+                            scr_save(0,0,true);
+                            obj_controller.menu=0;
+                            obj_controller.zui=0;
+                            obj_controller.invis=false;
+                            with(obj_saveload){
+                                instance_destroy();
+                            }
+                        }
+                        
+                    }
                     obj_controller.end_turn_insights = {};
                     with(obj_turn_end) {
                         instance_destroy();

@@ -7,8 +7,7 @@
         "points": 200,
         "founding": 4, // The id of the founding chapter, 0 for unknown or none
         "splash": 10,
-        "icon": 10, // in \images\creation\creation_icons.png, the index from the left, 0 being blank square and 1 being dark angels etc
-        "icon_name": "bt", // ? dunno what this is used for yet but the icon breaks if you dont use it 
+        "icon_name": "black_templars",
         "fleet_type": 3, // 1= Homeworld, 2 = Fleet based, 3 = Penitent
         "strength": 5, // 1-10
         "purity": 8, // 1-10
@@ -19,7 +18,7 @@
         "homeworld_rule": 1, // 1 = Govenor, 2 = Countries, 3 = Personal Rule
         "homeworld": "", // "Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
         "homeworld_name": "",
-        "recruit_home_relationship" : 2, //recruit from different system
+        "recruit_home_relationship": 2, //recruit from different system
         "recruiting": "", //"Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
         "recruiting_name": "",
         "discipline": "librarius", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune_magic'
@@ -57,7 +56,7 @@
             "special": 0, // 0 - normal, 1 - Breastplate, 2 - Vertical, 3 - Quadrant
             //"trim_on": 0 // 0 no, 1 yes for special trim colours 
         },
-        "culture_styles" : [
+        "culture_styles": [
             "Knightly",
             "Crusader"
         ],
@@ -80,7 +79,9 @@
             "recruiter": "Emrik"
         },
         "battle_cry": "No Pity! No Remorse! No Fear!",
-        "equal_specialists": 0,
+        "equal_specialists": 1,
+        "equal_scouts": 1,
+        "scout_company_behaviour": 1, //0 default codex compliant, 1 scouts are replaced with bolter neophytes
         "load_to_ships": {
             "escort_load": 2, // 0 no, 2 yes, 1 doesnt do anything :)
             "split_scouts": 0, // 0 no, 1 yes
@@ -183,9 +184,9 @@
             "codiciery": 0,
             "lexicanum": 0,
             "terminator": 0,
-            "assault": 0,
+            "assault": 10,
             "veteran": 0,
-            "devastator": 0
+            "devastator": -10
         },
         /**
         * * Default Marine strength
@@ -224,12 +225,26 @@
         * for combat roles, `custom_squads` should probably? be used instead 
         */
         "custom_roles": {
+            "chapter_master": {
+                "name": "High Marshall"
+            },
             "captain": {
                 "name": "Marshall",
                 "wep1": "Power Sword"
             },
             "veteran": {
                 "name": "Sword Brother"
+            },
+            "tactical": {
+                "name": "Initiate"
+            },
+            "scout": {
+                "name": "Neophyte",
+                "wep1": "Bolter"
+            },
+            "champion": {
+                "wep1": "Relic Blade",
+                "wep2": ""
             }
         },
         /**
@@ -262,6 +277,137 @@
         *   - type_data: names the squad, allows certain formations ? idk what that does yet
         */
         "squad_name": "Squad",
-        "custom_squads": {}
+        "custom_squads": {
+            "scout_squad": [
+                [
+                    "Sergeant",
+                    {
+                        "max": 1,
+                        "min": 1,
+                        "role": "Sergeant",
+                        "loadout": {
+                            "required": {
+                                "wep1": [
+                                    "Chainsword",
+                                    1
+                                ],
+                                "wep2": [
+                                    "Bolt Pistol",
+                                    1
+                                ]
+                            }
+                        }
+                    }
+                ],
+                [
+                    "Neophyte",
+                    {
+                        "max": 9,
+                        "min": 4,
+                        "loadout": {
+                            "required": {
+                                "wep1": [
+                                    "Bolter",
+                                    2
+                                ],
+                            },
+                            "option": {
+                                "wep1": [
+                                    [
+                                        [
+                                            "Chainsword"
+                                        ],
+                                        3,
+                                        {
+                                            "wep2": "Bolt Pistol"
+                                        }
+                                    ]
+                                ]
+                            }
+                        }
+                    }
+                ],
+                [
+                    "type_data",
+                    {
+                        "display_data": "Crusader Squad",
+                        "class": [
+                            "scout"
+                        ],
+                        "formation_options": [
+                            "scout",
+                            "tactical",
+                            "assault",
+                            "devastator"
+                        ],
+                    }
+                ]
+            ],
+            "scout_sniper_squad": [
+                [
+                    "Sergeant",
+                    {
+                        "max": 1,
+                        "min": 1,
+                        "role": "Sergeant",
+                        "loadout": {
+                            "required": {
+                                "wep1": [
+                                    "Chainsword",
+                                    1
+                                ],
+                                "wep2": [
+                                    "Bolt Pistol",
+                                    1
+                                ]
+                            }
+                        }
+                    }
+                ],
+                [
+                    "Neophyte",
+                    {
+                        "max": 9,
+                        "min": 4,
+                        "loadout": {
+                            "required": {
+                                "wep1": [
+                                    "Bolter",
+                                    2
+                                ],
+                            },
+                            "option": {
+                                "wep1": [
+                                    [
+                                        [
+                                            "Chainsword"
+                                        ],
+                                        3,
+                                        {
+                                            "wep2": "Bolt Pistol"
+                                        }
+                                    ]
+                                ]
+                            }
+                        }
+                    }
+                ],
+                [
+                    "type_data",
+                    {
+                        "display_data": "Crusader Squad",
+                        "class": [
+                            "scout"
+                        ],
+                        "formation_options": [
+                            "scout",
+                            "tactical",
+                            "assault",
+                            "devastator"
+                        ],
+                    }
+                ]
+            ],
+        }
     }
 }

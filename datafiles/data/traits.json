@@ -41,6 +41,11 @@
         "flavour_text": "For all their talent they are dogged by poor luck",
         "display_name": "Shitty Luck"
     },
+    "great_luck": {
+        "luck": 4,
+        "flavour_text": "Blessed by great luck",
+        "display_name": "Great Luck"
+    },
     "very_hard_to_kill": {
         "constitution": 15,
         "luck": 2,

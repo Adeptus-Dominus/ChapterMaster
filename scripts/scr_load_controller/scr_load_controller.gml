@@ -46,13 +46,12 @@ function scr_load_controller(save_id){
 		// TODO make it either throw error (if version is wrong) or try to upgrade the saved game data and version
 	    global.save_version=ini_read_string("Save","version",0);
 	    global.game_seed=ini_read_real("Save","game_seed",0);
-	    obj_ini.use_custom_icon=ini_read_real("Save","use_custom_icon",0);
 
 	    obj_controller.play_time=ini_read_real("Save","play_time",0);
 
-	    obj_ini.progenitor=ini_read_real("Save","founding",0);
+	    obj_ini.progenitor=ini_read_real("Save","founding",ePROGENITOR.NONE);
 	    // global.founding_secret=ini_read_string("Save","founding_secret","Error");
-	    global.custom=ini_read_real("Save","custom",1);
+	    global.custom=ini_read_real("Save","custom", eCHAPTER_TYPE.RANDOM);
 	    stars=ini_read_real("Save","stars",0);
 	    // pfleets=ini_read_real("Save","p_fleets",0);
 	    // efleets=ini_read_real("Save","en_fleets",0);
@@ -94,10 +93,10 @@ function scr_load_controller(save_id){
 	    obj_controller.tau_stars=ini_read_real("Controller","tau_stars",0);
 	    obj_controller.tau_messenger=ini_read_real("Controller","tau_messenger",0);
 	    obj_controller.fleet_all=ini_read_real("Controller","fleet_all",0);
-	    obj_ini.tolerant=ini_read_real("Controller","tolerant",0);
+	    // obj_ini.tolerant=ini_read_real("Controller","tolerant",0);
 	    obj_ini.stability=ini_read_real("Controller","stability",90);
 	    obj_ini.purity=ini_read_real("Controller","purity",5);
-	    obj_controller.tolerant=ini_read_real("Controller","tolerant",0);
+	    // obj_controller.tolerant=ini_read_real("Controller","tolerant",0);
 	    obj_controller.unload=ini_read_real("Controller","unload",0);
 	    obj_controller.diplomacy=0;
 	    obj_controller.trading=0;

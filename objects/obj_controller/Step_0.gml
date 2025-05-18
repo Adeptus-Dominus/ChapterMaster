@@ -696,7 +696,7 @@ try {
         }
     }
 
-    if (global.load > 0) {
+    if (global.load >= 0) {
         exit;
     }
     if (menu == 0) {

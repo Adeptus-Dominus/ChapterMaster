@@ -99,7 +99,7 @@ function scr_management(argument0) {
 
 	    for (var i = 0; i < array_length(obj_ini.name[0]); i++) {
 			unit = fetch_unit([0,i]);
-			if (unit.role() == "Chapter Master") {
+			if (unit.role() == obj_ini.role[100][eROLE.ChapterMaster]) {
 				num[1] += 1;
 				if (nam[1] == "") then nam[1] = unit.name();
 			}

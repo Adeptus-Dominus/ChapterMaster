@@ -324,9 +324,9 @@ function determine_pdf_defence(pdf, garrison="none", planet_forti=0, enemy=0){
 	    pdf_score = 2;
 	} else if (pdf < 100000 && pdf >= 2000) {
 	    pdf_score = 1;
-	} else if (pdf < 2000) {
+	} else if (pdf < 2000 &&pdf >500) {
 	    pdf_score = 0.5;
-	} else if (pdf < 500) {
+	} else if (pdf <= 500) {
 	    pdf_score = 0.1;
 	}
 	explanations += $"PDF Defence: {pdf_score}#"

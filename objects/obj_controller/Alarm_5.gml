@@ -118,12 +118,8 @@ if (turn=240) and (global.chapter_name="Lamenters"){
 // ** Battlefield Loot **
 if (scr_has_adv("Tech-Scavengers")){
     var lroll1,lroll2,loot="";
-    lroll1=floor(random(100))+1;
-    lroll2=floor(random(100))+1;
-    if (scr_has_disadv("Shitty Luck")){
-        lroll1+=2;
-        lroll2+=25;
-    }
+    lroll1=roll_dice_chapter(1, 100, "low");
+    lroll2=roll_dice_chapter(1, 100, "low");
     if (lroll1<=5){
         loot=choose("Chainsword","Bolt Pistol","Combat Knife","Narthecium");
         if (lroll2<=80) then loot=choose("Power Sword","Storm Bolter");
@@ -367,56 +363,7 @@ if (penitent==1) and (blood_debt==0){
 }
 // ** Ork WAAAAGH **
 if ((turn>=irandom(200)+100) or (obj_ini.fleet_type==eFACTION.Mechanicus)) and (faction_defeated[eFACTION.Ork]==0){
-    var waaagh=floor(random(100))+1;
-    with(obj_star){
-        if (owner==eFACTION.Ork) then instance_create(x,y,obj_temp2);
-    }
-    if ((instance_number(obj_temp2)>=5) and (waaagh<=instance_number(obj_temp2)) and (obj_controller.known[eFACTION.Ork]==0))/* or (obj_controller.is_test_map=true)*/{
-        obj_controller.known[eFACTION.Ork]=0.5;
-		//set an alarm for all ork controlled planets
-        with(obj_star){
-            if (owner==eFACTION.Ork) then alarm[4]=1;
-        }
 
-        if (!instance_exists(obj_turn_end)) then scr_popup("WAAAAGH!","The greenskins have swelled in activity, their numbers increasing seemingly without relent.  A massive Warboss has risen to take control, leading most of the sector's Orks on a massive WAAAGH!","waaagh","");
-		
-        if (instance_exists(obj_turn_end)){
-            obj_turn_end.popups+=1;
-            obj_turn_end.popup[obj_turn_end.popups]=1;
-            obj_turn_end.popup_type[obj_turn_end.popups]="WAAAAGH!";
-            obj_turn_end.popup_text[obj_turn_end.popups]="The greenskins have swelled in activity, their numbers increasing seemingly without relent.  A massive Warboss has risen to take control, leading most of the sector's Orks on a massive WAAAGH!";
-            obj_turn_end.popup_image[obj_turn_end.popups]="waaagh";
-            scr_event_log("red","Ork WAAAAGH! begins.");
-
-            with(obj_star){
-                if (owner==eFACTION.Ork){
-                    rund=floor(random(planets))+1;
-                    if (p_owner[rund]==eFACTION.Ork) and (p_pdf[rund]==0) and (p_guardsmen[rund]==0) and (p_orks[rund]>=2) then instance_create(x,y,obj_temp6);
-                }
-            }
-            if (instance_exists(obj_temp6)){
-                var you2,you;
-                rund=0;
-                you2=instance_nearest(random(room_width),random(room_height),obj_temp6);
-                you=instance_nearest(you2.x,you2.y,obj_star);
-
-                with(obj_temp2){instance_destroy();}
-                for(var i=0; i<10; i++){
-                    if (!instance_exists(obj_temp2)){
-                        rund=round(random(you.planets));
-						if (rund>0) and(rund<5){
-							if	(you.p_owner[rund]==eFACTION.Ork) and (you.p_pdf[rund]+you.p_guardsmen[rund]==0) and (you.p_orks[rund]>=2) then array_push( you.p_feature[rund], new NewPlanetFeature(P_features.OrkWarboss));
-						}
-                        if (you.p_orks[rund]<4) then you.p_orks[rund]=4;
-                        if (planet_feature_bool(you.p_feature[rund], P_features.OrkWarboss)==1) then instance_create(x,y,obj_temp2);
-                    }
-                }
-            }
-            with(obj_temp6){instance_destroy();}
-            with(obj_temp2){instance_destroy();}
-        }
-    }
-    with(obj_temp2){instance_destroy();}
 }
 
 // if (known[eFACTION.Ecclesiarchy]=1){var spikky;spikky=choose(0,0,0,1,1);if (spikky=1) then with(obj_turn_end){audiences+=1;audien[audiences]=5;audien_topic[audiences]="intro";}}
@@ -631,9 +578,7 @@ for(var i=1; i<=99; i++){
             }
             // Spare the inquisitor
             if (string_count("inquisitor_spared",event[i])>0){
-                var diceh=floor(random(100))+1;
-
-                if (scr_has_disadv("Shitty Luck")) then diceh-=25;
+                var diceh=roll_dice_chapter(1, 100, "high");
 
                 if (diceh<=25){
                     alarm[8]=1;

@@ -7,8 +7,7 @@
         "points": 150,
         "founding": 0, // The id of the founding chapter, 0 for unknown or none
         "splash": 2,
-        "icon": 2, // in \images\creation\creation_icons.png, the index from the left, 0 being blank square and 1 being dark angels etc
-        "icon_name": "ws", // ? dunno what this is used for yet but the icon breaks if you dont use it 
+        "icon_name": "white_scars",
         "fleet_type": 1, // 1= Homeworld, 2 = Fleet based, 3 = Penitent
         "strength": 5, // 1-10
         "purity": 10, // 1-10
@@ -19,12 +18,11 @@
         "homeworld_rule": 3, // 1 = Govenor, 2 = Countries, 3 = Personal Rule
         "homeworld": "Feudal", // "Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
         "homeworld_name": "Chogoris",
-        "recruit_home_relationship" : 0, //recruit from home planet
+        "recruit_home_relationship": 0, //recruit from home planet
         "recruiting": "", //"Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
         "recruiting_name": "",
         "discipline": "rune_magic", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune_magic'
         "aspirant_trial": "SURVIVAL", // ? need to find the best way to do this
-
         "advantages": [ //TODO something with these after rework of adv organisation
             "",
             "Lightning Warriors",
@@ -58,7 +56,7 @@
             "special": 0, // 0 - normal, 1 - Breastplate, 2 - Vertical, 3 - Quadrant
             //"trim_on": 0 // 0 no, 1 yes for special trim colours // todo update ref for new name
         },
-        "culture_styles" : [
+        "culture_styles": [
             "Mongol",
         ],
         "names": {
@@ -214,6 +212,9 @@
         * for combat roles, `custom_squads` should probably? be used instead 
         */
         "custom_roles": {
+            "chapter_master": {
+                "name": "Great Khan"
+            },
             "honour_guard": {
                 "name": "Keshig",
                 "wep1": "Power Sword",

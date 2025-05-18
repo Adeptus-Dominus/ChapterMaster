@@ -821,15 +821,6 @@ try {
 				draw_set_color(c_gray);
 				draw_set_alpha(1);
 
-				/*
-            if (string_count("Chapter Master",temp1)>0){
-                draw_text_transformed(xx+27+16,unit_y+64,string(temp1),0.7,0.7,0);draw_text_transformed(xx+28+16,unit_y+64,string(temp1),0.7,0.7,0);
-                draw_text_transformed(xx+27+16,unit_y+65,string(temp1),0.7,0.7,0);draw_text_transformed(xx+28+16,unit_y+65,string(temp1),0.7,0.7,0);
-                // draw inspect icon
-                draw_sprite(spr_inspect_small,0,xx+27,unit_y+68);
-            }
-            */
-
 				draw_text_transformed(unit_x + 271, unit_y + 151, string_hash_to_newline(string(temp2)), 1, 1, 0);
 				if ((obj_controller.man[sel] == "man") && (obj_controller.ma_lid[sel] == -1)) {
 					draw_text_transformed(unit_x + 271, unit_y + 151, string_hash_to_newline(string(temp2)), 1, 1, 0);
@@ -958,7 +949,7 @@ try {
 					unit = obj_ini.TTRPG[target_comp][obj_controller.ide[i]];
 					if (arti.has_tag("daemonic") || arti.has_tag("chaos")) {
 						unit.corruption += irandom(10 + 2);
-						if (unit.role() == "Chapter Master") {
+						if (unit.role() == obj_ini.role[100][eROLE.ChapterMaster]) {
 							dwarn = true;
 						}
 					}
@@ -1587,7 +1578,7 @@ try {
 			}
 			var select_text = $"{romanNumerals[i - 1]} [{check}]";
 			draw_text(xx + comp_data[0], yy + comp_data[1], select_text);
-			if (mouse_check_button_pressed(mb_left) && point_in_rectangle(mouse_x, mouse_y, xx + comp_data[0], yy + comp_data[1], xx + comp_data[0] + 90, yy + comp_data[1] + 20)) {
+			if (point_and_click([xx + comp_data[0], yy + comp_data[1], xx + comp_data[0] + 90, yy + comp_data[1] + 20])) {
 				target_comp = i;
 				target_role = 0;
 				get_unit_promotion_options();
@@ -1611,7 +1602,7 @@ try {
 						draw_set_alpha(0.25);
 					}
 					draw_text(xx + 1030 + role_x, yy + 310 + role_y, string_hash_to_newline(string(role_name[r]) + " [" + string(check) + "]"));
-					if (mouse_check_button_pressed(mb_left) && point_in_rectangle(mouse_x, mouse_y, xx + 1030 + role_x, yy + 310 + role_y, xx + 1180 + role_x, yy + 330 + role_y)) {
+					if (point_and_click([xx + 1030 + role_x, yy + 310 + role_y, xx + 1180 + role_x, yy + 330 + role_y])) {
 						if (min_exp >= role_exp[r]) {
 							target_role = r;
 							calculate_equipment_needs();

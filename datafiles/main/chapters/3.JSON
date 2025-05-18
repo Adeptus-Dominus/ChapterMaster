@@ -7,8 +7,7 @@
         "points": 150,
         "founding": 0, // The id of the founding chapter, 0 for unknown or none
         "splash": 3,
-        "icon": 3, // in \images\creation\creation_icons.png, the index from the left, 0 being blank square and 1 being dark angels etc
-        "icon_name": "sw", // ? dunno what this is used for yet but the icon breaks if you dont use it 
+        "icon_name": "space_wolves",
         "fleet_type": 1, // 1= Homeworld, 2 = Fleet based, 3 = Penitent
         "strength": 10, // 1-10
         "purity": 9, // 1-10
@@ -19,7 +18,7 @@
         "homeworld_rule": 2, // 1 = Govenor, 2 = Countries, 3 = Personal Rule
         "homeworld": "Ice", // "Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
         "homeworld_name": "Fenris",
-        "recruit_home_relationship" : 0, //recruit from home planet
+        "recruit_home_relationship": 0, //recruit from home planet
         "recruiting": "", //"Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
         "recruiting_name": "",
         "discipline": "rune_magic", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune_magic'
@@ -147,7 +146,7 @@
             "The Blackmanes",
             ""
         ],
-       "culture_styles" : [
+        "culture_styles": [
             "Feral",
             "Wolf Cult",
             "Runic"
@@ -229,11 +228,14 @@
         * for combat roles, `custom_squads` should probably? be used instead 
         */
         "custom_roles": {
+            "chapter_master": {
+                "name": "Great Wolf"
+            },
             "honour_guard": {
                 "name": "Wolf Guard",
                 "wep1": "Power Axe",
                 "wep2": "Bolter",
-                "armour": "Power Armour"
+                "armour": "Any Power Armour"
             },
             "veteran": {
                 "name": "Veteran",

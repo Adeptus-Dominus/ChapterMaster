@@ -612,7 +612,7 @@ function add_unit_to_battle(unit,meeting, is_local){
         if (obj_ini.mobi[cooh][va] = "Jump Pack") then col = obj_controller.bat_assault_column;
     }
 
-    if (_unit_role = "Chapter Master") {
+    if (_unit_role = obj_ini.role[100][eROLE.ChapterMaster]) {
         col = obj_controller.bat_command_column;
         new_combat.important_dudes++;
         new_combat.big_mofo = 1;

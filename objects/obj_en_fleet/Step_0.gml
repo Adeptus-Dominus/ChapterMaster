@@ -1,5 +1,5 @@
 
-if (global.load>0) or (instance_exists(obj_saveload)) then exit;
+if (global.load>=0) or (instance_exists(obj_saveload)) then exit;
 
 if (action!="") and (orbiting!=0){
     if (instance_exists(orbiting)){
@@ -115,7 +115,7 @@ if (owner = eFACTION.Tyranids) and (trade_goods=""){
     trade_goods+="|";
 }
 
-if (global.load>0){
+if (global.load>=0){
     if (owner = eFACTION.Imperium) then sprite_index=spr_fleet_imperial;
     if (owner = eFACTION.Mechanicus) then sprite_index=spr_fleet_mechanicus;
     if (owner  = eFACTION.Inquisition) then sprite_index=spr_fleet_inquisition;

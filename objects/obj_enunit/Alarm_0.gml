@@ -63,7 +63,7 @@ if (!engaged){ // Shooting
                 var cm_block = false;
                 with(obj_pnunit){
                     for (var u=0;u<array_length(unit_struct);u++){
-                        if (marine_type[u]="Chapter Master"){
+                        if (marine_type[u]==obj_ini.role[100][eROLE.ChapterMaster]){
                             cm_present=true;
                             cm_index = u;
                             cm_block=id

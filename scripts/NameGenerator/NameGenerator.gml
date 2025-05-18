@@ -39,37 +39,37 @@ function NameGenerator() constructor {
 	};
 
 	// vars // TODO put these into a struct or dict or something
-	static sector_names = LoadSimpleNames("sector", "Sector 1");
-	static sector_used_names = [];
+	sector_names = LoadSimpleNames("sector", "Sector 1");
+	sector_used_names = [];
 
-	static star_names = LoadSimpleNames("star", "Star 1");
-	static star_used_names = [];
-	static star_names_generic_counter = 0; // TODO once we migrate Star data to proper structs and jsons, this can probably be removed
+	star_names = LoadSimpleNames("star", "Star 1");
+	star_used_names = [];
+	star_names_generic_counter = 0; // TODO once we migrate Star data to proper structs and jsons, this can probably be removed
 
-	static space_marines_names = LoadSimpleNames("space_marine", "Space Marine 1");
-	static space_marines_used_names = [];
+	space_marines_names = LoadSimpleNames("space_marine", "Space Marine 1");
+	space_marines_used_names = [];
 
-	static imperial_names = LoadSimpleNames("imperial", "Imperial 1");
-	static imperial_used_names = [];
+	imperial_names = LoadSimpleNames("imperial", "Imperial 1");
+	imperial_used_names = [];
 
-	static chaos_names = LoadSimpleNames("chaos", "Chaos 1");
-	static chaos_used_names = [];
+	chaos_names = LoadSimpleNames("chaos", "Chaos 1");
+	chaos_used_names = [];
 
-	static eldar_syllables = LoadCompositeNames("eldar", ["first_syllables", "second_syllables", "third_syllables"]);
+	eldar_syllables = LoadCompositeNames("eldar", ["first_syllables", "second_syllables", "third_syllables"]);
 
-	static ork_name_composites = LoadCompositeNames("ork", ["prefixes", "suffixes", "special"]);
+	ork_name_composites = LoadCompositeNames("ork", ["prefixes", "suffixes", "special"]);
 
-	static imperial_ship_names = LoadSimpleNames("imperial_ship", "Imperial Ship 1");
-	static imperial_ship_used_names = [];
+	imperial_ship_names = LoadSimpleNames("imperial_ship", "Imperial Ship 1");
+	imperial_ship_used_names = [];
 
-	static ork_ship_names = LoadSimpleNames("ork_ship", "Ork Ship 1");
-	static ork_ship_used_names = [];
+	ork_ship_names = LoadSimpleNames("ork_ship", "Ork Ship 1");
+	ork_ship_used_names = [];
 
-	static hulk_name_composites = LoadCompositeNames("hulk", ["prefixes", "suffixes"]);
+	hulk_name_composites = LoadCompositeNames("hulk", ["prefixes", "suffixes"]);
 
-	static tau_name_composites = LoadCompositeNames("tau", ["prefixes", "suffixes"]);
+	tau_name_composites = LoadCompositeNames("tau", ["prefixes", "suffixes"]);
 
-	static genestealer_cult_names = LoadCompositeNames("genestealercult", ["main", "embelishment", "title"]);
+	genestealer_cult_names = LoadCompositeNames("genestealercult", ["main", "embelishment", "title"]);
 
 	// init
 
@@ -83,8 +83,9 @@ function NameGenerator() constructor {
 					array_copy(names, 0, used_names, 0, used_names_length);
 					array_delete(used_names, 0, used_names_length);
 				} else {
-					log_message($"Used up all {entity_name} names, generating generic name");
-					return $"{entity_name} {used_names_length + ++star_names_generic_counter}";
+					log_error($"Used up all {entity_name} names. Generating a generic name. used_names_length = {used_names_length}; star_names_generic_counter = {star_names_generic_counter}.");
+					star_names_generic_counter++;
+					return $"{entity_name} {used_names_length + star_names_generic_counter}";
 				}
 			}
 
@@ -225,6 +226,3 @@ function NameGenerator() constructor {
 		return CompositeNameGeneration(tau_name_composites, true);
 	};
 }
-
-// Init
-global.name_generator = new NameGenerator();

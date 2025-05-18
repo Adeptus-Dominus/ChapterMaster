@@ -219,16 +219,13 @@ if (max_ships>0)and (instance_exists(obj_star_select)){
                 }
             }                        
             // Start bombardment here
-            scr_bomb_world(p_data.system,p_data.planet,target,bomb_score,str);
+            p_data.bombard(target,bomb_score,str);
         }        
     }
     var cancel_button = draw_unit_buttons([bomb_window.x2-166, bomb_window.y2-40],"Cancel",[1,1],#34bc75,fa_center,fnt_40k_14b);
-    if (obj_controller.cooldown<=0){
-        if( point_and_click(cancel_button)){
-            obj_controller.cooldown=8;
-            with(obj_bomb_select){instance_destroy();}
-            instance_destroy();
-        }
+    if( point_and_click(cancel_button)){
+        with(obj_bomb_select){instance_destroy();}
+        instance_destroy();
     }
 
     draw_set_valign(fa_top);

@@ -3,9 +3,6 @@
 show_debug_message("Creating obj_ini");
 
 // // normal stuff
-use_custom_icon=0;
-icon=0;icon_name="";
-
 specials=0;firsts=0;seconds=0;thirds=0;fourths=0;fifths=0;
 sixths=0;sevenths=0;eighths=0;ninths=0;tenths=0;commands=0;
 
@@ -13,7 +10,6 @@ heh1=0;heh2=0;
 
 // strin="";
 // strin2="";
-tolerant=0;
 companies=10;
 progenitor=ePROGENITOR.NONE;
 aspirant_trial = 0;
@@ -95,10 +91,6 @@ recruit_trial = 0;
 recruiting_type="Death";
 
 gene_slaves = [];
-/* if (global.load=0){
-    if (obj_creation.custom>0) then scr_initialize_custom();
-    if (obj_creation.custom=0) then scr_initialize_standard();
-}*/
 
 adv = [];
 dis = [];
@@ -106,7 +98,7 @@ dis = [];
 
 if (instance_exists(obj_creation)) then custom=obj_creation.custom;
 
-if (global.load=0) then scr_initialize_custom();
+if (global.load==-1) then scr_initialize_custom();
 
 #region save/load serialization 
 
@@ -147,12 +139,14 @@ serialize = function(){
         y,
         custom_advisors,
         full_liveries: full_liveries,
+        company_liveries : company_liveries,
         complex_livery_data: complex_livery_data,
         squad_types: squad_types,
         artifact_struct: artifact_struct_trimmed,
         marine_structs: marines,
         squad_structs: squads,
-        equipment: equipment
+        equipment: equipment,
+        gene_slaves: gene_slaves
         // marines,
         // squads
     }
@@ -169,7 +163,7 @@ serialize = function(){
 }
 
 deserialize = function(save_data){
-    var exclusions = ["complex_livery_data", "full_liveries", "squad_types", "marine_structs", "squad_structs"]; // skip automatic setting of certain vars, handle explicitly later
+    var exclusions = ["complex_livery_data", "full_liveries","company_liveries", "squad_types", "marine_structs", "squad_structs"]; // skip automatic setting of certain vars, handle explicitly later
 
     // Automatic var setting
     var all_names = struct_get_names(save_data);
@@ -197,6 +191,15 @@ deserialize = function(save_data){
     } else {
         variable_struct_set(obj_ini, "full_liveries", array_create(21,variable_clone(livery_picker.map_colour)));
     }
+
+    livery_picker.scr_unit_draw_data(-1);
+    if(struct_exists(save_data, "company_liveries")){
+        variable_struct_set(obj_ini, "company_liveries", save_data.company_liveries)
+    } else {
+        variable_struct_set(obj_ini, "company_liveries", array_create(11,variable_clone(livery_picker.map_colour)));
+    }
+
+    livery_picker.scr_unit_draw_data();
 
     if(struct_exists(save_data, "complex_livery_data")){
         variable_struct_set(obj_ini, "complex_livery_data", save_data.complex_livery_data);
@@ -249,6 +252,10 @@ deserialize = function(save_data){
                 array_push(obj_ini.artifact_struct, arti_struct); //load empty ones into the rest of the slots
             }
         }
+    }
+
+    if(struct_exists(save_data, "gene_slaves")){
+        variable_struct_set(obj_ini, "gene_slaves", save_data.gene_slaves);
     }
 }
 

@@ -218,7 +218,7 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
                     var units_lost = 0;
 
                     // Apply damage
-                    var _shot_luck = roll_dice(1, 100, "low");
+                    var _shot_luck = roll_dice_chapter(1, 100, "low");
                     var _modified_damage = 0;
                     if (_shot_luck <= 5) {
                         _modified_damage = hostile_damage - (2 * marine_ac[marine_index]);

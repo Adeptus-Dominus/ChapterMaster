@@ -504,9 +504,11 @@ function scr_enemy_ai_e() {
             }
 
         }
-        if (p_player[run] > 0) and(has_problem_planet(run,"bomb")) {
+        if (p_player[run] > 0 && has_problem_planet(run,"necron")) {
+            log_message($"player on planet with necron mission {name} planet: {run}")
             var have_bomb;
             have_bomb = scr_check_equip("Plasma Bomb", name, run, 0);
+            log_message($"have bomb? {have_bomb} ")
             if (have_bomb > 0) {
                 var tixt;
                 tixt = "Your marines on " + planet_numeral_name(run);
@@ -699,7 +701,7 @@ function scr_enemy_ai_e() {
                 good = 0;
                 if (obj_ini.role[co, i] != "") and(obj_ini.loc[co, i] = name) and(obj_ini.TTRP[co, i].planet_location == floor(chaos_meeting)) then good += 1;
                 if (obj_ini.role[co, i] != obj_ini.role[100, 6]) and(obj_ini.role[co, i] != "Venerable " + string(obj_ini.role[100, 6])) then good += 1;
-                if (string_count("Dread", obj_ini.armour[co, i]) = 0) or(obj_ini.role[co, i] = "Chapter Master") then good += 1;
+                if (string_count("Dread", obj_ini.armour[co, i]) = 0) or(obj_ini.role[co, i] == obj_ini.role[100][eROLE.ChapterMaster]) then good += 1;
 
                 if (good = 3) {
                     obj_temp_meeting.dudes += 1;
@@ -707,7 +709,7 @@ function scr_enemy_ai_e() {
                     obj_temp_meeting.present[otm] = 1;
                     obj_temp_meeting.co[otm] = co;
                     obj_temp_meeting.ide[otm] = i;
-                    if (obj_ini.role[co, i] = "Chapter Master") then master_present = 1;
+                    if (obj_ini.role[co, i] == obj_ini.role[100][eROLE.ChapterMaster]) then master_present = 1;
                 }
             }
         }

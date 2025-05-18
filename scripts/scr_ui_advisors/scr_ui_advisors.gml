@@ -242,7 +242,7 @@ function scr_ui_advisors() {
             draw_set_color(c_gray);
             draw_rectangle(xx + 560, yy + 780, xx + 682, yy + 805, 0);
 
-            if (mouse_left = 1) and(cooldown <= 0) {
+            if (scr_click_left()) {
                 menu = 12.1;
                 var dro = 0;
                 dro = instance_create(xx + 1064, yy + 124, obj_dropdown_sel);
@@ -318,9 +318,8 @@ function scr_ui_advisors() {
             draw_sprite(spr_creation_check, che + 1, cx, cy);
             draw_set_alpha(1);
             // if (scr_hit(cx+31,cy,cx+260,cy+20)=true){tool1="Planet";tool2="Allows the use of vehicles, and bikes, but prevents this formation from being used during Raids.";}
-            if (scr_hit(cx, cy, cx + 32, cy + 32) = true) and(mouse_left = 1) and(cooldown <= 0) and(dropdown_open = 0) {
+            if (scr_hit(cx, cy, cx + 32, cy + 32) = true) and(scr_click_left()) and(dropdown_open = 0) {
                 var onceh = 0;
-                cooldown = 8000;
                 if (onceh = 0) and((fest_planet = 0)) {
                     onceh = 1;
                     fest_planet = 1;
@@ -348,9 +347,8 @@ function scr_ui_advisors() {
             draw_set_alpha(1);
 
             // if (scr_hit(cx+31,cy,cx+260,cy+20)=true){tool1="Planet";tool2="Allows the use of vehicles, and bikes, but prevents this formation from being used during Raids.";}
-            if (scr_hit(cx, cy, cx + 32, cy + 32) = true) and(mouse_left = 1) and(cooldown <= 0) and(dropdown_open = 0) {
+            if (scr_hit(cx, cy, cx + 32, cy + 32) = true) and(scr_click_left()) and(dropdown_open = 0) {
                 var onceh = 0;
-                cooldown = 8000;
                 if (onceh = 0) and(fest_planet = 1) and(fest_type != "Triumphal March") {
                     onceh = 1;
                     fest_planet = 0;
@@ -396,9 +394,8 @@ function scr_ui_advisors() {
             draw_sprite(spr_creation_check, che + 1, cx, cy);
             draw_set_alpha(1);
             // if (scr_hit(cx+31,cy,cx+260,cy+20)=true){tool1="Planet";tool2="Allows the use of vehicles, and bikes, but prevents this formation from being used during Raids.";}
-            if (scr_hit(cx, cy, cx + 32, cy + 32) = true) and(mouse_left = 1) and(cooldown <= 0) and(dropdown_open = 0) {
+            if (scr_hit(cx, cy, cx + 32, cy + 32) = true) and(scr_click_left()) and(dropdown_open = 0) {
                 var onceh = 0;
-                cooldown = 8000;
                 if (fest_type = "Tournament") or(fest_type = "Deathmatch") then onceh = 1;
                 if (onceh = 0) and(fest_feature1 = 0) {
                     onceh = 1;
@@ -445,9 +442,8 @@ function scr_ui_advisors() {
             draw_sprite(spr_creation_check, che + 1, cx, cy);
             draw_set_alpha(1);
             // if (scr_hit(cx+31,cy,cx+260,cy+20)=true){tool1="Planet";tool2="Allows the use of vehicles, and bikes, but prevents this formation from being used during Raids.";}
-            if (scr_hit(cx, cy, cx + 32, cy + 32) = true) and(mouse_left = 1) and(cooldown <= 0) and(dropdown_open = 0) {
+            if (scr_hit(cx, cy, cx + 32, cy + 32) = true) and(scr_click_left()) and(dropdown_open = 0) {
                 var onceh = 0;
-                cooldown = 8000;
                 if (fest_type = "Imperial Mass") and(known[5] = 0) then onceh = 1;
                 if (onceh = 0) and(fest_feature2 = 0) {
                     onceh = 1;
@@ -496,9 +492,8 @@ function scr_ui_advisors() {
             draw_sprite(spr_creation_check, che + 1, cx, cy);
             draw_set_alpha(1);
             // if (scr_hit(cx+31,cy,cx+260,cy+20)=true){tool1="Planet";tool2="Allows the use of vehicles, and bikes, but prevents this formation from being used during Raids.";}
-            if (scr_hit(cx, cy, cx + 32, cy + 32) = true) and(mouse_left = 1) and(cooldown <= 0) and(dropdown_open = 0) {
+            if (scr_hit(cx, cy, cx + 32, cy + 32) = true) and(scr_click_left()) and(dropdown_open = 0) {
                 var onceh = 0;
-                cooldown = 8000;
                 if (fest_type = "Imperial Mass") and(known[5] = 0) then onceh = 1;
                 if (onceh = 0) and(fest_feature3 = 0) {
                     onceh = 1;
@@ -554,10 +549,9 @@ function scr_ui_advisors() {
                 draw_set_alpha(0.2);
                 draw_rectangle(xx + 1302, yy + 780, xx + 1433, yy + 805, 0);
 
-                if (mouse_left = 1) and(cooldown <= 0) {
+                if (scr_click_left()) {
                     requisition -= fest_cost;
                     fest_scheduled = 1;
-                    cooldown = 6000;
                     menu = 12;
                     with(obj_dropdown_sel) {
                         instance_destroy();
@@ -582,8 +576,7 @@ function scr_ui_advisors() {
                 draw_set_color(c_white);
                 draw_set_alpha(0.2);
                 draw_rectangle(xx + 1132, yy + 780, xx + 1253, yy + 805, 0);
-                if (mouse_left = 1) and(cooldown <= 0) {
-                    cooldown = 20;
+                if (scr_click_left()) {
                     fest_type = "";
                     fest_sid = 0;
                     fest_wid = 0;
@@ -647,7 +640,7 @@ function scr_ui_advisors() {
         draw_rectangle(xx + 217, yy + 380, xx + 617, yy + 411, 1);
 
         draw_set_font(fnt_large);
-        draw_text_transformed(xx + 410, yy + 29, "Chapter Master", 0.5, 0.5, 0);
+        draw_text_transformed(xx + 410, yy + 29, obj_ini.role[100][eROLE.ChapterMaster], 0.5, 0.5, 0);
 
         draw_set_font(fnt_fancy);
         draw_text_transformed(xx + 410, yy + 40, string_hash_to_newline(string(obj_ini.master_name)), 1.5, 1.5, 0);

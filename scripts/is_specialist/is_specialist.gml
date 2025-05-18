@@ -127,7 +127,7 @@ function role_groups(group, include_trainee = false, include_heads = true) {
                 "Master of Sanctity",
                 $"Chief {_roles[eROLE.Librarian]}",
                 "Forge Master",
-                "Chapter Master",
+				obj_ini.role[100][eROLE.ChapterMaster],
                 "Master of the Apothecarion"
             ];
             break;

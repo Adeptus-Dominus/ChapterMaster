@@ -47,18 +47,11 @@ function scr_random_event(execute_now) {
 		}
 		else {
 			var player_luck;
-			var has_bad_luck = scr_has_disadv("Shitty Luck");
-			var luck_roll = irandom(100);
-			if (has_bad_luck){
-				if (luck_roll<=30) then player_luck=luck.good;
-			    if (luck_roll>30) and (luck_roll<45) then player_luck=luck.neutral;
-				if (luck_roll>=45) then player_luck=luck.bad;
-			}
-			else{
-			    if (luck_roll<=45) then player_luck=luck.good;
-			    if (luck_roll>45) and (luck_roll<55) then player_luck=luck.neutral;
-				if (luck_roll>=55) then player_luck=luck.bad;
-			}
+			var luck_roll = roll_dice_chapter(1, 100, "low");
+
+			if (luck_roll<=45) then player_luck=luck.good;
+			if (luck_roll>45) and (luck_roll<55) then player_luck=luck.neutral;
+			if (luck_roll>=55) then player_luck=luck.bad;
 
 		
 				var events;
@@ -96,7 +89,7 @@ function scr_random_event(execute_now) {
 						EVENT.ship_lost, // Another save-scumming event, mainly due to rarity of player ships
 						//EVENT.chaos_invasion, // Spawns Chaos fleets way too close to player owned worlds with no warning and usually lots of big ships, save-scum galore and encourages fleet-based chapters // TODO LOW INVASION_EVENT // Make them spawn way farther with more warning, make them have a different goal or remove this event entirely
 						EVENT.necron_awaken, // Inquisitor check for this is inverted
-						//EVENT.fallen, // Event mission cannot be completed and never expires // TODO LOW FALLEN_EVENT // fix
+						EVENT.fallen, // Event mission cannot be completed and never expires // TODO LOW FALLEN_EVENT // fix
 					];
 				}
 	
@@ -224,25 +217,7 @@ function scr_random_event(execute_now) {
 
 	if (chosen_event == EVENT.strange_behavior){
 		//TODO this event currenlty dose'nt do anything but now we have marine structs there is lots of potential here
-		log_message("RE: Strange Behavior");
-	    var marine_and_company = scr_random_marine("",0);
-		if(marine_and_company == "none")
-		{
-			log_error("RE: Strange Behavior, couldn't pick a space marine");
-			exit;
-		}
-		var marine=marine_and_company[1];
-		var company=marine_and_company[0];
-		var unit = fetch_unit(marine_and_company);
-		var role=obj_ini.role[company][marine];
-		var text = unit.name_role();
-		var company_text = scr_convert_company_to_string(company);
-		if(company_text != ""){
-			company_text = "("+company_text+")";
-			text += company_text;
-		}
-		text += " is behaving strangely.";
-		scr_alert("color","lol",text,0,0);
+		init_marine_acting_strange()
 		evented=true;
 	}
 	
@@ -319,7 +294,7 @@ function scr_random_event(execute_now) {
 			company_text = "("+company_text+")";
 		}
 		text += company_text;
-		text += " has distinguished himself.##He is up for review to be promoted.";
+		text += " has distinguished himself.##He åis up for review to be promoted.";
 		
 		if (company != 10){
 			unit.add_exp(10);
@@ -348,14 +323,11 @@ function scr_random_event(execute_now) {
 
         
 	    var crafted_object;
-	    var craft_roll=irandom(100);
+	    var craft_roll=roll_dice_chapter(1, 100, "low");
 		var heritical_item = false;
         
 		//this bit should be improved, idk what duke was checking for here
 		//TODO make craft chance reflective of crafters skill, rewards players for having skilled tech area
-        if (scr_has_disadv("Shitty Luck")) {
-			craft_roll+=20;
-		}
         if (scr_has_disadv("Tech-Heresy")) {
 			craft_roll+=20;
 		}
@@ -460,450 +432,14 @@ function scr_random_event(execute_now) {
 				}
 			}
 		}
+    
+	} else if (chosen_event == EVENT.mechanicus_mission) {
+		spawn_mechanicus_mission()
+
 	}
     
-	else if (chosen_event == EVENT.inquisition_mission){
-		log_message("RE: Inquisition Mission");
-    
-		var inquisition_missions =
-		[
-		INQUISITION_MISSION.purge,
-		INQUISITION_MISSION.inquisitor,
-		INQUISITION_MISSION.spyrer,
-		INQUISITION_MISSION.artifact
-		];
-		
-		var found_sleeping_necrons = false;
-		with(obj_star){
-			if(scr_star_has_planet_with_feature(id,"Necron Tomb") && !scr_star_has_planet_with_feature(id, "Awake")){
-				array_push(inquisition_missions, INQUISITION_MISSION.tomb_world);
-				found_sleeping_necrons = true;
-				break;
-			}
-		}
-		
-		
-		var found_tyranids = false;
-		if (string_count("Tyr",obj_controller.useful_info)==0) { // idk what this means, its some dukecode
-			with(obj_star){
-				for(var i = 1; i <= planets && !found_tyranids; i++)
-				{
-					if (p_tyranids[i]>4) {
-						array_push(inquisition_missions, INQUISITION_MISSION.tyranid_organism);
-						found_tyranids = true;
-						break;
-					}
-				}
-			}
-		}
-		
-		//if (string_count("Tau",obj_controller.useful_info)=0){
-		//	var found_tau = false;
-		//	with(obj_star){
-		//		if(found_tau){
-		//			break;
-		//		}
-		//		for(var i = 1; i <= planets; i++)
-		//		{
-		//			if (p_tau[i]>4) {
-		//				array_push(inquisition_missions, INQUISITION_MISSION.ethereal);
-		//				found_tau = true
-		//				break;
-		//			}
-		//		}
-		//	}
-		//}
-		
-		var chosen_mission = irandom(array_length(inquisition_missions)-1);
-    
-    
-	    if (chosen_mission == INQUISITION_MISSION.purge){
-			log_message("RE: Purge");
-	        var mission_flavour = choose(1,1,1,2,2,3);
-			
-			var stars = scr_get_stars();
-			var valid_stars = 0;
-			
-			if(mission_flavour == 3) {
-				valid_stars = array_filter_ext(stars, function(star,index){
-					var hive_idx = scr_get_planet_with_type(star,"Hive")
-					return scr_is_planet_owned_by_allies(star, hive_idx);
-				});
-			} else {
-				valid_stars = array_filter_ext(stars,
-					function(star,index){
-						var hive_idx = scr_get_planet_with_type(star,"Hive")
-						var desert_idx =  scr_get_planet_with_type(star,"Desert")
-						var temperate_idx = scr_get_planet_with_type(star,"Temparate")
-						var allied_hive = scr_is_planet_owned_by_allies(star, hive_idx)
-						var allied_desert = scr_is_planet_owned_by_allies(star, desert_idx)
-						var allied_temperate =scr_is_planet_owned_by_allies(star, temperate_idx)
-
-						return allied_hive || allied_desert || allied_temperate;
-				});
-			}
-
-			if(valid_stars == 0){
-				log_error("RE: Purge, couldn't find star");
-				exit;
-			}
-			
-			var star = stars[irandom(valid_stars - 1)];
-			
-			var planet = -1;
-			if(mission_flavour == 3) {
-				planet = scr_get_planet_with_type(star, "Hive");
-			} else {
-				var hive_planet = scr_get_planet_with_type(star,"Hive");
-				var desert_planet = scr_get_planet_with_type(star,"Desert");
-				var temperate_planet = scr_get_planet_with_type(star,"Temperate");
-				if(scr_is_planet_owned_by_allies(star, hive_planet)) {
-					planet = hive_planet;
-				} else if(scr_is_planet_owned_by_allies(star, temperate_planet)) {
-					planet = temperate_planet;
-				} else if(scr_is_planet_owned_by_allies(star, desert_planet)) {
-					planet = desert_planet;
-				}
-			}
-			
-			if(planet == -1){
-				log_error("RE: Purge, couldn't find planet");
-				exit;
-			}
-			
-	        
-			var eta = infinity
-			with(obj_p_fleet){
-				if (capital_number+frigate_number=0) {
-					eta = min(scr_mission_eta(star.x,star.y,1),eta); // this is wrong
-				}
-			}
-			eta = min(max(eta,12),100);
-			
-						var text="The Inquisition is trusting you with a special mission.";
-
-			
-			
-	        if (mission_flavour==1) {
-				text +="  A number of high-ranking nobility on the planet "+scr_roman(planet)+" are being difficult and harboring heretical thoughts.  They are to be selectively purged within "+string(eta)+" months.  Can your chapter handle this mission?";
-			}
-			else if (mission_flavour==2) {
-				text+="  A powerful crimelord on the planet "+scr_roman(planet)+" is gaining an unacceptable amount of power and disrupting daily operations.  They are to be selectively purged within "+string(eta)+" months.  Can your chapter handle this mission?";
-			}
-			else if (mission_flavour==3) {
-				text+="  The mutants of hive world "+scr_roman(planet)+" are growing in numbers and ferocity, rising sporadically from the underhive.  They are to be cleansed by promethium within "+string(eta)+" months.  Can your chapter handle this mission?";
-			}
-			
-			if (mission_flavour!=3) {
-				scr_popup("Inquisition Mission",text,"inquisition","purge|"+string(star.name)+"|"+string(planet)+"|"+string(real(eta+1))+"|");
-			}
-			else {	
-				scr_popup("Inquisition Mission",text,"inquisition","cleanse|"+string(star.name)+"|"+string(planet)+"|"+string(real(eta+1))+"|");
-			}
-			evented = true;
-	    }
-    
-	    else if (chosen_mission == INQUISITION_MISSION.inquisitor){
-			log_message("RE: Inquisitor Hunt");
-        
-	        var stars = scr_get_stars();
-			var valid_stars = array_filter_ext(stars,
-			function(star,index){
-				var p_fleet = instance_nearest(star.x,star.y,obj_p_fleet);
-				if(instance_exists(p_fleet)){
-					var distance = point_distance(star.x,star.y,p_fleet.x,p_fleet.y);
-					if(100 <= distance & distance <= 300){
-						return true;
-					}
-				}
-			return false;
-			});
-			
-			
-			if(valid_stars == 0) {
-				log_error("RE: Inquisitor Hunt,couldn't find a star");
-				exit;
-			}
-				
-			var star = stars[irandom(valid_stars-1)];
-			
-			var gender = choose(0,1);
-			var name=global.name_generator.generate_imperial_name(gender);
-			
-	        var eta = scr_mission_eta(star.x,star.y,1);
-	        eta=max(eta, 8);
-	        var text="The Inquisition is trusting you with a special mission.  A radical inquisitor named "+string(name)+" will be visiting the "+string(star.name)+" system in "+string(eta)+" month's time.  They are highly suspect of heresy, and as such, are to be put down.  Can your chapter handle this mission?";
-	        scr_popup("Inquisition Mission",text,"inquisition","inquisitor|"+string(star.name)+"|"+string(gender)+"|"+string(real(eta))+"|");
-			evented = true;
-        
-	    }
-    
-	    else if (chosen_mission == INQUISITION_MISSION.spyrer) { 
-			log_message("RE: Spyrer");
-			var stars = scr_get_stars();
-			var valid_stars = array_filter_ext(stars, 
-				function(star,index){
-					return scr_star_has_planet_with_type(star,"Hive");
-			});
-			
-			if(valid_stars == 0){
-				log_error("RE: Spyrer, couldn't find star");
-				exit;
-			}
-			var star = stars[irandom(valid_stars-1)];
-			var planet = scr_get_planet_with_type(star,"Hive");
-			var eta = scr_mission_eta(star.x,star.y,1);
-			eta = min(max(eta, 6), 50);
-			
-			
-	        var text="The Inquisition is trusting you with a special mission.  An experienced Spyrer on hive world " + string(star.name) + " " + scr_roman(planet);
-	        text += " has began to hunt indiscriminately, and proven impossible to take down by conventional means.  If they are not put down within "+string(eta)+" month's time panic is likely.  Can your chapter handle this mission?";
-	        scr_popup("Inquisition Mission",text,"inquisition","spyrer|"+string(star.name)+"|"+string(planet)+"|"+string(eta+1)+"|");
-			evented = true;
-		}
-    
-	    else if (chosen_mission == INQUISITION_MISSION.artifact) {
-			var text;
-			log_message("RE: Artifact Hold");
-	        text="The Inquisition is trusting you with a special mission.  A local Inquisitor has a powerful artifact.  You are to keep it safe, and NOT use it, until the artifact may be safely retrieved.  Can your chapter handle this mission?";
-	        scr_popup("Inquisition Mission",text,"inquisition","artifact|bop|0|"+string(irandom_range(6,26))+"|");
-			evented = true;
-	    }
-    
-	    else if (chosen_mission == INQUISITION_MISSION.tomb_world){
-			log_message("RE: Tomb Bombing");
-	        var stars = scr_get_stars();
-			var valid_stars = array_filter_ext(stars,
-				function(star, index) {
-					return scr_star_has_planet_with_feature(star, "Necron Tomb") && !scr_star_has_planet_with_feature(star, "Awakaned");	
-			});
-			
-			if(valid_stars == 0){
-				log_error("RE: Tomb Bombing, couldn't find star");
-				exit;
-			}
-			
-			
-			var star = stars[irandom(valid_stars-1)];
-			var planet = scr_get_planet_with_feature(star, P_features.Necron_Tomb);
-			var eta = scr_mission_eta(star.x, star.y,1)
-			
-			var text="The Inquisition is trusting you with a special mission.  They have reason to suspect the Necron Tomb on planet " + string(star.name) + " " +scr_roman(planet);
-	        text+=" may become active.  You are to send a small group of marines to plant a bomb deep inside, within "+string(eta)+" months.  Can your chapter handle this mission?";
-	        scr_popup("Inquisition Mission",text,"inquisition","necron|"+string(star.name)+"|"+string(planet)+"|"+string((eta+1))+"|");
-			evented = true;
-	    }
-    
-	    else if (chosen_mission == INQUISITION_MISSION.tyranid_organism) {
-			log_message("RE: Gaunt Capture");
-	        var stars= scr_get_stars();
-			var valid_stars = array_filter_ext(stars,
-				function(star,index){
-					for(var i = 1; i <= star.planets; i++){
-						if(star.p_tyranids[i]>4){
-							return true;
-						}
-					}
-					return false;
-			});
-			
-			if(valid_stars == 0){
-				log_error("RE: Gaunt Capture, couldn't find star");
-				exit;
-			}
-			
-			var star = stars[irandom(valid_stars-1)];
-			var planet = -1;
-			for(var i = 1; i <= star.planets; i++){
-				if(star.p_tyranids[i] > 4){
-					planet = i;
-					break;
-				}
-			}
-			
-			var eta = scr_mission_eta(star.x, star.y, 1);
-			var eta = min(max(eta,6),50);
-			
-			var text="An Inquisitor is trusting you with a special mission.  The planet " + string(star.name) + " " + scr_roman(planet);
-	        text+=" is ripe with Tyranid organisms.  They require that you capture one of the Gaunt species for research purposes.  Can your chapter handle this mission?";
-	        scr_popup("Inquisition Mission",text,"inquisition","tyranid_org|"+string(star.name)+"|"+string(planet)+"|"+string(eta+1)+"|");
-			evented = true;
-	    } else if (chosen_mission == INQUISITION_MISSION.ethereal) { 
-			log_message("RE: Ethereal Capture");
-			var stars = scr_get_stars();
-			var valid_stars = array_filter_ext(stars, function(star, index) {
-				for(var i = 1; i <= star.planets; i++){
-					if(star.p_owner[i]==eFACTION.Tau && star.p_tau[i] >= 4) {
-						return true;
-					}
-				}
-				return false;
-			});
-			if(valid_stars == 0){
-				exit;
-			}
-			
-			var planet = -1;
-			for(var i = 1; i <= star.planets; i++){
-				if(star.p_owner[i]==eFACTION.Tau && star.p_tau[i] >= 4){
-					planet = i;
-					break;
-				}
-			}
-			var eta = scr_mission_eta(star.x,star.y,1);
-			eta = min(max(eta,12),50);
-			var text = "An Inquisitor is trusting you with a special mission.";
-			text +="They require that you capture a Tau Ethereal from the planet "+string(star.name)+" "+scr_roman(planet)+"for research purposes.  You have"+string(eta)+" months to locate and capture one.  Can your chapter handle this mission?";
-			scr_popup("Inquisition Mission",text,"inquisition","ethereal|" + string(star.name) + "|" + string(planet) + "|" +string(eta+1) + "|");
-			evented = true;
-	    }
-    
-	}
-
-	else if (chosen_event == EVENT.mechanicus_mission) {
-		log_message("RE: Mechanicus Mission");
-		var mechanicus_missions = []
-		
-		var stars = scr_get_stars();
-		var mechanicus_have_forge_world = array_any(stars,
-			function(star,index){
-				return scr_star_has_planet_with_type(star,"Forge") && scr_star_has_planet_with_owner(star,3);
-		});
-		
-		if(mechanicus_have_forge_world){
-			array_push(mechanicus_missions, MECHANICUS_MISSION.bionics);
-			if (scr_role_count(obj_ini.role[100][16],"") >= 6) {
-				array_push(mechanicus_missions, MECHANICUS_MISSION.land_raider);
-			}
-		}
-		
-			
-		with(obj_star){
-			if(scr_star_has_planet_with_feature(id,P_features.Necron_Tomb)) and (awake_necron_Star(id)!= 0){
-				var planet = scr_get_planet_with_feature(id, P_features.Necron_Tomb);
-				if(scr_is_planet_owned_by_allies(self, planet)){
-					array_push(mechanicus_missions, MECHANICUS_MISSION.necron_study);
-					break;
-				}
-			}
-		}
-		
-	    if (obj_controller.disposition[3]>=70) {
-			array_push(mechanicus_missions, MECHANICUS_MISSION.mars_voyage);
-		}
-    
-		var mission_count = array_length(mechanicus_missions);
-		if(mission_count == 0){
-			log_error("RE: Mechanicus Mission, couldn't pick mission");
-			exit;
-		}
-		
-		var chosen_mission = mechanicus_missions[irandom(mission_count-1)];
-		
-	    if (chosen_mission == MECHANICUS_MISSION.bionics || chosen_mission == MECHANICUS_MISSION.land_raider || chosen_mission == MECHANICUS_MISSION.mars_voyage){
-        
-			stars = scr_get_stars();
-			var valid_stars = array_filter_ext(stars,
-				function(star, index){
-					var planet = scr_get_planet_with_feature(star, P_features.Mechanicus_Forge);
-					if(planet != -1){
-						return star.p_owner[planet] == eFACTION.Mechanicus;
-					}
-					return false;
-			});
-
-			if(valid_stars == 0){
-				log_error("RE: Mechanicus Mission, couldn't find a mechanicus forge world");
-				exit;
-			}
-
-			var star = stars[irandom(valid_stars-1)];
-			
-			
-	        if (chosen_mission == MECHANICUS_MISSION.land_raider){
-	            var text="The Adeptus Mechanicus are trusting you with a special mission.  They wish for you to bring a Land Raider and six "+string(obj_ini.role[100][16])+" to a Forge World in "+ string(star.name) + " for testing and training, for a duration of 24 months. You have four years to complete this.  Can your chapter handle this mission?";
-	            scr_popup("Mechanicus Mission",text,"mechanicus","mech_raider!0!|"+string(star.name)+"|");
-				evented = true;
-	        }
-	        else if (chosen_mission == MECHANICUS_MISSION.bionics) {
-	            var text="The Adeptus Mechanicus are trusting you with a special mission.  They desire a squad of Astartes with bionics to stay upon a Forge World in "+ string(star.name) + " for testing, for a duration of 24 months.  You have four years to complete this.  Can your chapter handle this mission?";
-	            scr_popup("Mechanicus Mission",text,"mechanicus","mech_bionics!0!|"+string(star.name)+"|");
-				evented = true;
-	        }
-	        else {
-	            var text="The local Adeptus Mechanicus are preparing to embark on a voyage to Mars, to delve into the catacombs in search of lost technology.  Due to your close relations they have made the offer to take some of your "+string(obj_ini.role[100][16])+"s with them.  Can your chapter handle this mission?";
-	            scr_popup("Mechanicus Mission",text,"mechanicus","mech_mars|"+string(star.name)+"|");
-				evented = true;
-	        }
-	    }
-    
-	    else if (chosen_mission==MECHANICUS_MISSION.necron_study) {
-			log_message("RE: Necron Tomb Study");
-			
-			stars = scr_get_stars();
-			var valid_stars = array_filter_ext(stars, 
-			function(star,index) {
-				if(scr_star_has_planet_with_feature(star,P_features.Necron_Tomb)) and (awake_necron_Star(star)!= 0){
-					var planet = scr_get_planet_with_feature(star, "Necron Tomb");
-					if(scr_is_planet_owned_by_allies(star, planet)) {
-						return true;
-					}
-				}
-				return false;
-			});
-			
-			if(valid_stars == 0) {
-				log_error("RE: Necron Tomb Study, coudln't find a tomb world under imperium control");
-				exit;
-			}
-			
-			var star = stars[irandom(valid_stars-1)]; 
-			var text="Mechanicus Techpriests have established a research site on a Necron Tomb World in the " + string(star.name)+ " system.  They are requesting some of your forces to provide security for the research team until the tests may be completed.  Further information is on a need-to-know basis.  Can your chapter handle this mission?";
-	            scr_popup("Mechanicus Mission",text,"mechanicus","mech_tomb|"+string(star.name)+"|");
-				evented = true;
-	    }
-	}
-    
-	else if (chosen_event == EVENT.inquisition_planet) {
-		var stars = scr_get_stars();
-		var valid_stars = array_filter_ext(stars,
-		function(star,index){			
-			if(scr_star_has_planet_with_feature(star, "????")){
-				var fleet = instance_nearest(star.x,star.y,obj_p_fleet);
-				if(fleet == undefined || point_distance(star.x,star.y,fleet.x,fleet.y)>=160){
-					return true;
-				}
-				return false;
-			}
-			return false;
-		});
-		
-		if (valid_stars == 0){
-			log_error("RE: Investigate Planet, couldn't find a star");
-			exit;
-		}
-	    	
-		var star = stars[irandom(valid_stars-1)];
-		var planet = scr_get_planet_with_feature(star, P_features.Ancient_Ruins);
-		if (planet == -1){
-			log_error("RE: Investigate Planet, couldn't pick a planet");
-			exit;
-		}
-
-		
-		var eta = infinity;
-	    with(obj_p_fleet){
-			if (action!=""){
-				continue;
-			}
-			eta = min(eta, scr_mission_eta(star.x,star.y,1));
-		}
-		eta = min(max(3,eta),100); 
-		
-		var text="The Inquisition wishes for you to investigate " + string(star.name) + " " + scr_roman(planet) + ".";
-		text+="  Boots are expected to be planted on its surface over the course of your investigation.";
-	    text += " You have " + string(eta) + " months to complete this task.";
-	    scr_popup("Inquisition Recon",text,"inquisition","recon|"+string(star.name)+"|"+string(planet)+"|"+string(eta)+"|");
+	else if (chosen_event == EVENT.inquisition_planet || chosen_event == EVENT.inquisition_mission) {
+		scr_inquisition_mission(chosen_event);
 	    evented = true;
 	}
 
@@ -1134,9 +670,10 @@ function scr_random_event(execute_now) {
 		
 		time=irandom_range(6,24);
 	    if (scr_has_disadv("Shitty Luck")){
-			own=1;
-		}
-		else {
+			own=choose(1,2,0,0,0);
+		} else if (scr_has_adv("Great Luck")) {
+			own=choose(1,1,2,2,0);
+		} else {
 			own=choose(1,1,2,0,0);
 		}
 		
@@ -1169,11 +706,12 @@ function scr_random_event(execute_now) {
 	else if (chosen_event == EVENT.enemy_forces){
 		log_message("RE: Enemy Forces");
 		var own;
-	    if (scr_has_disadv("Shitty Luck")) {
-			own=1;
-		}
-		else{
-			own=choose(1,1,2,2,3);
+	    if (scr_has_disadv("Shitty Luck")){
+			own=choose(1,1,1,1,1,1,2,2,3);
+		} else if (scr_has_adv("Great Luck")) {
+			own=choose(1,1,1,2,2,2,2,3,3);
+		} else {
+			own=choose(1,1,1,2,2,3);
 		}
 		
 		var star_id = scr_random_find(own,true,"","");
@@ -1357,7 +895,7 @@ function scr_random_event(execute_now) {
 	    var has_chief_psyker = scr_role_count("Chief "+string(obj_ini.role[100,17]),"") >= 1;
 		var cm_is_psyker = false;
 		for(var i = 1; i < 100; i++){
-			if (obj_ini.role[0,i] == "Chapter Master" && string_count("0",obj_ini.spe[0,i]) > 0) { 
+			if (obj_ini.role[0,i] == obj_ini.role[100][eROLE.ChapterMaster] && string_count("0",obj_ini.spe[0,i]) > 0) { 
 				cm_is_psyker = true;
 				break;
 			}
@@ -1377,42 +915,8 @@ function scr_random_event(execute_now) {
 	}
 	
 	else if(chosen_event == EVENT.fallen){
-		log_message("RE: Hunt the Fallen");
-		var stars = scr_get_stars();
-		var valid_stars = array_filter_ext(stars,
-			function(star,index){
-				return scr_star_has_planet_with_owner(star,2);
-		});
-		
-		if(valid_stars == 0)
-		{
-			log_error("RE: Hunt the Fallen, coulnd't find a star");
-			exit;
-		}
-		
-		var star_index = irandom(valid_stars-1);
-		var star = stars[star_index];
-		var planet = scr_get_planet_with_owner(star,2);
-		var eta = scr_mission_eta(star.x,star.y, 1);
-		
-		var assigned_problem = false;
-		
-		add_new_problem(planet, "fallen", eta,star)
-		
-		if(!assigned_problem) {
-			log_error("RE: Hunt the Fallen, coulnd't assign a problem to the planet");
-			exit;
-		}
-		
-		var text = "Sources indicate one of the Fallen may be upon "+string(star.name)+" "+string(scr_roman(planet))+".  We have "+string(eta)+" months to send out a strike team and scour the planet.  Any longer and any Fallen that might be there will have escaped.";
-		scr_popup("Hunt the Fallen",text,"fallen","");
-		scr_event_log("","Sources indicate one of the Fallen may be upon "+string(star.name)+" "+string(scr_roman(planet))+".  We have "+string(eta)+" months to investigate.");
-		var star_alert = instance_create(star.x+16,star.y-24,obj_star_event);
-		star_alert.image_alpha=1;
-		star_alert.image_speed=1;
-		star_alert.col="purple";
+		event_fallen();
 		evented = true;
-
 	}
 
 	if(evented) {
@@ -1434,5 +938,43 @@ function scr_random_event(execute_now) {
 	//with(obj_en_fleet){if (x<-10000){x+=20000;y+=20000;}}
 	//with(obj_star){if (x<-10000){x+=20000;y+=20000;}}
 
+
+}
+
+
+function event_fallen(){
+	log_message("RE: Hunt the Fallen");
+	var stars = scr_get_stars();
+	var valid_stars = scr_get_stars(false, [eFACTION.Imperium]);
+	
+	if (array_length(valid_stars) == 0){
+		log_error("RE: Hunt the Fallen, coulnd't find a star");
+		exit;
+	}
+	log_message($"Fallen: valid_stars {valid_stars}")
+	
+	var star = choose_array(stars);
+	var planet = scr_get_planet_with_owner(star,eFACTION.Imperium);
+	var eta = scr_mission_eta(star.x,star.y, 1);
+
+	if (planet>0){
+		log_message($"Fallen: found star {star.name} planet {planet} as candidate")
+		
+		var assigned_problem = add_new_problem(planet, "fallen", eta,star)
+		log_message($"assigned_problem {assigned_problem}")
+
+		if (!assigned_problem) {
+			log_error("RE: Hunt the Fallen, coulnd't assign a problem to the planet");
+			return;
+		}
+		
+		var text = "Sources indicate one of the Fallen may be upon "+string(star.name)+" "+string(scr_roman(planet))+".  We have "+string(eta)+" months to send out a strike team and scour the planet.  Any longer and any Fallen that might be there will have escaped.";
+		scr_popup("Hunt the Fallen",text,"fallen","");
+		scr_event_log("","Sources indicate one of the Fallen may be upon "+string(star.name)+" "+string(scr_roman(planet))+".  We have "+string(eta)+" months to investigate.");
+		var star_alert = instance_create(star.x+16,star.y-24,obj_star_event);
+		star_alert.image_alpha=1;
+		star_alert.image_speed=1;
+		star_alert.col="purple";
+	}
 
 }

@@ -6,11 +6,10 @@ function ChapterData() constructor {
 	points = 0;
 	flavor = "";
 	origin = eCHAPTER_ORIGINS.NONE;
-	founding = eCHAPTERS.UNKNOWN;
+	founding = ePROGENITOR.NONE;
 	successors = 0;
 	splash = 0;
-	icon = 0;
-	icon_name = "aa";
+	icon_name = "unknown";
 	aspirant_trial = eTrials.BLOODDUEL;
 	fleet_type = ePlayerBase.none;
 	strength = 0;
@@ -37,6 +36,7 @@ function ChapterData() constructor {
 	discipline = "librarius"; // todo convert to enum
 
 	full_liveries = "";
+	company_liveries = "";
 	complex_livery_data = complex_livery_default();
 
 
@@ -193,6 +193,8 @@ function scr_chapter_new(argument0) {
 
 	full_liveries = ""; // until chapter objects are in full use kicks off livery propogation
 
+	company_liveries = "";
+
 	// argument0 = chapter
 	obj_creation.use_chapter_object = false; // for the new json testing
 	var chapter_id = eCHAPTERS.UNKNOWN;
@@ -228,22 +230,22 @@ function scr_chapter_new(argument0) {
 		}
 	}
 	load_default_gear(eROLE.HonourGuard, "Honour Guard", "Power Sword", "Bolter", "Artificer Armour", "", "");
-	load_default_gear(eROLE.Veteran, "Veteran", "Combiflamer", "Combat Knife", "Power Armour", "", "");
+	load_default_gear(eROLE.Veteran, "Veteran", "Combiflamer", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
 	load_default_gear(eROLE.Terminator, "Terminator", "Power Fist", "Storm Bolter", "Terminator Armour", "", "");
-	load_default_gear(eROLE.Captain, "Captain", "Power Sword", "Bolt Pistol", "Power Armour", "", "Iron Halo");
+	load_default_gear(eROLE.Captain, "Captain", "Power Sword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Iron Halo");
 	load_default_gear(eROLE.Dreadnought, "Dreadnought", "Dreadnought Lightning Claw", "Lascannon", "Dreadnought", "", "");
-	load_default_gear(eROLE.Champion, "Champion", "Power Sword", "Power Armour", "Power Armour", "", "Combat Shield");
-	load_default_gear(eROLE.Tactical, "Tactical", "Bolter", "Combat Knife", "Power Armour", "", "");
-	load_default_gear(eROLE.Devastator, "Devastator", "", "Combat Knife", "Power Armour", "", "");
-	load_default_gear(eROLE.Assault, "Assault", "Chainsword", "Bolt Pistol", "Power Armour", "Jump Pack", "");
-	load_default_gear(eROLE.Ancient, "Ancient", "Company Standard", "Bolt Pistol", "Power Armour", "", "");
+	load_default_gear(eROLE.Champion, "Champion", "Power Sword", STR_ANY_POWER_ARMOUR, STR_ANY_POWER_ARMOUR, "", "Combat Shield");
+	load_default_gear(eROLE.Tactical, "Tactical", "Bolter", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
+	load_default_gear(eROLE.Devastator, "Devastator", "", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
+	load_default_gear(eROLE.Assault, "Assault", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "Jump Pack", "");
+	load_default_gear(eROLE.Ancient, "Ancient", "Company Standard", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "");
 	load_default_gear(eROLE.Scout, "Scout", "Bolter", "Combat Knife", "Scout Armour", "", "");
-	load_default_gear(eROLE.Chaplain, "Chaplain", "Crozius Arcanum", "Bolt Pistol", "Power Armour", "", "Rosarius");
-	load_default_gear(eROLE.Apothecary, "Apothecary", "Chainsword", "Bolt Pistol", "Power Armour", "", "Narthecium");
+	load_default_gear(eROLE.Chaplain, "Chaplain", "Crozius Arcanum", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Rosarius");
+	load_default_gear(eROLE.Apothecary, "Apothecary", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Narthecium");
 	load_default_gear(eROLE.Techmarine, "Techmarine", "Power Axe", "Bolt Pistol", "Artificer Armour", "Servo-arm", "");
-	load_default_gear(eROLE.Librarian, "Librarian", "Force Staff", "Bolt Pistol", "Power Armour", "", "Psychic Hood");
-	load_default_gear(eROLE.Sergeant, "Sergeant", "Chainsword", "Bolt Pistol", "Power Armour", "", "");
-	load_default_gear(eROLE.VeteranSergeant, "Veteran Sergeant", "Chainsword", "Plasma Pistol", "Power Armour", "", "");
+	load_default_gear(eROLE.Librarian, "Librarian", "Force Staff", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Psychic Hood");
+	load_default_gear(eROLE.Sergeant, "Sergeant", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "");
+	load_default_gear(eROLE.VeteranSergeant, "Veteran Sergeant", "Chainsword", "Plasma Pistol", STR_ANY_POWER_ARMOUR, "", "");
 
 
 	for(var c = 0; c < array_length(obj_creation.all_chapters); c++){
@@ -297,8 +299,7 @@ function scr_chapter_new(argument0) {
 		obj_creation.homeworld_rule = chapter_object.homeworld_rule;
 		obj_creation.chapter_name = chapter_object.name;
 
-		obj_creation.icon = chapter_object.icon;
-		obj_creation.icon_name = chapter_object.icon_name;
+		global.chapter_icon.name = chapter_object.icon_name;
 		obj_creation.fleet_type = chapter_object.fleet_type;
 		obj_creation.strength = chapter_object.strength;
 		obj_creation.purity = chapter_object.purity;
@@ -325,6 +326,7 @@ function scr_chapter_new(argument0) {
 
 		obj_creation.buttons.culture_styles.set(chapter_object.culture_styles);
 		obj_creation.full_liveries = chapter_object.full_liveries;
+		obj_creation.company_liveries = chapter_object.company_liveries;
 		obj_creation.complex_livery_data = chapter_object.complex_livery_data;
 		if (obj_creation.full_liveries!=""){
 			obj_creation.livery_picker.map_colour = full_liveries[0];
@@ -380,9 +382,25 @@ function scr_chapter_new(argument0) {
 		        lens_color:lens_color,
 		        weapon_color:weapon_color
 		    }
+		    livery_picker = new ColourItem(100,230);
+			if (company_liveries == ""){
+			    livery_picker.scr_unit_draw_data(-1);
+			    company_liveries = array_create(11,variable_clone(livery_picker.map_colour));
+			} else {
+				livery_picker.scr_unit_draw_data(-1);
+				var _all_maps = struct_get_names(livery_picker.map_colour);
+				for (var i=0;i<array_length(company_liveries);i++){
+					var _comp_data = company_liveries[i];
+					for (var s=0;s<array_length(_all_maps);s++){
+						var _name = _all_maps[s];
+						if !(struct_exists(_comp_data,_name )){
+							_comp_data[$ _name] = livery_picker.map_colour[$ _name];
+						}
+					}
+				}
+			}  
+			livery_picker.scr_unit_draw_data();
 			if (full_liveries==""){
-
-			    livery_picker = new ColourItem(100,230);
 			    livery_picker.scr_unit_draw_data();
 			    livery_picker.set_default_armour(struct_cols,col_special);
 			    full_liveries = array_create(21,variable_clone(livery_picker.map_colour)); 			    
@@ -425,6 +443,16 @@ function scr_chapter_new(argument0) {
 		var load = chapter_object.load_to_ships;
 		obj_creation.load_to_ships = [load.escort_load, load.split_scouts, load.split_vets];
 		obj_creation.equal_specialists = chapter_object.equal_specialists;
+		if(struct_exists(chapter_object, "scout_company_behaviour")){
+			obj_creation.scout_company_behaviour = chapter_object.scout_company_behaviour;
+		} else {
+			obj_creation.scout_company_behaviour = 0; //default
+		}
+		if(struct_exists(chapter_object, "equal_scouts")){
+			obj_creation.equal_scouts = chapter_object.equal_scouts;
+		} else {
+			obj_creation.equal_scouts = 0;
+		}
 		
 		obj_creation.mutations = 0;
 		struct_foreach(chapter_object.mutations, function(key, val){

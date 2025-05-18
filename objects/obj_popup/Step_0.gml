@@ -51,14 +51,10 @@ try {
 		if (press == 1) {
 			var del = obj_saveload.save[save];
 			var _save_file = string(PATH_save_files, del);
-			var _save_preview = string(PATH_save_previews, del);
 			if (file_exists(_save_file)) {
 				file_delete(_save_file);
 				if (file_exists($"save{del}log.ini")) {
 					file_delete($"save{del}log.ini");
-				}
-				if (file_exists(_save_preview)) {
-					file_delete(_save_preview);
 				}
 				with (obj_saveload) {
 					instance_destroy();
@@ -434,7 +430,7 @@ try {
 				scr_event_log("green", string(p1) + " on " + string(p3) + " ends.");
 			}
 			obj_controller.cooldown = 10;
-			if (number != 0) {
+			if (number != 0 && instance_exists(obj_turn_end)) {
 				obj_turn_end.alarm[1] = 4;
 			}
 			instance_destroy();
@@ -472,7 +468,7 @@ try {
 
 		if (press == 2) {
 			obj_controller.cooldown = 10;
-			if (number != 0) {
+			if (number != 0 && instance_exists(obj_turn_end)) {
 				obj_turn_end.alarm[1] = 4;
 			}
 			instance_destroy();
@@ -489,7 +485,7 @@ try {
 
 		if (press > 0) {
 			var randa, randa2;
-			randa = roll_dice(1, 100, "high");
+			randa = roll_dice_chapter(1, 100, "high");
 			randa2 = roll_dice(1, 100);
 		}
 
@@ -618,100 +614,8 @@ try {
         */
 	}
 
-	if ((image == "mechanicus") && (title == "Mechanicus Mission") || (title == "Mechanicus Mission Accepted")) {
-		if ((option1 == "") && (title == "Mechanicus Mission")) {
-			option1 = "Accept";
-			option2 = "Refuse";
-		} else if ((press == 1) && (option1 != "")) {
-			if (string_count("tomb", mission) > 0) {
-				with (obj_temp5) {
-					instance_destroy();
-				}
-				with (obj_star) {
-					if (name == obj_popup.loc) {
-						instance_create(x, y, obj_temp5);
-					}
-				}
-				if (instance_exists(obj_temp5)) {
-					var tempy, eh, eh2, that, that2;
-					tempy = instance_nearest(obj_temp5.x, obj_temp5.y, obj_star);
-					eh = 0;
-					that = 0;
-					eh2 = 0;
-					that2 = 0;
-					repeat (4) {
-						eh += 1;
-						var tomb_list = search_planet_features(tempy.p_feature[eh], P_features.Necron_Tomb);
-						if ((tempy.p_owner[eh] <= 5) && (array_length(tomb_list) > 0)) {
-							for (var tomb = 0; tomb < array_length(tomb_list); tomb++) {
-								if (tempy.p_feature[eh][tomb].awake == 0) {
-									that = eh;
-								}
-								if (that != 0) {
-									break;
-								}
-							}
-						}
-					}
-
-					with (obj_temp5) {
-						instance_destroy();
-					}
-					if (eh > 0) {
-						if (find_problem_planet(that, "", tempy) > 0) {
-							add_new_problem(that, "mech_tomb1", 17, tempy);
-							text = $"The Adeptus Mechanicus await your forces at " + string(tempy.name) + " " + scr_roman(that) + $".  They are expecting at least two squads of Astartes and have placed the testing on hold until their arrival.  {global.chapter_name} have 16 months to arrive.";
-							scr_event_log("", "Mechanicus Mission Accepted: At least two squads of marines are expected at " + string(tempy.name) + " " + scr_roman(that) + " within 16 months.", tempy.name);
-							new_star_event_marker("green");
-							title = "Mechanicus Mission Accepted";
-							option1 = "";
-							option2 = "";
-							cooldown = 15;
-							exit;
-						}
-					}
-				}
-			}
-
-			if ((string_count("raider", mission) > 0) || (string_count("bionics", mission) > 0) || (string_count("mech_mars", mission) > 0)) {
-				var mission_star = star_by_name(obj_popup.loc);
-				if (instance_exists(mission_star)) {
-					var forge_planet = scr_get_planet_with_type(mission_star, "Forge");
-					if (mission_star.p_owner[eh] == 3 && forge_planet) {
-						mission_loc = planet_numeral_name(forge_planet, mission_star);
-						if (string_count("raider", mission)) {
-							add_new_problem(forge_planet, "mech_raider", 49, mission_star, {"completion": 0});
-							text = $"The Adeptus Mechanicus await your forces at {mission_loc}.  They are expecting six {obj_ini.role[100][16]}s and a Land Raider.";
-							scr_event_log("", $"Mechanicus Mission Accepted: Six of your {obj_ini.role[100][16]}s and a Land Raider are to be stationed at {mission_loc} for 24 months.", mission_star.name);
-						} else if (string_count("bionics", mission)) {
-							add_new_problem(forge_planet, "mech_bionics", 49, mission_star, {"completion": 0});
-							text = $"The Adeptus Mechanicus await your forces at {mission_loc}.  They are expecting ten Astartes with bionics.";
-							scr_event_log("", $"Mechanicus Mission Accepted: Ten Astartes with bionics are to be stationed at {mission_loc} for 24 months for testing purposes.", mission_star.name);
-						} else if (string_count("mars", mission)) {
-							add_new_problem(forge_planet, "mech_mars", 13, mission_star);
-							text = $"The Adeptus Mechanicus await your {obj_ini.role[100][16]}s at {mission_loc}.  They are willing to hold on the voyage for up to 12 months.";
-							scr_event_log("", $"Mechanicus Mission Accepted: {obj_ini.role[100][16]}s are expected at {mission_loc} within 12 months, for the voyage to Mars.", tempy.name);
-						}
-						with (mission_star) {
-							new_star_event_marker("green");
-						}
-						cooldown = 15;
-						title = "Mechanicus Mission Accepted";
-						option1 = "";
-						option2 = "";
-						option3 = "";
-						exit;
-					}
-				}
-			}
-			// Other missions here
-		} else if ((press == 2) && (option2 != "")) {
-			obj_controller.cooldown = 10;
-			if (number != 0) {
-				obj_turn_end.alarm[1] = 4;
-			}
-			instance_destroy();
-		}
+	if (image == "mechanicus" && (title == "Mechanicus Mission" || title == "Mechanicus Mission Accepted")){
+		mechanicus_mission_procedures();
 	}
 
 	if (image == "geneseed_lab") {
@@ -772,13 +676,13 @@ try {
 
             _ruins.determine_race();
 
-            dice = roll_dice(1, 100, "high");
+            dice = roll_dice_chapter(1, 100, "high");
             ruins_battle = dice <= 50;
 
             // ruins_battle=1;
 
             if (ruins_battle == 1) {
-                dice = roll_dice(1, 100, "low");
+                dice = roll_dice_chapter(1, 100, "low");
 
                 if (dice >= 0 && dice <= 60) {
                     battle_threat = 1;
@@ -1206,11 +1110,11 @@ try {
 					}
 
 					instance_activate_object(obj_star);
-					mission_star = star_by_name(obj_controller.temp[200]);
-
+					mission_star = star_by_name(obj_temp8.loc);
 					var ppp = 0;
-					remove_planet_problem(planet, "bomb", mission_star);
-					mission_star.p_feature[planet][search_planet_features(mission_star.p_feature[planet], P_features.Necron_Tomb)[0]].sealed = 1;
+					remove_planet_problem(planet, "necron", mission_star);
+					seal_tomb_world(mission_star.p_feature[planet]);
+					// mission_star.p_feature[planet][search_planet_features(mission_star.p_feature[planet], P_features.Necron_Tomb)[0]].sealed = 1;
 					with (obj_temp8) {
 						instance_destroy();
 					}
@@ -1323,7 +1227,9 @@ try {
 				}
 				scr_event_log("", $"Inquisition Mission Accepted: The Inquisition wish for Astartes to land on and investigate {mission_star.name} {scr_roman(planet)} within {estimate} months.", mission_star.name);
 			}
-		} else if ((mission != "") && (title == "Inquisition Mission")) {
+		}
+		
+		if ((mission != "") && (title == "Inquisition Mission")) {
 			obj_controller.temp[200] = string(loc);
 			var mission_star, onceh;
 			mission_star = 0;
@@ -1340,10 +1246,12 @@ try {
 						mission_is_go = true;
 					}
 				}
+
 				if (mission_is_go) {
 					if (demand) {
 						title = "Inquisition Mission Demand";
 					}
+
 
 					if (mission == "purge") {
 						scr_event_log("", $"Inquisition Mission Accepted: The nobles of {mission_star.name} {scr_roman(planet)} must be selectively purged within {estimate} months.", mission_star.name);
@@ -1423,8 +1331,13 @@ try {
 							title = "Inquisition Mission Demand";
 							text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  {global.chapter_name} are to capture the Tau Ethereal somewhere within the {mission_star.name} system.";
 						}
-						if (mission_star.p_problem[planet, 1] == "recon") {
+						if (has_problem_star("recon", mission_star)) {
 							scr_event_log("", $"Inquisition Mission Accepted: The Inquisition wish for {global.chapter_name} to capture the Tau Ethereal somewhere within {mission_star.name}.", mission_star.name);
+						}
+					} else if (mission == "demon_world"){
+						scr_event_log("", $"Inquisition Mission Accepted: The demon world of {mission_star.name} {scr_roman(planet)} will be purged by your hand.", mission_star.name);
+						if (demand) {
+							text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  An out of control Demon World {mission_star.name} {scr_roman(onceh)} must be cleansed within {estimate} months.";
 						}
 					}
 				}
@@ -1446,15 +1359,6 @@ try {
 						}
 						if (obj_ini.home_type == "Lava") {
 							image = "fortress_lava";
-						}
-						if (obj_ini.icon_name == "dorf1") {
-							image = "fortress_dorf";
-						}
-						if (obj_ini.icon_name == "dorf2") {
-							image = "fortress_dorf";
-						}
-						if (obj_ini.icon_name == "dorf3") {
-							image = "fortress_dorf";
 						}
 						last_artifact = scr_add_artifact("good", "inquisition", 0, obj_ini.home_name, 2);
 					} else if (obj_ini.fleet_type != ePlayerBase.home_world) {
@@ -1526,7 +1430,7 @@ try {
 
 		obj_controller.cooldown = 10;
 		if (obj_controller.complex_event == false) {
-			if (number != 0) {
+			if (number != 0 && instance_exists(obj_turn_end)) {
 				obj_turn_end.alarm[1] = 4;
 			}
 			instance_destroy();
@@ -1715,7 +1619,7 @@ try {
 		obj_controller.cooldown = 10;
 
 		if (obj_controller.complex_event == false) {
-			if (number != 0) {
+			if (number != 0 && instance_exists(obj_turn_end)) {
 				obj_turn_end.alarm[1] = 4;
 			}
 			instance_destroy();
@@ -1870,7 +1774,7 @@ try {
 
 		obj_controller.cooldown = 10;
 		if (obj_controller.complex_event == false) {
-			if (number != 0) {
+			if (number != 0 && instance_exists(obj_turn_end)) {
 				obj_turn_end.alarm[1] = 4;
 			}
 			instance_destroy();

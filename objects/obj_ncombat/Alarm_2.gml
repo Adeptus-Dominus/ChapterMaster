@@ -67,31 +67,4 @@ if (ally>0) and (ally_forces>0){
 
 
 
-// scr_newtext();
-
-/*if (newline!=""){
-    var breaks,first_open;
-    newline=scr_lines(89,newline);
-    breaks=max(1,string_count("@",newline));
-    first_open=liness+1;
-    
-    var b,f;b=first_open;f=-1;
-    explode_script(newline,"@");
-    f+=1;lines[b+f]=string("-"+explode[f]);
-    repeat(breaks-1){f+=1;
-        lines[b+f]=string(explode[f]);
-    }
-    liness+=string_count("@",newline);
-    
-    repeat(100){
-        if (liness>30){scr_lines_increase(1);liness-=1;}
-    }
-}
-
-newline="";*/
-
-
 instance_activate_object(obj_enunit);
-
-/* */
-/*  */

@@ -41,13 +41,11 @@ function scr_enemy_ai_a() {
 	// checking for inquisition dead world inspections here
 	if (present_fleet[eFACTION.Player]>=0) and (present_fleet[eFACTION.Inquisition]==0){
 	    var chapter_asset_discovery,yep=0,stop=false;
-   
-	    var shitty = scr_has_disadv("Shitty Luck");
-    
+       
 	    if (present_fleet[1]=0){
-	    	chapter_asset_discovery = irandom_range(1, shitty?800:2000);
+	    	chapter_asset_discovery = roll_dice_chapter(20, 100, "high");
 	    } else {
-	    	chapter_asset_discovery = irandom_range(1, shitty?50:200);
+	    	chapter_asset_discovery = roll_dice_chapter(2, 100, "high");
 	    }
     
 	    // 137 ; chapter_asset_discovery=floor(random(20))+1;
@@ -313,7 +311,7 @@ function scr_enemy_ai_a() {
     
 	    if (!stop){// Start stop
 
-	    default_imperium_attack = guard_score>0 && !((guard_score<=0.5) && (pdf_score>1)) ?"guard":"pdf";
+	    default_imperium_attack = guard_score>0 && !((guard_score<=0.5) && (pdf_score>0)) ?"guard":"pdf";
     
 	    if (ork_attack=="imp")  then ork_attack = default_imperium_attack;
 
@@ -871,113 +869,113 @@ function scr_enemy_ai_a() {
 	} // end repeat here
 
 
-	    // quene player battles here
+    // quene player battles here
 
 
-	    // End quene player battles
-
-
-
-	    scr_star_ownership(true);
+    // End quene player battles
 
 
 
+    scr_star_ownership(true);
 
-	    // Restock PDF and military
-	    var i;
-	    i = 0;
-	    repeat(planets) {
-	        i += 1;
-	        if (p_type[i] == "Daemon") {
-	            p_heresy[i] = 200;
-	            p_owner[i] = 10;
-	        }
 
-	        if (p_population[i] <= 0) and(p_large[i] = 0) and(p_chaos[i] = 0) and(p_traitors[i] = 0) and(p_tau[i] = 0) and(p_type[i] != "Daemon") then p_heresy[i] = 0;
-	        if (p_population[i] < 1) and(p_large[i] = 1) {
-	            p_population[i] = p_population[i] * 100000000;
-	            p_large[i] = 0;
-	        }
 
-	        if (p_owner[i] = 2) and(p_type[i] != "Dead") and(planets >= i) and(p_tyranids[i] = 0) and(p_chaos[i] = 0) and(p_traitors[i] = 0) and(p_eldar[i] = 0) and(p_tau[i] = 0) {
-	            var military, pdf, rando, contin;
-	            military = 0;
-	            pdf = 0;
-	            contin = 0;
-	            rando = floor(random(100)) + 1;
 
-	            if (p_population[i] >= 10000000) {
-	                military = (p_population[i] / 470);
-	                pdf = floor(military * 0.75);
-	                military = floor(military * 0.25);
-	            }
-	            if (p_population[i] >= 5000000) and(p_population[i] < 10000000) {
-	                military = p_population[i] / 200;
-	                pdf = floor(military * 0.75);
-	                military = floor(military * 0.25);
-	            }
-	            if (p_population[i] >= 100000) and(p_population[i] < 5000000) {
-	                military = p_population[i] / 50;
-	                pdf = floor(military * 0.75);
-	                military = floor(military * 0.25);
-	            }
-	            if (p_large[i] = 1) {
-	                military = military * 1000000000;
-	                pdf = pdf * 1000000000;
-	            }
+    // Restock PDF and military
+    var i;
+    i = 0;
+    repeat(planets) {
+        i += 1;
+        if (p_type[i] == "Daemon") {
+            p_heresy[i] = 200;
+            p_owner[i] = 10;
+        }
 
-	            if (p_large[i] = 0) and(rando < 50) and(military != 0) and(pdf != 0) {
-	                // if (p_guardsmen[i]<military) and (rando<50){rando=10;contin=max(floor(p_guardsmen[i]*1.05),500);p_population[i]-=contin;p_guardsmen[i]+=contin;}/
-	                if (p_pdf[i] < pdf) and(rando < 50) {
-	                    rando = 1;
-	                    rando = 10;
-	                    contin = max(floor(p_pdf[i] * 1.02), 1000);
-	                    p_population[i] -= contin;
-	                    p_pdf[i] += contin;
-	                }
-	            }
-	            if (p_large[i] = 1) and(rando < 50) and(military != 0) and(pdf != 0) {
-	                // if (p_guardsmen[i]<military) and (rando<50){rando=10;contin=0.01*p_population[i];p_guardsmen[i]+=contin*1250000;}
-	                if (p_pdf[i] < pdf) and(rando < 50) {
-	                    rando = 1;
-	                    rando = 10;
-	                    contin = 0.01 * p_population[i];
-	                    p_pdf[i] += contin * 1250000;
-	                }
-	            }
+        if (p_population[i] <= 0) and(p_large[i] = 0) and(p_chaos[i] = 0) and(p_traitors[i] = 0) and(p_tau[i] = 0) and(p_type[i] != "Daemon") then p_heresy[i] = 0;
+        if (p_population[i] < 1) and(p_large[i] = 1) {
+            p_population[i] = p_population[i] * 100000000;
+            p_large[i] = 0;
+        }
 
-	            if (p_large[i] = 1) {
-	                military = floor(p_population[i] * 1250000);
-	                pdf = military * 3;
-	            }
-	            if (p_population[i] < 100000) and(p_population[i] > 5) and(p_large[i] = 0) {
-	                pdf = floor(p_population[i] / 25);
-	                military = 0;
-	            }
-	            if (p_population[i] < 2000) and(p_population[i] > 5) and(p_large[i] = 0) {
-	                pdf = floor(p_population[i] / 10);
-	                military = 0;
-	            }
+        if (p_owner[i] = 2) and(p_type[i] != "Dead") and(planets >= i) and(p_tyranids[i] = 0) and(p_chaos[i] = 0) and(p_traitors[i] = 0) and(p_eldar[i] = 0) and(p_tau[i] = 0) {
+            var military, pdf, rando, contin;
+            military = 0;
+            pdf = 0;
+            contin = 0;
+            rando = floor(random(100)) + 1;
 
-	            if (p_large[i] = 0) and(rando < 3) {
-	                // if (p_guardsmen[i]<military) and (rando<3){rando=1;contin=max(floor(p_guardsmen[i]*1.05),500);p_population[i]-=contin;p_guardsmen[i]+=contin;}
-	                if (p_pdf[i] < pdf) and(rando < 3) {
-	                    rando = 1;
-	                    rando = 1;
-	                    contin = max(floor(p_pdf[i] * 1.02), 1000);
-	                    p_population[i] -= contin;
-	                    p_pdf[i] += contin;
-	                }
-	            }
-	            if (p_large[i] = 1) and(rando < 3) {
-	                // if (p_guardsmen[i]<military) and (rando<3){rando=1;contin=0.01*p_population[i];p_guardsmen[i]+=floor(contin*1250000);}
-	                if (p_pdf[i] < pdf) and(rando < 3) {
-	                    rando = 1;
-	                    rando = 1;
-	                    contin = 0.01 * p_population[i];
-	                    p_pdf[i] += floor(contin * 1250000);
-	                }
-	            }
-	        }
-	    }
+            if (p_population[i] >= 10000000) {
+                military = (p_population[i] / 470);
+                pdf = floor(military * 0.75);
+                military = floor(military * 0.25);
+            }
+            if (p_population[i] >= 5000000) and(p_population[i] < 10000000) {
+                military = p_population[i] / 200;
+                pdf = floor(military * 0.75);
+                military = floor(military * 0.25);
+            }
+            if (p_population[i] >= 100000) and(p_population[i] < 5000000) {
+                military = p_population[i] / 50;
+                pdf = floor(military * 0.75);
+                military = floor(military * 0.25);
+            }
+            if (p_large[i] = 1) {
+                military = military * 1000000000;
+                pdf = pdf * 1000000000;
+            }
+
+            if (p_large[i] = 0) and(rando < 50) and(military != 0) and(pdf != 0) {
+                // if (p_guardsmen[i]<military) and (rando<50){rando=10;contin=max(floor(p_guardsmen[i]*1.05),500);p_population[i]-=contin;p_guardsmen[i]+=contin;}/
+                if (p_pdf[i] < pdf) and(rando < 50) {
+                    rando = 1;
+                    rando = 10;
+                    contin = max(floor(p_pdf[i] * 1.02), 1000);
+                    p_population[i] -= contin;
+                    p_pdf[i] += contin;
+                }
+            }
+            if (p_large[i] = 1) and(rando < 50) and(military != 0) and(pdf != 0) {
+                // if (p_guardsmen[i]<military) and (rando<50){rando=10;contin=0.01*p_population[i];p_guardsmen[i]+=contin*1250000;}
+                if (p_pdf[i] < pdf) and(rando < 50) {
+                    rando = 1;
+                    rando = 10;
+                    contin = 0.01 * p_population[i];
+                    p_pdf[i] += contin * 1250000;
+                }
+            }
+
+            if (p_large[i] = 1) {
+                military = floor(p_population[i] * 1250000);
+                pdf = military * 3;
+            }
+            if (p_population[i] < 100000) and(p_population[i] > 5) and(p_large[i] = 0) {
+                pdf = floor(p_population[i] / 25);
+                military = 0;
+            }
+            if (p_population[i] < 2000) and(p_population[i] > 5) and(p_large[i] = 0) {
+                pdf = floor(p_population[i] / 10);
+                military = 0;
+            }
+
+            if (p_large[i] = 0) and(rando < 3) {
+                // if (p_guardsmen[i]<military) and (rando<3){rando=1;contin=max(floor(p_guardsmen[i]*1.05),500);p_population[i]-=contin;p_guardsmen[i]+=contin;}
+                if (p_pdf[i] < pdf) and(rando < 3) {
+                    rando = 1;
+                    rando = 1;
+                    contin = max(floor(p_pdf[i] * 1.02), 1000);
+                    p_population[i] -= contin;
+                    p_pdf[i] += contin;
+                }
+            }
+            if (p_large[i] = 1) and(rando < 3) {
+                // if (p_guardsmen[i]<military) and (rando<3){rando=1;contin=0.01*p_population[i];p_guardsmen[i]+=floor(contin*1250000);}
+                if (p_pdf[i] < pdf) and(rando < 3) {
+                    rando = 1;
+                    rando = 1;
+                    contin = 0.01 * p_population[i];
+                    p_pdf[i] += floor(contin * 1250000);
+                }
+            }
+        }
+    }
 }

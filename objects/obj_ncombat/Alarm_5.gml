@@ -75,9 +75,9 @@ if (obj_ncombat.defeat == 0) {
     
         if (obj_controller.stc_bonus[3] = 4) {
             var _survival_roll = 70 + _candidate.priority;
-            var _dice_roll = roll_dice(1, 100, "high");
+            var _dice_roll = roll_dice_chapter(1, 100, "high");
             if (_dice_roll >= _survival_roll) && (_column_id.veh_dead[_vehicle_id] != 2) {
-                _column_id.veh_hp[_vehicle_id] = roll_dice(1, 10, "high");
+                _column_id.veh_hp[_vehicle_id] = roll_dice_chapter(1, 10, "high");
                 _column_id.veh_dead[_vehicle_id] = false;
                 vehicles_saved_count++;
 
@@ -91,7 +91,7 @@ if (obj_ncombat.defeat == 0) {
         }
     
         if (vehicle_recovery_score > 0) {
-            _column_id.veh_hp[_vehicle_id] = roll_dice(1, 10, "high");
+            _column_id.veh_hp[_vehicle_id] = roll_dice_chapter(1, 10, "high");
             _column_id.veh_dead[_vehicle_id] = false;
             vehicle_recovery_score -= _candidate.priority;
             vehicles_saved_count++;
@@ -115,7 +115,6 @@ var _total_deaths = final_marine_deaths + final_command_deaths;
 var _total_injured = _total_deaths + injured + units_saved_count;
 if (_total_injured > 0) {
     newline = $"{string_plural_count("unit", _total_injured)} {smart_verb("was", _total_injured)} critically injured.";
-    newline_color = "red";
 	scr_newtext();
 
     if (units_saved_count > 0) {
@@ -204,8 +203,7 @@ scr_newtext();
 
 var _total_damaged_count = vehicle_deaths + vehicles_saved_count;
 if (_total_damaged_count > 0) {
-	newline = $"{string_plural_count("vehicle", _total_damaged_count)} {smart_verb("was", _total_damaged_count)} critically damaged during battle.";
-    newline_color="red";
+	newline = $"{string_plural_count("vehicle", _total_damaged_count)} {smart_verb("was", _total_damaged_count)} disabled during battle.";
     scr_newtext();
 
     if (vehicles_saved_count > 0) {
@@ -341,7 +339,10 @@ if (fortified>0) and (!instance_exists(obj_nfort)) and (reduce_fortification=tru
 
 
 if (defeat=0) and (battle_special="space_hulk"){
-    var enemy_power=0,loot=0,dicey=floor(random(100))+1,ex=0;
+    var enemy_power=0,
+    loot=0,
+    dicey=roll_dice_chapter(1, 100, "low"),
+    ex=0;
 
     if (enemy=7){
         enemy_power=battle_object.p_orks[battle_id];
@@ -363,7 +364,6 @@ if (defeat=0) and (battle_special="space_hulk"){
     if (ex=100) then newline_color="red";
     scr_newtext();
 
-    if (scr_has_disadv("Shitty Luck")) then dicey=dicey*1.5;
     // show_message("Roll Under: "+string(enemy_power*10)+", Roll: "+string(dicey));
 
     if (dicey<=(enemy_power*10)){
@@ -686,13 +686,12 @@ inq_eated=false;
 
 
 if (obj_ini.omophagea){
-    var eatme=floor(random(100))+1;
+    var eatme=roll_dice_chapter(1, 100, "high");
     if (enemy=13) or (enemy=9) or (battle_special="ship_demon") then eatme+=100;
     if (enemy=10) and (battle_object.p_traitors[battle_id]=7) then eatme+=200;
 
     if (red_thirst=3) then thirsty=1;if (red_thirst>3) then thirsty=red_thirst-2;
     if (thirsty>0) then eatme-=(thirsty*6);if (really_thirsty>0) then eatme-=(really_thirsty*15);
-    if (scr_has_disadv("Shitty Luck")) then eatme-=10;
 
     if (allies>0){
         obj_controller.disposition[2]-=choose(1,0,0);
@@ -723,8 +722,7 @@ if (obj_ini.omophagea){
 
 
         // check for pdf/guardsmen
-        eatme=floor(random(100))+1;
-        if (scr_has_disadv("Shitty Luck")) then eatme-=10;
+        eatme=roll_dice_chapter(1, 100, "high");
         if (eatme<=10) and (allies>0){
             obj_controller.disposition[2]-=2;
             if (allies=1){
@@ -739,8 +737,7 @@ if (obj_ini.omophagea){
         }
 
         // check for inquisitor
-        eatme=floor(random(100))+1;
-        if (scr_has_disadv("Shitty Luck")) then eatme-=5;
+        eatme=roll_dice_chapter(1, 100, "high");
         if (eatme<=40) and (present_inquisitor=1){
             var thatta=0,remove=0,i=0;
             obj_controller.disposition[4]-=10;

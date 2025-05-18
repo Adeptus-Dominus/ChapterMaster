@@ -1,7 +1,5 @@
 // Checks which systems you can see the planets
-if (action_if_number(obj_saveload, 0, 0) &&
-    action_if_number(obj_drop_select, 0, 0) &&
-    action_if_number(obj_bomb_select, 0, 0)){
+if (!instance_exists(obj_saveload) && !instance_exists(obj_drop_select) && !instance_exists(obj_bomb_select) && !global.ui_click_lock) {
         var m_dist=point_distance(x,y,mouse_x,mouse_y);
         var allow_click_distance = 20*scale;
 

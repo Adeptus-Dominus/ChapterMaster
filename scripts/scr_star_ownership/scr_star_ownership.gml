@@ -9,12 +9,25 @@ function scr_star_ownership(argument0) {
 	repeat(planets){
 		run+=1;
     	if (p_owner[run]=eFACTION.Player){
-    		if (dispo[run]<90 && !planet_feature_bool(p_feature[run], P_features.Monastery)){
+    		if (dispo[run]<95 && !planet_feature_bool(p_feature[run], P_features.Monastery)){
     			p_owner[run]=2;
     		}
-    	}		
-	    if (p_type[run]="Dead") and (p_owner[run]!=2) and (p_first[run]!=1) and (p_first[run]!=5) then p_owner[run]=2;
-	    if (p_owner[run]=7) and (p_orks[run]=0) then p_owner[run]=p_first[run];
+    	}
+    	var _set_to_first = false;	
+	    if (p_owner[run]=7 && p_orks[run]=0 && p_type[run]!="Dead"){
+	    	_set_to_first = true;
+	    }
+	    if (_set_to_first){
+	    	var _first = p_first[run];
+	    	if (p_first[run] == eFACTION.Ork && p_orks[run] <= 0){
+	    		p_owner[run]=2;
+	    	} else {
+	    		p_owner[run]=p_first[run];
+	    	}
+	    }
+	    if (p_type[run]=="Dead") and (p_owner[run]!=2) and (p_first[run]!=1) and (p_first[run]!=5){
+	    	p_owner[run]=2;
+	    }
 	    if (p_owner[run]=8) and (p_tau[run]=0) and (p_pdf[run]=0){
 	    	p_owner[run]=2;
 	    	p_influence[run][eFACTION.Tau]=round(p_influence[run][eFACTION.Tau]/2);
@@ -25,15 +38,19 @@ function scr_star_ownership(argument0) {
 	    	if (p_owner[run]=10) then p_owner[run]=2;}
 	    if (p_type[run]="Daemon") then p_owner[run]=10;
 
+	    var _nid_chosen = false;
     	if (planet_feature_bool(p_feature[run], P_features.Gene_Stealer_Cult)){
     		if (p_influence[run][eFACTION.Tyranids]>50){
     			p_owner[run]=9;
     			tyranids_owner+=1;
+    			_nid_chosen = true;
     		}
     	} else if (p_tyranids[run]>=5) and (p_population[run]=0){
 	    	p_owner[run]=9;
 	    	tyranids_owner+=1;
-	    }else if (p_type[run]!="Dead"){
+	    	_nid_chosen = true;
+	    }
+	    if (p_type[run]!="Dead" && !_nid_chosen){
 		    if (p_owner[run]=eFACTION.Player) then player_owner+=1;
 		    if (p_owner[run]=eFACTION.Imperium)  then imperium_owner+=1;
 		    if (p_owner[run]=eFACTION.Mechanicus)  then forge_owner+=1;
@@ -67,7 +84,8 @@ function scr_star_ownership(argument0) {
 	                if (randoo=4){
 	                    p_type[run]="Daemon";
 	                    p_fortified[run]=6;
-	                    p_traitors[run]=7;p_owner[run]=10;
+	                    p_traitors[run]=7;
+	                    p_owner[run]=10;
 	                    delete_features(p_feature[run],P_features.Daemonic_Incursion);
 	                }
 	            }

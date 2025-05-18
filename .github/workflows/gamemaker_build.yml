@@ -1,24 +1,25 @@
 name: Build GameMaker Project
 on:
+  workflow_dispatch:
+    inputs:
+      yyc:
+        required: false
+        type: boolean
+        default: false
   workflow_call:
     inputs:
       yyc:
         required: false
         type: boolean
         default: false
-      development:
-        required: false
-        type: boolean
-        default: true
-    outputs:
-      suffix:
-        value: ${{ jobs.build.outputs.suffix }}
+      build_date:
+        required: true
+        type: string
+
 jobs:
   build:
     name: Build
     runs-on: windows-2022
-    outputs:
-      suffix: ${{ steps.version_info.outputs.suffix }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -32,11 +33,18 @@ jobs:
         shell: pwsh
         run: |
           # Generate current date-time directly in the format you want
-          $date_time = (Get-Date).ToString("yyyy-MM-dd-HHmm")
           git fetch --tags
-  
-          # Set the version number (this could be dynamic or hardcoded)
-          $BuildDate = $date_time
+
+          Write-Output "GITHUB_EVENT_NAME is: $env:GITHUB_EVENT_NAME"
+
+          if (-not "${{ inputs.build_date }}") {
+            $BuildDate = (Get-Date).ToString("yyyy-MM-dd-HHmm")
+            Write-Output "No build date provided. Using current date: $BuildDate"
+          } else {
+            $BuildDate = "${{ inputs.build_date }}"
+            Write-Output "Using provided build date: $BuildDate"
+          }
+
           $CommitHash = git rev-parse --short HEAD
 
           try {
@@ -47,11 +55,13 @@ jobs:
             $Version = $CommitHash
           }
 
-          if ("${{ inputs.development }}" -eq "true") {
-            $suffix = "dev-$Version-$BuildDate"
-          } else {
+          # Set the version number
+          if ($Version -match "^v") {
             $suffix = $Version
+          } else {
+            $suffix = "$Version-$BuildDate"
           }
+
           Add-Content -Path $env:GITHUB_OUTPUT -Value "suffix=$suffix"
           Write-Output "Suffix: $suffix"
   
@@ -64,11 +74,6 @@ jobs:
       
           # Write the version.json to disk
           Set-Content -Path datafiles/main/version.json -Value $VersionJson
-
-      - name: Check suffix
-        shell: pwsh
-        run: |
-          echo "Suffix is: ${{ steps.version_info.outputs.suffix }}"
 
       # This step finds the yyp file in the repository and saves the path to an output
       - id: find_yyp

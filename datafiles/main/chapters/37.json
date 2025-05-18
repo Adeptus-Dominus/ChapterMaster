@@ -1,0 +1,339 @@
+{
+    "chapter": {
+        "id": 37,
+        "name": "Consecrators",
+        "flavor": "The Consecrators are a secretive Dark Angels successor chapter dedicated to preserving ancient technologies and traditions from the early Imperium, maintaining a substantial armory of rare Heresy-era weaponry and equipment while continuing their parent chapter's hunt for the Fallen Angels.",
+        "origin": 2, // 1 - Founding, 2 - Successor, 3 - Other/non-canon/fanmade, 4 - Custom
+        "points": 150,
+        "founding": 0, // The id of the founding chapter, 0 for unknown or none, 10 for random
+        "splash": 1, // in \images\creation\chapters\splash folder, the img number, 1 being Dark Angels etc.
+        "icon_name": "consecrators",
+        "fleet_type": 2, // 1= Homeworld, 2 = Fleet based, 3 = Penitent
+        "strength": 5, // 1-10
+        "purity": 5, // 1-10
+        "stability": 50, // 1-99
+        "cooperation": 5, // 1-10
+        "homeworld_exists": 0, // 1 = true
+        "recruiting_exists": 1, // 1 = true
+        "homeworld_rule": 1, // 1 = Govenor, 2 = Countries, 3 = Personal Rule
+        "homeworld": "Hive", // one of  "Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
+        "homeworld_name": "", // Homeworld Planet name, leave blank to autogenerate
+        "recruiting": "Death", // one of "Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
+        "recruiting_name": "", // Recruiting Planet name, leave blank to autogenerate
+        "discipline": "librarius", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune_magic'
+        "aspirant_trial": "SURVIVAL", // one of "BLOODDUEL" "HUNTING" "SURVIVAL" "EXPOSURE" "KNOWLEDGE" "CHALLENGE"  "APPRENTICESHIP" 
+        "advantages": [
+            "", // leave the first entry blank for now
+            "Enemy: Fallen",
+            "Ancient Armoury",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        ],
+        "disadvantages": [
+            "", // leave the first entry blank for now
+            "Never Forgive",
+            "Enduring Angels",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        ],
+        "colors": {
+            "main": "Black",
+            "secondary": "Black",
+            "pauldron_r": "Black",
+            "pauldron_l": "Black",
+            "trim": "Black",
+            "lens": "Gold",
+            "weapon": "Dark Red",
+            "special": 0, // 0 - normal, 1 - Breastplate, 2 - Vertical, 3 - Quadrant
+            //"trim_on": 0 // 0 no, 1 yes for pauldron trim colours. Trim colour will still be used for certain complex livery items 
+        },
+        "complex_livery_data": {
+            "vet_sgt": {
+                "helm_lens": 12.0,
+                "helm_pattern": 1.0,
+                "helm_primary": 8.0,
+                "helm_secondary": 11.0,
+                "helm_detail": 0.0
+            },
+            "captain": {
+                "helm_lens": 12.0,
+                "helm_pattern": 1.0,
+                "helm_primary": 8.0,
+                "helm_secondary": 11.0,
+                "helm_detail": 0.0
+            },
+            "veteran": {
+                "helm_lens": 12.0,
+                "helm_pattern": 1.0,
+                "helm_primary": 8.0,
+                "helm_secondary": 11.0,
+                "helm_detail": 0.0
+            },
+            "sgt": {
+                "helm_lens": 12.0,
+                "helm_pattern": 1.0,
+                "helm_primary": 8.0,
+                "helm_secondary": 11.0,
+                "helm_detail": 0.0
+            },
+            "all_others": {
+                "helm_lens": 12.0,
+                "helm_pattern": 1.0,
+                "helm_primary": 8.0,
+                "helm_secondary": 11.0,
+                "helm_detail": 0.0
+            }
+        },
+        "names": {
+            //Chapter Staff
+            "hchaplain": "", // Head Chaplain
+            "clibrarian": "", // Chief Librarian
+            "fmaster": "", // Forge Master
+            "hapothecary": "", // Head Apothecary
+            //Company Captains 1 - 10
+            "honorcapt": "",
+            "watchmaster": "",
+            "arsenalmaster": "",
+            "admiral": "",
+            "marchmaster": "",
+            "ritesmaster": "",
+            "victualler": "",
+            "lordexec": "",
+            "relmaster": "",
+            "recruiter": ""
+        },
+        "battle_cry": "For the Emperor!",
+        "equal_specialists": 0, // 0 if no, 1 if yes. If yes, will distribute specialist roles like Assaults and Devastators equally between companies. Otherwise all Assaults go in Company 8 and all Devastators in Company 9
+        "load_to_ships": {
+            "escort_load": 2, // 0 no, 2 yes, 1 doesnt do anything :)
+            "split_scouts": 0, // 0 no, 1 yes. If yes, splits scouts between companies equally. Otherwise all scouts are kept in 10th Company.
+            "split_vets": 0 // 0 no, 1 yes. If yes, all veterans are distrubuted equally between companies. Otherwise all veterans are kept in the 1st Company
+        },
+        "successors": 0, //total number of successor chapters
+        "mutations": {
+            "preomnor": 0,
+            "voice": 0,
+            "doomed": 0,
+            "lyman": 0,
+            "omophagea": 0,
+            "ossmodula": 0,
+            "membrane": 0,
+            "zygote": 0,
+            "betchers": 0,
+            "catalepsean": 0,
+            "secretions": 0,
+            "occulobe": 0,
+            "mucranoid": 0
+        },
+        "disposition": [
+            0, // nothing
+            0, // Progenitor faction
+            50, // Imperium
+            50, // Admech
+            50, //Inquisition
+            50, // Ecclesiarchy
+            50, // Astartes
+            0 // nothing
+        ],
+        "chapter_master": {
+            "name": "Nakir",
+            "specialty": 1, //1 Leader, 2 Champion, 3 Psyker,
+            "melee": 5, // 1 twin power fists ... 8 force staff
+            "ranged": 3, // 1 boltstorm gauntlets ... 7 storm shield
+            // All chapter masters have the trait `Lead by Example` by default
+            "traits": [
+                "recluse",
+                "secretive_knights",
+            ],
+            "gear": "Rosarius",
+            "mobi": "",
+            "armour": "MK3 Iron Armour" // default is Artificer armour, only needed to set if changing to something else.
+        },
+        "artifact": [
+            {
+                "name": "Sword of Sanctity",
+                "description": "One of the few Heavenfall Blades from the chapter's armoury and utilizes small amounts of obsidian in its workings, similar to the Sword of Secrets wielded by Supreme Grand Master Azrael of the Dark Angels",
+                "base_weapon_type": "Power Sword",
+                "slot": "wep1"
+            }
+        ],
+        "company_titles": [
+            "",
+            "1st Company",
+            "2nd Company",
+            "3rd Company",
+            "4th Company",
+            "5th Company",
+            "6th Company",
+            "7th Company",
+            "8th Company",
+            "9th Company",
+            "10th Company"
+        ],
+        "flagship_name": "Reliquaria", // leave blank to autogenerate
+        /**
+        * * Default fleet composition
+        * * Homeworld 
+        * - 2 Battle Barges, 8 Strike cruisers, 7 Gladius, 3 Hunters
+        * * Fleet based and Penitent 
+        * - 4 Battle Barges, 3 Strike Cruisers, 7 Gladius, 3 Hunters
+        * 
+        * use negative numbers to subtract ships
+        * * Stacks with advantages/disadvantages
+        */
+        "extra_ships": {
+            "battle_barges": 0,
+            "gladius": 0,
+            "strike_cruisers": 0,
+            "hunters": 0
+        },
+        /**
+        * * Default HQ Layout (Does not include company specialists)
+        * - 8 Chaplains, 8 Techmarines, 8 Apothecary, 2 Epistolary (librarian), 
+        * - 2 Codiciery, 4 Lexicanum
+        * * Default Company specialists (divided based on `load_to_ships.split_vets` setting)
+        * - 20 Terminators, 85 Veterans, 20 Devastators, 20 Assault
+        * Use negative numbers to subtract
+        * * Stacks with advantages/disadvantages
+        */
+        "extra_specialists": {
+            "chaplains": 0,
+            "techmarines": 0,
+            "apothecary": 0,
+            "epistolary": 0,
+            "codiciery": 0,
+            "lexicanum": 0,
+            "terminator": 0,
+            "assault": 0,
+            "veteran": 0,
+            "devastator": 0
+        },
+        /**
+        * * Default Marine strength
+        * - 100 marines per company
+        * use negative numbers to subtract
+        * * Stacks with strength for non-founding chapters only
+        */
+        "extra_marines": {
+            "second": 0,
+            "third": 0,
+            "fourth": 0,
+            "fifth": 0,
+            "sixth": 0,
+            "seventh": 0,
+            "eighth": 0,
+            "ninth": 0,
+            "tenth": 0
+        },
+        /**
+        * All vehicles are added to the 10th company at the start of the game
+        */
+        "extra_vehicles": {
+            "rhino": 0,
+            "whirlwind": 0,
+            "predator": 0,
+            "land_raider": 0,
+            "land_speeder": 0
+        },
+        /** Add extra starting items ["Item Name", Number to add] */
+        "extra_equipment": [
+            // [
+            //     "Bolter",
+            //     20
+            // ]
+        ],
+        /** 
+        * Provide a place to change the default name and equipment preferences of roles for this chapter
+        * `custom_roles` should be used for specialist/leadership type roles, 
+        * To affect an entire squad, see `custom_squads` below
+        */
+        "custom_roles": {
+            "chapter_master": {
+                "name": "Grand Master",
+            },
+            // "veteran": {
+            //     "name": "Veteran",
+            //     "wep1": "Chainaxe"
+            // },
+            "captain": {
+                "name": "Master",
+            },
+            // "tactical": {
+            //     "name": "Tactical"
+            // },
+            // "devastator": {
+            //     "name": "Devastator"
+            // },
+            // "assault": {
+            //     "name": "Assault",
+            //     "wep1": "Chainsword"
+            // },
+            // "scout": {
+            //     "name": "Scout",
+            //     "wep1": "Sniper Rifle"
+            // },
+            // "chaplain": {
+            //     "name": "Chaplain",
+            // },
+            // "techmarine": {
+            //     "name": "Techmarine",
+            //     "wep1": "Power Axe"
+            // },
+            // "apothecary": {
+            //     "name": "Apothecary",
+            //     "wep1": "Power Axe"
+            // },
+            // "librarian": {
+            //     "name": "Librarian",
+            //     "wep1": "Force Staff"
+            // },
+            // "sergeant": {
+            //     "name": "Sergeant",
+            //     "wep1": "Chainaxe"
+            // },
+            // "veteran_sergeant": {
+            //     "name": "Veteran Sergeant",
+            //     "wep1": "Chainaxe"
+            // }
+        },
+        /**
+        * * Custom squad roles, loadouts and formations
+        * When companies are made, squads are formed based on these rules: 
+        * - squad name: one of captain, terminator, terminator_assault, sternguard_veteran,
+                vanguard_veteran, devastator, tactical, assault, scout, scout_sniper
+        * - squad array layout [Role, Role, ...Role, type_data]
+        * - each element of the array is a default Role, and their settings.
+            - if you changed the role using `custom_roles` you need to reference the role with this new name
+            - for non-leader roles it is better to change the name of the role in the squad layout instead
+        * - unit layout [Role Name, Settings Struct]
+        * - settings struct: 
+        *   - max: The most amount of this unit is allowed per squad
+        *   - min: The squad can't be formed unless at least 1 of this unit is in it
+        *   - role: The name of the unit when it is a member of the squad. This is where you rename roles e.g. 
+                "Terminator" > "Deathwing Terminator" 
+        **  - loadout: Struct containing Required and Optional weaponry this unit can equip 
+                a required loadout always follows this syntax <loadout_slot>:[<loadout_item>,<required number>]
+				so "wep1":["Bolter",4], will mean four marines are always equipped with 4 bolters in the wep1 slot
+        *       option loadouts follow the following syntax <loudout_slot>:[[<loadout_item_list>],<allowed_number>]
+				for example [["Flamer", "Meltagun"],1], means the role can have a max of one flamer or meltagun
+					[["Plasma Pistol","Bolt Pistol"], 4] means the role can have a mix of 4 plasma pistols and bolt pistols on top
+						of all required loadout options
+                - wep1: right hand weapon
+                - wep2: left hand weapon
+                - mobi: Mobility item, e.g. Jump Packs. 
+                - armour: required armour 
+                - gear: special equipment needed for certain roles, like a Roasrius or Narthecium
+        *   - type_data: names the squad, allows certain formations 
+        */
+        "squad_name": "Squad",
+        "custom_squads": {}
+    }
+}

@@ -550,7 +550,11 @@ function scr_image(path, image_id, x1, y1, width, height) {
 
 /// @description Use this to load the image at given path and id into the image cache so it can be 
 /// referenced in a different function to scr_image. Obtain the image later with `obj_img.image_cache[$path][image_id]`
-function scr_image_cache(path, image_id) {
+/// returns the sprite id if it exists or -1 if it doesnt
+/// @param {String} path the filepath after "images" in the 'datafiles' folder, OR, the filepath after "ChapterMaster" in the %LocalAppData% foler if `use_app_data` is true
+/// @param {Real} image_id the number of the image file, convention follows that numbers are "1.png" and so on, if using a prefix, include this in the `path` 
+/// @param {Bool} use_app_data determines whether reading from `datafiles` or `%LocalAppData%\ChapterMaster` folder 
+function scr_image_cache(path, image_id, use_app_data=false) {
     try {
         var drawing_sprite;
         var cache_arr_exists = struct_exists(obj_img.image_cache, path);
@@ -576,7 +580,12 @@ function scr_image_cache(path, image_id) {
             drawing_sprite = existing_sprite;
         } else if (image_id > -1) {
             var folders = string_replace_all(path, "/", "\\");
-            var dir = $"{working_directory}\\images\\{folders}\\{string(image_id)}.png";
+			var dir;
+			if(use_app_data){
+				dir = $"{folders}{string(image_id)}.png";
+			} else {
+				dir = $"{working_directory}\\images\\{folders}\\{string(image_id)}.png";
+			}
             if (file_exists(dir)) {
                 drawing_sprite = sprite_add(dir, 1, false, false, 0, 0);
                 if (image_id >= array_length(obj_img.image_cache[$ path])) {
@@ -585,11 +594,31 @@ function scr_image_cache(path, image_id) {
                 array_set(obj_img.image_cache[$ path], image_id, drawing_sprite);
             } else {
                 drawing_sprite = -1;
-                // log_error($"No directory/file found matching {dir}"); // too much noise
+                log_error($"No directory/file found matching {dir}"); // too much noise
             }
         }
         return drawing_sprite;
     } catch (_exception) {
         handle_exception(_exception);
     }
+}
+
+/// @description Simplified handling of chapter icon stuff for both Creation and player chapter icon 
+/// attempting to keep things consistent and easy through save/load and etc 
+/// @param {Bool} update_global_var set to true when wanting to update the player's icon, false if you just want to return the sprite for further use
+function scr_load_chapter_icon(_name, update_global_var = false){
+
+	if (!ds_map_exists(global.chapter_icons_map, _name)) {
+		_name = "unknown";
+	}
+
+	var _icon_sprite = global.chapter_icons_map[? _name];
+
+	if (update_global_var) {
+		global.chapter_icon.name = _name;
+		global.chapter_icon.sprite = _icon_sprite;
+	}
+    
+    // Return the loaded sprite
+    return _icon_sprite;
 }

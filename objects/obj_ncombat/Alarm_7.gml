@@ -64,8 +64,8 @@ try {
                 var i=0,ii=0,otm,good=0,master_present=0;
                 var run=0,s=0,chaos_meeting=0;
                 
-                var master_index = array_get_index(obj_ini.role[0], "Chapter Master");
-                chaos_meeting=fetch_unit([0,master_index]).planet_location;            
+                var master_index = array_get_index(obj_ini.role[0], obj_ini.role[100][eROLE.ChapterMaster]);
+                chaos_meeting=fetch_unit([0,master_index]).planet_location;
                 
                 // show_message("meeting planet:"+string(chaos_meeting));
                 for (var co=0;co<=10;co++){
@@ -75,7 +75,7 @@ try {
                         if (unit.role()=="" || obj_ini.loc[co][i]!=name) then continue;
                         if (unit.planet_location==floor(chaos_meeting)) then good+=1;
                         if (obj_ini.role[co][i]!=obj_ini.role[100][6]) and (obj_ini.role[co][i]!="Venerable "+string(obj_ini.role[100][6])) then good+=1;
-                        if (string_count("Dread",obj_ini.armour[co][i])=0) or (obj_ini.role[co][i]="Chapter Master") then good+=1;
+                        if (string_count("Dread",obj_ini.armour[co][i])=0) or (obj_ini.role[co][i]==obj_ini.role[100][eROLE.ChapterMaster]) then good+=1;
                         
                         // if (good>=3) then show_message(string(obj_ini.role[co][i])+": "+string(co)+"."+string(i));
                         
@@ -85,7 +85,7 @@ try {
                             obj_temp_meeting.present[otm]=1;
                             obj_temp_meeting.co[otm]=co;
                             obj_temp_meeting.ide[otm]=i;
-                            if (obj_ini.role[co][i]="Chapter Master") then master_present=1;
+                            if (obj_ini.role[co][i]==obj_ini.role[100][eROLE.ChapterMaster]) then master_present=1;
                         }
                     }
                 }
@@ -324,7 +324,7 @@ try {
             with(obj_star){if (name!=obj_ncombat.battle_loc) then instance_deactivate_object(id);}
             with(obj_star){
                 var planet = obj_ncombat.battle_id;
-                if (remove_planet_problem(planet,"bomb")){
+                if (remove_planet_problem(planet,"necron")){
                     p_necrons[planet]=4;
                 }
                 if (awake_tomb_world(p_feature[planet])==0) then awaken_tomb_world(p_feature[planet])
@@ -381,18 +381,20 @@ try {
                         with(obj_star){if (name!=obj_temp8.loc) then instance_deactivate_object(id);}
                         with(obj_star){if (name=obj_temp8.loc) then instance_create(x,y,obj_temp5);}
                         
-                        you=instance_nearest(obj_temp5.x,obj_temp5.y,obj_star);onceh=0;
-                        
+                        var star = star_by_name(obj_temp8.loc)
+                        var planet = obj_temp8.wid
                         // show_message(you.name);
                         
                         // show_message("TEMP5: "+string(instance_number(obj_temp5))+"#Star: "+string(you));
                         
                         var ppp;ppp=0;
-                        remove_planet_problem(obj_temp8.wid, "bomb", you);
+                        remove_planet_problem(planet, "necron", star);
+					    seal_tomb_world(star.p_feature[planet]);
+
     
                         pip.option1="";pip.option2="";pip.option3="";
-                        scr_event_log("","Inquisition Mission Completed: Your Astartes have sealed the Necron Tomb on "+string(you.name)+" "+string(scr_roman(obj_temp8.wid))+".");
-                        scr_gov_disp(you.name,obj_temp8.wid,choose(1,2,3,4,5));
+                        scr_event_log("","Inquisition Mission Completed: Your Astartes have sealed the Necron Tomb on "+string(star.name)+" "+string(scr_roman(planet))+".");
+                        scr_gov_disp(star.name,planet,choose(1,2,3,4,5));
                         
                         if (!instance_exists(obj_temp8)){
                             pip.loc=battle_loc;
@@ -480,10 +482,8 @@ try {
     
     
     if (enemy=1) and (on_ship=true) and (defeat=0){
-        var diceh=floor(random(100))+1;
-        
-        if(scr_has_disadv("Shitty Luck")) then diceh-=15;
-        
+        var diceh=roll_dice_chapter(1, 100, "high");
+                
         if (diceh<=15){
             var ship,ship_hp,i=-1;
             for (var i=0;i<array_length(obj_ini.ship);i++){

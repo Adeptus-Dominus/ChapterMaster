@@ -1,6 +1,5 @@
 /// @description Insert description here
 // You can write your code in this editor
-
 // Draws the main UI menu. The function is used to highlight if you selected something in the menu
 if instance_exists
 var l_hei=37,l_why=0;
@@ -8,7 +7,7 @@ var l_hei=37,l_why=0;
 if (instance_exists(obj_saveload)) then exit;
 if (instance_exists(obj_ncombat)) then exit;
 if (instance_exists(obj_fleet)) then exit;
-if (global.load>0) then exit;
+if (global.load>=0) then exit;
 if (invis==true) then exit;
 
 if (is_test_map==true){
@@ -21,7 +20,6 @@ if (is_test_map==true){
 
 var xx = 0;
 var yy = 0;
-
 // Main UI
 if (!zoomed && !zui){
     draw_sprite(spr_new_ui,menu==0,0,0);
@@ -53,8 +51,8 @@ if (!zoomed && !zui){
         sprw = 141,
         sprh = 141;
     
-    if (sprite_exists(global.chapter_icon_sprite)){
-        draw_sprite_stretched(global.chapter_icon_sprite, global.chapter_icon_frame, sprx, spry, sprw, sprh);
+    if (sprite_exists(global.chapter_icon.sprite)){
+        draw_sprite_stretched(global.chapter_icon.sprite, 0, sprx, spry, sprw, sprh);
     }
        
     

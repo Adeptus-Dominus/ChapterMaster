@@ -23,8 +23,8 @@ if (total_role_number>0){
     if (scr_hit(xx+114,yy+626,xx+560,yy+665)=true){
         draw_set_color(c_white);draw_set_alpha(0.2);if (good1+good2+good3+good4+good5!=5) then draw_set_alpha(0.1);
         draw_rectangle(xx+114,yy+626,xx+560,yy+665,0);draw_set_alpha(1);
-        if (obj_controller.mouse_left=1) and (good1+good2+good3+good4+good5=5){
-            obj_controller.cooldown=8000;engage=true;refresh=true;
+        if (scr_click_left()) and (good1+good2+good3+good4+good5=5){
+            engage=true;refresh=true;
             effect_create_above(ef_firework,xx+800,yy+400,5,c_yellow);
         }
     }draw_set_alpha(1);
@@ -155,9 +155,8 @@ if (total_role_number > 0 && tab > 0) {
             draw_text_transformed(x3, y3, string_hash_to_newline(item_name[h]), scale, 1, 0);
             draw_set_alpha(1);
 
-            if (obj_controller.mouse_left == 1 && obj_controller.cooldown <= 0) {
+            if (scr_click_left()) {
                 var buh = item_name[h] == ITEM_NAME_NONE ? "" : item_name[h];
-                obj_controller.cooldown = 8000;
 
                 switch (tab) {
                     // slots
@@ -166,7 +165,7 @@ if (total_role_number > 0 && tab > 0) {
                     case 3:
                         obj_ini.armour[100, role] = buh;
                         // No bikes or jump packs for Terminators
-                        if (buh == "Terminator Armour") {
+                        if (array_contains(LIST_TERMINATOR_ARMOUR, buh) || buh == STR_ANY_TERMINATOR_ARMOUR) {
                             obj_ini.mobi[100, role] = "";
                         }
                         break;
@@ -191,8 +190,7 @@ if (total_role_number > 0 && tab > 0) {
         draw_set_alpha(0.2);
         draw_rectangle(xx + 1347 - (string_width(string_hash_to_newline("CANCEL")) / 2), yy + 720, xx + 1347 + (string_width(string_hash_to_newline("CANCEL")) / 2), yy + 741, 0);
         draw_set_alpha(1);
-        if (obj_controller.mouse_left == 1) {
-            obj_controller.cooldown = 8000;
+        if (scr_click_left()) {
             tab = 0;
         }
     }

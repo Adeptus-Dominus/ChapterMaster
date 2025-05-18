@@ -46,6 +46,16 @@ function sort_all_companies(){
 		}
 	}
 }
+
+function sort_all_companies_to_map(map){
+	with (obj_ini){
+		for (var i=0;i<array_length(map);i++){
+			if (map[i]){
+				scr_company_order(i);
+			}
+		}
+	}
+}
 function scr_company_order(company) {
 	try_and_report_loop($"company order {company}", function(company){
 
@@ -368,7 +378,7 @@ function scr_company_order(company) {
 function role_hierarchy(){
 	var _roles = obj_ini.role[100];
 	var hierarchy = [
-			"Chapter Master",
+			obj_ini.role[100][eROLE.ChapterMaster],
 			"Forge Master",
 			"Master of Sanctity",
 			"Master of the Apothecarion",

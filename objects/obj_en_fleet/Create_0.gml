@@ -107,7 +107,7 @@ deserialize = function(save_data){
         }
     }
 
-    if(save_data.orbiting != 0){
+    if(save_data.orbiting != 0 && action == ""){
         var nearest_star = instance_nearest(x, y, obj_star);
         orbiting = nearest_star;
         // show_debug_message($"p_fleet id {id} deserialized: {self}");

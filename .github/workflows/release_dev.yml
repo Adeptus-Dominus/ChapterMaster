@@ -10,110 +10,217 @@ on:
         options:
           - YYC
           - VM
-  push:
-    branches:
-      - release/0.9
+  schedule:
+    - cron: "0 22 * * *" # every day at 22:00 UTC
 
 jobs:
   build_needed:
     name: Build needed?
     runs-on: ubuntu-latest
+    env:
+      COMPILER: ${{ github.event.inputs.compiler || 'YYC' }}
     outputs:
       needed: ${{ steps.commit_check.outputs.needed }}  # Output for skipping
     steps:
       - uses: actions/checkout@v4
         with:
+          fetch-depth: 0
+          fetch-tags: true
           lfs: true
 
-      - name: Check commit
+      - name: Check commit range
         id: commit_check
         run: |
-          COMMIT_MESSAGE=$(git log -1 --pretty=%B)
-          echo "Merge commit message: $COMMIT_MESSAGE"
+          # default to no build
+          echo "needed=false" >> $GITHUB_OUTPUT
 
-          EXCLUDE_PATTERN="^(docs|chore|style|ci)"
-
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            echo "Manually triggered, forcing build."
+          # manual override
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "Manually triggered → build."
             echo "needed=true" >> $GITHUB_OUTPUT
-          elif echo "$COMMIT_MESSAGE" | grep -Eq "$EXCLUDE_PATTERN"; then
-            echo "Commit message matches excluded pattern, skipping build."
-            echo "needed=false" >> $GITHUB_OUTPUT
             exit 0
-          else
-            echo "needed=true" >> $GITHUB_OUTPUT
           fi
+
+          # determine commit range since last tag
+          # Use 2>/dev/null to suppress error if no tags exist
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          if [ -n "$LAST_TAG" ]; then
+            RANGE="$LAST_TAG..HEAD"
+            echo "Checking commits in range: $RANGE (since last tag '$LAST_TAG')"
+          else
+            RANGE="HEAD" # If no tags, check all commits up to HEAD
+            echo "No previous tags found. Checking all commits up to HEAD."
+          fi
+
+          # Check if there are *any* commits in the range.
+          # git log -n 1 --format=%H will return the latest commit SHA if there's at least one.
+          # If the range is empty (HEAD is same as LAST_TAG), it returns nothing.
+          COMMITS_IN_RANGE=$(git log $RANGE -n 1 --format=%H 2>/dev/null || echo "")
+
+          if [ -z "$COMMITS_IN_RANGE" ]; then
+            echo "No new commits found in the range '$RANGE'. HEAD is likely the same as the last tag ($LAST_TAG)."
+            echo "Skipping build as no changes since the last tagged build."
+            # needed is already defaulted to false, so we just exit.
+            exit 0
+          fi
+
+          # If we reached here, there are new commits in the range.
+          echo "New commits found in range '$RANGE'. Checking their messages."
+
+          # collect all commit messages in range
+          ALL_MSGS=$(git log $RANGE --pretty=%B)
+          echo "Messages in range:"
+          # Use sed to indent messages for clarity in logs
+          echo "$ALL_MSGS" | sed 's/^/  /'
+
+          # only build if at least one message does NOT match exclude pattern
+          # The -v option inverts the match; -E enables extended regex; -q suppresses output.
+          # The overall command exits successfully (0) if a non-matching line is found.
+          EXCLUDE="^(docs|chore|style|ci)"
+          if echo "$ALL_MSGS" | grep -vEq "$EXCLUDE"; then
+            echo "Found at least one commit message not matching the exclude pattern '$EXCLUDE'."
+            echo "Build needed."
+            echo "needed=true" >> $GITHUB_OUTPUT
+          else
+            echo "All new commit messages match the exclude pattern '$EXCLUDE'."
+            echo "Skipping build."
+            # needed is already defaulted to false.
+          fi
+
+  prepare_release:
+    name: Prepare the tags
+    runs-on: ubuntu-latest
+    needs: build_needed
+    if: needs.build_needed.outputs.needed == 'true'
+    outputs:
+      tag_name: ${{ steps.tag_info.outputs.tag_name }}
+      build_date: ${{ steps.tag_info.outputs.build_date }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set tag name
+        id: tag_info
+        run: |
+          BRANCH_SUFFIX="${GITHUB_REF_NAME##*/}"
+          DATE_TAG=$(date -u +"%Y-%m-%d-%H%M")
+          TAG_NAME="$BRANCH_SUFFIX/$DATE_TAG"
+
+          echo "Resolved DATE_TAG=$DATE_TAG"
+          echo "Resolved BRANCH_SUFFIX=$BRANCH_SUFFIX"
+          echo "Resolved TAG_NAME=$TAG_NAME"
+          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+          echo "build_date=$DATE_TAG" >> $GITHUB_OUTPUT
+
+      - name: Cleanup old releases
+        run: |
+          set -euo pipefail # Exit immediately if a command exits with a non-zero status
+
+          # tag_name looks like: branch-name/date (e.g., main/2025-05-10-2220)
+          TAG_NAME="${{ steps.tag_info.outputs.tag_name }}"
+
+          # Extract the branch prefix from the tag name (e.g., "main/")
+          # This assumes your tag format is always 'branch-name/date'
+          BRANCH_PREFIX="${TAG_NAME%%/*}/"
+
+          echo "Starting cleanup for releases with prefix: ${BRANCH_PREFIX}"
+
+          # --- Added Step: List all tag names found before filtering ---
+          echo "--- All tag names found by 'gh release list --json tagName': ---"
+          # Get all tag names first
+          ALL_TAG_NAMES=$(gh release list --limit 100 --json tagName | jq -r '.[].tagName' || true)
+          if [ -z "$ALL_TAG_NAMES" ]; then
+            echo "No releases found at all."
+          else
+             echo "$ALL_TAG_NAMES" | cat -n # List all found tags with line numbers
+          fi
+          echo "-----------------------------------------------------------"
+
+
+          # Get tag names starting with the prefix, sort reverse chronologically by tag name.
+          # We use the previously fetched ALL_TAG_NAMES to avoid calling gh release list again
+          # Use || true at the end of the pipe to prevent the step from failing if no releases match the prefix
+          TAGS_TO_PROCESS=$(echo "$ALL_TAG_NAMES" | grep "^${BRANCH_PREFIX}" | sort -r || true)
+
+          if [ -z "$TAGS_TO_PROCESS" ]; then
+            echo "No releases found matching prefix '${BRANCH_PREFIX}'. No cleanup needed."
+            exit 0
+          fi
+
+          # --- The rest of the logic (count, keep, delete) remains the same ---
+          # Count the filtered tags
+          NUM_MATCHING=$(echo "$TAGS_TO_PROCESS" | wc -l)
+          RELEASES_TO_KEEP=10 # How many releases per branch prefix to keep
+          echo "Found ${NUM_MATCHING} releases matching prefix '${BRANCH_PREFIX}'. Will keep the latest $RELEASES_TO_KEEP."
+
+          COUNT=0
+          IFS=$'\n' # Set IFS to newline to correctly iterate over tags
+          for TAG in $TAGS_TO_PROCESS; do
+            COUNT=$((COUNT + 1))
+            if [ $COUNT -gt $RELEASES_TO_KEEP ]; then
+              echo "Deleting old release+tag: $TAG"
+              # gh release delete "$TAG" -y --cleanup-tag command deletes the release AND the associated git tag
+              # Use || echo to log a non-fatal warning if deletion fails (e.g., release already gone)
+              # gh release delete "$TAG" -y --cleanup-tag || echo "Warning: Failed to delete release $TAG. It may have been deleted already."
+            else
+              echo "Keeping release+tag: $TAG (it's within the latest $RELEASES_TO_KEEP)"
+            fi
+          done
+          unset IFS # Reset IFS
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needs permissions to delete releases/tags
 
   gamemaker_build:
     name: Build
     uses: ./.github/workflows/gamemaker_build.yml
     secrets: inherit
-    needs: build_needed
+    needs: [prepare_release, build_needed]
     if: needs.build_needed.outputs.needed == 'true'
     with:
-      yyc: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.compiler == 'YYC' || github.event_name != 'workflow_dispatch' }}
-
-  prepare_release:
-    name: Prepare the tags
-    runs-on: ubuntu-latest
-    needs: gamemaker_build
-    if: needs.build_needed.outputs.needed == 'true'
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Check if dev tag exists
-        id: check_dev_tag
-        run: |
-          if git rev-parse --verify "refs/tags/dev/${{ github.ref_name }}" >/dev/null 2>&1; then
-            echo "exists=true" >> $GITHUB_OUTPUT
-          else
-            echo "exists=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Move dev-old tag to dev
-        if: steps.check_dev_tag.outputs.exists == 'true'
-        run: |
-          prev_sha=$(git rev-parse "refs/tags/dev/${{ github.ref_name }}")
-          echo "Updating dev-old/${{ github.ref_name }} to $prev_sha"
-          git tag -f "dev-old/${{ github.ref_name }}" "$prev_sha"
-          git push -f origin "refs/tags/dev-old/${{ github.ref_name }}"
-
-      - id: delete_release_tag
-        name: Delete dev tag
-        if: steps.check_dev_tag.outputs.exists == 'true'
-        run: |
-          gh release delete "dev/${{ github.ref_name }}" -y --cleanup-tag
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      yyc: ${{ (github.event.inputs.compiler || 'YYC') == 'YYC' }}
+      build_date: ${{ needs.prepare_release.outputs.build_date }}
 
   release:
     name: Release
-    runs-on: windows-2022
-    needs: [gamemaker_build, prepare_release]
+    runs-on: ubuntu-latest
+    needs: [prepare_release, gamemaker_build]
     if: needs.build_needed.outputs.needed == 'true'
+    permissions:
+      contents: write # Needed for softprops/action-gh-release
     steps:
-      - uses: actions/checkout@v4
-        with:
-          lfs: true
-          fetch-depth: 0
-
       - name: Download built file artifact
         uses: actions/download-artifact@v4
         with:
           name: built-file
           path: ./build_output
 
+      - name: List downloaded files # Debug step
+        run: ls -R ./build_output
+
+      - name: Prepare Release Name
+        id: prep_release_name
+        run: |
+          rawTagName="${{ needs.prepare_release.outputs.tag_name }}"
+          # Use Bash parameter expansion: ${parameter//pattern/string}
+          # Replaces all occurrences of '/' with '-'
+          formattedTagName="${rawTagName//\//-}"
+          releaseName="ChapterMaster $formattedTagName"
+          echo "Calculated release name: $releaseName"
+          # Set the output using standard Bash redirection to the GITHUB_OUTPUT file
+          echo "release_name=$releaseName" >> $GITHUB_OUTPUT
+
       - id: create_release
         name: Create a release and upload the build
-        uses: softprops/action-gh-release@v2.0.9
+        uses: softprops/action-gh-release@v2
         with:
-          name: ChapterMaster ${{ needs.gamemaker_build.outputs.suffix }}
-          tag_name: dev/${{ github.ref_name }}
+          name: ${{ steps.prep_release_name.outputs.release_name }}
+          tag_name: ${{ needs.prepare_release.outputs.tag_name }}
           prerelease: true
           generate_release_notes: true
-          make_latest: true
-          target_commitish: ${{ github.ref_name }}
+          make_latest: false
           files: |
             ./build_output/${{ needs.gamemaker_build.outputs.built_file }}/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
