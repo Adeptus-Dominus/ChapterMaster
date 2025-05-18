@@ -37,7 +37,7 @@ function tyranid_fleet_planet_action(){
     with (orbiting){
     	is_dead = is_dead_star();
         if (!is_dead) {  		
-            for (var i=1;i<planets;i++){
+            for (var i=1;i<=planets;i++){
             	if (planet_feature_bool(p_feature[i], P_features.Gene_Stealer_Cult)){
             		if (p_influence[i][eFACTION.Tyranids]>50){
             			var alert = $"The Genestealer Cult on {planet_numeral_name(i)} is exceedingly thorough, there is almost no resistance as the swarm descends and what little resistance remains is quickly quelled by infiltrators, most of the populations willingly offer themselves to their new gods jumping into acid vats to form biomass for their newly arrived gods or otherwise allowing themselves to be devoured by the teaming ripper swarms";
@@ -152,7 +152,7 @@ function star_biomass_value(star, fleet=false){
 	} else {
 		for (var i=0;i<array_length(star.planets);i++){
 			if (p_large[i]){
-				_bio_val += _bio_val;
+				_bio_val += p_population[i];
 			} else {
 				if (p_type[i] == "Death" || p_type[i] == "Agri"){
 					_bio_val++;
