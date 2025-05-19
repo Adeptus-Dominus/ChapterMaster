@@ -1846,7 +1846,7 @@ remov=string_length(string(temp[65])+string(temp[66])+string(temp[67])+string(te
 
 instance_create(0,0,obj_tooltip );
 
-wait_and_execute(2, system_setup_controller,[] , id);
+wait_and_execute(3, system_setup_controller,[] , self);
 
 
 //**! DO NOT PUT THINGS AT THE BOTTOM OF THIS FILE IF YOU NEED THEM TO WORK AFTER LOADING FROM A SAVE, SEE LINE 1550 -ish   */

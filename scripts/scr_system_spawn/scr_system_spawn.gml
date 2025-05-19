@@ -1,7 +1,8 @@
 function system_setup_controller(){
-	instance_activate_object(obj_star);
+	instance_activate_all();
 	if (instance_exists(obj_ini)) and (global.load==-1){
-		wait_and_execute(2, scr_system_spawn, [], id);
+		show_debug_message("system spawn main");
+		wait_and_execute(2, scr_system_spawn, [], self);
 	    instance_activate_object(obj_star);
 	    instance_activate_all();
 	}
@@ -9,6 +10,12 @@ function system_setup_controller(){
 }
 
 function scr_system_spawn(){
+	system_setup_data = {
+		large_docks : 0,
+		medium_docks : 0,
+		small_docks : 0,
+	};
+	show_debug_message("system complexities");
 // Sets up the sector spawn and assigns spawned enemies to the sector
 instance_activate_object(obj_star);
 instance_activate_all();
@@ -103,8 +110,8 @@ if (did){
     _current_system.planet[1]=1;
     _current_system.planet[2]=1;
     _current_system.image_index=4;
-    _current_system.p_type[1]="Forge";
     _current_system.p_type[2]="Ice";
+    setup_forge_world(_current_system, 1, dock = 2);
 	/*
     _current_system.p_owner[1]=3;
 	_current_system.p_owner[2]=3;
@@ -326,11 +333,19 @@ if (did){
             rando=1;
             _current_system=instance_nearest(xx,yy,obj_star);
             with (_current_system){
-                if  (planets>0) and (_current_system.p_type[1]!="Dead") and (_current_system.owner == eFACTION.Imperium){
-                    p_owner[1] = eFACTION.Tau;
-                    owner = eFACTION.Tau;
-                    p_influence[1][eFACTION.Tau]=70;
-                }
+            	if (is_dead_star() || planets<0){
+            		continue;
+            	}
+            	if (owner != eFACTION.Imperium){
+            		continue;
+            	}
+
+            	for (var s=1;s<=planets;s++){
+            		if (p_type[i]!="Dead"){
+            			setup_tau_world(_current_system, s);
+            			break;
+            		}
+            	}
             }
             instance_deactivate_object(_current_system);
         }
@@ -432,7 +447,9 @@ if (did){
 
 
     if (field=="both"){
-        if (obj_ini.fleet_type==ePlayerBase.penitent) then orkz+=3;
+        if (obj_ini.fleet_type==ePlayerBase.penitent){
+        	orkz+=3;
+        }
         orkz+=3;
         n=array_length(_non_xenos_chaos);
         for (var j=0; j<orkz && j<n; j++){
@@ -452,12 +469,8 @@ if (did){
         yy=floor(random(748+480))+64;
         _current_system=instance_nearest(xx,yy,obj_star);
         if (_current_system.planets>0) and (_current_system.owner == eFACTION.Imperium){
-            var forge_planet = irandom(_current_system.planets-1)+1;
-            _current_system.plant[forge_planet]=1;
-            _current_system.p_type[forge_planet]="Forge";
-            _current_system.owner = eFACTION.Mechanicus;
-            _current_system.p_owner[forge_planet] = _current_system.owner;
-            _current_system.p_first[forge_planet] = _current_system.owner;
+        	var _forge_planet = irandom(_current_system.planets-1)+1;
+        	setup_forge_world(_current_system, _forge_planet);
         }
         instance_deactivate_object(_current_system);
     }
@@ -469,8 +482,12 @@ y=py;
 
 instance_activate_object(obj_star);
 
-if (did==0) then alarm[1]=5;
-if (did!=0) then obj_star.alarm[1]=1;
+if (did==0){
+	wait_and_execute(5, scr_system_spawn, [], self);
+} else {
+	map_dock_qouta = irandom_range(10, 20);
+	obj_star.alarm[1]=1;
+}
 
 // Eldar craftworld here
 
@@ -579,10 +596,12 @@ if (is_test_map==true){
     scr_add_artifact("good","",0,obj_ini.ship_data[0].name,501);*/
 }
 
-with(obj_temp7){instance_destroy();}
 //for tau fleets, if it is stationed on a system it owns, make a temp7 obj
+var _tau_stars = [];
 with(obj_en_fleet){
-    if (owner == eFACTION.Tau) and (instance_nearest(x,y,obj_star).owner == eFACTION.Tau) then instance_create(x,y,obj_temp7);
+    if (owner == eFACTION.Tau) and (instance_nearest(x,y,obj_star).owner == eFACTION.Tau){
+    	instance_create(x,y,obj_temp7);
+    }
 }
 //if any temp objects exist, find the one nearest to the center of the room and set your direction to
 //the angle to the room center
@@ -593,10 +612,13 @@ if (instance_exists(obj_temp7)){
 	}
 }
 
+with(obj_temp7){instance_destroy();};
+
 /*with(obj_star){
     scr_star_ownership(false);
 }*/
 
 // x=0;y=0;
+instance_activate_all();
 
 }
