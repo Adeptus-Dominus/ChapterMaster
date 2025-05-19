@@ -6,7 +6,8 @@ function new_ork_fleet(xx,yy){
     fleet.owner = eFACTION.Ork;
     fleet.sprite_index=spr_fleet_ork;
     fleet.image_index=1;
-    fleet.capital_number=1;
+    fleet.capital_number = 1;
+    fleet.frigate_number = 1
     present_fleet[7] = 1;
 }
 

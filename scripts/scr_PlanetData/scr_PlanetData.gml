@@ -237,7 +237,7 @@ function PlanetData(planet, system) constructor{
         }
 
         if (!enemies_present){
-            rando=roll_dice(1,200, "low");
+            rando=roll_dice(1,150, "low");
             if (_has_warboss){
                 rando -= 20;
             }
