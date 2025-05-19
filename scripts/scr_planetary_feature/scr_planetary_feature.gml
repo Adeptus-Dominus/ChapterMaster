@@ -43,7 +43,7 @@ function PlayerForge() constructor{
 }
 
 // Function creates a new struct planet feature of a  specified type
-function NewPlanetFeature(feature_type, other_data={}) constructor{
+function PlanetFeature(feature_type, other_data={}) constructor{
 	f_type = feature_type;
 	player_hidden=false;
 	static reveal_to_player = function(){
@@ -181,6 +181,7 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
             variable_struct_set(self, names[i], variable_struct_get(data, names[i]))
         }
 	}
+	move_data_to_current_scope(other_data);
 }
 
 // returns an array of all the positions that a certain planet feature occurs on th p_feature array of a planet
@@ -393,7 +394,7 @@ function create_starship_event(){
 		return false;
 	}else {
 		var planet=irandom(star.planets-1)+1;
-		array_push(star.p_feature[planet], new NewPlanetFeature(P_features.Starship))
+		array_push(star.p_feature[planet], new PlanetFeature(P_features.Starship))
 		scr_event_log("","Ancient Starship discovered on "+string(star.name)+" "+scr_roman(planet)+".", star.name);
 	}
 }

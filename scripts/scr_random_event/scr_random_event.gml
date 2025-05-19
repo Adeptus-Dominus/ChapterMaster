@@ -589,7 +589,7 @@ function scr_random_event(execute_now) {
 			}
 		}
 		
-		array_push(star.p_feature[planet], new NewPlanetFeature(P_features.Succession_War));
+		array_push(star.p_feature[planet], new PlanetFeature(P_features.Succession_War));
 		add_new_problem(planet, "succession",irandom(6) + 4, star);
 		star.dispo[planet] = -5000; 
 		

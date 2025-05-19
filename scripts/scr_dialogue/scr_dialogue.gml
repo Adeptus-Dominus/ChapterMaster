@@ -2187,7 +2187,7 @@ function scr_dialogue(diplo_keyphrase) {
 										if (array_length(p_feature[j])==0) and (onceh==0) then onceh=j;
 									}
 									if (onceh!=0){
-										array_push(p_feature[onceh], new NewPlanetFeature(P_features.Webway));
+										array_push(p_feature[onceh], new PlanetFeature(P_features.Webway));
 										obj_controller.temp[90]=name;
 										good=1;
 										if (onceh==1) then obj_controller.temp[90]+=" I";
@@ -2226,7 +2226,7 @@ function scr_dialogue(diplo_keyphrase) {
 										i=floor(random(planets))+1;
 										if (array_length(p_feature[i])==0) and (onceh==0) then onceh=i;}
 									if (onceh!=0){
-										array_push(p_feature[onceh], new NewPlanetFeature(P_features.Webway));
+										array_push(p_feature[onceh], new PlanetFeature(P_features.Webway));
 										obj_controller.temp[90]=name;
 										good=1;
 										if (onceh==1) then obj_controller.temp[90]+=" I";

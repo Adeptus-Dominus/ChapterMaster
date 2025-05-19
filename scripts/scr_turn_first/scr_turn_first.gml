@@ -119,7 +119,7 @@ function scr_turn_first() {
 	                nfleet.action_y=tplan.y;
 	                if (fnum=1){
 	                	starf=tplan;
-	                	nfleet.cargo_data.ork_warboss=new NewPlanetFeature(OrkWarboss);
+	                	nfleet.cargo_data.ork_warboss=new PlanetFeature(OrkWarboss);
 	                }	                
 	                with (nfleet){
 	                	frigate_number=10;

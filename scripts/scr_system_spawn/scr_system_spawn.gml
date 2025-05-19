@@ -353,39 +353,7 @@ if (did){
         instance_activate_object(obj_star);
     }
     // Chaos
-    repeat(2+irandom(4)){
-        xx=floor(random(1152))+64;
-        yy=floor(random(748))+64;
-        _current_system=instance_nearest(xx,yy,obj_star);
-        with (_current_system){
-            if (planets>0) and (owner == eFACTION.Imperium){
-                planet[1]=1;
-                p_owner[1]=10;
-                owner = eFACTION.Chaos;
-            }
-        }
-        instance_deactivate_object(_current_system);
-    }
-    // More sneaky this way; you have to be noted of rising heresy or something, or have a ship in the system
-    var hell_holes = ["Badab", "Hellsiris","Vraks","Isstvan","Stygies","Stygia","Nostromo","Jhanna","Gangrenous Rot"];
-    with(obj_star){
-        if (array_contains(hell_holes, name)){
-            rando=choose(1,1); // make 1's 0's if you want less chaos
-            if (rando==1){
-				
-                owner = eFACTION.Chaos;
-				p_owner = array_create(5, owner);
-                for (var i=1;i<=planets;i++){
-                    p_heresy[i]=floor(random_range(75,100));
-                    if (p_type[i]=="Dead") then p_type[i]=choose("Hive","Temperate","Desert","Ice");
-
-                    if (p_type[i]!="Dead") then p_traitors[i]=6;
-                    // give them big defences
-                    if (p_type[i]!="Dead") then p_fortified[i]=choose(4,5,5,4,4,3,6);
-                }
-            }
-        }
-    }
+    spawn_chaos_stars();
     
     // Ork planets here
 
@@ -464,13 +432,20 @@ if (did){
     }
     
     // Another mechanicus
-    repeat(choose(3,4,5)){
+    var _system_forge = choose(3,4,5);
+    system_setup_data.forges = _system_forge+1;
+    repeat(_system_forge){
         xx=floor(random(1152+640))+64;
         yy=floor(random(748+480))+64;
         _current_system=instance_nearest(xx,yy,obj_star);
         if (_current_system.planets>0) and (_current_system.owner == eFACTION.Imperium){
         	var _forge_planet = irandom(_current_system.planets-1)+1;
-        	setup_forge_world(_current_system, _forge_planet);
+            if (system_setup_data.large_docks == 0){
+                var _dock_size = 3; 
+            } else {
+                _dock_size = choose(2,3);
+            }
+        	setup_forge_world(_current_system, _forge_planet, choose(2,3));
         }
         instance_deactivate_object(_current_system);
     }
@@ -486,7 +461,7 @@ if (did==0){
 	wait_and_execute(5, scr_system_spawn, [], self);
 } else {
 	map_dock_qouta = irandom_range(10, 20);
-	obj_star.alarm[1]=1;
+    wait_and_execute(1, setup_star_planet_defualts, [], self);
 }
 
 // Eldar craftworld here
@@ -509,7 +484,7 @@ for(var i=0; i<100; i++){
         var craft=instance_create(xx,yy,obj_star);
         craft.craftworld=1;
         go=999;
-		array_push(craft.p_feature[1],new NewPlanetFeature(P_features.Warlord6));
+		array_push(craft.p_feature[1],new PlanetFeature(P_features.Warlord6));
         
         var elforce=instance_create(xx,yy,obj_en_fleet);
         elforce.sprite_index=spr_fleet_eldar;

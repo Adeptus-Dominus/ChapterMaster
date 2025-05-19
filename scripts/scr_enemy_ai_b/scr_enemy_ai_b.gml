@@ -291,7 +291,7 @@ function scr_enemy_ai_b() {
                 if ((rando >= 100) && (p_traitors[i] < 5)) {
                     p_traitors[i] = 6;
                     p_owner[i] = 10;
-                    array_push(p_feature[i], new NewPlanetFeature(P_features.Daemonic_Incursion));
+                    array_push(p_feature[i], new PlanetFeature(P_features.Daemonic_Incursion));
 
                     if (p_heresy[i] >= 80) {
                         p_heresy[i] = 95;

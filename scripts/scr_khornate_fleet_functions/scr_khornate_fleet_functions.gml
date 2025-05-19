@@ -47,7 +47,7 @@ function khorne_fleet_cargo(){
                         ii+=1;
                         if (landing_planet=0){
                             if (planet_imperium_ground_total(ii)>0) and (p_population[ii]>p_max_population[ii]/20){
-                                array_push(p_feature[ii], new NewPlanetFeature(P_features.World_Eaters));
+                                array_push(p_feature[ii], new PlanetFeature(P_features.World_Eaters));
                                 landing_planet=ii;
                                 p_chaos[ii]=6;
                                 break;
@@ -57,7 +57,7 @@ function khorne_fleet_cargo(){
                             if (p_player[ii]>0) and (p_population[ii]>p_max_population[ii]/20){
                                 landing_planet=ii;
                                 p_chaos[ii]=6;
-                                array_push(p_feature[ii], new NewPlanetFeature(P_features.World_Eaters));
+                                array_push(p_feature[ii], new PlanetFeature(P_features.World_Eaters));
                                 break;
                             }// Forces landed
                         }

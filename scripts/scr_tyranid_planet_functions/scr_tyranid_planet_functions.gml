@@ -23,11 +23,11 @@ function tyranids_planet_biomass_extraction(){
 	            }
 	            if (planet_feature_bool(p_feature[planet], P_features.CapillaryTowers)==1) and (p_type[planet]!="Dead"){
 	                p_feature[planet]=[];
-					array_push(p_feature[planet],  new NewPlanetFeature(P_features.Reclamationpools));
+					array_push(p_feature[planet],  new PlanetFeature(P_features.Reclamationpools));
 	                p_population[planet]=0;// show_message("C");
 	            }
 	            if (planet_feature_bool(p_feature[planet], P_features.CapillaryTowers)==0) and (planet_feature_bool(p_feature[planet], P_features.Reclamationpools)==0) and (p_type[planet]!="Dead"){
-					array_push(p_feature[planet], new NewPlanetFeature(P_features.CapillaryTowers));// show_message("B");
+					array_push(p_feature[planet], new PlanetFeature(P_features.CapillaryTowers));// show_message("B");
 	            }
 
 	        }
@@ -37,7 +37,7 @@ function tyranids_planet_biomass_extraction(){
 
 function deploy_reclamation_pools(planet){
     if (p_pdf[planet] <= 0){
-        new NewPlanetFeature(P_features.Reclamationpools);
+        new PlanetFeature(P_features.Reclamationpools);
         array_push(p_feature[planet], )
     }
 }
@@ -109,7 +109,7 @@ function genestealer_cult_end_turn_growth(planet){
     } else if (p_influence[planet][eFACTION.Tyranids] > 5) {
         adjust_influence(eFACTION.Tyranids, -1, planet);
         if ((irandom(200) + (p_influence[planet][eFACTION.Tyranids] / 10)) > 195) {
-            array_push(p_feature[planet], new NewPlanetFeature(P_features.Gene_Stealer_Cult));
+            array_push(p_feature[planet], new PlanetFeature(P_features.Gene_Stealer_Cult));
         }
     }	
 }

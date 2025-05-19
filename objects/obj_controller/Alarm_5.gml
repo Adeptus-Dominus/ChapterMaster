@@ -298,7 +298,7 @@ try_and_report_loop("Secret Chaos Warlord spawn", function(){
         if (_star_found){
             var _planet = array_random_element(planets_without_type("Dead",_choice_star));
             _choice_star.warlord[_planet]=1;
-            array_push(_choice_star.p_feature[_planet], new NewPlanetFeature(P_features.Warlord10));
+            array_push(_choice_star.p_feature[_planet], new PlanetFeature(P_features.Warlord10));
 
             var _heresy_inc = _choice_star.p_type[_planet]=="Hive" ? 25 : 10;
 

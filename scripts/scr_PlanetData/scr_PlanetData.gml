@@ -438,7 +438,7 @@ function PlanetData(planet, system) constructor{
     }
 
     static add_feature = function(feature_type){
-    	var new_feature =  new NewPlanetFeature(feature_type);
+    	var new_feature =  new PlanetFeature(feature_type);
     	array_push(system.p_feature[planet], new_feature);
     	return new_feature;
     }
