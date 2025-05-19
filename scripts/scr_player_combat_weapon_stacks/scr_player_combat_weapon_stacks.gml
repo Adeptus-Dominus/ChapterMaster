@@ -34,7 +34,19 @@ function add_data_to_stack (stack_index, weapon, unit_damage=false, head_role=fa
     wep_num[stack_index]++;
     splash[stack_index]=weapon.spli;
     wep[stack_index]=weapon.name;
-    if (obj_ncombat.started=0) then ammo[stack_index]=weapon.ammo;
+
+    if (obj_ncombat.started=0) {
+        ammo[stack_index] = weapon.ammo;
+
+        if (is_struct(unit)) {
+            var _mobi = unit.get_mobility_data();
+            if (is_struct(_mobi) && _mobi.has_tag("bonus_ammo")) {
+                ammo[stack_index] = weapon.ammo * 4;
+            }
+        } else if (unit == "vehicle") {
+            ammo[stack_index] = weapon.ammo * 10;
+        }
+    }
 
     if (unit!="none"){//this stops a potential infinite loop of secondary profiles
         add_second_profiles_to_stack(weapon, head_role, unit);
@@ -272,7 +284,7 @@ function scr_player_combat_weapon_stacks() {
                         if (is_struct(weapon)){
                             for (j=0;j<=40;j++){
                                 if (wep[j]==""||wep[j]==weapon.name){
-                                    add_data_to_stack(j,weapon);
+                                    add_data_to_stack(j,weapon,,,"vehicle");
                                     break;
                                 }
                             }
