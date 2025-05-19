@@ -19,7 +19,7 @@ global.weapons = {
 			"standard": 30,
 			"master_crafted": 35,
 			"artifact": 40
-		},
+		}
 	},
 	"Boarding Shield": {
 		"description": "Protects twice as well when boarding. Used in siege or boarding operations, this shield offers additional protection.  It may be used with a 2-handed ranged weapon.",
@@ -2767,7 +2767,7 @@ global.gear = {
 				"master_crafted": 30,
 				"artifact": 35
 			},
-			"tags": ["jump"],
+			"tags": ["power_only", "jump"],
 		},
 		"Heavy Weapons Pack": {
 			"abbreviation": "HvyWpPck",
@@ -2825,7 +2825,7 @@ global.gear = {
 			"description": "Designed for use with Terminator armour. Valuable for their ability to launch missiles rapidly from the twin racks, this back-mounted missile system also makes up for some of Terminator armour's inflexibility by providing more options in combat.",
 			"melee_hands": -0.5,
 			"ranged_hands": -0.5,
-			"tags": ["terminator"]
+			"tags": ["terminator_only"]
 		},
 		// Add more mobility items as needed...
 	}
