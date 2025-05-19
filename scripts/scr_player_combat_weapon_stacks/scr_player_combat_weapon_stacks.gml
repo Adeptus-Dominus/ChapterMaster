@@ -39,12 +39,17 @@ function add_data_to_stack (stack_index, weapon, unit_damage=false, head_role=fa
         ammo[stack_index] = weapon.ammo;
 
         if (is_struct(unit)) {
+            var _armour = unit.get_armour_data();
+            if (is_struct(_armour) && _armour.has_tag("dreadnought")) {
+                ammo[stack_index] = weapon.ammo * 3;
+            }
+
             var _mobi = unit.get_mobility_data();
             if (is_struct(_mobi) && _mobi.has_tag("bonus_ammo")) {
-                ammo[stack_index] = weapon.ammo * 4;
+                ammo[stack_index] = weapon.ammo * 2;
             }
         } else if (unit == "vehicle") {
-            ammo[stack_index] = weapon.ammo * 10;
+            ammo[stack_index] = weapon.ammo * 4;
         }
     }
 
