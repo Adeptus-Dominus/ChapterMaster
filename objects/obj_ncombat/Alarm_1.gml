@@ -492,7 +492,7 @@ if (temp>=100) and (threat>1) and (big_mofo>0) and (big_mofo<10) and (dropping=0
     
     // show_message(string(global.chapter_name)+"|"+string(global.custom)+"|"+string(standard_cry));
     
-    if (global.chapter_name="Iron Warriors") and (global.custom=0){standard_cry=1;
+    if (global.chapter_name="Iron Warriors") and (global.custom==eCHAPTER_TYPE.PREMADE){standard_cry=1;
         var rand;rand=choose(1,2,3,4,5);
         if (rand=1) and (big_mofo!=1){p2="breaks the silence, begining the Chapter Battlecry-";}if (rand=1) and (big_mofo=1){p2="break the silence, begining the Chapter Battlecry-";}
         if (rand=2) and (big_mofo!=1){p2="roars the first half of the Chapter Battlecry-";}if (rand=2) and (big_mofo=1){p2="roar the first half of the Chapter Battlecry-";}

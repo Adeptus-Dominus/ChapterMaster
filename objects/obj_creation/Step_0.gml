@@ -6,7 +6,7 @@ if (slide==1){
         scr_chapter_new(chapter_name);
         keyboard_string="";
         if (chapter_name!="nopw_nopw"){
-            custom=0;
+            custom=eCHAPTER_TYPE.PREMADE;
             change_slide=1;
             goto_slide=2;
             chapter_string=chapter_name;
@@ -66,7 +66,7 @@ if (change_slide==35) or (change_slide==36) or (chapter_name=="Doom Benefactors"
         
         chapter_name="Unnamed";
         chapter_string="Unnamed";
-        custom=0;
+        custom=eCHAPTER_TYPE.PREMADE;
         founding=ePROGENITOR.NONE;
         points=0;
         maxpoints=100;
@@ -157,7 +157,7 @@ if (text_bar>60) then text_bar=1;
 
 if (cooldown>0) and (cooldown<=5000) then cooldown-=1;
 // Checks if the name already exists
-if (custom==2){
+if (custom==eCHAPTER_TYPE.CUSTOM){
     name_bad=0;
     if (chapter_name=="") then name_bad=1;
     if (chapter_name=="Dark Angels") then name_bad=1;

@@ -1,22 +1,22 @@
 {
     "chapter": {
-        "id": 1,
-        "name": "Chapter Name",
-        "flavor": "Chapter Lore",
-        "origin": 3, // 1 - Founding, 2 - Successor, 3 - Other/non-canon/fanmade, 4 - Custom
+        "id": 35,
+        "name": "Celestial Lions",
+        "flavor": "The Celestial Lions are a Space Marine chapter nearly annihilated by the Inquisition after they dared question Inquisitorial atrocities on Armageddon, with their remnants saved from extinction only through the intervention of the Black Templars. Currently they have barely a hundred brothers left.",
+        "origin": 2, // 1 - Founding, 2 - Successor, 3 - Other/non-canon/fanmade, 4 - Custom
         "points": 150,
-        "founding": 0, // The id of the founding chapter, 0 for unknown or none, 10 for random
-        "splash": 1, // in \images\creation\chapters\splash folder, the img number, 1 being Dark Angels etc.
-        "icon_name": "unknown",
-        "fleet_type": 1, // 1= Homeworld, 2 = Fleet based, 3 = Penitent
-        "strength": 5, // 1-10
-        "purity": 5, // 1-10
-        "stability": 50, // 1-99
+        "founding": 4, // The id of the founding chapter, 0 for unknown or none, 10 for random
+        "splash": 98, // in \images\creation\chapters\splash folder, the img number, 1 being Dark Angels etc.
+        "icon_name": "celestial_lions",
+        "fleet_type": 2, // 1= Homeworld, 2 = Fleet based, 3 = Penitent
+        "strength": 1, // 1-10
+        "purity": 10, // 1-10
+        "stability": 99, // 1-99
         "cooperation": 5, // 1-10
         "homeworld_exists": 1, // 1 = true
         "recruiting_exists": 1, // 1 = true
         "homeworld_rule": 1, // 1 = Govenor, 2 = Countries, 3 = Personal Rule
-        "homeworld": "Hive", // one of  "Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
+        "homeworld": "", // one of  "Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
         "homeworld_name": "", // Homeworld Planet name, leave blank to autogenerate
         "recruiting": "Death", // one of "Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
         "recruiting_name": "", // Recruiting Planet name, leave blank to autogenerate
@@ -24,7 +24,7 @@
         "aspirant_trial": "SURVIVAL", // one of "BLOODDUEL" "HUNTING" "SURVIVAL" "EXPOSURE" "KNOWLEDGE" "CHALLENGE"  "APPRENTICESHIP" 
         "advantages": [
             "", // leave the first entry blank for now
-            "",
+            "Enemy: Orks",
             "",
             "",
             "",
@@ -35,8 +35,8 @@
         ],
         "disadvantages": [
             "", // leave the first entry blank for now
-            "",
-            "",
+            "Obliterated",
+            "Suspicious",
             "",
             "",
             "",
@@ -45,15 +45,44 @@
             ""
         ],
         "colors": {
-            "main": "Black",
-            "secondary": "Black",
-            "pauldron_r": "Black",
-            "pauldron_l": "Black",
-            "trim": "Silver",
+            "secondary": "Gold",
+            "pauldron_r": "Turqoise",
+            "pauldron_l": "Turqoise",
+            "trim": "Lighter Black",
             "lens": "Red",
-            "weapon": "Dark Red",
-            "special": 0, // 0 - normal, 1 - Breastplate, 2 - Vertical, 3 - Quadrant
-            //"trim_on": 0 // 0 no, 1 yes for pauldron trim colours. Trim colour will still be used for certain complex livery items 
+            "weapon": "Black",
+            "main": "Gold",
+            "special": 0.0
+        },
+        "complex_livery_data": {
+            "sgt": {
+                "helm_lens": 11.0,
+                "helm_pattern": 0.0,
+                "helm_primary": 8.0,
+                "helm_secondary": 0.0,
+                "helm_detail": 0.0
+            },
+            "veteran": {
+                "helm_lens": 11.0,
+                "helm_pattern": 0.0,
+                "helm_primary": 29.0,
+                "helm_secondary": 0.0,
+                "helm_detail": 0.0
+            },
+            "vet_sgt": {
+                "helm_lens": 11.0, //dark red
+                "helm_pattern": 0.0,
+                "helm_primary": 8.0, //black
+                "helm_secondary": 0.0,
+                "helm_detail": 0.0
+            },
+            "captain": {
+                "helm_lens": 22.0, //lime
+                "helm_pattern": 0.0,
+                "helm_primary": 29.0, //turquoise
+                "helm_secondary": 0.0,
+                "helm_detail": 0.0
+            }
         },
         "names": {
             //Chapter Staff
@@ -77,8 +106,8 @@
         "equal_specialists": 0, // 0 if no, 1 if yes. If yes, will distribute specialist roles like Assaults and Devastators equally between companies. Otherwise all Assaults go in Company 8 and all Devastators in Company 9
         "load_to_ships": {
             "escort_load": 2, // 0 no, 2 yes, 1 doesnt do anything :)
-            "split_scouts": 0, // 0 no, 1 yes. If yes, splits scouts between ships equally. Otherwise all scouts are kept on the homeworld.
-            "split_vets": 0 // 0 no, 1 yes. If yes, all veterans are distrubuted equally between ships. Otherwise all veterans are kept in the flagship
+            "split_scouts": 0, // 0 no, 1 yes. If yes, splits scouts between companies equally. Otherwise all scouts are kept in 10th Company.
+            "split_vets": 0 // 0 no, 1 yes. If yes, all veterans are distrubuted equally between companies. Otherwise all veterans are kept in the 1st Company
         },
         "successors": 0, //total number of successor chapters
         "mutations": {
@@ -99,18 +128,18 @@
         "disposition": [
             0, // nothing
             0, // Progenitor faction
-            50, // Imperium
+            42, // Imperium
             50, // Admech
-            50, //Inquisition
-            50, // Ecclesiarchy
+            22, //Inquisition
+            24, // Ecclesiarchy
             50, // Astartes
             0 // nothing
         ],
         "chapter_master": {
-            "name": "",
+            "name": "Ekene Dubaku",
             "specialty": 1, //1 Leader, 2 Champion, 3 Psyker,
-            "melee": 1, // 1 twin power fists ... 8 force staff
-            "ranged": 1, // 1 boltstorm gauntlets ... 7 storm shield
+            "melee": 5, // 1 twin power fists ... 8 force staff
+            "ranged": 3, // 1 boltstorm gauntlets ... 7 storm shield
             // All chapter masters have the trait `Lead by Example` by default
             "traits": [
                 ""
@@ -119,28 +148,21 @@
             "mobi": "",
             "armour": "" // default is Artificer armour, only needed to set if changing to something else.
         },
-        "artifact": [
-            {
-                "name": "Artifact Name",
-                "description": "Artefact Lore",
-                "base_weapon_type": "Power Sword",
-                "slot": "wep1"
-            }
-        ],
+        "artifact": [],
         "company_titles": [
             "",
-            "1st Company",
-            "2nd Company",
-            "3rd Company",
-            "4th Company",
-            "5th Company",
-            "6th Company",
-            "7th Company",
-            "8th Company",
-            "9th Company",
-            "10th Company"
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
         ],
-        "flagship_name": "Flagship Name", // leave blank to autogenerate
+        "flagship_name": "Hex", // leave blank to autogenerate
         /**
         * * Default fleet composition
         * * Homeworld 
@@ -169,13 +191,13 @@
         "extra_specialists": {
             "chaplains": 0,
             "techmarines": 0,
-            "apothecary": 0,
+            "apothecary": -10,
             "epistolary": 0,
             "codiciery": 0,
             "lexicanum": 0,
-            "terminator": 0,
+            "terminator": -10,
             "assault": 0,
-            "veteran": 0,
+            "veteran": 45, //offset obliterated
             "devastator": 0
         },
         /**
@@ -193,7 +215,7 @@
             "seventh": 0,
             "eighth": 0,
             "ninth": 0,
-            "tenth": 0
+            "tenth": 40 //offset obliterated
         },
         /**
         * All vehicles are added to the 10th company at the start of the game
@@ -218,19 +240,21 @@
         * To affect an entire squad, see `custom_squads` below
         */
         "custom_roles": {
-            // "honour_guard": {
-            //     "name": "Honour Guard",
-            //     "wep1": "Power Sword",
-            //     "wep2": "Bolter"
-            // },
-            // "veteran": {
-            //     "name": "Veteran",
-            //     "wep1": "Chainaxe"
-            // },
-            // "captain": {
-            //     "name": "Captain",
-            //     "wep1": "Power Sword"
-            // },
+            "captain": {
+                "name": "Warleader"
+            },
+            "sergeant": {
+                "name": "Pride Leader"
+            },
+            "chaplain": {
+                "name": "Deathspeaker"
+            },
+            "librarian": {
+                "name": "Spiritwalker"
+            },
+            "apothecary": {
+                "name": "Lifebinder"
+            }
             // "tactical": {
             //     "name": "Tactical"
             // },

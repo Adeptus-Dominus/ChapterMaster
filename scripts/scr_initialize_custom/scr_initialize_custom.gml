@@ -39,6 +39,12 @@ enum ePROGENITOR {
     RANDOM,
 }
 
+enum eCHAPTER_TYPE {
+    PREMADE,
+	RANDOM,
+    CUSTOM,
+}
+
 function progenitor_map(){
     var founding_chapters = [
         "",
@@ -107,7 +113,7 @@ function select_livery_data(livery_data, specific) {
 function helmet_livery(progenitor, specific = "none") {
     var livery_data;
 
-	if ((obj_creation.custom == 0) && (global.chapter_creation_object.origin == 1)) {
+	if ((obj_creation.custom == eCHAPTER_TYPE.PREMADE) && (global.chapter_creation_object.origin == 1)) {
 		progenitor = progenitor_map();
 	}
 
@@ -786,7 +792,7 @@ function scr_initialize_custom() {
 	* * Fleet based and Penitent 
 	* - 4 Battle Barges, 3 Strike Cruisers, 7 Gladius, 3 Hunters
 	*/
-	if (obj_creation.custom == 0) {
+	if (obj_creation.custom == eCHAPTER_TYPE.PREMADE) {
 		flagship_name = obj_creation.flagship_name;
 		if (obj_creation.fleet_type == ePlayerBase.home_world) {
 			battle_barges = 2;
@@ -799,12 +805,6 @@ function scr_initialize_custom() {
 			gladius = 7;
 			hunters = 3;
 		}
-
-		battle_barges = battle_barges + obj_creation.extra_ships.battle_barges;
-		strike_cruisers = strike_cruisers + obj_creation.extra_ships.strike_cruisers;
-		gladius = gladius + obj_creation.extra_ships.gladius;
-		hunters = hunters + obj_creation.extra_ships.hunters;
-
 	}
 
 	if (scr_has_adv ("Kings of Space")) {battle_barges += 1;}
@@ -821,6 +821,12 @@ function scr_initialize_custom() {
 		hunters = 0;
 		}
 	}
+
+	battle_barges = battle_barges + obj_creation.extra_ships.battle_barges;
+	strike_cruisers = strike_cruisers + obj_creation.extra_ships.strike_cruisers;
+	gladius = gladius + obj_creation.extra_ships.gladius;
+	hunters = hunters + obj_creation.extra_ships.hunters;
+
 	var ship_summary_str = $"Ships: bb: {battle_barges} sc: {strike_cruisers} g: {gladius} h: {hunters}"
 	// log_message(ship_summary_str);
 	// show_debug_message(ship_summary_str);
@@ -1055,6 +1061,7 @@ function scr_initialize_custom() {
 		landspeeder = 0;
 		rhino = 0;
 		whirlwind = 0;
+		dreadnought = 0;
 
 	}
 	if  scr_has_disadv("Enduring Angels") {
@@ -1110,19 +1117,13 @@ function scr_initialize_custom() {
 	if(global.chapter_name == "Iron Hands"){
 		predator += 1;
 	}
-	
-	// Strength ratings are made up for founding chapters
-	if (progenitor > ePROGENITOR.NONE && progenitor < ePROGENITOR.RANDOM) {
+
+	if (obj_creation.custom != eCHAPTER_TYPE.PREMADE) {
 		if (obj_creation.strength <= 4) then ninth = 0;
 		if (obj_creation.strength <= 3) then eighth = 0;
 		if (obj_creation.strength <= 2) then seventh = 0;
 		if (obj_creation.strength <= 1) then sixth = 0;
 
-		var bonus_marines = 0;
-		if (obj_creation.strength > 5) then bonus_marines = (obj_creation.strength - 5) * 50;
-	}
-
-	if (obj_creation.custom != 0) {
 		var bonus_marines = 0;
 		if (obj_creation.strength > 5) then bonus_marines = (obj_creation.strength - 5) * 50;
 		if scr_has_disadv("Obliterated") then bonus_marines = (obj_creation.strength - 1) * 10;
@@ -1273,7 +1274,7 @@ function scr_initialize_custom() {
 	if(epistolary <= 0) {epistolary_per_company = 0};
 
 
-	if (obj_creation.custom == 0) {
+	if (obj_creation.custom == eCHAPTER_TYPE.PREMADE) {
 		if (veteran >= 20) and(global.founding = ePROGENITOR.NONE) {
 			veteran -= 20;
 			terminator += 20;
@@ -1551,7 +1552,7 @@ function scr_initialize_custom() {
 
 	*/
 	var squad_name = "Squad";
-	if(obj_creation.custom != 0){
+	if(obj_creation.custom != eCHAPTER_TYPE.PREMADE){
 		if (obj_ini.progenitor == ePROGENITOR.SPACE_WOLVES) {
 			squad_name = "Pack";
 		}
@@ -2483,7 +2484,7 @@ function scr_initialize_custom() {
 	if (scr_has_adv("Retinue of Renown")){
 		_honour_guard_count += 10;
 	} 
-	if (progenitor == ePROGENITOR.DARK_ANGELS && obj_creation.custom == 0) { 
+	if (progenitor == ePROGENITOR.DARK_ANGELS && obj_creation.custom == eCHAPTER_TYPE.PREMADE) { 
 		_honour_guard_count += 6; 
 	}
 	if (_honour_guard_count == 0) {
@@ -2509,7 +2510,7 @@ function scr_initialize_custom() {
 			tacticals: 0,
 			assaults: 0,
 			devastators: 0,
-			dreadnoughts: dreadnought+1,
+			dreadnoughts: dreadnought == 0 ? 0 : dreadnought+1, //handle obliterated
 			predators: predator,
 			landraiders: landraider
 		},
@@ -2598,7 +2599,7 @@ function scr_initialize_custom() {
 		}
 	}
 
-	// log_message($"Pre balancing company totals: {json_stringify(companies,true)}")
+	log_message($"Pre balancing company totals: {json_stringify(companies,true)}")
 	// Extra vehicles loaded from json files all get dumped into the 10th company for the player to sort out
 	
 	var vehicle_keys = ["rhino", "whirlwind", "predator", "land_raider", "land_speeder"];
@@ -2638,6 +2639,9 @@ function scr_initialize_custom() {
 	var _moved_scouts = 0;
 
 	var _coys = struct_get_names(companies);
+	function _is_terminator (_armour) {
+		return array_contains(["Terminator Armour", "Tartaros"], _armour);
+	};
 	for(var _c = 0, _clen =  array_length(_coys); _c < _clen; _c++ ){
 		var k = 0, v = 0;//k = marine slot, v = vehicle slot
 		
@@ -2762,16 +2766,14 @@ function scr_initialize_custom() {
 			}
 		}
 
-		// log_message($"New Company Totals: eq specialists: {equal_specialists}: scout coy {scout_company_behaviour} equal_scouts: {equal_scouts}");
-		// log_message($"Company {_coy.coy}: {json_stringify(_coy,true)}");
+		log_message($"New Company Totals: eq specialists: {equal_specialists}: scout coy {scout_company_behaviour} equal_scouts: {equal_scouts}");
+		log_message($"Company {_coy.coy}: {json_stringify(_coy,true)}");
 
 
 		var attrs = struct_get_names(_coy);
 		
 		
-		var _is_terminator = function(_armour) {
-			return array_contains(["Terminator Armour", "Tartaros"], _armour);
-		};
+		
 		// log_message($"attrs {attrs}");
 
 		for(var _a = 0, _alen =  array_length(attrs); _a < _alen; _a++ ){
@@ -3201,6 +3203,15 @@ function scr_initialize_custom() {
         scr_add_item("MK4 Maximus", irandom_range(3, 18));
 	}
 
+	if(scr_has_adv("Ancient Armoury")){
+		scr_add_item("MK4 Maximus", irandom_range(5, 10));
+		scr_add_item("MK5 Heresy", irandom_range(5, 10));
+		scr_add_item("MK3 Iron Armour", irandom_range(1, 5));
+		scr_add_item("MK6 Corvus", irandom_range(10, 15));
+		scr_add_item("MK7 Aquila", -10);
+		scr_add_item("MK8 Errant", -1);
+	}
+
     gene_slaves = [];
     
 	var bloo = 0,
@@ -3308,7 +3319,7 @@ function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1
     } else {
         spawn_unit.roll_age();
         spawn_unit.roll_experience();
-    }    
+    }   
 	if(role_id == eROLE.HonourGuard){
 		spawn_unit.add_trait(choose("guardian", "champion", "observant", "perfectionist","natural_leader"));
 	}

@@ -1,5 +1,6 @@
 {
   "chapter": {
+    "name": "Flesh Tearers",
     "mutations": {
       "betchers": 0.0,
       "catalepsean": 0.0,
@@ -46,7 +47,7 @@
       "name": "Gabriel Seth"
     },
     "fleet_type": 1.0,
-    "strength": 1.0,
+    "strength": 5.0,
     "extra_ships": {
       "battle_barges": 0.0,
       "gladius": 0.0,
@@ -69,12 +70,12 @@
       "second": 0.0,
       "third": 0.0,
       "fourth": 0.0,
-      "fifth": -100.0,
+      "fifth": 0.0,
       "sixth": 0.0,
       "seventh": 0.0,
       "eighth": 0.0,
       "ninth": 0.0,
-      "tenth": -100.0
+      "tenth": -50.0
     },
     "extra_vehicles": {
       "whirlwind": 0.0,
@@ -153,7 +154,7 @@
     "disadvantages": [
       "",
       "Black Rage",
-      "",
+      "Enduring Angels",
       "",
       "",
       "",
@@ -162,7 +163,6 @@
       ""
     ],
     "discipline": "librarius",
-    "name": "Flesh Tearers",
     "full_liveries": [
       {
         "right_trim": 7.0,

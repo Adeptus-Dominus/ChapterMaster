@@ -103,7 +103,7 @@ function draw_chapter_select(){
 				if (!chap.disabled) {
 					if (scr_chapter_new(chapter_name)) {
                         scr_load_chapter_icon(chap.icon_name, true);
-						custom = 0;
+						custom = eCHAPTER_TYPE.PREMADE;
 						change_slide = 1;
 						goto_slide = 2;
 						chapter_string = chapter_name;
@@ -147,7 +147,7 @@ function draw_chapter_select(){
 				if (!chap.disabled) {
 					if (scr_chapter_new(chapter_name)) {
                         scr_load_chapter_icon(chap.icon_name, true);
-						custom = 0;
+						custom = eCHAPTER_TYPE.PREMADE;
 						change_slide = 1;
 						goto_slide = 2;
 						chapter_string = chapter_name;
@@ -202,13 +202,13 @@ function draw_chapter_select(){
 					global.chapter_id = chap.id;
 					change_slide = 1;
 					goto_slide = 2;
-					custom = 2;
+					custom = eCHAPTER_TYPE.CUSTOM;
 					scr_chapter_new(chap.id);
 				} else {
 					global.chapter_id = chap.id;
 					change_slide = 1;
 					goto_slide = 2;
-					custom = 2;
+					custom = eCHAPTER_TYPE.CUSTOM;
 					scr_chapter_random(0);
 				}
 			}
@@ -251,7 +251,7 @@ function draw_chapter_select(){
 						// global.chapter_icon_path = $"creation/chapters/icons";
 						// global.chapter_icon_filename = chap.icon_name;
 						global.chapter_id = chap.id;
-						custom = 0;
+						custom = eCHAPTER_TYPE.PREMADE;
 						change_slide = 1;
 						goto_slide = 2;
 						chapter_string = chapter_name;
@@ -265,6 +265,8 @@ function draw_chapter_select(){
 
 
 	grid.new_cell();
+	grid.new_cell();
+	grid.new_cell(); //padding between fanmade and the custom/random buttons
 
 
     // Blank Custom Chapter
@@ -289,7 +291,7 @@ function draw_chapter_select(){
             scr_load_chapter_icon("unknown", true);
             change_slide = 1;
             goto_slide = 2;
-            custom = 2;
+            custom = eCHAPTER_TYPE.CUSTOM;
             scr_chapter_random(0);
         }
     }
@@ -317,7 +319,7 @@ function draw_chapter_select(){
             scr_load_chapter_icon(array_random_element(global.chapter_icons_array), true);
             change_slide = 1;
             goto_slide = 2;
-            custom = 1;
+            custom = eCHAPTER_TYPE.RANDOM;
             scr_chapter_random(1);
         }
     }
@@ -399,8 +401,8 @@ function draw_chapter_trait_select(){
     obj_cursor.image_index=0;
     
     if (name_bad=1) then draw_set_color(c_red);
-    if (text_selected!="chapter") or (custom!=2) then draw_text(800,80,string_hash_to_newline(string(chapter_name)));
-    if (custom=2){
+    if (text_selected!="chapter") or (custom!=eCHAPTER_TYPE.CUSTOM) then draw_text(800,80,string_hash_to_newline(string(chapter_name)));
+    if (custom==eCHAPTER_TYPE.CUSTOM){
         if (text_selected="chapter") and (text_bar>30) then draw_text(800,80,string_hash_to_newline(string(chapter_name)));
         if (text_selected="chapter") and (text_bar<=30) then draw_text(805,80,string_hash_to_newline(string(chapter_name)+"|"));
         if (scr_text_hit(800,80,true,chapter_name)){
@@ -419,7 +421,7 @@ function draw_chapter_trait_select(){
     
     
     obj_cursor.image_index=0;
-    if (custom>0) and (restarted=0){
+    if (custom!=eCHAPTER_TYPE.PREMADE) and (restarted=0){
         if (scr_hit(436,74,436+128,74+128)) and (popup=""){
             obj_cursor.image_index=1;
             if (scr_click_left()){
@@ -428,7 +430,7 @@ function draw_chapter_trait_select(){
         }
     }
     
-    /*if (custom>0) and (restarted=0){
+    /*if (custom!=eCHAPTER_TYPE.PREMADE) and (restarted=0){
         draw_sprite_stretched(spr_creation_arrow,0,550,160,32,32);
         draw_sprite_stretched(spr_creation_arrow,1,597,160,32,32);
     }*/
@@ -439,7 +441,7 @@ function draw_chapter_trait_select(){
     draw_line(445,202,1125,202);
     
     if (popup=""){
-        if (custom<2) then draw_set_alpha(0.5);
+        if (custom!=eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.5);
         draw_text_transformed(800,211,string_hash_to_newline("Chapter Type"),0.6,0.6,0);
         draw_set_halign(fa_left);
         
@@ -456,11 +458,11 @@ function draw_chapter_trait_select(){
         	tooltip2="As with Fleet Based, but you must crusade and fight until your penitence meter runs out.  Note that recruiting is disabled until then.";
         }// Avoiding fights will result in excomunicatus traitorus.
         
-        if (custom<2) then draw_set_alpha(0.5);
+        if (custom!=eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.5);
         yar=0;
         if (fleet_type=1) then yar=1;
         draw_sprite(spr_creation_check,yar,519,239);yar=0;
-        if (custom=2 && point_and_click([519,239,519+32,239+32])){
+        if (custom==eCHAPTER_TYPE.CUSTOM && point_and_click([519,239,519+32,239+32])){
             if (points+20<=maxpoints) and (fleet_type=3){points+=20;fleet_type=1;}
             if (fleet_type=2){fleet_type=1;}
         }
@@ -469,7 +471,7 @@ function draw_chapter_trait_select(){
         yar=0;
         if (fleet_type=2) then yar=1;
         draw_sprite(spr_creation_check,yar,771,239);yar=0;
-        if (custom=2 && point_and_click([771,239,771+32,239+32])) {
+        if (custom==eCHAPTER_TYPE.CUSTOM && point_and_click([771,239,771+32,239+32])) {
             if (points+20<=maxpoints) and (fleet_type=3){points+=20;fleet_type=2;}
             if (fleet_type=1){fleet_type=2;}
         }
@@ -478,7 +480,7 @@ function draw_chapter_trait_select(){
         yar=0;
         if (fleet_type=3) then yar=1;
         draw_sprite(spr_creation_check,yar,958,239);yar=0;
-        if (custom=2 && point_and_click([958,239,958+32,239+32])){
+        if (custom==eCHAPTER_TYPE.CUSTOM && point_and_click([958,239,958+32,239+32])){
             if (fleet_type!=3) {
                 points-=20;
             }
@@ -508,7 +510,7 @@ function draw_chapter_trait_select(){
         var scores_max = [10, 10, 10, 99];
         var scores_min = [1, 1, 1, 1];
         var click_change = keyboard_check(vk_control) ? 10 : 1;
-        if (custom == 2) {
+        if (custom == eCHAPTER_TYPE.CUSTOM) {
             for (var i = 0; i < 4; i++) {
                 draw_sprite_stretched(spr_arrow, 0, 436, 325 + (i * 55), 32, 32);
                 if (scr_hit(436, 325 + (i * 55), 436 + sprite_get_width(spr_arrow), 357 + (i * 55))) {
@@ -560,11 +562,11 @@ function draw_chapter_trait_select(){
         draw_rectangle(445, 551, 1125, 553, 0);
     }
     
-    if (popup!="") or (custom<2) then draw_set_alpha(0.5);
+    if (popup!="") or (custom!=eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.5);
     
     
     if (popup!="icons"){
-        var advantage_click_allow = custom>1;
+        var advantage_click_allow = custom==eCHAPTER_TYPE.CUSTOM;
         draw_set_halign(fa_left);
         draw_set_font(fnt_40k_30b);
         draw_text_transformed(436,564,"Chapter Advantages",0.5,0.5,0);
@@ -583,7 +585,7 @@ function draw_chapter_trait_select(){
             draw_text(adv_txt.x1,adv_txt.y1+(i*adv_txt.h), draw_string);
             if (scr_hit(adv_txt.x1,adv_txt.y1+(i*adv_txt.h),adv_txt.x2,adv_txt.y2+(i*adv_txt.h))){
 
-                if (points>=maxpoints) and (adv_num[i]=0) and (popup="") and (custom>1){
+                if (points>=maxpoints) and (adv_num[i]=0) and (popup="") and (custom==eCHAPTER_TYPE.CUSTOM){
                     tooltip="Insufficient Points";
                     tooltip2="Add disadvantages or decrease Chapter Stats";
                 }
@@ -912,7 +914,7 @@ function draw_chapter_homeworld_select(){
             var trial_data = scr_trial_data();
             draw_text_transformed(160,90,"Aspirant Trial",0.6,0.6,0);
 
-            if (custom>1){
+            if (custom==eCHAPTER_TYPE.CUSTOM){
                 draw_sprite_stretched(spr_creation_arrow,0,40,90,32,32);
                 if (point_and_click([40,90,40+32,90+32])){
                     aspirant_trial++;

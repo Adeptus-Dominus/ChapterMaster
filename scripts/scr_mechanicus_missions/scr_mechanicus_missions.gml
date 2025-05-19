@@ -101,18 +101,21 @@ function mechanicus_missions_end_turn(planet){
     }
     var mars_mech_mission = has_problem_planet_and_time(planet,"mech_mars", 0);
     if (mars_mech_mission>-1){
-        var techs_taken,com,ide,ship_planet, unit;
+        var techs_taken,com,ide,ship_planet, _unit;
         techs_taken=0;com=-1;ide=0;ship_planet="";        	
         for (com =0; com<=10;com++){
-            for (ide =0; ide<=array_length(obj_ini.role[com]);ide++){
-                unit = fetch_unit([com,ide])
-                if (unit.role()=obj_ini.role[100][eROLE.Techmarine]){
+            for (ide = 0; ide<array_length(obj_ini.TTRPG[com]);ide++){
+                _unit = fetch_unit([com,ide]);
+                if (_unit.name() == ""){
+                	continue;
+                }
+                if (_unit.role()=obj_ini.role[100][eROLE.Techmarine]){
                     // Case 1: on planet
-                    if (obj_ini.loc[com][ide]=name) and (unit.planet_location=planet){
+                    if (obj_ini.loc[com][ide]=name) and (_unit.planet_location=planet){
                         p_player[planet]-=scr_unit_size(obj_ini.armour[com][ide],obj_ini.role[com][ide],true);
                         obj_ini.loc[com][ide]="Mechanicus Vessel";
-                        unit.planet_location=0;
-                        unit.ship_location=-1;
+                        _unit.planet_location=0;
+                        _unit.ship_location=-1;
                         techs_taken+=1;
                     }
                     if (unit.ship_location>-1){

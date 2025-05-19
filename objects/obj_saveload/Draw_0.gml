@@ -57,7 +57,8 @@ if (menu=1) or (menu=2){// This is the other one
     
     var o,x2,y2,s;o=top;x2=__view_get( e__VW.XView, 0 )+32;y2=__view_get( e__VW.YView, 0 )+166;s=0;
     repeat(4){
-        if ((save[o]>=0) or ((first_open=o) and (menu=1)) or (global.load=o) or (save_number=o)) and (save_number=0){s=save[o];
+        if ((save[o]>=0) or ((first_open=o) and (menu=1)) or (global.load=o) or (save_number=o)) and (save_number=0){
+            s=save[o];
             draw_set_font(fnt_40k_30b);
             draw_set_halign(fa_left);
             draw_set_color(0);
@@ -210,7 +211,7 @@ if (menu=1) or (menu=2){// This is the other one
             }
         }
         
-        if (menu=1) and ((save[o]>0) or (first_open=o)){// Save
+        if (menu=1) and ((save[o]>=0) or (first_open=o)){// Save
             draw_set_alpha(1);
             draw_set_color(c_gray);draw_rectangle(x2+1317,y2+113,x2+1461,y2+146,0);
             draw_set_color(c_black);draw_rectangle(x2+1317,y2+113,x2+1461,y2+146,1);

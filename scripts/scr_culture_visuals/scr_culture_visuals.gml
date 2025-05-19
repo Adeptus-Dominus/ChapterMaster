@@ -1733,6 +1733,10 @@ global.weapon_visual_data = {
     {
       cultures: ["Mongol"],
       sprite: spr_weapon_sword_oriental
+    },
+    {
+      cultures: ["Alpha"],
+      sprite: spr_weapoon_powso_flamberge
     }
   ]
 },

@@ -98,8 +98,6 @@ chapter_made = 0;
 map_scale = 1;
 scale_mod = 1;
 
-star_sprites = ds_map_create();
-
 
 diplomacy_pathway = "";
 option_selections=[];
@@ -750,14 +748,11 @@ trade_chip=0;
 trade_info=0;
 zui=0;
 // Variables for management
-for(var t=0; i<200; t++){
-    temp[t]="";
-}
-temp[90]=0;
-temp[9000]="";
-for(var t=4700; t<=4719; t++){
-    temp[t]=0;temp[t+100]=0;
-}
+var array_size = 9001;
+temp = array_create(array_size, 0);
+array_set_range(temp, 0, 199, "");
+temp[90] = 0;
+temp[9000] = "";
 // ** Resets all audiences **
 audiences=0;
 audien[0]=0;
@@ -1417,7 +1412,7 @@ if (global.load>=0){
 
 
 var xx,yy,me,dist,go,planet;
-global.custom=1;
+global.custom=eCHAPTER_TYPE.RANDOM;
 
 // ** Sets up base training level and trainees at game start **
 training_apothecary=0;
@@ -1510,7 +1505,7 @@ ork=1;
 eldar=1;
 // if tau = 1 then tau spawn. also does eldar 
 /*
-if (global.custom=1){ 
+if (global.custom==eCHAPTER_TYPE.RANDOM){ 
     tau=choose(0,0,1);
     eldar=choose(0,1);
 }

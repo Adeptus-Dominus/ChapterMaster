@@ -798,6 +798,9 @@ function ComplexSet(_unit) constructor {
 			_complex_helm = _comp_helms.captain;
 		} else if (unit_role == _role[eROLE.Veteran] || (unit_role == _role[eROLE.Terminator] && unit.company == 1)) {
 			_complex_helm = _comp_helms.veteran;
+		} else if (struct_exists(_comp_helms, "all_others")){
+			// there's probably room to improve this but consecrators demand the stripe
+			_complex_helm = _comp_helms.all_others;
 		}
 		if (is_struct(_complex_helm) && struct_exists(self, "head") && draw_helms) {
 			complex_helms(_complex_helm);

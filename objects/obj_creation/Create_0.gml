@@ -384,7 +384,7 @@ chapter_name="Unnamed";
 chapter_string="Unnamed";
 chapter_year=0;
 /// @instancevar {Real} custom 0 if premade, 1 if random, 2 if custom
-custom=0;
+custom=eCHAPTER_TYPE.PREMADE;
 /// @instancevar {Enum.ePROGENITOR} founding 
 founding=ePROGENITOR.NONE;
 chapter_tooltip="";
@@ -783,6 +783,12 @@ var all_advantages = [
             name : "Crafters",
             description : "Your chapter views artifacts as sacred; you start with better gear and maintain all equipment with more ease.",
             value : 40,
+            meta : ["Gear Quality"]
+        },
+        {
+            name : "Ancient Armoury",
+            description : "Your chapter is dedicated to preserving ancient wargear and as such have substantially higher amounts of rare Heresy-era armour than normal.",
+            value: 20,
             meta : ["Gear Quality"]
         },
         {

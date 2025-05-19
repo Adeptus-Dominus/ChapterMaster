@@ -266,3 +266,14 @@ function is_basic_array(_array, _max_depth = 1, _current_depth = 1) {
 
     return true;
 }
+
+/// @description Sets a range of elements in an array to a specific value.
+/// @param {Array} _array The array to modify.
+/// @param {Real} _start_index The starting index (inclusive).
+/// @param {Real} _end_index The ending index (inclusive).
+/// @param {Any} _value The value to set for the elements.
+function array_set_range(_array, _start_index, _end_index, _value) {
+	for (var i = _start_index; i <= _end_index; i++) {
+		_array[@ i] = _value;
+	}
+}
