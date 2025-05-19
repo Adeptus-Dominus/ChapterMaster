@@ -460,7 +460,7 @@ instance_activate_object(obj_star);
 if (did==0){
 	wait_and_execute(5, scr_system_spawn, [], self);
 } else {
-	map_dock_qouta = irandom_range(10, 20);
+	system_setup_data.map_dock_qouta = irandom_range(10, 20);
     wait_and_execute(1, setup_star_planet_defualts, [], self);
 }
 

@@ -31,7 +31,7 @@ function setup_forge_world(star, planet, dock = 0){
         if (_size == 3){
             system_setup_data.large_docks++;
         }
-        array_push(P_features[], new PlanetFeature(P_features.ShipDock, {size : _size}));
+        array_push(P_features[planet], new PlanetFeature(P_features.ShipDock, {size : _size}));
 	}
 }
 
@@ -55,8 +55,10 @@ function setup_star_planet_defualts(){
     // If getting to max pop is very rare, it will be awful to recruit from
     // some planets may be better or worse than others depending on their max pop.
     // TODO refactor and improve logic
+    var _sys_data = obj_controller.system_setup_data
     with(obj_star){
-    for(var i=1; i<=4; i++){
+    for(var i=1; i<=planets; i++){
+
         p_population[i]=0;// 10B
         switch (p_type[i]) {
             case "Lava":
@@ -126,6 +128,35 @@ function setup_star_planet_defualts(){
                 p_station = 6;
                 p_max_population[i] = p_population[i];
                 break;
+        }
+         if (system_setup_data.map_dock_qouta){
+            switch (p_type[i]) {
+                case "Temperate":
+                case "Shrine":
+                    if (!irandom(3)){
+                        array_push(P_features[i], new PlanetFeature(P_features.ShipDock, {size : choose(1,2)}));
+                        system_setup_data.map_dock_qouta--;
+                    }
+                    break;
+                case "Hive":
+                 if (irandom(1)){
+                        array_push(P_features[i], new PlanetFeature(P_features.ShipDock, {size : 2}));
+                        system_setup_data.map_dock_qouta--;
+                 }
+                 break;
+                 case "Feudal":
+                 case "Desert"  :               
+                    if (!irandom(5)){
+                        array_push(P_features[i], new PlanetFeature(P_features.ShipDock, {size : 1}));
+                        system_setup_data.map_dock_qouta--;                        
+                    }
+                case "Agri":
+                case "Lava":
+                    if (!irandom(1)){
+                        array_push(P_features[i], new PlanetFeature(P_features.ShipDock, {size : 1}));
+                        system_setup_data.map_dock_qouta--;                        
+                    }                    
+            }
         }
         // Sets military on planet
         if (p_population[i]>=10000000){
