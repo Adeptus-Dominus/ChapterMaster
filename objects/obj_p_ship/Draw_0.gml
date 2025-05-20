@@ -4,6 +4,7 @@ if !__b__
 {
 {
 
+shields.draw();
 if (selected=1){
     draw_set_color(38144);
     draw_circle(x,y,(sprite_width/2),1);

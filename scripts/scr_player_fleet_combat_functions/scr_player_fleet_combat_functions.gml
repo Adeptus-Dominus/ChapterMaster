@@ -121,13 +121,40 @@ function player_fleet_ship_spawner(){
 	}// End repeat		
 }
 
+function draw_ellipse_rotated(){
+
+}
 //data must have keys, shields, recharge, and reboot
 function ShipShieldGenerator(data){
 	move_data_to_current_scope(data);
 	destroyed = false;
 	disabled = false;
-	static step = function(){
+	disabled_timer = 0;
+	static draw = function(){
+		if (shields > 0 && !destroyed && !disabled){
+			draw_sprite_ext(spr_ship_shields, 0, ship.x, ship.y, 1, 1, ship.direction, c_white, 1);
+		}
+	}
 
+	static step = function(){
+		if (destroyed){
+			exit;
+		}
+		if (disabled){
+			disabled_timer++;
+			if (disabled_timer >= shields_reboot_time){
+				disabled_timer = 0;
+				disabled = false;
+			} else {
+				exit;
+			}
+		}
+
+		if (!disabled){
+			if (shields<maxshields){
+				shields += shields_recharge_rate;
+			}
+		}
 	}
 }
 
@@ -156,6 +183,7 @@ function setup_player_combat_ship(){
 	turrets=0;
 	ship_colour=obj_controller.body_colour_replace;
 	max_speed = ship_data.max_speed;
+	shields = new ShipShieldGenerator({shields, maxshields, ship_data.shields_recharge_rate, ship_data.shields_reboot_time, ship:id})
 	
     for (var i=0;i<array_length(weapons);i++){
     	weapons[i].ship = id;
