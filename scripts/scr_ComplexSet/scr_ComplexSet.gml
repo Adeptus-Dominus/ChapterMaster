@@ -142,7 +142,7 @@ function ComplexSet(_unit) constructor {
 				_mod = modulars[i];
 				exceptions = [];
 				if (array_contains(blocked, _mod.position)) {
-					return "blocked";
+					continue;
 				}
 
 				if (struct_exists(_mod, "allow_either")) {
@@ -327,17 +327,6 @@ function ComplexSet(_unit) constructor {
 				if (struct_exists(_mod, "overides")) {
 					_overides = _mod.overides;
 				}
-				if (struct_exists(_mod, "prevent_others")) {
-					replace_area(_mod.position, _mod.sprite, _overides);
-					array_push(blocked, _mod.position);
-					if (struct_exists(_mod, "ban")) {
-						for (var b = 0; b < array_length(_mod.ban); b++) {
-							if (!array_contains(banned, _mod.ban[b])) {
-								array_push(banned, _mod.ban[b]);
-							}
-						}
-					}
-				}
 				if (struct_exists(_mod, "assign_by_rank")) {
 					var _area = _mod.position;
 					var _status_level = _mod.assign_by_rank;
@@ -369,7 +358,7 @@ function ComplexSet(_unit) constructor {
 							continue;
 						}
 					}
-				}
+				}				
 
 				if (position != false) {
 					if (position == "weapon") {
@@ -384,10 +373,22 @@ function ComplexSet(_unit) constructor {
 				} else {
 					add_to_area(_mod.position, _mod.sprite, _overides);
 				}
+				if (struct_exists(_mod, "prevent_others")) {
+					replace_area(_mod.position, _mod.sprite, _overides);
+					array_push(blocked, _mod.position);
+					if (struct_exists(_mod, "ban")) {
+						for (var b = 0; b < array_length(_mod.ban); b++) {
+							if (!array_contains(banned, _mod.ban[b])) {
+								array_push(banned, _mod.ban[b]);
+							}
+						}
+					}
+				}				
 			}
+		} catch(_exception){
+ 			handle_exception(_exception);
 		}
 	};
-
 	blocked = [];
 	banned = [];
 	variation_map = {
