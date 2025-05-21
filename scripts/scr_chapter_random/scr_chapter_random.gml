@@ -176,7 +176,6 @@ function scr_chapter_random(custom_or_random) {
 		if (found_secret == 5) {
 			adv[1] = "Assault Doctrine";
 			dis[1] = "Black Rage";
-			disadvantage1 = 1;
 		}
 		if (found_secret == 6) {
 			adv[1] = "Tech-Brothers";
@@ -202,61 +201,58 @@ function scr_chapter_random(custom_or_random) {
 	*/
 
 		mutations += round(4 - (purity / 2.5));
-
-		repeat(50) {
-			if (mutat < mutations) {
-				if ((preomnor == 0) && (floor(random(12)) + 1 == 2)) {
-					preomnor = 1;
-					mutat += 1;
-				}
-				if ((voice == 0) && (floor(random(12)) + 1 == 2)) {
-					voice = 1;
-					mutat += 1;
-				}
-				if ((doomed == 0) && (floor(random(30)) + 1 == 2)) {
-					doomed = 1;
-					mutat += 4;
-				}
-				if ((lyman == 0) && (floor(random(12)) + 1 == 2)) {
-					lyman = 1;
-					mutat += 1;
-				}
-				if ((omophagea == 0) && (floor(random(12)) + 1 == 2)) {
-					omophagea = 1;
-					mutat += 1;
-				}
-				if ((ossmodula == 0) && (floor(random(12)) + 1 == 2)) {
-					ossmodula = 1;
-					mutat += 1;
-				}
-				if ((membrane == 0) && (floor(random(12)) + 1 == 2)) {
-					membrane = 1;
-					mutat += 1;
-				}
-				if ((zygote == 0) && (floor(random(12)) + 1 == 2)) {
-					zygote = 1;
-					mutat += 2;
-				}
-				if ((betchers == 0) && (floor(random(12)) + 1 == 2)) {
-					betchers = 1;
-					mutat += 1;
-				}
-				if ((catalepsean == 0) && (floor(random(12)) + 1 == 2)) {
-					catalepsean = 1;
-					mutat += 1;
-				}
-				if ((secretions == 0) && (floor(random(12)) + 1 == 2)) {
-					secretions = 1;
-					mutat += 1;
-				}
-				if ((occulobe == 0) && (floor(random(12)) + 1 == 2)) {
-					occulobe = 1;
-					mutat += 1;
-				}
-				if ((mucranoid == 0) && (floor(random(12)) + 1 == 2)) {
-					mucranoid = 1;
-					mutat += 1;
-				}
+		for (var r = 0; r < 50 && mutat < mutations; ++r) {
+			if ((preomnor == 0) && (floor(random(12)) + 1 == 2)) {
+				preomnor = 1;
+				mutat += 1;
+			}
+			if ((voice == 0) && (floor(random(12)) + 1 == 2)) {
+				voice = 1;
+				mutat += 1;
+			}
+			if ((doomed == 0) && (floor(random(30)) + 1 == 2)) {
+				doomed = 1;
+				mutat += 4;
+			}
+			if ((lyman == 0) && (floor(random(12)) + 1 == 2)) {
+				lyman = 1;
+				mutat += 1;
+			}
+			if ((omophagea == 0) && (floor(random(12)) + 1 == 2)) {
+				omophagea = 1;
+				mutat += 1;
+			}
+			if ((ossmodula == 0) && (floor(random(12)) + 1 == 2)) {
+				ossmodula = 1;
+				mutat += 1;
+			}
+			if ((membrane == 0) && (floor(random(12)) + 1 == 2)) {
+				membrane = 1;
+				mutat += 1;
+			}
+			if ((zygote == 0) && (floor(random(12)) + 1 == 2)) {
+				zygote = 1;
+				mutat += 2;
+			}
+			if ((betchers == 0) && (floor(random(12)) + 1 == 2)) {
+				betchers = 1;
+				mutat += 1;
+			}
+			if ((catalepsean == 0) && (floor(random(12)) + 1 == 2)) {
+				catalepsean = 1;
+				mutat += 1;
+			}
+			if ((secretions == 0) && (floor(random(12)) + 1 == 2)) {
+				secretions = 1;
+				mutat += 1;
+			}
+			if ((occulobe == 0) && (floor(random(12)) + 1 == 2)) {
+				occulobe = 1;
+				mutat += 1;
+			}
+			if ((mucranoid == 0) && (floor(random(12)) + 1 == 2)) {
+				mucranoid = 1;
+				mutat += 1;
 			}
 		}
 
@@ -799,7 +795,7 @@ function scr_chapter_random(custom_or_random) {
 	}
 	if (ran2 == 48) {
 		phrase2 = "Lamenters";
-		seconary_color = "Yellow";
+		col_second = "Yellow";
 		fleet_type = 3;
 	}
 	if (ran2 == 49) {
@@ -957,8 +953,8 @@ function scr_chapter_random(custom_or_random) {
 	if (ran2 == 93) {
 		phrase2 = "Wizards";
 		col_second = "Purple";
-		name[100, 17] = "Wizard";
-		master_specialty = 3;
+		name[100][eROLE.Librarian] = "Wizard";
+		chapter_master_specialty = 3;
 	}
 	if (ran2 == 94) {
 		phrase2 = "Wolves";
@@ -1034,7 +1030,7 @@ function scr_chapter_random(custom_or_random) {
 	obj_creation.livery_picker.scr_unit_draw_data();
 	obj_creation.livery_picker.set_default_armour(struct_cols, col_special);
 
-	obj_creation.livery_picker.map_colour = full_liveries[0];
+	obj_creation.livery_picker.map_colour = obj_creation.full_liveries[0];
 	obj_creation.livery_picker.role_set = 0;
 	chapter_name = string(phrase1) + " " + string(phrase2);
 	chapter_string = chapter_name;
