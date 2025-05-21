@@ -76,7 +76,8 @@ function calculate_full_chapter_spread(){
             	if (obj_ini.veh_race[company][v]!=0){
             		if(obj_ini.veh_lid[company][v]>-1){
 	            		veh_location = obj_ini.veh_lid[company][v];
-	            		var _ship_loc = obj_ini.ship_location[veh_location];
+	            		var _ship = obj_ini.ship_data[veh_location];
+	            		var _ship_loc = _ship.location;
 	            		if (_ship_loc == "Warp" || _ship_loc=="Lost"){
 			  	    		if instance_exists(obj_p_fleet){
 			  	    			with (obj_p_fleet){
@@ -90,9 +91,9 @@ function calculate_full_chapter_spread(){
 			  	    				}
 			  	    			}
 			  	    		}
-			  	    	} else if (obj_ini.ship_location[veh_location] != ""){
+			  	    	} else if (_ship_loc != ""){
 			  	    		array_slot=eSystemLoc.orbit;
-			  	    		key_val=obj_ini.ship_location[veh_location];
+			  	    		key_val=_ship_loc;
 			  	    	}
 		            }            	
 	            	if (obj_ini.veh_wid[company][v]>0){

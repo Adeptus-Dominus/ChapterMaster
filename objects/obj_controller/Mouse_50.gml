@@ -139,34 +139,6 @@ else if (menu==15) and (cooldown<=0){
         }
     }
 }
-// ** Fleet count **
-// Moved to scr_fleet_advisor();
-/* if (menu==16) and (cooldown<=0){
-    var i=ship_current;
-    for(var j=0; j<34; j++){
-        i+=1;
-        if (obj_ini.ship[i]!="") and (mouse_x>=xx+953) and (mouse_x>=yy+84+(i*20)) and (mouse_x<xx+969) and (mouse_y<yy+100+(i*20)){
-            temp[40]=obj_ini.ship[i];
-            with(obj_p_fleet){
-                for(var k=1; k<=40; k++){
-                    if (capital[k]==obj_controller.temp[40]) then instance_create(x,y,obj_temp7);
-                    if (frigate[k]==obj_controller.temp[40]) then instance_create(x,y,obj_temp7);
-                    if (escort[k]==obj_controller.temp[40]) then instance_create(x,y,obj_temp7);
-                }
-            }
-            if (instance_exists(obj_temp7)){
-                x=obj_temp7.x;
-                y=obj_temp7.y;
-                cooldown=8000;
-                menu=0;
-                with(obj_fleet_show){instance_destroy();}
-                instance_create(obj_temp7.x,obj_temp7.y,obj_fleet_show);
-                with(obj_temp7){instance_destroy();}
-            }
-        }
-    }
-} */
-
 
 // ** Diplomacy **
 if (menu==20) and (diplomacy>0) or ((diplomacy<-5) and (diplomacy>-6)) and (cooldown<=0) and (diplomacy<10){

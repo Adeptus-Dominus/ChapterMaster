@@ -154,7 +154,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 				}
 				body = $"The Cult of {feature.name} {control_string}";
 				break;				
-			case P_features.Victory_Shrine:
+			case P_features.VictoryShrine:
 				draw_text_transformed(xx+(area_width/2), yy +10, "Victory Shrine", 2, 2, 0);
 				draw_set_halign(fa_left);
 				draw_set_color(c_gray);				
@@ -448,6 +448,7 @@ function SpeedingDot(XX,YY, limit) constructor{
 function GlowDot() constructor{
 	flash = 0
 	flash_size = 5;
+	flash_modifier = 1;
 	one_flash_finished = true;
 	draw = function(xx, yy){
 		draw_set_color(c_green);
@@ -456,20 +457,21 @@ function GlowDot() constructor{
 			draw_circle(xx, yy, (i/3), 1);
 		}
 		if (flash==0){
-			if (flash_size<40){
-				flash_size++;
+			if (flash_size * flash_modifier<40*flash_modifier){
+				flash_size+=flash_modifier;
 			} else {
 				flash = 1;
-				flash_size--;
+				flash_size-=flash_modifier;
 			}
 		} else {
-			if (flash_size > 1){
-				flash_size--;
+			if (flash_size * flash_modifier > 1*flash_modifier){
+				flash_size-=flash_modifier;
 			}else {
-				flash_size++;
+				flash_size+=flash_modifier;
 				flash = 0;
 			}
-		}		
+		}
+		draw_set_alpha(1);		
 	}
 	draw_one_flash = function(xx, yy){
 		if (one_flash_finished) then exit;

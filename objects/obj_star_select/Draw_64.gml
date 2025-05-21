@@ -443,7 +443,7 @@ if (obj_controller.selecting_planet!=0){
                     if (obj_controller.faction_status[eFACTION.Imperium] == "War") {
                         obj_controller.recruiting_worlds_bought -= 1;
                     }
-                    array_push(target.p_feature[obj_controller.selecting_planet], new NewPlanetFeature(P_features.Recruiting_World));
+                    array_push(target.p_feature[obj_controller.selecting_planet], new PlanetFeature(P_features.Recruiting_World));
 
                     if (obj_controller.selecting_planet) {
                         obj_controller.recruiting_worlds += planet_numeral_name(obj_controller.selecting_planet, target);

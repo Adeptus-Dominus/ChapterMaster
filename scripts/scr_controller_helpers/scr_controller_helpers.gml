@@ -375,42 +375,46 @@ function scr_toggle_fleet_area() {
                 temp[37] = 0;
                 temp[38] = 0;
                 temp[39] = 0;
-                for (var i = 0; i < array_length(obj_ini.ship); i++) {
-                    if (obj_ini.ship[i] != "") {
-                        if (obj_ini.ship_size[i] == 3) {
+                for (var i = 0; i < array_length(obj_ini.ship_data); i++) {
+                     var _ship = obj_ini.ship_data[i];
+
+                    switch(_ship.size){
+                        case 3:
                             temp[37]++;
-                        }
-                        if (obj_ini.ship_size[i] == 2) {
+                            break;
+                        case 2:
                             temp[38]++;
-                        }
-                        if (obj_ini.ship_size[i] == 1) {
+                            break;
+                        case 1:
                             temp[39]++;
-                        }
+                            break;                                                                
                     }
+
                 }
 
                 g = 0;
                 temp[41] = "1";
-                for (var i = 0; i < array_length(obj_ini.ship); i++) {
-                    if ((g != 0) && (obj_ini.ship[i] != "")) {
-                        if ((obj_ini.ship_hp[i] / obj_ini.ship_maxhp[i]) < u) {
+                for (var i = 0; i < array_length(obj_ini.ship_data); i++) {
+                    var _ship = fetch_ship(i);
+                    if ((g != 0)) {
+                        if ((_ship.ship_hp_percentage()) < u) {
                             g = i;
-                            u = obj_ini.ship_hp[i] / obj_ini.ship_maxhp[i];
+                            u = _ship.ship_hp_percentage();
                         }
                     }
-                    if ((g == 0) && (obj_ini.ship[i] != "")) {
+                    if ((g == 0)) {
                         g = i;
-                        u = obj_ini.ship_hp[i] / obj_ini.ship_maxhp[i];
+                        u = _ship.ship_hp_percentage();
                     }
-                    if (obj_ini.ship[i] != "") {
-                        m = i;
-                    }
-                    if ((obj_ini.ship[i] != "") && ((obj_ini.ship_hp[i] / obj_ini.ship_maxhp[i]) < 0.25)) {
+
+                    m = i;
+
+                    if ((_ship.ship_hp_percentage() < 0.25)) {
                         d += 1;
                     }
                 }
                 if (g != 0) {
-                    temp[40] = string(obj_ini.ship_class[g]) + " '" + string(obj_ini.ship[g]) + "'";
+                    temp[40] = $"{_ship.class} ' {_ship.name}";
                     temp[41] = string(u);
                     temp[42] = string(d);
                 }

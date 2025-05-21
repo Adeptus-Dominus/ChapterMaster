@@ -4,6 +4,7 @@ if !__b__
 {
 {
 
+shields.draw();
 if (selected=1){
     draw_set_color(38144);
     draw_circle(x,y,(sprite_width/2),1);
@@ -29,6 +30,14 @@ if (selected=1){
     }
     
     draw_set_alpha(1);
+    for (var i=0;i<array_length(weapons);i++){
+        var _wep = weapons[i];
+        _wep.draw_weapon_firing_arc();
+    }
+
+    if (draw_targets != false){
+        location_target.draw(draw_targets[0],draw_targets[1]);
+    }
 }
 
 shader_set(Ship_shader);

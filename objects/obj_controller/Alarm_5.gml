@@ -268,12 +268,9 @@ for (var c = 0; c < 11; c++){
 // STC Bonuses
 if (obj_controller.stc_ships>=6){
     //self healing ships logic
-    for (var v=0; v<array_length(obj_ini.ship_hp); v++){
-        if (obj_ini.ship[v]=="" || obj_ini.ship_hp[v]<0) then continue;
-        if (obj_ini.ship_hp[v]<obj_ini.ship_maxhp[v]){
-            var _max = obj_ini.ship_maxhp[v];
-            obj_ini.ship_hp[v] = min(_max,obj_ini.ship_hp[v]+round(_max*0.06));
-        }
+    for (var v=0; v<array_length(obj_ini.ship_data); v++){
+        var _ship = obj_ini.ship_data[v];
+        _ship.ship_self_heal();
     }
 }
 
@@ -301,7 +298,7 @@ try_and_report_loop("Secret Chaos Warlord spawn", function(){
         if (_star_found){
             var _planet = array_random_element(planets_without_type("Dead",_choice_star));
             _choice_star.warlord[_planet]=1;
-            array_push(_choice_star.p_feature[_planet], new NewPlanetFeature(P_features.Warlord10));
+            array_push(_choice_star.p_feature[_planet], new PlanetFeature(P_features.Warlord10));
 
             var _heresy_inc = _choice_star.p_type[_planet]=="Hive" ? 25 : 10;
 
@@ -559,12 +556,11 @@ for(var i=1; i<=99; i++){
                     // Creates the ship
                     var last_ship = new_player_ship(new_ship_event, ship_spawn.system.name);
 
-                    add_ship_to_fleet(last_ship, _new_player_fleet)
+                    add_ship_to_fleet(last_ship, _new_player_fleet);
+                    var _ship = obj_ini.ship_data[last_ship];
 
-                    // show_message(string(obj_ini.ship_class[last_ship])+":"+string(obj_ini.ship[last_ship]));
-
-                    if (obj_ini.ship_size[last_ship]!=1) then scr_popup("Ship Constructed",$"Your new {obj_ini.ship_class[last_ship]} '{obj_ini.ship[last_ship]}' has finished being constructed.  It is orbiting {ship_spawn.system.name} and awaits its maiden voyage.","shipyard","");
-                    if (obj_ini.ship_size[last_ship]==1) then scr_popup("Ship Constructed",$"Your new {obj_ini.ship_class[last_ship]} Escort '{obj_ini.ship[last_ship]}' has finished being constructed.  It is orbiting {ship_spawn.system.name} and awaits its maiden voyage.","shipyard","");
+                    if (_ship.size!=1) then scr_popup("Ship Constructed",$"Your new {_ship.class} '{_ship.name}' has finished being constructed.  It is orbiting {ship_spawn.system.name} and awaits its maiden voyage.","shipyard","");
+                    if (_ship.size==1) then scr_popup("Ship Constructed",$"Your new {_ship.class} Escort '{_ship.name}' has finished being constructed.  It is orbiting {ship_spawn.system.name} and awaits its maiden voyage.","shipyard","");
                     var bob=instance_create(ship_spawn.system.x+16,ship_spawn.system.y-24,obj_star_event);
                     bob.image_alpha=1;
                     bob.image_speed=1;
@@ -629,7 +625,8 @@ for(var i=1; i<=99; i++){
                         last_artifact =  scr_add_artifact("random_nodemon","",0,obj_ini.home_name,2);
                     } else {
                         if (obj_ini.fleet_type != ePlayerBase.home_world){
-                            last_artifact = scr_add_artifact("random_nodemon","",0,obj_ini.ship_location[0],501);
+                            var _ship = obj_ini.ship_data[0];
+                            last_artifact = scr_add_artifact("random_nodemon","",0,_ship.location,501);
                         }
                     }
 
@@ -724,7 +721,7 @@ if (fest_scheduled>0) and (fest_repeats>0){
     fest_repeats-=1;
     lock=scr_master_loc();
 
-    if (fest_sid>0) and (obj_ini.ship[fest_sid]=lock) then cm_present=true;
+    if (fest_sid>0) and (obj_ini.ship_data[fest_sid].name=lock) then cm_present=true;
     if (fest_wid>0) and (string(fest_star)+"."+string(fest_wid)=lock) then cm_present=true;
 
     if (cm_present==true){
@@ -739,7 +736,7 @@ if (fest_scheduled>0) and (fest_repeats>0){
         if (fest_type=="Triumphal March") then imag="event_march";
 
         if (fest_wid>0) then scr_popup("Scheduled Event","Your "+string(fest_type)+" takes place on "+string(fest_star)+" "+scr_roman(fest_wid)+".  Would you like to spectate the event?",imag,"");
-        if (fest_sid>0) then scr_popup("Scheduled Event","Your "+string(fest_type)+" takes place on the ship '"+string(obj_ini.ship[fest_sid])+".  Would you like to spectate the event?",imag,"");
+        if (fest_sid>0) then scr_popup("Scheduled Event","Your "+string(fest_type)+" takes place on the ship '"+string(obj_ini.ship_data[fest_sid].name)+".  Would you like to spectate the event?",imag,"");
     }
 }
 

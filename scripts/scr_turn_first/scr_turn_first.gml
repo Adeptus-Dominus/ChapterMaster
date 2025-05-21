@@ -13,7 +13,8 @@ function scr_turn_first() {
 		if (cur_arti.loc()==""){
 			var valid_ship = get_valid_player_ship();
 			if (valid_ship >-1){
-				obj_ini.artifact_loc[unload] = obj_ini.ship[valid_ship];
+				var _ship = fetch_ship(valid_ship);
+				obj_ini.artifact_loc[unload] = _ship.name;
 				obj_ini.artifact_sid[unload] = 500+valid_ship;
 			}
 		}
@@ -118,7 +119,7 @@ function scr_turn_first() {
 	                nfleet.action_y=tplan.y;
 	                if (fnum=1){
 	                	starf=tplan;
-	                	nfleet.cargo_data.ork_warboss=new NewPlanetFeature(OrkWarboss);
+	                	nfleet.cargo_data.ork_warboss=new PlanetFeature(OrkWarboss);
 	                }	                
 	                with (nfleet){
 	                	frigate_number=10;

@@ -150,6 +150,7 @@ selection_window.inside_method = function(){
         
 	        if (posi<=escorts+frigates+capitals) && is_array(ship_type){
 	            name=ship_type[current_ship];
+	            var _ship = fetch_ship(current_ship);
 	            if (string_width(name)*scale>179){
 	            	for (var i=0;i<9;i++){
 	            		if (string_width(name)*scale>179) then scale-=0.05;
@@ -172,9 +173,8 @@ selection_window.inside_method = function(){
 	                    }
                 	}
 	            }
-	            if (obj_ini.ship_maxhp[current_ship]>0){
-	            	ship_health=round((obj_ini.ship_hp[current_ship]/obj_ini.ship_maxhp[current_ship])*100);
-	            }
+
+	            ship_health=round(_ship.ship_hp_percentage);
 
 	            if (ship_select==0){
 	            	selection_box="[ ]";

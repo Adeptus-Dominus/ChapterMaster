@@ -66,7 +66,7 @@ function player_home_star(home_planet){
             }
             name=obj_ini.home_name;
         }            
-        array_push(p_feature[home_planet], new NewPlanetFeature(P_features.Monastery));
+        array_push(p_feature[home_planet], new PlanetFeature(P_features.Monastery));
         p_owner[home_planet]=eFACTION.Player;
 
         p_first[home_planet]=1; //monestary
@@ -122,7 +122,7 @@ function set_player_recruit_planet(recruit_planet){
 	        name=obj_ini.home_name;
 	    }
 	}
-	array_push(p_feature[recruit_planet], new NewPlanetFeature(P_features.Recruiting_World));//recruiting world
+	array_push(p_feature[recruit_planet], new PlanetFeature(P_features.Recruiting_World));//recruiting world
 	if (p_type[recruit_planet]=="random") then p_type[recruit_planet]=choose("Death","Temperate","Desert","Ice","Hive", "Fuedal");
 	if (global.chapter_name!="Lamenters") then obj_controller.recruiting_worlds+=string(name)+" II|";
 }
@@ -149,7 +149,7 @@ function set_player_homeworld_star(chosen_star){
 	       	var _recruit_star = array_random_element(_possible_planets)
 			set_player_recruit_planet(_recruit_star);
 	    } else if (obj_ini.recruit_relative_loc==0){
-	    	array_push(p_feature[_home_star], new NewPlanetFeature(P_features.Recruiting_World));//recruiting world
+	    	array_push(p_feature[_home_star], new PlanetFeature(P_features.Recruiting_World));//recruiting world
 	    	for (var i=1;i<=planets;i++){
 		       	if (i!=_home_star){
 		       		p_type[i] = array_random_element(_planet_types);
@@ -173,5 +173,44 @@ function create_recruit_system(star){
 		set_player_recruit_planet(_recruit_planet);
 	}
 
+}
+
+
+function spawn_chaos_stars(){
+    // Chaos
+    var _chaos_stars = 2+irandom(4);
+    repeat(_chaos_stars){
+        xx=floor(random(1152))+64;
+        yy=floor(random(748))+64;
+        _current_system=instance_nearest(xx,yy,obj_star);
+        with (_current_system){
+            var _planet = irandom_range(1, planets);
+            if (planets>0) and (owner == eFACTION.Imperium){
+                var _planet = irandom_range(1, planets);
+                setup_chaos_world(_current_system,planets);
+            }
+        }
+        instance_deactivate_object(_current_system);
+    }
+    // More sneaky this way; you have to be noted of rising heresy or something, or have a ship in the system
+    var hell_holes = ["Badab", "Hellsiris","Vraks","Isstvan","Stygies","Stygia","Nostromo","Jhanna","Gangrenous Rot"];
+    with(obj_star){
+        if (array_contains(hell_holes, name)){
+            rando=choose(1,1); // make 1's 0's if you want less chaos
+            if (rando==1){
+				
+                owner = eFACTION.Chaos;
+				p_owner = array_create(5, owner);
+                for (var i=1;i<=planets;i++){
+                    p_heresy[i]=floor(random_range(75,100));
+                    if (p_type[i]=="Dead") then p_type[i]=choose("Hive","Temperate","Desert","Ice");
+
+                    if (p_type[i]!="Dead") then p_traitors[i]=6;
+                    // give them big defences
+                    if (p_type[i]!="Dead") then p_fortified[i]=choose(4,5,5,4,4,3,6);
+                }
+            }
+        }
+    }	
 }
 

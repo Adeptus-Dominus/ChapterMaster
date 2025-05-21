@@ -19,9 +19,7 @@ if (arm<dam){
 if (arm>dam) and (other.shields>0) then other.shields-=1;
 if (arm>dam) and (other.shields<=0) then other.hp-=1;
 
-if (sprite_index=spr_torpedo){
-    instance_create(x,y,obj_explosion);
-}
+new ShipWeaponExplosion(explosion_sprite, x,y, image_xscale);
 
 instance_destroy();
 

@@ -1,34 +1,34 @@
 enum P_features {
-			Sororitas_Cathedral,
-			Necron_Tomb,
-			Artifact, 
-			STC_Fragment,
-			Ancient_Ruins,
-			Cave_Network,
-			Recruiting_World, 
-			Monastery,
-			Warlord6,
-			OrkWarboss,
-			Warlord10,
-			Special_Force,
-			World_Eaters,
-			Webway,
-			Secret_Base,
-			Starship,
-			Succession_War,
-			Mechanicus_Forge,
-			Reclamation_pools,
-			Capillary_Towers,
-			Daemonic_Incursion,
-			Victory_Shrine,
-			Arsenal,
-			Gene_Vault,
-			Forge,
-			Gene_Stealer_Cult,
-			Mission,
-			OrkStronghold
-
-	};
+	Sororitas_Cathedral,
+	Necron_Tomb,
+	Artifact, 
+	STC_Fragment,
+	Ancient_Ruins,
+	Cave_Network,
+	Recruiting_World, 
+	Monastery,
+	Warlord6,
+	OrkWarboss,
+	Warlord10,
+	Special_Force,
+	World_Eaters,
+	Webway,
+	Secret_Base,
+	Starship,
+	Succession_War,
+	Mechanicus_Forge,
+	Reclamationpools,
+	CapillaryTowers,
+	Daemonic_Incursion,
+	VictoryShrine,
+	Arsenal,
+	Gene_Vault,
+	Forge,
+	Gene_Stealer_Cult,
+	Mission,
+	OrkStronghold,
+	ShipDock
+};
 	
 enum base_type{
 	Lair,
@@ -43,23 +43,26 @@ function PlayerForge() constructor{
 }
 
 // Function creates a new struct planet feature of a  specified type
-function NewPlanetFeature(feature_type, other_data={}) constructor{
+function PlanetFeature(feature_type, other_data={}) constructor{
 	f_type = feature_type;
+	player_hidden=false;
 	static reveal_to_player = function(){
 		if (player_hidden == 1){
 			player_hidden = 0;
 		}
 	}
 	switch(f_type){
-		case P_features.Gene_Stealer_Cult:
+	case P_features.Gene_Stealer_Cult:
 		PDF_control = 0;
 		sealed = 0;
-		player_hidden = 1;
+		player_hidden = false;
+		hive_summoned=false;
 		planet_display = "Genestealer Cult";
 		cult_age = 0;
 		hiding=true;
 		name = global.name_generator.generate_genestealer_cult_name();		
 		break;
+
 		case P_features.Necron_Tomb:
 		awake = 0;
 		sealed = 0;
@@ -162,6 +165,9 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
         recruit_type = 0;
         recruit_cost = 0;
 		break;
+	case P_features.ShipDock:
+		player_hidden = 0;
+		size = 1;
 	default:
 		player_hidden = 1;
 		planet_display = 0;
@@ -175,6 +181,7 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
             variable_struct_set(self, names[i], variable_struct_get(data, names[i]))
         }
 	}
+	move_data_to_current_scope(other_data);
 }
 
 // returns an array of all the positions that a certain planet feature occurs on th p_feature array of a planet
@@ -249,13 +256,30 @@ function delete_features(planet, del_feature){
 
 // returns 1 if an awake necron tomb iin system
 function awake_necron_Star(star){
-		for(var i = 1; i <= star.planets; i++){
+	for(var i = 1; i <= star.planets; i++){
 		if(awake_tomb_world(star.p_feature[i]) == 1)
 			{
 				return i;
 			}
 		}
 		return 0
+}
+
+function planet_player_hidden_feature(planet){
+	for (var i=0;i<array_length(planet);i++){
+		if (is_struct(planet[i])){
+			if (planet[i].player_hidden) then return true;
+		}
+	}
+	return false;
+}
+
+function system_player_hidden_feature(system){
+	for (var i=1;i<=system.planets;i++){
+		if (planet_player_hidden_feature(system.p_feature[i])) then return true;
+	}
+
+	return false;
 }
 
 
@@ -370,7 +394,7 @@ function create_starship_event(){
 		return false;
 	}else {
 		var planet=irandom(star.planets-1)+1;
-		array_push(star.p_feature[planet], new NewPlanetFeature(P_features.Starship))
+		array_push(star.p_feature[planet], new PlanetFeature(P_features.Starship))
 		scr_event_log("","Ancient Starship discovered on "+string(star.name)+" "+scr_roman(planet)+".", star.name);
 	}
 }

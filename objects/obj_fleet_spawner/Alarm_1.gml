@@ -346,7 +346,12 @@ if (owner = eFACTION.Necrons){// This is an orderly Necron ship formation
     }
 }
 
-
+with (obj_en_ship){
+    assign_ship_stats();
+}
+with (obj_al_ship){
+    assign_ship_stats();
+}
 
 
 /* */

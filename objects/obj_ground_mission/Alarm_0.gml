@@ -53,35 +53,28 @@ if (num > 0) {
                 pop.option2 = "Send it to the Adeptus Mechanicus.";
             }
         }
-        if ((mch > 0) && (stah.p_owner[num] == 3)) {
-            var pop, own;
-            pop = instance_create(0, 0, obj_popup);
-            pop.image = "stc";
-            pop.title = "STC Fragment Located";
-            pop.text = "An STC Fragment has been located upon " + string(stah.name) + " " + string(num) + ".  It appears to be located deep within a Mechanicus Vault.  The present Tech Priests stress they will not condone a mission to steal the STC Fragment.";
-
-            own = stah.p_owner[num];
-
-            scr_return_ship(loc, id, num);
-            var man_size, ship_id, comp, plan, i;
-            i = 0;
-            ship_id = 0;
-            man_size = 0;
-            comp = 0;
-            plan = 0;
-            repeat (30) {
-                i += 1;
-                if (obj_ini.ship[i] == loc) {
-                    ship_id = i;
-                }
-            }
-            i = 0;
-            obj_controller.menu = 0;
-            obj_controller.managing = 0;
-            obj_controller.cooldown = 10;
-            instance_destroy();
-            exit;
-
+        if (mch>0) and (stah.p_owner[num]=3){
+            var pop,own;
+            pop=instance_create(0,0,obj_popup);
+            pop.image="stc";
+            pop.title="STC Fragment Located";
+            pop.text="An STC Fragment has been located upon "+string(stah.name)+" "+string(num)+".  It appears to be located deep within a Mechanicus Vault.  The present Tech Priests stress they will not condone a mission to steal the STC Fragment.";
+            
+            own=stah.p_owner[num];
+            
+            
+            scr_return_ship(loc,id,num);
+            var man_size,ship_id,comp,plan,i;
+            i=0;
+            ship_id=0;
+            man_size=0;
+            comp=0;
+            plan=0;
+            ship_id = get_ship_by_name(loc);
+            obj_controller.menu=0;obj_controller.managing=0;
+            obj_controller.cooldown=10;
+            instance_destroy();exit;
+            
             // pop.option1="Leave it.";
             // get bitched at by the mechanicus
         }

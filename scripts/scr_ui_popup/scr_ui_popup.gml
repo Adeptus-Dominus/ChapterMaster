@@ -62,7 +62,7 @@ function scr_ui_popup() {
 					if (scr_click_left()) {
 						var base_options = {style: style.tag};
 						obj_temp_build.isnew = 0;
-						array_push(planet_upgrades, new NewPlanetFeature(P_features.Secret_Base, base_options));
+						array_push(planet_upgrades, new PlanetFeature(P_features.Secret_Base, base_options));
 					}
 				}
 		
@@ -316,7 +316,7 @@ function scr_ui_popup() {
 	            draw_set_alpha(1);
             
 	            if (scr_click_left()) and (obj_controller.requisition>=1500){
-	                array_push(planet_upgrades, new NewPlanetFeature(P_features.Arsenal));
+	                array_push(planet_upgrades, new PlanetFeature(P_features.Arsenal));
 	                obj_controller.requisition-=1500;
 	            }
 	        }draw_set_halign(fa_left);
@@ -334,7 +334,7 @@ function scr_ui_popup() {
 	            draw_set_alpha(0.2);draw_rectangle(xx+300,yy+175,xx+400,yy+195,0);draw_set_alpha(1);
             
 	            if (scr_click_left()) and (obj_controller.requisition>=4000){
-	                array_push(planet_upgrades, new NewPlanetFeature(P_features.Gene_Vault));
+	                array_push(planet_upgrades, new PlanetFeature(P_features.Gene_Vault));
 	                obj_controller.requisition-=4000;
 	            }
 	        }draw_set_halign(fa_left);
