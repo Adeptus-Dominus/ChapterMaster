@@ -98,7 +98,6 @@ jobs:
         with:
           target-yyp: ${{ steps.find_yyp.outputs.yyp-path }}
           access-key: ${{ secrets.GM_ACCESS_KEY }}
-          
       # Update the version.json file with build date and other versioning information
       - id: igor_build
         name: Build with Igor
