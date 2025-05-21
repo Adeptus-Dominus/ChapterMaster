@@ -110,7 +110,7 @@ function check_dead_marines(unit_struct, unit_index) {
     return unit_lost;
 }
 
-function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_damage, hostile_weapon, hostile_range, hostile_splash) {
+function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_damage, hostile_weapon, hostile_range, hostile_splash, weapon_index_position) {
     // Converts enemy scr_shoot damage into player marine or vehicle casualties.
     //
     // Parameters:
@@ -132,6 +132,15 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
             var man_hits = 0;
             var total_hits = hostile_shots;
             var unit_type = "";
+            var armour_pierce = apa[weapon_index_position];
+            var _armour_mod = 1;
+            if (armour_pierce == 1) {
+                _armour_mod = 2;
+            } else if (armour_pierce == 0) {
+                _armour_mod = 4;
+            } else if (armour_pierce == -1) {
+                _armour_mod = 6;
+            }
 
             // ### Vehicle Damage Processing ###
             if (!target_is_infantry && veh > 0) {
@@ -156,7 +165,7 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
                     you = random_index;
 
                     // Apply damage
-                    var _modified_damage = hostile_damage - veh_ac[you];
+                    var _modified_damage = hostile_damage - veh_ac[you] * _armour_mod;
                     if (_modified_damage < 0) {
                         _modified_damage = 0.25;
                     }
@@ -220,12 +229,13 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
                     // Apply damage
                     var _shot_luck = roll_dice_chapter(1, 100, "low");
                     var _modified_damage = 0;
-                    if (_shot_luck <= 5) {
-                        _modified_damage = hostile_damage - (2 * marine_ac[marine_index]);
-                    } else if (_shot_luck > 95) {
+                    var _marine_armour = marine_ac[marine_index] * _armour_mod;
+                    if (_shot_luck == 1) {
+                        _modified_damage = hostile_damage - (2 * _marine_armour);
+                    } else if (_shot_luck == 100) {
                         _modified_damage = hostile_damage;
                     } else {
-                        _modified_damage = hostile_damage - marine_ac[marine_index];
+                        _modified_damage = hostile_damage - _marine_armour;
                     }
 
                     if (_modified_damage > 0) {

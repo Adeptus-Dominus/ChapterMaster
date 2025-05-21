@@ -46,7 +46,7 @@ function EquipmentStruct(item_data, core_type, quality_request = "none") constru
     // Placeholder maintenance values;
     if (maintenance == 0) {
         if (has_tags(["heavy_ranged", "power", "plasma", "melta"])) {
-            maintenance = 0.05;
+            maintenance += 0.05;
         }
     }
 
@@ -166,10 +166,17 @@ function EquipmentStruct(item_data, core_type, quality_request = "none") constru
                             array_push(special_properties_array, special_properties[k]);
                         }
                     }
-                    if (arp > 0) {
-                        array_push(special_properties_array, "Armour Piercing");
-                    } else if (arp < 0) {
-                        array_push(special_properties_array, "Low Penetration");
+                    if (arp=4){
+                        array_push(special_properties_array, "Anti Vehicle")
+                    } 
+                    else if (arp=1){
+                        array_push(special_properties_array, "Low Penetration")
+                    }
+					else if (arp=2){
+                        array_push(special_properties_array, "Medium Penetration")
+                    }
+					else if (arp=3){
+                        array_push(special_properties_array, "High Penetration")
                     }
                     if (array_length(second_profiles) > 0) {
                         for (var h = 0; h < array_length(second_profiles); h++) {
@@ -316,6 +323,7 @@ function EquipmentStruct(item_data, core_type, quality_request = "none") constru
     };
 }
 
+/// @param {string} search_area possible values: "any", "weapon", "gear', "armour", "mobility";
 function gear_weapon_data(search_area = "any", item, wanted_data = "all", sub_class = false, quality_request = "standard") {
     var item_data_set = false;
     var equip_area = false;
