@@ -137,6 +137,35 @@ function load_vis_set_to_global(directory, data){
 }
 global.modular_drawing_items = [
     {
+        sprite : spr_purity_seal,
+        body_types :[0,2],
+        position : "purity_seals",
+    },
+    {
+        position : "crown",
+        body_types: [0],
+        max_saturation : 60,
+        exp : {
+            scale : true,
+            exp_scale_max : 200,
+        },
+        sprite:spr_psy_hood_alpha2,
+        equipped : {
+            "gear" : "Psychic Hood",
+        },
+        cultures: ["Alpha"], 
+        prevent_others : true,    
+    },
+    {
+        position : "crown",
+        body_types: [0],
+        sprite:spr_psy_hood_complex,
+        equipped : {
+            "gear" : "Psychic Hood",
+        },
+        prevent_others : true,
+    },  
+    {
         sprite : spr_da_mk5_helm_crests,
         cultures : ["Knightly"],
         body_types :[0],
@@ -343,6 +372,14 @@ global.modular_drawing_items = [
         armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"],         
     },
     {
+        cultures : ["Alpha"],
+        sprite : spr_alpha_backpack,
+        body_types :[0],
+        position : "backpack",
+        assign_by_rank : 3,
+        armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"],         
+    },
+    {
         chapter_adv : ["Reverent Guardians"],
         sprite : spr_pack_brazier3,
         body_types :[0],
@@ -368,11 +405,6 @@ global.modular_drawing_items = [
         position : "crest",
         role_type : [SPECIALISTS_CAPTAIN_CANDIDATES],
         assign_by_rank : 2,
-    },
-    {
-        sprite : spr_purity_seal,
-        body_types :[0,2],
-        position : "purity_seals",
     },
     {
         sprite : spr_marksmans_honor,
@@ -886,7 +918,7 @@ global.modular_drawing_items = [
         sprite: spr_indomitus_right_knee_crux,
         armours : ["Terminator Armour"],
         max_saturation : 30,
-    }                                                                       
+    },                                                              
 ];
 
 

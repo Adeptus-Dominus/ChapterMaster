@@ -244,7 +244,6 @@ function scr_draw_unit_image(_background = false) {
             var armour_sprite = spr_weapon_blank;
             var complex_livery = false;
             var back_equipment = BackType.None;
-            var psy_hood = false;
             var skull_mask = false;
             var servo_arm = 0;
             var servo_harness = 0;
@@ -305,10 +304,6 @@ function scr_draw_unit_image(_background = false) {
                 if (array_contains([UnitSpecialization.Chaplain, UnitSpecialization.WolfPriest, UnitSpecialization.Librarian], unit_specialization) || unit_role == _role[eROLE.ChapterMaster]) {
                     reverent_guardians = true;
                 }
-            }
-
-            if (unit_gear == "Psychic Hood") {
-                psy_hood = true;
             }
 
             if (array_contains([UnitSpecialization.Chaplain, UnitSpecialization.WolfPriest], unit_specialization)) {
@@ -566,9 +561,6 @@ function scr_draw_unit_image(_background = false) {
                 }
 
                 if (complex_livery) {
-                    if (armour_type == ArmourType.Normal && psy_hood) {
-                        complex_set.replace_area("crown", spr_psy_hood_complex);
-                    }
                     for (var part = 0; part < array_length(_body_parts); part++) {
                         if (struct_exists(body[$ _body_parts[part]], "bionic")) {
                             if (armour_type == ArmourType.Normal) {
