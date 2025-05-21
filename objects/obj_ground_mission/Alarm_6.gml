@@ -41,7 +41,7 @@ with (obj_temp7) {
 
 if (obj_ini.fleet_type == ePlayerBase.home_world) {
     with (obj_star) {
-        if ((owner == eFACTION.Player) && ((p_owner[1] == 1) || (p_owner[2] == 1))) {
+        if ((owner == eFACTION.Player) && ((p_owner[1] == 1) || (p_owner[2] == eFACTION.Player))) {
             instance_create(x, y, obj_temp2);
         }
     }
@@ -68,7 +68,7 @@ if (obj_ini.fleet_type != ePlayerBase.home_world) {
 
 
 var _enemy_fleet;
-var _target;
+var _target = -1;
 
 if (instance_exists(obj_temp2)) {
     _target = nearest_star_with_ownership(obj_temp2.x, obj_temp2.y, obj_controller.diplomacy);
