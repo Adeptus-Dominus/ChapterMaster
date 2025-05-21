@@ -12,3 +12,8 @@ ChapterMaster.resource_order
 
 tmp/
 stitch.config.json
+
+
+test_framework/tests/logs
+test_framework/tests/results
+test_framework/tests/screenshots
