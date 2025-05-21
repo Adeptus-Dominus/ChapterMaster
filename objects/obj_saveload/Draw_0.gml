@@ -74,7 +74,7 @@ if (menu=1) or (menu=2){// This is the other one
             draw_sprite(spr_save_data,0,x2,y2);
             if(o == 0){
                 //autosave
-                draw_text_transformed(x2+23,y2+62,string_hash_to_newline("A"),1.1,1.1,0);
+                draw_text_transformed(x2+21,y2+62,string_hash_to_newline("A"),1.1,1.1,0);
             } else {
                 draw_text_transformed(x2+23,y2+62,string_hash_to_newline(o),1.1,1.1,0);
             }
@@ -118,7 +118,7 @@ if (menu=1) or (menu=2){// This is the other one
         
         draw_set_font(fnt_40k_30b);draw_set_halign(fa_center);
         
-        if (save[o] >= 0) {
+        if (save[o] > 0) { //intentionally not allowed to delete the autosave file
             // Delete Data
             draw_set_alpha(1);
             draw_set_color(c_gray);
@@ -211,7 +211,8 @@ if (menu=1) or (menu=2){// This is the other one
             }
         }
         
-        if (menu=1) and ((save[o]>=0) or (first_open=o)){// Save
+        if (menu=1) and ((save[o]>0) or (first_open=o)){ // intentionally not allowed to saveover the autosave slot manually
+            // Save
             draw_set_alpha(1);
             draw_set_color(c_gray);draw_rectangle(x2+1317,y2+113,x2+1461,y2+146,0);
             draw_set_color(c_black);draw_rectangle(x2+1317,y2+113,x2+1461,y2+146,1);

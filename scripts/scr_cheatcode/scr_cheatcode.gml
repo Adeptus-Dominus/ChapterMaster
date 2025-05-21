@@ -350,8 +350,12 @@ function scr_cheatcode(argument0) {
 		                }
 		            }
 		            break;
-            }
-        }
+				case "zoom":
+					set_zoom_to_default();
+					break;
+
+			}
+		}
 	} catch(_exception) {
 		show_debug_message(_exception.longMessage);
 	}

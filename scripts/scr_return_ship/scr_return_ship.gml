@@ -1,4 +1,10 @@
 function scr_return_ship(ship_name, object, planet_number) {
+    // ship_name: name of ship
+    // object: object with man_selecting
+    // planet_number: planet number
+    var man_size, i;
+    i = 0;
+    man_size = 0;
 
 	// ship_name: name of ship
 	// object: object with man_selecting

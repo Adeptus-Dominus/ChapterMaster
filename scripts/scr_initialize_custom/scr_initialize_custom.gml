@@ -821,11 +821,12 @@ function scr_initialize_custom() {
 		hunters = 0;
 		}
 	}
-
-	battle_barges = battle_barges + obj_creation.extra_ships.battle_barges;
-	strike_cruisers = strike_cruisers + obj_creation.extra_ships.strike_cruisers;
-	gladius = gladius + obj_creation.extra_ships.gladius;
-	hunters = hunters + obj_creation.extra_ships.hunters;
+	if(struct_exists(obj_creation, "extra_ships")){
+		battle_barges = battle_barges + obj_creation.extra_ships.battle_barges;
+		strike_cruisers = strike_cruisers + obj_creation.extra_ships.strike_cruisers;
+		gladius = gladius + obj_creation.extra_ships.gladius;
+		hunters = hunters + obj_creation.extra_ships.hunters;
+	}
 
 	var ship_summary_str = $"Ships: bb: {battle_barges} sc: {strike_cruisers} g: {gladius} h: {hunters}"
 	// log_message(ship_summary_str);
