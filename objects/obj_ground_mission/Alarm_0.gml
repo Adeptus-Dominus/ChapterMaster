@@ -17,7 +17,7 @@ if (num > 0) {
                 pop.option1 = "Leave it.";
             } else if (tch > 0) {
                 pop.text = $"An STC Fragment upon {stah.name} {num} appears to be located deep within a Mechanicus Vault. Taking it may be seen as an act of war. What is thy will?";
-                // pop.option1 = "Steal the STC Fragment."; // not implemented
+                // pop.option1 = "Attempt to steal the STC Fragment."; // TODO: Fix this option, as it crashes the game when the battle starts;
                 pop.option1 = "Leave it.";
             } else {
                 pop.text = $"An STC Fragment upon {stah.name} {num} appears to be located deep within a Mechanicus Vault. Taking it may be seen as an act of war. The ground team has no Techmarines, so you have no choice but to leave it be.";

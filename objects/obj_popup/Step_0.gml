@@ -792,7 +792,7 @@ try {
 		var _option_picked = $"option{press}";
 		_option_picked = self[$ _option_picked];
 
-		if (string_count("take the STC", _option_picked)) {
+		if (string_count("take the STC", _option_picked) || string_count("steal the STC", _option_picked)) {
 			obj_ground_mission.alarm[5] = 1;
 		} else if (string_count("Leave it", _option_picked)) {
             scr_return_ship(0, obj_ground_mission, obj_ground_mission.num);
