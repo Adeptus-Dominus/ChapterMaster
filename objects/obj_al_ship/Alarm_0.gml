@@ -729,6 +729,28 @@ if (class=="Iconoclast"){
     weapon_dam[1]=8;
     weapon_range[1]=300;
     weapon_cooldown[1]=30;
+}else 
+if (class=="Armed Freighter"){
+    sprite_index=spr_ship_stri;
+    ship_size=2;
+    name="";
+    hp=300;
+    maxhp=300;
+    conditions="";
+    shields=100;
+    maxshields=100;
+    leadership=80;
+    armour_front=3;
+    armour_other=2;
+    weapons=1;
+    turrets=2;
+    capacity=150;
+    carrying=0;
+    weapon[1]="Weapons Battery";
+    weapon_facing[1]="most";
+    weapon_dam[1]=8;
+    weapon_range[1]=300;
+    weapon_cooldown[1]=30;
 }
 // Tyranids
 if (class=="Leviathan"){
