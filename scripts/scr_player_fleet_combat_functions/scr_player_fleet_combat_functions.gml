@@ -32,23 +32,17 @@ function sort_ships_into_columns(combat){
 	with (combat){
 	    for (var k = 0;k<array_length(ship_data);k++){// This determines the number of ships in each column
 	    	var _ship = combat.ship_data[k];
-            if ((combat.column[col]="capital" || _ship.size>=3)) then combat.column_num[col]+=1;
-            if ((combat.column[col-1]="capital" || _ship.size>=3)) then combat.column_num[col-1]+=1;
-            if ((combat.column[col-2]="capital" || _ship.size>=3)) then combat.column_num[col-2]+=1;
-            if ((combat.column[col-3]="capital" || _ship.size>=3)) then combat.column_num[col-3]+=1;
-            if ((combat.column[col-4]="capital" || _ship.size>=3)) then combat.column_num[col-4]+=1;
-        
-            if (_ship.class=combat.column[col]) then combat.column_num[col]+=1;
-            if (_ship.class=combat.column[col-1]) then combat.column_num[col-1]+=1;
-            if (_ship.class=combat.column[col-2]) then combat.column_num[col-2]+=1;
-            if (_ship.class=combat.column[col-3]) then combat.column_num[col-3]+=1;
-            if (_ship.class=combat.column[col-4]) then combat.column_num[col-4]+=1;
-            
-            if ((combat.column[col]="escort" ||_ship.size=1)) then combat.column_num[col]+=1;
-            if ((combat.column[col-1]="escort"|| _ship.size=1)) then combat.column_num[col-1]+=1;
-            if ((combat.column[col-2]="escort" || _ship.size=1)) then combat.column_num[col-2]+=1;
-            if ((combat.column[col-3]="escort" || _ship.size=1)) then combat.column_num[col-3]+=1;
-            if ((combat.column[col-4]="escort" || _ship.size=1)) then combat.column_num[col-4]+=1;
+	    	for (var col = 5;col>0;col--){
+	    		 if ((combat.column[col]="capital" || _ship.size>=3)){
+	    		 	combat.column_num[col]+=1;
+	    		 }
+	    		 if (_ship.class=combat.column[col]){
+	    		 	combat.column_num[col]+=1;
+	    		 }
+				if ((combat.column[col]="escort" ||_ship.size=1)){
+					combat.column_num[col]+=1;
+				}
+	    	}
 	    }		
 	}
 
