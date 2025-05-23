@@ -12,15 +12,7 @@ target_r=0;
 bullets_for = [];
 turn_bonus=1;
 speed_bonus=1;
-
-cooldown[0]=0;
-cooldown[1]=0;
-cooldown[2]=0;
-cooldown[3]=0;
-cooldown[4]=0;
-cooldown[5]=0;
 turret_cool=0;
-shield_size=0;
 
 name="";
 class="";

@@ -4,23 +4,30 @@ if (obj_fleet.start!=5) then exit;
 
 
 var dist;
-
-if (shields>0) and (shields<maxshields) then shields+=0.02;
 if (board_cooldown>=0) then board_cooldown-=1;
 
 // Need to every couple of seconds check this
 // with obj_en_ship if not big then disable, check nearest, and activate once more
 draw_targets = false;
-if (instance_exists(target)){if ((target.x<3) and (target.y<3)) or (target.hp<0) then target=-50;}
+if (instance_exists(target)){
+    if ((target.x<3) and (target.y<3)) or (target.hp<0){
+        target=-50;
+    }
+}
 if (!instance_exists(target)) or (target=-50){
-    with(obj_en_ship){if ((x<3) and (y<3)) or (hp<=0) then instance_deactivate_object(id);}
+    with(obj_en_ship){
+        if ((x<3) and (y<3)) or (hp<=0) then instance_deactivate_object(id);
+    }
     target=instance_nearest(x,y,obj_en_ship);
     instance_activate_object(obj_en_ship);
 }
 //if (!instance_exists(target)) then exit;
 
 if (instance_exists(obj_en_ship)){
-    if (!instance_exists(target) and (instance_nearest(x,y,obj_en_ship).x>500)) then target=instance_nearest(x,y,obj_en_ship);
+    if (!instance_exists(target) and (instance_nearest(x,y,obj_en_ship).x>500)){
+        target=instance_nearest(x,y,obj_en_ship);
+
+    }
 
     if (!instance_exists(target)) then target=instance_nearest(x,y,obj_en_ship);
 }
@@ -51,7 +58,8 @@ if (hp<=0) and (x>-5000){
     if (obj_fleet.start!=0){
         destroy_ship_and_leave_husk();
     }
-    x=-7000;y=room_height/2;
+    x=-7000;
+    y=room_height/2;
 }
 if (hp>0) and (instance_exists(target)){
     is_targeted();
@@ -182,6 +190,8 @@ if (hp>0) and (instance_exists(target)){
 
         
 }
+
+shields.step();
 
 
 

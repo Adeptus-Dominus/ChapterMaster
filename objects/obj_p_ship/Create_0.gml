@@ -31,9 +31,7 @@ target_r=0;
 target_x=0;
 target_y=0;
 
-cooldown = array_create(6, 0);
 turret_cool=0;
-shield_size=0;
 
 board_capital=false;
 board_frigate=false;

@@ -227,7 +227,7 @@ function FeatureSelected(Feature, system, planet) constructor{
                 title = "Ship Dock";
                 var _size_description = "";
                 var _size_literal
-                switch(size){
+                switch(feature.size){
                 	case 1:
                 		_size_description = "are small and unsuited to working on medium and large vessels and are mostly for the convieniencce of local traders of the planet";
                 		_size_literal = "Escort";
@@ -242,9 +242,9 @@ function FeatureSelected(Feature, system, planet) constructor{
                 		break;                		                		
                 }
                 var _description = $"The Docks of {planet_data.name()} {_size_description}\n\n";
-                _description += $"The docks are capable of berthing {capacity} ships of sizes up to {_size_literal} ships, ships being worked on in berths will not be able to participate in combat while they are being worked on and will take 2 months to recomission to duty once work has commenced";
+                _description += $"The docks are capable of berthing {feature.capacity} ships of sizes up to {_size_literal} ships, ships being worked on in berths will not be able to participate in combat while they are being worked on and will take 2 months to recomission to duty once work has commenced";
                 draw_text_ext(xx+10, yy+40,mission_description,-1,area_width-20);
-                
+
 			case P_features.Mission:
 				var mission_description=$"";
 				var planet_name = planet_numeral_name(planet_data.planet, obj_star_select.target);

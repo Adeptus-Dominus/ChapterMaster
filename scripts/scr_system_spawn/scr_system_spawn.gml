@@ -341,7 +341,7 @@ if (did){
             	}
 
             	for (var s=1;s<=planets;s++){
-            		if (p_type[i]!="Dead"){
+            		if (p_type[s] != "Dead" && choose(0,1)){
             			setup_tau_world(_current_system, s);
             			break;
             		}

@@ -28,7 +28,7 @@ function ShipWeaponExplosion(explosion_sprite, x, y, scale = 1) constructor{
 	animation_frames = sprite_get_number(bang_sprite);
 	 current_index = 0;
 	 static draw = function(){
-	 	draw_sprite_ext(bang_sprite,floor(current_index),x,  y,1*scale,1*scale,0,c_white,1);
+	 	draw_sprite_ext(bang_sprite,floor(current_index),x,  y,(scale/2),(scale/2),0,c_white,1);
 	 	current_index += 0.2;
 	 	if (floor(current_index) > animation_frames){
 	 		return -1;
@@ -242,7 +242,7 @@ function ShipWeapon(weapon_name, overide_data={}) constructor{
 	}
 	static draw_weapon_firing_arc = function(){
 		var _tangent_direction =  weapon_direction();
-		var _facing = facings
+		var _facing = facing
 
 	    var _max_distance = range;
 

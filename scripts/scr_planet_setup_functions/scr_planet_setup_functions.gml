@@ -47,10 +47,13 @@ function setup_tau_world(star, planet){
 }
 
 function setup_chaos_world(star, planet){
-    planet[planet]=1;
-    p_owner[planet]=10;
-    p_heresy[planet] = irandom_range(30, 80);
-    owner = eFACTION.Chaos;   
+    var _p = planet;
+    with (star){
+        planet[_p]=1;
+        p_owner[_p]=10;
+        p_heresy[_p] = irandom_range(30, 80);
+        owner = eFACTION.Chaos; 
+    }  
 }
 
 function setup_star_planet_defualts(){
@@ -133,7 +136,7 @@ function setup_star_planet_defualts(){
                 p_max_population[i] = p_population[i];
                 break;
         }
-         if (system_setup_data.map_dock_qouta){
+         if (_sys_data.map_dock_qouta){
             switch (p_type[i]) {
                 case "Temperate":
                 case "Shrine":

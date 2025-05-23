@@ -5,7 +5,7 @@ if !__b__
 {
 
 shields.draw();
-if (selected=1){
+if (selected=1 || point_distance(x, y, mouse_x, mouse_y) < 50){
     draw_set_color(38144);
     draw_circle(x,y,(sprite_width/2),1);
     draw_circle(x,y,(sprite_width/2)-1,1);
@@ -57,12 +57,12 @@ if (boarders>0){
     scr_image("ui/force",1,x-16-32,y+12-32,64,64);
     
     draw_set_color(0);
-    draw_text(x-16,y+12,string_hash_to_newline(string(boarders)));
-    draw_text(x-16-1,y+12-1,string_hash_to_newline(string(boarders)));
-    draw_text(x-16+1,y+12+1,string_hash_to_newline(string(boarders)));
-    draw_text(x-16+1,y+12,string_hash_to_newline(string(boarders)));
+    draw_text(x-16,y+12,string(boarders));
+    draw_text(x-16-1,y+12-1,string(boarders));
+    draw_text(x-16+1,y+12+1,string(boarders));
+    draw_text(x-16+1,y+12,string(boarders));
     draw_set_color(c_white);
-    draw_text(x-16,y+12,string_hash_to_newline(string(boarders)));
+    draw_text(x-16,y+12,string(boarders));
 }
 draw_set_color(38144);
 
@@ -73,13 +73,6 @@ if (maxhp!=0){
         var hp_percent = $"{(hp/maxhp)*100}%"
         
         draw_text_transformed(x,y-sprite_height,hp_percent,zoom_modifier,zoom_modifier,0);
-    }
-
-    if (shields>0){
-        draw_set_color(c_white);
-        var shield_percent = $"{(shields/maxshields)*100}%"
-        
-        draw_text_transformed(x,y-sprite_height,shield_percent,zoom_modifier,zoom_modifier,0);
     }
 }
 

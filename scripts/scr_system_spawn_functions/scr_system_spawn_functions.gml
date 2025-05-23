@@ -180,8 +180,8 @@ function spawn_chaos_stars(){
     // Chaos
     var _chaos_stars = 2+irandom(4);
     repeat(_chaos_stars){
-        var xx=floor(random(1152))+64;
-        var yy=floor(random(748))+64;
+        var xx=irandom(1152)+64;
+        var yy=irandom(748)+64;
         var _current_system=instance_nearest(xx,yy,obj_star);
         with (_current_system){
             var _planet = irandom_range(1, planets);

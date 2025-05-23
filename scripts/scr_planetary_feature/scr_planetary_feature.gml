@@ -181,6 +181,7 @@ function PlanetFeature(feature_type, other_data={}) constructor{
 				break;								
 		}
 		space_taken = 0;
+		planet_display = "Docks";
 		break;
 	default:
 		player_hidden = 1;

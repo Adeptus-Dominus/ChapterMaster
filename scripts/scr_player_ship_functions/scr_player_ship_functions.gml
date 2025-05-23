@@ -207,7 +207,7 @@ function loose_ship_to_warp_event(){
 				obj_ini.loc[company][marine] = "Lost";
 			}
 		}
-		for(var vehicle = 1; vehicle <= 100; vehicle++){
+		for(var vehicle = 0; vehicle <= 100; vehicle++){
 			if(obj_ini.veh_lid[company, vehicle] == _ship_index){
 				obj_ini.veh_loc[company, vehicle] = "Lost";
 			}
@@ -249,14 +249,33 @@ function new_player_ship(type, start_loc="home", new_name=""){
     _struct.class = type;
     if (string_count("Battle Barge",type)>0){
         with(_struct){
-	        left_broad_positions = [[56, 16],[65, 16],[74,16],[83, 16]];
-	        right_broad_positions = [[56, 37],[65, 37],[74,37],[83, 37]];        
-	        add_weapon_to_ship("Weapons Battery", {facing : "left", firing_arc: 30});
-	        add_weapon_to_ship("Weapons Battery", {facing : "right", firing_arc: 30});
-	        add_weapon_to_ship("Light Weapons Battery", {facing : "front"});
+	        left_broad_positions = [[162, 36],[173, 36],[185,36],[197, 36],[210,36],[222, 36]];
+	        right_broad_positions = [[162, 75],[173, 75],[185,75],[197, 75],[210,75],[222, 75]]; 
+	        var _broadsl = left_broad_positions;
+	        var _broadsr = right_broad_positions;
+	        for (var i=0;i<array_length(_broadsl);i++){
+	        	add_weapon_to_ship("Macro Cannon", {
+	        		facing : "left",
+	        		ship_position : _broadsl[i],
+	        	});
+	        	add_weapon_to_ship("Macro Cannon", {
+	        		facing : "right",
+	        		ship_position : _broadsr[i],
+	        	});
+	        }
+	        forward_positions = [[88, 6, 3],[88, 106, 3],[281, 90, 3],[281, 19, 3],[283, 56, 4]];
+	        var _for = forward_positions;  
+	       	for (var i=0;i<array_length(_for);i++){
+	       		if (_for[i][2] == 3){
+	       			add_weapon_to_ship("Torpedoes", {barrel_count:1});
+	       		} else {
+		        	add_weapon_to_ship("Macro Bombardment Cannons", {
+		        		facing : "front",
+		        		ship_position : _for[i],
+		        	});	       			
+	       		}
+	        }        
 	        add_weapon_to_ship("Thunderhawk Launch Bays");
-	        add_weapon_to_ship("Macro Bombardment Cannons");
-	        add_weapon_to_ship("Torpedoes", {barrel_count:4});
 	        size = 3;
 	        capacity = 600;
 	        turning_speed = 0.2;
@@ -309,7 +328,7 @@ function new_player_ship(type, start_loc="home", new_name=""){
     if (string_count("Gladius",type)>0){
         with(_struct){
         	class = "Gladius";
-	        add_weapon_to_ship("Light Weapons Battery");
+	        add_weapon_to_ship("Macro Cannon");
 	        turrets = [{}];
 	        hp = 200;
 	        max_hp = 200;
@@ -326,13 +345,13 @@ function new_player_ship(type, start_loc="home", new_name=""){
         with(_struct){
         	class = "Hunter";
 	        add_weapon_to_ship("Torpedoes");
-	        add_weapon_to_ship("Light Weapons Battery");
+	        add_weapon_to_ship("Macro Cannon");
 	        turrets = [{}];
 	        hp = 200;
 	        max_hp = 200;
 	        capacity = 25;
-	        turning_speed = 0.3;
-	        max_speed = 33; 
+	        turning_speed = 0.4;
+	        max_speed = 38; 
 			front_armour = 4;
 			side_armour = 3;
 			rear_armour = 1;
