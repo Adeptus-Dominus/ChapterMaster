@@ -249,7 +249,12 @@ if (obj_controller.selecting_planet!=0){
     var slate_draw_scale = 420/850;
     if (feature!=""){
         if (is_struct(feature)){
-            feature.draw_planet_features(344+main_data_slate.width-4,165)
+            try{
+                feature.draw_planet_features(344+main_data_slate.width-4,165);
+            } catch(_exception){
+                handle_exception(_exception);
+                feature = "";
+            }
             if (feature.remove){
                 feature="";
             }else if (feature.destroy){

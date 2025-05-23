@@ -243,7 +243,8 @@ function FeatureSelected(Feature, system, planet) constructor{
                 }
                 var _description = $"The Docks of {planet_data.name()} {_size_description}\n\n";
                 _description += $"The docks are capable of berthing {feature.capacity} ships of sizes up to {_size_literal} ships, ships being worked on in berths will not be able to participate in combat while they are being worked on and will take 2 months to recomission to duty once work has commenced";
-                draw_text_ext(xx+10, yy+40,mission_description,-1,area_width-20);
+                draw_text_ext(xx+10, yy+40,_description,-1,area_width-20);
+                break;
 
 			case P_features.Mission:
 				var mission_description=$"";

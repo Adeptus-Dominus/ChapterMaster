@@ -132,7 +132,7 @@ function setup_star_planet_defualts(){
                 break;
             case "Craftworld":
                 p_population[i] = irandom_range(150000, 300000);
-                p_station = 6;
+                p_station[i] = 6;
                 p_max_population[i] = p_population[i];
                 break;
         }

@@ -59,7 +59,7 @@ function player_fleet_ship_spawner(){
 	    if (col<5) then x2-=column_width[col];
 
 		if (column_num[col]>0){// Start ship creation
-		    if (column[col]=="capital" || "Battle Barge"){
+		    if (column[col] == "capital" || column[col] == "Battle Barge"){
 		    	hei=160;
 		    	sizz=3;
 		    }
@@ -139,7 +139,7 @@ function ShipShieldGenerator(data) constructor{
 	        draw_set_color(c_white);
 	        var shield_percent = $"{(shields/maxshields)*100}%"
 	        
-	        draw_text_transformed(ship.x,ship.y-sprite_height,shield_percent,x_scale*obj_controller.scale_mod,y_scale*obj_controller.scale_mod,0);
+	        draw_text_transformed(ship.x,ship.y-ship.sprite_height,shield_percent,x_scale*obj_controller.scale_mod,y_scale*obj_controller.scale_mod,0);
 		
 		}
 	}
