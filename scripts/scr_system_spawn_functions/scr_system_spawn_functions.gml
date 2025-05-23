@@ -180,14 +180,14 @@ function spawn_chaos_stars(){
     // Chaos
     var _chaos_stars = 2+irandom(4);
     repeat(_chaos_stars){
-        xx=floor(random(1152))+64;
-        yy=floor(random(748))+64;
-        _current_system=instance_nearest(xx,yy,obj_star);
+        var xx=floor(random(1152))+64;
+        var yy=floor(random(748))+64;
+        var _current_system=instance_nearest(xx,yy,obj_star);
         with (_current_system){
             var _planet = irandom_range(1, planets);
             if (planets>0) and (owner == eFACTION.Imperium){
                 var _planet = irandom_range(1, planets);
-                setup_chaos_world(_current_system,planets);
+                setup_chaos_world(id,_planet);
             }
         }
         instance_deactivate_object(_current_system);

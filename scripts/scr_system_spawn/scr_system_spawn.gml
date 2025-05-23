@@ -111,7 +111,7 @@ if (did){
     _current_system.planet[2]=1;
     _current_system.image_index=4;
     _current_system.p_type[2]="Ice";
-    setup_forge_world(_current_system, 1, dock = 2);
+    setup_forge_world(_current_system, 1, 2);
 	/*
     _current_system.p_owner[1]=3;
 	_current_system.p_owner[2]=3;
@@ -425,8 +425,8 @@ if (did){
             _current_system=array_random_element(_non_xenos_chaos);
 
             _current_system.planet[1]=1;
-            _current_system.p_owner[1]=90;
-            _current_system.owner=90;
+            _current_system.p_owner[1]=7;
+            _current_system.owner=7;
             array_delete(_non_xenos_chaos, i, 1);
         }
     }

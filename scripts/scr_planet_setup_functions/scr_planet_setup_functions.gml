@@ -1,16 +1,17 @@
 
 
 
-function setup_forge_world(star, planet, dock = 0){
+function setup_forge_world(star, choice_planet, dock = 0){
 	with(star){
-        planet[planet]=1;
-        p_type[planet]="Forge";
+        var _sys_data = obj_controller.system_setup_data
+        planet[choice_planet]=1;
+        p_type[choice_planet]="Forge";
         owner = eFACTION.Mechanicus;
-        p_owner[planet] = owner;
-        p_first[planet] = owner;
+        p_owner[choice_planet] = owner;
+        p_first[choice_planet] = owner;
         var _size = dock
         if (_size == 0){
-            if (system_setup_data.large_docks == 0){
+            if (_sys_data.large_docks == 0){
                 var _size = 3; 
             } else {
                 _size = choose(2,3); 
@@ -18,28 +19,31 @@ function setup_forge_world(star, planet, dock = 0){
         }
         switch (_size){
             case 1:
-                system_setup_data.small_docks++;
+                _sys_data.small_docks++;
                 break
             case 2:
-                system_setup_data.medium_docks++;
+                _sys_data.medium_docks++;
                 break
             case 3:
-                system_setup_data.large_docks++;
+                _sys_data.large_docks++;
                 break
 
         }
         if (_size == 3){
-            system_setup_data.large_docks++;
+            _sys_data.large_docks++;
         }
-        array_push(P_features[planet], new PlanetFeature(P_features.ShipDock, {size : _size}));
+        array_push(p_feature[choice_planet], new PlanetFeature(P_features.ShipDock, {size : _size}));
 	}
 }
 
 function setup_tau_world(star, planet){
-    p_owner[planet] = eFACTION.Tau;
-    owner = eFACTION.Tau;
-    p_influence[planet][eFACTION.Tau]=70;
-    owner = eFACTION.Tau;
+    var _p = planet;
+    with (star){
+        p_owner[_p] = eFACTION.Tau;
+        owner = eFACTION.Tau;
+        p_influence[_p][eFACTION.Tau]=70;
+        p_first[_p] = eFACTION.Tau;
+    }
 }
 
 function setup_chaos_world(star, planet){
@@ -134,27 +138,27 @@ function setup_star_planet_defualts(){
                 case "Temperate":
                 case "Shrine":
                     if (!irandom(3)){
-                        array_push(P_features[i], new PlanetFeature(P_features.ShipDock, {size : choose(1,2)}));
-                        system_setup_data.map_dock_qouta--;
+                        array_push(p_feature[i], new PlanetFeature(P_features.ShipDock, {size : choose(1,2)}));
+                        _sys_data.map_dock_qouta--;
                     }
                     break;
                 case "Hive":
                  if (irandom(1)){
-                        array_push(P_features[i], new PlanetFeature(P_features.ShipDock, {size : 2}));
-                        system_setup_data.map_dock_qouta--;
+                        array_push(p_feature[i], new PlanetFeature(P_features.ShipDock, {size : 2}));
+                        _sys_data.map_dock_qouta--;
                  }
                  break;
                  case "Feudal":
                  case "Desert"  :               
                     if (!irandom(5)){
-                        array_push(P_features[i], new PlanetFeature(P_features.ShipDock, {size : 1}));
-                        system_setup_data.map_dock_qouta--;                        
+                        array_push(p_feature[i], new PlanetFeature(P_features.ShipDock, {size : 1}));
+                        _sys_data.map_dock_qouta--;                        
                     }
                 case "Agri":
                 case "Lava":
                     if (!irandom(1)){
-                        array_push(P_features[i], new PlanetFeature(P_features.ShipDock, {size : 1}));
-                        system_setup_data.map_dock_qouta--;                        
+                        array_push(p_feature[i], new PlanetFeature(P_features.ShipDock, {size : 1}));
+                        _sys_data.map_dock_qouta--;                        
                     }                    
             }
         }
@@ -261,7 +265,7 @@ function setup_star_planet_defualts(){
              if (p_population[i]>0){
                 p_orks[i]=choose(1,2,3,3,4,5);
              }
-             if (p_type[i]=="Forge" || p_type[i]="Hive")){
+             if (p_type[i]=="Forge" || p_type[i]="Hive"){
                 p_orks[i] = 5;
             }
         }

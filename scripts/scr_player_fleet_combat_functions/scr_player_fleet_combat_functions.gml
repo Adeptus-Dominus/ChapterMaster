@@ -119,7 +119,7 @@ function draw_ellipse_rotated(){
 
 }
 //data must have keys, shields, recharge, and reboot
-function ShipShieldGenerator(data){
+function ShipShieldGenerator(data) constructor{
 	move_data_to_current_scope(data);
 	destroyed = false;
 	disabled = false;
@@ -177,7 +177,7 @@ function setup_player_combat_ship(){
 	turrets=0;
 	ship_colour=obj_controller.body_colour_replace;
 	max_speed = ship_data.max_speed;
-	shields = new ShipShieldGenerator({shields, maxshields, ship_data.shields_recharge_rate, ship_data.shields_reboot_time, ship:id})
+	shields = new ShipShieldGenerator({shields, maxshields, recharge_rate:ship_data.shields_recharge_rate, shields_reboot:ship_data.shields_reboot_time, ship:id})
 	
     for (var i=0;i<array_length(weapons);i++){
     	weapons[i].ship = id;

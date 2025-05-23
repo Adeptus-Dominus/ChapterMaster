@@ -13,6 +13,10 @@ function calculate_full_chapter_spread(){
 	var _tech_spread = {};
 	var _apoth_spread = {};
 	var _unit_spread = {};
+	for (var i=0;i<array_length(obj_ini.ship_data);i++){
+		var _ship = obj_ini.ship_data[i];
+		_ship.tech_crew = 0;
+	}
     for(var company=0;company<11;company++){
     	var _company_length = (array_length(obj_ini.name[company]));
     	for (var v=0; v < _company_length; v++) {
@@ -44,7 +48,11 @@ function calculate_full_chapter_spread(){
   	    		}
   	    		key_val = _mar_loc[2];
   	    	} else if (_mar_loc[0] == location_types.ship){
-  	    		if instance_exists(obj_p_fleet){
+  	    		var _ship = obj_ini.ship_data[_mar_loc[1]];
+  	    		if (_is_tech){
+  	    			_ship.tech_crew++;
+  	    		}
+  	    		if (instance_exists(obj_p_fleet)){
   	    			with (obj_p_fleet){
   	    				if (array_contains(capital_num, _mar_loc[1]) ||
   	    					array_contains(frigate_num, _mar_loc[1])||

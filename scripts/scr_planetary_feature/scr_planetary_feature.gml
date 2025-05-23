@@ -168,6 +168,20 @@ function PlanetFeature(feature_type, other_data={}) constructor{
 	case P_features.ShipDock:
 		player_hidden = 0;
 		size = 1;
+		move_data_to_current_scope(other_data);
+		switch(size){
+			case 1:
+				capacity = 3;
+				break;
+			case 2:
+				capacity = 9;
+				break;
+			case 3:
+				capacity = 20;
+				break;								
+		}
+		space_taken = 0;
+		break;
 	default:
 		player_hidden = 1;
 		planet_display = 0;
