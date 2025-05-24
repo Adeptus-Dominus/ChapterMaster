@@ -164,7 +164,7 @@ function ShipShieldGenerator(data) constructor{
 
 		if (!disabled){
 			if (shields<maxshields){
-				shields += shields_recharge_rate;
+				shields += recharge_rate;
 			}
 		}
 	}
@@ -186,39 +186,14 @@ function setup_player_combat_ship(){
 	armour_front = ship_data.front_armour;
 	side_armour=ship_data.side_armour;
 	rear_armour = ship_data.rear_armour;
-	turrets=0;
+	turrets=array_length(ship_data.turrets);
 	ship_colour=obj_controller.body_colour_replace;
 	max_speed = ship_data.max_speed;
+	sprite_index = ship_data.sprite_index;
 	
     for (var i=0;i<array_length(weapons);i++){
     	weapons[i].ship = id;
     }
-
-	if (class="Battle Barge"){
-	    turrets=3;
-	    sprite_index=spr_ship_bb;
-	}
-
-	else if (class=="Slaughtersong" || class=="Gloriana"){
-		turrets=3;
-		sprite_index=spr_ship_song;
-	}
-
-
-	else if (class="Strike Cruiser"){
-		turrets=1;
-		sprite_index=spr_ship_stri;
-	}
-
-	else if (class="Hunter"){
-		turrets=1;
-		sprite_index=spr_ship_hunt;
-	}
-
-	else if (class="Gladius"){
-		turrets=1;
-		sprite_index=spr_ship_glad;
-	}
 	shields = new ShipShieldGenerator({shields, maxshields, recharge_rate:ship_data.shields_recharge_rate, shields_reboot:ship_data.shields_reboot_time, ship:id})
 
 

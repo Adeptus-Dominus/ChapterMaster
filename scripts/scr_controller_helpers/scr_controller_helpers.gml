@@ -357,69 +357,12 @@ function scr_toggle_fleet_area() {
             if (menu != 16) {
                 //TODO rewrite all this shit when fleets finally become OOP
                 menu = 16;
+                fleet_advisor_data_setup();
+
 
                 cooldown = 8000;
                 click = 1;
-                for (var i = 37; i <= 41; i++) {
-                    temp[i] = "";
-                }
 
-                for (var i = 101; i < 120; i++) {
-                    temp[i] = "";
-                }
-
-                var g = 0,
-                    u = 0,
-                    m = 0,
-                    d = 0;
-                temp[37] = 0;
-                temp[38] = 0;
-                temp[39] = 0;
-                for (var i = 0; i < array_length(obj_ini.ship_data); i++) {
-                     var _ship = obj_ini.ship_data[i];
-
-                    switch(_ship.size){
-                        case 3:
-                            temp[37]++;
-                            break;
-                        case 2:
-                            temp[38]++;
-                            break;
-                        case 1:
-                            temp[39]++;
-                            break;                                                                
-                    }
-
-                }
-
-                g = 0;
-                temp[41] = "1";
-                for (var i = 0; i < array_length(obj_ini.ship_data); i++) {
-                    var _ship = fetch_ship(i);
-                    if ((g != 0)) {
-                        if ((_ship.ship_hp_percentage()) < u) {
-                            g = i;
-                            u = _ship.ship_hp_percentage();
-                        }
-                    }
-                    if ((g == 0)) {
-                        g = i;
-                        u = _ship.ship_hp_percentage();
-                    }
-
-                    m = i;
-
-                    if ((_ship.ship_hp_percentage() < 0.25)) {
-                        d += 1;
-                    }
-                }
-                if (g != 0) {
-                    temp[40] = $"{_ship.class} ' {_ship.name}";
-                    temp[41] = string(u);
-                    temp[42] = string(d);
-                }
-                man_max = m;
-                man_current = 0;
             } else if (menu == 16) {
                 menu = 0;
 

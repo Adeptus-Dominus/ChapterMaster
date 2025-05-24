@@ -285,6 +285,7 @@ function new_player_ship(type, start_loc="home", new_name=""){
 	        side_armour = 6;
 	        rear_armour = 3;
 	        shields = 1;
+	        sprite_index=spr_ship_bb;
        	}
 
         
@@ -319,7 +320,8 @@ function new_player_ship(type, start_loc="home", new_name=""){
 			front_armour = 6;
 			side_armour = 4;
 			rear_armour = 3;
-			shields = 6;	       	
+			shields = 6;
+			sprite_index=spr_ship_stri;	       	
 	    }
         
         
@@ -338,7 +340,8 @@ function new_player_ship(type, start_loc="home", new_name=""){
 			front_armour = 5;
 			side_armour = 4;
 			rear_armour = 1;
-			shields = 1;	              
+			shields = 1;
+			sprite_index=spr_ship_glad;	              
 	    }
     }
     if (string_count("Hunter",type)>0){
@@ -355,7 +358,8 @@ function new_player_ship(type, start_loc="home", new_name=""){
 			front_armour = 4;
 			side_armour = 3;
 			rear_armour = 1;
-			shields = 1;	            	
+			shields = 1;
+			sprite_index=spr_ship_hunt;	      	            	
 	    }
 
         
@@ -379,7 +383,8 @@ function new_player_ship(type, start_loc="home", new_name=""){
 			front_armour = 6;
 			side_armour = 8;
 			rear_armour = 2;
-			shields = 24;	            	    
+			shields = 24;
+			sprite_index=spr_ship_song;	      	   	            	    
 	    }          
         
     }
