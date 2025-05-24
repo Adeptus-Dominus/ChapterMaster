@@ -247,32 +247,128 @@ function new_player_ship(type, start_loc="home", new_name=""){
     _struct.location = start_loc;
     _struct.name=new_name;
     _struct.class = type;
+
     if (string_count("Battle Barge",type)>0){
         with(_struct){
-	        left_broad_positions = [[162, 36],[173, 36],[185,36],[197, 36],[210,36],[222, 36]];
-	        right_broad_positions = [[162, 75],[173, 75],[185,75],[197, 75],[210,75],[222, 75]]; 
+	        left_broad_positions = [
+	        {
+	        	ship_position : [162, 36],
+	        	slot_size : 2,
+	        	weapon : false;
+	        	facing : "left"
+	        },
+	        {
+	        	ship_position : [173, 36],
+	        	slot_size : 2,
+	        	weapon : false;
+	        	facing : "left"
+	        },
+	        {
+	        	ship_position : [185,36],
+	        	slot_size : 2,
+	        	weapon : false;
+	        	facing : "left"
+	        },
+	        {
+	        	ship_position : [197, 36],
+	        	slot_size : 2,
+	        	weapon : false;
+	        	facing : "left"
+	        },
+	        {
+	        	ship_position : [210,36],
+	        	slot_size : 2,
+	        	weapon : false;
+	        	facing : "left"
+	        },
+	        {
+	        	ship_position : [222, 36],
+	        	slot_size : 2,
+	        	weapon : false;
+	        	facing : "left"
+	        },	        	        	        	        	        
+	       ];
+	        right_broad_positions = [
+	        {
+	        	ship_position : [162, 75],
+	        	slot_size : 2,
+	        	weapon : false;
+	        	facing : "right"
+	        },
+	        {
+	        	ship_position : [173, 75],
+	        	slot_size : 2,
+	        	weapon : false;
+	        	facing : "right"
+	        },
+	        {
+	        	ship_position : [185,75],
+	        	slot_size : 2,
+	        	weapon : false;
+	        	facing : "right"
+	        },
+	        {
+	        	ship_position : [197, 75],
+	        	slot_size : 2,
+	        	weapon : false;
+	        	facing : "right"
+	        },
+	        {
+	        	ship_position : [210,75],
+	        	slot_size : 2,
+	        	weapon : false;
+	        	facing : "right"
+	        },
+	        {
+	        	ship_position : [222, 75],
+	        	slot_size : 2,
+	        	weapon : false;
+	        	facing : "right"
+	        },	        	        	        	        	        
+	       ];	       
 	        var _broadsl = left_broad_positions;
 	        var _broadsr = right_broad_positions;
 	        for (var i=0;i<array_length(_broadsl);i++){
-	        	add_weapon_to_ship("Macro Cannon", {
-	        		facing : "left",
-	        		ship_position : _broadsl[i],
-	        	});
-	        	add_weapon_to_ship("Macro Cannon", {
-	        		facing : "right",
-	        		ship_position : _broadsr[i],
-	        	});
+	        	add_weapon_to_slot("Macro Cannon",{}, _broadsl[i]);
+	        	add_weapon_to_slot("Macro Cannon",{}, _broadsr[i]);
 	        }
-	        forward_positions = [[88, 6, 3],[88, 106, 3],[281, 90, 3],[281, 19, 3],[283, 56, 4]];
+	        forward_positions = [
+		        {
+		        	ship_position: [88, 6]
+		        	slot_size : 3,
+		        	facing : "Front",
+
+		        },
+		        {
+		        	ship_position: [88, 106]
+		        	slot_size : 3,
+		        	facing : "Front",
+
+		        },
+		        {
+		        	ship_position: [281, 90]
+		        	slot_size : 3,
+		        	facing : "Front",
+
+		        },
+		        {
+		        	ship_position: [281, 19]
+		        	slot_size : 3,
+		        	facing : "Front",
+
+		        },
+		        {
+		        	ship_position: [283, 56]	
+		        	slot_size : 4,
+		        	facing : "Front",	        	
+		        }
+	        ];
 	        var _for = forward_positions;  
 	       	for (var i=0;i<array_length(_for);i++){
-	       		if (_for[i][2] == 3){
-	       			add_weapon_to_ship("Torpedoes", {barrel_count:1});
+	       		if (_for[i].slot_size == 3){
+	       			add_weapon_to_slot("Torpedoes",{}, _for[i]);
 	       		} else {
-		        	add_weapon_to_ship("Macro Bombardment Cannons", {
-		        		facing : "front",
-		        		ship_position : _for[i],
-		        	});	       			
+	       			add_weapon_to_slot("Macro Bombardment Cannons",{}, _for[i]);       			
 	       		}
 	        }        
 	        add_weapon_to_ship("Thunderhawk Launch Bays");
@@ -295,19 +391,38 @@ function new_player_ship(type, start_loc="home", new_name=""){
 
     if (string_count("Strike Cruiser",type)>0){
         with(_struct){
-	        left_broad_positions = [[56, 16],[65, 16],[74,16],[83, 16]];
+	         left_broad_positions = [
+	        {
+	        	ship_position : [56, 37],
+	        	slot_size : 2,
+	        	weapon : false;
+	        	facing : "left"
+	        },
+	        {
+	        	ship_position : [65, 37],
+	        	slot_size : 2,
+	        	weapon : false;
+	        	facing : "left"
+	        },
+	        {
+	        	ship_position : [74,37],
+	        	slot_size : 2,
+	        	weapon : false;
+	        	facing : "left"
+	        },
+	        {
+	        	ship_position : [83, 37],
+	        	slot_size : 2,
+	        	weapon : false;
+	        	facing : "left"
+	        },
+	        ]
 	        right_broad_positions = [[56, 37],[65, 37],[74,37],[83, 37]];
 	        var _broadsl = left_broad_positions;
 	        var _broadsr = right_broad_positions;
 	        for (var i=0;i<array_length(_broadsl);i++){
-	        	add_weapon_to_ship("Macro Cannon", {
-	        		facing : "left",
-	        		ship_position : _broadsl[i],
-	        	});
-	        	add_weapon_to_ship("Macro Cannon", {
-	        		facing : "right",
-	        		ship_position : _broadsr[i],
-	        	});
+	        	add_weapon_to_slot("Macro Cannon",{}, _broadsl[i]);
+	        	add_weapon_to_slot("Macro Cannon",{}, _broadsr[i]);
 	        }
 	        add_weapon_to_ship("Thunderhawk Launch Bays");
 	        add_weapon_to_ship("Bombardment Cannons");

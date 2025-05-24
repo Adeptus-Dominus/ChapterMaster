@@ -34,6 +34,9 @@ function ShipStruct() constructor{
 	shields_reboot_time = 20;
 	captain = false;
 	engineer = false;
+	left_broad_positions = [];
+	right_broad_positions = [];
+	forward_positions = [];
 
 	uid = floor(random(99999999))+1;
 
@@ -77,5 +80,52 @@ function ShipStruct() constructor{
             _final_speed *= 1.05;
         }
         return _final_speed;
+	}
+
+    static add_weapon_to_slot = function(weapon_name,overide_data,slot){
+    	var _s_data = slot;
+    	with (overide_data){
+    		move_data_to_current_scope(_s_data);
+    	}
+    	var _wep = new ShipWeapon(weapon_name, overide_data);
+    	array_push(weapons, _wep);
+    	slot.weapon = _wep;
+    }
+
+	static draw_ui_manage = function(x, y){
+		var _x_offset = sprite_get_xoffset(sprite_index);
+		var _y_offset = sprite_get_yoffset(sprite_index);
+		draw_sprite(sprite_index, 0, x+280, y+180);
+		var _draw_corner = [x+280 - _x_offset, y+180-_y_offset];
+		var _l_length = array_length(left_broad_positions);
+		var _r_length = array_length(right_broad_positions);
+		var _f_length = array_length(forward_positions);
+		var iter = max(_l_length, _r_length, _f_length);
+		var draw_weapon_box = function(pos, corner){
+			var coords = pos.ship_position;
+			var draw_coords = [corner[0]+ coords[0]-10, corner[1]+coords[1]-10, corner[0]+coords[0]+10, corner[1]+coords[1]+10];
+			if (scr_hit(draw_coords)){
+				draw_set_colour(c_green);
+				tooltip_draw("click to equip new weapon");
+				obj_controller.weapon_slate.weapon = pos.weapon;
+			} else {
+				draw_set_colour(c_blue);
+			}
+			draw_rectangle(corner[0]+ coords[0]-10, corner[1]+coords[1]-10, corner[0]+coords[0]+10, corner[1]+coords[1]+10, true);
+		}
+		for (var i=0;i<iter;i++){
+			if (i < _l_length){
+				var _pos = left_broad_positions[i];
+				draw_weapon_box(_pos, _draw_corner);
+			}
+			if (i < _r_length){
+				var _pos = right_broad_positions[i];
+				draw_weapon_box(_pos, _draw_corner);
+			}
+			if (i < _f_length){
+				var _pos = forward_positions[i];
+				draw_weapon_box(_pos, _draw_corner);
+			}						
+		}
 	}
 }

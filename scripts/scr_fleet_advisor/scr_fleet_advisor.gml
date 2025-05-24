@@ -12,6 +12,7 @@ function fleet_advisor_data_setup(){
     }
     ship_slate = new DataSlate();
     list_slate = new DataSlate();
+    weapon_slate = new DataSlate();
     for (var i = 0; i < array_length(obj_ini.ship_data); i++) {
          var _ship = obj_ini.ship_data[i];
 
@@ -155,8 +156,9 @@ function scr_fleet_advisor(){
             },
         };
 
-        var _column_x = list_slate.XX + 10
+        var _column_x = list_slate.XX + 40
         var yy = list_slate.YY;
+        var xx = list_slate.XX;
         var _header_offset = 80;
         var _columns_array = ["name", "class", "location", "hp", "carrying"];
 
@@ -193,7 +195,7 @@ function scr_fleet_advisor(){
             }
 
             var _row_y = _columns.name.y1 + _row_height + (i * (_row_height + _row_gap));
-            draw_rectangle(xx + 25, _row_y, xx + 1546, _row_y + _row_height, 1);
+            draw_rectangle(xx + 25, _row_y, xx + list_slate.width-50, _row_y + _row_height, 1);
 
             var _goto_button = {
                 x1: _columns.location.x1 - 20,
@@ -266,17 +268,18 @@ function scr_fleet_advisor(){
     }
 
 
-    list_slate.draw_with_dimensions(xx + 925, yy + 66, 660, 752);
+    list_slate.draw_with_dimensions(xx + 900, yy + 66, 685, 752);
 
     ship_slate.inside_method = function(){
         var xx = ship_slate.XX;
+        var _center_x = (ship_slate.width/2) + xx
         var yy = ship_slate.YY;
         if (fleet_temps.view_ship>-1) {
             var _ship = fleet_temps.view_ship_struct;
             draw_set_font(fnt_40k_30b);
             draw_set_halign(fa_center);
-            draw_text_transformed(xx + 280, yy + 368, _ship.name, 0.75, 0.75, 0);
-            draw_text_transformed(xx + 280, yy + 398, _ship.class, 0.5, 0.5, 0);
+            draw_text_transformed(xx + 280, yy + 30, _ship.name, 0.75, 0.75, 0);
+            draw_text_transformed(xx + 280, yy + 60, _ship.class, 0.5, 0.5, 0);
 
             draw_set_color(c_gray);
             draw_rectangle(xx + 488, yy + 492, xx + 756, yy + 634, 1);
@@ -289,7 +292,7 @@ function scr_fleet_advisor(){
                 }
             }
             draw_set_color(c_white);
-            draw_sprite(spr_ship_back_white, ship_im, xx + 488, yy + 492);
+            draw_sprite(spr_ship_back_white, ship_im, _center_x, yy + 492);
 
             draw_set_color(c_gray);
             draw_set_font(fnt_40k_14);
@@ -322,7 +325,7 @@ function scr_fleet_advisor(){
             draw_set_font(fnt_40k_14);
             */
 
-            draw_sprite(_ship.sprite_index, 0, xx+280, yy+180);
+            _ship.draw_ui_manage(xx, yy);
         }
     }
     ship_slate.draw_with_dimensions(xx + 342, yy + 66, 561, 752);
