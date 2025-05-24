@@ -13,6 +13,8 @@ function fleet_advisor_data_setup(){
     ship_slate = new DataSlate();
     list_slate = new DataSlate();
     weapon_slate = new DataSlate();
+    weapon_slate.weapon = false;
+    weapon_slate.slot = false;
     for (var i = 0; i < array_length(obj_ini.ship_data); i++) {
          var _ship = obj_ini.ship_data[i];
 
@@ -278,11 +280,11 @@ function scr_fleet_advisor(){
             var _ship = fleet_temps.view_ship_struct;
             draw_set_font(fnt_40k_30b);
             draw_set_halign(fa_center);
-            draw_text_transformed(xx + 280, yy + 30, _ship.name, 0.75, 0.75, 0);
-            draw_text_transformed(xx + 280, yy + 60, _ship.class, 0.5, 0.5, 0);
+            draw_text_transformed(xx + 280, yy + 60, _ship.name, 0.75, 0.75, 0);
+            draw_text_transformed(xx + 280, yy + 90, _ship.class, 0.5, 0.5, 0);
 
             draw_set_color(c_gray);
-            draw_rectangle(xx + 488, yy + 492, xx + 756, yy + 634, 1);
+            draw_rectangle(xx + 146, yy + 492, xx + 411, yy + 634, 1);
             var ships = ["Battle Barge", "Strike Cruiser","Gladius","Hunter"];
             var ship_im = 0;
             for (var i=0;i<array_length(ships);i++){
@@ -292,7 +294,7 @@ function scr_fleet_advisor(){
                 }
             }
             draw_set_color(c_white);
-            draw_sprite(spr_ship_back_white, ship_im, _center_x, yy + 492);
+            draw_sprite(spr_ship_back_white, ship_im, _center_x-(sprite_get_width(spr_ship_back_white)/2), yy + 492);
 
             draw_set_color(c_gray);
             draw_set_font(fnt_40k_14);
@@ -300,12 +302,12 @@ function scr_fleet_advisor(){
 
 
 
-            /*draw_text(xx + 383, yy + 655, $"Health: {temp[103]}/{temp[104]}");
-            draw_text(xx + 588, yy + 655, $"Shields: {temp[105]}" );
-            draw_text(xx + 768, yy + 655, $"Armour: {temp[107]},{temp[108]}");
+            draw_text(xx + 42, yy + 589, $"Health: {_ship.ship_hp_percentage()}");
+            draw_text(xx + 141, yy + 589, $"Shields: {_ship.shields}" );
+            draw_text(xx + 426, yy + 589, $"Armour: {_ship.front_armour,{_ship.side_armour}, {_ship.rear_armour}");
 
-            draw_text(xx + 495, yy + 675, $"Speed: {temp[106]}");
-            draw_text(xx + 680, yy + 675, $"Turrets: {temp[109]}");
+            draw_text(xx + 495, yy + 619, $"Speed: {convert_to_kilometers(_ship.max_speed)}/s");
+            draw_text(xx + 680, yy + 619, $"Turrets: {array_length(_ship.turrets)}");
 
             if (temp[110] != "") {
                 draw_text(xx + 383, yy + 705, $"-{temp[110]} ({temp[111]})");
@@ -323,12 +325,25 @@ function scr_fleet_advisor(){
             draw_set_font(fnt_40k_12);
             // draw_text_ext(xx + 352, 775, $"Carrying ({temp[118]}): {temp[119]}", -1, 542);
             draw_set_font(fnt_40k_14);
-            */
+            
 
             _ship.draw_ui_manage(xx, yy);
         }
     }
     ship_slate.draw_with_dimensions(xx + 342, yy + 66, 561, 752);
+    if (weapon_slate.weapon != false){
+        weapon_slate.inside_method = function(){
+            var _wep = weapon_slate.weapon;
+            var xx = weapon_slate.XX;
+            var yy = weapon_slate.YY;
+            draw_set_halign(fa_center);
+            draw_set_font(fnt_40k_30b);
+            draw_text_transformed(xx + 280, yy + 30, _wep.name, 1, 1, 0);
+            draw_set_font(fnt_40k_12);
+        }
+
+        weapon_slate.draw_with_dimensions(xx, yy+66, 340, 400);
+    }
     // 31 wide
     scr_scrollbar(1550, 100, 1577, 818, 34, ship_max, ship_current);
 }

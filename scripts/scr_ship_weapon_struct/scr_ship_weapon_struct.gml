@@ -17,7 +17,8 @@ global.ship_weapon_defualts  = {
 	accuracy : 98,
 	condition : "fuly_functional",
 	explosion_sprite : spr_explosion,
-	bombard_value : 0
+	bombard_value : 0,
+	size : 2,
 }
 
 function ShipWeaponExplosion(explosion_sprite, x, y, scale = 1) constructor{

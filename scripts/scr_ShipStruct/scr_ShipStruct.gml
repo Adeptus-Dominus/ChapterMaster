@@ -11,6 +11,14 @@ function get_ship_by_name(ship_name){
 	}
 }
 
+function convert_to_kilometers(pix_distance){
+	return pix_distance/50;
+}
+
+function per_step_to_kilometers(rate_dist){
+	return convert_to_kilometers((rate_dist*60));
+}
+
 function ShipStruct() constructor{
 	features = [];
 	turrets = [];
@@ -108,23 +116,47 @@ function ShipStruct() constructor{
 				draw_set_colour(c_green);
 				tooltip_draw("click to equip new weapon");
 				obj_controller.weapon_slate.weapon = pos.weapon;
+				obj_controller.weapon_slate.slot = pos;
+
 			} else {
 				draw_set_colour(c_blue);
 			}
 			draw_rectangle(corner[0]+ coords[0]-10, corner[1]+coords[1]-10, corner[0]+coords[0]+10, corner[1]+coords[1]+10, true);
 		}
+		draw_set_font(fnt_40k_30b);
+		draw_set_halign(fa_left);
+		var _h_scale = 0.6;
+		draw_text_transformed(x + 30, y + 350, "Left Batteries", _h, _h, 0);
+		draw_text_transformed(x + 200, y + 350, "Forward Batteries", _h, _h, 0);
+		draw_text_transformed(x + 370, y + 350, "Right Batteries", _h, _h, 0);
+		draw_set_font(fnt_40k_12);
 		for (var i=0;i<iter;i++){
 			if (i < _l_length){
 				var _pos = left_broad_positions[i];
 				draw_weapon_box(_pos, _draw_corner);
+				if (_pos.weapon = false){
+					draw_text(x + 35, y + 370 + (10*i), "Empty");
+				}else{
+					draw_text(x + 35, y + 370 + (10*i), _pos.weapon.name);
+				}
 			}
 			if (i < _r_length){
 				var _pos = right_broad_positions[i];
 				draw_weapon_box(_pos, _draw_corner);
+				if (_pos.weapon = false){
+					draw_text(x + 235, y + 370 + (10*i), "Empty");
+				}else{
+					draw_text(x + 235, y + 370 + (10*i), _pos.weapon.name);
+				}				
 			}
 			if (i < _f_length){
 				var _pos = forward_positions[i];
 				draw_weapon_box(_pos, _draw_corner);
+				if (_pos.weapon = false){
+					draw_text(x + 435, y + 370 + (10*i), "Empty");
+				}else{
+					draw_text(x + 435, y + 370 + (10*i), _pos.weapon.name);
+				}				
 			}						
 		}
 	}

@@ -254,37 +254,37 @@ function new_player_ship(type, start_loc="home", new_name=""){
 	        {
 	        	ship_position : [162, 36],
 	        	slot_size : 2,
-	        	weapon : false;
+	        	weapon : false,
 	        	facing : "left"
 	        },
 	        {
 	        	ship_position : [173, 36],
 	        	slot_size : 2,
-	        	weapon : false;
+	        	weapon : false,
 	        	facing : "left"
 	        },
 	        {
 	        	ship_position : [185,36],
 	        	slot_size : 2,
-	        	weapon : false;
+	        	weapon : false,
 	        	facing : "left"
 	        },
 	        {
 	        	ship_position : [197, 36],
 	        	slot_size : 2,
-	        	weapon : false;
+	        	weapon : false,
 	        	facing : "left"
 	        },
 	        {
 	        	ship_position : [210,36],
 	        	slot_size : 2,
-	        	weapon : false;
+	        	weapon : false,
 	        	facing : "left"
 	        },
 	        {
 	        	ship_position : [222, 36],
 	        	slot_size : 2,
-	        	weapon : false;
+	        	weapon : false,
 	        	facing : "left"
 	        },	        	        	        	        	        
 	       ];
@@ -292,37 +292,37 @@ function new_player_ship(type, start_loc="home", new_name=""){
 	        {
 	        	ship_position : [162, 75],
 	        	slot_size : 2,
-	        	weapon : false;
+	        	weapon : false,
 	        	facing : "right"
 	        },
 	        {
 	        	ship_position : [173, 75],
 	        	slot_size : 2,
-	        	weapon : false;
+	        	weapon : false,
 	        	facing : "right"
 	        },
 	        {
 	        	ship_position : [185,75],
 	        	slot_size : 2,
-	        	weapon : false;
+	        	weapon : false,
 	        	facing : "right"
 	        },
 	        {
 	        	ship_position : [197, 75],
 	        	slot_size : 2,
-	        	weapon : false;
+	        	weapon : false,
 	        	facing : "right"
 	        },
 	        {
 	        	ship_position : [210,75],
 	        	slot_size : 2,
-	        	weapon : false;
+	        	weapon : false,
 	        	facing : "right"
 	        },
 	        {
 	        	ship_position : [222, 75],
 	        	slot_size : 2,
-	        	weapon : false;
+	        	weapon : false,
 	        	facing : "right"
 	        },	        	        	        	        	        
 	       ];	       
@@ -334,31 +334,31 @@ function new_player_ship(type, start_loc="home", new_name=""){
 	        }
 	        forward_positions = [
 		        {
-		        	ship_position: [88, 6]
+		        	ship_position: [88, 6],
 		        	slot_size : 3,
 		        	facing : "Front",
 
 		        },
 		        {
-		        	ship_position: [88, 106]
+		        	ship_position: [88, 106],
 		        	slot_size : 3,
 		        	facing : "Front",
 
 		        },
 		        {
-		        	ship_position: [281, 90]
+		        	ship_position: [281, 90],
 		        	slot_size : 3,
 		        	facing : "Front",
 
 		        },
 		        {
-		        	ship_position: [281, 19]
+		        	ship_position: [281, 19],
 		        	slot_size : 3,
 		        	facing : "Front",
 
 		        },
 		        {
-		        	ship_position: [283, 56]	
+		        	ship_position: [283, 56],	
 		        	slot_size : 4,
 		        	facing : "Front",	        	
 		        }
@@ -395,29 +395,54 @@ function new_player_ship(type, start_loc="home", new_name=""){
 	        {
 	        	ship_position : [56, 37],
 	        	slot_size : 2,
-	        	weapon : false;
+	        	weapon : false,
 	        	facing : "left"
 	        },
 	        {
 	        	ship_position : [65, 37],
 	        	slot_size : 2,
-	        	weapon : false;
+	        	weapon : false,
 	        	facing : "left"
 	        },
 	        {
 	        	ship_position : [74,37],
 	        	slot_size : 2,
-	        	weapon : false;
+	        	weapon : false,
 	        	facing : "left"
 	        },
 	        {
 	        	ship_position : [83, 37],
 	        	slot_size : 2,
-	        	weapon : false;
+	        	weapon : false,
 	        	facing : "left"
 	        },
 	        ]
-	        right_broad_positions = [[56, 37],[65, 37],[74,37],[83, 37]];
+	        right_broad_positions = [
+	        	{
+	        		ship_position : [56, 37],
+	    	        slot_size : 2,
+		        	weapon : false,
+		        	facing : "right"
+	        	},
+	        	{
+	        		ship_position : [65, 37],
+	    	        slot_size : 2,
+		        	weapon : false,
+		        	facing : "right"
+	        	},
+	        	{
+	        		ship_position : [74,37],
+	    	        slot_size : 2,
+		        	weapon : false,
+		        	facing : "right"
+	        	},
+	        	{
+	        		ship_position : [83, 37],
+	    	        slot_size : 2,
+		        	weapon : false,
+		        	facing : "right"
+	        	}
+	        ];
 	        var _broadsl = left_broad_positions;
 	        var _broadsr = right_broad_positions;
 	        for (var i=0;i<array_length(_broadsl);i++){

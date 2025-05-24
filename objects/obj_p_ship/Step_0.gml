@@ -207,7 +207,8 @@ if (instance_exists(obj_en_ship)) and (boarders>0) and (board_cooldown<=0) and (
                 te=instance_nearest(x,y,obj_en_capital);
             }
         }
-        if (eh=2) and (board_frigate=true){if (instance_exists(obj_en_cruiser)) then te=instance_nearest(x,y,obj_en_cruiser);}
+        if (eh=2) and (board_frigate=true){
+            if (instance_exists(obj_en_cruiser)) then te=instance_nearest(x,y,obj_en_cruiser);}
         if (te!=0) and (instance_exists(te)){
             if (point_distance(x,y,te.x,te.y)<=428){
                 create_boarding_craft(te);
