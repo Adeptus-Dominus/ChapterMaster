@@ -10,6 +10,7 @@ function fleet_advisor_data_setup(){
         view_ship_struct : false,
         view_ship_occupants : "",
     }
+	
     ship_slate = new DataSlate();
     list_slate = new DataSlate();
     weapon_slate = new DataSlate();
@@ -302,25 +303,15 @@ function scr_fleet_advisor(){
 
 
 
-            draw_text(xx + 42, yy + 589, $"Health: {_ship.ship_hp_percentage()}");
-            draw_text(xx + 141, yy + 589, $"Shields: {_ship.shields}" );
-            draw_text(xx + 426, yy + 589, $"Armour: {_ship.front_armour,{_ship.side_armour}, {_ship.rear_armour}");
+            draw_text(xx + 42, yy + 450, $"Health: {_ship.ship_hp_percentage()}");
+            draw_text(xx + 42, yy + 500, $"Shields: {_ship.shields}" );
+            draw_text(xx + 42, yy + 550, $"Armour: {_ship.front_armour},{_ship.side_armour}, {_ship.rear_armour}");
+            draw_text(xx + 42, yy + 600, $"Turrets: {array_length(_ship.turrets)}");
 
-            draw_text(xx + 495, yy + 619, $"Speed: {convert_to_kilometers(_ship.max_speed)}/s");
-            draw_text(xx + 680, yy + 619, $"Turrets: {array_length(_ship.turrets)}");
-
-            if (temp[110] != "") {
-                draw_text(xx + 383, yy + 705, $"-{temp[110]} ({temp[111]})");
-            }
-            if (temp[112] != "") {
-                draw_text(xx + 383, yy + 725, "-" + temp[112] + " (" + string(temp[113]) + ")");
-            }
-            if (temp[114] != "") {
-                draw_text(xx + 383, yy + 745, "-" + temp[114] + " (" + string(temp[115]) + ")");
-            }
-            if (temp[116] != "") {
-                draw_text(xx + 383, yy + 765, "-" + temp[116] + " (" + string(temp[117]) + ")");
-            }
+            draw_text(xx + 426, yy + 450, $"Max Speed: {convert_to_kilometers(_ship.max_speed)}km/s");
+            draw_text(xx + 426, yy + 500, $"Acceleration: {_ship.acceleration * 60}km/s/s");
+            draw_text(xx + 426, yy + 550, $"Turn Speed: {_ship.turning_speed * 60}degrees/s");
+            
 
             draw_set_font(fnt_40k_12);
             // draw_text_ext(xx + 352, 775, $"Carrying ({temp[118]}): {temp[119]}", -1, 542);

@@ -32,14 +32,18 @@ function ShipStruct() constructor{
 	max_hp = 0;
 	acceleration = 0.008;
 	max_speed = 20;
+	turning_speed = 0.2;
+
 	front_armour = 6;
 	side_armour = 3;
 	rear_armour = 1;
+
 	name = "";
 	shields = 0;
 	shields_damage = 0;
 	shields_recharge_rate = 0.2;
 	shields_reboot_time = 20;
+
 	captain = false;
 	engineer = false;
 	left_broad_positions = [];
@@ -111,24 +115,25 @@ function ShipStruct() constructor{
 		var iter = max(_l_length, _r_length, _f_length);
 		var draw_weapon_box = function(pos, corner){
 			var coords = pos.ship_position;
-			var draw_coords = [corner[0]+ coords[0]-10, corner[1]+coords[1]-10, corner[0]+coords[0]+10, corner[1]+coords[1]+10];
+			var _box_size = pos.slot_size *3;
+			var draw_coords = [corner[0]+ coords[0]-_box_size, corner[1]+coords[1]-_box_size, corner[0]+coords[0]+_box_size, corner[1]+coords[1]+_box_size];
 			if (scr_hit(draw_coords)){
 				draw_set_colour(c_green);
-				tooltip_draw("click to equip new weapon");
+				tooltip_draw("Emplacement direction : {pos.facing}\nEmplacement Size : {pos.slot_size}\nclick to equip new weapon");
 				obj_controller.weapon_slate.weapon = pos.weapon;
 				obj_controller.weapon_slate.slot = pos;
 
 			} else {
 				draw_set_colour(c_blue);
 			}
-			draw_rectangle(corner[0]+ coords[0]-10, corner[1]+coords[1]-10, corner[0]+coords[0]+10, corner[1]+coords[1]+10, true);
+			draw_rectangle_array(draw_coords,true);
 		}
 		draw_set_font(fnt_40k_30b);
 		draw_set_halign(fa_left);
 		var _h_scale = 0.6;
-		draw_text_transformed(x + 30, y + 350, "Left Batteries", _h, _h, 0);
-		draw_text_transformed(x + 200, y + 350, "Forward Batteries", _h, _h, 0);
-		draw_text_transformed(x + 370, y + 350, "Right Batteries", _h, _h, 0);
+		draw_text_transformed(x + 30, y + 350, "Left Batteries", _h_scale, _h_scale, 0);
+		draw_text_transformed(x + 200, y + 350, "Forward Batteries", _h_scale, _h_scale, 0);
+		draw_text_transformed(x + 370, y + 350, "Right Batteries", _h_scale, _h_scale, 0);
 		draw_set_font(fnt_40k_12);
 		for (var i=0;i<iter;i++){
 			if (i < _l_length){
@@ -140,8 +145,8 @@ function ShipStruct() constructor{
 					draw_text(x + 35, y + 370 + (10*i), _pos.weapon.name);
 				}
 			}
-			if (i < _r_length){
-				var _pos = right_broad_positions[i];
+			if (i < _f_length){
+				var _pos = forward_positions[i];
 				draw_weapon_box(_pos, _draw_corner);
 				if (_pos.weapon = false){
 					draw_text(x + 235, y + 370 + (10*i), "Empty");
@@ -149,8 +154,8 @@ function ShipStruct() constructor{
 					draw_text(x + 235, y + 370 + (10*i), _pos.weapon.name);
 				}				
 			}
-			if (i < _f_length){
-				var _pos = forward_positions[i];
+			if (i < _r_length){
+				var _pos = right_broad_positions[i];
 				draw_weapon_box(_pos, _draw_corner);
 				if (_pos.weapon = false){
 					draw_text(x + 435, y + 370 + (10*i), "Empty");
