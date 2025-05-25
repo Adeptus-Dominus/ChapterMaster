@@ -131,9 +131,8 @@
     {"$GMIncludedFile":"","%Name":"blood_angels.png","CopyToMask":-1,"filePath":"datafiles/images/creation/chapters/icons","name":"blood_angels.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"blood_ravens.png","CopyToMask":-1,"filePath":"datafiles/images/creation/chapters/icons","name":"blood_ravens.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"carcharodons.png","CopyToMask":-1,"filePath":"datafiles/images/creation/chapters/icons","name":"carcharodons.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
-    {"$GMIncludedFile":"","%Name":"consecrators.png","CopyToMask":-1,"filePath":"datafiles/images/creation/chapters/icons","name":"consecrators.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
-
     {"$GMIncludedFile":"","%Name":"celestial_lions.png","CopyToMask":-1,"filePath":"datafiles/images/creation/chapters/icons","name":"celestial_lions.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"consecrators.png","CopyToMask":-1,"filePath":"datafiles/images/creation/chapters/icons","name":"consecrators.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"conservators.png","CopyToMask":-1,"filePath":"datafiles/images/creation/chapters/icons","name":"conservators.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"crimson_fists.png","CopyToMask":-1,"filePath":"datafiles/images/creation/chapters/icons","name":"crimson_fists.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"dark_angels.png","CopyToMask":-1,"filePath":"datafiles/images/creation/chapters/icons","name":"dark_angels.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
@@ -521,11 +520,9 @@
     {"$GMIncludedFile":"","%Name":"32.JSON","CopyToMask":-1,"filePath":"datafiles/main/chapters","name":"32.JSON","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"33.json","CopyToMask":-1,"filePath":"datafiles/main/chapters","name":"33.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"34.json","CopyToMask":-1,"filePath":"datafiles/main/chapters","name":"34.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
-
-    {"$GMIncludedFile":"","%Name":"37.json","CopyToMask":-1,"filePath":"datafiles/main/chapters","name":"37.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
-
-    {"$GMIncludedFile":"","%Name":"36.json","CopyToMask":-1,"filePath":"datafiles/main/chapters","name":"36.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"35.json","CopyToMask":-1,"filePath":"datafiles/main/chapters","name":"35.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"36.json","CopyToMask":-1,"filePath":"datafiles/main/chapters","name":"36.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"37.json","CopyToMask":-1,"filePath":"datafiles/main/chapters","name":"37.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"4.JSON","CopyToMask":-1,"filePath":"datafiles/main/chapters","name":"4.JSON","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"5.JSON","CopyToMask":-1,"filePath":"datafiles/main/chapters","name":"5.JSON","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"6.JSON","CopyToMask":-1,"filePath":"datafiles/main/chapters","name":"6.JSON","resourceType":"GMIncludedFile","resourceVersion":"2.0",},

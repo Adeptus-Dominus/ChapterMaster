@@ -180,21 +180,25 @@ function star_by_name(search_name){
 
 function distance_removed_star(origional_x,origional_y, star_offset = choose(2,3), disclude_hulk=true, disclude_elder=true, disclude_deads=true, warp_concious=true){
 	var from = instance_nearest(origional_x,origional_y,obj_star);
+	var _deactivated = [];
     for(var i=0; i<star_offset; i++){
         from=instance_nearest(origional_x,origional_y,obj_star);
         with(from){
+        	array_push(_deactivated, id);
         	instance_deactivate_object(id);
         };
         from=instance_nearest(origional_x,origional_y,obj_star);
         if (instance_exists(from)){
 	        if (disclude_elder && from.owner==eFACTION.Eldar){
 	        	i--;
+	        	array_push(_deactivated, id);
 	        	instance_deactivate_object(from);
 	        	continue;
 	        }
 	        if (disclude_deads){
 	        	if (is_dead_star(from)){
 		        	i--;
+		        	array_push(_deactivated, id);
 		        	instance_deactivate_object(from);
 		        	continue;        		
 	        	}
@@ -202,7 +206,10 @@ function distance_removed_star(origional_x,origional_y, star_offset = choose(2,3
 	    }        
     }
     //from=instance_nearest(origional_x,origional_y,obj_star);
-    instance_activate_object(obj_star);
+    for (var i=0;i<array_length(_deactivated);i++){
+    	instance_activate_object(_deactivated[i]);
+    }
+
     //TODO finish this off to make the distance remove more concious of warp lanes
     /*if (warp_concious){
     	var options = [from];
