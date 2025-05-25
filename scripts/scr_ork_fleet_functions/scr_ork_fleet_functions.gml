@@ -207,10 +207,8 @@ function init_ork_waagh(overide = false){
 
             var _waaagh_star = array_random_element(ork_waagh_activity);
 
-        } else if array_length(_any_ork_star){
+        } else if (array_length(_any_ork_star) > 0) {
             var _waaagh_star = array_random_element(_any_ork_star);
-        } else {
-
         }
         var _pdata = new PlanetData(_waaagh_star[1], _waaagh_star[0]);
         var _boss = _pdata.add_feature(P_features.OrkWarboss);
