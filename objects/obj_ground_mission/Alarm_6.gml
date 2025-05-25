@@ -1,9 +1,6 @@
-var comp, plan, i;
-i = 0;
-comp = 0;
-plan = 0;
-plan = instance_nearest(x, y, obj_star);
-delete_features(plan.p_feature[num], P_features.Artifact);
+var _target_planet;
+_target_planet = instance_nearest(x, y, obj_star);
+delete_features(_target_planet.p_feature[num], P_features.Artifact);
 
 scr_return_ship(loc, self, num);
 
@@ -44,7 +41,7 @@ with (obj_temp7) {
 
 if (obj_ini.fleet_type == ePlayerBase.home_world) {
     with (obj_star) {
-        if ((owner == eFACTION.Player) && ((p_owner[1] == 1) || (p_owner[2] == 1))) {
+        if ((owner == eFACTION.Player) && ((p_owner[1] == 1) || (p_owner[2] == eFACTION.Player))) {
             instance_create(x, y, obj_temp2);
         }
     }
@@ -69,16 +66,16 @@ if (obj_ini.fleet_type != ePlayerBase.home_world) {
     }
 }
 
-var flit, i, chasing;
-chasing = 0; // Set target
-var targ;
+
+var _enemy_fleet;
+var _target = -1;
+
 if (instance_exists(obj_temp2)) {
-    targ = nearest_star_with_ownership(obj_temp2.x, obj_temp2.y, obj_controller.diplomacy);
+    _target = nearest_star_with_ownership(obj_temp2.x, obj_temp2.y, obj_controller.diplomacy);
 } else if (instance_exists(obj_temp7)) {
-    targ = nearest_star_with_ownership(obj_temp7.x, obj_temp7.y, obj_controller.diplomacy);
+    _target = nearest_star_with_ownership(obj_temp7.x, obj_temp7.y, obj_controller.diplomacy);
 } else if ((!instance_exists(obj_temp2)) && (!instance_exists(obj_temp7)) && instance_exists(obj_p_fleet) && (obj_ini.fleet_type == ePlayerBase.home_world)) {
     // If player fleet is flying about then get their target for new target
-    chasing = 1;
     with (obj_p_fleet) {
         var pop;
         if ((capital_number > 0) && (action != "")) {
@@ -92,36 +89,38 @@ if (instance_exists(obj_temp2)) {
     }
 }
 
-flit = instance_create(targ.x, targ.y, obj_en_fleet);
+if (is_struct(_target)) {
+    _enemy_fleet = instance_create(_target.x, _target.y, obj_en_fleet);
 
-flit.owner = obj_controller.diplomacy;
-flit.home_x = targ.x;
-flit.home_y = targ.y;
-flit.sprite_index = spr_fleet_mechanicus;
+    _enemy_fleet.owner = obj_controller.diplomacy;
+    _enemy_fleet.home_x = _target.x;
+    _enemy_fleet.home_y = _target.y;
+    _enemy_fleet.sprite_index = spr_fleet_mechanicus;
 
-flit.image_index = 0;
-flit.capital_number = 1;
-flit.trade_goods = "Requisition!500!|";
+    _enemy_fleet.image_index = 0;
+    _enemy_fleet.capital_number = 1;
+    _enemy_fleet.trade_goods = "Requisition!500!|";
 
-if (obj_ini.fleet_type != ePlayerBase.home_world) {
-    if (instance_exists(obj_temp2)) {
-        flit.action_x = obj_temp2.x;
-        flit.action_y = obj_temp2.y;
-        flit.target = instance_nearest(flit.action_x, flit.action_y, obj_p_fleet);
+    if (obj_ini.fleet_type != ePlayerBase.home_world) {
+        if (instance_exists(obj_temp2)) {
+            _enemy_fleet.action_x = obj_temp2.x;
+            _enemy_fleet.action_y = obj_temp2.y;
+            _enemy_fleet.target = instance_nearest(_enemy_fleet.action_x, _enemy_fleet.action_y, obj_p_fleet);
+        }
+        if ((!instance_exists(obj_temp2)) && instance_exists(obj_temp7)) {
+            _enemy_fleet.action_x = obj_temp7.x;
+            _enemy_fleet.action_y = obj_temp7.y;
+            _enemy_fleet.target = instance_nearest(_enemy_fleet.action_x, _enemy_fleet.action_y, obj_p_fleet);
+        }
     }
-    if ((!instance_exists(obj_temp2)) && instance_exists(obj_temp7)) {
-        flit.action_x = obj_temp7.x;
-        flit.action_y = obj_temp7.y;
-        flit.target = instance_nearest(flit.action_x, flit.action_y, obj_p_fleet);
+    if (obj_ini.fleet_type == ePlayerBase.home_world) {
+        _target = instance_nearest(_enemy_fleet.x, _enemy_fleet.y, obj_temp2);
+        _enemy_fleet.action_x = _target.x;
+        _enemy_fleet.action_y = _target.y;
     }
-}
-if (obj_ini.fleet_type == ePlayerBase.home_world) {
-    targ = instance_nearest(flit.x, flit.y, obj_temp2);
-    flit.action_x = targ.x;
-    flit.action_y = targ.y;
-}
 
-flit.alarm[4] = 1;
+    _enemy_fleet.alarm[4] = 1;
+}
 
 instance_activate_all();
 with (obj_temp2) {

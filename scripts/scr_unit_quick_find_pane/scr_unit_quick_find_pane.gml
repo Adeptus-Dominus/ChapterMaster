@@ -909,20 +909,18 @@ function planet_selection_action(){
 					                    }
 					                }
 					            }
-					            if (tch+mch>0){
-					                var arti=instance_create(target.x,target.y,obj_ground_mission);// Unloading / artifact crap
-					                arti.num=sel_plan;
-					                arti.alarm[0]=1;
-					                arti.loc=obj_controller.selecting_location;
-					                arti.managing=obj_controller.managing;
-					                arti.tch=tch;
-					                arti.mch=mch;
-					                // Right here should pass the man_sel variables
-					                // var frag;frag=-1;repeat(150){frag+=1;arti.man_sel[frag]=obj_controller.man_sel[frag];}
-					                with (arti){
-					                    setup_planet_mission_group();
-					                }
-					            }
+								var arti=instance_create(target.x,target.y,obj_ground_mission);// Unloading / artifact crap
+								arti.num=sel_plan;
+								arti.alarm[0]=1;
+								arti.loc=obj_controller.selecting_location;
+								arti.managing=obj_controller.managing;
+								arti.tch=tch;
+								arti.mch=mch;
+								// Right here should pass the man_sel variables
+								// var frag;frag=-1;repeat(150){frag+=1;arti.man_sel[frag]=obj_controller.man_sel[frag];}
+								with (arti){
+									setup_planet_mission_group();
+								}
 					        }
 					        
 					        // Ancient Ruins
