@@ -178,6 +178,17 @@ function star_by_name(search_name){
 	return "none";
 }
 
+//use this to quickly make a loop through a stars planets in an unordered way
+function shuffled_planet_array(){
+	var _planets = [];
+	for (var i=1;i<=planets;i++){
+		array_push(_planets, i);
+	}
+	_planets = array_shuffle(_planets);
+	return _planets;
+
+}
+
 function distance_removed_star(origional_x,origional_y, star_offset = choose(2,3), disclude_hulk=true, disclude_elder=true, disclude_deads=true, warp_concious=true){
 	var from = instance_nearest(origional_x,origional_y,obj_star);
 	var _deactivated = [];

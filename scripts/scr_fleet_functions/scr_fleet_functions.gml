@@ -388,6 +388,7 @@ function scr_orbiting_fleet(faction, system="none"){
 			}
 			if (_valid && action == ""){
 				_found_fleet = id;
+				break;
 			}					
 		}
 	}
@@ -835,7 +836,11 @@ function fleet_arrival_logic(){
         var stue, stue2;stue=0;stue2=0;
         var goood=0;
         
-        with(obj_star){if (planets=1) and (p_type[1]="Dead") then instance_deactivate_object(id);}
+        with(obj_star){
+        	if (is_dead_star()){
+        		instance_deactivate_object(id);
+        	}
+        }
         stue=instance_nearest(x,y,obj_star);
         instance_deactivate_object(stue);
         repeat(10){
@@ -850,7 +855,7 @@ function fleet_arrival_logic(){
             }
         action_x=stue2.x;
         action_y=stue2.y;
-        alarm[4]=1;// stue.present_fleets-=1;
+        set_fleet_movement();// stue.present_fleets-=1;
         instance_activate_object(obj_star);
     }
     
@@ -889,7 +894,8 @@ function fleet_arrival_logic(){
         
             repeat(20){
                 if (kay=50){
-                    temp5=x+choose(random(300),random(300)*-1);temp6=y+choose(random(300),random(300)*-1);
+                    temp5=x+choose(random(300),random(300)*-1);
+                    temp6=y+choose(random(300),random(300)*-1);
                     temp7=instance_nearest(temp5,temp6,obj_star);
                     
                     if (owner = eFACTION.Ork) and (temp7.owner != eFACTION.Ork) and (temp7.planets>0) and (temp7.image_alpha>=1) then kay=55;

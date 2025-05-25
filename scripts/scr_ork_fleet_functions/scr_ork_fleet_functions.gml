@@ -67,13 +67,18 @@ function ork_fleet_arrive_target(){
     var _imperial_ship = scr_orbiting_fleet([eFACTION.Player, eFACTION.Imperium]);
     if (_imperial_ship == "none" && planets>0){
         var _allow_landing=true,ork_attack_planet=0,l=0;
-    
+        var _planets = shuffled_planet_array();
+        var i=-1
         repeat(planets){
-            l+=1;
-            if (ork_attack_planet=0) and (p_tyranids[l]>0) then ork_attack_planet=l;
+            i++;
+            l = _planets[i];
+            if (ork_attack_planet=0) and (p_tyranids[l]>0){
+                ork_attack_planet=l;
+                break;
+            }
         }
         if (ork_attack_planet>0){
-            p_tyranids[ork_attack_planet]-=_ork_fleet.capital_number+(_ork_fleet.frigate_number/2);
+            p_tyranids[ork_attack_planet]-=floor(_ork_fleet.capital_number+(_ork_fleet.frigate_number/2));
 
             var _pdata = new PlanetData(ork_attack_planet, self);
 
@@ -85,7 +90,9 @@ function ork_fleet_arrive_target(){
                     var nearest_imperial = nearest_star_with_ownership(x,y,eFACTION.Imperium, self.id);
                     if (nearest_imperial != "none"){
                         var targ_planet = scr_get_planet_with_owner(nearest_imperial,eFACTION.Imperium);
-                        if (targ_planet==-1) then targ_planet = irandom_range(1, nearest_imperial.planets);
+                        if (targ_planet==-1){
+                            targ_planet = irandom_range(1, nearest_imperial.planets);
+                        }
                         _pdata.send_colony_ship(nearest_imperial.id, targ_planet, "refugee");
                     }
                 }
@@ -94,22 +101,27 @@ function ork_fleet_arrive_target(){
         
         _allow_landing = !is_dead_star();
         if (_allow_landing){
-            for (var i=1;i<=planets;i++){
-                if ((p_guardsmen[i]+p_pdf[i]+p_player[i]+p_traitors[i]+p_tau[i]>0) or ((p_owner[i]!=7) and (p_orks[i]<=0))){
-                    if (p_type[i]!="Dead") and (p_orks[i]<4) and (i<=planets){
-                        p_orks[i]+=max(2,floor(_ork_fleet.image_index*0.8));
+            for (var i=0;i<planets;i++){
+                var _planet = _planets[i];
+                if ((p_guardsmen[_planet]+p_pdf[_planet]+p_player[_planet]+p_traitors[_planet]+p_tau[_planet]>0) or ((p_owner[_planet]!=7) and (p_orks[_planet]<=0))){
+                    if (p_type[_planet]!="Dead") and (p_orks[_planet]<4) and (i<=planets){
+                        p_orks[_planet]+=max(2,floor(_ork_fleet.image_index*0.8));
                     
+                        var _fleet_persists = false
 
                         if (fleet_has_cargo("ork_warboss",_ork_fleet)){
-                            array_push(p_feature[i], _ork_fleet.cargo_data.ork_warboss);
-                            p_orks[i]=6;
+                            array_push(p_feature[_planet], _ork_fleet.cargo_data.ork_warboss);
+                            p_orks[_planet]=6;
                             struct_remove(_ork_fleet.cargo_data,"ork_warboss");
+                            _fleet_persists = true;
                         }
 
                     
-                        if (p_orks[i]>6) then p_orks[i]=6;
-                        with(_ork_fleet){
-                            instance_destroy();
+                        if (p_orks[_planet]>6) then p_orks[_planet]=6;
+                        if (!_fleet_persists){
+                            with (_ork_fleet){
+                                instance_destroy();
+                            }
                         }
                         aler=1;
                         break;
@@ -119,7 +131,11 @@ function ork_fleet_arrive_target(){
         }
     
         if (aler>0){
-            scr_alert("green","owner",$"Ork ships have crashed across the {name} system.",x,y);
+            if (!_fleet_persists){
+                scr_alert("green","owner",$"Ork ships have crashed across the {name} system.",x,y);
+            } else {
+                scr_alert("green","owner",$"Ork ships Spill their ravenouss hordes accross {name} system and the green skin captains turn their guns towards the surface.",x,y);
+            }
         } else {
             var new_wagh_star = distance_removed_star(x,y, choose(2,3,4,5));
             if (instance_exists(new_wagh_star)){
