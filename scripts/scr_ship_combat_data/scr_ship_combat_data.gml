@@ -1,7 +1,7 @@
 global.ship_weapons_stats = {
 	"Lance Battery" : {
 		range : 1200,
-		dam : 6,
+		dam : 22,
 		cooldown : 60,
 		facing : "front",
 		firing_arc : 20,
