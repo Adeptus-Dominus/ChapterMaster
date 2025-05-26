@@ -146,6 +146,7 @@ function PlanetFeature(feature_type, other_data={}) constructor{
 		player_hidden = 1;
 		planet_display = "Ork Warboss";
 		Warboss = "alive";
+		name = global.name_generator.generate_ork_name();
 		turns_static = 0;
 		break;
 	case P_features.OrkStronghold:

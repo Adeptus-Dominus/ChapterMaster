@@ -14,7 +14,7 @@ function scr_star_ownership(argument0) {
     		}
     	}
     	var _set_to_first = false;	
-	    if (p_owner[run]=7 && p_orks[run]=0 && p_type[run]!="Dead"){
+	    if (p_owner[run]==7 && p_orks[run]<=0){
 	    	_set_to_first = true;
 	    }
 	    if (_set_to_first){

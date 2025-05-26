@@ -360,6 +360,9 @@ function scr_cheatcode(argument0) {
 				case "zoom":
 					set_zoom_to_default();
 					break;
+				case "orkinvasion":
+					out_of_system_warboss();
+					break;
 
 			}
 		}
