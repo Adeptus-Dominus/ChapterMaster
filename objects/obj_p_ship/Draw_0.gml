@@ -3,8 +3,6 @@ __b__ = action_if_variable(name, "", 0);
 if !__b__
 {
 {
-
-shields.draw();
 if (selected=1 || point_distance(x, y, mouse_x, mouse_y) < 50){
     draw_set_color(38144);
     draw_circle(x,y,(sprite_width/2),1);
@@ -65,16 +63,7 @@ if (boarders>0){
     draw_text(x-16,y+12,string(boarders));
 }
 draw_set_color(38144);
-
-
-if (maxhp!=0){
-    var zoom_modifier = obj_controller.zoomed?2:1;
-    if (shields<=0){
-        var hp_percent = $"{(hp/maxhp)*100}%"
-        
-        draw_text_transformed(x,y-sprite_height,hp_percent,zoom_modifier,zoom_modifier,0);
-    }
-}
+draw_ship_heathshields()
 
 if (master_present!=0) then draw_sprite_ext(spr_popup_select,0,x,y,2,2,0,c_white,1);
 

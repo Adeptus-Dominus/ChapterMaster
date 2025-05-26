@@ -32,10 +32,10 @@ draw_set_color(38144);
 if (class!="Battlekroozer"){
     draw_self();
 } else {
-    draw_sprite_ext(sprite_index,0,x,y,0.75,0.75,direction,c_white,1);
+    draw_sprite_ext(sprite_index,0,x,y,0.85,0.85,direction,c_white,1);
 }
 
-
+draw_ship_heathshields();
 if (owner != eFACTION.Tau){
     if (shields<=0){
         if (obj_controller.zoomed=0){if (maxhp!=0) then draw_text(x,y-(sprite_height/2),string_hash_to_newline(string(floor((hp/maxhp)*100))+"%"));}

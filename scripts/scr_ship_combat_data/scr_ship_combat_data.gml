@@ -1,10 +1,11 @@
 global.ship_weapons_stats = {
 	"Lance Battery" : {
-		range : 900,
-		dam : 14,
-		cooldown : 15,
+		range : 1200,
+		dam : 6,
+		cooldown : 60,
 		facing : "front",
-		firing_arc : 25,
+		firing_arc : 20,
+		bullet_speed : 40,
 		img : spr_ground_las,
 		explosion_sprite : spr_explosion3,
 	},
@@ -232,6 +233,9 @@ function facing_weapon_angle(facing){
 
 
 function assign_ship_stats(){
+	rear_armour = 1;
+	shields_recharge_rate = 0.2;
+	shields_reboot_time = 20;
 	if (class="Apocalypse Class Battleship"){
 	    sprite_index=spr_ship_apoc;
 	    ship_size=3;
@@ -846,6 +850,7 @@ function assign_ship_stats(){
 	    }
 	}
 
+	shields = new ShipShieldGenerator({shields, maxshields, recharge_rate:shields_recharge_rate, shields_reboot:shields_reboot_time})
 	if (owner != eFACTION.Eldar){
 	    hp/=2;
 	    maxhp=hp;
@@ -880,4 +885,17 @@ function assign_ship_stats(){
 
 
 	// show_message(string(class));	
+}
+
+
+function draw_ship_heathshields(){
+	shields.draw();
+	if (maxhp!=0){
+	    var zoom_modifier = obj_controller.zoomed?2:1;
+	    if (if !shields.active()<=0){
+	        var hp_percent = $"{(hp/maxhp)*100}%"
+	        
+	        draw_text_transformed(x,y-sprite_height,hp_percent,zoom_modifier,zoom_modifier,0);
+	    }
+	}
 }
