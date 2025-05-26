@@ -79,13 +79,18 @@ function ShipWeapon(weapon_name, overide_data={}) constructor{
 				bullet_obj = obj_al_round		
 			} 
 		}
+		var _direction = point_direction(_bul_x,_bul_y, target.x,target.y);
+
+		if (accuracy < 100){
+			_direction += (100-accuracy * random(1));
+		}
 		repeat(barrel_count){
 			var _bullet_qualities = {
 				speed : bullet_speed,
 				dam : dam,
 				image_xscale : draw_scale,
 				image_yscale : draw_scale,
-				direction : point_direction(_bul_x,_bul_y, target.x,target.y),
+				direction : _direction,
 				target : target,
 				target_x:target.x,
 				target_y:target.y,

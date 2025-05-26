@@ -31,6 +31,7 @@ global.ship_weapons_stats = {
 		facing : "front",
 		dam  : 4.5,
 		firing_arc : 5,
+		accuracy : 70,
 		explosion_sprite : spr_explosion2,
 	},
 	"Weapons Battery" : {

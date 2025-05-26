@@ -36,6 +36,7 @@ function fleet_advisor_data_setup(){
     var _most_damage = 100;
     for (var i = 0; i < array_length(obj_ini.ship_data); i++) {
         var _ship = fetch_ship(i);
+        _ship.fetch_captain();
         var _percent = _ship.ship_hp_percentage();
         if (_percent<100 && !fleet_temps.ships_with_damage){
             fleet_temps.ships_with_damage = true;
@@ -283,6 +284,26 @@ function scr_fleet_advisor(){
             draw_set_halign(fa_center);
             draw_text_transformed(xx + 280, yy + 60, _ship.name, 0.75, 0.75, 0);
             draw_text_transformed(xx + 280, yy + 90, _ship.class, 0.5, 0.5, 0);
+            if (_ship.captain != ""){
+                draw_text_transformed(xx + 280, yy + 120, "Current Captain : {_ship.captain_data.name_role()}", 0.5, 0.5, 0);
+            } else {
+                var _new_cap = draw_unit_buttons([xx + 280, yy + 120], "Choose Captain", [1, 1], 38144, , fnt_40k_14b);
+                if (point_and_click(_new_cap)){
+                    var _candidates = collect_role_group("all", ["",0,fleet_temps.view_ship]);
+                    var _select_data = {
+                        purpose:"Ship Management",
+                        purpose_code : "ship_captain",
+                        number:1,
+                        system:0,
+                        feature:"none",
+                        planet : 0,
+                        ship : fleet_temps.view_ship,
+                        selections : [],                        
+                    }
+                    group_selection(_candidates)
+                }
+                
+            }
 
             draw_set_color(c_gray);
             draw_rectangle(xx + 146, yy + 492, xx + 411, yy + 634, 1);

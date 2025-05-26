@@ -404,6 +404,7 @@ global.base_stats = {
 };
 
 function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}) constructor {
+    uid = scr_uuid_generate();
     constitution = 0;
     strength = 0;
     luck = 0;
@@ -436,6 +437,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     corruption = 0;
     religion_sub_cult = "none";
     base_group = "none";
+    captain = "";
     role_history = [];
     enum eROLE_TAG {
         Techmarine = 0,
@@ -2310,4 +2312,17 @@ function jsonify_marine_struct(company, marine, stringify=true) {
 /// @returns {Struct.TTRPG_stats} unit
 function fetch_unit(unit) {
     return obj_ini.TTRPG[unit[0]][unit[1]];
+}
+
+function fetch_unit_uid(uuid){
+    for (var i=0;i<obj_ini.companies;i++){
+        var _comp_length = array_length(obj_ini.TTRPG[i]);
+        for (var s=0;s<array_length(_comp_length);s++){
+            var _unit = fetch_unit([i,s]);
+            if (_unit.uid == uuid){
+                return _unit;
+            }
+        }
+    }
+    return "none";
 }

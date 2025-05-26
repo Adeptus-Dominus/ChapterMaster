@@ -48,16 +48,26 @@ function ShipStruct() constructor{
 	shields_recharge_rate = 0.2;
 	shields_reboot_time = 20;
 
-	captain = false;
-	engineer = false;
+	engineer = "";
 	left_broad_positions = [];
 	right_broad_positions = [];
 	forward_positions = [];
+	captain = "";
+	captain_data = false;
 
-	uid = floor(random(99999999))+1;
+	uid = scr_uuid_generate();
 
 	static ship_hp_percentage = function(){
 		return (hp/max_hp )* 100
+	}
+
+	static fetch_captain = function(){
+		var _cap = fetch_unit_uid(captain);
+		if (_cap != "none"){
+			captain_data = _cap;
+		} else {
+			captain = "";
+		}
 	}
 
 	static final_acceleration = function(){

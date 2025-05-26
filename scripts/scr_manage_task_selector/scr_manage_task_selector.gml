@@ -189,6 +189,15 @@ function scr_manage_task_selector(){
 					                exit_adhoc_manage();
 					                exit;
 					               	break;
+					            case "ship_captain":
+					               	var _unit = display_unit[i];
+					               	var _ship = fetch_ship(selection_data.ship);
+					               	_ship.captain = _unit.uid;
+					               	_unit.captain = _ship.uid;
+					               	scr_toggle_fleet_area();
+					               	fleet_temps.view_ship = selection_data.ship;
+					               	exit;
+					               	break;
 	                		}		                		
 	                	} else {
 	                		switch(selection_data.purpose_code){
