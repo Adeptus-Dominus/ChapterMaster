@@ -327,11 +327,24 @@ function scr_fleet_advisor(){
             var _wep = weapon_slate.weapon;
             var xx = weapon_slate.XX;
             var yy = weapon_slate.YY;
+            draw_set_halign(fa_middle);
             draw_set_halign(fa_center);
             draw_set_font(fnt_40k_30b);
-            draw_text_transformed(xx + 280, yy + 30, _wep.name, 1, 1, 0);
-            draw_set_font(fnt_40k_12);
+            draw_text(xx + 280 - (string_width(_wep.name)/2), yy + 30, _wep.name)
+            draw_set_font(fnt_40k_14b);
+            draw_set_halign(fa_left);
+            draw_text(xx+50, yy+60, $"Range : {convert_to_kilometers(_wep.range)}km");
+            draw_text(xx+50, yy+90, $"minrange : {convert_to_kilometers(_wep.minrange)}km");
+            draw_text(xx+50, yy+120, $"Rate of fire : {1/fps_to_secs(_wep.cooldown)}/s");
+            draw_text(xx+50, yy+150, $"Damage : {_wep.dam}");
+            draw_text(xx+50, yy+180, $"Firing Arc : {_wep.firing_arc*2} degrees");
+            draw_text(xx+50, yy+210, $"Bullet Speed : {convert_to_kilometers(_wep.bullet_speed)}km/s");
+            draw_text(xx+50, yy+240, $"Base Accuracy : {_wep.accuracy}%");
+            draw_text(xx+50, yy+270, $"Size : {_wep.size}");
+            draw_text(xx+50, yy+300, $"bombard_value : {_wep.bombard_value}");
         }
+            
+            
 
         weapon_slate.draw_with_dimensions(xx, yy+66, 340, 400);
     }

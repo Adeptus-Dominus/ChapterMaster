@@ -30,6 +30,8 @@ home_planet = 2;
 artifact_struct = array_create(200);
 flagship = 0;
 
+ship_weapons = [];
+
 // Equipment- maybe the bikes should go here or something?          yes they should
 equipment = {};
 i=-1;

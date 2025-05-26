@@ -19,6 +19,10 @@ function per_step_to_kilometers(rate_dist){
 	return convert_to_kilometers((rate_dist*60));
 }
 
+function fps_to_secs(val){
+	return val/60;
+}
+
 function ShipStruct() constructor{
 	features = [];
 	turrets = [];
@@ -119,7 +123,7 @@ function ShipStruct() constructor{
 			var draw_coords = [corner[0]+ coords[0]-_box_size, corner[1]+coords[1]-_box_size, corner[0]+coords[0]+_box_size, corner[1]+coords[1]+_box_size];
 			if (scr_hit(draw_coords)){
 				draw_set_colour(c_green);
-				tooltip_draw("Emplacement direction : {pos.facing}\nEmplacement Size : {pos.slot_size}\nclick to equip new weapon");
+				tooltip_draw($"Emplacement direction : {pos.facing}\nEmplacement Size : {pos.slot_size}\nclick to equip new weapon");
 				obj_controller.weapon_slate.weapon = pos.weapon;
 				obj_controller.weapon_slate.slot = pos;
 
