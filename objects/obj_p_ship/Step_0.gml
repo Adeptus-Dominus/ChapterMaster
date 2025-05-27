@@ -76,9 +76,12 @@ if (hp>0) and (instance_exists(target)){
         o_dist=64;
         action="broadside";
     }
-   else  if (class="Battle Barge") or (class="Strike Cruiser"){
+   else  if (class="Battle Barge"){
         o_dist=300;
         action="broadside";
+    } else if (class == "Strike Cruiser"){
+        action="broadside";
+        o_dist=300;
     }
     else if (class="Hunter") or (class="Gladius"){
         o_dist=64;
@@ -97,10 +100,11 @@ if (hp>0) and (instance_exists(target)){
     turning_speed = ship_data.calc_turn_speed();
     
     if (paction!="move") and (paction!="attack_move") and (paction!="turn") and (paction!="attack_turn"){
-        if (target!=0) and (action="attack"){
+        if (target!=0) and (action=="attack"){
             direction=turn_towards_point(direction,x,y,target.x,target.y,turning_speed/2);
         }
-        broadside_movement();
+        ideal_broadside()
+        //broadside_movement();
         flank_behaviour();
     }
 
@@ -147,11 +151,14 @@ if (hp>0) and (instance_exists(target)){
         if (y<target_y) then direction=turn_towards_point(direction,x,y,target_x,target_y,turning_speed);
         
         if (paction="attack_move") and (instance_exists(obj_en_ship)){
-            if (!instance_exists(target)) then target=instance_nearest(x,y,obj_en_ship);
+            if (!instance_exists(target)){
+                target=instance_nearest(x,y,obj_en_ship);
+            }
             dist=point_distance(x,y,target.x,target.y);
-            if (dist<=o_dist){paction="";
-            action="attack";
-        }
+            if (dist<=o_dist){
+                paction="";
+                action="attack";
+            }
         }
         
         if (dist>20) and (speed<(max_speed)) then speed+=speed_up;
@@ -179,8 +186,8 @@ if (hp>0) and (instance_exists(target)){
             bull.direction=point_direction(x,y,targe.x,targe.y);
             bull.speed=20;
             bull.dam=3;
-            bull.image_xscale=0.5;
-            bull.image_yscale=0.5;
+            bull.image_xscale=0.25;
+            bull.image_yscale=0.25;
             turret_cool=floor(60/turrets);
             bull.direction+=choose(random(3),1*-(random(3)));
             bull.explosion_sprite = spr_explosion;   

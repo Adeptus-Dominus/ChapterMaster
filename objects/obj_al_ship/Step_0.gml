@@ -180,13 +180,15 @@ if (!__b__){
         xx=x;
         yy=y;
         // Turret targetting
-        if (turrets>0) and (instance_exists(obj_en_in)) and (turret_cool=0){
+        if (turrets>0) and (instance_exists(obj_en_in)) and (turret_cool==0){
             targe=instance_nearest(x,y,obj_en_in);
             if (instance_exists(targe)) then dist=point_distance(x,y,targe.x,targe.y);
+            
             if (dist>64) and (dist<300){
                 bull=instance_create(x,y,obj_al_round);
                 bull.direction=point_direction(x,y,targe.x,targe.y);
-                if (owner == eFACTION.Tyranids) then bull.sprite_index=spr_glob;
+                if (owner = eFACTION.Tyranids) then bull.sprite_index=spr_glob;
+                if (owner = eFACTION.Tau) or (owner = eFACTION.Eldar) then bull.sprite_index=spr_pulse;
                 bull.speed=20;
                 bull.dam=3;
                 bull.image_xscale=0.5;
@@ -195,8 +197,7 @@ if (!__b__){
                 bull.direction+=choose(random(10),1*-(random(10)));
             }
         }
-        targe=0;
-        dist=9999;
+        ship_shoot_weapons();
         xx=lengthdir_x(64,direction+90);
         yy=lengthdir_y(64,direction+90);
         
@@ -215,17 +216,6 @@ if (!__b__){
         
         if (collision_line(x,y,x+lengthdir_x(2000,direction),y+lengthdir_y(2000,direction),obj_en_ship,0,1)) then front=1;
         
-        f=0;
-        facing="";
-        ammo=0;
-        range=0;
-        wep="";
-        dam=0;
-        
-            
-        for (var i=0;i<array_length(weapon);i++){
-            fire_ship_weapon(i);
-        }
     }
 }
 // Checks if the enemy fleet is Eldar

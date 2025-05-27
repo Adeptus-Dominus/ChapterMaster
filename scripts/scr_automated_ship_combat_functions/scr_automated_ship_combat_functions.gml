@@ -1,6 +1,33 @@
+function point_on_circle(start_x, start_y, radius, angle){
+    var _angle_radians = degtorad(angle);
+    var _final_x = start_x + lengthdir_x(radius, angle);
+    var _final_y = start_y + lengthdir_y(radius, angle);
+    return [_final_x, _final_y];
+}
 
+function ideal_broadside(){
+    if (action=="broadside" && target!=0){
+        var _ship_direc = direction;
+        var _enemy_points_left = 0;
+        var _enemy_points_right = 0;
+        var _ship_x = x;
+        var _ship_y = y;
+        with (obj_en_ship){
+            var _rel_direct = point_direction(_ship_x, _ship_y, x, y);
+            if (_rel_direct > 270){
+                _enemy_points_left += size;
+            } else if (_rel_direct < 90) {
+                _enemy_points_right += size;
+            }
+        }
+        var _break_direction = (_enemy_points_right > _enemy_points_left) ? 90 : 270;
+    
+    
+        draw_targets = point_on_circle(target.x, target.y, 450 ,_break_direction);
+        ship_turn_towards_point(draw_targets[0],draw_targets[1]);
+    }
 
-
+}
 function broadside_movement(){
 	var _target_direction = target.direction;
     if (target!=0) and (action="broadside") and (target_distance>closing_distance){
@@ -64,6 +91,7 @@ function avoid_ship_weapon(weapon, rel_direction){
     var _sx = xm+lengthdir_x(weapon.range, avoid_angle);
     var _sy = ym+lengthdir_y(weapon.range, avoid_angle);
     draw_targets = [_sx, _sy];
+    ship_turn_towards_point(_sx, _sy);
 }
 
 function ship_rear_approach(rel_direction){
@@ -210,13 +238,6 @@ function draw_arc(x1,y1,x2,y2,x3,y3,x4,y4,precision=24){
     draw_vertex(sx,sy);
     draw_primitive_end();
     return 0;
-}
-
-function point_on_circle(start_x, start_y, radius, angle){
-	var _angle_radians = degtorad(angle);
-	var _final_x = start_x + (radius * cos(_angle_radians));
-	var _final_y = start_y + (radius * sin(_angle_radians));
-	return [_final_x, _final_y];
 }
 
 function is_targeted(){

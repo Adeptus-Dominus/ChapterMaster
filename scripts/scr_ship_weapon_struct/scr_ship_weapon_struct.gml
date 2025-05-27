@@ -11,7 +11,7 @@ global.ship_weapon_defualts  = {
 	bullet_obj : obj_en_round,
 	img : spr_round,
 	damage_type : "full",
-	draw_scale : 1.5,
+	draw_scale :0.75,
 	barrel_count : 1,
 	melee : false,
 	accuracy : 98,
@@ -65,13 +65,14 @@ function ShipWeapon(weapon_name, overide_data={}) constructor{
 	static create_projectile = function(){
 		var _bullet = -1;
 		var _tangent_direction = weapon_direction();
-		var _bul_x = ship.x+lengthdir_x(32,_tangent_direction);
+
+		var _bul_x = x
 		var barrel_offset = 32;
-		var _bul_y = ship.y+lengthdir_y(32,_tangent_direction);
+		var _bul_y = y
 		if (barrel_count> 1){
 			var barrel_offset = -20*(barrel_offset/2);
 		}
-		var _bul_y = ship.y+lengthdir_y(barrel_offset,_tangent_direction);
+		
 		if (bullet_obj==obj_en_round){
 			if (ship.ai_type = "player" ){
 	            bullet_obj = obj_p_round
@@ -82,7 +83,7 @@ function ShipWeapon(weapon_name, overide_data={}) constructor{
 		var _direction = point_direction(_bul_x,_bul_y, target.x,target.y);
 
 		if (accuracy < 100){
-			_direction += (100-accuracy * random(1));
+			_direction += ((100-accuracy) * random_range(-1,1));
 		}
 		repeat(barrel_count){
 			var _bullet_qualities = {

@@ -75,10 +75,13 @@ function player_fleet_ship_spawner(){
 		    	hei=64;
 		    	sizz=1;
 		    }
-		    else if (column[col]=="escort"){hei=64;sizz=1;}
+		    else if (column[col]=="escort"){
+		    	hei=64;
+		    	sizz=1;
+		    }
 
-		    temp1=column_num[col]*hei;
-		    temp2=((room_height/2)-(temp1/2))+64;
+		    temp1 = max(column_num[col],1) * hei;
+		    temp2 = ((room_height/2)-(temp1/2))+64;
 		    if (column_num[col]=1) then temp2+=20;
 		    
 		    // show_message(string(column_num[col])+" "+string(column[col])+" X:"+string(x2));
@@ -89,17 +92,17 @@ function player_fleet_ship_spawner(){
 		            if (sizz>=3 && _ship.class!="") {
 		            	man=instance_create(x2,temp2,obj_p_capital);
 		            	man.ship_id=ship_id[k];
-		            	temp2+=hei;
+		            	temp2 += hei;
 		            }
 		            if (sizz=2 && _ship.class!="") {
 		            	man=instance_create(x2,temp2,obj_p_cruiser);
 		            	man.ship_id=ship_id[k];
-		            	temp2+=hei;
+		            	temp2 += hei;
 		            }
 		            if (sizz=1 && _ship.class!="") {
 		            	man=instance_create(x2,temp2,obj_p_escort);
 		            	man.ship_id=ship_id[k];
-		            	temp2+=hei;
+		            	temp2 += hei;
 		            }
 		            if (instance_exists(man)){
 			            with (man){

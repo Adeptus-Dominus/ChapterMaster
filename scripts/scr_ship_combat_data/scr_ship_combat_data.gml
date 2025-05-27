@@ -1,11 +1,12 @@
 global.ship_weapons_stats = {
 	"Lance Battery" : {
 		range : 1200,
-		dam : 22,
+		dam : 18,
 		cooldown : 60,
 		facing : "front",
 		firing_arc : 20,
 		bullet_speed : 40,
+		accuracy : 85,
 		img : spr_ground_las,
 		explosion_sprite : spr_explosion3,
 	},
@@ -33,6 +34,7 @@ global.ship_weapons_stats = {
 		firing_arc : 5,
 		accuracy : 70,
 		explosion_sprite : spr_explosion2,
+		range : 450,
 	},
 	"Weapons Battery" : {
 		facing : "front",
@@ -850,14 +852,14 @@ function assign_ship_stats(){
 	        if (obj_fleet.en_mutation[i]=="Turret") then turrets+=1;
 	    }
 	}
-
-	shields = new ShipShieldGenerator({shields, maxshields, recharge_rate:shields_recharge_rate, shields_reboot:shields_reboot_time})
 	if (owner != eFACTION.Eldar){
 	    hp/=2;
 	    maxhp=hp;
 	    shields=shields/2;
 	    maxshields=shields;
 	}
+	shields = new ShipShieldGenerator({shields, maxshields, recharge_rate:shields_recharge_rate, shields_reboot:shields_reboot_time, ship:id});
+
 	// if (obj_fleet.enemy=2){hp=hp*0.75;maxhp=hp;shields=shields*0.75;maxshields=shields;}
 	// hp=1;shields=1;
 	// if (obj_fleet.enemy="orks") then name=global.name_generator.generate_ork_ship_name();
@@ -865,19 +867,6 @@ function assign_ship_stats(){
 
 
 	bridge=maxhp;
-
-	/* 
-	if (obj_fleet.enemy == 2) {
-		hp = hp * 0.75;
-		maxhp = hp;
-		shields = shields * 0.75;
-		maxshields = shields;
-	}
-	 */
-	// hp=1;
-	shields=1;
-
-
 
 	// if (obj_fleet.enemy="orks") then name=global.name_generator.generate_ork_ship_name();
 
