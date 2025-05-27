@@ -36,7 +36,7 @@ function fleet_advisor_data_setup(){
     var _most_damage = 100;
     for (var i = 0; i < array_length(obj_ini.ship_data); i++) {
         var _ship = fetch_ship(i);
-        _ship.fetch_captain();
+        _ship.update_ship_combat_data();
         var _percent = _ship.ship_hp_percentage();
         if (_percent<100 && !fleet_temps.ships_with_damage){
             fleet_temps.ships_with_damage = true;
@@ -285,9 +285,9 @@ function scr_fleet_advisor(){
             draw_text_transformed(xx + 280, yy + 60, _ship.name, 0.75, 0.75, 0);
             draw_text_transformed(xx + 280, yy + 90, _ship.class, 0.5, 0.5, 0);
             if (_ship.captain != ""){
-                draw_text_transformed(xx + 280, yy + 120, "Current Captain : {_ship.captain_data.name_role()}", 0.5, 0.5, 0);
+                draw_text_transformed(xx + 280, yy + 120, $"Current Captain : {_ship.captain_data.name_role()}", 0.5, 0.5, 0);
             } else {
-                var _new_cap = draw_unit_buttons([xx + 280, yy + 120], "Choose Captain", [1, 1], 38144, , fnt_40k_14b);
+                var _new_cap = draw_unit_buttons([xx + 240, yy + 120], "Choose Captain", [1, 1], 38144, , fnt_40k_14b);
                 if (point_and_click(_new_cap)){
                     var _candidates = collect_role_group("all", ["",0,fleet_temps.view_ship]);
                     var _select_data = {
@@ -298,9 +298,9 @@ function scr_fleet_advisor(){
                         feature:"none",
                         planet : 0,
                         ship : fleet_temps.view_ship,
-                        selections : [],                        
+                        selections : [],
                     }
-                    group_selection(_candidates)
+                    group_selection(_candidates,_select_data);
                 }
                 
             }
@@ -310,8 +310,8 @@ function scr_fleet_advisor(){
             var ships = ["Battle Barge", "Strike Cruiser","Gladius","Hunter"];
             var ship_im = 0;
             for (var i=0;i<array_length(ships);i++){
-                if (_ship.class==ships[i]){
-                    ship_im=i;
+                if (_ship.class == ships[i]){
+                    ship_im = i;
                     break;
                 }
             }
@@ -324,14 +324,14 @@ function scr_fleet_advisor(){
 
 
 
-            draw_text(xx + 42, yy + 450, $"Health: {_ship.ship_hp_percentage()}");
-            draw_text(xx + 42, yy + 500, $"Shields: {_ship.shields}" );
-            draw_text(xx + 42, yy + 550, $"Armour: {_ship.front_armour},{_ship.side_armour}, {_ship.rear_armour}");
-            draw_text(xx + 42, yy + 600, $"Turrets: {array_length(_ship.turrets)}");
+            draw_text_ext(xx + 42, yy + 450, $"Health: {_ship.ship_hp_percentage()}",-1, 130);
+            draw_text_ext(xx + 42, yy + 500, $"Shields: {_ship.shields}" ,-1, 130);
+            draw_text_ext(xx + 42, yy + 550, $"Armour: {_ship.front_armour},{_ship.side_armour}, {_ship.rear_armour}",-1, 130);
+            draw_text_ext(xx + 42, yy + 600, $"Turrets: {array_length(_ship.turrets)}",-1, 130);
 
-            draw_text(xx + 426, yy + 450, $"Max Speed: {convert_to_kilometers(_ship.max_speed)}km/s");
-            draw_text(xx + 426, yy + 500, $"Acceleration: {_ship.acceleration * 60}km/s/s");
-            draw_text(xx + 426, yy + 550, $"Turn Speed: {_ship.turning_speed * 60}degrees/s");
+            draw_text_ext(xx + 426, yy + 450, $"Max Speed: {convert_to_kilometers(_ship.max_speed)}km/s",-1, 130);
+            draw_text_ext(xx + 426, yy + 500, $"Acceleration: {_ship.acceleration * 60}km/s/s",-1, 130);
+            draw_text_ext(xx + 426, yy + 550, $"Turn Speed: {_ship.turning_speed * 60}degrees/s",-1, 130);
             
 
             draw_set_font(fnt_40k_12);

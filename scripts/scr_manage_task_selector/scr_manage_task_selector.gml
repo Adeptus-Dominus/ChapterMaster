@@ -2,6 +2,16 @@
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 function scr_manage_task_selector(){
 	if (exit_button.draw_shutter(xx+400,yy+70, "Exit", 0.5, true)){
+			switch(selection_data.purpose_code){
+				case "ship_captain":
+					var _ship = fetch_ship(selection_data.ship);
+	               	exit_adhoc_manage();
+	               	scr_toggle_fleet_area();
+	               	fleet_temps.view_ship = selection_data.ship;
+	               	fleet_temps.view_ship_struct = _ship;
+	               	exit;					
+					break;
+			} 
 			if (is_real(selection_data.system) && selection_data.system <= 10 && selection_data.system >= 0){
 		        managing = selection_data.system;
 				update_general_manage_view();
@@ -192,10 +202,15 @@ function scr_manage_task_selector(){
 					            case "ship_captain":
 					               	var _unit = display_unit[i];
 					               	var _ship = fetch_ship(selection_data.ship);
+					               	show_debug_message(_unit.uid);
 					               	_ship.captain = _unit.uid;
 					               	_unit.captain = _ship.uid;
+					               	show_debug_message(_ship.name);
+					               	_ship.captain_data = _unit;
+					               	exit_adhoc_manage();
 					               	scr_toggle_fleet_area();
 					               	fleet_temps.view_ship = selection_data.ship;
+					               	fleet_temps.view_ship_struct = _ship;
 					               	exit;
 					               	break;
 	                		}		                		

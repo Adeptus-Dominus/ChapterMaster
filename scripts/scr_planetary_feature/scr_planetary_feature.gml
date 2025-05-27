@@ -51,6 +51,7 @@ function PlanetFeature(feature_type, other_data={}) constructor{
 			player_hidden = 0;
 		}
 	}
+	uid = scr_uuid_generate();
 	switch(f_type){
 	case P_features.Gene_Stealer_Cult:
 		PDF_control = 0;
@@ -182,6 +183,13 @@ function PlanetFeature(feature_type, other_data={}) constructor{
 				break;								
 		}
 		space_taken = 0;
+		static has_dock_space = function(dock_space_wanted){
+			if (size >= dock_space_wanted){
+				return (capacity-space_taken >= dock_space_wanted);
+			} else {
+				return false;
+			}
+		}
 		planet_display = "Docks";
 		break;
 	default:

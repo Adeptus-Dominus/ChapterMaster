@@ -621,19 +621,16 @@ stc_un_total=0;
 stc_wargear_un=0;
 stc_vehicles_un=0;
 stc_ships_un=0;
-stc_bonus[0]=0;
-stc_bonus[1]=0;
-stc_bonus[2]=0;
-stc_bonus[3]=0;
-stc_bonus[4]=0;
-stc_bonus[5]=0;
-stc_bonus[6]=0;
+stc_bonus = array_create(7,0);
+
 stc_research = {
     wargear:0,
     vehicles:0,
     ships:0,
     research_focus:"wargear",
 }
+
+flagship = 0;
 // ** Resets the years **
 check_number=0;
 year_fraction=0;
@@ -755,36 +752,9 @@ temp[90] = 0;
 temp[9000] = "";
 // ** Resets all audiences **
 audiences=0;
-audien[0]=0;
-audien[1]=0;
-audien[2]=0;
-audien[3]=0;
-audien[4]=0;
-audien[5]=0;
-audien[6]=0;
-audien[7]=0;
-audien[8]=0;
-audien[9]=0;
-audien[10]=0;
-audien[11]=0;
-audien[12]=0;
-audien[13]=0;
-audien[14]=0;
-audien_topic[0]="";
-audien_topic[1]="";
-audien_topic[2]="";
-audien_topic[3]="";
-audien_topic[4]="";
-audien_topic[5]="";
-audien_topic[6]="";
-audien_topic[7]="";
-audien_topic[8]="";
-audien_topic[9]="";
-audien_topic[10]="";
-audien_topic[11]="";
-audien_topic[12]="";
-audien_topic[13]="";
-audien_topic[14]="";
+audien = array_create(15, 0);
+audien_topic = array_create(15, "");
+
 // ** Sets default recruiting vars **
 recruits=0;
 recruiting_worlds="";
@@ -1212,35 +1182,10 @@ ignore[eFACTION.Heretics]=0;
 ignore[12]=0;
 ignore[eFACTION.Necrons]=0;
 // ** Sets diplomacy turns to be ignored **
-turns_ignored[0]=0;
-turns_ignored[1]=0;
-turns_ignored[2]=0;
-turns_ignored[3]=0;
-turns_ignored[4]=0;
-turns_ignored[5]=0;
-turns_ignored[6]=0;
-turns_ignored[7]=0;
-turns_ignored[8]=0;
-turns_ignored[9]=0;
-turns_ignored[10]=0;
-turns_ignored[11]=0;
-turns_ignored[12]=0;
-turns_ignored[13]=0;
+turns_ignored = array_create(15, 0);
+
 // ** Sets faction defeated **
-faction_defeated[0]=0;
-faction_defeated[1]=0;
-faction_defeated[2]=0;
-faction_defeated[3]=0;
-faction_defeated[4]=0;
-faction_defeated[5]=0;
-faction_defeated[6]=0;
-faction_defeated[7]=0;
-faction_defeated[8]=0;
-faction_defeated[9]=0;
-faction_defeated[10]=0;
-faction_defeated[11]=0;
-faction_defeated[12]=0;
-faction_defeated[13]=0;
+faction_defeated = array_create(15, 0);
 
 // **** CHAPTER CREATION VARS ****
 // ** Sets up Chapter configuration variables **

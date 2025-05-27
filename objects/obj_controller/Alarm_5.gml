@@ -683,37 +683,38 @@ with(obj_ground_mission){instance_destroy();}
 scr_random_event(true);
 
 // ** Random events here **
-if (hurssy_time>0) and (hurssy>0) then hurssy_time-=1;
+if (hurssy_time>0) and (hurssy>0){
+    hurssy_time-=1;
+}
 if (hurssy_time==0) and (hurssy>0){hurssy_time=-1;hurssy=0;}
 with(obj_p_fleet){
-    if (hurssy_time>0) and (hurssy>0) then hurssy_time-=1;
-    if (hurssy_time==0) and (hurssy>0){hurssy_time=-1;hurssy=0;}
+    if (hurssy_time>0) and (hurssy>0){
+        hurssy_time-=1;
+    }
+    if (hurssy_time==0) and (hurssy>0){
+        hurssy_time=-1;
+        hurssy=0;
+    }
 }
 with(obj_star){
-    if (p_hurssy_time[1]>0) and (p_hurssy[1]>0) then p_hurssy_time[1]-=1;
-    if (p_hurssy_time[1]==0) and (p_hurssy[1]>0){
-        p_hurssy_time[1]=-1;
-        p_hurssy[1]=0;
-    }
-    if (p_hurssy_time[2]>0) and (p_hurssy[2]>0) then p_hurssy_time[2]-=1;
-    if (p_hurssy_time[2]==0) and (p_hurssy[2]>0){
-        p_hurssy_time[2]=-1;
-        p_hurssy[2]=0;
-    }
-    if (p_hurssy_time[3]>0) and (p_hurssy[3]>0) then p_hurssy_time[3]-=1;
-    if (p_hurssy_time[3]=0) and (p_hurssy[3]>0){
-        p_hurssy_time[3]=-1;
-        p_hurssy[3]=0;
-    }
-    if (p_hurssy_time[4]>0) and (p_hurssy[4]>0) then p_hurssy_time[4]-=1;
-    if (p_hurssy_time[4]==0) and (p_hurssy[4]>0){
-        p_hurssy_time[4]=-1;
-        p_hurssy[4]=0;
+    for (var i=1;i<=planets;i++){
+        if (p_hurssy[i]<=0){
+            continue;
+        }
+        if (p_hurssy_time[i]>0) {
+            p_hurssy_time[i]-=1;
+        }
+        if (p_hurssy_time[i]==0) {
+            p_hurssy_time[i]=-1;
+            p_hurssy[i]=0;
+        }        
     }
 }
 
 if (turn==2){
-    if (obj_ini.master_name=="Zakis Randi") or (global.chapter_name=="Knights Inductor") and (obj_controller.faction_status[eFACTION.Imperium]!="War") then alarm[8]=1;
+    if (obj_ini.master_name=="Zakis Randi") or (global.chapter_name=="Knights Inductor") and (obj_controller.faction_status[eFACTION.Imperium]!="War"){
+        alarm[8]=1;
+    }
 }
 // ** Player-set events **
 if (fest_scheduled>0) and (fest_repeats>0){
@@ -764,7 +765,7 @@ init_ork_waagh();
 return_lost_ships_chance();
 //complex route plotting for player fleets
 with (obj_p_fleet){
-    if (array_length(complex_route)>0  && action == ""){
+    if (array_length(complex_route) > 0  && action == ""){
         set_new_player_fleet_course(complex_route);
     }
 }

@@ -382,6 +382,7 @@ function new_player_ship(type, start_loc="home", new_name=""){
 	        rear_armour = 3;
 	        shields = 1;
 	        sprite_index=spr_ship_bb;
+	        minimum_tech_requirements = 20;
        	}
 
         
@@ -392,30 +393,30 @@ function new_player_ship(type, start_loc="home", new_name=""){
     if (string_count("Strike Cruiser",type)>0){
         with(_struct){
 	         left_broad_positions = [
-	        {
-	        	ship_position : [56, 37],
-	        	slot_size : 2,
-	        	weapon : false,
-	        	facing : "left"
-	        },
-	        {
-	        	ship_position : [65, 37],
-	        	slot_size : 2,
-	        	weapon : false,
-	        	facing : "left"
-	        },
-	        {
-	        	ship_position : [74,37],
-	        	slot_size : 2,
-	        	weapon : false,
-	        	facing : "left"
-	        },
-	        {
-	        	ship_position : [83, 37],
-	        	slot_size : 2,
-	        	weapon : false,
-	        	facing : "left"
-	        },
+		        {
+		        	ship_position : [56, 37],
+		        	slot_size : 2,
+		        	weapon : false,
+		        	facing : "left"
+		        },
+		        {
+		        	ship_position : [65, 37],
+		        	slot_size : 2,
+		        	weapon : false,
+		        	facing : "left"
+		        },
+		        {
+		        	ship_position : [74,37],
+		        	slot_size : 2,
+		        	weapon : false,
+		        	facing : "left"
+		        },
+		        {
+		        	ship_position : [83, 37],
+		        	slot_size : 2,
+		        	weapon : false,
+		        	facing : "left"
+		        },
 	        ]
 	        right_broad_positions = [
 	        	{
@@ -461,9 +462,9 @@ function new_player_ship(type, start_loc="home", new_name=""){
 			side_armour = 4;
 			rear_armour = 3;
 			shields = 6;
-			sprite_index=spr_ship_stri;	       	
+			sprite_index=spr_ship_stri;
+			minimum_tech_requirements = 14;	       	
 	    }
-        
         
         _struct.turrets = [{}];
     }
@@ -481,7 +482,8 @@ function new_player_ship(type, start_loc="home", new_name=""){
 			side_armour = 4;
 			rear_armour = 1;
 			shields = 1;
-			sprite_index=spr_ship_glad;	              
+			sprite_index=spr_ship_glad;
+			minimum_tech_requirements = 6;            
 	    }
     }
     if (string_count("Hunter",type)>0){
@@ -499,7 +501,8 @@ function new_player_ship(type, start_loc="home", new_name=""){
 			side_armour = 3;
 			rear_armour = 1;
 			shields = 1;
-			sprite_index=spr_ship_hunt;	      	            	
+			sprite_index=spr_ship_hunt;	
+			minimum_tech_requirements = 8;               	            	
 	    }
 
         

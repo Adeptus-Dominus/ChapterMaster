@@ -893,7 +893,7 @@ function draw_ship_heathshields(){
 	shields.draw();
 	if (maxhp!=0){
 	    var zoom_modifier = obj_controller.zoomed?2:1;
-	    if (if !shields.active()<=0){
+	    if (!shields.active()){
 	        var hp_percent = $"{(hp/maxhp)*100}%"
 	        
 	        draw_text_transformed(x,y-sprite_height,hp_percent,zoom_modifier,zoom_modifier,0);

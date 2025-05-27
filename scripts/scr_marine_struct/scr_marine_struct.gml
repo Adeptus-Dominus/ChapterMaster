@@ -2317,12 +2317,56 @@ function fetch_unit(unit) {
 function fetch_unit_uid(uuid){
     for (var i=0;i<obj_ini.companies;i++){
         var _comp_length = array_length(obj_ini.TTRPG[i]);
-        for (var s=0;s<array_length(_comp_length);s++){
+        for (var s=0;s<_comp_length;s++){
             var _unit = fetch_unit([i,s]);
             if (_unit.uid == uuid){
                 return _unit;
             }
         }
     }
+
     return "none";
 }
+
+function determine_highest_ranking(unit_list){
+    var unit;
+    var member_length = array_length(unit_list);
+    var hierarchy = role_hierarchy();
+    var leader_hier_pos=array_length(hierarchy);
+    var leader="none", unit;
+    var highest_exp = 0;    
+    for (var i=0;i<member_length;i++){
+        unit = unit_list[i];
+        if (unit.name() == ""){
+            array_delete(members, i, 1);
+            member_length--;
+            i--;
+            continue;
+        } else {
+            if (leader=="none"){
+                leader = unit;
+                for (var r=0;r<array_length(hierarchy);r++){
+                    if (hierarchy[r]==unit.role()){
+                        leader_hier_pos=r;
+                        break;
+                    }
+                }
+            }else if (hierarchy[leader_hier_pos]==unit.role()){
+                if (leader.experience<unit.experience){
+                    leader=[unit.company, unit.marine_number];
+                }
+            }else{
+                for (var r=0;r<leader_hier_pos;r++){
+                    if (hierarchy[r]==unit.role()){
+                        leader_hier_pos=r;
+                        leader=unit;
+                        break;
+                    }
+                }
+            }
+        }           
+    }
+    return leader;
+}
+
+

@@ -332,7 +332,7 @@ function round_collision_with_ship(){
 }
 
 
-function round_step_logic = functino(){
+function round_step_logic(){
 	image_angle=direction;
 
 	if (x<-1000) or (x>room_width+1000) or (y<-1000) or (y>room_height+1000){

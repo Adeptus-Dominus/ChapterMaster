@@ -55,6 +55,11 @@ function ShipStruct() constructor{
 	captain = "";
 	captain_data = false;
 
+	minimum_tech_requirements = 8;
+	tech_fulfilment = 0;
+	tech_suppliers = [];
+	docked = false;
+
 	uid = scr_uuid_generate();
 
 	static ship_hp_percentage = function(){
@@ -62,19 +67,102 @@ function ShipStruct() constructor{
 	}
 
 	static fetch_captain = function(){
-		var _cap = fetch_unit_uid(captain);
-		if (_cap != "none"){
-			captain_data = _cap;
+		if (captain!=""){
+			var _cap = fetch_unit_uid(captain);
+			if (_cap != "none"){
+				captain_data = _cap;
+			} else {
+				determine_new_captain();
+			}
+		} else {
+			determine_new_captain();
+		}
+	}
+
+	static determine_new_captain = function(fetch_new_occupants=true){
+		if (fetch_new_occupants){
+			var _occupants = get_occupants();
+		} else {
+			var _occupants = occupants;
+		}
+		if (array_length(_occupants)){
+			var _new_cap = determine_highest_ranking(_occupants);
+			captain = _new_cap.uid;
+			captain_data = _new_cap;
 		} else {
 			captain = "";
 		}
+	}
+
+  /// @description figers out how many forge points the ship has working towards it's running.
+  /// @param {bool} collect ship occupants again if done recently this can be false, saves overhead
+	static tech_fulfilment = function(fetch_new_occupants=true){
+		if (fetch_new_occupants){
+			var _occupants = get_occupants();
+		}else {
+			var _occupants = occupants;
+		}
+		for (var i=0;i<array_length(occupants);i++){
+			var _unit = _occupants[i];
+			var _point_gen = _unit.forge_point_generation(false, true);
+			if (_point_gen){
+				tech_fulfilment += _point_gen;
+				array_push(tech_suppliers, _unit);
+			}
+		}
+	}
+
+
+	static dock_space = function(){
+		if (location == "Warp" || location == "Lost"){
+			possible_dock = false;
+		} else {
+			var star = star_by_name(location);
+			if (star == "none"){
+				possible_dock = false;
+			} else {
+				_planet = system_feature_bool(star.p_feature,P_features.ShipDock);
+				if (_planet == 0){
+					possible_dock = false;
+				} else {
+					var _dock = return_planet_features(star.p_feature[_planet], P_features.ShipDock)[0];
+					if (_dock.has_dock_space(size)){
+						possible_dock = _dock;
+					} else {
+						possible_dock = false;
+					}
+				}
+			}
+		}
+		return possible_dock;
+	}
+
+	static update_ship_combat_data = function(){
+		get_occupants();
+		fetch_captain();
+		tech_fulfilment();
+		dock_space();
+	}
+
+	static find_array_pos = function(){
+		for (var i=0;i<array_length(obj_ini.ship_data);i++){
+			if (obj_ini.ship_data[i].uid == uid){
+				return i;
+			}
+		}
+	}
+	static get_occupants = function(){
+		var _ship_id = find_array_pos();
+		var _occupants = collect_role_group("all", ["", 0,_ship_id]);
+		occupants = _occupants;
+		return _occupants;
 	}
 
 	static final_acceleration = function(){
 
 		var _acel = acceleration;
 	    if (obj_controller.stc_bonus[6]=3){
-	        _acel*=1.2;
+	        _acel *= 1.2;
 	    }	
 	    return 	_acel;
 	}
@@ -121,8 +209,8 @@ function ShipStruct() constructor{
 	static draw_ui_manage = function(x, y){
 		var _x_offset = sprite_get_xoffset(sprite_index);
 		var _y_offset = sprite_get_yoffset(sprite_index);
-		draw_sprite(sprite_index, 0, x+280, y+180);
-		var _draw_corner = [x+280 - _x_offset, y+180-_y_offset];
+		draw_sprite(sprite_index, 0, x+280, y+210);
+		var _draw_corner = [x+280 - _x_offset, y+210-_y_offset];
 		var _l_length = array_length(left_broad_positions);
 		var _r_length = array_length(right_broad_positions);
 		var _f_length = array_length(forward_positions);
@@ -141,6 +229,10 @@ function ShipStruct() constructor{
 				draw_set_colour(c_blue);
 			}
 			draw_rectangle_array(draw_coords,true);
+		}
+		if (possible_dock != false){
+			var _dock_button = draw_unit_buttons([x+280 - (string_width("Dock Ship")/2), y+300], "Dock Ship");
+
 		}
 		draw_set_font(fnt_40k_30b);
 		draw_set_halign(fa_left);

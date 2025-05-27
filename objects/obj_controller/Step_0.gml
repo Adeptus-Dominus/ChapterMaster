@@ -802,7 +802,6 @@ try {
                 obj_ini.loc[company][unit_id] = _ship.location;
                 unit.ship_location = -1;
                 unit.planet_location = unload;
-                obj_ini.uid[company][unit_id] = 0;
                 ma_loc[q] = _ship.location;
                 ma_lid[q] = -1;
                 ma_wid[q] = unload;
