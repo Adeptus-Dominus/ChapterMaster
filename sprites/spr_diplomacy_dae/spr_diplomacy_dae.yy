@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_diplomacy_dae",
   "bboxMode":0,
   "bbox_bottom":0,
