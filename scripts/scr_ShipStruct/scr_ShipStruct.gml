@@ -24,6 +24,8 @@ function fps_to_secs(val){
 }
 
 function ShipStruct() constructor{
+	crew_exp = 0;
+	machine_spirit_exp = 0;
 	features = [];
 	turrets = [];
 	weapons = [];
