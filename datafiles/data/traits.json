@@ -94,7 +94,8 @@
             "max"
         ],
         "flavour_text": "Seen many young warriors rise and die before them but they themselves still remain",
-        "display_name": "Old Guard"
+        "display_name": "Old Guard",
+        "effect": "All loyalty changes are halved",
     },
     "seasoned": {
         "luck": 1,
@@ -319,7 +320,8 @@
             "max"
         ],
         "display_name": "Faithless",
-        "flavour_text": "Puts great emphasis on a pragmatic and logical approach in place of faith and spiritual beliefs"
+        "flavour_text": "Puts great emphasis on a pragmatic and logical approach in place of faith and spiritual beliefs",
+        "effect" : "corruption attempts are less effective"
     },
     "feet_floor": {
         "wisdom": 1,
@@ -418,7 +420,8 @@
             "max"
         ],
         "display_name": "Charismatic",
-        "flavour_text": "Liked by most without even trying"
+        "flavour_text": "Liked by most without even trying",
+        "effect" : "failed charisma rolls are re-rolled",
     },
     "recluse": {
         "charisma": [
@@ -446,7 +449,8 @@
         "display_name": "Jaded",
         "flavour_text": "Their past has led them to form a deep distrust and cynical outlook on most parts of their life",
         "charisma": -2,
-        "wisdom": -1
+        "wisdom": -1,
+        "effect" : "negative loyalty effects are doubled"
     },
     "observant": {
         "display_name": "Observant",
@@ -589,10 +593,13 @@
     "soft_target": {
         "display_name": "Marked for death",
         "constitution": [
-            -5,
-            2
+            -3,
+            2,
+            "min"
         ],
-        "flavour_text": "This Marine can't shake the feeling that his days are numbered; in battle enemy attacks seem to find their way to softer sections of armor"
+        "luck" : -2,
+        "flavour_text": "This Marine can't shake the feeling that his days are numbered; in battle enemy attacks seem to find their way to softer sections of armor",
+        "effect" : "-10 modifier for rolls against constiutution",
     },
     "fast_learner": {
         "display_name": "Quick Learner",
@@ -713,7 +720,7 @@
             1
         ],
         "flavour_text": "Is known for their impeccable honor even in the heat of battle",
-        "effect": "If commanding garrison will prevent disposition loss"
+        "effect": "If commanding garrison will prevent disposition loss, losses to loyalty are halved"
     },
     "duelist": {
         "weapon_skill": [

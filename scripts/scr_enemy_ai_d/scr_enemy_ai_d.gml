@@ -1,5 +1,5 @@
 function scr_enemy_ai_d() {
-
+    
 	if (x<-15000){x+=20000;y+=20000;}
 	if (x<-15000){x+=20000;y+=20000;}
 	if (x<-15000){x+=20000;y+=20000;}
@@ -201,25 +201,26 @@ function scr_enemy_ai_d() {
             //TODO marker point for cohesion mechanics
             var alert_text="";
             var unit;
-            if (ran>33){// Give all marines +3d6 corruption and reduce loyalty by 20*/
+            if (irandom(100)>33){// Give all marines +3d6 corruption and reduce loyalty by 20*/
                 var me=0;
                 for (var co=0;co<=obj_ini.companies;co++){
                     me=0;
                     for (me=0;me<array_length(obj_ini.role[co]);me++){
                         if (obj_ini.race[co][me]=1) and (obj_ini.role[co][me]!=""){
                             unit = fetch_unit([co,me]);
-                            unit.add_corruption(irandom_range(3, 18));
+                            unit.add_corruption(irandom_range(3, 6));
+                            unit.alter_loyalty(10);
                         }
                     }
                 }
-                alert_text=$"Any Fallen that may have been on {planet_numeral_name(i)} ";
-                alert_text+="have been given sufficient time to escape.  Morale within your chapter has plummeted; some of your battle brothers have become restless and speak among eachother in hushed tones.";
-                scr_popup("Hunt the Fallen Failed",alert_text,"fallen","");
-                obj_controller.loyalty-=30;
-                obj_controller.loyalty_hidden-=30;
-                remove_planet_problem(i,"fallen"); 
-                scr_event_log("red",$"Mission Failed: Any Fallen within the {name} system have been given time to escape.");          	
-          }
+            }
+            alert_text=$"Any Fallen that may have been on {planet_numeral_name(i)} ";
+            alert_text+="have been given sufficient time to escape.  Morale within your chapter has plummeted; some of your battle brothers have become restless and speak among eachother in hushed tones.";
+            scr_popup("Hunt the Fallen Failed",alert_text + "\n\n(Chapter wide loyalty: -10)\nChaplains note marked changes in behaviour of some brothers" ,"fallen","");
+            obj_controller.loyalty-=10;
+            obj_controller.loyalty_hidden-=10;
+            remove_planet_problem(i,"fallen"); 
+            scr_event_log("red",$"Mission Failed: Any Fallen within the {name} system have been given time to escape.");          	
         }
         var garrison_mission = has_problem_planet_and_time(i,"provide_garrison", 0);
         if (garrison_mission>-1){
