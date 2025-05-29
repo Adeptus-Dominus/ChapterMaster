@@ -2,8 +2,8 @@
   "$GMSound":"v1",
   "%Name":"snd_battle",
   "audioGroupId":{
-    "name":"audiogroup_1",
-    "path":"audiogroups/audiogroup_1",
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
   },
   "bitDepth":1,
   "bitRate":192,
