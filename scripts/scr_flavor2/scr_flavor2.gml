@@ -345,6 +345,8 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
         }
     }
 
+	lost = [];
+    lost_num = [];
 
 	var unce = 0;
 
