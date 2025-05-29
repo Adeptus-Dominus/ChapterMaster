@@ -85,8 +85,8 @@ repeat(20) {
 
 	if ((obj_ncombat.started = 0) or(neww = 1)) or(dudes_num[j] > 1) {
 		if (dudes[j] = "Greater Daemon of Khorne") {
-			dudes_ac[j] = 18;
-			dudes_hp[j] = 600;
+			dudes_ac[j] = 12;
+			dudes_hp[j] = 700;
 		}
 	}
 	if (dudes[j] = "Greater Daemon of Khorne") {
@@ -97,20 +97,22 @@ repeat(20) {
 	}
 	if ((obj_ncombat.started = 0) or(neww = 1)) or(dudes_num[j] > 1) {
 		if (dudes[j] = "Greater Daemon of Slaanesh") {
-			dudes_ac[j] = 18;
-			dudes_hp[j] = 500;
+		dudes_ac[j] = 10;
+		dudes_hp[j] = 500;
+		dudes_dr[j] = 0.25;
 		}
 	}
 	if (dudes[j] = "Greater Daemon of Slaanesh") {
 		scr_en_weapon("Demon Melee", true, dudes_num[j], dudes[j], j);
 		scr_en_weapon("Lash Whip", true, dudes_num[j], dudes[j], j);
-		dudes_dr[j] = 0.7;
+		dudes_dr[j] = 0.25;
 		medi += dudes_num[j];
 	}
 	if ((obj_ncombat.started = 0) or(neww = 1)) or(dudes_num[j] > 1) {
 		if (dudes[j] = "Greater Daemon of Nurgle") {
-			dudes_ac[j] = 25;
-			dudes_hp[j] = 700;
+			dudes_ac[j] = 8;
+			dudes_hp[j] = 900;
+			dudes_dr[j] = 0.2;
 		}
 	}
 	if (dudes[j] = "Greater Daemon of Nurgle") {
@@ -121,54 +123,54 @@ repeat(20) {
 	}
 	if ((obj_ncombat.started = 0) or(neww = 1)) or(dudes_num[j] > 1) {
 		if (dudes[j] = "Greater Daemon of Tzeentch") {
-			dudes_ac[j] = 18;
-			dudes_hp[j] = 500;
+			dudes_ac[j] = 10;
+			dudes_hp[j] = 600;
 		}
 	}
 	if (dudes[j] = "Greater Daemon of Tzeentch") {
 		scr_en_weapon("Demon Melee", true, dudes_num[j], dudes[j], j);
 		scr_en_weapon("Witchfire", true, dudes_num[j], dudes[j], j);
-		dudes_dr[j] = 0.7;
+		dudes_dr[j] = 0.75;
 		medi += dudes_num[j];
 	}
 
 	if (dudes[j] = "Bloodletter") {
 		scr_en_weapon("Bloodletter Melee", true, dudes_num[j], dudes[j], j);
-		dudes_ac[j] = 15;
-		dudes_hp[j] = 120;
+		dudes_ac[j] = 10;
+		dudes_hp[j] = 200;
 		men += dudes_num[j];
-		dudes_dr[j] = 0.7;
+		dudes_dr[j] = 0.4;
 	}
 	if (dudes[j] = "Daemonette") {
 		scr_en_weapon("Daemonette Melee", true, dudes_num[j], dudes[j], j);
-		dudes_ac[j] = 15;
-		dudes_hp[j] = 100;
+		dudes_ac[j] = 8;
+		dudes_hp[j] = 150;
 		men += dudes_num[j];
-		dudes_dr[j] = 0.7;
+		dudes_dr[j] = 0.3;
 	}
 	if (dudes[j] = "Pink Horror") {
 		scr_en_weapon("Eldritch Fire", true, dudes_num[j], dudes[j], j);
-		dudes_ac[j] = 15;
+		dudes_ac[j] = 8;
 		dudes_hp[j] = 100;
 		men += dudes_num[j];
-		dudes_dr[j] = 0.8;
+		dudes_dr[j] = 0.5;
 	}
 	if (dudes[j] = "Plaguebearer") {
 		scr_en_weapon("Plaguebearer Melee", true, dudes_num[j], dudes[j], j);
-		dudes_ac[j] = 15;
-		dudes_hp[j] = 145;
+		dudes_ac[j] = 5;
+		dudes_hp[j] = 300;
 		men += dudes_num[j];
-		dudes_dr[j] = 0.6;
+		dudes_dr[j] = 0.4;
 	}
 
 	if (dudes[j] = "Helbrute") {
 		scr_en_weapon("Power Fist", false, dudes_num[j], dudes[j], j);
 		scr_en_weapon("Multi-Melta", false, dudes_num[j], dudes[j], j);
 		dudes_ac[j] = 40;
-		dudes_hp[j] = 100;
+		dudes_hp[j] = 300;
 		veh += dudes_num[j];
 		dudes_vehicle[j] = 1;
-		dudes_dr[j] = 0.75;
+		dudes_dr[j] = 0.5;
 	}
 	if (dudes[j] = "Soul Grinder") {
 		scr_en_weapon("Warpsword", false, dudes_num[j], dudes[j], j);
@@ -178,15 +180,15 @@ repeat(20) {
 		dudes_hp[j] = 350;
 		veh += dudes_num[j];
 		dudes_vehicle[j] = 1;
-		dudes_dr[j] = 1;
+		dudes_dr[j] = 0.5;
 	}
 	if (dudes[j] = "Maulerfiend") {
 		scr_en_weapon("Maulerfiend Claws", false, dudes_num[j], dudes[j], j);
-		dudes_ac[j] = 20;
+		dudes_ac[j] = 30;
 		dudes_hp[j] = 250;
 		veh += dudes_num[j];
 		dudes_vehicle[j] = 1;
-		dudes_dr[j] = 1;
+		dudes_dr[j] = 0.5;
 	}
 
 }
@@ -332,38 +334,41 @@ if __b__ {
 	repeat(20) {
 		j += 1;
 		if (dudes[j] = "Imperial Guardsman") {
-			dudes_ac[j] = 20;
-			dudes_hp[j] = 20;
+			dudes_ac[j] = 40;
+			dudes_hp[j] = 5;
 			men += dudes_num[j];
 		}
 
 		if (dudes[j] = "Heavy Weapons Team") {
 			scr_en_weapon("Heavy Bolter", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 0;
+			dudes_ac[j] = 10;
 			dudes_hp[j] = 100;
+			dudes_dr[j] = 0.9;
 			men += dudes_num[j];
 		}
 
 		if (dudes[j] = "Ogryn") {
 			scr_en_weapon("Ripper Gun", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Ogryn Melee", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 20;
+			dudes_ac[j] = 10;
 			dudes_hp[j] = 120;
+			dudes_dr[j] = 0.75;
 			men += dudes_num[j];
 		}
 
 		if (dudes[j] = "Chimera") {
 			scr_en_weapon("Multi-Laster", false, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Heavy Bolter", false, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 20;
-			dudes_hp[j] = 150;
+			dudes_ac[j] = 40;
+			dudes_hp[j] = 200;
+			dudes_dr[j] = 0.75;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
 		if (dudes[j] = "Basilisk") {
 			scr_en_weapon("Earthshaker Cannon", false, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Storm Bolter", false, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 15;
+			dudes_ac[j] = 20;
 			dudes_hp[j] = 150;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
@@ -371,8 +376,9 @@ if __b__ {
 		if (dudes[j] = "Leman Russ Battle Tank") {
 			scr_en_weapon("Battle Cannon", false, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Lascannon", false, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 40;
+			dudes_ac[j] = 45;
 			dudes_hp[j] = 250;
+			dudes_dr[j] = 0.25;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
@@ -381,6 +387,7 @@ if __b__ {
 			scr_en_weapon("Lascannon", false, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 40;
 			dudes_hp[j] = 250;
+			dudes_dr[j] = 0.25;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
@@ -388,6 +395,7 @@ if __b__ {
 			scr_en_weapon("Twin-Linked Lascannon", false, dudes_num[j] * 3, dudes[j], j);
 			dudes_ac[j] = 20;
 			dudes_hp[j] = 300;
+			dudes_dr[j] = 0.25;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
@@ -440,17 +448,17 @@ if __b__ {
 			scr_en_weapon("Blessed Weapon", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Laser Mace", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Infernus Pistol", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 35;
+			dudes_ac[j] = 10;
 			if (obj_ncombat.started = 0) or(dudes_num[j] > 1) {
 				dudes_hp[j] = 200;
 			}
 			men += dudes_num[j];
-			dudes_dr[j] = 0.33;
+			dudes_dr[j] = 0.25;
 		}
 		if (dudes[j] = "Palatine") {
 			scr_en_weapon("Plasma Pistol", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Power Weapon", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 22;
+			dudes_ac[j] = 10;
 			dudes_hp[j] = 100;
 			men += dudes_num[j];
 			dudes_dr[j] = 0.5;
@@ -458,7 +466,7 @@ if __b__ {
 		if (dudes[j] = "Priest") {
 			scr_en_weapon("Laspistol", true, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 0;
-			dudes_hp[j] = 30;
+			dudes_hp[j] = 50;
 			men += dudes_num[j];
 			dudes_dr[j] = 0.5;
 		}
@@ -468,28 +476,28 @@ if __b__ {
 			dudes_ac[j] = 0;
 			dudes_hp[j] = 150;
 			men += dudes_num[j];
-			dudes_dr[j] = 0.65;
+			dudes_dr[j] = 0.7;
 		}
 
 		if (dudes[j] = "Celestian") {
 			scr_en_weapon("Bolter", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Chainsword", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 20;
-			dudes_hp[j] = 40;
+			dudes_ac[j] = 10;
+			dudes_hp[j] = 60;
 			men += dudes_num[j];
-			dudes_dr[j] = 0.65;
+			dudes_dr[j] = 0.50;
 		}
 		if (dudes[j] = "Mistress") {
 			scr_en_weapon("Neural Whip", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 20;
-			dudes_hp[j] = 40;
+			dudes_ac[j] = 10;
+			dudes_hp[j] = 60;
 			men += dudes_num[j];
-			dudes_dr[j] = 0.75;
+			dudes_dr[j] = 0.50;
 		}
 		if (dudes[j] = "Sister Repentia") {
 			scr_en_weapon("Eviscerator", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 20;
-			dudes_hp[j] = 30;
+			dudes_ac[j] = 0;
+			dudes_hp[j] = 75;
 			men += dudes_num[j];
 			dudes_dr[j] = 0.75;
 		}
@@ -503,24 +511,24 @@ if __b__ {
 				scr_en_weapon("Bolter", true, dudes_num[j] - nem, dudes[j], j);
 			}
 			scr_en_weapon("Sarissa", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 20;
-			dudes_hp[j] = 40;
+			dudes_ac[j] = 10;
+			dudes_hp[j] = 60;
 			men += dudes_num[j];
-			dudes_dr[j] = 0.8;
+			dudes_dr[j] = 0.75;
 		}
 		if (dudes[j] = "Seraphim") {
 			scr_en_weapon("Seraphim Pistols", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Chainsword", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 20;
-			dudes_hp[j] = 40;
+			dudes_ac[j] = 10;
+			dudes_hp[j] = 60;
 			men += dudes_num[j];
-			dudes_dr[j] = 0.75;
+			dudes_dr[j] = 0.6;
 		}
 		if (dudes[j] = "Dominion") {
 			scr_en_weapon("Meltagun", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Meltabomb", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 20;
-			dudes_hp[j] = 40;
+			dudes_ac[j] = 10;
+			dudes_hp[j] = 60;
 			men += dudes_num[j];
 			dudes_dr[j] = 0.75;
 		}
@@ -533,50 +541,54 @@ if __b__ {
 				scr_en_weapon("Heavy Bolter", true, dudes_num[j] - nem, dudes[j], j);
 			}
 			scr_en_weapon("Bolt Pistol", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 20;
-			dudes_hp[j] = 40;
+			dudes_ac[j] = 10;
+			dudes_hp[j] = 60;
 			men += dudes_num[j];
-			dudes_dr[j] = 0.75;
+			dudes_dr[j] = 0.6;
 		}
 
 		if (dudes[j] = "Follower") {
 			scr_en_weapon("Laspistol", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("melee0.5", true, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 0;
-			dudes_hp[j] = 20;
+			dudes_hp[j] = 30;
 			men += dudes_num[j];
 		}
 
 		if (dudes[j] = "Rhino") {
 			scr_en_weapon("Storm Bolter", false, dudes_num[j] * 2, dudes[j], j);
-			dudes_ac[j] = 20;
+			dudes_ac[j] = 40;
 			dudes_hp[j] = 200;
+			dudes_dr[j] = 0.75;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
 
 		if (dudes[j] = "Chimera") {
 			scr_en_weapon("Heavy Flamer", false, dudes_num[j] * 2, dudes[j], j);
-			dudes_ac[j] = 23;
+			dudes_ac[j] = 40;
 			dudes_hp[j] = 200;
+			dudes_dr[j] = 0.75;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
 
 		if (dudes[j] = "Immolator") {
 			scr_en_weapon("Twin Linked Heavy Flamers", false, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 20;
-			dudes_hp[j] = 200;
+			dudes_ac[j] = 40;
+			dudes_hp[j] = 300;
+			dudes_dr[j] = 0.35;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
 		if (dudes[j] = "Exorcist") {
 			scr_en_weapon("Exorcist Missile Launcher", false, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Storm Bolter", false, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 30;
+			dudes_ac[j] = 40;
 			if (obj_ncombat.started = 0) or(dudes_num[j] > 1) {
-				dudes_hp[j] = 300;
+				dudes_hp[j] = 200;
 			}
+			dudes_dr[j] = 0.55;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
@@ -586,6 +598,7 @@ if __b__ {
 			scr_en_weapon("Heavy Flamer", false, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 35;
 			dudes_hp[j] = 150;
+			dudes_dr[j] = 0.50;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
@@ -612,8 +625,8 @@ if __b__ {
 		if (dudes[j] = "Leader") {
 			scr_en_weapon("Singing Spear", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Singing Spear Throw", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 30;
-			dudes_hp[j] = 300;
+			dudes_ac[j] = 10;
+			dudes_hp[j] = 150;
 			men += dudes_num[j];
 			dudes_dr[j] = 0.5;
 		}
@@ -621,22 +634,25 @@ if __b__ {
 		if (dudes[j] = "Autarch") {
 			scr_en_weapon("Power Weapon", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Fusion Gun", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 20;
+			dudes_ac[j] = 12;
 			dudes_hp[j] = 150;
+			dudes_dr[j] = 0.75;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Farseer") {
 			scr_en_weapon("Singing Spear", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Singing Spear Throw", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 30;
-			dudes_hp[j] = 150;
+			dudes_ac[j] = 10;
+			dudes_hp[j] = 120;
+			dudes_dr[j] = 0.6;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Warlock") {
 			scr_en_weapon("Witchblade", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Psyshock", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 20;
-			dudes_hp[j] = 100;
+			dudes_ac[j] = 10;
+			dudes_hp[j] = 80;
+			dudes_dr[j] = 0.75;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Avatar") {
@@ -644,159 +660,173 @@ if __b__ {
 			scr_en_weapon("Avatar Smite", true, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 40;
 			dudes_hp[j] = 300;
+			dudes_dr[j] = 0.55;
 			veh += dudes_num[j];
 		}
 		if (dudes[j] = "Mighty Avatar") {
 			scr_en_weapon("Wailing Doom", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Avatar Smite", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 55;
+			dudes_ac[j] = 50;
 			dudes_hp[j] = 450;
+			dudes_dr[j] = 0.5;
 			veh += dudes_num[j];
 		}
 		if (dudes[j] = "Godly Avatar") {
 			scr_en_weapon("Wailing Doom", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Avatar Smite", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 70;
+			dudes_ac[j] = 60;
 			dudes_hp[j] = 600;
+			dudes_dr[j] = 0.40;
 			veh += dudes_num[j];
 		}
 
 		if (dudes[j] = "Ranger") {
 			scr_en_weapon("Ranger Long Rifle", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Shuriken Pistol", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 10;
-			dudes_hp[j] = 30;
+			dudes_ac[j] = 8;
+			dudes_hp[j] = 40;
+			dudes_dr[j] = 0.9;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Pathfinder") {
 			scr_en_weapon("Pathfinder Long Rifle", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Melee1", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 10;
+			dudes_ac[j] = 8;
 			dudes_hp[j] = 60;
+			dudes_dr[j] = 0.8;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Dire Avenger") {
 			scr_en_weapon("Avenger Shuriken Catapult", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Melee1", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 15;
-			dudes_hp[j] = 30;
+			dudes_ac[j] = 10;
+			dudes_hp[j] = 40;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Dire Avenger Exarch") {
 			scr_en_weapon("Power Weapon", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 30;
-			dudes_hp[j] = 50; // Shimmershield 
+			dudes_ac[j] = 10;
+			dudes_hp[j] = 70; // Shimmershield 
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Howling Banshee") {
 			scr_en_weapon("Power Weapon", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Shuriken Pistol", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 15;
-			dudes_hp[j] = 30;
+			dudes_ac[j] = 8;
+			dudes_hp[j] = 40;
+			dudes_dr[j] = 0.8;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Howling Banshee Exarch") {
 			scr_en_weapon("Executioner", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 30;
-			dudes_hp[j] = 50;
+			dudes_ac[j] = 10;
+			dudes_hp[j] = 60;
+			dudes_dr[j] = 0.75;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Striking Scorpion") {
 			scr_en_weapon("Scorpion Chainsword", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Shuriken Pistol", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Mandiblaster", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 20;
-			dudes_hp[j] = 30;
+			dudes_ac[j] = 8;
+			dudes_hp[j] = 60;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Striking Scorpion Exarch") {
 			scr_en_weapon("Biting Blade", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Scorpion's Claw", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Mandiblaster", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 30;
-			dudes_hp[j] = 50;
+			dudes_ac[j] = 10;
+			dudes_hp[j] = 80;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Fire Dragon") {
 			scr_en_weapon("Fusion Gun", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Meltabomb", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Melee1", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 15;
-			dudes_hp[j] = 30;
+			dudes_ac[j] = 12;
+			dudes_hp[j] = 40;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Fire Dragon Exarch") {
 			scr_en_weapon("Firepike", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Power Weapon", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 20;
-			dudes_hp[j] = 50;
+			dudes_ac[j] = 12;
+			dudes_hp[j] = 60;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Warp Spider") {
 			scr_en_weapon("Deathspinner", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 15;
-			dudes_hp[j] = 30;
+			dudes_ac[j] = 8;
+			dudes_hp[j] = 40;
+			dudes_dr[j] = 0.9;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Warp Spider Exarch") {
 			scr_en_weapon("Dual Deathspinners", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Powerblades", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 20;
-			dudes_hp[j] = 50;
+			dudes_ac[j] = 10;
+			dudes_hp[j] = 60;
+			dudes_dr[j] = 0.8;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Dark Reaper") {
 			scr_en_weapon("Reaper Launcher", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Melee1", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 20;
-			dudes_hp[j] = 30;
+			dudes_ac[j] = 10;
+			dudes_hp[j] = 40;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Dark Reaper Exarch") {
-			scr_en_weapon("Eldar Missile Launcher", true, dudes_num[j], dudes[j], j);
+			scr_en_weapon("Tempest Launcher", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Melee1", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 30;
+			dudes_ac[j] = 10;
 			dudes_hp[j] = 50;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Shining Spear") {
 			scr_en_weapon("Laser Lance", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Twin Linked Shuriken Catapult", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 20;
-			dudes_hp[j] = 30;
-			men += dudes_num[j];
+			dudes_ac[j] = 10;
+			dudes_hp[j] = 75;
+			dudes_dr[j] = 0.8;
+			veh += dudes_num[j];
+			dudes_vehicle[j] = 1;
 		}
 		if (dudes[j] = "Guardian") {
 			scr_en_weapon("Shuriken Catapult", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Melee1", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 15;
+			dudes_ac[j] = 8;
 			dudes_hp[j] = 30;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Grav Platform") {
 			scr_en_weapon("Pulse Laser", false, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 15;
-			dudes_hp[j] = 70;
+			dudes_ac[j] = 10;
+			dudes_hp[j] = 60;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Trouper") {
 			scr_en_weapon("Power Weapon", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Fusion Pistol", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 30;
+			dudes_ac[j] = 8;
 			dudes_hp[j] = 50;
+			dudes_dr[j] = 0.25;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Athair") {
 			scr_en_weapon("Plasma Pistol", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Harlequin's Kiss", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 30;
+			dudes_ac[j] = 8;
 			dudes_hp[j] = 75;
+			dudes_dr[j] = 0.25;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Wraithguard") {
 			scr_en_weapon("Wraithcannon", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 20;
-			dudes_hp[j] = 80;
+			dudes_ac[j] = 15;
+			dudes_hp[j] = 125;
+			dudes_dr[j] = 0.70;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Vyper") {
@@ -804,6 +834,7 @@ if __b__ {
 			scr_en_weapon("Pulse Laser", false, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 40;
 			dudes_hp[j] = 100;
+			dudes_dr[j] = 0.8;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
@@ -813,6 +844,7 @@ if __b__ {
 			scr_en_weapon("Bright Lance", false, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 40;
 			dudes_hp[j] = 200;
+			dudes_dr[j] = 0.6;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
@@ -821,22 +853,25 @@ if __b__ {
 			scr_en_weapon("Prism Cannon", false, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 40;
 			dudes_hp[j] = 200;
+			dudes_dr[j] = 0.5;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
 		if (dudes[j] = "Nightspinner") {
 			scr_en_weapon("Twin Linked Doomweaver", false, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 40;
-			dudes_hp[j] = 170;
+			dudes_hp[j] = 200;
+			dudes_dr[j] = 0.6;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
 		if (dudes[j] = "Wraithlord") {
 			scr_en_weapon("Two Power Fists", false, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Flamer", false, dudes_num[j] * 2, dudes[j], j);
-			scr_en_weapon("Star Cannon", false, dudes_num[j], dudes[j], j);
+			scr_en_weapon("Starcannon", false, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 40;
 			dudes_hp[j] = 200;
+			dudes_dr[j] = 0.5;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
@@ -846,6 +881,7 @@ if __b__ {
 			scr_en_weapon("Titan Starcannon", false, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 50;
 			dudes_hp[j] = 800;
+			dudes_dr[j] = 0.35;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
@@ -863,7 +899,7 @@ if __b__ {
 			scr_en_weapon("Power Klaw", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Rokkit Launcha", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Big Shoota", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 60;
+			dudes_ac[j] = 12;
 			if (obj_ncombat.started = 0) or(dudes_num[j] > 1) {
 				dudes_hp[j] = 600;
 			}
@@ -874,29 +910,32 @@ if __b__ {
 		if (dudes[j] = "Minor Warboss") {
 			scr_en_weapon("Choppa", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Big Shoota", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 40;
+			dudes_ac[j] = 8;
 			if (obj_ncombat.started = 0) or(dudes_num[j] > 1) {
 				dudes_hp[j] = 150;
+				dudes_dr[j] = 0.75;
 			}
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Warboss") {
 			scr_en_weapon("Power Klaw", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Rokkit Launcha", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 50;
+			dudes_ac[j] = 12;
 			if (obj_ncombat.started = 0) or(dudes_num[j] > 1) {
 				dudes_hp[j] = 200;
+				dudes_dr[j] = 0.75;
 			}
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Big Warboss") {
 			scr_en_weapon("Power Klaw", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Rokkit Launcha", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 60;
+			dudes_ac[j] = 12;
 			if (obj_ncombat.started = 0) or(dudes_num[j] > 1) {
 				dudes_hp[j] = 300;
+				dudes_dr[j] = 0.5;
 			}
-			veh += dudes_num[j];
+			men += dudes_num[j];
 		}
 
 		if (dudes[j] = "Gretchin") {
@@ -908,81 +947,86 @@ if __b__ {
 		if (dudes[j] = "Slugga Boy") {
 			scr_en_weapon("Choppa", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Slugga", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 10;
-			dudes_hp[j] = 50;
+			dudes_ac[j] = 5;
+			dudes_hp[j] = 60;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Shoota Boy") {
 			scr_en_weapon("Shoota", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Choppa", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 10;
-			dudes_hp[j] = 50;
+			dudes_ac[j] = 5;
+			dudes_hp[j] = 60;
 			men += dudes_num[j];
 		}
 
 		if (dudes[j] = "Mekboy") {
 			scr_en_weapon("Power Klaw", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Big Shoota", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 30;
-			dudes_hp[j] = 60;
+			dudes_ac[j] = 12;
+			dudes_hp[j] = 100;
+			dudes_dr[j] = 0.75;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Meganob") {
 			scr_en_weapon("Power Klaw", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Big Shoota", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 40;
-			dudes_hp[j] = 120;
+			dudes_ac[j] = 12;
+			dudes_hp[j] = 150;
+			dudes_dr[j] = 0.6;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Flash Git") {
 			scr_en_weapon("Snazzgun", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Choppa", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 15;
-			dudes_hp[j] = 65;
+			dudes_ac[j] = 8;
+			dudes_hp[j] = 100;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Cybork") {
 			scr_en_weapon("Power Klaw", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Big Shoota", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 30;
-			dudes_hp[j] = 80;
+			dudes_ac[j] = 8;
+			dudes_hp[j] = 125;
+			dudes_dr[j] = 0.75;
 			men += dudes_num[j];
 		}
 
 		if (dudes[j] = "Ard Boy") {
 			scr_en_weapon("Choppa", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Slugga", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 20;
-			dudes_hp[j] = 70;
+			dudes_ac[j] = 8;
+			dudes_hp[j] = 80;
+			dudes_dr[j] = 0.9;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Kommando") {
 			scr_en_weapon("Choppa", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Rokkit Launcha", true, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 10;
-			dudes_hp[j] = 80;
+			dudes_hp[j] = 125;
+			dudes_dr[j] = 0.9;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Burna Boy") {
 			scr_en_weapon("Choppa", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Burna", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 10;
-			dudes_hp[j] = 35;
+			dudes_ac[j] = 5;
+			dudes_hp[j] = 80;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Tankbusta") {
 			scr_en_weapon("Rokkit Launcha", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Tankbusta Bomb", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Melee1", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 10;
-			dudes_hp[j] = 50;
+			dudes_ac[j] = 5;
+			dudes_hp[j] = 80;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Stormboy") {
 			scr_en_weapon("Choppa", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Slugga", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 10;
-			dudes_hp[j] = 50;
+			dudes_ac[j] = 5;
+			dudes_hp[j] = 80;
 			dudes_special[j] = "Jetpack";
 			men += dudes_num[j];
 		}
@@ -991,8 +1035,9 @@ if __b__ {
 			scr_en_weapon("Kannon", false, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Big Shoota", false, dudes_num[j] * 2, dudes[j], j);
 			scr_en_weapon("Rokkit Launcha", false, dudes_num[j] * 2, dudes[j], j);
-			dudes_ac[j] = 40;
+			dudes_ac[j] = 30;
 			dudes_hp[j] = 200;
+			dudes_dr[j] = 0.5;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
@@ -1000,8 +1045,9 @@ if __b__ {
 			scr_en_weapon("Power Klaw", false, dudes_num[j] * 2, dudes[j], j);
 			scr_en_weapon("Big Shoota", false, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Rokkit Launcha", false, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 35;
-			dudes_hp[j] = 150;
+			dudes_ac[j] = 20;
+			dudes_hp[j] = 200;
+			dudes_dr[j] = 0.75;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
@@ -1018,67 +1064,66 @@ if __b__ {
 			scr_en_weapon("Plasma Rifle", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Fusion Blaster", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Cyclic Ion Blaster", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 30;
-			dudes_hp[j] = 150;
-			medi += dudes_num[j];
-			dudes_vehicle[j] = 1;
+			dudes_ac[j] = 12;
+			dudes_hp[j] = 300;
+			dudes_dr[j] = 0.5;
+			men += dudes_num[j];
 		}
 		if (dudes[j] = "XV8 Bodyguard") {
 			scr_en_weapon("Plasma Rifle", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Burst Rifle", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 30;
-			dudes_hp[j] = 100;
-			medi += dudes_num[j];
-			dudes_vehicle[j] = 1;
+			dudes_ac[j] = 10;
+			dudes_hp[j] = 200;
+			dudes_dr[j] = 0.75;
+			men += dudes_num[j];
 		}
 		if (dudes[j] = "XV8 Crisis") {
 			scr_en_weapon("Plasma Rifle", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Missile Pod", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 30;
-			dudes_hp[j] = 75;
-			medi += dudes_num[j];
-			dudes_vehicle[j] = 1;
+			dudes_ac[j] = 10;
+			dudes_hp[j] = 150;
+			dudes_dr[j] = 0.75;
+			men += dudes_num[j];
 		}
 		if (dudes[j] = "XV8 (Brightknife)") {
 			scr_en_weapon("Fusion Blaster", true, dudes_num[j] * 2, dudes[j], j);
-			dudes_ac[j] = 30;
-			dudes_hp[j] = 75;
-			medi += dudes_num[j];
-			dudes_vehicle[j] = 1;
+			dudes_ac[j] = 10;
+			dudes_hp[j] = 150;
+			dudes_dr[j] = 0.75;
+			men += dudes_num[j];
 		}
 		if (dudes[j] = "Shield Drone") {
-			dudes_ac[j] = 30;
-			dudes_hp[j] = 100;
-			medi += dudes_num[j];
-			dudes_vehicle[j] = 1;
+			dudes_ac[j] = 8;
+			dudes_hp[j] = 50;
+			men += dudes_num[j];
 		}
 
 		if (dudes[j] = "XV88 Broadside") {
 			scr_en_weapon("Smart Missile System", true, dudes_num[j] * 2, dudes[j], j);
 			scr_en_weapon("Small Railgun", true, dudes_num[j] * 2, dudes[j], j);
-			dudes_ac[j] = 30;
-			dudes_hp[j] = 150;
-			medi += dudes_num[j];
-			dudes_vehicle[j] = 1;
+			dudes_ac[j] = 12;
+			dudes_hp[j] = 225;
+			dudes_dr[j] = 0.75;
+			men += dudes_num[j];
 		}
 		if (dudes[j] = "XV25 Stealthsuit") {
 			scr_en_weapon("Burst Rifle", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 20;
+			dudes_ac[j] = 8;
 			dudes_hp[j] = 50;
+			dudes_dr[j] = 0.75;
 			men += dudes_num[j];
-			dudes_vehicle[j] = 1;
 		}
 
 		if (dudes[j] = "Fire Warrior") {
 			scr_en_weapon("Pulse Rifle", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 20;
-			dudes_hp[j] = 20;
+			dudes_ac[j] = 8;
+			dudes_hp[j] = 30;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Pathfinder") {
 			scr_en_weapon("Rail Rifle", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 20;
-			dudes_hp[j] = 20;
+			dudes_ac[j] = 8;
+			dudes_hp[j] = 30;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Kroot") {
@@ -1091,7 +1136,7 @@ if __b__ {
 		if (dudes[j] = "Vespid") {
 			scr_en_weapon("Vespid Crystal", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Melee2", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 10;
+			dudes_ac[j] = 5;
 			dudes_hp[j] = 50;
 			men += dudes_num[j];
 		}
@@ -1100,14 +1145,16 @@ if __b__ {
 			scr_en_weapon("Smart Missile System", false, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 30;
 			dudes_hp[j] = 150;
+			dudes_dr[j] = 0.75;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
 		if (dudes[j] = "Hammerhead") {
 			scr_en_weapon("Railgun", false, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Smart Missile System", false, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 40;
-			dudes_hp[j] = 250;
+			dudes_ac[j] = 30;
+			dudes_hp[j] = 150;
+			dudes_dr[j] = 0.75;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
@@ -1124,36 +1171,38 @@ if __b__ {
 			scr_en_weapon("Bonesword", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Lashwhip", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Heavy Venom Cannon", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 35;
-			dudes_hp[j] = 250;
+			dudes_ac[j] = 20;
+			dudes_hp[j] = 400;
+			dudes_dr[j] = 0.5;
 			men += dudes_num[j];
 		}
 
 		if (dudes[j] = "Tyrant Guard") {
 			scr_en_weapon("Crushing Claws", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 30;
-			dudes_hp[j] = 100;
+			dudes_ac[j] = 12;
+			dudes_hp[j] = 200;
+			dudes_dr[j] = 0.6;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Tyranid Warrior") {
 			scr_en_weapon("Rending Claws", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Devourer", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 20;
+			dudes_ac[j] = 8;
 			dudes_hp[j] = 100;
+			dudes_dr[j] = 0.9;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Zoanthrope") {
 			scr_en_weapon("Zoanthrope Blast", false, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 40;
-			dudes_hp[j] = 200;
-			dudes_dr[j] = 0.5;
-			medi += dudes_num[j];
-			dudes_vehicle[j] = 1.5;
+			dudes_ac[j] = 8;
+			dudes_hp[j] = 300;
+			dudes_dr[j] = 0.25;
+			men += dudes_num[j];
 		}
 		if (dudes[j] = "Carnifex") {
 			scr_en_weapon("Carnifex Claws", false, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Venom Cannon", false, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 40;
+			dudes_ac[j] = 20;
 			dudes_hp[j] = 300;
 			dudes_dr[j] = 0.75;
 			veh += dudes_num[j];
@@ -1161,14 +1210,14 @@ if __b__ {
 		}
 		if (dudes[j] = "Termagaunt") {
 			scr_en_weapon("Fleshborer", true, dudes_num[j] / 10, dudes[j], j);
-			dudes_ac[j] = 0;
-			dudes_hp[j] = 20;
+			dudes_ac[j] = 5;
+			dudes_hp[j] = 25;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Hormagaunt") {
 			scr_en_weapon("Scything Talons", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 0;
-			dudes_hp[j] = 20;
+			dudes_ac[j] = 5;
+			dudes_hp[j] = 25;
 			men += dudes_num[j];
 		}
 
@@ -1176,39 +1225,40 @@ if __b__ {
 			scr_en_weapon("Autogun", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("melee0.5", true, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 0;
-			dudes_hp[j] = 20;
+			dudes_hp[j] = 35;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Genestealer") {
 			scr_en_weapon("Genestealer Claws", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 10;
-			dudes_hp[j] = 50;
+			dudes_ac[j] = 5;
+			dudes_hp[j] = 75;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Genestealer Patriarch") {
 			scr_en_weapon("Genestealer Claws", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Witchfire", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 20;
-			dudes_hp[j] = 150;
-			dudes_dr[j] = 0.75;
+			dudes_ac[j] = 8;
+			dudes_hp[j] = 300;
+			dudes_dr[j] = 0.60;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Armoured Limousine") {
 			scr_en_weapon("Autogun", false, dudes_num[j] * 4, dudes[j], j);
 			dudes_ac[j] = 10;
 			dudes_hp[j] = 150;
+			dudes_dr[j] = 0.75;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
 		if (dudes[j] = "Lictor") {
 			scr_en_weapon("Lictor Claws", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Flesh Hooks", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 20;
-			dudes_hp[j] = 150;
+			dudes_ac[j] = 8;
+			dudes_hp[j] = 300;
+			dudes_dr[j] = 0.60;
 			men += dudes_num[j];
 		}
 
-		dudes_dr[j] += 0.25;
 	}
 
 	/* */
@@ -1223,27 +1273,27 @@ if __b__ {
 			if (dudes[j] = "Leader") and(obj_controller.faction_gender[10] = 1) {
 				scr_en_weapon("Meltagun", true, dudes_num[j], dudes[j], j);
 				scr_en_weapon("Power Fist", true, dudes_num[j], dudes[j], j);
-				dudes_ac[j] = 40;
+				dudes_ac[j] = 30;
 				if (obj_ncombat.started = 0) or(dudes_num[j] > 1) {
 					dudes_hp[j] = 300;
 				}
 				men += dudes_num[j];
-				dudes_dr[j] = 0.5;
+				dudes_dr[j] = 0.75;
 			}
 			if (dudes[j] = "Leader") and(obj_controller.faction_gender[10] = 2) {
 				scr_en_weapon("Khorne Demon Melee", true, dudes_num[j] * 2, dudes[j], j);
-				dudes_ac[j] = 44;
+				dudes_ac[j] = 30;
 				if (obj_ncombat.started = 0) or(dudes_num[j] > 1) {
 					dudes_hp[j] = 300;
 				}
 				men += dudes_num[j];
-				dudes_dr[j] = 0.4;
+				dudes_dr[j] = 0.75;
 			}
 
 			if (dudes[j] = "Fallen") {
 				scr_en_weapon("Bolt Pistol", true, dudes_num[j], dudes[j], j);
 				scr_en_weapon("Power Weapon", true, dudes_num[j], dudes[j], j);
-				dudes_ac[j] = 20;
+				dudes_ac[j] = 30;
 				dudes_hp[j] = 120;
 				men += dudes_num[j];
 				dudes_dr[j] = 0.5;
@@ -1254,13 +1304,15 @@ if __b__ {
 				scr_en_weapon("Power Weapon", true, dudes_num[j], dudes[j], j);
 				dudes_ac[j] = 30;
 				dudes_hp[j] = 150;
+				dudes_dr[j] = 0.5;
 				men += dudes_num[j];
 			}
 			if (dudes[j] = "Chaos Sorcerer") {
 				scr_en_weapon("Plasma Pistol", true, dudes_num[j], dudes[j], j);
 				scr_en_weapon("Force Staff", true, dudes_num[j], dudes[j], j);
-				dudes_ac[j] = 25;
+				dudes_ac[j] = 30;
 				dudes_hp[j] = 100;
+				dudes_dr[j] = 0.5;
 				men += dudes_num[j];
 			}
 			if (dudes[j] = "Warpsmith") {
@@ -1269,6 +1321,7 @@ if __b__ {
 				scr_en_weapon("Flamer", true, dudes_num[j], dudes[j], j);
 				dudes_ac[j] = 30;
 				dudes_hp[j] = 100;
+				dudes_dr[j] = 0.5;
 				men += dudes_num[j];
 			}
 
@@ -1279,7 +1332,7 @@ if __b__ {
 				dudes_ac[j] = 40;
 				dudes_hp[j] = 100;
 				men += dudes_num[j];
-				dudes_dr[j] = 0.7;
+				dudes_dr[j] = 0.5;
 			}
 			if (dudes[j] = "Venerable Chaos Terminator") {
 				scr_en_weapon("Power Fist", true, dudes_num[j], dudes[j], j);
@@ -1288,7 +1341,7 @@ if __b__ {
 				dudes_ac[j] = 40;
 				dudes_hp[j] = 120;
 				men += dudes_num[j];
-				dudes_dr[j] = 0.6;
+				dudes_dr[j] = 0.4;
 			}
 			if (dudes[j] = "World Eaters Terminator") {
 				scr_en_weapon("Power Fist", true, dudes_num[j] * 2, dudes[j], j);
@@ -1296,20 +1349,22 @@ if __b__ {
 				dudes_ac[j] = 40;
 				dudes_hp[j] = 120;
 				men += dudes_num[j];
-				dudes_dr[j] = 0.6;
+				dudes_dr[j] = 0.4;
 			}
 			if (dudes[j] = "Obliterator") {
 				scr_en_weapon("Power Fist", true, dudes_num[j], dudes[j], j);
 				scr_en_weapon("Obliterator Weapon", true, dudes_num[j], dudes[j], j);
-				dudes_ac[j] = 30;
+				dudes_ac[j] = 40;
 				dudes_hp[j] = 200;
+				dudes_dr[j] = 0.5;
 				men += dudes_num[j];
 			}
 			if (dudes[j] = "Chaos Chosen") {
 				scr_en_weapon("Meltagun", true, dudes_num[j], dudes[j], j);
 				scr_en_weapon("Chainsword", true, dudes_num[j], dudes[j], j);
-				dudes_ac[j] = 17;
+				dudes_ac[j] = 20;
 				dudes_hp[j] = 125;
+				dudes_dr[j] = 0.85;
 				men += dudes_num[j];
 			}
 			if (dudes[j] = "Venerable Chaos Chosen") {
@@ -1325,6 +1380,7 @@ if __b__ {
 				scr_en_weapon("Possessed Claws", true, dudes_num[j], dudes[j], j);
 				dudes_ac[j] = 17;
 				dudes_hp[j] = 150;
+				dudes_dr[j] = 0.5;
 				men += dudes_num[j];
 			}
 			if (dudes[j] = "Chaos Space Marine") {
@@ -1332,6 +1388,7 @@ if __b__ {
 				scr_en_weapon("Chainsword", true, dudes_num[j], dudes[j], j);
 				dudes_ac[j] = 20;
 				dudes_hp[j] = 100;
+				dudes_dr[j] = 0.9;
 				men += dudes_num[j];
 			}
 			if (dudes[j] = "Havoc") {
@@ -1339,6 +1396,7 @@ if __b__ {
 				scr_en_weapon("Melee1", true, dudes_num[j], dudes[j], j);
 				dudes_ac[j] = 20;
 				dudes_hp[j] = 100;
+				dudes_dr[j] = 0.9;
 				men += dudes_num[j];
 			}
 			if (dudes[j] = "Raptor") {
@@ -1346,6 +1404,7 @@ if __b__ {
 				scr_en_weapon("Bolt Pistol", true, dudes_num[j], dudes[j], j);
 				dudes_ac[j] = 20;
 				dudes_hp[j] = 100;
+				dudes_dr[j] = 0.75;
 				dudes_special[j] = "Jump Pack";
 				men += dudes_num[j];
 			}
@@ -1355,6 +1414,7 @@ if __b__ {
 				scr_en_weapon("Chainaxe", true, dudes_num[j], dudes[j], j);
 				dudes_ac[j] = 20;
 				dudes_hp[j] = 100;
+				dudes_dr[j] = 0.75;
 				men += dudes_num[j];
 			}
 			if (dudes[j] = "World Eaters Veteran") {
@@ -1362,6 +1422,7 @@ if __b__ {
 				scr_en_weapon("Chainaxe", true, dudes_num[j], dudes[j], j);
 				dudes_ac[j] = 20;
 				dudes_hp[j] = 100;
+				dudes_dr[j] = 0.7;
 				men += dudes_num[j];
 			}
 
@@ -1370,6 +1431,7 @@ if __b__ {
 				scr_en_weapon("Bolt Pistol", true, dudes_num[j], dudes[j], j);
 				dudes_ac[j] = 20;
 				dudes_hp[j] = 100;
+				dudes_dr[j] = 0.65;
 				men += dudes_num[j];
 			}
 			if (dudes[j] = "Plague Marine") {
@@ -1377,6 +1439,7 @@ if __b__ {
 				scr_en_weapon("Poison Chainsword", true, dudes_num[j], dudes[j], j);
 				dudes_ac[j] = 20;
 				dudes_hp[j] = 150;
+				dudes_dr[j] = 0.5;
 				men += dudes_num[j];
 			}
 			if (dudes[j] = "Noise Marine") {
@@ -1384,73 +1447,81 @@ if __b__ {
 				scr_en_weapon("Melee1", true, dudes_num[j], dudes[j], j);
 				dudes_ac[j] = 20;
 				dudes_hp[j] = 100;
+				dudes_dr[j] = 0.75;
 				men += dudes_num[j];
 			}
 			if (dudes[j] = "Rubric Marine") {
 				scr_en_weapon("Rubric Bolter", true, dudes_num[j], dudes[j], j);
 				scr_en_weapon("Melee1", true, dudes_num[j], dudes[j], j);
-				dudes_ac[j] = 25;
+				dudes_ac[j] = 20;
 				dudes_hp[j] = 125;
+				dudes_dr[j] = 0.65;
 				men += dudes_num[j];
 			}
 			if (dudes[j] = "Rubric Sorcerer") {
 				scr_en_weapon("Witchfire", true, dudes_num[j], dudes[j], j);
 				scr_en_weapon("Force Staff", true, dudes_num[j], dudes[j], j);
-				dudes_ac[j] = 25;
+				dudes_ac[j] = 20;
 				dudes_hp[j] = 150;
+				dudes_dr[j] = 0.5;
 				men += dudes_num[j];
 			}
 			if (dudes[j] = "Cultist") {
 				scr_en_weapon("Autogun", true, dudes_num[j], dudes[j], j);
 				scr_en_weapon("melee0.5", true, dudes_num[j], dudes[j], j);
-				dudes_ac[j] = 0;
-				dudes_hp[j] = 30;
+				dudes_ac[j] = 5;
+				dudes_hp[j] = 35;
 				men += dudes_num[j];
 			}
 			if (dudes[j] = "Hellbrute") {
 				scr_en_weapon("Power Fist", false, dudes_num[j], dudes[j], j);
 				scr_en_weapon("Meltagun", false, dudes_num[j], dudes[j], j);
 				dudes_ac[j] = 40;
-				dudes_hp[j] = 200;
-				dudes_dr[j] = 0.75;
+				dudes_hp[j] = 300;
+				dudes_dr[j] = 0.5;
 				veh += dudes_num[j];
 				dudes_vehicle[j] = 1;
 			}
 			if (dudes[j] = "Rhino") {
 				scr_en_weapon("Storm Bolter", false, dudes_num[j] * 2, dudes[j], j);
-				dudes_ac[j] = 20;
+				dudes_ac[j] = 40;
 				dudes_hp[j] = 200;
+				dudes_dr[j] = 0.75;
 				veh += dudes_num[j];
 				dudes_vehicle[j] = 1;
 			}
 			if (dudes[j] = "Predator") {
 				scr_en_weapon("Lascannon", false, dudes_num[j] * 2, dudes[j], j);
 				scr_en_weapon("Twin Linked Lascannon", false, dudes_num[j], dudes[j], j);
-				dudes_ac[j] = 30;
-				dudes_hp[j] = 300;
+				dudes_ac[j] = 45;
+				dudes_hp[j] = 350;
+				dudes_dr[j] = 0.5;
 				veh += dudes_num[j];
 				dudes_vehicle[j] = 1;
 			}
 			if (dudes[j] = "Vindicator") {
 				scr_en_weapon("Demolisher Cannon", false, dudes_num[j], dudes[j], j);
 				scr_en_weapon("Havoc Launcher", false, dudes_num[j], dudes[j], j);
-				dudes_ac[j] = 40;
+				dudes_ac[j] = 45;
 				dudes_hp[j] = 300;
+				dudes_dr[j] = 0.5;
 				veh += dudes_num[j];
 				dudes_vehicle[j] = 1;
 			}
 			if (dudes[j] = "Land Raider") {
 				scr_en_weapon("Twin Linked Heavy Bolters", false, dudes_num[j], dudes[j], j);
 				scr_en_weapon("Twin Linked Lascannon", false, dudes_num[j] * 2, dudes[j], j);
-				dudes_ac[j] = 40;
+				dudes_ac[j] = 50;
 				dudes_hp[j] = 400;
+				dudes_dr[j] = 0.25;
 				veh += dudes_num[j];
 				dudes_vehicle[j] = 1;
 			}
 			if (dudes[j] = "Heldrake") {
 				scr_en_weapon("Baleflame", false, dudes_num[j] * 5, dudes[j], j);
-				dudes_ac[j] = 25;
+				dudes_ac[j] = 50;
 				dudes_hp[j] = 400;
+				dudes_dr[j] = 0.25;
 				veh += dudes_num[j];
 				dudes_vehicle[j] = 1;
 			}
@@ -1461,6 +1532,7 @@ if __b__ {
 				scr_en_weapon("Flamer", false, dudes_num[j], dudes[j], j);
 				dudes_ac[j] = 40;
 				dudes_hp[j] = 300;
+				dudes_dr[j] = 0.5;
 				veh += dudes_num[j];
 				dudes_vehicle[j] = 1;
 			}
@@ -1468,16 +1540,17 @@ if __b__ {
 			if (dudes[j] = "Arch Heretic") {
 				scr_en_weapon("Power Weapon", true, dudes_num[j], dudes[j], j);
 				scr_en_weapon("Plasma Pistol", true, dudes_num[j], dudes[j], j);
-				dudes_ac[j] = 20;
-				dudes_hp[j] = 30;
-				dudes_dr[j] = 0.7;
+				dudes_ac[j] = 8;
+				dudes_hp[j] = 40;
+				dudes_dr[j] = 0.75;
 				men += dudes_num[j];
 			}
 			if (dudes[j] = "Cultist Elite") {
 				scr_en_weapon("Lasgun", true, dudes_num[j], dudes[j], j);
 				scr_en_weapon("Chainaxe", true, dudes_num[j], dudes[j], j);
-				dudes_ac[j] = 10;
-				dudes_hp[j] = 20;
+				dudes_ac[j] = 8;
+				dudes_hp[j] = 40;
+				dudes_dr[j] = 0.9;
 				men += dudes_num[j];
 			}
 			if (dudes[j] = "Mutant") {
@@ -1489,15 +1562,16 @@ if __b__ {
 			if (dudes[j] = "Daemonhost") {
 				scr_en_weapon("Daemonhost Claws", true, dudes_num[j], dudes[j], j);
 				scr_en_weapon("Daemonhost_Powers", true, dudes_num[j], dudes[j], j);
-				dudes_ac[j] = 30;
+				dudes_ac[j] = 8;
 				dudes_hp[j] = 300;
 				dudes_dr[j] = 0.5;
 				medi += dudes_num[j];
 			}
 			if (dudes[j] = "Possessed") {
 				scr_en_weapon("Possessed Claws", true, dudes_num[j], dudes[j], j);
-				dudes_ac[j] = 17;
+				dudes_ac[j] = 8;
 				dudes_hp[j] = 100;
+				dudes_dr[j] = 0.75;
 				men += dudes_num[j];
 			}
 
@@ -1513,6 +1587,7 @@ if __b__ {
 				scr_en_weapon("Heavy Bolter", false, dudes_num[j], dudes[j], j);
 				dudes_ac[j] = 10;
 				dudes_hp[j] = 100;
+				dudes_dr[j] = 0.75;
 				veh += dudes_num[j];
 				dudes_vehicle[j] = 1;
 			}
@@ -1520,8 +1595,9 @@ if __b__ {
 			if (dudes[j] = "Chaos Leman Russ") {
 				scr_en_weapon("Battle Cannon", false, dudes_num[j], dudes[j], j);
 				scr_en_weapon("Heavy Bolter", false, dudes_num[j], dudes[j], j);
-				dudes_ac[j] = 40;
+				dudes_ac[j] = 45;
 				dudes_hp[j] = 250;
+				dudes_dr[j] = 0.25;
 				veh += dudes_num[j];
 				dudes_vehicle[j] = 1;
 			}
@@ -1557,53 +1633,59 @@ if __b__ {
 			scr_en_weapon("Staff of Light", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Staff of Light Shooting", true, dudes_num[j], dudes[j], j);
 			if (obj_ncombat.started = 0) or(dudes_num[j] > 1) {
-				dudes_ac[j] = 25;
+				dudes_ac[j] = 12;
 				dudes_hp[j] = 300;
+				dudes_dr[j] = 0.5;
 			}
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Lychguard") {
 			scr_en_weapon("Warscythe", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 35;
+			dudes_ac[j] = 12;
 			dudes_hp[j] = 100;
+			dudes_dr[j] = 0.75;
 			men += dudes_num[j];
 		}
 
 		if (dudes[j] = "Flayed One") {
 			scr_en_weapon("Melee5", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 25;
-			dudes_hp[j] = 100;
+			dudes_ac[j] = 8;
+			dudes_hp[j] = 75;
+			dudes_dr[j] = 0.9;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Necron Warrior") {
 			scr_en_weapon("Gauss Flayer", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Melee3", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 25;
-			dudes_hp[j] = 100;
+			dudes_ac[j] = 8;
+			dudes_hp[j] = 75;
+			dudes_dr[j] = 0.9;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Necron Immortal") {
 			scr_en_weapon("Gauss Blaster", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Melee3", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 25;
-			dudes_hp[j] = 100;
+			dudes_ac[j] = 8;
+			dudes_hp[j] = 75;
+			dudes_dr[j] = 0.85;
 			men += dudes_num[j];
 		}
 
 		if (dudes[j] = "Necron Wraith") {
 			scr_en_weapon("Wraith Claws", true, dudes_num[j], dudes[j], j);
 			if (obj_ncombat.started = 0) or(dudes_num[j] > 1) {
-				dudes_ac[j] = 25;
+				dudes_ac[j] = 10;
 				dudes_hp[j] = 200;
 			}
 			men += dudes_num[j];
-			dudes_dr[j] = 0.65;
+			dudes_dr[j] = 0.75;
 		}
 		if (dudes[j] = "Necron Destroyer") {
 			scr_en_weapon("Gauss Cannon", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Melee3", true, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 25;
 			dudes_hp[j] = 175;
+			dudes_dr[j] = 0.5;
 			men += dudes_num[j];
 		}
 
@@ -1612,9 +1694,10 @@ if __b__ {
 			scr_en_weapon("Overcharged Gauss Cannon", false, dudes_num[j] * 2, dudes[j], j);
 			scr_en_weapon("Claws", false, dudes_num[j] * 5, dudes[j], j);
 			if (obj_ncombat.started = 0) or(dudes_num[j] > 1) {
-				dudes_ac[j] = 30;
+				dudes_ac[j] = 40;
 				dudes_hp[j] = 600;
 			}
+			dudes_dr[j] = 0.5;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
@@ -1624,30 +1707,33 @@ if __b__ {
 				dudes_ac[j] = 30;
 				dudes_hp[j] = 300;
 			}
+			dudes_dr[j] = 0.75;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
 		if (dudes[j] = "Canoptek Scarab") {
 			scr_en_weapon("Melee3", false, dudes_num[j] * 2, dudes[j], j);
-			dudes_ac[j] = 10;
+			dudes_ac[j] = 8;
 			dudes_hp[j] = 30;
+			dudes_dr[j] = 0.75;
 			men += dudes_num[j];
 			dudes_vehicle[j] = 0;
 		}
 		if (dudes[j] = "Necron Monolith") {
 			scr_en_weapon("Gauss Flux Arc", false, dudes_num[j] * 4, dudes[j], j);
 			scr_en_weapon("Particle Whip", false, dudes_num[j] * 1, dudes[j], j);
-			dudes_ac[j] = 70;
-			dudes_hp[j] = 300;
+			dudes_ac[j] = 50;
+			dudes_hp[j] = 500;
+			dudes_dr[j] = 0.25;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
-			// was 50 / 500
 		}
 		if (dudes[j] = "Doomsday Arc") {
 			scr_en_weapon("Gauss Flayer Array", false, dudes_num[j] * 2, dudes[j], j);
 			scr_en_weapon("Doomsday Cannon", false, dudes_num[j] * 1, dudes[j], j);
-			dudes_ac[j] = 30;
-			dudes_hp[j] = 150;
+			dudes_ac[j] = 40;
+			dudes_hp[j] = 350;
+			dudes_dr[j] = 0.5;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
@@ -1679,16 +1765,14 @@ if (obj_ncombat.battle_special = "ruins") or(obj_ncombat.battle_special = "ruins
 */
 
 if (men + veh + medi <= 0) {
-	instance_destroy();
+	instance_destroy(id);
 	exit;
 }
 
 if (obj_ncombat.started = 0) {
 	obj_ncombat.enemy_forces += self.men + self.veh + self.medi;
 }
-
-if (!collision_point(x + 10, y, obj_pnunit, 0, 1)) and(!collision_point(x - 10, y, obj_pnunit, 0, 1)) then engaged = 0;
-if (collision_point(x + 10, y, obj_pnunit, 0, 1)) or(collision_point(x - 10, y, obj_pnunit, 0, 1)) then engaged = 1;
+engaged = (collision_point(x + 12, y, obj_pnunit, 0, 1)) or(collision_point(x - 12, y, obj_pnunit, 0, 1));
 
 if (neww = 1) then neww = 0;
 

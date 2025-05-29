@@ -34,7 +34,24 @@ function add_data_to_stack (stack_index, weapon, unit_damage=false, head_role=fa
     wep_num[stack_index]++;
     splash[stack_index]=weapon.spli;
     wep[stack_index]=weapon.name;
-    if (obj_ncombat.started=0) then ammo[stack_index]=weapon.ammo;
+
+    if (obj_ncombat.started=0) {
+        ammo[stack_index] = weapon.ammo;
+
+        if (is_struct(unit)) {
+            var _armour = unit.get_armour_data();
+            if (is_struct(_armour) && _armour.has_tag("dreadnought")) {
+                ammo[stack_index] = weapon.ammo * 3;
+            }
+
+            var _mobi = unit.get_mobility_data();
+            if (is_struct(_mobi) && _mobi.has_tag("bonus_ammo")) {
+                ammo[stack_index] = weapon.ammo * 2;
+            }
+        } else if (unit == "vehicle") {
+            ammo[stack_index] = weapon.ammo * 4;
+        }
+    }
 
     if (unit!="none"){//this stops a potential infinite loop of secondary profiles
         add_second_profiles_to_stack(weapon, head_role, unit);
@@ -154,7 +171,6 @@ function scr_player_combat_weapon_stacks() {
                             var stack_index = find_stack_index("Hammer of Wrath", head_role, unit);
                             if (stack_index > -1){
                                 add_data_to_stack(stack_index, unit.hammer_of_wrath(), false, head_role, unit);
-                                ammo[stack_index] = -1;
                                 if (head_role){
                                     player_head_role_stack(stack_index, unit);
                                 }
@@ -273,7 +289,7 @@ function scr_player_combat_weapon_stacks() {
                         if (is_struct(weapon)){
                             for (j=0;j<=40;j++){
                                 if (wep[j]==""||wep[j]==weapon.name){
-                                    add_data_to_stack(j,weapon);
+                                    add_data_to_stack(j,weapon,,,"vehicle");
                                     break;
                                 }
                             }
@@ -313,6 +329,34 @@ function scr_player_combat_weapon_stacks() {
     }
 }
 
+function set_up_player_blocks_turn(){
+    if (instance_exists(obj_pnunit)){
+        with (obj_pnunit){
+            alarm[3]=2;
+            wait_and_execute(3, scr_player_combat_weapon_stacks);
+            alarm[0]=4;
+        }
+    }
+    turn_count++;        
+}
+
+function reset_combat_message_arrays(){
+    messages=0;
+    messages_to_show=8;
+    largest=0;
+    random_messages=0;
+    priority=0;
+    messages_shown=0;
+    for (var i=0;i<array_length(message);i++){
+        message[i]="";
+        message_sz[i]=0;
+        message_priority[i]=0;
+    }
+    timer_stage=4;
+    timer=0;
+    done=0;
+    messages_shown=0;   
+}
 
 function scr_add_unit_to_roster(unit, is_local=false,is_ally=false){
     array_push(unit_struct, unit);
