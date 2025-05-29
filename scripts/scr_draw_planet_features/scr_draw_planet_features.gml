@@ -226,7 +226,9 @@ function FeatureSelected(Feature, system, planet) constructor{
             case P_features.ShipDock:
                 title = "Ship Dock";
                 var _size_description = "";
-                var _size_literal
+                var _size_literal;
+                var _monestary = planet_data.has_feature(P_features.Monastery);
+
                 switch(feature.size){
                 	case 1:
                 		_size_description = "are small and unsuited to working on medium and large vessels and are mostly for the convieniencce of local traders of the planet";
@@ -241,9 +243,13 @@ function FeatureSelected(Feature, system, planet) constructor{
                 		_size_literal = "Capital";
                 		break;                		                		
                 }
-                var _description = $"The Docks of {planet_data.name()} {_size_description}\n\n";
+                var _base_dock = _monestary ? "Your Fortress Monestary docks" : $"The Docks of {planet_data.name()}";
+                var _description = $"{_base_dock} {_size_description}\n\n";
                 _description += $"The docks are capable of berthing {feature.capacity} ships of sizes up to {_size_literal} ships, ships being worked on in berths will not be able to participate in combat while they are being worked on and will take 2 months to recomission to duty once work has commenced";
+                draw_set_halign(fa_left);
                 draw_text_ext(xx+10, yy+40,_description,-1,area_width-20);
+                var _off_height = string_height_ext(_description, -1,area_width-20);
+                //draw_unit_buttons([xx+10, ]);
                 break;
 
 			case P_features.Mission:

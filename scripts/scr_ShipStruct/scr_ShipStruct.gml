@@ -98,7 +98,8 @@ function ShipStruct() constructor{
 
   /// @description figers out how many forge points the ship has working towards it's running.
   /// @param {bool} collect ship occupants again if done recently this can be false, saves overhead
-	static tech_fulfilment = function(fetch_new_occupants=true){
+	static calc_tech_fulfilment = function(fetch_new_occupants=true){
+		tech_suppliers = [];
 		if (fetch_new_occupants){
 			var _occupants = get_occupants();
 		}else {
@@ -107,8 +108,8 @@ function ShipStruct() constructor{
 		for (var i=0;i<array_length(occupants);i++){
 			var _unit = _occupants[i];
 			var _point_gen = _unit.forge_point_generation(false, true);
-			if (_point_gen){
-				tech_fulfilment += _point_gen;
+			if (_point_gen[0]){
+				tech_fulfilment += _point_gen[0];
 				array_push(tech_suppliers, _unit);
 			}
 		}
@@ -149,7 +150,7 @@ function ShipStruct() constructor{
 	static update_ship_combat_data = function(){
 		get_occupants();
 		fetch_captain();
-		tech_fulfilment();
+		calc_tech_fulfilment(false);
 		dock_space();
 	}
 

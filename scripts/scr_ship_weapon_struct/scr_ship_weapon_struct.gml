@@ -21,6 +21,7 @@ global.ship_weapon_defualts  = {
 	size : 2,
 }
 
+
 function ShipWeaponExplosion(explosion_sprite, x, y, scale = 1) constructor{
 	self.x = x;
 	self.y = y;
@@ -39,6 +40,7 @@ function ShipWeaponExplosion(explosion_sprite, x, y, scale = 1) constructor{
 
 	 array_push(obj_fleet.explosions, self);
 }
+
 
 function ShipWeapon(weapon_name, overide_data={}) constructor{
 	if (struct_exists(global.ship_weapons_stats, weapon_name)){

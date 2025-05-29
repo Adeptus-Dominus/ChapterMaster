@@ -11,6 +11,28 @@ function fleet_advisor_data_setup(){
         view_ship_occupants : "",
         weapon_equip:false
     }
+    var _goto_button = new icon_button();
+
+    _goto_button.set_sprite_data(1,1,spr_view_small, 0);
+    with (_goto_button){
+        click_method = function(){
+            var _temps = obj_controller.fleet_temps;
+            var _ship = _temps.view_ship_struct;
+            var _select_data = {
+                purpose : $"{_ship.name} technical suppliers",
+                purpose_code : "ship_tech_suppliers",
+                number : 0,
+                ship : _temps.view_ship,
+            }
+            group_selection(_ship.tech_suppliers,_select_data);
+        }
+
+        hover_method = function(){
+            tooltip_draw("Click to viewmarines currently contributing to fullfilling technical requirements");
+        }
+    }  
+    
+    fleet_temps.tech_fulfilment_view = _goto_button;
 	
     ship_slate = new DataSlate();
     list_slate = new DataSlate();
@@ -374,7 +396,22 @@ function scr_fleet_advisor(){
             draw_set_halign(fa_left);
 
 
-
+            if (_ship.tech_fulfilment < _ship.minimum_tech_requirements){
+                draw_set_color(CM_RED_COLOR);
+            }
+            draw_text_ext(xx + 200, yy + 450, $"Tech Fulfillment\n{_ship.tech_fulfilment}/{_ship.minimum_tech_requirements}",-1, 130);
+            if (scr_hit(xx + 200, yy + 440, xx + 330, yy + 490)){
+                tooltip_draw("Ships without a minimum amount of technical capabilities onboard suffer greatly in combat situations and are prone to malfunctions, weapons jams, slower reload times and a range of other issues. Make sure ships have a contingent of techmarines or marines with high enough technical knowledge to fulfil a ships needs");
+            }
+            var _view_button = fleet_temps.tech_fulfilment_view;
+            _view_button.x1 = 335;
+            _view_button.y1 = 465;
+            _view_button.relative_x = xx;
+            _view_button.relative_y = yy;
+            _view_button.update();
+            _view_button.draw();
+           
+            draw_set_color(c_gray);
             draw_text_ext(xx + 42, yy + 450, $"Health: {_ship.ship_hp_percentage()}",-1, 130);
             draw_text_ext(xx + 42, yy + 500, $"Shields: {_ship.shields}" ,-1, 130);
             draw_text_ext(xx + 42, yy + 550, $"Armour: {_ship.front_armour},{_ship.side_armour}, {_ship.rear_armour}",-1, 130);

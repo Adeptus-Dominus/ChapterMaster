@@ -3,6 +3,7 @@
 function scr_manage_task_selector(){
 	if (exit_button.draw_shutter(xx+400,yy+70, "Exit", 0.5, true)){
 			switch(selection_data.purpose_code){
+				case "ship_tech_suppliers":
 				case "ship_captain":
 					var _ship = fetch_ship(selection_data.ship);
 	               	exit_adhoc_manage();

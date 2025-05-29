@@ -168,15 +168,19 @@ function icon_button() : UnitButtonObject() constructor{
 
 	click_method = false;
 	hover_method = false;
-	function set_sprite_data(x_scale=1,y_scale=1, sprite, subimg){
-        w = sprite_get_width(sprite)*x_scale;
-        h = sprite_get_height(sprite)*y_scale;
-        x2 = x1 + w;
-        y2 = y1 + h;
+	static set_sprite_data = function(x_scale=1,y_scale=1, sprite, subimg){
         self.x_scale = x_scale;
         self.y_scale = y_scale;
         self.sprite = sprite;
         self.subimg = subimg;
+        update();
+    }
+
+    static update = function(){
+        w = sprite_get_width(sprite)*x_scale;
+        h = sprite_get_height(sprite)*y_scale;
+        x2 = x1 + w;
+        y2 = y1 + h;    	
     }
     relative_x = 0;
     relative_y = 0;
