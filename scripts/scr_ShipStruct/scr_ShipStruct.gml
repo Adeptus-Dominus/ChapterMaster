@@ -124,15 +124,22 @@ function ShipStruct() constructor{
 				possible_dock = false;
 			} else {
 				_planet = system_feature_bool(star.p_feature,P_features.ShipDock);
-				if (_planet == 0){
+				if (_planet <= 0){
 					possible_dock = false;
 				} else {
-					var _dock = return_planet_features(star.p_feature[_planet], P_features.ShipDock)[0];
-					if (_dock.has_dock_space(size)){
-						possible_dock = _dock;
+					var _dock = return_planet_features(star.p_feature[_planet], P_features.ShipDock);
+					if (array_length(_dock)){
+						_dock = _dock[0];
+						if (_dock.has_dock_space(size)){
+							possible_dock = _dock;
+							possible_dock.planet = _planet;
+						} else {
+							possible_dock = false;
+						}						
 					} else {
 						possible_dock = false;
 					}
+
 				}
 			}
 		}
@@ -223,10 +230,13 @@ function ShipStruct() constructor{
 			var draw_coords = [corner[0]+ coords[0]-_box_size, corner[1]+coords[1]-_box_size, corner[0]+coords[0]+_box_size, corner[1]+coords[1]+_box_size];
 			if (scr_hit(draw_coords)){
 				draw_set_colour(c_green);
-				tooltip_draw($"Emplacement direction : {pos.facing}\nEmplacement Size : {pos.slot_size}\nclick to equip new weapon");
+				var _re_equip_s = docked ? "\nclick to equip new weapon" : "\ndock ship to re-equip";
+				tooltip_draw($"Emplacement direction : {pos.facing}\nEmplacement Size : {pos.slot_size}{_re_equip_s}");
 				obj_controller.weapon_slate.weapon = pos.weapon;
 				obj_controller.weapon_slate.slot = pos;
-
+				if (docked && scr_click_left()){
+					obj_controller.fleet_temps.weapon_equip = true;
+				}
 			} else {
 				draw_set_colour(c_blue);
 			}
@@ -234,7 +244,17 @@ function ShipStruct() constructor{
 		}
 		if (possible_dock != false){
 			var _dock_button = draw_unit_buttons([x+280 - (string_width("Dock Ship")/2), y+300], "Dock Ship");
-
+			if (point_and_click(_dock_button)){
+				docked = possible_dock.uid;
+				possible_dock.space_taken += size;
+				var _loc = location;
+				for (var i=0;i<array_length(obj_ini.ship_data);i++){
+					var _ship = obj_ini.ship_data[i];
+					if (_ship.location = _loc){
+						_ship.dock_space();
+					}
+				}
+			}
 		}
 		draw_set_font(fnt_40k_30b);
 		draw_set_halign(fa_left);

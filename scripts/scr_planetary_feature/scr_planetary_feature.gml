@@ -208,6 +208,30 @@ function PlanetFeature(feature_type, other_data={}) constructor{
 	move_data_to_current_scope(other_data);
 }
 
+function search_system_features_uid(system, uuid){
+	var sys_bool = false;
+	for (var sys =1; sys<5; sys++){
+		sys_bool = search_planet_features_uid(system[sys], uuid)
+		if (sys_bool!=false){
+			break;
+		}
+	}
+	return sys_bool;
+}
+
+function search_planet_features_uid(planet, uuid){
+	var feature_count = array_length(planet);
+	var _feature = false;
+	if (feature_count > 0){
+		for (var fc = 0; fc < feature_count; fc++){
+			if (planet[fc].uid == uuid){
+				return planet[fc];
+			}
+		}
+	}
+	return _feature;	
+}
+
 // returns an array of all the positions that a certain planet feature occurs on th p_feature array of a planet
 // this works for both planet_Features and planet upgrades
 function search_planet_features(planet, search_feature){

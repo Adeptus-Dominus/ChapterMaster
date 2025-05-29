@@ -9,6 +9,7 @@ function fleet_advisor_data_setup(){
         view_ship : -1,
         view_ship_struct : false,
         view_ship_occupants : "",
+        weapon_equip=false
     }
 	
     ship_slate = new DataSlate();
@@ -74,6 +75,168 @@ function fleet_advisor_data_setup(){
         _text = string_replace(_text, "We", "You");
     }
     fleet_temps.advisor_text = _text;
+
+    var _feet_surface = surface_create(685, 752);
+    surface_set_target(_feet_surface);
+    fleet_temps.goto_buttons = [];
+    fleet_temps.hitboxes = [];
+    fleet_select_surface();
+    surface_reset_target();
+    fleet_temps.fleet_list_surface = _feet_surface;
+}
+
+function fleet_select_surface(){
+    var _columns = {
+        name: {
+            w: 176,
+            text: "Name",
+            h_align: fa_left,
+            y1 : 0,
+        },
+        class: {
+            w: 154,
+            text: "Class",
+            h_align: fa_left,
+            y1 : 0,
+        },
+        location: {
+            w: 130,
+            text: "Location",
+            h_align: fa_left,
+            y1 : 0,
+        },
+        hp: {
+            w: 44,
+            text: "HP",
+            h_align: fa_right,
+            y1 : 0,
+        },
+        carrying: {
+            w: 84,
+            text: "Carrying",
+            h_align: fa_right,
+            y1 : 0,
+        },
+    };
+
+    var _column_x = 0 + 40
+    var yy = 0;
+    var xx = 0;
+    var _header_offset = 80;
+    var _columns_array = ["name", "class", "location", "hp", "carrying"];
+
+    for (var i = 0; i < array_length(_columns_array); i++) {
+        with(_columns[$ _columns_array[i]]) {
+            x1 = _column_x;
+            _column_x += w;
+            x2 = x1 + w;
+            y1 = yy + _header_offset;
+            header_y = (y1 - 2);
+            switch (h_align) {
+                case fa_right:
+                    header_x = x2;
+                    break;
+                case fa_center:
+                    header_x = (x1 + x2) / 2;
+                    break;
+                case fa_left:
+                default:
+                    header_x = x1;
+                    break;
+            }
+            draw_set_halign(h_align);
+            draw_text(header_x, header_y, text);
+        }
+    }
+    draw_set_halign(fa_left);
+
+    var _row_height = 20;
+    var _row_gap = 2;
+    for (var i = ship_current; i < ship_current + 34; i++) {
+        if (i >= array_length(obj_ini.ship_data)){
+            continue;
+        }
+
+        var _row_y = _columns.name.y1 + _row_height + (i * (_row_height + _row_gap));
+
+        var _goto_button = new icon_button();
+
+        _goto_button.x1 = _columns.location.x1 - 20;
+        _goto_button.y1 = _row_y + 4;
+
+        _goto_button.set_sprite_data(1,1,spr_view_small, 0);
+        _goto_button.id = i;
+        with (_goto_button){
+            click_method = function(){
+                var i = id;
+                with(obj_p_fleet) {
+                    var _fleet_ships = fleet_full_ship_array();
+                    if (array_contains(_fleet_ships, i)){
+                        obj_controller.x = x;
+                        obj_controller.y = y;
+                        obj_controller.menu = 0;
+                        with(obj_fleet_show) {
+                            instance_destroy();
+                        }
+                        instance_create(x, y, obj_fleet_show);                              
+                    }
+                }
+            }
+        }
+
+        array_push(fleet_temps.goto_buttons, _goto_button)
+
+        var _ship = obj_ini.ship_data[i];
+
+        with(_columns) {
+            name.contents = string_truncate(_ship.name, _columns.name.w - 6);
+            class.contents = _ship.class;
+            location.contents = _ship.location;
+            hp.contents = $"{round(_ship.hp / _ship.max_hp * 100)}%";
+            carrying.contents = $"{_ship.carrying}/{_ship.capacity}";
+        }
+
+        for (var g = 0; g < array_length(_columns_array); g++) {
+            with(_columns[$ _columns_array[g]]) {
+                draw_set_halign(h_align);
+                switch (h_align) {
+                    case fa_right:
+                        draw_text(x2, _row_y, contents);
+                        break;
+                    case fa_center:
+                        draw_text((x1 + x2) / 2, _row_y, contents);
+                        break;
+                    case fa_left:
+                    default:
+                        draw_text(x1, _row_y, contents);
+                        break;
+                    }
+            }
+        }
+        var _hit_box = {
+            x1 : xx + 25,
+            x2 : xx + 1546,
+            y1 : _row_y,
+            y2 : _row_y + _row_height,
+            ship : obj_ini.ship_data[i],
+            id : i,
+            relative_x : 0,
+            relative_y : 0,
+        }
+        with (_hit_box){
+            enter = function(){
+                if (scr_hit(relative_x + x1, relative_y + y1, relative_x+ x2, relative_y + y2)) {
+                    if (obj_controller.fleet_temps.view_ship != id){
+                        obj_controller.fleet_temps.view_ship = id;
+                        obj_controller.fleet_temps.view_ship_struct = ship;
+                        obj_controller.fleet_temps.view_ship_occupants = scr_ship_occupants(id);
+                    }
+                    tooltip_draw($"Carrying ({ship.carrying}/{ship.capacity}");
+                }                
+            }            
+        }
+        array_push(fleet_temps.hitboxes, _hit_box);
+    }
 }
 
 
@@ -125,149 +288,24 @@ function scr_fleet_advisor(){
     // TODO: Probably a good idea to turn this whole interactive list/sheet generating logic into a constructor, that can be reused on many screens.
     // I have no passion for this atm.
 
-    list_slate.inside_method = function(){
-
-        var _columns = {
-            name: {
-                w: 176,
-                text: "Name",
-                h_align: fa_left,
-                y1 : 0,
-            },
-            class: {
-                w: 154,
-                text: "Class",
-                h_align: fa_left,
-                y1 : 0,
-            },
-            location: {
-                w: 130,
-                text: "Location",
-                h_align: fa_left,
-                y1 : 0,
-            },
-            hp: {
-                w: 44,
-                text: "HP",
-                h_align: fa_right,
-                y1 : 0,
-            },
-            carrying: {
-                w: 84,
-                text: "Carrying",
-                h_align: fa_right,
-                y1 : 0,
-            },
-        };
-
-        var _column_x = list_slate.XX + 40
-        var yy = list_slate.YY;
-        var xx = list_slate.XX;
-        var _header_offset = 80;
-        var _columns_array = ["name", "class", "location", "hp", "carrying"];
-
-        for (var i = 0; i < array_length(_columns_array); i++) {
-            with(_columns[$ _columns_array[i]]) {
-                x1 = _column_x;
-                _column_x += w;
-                x2 = x1 + w;
-                y1 = yy + _header_offset;
-                header_y = (y1 - 2);
-                switch (h_align) {
-                    case fa_right:
-                        header_x = x2;
-                        break;
-                    case fa_center:
-                        header_x = (x1 + x2) / 2;
-                        break;
-                    case fa_left:
-                    default:
-                        header_x = x1;
-                        break;
+    if (obj_controller.fleet_temps.weapon_equip == false){
+        list_slate.inside_method = function(){
+            draw_surface(fleet_temps.fleet_list_surface, list_slate.XX, list_slate.YY);
+            var _loop = max(array_length(fleet_temps.goto_buttons), array_length(fleet_temps.hitboxes));
+            for (var i=0;i<_loop;i++){
+                if (i<array_length(fleet_temps.goto_buttons)){
+                    var _button = fleet_temps.goto_buttons[i];
+                    _button.relative_x = list_slate.XX;
+                    _button.relative_y = list_slate.YY;
+                    _button.draw();
                 }
-                draw_set_halign(h_align);
-                draw_text(header_x, header_y, text);
+                if (i<array_length(fleet_temps.hitboxes)){
+                    var _hit = fleet_temps.hitboxes[i];
+                    _hit.relative_x = list_slate.XX;
+                    _hit.relative_y = list_slate.YY;                
+                    _hit.enter();
+                }            
             }
-        }
-        draw_set_halign(fa_left);
-
-        var _row_height = 20;
-        var _row_gap = 2;
-        for (var i = ship_current; i < ship_current + 34; i++) {
-            if (i >= array_length(obj_ini.ship_data)){
-                continue;
-            }
-
-            var _row_y = _columns.name.y1 + _row_height + (i * (_row_height + _row_gap));
-            draw_rectangle(xx + 25, _row_y, xx + list_slate.width-50, _row_y + _row_height, 1);
-
-            var _goto_button = {
-                x1: _columns.location.x1 - 20,
-                y1: _row_y + 4,
-                sprite: spr_view_small,
-                click: function() {
-                    return point_and_click([x1, y1, x2, y2]);
-                }
-            };
-            with(_goto_button) {
-                w = sprite_get_width(sprite);
-                h = sprite_get_height(sprite);
-                x2 = x1 + w;
-                y2 = y1 + h;
-                draw_sprite(sprite, 0, x1, y1);
-            }
-            var _ship = obj_ini.ship_data[i];
-
-            with(_columns) {
-                name.contents = string_truncate(_ship.name, _columns.name.w - 6);
-                class.contents = _ship.class;
-                location.contents = _ship.location;
-                hp.contents = $"{round(_ship.hp / _ship.max_hp * 100)}%";
-                carrying.contents = $"{_ship.carrying}/{_ship.capacity}";
-            }
-
-            for (var g = 0; g < array_length(_columns_array); g++) {
-                with(_columns[$ _columns_array[g]]) {
-                    draw_set_halign(h_align);
-                    switch (h_align) {
-                        case fa_right:
-                            draw_text(x2, _row_y, contents);
-                            break;
-                        case fa_center:
-                            draw_text((x1 + x2) / 2, _row_y, contents);
-                            break;
-                        case fa_left:
-                        default:
-                            draw_text(x1, _row_y, contents);
-                            break;
-                        }
-                }
-            }
-
-            if scr_hit(xx + 25, _row_y, xx + 1546, _row_y + _row_height) {
-                var _struct = obj_ini.ship_data[i];
-                if (fleet_temps.view_ship != i){
-                    fleet_temps.view_ship = i;
-                    fleet_temps.view_ship_struct = _struct;
-                    fleet_temps.view_ship_occupants = scr_ship_occupants(i);
-                }
-                tooltip_draw($"Carrying ({_struct.carrying}/{_struct.capacity}");
-                if (_goto_button.click()) {
-                    with(obj_p_fleet) {
-                        var _fleet_ships = fleet_full_ship_array();
-                        if (array_contains(_fleet_ships, i)){
-                            obj_controller.x = x;
-                            obj_controller.y = y;
-                            obj_controller.menu = 0;
-                            with(obj_fleet_show) {
-                                instance_destroy();
-                            }  
-                            instance_create(x, y, obj_fleet_show);                              
-                        }
-                    }
-                }
-            }
-
         }
     }
 

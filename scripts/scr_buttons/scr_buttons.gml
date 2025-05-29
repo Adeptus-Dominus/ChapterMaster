@@ -164,6 +164,45 @@ function UnitButtonObject(data = false) constructor{
 	}
 }
 
+function icon_button() : UnitButtonObject() constructor{
+
+	click_method = false;
+	hover_method = false;
+	function set_sprite_data(x_scale=1,y_scale=1, sprite, subimg){
+        w = sprite_get_width(sprite)*x_scale;
+        h = sprite_get_height(sprite)*y_scale;
+        x2 = x1 + w;
+        y2 = y1 + h;
+        self.x_scale = x_scale;
+        self.y_scale = y_scale;
+        self.sprite = sprite;
+        self.subimg = subimg;
+    }
+    relative_x = 0;
+    relative_y = 0;
+
+	static draw = function(allow_click=true){
+		var xx = x1 + relative_x;
+		var yy = y1 + relative_y;
+		var xx2 = x2 + relative_x;
+		var yy2 = y2 + relative_y;		
+
+		draw_sprite_ext(sprite, subimg, xx, yy, x_scale, y_scale, 0, c_white, 1);
+		if (hover_method!=false){
+			if (scr_hit(xx, yy, xx2, yy2)){
+				hover_method();
+			}
+		}
+		if (click_method != false){
+			if (point_and_click([xx, yy, xx2, yy2])){
+				click_method();
+			}
+		}
+	}
+	
+}
+
+
 function PurchaseButton(req) : UnitButtonObject() constructor{
 	req_value = req;
 	static draw = function(allow_click=true){
