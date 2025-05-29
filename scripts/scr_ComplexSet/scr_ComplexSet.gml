@@ -327,6 +327,35 @@ function ComplexSet(_unit) constructor {
 				if (struct_exists(_mod, "overides")) {
 					_overides = _mod.overides;
 				}
+
+				if (struct_exists(_mod, "body_parts")){
+					var _viable = true;
+					var _body_areas = struct_get_names(_mod.body_parts);
+					for (var b=0;b<array_length(_body_areas);b++){
+						var _area =_body_areas[b];
+						if (!struct_exists(unit.body[$ _area],_mod.body_parts[$ _area])){
+							_viable = false;
+							break;							
+						}
+					}
+					if (!_viable){
+						if (!check_exception("body_parts")) {
+							continue;
+						}
+					}
+				}
+
+				if (struct_exists(_mod, "prevent_others")) {
+					replace_area(_mod.position, _mod.sprite, _overides);
+					array_push(blocked, _mod.position);
+					if (struct_exists(_mod, "ban")) {
+						for (var b = 0; b < array_length(_mod.ban); b++) {
+							if (!array_contains(banned, _mod.ban[b])) {
+								array_push(banned, _mod.ban[b]);
+							}
+						}
+					}
+				}
 				if (struct_exists(_mod, "assign_by_rank")) {
 					var _area = _mod.position;
 					var _status_level = _mod.assign_by_rank;

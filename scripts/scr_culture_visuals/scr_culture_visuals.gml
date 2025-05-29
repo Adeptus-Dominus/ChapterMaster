@@ -918,7 +918,79 @@ global.modular_drawing_items = [
         sprite: spr_indomitus_right_knee_crux,
         armours : ["Terminator Armour"],
         max_saturation : 30,
-    },                                                              
+    },
+    {
+        position : "right_eye",
+        sprite: spr_indomitus_right_eye_bionic,
+        body_types: [ 2],
+        body_parts :{
+            "right_eye" : "bionic",
+        }
+    },
+    {
+        position : "left_eye",
+        sprite: spr_indomitus_left_eye_bionic,
+        body_types: [ 2],
+        body_parts :{
+            "left_eye" : "bionic",
+        }
+    },
+    {
+        position : "left_leg",
+        sprite: spr_indomitus_left_leg_bionic,
+        body_types: [ 2],
+        body_parts :{
+            "left_leg" : "bionic",
+        },
+        prevent_others : true,
+        ban : ["left_knee","knees"],
+    }, 
+    {
+        position : "right_leg",
+        sprite: spr_indomitus_right_leg_bionic,
+        body_types: [ 2],
+        body_parts :{
+            "right_leg" : "bionic",
+        },
+        prevent_others : true,
+        ban : ["right_knee","knees"],
+    },
+    {
+        position : "left_leg",
+        sprite: spr_bionic_leg_left,
+        body_types: [ 0],
+        body_parts :{
+            "left_leg" : "bionic",
+        },
+        prevent_others : true,
+        ban : ["left_knee","knees"],
+    }, 
+    {
+        position : "right_leg",
+        sprite: spr_bionic_leg_right,
+        body_types: [ 0],
+        body_parts :{
+            "right_leg" : "bionic",
+        },
+        prevent_others : true,
+        ban : ["right_knee","knees"],
+    }, 
+    {
+        position : "right_eye",
+        sprite: spr_bionic_right_eyes,
+        body_types: [0],
+        body_parts :{
+            "right_eye" : "bionic",
+        }
+    },
+    {
+        position : "left_eye",
+        sprite: spr_bionic_left_eyes,
+        body_types: [0],
+        body_parts :{
+            "left_eye" : "bionic",
+        }
+    },                                                                  
 ];
 
 

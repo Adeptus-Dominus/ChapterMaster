@@ -494,32 +494,6 @@ function scr_draw_unit_image(_background = false) {
                     }
                     draw_sprite(spr_gear_halo, halo_type + halo_color, x_surface_offset, y_surface_offset + halo_offset_y);
                 }
-
-                if (armour_type == ArmourType.Terminator && complex_livery) {
-                    for (var part = 0; part < array_length(_body_parts); part++) {
-                        if (struct_exists(body[$ _body_parts[part]], "bionic")) {
-                            var body_part = _body_parts[part];
-                            var bionic = body[$ body_part][$ "bionic"];
-                            switch (body_part) {
-                                case "left_eye":
-                                    complex_set.add_to_area("left_eye", spr_indomitus_left_eye_bionic);
-                                    break;
-
-                                case "right_eye":
-                                    complex_set.add_to_area("right_eye", spr_indomitus_right_eye_bionic);
-                                    break;
-
-                                case "left_leg":
-                                    complex_set.add_to_area("left_leg", spr_indomitus_left_leg_bionic);
-                                    break;
-
-                                case "right_leg":
-                                    complex_set.add_to_area("right_leg", spr_indomitus_right_leg_bionic);
-                                    break;
-                            }
-                        }
-                    }
-                }
                 if (armour_type == ArmourType.Normal && (!robes_bypass || !robes_hood_bypass)) {
                     var robe_offset_x = 0;
                     var robe_offset_y = 0;
@@ -549,34 +523,9 @@ function scr_draw_unit_image(_background = false) {
                     }
                 }
 
-                if (armour_type == ArmourType.Normal && complex_livery) {
-                    if (struct_exists(body[$ "right_leg"], "bionic")) {
-                        complex_set.replace_area("right_leg", spr_bionic_leg_right);
-                    }
-                }
-                if (armour_type == ArmourType.Normal && complex_livery) {
-                    if (struct_exists(body[$ "left_leg"], "bionic")) {
-                        complex_set.replace_area("left_leg", spr_bionic_leg_left);
-                    }
-                }
-
                 if (complex_livery) {
-                    for (var part = 0; part < array_length(_body_parts); part++) {
-                        if (struct_exists(body[$ _body_parts[part]], "bionic")) {
-                            if (armour_type == ArmourType.Normal) {
-                                var body_part = _body_parts[part];
-                                var bionic = body[$ body_part][$ "bionic"];
-                                switch (body_part) {
-                                    case "left_eye":
-                                        complex_set.add_to_area("left_eye", spr_bionic_left_eyes);
-                                        break;
-
-                                    case "right_eye":
-                                        complex_set.add_to_area("right_eye", spr_bionic_right_eyes);
-                                        break;
-                                }
-                            }
-                        }
+                    if (armour_type == ArmourType.Normal && psy_hood) {
+                        complex_set.replace_area("crown", spr_psy_hood_complex);
                     }
                 }
                 // Draw torso
