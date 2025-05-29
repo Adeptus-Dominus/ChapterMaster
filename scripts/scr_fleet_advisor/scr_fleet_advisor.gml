@@ -9,7 +9,7 @@ function fleet_advisor_data_setup(){
         view_ship : -1,
         view_ship_struct : false,
         view_ship_occupants : "",
-        weapon_equip=false
+        weapon_equip:false
     }
 	
     ship_slate = new DataSlate();
@@ -86,6 +86,8 @@ function fleet_advisor_data_setup(){
 }
 
 function fleet_select_surface(){
+    draw_set_font(fnt_40k_14b);
+    draw_set_color(c_white);
     var _columns = {
         name: {
             w: 176,
@@ -239,7 +241,18 @@ function fleet_select_surface(){
     }
 }
 
+function setup_weapon_selection_equip(){
+    var _weps = obj_ini.ship_weapons;
+    var _slot = obj_controller.fleet_temps.wep_change_slot;
+    for (var i=0;i<array_length(_weps);i++){
+        var _wep = _weps[i];
+        if (_slot.size < _wep.size){
+            continue;
+        }
+        
+    }
 
+}
 
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
@@ -404,7 +417,6 @@ function scr_fleet_advisor(){
         }
             
             
-
         weapon_slate.draw_with_dimensions(xx, yy+66, 340, 400);
     }
     // 31 wide

@@ -236,6 +236,7 @@ function ShipStruct() constructor{
 				obj_controller.weapon_slate.slot = pos;
 				if (docked && scr_click_left()){
 					obj_controller.fleet_temps.weapon_equip = true;
+					obj_controller.fleet_temps.wep_change_slot = slot;
 				}
 			} else {
 				draw_set_colour(c_blue);
