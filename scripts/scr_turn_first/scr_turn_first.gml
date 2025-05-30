@@ -46,22 +46,22 @@ function scr_turn_first() {
 	host_p=0;
 
 	if (peace_check>0){
-	    var baddy,
-	    var total = 0;
+	    var _baddy = 0;
+	    var _total = 0;
 	    with(obj_star){
 	        if (owner>5){
-	            baddy = 0;
+	            _baddy = 0;
 	            o = 0;
 	            repeat(planets){
 	                o+=1;
-	                if (p_orks[o]+p_tyranids[o]+p_chaos[o]+p_traitors[o]+p_necrons[o]>=3) then baddy+=1;
+	                if (p_orks[o]+p_tyranids[o]+p_chaos[o]+p_traitors[o]+p_necrons[o]>=3) then _baddy+=1;
 	            }
-	            if (baddy>0) {
-	                total++;
+	            if (_baddy>0) {
+	                _total++;
 	            }
 	        }
 	    }
-	    if (total<=3){
+	    if (_total<=3){
 	        peace_check=2;
 	    }	
 	    if (peace_check==2){	
