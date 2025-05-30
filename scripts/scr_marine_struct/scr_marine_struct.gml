@@ -865,7 +865,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     loyalty = 0;
     static alter_loyalty = function(alt_val){
         if (alt_val < 0){
-            if (has_trait("honerable")){
+            if (has_trait("honorable")){
                 alt_val/=2;
             }
             if (has_trait("jaded")){
