@@ -599,7 +599,7 @@
         ],
         "luck" : -2,
         "flavour_text": "This Marine can't shake the feeling that his days are numbered; in battle enemy attacks seem to find their way to softer sections of armor",
-        "effect" : "-10 modifier for rolls against constiutution",
+        "effect" : "-10 modifier for rolls against constitution",
     },
     "fast_learner": {
         "display_name": "Quick Learner",
