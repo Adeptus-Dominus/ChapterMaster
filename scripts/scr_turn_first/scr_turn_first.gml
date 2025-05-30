@@ -2,16 +2,13 @@ function scr_turn_first() {
     try {
         // I believe this is ran at the start of the end of the turn.  That would make sense, right?
 
-        var _identifiable = 0;
         var _unload_i = 0;
-        var _cur_arti;
         for (var i = 0, l = array_length(obj_ini.artifact); i < l; i++) {
-            _identifiable = 0;
             _unload_i = i;
             if (obj_ini.artifact[_unload_i] == "") {
                 continue;
             }
-            _cur_arti = obj_ini.artifact_struct[_unload_i];
+            var _cur_arti = obj_ini.artifact_struct[_unload_i];
             if (_cur_arti.loc() == "") {
                 var _valid_ship_i = get_valid_player_ship();
                 if (_valid_ship_i > -1) {
@@ -39,24 +36,22 @@ function scr_turn_first() {
                     scr_alert("green", "artifact", "Artifact (" + string(obj_ini.artifact[_unload_i]) + ") has been identified.", 0, 0);
                 }
             }
-            _identifiable = false;
         }
-        _unload_i = 0;
 
         var _peace_check = obj_controller.turn > 100;
         // peace_check=1;// Testing
 
         if (_peace_check > 0) {
-            var _baddy = 0;
             var _total = 0;
+
             with (obj_star) {
                 if (owner > 5) {
-                    _baddy = 0;
-                    o = 0;
+                    var _baddy = 0;
+                    var o = 0;
                     repeat (planets) {
-                        o += 1;
+                        o++;
                         if (p_orks[o] + p_tyranids[o] + p_chaos[o] + p_traitors[o] + p_necrons[o] >= 3) {
-                            _baddy += 1;
+                            _baddy++;
                         }
                     }
                     if (_baddy > 0) {
@@ -64,11 +59,9 @@ function scr_turn_first() {
                     }
                 }
             }
+
             if (_total <= 3) {
-                _peace_check = 2;
-            }
-            if (_peace_check == 2) {
-                if ((obj_controller.turn >= 150) && (obj_controller.faction_defeated[10] == 0) && (obj_controller.known[eFACTION.Chaos] == 0) && (obj_controller.faction_gender[10] == 2)) {
+                if ((obj_controller.turn >= 150) && (obj_controller.faction_defeated[eFACTION.Chaos] == 0) && (obj_controller.known[eFACTION.Chaos] == 0) && (obj_controller.faction_gender[eFACTION.Chaos] == 2)) {
                     // if (turn>=100000) and (faction_defeated[10]=0) and (known[eFACTION.Chaos]=0){faction_gender[10]=2;
                     spawn_chaos_warlord();
                 } else {
