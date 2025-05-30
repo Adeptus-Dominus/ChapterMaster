@@ -4,7 +4,8 @@ function scr_ui_settings() {
     // Var declaration
     var xx, yy;
     var tool1 = "", tool2 = "";
-    var che, cx, cy;
+    var che = false;
+	var cx, cy;
     var x5 = 0, y5 = 0, x6 = 0;
     var too_img = 0;
     xx = __view_get(e__VW.XView, 0) + 0;
@@ -56,17 +57,17 @@ function scr_ui_settings() {
         obj_cursor.image_index = 0;
 
         if ((formating > 3) && (obj_cursor.dragging == 0)) {
-            if ((scr_hit(xx + 800 - (bar_wid / 2), yy + 66, xx + 800 + (bar_wid / 2), yy + 66 + string_height("LOL")) == false) && scr_click_left()) {
-                text_bar = 0;
-            }
-            if (scr_hit(xx + 800 - (bar_wid / 2), yy + 66, xx + 800 + (bar_wid / 2), yy + 66 + string_height("LOL")) == true) {
+            if (scr_hit([xx + 800 - (bar_wid / 2), yy + 66, xx + 800 + (bar_wid / 2), yy + 66 + string_height("LOL")])) {
                 obj_cursor.image_index = 2;
                 if (scr_click_left() && (text_bar == 0)) {
                     text_bar = 1;
                     keyboard_string = bat_formation[formating];
                 }
+            } else {
+				text_bar = 0;
             }
         }
+
         draw_set_alpha(1);
         if ((bat_formation[formating] != "") || (text_bar > 0)) {
             if (formating > 3) {
@@ -85,72 +86,65 @@ function scr_ui_settings() {
         draw_set_font(fnt_40k_14);
         draw_set_halign(fa_left);
 
-        if (bat_formation_type[formating] != 1) {
-            che = 1;
-        }
         if (bat_formation_type[formating] == 1) {
-            che = 2;
-        }
+            che = true;
+        } else {
+            che = false;
+		}
+
         cx = xx + 757;
-        cy = yy + 115;
+        cy = yy + 120;
 
         // Defines the attack command
-        draw_text(cx, cy, "Attack");
+		var _formation_name = "Attack Formation";
+        draw_text(cx, cy, _formation_name);
+
         cx -= 35;
         cy -= 4;
-
         if (formating <= 3) {
             draw_set_alpha(0.5);
         }
-        draw_sprite(spr_creation_check, che + 1, cx, cy);
+        draw_sprite(spr_creation_check, 2 + che, cx, cy);
         draw_set_alpha(1);
-        // Attack command tool tips
-        if (scr_hit(cx + 31, cy, cx + 260, cy + 20) == true) {
-            tool1 = "Attack";
-            tool2 = "Allows the use of vehicles, and bikes, but prevents this formation from being used during Raids.";
-        }
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && scr_click_left() && (formating > 3)) {
-            var onceh = 0;
 
-            if ((onceh == 0) && ((bat_formation_type[formating] == 0) || (bat_formation_type[formating] == 2))) {
-                onceh = 1;
-                bat_formation_type[formating] = 1;
-                scr_ui_formation_bars();
-            }
+        // Attack command tool tips
+        if (scr_hit(cx, cy, cx + string_width(_formation_name), cy + sprite_get_height(spr_creation_check))) {
+            tool1 = _formation_name;
+            tool2 = "Can't be used in Raids. Can use any vehicles.";
+			if (scr_click_left() && formating > 3 && bat_formation_type[formating] != 1) {
+				bat_formation_type[formating] = 1;
+				scr_ui_formation_bars();
+			}
         }
-        if (bat_formation_type[formating] != 2) {
-            che = 1;
-        }
+
         if (bat_formation_type[formating] == 2) {
-            che = 2;
-        }
+            che = true;
+        } else {
+            che = false;
+		}
 
         // Defines the Raid action
         cx = xx + 757;
-        cy = yy + 150;
-        draw_text(cx, cy, "Raid");
+        cy = yy + 155;
+		_formation_name = "Raid Formation";
+        draw_text(cx, cy, _formation_name);
 
         cx -= 35;
         cy -= 4;
         if (formating <= 3) {
             draw_set_alpha(0.5);
         }
-        draw_sprite(spr_creation_check, che + 1, cx, cy);
+        draw_sprite(spr_creation_check, 2 + che, cx, cy);
         draw_set_alpha(1);
-        // Raid action tooltip
-        if (scr_hit(cx + 31, cy, cx + 260, cy + 20) == true) {
-            tool1 = "Raid";
-            tool2 = "Prevents the use of vehicles, and bikes, but allows this formation to be used for Raids.";
-        }
-        if ((scr_hit(cx, cy, cx + 32, cy + 32) == true) && scr_click_left() && (formating > 3)) {
-            var onceh;
-            onceh = 0;
 
-            if ((onceh == 0) && ((bat_formation_type[formating] == 0) || (bat_formation_type[formating] == 1))) {
-                onceh = 1;
-                bat_formation_type[formating] = 2;
-                scr_ui_formation_bars();
-            }
+        // Raid action tooltip
+        if (scr_hit(cx, cy, cx + string_width(_formation_name), cy + sprite_get_height(spr_creation_check))) {
+            tool1 = _formation_name;
+            tool2 = "Can only be used in Raids. Prevents the use of all vehicles aside from Dreadnoughts and Land Speeders. Starts in melee.";
+			if (scr_click_left() && formating > 3 && bat_formation_type[formating] != 2) {
+				bat_formation_type[formating] = 2;
+				scr_ui_formation_bars();
+			}
         }
 
         draw_set_color(c_gray);
@@ -294,16 +288,19 @@ function scr_ui_settings() {
             scr_image("formation", too_img, xx + 1271, yy + 252, 239, 297);
         }
 
-        /*
-	    if (tool1!=""){
-	        draw_set_alpha(1);
-	        draw_set_font(fnt_40k_14);draw_set_halign(fa_left);draw_set_color(0);
-	        draw_rectangle(mouse_x+18,mouse_y+20,mouse_x+string_width_ext(tool2,-1,500)+24,mouse_y+44+string_height_ext(tool2,-1,500),0);
-	        draw_set_color(c_gray);
-	        draw_rectangle(mouse_x+18,mouse_y+20,mouse_x+string_width_ext(tool2,-1,500)+24,mouse_y+44+string_height_ext(tool2,-1,500),1);
-	        draw_set_font(fnt_40k_14b);draw_text(mouse_x+22,mouse_y+22,string(tool1));
-	        draw_set_font(fnt_40k_14);draw_text_ext(mouse_x+22,mouse_y+42,string(tool2),-1,500);
-	    }*/
+		if (tool1 != "") {
+			draw_set_alpha(1);
+			draw_set_font(fnt_40k_14);
+			draw_set_halign(fa_left);
+			draw_set_color(0);
+			draw_rectangle(mouse_x + 18, mouse_y + 20, mouse_x + string_width_ext(tool2, -1, 500) + 24, mouse_y + 44 + string_height_ext(tool2, -1, 500), 0);
+			draw_set_color(c_gray);
+			draw_rectangle(mouse_x + 18, mouse_y + 20, mouse_x + string_width_ext(tool2, -1, 500) + 24, mouse_y + 44 + string_height_ext(tool2, -1, 500), 1);
+			draw_set_font(fnt_40k_14b);
+			draw_text(mouse_x + 22, mouse_y + 22, string(tool1));
+			draw_set_font(fnt_40k_14);
+			draw_text_ext(mouse_x + 22, mouse_y + 42, string(tool2), -1, 500);
+		}
     }
 
     if (menu == 23) {
