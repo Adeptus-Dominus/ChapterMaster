@@ -255,7 +255,7 @@ for (var c = 0; c < 11; c++){
             penit_co[p]=c;
             penit_id[p]=e;
             penitorium+=1;
-            unit.loyalty--;
+            unit.alter_loyalty(-1);
             if (unit.corruption<90) and (unit.corruption>0){
                 var heresy_old=0,heresy_new=0;
                 heresy_old=round((unit.corruption*unit.corruption)/50)-0.5;

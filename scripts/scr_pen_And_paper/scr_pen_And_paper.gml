@@ -1,9 +1,19 @@
 function PenAndPaperSim() constructor{
+
+	static test_rerollable = function(unit, stat){
+		if (stat == "charisma"){
+			if (unit.has_trait("charismatic")){
+				return true;
+			}
+		}
+		return false;
+	}
 	static oppposed_test = function(unit1, unit2, stat,unit1_mod=0,unit2_mod=0,  modifiers={}){
 		var stat1 = irandom(99)+1;
 		var unit1_val = unit1[$ stat]+unit1_mod;
 		var unit2_val = unit2[$ stat]+unit2_mod;
 		var stat2 = irandom(99)+1;
+		var _reroll = test_rerollable(unit1, stat);
 		var stat1_pass_margin, stat2_pass_margin, winner, pass_margin;
 		//unit 1 passes test 
 		if (stat1 < unit1_val){
@@ -73,12 +83,17 @@ function PenAndPaperSim() constructor{
 	static standard_test = function(unit, stat, difficulty_mod=0, tags = []){
 		var passed =false;
 		var margin=0;
+		array_push(tags,stat);
+		var _reroll = test_rerollable(unit, stat);
 		difficulty_mod+=evaluate_tags(unit, tags);
 		var random_roll = irandom_range(1,100);
+		if (_reroll && random_roll>=unit[$ stat]+difficulty_mod){
+			random_roll = irandom_range(1,100);
+		}
 		if (random_roll<unit[$ stat]+difficulty_mod){
 			passed = true;
 			margin = unit[$ stat]+difficulty_mod - random_roll;
-		} else {
+		} else{ 
 			passed = false;
 			margin = unit[$ stat]+difficulty_mod - random_roll;
 		}
