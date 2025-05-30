@@ -277,3 +277,27 @@ function array_set_range(_array, _start_index, _end_index, _value) {
 		_array[@ i] = _value;
 	}
 }
+
+/// @description Similar to array_create, but can use complex default types (arrays and structs), creating a separate reference for each element.
+/// @param {Real} _size The size of the array to create.
+/// @param {Any} _default The value to set for the elements.
+function array_create_advanced(_size, _default = 0) {
+	var _result;
+
+	if (is_struct(_default)) {
+		_result = array_create(_size);
+		for (var i = 0; i < _size; i++) {
+			_result[i] = {};
+		}
+
+	} else if (is_array(_default)) {
+		_result = array_create(_size);
+		for (var i = 0; i < _size; i++) {
+			_result[i] = [];
+		}
+	} else {
+		_result = array_create(_size, _default);
+	}
+
+    return _result;
+}
