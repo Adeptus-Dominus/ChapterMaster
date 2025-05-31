@@ -2289,7 +2289,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 }
 
 
-fucntion jsonify_struct(copy_struct, stringify){
+function jsonify_struct(copy_struct, stringify){
     var _new_struct = {};
     var copy_part;
     var names = variable_struct_get_names(copy_struct); // get all keys within structure

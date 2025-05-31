@@ -140,8 +140,8 @@ serialize = function(){
 
     var ship_structs = [];
 
-    for (var i = 0; i < array_length(ship_data); i++){
-        var _ship = ship_data[i];
+    for (var s = 0; s < array_length(ship_data); s++){
+        var _ship = ship_data[s];
         var left_broad = variable_clone(_ship.left_broad_positions);
         var right_broad = variable_clone(_ship.right_broad_positions);
         var center_cannons = variable_clone(_ship.forward_positions);
@@ -149,7 +149,7 @@ serialize = function(){
         var _lb = array_length(left_broad);
         var _rb = array_length(right_broad);
         var _cb = array_length(center_cannons);
-        var _longest = max(_lb, _rb, _cb);s
+        var _longest = max(_lb, _rb, _cb);
         for (var i=0;i < _longest; i++){
             if (i<_lb){
                 if (left_broad[i].weapon != false){
@@ -161,7 +161,7 @@ serialize = function(){
                     right_broad[i].weapon = jsonify_struct(right_broad[i].weapon);
                 }
             }
-            if (i<_lb){
+            if (i<_cb){
                 if (center_cannons[i].weapon != false){
                     center_cannons[i].weapon = jsonify_struct(center_cannons[i].weapon);
                 }
@@ -313,8 +313,8 @@ deserialize = function(save_data){
     }
 
     if struct_exists(save_data, "ship_structs"){
-        for (var i=0 ;i<array_length(ship_structs);i++){
-            var _data = ship_structs[i];
+        for (var s=0 ;s<array_length(save_data.ship_structs);s++){
+            var _data = save_data.ship_structs[s];
             var _ship = new ShipStruct();
             with (_ship){
                 move_data_to_current_scope(_data);
@@ -326,7 +326,7 @@ deserialize = function(save_data){
             var _lb = array_length(left_broad);
             var _rb = array_length(right_broad);
             var _cb = array_length(center_cannons);
-            var _longest = max(_lb, _rb, _cb);s
+            var _longest = max(_lb, _rb, _cb);
             for (var i=0;i < _longest; i++){
                 if (i<_lb){
                     if (left_broad[i].weapon != false){
@@ -338,12 +338,13 @@ deserialize = function(save_data){
                         right_broad[i].weapon = new ShipWeapon(right_broad[i].weapon.name, right_broad[i].weapon);
                     }
                 }
-                if (i<_lb){
+                if (i<_cb){
                     if (center_cannons[i].weapon != false){
                         center_cannons[i].weapon = new ShipWeapon(center_cannons[i].weapon.name, center_cannons[i].weapon);
                     }
                 }                        
-            }                    
+            }
+            array_push(ship_data, _ship);                   
         }
     }
 

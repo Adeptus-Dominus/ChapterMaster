@@ -1,3 +1,5 @@
+
+//general functions to help with dealing with ship data
 function fetch_ship(id){
 	return obj_ini.ship_data[id];
 }
@@ -23,6 +25,8 @@ function fps_to_secs(val){
 	return val/60;
 }
 
+
+//The actual ship struct
 function ShipStruct() constructor{
 	crew_exp = 0;
 	machine_spirit_exp = 0;
