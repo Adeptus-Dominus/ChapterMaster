@@ -219,7 +219,6 @@ function scr_draw_unit_image(_background = false) {
 
     try {
         if ((name_role() != "") && (base_group == "astartes")) {
-            var draw_backpack = true;
             var pauldron_trim = false;
             var armour_bypass = false;
             var hide_bionics = false;
@@ -244,7 +243,6 @@ function scr_draw_unit_image(_background = false) {
             var armour_sprite = spr_weapon_blank;
             var complex_livery = false;
             var back_equipment = BackType.None;
-            var skull_mask = false;
             var servo_arm = 0;
             var servo_harness = 0;
             var halo = 0;
@@ -305,12 +303,6 @@ function scr_draw_unit_image(_background = false) {
                     reverent_guardians = true;
                 }
             }
-
-            if (array_contains([UnitSpecialization.Chaplain, UnitSpecialization.WolfPriest], unit_specialization)) {
-                skull_mask = true;
-            }
-
-            // if (_armour_type!=ArType.Norm) then draw_backpack=false;
 
             if (unit_back == "Servo-arm") {
                 servo_arm = 1;

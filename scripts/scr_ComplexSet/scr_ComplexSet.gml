@@ -105,7 +105,7 @@ function ComplexSet(_unit) constructor {
 		chest_variants: spr_mk7_chest_variants,
 		leg_variants: spr_mk7_leg_variants,
 		head: spr_mk7_head_variants,
-		knees: spr_mk7_complex_knees
+		right_knee: spr_mk7_complex_knees
 	};
 
 	_are_exceptions = false;
@@ -1075,8 +1075,8 @@ function ComplexSet(_unit) constructor {
 					left_arm: spr_mk3_left_arm,
 					right_arm: spr_mk3_right_arm,
 					head: spr_mk3_head_variants,
-					left_leg: spr_mk3_left_leg_variants,
-					right_leg: spr_mk3_right_leg_variants,
+					left_knee: spr_mk3_left_knee,
+					right_knee: spr_mk3_right_knee,
 					mouth_variants: spr_mk3_mouth,
 					forehead: spr_mk3_forehead_variants,
 					belt: spr_mk3_belt

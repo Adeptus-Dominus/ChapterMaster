@@ -1139,10 +1139,12 @@ function generate_marine_body(){
         "left_leg":{
             leg_variants: irandom(100),
             shin_variant : irandom(100),
+            knee_variant: irandom(100),
         }, 
         "right_leg":{
             leg_variants: irandom(100),
             shin_variant : irandom(100),
+            knee_variant: irandom(100),
         }, 
         "torso":{
             cloth:{
