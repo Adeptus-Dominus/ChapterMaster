@@ -485,7 +485,7 @@ function ArtifactStruct(Index) constructor {
                     unit.update_mobility_item("", false, true);
                 }
                 bearer = false;
-                obj_ini.artifact_equipped[index] = false;
+                obj_ini.artifact_struct[index].equipped() = false;
             } else if (equipped()) {
                 var _b_type = determine_base_type();
                 var _bearer = false;

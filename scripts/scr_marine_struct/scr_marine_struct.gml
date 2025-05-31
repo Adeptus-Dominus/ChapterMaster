@@ -2288,24 +2288,29 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 }
 
-function jsonify_marine_struct(company, marine, stringify=true) {
-    var copy_marine_struct = obj_ini.TTRPG[company, marine]; //grab marine structure
-    var new_marine = {};
+
+fucntion jsonify_struct(copy_struct, stringify){
+    var _new_struct = {};
     var copy_part;
-    var names = variable_struct_get_names(copy_marine_struct); // get all keys within structure
+    var names = variable_struct_get_names(copy_struct); // get all keys within structure
     for (var name = 0; name < array_length(names); name++) {
         //loop through keys to find which ones are methods as they can't be saved as a json string
-        if (!is_method(copy_marine_struct[$ names[name]])) {
-            copy_part = variable_clone(copy_marine_struct[$ names[name]]);
-            variable_struct_set(new_marine, names[name], copy_part); //if key value is not a method add to copy structure
+        if (!is_method(copy_struct[$ names[name]])) {
+            copy_part = variable_clone(copy_struct[$ names[name]]);
+            variable_struct_set(_new_struct, names[name], copy_part); //if key value is not a method add to copy structure
             delete copy_part;
         }
     }
     if(stringify){
-        return json_stringify(new_marine, true);
+        return json_stringify(_new_struct, true);
     } else {
-        return new_marine;
+        return _new_struct;
     }
+}
+
+function jsonify_marine_struct(company, marine, stringify=true) {
+    var copy_marine_struct = obj_ini.TTRPG[company, marine]; //grab marine structure
+    return jsonify_struct(copy_marine_struct, stringify);
 }
 
 /// @param {Array<Real>} unit where unit[0] is company and unit[1] is the position
