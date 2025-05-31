@@ -522,12 +522,6 @@ function scr_draw_unit_image(_background = false) {
                         }
                     }
                 }
-
-                if (complex_livery) {
-                    if (armour_type == ArmourType.Normal && psy_hood) {
-                        complex_set.replace_area("crown", spr_psy_hood_complex);
-                    }
-                }
                 // Draw torso
                 if (!armour_bypass) {
                     if (complex_livery) {

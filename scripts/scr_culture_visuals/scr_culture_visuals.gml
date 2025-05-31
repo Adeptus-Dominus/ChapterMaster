@@ -382,9 +382,12 @@ global.modular_drawing_items = [
     {
         chapter_adv : ["Reverent Guardians"],
         sprite : spr_pack_brazier3,
+        traits : ["zealous_faith"],
         body_types :[0],
+        allow_either : ["chapter_adv", "traits","role_type"],
+        role_type : [SPECIALISTS_CHAPLAINS],
         position : "backpack",
-        assign_by_rank : 4,
+        assign_by_rank : 3,
     },
     {
         sprite : spr_gear_librarian,
