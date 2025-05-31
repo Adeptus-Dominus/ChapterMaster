@@ -76,7 +76,7 @@ function scr_kill_ship(index){
 					}					
 				}								
 			}						
-			array_delete(ship,index,1);
+			array_delete(ship_data,index,1);
 
 			if (!in_warp){
 				if (_nearest_star!="none"){

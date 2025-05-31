@@ -316,6 +316,7 @@ deserialize = function(save_data){
         for (var s=0 ;s<array_length(save_data.ship_structs);s++){
             var _data = save_data.ship_structs[s];
             var _ship = new ShipStruct();
+            _ship.weapons = [];
             with (_ship){
                 move_data_to_current_scope(_data);
             }
@@ -331,16 +332,19 @@ deserialize = function(save_data){
                 if (i<_lb){
                     if (left_broad[i].weapon != false){
                         left_broad[i].weapon = new ShipWeapon(left_broad[i].weapon.name, left_broad[i].weapon);
+                        array_push(left_broad[i].weapon)
                     }
                 }
                 if (i<_rb){
                     if (right_broad[i].weapon != false){
                         right_broad[i].weapon = new ShipWeapon(right_broad[i].weapon.name, right_broad[i].weapon);
+                        array_push(right_broad[i].weapon)
                     }
                 }
                 if (i<_cb){
                     if (center_cannons[i].weapon != false){
                         center_cannons[i].weapon = new ShipWeapon(center_cannons[i].weapon.name, center_cannons[i].weapon);
+                        array_push(center_cannons[i].weapon)
                     }
                 }                        
             }
