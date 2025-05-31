@@ -559,7 +559,8 @@ function ship_bombard_score(ship_id){
 
 	var _weapons = obj_ini.ship_data[ship_id].weapons;
 	for (var b=0;b<array_length(_weapons);b++){
-		_bomb_score += _weapons.bombard_value;
+		var _weapon = _weapons[b];
+		_bomb_score += _weapon.bombard_value;
 	}
 
 	return _bomb_score;	

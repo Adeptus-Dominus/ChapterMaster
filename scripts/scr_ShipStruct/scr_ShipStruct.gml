@@ -61,6 +61,8 @@ function ShipStruct() constructor{
 	tech_fulfilment = 0;
 	tech_suppliers = [];
 	docked = false;
+	refittment_time = 0;
+	minimum_tech = true;
 
 	uid = scr_uuid_generate();
 
@@ -113,6 +115,15 @@ function ShipStruct() constructor{
 				array_push(tech_suppliers, _unit);
 			}
 		}
+		minimum_tech = tech_fulfilment >= minimum_tech_requirements;
+	}
+
+	static get_dock = function(){
+		if (docked != false){
+			var _dock = search_system_features_uid(star.p_feature,docked);
+			return _dock;
+		}
+		return false;
 	}
 
 
@@ -124,6 +135,12 @@ function ShipStruct() constructor{
 			if (star == "none"){
 				possible_dock = false;
 			} else {
+				var _dock = get_dock();
+				if (is_struct(_dock)){
+					return false;
+				} else {
+					docked = false;
+				}				
 				_planet = system_feature_bool(star.p_feature,P_features.ShipDock);
 				if (_planet <= 0){
 					possible_dock = false;
@@ -203,6 +220,9 @@ function ShipStruct() constructor{
         if (obj_controller.stc_bonus[5]=3){
             _final_speed *= 1.05;
         }
+        if (!minimum_tech){
+        	_final_speed *= 0.9;
+        }
         return _final_speed;
 	}
 
@@ -257,6 +277,25 @@ function ShipStruct() constructor{
 					}
 				}
 			}
+		}
+		else if (docked != false){
+			if (!refittment_time){
+				var _refit_string = "The ship is ready to move from docking";
+				var _undock_button = draw_unit_buttons([x+280 - (string_width("Un-Dock Ship")/2), y+320], "Un-Dock Ship");
+			} else {
+				var _refit_string = $"The ship requires {refittment_time} to finish being outfitted for service";
+			}
+
+			draw_text(x+280, y+295, $"Ship currently docked at {location} {_refit_string}");
+
+			if (point_and_click(_undock_button)){
+				var _dock = get_dock();
+				if (_dock != false){
+					possible_dock.space_taken -= size;
+					docked = false;
+				}
+			}
+
 		}
 		draw_set_font(fnt_40k_30b);
 		draw_set_halign(fa_left);

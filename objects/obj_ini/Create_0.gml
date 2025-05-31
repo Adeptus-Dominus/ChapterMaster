@@ -30,8 +30,6 @@ home_planet = 2;
 artifact_struct = array_create(200);
 flagship = 0;
 
-ship_weapons = [];
-
 // Equipment- maybe the bikes should go here or something?          yes they should
 equipment = {};
 i=-1;
@@ -152,7 +150,6 @@ serialize = function(){
         squad_structs: squads,
         equipment: equipment,
         gene_slaves: gene_slaves,
-        ship_weapons,
         ship_data,
         // marines,
         // squads
@@ -170,7 +167,7 @@ serialize = function(){
 }
 
 deserialize = function(save_data){
-    var exclusions = ["complex_livery_data", "full_liveries","company_liveries", "squad_types", "marine_structs", "squad_structs", "ship_weapons","ship_data"]; // skip automatic setting of certain vars, handle explicitly later
+    var exclusions = ["complex_livery_data", "full_liveries","company_liveries", "squad_types", "marine_structs", "squad_structs", "ship_data"]; // skip automatic setting of certain vars, handle explicitly later
 
     // Automatic var setting
     var all_names = struct_get_names(save_data);
