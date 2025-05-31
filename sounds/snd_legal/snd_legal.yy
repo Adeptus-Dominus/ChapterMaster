@@ -9,8 +9,8 @@
   "bitRate":192,
   "compression":3,
   "conversionMode":0,
-  "duration":30.280918,
-  "exportDir":"",
+  "duration":30.249727,
+  "exportDir":"sounds",
   "name":"snd_legal",
   "parent":{
     "name":"Themes",

@@ -1,5 +1,6 @@
+/// @mixin
 function scr_ui_formation_bars() {
-    ui_formations_data = {
+    var ui_formations_data = {
         nbar: 0,
         abar: 0,
         te: 4700,
@@ -112,6 +113,7 @@ function scr_ui_formation_bars() {
     }
 }
 
+/// @mixin
 function init_combat_bars(bar, ii, formations_data, size, image_index, unit_type) {
     formations_data.nbar = instance_create(formations_data.x9, formations_data.y9 + temp[formations_data.te], obj_formation_bar);
     formations_data.nbar.size = size;

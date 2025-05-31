@@ -12,7 +12,11 @@ if (placing=true) and (cooldown<=0){
     if (instance_exists(obj_turn_end)){
         if (obj_turn_end.audience>0){
             with(obj_turn_end){
-                cooldown=8;diplomacy=0;alarm[1]=1;audience=0;force_goodbye=0;
+                cooldown=8;
+                diplomacy=0;
+                alarm[1]=1;
+                audience=0;
+                force_goodbye=0;
             }
         }
     }

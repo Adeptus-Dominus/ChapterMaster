@@ -9,8 +9,8 @@
   "bitRate":192,
   "compression":3,
   "conversionMode":0,
-  "duration":267.6556,
-  "exportDir":"",
+  "duration":0.0,
+  "exportDir":"sounds",
   "name":"snd_defeat",
   "parent":{
     "name":"Themes",

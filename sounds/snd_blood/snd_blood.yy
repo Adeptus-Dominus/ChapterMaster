@@ -9,8 +9,8 @@
   "bitRate":192,
   "compression":3,
   "conversionMode":0,
-  "duration":120.95194,
-  "exportDir":"",
+  "duration":120.9178,
+  "exportDir":"sounds",
   "name":"snd_blood",
   "parent":{
     "name":"Themes",

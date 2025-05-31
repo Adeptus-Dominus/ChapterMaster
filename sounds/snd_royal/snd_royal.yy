@@ -9,8 +9,8 @@
   "bitRate":256,
   "compression":3,
   "conversionMode":0,
-  "duration":179.23112,
-  "exportDir":"",
+  "duration":19.401724,
+  "exportDir":"sounds",
   "name":"snd_royal",
   "parent":{
     "name":"Themes",

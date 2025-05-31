@@ -147,9 +147,10 @@ if (menu=1) or (menu=2){// This is the other one
             }
         }
         
-        
-        if (menu=2) and (save[o]>=0){// Restart
-            draw_set_alpha(1);
+        if (menu=2) and (save[o]>=0){
+            // Restart
+            //! Doesn't work properly, commented out until repaired;
+            /* draw_set_alpha(1);
             draw_set_color(c_gray);draw_rectangle(x2+977,y2+113,x2+1121,y2+146,0);
             draw_set_color(c_black);draw_rectangle(x2+977,y2+113,x2+1121,y2+146,1);
             draw_text_transformed(x2+1050,y2+117,string_hash_to_newline("Restart Game"),0.7,0.7,0);
@@ -178,8 +179,9 @@ if (menu=1) or (menu=2){// This is the other one
                         room_goto(Game);
                     }
                 }
-            }
+            } */
             
+            // Load
             draw_set_alpha(1);
             draw_set_color(c_gray);draw_rectangle(x2+1317,y2+113,x2+1461,y2+146,0);
             draw_set_color(c_black);draw_rectangle(x2+1317,y2+113,x2+1461,y2+146,1);

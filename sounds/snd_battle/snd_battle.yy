@@ -9,8 +9,8 @@
   "bitRate":192,
   "compression":3,
   "conversionMode":0,
-  "duration":164.70705,
-  "exportDir":"",
+  "duration":31.423855,
+  "exportDir":"sounds",
   "name":"snd_battle",
   "parent":{
     "name":"Themes",

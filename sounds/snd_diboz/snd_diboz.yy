@@ -9,8 +9,8 @@
   "bitRate":192,
   "compression":3,
   "conversionMode":0,
-  "duration":214.39194,
-  "exportDir":"",
+  "duration":0.0,
+  "exportDir":"sounds",
   "name":"snd_diboz",
   "parent":{
     "name":"Themes",
