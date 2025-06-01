@@ -495,7 +495,9 @@ function ship_combat_cleanup(){
         
         instance_activate_all();
         
-        if (instance_exists(obj_p_assra)){obj_p_assra.alarm[0]=1;}
+        if (instance_exists(obj_p_assra)){
+            obj_p_assra.alarm[0]=1;
+        }
         alarm[4]=2;
         
         
