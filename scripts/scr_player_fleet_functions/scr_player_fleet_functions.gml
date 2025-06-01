@@ -1,7 +1,6 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more informationype
 
-/// @mixin
 function init_player_fleet_arrays(){
 	ship=[];
 	ship_uid=[];
