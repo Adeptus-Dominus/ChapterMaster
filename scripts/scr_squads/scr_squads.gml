@@ -592,7 +592,7 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 				var replace_role = remove_sgt.role();
 				remove_sgt.update_role(new_sgt.role());
 				//TODO centralise loyalty changes for role changes in the update_role method
-				new_sgt.alter_loyalty(-10);
+				remove_sgt.alter_loyalty(-10);
 				new_sgt.update_role(replace_role);
 				new_sgt.alter_loyalty(10);
 			}
