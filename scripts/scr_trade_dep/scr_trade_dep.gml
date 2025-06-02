@@ -33,43 +33,6 @@ function scr_trade_dep() {
 
 }
 
-function remove_trade_items_from_inventory(){
-    for (var i=0;i<array_length(trade_give);i++){
-        if (trade_give[i]="Requisition"){
-        	requisition-=trade_mnum[i];
-        }
-        if (trade_give[i]="Gene-Seed") and (trade_mnum[i]>0){
-            gene_seed-=trade_mnum[i];
-        
-            if (diplomacy<=5) and (diplomacy!=4) then gene_sold+=trade_mnum[i];
-            if (diplomacy>=6) then gene_xeno+=trade_mnum[i];
-        }
-        if (trade_give[i]="Info Chip") and (trade_mnum[i]>0){
-        	info_chips-=trade_mnum[i];
-        }
-        if (trade_give[i]="STC Fragment") and (trade_mnum[i]>0){
-            var remov=0,p=0;
-            repeat(100){
-                if (remov=0){p=choose(1,2,3);
-                    if (p=1) and (stc_wargear_un>0){
-                    	stc_wargear_un-=1;
-                    	remov=1;
-                    }
-                    else if (p=2) and (stc_vehicles_un>0){
-                    	stc_vehicles_un-=1;
-                    	remov=1;}
-                    else if (p=3) and
-                     (stc_ships_un>0){
-                    	stc_ships_un-=1;
-                    	remov=1;
-                    }
-                }
-            }
-        }
-        if (trade_take[i]!="") then goods+=string(trade_take[i])+"!"+string(trade_tnum[i])+"!|";
-    }	
-}
-
 function setup_ai_trade_fleet(){
     var flit=instance_create(targ.x,targ.y,obj_en_fleet);
 
@@ -94,10 +57,4 @@ function setup_ai_trade_fleet(){
     flit.image_index=0;
 	flit.capital_number=1;
 	return flit
-}
-
-function set_up_trade_cargo_struct(fleet){
-     for (var i=0;i<array_length(trade_take);i++){
-     	
-     }	
 }

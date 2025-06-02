@@ -55,21 +55,204 @@ function TradeAttempt(diplomacy){
 	});
 
 	static successful_trade_attempt = function(){
+		var trading_object = {};
 		for (var i=0;i<array_length(demand_options);i++){
 			var _opt = demand_options[i];
+			if (_opt.number == 0){
+				continue;
+			}			
 			var _type = _opt.label;
-			switch (label){
-				case "Recruiting Planet":
-					obj_conotroller.recruiting_worlds_bought++;
+			if (_opt.trade_type == "equip"){
+				if (!struct_exists(trading_object, "items")){
+					trading_object.items = {};
+				}
+				trading_object.items[$ _type] = {
+					quality : "standard",
+					number : opt.number,
+				}
+			} else if (_opt.trade_type == "license"){
+				switch (label){
+					case "Recruiting Planet":
+						obj_controller.recruiting_worlds_bought++;
+						obj_controller.liscensing=5;
+						break;
+					case "License: Repair":
+						obj_controller.repair_ships = true;
+						break;
+					case "Useful Information":
+						obj_controller.liscensing=5;
+						break;
+					case "License: Crusade":
+						obj_controller.liscensing=2;
+						break;												
+				}
+			} else if (_opt.trade_type == "req"){
+				obj_controller.requisition += _opt.number;
 			}
 		}
+		for (var i=0;i<array_length(offer_options);i++){
+			var _opt = offer_options[i];
+			if (_opt.number == 0){
+				continue;
+			}
+			var _type = _opt.label;	
+			if (_opt.trade_type == "equip"){
+
+			} else if (_opt.trade_type == "req"){
+				controller.requisition -= _opt.number;
+				if (_opt.number > 500 && diplomacy_faction==6){
+	                var got2=0;
+	                with (obj_controller){
+		                repeat(10){
+		                	if (got2<50){
+		                		got2+=1;
+				                	if (quest[got2]="fund_elder") and (quest_faction[got2]=6){
+				                    scr_dialogue("mission1_thanks");
+				                    scr_quest(2,"fund_elder",6,0);
+				                    got2=50;
+				                    trading=0;
+				                    exit;
+			                	}
+			                }
+		            	}
+		            }					
+				}
+			} else if (_opt.trade_type == "gene"){
+				gene_seed-=_opt.number;
+                if (diplomacy_faction<=5) and (diplomacy_faction!=4) then obj_conotroller.gene_sold+=_opt.number;
+                if (diplomacy_faction>=6) then obj_controller.gene_xeno+=_opt.number;				
+			} else if(_opt.trade_type == "stc"){
+                for (var j = 0; j < 100; j += 1) {
+                    var p = choose(1, 2, 3);
+                    if (p == 1 && obj_controller.stc_wargear_un > 0) {
+                        obj_controller.stc_wargear_un -= 1;
+                        break;
+                    }
+                    if (p == 2 && obj_controller.stc_vehicles_un > 0) {
+                        obj_controller.stc_vehicles_un -= 1;
+                        break;
+                    }
+                    if (p == 3 && obj_controller.stc_ships_un > 0) {
+                        obj_controller.stc_ships_un -= 1;
+                        break;
+                    }
+                }
+			} else if(_opt.trade_type == "info"){
+				obj_controller.info_chips-=_opt.number;
+			}
+		}
+
+		var flit = setup_ai_trade_fleet();
+
+		flit.cargo_data.player_goods = trading_object;
+
+		flit.target = trade_to_obj;
+		flit.x = trade_from_star.x;
+		flit.y = trade_from_star.y;
+		with (flit){
+			action_x=target.x;
+	        action_y=target.y;
+	        set_fleet_movement();
+		}
+
+	}
+
+	static find_trade_locations(){
+ 		if (obj_ini.fleet_type=ePlayerBase.home_world){
+ 			var _stars_with_player_control = [];
+	 		with(obj_star){
+	 			if (array_contains(p_owner, 1)){
+	 				array_push(_stars_with_player_control, id)
+	 			}
+		    }
+
+		    var player_fleet_targets = [];
+
+		    if (obj_ini.fleet_type != ePlayerBase.home_world || !arraay_length(_stars_with_player_control)){
+		        // with(obj_star){if (present_fleet[1]>0){x-=10000;y-=10000;}}
+		        with(obj_p_fleet){// Get the nearest star system that is viable for creating the trading fleet
+		            if ((capital_number>0 || frigate_number>0) && action=""){
+		            	array_push(player_fleet_targets, id);
+		            }
+		   
+		        }
+		    }
+
+
+		    // temp2: ideal trade target
+		    // temp3: origin
+		    // temp4: possible trade target
+
+
+		    var viable_faction_trade_stars = [];
+	    	var _check_val = diplomacy_faction;
+	    	 if (obj_controller.diplomacy_faction=4){
+	    	 	_check_val = 2
+	    	 }
+		    with(obj_star){// Get origin star system for enemy fleet
+		    	if (array_contains(p_owner, _check_val)){
+		    		array_push(viable_faction_trade_stars, id);
+		    	}
+			    if (_check_val=5){
+
+		        	var ahuh=0,q=0;
+		            repeat(planets){
+		            	q+=1;
+		            	if (p_owner[q]=5) then ahuh=1;
+		                if (p_owner[q]<6) and (planet_feature_bool(p_feature[q],P_features.Sororitas_Cathedral )==1) then ahuh=1;
+		            }
+		            if (ahuh=1){
+		            	array_push(viable_faction_trade_stars, id);
+		            }
+
+			    }
+		    }		
+		}
+
+		if (!array_length(_stars_with_player_control) && !array_length(player_fleet_targets)){
+			with (obj_controller){
+				scr_dialogue("trade_error_1");
+				trading = false;
+			}
+			return false
+		}
+		if (!array_length(viable_faction_trade_stars)){
+			with (obj_controller){
+				scr_dialogue("trade_error_2");
+				trading = false;
+			}
+			return false			
+		}
+		trade_from_star = array_random_element(viable_faction_trade_stars);
+		if (!array_length(_stars_with_player_control)){
+			trade_to_obj = array_random_element(player_fleet_targets);
+		} else if (!array_length(player_fleet_targets)){
+			trade_to_obj = array_random_element(_stars_with_player_control);
+		} else {
+			trade_to_obj = choose(array_random_element(_stars_with_player_control), array_random_element(player_fleet_targets));
+		}
+		return true;
 	}
 	static attempt_trade = function(){
 		calculate_deal_chance();
 		var attempt_rand = roll_dice_chapter(1, 100, "high");
 		var _success = attempt_rand <= deal_chance;
 		if (_success){
-
+			_success = find_trade_locations();
+			if (_success){
+				successful_trade_attempt();
+				scr_dialogue("agree");
+				force_goodbye=1;
+				trading=0;
+				 if (diplomacy_faction=6) or (diplomacy_faction=7) or (diplomacy_faction=8){
+				 	scr_loyalty("Xeno Trade","+");
+				 }
+			}
+		} else {
+			with (obj_controller){
+				scr_dialogue("disagree");
+				clear_button.bind_method();
+			}			
 		}
 
 	}
@@ -169,7 +352,7 @@ function TradeAttempt(diplomacy){
 			new_demand_buttons(-10, "Master Crafted Power Sword", "equip",3);
 			new_demand_buttons(-10, "Archeotech Laspistol", "equip",1);
 			new_demand_buttons(10, "Ranger", "merc",3);
-			new_demand_buttons(-15, "Useful Information", "info",1);	
+			new_demand_buttons(-15, "Useful Information", "license",1);	
 			break;
 		case 7:	
 			new_demand_buttons(-100, "Power Klaw", "equip",10);
@@ -201,10 +384,10 @@ function TradeAttempt(diplomacy){
 	}
 
 	if (trade_chip > 0){
-		new_offer_option(, "STC Fragment", trade_chip);
+		new_offer_option(, "STC Fragment","stc" ,trade_chip);
 	}
 	if (info_chip > 0){
-		new_offer_option(, "Info Chip", info_chip);
+		new_offer_option(, "Info Chip","info", info_chip);
 	}
 
 	static draw_trade_screen(){
@@ -347,18 +530,18 @@ function TradeAttempt(diplomacy){
 		    	my_worth += _opt.number;
 		    }
 	    
-		    if (trade_give[i]="Gene-Seed") and (_opt.number>0){
+		    if (_opt.label="Gene-Seed") and (_opt.number>0){
 		        if (diplomacy_faction=3) or (diplomacy_faction=4) then my_worth+=_opt.number*30;
 		        if (diplomacy_faction=2) or (diplomacy_faction=5) then my_worth+=_opt.number*20;
 		        if (diplomacy_faction=8) or (diplomacy_faction=10) then my_worth+=_opt.number*50;
 		    }
 	    
-		    if (trade_give[i]="Info Chip") and (_opt.number>0){
+		    if (_opt.label="Info Chip") and (_opt.number>0){
 		    	my_worth+=_opt.number*80;
 		    }
-		    if (diplomacy_faction=3) and (trade_give[i]="Info Chip") and (_opt.number>0) then my_worth+=_opt.number*10;// 20% bonus
+		    if (diplomacy_faction=3) and (_opt.label="Info Chip") and (_opt.number>0) then my_worth+=_opt.number*10;// 20% bonus
 	    
-		    if (trade_give[i]="STC Fragment") and (_opt.number>0){
+		    if (_opt.label="STC Fragment") and (_opt.number>0){
 		        if (diplomacy_faction=2) then my_worth+=_opt.number*900;
 		        if (diplomacy_faction=3) then my_worth+=_opt.number*1000;
 		        if (diplomacy_faction=4) then my_worth+=_opt.number*1000;
@@ -401,355 +584,4 @@ function TradeAttempt(diplomacy){
 	}
 
 }
-
-function scr_trade(argument0) {
-
-	// argument0: true for trade, false for just tabulate score
-
-	var my_worth, their_worth, rando4, rando5;
-	my_worth=0;
-	their_worth=0;
-	rando4=floor(random(100))+1;
-	rando5=floor(random(100))+1;
-
-
-	var ss1,ss2;
-	ss1=string(trade_give[1])+string(trade_give[2])+string(trade_give[3])+string(trade_give[4]);
-	ss2=string(trade_take[1])+string(trade_take[2])+string(trade_take[3])+string(trade_take[4]);
-	if (ss1="Requisition") or (ss1="RequisitionRequisition") or (ss1="RequisitionRequisitionRequisition") or (string_count("Requisition",ss1)=4){
-	    if (ss2="Requisition") or (ss2="RequisitionRequisition") or (ss2="RequisitionRequisitionRequisition") or (string_count("Requisition",ss2)=4){
-	        my_worth=-10000;
-	    }
-	}
-	if (ss1="Requisition") and (ss2="Requisition") then my_worth=-10000;
-	if (ss1="") and (ss2="Requisition") then my_worth=-10000;
-	// Modify their worth based on relationship
-
-	    // show_message("A-1: "+string(liscensing));
-
-
-
-	if (argument0=true){
-
-	if (rando4<=deal) and (trading_artifact=0){
-
-	    var step,lisc;step=0;lisc=0;
-	    lisc=string_count("License",string(trade_take[1]+trade_take[2]+trade_take[3]+trade_take[4]));
-	    lisc+=string_count("Recruiting",string(trade_take[1]+trade_take[2]+trade_take[3]+trade_take[4]));
-	    lisc+=string_count("Useful Info",string(trade_take[1]+trade_take[2]+trade_take[3]+trade_take[4]));
-	    if (trade_take[1]!="") and (trade_take[2]="") then step=1;
-	    if (trade_take[2]!="") and (trade_take[3]="") then step=2;
-	    if (trade_take[3]!="") and (trade_take[4]="") then step=3;
-	    if (trade_take[4]!="") then step=4;
-
-	    if (lisc>0) then obj_controller.liscensing=1;
-	    if (trade_take[1]="Recruiting Planet") or (trade_take[2]="Recruiting Planet") or (trade_take[3]="Recruiting Planet") or (trade_take[4]="Recruiting Planet"){
-	        obj_controller.liscensing=5;
-        
-	        if (trade_take[1]="Recruiting Planet") then recruiting_worlds_bought+=1;
-	        if (trade_take[2]="Recruiting Planet") then recruiting_worlds_bought+=1;
-	        if (trade_take[3]="Recruiting Planet") then recruiting_worlds_bought+=1;
-	        if (trade_take[4]="Recruiting Planet") then recruiting_worlds_bought+=1;
-	    }
-	    if (trade_take[1]="License: Crusade") or (trade_take[2]="License: Crusade") or (trade_take[3]="License: Crusade") or (trade_take[4]="License: Crusade"){
-	        obj_controller.liscensing=2;
-	    }
-	    if (trade_take[1]="Useful Information") or (trade_take[2]="Useful Information") or (trade_take[3]="Useful Information") or (trade_take[4]="Useful Information"){
-	        obj_controller.liscensing=5;
-	    }
-	    if (trade_take[1]="License: Repair") or (trade_take[2]="License: Repair") or (trade_take[3]="License: Repair") or (trade_take[4]="License: Repair"){
-	        repair_ships=1;
-	    }
-	    if (trade_take[1]="Exterminatus") or (trade_take[2]="Exterminatus") or (trade_take[3]="Exterminatus") or (trade_take[4]="Exterminatus"){
-	        obj_controller.liscensing=0;
-	        lisc=0;
-	    }
-    
-	    // show_message("A: "+string(liscensing));
-    
-	    ;var goods;goods="";
-	   
-    
-    
-	    // Temporary work around
-	    if (lisc>0){
-            for (var i = 1; i <= 4; i += 1) {
-	            if (trade_give[i]="Requisition") then requisition-=_opt.number;
-	            if (trade_give[i]="Gene-Seed") and (_opt.number>0){
-	                gene_seed-=_opt.number;
-                
-	                if (diplomacy_faction<=5) and (diplomacy_faction!=4) then gene_sold+=_opt.number;
-	                if (diplomacy_faction>=6) then gene_xeno+=_opt.number;
-	            }
-	            if (trade_give[i]="Info Chip") and (_opt.number>0) then info_chips-=_opt.number;
-	            if (trade_give[i]="STC Fragment") and (_opt.number>0){
-                    for (var j = 0; j < 100; j += 1) {
-                        var p = choose(1, 2, 3);
-                        if (p == 1 && stc_wargear_un > 0) {
-                            stc_wargear_un -= 1;
-                            break;
-                        }
-                        if (p == 2 && stc_vehicles_un > 0) {
-                            stc_vehicles_un -= 1;
-                            break;
-                        }
-                        if (p == 3 && stc_ships_un > 0) {
-                            stc_ships_un -= 1;
-                            break;
-                        }
-                    }
-	            }
-	        }
-        
-        
-	    }
-    
-    
-    
-	    if (lisc!=step) or (lisc=0){// Do not fly over licenses
-    
-	        if (obj_ini.fleet_type=ePlayerBase.home_world) then with(obj_star){
-	            if ((p_owner[1]=1) or (p_owner[2]=1) or (p_owner[3]=1) or (p_owner[4]=1)){instance_create(x,y,obj_temp2);x-=10000;y-=10000;}
-	        }
-        
-        
-	        if (obj_ini.fleet_type != ePlayerBase.home_world){
-	            // with(obj_star){if (present_fleet[1]>0){x-=10000;y-=10000;}}
-	            with(obj_p_fleet){// Get the nearest star system that is viable for creating the trading fleet
-	                if (capital_number>0) and (action="") then instance_create(instance_nearest(x,y,obj_star).x,instance_nearest(x,y,obj_star).y,obj_temp2);
-	                if (frigate_number>0) and (action="") then instance_create(instance_nearest(x,y,obj_star).x,instance_nearest(x,y,obj_star).y,obj_ground_mission);
-	            }
-	        }
-        
-        
-	        // temp2: ideal trade target
-	        // temp3: origin
-	        // temp4: possible trade target
-        
-        
-	        with(obj_star){// Get origin star system for enemy fleet
-	            /*var q;q=0;
-	            repeat(4){q+=1;
-	                if (p_owner[q]=1) or (string_count("Monastery",p_feature[q])>0) then instance_create(x,y,obj_temp3);
-	            }*/
-        
-            
-	            if /*(owner=obj_controller.diplomacy_faction) and */((p_owner[1]=obj_controller.diplomacy_faction) or (p_owner[2]=obj_controller.diplomacy_faction) 
-	            or (p_owner[3]=obj_controller.diplomacy_faction) or (p_owner[4]=obj_controller.diplomacy_faction)){
-	                instance_create(x,y,obj_temp3);
-	            }
-            
-	            if (obj_controller.diplomacy_faction=4){
-	                if (p_owner[1]=2) or (p_owner[2]=2) or (p_owner[3]=2) or (p_owner[4]=2) then instance_create(x,y,obj_temp3);
-	            }
-            
-	            // if (obj_controller.diplomacy_faction=4) and (owner = eFACTION.Imperium) then instance_create(x,y,obj_temp3);
-	        }
-	        if (diplomacy_faction=5){
-	            with(obj_star){var ahuh,q;ahuh=0;q=0;
-	                repeat(4){q+=1;if (p_owner[q]=5) then ahuh=1;
-	                    if (p_owner[q]<6) and (planet_feature_bool(p_feature[q],P_features.Sororitas_Cathedral )==1) then ahuh=1;
-	                }
-	                if (ahuh=1) then instance_create(x,y,obj_temp3);
-	            }
-	        }
-        
-        
-	        // show_message("TG2:"+string(instance_number(obj_temp2))+", TG3:"+string(instance_number(obj_temp3))+", TG4:"+string(instance_number(obj_ground_mission)));
-        
-        
-	        var targ, flit, chasing;chasing=0;targ=0;// Set target, chase
-        
-	        // if (obj_ini.fleet_type != ePlayerBase.home_world){
-	            if (instance_exists(obj_temp2)) then targ=instance_nearest(obj_temp2.x,obj_temp2.y,obj_temp3);
-	            if (!instance_exists(obj_temp2)) and (instance_exists(obj_ground_mission)) then targ=instance_nearest(obj_ground_mission.x,obj_ground_mission.y,obj_temp3);
-            
-	            if ((!instance_exists(obj_temp2)) and (!instance_exists(obj_ground_mission))) or (instance_number(obj_p_fleet)=1) and ((obj_p_fleet.x<=0) or (obj_p_fleet.x>room_width) or (obj_p_fleet.y<=0) or (obj_p_fleet.y>room_height)){
-	                with(obj_star){
-	                    if (x<-3500) and (y<-3500){x+=10000;y+=10000;}
-	                    if (x<-3500) and (y<-3500){x+=10000;y+=10000;}
-	                }
-	                trading=0;scr_dialogue("trade_error_1");
-                
-	                if (trade_take[1]="Recruiting Planet") then recruiting_worlds_bought-=1;
-	                if (trade_take[2]="Recruiting Planet") then recruiting_worlds_bought-=1;
-	                if (trade_take[3]="Recruiting Planet") then recruiting_worlds_bought-=1;
-	                if (trade_take[4]="Recruiting Planet") then recruiting_worlds_bought-=1;
-	                if (trade_take[1]="License: Crusade") or (trade_take[2]="License: Crusade") or (trade_take[3]="License: Crusade") or (trade_take[4]="License: Crusade"){
-	                    obj_controller.liscensing=0;
-	                }
-	                if (trade_take[1]="Useful Information") or (trade_take[2]="Useful Information") or (trade_take[3]="Useful Information") or (trade_take[4]="Useful Information"){
-	                    obj_controller.liscensing=0;
-	                }
-	                if (trade_take[1]="License: Repair") or (trade_take[2]="License: Repair") or (trade_take[3]="License: Repair") or (trade_take[4]="License: Repair"){
-	                    repair_ships=0;
-	                }
-                
-	                instance_activate_all();exit;
-	            }
-            
-	            // If player fleet is flying about then get their target for new target
-	            if (!instance_exists(obj_temp2)) and (!instance_exists(obj_ground_mission)) and (instance_exists(obj_p_fleet)) and (obj_ini.fleet_type != ePlayerBase.home_world){
-	                // show_message("no T2 or T4: chasing");
-	                chasing=1;
-	                with(obj_p_fleet){var pop;
-	                    if (capital_number>0) and (action!=""){pop=instance_create(action_x,action_y,obj_temp2);pop.action_eta=action_eta;}
-	                    if (frigate_number>0) and (action!=""){pop=instance_create(action_x,action_y,obj_ground_mission);pop.action_eta=action_eta;}
-	                }
-	            }
-	            if (instance_exists(obj_temp2)) then targ=instance_nearest(obj_temp2.x,obj_temp2.y,obj_temp3);
-	            if (!instance_exists(obj_temp2)) and (instance_exists(obj_ground_mission)) then targ=instance_nearest(obj_ground_mission.x,obj_ground_mission.y,obj_temp3);
-	        // }
-
-	        if (!instance_exists(obj_temp3)){
-	            with(obj_star){
-	                if (x<-3500) and (y<-3500){x+=10000;y+=10000;}
-	                if (x<-3500) and (y<-3500){x+=10000;y+=10000;}
-	            }
-	            trading=0;scr_dialogue("trade_error_2");
-
-	            for (var i=1;i<5;i++){
-	            	if (trade_take[i]=="Recruiting Planet") then recruiting_worlds_bought-=1;
-	            	if (trade_take[i]=="License: Crusade") then obj_controller.liscensing=0;
-	            	if (trade_take[i]=="Useful Information") then obj_controller.liscensing=0;
-	            	if (trade_take[i]=="License: Repair") then repair_ships=0;
-	            }
-            
-	            instance_activate_all();
-	            exit;
-	        }
-        
-        	vara flit = setup_ai_trade_fleet();
-	        i=0;
-	        
-	        remove_trade_items_from_inventory();
-
-	        set_up_trade_cargo_struct();
-        
-	        flit.trade_goods=goods;
-	        if (flit.trade_goods="") then flit.trade_goods="none";
-        
-	        if (obj_ini.fleet_type != ePlayerBase.home_world){
-	            if (instance_exists(obj_temp2)){flit.action_x=obj_temp2.x;flit.action_y=obj_temp2.y;flit.target=instance_nearest(flit.action_x,flit.action_y,obj_p_fleet);}
-	            if (!instance_exists(obj_temp2)) and (instance_exists(obj_ground_mission)){flit.action_x=obj_ground_mission.x;flit.action_y=obj_ground_mission.y;flit.target=instance_nearest(flit.action_x,flit.action_y,obj_p_fleet);}
-	        }
-	        if (obj_ini.fleet_type=ePlayerBase.home_world){
-	            targ=instance_nearest(flit.x,flit.y,obj_temp2);
-	            flit.action_x=targ.x;
-	            flit.action_y=targ.y;
-	        }
-        
-	        if (chasing=1){flit.minimum_eta=flit.target.action_eta;}
-	        flit.alarm[4]=1;
-        
-	        with(obj_temp2){instance_destroy();}
-	        with(obj_temp3){instance_destroy();}
-	        with(obj_ground_mission){instance_destroy();}
-        
-        
-	    // show_message("D: "+string(liscensing));
-        
-	        if (flit.trade_goods=""){// Elfdar mission 1 maybe
-	            var got=0;
-            
-            
-	    // show_message("E: "+string(liscensing));
-            
-	            if (trade_give[1]="Requisition") then got+=trade_mnum[1];
-	            if (trade_give[2]="Requisition") then got+=trade_mnum[2];
-	            if (trade_give[3]="Requisition") then got+=trade_mnum[3];
-	            if (trade_give[4]="Requisition") then got+=trade_mnum[4];
-            
-	            if (trade_tnum[1]+trade_tnum[2]+trade_tnum[3]+trade_tnum[4]>0) then got=0;
-            
-	            if (got>=500) and (diplomacy_faction=6){
-	                var got2;got2=0;
-	                repeat(10){if (got2<50){got2+=1;if (quest[got2]="fund_elder") and (quest_faction[got2]=6){
-	                    scr_dialogue("mission1_thanks");scr_quest(2,"fund_elder",6,0);got2=50;trading=0;
-	                    trade_take[0]="";trade_take[1]="";trade_take[2]="";trade_take[3]="";trade_take[4]="";trade_take[5]="";trade_tnum[0]=0;trade_tnum[1]=0;trade_tnum[2]=0;trade_tnum[3]=0;trade_tnum[4]=0;trade_tnum[5]=0;
-	                    trade_give[0]="";trade_give[1]="";trade_give[2]="";trade_give[3]="";trade_give[4]="";trade_give[5]="";trade_mnum[0]=0;trade_mnum[1]=0;trade_mnum[2]=0;trade_mnum[3]=0;trade_mnum[4]=0;trade_mnum[5]=0;
-	                    exit;
-	                }}}
-	            }
-	        }
-        
-	    }
-    
-    
-	    trading=0;
-    
-	    // show_message("F: "+string(liscensing));
-    
-	    // show_message("rando4: "+string(rando4)+"#deal: "+string(deal));
-    
-    
-	    // show_message("Lisc: "+string(lisc)+" | Step: "+string(step));
-    
-	    if (trade_take[1]="Useful Information") or (trade_take[2]="Useful Information") or (trade_take[3]="Useful Information") or (trade_take[4]="Useful Information"){
-	        scr_dialogue("useful_information");
-	    }
-	    else{
-	        if (lisc!=step) or (lisc=0) then scr_dialogue("agree");
-	        if (lisc=step) and (obj_controller.liscensing>0) then scr_dialogue("agree_lisc");
-	    }
-
-	    trade_take[0]="";trade_take[1]="";trade_take[2]="";trade_take[3]="";trade_take[4]="";trade_take[5]="";trade_tnum[0]=0;trade_tnum[1]=0;trade_tnum[2]=0;trade_tnum[3]=0;trade_tnum[4]=0;trade_tnum[5]=0;
-	    trade_give[0]="";trade_give[1]="";trade_give[2]="";trade_give[3]="";trade_give[4]="";trade_give[5]="";trade_mnum[0]=0;trade_mnum[1]=0;trade_mnum[2]=0;trade_mnum[3]=0;trade_mnum[4]=0;trade_mnum[5]=0;
-	    if (diplomacy_faction=6) or (diplomacy_faction=7) or (diplomacy_faction=8) then scr_loyalty("Xeno Trade","+");
-	}
-	if (rando4>deal) and (trading_artifact=0){
-	    trading=0;scr_dialogue("disagree");
-	    trade_take[0]="";trade_take[1]="";trade_take[2]="";trade_take[3]="";trade_take[4]="";trade_take[5]="";trade_tnum[0]=0;trade_tnum[1]=0;trade_tnum[2]=0;trade_tnum[3]=0;trade_tnum[4]=0;trade_tnum[5]=0;
-	    trade_give[0]="";trade_give[1]="";trade_give[2]="";trade_give[3]="";trade_give[4]="";trade_give[5]="";trade_mnum[0]=0;trade_mnum[1]=0;trade_mnum[2]=0;trade_mnum[3]=0;trade_mnum[4]=0;trade_mnum[5]=0;
-	}
-
-
-	    // show_message("G: "+string(liscensing));
-
-	if (trading_artifact!=0){// Eheheheh, good space goy
-	    if (rando4<=deal){
-	        i=0;
-	        repeat(4){i+=1;
-	            if (trade_give[i]="Requisition") then requisition-=_opt.number;
-	            if (trade_give[i]="Gene-Seed") and (_opt.number>0){
-	                gene_seed-=_opt.number;
-                
-	                if (diplomacy_faction<=5) and (diplomacy_faction!=4) then gene_sold+=_opt.number;
-	                if (diplomacy_faction>=6) then gene_xeno+=_opt.number;
-	            }
-	            if (trade_give[i]="Info Chip") and (_opt.number>0) then info_chips-=_opt.number;
-	            if (trade_give[i]="STC Fragment") and (_opt.number>0){
-	                var remov,p;remov=0;p=0;
-	                repeat(100){
-	                    if (remov=0){p=choose(1,2,3);
-	                        if (p=1) and (stc_wargear_un>0){stc_wargear_un-=1;remov=1;}
-	                        if (p=2) and (stc_vehicles_un>0){stc_vehicles_un-=1;remov=1;}
-	                        if (p=3) and (stc_ships_un>0){stc_ships_un-=1;remov=1;}
-	                    }
-	                }
-	            }
-	        }
-	        trading=0;scr_dialogue("agree");force_goodbye=1;trading_artifact=2;
-	        trade_take[0]="";trade_take[1]="";trade_take[2]="";trade_take[3]="";trade_take[4]="";trade_take[5]="";trade_tnum[0]=0;trade_tnum[1]=0;trade_tnum[2]=0;trade_tnum[3]=0;trade_tnum[4]=0;trade_tnum[5]=0;
-	        trade_give[0]="";trade_give[1]="";trade_give[2]="";trade_give[3]="";trade_give[4]="";trade_give[5]="";trade_mnum[0]=0;trade_mnum[1]=0;trade_mnum[2]=0;trade_mnum[3]=0;trade_mnum[4]=0;trade_mnum[5]=0;
-	        if (diplomacy_faction=6) or (diplomacy_faction=7) or (diplomacy_faction=8) then scr_loyalty("Xeno Trade","+");
-	    }
-	    if (rando4>deal){scr_dialogue("disagree");
-	        trade_give[0]="";trade_give[1]="";trade_give[2]="";trade_give[3]="";trade_give[4]="";trade_give[5]="";trade_mnum[0]=0;trade_mnum[1]=0;trade_mnum[2]=0;trade_mnum[3]=0;trade_mnum[4]=0;trade_mnum[5]=0;
-	    }
-	}
-
-	    // show_message("H: "+string(liscensing));
-
-	}
-
-
-	with(obj_star){
-	    if (x<-3500) and (y<-3500){x+=10000;y+=10000;}
-	    if (x<-3500) and (y<-3500){x+=10000;y+=10000;}
-	}
-
-	instance_activate_all();
-
-
-}
+ 

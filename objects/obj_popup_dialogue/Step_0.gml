@@ -50,76 +50,13 @@ if (input_type = 2) {
     }
 
     if (execute = true) {
-        if (inputting != 0) { // All checks out captain
-            if (target = "t1") {
-                obj_controller.trade_tnum[1] = inputting;
-                obj_controller.trade_take[1] = target2;
-                with(obj_controller) {
-                    scr_trade(false);
-                }
-            }
-            if (target = "t2") {
-                obj_controller.trade_tnum[2] = inputting;
-                obj_controller.trade_take[2] = target2;
-                with(obj_controller) {
-                    scr_trade(false);
-                }
-            }
-            if (target = "t3") {
-                obj_controller.trade_tnum[3] = inputting;
-                obj_controller.trade_take[3] = target2;
-                with(obj_controller) {
-                    scr_trade(false);
-                }
-            }
-            if (target = "t4") {
-                obj_controller.trade_tnum[4] = inputting;
-                obj_controller.trade_take[4] = target2;
-                with(obj_controller) {
-                    scr_trade(false);
-                }
-            }
-
-            if (target = "m1") {
-                obj_controller.trade_mnum[1] = inputting;
-                obj_controller.trade_give[1] = target2;
-                with(obj_controller) {
-                    scr_trade(false);
-                }
-            }
-            if (target = "m2") {
-                obj_controller.trade_mnum[2] = inputting;
-                obj_controller.trade_give[2] = target2;
-                with(obj_controller) {
-                    scr_trade(false);
-                }
-            }
-            if (target = "m3") {
-                obj_controller.trade_mnum[3] = inputting;
-                obj_controller.trade_give[3] = target2;
-                with(obj_controller) {
-                    scr_trade(false);
-                }
-            }
-            if (target = "m4") {
-                obj_controller.trade_mnum[4] = inputting;
-                obj_controller.trade_give[4] = target2;
-                with(obj_controller) {
-                    scr_trade(false);
-                }
-            }
-
-            if (string_count("m", target) > 0) {
-                if (target2 = "Requisition") then obj_controller.trade_req -= inputting;
-                if (target2 = "Gene-Seed") then obj_controller.trade_gene -= inputting;
-                if (target2 = "STC Fragment") then obj_controller.trade_chip -= inputting;
-                if (target2 = "Info Chip") then obj_controller.trade_info -= inputting;
-            }
-        }
-        instance_destroy();
+        
     }
 }
 
 if (is_struct(target)){
-    target.number = inputting;
+    if (inputting != 0){
+        target.number = inputting;
+    }
+    instance_destroy();
 }

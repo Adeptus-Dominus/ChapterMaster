@@ -872,46 +872,6 @@ inqis_flag_lair=0;
 inqis_flag_gene=0;
 
 faction_justmet=0;
-
-trade_mine[0]="";
-trade_mine[1]="Requisition";
-trade_mine[2]="Gene-Seed";
-trade_mine[3]="STC Fragment";
-trade_mine[4]="Info Chip";
-trade_theirs[0]="";
-trade_theirs[1]="";
-trade_theirs[2]="";
-trade_theirs[3]="";
-trade_theirs[4]="";
-trade_theirs[5]="";
-trade_theirs[6]="";
-trade_disp[0]=0;
-trade_disp[1]=0;
-trade_disp[2]=0;
-trade_disp[3]=0;
-trade_disp[4]=0;
-trade_disp[5]=0;
-trade_disp[6]=0;
-trade_take[0]="";
-trade_take[1]="";
-trade_take[2]="";
-trade_take[3]="";
-trade_take[4]="";
-trade_tnum[0]=0;
-trade_tnum[1]=0;
-trade_tnum[2]=0;
-trade_tnum[3]=0;
-trade_tnum[4]=0;
-trade_give[0]="";
-trade_give[1]="";
-trade_give[2]="";
-trade_give[3]="";
-trade_give[4]="";
-trade_mnum[0]=0;
-trade_mnum[1]=0;
-trade_mnum[2]=0;
-trade_mnum[3]=0;
-trade_mnum[4]=0;
 // ** Sets up starting requisition **
 requisition=500;
 if (instance_exists(obj_ini)){
