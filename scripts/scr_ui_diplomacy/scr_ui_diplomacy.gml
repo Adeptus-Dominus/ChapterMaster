@@ -629,7 +629,16 @@ function scr_ui_diplomacy() {
 	        draw_rectangle(xx+818,yy+796,xx+897,yy+815,0);
         
 	        draw_set_color(0);
-	        draw_text(xx+442+52,yy+720,string_hash_to_newline("Trade"));
+	        if (point_and_click(draw_unit_buttons([xx+442+52,yy+720],"Trade"))){
+	        	if ((audience==0) and (force_goodbye==0)){
+	                trading=1;
+	                scr_dialogue("open_trade");
+	                cooldown=8;
+	                click2=1;
+	                trade_attempt = new TradeAttempt(diplomacy);
+	        	}
+	        }
+        
 	        draw_text(xx+562+52,yy+720,string_hash_to_newline("Demand"));
 	        draw_text(xx+682+52,yy+720,string_hash_to_newline("Discuss"));
 	        draw_text(xx+442+52,yy+754,string_hash_to_newline("Denounce"));
@@ -674,13 +683,6 @@ function scr_ui_diplomacy() {
 		
     
 	    // xx=view_xview[0];yy=view_yview[0];
-    
-    
-    
-	    if (trading==true){
-
-        	trade_attempt.draw_trade_screen();
-	    }
     
     
 	}

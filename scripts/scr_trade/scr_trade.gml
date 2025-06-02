@@ -1,14 +1,14 @@
 
-function TradeAttempt(diplomacy){
+function TradeAttempt(diplomacy) constructor{
 	diplomacy_faction = diplomacy;
 	relative_trade_values = {
 		"Test" : 5000,
 		"Requisition" : 1,
-		"Recruiting Planet" : disposition[2]<70 ? 4000 : 2000,
+		"Recruiting Planet" : obj_controller.disposition[2]<70 ? 4000 : 2000,
 		"License: Repair" : 750,
 		"License: Crusade" : 1500,
 		"Terminator Armour" : 400,
-		"Tartaros" : 900,s
+		"Tartaros" : 900,
 		"Land Raider" : 800,
 		"Castellax Battle Automata" : 1200,
 		"Minor Artifact" : 250,
@@ -33,25 +33,28 @@ function TradeAttempt(diplomacy){
 		"Ork Sniper" : 30,
 		"Flash Git" : 60,
 	}
+	demand_options = [];
+	offer_options = [];
 
+	static clear_options = function(){
+		trade_likely="";
+		var _offer_length = array_length(offer_options);
+		var _demand_length = array_length(offer_options)
+		var trade_options = max(_demand_length,_offer_length)
+		for (var i=0;i<trade_options;i++){
+			if (i<_offer_length){
+				offer_options[i].number = 0;
+			}
+			if (i<_demand_length){
+				demand_options[i].number = 0;
+			}			
+		}		
+	}
 	clear_button = new UnitButtonObject({
 		x1 : 510,
 		y1 : 649,
 		label : "Clear",
-		bind_method = function(){
-			trade_likely="";
-			var _offer_length = array_length(offer_options);
-			var _demand_length = array_length(offer_options)
-			var trade_options = max(_demand_length,_offer_length)
-			for (var i=0;i<trade_options;i++){
-				if (i<_offer_length){
-					offer_options[i].number = 0;
-				}
-				if (i<_demand_length){
-					demand_options[i].number = 0;
-				}			
-			}
-		}
+		bind_method : clear_options;
 	});
 
 	static successful_trade_attempt = function(){
@@ -68,7 +71,7 @@ function TradeAttempt(diplomacy){
 				}
 				trading_object.items[$ _type] = {
 					quality : "standard",
-					number : opt.number,
+					number : _opt.number,
 				}
 			} else if (_opt.trade_type == "license"){
 				switch (label){
@@ -157,7 +160,7 @@ function TradeAttempt(diplomacy){
 
 	}
 
-	static find_trade_locations(){
+	static find_trade_locations = function(){
  		if (obj_ini.fleet_type=ePlayerBase.home_world){
  			var _stars_with_player_control = [];
 	 		with(obj_star){
@@ -251,7 +254,7 @@ function TradeAttempt(diplomacy){
 		} else {
 			with (obj_controller){
 				scr_dialogue("disagree");
-				clear_button.bind_method();
+				clear_options();
 			}			
 		}
 
@@ -261,7 +264,7 @@ function TradeAttempt(diplomacy){
 		x1 : 630,
 		y1 : 649,
 		label : "Offer",
-		bind_method = function(){
+		bind_method : function(){
 			if (obj_controller.diplo_last!="offer"){
 				attempt_trade(true);
 			}
@@ -272,7 +275,7 @@ function TradeAttempt(diplomacy){
 		x1 : 818,
 		y1 : 796,
 		label : "Exit",
-		bind_method = function(){ 
+		bind_method : function(){ 
 			with (obj_controller){
 	            cooldown=8;
 	            trading=0;
@@ -292,13 +295,14 @@ function TradeAttempt(diplomacy){
 		}
 	});
 
-	static new_demand_buttons = function(trade_disp, name, trade_type, max_take:100000){
+	static new_demand_buttons = function(trade_disp, name, trade_type, max_take = 100000){
 		var _option = new UnitButtonObject({
 			label : name,
 			number : 0,
 			disp : trade_disp,
 			trade_type : trade_type,
 			max_take : max_take,
+			number_last : 0,
 			bind_method : function(){
 				if (max_take == 1){
 					number = 1;
@@ -310,10 +314,8 @@ function TradeAttempt(diplomacy){
 		});
 		array_push(demand_options, _option);
 	}
-	demand_options = [];
-	offer_options = [];
 
-	trader_disp = obj_controller.dispostion[diplomacy_faction];
+	trader_disp = obj_controller.disposition[diplomacy_faction];
 
     trade_req=obj_controller.requisition;
     trade_gene=obj_controller.gene_seed;
@@ -336,7 +338,7 @@ function TradeAttempt(diplomacy){
 			break;
 		case 4:
 			new_demand_buttons(30, "Hellrifle", "equip",3);
-			new_demand_buttons(20, "Incinerator", "equip"10);
+			new_demand_buttons(20, "Incinerator", "equip",10);
 			new_demand_buttons(25, "Crusader", "merc", 5);
 			new_demand_buttons(40, "Exterminatus", "equip",1);
 			new_demand_buttons(60, "Cyclonic Torpedo", "equip",1);
@@ -361,13 +363,14 @@ function TradeAttempt(diplomacy){
 			break;	
 	}
 
-	static new_offer_option(trade_disp-100, name, trade_type, max_count=1){
+	static new_offer_option = function(trade_disp = -100, name, trade_type, max_count=1){
 		var _option = new UnitButtonObject({
 			label : name,
 			number : 0,
 			max_number : max_count,
 			disp : trade_disp,
 			trade_type : trade_type,
+			number_last : 0,
 			bind_method : function(){
 				get_diag_integer("{label} offered?",max_number, self);
 			}
@@ -386,29 +389,29 @@ function TradeAttempt(diplomacy){
 	if (trade_chip > 0){
 		new_offer_option(, "STC Fragment","stc" ,trade_chip);
 	}
-	if (info_chip > 0){
-		new_offer_option(, "Info Chip","info", info_chip);
+	if (trade_info > 0){
+		new_offer_option(, "Info Chip","info", trade_info);
 	}
 
-	static draw_trade_screen(){
+	static draw_trade_screen = function(){
 		recalc_values =  false;
         draw_set_color(38144);
-        draw_rectangle(xx+342,yy+326,xx+486,yy+673,1);
-        draw_rectangle(xx+343,yy+327,xx+485,yy+672,1);// Left Main Panel
-        draw_rectangle(xx+504,yy+371,xx+741,yy+641,1);
-        draw_rectangle(xx+505,yy+372,xx+740,yy+640,1);// Center panel
-        draw_rectangle(xx+759,yy+326,xx+903,yy+673,1);
-        draw_rectangle(xx+760,yy+327,xx+902,yy+672,1);// Right Main Panel
+        draw_rectangle(342,326,486,673,1);
+        draw_rectangle(343,327,485,672,1);// Left Main Panel
+        draw_rectangle(504,371,741,641,1);
+        draw_rectangle(505,372,740,640,1);// Center panel
+        draw_rectangle(759,326,903,673,1);
+        draw_rectangle(760,327,902,672,1);// Right Main Panel
     
-        draw_rectangle(xx+342,yy+326,xx+486,yy+371,1);// Left Title Panel
-        draw_rectangle(xx+759,yy+326,xx+903,yy+371,1);// Right Title Panel
+        draw_rectangle(342,326,486,371,1);// Left Title Panel
+        draw_rectangle(759,326,903,371,1);// Right Title Panel
     
         draw_set_font(fnt_40k_14b);
         draw_set_halign(fa_center);
-        draw_text(xx+411,yy+330,string_hash_to_newline(string(obj_controller.faction[diplomacy_faction])+"#Items"));
-        draw_text(xx+829,yy+330,string_hash_to_newline(string(global.chapter_name)+"#Items"));
+        draw_text(411,330,$"{obj_controller.faction[diplomacy_faction]}\nItems");
+        draw_text(829,330,$"{global.chapter_name}\nItems");
     
-        if (trade_likely!="") then draw_text(xx+623,yy+348,string_hash_to_newline($"[{trade_likely}]"));
+        if (trade_likely!="") then draw_text(623,348,$"[{trade_likely}]");
 
         clear_button.draw();
         offer_button.draw();
@@ -421,28 +424,28 @@ function TradeAttempt(diplomacy){
         if (obj_controller.trading_artifact = 0){
 	        for (var i=0;i<array_length(demand_options);i++){
 	        	var _opt = demand_options[i];
-	        	if (opt.number != opt.number_last){
+	        	if (_opt.number != _opt.number_last){
 	        		recalc_values = true;
 	        	}
 	        
-	        	opt.x1 = 347;
-	        	opt.y1 = 382 + i*(48);
-	        	opt.update_loc();
-	        	opt.number_last = number;
-	        	var _allow_click = opot.disp >= trader_disp;
-	        	opt.draw(_allow_click);
-	        	if (opt.number > 0){
+	        	_opt.x1 = 347;
+	        	_opt.y1 = 382 + i*(48);
+	        	_opt.update_loc();
+	        	_opt.number_last = _opt.number;
+	        	var _allow_click = _opt.disp <= trader_disp;
+	        	_opt.draw(_allow_click);
+	        	if (_opt.number > 0){
 	        		var _y_offset = 399 + (_requested_count * 20);
 	        		draw_sprite(spr_cancel_small,0,507,_y_offset);
 	        		if (point_and_click_sprite(507,_y_offset, spr_cancel_small)){
-	        			opt.number = 0;
+	        			_opt.number = 0;
 	        			recalc_values = true;;
 	        		}
 
-	        		if (opt.max_take > 1){
-	        			draw_text(530,_y_offset,"{opt.label} : {opt.number}");
+	        		if (_opt.max_take > 1){
+	        			draw_text(530,_y_offset,"{_opt.label} : {_opt.number}");
 	        		} else {
-	        			draw_text(530,_y_offset,"{opt.label}");
+	        			draw_text(530,_y_offset,"{_opt.label}");
 	        		}
 	        	}
 	        }
@@ -451,25 +454,25 @@ function TradeAttempt(diplomacy){
 	    draw_text(507,529,string(global.chapter_name)+":");
         for (var i=0;i<array_length(offer_options);i++){
         	var _opt = offer_options[i];
-        	if (opt.number != opt.number_last){
+        	if (_opt.number != _opt.number_last){
         		recalc_values = true;
         	}        	
-        	opt.x1 = 347+ 419;
-        	opt.y1 = 382 + i*(48);
-        	opt.update_loc();
-        	opt.draw();
-        	opt.number_last = number;
-        	if (opt.number > 0){
+        	_opt.x1 = 347+ 419;
+        	_opt.y1 = 382 + i*(48);
+        	_opt.update_loc();
+        	_opt.draw();
+        	_opt.number_last = _opt.number;
+        	if (_opt.number > 0){
         		var _y_offset = 547 + (_requested_count * 20);
         		draw_sprite(spr_cancel_small,0,507,_y_offset);
 	        	if (point_and_click_sprite(507,_y_offset, spr_cancel_small)){
-        			opt.number = 0;
+        			_opt.number = 0;
         			recalc_values = true;;
         		}    		
-        		if (opt.max_number > s1){
-        			draw_text(530,_y_offset,"{opt.label} : {opt.number}");
+        		if (_opt.max_number > s1){
+        			draw_text(530,_y_offset,"{_opt.label} : {_opt.number}");
         		} else {
-        			draw_text(530,_y_offset,"{opt.label}");
+        			draw_text(530,_y_offset,"{_opt.label}");
         		}
         	}        	
         }
@@ -486,7 +489,7 @@ function TradeAttempt(diplomacy){
 	}
 	information_value = _info_val;
 
-	static calculate_trader_trade_value(){
+	static calculate_trader_trade_value = function(){
 		
 		their_worth = 0;
 		
@@ -522,7 +525,7 @@ function TradeAttempt(diplomacy){
 	    }	
 	}
 
-	static calculate_player_trade_value(){
+	static calculate_player_trade_value = function(){
 		my_worth = 0;
 	    for (var i = 1; i < 5; i++) {
 	    	var _opt = offer_options[i]
@@ -556,7 +559,7 @@ function TradeAttempt(diplomacy){
 	}
 
 	trade_likely = "";
-	static calculate_deal_chance(){
+	static calculate_deal_chance = function(){
 		var dif_penalty, penalty;
 		def_penalty=0;penalty=0;
 		calculate_player_trade_value();

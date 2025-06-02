@@ -2,9 +2,9 @@ function scr_trade_dep() {
 
 	var  _goods = cargo_data.player_goods;
 
-	if (struct_exists(_goods, "mercenaries"){
+	if (struct_exists(_goods, "mercenaries")){
 		var _mercs = struct_get_names(_goods.mercenaries);
-	    for (var m=0;m<array_length(_mercs);m++)
+	    for (var m=0;m<array_length(_mercs);m++){
 	    	var _merc_type = _mercs[m];
 	        repeat(_goods.mercenaries[$_merc_type]){
 	            scr_add_man(_merc_type,0,"","",0,true,"default");
@@ -12,7 +12,7 @@ function scr_trade_dep() {
 	    }
 	}
 
-	if (struct_exists(_goods, "requisition"){
+	if (struct_exists(_goods, "requisition")){
 		obj_controller.requisition+=_goods.requisition;
 	}
 

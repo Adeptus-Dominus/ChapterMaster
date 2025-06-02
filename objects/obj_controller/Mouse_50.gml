@@ -173,14 +173,6 @@ if (menu==20) and (diplomacy>0) or ((diplomacy<-5) and (diplomacy>-6)) and (cool
     if (trading==0) and (diplo_option[1]=="") and (diplo_option[2]=="") and (diplo_option[3]=="") and (diplo_option[4]==""){
         if (force_goodbye<=0){
             if (audience==0){
-                // Trade
-                if (mouse_x>=xx+442) and (mouse_y>=yy+718) and (mouse_x<xx+547) and (mouse_y<yy+737) and (audience==0) and (force_goodbye==0){
-                    trading=1;
-                    scr_dialogue("open_trade");
-                    cooldown=8;
-                    click2=1;
-                    trade_attempt = new TradeAttempt(diplomacy);
-                }
                 // Demand
                 if (mouse_x>=xx+561) and (mouse_y>=yy+718) and (mouse_x<xx+667) and (mouse_y<yy+737) and (force_goodbye==0){
                     cooldown=8;

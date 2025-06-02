@@ -883,6 +883,8 @@ if (instance_exists(obj_ini)){
     }
 }
 if (is_test_map==true) then requisition=50000;
+
+trade_attempt = false;
 // ** Sets income **
 income=0;
 income_last=0;
