@@ -278,17 +278,9 @@ function array_set_range(_array, _start_index, _end_index, _value) {
 	}
 }
 
-/// @description Similar to array_create, but can use complex default types (arrays and structs), creating a separate reference for each element.
+/// @description Similar to array_create, but uses `variable_clone()` to clone the default if it's a complex type (array/struct). Supports default with nesting.
 /// @param {Real} _size The size of the array to create.
 /// @param {Any} _default The value to set for the elements.
 function array_create_advanced(_size, _default = 0) {
-	var _result;
-
-	if (is_struct(_default) || is_array(_default)) {
-             _result = array_create(_size, variable_clone(_default));
-	} else {
-		_result = array_create(_size, _default);
-	}
-
-    return _result;
+    return array_create(_size, variable_clone(_default));
 }

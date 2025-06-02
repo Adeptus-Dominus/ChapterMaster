@@ -65,18 +65,10 @@ p_governor = array_create(_planet_array_size, "");
 p_operatives = array_create_advanced(_planet_array_size, []);
 p_feature = array_create_advanced(_planet_array_size, []);
 p_upgrades = array_create_advanced(_planet_array_size, []);
-p_influence = array_create(_planet_array_size);
-p_problem = array_create(_planet_array_size);
-p_problem_other_data = array_create(_planet_array_size);
-p_timer = array_create(_planet_array_size);
-
-// Need each sub-array to be independent
-for (var i = 0; i < _planet_array_size; i++) {
-    p_influence[i] = array_create(15, 0);
-    p_problem[i] = array_create(8, "");
-    p_problem_other_data[i] = array_create_advanced(8, {});
-    p_timer[i] = array_create(8, -1);
-}
+p_influence = array_create_advanced(_planet_array_size, array_create(15, 0));
+p_problem = array_create_advanced(_planet_array_size, array_create(8, ""));
+p_problem_other_data = array_create_advanced(_planet_array_size, array_create_advanced(8, {}));
+p_timer = array_create_advanced(_planet_array_size, array_create(8, -1));
 
 system_player_ground_forces = 0;
 garrison = false;
