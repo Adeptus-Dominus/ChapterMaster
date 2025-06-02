@@ -22,7 +22,8 @@ if (enemy=2){
     var i=0;
     i=en_capital;
     if (i>0){
-        en_column[2]="Apocalypse Class Battleship";en_num[2]=floor(random(i))+1;
+        en_column[2]="Apocalypse Class Battleship";
+        en_num[2]=floor(random(i))+1;
         if (en_num[2]<(en_capital*0.6)) then en_num[2]=round(en_capital*0.6);
         i-=en_num[2];en_size[2]=3;
     }
