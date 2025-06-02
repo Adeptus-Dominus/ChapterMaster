@@ -284,17 +284,8 @@ function array_set_range(_array, _start_index, _end_index, _value) {
 function array_create_advanced(_size, _default = 0) {
 	var _result;
 
-	if (is_struct(_default)) {
-		_result = array_create(_size);
-		for (var i = 0; i < _size; i++) {
-			_result[i] = {};
-		}
-
-	} else if (is_array(_default)) {
-		_result = array_create(_size);
-		for (var i = 0; i < _size; i++) {
-			_result[i] = [];
-		}
+	if (is_struct(_default) || is_array(_default)) {
+             _result = array_create(_size, variable_clone(_default));
 	} else {
 		_result = array_create(_size, _default);
 	}
