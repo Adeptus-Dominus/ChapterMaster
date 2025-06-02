@@ -1140,9 +1140,35 @@ annoyed = array_create(14, 0);
 // ** Sets diplomacy ignore status **
 ignore = array_create(14, 0);
 // ** Sets diplomacy turns to be ignored **
-turns_ignored = array_create(14, 0);
+turns_ignored[0]=0;
+turns_ignored[1]=0;
+turns_ignored[2]=0;
+turns_ignored[3]=0;
+turns_ignored[4]=0;
+turns_ignored[5]=0;
+turns_ignored[6]=0;
+turns_ignored[7]=0;
+turns_ignored[8]=0;
+turns_ignored[9]=0;
+turns_ignored[10]=0;
+turns_ignored[11]=0;
+turns_ignored[12]=0;
+turns_ignored[13]=0;
 // ** Sets faction defeated **
-faction_defeated = array_create(14, 0);
+faction_defeated[0]=0;
+faction_defeated[1]=0;
+faction_defeated[2]=0;
+faction_defeated[3]=0;
+faction_defeated[4]=0;
+faction_defeated[5]=0;
+faction_defeated[6]=0;
+faction_defeated[7]=0;
+faction_defeated[8]=0;
+faction_defeated[9]=0;
+faction_defeated[10]=0;
+faction_defeated[11]=0;
+faction_defeated[12]=0;
+faction_defeated[13]=0;
 
 // **** CHAPTER CREATION VARS ****
 // ** Sets up Chapter configuration variables **
