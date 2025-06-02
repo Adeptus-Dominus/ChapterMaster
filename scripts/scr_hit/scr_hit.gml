@@ -89,6 +89,13 @@ function point_and_click(rect, cooldown = 60, lock_bypass = false) {
 	return true;
 }
 
+function point_and_click_sprite(x1, y1, sprite, x_scale = 0, y_scale = 0){
+	var _width = sprite_get_width(sprite) * x_scale;
+	var _height = sprite_get_height(sprite) * y_scale;
+	point_and_click([x1, y1, x1 +_width, y1 + _height]);
+
+}
+
 function scr_click_left(cooldown = 60, lock_bypass = false){
 	if (lock_bypass == false && global.ui_click_lock == true) {
 		return false;

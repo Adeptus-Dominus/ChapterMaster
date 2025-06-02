@@ -530,7 +530,7 @@ for(var i=1; i<=99; i++){
                         flee.capital_number=choose(0,1);
 						flee.frigate_number=choose(2,3);
 						flee.escort_number=choose(4,5,6);
-                        flee.trade_goods="csm";
+                        fleet.cargo_data.csm = true;
 						obj_controller.chaos_fleets+=1;
                         flee.action_x=star_id.x;
 						flee.action_y=star_id.y;

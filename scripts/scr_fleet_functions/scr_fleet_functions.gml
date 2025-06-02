@@ -346,7 +346,9 @@ function scr_efleet_arrive_at_trade_loc(){
         scr_event_log("",bleh,cur_star.name);
         
         // Drop off here
-        if (trade_goods!="stuff") and (trade_goods!="none") then scr_trade_dep();
+        if (fleet_has_cargo("player_goods")){
+        	scr_trade_dep();
+        }
         
         trade_goods="return";
         if (target!=noone) then target=noone;

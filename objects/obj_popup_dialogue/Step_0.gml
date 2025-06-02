@@ -119,3 +119,7 @@ if (input_type = 2) {
         instance_destroy();
     }
 }
+
+if (is_struct(target)){
+    target.number = inputting;
+}

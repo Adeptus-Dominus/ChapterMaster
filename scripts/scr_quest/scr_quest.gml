@@ -152,7 +152,7 @@ function scr_quest(quest_satus=0, quest_name, quest_fac, quest_end) {
         
 	        flit.image_index=0;
 	        flit.capital_number=1;
-	        flit.trade_goods="none";
+	        flit.trade_goods="";
         
 	        if (instance_exists(obj_temp2)){flit.action_x=obj_temp2.x;flit.action_y=obj_temp2.y;flit.target=instance_nearest(flit.action_x,flit.action_y,obj_p_fleet);}
 	        if (!instance_exists(obj_temp2)) and (instance_exists(obj_ground_mission)){flit.action_x=obj_ground_mission.x;flit.action_y=obj_ground_mission.y;flit.target=instance_nearest(flit.action_x,flit.action_y,obj_p_fleet);}
