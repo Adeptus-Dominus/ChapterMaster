@@ -41,13 +41,7 @@ if (menu=1) or (menu=2){// This is the other one
     if (room_get_name(room)="Main_Menu") then draw_rectangle(0,0,room_width,707,0);
     draw_set_alpha(1);
     
-    draw_set_color(c_red);
-    draw_set_font(fnt_40k_14);
-    draw_set_halign(fa_left);
-    // draw_text(xx+40,yy+730,"Menu: "+string(menu)+", First Open: "+string(first_open)+", Top Save: "+string(top));
-    // draw_text(xx+40,yy+730,string(debug));
     draw_set_halign(fa_center);
-    
     draw_set_color(0);
     
     draw_sprite(spr_save_header,0,xx+0,yy+27);

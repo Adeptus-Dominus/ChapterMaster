@@ -105,7 +105,7 @@ function ComplexSet(_unit) constructor {
 		chest_variants: spr_mk7_chest_variants,
 		leg_variants: spr_mk7_leg_variants,
 		head: spr_mk7_head_variants,
-		knees: spr_mk7_complex_knees
+		right_knee: spr_mk7_complex_knees
 	};
 
 	_are_exceptions = false;
@@ -142,7 +142,7 @@ function ComplexSet(_unit) constructor {
 				_mod = modulars[i];
 				exceptions = [];
 				if (array_contains(blocked, _mod.position)) {
-					return "blocked";
+					continue;
 				}
 
 				if (struct_exists(_mod, "allow_either")) {
@@ -327,6 +327,24 @@ function ComplexSet(_unit) constructor {
 				if (struct_exists(_mod, "overides")) {
 					_overides = _mod.overides;
 				}
+
+				if (struct_exists(_mod, "body_parts")){
+					var _viable = true;
+					var _body_areas = struct_get_names(_mod.body_parts);
+					for (var b=0;b<array_length(_body_areas);b++){
+						var _area =_body_areas[b];
+						if (!struct_exists(unit.body[$ _area],_mod.body_parts[$ _area])){
+							_viable = false;
+							break;							
+						}
+					}
+					if (!_viable){
+						if (!check_exception("body_parts")) {
+							continue;
+						}
+					}
+				}
+
 				if (struct_exists(_mod, "prevent_others")) {
 					replace_area(_mod.position, _mod.sprite, _overides);
 					array_push(blocked, _mod.position);
@@ -369,7 +387,7 @@ function ComplexSet(_unit) constructor {
 							continue;
 						}
 					}
-				}
+				}				
 
 				if (position != false) {
 					if (position == "weapon") {
@@ -384,10 +402,22 @@ function ComplexSet(_unit) constructor {
 				} else {
 					add_to_area(_mod.position, _mod.sprite, _overides);
 				}
+				if (struct_exists(_mod, "prevent_others")) {
+					replace_area(_mod.position, _mod.sprite, _overides);
+					array_push(blocked, _mod.position);
+					if (struct_exists(_mod, "ban")) {
+						for (var b = 0; b < array_length(_mod.ban); b++) {
+							if (!array_contains(banned, _mod.ban[b])) {
+								array_push(banned, _mod.ban[b]);
+							}
+						}
+					}
+				}				
 			}
+		} catch(_exception){
+ 			handle_exception(_exception);
 		}
 	};
-
 	blocked = [];
 	banned = [];
 	variation_map = {
@@ -1045,8 +1075,8 @@ function ComplexSet(_unit) constructor {
 					left_arm: spr_mk3_left_arm,
 					right_arm: spr_mk3_right_arm,
 					head: spr_mk3_head_variants,
-					left_leg: spr_mk3_left_leg_variants,
-					right_leg: spr_mk3_right_leg_variants,
+					left_knee: spr_mk3_left_knee,
+					right_knee: spr_mk3_right_knee,
 					mouth_variants: spr_mk3_mouth,
 					forehead: spr_mk3_forehead_variants,
 					belt: spr_mk3_belt

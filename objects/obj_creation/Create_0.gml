@@ -44,36 +44,23 @@ successor_y = 250;
 custom_y = 463;
 /// y coord of Other section heading
 other_y = 593;
-var show_debug = false;
-if(show_debug){
-    show_debug_overlay(true);
-    dbg_view("obj_creation_dbg", true);
-    dbg_section("Icon Grid");
-    ref_to_max_cols = ref_create(self, "max_cols");
-    ref_to_icon_width = ref_create(self, "icon_width");
-    ref_to_icon_height = ref_create(self, "icon_height");
-    ref_to_icon_grid_left_edge = ref_create(self, "icon_grid_left_edge");
-    ref_to_icon_gap_y = ref_create(self, "icon_gap_y");
-    ref_to_icon_gap_x = ref_create(self, "icon_gap_x");
-    ref_to_icon_row_gap = ref_create(self, "icon_row_gap");
-    dbg_slider_int(ref_to_max_cols,1,15);
-    dbg_slider_int(ref_to_icon_width,1,100);
-    dbg_slider_int(ref_to_icon_height,1,100);
-    dbg_slider_int(ref_to_icon_grid_left_edge,1,1000);
-    dbg_slider_int(ref_to_icon_gap_y,1,300);
-    dbg_slider_int(ref_to_icon_gap_x,1,300);
-    dbg_slider_int(ref_to_icon_row_gap,1,300);
 
-    dbg_section("Heading Positions")
-    ref_to_founding_y = ref_create(self, "founding_y");
-    ref_to_successor_y = ref_create(self, "successor_y");
-    ref_to_custom_y = ref_create(self, "custom_y");
-    ref_to_other_y = ref_create(self, "other_y");
-    dbg_slider_int(ref_to_founding_y,1,1000);
-    dbg_slider_int(ref_to_successor_y,1,1000);
-    dbg_slider_int(ref_to_custom_y,1,1000);
-    dbg_slider_int(ref_to_other_y,1,1000);
-}
+var view = new DebugView("Obj Creation Grid", self);
+view.add_section("Icon Grid")
+.add_slider_int("max_cols", 1, 15)
+.add_slider_int("icon_width", 1 ,100)
+.add_slider_int("icon_height", 1, 100)
+.add_slider_int("icon_grid_left_edge", 1, 1000)
+.add_slider_int("icon_gap_y", 1 , 300)
+.add_slider_int("icon_gap_x", 1, 300)
+.add_slider_int("icon_row_gap", 1, 300)
+.add_section("Heading Positions")
+.add_slider_int("founding_y", 1, 1000)
+.add_slider_int("successor_y", 1, 1000)
+.add_slider_int("custom_y", 1, 1000)
+.add_slider_int("other_y", 1, 1000)
+.hide();
+
 #endregion
 
 window_data=string(window_get_x())+"|"+string(window_get_y())+"|"+string(window_get_width())+"|"+string(window_get_height())+"|";
