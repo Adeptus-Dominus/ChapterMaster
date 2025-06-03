@@ -39,7 +39,7 @@ function TradeAttempt(diplomacy) constructor{
 	static clear_options = function(){
 		trade_likely="";
 		var _offer_length = array_length(offer_options);
-		var _demand_length = array_length(offer_options)
+		var _demand_length = array_length(demand_options)
 		var trade_options = max(_demand_length,_offer_length)
 		for (var i=0;i<trade_options;i++){
 			if (i<_offer_length){
@@ -54,7 +54,7 @@ function TradeAttempt(diplomacy) constructor{
 		x1 : 510,
 		y1 : 649,
 		label : "Clear",
-		bind_method : clear_options;
+		bind_method : clear_options,
 	});
 
 	static successful_trade_attempt = function(){
@@ -254,8 +254,8 @@ function TradeAttempt(diplomacy) constructor{
 		} else {
 			with (obj_controller){
 				scr_dialogue("disagree");
-				clear_options();
-			}			
+			}
+			clear_options();			
 		}
 
 	}
@@ -372,7 +372,11 @@ function TradeAttempt(diplomacy) constructor{
 			trade_type : trade_type,
 			number_last : 0,
 			bind_method : function(){
-				get_diag_integer("{label} offered?",max_number, self);
+				if (max_number == 1){
+					number = 1;
+				} else {				
+					get_diag_integer("{label} offered?",max_number, self);
+				}
 			}
 		});
 		array_push(offer_options, _option);		

@@ -605,17 +605,20 @@ function scr_ui_diplomacy() {
 	        }
     
 	if (show_stuff=true){
-	    draw_set_font(fnt_40k_14);draw_set_alpha(1);
-	    draw_set_color(38144);draw_set_halign(fa_left);
+	    draw_set_font(fnt_40k_14);
+	    draw_set_alpha(1);
+	    draw_set_color(38144);
+	    draw_set_halign(fa_left);
 	    draw_text_ext(xx+336+16,yy+209,string_hash_to_newline(string(diplo_txt)),-1,536);
-	    xx=__view_get( e__VW.XView, 0 );yy=__view_get( e__VW.YView, 0 );draw_set_halign(fa_center);
+	    xx=__view_get( e__VW.XView, 0 );
+	    yy=__view_get( e__VW.YView, 0 );
+	    draw_set_halign(fa_center);
 	    draw_line(xx+429,yy+710,xx+800,yy+710);
     
 	    if (trading=0) and (diplo_option[1]="") and (diplo_option[2]="") and (diplo_option[3]="") and (diplo_option[4]=""){
 	        draw_set_color(38144);
 	        if ((audience=0) and (force_goodbye=0)) or (faction_justmet=1){
 	            if (audience=0) and (force_goodbye=0){
-	                draw_rectangle(xx+442,yy+719,xx+547,yy+738,0);
 	                draw_rectangle(xx+562,yy+719,xx+667,yy+738,0);
 	                draw_rectangle(xx+682,yy+719,xx+787,yy+738,0);
 	            }
@@ -629,6 +632,7 @@ function scr_ui_diplomacy() {
 	        draw_rectangle(xx+818,yy+796,xx+897,yy+815,0);
         
 	        draw_set_color(0);
+	        draw_set_halign(fa_top);
 	        if (point_and_click(draw_unit_buttons([xx+442+52,yy+720],"Trade"))){
 	        	if ((audience==0) and (force_goodbye==0)){
 	                trading=1;
@@ -638,6 +642,7 @@ function scr_ui_diplomacy() {
 	                trade_attempt = new TradeAttempt(diplomacy);
 	        	}
 	        }
+	        draw_set_halign(fa_center);
         
 	        draw_text(xx+562+52,yy+720,string_hash_to_newline("Demand"));
 	        draw_text(xx+682+52,yy+720,string_hash_to_newline("Discuss"));
@@ -649,11 +654,11 @@ function scr_ui_diplomacy() {
         
 	        draw_set_alpha(0.2);
 	        if ((audience=0) and (force_goodbye=0)) or (faction_justmet=1){
-	            var show;show=false;if (faction_justmet=1) then show=true;
+
+	            var show = faction_justmet;
          
         
 	            if (mouse_y>=yy+719) and (mouse_y<yy+738) and (audience=0) and (force_goodbye=0){
-	                if (mouse_x>=xx+442) and (mouse_x<xx+547){draw_rectangle(xx+442,yy+719,xx+547,yy+738,0);warning=1;}
 	                if (mouse_x>=xx+562) and (mouse_x<xx+667) then draw_rectangle(xx+562,yy+719,xx+667,yy+738,0);
 	                if (mouse_x>=xx+682) and (mouse_x<xx+787) then draw_rectangle(xx+682,yy+719,xx+787,yy+738,0);
 	            }
