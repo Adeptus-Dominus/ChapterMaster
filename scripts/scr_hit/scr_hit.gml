@@ -12,9 +12,17 @@ function scr_hit(x1=0, y1=0, x2=0, y2=0) {
 
 }
 
+function coord_relevative_positions(coords, xx, yy){
+	return [coords[0]+xx, coords[1]+yy,coords[2]+xx, coords[3]+yy];
+}
+
 function scr_hit_relative(x1, relative = [0,0]){
 	var mouse_consts = return_mouse_consts();
 	return point_in_rectangle(mouse_consts[0],mouse_consts[1],relative[0] + x1[0],relative[1] + x1[1],relative[0] + x1[2],relative[1] + x1[3]);
+}
+
+function point_and_click_relative(x1,relative = [0,0] ,cooldown = 60, lock_bypass = false){
+	return point_and_click([relative[0] + x1[0],relative[1] + x1[1],relative[0] + x1[2],relative[1] + x1[3]],cooldown,lock_bypass);
 }
 
 /// @function point_and_click

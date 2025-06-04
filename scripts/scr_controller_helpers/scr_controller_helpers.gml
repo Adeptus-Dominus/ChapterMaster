@@ -34,14 +34,7 @@ function scr_menu_clear_up(specific_area_function) {
 
             if ((zoomed == 0) && (cooldown <= 0) && (menu >= 500) && (menu <= 510)) {
                 if (mouse_y >= __view_get(e__VW.YView, 0) + 27) {
-                    cooldown = 8000;
-                    if ((menu >= 500) && (temp[menu - 434] == "")) {
-                        menu = 0;
-                        exit;
-                    }
-                    if ((menu < 503) && (menu != 0)) {
-                        menu += 1;
-                    }
+                    global.ui_click_lock = true;
                 }
             }
 

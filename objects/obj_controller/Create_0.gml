@@ -1619,16 +1619,16 @@ for(var company=0; company<10; company++){
     }
 }
 
-temp[59] = $"CLASSIFICATION: SECTOR LOGISTICAE#++++++++++DATE: {temp[30]}#++++++++AUTHOR: MASTER ADEPT {temp[31]}#++++++++++++RE: INTRODUCTORY MISSIVE#+++++RECIPIENT: CHAPTER MASTER {temp[32]}##++THOUGHT: {temp[33]}++##I see you have made it unscathed, your grace. Death comes with you as it should! The enemy is on the horizon. Thy chapter is mighty and only waits for your word to wreak havoc upon our enemies.##Your chapter contains-";
+temp[59] = $"CLASSIFICATION: SECTOR LOGISTICAE\n++++++++++DATE: {temp[30]}\n++++++++AUTHOR: MASTER ADEPT {temp[31]}\n++++++++++++RE: INTRODUCTORY MISSIVE\n+++++RECIPIENT: CHAPTER MASTER {temp[32]}\n\n++THOUGHT: {temp[33]}++\n\nI see you have made it unscathed, your grace. Death comes with you as it should! The enemy is on the horizon. Thy chapter is mighty and only waits for your word to wreak havoc upon our enemies.\n\nYour chapter contains-";
 
-temp[60] = $"{temp[59]}\n\n{temp[34]}\n\n{temp[35]}##{temp[36]}##{temp[37]}##{temp[38]}##{temp[39]}##{temp[40]}##{temp[41]}##{temp[42]}##{temp[43]}##{temp[44]}##{temp[45]}";
+temp[60] = $"{temp[59]}\n\n{temp[34]}\n\n{temp[35]}\n\n{temp[36]}\n\n{temp[37]}\n\n{temp[38]}\n\n{temp[39]}\n\n{temp[40]}\n\n{temp[41]}\n\n{temp[42]}\n\n{temp[43]}\n\n{temp[44]}\n\n{temp[45]}";
 
 
-temp[61]="\n\nYour armamentarium contains some spare equipment- \n";
+temp[61]=$"\n\nYour armamentarium contains some spare equipment- \n";
 temp[61] += equipment_struct_to_string(obj_ini.equipment, true, true);
 
 
-temp[62]="##Your fleet contains ";
+temp[62]=$"\n\nYour fleet contains ";
 
 var bb=0,sk=0,glad=0,hunt=0,ships=0,bb_names=[],sk_names=[],glad_names=[],hunt_names=[];
 
@@ -1682,87 +1682,225 @@ if (hunt > 0) {
 }
 
 
+
+servo_data_book = {
+    sprite : spr_pixel_servo_book,
+    x : -500,
+    y : 500,
+    scale : 0.1,
+    pages : [],
+    animate_commands : [
+        {
+            x_end : 310,
+            y_end : 500,
+            end_scale : 0.1,
+            move_time : 2,
+        },
+        {
+            x_end : 310,
+            y_end : 30,
+            end_scale : 0.25,
+            move_time : 2,
+        }
+    ]
+}
 // show_message(temp[61]);
 // show_message(temp[62]);
 // 61 : equipment
 // 62 : ships
-var lol=240;
+var lol=200;
 draw_set_font(fnt_small);
-welcome_pages=string_height(string_hash_to_newline(string(temp[60])+string(temp[61])+string(temp[62])));
-welcome_pages-=260;
-welcome_pages=(welcome_pages/lol)+1;
 
-if (floor(welcome_pages)<welcome_pages){
-    welcome_pages+=1;
-    welcome_pages=floor(welcome_pages);
+
+
+var new_servo_pages = function(_string){
+    var _string_short = function(_string2){
+        var _bas_height = string_height(" ");
+        var _string_width = 680*0.6;
+        var _two_pages = string_height_ext(_string2, -1, _string_width);
+        var _lines = _two_pages/_bas_height;  
+        return (_lines<=20);  
+    }
+    if (!_string_short(_string)){
+        var _tally = "";
+        var _splits = string_split(_string, "\n");
+        for (var i=0;i<array_length(_splits);i++){
+            if (!_string_short(_tally + _splits[i])){
+                array_push(servo_data_book.pages, _tally);
+                _tally = "";
+            }
+
+            _tally += _splits[i]+"\n";
+            if (i == array_length(_splits)-1){
+                array_push(servo_data_book.pages, _tally);
+            }
+        }
+    } else {
+        array_push(servo_data_book.pages, _string);
+    }
 }
 
-// show_message(string(welcome_pages)+" pages");
-var tman=65;
-temp[65]=string(temp[60])+string(temp[61])+string(temp[62]);
-for(var i=0; i<welcome_pages; i++){
-    tman+=1;
-    temp[tman]=string(temp[60])+string(temp[61])+string(temp[62]);
+for (var i=60;i<70;i++){
+    if (temp[i] == ""){
+        continue;
+    }
+    new_servo_pages(temp[i]);
 }
 
-var lig=0,remov=0,stahp=0;
 
-if (welcome_pages>=1){
-    for(var i=0; i<4000; i++){
-        if (string_height(string_hash_to_newline(temp[65]))>260){
-            lig=string_length(temp[65]);
-            temp[65]=string_delete(temp[65],lig,1);
+with (servo_data_book){
+
+    animate_out = function(){
+        animate_commands = [
+            {
+                x_end : 310,
+                y_end : 500,
+                end_scale : 0.1,
+                move_time : 2,
+            },
+            {
+                x_end : -500,
+                y_end : 500,
+                end_scale : 0.1,
+                move_time : 2,
+            }, 
+        ];
+        global.ui_click_lock = false;
+        obj_controller.menu = 0;         
+    }
+
+    for (i=0;i<array_length(pages);i++){
+        var new_surf = surface_create(680*0.6, 1000*0.6);
+        draw_set_halign(fa_left);
+        draw_set_color(c_white);
+        draw_set_font(fnt_40k_14b);
+        surface_set_target(new_surf);
+        draw_text_ext(0, 0, pages[i], -1, 680*0.6);
+        surface_reset_target();
+        pages[i] = sprite_create_from_surface(new_surf, 0, 0, 680*0.6, 1000*0.6, false, false, 0, 0);
+        surface_free(new_surf);
+    }
+    command_count = 0;
+    current_command = false;
+    move_time = 0;
+    draw = function(){
+        if (move_time = 0 && array_length(animate_commands) > 0){
+            current_command = animate_commands[0];
+            array_delete(animate_commands, 0, 1);
+            move_time = current_command.move_time*room_speed;
+            x_turn_move = (current_command.x_end - x)/move_time;
+            y_turn_move = (current_command.y_end - y)/move_time;
+            scale_change = (current_command.end_scale - scale)/move_time;
+            command_count++;
+        } else if (array_length(animate_commands) == 0 && move_time = 0){
+            x_turn_move = 0;
+            y_turn_move = 0;
+            scale_change = 0;
+        }
+        draw_sprite_ext(spr_pixel_servo_book, 0, x, y, scale, scale, 0, c_white, 1);
+
+        bookleft_page_loc = [(1000 * scale),1100*scale, 2000*scale, 2400*scale];
+        bookright_page_loc = [(2000 * scale),1100*scale, 3000*scale, 2400*scale];
+
+        var rel_locations = [coord_relevative_positions(bookleft_page_loc,x,y), coord_relevative_positions(bookright_page_loc,x,y)];
+        var _l_loc = rel_locations[0];
+        var _r_loc = rel_locations[1];
+
+        if (obj_controller.menu == 500){
+
+            if (scr_hit(_l_loc)){
+                draw_sprite_ext(spr_pixel_book_page_highlight, 0, x, y, scale, scale, 0, c_white, 1);
+
+            } else if (scr_hit(_r_loc)){
+                draw_sprite_ext(spr_pixel_book_page_highlight, 1, x, y, scale, scale, 0, c_white, 1);
+            }
+            draw_set_halign(fa_left);
+            draw_set_color(c_white);
+            draw_set_font(fnt_40k_14b);
+            draw_text_ext_transformed(_l_loc[0]+(280*scale), _l_loc[1] + (400*scale), "Read Chapter Breakdown",-1,680*scale, scale*4,scale*4,0);
+            draw_text_ext_transformed(_r_loc[0]+(280*scale), _r_loc[1] + (400*scale), "Start Commanding Chapter",-1, 680*scale, scale*4,scale*4,0);
+            if (point_and_click(_r_loc, , true)){
+                animate_out();                  
+
+            } else if (point_and_click(_l_loc, , true)){
+                show_debug_message("click l")
+                animate_commands = [
+                    {
+                        x_end : -800*0.6,
+                        y_end : -900*0.6,
+                        end_scale : 0.6,
+                        move_time : 2,
+                    },   
+                ] 
+                obj_controller.menu++;            
+            }
+
+
+        } else if (obj_controller.menu > 500 && !array_length(animate_commands) && move_time == 0){
+            var left_page = pages[0];
+            var _double =  (array_length(pages) >1);
+            if (_double){
+                var right_page = pages[1];
+            }
+            var draw_coords = [_l_loc[0]+(260*scale), _l_loc[1] + (150*scale)];
+            var draw_coords_r = [_r_loc[0]+(150*scale), _r_loc[1] + (150*scale)];
+
+            var _final_y = 0;
+            var _final_i = 0;
+            var _final_y2 = 0;
+            var _final_i2 = 0;
+            for (var i=0;i<680*scale;i++){
+                if (i<(680*scale)){
+                    if ((i*scale)<(scale*260)){
+                        var y_change = (power(i*0.0295, 2))*0.6;
+                        _final_y = y_change;
+                        _final_i = i;
+                    } else {
+                        var y_change = ((-(power((i-_final_i)*0.045, 2)))*0.5)+_final_y;
+                    }
+                    draw_sprite_part(left_page, 0, i, 0, 1, 1000, draw_coords[0]+i, draw_coords[1]-y_change);
+                    if (_double){
+                        if ((i*scale)<(scale*170)){
+                            var y_change = (power(i*0.045, 2)*-0.6);
+                            _final_y2 = y_change;
+                            _final_i2 = i;
+                        } else {
+                            var y_change = (-(power((i-_final_i2)*0.0295, 2))*-0.6)+_final_y2;
+                        }
+                        draw_sprite_part(right_page, 0, i, 0, 1, 1000, draw_coords_r[0]+i, draw_coords_r[1]-y_change);
+                    }
+                }
+                //draw_sprite_part(left_page, subimg, left, top, width, height, x, y)()
+            }
+            /*if (obj_controller.menu = 501){
+                draw_text_ext(_l_loc[0]+(250*scale), _l_loc[1] + (150*scale), string_hash_to_newline(pages[0]), -1, 680*scale);
+                draw_text_ext(_r_loc[0]+(250*scale), _l_loc[1] + (150*scale), string_hash_to_newline(pages[1]), -1, 680*scale);
+            } else if (obj_controller.menu == 502){
+                draw_text_ext(_l_loc[0]+(250*scale), _l_loc[1] + (150*scale), string_hash_to_newline(pages[2]), -1, 680*scale);
+                draw_text_ext(_r_loc[0]+(250*scale), _l_loc[1] + (150*scale), string_hash_to_newline(pages[3]), -1, 680*scale);
+            }*/
+            if (scr_click_left(60, true)){
+                obj_controller.menu++;
+                sprite_delete(left_page);
+
+                if (_double){
+                    sprite_delete(right_page);
+                }
+                array_delete(pages,0,_double?2:1);
+
+                if (!array_length(pages)){
+                     animate_out();                              
+                }
+            }
+        }
+        x+=x_turn_move;
+        y+=y_turn_move;
+        scale+=scale_change;
+        if (move_time>0){
+            move_time--;
         }
     }
 }
-remov=string_length(string(temp[65]))+1;
-
-if (welcome_pages>=2){
-    temp[66]=string_delete(temp[66],1,remov);
-    for(var i=0; i<4000; i++){
-        if (string_height(string_hash_to_newline(temp[66]))>lol){
-            lig=string_length(temp[66]);
-            temp[66]=string_delete(temp[66],lig,1);
-        }
-    }
-}
-remov=string_length(string(temp[65])+string(temp[66]))+1;
-// show_message(remov);
-
-if (welcome_pages>=3){
-    temp[67]=string_delete(temp[67],1,remov);
-    for(var i=0; i<4000; i++){
-        if (string_height(string_hash_to_newline(temp[67]))>lol){
-            lig=string_length(temp[67]);
-            temp[67]=string_delete(temp[67],lig,1);
-        }
-    }
-}
-remov=string_length(string(temp[65])+string(temp[66])+string(temp[67]))+1;
-
-if (welcome_pages<4) then temp[68]="";
-if (welcome_pages>=4){
-    temp[68]=string_delete(temp[68],1,remov);
-    for(var i=0; i<4000; i++){
-        if (string_height(string_hash_to_newline(temp[68]))>lol){
-            lig=string_length(temp[68]);
-            temp[68]=string_delete(temp[68],lig,1);
-        }
-    }
-}
-remov=string_length(string(temp[65])+string(temp[66])+string(temp[67])+string(temp[68]))+1;
-
-if (welcome_pages<5) then temp[69]="";
-if (welcome_pages>=5){
-    temp[69]=string_delete(temp[69],1,remov);
-    for(var i=0; i<4000; i++){
-        if (string_height(string_hash_to_newline(temp[69]))>lol){
-            lig=string_length(temp[69]);
-            temp[69]=string_delete(temp[69],lig,1);
-        }
-    }
-}
-remov=string_length(string(temp[65])+string(temp[66])+string(temp[67])+string(temp[68])+string(temp[69]))+1;
 
 instance_create(0,0,obj_tooltip );
 

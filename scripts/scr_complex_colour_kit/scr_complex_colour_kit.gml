@@ -1,6 +1,3 @@
-function coord_relevative_positions(coords, xx, yy){
-	return [coords[0]+xx, coords[1]+yy,coords[2]+xx, coords[3]+yy];
-}
 
 enum eMarkings {
     RIGHTPAD,
