@@ -868,6 +868,20 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 	that could be chosen to give boostes to the other stats
 	so as an example salamanders could have the chapter values as  */
     loyalty = 0;
+    static alter_loyalty = function(alt_val){
+        if (alt_val < 0){
+            if (has_trait("honorable")){
+                alt_val/=2;
+            }
+            if (has_trait("jaded")){
+                alt_val*=2;
+            }
+        }
+        if (has_trait("old_guard")){
+            alt_val/=2;
+        }
+        loyalty = clamp(loyalty + alt_val, 0, 100);
+    }
     switch (base_group) {
         case "astartes": //basic marine class //adds specific mechanics not releveant to most units
             loyalty = 100;

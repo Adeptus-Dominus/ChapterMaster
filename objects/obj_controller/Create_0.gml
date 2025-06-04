@@ -1024,9 +1024,8 @@ faction[12]="";
 disposition[12]=0;
 faction[13]="Necrons";
 disposition[13]=-20;
-// ** Max disposition for imperials **
-disposition_max[0]=0;
-disposition_max[1]=0;
+// ** Max disposition **
+disposition_max = array_create(14, 0);
 disposition_max[2]=40;
 disposition_max[3]=40;
 disposition_max[4]=40;
@@ -1041,108 +1040,63 @@ if (instance_exists(obj_ini)){
     disposition_max[5]=40+obj_ini.ecclesiarchy_disposition;
     if (disposition_max[5]>100) then disposition_max[5]=100;
 }
-// ** Max disposition for non imperials **
-disposition_max[6]=0;
-disposition_max[7]=0;
-disposition_max[8]=0;
-disposition_max[9]=0;
-disposition_max[10]=0;
-disposition_max[11]=0;
-disposition_max[12]=0;
-disposition_max[13]=0;
 // ** Sets up faction leader names as well as player faction stuff **
-faction_leader[0]="";
-faction_title[0]="";
-faction_status[0]="";
-faction_leader[1]="";
-faction_title[1]="";
-faction_status[1]="";
+faction_leader = array_create(14, "");
+faction_title = array_create(14, "");
+faction_status = array_create(14, "");
 // Sector Command faction
 faction_leader[eFACTION.Imperium]=global.name_generator.generate_imperial_name();
-faction_title[2]="Sector Commander";
+faction_title[eFACTION.Imperium]="Sector Commander";
 faction_status[eFACTION.Imperium]="Allied";
 // Mechanicus faction
 faction_leader[eFACTION.Mechanicus]=global.name_generator.generate_imperial_name();
-faction_title[3]="Magos";
+faction_title[eFACTION.Mechanicus]="Magos";
 faction_status[eFACTION.Mechanicus]="Allied";
 if (faction_leader[eFACTION.Mechanicus]==faction_leader[eFACTION.Imperium]) then faction_leader[eFACTION.Mechanicus]=global.name_generator.generate_space_marine_name();
 // Inquisition faction
 faction_leader[eFACTION.Inquisition]=global.name_generator.generate_imperial_name();
 if (faction_leader[eFACTION.Inquisition]==faction_leader[eFACTION.Mechanicus]) then faction_leader[eFACTION.Inquisition]=global.name_generator.generate_imperial_name();
-faction_title[4]="Inquisitor Lord";
+faction_title[eFACTION.Inquisition]="Inquisitor Lord";
 faction_status[eFACTION.Inquisition]="Allied";
 // Sisters faction
 faction_leader[eFACTION.Ecclesiarchy]=global.name_generator.generate_imperial_name(false);
-faction_title[5]="Prioress";
+faction_title[eFACTION.Ecclesiarchy]="Prioress";
 faction_status[eFACTION.Ecclesiarchy]="Allied";
 // Eldar faction
 faction_leader[eFACTION.Eldar]=global.name_generator.generate_eldar_name(2);
-faction_title[6]="Farseer";
+faction_title[eFACTION.Eldar]="Farseer";
 faction_status[eFACTION.Eldar]="Antagonism";// If disposition = 0 then instead set it to "Antagonism"
 // Orkz faction
 faction_leader[eFACTION.Ork]=global.name_generator.generate_ork_name();
-faction_title[7]="Warboss";
+faction_title[eFACTION.Ork]="Warboss";
 faction_status[eFACTION.Ork]="War";
 // Tau faction
 faction_leader[eFACTION.Tau] = global.name_generator.generate_tau_leader_name();
-faction_title[8]="Diplomat";
+faction_title[eFACTION.Tau]="Diplomat";
 faction_status[eFACTION.Tau]="Antagonism";
 // Other factions unkown to player
-faction_leader[eFACTION.Tyranids]="";
-faction_title[9]="";
 faction_status[eFACTION.Tyranids]="War";
-
-faction_leader[eFACTION.Chaos]=":D";
-faction_title[10]="Chaos Lord";
+faction_title[eFACTION.Chaos]="Chaos Lord";
 faction_status[eFACTION.Chaos]="War";
-
-faction_leader[eFACTION.Heretics]="";
-faction_title[11]="";
 faction_status[eFACTION.Heretics]="War";
-
-faction_leader[12]="";
-faction_title[12]="";
-faction_status[12]="War";
-
-faction_leader[eFACTION.Necrons]="";
-faction_title[13]="";
+faction_status[eFACTION.Genestealer]="War";
 faction_status[eFACTION.Necrons]="War";
 // ** Sets faction gender for names **
-faction_gender[0]=1;
-faction_gender[1]=1;
-faction_gender[2]=1;
-faction_gender[3]=1;
-faction_gender[4]=1;
-faction_gender[10]=1;
-faction_gender[5]=1;
+faction_gender = array_create(14, 1);
 faction_gender[6]=choose(1,2);
-faction_gender[7]=1;
 faction_gender[8]=choose(1,1,2);
-faction_gender[9]=1;
 if (faction_gender[4]=2) then faction_leader[eFACTION.Inquisition]=global.name_generator.generate_imperial_name(false);
 faction_gender[10]=choose(1,1,1,2,2);
 if (faction_gender[10]==1) then faction_leader[eFACTION.Chaos]=choose("1","1","1","2");
 if (faction_gender[10]==2) then faction_leader[eFACTION.Chaos]=choose("1","2","2","2");
 if (faction_leader[eFACTION.Chaos]=="1") then faction_leader[eFACTION.Chaos]=global.name_generator.generate_space_marine_name();
 if (faction_leader[eFACTION.Chaos]=="2") then faction_leader[eFACTION.Chaos]=global.name_generator.generate_chaos_name();
-faction_gender[11]=1;
-faction_gender[12]=1;
-faction_gender[13]=1;
 
+known = array_create(14, 0);
 known[0]=2;
 known[eFACTION.Player]=999;
 known[eFACTION.Imperium]=1;
 known[eFACTION.Mechanicus]=1;
-known[eFACTION.Inquisition]=0;
-known[eFACTION.Ecclesiarchy]=0;
-known[eFACTION.Eldar]=0;
-known[eFACTION.Ork]=0;
-known[eFACTION.Tau]=0;
-known[eFACTION.Tyranids]=0;
-known[eFACTION.Chaos]=0;
-known[eFACTION.Heretics]=0;
-known[12]=0;
-known[eFACTION.Necrons]=0;
 
 // UI testing
 // known[eFACTION.Inquisition]=1;known[eFACTION.Ecclesiarchy]=1;known[eFACTION.Eldar]=1;known[eFACTION.Ork]=1;known[eFACTION.Tau]=1;known[eFACTION.Tyranids]=1;known[eFACTION.Chaos]=1;
@@ -1152,35 +1106,9 @@ known[eFACTION.Necrons]=0;
 // disposition[4]=90;
 // disposition[3]=60;
 // ** Sets diplomacy annoyed status **
-annoyed[0]=0;
-annoyed[eFACTION.Player]=0;
-annoyed[eFACTION.Imperium]=0;
-annoyed[eFACTION.Mechanicus]=0;
-annoyed[eFACTION.Inquisition]=0;
-annoyed[eFACTION.Ecclesiarchy]=0;
-annoyed[eFACTION.Eldar]=0;
-annoyed[eFACTION.Ork]=0;
-annoyed[eFACTION.Tau]=0;
-annoyed[eFACTION.Tyranids]=0;
-annoyed[eFACTION.Chaos]=0;
-annoyed[eFACTION.Heretics]=0;
-annoyed[12]=0;
-annoyed[eFACTION.Necrons]=0;
+annoyed = array_create(14, 0);
 // ** Sets diplomacy ignore status **
-ignore[0]=0;
-ignore[eFACTION.Player]=0;
-ignore[eFACTION.Imperium]=0;
-ignore[eFACTION.Mechanicus]=0;
-ignore[eFACTION.Inquisition]=0;
-ignore[eFACTION.Ecclesiarchy]=0;
-ignore[eFACTION.Eldar]=0;
-ignore[eFACTION.Ork]=0;
-ignore[eFACTION.Tau]=0;
-ignore[eFACTION.Tyranids]=0;
-ignore[eFACTION.Chaos]=0;
-ignore[eFACTION.Heretics]=0;
-ignore[12]=0;
-ignore[eFACTION.Necrons]=0;
+ignore = array_create(14, 0);
 // ** Sets diplomacy turns to be ignored **
 turns_ignored = array_create(15, 0);
 
