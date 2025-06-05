@@ -282,9 +282,11 @@ function array_set_range(_array, _start_index, _end_index, _value) {
 /// @param {Real} _size The size of the array to create.
 /// @param {Any} _default The value to set for the elements.
 function array_create_advanced(_size = 1, _default = 0) {
-	var _array = [];
-	repeat (_size){
-		array_push(_array, variable_clone(_default));
+	var _array = array_create(_size);
+
+	for (var i = 0; i < _size; i++) {
+		_array[@ i] = variable_clone(_default);
 	}
+
 	return _array;
 }
