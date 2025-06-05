@@ -103,7 +103,7 @@ if (hp>0) and (instance_exists(target)){
         if (target!=0) and (action=="attack"){
             direction=turn_towards_point(direction,x,y,target.x,target.y,turning_speed/2);
         }
-        ideal_broadside()
+        ideal_broadside();
         //broadside_movement();
         flank_behaviour();
     }

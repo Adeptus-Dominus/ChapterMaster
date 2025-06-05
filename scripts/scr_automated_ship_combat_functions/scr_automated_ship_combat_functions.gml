@@ -5,6 +5,31 @@ function point_on_circle(start_x, start_y, radius, angle){
     return [_final_x, _final_y];
 }
 
+function circle_mechanics(end_location){
+    var _turn_require = point_direction(x,y,end_location[0],end_location[1]);
+    if (_turn_require<180){
+        time_to_face = 180/turning_speed;
+    } else{
+        time_to_face = (_turn_require-180)/turning_speed;
+    }
+
+    var x_travel = end_location[0] - x; 
+    var y_travel = end_location[1] - y;
+
+    for (var i=0; i<time_to_face();i++){
+
+    }
+    
+    var _current_circumference = speed * 360/turning_speed;
+
+
+
+    degtorad(); 
+    time_to_face = turning_speed
+    max_speed = 
+}
+
+
 function ideal_broadside(){
     if (action=="broadside" && target!=0){
         var _ship_direc = direction;
@@ -28,6 +53,8 @@ function ideal_broadside(){
     }
 
 }
+
+
 function broadside_movement(){
 	var _target_direction = target.direction;
     if (target!=0) and (action="broadside") and (target_distance>closing_distance){
@@ -70,7 +97,7 @@ function flank_direction_move(main_weapon = false){
         if (main_weapon == false){           
             ship_rear_approach(_rel_direction);
         } else {
-            if (point_distance(x, y, target.x, target.y) > main_weapon.range && abs(_rel_direction) <= main_weapon.firing_arc){
+            if (point_distance(x, y, target.x, target.y) < (main_weapon.range*2) && abs(_rel_direction) <= main_weapon.firing_arc){
                 avoid_ship_weapon(main_weapon, rel_direction);
             } else {
                 ship_rear_approach(_rel_direction);
@@ -88,8 +115,8 @@ function avoid_ship_weapon(weapon, rel_direction){
     } else {
         var avoid_angle = target.direction - weapon.firing_arc;
     }
-    var _sx = xm+lengthdir_x(weapon.range, avoid_angle);
-    var _sy = ym+lengthdir_y(weapon.range, avoid_angle);
+    var _sx = xm + lengthdir_x(weapon.range, avoid_angle);
+    var _sy = ym + lengthdir_y(weapon.range, avoid_angle);
     draw_targets = [_sx, _sy];
     ship_turn_towards_point(_sx, _sy);
 }

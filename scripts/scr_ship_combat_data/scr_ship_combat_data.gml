@@ -219,10 +219,10 @@ function facing_weapon_angle(facing){
 	var _direct_ = direction;
 	switch (facing){
 		case "right":
-			_direct_+=90;
+			_direct_ += 90;
 			break;
 		case "left":
-			_direct_-=90;
+			_direct_ -= 90;
 			break;
 		case "rear":
 			_direct_ -= 180;
