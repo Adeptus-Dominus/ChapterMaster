@@ -1,13 +1,14 @@
 {
-  "$GMSound":"v1",
+  "$GMSound":"v2",
   "%Name":"snd_redownload",
   "audioGroupId":{
     "name":"audiogroup_default",
     "path":"audiogroups/audiogroup_default",
   },
   "bitDepth":1,
-  "bitRate":192,
+  "channelFormat":0,
   "compression":0,
+  "compressionQuality":6,
   "conversionMode":0,
   "duration":1.8111565,
   "exportDir":"sounds",
@@ -21,6 +22,5 @@
   "resourceVersion":"2.0",
   "sampleRate":44100,
   "soundFile":"snd_redownload",
-  "type":0,
   "volume":1.0,
 }
