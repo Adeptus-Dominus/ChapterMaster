@@ -1,4 +1,3 @@
-
 draw_set_alpha(1);
 // draw_sprite(spr_defeat,global.defeat,331,73);
 scr_image("defeat",global.defeat,331,73,938,554);
@@ -20,5 +19,3 @@ draw_set_alpha(fade/faded);
 draw_rectangle(0,0,room_width,room_height,0);
 draw_set_alpha(fadeout/30);
 draw_rectangle(0,0,room_width,room_height,0);
-
-
