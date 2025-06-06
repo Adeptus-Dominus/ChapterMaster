@@ -14,6 +14,8 @@ whip=0;
 bridge=0;
 draw_targets = false;
 bullets_for = [];
+target_distance = 9999;
+closing_distance = 0;
 
 
 cooldown[0]=0;

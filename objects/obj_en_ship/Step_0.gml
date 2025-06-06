@@ -10,7 +10,7 @@ if (class="Daemon") and (image_alpha<1) then image_alpha+=0.006;
 
 var  ch_rang, ex, spid=0;
 
-
+target_distance = 9999
 // Need to every couple of seconds check this
 // with obj_en_ship if not big then disable, check nearest, and activate once more
 
@@ -45,35 +45,38 @@ if (hp>0) and (instance_exists(obj_p_ship)){
     is_targeted();
 
     if (class="Apocalypse Class Battleship"){
-        o_dist=500;
+        closing_distance=500;
         action="attack";
         spid=20;
     }
-    if (class="Nemesis Class Fleet Carrier"){o_dist=1000;action="attack";spid=20;}
-    if (class="Leviathan"){o_dist=160;action="attack";spid=20;}
-    if (class="Battle Barge") or (class="Custodian"){o_dist=300;action="attack";spid=20;}
-    if (class="Desecrator"){o_dist=300;action="attack";spid=20;}
-    if (class="Razorfiend"){o_dist=100;action="attack";spid=25;}
-    if (class="Cairn Class") or (class="Reaper Class"){o_dist=199;action="attack";spid=25;if (class="Reaper Class") then spid=30;}
+    if (class="Nemesis Class Fleet Carrier"){
+        closing_distance=1000;action="attack";
+        spid=20;
+    }
+    if (class="Leviathan"){closing_distance=160;action="attack";spid=20;}
+    if (class="Battle Barge") or (class="Custodian"){closing_distance=300;action="attack";spid=20;}
+    if (class="Desecrator"){closing_distance=300;action="attack";spid=20;}
+    if (class="Razorfiend"){closing_distance=100;action="attack";spid=25;}
+    if (class="Cairn Class") or (class="Reaper Class"){closing_distance=199;action="attack";spid=25;if (class="Reaper Class") then spid=30;}
     
     if (class="Dethdeala") or (class="Protector") or (class="Emissary"){
-        o_dist=200;
+        closing_distance=200;
         action="attack";
         spid=20;
     }
-    if (class="Gorbag's Revenge"){o_dist=200;action="attack";spid=20;}
-    if (class="Kroolboy") or (class="Slamblasta"){o_dist=200;action="attack";spid=25;}
-    if (class="Battlekroozer"){o_dist=200;action="attack";spid=30;}
-    if (class="Avenger") or (class="Carnage") or (class="Daemon"){o_dist=200;action="attack";spid=20;}
+    if (class="Gorbag's Revenge"){closing_distance=200;action="attack";spid=20;}
+    if (class="Kroolboy") or (class="Slamblasta"){closing_distance=200;action="attack";spid=25;}
+    if (class="Battlekroozer"){closing_distance=200;action="attack";spid=30;}
+    if (class="Avenger") or (class="Carnage") or (class="Daemon"){closing_distance=200;action="attack";spid=20;}
     
-    if (class="Ravager") or (class="Iconoclast") or (class="Castellan") or (class="Warden"){o_dist=300;action="attack";spid=35;}
-    if (class="Shroud Class"){o_dist=250;action="attack";spid=35;}
+    if (class="Ravager") or (class="Iconoclast") or (class="Castellan") or (class="Warden"){closing_distance=300;action="attack";spid=35;}
+    if (class="Shroud Class"){closing_distance=250;action="attack";spid=35;}
     
-    if (class="Stalker") or (class="Sword Class Frigate"){o_dist=100;action="attack";spid=20;}
-    if (class="Prowler"){o_dist=100;action="attack";spid=35;}
-    if (class="Avenger Class Grand Cruiser"){o_dist=48;action="broadside";spid=20;}
-    if (class="Jackal Class"){o_dist=200;action="attack";spid=40;}
-    if (class="Dirge Class"){o_dist=200;action="attack";spid=45;}
+    if (class="Stalker") or (class="Sword Class Frigate"){closing_distance=100;action="attack";spid=20;}
+    if (class="Prowler"){closing_distance=100;action="attack";spid=35;}
+    if (class="Avenger Class Grand Cruiser"){closing_distance=48;action="broadside";spid=20;}
+    if (class="Jackal Class"){closing_distance=200;action="attack";spid=40;}
+    if (class="Dirge Class"){closing_distance=200;action="attack";spid=45;}
 
     if (ship_size==1){
         action = "flank";
@@ -81,54 +84,17 @@ if (hp>0) and (instance_exists(obj_p_ship)){
     
     // if (class!="big") then flank!!!!
     
-    closing_distance = o_dist;
+    closing_distance = closing_distance;
     spid=spid*speed_bonus;
     
-    dist=point_distance(x,y,target.x,target.y)-(max(sprite_get_width(sprite_index),sprite_get_height(sprite_index)));
-    target_distance = dist;
+    target_distance=point_distance(x,y,target.x,target.y)-(max(sprite_get_width(sprite_index),sprite_get_height(sprite_index)));
+    target_distance = target_distance;
     
     if (target!=0) and (action="attack"){
         direction=turn_towards_point(direction,x,y,target.x,target.y,.1);
     }
     broadside_movement();
     flank_behaviour();
-    
-    
-    /*if (target!=0) and (action="broadside") and (o_dist>=dist){
-        direction=turn_towards_point(direction,x+lengthdir_x(128,target.direction-90),y,target.x,target.y+lengthdir_y(128,target.direction-90),.2)
-    }*/
-    
-    /*if (target!=0) and (action="broadside") and (o_dist>=dist){
-        var re_deh;re_deh=relative_direction(direction,target.direction);
-        
-        // if (re_deh<45) or (re_deh>315) or ((re_deh>135) and (re_deh<225)) then direction=turn_towards_point(direction,x+lengthdir_x(128,target.direction-90),y,target.x,target.y+lengthdir_y(128,target.direction-90),.2)
-        
-        var wok;
-        wok=0;
-        
-        if (!instance_exists(target_l)) then wok=2;
-        if (!instance_exists(target_r)) then wok=1;
-        
-        if (instance_exists(target_l)) and (instance_exists(target_r)){
-            if (point_distance(x,y,target_l.x,target_l.y))<(point_distance(x,y,target_r.x,target_r.y)) then wok=1;
-            else{wok=2;}
-            
-        }
-        
-        
-        if (wok=1){
-            direction=turn_towards_point(direction,x,y,x+lengthdir_x(256,90),y+lengthdir_y(256,90),.2)
-        }
-        
-        if (wok=2){
-            direction=turn_towards_point(direction,x,y,x+lengthdir_x(256,270),y+lengthdir_y(256,270),.2)
-        }
-        
-        // direction=turn_towards_point(direction,x+lengthdir_x(128,target.direction-90),y,target.x,target.y+lengthdir_y(128,target.direction-90),.2)
-        
-        
-         
-    }*/
 
     
     speed_down = 0.025;
@@ -140,14 +106,14 @@ if (hp>0) and (instance_exists(obj_p_ship)){
     if (turret_cool>0) then turret_cool-=1;
 
     
-    var targe=0,rdir=0,dirr="",dist=9999,xx=x,yy=y;
+    var targe=0,rdir=0,dirr="",target_distance=9999,xx=x,yy=y;
     
     
     if (turrets>0) and (instance_exists(obj_p_small)) and (turret_cool=0){
         targe=instance_nearest(x,y,obj_p_small);
-        if (instance_exists(targe)) then dist=point_distance(x,y,targe.x,targe.y);
+        if (instance_exists(targe)) then target_distance=point_distance(x,y,targe.x,targe.y);
         
-        if (dist>64) and (dist<300){
+        if (target_distance>64) and (target_distance<300){
             bull=instance_create(x,y,obj_en_round);
             bull.direction=point_direction(x,y,targe.x,targe.y);
             if (owner = eFACTION.Tyranids){
@@ -185,7 +151,7 @@ image_angle=direction;
 
 if (obj_fleet.start!=5) then exit;
 
-var o_dist, dist, ch_rang, ex, spid;spid=0;
+var ch_rang, ex, spid;spid=0;
 
 if (hp<=0){
     var wh,gud;wh=0;gud=0;
@@ -213,11 +179,15 @@ if (hp<=0){
 }
 
 if (hp>0) and (instance_exists(obj_p_ship)){
-    if (class="Void Stalker"){o_dist=300;action="swoop";spid=60;}
-    if (class="Shadow Class"){o_dist=200;action="swoop";spid=80;}
-    if (class="Hellebore") or (class="Aconite"){o_dist=200;action="swoop";spid=100;}
+    if (class="Void Stalker"){
+        closing_distance=300;
+        action="swoop";spid=60;}
+    if (class="Shadow Class"){
+        closing_distance=200;
+        action="swoop";spid=80;}
+    if (class="Hellebore") or (class="Aconite"){closing_distance=200;action="swoop";spid=100;}
     
-    dist=point_distance(x,y,target.x,target.y)-(max(sprite_get_width(target.sprite_index),sprite_get_height(sprite_index)));
+    target_distance=point_distance(x,y,target.x,target.y)-(max(sprite_get_width(target.sprite_index),sprite_get_height(sprite_index)));
     
     
     
@@ -228,15 +198,15 @@ if (hp>0) and (instance_exists(obj_p_ship)){
     if (target!=0){
         if (speed<((spid)/10)) then speed+=0.02;
         
-        var dist, range;
+        var range;
         if (instance_exists(target)){
-            dist=point_distance(x,y,target.x,target.y);
+            target_distance=point_distance(x,y,target.x,target.y);
             
             if (action="swoop"){direction=turn_towards_point(direction,x,y,target.x,target.y,5-ship_size);}
-            if (dist<=o_dist) and (collision_line(x,y,x+lengthdir_x(o_dist,direction),y+lengthdir_y(o_dist,direction),obj_p_ship,0,1)) then action="attack";
-            if (dist<300) and (action="attack") then action="bank";
+            if (target_distance<=closing_distance) and (collision_line(x,y,x+lengthdir_x(closing_distance,direction),y+lengthdir_y(closing_distance,direction),obj_p_ship,0,1)) then action="attack";
+            if (target_distance<300) and (action="attack") then action="bank";
             if (action="bank") then direction=turn_towards_point(direction,x,y,room_width,room_height/2,5-ship_size);
-            if (action="bank") and (dist>700) then action="attack";
+            if (action="bank") and (target_distance>700) then action="attack";
         }
     }
     
@@ -246,15 +216,15 @@ if (hp>0) and (instance_exists(obj_p_ship)){
     if (turret_cool>0) then turret_cool-=1;
 
     
-    var bull, targe, rdir, dirr, dist, xx, yy, ok;
-    targe=0;rdir=0;dirr="";dist=9999;xx=x;yy=y;
+    var bull, targe, rdir, dirr, target_distance, xx, yy, ok;
+    targe=0;rdir=0;dirr="";target_distance=9999;xx=x;yy=y;
     
     
     if (turrets>0) and (instance_exists(obj_p_small)) and (turret_cool=0){
         targe=instance_nearest(x,y,obj_p_small);
-        if (instance_exists(targe)) then dist=point_distance(x,y,targe.x,targe.y);
+        if (instance_exists(targe)) then target_distance=point_distance(x,y,targe.x,targe.y);
         
-        if (dist>64) and (dist<300){
+        if (target_distance>64) and (target_distance<300){
             bull=instance_create(x,y,obj_en_round);bull.direction=point_direction(x,y,targe.x,targe.y);
             if (owner = eFACTION.Tyranids) then bull.sprite_index=spr_glob;
             if (owner = eFACTION.Tau) or (owner = eFACTION.Eldar) then bull.sprite_index=spr_pulse;

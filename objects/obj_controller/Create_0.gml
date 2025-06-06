@@ -1284,7 +1284,7 @@ if (global.load>=0){
 
 
 
-var xx,yy,me,dist,go,planet;
+var xx,yy,me,target_distance,go,planet;
 global.custom=eCHAPTER_TYPE.RANDOM;
 
 // ** Sets up base training level and trainees at game start **

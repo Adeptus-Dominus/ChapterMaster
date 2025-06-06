@@ -17,7 +17,7 @@ if (!__b__){
 
     if (class="Daemon") and (image_alpha<1) then image_alpha+=0.006;
 
-    o_dist=0;
+    closing_distance=0;
     spid=0;
 
     if (shields>0) and (shields<maxshields) then shields+=0.02;
@@ -50,96 +50,96 @@ if (!__b__){
         // TODO on another PR we need to redo how combat works, currently its just "attack" perhaps we can have more precise choise based AI with
         // simpler patterns?
         if (class=="Apocalypse Class Battleship"){
-            o_dist=500;
+            closing_distance=500;
             action="attack";
             spid=20;
         }
         if (class=="Nemesis Class Fleet Carrier"){
-            o_dist=1000;
+            closing_distance=1000;
             action="attack";
             spid=20;
         }
         if (class=="Leviathan"){
-            o_dist=160;
+            closing_distance=160;
             action="attack";
             spid=20;
         }
         if (class=="Battle Barge") or (class=="Custodian"){
-            o_dist=300;
+            closing_distance=300;
             action="attack";
             spid=20;
         }
         if (class=="Desecrator"){
-            o_dist=300;
+            closing_distance=300;
             action="attack";
             spid=20;
         }
         if (class=="Razorfiend"){
-            o_dist=100;
+            closing_distance=100;
             action="attack";
             spid=25;
         }
         if (class=="Dethdeala") or (class=="Protector") or (class=="Emissary"){
-            o_dist=200;
+            closing_distance=200;
             action="attack";
             spid=20;
         }
         if (class=="Gorbag's Revenge"){
-            o_dist=200;
+            closing_distance=200;
             action="attack";
             spid=20;
         }
         if (class=="Kroolboy") or (class=="Slamblasta"){
-            o_dist=200;
+            closing_distance=200;
             action="attack";
             spid=25;
         }
         if (class=="Battlekroozer"){
-            o_dist=200;
+            closing_distance=200;
             action="attack";
             spid=30;
         }
         if (class=="Avenger") or (class=="Carnage") or (class=="Daemon"){
-            o_dist=200;
+            closing_distance=200;
             action="attack";
             spid=20;
         }        
         if (class=="Ravager") or (class=="Iconoclast") or (class=="Castellan") or (class=="Warden"){
-            o_dist=300;
+            closing_distance=300;
             action="attack";
             spid=35;
         }
         if (class=="Stalker") or (class=="Sword Class Frigate"){
-            o_dist=100;
+            closing_distance=100;
             action="attack";
             spid=20;
         }
         if (class=="Prowler"){
-            o_dist=100;
+            closing_distance=100;
             action="attack";
             spid=35;
         }
         if (class=="Avenger Class Grand Cruiser"){
-            o_dist=48;
+            closing_distance=48;
             action="broadside";
             spid=20;
         }
         // if (class!="big") then flank!!!!
-        closing_distance = o_dist;
+        closing_distance = closing_distance;
         spid=spid*speed_bonus;
         
-        dist=point_distance(x,y,target.x,target.y)-(max(sprite_get_width(sprite_index),sprite_get_height(sprite_index)));
-        target_distance = dist;
+        target_distance=point_distance(x,y,target.x,target.y)-(max(sprite_get_width(sprite_index),sprite_get_height(sprite_index)));
+        target_distance = target_distance;
         // For example here we could improve the options and how ships beheave...
         if (target!=0) and (action=="attack"){
             direction=turn_towards_point(direction,x,y,target.x,target.y,.1);
         }
         broadside_movement();
         flank_behaviour();
-        /*if (target!=0) and (action="broadside") and (o_dist>=dist){
+        /*if (target!=0) and (action="broadside") and (closing_distance>=target_distance){
             direction=turn_towards_point(direction,x+lengthdir_x(128,target.direction-90),y,target.x,target.y+lengthdir_y(128,target.direction-90),.2)
         }*/
-        /*if (target!=0) and (action="broadside") and (o_dist>=dist){
+        /*if (target!=0) and (action="broadside") and (closing_distance>=target_distance){
             var re_deh;re_deh=relative_direction(direction,target.direction);
             // if (re_deh<45) or (re_deh>315) or ((re_deh>135) and (re_deh<225)) then direction=turn_towards_point(direction,x+lengthdir_x(128,target.direction-90),y,target.x,target.y+lengthdir_y(128,target.direction-90),.2)
             var wok;
@@ -169,15 +169,15 @@ if (!__b__){
         
         targe=0;
         rdir=0;
-        dist=9999;
+        target_distance=9999;
         xx=x;
         yy=y;
         // Turret targetting
         if (turrets>0) and (instance_exists(obj_en_in)) and (turret_cool==0){
             targe=instance_nearest(x,y,obj_en_in);
-            if (instance_exists(targe)) then dist=point_distance(x,y,targe.x,targe.y);
+            if (instance_exists(targe)) then target_distance=point_distance(x,y,targe.x,targe.y);
             
-            if (dist>64) and (dist<300){
+            if (target_distance>64) and (target_distance<300){
                 bull=instance_create(x,y,obj_al_round);
                 bull.direction=point_direction(x,y,targe.x,targe.y);
                 if (owner = eFACTION.Tyranids) then bull.sprite_index=spr_glob;
@@ -218,7 +218,7 @@ if (__b__){
 
     if (obj_fleet.start!=5) then exit;
 
-    o_dist=0;
+    closing_distance=0;
     spid=0;
 
     if (shields>0) and (shields<maxshields) then shields+=0.03;
@@ -254,35 +254,35 @@ if (__b__){
     }
     if (hp>0) and (instance_exists(obj_en_ship)){
         if (class=="Void Stalker"){
-            o_dist=300;
+            closing_distance=300;
             action="swoop";
             spid=60;
         }
         if (class=="Shadow Class"){
-            o_dist=200;
+            closing_distance=200;
             action="swoop";
             spid=80;
         }
         if (class=="Hellebore") or (class=="Aconite"){
-            o_dist=200;
+            closing_distance=200;
             action="swoop";
             spid=100;
         }
         
-        dist=point_distance(x,y,target.x,target.y)-(max(sprite_get_width(target.sprite_index),sprite_get_height(sprite_index)));
+        target_distance=point_distance(x,y,target.x,target.y)-(max(sprite_get_width(target.sprite_index),sprite_get_height(sprite_index)));
         
         if (target!=0){
             if (speed<((spid)/10)) then speed+=0.02;
             if (instance_exists(target)){
-                dist=point_distance(x,y,target.x,target.y);
+                target_distance=point_distance(x,y,target.x,target.y);
                 
                 if (action=="swoop"){
                     direction=turn_towards_point(direction,x,y,target.x,target.y,5-ship_size);
                 }
-                if (dist<=o_dist) and (collision_line(x,y,x+lengthdir_x(o_dist,direction),y+lengthdir_y(o_dist,direction),obj_en_ship,0,1)) then action="attack";
-                if (dist<300) and (action=="attack") then action="bank";
+                if (target_distance<=closing_distance) and (collision_line(x,y,x+lengthdir_x(closing_distance,direction),y+lengthdir_y(closing_distance,direction),obj_en_ship,0,1)) then action="attack";
+                if (target_distance<300) and (action=="attack") then action="bank";
                 if (action=="bank") then direction=turn_towards_point(direction,x,y,room_width,room_height/2,5-ship_size);
-                if (action=="bank") and (dist>700){
+                if (action=="bank") and (target_distance>700){
                     action="attack";
                 }
             }
@@ -294,15 +294,15 @@ if (__b__){
         if (turret_cool>0) then turret_cool-=1;
 
         targe=0;
-        dist=9999;
+        target_distance=9999;
         xx=x;
         yy=y;
         
         if (turrets>0) and (instance_exists(obj_en_in)) and (turret_cool==0){
             targe=instance_nearest(x,y,obj_en_in);
-            if (instance_exists(targe)) then dist=point_distance(x,y,targe.x,targe.y);
+            if (instance_exists(targe)) then target_distance=point_distance(x,y,targe.x,targe.y);
             
-            if (dist>64) and (dist<300){
+            if (target_distance>64) and (target_distance<300){
                 bull=instance_create(x,y,obj_al_round);
                 bull.direction=point_direction(x,y,targe.x,targe.y);
                 if (owner = eFACTION.Tyranids) then bull.sprite_index=spr_glob;

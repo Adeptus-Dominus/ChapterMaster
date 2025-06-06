@@ -109,8 +109,8 @@ if (enemy=6){// This is an orderly Tau ship formation
 
 
 if (enemy=7) or (enemy=10){// This is spew out random ships without regard for formations
-    var xx,yy,dist,targ,numb,man;
-    xx=0;yy=0;dist=0;target=0;numb=0;man=0;
+    var xx,yy,target_distance,targ,numb,man;
+    xx=0;yy=0;target_distance=0;target=0;numb=0;man=0;
     
     var i;i=0;
     

@@ -239,6 +239,10 @@ function assign_ship_stats(){
 	rear_armour = 1;
 	shields_recharge_rate = 0.2;
 	shields_reboot_time = 20;
+	max_speed = 20;
+	speed_up = 0.008;
+	speed_down = 0.004;
+	turning_speed = 0.2;
 	if (class="Apocalypse Class Battleship"){
 	    sprite_index=spr_ship_apoc;
 	    ship_size=3;
@@ -255,6 +259,7 @@ function assign_ship_stats(){
 	    capacity=150;
 	    carrying=0;
 	    max_speed = 20;
+	    turning_speed = 0.23;
 	    add_weapon_to_ship("Lance Battery", {facing:"left"});
 	    add_weapon_to_ship("Lance Battery", {facing:"right"});
 	    add_weapon_to_ship("Nova Cannon");

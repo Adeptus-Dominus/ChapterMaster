@@ -24,8 +24,8 @@ if (loading=1){
     xx=xx;
     yy=yy;
 } else if (loading==1){
-    var  temp1, dist;
-    dist=999;
+    var  temp1, target_distance;
+    target_distance=999;
     
     obj_controller.selecting_planet=0;
     button1="";

@@ -1012,9 +1012,9 @@ function fleet_respond_crusade(){
 	var min_dist = 40;
 	var to_ignore = [eFACTION.Imperium, eFACTION.Mechanicus,eFACTION.Inquisition, eFACTION.Ecclesiarchy];
 	
-	var dist = point_distance(x,y,ns.x,ns.y)
+	var target_distance = point_distance(x,y,ns.x,ns.y)
 	var valid_target = !array_contains_ext(ns.p_owner, to_ignore, false)
-    if valid_target and dist <= max_dist and dist >= min_dist and (owner = eFACTION.Imperium) 
+    if valid_target and target_distance <= max_dist and target_distance >= min_dist and (owner = eFACTION.Imperium) 
 		then ok = true;
 
     // if ((ns.owner>5) or (ns.owner  = eFACTION.Player)) and (point_distance(x,y,ns.x,ns.y)<=max_dis) and (point_distance(x,y,ns.x,ns.y)>40) and (owner = eFACTION.Imperium){

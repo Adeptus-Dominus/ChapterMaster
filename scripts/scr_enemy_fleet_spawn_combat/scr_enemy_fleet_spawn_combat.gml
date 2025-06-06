@@ -661,7 +661,7 @@ function position_ships_and_assign_stats(){
 
 
 	if (owner = eFACTION.Ork) or (owner = eFACTION.Chaos){// This is spew out random ships without regard for formations
-	    var xx = 0,yy = 0,dist = 0,targ = 0,numb = 0,man = 0;
+	    var xx = 0,yy = 0,target_distance = 0,targ = 0,numb = 0,man = 0;
 	   
 	    var i;
 	    i=0;

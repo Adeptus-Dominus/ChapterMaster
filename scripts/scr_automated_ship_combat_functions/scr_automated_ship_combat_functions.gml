@@ -6,16 +6,16 @@ function point_on_circle(start_x, start_y, radius, angle){
 }
 
 function combat_acceleration_control(){
-    var _start_slowing = start_slowing_telemetry(dist, speed_down);
+    var _start_slowing = start_slowing_telemetry(target_distance, speed_down);
     if (_start_slowing){
         speed-=speed_down;
     } else {
         if (action="attack"){
-            if (dist>o_dist) and (speed<(max_speed)) then speed+=speed_up;
+            if (target_distance>closing_distance) and (speed<(max_speed)) then speed+=speed_up;
         } else if (action="broadside"){
-            if (dist>o_dist) and (speed<(max_speed)) then speed+=speed_up;
+            if (target_distance>closing_distance) and (speed<(max_speed)) then speed+=speed_up;
         } else if (action="flank"){// flank here
-            if (dist>o_dist) and (speed<(max_speed)) then speed+=speed_up;
+            if (target_distance>closing_distance) and (speed<(max_speed)) then speed+=speed_up;
         }
     }   
 }
@@ -333,7 +333,7 @@ function fire_ship_weapon(wep_id){
     */
     if (facing="special") then ok=2;
     if (!instance_exists(targe)) then exit;
-    dist=point_distance(x,y,targe.x,targe.y);
+    target_distance=point_distance(x,y,targe.x,targe.y);
 
     if (facing="right") and (point_direction(x,y,target_r.x,target_r.y)<337) and (point_direction(x,y,target_r.x,target_r.y)>203) then ok=2;
     if (facing="left") and (point_direction(x,y,target_r.x,target_r.y)>22) and (point_direction(x,y,target_r.x,target_r.y)<157) then ok=2;
@@ -344,7 +344,7 @@ function fire_ship_weapon(wep_id){
         
     
     
-    if (ok=2) and (dist<(range+(max(sprite_get_width(sprite_index),sprite_get_height(sprite_index))))){
+    if (ok=2) and (target_distance<(range+(max(sprite_get_width(sprite_index),sprite_get_height(sprite_index))))){
         if (ammo>0) and (ammo<900) then ammo-=1;
         weapon_ammo[wep_id]=ammo;
         cooldown[wep_id]=weapon_cooldown[wep_id];

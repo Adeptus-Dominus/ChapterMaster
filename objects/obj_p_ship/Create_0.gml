@@ -1,7 +1,7 @@
 
 ship_id=0;
 master_present=0;
-o_dist=0;
+closing_distance=0;
 
 selected=0;
 sel_x1=0;
@@ -24,6 +24,8 @@ if (instance_exists(obj_en_ship)){
     target=instance_nearest(x,y,obj_en_ship);
 }
 turn_bonus = false;
+target_distance = 0;
+closing_distance = 0;
 
 bullets_for = [];
 target_l=0;

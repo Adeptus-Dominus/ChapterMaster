@@ -1,9 +1,6 @@
 image_angle=direction;
 
 if (obj_fleet.start!=5) then exit;
-
-
-var dist;
 if (board_cooldown>=0) then board_cooldown-=1;
 
 // Need to every couple of seconds check this
@@ -65,43 +62,49 @@ if (hp>0) and (instance_exists(target)){
     is_targeted();
 
     if (class="Apocalypse Class Battleship") or (class="Gloriana"){
-        o_dist=500;
+        closing_distance=500;
         action="attack";
     }
     else if (class="Nemesis Class Fleet Carrier"){
-        o_dist=1000;
+        closing_distance=1000;
         action="attack";
     }
     else if (class="Avenger Class Grand Cruiser"){
-        o_dist=64;
+        closing_distance=64;
         action="broadside";
     }
    else  if (class="Battle Barge"){
-        o_dist=300;
+        closing_distance=300;
         action="broadside";
     } else if (class == "Strike Cruiser"){
         action="broadside";
-        o_dist=300;
+        closing_distance=300;
     }
     else if (class="Hunter") or (class="Gladius"){
-        o_dist=64;
+        closing_distance=64;
         action="flank";
     }
 
-    closing_distance = o_dist;
+    closing_distance = closing_distance;
 
     // if (class!="big") then flank!!!!
     
     
-    dist=point_distance(x,y,target.x,target.y)-(max(sprite_get_width(sprite_index),sprite_get_height(sprite_index)));
-    target_distance = dist;
+    target_distance=point_distance(x,y,target.x,target.y)-(max(sprite_get_width(sprite_index),sprite_get_height(sprite_index)));
+    target_distance = target_distance;
     
     // STC Bonuses
+
     turning_speed = ship_data.calc_turn_speed();
+    speed_up = ship_data.final_acceleration();
+
+    speed_down = ship_data.deceleration();
+
+    var _player_action = (paction=="move" || paction=="attack_move" || paction=="turn" || paction=="attack_turn");
     
-    if (paction!="move") and (paction!="attack_move") and (paction!="turn") and (paction!="attack_turn"){
+    if (!_player_action){
         if (target!=0) and (action=="attack"){
-            direction=turn_towards_point(direction,x,y,target.x,target.y,turning_speed/2);
+            ship_turn_towards_point(target.x,target.y);
         }
         ideal_broadside();
         //broadside_movement();
@@ -109,67 +112,71 @@ if (hp>0) and (instance_exists(target)){
     }
 
     if (draw_targets != false){
-        dist=point_distance(x,y,draw_targets[0], draw_targets[1]);
+        target_distance=point_distance(x,y,draw_targets[0], draw_targets[1]);
     }
     
-    speed_up = ship_data.final_acceleration();
-
-    speed_down = ship_data.deceleration();
-    
-    if (paction="turn") or (paction="attack_turn"){
-        direction=turn_towards_point(direction,x,y,target_x,target_y,turning_speed/2);
-        dist=point_distance(x,y,target_x,target_y);
-        if (y>target_y) then direction=turn_towards_point(direction,x,y,target_x,target_y,turning_speed);
-        if (y<target_y) then direction=turn_towards_point(direction,x,y,target_x,target_y,turning_speed);
-        if (speed>0) then speed-=speed_down;
-        
-        if (direction-point_direction(x,y,target_x,target_y)<=2) and (direction-point_direction(x,y,target_x,target_y)>=-2){
-            if (paction="turn") then paction="move";
-            if (paction="attack_turn") then paction="attack_move";
-        }
-    }
-    
-    if (paction!="move") and (paction!="turn") and (paction!="attack_move") and (paction!="attack_turn"){
+    if (!_player_action){
         combat_acceleration_control();
     }
-    if (paction="move") or (paction="attack_move"){
-        direction=turn_towards_point(direction,x,y,target_x,target_y,turning_speed/2);
-        var dist=point_distance(x,y,target_x,target_y);
-        if (y>target_y) then direction=turn_towards_point(direction,x,y,target_x,target_y,turning_speed);
-        if (y<target_y) then direction=turn_towards_point(direction,x,y,target_x,target_y,turning_speed);
-        
-        if (paction="attack_move") and (instance_exists(obj_en_ship)){
-            if (!instance_exists(target)){
-                target=instance_nearest(x,y,obj_en_ship);
+    if (_player_action){
+        if (paction="turn") or (paction="attack_turn"){
+            direction=turn_towards_point(direction,x,y,target_x,target_y,turning_speed/2);
+            target_distance=point_distance(x,y,target_x,target_y);
+            if ((y>target_y) || y<target_y)) {
+                ship_turn_towards_point(target_x,target_y);
             }
-            dist=point_distance(x,y,target.x,target.y);
-            if (dist<=o_dist){
+            if (speed>0) then speed-=speed_down;
+            
+            if (direction-point_direction(x,y,target_x,target_y)<=2) and (direction-point_direction(x,y,target_x,target_y)>=-2){
+                if (paction="turn") then paction="move";
+                if (paction="attack_turn") then paction="attack_move";
+            }
+        }
+        
+
+        if (paction="move") or (paction="attack_move"){
+            direction=turn_towards_point(direction,x,y,target_x,target_y,turning_speed/2);
+            target_distance=point_distance(x,y,target_x,target_y);
+
+            if( (y>target_y) || y<target_y)) {
+                ship_turn_towards_point(target_x,target_y);
+            }
+            
+            if (paction="attack_move") and (instance_exists(obj_en_ship)){
+                if (!instance_exists(target)){
+                    target=instance_nearest(x,y,obj_en_ship);
+                }
+                target_distance=point_distance(x,y,target.x,target.y);
+                if (target_distance<=closing_distance){
+                    paction="";
+                    action="attack";
+                }
+            }
+            
+            if (target_distance>20) and (speed<(max_speed)) then speed+=speed_up;
+            if (target_distance<=20) and (speed>0){
                 paction="";
                 action="attack";
             }
-        }
-        
-        if (dist>20) and (speed<(max_speed)) then speed+=speed_up;
-        if (dist<=20) and (speed>0){
-            paction="";
-            action="attack";
         }
     }
     
     
     if (speed<0) then speed=speed*0.9;
-    if (turret_cool>0) then turret_cool-=1;
+    if (turret_cool>0){
+        turret_cool-=1;
+    }
     
     
-    var bull, targe, rdir, dirr, dist, xx, yy, ok;
-    targe=0;rdir=0;dirr="";dist=9999;xx=x;yy=y;
+    var bull, targe, rdir, dirr, target_distance, xx, yy, ok;
+    targe=0;rdir=0;dirr="";target_distance=9999;xx=x;yy=y;
     
     
     if (turrets>0) and (instance_exists(obj_en_in)) and (turret_cool=0){
         targe=instance_nearest(x,y,obj_en_in);
-        if (instance_exists(targe)) then dist=point_distance(x,y,targe.x,targe.y);
+        if (instance_exists(targe)) then target_distance=point_distance(x,y,targe.x,targe.y);
         
-        if (dist>64) and (dist<300){
+        if (target_distance>64) and (target_distance<300){
             bull=instance_create(x,y,obj_p_round);
             bull.direction=point_direction(x,y,targe.x,targe.y);
             bull.speed=20;
