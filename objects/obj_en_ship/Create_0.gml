@@ -37,6 +37,7 @@ armour_front=0;
 side_armour=0;
 weapons=[];
 turrets=0;
+max_speed = 20;
 
 turn_bonus=1;
 speed_bonus=1;

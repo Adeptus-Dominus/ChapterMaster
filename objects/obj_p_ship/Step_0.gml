@@ -112,9 +112,9 @@ if (hp>0) and (instance_exists(target)){
         dist=point_distance(x,y,draw_targets[0], draw_targets[1]);
     }
     
-    var speed_up = ship_data.final_acceleration();
+    speed_up = ship_data.final_acceleration();
 
-    var speed_down = ship_data.deceleration();
+    speed_down = ship_data.deceleration();
     
     if (paction="turn") or (paction="attack_turn"){
         direction=turn_towards_point(direction,x,y,target_x,target_y,turning_speed/2);
@@ -130,23 +130,11 @@ if (hp>0) and (instance_exists(target)){
     }
     
     if (paction!="move") and (paction!="turn") and (paction!="attack_move") and (paction!="attack_turn"){
-
-        var _start_slowing = start_slowing_telemetry(dist, speed_down);
-        if (_start_slowing){
-            speed-=speed_down;
-        } else {
-            if (action="attack"){
-                if (dist>o_dist) and (speed<(max_speed)) then speed+=speed_up;
-            } else if (action="broadside"){
-                if (dist>o_dist) and (speed<(max_speed)) then speed+=speed_up;
-            } else if (action="flank"){// flank here
-                if (dist>o_dist) and (speed<(max_speed)) then speed+=speed_up;
-            }
-        }
+        combat_acceleration_control();
     }
     if (paction="move") or (paction="attack_move"){
         direction=turn_towards_point(direction,x,y,target_x,target_y,turning_speed/2);
-        var dist;dist=point_distance(x,y,target_x,target_y);
+        var dist=point_distance(x,y,target_x,target_y);
         if (y>target_y) then direction=turn_towards_point(direction,x,y,target_x,target_y,turning_speed);
         if (y<target_y) then direction=turn_towards_point(direction,x,y,target_x,target_y,turning_speed);
         

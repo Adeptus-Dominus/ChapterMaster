@@ -8,9 +8,7 @@ if (obj_fleet.start!=5) then exit;
 
 if (class="Daemon") and (image_alpha<1) then image_alpha+=0.006;
 
-var o_dist, dist, ch_rang, ex, spid;spid=0;
-
-if (shields>0) and (shields<maxshields) then shields+=0.02;
+var  ch_rang, ex, spid=0;
 
 
 // Need to every couple of seconds check this
@@ -20,18 +18,23 @@ if (shields>0) and (shields<maxshields) then shields+=0.02;
 if (instance_exists(obj_p_ship)) and (!instance_exists(obj_al_ship)) then target=instance_nearest(x,y,obj_p_ship);
 if (!instance_exists(obj_p_ship)) and (instance_exists(obj_al_ship)) then target=instance_nearest(x,y,obj_al_ship);
 if (instance_exists(obj_p_ship)) and (instance_exists(obj_al_ship)){
-    var tp1,tp2;
-    tp1=instance_nearest(x,y,obj_p_ship);tp2=instance_nearest(x,y,obj_al_ship);
+    var tp1=instance_nearest(x,y,obj_p_ship);
+    var tp2=instance_nearest(x,y,obj_al_ship);
     if (point_distance(x,y,tp1.x,tp1.y)<=point_distance(x,y,tp2.x,tp2.y)) then target=tp1;
     if (point_distance(x,y,tp1.x,tp1.y)>point_distance(x,y,tp2.x,tp2.y)) then target=tp2;
 }
 if (!instance_exists(target)) then exit;
 
 if (hp<=0){
-    var wh,gud;wh=0;gud=0;
-    repeat(5){wh+=1;if (obj_fleet.enemy[wh]=owner) then gud=wh;}
+    var wh=0,gud=0;
+    repeat(5){
+        wh+=1;
+        if (obj_fleet.enemy[wh]=owner){
+            gud=wh;
+        }
+    }
     
-    if (size=3) then obj_fleet.en_capital_lost[gud]+=1;
+    if (size>=3) then obj_fleet.en_capital_lost[gud]+=1;
     if (size=2) then obj_fleet.en_frigate_lost[gud]+=1;
     if (size=1) then obj_fleet.en_escort_lost[gud]+=1;
     
@@ -41,7 +44,11 @@ if (hp<=0){
 if (hp>0) and (instance_exists(obj_p_ship)){
     is_targeted();
 
-    if (class="Apocalypse Class Battleship"){o_dist=500;action="attack";spid=20;}
+    if (class="Apocalypse Class Battleship"){
+        o_dist=500;
+        action="attack";
+        spid=20;
+    }
     if (class="Nemesis Class Fleet Carrier"){o_dist=1000;action="attack";spid=20;}
     if (class="Leviathan"){o_dist=160;action="attack";spid=20;}
     if (class="Battle Barge") or (class="Custodian"){o_dist=300;action="attack";spid=20;}
@@ -49,7 +56,11 @@ if (hp>0) and (instance_exists(obj_p_ship)){
     if (class="Razorfiend"){o_dist=100;action="attack";spid=25;}
     if (class="Cairn Class") or (class="Reaper Class"){o_dist=199;action="attack";spid=25;if (class="Reaper Class") then spid=30;}
     
-    if (class="Dethdeala") or (class="Protector") or (class="Emissary"){o_dist=200;action="attack";spid=20;}
+    if (class="Dethdeala") or (class="Protector") or (class="Emissary"){
+        o_dist=200;
+        action="attack";
+        spid=20;
+    }
     if (class="Gorbag's Revenge"){o_dist=200;action="attack";spid=20;}
     if (class="Kroolboy") or (class="Slamblasta"){o_dist=200;action="attack";spid=25;}
     if (class="Battlekroozer"){o_dist=200;action="attack";spid=30;}
@@ -63,6 +74,10 @@ if (hp>0) and (instance_exists(obj_p_ship)){
     if (class="Avenger Class Grand Cruiser"){o_dist=48;action="broadside";spid=20;}
     if (class="Jackal Class"){o_dist=200;action="attack";spid=40;}
     if (class="Dirge Class"){o_dist=200;action="attack";spid=45;}
+
+    if (ship_size==1){
+        action = "flank";
+    }
     
     // if (class!="big") then flank!!!!
     
@@ -112,23 +127,12 @@ if (hp>0) and (instance_exists(obj_p_ship)){
         // direction=turn_towards_point(direction,x+lengthdir_x(128,target.direction-90),y,target.x,target.y+lengthdir_y(128,target.direction-90),.2)
         
         
-        
+         
     }*/
+
     
-    var speed_down = 0.025;
-    var _start_slowing = start_slowing_telemetry(dist, speed_down);
-    if (_start_slowing && owner != eFACTION.Tyranids){
-        speed-=speed_down;
-    } else {        
-        if (action="attack"){
-            if (target_distance>o_dist) and (speed<((spid)/10)) then speed+=0.005;
-            if (target_distance<o_dist) and (speed>0) then speed-=0.025;
-        }
-        if (action="broadside"){
-            if (target_distance>o_dist) and (speed<((spid)/10)) then speed+=0.005;
-            if (target_distance<o_dist) and (speed>0) then speed-=0.025;
-        }
-    }
+    speed_down = 0.025;
+    combat_acceleration_control();
     
 
     if (speed<0) then speed=speed*0.9;
@@ -152,7 +156,8 @@ if (hp>0) and (instance_exists(obj_p_ship)){
             bull.speed=20;
             bull.dam=3;
             bull.image_xscale=0.5;
-            bull.image_yscale=0.5;turret_cool=floor(60/turrets);
+            bull.image_yscale=0.5;
+            turret_cool=floor(60/turrets);
             if (owner = eFACTION.Necrons){
                 bull.sprite_index=spr_green_las;
                 bull.image_yscale=1;
@@ -168,6 +173,9 @@ if (hp>0) and (instance_exists(obj_p_ship)){
 }
 
 
+shields.step();
+
+
 /* */
 }
 __b__ = action_if_variable(owner, 6, 0);
@@ -178,13 +186,6 @@ image_angle=direction;
 if (obj_fleet.start!=5) then exit;
 
 var o_dist, dist, ch_rang, ex, spid;spid=0;
-
-if (shields>0) and (shields<maxshields) then shields+=0.03;
-
-
-// Need to every couple of seconds check this
-// with obj_en_ship if not big then disable, check nearest, and activate once more
-if (instance_exists(obj_p_ship)) then target=instance_nearest(x,y,obj_p_ship);
 
 if (hp<=0){
     var wh,gud;wh=0;gud=0;
@@ -257,7 +258,10 @@ if (hp>0) and (instance_exists(obj_p_ship)){
             bull=instance_create(x,y,obj_en_round);bull.direction=point_direction(x,y,targe.x,targe.y);
             if (owner = eFACTION.Tyranids) then bull.sprite_index=spr_glob;
             if (owner = eFACTION.Tau) or (owner = eFACTION.Eldar) then bull.sprite_index=spr_pulse;
-            bull.speed=20;bull.dam=3;bull.image_xscale=0.5;bull.image_yscale=0.5;turret_cool=floor(60/turrets);
+            bull.speed=20;
+            bull.dam=3;
+            bull.image_xscale=0.5;
+            bull.image_yscale=0.5;turret_cool=floor(60/turrets);
             bull.direction+=choose(random(10),1*-(random(10)));
         }
     }

@@ -368,6 +368,7 @@ function set_nid_ships(){
 	    add_weapon_to_ship("Pyro-acid Battery", {cooldown : 60});
 	    add_weapon_to_ship("Feeder Tendrils", {cooldown : 20});
 	    add_weapon_to_ship("Bio-Plasma Discharge");
+	    max_speed = 20;
 
 	}else 
 	if (class=="Prowler"){
@@ -388,6 +389,7 @@ function set_nid_ships(){
 	    carrying=0;
 	    add_weapon_to_ship("Pyro-acid Battery");
 	    add_weapon_to_ship("Feeder Tendrils");
+	    max_speed = 14;
 	}
 
 }

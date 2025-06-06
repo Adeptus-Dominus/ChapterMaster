@@ -5,7 +5,21 @@ function point_on_circle(start_x, start_y, radius, angle){
     return [_final_x, _final_y];
 }
 
-function circle_mechanics(end_location){
+function combat_acceleration_control(){
+    var _start_slowing = start_slowing_telemetry(dist, speed_down);
+    if (_start_slowing){
+        speed-=speed_down;
+    } else {
+        if (action="attack"){
+            if (dist>o_dist) and (speed<(max_speed)) then speed+=speed_up;
+        } else if (action="broadside"){
+            if (dist>o_dist) and (speed<(max_speed)) then speed+=speed_up;
+        } else if (action="flank"){// flank here
+            if (dist>o_dist) and (speed<(max_speed)) then speed+=speed_up;
+        }
+    }   
+}
+/*function circle_mechanics(end_location){
     var _turn_require = point_direction(x,y,end_location[0],end_location[1]);
     if (_turn_require<180){
         time_to_face = 180/turning_speed;
@@ -27,7 +41,7 @@ function circle_mechanics(end_location){
     degtorad(); 
     time_to_face = turning_speed
     max_speed = 
-}
+}*/
 
 
 function ideal_broadside(){

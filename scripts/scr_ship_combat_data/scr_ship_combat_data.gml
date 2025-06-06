@@ -254,7 +254,7 @@ function assign_ship_stats(){
 	    turrets=4;
 	    capacity=150;
 	    carrying=0;
-
+	    max_speed = 20;
 	    add_weapon_to_ship("Lance Battery", {facing:"left"});
 	    add_weapon_to_ship("Lance Battery", {facing:"right"});
 	    add_weapon_to_ship("Nova Cannon");
@@ -280,6 +280,7 @@ function assign_ship_stats(){
 	    add_weapon_to_ship("Interceptor Launch Bays");
 	    add_weapon_to_ship("Interceptor Launch Bays");
 	    add_weapon_to_ship("Lance Battery");
+	    max_speed = 20;
 	    
 	}
 

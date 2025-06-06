@@ -1,10 +1,10 @@
 // Manages space combat, checks if ships are destroyed and does the targeting and pointing of the ship
 
 var __b__;
-var bull, ok, targe=0,rdir=0,dist=9999,xx=x,yy=y;
+var bull, ok, targe=0,rdir=0,xx=x,yy=y;
 var front=0,right=0,left=0,rear=0;
 var f=0,facing="",ammo=0,range=0,wep="",dam=0;
-var o_dist=0, spid=0;
+var spid=0;
 var gud=0;
 var husk;
 var explo;
@@ -29,14 +29,18 @@ if (!__b__){
     // Check if ship is destroyed
     if (hp<=0){
         gud=0;
-        for(var wh=1; wh<=5; wh++){if (obj_fleet.enemy[wh]==owner) then gud=wh;}
+        for(var wh=1; wh<=5; wh++){
+            if (obj_fleet.enemy[wh]==owner) then gud=wh;
+        }
         
         if (class=="Gorbag's Revenge" or (class=="Dethdeala") or (class=="Kroolboy") or (class=="Desecrator")) or (class=="Custodian") then obj_fleet.en_capital_lost[gud]+=1;
         else if (class=="Battlekroozer") or (class=="Daemon") or (class=="Avenger Class Grand Cruiser") or (class=="Carnage") or (class=="Emissary") or (class=="Protector") then obj_fleet.en_frigate_lost[gud]+=1;
         else if (class=="Ravager") or (class=="Iconoclast") or (class=="Warden") or (class=="Castellan") then obj_fleet.en_escort_lost[gud]+=1;
         else if (class=="Leviathan") then obj_fleet.en_capital_lost[gud]+=1;
         else if (class=="Razorfiend") then obj_fleet.en_frigate_lost[gud]+=1;
-        else if (class=="Stalker") or (class=="Prowler") or (class=="Sword Class Frigate") then obj_fleet.en_escort_lost[gud]+=1;
+        else if (class=="Stalker") or (class=="Prowler") or (class=="Sword Class Frigate"){
+            obj_fleet.en_escort_lost[gud]+=1;
+        }
         
         destroy_ship_and_leave_husk();
     }
@@ -156,20 +160,9 @@ if (!__b__){
             // direction=turn_towards_point(direction,x+lengthdir_x(128,target.direction-90),y,target.x,target.y+lengthdir_y(128,target.direction-90),.2)
         }*/
         // Controls speed based on action
-        var speed_down = 0.025;
-        var _start_slowing = start_slowing_telemetry(dist, speed_down);
-        if (_start_slowing){
-            speed-=speed_down;
-        } else {        
-            if (action="attack"){
-                if (target_distance>o_dist) and (speed<((spid)/10)) then speed+=0.005;
-                if (target_distance<o_dist) and (speed>0) then speed-=0.025;
-            }
-            if (action="broadside"){
-                if (target_distance>o_dist) and (speed<((spid)/10)) then speed+=0.005;
-                if (target_distance<o_dist) and (speed>0) then speed-=0.025;
-            }
-        }
+        speed_down = 0.025;
+        combat_acceleration_control();
+
         if (speed<0) then speed=speed*0.9;
         // Weapon reloads
         if (turret_cool>0) then turret_cool-=1;
@@ -283,11 +276,15 @@ if (__b__){
             if (instance_exists(target)){
                 dist=point_distance(x,y,target.x,target.y);
                 
-                if (action=="swoop"){direction=turn_towards_point(direction,x,y,target.x,target.y,5-ship_size);}
+                if (action=="swoop"){
+                    direction=turn_towards_point(direction,x,y,target.x,target.y,5-ship_size);
+                }
                 if (dist<=o_dist) and (collision_line(x,y,x+lengthdir_x(o_dist,direction),y+lengthdir_y(o_dist,direction),obj_en_ship,0,1)) then action="attack";
                 if (dist<300) and (action=="attack") then action="bank";
                 if (action=="bank") then direction=turn_towards_point(direction,x,y,room_width,room_height/2,5-ship_size);
-                if (action=="bank") and (dist>700) then action="attack";
+                if (action=="bank") and (dist>700){
+                    action="attack";
+                }
             }
         }
         

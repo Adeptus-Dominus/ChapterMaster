@@ -213,6 +213,7 @@ function setup_player_combat_ship(){
 
 	var i=0, unit, b=0;
 
+	boarders = 0;
 	for (var co=0;co<=obj_ini.companies;co++){
 	    for (i=0;i<array_length(obj_ini.name[co]);i++){
 	        if (obj_ini.name[co][i]=="") then continue;
