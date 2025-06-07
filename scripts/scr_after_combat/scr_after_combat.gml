@@ -109,14 +109,14 @@ function distribute_experience(_units, _total_exp) {
     var _unit_count = array_length(_units);
     var _exp_reward = 0;
     var _exp_reward_max = 5;
-    var _unit_exp_celling = 200;
+    var _unit_exp_ceiling = 200;
     var _exp_mod_min = 0.1;
 
     if (_unit_count > 0 && _total_exp > 0) {
         _exp_reward = min(_total_exp / _unit_count, _exp_reward_max);
         for (var i = 0; i < _unit_count; i++) {
             var _unit = _units[i];
-            var _exp_mod = max(1 - (_unit.experience / _unit_exp_celling), _exp_mod_min);
+            var _exp_mod = max(1 - (_unit.experience / _unit_exp_ceiling), _exp_mod_min);
             var _exp_update_data = _unit.add_exp(_exp_reward * _exp_mod);
 
             var _powers_learned = _exp_update_data[1];
