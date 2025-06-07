@@ -105,7 +105,7 @@ function ComplexSet(_unit) constructor {
 		chest_variants: spr_mk7_chest_variants,
 		leg_variants: spr_mk7_leg_variants,
 		head: spr_mk7_head_variants,
-		knees: spr_mk7_complex_knees
+		right_knee: spr_mk7_complex_knees
 	};
 
 	_are_exceptions = false;
@@ -142,7 +142,7 @@ function ComplexSet(_unit) constructor {
 				_mod = modulars[i];
 				exceptions = [];
 				if (array_contains(blocked, _mod.position)) {
-					return "blocked";
+					continue;
 				}
 
 				if (struct_exists(_mod, "allow_either")) {
@@ -327,6 +327,24 @@ function ComplexSet(_unit) constructor {
 				if (struct_exists(_mod, "overides")) {
 					_overides = _mod.overides;
 				}
+
+				if (struct_exists(_mod, "body_parts")){
+					var _viable = true;
+					var _body_areas = struct_get_names(_mod.body_parts);
+					for (var b=0;b<array_length(_body_areas);b++){
+						var _area =_body_areas[b];
+						if (!struct_exists(unit.body[$ _area],_mod.body_parts[$ _area])){
+							_viable = false;
+							break;							
+						}
+					}
+					if (!_viable){
+						if (!check_exception("body_parts")) {
+							continue;
+						}
+					}
+				}
+
 				if (struct_exists(_mod, "prevent_others")) {
 					replace_area(_mod.position, _mod.sprite, _overides);
 					array_push(blocked, _mod.position);
@@ -369,7 +387,7 @@ function ComplexSet(_unit) constructor {
 							continue;
 						}
 					}
-				}
+				}				
 
 				if (position != false) {
 					if (position == "weapon") {
@@ -384,10 +402,22 @@ function ComplexSet(_unit) constructor {
 				} else {
 					add_to_area(_mod.position, _mod.sprite, _overides);
 				}
+				if (struct_exists(_mod, "prevent_others")) {
+					replace_area(_mod.position, _mod.sprite, _overides);
+					array_push(blocked, _mod.position);
+					if (struct_exists(_mod, "ban")) {
+						for (var b = 0; b < array_length(_mod.ban); b++) {
+							if (!array_contains(banned, _mod.ban[b])) {
+								array_push(banned, _mod.ban[b]);
+							}
+						}
+					}
+				}				
 			}
+		} catch(_exception){
+ 			handle_exception(_exception);
 		}
 	};
-
 	blocked = [];
 	banned = [];
 	variation_map = {
@@ -539,7 +569,11 @@ function ComplexSet(_unit) constructor {
 					} else if (_variant == 3) {
 						_bio = [spr_terminator_complex_arm_hidden_right, spr_terminator_complex_arm_hidden_left];
 					}
-				}
+				} else {
+                    if (_variant == 2 || _variant == 3){
+                        continue;
+                    }
+                }
 				if (_bionic_arm && !array_length(_bio)) {
 					if (armour_type == ArmourType.Normal) {
 						var _bio = [spr_bionic_right_arm, spr_bionic_left_arm];
@@ -752,9 +786,11 @@ function ComplexSet(_unit) constructor {
 					}
 					_arm.ui_ymod += 24;
 				}
-				if (_arm.display_type == "melee_onehand" && (_wep != "Company Standard")) {
-					_arm.arm_type = 2;
-					_arm.hand_type = 2;
+				if (_arm.display_type == "melee_onehand" && _wep != "Company Standard" ) {
+                    if (!_arm.hand_type){
+    					_arm.arm_type = 2;
+    					_arm.hand_type = 2;
+                    }
 					_arm.ui_xmod -= 14;
 					_arm.ui_ymod += 23;
 				}
@@ -774,11 +810,6 @@ function ComplexSet(_unit) constructor {
 					weapon_left.hand_type = 0;
 					_arm.ui_ymod += 15;
 				}
-
-				if (array_contains(["Chainaxe", "Power Axe", "Crozius Arcanum", "Power Mace", "Mace of Absolution", "Relic Blade"], _wep)) {
-					_arm.hand_type = 3;
-					_arm.arm_type = 3;
-				}
 			} else if (armour_type == ArmourType.Scout) {
 				_arm.ui_xmod += 4;
 				_arm.ui_ymod += 11;
@@ -797,6 +828,9 @@ function ComplexSet(_unit) constructor {
 			_complex_helm = _comp_helms.captain;
 		} else if (unit_role == _role[eROLE.Veteran] || (unit_role == _role[eROLE.Terminator] && unit.company == 1)) {
 			_complex_helm = _comp_helms.veteran;
+		} else if (struct_exists(_comp_helms, "all_others")){
+			// there's probably room to improve this but consecrators demand the stripe
+			_complex_helm = _comp_helms.all_others;
 		}
 		if (is_struct(_complex_helm) && struct_exists(self, "head") && draw_helms) {
 			complex_helms(_complex_helm);
@@ -1041,8 +1075,8 @@ function ComplexSet(_unit) constructor {
 					left_arm: spr_mk3_left_arm,
 					right_arm: spr_mk3_right_arm,
 					head: spr_mk3_head_variants,
-					left_leg: spr_mk3_left_leg_variants,
-					right_leg: spr_mk3_right_leg_variants,
+					left_knee: spr_mk3_left_knee,
+					right_knee: spr_mk3_right_knee,
 					mouth_variants: spr_mk3_mouth,
 					forehead: spr_mk3_forehead_variants,
 					belt: spr_mk3_belt

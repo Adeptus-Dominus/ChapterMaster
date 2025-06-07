@@ -45,13 +45,17 @@ All variable names, function names, etc., should use `snake_case` unless stated 
 ### Constants
 
 **Macros**:
-- To denote their group, use a short prefix in all caps (e.g., `PREFIX_`).
-- The rest should be in all caps `SNAKE_CASE`.
+**Macros**:
+
+- Written in all caps `SNAKE_CASE`.
+- Try to denote their group using a short prefix (e.g., `PREFIX_`).
 - Example: `#macro COL_DARK_RED`.
 
 **Enums**:
-- Enum names should start with an `e` prefix and be in all caps.
-- Enum entries should use `PascalCase`.
+ **Enums**:
+
+ - Enum names should start with an `e` prefix and be in all caps `SNAKE_CASE`.
+ - Enum entries should use `PascalCase`.
 - Example: `enum eCOLORS` with entries `DarkRed`, `Blue`, etc.
 
 ### General Styling

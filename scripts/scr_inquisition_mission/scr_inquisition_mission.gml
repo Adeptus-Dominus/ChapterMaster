@@ -131,9 +131,9 @@ function mission_inquisition_demon_world(demon_worlds){
         }
     }
     var eta = scr_mission_eta(star.x, star.y, 25);
-    var text="The Inquisitor is trusting you with a special mission.  The planet " + string(star.name) + " " + scr_roman(planet);
-    text+=" has been uncovered as a Demon World. The taint of chaos must be eradicated from this system.  Can your chapter handle this mission?";
-    scr_popup("Inquisition Mission",text,"inquisition","demon_world|"+string(star.name)+"|"+string(planet)+"|"+string(eta+1)+"|");
+    var text=$"The Inquisitor is trusting you with a special mission.  The planet {string(star.name)} {scr_roman(planet)}";
+    text+=$" has been uncovered as a Demon World. The taint of chaos must be eradicated from this system.  Can your chapter handle this mission?";
+    scr_popup("Inquisition Mission",text,"inquisition",$"demon_world|{string(star.name)}|{string(planet)}|{string(eta+1)}|");
 }
 
 function mission_inquisition_ethereal(){
@@ -161,9 +161,9 @@ function mission_inquisition_ethereal(){
     }
     var eta = scr_mission_eta(star.x,star.y,1);
     eta = min(max(eta,12),50);
-    var text = "An Inquisitor is trusting you with a special mission.";
-    text +="They require that you capture a Tau Ethereal from the planet "+string(star.name)+" "+scr_roman(planet)+"for research purposes.  You have"+string(eta)+" months to locate and capture one.  Can your chapter handle this mission?";
-    scr_popup("Inquisition Mission",text,"inquisition","ethereal|" + string(star.name) + "|" + string(planet) + "|" +string(eta+1) + "|");
+    var text = $"An Inquisitor is trusting you with a special mission.";
+    text +=$"They require that you capture a Tau Ethereal from the planet {string(star.name)} {scr_roman(planet)} for research purposes. You have {string(eta)} months to locate and capture one. Can your chapter handle this mission?";
+    scr_popup("Inquisition Mission",text,"inquisition",$"ethereal|{string(star.name)}|{string(planet)}|{string(eta+1)}|");
 
 }
 
@@ -181,9 +181,9 @@ function mission_inquisition_tyranid_organism(worlds){
     var eta = scr_mission_eta(star.x, star.y, 1);
     var eta = min(max(eta,6),50);
 
-    var text="An Inquisitor is trusting you with a special mission.  The planet " + string(star.name) + " " + scr_roman(planet);
+    var text=$"An Inquisitor is trusting you with a special mission.  The planet {string(star.name)} {scr_roman(planet)}";
     text+=" is ripe with Tyranid organisms.  They require that you capture one of the Gaunt species for research purposes.  Can your chapter handle this mission?";
-    scr_popup("Inquisition Mission",text,"inquisition","tyranid_org|"+string(star.name)+"|"+string(planet)+"|"+string(eta+1)+"|");
+    scr_popup("Inquisition Mission",text,"inquisition",$"tyranid_org|{string(star.name)}|{string(planet)}|{string(eta+1)}|");
 
 }
 
@@ -193,9 +193,9 @@ function mission_inquisition_tomb_world(tomb_worlds){
     var planet = scr_get_planet_with_feature(star, P_features.Necron_Tomb);
     var eta = scr_mission_eta(star.x, star.y,1)
     
-    var text="The Inquisition is trusting you with a special mission.  They have reason to suspect the Necron Tomb on planet " + string(star.name) + " " +scr_roman(planet);
-    text+=" may become active.  You are to send a small group of marines to plant a bomb deep inside, within "+string(eta)+" months.  Can your chapter handle this mission?";
-    scr_popup("Inquisition Mission",text,"inquisition","necron|"+string(star.name)+"|"+string(planet)+"|"+string((eta+1))+"|");
+    var text=$"The Inquisition is trusting you with a special mission.  They have reason to suspect the Necron Tomb on planet {string(star.name)} {scr_roman(planet)}";
+    text+=$" may become active.  You are to send a small group of marines to plant a bomb deep inside, within {string(eta)} months.  Can your chapter handle this mission?";
+    scr_popup("Inquisition Mission",text,"inquisition",$"necron|{string(star.name)}|{string(planet)}|{string((eta+1))}|");
 
 }
 
@@ -203,7 +203,7 @@ function mission_inquisition_artifact(){
     var text;
     log_message("RE: Artifact Hold");
     text="The Inquisition is trusting you with a special mission.  A local Inquisitor has a powerful artifact.  You are to keep it safe, and NOT use it, until the artifact may be safely retrieved.  Can your chapter handle this mission?";
-    scr_popup("Inquisition Mission",text,"inquisition","artifact|bop|0|"+string(irandom_range(6,26))+"|");
+    scr_popup("Inquisition Mission",text,"inquisition",$"artifact|bop|0|{string(irandom_range(6,26))}|");
 }
 
 function mission_inquistion_hunt_inquisitor(){
@@ -236,8 +236,8 @@ function mission_inquistion_hunt_inquisitor(){
     
     var eta = scr_mission_eta(star.x,star.y,1);
     eta=max(eta, 8);
-    var text="The Inquisition is trusting you with a special mission.  A radical inquisitor named "+string(name)+" will be visiting the "+string(star.name)+" system in "+string(eta)+" month's time.  They are highly suspect of heresy, and as such, are to be put down.  Can your chapter handle this mission?";
-    scr_popup("Inquisition Mission",text,"inquisition","inquisitor|"+string(star.name)+"|"+string(planet)+"|"+string(real(eta))+"|");
+    var text=$"The Inquisition is trusting you with a special mission.  A radical inquisitor named {string(name)} will be visiting the {string(star.name)} system in {string(eta)} month's time.  They are highly suspect of heresy, and as such, are to be put down.  Can your chapter handle this mission?";
+    scr_popup("Inquisition Mission",text,"inquisition",$"inquisitor|{string(star.name)}|{string(planet)}|{string(real(eta))}|");
 }
 
 function mission_inquistion_spyrer(){
@@ -258,9 +258,9 @@ function mission_inquistion_spyrer(){
     eta = min(max(eta, 6), 50);
     
     
-    var text="The Inquisition is trusting you with a special mission.  An experienced Spyrer on hive world " + string(star.name) + " " + scr_roman(planet);
-    text += " has began to hunt indiscriminately, and proven impossible to take down by conventional means.  If they are not put down within "+string(eta)+" month's time panic is likely.  Can your chapter handle this mission?";
-    var mission_params = "spyrer|"+string(star.name)+"|"+string(planet)+"|"+string(eta+1)+"|";
+    var text=$"The Inquisition is trusting you with a special mission.  An experienced Spyrer on hive world {string(star.name)} {scr_roman(planet)}";
+    text += $" has began to hunt indiscriminately, and proven impossible to take down by conventional means.  If they are not put down within {string(eta)} month's time panic is likely.  Can your chapter handle this mission?";
+    var mission_params = $"spyrer|{string(star.name)}|{string(planet)}|{string(eta+1)}|";
     log_message($"Starting spyrer mission with params {mission_params}")
     scr_popup("Inquisition Mission",text,"inquisition",mission_params);
 }
@@ -333,20 +333,20 @@ function mission_inquistion_purge(){
     
     
     if (mission_flavour==1) {
-        text +="  A number of high-ranking nobility on the planet "+scr_roman(planet)+" are being difficult and harboring heretical thoughts.  They are to be selectively purged within "+string(eta)+" months.  Can your chapter handle this mission?";
+        text +=$"  A number of high-ranking nobility on the planet {scr_roman(planet)} are being difficult and harboring heretical thoughts.  They are to be selectively purged within {string(eta)} months.  Can your chapter handle this mission?";
     }
     else if (mission_flavour==2) {
-        text+="  A powerful crimelord on the planet "+scr_roman(planet)+" is gaining an unacceptable amount of power and disrupting daily operations.  They are to be selectively purged within "+string(eta)+" months.  Can your chapter handle this mission?";
+        text+=$"  A powerful crimelord on the planet {scr_roman(planet)} is gaining an unacceptable amount of power and disrupting daily operations.  They are to be selectively purged within {string(eta)} months.  Can your chapter handle this mission?";
     }
     else if (mission_flavour==3) {
-        text+="  The mutants of hive world "+scr_roman(planet)+" are growing in numbers and ferocity, rising sporadically from the underhive.  They are to be cleansed by promethium within "+string(eta)+" months.  Can your chapter handle this mission?";
+        text+=$"  The mutants of hive world {scr_roman(planet)} are growing in numbers and ferocity, rising sporadically from the underhive.  They are to be cleansed by promethium within {string(eta)} months.  Can your chapter handle this mission?";
     }
     
     if (mission_flavour!=3) {
-        scr_popup("Inquisition Mission",text,"inquisition","purge|"+string(star.name)+"|"+string(planet)+"|"+string(real(eta+1))+"|");
+        scr_popup("Inquisition Mission",text,"inquisition",$"purge|{string(star.name)}|{string(planet)}|{string(real(eta+1))}|");
     }
     else {	
-        scr_popup("Inquisition Mission",text,"inquisition","cleanse|"+string(star.name)+"|"+string(planet)+"|"+string(real(eta+1))+"|");
+        scr_popup("Inquisition Mission",text,"inquisition",$"cleanse|{string(star.name)}|{string(planet)}|{string(real(eta+1))}|");
     }
 
 }
@@ -387,9 +387,9 @@ function mission_investigate_planet(){
 		}
 		eta = min(max(3,eta),100); 
 		
-		var text="The Inquisition wishes for you to investigate " + string(star.name) + " " + scr_roman(planet) + ".";
-		text+="  Boots are expected to be planted on its surface over the course of your investigation.";
-	    text += " You have " + string(eta) + " months to complete this task.";
-	    scr_popup("Inquisition Recon",text,"inquisition","recon|"+string(star.name)+"|"+string(planet)+"|"+string(eta)+"|");
+		var text=$"The Inquisition wishes for you to investigate {string(star.name)} {scr_roman(planet)}";
+		text+=$"  Boots are expected to be planted on its surface over the course of your investigation.";
+	    text += $" You have {string(eta)} months to complete this task.";
+	    scr_popup("Inquisition Recon",text,"inquisition",$"recon|{string(star.name)}|{string(planet)}|{string(eta)}|");
 
 }

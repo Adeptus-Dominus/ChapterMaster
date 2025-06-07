@@ -77,6 +77,24 @@ function scr_get_planet_with_type(star, type){
 	return -1;
 }
 
+function stars_with_faction_fleets(search_faction){
+    var _stars_with_fleets = {};
+    with (obj_en_fleet){
+        if (owner != search_faction) then continue;
+        if (capital_number+frigate_number+escort_number <= 0){
+            instance_destroy();
+            continue;
+        }
+        if (is_orbiting()){
+            if (struct_exists(_stars_with_fleets, orbiting.name)){
+                array_push(_stars_with_fleets[$orbiting.name],id);
+            } else {
+                _stars_with_fleets[$ orbiting.name] = [id];
+            }
+        }
+    }
+    return _stars_with_fleets;	
+}
 
 function planets_without_type(type,star="none"){
 	var return_planets = [];
@@ -160,23 +178,38 @@ function star_by_name(search_name){
 	return "none";
 }
 
+//use this to quickly make a loop through a stars planets in an unordered way
+function shuffled_planet_array(){
+	var _planets = [];
+	for (var i=1;i<=planets;i++){
+		array_push(_planets, i);
+	}
+	_planets = array_shuffle(_planets);
+	return _planets;
+
+}
+
 function distance_removed_star(origional_x,origional_y, star_offset = choose(2,3), disclude_hulk=true, disclude_elder=true, disclude_deads=true, warp_concious=true){
 	var from = instance_nearest(origional_x,origional_y,obj_star);
+	var _deactivated = [];
     for(var i=0; i<star_offset; i++){
         from=instance_nearest(origional_x,origional_y,obj_star);
         with(from){
+        	array_push(_deactivated, id);
         	instance_deactivate_object(id);
         };
         from=instance_nearest(origional_x,origional_y,obj_star);
         if (instance_exists(from)){
 	        if (disclude_elder && from.owner==eFACTION.Eldar){
 	        	i--;
+	        	array_push(_deactivated, id);
 	        	instance_deactivate_object(from);
 	        	continue;
 	        }
 	        if (disclude_deads){
 	        	if (is_dead_star(from)){
 		        	i--;
+		        	array_push(_deactivated, id);
 		        	instance_deactivate_object(from);
 		        	continue;        		
 	        	}
@@ -184,7 +217,10 @@ function distance_removed_star(origional_x,origional_y, star_offset = choose(2,3
 	    }        
     }
     //from=instance_nearest(origional_x,origional_y,obj_star);
-    instance_activate_object(obj_star);
+    for (var i=0;i<array_length(_deactivated);i++){
+    	instance_activate_object(_deactivated[i]);
+    }
+
     //TODO finish this off to make the distance remove more concious of warp lanes
     /*if (warp_concious){
     	var options = [from];

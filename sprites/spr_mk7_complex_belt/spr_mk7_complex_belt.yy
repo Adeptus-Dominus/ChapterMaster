@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_mk7_complex_belt",
   "bboxMode":0,
   "bbox_bottom":104,
@@ -12,9 +12,9 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"b6ba8600-fb6b-4fa9-abc7-bdc2311eb79e","name":"b6ba8600-fb6b-4fa9-abc7-bdc2311eb79e","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"c5eacaf3-6c5a-4af4-ac56-fd957c8f9f0b","name":"c5eacaf3-6c5a-4af4-ac56-fd957c8f9f0b","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"163be470-f687-42e2-b07c-ad2291c828fa","name":"163be470-f687-42e2-b07c-ad2291c828fa","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"b6ba8600-fb6b-4fa9-abc7-bdc2311eb79e","name":"b6ba8600-fb6b-4fa9-abc7-bdc2311eb79e","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"c5eacaf3-6c5a-4af4-ac56-fd957c8f9f0b","name":"c5eacaf3-6c5a-4af4-ac56-fd957c8f9f0b","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"163be470-f687-42e2-b07c-ad2291c828fa","name":"163be470-f687-42e2-b07c-ad2291c828fa","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -70,15 +70,9 @@
     "timeUnits":1,
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"b6ba8600-fb6b-4fa9-abc7-bdc2311eb79e","path":"sprites/spr_mk7_complex_belt/spr_mk7_complex_belt.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"9682d976-cfa5-495a-b8f6-5be5477a1db6","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"c5eacaf3-6c5a-4af4-ac56-fd957c8f9f0b","path":"sprites/spr_mk7_complex_belt/spr_mk7_complex_belt.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"9d12c3e7-cfb3-4825-b44b-5227c2503b2c","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"163be470-f687-42e2-b07c-ad2291c828fa","path":"sprites/spr_mk7_complex_belt/spr_mk7_complex_belt.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"3cb55ce9-9436-4e2c-9d6b-4a81a672efc0","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"b6ba8600-fb6b-4fa9-abc7-bdc2311eb79e","path":"sprites/spr_mk7_complex_belt/spr_mk7_complex_belt.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"9682d976-cfa5-495a-b8f6-5be5477a1db6","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"c5eacaf3-6c5a-4af4-ac56-fd957c8f9f0b","path":"sprites/spr_mk7_complex_belt/spr_mk7_complex_belt.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"9d12c3e7-cfb3-4825-b44b-5227c2503b2c","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"163be470-f687-42e2-b07c-ad2291c828fa","path":"sprites/spr_mk7_complex_belt/spr_mk7_complex_belt.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"3cb55ce9-9436-4e2c-9d6b-4a81a672efc0","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

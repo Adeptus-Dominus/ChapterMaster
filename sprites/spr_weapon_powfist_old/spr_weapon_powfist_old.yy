@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_weapon_powfist_old",
   "bboxMode":0,
   "bbox_bottom":144,
@@ -12,10 +12,10 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"0be31cfe-78c4-471d-b859-e254532372b9","name":"0be31cfe-78c4-471d-b859-e254532372b9","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"01579dc0-615a-49a2-9b4d-ea41758f00db","name":"01579dc0-615a-49a2-9b4d-ea41758f00db","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"726ce5d7-3fbd-4c4e-bfc9-623155e5a082","name":"726ce5d7-3fbd-4c4e-bfc9-623155e5a082","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"984d3389-f9ab-456a-9fa4-08daa820a402","name":"984d3389-f9ab-456a-9fa4-08daa820a402","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"0be31cfe-78c4-471d-b859-e254532372b9","name":"0be31cfe-78c4-471d-b859-e254532372b9","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"01579dc0-615a-49a2-9b4d-ea41758f00db","name":"01579dc0-615a-49a2-9b4d-ea41758f00db","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"726ce5d7-3fbd-4c4e-bfc9-623155e5a082","name":"726ce5d7-3fbd-4c4e-bfc9-623155e5a082","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"984d3389-f9ab-456a-9fa4-08daa820a402","name":"984d3389-f9ab-456a-9fa4-08daa820a402","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -71,18 +71,10 @@
     "timeUnits":1,
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"0be31cfe-78c4-471d-b859-e254532372b9","path":"sprites/spr_weapon_powfist_old/spr_weapon_powfist_old.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"510c3907-1247-443e-b8b5-1c65f1520ef2","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"01579dc0-615a-49a2-9b4d-ea41758f00db","path":"sprites/spr_weapon_powfist_old/spr_weapon_powfist_old.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"bf80a95d-0048-4e86-bd8b-3fd9c5c85d47","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"726ce5d7-3fbd-4c4e-bfc9-623155e5a082","path":"sprites/spr_weapon_powfist_old/spr_weapon_powfist_old.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"5451e330-335c-43db-a09f-024a21e42b94","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"984d3389-f9ab-456a-9fa4-08daa820a402","path":"sprites/spr_weapon_powfist_old/spr_weapon_powfist_old.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"3b9a418e-eac9-490f-9230-2751e6a5bc6f","IsCreationKey":false,"Key":3.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"0be31cfe-78c4-471d-b859-e254532372b9","path":"sprites/spr_weapon_powfist_old/spr_weapon_powfist_old.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"510c3907-1247-443e-b8b5-1c65f1520ef2","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"01579dc0-615a-49a2-9b4d-ea41758f00db","path":"sprites/spr_weapon_powfist_old/spr_weapon_powfist_old.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"bf80a95d-0048-4e86-bd8b-3fd9c5c85d47","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"726ce5d7-3fbd-4c4e-bfc9-623155e5a082","path":"sprites/spr_weapon_powfist_old/spr_weapon_powfist_old.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"5451e330-335c-43db-a09f-024a21e42b94","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"984d3389-f9ab-456a-9fa4-08daa820a402","path":"sprites/spr_weapon_powfist_old/spr_weapon_powfist_old.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"3b9a418e-eac9-490f-9230-2751e6a5bc6f","IsCreationKey":false,"Key":3.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

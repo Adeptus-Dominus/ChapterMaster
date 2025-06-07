@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_chaplain_wolfterm_helm",
   "bboxMode":0,
   "bbox_bottom":44,
@@ -12,7 +12,7 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"f2f04903-70d2-4526-bee9-08bfa83c5f9b","name":"f2f04903-70d2-4526-bee9-08bfa83c5f9b","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"f2f04903-70d2-4526-bee9-08bfa83c5f9b","name":"f2f04903-70d2-4526-bee9-08bfa83c5f9b","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -63,6 +63,8 @@
     "playbackSpeedType":0,
     "resourceType":"GMSequence",
     "resourceVersion":"2.0",
+    "seqHeight":232.0,
+    "seqWidth":167.0,
     "showBackdrop":true,
     "showBackdropImage":false,
     "timeUnits":1,

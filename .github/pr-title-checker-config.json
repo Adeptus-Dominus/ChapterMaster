@@ -1,6 +1,6 @@
 {
 	"CHECKS": {
-		"regexp": "((feat|fix|ci|chore|docs|test|refactor|revert|style|perf|build)(\\(.*\\))?: )|Merge branch"
+		"regexp": "((feat|fix|ci|chore|docs|test|refactor|revert|style|perf|build)(\\(.*\\))?!?: )|Merge branch"
 	},
 	"MESSAGES": {
 		"failure": "Invalid PR Title. Please use the following formats: `<type>(<optional-scope>): <Short summary>`. Refer to the list of [conventional commit types](https://github.com/pvdlg/conventional-commit-types?tab=readme-ov-file#commit-types)."

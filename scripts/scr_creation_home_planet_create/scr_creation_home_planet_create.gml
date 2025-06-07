@@ -2,13 +2,13 @@
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 function player_recruit_planet_selection(){
     with (obj_creation){
-    if (fleet_type!=1) or (custom<2) then draw_set_alpha(0.5);
+    if (fleet_type!=1) or (custom!=eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.5);
     yar=0;
     var _recruit_home = buttons.recruit_home_relationship;
 
     _recruit_home.x1 = 1265;
     _recruit_home.y1 =  110;
-    if (custom==0){
+    if (custom==eCHAPTER_TYPE.PREMADE){
         _recruit_home.allow_changes = false;
     }
     _recruit_home.draw();
@@ -21,7 +21,7 @@ function player_recruit_planet_selection(){
     }
     var _cur_planet_index2  = scr_planet_image_numbers(recruiting);
     
-    if (custom>1 && _recruit_world_type>0){
+    if (custom==eCHAPTER_TYPE.CUSTOM && _recruit_world_type>0){
         draw_sprite_stretched(spr_creation_arrow,0,1265,285,32,32);
         draw_sprite_stretched(spr_creation_arrow,1,1455,285,32,32);
         recruiting = list_traveler(planet_types, recruiting, [1265,285,1265+32,285+32],[1455,285,1455+32,285+32]);              
@@ -44,8 +44,8 @@ function player_recruit_planet_selection(){
     if (fleet_type=1 && _recruit_world_type<2) and (homeworld_name=recruiting_name) then name_bad=1;
     //TODO make a centralised logic for player renaming things in the creation screen
     if (name_bad=1) then draw_set_color(c_red);
-    if (text_selected!="recruiting_name") or (custom<2) then draw_text_transformed(1044+333,398,recruiting_name,0.5,0.5,0);
-    if (custom>1 && _recruit_world_type==2){
+    if (text_selected!="recruiting_name") or (custom!=eCHAPTER_TYPE.CUSTOM) then draw_text_transformed(1044+333,398,recruiting_name,0.5,0.5,0);
+    if (custom==eCHAPTER_TYPE.CUSTOM && _recruit_world_type==2){
         if (text_selected="recruiting_name") and (text_bar>30) then draw_text_transformed(1044+333,398,recruiting_name,0.5,0.5,0);
         if (text_selected="recruiting_name") and (text_bar<=30) then draw_text_transformed(1044+333,398,$"{recruiting_name}|",0.5,0.5,0);
         if (scr_text_hit(1044+333,398,true,recruiting_name)){
@@ -90,9 +90,9 @@ function scr_creation_home_planet_create(){
         
         draw_text_transformed(644,378,homeworld,0.5,0.5,0);
         // draw_text_transformed(644,398,string(homeworld_name),0.5,0.5,0);
-        if (text_selected!="home_name") or (custom<2) then draw_text_transformed(644,398,homeworld_name,0.5,0.5,0);
+        if (text_selected!="home_name") or (custom!=eCHAPTER_TYPE.CUSTOM) then draw_text_transformed(644,398,homeworld_name,0.5,0.5,0);
 
-        if (custom>1){
+        if (custom==eCHAPTER_TYPE.CUSTOM){
 
             if (text_selected="home_name") {
             	draw_text_transformed(644,398,homeworld_name+(text_bar>30?"":"|"),0.5,0.5,0);
@@ -118,7 +118,7 @@ function scr_creation_home_planet_create(){
             }
         }
         
-        if (custom>1){
+        if (custom==eCHAPTER_TYPE.CUSTOM){
         	draw_sprite_stretched(spr_creation_arrow,0,525,285,32,32);
         	draw_sprite_stretched(spr_creation_arrow,1,725,285,32,32);
             homeworld = list_traveler(planet_types, homeworld, [525,285,525+32,285+32],[725,285,725+32,285+32]);
@@ -135,10 +135,10 @@ function scr_creation_home_planet_create(){
         
         draw_text_transformed(644,378,"Battle Barge",0.5,0.5,0);
         // draw_text_transformed(644,398,string(homeworld_name),0.5,0.5,0);
-        if (text_selected!="flagship_name") or (custom=0) then draw_text_transformed(644,398,flagship_name,0.5,0.5,0);
+        if (text_selected!="flagship_name") or (custom==eCHAPTER_TYPE.PREMADE) then draw_text_transformed(644,398,flagship_name,0.5,0.5,0);
 
         //TODO swap out for TextBarArea constructor
-        if (custom>1){
+        if (custom==eCHAPTER_TYPE.CUSTOM){
             if (text_selected="flagship_name") and (text_bar>30) then draw_text_transformed(644,398,flagship_name,0.5,0.5,0);
             if (text_selected="flagship_name") and (text_bar<=30) then draw_text_transformed(644,398,flagship_name+"|",0.5,0.5,0);
             if (scr_text_hit(644,398,true,flagship_name)){
@@ -213,7 +213,7 @@ function scr_creation_home_planet_create(){
     
     //TODO move to OOP checkboxes
     if (fleet_type == ePlayerBase.home_world){
-        if (custom<2) then draw_set_alpha(0.5);
+        if (custom!=eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.5);
         var _homeworld_types = [
         	{
         		name : "Planetary Governer",
@@ -244,7 +244,7 @@ function scr_creation_home_planet_create(){
         	if (scr_hit(_draw_x, _draw_y,_draw_x+32, _draw_y+32)){
         		tooltip = _home_rule_type.tooltip;
         		tooltip2 = _home_rule_type.tooltip2;
-        		if (scr_click_left() && custom>1){
+        		if (scr_click_left() && custom==eCHAPTER_TYPE.CUSTOM){
         			homeworld_rule = i+1;
         		}
         	}

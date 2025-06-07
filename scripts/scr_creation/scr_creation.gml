@@ -19,7 +19,7 @@ function scr_creation(slide_num) {
 	// 6 = Chapter Master
 	
 	show_debug_message($"calling scr_creation with input {slide_num}");
-	if (slide_num=2 && custom>0){
+	if (slide_num=2 && custom!=eCHAPTER_TYPE.PREMADE){
 	    if (name_bad=1){/*(sound_play(bad);*/}
 	    if (name_bad=0){
 	        change_slide=1;goto_slide=3;race[100,17]=1;
@@ -27,7 +27,7 @@ function scr_creation(slide_num) {
 	    }
 	}
 
-	if (slide_num=2 && custom==0){
+	if (slide_num=2 && custom==eCHAPTER_TYPE.PREMADE){
 	    change_slide=1;
 	    goto_slide=3;
 	    race[100,eROLE.Chaplain]=1;
@@ -76,11 +76,11 @@ function scr_creation(slide_num) {
 	}
      
 	if (slide_num=4){
-	    if (custom == 0 || (hapothecary!="" && hchaplain!="" && clibrarian!="" && fmaster!="" && recruiter!="" && admiral!="" && battle_cry!="")){
+	    if (custom == eCHAPTER_TYPE.PREMADE || (hapothecary!="" && hchaplain!="" && clibrarian!="" && fmaster!="" && recruiter!="" && admiral!="" && battle_cry!="")){
 	        change_slide=1;
 	        goto_slide=5;
         
-	        if (custom=2){
+	        if (custom==eCHAPTER_TYPE.CUSTOM){
 	            mutations_selected=0;
 	            preomnor=0;
 	            voice=0;
@@ -98,7 +98,7 @@ function scr_creation(slide_num) {
 				mutations = 10 - purity
 	        }
         
-			if (custom > 0) {
+			if (custom != eCHAPTER_TYPE.PREMADE) {
 				disposition[0] = 0;
 				disposition[eSTART_FACTION.Progenitor] = 60 + ((cooperation - 5) * 4); // Prog
 				disposition[eSTART_FACTION.Imperium] = 50 + ((cooperation - 5) * 4); // Imp
@@ -172,7 +172,7 @@ function scr_creation(slide_num) {
 
 	// 5 to 6
 	if (slide_num=5){
-	    if (custom=0 || mutations<=mutations_selected){
+	    if (custom==eCHAPTER_TYPE.PREMADE || mutations<=mutations_selected){
 			change_slide=1;
 			goto_slide=6;
 		}

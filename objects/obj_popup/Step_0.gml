@@ -788,118 +788,23 @@ try {
         }
     }
 
-	if (image == "stc") {
-		if ((ma_co > 0) && (ma_id == 0)) {
-			if (press == 1) {
-				obj_ground_mission.alarm[5] = 1;
-				obj_controller.cooldown = 10;
-				instance_destroy();
-			}
-			if (press == 2) {
-				scr_return_ship(obj_ground_mission.loc, obj_ground_mission, obj_ground_mission.num);
-				var man_size, ship_id, comp, plan, i;
-				ship_id = 0;
-				man_size = 0;
-				comp = 0;
-				plan = 0;
-				ship_id = array_get_index(obj_ini.ship, obj_ground_mission.loc);
-				obj_controller.menu = 0;
-				obj_controller.managing = 0;
-				obj_controller.cooldown = 10;
-				with (obj_ground_mission) {
-					instance_destroy();
-				}
-				instance_destroy();
-				exit;
-			}
-			if (press == 3) {
-				exit;
-			}
-		} else if ((ma_co > 0) && (ma_id > 0)) {
-			if (press == 1) {
-				obj_ground_mission.alarm[5] = 1;
-				obj_controller.cooldown = 10;
-				instance_destroy();
-			}
-			if (press == 2) {
-				scr_return_ship(obj_ground_mission.loc, obj_ground_mission, obj_ground_mission.num);
-				var man_size, ship_id, comp, plan, i;
-				i = 0;
-				ship_id = 0;
-				man_size = 0;
-				comp = 0;
-				plan = 0;
+	if (image == "stc" && press > 0) {
+		var _option_picked = $"option{press}";
+		_option_picked = self[$ _option_picked];
 
-				ship_id = array_get_index(obj_ini.ship, obj_ground_mission.loc);
+		if (string_count("take the STC", _option_picked) || string_count("steal the STC", _option_picked)) {
+			obj_ground_mission.alarm[5] = 1;
+		} else if (string_count("Leave it", _option_picked)) {
+            scr_return_ship(0, obj_ground_mission, obj_ground_mission.num);
+			with (obj_ground_mission) {
+				instance_destroy();
+			}
+		} else if (string_count("to the Adeptus Mechanicus", _option_picked)) {
+			obj_ground_mission.alarm[6] = 1;
+		}
 
-				obj_controller.menu = 0;
-				obj_controller.managing = 0;
-				obj_controller.cooldown = 10;
-				with (obj_ground_mission) {
-					instance_destroy();
-				}
-				instance_destroy();
-				exit;
-			}
-			if (press == 3) {
-				obj_ground_mission.alarm[6] = 1;
-				obj_controller.cooldown = 10;
-				instance_destroy();
-			}
-		} else if ((ma_co == 0) && (ma_id > 0) && (target_comp != 3)) {
-			if (press == 1) {
-				scr_return_ship(obj_ground_mission.loc, obj_ground_mission, obj_ground_mission.num);
-				var man_size, ship_id, comp, plan, i;
-				i = 0;
-				ship_id = 0;
-				man_size = 0;
-				comp = 0;
-				plan = 0;
-				ship_id = array_get_index(obj_ini.ship, obj_ground_mission.loc);
-				obj_controller.menu = 0;
-				obj_controller.managing = 0;
-				obj_controller.cooldown = 10;
-				with (obj_ground_mission) {
-					instance_destroy();
-				}
-				instance_destroy();
-				exit;
-			}
-			if (press == 2) {
-				obj_ground_mission.alarm[6] = 1;
-				obj_controller.cooldown = 10;
-				instance_destroy();
-			}
-			if (press == 3) {
-				exit;
-			}
-		}
-		if ((ma_id > 0) && (target_comp == 3)) {
-			if (press == 1) {
-				scr_return_ship(obj_ground_mission.loc, obj_ground_mission, obj_ground_mission.num);
-				var man_size, ship_id, comp, plan, i;
-				i = 0;
-				ship_id = 0;
-				man_size = 0;
-				comp = 0;
-				plan = 0;
-				ship_id = array_get_index(obj_ini.ship, obj_ground_mission.loc);
-				obj_controller.menu = 0;
-				obj_controller.managing = 0;
-				obj_controller.cooldown = 10;
-				with (obj_ground_mission) {
-					instance_destroy();
-				}
-				instance_destroy();
-				exit;
-			}
-			if (press == 2) {
-				exit;
-			}
-			if (press == 3) {
-				exit;
-			}
-		}
+		instance_destroy();
+		exit;
 	}
 
 	if (type == 6) {
@@ -1236,7 +1141,7 @@ try {
 			onceh = 0;
 			var mission_star = star_by_name(obj_controller.temp[200]);
 			var mission_is_go = false;
-			if (mission_star != "none") {
+			if (mission_star != "none" && planet > 0) {
 				var _estimate = estimate;
 				var _planet = planet;
 				var _mission = mission;

@@ -77,8 +77,8 @@
         "equal_specialists": 0, // 0 if no, 1 if yes. If yes, will distribute specialist roles like Assaults and Devastators equally between companies. Otherwise all Assaults go in Company 8 and all Devastators in Company 9
         "load_to_ships": {
             "escort_load": 2, // 0 no, 2 yes, 1 doesnt do anything :)
-            "split_scouts": 0, // 0 no, 1 yes. If yes, splits scouts between companies equally. Otherwise all scouts are kept in 10th Company.
-            "split_vets": 0 // 0 no, 1 yes. If yes, all veterans are distrubuted equally between companies. Otherwise all veterans are kept in the 1st Company
+            "split_scouts": 0, // 0 no, 1 yes. If yes, splits scouts between ships equally. Otherwise all scouts are kept on the homeworld.
+            "split_vets": 0 // 0 no, 1 yes. If yes, all veterans are distrubuted equally between ships. Otherwise all veterans are kept in the flagship
         },
         "successors": 0, //total number of successor chapters
         "mutations": {

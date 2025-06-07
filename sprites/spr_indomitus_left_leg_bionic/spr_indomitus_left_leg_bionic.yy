@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_indomitus_left_leg_bionic",
   "bboxMode":0,
   "bbox_bottom":260,
@@ -12,7 +12,7 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"9050d74b-ae5d-43ad-9ef5-42a5ae426e64","name":"9050d74b-ae5d-43ad-9ef5-42a5ae426e64","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"9050d74b-ae5d-43ad-9ef5-42a5ae426e64","name":"9050d74b-ae5d-43ad-9ef5-42a5ae426e64","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -63,6 +63,8 @@
     "playbackSpeedType":0,
     "resourceType":"GMSequence",
     "resourceVersion":"2.0",
+    "seqHeight":271.0,
+    "seqWidth":181.0,
     "showBackdrop":true,
     "showBackdropImage":false,
     "timeUnits":1,

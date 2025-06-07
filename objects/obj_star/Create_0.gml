@@ -28,54 +28,47 @@ stored_owner = -1;
 star_surface = 0;
 
 // sets up default planet variables
-for(run=1; run<=8; run++){
-    planet[run]=0;
-    dispo[run]=-50;
-    p_type[run]="";
-    p_operatives[run]=[];
-    p_feature[run]=[];
-    p_owner[run]=0;
-    p_first[run]=0;
-    p_population[run]=0;
-    p_max_population[run]=0;
-    p_large[run]=0;
-    p_pop[run]="";
-    p_guardsmen[run]=0;
-    p_pdf[run]=0;
-    p_fortified[run]=0;
-    p_station[run]=0;
-	//warlord=0; uneeded i think
-    // Whether or not player forces are on the planet
-    p_player[run]=0;
-    p_lasers[run]=0;
-    p_silo[run]=0;
-    p_defenses[run]=0;
-    p_upgrades[run]=[];
-    // v how much of a problem they are from 1-6
-    p_orks[run]=0;
-    p_tau[run]=0;
-    p_eldar[run]=0;
-    p_tyranids[run]=0;
-    p_traitors[run]=0;
-    p_chaos[run]=0;
-    p_demons[run]=0;
-    p_sisters[run]=0;
-    p_necrons[run]=0;
-    p_halp[run]=0;
-    // current planet heresy
-    p_heresy[run]=0;
-    p_hurssy[run]=0;
-    p_hurssy_time[run]=0;
-    p_heresy_secret[run]=0;
-    p_influence[run] = array_create(15, 0);
-
-    p_raided[run]=0;
-    // 
-    p_governor[run] = "";
-    p_problem[run] = array_create(8,"");
-    p_problem_other_data[run] = array_create(8,{});
-    p_timer[run] = array_create(8,-1);
-}
+var _planet_array_size = 9;
+planet = array_create(_planet_array_size, 0);
+dispo = array_create(_planet_array_size, -50);
+p_type = array_create(_planet_array_size, "");
+p_owner = array_create(_planet_array_size, 0);
+p_first = array_create(_planet_array_size, 0);
+p_population = array_create(_planet_array_size, 0);
+p_max_population = array_create(_planet_array_size, 0);
+p_large = array_create(_planet_array_size, 0);
+p_pop = array_create(_planet_array_size, "");
+p_guardsmen = array_create(_planet_array_size, 0);
+p_pdf = array_create(_planet_array_size, 0);
+p_fortified = array_create(_planet_array_size, 0);
+p_station = array_create(_planet_array_size, 0);
+p_player = array_create(_planet_array_size, 0);
+p_lasers = array_create(_planet_array_size, 0);
+p_silo = array_create(_planet_array_size, 0);
+p_defenses = array_create(_planet_array_size, 0);
+p_orks = array_create(_planet_array_size, 0);
+p_tau = array_create(_planet_array_size, 0);
+p_eldar = array_create(_planet_array_size, 0);
+p_tyranids = array_create(_planet_array_size, 0);
+p_traitors = array_create(_planet_array_size, 0);
+p_chaos = array_create(_planet_array_size, 0);
+p_demons = array_create(_planet_array_size, 0);
+p_sisters = array_create(_planet_array_size, 0);
+p_necrons = array_create(_planet_array_size, 0);
+p_halp = array_create(_planet_array_size, 0);
+p_heresy = array_create(_planet_array_size, 0);
+p_hurssy = array_create(_planet_array_size, 0);
+p_hurssy_time = array_create(_planet_array_size, 0);
+p_heresy_secret = array_create(_planet_array_size, 0);
+p_raided = array_create(_planet_array_size, 0);
+p_governor = array_create(_planet_array_size, "");
+p_operatives = array_create_advanced(_planet_array_size, []);
+p_feature = array_create_advanced(_planet_array_size, []);
+p_upgrades = array_create_advanced(_planet_array_size, []);
+p_influence = array_create_advanced(_planet_array_size, array_create(15, 0));
+p_problem = array_create_advanced(_planet_array_size, array_create(8, ""));
+p_problem_other_data = array_create_advanced(_planet_array_size, array_create_advanced(8, {}));
+p_timer = array_create_advanced(_planet_array_size, array_create(8, -1));
 
 system_player_ground_forces = 0;
 garrison = false;
@@ -94,7 +87,7 @@ ai_d=-1;
 ai_e=-1;
 
 global.star_name_colors = [
-	38144,
+	c_gray,
 	c_white, //player
 	c_gray, //imperium
 	c_red, // toaster fuckers

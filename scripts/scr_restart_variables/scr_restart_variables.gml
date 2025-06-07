@@ -601,7 +601,7 @@ function reset_creation_variables(){
 
 	points = 100;
 	maxpoints = 100;
-	custom = 0;
+	custom = eCHAPTER_TYPE.PREMADE;
 
 	hapothecary = global.name_generator.generate_space_marine_name();
 	hchaplain = global.name_generator.generate_space_marine_name();
@@ -819,7 +819,7 @@ function reset_creation_variables(){
 		mobi[100, i] = obj_restart_vars.r_mobi[100, i];
 	}
 
-	custom = 1;
+	custom = eCHAPTER_TYPE.RANDOM;
 	restarted = 1;
 	mutations_selected = mutations;
 

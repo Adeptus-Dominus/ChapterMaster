@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_sanguin_guard",
   "bboxMode":0,
   "bbox_bottom":271,
@@ -12,8 +12,8 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"1d39ed2e-1e13-4613-90de-a21b28017808","name":"1d39ed2e-1e13-4613-90de-a21b28017808","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"6e84cd8e-d989-4364-8931-044b097b2c0b","name":"6e84cd8e-d989-4364-8931-044b097b2c0b","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"1d39ed2e-1e13-4613-90de-a21b28017808","name":"1d39ed2e-1e13-4613-90de-a21b28017808","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"6e84cd8e-d989-4364-8931-044b097b2c0b","name":"6e84cd8e-d989-4364-8931-044b097b2c0b","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -64,6 +64,8 @@
     "playbackSpeedType":0,
     "resourceType":"GMSequence",
     "resourceVersion":"2.0",
+    "seqHeight":272.0,
+    "seqWidth":167.0,
     "showBackdrop":true,
     "showBackdropImage":false,
     "timeUnits":1,

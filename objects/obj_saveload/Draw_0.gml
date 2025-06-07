@@ -41,13 +41,7 @@ if (menu=1) or (menu=2){// This is the other one
     if (room_get_name(room)="Main_Menu") then draw_rectangle(0,0,room_width,707,0);
     draw_set_alpha(1);
     
-    draw_set_color(c_red);
-    draw_set_font(fnt_40k_14);
-    draw_set_halign(fa_left);
-    // draw_text(xx+40,yy+730,"Menu: "+string(menu)+", First Open: "+string(first_open)+", Top Save: "+string(top));
-    // draw_text(xx+40,yy+730,string(debug));
     draw_set_halign(fa_center);
-    
     draw_set_color(0);
     
     draw_sprite(spr_save_header,0,xx+0,yy+27);
@@ -57,7 +51,8 @@ if (menu=1) or (menu=2){// This is the other one
     
     var o,x2,y2,s;o=top;x2=__view_get( e__VW.XView, 0 )+32;y2=__view_get( e__VW.YView, 0 )+166;s=0;
     repeat(4){
-        if ((save[o]>=0) or ((first_open=o) and (menu=1)) or (global.load=o) or (save_number=o)) and (save_number=0){s=save[o];
+        if ((save[o]>=0) or ((first_open=o) and (menu=1)) or (global.load=o) or (save_number=o)) and (save_number=0){
+            s=save[o];
             draw_set_font(fnt_40k_30b);
             draw_set_halign(fa_left);
             draw_set_color(0);
@@ -73,7 +68,7 @@ if (menu=1) or (menu=2){// This is the other one
             draw_sprite(spr_save_data,0,x2,y2);
             if(o == 0){
                 //autosave
-                draw_text_transformed(x2+23,y2+62,string_hash_to_newline("A"),1.1,1.1,0);
+                draw_text_transformed(x2+21,y2+62,string_hash_to_newline("A"),1.1,1.1,0);
             } else {
                 draw_text_transformed(x2+23,y2+62,string_hash_to_newline(o),1.1,1.1,0);
             }
@@ -117,7 +112,7 @@ if (menu=1) or (menu=2){// This is the other one
         
         draw_set_font(fnt_40k_30b);draw_set_halign(fa_center);
         
-        if (save[o] >= 0) {
+        if (save[o] > 0) { //intentionally not allowed to delete the autosave file
             // Delete Data
             draw_set_alpha(1);
             draw_set_color(c_gray);
@@ -146,9 +141,10 @@ if (menu=1) or (menu=2){// This is the other one
             }
         }
         
-        
-        if (menu=2) and (save[o]>=0){// Restart
-            draw_set_alpha(1);
+        if (menu=2) and (save[o]>=0){
+            // Restart
+            //! Doesn't work properly, commented out until repaired;
+            /* draw_set_alpha(1);
             draw_set_color(c_gray);draw_rectangle(x2+977,y2+113,x2+1121,y2+146,0);
             draw_set_color(c_black);draw_rectangle(x2+977,y2+113,x2+1121,y2+146,1);
             draw_text_transformed(x2+1050,y2+117,string_hash_to_newline("Restart Game"),0.7,0.7,0);
@@ -177,8 +173,9 @@ if (menu=1) or (menu=2){// This is the other one
                         room_goto(Game);
                     }
                 }
-            }
+            } */
             
+            // Load
             draw_set_alpha(1);
             draw_set_color(c_gray);draw_rectangle(x2+1317,y2+113,x2+1461,y2+146,0);
             draw_set_color(c_black);draw_rectangle(x2+1317,y2+113,x2+1461,y2+146,1);
@@ -210,7 +207,8 @@ if (menu=1) or (menu=2){// This is the other one
             }
         }
         
-        if (menu=1) and ((save[o]>0) or (first_open=o)){// Save
+        if (menu=1) and ((save[o]>0) or (first_open=o)){ // intentionally not allowed to saveover the autosave slot manually
+            // Save
             draw_set_alpha(1);
             draw_set_color(c_gray);draw_rectangle(x2+1317,y2+113,x2+1461,y2+146,0);
             draw_set_color(c_black);draw_rectangle(x2+1317,y2+113,x2+1461,y2+146,1);

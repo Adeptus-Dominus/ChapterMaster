@@ -40,7 +40,7 @@ if (instance_exists(obj_controller)) {
     }
 }
 
-save = array_create(201, 0);
+save = array_create(201, -1);
 save_turn = array_create(201, 0);
 save_chapter = array_create(201, "");
 save_master = array_create(201, "");
@@ -57,10 +57,9 @@ saves = 0;
 var i = 0;
 
 repeat (100) {
-    i += 1;
     if (file_exists(string(PATH_save_files, i))) {
-        saves += 1;
         save[saves] = i;
+        saves += 1;
     }
     if ((!file_exists(string(PATH_save_files, i))) && (i > 0) && (max_ini == 0)) {
         max_ini = i;
@@ -68,17 +67,17 @@ repeat (100) {
     if (file_exists(string(PATH_save_files, i + 1)) && (max_ini > 0)) {
         max_ini = 0;
     }
+    i += 1;
 }
 
 
-first_open=saves+1;
+first_open=saves;
 
 
 if (file_exists("saves.ini")){
     ini_open("saves.ini");
 
-    i=-1;
-    repeat(200){i+=1;
+    for(var i = 0; i <= 200; i++){
         if (save[i]>=0){
             if (ini_section_exists(string(save[i]))){
                 save_turn[save[i]]=ini_read_real(string(save[i]),"turn",0);
@@ -105,3 +104,11 @@ if (file_exists("saves.ini")){
 
     ini_close();
 }
+var view = new DebugView("Save Debug", self);
+view.add_section("Save Vars")
+.add_watch("menu")
+.add_watch("first_open")
+.add_watch("top")
+.add_watch("debug")
+.dump_props()
+.hide();

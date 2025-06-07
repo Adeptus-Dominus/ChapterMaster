@@ -1,7 +1,7 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 function scr_livery_setup(){
-  draw_set_font(fnt_40k_30b);
+   draw_set_font(fnt_40k_30b);
     draw_set_halign(fa_center);
     draw_set_alpha(1);
     draw_set_color(38144);
@@ -24,7 +24,7 @@ function scr_livery_setup(){
     preview_box.x2 = preview_box.x1 + preview_box.w;
     preview_box.y2 = preview_box.y1 + preview_box.h;
 
-	draw_sprite_stretched(spr_creation_arrow,0,preview_box.x1,preview_box.y1,32,32);// Left Arrow
+	/*draw_sprite_stretched(spr_creation_arrow,0,preview_box.x1,preview_box.y1,32,32);// Left Arrow
     draw_sprite_stretched(spr_creation_arrow,1,preview_box.x2-32,preview_box.y1,32,32);// Right Arrow 
     if (point_and_click([preview_box.x1,preview_box.y1,preview_box.x1+32,preview_box.y1+32])){
         test_sprite++;
@@ -33,107 +33,17 @@ function scr_livery_setup(){
     if (point_and_click([preview_box.x2-32,preview_box.y1,preview_box.x2, preview_box.y1+32])){
         test_sprite--;
         if (test_sprite<0) then test_sprite=(array_length(draw_sprites)-1);
-    }
+    }*/
     livery_picker.draw_base();
-    draw_rectangle_color_simple(preview_box.x1,preview_box.y1,preview_box.x2,preview_box.y2,1,38144);
-    if( shader_is_compiled(sReplaceColor)){
-        shader_set(sReplaceColor);
-        
-        shader_set_uniform_f_array(colour_to_find1, body_colour_find );       
-        shader_set_uniform_f_array(colour_to_set1, body_colour_replace );
-        shader_set_uniform_f_array(colour_to_find2, secondary_colour_find );       
-        shader_set_uniform_f_array(colour_to_set2, secondary_colour_replace );
-        shader_set_uniform_f_array(colour_to_find3, pauldron_colour_find );       
-        shader_set_uniform_f_array(colour_to_set3, pauldron_colour_replace );
-        shader_set_uniform_f_array(colour_to_find4, lens_colour_find );       
-        shader_set_uniform_f_array(colour_to_set4, lens_colour_replace );
-        shader_set_uniform_f_array(colour_to_find5, trim_colour_find );
-        shader_set_uniform_f_array(colour_to_set5, trim_colour_replace );
-        shader_set_uniform_f_array(colour_to_find6, pauldron2_colour_find );
-        shader_set_uniform_f_array(colour_to_set6, pauldron2_colour_replace );
-        shader_set_uniform_f_array(colour_to_find7, weapon_colour_find );
-        shader_set_uniform_f_array(colour_to_set7, weapon_colour_replace );
-        
-        //Rejoice!
-        tester_sprite = draw_sprites[test_sprite];
-        tester_helm = draw_hem[test_sprite];
-        if (col_special=0) then draw_sprite(tester_sprite,10,preview_box.x1,preview_box.y1 + 8);
-        if (col_special=1) then draw_sprite(tester_sprite,11,preview_box.x1,preview_box.y1 + 8);
-        if (col_special>=2) then draw_sprite(tester_sprite,12,preview_box.x1,preview_box.y1 + 8);
-        
-        draw_sprite(tester_sprite,col_special,preview_box.x1,preview_box.y1 + 8);
-        if (col_special<=1){
-            draw_sprite(tester_sprite,6,preview_box.x1,preview_box.y1 + 8);
-            draw_sprite(tester_sprite,8,preview_box.x1,preview_box.y1 + 8);
-        }
-        if (col_special>=2){
-            draw_sprite(tester_sprite,6,preview_box.x1,preview_box.y1 + 8);
-            draw_sprite(tester_sprite,9,preview_box.x1,preview_box.y1 + 8);
-        }
-        if (trim=0) and (col_special<=1) then draw_sprite(tester_sprite,4,preview_box.x1,preview_box.y1 + 8);
-        if (trim=0) and (col_special>=2) then draw_sprite(tester_sprite,5,preview_box.x1,preview_box.y1 + 8);
-        //TODO this can be imprved but for now it's fit for purpose
-        if (complex_selection=="Sergeant Markers" && complex_livery){
-            var sgt_col_1 = complex_livery_data.sgt.helm_primary;
-            var sgt_col_2 = complex_livery_data.sgt.helm_secondary;
-            var lens_col = complex_livery_data.sgt.helm_lens;
-            shader_set_uniform_f_array(colour_to_find1, [30/255,30/255,30/255]);
-            shader_set_uniform_f(colour_to_set1, col_r[sgt_col_1]/255, col_g[sgt_col_1]/255, col_b[sgt_col_1]/255);
-            shader_set_uniform_f_array(colour_to_find2, [200/255,0/255,0/255]);
-            shader_set_uniform_f(colour_to_set2, col_r[sgt_col_2]/255, col_g[sgt_col_2]/255, col_b[sgt_col_2]/255);
-            shader_set_uniform_f(colour_to_set4, col_r[lens_col]/255, col_g[lens_col]/255, col_b[lens_col]/255);
-            draw_sprite(tester_helm, complex_depth_selection, preview_box.x1,preview_box.y1 + 8);
-        }
-        else if (complex_selection=="Veteran Sergeant Markers" && complex_livery){
-            var sgt_col_1 = complex_livery_data.vet_sgt.helm_primary;
-            var sgt_col_2 = complex_livery_data.vet_sgt.helm_secondary;
-            var lens_col = complex_livery_data.vet_sgt.helm_lens;
-            shader_set_uniform_f_array(colour_to_find1, [30/255,30/255,30/255]);
-            shader_set_uniform_f(colour_to_set1, col_r[sgt_col_1]/255, col_g[sgt_col_1]/255, col_b[sgt_col_1]/255);
-            shader_set_uniform_f_array(colour_to_find2, [200/255,0/255,0/255]);
-            shader_set_uniform_f(colour_to_set2, col_r[sgt_col_2]/255, col_g[sgt_col_2]/255, col_b[sgt_col_2]/255);
-            shader_set_uniform_f(colour_to_set4, col_r[lens_col]/255, col_g[lens_col]/255, col_b[lens_col]/255);
-            draw_sprite(tester_helm, complex_depth_selection, preview_box.x1,preview_box.y1 + 8);
-        }
-        else if (complex_selection=="Captain Markers" && complex_livery){
-            var sgt_col_1 = complex_livery_data.captain.helm_primary;
-            var sgt_col_2 = complex_livery_data.captain.helm_secondary;
-            var lens_col = complex_livery_data.captain.helm_lens;
-            shader_set_uniform_f_array(colour_to_find1, [30/255,30/255,30/255]);
-            shader_set_uniform_f(colour_to_set1, col_r[sgt_col_1]/255, col_g[sgt_col_1]/255, col_b[sgt_col_1]/255);
-            shader_set_uniform_f_array(colour_to_find2, [200/255,0/255,0/255]);
-            shader_set_uniform_f(colour_to_set2, col_r[sgt_col_2]/255, col_g[sgt_col_2]/255, col_b[sgt_col_2]/255);
-            shader_set_uniform_f(colour_to_set4, col_r[lens_col]/255, col_g[lens_col]/255, col_b[lens_col]/255);
-            draw_sprite(tester_helm, complex_depth_selection, preview_box.x1,preview_box.y1 + 8);
-        } else if (complex_selection=="Veteran Markers" && complex_livery){
-            var sgt_col_1 = complex_livery_data.veteran.helm_primary;
-            var sgt_col_2 = complex_livery_data.veteran.helm_secondary;
-            var lens_col = complex_livery_data.veteran.helm_lens;
-            shader_set_uniform_f_array(colour_to_find1, [30/255,30/255,30/255]);
-            shader_set_uniform_f(colour_to_set1, col_r[sgt_col_1]/255, col_g[sgt_col_1]/255, col_b[sgt_col_1]/255);
-            shader_set_uniform_f_array(colour_to_find2, [200/255,0/255,0/255]);
-            shader_set_uniform_f(colour_to_set2, col_r[sgt_col_2]/255, col_g[sgt_col_2]/255, col_b[sgt_col_2]/255);
-            shader_set_uniform_f(colour_to_set4, col_r[lens_col]/255, col_g[lens_col]/255, col_b[lens_col]/255);
-            draw_sprite(tester_helm, complex_depth_selection, preview_box.x1,preview_box.y1 + 8);
-        }                 
-        shader_set_uniform_f_array(colour_to_find1, body_colour_find );       
-        shader_set_uniform_f_array(colour_to_set1, body_colour_replace );
-        shader_set_uniform_f_array(colour_to_find2, secondary_colour_find );       
-        shader_set_uniform_f_array(colour_to_set2, secondary_colour_replace ); 
-        shader_set_uniform_f_array(colour_to_set4, lens_colour_replace );
-		if(tester_sprite == spr_terminator3_colors){
-			draw_sprite(spr_weapon_colors,0,444 - 12,252 + 5);
-		} else {
-			draw_sprite(spr_weapon_colors,0,444,252);	
-		}
-        shader_reset();
-        
-    }else{
-        draw_text(444,252,string_hash_to_newline("Color swap shader#did not compile"));
-    }
+    draw_set_alpha(1);
 
+    draw_set_font(fnt_40k_30b);
+    draw_set_halign(fa_center);
+    draw_set_alpha(1);
+    draw_set_color(38144);
     var comp_toggle = buttons.company_options_toggle;
     var company_radio = buttons.company_liveries_choice;
+    company_radio.draw_title = false;
     var comp_change = false;
     comp_toggle.update({
         x1 : 50,
@@ -142,6 +52,7 @@ function scr_livery_setup(){
     draw_set_halign(fa_center);
     if (comp_toggle.draw()){
         comp_toggle.company_view = !comp_toggle.company_view;
+        livery_picker.colour_pick=false;
         if (!comp_toggle.company_view){
             company_liveries[livery_picker.role_set] = variable_clone(livery_picker.map_colour);
             livery_picker.role_set = 0;
@@ -179,6 +90,23 @@ function scr_livery_setup(){
         }    
     }  
 
+    var _updater = draw_unit_buttons([preview_box.x1,preview_box.y1], "Update Sprite");
+    if(scr_hit(_updater)){
+        tooltip_draw("Click to Update Marine colour picker with Colour settings, warning this will overide Existing colour selections");
+    }
+
+    if (point_and_click(_updater)){
+        var struct_cols = {
+            main_color :main_color,
+            secondary_color:secondary_color,
+            main_trim:main_trim,
+            right_pauldron:right_pauldron,
+            left_pauldron:left_pauldron,
+            lens_color:lens_color,
+            weapon_color:weapon_color
+        }
+        livery_picker.set_default_armour(struct_cols, col_special);    
+    }
     draw_set_color(38144);
     draw_set_halign(fa_left);
     draw_text_transformed(580,118,"Battle Cry:",0.6,0.6,0);
@@ -191,9 +119,9 @@ function scr_livery_setup(){
     
     draw_set_font(fnt_40k_30b);
     draw_text_transformed(444,215,"Basic Livelry",0.6,0.6,0);
-    var button_alpha = custom < 2 ? 0.5 : 1;
+    var button_alpha = custom != eCHAPTER_TYPE.CUSTOM ? 0.5 : 1;
     var livery_swap_button = draw_unit_buttons([570,215], complex_livery? "Simple Livery":"Complex Livery",[1,1], 38144,, fnt_40k_14b, button_alpha);
-    if (point_and_click(livery_swap_button) && custom >= 2){
+    if (point_and_click(livery_swap_button) && custom == eCHAPTER_TYPE.CUSTOM){
         complex_livery=!complex_livery;
     }
     var str,str_width,hei,x8,y8;x8=0;y8=0;
@@ -202,7 +130,7 @@ function scr_livery_setup(){
     /*function draw_checkbox (cords, text, main_alpha, checked){
             draw_set_alpha(main_alpha);
             yar = col_special==(i+1) ?1:0;
-            if (custom<2) then draw_set_alpha(0.5);
+            if (custom!=eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.5);
             draw_sprite(spr_creation_check,yar,cur_button.cords[0],cur_button.cords[1]);
              if (scr_hit(cur_button.cords[0],cur_button.cords[1],cur_button.cords[0]+32,cur_button.cords[1]+32) and allow_colour_click){
                     
@@ -213,11 +141,12 @@ function scr_livery_setup(){
              draw_text_transformed(cur_button.cords[0]+30,cur_button.cords[1]+4,cur_button.text,0.4,0.4,0);
     }*/
     if (!complex_livery){
+        var _tooltip_add_on = ". You can change this value as much as you want in order to update the marine role, company and defualt options on the left but remember to set this value back to your desired base value before continuing";
         var button_data = [
             {
                 text : $"Primary : {col[main_color]}",
                 tooltip:"Primary",
-                tooltip2:"The main color of your Astartes and their vehicles.",
+                tooltip2:"The main color of your Astartes and their vehicles. And the colour of your chapters Ships",
                 cords : [620, 252],
             },
             {
@@ -260,13 +189,13 @@ function scr_livery_setup(){
         var button_cords, cur_button;
         for (var i=0;i<array_length(button_data);i++){
             cur_button = button_data[i];
-            var button_alpha = custom < 2 ? 0.5 : 1;
+            var button_alpha = custom != eCHAPTER_TYPE.CUSTOM ? 0.5 : 1;
             button_cords = draw_unit_buttons(cur_button.cords, cur_button.text,[0.5,0.5], 38144,, fnt_40k_30b, button_alpha);
             if (scr_hit(button_cords[0],button_cords[1],button_cords[2],button_cords[3])){
                 tooltip=cur_button.tooltip;
-                tooltip2=cur_button.tooltip2;
+                tooltip2=cur_button.tooltip2+_tooltip_add_on;
             }
-            if (point_and_click(button_cords) && custom >= 2){
+            if (point_and_click(button_cords) && custom == eCHAPTER_TYPE.CUSTOM){
                 
                 instance_destroy(obj_creation_popup);
                 var pp=instance_create(0,0,obj_creation_popup);
@@ -291,33 +220,17 @@ function scr_livery_setup(){
         var yar;
         for (var i=0;i<array_length(livery_type_options);i++){
             cur_button = livery_type_options[i];
-            draw_set_alpha(1);
             yar = col_special==(i+1) ?1:0;
-            if (cur_button.text=="Trim") then yar = trim;
-            if (custom<2) then draw_set_alpha(0.5);
+            draw_set_alpha(custom != eCHAPTER_TYPE.CUSTOM ? 0.5 : 1);
             draw_sprite(spr_creation_check,yar,cur_button.cords[0],cur_button.cords[1]);
              if (point_and_click([cur_button.cords[0],cur_button.cords[1],cur_button.cords[0]+32,cur_button.cords[1]+32])){
                 
-                var onceh=0;
-                if (cur_button.text!="Trim"){
-                    if (col_special=i+1){
-                        col_special=0
-                    }else if (col_special!=i+1){
-                        col_special=i+1;
-                    }
-                } else {
-                    trim=!trim;
-                }
-	    		var struct_cols = {
-	    			main_color :main_color,
-	    			secondary_color:secondary_color,
-	    			main_trim:main_trim,
-	    			right_pauldron:right_pauldron,
-	    			left_pauldron:left_pauldron,
-	    			lens_color:lens_color,
-	    			weapon_color:weapon_color
-	    		}
-	    		livery_picker.set_default_armour(struct_cols, col_special);          
+
+                if (col_special=i+1){
+                    col_special=0
+                }else if (col_special!=i+1){
+                    col_special=i+1;
+                }      
              }
              draw_text_transformed(cur_button.cords[0]+30,cur_button.cords[1]+4,cur_button.text,0.4,0.4,0);
         }
@@ -487,13 +400,16 @@ function scr_livery_setup(){
             cur_button = livery_type_options[i];
             draw_set_alpha(1);
             yar = complex_depth_selection==(i) ? 1 : 0;
-            if (custom<2) then draw_set_alpha(0.5);
+            if (custom != eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.5);
             draw_sprite(spr_creation_check,yar,cur_button.cords[0],cur_button.cords[1]);
              if (point_and_click([cur_button.cords[0],cur_button.cords[1],cur_button.cords[0]+32,cur_button.cords[1]+32]) and allow_colour_click){
                     
                     var onceh=0;
                     if (complex_depth_selection=i) and (onceh=0){complex_depth_selection=0;onceh=1;}
-                    else if (complex_depth_selection!=i) and (onceh=0){complex_depth_selection=i;onceh=1;}
+                    else if (complex_depth_selection!=i) and (onceh=0){
+                        complex_depth_selection=i;
+                        onceh=1;
+                    }
              }
              draw_text_transformed(cur_button.cords[0]+30,cur_button.cords[1]+4,cur_button.text,0.4,0.4,0);
         }                                           
@@ -531,21 +447,21 @@ function scr_livery_setup(){
             
             draw_set_alpha(1);
             if (race[c,role_id]!=0){
-                if (custom<2) then draw_set_alpha(0.5);
+                if (custom != eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.5);
                 yyy+=spacing;
                 draw_set_color(38144);
                 draw_rectangle(xxx,yyy,1150,yyy+20,1);
                 draw_set_color(38144);
-                draw_text(xxx,yyy,string_hash_to_newline(role[c,role_id]));
+                draw_text(xxx,yyy,role[100,role_id]);
                 if (scr_hit(xxx,yyy,1150,yyy+20)) and ((!instance_exists(obj_creation_popup)) || ((instance_exists(obj_creation_popup) and obj_creation_popup.target_gear=0))) {
 
-                    draw_set_alpha(custom==2?0.2:0.1);
+                    draw_set_alpha(custom == eCHAPTER_TYPE.CUSTOM ? 0.2 : 0.1);
                     draw_set_color(c_white);
                     draw_rectangle(xxx,yyy,1150,yyy+20,0);
                     draw_set_alpha(1);
                     tooltip=string(role[c][role_id])+" Settings";
                     tooltip2="Click to open the settings for this unit.";
-                    if (custom>0) and (scr_click_left()) and (custom=2){
+                    if (scr_click_left() and custom==eCHAPTER_TYPE.CUSTOM){
                         instance_destroy(obj_creation_popup);
                         var pp=instance_create(0,0,obj_creation_popup);
                         pp.type=role_id+100;
@@ -558,6 +474,7 @@ function scr_livery_setup(){
                             }
                             livery_picker.shuffle_dummy();
                             livery_picker.reset_image();
+                            livery_picker.colour_pick=false;
                         }
                     }
                 }
@@ -589,7 +506,7 @@ function scr_livery_setup(){
     draw_set_alpha(1);
     draw_set_font(fnt_40k_30b);
     
-    if (custom<2) then draw_set_alpha(0.5);
+    if (custom != eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.5);
     yar=0;
     if (equal_specialists=1) then yar=1;
     draw_sprite(spr_creation_check,yar,860,645);yar=0;
@@ -686,8 +603,8 @@ function scr_livery_setup(){
         if (race[100,15]!=0){
             draw_set_color(38144);
             if (hapothecary="") then draw_set_color(c_red);
-            if (text_selected!="apoth") or (custom<2) then draw_text_ext(600,575,string_hash_to_newline(string(hapothecary)),-1,580);
-            if (custom>1){
+            if (text_selected!="apoth") or (custom != eCHAPTER_TYPE.CUSTOM) then draw_text_ext(600,575,string_hash_to_newline(string(hapothecary)),-1,580);
+            if (custom == eCHAPTER_TYPE.CUSTOM){
                 if (text_selected="capoth") and (text_bar>30) then draw_text_ext(600,575,string_hash_to_newline(string(hapothecary)),-1,580);
                 if (text_selected="capoth") and (text_bar<=30) then draw_text_ext(600,575,string_hash_to_newline(string(hapothecary)+"|"),-1,580);
                 var str_width,hei;str_width=0;hei=string_height_ext(string_hash_to_newline(hapothecary),-2,580);
@@ -713,8 +630,8 @@ function scr_livery_setup(){
         
         if (race[100,14]!=0){
             draw_set_color(38144);if (hchaplain="") then draw_set_color(c_red);
-            if (text_selected!="chap") or (custom<2) then draw_text_ext(600,597,string_hash_to_newline(string(hchaplain)),-1,580);
-            if (custom>1){
+            if (text_selected!="chap") or (custom != eCHAPTER_TYPE.CUSTOM) then draw_text_ext(600,597,string_hash_to_newline(string(hchaplain)),-1,580);
+            if (custom == eCHAPTER_TYPE.CUSTOM){
                 if (text_selected="chap") and (text_bar>30) then draw_text_ext(600,597,string_hash_to_newline(string(hchaplain)),-1,580);
                 if (text_selected="chap") and (text_bar<=30) then draw_text_ext(600,597,string_hash_to_newline(string(hchaplain)+"|"),-1,580);
                 var str_width,hei;str_width=0;hei=string_height_ext(string_hash_to_newline(hchaplain),-2,580);
@@ -736,8 +653,8 @@ function scr_livery_setup(){
         
         if (race[100,17]!=0){
             draw_set_color(38144);if (clibrarian="") then draw_set_color(c_red);
-            if (text_selected!="libra") or (custom<2) then draw_text_ext(600,619,string_hash_to_newline(string(clibrarian)),-1,580);
-            if (custom>1){
+            if (text_selected!="libra") or (custom != eCHAPTER_TYPE.CUSTOM) then draw_text_ext(600,619,string_hash_to_newline(string(clibrarian)),-1,580);
+            if (custom == eCHAPTER_TYPE.CUSTOM){
                 if (text_selected="libra") and (text_bar>30) then draw_text_ext(600,619,string_hash_to_newline(string(clibrarian)),-1,580);
                 if (text_selected="libra") and (text_bar<=30) then draw_text_ext(600,619,string_hash_to_newline(string(clibrarian)+"|"),-1,580);
                 var str_width,hei;str_width=0;hei=string_height_ext(string_hash_to_newline(clibrarian),-2,580);
@@ -759,8 +676,8 @@ function scr_livery_setup(){
         
         if (race[100,16]!=0){
             draw_set_color(38144);if (fmaster="") then draw_set_color(c_red);
-            if (text_selected!="forge") or (custom<2) then draw_text_ext(600,641,string_hash_to_newline(string(fmaster)),-1,580);
-            if (custom>1){
+            if (text_selected!="forge") or (custom != eCHAPTER_TYPE.CUSTOM) then draw_text_ext(600,641,string_hash_to_newline(string(fmaster)),-1,580);
+            if (custom == eCHAPTER_TYPE.CUSTOM){
                 if (text_selected="forge") and (text_bar>30) then draw_text_ext(600,641,string_hash_to_newline(string(fmaster)),-1,580);
                 if (text_selected="forge") and (text_bar<=30) then draw_text_ext(600,641,string_hash_to_newline(string(fmaster)+"|"),-1,580);
                 var str_width,hei;str_width=0;hei=string_height_ext(string_hash_to_newline(fmaster),-2,580);
@@ -781,8 +698,8 @@ function scr_livery_setup(){
         }
         
         draw_set_color(38144);if (recruiter="") then draw_set_color(c_red);
-        if (text_selected!="recr") or (custom<2) then draw_text_ext(600,663,string_hash_to_newline(string(recruiter)),-1,580);
-        if (custom>1){
+        if (text_selected!="recr") or (custom != eCHAPTER_TYPE.CUSTOM) then draw_text_ext(600,663,string_hash_to_newline(string(recruiter)),-1,580);
+        if (custom == eCHAPTER_TYPE.CUSTOM){
             if (text_selected="recr") and (text_bar>30) then draw_text_ext(600,663,string_hash_to_newline(string(recruiter)),-1,580);
             if (text_selected="recr") and (text_bar<=30) then draw_text_ext(600,663,string_hash_to_newline(string(recruiter)+"|"),-1,580);
             var str_width,hei;str_width=0;hei=string_height_ext(string_hash_to_newline(recruiter),-2,580);
@@ -802,8 +719,8 @@ function scr_livery_setup(){
         }
         
         draw_set_color(38144);if (admiral="") then draw_set_color(c_red);
-        if (text_selected!="admi") or (custom<2) then draw_text_ext(600,685,string_hash_to_newline(string(admiral)),-1,580);
-        if (custom>1){
+        if (text_selected!="admi") or (custom != eCHAPTER_TYPE.CUSTOM) then draw_text_ext(600,685,string_hash_to_newline(string(admiral)),-1,580);
+        if (custom == eCHAPTER_TYPE.CUSTOM){
             if (text_selected="admi") and (text_bar>30) then draw_text_ext(600,685,string_hash_to_newline(string(admiral)),-1,580);
             if (text_selected="admi") and (text_bar<=30) then draw_text_ext(600,685,string_hash_to_newline(string(admiral)+"|"),-1,580);
             var str_width,hei;str_width=0;hei=string_height_ext(string_hash_to_newline(admiral),-2,580);
@@ -823,7 +740,10 @@ function scr_livery_setup(){
         }
         
     }
-
+    draw_set_font(fnt_40k_14b);
+    draw_set_halign(fa_left);
+    draw_set_alpha(1);
+    draw_set_color(38144);
     right_data_slate.inside_method = function() {
         var _cultures = buttons.culture_styles;
         _cultures.x1 = right_data_slate.XX+30;

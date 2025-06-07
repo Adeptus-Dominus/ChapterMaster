@@ -266,3 +266,27 @@ function is_basic_array(_array, _max_depth = 1, _current_depth = 1) {
 
     return true;
 }
+
+/// @description Sets a range of elements in an array to a specific value.
+/// @param {Array} _array The array to modify.
+/// @param {Real} _start_index The starting index (inclusive).
+/// @param {Real} _end_index The ending index (inclusive).
+/// @param {Any} _value The value to set for the elements.
+function array_set_range(_array, _start_index, _end_index, _value) {
+	for (var i = _start_index; i <= _end_index; i++) {
+		_array[@ i] = _value;
+	}
+}
+
+/// @description Similar to array_create, but uses `variable_clone()` to clone the default if it's a complex type (array/struct). Supports default with nesting.
+/// @param {Real} _size The size of the array to create.
+/// @param {Any} _default The value to set for the elements.
+function array_create_advanced(_size = 1, _default = 0) {
+	var _array = array_create(_size);
+
+	for (var i = 0; i < _size; i++) {
+		_array[@ i] = variable_clone(_default);
+	}
+
+	return _array;
+}

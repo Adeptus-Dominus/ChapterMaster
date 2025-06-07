@@ -34,17 +34,40 @@ if (enemy=6){
 
 
 if (enemy=7){
-    var i;i=0;i=en_capital;
+    var i=en_capital;
     
-    if (i>0){en_column[1]="Dethdeala";en_num[1]=floor(random(i))+1;i-=en_num[1];en_size[1]=3;}
+    if (i>0){
+        en_column[1]="Dethdeala";
+        en_num[1]=irandom_range(1, i);
+        i-=en_num[1];
+        en_size[1]=3;
+    }
     
-    if (i>0){en_column[2]="Gorbag's Revenge";en_num[2]=floor(random(i))+1;i-=en_num[2];en_size[2]=3;}// en_num[2]+=en_num[1]+1;
+    if (i>0){
+        en_column[2]="Gorbag's Revenge";
+        en_num[2]=irandom_range(1, i);
+        i-=en_num[2];
+        en_size[2]=3;
+    }// en_num[2]+=en_num[1]+1;
     
-    if (i>0){en_column[3]="Kroolboy";en_num[3]=i;i-=en_num[3];en_size[3]=3;}// en_num[3]+=en_num[2]+1;
+    if (i>0){
+        en_column[3]="Kroolboy";
+        en_num[3]=i;
+        i-=en_num[3];
+        en_size[3]=3;
+    }// en_num[3]+=en_num[2]+1;
     
-    if (en_frigate>0){en_column[4]="Battlekroozer";en_num[4]=en_frigate;en_size[4]=2;}// en_num[4]+=en_num[3]+1;
+    if (en_frigate>0){
+        en_column[4]="Battlekroozer";
+        en_num[4]=en_frigate;
+        en_size[4]=2;
+    }// en_num[4]+=en_num[3]+1;
     
-    if (en_escort>0){en_column[5]="Ravager";en_num[5]=en_escort;en_size[5]=1;}// en_num[5]+=en_num[4]+1;
+    if (en_escort>0){
+        en_column[5]="Ravager";
+        en_num[5]=en_escort;
+        en_size[5]=1;
+    }// en_num[5]+=en_num[4]+1;
 }
 
 if (enemy=8){

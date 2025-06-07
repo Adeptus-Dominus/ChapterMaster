@@ -71,7 +71,7 @@ global.base_stats = {
         dexterity: [40, 3],
         intelligence: [40, 3],
         wisdom: [40, 3],
-        charisma: [30, 5],
+        charisma: [32, 6],
         religion: "imperial_cult",
         piety: [30, 3],
         luck: 10,
@@ -863,6 +863,20 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 	that could be chosen to give boostes to the other stats
 	so as an example salamanders could have the chapter values as  */
     loyalty = 0;
+    static alter_loyalty = function(alt_val){
+        if (alt_val < 0){
+            if (has_trait("honorable")){
+                alt_val/=2;
+            }
+            if (has_trait("jaded")){
+                alt_val*=2;
+            }
+        }
+        if (has_trait("old_guard")){
+            alt_val/=2;
+        }
+        loyalty = clamp(loyalty + alt_val, 0, 100);
+    }
     switch (base_group) {
         case "astartes": //basic marine class //adds specific mechanics not releveant to most units
             loyalty = 100;
@@ -1550,6 +1564,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 explanation_string += $"Secondary: +{second_attack}#";
             }
         }
+        final_range_attack = floor(final_range_attack * range_multiplyer);
         ranged_damage_data = [final_range_attack, explanation_string, carry_data, primary_weapon, secondary_weapon];
         return ranged_damage_data;
     };
@@ -1735,7 +1750,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                     secondary_modifier = 0;
                 } else {
                     secondary_modifier = 0.6;
-                    side_arm_data = "Pistol: x0.8";
+                    side_arm_data = "Pistol: x0.6";
                 }
             } else if (secondary_weapon.has_tag("flame")) {
                 secondary_modifier = 0.3;

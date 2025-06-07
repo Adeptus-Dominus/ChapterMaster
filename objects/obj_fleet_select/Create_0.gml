@@ -148,7 +148,7 @@ selection_window.inside_method = function(){
 	            colu++;
 	        }*/
         
-	        if (posi<=escorts+frigates+capitals) && is_array(ship_type){
+	        if (posi<=escorts+frigates+capitals) && is_array(ship_type) && current_ship<array_length(ship_type){
 	            name=ship_type[current_ship];
 	            if (string_width(name)*scale>179){
 	            	for (var i=0;i<9;i++){

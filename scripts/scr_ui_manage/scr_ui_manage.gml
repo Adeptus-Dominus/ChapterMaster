@@ -335,9 +335,8 @@ function scr_ui_manage() {
         draw_set_color(c_gray);
         // draw_line(xx+1005,yy+519,xx+1576,yy+519);
         draw_set_font(fnt_40k_14b);
-        var cn = obj_controller;
-        if (instance_exists(cn) && is_struct(temp[120])) {
-            var selected_unit = temp[120]; //unit struct
+        if (instance_exists(obj_controller) && is_struct(obj_controller.temp[120])) {
+            var selected_unit = obj_controller.temp[120]; //unit struct
             ///tooltip_text stacks hover over type tooltips into an array and draws them last so as not to create drawing order issues
             draw_set_color(c_red);
             var no_other_instances = !instance_exists(obj_temp3) && !instance_exists(obj_popup);
@@ -375,8 +374,8 @@ function scr_ui_manage() {
 
             // Draw unit image
             draw_set_color(c_white);
-            if (is_struct(temp[121])) {
-                temp[121].draw(xx + 1328, yy + 250);
+            if (is_struct(obj_controller.temp[121])) {
+                obj_controller.temp[121].draw(xx + 1328, yy + 250);
             }
 
             //TODO implement tooltip explaining potential loyalty hit of demoting a sgt
@@ -433,7 +432,7 @@ function scr_ui_manage() {
             var armour = selected_unit.armour();
             if (armour != "") {
                 text = selected_unit.equipments_qual_string("armour", true);
-                tooltip_text = cn.temp[103];
+                tooltip_text = obj_controller.temp[103];
                 x1 = x_left;
                 y1 = yy + 320;
                 x2 = x1 + string_width_ext(text, -1, 187);
@@ -446,7 +445,7 @@ function scr_ui_manage() {
             var gear = selected_unit.gear();
             if (selected_unit.gear() != "") {
                 text = selected_unit.equipments_qual_string("gear", true);
-                tooltip_text = cn.temp[105];
+                tooltip_text = obj_controller.temp[105];
                 x1 = x_left;
                 y1 = yy + 446;
                 x2 = x1 + string_width_ext(text, -1, 187);
@@ -458,7 +457,7 @@ function scr_ui_manage() {
             var mobi = selected_unit.mobility_item();
             if (mobi != "") {
                 text = selected_unit.equipments_qual_string("mobi", true);
-                tooltip_text = cn.temp[107];
+                tooltip_text = obj_controller.temp[107];
                 x1 = x_left;
                 y1 = yy + 467;
                 x2 = x1 + string_width_ext(text, -1, 187);
@@ -470,7 +469,7 @@ function scr_ui_manage() {
             var wep1 = selected_unit.weapon_one();
             if (wep1 != "") {
                 text = selected_unit.equipments_qual_string("wep1", true);
-                tooltip_text = cn.temp[109];
+                tooltip_text = obj_controller.temp[109];
                 x1 = x_left;
                 y1 = yy + 345;
                 x2 = x1 + string_width_ext(text, -1, 187);
@@ -482,7 +481,7 @@ function scr_ui_manage() {
             var wep2 = selected_unit.weapon_two();
             if (wep2 != "") {
                 text = selected_unit.equipments_qual_string("wep2", true);
-                tooltip_text = cn.temp[111];
+                tooltip_text = obj_controller.temp[111];
                 x1 = x_left;
                 y1 = yy + 395;
                 x2 = x1 + string_width_ext(text, -1, 187);
@@ -493,9 +492,9 @@ function scr_ui_manage() {
 
             // Stats
             // Bionics tracker
-            if (cn.temp[128] != "") {
-                text = cn.temp[128];
-                tooltip_text = cn.temp[129];
+            if (obj_controller.temp[128] != "") {
+                text = obj_controller.temp[128];
+                tooltip_text = obj_controller.temp[129];
                 x1 = x_left + 110;
                 y1 = yy + 208;
                 x2 = x1 + string_width(text);
@@ -509,9 +508,9 @@ function scr_ui_manage() {
             }
 
             // Armour Rating
-            if (cn.temp[126] != "") {
-                text = cn.temp[126];
-                tooltip_text = cn.temp[127];
+            if (obj_controller.temp[126] != "") {
+                text = obj_controller.temp[126];
+                tooltip_text = obj_controller.temp[127];
                 x1 = x_left + 20;
                 y1 = yy + 232;
                 x2 = x1 + string_width(text);
@@ -524,9 +523,9 @@ function scr_ui_manage() {
             }
 
             // Health
-            if (cn.temp[124] != "") {
-                text = cn.temp[124];
-                tooltip_text = cn.temp[125];
+            if (obj_controller.temp[124] != "") {
+                text = obj_controller.temp[124];
+                tooltip_text = obj_controller.temp[125];
                 x1 = x_left + 20;
                 y1 = yy + 208;
                 x2 = x1 + string_width(text);
@@ -539,8 +538,8 @@ function scr_ui_manage() {
             }
 
             // Experience
-            if (cn.temp[113] != "") {
-                text = cn.temp[113];
+            if (obj_controller.temp[113] != "") {
+                text = obj_controller.temp[113];
                 tooltip_text = "A measureme of how battle-hardened the unit is. Provides a lot of various bonuses across the board.";
                 x1 = x_left + 20;
                 y1 = yy + 184;
@@ -553,9 +552,9 @@ function scr_ui_manage() {
                 draw_text_outline(x1, y1, text);
             }
 
-            if (cn.temp[118] != "") {
-                text = cn.temp[118]; // Damage Resistance
-                tooltip_text = cn.temp[130];
+            if (obj_controller.temp[118] != "") {
+                text = obj_controller.temp[118]; // Damage Resistance
+                tooltip_text = obj_controller.temp[130];
                 x1 = x_left + 110;
                 y1 = yy + 232;
                 x2 = x1 + string_width(text);
@@ -568,9 +567,9 @@ function scr_ui_manage() {
             }
 
             // Psyker things
-            if (cn.temp[119] != "") {
-                text = cn.temp[119];
-                tooltip_text = cn.temp[123];
+            if (obj_controller.temp[119] != "") {
+                text = obj_controller.temp[119];
+                tooltip_text = obj_controller.temp[123];
                 x1 = x_left + 110;
                 y1 = yy + 184;
                 x2 = x1 + string_width(text);
@@ -582,9 +581,9 @@ function scr_ui_manage() {
                 array_push(tooltip_drawing, [tooltip_text, [x3, y1, x2, y2], "Psychic Stats"]);
             }
 
-            if (is_array(cn.temp[117])) {
-                text = $"{round(cn.temp[116][0])}"; // melee attack
-                tooltip_text = string(cn.temp[116][1]);
+            if (is_array(obj_controller.temp[117])) {
+                text = $"{round(obj_controller.temp[116][0])}"; // melee attack
+                tooltip_text = string(obj_controller.temp[116][1]);
                 x1 = x_left + 20;
                 y1 = yy + 256;
                 x2 = x1 + string_width(text);
@@ -601,9 +600,9 @@ function scr_ui_manage() {
                 array_push(tooltip_drawing, [tooltip_text, [x3, y1, x2, y2], "Melee Attack"]);
             }
 
-            if (is_array(cn.temp[117])) {
-                text = $"{round(cn.temp[117][0])}"; // ranged attack
-                tooltip_text = string(cn.temp[117][1]);
+            if (is_array(obj_controller.temp[117])) {
+                text = $"{round(obj_controller.temp[117][0])}"; // ranged attack
+                tooltip_text = string(obj_controller.temp[117][1]);
                 x1 = x_left + 20;
                 y1 = yy + 280;
                 x2 = x1 + string_width(text);
@@ -619,8 +618,8 @@ function scr_ui_manage() {
                 draw_set_color(line_color);
             }
 
-            if (is_array(cn.temp[116])) {
-                carry_data = cn.temp[116][2];
+            if (is_array(obj_controller.temp[116])) {
+                var carry_data = obj_controller.temp[116][2];
                 var carry_string = $"{carry_data[0]}/{carry_data[1]}"; // Melee Burden
                 x1 = x_left + 110;
                 y1 = yy + 256;
@@ -638,8 +637,8 @@ function scr_ui_manage() {
                 draw_set_color(line_color);
             }
 
-            if (is_array(cn.temp[117])) {
-                carry_data = cn.temp[117][2];
+            if (is_array(obj_controller.temp[117])) {
+                var carry_data = obj_controller.temp[117][2];
                 var carry_string = $"{carry_data[0]}/{carry_data[1]}"; // Ranged Burden
                 x1 = x_left + 110;
                 y1 = yy + 280;
@@ -936,8 +935,9 @@ function scr_ui_manage() {
 
                 button.label = "Reload";
                 //button.keystroke = (keyboard_check(vk_shift) && (keyboard_check_pressed(ord("F"))));
-                if (instance_exists(cn) && is_struct(temp[120])) {
-                    button.tooltip = $"{temp[120].last_ship.name}"; //Press Shift F";
+                if (instance_exists(obj_controller) && is_struct(obj_controller.temp[120])) {
+                    var selected_unit = obj_controller.temp[120];
+                    button.tooltip = $"{selected_unit.last_ship.name}"; //Press Shift F";
                 }
                 reload_possible = man_size > 0 && sel_loading == -1;
                 if (reload_possible) {
@@ -1216,8 +1216,9 @@ function scr_ui_manage() {
             draw_set_color(#3f7e5d);
             scr_scrollbar(974, 172, 1005, 790, 34, man_max, man_current);
         }
-        if (is_struct(cn.temp[120])) {
-            if ((cn.temp[120].name() != "") && (cn.temp[120].race() != 0)) {
+        if (instance_exists(obj_controller) && is_struct(obj_controller.temp[120])) {
+            var selected_unit = obj_controller.temp[120];
+            if ((selected_unit.name() != "") && (selected_unit.race() != 0)) {
                 draw_set_alpha(1);
                 var xx = __view_get(e__VW.XView, 0) + 0, yy = __view_get(e__VW.YView, 0) + 0;
                 if ((obj_controller.unit_profile) && !instance_exists(obj_popup)) {

@@ -79,16 +79,17 @@ serialize = function(){
         obj: object_get_name(object_index),
         x,
         y,
+        cargo_data : cargo_data,
     }
     
-    var excluded_from_save = ["temp", "serialize", "deserialize", "cargo_data"]
+    var excluded_from_save = ["temp", "serialize", "deserialize"];
 
     copy_serializable_fields(object_fleet, save_data, excluded_from_save);
 
     return save_data;
 }
 deserialize = function(save_data){
-    var exclusions = ["id"]; // skip automatic setting of certain vars, handle explicitly later
+    var exclusions = ["id","cargo_data"]; // skip automatic setting of certain vars, handle explicitly later
 
     // Automatic var setting
     var all_names = struct_get_names(save_data);
@@ -106,8 +107,18 @@ deserialize = function(save_data){
             show_debug_message(e);
         }
     }
+     if(struct_exists(save_data, "cargo_data")){
+        variable_struct_set(self, "cargo_data", save_data.cargo_data);
+        show_debug_message("cargo_data");
+        if (fleet_has_cargo("ork_warboss")){
+            show_debug_message("warboss_fleet");
+            var _boss = new NewPlanetFeature(P_features.OrkWarboss);
+            _boss.load_json_data(cargo_data.ork_warboss)
+            cargo_data.ork_warboss = _boss;
+        }        
+    }    
 
-    if(save_data.orbiting != 0){
+    if(save_data.orbiting != 0 && action == ""){
         var nearest_star = instance_nearest(x, y, obj_star);
         orbiting = nearest_star;
         // show_debug_message($"p_fleet id {id} deserialized: {self}");

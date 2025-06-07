@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_weapon_plasma_cannon_term",
   "bboxMode":0,
   "bbox_bottom":224,
@@ -12,8 +12,8 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"a881943a-e7b3-4a2d-aa8e-4482d90446bf","name":"a881943a-e7b3-4a2d-aa8e-4482d90446bf","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"b3de42d5-27c7-4349-82ce-0d82b0f1b555","name":"b3de42d5-27c7-4349-82ce-0d82b0f1b555","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"a881943a-e7b3-4a2d-aa8e-4482d90446bf","name":"a881943a-e7b3-4a2d-aa8e-4482d90446bf","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"b3de42d5-27c7-4349-82ce-0d82b0f1b555","name":"b3de42d5-27c7-4349-82ce-0d82b0f1b555","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -71,12 +71,8 @@
     "timeUnits":1,
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"a881943a-e7b3-4a2d-aa8e-4482d90446bf","path":"sprites/spr_weapon_plasma_cannon_term/spr_weapon_plasma_cannon_term.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"b6ff589f-4704-4be6-bb05-636239790be6","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"b3de42d5-27c7-4349-82ce-0d82b0f1b555","path":"sprites/spr_weapon_plasma_cannon_term/spr_weapon_plasma_cannon_term.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"2caa7e10-26a7-4146-b122-b0d0df872c4f","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"a881943a-e7b3-4a2d-aa8e-4482d90446bf","path":"sprites/spr_weapon_plasma_cannon_term/spr_weapon_plasma_cannon_term.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"b6ff589f-4704-4be6-bb05-636239790be6","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"b3de42d5-27c7-4349-82ce-0d82b0f1b555","path":"sprites/spr_weapon_plasma_cannon_term/spr_weapon_plasma_cannon_term.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"2caa7e10-26a7-4146-b122-b0d0df872c4f","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

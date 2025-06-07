@@ -137,6 +137,35 @@ function load_vis_set_to_global(directory, data){
 }
 global.modular_drawing_items = [
     {
+        sprite : spr_purity_seal,
+        body_types :[0,2],
+        position : "purity_seals",
+    },
+    {
+        position : "crown",
+        body_types: [0],
+        max_saturation : 60,
+        exp : {
+            scale : true,
+            exp_scale_max : 200,
+        },
+        sprite:spr_psy_hood_alpha2,
+        equipped : {
+            "gear" : "Psychic Hood",
+        },
+        cultures: ["Alpha"], 
+        prevent_others : true,    
+    },
+    {
+        position : "crown",
+        body_types: [0],
+        sprite:spr_psy_hood_complex,
+        equipped : {
+            "gear" : "Psychic Hood",
+        },
+        prevent_others : true,
+    },  
+    {
         sprite : spr_da_mk5_helm_crests,
         cultures : ["Knightly"],
         body_types :[0],
@@ -343,11 +372,22 @@ global.modular_drawing_items = [
         armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"],         
     },
     {
-        chapter_adv : ["Reverent Guardians"],
-        sprite : spr_pack_brazier3,
+        cultures : ["Alpha"],
+        sprite : spr_alpha_backpack,
         body_types :[0],
         position : "backpack",
-        assign_by_rank : 4,
+        assign_by_rank : 3,
+        armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"],         
+    },
+    {
+        chapter_adv : ["Reverent Guardians"],
+        sprite : spr_pack_brazier3,
+        traits : ["zealous_faith"],
+        body_types :[0],
+        allow_either : ["chapter_adv", "traits","role_type"],
+        role_type : [SPECIALISTS_CHAPLAINS],
+        position : "backpack",
+        assign_by_rank : 3,
     },
     {
         sprite : spr_gear_librarian,
@@ -368,11 +408,6 @@ global.modular_drawing_items = [
         position : "crest",
         role_type : [SPECIALISTS_CAPTAIN_CANDIDATES],
         assign_by_rank : 2,
-    },
-    {
-        sprite : spr_purity_seal,
-        body_types :[0,2],
-        position : "purity_seals",
     },
     {
         sprite : spr_marksmans_honor,
@@ -886,7 +921,79 @@ global.modular_drawing_items = [
         sprite: spr_indomitus_right_knee_crux,
         armours : ["Terminator Armour"],
         max_saturation : 30,
-    }                                                                       
+    },
+    {
+        position : "right_eye",
+        sprite: spr_indomitus_right_eye_bionic,
+        body_types: [ 2],
+        body_parts :{
+            "right_eye" : "bionic",
+        }
+    },
+    {
+        position : "left_eye",
+        sprite: spr_indomitus_left_eye_bionic,
+        body_types: [ 2],
+        body_parts :{
+            "left_eye" : "bionic",
+        }
+    },
+    {
+        position : "left_leg",
+        sprite: spr_indomitus_left_leg_bionic,
+        body_types: [ 2],
+        body_parts :{
+            "left_leg" : "bionic",
+        },
+        prevent_others : true,
+        ban : ["left_knee","knees"],
+    }, 
+    {
+        position : "right_leg",
+        sprite: spr_indomitus_right_leg_bionic,
+        body_types: [ 2],
+        body_parts :{
+            "right_leg" : "bionic",
+        },
+        prevent_others : true,
+        ban : ["right_knee","knees"],
+    },
+    {
+        position : "left_leg",
+        sprite: spr_bionic_leg_left,
+        body_types: [ 0],
+        body_parts :{
+            "left_leg" : "bionic",
+        },
+        prevent_others : true,
+        ban : ["left_knee","knees"],
+    }, 
+    {
+        position : "right_leg",
+        sprite: spr_bionic_leg_right,
+        body_types: [ 0],
+        body_parts :{
+            "right_leg" : "bionic",
+        },
+        prevent_others : true,
+        ban : ["right_knee","knees"],
+    }, 
+    {
+        position : "right_eye",
+        sprite: spr_bionic_right_eyes,
+        body_types: [0],
+        body_parts :{
+            "right_eye" : "bionic",
+        }
+    },
+    {
+        position : "left_eye",
+        sprite: spr_bionic_left_eyes,
+        body_types: [0],
+        body_parts :{
+            "left_eye" : "bionic",
+        }
+    },                                                                  
 ];
 
 
@@ -1032,10 +1139,12 @@ function generate_marine_body(){
         "left_leg":{
             leg_variants: irandom(100),
             shin_variant : irandom(100),
+            knee_variant: irandom(100),
         }, 
         "right_leg":{
             leg_variants: irandom(100),
             shin_variant : irandom(100),
+            knee_variant: irandom(100),
         }, 
         "torso":{
             cloth:{
@@ -1417,7 +1526,9 @@ global.weapon_visual_data = {
       sprite: spr_weapon_plasma_cannon_term
     },
     {
-      display_type: "ranged_twohand",
+       weapon_data: {
+          display_type: "ranged_twohand",
+      },
       sprite: spr_weapon_plasc,
       body_types: [0, 1]
     }
@@ -1436,8 +1547,11 @@ global.weapon_visual_data = {
       sprite: spr_weapon_plasma_cannon_term
     },
     {
-      display_type: "ranged_twohand",
+       weapon_data: {
+          display_type: "ranged_twohand",
+      },
       sprite: spr_weapon_grav_cannon,
+      body_types: [0,1]
     }
   ]
 },
@@ -1728,8 +1842,24 @@ global.weapon_visual_data = {
     {
       cultures: ["Mongol"],
       sprite: spr_weapon_sword_oriental
+    },
+    {
+      cultures: ["Alpha"],
+      sprite: spr_weapoon_powso_flamberge
     }
   ]
+},
+"Eviscerator" : {
+    base: {
+    weapon_data: {
+      display_type: "melee_onehand",
+      hand_type: 0,
+      new_weapon_draw: true
+    }, 
+   },
+     variants: [{
+        sprite: spr_weapon_evisc
+     }]
 },
 
 "Eldar Power Sword": {
@@ -1779,7 +1909,8 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "melee_onehand",
-      hand_type: 2,
+      hand_type: 3,
+      arm_type : 3,
       new_weapon_draw: true
     },
   },
@@ -1789,12 +1920,44 @@ global.weapon_visual_data = {
     }
   ]
 },
+"Power Mace": {
+  base: {
+    weapon_data: {
+      display_type: "melee_onehand",
+      hand_type: 3,
+      arm_type : 3,
+      new_weapon_draw: true
+    },
+  },
+  variants: [
+    {
+      sprite: spr_weapon_powmace
+    },
+  ]
+},
+"Mace of Absolution": {
+  base: {
+    weapon_data: {
+      display_type: "melee_onehand",
+      hand_type: 3,
+      arm_type : 3,
+      new_weapon_draw: true
+    },
+  },
+  variants: [
+    {
+      sprite: spr_weapon_mace_of_absolution
+    }
+  ]
+},
 
 "Crozius Arcanum": {
   base: {
     weapon_data: {
       hand_on_top: true,
-      display_type: "melee_onehand"
+      display_type: "melee_onehand",
+      hand_type: 3,
+      arm_type : 3,      
     },
   },
   variants: [
@@ -1808,7 +1971,8 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "melee_onehand",
-      hand_type: 2,
+      hand_type: 3,
+      arm_type : 3,
       new_weapon_draw: true
     },
   },
@@ -1853,13 +2017,14 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       display_type: "melee_onehand",
-      hand_type: 2,
+      hand_type: 3,
+      arm_type : 3,
       new_weapon_draw: true
     },
   },
   variants: [
     {
-      sprite: spr_weapon_powaxe
+      sprite: spr_weapon_frcaxe,
     }
   ]
 },
@@ -1868,7 +2033,9 @@ global.weapon_visual_data = {
   base: {
     weapon_data: {
       hand_on_top: true,
-      display_type: "melee_onehand"
+      display_type: "melee_onehand",
+      hand_type: 3,
+      arm_type : 3,      
     },
   },
   variants: [

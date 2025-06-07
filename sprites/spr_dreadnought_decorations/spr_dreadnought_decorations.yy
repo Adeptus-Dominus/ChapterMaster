@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_dreadnought_decorations",
   "bboxMode":0,
   "bbox_bottom":98,
@@ -12,9 +12,9 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"69e1b091-39fa-466c-90b9-3f95c7e9c166","name":"69e1b091-39fa-466c-90b9-3f95c7e9c166","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"8033e364-cf92-46f9-ab1d-5c89b6ac7bd4","name":"8033e364-cf92-46f9-ab1d-5c89b6ac7bd4","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"b4ca3de8-8303-4af4-9873-ba8290935271","name":"b4ca3de8-8303-4af4-9873-ba8290935271","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"69e1b091-39fa-466c-90b9-3f95c7e9c166","name":"69e1b091-39fa-466c-90b9-3f95c7e9c166","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"8033e364-cf92-46f9-ab1d-5c89b6ac7bd4","name":"8033e364-cf92-46f9-ab1d-5c89b6ac7bd4","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"b4ca3de8-8303-4af4-9873-ba8290935271","name":"b4ca3de8-8303-4af4-9873-ba8290935271","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -70,15 +70,9 @@
     "timeUnits":1,
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"69e1b091-39fa-466c-90b9-3f95c7e9c166","path":"sprites/spr_dreadnought_decorations/spr_dreadnought_decorations.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"aeff9adb-1df6-477e-997f-f351dba2f5af","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"8033e364-cf92-46f9-ab1d-5c89b6ac7bd4","path":"sprites/spr_dreadnought_decorations/spr_dreadnought_decorations.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"09c36d69-135f-471a-8232-a16c5f00f8c6","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"b4ca3de8-8303-4af4-9873-ba8290935271","path":"sprites/spr_dreadnought_decorations/spr_dreadnought_decorations.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"3a9b1205-3f6f-4058-a295-0fbc6bedd565","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"69e1b091-39fa-466c-90b9-3f95c7e9c166","path":"sprites/spr_dreadnought_decorations/spr_dreadnought_decorations.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"aeff9adb-1df6-477e-997f-f351dba2f5af","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"8033e364-cf92-46f9-ab1d-5c89b6ac7bd4","path":"sprites/spr_dreadnought_decorations/spr_dreadnought_decorations.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"09c36d69-135f-471a-8232-a16c5f00f8c6","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"b4ca3de8-8303-4af4-9873-ba8290935271","path":"sprites/spr_dreadnought_decorations/spr_dreadnought_decorations.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"3a9b1205-3f6f-4058-a295-0fbc6bedd565","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

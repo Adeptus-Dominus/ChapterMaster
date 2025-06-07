@@ -1,15 +1,17 @@
 {
-  "$GMSound":"",
+  "$GMSound":"v2",
   "%Name":"snd_royal",
   "audioGroupId":{
     "name":"audiogroup_default",
     "path":"audiogroups/audiogroup_default",
   },
   "bitDepth":1,
-  "bitRate":256,
+  "channelFormat":1,
   "compression":3,
+  "compressionQuality":8,
   "conversionMode":0,
-  "duration":179.23112,
+  "duration":19.401724,
+  "exportDir":"sounds",
   "name":"snd_royal",
   "parent":{
     "name":"Themes",
@@ -20,6 +22,5 @@
   "resourceVersion":"2.0",
   "sampleRate":44100,
   "soundFile":"snd_royal",
-  "type":1,
   "volume":1.0,
 }

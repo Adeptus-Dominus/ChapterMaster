@@ -1,7 +1,7 @@
 name: "Mark stale issues and PRs"
 on:
   schedule:
-    - cron: '0 0 * * *'  # every day at midnight UTC
+    - cron: '0 22 * * *'  # every day at 22:00 UTC
 
 jobs:
   stale:
