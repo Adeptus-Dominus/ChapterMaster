@@ -84,11 +84,9 @@ if (hp>0) and (instance_exists(obj_p_ship)){
     
     // if (class!="big") then flank!!!!
     
-    closing_distance = closing_distance;
     spid=spid*speed_bonus;
     
     target_distance=point_distance(x,y,target.x,target.y)-(max(sprite_get_width(sprite_index),sprite_get_height(sprite_index)));
-    target_distance = target_distance;
     
     if (target!=0) and (action="attack"){
         direction=turn_towards_point(direction,x,y,target.x,target.y,.1);
@@ -98,7 +96,7 @@ if (hp>0) and (instance_exists(obj_p_ship)){
 
     
     speed_down = 0.025;
-    combat_acceleration_control();
+   combat_acceleration_control();
     
 
     if (speed<0) then speed=speed*0.9;

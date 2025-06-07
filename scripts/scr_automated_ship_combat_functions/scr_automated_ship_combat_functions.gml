@@ -6,17 +6,28 @@ function point_on_circle(start_x, start_y, radius, angle){
 }
 
 function combat_acceleration_control(){
-    var _start_slowing = start_slowing_telemetry(target_distance, speed_down);
+    var travel_distance = draw_targets == false ? target_distance : point_distance(x, y, draw_targets[0], draw_targets[1]);
+    var _start_slowing = start_slowing_telemetry(travel_distance, speed_down);
     if (_start_slowing){
+       // if (object_index==obj_p_ship){
+            //show_debug_message("start_Slow");
+       // }
         speed-=speed_down;
     } else {
-        if (action="attack"){
+        //if (object_index==obj_p_ship){
+            //show_debug_message($"start_speed{speed}");
+        //} 
+        speed+=speed_up;
+        /*if (action=="attack"){
             if (target_distance>closing_distance) and (speed<(max_speed)) then speed+=speed_up;
-        } else if (action="broadside"){
+        } else if (action=="broadside"){
             if (target_distance>closing_distance) and (speed<(max_speed)) then speed+=speed_up;
-        } else if (action="flank"){// flank here
+        } else if (action=="flank"){// flank here
             if (target_distance>closing_distance) and (speed<(max_speed)) then speed+=speed_up;
-        }
+        }*/
+         //if (object_index==obj_p_ship){
+         //show_debug_message($"end_speed{speed}, {max_speed}");
+        //}
     }   
 }
 /*function circle_mechanics(end_location){

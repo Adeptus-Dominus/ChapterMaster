@@ -14,7 +14,12 @@ draw_set_halign(fa_center);
 
 
 draw_set_alpha(1);
-
+if (point_distance(x, y, mouse_x, mouse_y)< 50){
+    for (var i=0;i<array_length(weapons);i++){
+        var _wep = weapons[i];
+        _wep.draw_weapon_firing_arc(c_red);
+    }
+}
 if (lightning>01) and (instance_exists(target)){
     draw_set_color(c_lime);
     lightning-=1;

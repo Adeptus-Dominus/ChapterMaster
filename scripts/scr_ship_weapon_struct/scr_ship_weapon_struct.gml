@@ -249,7 +249,7 @@ function ShipWeapon(weapon_name, overide_data={}) constructor{
 			draw_line(x, y, target.x, target.y);
 		}
 	}
-	static draw_weapon_firing_arc = function(){
+	static draw_weapon_firing_arc = function(arc_col = CM_GREEN_COLOR){
 		var _tangent_direction =  weapon_direction();
 		var _facing = facing
 
@@ -265,7 +265,7 @@ function ShipWeapon(weapon_name, overide_data={}) constructor{
 	    if (facing == "most"){
 	    	firing_arc = 110;
 	    }
-	    draw_set_color(38144);
+	    draw_set_color(arc_col);
 
 	    var _start_x = x + lengthdir_x(_max_distance, _tangent_direction - firing_arc);
 	    var _start_y = y + lengthdir_y(_max_distance, _tangent_direction - firing_arc);

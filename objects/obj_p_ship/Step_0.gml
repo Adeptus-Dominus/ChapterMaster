@@ -85,7 +85,18 @@ if (hp>0) and (instance_exists(target)){
         action="flank";
     }
 
-    closing_distance = closing_distance;
+    if (action = "flank" && target.action == "flank"){
+        action = "attack";
+    }
+
+    if (action == "broadside"){
+        var _near_enemy = instance_nearest(obj_en_ship);
+        if (instance_nearest(obj_en_ship).size >= size){
+            target = _near_enemy;
+        }
+    }
+
+    show_debug_message($"closing:{closing_distance}");
 
     // if (class!="big") then flank!!!!
     
@@ -97,6 +108,7 @@ if (hp>0) and (instance_exists(target)){
 
     turning_speed = ship_data.calc_turn_speed();
     speed_up = ship_data.final_acceleration();
+    show_debug_message($"accel:{speed_up}");
 
     speed_down = ship_data.deceleration();
 
@@ -116,13 +128,14 @@ if (hp>0) and (instance_exists(target)){
     }
     
     if (!_player_action){
+        show_debug_message($"accelcalcs");
         combat_acceleration_control();
     }
     if (_player_action){
         if (paction="turn") or (paction="attack_turn"){
             direction=turn_towards_point(direction,x,y,target_x,target_y,turning_speed/2);
             target_distance=point_distance(x,y,target_x,target_y);
-            if ((y>target_y) || y<target_y)) {
+            if (y>target_y || y<target_y) {
                 ship_turn_towards_point(target_x,target_y);
             }
             if (speed>0) then speed-=speed_down;
@@ -138,7 +151,7 @@ if (hp>0) and (instance_exists(target)){
             direction=turn_towards_point(direction,x,y,target_x,target_y,turning_speed/2);
             target_distance=point_distance(x,y,target_x,target_y);
 
-            if( (y>target_y) || y<target_y)) {
+            if(y>target_y || y<target_y) {
                 ship_turn_towards_point(target_x,target_y);
             }
             
