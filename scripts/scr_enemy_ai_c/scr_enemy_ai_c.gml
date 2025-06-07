@@ -283,7 +283,7 @@ function scr_enemy_ai_c() {
                             
 	                            if (kawaii=1) and (instance_exists(obj_crusade)){// NOPE, stay home and defend
 	                                var him,own,dis;
-	                                him=instance_nearest(x,y,obj_crusade);
+	                                him=instance_nearest(x,y,obj_crusade); // Issue 714
 	                                own=him.owner;dis=him.radius;
 	                                if (point_distance(x,y,him.x,him.y)<=dis) then kawaii=0;
 	                            }
