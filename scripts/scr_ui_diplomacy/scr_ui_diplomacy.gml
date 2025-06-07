@@ -605,17 +605,20 @@ function scr_ui_diplomacy() {
 	        }
     
 	if (show_stuff=true){
-	    draw_set_font(fnt_40k_14);draw_set_alpha(1);
-	    draw_set_color(38144);draw_set_halign(fa_left);
+	    draw_set_font(fnt_40k_14);
+	    draw_set_alpha(1);
+	    draw_set_color(38144);
+	    draw_set_halign(fa_left);
 	    draw_text_ext(xx+336+16,yy+209,string_hash_to_newline(string(diplo_txt)),-1,536);
-	    xx=__view_get( e__VW.XView, 0 );yy=__view_get( e__VW.YView, 0 );draw_set_halign(fa_center);
+	    xx=__view_get( e__VW.XView, 0 );
+	    yy=__view_get( e__VW.YView, 0 );
+	    draw_set_halign(fa_center);
 	    draw_line(xx+429,yy+710,xx+800,yy+710);
     
 	    if (trading=0) and (diplo_option[1]="") and (diplo_option[2]="") and (diplo_option[3]="") and (diplo_option[4]=""){
 	        draw_set_color(38144);
 	        if ((audience=0) and (force_goodbye=0)) or (faction_justmet=1){
 	            if (audience=0) and (force_goodbye=0){
-	                draw_rectangle(xx+442,yy+719,xx+547,yy+738,0);
 	                draw_rectangle(xx+562,yy+719,xx+667,yy+738,0);
 	                draw_rectangle(xx+682,yy+719,xx+787,yy+738,0);
 	            }
@@ -629,7 +632,18 @@ function scr_ui_diplomacy() {
 	        draw_rectangle(xx+818,yy+796,xx+897,yy+815,0);
         
 	        draw_set_color(0);
-	        draw_text(xx+442+52,yy+720,string_hash_to_newline("Trade"));
+	        draw_set_halign(fa_top);
+	        if (point_and_click(draw_unit_buttons([xx+442+52,yy+720],"Trade"))){
+	        	if ((audience==0) and (force_goodbye==0)){
+	                trading=1;
+	                scr_dialogue("open_trade");
+	                cooldown=8;
+	                click2=1;
+	                trade_attempt = new TradeAttempt(diplomacy);
+	        	}
+	        }
+	        draw_set_halign(fa_center);
+        
 	        draw_text(xx+562+52,yy+720,string_hash_to_newline("Demand"));
 	        draw_text(xx+682+52,yy+720,string_hash_to_newline("Discuss"));
 	        draw_text(xx+442+52,yy+754,string_hash_to_newline("Denounce"));
@@ -640,11 +654,11 @@ function scr_ui_diplomacy() {
         
 	        draw_set_alpha(0.2);
 	        if ((audience=0) and (force_goodbye=0)) or (faction_justmet=1){
-	            var show;show=false;if (faction_justmet=1) then show=true;
+
+	            var show = faction_justmet;
          
         
 	            if (mouse_y>=yy+719) and (mouse_y<yy+738) and (audience=0) and (force_goodbye=0){
-	                if (mouse_x>=xx+442) and (mouse_x<xx+547){draw_rectangle(xx+442,yy+719,xx+547,yy+738,0);warning=1;}
 	                if (mouse_x>=xx+562) and (mouse_x<xx+667) then draw_rectangle(xx+562,yy+719,xx+667,yy+738,0);
 	                if (mouse_x>=xx+682) and (mouse_x<xx+787) then draw_rectangle(xx+682,yy+719,xx+787,yy+738,0);
 	            }
@@ -674,173 +688,6 @@ function scr_ui_diplomacy() {
 		
     
 	    // xx=view_xview[0];yy=view_yview[0];
-    
-    
-    
-	    if (trading=1){
-	        draw_set_color(38144);
-	        draw_rectangle(xx+342,yy+326,xx+486,yy+673,1);draw_rectangle(xx+343,yy+327,xx+485,yy+672,1);// Left Main Panel
-	        draw_rectangle(xx+504,yy+371,xx+741,yy+641,1);draw_rectangle(xx+505,yy+372,xx+740,yy+640,1);// Center panel
-	        draw_rectangle(xx+759,yy+326,xx+903,yy+673,1);draw_rectangle(xx+760,yy+327,xx+902,yy+672,1);// Right Main Panel
-        
-	        draw_rectangle(xx+342,yy+326,xx+486,yy+371,1);// Left Title Panel
-	        draw_rectangle(xx+759,yy+326,xx+903,yy+371,1);// Right Title Panel
-        
-	        draw_set_font(fnt_40k_14b);draw_set_halign(fa_center);
-	        draw_text(xx+411,yy+330,string_hash_to_newline(string(obj_controller.faction[diplomacy])+"#Items"));
-	        draw_text(xx+829,yy+330,string_hash_to_newline(string(global.chapter_name)+"#Items"));
-        
-	        if (trade_likely!="") then draw_text(xx+623,yy+348,string_hash_to_newline("["+string(trade_likely)+"]"));
-        
-	        // Buttons
-	        draw_rectangle(xx+510,yy+649,xx+615,yy+668,0);// Clear
-	        draw_rectangle(xx+630,yy+649,xx+735,yy+668,0);// Offer
-	        draw_rectangle(xx+818,yy+796,xx+897,yy+815,0);// Cancel
-        
-	        draw_set_color(0);
-	        draw_text(xx+562,yy+649,string_hash_to_newline("Clear"));
-	        draw_text(xx+682,yy+649,string_hash_to_newline("Offer"));
-	        draw_text(xx+857.5,yy+797,string_hash_to_newline("Exit"));
-        
-	        draw_set_alpha(0.2);
-	        if (scr_hit(xx+510,yy+649,xx+615,yy+668)=true) then draw_rectangle(xx+510,yy+649,xx+615,yy+668,0);
-	        if (scr_hit(xx+630,yy+649,xx+735,yy+668)=true) then draw_rectangle(xx+630,yy+649,xx+735,yy+668,0);
-	        if (scr_hit(xx+818,yy+796,xx+897,yy+815)=true) then draw_rectangle(xx+818,yy+796,xx+897,yy+815,0);
-	        draw_set_alpha(1);
-        
-	        draw_set_halign(fa_left);draw_set_font(fnt_40k_14);draw_set_color(38144);
-	        if (trading_artifact=0){
-	            draw_set_alpha(1);if (disposition[diplomacy]<trade_disp[1]) then draw_set_alpha(0.3);
-	            draw_text_ext(xx+347,yy+382,string_hash_to_newline(string(trade_theirs[1])),-1,136);
-	            if (trade_theirs[1]!="") then draw_line(xx+342,yy+422,xx+485,yy+422);
-	            if (trade_theirs[1]!="") and (scr_hit(xx+342,yy+371,xx+485,yy+422)=true){
-	                draw_set_color(c_gray);draw_set_alpha(0.15);
-	                draw_rectangle(xx+342,yy+371,xx+485,yy+422,0);
-	                draw_set_color(38144);
-	            }
-	            draw_set_alpha(1);
-            
-	            draw_set_alpha(1);if (disposition[diplomacy]<trade_disp[2]) then draw_set_alpha(0.3);
-	            draw_text_ext(xx+347,yy+430,string_hash_to_newline(string(trade_theirs[2])),-1,136);
-	            if (trade_theirs[2]!="") then draw_line(xx+342,yy+470,xx+485,yy+470);
-	            if (trade_theirs[2]!="") and (scr_hit(xx+342,yy+422,xx+485,yy+470)=true){
-	                draw_set_color(c_gray);draw_set_alpha(0.15);
-	                draw_rectangle(xx+342,yy+422,xx+485,yy+470,0);
-	                draw_set_color(38144);
-	            }
-	            draw_set_alpha(1);
-            
-	            draw_set_alpha(1);if (disposition[diplomacy]<trade_disp[3]) then draw_set_alpha(0.3);
-	            draw_text_ext(xx+347,yy+478,string_hash_to_newline(string(trade_theirs[3])),-1,136);
-	            if (trade_theirs[3]!="") then draw_line(xx+342,yy+517,xx+485,yy+517);
-	            if (trade_theirs[3]!="") and (scr_hit(xx+342,yy+470,xx+485,yy+517)=true){
-	                draw_set_color(c_gray);draw_set_alpha(0.15);
-	                draw_rectangle(xx+342,yy+470,xx+485,yy+517,0);
-	                draw_set_color(38144);
-	            }
-	            draw_set_alpha(1);
-            
-	            draw_set_alpha(1);if (disposition[diplomacy]<trade_disp[4]) then draw_set_alpha(0.3);
-	            draw_text_ext(xx+347,yy+525,string_hash_to_newline(string(trade_theirs[4])),-1,136);
-	            if (trade_theirs[4]!="") then draw_line(xx+342,yy+564,xx+485,yy+564);
-	            if (trade_theirs[4]!="") and (scr_hit(xx+342,yy+517,xx+485,yy+564)=true){
-	                draw_set_color(c_gray);draw_set_alpha(0.15);
-	                draw_rectangle(xx+342,yy+517,xx+485,yy+564,0);
-	                draw_set_color(38144);
-	            }
-	            draw_set_alpha(1);
-            
-	            draw_set_alpha(1);if (disposition[diplomacy]<trade_disp[5]) then draw_set_alpha(0.3);
-	            draw_text_ext(xx+347,yy+572,string_hash_to_newline(string(trade_theirs[5])),-1,136);
-	            if (trade_theirs[5]!="") then draw_line(xx+342,yy+611,xx+485,yy+611);
-	            if (trade_theirs[5]!="") and (scr_hit(xx+342,yy+564,xx+485,yy+611)=true){
-	                draw_set_color(c_gray);draw_set_alpha(0.15);
-	                draw_rectangle(xx+342,yy+564,xx+485,yy+611,0);
-	                draw_set_color(38144);
-	            }
-	            draw_set_alpha(1);
-	        }
-        
-        
-	        xx+=419;
-	        if (requisition<=0) then draw_set_alpha(0.33);draw_text_ext(xx+347,yy+379,string_hash_to_newline(string(trade_mine[1])),-1,136);draw_set_alpha(1);
-	        if (trade_mine[1]!="") then draw_line(xx+342,yy+422,xx+485,yy+422);
-	        if (scr_hit(xx+342,yy+371,xx+485,yy+422)=true){
-	            draw_set_color(c_gray);draw_set_alpha(0.15);
-	            draw_rectangle(xx+342,yy+371,xx+485,yy+422,0);
-	            draw_set_color(38144);
-	        }
-	        draw_set_alpha(1);
-        
-	        if (gene_seed<=0) then draw_set_alpha(0.33);draw_text_ext(xx+347,yy+430,string_hash_to_newline(string(trade_mine[2])),-1,136);draw_set_alpha(1);
-	        if (trade_mine[2]!="") then draw_line(xx+342,yy+470,xx+485,yy+470);
-	        if (scr_hit(xx+342,yy+422,xx+485,yy+470)=true){
-	            draw_set_color(c_gray);draw_set_alpha(0.15);
-	            draw_rectangle(xx+342,yy+422,xx+485,yy+470,0);
-	            draw_set_color(38144);
-	        }
-	        draw_set_alpha(1);
-        
-	        if (stc_wargear_un+stc_vehicles_un+stc_ships_un<=0) then draw_set_alpha(0.33);draw_text_ext(xx+347,yy+478,string_hash_to_newline(string(trade_mine[3])),-1,136);draw_set_alpha(1);
-	        if (trade_mine[3]!="") then draw_line(xx+342,yy+517,xx+485,yy+517);
-	        if (scr_hit(xx+342,yy+470,xx+485,yy+517)=true){
-	            draw_set_color(c_gray);draw_set_alpha(0.15);
-	            draw_rectangle(xx+342,yy+470,xx+485,yy+517,0);
-	            draw_set_color(38144);
-	        }
-	        draw_set_alpha(1);
-        
-	        if (info_chips<=0) then draw_set_alpha(0.33);draw_text_ext(xx+347,yy+525,string_hash_to_newline(string(trade_mine[4])),-1,136);draw_set_alpha(1);
-	        if (trade_mine[4]!="") then draw_line(xx+342,yy+564,xx+485,yy+564);
-	        if (scr_hit(xx+342,yy+517,xx+485,yy+564)=true){
-	            draw_set_color(c_gray);draw_set_alpha(0.15);
-	            draw_rectangle(xx+342,yy+517,xx+485,yy+564,0);
-	            draw_set_color(38144);
-	        }
-	        xx-=419;draw_set_alpha(1);
-        
-        
-	        if (trade_tnum[1]+trade_tnum[2]+trade_tnum[3]+trade_tnum[4]>0){
-	            draw_set_font(fnt_40k_14b);
-	            draw_text(xx+507,yy+381,string_hash_to_newline(string(obj_controller.faction[diplomacy])+":"));
-	            draw_set_font(fnt_40k_14);
-	            if (trading_artifact=0){
-	                if (trade_tnum[1]>0) then draw_sprite(spr_cancel_small,0,xx+507,yy+399);
-	                if (trade_tnum[2]>0) then draw_sprite(spr_cancel_small,0,xx+507,yy+419);
-	                if (trade_tnum[3]>0) then draw_sprite(spr_cancel_small,0,xx+507,yy+439);
-	                if (trade_tnum[4]>0) then draw_sprite(spr_cancel_small,0,xx+507,yy+459);
-	            }
-	            if (trade_tnum[1]=1) and (trade_take[1]!="Artifact") then draw_text(xx+530,yy+399,string_hash_to_newline(string(trade_take[1])));
-	            if (trade_tnum[1]=1) and (trade_take[1]="Artifact") then draw_text(xx+530,yy+399,string_hash_to_newline(string(trade_take[1])));
-	            // 
-	            if (trade_tnum[1]>1) then draw_text(xx+530,yy+399,string_hash_to_newline(string(trade_take[1])+" ("+string(trade_tnum[1])+")"));
-	            if (trade_tnum[2]=1) then draw_text(xx+530,yy+419,string_hash_to_newline(string(trade_take[2])));
-	            if (trade_tnum[2]>1) then draw_text(xx+530,yy+419,string_hash_to_newline(string(trade_take[2])+" ("+string(trade_tnum[2])+")"));
-	            if (trade_tnum[3]=1) then draw_text(xx+530,yy+439,string_hash_to_newline(string(trade_take[3])));
-	            if (trade_tnum[3]>1) then draw_text(xx+530,yy+439,string_hash_to_newline(string(trade_take[3])+" ("+string(trade_tnum[3])+")"));
-	            if (trade_tnum[4]=1) then draw_text(xx+530,yy+459,string_hash_to_newline(string(trade_take[4])));
-	            if (trade_tnum[4]>1) then draw_text(xx+530,yy+459,string_hash_to_newline(string(trade_take[4])+" ("+string(trade_tnum[4])+")"));
-	        }
-	        if (trade_mnum[1]+trade_mnum[2]+trade_mnum[3]+trade_mnum[4]>0){
-	            draw_set_font(fnt_40k_14b);
-	            draw_text(xx+507,yy+529,string_hash_to_newline(string(global.chapter_name)+":"));
-	            draw_set_font(fnt_40k_14);
-	            if (trade_mnum[1]>0) then draw_sprite(spr_cancel_small,0,xx+507,yy+547);
-	            if (trade_mnum[2]>0) then draw_sprite(spr_cancel_small,0,xx+507,yy+567);
-	            if (trade_mnum[3]>0) then draw_sprite(spr_cancel_small,0,xx+507,yy+587);
-	            if (trade_mnum[4]>0) then draw_sprite(spr_cancel_small,0,xx+507,yy+607);
-            
-	            if (trade_mnum[1]=1) then draw_text(xx+530,yy+547,string_hash_to_newline(string(trade_give[1])));
-	            if (trade_mnum[1]>1) then draw_text(xx+530,yy+547,string_hash_to_newline(string(trade_give[1])+" ("+string(trade_mnum[1])+")"));
-	            if (trade_mnum[2]=1) then draw_text(xx+530,yy+567,string_hash_to_newline(string(trade_give[2])));
-	            if (trade_mnum[2]>1) then draw_text(xx+530,yy+567,string_hash_to_newline(string(trade_give[2])+" ("+string(trade_mnum[2])+")"));
-	            if (trade_mnum[3]=1) then draw_text(xx+530,yy+587,string_hash_to_newline(string(trade_give[3])));
-	            if (trade_mnum[3]>1) then draw_text(xx+530,yy+587,string_hash_to_newline(string(trade_give[3])+" ("+string(trade_mnum[3])+")"));
-	            if (trade_mnum[4]=1) then draw_text(xx+530,yy+607,string_hash_to_newline(string(trade_give[4])));
-	            if (trade_mnum[4]>1) then draw_text(xx+530,yy+607,string_hash_to_newline(string(trade_give[4])+" ("+string(trade_mnum[4])+")"));
-	        }
-        
-	    }
     
     
 	}

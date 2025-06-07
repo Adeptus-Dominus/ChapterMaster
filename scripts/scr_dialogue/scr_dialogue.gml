@@ -961,11 +961,13 @@ function scr_dialogue(diplo_keyphrase) {
 	        if (rando==2) then diplo_text="I believe this trade would be beneficial to us both.";
 	        if (rando==3) then diplo_text="What benefits us both benefits the Imperium. Who better for you to trade with than myself?";
 	    }
-	    if (diplo_keyphrase=="open_trade") then diplo_text="Make your proposal, Chapter Master.";
-	    if (diplo_keyphrase=="artifact_thanks"){
+	    if (diplo_keyphrase=="open_trade"){
+	    	diplo_text="Make your proposal, Chapter Master.";
+	    }
+	    else if (diplo_keyphrase=="artifact_thanks"){
 	        diplo_text="Thank you indeed, Chapter Master. A relic of such magnificence... I thank you more than I can say.";
 	    }
-	    if (diplo_keyphrase=="artifact_daemon"){
+	    else if (diplo_keyphrase=="artifact_daemon"){
 	        diplo_text="Thank you indeed, Chapter Master. A relic of such magnificence... I thank you.  This item is precious to me.";
 	    }
 	    if (diplo_keyphrase=="stc_thanks"){

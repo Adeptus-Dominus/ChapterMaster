@@ -159,6 +159,13 @@ if (global.cheat_debug == true){
     draw_text(1124, 7, string_hash_to_newline("DEBUG MODE"));
 }
 
+if (menu == 20){
+    if (trading==true){
+        if ((diplomacy>1) && is_struct(trade_attempt)){
+            trade_attempt.draw_trade_screen();
+        }
+    }
+}
 
 function draw_line(x1, y1, y_slide, variable) {
     l_hei = 37;
