@@ -1108,7 +1108,7 @@ global.weapons = {
 		},
 		"arp": 1,
 		"range": 50,
-		"amm": 1,
+		"ammo": 1,
 		"spli": 1,
 		"tags": ["vehicle"]
 	},
