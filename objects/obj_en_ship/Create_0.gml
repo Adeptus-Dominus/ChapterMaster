@@ -29,7 +29,7 @@ turret_cool=0;
 
 name="";
 class="";
-size=0;
+size=1;
 hp=0;
 maxhp=0;
 conditions="";

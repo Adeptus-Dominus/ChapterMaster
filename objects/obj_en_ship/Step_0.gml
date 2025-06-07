@@ -78,7 +78,7 @@ if (hp>0) and (instance_exists(obj_p_ship)){
     if (class="Jackal Class"){closing_distance=200;action="attack";spid=40;}
     if (class="Dirge Class"){closing_distance=200;action="attack";spid=45;}
 
-    if (ship_size==1){
+    if (size==1){
         action = "flank";
     }
     
@@ -200,10 +200,10 @@ if (hp>0) and (instance_exists(obj_p_ship)){
         if (instance_exists(target)){
             target_distance=point_distance(x,y,target.x,target.y);
             
-            if (action="swoop"){direction=turn_towards_point(direction,x,y,target.x,target.y,5-ship_size);}
+            if (action="swoop"){direction=turn_towards_point(direction,x,y,target.x,target.y,5-size);}
             if (target_distance<=closing_distance) and (collision_line(x,y,x+lengthdir_x(closing_distance,direction),y+lengthdir_y(closing_distance,direction),obj_p_ship,0,1)) then action="attack";
             if (target_distance<300) and (action="attack") then action="bank";
-            if (action="bank") then direction=turn_towards_point(direction,x,y,room_width,room_height/2,5-ship_size);
+            if (action="bank") then direction=turn_towards_point(direction,x,y,room_width,room_height/2,5-size);
             if (action="bank") and (target_distance>700) then action="attack";
         }
     }

@@ -33,14 +33,14 @@ function sort_ships_into_columns(combat){
 	    for (var k = 0;k<array_length(ship_data);k++){// This determines the number of ships in each column
 	    	var _ship = combat.ship_data[k];
 	    	for (var col = 5;col>0;col--){
-	    		 if ((combat.column[col]="capital" || _ship.size>=3)){
-	    		 	combat.column_num[col]+=1;
+	    		 if ((combat.column[col]="capital" &&  _ship.size>=3)){
+	    		 	combat.column_num[col]++;
 	    		 }
-	    		 if (_ship.class=combat.column[col]){
-	    		 	combat.column_num[col]+=1;
+	    		 else if (combat.column[col]=="frigate"&& _ship.size==2){
+	    		 	combat.column_num[col]++;
 	    		 }
-				if ((combat.column[col]="escort" ||_ship.size=1)){
-					combat.column_num[col]+=1;
+				else if ((combat.column[col]=="escort" && _ship.size==1)){
+					combat.column_num[col]++;
 				}
 	    	}
 	    }		
@@ -182,8 +182,9 @@ function setup_player_combat_ship(){
 
 	name=ship_data.name;
 	class=ship_data.class;
-	hp=ship_data.hp
-	maxhp=ship_data.max_hp
+	hp=ship_data.hp;
+	size = ship_data.size;
+	maxhp=ship_data.max_hp;
 	shields=ship_data.shields*100;
 	maxshields=shields;
 	armour_front = ship_data.front_armour;

@@ -230,6 +230,11 @@ function facing_weapon_angle(facing){
 		default:
 			break;
 	}
+	if (_direct_ > 360){
+		_direct_-=360;
+	} else if (_direct_< 0){
+		_direct_ +=360;
+	}
 
 	return _direct_;
 }
@@ -245,7 +250,7 @@ function assign_ship_stats(){
 	turning_speed = 0.2;
 	if (class="Apocalypse Class Battleship"){
 	    sprite_index=spr_ship_apoc;
-	    ship_size=3;
+	    size=3;
 	    name="";
 	    hp=1200;
 	    maxhp=1200;
@@ -269,7 +274,7 @@ function assign_ship_stats(){
 
 	if (class="Nemesis Class Fleet Carrier"){
 		sprite_index=spr_ship_nem;
-	    ship_size=3;
+	    size=3;
 	    name="";
 	    hp=1000;
 	    maxhp=1000;
@@ -291,7 +296,7 @@ function assign_ship_stats(){
 
 	if (class="Avenger Class Grand Cruiser"){
 	    sprite_index=spr_ship_aven;
-	    ship_size=2;
+	    size=2;
 	    name="";
 	    hp=1000;
 	    maxhp=1000;
@@ -311,7 +316,7 @@ function assign_ship_stats(){
 
 	if (class="Sword Class Frigate"){
 	    sprite_index=spr_ship_sword;
-	    ship_size=1;
+	    size=1;
 	    name="";
 	    hp=100;
 	    maxhp=100;
@@ -334,7 +339,7 @@ function assign_ship_stats(){
 
 	if (class="Void Stalker"){
 	    sprite_index=spr_ship_void;
-	    ship_size=3;
+	    size=3;
 	    name="";
 	    hp=1000;
 	    maxhp=1000;
@@ -355,7 +360,7 @@ function assign_ship_stats(){
 
 	if (class="Shadow Class"){
 	    sprite_index=spr_ship_shadow;
-	    ship_size=3;
+	    size=3;
 	    name="";
 	    hp=600;
 	    maxhp=600;
@@ -375,7 +380,7 @@ function assign_ship_stats(){
 
 	if (class="Hellebore"){
 	    sprite_index=spr_ship_hellebore;
-	    ship_size=1;
+	    size=1;
 	    name="";
 	    hp=200;
 	    maxhp=200;
@@ -398,7 +403,7 @@ function assign_ship_stats(){
 
 	if (class="Aconite"){sprite_index=spr_ship_aconite;
 	    sprite_index=spr_ship_aconite;
-	    ship_size=1;
+	    size=1;
 	    name="";
 	    hp=200;
 	    maxhp=200;
@@ -422,7 +427,7 @@ function assign_ship_stats(){
 
 	if (class="Dethdeala"){
 	    sprite_index=spr_ship_deth;
-	    ship_size=3;
+	    size=3;
 	    name="";
 	    hp=1200;
 	    maxhp=1200;
@@ -446,7 +451,7 @@ function assign_ship_stats(){
 
 	if (class="Gorbag's Revenge"){
 	    sprite_index=spr_ship_gorbag;
-	    ship_size=3;
+	    size=3;
 	    name="";
 	    hp=1200;
 	    maxhp=1200;
@@ -468,7 +473,7 @@ function assign_ship_stats(){
 	}
 
 	if (class=="Kroolboy") or (class=="Slamblasta"){
-	    ship_size=3;
+	    size=3;
 	    sprite_index=spr_ship_krool;
 	    if (class=="Kroolboy") then sprite_index=spr_ship_krool;
 	    if (class=="Slamblasta") then sprite_index=spr_ship_slam;
@@ -491,7 +496,7 @@ function assign_ship_stats(){
 
 	}else if (class=="Battlekroozer"){
 	    sprite_index=spr_ship_kroozer;
-	    ship_size=3;
+	    size=3;
 	    name="";
 	    hp=1000;
 	    maxhp=1000;
@@ -512,7 +517,7 @@ function assign_ship_stats(){
 	}else 
 	if (class=="Ravager"){
 	    sprite_index=spr_ship_ravager;
-	    ship_size=1;
+	    size=1;
 	    name="";
 	    hp=100;
 	    maxhp=100;
@@ -531,7 +536,7 @@ function assign_ship_stats(){
 	// ** Tau **
 	if (class=="Custodian"){
 	    sprite_index=spr_ship_custodian;
-	    ship_size=3;
+	    size=3;
 	    name="";
 	    hp=1000;
 	    maxhp=1000;
@@ -552,7 +557,7 @@ function assign_ship_stats(){
 	}else 
 	if (class=="Protector"){
 	    sprite_index=spr_ship_protector;
-	    ship_size=2;
+	    size=2;
 	    name="";
 	    hp=600;
 	    maxhp=600;
@@ -572,7 +577,7 @@ function assign_ship_stats(){
 	}else 
 	if (class=="Emissary"){
 	    sprite_index=spr_ship_emissary;
-	    ship_size=2;
+	    size=2;
 	    name="";
 	    hp=400;
 	    maxhp=400;
@@ -592,7 +597,7 @@ function assign_ship_stats(){
 	}else 
 	if (class=="Warden"){
 	    sprite_index=spr_ship_warden;
-	    ship_size=1;
+	    size=1;
 	    name="";hp=100;
 	    maxhp=100;
 	    conditions="";
@@ -610,7 +615,7 @@ function assign_ship_stats(){
 	}else 
 	if (class=="Castellan"){
 	    sprite_index=spr_ship_castellan;
-	    ship_size=1;
+	    size=1;
 	    name="";
 	    hp=100;
 	    maxhp=100;
@@ -629,7 +634,7 @@ function assign_ship_stats(){
 	// ** Chaos **
 	if (class=="Desecrator"){
 	    sprite_index=spr_ship_dese;
-	    ship_size=3;
+	    size=3;
 	    name="";
 	    hp=1200;
 	    maxhp=1200;
@@ -652,7 +657,7 @@ function assign_ship_stats(){
 
 	if (class="Avenger"){
 	    sprite_index=spr_ship_veng;
-	    ship_size=2;
+	    size=2;
 	    name="";
 	    hp=1000;
 	    maxhp=1000;
@@ -672,7 +677,7 @@ function assign_ship_stats(){
 
 	if (class="Carnage") or (class="Daemon"){
 		sprite_index=spr_ship_carnage;
-	    ship_size=2;
+	    size=2;
 	    name="";
 	    hp=1000;
 	    maxhp=1000;
@@ -699,7 +704,7 @@ function assign_ship_stats(){
 	if (class="Iconoclast"){
 		sprite_index=spr_ship_icono;
 	    sprite_index=spr_ship_icono;
-	    ship_size=1;
+	    size=1;
 	    name="";
 	    hp=100;
 	    maxhp=100;
@@ -724,7 +729,7 @@ function assign_ship_stats(){
 	// Necrons
 	if (class="Cairn Class"){
 		sprite_index=spr_ship_cairn;
-	    ship_size=3;
+	    size=3;
 
 	    name="";
 	    hp=1100;
@@ -753,7 +758,7 @@ function assign_ship_stats(){
 	}
 
 	if (class="Reaper Class"){sprite_index=spr_ship_reaper;
-	    ship_size=3;
+	    size=3;
 
 	    name="";
 	    hp=900;
@@ -775,7 +780,7 @@ function assign_ship_stats(){
 	     
 	}
 
-	if (class="Shroud Class"){ship_size=2;
+	if (class="Shroud Class"){size=2;
 	    sprite_index=spr_ship_shroud;
 
 	    name="";
@@ -797,7 +802,7 @@ function assign_ship_stats(){
 	}
 
 	if (class="Jackal Class"){
-		ship_size=2;
+		size=2;
 	    sprite_index=spr_ship_jackal;
 
 	    name="";
@@ -819,7 +824,7 @@ function assign_ship_stats(){
 	}
 
 	if (class="Dirge Class"){
-		ship_size=2;
+		size=2;
 	    sprite_index=spr_ship_dirge;
 
 	    name="";

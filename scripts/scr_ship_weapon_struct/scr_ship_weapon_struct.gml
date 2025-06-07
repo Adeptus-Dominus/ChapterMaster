@@ -61,19 +61,16 @@ function ShipWeapon(weapon_name, overide_data={}) constructor{
 		with (ship){
 			_tangent_direction  = facing_weapon_angle(_facing);
 		}
-
 		return _tangent_direction;
 	}
+
+
 	static create_projectile = function(){
 		var _bullet = -1;
-		var _tangent_direction = weapon_direction();
 
 		var _bul_x = x
 		var barrel_offset = 32;
 		var _bul_y = y
-		if (barrel_count> 1){
-			var barrel_offset = -20*(barrel_offset/2);
-		}
 		
 		if (bullet_obj==obj_en_round){
 			if (ship.ai_type = "player" ){
@@ -85,35 +82,34 @@ function ShipWeapon(weapon_name, overide_data={}) constructor{
 		var _direction = point_direction(_bul_x,_bul_y, target.x,target.y);
 
 		if (accuracy < 100){
-			_direction += ((100-accuracy) * random_range(-0.5,5));
+			_direction += ((100-accuracy) * random_range(-0.5,0.5));
 		}
-		repeat(barrel_count){
-			var _bullet_qualities = {
-				speed : bullet_speed,
-				dam : dam,
-				image_xscale : draw_scale,
-				image_yscale : draw_scale,
-				direction : _direction,
-				target : target,
-				target_x:target.x,
-				target_y:target.y,
-				sprite_index : img,
-				explosion_sprite : explosion_sprite,
-			} 
 
-			_bullet = instance_create_layer(
-	        	_bul_x,
-	        	_bul_y,
-	            layer_get_all()[0],
-	            bullet_obj
-	        );
-	        with (_bullet){
-	        	move_data_to_current_scope(_bullet_qualities);
-	        }
-	        array_push(target.bullets_for, _bullet.id);
-	        barrel_offset+=20
-	        _bul_y = ship.y+lengthdir_y(barrel_offset,_tangent_direction);
-	    }
+		var _bullet_qualities = {
+			speed : bullet_speed,
+			dam : dam,
+			image_xscale : draw_scale,
+			image_yscale : draw_scale,
+			direction : _direction,
+			target : target,
+			target_x:target.x,
+			target_y:target.y,
+			sprite_index : img,
+			explosion_sprite : explosion_sprite,
+		} 
+
+		_bullet = instance_create_layer(
+        	_bul_x,
+        	_bul_y,
+            layer_get_all()[0],
+            bullet_obj
+        );
+        with (_bullet){
+        	move_data_to_current_scope(_bullet_qualities);
+        }
+        array_push(target.bullets_for, _bullet.id);
+        barrel_offset+=20
+
 	}
 	static fire = function(){
 		if (cooldown_timer > 0){
@@ -176,11 +172,7 @@ function ShipWeapon(weapon_name, overide_data={}) constructor{
 	static find_target = function(){
 		calc_gun_position();
 		var _shoot_angle = weapon_direction();
-		if (_shoot_angle > 360){
-			_shoot_angle -= 360;
-		} else if (_shoot_angle< 0){
-			_shoot_angle = 360 -_shoot_angle;
-		}
+
 		if (ship.ai_type == "player" || ship.ai_type == "allies"){
 
 			var _enemies = instance_number(obj_en_ship);

@@ -292,7 +292,7 @@ function organise_tyranid_fleet_bio(){
 function set_nid_ships(){
 	if (class=="Leviathan"){
 	    sprite_index=spr_ship_leviathan;
-	    ship_size=3;
+	    size=3;
 	    name="";
 	    hp=1000;
 	    maxhp=1000;
@@ -329,7 +329,7 @@ function set_nid_ships(){
 	}else 
 	if (class=="Razorfiend"){
 	    sprite_index=spr_ship_razorfiend;
-	    ship_size=2;
+	    size=2;
 	    name="";
 	    hp=600;
 	    maxhp=600;
@@ -351,7 +351,7 @@ function set_nid_ships(){
 	}else 
 	if (class=="Stalker"){
 	    sprite_index=spr_ship_stalker;
-	    ship_size=1;
+	    size=1;
 	    name="";
 	    hp=100;
 	    maxhp=100;
@@ -373,7 +373,7 @@ function set_nid_ships(){
 	}else 
 	if (class=="Prowler"){
 	    sprite_index=spr_ship_prowler;
-	    ship_size=1;
+	    size=1;
 	    name="";
 	    hp=100;
 	    maxhp=100;

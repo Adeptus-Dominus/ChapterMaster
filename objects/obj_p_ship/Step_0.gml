@@ -90,8 +90,8 @@ if (hp>0) and (instance_exists(target)){
     }
 
     if (action == "broadside"){
-        var _near_enemy = instance_nearest(obj_en_ship);
-        if (instance_nearest(obj_en_ship).size >= size){
+        var _near_enemy = instance_nearest(x,y,obj_en_ship);
+        if (_near_enemy.size >= size){
             target = _near_enemy;
         }
     }

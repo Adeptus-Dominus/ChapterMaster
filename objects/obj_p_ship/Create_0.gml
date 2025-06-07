@@ -41,6 +41,7 @@ board_frigate=false;
 name="";
 class="";
 hp=0;
+size = 1;
 maxhp=0;
 conditions="";
 shields=1;
