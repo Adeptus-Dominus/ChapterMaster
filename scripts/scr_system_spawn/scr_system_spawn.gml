@@ -414,6 +414,7 @@ if (did){
     }
 
 
+    //seeds genestealer cults
     if (field=="both"){
         if (obj_ini.fleet_type==ePlayerBase.penitent){
         	orkz+=3;
@@ -422,12 +423,8 @@ if (did){
         n=array_length(_non_xenos_chaos);
         for (var j=0; j<orkz && j<n; j++){
             
-            _current_system=array_random_element(_non_xenos_chaos);
-
-            _current_system.planet[1]=1;
-            _current_system.p_owner[1]=7;
-            _current_system.owner=7;
-            array_delete(_non_xenos_chaos, i, 1);
+            _current_system = array_pop_random(_non_xenos_chaos);
+            _current_system.owner = eFACTION.Tyranids;
         }
     }
     

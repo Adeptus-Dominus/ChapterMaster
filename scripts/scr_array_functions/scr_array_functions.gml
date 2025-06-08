@@ -74,6 +74,12 @@ function array_random_element(choice_array){
 	return choice_array[irandom(array_length(choice_array) - 1)];
 }
 
+function array_pop_random(choice_array){
+	var i = array_random_index(choice_array);
+	var _item = choice_array[i];
+	array_delete(choice_array, i, 1);
+	return _item;
+}
 function array_random_index(choice_array){
 	return irandom(array_length(choice_array) - 1);
 }

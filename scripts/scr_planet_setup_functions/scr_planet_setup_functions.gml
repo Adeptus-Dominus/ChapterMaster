@@ -56,6 +56,45 @@ function setup_chaos_world(star, planet){
     }  
 }
 
+
+function setup_sisters_world(star, planet){
+    var _p = planet;
+    with (star){
+        p_owner[_p]=5;
+        p_first[_p]=5;
+        p_sisters[_p]=4;
+        adjust_influence(eFACTION.Ecclesiarchy, (p_sisters[_p]*10)-irandom(5), _p);
+    }
+}
+
+function setup_genecult_infestation(){
+    var _planets = shuffled_planet_array();
+    var _culted = false;
+    for (var i = 0; i < planets; i++) {
+        var _planet = _planets[i];
+        if (!_culted){
+            _add_cult = true
+        } else {
+            _add_cult = irandom(1);
+        }
+        if (_add_cult){
+            if (p_population[_planet] > 0) {
+                _culted = true;
+                var new_cult = new PlanetFeature(P_features.Gene_Stealer_Cult);
+                array_push(p_feature[_planet], new_cult);
+                new_cult.cult_age = irandom(300)
+                p_influence[_planet][eFACTION.Tyranids] = new_cult.cult_age/10 + irandom(30);
+                p_tyranids[_planet] = min(3, floor(p_influence[_planet][eFACTION.Tyranids]/15))
+                if (p_tyranids[_planet]!=0){
+                    new_cult.hiding = false;
+                }
+            }
+        }
+        p_owner[_planet] = 2;
+    } 
+    owner = 2;  
+}
+
 function setup_star_planet_defualts(){
     // the min population of a planet is usually 1/3 of the max. so lava has 1500 max. min is 500. min + random should = max
     // its important to know the population of a planet due to recruitment changing depending on population max
@@ -350,38 +389,7 @@ function setup_star_planet_defualts(){
     }
     // Create Nids
     if (owner == eFACTION.Tyranids){
-        for (var i = 1; i <= planets; i++) {
-            if (p_population[i] > 0) {
-                p_tyranids[i] = 1;
-                
-                switch (p_type[i]) {
-                    case "Forge":
-                    case "Hive":
-                        p_tyranids[i] = choose(4,5,5);
-                        break;
-                }
-                //array_push(p_feature[i], new PlanetFeature(P_features.Gene_Stealer_Cult));
-
-            }
-            p_owner[i] = eFACTION.Imperium;
-        }
-    }
-
-    if (owner>20){
-        for (var i = 1; i <= planets; i++) {
-            if (p_population[i] > 0) {
-                var new_cult = new PlanetFeature(P_features.Gene_Stealer_Cult);
-                array_push(p_feature[i], new_cult);
-                new_cult.cult_age = irandom(300)
-                p_influence[i][eFACTION.Tyranids] = new_cult.cult_age/10 + irandom(30);
-                p_tyranids[i] = min(3, floor(p_influence[i][eFACTION.Tyranids]/15))
-                if (p_tyranids[i]!=0){
-                    new_cult.hiding =false;
-                }
-            }
-            p_owner[i] = 2;
-        }
-        owner = eFACTION.Tyranids;
+        setup_genecult_infestation();
     }
 
     for(var i=1; i<=planets; i++){
@@ -390,10 +398,7 @@ function setup_star_planet_defualts(){
             p_guardsmen[i]=0;
         }
         if (p_type[i]="Shrine") and (p_owner[i]!=1) and (p_first[i]!=1){
-            p_owner[i]=5;
-            p_first[i]=5;
-            p_sisters[i]=4;
-            adjust_influence(eFACTION.Ecclesiarchy, (p_sisters[i]*10)-irandom(5), i);
+            setup_sisters_world(self, i);
         }
         // if (p_owner[i]=3) or (p_owner[i]=5){p_feature[i]="Artifact|";}Testing ; 137
     }
@@ -407,7 +412,7 @@ function setup_star_planet_defualts(){
         }
     }
 
-    obj_controller.alarm[3]=1;
+    wait_and_excecute(1,scr_income,[],obj_controller);
 
     var i=choose(0,1);
     if (i==1) and (planets>0){
