@@ -28,45 +28,45 @@ function scr_income() {
         }
     }
 
-	if (training_apothecary=1) then income_training-=1;
-	if (training_apothecary=2) then income_training-=2;
-	if (training_apothecary=3) then income_training-=3;
-	if (training_apothecary=4) then income_training-=4;
-	if (training_apothecary=5) then income_training-=6;
-	if (training_apothecary=6) then income_training-=12;
+    static training_cost_chart = [0,1,2,3,4,6,12];
 
-	if (training_chaplain=1) then income_training-=1;
-	if (training_chaplain=2) then income_training-=2;
-	if (training_chaplain=3) then income_training-=3;
-	if (training_chaplain=4) then income_training-=4;
-	if (training_chaplain=5) then income_training-=6;
-	if (training_chaplain=6) then income_training-=12;
+    var training_sets = [training_apothecary,training_chaplain,training_psyker,training_techmarine];
+    for (var i=0;i<array_length(training_sets);i++){
+    	if (training_sets[i] > 0 && training_sets[i] < 7){
+    		income_training -=training_sets[training_sets[i]];
+    	}
+    }
 
-	if (training_psyker=1) then income_training-=1;
-	if (training_psyker=2) then income_training-=2;
-	if (training_psyker=3) then income_training-=3;
-	if (training_psyker=4) then income_training-=4;
-	if (training_psyker=5) then income_training-=6;
-	if (training_psyker=6) then income_training-=12;
-
-	if (training_techmarine=1) then income_training-=1;
-	if (training_techmarine=2) then income_training-=2;
-	if (training_techmarine=3) then income_training-=3;
-	if (training_techmarine=4) then income_training-=4;
-	if (training_techmarine=5) then income_training-=6;
-	if (training_techmarine=6) then income_training-=12;
-
-	tau_stars=0;if (instance_exists(obj_turn_end)) then tau_messenger+=1;
+	tau_stars=0;
+	if (instance_exists(obj_turn_end)) then tau_messenger+=1;
 
 	if (obj_ini.fleet_type=ePlayerBase.home_world){
 	    with(obj_star){
-	        if (planet_feature_bool(p_feature[1], P_features.Monastery)==1){obj_controller.income+=10;instance_create(x,y,obj_temp1);}
-	        if (planet_feature_bool(p_feature[2], P_features.Monastery)==1){obj_controller.income+=10;instance_create(x,y,obj_temp1);}
-	        if (owner = eFACTION.Tau) then obj_controller.tau_stars+=1;
-	        alarm[2]=1;
+	    	if (system_feature_bool(P_features.Monastery)){
+	    		obj_controller.income+=10;
+	    		var _joined = nearest_warp_joined(self);
+	    		if (_joined!="none"){
+	    			with (_joined){
+				        for(var i=1; i<=planets; i++){
+				            if (p_type[i]=="Forge") and (p_owner[i]==3) then obj_controller.income_forge+=6;
+				            if (p_type[i]=="Agri") and (p_owner[i]==2) then obj_controller.income_agri+=3;
+				        }	    				
+	    			}
+	    		} else {
+	    			var _nearest = distance_removed_star(x, y, 1);
+	    			if (point_distance(x,y,_nearest.x,_nearest.y) <= 180){
+	    				with (nearest){
+				            if (p_type[i]=="Forge") and (p_owner[i]==3) then obj_controller.income_forge+=6;
+				            if (p_type[i]=="Agri") and (p_owner[i]==2) then obj_controller.income_agri+=3;	 
+				        }   				
+	    			}
+	    		}
+	    	}
+	        if (owner = eFACTION.Tau){
+	        	obj_controller.tau_stars+=1;
+	        }
 	    }
 	}
-
 
 	if (obj_ini.fleet_type != ePlayerBase.home_world){
 	    with(obj_p_fleet){
@@ -85,8 +85,9 @@ function scr_income() {
 
 
 	with(obj_star){
-	    var o;o=0;
-	    repeat(4){o+=1;
+	    var o=0;
+	    repeat(planets){
+	    	o+=1;
 	        if (dispo[o]>=100){
 	            if (planet_feature_bool(p_feature[1], P_features.Monastery)==0){
 	                obj_controller.income_controlled_planets+=1;obj_controller.income_tribute+=1;

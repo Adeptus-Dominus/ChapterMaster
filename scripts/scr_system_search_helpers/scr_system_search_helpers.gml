@@ -244,9 +244,24 @@ function nearest_star_proper(xx,yy) {
 	return "none";
 }
 
+function nearest_warp_joined(_start_star){
+	var total_stars =  instance_number(obj_star);
+	for (var i=0;i<total_stars;i++){
+		var _trial_star = instance_nearest(obj_star.x, obj_star.y,obj_star);
+		var _join = determine_warp_join(_start_star,_trial_star ) ;
+		if (_join> 0){
+			instance_activate_object(obj_star);
+			return _trial_star.id;
+		}
+		instance_deactivate_object(id);
+	}
+	instance_activate_object(obj_star);
+	return "none";
+}
+
 
 function nearest_star_with_ownership(xx,yy, ownership, start_star="none", ignore_dead = true){
-	var nearest = "none"
+	var nearest = "none";
 	var total_stars =  instance_number(obj_star);
 	var i=0;
 	if (!is_array(ownership)){
