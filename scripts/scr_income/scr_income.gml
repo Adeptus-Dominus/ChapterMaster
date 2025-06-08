@@ -52,6 +52,9 @@ function scr_income() {
 
 	if (obj_ini.fleet_type=ePlayerBase.home_world){
 	    with(obj_star){
+	    	if (space_hulk){
+	    		continue;
+	    	}
 	    	if (system_feature_bool(p_feature, P_features.Monastery)){
 	    		obj_controller.income+=10;
 	    		var _joined = nearest_warp_joined(self);

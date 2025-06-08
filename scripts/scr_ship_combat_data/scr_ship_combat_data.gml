@@ -475,8 +475,11 @@ function assign_ship_stats(){
 	if (class=="Kroolboy") or (class=="Slamblasta"){
 	    size=3;
 	    sprite_index=spr_ship_krool;
-	    if (class=="Kroolboy") then sprite_index=spr_ship_krool;
-	    if (class=="Slamblasta") then sprite_index=spr_ship_slam;
+	    if (class=="Kroolboy"){
+	    	sprite_index=spr_ship_krool;
+	    } else if (class=="Slamblasta"){
+	    	sprite_index=spr_ship_slam;
+	    }
 	    name="";
 	    hp=1200;
 	    maxhp=1200;
@@ -490,21 +493,21 @@ function assign_ship_stats(){
 	    capacity=250;
 	    carrying=0;
 
-	    add_weapon_to_ship("Fighta Bommerz", {ammo : 3, cooldown : 120}); 
+	    add_weapon_to_ship("Fighta Bommerz", {ammo : 12, cooldown : 120}); 
 	    add_weapon_to_ship("Gunz Battery");
 	    add_weapon_to_ship("Heavy Gunz"); 
 
 	}else if (class=="Battlekroozer"){
 	    sprite_index=spr_ship_kroozer;
-	    size=3;
+	    size=2;
 	    name="";
-	    hp=1000;
-	    maxhp=1000;
+	    hp=800;
+	    maxhp=800;
 	    conditions="";
 	    shields=200;
 	    maxshields=200;
 	    leadership=100;
-	    armour_front=6;
+	    armour_front=5;
 	    side_armour=5;
 	    turrets=3;
 	    capacity=250;
@@ -525,8 +528,8 @@ function assign_ship_stats(){
 	    shields=100;
 	    maxshields=100;
 	    leadership=80;
-	    armour_front=6;
-	    side_armour=4;
+	    armour_front=3;
+	    side_armour=3;
 	    turrets=2;
 	    capacity=50;
 	    carrying=0;

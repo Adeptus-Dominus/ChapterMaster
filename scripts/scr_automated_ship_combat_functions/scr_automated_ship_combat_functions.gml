@@ -65,9 +65,9 @@ function ideal_broadside(){
         with (obj_en_ship){
             var _rel_direct = point_direction(_ship_x, _ship_y, x, y);
             if (_rel_direct > 270){
-                _enemy_points_left += size;
-            } else if (_rel_direct < 90) {
                 _enemy_points_right += size;
+            } else if (_rel_direct < 90) {
+                _enemy_points_left += size;
             }
         }
         var _break_direction = (_enemy_points_right > _enemy_points_left) ? 90 : 270;

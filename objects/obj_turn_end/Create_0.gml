@@ -27,6 +27,7 @@ first_y=obj_controller.y;
 combating=0;
 cooldown=10;
 
+main_slate = new DataSlate();
 obj_controller.menu=999;// show nothing, click nothing
 
 i=-1;repeat(11){i+=1;enemy_fleet[i]=0;allied_fleet[i]=0;ecap[i]=0;efri[i]=0;eesc[i]=0;acap[i]=0;afri[i]=0;aesc[i]=0;}

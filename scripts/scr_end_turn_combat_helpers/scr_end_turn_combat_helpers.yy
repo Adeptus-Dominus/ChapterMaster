@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_end_turn_combat_helpers",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_end_turn_combat_helpers",
+  "parent":{
+    "name":"Turn",
+    "path":"folders/Scripts/Turn.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -796,6 +796,7 @@
     {"id":{"name":"scr_drop_fiddle","path":"scripts/scr_drop_fiddle/scr_drop_fiddle.yy",},},
     {"id":{"name":"scr_drop_select_function","path":"scripts/scr_drop_select_function/scr_drop_select_function.yy",},},
     {"id":{"name":"scr_en_weapon","path":"scripts/scr_en_weapon/scr_en_weapon.yy",},},
+    {"id":{"name":"scr_end_turn_combat_helpers","path":"scripts/scr_end_turn_combat_helpers/scr_end_turn_combat_helpers.yy",},},
     {"id":{"name":"scr_enemy_ai_a","path":"scripts/scr_enemy_ai_a/scr_enemy_ai_a.yy",},},
     {"id":{"name":"scr_enemy_ai_b","path":"scripts/scr_enemy_ai_b/scr_enemy_ai_b.yy",},},
     {"id":{"name":"scr_enemy_ai_c","path":"scripts/scr_enemy_ai_c/scr_enemy_ai_c.yy",},},

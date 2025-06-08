@@ -32,6 +32,40 @@ if (alerts>0) and (popups_end=1){
         }
     }
 }
+main_slate.inside_method = function(){
+    if (show>0) and (current_battle<=battles){
+        var xxx=main_slate.XX;
+        var yyy=main_slate.YY;
+        var i=current_battle;
+        
+        draw_sprite(spr_purge_panel,0,xxx,yyy);
+        // if (battle_world[i]=-50) then draw_sprite(spr_attacked,1,xxx+12,yyy+54);
+        // if (battle_world[i]>0) then draw_sprite(spr_attacked,0,xxx+12,yyy+54);
+        if (battle_world[i]=-50) then scr_image("attacked",1,xxx+12,yyy+54,254,174);
+        if (battle_world[i]>0) then scr_image("attacked",0,xxx+12,yyy+54,254,174);
+        
+        draw_set_font(fnt_40k_14);draw_set_halign(fa_left);draw_set_color(c_gray);
+        draw_text(xxx+8,yyy+13,string_hash_to_newline(string(i)+"/"+string(battles)));
+        
+        draw_set_halign(fa_center);
+        draw_set_font(fnt_40k_30b);
+        
+        if (battle_world[i]>0) then draw_text_transformed(xxx+265,yyy+11,string_hash_to_newline("Forces Attacked! ("+string(battle_location[i])+" "+scr_roman(battle_world[i])+")"),0.7,0.7,0);
+        if (battle_world[i]=-50) then draw_text_transformed(xxx+265,yyy+11,string_hash_to_newline("Fleet Attacked! ("+string(battle_location[i])+" System)"),0.7,0.7,0);
+        
+        scr_image("ui/force",1,xxx+378-32,yyy+86-32,64,64);
+        // draw_sprite(spr_force_icon,1,xxx+378,yyy+86);
+        
+        draw_set_font(fnt_40k_14);
+        draw_set_halign(fa_left);
+        if (battle_world[current_battle]<0){
+            draw_player_fleet_combat_options();
+        }   else if (battle_world[i]>=1){
+           draw_player_ground_combat_options();
+        }
+    }
+    draw_set_alpha(1);
+}
 
-draw_set_alpha(1);
+main_slate.draw_with_dimensions(535, 200, 530, 400);
 
