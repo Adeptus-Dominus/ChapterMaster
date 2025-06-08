@@ -412,7 +412,7 @@ function setup_star_planet_defualts(){
         }
     }
 
-    wait_and_excecute(1,scr_income,[],obj_controller);
+    wait_and_execute(1,scr_income,[],obj_controller);
 
     var i=choose(0,1);
     if (i==1) and (planets>0){

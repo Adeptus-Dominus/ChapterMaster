@@ -3,11 +3,18 @@ function scr_income() {
 	// Determines income
 
 
-	income_base=32;income_tribute=0;income_controlled_planets=0;
-	if (obj_ini.fleet_type != ePlayerBase.home_world) then income_base=40;
+	income_base=32;
+
+	income_tribute=0;
+	income_controlled_planets=0;
+	if (obj_ini.fleet_type != ePlayerBase.home_world){
+		income_base=40;
+	}
 
 	income_home=0;
-	if (obj_ini.fleet_type=ePlayerBase.home_world) then income_home=8;// Homeworld-based income
+	if (obj_ini.fleet_type=ePlayerBase.home_world){
+		income_home=8;// Homeworld-based income
+	}
 
 	income_fleet=0;
 	with(obj_p_fleet){
@@ -15,7 +22,10 @@ function scr_income() {
 	    obj_controller.income_fleet-=frigate_number/2;
 	    obj_controller.income_fleet-=escort_number/10;
 	}
-	if (obj_ini.fleet_type = ePlayerBase.home_world) then obj_controller.income_fleet=round(obj_controller.income_fleet/2);
+
+	if (obj_ini.fleet_type = ePlayerBase.home_world){
+		obj_controller.income_fleet=round(obj_controller.income_fleet/2);
+	}
 
 	income_forge=0;
 	income_agri=0;
@@ -42,7 +52,7 @@ function scr_income() {
 
 	if (obj_ini.fleet_type=ePlayerBase.home_world){
 	    with(obj_star){
-	    	if (system_feature_bool(P_features.Monastery)){
+	    	if (system_feature_bool(p_feature, P_features.Monastery)){
 	    		obj_controller.income+=10;
 	    		var _joined = nearest_warp_joined(self);
 	    		if (_joined!="none"){
