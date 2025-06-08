@@ -1101,7 +1101,16 @@ global.weapons = {
 	"HK Missile": {
 		"abbreviation": "HKMssl",
 		"description": "A single shot hunter killer	missile that serves as a powerful anti armour/aircraft deterent.",
-		"tags": ["HK"]
+		"attack": {
+			"standard": 350,
+			"master_crafted": 400,
+			"artifact": 450
+		},
+		"arp": 1,
+		"range": 50,
+		"ammo": 1,
+		"spli": 1,
+		"tags": ["vehicle"]
 	},
 	"Twin Linked Heavy Bolter Mount": {
 		"attack": {

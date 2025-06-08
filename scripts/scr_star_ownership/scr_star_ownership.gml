@@ -1,3 +1,4 @@
+/// @mixin obj_star
 function scr_star_ownership(argument0) {
 
 
@@ -10,7 +11,7 @@ function scr_star_ownership(argument0) {
 		run+=1;
     	if (p_owner[run]=eFACTION.Player){
     		if (dispo[run]<95 && !planet_feature_bool(p_feature[run], P_features.Monastery)){
-    			p_owner[run]=2;
+    			p_owner[run]=eFACTION.Imperium;
     		}
     	}
     	var _set_to_first = false;	
@@ -25,11 +26,11 @@ function scr_star_ownership(argument0) {
 	    		p_owner[run]=p_first[run];
 	    	}
 	    }
-	    if (p_type[run]=="Dead") and (p_owner[run]!=2) and (p_first[run]!=1) and (p_first[run]!=5){
-	    	p_owner[run]=2;
+	    if (p_type[run]=="Dead") and (p_owner[run]!=eFACTION.Imperium) and (p_first[run]!=eFACTION.Player) and (p_first[run]!=eFACTION.Ecclesiarchy){
+	    	p_owner[run]=eFACTION.Imperium;
 	    }
-	    if (p_owner[run]=8) and (p_tau[run]=0) and (p_pdf[run]=0){
-	    	p_owner[run]=2;
+	    if (p_owner[run]=eFACTION.Tau) and (p_tau[run]=0) and (p_pdf[run]=0){
+	    	p_owner[run]=eFACTION.Imperium;
 	    	p_influence[run][eFACTION.Tau]=round(p_influence[run][eFACTION.Tau]/2);
 	    }
 	    if (p_owner[run]=10) and (p_chaos[run]=0) and (p_traitors[run]=0) and (p_population[run]<=0){
@@ -115,7 +116,7 @@ function scr_star_ownership(argument0) {
 		owner = eFACTION.Chaos;
 	} else if (tau_owner>imperium_owner) and (tau_owner>forge_owner) and (tau_owner>ork_owner) and (tau_owner>necrons_owner) and (tau_owner>player_owner) and (tau_owner>traitors_owner){
 		owner = eFACTION.Tau
-	} else if (ork_owner>player_owner) and (ork_owner>tau_owner) and (ork_owner>traitors_owner) and (ork_owner>necrons_owner){
+	} else if (ork_owner>imperium_owner) && (ork_owner>forge_owner) && (ork_owner>player_owner) and (ork_owner>tau_owner) and (ork_owner>traitors_owner) and (ork_owner>necrons_owner){
 		owner = eFACTION.Ork;
 	} else 	if (imperium_owner>0) and (imperium_owner>=forge_owner) and (imperium_owner>=tau_owner) and (imperium_owner>=necrons_owner) and (imperium_owner>=traitors_owner) and (imperium_owner>=ork_owner) and (player_owner=0){
 		owner = eFACTION.Imperium;

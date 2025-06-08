@@ -304,6 +304,7 @@ function scr_random_event(execute_now) {
 		}
 		
 		scr_popup("Promotions!",text,"distinguished","");
+        scr_event_log("green",text);
 		evented = true;
 	}
     
@@ -660,7 +661,8 @@ function scr_random_event(execute_now) {
 				text +="the Chapter Garage.";
 				break;
 		}
-	    scr_alert("color","lol",text,0,0);
+		scr_alert("color","lol",text,0,0);
+        scr_event_log("red",text); 
 		evented = true;
 	}
 
@@ -694,12 +696,9 @@ function scr_random_event(execute_now) {
 		else{
 			star_id.storm += time;
 			evented = true;
-			if (own==1){
-				scr_alert("red","Warp","Warp Storms rage across the "+string(star_id.name)+" system.",star_id.x,star_id.y);
-			}
-			else{
-				scr_alert("green","Warp","Warp Storms rage across the "+string(star_id.name)+" system.",star_id.x,star_id.y);
-			}	
+			var _col = own == 1 ? "red" : "green";
+			scr_alert(_col, "Warp", $"Warp Storms rage across the {star_id.name} system.", star_id.x, star_id.y);
+			scr_event_log(_col, $"Warp Storms rage across the {star_id.name} system.", star_id.x, star_id.y);
 		}
 	}
     
@@ -777,7 +776,8 @@ function scr_random_event(execute_now) {
 					log_error("RE: Enemy Forces, couldn't pick an enemy faction");
 					exit;
 			}
-			scr_alert("red","enemy",string(text)+" forces suddenly appear at "+string(star_id.name)+" "+string(planet)+"!",star_id.x,star_id.y);
+			scr_alert("red","enemy", $"{text} forces suddenly appear at {star_id.name} {planet}!",star_id.x,star_id.y);
+            scr_event_log("red",$"{text} forces suddenly appear at {star_id.name} {planet}!",star_id.x,star_id.y);
 			evented = true;
 		}
 	}
