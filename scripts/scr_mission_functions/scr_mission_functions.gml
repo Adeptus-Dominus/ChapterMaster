@@ -116,6 +116,7 @@ function init_marine_acting_strange(){
 	}
 	text += " is behaving strangely.";
 	scr_alert("color","lol",text,0,0);
+    scr_event_log("color",text);
 }
 
 function init_garrison_mission(planet, star, mission_slot){
