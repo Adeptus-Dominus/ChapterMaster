@@ -54,9 +54,3 @@ if (input_type = 2) {
     }
 }
 
-if (is_struct(target)){
-    if (inputting != 0){
-        target.number = inputting;
-    }
-    instance_destroy();
-}

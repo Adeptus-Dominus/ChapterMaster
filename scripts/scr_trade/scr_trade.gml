@@ -37,6 +37,7 @@ function TradeAttempt(diplomacy) constructor{
 	offer_options = [];
 
 	static clear_options = function(){
+		show_debug_message("clear");
 		trade_likely="";
 		var _offer_length = array_length(offer_options);
 		var _demand_length = array_length(demand_options)
@@ -306,14 +307,18 @@ function TradeAttempt(diplomacy) constructor{
 			trade_type : trade_type,
 			max_take : max_take,
 			number_last : 0,
-			bind_method : function(){
+		});
+		with (_option){
+			bind_method = function(){
 				if (max_take == 1){
-					number = 1;
+					 variable_struct_set(self, "number", 1);	
 				} else {
+					show_debug_message("diag_box");
 					get_diag_integer("{label} wanted?", max_take, self);
 				}
 			}
-		});
+		}
+		//_option.bind_scope = _option;
 		array_push(demand_options, _option);
 	}
 
@@ -426,14 +431,13 @@ function TradeAttempt(diplomacy) constructor{
         draw_set_halign(fa_left);
         draw_set_font(fnt_40k_14);
         draw_set_color(38144);
-        var _requested_count = 0
-        if (obj_controller.trading_artifact = 0){
+        var _requested_count = 0;
+        //if (obj_controller.trading_artifact = 0){
 	        for (var i=0;i<array_length(demand_options);i++){
 	        	var _opt = demand_options[i];
 	        	if (_opt.number != _opt.number_last){
 	        		recalc_values = true;
 	        	}
-	        
 	        	_opt.x1 = 347;
 	        	_opt.y1 = 382 + i*(48);
 	        	_opt.update_loc();
@@ -441,23 +445,27 @@ function TradeAttempt(diplomacy) constructor{
 	        	var _allow_click = _opt.disp <= trader_disp;
 	        	_opt.draw(_allow_click);
 	        	if (_opt.number > 0){
+	        		show_debug_message(_opt);
 	        		var _y_offset = 399 + (_requested_count * 20);
 	        		draw_sprite(spr_cancel_small,0,507,_y_offset);
 	        		if (point_and_click_sprite(507,_y_offset, spr_cancel_small)){
+	        			show_debug_message("cancel option");
 	        			_opt.number = 0;
 	        			recalc_values = true;;
 	        		}
 
 	        		if (_opt.max_take > 1){
-	        			draw_text(530,_y_offset,"{_opt.label} : {_opt.number}");
+	        			draw_text(530,_y_offset,$"{_opt.label} : {_opt.number}");
 	        		} else {
-	        			draw_text(530,_y_offset,"{_opt.label}");
+	        			draw_text(530,_y_offset,$"{_opt.label}");
 	        		}
+	        		_requested_count++;
 	        	}
 	        }
-	    }
+	    //}
 
-	    draw_text(507,529,string(global.chapter_name)+":");
+	    var _requested_count = 0;
+	    draw_text(507,529,$"{global.chapter_name}:");
         for (var i=0;i<array_length(offer_options);i++){
         	var _opt = offer_options[i];
         	if (_opt.number != _opt.number_last){
@@ -480,6 +488,7 @@ function TradeAttempt(diplomacy) constructor{
         		} else {
         			draw_text(530,_y_offset,"{_opt.label}");
         		}
+        		_requested_count++;
         	}        	
         }
 
@@ -501,39 +510,40 @@ function TradeAttempt(diplomacy) constructor{
 		
 		for (var i=0;i<array_length(demand_options);i++){
 			var _opt = demand_options[i]
+
+			if (_opt.number > 0 && struct_exists(relative_trade_values, _opt.label)){
+				their_worth+=_opt.number*relative_trade_values[$ _opt.label];
+			}
+
+
+
+		    /*if (trade_take[i]="Artifact"){
+		    	var _faction_barrier = 0;
+		    	switch (diplomacy_faction){
+		    		case 2:
+		    			_faction_barrier = 300;
+		    			break;
+		    		case 3:
+		    			_faction_barrier = 800;
+		    			break;
+		    		case 4:
+		    			_faction_barrier = 600;
+		    			break;
+		    		case 5:
+		    			_faction_barrier = 500;
+		    			break;	    			    				    			
+		    	}
+		    	if (diplomacy_faction < 5){
+		    		_faction_barrier = 1200
+		    	}*/
+		    //}
+		    their_worth += 1200;		    
 		}
-		if (_opt.number > 0 && struct_exists(relative_trade_values, _opt.label)){
-			their_worth+=_opt.number*relative_trade_values[$ _opt.label];
-		}
-
-
-
-	    if (trade_take[i]="Artifact"){
-	    	var _faction_barrier = 0;
-	    	switch (diplomacy_faction){
-	    		case 2:
-	    			_faction_barrier = 300;
-	    			break;
-	    		case 3:
-	    			_faction_barrier = 800;
-	    			break;
-	    		case 4:
-	    			_faction_barrier = 600;
-	    			break;
-	    		case 5:
-	    			_faction_barrier = 500;
-	    			break;	    			    				    			
-	    	}
-	    	if (diplomacy_faction < 5){
-	    		_faction_barrier = 1200
-	    	}
-	    	their_worth += 1200;
-	    }	
 	}
 
 	static calculate_player_trade_value = function(){
 		my_worth = 0;
-	    for (var i = 1; i < 5; i++) {
+	    for (var i = 0; i < array_length(offer_options); i++) {
 	    	var _opt = offer_options[i]
 	    	if (_opt.number<=0){
 	    		continue;
