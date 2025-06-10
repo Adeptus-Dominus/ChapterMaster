@@ -116,6 +116,7 @@ function init_marine_acting_strange(){
 	}
 	text += " is behaving strangely.";
 	scr_alert("color","lol",text,0,0);
+    scr_event_log("color",text);
 }
 
 function init_garrison_mission(planet, star, mission_slot){
@@ -353,7 +354,7 @@ function complete_beast_hunt_mission(targ_planet, problem_index){
         }
         for (var i=0;i<array_length(_hunters);i++){
         	_unit = _hunters[i];
-			_unit_pass = _tester.standard_test(_unit, "weapon_skill",10, "beast");
+			_unit_pass = _tester.standard_test(_unit, "weapon_skill",10, ["beast"]);
 			if (_unit_pass[0]){
 				if (!_success) then _success=true;
 			}

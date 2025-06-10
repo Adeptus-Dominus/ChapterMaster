@@ -1,13 +1,14 @@
 {
-  "$GMSound":"v1",
+  "$GMSound":"v2",
   "%Name":"snd_vode",
   "audioGroupId":{
     "name":"audiogroup_default",
     "path":"audiogroups/audiogroup_default",
   },
   "bitDepth":1,
-  "bitRate":256,
+  "channelFormat":1,
   "compression":3,
+  "compressionQuality":8,
   "conversionMode":0,
   "duration":118.41306,
   "exportDir":"sounds",
@@ -21,6 +22,5 @@
   "resourceVersion":"2.0",
   "sampleRate":44100,
   "soundFile":"snd_vode",
-  "type":1,
   "volume":1.0,
 }

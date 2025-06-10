@@ -1244,6 +1244,9 @@ function scr_initialize_custom() {
 				case "devastator":
 					devastator = devastator + real(s_val);
 					break;
+				case "dreadnought":
+					dreadnought = dreadnought + real(s_val);
+					break;
 			}
 		}
 	}
