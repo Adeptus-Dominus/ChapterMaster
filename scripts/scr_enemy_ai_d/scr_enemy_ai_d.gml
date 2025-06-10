@@ -406,11 +406,13 @@ function scr_enemy_ai_d() {
                     break;
                 }
     
-                if ((p_owner[r]==eFACTION.Imperium) or (p_owner[r]==eFACTION.Ecclesiarchy))   and (p_type[r]!="Lava") and (p_type[r]!="Hive") and (p_type[r]!="Temperate")  then array_push(non_priority_requests, r);
+                if ((p_owner[r]==eFACTION.Imperium) or (p_owner[r]==eFACTION.Ecclesiarchy)){
+                    array_push(non_priority_requests, r);
+                }
             }
         }
     
-        if (array_length(pop_doner_options)>0 && array_length(non_priority_requests) && array_length(priority_requests)){
+        if (array_length(pop_doner_options)>0 && (array_length(non_priority_requests) || array_length(priority_requests))){
             var onceh=0;
             var random_chance=floor(random(100))+1;
             var doner_index = 0;
