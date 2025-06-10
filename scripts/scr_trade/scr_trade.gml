@@ -54,8 +54,8 @@ function TradeAttempt(diplomacy) constructor{
 		x1 : 510,
 		y1 : 649,
 		label : "Clear",
-		bind_method : clear_options,
 	});
+	clear_button.bind_method  = clear_options;
 
 	static successful_trade_attempt = function(){
 		var trading_object = {};
@@ -264,37 +264,37 @@ function TradeAttempt(diplomacy) constructor{
 		x1 : 630,
 		y1 : 649,
 		label : "Offer",
-		bind_method : function(){
-			if (obj_controller.diplo_last!="offer"){
-				attempt_trade(true);
-			}
-		}
 	});
+	offer_button.bind_method = function(){
+		if (obj_controller.diplo_last !=" offer"){
+			attempt_trade(true);
+		}		
+	}
 
 	exit_button = new UnitButtonObject({
 		x1 : 818,
 		y1 : 796,
 		label : "Exit",
-		bind_method : function(){ 
-			with (obj_controller){
-	            cooldown=8;
-	            trading=0;
-	            scr_dialogue("trade_close");
-	            click2=1;	
-	            if (trading_artifact!=0){
-	                diplomacy=0;
-	                menu=0;
-	                force_goodbye=0;
-	                with(obj_popup){
-	                	instance_destroy();
-	                }
-	                obj_ground_mission.alarm[1]=1;
-	                exit;
-	            }	            			
-			}		
-		}
 	});
 
+	exit_button.bind_method = function(){
+		with (obj_controller){
+            cooldown=8;
+            trading=0;
+            scr_dialogue("trade_close");
+            click2=1;	
+            if (trading_artifact!=0){
+                diplomacy=0;
+                menu=0;
+                force_goodbye=0;
+                with(obj_popup){
+                	instance_destroy();
+                }
+                obj_ground_mission.alarm[1]=1;
+                exit;
+            }	            			
+		}		
+	}
 	static new_demand_buttons = function(trade_disp, name, trade_type, max_take = 100000){
 		var _option = new UnitButtonObject({
 			label : name,
@@ -303,15 +303,16 @@ function TradeAttempt(diplomacy) constructor{
 			trade_type : trade_type,
 			max_take : max_take,
 			number_last : 0,
-			bind_method : function(){
-				if (max_take == 1){
-					number = 1;
-				} else {
-					get_diag_integer("{label} wanted?", max_take, self);
-				}
+		});
+
+		_option.bind_method = function(){
+			if (max_take == 1){
+				number = 1;
+			} else {
+				get_diag_integer("{label} wanted?", max_take, self);
 			}
 
-		});
+		}
 		array_push(demand_options, _option);
 	}
 
@@ -371,14 +372,14 @@ function TradeAttempt(diplomacy) constructor{
 			disp : trade_disp,
 			trade_type : trade_type,
 			number_last : 0,
-			bind_method : function(){
-				if (max_number == 1){
-					number = 1;
-				} else {				
-					get_diag_integer("{label} offered?",max_number, self);
-				}
-			}
 		});
+		_option.bind_method = function(){
+			if (max_number == 1){
+				number = 1;
+			} else {				
+				get_diag_integer("{label} offered?",max_number, self);
+			}			
+		}
 		array_push(offer_options, _option);		
 	}
 
