@@ -64,6 +64,7 @@ function UnitButtonObject(data = false) constructor{
 	keystroke = false;
 	tooltip = "";
 	bind_method = "";
+	bind_scope = false;
 	style = "standard";
 	font=fnt_40k_14b
 
@@ -154,7 +155,15 @@ function UnitButtonObject(data = false) constructor{
 			var clicked = point_and_click(_button_click_area) || keystroke;
 			if (clicked){
 				if (is_callable(bind_method)){
-					bind_method();
+					if (bind_scope != false){
+						var _method = bind_method;
+						with (bind_scope){
+							_method();
+						}
+					} else {
+						bind_method();
+					}
+
 				}
 			}
 			return clicked

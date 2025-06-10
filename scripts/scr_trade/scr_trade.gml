@@ -56,6 +56,7 @@ function TradeAttempt(diplomacy) constructor{
 		label : "Clear",
 	});
 	clear_button.bind_method  = clear_options;
+	clear_button.bind_scope = self;
 
 	static successful_trade_attempt = function(){
 		var trading_object = {};
@@ -270,6 +271,7 @@ function TradeAttempt(diplomacy) constructor{
 			attempt_trade(true);
 		}		
 	}
+	offer_button.bind_scope = self;
 
 	exit_button = new UnitButtonObject({
 		x1 : 818,
@@ -295,6 +297,7 @@ function TradeAttempt(diplomacy) constructor{
             }	            			
 		}		
 	}
+	exit_button.bind_scope = self;
 	static new_demand_buttons = function(trade_disp, name, trade_type, max_take = 100000){
 		var _option = new UnitButtonObject({
 			label : name,
@@ -303,16 +306,14 @@ function TradeAttempt(diplomacy) constructor{
 			trade_type : trade_type,
 			max_take : max_take,
 			number_last : 0,
-		});
-
-		_option.bind_method = function(){
-			if (max_take == 1){
-				number = 1;
-			} else {
-				get_diag_integer("{label} wanted?", max_take, self);
+			bind_method : function(){
+				if (max_take == 1){
+					number = 1;
+				} else {
+					get_diag_integer("{label} wanted?", max_take, self);
+				}
 			}
-
-		}
+		});
 		array_push(demand_options, _option);
 	}
 
@@ -372,14 +373,14 @@ function TradeAttempt(diplomacy) constructor{
 			disp : trade_disp,
 			trade_type : trade_type,
 			number_last : 0,
-		});
-		_option.bind_method = function(){
-			if (max_number == 1){
-				number = 1;
-			} else {				
-				get_diag_integer("{label} offered?",max_number, self);
+			bind_method : function(){
+				if (max_number == 1){
+					number = 1;
+				} else {				
+					get_diag_integer("{label} offered?",max_number, self);
+				}			
 			}			
-		}
+		});
 		array_push(offer_options, _option);		
 	}
 
@@ -534,22 +535,29 @@ function TradeAttempt(diplomacy) constructor{
 		my_worth = 0;
 	    for (var i = 1; i < 5; i++) {
 	    	var _opt = offer_options[i]
-		    if (my_worth.label="Requisition"){
+	    	if (_opt.number<=0){
+	    		continue;
+	    	}
+		    if (_opt.label="Requisition"){
 		    	my_worth += _opt.number;
 		    }
 	    
-		    if (_opt.label="Gene-Seed") and (_opt.number>0){
+		    else if (_opt.label="Gene-Seed") {
 		        if (diplomacy_faction=3) or (diplomacy_faction=4) then my_worth+=_opt.number*30;
 		        if (diplomacy_faction=2) or (diplomacy_faction=5) then my_worth+=_opt.number*20;
 		        if (diplomacy_faction=8) or (diplomacy_faction=10) then my_worth+=_opt.number*50;
 		    }
 	    
-		    if (_opt.label="Info Chip") and (_opt.number>0){
+		    else if (_opt.label="Info Chip"){
+		    	if (diplomacy_faction == eFACTION.Mechanicus){
+		    		my_worth+=_opt.number*100;// 20% bonus
+		    	} else {
+		    		my_worth+=_opt.number*80;
+		    	}
 		    	my_worth+=_opt.number*80;
 		    }
-		    if (diplomacy_faction=3) and (_opt.label="Info Chip") and (_opt.number>0) then my_worth+=_opt.number*10;// 20% bonus
 	    
-		    if (_opt.label="STC Fragment") and (_opt.number>0){
+		    if (_opt.label="STC Fragment") {
 		        if (diplomacy_faction=2) then my_worth+=_opt.number*900;
 		        if (diplomacy_faction=3) then my_worth+=_opt.number*1000;
 		        if (diplomacy_faction=4) then my_worth+=_opt.number*1000;
@@ -564,31 +572,46 @@ function TradeAttempt(diplomacy) constructor{
 	}
 
 	trade_likely = "";
+	static chance_chart = ["Impossible", "Very Unlikely","Unlikely","Moderate Chance","Likely","Very Likely","Unrefusable"];
 	static calculate_deal_chance = function(){
-		var dif_penalty, penalty;
-		def_penalty=0;penalty=0;
+
+		var def_penalty=0;
+		var penalty=0;
 		calculate_player_trade_value();
 		calculate_trader_trade_value();
 
-		if (diplomacy_faction=2){dif_penalty=.4;penalty=5;}
-		else if (diplomacy_faction=3){dif_penalty=.6;penalty=5;}
-		else if (diplomacy_faction=4){dif_penalty=1;penalty=15;}
-		else if (diplomacy_faction=5){dif_penalty=0.8;penalty=0;}
-		else if (diplomacy_faction=6){dif_penalty=0.6;penalty=10;}
-		else if (diplomacy_faction=7){dif_penalty=0.4;penalty=20;}
-		else if (diplomacy_faction=8){dif_penalty=0.4;penalty=0;}
-		else if (diplomacy_faction=10){dif_penalty=1;penalty=0;}
+		if (diplomacy_faction=2){
+			dif_penalty=.4;
+			penalty=5;
+		}else if (diplomacy_faction=3){
+			dif_penalty=.6;
+			penalty=5;
+		}else if (diplomacy_faction=4){
+			dif_penalty=1;
+			penalty=15;
+		}else if (diplomacy_faction=5){
+			dif_penalty=0.8;
+			penalty=0;
+		}else if (diplomacy_faction=6){
+			dif_penalty=0.6;
+			penalty=10;
+		}else if (diplomacy_faction=7){
+			dif_penalty=0.4;
+			penalty=20;
+		}else if (diplomacy_faction=8){
+			dif_penalty=0.4;
+			penalty=0;
+		}else if (diplomacy_faction=10){
+			dif_penalty=1;
+			penalty=0;}
 
 		deal_chance=(100-penalty)-((their_worth-my_worth)*dif_penalty);
 
+		
 
-		if (deal_chance<=20) then trade_likely="Very Unlikely";
-	    if (deal_chance<=0) then trade_likely="Impossible";
-	    if (deal_chance>20) and (deal_chance<=40) then trade_likely="Unlikely";
-	    if (deal_chance>40) and (deal_chance<=60) then trade_likely="Moderate Chance";
-	    if (deal_chance>60) and (deal_chance<=80) then trade_likely="Likely";
-	    if (deal_chance>80) then trade_likely="Very Likely";
-	    if (deal_chance>100) then trade_likely="Unrefusable";
+		var _chance = clamp(floor((deal_chance/20)), 0, 6);
+
+		trade_likely = chance_chart[_chance];
 	}
 
 }
