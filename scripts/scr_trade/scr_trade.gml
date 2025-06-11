@@ -37,7 +37,6 @@ function TradeAttempt(diplomacy) constructor{
 	offer_options = [];
 
 	static clear_options = function(){
-		show_debug_message("clear");
 		trade_likely="";
 		var _offer_length = array_length(offer_options);
 		var _demand_length = array_length(demand_options)
@@ -313,7 +312,6 @@ function TradeAttempt(diplomacy) constructor{
 				if (max_take == 1){
 					 variable_struct_set(self, "number", 1);	
 				} else {
-					show_debug_message("diag_box");
 					get_diag_integer("{label} wanted?", max_take, self);
 				}
 			}
@@ -445,11 +443,9 @@ function TradeAttempt(diplomacy) constructor{
 	        	var _allow_click = _opt.disp <= trader_disp;
 	        	_opt.draw(_allow_click);
 	        	if (_opt.number > 0){
-	        		show_debug_message(_opt);
 	        		var _y_offset = 399 + (_requested_count * 20);
 	        		draw_sprite(spr_cancel_small,0,507,_y_offset);
 	        		if (point_and_click_sprite(507,_y_offset, spr_cancel_small)){
-	        			show_debug_message("cancel option");
 	        			_opt.number = 0;
 	        			recalc_values = true;;
 	        		}
