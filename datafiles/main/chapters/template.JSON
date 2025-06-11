@@ -168,15 +168,20 @@
         */
         "extra_specialists": {
             "chaplains": 0,
+            "chaplains_per_company": 0,
             "techmarines": 0,
+            "techmarines_per_company": 0,
             "apothecary": 0,
+            "apothecary_per_company": 0,
             "epistolary": 0,
+            "epistolary_per_company": 0,
             "codiciery": 0,
             "lexicanum": 0,
             "terminator": 0,
             "assault": 0,
             "veteran": 0,
-            "devastator": 0
+            "devastator": 0,
+            "dreadnought": 0
         },
         /**
         * * Default Marine strength
