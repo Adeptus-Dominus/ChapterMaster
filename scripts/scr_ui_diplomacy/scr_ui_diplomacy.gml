@@ -1,8 +1,250 @@
+function draw_character_diplomacy_base_page(){
+    draw_set_font(fnt_40k_14);
+    draw_set_alpha(1);
+    draw_set_color(38144);
+    draw_set_halign(fa_left);
+    draw_text_ext(336+16,209,string_hash_to_newline(string(diplo_txt)),-1,536);
+    draw_set_halign(fa_center);
+    draw_line(xx+429,yy+710,xx+800,yy+710);	
+	if (!audience){
+		with (diplo_buttons){
+			trade.draw();
+			demand.draw();
+			discuss.draw();
+			denounce.draw();
+			praise.draw();
+			alliance.draw();
+			declare_War.draw();
+		}
+	}
+	diplo_buttons.exit_button.draw();
+
+}
+
+function set_up_diplomacy_buttons(){
+	diplo_buttons = {};
+
+	//Trade button setup
+	diplo_buttons.trade = new UnitButtonObject({
+		x1 : 440,
+		y1 : 720,
+		label : "Trade",
+		bind_scope : obj_controller,
+	});
+	diplo_buttons.trade.bind_method = function(){
+    	if ((audience==0) and (force_goodbye==0)){
+            trading=1;
+            scr_dialogue("open_trade");
+            cooldown=8;
+            click2=1;
+            trade_attempt = new TradeAttempt(diplomacy);
+    	}		
+	}
+
+
+	//Demand button setup
+	diplo_buttons.demand = new UnitButtonObject({
+		x1 : 640,
+		y1 : 720,
+		label : "Demand",
+		bind_scope : obj_controller,
+	});
+	diplo_buttons.demand.bind_method = function(){
+    	if ((audience==0) and (force_goodbye==0)){
+            cooldown=8;
+            click2=1;
+            trading_demand=diplomacy;
+            scr_dialogue("trading_demand");
+    	}		
+	}
+
+
+	//Discuss button setup	
+	diplo_buttons.discuss = new UnitButtonObject({
+		x1 : 840,
+		y1 : 720,
+		label : "Discuss",
+		tooltip : "Unfinished",
+		bind_scope : obj_controller,
+	});
+
+
+	//denounce button setup
+	diplo_buttons.denounce = new UnitButtonObject({
+		x1 : 440,
+		y1 : diplo_buttons.trade.y2,
+		label : "Denounce",
+		bind_scope : obj_controller,
+	});
+
+	diplo_buttons.denounce.bind_method = function(){
+        if (diplo_last!="denounced"){
+            scr_dialogue("denounced");
+            cooldown=8;
+            click2=1;
+        }		
+	}
+
+	diplo_buttons.praise = new UnitButtonObject({
+		x1 : 640,
+		y1 : diplo_buttons.trade.y2,
+		label : "Praise",
+		bind_scope : obj_controller,
+	});
+
+	diplo_buttons.praise.bind_method = function(){
+        if (diplo_last!="praised"){
+            scr_dialogue("praised");
+            cooldown=8;
+            click2=1;
+        }			
+	}
+
+	diplo_buttons.alliance = new UnitButtonObject({
+		x1 : 840,
+		y1 : diplo_buttons.trade.y2,
+		label : "Propose\nAlliance",
+		bind_scope : obj_controller,
+	});
+
+
+	diplo_buttons.alliance.bind_method = function(){
+        if (diplo_last!="propose_alliance"){
+            cooldown=8;
+            click2=1;
+            scr_dialogue("propose_alliance");
+        }			
+	}
+
+	diplo_buttons.exit_button = new UnitButtonObject({
+		x1 : 818,
+		y1 : 795,
+		label : "Exist",
+		bind_scope : obj_controller,
+		color : CM_RED_COLOR,
+	});
+
+	diplo_buttons.exit_button.bind_method = function(){
+		if (audio_is_playing(snd_blood)==true) then scr_music("royal",2000);
+
+        if (complex_event==true) and (instance_exists(obj_temp_meeting)){
+            complex_event=false;
+            diplomacy=0;
+            menu=0;
+            force_goodbye=0;
+            cooldown=80;
+            with(obj_temp_meeting){instance_destroy();}
+            if (instance_exists(obj_turn_end)){
+                obj_turn_end.alarm[1]=1;
+                exit;
+            }
+            exit;
+        }
+        if (trading_artifact!=0){
+            for(var h=1; h<=4; h++){
+                diplo_option[h]="";
+                diplo_goto[h]="";
+            }
+            diplomacy=0;
+            menu=0;
+            force_goodbye=0;
+            cooldown=8;
+            if (trading_artifact==2) and (instance_exists(obj_ground_mission)){
+                obj_ground_mission.alarm[2]=1;
+            }// 135 this might not be needed
+            trading_artifact=0;
+            with(obj_popup){
+                obj_ground_mission.alarm[1]=1;
+                instance_destroy();
+            }
+            exit;
+        }
+        if (force_goodbye==5){
+            for(var h=1; h<=4; h++){
+                diplo_option[h]="";
+                diplo_goto[h]="";
+            }
+            diplomacy=0;
+            menu=0;
+            force_goodbye=0;
+            cooldown=8;
+            exit;
+        }
+        if (liscensing==2) and (repair_ships==0){
+            cooldown=8;
+            var cru=instance_create(mouse_x,mouse_y,obj_crusade);
+            cru.owner=diplomacy;
+            cru.placing=true;
+            diplomacy=0;
+            force_goodbye=0;
+            menu=0;
+            exit_all=0;
+            liscensing=0;
+            if (zoomed==0) then scr_zoom();
+            exit;
+        }
+        if (exit_all!=0){
+            cooldown=8;
+            diplomacy=0;
+            force_goodbye=0;
+            menu=0;
+            exit_all=0;
+        }
+        if (diplo_last=="artifact_thanks") and (force_goodbye!=0){
+            diplomacy=0;
+            menu=13;
+            force_goodbye=0;
+            cooldown=8;
+            exit;
+        }
+        // Exits back to diplomacy thing
+        if (audience==0){
+            cooldown=8;
+            diplomacy=0;
+            force_goodbye=0;
+        }
+        // No need to check for next audience
+        if (audience>0) and (!instance_exists(obj_turn_end)){
+            cooldown=8;
+            diplomacy=0;
+            menu=0;
+            audience=0;
+            force_goodbye=0;
+            exit;
+        }
+        if (audience>0) and (instance_exists(obj_turn_end)){
+            if (complex_event==false){
+                cooldown=8;
+                diplomacy=0;
+                menu=0;
+                obj_turn_end.alarm[1]=1;
+                audience=0;
+                force_goodbye=0;
+                exit;
+            }
+            if (complex_event=true){
+                // TODO
+            }
+        }
+	}
+
+
+	diplo_buttons.declare_War = new UnitButtonObject({
+		x1 : 640,
+		y1 : diplo_buttons.alliance.y2,
+		label : "DECLARE WAR",
+		tooltip : "Unfinished",
+		color : CM_RED_COLOR,
+		bind_scope : obj_controller,
+	});
+}
+
 function scr_ui_diplomacy() {
 	var xx,yy,show_stuff;
 	xx=__view_get( e__VW.XView, 0 )+0;
 	yy=__view_get( e__VW.YView, 0 )+0;
-	var show_stuff=false;var warning=0;
+	var show_stuff=false;
+	var warning=0;
 
 	// This script draws all of the diplomacy stuff, up to and including trading.
 
@@ -593,104 +835,17 @@ function scr_ui_diplomacy() {
 	    show_stuff=true;
 	}
 		
-		if (warning=1) and (diplomacy>=6){
-	            var warn;
-	            if (diplomacy<10) and (warning=1) then warn="Consorting with xenos will cause your disposition with the Imperium to lower.";
-	            if (diplomacy>=10) and (warning=1) then warn="Consorting with heretics will cause your disposition with the Imperium to plummet.";
-        
-	            draw_rectangle(mouse_x-2,mouse_y+20,mouse_x+2+string_width_ext(string_hash_to_newline(string(warn)),-1,600),mouse_y+24+string_height_ext(string_hash_to_newline(string(warn)),-1,600),0);
-	            draw_set_color(38144);
-	            draw_rectangle(mouse_x-2,mouse_y+20,mouse_x+2+string_width_ext(string_hash_to_newline(string(warn)),-1,600),mouse_y+24+string_height_ext(string_hash_to_newline(string(warn)),-1,600),1);
-	            draw_text_ext(mouse_x,mouse_y+22,string_hash_to_newline(string(warn)),-1,600);
-	        }
-    
-	if (show_stuff=true){
-	    draw_set_font(fnt_40k_14);
-	    draw_set_alpha(1);
-	    draw_set_color(38144);
-	    draw_set_halign(fa_left);
-	    draw_text_ext(xx+336+16,yy+209,string_hash_to_newline(string(diplo_txt)),-1,536);
-	    xx=__view_get( e__VW.XView, 0 );
-	    yy=__view_get( e__VW.YView, 0 );
-	    draw_set_halign(fa_center);
-	    draw_line(xx+429,yy+710,xx+800,yy+710);
-    
-	    if (trading=0) and (diplo_option[1]="") and (diplo_option[2]="") and (diplo_option[3]="") and (diplo_option[4]=""){
-	        draw_set_color(38144);
-	        if ((audience=0) and (force_goodbye=0)) or (faction_justmet=1){
-	            if (audience=0) and (force_goodbye=0){
-	                draw_rectangle(xx+562,yy+719,xx+667,yy+738,0);
-	                draw_rectangle(xx+682,yy+719,xx+787,yy+738,0);
-	            }
-            
-	            draw_rectangle(xx+442,yy+753,xx+547,yy+772,0);
-	            draw_rectangle(xx+562,yy+753,xx+667,yy+772,0);
-	            if (audience=0) and (force_goodbye=0){draw_rectangle(xx+682,yy+753,xx+787,yy+772,0);}
-            
-	            if (audience=0) and (force_goodbye=0){draw_rectangle(xx+552,yy+785,xx+677,yy+804,0);}// Declare War?
-	        }
-	        draw_rectangle(xx+818,yy+796,xx+897,yy+815,0);
-        
-	        draw_set_color(0);
-	        draw_set_halign(fa_top);
-	        if (point_and_click(draw_unit_buttons([xx+442+52,yy+720],"Trade"))){
-	        	if ((audience==0) and (force_goodbye==0)){
-	                trading=1;
-	                scr_dialogue("open_trade");
-	                cooldown=8;
-	                click2=1;
-	                trade_attempt = new TradeAttempt(diplomacy);
-	        	}
-	        }
-	        draw_set_halign(fa_center);
-        
-	        draw_text(xx+562+52,yy+720,string_hash_to_newline("Demand"));
-	        draw_text(xx+682+52,yy+720,string_hash_to_newline("Discuss"));
-	        draw_text(xx+442+52,yy+754,string_hash_to_newline("Denounce"));
-	        draw_text(xx+562+52,yy+754,string_hash_to_newline("Praise"));
-	        draw_text(xx+682+52,yy+754,string_hash_to_newline("Propose Alliance"));
-	        draw_text(xx+614.5,yy+786,string_hash_to_newline("DECLARE WAR"));
-	        draw_text(xx+857.5,yy+797,string_hash_to_newline("Exit"));
-        
-	        draw_set_alpha(0.2);
-	        if ((audience=0) and (force_goodbye=0)) or (faction_justmet=1){
+	if (warning=1) and (diplomacy>=6){
+        var warn;
+        if (diplomacy<10) and (warning=1) then warn="Consorting with xenos will cause your disposition with the Imperium to lower.";
+        if (diplomacy>=10) and (warning=1) then warn="Consorting with heretics will cause your disposition with the Imperium to plummet.";
 
-	            var show = faction_justmet;
-         
-        
-	            if (mouse_y>=yy+719) and (mouse_y<yy+738) and (audience=0) and (force_goodbye=0){
-	                if (mouse_x>=xx+562) and (mouse_x<xx+667) then draw_rectangle(xx+562,yy+719,xx+667,yy+738,0);
-	                if (mouse_x>=xx+682) and (mouse_x<xx+787) then draw_rectangle(xx+682,yy+719,xx+787,yy+738,0);
-	            }
-	            if (mouse_y>=yy+753) and (mouse_y<yy+772){
-	                if (show=true){
-	                    if (mouse_x>=xx+442) and (mouse_x<xx+547) then draw_rectangle(xx+442,yy+753,xx+547,yy+772,0);
-	                    if (mouse_x>=xx+562) and (mouse_x<xx+667) then draw_rectangle(xx+562,yy+753,xx+667,yy+772,0);
-	                }
-	                if (audience=0) and (force_goodbye=0){
-	                    if (mouse_x>=xx+682) and (mouse_x<xx+787) then draw_rectangle(xx+682,yy+753,xx+787,yy+772,0);
-	                }
-	            }
-	            if (audience=0) and (force_goodbye=0){
-	                if (mouse_x>=xx+552) and (mouse_y>=yy+785) and (mouse_x<=xx+677) and (mouse_y<=yy+804) then draw_rectangle(xx+552,yy+785,xx+677,yy+804,0);
-	            }
-	        }
-	        if (mouse_x>=xx+818) and (mouse_y>=yy+796) and (mouse_x<=xx+897) and (mouse_y<=yy+815) then draw_rectangle(xx+818,yy+796,xx+897,yy+815,0);
-        
-	        draw_set_alpha(1);
-	        draw_set_halign(fa_left);
-	        draw_set_color(0);
-        
-
-        
-	        // draw_line(xx+220,yy+317,xx+592,yy+317);
-	    }
-		
+        draw_rectangle(mouse_x-2,mouse_y+20,mouse_x+2+string_width_ext(string_hash_to_newline(string(warn)),-1,600),mouse_y+24+string_height_ext(string_hash_to_newline(string(warn)),-1,600),0);
+        draw_set_color(38144);
+        draw_rectangle(mouse_x-2,mouse_y+20,mouse_x+2+string_width_ext(string_hash_to_newline(string(warn)),-1,600),mouse_y+24+string_height_ext(string_hash_to_newline(string(warn)),-1,600),1);
+        draw_text_ext(mouse_x,mouse_y+22,string_hash_to_newline(string(warn)),-1,600);
+        }
     
-	    // xx=view_xview[0];yy=view_yview[0];
-    
-    
-	}
 	//scr_dialogue(diplomacy_pathway);
 	basic_diplomacy_screen();
 

@@ -5,7 +5,7 @@ if (audien[current_audience]!=0){
     with(obj_controller){if (zoomed=1) then scr_zoom();}
 
     obj_controller.audience=self.audien[self.current_audience];
-    obj_controller.menu=20;
+    scr_toggle_diplomacy();
     obj_controller.diplomacy=obj_controller.audience;
     
     if (obj_controller.diplomacy=10) and (obj_controller.faction_gender[10]=2) then scr_music("blood",60);

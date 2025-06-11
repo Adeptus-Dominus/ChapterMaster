@@ -67,6 +67,7 @@ function UnitButtonObject(data = false) constructor{
 	bind_scope = false;
 	style = "standard";
 	font=fnt_40k_14b
+	set_height_width = false;
 
 
 	static update_loc = function(){
@@ -82,7 +83,9 @@ function UnitButtonObject(data = false) constructor{
 		for (i=0;i<array_length(_updaters);i++){
 			self[$ _updaters[i]] = data[$ _updaters[i]];
 		}
-		update_loc();
+		if (!set_height_width){
+			update_loc();
+		}
 	}
 	if (data != false){
 		update(data);

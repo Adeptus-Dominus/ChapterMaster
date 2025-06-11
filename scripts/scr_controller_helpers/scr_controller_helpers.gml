@@ -431,6 +431,7 @@ function scr_toggle_diplomacy() {
     scr_change_menu(function() {
         with(obj_controller) {
             if (menu != 20) {
+                set_up_diplomacy_buttons();
                 menu = 20;
 
                 hide_banner = 1;

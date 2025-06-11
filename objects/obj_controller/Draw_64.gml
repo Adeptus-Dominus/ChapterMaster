@@ -160,9 +160,13 @@ if (global.cheat_debug == true){
 }
 
 if (menu == 20){
-    if (trading==true){
-        if ((diplomacy>1) && is_struct(trade_attempt)){
-            trade_attempt.draw_trade_screen();
+    if (diplomacy != 0){
+        if (trading==true){
+            if ((diplomacy>1) && is_struct(trade_attempt)){
+                trade_attempt.draw_trade_screen();
+            }
+        } else if (diplomacy!=10.1){
+            draw_character_diplomacy_base_page()
         }
     }
 }

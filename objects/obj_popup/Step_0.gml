@@ -1311,7 +1311,7 @@ try {
 				obj_ground_mission.alarm[3] = 1;
 			}
 			if ((target_comp > 2) && (target_comp != 7) && (target_comp < 9)) {
-				obj_controller.menu = 20;
+				scr_toggle_diplomacy();
 				obj_controller.cooldown = 10;
 				obj_controller.diplomacy = target_comp;
 				obj_controller.trading_artifact = 1;
@@ -1639,7 +1639,7 @@ try {
 				// Set disposition
 				// 135
 
-				obj_controller.menu = 20;
+				scr_toggle_diplomacy();
 				obj_controller.cooldown = 10;
 				obj_controller.diplomacy = target_comp;
 				with (obj_controller) {
