@@ -623,8 +623,9 @@ global.textures = {
     "Hazzards" : spr_hazzard_texture,
     "Checks" : spr_checker_texture,
     "flora_camo" : spr_flora_camo_texture,
-    "Checks2" : spr_hazzard_texture,
-    "Checks3" : spr_checker_texture,
+    "red_scale" : spr_red_scale_texture,
+    "smallchecks" : spr_checker_texture_small,
+    "clearchecks" : spr_clear_checker,
     "Checks4" : spr_hazzard_texture,
     "Checks5" : spr_checker_texture
 
