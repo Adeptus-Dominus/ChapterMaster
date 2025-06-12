@@ -395,7 +395,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 			spli = 3;
 		}
 		if (argument0 = "Slugga") {
-			atta = 80;
+			atta = 70;
 			arp = 0;
 			rang = 3.1;
 			amm = 4;
@@ -587,7 +587,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 			rang = 5;
 				spli = 3
 			if (obj_ini.preomnor = 1) {
-				atta = 180;
+				atta = 120;
 			}
 		}
 		if (argument0 = "Zoanthrope Blast") {
@@ -799,7 +799,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 			spli = 3;
 		}
 		if (argument0 = "Lascannon") {
-			atta = 300;
+			atta = 400;
 			arp = 1;
 			rang = 20;
 			amm = 8;
@@ -818,13 +818,13 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 			spli = 3;
 		}
 		if (argument0 = "Twin Linked Lascannon") {
-			atta = 600;
+			atta = 800;
 			arp = 1;
 			rang = 20;
 			spli = 2;
 		}
 		if (argument0 = "Twin-Linked Lascannon") {
-			atta = 600;
+			atta = 800;
 			arp = 1;
 			rang = 20;
 			spli = 2;
