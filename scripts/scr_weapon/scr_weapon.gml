@@ -2118,9 +2118,9 @@ global.gear = {
 		"Dreadnought": {
 			"abbreviation": "Drdnght",
 			"armour_value": {
-				"standard": 40,
-				"master_crafted": 45,
-				"artifact": 50
+				"standard": 60,
+				"master_crafted": 65,
+				"artifact": 70
 			},
 			"ranged_mod": {
 				"standard": -10,
@@ -2135,7 +2135,12 @@ global.gear = {
 			"hp_mod":{
 				"standard": 30,
 				"master_crafted": 35,
-				"artifact": 60
+				"artifact": 50
+			},
+			"damage_resistance_mod": {
+				"standard": 20,
+				"master_crafted": 25,
+				"artifact": 40
 			},
 			"melee_hands": 8,
 			"ranged_hands": 8,
@@ -2286,11 +2291,6 @@ global.gear = {
 			"hp_mod":{
 				"standard": 0,
 				"master_crafted": 5,
-				"artifact": 10
-			},
-			"damage_resistance_mod": {
-				"standard": -10,
-				"master_crafted": 0,
 				"artifact": 10
 			},
 			"description": "Power Armor dating back to the end of the Great Crusade. It is considered the pinnacle of Power Armor by some Astartes. However, the components are no longer reproducible, the knowledge having been lost to time.",
