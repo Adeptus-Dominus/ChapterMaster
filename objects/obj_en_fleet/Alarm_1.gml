@@ -20,7 +20,7 @@ if (orbiting != 0 && action=="" && owner!=noone){
         orbiting.present_fleet[owner]++;
     }
 }
-var _khorne_cargo = fleet_has_cargo("khorne_warband");
+var _khorne_cargo = fleet_has_cargo("warband");
 if (_khorne_cargo && owner=eFACTION.Chaos) {
     khorne_fleet_cargo();
 }

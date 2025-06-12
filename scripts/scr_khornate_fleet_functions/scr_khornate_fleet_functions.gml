@@ -2,14 +2,16 @@
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 function khorne_fleet_cargo(){
 	//This handles khorne fleets killing planet popultions moving planet and then choosing a new target ot chase
-    warband = cargo_data.khorne_warband;
-	var orb=orbiting; 
-	if (orb!=0) and (instance_exists(orb)) and (action=""){
-        if (orb.present_fleet[1]+orb.present_fleet[2]+orb.present_fleet[3]+orb.present_fleet[6]+orb.present_fleet[7]+orb.present_fleet[9]+orb.present_fleet[13]=0){
+    warband = cargo_data.warband;
+	var _orb=orbiting; 
+	if (_orb!=0) and (instance_exists(_orb)) and (action=""){
+        if (_orb.present_fleet[1]+_orb.present_fleet[2]+_orb.present_fleet[3]+_orb.present_fleet[6]+_orb.present_fleet[7]+_orb.present_fleet[9]+_orb.present_fleet[13]=0){
             var ii=0,good=0,part=0,find_new_planet=false;
             
             // No forces already landed
-            with (orb){
+            var _fleet = self;
+
+            with (_orb){
                 repeat(planets){
                     ii+=1;
                     if (planet_feature_bool(p_feature[ii], P_features.ChaosWarband)==1) {
@@ -18,9 +20,13 @@ function khorne_fleet_cargo(){
                         if (planet_imperium_ground_total(ii)<=0){
                            if (p_population[ii]>p_max_population[ii]/20){
                                 p_population[ii]=round(p_population[ii]/2);
-                                if (p_population[ii]<=p_max_population[ii]/20) then find_new_planet=true;
+                                if (p_population[ii]<=p_max_population[ii]/20){
+                                    find_new_planet=true;
+                                }
                             }
-                        } else if (p_population[ii]<=p_max_population[ii]/20) then find_new_planet=true;
+                        } else if (p_population[ii]<=p_max_population[ii]/20){
+                            find_new_planet=true;
+                        }
                     }
                 }
                 // Next planet; rembark the chaos forces
@@ -43,7 +49,7 @@ function khorne_fleet_cargo(){
             if ((good=0) or (find_new_planet=true)){
 				ii=0;
 				var landing_planet=0;
-                with (orb){
+                with (_orb){
                     repeat(planets) {
                         ii+=1;
                         if (landing_planet=0){
@@ -68,7 +74,7 @@ function khorne_fleet_cargo(){
                 if (landing_planet=0) and (trade_goods!="khorne_warband_landing_force"){// Nothing to see here, continue to next star*/
                     ii=0;
                     
-                    with(orb) {
+                    with(_orb) {
 						instance_deactivate_object(id);
 					}
 					
@@ -253,7 +259,7 @@ function spawn_chaos_warlord(){
 		    image_index=9;
 		    home_x=x+lengthdir_x(5000,point_direction(x,y,room_width/2,room_height/2));
 		    home_y=y+lengthdir_y(5000,point_direction(x,y,room_width/2,room_height/2));
-            cargo_data.khorne_warband = {};
+            cargo_data.warband = {};
 		    capital_number=10;
 		    frigate_number=20;
 		    escort_number=40;

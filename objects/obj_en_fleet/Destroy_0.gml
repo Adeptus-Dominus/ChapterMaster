@@ -15,7 +15,7 @@ if (action="") and (orbiting!=0){
 
 
 if (instance_exists(obj_controller)){
-    if (fleet_has_cargo("khorne_warband")) and (obj_controller.faction_defeated[10]=0){
+    if (fleet_has_cargo("warband")) and (obj_controller.faction_defeated[10]=0){
         destroy_khorne_fleet();
     }
     if (fleet_has_cargo("ork_warboss")) and (obj_controller.faction_defeated[7]<=0) and (safe=0){

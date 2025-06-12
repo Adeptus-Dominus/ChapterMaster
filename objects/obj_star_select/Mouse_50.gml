@@ -137,7 +137,7 @@ if (player_fleet>0) and (imperial_fleet+mechanicus_fleet+inquisitor_fleet+eldar_
                             en_capitals+=capital_number;
                             en_frigates+=frigate_number;
                             en_escorts+=escort_number;
-                            if (fleet_has_cargo("khorne_warband")) then khorne_count++;
+                            if (fleet_has_cargo("warband")) then khorne_count++;
                             if (fleet_has_cargo("csm")){
                                 chaos_space_marine_count++;
                             }
