@@ -416,7 +416,7 @@ function scr_enemy_ai_e() {
                         }
                         with(obj_en_fleet) {
                             if (action = "") and(orbiting = obj_controller.temp[1049]) and(owner = 10) {
-                                if (string_count("Khorne_warband", trade_goods) > 0) then instance_create(x, y, obj_temp2);
+                                if (string_count("khorne_warband", trade_goods) > 0) then instance_create(x, y, obj_temp2);
                                 if (string_lower(trade_goods) = "csm") then instance_create(x, y, obj_temp3);
                             }
                         }

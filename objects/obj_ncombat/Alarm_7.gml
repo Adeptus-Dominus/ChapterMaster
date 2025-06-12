@@ -645,18 +645,18 @@ try {
     
     
     
-    if ((leader=1) or (battle_special="world_eaters")) and (obj_controller.faction_defeated[10]=0) and (defeat=0) and (battle_special!="WL10_reveal") and (battle_special!="WL10_later"){
+    if ((leader=1) or (battle_special="ChaosWarband")) and (obj_controller.faction_defeated[10]=0) and (defeat=0) and (battle_special!="WL10_reveal") and (battle_special!="WL10_later"){
         if (battle_special!="WL10_reveal") and (battle_special!="WL10_later"){
         // prolly schedule a popup congratulating
         obj_controller.faction_defeated[enemy]=1;
         if (obj_controller.known[enemy]=0) then obj_controller.known[enemy]=1;
         
-        if (battle_special!="world_eaters") then with(obj_star){
+        if (battle_special!="ChaosWarband") then with(obj_star){
             if (string_count("WL"+string(obj_ncombat.enemy),p_feature[obj_ncombat.battle_id])>0){
                 p_feature[obj_ncombat.battle_id]=string_replace(p_feature[obj_ncombat.battle_id],"WL"+string(obj_ncombat.enemy)+"|","");
             }
         }
-        if (battle_special="world_eaters"){
+        if (battle_special="ChaosWarband"){
             obj_controller.faction_defeated[10]=1;// show_message("WL10 defeated");
             if (instance_exists(obj_turn_end)){
                 scr_event_log("","Enemy Leader Assassinated: Chaos Lord");

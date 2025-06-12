@@ -597,9 +597,9 @@ function fleet_arrival_logic(){
         if (string_count("_her",trade_goods)>0) then cancel=true;
         if (string_count("investigate_dead",trade_goods)>0) then cancel=true;
         if (string_count("spelunk",trade_goods)>0) then cancel=true;
-        if (string_count("BLOOD",trade_goods)>0) then cancel=true;
+        if (fleet_has_cargo("khorne_warband")) then cancel=true;
         if (fleet_has_cargo("ork_warboss")) cancel=true;
-        if (trade_goods="csm") then cancel=true;
+        if (fleet_has_cargo("csm")) then cancel=true;
 
         if (!cancel && trade_goods!="" && trade_goods!="return" && owner!=eFACTION.Tyranids && owner!=eFACTION.Chaos){
         	scr_efleet_arrive_at_trade_loc();
@@ -737,7 +737,9 @@ function fleet_arrival_logic(){
         // show_message("Tau|||  Other Owner: "+string(cur_star.owner)+"   ret: "+string(ret)+"    mergus: "+string(mergus));
     }
     
-    if (owner=eFACTION.Chaos) and (trade_goods="csm") or (trade_goods="Khorne_warband") then mergus=0;
+    if (owner=eFACTION.Chaos) and (fleet_has_cargo("csm")) or ( fleet_has_cargo("khorne_warband")){
+    	mergus=0;
+    }
     // if (cur_star.owner!=owner) then mergus=0;
     
     
@@ -834,7 +836,9 @@ function fleet_arrival_logic(){
     x=old_x;
     y=old_y;
     
-    if (cur_star.x=old_x) and (cur_star.y=old_y) and (cur_star.owner=self.owner) and (cur_star.action="") and ((owner = eFACTION.Tau) or (owner = eFACTION.Chaos)) and (mergus=10) and (trade_goods!="csm") and (trade_goods!="Khorne_warband"){// Move somewhere new
+    var _csm = fleet_has_cargo("khorne_warband") ||  fleet_has_cargo("khorne_warband");
+
+    if (cur_star.x=old_x) and (cur_star.y=old_y) and (cur_star.owner=self.owner) and (cur_star.action="") and ((owner = eFACTION.Tau) or (owner = eFACTION.Chaos)) and (mergus=10) and (!_csm){// Move somewhere new
         var stue, stue2;stue=0;stue2=0;
         var goood=0;
         

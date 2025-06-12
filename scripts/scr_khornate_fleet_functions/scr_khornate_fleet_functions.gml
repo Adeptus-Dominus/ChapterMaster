@@ -2,6 +2,7 @@
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 function khorne_fleet_cargo(){
 	//This handles khorne fleets killing planet popultions moving planet and then choosing a new target ot chase
+    warband = cargo_data.khorne_warband;
 	var orb=orbiting; 
 	if (orb!=0) and (instance_exists(orb)) and (action=""){
         if (orb.present_fleet[1]+orb.present_fleet[2]+orb.present_fleet[3]+orb.present_fleet[6]+orb.present_fleet[7]+orb.present_fleet[9]+orb.present_fleet[13]=0){
@@ -11,7 +12,7 @@ function khorne_fleet_cargo(){
             with (orb){
                 repeat(planets){
                     ii+=1;
-                    if (planet_feature_bool(p_feature[ii], P_features.World_Eaters)==1) {
+                    if (planet_feature_bool(p_feature[ii], P_features.ChaosWarband)==1) {
                         good-=1;
                         
                         if (planet_imperium_ground_total(ii)<=0){
@@ -28,10 +29,10 @@ function khorne_fleet_cargo(){
                     find_new_planet=false;
                     repeat(planets){
                         ii+=1;
-                        if (planet_feature_bool(p_feature[ii], P_features.World_Eaters)==1){
+                        if (planet_feature_bool(p_feature[ii], P_features.ChaosWarband)==1){
                             p_chaos[ii]=0;
                             p_traitors[ii]=max(4,p_traitors[ii]+1);
-                            delete_features(p_feature[ii], P_features.World_Eaters);
+                            delete_features(p_feature[ii], P_features.ChaosWarband);
                             find_new_planet=true;
                         }
                     }
@@ -47,7 +48,7 @@ function khorne_fleet_cargo(){
                         ii+=1;
                         if (landing_planet=0){
                             if (planet_imperium_ground_total(ii)>0) and (p_population[ii]>p_max_population[ii]/20){
-                                array_push(p_feature[ii], new NewPlanetFeature(P_features.World_Eaters));
+                                array_push(p_feature[ii], new NewPlanetFeature(P_features.ChaosWarband));
                                 landing_planet=ii;
                                 p_chaos[ii]=6;
                                 break;
@@ -57,14 +58,14 @@ function khorne_fleet_cargo(){
                             if (p_player[ii]>0) and (p_population[ii]>p_max_population[ii]/20){
                                 landing_planet=ii;
                                 p_chaos[ii]=6;
-                                array_push(p_feature[ii], new NewPlanetFeature(P_features.World_Eaters));
+                                array_push(p_feature[ii], new NewPlanetFeature(P_features.ChaosWarband));
                                 break;
                             }// Forces landed
                         }
                     }
                 }
                 
-                if (landing_planet=0) and (trade_goods!="Khorne_warband_landing_force"){// Nothing to see here, continue to next star*/
+                if (landing_planet=0) and (trade_goods!="khorne_warband_landing_force"){// Nothing to see here, continue to next star*/
                     ii=0;
                     
                     with(orb) {
@@ -75,7 +76,7 @@ function khorne_fleet_cargo(){
 						if (owner=eFACTION.Chaos) or (owner=eFACTION.Ork) or (owner=eFACTION.Necrons) or (owner=eFACTION.Eldar){
                             instance_deactivate_object(id)
                         } else {
-                            for (var p =1;p<=planets;p++){
+                            for (var p = 1;p <= planets;p++){
                                 if (p_type[p] != "Dead") then break;
                                 if (p == planets) then instance_deactivate_object(id);
                             }
@@ -102,11 +103,11 @@ function khorne_fleet_cargo(){
                     
 					
 					if !point_in_rectangle(n2,yy2, 50,50,room_width,room_height) {
-						trade_goods="Khorne_warband_landing_force";
-                        // show_message("Khorne_warband_landing_force");
+						trade_goods="khorne_warband_landing_force";
+                        // show_message("khorne_warband_landing_force");
                     }
                     
-                    if (trade_goods!="Khorne_warband_landing_force") {
+                    if (trade_goods!="khorne_warband_landing_force") {
                         next_star=instance_nearest(nx,ny,obj_star);
                         action_x=next_star.x;
                         action_y=next_star.y;
@@ -118,7 +119,7 @@ function khorne_fleet_cargo(){
                 
                 
                 
-                if (landing_planet=0 && trade_goods="Khorne_warband_landing_force"){
+                if (landing_planet=0 && trade_goods="khorne_warband_landing_force"){
                     log_message("BLOOD: A");
                     
                     // Go after the player now
@@ -209,6 +210,8 @@ function khorne_fleet_cargo(){
         }
     }	
 }
+
+
 function spawn_chaos_fleet_at_system(system){
     var _new_fleet = instance_create(system.x,system.y,obj_en_fleet);
     with (_new_fleet){
@@ -250,7 +253,7 @@ function spawn_chaos_warlord(){
 		    image_index=9;
 		    home_x=x+lengthdir_x(5000,point_direction(x,y,room_width/2,room_height/2));
 		    home_y=y+lengthdir_y(5000,point_direction(x,y,room_width/2,room_height/2));
-		    trade_goods="Khorne_warband";
+            cargo_data.khorne_warband = {};
 		    capital_number=10;
 		    frigate_number=20;
 		    escort_number=40;
@@ -291,7 +294,7 @@ function spawn_chaos_warlord(){
 function destroy_khorne_fleet(){
     var chaos_lord_killed=false;
     with(instance_nearest(x, y, obj_star)){
-		if system_feature_bool(p_feature, P_features.World_Eaters == 1) then chaos_lord_killed=true;
+		if system_feature_bool(p_feature, P_features.ChaosWarband == 1) then chaos_lord_killed=true;
     }
     if (chaos_lord_killed){
         obj_controller.faction_defeated[10]=1;

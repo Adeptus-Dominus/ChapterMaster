@@ -11,7 +11,7 @@ enum P_features {
 			OrkWarboss,
 			Warlord10,
 			Special_Force,
-			World_Eaters,
+			ChaosWarband,
 			Webway,
 			Secret_Base,
 			Starship,

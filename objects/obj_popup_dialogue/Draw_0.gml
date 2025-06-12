@@ -21,7 +21,7 @@ draw_set_font(fnt_40k_14b);
 draw_set_color(c_gray);
 draw_set_halign(fa_center);
 
-draw_text_ext(xx + 150, yy + 7, string_hash_to_newline(question), 18, 260);
+draw_text_ext(xx + 150, yy + 7, question, 18, 260);
 
 if (scr_hit(xx + 19, yy + 46, xx + 280, yy + 70)) {
     if (instance_exists(obj_cursor)) obj_cursor.image_index = 2;
@@ -32,9 +32,9 @@ if (scr_hit(xx + 19, yy + 46, xx + 280, yy + 70)) {
 draw_set_font(fnt_40k_14);
 draw_set_color(c_gray);
 if (blink >= 1) {
-    draw_text(xx + 152, yy + 50, string_hash_to_newline(string(inputting) + "|"));
+    draw_text(xx + 152, yy + 50, string(inputting + "|"));
 } else {
-    draw_text(xx + 150, yy + 50, string_hash_to_newline(string(inputting)));
+    draw_text(xx + 150, yy + 50, string(inputting));
 }
 
 // Button 1
