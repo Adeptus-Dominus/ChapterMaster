@@ -24,8 +24,8 @@ if (loading=1){
     xx=xx;
     yy=yy;
 } else if (loading==1){
-    var  temp1, dist;
-    dist=999;
+    var  temp1, target_distance;
+    target_distance=999;
     
     obj_controller.selecting_planet=0;
     button1="";
@@ -249,7 +249,12 @@ if (obj_controller.selecting_planet!=0){
     var slate_draw_scale = 420/850;
     if (feature!=""){
         if (is_struct(feature)){
-            feature.draw_planet_features(344+main_data_slate.width-4,165)
+            try{
+                feature.draw_planet_features(344+main_data_slate.width-4,165);
+            } catch(_exception){
+                handle_exception(_exception);
+                feature = "";
+            }
             if (feature.remove){
                 feature="";
             }else if (feature.destroy){
@@ -443,7 +448,7 @@ if (obj_controller.selecting_planet!=0){
                     if (obj_controller.faction_status[eFACTION.Imperium] == "War") {
                         obj_controller.recruiting_worlds_bought -= 1;
                     }
-                    array_push(target.p_feature[obj_controller.selecting_planet], new NewPlanetFeature(P_features.Recruiting_World));
+                    array_push(target.p_feature[obj_controller.selecting_planet], new PlanetFeature(P_features.Recruiting_World));
 
                     if (obj_controller.selecting_planet) {
                         obj_controller.recruiting_worlds += planet_numeral_name(obj_controller.selecting_planet, target);

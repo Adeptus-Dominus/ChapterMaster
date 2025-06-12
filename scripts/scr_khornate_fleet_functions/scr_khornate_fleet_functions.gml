@@ -47,7 +47,7 @@ function khorne_fleet_cargo(){
                         ii+=1;
                         if (landing_planet=0){
                             if (planet_imperium_ground_total(ii)>0) and (p_population[ii]>p_max_population[ii]/20){
-                                array_push(p_feature[ii], new NewPlanetFeature(P_features.World_Eaters));
+                                array_push(p_feature[ii], new PlanetFeature(P_features.World_Eaters));
                                 landing_planet=ii;
                                 p_chaos[ii]=6;
                                 break;
@@ -57,7 +57,7 @@ function khorne_fleet_cargo(){
                             if (p_player[ii]>0) and (p_population[ii]>p_max_population[ii]/20){
                                 landing_planet=ii;
                                 p_chaos[ii]=6;
-                                array_push(p_feature[ii], new NewPlanetFeature(P_features.World_Eaters));
+                                array_push(p_feature[ii], new PlanetFeature(P_features.World_Eaters));
                                 break;
                             }// Forces landed
                         }
@@ -157,7 +157,7 @@ function khorne_fleet_cargo(){
                         if (chase_fleet != "none") and (action == "") {
                         	var intercept_time = fleet_intercept_time_calculate(chase_fleet);
                         	if (chase_fleet.action!=""){
-                        		if (intercept_time<=chase_fleet.eta){
+                        		if (intercept_time<=chase_fleet._eta){
                         			target = chase_fleet;
                         			chase_fleet_target_set();
                         			target_chosen=true;
@@ -220,6 +220,7 @@ function spawn_chaos_fleet_at_system(system){
 }
 function spawn_chaos_warlord(){
 	with (obj_controller){
+
 		with(obj_turn_end){
 			audiences+=1;
 			audien[audiences]=10;
@@ -255,6 +256,7 @@ function spawn_chaos_warlord(){
 		    frigate_number=20;
 		    escort_number=40;
 		}
+
 		var rep, filtered_array, candidate_systems;
 		candidate_systems = [];
 	    with(obj_star){

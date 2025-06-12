@@ -43,14 +43,14 @@ if (!engaged){ // Shooting
 
         if (instance_exists(obj_nfort) && !flank) {
             enemy = instance_nearest(x,y,obj_nfort);
-            dist = 2;
+            target_distance = 2;
         } else {
-            dist=get_block_distance(enemy);  
+            target_distance=get_block_distance(enemy);  
         }
 
         target_unit_index=0;
 
-        if  (range[i] >= dist) { // The weapon is in range;
+        if  (range[i] >= target_distance) { // The weapon is in range;
             var _target_vehicles = apa[i] > 0 ? true : false; // AP weapons target vehicles
 
             // if (string_count("Gauss",wep[i])>0) then _target_vehicles=true;
@@ -214,8 +214,8 @@ if (!engaged){ // Shooting
 //TODO: The melee code was not refactored;
 else if ((engaged || enemy.engaged) and target_block_is_valid( enemy,obj_pnunit)){// Melee
     engaged=1;
-    var i=0,dist=999,no_ap=1;
-    // dist=point_distance(x,y,enemy.x,enemy.y)/10;
+    var i=0,target_distance=999,no_ap=1;
+    // target_distance=point_distance(x,y,enemy.x,enemy.y)/10;
     if !(instance_exists(obj_pnunit))then exit;
     for (var i=0;i<array_length(wep);i++){
         if (wep[i]=="" || wep_num[i]==0) then continue;
@@ -227,7 +227,7 @@ else if ((engaged || enemy.engaged) and target_block_is_valid( enemy,obj_pnunit)
             if (enemy=="none"){
                 exit;
             }
-            dist=get_block_distance(enemy);
+            target_distance=get_block_distance(enemy);
         }
         else if (flank){
             enemy=get_leftmost();
@@ -235,7 +235,7 @@ else if ((engaged || enemy.engaged) and target_block_is_valid( enemy,obj_pnunit)
             if (enemy=="none"){
                 exit;
             }                
-            dist=get_block_distance(enemy);
+            target_distance=get_block_distance(enemy);
         } 
         
         
@@ -331,7 +331,7 @@ var range_shooti;
 
 
     
-    dist=floor(point_distance(enemy2.x,enemy2.y,x,y)/10);
+    target_distance=floor(point_distance(enemy2.x,enemy2.y,x,y)/10);
     
     
     
@@ -339,7 +339,7 @@ var range_shooti;
     
     range_shoot="";
     
-    if (wep[i]!="") and (range[i]>=dist) and (ammo[i]!=0){
+    if (wep[i]!="") and (range[i]>=target_distance) and (ammo[i]!=0){
         if (range[i]!=1) and (engaged=0) then range_shoot="ranged";
         if ((range[i]!=floor(range[i])) or (range[i]=1)) and (engaged=1) then range_shoot="melee";
     }
@@ -350,7 +350,7 @@ var range_shooti;
     
     
     
-    if (wep[i]!="") and (range_shoot="ranged") and (range[i]>=dist){// Weapon meets preliminary checks
+    if (wep[i]!="") and (range_shoot="ranged") and (range[i]>=target_distance){// Weapon meets preliminary checks
         var _armour_piercing;_armour_piercing=0;if (apa[i]>att[i]) then _armour_piercing=1;// Determines if it is _armour_piercing or not
         
         // if (wep[i]="Missile Launcher") then _armour_piercing=1;

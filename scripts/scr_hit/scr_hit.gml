@@ -194,6 +194,45 @@ function mouse_distance_less(xx, yy, distance){
 	return (point_distance(xx,yy,mouse_consts[0],mouse_consts[1])<=distance)
 }
 
+function DragBox(xx, yy, bind_button = mb_left, on_release=false, on_drag = false) constructor{
+	x1 = xx;
+	y1 = yy;
+
+	x2 = xx;
+	y2 = yy;
+
+	self.bind_button = bind_button;
+	self.on_release = on_release;
+	self.on_drag = on_drag;
+
+	box_colour = CM_GREEN_COLOR;
+
+	drag_alpha =  0.25;
+
+	static step = function(){
+		var _mb_consts = return_mouse_consts();
+		x2 = _mb_consts[0];
+		y2 = _mb_consts[1];
+		if (!mouse_button_held(bind_button)){
+			if (is_callable(on_release)){
+				on_release(x1,y1,x2,y2);
+				return false;
+			}
+		} else {
+			draw_set_color(box_colour);
+			draw_set_alpha(drag_alpha);
+			draw_rectangle(x1, y1, x2, y2, 0);
+			draw_set_alpha(1);
+			draw_rectangle(x1, y1, x2, y2, 1);
+
+			if (is_callable(on_drag)){
+				on_drag(x1,y1,x2,y2);
+			}
+		}
+		return true;
+	}
+}
+
 function return_mouse_consts_tooltip(){
 	var consts = return_mouse_consts();
 	return [consts[0], consts[1]]

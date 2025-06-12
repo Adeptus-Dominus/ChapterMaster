@@ -26,17 +26,17 @@ function FastestRouteAlgorithm(start_x,start_y, xx,yy,fleet, start_from_star=fal
 	function find_star_travel_distances(cur_star_id){
 		var current_star = unvisited_stars[cur_star_id][0];
 		var cur_travel = unvisited_stars[cur_star_id][1];
-		var eta;
+		var _eta;
 		var warp_lane = false;
 		for (var s=cur_star_id+1; s<array_length(unvisited_stars);s++){
 			var visit_data = unvisited_stars[s];
 			if (visit_data[3]) then continue;
 			visit_star = unvisited_stars[s][0];
-			eta = calculate_fleet_eta(current_star.x,current_star.y,visit_star.x,visit_star.y, ship_speed, true, true, fleet.warp_able);
-			if (eta){
-				if (eta+cur_travel<visit_data[1]
+			_eta = calculate_fleet_eta(current_star.x,current_star.y,visit_star.x,visit_star.y, ship_speed, true, true, fleet.warp_able);
+			if (_eta){
+				if (_eta+cur_travel<visit_data[1]
 					|| visit_data[1]==-1 ){
-					visit_data[1] = eta+cur_travel;
+					visit_data[1] = _eta+cur_travel;
 					visit_data[2] =[];
 					for (var c=0;c<array_length(unvisited_stars[cur_star_id][2]);c++){
 						array_push(visit_data[2], unvisited_stars[cur_star_id][2][c]);
@@ -49,7 +49,7 @@ function FastestRouteAlgorithm(start_x,start_y, xx,yy,fleet, start_from_star=fal
 				visit_data[3] = true;
 			}
 			/*if (cur_star_id==0){
-				if (eta>worst_case){
+				if (_eta>worst_case){
 					visit_data[3] = true;
 				}
 			}*/
@@ -74,9 +74,9 @@ function FastestRouteAlgorithm(start_x,start_y, xx,yy,fleet, start_from_star=fal
              cur_star = final_route_info[2][i];
         }
         draw_line_dashed(cur_star.x,cur_star.y,final_route_info[0].x,final_route_info[0].y,16,0.5);
-        var eta = $"ETA {final_route_info[1]+1}";
+        var _eta = $"ETA {final_route_info[1]+1}";
         var zoom_size = obj_controller.zoomed?5:1;
-        draw_text_transformed(cur_star.x+24,cur_star.y+40,eta,zoom_size,zoom_size,0);             
+        draw_text_transformed(cur_star.x+24,cur_star.y+40,_eta,zoom_size,zoom_size,0);             
 	}
 
 	static final_array_path = function(){
