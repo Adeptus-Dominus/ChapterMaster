@@ -15,7 +15,7 @@ function instance_create(_x, _y, _obj) {
 function instances_exist(instance_set = []){
 	var _exists = false;
 	for (var i=0;i<array_length(instance_set);i++){
-		exists = instance_exists(instance_set[i]);
+		_exists = instance_exists(instance_set[i]);
 		if (_exists){
 			break;
 		}
