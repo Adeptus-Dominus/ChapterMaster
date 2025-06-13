@@ -3,8 +3,9 @@
 function khorne_fleet_cargo(){
 	//This handles khorne fleets killing planet popultions moving planet and then choosing a new target ot chase
     warband = cargo_data.warband;
-	var _orb=orbiting; 
-	if (_orb!=0) and (instance_exists(_orb)) and (action=""){
+	var _is_orbiting = is_orbiting();
+	if (_is_orbiting) and (action=""){
+        _orb = orbiting;
         if (_orb.present_fleet[1]+_orb.present_fleet[2]+_orb.present_fleet[3]+_orb.present_fleet[6]+_orb.present_fleet[7]+_orb.present_fleet[9]+_orb.present_fleet[13]=0){
             var ii=0,good=0,part=0,find_new_planet=false;
             
@@ -284,10 +285,13 @@ function spawn_chaos_warlord(){
 				var curr_dist = point_distance(curr.x, curr.y, nfleet.x, nfleet.y)
 				
 				return (prev_dist > curr_dist) ? curr : prev;
-		}),noone)
-	    nfleet.action_x=fleet_target.x;
-		nfleet.action_y=fleet_target.y;
-	    nfleet.alarm[4]=1;
+		}),noone);
+
+        with (nfleet){
+            nfleet.action_x=fleet_target.x;
+            nfleet.action_y=fleet_target.y;            
+            set_fleet_movement()    
+        }
 	
 	    var tix=$"Chaos Lord {faction_leader[eFACTION.Chaos]} continues his Black Crusade into Sector {obj_ini.sector_name}.";
 	    scr_alert("purple","lol",tix,nfleet.x,nfleet.y);
