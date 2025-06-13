@@ -777,7 +777,6 @@
     {"id":{"name":"scr_creation","path":"scripts/scr_creation/scr_creation.yy",},},
     {"id":{"name":"scr_crusade","path":"scripts/scr_crusade/scr_crusade.yy",},},
     {"id":{"name":"scr_culture_visuals","path":"scripts/scr_culture_visuals/scr_culture_visuals.yy",},},
-    {"id":{"name":"scr_DataSlate","path":"scripts/scr_DataSlate/scr_DataSlate.yy",},},
     {"id":{"name":"scr_demand","path":"scripts/scr_demand/scr_demand.yy",},},
     {"id":{"name":"scr_destroy_planet","path":"scripts/scr_destroy_planet/scr_destroy_planet.yy",},},
     {"id":{"name":"scr_destroy_vehicle","path":"scripts/scr_destroy_vehicle/scr_destroy_vehicle.yy",},},
