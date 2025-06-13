@@ -347,4 +347,3 @@ function FeatureSelected(Feature, system, planet) constructor{
 		return "done";
 	}
 }
-
