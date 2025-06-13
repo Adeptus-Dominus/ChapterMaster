@@ -30,7 +30,7 @@ if (image="chaos_symbol") and (title="Concealed Heresy") and (instance_exists(ob
 
 if (instance_exists(obj_controller)){
     if (obj_controller.current_eventing="chaos_meeting_1"){
-        obj_controller.menu=20;
+        scr_toggle_diplomacy();
         obj_controller.diplomacy=10;
         obj_controller.cooldown=5000;
         with(obj_controller){scr_dialogue("cs_meeting1");}

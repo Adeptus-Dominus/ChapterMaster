@@ -157,7 +157,7 @@ try {
         
         if (defeat=1) and (battle_special="WL10_reveal"){
             obj_controller.audience=10;
-            obj_controller.menu=20;
+            scr_toggle_diplomacy();
             obj_controller.diplomacy=10;
             obj_controller.known[eFACTION.Chaos]=2;
             with(obj_controller){scr_dialogue("intro2");}
@@ -510,7 +510,8 @@ try {
     
     if (enemy=1){
         if (battle_special="cs_meeting_battle1") or (battle_special="cs_meeting_battle2"){
-            obj_controller.diplomacy=10;obj_controller.menu=20;
+            obj_controller.diplomacy=10;
+            scr_toggle_diplomacy();
             with(obj_controller){scr_dialogue("cs_meeting21");}
         }
         
@@ -555,7 +556,7 @@ try {
             }
             // Master of Sanctity present, wishes to take in the player
             if (instance_exists(obj_ground_mission)) and (string_count("CRMOS|",obj_controller.useful_info)=0){
-                obj_controller.menu=20;
+                scr_toggle_diplomacy();
                 with(obj_controller){
                     scr_dialogue("cs_meeting_m5");
                 }

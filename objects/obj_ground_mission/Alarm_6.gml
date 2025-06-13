@@ -11,7 +11,7 @@ with (obj_fleet_select) {
     instance_destroy();
 }
 
-obj_controller.menu = 20;
+scr_toggle_diplomacy();
 obj_controller.diplomacy = 3;
 obj_controller.force_goodbye = 5;
 

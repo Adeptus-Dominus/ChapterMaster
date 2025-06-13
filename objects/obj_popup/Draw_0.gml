@@ -110,7 +110,7 @@ try {
 				obj_controller.menu_artifact = obj_controller.artifacts;
 			}
 
-			obj_controller.menu = 20;
+			scr_toggle_diplomacy();
 			obj_controller.diplomacy = giveto;
 			obj_controller.force_goodbye = -1;
 			var the = "";
