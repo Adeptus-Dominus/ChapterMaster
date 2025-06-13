@@ -2,7 +2,7 @@
   "$GMProject":"v1",
   "%Name":"ChapterMaster",
   "AudioGroups":[
-    {"$GMAudioGroup":"","%Name":"audiogroup_default","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
+    {"$GMAudioGroup":"v1","%Name":"audiogroup_default","exportDir":"","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
   ],
   "configs":{
     "children":[],
@@ -1049,6 +1049,7 @@
     {"id":{"name":"spr_charisma_icon","path":"sprites/spr_charisma_icon/spr_charisma_icon.yy",},},
     {"id":{"name":"spr_checker_texture_small","path":"sprites/spr_checker_texture_small/spr_checker_texture_small.yy",},},
     {"id":{"name":"spr_checker_texture","path":"sprites/spr_checker_texture/spr_checker_texture.yy",},},
+    {"id":{"name":"spr_clear_checker","path":"sprites/spr_clear_checker/spr_clear_checker.yy",},},
     {"id":{"name":"spr_cloak_cloth","path":"sprites/spr_cloak_cloth/spr_cloak_cloth.yy",},},
     {"id":{"name":"spr_cloak_fur","path":"sprites/spr_cloak_fur/spr_cloak_fur.yy",},},
     {"id":{"name":"spr_cloak_image_0","path":"sprites/spr_cloak_image_0/spr_cloak_image_0.yy",},},
@@ -1446,6 +1447,7 @@
     {"id":{"name":"spr_railgun","path":"sprites/spr_railgun/spr_railgun.yy",},},
     {"id":{"name":"spr_rectangle","path":"sprites/spr_rectangle/spr_rectangle.yy",},},
     {"id":{"name":"spr_red_button","path":"sprites/spr_red_button/spr_red_button.yy",},},
+    {"id":{"name":"spr_red_scale_texture","path":"sprites/spr_red_scale_texture/spr_red_scale_texture.yy",},},
     {"id":{"name":"spr_requisition","path":"sprites/spr_requisition/spr_requisition.yy",},},
     {"id":{"name":"spr_research_bar","path":"sprites/spr_research_bar/spr_research_bar.yy",},},
     {"id":{"name":"spr_rg_mk5_helm","path":"sprites/spr_rg_mk5_helm/spr_rg_mk5_helm.yy",},},
