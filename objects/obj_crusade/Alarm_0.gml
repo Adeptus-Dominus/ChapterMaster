@@ -1,5 +1,5 @@
 
-duration-=1;
+duration-=1; // Whole file here seems relevant for 714
 
 if (duration=0){
     with(obj_en_ship){
