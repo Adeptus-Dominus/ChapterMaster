@@ -1,3 +1,132 @@
+function DataSlate() constructor{
+	static_line=1;
+	title="";
+	sub_title="";
+	body_text = "";
+	inside_method = "";
+	XX=0;
+	YY=0;
+	width=0;
+	height=0;
+	percent_cut=0;
+	set_width = false;
+
+	style = "defualt";
+
+	tooltip_drawing = [];
+
+	static entered = function(){
+		return (scr_hit(
+                    XX-4,
+                    YY,
+                    XX + width,
+                    YY + height,
+                ));
+	}
+
+	static draw_with_dimensions = function(xx = -1,yy = -1, Width=-1 , Height=-1){
+		if (Width != -1){
+			width = Width;
+		}
+		if (Height != -1){
+			height = Height;
+		}
+		var _scale_x =  width/860;
+		var _scale_y =  height/850;
+		draw(xx,yy, _scale_x, _scale_y);
+	}
+
+	static draw = function(xx= -1,yy = -1, scale_x=1, scale_y=1){
+		if (xx != -1){
+			XX=xx;
+		}
+		if (yy != -1){
+			YY=yy;
+		}
+
+		if (!set_width){
+			width = 860*scale_x;
+			height = 850*scale_y;
+		}
+
+		switch (style){
+			case "defualt":
+				draw_sprite_ext(spr_data_slate,1, XX,YY, scale_x, scale_y, 0, c_white, 1);
+				break;
+			case "decorated":
+				draw_sprite_stretched(spr_data_slate_back, 0, XX,YY, width, height);
+				draw_sprite_stretched(spr_slate_side, 0, XX,YY, width, height);
+				draw_rectangle_color_simple(xx,YY, XX+width,YY+height, 0, 5998382, 0.05);
+				break;
+
+			case "plain":
+				draw_sprite_stretched(spr_data_slate_back, 0, XX,YY, width, height);
+				draw_rectangle_color_simple(xx,YY, XX+width,YY+height, 0, 5998382, 0.05);				
+				break;
+		}
+
+		if (is_callable(inside_method)){
+			inside_method();
+		}
+	    if (static_line<=10) then draw_set_alpha(static_line/10);
+	    if (static_line>10) then draw_set_alpha(1-((static_line-10)/10));		
+		draw_set_color(5998382);
+		var line_move = YY+(70*scale_y)+((36*scale_y)*static_line);
+		draw_line(XX+(30*scale_x),line_move,XX+(820*scale_x),line_move);
+		draw_set_alpha(1);
+		if (irandom(75)=0 && static_line>1){static_line--;}
+		else{
+			static_line+=0.1;
+		}
+		if (static_line>20) then static_line=1;
+		draw_set_color(c_gray);
+		draw_set_halign(fa_center);
+		var draw_height = 5;
+		if (title!=""){
+			draw_text_transformed(XX+(0.5*width), YY+(50*scale_y), title, 3*scale_x, 3*scale_y, 0);
+			draw_height += (string_height(title)*3)*scale_y;
+		}
+		if (sub_title!=""){
+			draw_text_transformed(XX+(0.5*width), YY+(50*scale_y)+draw_height, sub_title, 2*scale_x, 2*scale_y, 0);
+			draw_height+=(25*scale_y) +(string_height(sub_title)*2)*scale_y;
+		}
+		if (body_text!=""){
+			draw_text_ext(XX+(0.5*width), YY+(50*scale_y)+draw_height, string_hash_to_newline(body_text), -1, width-60);
+		}
+		switch (style){
+			case "decorated":
+				var _slate_scalex = width/sprite_get_width(spr_slate_side);
+				var _slate_scaley = height/sprite_get_height(spr_slate_side);
+				draw_sprite(spr_data_slate_corner_decoration, 0,XX+width - (66*_slate_scalex), YY + (7*_slate_scaley));
+				break;
+
+		}
+	}
+
+	static draw_cut = function(xx,yy, scale_x=1, scale_y=1, middle_percent=percent_cut){
+		XX=xx;
+		YY=yy;
+		draw_sprite_part_ext(spr_data_slate,1, 0, 0, 850, 69, XX, YY, scale_x, scale_y, c_white, 1);
+		draw_sprite_part_ext(spr_data_slate,1, 0, 69, 850, 683*(middle_percent/100), XX, YY+(69*scale_y), scale_x, scale_y, c_white, 1);
+		draw_sprite_part_ext(spr_data_slate,1, 0, 752, 850, 98, XX, YY+(69+683*((middle_percent/100)))*scale_y, scale_x, scale_y, c_white, 1);
+		width = 860*scale_x;
+		height = (69+(683*(middle_percent/100))+98 )*scale_y;
+		if (is_callable(inside_method)){
+			inside_method();
+		}		
+	}
+
+	static percent_mod_draw_cut = function(xx,yy, scale_x=1, scale_y=1, mod_edit=1){
+		percent_cut = min(percent_cut+mod_edit, 100);
+		if (!percent_cut) then percent_cut=0;
+		draw_cut(xx,yy, scale_x, scale_y);
+	}
+}
+
+
+
+
+
 function draw_building_builder(xx, yy, req_require, building_sprite){
 	var clicked =false;
 	draw_sprite_ext(building_sprite, 0, xx, yy, 0.5, 0.5, 0, c_white, 1);
@@ -189,11 +318,14 @@ function ShutterButton() constructor{
 	height=0;
 	right_rack = new RackAndPinion();
 	left_rack = new RackAndPinion("backward");
+	background = new DataSlate();
+	background.style = "plain";
 	draw_shutter = function(xx,yy,text, scale=1, entered = ""){
 		XX=xx;
 		YY=yy;
         draw_set_alpha(1);
-
+        self.scale = scale;
+        self.text = text;
         draw_set_font(fnt_40k_12);
         draw_set_halign(fa_left);
         draw_set_color(c_gray);		
@@ -227,7 +359,7 @@ function ShutterButton() constructor{
 			right_rack.draw(xx+width, yy, true);
 			left_rack.draw(xx, yy, true);
 		}
-		var text_draw = xx+(width/2)-(string_width(text)*(3*scale)/2);
+
 		var main_sprite = 0;
 		if (time_open<2){
 			draw_sprite_ext(spr_shutter_button, main_sprite, xx, yy, scale, scale, 0, c_white, 1)
@@ -241,14 +373,24 @@ function ShutterButton() constructor{
 			main_sprite=4;
 		}
 		if (time_open>=2){
-			draw_sprite_ext(spr_shutter_button, shutter_backdrop, xx, yy, scale, scale, 0, c_white, 1)
-			draw_set_color(c_red);
-			if (click_timer>0){
-				draw_text_transformed(text_draw, yy+(24*scale), text, 3*scale, 3*scale, 0);
-			} else {
-				draw_text_transformed(text_draw, yy+(20*scale), text, 3*scale, 3*scale, 0);
+			//draw_sprite_ext(spr_shutter_button, shutter_backdrop, xx, yy, scale, scale, 0, c_white, 1)
+			background.inside_method = function(){
+				var yy = YY;
+				var xx = XX;
+				var text_draw = xx+(width/2)-(string_width(text)*(3*scale)/2);
+				if (scr_hit(xx, yy, xx+width, yy+height)){
+					draw_rectangle_color_simple(xx, yy, xx+width, yy+height, false, CM_GREEN_COLOR, 0.35)
+				}
+				draw_set_halign(fa_left);
+				draw_set_color(c_red);
+				if (click_timer>0){
+					draw_text_transformed(text_draw, yy+(24*scale), text, 3*scale, 3*scale, 0);
+				} else {
+					draw_text_transformed(text_draw, yy+(20*scale), text, 3*scale, 3*scale, 0);
+				}
 			}
-			draw_sprite_ext(spr_shutter_button, main_sprite, xx, yy, scale, scale, 0, c_white, 1)			
+			background.draw_with_dimensions(xx, yy, width, height);
+			draw_sprite_ext(spr_shutter_button, main_sprite, xx, yy, scale, scale, 0, c_white, 1);	
 		}
 		draw_set_color(c_grey);
 		if (click_timer>7){
@@ -257,86 +399,6 @@ function ShutterButton() constructor{
 		} else {
 			return false;
 		}
-	}
-}
-
-function DataSlate() constructor{
-	static_line=1;
-	title="";
-	sub_title="";
-	body_text = "";
-	inside_method = "";
-	XX=0;
-	YY=0;
-	width=0;
-	height=0;
-	percent_cut=0;
-
-	static entered = function(){
-		return (scr_hit(
-                    XX-4,
-                    YY,
-                    XX + width,
-                    YY + height,
-                ));
-	}
-	static draw_with_dimensions = function(xx,yy, width , height){
-		var _scale_x =  width/860;
-		var _scale_y =  height/850;
-		draw(xx,yy, _scale_x, _scale_y);
-	}
-	static draw = function(xx,yy, scale_x=1, scale_y=1){
-		XX=xx;
-		YY=yy;
-		width = 860*scale_x;
-		height = 850*scale_y;
-		draw_sprite_ext(spr_data_slate,1, xx,yy, scale_x, scale_y, 0, c_white, 1);
-		if (is_callable(inside_method)){
-			inside_method();
-		}
-	    if (static_line<=10) then draw_set_alpha(static_line/10);
-	    if (static_line>10) then draw_set_alpha(1-((static_line-10)/10));		
-		draw_set_color(5998382);
-		var line_move = yy+(70*scale_y)+((36*scale_y)*static_line);
-		draw_line(xx+(30*scale_x),line_move,xx+(820*scale_x),line_move);
-		draw_set_alpha(1);
-		if (irandom(75)=0 && static_line>1){static_line--;}
-		else{
-			static_line+=0.1;
-		}
-		if (static_line>20) then static_line=1;
-		draw_set_color(c_gray);
-		draw_set_halign(fa_center);
-		var draw_height = 	5;
-		if (title!=""){
-			draw_text_transformed(xx+(0.5*width), yy+(50*scale_y), title, 3*scale_x, 3*scale_y, 0);
-			draw_height += (string_height(title)*3)*scale_y;
-		}
-		if (sub_title!=""){
-			draw_text_transformed(xx+(0.5*width), yy+(50*scale_y)+draw_height, sub_title, 2*scale_x, 2*scale_y, 0);
-			draw_height+=(25*scale_y) +(string_height(sub_title)*2)*scale_y;
-		}
-		if (body_text!=""){
-			draw_text_ext(xx+(0.5*width), yy+(50*scale_y)+draw_height, string_hash_to_newline(body_text), -1, width-60);
-		}
-	}
-	static draw_cut = function(xx,yy, scale_x=1, scale_y=1, middle_percent=percent_cut){
-		XX=xx;
-		YY=yy;
-		draw_sprite_part_ext(spr_data_slate,1, 0, 0, 850, 69, XX, YY, scale_x, scale_y, c_white, 1);
-		draw_sprite_part_ext(spr_data_slate,1, 0, 69, 850, 683*(middle_percent/100), XX, YY+(69*scale_y), scale_x, scale_y, c_white, 1);
-		draw_sprite_part_ext(spr_data_slate,1, 0, 752, 850, 98, XX, YY+(69+683*((middle_percent/100)))*scale_y, scale_x, scale_y, c_white, 1);
-		width = 860*scale_x;
-		height = (69+(683*(middle_percent/100))+98 )*scale_y;
-		if (is_callable(inside_method)){
-			inside_method();
-		}		
-	}
-
-	static percent_mod_draw_cut = function(xx,yy, scale_x=1, scale_y=1, mod_edit=1){
-		percent_cut = min(percent_cut+mod_edit, 100);
-		if (!percent_cut) then percent_cut=0;
-		draw_cut(xx,yy, scale_x, scale_y);
 	}
 }
 
