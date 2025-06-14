@@ -15,6 +15,8 @@ function DataSlate() constructor{
 
 	tooltip_drawing = [];
 
+	blend_col = 5998382;
+
 	static entered = function(){
 		return (scr_hit(
                     XX-4,
@@ -56,12 +58,12 @@ function DataSlate() constructor{
 			case "decorated":
 				draw_sprite_stretched(spr_data_slate_back, 0, XX,YY, width, height);
 				draw_sprite_stretched(spr_slate_side, 0, XX,YY, width, height);
-				draw_rectangle_color_simple(xx,YY, XX+width,YY+height, 0, 5998382, 0.05);
+				draw_rectangle_color_simple(xx,YY, XX+width,YY+height, 0, blend_col, 0.05);
 				break;
 
 			case "plain":
 				draw_sprite_stretched(spr_data_slate_back, 0, XX,YY, width, height);
-				draw_rectangle_color_simple(xx,YY, XX+width,YY+height, 0, 5998382, 0.05);				
+				draw_rectangle_color_simple(xx,YY, XX+width,YY+height, 0, blend_col, 0.05);				
 				break;
 		}
 

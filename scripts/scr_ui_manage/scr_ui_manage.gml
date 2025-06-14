@@ -176,6 +176,7 @@ function draw_sprite_and_unit_equip_data(){
     draw_set_halign(fa_left);    
     // Swap between squad view and normal view
     company_data.unit_ui_panel.inside_method = function(){
+        var _unit_tooltips = [];
         draw_set_color(c_gray);
         var xx = company_data.unit_ui_panel.XX;
         var yy = company_data.unit_ui_panel.YY;
@@ -221,7 +222,7 @@ function draw_sprite_and_unit_equip_data(){
             // Draw unit image
             draw_set_color(c_white);
             if (is_struct(obj_controller.temp[121])) {
-                obj_controller.temp[121].draw(xx + 220, yy + 109);
+                obj_controller.temp[121].draw(xx + 320, yy + 109);
             }
 
             //TODO implement tooltip explaining potential loyalty hit of demoting a sgt
@@ -231,7 +232,7 @@ function draw_sprite_and_unit_equip_data(){
                     var cur_squad = company_data.grab_current_squad();
                     var sgt_possible = cur_squad.type != "command_squad" && !selected_unit.IsSpecialist(SPECIALISTS_SQUAD_LEADERS);
                     if (selected_unit != cur_squad.squad_leader) {
-                        if (point_and_click(draw_unit_buttons([xx + 200 + 50, yy + 210 + 260], "Make Sgt", [1, 1], #50a076, , , sgt_possible ? 1 : 0.5)) && sgt_possible) {
+                        if (point_and_click(draw_unit_buttons([xx + 200 + 50, yy + 329], "Make Sgt", [1, 1], #50a076, , , sgt_possible ? 1 : 0.5)) && sgt_possible) {
                             cur_squad.change_sgt(selected_unit);
                         }
                     }
@@ -280,12 +281,12 @@ function draw_sprite_and_unit_equip_data(){
                 text = selected_unit.equipments_qual_string("armour", true);
                 tooltip_text = obj_controller.temp[103];
                 x1 = x_left;
-                y1 = yy + 58;
+                y1 = yy + 179;
                 x2 = x1 + string_width_ext(text, -1, 187);
                 y2 = y1 + string_height_ext(text, -1, 187);
                 draw_set_alpha(1);
                 draw_text_ext_outline(x1, y1, text, -1, 187, 0, quality_color(selected_unit.armour_quality));
-                array_push(company_data.tooltip_drawing, [tooltip_text, [x1, y1, x2, y2], "Armour"]);
+                array_push(_unit_tooltips, [tooltip_text, [x1, y1, x2, y2], "Armour"]);
             }
 
             var gear = selected_unit.gear();
@@ -293,11 +294,11 @@ function draw_sprite_and_unit_equip_data(){
                 text = selected_unit.equipments_qual_string("gear", true);
                 tooltip_text = obj_controller.temp[105];
                 x1 = x_left;
-                y1 = yy + 68;
+                y1 = yy + 305;
                 x2 = x1 + string_width_ext(text, -1, 187);
                 y2 = y1 + string_height_ext(text, -1, 187);
                 draw_text_ext_outline(x1, y1, text, -1, 187, 0, quality_color(selected_unit.gear_quality));
-                array_push(company_data.tooltip_drawing, [tooltip_text, [x1, y1, x2, y2], "Gear"]);
+                array_push(_unit_tooltips, [tooltip_text, [x1, y1, x2, y2], "Gear"]);
             }
 
             var mobi = selected_unit.mobility_item();
@@ -305,11 +306,11 @@ function draw_sprite_and_unit_equip_data(){
                 text = selected_unit.equipments_qual_string("mobi", true);
                 tooltip_text = obj_controller.temp[107];
                 x1 = x_left;
-                y1 = yy + 89;
+                y1 = yy + 326;
                 x2 = x1 + string_width_ext(text, -1, 187);
                 y2 = y1 + string_height_ext(text, -1, 187);
                 draw_text_ext_outline(x1, y1, text, -1, 187, 0, quality_color(selected_unit.mobility_item_quality));
-                array_push(company_data.tooltip_drawing, [tooltip_text, [x1, y1, x2, y2], "Back/Mobilitiy"]);
+                array_push(_unit_tooltips, [tooltip_text, [x1, y1, x2, y2], "Back/Mobilitiy"]);
             }
 
             var wep1 = selected_unit.weapon_one();
@@ -317,11 +318,11 @@ function draw_sprite_and_unit_equip_data(){
                 text = selected_unit.equipments_qual_string("wep1", true);
                 tooltip_text = obj_controller.temp[109];
                 x1 = x_left;
-                y1 = yy + 67;
+                y1 = yy + 204;
                 x2 = x1 + string_width_ext(text, -1, 187);
                 y2 = y1 + string_height_ext(text, -1, 187);
                 draw_text_ext_outline(x1, y1, text, -1, 187, 0, quality_color(selected_unit.weapon_one_quality));
-                array_push(company_data.tooltip_drawing, [tooltip_text, [x1, y1, x2, y2], "First Weapon"]);
+                array_push(_unit_tooltips, [tooltip_text, [x1, y1, x2, y2], "First Weapon"]);
             }
 
             var wep2 = selected_unit.weapon_two();
@@ -329,11 +330,11 @@ function draw_sprite_and_unit_equip_data(){
                 text = selected_unit.equipments_qual_string("wep2", true);
                 tooltip_text = obj_controller.temp[111];
                 x1 = x_left;
-                y1 = yy + 17;
+                y1 = yy + 254;
                 x2 = x1 + string_width_ext(text, -1, 187);
                 y2 = y1 + string_height_ext(text, -1, 187);
                 draw_text_ext_outline(x1, y1, text, -1, 187, 0, quality_color(selected_unit.weapon_two_quality));
-                array_push(company_data.tooltip_drawing, [tooltip_text, [x1, y1, x2, y2], "Second Weapon"]);
+                array_push(_unit_tooltips, [tooltip_text, [x1, y1, x2, y2], "Second Weapon"]);
             }
 
             // Stats
@@ -342,7 +343,7 @@ function draw_sprite_and_unit_equip_data(){
                 text = obj_controller.temp[128];
                 tooltip_text = obj_controller.temp[129];
                 x1 = x_left + 110;
-                y1 = yy + 208;
+                y1 = yy + 67;
                 x2 = x1 + string_width(text);
                 y2 = y1 + string_height(text);
                 x3 = x1 - 26;
@@ -350,7 +351,7 @@ function draw_sprite_and_unit_equip_data(){
 
                 draw_sprite_stretched(spr_icon_bionics, 0, x3, y3, 24, 24);
                 draw_text_outline(x1, y1, text);
-                array_push(company_data.tooltip_drawing, [tooltip_text, [x3, y1, x2, y2], "Bionics Installed"]);
+                array_push(_unit_tooltips, [tooltip_text, [x3, y1, x2, y2], "Bionics Installed"]);
             }
 
             // Armour Rating
@@ -358,14 +359,14 @@ function draw_sprite_and_unit_equip_data(){
                 text = obj_controller.temp[126];
                 tooltip_text = obj_controller.temp[127];
                 x1 = x_left + 20;
-                y1 = yy + 232;
+                y1 = yy + 91;
                 x2 = x1 + string_width(text);
                 y2 = y1 + string_height(text);
                 x3 = x1 - 26;
                 y3 = y1 - 4;
                 draw_sprite_stretched(spr_icon_shield2, 0, x3, y3, 24, 24);
                 draw_text_outline(x1, y1, text);
-                array_push(company_data.tooltip_drawing, [tooltip_text, [x3, y1, x2, y2], "Armour Rating"]);
+                array_push(_unit_tooltips, [tooltip_text, [x3, y1, x2, y2], "Armour Rating"]);
             }
 
             // Health
@@ -373,14 +374,14 @@ function draw_sprite_and_unit_equip_data(){
                 text = obj_controller.temp[124];
                 tooltip_text = obj_controller.temp[125];
                 x1 = x_left + 20;
-                y1 = yy + 208;
+                y1 = yy + 67;
                 x2 = x1 + string_width(text);
                 y2 = y1 + string_height(text);
                 x3 = x1 - 26;
                 y3 = y1 - 4;
                 draw_sprite_stretched(spr_icon_health, 0, x3, y3, 24, 24);
                 draw_text_outline(x1, y1, text);
-                array_push(company_data.tooltip_drawing, [tooltip_text, [x3, y1, x2, y2], "Health"]);
+                array_push(_unit_tooltips, [tooltip_text, [x3, y1, x2, y2], "Health"]);
             }
 
             // Experience
@@ -388,13 +389,13 @@ function draw_sprite_and_unit_equip_data(){
                 text = obj_controller.temp[113];
                 tooltip_text = "A measureme of how battle-hardened the unit is. Provides a lot of various bonuses across the board.";
                 x1 = x_left + 20;
-                y1 = yy + 184;
+                y1 = yy + 43;
                 x2 = x1 + string_width(text);
                 y2 = y1 + string_height(text);
                 x3 = x1 - 26;
                 y3 = y1 - 4;
-                array_push(company_data.tooltip_drawing, [tooltip_text, [x3, y1, x2, y2], "Experience"]);
-                draw_sprite_stretched(spr_icon_veteran, 0, x_left - 6, yy + 180, 24, 24);
+                array_push(_unit_tooltips, [tooltip_text, [x3, y1, x2, y2], "Experience"]);
+                draw_sprite_stretched(spr_icon_veteran, 0, x_left - 6, yy + 39, 24, 24);
                 draw_text_outline(x1, y1, text);
             }
 
@@ -402,14 +403,14 @@ function draw_sprite_and_unit_equip_data(){
                 text = obj_controller.temp[118]; // Damage Resistance
                 tooltip_text = obj_controller.temp[130];
                 x1 = x_left + 110;
-                y1 = yy + 232;
+                y1 = yy + 91;
                 x2 = x1 + string_width(text);
                 y2 = y1 + string_height(text);
                 x3 = x1 - 26;
                 y3 = y1 - 4;
                 draw_sprite_stretched(spr_icon_iron_halo, 0, x3, y3, 24, 24);
                 draw_text_outline(x1, y1, text);
-                array_push(company_data.tooltip_drawing, [tooltip_text, [x3, y1, x2, y2], "Damage Resistance"]);
+                array_push(_unit_tooltips, [tooltip_text, [x3, y1, x2, y2], "Damage Resistance"]);
             }
 
             // Psyker things
@@ -417,21 +418,21 @@ function draw_sprite_and_unit_equip_data(){
                 text = obj_controller.temp[119];
                 tooltip_text = obj_controller.temp[123];
                 x1 = x_left + 110;
-                y1 = yy + 184;
+                y1 = yy + 43;
                 x2 = x1 + string_width(text);
                 y2 = y1 + string_height(text);
                 x3 = x1 - 26;
                 y3 = y1 - 4;
                 draw_sprite_stretched(spr_icon_psyker, 0, x3, y3, 24, 24);
                 draw_text_outline(x1, y1, text);
-                array_push(company_data.tooltip_drawing, [tooltip_text, [x3, y1, x2, y2], "Psychic Stats"]);
+                array_push(_unit_tooltips, [tooltip_text, [x3, y1, x2, y2], "Psychic Stats"]);
             }
 
             if (is_array(obj_controller.temp[116])) {
                 text = $"{round(obj_controller.temp[116][0])}"; // melee attack
                 tooltip_text = string(obj_controller.temp[116][1]);
                 x1 = x_left + 20;
-                y1 = yy + 256;
+                y1 = yy + 115;
                 x2 = x1 + string_width(text);
                 y2 = y1 + string_height(text);
                 if (selected_unit.encumbered_melee) {
@@ -443,14 +444,14 @@ function draw_sprite_and_unit_equip_data(){
                 draw_sprite_stretched(spr_icon_weapon_skill, 0, x3, y3, 24, 24);
                 draw_text_outline(x1, y1, text);
                 draw_set_color(line_color);
-                array_push(company_data.tooltip_drawing, [tooltip_text, [x3, y1, x2, y2], "Melee Attack"]);
+                array_push(_unit_tooltips, [tooltip_text, [x3, y1, x2, y2], "Melee Attack"]);
             }
 
             if (is_array(obj_controller.temp[117])) {
                 text = $"{round(obj_controller.temp[117][0])}"; // ranged attack
                 tooltip_text = string(obj_controller.temp[117][1]);
                 x1 = x_left + 20;
-                y1 = yy + 280;
+                y1 = yy + 139;
                 x2 = x1 + string_width(text);
                 y2 = y1 + string_height(text);
                 if (selected_unit.encumbered_ranged) {
@@ -460,7 +461,7 @@ function draw_sprite_and_unit_equip_data(){
                 y3 = y1 - 4;
                 draw_sprite_stretched(spr_icon_ballistic_skill, 0, x3, y3, 24, 24);
                 draw_text_outline(x1, y1, text);
-                array_push(company_data.tooltip_drawing, [tooltip_text, [x3, y1, x2, y2], "Ranged Attack"]);
+                array_push(_unit_tooltips, [tooltip_text, [x3, y1, x2, y2], "Ranged Attack"]);
                 draw_set_color(line_color);
             }
 
@@ -468,7 +469,7 @@ function draw_sprite_and_unit_equip_data(){
                 var carry_data = obj_controller.temp[116][2];
                 var carry_string = $"{carry_data[0]}/{carry_data[1]}"; // Melee Burden
                 x1 = x_left + 110;
-                y1 = yy + 256;
+                y1 = yy + 115;
                 x2 = x1 + string_width(carry_string);
                 y2 = y1 + string_height(carry_string);
                 if (selected_unit.encumbered_melee) {
@@ -479,7 +480,7 @@ function draw_sprite_and_unit_equip_data(){
                 draw_sprite_stretched(spr_icon_weight, 0, x3, y3, 24, 24);
                 draw_text_outline(x1, y1, carry_string);
                 tooltip_text = carry_data[2];
-                array_push(company_data.tooltip_drawing, [tooltip_text, [x3, y1, x2, y2], "Melee Burden"]);
+                array_push(_unit_tooltips, [tooltip_text, [x3, y1, x2, y2], "Melee Burden"]);
                 draw_set_color(line_color);
             }
 
@@ -487,7 +488,7 @@ function draw_sprite_and_unit_equip_data(){
                 var carry_data = obj_controller.temp[117][2];
                 var carry_string = $"{carry_data[0]}/{carry_data[1]}"; // Ranged Burden
                 x1 = x_left + 110;
-                y1 = yy + 280;
+                y1 = yy + 139;
                 x2 = x1 + string_width(carry_string);
                 y2 = y1 + string_height(carry_string);
                 if (selected_unit.encumbered_ranged) {
@@ -498,14 +499,12 @@ function draw_sprite_and_unit_equip_data(){
                 draw_sprite_stretched(spr_icon_weight, 0, x3, y3, 24, 24);
                 draw_text_outline(x1, y1, carry_string);
                 tooltip_text = carry_data[2];
-                array_push(company_data.tooltip_drawing, [tooltip_text, [x3, y1, x2, y2], "Ranged Burden"]);
+                array_push(_unit_tooltips, [tooltip_text, [x3, y1, x2, y2], "Ranged Burden"]);
                 draw_set_color(line_color);
             }
 
-            // Animated scanline
-            //draw_animated_scanline(xx + 1013, yy + 140 + 4, 558, 368);
-            draw_sprite_stretched(spr_data_slate_border, 0, xx + 1008 - 1, yy + 140, 572, 378);
         }
+        setup_tooltip_list(_unit_tooltips)
     }
     company_data.unit_ui_panel.draw_with_dimensions();
 }
@@ -661,7 +660,7 @@ function scr_ui_manage() {
         draw_sprite_and_unit_equip_data();
         // Back
 
-        draw_set_halign(fa_center);
+        draw_set_halign(fa_left);
         var top = man_current, sel = top, temp1 = "", temp2 = "", temp3 = "", temp4 = "", temp5 = "";
 
         // Var creation
@@ -1238,14 +1237,7 @@ function scr_ui_manage() {
                 }
             }
         }
-        var tip, coords;
-        for (var i = 0; i < array_length(company_data.tooltip_drawing); i++) {
-            tip = company_data.tooltip_drawing[i];
-            coords = tip[1];
-            if (scr_hit(coords)) {
-                tooltip_draw(tip[0], 350, , , , tip[2]);
-            }
-        }
+        setup_tooltip_list(company_data.tooltip_drawing);
     } else if (menu == 30 && (managing > 0 || managing == -1)) {
         // Load to ships
 
@@ -1340,11 +1332,11 @@ function scr_ui_manage() {
                 draw_rectangle(main_rect[0], main_rect[1], main_rect[2], main_rect[3], 0);
                 draw_set_color(c_gray);
                 draw_rectangle(xx + 25, yy + 64, xx + 974, yy + 85, 1);
-                draw_text_transformed(xx + 27, yy + 66, string_hash_to_newline(string(temp1)), 1, 1, 0);
-                draw_text_transformed(xx + 27.5, yy + 66.5, string_hash_to_newline(string(temp1)), 1, 1, 0);
-                draw_text_transformed(xx + 364, yy + 66, string_hash_to_newline(string(temp2)), 1, 1, 0);
-                draw_text_transformed(xx + 580, yy + 66, string_hash_to_newline(string(temp3)), 1, 1, 0);
-                draw_text_transformed(xx + 730, yy + 66, string_hash_to_newline(string(temp4)), 1, 1, 0);
+                draw_text_transformed(xx + 27, yy + 66, temp1, 1, 1, 0);
+                draw_text_transformed(xx + 27.5, yy + 66.5, temp1, 1, 1, 0);
+                draw_text_transformed(xx + 364, yy + 66, string(temp2), 1, 1, 0);
+                draw_text_transformed(xx + 580, yy + 66, string(temp3), 1, 1, 0);
+                draw_text_transformed(xx + 730, yy + 66, string(temp4), 1, 1, 0);
                 if (point_and_click(main_rect)) {
                     load_marines_into_ship(selecting_location, sel, display_unit);
                 }
