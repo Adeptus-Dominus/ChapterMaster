@@ -10,6 +10,11 @@ function new_company_struct(){
 	}
 }
 function CompanyStruct(comp) constructor{
+	has_squads = true;
+
+	if (comp == 0 || comp == -1){
+		has_squads = false;
+	}
 
 	unit_ui_panel = new DataSlate();
 	unit_ui_panel.width = 572;

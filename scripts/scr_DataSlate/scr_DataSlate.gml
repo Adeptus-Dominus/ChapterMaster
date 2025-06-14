@@ -99,7 +99,7 @@ function DataSlate() constructor{
 			case "decorated":
 				var _slate_scalex = width/sprite_get_width(spr_slate_side);
 				var _slate_scaley = height/sprite_get_height(spr_slate_side);
-				draw_sprite(spr_data_slate_corner_decoration, 0,XX+width - (66*_slate_scalex), YY + (7*_slate_scaley));
+				draw_sprite(spr_data_slate_corner_decoration, 0,XX+width - (70*_slate_scalex), YY + (7*_slate_scaley));
 				break;
 
 		}
@@ -172,7 +172,7 @@ function DataSlateMKTwo()constructor{
 	}
 }
 
-function RackAndPinion(Type="forward") constructor{
+function RackAndPinion(Type="forward", scale = 1) constructor{
 	reverse =false;
 	rack_y=0;
 	rotation = 360;
@@ -322,6 +322,11 @@ function ShutterButton() constructor{
 	left_rack = new RackAndPinion("backward");
 	background = new DataSlate();
 	background.style = "plain";
+
+	/*draw_with_dimensions = function(xx,yy, ,width, entered){
+		draw_shutter();
+	}*/
+
 	draw_shutter = function(xx,yy,text, scale=1, entered = ""){
 		XX=xx;
 		YY=yy;
@@ -334,14 +339,16 @@ function ShutterButton() constructor{
 		width = Width *scale;
 		height = Height *scale;
 		if (text=="") then entered = false;
+
 		if (entered==""){
 			entered = scr_hit(xx, yy, xx+width, yy+height);
 		} else {
 			entered=entered;
 		}
+
 		var shutter_backdrop = 5;
 		if (entered || click_timer>0){
-			if (time_open<20){
+			if (time_open<24){
 				time_open++;
 				right_rack.draw(xx+width, yy, false, false);
 				left_rack.draw(xx, yy, false, false);
@@ -365,16 +372,10 @@ function ShutterButton() constructor{
 		var main_sprite = 0;
 		if (time_open<2){
 			draw_sprite_ext(spr_shutter_button, main_sprite, xx, yy, scale, scale, 0, c_white, 1)
-		} else if (time_open<8 && time_open>=2){
-			main_sprite=1;
-		}else if  (time_open<13 && time_open>=8){
-			main_sprite=2;
-		}else if  (time_open<18 && time_open>=13){
-			main_sprite=3;
-		} else if (time_open>=18){
-			main_sprite=4;
-		}
-		if (time_open>=2){
+		} else if (time_open>=2){
+
+			main_sprite=floor(time_open/6) + 1;
+
 			//draw_sprite_ext(spr_shutter_button, shutter_backdrop, xx, yy, scale, scale, 0, c_white, 1)
 			background.inside_method = function(){
 				var yy = YY;
