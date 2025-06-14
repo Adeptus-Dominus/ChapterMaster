@@ -10,8 +10,23 @@ function new_company_struct(){
 	}
 }
 function CompanyStruct(comp) constructor{
+	has_squads = true;
+
+	if (comp == 0 || comp == -1){
+		has_squads = false;
+	}
+
+	unit_ui_panel = new DataSlate();
+	unit_ui_panel.width = 572;
+	unit_ui_panel.height = 378;
+	unit_ui_panel.XX = 1008;
+	unit_ui_panel.YY = 141
+	unit_ui_panel.set_width = true;
+	unit_ui_panel.style = "decorated";
+
 	company = comp;
 	company_squads = [];
+	tooltip_drawing = [];
 	static garbage_collect = function(){
 		reset_squad_surface();
 		delete next_squad_button;
@@ -20,6 +35,7 @@ function CompanyStruct(comp) constructor{
 		delete reset_loadout_button;
 		delete sabotage_button;
 		delete garrison_button;
+		delete unit_ui_panel;
 	}
 	static squad_search = function(){
 		var _squads = obj_ini.squads;
