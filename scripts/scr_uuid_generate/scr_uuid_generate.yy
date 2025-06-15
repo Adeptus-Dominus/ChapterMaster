@@ -6,8 +6,8 @@
   "name":"scr_uuid_generate",
   "parent":{
     "name":"Scripts",
-    "path":"folders/Scripts.yy"
+    "path":"folders/Scripts.yy",
   },
   "resourceType":"GMScript",
-  "resourceVersion":"2.0"
+  "resourceVersion":"2.0",
 }
