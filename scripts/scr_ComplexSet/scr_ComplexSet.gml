@@ -758,7 +758,7 @@ function ComplexSet(_unit) constructor {
 					}
 				}
 			}
-			var _defualts = [
+			var _defaults = [
                 "hand_on_top",
                 "ui_xmod",
                 "ui_ymod",
@@ -771,9 +771,9 @@ function ComplexSet(_unit) constructor {
                 "sprite",
                 "display_type"
             ];
-			for (var s = 0; s < array_length(_defualts); s++) {
-				if (!struct_exists(_arm, _defualts[s])) {
-					_arm[$ _defualts[s]] = 0;
+			for (var s = 0; s < array_length(_defaults); s++) {
+				if (!struct_exists(_arm, _defaults[s])) {
+					_arm[$ _defaults[s]] = 0;
 				}
 			}
 			if (armour_type == ArmourType.Terminator && !array_contains(["terminator_ranged", "terminator_melee", "terminator_fist"], _arm.display_type)) {

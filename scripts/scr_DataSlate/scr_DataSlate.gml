@@ -11,7 +11,7 @@ function DataSlate() constructor{
 	percent_cut=0;
 	set_width = false;
 
-	style = "defualt";
+	style = "default";
 
 	tooltip_drawing = [];
 
@@ -52,7 +52,7 @@ function DataSlate() constructor{
 		}
 
 		switch (style){
-			case "defualt":
+			case "default":
 				draw_sprite_ext(spr_data_slate,1, XX,YY, scale_x, scale_y, 0, c_white, 1);
 				break;
 			case "decorated":
