@@ -321,11 +321,47 @@ function ShutterButton() constructor{
 	right_rack = new RackAndPinion();
 	left_rack = new RackAndPinion("backward");
 	background = new DataSlate();
+	background.inside_method = function(){
+		var yy = YY;
+		var xx = XX;
+		var text_draw = xx+(width/2)-(string_width(text)*(3*scale)/2);
+		if (scr_hit(xx, yy, xx+width, yy+height)){
+			draw_rectangle_color_simple(xx, yy, xx+width, yy+height, false, CM_GREEN_COLOR, 0.35)
+		}
+		draw_set_halign(fa_left);
+		draw_set_color(c_red);
+		if (click_timer>0){
+			draw_text_transformed(text_draw, yy+(24*scale), text, 3*scale, 3*scale, 0);
+		} else {
+			draw_text_transformed(text_draw, yy+(20*scale), text, 3*scale, 3*scale, 0);
+		}
+	}
+
 	background.style = "plain";
+	style = "plain";
 
 	/*draw_with_dimensions = function(xx,yy, ,width, entered){
 		draw_shutter();
 	}*/
+	inside_method = function(){
+		var yy = YY;
+		var xx = XX;
+		var text_draw = xx+(width/2)-(string_width(text)*(3*scale)/2);		
+		if (point_and_click([XX, YY, XX+width, YY+height]) || click_timer>0 ){
+			shutter_backdrop = 7;
+			click_timer++;
+		} else {
+			shutter_backdrop = 6;
+		}
+		draw_sprite_ext(spr_shutter_button, shutter_backdrop, XX, YY, scale, scale, 0, c_white, 1);
+		draw_set_halign(fa_left);
+		draw_set_color(c_red);
+		if (click_timer>0){
+			draw_text_transformed(text_draw, yy+(24*scale), text, 3*scale, 3*scale, 0);
+		} else {
+			draw_text_transformed(text_draw, yy+(20*scale), text, 3*scale, 3*scale, 0);
+		}
+	}
 
 	draw_shutter = function(xx,yy,text, scale=1, entered = ""){
 		XX=xx;
@@ -346,7 +382,7 @@ function ShutterButton() constructor{
 			entered=entered;
 		}
 
-		var shutter_backdrop = 5;
+		var shutter_backdrop = 6;
 		if (entered || click_timer>0){
 			if (time_open<24){
 				time_open++;
@@ -355,10 +391,6 @@ function ShutterButton() constructor{
 			} else {
 				right_rack.draw(xx+width, yy, true);
 				left_rack.draw(xx, yy, true);
-			}
-			if (point_and_click([xx, yy, xx+width, yy+height]) || click_timer>0 ){
-				shutter_backdrop = 6;
-				click_timer++;
 			}
 		} else if (time_open>0){
 			time_open--;
@@ -376,23 +408,11 @@ function ShutterButton() constructor{
 
 			main_sprite=floor(time_open/6) + 1;
 
-			//draw_sprite_ext(spr_shutter_button, shutter_backdrop, xx, yy, scale, scale, 0, c_white, 1)
-			background.inside_method = function(){
-				var yy = YY;
-				var xx = XX;
-				var text_draw = xx+(width/2)-(string_width(text)*(3*scale)/2);
-				if (scr_hit(xx, yy, xx+width, yy+height)){
-					draw_rectangle_color_simple(xx, yy, xx+width, yy+height, false, CM_GREEN_COLOR, 0.35)
-				}
-				draw_set_halign(fa_left);
-				draw_set_color(c_red);
-				if (click_timer>0){
-					draw_text_transformed(text_draw, yy+(24*scale), text, 3*scale, 3*scale, 0);
-				} else {
-					draw_text_transformed(text_draw, yy+(20*scale), text, 3*scale, 3*scale, 0);
-				}
+			if (style == "plain"){
+				inside_method();
+			} else if (style == "slate"){
+				background.draw_with_dimensions(xx, yy, width, height);
 			}
-			background.draw_with_dimensions(xx, yy, width, height);
 			draw_sprite_ext(spr_shutter_button, main_sprite, xx, yy, scale, scale, 0, c_white, 1);	
 		}
 		draw_set_color(c_grey);

@@ -23,7 +23,7 @@ function draw_character_diplomacy_base_page(){
 
 function set_up_diplomacy_buttons(){
 	diplo_buttons = {};
-
+	set_up_diplomacy_persons();
 	//Trade button setup
 	diplo_buttons.trade = new UnitButtonObject({
 		x1 : 440,
@@ -238,6 +238,76 @@ function set_up_diplomacy_buttons(){
 		bind_scope : obj_controller,
 	});
 }
+function set_up_diplomacy_persons(){
+	diplo_persons = {
+	}
+	diplo_persons.imperium = new ShutterButton();
+	var _imp = imperium;
+	_imp.image = known[eFACTION.Imperium] ? 3 : 4;
+	_imp._faction_enum = eFACTION.Imperium;
+
+	var _shutters = [imp];
+
+	for (var i=0;i<array_length(_shutters);i++){
+		var _button = _shutters[i];
+		with (_shutters){
+		    management_buttons = {
+		        audience: new UnitButtonObject({
+		            style: "pixel",
+		            label: "Request Audience",
+		            tooltip: "Click here or press S to toggle Squad View."
+		        }),
+		        ignore: new UnitButtonObject({
+		            style: "pixel",
+		            label: "Ignore",
+		            tooltip: "Click here or press P to show unit profile."
+		        }),
+		        unignore: new UnitButtonObject({
+		            style: "pixel",
+		            label: "Unignore",
+		            tooltip: "Click here or press B to Toggle Unit Biography."
+		        })
+		    };
+			inside_method = function(){
+				var yy = YY;
+				var xx = XX;
+				draw_text(xx+10,yy-15,obj_controller.faction[_faction_enum]);
+				scr_image("diplomacy/icons",imm,xx+10,yy+10,153,135);
+			    draw_set_font(fnt_40k_14);
+				draw_set_halign(fa_right);
+			    draw_text_transformed(xx+420,yy+20,faction_status[_faction_enum],0.7,0.7,0);
+			    draw_set_halign(fa_left);
+				var txt;
+			    txt="????";
+				if (known[_faction_enum]>0) then txt=string(faction_title[_faction_enum])+" "+string(faction_leader[_faction_enum]);
+				draw_text_transformed(xx+169,yy+40,txt,0.7,0.7,0);
+				draw_text_transformed(xx+169,yy+55,$"Disposition: {disposition[_faction_enum]}",0.7,0.7,0);	
+				scr_draw_rainbow(xx+250,yy+56,xx+400,yy+280,(disposition[_faction_enum]/200)+0.5);
+
+			    if (known[_faction_enum]>0.7) and (faction_defeated[_faction_enum]=0) {
+			    	var _audience = management_buttons.audience;
+			    	audience.update({
+			            x1: xx+230,
+			            y1: yy+65,			    		
+			    	});
+			    	var _ignore_status = ignore[_faction_enum] < 1 ? management_buttons.ignore : management_buttons.unignore;
+
+			    	_ignore_status.update({
+			            x1: audience.x2+4,
+			            y1: yy+65,			    		
+			    	});
+		        
+		    
+			        /*var fis;fis="[Request Audience]";
+			        if (turns_ignored[2]>0) then fis="                  ";
+			        if (ignore[eFACTION.Imperium]<1) then draw_text_transformed(xx+189,yy+354,string(fis)+"  [Ignore]",0.7,0.7,0);
+			        if (ignore[eFACTION.Imperium]>=1) then draw_text_transformed(xx+189,yy+354,string(fis)+"[Unignore]",0.7,0.7,0);*/
+			    }		
+			}
+		}
+	}
+}
+
 
 function scr_ui_diplomacy() {
 	var xx,yy,show_stuff;
@@ -278,7 +348,7 @@ function scr_ui_diplomacy() {
     
 	    xx+=55;yy-=20;
     
-    
+    	diplo_persons.imperium(xx+31, yy+281, "", 3);
 	    var imm = 1;
 	    if (known[eFACTION.Imperium]>0) then imm=3;
 		if (known[eFACTION.Imperium]<1) then imm=4;// draw_sprite(spr_diplomacy_med,imm,xx+31,yy+281);
@@ -361,7 +431,7 @@ function scr_ui_diplomacy() {
 	    draw_rectangle(xx+31,yy+689,xx+438,yy+824,1);
 		draw_line(xx+184,yy+689,xx+184,yy+824);
 	    // 
-		//draes chapter diplomacy
+		//draws chapter diplomacy
 		draw_rectangle(xx+451,yy+281,xx+675,yy+416,1);
 		draw_line(xx+604,yy+281,xx+604,yy+416);
 	    draw_rectangle(xx+451,yy+417,xx+675,yy+552,1);
@@ -507,38 +577,7 @@ function scr_ui_diplomacy() {
 		
 		
 		#region faction talks/ignore stuff
-	    if (known[2]>0.7) and (faction_defeated[2]=0) {
-	        x6=xx+250;y6=yy+334;x7=x6+92;y7=y6+15;
-	        if (turns_ignored[2]<=0) {
-	            draw_set_color(38144);
-				draw_rectangle(x6,y6,x7,y7,0);
-	            draw_set_color(c_black);
-				draw_text_transformed(x6,y6+1,string_hash_to_newline(" Request Audience"),0.7,0.7,0);
-	            if (mouse_x>=x6) and (mouse_y>=y6) and (mouse_x<x7) and (mouse_y<y7){
-	                draw_set_alpha(0.2);
-					draw_rectangle(x6,y6,x7,y7,0);
-					draw_set_alpha(1);
-	            }
-	        }
-	        x6=xx+349;
-			x7=x6+51;
-	        draw_set_color(38144);
-			draw_rectangle(x6,y6,x7,y7,0);
-			draw_set_color(c_black);
-	        if (ignore[2]<1) then draw_text_transformed(x6,y6+1,string_hash_to_newline("   Ignore"),0.7,0.7,0);
-	        if (ignore[2]>=1) then draw_text_transformed(x6,y6+1,string_hash_to_newline(" Unignore"),0.7,0.7,0);
-	        if (mouse_x>=x6) and (mouse_y>=y6) and (mouse_x<x7) and (mouse_y<y7){
-	            draw_set_alpha(0.2);
-				draw_rectangle(x6,y6,x7,y7,0);
-				draw_set_alpha(1);
-	        }
-        
-    
-	        /*var fis;fis="[Request Audience]";
-	        if (turns_ignored[2]>0) then fis="                  ";
-	        if (ignore[eFACTION.Imperium]<1) then draw_text_transformed(xx+189,yy+354,string(fis)+"  [Ignore]",0.7,0.7,0);
-	        if (ignore[eFACTION.Imperium]>=1) then draw_text_transformed(xx+189,yy+354,string(fis)+"[Unignore]",0.7,0.7,0);*/
-	    }
+
     
 	    if (known[eFACTION.Mechanicus]>0.7) and (faction_defeated[3]=0){
 	        x6=xx+250;y6=yy+334+136;x7=x6+92;y7=y6+15;
