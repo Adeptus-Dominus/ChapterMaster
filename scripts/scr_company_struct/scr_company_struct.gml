@@ -20,7 +20,7 @@ function CompanyStruct(comp) constructor{
 	unit_ui_panel.width = 572;
 	unit_ui_panel.height = 378;
 	unit_ui_panel.XX = 1008;
-	unit_ui_panel.YY = 141
+	unit_ui_panel.YY = 141;
 	unit_ui_panel.set_width = true;
 	unit_ui_panel.style = "decorated";
 

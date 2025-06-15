@@ -318,6 +318,12 @@ function ShutterButton() constructor{
 	YY=0;
 	width=0;
 	height=0;
+	cover_text = "aaa";
+
+	/*cover_sprite = spr_shutter_button_cover;
+	static make_custom_cover(){
+
+	}*/
 	right_rack = new RackAndPinion();
 	left_rack = new RackAndPinion("backward");
 	background = new DataSlate();

@@ -238,64 +238,103 @@ function set_up_diplomacy_buttons(){
 		bind_scope : obj_controller,
 	});
 }
+
 function set_up_diplomacy_persons(){
 	diplo_persons = {
 	}
 	diplo_persons.imperium = new ShutterButton();
-	var _imp = imperium;
+	var _imp = diplo_persons.imperium;
 	_imp.image = known[eFACTION.Imperium] ? 3 : 4;
 	_imp._faction_enum = eFACTION.Imperium;
 
-	var _shutters = [imp];
+	diplo_persons.mechanicus = new ShutterButton();
+	var _mechs = diplo_persons.mechanicus;
+	_mechs.image = known[eFACTION.Mechanicus] ? 5 : 6;
+	_mechs._faction_enum = eFACTION.Mechanicus;
+
+	diplo_persons.inquisition = new ShutterButton();
+	var _inquis = diplo_persons.inquisition;
+	_inquis.image = known[eFACTION.Inquisition] ? 7 : 8;
+	_inquis._faction_enum = eFACTION.Inquisition;
+
+	diplo_persons.sisters = new ShutterButton();
+	var _sisters = diplo_persons.sisters;
+	_sisters.image = known[eFACTION.Ecclesiarchy] ? 9 : 10;
+	_sisters._faction_enum = eFACTION.Ecclesiarchy;
+
+	var _shutters = [_imp, _mechs, _inquis, _sisters];
 
 	for (var i=0;i<array_length(_shutters);i++){
 		var _button = _shutters[i];
-		with (_shutters){
+		with (_button){
 		    management_buttons = {
 		        audience: new UnitButtonObject({
 		            style: "pixel",
 		            label: "Request Audience",
-		            tooltip: "Click here or press S to toggle Squad View."
+		            //tooltip: "."
 		        }),
 		        ignore: new UnitButtonObject({
 		            style: "pixel",
 		            label: "Ignore",
-		            tooltip: "Click here or press P to show unit profile."
+		            //tooltip: "."
 		        }),
 		        unignore: new UnitButtonObject({
 		            style: "pixel",
 		            label: "Unignore",
 		            tooltip: "Click here or press B to Toggle Unit Biography."
-		        })
+		        }),
+		        screen_slate : new DataSlate(),
 		    };
+		    var _screen_slate = management_buttons.screen_slate;
+		    _screen_slate.XX = XX+10;
+		    _screen_slate.YY = YY+141;
+		   	_screen_slate.set_width = true;
+			_screen_slate.style = "plain";
+			_screen_slate.width = 153;
+			_screen_slate.height = 135;
+			_screen_slate.inside_method = function(){
+				scr_image("diplomacy/icons",image,XX+10,YY+10,153,135);
+			}
+
 			inside_method = function(){
 				var yy = YY;
 				var xx = XX;
-				draw_text(xx+10,yy-15,obj_controller.faction[_faction_enum]);
-				scr_image("diplomacy/icons",imm,xx+10,yy+10,153,135);
+			    draw_set_font(fnt_40k_14b);
+				draw_set_halign(fa_left);
+				draw_text(xx+169,yy+35,obj_controller.faction[_faction_enum]);
+				management_buttons.screen_slate.draw_with_dimensions(xx+5, yy+5,);
 			    draw_set_font(fnt_40k_14);
 				draw_set_halign(fa_right);
-			    draw_text_transformed(xx+420,yy+20,faction_status[_faction_enum],0.7,0.7,0);
+			    draw_text_transformed(xx+420,yy+20,obj_controller.faction_status[_faction_enum],0.7,0.7,0);
 			    draw_set_halign(fa_left);
 				var txt;
 			    txt="????";
-				if (known[_faction_enum]>0) then txt=string(faction_title[_faction_enum])+" "+string(faction_leader[_faction_enum]);
-				draw_text_transformed(xx+169,yy+40,txt,0.7,0.7,0);
-				draw_text_transformed(xx+169,yy+55,$"Disposition: {disposition[_faction_enum]}",0.7,0.7,0);	
-				scr_draw_rainbow(xx+250,yy+56,xx+400,yy+280,(disposition[_faction_enum]/200)+0.5);
+				if (obj_controller.known[_faction_enum]>0){
+					txt=$"{obj_controller.faction_title[_faction_enum]} {obj_controller.faction_leader[_faction_enum]}";
+				}
+				draw_text_transformed(xx+169,yy+50,txt,0.7,0.7,0);
+				draw_text_transformed(xx+169,yy+65,$"Disposition: {obj_controller.disposition[_faction_enum]}",0.7,0.7,0);	
+				scr_draw_rainbow(xx+250,yy+66,xx+400,yy+76,(obj_controller.disposition[_faction_enum]/200)+0.5);
 
-			    if (known[_faction_enum]>0.7) and (faction_defeated[_faction_enum]=0) {
+			    if (obj_controller.known[_faction_enum]>0.7) and (obj_controller.faction_defeated[_faction_enum]=0) {
 			    	var _audience = management_buttons.audience;
-			    	audience.update({
-			            x1: xx+230,
-			            y1: yy+65,			    		
+			    	_audience.update({
+			            x1: xx+169,
+			            y1: yy+85,			    		
 			    	});
-			    	var _ignore_status = ignore[_faction_enum] < 1 ? management_buttons.ignore : management_buttons.unignore;
+			    	_audience.bind_method = function(){
+			            if (obj_controller.known[_faction_enum]!=0) and (obj_controller.turns_ignored[_faction_enum]==0){
+			                obj_controller.diplomacy = _faction_enum;
+			            }			    		
+			    	}
+			    	_audience.draw();
+			    	var _ignore_status = obj_controller.ignore[_faction_enum] < 1 ? management_buttons.ignore : management_buttons.unignore;
 
 			    	_ignore_status.update({
-			            x1: audience.x2+4,
-			            y1: yy+65,			    		
+			            x1: _audience.x2+1,
+			            y1: yy+85,			    		
 			    	});
+			    	_ignore_status.draw();
 		        
 		    
 			        /*var fis;fis="[Request Audience]";
@@ -348,28 +387,14 @@ function scr_ui_diplomacy() {
     
 	    xx+=55;yy-=20;
     
-    	diplo_persons.imperium(xx+31, yy+281, "", 3);
-	    var imm = 1;
-	    if (known[eFACTION.Imperium]>0) then imm=3;
-		if (known[eFACTION.Imperium]<1) then imm=4;// draw_sprite(spr_diplomacy_med,imm,xx+31,yy+281);
-	    scr_image("diplomacy/icons",imm,xx+31,yy+281,153,135);
-	    if (faction_defeated[eFACTION.Imperium]=1) then draw_sprite(spr_diplomacy_defeated,0,xx+31,yy+281);
-    
-	    if (known[eFACTION.Mechanicus]>0) then imm=5;
-		if (known[eFACTION.Mechanicus]<1) then imm=6;// draw_sprite(spr_diplomacy_med,imm,xx+31,yy+417);
-	    scr_image("diplomacy/icons",imm,xx+31,yy+417,153,135);
-	    if (faction_defeated[eFACTION.Mechanicus]=1) then draw_sprite(spr_diplomacy_defeated,0,xx+31,yy+417);
-    
-	    if (known[eFACTION.Inquisition]>0) then imm=7;
-		if (known[eFACTION.Inquisition]<1) then imm=8;// draw_sprite(spr_diplomacy_med,imm,xx+31,yy+553);
-	    scr_image("diplomacy/icons",imm,xx+31,yy+553,153,135);
-	    if (faction_defeated[eFACTION.Inquisition]=1) then draw_sprite(spr_diplomacy_defeated,0,xx+31,yy+553);
-    
-	    if (known[eFACTION.Ecclesiarchy]>0) then imm=9;
-		if (known[eFACTION.Ecclesiarchy]<1) then imm=10;// draw_sprite(spr_diplomacy_med,imm,xx+31,yy+689);
-	    scr_image("diplomacy/icons",imm,xx+31,yy+689,153,135);
-	    if (faction_defeated[eFACTION.Ecclesiarchy]=1) then draw_sprite(spr_diplomacy_defeated,0,xx+31,yy+689);
-    
+    	diplo_persons.imperium.draw_shutter(xx+31, yy+281, false, 1.5, known[eFACTION.Imperium]>0.7);
+
+    	diplo_persons.mechanicus.draw_shutter(xx+31, yy+417, false, 1.5, known[eFACTION.Mechanicus]>0.7);
+
+    	diplo_persons.inquisition.draw_shutter(xx+31, yy+553, false, 1.5, known[eFACTION.Inquisition]>0.7);
+
+    	diplo_persons.sisters.draw_shutter(xx+31, yy+689, false, 1.5, known[eFACTION.Ecclesiarchy]>0.7);
+
     
 	    if (faction_gender[eFACTION.Eldar]=1){ //male eldar
 			if (known[eFACTION.Eldar]>0) then imm=11;
@@ -422,17 +447,9 @@ function scr_ui_diplomacy() {
 	    scr_image("symbol",2,xx+1147,yy+174,217,107);
     
 		
-	    draw_rectangle(xx+31,yy+281,xx+438,yy+416,1);
-		draw_line(xx+184,yy+281,xx+184,yy+416);
-	    draw_rectangle(xx+31,yy+417,xx+438,yy+552,1);
-		draw_line(xx+184,yy+417,xx+184,yy+553);
-	    draw_rectangle(xx+31,yy+553,xx+438,yy+688,1);
-		draw_line(xx+184,yy+553,xx+184,yy+689);
-	    draw_rectangle(xx+31,yy+689,xx+438,yy+824,1);
-		draw_line(xx+184,yy+689,xx+184,yy+824);
-	    // 
+
 		//draws chapter diplomacy
-		draw_rectangle(xx+451,yy+281,xx+675,yy+416,1);
+		/*draw_rectangle(xx+451,yy+281,xx+675,yy+416,1);
 		draw_line(xx+604,yy+281,xx+604,yy+416);
 	    draw_rectangle(xx+451,yy+417,xx+675,yy+552,1);
 		draw_line(xx+604,yy+417,xx+604,yy+553);
@@ -440,6 +457,7 @@ function scr_ui_diplomacy() {
 		draw_line(xx+604,yy+553,xx+604,yy+689);
 	    draw_rectangle(xx+451,yy+689,xx+675,yy+824,1);
 		draw_line(xx+604,yy+689,xx+604,yy+824);
+		*/
 		
 		//draws chaos diplomacy
 	    draw_rectangle(xx+688,yy+281,xx+1028,yy+416,1);
@@ -459,10 +477,6 @@ function scr_ui_diplomacy() {
 		draw_set_halign(fa_left);
 		
 		//draw faction names, etc
-	    draw_text(xx+189,yy+285,string_hash_to_newline("Imperium"));
-	    draw_text(xx+189,yy+421,string_hash_to_newline("Mechanicus"));
-	    draw_text(xx+189,yy+557,string_hash_to_newline("Inquisition"));
-	    draw_text(xx+189,yy+693,string_hash_to_newline("Ecclesiarchy"));
 	    draw_text(xx+609,yy+285,string_hash_to_newline("Chapter 1"));
 	    draw_text(xx+609,yy+421,string_hash_to_newline("Chapter 2"));
 	    draw_text(xx+609,yy+557,string_hash_to_newline("Chapter 3"));
@@ -475,10 +489,6 @@ function scr_ui_diplomacy() {
 		//render status, i.e. whether at war, that stuff
 	    draw_set_font(fnt_40k_14);
 		draw_set_halign(fa_right);
-	    draw_text_transformed(xx+431,yy+289,string_hash_to_newline(string(faction_status[2])),0.7,0.7,0);
-	    draw_text_transformed(xx+431,yy+425,string_hash_to_newline(faction_status[3]),0.7,0.7,0);
-	    draw_text_transformed(xx+431,yy+561,string_hash_to_newline(faction_status[4]),0.7,0.7,0);
-	    draw_text_transformed(xx+431,yy+697,string_hash_to_newline(faction_status[5]),0.7,0.7,0);
 	    /*draw_text_transformed(xx+851,yy+289,faction_status[6],0.7,0.7,0);
 	    draw_text_transformed(xx+851,yy+425,faction_status[7],0.7,0.7,0);
 	    draw_text_transformed(xx+851,yy+561,faction_status[8],0.7,0.7,0);
@@ -490,18 +500,6 @@ function scr_ui_diplomacy() {
     
 	    draw_set_halign(fa_left);
 		var txt;
-	    txt="????";
-		if (known[2]>0) then txt=string(faction_title[2])+" "+string(faction_leader[2]);
-		draw_text_transformed(xx+189,yy+309,string_hash_to_newline(txt),0.7,0.7,0);
-	    txt="????";
-		if (known[3]>0) then txt=string(faction_title[3])+" "+string(faction_leader[3]);
-		draw_text_transformed(xx+189,yy+445,string_hash_to_newline(txt),0.7,0.7,0);
-	    txt="????";
-		if (known[4]>0) then txt=string(faction_title[4])+" "+string(faction_leader[4]);
-		draw_text_transformed(xx+189,yy+581,string_hash_to_newline(txt),0.7,0.7,0);
-	    txt="????";
-		if (known[5]>0) then txt=string(faction_title[5])+" "+string(faction_leader[5]);
-		draw_text_transformed(xx+189,yy+717,string_hash_to_newline(txt),0.7,0.7,0);
 	    /*txt="????";if (known[6]>0) then txt=string(faction_title[6])+" "+string(faction_leader[6]);draw_text_transformed(xx+609,yy+309,txt,0.7,0.7,0);
 	    txt="????";if (known[7]>0) then txt=string(faction_title[7])+" "+string(faction_leader[7]);draw_text_transformed(xx+609,yy+445,txt,0.7,0.7,0);
 	    txt="????";if (known[8]>0) then txt=string(faction_title[8])+" "+string(faction_leader[8]);draw_text_transformed(xx+609,yy+581,txt,0.7,0.7,0);
@@ -519,10 +517,6 @@ function scr_ui_diplomacy() {
 		draw_text_transformed(xx+1199,yy+717,string_hash_to_newline(txt),0.7,0.7,0);
     
 		//disposition score rendering
-	    draw_text_transformed(xx+189,yy+324,string_hash_to_newline("Disposition: "+string(disposition[2])),0.7,0.7,0);
-	    draw_text_transformed(xx+189,yy+460,string_hash_to_newline("Disposition: "+string(disposition[3])),0.7,0.7,0);
-	    draw_text_transformed(xx+189,yy+596,string_hash_to_newline("Disposition: "+string(disposition[4])),0.7,0.7,0);
-	    draw_text_transformed(xx+189,yy+732,string_hash_to_newline("Disposition: "+string(disposition[5])),0.7,0.7,0);
 	    /*draw_text_transformed(xx+609,yy+324,"Disposition: "+string(disposition[6]),0.7,0.7,0);
 	    draw_text_transformed(xx+609,yy+460,"Disposition: "+string(disposition[7]),0.7,0.7,0);
 	    draw_text_transformed(xx+609,yy+596,"Disposition: "+string(disposition[8]),0.7,0.7,0);
@@ -534,10 +528,6 @@ function scr_ui_diplomacy() {
     
     
 		//disposition bar rendering
-	    scr_draw_rainbow(xx+270,yy+325,xx+420,yy+335,(disposition[2]/200)+0.5);
-	    scr_draw_rainbow(xx+270,yy+325+136,xx+420,yy+335+136,(disposition[3]/200)+0.5);
-	    scr_draw_rainbow(xx+270,yy+325+272,xx+420,yy+335+272,(disposition[4]/200)+0.5);
-	    scr_draw_rainbow(xx+270,yy+325+408,xx+420,yy+335+408,(disposition[5]/200)+0.5);
     
 	    scr_draw_rainbow(xx+270+1010,yy+325,xx+420+1010,yy+335,(disposition[6]/200)+0.5);
 	    scr_draw_rainbow(xx+270+1010,yy+325+136,xx+420+1010,yy+335+136,(disposition[7]/200)+0.5);
@@ -578,62 +568,6 @@ function scr_ui_diplomacy() {
 		
 		#region faction talks/ignore stuff
 
-    
-	    if (known[eFACTION.Mechanicus]>0.7) and (faction_defeated[3]=0){
-	        x6=xx+250;y6=yy+334+136;x7=x6+92;y7=y6+15;
-	        if (turns_ignored[3]<=0) {
-	            draw_set_color(38144);
-				draw_rectangle(x6,y6,x7,y7,0);
-	            draw_set_color(c_black);
-				draw_text_transformed(x6,y6+1,string_hash_to_newline(" Request Audience"),0.7,0.7,0);
-	            if (mouse_x>=x6) and (mouse_y>=y6) and (mouse_x<x7) and (mouse_y<y7){
-	                draw_set_alpha(0.2);draw_rectangle(x6,y6,x7,y7,0);draw_set_alpha(1);
-	            }
-	        }
-	        x6=xx+349;x7=x6+51;
-	        draw_set_color(38144);draw_rectangle(x6,y6,x7,y7,0);draw_set_color(c_black);
-	        if (ignore[eFACTION.Mechanicus]<1) then draw_text_transformed(x6,y6+1,string_hash_to_newline("   Ignore"),0.7,0.7,0);
-	        if (ignore[eFACTION.Mechanicus]>=1) then draw_text_transformed(x6,y6+1,string_hash_to_newline(" Unignore"),0.7,0.7,0);
-	        if (mouse_x>=x6) and (mouse_y>=y6) and (mouse_x<x7) and (mouse_y<y7){
-	            draw_set_alpha(0.2);draw_rectangle(x6,y6,x7,y7,0);draw_set_alpha(1);
-	        }
-	    }
-    
-	    if (known[eFACTION.Inquisition]>0.7) and (faction_defeated[4]=0){
-	        x6=xx+250;y6=yy+334+272;x7=x6+92;y7=y6+15;
-	        if (turns_ignored[4]<=0){
-	            draw_set_color(38144);draw_rectangle(x6,y6,x7,y7,0);
-	            draw_set_color(c_black);draw_text_transformed(x6,y6+1,string_hash_to_newline(" Request Audience"),0.7,0.7,0);
-	            if (mouse_x>=x6) and (mouse_y>=y6) and (mouse_x<x7) and (mouse_y<y7){
-	                draw_set_alpha(0.2);draw_rectangle(x6,y6,x7,y7,0);draw_set_alpha(1);
-	            }
-	        }
-	        x6=xx+349;x7=x6+51;
-	        draw_set_color(38144);draw_rectangle(x6,y6,x7,y7,0);draw_set_color(c_black);
-	        if (ignore[eFACTION.Inquisition]<1) then draw_text_transformed(x6,y6+1,string_hash_to_newline("   Ignore"),0.7,0.7,0);
-	        if (ignore[eFACTION.Inquisition]>=1) then draw_text_transformed(x6,y6+1,string_hash_to_newline(" Unignore"),0.7,0.7,0);
-	        if (mouse_x>=x6) and (mouse_y>=y6) and (mouse_x<x7) and (mouse_y<y7){
-	            draw_set_alpha(0.2);draw_rectangle(x6,y6,x7,y7,0);draw_set_alpha(1);
-	        }
-	    }
-    
-	    if (known[eFACTION.Ecclesiarchy]>0.7) and (faction_defeated[5]=0){
-	        x6=xx+250;y6=yy+334+408;x7=x6+92;y7=y6+15;
-	        if (turns_ignored[5]<=0){
-	            draw_set_color(38144);draw_rectangle(x6,y6,x7,y7,0);
-	            draw_set_color(c_black);draw_text_transformed(x6,y6+1,string_hash_to_newline(" Request Audience"),0.7,0.7,0);
-	            if (mouse_x>=x6) and (mouse_y>=y6) and (mouse_x<x7) and (mouse_y<y7){
-	                draw_set_alpha(0.2);draw_rectangle(x6,y6,x7,y7,0);draw_set_alpha(1);
-	            }
-	        }
-	        x6=xx+349;x7=x6+51;
-	        draw_set_color(38144);draw_rectangle(x6,y6,x7,y7,0);draw_set_color(c_black);
-	        if (ignore[eFACTION.Ecclesiarchy]<1) then draw_text_transformed(x6,y6+1,string_hash_to_newline("   Ignore"),0.7,0.7,0);
-	        if (ignore[eFACTION.Ecclesiarchy]>=1) then draw_text_transformed(x6,y6+1,string_hash_to_newline(" Unignore"),0.7,0.7,0);
-	        if (mouse_x>=x6) and (mouse_y>=y6) and (mouse_x<x7) and (mouse_y<y7){
-	            draw_set_alpha(0.2);draw_rectangle(x6,y6,x7,y7,0);draw_set_alpha(1);
-	        }
-	    }
       
 	    if (known[6]>0.7) and (faction_defeated[2]=0){
 	        x6=xx+250+1010;y6=yy+334;x7=x6+92;y7=y6+15;

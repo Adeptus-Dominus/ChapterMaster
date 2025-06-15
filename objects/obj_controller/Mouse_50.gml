@@ -372,26 +372,6 @@ if (zoomed==0) and (cooldown<=0) and (menu==20) and (diplomacy==0){
 		}
     var faction_interact_coords=[
         [
-            [xx+194,yy+355,xx+288,yy+369],//imperium
-            [xx+292,yy+355,xx+350,yy+369],
-            2
-        ],
-        [
-            [xx+194,yy+491,xx+288,yy+503],//mechanicus
-            [xx+292,yy+491,xx+350,yy+503],
-            3
-        ],
-        [
-            [xx+194,yy+630,xx+288,yy+644],//Inquisition
-            [xx+292,yy+630,xx+350,yy+644],
-            4
-        ],
-        [
-            [xx+194,yy+760,xx+288,yy+774],//sisters
-            [xx+292,yy+760,xx+350,yy+774],
-            5
-        ], 
-        [
             [xx+1203,yy+355,xx+1300,yy+369],//eldar
             [xx+1303,yy+355,xx+1350,yy+369],
             6
