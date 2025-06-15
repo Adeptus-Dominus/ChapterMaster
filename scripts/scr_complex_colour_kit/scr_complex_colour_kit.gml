@@ -13,39 +13,39 @@ function ColourItem(xx,yy) constructor{
 	self.xx=xx;
 	self.yy=yy;
     data_slate = new DataSlate();
-    static scr_unit_draw_data = function(defualt_val = 0){
+    static scr_unit_draw_data = function(default_val = 0){
         map_colour = {
             is_changed : false,
-            left_leg_lower : defualt_val,
-            left_leg_upper : defualt_val,
-            left_leg_knee : defualt_val,
-            right_leg_lower : defualt_val,
-            right_leg_upper : defualt_val,
-            right_leg_knee : defualt_val,
-            metallic_trim : defualt_val,
-            right_trim : defualt_val,
-            left_trim : defualt_val,
-            left_chest : defualt_val,
-            right_chest : defualt_val,
-            left_thorax : defualt_val,
-            right_thorax : defualt_val, 
-            left_pauldron : defualt_val,
-            left_arm : defualt_val,
-            left_hand : defualt_val,
-            right_pauldron: defualt_val,
-            right_arm : defualt_val,
-            right_hand : defualt_val,
-            left_head : defualt_val,
-            right_head: defualt_val, 
-            left_muzzle: defualt_val,
-            right_muzzle: defualt_val,
-            eye_lense :defualt_val,  
-            right_backpack : defualt_val,   
-            left_backpack : defualt_val,
-            weapon_primary : defualt_val,
-            weapon_secondary : defualt_val,
-            company_marks : defualt_val,
-            company_marks_loc : defualt_val,                         
+            left_leg_lower : default_val,
+            left_leg_upper : default_val,
+            left_leg_knee : default_val,
+            right_leg_lower : default_val,
+            right_leg_upper : default_val,
+            right_leg_knee : default_val,
+            metallic_trim : default_val,
+            right_trim : default_val,
+            left_trim : default_val,
+            left_chest : default_val,
+            right_chest : default_val,
+            left_thorax : default_val,
+            right_thorax : default_val, 
+            left_pauldron : default_val,
+            left_arm : default_val,
+            left_hand : default_val,
+            right_pauldron: default_val,
+            right_arm : default_val,
+            right_hand : default_val,
+            left_head : default_val,
+            right_head: default_val, 
+            left_muzzle: default_val,
+            right_muzzle: default_val,
+            eye_lense :default_val,  
+            right_backpack : default_val,   
+            left_backpack : default_val,
+            weapon_primary : default_val,
+            weapon_secondary : default_val,
+            company_marks : default_val,
+            company_marks_loc : default_val,                         
         }
         return map_colour;
     }
@@ -623,8 +623,9 @@ global.textures = {
     "Hazzards" : spr_hazzard_texture,
     "Checks" : spr_checker_texture,
     "flora_camo" : spr_flora_camo_texture,
-    "Checks2" : spr_hazzard_texture,
-    "Checks3" : spr_checker_texture,
+    "red_scale" : spr_red_scale_texture,
+    "smallchecks" : spr_checker_texture_small,
+    "clearchecks" : spr_clear_checker,
     "Checks4" : spr_hazzard_texture,
     "Checks5" : spr_checker_texture
 
@@ -738,8 +739,8 @@ function colour_picker(xx,yy, max_width=400) constructor{
         var column = -1;
         var current_color = 0;
         var row = 0;
-        var defualt_box_x = x;
-        var box_x = defualt_box_x
+        var default_box_x = x;
+        var box_x = default_box_x
         var box_y = y;
 
 

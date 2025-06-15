@@ -1244,6 +1244,9 @@ function scr_initialize_custom() {
 				case "devastator":
 					devastator = devastator + real(s_val);
 					break;
+				case "dreadnought":
+					dreadnought = dreadnought + real(s_val);
+					break;
 			}
 		}
 	}
@@ -1370,7 +1373,6 @@ function scr_initialize_custom() {
 		name[0, i] = "";
 		role[0, i] = "";
 		wep1[0, i] = "";
-		bio[0, i] = 0;
 		spe[0, i] = "";
 		wep2[0, i] = "";
 		armour[0, i] = "";

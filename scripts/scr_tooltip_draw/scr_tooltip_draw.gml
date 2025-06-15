@@ -22,7 +22,16 @@ function tooltip_draw(_tooltip="", _width=350, _coords=return_mouse_consts_toolt
 }
 
 
-
+function setup_tooltip_list(list){
+	var tip, coords;
+    for (var i = 0; i < array_length(list); i++) {
+        tip = list[i];
+        coords = tip[1];
+        if (scr_hit(coords)) {
+            tooltip_draw(tip[0], 350, , , , tip[2]);
+        }
+    }
+}
 
 
 
