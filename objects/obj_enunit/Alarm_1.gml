@@ -394,7 +394,7 @@ if __b__ {
 		if (dudes[j] = "Vendetta") {
 			scr_en_weapon("Twin-Linked Lascannon", false, dudes_num[j] * 3, dudes[j], j);
 			dudes_ac[j] = 20;
-			dudes_hp[j] = 300;
+			dudes_hp[j] = 200;
 			dudes_dr[j] = 0.25;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
@@ -1422,7 +1422,7 @@ if __b__ {
 				scr_en_weapon("Chainaxe", true, dudes_num[j], dudes[j], j);
 				dudes_ac[j] = 20;
 				dudes_hp[j] = 100;
-				dudes_dr[j] = 0.7;
+				dudes_dr[j] = 0.65;
 				men += dudes_num[j];
 			}
 
@@ -1439,7 +1439,7 @@ if __b__ {
 				scr_en_weapon("Poison Chainsword", true, dudes_num[j], dudes[j], j);
 				dudes_ac[j] = 20;
 				dudes_hp[j] = 150;
-				dudes_dr[j] = 0.5;
+				dudes_dr[j] = 0.6;
 				men += dudes_num[j];
 			}
 			if (dudes[j] = "Noise Marine") {
@@ -1513,7 +1513,7 @@ if __b__ {
 				scr_en_weapon("Twin Linked Lascannon", false, dudes_num[j] * 2, dudes[j], j);
 				dudes_ac[j] = 50;
 				dudes_hp[j] = 400;
-				dudes_dr[j] = 0.25;
+				dudes_dr[j] = 0.4;
 				veh += dudes_num[j];
 				dudes_vehicle[j] = 1;
 			}
@@ -1597,7 +1597,7 @@ if __b__ {
 				scr_en_weapon("Heavy Bolter", false, dudes_num[j], dudes[j], j);
 				dudes_ac[j] = 45;
 				dudes_hp[j] = 250;
-				dudes_dr[j] = 0.25;
+				dudes_dr[j] = 0.5;
 				veh += dudes_num[j];
 				dudes_vehicle[j] = 1;
 			}
@@ -1724,7 +1724,7 @@ if __b__ {
 			scr_en_weapon("Particle Whip", false, dudes_num[j] * 1, dudes[j], j);
 			dudes_ac[j] = 50;
 			dudes_hp[j] = 500;
-			dudes_dr[j] = 0.25;
+			dudes_dr[j] = 0.5;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
