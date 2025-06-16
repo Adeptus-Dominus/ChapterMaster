@@ -363,52 +363,14 @@ if (zoomed==0) and (cooldown<=0) and (menu==20) and (diplomacy==0){
     yy-=20;
 	var onceh=0
 	// Daemon emmissary
-	    if (point_in_rectangle(mouse_x, mouse_y, xx+688,yy+181,xx+1028,yy+281)){
-			diplomacy=10.1;
-            diplomacy_pathway="intro";
-            scr_dialogue(diplomacy_pathway);
-            onceh=1;
-            cooldown = 1;
-		}
-    var faction_interact_coords=[
-        [
-            [xx+1203,yy+355,xx+1300,yy+369],//eldar
-            [xx+1303,yy+355,xx+1350,yy+369],
-            6
-        ],
-        [
-            [xx+1203,yy+491,xx+1300,yy+503],//orks
-            [xx+1303,yy+491,xx+1350,yy+503],
-            7
-        ],
-        [
-            [xx+1203,yy+630,xx+1300,yy+644],//Tau
-            [xx+1303,yy+630,xx+1350,yy+644],
-            8
-        ],
-        [
-            [xx+1203,yy+760,xx+1300,yy+774],//heretic
-            [xx+1303,yy+760,xx+1350,yy+774],
-            10
-        ],                                           
-    ]
-    for (var i=0;i<array_length(faction_interact_coords);i++){
-        var fac_data = faction_interact_coords[i];
-        if (point_in_rectangle(mouse_x, mouse_y, fac_data[0][0], fac_data[0][1], fac_data[0][2], fac_data[0][3])){
-            if (known[fac_data[2]]!=0) and (turns_ignored[fac_data[2]]==0){
-                diplomacy=fac_data[2];
-                cooldown=8000;
-            }
-        } else if (point_in_rectangle(mouse_x, mouse_y, fac_data[1][0], fac_data[1][1], fac_data[1][2], fac_data[1][3])){
-            cooldown=8000;
-            click2=1;
-            if (ignore[fac_data[2]]==0){
-                ignore[fac_data[2]]=1;
-            }else if (ignore[fac_data[2]]==1){
-                ignore[fac_data[2]]=0;
-            }            
-        }
-    }
+    if (point_in_rectangle(mouse_x, mouse_y, xx+688,yy+181,xx+1028,yy+281)){
+		diplomacy=10.1;
+        diplomacy_pathway="intro";
+        scr_dialogue(diplomacy_pathway);
+        onceh=1;
+        cooldown = 1;
+	}
+    
     if (diplomacy>0) and (cooldown==8000){
         onceh=0;
         if (known[diplomacy]==1) and (diplomacy!=4) and (onceh==0){
