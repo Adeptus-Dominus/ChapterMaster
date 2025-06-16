@@ -339,12 +339,6 @@ if (shop = "equipment") {
 	forge_cost[i] = 230; 
     i += 1;
     x_mod[i] = 9;
-	//30k test debug 
-	//volk
-
-
-	
-	//
     item[i] = "Combiflamer";
     item_stocked[i] = scr_item_count(item[i]);
     forge_cost[i] = 200;
