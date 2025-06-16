@@ -42,7 +42,7 @@ global.weapons = {
 			"master_crafted": 420,
 			"artifact": 440
 		},
-		"description": "Ancient thermal ray weapon, smaller, yet still deadly borother of caliver.",
+		"description": "Ancient thermal ray weapon, smaller, yet still deadly brother of caliver.",
 		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 10,
@@ -59,7 +59,7 @@ global.weapons = {
 			"master_crafted": 270,
 			"artifact": 290
 		},
-		"description": "Ancient one handed thermal ray weapon, prefered by melee specialists, and officers .",
+		"description": "Ancient one handed thermal ray weapon, preferred by melee specialists, and officers .",
 		"melee_hands": 0,
 		"ranged_hands": 1,
 		"ammo": 10,
@@ -84,7 +84,7 @@ global.weapons = {
 		"range": 3.5,
 		"spli": 2,
 		"arp": 0,
-		"tags": ["bolt", "pistol"],
+		"tags": ["bolt", "pistol"]
 	},
 
 "Phobos pattern Bolter": {
@@ -94,7 +94,7 @@ global.weapons = {
 			"master_crafted": 80,
 			"artifact": 85
 		},
-		"description": "Ancient pattern of boltgun made during times of the Great Crusade for the Astartes Legions. It uses different ammunition, has larger magazine and is slightly bigger than it's modern counterparts.",
+		"description": "Ancient pattern of boltgun made during times of the Great Crusade for the Astartes Legions. It uses different ammunition, has larger magazine and is slightly bigger than its modern counterparts.",
 		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 20,
@@ -111,7 +111,7 @@ global.weapons = {
 			"master_crafted": 430,
 			"artifact": 460
 		},
-		"description": " Rare variant of heavy bolter, uncommon even during times of it's production. Made in forges of Mars itself, it's more lightweight and compact in comparisson to modern patterns.",
+		"description": " Rare variant of heavy bolter, uncommon even during times of it's production. Made in forges of Mars itself, it's more lightweight and compact in comparison to modern patterns.",
 		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 12,
