@@ -30,6 +30,7 @@ function set_up_diplomacy_buttons(){
 		y1 : 720,
 		label : "Trade",
 		bind_scope : obj_controller,
+		style:"pixel"
 	});
 	diplo_buttons.trade.bind_method = function(){
     	if ((audience==0) and (force_goodbye==0)){
@@ -48,6 +49,7 @@ function set_up_diplomacy_buttons(){
 		y1 : 720,
 		label : "Demand",
 		bind_scope : obj_controller,
+		style:"pixel"
 	});
 	diplo_buttons.demand.bind_method = function(){
     	if ((audience==0) and (force_goodbye==0)){
@@ -58,7 +60,6 @@ function set_up_diplomacy_buttons(){
     	}		
 	}
 
-
 	//Discuss button setup	
 	diplo_buttons.discuss = new UnitButtonObject({
 		x1 : 840,
@@ -66,6 +67,7 @@ function set_up_diplomacy_buttons(){
 		label : "Discuss",
 		tooltip : "Unfinished",
 		bind_scope : obj_controller,
+		style:"pixel"
 	});
 
 
@@ -75,6 +77,7 @@ function set_up_diplomacy_buttons(){
 		y1 : diplo_buttons.trade.y2,
 		label : "Denounce",
 		bind_scope : obj_controller,
+		style:"pixel"
 	});
 
 	diplo_buttons.denounce.bind_method = function(){
@@ -90,6 +93,7 @@ function set_up_diplomacy_buttons(){
 		y1 : diplo_buttons.trade.y2,
 		label : "Praise",
 		bind_scope : obj_controller,
+		style:"pixel"
 	});
 
 	diplo_buttons.praise.bind_method = function(){
@@ -105,6 +109,7 @@ function set_up_diplomacy_buttons(){
 		y1 : diplo_buttons.trade.y2,
 		label : "Propose\nAlliance",
 		bind_scope : obj_controller,
+		style:"pixel"
 	});
 
 
@@ -119,7 +124,7 @@ function set_up_diplomacy_buttons(){
 	diplo_buttons.exit_button = new UnitButtonObject({
 		x1 : 818,
 		y1 : 795,
-		label : "Exist",
+		label : "Exit",
 		bind_scope : obj_controller,
 		color : CM_RED_COLOR,
 	});
@@ -229,14 +234,15 @@ function set_up_diplomacy_buttons(){
 	}
 
 
-	diplo_buttons.declare_War = new UnitButtonObject({
-		x1 : 640,
-		y1 : diplo_buttons.alliance.y2,
-		label : "DECLARE WAR",
-		tooltip : "Unfinished",
-		color : CM_RED_COLOR,
-		bind_scope : obj_controller,
-	});
+	diplo_buttons.declare_War = new ShutterButton();
+	var _war = diplo_buttons.declare_War;
+	_war.XX : 640;
+	_war.YY : diplo_buttons.alliance.y2;
+	_war.label : "DECLARE WAR";
+	_war.tooltip : "Unfinished";
+	_war.color : CM_RED_COLOR;
+	_war.cover_text = "Declare War";
+	_war.bind_scope : obj_controller;
 }
 
 function set_up_diplomacy_persons(){
@@ -426,13 +432,13 @@ function scr_ui_diplomacy() {
 
     	diplo_persons.sisters.draw_shutter(xx+31, yy+689, false, 1.5, known[eFACTION.Ecclesiarchy]>0.7);
 
-    	diplo_persons.eldar.draw_shutter(xx+1041, yy+281, false, 1.5, known[eFACTION.Ecclesiarchy]>0.7);
+    	diplo_persons.eldar.draw_shutter(xx+1041, yy+281, false, 1.5, known[eFACTION.Eldar]>0.7);
 
-    	diplo_persons.ork.draw_shutter(xx+1041, yy+417, false, 1.5, known[eFACTION.Ecclesiarchy]>0.7);
+    	diplo_persons.ork.draw_shutter(xx+1041, yy+417, false, 1.5, known[eFACTION.Ork]>0.7);
 
-    	diplo_persons.tau.draw_shutter(xx+1041, yy+553, false, 1.5, known[eFACTION.Ecclesiarchy]>0.7);
+    	diplo_persons.tau.draw_shutter(xx+1041, yy+553, false, 1.5, known[eFACTION.Tau]>0.7);
 
-    	diplo_persons.tau.draw_shutter(xx+1041, yy+689, false, 1.5, known[eFACTION.Ecclesiarchy]>0.7);
+    	diplo_persons.chaos.draw_shutter(xx+1041, yy+689, false, 1.5, known[eFACTION.Chaos]>0.7);
 
     
 	    scr_image("symbol",0,xx+138,yy+174,217,107);

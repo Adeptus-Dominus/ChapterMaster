@@ -110,7 +110,7 @@
     "9647":{"character":9647,"h":37,"offset":5,"shift":19,"w":10,"x":33,"y":119,},
   },
   "hinting":0,
-  "includeTTF":false,
+  "includeTTF":true,
   "interpreter":0,
   "italic":false,
   "kerningPairs":[],
@@ -138,6 +138,6 @@
     "name":"Default",
     "path":"texturegroups/Default",
   },
-  "TTFName":"",
+  "TTFName":"/Users/admin/Documents/ChapterMaster/fonts/fnt_Embossed_metal/MessingLettern.ttf",
   "usesSDF":false,
 }

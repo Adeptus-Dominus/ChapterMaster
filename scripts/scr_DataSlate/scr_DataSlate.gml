@@ -319,6 +319,7 @@ function ShutterButton() constructor{
 	width=0;
 	height=0;
 	cover_text = "";
+	tooltip = "";
 
 	/*cover_sprite = spr_shutter_button_cover;
 	static make_custom_cover(){
@@ -369,9 +370,13 @@ function ShutterButton() constructor{
 		}
 	}
 
-	draw_shutter = function(xx,yy,text, scale=1, entered = ""){
-		XX=xx;
-		YY=yy;
+	draw_shutter = function(xx=-1,yy=-1,text, scale=1, entered = ""){
+		if (xx != -1){
+			XX=xx;s
+		}
+		if (yy != -1){
+			YY=yy;
+		}
         draw_set_alpha(1);
         self.scale = scale;
         self.text = text;
@@ -388,6 +393,9 @@ function ShutterButton() constructor{
 			entered=entered;
 		}
 
+		if (tooltip!= "" && scr_hit(xx, yy, xx+width, yy+height)){
+			tooltip_draw(tooltip);
+		}
 		var shutter_backdrop = 6;
 		if (entered || click_timer>0){
 			if (time_open<24){
@@ -414,7 +422,7 @@ function ShutterButton() constructor{
 				draw_set_font(fnt_Embossed_metal);
 				var text_draw = xx+(width/2)-(string_width(cover_text)*(3*scale)/2);
 				draw_set_color(c_black);
-				draw_text_transformed(text_draw, yy+(6*scale), cover_text, 3*scale, 3*scale, 0);
+				draw_text_transformed(text_draw, yy+(3*scale), cover_text, 3*scale, 3*scale, 0);
 			}
 		} else if (time_open>=2){
 

@@ -240,10 +240,18 @@ function scr_demand(argument0) {
 	    force_goodbye=1;
 	}
 	if (worked=false){
-	    var h;h=0;repeat(4){h+=1;obj_controller.diplo_option[h]="";obj_controller.diplo_goto[h]="";}
-	    if (rela="friendly") and (no_penalty=false){disposition[trading_demand]-=2;turns_ignored[trading_demand]+=1;}
-	    if (rela="neutral") and (no_penalty=false){disposition[trading_demand]-=4;turns_ignored[trading_demand]+=3;}
-	    if (rela="hostile") and (no_penalty=false){disposition[trading_demand]-=8;turns_ignored[trading_demand]+=6;}
+	    var h=0;
+	    repeat(4){h+=1;obj_controller.diplo_option[h]="";obj_controller.diplo_goto[h]="";}
+	    if (rela="friendly") and (no_penalty=false){
+	    	disposition[trading_demand]-=2;
+	    	turns_ignored[trading_demand]+=1;
+	    }
+	    if (rela="neutral") and (no_penalty=false){
+	    	disposition[trading_demand]-=4;
+	    	turns_ignored[trading_demand]+=3;
+	    }
+	    if (rela="hostile") and (no_penalty=false){
+	    	disposition[trading_demand]-=8;turns_ignored[trading_demand]+=6;}
 	    if (disposition[trading_demand]<-100) then disposition[trading_demand]=-100;
 	    trading_demand=0;force_goodbye=1;
     
