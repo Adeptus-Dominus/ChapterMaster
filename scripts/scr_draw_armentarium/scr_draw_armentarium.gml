@@ -21,6 +21,7 @@ function set_up_armentarium(){
         specialist_point_handler.calculate_research_points();
         in_forge=false
         forge_button = new ShutterButton();
+        forge_button.cover_text = "FORGE";
         stc_flashes = new GlowDot();
         /*for (var i =0;i<3;i++){
             for (var f =0;f<7;f++){
