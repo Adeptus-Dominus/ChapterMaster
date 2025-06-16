@@ -2118,9 +2118,9 @@ global.gear = {
 		"Dreadnought": {
 			"abbreviation": "Drdnght",
 			"armour_value": {
-				"standard": 60,
-				"master_crafted": 65,
-				"artifact": 70
+				"standard": 40,
+				"master_crafted": 45,
+				"artifact": 50
 			},
 			"ranged_mod": {
 				"standard": -10,
