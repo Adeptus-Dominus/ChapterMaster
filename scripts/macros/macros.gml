@@ -10,7 +10,7 @@
 #macro CM_RED_COLOR #bf4040
 #macro MANAGE_MAN_SEE 34
 #macro MANAGE_MAN_MAX array_length(obj_controller.display_unit) + 7
-#macro SHOP_SELL_MOD 0.9
+#macro SHOP_SELL_MOD 0.8
 
 enum luck {
     bad = -1,
