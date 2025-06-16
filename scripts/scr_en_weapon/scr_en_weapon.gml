@@ -468,13 +468,13 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 			spli = 3;
 		}
 		if (argument0 = "Rokkit Launcha") {
-			atta = 125;
+			atta = 150;
 			arp = 1;
 			rang = 15;
 			spli = 3;
 		}
 		if (argument0 = "Krooz Missile") {
-			atta = 250;
+			atta = 300;
 			arp = 1;
 			rang = 15;
 			spli = 3;
