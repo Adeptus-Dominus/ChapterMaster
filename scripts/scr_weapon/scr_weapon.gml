@@ -136,6 +136,55 @@ global.weapons = {
 		"arp": 1,
 		"tags": ["heavy_ranged", "bolt"]
 },
+//Plasma Pack
+"Ryza pattern Plasma Gun": {
+"abbreviation": "RyzPlsmGn",
+		"attack": {
+			"standard": 325,
+			"master_crafted": 350,
+			"artifact": 375
+		},
+		"description": "Ancient and now forgotten pattern of plasma weapon. It features improved coils, more stable hydrogen fuel, and characteristic purple glow",
+		"melee_hands": 1,
+		"ranged_hands": 2,
+		"ammo": 18,
+		"range": 14,
+		"spli": 5,
+		"arp": 1,
+		"tags": [ "plasma","energy"]
+},
+"Ryza pattern Plasma Pistol": {
+"abbreviation": "RyzPlsmPis",
+		"attack": {
+			"standard": 145,
+			"master_crafted": 160,
+			"artifact": 175
+		},
+		"description": "Ancient and now forgotten pattern of plasma pistol. Often given to veterans and officers as a sign of great honor. It features improved coils, more stable hydrogen fuel, and characteristic purple glow",
+		"melee_hands": 1,
+		"ranged_hands": 2,
+		"ammo": 18,
+		"range": 14,
+		"spli": 5,
+		"arp": 1,
+		"tags": [ "plasma","energy","pistol"]
+},
+"Mars pattern Plasma Cannon": {
+"abbreviation": "MarsPlsmCnn",
+		"attack": {
+			"standard": 650,
+			"master_crafted": 700,
+			"artifact": 750 //I think that usual 25% increase will be too much for that weapon so applied +150.
+		},
+		"description": "Ancient and now forgotten pattern of plasma weapon. Heaviest portable variant. It features improved coils, more stable hydrogen ammo, and characteristic purple glow",
+		"melee_hands": 1,
+		"ranged_hands": 3,
+		"ammo": 18,
+		"range": 16,
+		"spli": 8,
+		"arp": 1,
+		"tags": [ "plasma","energy"]
+},
 	//40K Weapons
 	"Storm Shield": {
 		"description": "Protects twice as well when boarding. A powered shield that must be held with a hand.  While powered by the marines armour it shimmers with blue energy.",
@@ -1019,11 +1068,11 @@ global.weapons = {
 			"artifact": 300
 		},
 		"description": "A two-handed weapon that launches blobs of plasma at the target. They are considered both sacred and dangerous, overheating through rapid firing of the weapon. Overheating can result in detonation of the weapon, killing the wielder.",
-		"melee_hands": 0,
+		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 16,
 		"range": 12,
-		"spli": 3,
+		"spli": 2,
 		"arp": 1,
 		"tags": ["plasma", "energy"]
 	},
@@ -1039,7 +1088,7 @@ global.weapons = {
 		"ranged_hands": 3,
 		"ammo": 16,
 		"range": 14,
-		"spli": 2,
+		"spli": 5,
 		"arp": 1,
 		"tags": ["plasma","energy","heavy_ranged", "dreadnought"]
 	},

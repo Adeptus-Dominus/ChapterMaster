@@ -1286,6 +1286,7 @@ global.weapon_visual_data = {
       display_type: "ranged_twohand",
       new_weapon_draw: true
     },
+	body_types:[0,1]
   },
   variants: [{
     sprite: spr_weapon_volkite_caliver,
@@ -1298,6 +1299,7 @@ global.weapon_visual_data = {
       display_type: "ranged_twohand",
       new_weapon_draw: true
     },
+	body_types:[0,1]
   },
   variants: [{
     sprite: spr_weapon_volkite_culverin,
@@ -1332,6 +1334,7 @@ global.weapon_visual_data = {
       display_type: "ranged_twohand",
       new_weapon_draw: true
     },
+	body_types:[0,1]
   },
   variants: [{
     sprite: spr_weapon_mars_hbolt,
@@ -1346,6 +1349,41 @@ global.weapon_visual_data = {
   },
   variants: [{
     sprite: spr_weapon_tigris_combi,
+  }]
+},
+//Plasma Pack
+"Ryza pattern Plasma Gun": {
+ base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_ryza_plasg,
+  }]
+},
+"Ryza pattern Plasma Pistol": {
+ base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_ryza_plasp,
+  }]
+},
+"Mars pattern Plasma Cannon": {
+ base: {
+    weapon_data: {
+      display_type: "ranged_twohand",
+      new_weapon_draw: true
+    },
+    body_types: [0,1]
+  },
+  variants: [{
+    sprite: spr_weapon_mars_plasc,
   }]
 },
 

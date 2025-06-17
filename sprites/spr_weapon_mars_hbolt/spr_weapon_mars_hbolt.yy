@@ -2,9 +2,9 @@
   "$GMSprite":"v2",
   "%Name":"spr_weapon_mars_hbolt",
   "bboxMode":0,
-  "bbox_bottom":167,
+  "bbox_bottom":196,
   "bbox_left":64,
-  "bbox_right":225,
+  "bbox_right":221,
   "bbox_top":96,
   "collisionKind":1,
   "collisionTolerance":0,
@@ -12,14 +12,14 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"v1","%Name":"473a7284-a688-484d-91d4-96d25b326cfd","name":"473a7284-a688-484d-91d4-96d25b326cfd","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"92c1e015-f4b1-4680-bce0-ab34e0386143","name":"92c1e015-f4b1-4680-bce0-ab34e0386143","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
   "height":272,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"cb2bbe01-35ef-4dc1-b409-a1cbfe34ce5a","blendMode":0,"displayName":"default","isLocked":false,"name":"cb2bbe01-35ef-4dc1-b409-a1cbfe34ce5a","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"809dd153-fa4a-4b45-acba-ff40610702e0","blendMode":0,"displayName":"default","isLocked":false,"name":"809dd153-fa4a-4b45-acba-ff40610702e0","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
   "name":"spr_weapon_mars_hbolt",
   "nineSlice":null,
@@ -71,8 +71,8 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"473a7284-a688-484d-91d4-96d25b326cfd","path":"sprites/spr_weapon_mars_hbolt/spr_weapon_mars_hbolt.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"a1388382-acc0-40ab-8fda-87d712ffca54","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"92c1e015-f4b1-4680-bce0-ab34e0386143","path":"sprites/spr_weapon_mars_hbolt/spr_weapon_mars_hbolt.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"631dd7f5-14a0-4745-9829-7aefa826c792","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

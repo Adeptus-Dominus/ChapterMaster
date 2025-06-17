@@ -340,10 +340,63 @@ if (shop = "equipment") {
     i += 1;
     x_mod[i] = 9;
 	//30k test debug 
-	//volk
-
-
-	
+	item[i] = "Volkite Serpenta";
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 80;
+    forge_cost[i] = 800;
+    i += 1;
+    item[i] = "Volkite Charger";
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 80;
+    forge_cost[i] = 800;
+    i += 1;
+    item[i] = "Volkite Caliver";
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 80;
+    forge_cost[i] = 800;
+    i += 1;
+    item[i] ="Volkite Culverin";
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 80;
+    forge_cost[i] = 800;
+    i += 1;
+   //Bolt Pack
+   item[i] = "Phobos pattern Bolt Pistol";
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 80;
+    forge_cost[i] = 800;
+    i += 1;
+    item[i] = "Phobos pattern Bolter";
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 80;
+    forge_cost[i] = 800;
+    i += 1;
+    item[i] = "Mars pattern Heavy Bolter";
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 80;
+    forge_cost[i] = 800;
+    i += 1;
+    item[i] = "Tigris pattern Combi Bolter";
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 80;
+    forge_cost[i] = 800;
+    i += 1;
+//Plasma Pack
+ item[i] = "Ryza pattern Plasma Gun";
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 80;
+    forge_cost[i] = 800;
+    i += 1;
+    item[i] = "Ryza pattern Plasma Pistol";
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 80;
+    forge_cost[i] = 800;
+    i += 1;
+    item[i] = "Mars pattern Plasma Cannon";
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 80;
+    forge_cost[i] = 800;
+    i += 1;
 	//
     item[i] = "Combiflamer";
     item_stocked[i] = scr_item_count(item[i]);
