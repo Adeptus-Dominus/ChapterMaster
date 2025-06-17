@@ -424,12 +424,14 @@ if __b__ {
 			scr_en_weapon("Thallax Melee", true, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 25;
 			dudes_hp[j] = 100;
+			dudes_dr[j] = 0.8
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Praetorian Servitor") {
 			scr_en_weapon("Phased Plasma-fusil", true, dudes_num[j], dudes[j], j);
-			dudes_ac[j] = 30;
+			dudes_ac[j] = 20;
 			dudes_hp[j] = 150;
+			dudes_dr[j] = 0.85
 			medi += dudes_num[j];
 		}
 	}
@@ -1666,7 +1668,7 @@ if __b__ {
 			scr_en_weapon("Gauss Blaster", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("Melee3", true, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 10;
-			dudes_hp[j] = 80;
+			dudes_hp[j] = 90;
 			dudes_dr[j] = 0.85;
 			men += dudes_num[j];
 		}
@@ -1697,7 +1699,7 @@ if __b__ {
 				dudes_ac[j] = 30;
 				dudes_hp[j] = 300;
 			}
-			dudes_dr[j] = 0.5;
+			dudes_dr[j] = 0.55;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
@@ -1707,7 +1709,7 @@ if __b__ {
 				dudes_ac[j] = 20;
 				dudes_hp[j] = 200;
 			}
-			dudes_dr[j] = 0.75;
+			dudes_dr[j] = 0.80;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
@@ -1724,7 +1726,7 @@ if __b__ {
 			scr_en_weapon("Particle Whip", false, dudes_num[j] * 1, dudes[j], j);
 			dudes_ac[j] = 50;
 			dudes_hp[j] = 500;
-			dudes_dr[j] = 0.5;
+			dudes_dr[j] = 0.35;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
@@ -1733,7 +1735,7 @@ if __b__ {
 			scr_en_weapon("Doomsday Cannon", false, dudes_num[j] * 1, dudes[j], j);
 			dudes_ac[j] = 30;
 			dudes_hp[j] = 350;
-			dudes_dr[j] = 0.7;
+			dudes_dr[j] = 0.55;
 			veh += dudes_num[j];
 			dudes_vehicle[j] = 1;
 		}
