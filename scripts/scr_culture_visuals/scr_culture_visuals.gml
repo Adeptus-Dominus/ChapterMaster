@@ -30,6 +30,8 @@ function load_visual_sets(){
 
     }
 
+    set_up_visual_overides();
+
     load_symbol_sets(global.chapter_symbols, "chapter_symbols", ["pauldron", "knees"]);
     load_symbol_sets(global.role_markings, "role_markings", ["pauldron", "knees"]);
 }
@@ -129,8 +131,37 @@ function load_vis_set_to_global(directory, data){
                     sprite_delete(_merge_sprite);
                 }
                 var _s_data = _sprite_item.data;
+                _s_data.name = _sprite_item.name;
                 _s_data.sprite = _new_sprite;
                 array_push(global.modular_drawing_items, _s_data);
+            }
+        }
+    }
+}
+
+function set_up_visual_overides(){
+    var _mods = global.modular_drawing_items;
+    for (var i=0;i<array_length(_mods);i++){
+        var _item = _mods[i];
+        if (struct_exists(_item, "overides")){
+            var _overide_areas = struct_get_names(_item.overides);
+            for (var o = 0; o<array_length(_overide_areas);o++){
+                var _overide = _item.overides[_overide_areas[$o]];
+                if (is_string(_overide)){
+                    var _found_sprite = false;
+                    for (var s=0;s<array_length(_mods);s++){
+                        if (struct_exists(_mods[s], "name")){
+                            if (_mods[s].name == _overide){
+                                _item.overides[_overide_areas[$o]] = _mods[s].sprite;
+                                _found_sprite = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!_found_sprite){
+                        struct_remove(_item.overides, _overide_areas[$o]);
+                    }
+                }
             }
         }
     }
@@ -993,7 +1024,19 @@ global.modular_drawing_items = [
         body_parts :{
             "left_eye" : "bionic",
         }
-    },                                                                  
+    }, 
+    {
+        position : "forehead",struct_get_names
+        sprite: spr_helm_decorations,
+        body_types: [0, 2],
+        max_saturation : 50,
+        roles : [eROLE.Sergeant,eROLE.Champion,eROLE.VeteranSergeant],
+        offsets : {
+            "Terminator Armour" : {
+                y : -10
+            }
+        }
+    },                                                                 
 ];
 
 
