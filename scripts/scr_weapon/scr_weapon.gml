@@ -42,7 +42,11 @@ global.weapons = {
 			"master_crafted": 420,
 			"artifact": 440
 		},
+<<<<<<< HEAD
 		"description": "Ancient thermal ray weapon, smaller, yet still deadly borother of caliver.",
+=======
+		"description": "Ancient thermal ray weapon, smaller, yet still deadly brother of caliver.",
+>>>>>>> origin/Volkite+boltPack
 		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 10,
@@ -59,7 +63,11 @@ global.weapons = {
 			"master_crafted": 270,
 			"artifact": 290
 		},
+<<<<<<< HEAD
 		"description": "Ancient one handed thermal ray weapon, prefered by melee specialists, and officers .",
+=======
+		"description": "Ancient one handed thermal ray weapon, preferred by melee specialists, and officers .",
+>>>>>>> origin/Volkite+boltPack
 		"melee_hands": 0,
 		"ranged_hands": 1,
 		"ammo": 10,
@@ -84,7 +92,11 @@ global.weapons = {
 		"range": 3.5,
 		"spli": 2,
 		"arp": 0,
+<<<<<<< HEAD
 		"tags": ["bolt", "pistol"],
+=======
+		"tags": ["bolt", "pistol"]
+>>>>>>> origin/Volkite+boltPack
 	},
 
 "Phobos pattern Bolter": {
@@ -94,7 +106,11 @@ global.weapons = {
 			"master_crafted": 80,
 			"artifact": 85
 		},
+<<<<<<< HEAD
 		"description": "Ancient pattern of boltgun made during times of the Great Crusade for the Astartes Legions. It uses different ammunition, has larger magazine and is slightly bigger than it's modern counterparts.",
+=======
+		"description": "Ancient pattern of boltgun made during times of the Great Crusade for the Astartes Legions. It uses different ammunition, has larger magazine and is slightly bigger than its modern counterparts.",
+>>>>>>> origin/Volkite+boltPack
 		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 20,
@@ -111,7 +127,11 @@ global.weapons = {
 			"master_crafted": 430,
 			"artifact": 460
 		},
+<<<<<<< HEAD
 		"description": " Rare variant of heavy bolter, uncommon even during times of it's production. Made in forges of Mars itself, it's more lightweight and compact in comparisson to modern patterns.",
+=======
+		"description": " Rare variant of heavy bolter, uncommon even during times of it's production. Made in forges of Mars itself, it's more lightweight and compact in comparison to modern patterns.",
+>>>>>>> origin/Volkite+boltPack
 		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 12,
@@ -136,6 +156,7 @@ global.weapons = {
 		"arp": 1,
 		"tags": ["heavy_ranged", "bolt"]
 },
+<<<<<<< HEAD
 //Plasma Pack
 "Ryza pattern Plasma Gun": {
 "abbreviation": "RyzPlsmGn",
@@ -185,6 +206,8 @@ global.weapons = {
 		"arp": 1,
 		"tags": [ "plasma","energy"]
 },
+=======
+>>>>>>> origin/Volkite+boltPack
 	//40K Weapons
 	"Storm Shield": {
 		"description": "Protects twice as well when boarding. A powered shield that must be held with a hand.  While powered by the marines armour it shimmers with blue energy.",

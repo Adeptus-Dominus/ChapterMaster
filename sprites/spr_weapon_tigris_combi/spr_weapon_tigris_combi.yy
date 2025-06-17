@@ -12,14 +12,22 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
+<<<<<<< HEAD
     {"$GMSpriteFrame":"v1","%Name":"00f5bd12-9f2e-43b0-b6eb-0cc062b589ab","name":"00f5bd12-9f2e-43b0-b6eb-0cc062b589ab","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+=======
+    {"$GMSpriteFrame":"v1","%Name":"7078d58a-3619-44c5-bbe0-4449064aeaa4","name":"7078d58a-3619-44c5-bbe0-4449064aeaa4","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+>>>>>>> origin/Volkite+boltPack
   ],
   "gridX":0,
   "gridY":0,
   "height":231,
   "HTile":false,
   "layers":[
+<<<<<<< HEAD
     {"$GMImageLayer":"","%Name":"5629dea4-f3b9-4fde-86f6-d6785f09befa","blendMode":0,"displayName":"default","isLocked":false,"name":"5629dea4-f3b9-4fde-86f6-d6785f09befa","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+=======
+    {"$GMImageLayer":"","%Name":"c71b0c2f-0e0d-4b9e-aa10-73d13c7796a6","blendMode":0,"displayName":"default","isLocked":false,"name":"c71b0c2f-0e0d-4b9e-aa10-73d13c7796a6","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+>>>>>>> origin/Volkite+boltPack
   ],
   "name":"spr_weapon_tigris_combi",
   "nineSlice":{
@@ -90,8 +98,13 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
+<<<<<<< HEAD
                 "0":{"$SpriteFrameKeyframe":"","Id":{"name":"00f5bd12-9f2e-43b0-b6eb-0cc062b589ab","path":"sprites/spr_weapon_tigris_combi/spr_weapon_tigris_combi.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"2026bd6a-a008-4042-b3c3-5cd503222493","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+=======
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"7078d58a-3619-44c5-bbe0-4449064aeaa4","path":"sprites/spr_weapon_tigris_combi/spr_weapon_tigris_combi.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"edd0737e-fb8c-439a-88d5-d55cb9bea077","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+>>>>>>> origin/Volkite+boltPack
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

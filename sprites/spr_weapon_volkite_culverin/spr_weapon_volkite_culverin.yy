@@ -12,14 +12,22 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
+<<<<<<< HEAD
     {"$GMSpriteFrame":"v1","%Name":"c846cb7a-226a-40a1-9515-bf994905b94f","name":"c846cb7a-226a-40a1-9515-bf994905b94f","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+=======
+    {"$GMSpriteFrame":"v1","%Name":"27b95a4c-b7c0-4f2e-aa03-ece8e4e50432","name":"27b95a4c-b7c0-4f2e-aa03-ece8e4e50432","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+>>>>>>> origin/Volkite+boltPack
   ],
   "gridX":0,
   "gridY":0,
   "height":272,
   "HTile":false,
   "layers":[
+<<<<<<< HEAD
     {"$GMImageLayer":"","%Name":"f9483391-3b2b-4cc6-b7ef-addac06ac16a","blendMode":0,"displayName":"default","isLocked":false,"name":"f9483391-3b2b-4cc6-b7ef-addac06ac16a","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+=======
+    {"$GMImageLayer":"","%Name":"7e7d708c-6c89-45d1-b800-7d518f4ba3cd","blendMode":0,"displayName":"default","isLocked":false,"name":"7e7d708c-6c89-45d1-b800-7d518f4ba3cd","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+>>>>>>> origin/Volkite+boltPack
   ],
   "name":"spr_weapon_volkite_culverin",
   "nineSlice":null,
@@ -71,8 +79,13 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
+<<<<<<< HEAD
                 "0":{"$SpriteFrameKeyframe":"","Id":{"name":"c846cb7a-226a-40a1-9515-bf994905b94f","path":"sprites/spr_weapon_volkite_culverin/spr_weapon_volkite_culverin.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"a121ac2b-31bf-49c0-8a8a-b737b56fa24c","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+=======
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"27b95a4c-b7c0-4f2e-aa03-ece8e4e50432","path":"sprites/spr_weapon_volkite_culverin/spr_weapon_volkite_culverin.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"568801a4-4dcc-4f73-a88b-447c31f2e712","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+>>>>>>> origin/Volkite+boltPack
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

@@ -208,7 +208,7 @@ function scr_enemy_ai_d() {
                     for (me=0;me<array_length(obj_ini.role[co]);me++){
                         if (obj_ini.race[co][me]=1) and (obj_ini.role[co][me]!=""){
                             unit = fetch_unit([co,me]);
-                            unit.add_corruption(irandom_range(3, 6));
+                            unit.edit_corruption(irandom_range(3, 6));
                             unit.alter_loyalty(10);
                         }
                     }
