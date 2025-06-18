@@ -1254,6 +1254,103 @@ function format_weapon_visuals(weapon_name){
     return return_options;
 }
 global.weapon_visual_data = {
+	//30k weapons
+	//Volkitepack
+	"Volkite Charger": {
+  base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_volkite_charger,
+  }]
+},
+
+"Volkite Serpenta": {
+  base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_volkite_serpenta,
+  }]
+},
+ 
+"Volkite Caliver": {
+  base: {
+    weapon_data: {
+      display_type: "ranged_twohand",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_volkite_caliver,
+  }]
+},
+
+"Volkite Culverin": {
+  base: {
+    weapon_data: {
+      display_type: "ranged_twohand",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_volkite_culverin,
+  }]
+},
+//Bolter Pack
+"Phobos pattern Bolter": {
+ base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_phobos_bolter,
+  }]
+},
+"Phobos pattern Bolt Pistol": {
+ base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_phobos_bolt_pistol,
+  }]
+},
+"Mars pattern Heavy Bolter": {
+  base: {
+    weapon_data: {
+      display_type: "ranged_twohand",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_mars_hbolt,
+  }]
+},
+"Tigris pattern Combi Bolter": {
+ base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_tigris_combi,
+  }]
+},
+
+	
+	//40k weapons
   "Assault Cannon": {
     base : {
         weapon_data:{
