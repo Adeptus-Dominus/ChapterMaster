@@ -425,14 +425,14 @@ if __b__ {
 			scr_en_weapon("Thallax Melee", true, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 25;
 			dudes_hp[j] = 100;
-			dudes_dr[j] = 0.8
+			dudes_dr[j] = 0.8;
 			men += dudes_num[j];
 		}
 		if (dudes[j] = "Praetorian Servitor") {
 			scr_en_weapon("Phased Plasma-fusil", true, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 15;
 			dudes_hp[j] = 150;
-			dudes_dr[j] = 0.85
+			dudes_dr[j] = 0.85;
 			medi += dudes_num[j];
 		}
 	}
@@ -550,7 +550,7 @@ if __b__ {
 			dudes_dr[j] = 0.6;
 		}
 
-		if (dudes[j] = "Follower") { //Frazteris Militia
+		if (dudes[j] = "Follower") { //Frateris Militia
 			scr_en_weapon("Laspistol", true, dudes_num[j], dudes[j], j);
 			scr_en_weapon("melee0.5", true, dudes_num[j], dudes[j], j);
 			dudes_ac[j] = 5;
