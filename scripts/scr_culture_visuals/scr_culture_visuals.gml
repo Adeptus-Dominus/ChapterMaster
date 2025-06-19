@@ -1352,7 +1352,7 @@ global.weapon_visual_data = {
   }]
 },
 //Plasma Pack
-"Ryza  Plasma Gun": {
+"Ryza Plasma Gun": {
  base: {
     weapon_data: {
       display_type: "normal_ranged",
@@ -1363,7 +1363,7 @@ global.weapon_visual_data = {
     sprite: spr_weapon_ryza_plasg,
   }]
 },
-"Ryza  Plasma Pistol": {
+"Ryza Plasma Pistol": {
  base: {
     weapon_data: {
       display_type: "normal_ranged",
@@ -1374,7 +1374,7 @@ global.weapon_visual_data = {
     sprite: spr_weapon_ryza_plasp,
   }]
 },
-"Mars  Plasma Cannon": {
+"Mars Plasma Cannon": {
  base: {
     weapon_data: {
       display_type: "ranged_twohand",
