@@ -15,9 +15,10 @@
         "data" : {
             "cultures" : ["Crusader"],
             "body_types" : [0],
-            "ban" : ["forehead", "right_eye", "left_eye"],
+            "ban" : ["right_eye", "left_eye"],
             "assign_by_rank" : 2,
-            "position" : "crown"      
+            "position" : "crown",
+            "max_saturation"  : 0, 
         }
     },
     {
@@ -25,10 +26,13 @@
         "data" : {
             "cultures" : ["Crusader"],
             "body_types" : [0],
-            "ban" : ["forehead", "right_eye", "left_eye"],
+            "ban" : ["right_eye", "left_eye"],
             "assign_by_rank" : 2,
             "exp" : {"min" : 80},
-            "position" : "crown"
+            "position" : "forehead",
+            "overides" : {
+                "crown" : "torse",
+            }
         }
     }
 ]

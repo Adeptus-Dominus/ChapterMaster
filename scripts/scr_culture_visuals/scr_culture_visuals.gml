@@ -168,6 +168,31 @@ function set_up_visual_overides(){
                 }
             }
         }
+        if (struct_exists(_item, "subcomponents")){
+            var _subs = _item.subcomponents;
+            for (var s = 0;s<array_length(_subs);s++){
+                var _sub_group = _subs[s]
+                for (var g=array_length(_sub_group)-1;g>=0;g--){
+                    var _found_sprite = false;
+                    var _subimg = _sub_group[g];
+                    if (!is_string(_subimg)){
+                        continue;
+                    }
+                    for (var s=0;s<array_length(_mods);s++){
+                        if (struct_exists(_mods[s], "name")){
+                            if (_mods[s].name == _subimg){
+                                _item.subcomponents[s][g] = _mods[s].sprite;
+                                _found_sprite = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!_found_sprite){
+                        array_delete(_item.subcomponents[s], g, 1);
+                    }
+                }
+            }
+        }
     }
 }
 global.modular_drawing_items = [
