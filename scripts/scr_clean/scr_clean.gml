@@ -133,14 +133,21 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
             var total_hits = hostile_shots;
             var unit_type = "";
             var armour_pierce = apa[weapon_index_position];
-            var _armour_mod = 1;
-            if (armour_pierce == 1) {
+            var _armour_mod = 0;
+            switch (armour_pierce) {
+            case 3:
                 _armour_mod = 2;
-            } else if (armour_pierce == 0) {
+                    break;
+            case 2:
                 _armour_mod = 4;
-            } else if (armour_pierce == -1) {
+                    break;
+            case 1:
                 _armour_mod = 6;
-            }
+                    break;
+            default:
+                _armour_mod = 0;
+                break;
+}
 
             // ### Vehicle Damage Processing ###
             if (!target_is_infantry && veh > 0) {
