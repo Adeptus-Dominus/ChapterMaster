@@ -1,6 +1,6 @@
 var _target_planet;
 _target_planet = instance_nearest(x, y, obj_star);
-delete_features(_target_planet.p_feature[num], P_features.Artifact);
+delete_features(_target_planet.p_feature[num], P_features.STC_Fragment);
 
 scr_return_ship(loc, self, num);
 
