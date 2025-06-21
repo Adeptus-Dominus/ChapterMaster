@@ -31,8 +31,8 @@ function scr_enemy_ai_a() {
 	    repeat(planets){
 	    	cur_planet+=1;
 	        if (array_length(p_feature[cur_planet])!=0){
-	            if (planet_feature_bool(p_feature[cur_planet], P_features.World_Eaters)==1) and (p_chaos[cur_planet]<=0){
-	                delete_features(p_feature[cur_planet],P_features.World_Eaters);
+	            if (planet_feature_bool(p_feature[cur_planet], P_features.ChaosWarband)==1) and (p_chaos[cur_planet]<=0){
+	                delete_features(p_feature[cur_planet],P_features.ChaosWarband);
 	            }
 	        }
 	    }

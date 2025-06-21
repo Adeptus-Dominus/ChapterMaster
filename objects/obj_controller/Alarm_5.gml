@@ -469,7 +469,9 @@ for(var i=1; i<=99; i++){
         event_duration[i]-=1;
         if (event_duration[i]==0){
 
-            if (event[i]=="game_over_man") then obj_controller.alarm[8]=1;
+            if (event[i]=="game_over_man"){
+                obj_controller.alarm[8]=1;
+            }
             // Removes planetary governor installed by the chapter
             if (string_count("remove_serf",event[i])>0){
                 explode_script(event[i],"|");
@@ -530,7 +532,7 @@ for(var i=1; i<=99; i++){
                         flee.capital_number=choose(0,1);
 						flee.frigate_number=choose(2,3);
 						flee.escort_number=choose(4,5,6);
-                        flee.trade_goods="csm";
+                        flee.cargo_data.csm = true;
 						obj_controller.chaos_fleets+=1;
                         flee.action_x=star_id.x;
 						flee.action_y=star_id.y;

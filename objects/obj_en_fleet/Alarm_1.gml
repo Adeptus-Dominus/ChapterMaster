@@ -20,8 +20,8 @@ if (orbiting != 0 && action=="" && owner!=noone){
         orbiting.present_fleet[owner]++;
     }
 }
-
-if ((trade_goods="Khorne_warband") or (trade_goods="Khorne_warband_landing_force")) and (owner=eFACTION.Chaos) {
+var _khorne_cargo = fleet_has_cargo("warband");
+if (_khorne_cargo && owner=eFACTION.Chaos) {
     khorne_fleet_cargo();
 }
 
@@ -389,7 +389,8 @@ if (navy && action=="") {
 	    if (guard_wanted>50000) then planet_needed=2;// Feudal and up
 	    if (guard_wanted>200000) then planet_needed=3;// Temperate and up
 	    if (guard_wanted>2000000) then planet_needed=4;// Hive
-	    obj_controller.temp[200]=guard_wanted;trade_goods="";
+	    obj_controller.temp[200]=guard_wanted;
+	    trade_goods="";
     
 	    if (planet_needed=1) or (planet_needed=2){
 			var good
@@ -499,7 +500,9 @@ if (navy && action=="") {
 	}
 
 	scr_navy_planet_action();
-	if (trade_goods="recruited") then trade_goods="";
+	if (trade_goods="recruited"){
+		trade_goods="";
+	}
 	/* */
 	}
 }

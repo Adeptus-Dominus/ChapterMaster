@@ -49,8 +49,8 @@ function mechanicus_missions_end_turn(planet){
 	            if (battli=2) then obj_turn_end.battle_special[obj_turn_end.battles]="study2b";
 	        
 	            if (obj_turn_end.battle_opponent[obj_turn_end.battles]==11){
-	                if (planet_feature_bool(p_feature[planet],P_features.World_Eaters)==1){
-	                    obj_turn_end.battle_special[obj_turn_end.battles]="world_eaters";
+	                if (planet_feature_bool(p_feature[planet],P_features.ChaosWarband)==1){
+	                    obj_turn_end.battle_special[obj_turn_end.battles]="ChaosWarband";
 	                }
 	            }
 	        }

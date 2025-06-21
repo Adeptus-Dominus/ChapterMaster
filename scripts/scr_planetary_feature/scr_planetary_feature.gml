@@ -11,7 +11,7 @@ enum P_features {
 			OrkWarboss,
 			Warlord10,
 			Special_Force,
-			World_Eaters,
+			ChaosWarband,
 			Webway,
 			Secret_Base,
 			Starship,
@@ -163,6 +163,12 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
         recruit_type = 0;
         recruit_cost = 0;
 		break;
+	case P_features.ChaosWarband:
+		if !(struct_exists(data, "patron")){
+			patron = choose("slaanesh", "tzeentch", "khorne", "nurgle", "undivided");
+		} else {
+			self.patron = data.patron;
+		}
 	default:
 		player_hidden = 1;
 		planet_display = 0;
@@ -177,7 +183,15 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
         }
 	}
 }
+function move_feature_to_fleet(planet, feature_slot, fleet, cargo_key){
+	var _feat = p_feature[planet][feature_slot];
+	array_delete(p_feature[planet], feature_slot, 1);
+	fleet.cargo_data[$ cargo_key] = _feat;
+}
 
+function move_feature_to_planet(cargo_key, star, planet){
+	
+}
 // returns an array of all the positions that a certain planet feature occurs on th p_feature array of a planet
 // this works for both planet_Features and planet upgrades
 function search_planet_features(planet, search_feature){

@@ -1,0 +1,82 @@
+[
+	{
+		"name" : "one",
+		"data" : {
+			"body_types" :[0],
+			"position" : "right_pauldron",
+			"company" : [1],        
+    	},
+	},
+	{
+		"name" : "two",
+		"data" : {
+			"body_types" :[0],
+			"position" : "right_pauldron",
+			"company" : [2],        
+    	},
+	},
+	{
+		"name" : "three",
+		"data" : {
+			"body_types" :[0],
+			"position" : "right_pauldron",
+			"company" : [3],        
+    	},
+	},
+	{
+		"name" : "four",
+		"data" : {
+			"body_types" :[0],
+			"position" : "right_pauldron",
+			"company" : [4],        
+    	},
+	},
+	{
+		"name" : "five",
+		"data" : {
+			"body_types" :[0],
+			"position" : "right_pauldron",
+			"company" : [5],        
+    	},
+	},
+	{
+		"name" : "six",
+		"data" : {
+			"body_types" :[0],
+			"position" : "right_pauldron",
+			"company" : [6],        
+    	},
+	},
+	{
+		"name" : "seven",
+		"data" : {
+			"body_types" :[0],
+			"position" : "right_pauldron",
+			"company" : [7],        
+    	},
+	},
+	{
+		"name" : "eight",
+		"data" : {
+			"body_types" :[0],
+			"position" : "right_pauldron",
+			"company" : [8],        
+    	},
+	},
+	{
+		"name" : "nine",
+		"data" : {
+			"body_types" :[0],
+			"position" : "right_pauldron",
+			"company" : [9],        
+    	},
+	},
+	{
+		"name" : "ten",
+		"data" : {
+			"body_types" :[0],
+			"position" : "right_pauldron",
+			"company" : [10],        
+    	},
+	},		
+]
