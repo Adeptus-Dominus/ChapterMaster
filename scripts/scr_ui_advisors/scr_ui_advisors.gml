@@ -670,24 +670,7 @@ function scr_ui_advisors() {
         draw_sprite(spr_arrow, 0, xx + 217, yy + 32);
     }
 
-    // ** Welcome menu **
-    if (menu >= 500 && menu <= 510) {
-        draw_sprite(spr_welcome_bg, 0, xx, yy);
-        // draw_sprite(spr_advisors,0,xx+16,yy+16);
-        scr_image("advisor/splash", 1, xx + 16, yy + 16, 310, 828);
-        draw_set_halign(fa_left);
-        draw_set_color(0);
-        draw_set_font(fnt_40k_14);
 
-        if (menu = 500) then draw_text_ext(xx + 370, yy + 72, string_hash_to_newline(string(temp[65])), -1, 660);
-        if (menu = 501) then draw_text_ext(xx + 370, yy + 72, string_hash_to_newline(string(temp[66])), -1, 660);
-        if (menu = 502) then draw_text_ext(xx + 370, yy + 72, string_hash_to_newline(string(temp[67])), -1, 660);
-        if (menu = 503) then draw_text_ext(xx + 370, yy + 72, string_hash_to_newline(string(temp[68])), -1, 660);
-        draw_set_halign(fa_center);
-        draw_text(xx + 702, yy + 695, $"{menu - 499} (Press Any Key)");
-        draw_set_halign(fa_left);
-
-    }
 
     if (menu = 1) and(managing = 0) {
         draw_set_alpha(1);

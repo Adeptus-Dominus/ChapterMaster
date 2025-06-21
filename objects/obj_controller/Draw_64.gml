@@ -20,6 +20,24 @@ if (is_test_map==true){
 
 var xx = 0;
 var yy = 0;
+// ** Welcome menu **
+if (menu >= 500 && menu <= 510) {
+    //draw_sprite(spr_welcome_bg, 0, 0, 0);
+    // draw_sprite(spr_advisors,0,xx+16,yy+16);
+   scr_image("advisor/splash", 1, 16, 16, 310, 828);
+
+    draw_set_halign(fa_left);
+    draw_set_color(0);
+    draw_set_font(fnt_40k_14);
+    draw_set_halign(fa_center);
+    draw_text(702, 695, $"{menu - 499} (Press Any Key)");
+    draw_set_halign(fa_left);
+
+}
+servo_data_book.draw();
+
+
+
 // Main UI
 if (!zoomed && !zui){
     draw_sprite(spr_new_ui,menu==0,0,0);
@@ -157,6 +175,14 @@ draw_set_alpha(1);
 // Sets up debut mode
 if (global.cheat_debug == true){
     draw_text(1124, 7, string_hash_to_newline("DEBUG MODE"));
+}
+
+if (menu == 20){
+    if (trading==true){
+        if ((diplomacy>1) && is_struct(trade_attempt)){
+            trade_attempt.draw_trade_screen();
+        }
+    }
 }
 
 
