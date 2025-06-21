@@ -1,14 +1,13 @@
 <!--- Make use of markdown lists. They make stuff much easier to read through. -->
-### Purpose and Description
-<!-- With a few sentences, describe why you decided to make these changes/additions. -->
-<!-- And what your changes do and how. No need to get too technical. Some stuff from this list will also be used for the player release notes. -->
+## Purpose and Description
+<!-- Explain why and what your changes do in simple terms. -->
 - Self-descriptive.
 
-### Testing done
+## Testing done
 <!-- Describe what steps you took to test that this PR resolved the bug or added the feature, and what tests you performed to make sure it didn't cause any regressions. -->
 - None, and I understand the risks.
 
-### Related things and/or additional context
+## Related things and/or additional context
 <!-- Other PRs, Discord bug reports, messages, threads, outside docs, screenshots etc. -->
 -
 
