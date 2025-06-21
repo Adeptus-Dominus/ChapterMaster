@@ -1656,6 +1656,14 @@ var tech_heretic_modifier =1
     item_cost[i] = ceil(item_cost[i]);
 }
 
+if (global.cheat_debug) {
+    var i_count = array_length(item_cost);
+    var empty_array = array_create(i_count, 0);
+    item_cost = empty_array;
+    forge_cost = array_create(i_count, 1);
+    nobuy = empty_array;
+}
+
 item_cost_tooltip_info = "";
 item_cost_tooltip_info += $"Modifier from forge Master : X{forge_master_modifier}/n"
 item_cost_tooltip_info += $"Mechanicus Relations : X{mechanicus_modifier}/n"
