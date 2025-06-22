@@ -80,7 +80,7 @@ dudes_defense = [];
 dudes_wep1 = [];
 dudes_wep2 = [];
 dudes_gear = [];
-dudges_mobi = [];
+dudes_mobi = [];
 
 
 alarm[1]=5;
