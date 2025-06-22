@@ -372,7 +372,7 @@ function ShutterButton() constructor{
 
 	draw_shutter = function(xx=-1,yy=-1,text, scale=1, entered = ""){
 		if (xx != -1){
-			XX=xx;s
+			XX=xx;
 		}
 		if (yy != -1){
 			YY=yy;

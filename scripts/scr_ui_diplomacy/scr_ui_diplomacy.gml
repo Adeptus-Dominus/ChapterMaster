@@ -236,13 +236,13 @@ function set_up_diplomacy_buttons(){
 
 	diplo_buttons.declare_War = new ShutterButton();
 	var _war = diplo_buttons.declare_War;
-	_war.XX : 640;
-	_war.YY : diplo_buttons.alliance.y2;
-	_war.label : "DECLARE WAR";
-	_war.tooltip : "Unfinished";
-	_war.color : CM_RED_COLOR;
-	_war.cover_text = "Declare War";
-	_war.bind_scope : obj_controller;
+	_war.XX= 640;
+	_war.YY= diplo_buttons.alliance.y2;
+	_war.label = "DECLARE WAR";
+	_war.tooltip = "Unfinished";
+	_war.color = CM_RED_COLOR;
+	_war.cover_text= "Declare War";
+	_war.bind_scope = obj_controller;
 }
 
 function set_up_diplomacy_persons(){
