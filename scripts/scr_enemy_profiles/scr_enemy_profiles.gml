@@ -434,7 +434,7 @@ function add_enemy_row_item(instance, en_name ,  number){
 		array_push(dudes_wep1,"")
 		array_push(dudes_wep2,"")
 		array_push(dudes_gear,"")
-		array_push(dudges_mobi,"")
+		array_push(dudes_mobi,"")
 	}
 	array_push(enemies, number);
 }
