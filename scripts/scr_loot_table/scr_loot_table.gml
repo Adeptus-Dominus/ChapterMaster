@@ -7,7 +7,7 @@ function find_loot(loot_data={}, loot_value = 200){
 
 	var _exclusives = struct_exists(loot_data ,"exclusives") ? loot_data.exclusives : false;
 
-	var _mults = struct_exists(loot_data ,"multipliers") ? loot_data.multiplyers : false;
+	var _mults = struct_exists(loot_data ,"multipliers") ? loot_data.multipliers : false;
 
 	var _excludes = struct_exists(loot_data ,"excludes") ? loot_data.excludes : false;
 
@@ -19,7 +19,9 @@ function find_loot(loot_data={}, loot_value = 200){
 
 	for (var i=0;i<array_length(_all_items_table);i++){
 		var _item = gear_weapon_data(,_all_items_table[i]);
-		if (_item == false)
+		if (_item == false){
+			continue;
+		}
 		if (_exclusives != false){
 			var _include = false;
 			for (var e = 0; e<array_length(_exclusives); e++){
@@ -48,9 +50,9 @@ function find_loot(loot_data={}, loot_value = 200){
 
 		var _loot_value = _item.loot.base;
 		for (var t = 0;t<array_length(_loot_tags);t++){
-			if (struct_exists(_item, _loot_tags[t])){
-				if (_item[$ _loot_tags[t]] > _loot_value){
-					_loot_value = _item[$ _loot_tags[t]];
+			if (struct_exists(_item.loot, _loot_tags[t])){
+				if (_item.loot[$ _loot_tags[t]] > _loot_value){
+					_loot_value = _item.loot[$ _loot_tags[t]];
 				}
 			}
 		}
