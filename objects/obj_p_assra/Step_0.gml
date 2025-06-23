@@ -67,7 +67,7 @@ if (boarding=true) and (board_cooldown>=0) and (instance_exists(target)) and (in
     board_cooldown-=1;
 
     if (board_cooldown=0){board_cooldown=60;
-        var o,challenge,boarding_odds,boarding_difficulty,boarding_advantage,boarding_disadvantage,gear_bonus,marine_bonus,outcome_roll,damage_roll,attack,arp,wep,ac,dr,co,i,hits,hurt,damaged_ship,bridge_damage;
+        var o,challenge,boarding_odds,boarding_advantage,boarding_disadvantage,gear_bonus,marine_bonus,outcome_roll,damage_roll,attack,arp,wep,ac,dr,co,i,hits,hurt,damaged_ship,bridge_damage;
         o=firstest-1;boarding_odds=0;challenge=0;outcome_roll=0;damage_roll=0;attack=0;arp=0;wep="";hits=0;hurt=0;damaged_ship=0;bridge_damage=1;
         co=0;i=0;ac=0;dr=1;
         
@@ -94,12 +94,12 @@ if (boarding=true) and (board_cooldown>=0) and (instance_exists(target)) and (in
                 marine_bonus+=(1-(target.hp/target.maxhp))*33; // if wounded marine will perform worse
 
                 var _weapons = [unit.get_weapon_one_data(), unit.get_weapon_two_data()];
-                if (_weapons[0] == "" && _weapons[1] == "") {
+                if (!is_struct(_weapons[0]) && !is_struct(_weapons[1])) {
                     gear_bonus -= 10;
                 } else {
                     for (var i = 0; i <= 1; i++) {
                         var _weapon = _weapons[i];
-                        if (!is_struct(_weapon)) then break
+                        if (!is_struct(_weapon)) then continue
 
                         if (_weapon.has_tag("boarding 1")) {
                             gear_bonus += 2;
