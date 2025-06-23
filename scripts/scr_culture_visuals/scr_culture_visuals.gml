@@ -1254,6 +1254,140 @@ function format_weapon_visuals(weapon_name){
     return return_options;
 }
 global.weapon_visual_data = {
+	//30k weapons
+	//Volkite Pack
+"Volkite Charger": {
+  base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_volkite_charger,
+  }]
+},
+
+"Volkite Serpenta": {
+  base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_volkite_serpenta,
+  }]
+},
+ 
+"Volkite Caliver": {
+  base: {
+    weapon_data: {
+      display_type: "ranged_twohand",
+      new_weapon_draw: true
+    },
+    body_types: [0,1]
+  },
+  variants: [{
+    sprite: spr_weapon_volkite_caliver,
+  }]
+},
+
+"Volkite Culverin": {
+  base: {
+    weapon_data: {
+      display_type: "ranged_twohand",
+      new_weapon_draw: true
+    },
+    body_types: [0,1]
+  },
+  variants: [{
+    sprite: spr_weapon_volkite_culverin,
+  }]
+},
+//Bolter Pack
+"Phobos Bolter": {
+ base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_phobos_bolter,
+  }]
+},
+"Phobos Bolt Pistol": {
+ base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_phobos_boltpis,
+  }]
+},
+"Mars Heavy Bolter": {
+  base: {
+    weapon_data: {
+      display_type: "ranged_twohand",
+      new_weapon_draw: true
+    },
+    body_types: [0,1]
+  },
+  variants: [{
+    sprite: spr_weapon_mars_hbolt,
+  }]
+},
+"Tigris Combi Bolter": {
+ base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_tigris_combi,
+  }]
+},
+//Plasma Pack
+"Ryza Plasma Gun": {
+ base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_ryza_plasg,
+  }]
+},
+"Ryza Plasma Pistol": {
+ base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_ryza_plasp,
+  }]
+},
+"Mars Plasma Cannon": {
+ base: {
+    weapon_data: {
+      display_type: "ranged_twohand",
+      new_weapon_draw: true
+    },
+    body_types: [0,1]
+  },
+  variants: [{
+    sprite: spr_weapon_mars_plasc,
+  }]
+},
+	
+	//40k weapons
   "Assault Cannon": {
     base : {
         weapon_data:{

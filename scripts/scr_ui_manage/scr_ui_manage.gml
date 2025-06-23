@@ -506,7 +506,9 @@ function draw_sprite_and_unit_equip_data(){
         }
         setup_tooltip_list(_unit_tooltips)
     }
-    company_data.unit_ui_panel.draw_with_dimensions();
+    if (!instance_exists(obj_popup)){
+        company_data.unit_ui_panel.draw_with_dimensions();
+    }
 }
 /// @mixin
 function scr_ui_manage() {

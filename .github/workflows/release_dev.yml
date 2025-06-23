@@ -160,9 +160,7 @@ jobs:
             COUNT=$((COUNT + 1))
             if [ $COUNT -gt $RELEASES_TO_KEEP ]; then
               echo "Deleting old release+tag: $TAG"
-              # gh release delete "$TAG" -y --cleanup-tag command deletes the release AND the associated git tag
-              # Use || echo to log a non-fatal warning if deletion fails (e.g., release already gone)
-              # gh release delete "$TAG" -y --cleanup-tag || echo "Warning: Failed to delete release $TAG. It may have been deleted already."
+              gh release delete "$TAG" -y --cleanup-tag || echo "Warning: Failed to delete release $TAG. It may have been deleted already."
             else
               echo "Keeping release+tag: $TAG (it's within the latest $RELEASES_TO_KEEP)"
             fi
