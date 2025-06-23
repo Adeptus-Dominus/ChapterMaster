@@ -161,6 +161,7 @@ if (global.cheat_debug == true){
 
 if (menu == 20){
     if (diplomacy != 0){
+        draw_diplomacy_diplo_text();
         if (trading==true){
             if ((diplomacy>1) && is_struct(trade_attempt)){
                 trade_attempt.draw_trade_screen();

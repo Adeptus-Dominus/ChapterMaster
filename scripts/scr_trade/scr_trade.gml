@@ -101,9 +101,9 @@ function TradeAttempt(diplomacy) constructor{
 			}
 			var _type = _opt.label;	
 			if (_opt.trade_type == "equip"){
-
+				scr_add_item(_opt.label, -_opt.label);
 			} else if (_opt.trade_type == "req"){
-				controller.requisition -= _opt.number;
+				obj_controller.requisition -= _opt.number;
 				if (_opt.number > 500 && diplomacy_faction==6){
 	                var got2=0;
 	                with (obj_controller){
@@ -146,13 +146,11 @@ function TradeAttempt(diplomacy) constructor{
 			}
 		}
 
-		var flit = setup_ai_trade_fleet();
+		var flit = setup_ai_trade_fleet(trade_from_star, diplomacy_faction);
 
 		flit.cargo_data.player_goods = trading_object;
 
 		flit.target = trade_to_obj;
-		flit.x = trade_from_star.x;
-		flit.y = trade_from_star.y;
 		with (flit){
 			action_x=target.x;
 	        action_y=target.y;
@@ -172,7 +170,7 @@ function TradeAttempt(diplomacy) constructor{
 
 		    var player_fleet_targets = [];
 
-		    if (obj_ini.fleet_type != ePlayerBase.home_world || !arraay_length(_stars_with_player_control)){
+		    if (obj_ini.fleet_type != ePlayerBase.home_world || !array_length(_stars_with_player_control)){
 		        // with(obj_star){if (present_fleet[1]>0){x-=10000;y-=10000;}}
 		        with(obj_p_fleet){// Get the nearest star system that is viable for creating the trading fleet
 		            if ((capital_number>0 || frigate_number>0) && action=""){
@@ -190,7 +188,7 @@ function TradeAttempt(diplomacy) constructor{
 
 		    var viable_faction_trade_stars = [];
 	    	var _check_val = diplomacy_faction;
-	    	 if (obj_controller.diplomacy_faction=4){
+	    	 if (diplomacy_faction==4){
 	    	 	_check_val = 2
 	    	 }
 		    with(obj_star){// Get origin star system for enemy fleet
@@ -203,7 +201,7 @@ function TradeAttempt(diplomacy) constructor{
 		            repeat(planets){
 		            	q+=1;
 		            	if (p_owner[q]=5) then ahuh=1;
-		                if (p_owner[q]<6) and (planet_feature_bool(p_feature[q],P_features.Sororitas_Cathedral )==1) then ahuh=1;
+		                if (p_owner[q]<6) and (planet_feature_bool(p_feature[q],P_features.Sororitas_Cathedral) == 1) then ahuh=1;
 		            }
 		            if (ahuh=1){
 		            	array_push(viable_faction_trade_stars, id);
@@ -243,6 +241,7 @@ function TradeAttempt(diplomacy) constructor{
 		var _success = attempt_rand <= deal_chance;
 		if (_success){
 			_success = find_trade_locations();
+			show_debug_message("trade_success");
 			if (_success){
 				successful_trade_attempt();
 				scr_dialogue("agree");
@@ -251,11 +250,41 @@ function TradeAttempt(diplomacy) constructor{
 				 if (diplomacy_faction=6) or (diplomacy_faction=7) or (diplomacy_faction=8){
 				 	scr_loyalty("Xeno Trade","+");
 				 }
+			} else {
+				show_debug_message("no trade locations");
 			}
 		} else {
+			var _dip = diplomacy_faction;
 			with (obj_controller){
-				scr_dialogue("disagree");
+				var _rela=relationship_hostility_matrix(diplomacy);
+				if (trading_artifact==0){
+					diplo_text="[[Trade Refused]]##";
+				} else {
+					diplo_text="";
+				}
+		        annoyed[_dip] += 1;
+		        rando=choose(1,2,3);
+		        if (_rela=="hostile"){
+					force_goodbye=1;
+		            if (rando==1) then diplo_text+="You would offer me scraps for the keys to a kingdom? You are foolish and, worse, you are unaware of your own incompetence.";
+		            if (rando==2) then diplo_text+="Do not attempt exchanges with those so far above you, lapdog of the Corpse Emperor, it makes you look even more idiotic than you already do.";
+		            if (rando==3) then diplo_text+="I would spit upon this ‘offer' you bring before me but I find myself too amused by it.";
+		        }
+		        else if (_rela!="hostile"){
+		            if (rando==1) then diplo_text+="You may consider my response to be a ‘no' and assume my attitude to be whatever you like, Chapter Master.";
+		            if (rando==2) then diplo_text+="Have a care that you do not overstep the mark, Chapter Master, I see no reason to accept such a trade.";
+		            if (rando==3) then diplo_text+="An unreasonable trade, whatever our working relationship might be. I refuse.";
+		        }
+		        if (annoyed[_dip]>=10){
+					force_goodbye=1;
+		            turns_ignored[_dip]=max(turns_ignored[_dip],1);
+					diplo_last="disagree";
+					diplo_char=0;
+					diplo_alpha=0;
+					exit;
+		        }
 			}
+			show_debug_message("trade_fail");
 			clear_options();			
 		}
 
@@ -312,7 +341,7 @@ function TradeAttempt(diplomacy) constructor{
 				if (max_take == 1){
 					 variable_struct_set(self, "number", 1);	
 				} else {
-					get_diag_integer("{label} wanted?", max_take, self);
+					get_diag_integer($"{label} wanted?", max_take, self);
 				}
 			}
 		}
@@ -375,15 +404,17 @@ function TradeAttempt(diplomacy) constructor{
 			max_number : max_count,
 			disp : trade_disp,
 			trade_type : trade_type,
-			number_last : 0,
-			bind_method : function(){
+			number_last : 0,		
+		});
+		with (_option){
+			bind_method = function(){
 				if (max_number == 1){
 					number = 1;
 				} else {				
-					get_diag_integer("{label} offered?",max_number, self);
+					get_diag_integer($"{label} offered?",max_number, self);
 				}			
-			}			
-		});
+			}
+		}
 		array_push(offer_options, _option);		
 	}
 
@@ -479,10 +510,10 @@ function TradeAttempt(diplomacy) constructor{
         			_opt.number = 0;
         			recalc_values = true;;
         		}    		
-        		if (_opt.max_number > s1){
-        			draw_text(530,_y_offset,"{_opt.label} : {_opt.number}");
+        		if (_opt.max_number > 1){
+        			draw_text(530,_y_offset,$"{_opt.label} : {_opt.number}");
         		} else {
-        			draw_text(530,_y_offset,"{_opt.label}");
+        			draw_text(530,_y_offset,$"{_opt.label}");
         		}
         		_requested_count++;
         	}        	
@@ -509,31 +540,28 @@ function TradeAttempt(diplomacy) constructor{
 
 			if (_opt.number > 0 && struct_exists(relative_trade_values, _opt.label)){
 				their_worth+=_opt.number*relative_trade_values[$ _opt.label];
-			}
-
-
-
-		    /*if (trade_take[i]="Artifact"){
-		    	var _faction_barrier = 0;
-		    	switch (diplomacy_faction){
-		    		case 2:
-		    			_faction_barrier = 300;
-		    			break;
-		    		case 3:
-		    			_faction_barrier = 800;
-		    			break;
-		    		case 4:
-		    			_faction_barrier = 600;
-		    			break;
-		    		case 5:
-		    			_faction_barrier = 500;
-		    			break;	    			    				    			
-		    	}
-		    	if (diplomacy_faction < 5){
-		    		_faction_barrier = 1200
-		    	}*/
-		    //}
-		    their_worth += 1200;		    
+			    if (_opt.label=="Artifact"){
+			    	var _faction_barrier = 0;
+			    	switch (diplomacy_faction){
+			    		case 2:
+			    			_faction_barrier = 300;
+			    			break;
+			    		case 3:
+			    			_faction_barrier = 800;
+			    			break;
+			    		case 4:
+			    			_faction_barrier = 600;
+			    			break;
+			    		case 5:
+			    			_faction_barrier = 500;
+			    			break;	    			    				    			
+			    	}
+			    	if (diplomacy_faction < 5){
+			    		_faction_barrier = 1200
+			    	}
+			    	their_worth += _faction_barrier;
+			    }
+			}		    
 		}
 	}
 
@@ -587,10 +615,10 @@ function TradeAttempt(diplomacy) constructor{
 		calculate_trader_trade_value();
 
 		if (diplomacy_faction=2){
-			dif_penalty=.4;
+			dif_penalty=0.4;
 			penalty=5;
 		}else if (diplomacy_faction=3){
-			dif_penalty=.6;
+			dif_penalty=0.6;
 			penalty=5;
 		}else if (diplomacy_faction=4){
 			dif_penalty=1;
@@ -611,9 +639,9 @@ function TradeAttempt(diplomacy) constructor{
 			dif_penalty=1;
 			penalty=0;}
 
-		deal_chance=(100-penalty)-((their_worth-my_worth)*dif_penalty);
+		deal_chance=(100-penalty)-(((their_worth-(my_worth*dif_penalty))/10));
 
-		
+		show_debug_message($"{their_worth},{my_worth},{deal_chance}");
 
 		var _chance = clamp(floor((deal_chance/20)), 0, 6);
 

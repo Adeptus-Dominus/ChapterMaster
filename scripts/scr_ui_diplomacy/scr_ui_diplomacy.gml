@@ -1,11 +1,4 @@
 function draw_character_diplomacy_base_page(){
-    draw_set_font(fnt_40k_14);
-    draw_set_alpha(1);
-    draw_set_color(38144);
-    draw_set_halign(fa_left);
-    draw_text_ext(336+16,209,string_hash_to_newline(string(diplo_txt)),-1,536);
-    draw_set_halign(fa_center);
-    draw_line(xx+429,yy+710,xx+800,yy+710);	
 	if (!audience){
 		with (diplo_buttons){
 			trade.draw();
@@ -14,19 +7,58 @@ function draw_character_diplomacy_base_page(){
 			denounce.draw();
 			praise.draw();
 			alliance.draw();
-			declare_War.draw();
+			declare_war.draw_shutter(praise.x1,alliance.y2,"WAR",0.4);
 		}
 	}
 	diplo_buttons.exit_button.draw();
 
 }
 
+function intro_to_diplomacy(faction_enum){
+	with (obj_controller){
+	    var _new_diag = "intro";
+	    if  (faction_enum!=4){
+	        if (known[faction_enum]==1) {
+	            known[diplomacy]=2;
+	            faction_justmet=1;
+	        }
+	        else if (known[faction_enum]>=2)  {
+	            _new_diag = "hello";
+	        }
+	    } else {
+	        if (known[eFACTION.Inquisition]==1)  {
+	            known[diplomacy]=2;
+	            faction_justmet=1;
+	            obj_controller.last_mission=turn+1;
+	        }
+	        else if (known[eFACTION.Inquisition]==3)  {
+	            known[faction_enum]=4;
+	            faction_justmet=1;
+	            obj_controller.last_mission=turn+1;
+	        }
+	        else if (known[faction_enum]>=4)  {
+	            _new_diag = "hello";
+	        }	
+	    }
+	    scr_dialogue(_new_diag);	
+	}
+}
+
+function draw_diplomacy_diplo_text(){
+    draw_set_font(fnt_40k_14);
+    draw_set_alpha(1);
+    draw_set_color(38144);
+    draw_set_halign(fa_left);
+    draw_text_ext(336+16,209,string_hash_to_newline(string(diplo_txt)),-1,536);
+    draw_set_halign(fa_center);
+    draw_line(xx+429,yy+710,xx+800,yy+710);	
+}
 function set_up_diplomacy_buttons(){
 	diplo_buttons = {};
 	set_up_diplomacy_persons();
 	//Trade button setup
 	diplo_buttons.trade = new UnitButtonObject({
-		x1 : 440,
+		x1 : 400,
 		y1 : 720,
 		label : "Trade",
 		bind_scope : obj_controller,
@@ -45,7 +77,7 @@ function set_up_diplomacy_buttons(){
 
 	//Demand button setup
 	diplo_buttons.demand = new UnitButtonObject({
-		x1 : 640,
+		x1 : 600,
 		y1 : 720,
 		label : "Demand",
 		bind_scope : obj_controller,
@@ -62,7 +94,7 @@ function set_up_diplomacy_buttons(){
 
 	//Discuss button setup	
 	diplo_buttons.discuss = new UnitButtonObject({
-		x1 : 840,
+		x1 : 800,
 		y1 : 720,
 		label : "Discuss",
 		tooltip : "Unfinished",
@@ -73,7 +105,7 @@ function set_up_diplomacy_buttons(){
 
 	//denounce button setup
 	diplo_buttons.denounce = new UnitButtonObject({
-		x1 : 440,
+		x1 : 400,
 		y1 : diplo_buttons.trade.y2,
 		label : "Denounce",
 		bind_scope : obj_controller,
@@ -89,7 +121,7 @@ function set_up_diplomacy_buttons(){
 	}
 
 	diplo_buttons.praise = new UnitButtonObject({
-		x1 : 640,
+		x1 : 600,
 		y1 : diplo_buttons.trade.y2,
 		label : "Praise",
 		bind_scope : obj_controller,
@@ -105,7 +137,7 @@ function set_up_diplomacy_buttons(){
 	}
 
 	diplo_buttons.alliance = new UnitButtonObject({
-		x1 : 840,
+		x1 : 800,
 		y1 : diplo_buttons.trade.y2,
 		label : "Propose\nAlliance",
 		bind_scope : obj_controller,
@@ -234,8 +266,8 @@ function set_up_diplomacy_buttons(){
 	}
 
 
-	diplo_buttons.declare_War = new ShutterButton();
-	var _war = diplo_buttons.declare_War;
+	diplo_buttons.declare_war = new ShutterButton();
+	var _war = diplo_buttons.declare_war;
 	_war.XX= 640;
 	_war.YY= diplo_buttons.alliance.y2;
 	_war.label = "DECLARE WAR";
@@ -332,7 +364,7 @@ function set_up_diplomacy_persons(){
 			_screen_slate.inside_method = function(){
 				scr_image("diplomacy/icons",image,XX+10,YY+10,153,135);
 			}
-
+			cover_text = obj_controller.faction[_faction_enum];
 			inside_method = function(){
 				var yy = YY;
 				var xx = XX;
@@ -362,7 +394,9 @@ function set_up_diplomacy_persons(){
 			    	_audience.bind_method = function(){
 			            if (obj_controller.known[_faction_enum]!=0) and (obj_controller.turns_ignored[_faction_enum]==0){
 			                obj_controller.diplomacy = _faction_enum;
-			            }			    		
+			                intro_to_diplomacy(_faction_enum);	    
+			            }
+			            		
 			    	}
 			    	_audience.draw();
 			    	var _ignore_status = obj_controller.ignore[_faction_enum] < 1 ? management_buttons.ignore : management_buttons.unignore;

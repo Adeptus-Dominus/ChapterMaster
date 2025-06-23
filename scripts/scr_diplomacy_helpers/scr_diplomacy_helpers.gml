@@ -1,6 +1,28 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
-
+function relationship_hostility_matrix(faction){
+    var _rela="neutral";
+    var _disp = disposition[faction];
+    with (obj_controller){
+        // if (diplomacy!=8){
+        if (_disp>=60) then _rela="friendly";
+        if (_disp<60) and (_disp>=20) then _rela="neutral";
+        if (_disp<20) then _rela="hostile";
+        // }
+        if (diplomacy==6){
+            if (_disp>=60) then _rela="friendly";
+            if (_disp<60) and (_disp>=0) then _rela="neutral";
+            if (_disp<0) then _rela="hostile";
+        }
+    
+        if (diplomacy==8){
+            if (_disp>=40) then _rela="friendly";
+            if (_disp<40) and (_disp>=-15) then _rela="neutral";
+            if (_disp<-15) then _rela="hostile";
+        }        
+    }
+    return _rela;
+}
 
 function basic_diplomacy_screen(){
 	var  yy=__view_get( e__VW.YView, 0 );
@@ -32,13 +54,18 @@ function basic_diplomacy_screen(){
                     for (var i=1;i<5;i++){
                     	if (string_width(string_hash_to_newline(diplo_option[slot]))*sw>530) then sw-=0.05;
                     }
-                    if (string_width(string_hash_to_newline(diplo_option[slot]))*sw<=530) and (sw=1) then draw_text_transformed(xx+620,yy+696,string_hash_to_newline(string(diplo_option[slot])),sw,sw,0);
-                    if (string_width(string_hash_to_newline(diplo_option[slot]))*sw<=530) and (sw<1) then draw_text_transformed(xx+620,yy+696+2,string_hash_to_newline(string(diplo_option[slot])),sw,sw,0);
+                    if (string_width(string_hash_to_newline(diplo_option[slot]))*sw<=530) and (sw=1){
+                        draw_text_transformed(xx+620,yy+696,string_hash_to_newline(string(diplo_option[slot])),sw,sw,0);
+						draw_text_transformed(xx+620,yy+696+2,string_hash_to_newline(string(diplo_option[slot])),sw,sw,0);
+                    }
+
                     if (string_width(string_hash_to_newline(diplo_option[slot]))*sw>530){
                         draw_text_ext_transformed(xx+620,yy+696-4,string_hash_to_newline(string(diplo_option[slot])),16,530/sw,sw,sw,0);
                     }
-					if point_in_rectangle(mouse_x, mouse_y,left,top,right,base){
-                        draw_set_alpha(0.2);draw_rectangle(left,top,right,base,0);draw_set_alpha(1);
+					if scr_hit(left,top,right,base){
+                        draw_set_alpha(0.2);
+                        draw_rectangle(left,top,right,base,0);
+                        draw_set_alpha(1);
                     }
 					opt = [left,top,right,base];
 					array_push(option_selections,opt);

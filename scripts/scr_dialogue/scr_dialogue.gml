@@ -2,6 +2,7 @@
 function scr_dialogue(diplo_keyphrase) {
 	// diplo_last="";
 
+	with (obj_controller){
 	// diplo_keyphrase = keyphrase
 
 	for(var h=1; h<=4; h++){
@@ -37,26 +38,11 @@ function scr_dialogue(diplo_keyphrase) {
 	var dip_score=diplomacy;
 	// repeat(3){
 	    // i+=1;
-		rela="neutral";
-    
-	    if (diplomacy>0){
-	        // if (diplomacy!=8){
-	            if (disposition[dip_score]>=60) then rela="friendly";
-	            if (disposition[dip_score]<60) and (disposition[dip_score]>=20) then rela="neutral";
-	            if (disposition[dip_score]<20) then rela="hostile";
-	        // }
-	        if (diplomacy==6){
-	            if (disposition[dip_score]>=60) then rela="friendly";
-	            if (disposition[dip_score]<60) and (disposition[dip_score]>=0) then rela="neutral";
-	            if (disposition[dip_score]<0) then rela="hostile";
-	        }
-        
-	        if (diplomacy==8){
-	            if (disposition[dip_score]>=40) then rela="friendly";
-	            if (disposition[dip_score]<40) and (disposition[dip_score]>=-15) then rela="neutral";
-	            if (disposition[dip_score]<-15) then rela="hostile";
-	        }// */
-	    }
+	rela="neutral";
+	if (diplomacy>0){
+		rela=relationship_hostility_matrix(diplomacy);
+    // */
+    }
 	    // if (i<=5) and (fleet_type=3) and (rela="hostile") then rela="neutral";
 	// }
 
@@ -624,27 +610,6 @@ function scr_dialogue(diplo_keyphrase) {
 	        }
 	    }
 	    if (diplo_keyphrase=="disagree"){
-			if (trading_artifact==0) then diplo_text="[[Trade Refused]]##";
-			if (trading_artifact==1) then diplo_text="";
-	        annoyed[diplomacy]+=1;
-	        rando=choose(1,2,3);
-	        if (rela=="hostile"){
-				force_goodbye=1;
-	            if (rando==1) then diplo_text+="You would offer me scraps for the keys to a kingdom? You are foolish and, worse, you are unaware of your own incompetence.";
-	            if (rando==2) then diplo_text+="Do not attempt exchanges with those so far above you, lapdog of the Corpse Emperor, it makes you look even more idiotic than you already do.";
-	            if (rando==3) then diplo_text+="I would spit upon this ‘offer' you bring before me but I find myself too amused by it.";
-	        }
-	        if (rela!="hostile"){
-	            if (rando==1) then diplo_text+="You may consider my response to be a ‘no' and assume my attitude to be whatever you like, Chapter Master.";
-	            if (rando==2) then diplo_text+="Have a care that you do not overstep the mark, Chapter Master, I see no reason to accept such a trade.";
-	            if (rando==3) then diplo_text+="An unreasonable trade, whatever our working relationship might be. I refuse.";
-	        }
-	        if (annoyed[diplomacy]>=10){
-				force_goodbye=1;
-	            turns_ignored[diplomacy]=max(turns_ignored[diplomacy],1);
-				diplo_last=string(diplo_keyphrase);
-				diplo_char=0;diplo_alpha=0;exit;
-	        }
 	    }
 	    if (diplo_keyphrase=="attacked"){
 	        // TODO
@@ -2647,5 +2612,6 @@ function scr_dialogue(diplo_keyphrase) {
 	diplo_last=string(diplo_keyphrase);
 	diplo_char=0;
 	diplo_alpha=0;
+	}
 	
 }

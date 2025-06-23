@@ -420,9 +420,13 @@ function ShutterButton() constructor{
 			draw_sprite_ext(spr_shutter_button, main_sprite, xx, yy, scale, scale, 0, c_white, 1);
 			if (cover_text != ""){
 				draw_set_font(fnt_Embossed_metal);
-				var text_draw = xx+(width/2)-(string_width(cover_text)*(3*scale)/2);
+				var _cover_scale = 3*scale;
+				while (string_width(cover_text) * _cover_scale > width-(5*scale)){
+					_cover_scale -= 0.1;
+				}
+				var text_draw = xx+(width/2)-((string_width(cover_text)*(_cover_scale))/2);
 				draw_set_color(c_black);
-				draw_text_transformed(text_draw, yy+(3*scale), cover_text, 3*scale, 3*scale, 0);
+				draw_text_transformed(text_draw, yy+(_cover_scale*1), cover_text, _cover_scale, _cover_scale, 0);
 			}
 		} else if (time_open>=2){
 

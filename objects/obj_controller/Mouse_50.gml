@@ -370,38 +370,6 @@ if (zoomed==0) and (cooldown<=0) and (menu==20) and (diplomacy==0){
         onceh=1;
         cooldown = 1;
 	}
-    
-    if (diplomacy>0) and (cooldown==8000){
-        onceh=0;
-        if (known[diplomacy]==1) and (diplomacy!=4) and (onceh==0){
-            scr_dialogue("intro");
-            onceh=1;
-            known[diplomacy]=2;
-            faction_justmet=1;
-        }
-        if (known[diplomacy]>=2) and (diplomacy!=4) and (onceh==0){
-            scr_dialogue("hello");
-            onceh=1;
-        }
-        if (known[eFACTION.Inquisition]==1) and (diplomacy==4) and (onceh==0){
-            scr_dialogue("intro");
-            onceh=1;
-            known[diplomacy]=2;
-            faction_justmet=1;
-            obj_controller.last_mission=turn+1;
-        }
-        if (known[eFACTION.Inquisition]==3) and (diplomacy==4) and (onceh==0){
-            scr_dialogue("intro");
-            onceh=1;
-            known[diplomacy]=4;
-            faction_justmet=1;
-            obj_controller.last_mission=turn+1;
-        }
-        if (known[diplomacy]>=4) and (diplomacy==4) and (onceh==0){
-            scr_dialogue("hello");
-            onceh=1;
-        }
-    }
 }
 
 
