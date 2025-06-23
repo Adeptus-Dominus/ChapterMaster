@@ -111,6 +111,68 @@ if (shop = "equipment") {
     item_cost[i] = 10;
     forge_cost[i] = 40;
     i += 1;
+    if (global.cheat_debug) {
+        //Debug space for 30k weapons
+        //Volkite Pack
+        item[i] = "Volkite Serpenta";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+        item[i] = "Volkite Charger";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+        item[i] = "Volkite Caliver";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+        item[i] ="Volkite Culverin";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+        //Bolt Pack
+        item[i] = "Phobos Bolt Pistol";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+        item[i] = "Phobos Bolter";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+        item[i] = "Mars Heavy Bolter";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+        item[i] = "Tigris Combi Bolter";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+        //Plasma Pack
+        item[i] = "Ryza Plasma Gun";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+        item[i] = "Ryza Plasma Pistol";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+        item[i] = "Mars Plasma Cannon";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+        //End of debug space for 30k weapons
+    }
     item[i] = "Power Axe";
     item_stocked[i] = scr_item_count(item[i]);
     item_cost[i] = 40;
@@ -1672,3 +1734,20 @@ item_cost_tooltip_info += $"Chapter tech approach (obj_controller.tech_status) :
 
 /* */
 /*  */
+
+/// @description Sells an item and adds resources to the player
+/// @param {Real} item_index The index of the item in the global array
+/// @param {Real} sell_count The quantity to sell
+/// @param {Real} sell_modifier The value modifier (0.0-1.0)
+/// @returns {Boolean} Whether the sale was successful
+sell_item = function (item_index, sell_count, sell_modifier) {
+    if (item_stocked[item_index] >= sell_count) {
+        scr_add_item(item[item_index], (-sell_count), "standard");
+        item_stocked[item_index] -= (sell_count);
+        var sell_price = (item_cost[item_index] * sell_modifier) * sell_count;
+        obj_controller.requisition += sell_price;
+
+        return true;
+    }
+    return false;
+}
