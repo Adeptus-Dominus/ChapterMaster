@@ -24,6 +24,9 @@ function EquipmentStruct(item_data, core_type, quality_request = "none") constru
     req_exp = 0;
     maintenance = 0;
     specials = "";
+    loot = {
+        base : 100,
+    }
     quality = quality_request == "none" ? "standard" : quality_request;
     // Struct defaults end;
 
@@ -42,10 +45,36 @@ function EquipmentStruct(item_data, core_type, quality_request = "none") constru
             // _struct_key = "";
         }
     }
+    if (!struct_exists(loot, "base")){
+        loot.base = 100;
+    }
+
+    if (has_tag("xenos")){
+        loot.base = 4;
+    } else if has_tag("heavy_ranged"){
+        loot.base = 75;
+    }else if has_tag("plasma"){
+        loot.base = 75;
+    }else if has_tag("energy"){
+        loot.base = 75;
+    }
+
+    if (has_tag("dreadnought")){
+        loot.base = 7;
+    } else  if (has_tag("vehicle")){
+        loot.base = 9;
+    }
+
+
+    if has_tag("terminator"){
+        loot.base = 10;
+    }else if has_tag("ancient"){
+        loot.base = 5;
+    }
 
     // Placeholder maintenance values;
     if (maintenance == 0) {
-        if (has_tags(["heavy_ranged", "power", "plasma", "melta"])) {
+        if (has_tags(["heavy_ranged", "power", "plasma", "melta"]) && maintenance<0.05) {
             maintenance = 0.05;
         }
     }

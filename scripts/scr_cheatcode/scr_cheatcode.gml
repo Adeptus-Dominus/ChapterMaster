@@ -356,6 +356,9 @@ function scr_cheatcode(argument0) {
 				case "orkinvasion":
 					out_of_system_warboss();
 					break;
+				case "rollloot":
+					show_debug_message(find_loot());
+					break;
 
 			}
 		}

@@ -415,6 +415,12 @@ global.weapons = {
 		"spli": 2,
 		"arp": 1,
 		"tags": ["power","boarding", "chain", "fist", "dual", "siege"],
+		"loot" : {
+			"base" : 20,
+			"imperial" : {
+				"val" : 5,
+			}
+		}
 	},
 	"Lascutter": {
 		"abbreviation": "Lasct",
@@ -470,6 +476,11 @@ global.weapons = {
 		"spli": 5,
 		"arp": 1,
 		"tags": ["power", "axe", "dual"],
+		"loot" : {
+			"imperial" : {
+				"val" : 5,
+			}
+		}
 	},
 	"Executioner Power Axe": {
 		"abbreviation": "ExPwrAxe",
@@ -512,6 +523,11 @@ global.weapons = {
 		"spli": 2,
 		"arp": 1,
 		"tags": ["power", "dual", "fist"],
+		"loot" : {
+			"imperial" : {
+				"val" : 5,
+			}
+		}
 	},
 	"Power Fists": {
 		"abbreviation": "PwrFsts",
@@ -683,6 +699,11 @@ global.weapons = {
 		"arp": 1,
 		"tags": ["power", "mace", "siege"],
 		"req_exp": 100,
+		"loot" : {
+			"imperial" : {
+				"val" : 5,
+			}
+		}
 	},
 	"Mace of Absolution": {
 		"abbreviation": "AbsltMace",
@@ -995,7 +1016,10 @@ global.weapons = {
 		"range": 2.1,
 		"spli": 1,
 		"arp": 1,
-		"tags": ["melta","boarding"]
+		"tags": ["melta","boarding"],
+		"loot" : {
+			"base" : 8,
+		}		
 	},
 	"Multi-Melta": {
 		"abbreviation": "MltMelt",
@@ -1630,6 +1654,11 @@ global.weapons = {
 		"arp": -1,
 		"tags": ["flame"],
 		"maintenance" : 0.01,
+		"loot" : {
+			"imperial" : {
+				"val" : 8,
+			}
+		}
 	},
 	"Underslung Flamer": {
 		"attack": {
