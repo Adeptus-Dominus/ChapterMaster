@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_roman_centurian_crest",
   "bboxMode":0,
   "bbox_bottom":87,
@@ -12,9 +12,9 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"dd649fd8-7e35-4852-a36d-a78f4f914d36","name":"dd649fd8-7e35-4852-a36d-a78f4f914d36","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"ecad98d1-bb1f-4cb3-b4f0-6d3bdd38418e","name":"ecad98d1-bb1f-4cb3-b4f0-6d3bdd38418e","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"93ba81df-88f2-4d08-9f82-8e78097802e9","name":"93ba81df-88f2-4d08-9f82-8e78097802e9","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"dd649fd8-7e35-4852-a36d-a78f4f914d36","name":"dd649fd8-7e35-4852-a36d-a78f4f914d36","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"ecad98d1-bb1f-4cb3-b4f0-6d3bdd38418e","name":"ecad98d1-bb1f-4cb3-b4f0-6d3bdd38418e","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"93ba81df-88f2-4d08-9f82-8e78097802e9","name":"93ba81df-88f2-4d08-9f82-8e78097802e9","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -65,6 +65,8 @@
     "playbackSpeedType":0,
     "resourceType":"GMSequence",
     "resourceVersion":"2.0",
+    "seqHeight":232.0,
+    "seqWidth":167.0,
     "showBackdrop":true,
     "showBackdropImage":false,
     "timeUnits":1,

@@ -18,6 +18,7 @@ Arguments with stars `(argument*)` can be omitted.
 - `artifact (type*) (number*)` - spawns an artifact of a random type, if unspecified.
     - `(type*)` - possible values: random, random_nodemon, Weapon, Armour, Gear, Device, Robot, Tome, chaos_gift, good. Case sensitive.
 - `artifactpopulate` - spawns artifacts on all planets.
+- `stcpopulate` - spawns an STC fragment on all planets.
 - `additem "(name)" (number*) (quality*)` - spawns an item(s) with specified parameters.
     - `"(name)"` - item name in quotes, as it's written in the game. Case sensitive. "Bolter", "Power Axe", etc.
     - `(quality*)` - possible values: standard, master_crafted, artificer, artifact, exemplary. Case insensitive.

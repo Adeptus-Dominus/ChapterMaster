@@ -14,7 +14,6 @@ var enemy2 = enemy;
 
 //In melee check
 engaged = collision_point(x-10, y, obj_pnunit, 0, 1) || collision_point(x+10, y, obj_pnunit, 0, 1);
-// show_debug_message($"enemy is in melee {engaged}")
 
 if (!engaged){ // Shooting
     for (var i=0;i<array_length(wep);i++){
@@ -42,7 +41,13 @@ if (!engaged){ // Shooting
             }
         }
 
-        dist=get_block_distance(enemy);  
+        if (instance_exists(obj_nfort) && !flank) {
+            enemy = instance_nearest(x,y,obj_nfort);
+            dist = 2;
+        } else {
+            dist=get_block_distance(enemy);  
+        }
+
         target_unit_index=0;
 
         if  (range[i] >= dist) { // The weapon is in range;
@@ -111,11 +116,9 @@ if (!engaged){ // Shooting
                     }
                 } else {
                     enemy=instance_nearest(x,y,obj_nfort);
-                    if (range[i] >= get_block_distance(enemy)) {
                         scr_shoot(i,enemy,1,"arp","wall");
                         // show_debug_message($"I'm shooting at the fort! {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
                         continue;
-                    }
                 }
             }
 
@@ -194,11 +197,9 @@ if (!engaged){ // Shooting
                         }
                     } else {
                         enemy=instance_nearest(x,y,obj_nfort);
-                        if (range[i] >= get_block_distance(enemy)) {
                             scr_shoot(i,enemy,1,"att","wall");
                             // show_debug_message($"I'm shooting at a fort, because I can't find a normal unit! {wep[i]}; Column ID: {id}; Enemy Unit: {wep_owner[i]}");
                             continue;
-                        }
                     }
                 }
             }

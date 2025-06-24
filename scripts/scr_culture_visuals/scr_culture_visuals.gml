@@ -137,6 +137,35 @@ function load_vis_set_to_global(directory, data){
 }
 global.modular_drawing_items = [
     {
+        sprite : spr_purity_seal,
+        body_types :[0,2],
+        position : "purity_seals",
+    },
+    {
+        position : "crown",
+        body_types: [0],
+        max_saturation : 60,
+        exp : {
+            scale : true,
+            exp_scale_max : 200,
+        },
+        sprite:spr_psy_hood_alpha2,
+        equipped : {
+            "gear" : "Psychic Hood",
+        },
+        cultures: ["Alpha"], 
+        prevent_others : true,    
+    },
+    {
+        position : "crown",
+        body_types: [0],
+        sprite:spr_psy_hood_complex,
+        equipped : {
+            "gear" : "Psychic Hood",
+        },
+        prevent_others : true,
+    },  
+    {
         sprite : spr_da_mk5_helm_crests,
         cultures : ["Knightly"],
         body_types :[0],
@@ -343,11 +372,22 @@ global.modular_drawing_items = [
         armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"],         
     },
     {
-        chapter_adv : ["Reverent Guardians"],
-        sprite : spr_pack_brazier3,
+        cultures : ["Alpha"],
+        sprite : spr_alpha_backpack,
         body_types :[0],
         position : "backpack",
-        assign_by_rank : 4,
+        assign_by_rank : 3,
+        armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"],         
+    },
+    {
+        chapter_adv : ["Reverent Guardians"],
+        sprite : spr_pack_brazier3,
+        traits : ["zealous_faith"],
+        body_types :[0],
+        allow_either : ["chapter_adv", "traits","role_type"],
+        role_type : [SPECIALISTS_CHAPLAINS],
+        position : "backpack",
+        assign_by_rank : 3,
     },
     {
         sprite : spr_gear_librarian,
@@ -368,11 +408,6 @@ global.modular_drawing_items = [
         position : "crest",
         role_type : [SPECIALISTS_CAPTAIN_CANDIDATES],
         assign_by_rank : 2,
-    },
-    {
-        sprite : spr_purity_seal,
-        body_types :[0,2],
-        position : "purity_seals",
     },
     {
         sprite : spr_marksmans_honor,
@@ -893,7 +928,79 @@ global.modular_drawing_items = [
         sprite: spr_indomitus_right_knee_crux,
         armours : ["Terminator Armour"],
         max_saturation : 30,
-    }                                                                       
+    },
+    {
+        position : "right_eye",
+        sprite: spr_indomitus_right_eye_bionic,
+        body_types: [ 2],
+        body_parts :{
+            "right_eye" : "bionic",
+        }
+    },
+    {
+        position : "left_eye",
+        sprite: spr_indomitus_left_eye_bionic,
+        body_types: [ 2],
+        body_parts :{
+            "left_eye" : "bionic",
+        }
+    },
+    {
+        position : "left_leg",
+        sprite: spr_indomitus_left_leg_bionic,
+        body_types: [ 2],
+        body_parts :{
+            "left_leg" : "bionic",
+        },
+        prevent_others : true,
+        ban : ["left_knee","knees"],
+    }, 
+    {
+        position : "right_leg",
+        sprite: spr_indomitus_right_leg_bionic,
+        body_types: [ 2],
+        body_parts :{
+            "right_leg" : "bionic",
+        },
+        prevent_others : true,
+        ban : ["right_knee","knees"],
+    },
+    {
+        position : "left_leg",
+        sprite: spr_bionic_leg_left,
+        body_types: [ 0],
+        body_parts :{
+            "left_leg" : "bionic",
+        },
+        prevent_others : true,
+        ban : ["left_knee","knees"],
+    }, 
+    {
+        position : "right_leg",
+        sprite: spr_bionic_leg_right,
+        body_types: [ 0],
+        body_parts :{
+            "right_leg" : "bionic",
+        },
+        prevent_others : true,
+        ban : ["right_knee","knees"],
+    }, 
+    {
+        position : "right_eye",
+        sprite: spr_bionic_right_eyes,
+        body_types: [0],
+        body_parts :{
+            "right_eye" : "bionic",
+        }
+    },
+    {
+        position : "left_eye",
+        sprite: spr_bionic_left_eyes,
+        body_types: [0],
+        body_parts :{
+            "left_eye" : "bionic",
+        }
+    },                                                                  
 ];
 
 
@@ -1039,10 +1146,12 @@ function generate_marine_body(){
         "left_leg":{
             leg_variants: irandom(100),
             shin_variant : irandom(100),
+            knee_variant: irandom(100),
         }, 
         "right_leg":{
             leg_variants: irandom(100),
             shin_variant : irandom(100),
+            knee_variant: irandom(100),
         }, 
         "torso":{
             cloth:{
@@ -1152,6 +1261,140 @@ function format_weapon_visuals(weapon_name){
     return return_options;
 }
 global.weapon_visual_data = {
+	//30k weapons
+	//Volkite Pack
+"Volkite Charger": {
+  base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_volkite_charger,
+  }]
+},
+
+"Volkite Serpenta": {
+  base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_volkite_serpenta,
+  }]
+},
+ 
+"Volkite Caliver": {
+  base: {
+    weapon_data: {
+      display_type: "ranged_twohand",
+      new_weapon_draw: true
+    },
+    body_types: [0,1]
+  },
+  variants: [{
+    sprite: spr_weapon_volkite_caliver,
+  }]
+},
+
+"Volkite Culverin": {
+  base: {
+    weapon_data: {
+      display_type: "ranged_twohand",
+      new_weapon_draw: true
+    },
+    body_types: [0,1]
+  },
+  variants: [{
+    sprite: spr_weapon_volkite_culverin,
+  }]
+},
+//Bolter Pack
+"Phobos Bolter": {
+ base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_phobos_bolter,
+  }]
+},
+"Phobos Bolt Pistol": {
+ base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_phobos_boltpis,
+  }]
+},
+"Mars Heavy Bolter": {
+  base: {
+    weapon_data: {
+      display_type: "ranged_twohand",
+      new_weapon_draw: true
+    },
+    body_types: [0,1]
+  },
+  variants: [{
+    sprite: spr_weapon_mars_hbolt,
+  }]
+},
+"Tigris Combi Bolter": {
+ base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_tigris_combi,
+  }]
+},
+//Plasma Pack
+"Ryza Plasma Gun": {
+ base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_ryza_plasg,
+  }]
+},
+"Ryza Plasma Pistol": {
+ base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_ryza_plasp,
+  }]
+},
+"Mars Plasma Cannon": {
+ base: {
+    weapon_data: {
+      display_type: "ranged_twohand",
+      new_weapon_draw: true
+    },
+    body_types: [0,1]
+  },
+  variants: [{
+    sprite: spr_weapon_mars_plasc,
+  }]
+},
+	
+	//40k weapons
   "Assault Cannon": {
     base : {
         weapon_data:{

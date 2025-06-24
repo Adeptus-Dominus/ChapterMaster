@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_creation_slate",
   "bboxMode":0,
   "bbox_bottom":0,

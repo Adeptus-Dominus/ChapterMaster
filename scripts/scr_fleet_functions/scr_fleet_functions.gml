@@ -388,6 +388,7 @@ function scr_orbiting_fleet(faction, system="none"){
 			}
 			if (_valid && action == ""){
 				_found_fleet = id;
+				break;
 			}					
 		}
 	}
@@ -835,7 +836,11 @@ function fleet_arrival_logic(){
         var stue, stue2;stue=0;stue2=0;
         var goood=0;
         
-        with(obj_star){if (planets=1) and (p_type[1]="Dead") then instance_deactivate_object(id);}
+        with(obj_star){
+        	if (is_dead_star()){
+        		instance_deactivate_object(id);
+        	}
+        }
         stue=instance_nearest(x,y,obj_star);
         instance_deactivate_object(stue);
         repeat(10){
@@ -850,7 +855,7 @@ function fleet_arrival_logic(){
             }
         action_x=stue2.x;
         action_y=stue2.y;
-        alarm[4]=1;// stue.present_fleets-=1;
+        set_fleet_movement();// stue.present_fleets-=1;
         instance_activate_object(obj_star);
     }
     
@@ -862,26 +867,26 @@ function fleet_arrival_logic(){
     // If the connected planet is owned by orks then choose a random one within 400 not owned by orks
     
     
-    if (owner = eFACTION.Ork){
+    if (owner == eFACTION.Ork){
     	if (is_orbiting()){
     		with (orbiting){
     			ork_fleet_arrive_target();
     		}
     	}
-        var kay, temp5, temp6, temp7;
-        kay=0;temp5=0;temp6=0;temp7=0;
+
+        var kay=0,temp5=0,temp6=0,temp7=0;
 
 		var cur_star=instance_nearest(x,y,obj_star);
     
         
         // This is the new check to go along code; if doesn't add up to all planets = 7 then they exit
-        if (!is_dead_star(cur_star)) then kay=5;
-        
-        if (kay=5){// KILL the enemy
-            if (cur_star.present_fleet[1]>1) or (cur_star.present_fleet[2]>1) then exit;
+        if (!is_dead_star(cur_star)){// KILL the enemy
+        	 if (cur_star.present_fleet[1]>1) or (cur_star.present_fleet[2]>1) then exit;
         }
         
-        if ((cur_star.owner = eFACTION.Chaos) and (image_index>=5) and (owner = eFACTION.Chaos)) or ((owner = eFACTION.Chaos) and (image_index>=5) and (cur_star.planets=0)) then kay=50;
+        if ((cur_star.owner = eFACTION.Chaos) and (image_index>=5) and (owner = eFACTION.Chaos)) or ((owner = eFACTION.Chaos) and (image_index>=5) and (cur_star.planets=0)){
+        	kay=50;
+        }
 
         if (kay=50){
         
@@ -889,7 +894,8 @@ function fleet_arrival_logic(){
         
             repeat(20){
                 if (kay=50){
-                    temp5=x+choose(random(300),random(300)*-1);temp6=y+choose(random(300),random(300)*-1);
+                    temp5=x+choose(random(300),random(300)*-1);
+                    temp6=y+choose(random(300),random(300)*-1);
                     temp7=instance_nearest(temp5,temp6,obj_star);
                     
                     if (owner = eFACTION.Ork) and (temp7.owner != eFACTION.Ork) and (temp7.planets>0) and (temp7.image_alpha>=1) then kay=55;
@@ -901,7 +907,7 @@ function fleet_arrival_logic(){
             if (kay=55) and (instance_exists(temp7)){
                 action_x=temp7.x;
                 action_y=temp7.y;
-                alarm[4]=1;
+                set_fleet_movement();
                 
                 // cur_star.present_fleets-=1;
             }
@@ -913,7 +919,6 @@ function fleet_arrival_logic(){
         instance_activate_object(obj_star);
  
     }
-
 
     exit;// end of eta=0	
 }

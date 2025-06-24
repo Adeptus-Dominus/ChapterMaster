@@ -237,7 +237,7 @@ function PlanetData(planet, system) constructor{
         }
 
         if (!enemies_present){
-            rando=roll_dice(1,200, "low");
+            rando=roll_dice(1,150, "low");
             if (_has_warboss){
                 rando -= 20;
             }
@@ -359,8 +359,8 @@ function PlanetData(planet, system) constructor{
                 _warboss.turns_static = 0;
                 _ork_fleet.cargo_data.ork_warboss = _warboss;
                 delete_feature(P_features.OrkWarboss);
-                if (!_warboss.player_hidden){
-                     scr_alert("red","ork",$"{obj_controller.faction_leader[0]} departs {name()} as his waaagh gains momentum",0,0);
+                if (!_warboss.player_hidden || !irandom(5)){
+                     scr_alert("red","ork",$"{_warboss.name} departs {name()} as his waaagh gains momentum",0,0);
                 }
             }
         }

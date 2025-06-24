@@ -1,4 +1,192 @@
 global.weapons = {
+	//30k Weapons
+	//Volkite Pack
+"Volkite Culverin": {
+		"abbreviation": "VolkCul",
+		"attack": {
+			"standard": 700,
+			"master_crafted": 720,
+			"artifact": 740
+		},
+		"description": "Ancient thermal ray weapon, heaviest man portable variant of its class.",
+		"melee_hands": 1,
+		"ranged_hands": 2.2,
+		"ammo": 4,
+		"range": 22,
+		"spli": 12,
+		"arp": 0,
+		"tags": ["Volkite", "energy"]
+},
+
+"Volkite Caliver": {
+		"abbreviation": "VolkCal",
+		"attack": {
+			"standard": 550,
+			"master_crafted": 570,
+			"artifact": 590
+		},
+		"description": "Ancient thermal ray weapon, an uncommon sight during ancient times, now a precious relic for every chapter that can claim one.",
+		"melee_hands": 1,
+		"ranged_hands": 2,
+		"ammo": 6,
+		"range": 16,
+		"spli": 10,
+		"arp": 0,
+		"tags": ["Volkite", "energy"]
+},
+
+"Volkite Charger": {
+		"abbreviation": "VolkCharg",
+		"attack": {
+			"standard": 400,
+			"master_crafted": 420,
+			"artifact": 440
+		},
+		"description": "Ancient thermal ray weapon, smaller, yet still deadly brother of caliver.",
+		"melee_hands": 1,
+		"ranged_hands": 2,
+		"ammo": 10,
+		"range": 10,
+		"spli": 6,
+		"arp": 0,
+		"tags": ["Volkite", "energy"]
+},
+
+"Volkite Serpenta": {
+		"abbreviation": "VolkSerp",
+		"attack": {
+			"standard": 250,
+			"master_crafted": 270,
+			"artifact": 290
+		},
+		"description": "Ancient one-handed thermal ray weapon, preferred by melee specialists, and officers .",
+		"melee_hands": 0,
+		"ranged_hands": 1,
+		"ammo": 10,
+		"range": 3,
+		"spli": 4,
+		"arp": 0,
+		"tags": ["Volkite", "energy", "pistol"]
+},
+
+//Bolt Pack
+"Phobos Bolt Pistol": {
+		"abbreviation": "PhBltPis",
+		"attack": {
+			"standard": 38,
+			"master_crafted": 43,
+			"artifact": 48
+		},
+		"description":"Once primary personal weapon of ancient astartes legions, now an uncommon sight on the battlefield.This weapon was hand-crafted by the Fabricators of Mars at the very birth of the Imperium during the Great Crusade.",
+		"melee_hands": 0,
+		"ranged_hands": 1,
+		"ammo": 20,
+		"range": 3.5,
+		"spli": 2,
+		"arp": 0,
+		"tags": ["bolt", "pistol"],
+	},
+
+"Phobos Bolter": {
+		"abbreviation": "PhBltr",
+		"attack": {
+			"standard": 75,
+			"master_crafted": 80,
+			"artifact": 85
+		},
+		"description": "Ancient pattern of boltgun made during times of the Great Crusade for the Astartes Legions. It uses different ammunition, has larger magazine and is slightly bigger than its modern counterparts.",
+		"melee_hands": 1,
+		"ranged_hands": 2,
+		"ammo": 20,
+		"range": 13,
+		"spli": 3,
+		"arp": 0,
+		"tags": ["bolt"]
+},
+
+"Mars Heavy Bolter": {
+		"abbreviation": "MarsHvyBltr",
+		"attack": {
+			"standard": 400,
+			"master_crafted": 430,
+			"artifact": 460
+		},
+		"description": "Rare variant of heavy bolter, uncommon even during times of it's production. Made in forges of Mars itself, it's more lightweight and compact in comparison to modern patterns.",
+		"melee_hands": 1,
+		"ranged_hands": 2,
+		"ammo": 12,
+		"range": 17,
+		"spli": 9,
+		"arp": 1,
+		"tags": ["heavy_ranged", "bolt"]
+},
+"Tigris Combi Bolter": {
+		"abbreviation": "TigComBltr",
+		"attack": {
+			"standard": 100,
+			"master_crafted": 120,
+			"artifact": 140
+		},
+		"description": "Once primary weapon of ancient terminator squads, now precious relic of any chapter that still can field it.",
+		"melee_hands": 1.1,
+		"ranged_hands": 1.1,
+		"ammo": 14,
+		"range": 19,
+		"spli": 11,
+		"arp": 1,
+		"tags": [ "bolt"]
+},
+
+//Plasma Pack
+"Ryza Plasma Gun": {
+"abbreviation": "RyzPlsmGn",
+		"attack": {
+			"standard": 325,
+			"master_crafted": 350,
+			"artifact": 375
+		},
+		"description": "Ancient and now forgotten pattern of plasma weapon. It features improved coils, more stable hydrogen fuel, and characteristic purple glow",
+		"melee_hands": 1,
+		"ranged_hands": 2,
+		"ammo": 18,
+		"range": 14,
+		"spli": 5,
+		"arp": 1,
+		"tags": [ "plasma","energy"]
+},
+"Ryza Plasma Pistol": {
+"abbreviation": "RyzPlsmPis",
+		"attack": {
+			"standard": 145,
+			"master_crafted": 160,
+			"artifact": 175
+		},
+		"description": "Ancient and now forgotten pattern of plasma pistol. Often given to veterans and officers as a sign of great honor. It features improved coils, more stable hydrogen fuel, and characteristic purple glow",
+		"melee_hands": 1,
+		"ranged_hands": 2,
+		"ammo": 18,
+		"range": 14,
+		"spli": 5,
+		"arp": 1,
+		"tags": [ "plasma","energy","pistol"]
+},
+"Mars Plasma Cannon": {
+"abbreviation": "MarsPlsmCnn",
+		"attack": {
+			"standard": 650,
+			"master_crafted": 700,
+			"artifact": 750 //I think that usual 25% increase will be too much for that weapon so applied +150.
+		},
+		"description": "Ancient and now forgotten pattern of plasma weapon. Heaviest portable variant. It features improved coils, more stable hydrogen ammo, and characteristic purple glow",
+		"melee_hands": 1,
+		"ranged_hands": 3,
+		"ammo": 18,
+		"range": 16,
+		"spli": 8,
+		"arp": 1,
+		"tags": [ "plasma","energy"]
+},
+	//40K Weapons
 	"Storm Shield": {
 		"description": "Protects twice as well when boarding. A powered shield that must be held with a hand.  While powered by the marines armour it shimmers with blue energy.",
 		"abbreviation": "StrmShld",
@@ -989,7 +1177,7 @@ global.weapons = {
 			"artifact": 450
 		},
 		"description": "A two-handed weapon that launches blobs of plasma at the target. They are considered both sacred and dangerous, overheating through rapid firing of the weapon. Overheating can result in detonation of the weapon, killing the wielder.",
-		"melee_hands": 0,
+		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 16,
 		"range": 10,
@@ -1091,7 +1279,6 @@ global.weapons = {
 		"range": 12,
 		"spli": 10,
 		"arp": 2,
-		
 		"tags": ["heavy_ranged","explosive", "dreadnought"]
 	},
 	"Cyclone Missile Launcher": {
@@ -1242,7 +1429,16 @@ global.weapons = {
 	"HK Missile": {
 		"abbreviation": "HKMssl",
 		"description": "A single shot hunter killer	missile that serves as a powerful anti armour/aircraft deterent.",
-		"tags": ["HK"]
+		"attack": {
+			"standard": 350,
+			"master_crafted": 400,
+			"artifact": 450
+		},
+		"arp": 1,
+		"range": 50,
+		"ammo": 1,
+		"spli": 1,
+		"tags": ["vehicle"]
 	},
 	"Twin Linked Heavy Bolter Mount": {
 		"attack": {

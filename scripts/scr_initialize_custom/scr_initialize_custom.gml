@@ -851,11 +851,12 @@ function scr_initialize_custom() {
 		hunters = 0;
 		}
 	}
-
-	battle_barges = battle_barges + obj_creation.extra_ships.battle_barges;
-	strike_cruisers = strike_cruisers + obj_creation.extra_ships.strike_cruisers;
-	gladius = gladius + obj_creation.extra_ships.gladius;
-	hunters = hunters + obj_creation.extra_ships.hunters;
+	if(struct_exists(obj_creation, "extra_ships")){
+		battle_barges = battle_barges + obj_creation.extra_ships.battle_barges;
+		strike_cruisers = strike_cruisers + obj_creation.extra_ships.strike_cruisers;
+		gladius = gladius + obj_creation.extra_ships.gladius;
+		hunters = hunters + obj_creation.extra_ships.hunters;
+	}
 
 	var ship_summary_str = $"Ships: bb: {battle_barges} sc: {strike_cruisers} g: {gladius} h: {hunters}"
 	// log_message(ship_summary_str);
@@ -1148,81 +1149,79 @@ function scr_initialize_custom() {
 		predator += 1;
 	}
 
-	if (obj_creation.custom != eCHAPTER_TYPE.PREMADE) {
-		if (obj_creation.strength <= 4) then ninth = 0;
-		if (obj_creation.strength <= 3) then eighth = 0;
-		if (obj_creation.strength <= 2) then seventh = 0;
-		if (obj_creation.strength <= 1) then sixth = 0;
+	if (obj_creation.strength <= 4) then ninth = 0;
+	if (obj_creation.strength <= 3) then eighth = 0;
+	if (obj_creation.strength <= 2) then seventh = 0;
+	if (obj_creation.strength <= 1) then sixth = 0;
 
-		var bonus_marines = 0;
-		if (obj_creation.strength > 5) then bonus_marines = (obj_creation.strength - 5) * 50;
-		if scr_has_disadv("Obliterated") then bonus_marines = (obj_creation.strength - 1) * 10;
-		var i = 0;
-		while (bonus_marines >= 5) {
-			switch (i % 10) {
-				case 0:
-					if (veteran > 0) {
-						bonus_marines -= 5;
-						veteran += 5;
-					}
-					break;
-				case 1:
-					if (second > 0) {
-						bonus_marines -= 5;
-						second += 5;
-					}
-					break;
-				case 2:
-					if (third > 0) {
-						bonus_marines -= 5;
-						third += 5;
-					}
-					break;
-				case 3:
-					if (fourth > 0) {
-						bonus_marines -= 5;
-						fourth += 5;
-					}
-					break;
-				case 4:
-					if (fifth > 0) {
-						bonus_marines -= 5;
-						fifth += 5;
-					}
-					break;
-				case 5:
-					if (sixth > 0) {
-						bonus_marines -= 5;
-						sixth += 5;
-					}
-					break;
-				case 6:
-					if (seventh > 0) {
-						bonus_marines -= 5;
-						seventh += 5;
-					}
-					break;
-				case 7:
-					if (eighth > 0) {
-						bonus_marines -= 5;
-						eighth += 5;
-					}
-					break;
-				case 8:
-					if (ninth > 0) {
-						bonus_marines -= 5;
-						ninth += 5;
-					}
-					break;
-				case 9:
-					if (tenth > 0) {
-						bonus_marines -= 5;
-						tenth += 5;
-					}
-					break;
-			}
-			i++;
+	var bonus_marines = 0;
+	if (obj_creation.strength > 5) then bonus_marines = (obj_creation.strength - 5) * 50;
+	if scr_has_disadv("Obliterated") then bonus_marines = (obj_creation.strength - 1) * 10;
+	var i = 0;
+	while (bonus_marines >= 5) {
+		switch (i % 10) {
+			case 0:
+				if (veteran > 0) {
+					bonus_marines -= 5;
+					veteran += 5;
+				}
+				break;
+			case 1:
+				if (second > 0) {
+					bonus_marines -= 5;
+					second += 5;
+				}
+				break;
+			case 2:
+				if (third > 0) {
+					bonus_marines -= 5;
+					third += 5;
+				}
+				break;
+			case 3:
+				if (fourth > 0) {
+					bonus_marines -= 5;
+					fourth += 5;
+				}
+				break;
+			case 4:
+				if (fifth > 0) {
+					bonus_marines -= 5;
+					fifth += 5;
+				}
+				break;
+			case 5:
+				if (sixth > 0) {
+					bonus_marines -= 5;
+					sixth += 5;
+				}
+				break;
+			case 6:
+				if (seventh > 0) {
+					bonus_marines -= 5;
+					seventh += 5;
+				}
+				break;
+			case 7:
+				if (eighth > 0) {
+					bonus_marines -= 5;
+					eighth += 5;
+				}
+				break;
+			case 8:
+				if (ninth > 0) {
+					bonus_marines -= 5;
+					ninth += 5;
+				}
+				break;
+			case 9:
+				if (tenth > 0) {
+					bonus_marines -= 5;
+					tenth += 5;
+				}
+				break;
 		}
+		i++;
 	}
 
 	if (struct_exists(obj_creation, "extra_specialists")) {
@@ -1274,6 +1273,9 @@ function scr_initialize_custom() {
 					break;
 				case "devastator":
 					devastator = devastator + real(s_val);
+					break;
+				case "dreadnought":
+					dreadnought = dreadnought + real(s_val);
 					break;
 			}
 		}
@@ -1401,7 +1403,6 @@ function scr_initialize_custom() {
 		name[0, i] = "";
 		role[0, i] = "";
 		wep1[0, i] = "";
-		bio[0, i] = 0;
 		spe[0, i] = "";
 		wep2[0, i] = "";
 		armour[0, i] = "";
@@ -3114,6 +3115,8 @@ function scr_initialize_custom() {
 		scr_add_item(wep1[defaults_slot, eROLE.Apothecary], 4);
 		scr_add_item(wep2[defaults_slot,  eROLE.Apothecary], 4);
 		scr_add_item("Psychic Hood", 4);
+		scr_add_item("Crozius Arcanum", 4);
+		scr_add_item("Servo-arm", 4);
 		scr_add_item("Force Staff", 4);
 		scr_add_item("Plasma Pistol", 4);
 		scr_add_item("Company Standard", 4);

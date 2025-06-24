@@ -372,7 +372,7 @@ function UnitQuickFindPanel() constructor{
 	}
 	static draw = function(){
 		if (obj_controller.menu==0 && obj_controller.zoomed==0 ){
-			if (!instance_exists(obj_fleet_select) && !instance_exists(obj_star_select)){
+			if (!instances_exist([obj_fleet_select,obj_star_select])){
 
 				var x_draw=0;
 				var lower_draw = main_panel.height+110;
@@ -466,12 +466,11 @@ function update_general_manage_view(){
 	    if (managing>0){
 	        if (managing<=10) and (managing!=0){
 	        	scr_company_view(managing);
-	        	company_data = new CompanyStruct(managing);
 	        }
 	        if (managing>10) or (managing=0){
 				scr_special_view(managing);
-				company_data={};
-	        }            
+	        }  
+	        new_company_struct();          
 	        cooldown=10;
 	        sel_loading=-1;
 	        unload=0;
@@ -905,20 +904,18 @@ function planet_selection_action(){
 					                    }
 					                }
 					            }
-					            if (tch+mch>0){
-					                var arti=instance_create(target.x,target.y,obj_ground_mission);// Unloading / artifact crap
-					                arti.num=sel_plan;
-					                arti.alarm[0]=1;
-					                arti.loc=obj_controller.selecting_location;
-					                arti.managing=obj_controller.managing;
-					                arti.tch=tch;
-					                arti.mch=mch;
-					                // Right here should pass the man_sel variables
-					                // var frag;frag=-1;repeat(150){frag+=1;arti.man_sel[frag]=obj_controller.man_sel[frag];}
-					                with (arti){
-					                    setup_planet_mission_group();
-					                }
-					            }
+								var arti=instance_create(target.x,target.y,obj_ground_mission);// Unloading / artifact crap
+								arti.num=sel_plan;
+								arti.alarm[0]=1;
+								arti.loc=obj_controller.selecting_location;
+								arti.managing=obj_controller.managing;
+								arti.tch=tch;
+								arti.mch=mch;
+								// Right here should pass the man_sel variables
+								// var frag;frag=-1;repeat(150){frag+=1;arti.man_sel[frag]=obj_controller.man_sel[frag];}
+								with (arti){
+									setup_planet_mission_group();
+								}
 					        }
 					        
 					        // Ancient Ruins

@@ -192,7 +192,14 @@ function scr_cheatcode(argument0) {
 							array_push(p_feature[i], new NewPlanetFeature(P_features.Ancient_Ruins));
 						}
 					}
-					break;					
+					break;		
+				case "stcpopulate":
+					with (obj_star) {
+						for (var i = 1; i <= planets; i++) {
+							array_push(p_feature[i], new NewPlanetFeature(P_features.STC_Fragment));
+						}
+					}
+					break;	
 				case "event":
 					if (cheat_arguments[0] == "crusade") {
 						show_debug_message("crusading");
@@ -342,6 +349,12 @@ function scr_cheatcode(argument0) {
 				case "gloriana":
 					var _fleet = get_nearest_player_fleet(0,0);
 					add_ship_to_fleet(new_player_ship("Gloriana"),_fleet);
+					break;
+				case "zoom":
+					set_zoom_to_default();
+					break;
+				case "orkinvasion":
+					out_of_system_warboss();
 					break;
 
 			}
