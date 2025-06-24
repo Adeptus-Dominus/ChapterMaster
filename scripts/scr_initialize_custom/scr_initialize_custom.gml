@@ -3165,6 +3165,7 @@ function scr_initialize_custom() {
 		scr_add_item(wep2[defaults_slot,  eROLE.Apothecary], 4);
 		scr_add_item("Psychic Hood", 4);
 		scr_add_item("Crozius Arcanum", 4);
+		scr_add_item("Servo-arm", 4);
 		scr_add_item("Force Staff", 4);
 		scr_add_item("Plasma Pistol", 4);
 		scr_add_item("Company Standard", 4);
