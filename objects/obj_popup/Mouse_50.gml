@@ -322,7 +322,7 @@ if (scr_hit(xx+1465, yy+499,xx+1576,yy+518)){// Promoting right here
         variable_struct_set(role_squad_equivilances,obj_ini.role[100][9],"devastator_squad");
         variable_struct_set(role_squad_equivilances,obj_ini.role[100][10],"assault_squad");
         variable_struct_set(role_squad_equivilances,obj_ini.role[100][12],"scout_squad");
-        variable_struct_set(role_squad_equivilances,obj_ini.role[100][3],"sternguard_veteran_squad");
+        variable_struct_set(role_squad_equivilances,obj_ini.role[100][3],"veteran_squad");
         variable_struct_set(role_squad_equivilances,obj_ini.role[100][4],"terminator_squad");
 
         for(i=0;i<array_length(obj_controller.display_unit) && mahreens<500;i++){
