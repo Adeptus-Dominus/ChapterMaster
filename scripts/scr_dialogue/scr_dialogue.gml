@@ -5,10 +5,7 @@ function scr_dialogue(diplo_keyphrase) {
 	with (obj_controller){
 	// diplo_keyphrase = keyphrase
 
-	for(var h=1; h<=4; h++){
-		obj_controller.diplo_option[h]="";
-		obj_controller.diplo_goto[h]="";
-	}
+	clear_diplo_choices();
 	var event_log="";
 	var rando=0,tempd="",sorc=false;
 	var rela,trade_msg;
@@ -175,8 +172,8 @@ function scr_dialogue(diplo_keyphrase) {
 		var _string = $"{global.chapter_name}, I order you to hold your fire! {_master_of_sanct.name()}, if you doubt my leadership then let it be decided by single combat! [Duel your Master of Sanctity]"
 	    add_diplomacy_option({option_text: _string, goto : "cs_meeting_battle2"});
 
-	    var _string = $"I deny you {obj_controller.faction_leader[eFACTION.Chaos])}.  And now I shall destroy you.  For the Emperor! [Attack Chaos forces]";
-	    add_diplomacy_option({option_text:_string, goto :"cs_meeting_battle5" };
+	    var _string = $"I deny you {obj_controller.faction_leader[eFACTION.Chaos]}.  And now I shall destroy you.  For the Emperor! [Attack Chaos forces]";
+	    add_diplomacy_option({option_text:_string, goto :"cs_meeting_battle5" });
 	}
 
 	// First explanation for chaos
@@ -284,7 +281,7 @@ function scr_dialogue(diplo_keyphrase) {
 	    event_log=string(obj_controller.faction_leader[eFACTION.Chaos])+" gives you an Artifact, meant to help corrupt your marines to the path of Chaos.";
 	    scr_event_log("purple",event_log);// scr_alert("purple","lol",string(tix),0,0);
 	    diplo_text="[The tones of his humorless laughter are filled with the bitterness of ancient, poisoned memories. He continues.]\nYou must emerge victorious from this... \\Civil War\\, and not decimate your ranks in the process, if you are to be of any use to the Gods or to me.  ";
-	    diplo_text+$="And to that end, I give you this.\n[[{obj_controller.faction_leader[eFACTION.Chaos]} gestures to one of his Terminators, who presents you with an Artifact. In your mind, something sinister seems to cling to the lines of its form.]]\nThe more of your warriors that come to accept Chaos, the fewer holdouts there will be to overcome when the time comes. This object will speed their introduction to its ways. You must also encourage your warriors to...broaden their horizons wherever possible, so they come to their own understanding of the Primordial Truth. But you must tread carefully at the same time, lest you alert the Inquisition. They must not have even a hint of what’s taking place in your Chapter, or they will obliterate you.";
+	    diplo_text+=$"And to that end, I give you this.\n[[{obj_controller.faction_leader[eFACTION.Chaos]} gestures to one of his Terminators, who presents you with an Artifact. In your mind, something sinister seems to cling to the lines of its form.]]\nThe more of your warriors that come to accept Chaos, the fewer holdouts there will be to overcome when the time comes. This object will speed their introduction to its ways. You must also encourage your warriors to...broaden their horizons wherever possible, so they come to their own understanding of the Primordial Truth. But you must tread carefully at the same time, lest you alert the Inquisition. They must not have even a hint of what’s taking place in your Chapter, or they will obliterate you.";
 	    add_diplomacy_option({option_text:"[Continue]", goto : "cs_meeting137"});
 	}
 
@@ -421,8 +418,8 @@ function scr_dialogue(diplo_keyphrase) {
 				break;
 			case "Khorne_path":
 				diplo_text ="AAAAH the path of the warrior perhaps it was a little hopefull of me to expect anymore, from the right angle i suppose you could almost pass form one of those stunted little red bretheren of mine. The lord of skulls is always eager to help in an endevour that might spill even a moreseful more, but pray what will you offer to the lord of skulls for such favour; he loathes those who emply sorcery but then, but he's known to value the martial mans skull most, i suppose it dosen't matter too much from where the blood flows so long as it flows."
-				add_diplomacy_option({option_text:"Sacrifice Librarian"}) "Sacrifice Librarian"; 
-				add_diplomacy_option({option_text:"Sacrifice Champion"}) ; 
+				add_diplomacy_option({option_text:"Sacrifice Librarian"}); 
+				add_diplomacy_option({option_text:"Sacrifice Champion"}); 
 				add_diplomacy_option({option_text:"Sacrifice squad"}); 
 				add_diplomacy_option({option_text:"FLEE"});
 			break;
@@ -465,7 +462,7 @@ function scr_dialogue(diplo_keyphrase) {
 		}
 			if (diplo_keyphrase == "gift"){
 			diplo_text ="Of course Chapter master (giggle) and what may they do for you";
-			add_diplomacy_option({option_text:=}) "I need strength and power to crush my enemies";
+			add_diplomacy_option({option_text:"I need strength and power to crush my enemies"});
 			add_diplomacy_option({option_text:"I seek to protect thoes under my command from this hellish existance"});
 			add_diplomacy_option({option_text:"I seek wisdom and knowlage to better guide me"});
 			add_diplomacy_option({option_text:"I seek wealth and a better life for my men"});	
@@ -1430,7 +1427,9 @@ function scr_dialogue(diplo_keyphrase) {
 	        add_diplomacy_option({option_text:"Demand Requisition"});
 			add_diplomacy_option({option_text:"Skip Inspection"});
 			add_diplomacy_option({option_text:"Cancel"});
-	        if (inspection_passes>0) then add_diplomacy_option({option_text:"Skip Inspection ("})+string(inspection_passes)+" pass)";
+	        if (inspection_passes>0){
+				add_diplomacy_option({option_text:"Skip Inspection ({inspection_passes} pass)"});
+			}
 	    }
 	    if (diplo_keyphrase=="penitent_end"){
 	        rando=choose(1,2);
@@ -1450,7 +1449,7 @@ function scr_dialogue(diplo_keyphrase) {
         
 	        add_diplomacy_option({option_text:"It will not happen again"});
 	        add_diplomacy_option({option_text:"Very well"});
-	        add_diplomacy_option({option_text:"You will not.  "})+string(tb)+" is MINE!";
+	        add_diplomacy_option({option_text:$"You will not.  {tb} is MINE!"});
 	    }
 	    if (diplo_keyphrase=="you_better"){
 	        rando=choose(1,2);
