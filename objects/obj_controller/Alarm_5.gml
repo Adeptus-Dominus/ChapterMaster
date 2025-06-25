@@ -366,39 +366,26 @@ if ((turn>=irandom(200)+100) or (obj_ini.fleet_type==eFACTION.Mechanicus)) and (
 
 }
 
-// if (known[eFACTION.Ecclesiarchy]=1){var spikky;spikky=choose(0,0,0,1,1);if (spikky=1) then with(obj_turn_end){audiences+=1;audien[audiences]=5;audien_topic[audiences]="intro";}}
 if (known[eFACTION.Ecclesiarchy]==1){
     spikky=choose(0,1,1);
-    if (spikky==1) then with(obj_turn_end){
-        audiences+=1;
-        audien[audiences]=eFACTION.Ecclesiarchy;
-        known[eFACTION.Ecclesiarchy] = 2;
-        audien_topic[audiences]="intro";
-        if (obj_controller.faction_status[eFACTION.Ecclesiarchy]=="War") then audien_topic[audiences]="declare_war";
+    if (spikky){
+        var _topic = faction_status[eFACTION.Ecclesiarchy]=="War" ? "declare_war" : "intro";
+        scr_audience(eFACTION.Ecclesiarchy, _topic);
     }
 }
 if (known[eFACTION.Eldar]==1) and (faction_defeated[eFACTION.Eldar]==0){
     spikky=choose(0,1);
-    if (spikky==1) then with(obj_turn_end){
-        audiences+=1;
-        audien[audiences]= eFACTION.Eldar;
-        audien_topic[audiences]="intro1";
+    if (spikky==1){
+        scr_audience(eFACTION.Eldar, "intro1");
     }
 }
 if (known[eFACTION.Ork]==0.5) and (faction_defeated[eFACTION.Ork]==0){
-    spikky=floor(random(7));
-    if (spikky==1) then with(obj_turn_end){
-        audiences+=1;
-        audien[audiences]=eFACTION.Ork;
-        audien_topic[audiences]="intro";
+    if (1==irandom(7)){
+        scr_audience(eFACTION.Ork, "intro");
     }
 }
 if (known[eFACTION.Tau]==1) and (faction_defeated[eFACTION.Tau]==0){
-    with(obj_turn_end){
-        audiences+=1;
-        audien[audiences]=8;
-        audien_topic[audiences]="intro";
-    }
+    scr_audience(eFACTION.Tau, "intro");
 }
 // ** Quests here **
 // 135 ; quests

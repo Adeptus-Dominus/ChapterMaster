@@ -24,54 +24,81 @@ function relationship_hostility_matrix(faction){
     return _rela;
 }
 
+function clear_diplo_choices(){
+    obj_controller.diplo_option = [];
+}
+
+function valid_diplomacy_options(){
+    var valid = false;
+    if (array_length(obj_controller.diplo_option)){
+        for (var i=array_length(obj_controller.diplo_option)-1;i>=<0;i--){
+            if (obj_controller.diplo_option[i] != ""){
+                valid = true;
+            } else {
+                array_delete(obj_controller.diplo_option, i, 1);
+            }
+        }
+    }else{
+        return false;
+    }
+    return valid;
+}
+
+function add_diplomacy_option(option={}){
+    if (!struct_exists(option, "goto")){
+        option.goto = "";
+    }
+    array_push(obj_controller.diplo_option, option);
+}
+
 function basic_diplomacy_screen(){
 	var  yy=__view_get( e__VW.YView, 0 );
 	var  xx=__view_get( e__VW.XView, 0 );
-	 if (trading=0) and ((diplo_option[1]!="") or (diplo_option[2]!="") or (diplo_option[3]!="") or (diplo_option[4]!="")){
+	 if (trading=0  && valid_diplomacy_options()){
         if (force_goodbye=0){
             draw_set_halign(fa_center);
         
             var opts=0,slot=0,dp=0,opt_cord=0;
-           for (dp=1;dp<5;dp++){
-           		if (diplo_option[dp]!="") then opts+=1;
-           	}
-            if (opts=4) then yy-=30;
-            if (opts=2) then yy+=30;
-            if (opts=1) then yy+=60;
+            var opts = array_length(diplo_option);
+            if (opts==4) then yy-=30;
+            if (opts==2) then yy+=30;
+            if (opts==1) then yy+=60;
+
         	var left,top,right,base,opt;
         	option_selections = [];
-            for (slot=1;slot<5;slot++){
-                if (diplo_option[slot]!=""){
-					left = xx+354;
-					top = yy+694;
-					right = xx+887;
-					base = yy+717;
-                    draw_set_color(38144);
-                    draw_rectangle(left,top,right,base,0);
-                    draw_set_color(0);
-                
-                    var sw=1;
-                    for (var i=1;i<5;i++){
-                    	if (string_width(string_hash_to_newline(diplo_option[slot]))*sw>530) then sw-=0.05;
-                    }
-                    if (string_width(string_hash_to_newline(diplo_option[slot]))*sw<=530) and (sw=1){
-                        draw_text_transformed(xx+620,yy+696,string_hash_to_newline(string(diplo_option[slot])),sw,sw,0);
-						draw_text_transformed(xx+620,yy+696+2,string_hash_to_newline(string(diplo_option[slot])),sw,sw,0);
-                    }
+            for (var slot=0; slot<opts; slot++){
 
-                    if (string_width(string_hash_to_newline(diplo_option[slot]))*sw>530){
-                        draw_text_ext_transformed(xx+620,yy+696-4,string_hash_to_newline(string(diplo_option[slot])),16,530/sw,sw,sw,0);
-                    }
-					if scr_hit(left,top,right,base){
-                        draw_set_alpha(0.2);
-                        draw_rectangle(left,top,right,base,0);
-                        draw_set_alpha(1);
-                    }
-					opt = [left,top,right,base];
-					array_push(option_selections,opt);
-					opt_cord+=1;
-	                yy+=30;                    
+                var _opt = diplo_option[slot];
+				left = xx+354;
+				top = yy+694;
+				right = xx+887;
+				base = yy+717;
+                draw_set_color(38144);
+                draw_rectangle(left,top,right,base,0);
+                draw_set_color(0);
+            
+                var sw=1;
+                for (var i=1;i<5;i++){
+                	if (string_width(string_hash_to_newline(_opt))*sw>530) then sw-=0.05;
                 }
+                if (string_width(string_hash_to_newline(_opt))*sw<=530) and (sw=1){
+                    draw_text_transformed(xx+620,yy+696,string_hash_to_newline(_opt),sw,sw,0);
+					draw_text_transformed(xx+620,yy+696+2,string_hash_to_newline(_opt),sw,sw,0);
+                }
+
+                if (string_width(string_hash_to_newline(_opt))*sw>530){
+                    draw_text_ext_transformed(xx+620,yy+696-4,string_hash_to_newline(_opt),16,530/sw,sw,sw,0);
+                }
+				if scr_hit(left,top,right,base){
+                    draw_set_alpha(0.2);
+                    draw_rectangle(left,top,right,base,0);
+                    draw_set_alpha(1);
+                }
+				opt = [left,top,right,base];
+				array_push(option_selections,opt);
+				opt_cord+=1;
+                yy+=30;                    
+
             }
             yy=__view_get( e__VW.YView, 0 );
         }

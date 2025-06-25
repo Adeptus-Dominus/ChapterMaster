@@ -50,7 +50,7 @@ function scr_dialogue(diplo_keyphrase) {
 	if (diplo_keyphrase=="cs_meeting1"){
 		diplomacy=10;
 	    diplo_text="So you have brought yourself before me "+string(obj_ini.master_name)+". This pleases me. You are not the first among the Astartes to come to me. Do not look so shocked. Many have gazed upon the decay and decrepitude of the Imperium with open eyes, and heard the empty slogans of the Corpse Emperor with fresh ears and come to the realization I had so many long millennia ago. There is only one truth in the universe, one path worthy of an Astartes to walk. The path of true power. The path of true insight into the nature of reality and what lies beyond. The path of Chaos. Only when free of the pointless bondage of the Imperium can we ascend to our rightful place in the universe.";
-	    diplo_option[1]="[Continue]";
+	    add_diplomacy_option({option_text:"[Continue]"});
 		diplo_goto[1]="cs_meeting2";
 	    disposition[10]+=10;
 	}
@@ -75,18 +75,22 @@ function scr_dialogue(diplo_keyphrase) {
 	    }
     
 	    if (mos==true) and (diplo_keyphrase!="cs_meeting20"){
-	        diplo_option[1]="[Continue]";
+	        add_diplomacy_option({option_text:"[Continue]"});
 			diplo_goto[1]="cs_meeting_m1";
 	    }
 
 	    if (mos==false) or (diplo_keyphrase=="cs_meeting20"){
-	        diplo_option[1]="The Imperium has bound us and kept us from our true potential.  We seek strength.";
-	        diplo_option[2]="The Imperium and Inquisition's ignorance and hypocrisy will be the death of my Chapter.";
-	        diplo_option[3]="Our enemies are many and our strength is diminished. We need allies to join with us while we rebuild our forces.";
-	        diplo_option[4]="I sought you out to slay you with my own hands.";
+	        add_diplomacy_option(
+	        	{
+	        		option_text:"The Imperium has bound us and kept us from our true potential.  We seek strength.",
+	        		goto : "cs_meeting30",
+	        	}
+	        );
+	        add_diplomacy_option({option_text:"The Imperium and Inquisition's ignorance and hypocrisy will be the death of my Chapter."});
+	        add_diplomacy_option({option_text:"Our enemies are many and our strength is diminished. We need allies to join with us while we rebuild our forces."});
+	        add_diplomacy_option({option_text:"I sought you out to slay you with my own hands."});
         
 	        // Set targets for those options
-	        diplo_goto[1]="cs_meeting30";
         
 	        if (obj_controller.disposition[4]<=30) then diplo_goto[2]="cs_meeting40";// Convinced
 	        if (obj_controller.disposition[4]>30) then diplo_goto[2]="cs_meeting45";// Not convinced, high inquisition dispositioin
@@ -105,7 +109,7 @@ function scr_dialogue(diplo_keyphrase) {
 		// scr_alert("purple","lol",string(tix),0,0);
     
 	    diplo_text="As the echoes fade, it becomes clear that the Master of Sanctity of "+string(global.chapter_name)+" has fallen.";
-	    diplo_option[1]="[Continue]";
+	    add_diplomacy_option({option_text:"[Continue]"});
 		diplo_goto[1]="cs_meeting135";
 	}
 	// MoS cuts in
@@ -114,9 +118,9 @@ function scr_dialogue(diplo_keyphrase) {
 	    diplo_text="[["+string(obj_ini.name[0,3])+" hisses your name over a private vox channel.]]##";
 	    diplo_text+="My lord!  What are we doing here, treating with this monster of the Traitor Legions? The very existence of the Archenemy is a threat to everything the Chapter stands for, and we endanger our immortal souls just being here. You know this! I demand to know your intentions! And I warn you, I will not hesitate to do what I must, for the good of the Chapter and the Imperium.";
     
-	    diplo_option[1]="Times change and the Chapter must change with them or be ground into the dust of history.  (Chaos)";
-	    diplo_option[2]="We will not serve the Imperium’s crooked ends any longer. Our Chapter will control its own destiny.  (Renegade)";
-	    diplo_option[3]="I haven’t turned traitor and my faith is strong. The Beast has foolishly opened its lair to us. Be ready for my signal.";
+	    add_diplomacy_option({option_text:"Times change and the Chapter must change with them or be ground into the dust of history.  (Chaos)"});
+	    add_diplomacy_option({option_text:"We will not serve the Imperium’s crooked ends any longer. Our Chapter will control its own destiny.  (Renegade)"});
+	    add_diplomacy_option({option_text:"I haven’t turned traitor and my faith is strong. The Beast has foolishly opened its lair to us. Be ready for my signal."});
 	    
 		for(var g=1; g<=3; g++){diplo_goto[g]="cs_meeting_m2";}
         
@@ -125,7 +129,7 @@ function scr_dialogue(diplo_keyphrase) {
 		for(var ii=1; i<=200; i++){if (obj_ini.role[0,ii]==obj_ini.role[100][eROLE.ChapterMaster]) and (string_count("$",obj_ini.spe[0,ii])>0) then born=true;}
     
 	    if (obj_ini.TTRPG[0][3].corruption>=50) and (born=true){
-	        diplo_option[4]="Right now I need my Master of Sanctity at my side, trusting that his Chapter Master is doing what is best, what is necessary for the Chapter, during this dangerous moment. All will be made clear in time, I promise you brother. This is the right path.";
+	        add_diplomacy_option({option_text:"Right now I need my Master of Sanctity at my side, trusting that his Chapter Master is doing what is best, what is necessary for the Chapter, during this dangerous moment. All will be made clear in time, I promise you brother. This is the right path."});
 	        diplo_goto[4]="cs_meeting_m3";
 	    }
 	}
@@ -133,12 +137,12 @@ function scr_dialogue(diplo_keyphrase) {
 	    event_log="The "+string(global.chapter_name)+" Master of Sanctity takes a stand against you.";
 	    scr_event_log("purple",event_log);// scr_alert("purple","lol",string(tix),0,0);
 	    diplo_text="You have besmirched the honor of our chapter this day, and I will not forget it /my lord Chapter Master/.##[["+string(obj_ini.name[0,3])+" strides forward and his shout erupts from his external vox speakers with a boom that shatters the silence in the room.]]##We will not stand idly by and bandy words with heretic scum! To me my brothers! Slay these traitors in the name of our Emperor!";
-	    diplo_option[1]="[Continue]";
+	    add_diplomacy_option({option_text:"[Continue]"});
 		diplo_goto[1]="cs_meeting9";
 	}
 	if (diplo_keyphrase=="cs_meeting_m3"){
 	    diplo_text="[["+string(obj_ini.name[0,3])+" is silent for a moment, before giving you an imperceptible nod.]]##I stand with you, Lord "+string(obj_ini.master_name)+". Let us face this together.";
-	    diplo_option[1]="[Continue]";
+	    add_diplomacy_option({option_text:"[Continue]"});
 		diplo_goto[1]="cs_meeting20";
 	    obj_controller.useful_info+="CRMOS|";
 	}
@@ -147,8 +151,8 @@ function scr_dialogue(diplo_keyphrase) {
 		instance_activate_all();
 	    diplo_text="By the sacred oath I have sworn, I bear witness to your darkest secrets. Know this: I am compelled to report your heresy to the Inquisition. Redemption or retribution, their verdict shall decide. May the Emperor's mercy guide your path.";
     
-	    diplo_option[1]="Very well.  I did what must be done for my brothers, and now accept the price.  [Game Over]";
-	    diplo_option[2]="Never!  [Battle Loyalist "+string(global.chapter_name)+"]";
+	    add_diplomacy_option({option_text:"Very well.  I did what must be done for my brothers, and now accept the price.  [Game Over]"});
+	    add_diplomacy_option({option_text:"Never!  [Battle Loyalist "})+string(global.chapter_name)+"]";
 	    diplo_goto[1]="cs_meeting_m6";
 		diplo_goto[2]="cs_meeting_battle7";
 	}
@@ -161,24 +165,24 @@ function scr_dialogue(diplo_keyphrase) {
 	    diplomacy=10;
 	    diplo_text="[["+string(obj_controller.faction_leader[eFACTION.Chaos])+" turns to you, his voice even and calm]]##Here is the first step you must take, to prove you’ve truly left the Imperium behind. Kill him. Kill your loyal brothers.##[[His Chaos Terminators raise their weapons as one and point them at you. Somewhere behind them a daemon cackles.]]##Choose now or be obliterated.";
     
-	    diplo_option[1]="Stand with me my brothers! Fight for the future of your Chapter, and slay "+string(obj_ini.name[0,3])+"!  [Battle loyalist "+string(global.chapter_name)+"]";
+	    add_diplomacy_option({option_text:"Stand with me my brothers! Fight for the future of your Chapter, and slay "})+string(obj_ini.name[0,3])+"!  [Battle loyalist "+string(global.chapter_name)+"]";
 		diplo_goto[1]="cs_meeting_battle1";
-	    diplo_option[2]=string(global.chapter_name)+", I order you to hold your fire! "+string(obj_ini.name[0,3])+", if you doubt my leadership then let it be decided by single combat! [Duel your Master of Sanctity]";
+	    add_diplomacy_option({option_text:string(global.chapter_name)+",}) I order you to hold your fire! "+string(obj_ini.name[0,3])+", if you doubt my leadership then let it be decided by single combat! [Duel your Master of Sanctity]";
 		diplo_goto[2]="cs_meeting_battle2";
-	    diplo_option[3]="I deny you "+string(obj_controller.faction_leader[eFACTION.Chaos])+".  And now I shall destroy you.  For the Emperor! [Attack Chaos forces]";
+	    add_diplomacy_option({option_text:"I deny you "})+string(obj_controller.faction_leader[eFACTION.Chaos])+".  And now I shall destroy you.  For the Emperor! [Attack Chaos forces]";
 		diplo_goto[3]="cs_meeting_battle5";
 	}
 	// First explanation for chaos
 	if (diplo_keyphrase=="cs_meeting30"){
 	    diplo_text="Then you have awakened to the truth the Imperium so hypocritically denies, that there is only one real power in the universe, and it goes to those with the will to seize it.";
-	    diplo_option[1]="[Continue]";
+	    add_diplomacy_option({option_text:"[Continue]"});
 		diplo_goto[1]="cs_meeting135";
 	    disposition[10]+=30;
 	}
 	// Fucking inquisition
 	if (diplo_keyphrase=="cs_meeting40"){
 	    diplo_text="Yes...you do not fit the precious mold the Codex Astartes carves out for you, do you? And the Imperium destroys that which it cannot understand.";
-	    diplo_option[1]="[Continue]";
+	    add_diplomacy_option({option_text:"[Continue]"});
 		diplo_goto[1]="cs_meeting135";
 	    disposition[10]+=30;
 	}
@@ -186,10 +190,10 @@ function scr_dialogue(diplo_keyphrase) {
 	if (diplo_keyphrase=="cs_meeting45"){
 	    diplo_text="Do you take me as a fool, "+string(obj_ini.master_name)+"?  Even in the Eye there are whispers of your running to and fro at the Inquisition’s beck and call, like a dog playing fetch. You’re a well-trained, and maybe even a clever, dog. I’ve killed so many clever dogs in my time. How do I know this isn’t just a hopelessly doomed plot to try and kill me, hatched by your Inquisition masters still holding your leash?";
         
-	    diplo_option[1]="There are advantages to staying on the Inquisition’s good side, and I’m not one to ignore an advantage.";
-	    diplo_option[2]="Appeasing the Inquisition is no hard choice when your options are obey, or eventually be branded a heretic and be destroyed.";
-	    diplo_option[3]="Given enough time, everyone becomes a heretic in the eyes of the Inquisition. I will not wait for them to make their move against us.";
-	    diplo_option[4]="You have one thing right, "+string(obj_controller.faction_leader[eFACTION.Chaos])+". I am here to kill you. Open fire brothers, NOW!  [Battle Chaos forces]";
+	    add_diplomacy_option({option_text:"There are advantages to staying on the Inquisition’s good side, and I’m not one to ignore an advantage."});
+	    add_diplomacy_option({option_text:"Appeasing the Inquisition is no hard choice when your options are obey, or eventually be branded a heretic and be destroyed."});
+	    add_diplomacy_option({option_text:"Given enough time, everyone becomes a heretic in the eyes of the Inquisition. I will not wait for them to make their move against us."});
+	    add_diplomacy_option({option_text:"You have one thing right, "})+string(obj_controller.faction_leader[eFACTION.Chaos])+". I am here to kill you. Open fire brothers, NOW!  [Battle Chaos forces]";
 		diplo_goto[4]="cs_meeting_battle5";
 
 		for(var q=1; q<=3; q++){diplo_goto[q]=choose("cs_meeting46","cs_meeting47");}
@@ -197,28 +201,28 @@ function scr_dialogue(diplo_keyphrase) {
 	// Sorry brah, you're not their homie
 	if (diplo_keyphrase=="cs_meeting46"){
 	    diplo_text="I am not convinced.  A shame.  I was hoping you might actually be of use- but now it is apparent that your use will only be as a bloody, broken offering to the Dark Gods.";
-	    diplo_option[1]="[Battle Chaos AND any loyalist forces]";
-		diplo_option[2]="cs_meeting_battle6";
+	    add_diplomacy_option({option_text:"[Battle Chaos AND any loyalist forces]"});
+		add_diplomacy_option({option_text:"cs_meeting_battle6"});
 	}
 	// you might be their homie, fine
 	if (diplo_keyphrase=="cs_meeting47"){
 	    diplo_text="You may yet be of use to me.  Very well, we will assist you. It will be no trouble at all to exterminate you, should you displease me at a future time.";
-	    diplo_option[1]="[Continue]";
+	    add_diplomacy_option({option_text:"[Continue]"});
 		diplo_goto[1]="cs_meeting135";
 	    disposition[10]+=30;
 	}
 	// mah numbers
 	if (diplo_keyphrase=="cs_meeting50"){
 	    diplo_text="Yes we have seen you struggle alone, scurrying from shadow to shadow like a hunted rat. I won’t lie to you though, I’ve seen the potential in you and your….brothers. Alright, we will assist you. It will be no trouble at all to exterminate you, should you displease me.";
-	    diplo_option[1]="[Continue]";
+	    add_diplomacy_option({option_text:"[Continue]"});
 		diplo_goto[1]="cs_meeting135";
 	    disposition[10]+=30;
 	}
 	// such numbers, wow
 	if (diplo_keyphrase=="cs_meeting55"){
 	    diplo_text="I could overrun this sector with half the warriors you have now. Is your “Chapter” so pathetic you need to throw scores more men into the meatgrinder to succeed?  You have not convinced me.  I'd have enjoyed making use of your Chapter, but this was clearly not meant to be.  Make your peace.";
-	    diplo_option[1]="[Battle Chaos AND any loyalist forces]";
-		diplo_option[2]="cs_meeting_battle6";
+	    add_diplomacy_option({option_text:"[Battle Chaos AND any loyalist forces]"});
+		add_diplomacy_option({option_text:"cs_meeting_battle6"});
 	}
 	// Actually here to kill you
 	if (diplo_keyphrase=="cs_meeting60"){
@@ -226,38 +230,38 @@ function scr_dialogue(diplo_keyphrase) {
 		disposition[10]+=10;
 	    diplo_text=$"[[{chaos_leader} is silent for a moment, then a slow chuckle rises from deep within his ancient power armour. The chuckle erupts into hideous laughter that chills your blood with its otherworldly tenor.]]##I thank you, I have not truly laughed in three hundred years. I shall take your skull as a memento of this day and your fine jest. But before I do, indulge my curiosity. Let us say you did kill me, /then/ what would you do? Claim the price on my head? Go crawling back on your belly to your Imperial masters like a whipped cur, dragging your kill behind you? Become master of this sector yourself now that you’ve bested your greatest foe? Or perhaps you’d offer up my soul to the Dark Gods, ignorantly fumbling about in the darkness for their favor? Tell me.";
     
-	    diplo_option[1]="The reward for one such as you will be great, and I /will/ claim it.";
+	    add_diplomacy_option({option_text:"The reward for one such as you will be great, and I /will/ claim it."});
 		diplo_goto[1]="cs_meeting61";
-	    diplo_option[2]="The atrocities you’ve visited on this sector are reason enough.";
+	    add_diplomacy_option({option_text:"The atrocities you’ve visited on this sector are reason enough."});
 		diplo_goto[2]="cs_meeting63";
-	    diplo_option[3]=$"You think me ignorant of the ways of Chaos, {chaos_leader}, but I know one truth. There is power in blood. Your blood. My power. They will hear me.";
+	    add_diplomacy_option({option_text:$"You think me ignorant of the ways of Chaos, {chaos_leader}, but I know one truth. There is power in blood. Your blood. My power. They will hear me."});
 		diplo_goto[3]="cs_meeting65";
-	    diplo_option[4]=$"I’m just tired of listening to you talk, {chaos_leader}.";
+	    add_diplomacy_option({option_text:$"I’m just tired of listening to you talk, {chaos_leader}."});
 		diplo_goto[4]="cs_meeting67";
 	}
 	// Reward
 	if (diplo_keyphrase=="cs_meeting61"){
 	    diplo_text="It is this blind overconfidence that makes killing a Space Marine so satisfying.";
-	    diplo_option[1]="[Battle Chaos forces]";
+	    add_diplomacy_option({option_text:"[Battle Chaos forces]"});
 		diplo_goto[1]="cs_meeting_battle5";
 	}
 	// Atrocities
 	if (diplo_keyphrase=="cs_meeting63"){
 	    diplo_text="Oh, but I have one more atrocity to commit you simply shouldn’t miss...";
-	    diplo_option[1]="[Battle Chaos forces]";
+	    add_diplomacy_option({option_text:"[Battle Chaos forces]"});
 		diplo_goto[1]="cs_meeting_battle5";
 	}
 	// BLOOD BLOOD BLOOD
 	if (diplo_keyphrase=="cs_meeting65"){
 	    diplo_text="You know, I think I would actually enjoy watching you attempt it. But I’ll spare you having your soul torn to shreds by daemons, and just give you an agonizing death instead.";
-	    diplo_option[1]="[Battle Chaos AND any loyalist forces]";
+	    add_diplomacy_option({option_text:"[Battle Chaos AND any loyalist forces]"});
 		diplo_goto[1]="cs_meeting_battle6";
 	}
 	// stahp talking
 	if (diplo_keyphrase=="cs_meeting67"){
 		disposition[10]+=10;
 	    diplo_text="And I thought we were becoming such fast friends, you and I. Very well, don’t bore me.";
-	    diplo_option[1]="[Battle Chaos forces]";
+	    add_diplomacy_option({option_text:"[Battle Chaos forces]"});
 		diplo_goto[1]="cs_meeting_battle5";
 	}
 
@@ -270,7 +274,7 @@ function scr_dialogue(diplo_keyphrase) {
 		disposition[10]=max(disposition[10]+10,10);
 	    diplo_text="[["+string(obj_controller.faction_leader[eFACTION.Chaos])+"’s power armour grinds as he leans forward, his posture predatory.]]##Then we have an accord. We will assist you as you take your first steps on the path toward Chaos. And my payment for all this?##[[He chuckles.]]##Enlisting an entire chapter in the service of the Dark Gods is all the reward I require.";
 	    diplo_text+="##But you cannot simply paint the eight-pointed star on your wargear and begin slaughtering in the name of the Dark Gods. No, some within your chapter will resist the choice you’ve made, either out of loyalty to the Corpse Emperor or out of fear of Chaos. Just think, it will be like your own little heresy. The ''"+string(obj_ini.master_name)+" Heresy!''";    
-	    diplo_option[1]="[Continue]";
+	    add_diplomacy_option({option_text:"[Continue]"});
 		diplo_goto[1]="cs_meeting136";
 	}
 	if (diplo_keyphrase=="cs_meeting136"){
@@ -278,7 +282,7 @@ function scr_dialogue(diplo_keyphrase) {
 	    scr_event_log("purple",event_log);// scr_alert("purple","lol",string(tix),0,0);
 	    diplo_text="[The tones of his humorless laughter are filled with the bitterness of ancient, poisoned memories. He continues.]##You must emerge victorious from this... \\Civil War\\, and not decimate your ranks in the process, if you are to be of any use to the Gods or to me.  ";
 	    diplo_text+="And to that end, I give you this.##[["+string(obj_controller.faction_leader[eFACTION.Chaos])+" gestures to one of his Terminators, who presents you with an Artifact. In your mind, something sinister seems to cling to the lines of its form.]]##The more of your warriors that come to accept Chaos, the fewer holdouts there will be to overcome when the time comes. This object will speed their introduction to its ways. You must also encourage your warriors to...broaden their horizons wherever possible, so they come to their own understanding of the Primordial Truth. But you must tread carefully at the same time, lest you alert the Inquisition. They must not have even a hint of what’s taking place in your Chapter, or they will obliterate you.";
-	    diplo_option[1]="[Continue]";
+	    add_diplomacy_option({option_text:"[Continue]"});
 		diplo_goto[1]="cs_meeting137";
 	}
 	if (diplo_keyphrase=="cs_meeting137"){
@@ -397,47 +401,47 @@ function scr_dialogue(diplo_keyphrase) {
 				diplo_text = "[[The Emmissary to Chaos is writhing snake like creature, a vile creature even by the standards of it's foul bretheren it has no specific master instead preffering to work undividely. It's savage toungue flicks from between it's teeth with glazed aged ayes staring into your soul]]";
 				diplo_text += "###";
 				diplo_text += "Greetings Chapter Master, The gods have been watching you oh so very closely, they see you struggles, they hear your pain, they breathe your despair. The warp is the key too all things all you need do is ask and they will provide......For a cost of course even in the warp nothing comes without cost";
-				diplo_option[1] = "I seek a favour from the Gods"; 
-				diplo_option[2]="Begone Filth i serve the true god FOR THE EMPROR"; 
-				diplo_option[3]="The gods may have respect when they earn it i'll be back cretin";
+				add_diplomacy_option({option_text:=}) "I seek a favour from the Gods"; 
+				add_diplomacy_option({option_text:"Begone Filth i serve the true god FOR THE EMPROR"}); 
+				add_diplomacy_option({option_text:"The gods may have respect when they earn it i'll be back cretin"});
 				break;	
 			case "gift":
 				diplo_text ="Of course Chapter master (giggle) and what may they do for you";
-				diplo_option[1] = "I need strength and power to crush my enemies";
-				diplo_option[2]="I seek to protect thoes under my command from this hellish existance";
-				diplo_option[3]="I seek wisdom and knowlage to better guide me";
-				diplo_option[4]="I seek wealth and a better life for my men";
+				add_diplomacy_option({option_text:=}) "I need strength and power to crush my enemies";
+				add_diplomacy_option({option_text:"I seek to protect thoes under my command from this hellish existance"});
+				add_diplomacy_option({option_text:"I seek wisdom and knowlage to better guide me"});
+				add_diplomacy_option({option_text:"I seek wealth and a better life for my men"});
 				break;
 			case "Khorne_path":
 				diplo_text ="AAAAH the path of the warrior perhaps it was a little hopefull of me to expect anymore, from the right angle i suppose you could almost pass form one of those stunted little red bretheren of mine. The lord of skulls is always eager to help in an endevour that might spill even a moreseful more, but pray what will you offer to the lord of skulls for such favour; he loathes those who emply sorcery but then, but he's known to value the martial mans skull most, i suppose it dosen't matter too much from where the blood flows so long as it flows."
-				diplo_option[1] = "Sacrifice Librarian"; 
-				diplo_option[2] = "Sacrifice Champion"; 
-				diplo_option[3] = "Sacrifice squad"; 
-				diplo_option[4] = "FLEE"
+				add_diplomacy_option({option_text:=}) "Sacrifice Librarian"; 
+				add_diplomacy_option({option_text:=}) "Sacrifice Champion"; 
+				add_diplomacy_option({option_text:=}) "Sacrifice squad"; 
+				add_diplomacy_option({option_text:=}) "FLEE"
 			break;
 				case "daemon_scorn":
 					diplo_text = "return when you find yourself more enligtened Chapter Master my Lords hunger for you";
 				break;
 			case "Nurgle_path":
 				diplo_text ="No one understands decay, rot and eventual death like the loving father of the warp. Only he can end your suffering and and that of your men. To be embraced is all the benevolent Father asks do you accept thse tuerms Chapter Master"
-				diplo_option[1] ="I accept, we surrender our will to the father"; 
-				diplo_option[2] = "Never you foul daemon all i hear are foul tricks"; 
-				diplo_option[3] = ""; 
-				diplo_option[4] = "";
+				add_diplomacy_option ({option_text:"I accept, we surrender our will to the father"}); 
+				add_diplomacy_option({option_text:=}) "Never you foul daemon all i hear are foul tricks"; 
+				add_diplomacy_option({option_text:=}) ""; 
+				add_diplomacy_option({option_text:=}) "";
 				break;
 			case "Slaanesh_path":
 				diplo_text ="Riches. Joy. Pleasure.ha you remind me of that fool Midas. Who's Midas? Oh never you mind. She who thirsts has a fondness for little play things. Seek out a relic of importnace to her and you'll find yourself rewarded."
-				diplo_option[1] ="Where is this relic?"; 
-				diplo_option[2] = "As i thought the  gods would rather have me chase my own tail than give me what i want"; 
-				diplo_option[3] = ""; 
-				diplo_option[4] = "";
+				add_diplomacy_option ({option_text:"Where is this relic?"}); 
+				add_diplomacy_option({option_text:=}) "As i thought the  gods would rather have me chase my own tail than give me what i want"; 
+				add_diplomacy_option({option_text:=}) ""; 
+				add_diplomacy_option({option_text:=}) "";
 			break;	
 			case "Tzeentch_path":
 				diplo_text ="Yes I supose for a creature of your occupation your fate must be a pressing concern. it's dreary really wandering which rancid little backwater you'll die on fighting a pointless cause for a corpse on a throne, or maybe you only ask because you harbour greater ambitions? The changer of ways knows all things if you'll play a part in his games for him. ohh he does love his games yes he does."
-				diplo_option[1] ="What little game?"; 
-				diplo_option[2] = "A game? not only heretics but fools then begone Daemon"; 
-				diplo_option[3] = ""; 
-				diplo_option[4] = "";
+				add_diplomacy_option ({option_text:"What little game?"}); 
+				add_diplomacy_option({option_text:=}) "A game? not only heretics but fools then begone Daemon"; 
+				add_diplomacy_option({option_text:=}) ""; 
+				add_diplomacy_option({option_text:=}) "";
 			break;	
 			case "sacrifice_lib":
 				diplo_text="one less spell caster how pleasing for the lord. Enjoy your gift.";
@@ -460,10 +464,10 @@ function scr_dialogue(diplo_keyphrase) {
 		}
 			if (diplo_keyphrase == "gift"){
 			diplo_text ="Of course Chapter master (giggle) and what may they do for you";
-			diplo_option[1] = "I need strength and power to crush my enemies";
-			diplo_option[2]="I seek to protect thoes under my command from this hellish existance";
-			diplo_option[3]="I seek wisdom and knowlage to better guide me";
-			diplo_option[4]="I seek wealth and a better life for my men";	
+			add_diplomacy_option({option_text:=}) "I need strength and power to crush my enemies";
+			add_diplomacy_option({option_text:"I seek to protect thoes under my command from this hellish existance"});
+			add_diplomacy_option({option_text:"I seek wisdom and knowlage to better guide me"});
+			add_diplomacy_option({option_text:"I seek wealth and a better life for my men"});	
 
 		};
 	}
@@ -518,9 +522,9 @@ function scr_dialogue(diplo_keyphrase) {
 	                if (rando==4) then diplo_text="What do you want?";
                 
 	                if (obj_controller.chaos_rating>=1){
-	                    diplo_option[1]="My Chapter is prepared to join Chaos.  [Begin]";
+	                    add_diplomacy_option({option_text:"My Chapter is prepared to join Chaos.  [Begin]"});
 						diplo_goto[1]="civilwar_begin";
-	                    diplo_option[2]="I require more time to corrupt my brethren.";
+	                    add_diplomacy_option({option_text:"I require more time to corrupt my brethren."});
 						diplo_goto[2]="civilwar_soon";
 	                }
 	            }
@@ -964,9 +968,9 @@ function scr_dialogue(diplo_keyphrase) {
 	        if (rela=="friendly") then diplo_text=string(obj_ini.master_name)+"?";
 	        if (rela=="neutral") then diplo_text="What is the meaning of this?";
 	        if (rela=="hostile") then diplo_text="Consider your next words carefully.";
-	        diplo_option[1]="Demand Requisition";
-			diplo_option[2]="Demand Military Assistance";
-			diplo_option[3]="Cancel";
+	        add_diplomacy_option({option_text:"Demand Requisition"});
+			add_diplomacy_option({option_text:"Demand Military Assistance"});
+			add_diplomacy_option({option_text:"Cancel"});
 	    }
 	    if (string_count("assassination_angryish",diplo_keyphrase)>0){
 	        var ta="",tb="",tc="";
@@ -1114,8 +1118,8 @@ function scr_dialogue(diplo_keyphrase) {
 	    if (diplo_keyphrase=="open_trade") then diplo_text="...";
 	    if (diplo_keyphrase=="artifact"){
 	        if (rela!="hostile"){
-	            diplo_option[1]="Propose a trade for the Artifact.";
-				diplo_option[2]="Leave it be; Exit.";
+	            add_diplomacy_option({option_text:"Propose a trade for the Artifact."});
+				add_diplomacy_option({option_text:"Leave it be; Exit."});
 	            diplo_text="The Adeptus Mechanicus is aware of the Artifact.  Do not concern yourself with that which is rightly within our territory.";
 	        }
 	        if (rela=="hostile"){
@@ -1168,8 +1172,8 @@ function scr_dialogue(diplo_keyphrase) {
 	            if (randoo==1) then diplo_text="Calculations reveal that depending on your query we may have to beat your ass.";
 	            if (randoo!=1) then diplo_text="Certain queries may have to be answered by action.";
 	        }
-	        diplo_option[1]="Demand Requisition";
-			diplo_option[2]="Cancel";
+	        add_diplomacy_option({option_text:"Demand Requisition"});
+			add_diplomacy_option({option_text:"Cancel"});
 	    }
 	}
 	// ** Inquisition **
@@ -1341,8 +1345,8 @@ function scr_dialogue(diplo_keyphrase) {
 	    }
 	    if (diplo_keyphrase=="open_trade") then diplo_text="Make me an offer and I shall consider it, both for its value and its potential heresy.";
 	    if (diplo_keyphrase=="artifact"){
-	        diplo_option[1]="Propose a trade for the Artifact.";
-			diplo_option[2]="Leave it be; Exit.";
+	        add_diplomacy_option({option_text:"Propose a trade for the Artifact."});
+			add_diplomacy_option({option_text:"Leave it be; Exit."});
 	        diplo_text="The Inquisition is, of course, aware of the artifact in question. What, precisely, are you offering for it?";
 	    }
 	    if (diplo_keyphrase=="artifact_thanks"){
@@ -1416,10 +1420,10 @@ function scr_dialogue(diplo_keyphrase) {
 	        if (rela=="friendly") then diplo_text="Remember whom you speak to, Chapter Master.";
 	        if (rela=="neutral") then diplo_text="I, Inquisitor Lord "+string(faction_leader[eFACTION.Inquisition])+", on behalf of the Inquisition, am awaiting your words.";
 	        if (rela=="hostile") then diplo_text="Speak your next words very carefully, Astartes, for they may be your last.";
-	        diplo_option[1]="Demand Requisition";
-			diplo_option[2]="Skip Inspection";
-			diplo_option[3]="Cancel";
-	        if (inspection_passes>0) then diplo_option[2]="Skip Inspection ("+string(inspection_passes)+" pass)";
+	        add_diplomacy_option({option_text:"Demand Requisition"});
+			add_diplomacy_option({option_text:"Skip Inspection"});
+			add_diplomacy_option({option_text:"Cancel"});
+	        if (inspection_passes>0) then add_diplomacy_option({option_text:"Skip Inspection ("})+string(inspection_passes)+" pass)";
 	    }
 	    if (diplo_keyphrase=="penitent_end"){
 	        rando=choose(1,2);
@@ -1437,9 +1441,9 @@ function scr_dialogue(diplo_keyphrase) {
         
 	        diplo_text="My patience is wearing thin, Chapter Master.  I have many more problems more urgent and, yet, you continue to force me away from the work assigned to me by He on Terra.  Your serf on "+string(tb)+" "+scr_roman(tc)+" will be executed along with all the other puppets I ferret out.  You are close to treason, Chapter Master.  Choose your next words with exceptional care for they may be your last.";
         
-	        diplo_option[1]="It will not happen again";
-	        diplo_option[2]="Very well";
-	        diplo_option[3]="You will not.  "+string(tb)+" is MINE!";
+	        add_diplomacy_option({option_text:"It will not happen again"});
+	        add_diplomacy_option({option_text:"Very well"});
+	        add_diplomacy_option({option_text:"You will not.  "})+string(tb)+" is MINE!";
 	    }
 	    if (diplo_keyphrase=="you_better"){
 	        rando=choose(1,2);
@@ -1493,11 +1497,11 @@ function scr_dialogue(diplo_keyphrase) {
 	        diplo_text="Your arrogant, blatant disregard for proper Imperial conduct can no longer go unanswered, Astartes.  Time and time again you have ignored the Imperium's call to arms, refusing to strike out at the enemies of man when it was most needed, and callously ignored the Inquisition's wants.  It has become clear that you are not in line with the High Lords of Terra and His will.  This heresy must be cut from your Chapter like the festering blight it is.  You may either atone for your Chapter's crimes, in penitence, or see it ground to dust around you.";
 	        // Speak your next words carefully, Chapter Master, for they may damn all the souls of your men to oblivion.
         
-	        diplo_option[1]="You are right in that we must account for our sins.  Let our Penitence begin.";
+	        add_diplomacy_option({option_text:"You are right in that we must account for our sins.  Let our Penitence begin."});
 			diplo_goto[1]="loyalty_penitence";
-	        diplo_option[2]="I answer only to the Emperor himself, not to the likes of you.";
+	        add_diplomacy_option({option_text:"I answer only to the Emperor himself, not to the likes of you."});
 			diplo_goto[2]="die_heretic";
-	        diplo_option[3]="Threaten my Chapter at your own peril.";
+	        add_diplomacy_option({option_text:"Threaten my Chapter at your own peril."});
 			diplo_goto[3]="die_heretic";
 	    }
 	    if (diplo_keyphrase=="loyalty_penitence"){
@@ -1686,8 +1690,8 @@ function scr_dialogue(diplo_keyphrase) {
 	    }
 	    if (diplo_keyphrase=="open_trade") then diplo_text="Make me an offer, Space Marine, and I will pray for the guidance to respond.";
 	    if (diplo_keyphrase=="artifact"){
-	        diplo_option[1]="Propose a trade for the Artifact.";
-			diplo_option[2]="Leave it be; Exit.";
+	        add_diplomacy_option({option_text:"Propose a trade for the Artifact."});
+			add_diplomacy_option({option_text:"Leave it be; Exit."});
 	        diplo_text="You have done a service to us by making us aware of this artifact. It is a little amusing that is was under our noses this whole time, though now I am sure it can be retrieved.";
 	    }
 	    if (diplo_keyphrase=="artifact_thanks"){
@@ -1712,8 +1716,8 @@ function scr_dialogue(diplo_keyphrase) {
 	        if (rela=="friendly") then diplo_text=string(obj_ini.master_name)+"?";
 	        if (rela=="neutral") then diplo_text="What is the meaning of this?";
 	        if (rela=="hostile") then diplo_text="“The Heretic and Blasphemer can offer no excuse for their crimes. Those who are pardoned merely live to further shroud Humanity from the Light of the Emperor with the Darkness of their souls.”";
-	        diplo_option[1]="Demand Requisition";
-			diplo_option[2]="Cancel";
+	        add_diplomacy_option({option_text:"Demand Requisition"});
+			add_diplomacy_option({option_text:"Cancel"});
 	    }
 	    if (diplo_keyphrase=="penitent_end"){
 	        rando=choose(1,2);
@@ -1964,9 +1968,9 @@ function scr_dialogue(diplo_keyphrase) {
 	            if (rando==2) then diplo_text="You may not always have what you wish for, Mon'keigh.";
 	            if (rando==3) then diplo_text="Were I a lesser being, such as yourself, spitting in your face might prove tempting.";
 	        }
-	        diplo_option[1]="Demand Requisition";
-			diplo_option[2]="Demand Useful Information";
-			diplo_option[3]="Cancel";
+	        add_diplomacy_option({option_text:"Demand Requisition"});
+			add_diplomacy_option({option_text:"Demand Useful Information"});
+			add_diplomacy_option({option_text:"Cancel"});
 	    }
 	    if (diplo_keyphrase=="mission1"){
 	        diplo_text="The good that might come from simple acts of benevolence are oft underestimated.  A token goodwill gesture can go far, ";
@@ -1974,9 +1978,9 @@ function scr_dialogue(diplo_keyphrase) {
 	        if (rela!="hostile") then diplo_text+="human";
         
 	        diplo_text+=".  Even something as small as water, raw material, and sustenance can have a profound efect.";
-	        diplo_option[1]="Give 500 Requisition";
-	        diplo_option[2]="Maybe";
-	        diplo_option[3]="Refuse";
+	        add_diplomacy_option({option_text:"Give 500 Requisition"});
+	        add_diplomacy_option({option_text:"Maybe"});
+	        add_diplomacy_option({option_text:"Refuse"});
 	        questing=1;
 	    }
 	    if (diplo_keyphrase=="mission1_thanks"){
@@ -2439,9 +2443,9 @@ function scr_dialogue(diplo_keyphrase) {
 	    if (diplo_keyphrase=="open_trade") then diplo_text="Wut?";
 	    if (diplo_keyphrase=="trading_demand"){
 	        diplo_text="Yeah?  Wut?";
-	        diplo_option[1]="Demand Requisition";
-			diplo_option[2]="Demand Military Assistance";
-			diplo_option[3]="Cancel";
+	        add_diplomacy_option({option_text:"Demand Requisition"});
+			add_diplomacy_option({option_text:"Demand Military Assistance"});
+			add_diplomacy_option({option_text:"Cancel"});
 	    }
 	}
 	// ** Tau **
@@ -2606,7 +2610,9 @@ function scr_dialogue(diplo_keyphrase) {
 	if (diplo_keyphrase=="trade_error_2") then diplo_text="[Error 2: "+string(obj_controller.faction[diplomacy])+" has no valid origin for a fleet.]";
 
 	// ** Sets ignored turns when kicked out of diplomacy screen **
-	if (force_goodbye==1) then turns_ignored[diplomacy]=max(turns_ignored[diplomacy],1);
+	if (force_goodbye==1){
+		turns_ignored[diplomacy]=max(turns_ignored[diplomacy],1);
+	}
 
 	// ** Resets global vars **
 	diplo_last=string(diplo_keyphrase);

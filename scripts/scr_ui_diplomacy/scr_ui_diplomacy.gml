@@ -166,11 +166,10 @@ function set_up_diplomacy_buttons(){
 
         if (complex_event==true) and (instance_exists(obj_temp_meeting)){
             complex_event=false;
-            diplomacy=0;
-            menu=0;
-            force_goodbye=0;
-            cooldown=80;
-            with(obj_temp_meeting){instance_destroy();}
+            scr_toggle_diplomacy();
+            with(obj_temp_meeting){
+            	instance_destroy();
+            }
             if (instance_exists(obj_turn_end)){
                 obj_turn_end.alarm[1]=1;
                 exit;
@@ -178,13 +177,8 @@ function set_up_diplomacy_buttons(){
             exit;
         }
         if (trading_artifact!=0){
-            for(var h=1; h<=4; h++){
-                diplo_option[h]="";
-                diplo_goto[h]="";
-            }
-            diplomacy=0;
-            menu=0;
-            force_goodbye=0;
+            clear_diplo_choices();
+            scr_toggle_diplomacy();
             cooldown=8;
             if (trading_artifact==2) and (instance_exists(obj_ground_mission)){
                 obj_ground_mission.alarm[2]=1;
@@ -197,14 +191,8 @@ function set_up_diplomacy_buttons(){
             exit;
         }
         if (force_goodbye==5){
-            for(var h=1; h<=4; h++){
-                diplo_option[h]="";
-                diplo_goto[h]="";
-            }
-            diplomacy=0;
-            menu=0;
-            force_goodbye=0;
-            cooldown=8;
+            clear_diplo_choices();
+            scr_toggle_diplomacy();
             exit;
         }
         if (liscensing==2) and (repair_ships==0){
@@ -212,26 +200,19 @@ function set_up_diplomacy_buttons(){
             var cru=instance_create(mouse_x,mouse_y,obj_crusade);
             cru.owner=diplomacy;
             cru.placing=true;
-            diplomacy=0;
-            force_goodbye=0;
-            menu=0;
+            scr_toggle_diplomacy();
             exit_all=0;
             liscensing=0;
             if (zoomed==0) then scr_zoom();
             exit;
         }
         if (exit_all!=0){
-            cooldown=8;
-            diplomacy=0;
-            force_goodbye=0;
-            menu=0;
+            scr_toggle_diplomacy();
             exit_all=0;
         }
         if (diplo_last=="artifact_thanks") and (force_goodbye!=0){
-            diplomacy=0;
-            menu=13;
-            force_goodbye=0;
-            cooldown=8;
+			scr_toggle_diplomacy();
+			scr_toggle_armamentarium();
             exit;
         }
         // Exits back to diplomacy thing
@@ -242,21 +223,14 @@ function set_up_diplomacy_buttons(){
         }
         // No need to check for next audience
         if (audience>0) and (!instance_exists(obj_turn_end)){
-            cooldown=8;
-            diplomacy=0;
-            menu=0;
-            audience=0;
-            force_goodbye=0;
+            scr_toggle_diplomacy();
             exit;
         }
         if (audience>0) and (instance_exists(obj_turn_end)){
             if (complex_event==false){
-                cooldown=8;
-                diplomacy=0;
-                menu=0;
+                scr_toggle_diplomacy();
                 obj_turn_end.alarm[1]=1;
-                audience=0;
-                force_goodbye=0;
+                show_debug_message("next_audience");
                 exit;
             }
             if (complex_event=true){
@@ -420,6 +394,9 @@ function set_up_diplomacy_persons(){
 
 
 function scr_ui_diplomacy() {
+	if (menu=!20){
+		return;
+	}
 	var xx,yy,show_stuff;
 	xx=__view_get( e__VW.XView, 0 )+0;
 	yy=__view_get( e__VW.YView, 0 )+0;
@@ -430,7 +407,7 @@ function scr_ui_diplomacy() {
 
 	xx+=6;
 
-	if (menu=20) and (diplomacy=0){// Main diplomacy screen
+	if (diplomacy=0){// Main diplomacy screen
 	    draw_set_alpha(1);
 		draw_set_color(0);
 		draw_rectangle(xx,yy,xx+1600,yy+900,0);
@@ -570,7 +547,7 @@ function scr_ui_diplomacy() {
 	yy=__view_get( e__VW.YView, 0 );
 
 
-	if (menu=20) and (diplomacy<-5) and (diplomacy>-6){
+	if (diplomacy<-5) and (diplomacy>-6){
 	    draw_sprite(spr_rock_bg,0,xx,yy);
 	    // draw_sprite(spr_diplo_splash,diplomacy,xx+916,yy+33);
 	    draw_set_alpha(0.75);
@@ -594,8 +571,10 @@ function scr_ui_diplomacy() {
 	    draw_set_color(38144);
 	    draw_set_font(fnt_40k_30b);
     
-	    var fac, fac2, fac3,warning;fac="";
-	    fac2=string(global.chapter_name)+" (Imperium)";fac3="";warning=0;
+	    var fac="";
+	    var fac2=string(global.chapter_name)+" (Imperium)";
+	    var fac3="";
+	    var warning=0;
     
 	    if (advi="flee") then fac="Master of the Fleet "+string(obj_ini.lord_admiral_name);
 	    if (advi="apoth") then fac="Master of the Apothecarion "+string(obj_ini.name[0,4]);
@@ -604,15 +583,15 @@ function scr_ui_diplomacy() {
 	    if (advi="tech") then fac="Forge Master "+string(obj_ini.name[0,2]);
 	    if (advi="") then fac="First Sergeant "+string(recruiter_name); 
     
-	    draw_text_transformed(xx+622,yy+66,string_hash_to_newline(string(fac2)),1,1,0);
-	    draw_text_transformed(xx+622,yy+104,string_hash_to_newline(string(fac)),0.6,0.6,0);
+	    draw_text_transformed(xx+622,yy+66,fac2,1,1,0);
+	    draw_text_transformed(xx+622,yy+104,fac,0.6,0.6,0);
     
 	    show_stuff=true;
 	}
 
 
 
-	if (menu=20) and (diplomacy>0){// Diplomacy - Speaking
+	if (diplomacy>0){// Diplomacy - Speaking
 	    var daemon;
 		daemon=false;
 		if (diplomacy>10) and (diplomacy<11) then daemon=true;
@@ -694,7 +673,7 @@ function scr_ui_diplomacy() {
         draw_set_color(38144);
         draw_rectangle(mouse_x-2,mouse_y+20,mouse_x+2+string_width_ext(string_hash_to_newline(string(warn)),-1,600),mouse_y+24+string_height_ext(string_hash_to_newline(string(warn)),-1,600),1);
         draw_text_ext(mouse_x,mouse_y+22,string_hash_to_newline(string(warn)),-1,600);
-        }
+    }
     
 	//scr_dialogue(diplomacy_pathway);
 	basic_diplomacy_screen();

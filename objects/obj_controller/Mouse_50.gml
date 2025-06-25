@@ -170,54 +170,61 @@ else if (menu==15) and (cooldown<=0){
 
 // ** Diplomacy **
 if (menu==20) and (diplomacy>0) or ((diplomacy<-5) and (diplomacy>-6)) and (cooldown<=0) and (diplomacy<10){
-    if (trading==0) and ((diplo_option[1]!="") or (diplo_option[2]!="") or (diplo_option[3]!="") or (diplo_option[4]!="")){
+    if (trading==0) and (valid_diplomacy_options()){
         if (force_goodbye==0) and (cooldown<=0){
 
-            var diplo_pressed=0;
+            var diplo_pressed=-1;
             yy=__view_get( e__VW.YView, 0 )+0;
 
-            var opts=0;
-            for(var dp=1; dp<=4; dp++){if (diplo_option[dp]!="") then opts+=1;}
+
+            var opts = array_length(diplo_option);
             if (opts==4) then yy-=30;
             if (opts==2) then yy+=30;
             if (opts==1) then yy+=60;
-            for(var slot=1; slot<=4; slot++){
-                if (diplo_option[slot]!=""){
-                    if (mouse_x>=xx+354) and (mouse_y>=yy+694) and (mouse_x<xx+887) and (mouse_y<yy+717) and (cooldown<=0){
-                        diplo_pressed=slot;
-                    }
+            for(var slot=0; slot<opts; slot++){
+
+                if (mouse_x>=xx+354) and (mouse_y>=yy+694) and (mouse_x<xx+887) and (mouse_y<yy+717) and (cooldown<=0){
+                    diplo_pressed=slot;
                 }
+
                 yy+=30;
             }
             yy=__view_get( e__VW.YView, 0 );
 
-            if (diplo_pressed>0) and (diplo_goto[diplo_pressed]!="") and (cooldown<=0){
+            if (diplo_pressed>-1) and (diplo_goto[diplo_pressed]!="") and (cooldown<=0){
                 click2=1;
                 scr_dialogue(diplo_goto[diplo_pressed]);
                 cooldown=4000;
                 exit;
             }
-            if (diplo_pressed==1){
-                click2=1;
-                if (questing==0) and (trading_artifact==0) and (trading_demand==0){
-                    if (diplomacy==4) and (diplo_option[1]=="It will not happen again"){// It will not happen again mang
-                        scr_dialogue("you_better");
-                        diplo_option[1]="";
-                        diplo_option[2]="";
-                        diplo_option[3]="";
-                        force_goodbye=1;
+            if (diplo_pressed>-1){
+                var _pressed_option = diplo_option[diplo_pressed];
+                if (_pressed_option == "It will not happen again"){
+                    if (questing==0) and (trading_artifact==0) and (trading_demand==0){
+                        if (diplomacy==4) {// It will not happen again mang
+                            scr_dialogue("you_better");
+                            clear_diplo_choices();
+                            force_goodbye=1;
 
-                        var tb,tc;
-                        explode_script(obj_controller.temp[1008],"|");
-                        tb=string(explode[0]);
-                        tc=real(explode[1]);
-                        var ev=0;
-                        for(var v=1; v<=99; v++){if (ev==0) and (event[v]=="") then ev=v;}
-                        event[ev]="remove_serf|"+string(tb)+"|"+string(tc)+"|";
-                        event_duration[ev]=choose(1,2);
-                        exit;
+                            var tb,tc;
+                            explode_script(obj_controller.temp[1008],"|");
+                            tb=string(explode[0]);
+                            tc=real(explode[1]);
+                            var ev=0;
+                            for(var v=1; v<=99; v++){
+                                if (ev==0) and (event[v]=="") then ev=v;
+                            }
+                            event[ev]="remove_serf|"+string(tb)+"|"+string(tc)+"|";
+                            event_duration[ev]=choose(1,2);
+                            exit;
+                        }
                     }
                 }
+            }
+
+            if (diplo_pressed==1){
+                click2=1;
+
                 if (questing!=0){
                     cooldown=8;
                     if (questing==1) and (diplomacy==6){
@@ -226,9 +233,7 @@ if (menu==20) and (diplomacy>0) or ((diplomacy<-5) and (diplomacy>-6)) and (cool
                             scr_dialogue("mission1_thanks");
                             scr_quest(2,"fund_elder",6,0);
                             requisition-=500;questing=0;
-                            diplo_option[1]="";
-                            diplo_option[2]="";
-                            diplo_option[3]="";
+                            clear_diplo_choices();
                             exit;
                         }
                     }
@@ -250,9 +255,7 @@ if (menu==20) and (diplomacy>0) or ((diplomacy<-5) and (diplomacy>-6)) and (cool
 
                 if (questing==0) and (trading_artifact==0) and (trading_demand==0){// Don't want no trabble
                     if (diplomacy==4) and (diplo_option[2]=="Very well"){
-                        diplo_option[1]="";
-                        diplo_option[2]="";
-                        diplo_option[3]="";
+                        clear_diplo_choices();
                         force_goodbye=1;
 
                         var tb,tc;
@@ -277,9 +280,7 @@ if (menu==20) and (diplomacy>0) or ((diplomacy<-5) and (diplomacy>-6)) and (cool
                     if (questing==1) and (diplomacy==6){
                         scr_dialogue("quest_maybe");
                         questing=0;
-                        diplo_option[1]="";
-                        diplo_option[2]="";
-                        diplo_option[3]="";
+                        clear_diplo_choices();
                         exit;
                     }
                 }
@@ -287,9 +288,7 @@ if (menu==20) and (diplomacy>0) or ((diplomacy<-5) and (diplomacy>-6)) and (cool
                 if (trading_demand>0) and (diplo_option[2]=="Cancel"){
                     cooldown=8000;
                     trading_demand=0;
-                    diplo_option[1]="";
-                    diplo_option[2]="";
-                    diplo_option[3]="";
+                    clear_diplo_choices();
                     diplo_text="...";
                     diplo_txt="...";
                 }
@@ -299,9 +298,7 @@ if (menu==20) and (diplomacy>0) or ((diplomacy<-5) and (diplomacy>-6)) and (cool
                     trading_artifact=0;
                     menu=0;
                     diplomacy=0;
-                    diplo_option[1]="";
-                    diplo_option[2]="";
-                    diplo_option[3]="";
+                    clear_diplo_choices();
                 }
             }
             if (diplo_pressed==3){
@@ -309,9 +306,7 @@ if (menu==20) and (diplomacy>0) or ((diplomacy<-5) and (diplomacy>-6)) and (cool
                 if (questing==0) and (trading_artifact==0) and (trading_demand==0){
                     if (diplomacy==4) and (string_count("You will not",diplo_option[3])>0){// MIIIIINE!!!1
                         scr_dialogue("die_heretic");
-                        diplo_option[1]="";
-                        diplo_option[2]="";
-                        diplo_option[3]="";
+                        clear_diplo_choices();
                         force_goodbye=1;
                         exit;
                     }
@@ -322,9 +317,7 @@ if (menu==20) and (diplomacy>0) or ((diplomacy<-5) and (diplomacy>-6)) and (cool
                         scr_dialogue("mission1_refused");
                         scr_quest(3,"fund_elder",6,0);
                         questing=0;
-                        diplo_option[1]="";
-                        diplo_option[2]="";
-                        diplo_option[3]="";
+                        clear_diplo_choices();
                         exit;
                     }
                 }
@@ -332,9 +325,7 @@ if (menu==20) and (diplomacy>0) or ((diplomacy<-5) and (diplomacy>-6)) and (cool
                 if (trading_demand>0) and (diplo_option[3]=="Cancel"){
                     cooldown=8;
                     trading_demand=0;
-                    diplo_option[1]="";
-                    diplo_option[2]="";
-                    diplo_option[3]="";
+                    clear_diplo_choices();
                     diplo_text="...";
                     diplo_txt="...";
                 }
@@ -343,9 +334,7 @@ if (menu==20) and (diplomacy>0) or ((diplomacy<-5) and (diplomacy>-6)) and (cool
         if (force_goodbye!=0) and (cooldown<=0){// Want to check to see if the deal went fine here
             if (trading_artifact!=0){
                 click2=1;
-                obj_controller.diplo_option[1]="";
-                obj_controller.diplo_option[2]="";
-                diplo_option[3]="";
+                clear_diplo_choices();
                 diplomacy=0;
                 menu=0;
                 force_goodbye=0;

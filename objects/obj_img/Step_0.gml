@@ -7,8 +7,14 @@
 if (!instance_exists(obj_fleet)) and (!instance_exists(obj_ncombat)){
     
     if (instance_exists(obj_controller)){
-        if (obj_controller.diplomacy=0) and (obj_controller.menu=20) and (diplomacy_icon_good=false){scr_image("diplomacy_icon",-50,0,0,0,0);scr_image("symbol",-50,0,0,0,0);}
-        if (obj_controller.menu!=20) and (diplomacy_icon_good=true){scr_image("diplomacy_icon",-666,0,0,0,0);scr_image("symbol",-666,0,0,0,0);}
+        if (obj_controller.diplomacy=0) and (obj_controller.menu=20) and (diplomacy_icon_good=false){
+            scr_image("diplomacy_icon",-50,0,0,0,0);
+            scr_image("symbol",-50,0,0,0,0);
+        }
+        if (obj_controller.menu!=20) and (diplomacy_icon_good=true){
+            scr_image("diplomacy_icon",-666,0,0,0,0);
+            scr_image("symbol",-666,0,0,0,0);
+        }
         
         if (obj_controller.diplomacy>0) and (diplomacy_splash_good=false) then scr_image("diplomacy_splash",-50,0,0,0,0);
         if (obj_controller.diplomacy=0) and (diplomacy_splash_good=true) then scr_image("diplomacy_splash",-666,0,0,0,0);

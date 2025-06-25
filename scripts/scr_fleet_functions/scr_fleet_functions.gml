@@ -180,7 +180,9 @@ function set_fleet_movement(fastest_route = true, new_action="move"){
 	        action_eta = eta;
 	        if (action_eta<=0) or (owner  != eFACTION.Inquisition){
 	            action_eta=eta;
-	            if (owner  = eFACTION.Inquisition) and (action_eta<2) and (string_count("_her",trade_goods)=0) then action_eta=2;
+	            
+	        } else if (owner  = eFACTION.Inquisition) and (action_eta<2) and (string_count("_her",trade_goods)=0){
+	        	action_eta=2;
 	        }
 	        
 	        if (owner != eFACTION.Eldar && mine.storm) then action_eta+=10000;
@@ -351,7 +353,9 @@ function scr_efleet_arrive_at_trade_loc(){
         }
         
         trade_goods="return";
-        if (target!=noone) then target=noone;
+        if (target!=noone){
+        	target=noone;
+        }
         
         if (owner==eFACTION.Eldar){
         	cur_star = nearest_star_with_ownership(xx,yy, eFACTION.Eldar);
@@ -361,13 +365,10 @@ function scr_efleet_arrive_at_trade_loc(){
         	}                  	
         } else {
             action_x=home_x;
-			action_y=home_y;                   	
+			action_y=home_y; 
+			set_fleet_movement();                  	
         }
-        
-        action_eta=0;
-		action="";
 
-        set_fleet_movement();
         if (action_eta==0){
         	instance_destroy();
         }

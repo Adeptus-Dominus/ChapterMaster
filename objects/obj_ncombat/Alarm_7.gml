@@ -213,22 +213,9 @@ try {
     
     
     if (enemy=5) and (obj_controller.faction_status[eFACTION.Ecclesiarchy]!="War"){
-        obj_controller.loyalty-=50;obj_controller.loyalty_hidden-=50;
-        obj_controller.disposition[2]-=50;obj_controller.disposition[3]-=80;
-        obj_controller.disposition[4]-=40;obj_controller.disposition[5]-=30;
-        
-        obj_controller.faction_status[eFACTION.Imperium]="War";obj_controller.faction_status[eFACTION.Mechanicus]="War";
-        obj_controller.faction_status[eFACTION.Inquisition]="War";obj_controller.faction_status[eFACTION.Ecclesiarchy]="War";
-        
-        if (!instance_exists(obj_turn_end)){
-            obj_controller.audiences+=1;obj_controller.audien[obj_controller.audiences]=5;obj_controller.audien_topic[obj_controller.audiences]="declare_war";
-            if (obj_controller.known[eFACTION.Inquisition]>1){obj_controller.audiences+=1;obj_controller.audien[obj_controller.audiences]=4;obj_controller.audien_topic[obj_controller.audiences]="declare_war";}
-            obj_controller.audiences+=1;obj_controller.audien[obj_controller.audiences]=2;obj_controller.audien_topic[obj_controller.audiences]="declare_war";
-        }else{
-            obj_turn_end.audiences+=1;obj_turn_end.audien[obj_turn_end.audiences]=5;obj_turn_end.audien_topic[obj_turn_end.audiences]="declare_war";
-            if (obj_turn_end.known[eFACTION.Inquisition]>1){obj_turn_end.audiences+=1;obj_turn_end.audien[obj_turn_end.audiences]=4;obj_turn_end.audien_topic[obj_turn_end.audiences]="declare_war";}
-            obj_turn_end.audiences+=1;obj_turn_end.audien[obj_turn_end.audiences]=2;obj_turn_end.audien_topic[obj_turn_end.audiences]="declare_war";
-        }
+        obj_controller.loyalty-=50;
+        obj_controller.loyalty_hidden-=50;
+        decare_war_on_imperium_audiences();
     }
     
     

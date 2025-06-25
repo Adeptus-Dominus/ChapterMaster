@@ -754,37 +754,9 @@ array_set_range(temp, 0, 199, "");
 temp[90] = 0;
 temp[9000] = "";
 // ** Resets all audiences **
+audience_stack = [];
 audiences=0;
-audien[0]=0;
-audien[1]=0;
-audien[2]=0;
-audien[3]=0;
-audien[4]=0;
-audien[5]=0;
-audien[6]=0;
-audien[7]=0;
-audien[8]=0;
-audien[9]=0;
-audien[10]=0;
-audien[11]=0;
-audien[12]=0;
-audien[13]=0;
-audien[14]=0;
-audien_topic[0]="";
-audien_topic[1]="";
-audien_topic[2]="";
-audien_topic[3]="";
-audien_topic[4]="";
-audien_topic[5]="";
-audien_topic[6]="";
-audien_topic[7]="";
-audien_topic[8]="";
-audien_topic[9]="";
-audien_topic[10]="";
-audien_topic[11]="";
-audien_topic[12]="";
-audien_topic[13]="";
-audien_topic[14]="";
+
 // ** Sets default recruiting vars **
 recruits=0;
 recruiting_worlds="";
@@ -824,10 +796,9 @@ diplo_last="";
 diplo_text="";
 diplo_txt="";
 diplo_char=0;
-for(var q=0; q<6; q++){
-    diplo_option[q]="";
-    diplo_goto[q]="";
-}
+diplo_option = [];
+diplo_goto = [];
+
 diplo_alpha=0;
 // ** Sets combat to not true **
 combat=0;

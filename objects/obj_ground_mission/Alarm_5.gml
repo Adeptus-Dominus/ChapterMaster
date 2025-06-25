@@ -53,8 +53,12 @@ if (mission="bad") and (plan.p_first[num]=3) and (plan.p_type[num]="Forge"){
     if (plan.p_owner[num]=6) then obj_controller.disposition[6]-=15;
     if (plan.p_owner[num]=8) then obj_controller.disposition[8]-=8;*/
     
-    if (plan.p_owner[num]>3) and (plan.p_owner[num]<=6){obj_controller.audiences+=1;obj_controller.audien[obj_controller.audiences]=plan.p_owner[num];obj_controller.audien_topic[obj_controller.audiences]="artifact_angry";}
-    if (plan.p_owner[num]=3) and (obj_controller.faction_status[eFACTION.Mechanicus]!="War"){obj_controller.audiences+=1;obj_controller.audien[obj_controller.audiences]=plan.p_owner[num];obj_controller.audien_topic[obj_controller.audiences]="declare_war";}
+    if (plan.p_owner[num]>3) and (plan.p_owner[num]<=6){
+        scr_audience(plan.p_owner[num], "artifact_angry",);
+    }
+    if (plan.p_owner[num]=3) and (obj_controller.faction_status[eFACTION.Mechanicus]!="War"){
+        scr_audience(plan.p_owner[num], "declare_war", -20);
+    }
     
     // Start battle
     pop.battle_special=3.1;

@@ -230,13 +230,7 @@ function spawn_chaos_fleet_at_system(system){
 }
 function spawn_chaos_warlord(){
 	with (obj_controller){
-		with(obj_turn_end){
-			audiences+=1;
-			audien[audiences]=10;
-			known[eFACTION.Chaos]=2;
-			audien_topic[audiences]="intro";
-			did_so=true;
-		}
+        scr_audience(eFACTION.Chaos, "intro", 0, "", 0, 2);
 	    fdir=terra_direction+choose(-90,90);
 		fdir+=floor(random_range(-35,35));
 	    var len,width,height,t,c,s;

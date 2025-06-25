@@ -51,9 +51,7 @@ if (mission="bad"){
     if (planet.p_owner[num]=8) then obj_controller.disposition[8]-=8;
     
     if (planet.p_owner[num]>=3) and (planet.p_owner[num]<=6){
-        obj_controller.audiences+=1;
-        obj_controller.audien[obj_controller.audiences]=planet.p_owner[num];
-        obj_controller.audien_topic[obj_controller.audiences]="artifact_angry";
+        scr_audience(planet.p_owner[num], "artifact_angry",);
     }
 }
 

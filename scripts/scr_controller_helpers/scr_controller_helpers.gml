@@ -5,6 +5,7 @@ function scr_menu_clear_up(specific_area_function) {
         var menu_action_allowed = action_if_number(obj_saveload, 0, 0) && action_if_number(obj_drop_select, 0, 0) && action_if_number(obj_popup_dialogue, 0, 0) && action_if_number(obj_ncombat, 0, 0);
 
         if (menu_action_allowed) {
+            show_debug_message("menu_change_allowed");
             if (combat != 0) {
                 exit;
             }
@@ -15,16 +16,14 @@ function scr_menu_clear_up(specific_area_function) {
                 exit;
             }
 
-            if (instance_exists(obj_turn_end) && (obj_controller.complex_event != true) && (!instance_exists(obj_temp_meeting))) {
+            if (instance_exists(obj_turn_end) && (obj_controller.complex_event != true) && (!instance_exists(obj_temp_meeting)) && array_length(obj_turn_end.audience_stack) == 0) {
                 if ((obj_turn_end.popups_end == 1) && (audience == 0) && (cooldown <= 0)) {
                     with(obj_turn_end) {
                         instance_destroy();
                     }
                 }
             }
-            if (instance_exists(obj_turn_end) && (audience == 0)) {
-                exit;
-            }
+
             if (instance_exists(obj_star_select)) {
                 exit;
             }
@@ -33,6 +32,7 @@ function scr_menu_clear_up(specific_area_function) {
             }
 
             if ((zoomed == 0) && (cooldown <= 0) && (menu >= 500) && (menu <= 510)) {
+                show_debug_message("high menu");
                 if (mouse_y >= __view_get(e__VW.YView, 0) + 27) {
                     cooldown = 8000;
                     if ((menu >= 500) && (temp[menu - 434] == "")) {
@@ -45,15 +45,13 @@ function scr_menu_clear_up(specific_area_function) {
                 }
             }
 
-            if (menu >= 500) {
+            /*if (menu >= 500 && array_length(obj_turn_end.audience_stack) == 0) {
                 exit;
-            }
+            }*/
 
-            var zoomeh = 0,
-                diyst = 999;
+            diyst = 999;
             xx = __view_get(e__VW.XView, 0);
             yy = __view_get(e__VW.YView, 0);
-            zoomeh = zoomed;
 
             if (menu == 0) {
                 hide_banner = 0;
@@ -432,13 +430,18 @@ function scr_toggle_diplomacy() {
         with(obj_controller) {
             if (menu != 20) {
                 set_up_diplomacy_buttons();
+                show_debug_message("menu_diplomacy");
                 menu = 20;
-
+                audience = 0;
+                diplomacy = 0;
                 hide_banner = 1;
             } else if (menu == 20) {
+                show_debug_message("menu_diplomacy_out");
                 menu = 0;
-
+                audience = 0;
+                diplomacy = 0;
                 hide_banner = 0;
+                force_goodbye = 0;
                 location_viewer.update_garrison_log();
             }
             managing = 0;

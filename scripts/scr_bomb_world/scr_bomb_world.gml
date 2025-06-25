@@ -274,25 +274,24 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
 	    if (pop_after==0 && pop_before>0){
 	        if (current_owner=2) and (obj_controller.faction_status[eFACTION.Imperium]!="War"){
 	            if (planet_type="Temperate" || planet_type="Hive" || planet_type="Desert"){
-	                obj_controller.audiences+=1;
-	                obj_controller.audien[obj_controller.audiences]=2;
-	                obj_controller.audien_topic[obj_controller.audiences]="bombard_angry";
-	            }
-	            if (planet_type="Temperate"){ 
-	            	obj_controller.disposition[2]-=5;
-	            }else if (planet_type="Desert"){ 
-	            	obj_controller.disposition[2]-=3;
-	            }else if (planet_type="Hive"){ 
-	            	obj_controller.disposition[2]-=10;
+	            	var _disp_neg = 0;
+		            if (planet_type="Temperate"){ 
+		            	_disp_neg-=5;
+		            }else if (planet_type="Desert"){ 
+		            	_disp_neg-=3;
+		            }else if (planet_type="Hive"){ 
+		            	_disp_neg-=10;
+		            }
+	                scr_audience(eFACTION.Imperium, "bombard_angry", _disp_neg,);
 	            }
 	        }else if (current_owner=3) and (obj_controller.faction_status[eFACTION.Mechanicus]!="War"){
-	            obj_controller.audiences+=1;obj_controller.audien[obj_controller.audiences]=3;
-	            obj_controller.audien_topic[obj_controller.audiences]="bombard_angry";
+	            var _disp_neg = 0;
 	            if (planet_type="Forge"){
-	            	obj_controller.disposition[3]-=15;
+	            	_disp_neg-=15;
 	        	}else if (planet_type="Ice"){
-	        		obj_controller.disposition[3]-=7;
+	        		_disp_neg-=7;
 	       		}
+	       		scr_audience(eFACTION.Mechanicus, "bombard_angry", _disp_neg,);
 	        }
             if (planet_feature_bool(system.p_feature[planet], P_features.Gene_Stealer_Cult)) {
                 delete_features(system.p_feature[planet], P_features.Gene_Stealer_Cult);
@@ -303,10 +302,7 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
             }
 	    }
 	    if (bombard_target_faction=8) and (obj_controller.faction_status[eFACTION.Tau]!="War"){
-	        obj_controller.audiences+=1;
-	        obj_controller.audien[obj_controller.audiences]=8;
-	        obj_controller.audien_topic[obj_controller.audiences]=choose("declare_war","bombard_angry");
-	        obj_controller.disposition[8]-=15;
+	    	scr_audience(eFACTION.Tau, choose("declare_war","bombard_angry"), -15,);
 	    }
     
     

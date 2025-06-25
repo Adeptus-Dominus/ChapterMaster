@@ -2,6 +2,7 @@ function scr_trade_dep() {
 
 	var  _goods = cargo_data.player_goods;
 
+	show_debug_message($"trade goods : {_goods}");
 	if (struct_exists(_goods, "mercenaries")){
 		var _mercs = struct_get_names(_goods.mercenaries);
 	    for (var m=0;m<array_length(_mercs);m++){
@@ -30,6 +31,8 @@ function scr_trade_dep() {
         if (obj_ini.fleet_type=ePlayerBase.home_world) then scr_add_artifact("random_nodemon","minor",0,obj_ini.home_name,2);
         if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("random_nodemon","minor",0,obj_ini.ship[0],501);
 	}
+
+	struct_remove(cargo_data, "player_goods");
 
 }
 
