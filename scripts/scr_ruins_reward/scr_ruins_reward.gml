@@ -135,7 +135,6 @@ function scr_ruins_reward(star_system, planet, _ruins) {
 	        wep3=choose("Servo-harness");
 	        wen3=choose(1);
 	    }
-		
     
 	    scr_add_item(wep1,wen1);
 	    scr_add_item(wep2,wen2);

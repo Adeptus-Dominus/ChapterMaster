@@ -842,6 +842,7 @@
     {"id":{"name":"scr_load_controller","path":"scripts/scr_load_controller/scr_load_controller.yy",},},
     {"id":{"name":"scr_load","path":"scripts/scr_load/scr_load.yy",},},
     {"id":{"name":"scr_log","path":"scripts/scr_log/scr_log.yy",},},
+    {"id":{"name":"scr_loot_table","path":"scripts/scr_loot_table/scr_loot_table.yy",},},
     {"id":{"name":"scr_loyalty","path":"scripts/scr_loyalty/scr_loyalty.yy",},},
     {"id":{"name":"scr_manage_task_selector","path":"scripts/scr_manage_task_selector/scr_manage_task_selector.yy",},},
     {"id":{"name":"scr_management","path":"scripts/scr_management/scr_management.yy",},},
