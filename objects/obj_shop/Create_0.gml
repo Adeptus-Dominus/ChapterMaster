@@ -111,8 +111,8 @@ if (shop = "equipment") {
     item_cost[i] = 10;
     forge_cost[i] = 40;
     i += 1;
-    if (global.cheat_debug) {
-        //Debug space for 30k weapons
+	//Debug space for 30k weapons
+	if (global.cheat_debug) {
         //Volkite Pack
         item[i] = "Volkite Serpenta";
         item_stocked[i] = scr_item_count(item[i]);
@@ -167,6 +167,36 @@ if (shop = "equipment") {
         forge_cost[i] = 0;
         i += 1;
         item[i] = "Mars Plasma Cannon";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+		item[i] = "Primus Melta Gun";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+		item[i] = "Proteus Multi-Melta";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+		item[i] = "Phaestos Flamer";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+		item[i] = "Power Scythe";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+		item[i] = "Ryza Lascannon";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
+		item[i] = "Cthon Autocannon";
         item_stocked[i] = scr_item_count(item[i]);
         item_cost[i] = 0;
         forge_cost[i] = 0;

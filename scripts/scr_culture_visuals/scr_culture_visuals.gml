@@ -1386,6 +1386,83 @@ global.weapon_visual_data = {
     sprite: spr_weapon_mars_plasc,
   }]
 },
+//Melta Pack
+"Proteus Multi-Melta": {
+ base: {
+    weapon_data: {
+      display_type: "ranged_twohand",
+      new_weapon_draw: true
+    },
+    body_types: [0,1]
+  },
+  variants: [{
+    sprite: spr_weapon_prot_mmlt,
+  }]
+},  
+"Primus Melta Gun": {
+base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_prim_mltg,
+  }]
+},  
+//Flamer Pack
+"Phaestos Flamer": {
+base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_ph_flmr,
+  }]
+},
+//melee pack  
+"Power Scythe": {
+base: {
+    weapon_data: {
+      display_type: "melee_onehand",
+      hand_type: 2,
+      new_weapon_draw: true
+    },
+  },
+  variants: [
+    {
+      sprite: spr_weapon_powscythe
+    }
+  ]
+},
+//Laser pack
+"Ryza Lascannon": {
+ base: {
+    weapon_data: {
+      display_type: "ranged_twohand",
+      new_weapon_draw: true
+    },
+    body_types: [0,1]
+  },
+  variants: [{
+    sprite: spr_weapon_ryza_lasca,
+  }]
+},
+//misc pack
+"Cthon Autocannon": {
+ base: {
+    weapon_data: {
+      display_type: "ranged_twohand",
+      new_weapon_draw: true
+    },
+    body_types: [0,1]
+  },
+  variants: [{
+    sprite: spr_weapon_cthon_autocannon,
+  }]
+},  
 	
 	//40k weapons
   "Assault Cannon": {
@@ -1421,7 +1498,7 @@ global.weapon_visual_data = {
 },
 "Lascannon":{
     base: {
-        body_types: [0, 1, 2],
+        body_types: [0, 1],
         weapon_data: {
           display_type: "ranged_twohand",
         },
@@ -1434,7 +1511,7 @@ global.weapon_visual_data = {
 },
 "Multi-Melta" : {
     base: {
-        body_types: [0, 1, 2],
+        body_types: [0, 1],
         weapon_data: {
           display_type: "ranged_twohand",
         },
