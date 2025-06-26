@@ -424,7 +424,8 @@ global.astartes_trait_dist = [
 			{
 				chapter_name:[
 					"Dark Angels",[500,0]
-				],			
+				],
+				progenitor:[ePROGENITOR.DARK_ANGELS,[500,0]]		
 			}
 		],		
 		[
@@ -433,7 +434,8 @@ global.astartes_trait_dist = [
 			{
 				chapter_name:[
 					"White Scars",[500,0]
-				],			
+				],
+				progenitor:[ePROGENITOR.WHITE_SCARS,[500,0]]			
 			}
 		],		
 		[
@@ -442,7 +444,8 @@ global.astartes_trait_dist = [
 			{
 				chapter_name:[
 					"Space Wolves",[500,0]
-				],			
+				],
+				progenitor:[ePROGENITOR.SPACE_WOLVES,[500,0]]			
 			}
 		],		
 		[
@@ -451,7 +454,8 @@ global.astartes_trait_dist = [
 			{
 				chapter_name:[
 					"Imperial Fists",[500,0]
-				],			
+				],
+				progenitor:[ePROGENITOR.IMPERIAL_FISTS,[500,0]]			
 			}
 		],		
 		[
@@ -460,7 +464,8 @@ global.astartes_trait_dist = [
 			{
 				chapter_name:[
 					"Blood Angels",[500,0]
-				],			
+				],
+				progenitor:[ePROGENITOR.BLOOD_ANGELS,[500,0]]			
 			}
 		],		
 		[
@@ -469,7 +474,8 @@ global.astartes_trait_dist = [
 			{
 				chapter_name:[
 					"Iron Hands",[500,0]
-				],			
+				],
+				progenitor:[ePROGENITOR.IRON_HANDS,[500,0]]			
 			}
 		],		
 		[
@@ -478,7 +484,8 @@ global.astartes_trait_dist = [
 			{
 				chapter_name:[
 					"Ultramarines",[500,0]
-				],			
+				],
+				progenitor:[ePROGENITOR.ULTRAMARINES,[500,0]]			
 			}
 		],		
 		[
@@ -487,7 +494,8 @@ global.astartes_trait_dist = [
 			{
 				chapter_name:[
 					"Salamanders",[500,0]
-				],			
+				],
+				progenitor:[ePROGENITOR.SALAMANDERS,[500,0]]			
 			}
 		],		
 		[
@@ -496,7 +504,8 @@ global.astartes_trait_dist = [
 			{
 				chapter_name:[
 					"Raven Guard",[500,0]
-				],			
+				],
+				progenitor:[ePROGENITOR.RAVEN_GUARD,[500,0]]			
 			}
 		],		
 		

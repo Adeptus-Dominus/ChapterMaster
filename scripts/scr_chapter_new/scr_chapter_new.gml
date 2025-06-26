@@ -30,7 +30,7 @@ function ChapterData() constructor {
 	home_planets = 1;
 
 	flagship_name = global.name_generator.generate_imperial_ship_name();
-	monastary_name = "";
+	monastery_name = "";
 	advantages = array_create(9);
 	disadvantages = array_create(9);
 	discipline = "librarius"; // todo convert to enum
@@ -107,6 +107,7 @@ function ChapterData() constructor {
 		armour: "",
 	};
 	extra_ships = {
+		glorianas: 0,
 		battle_barges: 0,
 		gladius: 0,
 		strike_cruisers: 0,
@@ -143,6 +144,7 @@ function ChapterData() constructor {
 		land_speeder: 0,
 	}
 	extra_equipment = [];
+	companies = {};
 	custom_roles = {};
 	squad_name = "Squad";
 	custom_squads = {};
@@ -486,6 +488,7 @@ function scr_chapter_new(argument0) {
 		obj_creation.extra_marines = chapter_object.extra_marines;
 		obj_creation.extra_vehicles = chapter_object.extra_vehicles;
 		obj_creation.extra_equipment = chapter_object.extra_equipment;
+		obj_creation.companies = chapter_object.companies;
 
 		obj_creation.squad_name = chapter_object.squad_name;
 		if(struct_exists(chapter_object, "custom_roles")){

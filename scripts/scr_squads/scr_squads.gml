@@ -9,10 +9,15 @@ function fetch_squad(array_id){
 	return obj_ini.squads[array_id];
 }
 function create_squad(squad_type, company, squad_loadout = true, squad_index=false){
-
+	var fill_squad = obj_ini.squad_types[$ squad_type];
+    var type_data = fill_squad[$"type_data"];
+    if (struct_exists(type_data, "allowed_companies")) {
+        if (!array_contains(type_data.allowed_companies, company)) {
+            return; // Not allowed in this company
+        }
+    }
 	var squad_unit_types, fulfilled,unit, squad;
 	var squad_count = array_length(obj_ini.squads);
-	var fill_squad =  obj_ini.squad_types[$ squad_type];			//grab all the squad struct info from the squad_types struct
 	squad = new UnitSquad(squad_type, company);
 	squad.base_company = company;
 	squad.add_type_data(fill_squad[$"type_data"]);		
@@ -22,6 +27,7 @@ function create_squad(squad_type, company, squad_loadout = true, squad_index=fal
 	var roles = obj_ini.role[100];
 	var sergeant_found = false;
 	var sgt_types = [roles[eROLE.Sergeant], roles[eROLE.VeteranSergeant]];
+
 
 	//if squad has sergeants in find out if there are any available sergeants
 	for (var s = 0; s < 2;s++){
@@ -90,10 +96,15 @@ function create_squad(squad_type, company, squad_loadout = true, squad_index=fal
 	fulfilled = true;
 	for (var i = 0;i < array_length(squad_unit_types);i++){
 		if (squad_fulfilment[$ squad_unit_types[i]] < fill_squad[$ squad_unit_types[i]][$ "min"]){
+			show_debug_message("Missing role: " + string(squad_unit_types[i]) + " need " + string(fill_squad[$ squad_unit_types[i]][$ "min"]) + " have " + string(squad_fulfilment[$ squad_unit_types[i]]));
 			fulfilled = false;
 			break
 		}
 	}
+	if (!fulfilled) {
+    show_debug_message("Could not create " + squad_type + " in company " + string(company) + ": Not enough available marines of required roles.");
+    return;
+}
 	if (fulfilled){
 		for (var s = 0; s< 2;s++){
 			if (struct_exists(squad_fulfilment ,sgt_types[s])) and (sergeant_found == false){
@@ -301,6 +312,12 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 		}		
 	}
 	static change_type = function(new_type){
+		var new_type_data = obj_ini.squad_types[$ new_type].type_data;
+    if (struct_exists(new_type_data, "allowed_companies")) {
+        if (!array_contains(new_type_data.allowed_companies, base_company)) {
+            return; // Not allowed in this company
+        }
+    }
 		type=new_type;
 		add_type_data(obj_ini.squad_types[$ type].type_data)
 	}
@@ -656,6 +673,13 @@ function game_start_squads(){
 	obj_ini.squads = [];
 	var last_squad_count
 	for (var company=2;company < 10;company++){
+			last_squad_count = array_length(obj_ini.squads);
+			if (struct_exists(obj_ini.squad_types,"ravenwing_command_squad")){
+				while (last_squad_count == array_length(obj_ini.squads)){
+				last_squad_count = (array_length(obj_ini.squads) + 1);
+				create_squad("ravenwing_command_squad", company);
+				}
+			}
 		create_squad("command_squad", company);
 		last_squad_count = array_length(obj_ini.squads);
 		while (last_squad_count == array_length(obj_ini.squads)){ ///keep making tact squads for as long as there are enough tact marines
@@ -703,23 +727,47 @@ function game_start_squads(){
 		}
 	}
 	company = 1;
-	create_squad("command_squad", company);
 	last_squad_count = array_length(obj_ini.squads);
-	while (last_squad_count == array_length(obj_ini.squads)){
+	if (struct_exists(obj_ini.squad_types,"deathwing_command_squad"))
+	{
+		while (last_squad_count == array_length(obj_ini.squads)){
 		last_squad_count = (array_length(obj_ini.squads) + 1);
-		if(last_squad_count%2 == 0){
-		create_squad("terminator_squad", company);
-	}else{
-		create_squad("terminator_assault_squad", company);
-			}
-	}	
-	last_squad_count = array_length(obj_ini.squads);	
+		create_squad("deathwing_command_squad", company);
+		}
+	}
+	else {create_squad("command_squad", company)};
+	last_squad_count = array_length(obj_ini.squads);
+	if (struct_exists(obj_ini.squad_types,"deathwing_squad")){
+		while (last_squad_count == array_length(obj_ini.squads)){
+			last_squad_count = (array_length(obj_ini.squads) + 1);
+			create_squad("deathwing_squad", company);
+		}
+	} else {
+		while (last_squad_count == array_length(obj_ini.squads)){
+			last_squad_count = (array_length(obj_ini.squads) + 1);
+			if(last_squad_count%2 == 0){
+			create_squad("terminator_squad", company);
+		}else{
+			create_squad("terminator_assault_squad", company);
+				}
+		}	
+	}
+
+	last_squad_count = array_length(obj_ini.squads);
 	while (last_squad_count == array_length(obj_ini.squads)){
 		last_squad_count = (array_length(obj_ini.squads) + 1);
 		if(last_squad_count%2 == 0){
 		create_squad("sternguard_veteran_squad", company);
 	}else{
 		create_squad("vanguard_veteran_squad", company);
+		}
+	}
+	company=2;
+		last_squad_count = array_length(obj_ini.squads);
+		if (struct_exists(obj_ini.squad_types,"ravenwing_squad")){
+		while (last_squad_count == array_length(obj_ini.squads)){
+			last_squad_count = (array_length(obj_ini.squads) + 1);
+			create_squad("ravenwing_squad", company);
 		}
 	}
 	company = 10;

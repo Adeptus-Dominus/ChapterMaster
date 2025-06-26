@@ -130,7 +130,8 @@ function set_player_recruit_planet(recruit_planet){
 function set_player_homeworld_star(chosen_star){
 	with (chosen_star){
 		if (obj_ini.recruit_relative_loc==1 && obj_ini.home_planet_count ==0){
-			obj_ini.home_planet_count++;
+			if (obj_ini.fleet_type==2) then return;
+			else obj_ini.home_planet_count++;
 		}
 		planets = obj_ini.home_planet_count+1;
 		var _home_star = irandom_range(1,planets);

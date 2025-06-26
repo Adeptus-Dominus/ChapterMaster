@@ -1,309 +1,1489 @@
 {
-    "chapter": {
-        "id": 1,
-        "name": "Chapter Name",
-        "flavor": "Chapter Lore",
-        "origin": 3, // 1 - Founding, 2 - Successor, 3 - Other/non-canon/fanmade, 4 - Custom
-        "points": 150,
-        "founding": 0, // The id of the founding chapter, 0 for unknown or none, 10 for random
-        "splash": 1, // in \images\creation\chapters\splash folder, the img number, 1 being Dark Angels etc.
-        "icon_name": "unknown",
-        "fleet_type": 1, // 1= Homeworld, 2 = Fleet based, 3 = Penitent
-        "strength": 5, // 1-10
-        "purity": 5, // 1-10
-        "stability": 50, // 1-99
-        "cooperation": 5, // 1-10
-        "homeworld_exists": 1, // 1 = true
-        "recruiting_exists": 1, // 1 = true
-        "homeworld_rule": 1, // 1 = Govenor, 2 = Countries, 3 = Personal Rule
-        "homeworld": "Hive", // one of  "Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
-        "homeworld_name": "", // Homeworld Planet name, leave blank to autogenerate
-        "recruiting": "Death", // one of "Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
-        "recruiting_name": "", // Recruiting Planet name, leave blank to autogenerate
-        "discipline": "librarius", // one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune_magic'
-        "aspirant_trial": "SURVIVAL", // one of "BLOODDUEL" "HUNTING" "SURVIVAL" "EXPOSURE" "KNOWLEDGE" "CHALLENGE"  "APPRENTICESHIP" 
-        "advantages": [
-            "", // leave the first entry blank for now
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            ""
+  "chapter":
+  {
+    "id": 0, //number for your JSON file to be referenced in game files
+    "name": "", //name of the chapter
+    "flavor": "", //the short description that appears on popup when you hover over a chapter image
+    "battle_cry": "", //this is where you cry. I mean this is where you say what are you crying about. I mean... fuck it just type shit here to scream at people
+    "origin": "", //[1] Founding [2] Successor [3] Other [4] Custom
+    "points": 0, //creation points, feel free to cheat here for more wild stuff in custom if you don't like doing it via files
+    "founding": 0, //ID of the progenitor chapter, as per fiels in datafiles/main/chapters
+    "successors": , //write how many successors your chapter has. Go bonkers. Show them you got the seed to have 666 successors
+    "splash": 0, //the more artsy image on the left side of selection screen. Highly advised to use the same number as chapter ID
+    "icon_name": "", //name for the chapter icon you'll be using. Standing 
+    "fleet_type": 0, //[1] Homeworld [2] Fleetbased [3] Penitent
+    "strength": 0, //1-10
+    "purity": 0, //1-10
+    "stability": 0, //1-99
+    "cooperation": 0, //1-10
+    "homeworld_exists:": 1, //only is there for an obscure bit of code, but to avoid bugs and crashes keep it as is until we fix it
+    "recruiting_exists": 1, //same here
+    "home_warp": 1, //[0] low/no connections [1] connected [2] warp hub
+    "home_planets": 1, //how many planets in home system, [0]=1 [3]=4
+    "homeworld": "Forge", //Homeworld planet type "Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
+    "homeworld_rule": 1, //[1] Governor [2] Semi-independent [3] Direct Rule
+    "home_spawn_loc": 1, //unsure which is it, probably 0=fringe, 1=central
+    "homeworld_name": "", //name of the homeworld
+    "monastery_name": "", //name of the F-M structure on the homeplanet.
+    "recruiting": "", //Recruiting world planet type "Lava" "Desert" "Forge" "Hive" "Death" "Agri" "Feudal" "Temperate" "Ice" "Dead" "Shrine"
+    "recruiting_name": "", //recruiting world name
+    "recruit_home_relationship": 1, //[0] same planet [1] same system [2] different system
+    "discipline": "librarius", //one of 'default' 'biomancy' 'pyromancy' 'telekinesis' 'rune_magic'
+    "aspirant_trial": 5, //[0]"BLOODDUEL" [1]"HUNTING" [2]"SURVIVAL" [3]"EXPOSURE" [4]"KNOWLEDGE" [5]"CHALLENGE" [6]"APPRENTICESHIP"
+    "advantages": //Self-Explanatory
+      [
+        "", //first blank cause reasons
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+    "disadvantages": //S-E
+      [
+        "", //first blank cause reasons
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+    "mutations": //defines which mutations are present
+      {
+        "mucranoid":0,
+        "zygote":0,
+        "secretions":0,
+        "doomed":0,
+        "occulobe":0,
+        "membrane":0,
+        "lyman":0,
+        "betchers":0,
+        "ossmodula":0,
+        "omophagea":0,
+        "voice":0,
+        "catalepsean":0,
+        "preomnor":0
+      },
+    "disposition":
+      [
+        0,  //nothing, probably self
+        0,  //Progenitor
+        0,  //Imperium
+        0,  //Admech
+        0,  //=][=
+        0,  //Ecclesiarchy
+        0,  //Astartes
+        0   //Nothing
+      ],
+    "colors": //main or default colours for your chapter. Check a pasted table or scr_colors_initialize.gml for the color array
+      {
+        "special": 0, // 0 - normal, 1 - Breastplate, 2 - Vertical, 3 - Quadrant
+        "main": "Dark Red",
+        "weapon": "Dark Red",
+        "pauldron_l": "Dark Red",
+        "pauldron_r": "Dark Red",
+        "trim": "Dark Gold",
+        "secondary": "Dark Gold",
+        "lens": "Red"
+      },
+    "culture_styles":   //write in the styles you want
+      [
+        ""
+      ],
+    "chapter_master":
+      {
+        "name": "", //name for your chapter master, leave blank for random
+        "traits": //currently kinda not working, he's guaranteed to have Lead by Example though
+        [
+          ""
         ],
-        "disadvantages": [
-            "", // leave the first entry blank for now
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            ""
-        ],
-        "colors": {
-            "main": "Black",
-            "secondary": "Black",
-            "pauldron_r": "Black",
-            "pauldron_l": "Black",
-            "trim": "Silver",
-            "lens": "Red",
-            "weapon": "Dark Red",
-            "special": 0, // 0 - normal, 1 - Breastplate, 2 - Vertical, 3 - Quadrant
-            //"trim_on": 0 // 0 no, 1 yes for pauldron trim colours. Trim colour will still be used for certain complex livery items 
+        "specialty": 1, //1 Leader, 2 Champion, 3 Psyker
+        "melee": 1, //[1]twin power fists [2]twin lighting claws [3]Relic blade [4]Thunder Hammer [5]Power Sword [6]Power axe [7]Eviscerator [8]Force staff
+        "ranged": 1, //[1]boltstorm gauntlet [2]Infernus pistol [3]Plasma pistol [4]Plasma gun [5]MC Heavy Bolter [6]Mc Meltagun [7]Storm Shield
+        "armour": "", //default is Artificer, dont' need to put anything unless you want something different
+        "gear": "" //default is Iron Halo, same as above
+      },
+    "artifact": //copy and paste the template below as many times as you like
+      [
+        {
+          "name": "Artifact Name", //the most holy name of your long schlong weapon
+          "description": "Artefact Lore", //write fun stuff
+          "base_weapon_type": "Power Sword", //doesn't matter if it's armour, gear, mobi or anything else, you always use base_weapon_type to define it
+          "slot": "wep1" //leave empty if you want it to be stored in the Librarium without assignment
+        }
+      ],
+    "names":
+      {
+        //Chapter Staff
+        "hchaplain": "", // Head Chaplain
+        "clibrarian": "", // Chief Librarian
+        "fmaster": "", // Forge Master
+        "hapothecary": "", // Head Apothecary
+        //Company Captains 1 - 10
+        "honorcapt": "",
+        "watchmaster": "",
+        "arsenalmaster": "",
+        "admiral": "",
+        "marchmaster": "",
+        "ritesmaster": "",
+        "victualler": "",
+        "lordexec": "",
+        "relmaster": "",
+        "recruiter": ""
+      },
+    "company_titles":
+      [
+        "", //leave blank cause reasons
+        "", //1st Company
+        "", //2nd
+        "", //3rd
+        "", //4th
+        "", //5th
+        "", //6th
+        "", //7th
+        "", //8th
+        "", //9th
+        ""  //10th
+      ],
+    "equal_specialists": 0,// 0 if no, 1 if yes. If yes, will distribute specialist roles like Assaults and Devastators equally between companies. Otherwise all Assaults go in Company 8 and all Devastators in Company 9
+    "flagship_name":  "Flagship Name", // leave blank to autogenerate
+    "load_to_ships": 
+      {
+        "escort_load": 2, // 0 no, 2 yes, 1 doesnt do anything :)
+        "split_scouts": 0, // 0 no, 1 yes. If yes, splits scouts between ships equally. Otherwise all scouts are kept on the homeworld.
+        "split_vets": 0 // 0 no, 1 yes. If yes, all veterans are distrubuted equally between ships. Otherwise all veterans are kept in the flagship
+      },
+    "full_liveries":
+      [
+        {//[1] Chapter Master
+          "weapon_primary":11,
+          "metallic_trim":11,
+          "weapon_secondary":20,
+          "is_changed":true,
+          "left_arm":20,
+          "left_backpack":20,
+          "left_chest":20,
+          "right_arm":20,
+          "right_backpack":20,
+          "right_chest":20,
+          "left_hand":11,
+          "left_head":20,
+          "left_leg_knee":20,
+          "right_hand":11,
+          "eye_lense":9,
+          "right_head":20,
+          "left_leg_lower":20,
+          "left_leg_upper":20,
+          "left_muzzle":20,
+          "right_leg_knee":20,
+          "left_pauldron":11,
+          "right_leg_lower":20,
+          "right_leg_upper":20,
+          "right_muzzle":20,
+          "right_pauldron":11,
+          "left_thorax":20,
+          "left_trim":20,
+          "right_thorax":20,
+          "right_trim":20,
+          "company_marks":0,
+          "company_marks_loc":0
         },
-        "names": {
-            //Chapter Staff
-            "hchaplain": "", // Head Chaplain
-            "clibrarian": "", // Chief Librarian
-            "fmaster": "", // Forge Master
-            "hapothecary": "", // Head Apothecary
-            //Company Captains 1 - 10
-            "honorcapt": "",
-            "watchmaster": "",
-            "arsenalmaster": "",
-            "admiral": "",
-            "marchmaster": "",
-            "ritesmaster": "",
-            "victualler": "",
-            "lordexec": "",
-            "relmaster": "",
-            "recruiter": ""
+        {//[2] Brown dude, so far unknown what is this defining
+          "weapon_primary":11,
+          "metallic_trim":20,
+          "weapon_secondary":20,
+          "is_changed":true,
+          "left_arm":14,
+          "left_backpack":14,
+          "left_chest":14,
+          "right_arm":14,
+          "right_backpack":14,
+          "right_chest":14,
+          "left_hand":14,
+          "left_head":14,
+          "left_leg_knee":14,
+          "right_hand":14,
+          "eye_lense":22,
+          "right_head":14,
+          "left_leg_lower":14,
+          "left_leg_upper":14,
+          "left_muzzle":14,
+          "right_leg_knee":14,
+          "left_pauldron":14,
+          "right_leg_lower":14,
+          "right_leg_upper":14,
+          "right_muzzle":14,
+          "right_pauldron":14,
+          "left_thorax":0,
+          "left_trim":20,
+          "right_thorax":0,
+          "right_trim":20,
+          "company_marks":0,
+          "company_marks_loc":0
         },
-        "battle_cry": "For the Emperor!",
-        "equal_specialists": 0, // 0 if no, 1 if yes. If yes, will distribute specialist roles like Assaults and Devastators equally between companies. Otherwise all Assaults go in Company 8 and all Devastators in Company 9
-        "load_to_ships": {
-            "escort_load": 2, // 0 no, 2 yes, 1 doesnt do anything :)
-            "split_scouts": 0, // 0 no, 1 yes. If yes, splits scouts between ships equally. Otherwise all scouts are kept on the homeworld.
-            "split_vets": 0 // 0 no, 1 yes. If yes, all veterans are distrubuted equally between ships. Otherwise all veterans are kept in the flagship
+        {//[3] Honour Guard
+          "weapon_primary":11,
+          "metallic_trim":20,
+          "weapon_secondary":20,
+          "is_changed":true,
+          "left_arm":20,
+          "left_backpack":20,
+          "left_chest":20,
+          "right_arm":20,
+          "right_backpack":20,
+          "right_chest":20,
+          "left_hand":20,
+          "left_head":20,
+          "left_leg_knee":20,
+          "right_hand":20,
+          "eye_lense":9,
+          "right_head":20,
+          "left_leg_lower":20,
+          "left_leg_upper":20,
+          "left_muzzle":20,
+          "right_leg_knee":20,
+          "left_pauldron":20,
+          "right_leg_lower":20,
+          "right_leg_upper":20,
+          "right_muzzle":20,
+          "right_pauldron":20,
+          "left_thorax":0,
+          "left_trim":20,
+          "right_thorax":0,
+          "right_trim":20,
+          "company_marks":0,
+          "company_marks_loc":0
         },
-        "successors": 0, //total number of successor chapters
-        "mutations": {
-            "preomnor": 0,
-            "voice": 0,
-            "doomed": 0,
-            "lyman": 0,
-            "omophagea": 0,
-            "ossmodula": 0,
-            "membrane": 0,
-            "zygote": 0,
-            "betchers": 0,
-            "catalepsean": 0,
-            "secretions": 0,
-            "occulobe": 0,
-            "mucranoid": 0
+        {//[4] Veteran
+          "weapon_primary":11,
+          "metallic_trim":20,
+          "weapon_secondary":20,
+          "is_changed":true,
+          "left_arm":20,
+          "left_backpack":11,
+          "left_chest":8,
+          "right_arm":20,
+          "right_backpack":11,
+          "right_chest":8,
+          "left_hand":11,
+          "left_head":20,
+          "left_leg_knee":20,
+          "right_hand":11,
+          "eye_lense":9,
+          "right_head":20,
+          "left_leg_lower":11,
+          "left_leg_upper":11,
+          "left_muzzle":20,
+          "right_leg_knee":20,
+          "left_pauldron":11,
+          "right_leg_lower":11,
+          "right_leg_upper":11,
+          "right_muzzle":20,
+          "right_pauldron":11,
+          "left_thorax":0,
+          "left_trim":20,
+          "right_thorax":0,
+          "right_trim":20,
+          "company_marks":0,
+          "company_marks_loc":0
         },
-        "disposition": [
-            0, // nothing
-            0, // Progenitor faction
-            50, // Imperium
-            50, // Admech
-            50, //Inquisition
-            50, // Ecclesiarchy
-            50, // Astartes
-            0 // nothing
-        ],
-        "chapter_master": {
-            "name": "",
-            "specialty": 1, //1 Leader, 2 Champion, 3 Psyker,
-            "melee": 1, // 1 twin power fists ... 8 force staff
-            "ranged": 1, // 1 boltstorm gauntlets ... 7 storm shield
-            // All chapter masters have the trait `Lead by Example` by default
-            "traits": [
-                ""
-            ],
-            "gear": "",
-            "mobi": "",
-            "armour": "" // default is Artificer armour, only needed to set if changing to something else.
+        {//[5] Terminator
+          "weapon_primary":11,
+          "metallic_trim":20,
+          "weapon_secondary":20,
+          "is_changed":true,
+          "left_arm":11,
+          "left_backpack":11,
+          "left_chest":11,
+          "right_arm":11,
+          "right_backpack":11,
+          "right_chest":11,
+          "left_hand":20,
+          "left_head":8,
+          "left_leg_knee":11,
+          "right_hand":20,
+          "eye_lense":9,
+          "right_head":8,
+          "left_leg_lower":11,
+          "left_leg_upper":11,
+          "left_muzzle":20,
+          "right_leg_knee":20,
+          "left_pauldron":20,
+          "right_leg_lower":11,
+          "right_leg_upper":11,
+          "right_muzzle":20,
+          "right_pauldron":20,
+          "left_thorax":0,
+          "left_trim":20,
+          "right_thorax":0,
+          "right_trim":20,
+          "company_marks":0,
+          "company_marks_loc":0
         },
-        "artifact": [
+        {//[6] Captain
+          "weapon_primary":11,
+          "metallic_trim":11,
+          "weapon_secondary":20,
+          "is_changed":true,
+          "left_arm":20,
+          "left_backpack":20,
+          "left_chest":20,
+          "right_arm":20,
+          "right_backpack":20,
+          "right_chest":20,
+          "left_hand":20,
+          "left_head":20,
+          "left_leg_knee":11,
+          "right_hand":20,
+          "eye_lense":9,
+          "right_head":20,
+          "left_leg_lower":20,
+          "left_leg_upper":20,
+          "left_muzzle":20,
+          "right_leg_knee":11,
+          "left_pauldron":20,
+          "right_leg_lower":20,
+          "right_leg_upper":20,
+          "right_muzzle":20,
+          "right_pauldron":20,
+          "left_thorax":0,
+          "left_trim":11,
+          "right_thorax":0,
+          "right_trim":11,
+          "company_marks":0,
+          "company_marks_loc":0
+        },
+        {//[7] Dreadnought
+          "weapon_primary":11,
+          "metallic_trim":20,
+          "weapon_secondary":20,
+          "is_changed":true,
+          "left_arm":20,
+          "left_backpack":20,
+          "left_chest":20,
+          "right_arm":20,
+          "right_backpack":20,
+          "right_chest":20,
+          "left_hand":20,
+          "left_head":20,
+          "left_leg_knee":20,
+          "right_hand":20,
+          "eye_lense":9,
+          "right_head":20,
+          "left_leg_lower":20,
+          "left_leg_upper":20,
+          "left_muzzle":20,
+          "right_leg_knee":20,
+          "left_pauldron":20,
+          "right_leg_lower":20,
+          "right_leg_upper":20,
+          "right_muzzle":20,
+          "right_pauldron":20,
+          "left_thorax":20,
+          "left_trim":20,
+          "right_thorax":20,
+          "right_trim":20,
+          "company_marks":20,
+         "company_marks_loc":20
+        },
+        {//[8] Champion
+          "weapon_primary":11,
+          "metallic_trim":20,
+          "weapon_secondary":20,
+          "is_changed":true,
+          "left_arm":20,
+          "left_backpack":20,
+          "left_chest":11,
+          "right_arm":20,
+          "right_backpack":20,
+          "right_chest":11,
+          "left_hand":20,
+          "left_head":11,
+          "left_leg_knee":20,
+          "right_hand":20,
+          "eye_lense":22,
+          "right_head":11,
+          "left_leg_lower":11,
+          "left_leg_upper":11,
+          "left_muzzle":11,
+          "right_leg_knee":20,
+          "left_pauldron":20,
+          "right_leg_lower":11,
+          "right_leg_upper":11,
+          "right_muzzle":11,
+          "right_pauldron":20,
+          "left_thorax":0,
+          "left_trim":11,
+          "right_thorax":0,
+          "right_trim":11,
+          "company_marks":0,
+          "company_marks_loc":0
+        },
+        {//[9] Tactical
+          "weapon_primary":11,
+          "metallic_trim":20,
+          "weapon_secondary":20,
+          "is_changed":true,
+          "left_arm":11,
+          "left_backpack":11,
+          "left_chest":11,
+          "right_arm":11,
+          "right_backpack":11,
+          "right_chest":11,
+          "left_hand":11,
+          "left_head":11,
+          "left_leg_knee":11,
+          "right_hand":11,
+          "eye_lense":22,
+          "right_head":11,
+          "left_leg_lower":11,
+          "left_leg_upper":11,
+          "left_muzzle":11,
+          "right_leg_knee":11,
+          "left_pauldron":11,
+          "right_leg_lower":11,
+          "right_leg_upper":11,
+          "right_muzzle":11,
+          "right_pauldron":11,
+          "left_thorax":0,
+          "left_trim":20,
+          "right_thorax":0,
+          "right_trim":20,
+          "company_marks":0,
+          "company_marks_loc":0
+        },
+        {//[10] Devastator
+          "weapon_primary":11,
+          "metallic_trim":20,
+          "weapon_secondary":20,
+          "is_changed":true,
+          "left_arm":11,
+          "left_backpack":11,
+          "left_chest":11,
+          "right_arm":11,
+          "right_backpack":11,
+          "right_chest":11,
+          "left_hand":11,
+          "left_head":20,
+          "left_leg_knee":11,
+          "right_hand":11,
+          "eye_lense":22,
+          "right_head":20,
+          "left_leg_lower":11,
+          "left_leg_upper":11,
+          "left_muzzle":11,
+          "right_leg_knee":11,
+          "left_pauldron":11,
+          "right_leg_lower":11,
+          "right_leg_upper":11,
+          "right_muzzle":11,
+          "right_pauldron":11,
+          "left_thorax":0,
+          "left_trim":20,
+          "right_thorax":0,
+          "right_trim":20,
+          "company_marks":0,
+          "company_marks_loc":0
+        },
+        {//[11] Assault
+          "weapon_primary":11,
+          "metallic_trim":20,
+          "weapon_secondary":20,
+          "is_changed":true,
+          "left_arm":11,
+          "left_backpack":11,
+          "left_chest":11,
+          "right_arm":11,
+          "right_backpack":11,
+          "right_chest":11,
+          "left_hand":11,
+          "left_head":11,
+          "left_leg_knee":11,
+          "right_hand":11,
+          "eye_lense":22,
+          "right_head":11,
+          "left_leg_lower":11,
+          "left_leg_upper":11,
+          "left_muzzle":20,
+          "right_leg_knee":11,
+          "left_pauldron":11,
+          "right_leg_lower":11,
+          "right_leg_upper":11,
+          "right_muzzle":20,
+          "right_pauldron":11,
+          "left_thorax":0,
+          "left_trim":20,
+          "right_thorax":0,
+          "right_trim":20,
+          "company_marks":0,
+          "company_marks_loc":0
+        },
+        {//[12] Ancient
+          "weapon_primary":20,
+          "metallic_trim":20,
+          "weapon_secondary":20,
+          "is_changed":true,
+          "left_arm":11,
+          "left_backpack":20,
+          "left_chest":8,
+          "right_arm":11,
+          "right_backpack":20,
+          "right_chest":8,
+          "left_hand":20,
+          "left_head":11,
+          "left_leg_knee":20,
+          "right_hand":20,
+          "eye_lense":9,
+          "right_head":11,
+          "left_leg_lower":11,
+          "left_leg_upper":11,
+          "left_muzzle":8,
+          "right_leg_knee":20,
+          "left_pauldron":11,
+          "right_leg_lower":11,
+          "right_leg_upper":11,
+          "right_muzzle":8,
+          "right_pauldron":11,
+          "left_thorax":0,
+          "left_trim":8,
+          "right_thorax":0,
+          "right_trim":8,
+          "company_marks":0,
+          "company_marks_loc":0
+        },
+        {//[13] Scout
+          "weapon_primary":11,
+          "metallic_trim":20,
+          "weapon_secondary":20,
+          "is_changed":true,
+          "left_arm":11,
+          "left_backpack":11,
+          "left_chest":11,
+          "right_arm":11,
+          "right_backpack":11,
+          "right_chest":11,
+          "left_hand":11,
+          "left_head":11,
+          "left_leg_knee":11,
+          "right_hand":11,
+          "eye_lense":22,
+          "right_head":11,
+          "left_leg_lower":11,
+          "left_leg_upper":11,
+          "left_muzzle":11,
+          "right_leg_knee":11,
+          "left_pauldron":11,
+          "right_leg_lower":11,
+          "right_leg_upper":11,
+          "right_muzzle":11,
+          "right_pauldron":11,
+          "left_thorax":0,
+          "left_trim":20,
+          "right_thorax":0,
+          "right_trim":20,
+          "company_marks":0,
+          "company_marks_loc":0
+        },
+        {//[14] Green dude
+          "weapon_primary":11,
+          "metallic_trim":20,
+          "weapon_secondary":20,
+          "is_changed":true,
+          "left_arm":23,
+          "left_backpack":23,
+          "left_chest":23,
+          "right_arm":23,
+          "right_backpack":23,
+          "right_chest":23,
+          "left_hand":23,
+          "left_head":23,
+          "left_leg_knee":23,
+          "right_hand":23,
+          "eye_lense":22,
+          "right_head":23,
+          "left_leg_lower":23,
+          "left_leg_upper":23,
+          "left_muzzle":23,
+          "right_leg_knee":23,
+          "left_pauldron":23,
+          "right_leg_lower":23,
+          "right_leg_upper":23,
+          "right_muzzle":23,
+          "right_pauldron":23,
+          "left_thorax":0,
+          "left_trim":20,
+          "right_thorax":0,
+          "right_trim":20,
+          "company_marks":0,
+          "company_marks_loc":0
+        },
+        {//[15] Chaplain
+          "weapon_primary":8,
+          "metallic_trim":20,
+          "weapon_secondary":20,
+          "is_changed":true,
+          "left_arm":8,
+          "left_backpack":8,
+          "left_chest":8,
+          "right_arm":8,
+          "right_backpack":8,
+          "right_chest":8,
+          "left_hand":8,
+          "left_head":8,
+          "left_leg_knee":8,
+          "right_hand":8,
+          "eye_lense":9,
+          "right_head":8,
+          "left_leg_lower":8,
+          "left_leg_upper":8,
+          "left_muzzle":8,
+          "right_leg_knee":8,
+          "left_pauldron":11,
+          "right_leg_lower":8,
+          "right_leg_upper":8,
+          "right_muzzle":8,
+          "right_pauldron":8,
+          "left_thorax":0,
+          "left_trim":20,
+          "right_thorax":0,
+          "right_trim":20,
+          "company_marks":0,
+          "company_marks_loc":0
+        },
+        {//[16] Apothecary
+          "weapon_primary":11,
+          "metallic_trim":20,
+          "weapon_secondary":20,
+          "is_changed":true,
+          "left_arm":18,
+          "left_backpack":18,
+          "left_chest":18,
+          "right_arm":18,
+          "right_backpack":18,
+          "right_chest":18,
+          "left_hand":18,
+          "left_head":18,
+          "left_leg_knee":18,
+          "right_hand":18,
+          "eye_lense":9,
+          "right_head":18,
+          "left_leg_lower":18,
+          "left_leg_upper":18,
+          "left_muzzle":18,
+          "right_leg_knee":18,
+          "left_pauldron":11,
+          "right_leg_lower":18,
+          "right_leg_upper":18,
+          "right_muzzle":18,
+          "right_pauldron":18,
+          "left_thorax":0,
+          "left_trim":20,
+          "right_thorax":0,
+          "right_trim":20,
+          "company_marks":0,
+          "company_marks_loc":0
+        },
+        {//[17] Techmarine
+          "weapon_primary":11,
+          "metallic_trim":20,
+          "weapon_secondary":20,
+          "is_changed":true,
+          "left_arm":9,
+          "left_backpack":9,
+          "left_chest":9,
+          "right_arm":9,
+          "right_backpack":9,
+          "right_chest":9,
+          "left_hand":9,
+          "left_head":9,
+          "left_leg_knee":9,
+          "right_hand":9,
+          "eye_lense":22,
+          "right_head":9,
+          "left_leg_lower":9,
+          "left_leg_upper":9,
+          "left_muzzle":9,
+          "right_leg_knee":9,
+          "left_pauldron":11,
+          "right_leg_lower":9,
+          "right_leg_upper":9,
+          "right_muzzle":9,
+          "right_pauldron":9,
+          "left_thorax":0,
+          "left_trim":20,
+          "right_thorax":0,
+          "right_trim":20,
+          "company_marks":0,
+          "company_marks_loc":0
+        },
+        {//[18] Librarian
+          "weapon_primary":11,
+          "metallic_trim":20,
+          "weapon_secondary":20,
+          "is_changed":true,
+          "left_arm":34,
+          "left_backpack":34,
+          "left_chest":34,
+          "right_arm":34,
+          "right_backpack":34,
+          "right_chest":34,
+          "left_hand":34,
+          "left_head":34,
+          "left_leg_knee":34,
+          "right_hand":34,
+          "eye_lense":22,
+          "right_head":34,
+          "left_leg_lower":34,
+          "left_leg_upper":34,
+          "left_muzzle":34,
+          "right_leg_knee":34,
+          "left_pauldron":1,
+          "right_leg_lower":34,
+          "right_leg_upper":34,
+          "right_muzzle":34,
+          "right_pauldron":34,
+          "left_thorax":0,
+          "left_trim":0,
+          "right_thorax":0,
+          "right_trim":0,
+          "company_marks":0,
+          "company_marks_loc":0
+        },
+        {//[19] Sergeant
+          "weapon_primary":11,
+          "metallic_trim":20,
+          "weapon_secondary":20,
+          "is_changed":true,
+          "left_arm":11,
+          "left_backpack":11,
+          "left_chest":11,
+          "right_arm":11,
+          "right_backpack":11,
+          "right_chest":11,
+          "left_hand":11,
+          "left_head":11,
+          "left_leg_knee":11,
+          "right_hand":11,
+          "eye_lense":22,
+          "right_head":11,
+          "left_leg_lower":11,
+          "left_leg_upper":11,
+          "left_muzzle":11,
+          "right_leg_knee":20,
+          "left_pauldron":20,
+          "right_leg_lower":11,
+          "right_leg_upper":11,
+          "right_muzzle":11,
+          "right_pauldron":20,
+          "left_thorax":0,
+          "left_trim":11,
+          "right_thorax":0,
+          "right_trim":20,
+          "company_marks":0,
+          "company_marks_loc":0
+        },
+        {//[20] Veteran Sergeant
+          "weapon_primary":8,
+          "metallic_trim":20,
+          "weapon_secondary":11,
+          "is_changed":true,
+          "left_arm":20,
+          "left_backpack":8,
+          "left_chest":8,
+          "right_arm":20,
+          "right_backpack":8,
+          "right_chest":8,
+          "left_hand":20,
+          "left_head":11,
+          "left_leg_knee":20,
+          "right_hand":20,
+          "eye_lense":22,
+          "right_head":11,
+          "left_leg_lower":8,
+          "left_leg_upper":8,
+          "left_muzzle":11,
+          "right_leg_knee":20,
+          "left_pauldron":11,
+          "right_leg_lower":8,
+          "right_leg_upper":8,
+          "right_muzzle":11,
+          "right_pauldron":20,
+          "left_thorax":0,
+          "left_trim":11,
+          "right_thorax":0,
+          "right_trim":20,
+          "company_marks":0,
+          "company_marks_loc":0
+        },
+        {//[21] Blue Chest
+          "weapon_primary":11,
+          "metallic_trim":20,
+          "weapon_secondary":20,
+          "is_changed":true,
+          "left_arm":31,
+          "left_backpack":31,
+          "left_chest":31,
+          "right_arm":31,
+          "right_backpack":31,
+          "right_chest":31,
+          "left_hand":31,
+          "left_head":31,
+          "left_leg_knee":31,
+          "right_hand":31,
+          "eye_lense":22,
+          "right_head":31,
+          "left_leg_lower":31,
+          "left_leg_upper":31,
+          "left_muzzle":31,
+          "right_leg_knee":31,
+          "left_pauldron":31,
+          "right_leg_lower":31,
+          "right_leg_upper":31,
+          "right_muzzle":31,
+          "right_pauldron":31,
+          "left_thorax":0,
+          "left_trim":20,
+          "right_thorax":0,
+          "right_trim":20,
+          "company_marks":0,
+          "company_marks_loc":0
+        }
+      ],
+    "complex_livery_data": //helm_pattern - paint setup, [0] Full colour primary [1] Stripe in the middle secondary [2] Upper main lower second [3] same as 1 for some reason
+      {
+        "sgt":
+        {
+          "helm_detail":20,
+          "helm_lens":9,
+          "helm_pattern":0,
+          "helm_primary":20,
+          "helm_secondary":0
+        },
+        "veteran":
+        {
+          "helm_detail":20,
+          "helm_lens":22,
+          "helm_pattern":1,
+          "helm_primary":11,
+          "helm_secondary":8
+        },
+        "captain":
+        {
+          "helm_detail":20,
+          "helm_lens":9,
+          "helm_pattern":1,
+          "helm_primary":20,
+          "helm_secondary":11
+        },
+        "vet_sgt":
+        {
+          "helm_detail":20,
+          "helm_lens":9,
+          "helm_pattern":1,
+          "helm_primary":8,
+          "helm_secondary":11
+        }
+      },
+    "company_liveries"://if you put -1 as value that means there is no change from the base colour scheme. Beware that compnay markings overwrite specialists as well
+      [
+        {// HQ
+          "weapon_primary":-1,
+          "metallic_trim":-1,
+          "weapon_secondary":-1,
+          "is_changed":true,
+          "left_arm":-1,
+          "left_backpack":-1,
+          "left_chest":-1,
+          "right_arm":-1,
+          "right_backpack":-1,
+          "right_chest":-1,
+          "left_hand":-1,
+          "left_head":-1,
+          "left_leg_knee":-1,
+          "right_hand":-1,
+          "eye_lense":-1,
+          "right_head":-1,
+          "left_leg_lower":-1,
+          "left_leg_upper":-1,
+          "left_muzzle":-1,
+          "right_leg_knee":-1,
+          "left_pauldron":-1,
+          "right_leg_lower":-1,
+          "right_leg_upper":-1,
+          "right_muzzle":-1,
+          "right_pauldron":-1,
+          "left_thorax":-1,
+          "left_trim":-1,
+          "right_thorax":-1,
+          "right_trim":-1,
+          "company_marks":-1,
+          "company_marks_loc":-1
+        },
+        {// 1
+          "weapon_primary":-1,
+          "metallic_trim":-1,
+          "weapon_secondary":-1,
+          "is_changed":true,
+          "left_arm":-1,
+          "left_backpack":-1,
+          "left_chest":-1,
+          "right_arm":-1,
+          "right_backpack":-1,
+          "right_chest":-1,
+          "left_hand":-1,
+          "left_head":-1,
+          "left_leg_knee":-1,
+          "right_hand":-1,
+          "eye_lense":-1,
+          "right_head":-1,
+          "left_leg_lower":-1,
+          "left_leg_upper":-1,
+          "left_muzzle":-1,
+          "right_leg_knee":-1,
+          "left_pauldron":-1,
+          "right_leg_lower":-1,
+          "right_leg_upper":-1,
+          "right_muzzle":-1,
+          "right_pauldron":-1,
+          "left_thorax":-1,
+          "left_trim":-1,
+          "right_thorax":-1,
+          "right_trim":-1,
+          "company_marks":-1,
+          "company_marks_loc":-1
+        },
+        {// 2
+          "weapon_primary":-1,
+          "metallic_trim":-1,
+          "weapon_secondary":-1,
+          "is_changed":true,
+          "left_arm":-1,
+          "left_backpack":-1,
+          "left_chest":-1,
+          "right_arm":-1,
+          "right_backpack":-1,
+          "right_chest":-1,
+          "left_hand":-1,
+          "left_head":-1,
+          "left_leg_knee":-1,
+          "right_hand":-1,
+          "eye_lense":-1,
+          "right_head":-1,
+          "left_leg_lower":-1,
+          "left_leg_upper":-1,
+          "left_muzzle":-1,
+          "right_leg_knee":-1,
+          "left_pauldron":-1,
+          "right_leg_lower":-1,
+          "right_leg_upper":-1,
+          "right_muzzle":-1,
+          "right_pauldron":-1,
+          "left_thorax":-1,
+          "left_trim":-1,
+          "right_thorax":-1,
+          "right_trim":-1,
+          "company_marks":-1,
+          "company_marks_loc":-1
+        },
+        {// 3
+          "weapon_primary":-1,
+          "metallic_trim":-1,
+          "weapon_secondary":-1,
+          "is_changed":true,
+          "left_arm":-1,
+          "left_backpack":-1,
+          "left_chest":-1,
+          "right_arm":-1,
+          "right_backpack":-1,
+          "right_chest":-1,
+          "left_hand":-1,
+          "left_head":-1,
+          "left_leg_knee":-1,
+          "right_hand":-1,
+          "eye_lense":-1,
+          "right_head":-1,
+          "left_leg_lower":-1,
+          "left_leg_upper":-1,
+          "left_muzzle":-1,
+          "right_leg_knee":-1,
+          "left_pauldron":-1,
+          "right_leg_lower":-1,
+          "right_leg_upper":-1,
+          "right_muzzle":-1,
+          "right_pauldron":-1,
+          "left_thorax":-1,
+          "left_trim":-1,
+          "right_thorax":-1,
+          "right_trim":-1,
+          "company_marks":-1,
+          "company_marks_loc":-1
+        },
+        {// 4
+          "weapon_primary":-1,
+          "metallic_trim":-1,
+          "weapon_secondary":-1,
+          "is_changed":true,
+          "left_arm":-1,
+          "left_backpack":-1,
+          "left_chest":-1,
+          "right_arm":-1,
+          "right_backpack":-1,
+          "right_chest":-1,
+          "left_hand":-1,
+          "left_head":-1,
+          "left_leg_knee":-1,
+          "right_hand":-1,
+          "eye_lense":-1,
+          "right_head":-1,
+          "left_leg_lower":-1,
+          "left_leg_upper":-1,
+          "left_muzzle":-1,
+          "right_leg_knee":-1,
+          "left_pauldron":-1,
+          "right_leg_lower":-1,
+          "right_leg_upper":-1,
+          "right_muzzle":-1,
+          "right_pauldron":-1,
+          "left_thorax":-1,
+          "left_trim":-1,
+          "right_thorax":-1,
+          "right_trim":-1,
+          "company_marks":-1,
+          "company_marks_loc":-1
+        },
+        {// 5
+          "weapon_primary":-1,
+          "metallic_trim":-1,
+          "weapon_secondary":-1,
+          "is_changed":true,
+          "left_arm":-1,
+          "left_backpack":-1,
+          "left_chest":-1,
+          "right_arm":-1,
+          "right_backpack":-1,
+          "right_chest":-1,
+          "left_hand":-1,
+          "left_head":-1,
+          "left_leg_knee":-1,
+          "right_hand":-1,
+          "eye_lense":-1,
+          "right_head":-1,
+          "left_leg_lower":-1,
+          "left_leg_upper":-1,
+          "left_muzzle":-1,
+          "right_leg_knee":-1,
+          "left_pauldron":-1,
+          "right_leg_lower":-1,
+          "right_leg_upper":-1,
+          "right_muzzle":-1,
+          "right_pauldron":-1,
+          "left_thorax":-1,
+          "left_trim":-1,
+          "right_thorax":-1,
+          "right_trim":-1,
+          "company_marks":-1,
+          "company_marks_loc":-1
+        },
+        {// 6
+          "weapon_primary":-1,
+          "metallic_trim":-1,
+          "weapon_secondary":-1,
+          "is_changed":true,
+          "left_arm":-1,
+          "left_backpack":-1,
+          "left_chest":-1,
+          "right_arm":-1,
+          "right_backpack":-1,
+          "right_chest":-1,
+          "left_hand":-1,
+          "left_head":-1,
+          "left_leg_knee":-1,
+          "right_hand":-1,
+          "eye_lense":-1,
+          "right_head":-1,
+          "left_leg_lower":-1,
+          "left_leg_upper":-1,
+          "left_muzzle":-1,
+          "right_leg_knee":-1,
+          "left_pauldron":-1,
+          "right_leg_lower":-1,
+          "right_leg_upper":-1,
+          "right_muzzle":-1,
+          "right_pauldron":-1,
+          "left_thorax":-1,
+          "left_trim":-1,
+          "right_thorax":-1,
+          "right_trim":-1,
+          "company_marks":-1,
+          "company_marks_loc":-1
+        },
+        {// 7
+          "weapon_primary":-1,
+          "metallic_trim":-1,
+          "weapon_secondary":-1,
+          "is_changed":true,
+          "left_arm":-1,
+          "left_backpack":-1,
+          "left_chest":-1,
+          "right_arm":-1,
+          "right_backpack":-1,
+          "right_chest":-1,
+          "left_hand":-1,
+          "left_head":-1,
+          "left_leg_knee":-1,
+          "right_hand":-1,
+          "eye_lense":-1,
+          "right_head":-1,
+          "left_leg_lower":-1,
+          "left_leg_upper":-1,
+          "left_muzzle":-1,
+          "right_leg_knee":-1,
+          "left_pauldron":-1,
+          "right_leg_lower":-1,
+          "right_leg_upper":-1,
+          "right_muzzle":-1,
+          "right_pauldron":-1,
+          "left_thorax":-1,
+          "left_trim":-1,
+          "right_thorax":-1,
+          "right_trim":-1,
+          "company_marks":-1,
+          "company_marks_loc":-1
+        },
+        {// 8
+          "weapon_primary":-1,
+          "metallic_trim":-1,
+          "weapon_secondary":-1,
+          "is_changed":true,
+          "left_arm":-1,
+          "left_backpack":-1,
+          "left_chest":-1,
+          "right_arm":-1,
+          "right_backpack":-1,
+          "right_chest":-1,
+          "left_hand":-1,
+          "left_head":-1,
+          "left_leg_knee":-1,
+          "right_hand":-1,
+          "eye_lense":-1,
+          "right_head":-1,
+          "left_leg_lower":-1,
+          "left_leg_upper":-1,
+          "left_muzzle":-1,
+          "right_leg_knee":-1,
+          "left_pauldron":-1,
+          "right_leg_lower":-1,
+          "right_leg_upper":-1,
+          "right_muzzle":-1,
+          "right_pauldron":-1,
+          "left_thorax":-1,
+          "left_trim":-1,
+          "right_thorax":-1,
+          "right_trim":-1,
+          "company_marks":-1,
+          "company_marks_loc":-1
+        },
+        {// 9
+          "weapon_primary":-1,
+          "metallic_trim":-1,
+          "weapon_secondary":-1,
+          "is_changed":true,
+          "left_arm":-1,
+          "left_backpack":-1,
+          "left_chest":-1,
+          "right_arm":-1,
+          "right_backpack":-1,
+          "right_chest":-1,
+          "left_hand":-1,
+          "left_head":-1,
+          "left_leg_knee":-1,
+          "right_hand":-1,
+          "eye_lense":-1,
+          "right_head":-1,
+          "left_leg_lower":-1,
+          "left_leg_upper":-1,
+          "left_muzzle":-1,
+          "right_leg_knee":-1,
+          "left_pauldron":-1,
+          "right_leg_lower":-1,
+          "right_leg_upper":-1,
+          "right_muzzle":-1,
+          "right_pauldron":-1,
+          "left_thorax":-1,
+          "left_trim":-1,
+          "right_thorax":-1,
+          "right_trim":-1,
+          "company_marks":-1,
+          "company_marks_loc":-1
+        },
+        {// 10
+          "weapon_primary":-1,
+          "metallic_trim":-1,
+          "weapon_secondary":-1,
+          "is_changed":true,
+          "left_arm":-1,
+          "left_backpack":-1,
+          "left_chest":-1,
+          "right_arm":-1,
+          "right_backpack":-1,
+          "right_chest":-1,
+          "left_hand":-1,
+          "left_head":-1,
+          "left_leg_knee":-1,
+          "right_hand":-1,
+          "eye_lense":-1,
+          "right_head":-1,
+          "left_leg_lower":-1,
+          "left_leg_upper":-1,
+          "left_muzzle":-1,
+          "right_leg_knee":-1,
+          "left_pauldron":-1,
+          "right_leg_lower":-1,
+          "right_leg_upper":-1,
+          "right_muzzle":-1,
+          "right_pauldron":-1,
+          "left_thorax":-1,
+          "left_trim":-1,
+          "right_thorax":-1,
+          "right_trim":-1,
+          "company_marks":-1,
+          "company_marks_loc":-1
+        }
+    ],
+    "custom_roles":
+    {
+      "chapter_master"://feel free to add specific equipment, name and whatnot
+      {
+        "name": ""
+      }
+      /*"template":
+      {
+        "wep1":"",
+        "wep2":"",
+        "gear":"",
+        "armour":"",
+        "name":"template",
+        "mobi":""
+      },*/
+    },
+    "extra_equipment": 
+    [
+      // ["Bolter", 10] is an example of how this is called
+    ],
+    "extra_marines": //default is 100 marines per company, the first company works via adding veterans or terminators
+    {//beware, only adds Tacticals
+      "second": 0,
+      "third": 0,
+      "fourth": 0,
+      "fifth": 0,
+      "sixth": 0,
+      "seventh": 0,
+      "eighth": 0,
+      "ninth": 0,
+      "tenth": 0
+    },
+    "extra_ships": 
+    /**
+    * * Default fleet composition
+    * * Homeworld 
+    * - 2 Battle Barges, 8 Strike cruisers, 7 Gladius, 3 Hunters
+    * * Fleet based and Penitent 
+    * - 4 Battle Barges, 3 Strike Cruisers, 7 Gladius, 3 Hunters
+    * 
+    * use negative numbers to subtract ships
+    * * Stacks with advantages/disadvantages
+    */
+    {
+      "gloriana": 0,
+      "battle_barges": 0,
+      "strike_cruisers": 0,
+      "gladius": 0,
+      "hunters": 0
+    },
+    /**
+      * * Default HQ Layout (Does not include company specialists)
+      * - 8 Chaplains, 8 Techmarines, 8 Apothecary, 2 Epistolary (librarian), 
+      * - 2 Codiciery, 4 Lexicanum
+      * * Default Company specialists (divided based on `load_to_ships.split_vets` setting)
+      * - 20 Terminators, 85 Veterans, 20 Devastators, 20 Assault
+      * Use negative numbers to subtract
+      * Stacks with advantages/disadvantages
+    */
+    "extra_specialists": 
+    {
+      "chaplains": 0,//adds them to the Reclusiam
+      "chaplains_per_company": 0,//adds them to company, X per company
+      "techmarines": 0,
+      "techmarines_per_company": 0,
+      "apothecary": 0,
+      "apothecary_per_company": 0,
+      "epistolary": 0,
+      "epistolary_per_company": 0,
+      "codiciery": 0,
+      "lexicanum": 0,
+      "terminator": 0,
+      "assault": 0,
+      "veteran": 0,
+      "devastator": 0,
+      "dreadnought": 0
+    },
+    "extra_vehicles":
+    {
+      "rhino": 0,
+      "predator": 0,
+      "land_speeder": 0,
+      "whirlwind": 0,
+      "land_raider": 0
+    },
+    "companies":// you may use this to override default company manpower and vehicles on start.
+    {
+      "first": "",
+      "second":"",
+      "third":"",
+      "fourth":"",
+      "fifth":"",
+      "sixth":"",
+      "seventh":"",
+      "eighth":"",
+      "ninth":"",
+      "tenth":""
+    },
+    "custom_advisors"://here you define what image [by typing the png name] are your custom advisors using. If you add nothing here, the game uses defaults
+    {/*
+      "forge_master": ,
+      "apothecary": ,
+      "librarian": , 
+      "chaplain": ,
+      "admiral": ,
+      "recruiter": 
+    */},
+    "squad_name": "Squad", //how will any squad be referenced
+    "custom_squads":
+    {/*Example how this works, showcasing the Deathwing Terminator Squads
+      "deathwing_squad":
+      [
+        // Terminator Sergeant
+        [
+          "Veteran Sergeant",
+          {
+            "max": 1,
+            "min": 1,
+            "role": "Deathwing Sergeant",
+            "loadout": 
             {
-                "name": "Artifact Name",
-                "description": "Artefact Lore",
-                "base_weapon_type": "Power Sword",
-                "slot": "wep1"
+              "required": 
+              {
+                "wep1":
+                [
+                  "Power Sword",
+                  1
+                ]
+              }
+            }
+          }
+        ],
+        // Terminator
+        [
+          "Terminator",
+            {
+              "max": 4,
+              "min": 2,
+              "role": "Deathwing Terminator",
+              "loadout":
+              {
+                "required":
+                {
+                  "wep1":
+                  [
+                    "",
+                    0
+                  ],
+                  "wep2":
+                  [
+                    "Storm Bolter",
+                    3
+                  ]
+                },
+                "option":
+                {
+                  "wep1":
+                  [
+                    [
+                      [
+                        "Power Fist",
+                        "Chainfist"
+                      ],
+                      4
+                    ]
+                  ],
+                  "wep2":
+                  [
+                    [
+                      [
+                        "Heavy Flamer",
+                        "Heavy Flamer",
+                        "Heavy Flamer",
+                        "Assault Cannon",
+                        "Assault Cannon",
+                        "Plasma Cannon"
+                      ],
+                      1
+                    ]
+                  ]
+                }
+              }
             }
         ],
-        "company_titles": [
-            "",
-            "1st Company",
-            "2nd Company",
-            "3rd Company",
-            "4th Company",
-            "5th Company",
-            "6th Company",
-            "7th Company",
-            "8th Company",
-            "9th Company",
-            "10th Company"
-        ],
-        "flagship_name": "Flagship Name", // leave blank to autogenerate
-        /**
-        * * Default fleet composition
-        * * Homeworld 
-        * - 2 Battle Barges, 8 Strike cruisers, 7 Gladius, 3 Hunters
-        * * Fleet based and Penitent 
-        * - 4 Battle Barges, 3 Strike Cruisers, 7 Gladius, 3 Hunters
-        * 
-        * use negative numbers to subtract ships
-        * * Stacks with advantages/disadvantages
-        */
-        "extra_ships": {
-            "battle_barges": 0,
-            "gladius": 0,
-            "strike_cruisers": 0,
-            "hunters": 0
-        },
-        /**
-        * * Default HQ Layout (Does not include company specialists)
-        * - 8 Chaplains, 8 Techmarines, 8 Apothecary, 2 Epistolary (librarian), 
-        * - 2 Codiciery, 4 Lexicanum
-        * * Default Company specialists (divided based on `load_to_ships.split_vets` setting)
-        * - 20 Terminators, 85 Veterans, 20 Devastators, 20 Assault
-        * Use negative numbers to subtract
-        * * Stacks with advantages/disadvantages
-        */
-        "extra_specialists": {
-            "chaplains": 0,
-            "chaplains_per_company": 0,
-            "techmarines": 0,
-            "techmarines_per_company": 0,
-            "apothecary": 0,
-            "apothecary_per_company": 0,
-            "epistolary": 0,
-            "epistolary_per_company": 0,
-            "codiciery": 0,
-            "lexicanum": 0,
-            "terminator": 0,
-            "assault": 0,
-            "veteran": 0,
-            "devastator": 0,
-            "dreadnought": 0
-        },
-        /**
-        * * Default Marine strength
-        * - 100 marines per company
-        * use negative numbers to subtract
-        * * Stacks with strength for non-founding chapters only
-        */
-        "extra_marines": {
-            "second": 0,
-            "third": 0,
-            "fourth": 0,
-            "fifth": 0,
-            "sixth": 0,
-            "seventh": 0,
-            "eighth": 0,
-            "ninth": 0,
-            "tenth": 0
-        },
-        /**
-        * All vehicles are added to the 10th company at the start of the game
-        */
-        "extra_vehicles": {
-            "rhino": 0,
-            "whirlwind": 0,
-            "predator": 0,
-            "land_raider": 0,
-            "land_speeder": 0
-        },
-        /** Add extra starting items ["Item Name", Number to add] */
-        "extra_equipment": [
-            // [
-            //     "Bolter",
-            //     20
-            // ]
-        ],
-        /** 
-        * Provide a place to change the default name and equipment preferences of roles for this chapter
-        * `custom_roles` should be used for specialist/leadership type roles, 
-        * To affect an entire squad, see `custom_squads` below
-        */
-        "custom_roles": {
-            // "honour_guard": {
-            //     "name": "Honour Guard",
-            //     "wep1": "Power Sword",
-            //     "wep2": "Bolter"
-            // },
-            // "veteran": {
-            //     "name": "Veteran",
-            //     "wep1": "Chainaxe"
-            // },
-            // "captain": {
-            //     "name": "Captain",
-            //     "wep1": "Power Sword"
-            // },
-            // "tactical": {
-            //     "name": "Tactical"
-            // },
-            // "devastator": {
-            //     "name": "Devastator"
-            // },
-            // "assault": {
-            //     "name": "Assault",
-            //     "wep1": "Chainsword"
-            // },
-            // "scout": {
-            //     "name": "Scout",
-            //     "wep1": "Sniper Rifle"
-            // },
-            // "chaplain": {
-            //     "name": "Chaplain",
-            // },
-            // "techmarine": {
-            //     "name": "Techmarine",
-            //     "wep1": "Power Axe"
-            // },
-            // "apothecary": {
-            //     "name": "Apothecary",
-            //     "wep1": "Power Axe"
-            // },
-            // "librarian": {
-            //     "name": "Librarian",
-            //     "wep1": "Force Staff"
-            // },
-            // "sergeant": {
-            //     "name": "Sergeant",
-            //     "wep1": "Chainaxe"
-            // },
-            // "veteran_sergeant": {
-            //     "name": "Veteran Sergeant",
-            //     "wep1": "Chainaxe"
-            // }
-        },
-        /**
-        * * Custom squad roles, loadouts and formations
-        * When companies are made, squads are formed based on these rules: 
-        * - squad name: one of captain, terminator, terminator_assault, sternguard_veteran,
-                vanguard_veteran, devastator, tactical, assault, scout, scout_sniper
-        * - squad array layout [Role, Role, ...Role, type_data]
-        * - each element of the array is a default Role, and their settings.
-            - if you changed the role using `custom_roles` you need to reference the role with this new name
-            - for non-leader roles it is better to change the name of the role in the squad layout instead
-        * - unit layout [Role Name, Settings Struct]
-        * - settings struct: 
-        *   - max: The most amount of this unit is allowed per squad
-        *   - min: The squad can't be formed unless at least 1 of this unit is in it
-        *   - role: The name of the unit when it is a member of the squad. This is where you rename roles e.g. 
-                "Terminator" > "Deathwing Terminator" 
-        **  - loadout: Struct containing Required and Optional weaponry this unit can equip 
-                a required loadout always follows this syntax <loadout_slot>:[<loadout_item>,<required number>]
-				so "wep1":["Bolter",4], will mean four marines are always equipped with 4 bolters in the wep1 slot
-        *       option loadouts follow the following syntax <loudout_slot>:[[<loadout_item_list>],<allowed_number>]
-				for example [["Flamer", "Meltagun"],1], means the role can have a max of one flamer or meltagun
-					[["Plasma Pistol","Bolt Pistol"], 4] means the role can have a mix of 4 plasma pistols and bolt pistols on top
-						of all required loadout options
-                - wep1: right hand weapon
-                - wep2: left hand weapon
-                - mobi: Mobility item, e.g. Jump Packs. 
-                - armour: required armour 
-                - gear: special equipment needed for certain roles, like a Roasrius or Narthecium
-        *   - type_data: names the squad, allows certain formations 
-        */
-        "squad_name": "Squad",
-        "custom_squads": {}
+        [
+          "type_data",
+            {
+              "display_data": "Deathwing Terminator Squad",
+              "formation_options":
+              [
+                "terminator",
+                "veteran",
+                "assault",
+                "devastator",
+                "scout",
+                "tactical"
+              ],
+              "allowed_companies": [1]
+            }
+        ]
+      ]*/
     }
+/*  * Custom squad roles, loadouts and formations
+    * When companies are made, squads are formed based on these rules: 
+    * - squad name: one of captain, terminator, terminator_assault, sternguard_veteran,
+      vanguard_veteran, devastator, tactical, assault, scout, scout_sniper
+    * - squad array layout [Role, Role, ...Role, type_data]
+    * - each element of the array is a default Role, and their settings.
+      - if you changed the role using `custom_roles` you need to reference the role with this new name
+      - for non-leader roles it is better to change the name of the role in the squad layout instead
+    * - unit layout [Role Name, Settings Struct]
+    * - settings struct: 
+    *   - max: The most amount of this unit is allowed per squad
+    *   - min: The squad can't be formed unless at least 1 of this unit is in it
+    *   - role: The name of the unit when it is a member of the squad. This is where you rename roles e.g. 
+      "Terminator" > "Deathwing Terminator" 
+    **  - loadout: Struct containing Required and Optional weaponry this unit can equip 
+      a required loadout always follows this syntax <loadout_slot>:[<loadout_item>,<required number>]
+		so "wep1":["Bolter",4], will mean four marines are always equipped with 4 bolters in the wep1 slot
+    *       option loadouts follow the following syntax <loudout_slot>:[[<loadout_item_list>],<allowed_number>]
+		for example [["Flamer", "Meltagun"],1], means the role can have a max of one flamer or meltagun
+		[["Plasma Pistol","Bolt Pistol"], 4] means the role can have a mix of 4 plasma pistols and bolt pistols on top
+		of all required loadout options
+      - wep1: right hand weapon
+      - wep2: left hand weapon
+      - mobi: Mobility item, e.g. Jump Packs. 
+      - armour: required armour 
+      - gear: special equipment needed for certain roles, like a Roasrius or Narthecium
+    *   - type_data: names the squad, allows certain formations ? idk what that does yet*/
+  }
 }

@@ -769,6 +769,7 @@ function scr_initialize_custom() {
 
 
 	#region Ship Setup
+	glorianas = 0;
 	battle_barges = 0;
 	strike_cruisers = 0;
 	gladius = 0;
@@ -822,20 +823,29 @@ function scr_initialize_custom() {
 		}
 	}
 	if(struct_exists(obj_creation, "extra_ships")){
+		glorianas = glorianas + obj_creation.extra_ships.gloriana;
 		battle_barges = battle_barges + obj_creation.extra_ships.battle_barges;
 		strike_cruisers = strike_cruisers + obj_creation.extra_ships.strike_cruisers;
 		gladius = gladius + obj_creation.extra_ships.gladius;
 		hunters = hunters + obj_creation.extra_ships.hunters;
 	}
 
-	var ship_summary_str = $"Ships: bb: {battle_barges} sc: {strike_cruisers} g: {gladius} h: {hunters}"
+	var ship_summary_str = $"Ships: gl: {glorianas} bb: {battle_barges} sc: {strike_cruisers} g: {gladius} h: {hunters}"
 	// log_message(ship_summary_str);
 	// show_debug_message(ship_summary_str);
 
-	if (battle_barges>=1){
+	if (glorianas>=1)
+	{
+	for (v=0;v<glorianas;v++){
+		var new_ship = new_player_ship("Gloriana", "home");
+		if (flagship_name!="") and (v=0) then ship[new_ship]=flagship_name;
+	}
+	}
+	if (battle_barges>=1)
+	{
 	 	for (v=0;v<battle_barges;v++){
 	 		var new_ship = new_player_ship("Battle Barge", "home");
-		    if (flagship_name!="") and (v=0) then ship[new_ship]=flagship_name;
+		    if (flagship_name=="") && (v=0) then ship[new_ship]=flagship_name;
 		}
 	}
 
@@ -2056,25 +2066,16 @@ function scr_initialize_custom() {
 	// show_debug_message($"{st}");
 
 
-	if(struct_exists(obj_creation, "custom_squads")){
-		var custom_squads = obj_creation.custom_squads;
-		// show_debug_message($"custom roles {custom_squads}");
-		if(array_length(struct_get_names(custom_squads)) != 0){
-			var names = struct_get_names(st);
-			// show_debug_message($"names {names}");
-			for(var n = 0; n < array_length(names); n++){
-				var squad_name = names[n];
-				// show_debug_message($"matched squad name name {squad_name}");
-
-				if(struct_exists(custom_squads, squad_name)){
-					var custom_squad = struct_get(custom_squads, squad_name);
-					// show_debug_message($"overwriting squad layout for {squad_name}");
-					// show_debug_message($"{custom_squad}")
-					variable_struct_set(st, squad_name, custom_squad);
-				}
-			}
-		}
-	}
+    if (struct_exists(obj_creation, "custom_squads")){
+        if(array_length(struct_get_names(obj_creation.custom_squads)) != 0){
+            var names = struct_get_names(obj_creation.custom_squads);
+            for(var n = 0; n < array_length(names); n++){
+                var squad_name = names[n];
+                var custom_squad = struct_get(obj_creation.custom_squads, squad_name);
+                st[$ squad_name] = custom_squad;
+            }
+        }
+    }
 
 	// show_debug_message($"roles object for chapter {chapter_name} after setting from obj");
 	// show_debug_message($"{st}");
@@ -2580,7 +2581,6 @@ function scr_initialize_custom() {
 			coy: 9,
 			total: ninth,
 			dreadnoughts: dreadnought,
-
 			rhinos: rhino-6,
 			whirlwinds: whirlwind-4,
 			landspeeders: landspeeder-2,
@@ -2599,7 +2599,6 @@ function scr_initialize_custom() {
 			landraiders:0,
 		}
 	}
-
 	log_message($"Pre balancing company totals: {json_stringify(companies,true)}")
 	// Extra vehicles loaded from json files all get dumped into the 10th company for the player to sort out
 	
@@ -2620,8 +2619,6 @@ function scr_initialize_custom() {
 			}
 		}
 	}
-
-
 	var equal_specialists = obj_creation.equal_specialists;
 	var scout_company_behaviour = 0;
 	if(struct_exists(obj_creation, "scout_company_behaviour")){
@@ -2772,7 +2769,22 @@ function scr_initialize_custom() {
 
 
 		var attrs = struct_get_names(_coy);
-		
+		if (struct_exists(obj_creation, "companies")) {
+    var company_keys = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth"];
+    for (var i = 0; i < array_length(company_keys); i++) {
+        var ckey_hash = variable_get_hash(company_keys[i]);
+        if (struct_exists_from_hash(obj_creation.companies, ckey_hash) && struct_exists_from_hash(companies, ckey_hash)) {
+            var ckey_ins = struct_get_from_hash(obj_creation.companies, ckey_hash);
+            var ckey_var = struct_get_from_hash(companies, ckey_hash);
+            var override_keys = struct_get_names(ckey_ins);
+            for (var j = 0; j < array_length(override_keys); j++) {
+                var okey_hash = variable_get_hash(override_keys[j]);
+                var okey_ins = struct_get_from_hash(ckey_ins, okey_hash);
+                struct_set_from_hash(ckey_var, okey_hash, okey_ins);
+            }
+        }
+    }
+}
 		
 		
 		// log_message($"attrs {attrs}");
@@ -2997,6 +3009,7 @@ function scr_initialize_custom() {
 					_rolename = "Land Speeder";
 					_erole = eROLE.LandSpeeder;
 					_wep1 = "Heavy Bolter";
+					_wep2 = "";
 					break;
 				case "whirlwinds":
 					_is_vehicle = true;
