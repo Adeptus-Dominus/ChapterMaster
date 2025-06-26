@@ -63,7 +63,7 @@ if (mission="bad") and (plan.p_first[num]=3) and (plan.p_type[num]="Forge"){
     // Start battle
     pop.battle_special=3.1;
     obj_controller.trading_artifact=0;
-    var h;h=0;repeat(4){h+=1;obj_controller.diplo_option[h]="";obj_controller.diplo_goto[h]="";}
+    clear_diplo_choices();
     obj_controller.menu=0;
     
     pop.loc=plan.name;
@@ -110,8 +110,8 @@ delete_features(plan.p_feature[num], P_features.STC_Fragment);
 scr_add_stc_fragment();// STC here
 
 
-obj_controller.trading_artifact=0;obj_controller.diplo_option1="";
-obj_controller.diplo_option2="";obj_controller.diplo_option3="";
+obj_controller.trading_artifact=0;
+clear_diplo_choices();
 obj_controller.menu=0;
 instance_destroy();
 

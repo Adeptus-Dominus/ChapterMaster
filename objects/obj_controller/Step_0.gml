@@ -727,10 +727,7 @@ try {
     }
 
     if ((trading_artifact == 0) && (trading == 0) && (trading_artifact == 0) && (faction_justmet == 1) && (questing == 0) && (trading_demand == 0) && (complex_event == false)) {
-        for (var h = 1; h <= 4; h++) {
-            obj_controller.diplo_option[h] = "";
-            obj_controller.diplo_goto[h] = "";
-        }
+        clear_diplo_choices();
     }
 
     income = income_base + income_home + income_forge + income_agri + income_training + income_fleet + income_trade + income_tribute;

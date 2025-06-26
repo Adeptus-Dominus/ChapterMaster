@@ -1076,7 +1076,7 @@ try {
 			            add_to_battle();
 			        }               
 			    }
-			    delete _roster				
+			    delete _roster;			
 
 
 				instance_activate_object(obj_star);

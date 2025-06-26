@@ -48,6 +48,9 @@ function add_diplomacy_option(option={}){
     if (!struct_exists(option, "goto")){
         option.goto = "";
     }
+    if (!struct_exists(option, "key")){
+        option.key = option.option_text;
+    }
     array_push(obj_controller.diplo_option, option);
 }
 
@@ -55,7 +58,7 @@ function basic_diplomacy_screen(){
 	var  yy=__view_get( e__VW.YView, 0 );
 	var  xx=__view_get( e__VW.XView, 0 );
 	 if (trading=0  && valid_diplomacy_options()){
-        if (force_goodbye=0){
+        if (!force_goodbye){
             draw_set_halign(fa_center);
         
             var opts=0,slot=0,dp=0,opt_cord=0;
@@ -66,6 +69,7 @@ function basic_diplomacy_screen(){
 
         	var left,top,right,base,opt;
         	option_selections = [];
+            var diplo_pressed = -1;
             for (var slot=0; slot<opts; slot++){
 
                 var _opt = diplo_option[slot];
@@ -96,9 +100,15 @@ function basic_diplomacy_screen(){
                 }
 				opt = [left,top,right,base];
 				array_push(option_selections,opt);
+                if (point_and_click(opt)){
+                    diplo_pressed = slot;
+                }
 				opt_cord+=1;
                 yy+=30;                    
 
+            }
+            if (diplo_pressed>-1){
+                evaluate_chosen_diplomacy_option(diplo_pressed);
             }
             yy=__view_get( e__VW.YView, 0 );
         }
@@ -116,6 +126,22 @@ function basic_diplomacy_screen(){
     
     }
 }
+
+function evaluate_chosen_diplomacy_option(){
+    var _opt = diplo_option[diplo_pressed];
+    if (_opt.goto != ""){
+        scr_dialogue(_opt.goto);
+        exit;
+    }
+
+    var _pressed_option = _opt.key;
+    if (struct_exists(_opt, "method")){
+        if (is_callable(_opt.method)){
+            script_execute(_opt.method);
+        }
+    }
+}
+
 function scr_diplomacy_hit(selection, new_path, complex_path="none"){
     if (array_length(option_selections)>selection){
         if (point_and_click(option_selections[selection])){

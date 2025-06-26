@@ -221,7 +221,7 @@ function scr_demand(argument0) {
 
 
 	if (worked=true){
-	    var h;h=0;repeat(4){h+=1;obj_controller.diplo_option[h]="";obj_controller.diplo_goto[h]="";}
+	    clear_diplo_choices();
 	    if (rela="friendly") and (no_penalty=false){disposition[trading_demand]-=8;turns_ignored[trading_demand]+=3;if (trading_demand=8) then disposition[trading_demand]+=6;}
 	    if (rela="neutral") and (no_penalty=false){disposition[trading_demand]-=10;turns_ignored[trading_demand]+=6;if (trading_demand=8) then disposition[trading_demand]+=6;}
 	    if (rela="hostile") and (no_penalty=false){disposition[trading_demand]-=15;turns_ignored[trading_demand]+=9;if (trading_demand=8) then disposition[trading_demand]+=9;}
@@ -241,7 +241,7 @@ function scr_demand(argument0) {
 	}
 	if (worked=false){
 	    var h=0;
-	    repeat(4){h+=1;obj_controller.diplo_option[h]="";obj_controller.diplo_goto[h]="";}
+	    clear_diplo_choices();
 	    if (rela="friendly") and (no_penalty=false){
 	    	disposition[trading_demand]-=2;
 	    	turns_ignored[trading_demand]+=1;

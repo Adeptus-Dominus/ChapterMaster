@@ -797,7 +797,6 @@ diplo_text="";
 diplo_txt="";
 diplo_char=0;
 diplo_option = [];
-diplo_goto = [];
 
 diplo_alpha=0;
 // ** Sets combat to not true **

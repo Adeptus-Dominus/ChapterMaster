@@ -107,7 +107,7 @@ delete_features(planet.p_feature[num], P_features.Artifact);
 corrupt_artifact_collectors(last_artifact);
 
 obj_controller.trading_artifact=0;
-var h;h=0;repeat(4){h+=1;obj_controller.diplo_option[h]="";obj_controller.diplo_goto[h]="";}
+clear_diplo_choices();
 obj_controller.menu=0;
 instance_destroy();
 

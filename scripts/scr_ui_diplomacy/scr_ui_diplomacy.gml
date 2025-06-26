@@ -4,14 +4,20 @@ function draw_character_diplomacy_base_page(){
 			trade.draw();
 			demand.draw();
 			discuss.draw();
-			denounce.draw();
-			praise.draw();
 			alliance.draw();
+			denounce.draw();
+			praise.draw();			
 			declare_war.draw_shutter(praise.x1,alliance.y2,"WAR",0.4);
 		}
+	} else {
+		if (!valid_diplomacy_options()){
+			diplo_buttons.denounce.draw();
+			diplo_buttons.praise.draw();
+		}
 	}
-	diplo_buttons.exit_button.draw();
-
+	if (!valid_diplomacy_options() || force_goodbye){
+		diplo_buttons.exit_button.draw();
+	}
 }
 
 function intro_to_diplomacy(faction_enum){
@@ -475,10 +481,10 @@ function scr_ui_diplomacy() {
 		draw_set_halign(fa_left);
 		
 		//draw faction names, etc
-	    draw_text(xx+609,yy+285,string_hash_to_newline("Chapter 1"));
-	    draw_text(xx+609,yy+421,string_hash_to_newline("Chapter 2"));
-	    draw_text(xx+609,yy+557,string_hash_to_newline("Chapter 3"));
-	    draw_text(xx+609,yy+693,string_hash_to_newline("Chapter 4"));
+	    draw_text(xx+609,yy+285,"Chapter 1");
+	    draw_text(xx+609,yy+421,"Chapter 2");
+	    draw_text(xx+609,yy+557,"Chapter 3");
+	    draw_text(xx+609,yy+693,"Chapter 4");
     
 		//render status, i.e. whether at war, that stuff
 	    draw_set_font(fnt_40k_14);
@@ -669,10 +675,10 @@ function scr_ui_diplomacy() {
         if (diplomacy<10) and (warning=1) then warn="Consorting with xenos will cause your disposition with the Imperium to lower.";
         if (diplomacy>=10) and (warning=1) then warn="Consorting with heretics will cause your disposition with the Imperium to plummet.";
 
-        draw_rectangle(mouse_x-2,mouse_y+20,mouse_x+2+string_width_ext(string_hash_to_newline(string(warn)),-1,600),mouse_y+24+string_height_ext(string_hash_to_newline(string(warn)),-1,600),0);
+        draw_rectangle(mouse_x-2,mouse_y+20,mouse_x+2+string_width_ext(warn),-1,600),mouse_y+24+string_height_ext(warn),-1,600),0);
         draw_set_color(38144);
-        draw_rectangle(mouse_x-2,mouse_y+20,mouse_x+2+string_width_ext(string_hash_to_newline(string(warn)),-1,600),mouse_y+24+string_height_ext(string_hash_to_newline(string(warn)),-1,600),1);
-        draw_text_ext(mouse_x,mouse_y+22,string_hash_to_newline(string(warn)),-1,600);
+        draw_rectangle(mouse_x-2,mouse_y+20,mouse_x+2+string_width_ext(warn),-1,600),mouse_y+24+string_height_ext(warn),-1,600),1);
+        draw_text_ext(mouse_x,mouse_y+22,warn,-1,600);
     }
     
 	//scr_dialogue(diplomacy_pathway);
