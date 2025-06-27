@@ -220,17 +220,17 @@ function scr_librarium(){
                         }                         
                     }
                 }
-                else if (obj_ini.artifact_identified[menu_artifact] < 1) {
+                else if (cur_arti.identified() < 1) {
                     draw_set_color(881503);
                     artif_descr = "";
                     try{
-                        artif_descr = obj_ini.artifact_struct[menu_artifact].description();
+                        artif_descr = cur_arti.description();
                     }   catch( _exception){
                         handle_exception(_exception);
                     }
                     tooltip = "";
                     tooltip_other = "";
-                    var arti_data = gear_weapon_data("any",obj_ini.artifact[menu_artifact], "all", false, obj_ini.artifact_quality[menu_artifact]);
+                    var arti_data = gear_weapon_data("any",cur_arti.type(), "all", false, cur_arti.quality());
 
                     var _can_equip = cur_arti.can_equip();
                     if (_can_equip){
@@ -347,13 +347,13 @@ function scr_librarium(){
                 if (obj_controller.artifacts>0){
                     for (var i = 1; i <= 20; i++) {
                         if (i <= 9 && i<array_length(capital_num)) {
-                            if (capital_num[i] = obj_ini.artifact_sid[obj_controller.menu_artifact] - 500) then good = 1;
+                            if (capital_num[i] = cur_arti.ship_id()) then good = 1;
                         }
                         if (i<array_length(frigate_num)){
-                            if (frigate_num[i] = obj_ini.artifact_sid[obj_controller.menu_artifact] - 500) then good = 1;
+                            if (frigate_num[i] = cur_arti.ship_id()) then good = 1;
                         }
                         if (i<array_length(escort_num)){
-                            if (escort_num[i] = obj_ini.artifact_sid[obj_controller.menu_artifact] - 500) then good = 1;
+                            if (escort_num[i] = cur_arti.ship_id()) then good = 1;
                         }
                     }
                 }
@@ -361,4 +361,7 @@ function scr_librarium(){
                 if (good = 2) then obj_controller.identifiable = 1;
             }
         }
+
+    
+
 }
