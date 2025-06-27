@@ -119,6 +119,7 @@ if (!_is_audience){
 // if (current_popup>popups) or (popup[1]=0) then popups_end=1;
 
 if (popups_end=1){
+    show_debug_message("end turn final sequence");
 
 
     /*if (popups=0){

@@ -28,7 +28,7 @@ function scr_dialogue(diplo_keyphrase) {
 	if (diplo_keyphrase=="declare_war") and (string_count("|SC|",obj_controller.useful_info)>1) and (diplomacy==4) then sorc=true;
 
 	if (diplo_keyphrase=="intro") or (diplo_keyphrase=="intro1") or ((diplomacy==10) and (diplo_keyphrase=="intro2")){
-	    event_log=$"Chapter Master {obj_ini.master_name} meets the {obj_controller.faction[diplomacy]} {obj_controller.faction_title[diplomacy}, {obj_controller.faction_leader[diplomacy]}.";
+	    event_log=$"Chapter Master {obj_ini.master_name} meets the {obj_controller.faction[diplomacy]} {obj_controller.faction_title[diplomacy]}, {obj_controller.faction_leader[diplomacy]}.";
 	    scr_event_log("",event_log);
 	}
 
@@ -264,7 +264,7 @@ function scr_dialogue(diplo_keyphrase) {
 
 	if (diplo_keyphrase=="cs_meeting135"){
 		disposition[10]=max(disposition[10]+10,10);
-	    diplo_text=$"[[{obj_controller.faction_leader[eFACTION.Chaos}’s power armour grinds as he leans forward, his posture predatory.]]\nThen we have an accord. We will assist you as you take your first steps on the path toward Chaos. And my payment for all this?\n[[He chuckles.]]\nEnlisting an entire chapter in the service of the Dark Gods is all the reward I require.";
+	    diplo_text=$"[[{obj_controller.faction_leader[eFACTION.Chaos]}’s power armour grinds as he leans forward, his posture predatory.]]\nThen we have an accord. We will assist you as you take your first steps on the path toward Chaos. And my payment for all this?\n[[He chuckles.]]\nEnlisting an entire chapter in the service of the Dark Gods is all the reward I require.";
 	    diplo_text+="\nBut you cannot simply paint the eight-pointed star on your wargear and begin slaughtering in the name of the Dark Gods. No, some within your chapter will resist the choice you’ve made, either out of loyalty to the Corpse Emperor or out of fear of Chaos. Just think, it will be like your own little heresy. The ''"+string(obj_ini.master_name)+" Heresy!''";    
 	    add_diplomacy_option({option_text:"[Continue]", goto : "cs_meeting136"});
 	}
@@ -767,7 +767,7 @@ function scr_dialogue(diplo_keyphrase) {
 	if (diplomacy==2){
 	    if (diplo_keyphrase=="intro"){
 	        rando=choose(1,2);
-	        if (rando==1) then tempd=$"[[To see Sector Commander {faction_leader[eFACTION.Imperium} is to see what happens to heroes when their glory days have passed and the rot of ages sets in. Now a huge mass of fat and flab, he was once a mighty and respected general and the commander of a score of successful campaigns. As his reward for a glorious career, he was given commander of the sector and, as has happened to so many others, the bureaucracy crushed his warrior spirit and turned him into the man he is.]]";
+	        if (rando==1) then tempd=$"[[To see Sector Commander {faction_leader[eFACTION.Imperium]} is to see what happens to heroes when their glory days have passed and the rot of ages sets in. Now a huge mass of fat and flab, he was once a mighty and respected general and the commander of a score of successful campaigns. As his reward for a glorious career, he was given commander of the sector and, as has happened to so many others, the bureaucracy crushed his warrior spirit and turned him into the man he is.]]";
 	        if (rando==2) then tempd=$"[[Loyal to allies and venomous to enemies, few figures command such opposing reputations as {faction_leader[eFACTION.Imperium]}. Enemies of the Imperium speak in hushed tones of his incredible cruelty and harsh actions against them, whereas the citizens and organizations that lay claim to the protection of the Emperor loudly toast his generosity and stalwart courage. A friend to keep and an enemy to lose.]]";
 	        tempd+="\n#";
 	        rando=choose(1,2);

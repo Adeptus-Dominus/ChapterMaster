@@ -12,9 +12,11 @@ function scr_menu_clear_up(specific_area_function) {
             if (scrollbar_engaged != 0) {
                 exit;
             }
+            show_debug_message("men0");
             if (instance_exists(obj_ingame_menu)) {
                 exit;
             }
+            show_debug_message("men0.5");
 
             if (instance_exists(obj_turn_end) && (obj_controller.complex_event != true) && (!instance_exists(obj_temp_meeting)) && array_length(obj_turn_end.audience_stack) == 0) {
                 if ((obj_turn_end.popups_end == 1) && (audience == 0) && (cooldown <= 0)) {
@@ -23,16 +25,16 @@ function scr_menu_clear_up(specific_area_function) {
                     }
                 }
             }
-
+            show_debug_message("men1");
             if (instance_exists(obj_star_select)) {
                 exit;
             }
             if (instance_exists(obj_bomb_select)) {
                 exit;
             }
-
+            show_debug_message("men2");
             if ((zoomed == 0) && (cooldown <= 0) && (menu >= 500) && (menu <= 510)) {
-                show_debug_message("high menu");
+                //show_debug_message("high menu");
                 if (mouse_y >= __view_get(e__VW.YView, 0) + 27) {
                     cooldown = 8000;
                     if ((menu >= 500) && (temp[menu - 434] == "")) {
@@ -62,6 +64,7 @@ function scr_menu_clear_up(specific_area_function) {
                     exit;
                 }
             }
+            show_debug_message("men3");
             return spec_func();
         }
     }
@@ -71,11 +74,12 @@ function scr_menu_clear_up(specific_area_function) {
 function scr_change_menu(specific_area_function) {
     var continue_sequence = false;
     with(obj_controller) {
+        main_map_defualts();
         set_zoom_to_default();
         continue_sequence = scr_menu_clear_up(function() {
-            if ((zoomed == 0) && (diplomacy == 0)) {
+            //if ((zoomed == 0) && (diplomacy == 0)) {
                 return true;
-            }
+            //}
         });
         if (continue_sequence) {
             with(obj_fleet_select) {
@@ -92,6 +96,21 @@ function scr_change_menu(specific_area_function) {
     }
 }
 
+function main_map_defualts(){
+    menu = 0;
+    hide_banner = 0;
+    location_viewer.update_garrison_log();
+    managing = 0; 
+    managing = 0;
+    menu_adept = 0;
+    view_squad = false;
+    unit_profile = false;
+    force_goodbye = 0;
+    hide_banner = 0;
+    diplomacy = 0;
+    audience = 0;
+}
+
 function scr_in_game_help() {
     scr_change_menu(function() {
         with(obj_controller) {
@@ -105,14 +124,7 @@ function scr_in_game_help() {
                     instance_activate_object(obj_event_log);
                     obj_event_log.top = 1;
                     obj_event_log.help = 1;
-                } else {
-                    menu = 0;
-                    click = 1;
-                    hide_banner = 0;
-                }
-                managing = 0;
-                view_squad = false;
-                unit_profile = false;
+                } 
             }
         }
     });
@@ -167,12 +179,7 @@ function scr_toggle_manage() {
             if (menu != 1) {
                 basic_manage_settings();
                 scr_management(1);
-            } else if (menu == 1) {
-                menu = 0;
-                hide_banner = 0;
-                location_viewer.update_garrison_log();
             }
-            managing = 0;
         }
     });
 }
@@ -185,18 +192,11 @@ function scr_toggle_setting() {
                 popup = 0;
                 selected = 0;
                 hide_banner = 1;
-            } else if (menu == 21) {
-                if (!settings) {
-                    menu = 0;
-                    cooldown = 8000;
-                    click = 1;
-                    hide_banner = 0;
-                } else if (settings) {
-                    menu = 21;
-                    cooldown = 8000;
-                    click = 1;
-                    settings = 0;
-                }
+            }  else if (settings) {
+                menu = 21;
+                cooldown = 8000;
+                click = 1;
+                settings = 0;
             }
         }
     });
@@ -214,10 +214,7 @@ function scr_toggle_apothecarion() {
                 menu = 11;
 
                 temp[36] = scr_role_count(obj_ini.role[100][15], "");
-            } else if (menu == 11) {
-                menu = 0;
             }
-            managing = 0;
         }
     });
 }
@@ -249,12 +246,7 @@ function scr_toggle_reclu() {
                         }
                     }
                 }
-            } else if (menu == 12) {
-                menu = 0;
-
-                location_viewer.update_garrison_log();
-            }
-            managing = 0;
+            } 
         }
     });
 }
@@ -281,12 +273,7 @@ function scr_toggle_lib() {
                 artifact_destroy = new ShutterButton();
                 artifact_namer = new TextBarArea(xx + 622, yy + 460, 350);
                 set_chapter_arti_data();
-            } else if (menu == 13) {
-                menu = 0;
-
-                location_viewer.update_garrison_log();
-            }
-            managing = 0;
+            } 
         }
     });
 }
@@ -294,17 +281,13 @@ function scr_toggle_lib() {
 function scr_toggle_armamentarium() {
     scr_change_menu(function() {
         with(obj_controller) {
-            menu_adept = 0;
-            hide_banner = 1;
-            if (scr_role_count("Forge Master", "0") == 0) {
-                menu_adept = 1;
-            }
             if (menu != 14) {
-                set_up_armentarium();
-            } else if (menu == 14) {
-                menu = 0;
+                if (scr_role_count("Forge Master", "0") == 0) {
+                    menu_adept = 1;
+                }
+                hide_banner = 1;
+                set_up_arsmentarium();
             }
-            managing = 0;
         }
     });
 }
@@ -322,18 +305,11 @@ function scr_toggle_recruiting() {
                     }
                 }
             }
-            menu_adept = 0;
-            hide_banner = 1;
 
             if (menu != 15) {
                 set_up_recruitment_view();
-            } else if (menu == 15) {
-                menu = 0;
-
-                location_viewer.update_garrison_log();
-            }
-
-            managing = 0;
+                hide_banner = 1;
+            } 
         }
     });
 }
@@ -342,7 +318,6 @@ function scr_toggle_fleet_area() {
     scr_change_menu(function() {
         with(obj_controller) {
             menu_adept = 0;
-            hide_banner = 1;
             var geh = 0,
                 good = 0;
             for (geh = 1; geh <= 50; geh++) {
@@ -353,6 +328,7 @@ function scr_toggle_fleet_area() {
                 }
             }
             if (menu != 16) {
+                hide_banner = 1;
                 //TODO rewrite all this shit when fleets finally become OOP
                 menu = 16;
 
@@ -414,13 +390,7 @@ function scr_toggle_fleet_area() {
                 }
                 man_max = m;
                 man_current = 0;
-            } else if (menu == 16) {
-                menu = 0;
-
-                cooldown = 8000;
-                click = 1;
             }
-            managing = 0;
         }
     });
 }
@@ -435,16 +405,7 @@ function scr_toggle_diplomacy() {
                 audience = 0;
                 diplomacy = 0;
                 hide_banner = 1;
-            } else if (menu == 20) {
-                show_debug_message("menu_diplomacy_out");
-                menu = 0;
-                audience = 0;
-                diplomacy = 0;
-                hide_banner = 0;
-                force_goodbye = 0;
-                location_viewer.update_garrison_log();
             }
-            managing = 0;
         }
     });
 }
@@ -458,12 +419,7 @@ function scr_toggle_event_log() {
                 hide_banner = 1;
                 instance_activate_object(obj_event_log);
                 obj_event_log.top = 1;
-            } else if (menu == 17) {
-                menu = 0;
-
-                hide_banner = 0;
             }
-            managing = 0;
         }
     });
 }
@@ -570,20 +526,6 @@ function scr_end_turn() {
                     scr_turn_first();
                 }
             }
-
-            if (menu == 1) {
-                menu = 0;
-                cooldown = 8000;
-                click = 1;
-                hide_banner = 0;
-            }
-            managing = 0;
-			/*with(obj_ini){
-				for (var i=0;i<11;i++){
-					scr_company_order(i);
-				}
-			}*/
-            location_viewer.update_garrison_log();
         }
     });
 }

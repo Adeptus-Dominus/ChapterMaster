@@ -675,9 +675,9 @@ function scr_ui_diplomacy() {
         if (diplomacy<10) and (warning=1) then warn="Consorting with xenos will cause your disposition with the Imperium to lower.";
         if (diplomacy>=10) and (warning=1) then warn="Consorting with heretics will cause your disposition with the Imperium to plummet.";
 
-        draw_rectangle(mouse_x-2,mouse_y+20,mouse_x+2+string_width_ext(warn),-1,600),mouse_y+24+string_height_ext(warn),-1,600),0);
+        draw_rectangle(mouse_x-2,mouse_y+20,mouse_x+2+string_width_ext(warn,-1,600),mouse_y+24+string_height_ext(warn,-1,600),0);
         draw_set_color(38144);
-        draw_rectangle(mouse_x-2,mouse_y+20,mouse_x+2+string_width_ext(warn),-1,600),mouse_y+24+string_height_ext(warn),-1,600),1);
+        draw_rectangle(mouse_x-2,mouse_y+20,mouse_x+2+string_width_ext(warn,-1,600),mouse_y+24+string_height_ext(warn,-1,600),1);
         draw_text_ext(mouse_x,mouse_y+22,warn,-1,600);
     }
     
