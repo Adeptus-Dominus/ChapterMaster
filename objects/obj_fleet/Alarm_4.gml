@@ -35,16 +35,14 @@ if (player_started=1){
     
     if (instance_exists(obj_star_select)) then with(obj_star_select){
         alarm[1]=1;player_fleet=0;
-        var i;i=-1;repeat(15){i+=1;en_fleet[i]=0;}
+        var i=-1;repeat(15){i+=1;en_fleet[i]=0;}
     }
     if (instance_exists(pla_fleet)){
         pla_fleet.acted=2;
         if (capital+frigate+escort=0) then with(pla_fleet){instance_destroy();}
     }
     if (enemy[1]!=4) and (obj_controller.faction_status[enemy[1]]!="War"){
-        obj_controller.audiences+=1;obj_controller.audien[obj_controller.audiences]=enemy[1];
-        obj_controller.audien_topic[obj_controller.audiences]="declare_war";
-        obj_controller.disposition[enemy[1]]-=20;
+        scr_audience(enemy[1], "declare_war", obj_controller.disposition[enemy[1]]-20, "War", 3, 2);
     }
 }
 

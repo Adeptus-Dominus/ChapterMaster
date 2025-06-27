@@ -1,28 +1,48 @@
 
-if (current_audience<=audiences) then current_audience+=1;
+var _is_audience = false;
+if (array_length(audience_stack) > 0){
+    var current_audience = audience_stack[0];
+    _is_audience = true;
+}
 
-if (audien[current_audience]!=0){
-    with(obj_controller){if (zoomed=1) then scr_zoom();}
 
-    obj_controller.audience=self.audien[self.current_audience];
-    obj_controller.menu=20;
-    obj_controller.diplomacy=obj_controller.audience;
+if (_is_audience){
+    with(obj_controller){
+        if (zoomed=1){
+            scr_zoom();
+        }
+    }
+
+    show_debug_message(current_audience);
+
+    if (obj_controller.menu != MENU.Diplomacy){
+        scr_toggle_diplomacy();
+    }
+    obj_controller.audience=current_audience.faction;
+    obj_controller.diplomacy=current_audience.faction;
     
-    if (obj_controller.diplomacy=10) and (obj_controller.faction_gender[10]=2) then scr_music("blood",60);
+    if (obj_controller.diplomacy=10) and (obj_controller.faction_gender[10]=2){
+        scr_music("blood",60);
+    }
     
-    if (string_count("intro",audien_topic[current_audience])>0){
+    if (string_count("intro",current_audience.topic)>0){
         obj_controller.known[obj_controller.diplomacy]=2;
         obj_controller.faction_justmet=1;
-        if (obj_controller.diplomacy=6) then with(obj_controller){scr_dialogue("intro1");}
-        if (obj_controller.diplomacy!=6) then with(obj_controller){scr_dialogue("intro");}
-    }
-    
-    if (audien_topic[current_audience]!="intro"){
-        with(obj_controller){scr_dialogue(obj_turn_end.audien_topic[obj_turn_end.current_audience]);}
+        if (obj_controller.diplomacy=6){
+
+             scr_dialogue("intro1");
+
+        }
+        if (obj_controller.diplomacy!=6){
+            show_debug_message("new_intro");
+            scr_dialogue("intro");
+
+        }
+    }else {
+        scr_dialogue(current_audience.topic);
         
-        // "mission1"
-        
     }
+    array_delete(audience_stack, 0, 1);
     exit;
 }
 
@@ -37,7 +57,7 @@ if (audien[current_audience]!=0){
 // if (current_audience<=audiences) then alarm[1]=5;
 
 
-if (audien[1]=0) or (current_audience>audiences){
+if (!_is_audience){
     current_popup+=1;
     
     
@@ -101,6 +121,7 @@ if (audien[1]=0) or (current_audience>audiences){
 // if (current_popup>popups) or (popup[1]=0) then popups_end=1;
 
 if (popups_end=1){
+    show_debug_message("end turn final sequence");
 
 
     /*if (popups=0){

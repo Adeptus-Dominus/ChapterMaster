@@ -293,8 +293,8 @@ function drop_select_draw() {
                     }
 
                     if (obj_ncombat.enemy == 11) {
-                        if (planet_feature_bool(obj_ncombat.battle_object.p_feature[obj_ncombat.battle_id], P_features.World_Eaters) == 1) {
-                            obj_ncombat.battle_special = "world_eaters";
+                        if (planet_feature_bool(obj_ncombat.battle_object.p_feature[obj_ncombat.battle_id], P_features.ChaosWarband) == 1) {
+                            obj_ncombat.battle_special = "ChaosWarband";
                             obj_ncombat.leader = 1;
                         }
                     }
@@ -328,7 +328,7 @@ function drop_select_draw() {
                     }
 
                     // if (obj_ncombat.threat>1) and (obj_ncombat.enemy!=13) then obj_ncombat.threat-=1;
-                    if ((obj_ncombat.threat > 1) && (obj_ncombat.battle_special != "world_eaters") && (attack == 0)) {
+                    if ((obj_ncombat.threat > 1) && (obj_ncombat.battle_special != "ChaosWarband") && (attack == 0)) {
                         obj_ncombat.threat -= 1;
                     }
                     if (obj_ncombat.threat < 1) {

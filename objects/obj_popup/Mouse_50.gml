@@ -603,7 +603,7 @@ if (type=9.1) and (mouse_x>=xx+240+420) and (mouse_x<xx+387+420) and (cooldown<=
 			}// 137 ; chance for mechanicus to get very pissed
             // End disposition
             obj_controller.cooldown=7000;
-            obj_controller.menu=20;
+            scr_toggle_diplomacy();
             obj_controller.diplomacy=giveto;
             obj_controller.force_goodbye=-1;
             var the;

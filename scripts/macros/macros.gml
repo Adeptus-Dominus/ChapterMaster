@@ -19,6 +19,20 @@
 #macro LIST_BASIC_POWER_ARMOUR ["MK7 Aquila", "MK6 Corvus", "MK5 Heresy", "MK8 Errant", "MK4 Maximus", "MK3 Iron Armour","Power Armour"]
 #macro LIST_TERMINATOR_ARMOUR ["Terminator Armour", "Tartaros"]
 
+enum MENU {
+    Default = 0,
+    Manage = 1,
+    Apothecarion = 11,
+    Reclusiam = 12,
+    Librarium = 13,
+    Armamentarium = 14,
+    Recruiting = 15,
+    Fleet = 16,
+    EventLog = 17,
+    Diplomacy = 20,
+    Settings = 21,
+    GameHelp = 30,
+}
 
 enum luck {
     bad = -1,

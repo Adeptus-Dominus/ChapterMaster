@@ -216,9 +216,6 @@ function scr_save_controller(save_id){
         ini_write_real("Factions","annoyed"+string(g),obj_controller.annoyed[g]);
         ini_write_real("Factions","ignore"+string(g),obj_controller.ignore[g]);
         ini_write_real("Factions","turns_ignored"+string(g),obj_controller.turns_ignored[g]);
-
-        ini_write_real("Factions","audience"+string(g),obj_controller.audien[g]);
-        ini_write_string("Factions","audience_topic"+string(g),obj_controller.audien_topic[g]);
     }
     //
     var g;g=0;

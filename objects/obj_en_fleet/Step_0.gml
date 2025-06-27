@@ -98,7 +98,9 @@ if (owner = eFACTION.Tau) and (action="") and (obj_controller.tau_messenger>=30)
         if (good=1){
             fleet.action_x=stir.x;
             fleet.action_y=stir.y;
-            fleet.alarm[4]=1;
+            with(fleet){
+                set_fleet_movement();
+            }
         }
     }
     

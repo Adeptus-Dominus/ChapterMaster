@@ -7,7 +7,7 @@ if (duration=0){
         if (owner=ns.owner) and (action="") and (home_x+home_y!=0) and (point_distance(x,y,ns.x,ns.y)<=ns.radius){
             action_x=home_x;
             action_y=home_y;
-            alarm[4]=1;
+            set_fleet_movement();
         }
     }
     if (instance_exists(obj_turn_end)){

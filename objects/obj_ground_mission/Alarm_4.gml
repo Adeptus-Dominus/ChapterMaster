@@ -51,9 +51,7 @@ if (mission="bad"){
     if (planet.p_owner[num]=8) then obj_controller.disposition[8]-=8;
     
     if (planet.p_owner[num]>=3) and (planet.p_owner[num]<=6){
-        obj_controller.audiences+=1;
-        obj_controller.audien[obj_controller.audiences]=planet.p_owner[num];
-        obj_controller.audien_topic[obj_controller.audiences]="artifact_angry";
+        scr_audience(planet.p_owner[num], "artifact_angry",);
     }
 }
 
@@ -109,7 +107,7 @@ delete_features(planet.p_feature[num], P_features.Artifact);
 corrupt_artifact_collectors(last_artifact);
 
 obj_controller.trading_artifact=0;
-var h;h=0;repeat(4){h+=1;obj_controller.diplo_option[h]="";obj_controller.diplo_goto[h]="";}
+clear_diplo_choices();
 obj_controller.menu=0;
 instance_destroy();
 

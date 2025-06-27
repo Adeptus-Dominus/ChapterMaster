@@ -100,7 +100,6 @@ function scr_load_controller(save_id){
 	    obj_controller.unload=ini_read_real("Controller","unload",0);
 	    obj_controller.diplomacy=0;
 	    obj_controller.trading=0;
-	    obj_controller.audience=0;
 	    obj_controller.force_goodbye=0;
 	    obj_controller.combat=0;
 	    obj_controller.new_vehicles=ini_read_real("Controller","new_vehicles",0);
@@ -324,8 +323,6 @@ function scr_load_controller(save_id){
 	        obj_controller.annoyed[g]=ini_read_real("Factions","annoyed"+string(g),0);
 	        obj_controller.ignore[g]=ini_read_real("Factions","ignore"+string(g),0);
 	        obj_controller.turns_ignored[g]=ini_read_real("Factions","turns_ignored"+string(g),0);
-	        obj_controller.audien[g]=ini_read_real("Factions","audience"+string(g),0);
-	        obj_controller.audien_topic[g]=ini_read_string("Factions","audience_topic"+string(g),"");
 	    }
 	    //
 	    var g;g=0;

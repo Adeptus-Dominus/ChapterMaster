@@ -89,23 +89,23 @@ function scr_purge_world(star, planet, action_type, action_score) {
 		var _displayed_killed = star.p_large[planet] == 1 ? $"{kill} billion" : scr_display_number(floor(kill));
 	    txt1 += $"##The world had {_displayed_population} Imperium subjects. {_displayed_killed} were purged over the duration of the bombardment.##Heresy has fallen down to {max(0, heres_after)}%.";
     
-	    if (pop_after=0){
+	    if (pop_after<=0){
 	        if (star.p_owner[planet]=2) and (obj_controller.faction_status[2]!="War"){
-	            if (star.p_type[planet]="Temperate") or (star.p_type[planet]="Hive") or (star.p_type[planet]="Desert"){
-	                obj_controller.audiences+=1;obj_controller.audien[obj_controller.audiences]=2;
-	                obj_controller.audien_topic[obj_controller.audiences]="bombard_angry";
+	            if (star.p_type[planet]="Temperate" || star.p_type[planet]="Hive" || star.p_type[planet]="Desert"){
+	            	var _disp_hit = -10;
+		            if (star.p_type[planet]="Temperate") then _disp_hit = -5;
+		            if (star.p_type[planet]="Desert") then _disp_hit = -3;         	
+
+	                scr_audience(eFACTION.Imperium, "bombard_angry", _disp_hit, "", 0, 0);
 	            }
-	            if (star.p_type[planet]="Temperate") then obj_controller.disposition[2]-=5;
-	            if (star.p_type[planet]="Desert") then obj_controller.disposition[2]-=3;
-	            if (star.p_type[planet]="Hive") then obj_controller.disposition[2]-=10;
 	        }
 	    }
 	    if (star.p_owner[planet]=3) and (obj_controller.faction_status[3]!="War"){
-	        obj_controller.audiences+=1;
-	        obj_controller.audien[obj_controller.audiences]=3;
-	        obj_controller.audien_topic[obj_controller.audiences]="bombard_angry";
-	        if (star.p_type[planet]="Forge") then obj_controller.disposition[3]-=15;
-	        if (star.p_type[planet]="Ice") then obj_controller.disposition[3]-=7;
+
+	    	if (star.p_type[planet]="Forge") then _disp_hit =-15;
+	        if (star.p_type[planet]="Ice") then _disp_hit =-7;
+	    	scr_audience(eFACTION.Inquisition, "bombard_angry", _disp_hit, "", 0, 0);
+
 	    }
 
     

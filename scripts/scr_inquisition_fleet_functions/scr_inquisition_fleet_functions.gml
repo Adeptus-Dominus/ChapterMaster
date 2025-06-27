@@ -13,6 +13,17 @@ function base_inquis_fleet (){
     }
 }
 
+function hunt_player_serfs(){
+    explode_script(obj_controller.temp[1008],"|");
+    var tb=string(explode[0]);
+    var tc=real(explode[1]);
+    var ev=0;
+    for(var v=1; v<=99; v++){
+        if (ev==0) and (event[v]=="") then ev=v;
+    }
+    event[ev]="remove_serf|"+string(tb)+"|"+string(tc)+"|";
+    event_duration[ev]=choose(1,2);   
+}
 
 function inquisition_fleet_inspection_chase(){
 	var good=0,acty="";

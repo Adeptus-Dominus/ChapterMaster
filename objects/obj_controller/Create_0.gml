@@ -396,6 +396,7 @@ hide_banner=0;
 // ui stuff
 var xx=__view_get( e__VW.XView, 0 );
 var yy=__view_get( e__VW.YView, 0 );
+menu_lock = false;
 menu_buttons = {
     "chapter_manage":new MainMenuButton(spr_ui_but_1, spr_ui_hov_1,,,ord("M"),scr_toggle_manage),
     "chapter_settings":new MainMenuButton(spr_ui_but_1, spr_ui_hov_1,,,ord("S"),scr_toggle_setting),
@@ -754,37 +755,9 @@ array_set_range(temp, 0, 199, "");
 temp[90] = 0;
 temp[9000] = "";
 // ** Resets all audiences **
+audience_stack = [];
 audiences=0;
-audien[0]=0;
-audien[1]=0;
-audien[2]=0;
-audien[3]=0;
-audien[4]=0;
-audien[5]=0;
-audien[6]=0;
-audien[7]=0;
-audien[8]=0;
-audien[9]=0;
-audien[10]=0;
-audien[11]=0;
-audien[12]=0;
-audien[13]=0;
-audien[14]=0;
-audien_topic[0]="";
-audien_topic[1]="";
-audien_topic[2]="";
-audien_topic[3]="";
-audien_topic[4]="";
-audien_topic[5]="";
-audien_topic[6]="";
-audien_topic[7]="";
-audien_topic[8]="";
-audien_topic[9]="";
-audien_topic[10]="";
-audien_topic[11]="";
-audien_topic[12]="";
-audien_topic[13]="";
-audien_topic[14]="";
+
 // ** Sets default recruiting vars **
 recruits=0;
 recruiting_worlds="";
@@ -824,10 +797,8 @@ diplo_last="";
 diplo_text="";
 diplo_txt="";
 diplo_char=0;
-for(var q=0; q<6; q++){
-    diplo_option[q]="";
-    diplo_goto[q]="";
-}
+diplo_option = [];
+
 diplo_alpha=0;
 // ** Sets combat to not true **
 combat=0;
@@ -872,46 +843,6 @@ inqis_flag_lair=0;
 inqis_flag_gene=0;
 
 faction_justmet=0;
-
-trade_mine[0]="";
-trade_mine[1]="Requisition";
-trade_mine[2]="Gene-Seed";
-trade_mine[3]="STC Fragment";
-trade_mine[4]="Info Chip";
-trade_theirs[0]="";
-trade_theirs[1]="";
-trade_theirs[2]="";
-trade_theirs[3]="";
-trade_theirs[4]="";
-trade_theirs[5]="";
-trade_theirs[6]="";
-trade_disp[0]=0;
-trade_disp[1]=0;
-trade_disp[2]=0;
-trade_disp[3]=0;
-trade_disp[4]=0;
-trade_disp[5]=0;
-trade_disp[6]=0;
-trade_take[0]="";
-trade_take[1]="";
-trade_take[2]="";
-trade_take[3]="";
-trade_take[4]="";
-trade_tnum[0]=0;
-trade_tnum[1]=0;
-trade_tnum[2]=0;
-trade_tnum[3]=0;
-trade_tnum[4]=0;
-trade_give[0]="";
-trade_give[1]="";
-trade_give[2]="";
-trade_give[3]="";
-trade_give[4]="";
-trade_mnum[0]=0;
-trade_mnum[1]=0;
-trade_mnum[2]=0;
-trade_mnum[3]=0;
-trade_mnum[4]=0;
 // ** Sets up starting requisition **
 requisition=500;
 if (instance_exists(obj_ini)){
@@ -923,6 +854,8 @@ if (instance_exists(obj_ini)){
     }
 }
 if (is_test_map==true) then requisition=50000;
+
+trade_attempt = false;
 // ** Sets income **
 income=0;
 income_last=0;

@@ -24,5 +24,7 @@ if (fast>=alerts){
     alarm[3]=min(alarm[3],360);
 }
 
-if (alerts=0) then instance_destroy();
+if (alerts=0){
+    instance_destroy();
+}
 

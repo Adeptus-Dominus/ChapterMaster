@@ -1,177 +1,64 @@
 function scr_trade_dep() {
 
+	var  _goods = cargo_data.player_goods;
 
-	if (trade_goods="none") then exit;
-
-
-	var g, n, r, temp1, temp2;
-	r=-1;repeat(100){r+=1;g[r]="";n[r]=0;}
-
-	temp1=0;temp2=string_count("|",trade_goods);
-
-	explode_script(trade_goods,"|");
-	r=0;repeat(temp2){r+=1;
-	    g[r]=string(explode[r-1]);// show_message(string(g[r]));
-	}
-	r=0;repeat(temp2){r+=1;
-	    explode_script(g[r],"!");g[r]=string(explode[0]);n[r]=real(explode[1]);
-	    // show_message(string(g[r])+" x"+string(n[r]));
-	}
-
-
-
-	/*if (string_count("|",trade_goods)=4){
-	    explode_script(trade_goods,"|");
-	    g[1]=string(explode[0]);
-	    g[2]=string(explode[1]);
-	    g[3]=string(explode[2]);
-	    g[4]=string(explode[3]);
-    
-	    explode_script(g[1],"!");g[1]=string(explode[0]);n[1]=real(explode[1]);
-	    explode_script(g[2],"!");g[2]=string(explode[0]);n[2]=real(explode[1]);
-	    explode_script(g[3],"!");g[3]=string(explode[0]);n[3]=real(explode[1]);
-	    explode_script(g[4],"!");g[4]=string(explode[0]);n[4]=real(explode[1]);
-	}*/
-
-
-
-
-	/*if (string_count("|",trade_goods)=1){
-	    explode_script(trade_goods,"|");
-	    g[1]=string(explode[0]);
-	    explode_script(g[1],"!");
-	    g[1]=string(explode[0]);
-	    n[1]=real(explode[1]);
-	}
-	if (string_count("|",trade_goods)=2){
-	    explode_script(trade_goods,"|");
-	    g[1]=string(explode[0]);
-	    g[2]=string(explode[1]);
-    
-	    explode_script(g[1],"!");g[1]=string(explode[0]);n[1]=real(explode[1]);
-	    explode_script(g[2],"!");g[2]=string(explode[0]);n[2]=real(explode[1]);
-	}
-	if (string_count("|",trade_goods)=3){
-	    explode_script(trade_goods,"|");
-	    g[1]=string(explode[0]);
-	    g[2]=string(explode[1]);
-	    g[3]=string(explode[2]);
-    
-	    explode_script(g[1],"!");g[1]=string(explode[0]);n[1]=real(explode[1]);
-	    explode_script(g[2],"!");g[2]=string(explode[0]);n[2]=real(explode[1]);
-	    explode_script(g[3],"!");g[3]=string(explode[0]);n[3]=real(explode[1]);
-	}
-	if (string_count("|",trade_goods)=4){
-	    explode_script(trade_goods,"|");
-	    g[1]=string(explode[0]);
-	    g[2]=string(explode[1]);
-	    g[3]=string(explode[2]);
-	    g[4]=string(explode[3]);
-    
-	    explode_script(g[1],"!");g[1]=string(explode[0]);n[1]=real(explode[1]);
-	    explode_script(g[2],"!");g[2]=string(explode[0]);n[2]=real(explode[1]);
-	    explode_script(g[3],"!");g[3]=string(explode[0]);n[3]=real(explode[1]);
-	    explode_script(g[4],"!");g[4]=string(explode[0]);n[4]=real(explode[1]);
-	}
-	if (string_count("|",trade_goods)=5){
-	    explode_script(trade_goods,"|");
-	    g[1]=string(explode[0]);
-	    g[2]=string(explode[1]);
-	    g[3]=string(explode[2]);
-	    g[4]=string(explode[3]);
-	    g[5]=string(explode[4]);
-    
-	    explode_script(g[1],"!");g[1]=string(explode[0]);n[1]=real(explode[1]);
-	    explode_script(g[2],"!");g[2]=string(explode[0]);n[2]=real(explode[1]);
-	    explode_script(g[3],"!");g[3]=string(explode[0]);n[3]=real(explode[1]);
-	    explode_script(g[4],"!");g[4]=string(explode[0]);n[4]=real(explode[1]);
-	    explode_script(g[5],"!");g[5]=string(explode[0]);n[5]=real(explode[1]);
-	}
-	if (string_count("|",trade_goods)=6){
-	    explode_script(trade_goods,"|");
-	    g[1]=string(explode[0]);
-	    g[2]=string(explode[1]);
-	    g[3]=string(explode[2]);
-	    g[4]=string(explode[3]);
-	    g[5]=string(explode[4]);
-	    g[6]=string(explode[5]);
-    
-	    explode_script(g[1],"!");g[1]=string(explode[0]);n[1]=real(explode[1]);
-	    explode_script(g[2],"!");g[2]=string(explode[0]);n[2]=real(explode[1]);
-	    explode_script(g[3],"!");g[3]=string(explode[0]);n[3]=real(explode[1]);
-	    explode_script(g[4],"!");g[4]=string(explode[0]);n[4]=real(explode[1]);
-	    explode_script(g[5],"!");g[5]=string(explode[0]);n[5]=real(explode[1]);
-	    explode_script(g[6],"!");g[6]=string(explode[0]);n[6]=real(explode[1]);
-	}
-	if (string_count("|",trade_goods)=7){
-	    explode_script(trade_goods,"|");
-	    g[1]=string(explode[0]);
-	    g[2]=string(explode[1]);
-	    g[3]=string(explode[2]);
-	    g[4]=string(explode[3]);
-	    g[5]=string(explode[4]);
-	    g[6]=string(explode[5]);
-	    g[7]=string(explode[6]);
-    
-	    explode_script(g[1],"!");g[1]=string(explode[0]);n[1]=real(explode[1]);
-	    explode_script(g[2],"!");g[2]=string(explode[0]);n[2]=real(explode[1]);
-	    explode_script(g[3],"!");g[3]=string(explode[0]);n[3]=real(explode[1]);
-	    explode_script(g[4],"!");g[4]=string(explode[0]);n[4]=real(explode[1]);
-	    explode_script(g[5],"!");g[5]=string(explode[0]);n[5]=real(explode[1]);
-	    explode_script(g[6],"!");g[6]=string(explode[0]);n[6]=real(explode[1]);
-	    explode_script(g[7],"!");g[7]=string(explode[0]);n[7]=real(explode[1]);
-	}
-	if (string_count("|",trade_goods)=8){
-	    explode_script(trade_goods,"|");
-	    g[1]=string(explode[0]);
-	    g[2]=string(explode[1]);
-	    g[3]=string(explode[2]);
-	    g[4]=string(explode[3]);
-	    g[5]=string(explode[4]);
-	    g[6]=string(explode[5]);
-	    g[7]=string(explode[6]);
-	    g[8]=string(explode[7]);
-    
-	    explode_script(g[1],"!");g[1]=string(explode[0]);n[1]=real(explode[1]);
-	    explode_script(g[2],"!");g[2]=string(explode[0]);n[2]=real(explode[1]);
-	    explode_script(g[3],"!");g[3]=string(explode[0]);n[3]=real(explode[1]);
-	    explode_script(g[4],"!");g[4]=string(explode[0]);n[4]=real(explode[1]);
-	    explode_script(g[5],"!");g[5]=string(explode[0]);n[5]=real(explode[1]);
-	    explode_script(g[6],"!");g[6]=string(explode[0]);n[6]=real(explode[1]);
-	    explode_script(g[7],"!");g[7]=string(explode[0]);n[7]=real(explode[1]);
-	    explode_script(g[8],"!");g[8]=string(explode[0]);n[8]=real(explode[1]);
-	}*/
-
-
-	// show_message(string(n[1])+"x "+string(g[1])+"#"+string(n[2])+"x "+string(g[2])+"#"+string(n[3])+"x "+string(g[3])+"#"+string(n[4])+"x "+string(g[4]));
-
-
-	var i;i=0;
-	repeat(temp2){
-	    i+=1;temp1=0;
-	    if (g[i]="Skitarii") or (g[i]="Techpriest") then temp1=1;
-	    if (g[i]="Crusader") or (g[i]="Ranger") then temp1=1;
-	    if (g[i]="Sister of Battle") or (g[i]="Sister Hospitaler") then temp1=1;
-	    if (g[i]="Ork Sniper") or (g[i]="Flash Git") then temp1=1;
-	    if (temp1=1){
-	        repeat(n[i]){
-	            scr_add_man(string(g[i]),0,"","",0,true,"default");
+	show_debug_message($"trade goods : {_goods}");
+	if (struct_exists(_goods, "mercenaries")){
+		var _mercs = struct_get_names(_goods.mercenaries);
+	    for (var m=0;m<array_length(_mercs);m++){
+	    	var _merc_type = _mercs[m];
+	        repeat(_goods.mercenaries[$_merc_type]){
+	            scr_add_man(_merc_type,0,"","",0,true,"default");
 	        }
 	    }
-	    if (temp1=0) and (g[i]!="Requisition") and (g[i]!="Minor Artifact") then scr_add_item(string(g[i]),n[i]);
-	    if (temp1=0) and (g[i]="Requisition") then obj_controller.requisition+=n[i];
-	    if (temp1=0) and (g[i]="Minor Artifact"){
-	        /*var rar;rar=floor(random(10))+1;
-	        if (rar=1) then scr_add_item("Terminator Armour",1);
-	        if (rar=2) then scr_add_item("Dreadnought",1);
-	        if (rar=3) then scr_add_item(choose("Master Crafted Heavy Bolter","Master Crafted Plasma Pistol"),1);
-	        if (rar=4) then scr_add_item("Iron Halo",1);
-	        */
-        
-	        if (obj_ini.fleet_type=ePlayerBase.home_world) then scr_add_artifact("random_nodemon","minor",0,obj_ini.home_name,2);
-	        if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("random_nodemon","minor",0,obj_ini.ship[0],501);
-	    }
 	}
 
+	if (struct_exists(_goods, "requisition")){
+		obj_controller.requisition+=_goods.requisition;
+	}
 
+	if (struct_exists(_goods, "items")){
+		var _items = struct_get_names(_goods.items);
+		 for (var m=0;m<array_length(_items);m++){
+		 	var _item_type = _items[m];
+		 	var _item_data = _goods.items[$ _item_type];
+		 	scr_add_item(_item_type,_item_data.number, _item_data.quality);
+		 }
+
+	}
+
+	if (struct_exists(_goods, "Minor Artifact")){
+        if (obj_ini.fleet_type=ePlayerBase.home_world) then scr_add_artifact("random_nodemon","minor",0,obj_ini.home_name,2);
+        if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("random_nodemon","minor",0,obj_ini.ship[0],501);
+	}
+
+	struct_remove(cargo_data, "player_goods");
+
+}
+
+function setup_ai_trade_fleet(start_place, faction){
+    var flit=instance_create(start_place.x,start_place.y,obj_en_fleet);
+
+    flit.owner=faction;
+    flit.home_x=start_place.x;
+    flit.home_y=start_place.y;
+
+    //pretty sure this sprite setting has a dedicated function somewhere but i've forgotten where atm
+    if (faction=5) then flit.owner = eFACTION.Imperium;
+
+    if (faction=2) then flit.sprite_index=spr_fleet_imperial;
+    if (faction=3) then flit.sprite_index=spr_fleet_mechanicus;
+    if (faction=4){flit.sprite_index=spr_fleet_inquisition;flit.owner  = eFACTION.Inquisition;}
+    // if (diplomacy=4){flit.sprite_index=spr_fleet_imperial;flit.owner = eFACTION.Imperium;}
+    if (faction=6){
+        flit.action_spd=6400;
+        flit.action_eta=1;
+        flit.sprite_index=spr_fleet_eldar;
+    }
+    if (faction=7) then flit.sprite_index=spr_fleet_ork;
+    if (faction=8) then flit.sprite_index=spr_fleet_tau;
+
+    flit.image_index=0;
+	flit.capital_number=1;
+	return flit
 }

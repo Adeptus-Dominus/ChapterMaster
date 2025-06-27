@@ -137,8 +137,10 @@ if (player_fleet>0) and (imperial_fleet+mechanicus_fleet+inquisitor_fleet+eldar_
                             en_capitals+=capital_number;
                             en_frigates+=frigate_number;
                             en_escorts+=escort_number;
-                            if (string_count("BLOOD",trade_goods)>0) then khorne_count++;
-                            if (string_lower(trade_goods)="csm") then chaos_space_marine_count++;
+                            if (fleet_has_cargo("warband")) then khorne_count++;
+                            if (fleet_has_cargo("csm")){
+                                chaos_space_marine_count++;
+                            }
                         }
                     }
                     

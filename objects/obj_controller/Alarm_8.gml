@@ -3,40 +3,12 @@ instance_activate_object(obj_star);
 
 var witch=obj_controller;
 if (instance_exists(obj_turn_end)) then witch=obj_turn_end;
-witch.audiences+=1;
-witch.audien[witch.audiences]=4;
-witch.audien_topic[witch.audiences]="declare_war";
-if (gene_xeno>99995) then witch.audien_topic[witch.audiences]="gene_xeno";
-obj_controller.disposition[4]-=50;
-obj_controller.faction_status[eFACTION.Inquisition]="War";
-obj_controller.turns_ignored[4]=9999;
-if (known[eFACTION.Inquisition]>0) then known[eFACTION.Inquisition]=4;
 
-witch.audiences+=1;
-witch.audien[witch.audiences]=2;
-witch.audien_topic[witch.audiences]="declare_war";
-obj_controller.disposition[2]-=40;
-obj_controller.faction_status[eFACTION.Imperium]="War";
-obj_controller.turns_ignored[2]=9999;
-if (known[eFACTION.Imperium]>0) then known[eFACTION.Imperium]=2;
 
-obj_controller.faction_status[eFACTION.Mechanicus]="War";
-obj_controller.turns_ignored[3]=9999;
-obj_controller.disposition[3]-=30;
-if (known[eFACTION.Mechanicus]>0) then known[eFACTION.Mechanicus]=2;
-
-if (known[eFACTION.Ecclesiarchy]>0){
-    witch.audiences+=1;witch.audien[witch.audiences]=5;
-    witch.audien_topic[witch.audiences]="declare_war";known[eFACTION.Ecclesiarchy]=2;
-}
-obj_controller.faction_status[eFACTION.Ecclesiarchy]="War";
-obj_controller.turns_ignored[5]=9999;
-obj_controller.disposition[5]-=40;
+decare_war_on_imperium_audiences()
 
 if (obj_controller.faction_gender[10]==1) and (obj_controller.known[eFACTION.Chaos]==0) and (obj_controller.faction_defeated[10]==0){
-    witch.audiences+=1;
-    witch.audien[witch.audiences]=10;
-    witch.audien_topic[witch.audiences]="intro";
+    scr_audience(10, "intro");
 }
 
 with(obj_star){
