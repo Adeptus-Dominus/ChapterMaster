@@ -92,6 +92,14 @@ function TradeAttempt(diplomacy) constructor{
 				}
 			} else if (_opt.trade_type == "req"){
 				obj_controller.requisition += _opt.number;
+			} else if (_opt.trade_type == "merc"){
+				if (!struct_exists(trading_object, "mercenaries")){
+					trading_object.mercenaries = {};
+				}
+				trading_object.mercenaries[$ _type] = {
+					quality : "standard",
+					number : _opt.number,
+				}
 			}
 		}
 		for (var i=0;i<array_length(offer_options);i++){

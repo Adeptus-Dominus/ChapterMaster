@@ -776,9 +776,9 @@ function scr_dialogue(diplo_keyphrase) {
 	        diplo_text=tempd;
 	    }
 	    if (diplo_keyphrase=="hello"){
-	        if (rela=="friendly") then diplo_text="What can I do for the hero of {obj_ini.sector_name}?";
-	        if (rela=="neutral") then diplo_text="State your business, Chapter Master.";
-	        if (rela=="hostile") then diplo_text="What do you want, Chapter Master? I have little time for glorified interplanetary brigands such as yourself.";
+	        if (rela=="friendly") then diplo_text=$"What can I do for the hero of {obj_ini.sector_name}?";
+	        if (rela=="neutral") then diplo_text=$"State your business, Chapter Master.";
+	        if (rela=="hostile") then diplo_text=$"What do you want, Chapter Master? I have little time for glorified interplanetary brigands such as yourself.";
 	    }
 	    if (diplo_keyphrase=="trade_close"){
 	        if (rela=="friendly") then diplo_text="Were I a less forgiving man, I might find that rude! But there is little I would not forgive you, my friend!";
