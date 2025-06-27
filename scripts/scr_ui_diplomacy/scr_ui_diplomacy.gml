@@ -1,4 +1,5 @@
 function draw_character_diplomacy_base_page(){
+	obj_controller.menu_lock = true;
 	if (!audience){
 		with (diplo_buttons){
 			trade.draw();
@@ -168,23 +169,21 @@ function set_up_diplomacy_buttons(){
 	});
 
 	diplo_buttons.exit_button.bind_method = function(){
+		obj_controller.menu_lock = false;
 		if (audio_is_playing(snd_blood)==true) then scr_music("royal",2000);
 
+		var _close_diplomacy = true;
         if (complex_event==true) and (instance_exists(obj_temp_meeting)){
             complex_event=false;
-            scr_toggle_diplomacy();
             with(obj_temp_meeting){
             	instance_destroy();
             }
             if (instance_exists(obj_turn_end)){
                 obj_turn_end.alarm[1]=1;
-                exit;
             }
-            exit;
         }
         if (trading_artifact!=0){
             clear_diplo_choices();
-            scr_toggle_diplomacy();
             cooldown=8;
             if (trading_artifact==2) and (instance_exists(obj_ground_mission)){
                 obj_ground_mission.alarm[2]=1;
@@ -194,54 +193,47 @@ function set_up_diplomacy_buttons(){
                 obj_ground_mission.alarm[1]=1;
                 instance_destroy();
             }
-            exit;
         }
         if (force_goodbye==5){
             clear_diplo_choices();
-            scr_toggle_diplomacy();
-            exit;
         }
         if (liscensing==2) and (repair_ships==0){
             cooldown=8;
             var cru=instance_create(mouse_x,mouse_y,obj_crusade);
             cru.owner=diplomacy;
             cru.placing=true;
-            scr_toggle_diplomacy();
             exit_all=0;
             liscensing=0;
             if (zoomed==0) then scr_zoom();
-            exit;
         }
         if (exit_all!=0){
-            scr_toggle_diplomacy();
             exit_all=0;
         }
         if (diplo_last=="artifact_thanks") and (force_goodbye!=0){
-			scr_toggle_diplomacy();
+
 			scr_toggle_armamentarium();
-            exit;
+			_close_diplomacy = false;
         }
         // Exits back to diplomacy thing
         if (audience==0){
             cooldown=8;
             diplomacy=0;
             force_goodbye=0;
+            _close_diplomacy = false;
         }
         // No need to check for next audience
-        if (audience>0) and (!instance_exists(obj_turn_end)){
-            scr_toggle_diplomacy();
-            exit;
-        }
         if (audience>0) and (instance_exists(obj_turn_end)){
             if (complex_event==false){
-                scr_toggle_diplomacy();
+
                 obj_turn_end.alarm[1]=1;
                 show_debug_message("next_audience");
-                exit;
             }
             if (complex_event=true){
                 // TODO
             }
+        }
+        if (_close_diplomacy){
+        	scr_toggle_diplomacy();
         }
 	}
 
@@ -400,7 +392,7 @@ function set_up_diplomacy_persons(){
 
 
 function scr_ui_diplomacy() {
-	if (menu=!20){
+	if (menu != MENU.Diplomacy){
 		return;
 	}
 	var xx,yy,show_stuff;

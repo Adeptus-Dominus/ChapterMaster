@@ -169,7 +169,7 @@ else if (menu==15) and (cooldown<=0){
 
 
 // ** Diplomacy **
-if (menu==20) and (diplomacy>0) or ((diplomacy<-5) and (diplomacy>-6)) and (cooldown<=0) and (diplomacy<10){
+if (menu==MENU.Diplomacy) and (diplomacy>0) or ((diplomacy<-5) and (diplomacy>-6)) and (cooldown<=0) and (diplomacy<10){
     if (trading==0) and (valid_diplomacy_options()){
         if (force_goodbye==0) and (cooldown<=0){
 
@@ -190,7 +190,7 @@ if (menu==20) and (diplomacy>0) or ((diplomacy<-5) and (diplomacy>-6)) and (cool
     }
 }
 // Diplomacy
-if (zoomed==0) and (cooldown<=0) and (menu==20) and (diplomacy==0){
+if (zoomed==0) and (cooldown<=0) and (menu==MENU.Diplomacy) and (diplomacy==0){
     xx+=55;
     yy-=20;
 	var onceh=0

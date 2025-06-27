@@ -156,8 +156,9 @@ function scr_quest(quest_satus=0, quest_name, quest_fac, quest_end) {
         
 	        if (instance_exists(obj_temp2)){flit.action_x=obj_temp2.x;flit.action_y=obj_temp2.y;flit.target=instance_nearest(flit.action_x,flit.action_y,obj_p_fleet);}
 	        if (!instance_exists(obj_temp2)) and (instance_exists(obj_ground_mission)){flit.action_x=obj_ground_mission.x;flit.action_y=obj_ground_mission.y;flit.target=instance_nearest(flit.action_x,flit.action_y,obj_p_fleet);}
-        
-	        flit.alarm[4]=1;
+        	with(flit){
+        		set_fleet_movement();
+        	}
         
 	        with(obj_temp2){instance_destroy();}
 	        with(obj_temp3){instance_destroy();}

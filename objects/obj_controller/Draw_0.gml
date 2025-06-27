@@ -16,10 +16,10 @@ try{
     menu = 0;   
 }
 try{
-    if (audience > 0 && instance_exists(obj_turn_end)){
+    /*if (audience > 0 && instance_exists(obj_turn_end)){
         menu = 20;
-    }
-    if (menu == 20){
+    }*/
+    if (menu == MENU.Diplomacy){
         scr_ui_diplomacy();
     }
 } catch(_exception){

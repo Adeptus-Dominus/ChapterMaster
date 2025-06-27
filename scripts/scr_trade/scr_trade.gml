@@ -75,7 +75,7 @@ function TradeAttempt(diplomacy) constructor{
 					number : _opt.number,
 				}
 			} else if (_opt.trade_type == "license"){
-				switch (label){
+				switch (_opt.label){
 					case "Recruiting Planet":
 						obj_controller.recruiting_worlds_bought++;
 						obj_controller.liscensing=5;
@@ -245,8 +245,8 @@ function TradeAttempt(diplomacy) constructor{
 			if (_success){
 				successful_trade_attempt();
 				scr_dialogue("agree");
-				force_goodbye=1;
-				trading=0;
+				//force_goodbye=1;
+				obj_controller.trading=0;
 				 if (diplomacy_faction=6) or (diplomacy_faction=7) or (diplomacy_faction=8){
 				 	scr_loyalty("Xeno Trade","+");
 				 }

@@ -372,8 +372,12 @@ function scr_efleet_arrive_at_trade_loc(){
         if (action_eta==0){
         	instance_destroy();
         }
+        return true;
     }
+    return false;
 }
+
+
 function scr_orbiting_fleet(faction, system="none"){
 	var _found_fleet = "none";
 	var _faction_list = is_array(faction);
@@ -603,7 +607,10 @@ function fleet_arrival_logic(){
         if (fleet_has_cargo("csm")) then cancel=true;
 
         if (!cancel && ((trade_goods!="" && trade_goods!="return" && owner!=eFACTION.Tyranids && owner!=eFACTION.Chaos) || (fleet_has_cargo("player_goods")))){
-        	scr_efleet_arrive_at_trade_loc();
+        	if (scr_efleet_arrive_at_trade_loc()){
+        		exit;
+        	}
+
         }    
     }
     
@@ -624,7 +631,7 @@ function fleet_arrival_logic(){
             orbiting=instance_nearest(x,y,obj_star);
             action_x=orbiting.x;
             action_y=orbiting.y;
-            alarm[4]=1;
+            set_fleet_movement();
             instance_activate_object(obj_star);
             trade_goods+="|DELETE|";
             exit;
@@ -668,10 +675,6 @@ function fleet_arrival_logic(){
         }
     }*/
     
-    
-    
-    
-    action="";
 
     if (owner= eFACTION.Inquisition){
 
@@ -822,7 +825,9 @@ function fleet_arrival_logic(){
         
         if (new_star.owner=eFACTION.Tau){
             // show_message("Tau fleet actually fleeing");
-            action="";action_x=new_star.x;action_y=new_star.y;alarm[4]=1;
+            action_x=new_star.x;
+            action_y=new_star.y;
+            set_fleet_movement();
         }
         
         instance_activate_object(obj_star);
@@ -1027,7 +1032,7 @@ function fleet_respond_crusade(){
     if (ok){
         action_x=ns.x;
 		action_y=ns.y;
-		alarm[4]=1;
+		set_fleet_movement();
         orbiting.present_fleet[owner]-=1;
         home_x=orbiting.x;
         home_y=orbiting.y;

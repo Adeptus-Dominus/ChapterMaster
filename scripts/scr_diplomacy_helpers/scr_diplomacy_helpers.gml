@@ -112,13 +112,13 @@ function basic_diplomacy_screen(){
             }
             yy=__view_get( e__VW.YView, 0 );
         }
-		if (menu==20) and (diplomacy==10.1){
+		if (menu==MENU.Diplomacy) and (diplomacy==10.1){
 			scr_emmisary_diplomacy_routes();
 		}
         if (force_goodbye=1){
             draw_rectangle(xx+818,yy+796,xx+897,yy+815,0);
             draw_set_color(0);
-            draw_text(xx+857.5,yy+797,string_hash_to_newline("Exit"));
+            draw_text(xx+857.5,yy+797,"Exit");
             draw_set_alpha(0.2);
             if (mouse_x>=xx+818) and (mouse_y>=yy+796) and (mouse_x<=xx+897) and (mouse_y<=yy+815) then draw_rectangle(xx+818,yy+796,xx+897,yy+815,0);
             draw_set_alpha(1);

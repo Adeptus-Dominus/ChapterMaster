@@ -15,7 +15,9 @@ if (_is_audience){
 
     show_debug_message(current_audience);
 
-    scr_toggle_diplomacy();
+    if (obj_controller.menu != MENU.Diplomacy){
+        scr_toggle_diplomacy();
+    }
     obj_controller.audience=current_audience.faction;
     obj_controller.diplomacy=current_audience.faction;
     

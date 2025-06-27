@@ -5,18 +5,15 @@ function scr_menu_clear_up(specific_area_function) {
         var menu_action_allowed = action_if_number(obj_saveload, 0, 0) && action_if_number(obj_drop_select, 0, 0) && action_if_number(obj_popup_dialogue, 0, 0) && action_if_number(obj_ncombat, 0, 0);
 
         if (menu_action_allowed) {
-            show_debug_message("menu_change_allowed");
             if (combat != 0) {
                 exit;
             }
             if (scrollbar_engaged != 0) {
                 exit;
             }
-            show_debug_message("men0");
             if (instance_exists(obj_ingame_menu)) {
                 exit;
             }
-            show_debug_message("men0.5");
 
             if (instance_exists(obj_turn_end) && (obj_controller.complex_event != true) && (!instance_exists(obj_temp_meeting)) && array_length(obj_turn_end.audience_stack) == 0) {
                 if ((obj_turn_end.popups_end == 1) && (audience == 0) && (cooldown <= 0)) {
@@ -25,16 +22,13 @@ function scr_menu_clear_up(specific_area_function) {
                     }
                 }
             }
-            show_debug_message("men1");
             if (instance_exists(obj_star_select)) {
                 exit;
             }
             if (instance_exists(obj_bomb_select)) {
                 exit;
             }
-            show_debug_message("men2");
             if ((zoomed == 0) && (cooldown <= 0) && (menu >= 500) && (menu <= 510)) {
-                //show_debug_message("high menu");
                 if (mouse_y >= __view_get(e__VW.YView, 0) + 27) {
                     cooldown = 8000;
                     if ((menu >= 500) && (temp[menu - 434] == "")) {
@@ -64,15 +58,21 @@ function scr_menu_clear_up(specific_area_function) {
                     exit;
                 }
             }
-            show_debug_message("men3");
             return spec_func();
         }
     }
     return false;
 }
 
-function scr_change_menu(specific_area_function) {
+function scr_change_menu(wanted_menu, specific_area_function=false) {
     var continue_sequence = false;
+    if (obj_controller.menu_lock){
+        return false;
+    }
+    if (wanted_menu == obj_controller.menu){
+        main_map_defualts();
+        return true;
+    }
     with(obj_controller) {
         main_map_defualts();
         set_zoom_to_default();
@@ -91,33 +91,38 @@ function scr_change_menu(specific_area_function) {
                 }
             }
             close_popups = true;
-            specific_area_function();
+            if (is_callable(specific_area_function)){
+                specific_area_function();
+            }
         }
     }
 }
 
 function main_map_defualts(){
-    menu = 0;
-    hide_banner = 0;
-    location_viewer.update_garrison_log();
-    managing = 0; 
-    managing = 0;
-    menu_adept = 0;
-    view_squad = false;
-    unit_profile = false;
-    force_goodbye = 0;
-    hide_banner = 0;
-    diplomacy = 0;
-    audience = 0;
+    with (obj_controller){
+        menu = 0;
+        hide_banner = 0;
+        location_viewer.update_garrison_log();
+        managing = 0; 
+        managing = 0;
+        menu_adept = 0;
+        view_squad = false;
+        unit_profile = false;
+        force_goodbye = 0;
+        hide_banner = 0;
+        diplomacy = 0;
+        audience = 0;
+        zoomed = 0;
+    }
 }
 
 function scr_in_game_help() {
-    scr_change_menu(function() {
+    scr_change_menu(MENU.GameHelp,function() {
         with(obj_controller) {
             if ((zoomed == 0) && (!instance_exists(obj_ingame_menu)) && (!instance_exists(obj_popup))) {
                 set_zoom_to_default();
-                if (menu != 17.5) {
-                    menu = 17.5;
+                if (menu != 30) {
+                    menu = 30;
                     cooldown = 8000;
                     click = 1;
                     hide_banner = 0;
@@ -131,15 +136,9 @@ function scr_in_game_help() {
 }
 
 function scr_in_game_menu() {
-    scr_change_menu(function() {
+    scr_change_menu(-1,function() {
         if ((!instance_exists(obj_ingame_menu)) && (!instance_exists(obj_popup)) && (!obj_controller.zoomed)) {
-            // Main Menu
-            with(obj_controller) {
-                menu = 0;
-                hide_banner = 0;
-                location_viewer.update_garrison_log();
-                managing = 0;
-            }
+            // Main MENU
             set_zoom_to_default();
             instance_create(0, 0, obj_ingame_menu);
         }
@@ -147,13 +146,10 @@ function scr_in_game_menu() {
 }
 
 function basic_manage_settings() {
-    menu = 1;
+    menu = MENU.Manage;
     popup = 0;
     selected = 0;
-    hide_banner = 1;
     diplomacy = 0;
-    zoomed = 0;
-    view_squad = false;
     management_buttons = {
         squad_toggle: new UnitButtonObject({
             style: "pixel",
@@ -174,9 +170,9 @@ function basic_manage_settings() {
 }
 
 function scr_toggle_manage() {
-    scr_change_menu(function() {
+    scr_change_menu(MENU.Manage,function() {
         with(obj_controller) {
-            if (menu != 1) {
+            if (menu != MENU.Manage) {
                 basic_manage_settings();
                 scr_management(1);
             }
@@ -185,15 +181,15 @@ function scr_toggle_manage() {
 }
 
 function scr_toggle_setting() {
-    scr_change_menu(function() {
+    scr_change_menu(MENU.Settings,function() {
         with(obj_controller) {
-            if (menu != 21) {
-                menu = 21;
+            if (menu != MENU.Settings) {
+                menu = MENU.Settings;
                 popup = 0;
                 selected = 0;
                 hide_banner = 1;
             }  else if (settings) {
-                menu = 21;
+                menu = MENU.Settings;
                 cooldown = 8000;
                 click = 1;
                 settings = 0;
@@ -203,7 +199,7 @@ function scr_toggle_setting() {
 }
 
 function scr_toggle_apothecarion() {
-    scr_change_menu(function() {
+    scr_change_menu(MENU.Apothecarion,function() {
         with(obj_controller) {
             menu_adept = 0;
             hide_banner = 1;
@@ -220,15 +216,15 @@ function scr_toggle_apothecarion() {
 }
 
 function scr_toggle_reclu() {
-    scr_change_menu(function() {
+    scr_change_menu(MENU.Reclusiam,function() {
         with(obj_controller) {
             menu_adept = 0;
             hide_banner = 1;
             if (scr_role_count("Master of Sanctity", "0") == 0) {
                 menu_adept = 1;
             }
-            if (menu != 12) {
-                menu = 12;
+            if (menu != MENU.Reclusiam) {
+                menu = MENU.Reclusiam;
 
                 temp[36] = string(scr_role_count(obj_ini.role[100][14], "field"));
                 temp[37] = string(scr_role_count(obj_ini.role[100][14], "home"));
@@ -252,15 +248,15 @@ function scr_toggle_reclu() {
 }
 
 function scr_toggle_lib() {
-    scr_change_menu(function() {
+    scr_change_menu(MENU.Librarium,function() {
         with(obj_controller) {
             menu_adept = 0;
             hide_banner = 1;
             if (scr_role_count("Chief " + string(obj_ini.role[100][17]), "0") == 0) {
                 menu_adept = 1;
             }
-            if (menu != 13) {
-                menu = 13;
+            if (menu != MENU.Librarium) {
+                menu = MENU.Librarium;
 
                 if ((artifacts > 0) && (menu_artifact == 0)) {
                     menu_artifact = 1;
@@ -279,21 +275,21 @@ function scr_toggle_lib() {
 }
 
 function scr_toggle_armamentarium() {
-    scr_change_menu(function() {
+    scr_change_menu(MENU.Armamentarium,function() {
         with(obj_controller) {
-            if (menu != 14) {
+            if (menu != MENU.Armamentarium) {
                 if (scr_role_count("Forge Master", "0") == 0) {
                     menu_adept = 1;
                 }
                 hide_banner = 1;
-                set_up_arsmentarium();
+                set_up_armentarium();
             }
         }
     });
 }
 
 function scr_toggle_recruiting() {
-    scr_change_menu(function() {
+    scr_change_menu(MENU.Recruiting,function() {
         with(obj_controller) {
             var geh = 0,
                 good = 0;
@@ -306,7 +302,7 @@ function scr_toggle_recruiting() {
                 }
             }
 
-            if (menu != 15) {
+            if (menu != MENU.Recruiting) {
                 set_up_recruitment_view();
                 hide_banner = 1;
             } 
@@ -315,7 +311,7 @@ function scr_toggle_recruiting() {
 }
 
 function scr_toggle_fleet_area() {
-    scr_change_menu(function() {
+    scr_change_menu(MENU.Fleet,function() {
         with(obj_controller) {
             menu_adept = 0;
             var geh = 0,
@@ -327,10 +323,10 @@ function scr_toggle_fleet_area() {
                     }
                 }
             }
-            if (menu != 16) {
+            if (menu != MENU.Fleet) {
                 hide_banner = 1;
                 //TODO rewrite all this shit when fleets finally become OOP
-                menu = 16;
+                menu = MENU.Fleet;
 
                 cooldown = 8000;
                 click = 1;
@@ -396,25 +392,25 @@ function scr_toggle_fleet_area() {
 }
 
 function scr_toggle_diplomacy() {
-    scr_change_menu(function() {
+    scr_change_menu(MENU.Diplomacy, function() {
         with(obj_controller) {
-            if (menu != 20) {
+            if (menu != MENU.Diplomacy) {
                 set_up_diplomacy_buttons();
-                show_debug_message("menu_diplomacy");
-                menu = 20;
+                menu = MENU.Diplomacy;
                 audience = 0;
                 diplomacy = 0;
                 hide_banner = 1;
+                show_debug_message("set_diplo")
             }
         }
     });
 }
 
 function scr_toggle_event_log() {
-    scr_change_menu(function() {
+    scr_change_menu(MENU.EventLog,function() {
         with(obj_controller) {
-            if (menu != 17) {
-                menu = 17;
+            if (menu != MENU.EventLog) {
+                menu = MENU.EventLog;
 
                 hide_banner = 1;
                 instance_activate_object(obj_event_log);
@@ -425,9 +421,12 @@ function scr_toggle_event_log() {
 }
 
 function scr_end_turn() {
-    scr_change_menu(function() {
+    if (instance_exists(obj_turn_end)){
+        return false;
+    }
+    scr_change_menu(-1,function() {
         with(obj_controller) {
-            if ((menu == 0) && (cooldown <= 0)) {
+            if ((menu == MENU.Default) && (cooldown <= 0)) {
                 if (location_viewer.hide_sequence == 0) {
                     location_viewer.hide_sequence++;
                 }
@@ -437,11 +436,11 @@ function scr_end_turn() {
                 if (!instance_exists(obj_turn_end)) {
                     ok = 1;
                 }
-                if (instance_exists(obj_turn_end)) {
+                /*if (instance_exists(obj_turn_end)) {
                     if (obj_turn_end.popups_end == 1) {
                         ok = 1;
                     }
-                }
+                }*/
 
                 if (ok == 1) {
                     if(settings_autosave == true){

@@ -143,8 +143,8 @@ if (!zoomed && !zui){
     // Draws the current marines in your command
     draw_sprite(spr_new_resource,3,475-10,17);
     draw_set_color(16291875);
-    draw_text(495-10,16,string_hash_to_newline(string(marines)+"/"+string(command)));
-    draw_text(495.5-10,16.5,string_hash_to_newline(string(marines)+"/"+string(command)));
+    draw_text(495-10,16,string(marines)+"/"+string(command));
+    draw_text(495.5-10,16.5,string(marines)+"/"+string(command));
 
     if (menu==0){
         location_viewer.draw();
@@ -159,12 +159,19 @@ if (global.cheat_debug == true){
     draw_text(1124, 7, string_hash_to_newline("DEBUG MODE"));
 }
 
-if (menu == 20){
+if (menu == MENU.Diplomacy){
     if (diplomacy != 0){
         draw_diplomacy_diplo_text();
         if (trading==true){
             if ((diplomacy>1) && is_struct(trade_attempt)){
-                trade_attempt.draw_trade_screen();
+                try {
+                    trade_attempt.draw_trade_screen();
+                } catch(_exception){
+                     handle_exception(_exception);
+                     delete trade_attempt;
+                     trading = false;
+
+                }
             }
         } else if (diplomacy!=10.1){
             draw_character_diplomacy_base_page()

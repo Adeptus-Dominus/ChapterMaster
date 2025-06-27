@@ -119,7 +119,9 @@ if (is_struct(_target)) {
         _enemy_fleet.action_y = _target.y;
     }
 
-    _enemy_fleet.alarm[4] = 1;
+    with(_enemy_fleet){
+        set_fleet_movement();
+    }
 }
 
 instance_activate_all();

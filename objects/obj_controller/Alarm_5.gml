@@ -523,7 +523,9 @@ for(var i=1; i<=99; i++){
 						obj_controller.chaos_fleets+=1;
                         flee.action_x=star_id.x;
 						flee.action_y=star_id.y;
-						flee.alarm[4]=1;
+                        with(flee){
+                            set_fleet_movement();
+                        }
                     }	
 				}
             }
