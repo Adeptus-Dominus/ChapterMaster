@@ -28,7 +28,7 @@ function scr_dialogue(diplo_keyphrase) {
 	if (diplo_keyphrase=="declare_war") and (string_count("|SC|",obj_controller.useful_info)>1) and (diplomacy==4) then sorc=true;
 
 	if (diplo_keyphrase=="intro") or (diplo_keyphrase=="intro1") or ((diplomacy==10) and (diplo_keyphrase=="intro2")){
-	    event_log="Chapter Master "+string(obj_ini.master_name)+" meets the "+string(obj_controller.faction[diplomacy])+" "+string(obj_controller.faction_title[diplomacy])+", "+string(obj_controller.faction_leader[diplomacy])+".";
+	    event_log=$"Chapter Master {obj_ini.master_name} meets the {obj_controller.faction[diplomacy]} {obj_controller.faction_title[diplomacy}, {obj_controller.faction_leader[diplomacy]}.";
 	    scr_event_log("",event_log);
 	}
 
@@ -57,7 +57,11 @@ function scr_dialogue(diplo_keyphrase) {
 	    var mos=false,ii=0;
 	    repeat(obj_temp_meeting.dudes){
 			ii+=1;
-			if (mos=false){if (obj_ini.role[obj_temp_meeting.co[ii],obj_temp_meeting.ide[ii]]="Master of Sanctity") then mos=true;}
+			if (mos=false){
+				if (obj_ini.role[obj_temp_meeting.co[ii],obj_temp_meeting.ide[ii]]="Master of Sanctity"){
+					mos=true;
+				}
+			}
 		}
 	    
 		if (diplo_keyphrase=="cs_meeting2") then disposition[10]+=10;
@@ -108,7 +112,7 @@ function scr_dialogue(diplo_keyphrase) {
 	// MoS cuts in
 	if (diplo_keyphrase=="cs_meeting_m1"){
 		diplomacy=-5.2;
-	    diplo_text="[["+string(obj_ini.name[0,3])+" hisses your name over a private vox channel.]]\n";
+	    diplo_text=$"[[{obj_ini.name[0,3]} hisses your name over a private vox channel.]]\n";
 	    diplo_text+="My lord!  What are we doing here, treating with this monster of the Traitor Legions? The very existence of the Archenemy is a threat to everything the Chapter stands for, and we endanger our immortal souls just being here. You know this! I demand to know your intentions! And I warn you, I will not hesitate to do what I must, for the good of the Chapter and the Imperium.";
     	
     	var _goto = "cs_meeting_m2";
@@ -260,7 +264,7 @@ function scr_dialogue(diplo_keyphrase) {
 
 	if (diplo_keyphrase=="cs_meeting135"){
 		disposition[10]=max(disposition[10]+10,10);
-	    diplo_text="[["+string(obj_controller.faction_leader[eFACTION.Chaos])+"’s power armour grinds as he leans forward, his posture predatory.]]\nThen we have an accord. We will assist you as you take your first steps on the path toward Chaos. And my payment for all this?\n[[He chuckles.]]\nEnlisting an entire chapter in the service of the Dark Gods is all the reward I require.";
+	    diplo_text=$"[[{obj_controller.faction_leader[eFACTION.Chaos}’s power armour grinds as he leans forward, his posture predatory.]]\nThen we have an accord. We will assist you as you take your first steps on the path toward Chaos. And my payment for all this?\n[[He chuckles.]]\nEnlisting an entire chapter in the service of the Dark Gods is all the reward I require.";
 	    diplo_text+="\nBut you cannot simply paint the eight-pointed star on your wargear and begin slaughtering in the name of the Dark Gods. No, some within your chapter will resist the choice you’ve made, either out of loyalty to the Corpse Emperor or out of fear of Chaos. Just think, it will be like your own little heresy. The ''"+string(obj_ini.master_name)+" Heresy!''";    
 	    add_diplomacy_option({option_text:"[Continue]", goto : "cs_meeting136"});
 	}
@@ -763,8 +767,8 @@ function scr_dialogue(diplo_keyphrase) {
 	if (diplomacy==2){
 	    if (diplo_keyphrase=="intro"){
 	        rando=choose(1,2);
-	        if (rando==1) then tempd="[[To see Sector Commander "+string(faction_leader[eFACTION.Imperium])+" is to see what happens to heroes when their glory days have passed and the rot of ages sets in. Now a huge mass of fat and flab, he was once a mighty and respected general and the commander of a score of successful campaigns. As his reward for a glorious career, he was given commander of the sector and, as has happened to so many others, the bureaucracy crushed his warrior spirit and turned him into the man he is.]]";
-	        if (rando==2) then tempd="[[Loyal to allies and venomous to enemies, few figures command such opposing reputations as "+string(faction_leader[eFACTION.Imperium])+". Enemies of the Imperium speak in hushed tones of his incredible cruelty and harsh actions against them, whereas the citizens and organizations that lay claim to the protection of the Emperor loudly toast his generosity and stalwart courage. A friend to keep and an enemy to lose.]]";
+	        if (rando==1) then tempd=$"[[To see Sector Commander {faction_leader[eFACTION.Imperium} is to see what happens to heroes when their glory days have passed and the rot of ages sets in. Now a huge mass of fat and flab, he was once a mighty and respected general and the commander of a score of successful campaigns. As his reward for a glorious career, he was given commander of the sector and, as has happened to so many others, the bureaucracy crushed his warrior spirit and turned him into the man he is.]]";
+	        if (rando==2) then tempd=$"[[Loyal to allies and venomous to enemies, few figures command such opposing reputations as {faction_leader[eFACTION.Imperium]}. Enemies of the Imperium speak in hushed tones of his incredible cruelty and harsh actions against them, whereas the citizens and organizations that lay claim to the protection of the Emperor loudly toast his generosity and stalwart courage. A friend to keep and an enemy to lose.]]";
 	        tempd+="\n#";
 	        rando=choose(1,2);
 	        if (rando==1) then tempd+="Space Marines in my sector are expected to conduct themselves as befits one of the Adeptus Astartes. Do not disappoint me."; 
@@ -772,7 +776,7 @@ function scr_dialogue(diplo_keyphrase) {
 	        diplo_text=tempd;
 	    }
 	    if (diplo_keyphrase=="hello"){
-	        if (rela=="friendly") then diplo_text="What can I do for the hero of "+string(obj_ini.sector_name)+"?";
+	        if (rela=="friendly") then diplo_text="What can I do for the hero of {obj_ini.sector_name}?";
 	        if (rela=="neutral") then diplo_text="State your business, Chapter Master.";
 	        if (rela=="hostile") then diplo_text="What do you want, Chapter Master? I have little time for glorified interplanetary brigands such as yourself.";
 	    }
