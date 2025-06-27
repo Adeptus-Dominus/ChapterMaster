@@ -128,7 +128,7 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 		break;
 	case P_features.Cave_Network:
 		player_hidden = 1;
-		cave_depth =irandom(3);//allow_multiple levels of caves, option to go deeper
+		cave_depth = irandom(3);//allow_multiple levels of caves, option to go deeper
 		planet_display = "Unexplored Cave Network";
 		break;
 	case P_features.Sororitas_Cathedral:
