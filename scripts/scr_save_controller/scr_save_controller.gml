@@ -11,6 +11,7 @@ function scr_save_controller(save_id){
     ini_write_string("Save","version",global.game_version);
     ini_write_real("Save","play_time",play_time);
     ini_write_real("Save","game_seed",global.game_seed);
+    ini_write_real("Save","use_custom_icon",obj_ini.use_custom_icon);
 
     // obj_controller variables here
     ini_write_real("boolean", "cheat_req", global.cheat_req);
@@ -173,6 +174,7 @@ function scr_save_controller(save_id){
     ini_write_real("Controller","trial",obj_controller.recruit_trial);
     ini_write_real("Controller","recruits",obj_controller.recruits);
     ini_write_real("Controller","recruit_last",obj_controller.recruit_last);
+    ini_write_real("Controller", "enemies_cleared_count", obj_controller.enemies_cleared_count);
     //
     var g=-1;
     repeat(30){g+=1;
