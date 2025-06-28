@@ -14,7 +14,9 @@ function load_visual_sets(){
         }
         for (var i=0;i<array_length(_raw_data);i++){
             var _sepcific_vis_set = $"{_vis_set_directory}\\{_raw_data[i]}";
+            show_debug_message(_raw_data[i]);
             if (directory_exists(_sepcific_vis_set)){
+                show_debug_message(_raw_data[i]);
                 var _data_buffer = buffer_load($"{_sepcific_vis_set}\\data.json");
                 if (_data_buffer == -1) {
                     buffer_delete(_data_buffer);
@@ -29,6 +31,8 @@ function load_visual_sets(){
         }
 
     }
+
+    set_up_visual_overides();
 
     load_symbol_sets(global.chapter_symbols, "chapter_symbols", ["pauldron", "knees"]);
     load_symbol_sets(global.role_markings, "role_markings", ["pauldron", "knees"]);
@@ -112,6 +116,7 @@ global.company_markings = {
 function load_vis_set_to_global(directory, data){
     for (var i=0;i<array_length(data); i++){
         var _sprite_item = data[i];
+        show_debug_message(_sprite_item);
         if (directory_exists(directory + $"\\{_sprite_item.name}")){
             var _sprite_direct = directory + $"\\{_sprite_item.name}";
             if (file_exists($"{_sprite_direct}\\1.png")){
@@ -129,8 +134,63 @@ function load_vis_set_to_global(directory, data){
                     sprite_delete(_merge_sprite);
                 }
                 var _s_data = _sprite_item.data;
+                show_debug_message(_sprite_item.name);
+                _s_data.name = _sprite_item.name;
                 _s_data.sprite = _new_sprite;
                 array_push(global.modular_drawing_items, _s_data);
+            }
+        }
+    }
+}
+
+function set_up_visual_overides(){
+    var _mods = global.modular_drawing_items;
+    for (var i=0;i<array_length(_mods);i++){
+        var _item = _mods[i];
+        if (struct_exists(_item, "overides")){
+            var _overide_areas = struct_get_names(_item.overides);
+            for (var o = 0; o<array_length(_overide_areas);o++){
+                var _overide = _item.overides[$ _overide_areas[o]];
+                if (is_string(_overide)){
+                    var _found_sprite = false;
+                    for (var s=0;s<array_length(_mods);s++){
+                        if (struct_exists(_mods[s], "name")){
+                            if (_mods[s].name == _overide){
+                                _item.overides[$ _overide_areas[o]] = _mods[s].sprite;
+                                _found_sprite = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!_found_sprite){
+                        struct_remove(_item.overides, _overide_areas[$o]);
+                    }
+                }
+            }
+        }
+        if (struct_exists(_item, "subcomponents")){
+            var _subs = _item.subcomponents;
+            for (var s = 0;s<array_length(_subs);s++){
+                var _sub_group = _subs[s]
+                for (var g=array_length(_sub_group)-1;g>=0;g--){
+                    var _found_sprite = false;
+                    var _subimg = _sub_group[g];
+                    if (!is_string(_subimg)){
+                        continue;
+                    }
+                    for (var s=0;s<array_length(_mods);s++){
+                        if (struct_exists(_mods[s], "name")){
+                            if (_mods[s].name == _subimg){
+                                _item.subcomponents[s][g] = _mods[s].sprite;
+                                _found_sprite = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!_found_sprite){
+                        array_delete(_item.subcomponents[s], g, 1);
+                    }
+                }
             }
         }
     }
@@ -993,7 +1053,19 @@ global.modular_drawing_items = [
         body_parts :{
             "left_eye" : "bionic",
         }
-    },                                                                  
+    }, 
+    {
+        position : "forehead",
+        sprite: spr_helm_decorations,
+        body_types: [0, 2],
+        max_saturation : 50,
+        roles : [eROLE.Sergeant,eROLE.Champion,eROLE.VeteranSergeant],
+        offsets : {
+            "Terminator Armour" : {
+                y : -10
+            }
+        }
+    },                                                                 
 ];
 
 

@@ -1205,7 +1205,7 @@ function ComplexSet(_unit) constructor {
 		shader_set(full_livery_shader);
 	};
 
-	static add_to_area = function(area, add_sprite, overide_data = "none") {
+	static add_to_area = function(area, add_sprite, overide_data = "none", sub_components) {
 		if (sprite_exists(add_sprite)) {
 			var _add_sprite_length = sprite_get_number(add_sprite);
 			if (!struct_exists(self, area)) {
@@ -1228,7 +1228,7 @@ function ComplexSet(_unit) constructor {
 		array_push(overides[$ area], [_overide_start, _overide_start + sprite_length, overide_data]);
 	};
 
-	static replace_area = function(area, add_sprite, overide_data = "none") {
+	static replace_area = function(area, add_sprite, overide_data = "none", sub_coomponents) {
 		if (struct_exists(self, area)) {
 			sprite_delete(self[$ area]);
 			if (struct_exists(overides, area)) {

@@ -1,0 +1,38 @@
+[
+    {
+        "name" : "topfhelm",
+        "data" : {
+            "cultures" : ["Crusader"],
+            "body_types" : [0],
+            "ban" : ["mouth_variants"],
+            "prevent_others" : true,
+            "stats" : [["weapon_skill", 35, "exmore"]],
+            "position" : "head"      
+        }
+    },
+    {
+        "name" : "torse",
+        "data" : {
+            "cultures" : ["Crusader"],
+            "body_types" : [0],
+            "ban" : ["right_eye", "left_eye"],
+            "assign_by_rank" : 2,
+            "position" : "crown",
+            "max_saturation"  : 0, 
+        }
+    },
+    {
+        "name" : "torse_with_hood",
+        "data" : {
+            "cultures" : ["Crusader"],
+            "body_types" : [0],
+            "ban" : ["right_eye", "left_eye"],
+            "assign_by_rank" : 2,
+            "exp" : {"min" : 80},
+            "position" : "forehead",
+            "overides" : {
+                "crown" : "torse",
+            }
+        }
+    }
+]
