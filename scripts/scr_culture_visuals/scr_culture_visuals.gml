@@ -1069,6 +1069,8 @@ function DummyMarine()constructor{
                 var _armour  = armour[100][livery_picker.role_set > 0  ? livery_picker.role_set : eROLE.Tactical];
                 if (array_contains(armours, _armour) || _armour == STR_ANY_POWER_ARMOUR){
                      _armour = array_random_element(armours);
+                } else if(array_contains(LIST_TERMINATOR_ARMOUR, _armour)||  _armour == STR_ANY_POWER_ARMOUR){
+                    _armour = array_random_element(LIST_TERMINATOR_ARMOUR);
                 }
                 if (_armour == "Power Armour"){
                      _armour = "MK7 Aquila";

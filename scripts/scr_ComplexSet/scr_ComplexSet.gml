@@ -1117,6 +1117,17 @@ function ComplexSet(_unit) constructor {
 				});
 				armour_type = ArmourType.Terminator;
 				break;
+			case "Cataphractii Pattern Terminator":
+				add_group({
+					armour : spr_cata_complex,
+					head: spr_cata_head,
+					left_leg : spr_cata_left_leg,
+					right_leg : spr_cata_right_leg,
+					belt : spr_cata_belt,
+					gorget : spr_cata_gorget,
+				});
+				armour_type = ArmourType.Terminator;
+				break;
 			case "Dreadnought":
 				add_group({
 					armour: spr_dreadnought_complex
