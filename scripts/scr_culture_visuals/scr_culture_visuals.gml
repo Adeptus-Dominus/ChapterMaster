@@ -168,6 +168,9 @@ function set_up_visual_overides(){
                 }
             }
         }
+        /*subs have the format "subcomponents" : [
+            [crusader_neckpiece],
+        ]*/
         if (struct_exists(_item, "subcomponents")){
             var _subs = _item.subcomponents;
             for (var s = 0;s<array_length(_subs);s++){
@@ -176,14 +179,22 @@ function set_up_visual_overides(){
                     var _found_sprite = false;
                     var _subimg = _sub_group[g];
                     if (!is_string(_subimg)){
+                        if (!sprite_exists(_subimg)){
+                            array_delete(_sub_group,g,1);
+                        }
                         continue;
                     }
-                    for (var s=0;s<array_length(_mods);s++){
-                        if (struct_exists(_mods[s], "name")){
-                            if (_mods[s].name == _subimg){
-                                _item.subcomponents[s][g] = _mods[s].sprite;
-                                _found_sprite = true;
-                                break;
+                    if (_subimg == "blank"){
+                        _item.subcomponents[s][g] = spr_blank;
+                        _found_sprite = true;
+                    } else {
+                        for (var m=0;m<array_length(_mods);m++){
+                            if (struct_exists(_mods[m], "name")){
+                                if (_mods[m].name == _subimg){
+                                    _item.subcomponents[s][g] = _mods[m].sprite;
+                                    _found_sprite = true;
+                                    break;
+                                }
                             }
                         }
                     }
@@ -1065,7 +1076,133 @@ global.modular_drawing_items = [
                 y : -10
             }
         }
-    },                                                                 
+    },
+    {
+        position : "left_arm",
+        sprite : spr_cata_left_arm,
+        body_types:[2],
+        armours : ["Cataphractii Pattern Terminator"],
+        subcomponents : [
+            [spr_blank,spr_cata_left_armtrim]
+        ]
+    },
+    {
+        position : "right_arm",
+        sprite : spr_cata_right_arm,
+        body_types:[2],
+        armours : ["Cataphractii Pattern Terminator"],
+        subcomponents : [
+            [spr_blank,spr_cata_right_armtrim]
+        ]
+    }, 
+    {
+        position : "armour",
+        sprite : spr_cata_complex,
+        body_types:[2],
+        armours : ["Cataphractii Pattern Terminator"],
+        subcomponents : [
+            [spr_cata_cowl_trim],
+        ]
+    },
+    {
+        position : "tabbard",
+        sprite : spr_cata_tabbard_leather,
+        body_types:[2],
+        armours : ["Cataphractii Pattern Terminator"],
+        subcomponents : [
+            [spr_blank,spr_cata_tabbard_leather_hangings],
+        ]
+    },
+    {
+        position : "tabbard",
+        sprite : spr_cata_tabbard_mail,
+        body_types:[2],
+        armours : ["Cataphractii Pattern Terminator"],
+    },
+    {
+        position : "right_knee",
+        sprite : spr_cata_right_knee,
+        body_types:[2],
+        armours : ["Cataphractii Pattern Terminator"],
+        max_saturation : 50,
+    }, 
+    {
+        position : "left_knee",
+        sprite : spr_cata_left_knee,
+        body_types:[2],
+        armours : ["Cataphractii Pattern Terminator"],
+        max_saturation : 50,
+    },
+    {
+        position : "right_leg",
+        sprite : spr_cata_right_leg,
+        body_types:[2],
+        armours : ["Cataphractii Pattern Terminator"],
+        subcomponents : [
+            [spr_blank,spr_cata_heavy_toe_right],
+        ]
+    }, 
+    {
+        position : "left_leg",
+        sprite : spr_cata_left_leg,
+        body_types:[2],
+        armours : ["Cataphractii Pattern Terminator"],
+        subcomponents : [
+            [spr_blank,spr_cata_heavy_toe_left],
+        ],
+    },
+    {
+        position : "right_pauldron_embeleshments",
+        sprite : spr_cata_shoulder_hanging_leather_right,
+        body_types:[2],
+        armours : ["Cataphractii Pattern Terminator"],
+        subcomponents : [
+            [spr_blank, spr_cata_shoulder_hanging_leather_right_tips],
+        ],
+    },
+    {
+        position : "left_pauldron_embeleshments",
+        sprite : spr_cata_shoulder_hanging_leather_left,
+        body_types:[2],
+        armours : ["Cataphractii Pattern Terminator"],
+        subcomponents : [
+            [spr_blank, spr_cata_shoulder_hanging_leather_left_tips],
+        ],
+    },
+    {
+        position : "right_pauldron_embeleshments",
+        sprite : spr_cata_shoulder_hanging_mail_right,
+        body_types:[2],
+        armours : ["Cataphractii Pattern Terminator"],
+    },
+    {
+        position : "left_pauldron_embeleshments",
+        sprite : spr_cata_shoulder_hanging_mail_left,
+        body_types:[2],
+        armours : ["Cataphractii Pattern Terminator"],
+    },
+    {
+        sprite : spr_blank,
+        body_types :[2],
+        position : "left_trim",
+        armours : ["Cataphractii Pattern Terminator"],
+        subcomponents : [
+            [spr_blank, spr_cata_left_trim],
+            [spr_blank, spr_cata_left_trim_2],
+            [spr_blank, spr_cata_left_trim_1],
+        ],
+    }, 
+    {
+        sprite : spr_blank,
+        body_types :[2],
+        position : "right_trim",
+        armours : ["Cataphractii Pattern Terminator"],
+        subcomponents : [
+            [spr_blank, spr_cata_right_trim],
+            [spr_blank, spr_cata_right_trim_2],
+            [spr_blank, spr_cata_right_trim_1],
+        ],
+    },                                                            
 ];
 
 
@@ -1257,6 +1394,7 @@ function generate_marine_body(){
         },
         "throat":{
             variant : irandom(100),
+            hanging_variant : irandom(100),
         }, 
         "jaw":{
             variant: irandom(100),

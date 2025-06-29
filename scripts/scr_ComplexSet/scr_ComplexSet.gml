@@ -89,6 +89,7 @@ function sprite_get_uvs_transformed(_spr1, _subimg1, _spr2, _subimg2) {
 
 function ComplexSet(_unit) constructor {
 	overides = {};
+	subcomponents = {};
 	unit_armour = _unit.armour();
 	unit = _unit;
 	draw_helms = instance_exists(obj_creation) ? obj_creation.draw_helms : obj_controller.draw_helms;
@@ -135,12 +136,15 @@ function ComplexSet(_unit) constructor {
 
 	static assign_modulars = function(modulars = global.modular_drawing_items, position = false) {
 		var _mod = {};
+		var _sub_comps = false
 
 		try {
 			for (var i = 0; i < array_length(modulars); i++) {
 				_are_exceptions = false;
 				_mod = modulars[i];
 				exceptions = [];
+				_sub_comps = "none";
+
 				if (array_contains(blocked, _mod.position)) {
 					continue;
 				}
@@ -328,6 +332,10 @@ function ComplexSet(_unit) constructor {
 					_overides = _mod.overides;
 				}
 
+				if (struct_exists(_mod, "subcomponents")){
+					_sub_comps = _mod.subcomponents;
+				}
+
 				if (struct_exists(_mod, "body_parts")){
 					var _viable = true;
 					var _body_areas = struct_get_names(_mod.body_parts);
@@ -346,7 +354,7 @@ function ComplexSet(_unit) constructor {
 				}
 
 				if (struct_exists(_mod, "prevent_others")) {
-					replace_area(_mod.position, _mod.sprite, _overides);
+					replace_area(_mod.position, _mod.sprite, _overides,_sub_comps);
 					array_push(blocked, _mod.position);
 					if (struct_exists(_mod, "ban")) {
 						for (var b = 0; b < array_length(_mod.ban); b++) {
@@ -400,10 +408,10 @@ function ComplexSet(_unit) constructor {
 						}
 					}
 				} else {
-					add_to_area(_mod.position, _mod.sprite, _overides);
+					add_to_area(_mod.position, _mod.sprite, _overides,_sub_comps);
 				}
 				if (struct_exists(_mod, "prevent_others")) {
-					replace_area(_mod.position, _mod.sprite, _overides);
+					replace_area(_mod.position, _mod.sprite, _overides,_sub_comps);
 					array_push(blocked, _mod.position);
 					if (struct_exists(_mod, "ban")) {
 						for (var b = 0; b < array_length(_mod.ban); b++) {
@@ -466,7 +474,8 @@ function ComplexSet(_unit) constructor {
 		backpack_augment: unit.get_body_data("backpack_augment_variation", "torso"),
 		chest_fastening: unit.get_body_data("chest_fastening", "torso"),
 		left_weapon: unit.get_body_data("weapon_variation", "left_arm"),
-		right_weapon: unit.get_body_data("weapon_variation", "right_arm")
+		right_weapon: unit.get_body_data("weapon_variation", "right_arm"),
+		necklace : unit.get_body_data("hanging_variant", "throat"),
 	};
 
 	static draw_component = function(component_name, texture_draws = {}) {
@@ -477,8 +486,10 @@ function ComplexSet(_unit) constructor {
 			var _sprite = self[$ component_name];
 			if (sprite_exists(_sprite)) {
 				var choice = 0;
+				var _map_choice = 3;
 				if (struct_exists(variation_map, component_name)) {
-					var choice = variation_map[$ component_name] % sprite_get_number(_sprite);
+					_map_choice = variation_map[$ component_name];
+					var choice = _map_choice % sprite_get_number(_sprite);
 				}
 				if (struct_exists(overides, component_name)) {
 					var _overide_set = overides[$ component_name];
@@ -492,6 +503,7 @@ function ComplexSet(_unit) constructor {
 						}
 					}
 				}
+
 				var _tex_names = struct_get_names(texture_draws);
 				if (array_length(_tex_names)) {
 					var _return_surface = surface_get_target();
@@ -544,6 +556,55 @@ function ComplexSet(_unit) constructor {
 					surface_set_target(_return_surface);
 				} else {
 					draw_sprite(_sprite, choice ?? 0, x_surface_offset, y_surface_offset);
+				}
+				if (struct_exists(subcomponents, component_name)) {
+					var _subcomponents_found = false;
+					var _component_bulk_set = subcomponents[$ component_name];
+					for (var i = 0; i < array_length(_component_bulk_set); i++) {
+						var _spec_over = _component_bulk_set[i];
+						if (_spec_over[0] <= choice && _spec_over[1] > choice) {
+							_subcomponents_found = true;
+							var _component_set = _spec_over[2];
+						}
+					}
+
+					if (_subcomponents_found){
+						//show_debug_message($"subcomponents : {_component_set}");
+						for (var i = 0; i < array_length(_component_set); i++) {
+							var _subcomponents = _component_set[i];
+							//show_debug_message($"subcomponents 2: {_subcomponents}");
+							var _sub_choice = 0;
+							if (_map_choice != 0){
+								_sub_choice = sqr(_map_choice + 1) - i;
+							}
+							var _total_options = -1;
+							for (var s=0;s<array_length(_subcomponents);s++){
+								_total_options += sprite_get_number(_subcomponents[s]);
+							}
+							//show_debug_message($"{_total_options}")
+
+							if (_total_options > -1){
+								if (_total_options == 0){
+									_sub_choice_final = 0;
+								}else {
+									//show_debug_message($"{_sub_choice},{_total_options+1}")
+									_sub_choice_final = _sub_choice % (_total_options+1);
+								}
+
+								//show_debug_message($"{_sub_choice_final}");
+								
+								_choice_count = 0;
+								for (var s=0;s<array_length(_subcomponents);s++){
+									if (_sub_choice_final >= _choice_count && _sub_choice_final < _choice_count+sprite_get_number(_subcomponents[s])){
+										draw_sprite(_subcomponents[s], _sub_choice_final-_choice_count ?? 0, x_surface_offset, y_surface_offset);
+										break;
+									} else {
+										_choice_count += sprite_get_number(_subcomponents[s]);
+									}
+								}
+							}
+						}
+					}
 				}
 				//sprite_delete(_sprite);
 			}
@@ -857,6 +918,7 @@ function ComplexSet(_unit) constructor {
                 "chest_fastening",
                 "head",
                 "gorget",
+                "necklace",
                 "left_pauldron_base",
                 "right_pauldron_base",
                 "left_trim",
@@ -888,6 +950,7 @@ function ComplexSet(_unit) constructor {
                 "right_knee",
                 "head",
                 "gorget",
+                "necklace",
                 "left_pauldron_base",
                 "right_pauldron_base",
                 "left_trim",
@@ -1119,10 +1182,7 @@ function ComplexSet(_unit) constructor {
 				break;
 			case "Cataphractii Pattern Terminator":
 				add_group({
-					armour : spr_cata_complex,
 					head: spr_cata_head,
-					left_leg : spr_cata_left_leg,
-					right_leg : spr_cata_right_leg,
 					belt : spr_cata_belt,
 					gorget : spr_cata_gorget,
 				});
@@ -1205,7 +1265,7 @@ function ComplexSet(_unit) constructor {
 		shader_set(full_livery_shader);
 	};
 
-	static add_to_area = function(area, add_sprite, overide_data = "none", sub_components) {
+	static add_to_area = function(area, add_sprite, overide_data = "none", sub_components = "none") {
 		if (sprite_exists(add_sprite)) {
 			var _add_sprite_length = sprite_get_number(add_sprite);
 			if (!struct_exists(self, area)) {
@@ -1218,6 +1278,9 @@ function ComplexSet(_unit) constructor {
 			if (overide_data != "none") {
 				add_overide(area, _overide_start, _add_sprite_length, overide_data);
 			}
+			if (sub_components != "none") {
+				add_sub_components(area, _overide_start, _add_sprite_length, sub_components);
+			}
 		}
 	};
 
@@ -1228,17 +1291,16 @@ function ComplexSet(_unit) constructor {
 		array_push(overides[$ area], [_overide_start, _overide_start + sprite_length, overide_data]);
 	};
 
-	static replace_area = function(area, add_sprite, overide_data = "none", sub_coomponents) {
-		if (struct_exists(self, area)) {
-			sprite_delete(self[$ area]);
-			if (struct_exists(overides, area)) {
-				struct_remove(overides, area);
-			}
+	static add_sub_components = function(area, _overide_start, sprite_length, sub_components) {
+		if (!struct_exists(subcomponents, area)) {
+			subcomponents[$ area] = [];
 		}
-		self[$ area] = sprite_duplicate(add_sprite);
-		if (overide_data != "none") {
-			add_overide(area, 0, sprite_get_number(self[$ area]), overide_data);
-		}
+		array_push(subcomponents[$ area], [_overide_start, _overide_start + sprite_length, sub_components]);
+	};
+
+	static replace_area = function(area, add_sprite, overide_data = "none", sub_components = "none") {
+		remove_area(area);
+		add_to_area(area, add_sprite, overide_data , sub_components)
 	};
 
 	static remove_area = function(area) {
@@ -1247,6 +1309,9 @@ function ComplexSet(_unit) constructor {
 			struct_remove(self, area);
 			if (struct_exists(overides, area)) {
 				struct_remove(overides, area);
+			}
+			if (struct_exists(subcomponents, area)) {
+				struct_remove(subcomponents, area);
 			}
 		}
 	};
