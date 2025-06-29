@@ -59,7 +59,7 @@ global.weapons = {
 			"master_crafted": 270,
 			"artifact": 290
 		},
-		"description": "Ancient one-handed thermal ray weapon, preferred by melee specialists, and officers .",
+		"description": "Ancient one-handed thermal ray weapon, preferred by melee specialists and officers.",
 		"melee_hands": 0,
 		"ranged_hands": 1,
 		"ammo": 10,
