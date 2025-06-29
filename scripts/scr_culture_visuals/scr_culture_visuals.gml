@@ -175,7 +175,7 @@ function set_up_visual_overides(){
                         }
                     }
                     if (!_found_sprite){
-                        struct_remove(_item.overides, _overide_areas[$o]);
+                        struct_remove(_item.overides, _overide_areas[o]);
                     }
                 }
             }
