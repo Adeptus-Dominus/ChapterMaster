@@ -134,18 +134,19 @@ function load_vis_set_to_global(directory, data){
                     sprite_delete(_merge_sprite);
                 }
                 var _s_data = _sprite_item.data;
-                show_debug_message(_sprite_item.name);
                 _s_data.name = _sprite_item.name;
                 _s_data.sprite = _new_sprite;
                 if (_s_data.position == "weapon"){
                     var _weapon_vis = global.weapon_visual_data;
-                    if (struct_exists(_s_data,"base_weapon")){
-                        array_push(_weapon_vis.variants, _s_data);
+                    struct_remove(_s_data, "position");
+                    if (struct_exists(_weapon_vis,_s_data.base_weapon)){
+                        array_push(_weapon_vis[$_s_data.base_weapon].variants, _s_data);
                     } else {
                         _weapon_vis[$ _s_data.base_weapon] = {
                             base : _s_data,
                             variants : [{sprite : _s_data.sprite}],
                         };
+                        struct_remove(_weapon_vis[$ _s_data.base_weapon].base, "base_weapon");
                     }
                 } else {
                     array_push(global.modular_drawing_items, _s_data);
