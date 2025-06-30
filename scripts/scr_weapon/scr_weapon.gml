@@ -59,7 +59,7 @@ global.weapons = {
 			"master_crafted": 270,
 			"artifact": 290
 		},
-		"description": "Ancient one-handed thermal ray weapon, preferred by melee specialists, and officers .",
+		"description": "Ancient one-handed thermal ray weapon, preferred by melee specialists and officers.",
 		"melee_hands": 0,
 		"ranged_hands": 1,
 		"ammo": 10,
@@ -133,7 +133,7 @@ global.weapons = {
 		"ammo": 14,
 		"range": 19,
 		"spli": 11,
-		"arp": 1,
+		"arp": 0,
 		"tags": [ "bolt"]
 },
 
@@ -186,29 +186,117 @@ global.weapons = {
 		"arp": 1,
 		"tags": [ "plasma","energy"]
 },
-	//40K Weapons
-	"Storm Shield": {
-		"description": "Protects twice as well when boarding. A powered shield that must be held with a hand.  While powered by the marines armour it shimmers with blue energy.",
-		"abbreviation": "StrmShld",
-		"attack": {
-			"standard": 5,
-			"master_crafted": 5,
-			"artifact": 10
+
+	//Melta Pack 
+"Primus Melta Gun":{
+"abbreviation": "PrimMltGn",
+"attack": {
+			"standard": 560,
+			"master_crafted": 585,
+			"artifact": 610
 		},
-		"armour_value": {
-			"standard": 8,
-			"master_crafted": 10,
-			"artifact": 12
-		},
-		"melee_hands": 0.75,
-		"ranged_hands": 1,
-		"tags": ["shield"],
-		"hp_mod": {
-			"standard": 30,
-			"master_crafted": 35,
-			"artifact": 40
-		},
+		"description": "The Primus MK II Meltagun's origins have been lost to history, but the knowledge of its power and their bearers who served in the Legiones Astartes remains. Some theories have been made to its Ryzan origins due to the curvature of the body, but the famous Forge World denies those claims.",
+		"melee_hands": 1,
+		"ranged_hands": 2,
+		"ammo": 6,
+		"range": 2.5,
+		"spli": 2,
+		"arp": 1,
+		"tags": ["melta","energy","boarding"]
 	},
+"Proteus Multi-Melta":{
+"abbreviation": "ProtMltMelt",
+"attack": {
+			"standard": 1000,
+			"master_crafted": 1100,
+			"artifact": 1200
+		},
+		"description": "This Multi-Melta design originates, like many others used by Legiones Astartes, in the Dark Age of Technology. Deadlier than the current designs fielded by the Space Marine Chapters, it is a relic of both of the zenith of mankind's science and the last moments of the Emperor's true vision",
+		"melee_hands": 1,
+		"ranged_hands": 2,
+		"ammo": 6,
+		"range": 4.5,
+		"spli": 2,
+		"arp": 1,
+		"tags": ["melta","energy","boarding"]
+	},
+
+//Flamer Pack
+"Phaestos Flamer":{
+"abbreviation": "PhFlmr",
+"attack": {
+			"standard": 430,
+			"master_crafted": 585,
+			"artifact": 610
+		},
+		"description": "The Phaestos-pattern Flamer is a stark reminder of the time where Mankind's future was yet unmolested by the decaying stench of the Horus Heresy. Oddly shaped for the modern users, it is nonetheless not to be underestimated and its potent promethium-fueled flame has burned through armours of unnumbered heroes",
+		"melee_hands": 1,
+		"ranged_hands": 2,
+		"ammo": 6,
+		"range": 2.5,
+		"spli": 6,
+		"arp": -1,
+		"tags": ["flame",]//Shouldn't it also feature "boarding"?
+	},
+//Melle Pack
+"Power Scythe" :{
+"abbreviation": "PwrSct",
+"attack": {
+			"standard": 250,
+			"master_crafted": 300,
+			"artifact": 350
+		},
+		"melee_mod": {
+			"standard": 1,
+			"master_crafted": 1.1,
+			"artifact": 1.2
+		},
+		"description": "An unpopular power weapon, once a signature of the cursed 14th Legion, now fielded by a handful of loyalist Chapters.",
+		"melee_hands": 2,
+		"ranged_hands": 1,
+		"ammo": 0,
+		"range": 1.5,
+		"spli": 6,
+		"arp": 1,
+		"tags": ["power",]
+	},
+	//Laser Pack
+"Ryza Lascannon":{
+"abbreviation": "RyzLascnn",
+"attack": {
+			"standard": 750,
+			"master_crafted": 800,
+			"artifact": 850
+		},
+		"description": "PH",
+		"melee_hands": 1,
+		"ranged_hands": 2.25,
+		"ammo": 10,
+		"range": 24,
+		"spli": 1,
+		"arp": 1,
+		"tags": ["heavy_ranged","las","energy",]
+},
+		//misc pack
+"Cthon Autocannon":{
+"abbreviation": "CthAutocnn",
+"attack": {
+			"standard": 480,
+			"master_crafted": 520,
+			"artifact": 560
+		},
+		"description": "PH",
+		"melee_hands": 1,
+		"ranged_hands": 2.25,
+		"ammo": 30,
+		"range": 20,
+		"spli": 15,
+		"arp": 1,
+		"tags": ["heavy_ranged","dreadnought",]
+},
+	
+	//40k weapons
+
 	"Boarding Shield": {
 		"description": "Protects twice as well when boarding. Used in siege or boarding operations, this shield offers additional protection.  It may be used with a 2-handed ranged weapon.",
 		"abbreviation": "BrdShld",
@@ -1133,7 +1221,7 @@ global.weapons = {
 			"artifact": 430
 		},
 		"description": "A rapid-firing weapon able to use a wide variety of ammunition, from mass-reactive explosive to solid shells. It has been found to be incredibly effective against large groups of targets and even Traitor Astartes to an extent.",
-		"melee_hands": 0,
+		"melee_hands": 1,
 		"ranged_hands": 2.25,
 		"ammo": 25,
 		"range": 18,

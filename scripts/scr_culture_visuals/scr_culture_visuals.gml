@@ -14,7 +14,9 @@ function load_visual_sets(){
         }
         for (var i=0;i<array_length(_raw_data);i++){
             var _sepcific_vis_set = $"{_vis_set_directory}\\{_raw_data[i]}";
+            show_debug_message(_raw_data[i]);
             if (directory_exists(_sepcific_vis_set)){
+                show_debug_message(_raw_data[i]);
                 var _data_buffer = buffer_load($"{_sepcific_vis_set}\\data.json");
                 if (_data_buffer == -1) {
                     buffer_delete(_data_buffer);
@@ -29,6 +31,8 @@ function load_visual_sets(){
         }
 
     }
+
+    set_up_visual_overides();
 
     load_symbol_sets(global.chapter_symbols, "chapter_symbols", ["pauldron", "knees"]);
     load_symbol_sets(global.role_markings, "role_markings", ["pauldron", "knees"]);
@@ -112,6 +116,7 @@ global.company_markings = {
 function load_vis_set_to_global(directory, data){
     for (var i=0;i<array_length(data); i++){
         var _sprite_item = data[i];
+        show_debug_message(_sprite_item);
         if (directory_exists(directory + $"\\{_sprite_item.name}")){
             var _sprite_direct = directory + $"\\{_sprite_item.name}";
             if (file_exists($"{_sprite_direct}\\1.png")){
@@ -129,8 +134,86 @@ function load_vis_set_to_global(directory, data){
                     sprite_delete(_merge_sprite);
                 }
                 var _s_data = _sprite_item.data;
+                show_debug_message(_sprite_item.name);
+                _s_data.name = _sprite_item.name;
                 _s_data.sprite = _new_sprite;
-                array_push(global.modular_drawing_items, _s_data);
+                if (_s_data.position == "weapon"){
+                    var _weapon_vis = global.weapon_visual_data;
+                    if (struct_exists(_s_data,"base_weapon")){
+                        array_push(_weapon_vis.variants, _s_data);
+                    } else {
+                        _weapon_vis[$ _s_data.base_weapon] = {
+                            base : _s_data,
+                            variants : [{sprite : _s_data.sprite}],
+                        };
+                    }
+                } else {
+                    array_push(global.modular_drawing_items, _s_data);
+                }
+            }
+        }
+    }
+}
+
+function set_up_visual_overides(){
+    var _mods = global.modular_drawing_items;
+    for (var i=0;i<array_length(_mods);i++){
+        var _item = _mods[i];
+        if (struct_exists(_item, "overides")){
+            var _overide_areas = struct_get_names(_item.overides);
+            for (var o = 0; o<array_length(_overide_areas);o++){
+                var _overide = _item.overides[$ _overide_areas[o]];
+                if (is_string(_overide)){
+                    var _found_sprite = false;
+                    for (var s=0;s<array_length(_mods);s++){
+                        if (struct_exists(_mods[s], "name")){
+                            if (_mods[s].name == _overide){
+                                _item.overides[$ _overide_areas[o]] = _mods[s].sprite;
+                                _found_sprite = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!_found_sprite){
+                        struct_remove(_item.overides, _overide_areas[o]);
+                    }
+                }
+            }
+        }
+        /*subs have the format "subcomponents" : [
+            [crusader_neckpiece],
+        ]*/
+        if (struct_exists(_item, "subcomponents")){
+            var _subs = _item.subcomponents;
+            for (var s = 0;s<array_length(_subs);s++){
+                var _sub_group = _subs[s]
+                for (var g=array_length(_sub_group)-1;g>=0;g--){
+                    var _found_sprite = false;
+                    var _subimg = _sub_group[g];
+                    if (!is_string(_subimg)){
+                        if (!sprite_exists(_subimg)){
+                            array_delete(_sub_group,g,1);
+                        }
+                        continue;
+                    }
+                    if (_subimg == "blank"){
+                        _item.subcomponents[s][g] = spr_blank;
+                        _found_sprite = true;
+                    } else {
+                        for (var m=0;m<array_length(_mods);m++){
+                            if (struct_exists(_mods[m], "name")){
+                                if (_mods[m].name == _subimg){
+                                    _item.subcomponents[s][g] = _mods[m].sprite;
+                                    _found_sprite = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if (!_found_sprite){
+                        array_delete(_item.subcomponents[s], g, 1);
+                    }
+                }
             }
         }
     }
@@ -993,7 +1076,145 @@ global.modular_drawing_items = [
         body_parts :{
             "left_eye" : "bionic",
         }
-    },                                                                  
+    }, 
+    {
+        position : "forehead",
+        sprite: spr_helm_decorations,
+        body_types: [0, 2],
+        max_saturation : 50,
+        roles : [eROLE.Sergeant,eROLE.Champion,eROLE.VeteranSergeant],
+        offsets : {
+            "Terminator Armour" : {
+                y : -10
+            }
+        }
+    },
+    {
+        position : "left_arm",
+        sprite : spr_cata_left_arm,
+        body_types:[2],
+        armours : ["Cataphractii Pattern Terminator"],
+        subcomponents : [
+            [spr_blank,spr_cata_left_armtrim]
+        ]
+    },
+    {
+        position : "right_arm",
+        sprite : spr_cata_right_arm,
+        body_types:[2],
+        armours : ["Cataphractii Pattern Terminator"],
+        subcomponents : [
+            [spr_blank,spr_cata_right_armtrim]
+        ]
+    }, 
+    {
+        position : "armour",
+        sprite : spr_cata_complex,
+        body_types:[2],
+        armours : ["Cataphractii Pattern Terminator"],
+        subcomponents : [
+            [spr_cata_cowl_trim],
+        ]
+    },
+    {
+        position : "tabbard",
+        sprite : spr_cata_tabbard_leather,
+        body_types:[2],
+        armours : ["Cataphractii Pattern Terminator"],
+        subcomponents : [
+            [spr_blank,spr_cata_tabbard_leather_hangings],
+        ]
+    },
+    {
+        position : "tabbard",
+        sprite : spr_cata_tabbard_mail,
+        body_types:[2],
+        armours : ["Cataphractii Pattern Terminator"],
+    },
+    {
+        position : "right_knee",
+        sprite : spr_cata_right_knee,
+        body_types:[2],
+        armours : ["Cataphractii Pattern Terminator"],
+        max_saturation : 50,
+    }, 
+    {
+        position : "left_knee",
+        sprite : spr_cata_left_knee,
+        body_types:[2],
+        armours : ["Cataphractii Pattern Terminator"],
+        max_saturation : 50,
+    },
+    {
+        position : "right_leg",
+        sprite : spr_cata_right_leg,
+        body_types:[2],
+        armours : ["Cataphractii Pattern Terminator"],
+        subcomponents : [
+            [spr_blank,spr_cata_heavy_toe_right],
+        ]
+    }, 
+    {
+        position : "left_leg",
+        sprite : spr_cata_left_leg,
+        body_types:[2],
+        armours : ["Cataphractii Pattern Terminator"],
+        subcomponents : [
+            [spr_blank,spr_cata_heavy_toe_left],
+        ],
+    },
+    {
+        position : "right_pauldron_embeleshments",
+        sprite : spr_cata_shoulder_hanging_leather_right,
+        body_types:[2],
+        armours : ["Cataphractii Pattern Terminator"],
+        subcomponents : [
+            [spr_blank, spr_cata_shoulder_hanging_leather_right_tips],
+        ],
+    },
+    {
+        position : "left_pauldron_embeleshments",
+        sprite : spr_cata_shoulder_hanging_leather_left,
+        body_types:[2],
+        armours : ["Cataphractii Pattern Terminator"],
+        subcomponents : [
+            [spr_blank, spr_cata_shoulder_hanging_leather_left_tips],
+        ],
+    },
+    {
+        position : "right_pauldron_embeleshments",
+        sprite : spr_cata_shoulder_hanging_mail_right,
+        body_types:[2],
+        armours : ["Cataphractii Pattern Terminator"],
+    },
+    {
+        position : "left_pauldron_embeleshments",
+        sprite : spr_cata_shoulder_hanging_mail_left,
+        body_types:[2],
+        armours : ["Cataphractii Pattern Terminator"],
+    },
+    {
+        sprite : spr_blank,
+        body_types :[2],
+        position : "left_trim",
+        armours : ["Cataphractii Pattern Terminator"],
+        subcomponents : [
+            [spr_blank, spr_cata_left_trim],
+            [spr_blank, spr_cata_left_trim_2],
+            [spr_blank, spr_cata_left_trim_1],
+        ],
+    }, 
+    {
+        sprite : spr_blank,
+        body_types :[2],
+        position : "right_trim",
+        armours : ["Cataphractii Pattern Terminator"],
+        subcomponents : [
+            [spr_blank, spr_cata_right_trim],
+            [spr_blank, spr_cata_right_trim_2],
+            [spr_blank, spr_cata_right_trim_1],
+        ],
+    },                                                            
 ];
 
 
@@ -1069,6 +1290,8 @@ function DummyMarine()constructor{
                 var _armour  = armour[100][livery_picker.role_set > 0  ? livery_picker.role_set : eROLE.Tactical];
                 if (array_contains(armours, _armour) || _armour == STR_ANY_POWER_ARMOUR){
                      _armour = array_random_element(armours);
+                } else if(array_contains(LIST_TERMINATOR_ARMOUR, _armour)||  _armour == STR_ANY_POWER_ARMOUR){
+                    _armour = array_random_element(LIST_TERMINATOR_ARMOUR);
                 }
                 if (_armour == "Power Armour"){
                      _armour = "MK7 Aquila";
@@ -1183,6 +1406,7 @@ function generate_marine_body(){
         },
         "throat":{
             variant : irandom(100),
+            hanging_variant : irandom(100),
         }, 
         "jaw":{
             variant: irandom(100),
@@ -1386,6 +1610,83 @@ global.weapon_visual_data = {
     sprite: spr_weapon_mars_plasc,
   }]
 },
+//Melta Pack
+"Proteus Multi-Melta": {
+ base: {
+    weapon_data: {
+      display_type: "ranged_twohand",
+      new_weapon_draw: true
+    },
+    body_types: [0,1]
+  },
+  variants: [{
+    sprite: spr_weapon_prot_mmlt,
+  }]
+},  
+"Primus Melta Gun": {
+base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_prim_mltg,
+  }]
+},  
+//Flamer Pack
+"Phaestos Flamer": {
+base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_ph_flmr,
+  }]
+},
+//melee pack  
+"Power Scythe": {
+base: {
+    weapon_data: {
+      display_type: "melee_onehand",
+      hand_type: 2,
+      new_weapon_draw: true
+    },
+  },
+  variants: [
+    {
+      sprite: spr_weapon_powscythe
+    }
+  ]
+},
+//Laser pack
+"Ryza Lascannon": {
+ base: {
+    weapon_data: {
+      display_type: "ranged_twohand",
+      new_weapon_draw: true
+    },
+    body_types: [0,1]
+  },
+  variants: [{
+    sprite: spr_weapon_ryza_lasca,
+  }]
+},
+//misc pack
+"Cthon Autocannon": {
+ base: {
+    weapon_data: {
+      display_type: "ranged_twohand",
+      new_weapon_draw: true
+    },
+    body_types: [0,1]
+  },
+  variants: [{
+    sprite: spr_weapon_cthon_autocannon,
+  }]
+},  
 	
 	//40k weapons
   "Assault Cannon": {
@@ -1421,7 +1722,7 @@ global.weapon_visual_data = {
 },
 "Lascannon":{
     base: {
-        body_types: [0, 1, 2],
+        body_types: [0, 1],
         weapon_data: {
           display_type: "ranged_twohand",
         },
@@ -1434,7 +1735,7 @@ global.weapon_visual_data = {
 },
 "Multi-Melta" : {
     base: {
-        body_types: [0, 1, 2],
+        body_types: [0, 1],
         weapon_data: {
           display_type: "ranged_twohand",
         },
