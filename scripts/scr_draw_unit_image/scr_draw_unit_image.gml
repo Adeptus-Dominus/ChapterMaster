@@ -453,7 +453,7 @@ function scr_draw_unit_image(_background = false) {
 
                 // if (skin_color!=6) then draw_sprite(spr_clothing_colors,clothing_style,x_surface_offset,y_surface_offset);
             } else {
-                var _complex_armours = ["MK3 Iron Armour", "Terminator Armour", "Tartaros", "MK7 Aquila", "Power Armour", "MK8 Errant", "Artificer Armour", "MK4 Maximus", "MK5 Heresy", "MK6 Corvus", "Dreadnought", "Scout Armour"];
+                var _complex_armours = ["MK3 Iron Armour", "Terminator Armour", "Tartaros", "MK7 Aquila", "Power Armour", "MK8 Errant", "Artificer Armour", "MK4 Maximus", "MK5 Heresy", "MK6 Corvus", "Dreadnought", "Scout Armour","Cataphractii"];
                 if (array_contains(_complex_armours, unit_armour)) {
                     complex_set = new ComplexSet(self);
                     complex_livery = true;

@@ -17,7 +17,7 @@
 
 // Basic, because we don't include Artificer Armour
 #macro LIST_BASIC_POWER_ARMOUR ["MK7 Aquila", "MK6 Corvus", "MK5 Heresy", "MK8 Errant", "MK4 Maximus", "MK3 Iron Armour","Power Armour"]
-#macro LIST_TERMINATOR_ARMOUR ["Terminator Armour", "Tartaros","Cataphractii Pattern Terminator"]
+#macro LIST_TERMINATOR_ARMOUR ["Terminator Armour", "Tartaros","Cataphractii"]
 
 
 enum luck {

@@ -1180,7 +1180,7 @@ function ComplexSet(_unit) constructor {
 				});
 				armour_type = ArmourType.Terminator;
 				break;
-			case "Cataphractii Pattern Terminator":
+			case "Cataphractii":
 				add_group({
 					head: spr_cata_head,
 					belt : spr_cata_belt,

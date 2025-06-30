@@ -2289,7 +2289,7 @@ global.gear = {
 			"req_exp": 100,
 			"maintenance" : 0.5,
 		},
-		"Cataphractii Pattern Terminator": {
+		"Cataphractii": {
 			"abbreviation": "Catphr",
 			"armour_value": {
 				"standard": 42,

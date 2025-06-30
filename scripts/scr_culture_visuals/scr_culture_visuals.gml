@@ -1093,7 +1093,7 @@ global.modular_drawing_items = [
         position : "left_arm",
         sprite : spr_cata_left_arm,
         body_types:[2],
-        armours : ["Cataphractii Pattern Terminator"],
+        armours : ["Cataphractii"],
         subcomponents : [
             [spr_blank,spr_cata_left_armtrim]
         ]
@@ -1102,7 +1102,7 @@ global.modular_drawing_items = [
         position : "right_arm",
         sprite : spr_cata_right_arm,
         body_types:[2],
-        armours : ["Cataphractii Pattern Terminator"],
+        armours : ["Cataphractii"],
         subcomponents : [
             [spr_blank,spr_cata_right_armtrim]
         ]
@@ -1111,7 +1111,7 @@ global.modular_drawing_items = [
         position : "armour",
         sprite : spr_cata_complex,
         body_types:[2],
-        armours : ["Cataphractii Pattern Terminator"],
+        armours : ["Cataphractii"],
         subcomponents : [
             [spr_cata_cowl_trim],
         ]
@@ -1120,7 +1120,7 @@ global.modular_drawing_items = [
         position : "tabbard",
         sprite : spr_cata_tabbard_leather,
         body_types:[2],
-        armours : ["Cataphractii Pattern Terminator"],
+        armours : ["Cataphractii"],
         subcomponents : [
             [spr_blank,spr_cata_tabbard_leather_hangings],
         ]
@@ -1129,27 +1129,27 @@ global.modular_drawing_items = [
         position : "tabbard",
         sprite : spr_cata_tabbard_mail,
         body_types:[2],
-        armours : ["Cataphractii Pattern Terminator"],
+        armours : ["Cataphractii"],
     },
     {
         position : "right_knee",
         sprite : spr_cata_right_knee,
         body_types:[2],
-        armours : ["Cataphractii Pattern Terminator"],
+        armours : ["Cataphractii"],
         max_saturation : 50,
     }, 
     {
         position : "left_knee",
         sprite : spr_cata_left_knee,
         body_types:[2],
-        armours : ["Cataphractii Pattern Terminator"],
+        armours : ["Cataphractii"],
         max_saturation : 50,
     },
     {
         position : "right_leg",
         sprite : spr_cata_right_leg,
         body_types:[2],
-        armours : ["Cataphractii Pattern Terminator"],
+        armours : ["Cataphractii"],
         subcomponents : [
             [spr_blank,spr_cata_heavy_toe_right],
         ]
@@ -1158,7 +1158,7 @@ global.modular_drawing_items = [
         position : "left_leg",
         sprite : spr_cata_left_leg,
         body_types:[2],
-        armours : ["Cataphractii Pattern Terminator"],
+        armours : ["Cataphractii"],
         subcomponents : [
             [spr_blank,spr_cata_heavy_toe_left],
         ],
@@ -1167,7 +1167,7 @@ global.modular_drawing_items = [
         position : "right_pauldron_embeleshments",
         sprite : spr_cata_shoulder_hanging_leather_right,
         body_types:[2],
-        armours : ["Cataphractii Pattern Terminator"],
+        armours : ["Cataphractii"],
         subcomponents : [
             [spr_blank, spr_cata_shoulder_hanging_leather_right_tips],
         ],
@@ -1176,7 +1176,7 @@ global.modular_drawing_items = [
         position : "left_pauldron_embeleshments",
         sprite : spr_cata_shoulder_hanging_leather_left,
         body_types:[2],
-        armours : ["Cataphractii Pattern Terminator"],
+        armours : ["Cataphractii"],
         subcomponents : [
             [spr_blank, spr_cata_shoulder_hanging_leather_left_tips],
         ],
@@ -1185,19 +1185,19 @@ global.modular_drawing_items = [
         position : "right_pauldron_embeleshments",
         sprite : spr_cata_shoulder_hanging_mail_right,
         body_types:[2],
-        armours : ["Cataphractii Pattern Terminator"],
+        armours : ["Cataphractii"],
     },
     {
         position : "left_pauldron_embeleshments",
         sprite : spr_cata_shoulder_hanging_mail_left,
         body_types:[2],
-        armours : ["Cataphractii Pattern Terminator"],
+        armours : ["Cataphractii"],
     },
     {
         sprite : spr_blank,
         body_types :[2],
         position : "left_trim",
-        armours : ["Cataphractii Pattern Terminator"],
+        armours : ["Cataphractii"],
         subcomponents : [
             [spr_blank, spr_cata_left_trim],
             [spr_blank, spr_cata_left_trim_2],
@@ -1208,7 +1208,7 @@ global.modular_drawing_items = [
         sprite : spr_blank,
         body_types :[2],
         position : "right_trim",
-        armours : ["Cataphractii Pattern Terminator"],
+        armours : ["Cataphractii"],
         subcomponents : [
             [spr_blank, spr_cata_right_trim],
             [spr_blank, spr_cata_right_trim_2],
