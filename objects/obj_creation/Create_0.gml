@@ -774,8 +774,8 @@ var all_advantages = [
         },
         {
             name : "Ancient Armoury",
-            description : "Your chapter is dedicated to preserving ancient wargear and as such have substantially higher amounts of rare Heresy-era armour than normal.",
-            value: 20,
+            description : "Your chapter is dedicated to preserving ancient wargear and as such have substantially higher amounts of rare Heresy-era armour and weapons than normal.",
+            value: 20,//I'm not sure, but it could be higher since now this trait will bring much more benefits.
             meta : ["Gear Quality"]
         },
         {
