@@ -84,7 +84,7 @@ function scr_ruins_reward(star_system, planet, _ruins) {
 
 //Fallen Terminator Squad
 if (ruins_type<=2) or (ruins_type>=10){
-	wep1=choose("Tartaros","Terminator Armour");
+	wep1=choose("Tartaros","Terminator Armour","Cataphractii");
 	wen1=choose(1,2,3);
 	wep2=choose("Tigris Combi Bolter","Volkite Charger");
 	wen2=choose(1,2,);
