@@ -25,7 +25,7 @@ try {
 
     var once_only;once_only=0;
     var range_shoot="";
-    var dist=point_distance(x,y,enemy.x,enemy.y)/10;
+    var target_distance=point_distance(x,y,enemy.x,enemy.y)/10;
 
     //* Psychic power buffs
     for (var i = 0; i < array_length(unit_struct); i++) {
@@ -69,12 +69,12 @@ try {
             }
 
             
-            if (range[i]>=dist) and (ammo[i]!=0 || range[i]==1){
+            if (range[i]>=target_distance) and (ammo[i]!=0 || range[i]==1){
                 if (range[i]!=1) and (engaged=0) then range_shoot="ranged";
                 if ((range[i]!=floor(range[i]) || floor(range[i])=1) && engaged=1) then range_shoot="melee";
             }
             
-            if (range_shoot="ranged") and (range[i]>=dist){// Weapon meets preliminary checks
+            if (range_shoot="ranged") and (range[i]>=target_distance){// Weapon meets preliminary checks
                 var ap=0;
                 if (apa[i]>att[i]) then ap=1;// Determines if it is AP or not
                 if (wep[i]="Missile Launcher") then ap=1;

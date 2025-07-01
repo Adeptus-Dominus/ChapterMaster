@@ -297,12 +297,8 @@ function scr_dialogue(diplo_keyphrase) {
 	    obj_controller.chaos_rating+=1;
     
 	    // Casket, Chalice, Tome
-	    if (obj_ini.fleet_type=ePlayerBase.home_world){
-	    	scr_add_artifact("chaos_gift","",0,obj_ini.home_name,2);
-	    }
-	    if (obj_ini.fleet_type != ePlayerBase.home_world){
-	    	scr_add_artifact("chaos_gift","",0,obj_ini.ship[0],501);
-	    }
+	    if (obj_ini.fleet_type=ePlayerBase.home_world) then scr_add_artifact("chaos_gift","",0,obj_ini.home_name,2);
+	    if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("chaos_gift","",0,obj_ini.ship_data[0].name,501);
 	}
 	if (string_count("cs_meeting_battle",diplo_keyphrase)>0){
 	    var current_eventing=diplo_keyphrase;combating=1;
@@ -2207,7 +2203,7 @@ function scr_dialogue(diplo_keyphrase) {
 										if (array_length(p_feature[j])==0) and (onceh==0) then onceh=j;
 									}
 									if (onceh!=0){
-										array_push(p_feature[onceh], new NewPlanetFeature(P_features.Webway));
+										array_push(p_feature[onceh], new PlanetFeature(P_features.Webway));
 										obj_controller.temp[90]=name;
 										good=1;
 										obj_controller.temp[90]+=scr_roman(onceh)
@@ -2243,7 +2239,7 @@ function scr_dialogue(diplo_keyphrase) {
 										i=floor(random(planets))+1;
 										if (array_length(p_feature[i])==0) and (onceh==0) then onceh=i;}
 									if (onceh!=0){
-										array_push(p_feature[onceh], new NewPlanetFeature(P_features.Webway));
+										array_push(p_feature[onceh], new PlanetFeature(P_features.Webway));
 										obj_controller.temp[90]=name;
 										good=1;
 										if (onceh==1) then obj_controller.temp[90]+=" I";

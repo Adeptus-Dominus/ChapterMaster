@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_enemy_fleet_spawn_combat",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_enemy_fleet_spawn_combat",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
