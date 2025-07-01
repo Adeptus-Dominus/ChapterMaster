@@ -553,6 +553,8 @@ if (shop = "equipment") {
         item_stocked[i] = scr_item_count(item[i]);
         item_cost[i] = 0;
         forge_cost[i] = 0;
+         nobuy[i] = 1;
+
         i += 1;
         nobuy[i] = 1;
         item[i] = "Volkite Charger";
