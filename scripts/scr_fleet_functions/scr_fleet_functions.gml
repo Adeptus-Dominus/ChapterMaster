@@ -179,8 +179,10 @@ function set_fleet_movement(fastest_route = true, new_action="move"){
 	        var _eta = calculate_fleet_eta(x,y,action_x,action_y,action_spd,_target_is_sys,is_orbiting(),warp_able);
 	        action_eta = _eta;
 	        if (action_eta<=0) or (owner  != eFACTION.Inquisition){
-	            action_eta=_eta;
-	            if (owner  = eFACTION.Inquisition) and (action_eta<2) and (string_count("_her",trade_goods)=0) then action_eta=2;
+	            action_eta=eta;
+	            
+	        } else if (owner  = eFACTION.Inquisition) and (action_eta<2) and (string_count("_her",trade_goods)=0){
+	        	action_eta=2;
 	        }
 	        
 	        if (owner != eFACTION.Eldar && mine.storm) then action_eta+=10000;
@@ -347,10 +349,14 @@ function scr_efleet_arrive_at_trade_loc(){
         scr_event_log("",bleh,cur_star.name);
         
         // Drop off here
-        if (trade_goods!="stuff") and (trade_goods!="none") then scr_trade_dep();
+        if (fleet_has_cargo("player_goods")){
+        	scr_trade_dep();
+        }
         
         trade_goods="return";
-        if (target!=noone) then target=noone;
+        if (target!=noone){
+        	target=noone;
+        }
         
         if (owner==eFACTION.Eldar){
         	cur_star = nearest_star_with_ownership(xx,yy, eFACTION.Eldar);
@@ -360,18 +366,19 @@ function scr_efleet_arrive_at_trade_loc(){
         	}                  	
         } else {
             action_x=home_x;
-			action_y=home_y;                   	
+			action_y=home_y; 
+			set_fleet_movement();                  	
         }
-        
-        action_eta=0;
-		action="";
 
-        set_fleet_movement();
         if (action_eta==0){
         	instance_destroy();
         }
+        return true;
     }
+    return false;
 }
+
+
 function scr_orbiting_fleet(faction, system="none"){
 	var _found_fleet = "none";
 	var _faction_list = is_array(faction);
@@ -596,12 +603,15 @@ function fleet_arrival_logic(){
         if (string_count("_her",trade_goods)>0) then cancel=true;
         if (string_count("investigate_dead",trade_goods)>0) then cancel=true;
         if (string_count("spelunk",trade_goods)>0) then cancel=true;
-        if (string_count("BLOOD",trade_goods)>0) then cancel=true;
+        if (fleet_has_cargo("warband")) then cancel=true;
         if (fleet_has_cargo("ork_warboss")) cancel=true;
-        if (trade_goods="csm") then cancel=true;
+        if (fleet_has_cargo("csm")) then cancel=true;
 
-        if (!cancel && trade_goods!="" && trade_goods!="return" && owner!=eFACTION.Tyranids && owner!=eFACTION.Chaos){
-        	scr_efleet_arrive_at_trade_loc();
+        if (!cancel && ((trade_goods!="" && trade_goods!="return" && owner!=eFACTION.Tyranids && owner!=eFACTION.Chaos) || (fleet_has_cargo("player_goods")))){
+        	if (scr_efleet_arrive_at_trade_loc()){
+        		exit;
+        	}
+
         }    
     }
     
@@ -622,7 +632,7 @@ function fleet_arrival_logic(){
             orbiting=instance_nearest(x,y,obj_star);
             action_x=orbiting.x;
             action_y=orbiting.y;
-            alarm[4]=1;
+            set_fleet_movement();
             instance_activate_object(obj_star);
             trade_goods+="|DELETE|";
             exit;
@@ -666,10 +676,6 @@ function fleet_arrival_logic(){
         }
     }*/
     
-    
-    
-    
-    action="";
 
     if (owner= eFACTION.Inquisition){
 
@@ -736,7 +742,9 @@ function fleet_arrival_logic(){
         // show_message("Tau|||  Other Owner: "+string(cur_star.owner)+"   ret: "+string(ret)+"    mergus: "+string(mergus));
     }
     
-    if (owner=eFACTION.Chaos) and (trade_goods="csm") or (trade_goods="Khorne_warband") then mergus=0;
+    if (owner=eFACTION.Chaos) and (fleet_has_cargo("csm")) or ( fleet_has_cargo("warband")){
+    	mergus=0;
+    }
     // if (cur_star.owner!=owner) then mergus=0;
     
     
@@ -818,7 +826,9 @@ function fleet_arrival_logic(){
         
         if (new_star.owner=eFACTION.Tau){
             // show_message("Tau fleet actually fleeing");
-            action="";action_x=new_star.x;action_y=new_star.y;alarm[4]=1;
+            action_x=new_star.x;
+            action_y=new_star.y;
+            set_fleet_movement();
         }
         
         instance_activate_object(obj_star);
@@ -833,7 +843,9 @@ function fleet_arrival_logic(){
     x=old_x;
     y=old_y;
     
-    if (cur_star.x=old_x) and (cur_star.y=old_y) and (cur_star.owner=self.owner) and (cur_star.action="") and ((owner = eFACTION.Tau) or (owner = eFACTION.Chaos)) and (mergus=10) and (trade_goods!="csm") and (trade_goods!="Khorne_warband"){// Move somewhere new
+    var _csm = fleet_has_cargo("warband");
+
+    if (cur_star.x=old_x) and (cur_star.y=old_y) and (cur_star.owner=self.owner) and (cur_star.action="") and ((owner = eFACTION.Tau) or (owner = eFACTION.Chaos)) and (mergus=10) and (!_csm){// Move somewhere new
         var stue, stue2;stue=0;stue2=0;
         var goood=0;
         
@@ -1021,7 +1033,7 @@ function fleet_respond_crusade(){
     if (ok){
         action_x=ns.x;
 		action_y=ns.y;
-		alarm[4]=1;
+		set_fleet_movement();
         orbiting.present_fleet[owner]-=1;
         home_x=orbiting.x;
         home_y=orbiting.y;

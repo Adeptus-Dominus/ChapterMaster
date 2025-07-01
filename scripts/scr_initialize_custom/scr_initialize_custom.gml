@@ -1100,7 +1100,7 @@ function scr_initialize_custom() {
 		tenth += 5;
 	}
 	if  scr_has_disadv ("Small Reclusiam") {
-		chaplains -= 5;
+		chaplains = max(1, chaplains - 5);
 		tenth += 5;
 	}
 	if scr_has_adv ("Reverent Guardians") {
@@ -3164,6 +3164,8 @@ function scr_initialize_custom() {
 		scr_add_item(wep1[defaults_slot, eROLE.Apothecary], 4);
 		scr_add_item(wep2[defaults_slot,  eROLE.Apothecary], 4);
 		scr_add_item("Psychic Hood", 4);
+		scr_add_item("Crozius Arcanum", 4);
+		scr_add_item("Servo-arm", 4);
 		scr_add_item("Force Staff", 4);
 		scr_add_item("Plasma Pistol", 4);
 		scr_add_item("Company Standard", 4);
@@ -3204,14 +3206,42 @@ function scr_initialize_custom() {
         scr_add_item("MK4 Maximus", irandom_range(3, 18));
 	}
 
-	if(scr_has_adv("Ancient Armoury")){
-		scr_add_item("MK4 Maximus", irandom_range(5, 10));
-		scr_add_item("MK5 Heresy", irandom_range(5, 10));
-		scr_add_item("MK3 Iron Armour", irandom_range(1, 5));
-		scr_add_item("MK6 Corvus", irandom_range(10, 15));
-		scr_add_item("MK7 Aquila", -10);
-		scr_add_item("MK8 Errant", -1);
+	//Fixed Loot tagble 
+if(scr_has_adv("Ancient Armoury")){
+//armour
+var armm5="";
+	armm5=choose("Tartaros","Cataphractii");
+	scr_add_item("MK3 Iron Armour",irandom_range(2,5));
+	scr_add_item("MK4 Maximus",irandom_range(5,10));
+	scr_add_item("MK5 Heresy",irandom_range(5,10));
+	scr_add_item("MK6 Corvus",irandom_range(5,10));//Lowered to balance other buffs
+	scr_add_item("MK7 Aquila", -10);
+	scr_add_item("MK8 Errant", -1);
+//weapons (I'm not sure about replacing all 40k weapons with 30k)
+ var armm1="",armk1=0,armm2="",armk2=0,armm3="",armk3=0,armm4="",armk4=0;
+ 	scr_add_item("Bolter", -15);
+ 	scr_add_item("Bolt Pistol", -5);
+ 	scr_add_item("Lascannon",-5);
+ 	scr_add_item("Heavy Bolter",-5)
+ 	scr_add_item("Phobos Bolter",10);
+ 	scr_add_item("Phobos Bolt Pistol",3);
+ 	scr_add_item("Mars Heavy Bolter",5);
+ 	armm1=choose("Volkite Culverin","Volkite Caliver","Mars Plasma Cannon","Ryza Lascannon","Grav-Cannon","Proteus Multi-Melta","Cthon Autocannon");
+ 	armk1=irandom_range(2,5);
+ 	armm2=choose("Primus Melta Gun","Ryza Plasma Gun","Volkite Charger","Grav-Gun");
+ 	armk2=irandom_range(2,5)
+ 	armm3=choose("Ryza Plasma Pistol","Volkite Serpenta")
+ 	armk3=irandom_range(1,3)
+ 	armk4=choose("Power Sword","Power Fist", "Lightining Claw","Power Axe","Power Scythe")
+ 	armk4=irandom_range(1,3)
+	scr_add_item(armm1,armk1);
+	scr_add_item(armm2,armk2);
+	scr_add_item(armm3,armk3);
+	scr_add_item(armm4,armk4);
+	scr_add_item(armm5,1);
+	
 	}
+
 
     gene_slaves = [];
     

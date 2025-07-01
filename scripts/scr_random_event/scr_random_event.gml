@@ -1,27 +1,26 @@
 function scr_random_event(execute_now) {
 
 	var evented = false;
-	// This is some eldar mission, it should be fixed
-	//	var rando4=floor(random(200))+1;
-	//if (obj_controller.turns_ignored[6]<=0) and (obj_controller.faction_gender[6]=2) then rando4-=2;
-	//if (obj_controller.turns_ignored[6]<=0) and (rando4<=3) and execute_now and (faction_defeated[6]=0){
-	//    if (obj_controller.known[eFACTION.Eldar]=2) and (obj_controller.disposition[6]>=-10) and (string_count("Eldar",obj_ini.strin)=0){
-	//		log_message("RE: Eldar Mission 1");
-	//        // Need something else here that prevents them from asking missions when they are pissed
+	/*This is some eldar mission, it should be fixed
+		var rando4=floor(random(200))+1;
+	if (obj_controller.turns_ignored[6]<=0) and (obj_controller.faction_gender[6]=2) then rando4-=2;
+	if (obj_controller.turns_ignored[6]<=0) and (rando4<=3) and execute_now and (faction_defeated[6]=0){
+	    if (obj_controller.known[eFACTION.Eldar]=2) and (obj_controller.disposition[6]>=-10) and (string_count("Eldar",obj_ini.strin)=0){
+			log_message("RE: Eldar Mission 1");
+	        // Need something else here that prevents them from asking missions when they are pissed
         
-	//        obj_turn_end.audiences+=1;// obj_turn_end.audiences+=1;
-	//        obj_turn_end.audien[obj_turn_end.audiences]=6;
+	        obj_turn_end.audiences+=1;// obj_turn_end.audiences+=1;
+	        obj_turn_end.audience_stack[obj_turn_end.audiences]=6;
         
-	//        // if (obj_controller.known[eFACTION.Eldar]>2) then obj_turn_end.audien_topic[obj_turn_end.audiences]="mission";// Random mission?
-	//        if (obj_controller.known[eFACTION.Eldar]=2){
-	//            obj_turn_end.audien_topic[obj_turn_end.audiences]="mission1";
-	//            obj_controller.known[eFACTION.Eldar]=2.2;
-	//            scr_quest(0,"fund_elder",6,24);
-	//        }
+	        // if (obj_controller.known[eFACTION.Eldar]>2) then obj_turn_end.audien_topic[obj_turn_end.audiences]="mission";// Random mission?
+	        if (obj_controller.known[eFACTION.Eldar]=2){
+					scr_audience(eFACTION.Eldar, "mission1", 0, "", 0, 2.2);
+	            scr_quest(0,"fund_elder",6,24);
+	        }
         
-	//        exit;
-	//    }
-	//}
+	        exit;
+	    }
+	}*/
 	var chosen_event;
 
 	var inquisition_mission_roll = irandom(100);

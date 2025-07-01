@@ -141,7 +141,7 @@ function scr_livery_setup(){
              draw_text_transformed(cur_button.cords[0]+30,cur_button.cords[1]+4,cur_button.text,0.4,0.4,0);
     }*/
     if (!complex_livery){
-        var _tooltip_add_on = ". You can change this value as much as you want in order to update the marine role, company and defualt options on the left but remember to set this value back to your desired base value before continuing";
+        var _tooltip_add_on = ". You can change this value as much as you want in order to update the marine role, company and default options on the left but remember to set this value back to your desired base value before continuing";
         var button_data = [
             {
                 text : $"Primary : {col[main_color]}",

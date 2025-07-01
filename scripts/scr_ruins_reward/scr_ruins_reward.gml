@@ -79,73 +79,116 @@ function scr_ruins_reward(star_system, planet, _ruins) {
 	    scr_event_log("","STC Fragment recovered from Ancient Ruins.");
 	}
 	else if (loot="gear"){
-	    var wep1="",wen1=0,wep2="",wen2=0,wep3="",wen3=0;
+	    var wep1="",wen1=0,wep2="",wen2=0,wep3="",wen3=0,wep4="",wen4=0,wep5="",wen5=0,wep6="",wen6=0,wep7="",wen7=0,wep8="",wen8=0;
 
-	    if (ruins_type<=2) or (ruins_type>=10){
-	        wep1=choose("Power Fist","Chainfist","Power Axe","Power Sword");
-	        wen1=choose(2,3,4,5);
-	        wep2=choose("Flamer","Meltagun","Combiflamer","Sniper Rifle");
-	        wen2=choose(3,4,5,6,7,8);
-	        wep3=choose("Missile Launcher","Heavy Bolter","Lascannon","Plasma Pistol");
-	        wen3=choose(1,2,3);
-	    }else if (ruins_type=3){
-			wep1=choose("Terminator Armour");
-			wen1=choose(1,2);
-	        wep2=choose("Bionics");
-	        wen2=choose(5,6,7);
-	        wep3=choose("Narthecium","Psychic Hood","Rosarius");
-	        wen3=choose(1);
-	    }
-		else if (ruins_type=4){
-			wep1=choose("MK4 Maximus");
-			wen1=choose(2,3);
-	        wep2=choose("MK6 Corvus");
-	        wen2=choose(4,5,6);
-	        wep3=choose("MK8 Errant");
-	        wen3=choose(1,2);
-	    }
-	    else if (ruins_type=5){
-	        wep1=choose("Eviscerator","Underslung Flamer");
-	        wen1=choose(2,3,4,5);
-	        wep2=choose("Flamer","Meltagun","Combiflamer");
-	        wen2=choose(3,4,5,6,7,8);
-	        wep3=choose("Heavy Flamer","Heavy Bolter","Plasma Pistol");
-	        wen3=choose(1,2,3);
-	    }
-	    else if (ruins_type=6){
-	        wep1=choose("Eldar Power Sword","Power Spear");
-	        wen1=choose(1,2);
-	        wep2=choose("Storm Shield","Twin Linked Bolters");
-	        wen2=choose(1,2);
-	        wep3=choose("Archeotech Laspistol","Plasma Pistol");
-	        wen3=choose(1,2);
-	    }
-		else if (ruins_type=7){
-			wep1=choose("Autocannon");
-			wen1=choose(1,2);
-	        wep2=choose("Heavy Bolters","Twin Linked Heavy Bolter");
-	        wen2=choose(1,2,3);
-	        wep3=choose("Twin Linked Lascannon","Lascannon");
-	        wen3=choose(1,2);
-	    }else if (ruins_type=8){
-			wep1=choose("Iron Halo");
-			wen1=choose(1,2);
-	        wep2=choose("Company Standard");
-	        wen2=choose(1);
-	        wep3=choose("Servo-harness");
-	        wen3=choose(1);
-	    }
+
+//Fallen Terminator Squad
+if (ruins_type<=2) or (ruins_type>=10){
+	wep1=choose("Tartaros","Terminator Armour","Cataphractii");
+	wen1=choose(1,2,3);
+	wep2=choose("Tigris Combi Bolter","Volkite Charger");
+	wen2=choose(1,2,);
+	wep3=choose("Power Fist","Chainfist","Power Mace","Relic Blade","Power Spear","Lightning Claw","Power Scythe");
+	wen3=choose(1,2,3);
+	wep4=choose("Assault Cannon","Plasma Cannon",);
+	wen4=choose(0,1);
+	wep5=choose("Company Standard","Narthecium","Psychic Hood","Rosarius");
+	wen5=choose(0,1);
+	wep6=choose("Storm Shield");
+	wen6=choose(1,2,3);
+}
+//Fallen Tactical Squad
+else if (ruins_type=3){
+	wep1=choose("MK3 Iron Armour","MK4 Maximus","MK5 Heresy");
+	wen1=choose(3,4,5,6);
+	wep2=choose("Phobos Bolter");
+	wen2=choose(2,3);
+	wep3=choose("Ryza Plasma Gun","Volkite Charger","Volkite Caliver");
+	wen3=choose(1,2);
+	wep4=choose("Primus Melta Gun", "Phaestos Flamer");
+	wen4=choose(1,2);
+	wep5=choose("Ryza Plasma Pistol","Phobos Bolt Pistol","Volkite Serpenta");
+	wen5=choose(0,1)
+	wep6=choose("Power Sword","Chain Axe","Power Axe","Power Fist");
+	wen6=choose(0,1);
+	wep7=choose("Company Standard","Narthecium","Psychic Hood","Rosarius");
+	wen7=choose(0,1);
+	wep8=choose("Bionics");
+	wen8=choose(1,2,3);
+}
+//Fallen Devastator Squad
+else if (ruins_type=4){
+	wep1=choose("MK3 Iron","MK4 Maximus","MK6 Corvus");
+	wen1=choose(3,4,5);
+	wep2=choose("Mars Heavy Bolter");
+	wen2=choose(2,3);
+	wep3=choose("Mars Plasma Cannon","Volkite Culverin",);
+	wen3=choose(1,2);
+	wep4=choose("Ryza Las Cannon","Cthon Auto Cannon");
+	wen4=choose(1,2);
+	wep5=choose("Ryza Plasma Pistol","Phobos Bolt Pistol","Volkite Serpenta");
+	wen5=choose(0,1)
+	wep6=choose("Power Sword","Chain Axe","Power Axe","Power Fist");
+	wen6=choose(0,1);
+	wep7=choose("Company Standard","Narthecium","Psychic Hood","Rosarius");
+	wen7=choose(0,1);
+	wep8=choose("Heavy Weapons Pack");
+	wen8=choose(1,2,3);
+}
+//Fallen Assault Squad
+else if (ruins_type=5){
+	wep1=choose("MK4 Maximus","MK6 Corvus","MK5 Heresy");
+	wen1=choose(3,4,5);
+	wep2=choose("Chainsword","Chain Axe");
+	wen2=choose(2,3);
+	wep3=choose("Power Sword","Power Axe","Power Fist");
+	wen3=choose(1,2);
+	wep4=choose("Lightning Claws ","Power Scythe");
+	wen4=choose(1,2);
+	wep5=choose("Ryza Plasma Pistol","Phobos Bolt Pistol","Volkite Serpenta");
+	wen5=choose(0,1)
+	wep6=choose("Primus Melta Gun","Phaestos Flamer");
+	wen6=choose(0,1);
+	wep7=choose("Company Standard","Narthecium","Psychic Hood","Rosarius");
+	wen7=choose(0,1);
+	wep8=choose("Jump Pack");
+	wen8=choose(1,2,3);
+}
+//Fallen Breacher Squad
+else if (ruins_type=6){
+wep1=choose("MK3 Iron Armour","MK4 Maximus","MK5 Heresy");
+	wen1=choose(3,4,5,6);
+	wep2=choose("Primus Melta Gun");
+	wen2=choose(2,3);
+	wep3=choose("Ryza Plasma Gun","Volkite Charger","Volkite Caliver");
+	wen3=choose(1,2);
+	wep4=choose("Phobos Bolter", "Phaestos Flamer");
+	wen4=choose(1,2);
+	wep5=choose("Ryza Plasma Pistol","Phobos Bolt Pistol","Volkite Serpenta");
+	wen5=choose(0,1)
+	wep6=choose("Power Sword","Chain Axe","Power Axe","Power Fist");
+	wen6=choose(0,1);
+	wep7=choose("Company Standard","Narthecium","Psychic Hood","Rosarius");
+	wen7=choose(0,1);
+	wep8=choose("Boarding Shield");
+	wen8=choose(1,2,3);
+}
 		
     
 	    scr_add_item(wep1,wen1);
 	    scr_add_item(wep2,wen2);
 	    scr_add_item(wep3,wen3);
+	    scr_add_item(wep4,wen4);
+	    scr_add_item(wep5,wen5);
+	    scr_add_item(wep6,wen6);
+	    scr_add_item(wep7,wen7);
+	    scr_add_item(wep8,wen8);
     
 	    var pop;
 	    pop=instance_create(0,0,obj_popup);
 	    pop.image="ancient_ruins";
 	    pop.title="Ancient Ruins: Gear";
-	    pop.text="These ruins were once an armoury. We found some weapons and pieces of wargear.  "+string(wen1)+"x "+string(wep1)+", "+string(wen2)+"x "+string(wep2)+", and "+string(wen3)+"x "+string(wep3)+" have been added to the Armamentarium.";
+	    pop.text="My lord, your brothers have found sealed chamber in these ruins. It bears symbols of one of the ancient legions. After your tech-marines managed to open this chamber, they've found a number of relics that can be brought back to service. They've found:  "+string(wen1)+"x "+string(wep1)+", "+string(wen2)+"x "+string(wep2)+","+string(wen3)+"x "+string(wep3)+","+string(wen4)+"x "+string(wep4)+","+string(wen5)+"x "+string(wep5)+","+string(wen6)+"x "+string(wep6)+","+string(wen7)+"x "+string(wep7)+", and "+string(wen8)+"x "+string(wep8)+" have been added to the Armamentarium.";
 	}
 	else if (loot="gene_seed"){// Requisition
 	    var gene,pop;gene=floor(random_range(20,40))+1;

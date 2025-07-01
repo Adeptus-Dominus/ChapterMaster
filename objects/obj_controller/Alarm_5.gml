@@ -363,39 +363,26 @@ if ((turn>=irandom(200)+100) or (obj_ini.fleet_type==eFACTION.Mechanicus)) and (
 
 }
 
-// if (known[eFACTION.Ecclesiarchy]=1){var spikky;spikky=choose(0,0,0,1,1);if (spikky=1) then with(obj_turn_end){audiences+=1;audien[audiences]=5;audien_topic[audiences]="intro";}}
 if (known[eFACTION.Ecclesiarchy]==1){
     spikky=choose(0,1,1);
-    if (spikky==1) then with(obj_turn_end){
-        audiences+=1;
-        audien[audiences]=eFACTION.Ecclesiarchy;
-        known[eFACTION.Ecclesiarchy] = 2;
-        audien_topic[audiences]="intro";
-        if (obj_controller.faction_status[eFACTION.Ecclesiarchy]=="War") then audien_topic[audiences]="declare_war";
+    if (spikky){
+        var _topic = faction_status[eFACTION.Ecclesiarchy]=="War" ? "declare_war" : "intro";
+        scr_audience(eFACTION.Ecclesiarchy, _topic);
     }
 }
 if (known[eFACTION.Eldar]==1) and (faction_defeated[eFACTION.Eldar]==0){
     spikky=choose(0,1);
-    if (spikky==1) then with(obj_turn_end){
-        audiences+=1;
-        audien[audiences]= eFACTION.Eldar;
-        audien_topic[audiences]="intro1";
+    if (spikky==1){
+        scr_audience(eFACTION.Eldar, "intro1");
     }
 }
 if (known[eFACTION.Ork]==0.5) and (faction_defeated[eFACTION.Ork]==0){
-    spikky=floor(random(7));
-    if (spikky==1) then with(obj_turn_end){
-        audiences+=1;
-        audien[audiences]=eFACTION.Ork;
-        audien_topic[audiences]="intro";
+    if (1==irandom(7)){
+        scr_audience(eFACTION.Ork, "intro");
     }
 }
 if (known[eFACTION.Tau]==1) and (faction_defeated[eFACTION.Tau]==0){
-    with(obj_turn_end){
-        audiences+=1;
-        audien[audiences]=8;
-        audien_topic[audiences]="intro";
-    }
+    scr_audience(eFACTION.Tau, "intro");
 }
 // ** Quests here **
 // 135 ; quests
@@ -466,7 +453,9 @@ for(var i=1; i<=99; i++){
         event_duration[i]-=1;
         if (event_duration[i]==0){
 
-            if (event[i]=="game_over_man") then obj_controller.alarm[8]=1;
+            if (event[i]=="game_over_man"){
+                obj_controller.alarm[8]=1;
+            }
             // Removes planetary governor installed by the chapter
             if (string_count("remove_serf",event[i])>0){
                 explode_script(event[i],"|");
@@ -527,11 +516,13 @@ for(var i=1; i<=99; i++){
                         flee.capital_number=choose(0,1);
 						flee.frigate_number=choose(2,3);
 						flee.escort_number=choose(4,5,6);
-                        flee.trade_goods="csm";
+                        flee.cargo_data.csm = true;
 						obj_controller.chaos_fleets+=1;
                         flee.action_x=star_id.x;
 						flee.action_y=star_id.y;
-						flee.alarm[4]=1;
+                        with(flee){
+                            set_fleet_movement();
+                        }
                     }	
 				}
             }

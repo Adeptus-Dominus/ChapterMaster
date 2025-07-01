@@ -37,7 +37,8 @@ enum Colors {
     Purple,
     Pink,
     Imperial_Fists,
-    Raptors_Green
+    Raptors_Green,
+    Screamer_Pink
 }
 function scr_colors_initialize() {
 
@@ -81,7 +82,7 @@ function scr_colors_initialize() {
         ["Pink", 255, 0, 198],
         ["Imperial Fists", 255, 200, 0],
         ["Raptors Green", 65, 74, 29],
-
+        ["Screamer Pink", 122, 14, 68]
     ];
 
 	global.colors_count = array_length(colors_array);

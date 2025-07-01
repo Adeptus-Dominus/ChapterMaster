@@ -1,32 +1,32 @@
 enum P_features {
-	Sororitas_Cathedral,
-	Necron_Tomb,
-	Artifact, 
-	STC_Fragment,
-	Ancient_Ruins,
-	Cave_Network,
-	Recruiting_World, 
-	Monastery,
-	Warlord6,
-	OrkWarboss,
-	Warlord10,
-	Special_Force,
-	World_Eaters,
-	Webway,
-	Secret_Base,
-	Starship,
-	Succession_War,
-	Mechanicus_Forge,
-	Reclamationpools,
-	CapillaryTowers,
-	Daemonic_Incursion,
-	VictoryShrine,
-	Arsenal,
-	Gene_Vault,
-	Forge,
-	Gene_Stealer_Cult,
-	Mission,
-	OrkStronghold,
+			Sororitas_Cathedral,
+			Necron_Tomb,
+			Artifact, 
+			STC_Fragment,
+			Ancient_Ruins,
+			Cave_Network,
+			Recruiting_World, 
+			Monastery,
+			Warlord6,
+			OrkWarboss,
+			Warlord10,
+			Special_Force,
+			ChaosWarband,
+			Webway,
+			Secret_Base,
+			Starship,
+			Succession_War,
+			Mechanicus_Forge,
+			Reclamation_pools,
+			Capillary_Towers,
+			Daemonic_Incursion,
+			Victory_Shrine,
+			Arsenal,
+			Gene_Vault,
+			Forge,
+			Gene_Stealer_Cult,
+			Mission,
+			OrkStronghold
 	ShipDock
 };
 	
@@ -192,6 +192,12 @@ function PlanetFeature(feature_type, other_data={}) constructor{
 		}
 		planet_display = "Docks";
 		break;
+	case P_features.ChaosWarband:
+		if !(struct_exists(data, "patron")){
+			patron = choose("slaanesh", "tzeentch", "khorne", "nurgle", "undivided");
+		} else {
+			self.patron = data.patron;
+		}
 	default:
 		player_hidden = 1;
 		planet_display = 0;
@@ -207,7 +213,15 @@ function PlanetFeature(feature_type, other_data={}) constructor{
 	}
 	move_data_to_current_scope(other_data);
 }
+function move_feature_to_fleet(planet, feature_slot, fleet, cargo_key){
+	var _feat = p_feature[planet][feature_slot];
+	array_delete(p_feature[planet], feature_slot, 1);
+	fleet.cargo_data[$ cargo_key] = _feat;
+}
 
+function move_feature_to_planet(cargo_key, star, planet){
+	
+}
 function search_system_features_uid(system, uuid){
 	var sys_bool = false;
 	for (var sys =1; sys<5; sys++){

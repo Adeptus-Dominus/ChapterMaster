@@ -10,14 +10,29 @@
 #macro CM_RED_COLOR #bf4040
 #macro MANAGE_MAN_SEE 34
 #macro MANAGE_MAN_MAX array_length(obj_controller.display_unit) + 7
+#macro SHOP_SELL_MOD 0.8
 
 #macro STR_ANY_POWER_ARMOUR "Any Power Armour"
 #macro STR_ANY_TERMINATOR_ARMOUR "Any Terminator Armour"
 
 // Basic, because we don't include Artificer Armour
 #macro LIST_BASIC_POWER_ARMOUR ["MK7 Aquila", "MK6 Corvus", "MK5 Heresy", "MK8 Errant", "MK4 Maximus", "MK3 Iron Armour","Power Armour"]
-#macro LIST_TERMINATOR_ARMOUR ["Terminator Armour", "Tartaros"]
+#macro LIST_TERMINATOR_ARMOUR ["Terminator Armour", "Tartaros","Cataphractii"]
 
+enum MENU {
+    Default = 0,
+    Manage = 1,
+    Apothecarion = 11,
+    Reclusiam = 12,
+    Librarium = 13,
+    Armamentarium = 14,
+    Recruiting = 15,
+    Fleet = 16,
+    EventLog = 17,
+    Diplomacy = 20,
+    Settings = 21,
+    GameHelp = 30,
+}
 
 enum luck {
     bad = -1,

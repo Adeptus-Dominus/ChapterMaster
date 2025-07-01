@@ -659,7 +659,7 @@ scr_newtext();
 newline=line_break;
 scr_newtext();
 
-if (((leader)) or ((battle_special="world_eaters") and (!obj_controller.faction_defeated[10]))) and (!defeat){
+if (((leader)) or ((battle_special="ChaosWarband") and (!obj_controller.faction_defeated[10]))) and (!defeat){
     var nep;nep=false;
     newline="The enemy Leader has been killed!";newline_color="yellow";scr_newtext();
     newline=line_break;
