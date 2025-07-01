@@ -654,7 +654,7 @@ if (shop = "equipment") {
         item_cost[i] = 0;
         forge_cost[i] = 0;
         i += 1;
-        nobuy[i] = 1;
+
     var mc = 0;
     repeat(i) {
         mc++;
