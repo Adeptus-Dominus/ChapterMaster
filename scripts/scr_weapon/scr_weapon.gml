@@ -1,302 +1,323 @@
 global.weapons = {
 	//30k Weapons
 	//Volkite Pack
-"Volkite Culverin": {
-		"abbreviation": "VolkCul",
-		"attack": {
-			"standard": 700,
-			"master_crafted": 720,
-			"artifact": 740
-		},
-		"description": "Ancient thermal ray weapon, heaviest man portable variant of its class.",
-		"melee_hands": 1,
-		"ranged_hands": 2.2,
-		"ammo": 4,
-		"range": 22,
-		"spli": 12,
-		"arp": 0,
-		"tags": ["Volkite", "energy"]
-},
-
-"Volkite Caliver": {
-		"abbreviation": "VolkCal",
-		"attack": {
-			"standard": 550,
-			"master_crafted": 570,
-			"artifact": 590
-		},
-		"description": "Ancient thermal ray weapon, an uncommon sight during ancient times, now a precious relic for every chapter that can claim one.",
-		"melee_hands": 1,
-		"ranged_hands": 2,
-		"ammo": 6,
-		"range": 16,
-		"spli": 10,
-		"arp": 0,
-		"tags": ["Volkite", "energy"]
-},
-
-"Volkite Charger": {
-		"abbreviation": "VolkCharg",
-		"attack": {
-			"standard": 400,
-			"master_crafted": 420,
-			"artifact": 440
-		},
-		"description": "Ancient thermal ray weapon, smaller, yet still deadly brother of caliver.",
-		"melee_hands": 1,
-		"ranged_hands": 2,
-		"ammo": 10,
-		"range": 10,
-		"spli": 6,
-		"arp": 0,
-		"tags": ["Volkite", "energy"]
-},
-
-"Volkite Serpenta": {
-		"abbreviation": "VolkSerp",
-		"attack": {
-			"standard": 250,
-			"master_crafted": 270,
-			"artifact": 290
-		},
-		"description": "Ancient one-handed thermal ray weapon, preferred by melee specialists and officers.",
-		"melee_hands": 0,
-		"ranged_hands": 1,
-		"ammo": 10,
-		"range": 3,
-		"spli": 4,
-		"arp": 0,
-		"tags": ["Volkite", "energy", "pistol"]
-},
-
-//Bolt Pack
-"Phobos Bolt Pistol": {
-		"abbreviation": "PhBltPis",
-		"attack": {
-			"standard": 38,
-			"master_crafted": 43,
-			"artifact": 48
-		},
-		"description":"Once primary personal weapon of ancient astartes legions, now an uncommon sight on the battlefield.This weapon was hand-crafted by the Fabricators of Mars at the very birth of the Imperium during the Great Crusade.",
-		"melee_hands": 0,
-		"ranged_hands": 1,
-		"ammo": 20,
-		"range": 3.5,
-		"spli": 2,
-		"arp": 0,
-		"tags": ["bolt", "pistol"],
+	"Volkite Culverin": {
+			"abbreviation": "VolkCul",
+			"attack": {
+				"standard": 700,
+				"master_crafted": 720,
+				"artifact": 740
+			},
+			"description": "Ancient thermal ray weapon, heaviest man portable variant of its class.",
+			"melee_hands": 1,
+			"ranged_hands": 2.2,
+			"ammo": 4,
+			"range": 22,
+			"spli": 12,
+			"arp": 0,
+			"tags": ["Volkite", "energy"]
 	},
 
-"Phobos Bolter": {
-		"abbreviation": "PhBltr",
-		"attack": {
-			"standard": 75,
-			"master_crafted": 80,
-			"artifact": 85
-		},
-		"description": "Ancient pattern of boltgun made during times of the Great Crusade for the Astartes Legions. It uses different ammunition, has larger magazine and is slightly bigger than its modern counterparts.",
-		"melee_hands": 1,
-		"ranged_hands": 2,
-		"ammo": 20,
-		"range": 13,
-		"spli": 3,
-		"arp": 0,
-		"tags": ["bolt"]
-},
-
-"Mars Heavy Bolter": {
-		"abbreviation": "MarsHvyBltr",
-		"attack": {
-			"standard": 400,
-			"master_crafted": 430,
-			"artifact": 460
-		},
-		"description": "Rare variant of heavy bolter, uncommon even during times of it's production. Made in forges of Mars itself, it's more lightweight and compact in comparison to modern patterns.",
-		"melee_hands": 1,
-		"ranged_hands": 2,
-		"ammo": 12,
-		"range": 17,
-		"spli": 9,
-		"arp": 1,
-		"tags": ["heavy_ranged", "bolt"]
-},
-"Tigris Combi Bolter": {
-		"abbreviation": "TigComBltr",
-		"attack": {
-			"standard": 100,
-			"master_crafted": 120,
-			"artifact": 140
-		},
-		"description": "Once primary weapon of ancient terminator squads, now precious relic of any chapter that still can field it.",
-		"melee_hands": 1.1,
-		"ranged_hands": 1.1,
-		"ammo": 14,
-		"range": 19,
-		"spli": 11,
-		"arp": 0,
-		"tags": [ "bolt"]
-},
-
-//Plasma Pack
-"Ryza Plasma Gun": {
-"abbreviation": "RyzPlsmGn",
-		"attack": {
-			"standard": 325,
-			"master_crafted": 350,
-			"artifact": 375
-		},
-		"description": "Ancient and now forgotten pattern of plasma weapon. It features improved coils, more stable hydrogen fuel, and characteristic purple glow",
-		"melee_hands": 1,
-		"ranged_hands": 2,
-		"ammo": 18,
-		"range": 14,
-		"spli": 5,
-		"arp": 1,
-		"tags": [ "plasma","energy"]
-},
-"Ryza Plasma Pistol": {
-"abbreviation": "RyzPlsmPis",
-		"attack": {
-			"standard": 145,
-			"master_crafted": 160,
-			"artifact": 175
-		},
-		"description": "Ancient and now forgotten pattern of plasma pistol. Often given to veterans and officers as a sign of great honor. It features improved coils, more stable hydrogen fuel, and characteristic purple glow",
-		"melee_hands": 1,
-		"ranged_hands": 2,
-		"ammo": 18,
-		"range": 14,
-		"spli": 5,
-		"arp": 1,
-		"tags": [ "plasma","energy","pistol"]
-},
-"Mars Plasma Cannon": {
-"abbreviation": "MarsPlsmCnn",
-		"attack": {
-			"standard": 650,
-			"master_crafted": 700,
-			"artifact": 750 //I think that usual 25% increase will be too much for that weapon so applied +150.
-		},
-		"description": "Ancient and now forgotten pattern of plasma weapon. Heaviest portable variant. It features improved coils, more stable hydrogen ammo, and characteristic purple glow",
-		"melee_hands": 1,
-		"ranged_hands": 3,
-		"ammo": 18,
-		"range": 16,
-		"spli": 8,
-		"arp": 1,
-		"tags": [ "plasma","energy"]
-},
-
-	//Melta Pack 
-"Primus Melta Gun":{
-"abbreviation": "PrimMltGn",
-"attack": {
-			"standard": 560,
-			"master_crafted": 585,
-			"artifact": 610
-		},
-		"description": "The Primus MK II Meltagun's origins have been lost to history, but the knowledge of its power and their bearers who served in the Legiones Astartes remains. Some theories have been made to its Ryzan origins due to the curvature of the body, but the famous Forge World denies those claims.",
-		"melee_hands": 1,
-		"ranged_hands": 2,
-		"ammo": 6,
-		"range": 2.5,
-		"spli": 2,
-		"arp": 1,
-		"tags": ["melta","energy","boarding"]
-	},
-"Proteus Multi-Melta":{
-"abbreviation": "ProtMltMelt",
-"attack": {
-			"standard": 1000,
-			"master_crafted": 1100,
-			"artifact": 1200
-		},
-		"description": "This Multi-Melta design originates, like many others used by Legiones Astartes, in the Dark Age of Technology. Deadlier than the current designs fielded by the Space Marine Chapters, it is a relic of both of the zenith of mankind's science and the last moments of the Emperor's true vision",
-		"melee_hands": 1,
-		"ranged_hands": 2,
-		"ammo": 6,
-		"range": 4.5,
-		"spli": 2,
-		"arp": 1,
-		"tags": ["melta","energy","boarding"]
+	"Volkite Caliver": {
+			"abbreviation": "VolkCal",
+			"attack": {
+				"standard": 550,
+				"master_crafted": 570,
+				"artifact": 590
+			},
+			"description": "Ancient thermal ray weapon, an uncommon sight during ancient times, now a precious relic for every chapter that can claim one.",
+			"melee_hands": 1,
+			"ranged_hands": 2,
+			"ammo": 6,
+			"range": 16,
+			"spli": 10,
+			"arp": 0,
+			"tags": ["Volkite", "energy"]
 	},
 
-//Flamer Pack
-"Phaestos Flamer":{
-"abbreviation": "PhFlmr",
-"attack": {
-			"standard": 430,
-			"master_crafted": 585,
-			"artifact": 610
-		},
-		"description": "The Phaestos-pattern Flamer is a stark reminder of the time where Mankind's future was yet unmolested by the decaying stench of the Horus Heresy. Oddly shaped for the modern users, it is nonetheless not to be underestimated and its potent promethium-fueled flame has burned through armours of unnumbered heroes",
-		"melee_hands": 1,
-		"ranged_hands": 2,
-		"ammo": 6,
-		"range": 2.5,
-		"spli": 6,
-		"arp": -1,
-		"tags": ["flame",]//Shouldn't it also feature "boarding"?
+	"Volkite Charger": {
+			"abbreviation": "VolkCharg",
+			"attack": {
+				"standard": 400,
+				"master_crafted": 420,
+				"artifact": 440
+			},
+			"description": "Ancient thermal ray weapon, smaller, yet still deadly brother of caliver.",
+			"melee_hands": 1,
+			"ranged_hands": 2,
+			"ammo": 10,
+			"range": 10,
+			"spli": 6,
+			"arp": 0,
+			"tags": ["Volkite", "energy"]
 	},
-//Melle Pack
-"Power Scythe" :{
-"abbreviation": "PwrSct",
-"attack": {
-			"standard": 250,
-			"master_crafted": 300,
-			"artifact": 350
-		},
-		"melee_mod": {
-			"standard": 1,
-			"master_crafted": 1.1,
-			"artifact": 1.2
-		},
-		"description": "An unpopular power weapon, once a signature of the cursed 14th Legion, now fielded by a handful of loyalist Chapters.",
-		"melee_hands": 2,
-		"ranged_hands": 1,
-		"ammo": 0,
-		"range": 1.5,
-		"spli": 6,
-		"arp": 1,
-		"tags": ["power",]
+
+	"Volkite Serpenta": {
+			"abbreviation": "VolkSerp",
+			"attack": {
+				"standard": 250,
+				"master_crafted": 270,
+				"artifact": 290
+			},
+			"description": "Ancient one-handed thermal ray weapon, preferred by melee specialists and officers.",
+			"melee_hands": 0,
+			"ranged_hands": 1,
+			"ammo": 10,
+			"range": 3,
+			"spli": 4,
+			"arp": 0,
+			"tags": ["Volkite", "energy", "pistol"]
 	},
-	//Laser Pack
-"Ryza Lascannon":{
-"abbreviation": "RyzLascnn",
-"attack": {
-			"standard": 750,
-			"master_crafted": 800,
-			"artifact": 850
+
+	//Bolt Pack
+	"Phobos Bolt Pistol": {
+			"abbreviation": "PhBltPis",
+			"attack": {
+				"standard": 38,
+				"master_crafted": 43,
+				"artifact": 48
+			},
+			"description":"Once primary personal weapon of ancient astartes legions, now an uncommon sight on the battlefield.This weapon was hand-crafted by the Fabricators of Mars at the very birth of the Imperium during the Great Crusade.",
+			"melee_hands": 0,
+			"ranged_hands": 1,
+			"ammo": 20,
+			"range": 3.5,
+			"spli": 2,
+			"arp": 0,
+			"tags": ["bolt", "pistol"],
 		},
-		"description": "PH",
-		"melee_hands": 1,
-		"ranged_hands": 2.25,
-		"ammo": 10,
-		"range": 24,
-		"spli": 1,
-		"arp": 1,
-		"tags": ["heavy_ranged","las","energy",]
-},
-		//misc pack
-"Cthon Autocannon":{
-"abbreviation": "CthAutocnn",
-"attack": {
-			"standard": 480,
-			"master_crafted": 520,
-			"artifact": 560
+
+	"Phobos Bolter": {
+			"abbreviation": "PhBltr",
+			"attack": {
+				"standard": 75,
+				"master_crafted": 80,
+				"artifact": 85
+			},
+			"description": "Ancient pattern of boltgun made during times of the Great Crusade for the Astartes Legions. It uses different ammunition, has larger magazine and is slightly bigger than its modern counterparts.",
+			"melee_hands": 1,
+			"ranged_hands": 2,
+			"ammo": 20,
+			"range": 13,
+			"spli": 3,
+			"arp": 0,
+			"tags": ["bolt"]
+	},
+
+	"Mars Heavy Bolter": {
+			"abbreviation": "MarsHvyBltr",
+			"attack": {
+				"standard": 400,
+				"master_crafted": 430,
+				"artifact": 460
+			},
+			"description": "Rare variant of heavy bolter, uncommon even during times of it's production. Made in forges of Mars itself, it's more lightweight and compact in comparison to modern patterns.",
+			"melee_hands": 1,
+			"ranged_hands": 2,
+			"ammo": 12,
+			"range": 17,
+			"spli": 9,
+			"arp": 1,
+			"tags": ["heavy_ranged", "bolt"]
+	},
+	"Tigris Combi Bolter": {
+			"abbreviation": "TigComBltr",
+			"attack": {
+				"standard": 100,
+				"master_crafted": 120,
+				"artifact": 140
+			},
+			"description": "Once primary weapon of ancient terminator squads, now precious relic of any chapter that still can field it.",
+			"melee_hands": 1.1,
+			"ranged_hands": 1.1,
+			"ammo": 14,
+			"range": 19,
+			"spli": 11,
+			"arp": 0,
+			"tags": [ "bolt"]
+	},
+
+	//Plasma Pack
+	"Ryza Plasma Gun": {
+	"abbreviation": "RyzPlsmGn",
+			"attack": {
+				"standard": 325,
+				"master_crafted": 350,
+				"artifact": 375
+			},
+			"description": "Ancient and now forgotten pattern of plasma weapon. It features improved coils, more stable hydrogen fuel, and characteristic purple glow",
+			"melee_hands": 1,
+			"ranged_hands": 2,
+			"ammo": 18,
+			"range": 14,
+			"spli": 5,
+			"arp": 1,
+			"tags": [ "plasma","energy"]
+	},
+	"Ryza Plasma Pistol": {
+	"abbreviation": "RyzPlsmPis",
+			"attack": {
+				"standard": 145,
+				"master_crafted": 160,
+				"artifact": 175
+			},
+			"description": "Ancient and now forgotten pattern of plasma pistol. Often given to veterans and officers as a sign of great honor. It features improved coils, more stable hydrogen fuel, and characteristic purple glow",
+			"melee_hands": 1,
+			"ranged_hands": 2,
+			"ammo": 18,
+			"range": 14,
+			"spli": 5,
+			"arp": 1,
+			"tags": [ "plasma","energy","pistol"]
+	},
+	"Mars Plasma Cannon": {
+	"abbreviation": "MarsPlsmCnn",
+			"attack": {
+				"standard": 650,
+				"master_crafted": 700,
+				"artifact": 750 //I think that usual 25% increase will be too much for that weapon so applied +150.
+			},
+			"description": "Ancient and now forgotten pattern of plasma weapon. Heaviest portable variant. It features improved coils, more stable hydrogen ammo, and characteristic purple glow",
+			"melee_hands": 1,
+			"ranged_hands": 3,
+			"ammo": 18,
+			"range": 16,
+			"spli": 8,
+			"arp": 1,
+			"tags": [ "plasma","energy"]
+	},
+
+		//Melta Pack 
+	"Primus Melta Gun":{
+	"abbreviation": "PrimMltGn",
+	"attack": {
+				"standard": 560,
+				"master_crafted": 585,
+				"artifact": 610
+			},
+			"description": "The Primus MK II Meltagun's origins have been lost to history, but the knowledge of its power and their bearers who served in the Legiones Astartes remains. Some theories have been made to its Ryzan origins due to the curvature of the body, but the famous Forge World denies those claims.",
+			"melee_hands": 1,
+			"ranged_hands": 2,
+			"ammo": 6,
+			"range": 2.5,
+			"spli": 2,
+			"arp": 1,
+			"tags": ["melta","energy","boarding"]
 		},
-		"description": "PH",
-		"melee_hands": 1,
-		"ranged_hands": 2.25,
-		"ammo": 30,
-		"range": 20,
-		"spli": 15,
-		"arp": 1,
-		"tags": ["heavy_ranged","dreadnought",]
-},
+	"Proteus Multi-Melta":{
+	"abbreviation": "ProtMltMelt",
+	"attack": {
+				"standard": 1000,
+				"master_crafted": 1100,
+				"artifact": 1200
+			},
+			"description": "This Multi-Melta design originates, like many others used by Legiones Astartes, in the Dark Age of Technology. Deadlier than the current designs fielded by the Space Marine Chapters, it is a relic of both of the zenith of mankind's science and the last moments of the Emperor's true vision",
+			"melee_hands": 1,
+			"ranged_hands": 2,
+			"ammo": 6,
+			"range": 4.5,
+			"spli": 2,
+			"arp": 1,
+			"tags": ["melta","energy","boarding"]
+		},
+
+	//Flamer Pack
+	"Phaestos Flamer":{
+	"abbreviation": "PhFlmr",
+	"attack": {
+				"standard": 430,
+				"master_crafted": 585,
+				"artifact": 610
+			},
+			"description": "The Phaestos-pattern Flamer is a stark reminder of the time where Mankind's future was yet unmolested by the decaying stench of the Horus Heresy. Oddly shaped for the modern users, it is nonetheless not to be underestimated and its potent promethium-fueled flame has burned through armours of unnumbered heroes",
+			"melee_hands": 1,
+			"ranged_hands": 2,
+			"ammo": 6,
+			"range": 2.5,
+			"spli": 6,
+			"arp": -1,
+			"tags": ["flame",]//Shouldn't it also feature "boarding"?
+		},
+	//Melle Pack
+	"Power Scythe" :{
+	"abbreviation": "PwrSct",
+	"attack": {
+				"standard": 250,
+				"master_crafted": 300,
+				"artifact": 350
+			},
+			"melee_mod": {
+				"standard": 1,
+				"master_crafted": 1.1,
+				"artifact": 1.2
+			},
+			"description": "An unpopular power weapon, once a signature of the cursed 14th Legion, now fielded by a handful of loyalist Chapters.",
+			"melee_hands": 2,
+			"ranged_hands": 1,
+			"ammo": 0,
+			"range": 1.5,
+			"spli": 6,
+			"arp": 1,
+			"tags": ["power",]
+		},
+		//Laser Pack
+	"Ryza Lascannon":{
+	"abbreviation": "RyzLascnn",
+	"attack": {
+				"standard": 750,
+				"master_crafted": 800,
+				"artifact": 850
+			},
+			"description": "PH",
+			"melee_hands": 1,
+			"ranged_hands": 2.25,
+			"ammo": 10,
+			"range": 24,
+			"spli": 1,
+			"arp": 1,
+			"tags": ["heavy_ranged","las","energy",]
+	},
+			//misc pack
+	"Cthon Autocannon":{
+	"abbreviation": "CthAutocnn",
+	"attack": {
+				"standard": 480,
+				"master_crafted": 520,
+				"artifact": 560
+			},
+			"description": "PH",
+			"melee_hands": 1,
+			"ranged_hands": 2.25,
+			"ammo": 30,
+			"range": 20,
+			"spli": 15,
+			"arp": 1,
+			"tags": ["heavy_ranged","dreadnought",]
+	},
 	
 	//40k weapons
-
+	"Storm Shield": {
+		"description": "Protects twice as well when boarding. A powered shield that must be held with a hand.  While powered by the marines armour it shimmers with blue energy.",
+		"abbreviation": "StrmShld",
+		"attack": {
+			"standard": 5,
+			"master_crafted": 5,
+			"artifact": 10
+		},
+		"armour_value": {
+			"standard": 8,
+			"master_crafted": 10,
+			"artifact": 12
+		},
+		"melee_hands": 0.75,
+		"ranged_hands": 1,
+		"tags": ["shield"],
+		"hp_mod": {
+			"standard": 30,
+			"master_crafted": 35,
+			"artifact": 40
+		},
+	},
 	"Boarding Shield": {
 		"description": "Protects twice as well when boarding. Used in siege or boarding operations, this shield offers additional protection.  It may be used with a 2-handed ranged weapon.",
 		"abbreviation": "BrdShld",
@@ -2543,7 +2564,7 @@ global.gear = {
 			},
 			"tags": ["vehicle", "Upgrade"],
 		},
-// Hireling Armour
+	// Hireling Armour
 	// Admech
 		"Skitarii Armour": {
 			"abbreviation": "SkitArm",
