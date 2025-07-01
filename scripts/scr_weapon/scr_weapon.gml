@@ -80,7 +80,7 @@ global.weapons = {
 		"range": 3.5,
 		"spli": 2,
 		"arp": 0,
-		"tags": ["bolt", "pistol"],
+		"tags": ["bolt", "pistol"]
 	},
 	"Phobos Bolter": {
 		"abbreviation": "PhBltr",
@@ -179,7 +179,7 @@ global.weapons = {
 		"arp": 1,
 		"tags": ["plasma", "energy"]
 	},
-	//Melta Pack 
+	//Melta Pack
 	"Primus Melta Gun": {
 		"abbreviation": "PrimMltGn",
 		"attack": {
@@ -212,7 +212,6 @@ global.weapons = {
 		"arp": 1,
 		"tags": ["melta", "energy", "boarding"]
 	},
-
 	//Flamer Pack
 	"Phaestos Flamer": {
 		"abbreviation": "PhFlmr",
@@ -228,7 +227,7 @@ global.weapons = {
 		"range": 2.5,
 		"spli": 6,
 		"arp": -1,
-		"tags": ["flame", ] //Shouldn't it also feature "boarding"?
+		"tags": ["flame"] //Shouldn't it also feature "boarding"?
 	},
 	//Melle Pack
 	"Power Scythe": {
@@ -250,7 +249,7 @@ global.weapons = {
 		"range": 1.5,
 		"spli": 6,
 		"arp": 1,
-		"tags": ["power", ]
+		"tags": ["power"]
 	},
 	//Laser Pack
 	"Ryza Lascannon": {
@@ -267,7 +266,7 @@ global.weapons = {
 		"range": 24,
 		"spli": 1,
 		"arp": 1,
-		"tags": ["heavy_ranged", "las", "energy", ]
+		"tags": ["heavy_ranged", "las", "energy"]
 	},
 	//misc pack
 	"Cthon Autocannon": {
@@ -284,7 +283,7 @@ global.weapons = {
 		"range": 20,
 		"spli": 15,
 		"arp": 1,
-		"tags": ["heavy_ranged", "dreadnought", ]
+		"tags": ["heavy_ranged", "dreadnought"]
 	},
 	//40k weapons
 	"Storm Shield": {
