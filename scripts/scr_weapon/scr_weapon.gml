@@ -73,7 +73,7 @@ global.weapons = {
 			"master_crafted": 43,
 			"artifact": 48
 		},
-		"description": "Once primary personal weapon of ancient astartes legions, now an uncommon sight on the battlefield.This weapon was hand-crafted by the Fabricators of Mars at the very birth of the Imperium during the Great Crusade.",
+		"description": "Once primary personal weapon of ancient astartes legions, now an uncommon sight on the battlefield. This weapon was hand-crafted by the Fabricators of Mars at the very birth of the Imperium during the Great Crusade.",
 		"melee_hands": 0,
 		"ranged_hands": 1,
 		"ammo": 20,
