@@ -11,7 +11,7 @@ with (obj_fleet_select) {
     instance_destroy();
 }
 
-obj_controller.menu = 20;
+scr_toggle_diplomacy();
 obj_controller.diplomacy = 3;
 obj_controller.force_goodbye = 5;
 
@@ -119,7 +119,9 @@ if (is_struct(_target)) {
         _enemy_fleet.action_y = _target.y;
     }
 
-    _enemy_fleet.alarm[4] = 1;
+    with(_enemy_fleet){
+        set_fleet_movement();
+    }
 }
 
 instance_activate_all();

@@ -3209,7 +3209,8 @@ function scr_initialize_custom() {
 	//Fixed Loot tagble 
 if(scr_has_adv("Ancient Armoury")){
 //armour
-	scr_add_item("Tartaros",1)//When Cata is added I will replace tartaros with that.
+var armm5="";
+	armm5=choose("Tartaros","Cataphractii");
 	scr_add_item("MK3 Iron Armour",irandom_range(2,5));
 	scr_add_item("MK4 Maximus",irandom_range(5,10));
 	scr_add_item("MK5 Heresy",irandom_range(5,10));
@@ -3237,6 +3238,7 @@ if(scr_has_adv("Ancient Armoury")){
 	scr_add_item(armm2,armk2);
 	scr_add_item(armm3,armk3);
 	scr_add_item(armm4,armk4);
+	scr_add_item(armm5,1);
 	
 	}
 

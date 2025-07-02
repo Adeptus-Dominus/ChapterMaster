@@ -236,18 +236,11 @@ function out_of_system_warboss(){
         known[eFACTION.Ork] = 0;
         var _warboss = new NewPlanetFeature(P_features.OrkWarboss);
         if (faction_defeated[7]=1){
-            with(obj_turn_end){
-                audiences+=1;
-                audien[audiences] = 7;
-                known[eFACTION.Chaos] = 2;
-                audien_topic[audiences] = "new_warboss";
-                did_so=true;
-            }
             faction_defeated[7] =-1;
             faction_leader[eFACTION.Ork] = _warboss.name;
             faction_title[7]="Warboss";
             faction_status[eFACTION.Ork]="War";
-            disposition[7]=-40;            
+            scr_audience(eFACTION.Ork, "new_warboss", -40,"War", 0, 2);     
         } else {
             known[eFACTION.Ork] = 0.5;
         }

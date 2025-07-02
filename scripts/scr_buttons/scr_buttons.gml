@@ -64,8 +64,10 @@ function UnitButtonObject(data = false) constructor{
 	keystroke = false;
 	tooltip = "";
 	bind_method = "";
+	bind_scope = false;
 	style = "standard";
 	font=fnt_40k_14b
+	set_height_width = false;
 
 
 	static update_loc = function(){
@@ -81,7 +83,9 @@ function UnitButtonObject(data = false) constructor{
 		for (i=0;i<array_length(_updaters);i++){
 			self[$ _updaters[i]] = data[$ _updaters[i]];
 		}
-		update_loc();
+		if (!set_height_width){
+			update_loc();
+		}
 	}
 	if (data != false){
 		update(data);
@@ -154,7 +158,15 @@ function UnitButtonObject(data = false) constructor{
 			var clicked = point_and_click(_button_click_area) || keystroke;
 			if (clicked){
 				if (is_callable(bind_method)){
-					bind_method();
+					if (bind_scope != false){
+						var _method = bind_method;
+						with (bind_scope){
+							_method();
+						}
+					} else {
+						bind_method();
+					}
+
 				}
 			}
 			return clicked

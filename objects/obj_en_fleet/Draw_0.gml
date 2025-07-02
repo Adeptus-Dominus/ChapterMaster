@@ -113,7 +113,7 @@ if (within=1) or (selected>0){
             break;
         case eFACTION.Chaos:
             fleet_descript="Heretic Fleet";
-            if (trade_goods="Khorne_warband" || trade_goods="Khorne_warband_landing_force"){
+            if (fleet_has_cargo("warband") || fleet_has_cargo("csm")){
                 fleet_descript=string(obj_controller.faction_leader[eFACTION.Chaos])+"'s Fleet";
                 if (string_count("s's Fleet",fleet_descript)>0) then fleet_descript=string_replace(fleet_descript,"s's Fleet","s' Fleet");                
             }

@@ -157,7 +157,7 @@ try {
         
         if (defeat=1) and (battle_special="WL10_reveal"){
             obj_controller.audience=10;
-            obj_controller.menu=20;
+            scr_toggle_diplomacy();
             obj_controller.diplomacy=10;
             obj_controller.known[eFACTION.Chaos]=2;
             with(obj_controller){scr_dialogue("intro2");}
@@ -213,22 +213,9 @@ try {
     
     
     if (enemy=5) and (obj_controller.faction_status[eFACTION.Ecclesiarchy]!="War"){
-        obj_controller.loyalty-=50;obj_controller.loyalty_hidden-=50;
-        obj_controller.disposition[2]-=50;obj_controller.disposition[3]-=80;
-        obj_controller.disposition[4]-=40;obj_controller.disposition[5]-=30;
-        
-        obj_controller.faction_status[eFACTION.Imperium]="War";obj_controller.faction_status[eFACTION.Mechanicus]="War";
-        obj_controller.faction_status[eFACTION.Inquisition]="War";obj_controller.faction_status[eFACTION.Ecclesiarchy]="War";
-        
-        if (!instance_exists(obj_turn_end)){
-            obj_controller.audiences+=1;obj_controller.audien[obj_controller.audiences]=5;obj_controller.audien_topic[obj_controller.audiences]="declare_war";
-            if (obj_controller.known[eFACTION.Inquisition]>1){obj_controller.audiences+=1;obj_controller.audien[obj_controller.audiences]=4;obj_controller.audien_topic[obj_controller.audiences]="declare_war";}
-            obj_controller.audiences+=1;obj_controller.audien[obj_controller.audiences]=2;obj_controller.audien_topic[obj_controller.audiences]="declare_war";
-        }else{
-            obj_turn_end.audiences+=1;obj_turn_end.audien[obj_turn_end.audiences]=5;obj_turn_end.audien_topic[obj_turn_end.audiences]="declare_war";
-            if (obj_turn_end.known[eFACTION.Inquisition]>1){obj_turn_end.audiences+=1;obj_turn_end.audien[obj_turn_end.audiences]=4;obj_turn_end.audien_topic[obj_turn_end.audiences]="declare_war";}
-            obj_turn_end.audiences+=1;obj_turn_end.audien[obj_turn_end.audiences]=2;obj_turn_end.audien_topic[obj_turn_end.audiences]="declare_war";
-        }
+        obj_controller.loyalty-=50;
+        obj_controller.loyalty_hidden-=50;
+        decare_war_on_imperium_audiences();
     }
     
     
@@ -510,7 +497,8 @@ try {
     
     if (enemy=1){
         if (battle_special="cs_meeting_battle1") or (battle_special="cs_meeting_battle2"){
-            obj_controller.diplomacy=10;obj_controller.menu=20;
+            obj_controller.diplomacy=10;
+            scr_toggle_diplomacy();
             with(obj_controller){scr_dialogue("cs_meeting21");}
         }
         
@@ -555,7 +543,7 @@ try {
             }
             // Master of Sanctity present, wishes to take in the player
             if (instance_exists(obj_ground_mission)) and (string_count("CRMOS|",obj_controller.useful_info)=0){
-                obj_controller.menu=20;
+                scr_toggle_diplomacy();
                 with(obj_controller){
                     scr_dialogue("cs_meeting_m5");
                 }
@@ -644,18 +632,18 @@ try {
     
     
     
-    if ((leader=1) or (battle_special="world_eaters")) and (obj_controller.faction_defeated[10]=0) and (defeat=0) and (battle_special!="WL10_reveal") and (battle_special!="WL10_later"){
+    if ((leader=1) or (battle_special="ChaosWarband")) and (obj_controller.faction_defeated[10]=0) and (defeat=0) and (battle_special!="WL10_reveal") and (battle_special!="WL10_later"){
         if (battle_special!="WL10_reveal") and (battle_special!="WL10_later"){
         // prolly schedule a popup congratulating
         obj_controller.faction_defeated[enemy]=1;
         if (obj_controller.known[enemy]=0) then obj_controller.known[enemy]=1;
         
-        if (battle_special!="world_eaters") then with(obj_star){
+        if (battle_special!="ChaosWarband") then with(obj_star){
             if (string_count("WL"+string(obj_ncombat.enemy),p_feature[obj_ncombat.battle_id])>0){
                 p_feature[obj_ncombat.battle_id]=string_replace(p_feature[obj_ncombat.battle_id],"WL"+string(obj_ncombat.enemy)+"|","");
             }
         }
-        if (battle_special="world_eaters"){
+        if (battle_special="ChaosWarband"){
             obj_controller.faction_defeated[10]=1;// show_message("WL10 defeated");
             if (instance_exists(obj_turn_end)){
                 scr_event_log("","Enemy Leader Assassinated: Chaos Lord");

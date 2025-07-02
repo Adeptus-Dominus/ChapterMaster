@@ -3841,7 +3841,7 @@ if (enemy = 10) and(battle_special != "ship_demon") and(battle_special != "falle
 }
 
 // ** Chaos Space Marines Forces **
-if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeting_battle", battle_special) = 0) {
+if (enemy = 11) and(battle_special != "ChaosWarband") and(string_count("cs_meeting_battle", battle_special) = 0) {
 	// CSMs are a bit special case compared to other factions - it is a player's "evil mirror" faction so to speak
 	// CSM Marine
 	if (threat = 1) {
@@ -4236,7 +4236,7 @@ if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeti
 }
 
 // ** World Eaters Forces **
-if (enemy = 11) and(battle_special = "world_eaters") {
+if (enemy = 11) and(battle_special = "ChaosWarband") {
 	// WE Marine
 	if (threat = 1) {
 		u = instance_nearest(xxx, 240, obj_enunit);

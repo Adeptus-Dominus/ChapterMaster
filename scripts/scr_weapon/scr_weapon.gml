@@ -1,7 +1,7 @@
 global.weapons = {
 	//30k Weapons
 	//Volkite Pack
-"Volkite Culverin": {
+	"Volkite Culverin": {
 		"abbreviation": "VolkCul",
 		"attack": {
 			"standard": 700,
@@ -16,9 +16,8 @@ global.weapons = {
 		"spli": 12,
 		"arp": 0,
 		"tags": ["Volkite", "energy"]
-},
-
-"Volkite Caliver": {
+	},
+	"Volkite Caliver": {
 		"abbreviation": "VolkCal",
 		"attack": {
 			"standard": 550,
@@ -33,9 +32,8 @@ global.weapons = {
 		"spli": 10,
 		"arp": 0,
 		"tags": ["Volkite", "energy"]
-},
-
-"Volkite Charger": {
+	},
+	"Volkite Charger": {
 		"abbreviation": "VolkCharg",
 		"attack": {
 			"standard": 400,
@@ -50,9 +48,8 @@ global.weapons = {
 		"spli": 6,
 		"arp": 0,
 		"tags": ["Volkite", "energy"]
-},
-
-"Volkite Serpenta": {
+	},
+	"Volkite Serpenta": {
 		"abbreviation": "VolkSerp",
 		"attack": {
 			"standard": 250,
@@ -67,27 +64,25 @@ global.weapons = {
 		"spli": 4,
 		"arp": 0,
 		"tags": ["Volkite", "energy", "pistol"]
-},
-
-//Bolt Pack
-"Phobos Bolt Pistol": {
+	},
+	//Bolt Pack
+	"Phobos Bolt Pistol": {
 		"abbreviation": "PhBltPis",
 		"attack": {
 			"standard": 38,
 			"master_crafted": 43,
 			"artifact": 48
 		},
-		"description":"Once primary personal weapon of ancient astartes legions, now an uncommon sight on the battlefield.This weapon was hand-crafted by the Fabricators of Mars at the very birth of the Imperium during the Great Crusade.",
+		"description": "Once primary personal weapon of ancient astartes legions, now an uncommon sight on the battlefield. This weapon was hand-crafted by the Fabricators of Mars at the very birth of the Imperium during the Great Crusade.",
 		"melee_hands": 0,
 		"ranged_hands": 1,
 		"ammo": 20,
 		"range": 3.5,
 		"spli": 2,
 		"arp": 0,
-		"tags": ["bolt", "pistol"],
+		"tags": ["bolt", "pistol"]
 	},
-
-"Phobos Bolter": {
+	"Phobos Bolter": {
 		"abbreviation": "PhBltr",
 		"attack": {
 			"standard": 75,
@@ -102,9 +97,8 @@ global.weapons = {
 		"spli": 3,
 		"arp": 0,
 		"tags": ["bolt"]
-},
-
-"Mars Heavy Bolter": {
+	},
+	"Mars Heavy Bolter": {
 		"abbreviation": "MarsHvyBltr",
 		"attack": {
 			"standard": 400,
@@ -119,8 +113,8 @@ global.weapons = {
 		"spli": 9,
 		"arp": 1,
 		"tags": ["heavy_ranged", "bolt"]
-},
-"Tigris Combi Bolter": {
+	},
+	"Tigris Combi Bolter": {
 		"abbreviation": "TigComBltr",
 		"attack": {
 			"standard": 100,
@@ -134,12 +128,11 @@ global.weapons = {
 		"range": 19,
 		"spli": 11,
 		"arp": 0,
-		"tags": [ "bolt"]
-},
-
-//Plasma Pack
-"Ryza Plasma Gun": {
-"abbreviation": "RyzPlsmGn",
+		"tags": ["bolt"]
+	},
+	//Plasma Pack
+	"Ryza Plasma Gun": {
+		"abbreviation": "RyzPlsmGn",
 		"attack": {
 			"standard": 325,
 			"master_crafted": 350,
@@ -152,10 +145,10 @@ global.weapons = {
 		"range": 14,
 		"spli": 5,
 		"arp": 1,
-		"tags": [ "plasma","energy"]
-},
-"Ryza Plasma Pistol": {
-"abbreviation": "RyzPlsmPis",
+		"tags": ["plasma", "energy"]
+	},
+	"Ryza Plasma Pistol": {
+		"abbreviation": "RyzPlsmPis",
 		"attack": {
 			"standard": 145,
 			"master_crafted": 160,
@@ -168,10 +161,10 @@ global.weapons = {
 		"range": 14,
 		"spli": 5,
 		"arp": 1,
-		"tags": [ "plasma","energy","pistol"]
-},
-"Mars Plasma Cannon": {
-"abbreviation": "MarsPlsmCnn",
+		"tags": ["plasma", "energy", "pistol"]
+	},
+	"Mars Plasma Cannon": {
+		"abbreviation": "MarsPlsmCnn",
 		"attack": {
 			"standard": 650,
 			"master_crafted": 700,
@@ -184,13 +177,12 @@ global.weapons = {
 		"range": 16,
 		"spli": 8,
 		"arp": 1,
-		"tags": [ "plasma","energy"]
-},
-
-	//Melta Pack 
-"Primus Melta Gun":{
-"abbreviation": "PrimMltGn",
-"attack": {
+		"tags": ["plasma", "energy"]
+	},
+	//Melta Pack
+	"Primus Melta Gun": {
+		"abbreviation": "PrimMltGn",
+		"attack": {
 			"standard": 560,
 			"master_crafted": 585,
 			"artifact": 610
@@ -202,11 +194,11 @@ global.weapons = {
 		"range": 2.5,
 		"spli": 2,
 		"arp": 1,
-		"tags": ["melta","energy","boarding"]
+		"tags": ["melta", "energy", "boarding"]
 	},
-"Proteus Multi-Melta":{
-"abbreviation": "ProtMltMelt",
-"attack": {
+	"Proteus Multi-Melta": {
+		"abbreviation": "ProtMltMelt",
+		"attack": {
 			"standard": 1000,
 			"master_crafted": 1100,
 			"artifact": 1200
@@ -218,13 +210,12 @@ global.weapons = {
 		"range": 4.5,
 		"spli": 2,
 		"arp": 1,
-		"tags": ["melta","energy","boarding"]
+		"tags": ["melta", "energy", "boarding"]
 	},
-
-//Flamer Pack
-"Phaestos Flamer":{
-"abbreviation": "PhFlmr",
-"attack": {
+	//Flamer Pack
+	"Phaestos Flamer": {
+		"abbreviation": "PhFlmr",
+		"attack": {
 			"standard": 430,
 			"master_crafted": 585,
 			"artifact": 610
@@ -236,12 +227,12 @@ global.weapons = {
 		"range": 2.5,
 		"spli": 6,
 		"arp": -1,
-		"tags": ["flame",]//Shouldn't it also feature "boarding"?
+		"tags": ["flame"] //Shouldn't it also feature "boarding"?
 	},
-//Melle Pack
-"Power Scythe" :{
-"abbreviation": "PwrSct",
-"attack": {
+	//Melle Pack
+	"Power Scythe": {
+		"abbreviation": "PwrSct",
+		"attack": {
 			"standard": 250,
 			"master_crafted": 300,
 			"artifact": 350
@@ -258,12 +249,12 @@ global.weapons = {
 		"range": 1.5,
 		"spli": 6,
 		"arp": 1,
-		"tags": ["power",]
+		"tags": ["power"]
 	},
 	//Laser Pack
-"Ryza Lascannon":{
-"abbreviation": "RyzLascnn",
-"attack": {
+	"Ryza Lascannon": {
+		"abbreviation": "RyzLascnn",
+		"attack": {
 			"standard": 750,
 			"master_crafted": 800,
 			"artifact": 850
@@ -275,12 +266,12 @@ global.weapons = {
 		"range": 24,
 		"spli": 1,
 		"arp": 1,
-		"tags": ["heavy_ranged","las","energy",]
-},
-		//misc pack
-"Cthon Autocannon":{
-"abbreviation": "CthAutocnn",
-"attack": {
+		"tags": ["heavy_ranged", "las", "energy"]
+	},
+	//misc pack
+	"Cthon Autocannon": {
+		"abbreviation": "CthAutocnn",
+		"attack": {
 			"standard": 480,
 			"master_crafted": 520,
 			"artifact": 560
@@ -292,11 +283,31 @@ global.weapons = {
 		"range": 20,
 		"spli": 15,
 		"arp": 1,
-		"tags": ["heavy_ranged","dreadnought",]
-},
-	
+		"tags": ["heavy_ranged", "dreadnought"]
+	},
 	//40k weapons
-
+	"Storm Shield": {
+		"description": "Protects twice as well when boarding. A powered shield that must be held with a hand.  While powered by the marines armour it shimmers with blue energy.",
+		"abbreviation": "StrmShld",
+		"attack": {
+			"standard": 5,
+			"master_crafted": 5,
+			"artifact": 10
+		},
+		"armour_value": {
+			"standard": 8,
+			"master_crafted": 10,
+			"artifact": 12
+		},
+		"melee_hands": 0.75,
+		"ranged_hands": 1,
+		"tags": ["shield"],
+		"hp_mod": {
+			"standard": 30,
+			"master_crafted": 35,
+			"artifact": 40
+		},
+	},
 	"Boarding Shield": {
 		"description": "Protects twice as well when boarding. Used in siege or boarding operations, this shield offers additional protection.  It may be used with a 2-handed ranged weapon.",
 		"abbreviation": "BrdShld",
@@ -2289,7 +2300,7 @@ global.gear = {
 			"req_exp": 100,
 			"maintenance" : 0.5,
 		},
-		"Cataphractii Pattern Terminator": {
+		"Cataphractii": {
 			"abbreviation": "Catphr",
 			"armour_value": {
 				"standard": 42,
@@ -2543,7 +2554,7 @@ global.gear = {
 			},
 			"tags": ["vehicle", "Upgrade"],
 		},
-// Hireling Armour
+	// Hireling Armour
 	// Admech
 		"Skitarii Armour": {
 			"abbreviation": "SkitArm",
@@ -2854,47 +2865,3 @@ global.gear = {
 		// Add more mobility items as needed...
 	}
 }
-
-
-/*
-
-    repeat(2){
-            // Artifact weapons
-            if (arti_armour=false){
-
-                if (string_count("DUB",thawep)>0){attack=floor(attack*1.5);melee_hands+=1;ranged_hands+=1;spli=1;}
-                if (string_count("Dae",thawep)>0){attack=floor(attack*1.5);amm=-1;}
-                if (string_count("VOI",thawep)>0){attack=floor(attack*1.2);}
-                if (string_count("ADAMANTINE",thawep)>0){attack=floor(attack*1.1);}
-
-                if (string_count("MINOR",thawep)>0){attack=floor(attack*0.85);}
-                if (string_count("MNR",thawep)>0){attack=floor(attack*0.85);}
-            }
-
-        }
-    // Vehicle Upgrades
-
-            if (equipment_1="Lucifer Pattern Engine"){statt=5;special_description="";emor=1;
-                descr="A significant upgrade over the more common patterns of Rhino-chassis engines, these engines provide greater output.";}
-
-                    // Vehicle Utility Weapons
-            if (thawep="HK Missile"){attack=350;arp=1;range=50;ranged_hands+=1;amm=1;spli=1;
-                descr="A single-use long-range anti-tank missile, this weapon can surgically destroy armoured targets in the opening stages of a battle.";}
-
-                    // Land Raider Sponsons
-                // Predator Turrets
-
-                if (thawep="Twin Linked Assault Cannon Turret"){attack=360;arp=0;range=12;amm=10;spli=1;
-                    descr="A Predator-compatible turret mounting a pair of short range anti-infantry assault cannons. ";}
-                if (thawep="Flamestorm Cannon Turret"){attack=400;arp=1;range=2.1;amm=12;spli=1;
-                      descr="A Predator-compatible turret housing a huge flamethrower, the heat produced by this terrifying weapon can crack even armoured ceramite. ";}
-                if (thawep="Magna-Melta Turret"){attack=400;arp=1;range=6;amm=12;
-                      descr="A Predator-compatible turret housing a magna-melta, a devastating short-range anti-tank weapon. ";}
-                if (thawep="Plasma Destroyer Turret"){attack=350;arp=1;range=15;spli=1;
-                      descr="A Predator-compatible turret housing a plasma destroyer, sometimes called the plasma executioner after the vehicle variants that mount this terrifying anti-armour weapon. ";}
-                if (thawep="Heavy Conversion Beamer Turret"){attack=750;arp=1;range=25;amm=3;spli=1;
-                    descr="A Predator-compatible turret housing a Heavy Conversion Beam Projector, a heavy energy weapon that turns a target's own matter against it by converting it into destructive energy.";}
-                if (thawep="Neutron Blaster Turret"){attack=400;arp=1;range=15;amm=10
-                      descr="A Predator-compatible turret housing a neutron blaster; a weapon from the Dark Age of Technology, this weapon is capable of destroying enemy armour with impunity. ";}
-                if (thawep="Volkite Saker Turret"){attack=400;arp=0;range=18;amm=50;spli=1;
-                        descr="A Predator-compatible turret housing a Volkite Saker, capable of igniting entire formations of enemy forces with a single sweep. ";}

@@ -20,8 +20,8 @@ if (orbiting != 0 && action=="" && owner!=noone){
         orbiting.present_fleet[owner]++;
     }
 }
-
-if ((trade_goods="Khorne_warband") or (trade_goods="Khorne_warband_landing_force")) and (owner=eFACTION.Chaos) {
+var _khorne_cargo = fleet_has_cargo("warband");
+if (_khorne_cargo && owner=eFACTION.Chaos) {
     khorne_fleet_cargo();
 }
 
@@ -232,7 +232,7 @@ if (navy && action=="") {
 	            if (homeworld_distance<fleet_distance) and (homeworld_distance<5000) and (homeworld_distance>40) {// Go towards planet
 	                action_x=homeworld_nearby.x;
 					action_y=homeworld_nearby.y;
-					alarm[4]=1;// show_message("B");
+					set_fleet_movement();// show_message("B");
 	                with(obj_temp7){instance_destroy();}
 	                with(obj_temp8){instance_destroy();}
 	                exit;
@@ -260,7 +260,7 @@ if (navy && action=="") {
 	                        if (goto.present_fleet[eFACTION.Player]=0) {
 								action_x=goto.x;
 								action_y=goto.y;
-								alarm[4]=1;
+								set_fleet_movement();
 							}
                         
 	                        with(obj_temp7){instance_destroy();}
@@ -285,7 +285,7 @@ if (navy && action=="") {
 	        with(obj_p_fleet){if (y<-10000) then y+=20000;}// Enable non-stationary player fleets
         
 	        if (homeworld_distance<=fleet_distance) and (homeworld_distance<7000) and (instance_exists(homeworld_nearby)){// Go towards planet
-	            action_x=homeworld_nearby.x;action_y=homeworld_nearby.y;alarm[4]=1;exit;
+	            action_x=homeworld_nearby.x;action_y=homeworld_nearby.y;set_fleet_movement();;exit;
 	        }
         
         
@@ -389,7 +389,8 @@ if (navy && action=="") {
 	    if (guard_wanted>50000) then planet_needed=2;// Feudal and up
 	    if (guard_wanted>200000) then planet_needed=3;// Temperate and up
 	    if (guard_wanted>2000000) then planet_needed=4;// Hive
-	    obj_controller.temp[200]=guard_wanted;trade_goods="";
+	    obj_controller.temp[200]=guard_wanted;
+	    trade_goods="";
     
 	    if (planet_needed=1) or (planet_needed=2){
 			var good
@@ -499,7 +500,9 @@ if (navy && action=="") {
 	}
 
 	scr_navy_planet_action();
-	if (trade_goods="recruited") then trade_goods="";
+	if (trade_goods="recruited"){
+		trade_goods="";
+	}
 	/* */
 	}
 }
@@ -540,7 +543,8 @@ if (action=="" && _is_orbiting){
         var ns=instance_nearest(x,y,obj_star);
         if (ns.owner != eFACTION.Ork) and (point_distance(x,y,ns.x,ns.y)<=max_dis) and (point_distance(x,y,ns.x,ns.y)>40) and (instance_exists(obj_crusade)) and (image_index>3){
             action_x=ns.x;
-            action_y=ns.y;alarm[4]=1;
+            action_y=ns.y;
+            set_fleet_movement();
             home_x=orbiting.x;
             home_y=orbiting.y;
             exit;
@@ -579,7 +583,7 @@ if (action=="" && _is_orbiting){
                 action_x=you.x;action_y=you.y;
                 home_x=instance_nearest(x,y,obj_star).x;
                 home_y=instance_nearest(x,y,obj_star).y;
-                alarm[4]=1;with(obj_temp3){instance_destroy();}
+                set_fleet_movement();with(obj_temp3){instance_destroy();}
                 exit;
             }
             if (dis>=300) then ret=1;
@@ -595,7 +599,7 @@ if (action=="" && _is_orbiting){
             if ((cls.x!=home_x) or (cls.y!=home_y)) and (home_x+home_y>0){
                 action_x=home_x;
                 action_y=home_y;
-                alarm[4]=1;
+                set_fleet_movement();
             }
         }
 
@@ -808,7 +812,7 @@ if (action=="" && _is_orbiting){
             action_x=exit_star.x;
             action_y=exit_star.y;
             orbiting=exit_star;
-            alarm[4]=1;
+            set_fleet_movement();
             trade_goods="|DELETE|";
             exit;
         }
@@ -832,7 +836,7 @@ if (action=="" && _is_orbiting){
                 if (wop!=0) and (point_distance(x,y,wop.x,wop.y)<300) and (wop.x>5) and (wop.y>5){
                     target_x=wop.x;target_y=wop.y;
                     home_x=x;home_y=y;
-                    alarm[4]=1;
+                    set_fleet_movement();
                 }
             }
             with(obj_temp5){instance_destroy();}
@@ -914,12 +918,19 @@ if (action=="" && _is_orbiting){
                         
                         new_fleet.action_x=plin2.x;
                         new_fleet.action_y=plin2.y;
-                        new_fleet.alarm[4]=1;
+                        with(new_fleet){
+                        	set_fleet_movement();
+                        }
                         break;
                     }
                     
                     
-                    if (good=1) and (instance_exists(plin)){action_x=plin.x;action_y=plin.y;alarm[4]=1;if (n!=5) then good=5;}
+                    if (good=1) and (instance_exists(plin)){
+                    	action_x=plin.x;
+                    	action_y=plin.y;
+                    	set_fleet_movement();
+                    	if (n!=5) then good=5;
+                    }
                 }
             }
             instance_activate_object(obj_star);
