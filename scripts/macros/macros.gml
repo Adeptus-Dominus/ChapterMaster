@@ -18,6 +18,26 @@
 // Basic, because we don't include Artificer Armour
 #macro LIST_BASIC_POWER_ARMOUR ["MK7 Aquila", "MK6 Corvus", "MK5 Heresy", "MK8 Errant", "MK4 Maximus", "MK3 Iron Armour","Power Armour"]
 #macro LIST_TERMINATOR_ARMOUR ["Terminator Armour", "Tartaros","Cataphractii"]
+#macro FACTION_NAMES ["","Your Chapter", "Imperium of Man","Adeptus Mechanicus","Inquisition","Ecclesiarchy","Eldar","Orks", "Tyranid Hive","Tau Empire","Chaos","Heretics","Genestealer Cults", "Necron Dynasties"]
+#macro XENOS_FACTIONS [6,7,8,9]
+
+#macro ALLIANCE_GRADES ["Hated", "Hostile","Suspicious","Uneasy","Neutral","Allies","Close Allies","Battle Brothers"]
+
+enum eFACTION {
+    Player = 1,
+    Imperium,
+    Mechanicus,
+    Inquisition,
+    Ecclesiarchy,
+    Eldar,
+    Ork,
+    Tau,
+    Tyranids,
+    Chaos,
+    Heretics,
+    Genestealer,
+    Necrons = 13
+}
 
 enum MENU {
     Default = 0,
