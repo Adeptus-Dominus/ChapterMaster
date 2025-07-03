@@ -265,7 +265,7 @@ function GarrisonForce(planet_operatives, turn_end=false, type="garrison") const
 													case "hold_breach":
 														unit.add_feat({
 															ident:"hold_breach",
-															title : "Held breach"
+															title : "Held breach",
 															planet:planet,
 															grade : 5,
 															location:"location",

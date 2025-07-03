@@ -391,7 +391,7 @@ function set_up_diplomacy_persons(){
 }
 
 function faction_disposition_rating_string(diplomacy){
-	with(obj_contoller){
+	with(obj_controller){
 	var _disposition_rating = "";
     if (disposition[diplomacy]<=-20){
     	_disposition_rating = ALLIANCE_GRADES[0];
@@ -407,9 +407,9 @@ function scr_ui_diplomacy() {
 	if (menu != MENU.Diplomacy){
 		return;
 	}
-	var xx,yy,show_stuff;
-	xx=__view_get( e__VW.XView, 0 )+0;
-	yy=__view_get( e__VW.YView, 0 )+0;
+
+	var xx=__view_get( e__VW.XView, 0 )+0;
+	var yy=__view_get( e__VW.YView, 0 )+0;
 	var show_stuff=false;
 	var warning=0;
 
@@ -625,6 +625,10 @@ function scr_ui_diplomacy() {
 	    show_stuff=true;
 	}
 
+	if (diplomacy = -1){
+
+	}
+
 
 
 	if (diplomacy>0){// Diplomacy - Speaking
@@ -654,8 +658,12 @@ function scr_ui_diplomacy() {
 	        if (diplomacy!=eFACTION.Eldar) or ((diplomacy==eFACTION.Eldar) and (faction_gender[eFACTION.Eldar]=1)){
 	        	scr_image("diplomacy/splash",diplomacy,xx+16,yy+16,310,828);
 	        }
-	        if (diplomacy==eFACTION.Eldar) and (faction_gender[eFACTION.Eldar]=2) then scr_image("diplomacy/splash",11,xx+16,yy+16,310,828);
-	        if (diplomacy==eFACTION.Chaos) and (faction_gender[eFACTION.Chaos]=2) then scr_image("diplomacy/splash",12,xx+16,yy+43,310,828);
+	        if (diplomacy==eFACTION.Eldar) and (faction_gender[eFACTION.Eldar]=2){
+	        	scr_image("diplomacy/splash",11,xx+16,yy+16,310,828);
+	        }
+	        if (diplomacy==eFACTION.Chaos) and (faction_gender[eFACTION.Chaos]=2){
+	        	scr_image("diplomacy/splash",12,xx+16,yy+43,310,828);
+	        }
 	    }
     
 	    draw_set_halign(fa_center);
@@ -666,18 +674,20 @@ function scr_ui_diplomacy() {
 	    var _diplomacy_faction_alligience=" (Imperium)";
 	    var _disposition_rating="";
 	    var warning=0;
-	    if (diplomacy>=6) then _diplomacy_faction_alligience="";
+	    if (diplomacy>=6){
+	    	_diplomacy_faction_alligience="";
+	    }
     
     	
     	_diplomacy_faction_name = FACTION_NAMES[diplomacy];
     
-	    draw_text_transformed(xx+622,yy+66,c),1,1,0);
+	    draw_text_transformed(xx+622,yy+66,_diplomacy_faction_name,1,1,0);
     
 	    if (daemon=true){
 	    	draw_text_transformed(xx+622,yy+104,"The Emmmisary",0.6,0.6,0);
 	    	show_stuff=true;
 	    } else if (daemon=false){
-	    	draw_text_transformed(xx+622,yy+104,string_hash_to_newline(string(faction_title[diplomacy])+" "+string(faction_leader[diplomacy])+string(_diplomacy_faction_alligience)),0.6,0.6,0);
+	    	draw_text_transformed(xx+622,yy+104,$"{faction_title[diplomacy]} {faction_leader[diplomacy]} {_diplomacy_faction_alligience}",0.6,0.6,0);
 	    }
     
 	    draw_set_font(fnt_40k_14);
