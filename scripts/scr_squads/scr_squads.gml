@@ -32,7 +32,7 @@ function create_squad(squad_type, company, squad_loadout = true, squad_index=fal
 					obj_ini.TTRPG[company][i]= new TTRPG_stats("chapter", company,i,"blank");
 				}
 				unit = fetch_unit([company, i]);
-				if ((unit.name() =="") or (unit.base_group=="none")) then continue;
+				if ((unit.name() =="" || unit.base_group=="none")) then continue;
 				if (unit.squad == "none"){
 					if (unit.role() == sgt_types[s]){
 						squad_fulfilment[$ sgt_types[s]] += 1;
@@ -428,9 +428,11 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 		}
 		members = [];
 	}
+
 	static fetch_member= function(index){
 		return fetch_unit(members[index]);
 	}
+	
 	static add_member = function(comp, unit_number){
 		array_push(members, [comp, unit_number]);
 		life_members++;

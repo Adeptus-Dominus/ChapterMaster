@@ -351,6 +351,10 @@ function TradeAttempt(diplomacy) constructor{
 				}
 			}
 		}
+		if (trader_disp < trade_disp){
+			_option.disabled = true;
+			_option.tooltip = $"{trade_disp} disposition required";
+		}
 		//_option.bind_scope = _option;
 		array_push(demand_options, _option);
 	}
