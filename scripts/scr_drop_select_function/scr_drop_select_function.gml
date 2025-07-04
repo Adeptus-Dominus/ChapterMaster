@@ -176,7 +176,7 @@ function drop_select_draw() {
                     target_threat = "",
                     race_quantity = 0;
                 var races = ["", "Ecclesiarchy", "Eldar", "Orks", "Tau", "Tyranids", "Heretics", "CSMs", "Daemons", "Necrons"];
-                var threat_levels = ["", "Minima (1)", "Parvus (2)", "Moderatus (3)", "Significus (4)", "Enormicus (5)", "Extremis (6)"];
+                var threat_levels = ["", "Marine (1)", "Demi-Squad (2)", "Squad (3)", "Squads+ (4)", "Demi-Company (5)", "Company (6)", "Company+ (7)", "Companies++ (8)", "Chapter/2 (9)", "Chapter (10)"];
                 var race_quantities = [0, sisters, eldar, ork, tau, tyranids, traitors, csm, demons, necrons];
 
                 if (attacking >= 5 && attacking <= 13) {
@@ -184,10 +184,10 @@ function drop_select_draw() {
                     target_race = races[attacking - 4];
                 }
 
-                if (race_quantity >= 1 && race_quantity <= 6) {
+                if (race_quantity >= 1 && race_quantity <= 10) {
                     target_threat = threat_levels[race_quantity];
-                } else if (race_quantity >= 6) {
-                    target_threat = threat_levels[6];
+                } else if (race_quantity >= 10) {
+                    target_threat = threat_levels[10];
                 }
                 target.x1 = formation.x1;
                 target.y1 = formation.y2 + 10;
