@@ -540,23 +540,29 @@ function PlanetData(planet, system) constructor{
 
 	static guard_score_calc = function(){ // TODO: Consider adding higher guard scores
 		guard_score = 0;
-        if (guardsmen < 500 && guardsmen>0) {
+        if (guardsmen < 500 && guardsmen>0) { // Guardsmen squad leftovers
 		    guard_score = 0.1;
-		} else if (guardsmen >= 100000000) {
+		} else if (guardsmen >= 100000000000) { // Guardsmen Theatre
+		    guard_score = 10;
+		} else if (guardsmen >= 10000000000) { // Guardsmen Army Group
+		    guard_score = 9;
+		} else if (guardsmen >= 1000000000) { // Guardsmen Army
+		    guard_score = 8;
+		} else if (guardsmen >= 100000000) { // Guardsmen Army Corps
 		    guard_score = 7;
-		} else if (guardsmen >= 50000000) {
+		} else if (guardsmen >= 10000000) { // Guardsmen Division
 		    guard_score = 6;
-		} else if (guardsmen >= 15000000) {
+		} else if (guardsmen >= 5000000) { // Guardsmen Brigade
 		    guard_score = 5;
-		} else if (guardsmen >= 6000000) {
+		} else if (guardsmen >= 1000000) { // Guardsmen Regiment
 		    guard_score = 4;
-		} else if (guardsmen >= 1000000) {
+		} else if (guardsmen >= 100000) { // Guardsmen Battalion
 		    guard_score = 3;
-		} else if (guardsmen >= 100000) {
+		} else if (guardsmen >= 10000) { // Guardsmen Company
 		    guard_score = 2;
-		} else if (guardsmen >= 2000) {
+		} else if (guardsmen >= 2000) { // Guardsmen Platoon
 		    guard_score = 1;
-		} else {
+		} else { // Guardsmen Demi-Platoon
 		    guard_score = 0.5;
 		}
 
