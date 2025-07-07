@@ -8,7 +8,7 @@ global.weapons = {
 			"master_crafted": 720,
 			"artifact": 740
 		},
-		"description": "Ancient thermal ray weapon, heaviest man portable variant of its class.",
+		"description": "The only man-portable heavy support Volkite, the Culverin has been a dreaded presence on the battlefields of the 31st millennium, where it would rend Contemptors apart and combust Marines by the dozen. Featuring the greatest range out of the family amongst the other heavier variants, its beam potency is outmatched by all heavier Volkites.",
 		"melee_hands": 1,
 		"ranged_hands": 2.2,
 		"ammo": 4,
@@ -24,7 +24,7 @@ global.weapons = {
 			"master_crafted": 570,
 			"artifact": 590
 		},
-		"description": "Ancient thermal ray weapon, an uncommon sight during ancient times, now a precious relic for every chapter that can claim one.",
+		"description": "Featuring grater range, more precise fire and more stopping fire than the Charger, this is the rifle of the Volkite family, whereas its smaller brother is the assault rifle. A weapon most prominent in Tactical squads of the Great Crusade Legions, its potency is spoken of even those many thousands of years past their height.",
 		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 6,
@@ -40,7 +40,7 @@ global.weapons = {
 			"master_crafted": 420,
 			"artifact": 440
 		},
-		"description": "Ancient thermal ray weapon, smaller, yet still deadly brother of caliver.",
+		"description": "One of the deadliest of the mainstay weapons in the Imperial arsenal during the Great Crusade. The humble Charger is a thermal ray weapon that deflagrate organic matter, combusting the target in extreme cases. Some variants even arc over multiple targets.",
 		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 10,
@@ -56,7 +56,7 @@ global.weapons = {
 			"master_crafted": 270,
 			"artifact": 290
 		},
-		"description": "Ancient one-handed thermal ray weapon, preferred by melee specialists and officers.",
+		"description": "The pistol variant of the long-lost Volkite weapon type, the Serpenta was a mainstay of Moritats and often wielded by Centurions of the Legiones Astartes. Now a symbol of status to match its fearsome potency, a sighting of this ancient weapon would send many foes running.",
 		"melee_hands": 0,
 		"ranged_hands": 1,
 		"ammo": 10,
@@ -73,7 +73,7 @@ global.weapons = {
 			"master_crafted": 43,
 			"artifact": 48
 		},
-		"description": "Once primary personal weapon of ancient astartes legions, now an uncommon sight on the battlefield. This weapon was hand-crafted by the Fabricators of Mars at the very birth of the Imperium during the Great Crusade.",
+		"description": "The shortened version of the Phobos Bolgun, this pistol like its brother features a .70 bolt and less bulk than its successors. Despite its most venerable origin it features better quality basic components than its modern counterparts but lacks anything more advanced than its simple firing mechanism and basic optics.",
 		"melee_hands": 0,
 		"ranged_hands": 1,
 		"ammo": 20,
@@ -89,7 +89,7 @@ global.weapons = {
 			"master_crafted": 80,
 			"artifact": 85
 		},
-		"description": "Ancient pattern of boltgun made during times of the Great Crusade for the Astartes Legions. It uses different ammunition, has larger magazine and is slightly bigger than its modern counterparts.",
+		"description": "Created at the very conception of the Imperium, this very first bolter pattern features a .70 caliber bolt as opposed to the 41st millennium's standard .75, its form is far less bulky than the Godwyn, most prevalent in the modern Astartes armouries. Simpler in design in theory but required higher-tech components than what is currently available, so when the Heresy ended and the weaponry was streamlined for less logisitcal effort, the older patterns were phased out.",
 		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 20,
@@ -105,7 +105,7 @@ global.weapons = {
 			"master_crafted": 430,
 			"artifact": 460
 		},
-		"description": "Rare variant of heavy bolter, uncommon even during times of it's production. Made in forges of Mars itself, it's more lightweight and compact in comparison to modern patterns.",
+		"description": "The workhorse of the early imperium idfk make up your own lore cause that's fucking it from canon.",
 		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 12,
