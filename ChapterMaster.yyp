@@ -1233,6 +1233,7 @@
     {"id":{"name":"spr_heresy_colors","path":"sprites/spr_heresy_colors/spr_heresy_colors.yy",},},
     {"id":{"name":"spr_hero_skull","path":"sprites/spr_hero_skull/spr_hero_skull.yy",},},
     {"id":{"name":"spr_hero","path":"sprites/spr_hero/spr_hero.yy",},},
+    {"id":{"name":"spr_holo_pad","path":"sprites/spr_holo_pad/spr_holo_pad.yy",},},
     {"id":{"name":"spr_honor_helm","path":"sprites/spr_honor_helm/spr_honor_helm.yy",},},
     {"id":{"name":"spr_icon_apothecarion","path":"sprites/spr_icon_apothecarion/spr_icon_apothecarion.yy",},},
     {"id":{"name":"spr_icon_ballistic_skill","path":"sprites/spr_icon_ballistic_skill/spr_icon_ballistic_skill.yy",},},

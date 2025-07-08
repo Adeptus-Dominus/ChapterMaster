@@ -1,8 +1,18 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
-function scr_draw_unit_stat_data(manage=false){
-	var xx=__view_get( e__VW.XView, 0 )+0;
-	var yy=__view_get( e__VW.YView, 0 )+0;
+function scr_draw_unit_stat_data(manage=false, data_block = {
+		x1: 1008,
+		y1: 520,
+		w: 569,
+		h: 303,
+}, squeezed = false){
+	if (event_number==ev_gui){
+		xx=0;
+		yy=0;
+	} else {
+		var xx=__view_get( e__VW.XView, 0 )+0;
+		var yy=__view_get( e__VW.YView, 0 )+0;
+	}
 	var stat_tool_tips = [];
 	var trait_tool_tips = [];
 	var unit_name = name();
@@ -13,20 +23,15 @@ function scr_draw_unit_stat_data(manage=false){
 		var _psy_levels = ARR_psy_levels
 		var _psionic_assignment = _psy_levels[psionic]
 	}
-
-	var data_block = {
-		x1: xx + 1008,
-		y1: yy + 520,
-		w: 569,
-		h: 303,
-	};
+	data_block.x1 += xx;
+	data_block.y1 += yy;
 	data_block.x2 = data_block.x1 + data_block.w;
 	data_block.y2 = data_block.y1 + data_block.h;
 	data_block.x_mid = (data_block.x1 + data_block.x2) / 2;
 	data_block.y_mid = (data_block.y1 + data_block.y2) / 2;
 
 	var attribute_box = {
-		x1: data_block.x1 + 84,
+		x1: data_block.x1 + (squeezed ? 42 : 84),
 		y1: data_block.y1 + 8,
 		w: 32,
 		h: 48,
@@ -257,7 +262,7 @@ function scr_draw_unit_stat_data(manage=false){
 			array_push(stat_tool_tips, [data_block.x1+16, attribute_box.y2+16+(i*24), data_block.x1+16+string_width(data_lines[i].text), attribute_box.y2+16+(i*24)+string_height(data_lines[i].text), data_lines[i].tooltip, ""]);
 		}
 
-		var x1 = data_block.x2-16;
+		var x1 = squeezed ? data_block.x1 + ((data_block.x2- data_block.x1)/2) +32: data_block.x2-16;
 		if (array_length(traits) != 0) {
 			for (var i=0; i<array_length(traits); i++) {
 				var trait = global.trait_list[$ traits[i]];

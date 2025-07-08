@@ -400,6 +400,7 @@ function scr_toggle_diplomacy() {
                 audience = 0;
                 diplomacy = 0;
                 hide_banner = 1;
+                character_diplomacy = false;
                 show_debug_message("set_diplo")
             }
         }

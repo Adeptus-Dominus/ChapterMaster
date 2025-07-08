@@ -131,8 +131,12 @@ function TradeAttempt(diplomacy) constructor{
 				}
 			} else if (_opt.trade_type == "gene"){
 				gene_seed-=_opt.number;
-                if (diplomacy_faction<=5) and (diplomacy_faction!=4) then obj_conotroller.gene_sold+=_opt.number;
-                if (diplomacy_faction>=6) then obj_controller.gene_xeno+=_opt.number;				
+                if (diplomacy_faction<=5) and (diplomacy_faction!=4){
+                	obj_controller.gene_sold+=_opt.number;
+                }
+                if (diplomacy_faction>=6){
+                	obj_controller.gene_xeno+=_opt.number;	
+                }			
 			} else if(_opt.trade_type == "stc"){
                 for (var j = 0; j < 100; j += 1) {
                     var p = choose(1, 2, 3);
@@ -610,7 +614,9 @@ function TradeAttempt(diplomacy) constructor{
 	        
 		        if (diplomacy_faction=6) then my_worth+=_opt.number*500;
 		        if (diplomacy_faction=7) then my_worth+=_opt.number*500;
-		        if (diplomacy_faction=8) then my_worth+=_opt.number*1000;
+		        if (diplomacy_faction=8){
+		        	my_worth+=_opt.number*1000;
+		        }
 		    }
 		}
 	}
