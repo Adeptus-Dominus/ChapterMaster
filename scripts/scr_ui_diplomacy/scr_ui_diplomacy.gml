@@ -568,6 +568,7 @@ function scr_ui_diplomacy() {
 		} else {
 		    // draw_sprite(spr_diplo_splash,diplomacy,xx+916,yy+33);
 
+
 		}
 	}
 
@@ -609,6 +610,8 @@ function scr_ui_diplomacy() {
 	    var _diplomacy_faction_name="";
 	    var _diplomacy_faction_alligience=" (Imperium)";
 	    var _disposition_rating="";
+
+
 	    if (diplomacy>=6){
 	    	_diplomacy_faction_alligience="";
 	    }
@@ -646,7 +649,9 @@ function scr_ui_diplomacy() {
         } else {
         	warn="Consorting with heretics will cause your disposition with the Imperium to plummet.";
         }
+
         draw_set_halign(fa_left);
+
         draw_rectangle(mouse_x-2,mouse_y+20,mouse_x+2+string_width_ext(warn,-1,600),mouse_y+24+string_height_ext(warn,-1,600),0);
         draw_set_color(38144);
         draw_rectangle(mouse_x-2,mouse_y+20,mouse_x+2+string_width_ext(warn,-1,600),mouse_y+24+string_height_ext(warn,-1,600),1);
