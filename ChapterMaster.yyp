@@ -774,6 +774,7 @@
     {"id":{"name":"scr_complex_colour_kit","path":"scripts/scr_complex_colour_kit/scr_complex_colour_kit.yy",},},
     {"id":{"name":"scr_ComplexSet","path":"scripts/scr_ComplexSet/scr_ComplexSet.yy",},},
     {"id":{"name":"scr_controller_helpers","path":"scripts/scr_controller_helpers/scr_controller_helpers.yy",},},
+    {"id":{"name":"scr_CoordsStruct","path":"scripts/scr_CoordsStruct/scr_CoordsStruct.yy",},},
     {"id":{"name":"scr_count_forces","path":"scripts/scr_count_forces/scr_count_forces.yy",},},
     {"id":{"name":"scr_count_marines_on_ship","path":"scripts/scr_count_marines_on_ship/scr_count_marines_on_ship.yy",},},
     {"id":{"name":"scr_creation_draw_slides","path":"scripts/scr_creation_draw_slides/scr_creation_draw_slides.yy",},},
