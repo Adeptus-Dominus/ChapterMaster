@@ -132,10 +132,10 @@ function TradeAttempt(diplomacy) constructor{
 			} else if (_opt.trade_type == "gene"){
 				gene_seed-=_opt.number;
                 if (diplomacy_faction<=5) and (diplomacy_faction!=4){
-                	obj_controller.gene_sold+=_opt.number;
+                	obj_controller.gene_sold += _opt.number;
                 }
                 if (diplomacy_faction>=6){
-                	obj_controller.gene_xeno+=_opt.number;	
+                	obj_controller.gene_xeno += _opt.number;	
                 }			
 			} else if(_opt.trade_type == "stc"){
                 for (var j = 0; j < 100; j += 1) {
@@ -653,12 +653,11 @@ function TradeAttempt(diplomacy) constructor{
 			penalty=0;
 		}else if (diplomacy_faction=10){
 			dif_penalty=1;
-			penalty=0;}
+			penalty=0;
+		}
 
 		deal_chance=(100-penalty)-(((their_worth-(my_worth*dif_penalty))/10));
-
-		show_debug_message($"{their_worth},{my_worth},{deal_chance}");
-
+		//show_debug_message($"{their_worth},{my_worth},{deal_chance}");
 		var _chance = clamp(floor((deal_chance/20)), 0, 6);
 
 		trade_likely = chance_chart[_chance];

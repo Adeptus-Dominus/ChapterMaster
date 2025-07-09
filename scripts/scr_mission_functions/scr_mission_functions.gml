@@ -107,11 +107,11 @@ function init_marine_acting_strange(){
 	}
 
 	var unit = fetch_unit(marine_and_company);
-	var role=unit.role();
+	var role = unit.role();
 	var text = unit.name_role();
 	var company_text = scr_convert_company_to_string(unit.company);
 	if(company_text != ""){
-		company_text = "("+company_text+")";
+		company_text = $"({company_text})";
 		text += company_text;
 	}
 	text += " is behaving strangely.";

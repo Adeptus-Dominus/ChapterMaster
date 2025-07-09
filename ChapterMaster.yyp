@@ -758,6 +758,7 @@
     {"id":{"name":"scr_bomb_world","path":"scripts/scr_bomb_world/scr_bomb_world.yy",},},
     {"id":{"name":"scr_buttons","path":"scripts/scr_buttons/scr_buttons.yy",},},
     {"id":{"name":"scr_chaos_alliance_test","path":"scripts/scr_chaos_alliance_test/scr_chaos_alliance_test.yy",},},
+    {"id":{"name":"scr_chapter_master","path":"scripts/scr_chapter_master/scr_chapter_master.yy",},},
     {"id":{"name":"scr_chapter_new","path":"scripts/scr_chapter_new/scr_chapter_new.yy",},},
     {"id":{"name":"scr_chapter_random","path":"scripts/scr_chapter_random/scr_chapter_random.yy",},},
     {"id":{"name":"scr_cheatcode","path":"scripts/scr_cheatcode/scr_cheatcode.yy",},},
