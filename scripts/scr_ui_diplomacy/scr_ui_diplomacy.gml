@@ -602,7 +602,6 @@ function scr_ui_diplomacy() {
 	        }
 	    }
     	
-    	var warning=0;
 	    draw_set_halign(fa_center);
 	    draw_set_color(38144);
 	    draw_set_font(fnt_40k_30b);
