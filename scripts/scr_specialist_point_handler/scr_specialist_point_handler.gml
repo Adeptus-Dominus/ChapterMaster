@@ -260,7 +260,7 @@ function SpecialistPointHandler() constructor{
                         if (_new_pursuasion==forge_master){
                             // if tech is the forge master then forge master takes a wisdom in this case doubling as a perception test
                             // if forge master passes tech heresy is noted and chapter master notified
-                            if (_tester.standard_test(_current_tech, "wisdom", - 40)[0] && !_noticed_heresy && && !_heritecs){
+                            if (_tester.standard_test(_current_tech, "wisdom", - 40)[0] && !_noticed_heresy && !_heritecs){
                                 _noticed_heresy=true;
                                 scr_event_log("purple",$"{techs[forge_master].name_role()} Has noticed signs of tech heresy amoung the Armentarium ranks");
                                 scr_alert("purple","Tech Heresy",$"{techs[forge_master].name_role()} Has noticed signs of tech heresy amoung the Armentarium ranks");

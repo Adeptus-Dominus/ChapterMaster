@@ -547,7 +547,7 @@ function TradeAttempt(diplomacy) constructor{
 
 	static calculate_trader_trade_value = function(){
 		
-		their_worth = 0;
+		their_worth = 100;
 		
 		for (var i=0;i<array_length(demand_options);i++){
 			var _opt = demand_options[i]
@@ -656,7 +656,7 @@ function TradeAttempt(diplomacy) constructor{
 			penalty=0;
 		}
 
-		deal_chance=(100-penalty)-(((their_worth-(my_worth*dif_penalty))/10));
+		deal_chance=(100-penalty)-(((their_worth-(my_worth*dif_penalty))));
 		//show_debug_message($"{their_worth},{my_worth},{deal_chance}");
 		var _chance = clamp(floor((deal_chance/20)), 0, 6);
 
