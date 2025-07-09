@@ -55,7 +55,7 @@ function surface_clear_and_free(_surface) {
 function UnitImage(_unit_sprite) constructor {
     unit_sprite = _unit_sprite;
 
-    static draw = function(xx, yy, _background = false) {
+    static draw = function(xx, yy, _background = false,xscale = 1, yscale=1, rot=0, col=c_white, alpha=1) {
         if (_background) {
             draw_rectangle_color_simple(xx - 1, yy - 1, xx + 1 + 166, yy + 271 + 1, 0, c_black);
             draw_rectangle_color_simple(xx - 1, yy - 1, xx + 166 + 1, yy + 271 + 1, 1, c_gray);
@@ -63,11 +63,10 @@ function UnitImage(_unit_sprite) constructor {
             draw_rectangle_color_simple(xx - 3, yy - 3, xx + 166 + 3, yy + 3 + 271, 1, c_gray);
         }
         if (sprite_exists(unit_sprite)) {
-            draw_sprite(unit_sprite, 0, xx - 200, yy - 90);
+            draw_sprite_ext(unit_sprite, 0, xx - 200, yy - 90, xscale, yscale, rot, col, alpha)
         }
     };
-
-    static draw_part = function(xx, yy, left, top, width, height, _background = false) {
+    static draw_part = function(xx, yy, left, top, width, height, _background = false,xscale = 1, yscale=1, rot=0, col=c_white, alpha=1) {
         if (_background) {
             draw_rectangle_color_simple(xx - 1 + left, yy - 1 + top, xx + 1 + width, yy + height + 1, 0, c_black);
             draw_rectangle_color_simple(xx - 1 + left, yy - 1 + top, xx + width + 1, yy + height + 1, 1, c_gray);
@@ -78,6 +77,7 @@ function UnitImage(_unit_sprite) constructor {
             draw_sprite_part(unit_sprite, 0, left + 200, top + 90, width, height, xx, yy);
         }
     };
+
 
     static destroy_image = function() {
         if (sprite_exists(unit_sprite)) {

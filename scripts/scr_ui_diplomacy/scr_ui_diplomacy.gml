@@ -247,6 +247,36 @@ function set_up_diplomacy_buttons(){
 	_war.color = CM_RED_COLOR;
 	_war.cover_text= "Declare War";
 	_war.bind_scope = obj_controller;
+
+	diplo_buttons.main_slate = new DataSlate();
+	diplo_buttons.main_slate.width = 570;
+	diplo_buttons.main_slate.height = 854;
+	diplo_buttons.main_slate.set_width = true;
+	diplo_buttons.main_slate.style = "decorated";
+	set_up_rpgcharacter_diplomacy();
+}
+
+function set_up_rpgcharacter_diplomacy(){
+	with(obj_controller){
+		diplo_buttons.meet_slate = new DataSlate();
+		with(diplo_buttons.meet_slate){
+			width = 572;
+			height = 188;
+			XX = 0;
+			YY = 712;
+			set_width = true;
+			style = "plain";			
+		}
+		diplo_buttons.cm_slate = new DataSlate();
+		with(diplo_buttons.cm_slate){
+			width = 572;
+			height = 188;
+			XX = 1031;
+			YY = 712;
+			set_width = true;
+			style = "plain";			
+		}
+	}
 }
 
 function set_up_diplomacy_persons(){
@@ -416,14 +446,13 @@ function scr_ui_diplomacy() {
 	// This script draws all of the diplomacy stuff, up to and including trading.
 
 	xx+=6;
-
-	if (diplomacy=0){// Main diplomacy screen
-	    draw_set_alpha(1);
-		draw_set_color(0);
-		draw_rectangle(xx,yy,xx+1600,yy+900,0);
-	    draw_set_alpha(0.5);
-		draw_sprite(spr_rock_bg,0,xx,yy);
-		draw_set_alpha(1);
+    draw_set_alpha(1);
+	draw_set_color(0);
+	draw_rectangle(xx,yy,xx+1600,yy+900,0);
+    draw_set_alpha(0.5);
+	draw_sprite(spr_rock_bg,0,xx,yy);
+	draw_set_alpha(1);
+	if (diplomacy==0){// Main diplomacy screen
 
 	    /*draw_set_color(38144);
 	    draw_rectangle(xx+31,yy+281,xx+438,yy+416,0);
@@ -499,22 +528,7 @@ function scr_ui_diplomacy() {
     
 	    draw_set_halign(fa_left);
 		var txt;
-    
-   
-    
-	    /*draw_sprite(spr_disposition_small,round((disposition[2]+100)/10),xx+131,yy+74);
-	    draw_sprite(spr_disposition_small,round((disposition[3]+100)/10),xx+131+286,yy+74);
-    
-	    draw_sprite(spr_disposition_small,round((disposition[4]+100)/10),xx+131,yy+74+91);
-	    draw_sprite(spr_disposition_small,round((disposition[5]+100)/10),xx+131+286,yy+74+91);
-    
-	    draw_sprite(spr_disposition_small,round((disposition[6]+100)/10),xx+131,yy+74+182);
-	    draw_sprite(spr_disposition_small,round((disposition[7]+100)/10),xx+131+286,yy+74+182);
-    
-	    draw_sprite(spr_disposition_small,round((disposition[8]+100)/10),xx+131,yy+74+273);
-	    draw_sprite(spr_disposition_small,round((disposition[10]+100)/10),xx+131+286,yy+74+273);*/
-    
-    
+
 		//draw the meet chaos button
 	    draw_set_halign(fa_left);
 	    draw_set_color(38144);
@@ -535,120 +549,42 @@ function scr_ui_diplomacy() {
 		#region faction talks/ignore stuff
 
     
-		#endregion
-
-	    /*
-	    faction_leader[0]="";faction_title[0]="";faction_status[0]="";faction_leader[1]="";faction_title[1]="";faction_status[1]="";
-	    faction_leader[eFACTION.Imperium]="";faction_title[2]="Sector Commander";faction_status[eFACTION.Imperium]="Allied";
-	    faction_leader[eFACTION.Mechanicus]="";faction_title[3]="Magos";faction_status[eFACTION.Mechanicus]="Allied";
-	    faction_leader[eFACTION.Inquisition]="";faction_title[4]="Inquisitor Lord";faction_status[eFACTION.Inquisition]="Allied";
-	    faction_leader[eFACTION.Ecclesiarchy]="";faction_title[5]="Prioress";faction_status[eFACTION.Ecclesiarchy]="Allied";
-	    faction_leader[eFACTION.Eldar]="";faction_title[6]="Farseer";faction_status[eFACTION.Eldar]="War";
-	    faction_leader[eFACTION.Ork]="";faction_title[7]="Warboss";faction_status[eFACTION.Ork]="War";
-	    faction_leader[eFACTION.Tau]="";faction_title[8]="Diplomat";faction_status[eFACTION.Tau]="War";
-	    faction_leader[eFACTION.Tyranids]="";faction_title[9]="";faction_status[eFACTION.Tyranids]="War";
-	    faction_leader[eFACTION.Chaos]="";faction_title[10]="Master";faction_status[eFACTION.Chaos]="War";
-	    */
-    
-    
-    
+		#endregion 
 	}
 
 
 	xx=__view_get( e__VW.XView, 0 );
 	yy=__view_get( e__VW.YView, 0 );
 
+	var _main_slate = diplo_buttons.main_slate
+	_main_slate.XX = xx+328;
+	_main_slate.YY = yy+175;
+	_main_slate.height = 545;
 
-	if (diplomacy<-5) and (diplomacy>-6){
-	    draw_sprite(spr_rock_bg,0,xx,yy);
-	    // draw_sprite(spr_diplo_splash,diplomacy,xx+916,yy+33);
-	    draw_set_alpha(0.75);
-		draw_set_color(0);
-		draw_rectangle(xx+326+16,yy+66,xx+887+16,yy+820,0);
-	    draw_set_alpha(1);
-		draw_set_color(38144);
-		draw_rectangle(xx+326+16,yy+66,xx+887+16,yy+820,1);
-    
-	    var advi,fra;advi="";fra=0;
-	    if (diplomacy=-5.1){
-	    	advi="apoth";
-	    	fra=1;
-	    }
-	    if (diplomacy=-5.2){
-	    	advi="chap";
-	    	fra=2;
-	    	if (global.chapter_name="Space Wolves"){
-	    		fra=11;
-	    	}
-	    }
-	    if (diplomacy=-5.3){
-	    	advi="libr";
-	    	fra=3;
-	    	if (global.chapter_name="Space Wolves"){
-	    		fra=10;
-	    	}
-	    }
-	    if (diplomacy=-5.4){
-	    	advi="tech";
-	    	fra=4;
-	    }
-	    if (diplomacy=-5.5){
-	    	advi="recr";
-	    	fra=5;
-	    }
-	    if (diplomacy=-5.6){
-	    	advi="flee";
-	    	fra=6;
-	    }
-    
-	    // draw_sprite(spr_advisors,fra,xx+16,yy+43);
-	    scr_image("advisor/splash",fra+1,xx+16,yy+43,310,828);
-	    draw_set_halign(fa_center);
-	    draw_set_color(38144);
-	    draw_set_font(fnt_40k_30b);
-    
-	    var _diplomacy_faction_name="";
-	    var _diplomacy_faction_alligience=$"{global.chapter_name} (Imperium)";
-	    var _disposition_rating="";
-	    var warning=0;
-    
-	    if (advi="flee") then _diplomacy_faction_name="Master of the Fleet "+string(obj_ini.lord_admiral_name);
-	    if (advi="apoth") then _diplomacy_faction_name="Master of the Apothecarion "+string(obj_ini.name[0,4]);
-	    if (advi="chap") then _diplomacy_faction_name="Master of Sanctity "+string(obj_ini.name[0,3]);
-	    if (advi="libr") then _diplomacy_faction_name="Chief "+string(obj_ini.role[100,17])+" "+string(obj_ini.name[0,5]);
-	    if (advi="tech") then _diplomacy_faction_name="Forge Master "+string(obj_ini.name[0,2]);
-	    if (advi="") then _diplomacy_faction_name="First Sergeant "+string(recruiter_name); 
-    
-	    draw_text_transformed(xx+622,yy+66,_diplomacy_faction_alligience,1,1,0);
-	    draw_text_transformed(xx+622,yy+104,_diplomacy_faction_name,0.6,0.6,0);
-    
-	    show_stuff=true;
+	if (diplomacy == -1){
+		if (!is_struct(character_diplomacy)){
+			show_debug_message("no valid diplomacy target");
+			diplomacy = 0;
+		} else {
+		    // draw_sprite(spr_diplo_splash,diplomacy,xx+916,yy+33);
+
+
+		}
 	}
-
-	if (diplomacy = -1){
-
-	}
-
-
 
 	if (diplomacy>0){// Diplomacy - Speaking
 	    var daemon;
 		daemon=false;
 		if (diplomacy>10) and (diplomacy<11) then daemon=true;
-	    draw_sprite(spr_rock_bg,0,xx,yy);
 	    // draw_sprite(spr_diplo_splash,diplomacy,xx+916,yy+33);
-	    draw_set_alpha(0.75);
-		draw_set_color(0);
-		draw_rectangle(xx+326+16,yy+66,xx+887+16,yy+820,0);
-	    draw_set_alpha(1);
-		draw_set_color(38144);
-		draw_rectangle(xx+326+16,yy+66,xx+887+16,yy+820,1);
 		if (diplomacy==10.1){
 	        // if (diplomacy=10.1) then draw_sprite(spr_diplomacy_dae,0,xx+16,yy+43);
 	        daemon=true;
 			scr_image("diplomacy_daemon",0,xx+16,yy+43,310,828);
 			show_stuff=false;
-			if (mouse_x>=xx+360) and (mouse_y>=yy+143) and (mouse_x<=xx+884) and (mouse_y<=yy+180) then warning=1;
+			if (scr_hit(360,143,884,180)){
+				warning=1;
+			}
 		}
     
 	    if (daemon=false){
@@ -665,7 +601,7 @@ function scr_ui_diplomacy() {
 	        	scr_image("diplomacy/splash",12,xx+16,yy+43,310,828);
 	        }
 	    }
-    
+    	
 	    draw_set_halign(fa_center);
 	    draw_set_color(38144);
 	    draw_set_font(fnt_40k_30b);
@@ -673,7 +609,8 @@ function scr_ui_diplomacy() {
 	    var _diplomacy_faction_name="";
 	    var _diplomacy_faction_alligience=" (Imperium)";
 	    var _disposition_rating="";
-	    var warning=0;
+
+
 	    if (diplomacy>=6){
 	    	_diplomacy_faction_alligience="";
 	    }
@@ -701,6 +638,7 @@ function scr_ui_diplomacy() {
 	    draw_rectangle(xx+366,yy+165,xx+871,yy+175,1);
     
 	    show_stuff=true;
+	   	_main_slate.draw_with_dimensions();
 	}
 		
 	if (warning=1 || diplomacy>=6){
@@ -710,6 +648,8 @@ function scr_ui_diplomacy() {
         } else {
         	warn="Consorting with heretics will cause your disposition with the Imperium to plummet.";
         }
+
+        draw_set_halign(fa_left);
 
         draw_rectangle(mouse_x-2,mouse_y+20,mouse_x+2+string_width_ext(warn,-1,600),mouse_y+24+string_height_ext(warn,-1,600),0);
         draw_set_color(38144);

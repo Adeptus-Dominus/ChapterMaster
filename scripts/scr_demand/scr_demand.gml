@@ -1,6 +1,6 @@
-function scr_demand(argument0) {
+function scr_demand(demand_type) {
 
-	// argument0: button
+	// demand_type: button
 
 
 
@@ -14,7 +14,11 @@ function scr_demand(argument0) {
 	annoyed[trading_demand]+=2;
 
 	if (trading_demand=2){// Imperium
-	    with(obj_star){if (owner = eFACTION.Imperium) then instance_create(x,y,obj_temp2);}
+	    with(obj_star){
+	    	if (owner = eFACTION.Imperium){
+	    		instance_create(x,y,obj_temp2);
+	    	}
+	    }
 	    resistance=min(instance_number(obj_temp2),8);
 	    with(obj_temp2){instance_destroy();}
 	    if (obj_controller.disposition[2]<30) then resistance+=1;
@@ -23,15 +27,25 @@ function scr_demand(argument0) {
 	    if (rela="hostile") or (faction_status[eFACTION.Imperium]="Antagonism") then resistance+=2;
 	    if (faction_status[eFACTION.Imperium]="War") then resistance+=3;
 
-	    if (argument0=1){// Requisition
+	    if (demand_type=1){// Requisition
 	        rull=floor(random(10))+1;
-	        if (rull>resistance){requisition+=300;worked=true;}
-	        if (rull<=resistance){worked=false;}
+	        if (rull>resistance){
+	        	requisition+=300;
+	        	worked=true;
+	        }
+	        else if (rull<=resistance){
+	        	worked=false;
+	        }
 	    }
-	    if (argument0=2){// Crusade
+	    if (demand_type=2){// Crusade
 	        rull=floor(random(10))+1;
-	        if (rull>resistance){obj_controller.liscensing=2;worked=true;}
-	        if (rull<=resistance){worked=false;}
+	        if (rull>resistance){
+	        	obj_controller.liscensing=2;
+	        	worked=true;
+	        }
+	        if (rull<=resistance){
+	        	worked=false;
+	        }
 	    }
     
 	}
@@ -46,7 +60,7 @@ function scr_demand(argument0) {
 	    if (faction_status[diplomacy]="War") then resistance+=3;
 	    if (rela="friendly") then resistance-=2;
     
-	    if (argument0=1){// Requisition
+	    if (demand_type=1){// Requisition
 	        rull=floor(random(10))+1;
 	        if (rull>resistance){requisition+=300;worked=true;}
 	        if (rull<=resistance){worked=false;}
@@ -58,12 +72,12 @@ function scr_demand(argument0) {
 	if (trading_demand=4){
 	    resistance=10;
     
-	    if (argument0=1){// Requisition
+	    if (demand_type=1){// Requisition
 	        rull=floor(random(10))+1;
 	        if (rull>resistance){requisition+=300;worked=true;}
 	        if (rull<=resistance){worked=false;}
 	    }
-	    if (argument0=2) and (inspection_passes=0){
+	    if (demand_type=2) and (inspection_passes=0){
 	        rull=floor(random(10))+1;
 	        if (rull>resistance){
 	            worked=true;
@@ -74,7 +88,7 @@ function scr_demand(argument0) {
 	        }
 	        if (rull<=resistance){worked=false;}
 	    }
-	    if (argument0=2) and (inspection_passes>0){
+	    if (demand_type=2) and (inspection_passes>0){
 	        inspection_passes-=1;
 	        worked=true;no_penalty=true;
 	        last_world_inspection=turn+12;
@@ -97,7 +111,7 @@ function scr_demand(argument0) {
 
 	    if (rela="neutral") then resistance-=1;
 	    if (rela="friendly") then resistance-=3;
-	    if (argument0=2) then resistance-=2;
+	    if (demand_type=2) then resistance-=2;
     
 	    if (obj_controller.faction_status[eFACTION.Eldar]="War") or (obj_controller.faction_status[eFACTION.Eldar]="Antagonism"){
 	        with(obj_star){if (owner = eFACTION.Eldar) and (craftworld=1) then instance_create(x,y,obj_temp5);}
@@ -110,7 +124,7 @@ function scr_demand(argument0) {
 	        with(obj_temp3){instance_destroy();}
 	    }
     
-	    if (argument0=1){// Requisition
+	    if (demand_type=1){// Requisition
 	        rull=floor(random(10))+1;
 	        if (rull>resistance){
 	        	requisition+=150;
@@ -118,7 +132,7 @@ function scr_demand(argument0) {
 	        }
 	        if (rull<=resistance){worked=false;}
 	    }
-	    if (argument0=2){// useful info
+	    if (demand_type=2){// useful info
 	        rull=floor(random(10))+1;
 	        if (rull>resistance){worked=true;}
 	        if (rull<=resistance){worked=false;}
@@ -139,14 +153,14 @@ function scr_demand(argument0) {
 
 	    if (rela="neutral") then resistance-=2;
 	    if (rela="friendly") then resistance-=2;
-	    if (argument0=2) then resistance-=2;
+	    if (demand_type=2) then resistance-=2;
     
-	    if (argument0=1){// Requisition
+	    if (demand_type=1){// Requisition
 	        rull=floor(random(10))+1;
 	        if (rull>resistance){requisition+=200;worked=true;}
 	        if (rull<=resistance){worked=false;}
 	    }
-	    if (argument0=2){// Crusade
+	    if (demand_type=2){// Crusade
 	        rull=floor(random(10))+1;
 	        if (rull>resistance){obj_controller.liscensing=2;worked=true;if (disposition[7]>=40) then no_penalty=true;}
 	        if (rull<=resistance){worked=false;}
@@ -166,12 +180,12 @@ function scr_demand(argument0) {
     
 	    // If only one planet, and player is at it, should probably get a bonus
     
-	    if (argument0=1){// Requisition
+	    if (demand_type=1){// Requisition
 	        rull=floor(random(10))+1;
 	        if (rull>resistance){requisition+=300;worked=true;}
 	        if (rull<=resistance){worked=false;}
 	    }
-	    if (argument0=2){
+	    if (demand_type=2){
 	        rull=floor(random(10))+1;
         
         
@@ -222,13 +236,36 @@ function scr_demand(argument0) {
 
 	if (worked=true){
 	    clear_diplo_choices();
-	    if (rela="friendly") and (no_penalty=false){disposition[trading_demand]-=8;turns_ignored[trading_demand]+=3;if (trading_demand=8) then disposition[trading_demand]+=6;}
-	    if (rela="neutral") and (no_penalty=false){disposition[trading_demand]-=10;turns_ignored[trading_demand]+=6;if (trading_demand=8) then disposition[trading_demand]+=6;}
-	    if (rela="hostile") and (no_penalty=false){disposition[trading_demand]-=15;turns_ignored[trading_demand]+=9;if (trading_demand=8) then disposition[trading_demand]+=9;}
+	    if (!no_penalty){
+		    if (rela="friendly") {
+		    	disposition[trading_demand]-=8;
+		    	turns_ignored[trading_demand]+=3;
+		    	if (trading_demand=8){
+		    		disposition[trading_demand]+=6;
+		    	}
+		    }
+		    if (rela="neutral") {
+		    	disposition[trading_demand]-=10;
+		    	turns_ignored[trading_demand]+=6;
+		    	if (trading_demand=8){
+		    		disposition[trading_demand]+=6;
+		    	}
+		    }
+		    if (rela="hostile") {
+		    	disposition[trading_demand]-=15;
+		    	turns_ignored[trading_demand]+=9;
+		    	if (trading_demand=8){
+		    		disposition[trading_demand]+=9;
+		    	}
+		    }
+		    if (disposition[trading_demand]<-100){
+		    	disposition[trading_demand]=-100;
+		    }
+		}
     
-	    if (disposition[trading_demand]<-100) and (no_penalty=false) then disposition[trading_demand]=-100;
+	    
     
-	    if (trading_demand=6) and (argument0=2){
+	    if (trading_demand=6) and (demand_type=2){
 	        if (no_penalty=false) then disposition[trading_demand]+=7;
 	        force_goodbye=1;trading_demand=0;scr_dialogue("useful_information");
 	        exit;
@@ -259,7 +296,7 @@ function scr_demand(argument0) {
 	    var war,woo;war=false;woo=floor(random(100))+1;
 	    if (no_penalty=false){
 	        if (disposition[diplomacy]<=10) and (faction_status[diplomacy]="Antagonism") and (woo<=35) then war=true;
-	        if (diplomacy=8) and (argument0=2) and (war=true) then war=false;
+	        if (diplomacy=8) and (demand_type=2) and (war=true) then war=false;
 	    }
     
 	    if (war=false) then scr_dialogue("demand_refused");

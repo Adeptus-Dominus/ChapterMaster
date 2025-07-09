@@ -6,6 +6,16 @@ function scr_dialogue(diplo_keyphrase) {
 	// diplo_keyphrase = keyphrase
 
 	clear_diplo_choices();
+	if (diplomacy == -1){
+		if (is_struct(character_diplomacy)){
+			if (_unit.role == "Forge Master"){
+				if (diplo_keyphrase == "intro"){
+					diplo_text = "Chapter Master. What may "
+					iplomacy_option({option_text:"The Imperium and Inquisition's ignorance and hypocrisy will be the death of my Chapter.", goto: _goto});
+				}
+			}
+		}
+	}
 	var event_log="";
 	var rando=0,tempd="",sorc=false;
 	var rela,trade_msg;
@@ -1419,7 +1429,7 @@ function scr_dialogue(diplo_keyphrase) {
 	    }
 	    if (diplo_keyphrase=="trading_demand"){
 	        if (rela=="friendly") then diplo_text="Remember whom you speak to, Chapter Master.";
-	        if (rela=="neutral") then diplo_text="I, Inquisitor Lord "+string(faction_leader[eFACTION.Inquisition])+", on behalf of the Inquisition, am awaiting your words.";
+	        if (rela=="neutral") then diplo_text=$"I, Inquisitor Lord {faction_leader[eFACTION.Inquisition]}, on behalf of the Inquisition, am awaiting your words.";
 	        if (rela=="hostile") then diplo_text="Speak your next words very carefully, Astartes, for they may be your last.";
 	        add_diplomacy_option({option_text:"Demand Requisition"});
 			add_diplomacy_option({option_text:"Skip Inspection"});
@@ -2203,10 +2213,8 @@ function scr_dialogue(diplo_keyphrase) {
 										if (array_length(p_feature[j])==0) and (onceh==0) then onceh=j;
 									}
 									if (onceh!=0){
-										array_push(p_feature[onceh], new PlanetFeature(P_features.Webway));
-										obj_controller.temp[90]=name;
-										good=1;
-										obj_controller.temp[90]+=scr_roman(onceh)
+										array_push(p_feature[onceh], new NewPlanetFeature(P_features.Webway));
+										obj_controller.temp[90] = planet_numeral_name(onceh);
 									}
 								}
 							}
@@ -2233,19 +2241,17 @@ function scr_dialogue(diplo_keyphrase) {
 							var that,good=0;
 							that=instance_nearest(random(room_width),random(room_height),obj_star);
 							for(var j=0; j<5; j++){
-								if (good==0) then with(that){
-									var i=0,onceh=0;
-									for(var k=0; k<10; k++){
-										i=floor(random(planets))+1;
-										if (array_length(p_feature[i])==0) and (onceh==0) then onceh=i;}
-									if (onceh!=0){
-										array_push(p_feature[onceh], new PlanetFeature(P_features.Webway));
-										obj_controller.temp[90]=name;
-										good=1;
-										if (onceh==1) then obj_controller.temp[90]+=" I";
-										if (onceh==2) then obj_controller.temp[90]+=" II";
-										if (onceh==3) then obj_controller.temp[90]+=" III";
-										if (onceh==4) then obj_controller.temp[90]+=" IV";
+								if (good==0){ 
+									with(that){
+										var onceh=0;
+										for(var k=0; k<10; k++){
+											var i=floor(random(planets))+1;
+											if (array_length(p_feature[i])==0) and (onceh==0) then onceh=i;
+										}
+										if (onceh!=0){
+											array_push(p_feature[onceh], new NewPlanetFeature(P_features.Webway));
+											obj_controller.temp[90] = planet_numeral_name(onceh);
+										}
 									}
 								}
 							}

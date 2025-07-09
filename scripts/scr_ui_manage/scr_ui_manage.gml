@@ -661,7 +661,6 @@ function scr_ui_manage() {
 
 
         draw_set_color(c_white);
-        draw_sprite_and_unit_equip_data();
         // Back
 
         draw_set_halign(fa_left);
@@ -812,7 +811,7 @@ function scr_ui_manage() {
             }
 
             for (var i = 0; i < max(0, repetitions); i++) {
-
+                draw_set_font(fnt_40k_14);
                 if (sel >= array_length(display_unit)) {
                     break;
                 }
