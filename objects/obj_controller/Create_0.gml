@@ -922,21 +922,7 @@ bat_whirlwind_column=1;
 bat_landspeeder_column=4;
 bat_scout_column=1;
 // ** Sets up disposition per faction **
-enum eFACTION {
-	Player = 1,
-	Imperium,
-	Mechanicus,
-	Inquisition,
-	Ecclesiarchy,
-	Eldar,
-	Ork,
-	Tau,
-	Tyranids,
-	Chaos,
-	Heretics,
-    Genestealer,
-	Necrons = 13
-}
+
 
 imperial_factions = [
     eFACTION.Imperium,

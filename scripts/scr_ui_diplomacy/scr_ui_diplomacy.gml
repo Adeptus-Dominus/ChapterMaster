@@ -390,14 +390,26 @@ function set_up_diplomacy_persons(){
 	}
 }
 
+function faction_disposition_rating_string(diplomacy){
+	with(obj_controller){
+	var _disposition_rating = "";
+    if (disposition[diplomacy]<=-20){
+    	_disposition_rating = ALLIANCE_GRADES[0];
+    } else {
+    	var _grade = clamp(floor((disposition[diplomacy] + 39)/20), 1, 7);
+		_disposition_rating = ALLIANCE_GRADES[_grade];
+    }
+    return _disposition_rating;
+	}
+}
 
 function scr_ui_diplomacy() {
 	if (menu != MENU.Diplomacy){
 		return;
 	}
-	var xx,yy,show_stuff;
-	xx=__view_get( e__VW.XView, 0 )+0;
-	yy=__view_get( e__VW.YView, 0 )+0;
+
+	var xx=__view_get( e__VW.XView, 0 )+0;
+	var yy=__view_get( e__VW.YView, 0 )+0;
 	var show_stuff=false;
 	var warning=0;
 
@@ -473,10 +485,12 @@ function scr_ui_diplomacy() {
 		draw_set_halign(fa_left);
 		
 		//draw faction names, etc
-	    draw_text(xx+609,yy+285,"Chapter 1");
-	    draw_text(xx+609,yy+421,"Chapter 2");
-	    draw_text(xx+609,yy+557,"Chapter 3");
-	    draw_text(xx+609,yy+693,"Chapter 4");
+	    /*
+		    draw_text(xx+609,yy+285,"Chapter 1");
+		    draw_text(xx+609,yy+421,"Chapter 2");
+		    draw_text(xx+609,yy+557,"Chapter 3");
+		    draw_text(xx+609,yy+693,"Chapter 4");
+	    */
     
 		//render status, i.e. whether at war, that stuff
 	    draw_set_font(fnt_40k_14);
@@ -506,7 +520,7 @@ function scr_ui_diplomacy() {
 	    draw_set_color(38144);
 		draw_rectangle(xx+688,yy+240,xx+1028,yy+281,0);
 	    draw_set_color(c_black);
-		draw_text_transformed(xx+688,yy+241,string_hash_to_newline(" Meet Chaos Emmissary"),0.7,0.7,0);
+		draw_text_transformed(xx+688,yy+241," Meet Chaos Emmissary",0.7,0.7,0);
 		//color blending stuff if hovering over the meeting chaos icon
 	    if (point_in_rectangle(mouse_x, mouse_y, xx+688,yy+240,xx+1028,yy+281)){
 	        draw_set_alpha(0.2);
@@ -556,12 +570,36 @@ function scr_ui_diplomacy() {
 		draw_rectangle(xx+326+16,yy+66,xx+887+16,yy+820,1);
     
 	    var advi,fra;advi="";fra=0;
-	    if (diplomacy=-5.1){advi="apoth";fra=1;}
-	    if (diplomacy=-5.2){advi="chap";fra=2;if (global.chapter_name="Space Wolves") then fra=11;}
-	    if (diplomacy=-5.3){advi="libr";fra=3;if (global.chapter_name="Space Wolves") then fra=10;}
-	    if (diplomacy=-5.4){advi="tech";fra=4;}
-	    if (diplomacy=-5.5){advi="recr";fra=5;}
-	    if (diplomacy=-5.6){advi="flee";fra=6;}
+	    if (diplomacy=-5.1){
+	    	advi="apoth";
+	    	fra=1;
+	    }
+	    if (diplomacy=-5.2){
+	    	advi="chap";
+	    	fra=2;
+	    	if (global.chapter_name="Space Wolves"){
+	    		fra=11;
+	    	}
+	    }
+	    if (diplomacy=-5.3){
+	    	advi="libr";
+	    	fra=3;
+	    	if (global.chapter_name="Space Wolves"){
+	    		fra=10;
+	    	}
+	    }
+	    if (diplomacy=-5.4){
+	    	advi="tech";
+	    	fra=4;
+	    }
+	    if (diplomacy=-5.5){
+	    	advi="recr";
+	    	fra=5;
+	    }
+	    if (diplomacy=-5.6){
+	    	advi="flee";
+	    	fra=6;
+	    }
     
 	    // draw_sprite(spr_advisors,fra,xx+16,yy+43);
 	    scr_image("advisor/splash",fra+1,xx+16,yy+43,310,828);
@@ -569,22 +607,26 @@ function scr_ui_diplomacy() {
 	    draw_set_color(38144);
 	    draw_set_font(fnt_40k_30b);
     
-	    var fac="";
-	    var fac2=string(global.chapter_name)+" (Imperium)";
-	    var fac3="";
+	    var _diplomacy_faction_name="";
+	    var _diplomacy_faction_alligience=$"{global.chapter_name} (Imperium)";
+	    var _disposition_rating="";
 	    var warning=0;
     
-	    if (advi="flee") then fac="Master of the Fleet "+string(obj_ini.lord_admiral_name);
-	    if (advi="apoth") then fac="Master of the Apothecarion "+string(obj_ini.name[0,4]);
-	    if (advi="chap") then fac="Master of Sanctity "+string(obj_ini.name[0,3]);
-	    if (advi="libr") then fac="Chief "+string(obj_ini.role[100,17])+" "+string(obj_ini.name[0,5]);
-	    if (advi="tech") then fac="Forge Master "+string(obj_ini.name[0,2]);
-	    if (advi="") then fac="First Sergeant "+string(recruiter_name); 
+	    if (advi="flee") then _diplomacy_faction_name="Master of the Fleet "+string(obj_ini.lord_admiral_name);
+	    if (advi="apoth") then _diplomacy_faction_name="Master of the Apothecarion "+string(obj_ini.name[0,4]);
+	    if (advi="chap") then _diplomacy_faction_name="Master of Sanctity "+string(obj_ini.name[0,3]);
+	    if (advi="libr") then _diplomacy_faction_name="Chief "+string(obj_ini.role[100,17])+" "+string(obj_ini.name[0,5]);
+	    if (advi="tech") then _diplomacy_faction_name="Forge Master "+string(obj_ini.name[0,2]);
+	    if (advi="") then _diplomacy_faction_name="First Sergeant "+string(recruiter_name); 
     
-	    draw_text_transformed(xx+622,yy+66,fac2,1,1,0);
-	    draw_text_transformed(xx+622,yy+104,fac,0.6,0.6,0);
+	    draw_text_transformed(xx+622,yy+66,_diplomacy_faction_alligience,1,1,0);
+	    draw_text_transformed(xx+622,yy+104,_diplomacy_faction_name,0.6,0.6,0);
     
 	    show_stuff=true;
+	}
+
+	if (diplomacy = -1){
+
 	}
 
 
@@ -610,50 +652,49 @@ function scr_ui_diplomacy() {
 		}
     
 	    if (daemon=false){
-	        if (diplomacy!=eFACTION.Eldar) then scr_image("diplomacy/splash",diplomacy,xx+16,yy+43,310,828);
-	        if (diplomacy!=eFACTION.Eldar) or ((diplomacy==eFACTION.Eldar) and (faction_gender[eFACTION.Eldar]=1)) then scr_image("diplomacy/splash",diplomacy,xx+16,yy+16,310,828);
-	        if (diplomacy==eFACTION.Eldar) and (faction_gender[eFACTION.Eldar]=2) then scr_image("diplomacy/splash",11,xx+16,yy+16,310,828);
-	        if (diplomacy==eFACTION.Chaos) and (faction_gender[eFACTION.Chaos]=2) then scr_image("diplomacy/splash",12,xx+16,yy+43,310,828);
+	        if (diplomacy!=eFACTION.Eldar){
+	        	scr_image("diplomacy/splash",diplomacy,xx+16,yy+43,310,828);
+	        }
+	        if (diplomacy!=eFACTION.Eldar) or ((diplomacy==eFACTION.Eldar) and (faction_gender[eFACTION.Eldar]=1)){
+	        	scr_image("diplomacy/splash",diplomacy,xx+16,yy+16,310,828);
+	        }
+	        if (diplomacy==eFACTION.Eldar) and (faction_gender[eFACTION.Eldar]=2){
+	        	scr_image("diplomacy/splash",11,xx+16,yy+16,310,828);
+	        }
+	        if (diplomacy==eFACTION.Chaos) and (faction_gender[eFACTION.Chaos]=2){
+	        	scr_image("diplomacy/splash",12,xx+16,yy+43,310,828);
+	        }
 	    }
     
 	    draw_set_halign(fa_center);
 	    draw_set_color(38144);
 	    draw_set_font(fnt_40k_30b);
     
-	    var fac, fac2, fac3,warning;fac="";fac2=" (Imperium)";fac3="";warning=0;
-	    if (diplomacy>=6) then fac2="";
+	    var _diplomacy_faction_name="";
+	    var _diplomacy_faction_alligience=" (Imperium)";
+	    var _disposition_rating="";
+	    var warning=0;
+	    if (diplomacy>=6){
+	    	_diplomacy_faction_alligience="";
+	    }
     
+    	
+    	_diplomacy_faction_name = FACTION_NAMES[diplomacy];
     
-	    if (diplomacy==eFACTION.Imperium) then fac="Imperium of Man";
-	    if (diplomacy==eFACTION.Mechanicus) then fac="Adeptus Mechanicus";
-	    if (diplomacy==eFACTION.Inquisition) then fac="Inquisition";
-	    if (diplomacy==eFACTION.Ecclesiarchy) then fac="Ecclesiarchy";
-	    if (diplomacy==eFACTION.Eldar) then fac="Eldar";
-	    if (diplomacy==eFACTION.Ork) then fac="Orks";
-	    if (diplomacy==eFACTION.Tau) then fac="Tau Empire";
-	    if (diplomacy==eFACTION.Chaos) then fac="Heretics";
-	    if (diplomacy>10) and (diplomacy<11) then fac="Chaos";
+	    draw_text_transformed(xx+622,yy+66,_diplomacy_faction_name,1,1,0);
     
-	    draw_text_transformed(xx+622,yy+66,string_hash_to_newline(string(fac)),1,1,0);
-    
-	    if (daemon=true){ draw_text_transformed(xx+622,yy+104,string_hash_to_newline("The Emmmisary"),0.6,0.6,0);show_stuff=true;};
-	    if (daemon=false) then draw_text_transformed(xx+622,yy+104,string_hash_to_newline(string(faction_title[diplomacy])+" "+string(faction_leader[diplomacy])+string(fac2)),0.6,0.6,0);
+	    if (daemon=true){
+	    	draw_text_transformed(xx+622,yy+104,"The Emmmisary",0.6,0.6,0);
+	    	show_stuff=true;
+	    } else if (daemon=false){
+	    	draw_text_transformed(xx+622,yy+104,$"{faction_title[diplomacy]} {faction_leader[diplomacy]} {_diplomacy_faction_alligience}",0.6,0.6,0);
+	    }
     
 	    draw_set_font(fnt_40k_14);
-    
 	    if (daemon=false){
-	        fac3="Disposition: ";
-	        if (disposition[diplomacy]<=-20) then fac3+="Hated";
-	        if (disposition[diplomacy]>-20) and (disposition[diplomacy]<0) then fac3+="Hostile";
-	        if (disposition[diplomacy]>=0) and (disposition[diplomacy]<10) then fac3+="Suspicious";
-	        if (disposition[diplomacy]>=10) and (disposition[diplomacy]<20) then fac3+="Uneasy";
-	        if (disposition[diplomacy]>=20) and (disposition[diplomacy]<40) then fac3+="Neutral";
-	        if (disposition[diplomacy]>=40) and (disposition[diplomacy]<60) then fac3+="Allies";
-	        if (disposition[diplomacy]>=60) and (disposition[diplomacy]<80) then fac3+="Close Allies";
-	        if (disposition[diplomacy]>=80) then fac3+="Battle Brothers";
-	        fac3+=" ("+string(disposition[diplomacy])+")";
+	        _disposition_rating=$"Disposition: {faction_disposition_rating_string(diplomacy)} ({disposition[diplomacy]})";
 	        // draw_set_halign(fa_center);
-	        draw_text(xx+622,yy+144,string_hash_to_newline(string(fac3)));
+	        draw_text(xx+622,yy+144,_disposition_rating);
 	        scr_draw_rainbow(xx+366,yy+165,xx+871,yy+175,(disposition[diplomacy]/200)+0.5);
 	    }
 	    draw_set_color(c_gray);
@@ -662,10 +703,13 @@ function scr_ui_diplomacy() {
 	    show_stuff=true;
 	}
 		
-	if (warning=1) and (diplomacy>=6){
+	if (warning=1 || diplomacy>=6){
         var warn;
-        if (diplomacy<10) and (warning=1) then warn="Consorting with xenos will cause your disposition with the Imperium to lower.";
-        if (diplomacy>=10) and (warning=1) then warn="Consorting with heretics will cause your disposition with the Imperium to plummet.";
+        if (array_contains(XENOS_FACTIONS, diplomacy)){
+        	warn="Consorting with xenos will cause your disposition with the Imperium to lower.";
+        } else {
+        	warn="Consorting with heretics will cause your disposition with the Imperium to plummet.";
+        }
 
         draw_rectangle(mouse_x-2,mouse_y+20,mouse_x+2+string_width_ext(warn,-1,600),mouse_y+24+string_height_ext(warn,-1,600),0);
         draw_set_color(38144);

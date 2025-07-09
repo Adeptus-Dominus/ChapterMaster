@@ -112,6 +112,7 @@ function UnitButtonObject(data = false) constructor{
 				break;								
 		}
 	}
+	static disabled = false;
 	static draw = function(allow_click = true){
 		var cur_alpha = draw_get_alpha();
 		var cur_font = draw_get_font();
@@ -119,7 +120,12 @@ function UnitButtonObject(data = false) constructor{
 		var cur_halign = draw_get_halign();
 		var cur_valign = draw_get_valign();
 		if (style = "standard"){
-			var _button_click_area = draw_unit_buttons(w > 0 ? [x1, y1, x2, y2] : [x1, y1] , label, [1,1],color,,font,alpha);
+			var _temp_alpha = alpha;
+			if (disabled){
+				_temp_alpha = 0.5;
+				allow_click = false;
+			}
+			var _button_click_area = draw_unit_buttons(w > 0 ? [x1, y1, x2, y2] : [x1, y1] , label, [1,1],color,,font,_temp_alpha);
 		} else if (style = "pixel"){
 
 			var _widths =  [sprite_get_width(spr_pixel_button_left), sprite_get_width(spr_pixel_button_middle), sprite_get_width(spr_pixel_button_right)]

@@ -345,7 +345,8 @@ function scr_enemy_ai_a() {
 	    var after_combat_tyranids=tyranids_score;
 	    var after_combat_sisters=sisters_score;
 	    var tempor=0,rand1=0,rand2=0;
-    
+    	
+    	var _active_garrison = pdf_with_player && garrison.viable_garrison>0;
 	    // Guard attack
 	    if (guard_score>0) and (guard_attack!="") and (guard_score>0.5){
         
@@ -522,19 +523,27 @@ function scr_enemy_ai_a() {
 	        }else if (ork_attack="guard"){var onc=0;
 	            rand2=(choose(1,2,3,4,5,6)*guard_score)*choose(1,1.25);
 	            if (rand1>rand2){
-	                if (planet_forces[eFACTION.Ork]<=3) and (onc=0){p_guardsmen[_run]=floor(p_guardsmen[_run]*(min(0.95, 0.7+pdf_loss_reduction)));onc=1;}
-	                if (planet_forces[eFACTION.Ork]>=4) and (onc=0){p_guardsmen[_run]=floor(p_guardsmen[_run]*(min(0.95, 0.55+pdf_loss_reduction)));onc=1;}
-	                if (planet_forces[eFACTION.Ork]>=4) and (p_guardsmen[_run]<15000) and (onc=0){p_guardsmen[_run]=0;onc=1;}
-	                if (planet_forces[eFACTION.Ork]>=3) and (p_guardsmen[_run]<5000) and (onc=0){p_guardsmen[_run]=0;onc=1;}
+	                if (planet_forces[eFACTION.Ork]<=3) and (onc=0){
+	                	p_guardsmen[_run]=floor(p_guardsmen[_run]*(min(0.95, 0.7+pdf_loss_reduction)));onc=1;
+	                }
+	                if (planet_forces[eFACTION.Ork]>=4) and (onc=0){
+	                	p_guardsmen[_run]=floor(p_guardsmen[_run]*(min(0.95, 0.55+pdf_loss_reduction)));
+	                	onc=1;
+	                }
+	                if (planet_forces[eFACTION.Ork]>=4) and (p_guardsmen[_run]<15000) and (onc=0){
+	                	p_guardsmen[_run]=0;onc=1;
+	                }
+	                if (planet_forces[eFACTION.Ork]>=3) and (p_guardsmen[_run]<5000) and (onc=0){
+	                	p_guardsmen[_run]=0;onc=1;
+	                }
 	            }
 	        }else if (ork_attack="pdf"){
 	        	var pdf_random = choose(1,2,3,4,5,6);
 	            rand2=(pdf_random*pdf_score);
-	            var active_garrison = pdf_with_player && garrison.viable_garrison>0;
 	            if (rand1>rand2){
 	            	_planet_data.pdf_defence_loss_to_orks();
 
-	                if (active_garrison){
+	                if (_active_garrison){
 	                	var tixt = $"Chapter Forces led by {garrison.garrison_leader.name_role()} on {name} {scr_roman_numerals()[_run-1]} were unable to secure PDF victory chapter support requested";
 	                	if (garrison.garrison_sustain_damages("loose")>0){
 	                		tixt += $". {garrison.garrison_sustain_damages()} Marines Lost";
@@ -543,7 +552,7 @@ function scr_enemy_ai_a() {
 	                	//garrison.determine_battle(false,rand2-rand1, eFACTION.Ork);
 	                }
 	            } else {
-	            	if (active_garrison){
+	            	if (_active_garrison){
 	            		garrison.garrison_sustain_damages();
 	            		var tixt = $"Chapter Forces led by {garrison.garrison_leader.name_role()} on {name} {scr_roman_numerals()[_run-1]} secure PDF victory";
 	                	if (garrison.garrison_sustain_damages("win")>0){
@@ -750,10 +759,19 @@ function scr_enemy_ai_a() {
 	        }else if (necrons_attack="guard"){
 	            rand2=(choose(1,2,3,4,5)*guard_score)*choose(1,1.25);
 	            if (rand1>rand2){
-	                if (necrons_score<=3) then p_guardsmen[_run]=floor(p_guardsmen[_run]*0.6);
-	                if (necrons_score>=4) then p_guardsmen[_run]=floor(p_guardsmen[_run]*0.5);
-	                if (necrons_score>=6) then p_guardsmen[_run]=floor(p_guardsmen[_run]*0.2);
-	                if (necrons_score>=4) and (p_guardsmen[_run]<15000) then p_guardsmen[_run]=0;
+	                if (necrons_score<=3){
+	                	p_guardsmen[_run]=floor(p_guardsmen[_run]*0.6);
+	                }
+	                else if (necrons_score>=6){
+	                	p_guardsmen[_run]=floor(p_guardsmen[_run]*0.2);
+	                }	                
+	                else if (necrons_score>=4){
+	                	if (p_guardsmen[_run]<15000){
+	                		p_guardsmen[_run]=0;
+	                	} else {
+	                		p_guardsmen[_run]=floor(p_guardsmen[_run]*0.5);
+	                	}	                	
+	                }
 	            }
 	        }else if (necrons_attack="pdf"){
 	            rand2=(choose(1,2,3,4,5)*pdf_score)*choose(1,1.25);

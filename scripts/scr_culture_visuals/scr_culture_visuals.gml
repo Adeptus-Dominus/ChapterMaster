@@ -134,6 +134,9 @@ function load_vis_set_to_global(directory, data){
                     sprite_delete(_merge_sprite);
                 }
                 var _s_data = _sprite_item.data;
+                if (struct_exists(_s_data, "offset")){
+                    sprite_set_offset(_new_sprite, _s_data.offset.x, _s_data.offset.y);
+                }
                 _s_data.name = _sprite_item.name;
                 _s_data.sprite = _new_sprite;
                 if (_s_data.position == "weapon"){

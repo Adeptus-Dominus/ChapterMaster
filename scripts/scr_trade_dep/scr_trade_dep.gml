@@ -7,7 +7,7 @@ function scr_trade_dep() {
 		var _mercs = struct_get_names(_goods.mercenaries);
 	    for (var m=0;m<array_length(_mercs);m++){
 	    	var _merc_type = _mercs[m];
-	        repeat(_goods.mercenaries[$_merc_type]){
+	        repeat(_goods.mercenaries[$_merc_type].number){
 	            scr_add_man(_merc_type,0,"","",0,true,"default");
 	        }
 	    }
