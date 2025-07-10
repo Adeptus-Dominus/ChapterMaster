@@ -293,8 +293,8 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
 	       		}
 	       		scr_audience(eFACTION.Mechanicus, "bombard_angry", _disp_neg,);
 	        }
-            if (planet_feature_bool(system.p_feature[planet], P_features.Gene_Stealer_Cult)) {
-                delete_features(system.p_feature[planet], P_features.Gene_Stealer_Cult);
+            if (planet_feature_bool(system.p_feature[planet], P_features.GeneStealerCult)) {
+                delete_features(system.p_feature[planet], P_features.GeneStealerCult);
                 adjust_influence(eFACTION.Tyranids, -100, planet, system);
                 pip.text += " The xeno taint of the tyranids that was infesting the population has been completely eradicated with the planets cleansing";
             } else {

@@ -95,7 +95,7 @@ function scr_enemy_ai_d() {
             if (result="imperial"){alert_text+=".";
                 scr_alert("green","succession",alert_text,x,y);
             }
-            delete_features(p_feature[i], P_features.Succession_War);
+            delete_features(p_feature[i], P_features.SuccessionWar);
             if (result="chaos") then scr_event_log("purple",alert_text);
             if (result="tau") then scr_event_log("red",alert_text);
             if (result="imperial") then scr_event_log("",alert_text);
@@ -244,7 +244,7 @@ function scr_enemy_ai_d() {
             }
         }             
     
-	    if (p_tyranids[i] > 3 && planet_feature_bool(p_feature[i], P_features.Gene_Stealer_Cult) && obj_controller.turn > 120){
+	    if (p_tyranids[i] > 3 && planet_feature_bool(p_feature[i], P_features.GeneStealerCult) && obj_controller.turn > 120){
 	        if (!(has_problem_planet(i, "Hive Fleet"))){
 	            var roll=irandom_range(0,300);
 	            var cont=0;

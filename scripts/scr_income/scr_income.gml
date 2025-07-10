@@ -68,7 +68,7 @@ function scr_income() {
 	    		} else {
 	    			var _nearest = distance_removed_star(x, y, 1);
 	    			if (point_distance(x,y,_nearest.x,_nearest.y) <= 180){
-	    				with (nearest){
+	    				with (_nearest){
 				            if (p_type[i]=="Forge") and (p_owner[i]==3) then obj_controller.income_forge+=6;
 				            if (p_type[i]=="Agri") and (p_owner[i]==2) then obj_controller.income_agri+=3;	 
 				        }   				

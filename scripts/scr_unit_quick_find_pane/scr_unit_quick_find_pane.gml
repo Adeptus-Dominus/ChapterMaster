@@ -898,7 +898,7 @@ function planet_selection_action(){
 					        }
 					        
 					        // STC Grab
-					        if (planet_feature_bool(target.p_feature[sel_plan], P_features.STC_Fragment) == 1) and (recon=0){
+					        if (planet_feature_bool(target.p_feature[sel_plan], P_features.STCFragment) == 1) and (recon=0){
 					            var tch,mch;frag=0;tch=0;mch=0;
 					            for (var frag=0;frag<array_length(obj_controller.display_unit);frag++){
 					                if (obj_controller.man[frag]!="") and (obj_controller.man_sel[frag]==1){

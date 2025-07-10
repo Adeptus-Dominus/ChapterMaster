@@ -1,33 +1,33 @@
 enum P_features {
 			Sororitas_Cathedral,
-			Necron_Tomb,
+			NecronTomb,
 			Artifact, 
-			STC_Fragment,
-			Ancient_Ruins,
-			Cave_Network,
-			Recruiting_World, 
+			STCFragment,
+			AncientRuins,
+			CaveNetwork,
+			RecruitingWorld, 
 			Monastery,
 			Warlord6,
 			OrkWarboss,
 			Warlord10,
-			Special_Force,
+			SpecialForce,
 			ChaosWarband,
 			Webway,
-			Secret_Base,
+			SecretBase,
 			Starship,
-			Succession_War,
-			Mechanicus_Forge,
-			Reclamation_pools,
-			Capillary_Towers,
-			Daemonic_Incursion,
-			Victory_Shrine,
+			SuccessionWar,
+			MechanicusForge,
+			ReclamationPools,
+			CapillaryTowers,
+			DaemonicIncursion,
+			VictoryShrine,
 			Arsenal,
-			Gene_Vault,
+			GeneVault,
 			Forge,
-			Gene_Stealer_Cult,
+			GeneStealerCult,
 			Mission,
-			OrkStronghold
-	ShipDock
+			OrkStronghold,
+	        ShipDock
 };
 	
 enum base_type{
@@ -53,7 +53,7 @@ function PlanetFeature(feature_type, other_data={}) constructor{
 	}
 	uid = scr_uuid_generate();
 	switch(f_type){
-	case P_features.Gene_Stealer_Cult:
+	case P_features.GeneStealerCult:
 		PDF_control = 0;
 		sealed = 0;
 		player_hidden = false;
@@ -64,14 +64,14 @@ function PlanetFeature(feature_type, other_data={}) constructor{
 		name = global.name_generator.generate_genestealer_cult_name();		
 		break;
 
-		case P_features.Necron_Tomb:
+		case P_features.NecronTomb:
 		awake = 0;
 		sealed = 0;
 		player_hidden = 1
 		planet_display = "Dormant Necron Tomb";
 		break;
 
-	case P_features.Secret_Base:
+	case P_features.SecretBase:
 		base_type = 0;
 		inquis_hidden =1;
 		planet_display = "Hidden Secret Base";
@@ -101,7 +101,7 @@ function PlanetFeature(feature_type, other_data={}) constructor{
 		player_hidden = 0;
 		built = obj_controller.turn+3;
 		break;
-	case P_features.Gene_Vault:
+	case P_features.GeneVault:
 		inquis_hidden=1;
 		planet_display = "Arsenal";
 		player_hidden = 0;
@@ -114,7 +114,7 @@ function PlanetFeature(feature_type, other_data={}) constructor{
 		player_hidden = 0;
 		engineer_score = 0;
 	break;	
-	case P_features.Ancient_Ruins:
+	case P_features.AncientRuins:
 		static ruins_explored = scr_ruins_explored;
 		static explore = scr_explore_ruins;
 		static determine_race = scr_ruins_determine_race;
@@ -125,12 +125,12 @@ function PlanetFeature(feature_type, other_data={}) constructor{
 		static ruins_combat_end=scr_ruins_combat_end;
 		scr_ancient_ruins_setup();
 		break;
-	case P_features.STC_Fragment:
+	case P_features.STCFragment:
 		player_hidden = 1;
 		Fragment_type =0;
 		planet_display = "STC Fragment";
 		break;
-	case P_features.Cave_Network:
+	case P_features.CaveNetwork:
 		player_hidden = 1;
 		cave_depth =irandom(3);//allow_multiple levels of caves, option to go deeper
 		planet_display = "Unexplored Cave Network";
@@ -161,7 +161,7 @@ function PlanetFeature(feature_type, other_data={}) constructor{
 		forge=0;
 		name=global.name_generator.generate_imperial_ship_name();
 		break;
-	case P_features.Recruiting_World:
+	case P_features.RecruitingWorld:
 		planet_display="Recruitment";
 		player_hidden = 0;
         recruit_type = 0;
@@ -348,7 +348,7 @@ function system_player_hidden_feature(system){
 //returns 1 if awake tomb world on planet 0 if tombs on planet but not awake and 2 if no tombs on planet
 function awake_tomb_world(planet){
 	var awake_tomb = 0;
-	 var tombs = search_planet_features(planet, P_features.Necron_Tomb);
+	 var tombs = search_planet_features(planet, P_features.NecronTomb);
 	 if (array_length(tombs)>0){
 		 for (var tomb =0;tomb<array_length(tombs);tomb++){
 			 if (planet[tombs[tomb]].awake = 1){
@@ -365,7 +365,7 @@ function awake_tomb_world(planet){
 //selas a tomb world and switche off awake so will no longer spawn necrons or necron fleets
 function seal_tomb_world(planet){
 	var awake_tomb = 0;
-	 var tombs = search_planet_features(planet, P_features.Necron_Tomb);
+	 var tombs = search_planet_features(planet, P_features.NecronTomb);
 	 if (array_length(tombs)>0){
 		 for (var tomb =0;tomb<array_length(tombs);tomb++){
 			awake_tomb = 1;
@@ -381,7 +381,7 @@ function seal_tomb_world(planet){
 //awakens a tomb world so necrons and necron fleets will spawn
 function awaken_tomb_world(planet){
 	var awake_tomb = 0;
-	 var tombs = search_planet_features(planet, P_features.Necron_Tomb);
+	 var tombs = search_planet_features(planet, P_features.NecronTomb);
 	 if (array_length(tombs)>0){
 		 for (var tomb =0;tomb<array_length(tombs);tomb++){
 			if (planet[tombs[tomb]].awake == 0){
@@ -414,7 +414,7 @@ function scr_planetary_feature(planet_num) {
 				    if (p_heresy[planet_num]>10) then p_heresy[planet_num]-=10;
 				    p_sisters[planet_num]=choose(2,2,3);goo=1;
 					break;
-				case P_features.Necron_Tomb:
+				case P_features.NecronTomb:
 				    var lop=$"Necron Tomb discovered on {numeral_n}.";
 				    scr_alert("red","feature",lop,x,y);
 				    scr_event_log("red",lop);
@@ -424,17 +424,17 @@ function scr_planetary_feature(planet_num) {
 					scr_alert("green","feature",lop,x,y);
 					scr_event_log("",lop);
 					break;
-				case P_features.STC_Fragment:
+				case P_features.STCFragment:
 					var lop=$"STC Fragment located on {numeral_n}.";
 					 scr_alert("green","feature",lop,x,y);
 					 scr_event_log("",lop);
 					 break;
-				case P_features.Ancient_Ruins:
+				case P_features.AncientRuins:
 					var lop=$"A {feat.ruins_size} Ancient Ruins discovered on {string(name)} {scr_roman(planet_num)}.";
 					scr_alert("green","feature",lop,x,y);
 					scr_event_log("",lop);
 					break;
-				case P_features.Cave_Network:
+				case P_features.CaveNetwork:
 					var lop=$"Extensive Cave Network discovered on {numeral_n}.";
 			        scr_alert("green","feature",lop,x,y);
 			        scr_event_log("",lop);

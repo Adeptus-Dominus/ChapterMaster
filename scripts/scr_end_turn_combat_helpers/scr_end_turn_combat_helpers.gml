@@ -10,9 +10,9 @@ function draw_player_fleet_combat_options(){
     draw_text(xxx+12,yyy+237,"Enemy Fleets:");
     draw_text(xxx+332,yyy+237,"Allied Fleets:");
     
-	draw_text(xxx+310,yyy+118,"{strin[1]} {string_plural(Battleship,strin[1])} ({strin[4]}% HP)");
-	draw_text(xxx+310,yyy+138,"{strin[2]} {string_plural(Frigate,strin[2])} ({strin[5]}% HP)");
-	draw_text(xxx+310,yyy+158,"{strin[3]} {string_plural(Escort,strin[3])} ({strin[6]}% HP)");
+	draw_text(xxx+310,yyy+118,$"{strin[1]} {string_plural(Battleship,strin[1])} ({strin[4]}% HP)");
+	draw_text(xxx+310,yyy+138,$"{strin[2]} {string_plural(Frigate,strin[2])} ({strin[5]}% HP)");
+	draw_text(xxx+310,yyy+158,$"{strin[3]} {string_plural(Escort,strin[3])} ({strin[6]}% HP)");
 
     
     draw_set_halign(fa_center);
@@ -25,9 +25,9 @@ function draw_player_fleet_combat_options(){
         if (enemy_fleet[i]!=0){
 	        scr_image("ui/force",enemy_fleet[i],xxx+44-32,yyy+269-32,64,64);
 	        var shw="";
-	        shw += "{ecap[i]} : {string_plural( "Battleship",ecap[i])} \n";
-	        shw += "{efri[i]} :{string_plural( "Frigate",efri[i])} \n";
-	        shw += "{eesc[i]} :{string_plural( "Escort",eesc[i])} \n";
+	        shw += $"{ecap[i]} :"+string_plural( "Battleship",ecap[i]) + "\n";
+	        shw += $"{efri[i]} :"+string_plural("Frigate",efri[i]) + "\n";
+	        shw +=$"{eesc[i]} :"+string_plural( "Escort",eesc[i]) + "\n";
 	        
 	        draw_text_transformed(xxx+44,yyy+286,shw,0.7,1,0);
 	        draw_set_halign(fa_center);
@@ -39,9 +39,9 @@ function draw_player_fleet_combat_options(){
 	            // draw_sprite(spr_force_icon,allied_fleet[1],xxx+374,yyy+269);
 	            scr_image("ui/force",allied_fleet[i],xxx+44+_ali_mod-32,yyy+269-32,64,64);
 	            var shw="";
-		        shw += "{acap[i]} : {string_plural( "Battleship",acap[i])} \n";
-		        shw += "{afri[i]} :{string_plural( "Frigate",afri[i])} \n";
-		        shw += "{aesc[i]} :{string_plural( "Escort",aesc[i])} \n";	            
+		        shw += $"{acap[i]} : {string_plural( "Battleship",acap[i])} \n";
+		        shw += $"{afri[i]} :{string_plural( "Frigate",afri[i])} \n";
+		        shw +=$"{aesc[i]} :{string_plural( "Escort",aesc[i])} \n";	            
 	            
 	            draw_text_transformed(xxx+44+_ali_mod,yyy+286,shw,0.7,1,0);
 	            draw_set_halign(fa_center);

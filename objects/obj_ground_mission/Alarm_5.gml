@@ -105,7 +105,7 @@ if (scr_has_adv("Tech-Scavengers")){
 
 with(obj_star_select){instance_destroy();}
 with(obj_fleet_select){instance_destroy();}
-delete_features(plan.p_feature[num], P_features.STC_Fragment);
+delete_features(plan.p_feature[num], P_features.STCFragment);
 
 scr_add_stc_fragment();// STC here
 

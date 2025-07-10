@@ -40,7 +40,7 @@ function scr_star_ownership(argument0) {
 	    if (p_type[run]="Daemon") then p_owner[run]=10;
 
 	    var _nid_chosen = false;
-    	if (planet_feature_bool(p_feature[run], P_features.Gene_Stealer_Cult)){
+    	if (planet_feature_bool(p_feature[run], P_features.GeneStealerCult)){
     		if (p_influence[run][eFACTION.Tyranids]>50){
     			p_owner[run]=9;
     			tyranids_owner+=1;
@@ -68,7 +68,7 @@ function scr_star_ownership(argument0) {
     
 	    if (argument0!=false){
 	        if (array_length(p_feature[run]) != 0){
-	            if (planet_feature_bool(p_feature[run], P_features.Daemonic_Incursion)==1){
+	            if (planet_feature_bool(p_feature[run], P_features.DaemonicIncursion)==1){
 	            	p_heresy[run]+=2;
 	                if (p_large[run]=0) and (p_population[run]>10000) then p_population[run]=floor(p_population[run]*0.5);
 	                if (p_large[run]=1) then p_population[run]=p_population[run]*0.7;
@@ -80,14 +80,14 @@ function scr_star_ownership(argument0) {
 	            if (p_large[run]=1) then p_population[run]=p_population[run]*0.1;
 	        }
 	        if (array_length(p_feature[run])!=0){
-	            if (p_type[run]!="Dead") and (planet_feature_bool(p_feature[run], P_features.Daemonic_Incursion)==1) and (p_heresy[run]>=100){
+	            if (p_type[run]!="Dead") and (planet_feature_bool(p_feature[run], P_features.DaemonicIncursion)==1) and (p_heresy[run]>=100){
 	                var randoo=choose(1,2,3,4);
 	                if (randoo=4){
 	                    p_type[run]="Daemon";
 	                    p_fortified[run]=6;
 	                    p_traitors[run]=7;
 	                    p_owner[run]=10;
-	                    delete_features(p_feature[run],P_features.Daemonic_Incursion);
+	                    delete_features(p_feature[run],P_features.DaemonicIncursion);
 	                }
 	            }
 	        }

@@ -55,7 +55,7 @@ if (did){
     }
     with(_current_system){
         for(var f=1; f<=4; f++){
-			if (array_length( search_planet_features(p_feature[f], P_features.Monastery)) >0)and (array_length( search_planet_features(p_feature[f], P_features.Recruiting_World)) >0){
+			if (array_length( search_planet_features(p_feature[f], P_features.Monastery)) >0)and (array_length( search_planet_features(p_feature[f], P_features.RecruitingWorld)) >0){
                 if (p_owner[f]==eFACTION.Player) then p_owner[f]=eFACTION.Imperium;
             }
 			if (array_length( search_planet_features(p_feature[f], P_features.Monastery)) >0){
@@ -99,7 +99,7 @@ if (did){
     instance_activate_object(obj_star);
     instance_deactivate_object(_current_system);
     with (obj_star){
-        if (system_feature_bool(p_feature, P_features.Recruiting_World)){
+        if (system_feature_bool(p_feature, P_features.RecruitingWorld)){
             instance_deactivate_object(id);
             break;
         }

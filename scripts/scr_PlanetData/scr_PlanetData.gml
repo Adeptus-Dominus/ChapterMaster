@@ -476,7 +476,7 @@ function PlanetData(planet, system) constructor{
 
     static planet_training = function(local_screening_points) {
         var _training_happend = false;
-        if (has_feature(P_features.Recruiting_World)) {
+        if (has_feature(P_features.RecruitingWorld)) {
             if (obj_controller.gene_seed == 0 && obj_controller.recruiting > 0) {
                 obj_controller.recruiting = 0;
                 scr_alert("red", "recruiting", "The Chapter has run out of gene-seed!", 0, 0);
@@ -609,7 +609,7 @@ function PlanetData(planet, system) constructor{
 		if (current_owner== eFACTION.Tau){
 			return false;
 		}
-		if (has_feature(P_features.Gene_Stealer_Cult) && current_owner==eFACTION.Tyranids){
+		if (has_feature(P_features.GeneStealerCult) && current_owner==eFACTION.Tyranids){
 			return false;
 		}
 
@@ -641,8 +641,8 @@ function PlanetData(planet, system) constructor{
 	    if (planet_forces[eFACTION.Tyranids]>=4){
 	    	guard_attack="tyranids";
 	    }else if (planet_forces[eFACTION.Tyranids]<4 && planet_forces[eFACTION.Tyranids]>0){
-			 if (has_feature(P_features.Gene_Stealer_Cult)){
-	 			var _hidden_cult = get_features(P_features.Gene_Stealer_Cult)[0].hiding;
+			 if (has_feature(P_features.GeneStealerCult)){
+	 			var _hidden_cult = get_features(P_features.GeneStealerCult)[0].hiding;
 	 			if (!_hidden_cult){
 	 				guard_attack="tyranids";
 	 			}
@@ -656,7 +656,7 @@ function PlanetData(planet, system) constructor{
 	static pdf_attack_matrix = function(){
 		var _no_notable_traitors = planet_forces[eFACTION.Heretics]<=1;
 		var _pdf_attack = "";
-		if (planet_forces[eFACTION.Tyranids]>=4 && !has_feature(P_features.Gene_Stealer_Cult)){
+		if (planet_forces[eFACTION.Tyranids]>=4 && !has_feature(P_features.GeneStealerCult)){
 			_pdf_attack = "tyranids";
 		}
 
@@ -772,8 +772,8 @@ function PlanetData(planet, system) constructor{
         var bar_percent_length = (bar_width/100);
         var current_bar_percent = 0;
         var hidden_cult = false;
-        if (has_feature(P_features.Gene_Stealer_Cult)){
-            hidden_cult = get_features(P_features.Gene_Stealer_Cult)[0].hiding;
+        if (has_feature(P_features.GeneStealerCult)){
+            hidden_cult = get_features(P_features.GeneStealerCult)[0].hiding;
         }          
         
         for (var i=1;i<13;i++){
@@ -964,7 +964,7 @@ function PlanetData(planet, system) constructor{
             for (i =0; i <  feat_count ;i++){
                 cur_feature= features[i]
                 if (cur_feature.planet_display != 0){
-                    if (cur_feature.f_type == P_features.Gene_Stealer_Cult){
+                    if (cur_feature.f_type == P_features.GeneStealerCult){
                         if (!cur_feature.hiding){
                             array_push(planet_displays, [cur_feature.planet_display, cur_feature]);
                         }
@@ -986,7 +986,7 @@ function PlanetData(planet, system) constructor{
         if (upgrade_count>0){
             for (i =0; i <  upgrade_count ;i++){
                 var _upgrade = upgrades[i];
-                if (_upgrade.f_type == P_features.Secret_Base){
+                if (_upgrade.f_type == P_features.SecretBase){
                     if (_upgrade.forge>0){
                         var forge = _upgrade.forge_data;
                         var size_string= $"{size[forge.size]} Chapter Forge"

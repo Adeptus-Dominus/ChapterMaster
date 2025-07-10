@@ -122,7 +122,7 @@ function set_player_recruit_planet(recruit_planet){
 	        name=obj_ini.home_name;
 	    }
 	}
-	array_push(p_feature[recruit_planet], new PlanetFeature(P_features.Recruiting_World));//recruiting world
+	array_push(p_feature[recruit_planet], new PlanetFeature(P_features.RecruitingWorld));//recruiting world
 	if (p_type[recruit_planet]=="random") then p_type[recruit_planet]=choose("Death","Temperate","Desert","Ice","Hive", "Fuedal");
 	if (global.chapter_name!="Lamenters") then obj_controller.recruiting_worlds+=string(name)+" II|";
 }
@@ -149,7 +149,7 @@ function set_player_homeworld_star(chosen_star){
 	       	var _recruit_star = array_random_element(_possible_planets)
 			set_player_recruit_planet(_recruit_star);
 	    } else if (obj_ini.recruit_relative_loc==0){
-	    	array_push(p_feature[_home_star], new PlanetFeature(P_features.Recruiting_World));//recruiting world
+	    	array_push(p_feature[_home_star], new PlanetFeature(P_features.RecruitingWorld));//recruiting world
 	    	for (var i=1;i<=planets;i++){
 		       	if (i!=_home_star){
 		       		p_type[i] = array_random_element(_planet_types);

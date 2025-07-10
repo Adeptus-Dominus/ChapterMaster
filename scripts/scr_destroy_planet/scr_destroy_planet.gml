@@ -117,7 +117,7 @@ function scr_destroy_planet(destruction_method) {
         }
         scr_audience(eFACTION.Imperium, "declare_war", -50, "War", 9999, 2);
 
-    } else if (obj_controller.faction_status[eFACTION.Imperium] != "War" && planet_feature_bool(you.p_feature[baid], P_features.Daemonic_Incursion) == 0 && you.p_tyranids[baid] < 5) {
+    } else if (obj_controller.faction_status[eFACTION.Imperium] != "War" && planet_feature_bool(you.p_feature[baid], P_features.DaemonicIncursion) == 0 && you.p_tyranids[baid] < 5) {
         if (you.p_first[baid] == eFACTION.Imperium && you.p_type[baid] == "Hive") {
             obj_controller.loyalty -= 50;
             obj_controller.loyalty_hidden -= 50;

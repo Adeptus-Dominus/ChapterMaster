@@ -80,7 +80,7 @@ function setup_genecult_infestation(){
         if (_add_cult){
             if (p_population[_planet] > 0) {
                 _culted = true;
-                var new_cult = new PlanetFeature(P_features.Gene_Stealer_Cult);
+                var new_cult = new PlanetFeature(P_features.GeneStealerCult);
                 array_push(p_feature[_planet], new_cult);
                 new_cult.cult_age = irandom(300)
                 p_influence[_planet][eFACTION.Tyranids] = new_cult.cult_age/10 + irandom(30);
@@ -460,7 +460,7 @@ function setup_star_planet_defualts(){
                                     break;
                                 case 2:
                                     if (p_type[i]!="Hive") and (p_type[i]!="Lava") and (goo==0){
-                                        array_push(p_feature[i], new PlanetFeature(P_features.Necron_Tomb))
+                                        array_push(p_feature[i], new PlanetFeature(P_features.NecronTomb))
                                         goo=1;
                                     }
                                     break;
@@ -469,19 +469,19 @@ function setup_star_planet_defualts(){
                                     goo=1;
                                     break;
                                 case 4:
-                                    array_push(p_feature[i], new PlanetFeature( P_features.STC_Fragment))
+                                    array_push(p_feature[i], new PlanetFeature( P_features.STCFragment))
                                     goo=1;
                                     break;
                                 case 5:
                                     if (p_type[i]!="Ice") and (p_type[i]!="Dead") and (p_type[i]!="Feudal"){
                                         goo=1;
-                                        array_push(p_feature[i], new PlanetFeature( P_features.Ancient_Ruins))
+                                        array_push(p_feature[i], new PlanetFeature( P_features.AncientRuins))
                                     }
                                     break;
                                 //alternative spawn for necron tomb probably needs merging with other method
                                 case 6:
                                     if ((p_type[i]=="Ice") or (p_type[i]=="Dead")){
-                                        array_push(p_feature[i], new PlanetFeature( P_features.Necron_Tomb))
+                                        array_push(p_feature[i], new PlanetFeature( P_features.NecronTomb))
                                         goo=1;
                                     }
                                     break;
@@ -489,7 +489,7 @@ function setup_star_planet_defualts(){
                                 if ((p_type[i]=="Dead") or (p_type[i]=="Desert")){
                                     var randum=floor(random(100))+1;
                                     if (randum<=25){
-                                        array_push(p_feature[i], new PlanetFeature( P_features.Cave_Network))
+                                        array_push(p_feature[i], new PlanetFeature( P_features.CaveNetwork))
                                         goo=1;
                                     }
                                 }

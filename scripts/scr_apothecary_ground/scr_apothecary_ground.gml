@@ -165,7 +165,7 @@ function apothecary_simple(){
 		}
 		if (!marines_present){
 			if (obj_controller.gene_seed == 0) and (obj_controller.recruiting > 0) {
-				var _training_ground = system_feature_bool(self.p_feature, P_features.Recruiting_World);
+				var _training_ground = system_feature_bool(self.p_feature, P_features.RecruitingWorld);
 				if (_training_ground){
                     obj_controller.recruiting = 0;
                     scr_alert("red", "recruiting", "The Chapter has run out of gene-seed!", 0, 0);

@@ -8,8 +8,7 @@ try {
         audio_sound_gain(snd_royal,0.25*obj_controller.master_volume*obj_controller.music_volume,2000);
     }
     
-    // scr_dead_marines(1);
-    
+
     // Execute the cleaning scripts
     // Check for any more battles
     

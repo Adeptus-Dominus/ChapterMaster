@@ -109,7 +109,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 					//TODO somthing if the forge has a hanger
 				}		
 				break;
-			case P_features.Necron_Tomb:
+			case P_features.NecronTomb:
 
 				generic=true;
 				if (feature.awake==0 && feature.sealed==0){
@@ -128,17 +128,17 @@ function FeatureSelected(Feature, system, planet) constructor{
 				title = "Unknown Artifact";
 				body = "Unload Marines onto the planet to search for the artifact";
 				break;	
-			case P_features.Ancient_Ruins:
+			case P_features.AncientRuins:
 				generic=true;
 				title = "Ancinet Ruins";
 				body = "Unload Marines onto the planet to explore the ruins";
 				break;
-			case P_features.STC_Fragment:
+			case P_features.STCFragment:
 				generic=true;
 				title = "STC Fragment";
 				body = $"Unload a {obj_ini.role[100][16]} and whatever entourage you deem necessary to recover the STC Fragment";
 				break;
-			case P_features.Gene_Stealer_Cult:
+			case P_features.GeneStealerCult:
 				generic=true;
 				var cult_control = planet_data.population_influences[eFACTION.Tyranids];
 				title = $"Cult of {feature.name}";
@@ -186,12 +186,12 @@ function FeatureSelected(Feature, system, planet) constructor{
 					body = "Without a force of orks to hold it together the fortress is slowly pulled apart from within by the inhabitants, It's capabilities will constantly decrease until soon there will be nothing left";
 				}
 				break
-            case P_features.Recruiting_World:
+            case P_features.RecruitingWorld:
                 generic = true;
                 var _planet = planet_data.planet;
                 var _star = obj_star_select.target;
                 var p_data = new PlanetData(_planet, _star);
-                var _recruit_world = p_data.get_features(P_features.Recruiting_World)[0];
+                var _recruit_world = p_data.get_features(P_features.RecruitingWorld)[0];
                 var _spare_apoth_points = p_data.get_local_apothecary_points();
                 title = "Marine Recruitment";
                 body = $"There are {_spare_apoth_points} apothecary rescource points available for recruit screening,\n\n";

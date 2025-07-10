@@ -189,14 +189,14 @@ function scr_cheatcode(argument0) {
 				case "ruinspopulate":
 					with (obj_star) {
 						for (var i = 1; i <= planets; i++) {
-							array_push(p_feature[i], new PlanetFeature(P_features.Ancient_Ruins));
+							array_push(p_feature[i], new PlanetFeature(P_features.AncientRuins));
 						}
 					}
 					break;		
 				case "stcpopulate":
 					with (obj_star) {
 						for (var i = 1; i <= planets; i++) {
-							array_push(p_feature[i], new NewPlanetFeature(P_features.STC_Fragment));
+							array_push(p_feature[i], new NewPlanetFeature(P_features.STCFragment));
 						}
 					}
 					break;	
@@ -352,7 +352,7 @@ function scr_cheatcode(argument0) {
 					break;
         		case "nidinvasion":
 		            with (obj_star){
-		                if (system_feature_bool(p_feature,P_features.Gene_Stealer_Cult)){
+		                if (system_feature_bool(p_feature,P_features.GeneStealerCult)){
 		                    summon_new_hive_fleet();
 		                }
 		            }

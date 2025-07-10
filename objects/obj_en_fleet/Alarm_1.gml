@@ -661,7 +661,7 @@ if (action=="" && _is_orbiting){
                     t+=1;
                     tem1=tem1_base;// Repeat to check each of the planets
                     if (cur_star.p_type[t]="Dead") and (array_length(cur_star.p_upgrades[t])>0){
-						var base_search = search_planet_features(cur_star.p_upgrades[t], P_features.Secret_Base); 
+						var base_search = search_planet_features(cur_star.p_upgrades[t], P_features.SecretBase); 
                         if (array_length(base_search) >0){
 							var player_base = cur_star.p_upgrades[t][base_search[0]]
                             if (player_base.vox>0) then tem1+=2;

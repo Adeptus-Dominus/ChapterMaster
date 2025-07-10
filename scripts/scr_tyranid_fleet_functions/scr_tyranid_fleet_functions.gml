@@ -38,7 +38,7 @@ function tyranid_fleet_planet_action(){
     	is_dead = is_dead_star();
         if (!is_dead) {  		
             for (var i=1;i<=planets;i++){
-            	if (planet_feature_bool(p_feature[i], P_features.Gene_Stealer_Cult)){
+            	if (planet_feature_bool(p_feature[i], P_features.GeneStealerCult)){
             		if (p_influence[i][eFACTION.Tyranids]>50){
             			var alert = $"The Genestealer Cult on {planet_numeral_name(i)} is exceedingly thorough, there is almost no resistance as the swarm descends and what little resistance remains is quickly quelled by infiltrators, most of the populations willingly offer themselves to their new gods jumping into acid vats to form biomass for their newly arrived gods or otherwise allowing themselves to be devoured by the teaming ripper swarms";
             			scr_popup("Tyranids",alert,"","");
@@ -49,7 +49,7 @@ function tyranid_fleet_planet_action(){
             			scr_popup("Tyranids",scr_alert,"","");
             			p_pdf[i]*=(p_influence[i][eFACTION.Tyranids]/100);
             		}
-            		delete_features(p_feature[i],  P_features.Gene_Stealer_Cult);
+            		delete_features(p_feature[i],  P_features.GeneStealerCult);
             	}
             }
         }   	
@@ -158,7 +158,7 @@ function star_biomass_value(star, fleet=false){
 					_bio_val++;
 				}
 			}
-			var _cults = return_planet_features(p_features[i], P_features.Gene_Stealer_Cult)
+			var _cults = return_planet_features(p_features[i], P_features.GeneStealerCult)
 			if (array_length(_cults)){
 				var _cult = _cults[0];
 				_bio_val++;

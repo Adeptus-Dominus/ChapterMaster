@@ -1020,7 +1020,7 @@ try {
 					var ppp = 0;
 					remove_planet_problem(planet, "necron", mission_star);
 					seal_tomb_world(mission_star.p_feature[planet]);
-					// mission_star.p_feature[planet][search_planet_features(mission_star.p_feature[planet], P_features.Necron_Tomb)[0]].sealed = 1;
+					// mission_star.p_feature[planet][search_planet_features(mission_star.p_feature[planet], P_features.NecronTomb)[0]].sealed = 1;
 					with (obj_temp8) {
 						instance_destroy();
 					}
