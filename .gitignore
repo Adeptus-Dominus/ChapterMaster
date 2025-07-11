@@ -12,3 +12,5 @@ ChapterMaster.resource_order
 
 tmp/
 stitch.config.json
+
+objects/obj_garbage_collector/
