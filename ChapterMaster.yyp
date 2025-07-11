@@ -575,7 +575,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.1400.0.815",
+    "IDEVersion":"2024.1400.0.841",
   },
   "name":"ChapterMaster",
   "resources":[
@@ -1686,6 +1686,7 @@
     {"id":{"name":"spr_weapon_flamer","path":"sprites/spr_weapon_flamer/spr_weapon_flamer.yy",},},
     {"id":{"name":"spr_weapon_frcaxe","path":"sprites/spr_weapon_frcaxe/spr_weapon_frcaxe.yy",},},
     {"id":{"name":"spr_weapon_frcstaff","path":"sprites/spr_weapon_frcstaff/spr_weapon_frcstaff.yy",},},
+    {"id":{"name":"spr_weapon_frcsword","path":"sprites/spr_weapon_frcsword/spr_weapon_frcsword.yy",},},
     {"id":{"name":"spr_weapon_grav_cannon","path":"sprites/spr_weapon_grav_cannon/spr_weapon_grav_cannon.yy",},},
     {"id":{"name":"spr_weapon_grav_gun","path":"sprites/spr_weapon_grav_gun/spr_weapon_grav_gun.yy",},},
     {"id":{"name":"spr_weapon_grav_pistol","path":"sprites/spr_weapon_grav_pistol/spr_weapon_grav_pistol.yy",},},
