@@ -163,16 +163,21 @@ function draw_player_ground_combat_options(){
     draw_set_halign(fa_center);draw_set_font(fnt_40k_14b);
     
     
-    draw_set_color(c_gray);draw_rectangle(xxx+132,yyy+354,xxx+259,yyy+389,0);
-    draw_set_color(0);draw_text_transformed(xxx+195,yyy+362,string_hash_to_newline("Offensive"),1.1,1.1,0);
-    if (scr_hit(xxx+132,yyy+354,xxx+259,yyy+389)=true){
-        draw_set_alpha(0.2);draw_rectangle(xxx+132,yyy+354,xxx+259,yyy+389,0);draw_set_alpha(1);
+    draw_set_color(c_gray);
+	draw_rectangle(xxx+132,yyy+354,xxx+259,yyy+389,0);
+    draw_set_color(0);
+	draw_text_transformed(xxx+195,yyy+362,"Offensive",1.1,1.1,0);
+    if (scr_hit(xxx+132,yyy+354,xxx+259,yyy+389)){
+        draw_set_alpha(0.2);draw_rectangle(xxx+132,yyy+354,xxx+259,yyy+389,0);
+		draw_set_alpha(1);
     }
     
     draw_set_color(c_gray);draw_rectangle(xxx+272,yyy+354,xxx+399,yyy+389,0);
-    draw_set_color(0);draw_text_transformed(xxx+335,yyy+362,string_hash_to_newline("Defensive"),1.1,1.1,0);
-    if (scr_hit(xxx+272,yyy+354,xxx+399,yyy+389)=true){
-        draw_set_alpha(0.2);draw_rectangle(xxx+272,yyy+354,xxx+399,yyy+389,0);draw_set_alpha(1);
+    draw_set_color(0);
+	draw_text_transformed(xxx+335,yyy+362,"Defensive",1.1,1.1,0);
+    if (scr_hit(xxx+272,yyy+354,xxx+399,yyy+389)){
+        draw_set_alpha(0.2);
+		draw_rectangle(xxx+272,yyy+354,xxx+399,yyy+389,0);draw_set_alpha(1);
     } 
     
 }

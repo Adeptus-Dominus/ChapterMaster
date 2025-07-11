@@ -178,10 +178,8 @@ function set_fleet_movement(fastest_route = true, new_action="move"){
 	        
 	        var _eta = calculate_fleet_eta(x,y,action_x,action_y,action_spd,_target_is_sys,is_orbiting(),warp_able);
 	        action_eta = _eta;
-	        if (action_eta<=0) or (owner  != eFACTION.Inquisition){
-	            action_eta=eta;
-	            
-	        } else if (owner  = eFACTION.Inquisition) and (action_eta<2) and (string_count("_her",trade_goods)=0){
+	        
+	        if (owner  = eFACTION.Inquisition) and (action_eta<2) and (string_count("_her",trade_goods)=0){
 	        	action_eta=2;
 	        }
 	        
