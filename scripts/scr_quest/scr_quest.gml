@@ -68,11 +68,18 @@ function scr_quest(quest_satus=0, quest_name, quest_fac, quest_end) {
 	            disposition[4]-=10;
 	            obj_controller.qsfx=1;
 	        }else {
+	        	var _result_text = "";
 	            delete_artifact(wanted_arti);
 	            i=wanted_arti;
-	            if (obj_controller.demanding=0) then obj_controller.disposition[4]+=1;
-	            if (obj_controller.demanding=1) then obj_controller.disposition[4]+=choose(0,0,1);
-	            scr_popup("Inquisition Mission Completed","The Inquisition has asked for the return of the Artifact, and your Chapter was able to hand it over without complications.  The mission has been accomplished.","inquisition","");
+	            if (obj_controller.demanding=0){
+	            	obj_controller.disposition[4]+=1;
+	            	obj_controller.inspection_passes++;
+	            	_result_text = "(Disposition : 1\nInspection Passes : +1(yieldable in diplommacy))";
+	            }
+	            if (obj_controller.demanding=1){
+	            	obj_controller.disposition[4]+=choose(0,0,1);
+	            }
+	            scr_popup("Inquisition Mission Completed","The Inquisition has asked for the return of the Artifact, and your Chapter was able to hand it over without complications.  The mission has been accomplished." + _result_text,"inquisition","");
 	            scr_event_log("","Inquisition Mission Completed: The entrusted Artifact has been returned to the Inquisition.");
 	        }
 	    }

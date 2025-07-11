@@ -13,6 +13,7 @@ function base_inquis_fleet (){
     }
 }
 
+
 function hunt_player_serfs(){
     explode_script(obj_controller.temp[1008],"|");
     var tb=string(explode[0]);
