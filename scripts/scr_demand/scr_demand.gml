@@ -17,8 +17,6 @@ function clear_inspections(){
 function inquis_use_inspection_pass(){
    	if (inspection_passes>0){
         inspection_passes-=1;
-        _worked=true;
-        no_penalty=true;
         last_world_inspection=turn+25;
         last_fleet_inspection=turn+25;
         //obj_controller.liscensing=5;
