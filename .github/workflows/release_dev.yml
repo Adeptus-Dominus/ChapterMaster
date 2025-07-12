@@ -222,3 +222,11 @@ jobs:
             ./build_output/${{ needs.gamemaker_build.outputs.built_file }}/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: GitHub Releases to Discord
+        uses: SethCohen/github-releases-to-discord@v1.19.0
+        with:
+          webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          username: "GitHub Releases"
+          content: "@Development Builds"
+          reduce_headings: true
