@@ -203,28 +203,36 @@ function init_ork_waagh(overide = false){
             }
         }
 
+        var _waaagh_star_found = false;
         if (array_length(ork_waagh_activity)){
 
             var _waaagh_star = array_random_element(ork_waagh_activity);
+            _waaagh_star_found = true;
 
         } else if (array_length(_any_ork_star) > 0) {
             var _waaagh_star = array_random_element(_any_ork_star);
-        }
-        var _pdata = new PlanetData(_waaagh_star[1], _waaagh_star[0]);
-        var _boss = _pdata.add_feature(P_features.OrkWarboss);
-        if (overide){
-            _boss.player_hidden = false;
-            scr_event_log("red","boss on {_pdata.name()}", _pdata.system.name);
+            _waaagh_star_found = true;
         }
 
-        if (_pdata.planet_forces[eFACTION.Ork] < 4) {
-            _pdata.add_forces(eFACTION.Ork, 2);
-        }
+        if (_waaagh_star_found){
+            var _pdata = new PlanetData(_waaagh_star[1], _waaagh_star[0]);
 
+            var _boss = _pdata.add_feature(P_features.OrkWarboss);
+            if (overide){
+                _boss.player_hidden = false;
+                scr_event_log("red","boss on {_pdata.name()}", _pdata.system.name);
+            }
+
+            if (_pdata.planet_forces[eFACTION.Ork] < 4) {
+                _pdata.add_forces(eFACTION.Ork, 2);
+            }
+        } else {
+            out_of_system_warboss(true);
+        }
     }
 }
 
-function out_of_system_warboss(){
+function out_of_system_warboss(overide = false){
 
     with (obj_controller){
     // More Testing
@@ -232,7 +240,7 @@ function out_of_system_warboss(){
 
     var did_so=false;
 
-    if (did_so=false)&& (faction_defeated[7]=1 || known[eFACTION.Ork]== 0 ) {
+    if (did_so=false) && (faction_defeated[7]=1 || known[eFACTION.Ork] == 0 || overide) {
         known[eFACTION.Ork] = 0;
         var _warboss = new NewPlanetFeature(P_features.OrkWarboss);
         if (faction_defeated[7]=1){
@@ -318,10 +326,10 @@ function out_of_system_warboss(){
         instance_activate_object(obj_en_fleet);
         
         var _ork_leader = obj_controller.faction_leader[eFACTION.Ork];
-        var tix=$"Warboss {_ork_leader} leads a WAAAGH! into Sector "+string(obj_ini.sector_name)+".";
+        var tix=$"Warboss {_ork_leader} leads a WAAAGH! into Sector {obj_ini.sector_name}.";
         scr_alert("red","lol",string(tix),starf.x,starf.y);
         scr_event_log("red",tix);
-        scr_popup("WAAAAGH!",$"A WAAAGH! led by the Warboss {_ork_leader} has arrived in "+string(obj_ini.sector_name)+".  With him is a massive Ork fleet.  Numbering in the dozens of battleships, they carry with them countless greenskins.  The forefront of the WAAAGH! is destined for the "+string(starf.name)+" system.","waaagh","");
+        scr_popup("WAAAAGH!",$"A WAAAGH! led by the Warboss {_ork_leader} has arrived in {obj_ini.sector_name}.  With him is a massive Ork fleet.  Numbering in the dozens of battleships, they carry with them countless greenskins.  The forefront of the WAAAGH! is destined for the {starf.name} system.","waaagh","");
     }
     }
 }
