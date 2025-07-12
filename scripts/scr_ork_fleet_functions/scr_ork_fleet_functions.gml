@@ -220,7 +220,7 @@ function init_ork_waagh(overide = false){
             var _boss = _pdata.add_feature(P_features.OrkWarboss);
             if (overide){
                 _boss.player_hidden = false;
-                scr_event_log("red","boss on {_pdata.name()}", _pdata.system.name);
+                scr_event_log("red",$"boss on {_pdata.name()}", _pdata.system.name);
             }
 
             if (_pdata.planet_forces[eFACTION.Ork] < 4) {
