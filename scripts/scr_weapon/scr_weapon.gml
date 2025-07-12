@@ -2817,6 +2817,17 @@ global.gear = {
 			},
 			"tags": ["jump"],
 		},
+		"Ancient Jump Pack": {
+      "abbreviation": "AncientJmpPck",
+      "special_properties": ["Hammer of Wrath"],
+      "description": "A back-mounted device containing jets powerful enough to lift an Astartes in Power Armor over great distances. Utilizing these, Assault Marines bring devastation to the foe. This is ancient and now very rare serpha V pattern, used mostly during Emperors's Great Crusade.",
+      "damage_resistance_mod": {
+        "standard": 30,
+        "master_crafted": 35,
+        "artifact": 40
+      },
+      "tags": ["jump"],
+    },
 		"Heavy Weapons Pack": {
 			"abbreviation": "HvyWpPck",
 			"description": "A heavy ammunition backpack commonly used by devastators in conjunction with a heavy support weapon.",

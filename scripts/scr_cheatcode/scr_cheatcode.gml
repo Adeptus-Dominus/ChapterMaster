@@ -356,7 +356,20 @@ function scr_cheatcode(argument0) {
 				case "orkinvasion":
 					out_of_system_warboss();
 					break;
-
+				case "forgemastermeet":
+					var _forge_master = scr_role_count("Forge Master", "", "units");
+					if (array_length(_forge_master)>0){
+						show_debug_message("meet forge master");
+						obj_controller.menu_lock = false;
+						instance_destroy(obj_popup_dialogue);
+						scr_toggle_diplomacy();
+						obj_controller.diplomacy = -1;
+						obj_controller.character_diplomacy = _forge_master[0];
+						diplo_txt="Greetings chapter master";
+					} else {
+						show_debug_message("no forge master");
+					}
+					break;
 			}
 		}
 	} catch(_exception) {

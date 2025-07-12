@@ -654,6 +654,12 @@ if (shop = "equipment") {
         item_cost[i] = 0;
         forge_cost[i] = 0;
         i += 1;
+		 nobuy[i] = 1;
+		item[i] = "Ancient Jump Pack";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+        i += 1;
 
     var mc = 0;
     repeat(i) {

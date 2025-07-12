@@ -732,6 +732,18 @@ global.modular_drawing_items = [
         },        
 
     },
+	 {
+        sprite : spr_jump_pack_serpha_complex,
+        body_types :[0],
+        position : "backpack_augment",
+        equipped : {
+            "mobi" : "Ancient Jump Pack"
+        },
+        overides : {
+            "chest_fastening" : spr_backpack_fastening,
+        },        
+
+    },
     {
         sprite : spr_gear_hood2,
         body_types :[0],
@@ -1130,6 +1142,7 @@ global.modular_drawing_items = [
         ]
     },
     {
+
         position : "tabbard",
         sprite : spr_cata_tabbard_mail,
         body_types:[2],
@@ -1172,6 +1185,15 @@ global.modular_drawing_items = [
         sprite : spr_cata_shoulder_hanging_leather_right,
         body_types:[2],
         armours : ["Cataphractii"],
+		subcomponents : [
+            [spr_blank, spr_cata_shoulder_hanging_leather_right_tips],
+        ],
+		overides: {
+			"left_pauldron_embeleshments" :
+			spr_cata_shoulder_hanging_leather_left, 
+			"tabbard": 
+			spr_cata_tabbard_leather 
+		},
         subcomponents : [
             [spr_blank, spr_cata_shoulder_hanging_leather_right_tips],
         ],
@@ -1186,12 +1208,21 @@ global.modular_drawing_items = [
         ],
     },
     {
+		
         position : "right_pauldron_embeleshments",
         sprite : spr_cata_shoulder_hanging_mail_right,
         body_types:[2],
         armours : ["Cataphractii"],
+		overides: {
+			"left_pauldron_embeleshments" :
+			spr_cata_shoulder_hanging_mail_left, 
+			"tabbard": 
+			spr_cata_tabbard_mail
     },
+	},
+	
     {
+		
         position : "left_pauldron_embeleshments",
         sprite : spr_cata_shoulder_hanging_mail_left,
         body_types:[2],
@@ -1524,14 +1555,22 @@ global.weapon_visual_data = {
 "Volkite Culverin": {
   base: {
     weapon_data: {
-      display_type: "ranged_twohand",
-      new_weapon_draw: true
+      display_type: "terminator_ranged",
     },
-    body_types: [0,1]
+    body_types: [2]
   },
-  variants: [{
-    sprite: spr_weapon_volkite_culverin,
-  }]
+  variants: [
+    {
+      sprite: spr_weapon_volkite_culverin_term
+    },
+    {
+       weapon_data: {
+          display_type: "ranged_twohand",
+      },
+      sprite: spr_weapon_volkite_culverin,
+      body_types: [0, 1]
+    }
+  ]
 },
 //Bolter Pack
 "Phobos Bolter": {
@@ -2447,7 +2486,7 @@ base: {
   },
   variants: [
     {
-      sprite: spr_weapon_powswo
+      sprite: spr_weapon_frcsword
     }
   ]
 },

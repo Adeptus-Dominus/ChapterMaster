@@ -1,7 +1,9 @@
 function disposition_description_chart(dispo) {
     if (global.cheat_debug) {
         return $"{dispo}"
-    } else if (dispo < -100) {
+    } else if (dispo < -4000) {
+    	return "Ruled";
+    }else if (dispo < -100) {
         return "DEBUG: Numbers lower than -100 detected, this shouldn't happen!";
     } else if (dispo <= 0) {
         return "Extremely Hostile";
@@ -154,11 +156,15 @@ function GarrisonForce(planet_operatives, turn_end=false, type="garrison") const
 		} else {report_string+="The garrison is comprised of a single _squad,"}
 
 		report_string+= $" with a total man count of {total_garrison}.#"
-        if (system.p_owner[planet] != eFACTION.Player) {
+        if (system.p_owner[planet] != eFACTION.Player && system.dispo[planet] >=-100) {
             var disposition = disposition_description_chart(system.dispo[planet]);
             report_string += $"Our Relationship with the Rulers of the planet is {disposition}#";
-        } else if (system.dispo[planet] < -1000 && system.p_owner[planet] == eFACTION.Player) {
-            report_string += $"Rule of the planet is going well";
+        } else if (system.dispo[planet] < -1000) {
+        	if (system.p_owner[planet] == eFACTION.Player){
+            	report_string += $"Rule of the planet is going well";
+        	} else {
+        		report_string += $"Your rule of the the planet is being undermined by hostile forces";
+        	}
         } else {
             report_string += $"DEBUG: planet owner check failed";
             //report_string+=$"There is no clear chain of command on the planet we suspect the existence of Xenos or Heretic Forces"; // TODO LOW GARRISON_XENO // Readd when this actually gets implented

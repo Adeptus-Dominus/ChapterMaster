@@ -659,7 +659,6 @@ function scr_ui_manage() {
 
 
         draw_set_color(c_white);
-        draw_sprite_and_unit_equip_data();
         // Back
 
         draw_set_halign(fa_left);
@@ -791,7 +790,7 @@ function scr_ui_manage() {
             man_count = 0;
 
             var _command_slots_data = get_command_slots_data();
-
+            draw_set_font(fnt_40k_14);
             if (managing > 0 && managing <= 10) {
                 for (var r = 0; r < array_length(_command_slots_data); r++) {
                     var role = _command_slots_data[r];
@@ -810,7 +809,7 @@ function scr_ui_manage() {
             }
 
             for (var i = 0; i < max(0, repetitions); i++) {
-
+                draw_set_font(fnt_40k_14);
                 if (sel >= array_length(display_unit)) {
                     break;
                 }

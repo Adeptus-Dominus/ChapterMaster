@@ -6,6 +6,16 @@ function scr_dialogue(diplo_keyphrase) {
 	// diplo_keyphrase = keyphrase
 
 	clear_diplo_choices();
+	if (diplomacy == -1){
+		if (is_struct(character_diplomacy)){
+			if (_unit.role == "Forge Master"){
+				if (diplo_keyphrase == "intro"){
+					diplo_text = "Chapter Master. What may "
+					iplomacy_option({option_text:"The Imperium and Inquisition's ignorance and hypocrisy will be the death of my Chapter.", goto: _goto});
+				}
+			}
+		}
+	}
 	var event_log="";
 	var rando=0,tempd="",sorc=false;
 	var rela,trade_msg;
@@ -468,6 +478,11 @@ function scr_dialogue(diplo_keyphrase) {
 
 		};
 	}
+	if (diplo_keyphrase=="Demand Method"){
+		add_diplomacy_option({option_text:"Threaten", tooltip : "The plausibility will of your threat"});
+		add_diplomacy_option({option_text:"Bribe"});
+		add_diplomacy_option({option_text:"Plausible Excuse"});
+	}
 	// ** Chaos **
 	if (diplomacy=10){
 	    if (diplo_keyphrase=="civilwar_begin"){
@@ -736,7 +751,10 @@ function scr_dialogue(diplo_keyphrase) {
 	        }
 	        add_diplomacy_option({option_text:"Demand Requisition"});
 			add_diplomacy_option({option_text:"Demand Military Assistance"});
-			add_diplomacy_option({option_text:"Cancel"});
+			add_diplomacy_option({
+				option_text:"Cancel",
+				goto:"disagree"
+			});
 	    }
 	    if (diplo_keyphrase=="propose_alliance") and (obj_controller.faction_gender[10]==1){
 	    	var _found = false;
@@ -975,7 +993,10 @@ function scr_dialogue(diplo_keyphrase) {
 	        if (rela=="hostile") then diplo_text="Consider your next words carefully.";
 	        add_diplomacy_option({option_text:"Demand Requisition"});
 			add_diplomacy_option({option_text:"Demand Military Assistance"});
-			add_diplomacy_option({option_text:"Cancel"});
+			add_diplomacy_option({
+				option_text:"Cancel",
+				goto:"disagree"
+			});
 	    }
 	    if (string_count("assassination_angryish",diplo_keyphrase)>0){
 	        var ta="",tb="",tc="";
@@ -1178,7 +1199,10 @@ function scr_dialogue(diplo_keyphrase) {
 	            if (randoo!=1) then diplo_text="Certain queries may have to be answered by action.";
 	        }
 	        add_diplomacy_option({option_text:"Demand Requisition"});
-			add_diplomacy_option({option_text:"Cancel"});
+			add_diplomacy_option({
+				option_text:"Cancel",
+				goto:"disagree"
+			});
 	    }
 	}
 	// ** Inquisition **
@@ -1423,14 +1447,28 @@ function scr_dialogue(diplo_keyphrase) {
 	    }
 	    if (diplo_keyphrase=="trading_demand"){
 	        if (rela=="friendly") then diplo_text="Remember whom you speak to, Chapter Master.";
-	        if (rela=="neutral") then diplo_text="I, Inquisitor Lord "+string(faction_leader[eFACTION.Inquisition])+", on behalf of the Inquisition, am awaiting your words.";
+	        if (rela=="neutral") then diplo_text=$"I, Inquisitor Lord {faction_leader[eFACTION.Inquisition]}, on behalf of the Inquisition, am awaiting your words.";
 	        if (rela=="hostile") then diplo_text="Speak your next words very carefully, Astartes, for they may be your last.";
-	        add_diplomacy_option({option_text:"Demand Requisition"});
-			add_diplomacy_option({option_text:"Skip Inspection"});
-			add_diplomacy_option({option_text:"Cancel"});
+	        add_diplomacy_option({
+	        	option_text:"Demand Requisition"
+	        });
+
+
+			add_diplomacy_option({
+				option_text:"Skip Inspection",
+				method : inquis_demand_inspection_pass,
+			});
+
 	        if (inspection_passes>0){
-				add_diplomacy_option({option_text:"Skip Inspection ({inspection_passes} pass)"});
+				add_diplomacy_option({
+					option_text:"Skip Inspection (Use pass)",
+					method : inquis_use_inspection_pass
+				});
 			}
+			add_diplomacy_option({
+				option_text:"Cancel",
+				goto:"disagree"
+			});
 	    }
 	    if (diplo_keyphrase=="penitent_end"){
 	        rando=choose(1,2);
@@ -1751,7 +1789,10 @@ function scr_dialogue(diplo_keyphrase) {
 	        if (rela=="neutral") then diplo_text="What is the meaning of this?";
 	        if (rela=="hostile") then diplo_text="“The Heretic and Blasphemer can offer no excuse for their crimes. Those who are pardoned merely live to further shroud Humanity from the Light of the Emperor with the Darkness of their souls.”";
 	        add_diplomacy_option({option_text:"Demand Requisition"});
-			add_diplomacy_option({option_text:"Cancel"});
+			add_diplomacy_option({
+				option_text:"Cancel",
+				goto:"disagree"
+			});
 	    }
 	    if (diplo_keyphrase=="penitent_end"){
 	        rando=choose(1,2);
@@ -2004,7 +2045,10 @@ function scr_dialogue(diplo_keyphrase) {
 	        }
 	        add_diplomacy_option({option_text:"Demand Requisition"});
 			add_diplomacy_option({option_text:"Demand Useful Information"});
-			add_diplomacy_option({option_text:"Cancel"});
+			add_diplomacy_option({
+				option_text:"Cancel",
+				goto:"disagree"
+			});
 	    }
 	    if (diplo_keyphrase=="mission1"){
 	        diplo_text="The good that might come from simple acts of benevolence are oft underestimated.  A token goodwill gesture can go far, ";
@@ -2208,9 +2252,7 @@ function scr_dialogue(diplo_keyphrase) {
 									}
 									if (onceh!=0){
 										array_push(p_feature[onceh], new NewPlanetFeature(P_features.Webway));
-										obj_controller.temp[90]=name;
-										good=1;
-										obj_controller.temp[90]+=scr_roman(onceh)
+										obj_controller.temp[90] = planet_numeral_name(onceh);
 									}
 								}
 							}
@@ -2237,19 +2279,17 @@ function scr_dialogue(diplo_keyphrase) {
 							var that,good=0;
 							that=instance_nearest(random(room_width),random(room_height),obj_star);
 							for(var j=0; j<5; j++){
-								if (good==0) then with(that){
-									var i=0,onceh=0;
-									for(var k=0; k<10; k++){
-										i=floor(random(planets))+1;
-										if (array_length(p_feature[i])==0) and (onceh==0) then onceh=i;}
-									if (onceh!=0){
-										array_push(p_feature[onceh], new NewPlanetFeature(P_features.Webway));
-										obj_controller.temp[90]=name;
-										good=1;
-										if (onceh==1) then obj_controller.temp[90]+=" I";
-										if (onceh==2) then obj_controller.temp[90]+=" II";
-										if (onceh==3) then obj_controller.temp[90]+=" III";
-										if (onceh==4) then obj_controller.temp[90]+=" IV";
+								if (good==0){ 
+									with(that){
+										var onceh=0;
+										for(var k=0; k<10; k++){
+											var i=floor(random(planets))+1;
+											if (array_length(p_feature[i])==0) and (onceh==0) then onceh=i;
+										}
+										if (onceh!=0){
+											array_push(p_feature[onceh], new NewPlanetFeature(P_features.Webway));
+											obj_controller.temp[90] = planet_numeral_name(onceh);
+										}
 									}
 								}
 							}
@@ -2491,7 +2531,10 @@ function scr_dialogue(diplo_keyphrase) {
 	        diplo_text="Yeah?  Wut?";
 	        add_diplomacy_option({option_text:"Demand Requisition"});
 			add_diplomacy_option({option_text:"Demand Military Assistance"});
-			add_diplomacy_option({option_text:"Cancel"});
+			add_diplomacy_option({
+				option_text:"Cancel",
+				goto:"disagree"
+			});
 	    }
 	}
 	// ** Tau **

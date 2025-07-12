@@ -224,7 +224,7 @@ function scr_draw_armentarium(){
         yyy1 = max_techs - temp[37];
         if (yyy1 < 0) then yyy1 = yyy1 * -1;
         yyy = (yyy1 * 2);
-        if (disposition[3] mod 2 == 0) then yyy += 2;
+        if (disposition[3] % 2 == 0) then yyy += 2;
         else {
             yyy += 1;
         }

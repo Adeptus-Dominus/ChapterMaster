@@ -83,15 +83,15 @@ function basic_diplomacy_screen(){
             
                 var sw=1;
                 for (var i=1;i<5;i++){
-                	if (string_width(string_hash_to_newline(_opt))*sw>530) then sw-=0.05;
+                	if (string_width(string_hash_to_newline(_opt.option_text))*sw>530) then sw-=0.05;
                 }
-                if (string_width(string_hash_to_newline(_opt))*sw<=530) and (sw=1){
-                    draw_text_transformed(xx+620,yy+696,string_hash_to_newline(_opt),sw,sw,0);
-					draw_text_transformed(xx+620,yy+696+2,string_hash_to_newline(_opt),sw,sw,0);
+                if (string_width(string_hash_to_newline(_opt.option_text))*sw<=530) and (sw=1){
+                    draw_text_transformed(xx+620,yy+696,string_hash_to_newline(_opt.option_text),sw,sw,0);
+					draw_text_transformed(xx+620,yy+696+2,string_hash_to_newline(_opt.option_text),sw,sw,0);
                 }
 
-                if (string_width(string_hash_to_newline(_opt))*sw>530){
-                    draw_text_ext_transformed(xx+620,yy+696-4,string_hash_to_newline(_opt),16,530/sw,sw,sw,0);
+                if (string_width(string_hash_to_newline(_opt.option_text))*sw>530){
+                    draw_text_ext_transformed(xx+620,yy+696-4,string_hash_to_newline(_opt.option_text),16,530/sw,sw,sw,0);
                 }
 				if scr_hit(left,top,right,base){
                     draw_set_alpha(0.2);
@@ -127,18 +127,111 @@ function basic_diplomacy_screen(){
     }
 }
 
-function evaluate_chosen_diplomacy_option(){
-    var _opt = diplo_option[diplo_pressed];
-    if (_opt.goto != ""){
-        scr_dialogue(_opt.goto);
-        exit;
+function draw_character_diplomacy(){
+    var _diplo_unit = character_diplomacy;
+    if (_diplo_unit.allegiance == global.chapter_name){
+
+
+        /*if (advi="flee") {
+            _diplomacy_faction_name="Master of the Fleet "+string(obj_ini.lord_admiral_name);
+        }*/
+        var _splash = "";
+        var _specific_splash = 0;
+        _diplomacy_faction_name = _diplo_unit.name_role();
+        _diplo_unit.IsSpecialist(SPECIALISTS_HEADS){
+
+            var _customs = obj_ini.custom_advisors;
+            if (_diplo_unit.IsSpecialist(SPECIALISTS_APOTHECARIES)) {
+                _specific_splash = struct_exists(_customs,"apothecary") ? _customs.apothecary : 2;
+            }
+            else if (_diplo_unit.IsSpecialist(SPECIALISTS_CHAPLAINS)) {
+                _specific_splash = struct_exists(_customs,"chaplain") ? _customs.chaplain : 3;
+            }
+            else if (_diplo_unit.IsSpecialist(SPECIALISTS_LIBRARIANS)) {
+                _specific_splash = struct_exists(_customs,"librarian") ? _customs.librarian : 4;
+            }
+            else if (_diplo_unit.IsSpecialist(SPECIALISTS_TECHS)) {
+                _specific_splash = struct_exists(_customs,"forge_master") ? _customs.forge : 5;
+            }
+            scr_image("advisor/splash", _specific_splash, 16, 43, 310, 828);
+        }
+       /* else if (advi="") {
+            _diplomacy_faction_name="First Sergeant "+string(recruiter_name); 
+        }*/
+
     }
+
+    var _main_slate = diplo_buttons.main_slate; 
+    var _meet = diplo_buttons.meet_slate;
+    var _cm_slate = diplo_buttons.cm_slate;
+    with (_meet){
+        XX = 0;
+        YY = 520;
+        width = 520;
+    }
+
+    _meet.inside_method = function(){
+        var _diplo_unit = obj_controller.character_diplomacy;
+        if (!struct_exists(obj_controller, "diplo_image")){
+            obj_controller.diplo_image = _diplo_unit.draw_unit_image();
+        }
+        obj_controller.diplo_image.draw(210, 520-271,true, 1,1,0,CM_GREEN_COLOR, 1);
+        _diplo_unit.stat_display(false,{
+            x1: 10,
+            y1: 520,
+            w: 569,
+            h: 303,
+        }, true);  
+        draw_sprite(spr_holo_pad, 0, 210, 520);      
+    }
+
+    _meet.draw_with_dimensions();
+
+    _main_slate.XX = _meet.XX+_meet.width;
+    _main_slate.YY = 175;
+    _main_slate.draw_with_dimensions();
+    draw_diplomacy_diplo_text();
+    draw_set_halign(fa_center);
+    draw_text_transformed(622,104,$"{_diplo_unit.name_role()}",0.6,0.6,0);
+    draw_set_halign(fa_left);
+
+    with (_cm_slate){
+        XX = _main_slate.XX+_main_slate.width;
+        YY = 520;
+    }
+    _cm_slate.inside_method = function(){
+        var _master = fetch_unit([0,0]);
+
+        if (!struct_exists(obj_controller, "master_image")){
+            obj_controller.master_image = _master.draw_unit_image();
+        }
+        obj_controller.master_image.draw(1108+200, 520-271,true, 1,1,0,CM_GREEN_COLOR, 1);
+        _master.stat_display(false,{
+            x1: 1108,
+            y1: 520,
+            w: 569,
+            h: 303,
+        } , true);
+        draw_sprite(spr_holo_pad, 0, 1108+200, 520);
+    }
+    _cm_slate.draw_with_dimensions();
+
+
+
+    basic_diplomacy_screen();
+}
+
+function evaluate_chosen_diplomacy_option(diplo_pressed){
+    var _opt = diplo_option[diplo_pressed];
 
     var _pressed_option = _opt.key;
     if (struct_exists(_opt, "method")){
         if (is_callable(_opt.method)){
             script_execute(_opt.method);
         }
+    }
+    if (_opt.goto != ""){
+        scr_dialogue(_opt.goto);
     }
 }
 

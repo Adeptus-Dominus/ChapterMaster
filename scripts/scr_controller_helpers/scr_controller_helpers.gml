@@ -173,6 +173,7 @@ function scr_toggle_manage() {
     scr_change_menu(MENU.Manage,function() {
         with(obj_controller) {
             if (menu != MENU.Manage) {
+                hide_banner = 1;
                 basic_manage_settings();
                 scr_management(1);
             }
@@ -400,6 +401,7 @@ function scr_toggle_diplomacy() {
                 audience = 0;
                 diplomacy = 0;
                 hide_banner = 1;
+                character_diplomacy = false;
                 show_debug_message("set_diplo")
             }
         }

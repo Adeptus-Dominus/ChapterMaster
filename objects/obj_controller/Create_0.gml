@@ -566,7 +566,7 @@ identifiable=0;
 repair_ships=0;
 forge_points = 0;
 master_craft_chance = 0;
-tech_status = "Cult Mechanicus";
+tech_status = "cult_mechanicus";
 forge_string="";
 player_forge_data = {
     player_forges : 0,
