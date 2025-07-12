@@ -77,7 +77,7 @@ function mechanicus_missions_end_turn(planet){
                 }
                 else if (reward==2){
                     if (obj_ini.fleet_type=ePlayerBase.home_world) then scr_add_artifact("random","",0,obj_ini.home_name,2);
-                    if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("random","",0,obj_ini.ship[0],501);
+                    if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("random","",0,obj_ini.ship_data[0].name,501);
                     text="The Mechanicus Research team on planet "+string(name)+" "+scr_roman(planet)+" have completed their work without any major setbacks.  Pleased with your astartes' work, they have granted your Chapter an artifact, to be used as you see fit.";
                     scr_event_log("","Mechanicus Mission Completed: The Mechanicus research team on "+string(name)+" "+scr_roman(planet)+" have completed their work.");
                     scr_event_log("","Artifact gifted from Mechanicus.");
@@ -118,11 +118,14 @@ function mechanicus_missions_end_turn(planet){
                         _unit.ship_location=-1;
                         techs_taken+=1;
                     }
-                    if (_unit.ship_location>-1){
-                        ship_planet=obj_ini.ship_location[_unit.ship_location];
+                    if (unit.ship_location>-1){
+                    	var _ship = obj_ini.ship_data[unit.ship_location];
+                        ship_planet=_ship.location;
                         if (ship_planet=name){
-                            obj_ini.ship_carrying[_unit.ship_location]-=scr_unit_size(obj_ini.armour[com][ide],obj_ini.role[com][ide],true);
-                            obj_ini.loc[com][ide]="Mechanicus Vessel";_unit.planet_location=0;_unit.ship_location=0;
+                            _ship.carrying-=scr_unit_size(obj_ini.armour[com][ide],obj_ini.role[com][ide],true);
+                            obj_ini.loc[com][ide]="Mechanicus Vessel";
+                            unit.planet_location=0;
+                            unit.ship_location=0;
                             techs_taken+=1;
                         }
                     }
@@ -195,8 +198,8 @@ function spawn_mechanicus_mission(){
 	
 		
 	with(obj_star){
-		if(scr_star_has_planet_with_feature(id,P_features.Necron_Tomb)) and (awake_necron_Star(id)!= 0){
-			var planet = scr_get_planet_with_feature(id, P_features.Necron_Tomb);
+		if(scr_star_has_planet_with_feature(id,P_features.NecronTomb)) and (awake_necron_Star(id)!= 0){
+			var planet = scr_get_planet_with_feature(id, P_features.NecronTomb);
 			if(scr_is_planet_owned_by_allies(self, planet)){
 				array_push(mechanicus_missions, "mech_tomb");
 				break;
@@ -253,8 +256,8 @@ function spawn_mechanicus_mission(){
 		stars = scr_get_stars();
 		var valid_stars = array_filter_ext(stars, 
 		function(star,index) {
-			if(scr_star_has_planet_with_feature(star,P_features.Necron_Tomb)) and (awake_necron_Star(star)!= 0){
-				var planet = scr_get_planet_with_feature(star, P_features.Necron_Tomb);
+			if(scr_star_has_planet_with_feature(star,P_features.NecronTomb)) and (awake_necron_Star(star)!= 0){
+				var planet = scr_get_planet_with_feature(star, P_features.NecronTomb);
 				if(scr_is_planet_owned_by_allies(star, planet)) {
 					return true;
 				}

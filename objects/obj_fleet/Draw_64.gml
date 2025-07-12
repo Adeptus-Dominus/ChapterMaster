@@ -206,3 +206,5 @@ if (start == 7) {
     draw_set_valign(fa_bottom);
     draw_text(_result_center_x, _bbox_y2 - _padding_y, _result_box_footer);
 }
+
+

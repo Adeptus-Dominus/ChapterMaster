@@ -669,10 +669,10 @@ function scr_enemy_ai_e() {
                         if (upgrade_type == P_features.Arsenal) {
                             display_type = "Arsenal";
                             obj_controller.und_armouries++;
-                        }else if (upgrade_type == P_features.Secret_Base) {
+                        }else if (upgrade_type == P_features.SecretBase) {
                             display_type = "Lair";
                             obj_controller.und_lairs++;
-                        }else if (upgrade_type == P_features.Gene_Vault) {
+                        }else if (upgrade_type == P_features.GeneVault) {
                             display_type = "Gene Vault";
                             obj_controller.und_gene_vaults++;
                         }
@@ -680,7 +680,7 @@ function scr_enemy_ai_e() {
                         scr_alert("green", "owner", string(tx), x, y);
                         scr_event_log("", string(tx));
                     }
-                    if (upgrade.built<=obj_controller.turn && upgrade_type == P_features.Secret_Base){
+                    if (upgrade.built<=obj_controller.turn && upgrade_type == P_features.SecretBase){
                         if (upgrade.forge > 0){
                             obj_controller.player_forge_data.player_forges+=sqr(upgrade.forge_data.size);
                             if (upgrade.forge_data.vehicle_hanger){

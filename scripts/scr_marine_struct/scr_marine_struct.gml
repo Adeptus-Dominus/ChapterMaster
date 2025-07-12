@@ -437,6 +437,7 @@ global.base_stats = {
 };
 
 function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}) constructor {
+    uid = scr_uuid_generate();
     constitution = 0;
     strength = 0;
     luck = 0;
@@ -455,6 +456,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         planet_location = obj_ini.home_planet;
     }
     ship_location = -1;
+    static ship = function(){
+        return fetch_ship(ship_location);
+    }
     last_ship = {
         uid: "",
         name: ""
@@ -466,6 +470,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     corruption = 0;
     religion_sub_cult = "none";
     base_group = "none";
+    captain = "";
     role_history = [];
     enum eROLE_TAG {
         Techmarine = 0,
@@ -1924,8 +1929,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         } else {
             location_type = location_types.ship; //marine is on ship
             location_id = ship_location > -1 ? ship_location : 0; //ship array position
-            if (location_id < array_length(obj_ini.ship_location)) {
-                location_name = obj_ini.ship_location[location_id]; //location of ship
+            if (location_id < array_length(obj_ini.ship_data)) {
+                var _ship = ship();
+                location_name = _ship.location; //location of ship
             } else {
                 location_name = location_name == obj_ini.loc[company][marine_number];
             }
@@ -1959,7 +1965,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         get_unit_size(); // make sure marines size given it's current equipment is correct
         var current_location = marine_location();
         var system = current_location[2];
-        var target_ship_location = obj_ini.ship_location[ship];
+        var _ship = obj_ini.ship_data[ship];
+        var target_ship_location = _ship.location;
         set_last_ship();
         if (assignment() != "none") {
             return "on assignment";
@@ -1974,10 +1981,10 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 system = obj_ini.home_name;
             }
             //check if ship is in the same location as marine and has enough space;
-            if ((target_ship_location == system) && ((obj_ini.ship_carrying[ship] + size) <= obj_ini.ship_capacity[ship])) {
+            if (target_ship_location == system && _ship.has_space(size)) {
                 planet_location = 0; //mark marine as no longer on planet
                 ship_location = ship; //id of ship marine is now loaded on
-                obj_ini.ship_carrying[ship] += size; //update ship capacity
+                _ship.carrying += size; //update ship capacity
 
                 if (star == "none") {
                     star = star_by_name(system);
@@ -1991,18 +1998,21 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         } else if (current_location[0] == location_types.ship) {
             //with this addition marines can now be moved between ships freely as long as they are in the same system
             var off_loading_ship = current_location[1];
-            if ((obj_ini.ship_location[ship] == obj_ini.ship_location[off_loading_ship]) && ((obj_ini.ship_carrying[ship] + size) <= obj_ini.ship_capacity[ship])) {
-                obj_ini.ship_carrying[off_loading_ship] -= size; // remove from previous ship capacity
+            var _ship = obj_ini.ship_data[ship];
+            var _offload_ship = obj_ini.ship_data[off_loading_ship];
+            if (_ship.location == _offload_ship.location && _ship.has_space(size)) {
+                oboff_loading_ship.carrying -= size; // remove from previous ship capacity
                 ship_location = ship; // change marine location to new ship
-                obj_ini.ship_carrying[ship] += size; //add marine capacity to new ship
+                _ship.carrying += size; //add marine capacity to new ship
             }
         }
     };
 
     static set_last_ship = function() {
         if (ship_location > -1) {
-            last_ship.uid = obj_ini.ship_uid[ship_location];
-            last_ship.name = obj_ini.ship[ship_location];
+            var _ship = fetch_ship(ship_location);
+            last_ship.uid = _ship.uid;
+            last_ship.name = _ship.name;
         } else {
             last_ship = {
                 uid: "",
@@ -2016,12 +2026,13 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         set_last_ship();
         if (current_location[0] == location_types.ship) {
             if (!array_contains(["Warp", "Terra", "Mechanicus Vessel", "Lost"], current_location[2]) && current_location[2] == system.name) {
-                obj_ini.loc[company][marine_number] = obj_ini.ship_location[current_location[1]];
+                var _ship = obj_ini.ship_data[current_location[1]];
+                obj_ini.loc[company][marine_number] = _ship.location;
                 planet_location = planet_number;
                 ship_location = -1;
                 get_unit_size();
                 system.p_player[planet_number] += size;
-                obj_ini.ship_carrying[current_location[1]] -= size;
+                _ship.carrying -= size;
             }
         } else {
             ship_location = -1;
@@ -2079,7 +2090,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             }
         } else if (ship == -1 && planet == 0) {
             if (ship_location > -1) {
-                if (obj_ini.ship_location[ship_location] == location) {
+                var _ship = obj_ini.ship_data[ship_location];
+                if (_ship.location == location) {
                     is_at_loc = true;
                 }
             } else if (obj_ini.loc[company][marine_number] == location) {
@@ -2323,24 +2335,29 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 }
 
-function jsonify_marine_struct(company, marine, stringify=true) {
-    var copy_marine_struct = obj_ini.TTRPG[company, marine]; //grab marine structure
-    var new_marine = {};
+
+function jsonify_struct(copy_struct, stringify){
+    var _new_struct = {};
     var copy_part;
-    var names = variable_struct_get_names(copy_marine_struct); // get all keys within structure
+    var names = variable_struct_get_names(copy_struct); // get all keys within structure
     for (var name = 0; name < array_length(names); name++) {
         //loop through keys to find which ones are methods as they can't be saved as a json string
-        if (!is_method(copy_marine_struct[$ names[name]])) {
-            copy_part = variable_clone(copy_marine_struct[$ names[name]]);
-            variable_struct_set(new_marine, names[name], copy_part); //if key value is not a method add to copy structure
+        if (!is_method(copy_struct[$ names[name]])) {
+            copy_part = variable_clone(copy_struct[$ names[name]]);
+            variable_struct_set(_new_struct, names[name], copy_part); //if key value is not a method add to copy structure
             delete copy_part;
         }
     }
     if(stringify){
-        return json_stringify(new_marine, true);
+        return json_stringify(_new_struct, true);
     } else {
-        return new_marine;
+        return _new_struct;
     }
+}
+
+function jsonify_marine_struct(company, marine, stringify=true) {
+    var copy_marine_struct = obj_ini.TTRPG[company, marine]; //grab marine structure
+    return jsonify_struct(copy_marine_struct, stringify);
 }
 
 /// @param {Array<Real>} unit where unit[0] is company and unit[1] is the position
@@ -2348,3 +2365,60 @@ function jsonify_marine_struct(company, marine, stringify=true) {
 function fetch_unit(unit) {
     return obj_ini.TTRPG[unit[0]][unit[1]];
 }
+
+function fetch_unit_uid(uuid){
+    for (var i=0;i<obj_ini.companies;i++){
+        var _comp_length = array_length(obj_ini.TTRPG[i]);
+        for (var s=0;s<_comp_length;s++){
+            var _unit = fetch_unit([i,s]);
+            if (_unit.uid == uuid){
+                return _unit;
+            }
+        }
+    }
+
+    return "none";
+}
+
+function determine_highest_ranking(unit_list){
+    var unit;
+    var member_length = array_length(unit_list);
+    var hierarchy = role_hierarchy();
+    var leader_hier_pos=array_length(hierarchy);
+    var leader="none", unit;
+    var highest_exp = 0;    
+    for (var i=0;i<member_length;i++){
+        unit = unit_list[i];
+        if (unit.name() == ""){
+            array_delete(members, i, 1);
+            member_length--;
+            i--;
+            continue;
+        } else {
+            if (leader=="none"){
+                leader = unit;
+                for (var r=0;r<array_length(hierarchy);r++){
+                    if (hierarchy[r]==unit.role()){
+                        leader_hier_pos=r;
+                        break;
+                    }
+                }
+            }else if (hierarchy[leader_hier_pos]==unit.role()){
+                if (leader.experience<unit.experience){
+                    leader=[unit.company, unit.marine_number];
+                }
+            }else{
+                for (var r=0;r<leader_hier_pos;r++){
+                    if (hierarchy[r]==unit.role()){
+                        leader_hier_pos=r;
+                        leader=unit;
+                        break;
+                    }
+                }
+            }
+        }           
+    }
+    return leader;
+}
+
+

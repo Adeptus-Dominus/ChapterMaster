@@ -4,6 +4,7 @@ function scr_kill_ship(index){
 		with(obj_ini){
 			var _units_on_ship = [];
 			var _unit;
+			var _ship = ship_data[index];
 			for (var co=0;co<=companies;co++){
 				for (var i=0;i<array_length(name[co]);i++){
 					_unit = fetch_unit([co,i]);
@@ -29,11 +30,12 @@ function scr_kill_ship(index){
 					}
 				}
 			}
-			var in_warp = ship_location[index] == "Warp";
+
+			var in_warp = _ship.location == "Warp";
 			var _available_ships = [];
 			var _ship_fleet = find_ships_fleet(index);
 			if (!in_warp){
-				var _nearest_star = star_by_name(ship_location[index]);
+				var _nearest_star = star_by_name(_ship.location);
 			}
 			if (_ship_fleet!="none"){
 				delete_ship_from_fleet(index,_ship_fleet);
@@ -41,13 +43,16 @@ function scr_kill_ship(index){
 			}
 			_units_on_ship = array_shuffle(_units_on_ship);
 			for (var i=0;i<array_length(_available_ships);i++){
-				if (_available_ships[i]==index) then continue;
+				if (_available_ships[i]==index){
+					continue;
+				}
 				var _cur_ship = _available_ships[i];
+				var _ship = ship_data[_cur_ship];
 				var f=0;
 				var _total_units = array_length(_units_on_ship);
-				while (ship_carrying[_cur_ship]<ship_capacity[_cur_ship] && f<_total_units && array_length(_units_on_ship)>0){
+				while (_ship.has_space() && f<_total_units && array_length(_units_on_ship)>0){
 					f++;
-					if (_units_on_ship[0].get_unit_size()+ship_carrying[_cur_ship]<=ship_capacity[_cur_ship]){
+					if (_ship.has_space(_units_on_ship[0].get_unit_size())){
 						_units_on_ship[0].load_marine(_cur_ship);
 						array_delete(_units_on_ship, 0, 1);
 					}
@@ -71,33 +76,7 @@ function scr_kill_ship(index){
 					}					
 				}								
 			}						
-			array_delete(ship,index,1);
-			array_delete(ship_uid,index,1);
-			array_delete(ship_owner,index,1);
-			array_delete(ship_class,index,1);
-			array_delete(ship_size,index,1);
-			array_delete(ship_leadership,index,1);
-			array_delete(ship_hp,index,1);
-			array_delete(ship_maxhp,index,1);
-
-			array_delete(ship_location,index,1);
-			array_delete(ship_shields,index,1);
-			array_delete(ship_conditions,index,1);
-			array_delete(ship_speed,index,1);
-			array_delete(ship_turning,index,1);
-
-			array_delete(ship_front_armour,index,1);
-			array_delete(ship_other_armour,index,1);
-			array_delete(ship_weapons,index,1);
-
-			array_delete(ship_wep ,index,1);
-			array_delete(ship_wep_condition,index,1);
-			array_delete(ship_wep_facing,index,1);
-
-			array_delete(ship_capacity,index,1);
-			array_delete(ship_carrying,index,1);
-			array_delete(ship_contents,index,1);
-			array_delete(ship_turrets,index,1);
+			array_delete(ship_data,index,1);
 
 			if (!in_warp){
 				if (_nearest_star!="none"){
@@ -122,10 +101,12 @@ function scr_ini_ship_cleanup() {
 	// If the ship is dead then make it fucking dead man
 	with(obj_ini){
 		if (array_length(ship)){
-			for (var i=array_length(ship)-1;i>=0;i--){
-			    if (ship[i]!="") and (ship_hp[i]<=0){
-			        scr_kill_ship(i);
-			    }
+			var _ships = array_length(ship)
+			for (var i=_ships-1;i>=0;i--){
+				var _ship = fetch_ship(i);
+				if (_ship.hp<0){
+					scr_kill_ship(i);
+				}
 			}
 		}
 		sort_all_companies();

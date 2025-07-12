@@ -15,14 +15,15 @@ function UnitQuickFindPanel() constructor{
 	view_area = "fleets";
 	static update_garrison_log = function(){
 		try{
-		for (var i = 0;i<array_length(obj_ini.ship_carrying); i++){
-			obj_ini.ship_carrying[i]=0
+		for (var i = 0;i<array_length(obj_ini.ship_data); i++){
+			var _ship = obj_ini.ship_data[i];
+			_ship.carrying=0;
 		};
 		var unit, unit_location, group;
 		delete garrison_log;
 	    garrison_log = {};
 	    obj_controller.specialist_point_handler.calculate_research_points(false);
-	    var _ship_count = array_length(obj_ini.ship_carrying);
+	    var _ship_count = array_length(obj_ini.ship_data);
 	    // show_debug_message(obj_controller.specialist_point_handler.point_breakdown);
 	    for (var co=0;co<=obj_ini.companies;co++){
 	    	for (var u=0;u<array_length(obj_ini.TTRPG[co]);u++){
@@ -51,7 +52,8 @@ function UnitQuickFindPanel() constructor{
 	    			}
 	    		} else if (unit_location[0]==location_types.ship){
 	    			if (unit.ship_location<_ship_count && unit.ship_location>-1){
-	    				obj_ini.ship_carrying[unit.ship_location]+=unit.get_unit_size();
+	    				var _ship = obj_ini.ship_data[unit.ship_location];
+	    				_ship.carrying+=unit.get_unit_size();
 	    			}
 	    		}
 	    	}
@@ -75,7 +77,8 @@ function UnitQuickFindPanel() constructor{
 		    				garrison_log[$ unit_location].vehicles++;
 		    			}
 		    		} else if (obj_ini.veh_lid[co][u]>-1){
-		    			obj_ini.ship_carrying[obj_ini.veh_lid[co][u]]+=scr_unit_size("",obj_ini.veh_role[co][u],true);
+		    			var _ship = obj_ini.ship_data[obj_ini.veh_lid[co][u]];
+		    			_ship.carrying+=scr_unit_size("",obj_ini.veh_role[co][u],true);
 		    		}
 		    	}
 		    }catch(_exception){
@@ -445,9 +448,11 @@ function HoverBox() constructor{
 
 function exit_adhoc_manage(){
 	scr_toggle_manage();
-    if (instance_exists(selection_data.system)){
-   		selection_data.system.alarm[3]=2;
-    }		
+	if (struct_exists(selection_data,"system")){
+	    if (instance_exists(selection_data.system)){
+	   		selection_data.system.alarm[3]=2;
+	    }		
+	}
 };
  function update_garrison_manage(){
 	location_viewer.update_garrison_log();
@@ -724,8 +729,9 @@ function unload_selection(){
                 // selecting location is the ship right now; get it's orbit location
                 boba.loading_name=selecting_location;
                 boba.depth=self.depth-50;
-                // sel_uid=obj_ini.ship_uid[selecting_ship];
-                scr_company_load(obj_ini.ship_location[selecting_ship]);
+
+                var _ship = obj_ini.ship_data[selecting_ship];
+                scr_company_load(_ship.location);
             }
         }
     }	
@@ -892,7 +898,7 @@ function planet_selection_action(){
 					        }
 					        
 					        // STC Grab
-					        if (planet_feature_bool(target.p_feature[sel_plan], P_features.STC_Fragment) == 1) and (recon=0){
+					        if (planet_feature_bool(target.p_feature[sel_plan], P_features.STCFragment) == 1) and (recon=0){
 					            var tch,mch;frag=0;tch=0;mch=0;
 					            for (var frag=0;frag<array_length(obj_controller.display_unit);frag++){
 					                if (obj_controller.man[frag]!="") and (obj_controller.man_sel[frag]==1){

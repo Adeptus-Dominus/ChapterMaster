@@ -4,7 +4,7 @@ if (num > 0) {
     stah = instance_nearest(x, y, obj_star);
     obj_controller.menu = 0;
 
-    if (planet_feature_bool(stah.p_feature[num], P_features.STC_Fragment) == 1) { // STC is present
+    if (planet_feature_bool(stah.p_feature[num], P_features.STCFragment) == 1) { // STC is present
         var pop, own;
         own = stah.p_owner[num];
         pop = instance_create(0, 0, obj_popup);

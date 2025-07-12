@@ -2,7 +2,7 @@
 image_angle=direction;
 if (cooldown>0) then cooldown-=1;
 
-var dist;
+var target_distance;
 if (instance_exists(target)){
     if (target.owner = eFACTION.Tyranids) or (target.owner = eFACTION.Necrons){damage=true;plasma_bomb=true;steal=false;} 
     if (target.owner != eFACTION.Tyranids) and (target.owner != eFACTION.Necrons){
@@ -11,7 +11,7 @@ if (instance_exists(target)){
         if (obj_controller.command_set[22]=1) then steal=true; // important for boarding and commandeering ships later down the line?
     }
     
-    dist=point_distance(x,y,target.x,target.y);
+    target_distance=point_distance(x,y,target.x,target.y);
     
     if (action="goto"){speed=4;
         direction=turn_towards_point(direction,x,y,target.x,target.y,8);
