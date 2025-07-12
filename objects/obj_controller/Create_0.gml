@@ -1216,6 +1216,7 @@ serialize = function(){
         loyalty,
         spec_train_data,
         forge_queue: specialist_point_handler.forge_queue,
+        chapter_master_data : chapter_master
 
     }
     var excluded_from_save = ["temp", "serialize", "deserialize", "build_chaos_gods", "company_data","menu_buttons",
