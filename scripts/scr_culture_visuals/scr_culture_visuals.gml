@@ -2486,7 +2486,7 @@ base: {
   },
   variants: [
     {
-      sprite: spr_weapon_powswo
+      sprite: spr_weapon_frcsword
     }
   ]
 },

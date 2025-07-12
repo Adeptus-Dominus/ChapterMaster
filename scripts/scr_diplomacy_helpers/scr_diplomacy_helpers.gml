@@ -83,15 +83,15 @@ function basic_diplomacy_screen(){
             
                 var sw=1;
                 for (var i=1;i<5;i++){
-                	if (string_width(string_hash_to_newline(_opt))*sw>530) then sw-=0.05;
+                	if (string_width(string_hash_to_newline(_opt.option_text))*sw>530) then sw-=0.05;
                 }
-                if (string_width(string_hash_to_newline(_opt))*sw<=530) and (sw=1){
-                    draw_text_transformed(xx+620,yy+696,string_hash_to_newline(_opt),sw,sw,0);
-					draw_text_transformed(xx+620,yy+696+2,string_hash_to_newline(_opt),sw,sw,0);
+                if (string_width(string_hash_to_newline(_opt.option_text))*sw<=530) and (sw=1){
+                    draw_text_transformed(xx+620,yy+696,string_hash_to_newline(_opt.option_text),sw,sw,0);
+					draw_text_transformed(xx+620,yy+696+2,string_hash_to_newline(_opt.option_text),sw,sw,0);
                 }
 
-                if (string_width(string_hash_to_newline(_opt))*sw>530){
-                    draw_text_ext_transformed(xx+620,yy+696-4,string_hash_to_newline(_opt),16,530/sw,sw,sw,0);
+                if (string_width(string_hash_to_newline(_opt.option_text))*sw>530){
+                    draw_text_ext_transformed(xx+620,yy+696-4,string_hash_to_newline(_opt.option_text),16,530/sw,sw,sw,0);
                 }
 				if scr_hit(left,top,right,base){
                     draw_set_alpha(0.2);
@@ -223,16 +223,15 @@ function draw_character_diplomacy(){
 
 function evaluate_chosen_diplomacy_option(diplo_pressed){
     var _opt = diplo_option[diplo_pressed];
-    if (_opt.goto != ""){
-        scr_dialogue(_opt.goto);
-        exit;
-    }
 
     var _pressed_option = _opt.key;
     if (struct_exists(_opt, "method")){
         if (is_callable(_opt.method)){
             script_execute(_opt.method);
         }
+    }
+    if (_opt.goto != ""){
+        scr_dialogue(_opt.goto);
     }
 }
 

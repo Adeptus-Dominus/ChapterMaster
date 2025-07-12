@@ -478,6 +478,11 @@ function scr_dialogue(diplo_keyphrase) {
 
 		};
 	}
+	if (diplo_keyphrase=="Demand Method"){
+		add_diplomacy_option({option_text:"Threaten", tooltip : "The plausibility will of your threat"});
+		add_diplomacy_option({option_text:"Bribe"});
+		add_diplomacy_option({option_text:"Plausible Excuse"});
+	}
 	// ** Chaos **
 	if (diplomacy=10){
 	    if (diplo_keyphrase=="civilwar_begin"){
@@ -746,7 +751,10 @@ function scr_dialogue(diplo_keyphrase) {
 	        }
 	        add_diplomacy_option({option_text:"Demand Requisition"});
 			add_diplomacy_option({option_text:"Demand Military Assistance"});
-			add_diplomacy_option({option_text:"Cancel"});
+			add_diplomacy_option({
+				option_text:"Cancel",
+				goto:"disagree"
+			});
 	    }
 	    if (diplo_keyphrase=="propose_alliance") and (obj_controller.faction_gender[10]==1){
 	    	var _found = false;
@@ -985,7 +993,10 @@ function scr_dialogue(diplo_keyphrase) {
 	        if (rela=="hostile") then diplo_text="Consider your next words carefully.";
 	        add_diplomacy_option({option_text:"Demand Requisition"});
 			add_diplomacy_option({option_text:"Demand Military Assistance"});
-			add_diplomacy_option({option_text:"Cancel"});
+			add_diplomacy_option({
+				option_text:"Cancel",
+				goto:"disagree"
+			});
 	    }
 	    if (string_count("assassination_angryish",diplo_keyphrase)>0){
 	        var ta="",tb="",tc="";
@@ -1188,7 +1199,10 @@ function scr_dialogue(diplo_keyphrase) {
 	            if (randoo!=1) then diplo_text="Certain queries may have to be answered by action.";
 	        }
 	        add_diplomacy_option({option_text:"Demand Requisition"});
-			add_diplomacy_option({option_text:"Cancel"});
+			add_diplomacy_option({
+				option_text:"Cancel",
+				goto:"disagree"
+			});
 	    }
 	}
 	// ** Inquisition **
@@ -1435,12 +1449,26 @@ function scr_dialogue(diplo_keyphrase) {
 	        if (rela=="friendly") then diplo_text="Remember whom you speak to, Chapter Master.";
 	        if (rela=="neutral") then diplo_text=$"I, Inquisitor Lord {faction_leader[eFACTION.Inquisition]}, on behalf of the Inquisition, am awaiting your words.";
 	        if (rela=="hostile") then diplo_text="Speak your next words very carefully, Astartes, for they may be your last.";
-	        add_diplomacy_option({option_text:"Demand Requisition"});
-			add_diplomacy_option({option_text:"Skip Inspection"});
-			add_diplomacy_option({option_text:"Cancel"});
+	        add_diplomacy_option({
+	        	option_text:"Demand Requisition"
+	        });
+
+
+			add_diplomacy_option({
+				option_text:"Skip Inspection",
+				method : inquis_demand_inspection_pass,
+			});
+
 	        if (inspection_passes>0){
-				add_diplomacy_option({option_text:"Skip Inspection ({inspection_passes} pass)"});
+				add_diplomacy_option({
+					option_text:"Skip Inspection (Use pass)",
+					method : inquis_use_inspection_pass
+				});
 			}
+			add_diplomacy_option({
+				option_text:"Cancel",
+				goto:"disagree"
+			});
 	    }
 	    if (diplo_keyphrase=="penitent_end"){
 	        rando=choose(1,2);
@@ -1761,7 +1789,10 @@ function scr_dialogue(diplo_keyphrase) {
 	        if (rela=="neutral") then diplo_text="What is the meaning of this?";
 	        if (rela=="hostile") then diplo_text="“The Heretic and Blasphemer can offer no excuse for their crimes. Those who are pardoned merely live to further shroud Humanity from the Light of the Emperor with the Darkness of their souls.”";
 	        add_diplomacy_option({option_text:"Demand Requisition"});
-			add_diplomacy_option({option_text:"Cancel"});
+			add_diplomacy_option({
+				option_text:"Cancel",
+				goto:"disagree"
+			});
 	    }
 	    if (diplo_keyphrase=="penitent_end"){
 	        rando=choose(1,2);
@@ -2014,7 +2045,10 @@ function scr_dialogue(diplo_keyphrase) {
 	        }
 	        add_diplomacy_option({option_text:"Demand Requisition"});
 			add_diplomacy_option({option_text:"Demand Useful Information"});
-			add_diplomacy_option({option_text:"Cancel"});
+			add_diplomacy_option({
+				option_text:"Cancel",
+				goto:"disagree"
+			});
 	    }
 	    if (diplo_keyphrase=="mission1"){
 	        diplo_text="The good that might come from simple acts of benevolence are oft underestimated.  A token goodwill gesture can go far, ";
@@ -2497,7 +2531,10 @@ function scr_dialogue(diplo_keyphrase) {
 	        diplo_text="Yeah?  Wut?";
 	        add_diplomacy_option({option_text:"Demand Requisition"});
 			add_diplomacy_option({option_text:"Demand Military Assistance"});
-			add_diplomacy_option({option_text:"Cancel"});
+			add_diplomacy_option({
+				option_text:"Cancel",
+				goto:"disagree"
+			});
 	    }
 	}
 	// ** Tau **
