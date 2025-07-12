@@ -61,7 +61,12 @@ function scr_is_planet_owned_by_allies(star, planet_id) {
 	if( planet_id < 1 ){//1 because weird indexing starting at 1 in this game
 		return false;
 	}
-	return array_contains(global.SystemHelps.default_allies, star.p_owner[planet_id]);
+	if (array_contains(global.SystemHelps.default_allies, star.p_owner[planet_id])){
+		return true;
+	}else if(star.dispo[b] < -4000) {
+		return true;
+	}
+	return false;
 }
 
 function scr_is_star_owned_by_allies(star) {
