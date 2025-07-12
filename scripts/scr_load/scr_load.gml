@@ -93,7 +93,9 @@ function scr_load(save_part, save_id) {
 			chapter_master = new scr_chapter_master();
 			if (struct_exists(save_data, "chapter_master_data")){
 				var _data = variable_struct_get(save_data, "chapter_master_data");	
-				for (var i=0)	
+				with (chapter_master){
+					move_data_to_current_scope(_data, true);
+				}
 			}
 	
 			specialist_point_handler.calculate_research_points();
