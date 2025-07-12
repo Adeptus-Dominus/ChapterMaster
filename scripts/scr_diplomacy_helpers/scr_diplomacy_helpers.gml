@@ -24,6 +24,10 @@ function relationship_hostility_matrix(faction){
     return _rela;
 }
 
+function alter_disposition(faction, alter_value){
+    obj_controller.disposition[faction] = clamp(obj_controller.disposition[faction]+alter_value, -100, 100);
+}
+
 function clear_diplo_choices(){
     obj_controller.diplo_option = [];
 }

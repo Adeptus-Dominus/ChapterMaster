@@ -855,6 +855,8 @@ if (instance_exists(obj_ini)){
 }
 if (is_test_map==true) then requisition=50000;
 
+chapter_master = new scr_chapter_master();
+
 trade_attempt = false;
 // ** Sets income **
 income=0;

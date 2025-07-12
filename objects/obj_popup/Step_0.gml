@@ -1366,12 +1366,9 @@ try {
 					instance_destroy();
 				}
 			}
-			if (obj_ini.fleet_type != ePlayerBase.home_world) {
-				var last_artifact = scr_add_artifact("random", "", 4, obj_ini.ship[0], 501);
-			}
-			if (obj_ini.fleet_type == ePlayerBase.home_world) {
-				var last_artifact = scr_add_artifact("random", "", 4, obj_ini.home_name, 2);
-			}
+
+			var last_artifact = scr_add_artifact("random", "", 4);
+
 			option1 = "";
 			option2 = "";
 			option3 = "";
@@ -1543,12 +1540,8 @@ try {
 					action = "";
 				}
 			}
-			if (obj_ini.fleet_type != ePlayerBase.home_world) {
-				var last_artifact = scr_add_artifact("random", "", 4, obj_ini.ship[0], 501);
-			}
-			if (obj_ini.fleet_type == ePlayerBase.home_world) {
-				var last_artifact = scr_add_artifact("random", "", 4, obj_ini.home_name, 2);
-			}
+			var last_artifact = scr_add_artifact("random", "", 4);
+			
 			option1 = "";
 			option2 = "";
 			option3 = "";

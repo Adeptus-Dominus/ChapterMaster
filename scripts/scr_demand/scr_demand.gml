@@ -40,7 +40,7 @@ function inquis_demand_inspection_pass(){
             diplo_text = "Very well Chapter Master I Your service to the imperium is well known i have no doubt that you would not ask such of me without good reasoon. I shall forgoe my normal duties just this onece. \n do not becomne complacent Chapter Master i may not always be so generous";
         } else {
         	var _diff = resistance - rull;
-        	diplomacy[eFACTION.Inquisition] -= 1;
+        	alter_disposition(eFACTION.Inquisition, -1);
         	diplo_text = "Consider your request denied. If there is heresy or any wrong doing i shal see that is rooted out and made plain for all to see";;
 
         }
@@ -198,8 +198,15 @@ function scr_demand(demand_type) {
 	    }
 	    if (demand_type=2){// Crusade
 	        rull=floor(random(10))+1;
-	        if (rull>resistance){obj_controller.liscensing=2;worked=true;if (disposition[7]>=40) then no_penalty=true;}
-	        if (rull<=resistance){worked=false;}
+	        if (rull>resistance){
+	        	obj_controller.liscensing=2;worked=true;
+	        	if (disposition[7]>=40){
+	        		no_penalty=true;
+	        	}
+	        }
+	        if (rull<=resistance){
+	        	worked=false;
+	        }
 	    }
 	}
 
