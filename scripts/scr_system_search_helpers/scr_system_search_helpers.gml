@@ -63,7 +63,7 @@ function scr_is_planet_owned_by_allies(star, planet_id) {
 	}
 	if (array_contains(global.SystemHelps.default_allies, star.p_owner[planet_id])){
 		return true;
-	}else if(star.dispo[b] < -4000) {
+	}else if(star.dispo[planet_id] < -4000) {
 		return true;
 	}
 	return false;
