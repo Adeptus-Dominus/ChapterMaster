@@ -105,7 +105,7 @@ global.weapons = {
 			"master_crafted": 430,
 			"artifact": 460
 		},
-		"description": "The workhorse of the early imperium idfk make up your own lore cause that's fucking it from canon.",
+		"description": "This is the prototype that turned into the staple of all Heavy Bolter designs. Introduced in early Great Crusade, it was one of the very first heavy support weapons churned out by the forges of Mechanicum.",
 		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 12,
@@ -121,7 +121,7 @@ global.weapons = {
 			"master_crafted": 120,
 			"artifact": 140
 		},
-		"description": "Once primary weapon of ancient terminator squads, now precious relic of any chapter that still can field it.",
+		"description": "During the great crusade, there came a need for a hand-held weapon of high rate of fire and respectable firepower that's easy to manufacture. Some Techpriest, or perhaps a Techmarine, put to bolters together and thus the Combi-Bolter was born. Phased out by the Storm Bolter, it is nevertheless a respectable weapon and a relic of more civilised times.",
 		"melee_hands": 1.1,
 		"ranged_hands": 1.1,
 		"ammo": 14,
@@ -2817,17 +2817,6 @@ global.gear = {
 			},
 			"tags": ["jump"],
 		},
-		"Ancient Jump Pack": {
-      "abbreviation": "AncientJmpPck",
-      "special_properties": ["Hammer of Wrath"],
-      "description": "A back-mounted device containing jets powerful enough to lift an Astartes in Power Armor over great distances. Utilizing these, Assault Marines bring devastation to the foe. This is ancient and now very rare serpha V pattern, used mostly during Emperors's Great Crusade.",
-      "damage_resistance_mod": {
-        "standard": 30,
-        "master_crafted": 35,
-        "artifact": 40
-      },
-      "tags": ["jump"],
-    },
 		"Heavy Weapons Pack": {
 			"abbreviation": "HvyWpPck",
 			"description": "A heavy ammunition backpack commonly used by devastators in conjunction with a heavy support weapon.",
