@@ -531,7 +531,6 @@ if (shop = "equipment") {
     forge_cost[i] = 200;
     item_stocked[i] = scr_item_count(item[i]);
     item_cost[i] = 10;
-
     i += 1;
     item[i] = "Missile Launcher";
     forge_cost[i] = 300;
@@ -547,6 +546,7 @@ if (shop = "equipment") {
         nobuy[i] = 1;
         item_cost[i] = 0;
     }
+	i += 1;
 	//Debug space for 30k weapons
        //Volkite Pack
         item[i] = "Volkite Serpenta";
