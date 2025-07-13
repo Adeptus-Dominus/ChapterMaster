@@ -182,6 +182,7 @@ function set_up_diplomacy_buttons(){
                 obj_turn_end.alarm[1]=1;
             }
         }
+        
         if (trading_artifact!=0){
             clear_diplo_choices();
             cooldown=8;
@@ -194,9 +195,11 @@ function set_up_diplomacy_buttons(){
                 instance_destroy();
             }
         }
+
         if (force_goodbye==5){
             clear_diplo_choices();
         }
+
         if (liscensing==2) and (repair_ships==0){
             cooldown=8;
             var cru=instance_create(mouse_x,mouse_y,obj_crusade);
@@ -206,6 +209,7 @@ function set_up_diplomacy_buttons(){
             liscensing=0;
             if (zoomed==0) then scr_zoom();
         }
+
         if (exit_all!=0){
             exit_all=0;
         }
