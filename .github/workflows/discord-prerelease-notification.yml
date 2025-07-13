@@ -1,6 +1,6 @@
 on:
   release:
-    types: [prereleased]
+    types: [prereleased, published]
 
 permissions:
     contents: read
