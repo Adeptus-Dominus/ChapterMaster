@@ -379,7 +379,7 @@ function multi_select(options_array, title)constructor{
 		_next_tog.active = false;
 		array_push(toggles, _next_tog);
 	}
-	static update = item_data_updater
+	static update = item_data_updater;
 	static draw = function(){
 		var _change_method = is_callable(on_change);
 		draw_text(x1, y1, title);
