@@ -221,4 +221,4 @@ jobs:
           files: |
             ./build_output/${{ needs.gamemaker_build.outputs.built_file }}/*
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
