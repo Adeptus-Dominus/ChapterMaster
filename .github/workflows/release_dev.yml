@@ -211,7 +211,7 @@ jobs:
 
       - id: create_release
         name: Create a release and upload the build
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v2.3.2
         with:
           name: ${{ steps.prep_release_name.outputs.release_name }}
           tag_name: ${{ needs.prepare_release.outputs.tag_name }}
@@ -220,5 +220,4 @@ jobs:
           make_latest: false
           files: |
             ./build_output/${{ needs.gamemaker_build.outputs.built_file }}/*
-        env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          token: ${{ secrets.RELEASE_TOKEN }}
