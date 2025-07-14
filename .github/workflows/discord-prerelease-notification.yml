@@ -1,7 +1,7 @@
 name: Discord Release Notification
 on:
   release:
-    types: [published, prereleased, created, edited, deleted, unpublished]
+    types: [prereleased]
 permissions:
     contents: read
 jobs:
@@ -25,5 +25,5 @@ jobs:
         with:
           webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
           username: "GitHub Releases"
-          content: "@ettykitty."
+          content: "<@&1318332223232938014>"
           reduce_headings: true
