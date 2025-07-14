@@ -11,15 +11,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Debug GitHub Event
-        run: |
-          echo "GitHub Event Name: ${{ github.event_name }}"
-          echo "GitHub Event Action: ${{ github.event.action }}"
-          echo "Release ID: ${{ github.event.release.id }}"
-          echo "Release Tag Name: ${{ github.event.release.tag_name }}"
-          echo "Release Prerelease: ${{ github.event.release.prerelease }}"
-          echo "Release Draft: ${{ github.event.release.draft }}"
-
       - name: GitHub Releases to Discord
         uses: SethCohen/github-releases-to-discord@v1.19.0
         with:
