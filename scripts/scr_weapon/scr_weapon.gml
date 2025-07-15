@@ -138,7 +138,7 @@ global.weapons = {
 			"master_crafted": 350,
 			"artifact": 375
 		},
-		"description": "Ancient and now forgotten pattern of plasma weapon. It features improved coils, more stable hydrogen fuel, and characteristic purple glow",
+		"description": "One of many Plasma weapon patterns that came from the famed Forge World of Ryza. With its characteristic purple glow, alongside slight curvatures of the design, the mark of its forgeworld is impossible to miss. Featuring greater range and accuracy as well as pure stopping power, this is a weapon that even Terminators should fear to face.",
 		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 18,
@@ -154,7 +154,7 @@ global.weapons = {
 			"master_crafted": 160,
 			"artifact": 175
 		},
-		"description": "Ancient and now forgotten pattern of plasma pistol. Often given to veterans and officers as a sign of great honor. It features improved coils, more stable hydrogen fuel, and characteristic purple glow",
+		"description": "The smaller brother of the Ryzan Plasma Gun, it shares its characteristics as well as sleek design and purple glow. Once a regular weapon for Sergeants and some Moritats in the Legiones Astartes, with even some Consuls or Centurions favouring them over Volkites or Disintegrator, the humble Ryzan Plasma Pistol has earned its place as a vaunted relic of any armoury lucky enough to have it.",
 		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 18,
@@ -170,7 +170,7 @@ global.weapons = {
 			"master_crafted": 700,
 			"artifact": 750 //I think that usual 25% increase will be too much for that weapon so applied +150.
 		},
-		"description": "Ancient and now forgotten pattern of plasma weapon. Heaviest portable variant. It features improved coils, more stable hydrogen ammo, and characteristic purple glow",
+		"description": "An ancient Plasma Cannon variant born in the bowels of Mother Mars. Once a staple of heavy weapons squads in the time of Legiones Astartes, now a revered relic with power beyond compare with any modern weapons, even those made in the forges of Mars and Ryza in this dark age. Sharing some design and components with Ryzan patterns, it features the same purple glow that makes them so easily distinguishable.",
 		"melee_hands": 1,
 		"ranged_hands": 3,
 		"ammo": 18,
@@ -203,7 +203,7 @@ global.weapons = {
 			"master_crafted": 1100,
 			"artifact": 1200
 		},
-		"description": "This Multi-Melta design originates, like many others used by Legiones Astartes, in the Dark Age of Technology. Deadlier than the current designs fielded by the Space Marine Chapters, it is a relic of both of the zenith of mankind's science and the last moments of the Emperor's true vision",
+		"description": "This Multi-Melta design originates, like many others used by Legiones Astartes, in the Dark Age of Technology. Deadlier than the current designs fielded by the Space Marine Chapters, it is a relic of both of the zenith of mankind's science and the last moments of the Emperor's true vision.",
 		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 6,
@@ -220,7 +220,7 @@ global.weapons = {
 			"master_crafted": 585,
 			"artifact": 610
 		},
-		"description": "The Phaestos-pattern Flamer is a stark reminder of the time where Mankind's future was yet unmolested by the decaying stench of the Horus Heresy. Oddly shaped for the modern users, it is nonetheless not to be underestimated and its potent promethium-fueled flame has burned through armours of unnumbered heroes",
+		"description": "The Phaestos-pattern Flamer is a stark reminder of the time where Mankind's future was yet unmolested by the decaying stench of the Horus Heresy. Oddly shaped for the modern users, it is nonetheless not to be underestimated and its potent promethium-fueled flame has burned through armours of unnumbered heroes.",
 		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 6,
@@ -229,7 +229,7 @@ global.weapons = {
 		"arp": -1,
 		"tags": ["flame"] //Shouldn't it also feature "boarding"?
 	},
-	//Melle Pack
+	//Melee Pack
 	"Power Scythe": {
 		"abbreviation": "PwrSct",
 		"attack": {
@@ -242,7 +242,7 @@ global.weapons = {
 			"master_crafted": 1.1,
 			"artifact": 1.2
 		},
-		"description": "An unpopular power weapon, once a signature of the cursed 14th Legion, now fielded by a handful of loyalist Chapters.",
+		"description": "One of many Power Weapon types made in the nascent Imperium, the Power Scythes never truly became a staple of any large force outside of specialist elements, and when even those faded into obscurity or went traitor, the production of the Power Scythes was halted. Since then few remain in Imperial use, and most can be found in hands of foul traitors.",
 		"melee_hands": 2,
 		"ranged_hands": 1,
 		"ammo": 0,
@@ -259,7 +259,7 @@ global.weapons = {
 			"master_crafted": 800,
 			"artifact": 850
 		},
-		"description": "PH",
+		"description": "The Forge World of Ryza is known not only for its mastery of Plasma weaponry, but also for its genius in Las weapon designs. This revered Ryzan Lascannon pattern can be dated to the Great Crusade, and as such it is the pinnacle of its kind as the Imperium was then. A common sight across the Legiones Astartes heavy support squads as well as Solar Auxilia, any Chapter blessed with one should count themselves lucky.",
 		"melee_hands": 1,
 		"ranged_hands": 2.25,
 		"ammo": 10,
@@ -276,7 +276,7 @@ global.weapons = {
 			"master_crafted": 520,
 			"artifact": 560
 		},
-		"description": "PH",
+		"description": "Originating from the Warmaster's homeworld [allegedly untrue] of Cthonia, this Autocannon pattern was the chosen type of this weapon for Terminator Squads throughout the Great Crusade and subsequent Horus Heresy. While later designs may have outshined it in fire rate or range, this remains the hardest hitting autocannon to date, perhaps with the Kalibrax as a strong competitor.",
 		"melee_hands": 1,
 		"ranged_hands": 2.25,
 		"ammo": 30,
