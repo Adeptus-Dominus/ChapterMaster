@@ -236,6 +236,8 @@ function scr_cheatcode(argument0) {
 						strange_build_event();
 					}else if (cheat_arguments[0] == "factionenemy"){
 						make_faction_enemy_event();
+					}else if (cheat_arguments[0] == "stopall"){
+						obj_controller.last_event = 1000000;
 					}else {
 						with (obj_controller) {
 							scr_random_event(false);

@@ -47,6 +47,7 @@ Arguments with stars `(argument*)` can be omitted.
     - `surfremove` - triggers inquisition surf removal
     - `strangebuild` - triggers strange build event
     - `factionenemy` - triggers the made a faction enemy event
+    - `stopall` - stops random events
 - `inquisarti` - triggers the Artifact Loan quest.
 - `govmission` - spawns governor missions on all planets.
 - `inquismission (mission*)` - triggers an inquisition mission. You must have met the inquisition for this to work
