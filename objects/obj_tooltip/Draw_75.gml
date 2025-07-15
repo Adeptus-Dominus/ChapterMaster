@@ -81,6 +81,16 @@ for (var i=0;i<array_length(queue);i++){
 		_rect_y += _cursor_offset;
 	}
 
+	// Check if the tooltip goes over the left part of the screen and flip right if so
+	if (_rect_x < _screen_hpadding) {
+ 		_rect_x = _coords[0] + _cursor_offset;
+	}
+
+// Check if the tooltip goes over the top part of the screen and flip down if so
+	if (_rect_y < _screen_vpadding) {
+	    _rect_y = _coords[1] + _cursor_offset;
+	}
+
 	// Draw the tooltip background
 	// draw_sprite_ext(spr_tooltip1, 0, _rect_x, _rect_y, x_scale, y_scale, 0, c_white, 1);
 	// draw_sprite_ext(spr_tooltip1, 1, _rect_x, _rect_y, x_scale, y_scale, 0, c_white, 1);
