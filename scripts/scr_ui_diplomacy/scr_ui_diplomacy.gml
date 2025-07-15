@@ -62,6 +62,7 @@ function draw_diplomacy_diplo_text(){
 }
 function set_up_diplomacy_buttons(){
 	diplo_buttons = {};
+	audience_data = {};
 	set_up_diplomacy_persons();
 	//Trade button setup
 	diplo_buttons.trade = new UnitButtonObject({

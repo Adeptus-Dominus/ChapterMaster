@@ -1,6 +1,6 @@
 function threat_plausibility(){
     var _threat = 20;
-    var _good_imperium_position = diplomacy[eFACTION.Imperium] > 50 ? 1 : -1;
+    var _good_imperium_position = disposition[eFACTION.Imperium] > 50 ? 1 : -1;
     var _relative_strength = floor(obj_controller/20);
     var _nature = "";
 }

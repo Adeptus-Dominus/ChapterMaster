@@ -407,8 +407,12 @@ if (inspection_type="inspect_world") or (inspection_type="inspect_fleet"){
                         if (obj_controller.disposition[4]<=10) and (one=0){obj_controller.disposition[4]=0;one=3;}
                     
                         if ((obj_controller.loyalty-80)<=0) and (one<3) then one=3;
-                        if (one=1) then with(obj_controller){scr_audience(4,"chaos_audience1",0,"",0,0);}
-                        if (one=2) then with(obj_controller){scr_audience(4,"chaos_audience2",0,"",0,0);}
+                        if (one=1) then with(obj_controller){
+                            scr_audience(4,"chaos_audience1",0,"",0,0);
+                        }
+                        if (one=2) then with(obj_controller){
+                            scr_audience(4,"chaos_audience2",0,"",0,0);
+                        }
                         if (one=3) then obj_controller.alarm[8]=1;
                     }
                     if (obj_controller.loyal[i]="Heretical Homeworld"){obj_controller.loyal_num[i]=20;obj_controller.loyal_time[i]=3;}

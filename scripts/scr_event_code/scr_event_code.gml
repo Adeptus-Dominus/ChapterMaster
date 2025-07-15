@@ -19,7 +19,8 @@ function find_event(e_id){
 	for (var i=0;i<array_length(obj_controller.event);i++){
 		var _event = obj_controller.event[i];
 		if (_event.e_id == e_id){
-			return i;
+			_event_found = i;
+			break;
 		}
 	}
 	return _event_found;
@@ -270,11 +271,7 @@ function handle_discovered_governor_assasinations(){
 	                _event.e_id = "assassination_angryish";
 	            }            	
             } else if (_event.variant == 2){
-            	alter_dispositions([
-            		[eFACTION.Imperium, -15],
-            		[eFACTION.Inquisition, -30],
-            		[eFACTION.Ecclesiarchy, -10],
-            	]);
+            	alter_disposition(eFACTION.Inquisition, -3);
 	            if (obj_controller.disposition[4]>0&& obj_controller.disposition[2]>0){
 	            	_event.e_id = "assassination_angry";
 	            }
@@ -283,7 +280,7 @@ function handle_discovered_governor_assasinations(){
             if (obj_controller.disposition[4]<=0) or (obj_controller.disposition[2]<=0){
                 obj_controller.alarm[8]=1;
             } else{
-            	scr_audience(4,_event.e_id,0,"",0,0);
+            	scr_audience(4,_event.e_id,0,"",0,0,_event);
             }
 		}
 	}

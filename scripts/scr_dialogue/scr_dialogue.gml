@@ -999,16 +999,15 @@ function scr_dialogue(diplo_keyphrase) {
 			});
 	    }
 	    if (diplo_keyphrase == "assassination_angryish"){
-	        var _event_index = find_event(diplo_keyphrase);
-        	if (_event_index>-1){
-        		var _event = obj_controller.event[_event_index];
-		        rando=choose(1,2,3);
-		        var _assasin_place = planet_numeral_name(_event.planet, _event.system);
-		        if (rando==1) then diplo_text=$"Several sources indicate that you have killed the Planetary Governor of {_assasin_place} and went on to meddle with the succession.  Such subterfuge will not be tolerated, Chapter Master.";
-		        if (rando==2) then diplo_text=$"I have received word that you have killed the Planetary Governor of {_assasin_place} and placed a fool in power.  Your attempts to control this sector, and seemingly emulate the Ultramarines, have not gone unnoticed.  Do not think this will go unpunished.";
-		        if (rando==3) then diplo_text=$"What do you think you are doing, Chapter Master?  Killing a Planetary Governor?  Replacing them with one of your tools?  Inquisitor Lord {faction_leader[eFACTION.Inquisition]} will hear of this madness.";
-		        array_delete(obj_controller.event, _event_index, 1);
-		    }
+
+    		var _event = audience_data;
+	        rando=choose(1,2,3);
+	        var _assasin_place = planet_numeral_name(_event.planet, _event.system);
+	        if (rando==1) then diplo_text=$"Several sources indicate that you have killed the Planetary Governor of {_assasin_place} and went on to meddle with the succession.  Such subterfuge will not be tolerated, Chapter Master.";
+	        if (rando==2) then diplo_text=$"I have received word that you have killed the Planetary Governor of {_assasin_place} and placed a fool in power.  Your attempts to control this sector, and seemingly emulate the Ultramarines, have not gone unnoticed.  Do not think this will go unpunished.";
+	        if (rando==3) then diplo_text=$"What do you think you are doing, Chapter Master?  Killing a Planetary Governor?  Replacing them with one of your tools?  Inquisitor Lord {faction_leader[eFACTION.Inquisition]} will hear of this madness.";
+	        array_delete(obj_controller.event, _event_index, 1);
+
 	    }
 	}
 	// ** Mechanicus **
@@ -1478,50 +1477,67 @@ function scr_dialogue(diplo_keyphrase) {
 	    if (diplo_keyphrase == "assassination_angry"){
 	        // aa|planet_name|planet number|
 
-	        var _event_index = find_event(diplo_keyphrase);
-	        if (_event_index>-1){
-	        	var _event = obj_controller.event[_event_index];
-	        	var _system = _event.system;
-	        	var _planet = _event.planet;
-	        
-		        diplo_text="My patience is wearing thin, Chapter Master.  I have many more problems more urgent and, yet, you continue to force me away from the work assigned to me by He on Terra.  Your serf on "+string(tb)+" "+scr_roman(tc)+" will be executed along with all the other puppets I ferret out.  You are close to treason, Chapter Master.  Choose your next words with exceptional care for they may be your last.";
-	        
-		        add_diplomacy_option({
-		        	option_text:"It will not happen again", 
-		        	key : "serf_removal_submit",
-		        	method : function(){
-		                scr_dialogue("you_better");
-		                force_goodbye=1;
-		                hunt_player_serfs(_planet, _system);
-		                exit;	        		
-		        	}
-		        });
-		        add_diplomacy_option({
-		        	option_text:"Very well", 
-		        	key : "serf_removal_accept",
-		        	method : function(){
-	                    clear_diplo_choices();
-	                    force_goodbye=1;
 
-	                    hunt_player_serfs(_planet, _system);
-	                    cooldown=8;
-	                    diplomacy=0;
-	                    menu=0;
-	                    obj_turn_end.alarm[1]=1;
-	                    audience=0;
-	                    force_goodbye=0;
-	                    exit;	        		
-		        	}
-		        });
-		        add_diplomacy_option({
-		        	option_text:$"You will not.  {planet_numeral_name(_event.planet, star_by_name(_event.system))} is MINE!", 
-		        	key : "serf_removal_defy",
-		        	force_goodbye : 1,
-		        	goto : "die_heretic",
-		        });
+        	var _event = audience_data;
+        	var _system = _event.system;
+        	var _planet = _event.planet;
+        	var _star_name = planet_numeral_name(_planet, star_by_name(_system))
+	        diplo_text=$"My patience is wearing thin, Chapter Master.  I have many more problems more urgent and, yet, you continue to force me away from the work assigned to me by He on Terra.  Your serf on {_star_name} will be executed along with all the other puppets I ferret out.  You are close to treason, Chapter Master.  Choose your next words with exceptional care for they may be your last.";
+        
+	        add_diplomacy_option({
+	        	option_text:"It will not happen again", 
+	        	key : "serf_removal_submit",
+	        	method : function(){
+	                scr_dialogue("you_better");
+	                force_goodbye=1;
+	                hunt_player_serfs(audience_data.planet, audience_data.system);
+	            	alter_dispositions([
+	            		[eFACTION.Imperium, -15],
+	            		[eFACTION.Inquisition, -30],
+	            		[eFACTION.Ecclesiarchy, -10],
+	            	]);
+	                exit;	        		
+	        	}
+	        });
+	        add_diplomacy_option({
+	        	option_text:"Very well", 
+	        	key : "serf_removal_accept",
+	        	method : function(){
+                    force_goodbye=1;
 
-		        array_delete(obj_controller.event, _event_index, 1);
-	       	}
+                    hunt_player_serfs(audience_data.planet, audience_data.system);
+
+	               	alter_dispositions([
+	            		[eFACTION.Imperium, -15],
+	            		[eFACTION.Inquisition, -30],
+	            		[eFACTION.Ecclesiarchy, -10],
+	            	]);
+                    exit;	        		
+	        	}
+	        });
+
+	       	if (obj_controller.disposition[eFACTION.Inquisition] >= 70){
+	        	add_diplomacy_option({
+	        		option_text:"Perhaps We can come to an arrangement", 
+	        		tooltip : "This action will trigger a Charisma test",
+	        		method : function(){
+
+	        		}
+	        	});
+	        }
+	        add_diplomacy_option({
+	        	option_text:$"You will not.  {_star_name} is MINE!", 
+	        	key : "serf_removal_defy",
+	        	force_goodbye : 1,
+	        	method : function(){
+	               	alter_dispositions([
+	            		[eFACTION.Imperium, -30],
+	            		[eFACTION.Inquisition, -60],
+	            		[eFACTION.Ecclesiarchy, -30],
+	            	]);	        		
+	        	},
+	        	goto : "die_heretic",
+	        });
 	    }
 	    if (diplo_keyphrase=="you_better"){
 	        rando=choose(1,2);
