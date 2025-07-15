@@ -146,14 +146,10 @@ try {
                         case eFACTION.Imperium:
                             if (is_daemon) {
                                 var v = 0, ev = 0;
-                                for (var v = 1; v < array_length(obj_controller.event); v++) {
-                                    if (obj_controller.event[v] == "") {
-                                        ev = v;
-                                        break;
-                                    }
-                                }
-                                obj_controller.event[ev] = "imperium_daemon";
-                                obj_controller.event_duration[ev] = 1;
+                               	add_event({
+						        	e_id : "imperium_daemon",
+						        	duration : 1,
+						        });
                                 with (obj_star) {
                                     for (var i = 1; i <= planets; i++) {
                                         if (p_owner[i] == 2) {

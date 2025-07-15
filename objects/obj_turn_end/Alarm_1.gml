@@ -20,6 +20,7 @@ if (_is_audience){
     }
     obj_controller.audience=current_audience.faction;
     obj_controller.diplomacy=current_audience.faction;
+    obj_controller.audience_data = current_audience.audience_data;
     
     if (obj_controller.diplomacy=10) and (obj_controller.faction_gender[10]=2){
         scr_music("blood",60);

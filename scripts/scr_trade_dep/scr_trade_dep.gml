@@ -27,12 +27,7 @@ function scr_trade_dep() {
 	}
 
 	if (struct_exists(_goods, "Minor Artifact")){
-        if (obj_ini.fleet_type=ePlayerBase.home_world){
-        	scr_add_artifact("random_nodemon","minor",0,obj_ini.home_name,2);
-        }
-        if (obj_ini.fleet_type != ePlayerBase.home_world){
-        	scr_add_artifact("random_nodemon","minor",0,obj_ini.ship[0],501);
-        }
+		var last_artifact = scr_add_artifact("random", "minor", 0);
 	}
 
 	struct_remove(cargo_data, "player_goods");

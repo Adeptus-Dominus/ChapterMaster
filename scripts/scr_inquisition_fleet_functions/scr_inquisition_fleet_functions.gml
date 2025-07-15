@@ -14,16 +14,13 @@ function base_inquis_fleet (){
 }
 
 
-function hunt_player_serfs(){
-    explode_script(obj_controller.temp[1008],"|");
-    var tb=string(explode[0]);
-    var tc=real(explode[1]);
-    var ev=0;
-    for(var v=1; v<=99; v++){
-        if (ev==0) and (event[v]=="") then ev=v;
-    }
-    event[ev]="remove_serf|"+string(tb)+"|"+string(tc)+"|";
-    event_duration[ev]=choose(1,2);   
+function hunt_player_serfs(planet, system){
+    add_event({
+        planet : planet,
+        system : system,
+        e_id : "remove_surf",
+        duration : irandom_range(1,4),
+    });
 }
 
 function inquisition_fleet_inspection_chase(){
@@ -410,8 +407,12 @@ if (inspection_type="inspect_world") or (inspection_type="inspect_fleet"){
                         if (obj_controller.disposition[4]<=10) and (one=0){obj_controller.disposition[4]=0;one=3;}
                     
                         if ((obj_controller.loyalty-80)<=0) and (one<3) then one=3;
-                        if (one=1) then with(obj_controller){scr_audience(4,"chaos_audience1",0,"",0,0);}
-                        if (one=2) then with(obj_controller){scr_audience(4,"chaos_audience2",0,"",0,0);}
+                        if (one=1) then with(obj_controller){
+                            scr_audience(4,"chaos_audience1",0,"",0,0);
+                        }
+                        if (one=2) then with(obj_controller){
+                            scr_audience(4,"chaos_audience2",0,"",0,0);
+                        }
                         if (one=3) then obj_controller.alarm[8]=1;
                     }
                     if (obj_controller.loyal[i]="Heretical Homeworld"){obj_controller.loyal_num[i]=20;obj_controller.loyal_time[i]=3;}
