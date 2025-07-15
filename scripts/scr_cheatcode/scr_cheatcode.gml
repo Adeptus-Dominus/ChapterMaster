@@ -231,7 +231,12 @@ function scr_cheatcode(argument0) {
 			                system : _star_id.name,
 			                planet : irandom_range(1, _star_id.planets),
 			            });						
-					} else {
+					} else if (cheat_arguments[0] == "strangebuild"){
+						show_debug_message("strange build");
+						strange_build_event();
+					}else if (cheat_arguments[0] == "factionenemy"){
+						make_faction_enemy_event();
+					}else {
 						with (obj_controller) {
 							scr_random_event(false);
 						}

@@ -1,6 +1,6 @@
 function scr_random_event(execute_now) {
 
-	var evented = false;
+	var _evented = false;
 	/*This is some eldar mission, it should be fixed
 		var rando4=floor(random(200))+1;
 	if (obj_controller.turns_ignored[6]<=0) and (obj_controller.faction_gender[6]=2) then rando4-=2;
@@ -217,7 +217,7 @@ function scr_random_event(execute_now) {
 	if (chosen_event == EVENT.strange_behavior){
 		//TODO this event currenlty dose'nt do anything but now we have marine structs there is lots of potential here
 		init_marine_acting_strange()
-		evented=true;
+		_evented=true;
 	}
 	
 	else if (chosen_event == EVENT.space_hulk){
@@ -266,7 +266,7 @@ function scr_random_event(execute_now) {
 				scr_alert(own?"red":"green","space_hulk",$"The Space Hulk {spaceHulk.name} appears near the {star_id.name} system.",spaceHulkX,spaceHulkY);
 
 				scr_event_log("",$"The Space Hulk {spaceHulk.name} appears near the {star_id.name} system.",star_id.name);
-		        evented = true;
+		        _evented = true;
 			}
 			catch(_exception){
 				handle_exception(_exception);
@@ -304,91 +304,11 @@ function scr_random_event(execute_now) {
 		
 		scr_popup("Promotions!",text,"distinguished","");
         scr_event_log("green",text);
-		evented = true;
+		_evented = true;
 	}
     
 	else if (chosen_event == EVENT.strange_building){
-		log_message("RE: Fey Mood");
-		var _search_params = {trait : ["crafter","tinkerer"]}
-		var marine_and_company = scr_random_marine(obj_ini.role[100][16],0, _search_params);
-		if(marine_and_company != "none"){
-			var marine = marine_and_company[1];
-			var company = marine_and_company[0];
-			var text="";
-			var _unit = fetch_unit(marine_and_company);
-			var role =  _unit.role();
-		    text = _unit.name_role();
-		    text+=" is taken by a strange mood and starts building!";  
-
-	        
-		    var crafted_object;
-		    var craft_roll=roll_dice_chapter(1, 100, "low");
-			var heritical_item = false;
-	        
-			//this bit should be improved, idk what duke was checking for here
-			//TODO make craft chance reflective of crafters skill, rewards players for having skilled tech area
-	        if (scr_has_disadv("Tech-Heresy")) {
-				craft_roll+=20;
-			}
-			if (unit.has_trait("tech_heretic")){
-				craft_roll+=60;
-			}
-			if (scr_has_adv("Crafter")) {
-	            if (craft_roll>80) {
-					craft_roll-=10;
-				}
-				if (craft_roll<60) {
-					craft_roll+=10;
-				}
-	        }
-	        
-		    if (craft_roll<=50){
-				crafted_object=choose("Icon","Icon","Statue");
-				_unit.add_exp(choose(5,10));
-			}
-		    else if ((craft_roll>50) && (craft_roll<=60)) {
-				crafted_object=choose("Bike","Rhino");
-			}
-		    else if ((craft_roll>60) && (craft_roll<=80)) {
-				crafted_object="Artifact";
-			}
-			else {
-				crafted_object=choose("baby","robot","demon","fusion");
-				heritical_item=1;
-			}
-	        
-
-	    	add_event({
-	    		e_id : "strange_building",
-	    		duration : 1,
-	    		name : _unit.name(),
-	    		company : company,
-	    		marine : marine,
-	    		crafted : crafted_object,
-	    	})
-			
-			scr_popup("Can He Build marine?!?",text,"tech_build","");
-			evented = true;
-	    
-			var marine_is_planetside = _unit.planet_location>0;
-	        if (marine_is_planetside && heritical_item) {
-	        	var _system = star_by_name(obj_ini.loc[company][marine]);
-	        	var _planet = _unit.planet_location;
-	            if (_system!="none"){
-	            	with (_system){
-	            		p_hurssy[_planet]+=6;
-						p_hurssy_time[_planet]=2;
-	            	}	               
-	            }
-	        }
-	        else if (!marine_is_planetside and heritical_item){
-	            var _fleet = find_ships_fleet(_unit.ship_location);
-	            if (_fleet!="none"){
-	            	//the intended code for here was to add some sort of chaos event on the ship stashed up ready to fire in a few turns
-	            }
-	        }
-		}
-		
+		_evented = strange_build_event();
 	}
     
 	else if (chosen_event == EVENT.sororitas){
@@ -420,7 +340,7 @@ function scr_random_event(execute_now) {
 			
 			var planet = eligible_planets[irandom(array_length(eligible_planets)-1)];
 			++(star_id.p_sisters[planet]);
-			evented = true;
+			_evented = true;
 			
 			if ((own!=1) && (star_id.p_player[planet]<=0) && (star_id.present_fleet[1]==0)){
 				scr_alert("green","sororitas","Sororitas place a company of sisters on "+string(star_id.name)+" "+string(planet)+".",star_id.x,star_id.y);
@@ -440,7 +360,7 @@ function scr_random_event(execute_now) {
     
 	else if (chosen_event == EVENT.inquisition_planet || chosen_event == EVENT.inquisition_mission) {
 		scr_inquisition_mission(chosen_event);
-	    evented = true;
+	    _evented = true;
 	}
 
 	else if (chosen_event == EVENT.rogue_trader){
@@ -491,7 +411,7 @@ function scr_random_event(execute_now) {
 		star_alert = instance_create(star.x+16,star.y-24,obj_star_event);
 		star_alert.image_alpha = 1;
 		star_alert.image_speed = 1;
-        evented = true;
+        _evented = true;
 	}
 
 	else if (chosen_event == EVENT.fleet_delay){
@@ -529,7 +449,7 @@ function scr_random_event(execute_now) {
 						text = "Eldar pirates have attacked your fleet. Damage was minimal but the voyage has been delayed by " + string(delay)+ " months.";
 					}
 	                scr_popup("Fleet Attacked",text,"","");
-					evented = true;
+					_evented = true;
 	                var star_alert =instance_create(fleet.x+16,fleet.y-24,obj_star_event);
 					star_alert.image_alpha=1;
 					star_alert.image_speed=1;
@@ -600,7 +520,7 @@ function scr_random_event(execute_now) {
 		star_alert.image_speed=1;
 		star_alert.col="red";
 		scr_event_log("red","War of Succession on "+string(text));       
-		evented = true;
+		_evented = true;
 	}
     
 	// Flavor text/events
@@ -662,7 +582,7 @@ function scr_random_event(execute_now) {
 		}
 		scr_alert("color","lol",text,0,0);
         scr_event_log("red",text); 
-		evented = true;
+		_evented = true;
 	}
 
 	else if (chosen_event == EVENT.warp_storms){
@@ -694,7 +614,7 @@ function scr_random_event(execute_now) {
 		}
 		else{
 			star_id.storm += time;
-			evented = true;
+			_evented = true;
 			var _col = own == 1 ? "red" : "green";
 			scr_alert(_col, "Warp", $"Warp Storms rage across the {star_id.name} system.", star_id.x, star_id.y);
 			scr_event_log(_col, $"Warp Storms rage across the {star_id.name} system.", star_id.x, star_id.y);
@@ -777,17 +697,17 @@ function scr_random_event(execute_now) {
 			}
 			scr_alert("red","enemy", $"{text} forces suddenly appear at {star_id.name} {planet}!",star_id.x,star_id.y);
             scr_event_log("red",$"{text} forces suddenly appear at {star_id.name} {planet}!",star_id.x,star_id.y);
-			evented = true;
+			_evented = true;
 		}
 	}
 
 	else if ((chosen_event == EVENT.crusade)){
 		//i think all events should be hanlded like this then we have far more options on when to call them and how they work
-		evented = launch_crusade();
+		_evented = launch_crusade();
 	}
     
 	else if (chosen_event == EVENT.enemy) {
-		evented = make_faction_enemy_event();
+		_evented = make_faction_enemy_event();
 	}
     
 	else if ((chosen_event == EVENT.mutation)) {
@@ -795,7 +715,7 @@ function scr_random_event(execute_now) {
 		log_message("RE: Gene-Seed Mutation");
 	    var text = "The Chapter's gene-seed has mutated!  Apothecaries are scrambling to control the damage and prevent further contamination.  What is thy will?";
 	    scr_popup("Gene-Seed Mutated!",text,"gene_bad","");
-		evented = true;
+		_evented = true;
 	    scr_event_log("red","The Chapter Gene-Seed has mutated.");
 	}
 
@@ -831,15 +751,15 @@ function scr_random_event(execute_now) {
 	}
     
 	else if (chosen_event == EVENT.necron_awaken){
-		evented = awaken_tomb_event();
+		_evented = awaken_tomb_event();
 	}
 	
 	else if(chosen_event == EVENT.fallen){
 		event_fallen();
-		evented = true;
+		_evented = true;
 	}
 
-	if(evented) {
+	if(_evented) {
 		if(force_inquisition_mission && chosen_event == EVENT.inquisition_mission) {
 			last_mission=turn;
 		}
