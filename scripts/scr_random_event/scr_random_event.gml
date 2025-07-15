@@ -284,9 +284,9 @@ function scr_random_event(execute_now) {
 		}
 		var marine=marine_and_company[1];
 		var company=marine_and_company[0];
-		var unit = obj_ini.TTRPG[company][marine];
-		var role=unit.role();
-		var text = unit.name_role();
+		var _unit = obj_ini.TTRPG[company][marine];
+		var role=_unit.role();
+		var text = _unit.name_role();
 		var company_text = scr_convert_company_to_string(company);
 		//var company_text = scr_company_string(company);
 		if(company_text != ""){
@@ -296,10 +296,10 @@ function scr_random_event(execute_now) {
 		text += " has distinguished himself.##He åis up for review to be promoted.";
 		
 		if (company != 10){
-			unit.add_exp(10);
+			_unit.add_exp(10);
 		}
 		else {
-			unit.add_exp(max(20, unit.experience));
+			_unit.add_exp(max(20, _unit.experience));
 		}
 		
 		scr_popup("Promotions!",text,"distinguished","");
@@ -309,73 +309,71 @@ function scr_random_event(execute_now) {
     
 	else if (chosen_event == EVENT.strange_building){
 		log_message("RE: Fey Mood");
-		var marine_and_company = scr_random_marine(obj_ini.role[100][16],0);
-		if(marine_and_company == "none"){
-			exit;
-		}
-		var marine = marine_and_company[1];
-		var company = marine_and_company[0];
-		var text="";
-		var unit = obj_ini.TTRPG[company][marine];
-		var role= unit.role();
-	    text = unit.name_role();
-	    text+=" is taken by a strange mood and starts building!";  
+		var _search_params = {trait : ["crafter","tinkerer"]}
+		var marine_and_company = scr_random_marine(obj_ini.role[100][16],0, _search_params);
+		if(marine_and_company != "none"){
+			var marine = marine_and_company[1];
+			var company = marine_and_company[0];
+			var text="";
+			var _unit = fetch_unit(marine_and_company);
+			var role =  _unit.role();
+		    text = _unit.name_role();
+		    text+=" is taken by a strange mood and starts building!";  
 
-        
-	    var crafted_object;
-	    var craft_roll=roll_dice_chapter(1, 100, "low");
-		var heritical_item = false;
-        
-		//this bit should be improved, idk what duke was checking for here
-		//TODO make craft chance reflective of crafters skill, rewards players for having skilled tech area
-        if (scr_has_disadv("Tech-Heresy")) {
-			craft_roll+=20;
-		}
-		if (scr_has_adv("Crafter")) {
-            if (craft_roll>80) {
-				craft_roll-=10;
+	        
+		    var crafted_object;
+		    var craft_roll=roll_dice_chapter(1, 100, "low");
+			var heritical_item = false;
+	        
+			//this bit should be improved, idk what duke was checking for here
+			//TODO make craft chance reflective of crafters skill, rewards players for having skilled tech area
+	        if (scr_has_disadv("Tech-Heresy")) {
+				craft_roll+=20;
 			}
-			if (craft_roll<60) {
-				craft_roll+=10;
+			if (unit.has_trait("tech_heretic")){
+				craft_roll+=60;
 			}
-        }
-        
-	    if (craft_roll<=50){
-			crafted_object=choose("Icon","Icon","Statue");
-			unit.add_exp(choose(5,10));
-		}
-	    else if ((craft_roll>50) && (craft_roll<=60)) {
-			crafted_object=choose("Bike","Rhino");
-		}
-	    else if ((craft_roll>60) && (craft_roll<=80)) {
-			crafted_object="Artifact";
-		}
-		else {
-			crafted_object=choose("baby","robot","demon","fusion");
-			heritical_item=1;
-		}
-        
-			var event_index = -1;
-			for(var i = 0; i < array_length(event); i++){
-				if(event[i] == "" || event[i] == undefined){
-					event_index = i;
-					break;
+			if (scr_has_adv("Crafter")) {
+	            if (craft_roll>80) {
+					craft_roll-=10;
 				}
+				if (craft_roll<60) {
+					craft_roll+=10;
+				}
+	        }
+	        
+		    if (craft_roll<=50){
+				crafted_object=choose("Icon","Icon","Statue");
+				_unit.add_exp(choose(5,10));
 			}
-			if(event_index == -1){
-				//
-				exit;
+		    else if ((craft_roll>50) && (craft_roll<=60)) {
+				crafted_object=choose("Bike","Rhino");
 			}
+		    else if ((craft_roll>60) && (craft_roll<=80)) {
+				crafted_object="Artifact";
+			}
+			else {
+				crafted_object=choose("baby","robot","demon","fusion");
+				heritical_item=1;
+			}
+	        
+
+	    	add_event({
+	    		e_id : "strange_building",
+	    		duration : 1,
+	    		name : _unit.name(),
+	    		company : company,
+	    		marine : marine,
+	    		crafted : crafted_object,
+	    	})
 			
 			scr_popup("Can He Build marine?!?",text,"tech_build","");
 			evented = true;
-	        event[event_index]="strange_building|"+unit.name()+"|"+string(company)+"|"+string(marine)+"|"+string(crafted_object)+"|";
-	        event_duration[event_index]=1;
-        
-			var marine_is_planetside = unit.planet_location>0;
+	    
+			var marine_is_planetside = _unit.planet_location>0;
 	        if (marine_is_planetside && heritical_item) {
 	        	var _system = star_by_name(obj_ini.loc[company][marine]);
-	        	var _planet = unit.planet_location;
+	        	var _planet = _unit.planet_location;
 	            if (_system!="none"){
 	            	with (_system){
 	            		p_hurssy[_planet]+=6;
@@ -384,11 +382,13 @@ function scr_random_event(execute_now) {
 	            }
 	        }
 	        else if (!marine_is_planetside and heritical_item){
-	            var _fleet = find_ships_fleet(unit.ship_location);
+	            var _fleet = find_ships_fleet(_unit.ship_location);
 	            if (_fleet!="none"){
 	            	//the intended code for here was to add some sort of chaos event on the ship stashed up ready to fire in a few turns
 	            }
 	        }
+		}
+		
 	}
     
 	else if (chosen_event == EVENT.sororitas){
@@ -787,72 +787,7 @@ function scr_random_event(execute_now) {
 	}
     
 	else if (chosen_event == EVENT.enemy) {
-		log_message("RE: Enemy");
-		
-		var factions = [];
-		if(known[eFACTION.Imperium] == 1){
-			array_push(factions,2);
-		}
-		if(known[eFACTION.Mechanicus] == 1){
-			array_push(factions,3);
-		}
-		if(known[eFACTION.Inquisition] == 1){
-			array_push(factions,4);
-		}
-		if(known[eFACTION.Ecclesiarchy] == 1){
-			array_push(factions,5);		
-		}
-		
-		if(array_length(factions) == 0){
-			log_error("RE: Enemy, no faction could be chosen");
-			exit;
-		}
-		var chosen_faction = factions[irandom(array_length(factions)-1)];
-		var event_index = -1;
-		for(var i=1;i < 99; i++){
-			if(event[i] == ""){
-				event_index = i;
-				break;
-			}
-		}
-		if(event_index == -1){
-			log_error("RE: Enemy, couldn't find an event_index");
-			exit;
-		}
-		
-		var text = "You have made an enemy within the ";
-		var log = "An enemy has been made within the ";
-		switch(chosen_faction) {
-			case 2:
-				event[event_index]="enemy_imperium";
-				text += "Imperium";
-				log += "Imperium";
-				break;
-			case 3:
-				event[event_index]="enemy_mechanicus";
-				text += "Mechanicus";
-				log += "Mechanicus";
-				break;
-			case 4:
-				event[event_index]="enemy_inquisition";
-				text += "Inquisition";
-				log += "Inquisition";
-				break;
-			case 5:
-				event[event_index]="enemy_ecclesiarchy";
-				text += "Ecclesiarchy";
-				log += "Ecclesiarchy";
-				break;
-			default:
-				log_error("RE: Enemy, no faction could be chosen");
-				exit;
-		}
-	    event_duration[event_index]=irandom_range(12,96);
-		disposition[chosen_faction]-=20;
-	    text +="; relations with them will be soured for the forseable future.";
-	    scr_popup("Diplomatic Incident",text,"angry","");
-		evented = true;
-	    scr_event_log("red",string(log));
+		evented = make_faction_enemy_event();
 	}
     
 	else if ((chosen_event == EVENT.mutation)) {
@@ -871,24 +806,10 @@ function scr_random_event(execute_now) {
 	else if (chosen_event == EVENT.chaos_invasion){
 	    log_message("RE: Chaos Invasion");
     
-		var event_index = -1;
-		for(var i = 1; i < 100; i++) {
-			if(event[i] == ""){
-				chosen_event = i;
-				break;
-			}
-		}
-		if(chosen_event == -1){
-			log_error("RE: Chaos Invasion, couldn't find a id for the event");
-			exit;
-		}
-		
-	    event[chosen_event] = "chaos_invasion";
-		event_duration[chosen_event] = 1;
-		evented = true;
-		
-		
-		
+		add_event({
+			e_id : "chaos_invasion",
+			duration : 1
+		})
 		
 		var psyker_intolerant = scr_has_disadv("Psyker Intolerant");
 	    var has_chief_psyker = scr_role_count("Chief "+string(obj_ini.role[100,17]),"") >= 1;

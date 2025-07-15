@@ -685,11 +685,8 @@ for(var i=0; i<501; i++){
         penit_co[i]=0;
         penit_id[i]=0;
     }
-    if (i<=100){
-        event[i]="";
-        event_duration[i]=0;
-    }
 }
+event = [];
 // ship management arrays
 // they are used to display a paginated subset of ships
 // at a particular location for the load to ship screen.

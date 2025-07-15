@@ -28,6 +28,11 @@ function alter_disposition(faction, alter_value){
     obj_controller.disposition[faction] = clamp(obj_controller.disposition[faction]+alter_value, -100, 100);
 }
 
+function alter_dispositions(alterations){
+    for (var i=0;i<array_length(alterations)i++){
+        alter_disposition(alterations[i][0],alterations[i][1]);
+    }
+}
 function clear_diplo_choices(){
     obj_controller.diplo_option = [];
 }
