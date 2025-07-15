@@ -737,7 +737,7 @@ global.modular_drawing_items = [
         body_types :[0],
         position : "backpack_augment",
         equipped : {
-            "mobi" : "Ancient Jump Pack"
+            "mobi" : "Serpha Jump Pack"
         },
         overides : {
             "chest_fastening" : spr_backpack_fastening,

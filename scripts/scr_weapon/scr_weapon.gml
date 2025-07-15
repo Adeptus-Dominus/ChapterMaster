@@ -2817,6 +2817,17 @@ global.gear = {
 			},
 			"tags": ["jump"],
 		},
+		"Serpha Jump Pack": {
+			"abbreviation": "SphJmpPck",
+			"special_properties": ["Hammer of Wrath"],
+			"description": "Once the mainstay of the Legiones Astartes, now the Serpha Pattern Jump Pack is nothing but a sad reminder of these better times and of the terrible atrocities that followed. Mainly used by the Traitors in the modern Imperium, it is nonetheless seen in the Loyalist armouries in which it is prized for its superior energy cells and power cabling, but doesn't provide as reliable of a thruster as, for instance, the most common in the 41st millennium Mark VII Mars Pattern.",
+			"damage_resistance_mod": {
+				"standard": 30,
+				"master_crafted": 35,
+				"artifact": 40
+			},
+			"tags": ["jump"],
+		},
 		"Heavy Weapons Pack": {
 			"abbreviation": "HvyWpPck",
 			"description": "A heavy ammunition backpack commonly used by devastators in conjunction with a heavy support weapon.",
