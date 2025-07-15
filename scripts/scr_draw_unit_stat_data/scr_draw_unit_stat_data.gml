@@ -6,6 +6,8 @@ function scr_draw_unit_stat_data(manage=false, data_block = {
 		w: 569,
 		h: 303,
 }, squeezed = false){
+	var _cur_font = draw_get_font();
+	draw_set_font(fnt_40k_14);
 	if (event_number==ev_gui){
 		xx=0;
 		yy=0;
@@ -212,109 +214,111 @@ function scr_draw_unit_stat_data(manage=false, data_block = {
 	draw_set_valign(fa_top);
 	draw_set_color(#50a076);
 
-		if (!obj_controller.view_squad && obj_controller.unit_bio){
-			var unit_data_string = unit_profile_text();
-			tooltip_draw(unit_data_string, 925, [xx+23,yy+141],,,,,true);
+	if (!obj_controller.view_squad && obj_controller.unit_bio){
+		var unit_data_string = unit_profile_text();
+		tooltip_draw(unit_data_string, 925, [xx+23,yy+141],,,,,true);
+	}
+
+	var data_lines = [];
+	var data_entry = {};
+	data_entry.text = $"Loyalty: {loyalty}\n";
+	data_entry.tooltip = "Loyalty represents the unwavering devotion to one's Chapter, their Primarch, and the Emperor himself. It is a measure of their ability to resist the temptations of Chaos, the influence of xenos artifacts, and the machinations of the Warp.";
+	array_push(data_lines, data_entry);
+	
+	data_entry = {};
+	data_entry.text = $"Corruption: {corruption}\n";
+	data_entry.tooltip = "Corruption reflects exposure to the malevolent forces of the Warp. High Corruption may indicate that the person is teetering on the brink of damnation, while a low score suggests relative purity.";
+	array_push(data_lines, data_entry);
+	
+	data_entry = {};
+	data_entry.text = $"Assignment: {_psionic_assignment} ({psionic})\n";
+	data_entry.tooltip = "The Imperium measures and records the psionic activity and power level of psychic individuals through a rating system called The Assignment. Comprised of a twenty-four point scale, The Assignment simplifies the comparison of psykers to aid Imperial authorities in recognizing possible threats.";
+	array_push(data_lines, data_entry);
+	
+	var forge_gen = forge_point_generation();
+
+	data_entry = {};
+	data_entry.tooltip="";
+	var gen_reasons = forge_gen[1];
+	data_entry.text = $"Forge Production: {forge_gen[0]}\n";
+	if (struct_exists(gen_reasons, "trained")){
+		data_entry.tooltip+=$"Trained On Mars (TEC/10): {gen_reasons.trained}\n";
+		if (struct_exists(gen_reasons, "at_forge")){
+			data_entry.tooltip+=$"{gen_reasons.at_forge}(at Forge)\n";
 		}
+	}
+	if (struct_exists(gen_reasons, "master")){
+		data_entry.tooltip+=$"Forge Master: +{gen_reasons.master}\n";
+	}
+	if (struct_exists(gen_reasons, "crafter")){
+		data_entry.tooltip+=$"Crafter: +{gen_reasons.crafter}\n";
+	}
+	if (struct_exists(gen_reasons, "maintenance")){
+		data_entry.tooltip+=$"Maintenance: +{gen_reasons.maintenance}";
+	}			
+	array_push(data_lines, data_entry);
 
-		var data_lines = [];
-		var data_entry = {};
-		data_entry.text = $"Loyalty: {loyalty}\n";
-		data_entry.tooltip = "Loyalty represents the unwavering devotion to one's Chapter, their Primarch, and the Emperor himself. It is a measure of their ability to resist the temptations of Chaos, the influence of xenos artifacts, and the machinations of the Warp.";
-		array_push(data_lines, data_entry);
-		
-		data_entry = {};
-		data_entry.text = $"Corruption: {corruption}\n";
-		data_entry.tooltip = "Corruption reflects exposure to the malevolent forces of the Warp. High Corruption may indicate that the person is teetering on the brink of damnation, while a low score suggests relative purity.";
-		array_push(data_lines, data_entry);
-		
-		data_entry = {};
-		data_entry.text = $"Assignment: {_psionic_assignment} ({psionic})\n";
-		data_entry.tooltip = "The Imperium measures and records the psionic activity and power level of psychic individuals through a rating system called The Assignment. Comprised of a twenty-four point scale, The Assignment simplifies the comparison of psykers to aid Imperial authorities in recognizing possible threats.";
-		array_push(data_lines, data_entry);
-		
-		var forge_gen = forge_point_generation();
+	
+	for (var i = 0; i < array_length(data_lines); i++) {
+		draw_text(data_block.x1+16, attribute_box.y2+16+(i*24), data_lines[i].text); // Adjust the y-coordinate for the new line
+		array_push(stat_tool_tips, [data_block.x1+16, attribute_box.y2+16+(i*24), data_block.x1+16+string_width(data_lines[i].text), attribute_box.y2+16+(i*24)+string_height(data_lines[i].text), data_lines[i].tooltip, ""]);
+	}
 
-		data_entry = {};
-		data_entry.tooltip="";
-		var gen_reasons = forge_gen[1];
-		data_entry.text = $"Forge Production: {forge_gen[0]}\n";
-		if (struct_exists(gen_reasons, "trained")){
-			data_entry.tooltip+=$"Trained On Mars (TEC/10): {gen_reasons.trained}\n";
-			if (struct_exists(gen_reasons, "at_forge")){
-				data_entry.tooltip+=$"{gen_reasons.at_forge}(at Forge)\n";
+	var x1 = squeezed ? data_block.x1 + ((data_block.x2- data_block.x1)/2) +32: data_block.x2-16;
+	if (array_length(traits) != 0) {
+		for (var i=0; i<array_length(traits); i++) {
+			var trait = global.trait_list[$ traits[i]];
+			var trait_name = trait.display_name;
+			var trait_description = string(trait.flavour_text, unit_name);
+			var trait_effect = "";
+			if (struct_exists(trait, "effect")){
+				trait_effect = string(trait.effect + "." + "\n\n");
 			}
-		}
-		if (struct_exists(gen_reasons, "master")){
-			data_entry.tooltip+=$"Forge Master: +{gen_reasons.master}\n";
-		}
-		if (struct_exists(gen_reasons, "crafter")){
-			data_entry.tooltip+=$"Crafter: +{gen_reasons.crafter}\n";
-		}
-		if (struct_exists(gen_reasons, "maintenance")){
-			data_entry.tooltip+=$"Maintenance: +{gen_reasons.maintenance}";
-		}			
-		array_push(data_lines, data_entry);
-
-		
-		for (var i = 0; i < array_length(data_lines); i++) {
-			draw_text(data_block.x1+16, attribute_box.y2+16+(i*24), data_lines[i].text); // Adjust the y-coordinate for the new line
-			array_push(stat_tool_tips, [data_block.x1+16, attribute_box.y2+16+(i*24), data_block.x1+16+string_width(data_lines[i].text), attribute_box.y2+16+(i*24)+string_height(data_lines[i].text), data_lines[i].tooltip, ""]);
-		}
-
-		var x1 = squeezed ? data_block.x1 + ((data_block.x2- data_block.x1)/2) +32: data_block.x2-16;
-		if (array_length(traits) != 0) {
-			for (var i=0; i<array_length(traits); i++) {
-				var trait = global.trait_list[$ traits[i]];
-				var trait_name = trait.display_name;
-				var trait_description = string(trait.flavour_text, unit_name);
-				var trait_effect = "";
-				if (struct_exists(trait, "effect")){
-					trait_effect = string(trait.effect + "." + "\n\n");
-				}
-				var y1 = attribute_box.y2+16 + (i*24);
-				draw_set_halign(fa_right);
-				draw_text(x1, y1, trait_name);
-				draw_set_halign(fa_left);
-				var x2 = x1 - string_width(trait_name);
-				var y2 = y1 + string_height(trait_name);
-
-				var _trait_growth_effect = "";
-				var _stat_list = ARR_stat_list;
-				for (var j=0;j<array_length(_stat_list);j++){
-					var _stat = _stat_list[j];
-					var _stat_name = global.stat_display_strings[$ _stat];
-					if (struct_exists(trait, _stat)){
-						var _stat_val = eval_trait_stat_data(trait[$ _stat]);
-						var descriptive_string = "";
-						if (_stat_val>0){
-							repeat(max(floor(_stat_val/2),1)){
-								descriptive_string += "+"
-							}
-						} else {
-							repeat(max(floor((_stat_val*-1)/2),1)){
-								descriptive_string += "-"
-							}							
-						}
-						_trait_growth_effect += $"{_stat_name} : {descriptive_string}\n";
-					}
-				}
-				array_push(trait_tool_tips, [x1, y1, x2, y2, $"{trait_description}\n{trait_effect}\n{_trait_growth_effect}" + trait_effect]);
-			}
-		} else {
+			var y1 = attribute_box.y2+16 + (i*24);
 			draw_set_halign(fa_right);
-			draw_text(data_block.x2-16, attribute_box.y2+16, "No Traits");
+			draw_text(x1, y1, trait_name);
 			draw_set_halign(fa_left);
-		}
+			var x2 = x1 - string_width(trait_name);
+			var y2 = y1 + string_height(trait_name);
 
-		for (var i=0;i<array_length(stat_tool_tips);i++){
-			if (scr_hit(stat_tool_tips[i])){
-				tooltip_draw(stat_tool_tips[i][4], 300, [stat_tool_tips[i][0], stat_tool_tips[i][3]],,,stat_tool_tips[i][5]);
+			var _trait_growth_effect = "";
+			var _stat_list = ARR_stat_list;
+			for (var j=0;j<array_length(_stat_list);j++){
+				var _stat = _stat_list[j];
+				var _stat_name = global.stat_display_strings[$ _stat];
+				if (struct_exists(trait, _stat)){
+					var _stat_val = eval_trait_stat_data(trait[$ _stat]);
+					var descriptive_string = "";
+					if (_stat_val>0){
+						repeat(max(floor(_stat_val/2),1)){
+							descriptive_string += "+"
+						}
+					} else {
+						repeat(max(floor((_stat_val*-1)/2),1)){
+							descriptive_string += "-"
+						}							
+					}
+					_trait_growth_effect += $"{_stat_name} : {descriptive_string}\n";
+				}
 			}
+			array_push(trait_tool_tips, [x1, y1, x2, y2, $"{trait_description}\n{trait_effect}\n{_trait_growth_effect}" + trait_effect]);
 		}
-		for (var i=0;i<array_length(trait_tool_tips);i++){
-			if (point_in_rectangle(mouse_x, mouse_y, trait_tool_tips[i][2], trait_tool_tips[i][1], trait_tool_tips[i][0], trait_tool_tips[i][3])){
-				tooltip_draw(trait_tool_tips[i][4], 300);
-			}
+	} else {
+		draw_set_halign(fa_right);
+		draw_text(data_block.x2-16, attribute_box.y2+16, "No Traits");
+		draw_set_halign(fa_left);
+	}
+
+	for (var i=0;i<array_length(stat_tool_tips);i++){
+		if (scr_hit(stat_tool_tips[i])){
+			tooltip_draw(stat_tool_tips[i][4], 300, [stat_tool_tips[i][0], stat_tool_tips[i][3]],,,stat_tool_tips[i][5]);
 		}
+	}
+	for (var i=0;i<array_length(trait_tool_tips);i++){
+		if (point_in_rectangle(mouse_x, mouse_y, trait_tool_tips[i][2], trait_tool_tips[i][1], trait_tool_tips[i][0], trait_tool_tips[i][3])){
+			tooltip_draw(trait_tool_tips[i][4], 300);
+		}
+	}
+
+	draw_set_font(_cur_font);
 }

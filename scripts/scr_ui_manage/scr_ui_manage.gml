@@ -624,6 +624,8 @@ function scr_ui_manage() {
             }
         }
 
+        draw_set_font(fnt_40k_14);
+
         // var we;we=string_width(string(global.chapter_name)+" "+string(fx))/2;
 
         if (managing > 0) {

@@ -222,11 +222,20 @@ function scr_cheatcode(argument0) {
 						create_starship_event();
 					} else if (cheat_arguments[0] == "fallen"){
 						event_fallen();
+					}else if (cheat_arguments[0] == "surfremove"){
+						var _star_id = scr_random_find(0,true,"","");
+			            add_event({
+			                duration : 2,
+			                e_id : "governor_assassination",
+			                variant : 2,
+			                system : _star_id.name,
+			                planet : irandom_range(1, _star_id.planets),
+			            });						
 					} else {
 						with (obj_controller) {
 							scr_random_event(false);
 						}
-					}
+					} 
 					break;
 				case "infreq":
 					if (global.cheat_req == 0) {
