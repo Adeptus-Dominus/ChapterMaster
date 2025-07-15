@@ -40,7 +40,7 @@ global.weapons = {
 			"master_crafted": 420,
 			"artifact": 440
 		},
-		"description": "One of the deadliest of the mainstay weapons in the Imperial arsenal during the Great Crusade. The humble Charger is a thermal ray weapon that deflagrate organic matter, combusting the target in extreme cases. Some variants even arc over multiple targets.",
+		"description": "One of the deadliest of the mainstay weapons in the Imperial arsenal during the Great Crusade. The humble Charger is a thermal ray weapon that deflagrates organic matter, combusting the target in extreme cases. Some variants even arc over multiple targets.",
 		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 10,
@@ -89,7 +89,7 @@ global.weapons = {
 			"master_crafted": 80,
 			"artifact": 85
 		},
-		"description": "Created at the very conception of the Imperium, this very first bolter pattern features a .70 caliber bolt as opposed to the 41st millennium's standard .75, its form is far less bulky than the Godwyn, most prevalent in the modern Astartes armouries. Simpler in design in theory but required higher-tech components than what is currently available, so when the Heresy ended and the weaponry was streamlined for less logisitcal effort, the older patterns were phased out.",
+		"description": "Created at the conception of the Imperium, this very first bolter pattern features a .70 caliber bolt as opposed to the 41st millennium's standard .75. Its form is far less bulky than the Godwyn, most prevalent in the modern Astartes armouries. Simpler in design in theory but required higher-tech components than what is currently available, so when the Heresy ended and the weaponry was streamlined for less logistical effort, the older patterns, such as the venerable Phobos, were phased out.",
 		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 20,
@@ -121,7 +121,7 @@ global.weapons = {
 			"master_crafted": 120,
 			"artifact": 140
 		},
-		"description": "During the great crusade, there came a need for a hand-held weapon of high rate of fire and respectable firepower that's easy to manufacture. Some Techpriest, or perhaps a Techmarine, put to bolters together and thus the Combi-Bolter was born. Phased out by the Storm Bolter, it is nevertheless a respectable weapon and a relic of more civilised times.",
+		"description": "During the Great Crusade, there came a need for a hand-held weapon of high rate of fire and respectable firepower that's easy to manufacture. Some Techpriest, or perhaps a Techmarine, put two bolters together and thus the Combi-Bolter was born. Phased out by the Storm Bolter, it is nevertheless a respectable weapon and a relic of more civilised times.",
 		"melee_hands": 1.1,
 		"ranged_hands": 1.1,
 		"ammo": 14,
@@ -154,7 +154,7 @@ global.weapons = {
 			"master_crafted": 160,
 			"artifact": 175
 		},
-		"description": "The smaller brother of the Ryzan Plasma Gun, it shares its characteristics as well as sleek design and purple glow. Once a regular weapon for Sergeants and some Moritats in the Legiones Astartes, with even some Consuls or Centurions favouring them over Volkites or Disintegrator, the humble Ryzan Plasma Pistol has earned its place as a vaunted relic of any armoury lucky enough to have it.",
+		"description": "The smaller brother of the Ryzan Plasma Gun, it shares its characteristics as well as sleek design and purple glow. Once a regular weapon for Sergeants and some Moritats in the Legiones Astartes, with even some Consuls or Centurions favouring them over Volkites or Disintegrators, the humble Ryzan Plasma Pistol has earned its place as a vaunted relic of any armoury lucky enough to have it.",
 		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 18,
