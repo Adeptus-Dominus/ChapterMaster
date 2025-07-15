@@ -183,6 +183,7 @@ function mechanicus_missions_end_turn(planet){
 function spawn_mechanicus_mission(){
 	log_message("RE: Mechanicus Mission");
 	var mechanicus_missions = []
+	var _evented
 	
 	var _forge_stars = scr_get_stars(false, [eFACTION.Mechanicus],["Forge"]);
 	
@@ -233,17 +234,17 @@ function spawn_mechanicus_mission(){
         if (chosen_mission == "mech_raider"){
             var text=$"The Adeptus Mechanicus are trusting you with a special mission.  They wish for you to bring a Land Raider and six {obj_ini.role[100][16]} to a Forge World in {_name} for testing and training, for a duration of 24 months. You have four years to complete this.  Can your chapter handle this mission?";
             scr_popup("Mechanicus Mission",text,"mechanicus",mission_data);
-			evented = true;
+			_evented = true;
         }
         else if (chosen_mission == "mech_bionics") {
             var text=$"The Adeptus Mechanicus are trusting you with a special mission.  They desire a squad of Astartes with bionics to stay upon a Forge World in {_name} for testing, for a duration of 24 months.  You have four years to complete this.  Can your chapter handle this mission?";
             scr_popup("Mechanicus Mission",text,"mechanicus",mission_data);
-			evented = true;
+			_evented = true;
         }
         else {
             var text=$"The local Adeptus Mechanicus are preparing to embark on a voyage to Mars, to delve into the catacombs in search of lost technology.  Due to your close relations they have made the offer to take some of your {obj_ini.role[100][16]}s with them.  Can your chapter handle this mission?";
             scr_popup("Mechanicus Mission",text,"mechanicus",mission_data);
-			evented = true;
+			_evented = true;
         }
         //show_debug_message(mission_data);
     }
@@ -273,8 +274,9 @@ function spawn_mechanicus_mission(){
 		}
 		var text=$"Mechanicus Techpriests have established a research site on a Necron Tomb World in the {star.name} system.  They are requesting some of your forces to provide security for the research team until the tests may be completed.  Further information is on a need-to-know basis.  Can your chapter handle this mission?";
             scr_popup("Mechanicus Mission",text,"mechanicus",_mission_data);
-			evented = true;
-    }	
+			_evented = true;
+    }
+    return _evented;	
 }
 
 function mechanicus_mission_procedures(){

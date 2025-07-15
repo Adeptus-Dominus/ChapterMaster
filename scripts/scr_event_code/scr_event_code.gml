@@ -346,7 +346,6 @@ function strange_build_event(){
     	})
 		
 		scr_popup("Can He Build marine?!?",text,"tech_build","");
-		evented = true;
     
 		var marine_is_planetside = _unit.planet_location>0;
         if (marine_is_planetside && heritical_item) {
@@ -428,7 +427,6 @@ function make_faction_enemy_event(){
 	    alter_disposition(chosen_faction, -20)
 	    text +="; relations with them will be soured for the forseable future.";
 	    scr_popup("Diplomatic Incident",text,"angry","");
-		evented = true;
 	    scr_event_log("red",string(log));
 	    return true;
 	}

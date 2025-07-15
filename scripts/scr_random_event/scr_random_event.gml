@@ -354,7 +354,7 @@ function scr_random_event(execute_now) {
 		}
     
 	} else if (chosen_event == EVENT.mechanicus_mission) {
-		spawn_mechanicus_mission()
+		evented = spawn_mechanicus_mission();
 
 	}
     

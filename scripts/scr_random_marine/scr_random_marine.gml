@@ -100,6 +100,8 @@ function scr_random_marine(role, exp_req, search_params="none"){
 	            					if (array_contains(unit.traits, search_params[$ "trait"][trait])){
 	            						match = true;
 	            						break;
+	            					} else {
+	            						match = false;
 	            					}
 	            				}            					
             				}
