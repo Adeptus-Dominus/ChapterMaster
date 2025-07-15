@@ -238,6 +238,7 @@ function scr_cheatcode(argument0) {
 						make_faction_enemy_event();
 					}else if (cheat_arguments[0] == "stopall"){
 						obj_controller.last_event = 1000000;
+						show_debug_message($"last event : {obj_controller.last_event}")
 					}else {
 						with (obj_controller) {
 							scr_random_event(false);
