@@ -44,6 +44,9 @@ Arguments with stars `(argument*)` can be omitted.
     - `techuprising` - triggers the Tech Heretics Uprising event.
     - `inspection` - triggers the Inquisitorial Inspection event.
     - `slaughtersong` - triggers the Starship event.
+    - `surfremove` - triggers inquisition surf removal
+    - `strangebuild` - triggers strange build event
+    - `factionenemy` - triggers the made a faction enemy event
 - `inquisarti` - triggers the Artifact Loan quest.
 - `govmission` - spawns governor missions on all planets.
 - `inquismission (mission*)` - triggers an inquisition mission. You must have met the inquisition for this to work

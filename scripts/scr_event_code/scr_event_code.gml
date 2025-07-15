@@ -172,20 +172,18 @@ function event_end_turn_action(){
 	            }
 	        }
 
-	        if (string_count("strange_building",_event.e_id)>0){
-	            var b_event="",marine_name="",comp=0,marine_num=0,item="",unit;
-	            explode_script(_event.e_id,"|");
-	            b_event=string(explode[0]);
-	            marine_name=string(explode[1]);
-	            comp=real(explode[2]);
-	            marine_num=real(explode[3]);
-	            unit=obj_ini.TTRPG[comp][marine_num];
-	            item=string(explode[4]);
+	        if (_event.e_id == "strange_building"){
+
+	            var marine_name=_event.name;
+	            var comp=_event.company;
+	            var marine_num=_event.marine;
+	            var _unit=fetch_unit([marine_num,comp]);
+	            var item=_event.crafted;
 
 	            var killy=0,tixt=string(obj_ini.role[100][16])+" "+string(marine_name)+" has finished his work- ";
 
 	            if (item=="Icon"){
-	                tixt+="it is a "+string(global.chapter_name)+" Icon wrought in metal, finely decorated.  Pride for his chapter seems to have overtaken him.  There are no corrections to be made and the item is placed where many may view it.";
+	                tixt+=$"it is a {global.chapter_name} Icon wrought in metal, finely decorated.  Pride for his chapter seems to have overtaken him.  There are no corrections to be made and the item is placed where many may view it.";
 	            }
 	            if (item=="Statue"){
 	                tixt+="it is a small, finely crafted statue wrought in metal.  The "+string(obj_ini.role[100][16])+" is scolded for the waste of material, but none daresay the quality of the piece.";
@@ -199,29 +197,28 @@ function event_end_turn_action(){
 	                tixt+="it is a finely crafted Rhino, conforming to STC standards.  The other "+string(obj_ini.role[100][16])+" are surprised at the rapid pace of his work.";
 	            }
 	            if (item=="Artifact"){
-	                var last_artifact=0;
 	                scr_event_log("",string(obj_ini.role[100][16])+" "+string(marine_name)+" constructs an Artifact.");
-	                scr_add_artifact("random_nodemon","",0);
+	                var _last_artifact = scr_add_artifact("random_nodemon","",0);
 
-	                tixt+=$"some form of divine inspiration has seemed to have taken hold of him.  An artifact {obj_ini.artifact[last_artifact]} has been crafted.";
+	                tixt+=$"some form of divine inspiration has seemed to have taken hold of him.  An artifact {obj_ini.artifact[_last_artifact]} has been crafted.";
 	            }
 	            if (item=="baby"){
-	                unit.edit_corruption(choose(8,12,16,20))
+	                _unit.edit_corruption(choose(8,12,16,20))
 	                tixt+="some form of horrendous statue.  A weird amalgram of limbs and tentacles, the sheer atrocity of it is made worse by the tiny, baby-like form, the once natural shape of a human child twisted nearly beyond recognition.";
 	            }
 	            else if (item=="robot"){
-	                unit.edit_corruption(choose(2,4,6,8,10));
-	                tixt+=$"some form of small, box-like robot.  It seems to teeter around haphazardly, nearly falling over with each step. {unit.name()} maintains that it has no AI, though the other "+string(obj_ini.role[100][16])+" express skepticism.";
-	                unit.add_trait("tech_heretic");
+	                _unit.edit_corruption(choose(2,4,6,8,10));
+	                tixt+=$"some form of small, box-like robot.  It seems to teeter around haphazardly, nearly falling over with each step. {_unit.name()} maintains that it has no AI, though the other "+string(obj_ini.role[100][16])+" express skepticism.";
+	                _unit.add_trait("tech_heretic");
 	            }
 	            else if (item=="demon"){
-	                unit.edit_corruption(choose(8,12,16,20));
+	                _unit.edit_corruption(choose(8,12,16,20));
 	                tixt+="some form of horrendous statue.  What was meant to be some sort of angel, or primarch, instead has a mishappen face that is hardly human in nature.  Between the fetid, ragged feathers and empty sockets it is truly blasphemous.";
-	                unit.add_trait("tech_heretic");
+	                _unit.add_trait("tech_heretic");
 	            }
 	            else if (item=="fusion"){
 	                //TODO if tech heretic chosen don't kill the dude
-	                // unit.corruption+=choose(70);
+	                // _unit.corruption+=choose(70);
 	                tixt+=$"some kind of ill-mannered ascension.  One of your battle-brothers enters the armamentarium to find {marine_name} fused to a vehicle, his flesh twisted and submerged into the frame.  Mechendrites and weapons fire upon the marine without warning, a windy scream eminating from the abomination.  It takes several battle-brothers to take out what was once a "+string(obj_ini.role[100][16])+".";
 
 	                // This is causing the problem
@@ -285,20 +282,106 @@ function handle_discovered_governor_assasinations(){
 		}
 	}
 }
+
+function strange_build_event(){
+	log_message("RE: Fey Mood");
+	var _search_params = {trait : ["crafter","tinkerer"], trait_any : true}
+	var marine_and_company = scr_random_marine("",0, _search_params);
+	if (marine_and_company == "none"){
+		marine_and_company = scr_random_marine("",0, "none");
+	}
+	if(marine_and_company != "none"){
+		var marine = marine_and_company[0];
+		var company = marine_and_company[1];
+		var text="";
+		var _unit = fetch_unit(marine_and_company);
+		var role =  _unit.role();
+	    text = _unit.name_role();
+	    text+=" is taken by a strange mood and starts building!";  
+
+        
+	    var crafted_object;
+	    var craft_roll=roll_dice_chapter(1, 100, "low");
+		var heritical_item = false;
+        
+		//this bit should be improved, idk what duke was checking for here
+		//TODO make craft chance reflective of crafters skill, rewards players for having skilled tech area
+        if (scr_has_disadv("Tech-Heresy")) {
+			craft_roll+=20;
+		}
+		if (_unit.has_trait("tech_heretic")){
+			craft_roll+=60;
+		}
+		if (scr_has_adv("Crafter")) {
+            if (craft_roll>80) {
+				craft_roll-=10;
+			}
+			if (craft_roll<60) {
+				craft_roll+=10;
+			}
+        }
+
+	    if (craft_roll<=50){
+			crafted_object=choose("Icon","Icon","Statue");		
+		}
+	    else if ((craft_roll>50) && (craft_roll<=60)) {
+			crafted_object=choose("Bike","Rhino");
+		}
+	    else if ((craft_roll>60) && (craft_roll<=80)) {
+			crafted_object="Artifact";
+		}
+		else {
+			crafted_object=choose("baby","robot","demon","fusion");
+			heritical_item=1;
+		}
+        
+
+    	add_event({
+    		e_id : "strange_building",
+    		duration : 1,
+    		name : _unit.name(),
+    		company : company,
+    		marine : marine,
+    		crafted : crafted_object,
+    	})
+		
+		scr_popup("Can He Build marine?!?",text,"tech_build","");
+    
+		var marine_is_planetside = _unit.planet_location>0;
+        if (marine_is_planetside && heritical_item) {
+        	var _system = star_by_name(obj_ini.loc[company][marine]);
+        	var _planet = _unit.planet_location;
+            if (_system!="none"){
+            	with (_system){
+            		p_hurssy[_planet]+=6;
+					p_hurssy_time[_planet]=2;
+            	}	               
+            }
+        }
+        else if (!marine_is_planetside and heritical_item){
+            var _fleet = find_ships_fleet(_unit.ship_location);
+            if (_fleet!="none"){
+            	//the intended code for here was to add some sort of chaos event on the ship stashed up ready to fire in a few turns
+            }
+        }
+        return true;
+	}
+	return false;
+}
 function make_faction_enemy_event(){
 	log_message("RE: Enemy");
 		
 	var factions = [];
-	if(known[eFACTION.Imperium] == 1){
+	if(obj_controller.known[eFACTION.Imperium] == 1){
 		array_push(factions,2);
 	}
-	if(known[eFACTION.Mechanicus] == 1){
+	if(obj_controller.known[eFACTION.Mechanicus] == 1){
 		array_push(factions,3);
 	}
-	if(known[eFACTION.Inquisition] == 1){
+	if(obj_controller.known[eFACTION.Inquisition] == 1){
 		array_push(factions,4);
 	}
-	if(known[eFACTION.Ecclesiarchy] == 1){
+	if(obj_controller.known[eFACTION.Ecclesiarchy] == 1){
 		array_push(factions,5);		
 	}
 	
@@ -306,7 +389,7 @@ function make_faction_enemy_event(){
 		log_error("RE: Enemy, no faction could be chosen");
 		exit;
 	}
-	var chosen_faction = factions[irandom(array_length(factions)-1)];
+	var chosen_faction = array_random_element(factions);
 	
 	var text = "You have made an enemy within the ";
 	var log = "An enemy has been made within the ";
@@ -344,7 +427,6 @@ function make_faction_enemy_event(){
 	    alter_disposition(chosen_faction, -20)
 	    text +="; relations with them will be soured for the forseable future.";
 	    scr_popup("Diplomatic Incident",text,"angry","");
-		evented = true;
 	    scr_event_log("red",string(log));
 	    return true;
 	}
