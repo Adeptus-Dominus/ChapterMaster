@@ -5,6 +5,12 @@
 function MissionHandler(planet, system) : PlanetData(planet, system) constructor{
 
 }
+
+
+function location_out_of_player_control(unit_loc){
+	static _locs = ["Terra", "Mechanicus Vessel", "Lost", "Mars"];
+	return (array_contains(_locs,unit_loc ));
+}
 function mission_name_key(mission){
 	var mission_key = {
 		"meeting_trap" : "Chaos Lord Meeting",

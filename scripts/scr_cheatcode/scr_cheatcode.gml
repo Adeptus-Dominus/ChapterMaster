@@ -141,8 +141,13 @@ function scr_cheatcode(argument0) {
 
 				case "mechmission":
 					show_debug_message("mech_mission");
-					spawn_mechanicus_mission();
-          break;
+
+					if (array_length(cheat_arguments)){
+						spawn_mechanicus_mission(cheat_arguments[0]);
+					} else {
+						spawn_mechanicus_mission();
+					}
+         		 break;
 
 				case "inquismission": 
 					var mission = cheat_arguments[0];

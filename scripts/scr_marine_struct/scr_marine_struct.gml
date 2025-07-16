@@ -1933,6 +1933,10 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         return [location_type, location_id, location_name];
     };
 
+    static controllable = function(){
+        return !location_out_of_player_control(obj_ini.loc[company][marine_number]);
+    }
+
     //quick way of getting name and role combined in string
     static name_role = function() {
         var temp_role = role();
@@ -2014,8 +2018,11 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     static unload = function(planet_number, system) {
         var current_location = marine_location();
         set_last_ship();
+        if (!controllable()){
+            return;
+        }
         if (current_location[0] == location_types.ship) {
-            if (!array_contains(["Warp", "Terra", "Mechanicus Vessel", "Lost"], current_location[2]) && current_location[2] == system.name) {
+            if (current_location[2] != "Warp" && current_location[2] == system.name) {
                 obj_ini.loc[company][marine_number] = obj_ini.ship_location[current_location[1]];
                 planet_location = planet_number;
                 ship_location = -1;

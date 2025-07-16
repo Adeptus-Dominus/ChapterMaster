@@ -112,17 +112,25 @@ function mechanicus_missions_end_turn(planet){
                 if (_unit.role()=obj_ini.role[100][eROLE.Techmarine]){
                     // Case 1: on planet
                     if (obj_ini.loc[com][ide]=name) and (_unit.planet_location=planet){
-                        p_player[planet]-=scr_unit_size(obj_ini.armour[com][ide],obj_ini.role[com][ide],true);
+                        p_player[planet]-=_unit.get_unit_size();
                         obj_ini.loc[com][ide]="Mechanicus Vessel";
                         _unit.planet_location=0;
                         _unit.ship_location=-1;
+                        _unit.job = {
+                        	type : "mecanicus mission",
+                        }
                         techs_taken+=1;
                     }
                     if (_unit.ship_location>-1){
                         ship_planet=obj_ini.ship_location[_unit.ship_location];
                         if (ship_planet=name){
-                            obj_ini.ship_carrying[_unit.ship_location]-=scr_unit_size(obj_ini.armour[com][ide],obj_ini.role[com][ide],true);
-                            obj_ini.loc[com][ide]="Mechanicus Vessel";_unit.planet_location=0;_unit.ship_location=0;
+                            obj_ini.ship_carrying[_unit.ship_location]-=_unit.get_unit_size();
+                            obj_ini.loc[com][ide]="Mechanicus Vessel";
+                            _unit.planet_location=0;
+                            _unit.ship_location=-1;
+	                        _unit.job = {
+	                        	type : "mecanicus mission",
+	                        }                            
                             techs_taken+=1;
                         }
                     }
@@ -139,22 +147,30 @@ function mechanicus_missions_end_turn(planet){
     
     
         else if (techs_taken>0){
-            if (techs_taken>=20) then obj_controller.disposition[3]+=max(techs_taken,4);
-            var taxt="Mechanicus Ship departs for the Mars catacombs.  Onboard are "+string(techs_taken)+" of your "+string(obj_ini.role[100][16])+"s.";
-            scr_alert("","mission",taxt,0,0);
-            scr_event_log("green",taxt);
+            if (techs_taken>=5){
+            	obj_controller.disposition[3]+=max(techs_taken,4);
+            }
+            var _text=$"Mechanicus Ship departs for the Mars catacombs.  Onboard are {techs_taken} of your {obj_ini.role[100][16]}s.";
+            scr_alert("","mission",_text,0,0);
+            scr_event_log("green",_text);
+	        var flit=instance_create(x,y,obj_en_fleet);
+
+	        with  (flit){
+		        owner = eFACTION.Mechanicus;
+		        sprite_index=spr_fleet_mechanicus;
+		        capital_number=1;
+		        image_index=0;
+		        image_speed=0;
+		        trade_goods="mars_spelunk1";
+		        home_x=x;
+		        home_y=y;
+		        action_x=x+lengthdir_x(3000,obj_controller.terra_direction);
+		        action_y=y+lengthdir_y(3000,obj_controller.terra_direction);	        	
+	        	set_fleet_movement(false, "move", 48, 48);   
+	        }
+      
         }
-        
-        var flit=instance_create(x,y,obj_en_fleet);
-        flit.owner = eFACTION.Mechanicus;
-        flit.sprite_index=spr_fleet_mechanicus;
-        flit.capital_number=1;flit.image_index=0;flit.image_speed=0;
-        flit.trade_goods="mars_spelunk1";
-        flit.home_x=x;
-        flit.home_y=y;
-        flit.action_x=x+lengthdir_x(3000,obj_controller.terra_direction);
-        flit.action_y=y+lengthdir_y(3000,obj_controller.terra_direction);
-        flit.action="move";flit.action_eta=48;                    	
+                    	
     }
     if (has_problem_planet_and_time(planet,"mech_tomb1", 0)>-1){
         var alert_text="Mechanicus Mission Failed: Necron Tomb Study at "+string(name)+" "+scr_roman(planet)+".";
@@ -180,7 +196,7 @@ function mechanicus_missions_end_turn(planet){
 }
 
 
-function spawn_mechanicus_mission(){
+function spawn_mechanicus_mission(chosen_mission = "random"){
 	log_message("RE: Mechanicus Mission");
 	var mechanicus_missions = []
 	var _evented
@@ -210,12 +226,14 @@ function spawn_mechanicus_mission(){
 	}
 
 	var mission_count = array_length(mechanicus_missions);
-	if(mission_count == 0){
+	if (mission_count == 0 && chosen_mission== "random"){
 		log_error("RE: Mechanicus Mission, couldn't pick mission");
 		exit;
 	}
 	
-	var chosen_mission = array_random_element(mechanicus_missions);
+	if (chosen_mission == "random"){
+		chosen_mission = array_random_element(mechanicus_missions);
+	}
 	
     if (chosen_mission == "mech_bionics" || chosen_mission == "mech_raider" || chosen_mission == "mech_mars"){
 
@@ -321,23 +339,25 @@ function mechanicus_mission_procedures(){
 
 				if (_planet.current_owner == 3 && _forge_planet) {
 					var _mission_loc = _planet.name();
+					var _nearest_fleet = instance_nearest(_star.x, _star.y, obj_p_fleet);
+					var _mission_time = get_viable_travel_time(5, _nearest_fleet.x, _nearest_fleet.y, _star.x, _star.y, _nearest_fleet, false);
 					if (mission == "mech_raider") {
-						_planet.add_problem("mech_raider", 49, {
+						_planet.add_problem("mech_raider", _mission_time, {
 							completion: 0, 
 							required_months :24
 						});
 						text = $"The Adeptus Mechanicus await your forces at {_mission_loc}.  They are expecting six {obj_ini.role[100][16]}s and a Land Raider.";
-						scr_event_log("", $"Mechanicus Mission Accepted: Six of your {obj_ini.role[100][16]}s and a Land Raider are to be stationed at {_mission_loc} for 24 months.", _star.name);
+						scr_event_log("", $"Mechanicus Mission Accepted: Six of your {obj_ini.role[100][16]}s and a Land Raider are to be stationed at {_mission_loc} for {_mission_time} months.", _star.name);
 					} else if (mission == "mech_bionics") {
-						_planet.add_problem("mech_bionics", 49, {
+						_planet.add_problem("mech_bionics", _mission_time, {
 							completion: 0, 
 							required_months :24
 						})
 						text = $"The Adeptus Mechanicus await your forces at {_mission_loc}.  They are expecting ten Astartes with bionics. (Beneficial traits: Weakness of Flesh )";
 						scr_event_log("", $"Mechanicus Mission Accepted: Ten Astartes with bionics are to be stationed at {_mission_loc} for 24 months for testing purposes.", _star.name);
 					} else if (mission == "mech_mars") {
-						_planet.add_problem("mech_mars", 31 )
-						text = $"The Adeptus Mechanicus await your {obj_ini.role[100][16]}s at {_mission_loc}.  They are willing to hold on the voyage for up to 12 months.";
+						_planet.add_problem("mech_mars", _mission_time )
+						text = $"The Adeptus Mechanicus await your {obj_ini.role[100][16]}s at {_mission_loc}.  They are willing to hold on the voyage for up to {_mission_time} months.";
 						scr_event_log("", $"Mechanicus Mission Accepted: {obj_ini.role[100][16]}s are expected at {_mission_loc} within 30 months, for the voyage to Mars.", _star.name);
 					}
 					with (_star) {
