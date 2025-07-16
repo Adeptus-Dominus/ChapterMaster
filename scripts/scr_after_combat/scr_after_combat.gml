@@ -105,17 +105,19 @@ function assemble_alive_units() {
     }
 }
 
-function distribute_experience(_units, _exp_amount) {
-    var _eligible_units_count = array_length(_units);
-    var _average_exp = 0;
+function distribute_experience(_units, _total_exp) {
+    var _unit_count = array_length(_units);
+    var _exp_reward = 0;
+    var _exp_reward_max = 5;
+    var _unit_exp_ceiling = 200;
+    var _exp_mod_min = 0.1;
 
-    if (_eligible_units_count > 0 && _exp_amount > 0) {
-        var _individual_exp = _exp_amount / _eligible_units_count;
-        _average_exp = _individual_exp;
-        for (var i = 0; i < _eligible_units_count; i++) {
+    if (_unit_count > 0 && _total_exp > 0) {
+        _exp_reward = min(_total_exp / _unit_count, _exp_reward_max);
+        for (var i = 0; i < _unit_count; i++) {
             var _unit = _units[i];
-            var _exp_mod = max(1 - (_unit.experience / 200), 0.1);
-            var _exp_update_data = _unit.add_exp(_individual_exp*_exp_mod);
+            var _exp_mod = max(1 - (_unit.experience / _unit_exp_ceiling), _exp_mod_min);
+            var _exp_update_data = _unit.add_exp(_exp_reward * _exp_mod);
 
             var _powers_learned = _exp_update_data[1];
             if (_powers_learned > 0) {
@@ -125,7 +127,7 @@ function distribute_experience(_units, _exp_amount) {
         }
     }
 
-    return _average_exp;
+    return _exp_reward;
 }
 
 /// @mixin
@@ -141,7 +143,7 @@ function after_battle_part2() {
         }
         if (_unit.base_group=="astartes"){
             if (marine_dead[i]=0) and (_unit.gene_seed_mutations.mucranoid==1) and (ally[i]=false){
-                var muck=roll_personal_dice(1,100,"high",_unit);
+                var muck=roll_dice_unit(1,100,"high",_unit);
                 if (muck==1){    //slime  armour damaged due to mucranoid
                     if (_unit.armour != ""){
                         obj_controller.specialist_point_handler.add_to_armoury_repair(_unit.armour());

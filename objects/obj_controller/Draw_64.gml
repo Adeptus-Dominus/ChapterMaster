@@ -20,6 +20,29 @@ if (is_test_map==true){
 
 var xx = 0;
 var yy = 0;
+if (menu == MENU.Diplomacy){
+    if (diplomacy > 0){
+        draw_diplomacy_diplo_text();
+        if (trading==true){
+            if ((diplomacy>1) && is_struct(trade_attempt)){
+                try {
+                    trade_attempt.draw_trade_screen();
+                } catch(_exception){
+                     handle_exception(_exception);
+                     delete trade_attempt;
+                     trading = false;
+
+                }
+            }
+        } else if (diplomacy!=10.1){
+            draw_character_diplomacy_base_page()
+        }
+    } else if (diplomacy == -1){
+        if (is_struct(character_diplomacy)){
+            draw_character_diplomacy();
+        }
+    }
+}
 // Main UI
 if (!zoomed && !zui){
     draw_sprite(spr_new_ui,menu==0,0,0);
@@ -51,8 +74,8 @@ if (!zoomed && !zui){
         sprw = 141,
         sprh = 141;
     
-    if (sprite_exists(global.chapter_icon_sprite)){
-        draw_sprite_stretched(global.chapter_icon_sprite, global.chapter_icon_frame, sprx, spry, sprw, sprh);
+    if (sprite_exists(global.chapter_icon.sprite)){
+        draw_sprite_stretched(global.chapter_icon.sprite, 0, sprx, spry, sprw, sprh);
     }
        
     
@@ -143,10 +166,10 @@ if (!zoomed && !zui){
     // Draws the current marines in your command
     draw_sprite(spr_new_resource,3,475-10,17);
     draw_set_color(16291875);
-    draw_text(495-10,16,string_hash_to_newline(string(marines)+"/"+string(command)));
-    draw_text(495.5-10,16.5,string_hash_to_newline(string(marines)+"/"+string(command)));
+    draw_text(495-10,16,string(marines)+"/"+string(command));
+    draw_text(495.5-10,16.5,string(marines)+"/"+string(command));
 
-    if (menu==0){
+    if (menu==MENU.Default){
         location_viewer.draw();
     }
 }
@@ -156,9 +179,8 @@ draw_set_halign(fa_left);
 draw_set_alpha(1);
 // Sets up debut mode
 if (global.cheat_debug == true){
-    draw_text(1124, 7, string_hash_to_newline("DEBUG MODE"));
+    draw_text(1124, 7, "DEBUG MODE");
 }
-
 
 function draw_line(x1, y1, y_slide, variable) {
     l_hei = 37;
@@ -175,8 +197,9 @@ function draw_line(x1, y1, y_slide, variable) {
 }
 
 
-
-
+if ((menu == 1) && (managing > 0 || managing < 0)) {
+    draw_sprite_and_unit_equip_data();
+}
 
 
 

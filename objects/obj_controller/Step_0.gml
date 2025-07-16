@@ -1,7 +1,7 @@
 try {
     // Handles most logic for main menus, audio and checks if cheats are enabled
     // TODO refactor will wait untill squads PR (#76) is merged
-    if (menu == 0 && zoomed == 0 && !instance_exists(obj_ingame_menu)) {
+    if (menu == 0 && zoomed == 0 && !instances_exist([obj_ingame_menu,obj_ncombat])){
         scr_zoom_keys();
     }
     if (double_click >= 0) {
@@ -727,15 +727,12 @@ try {
     }
 
     if ((trading_artifact == 0) && (trading == 0) && (trading_artifact == 0) && (faction_justmet == 1) && (questing == 0) && (trading_demand == 0) && (complex_event == false)) {
-        for (var h = 1; h <= 4; h++) {
-            obj_controller.diplo_option[h] = "";
-            obj_controller.diplo_goto[h] = "";
-        }
+        clear_diplo_choices();
     }
 
     income = income_base + income_home + income_forge + income_agri + income_training + income_fleet + income_trade + income_tribute;
 
-    if ((menu == 20) && ((diplomacy > 0) || ((diplomacy < -5) && (diplomacy > -6)))) {
+    if ((menu == MENU.Diplomacy) && ((diplomacy > 0) || ((diplomacy < -5) && (diplomacy > -6)))) {
         if (string_length(diplo_txt) < string_length(diplo_text)) {
             diplo_char += 2;
             diplo_txt = string_copy(diplo_text, 0, diplo_char);
@@ -846,8 +843,10 @@ try {
         selecting_ship = -1;
     }
 
-    if ((marines <= 0) && (alarm[7] == -1) && (!instance_exists(obj_fleet_controller)) && (!instance_exists(obj_ncombat))) {
-        alarm[7] = 15;
+    if (menu == 0  && !instances_exist([obj_ncombat,obj_fleet_controller])){
+        if (!array_contains(obj_ini.role[0],obj_ini.role[100][eROLE.ChapterMaster])  && (alarm[7] == -1)){
+            alarm[7] = 15;
+        }
     }
 } catch (_exception) {
     handle_exception(_exception);

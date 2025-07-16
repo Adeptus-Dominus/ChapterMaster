@@ -110,7 +110,7 @@ try {
 				obj_controller.menu_artifact = obj_controller.artifacts;
 			}
 
-			obj_controller.menu = 20;
+			scr_toggle_diplomacy();
 			obj_controller.diplomacy = giveto;
 			obj_controller.force_goodbye = -1;
 			var the = "";
@@ -146,14 +146,10 @@ try {
                         case eFACTION.Imperium:
                             if (is_daemon) {
                                 var v = 0, ev = 0;
-                                for (var v = 1; v < array_length(obj_controller.event); v++) {
-                                    if (obj_controller.event[v] == "") {
-                                        ev = v;
-                                        break;
-                                    }
-                                }
-                                obj_controller.event[ev] = "imperium_daemon";
-                                obj_controller.event_duration[ev] = 1;
+                               	add_event({
+						        	e_id : "imperium_daemon",
+						        	duration : 1,
+						        });
                                 with (obj_star) {
                                     for (var i = 1; i <= planets; i++) {
                                         if (p_owner[i] == 2) {
@@ -1578,7 +1574,7 @@ try {
 			}
 			var select_text = $"{romanNumerals[i - 1]} [{check}]";
 			draw_text(xx + comp_data[0], yy + comp_data[1], select_text);
-			if (mouse_check_button_pressed(mb_left) && point_in_rectangle(mouse_x, mouse_y, xx + comp_data[0], yy + comp_data[1], xx + comp_data[0] + 90, yy + comp_data[1] + 20)) {
+			if (point_and_click([xx + comp_data[0], yy + comp_data[1], xx + comp_data[0] + 90, yy + comp_data[1] + 20])) {
 				target_comp = i;
 				target_role = 0;
 				get_unit_promotion_options();
@@ -1602,7 +1598,7 @@ try {
 						draw_set_alpha(0.25);
 					}
 					draw_text(xx + 1030 + role_x, yy + 310 + role_y, string_hash_to_newline(string(role_name[r]) + " [" + string(check) + "]"));
-					if (mouse_check_button_pressed(mb_left) && point_in_rectangle(mouse_x, mouse_y, xx + 1030 + role_x, yy + 310 + role_y, xx + 1180 + role_x, yy + 330 + role_y)) {
+					if (point_and_click([xx + 1030 + role_x, yy + 310 + role_y, xx + 1180 + role_x, yy + 330 + role_y])) {
 						if (min_exp >= role_exp[r]) {
 							target_role = r;
 							calculate_equipment_needs();

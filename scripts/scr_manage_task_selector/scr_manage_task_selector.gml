@@ -53,7 +53,7 @@ function task_selector_man_manage(){
 	man_count = array_sum(man_sel);
     selections = [];
     var unit;
-    for (var i=0; i<array_length(display_unit);i++){
+	for (var i=0; i<array_length(display_unit);i++){
     	if (ma_name[i]== "") then continue;
     	if (man_sel[i]){
     		switch(selection_data.purpose_code){

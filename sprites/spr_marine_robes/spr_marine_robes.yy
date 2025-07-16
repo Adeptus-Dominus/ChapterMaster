@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_marine_robes",
   "bboxMode":0,
   "bbox_bottom":198,
@@ -12,8 +12,8 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"c69262d4-e553-4269-a37b-ce6d95d4fbe9","name":"c69262d4-e553-4269-a37b-ce6d95d4fbe9","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"2517a4fc-f093-4d83-8a38-f4f33e3f9ed3","name":"2517a4fc-f093-4d83-8a38-f4f33e3f9ed3","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"c69262d4-e553-4269-a37b-ce6d95d4fbe9","name":"c69262d4-e553-4269-a37b-ce6d95d4fbe9","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"2517a4fc-f093-4d83-8a38-f4f33e3f9ed3","name":"2517a4fc-f093-4d83-8a38-f4f33e3f9ed3","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -64,6 +64,8 @@
     "playbackSpeedType":0,
     "resourceType":"GMSequence",
     "resourceVersion":"2.0",
+    "seqHeight":232.0,
+    "seqWidth":167.0,
     "showBackdrop":true,
     "showBackdropImage":false,
     "timeUnits":1,
@@ -85,8 +87,8 @@
   "swatchColours":null,
   "swfPrecision":2.525,
   "textureGroupId":{
-    "name":"Default",
-    "path":"texturegroups/Default",
+    "name":"MarineViewer",
+    "path":"texturegroups/MarineViewer",
   },
   "type":0,
   "VTile":false,

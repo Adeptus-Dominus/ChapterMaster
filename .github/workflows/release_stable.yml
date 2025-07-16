@@ -9,7 +9,7 @@ jobs:
     uses: ./.github/workflows/gamemaker_build.yml
     secrets: inherit
     with:
-      development: false
+      build_date: ""
       yyc: true
   release:
     name: Release

@@ -64,8 +64,10 @@ function UnitButtonObject(data = false) constructor{
 	keystroke = false;
 	tooltip = "";
 	bind_method = "";
+	bind_scope = false;
 	style = "standard";
 	font=fnt_40k_14b
+	set_height_width = false;
 
 
 	static update_loc = function(){
@@ -81,7 +83,9 @@ function UnitButtonObject(data = false) constructor{
 		for (i=0;i<array_length(_updaters);i++){
 			self[$ _updaters[i]] = data[$ _updaters[i]];
 		}
-		update_loc();
+		if (!set_height_width){
+			update_loc();
+		}
 	}
 	if (data != false){
 		update(data);
@@ -108,6 +112,7 @@ function UnitButtonObject(data = false) constructor{
 				break;								
 		}
 	}
+	static disabled = false;
 	static draw = function(allow_click = true){
 		var cur_alpha = draw_get_alpha();
 		var cur_font = draw_get_font();
@@ -115,7 +120,12 @@ function UnitButtonObject(data = false) constructor{
 		var cur_halign = draw_get_halign();
 		var cur_valign = draw_get_valign();
 		if (style = "standard"){
-			var _button_click_area = draw_unit_buttons(w > 0 ? [x1, y1, x2, y2] : [x1, y1] , label, [1,1],color,,font,alpha);
+			var _temp_alpha = alpha;
+			if (disabled){
+				_temp_alpha = 0.5;
+				allow_click = false;
+			}
+			var _button_click_area = draw_unit_buttons(w > 0 ? [x1, y1, x2, y2] : [x1, y1] , label, [1,1],color,,font,_temp_alpha);
 		} else if (style = "pixel"){
 
 			var _widths =  [sprite_get_width(spr_pixel_button_left), sprite_get_width(spr_pixel_button_middle), sprite_get_width(spr_pixel_button_right)]
@@ -154,7 +164,15 @@ function UnitButtonObject(data = false) constructor{
 			var clicked = point_and_click(_button_click_area) || keystroke;
 			if (clicked){
 				if (is_callable(bind_method)){
-					bind_method();
+					if (bind_scope != false){
+						var _method = bind_method;
+						with (bind_scope){
+							_method();
+						}
+					} else {
+						bind_method();
+					}
+
 				}
 			}
 			return clicked
@@ -437,6 +455,7 @@ function radio_set(options_array, title)constructor{
 	y_gap = 5;
 	x1 = 0;
 	y1 = 0;
+	draw_title = true;
 	changed = false;
 	max_width = 0;
 	max_height = 0;
@@ -448,7 +467,10 @@ function radio_set(options_array, title)constructor{
 
 	static update = item_data_updater;
 	static draw = function(){
-		draw_text(x1, y1, title);
+		if (draw_title){
+			draw_text(x1, y1, title);
+		}
+
 		changed = false;
 		var _start_current_selection = current_selection;
 		var _prev_x = x1;

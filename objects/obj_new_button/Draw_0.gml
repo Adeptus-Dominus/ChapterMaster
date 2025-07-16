@@ -1,9 +1,11 @@
 
 draw_set_alpha(1);
 
-var xx,yy;xx=x;yy=y;
+var xx,yy;
+xx=x;yy=y;
 if (follow_control=true) and (instance_exists(obj_controller)){
-    xx+=__view_get( e__VW.XView, 0 );yy+=__view_get( e__VW.YView, 0 );
+    xx+=__view_get( e__VW.XView, 0 );
+    yy+=__view_get( e__VW.YView, 0 );
 }
 
 

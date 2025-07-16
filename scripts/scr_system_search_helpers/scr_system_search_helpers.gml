@@ -61,7 +61,12 @@ function scr_is_planet_owned_by_allies(star, planet_id) {
 	if( planet_id < 1 ){//1 because weird indexing starting at 1 in this game
 		return false;
 	}
-	return array_contains(global.SystemHelps.default_allies, star.p_owner[planet_id]);
+	if (array_contains(global.SystemHelps.default_allies, star.p_owner[planet_id])){
+		return true;
+	}else if(star.dispo[planet_id] < -4000) {
+		return true;
+	}
+	return false;
 }
 
 function scr_is_star_owned_by_allies(star) {
@@ -69,15 +74,32 @@ function scr_is_star_owned_by_allies(star) {
 }
 
 function scr_get_planet_with_type(star, type){
-	for(var i = 1; i <= star.planets; i++){
-		if(star.p_type[i] == type)
-			{
-				return i;
-			}
+	for (var i = 1; i <= star.planets; i++){
+		if(star.p_type[i] == type){
+			return i;
 		}
+	}
 	return -1;
 }
 
+function stars_with_faction_fleets(search_faction){
+    var _stars_with_fleets = {};
+    with (obj_en_fleet){
+        if (owner != search_faction) then continue;
+        if (capital_number+frigate_number+escort_number <= 0){
+            instance_destroy();
+            continue;
+        }
+        if (is_orbiting()){
+            if (struct_exists(_stars_with_fleets, orbiting.name)){
+                array_push(_stars_with_fleets[$orbiting.name],id);
+            } else {
+                _stars_with_fleets[$ orbiting.name] = [id];
+            }
+        }
+    }
+    return _stars_with_fleets;	
+}
 
 function planets_without_type(type,star="none"){
 	var return_planets = [];
@@ -101,11 +123,10 @@ function scr_star_has_planet_with_type(star, type){
 
 function scr_get_planet_with_owner(star, owner){
 	for(var i = 1; i <= star.planets; i++){
-		if(star.p_owner[i] == owner)
-			{
-				return i;
-			}
+		if (star.p_owner[i] == owner){
+			return i;
 		}
+	}
 	return -1;
 }
 
@@ -113,16 +134,34 @@ function scr_star_has_planet_with_owner(star, owner){
 	return scr_get_planet_with_owner(star,owner) != -1;
 }
 
-function scr_get_stars(shuffled=false, ownership=[]) {
+
+/// @returns {Array<Id.Instance.obj_star>} stars
+function scr_get_stars(shuffled=false, ownership=[], types = []) {
 	var stars = [];
 	var _owner_sort = array_length(ownership);
+	var _types_sort = array_length(types);
 	with(obj_star){
-		if (!_owner_sort){
-			array_push(stars,id);
+		if (!_owner_sort && !_types_sort){
+			var _add = true;
 		} else {
-			if (array_contains(ownership,owner)){
-				array_push(stars,id);
+			var _add = true
+			if (_owner_sort && !array_contains(ownership,owner)){
+				_add = false
 			}
+			if (_add && _types_sort){
+				for (var i=1;i<=planets;i++){
+					array_delete_value(types, p_type[i]);
+					if (!array_length(types)){
+						break;
+					}
+				}
+				if (array_length(types)){
+					_add = false;
+				}				
+			}
+		}
+		if (_add){
+			array_push(stars,id);
 		}
 	}
 	if (shuffled){
@@ -137,30 +176,45 @@ function planet_imperium_ground_total(planet_check){
 
 function star_by_name(search_name){
 	with(obj_star){
-		if (name = search_name){
+		if (name == search_name){
 			return self;
 		}
 	}
 	return "none";
 }
 
+//use this to quickly make a loop through a stars planets in an unordered way
+function shuffled_planet_array(){
+	var _planets = [];
+	for (var i=1;i<=planets;i++){
+		array_push(_planets, i);
+	}
+	_planets = array_shuffle(_planets);
+	return _planets;
+
+}
+
 function distance_removed_star(origional_x,origional_y, star_offset = choose(2,3), disclude_hulk=true, disclude_elder=true, disclude_deads=true, warp_concious=true){
 	var from = instance_nearest(origional_x,origional_y,obj_star);
+	var _deactivated = [];
     for(var i=0; i<star_offset; i++){
         from=instance_nearest(origional_x,origional_y,obj_star);
         with(from){
+        	array_push(_deactivated, id);
         	instance_deactivate_object(id);
         };
         from=instance_nearest(origional_x,origional_y,obj_star);
         if (instance_exists(from)){
 	        if (disclude_elder && from.owner==eFACTION.Eldar){
 	        	i--;
+	        	array_push(_deactivated, id);
 	        	instance_deactivate_object(from);
 	        	continue;
 	        }
 	        if (disclude_deads){
 	        	if (is_dead_star(from)){
 		        	i--;
+		        	array_push(_deactivated, id);
 		        	instance_deactivate_object(from);
 		        	continue;        		
 	        	}
@@ -168,7 +222,10 @@ function distance_removed_star(origional_x,origional_y, star_offset = choose(2,3
 	    }        
     }
     //from=instance_nearest(origional_x,origional_y,obj_star);
-    instance_activate_object(obj_star);
+    for (var i=0;i<array_length(_deactivated);i++){
+    	instance_activate_object(_deactivated[i]);
+    }
+
     //TODO finish this off to make the distance remove more concious of warp lanes
     /*if (warp_concious){
     	var options = [from];
@@ -234,10 +291,12 @@ function find_population_doners(doner_to=0){
 
 function planet_numeral_name(planet, star="none"){
 	if (star=="none"){
-		return $"{name} {scr_roman(planet)}";
+		//show_debug_message($"{planet}, numeral name")
+		return $"{name} {int_to_roman(planet)}";
 	} else {
 		with (star){
-			return $"{name} {scr_roman(planet)}";
+			//show_debug_message($"{planet}, numeral name")
+			return $"{name} {int_to_roman(planet)}";
 		}		
 	}
 }
@@ -340,3 +399,57 @@ function scr_planet_image_numbers(p_type){
 
 //}
 
+/// @param {Id.Instance.obj_star} star 
+/// @param {Enum.eFACTION} faction
+/// @param {Real} minimum_strength 
+function star_has_planet_with_forces(star, faction, minimum_strength = 1){
+	var found = false;
+	with(star){
+		for(var p = 0;  p <= planets && !found; p++){
+			if(found){
+				break;
+			}
+			found = planet_has_forces(star, p, faction, minimum_strength);
+		}
+	}
+	return found;
+	
+}
+
+/// @param {Id.Instance.obj_star} star 
+/// @param {Real} planet_id
+/// @param {Enum.eFACTION} faction
+/// @param {Real} minimum_strength 
+function planet_has_forces(star, planet_id, faction, minimum_strength = 1){
+	var found = false;
+	switch(faction){
+		case eFACTION.Tau:
+			found = star.p_tau[planet_id] >= minimum_strength;
+			break;
+		case eFACTION.Tyranids:
+			found = star.p_tyranids[planet_id] >= minimum_strength;
+			break;
+		case eFACTION.Ork:
+			found = star.p_orks[planet_id] >= minimum_strength;
+			break;
+		case eFACTION.Chaos: 
+			found = star.p_chaos[planet_id] >= minimum_strength;
+			break;
+		case eFACTION.Eldar:
+			found = star.p_eldar[planet_id] >= minimum_strength;
+			break;
+		case eFACTION.Genestealer:
+			found = star.p_tyranids[planet_id] >= minimum_strength;
+			break;
+		case eFACTION.Heretics:
+			found = star.p_traitors[planet_id] >= minimum_strength;
+			break;
+		case eFACTION.Necrons:
+			found = star.p_necrons[planet_id] >= minimum_strength;
+			break;
+		case "Demons": //special case for demon world mission
+			found = star.p_demons[planet_id] >= minimum_strength;
+			break;
+	}
+	return found;
+}

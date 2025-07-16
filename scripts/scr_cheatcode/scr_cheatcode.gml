@@ -105,6 +105,10 @@ function scr_cheatcode(argument0) {
 				case "chaosfleetspawn":
 					spawn_chaos_warlord();
 					break;
+				case "waaagh":
+
+					init_ork_waagh(true);
+					break;
 				case "neworkfleet":
 					var p_fleet = get_largest_player_fleet();
 					with (instance_nearest(p_fleet.x, p_fleet.y, obj_star)) {
@@ -134,6 +138,52 @@ function scr_cheatcode(argument0) {
 						}
 					}
 					break;
+
+				case "mechmission":
+					show_debug_message("mech_mission");
+
+					if (array_length(cheat_arguments)){
+						spawn_mechanicus_mission(cheat_arguments[0]);
+					} else {
+						spawn_mechanicus_mission();
+					}
+         		 break;
+
+				case "inquismission": 
+					var mission = cheat_arguments[0];
+					switch (mission){
+						case "1": //default 
+							scr_inquisition_mission(EVENT.inquisition_mission);
+						break;
+						case "planet":
+							scr_inquisition_mission(EVENT.inquisition_planet);
+						break;
+						case "spyrer": 
+							scr_inquisition_mission(EVENT.inquisition_mission, INQUISITION_MISSION.spyrer);
+						break;
+						case "artifact": 
+							scr_inquisition_mission(EVENT.inquisition_mission, INQUISITION_MISSION.artifact);
+						break;
+						case "inquisitor": 
+							scr_inquisition_mission(EVENT.inquisition_mission, INQUISITION_MISSION.inquisitor);
+						break;
+						case "purge": 
+							scr_inquisition_mission(EVENT.inquisition_mission, INQUISITION_MISSION.purge);
+						break;
+						case "tomb_world": 
+							scr_inquisition_mission(EVENT.inquisition_mission, INQUISITION_MISSION.tomb_world);
+						break;
+						case "tyranid_organism": 
+							scr_inquisition_mission(EVENT.inquisition_mission, INQUISITION_MISSION.tyranid_organism);
+						break;
+						case "demon": 
+							scr_inquisition_mission(EVENT.inquisition_mission, INQUISITION_MISSION.demon_world);
+						break;
+						default: 
+							scr_inquisition_mission(EVENT.inquisition_mission);
+						break;
+					}
+					break;
 				case "artifactpopulate":
 					with (obj_star) {
 						for (var i = 1; i <= planets; i++) {
@@ -147,7 +197,14 @@ function scr_cheatcode(argument0) {
 							array_push(p_feature[i], new NewPlanetFeature(P_features.Ancient_Ruins));
 						}
 					}
-					break;					
+					break;		
+				case "stcpopulate":
+					with (obj_star) {
+						for (var i = 1; i <= planets; i++) {
+							array_push(p_feature[i], new NewPlanetFeature(P_features.STC_Fragment));
+						}
+					}
+					break;	
 				case "event":
 					if (cheat_arguments[0] == "crusade") {
 						show_debug_message("crusading");
@@ -168,11 +225,33 @@ function scr_cheatcode(argument0) {
 						new_inquisitor_inspection();
 					} else if (cheat_arguments[0] == "slaughtersong") {
 						create_starship_event();
-					} else {
+					} else if (cheat_arguments[0] == "fallen"){
+						event_fallen();
+					}else if (cheat_arguments[0] == "surfremove"){
+						var _star_id = scr_random_find(0,true,"","");
+			            add_event({
+			                duration : 2,
+			                e_id : "governor_assassination",
+			                variant : 2,
+			                system : _star_id.name,
+			                planet : irandom_range(1, _star_id.planets),
+			            });						
+					} else if (cheat_arguments[0] == "strangebuild"){
+						show_debug_message("strange build");
+						strange_build_event();
+					}else if (cheat_arguments[0] == "factionenemy"){
+						make_faction_enemy_event();
+					}else if (cheat_arguments[0] == "stopall"){
+						obj_controller.last_event = 1000000;
+						show_debug_message($"last event : {obj_controller.last_event}")
+					}else if (cheat_arguments[0] == "startevents"){
+						obj_controller.last_event = 0;
+						show_debug_message($"last event : {obj_controller.last_event}")
+					}else {
 						with (obj_controller) {
 							scr_random_event(false);
 						}
-					}
+					} 
 					break;
 				case "infreq":
 					if (global.cheat_req == 0) {
@@ -296,7 +375,26 @@ function scr_cheatcode(argument0) {
 					var _fleet = get_nearest_player_fleet(0,0);
 					add_ship_to_fleet(new_player_ship("Gloriana"),_fleet);
 					break;
-
+				case "zoom":
+					set_zoom_to_default();
+					break;
+				case "orkinvasion":
+					out_of_system_warboss();
+					break;
+				case "forgemastermeet":
+					var _forge_master = scr_role_count("Forge Master", "", "units");
+					if (array_length(_forge_master)>0){
+						show_debug_message("meet forge master");
+						obj_controller.menu_lock = false;
+						instance_destroy(obj_popup_dialogue);
+						scr_toggle_diplomacy();
+						obj_controller.diplomacy = -1;
+						obj_controller.character_diplomacy = _forge_master[0];
+						diplo_txt="Greetings chapter master";
+					} else {
+						show_debug_message("no forge master");
+					}
+					break;
 			}
 		}
 	} catch(_exception) {

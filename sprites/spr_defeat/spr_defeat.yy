@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_defeat",
   "bboxMode":0,
   "bbox_bottom":0,
@@ -24,7 +24,7 @@
   "origin":0,
   "parent":{
     "name":"New UI",
-    "path":"folders/Sprites/New UI.yy",
+    "path":"folders/Sprites/UI/New UI.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

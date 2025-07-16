@@ -196,6 +196,7 @@ function SpecialistPointHandler() constructor{
 
     //handles tech heretic idealology rot
     static tech_ideology_spread = function(){
+        var _heritecs = obj_controller.tech_status == "heretics";
         try{
         var tech_test, charisma_test, piety_test, _met_non_heretic, heretics_persuade_chances;
         var _tester = global.character_tester;
@@ -248,9 +249,10 @@ function SpecialistPointHandler() constructor{
                                 if (piety_test[0] == false && choose(true,false)){
                                     _current_tech.add_trait("tech_heretic");
                                 }
-                            } else if (charisma_test[0]==2){
+                            } else if (charisma_test[0]==2 && !_heritecs){
                                 if (charisma_test[1] > 40 && _noticed_heresy=false){
                                     scr_alert("purple","Tech Heresy",$"{_current_tech.name_role()} contacts you concerned of Tech Heresy in the Armentarium");
+                                    scr_event_log("purple",$"{_current_tech.name_role()} contacts you concerned of Tech Heresy in the Armentarium");
                                     _noticed_heresy=true;
                                 }
                             }
@@ -258,7 +260,7 @@ function SpecialistPointHandler() constructor{
                         if (_new_pursuasion==forge_master){
                             // if tech is the forge master then forge master takes a wisdom in this case doubling as a perception test
                             // if forge master passes tech heresy is noted and chapter master notified
-                            if (_tester.standard_test(_current_tech, "wisdom", - 40)[0] && !_noticed_heresy){
+                            if (_tester.standard_test(_current_tech, "wisdom", - 40)[0] && !_noticed_heresy && !_heritecs){
                                 _noticed_heresy=true;
                                 scr_event_log("purple",$"{techs[forge_master].name_role()} Has noticed signs of tech heresy amoung the Armentarium ranks");
                                 scr_alert("purple","Tech Heresy",$"{techs[forge_master].name_role()} Has noticed signs of tech heresy amoung the Armentarium ranks");
@@ -277,7 +279,7 @@ function SpecialistPointHandler() constructor{
                     if 
                 }*/
             }
-            if (array_length(techs)>array_length(heretics)){
+            if (array_length(techs)>array_length(heretics) && !_heritecs){
                 if (array_length(heretics)/array_length(techs)>=0.35){
                     if (!irandom(9)){
                         /*var text_string = "You Recive an Urgent Transmision from";
@@ -393,6 +395,7 @@ function SpecialistPointHandler() constructor{
                     obj_controller.gene_seed+=_cur_slave.num;
                     // color / type / text /x/y
                     scr_alert("green","test-slaves",$"Test-Slave Incubators Batch {i} harvested for {_cur_slave.num} Gene-Seed.",0,0);
+                    scr_event_log("green",$"Test-Slave Incubators Batch {i} harvested for {_cur_slave.num} Gene-Seed.",0,0);
                 } else if (_cur_slave.num==0){
                     array_push(_stack_lost_incubators, i);
                 }
@@ -406,9 +409,11 @@ function SpecialistPointHandler() constructor{
 
             }
             scr_alert("","test-slaves",_lost_inc_string ,0,0);
+            scr_event_log("","test-slaves",_lost_inc_string ,0,0);
         }
         if(_lost_gene_slaves>0){
             scr_alert("","test-slaves",$"{_lost_gene_slaves} gene slaves lost due to geneseed instability their incubators have been returned to the armoury",0,0);
+            scr_event_log("",$"{_lost_gene_slaves} gene slaves lost due to geneseed instability their incubators have been returned to the armoury",0,0);
         }
     }    
     static scr_forge_item = function(item){

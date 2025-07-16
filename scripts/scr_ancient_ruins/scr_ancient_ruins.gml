@@ -249,7 +249,7 @@ function scr_ruins_combat_end() {
     var planet = obj_ground_mission.num;
     var _battle_threat = obj_ground_mission.battle_threat;
     if (obj_ground_mission.defeat == 0){
-        var dice=roll_dice(1, 100, "low");
+        var dice=roll_dice_chapter(1, 100, "low");
 
         if (dice < (_battle_threat*10)){
             if (ruins_race == eFACTION.Ecclesiarchy){
@@ -290,7 +290,7 @@ function scr_ruins_combat_end() {
 
         scr_ruins_reward(_star,planet,self);
     } else if (obj_ground_mission.defeat == 1) {
-        var dice=roll_dice(1, 100, "low");
+        var dice=roll_dice_chapter(1, 100, "low");
 
         if (dice < (_battle_threat*10)){
             if (ruins_race == eFACTION.Ecclesiarchy) {

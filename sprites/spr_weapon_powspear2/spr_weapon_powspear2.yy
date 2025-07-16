@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_weapon_powspear2",
   "bboxMode":0,
   "bbox_bottom":281,
@@ -12,10 +12,10 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"9e672385-98c8-4ea0-ae1e-13d49a097f5d","name":"9e672385-98c8-4ea0-ae1e-13d49a097f5d","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"e7a5116f-9003-4fe0-a3a6-22b578284d0f","name":"e7a5116f-9003-4fe0-a3a6-22b578284d0f","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"a02ce5c0-2d43-4023-80b7-6fcfe2f77d94","name":"a02ce5c0-2d43-4023-80b7-6fcfe2f77d94","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"152b7978-2299-46a9-8659-9d3fa7ea8162","name":"152b7978-2299-46a9-8659-9d3fa7ea8162","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"9e672385-98c8-4ea0-ae1e-13d49a097f5d","name":"9e672385-98c8-4ea0-ae1e-13d49a097f5d","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"e7a5116f-9003-4fe0-a3a6-22b578284d0f","name":"e7a5116f-9003-4fe0-a3a6-22b578284d0f","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"a02ce5c0-2d43-4023-80b7-6fcfe2f77d94","name":"a02ce5c0-2d43-4023-80b7-6fcfe2f77d94","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"152b7978-2299-46a9-8659-9d3fa7ea8162","name":"152b7978-2299-46a9-8659-9d3fa7ea8162","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -30,8 +30,8 @@
   "nineSlice":null,
   "origin":9,
   "parent":{
-    "name":"unused",
-    "path":"folders/Sprites/Marine Viewer/unused.yy",
+    "name":"Unused",
+    "path":"folders/Sprites/Unused.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",
@@ -73,18 +73,10 @@
     "timeUnits":1,
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"9e672385-98c8-4ea0-ae1e-13d49a097f5d","path":"sprites/spr_weapon_powspear2/spr_weapon_powspear2.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"c41219a2-cc77-4318-ae9d-736be346d285","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"e7a5116f-9003-4fe0-a3a6-22b578284d0f","path":"sprites/spr_weapon_powspear2/spr_weapon_powspear2.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"f3b5421b-700a-4ffd-84cc-867d26deb4e8","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"a02ce5c0-2d43-4023-80b7-6fcfe2f77d94","path":"sprites/spr_weapon_powspear2/spr_weapon_powspear2.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"278bbb1d-7f3b-4087-95e6-ce6a630531e2","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"152b7978-2299-46a9-8659-9d3fa7ea8162","path":"sprites/spr_weapon_powspear2/spr_weapon_powspear2.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"dabce5f0-7a0a-42d9-97ef-29030be272ec","IsCreationKey":false,"Key":3.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"9e672385-98c8-4ea0-ae1e-13d49a097f5d","path":"sprites/spr_weapon_powspear2/spr_weapon_powspear2.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"c41219a2-cc77-4318-ae9d-736be346d285","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"e7a5116f-9003-4fe0-a3a6-22b578284d0f","path":"sprites/spr_weapon_powspear2/spr_weapon_powspear2.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"f3b5421b-700a-4ffd-84cc-867d26deb4e8","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"a02ce5c0-2d43-4023-80b7-6fcfe2f77d94","path":"sprites/spr_weapon_powspear2/spr_weapon_powspear2.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"278bbb1d-7f3b-4087-95e6-ce6a630531e2","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"152b7978-2299-46a9-8659-9d3fa7ea8162","path":"sprites/spr_weapon_powspear2/spr_weapon_powspear2.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"dabce5f0-7a0a-42d9-97ef-29030be272ec","IsCreationKey":false,"Key":3.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,
@@ -95,8 +87,8 @@
   "swatchColours":null,
   "swfPrecision":2.525,
   "textureGroupId":{
-    "name":"Default",
-    "path":"texturegroups/Default",
+    "name":"Unused",
+    "path":"texturegroups/Unused",
   },
   "type":0,
   "VTile":false,

@@ -1,7 +1,3 @@
-
-mouse_left=1;
-
-
 if (room_get_name(room)="Creation"){
     if (hover[1]=1){
         cooldown=9999;button=1;fading=1;

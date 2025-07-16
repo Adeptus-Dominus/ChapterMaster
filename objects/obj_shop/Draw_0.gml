@@ -21,7 +21,8 @@ slate_panel.inside_method = function(){
         draw_text(xx+1280+10.5+string_width("Stocked"),yy+159.5,string_hash_to_newline("MC"));
         }
     }
-    draw_text(xx+1430.5,yy+159.5,string_hash_to_newline("Cost"));
+    draw_text(xx+1410,yy+159,string_hash_to_newline("Cost"));
+    draw_text(xx+1410.5,yy+159.5,string_hash_to_newline("Cost"));
     draw_set_color(c_gray);
 
 
@@ -70,7 +71,7 @@ slate_panel.inside_method = function(){
                 if (obj_controller.in_forge){
                     draw_sprite_ext(
                                 spr_forge_points_icon,0, 
-                                xx+1430,
+                                xx+1410,
                                 yy+y2+3, 
                                 0.3, 
                                 0.3, 
@@ -78,7 +79,7 @@ slate_panel.inside_method = function(){
                                 c_white,
                                 1); 
                 } else{
-                    draw_sprite_ext(spr_requisition,0,xx+1430,yy+y2+6,1,1,0,c_white,1);
+                    draw_sprite_ext(spr_requisition,0,xx+1410,yy+y2+6,1,1,0,c_white,1);
                 }            
     			draw_set_color(16291875)
                 if (obj_controller.in_forge){
@@ -94,16 +95,28 @@ slate_panel.inside_method = function(){
                     if (keyboard_check(vk_shift)) then cost*=5;
                 }
 
-                draw_text(xx+1447,yy+y2,cost);// Requisition
+                draw_text(xx+1427,yy+y2,cost);// Requisition
+
                 if (!obj_controller.in_forge ){
+                    draw_sprite(spr_buy_tiny,0,xx+1530,yy+y2+2);
                     if (obj_controller.requisition< cost) then draw_set_alpha(0.25);
+                    draw_set_alpha(1);
+
+                    draw_sprite(spr_sell_tiny,0,xx+1480,yy+y2+2);
+                    if (scr_hit(xx + 1480, yy + y2 + 2, xx + 1530, yy + y2 + 14) && shop != "warships" && shop != "vehicles") {
+                        var _sell_mod = SHOP_SELL_MOD;
+                        tooltip = $"Send items back for {_sell_mod * 100}% of the requisition cost.";
+                        tooltip_show=1;
+                        if (scr_click_left()) {
+                            var sell_count = keyboard_check(vk_shift) ? 5 : 1;
+                            sell_item(i, sell_count, _sell_mod)
+                        }
+                    }
                 }
 
-                draw_sprite(spr_build_tiny2,0,xx+1530,yy+y2+2);
-
-                draw_set_alpha(1);
-                var clicked =(point_in_rectangle(mouse_x, mouse_y, xx+1520, yy+y2+2, xx+1580, yy+y2+18)&& mouse_check_button_pressed(mb_left));
+                var clicked = (point_and_click([xx+1520, yy+y2+2, xx+1570, yy+y2+14]));
                 if (obj_controller.in_forge){
+                    draw_sprite(spr_build_tiny,0,xx+1530,yy+y2+2);
                     if (clicked){
                         if (array_length(obj_controller.specialist_point_handler.forge_queue)<20){
                             var new_queue_item = {
@@ -121,7 +134,7 @@ slate_panel.inside_method = function(){
                             array_push(obj_controller.specialist_point_handler.forge_queue, new_queue_item);
                         }               
                     }
-               }else if (nobuy[i]=0) && clicked && (!obj_controller.in_forge){
+               } else if (nobuy[i]=0 && clicked && !obj_controller.in_forge){
                     cost=item_cost[i];
                     if (keyboard_check(vk_shift)) and (shop!="warships") then cost=item_cost[i]*5;
                     if (obj_controller.requisition>=cost) and (shop!="warships"){
@@ -142,29 +155,31 @@ slate_panel.inside_method = function(){
                     }
 
                     if (obj_controller.requisition>=cost) and (shop="warships"){
-                        var v=0,ev=0;
-                        repeat(99){v+=1;if (ev=0) and (obj_controller.event[v]="") then ev=v;}
-                        obj_controller.event[ev]="new_"+string(item[i]);
 
-                        if (item[i]="Battle Barge") then obj_controller.event_duration[ev]=12;
-                        if (item[i]="Strike Cruiser") then obj_controller.event_duration[ev]=4;
-                        if (item[i]="Gladius") then obj_controller.event_duration[ev]=1;
-                        if (item[i]="Hunter") then obj_controller.event_duration[ev]=1;
-                        obj_controller.event_duration[ev]+=choose(0,0,1);
-                        eta=obj_controller.event_duration[ev];
+                        var _duration = 4;
+                        if (item[i]="Battle Barge") then _duration=30;
+                        if (item[i]="Strike Cruiser") then _duration=10;
 
-                        construction_started=120;obj_controller.requisition-=cost;
+                        eta = _duration;
+
+                        construction_started=120;
+                        obj_controller.requisition-=cost;
+                        add_event({
+                            e_id : "ship_construction",
+                            ship_class : item[i],
+                            duration : _duration,
+                        })
                     }
 
                     obj_controller.cooldown=8000;
-                }               
+                }
             }
             if (!obj_controller.in_forge && nobuy[i]=1) ||  (obj_controller.in_forge && forge_cost[i]=0){
                 draw_set_alpha(1);
                 draw_set_color(881503);
-                draw_text(xx+x2+x_mod[i],yy+y2,string_hash_to_newline(item[i]));// Name
+                draw_text(xx+x2+x_mod[i],yy+y2,item[i]);// Name
                 if (item_stocked[i]=0) then draw_set_alpha(0.5);
-                draw_text(xx+1300,yy+y2,string_hash_to_newline(item_stocked[i]));// Stocked
+                draw_text(xx+1300,yy+y2,item_stocked[i]);// Stocked
                 draw_set_alpha(1);
             }
             if (mouse_x>=xx+962) and (mouse_y>=yy+y2) and (mouse_x<xx+1280) and (mouse_y<yy+y2+19) and (shop!="warships"){

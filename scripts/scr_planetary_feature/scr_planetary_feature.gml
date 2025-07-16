@@ -11,7 +11,7 @@ enum P_features {
 			OrkWarboss,
 			Warlord10,
 			Special_Force,
-			World_Eaters,
+			ChaosWarband,
 			Webway,
 			Secret_Base,
 			Starship,
@@ -26,7 +26,7 @@ enum P_features {
 			Forge,
 			Gene_Stealer_Cult,
 			Mission,
-			Ork_Stronghold
+			OrkStronghold
 
 	};
 	
@@ -141,8 +141,15 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 		break;
 	case P_features.OrkWarboss:
 		player_hidden = 1;
-		planet_display= "Ork Warboss";
+		planet_display = "Ork Warboss";
 		Warboss = "alive";
+		name = global.name_generator.generate_ork_name();
+		turns_static = 0;
+		break;
+	case P_features.OrkStronghold:
+		player_hidden = 1;
+		planet_display= "Ork Stronghold";
+		tier = 1;
 		break;
 	case P_features.Monastery:
 		planet_display="Fortress Monastary";
@@ -156,9 +163,18 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
         recruit_type = 0;
         recruit_cost = 0;
 		break;
+	case P_features.ChaosWarband:
+		if !(struct_exists(data, "patron")){
+			patron = choose("slaanesh", "tzeentch", "khorne", "nurgle", "undivided");
+		} else {
+			self.patron = data.patron;
+		}
 	default:
 		player_hidden = 1;
 		planet_display = 0;
+	}
+	if (global.cheat_debug){
+		player_hidden = 0;
 	}
 	static load_json_data = function(data){
 		 var names = variable_struct_get_names(data);
@@ -167,7 +183,15 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
         }
 	}
 }
+function move_feature_to_fleet(planet, feature_slot, fleet, cargo_key){
+	var _feat = p_feature[planet][feature_slot];
+	array_delete(p_feature[planet], feature_slot, 1);
+	fleet.cargo_data[$ cargo_key] = _feat;
+}
 
+function move_feature_to_planet(cargo_key, star, planet){
+	
+}
 // returns an array of all the positions that a certain planet feature occurs on th p_feature array of a planet
 // this works for both planet_Features and planet upgrades
 function search_planet_features(planet, search_feature){
@@ -273,12 +297,10 @@ function seal_tomb_world(planet){
 	 var tombs = search_planet_features(planet, P_features.Necron_Tomb);
 	 if (array_length(tombs)>0){
 		 for (var tomb =0;tomb<array_length(tombs);tomb++){
-			 if (planet[tombs[tomb]].awake == 1){
-				awake_tomb = 1;
-				planet[tombs[tomb]].awake = 0;
-				planet[tombs[tomb]].sealed = 1;
-				planet[tombs[tomb]].planet_display = "Sealed Necron Tomb";
-			 }
+			awake_tomb = 1;
+			planet[tombs[tomb]].awake = 0;
+			planet[tombs[tomb]].sealed = 1;
+			planet[tombs[tomb]].planet_display = "Sealed Necron Tomb";
 			 if (awake_tomb = 1) then break;
 		 }
 	 }

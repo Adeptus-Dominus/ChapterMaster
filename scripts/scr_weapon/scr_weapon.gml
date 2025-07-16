@@ -1,4 +1,291 @@
 global.weapons = {
+	//30k Weapons
+	//Volkite Pack
+	"Volkite Culverin": {
+		"abbreviation": "VolkCul",
+		"attack": {
+			"standard": 700,
+			"master_crafted": 720,
+			"artifact": 740
+		},
+		"description": "The only man-portable heavy support Volkite, the Culverin has been a dreaded presence on the battlefields of the 31st millennium, where it would rend Contemptors apart and combust Marines by the dozen. Featuring the greatest range out of the family amongst the other heavier variants, its beam potency is outmatched by all heavier Volkites.",
+		"melee_hands": 1,
+		"ranged_hands": 2.2,
+		"ammo": 4,
+		"range": 22,
+		"spli": 12,
+		"arp": 0,
+		"tags": ["Volkite", "energy"]
+	},
+	"Volkite Caliver": {
+		"abbreviation": "VolkCal",
+		"attack": {
+			"standard": 550,
+			"master_crafted": 570,
+			"artifact": 590
+		},
+		"description": "Featuring grater range, more precise fire and more stopping fire than the Charger, this is the rifle of the Volkite family, whereas its smaller brother is the assault rifle. A weapon most prominent in Tactical squads of the Great Crusade Legions, its potency is spoken of even those many thousands of years past their height.",
+		"melee_hands": 1,
+		"ranged_hands": 2,
+		"ammo": 6,
+		"range": 16,
+		"spli": 10,
+		"arp": 0,
+		"tags": ["Volkite", "energy"]
+	},
+	"Volkite Charger": {
+		"abbreviation": "VolkCharg",
+		"attack": {
+			"standard": 400,
+			"master_crafted": 420,
+			"artifact": 440
+		},
+		"description": "One of the deadliest of the mainstay weapons in the Imperial arsenal during the Great Crusade. The humble Charger is a thermal ray weapon that deflagrates organic matter, combusting the target in extreme cases. Some variants even arc over multiple targets.",
+		"melee_hands": 1,
+		"ranged_hands": 2,
+		"ammo": 10,
+		"range": 10,
+		"spli": 6,
+		"arp": 0,
+		"tags": ["Volkite", "energy"]
+	},
+	"Volkite Serpenta": {
+		"abbreviation": "VolkSerp",
+		"attack": {
+			"standard": 250,
+			"master_crafted": 270,
+			"artifact": 290
+		},
+		"description": "The pistol variant of the long-lost Volkite weapon type, the Serpenta was a mainstay of Moritats and often wielded by Centurions of the Legiones Astartes. Now a symbol of status to match its fearsome potency, a sighting of this ancient weapon would send many foes running.",
+		"melee_hands": 0,
+		"ranged_hands": 1,
+		"ammo": 10,
+		"range": 3,
+		"spli": 4,
+		"arp": 0,
+		"tags": ["Volkite", "energy", "pistol"]
+	},
+	//Bolt Pack
+	"Phobos Bolt Pistol": {
+		"abbreviation": "PhBltPis",
+		"attack": {
+			"standard": 38,
+			"master_crafted": 43,
+			"artifact": 48
+		},
+		"description": "The shortened version of the Phobos Bolgun, this pistol like its brother features a .70 bolt and less bulk than its successors. Despite its most venerable origin it features better quality basic components than its modern counterparts but lacks anything more advanced than its simple firing mechanism and basic optics.",
+		"melee_hands": 0,
+		"ranged_hands": 1,
+		"ammo": 20,
+		"range": 3.5,
+		"spli": 2,
+		"arp": 0,
+		"tags": ["bolt", "pistol"]
+	},
+	"Phobos Bolter": {
+		"abbreviation": "PhBltr",
+		"attack": {
+			"standard": 75,
+			"master_crafted": 80,
+			"artifact": 85
+		},
+		"description": "Created at the conception of the Imperium, this very first bolter pattern features a .70 caliber bolt as opposed to the 41st millennium's standard .75. Its form is far less bulky than the Godwyn, most prevalent in the modern Astartes armouries. Simpler in design in theory but required higher-tech components than what is currently available, so when the Heresy ended and the weaponry was streamlined for less logistical effort, the older patterns, such as the venerable Phobos, were phased out.",
+		"melee_hands": 1,
+		"ranged_hands": 2,
+		"ammo": 20,
+		"range": 13,
+		"spli": 3,
+		"arp": 0,
+		"tags": ["bolt"]
+	},
+	"Mars Heavy Bolter": {
+		"abbreviation": "MarsHvyBltr",
+		"attack": {
+			"standard": 400,
+			"master_crafted": 430,
+			"artifact": 460
+		},
+		"description": "This is the prototype that turned into the staple of all Heavy Bolter designs. Introduced in early Great Crusade, it was one of the very first heavy support weapons churned out by the forges of Mechanicum.",
+		"melee_hands": 1,
+		"ranged_hands": 2,
+		"ammo": 12,
+		"range": 17,
+		"spli": 9,
+		"arp": 1,
+		"tags": ["heavy_ranged", "bolt"]
+	},
+	"Tigris Combi Bolter": {
+		"abbreviation": "TigComBltr",
+		"attack": {
+			"standard": 100,
+			"master_crafted": 120,
+			"artifact": 140
+		},
+		"description": "During the Great Crusade, there came a need for a hand-held weapon of high rate of fire and respectable firepower that's easy to manufacture. Some Techpriest, or perhaps a Techmarine, put two bolters together and thus the Combi-Bolter was born. Phased out by the Storm Bolter, it is nevertheless a respectable weapon and a relic of more civilised times.",
+		"melee_hands": 1.1,
+		"ranged_hands": 1.1,
+		"ammo": 14,
+		"range": 19,
+		"spli": 11,
+		"arp": 0,
+		"tags": ["bolt"]
+	},
+	//Plasma Pack
+	"Ryza Plasma Gun": {
+		"abbreviation": "RyzPlsmGn",
+		"attack": {
+			"standard": 325,
+			"master_crafted": 350,
+			"artifact": 375
+		},
+		"description": "One of many Plasma weapon patterns that came from the famed Forge World of Ryza. With its characteristic purple glow, alongside slight curvatures of the design, the mark of its forgeworld is impossible to miss. Featuring greater range and accuracy as well as pure stopping power, this is a weapon that even Terminators should fear to face.",
+		"melee_hands": 1,
+		"ranged_hands": 2,
+		"ammo": 18,
+		"range": 14,
+		"spli": 5,
+		"arp": 1,
+		"tags": ["plasma", "energy"]
+	},
+	"Ryza Plasma Pistol": {
+		"abbreviation": "RyzPlsmPis",
+		"attack": {
+			"standard": 145,
+			"master_crafted": 160,
+			"artifact": 175
+		},
+		"description": "The smaller brother of the Ryzan Plasma Gun, it shares its characteristics as well as sleek design and purple glow. Once a regular weapon for Sergeants and some Moritats in the Legiones Astartes, with even some Consuls or Centurions favouring them over Volkites or Disintegrators, the humble Ryzan Plasma Pistol has earned its place as a vaunted relic of any armoury lucky enough to have it.",
+		"melee_hands": 1,
+		"ranged_hands": 2,
+		"ammo": 18,
+		"range": 14,
+		"spli": 5,
+		"arp": 1,
+		"tags": ["plasma", "energy", "pistol"]
+	},
+	"Mars Plasma Cannon": {
+		"abbreviation": "MarsPlsmCnn",
+		"attack": {
+			"standard": 650,
+			"master_crafted": 700,
+			"artifact": 750 //I think that usual 25% increase will be too much for that weapon so applied +150.
+		},
+		"description": "An ancient Plasma Cannon variant born in the bowels of Mother Mars. Once a staple of heavy weapons squads in the time of Legiones Astartes, now a revered relic with power beyond compare with any modern weapons, even those made in the forges of Mars and Ryza in this dark age. Sharing some design and components with Ryzan patterns, it features the same purple glow that makes them so easily distinguishable.",
+		"melee_hands": 1,
+		"ranged_hands": 3,
+		"ammo": 18,
+		"range": 16,
+		"spli": 8,
+		"arp": 1,
+		"tags": ["plasma", "energy"]
+	},
+	//Melta Pack
+	"Primus Melta Gun": {
+		"abbreviation": "PrimMltGn",
+		"attack": {
+			"standard": 560,
+			"master_crafted": 585,
+			"artifact": 610
+		},
+		"description": "The Primus MK II Meltagun's origins have been lost to history, but the knowledge of its power and their bearers who served in the Legiones Astartes remains. Some theories have been made to its Ryzan origins due to the curvature of the body, but the famous Forge World denies those claims.",
+		"melee_hands": 1,
+		"ranged_hands": 2,
+		"ammo": 6,
+		"range": 2.5,
+		"spli": 2,
+		"arp": 1,
+		"tags": ["melta", "energy", "boarding"]
+	},
+	"Proteus Multi-Melta": {
+		"abbreviation": "ProtMltMelt",
+		"attack": {
+			"standard": 1000,
+			"master_crafted": 1100,
+			"artifact": 1200
+		},
+		"description": "This Multi-Melta design originates, like many others used by Legiones Astartes, in the Dark Age of Technology. Deadlier than the current designs fielded by the Space Marine Chapters, it is a relic of both of the zenith of mankind's science and the last moments of the Emperor's true vision.",
+		"melee_hands": 1,
+		"ranged_hands": 2,
+		"ammo": 6,
+		"range": 4.5,
+		"spli": 2,
+		"arp": 1,
+		"tags": ["melta", "energy", "boarding"]
+	},
+	//Flamer Pack
+	"Phaestos Flamer": {
+		"abbreviation": "PhFlmr",
+		"attack": {
+			"standard": 430,
+			"master_crafted": 585,
+			"artifact": 610
+		},
+		"description": "The Phaestos-pattern Flamer is a stark reminder of the time where Mankind's future was yet unmolested by the decaying stench of the Horus Heresy. Oddly shaped for the modern users, it is nonetheless not to be underestimated and its potent promethium-fueled flame has burned through armours of unnumbered heroes.",
+		"melee_hands": 1,
+		"ranged_hands": 2,
+		"ammo": 6,
+		"range": 2.5,
+		"spli": 6,
+		"arp": -1,
+		"tags": ["flame"] //Shouldn't it also feature "boarding"?
+	},
+	//Melee Pack
+	"Power Scythe": {
+		"abbreviation": "PwrSct",
+		"attack": {
+			"standard": 250,
+			"master_crafted": 300,
+			"artifact": 350
+		},
+		"melee_mod": {
+			"standard": 1,
+			"master_crafted": 1.1,
+			"artifact": 1.2
+		},
+		"description": "One of many Power Weapon types made in the nascent Imperium, the Power Scythes never truly became a staple of any large force outside of specialist elements, and when even those faded into obscurity or went traitor, the production of the Power Scythes was halted. Since then few remain in Imperial use, and most can be found in hands of foul traitors.",
+		"melee_hands": 2,
+		"ranged_hands": 1,
+		"ammo": 0,
+		"range": 1.5,
+		"spli": 6,
+		"arp": 1,
+		"tags": ["power"]
+	},
+	//Laser Pack
+	"Ryza Lascannon": {
+		"abbreviation": "RyzLascnn",
+		"attack": {
+			"standard": 750,
+			"master_crafted": 800,
+			"artifact": 850
+		},
+		"description": "The Forge World of Ryza is known not only for its mastery of Plasma weaponry, but also for its genius in Las weapon designs. This revered Ryzan Lascannon pattern can be dated to the Great Crusade, and as such it is the pinnacle of its kind as the Imperium was then. A common sight across the Legiones Astartes heavy support squads as well as Solar Auxilia, any Chapter blessed with one should count themselves lucky.",
+		"melee_hands": 1,
+		"ranged_hands": 2.25,
+		"ammo": 10,
+		"range": 24,
+		"spli": 1,
+		"arp": 1,
+		"tags": ["heavy_ranged", "las", "energy"]
+	},
+	//misc pack
+	"Cthon Autocannon": {
+		"abbreviation": "CthAutocnn",
+		"attack": {
+			"standard": 480,
+			"master_crafted": 520,
+			"artifact": 560
+		},
+		"description": "Originating from the Warmaster's homeworld [allegedly untrue] of Cthonia, this Autocannon pattern was the chosen type of this weapon for Terminator Squads throughout the Great Crusade and subsequent Horus Heresy. While later designs may have outshined it in fire rate or range, this remains the hardest hitting autocannon to date, perhaps with the Kalibrax as a strong competitor.",
+		"melee_hands": 1,
+		"ranged_hands": 2.25,
+		"ammo": 30,
+		"range": 20,
+		"spli": 15,
+		"arp": 1,
+		"tags": ["heavy_ranged", "dreadnought"]
+	},
+	//40k weapons
 	"Storm Shield": {
 		"description": "Protects twice as well when boarding. A powered shield that must be held with a hand.  While powered by the marines armour it shimmers with blue energy.",
 		"abbreviation": "StrmShld",
@@ -881,11 +1168,11 @@ global.weapons = {
 			"artifact": 300
 		},
 		"description": "A two-handed weapon that launches blobs of plasma at the target. They are considered both sacred and dangerous, overheating through rapid firing of the weapon. Overheating can result in detonation of the weapon, killing the wielder.",
-		"melee_hands": 0,
+		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 16,
 		"range": 12,
-		"spli": 3,
+		"spli": 2,
 		"arp": 1,
 		"tags": ["plasma", "energy"]
 	},
@@ -901,7 +1188,7 @@ global.weapons = {
 		"ranged_hands": 3,
 		"ammo": 16,
 		"range": 14,
-		"spli": 2,
+		"spli": 5,
 		"arp": 1,
 		"tags": ["plasma","energy","heavy_ranged", "dreadnought"]
 	},
@@ -945,7 +1232,7 @@ global.weapons = {
 			"artifact": 430
 		},
 		"description": "A rapid-firing weapon able to use a wide variety of ammunition, from mass-reactive explosive to solid shells. It has been found to be incredibly effective against large groups of targets and even Traitor Astartes to an extent.",
-		"melee_hands": 0,
+		"melee_hands": 1,
 		"ranged_hands": 2.25,
 		"ammo": 25,
 		"range": 18,
@@ -1101,7 +1388,16 @@ global.weapons = {
 	"HK Missile": {
 		"abbreviation": "HKMssl",
 		"description": "A single shot hunter killer	missile that serves as a powerful anti armour/aircraft deterent.",
-		"tags": ["HK"]
+		"attack": {
+			"standard": 350,
+			"master_crafted": 400,
+			"artifact": 450
+		},
+		"arp": 1,
+		"range": 50,
+		"ammo": 1,
+		"spli": 1,
+		"tags": ["vehicle"]
 	},
 	"Twin Linked Heavy Bolter Mount": {
 		"attack": {
@@ -2004,7 +2300,7 @@ global.gear = {
 			"req_exp": 100,
 			"maintenance" : 0.5,
 		},
-		"Cataphractii Pattern Terminator": {
+		"Cataphractii": {
 			"abbreviation": "Catphr",
 			"armour_value": {
 				"standard": 42,
@@ -2258,7 +2554,7 @@ global.gear = {
 			},
 			"tags": ["vehicle", "Upgrade"],
 		},
-// Hireling Armour
+	// Hireling Armour
 	// Admech
 		"Skitarii Armour": {
 			"abbreviation": "SkitArm",
@@ -2521,6 +2817,17 @@ global.gear = {
 			},
 			"tags": ["jump"],
 		},
+		"Serpha Jump Pack": {
+			"abbreviation": "SphJmpPck",
+			"special_properties": ["Hammer of Wrath"],
+			"description": "Once the mainstay of the Legiones Astartes, now the Serpha Pattern Jump Pack is nothing but a sad reminder of these better times and of the terrible atrocities that followed. Mainly used by the Traitors in the modern Imperium, it is nonetheless seen in the Loyalist armouries in which it is prized for its superior energy cells and power cabling, but doesn't provide as reliable of a thruster as, for instance, the most common in the 41st millennium Mark VII Mars Pattern.",
+			"damage_resistance_mod": {
+				"standard": 30,
+				"master_crafted": 35,
+				"artifact": 40
+			},
+			"tags": ["jump"],
+		},
 		"Heavy Weapons Pack": {
 			"abbreviation": "HvyWpPck",
 			"description": "A heavy ammunition backpack commonly used by devastators in conjunction with a heavy support weapon.",
@@ -2569,47 +2876,3 @@ global.gear = {
 		// Add more mobility items as needed...
 	}
 }
-
-
-/*
-
-    repeat(2){
-            // Artifact weapons
-            if (arti_armour=false){
-
-                if (string_count("DUB",thawep)>0){attack=floor(attack*1.5);melee_hands+=1;ranged_hands+=1;spli=1;}
-                if (string_count("Dae",thawep)>0){attack=floor(attack*1.5);amm=-1;}
-                if (string_count("VOI",thawep)>0){attack=floor(attack*1.2);}
-                if (string_count("ADAMANTINE",thawep)>0){attack=floor(attack*1.1);}
-
-                if (string_count("MINOR",thawep)>0){attack=floor(attack*0.85);}
-                if (string_count("MNR",thawep)>0){attack=floor(attack*0.85);}
-            }
-
-        }
-    // Vehicle Upgrades
-
-            if (equipment_1="Lucifer Pattern Engine"){statt=5;special_description="";emor=1;
-                descr="A significant upgrade over the more common patterns of Rhino-chassis engines, these engines provide greater output.";}
-
-                    // Vehicle Utility Weapons
-            if (thawep="HK Missile"){attack=350;arp=1;range=50;ranged_hands+=1;amm=1;spli=1;
-                descr="A single-use long-range anti-tank missile, this weapon can surgically destroy armoured targets in the opening stages of a battle.";}
-
-                    // Land Raider Sponsons
-                // Predator Turrets
-
-                if (thawep="Twin Linked Assault Cannon Turret"){attack=360;arp=0;range=12;amm=10;spli=1;
-                    descr="A Predator-compatible turret mounting a pair of short range anti-infantry assault cannons. ";}
-                if (thawep="Flamestorm Cannon Turret"){attack=400;arp=1;range=2.1;amm=12;spli=1;
-                      descr="A Predator-compatible turret housing a huge flamethrower, the heat produced by this terrifying weapon can crack even armoured ceramite. ";}
-                if (thawep="Magna-Melta Turret"){attack=400;arp=1;range=6;amm=12;
-                      descr="A Predator-compatible turret housing a magna-melta, a devastating short-range anti-tank weapon. ";}
-                if (thawep="Plasma Destroyer Turret"){attack=350;arp=1;range=15;spli=1;
-                      descr="A Predator-compatible turret housing a plasma destroyer, sometimes called the plasma executioner after the vehicle variants that mount this terrifying anti-armour weapon. ";}
-                if (thawep="Heavy Conversion Beamer Turret"){attack=750;arp=1;range=25;amm=3;spli=1;
-                    descr="A Predator-compatible turret housing a Heavy Conversion Beam Projector, a heavy energy weapon that turns a target's own matter against it by converting it into destructive energy.";}
-                if (thawep="Neutron Blaster Turret"){attack=400;arp=1;range=15;amm=10
-                      descr="A Predator-compatible turret housing a neutron blaster; a weapon from the Dark Age of Technology, this weapon is capable of destroying enemy armour with impunity. ";}
-                if (thawep="Volkite Saker Turret"){attack=400;arp=0;range=18;amm=50;spli=1;
-                        descr="A Predator-compatible turret housing a Volkite Saker, capable of igniting entire formations of enemy forces with a single sweep. ";}

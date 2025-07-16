@@ -51,14 +51,10 @@ try {
 		if (press == 1) {
 			var del = obj_saveload.save[save];
 			var _save_file = string(PATH_save_files, del);
-			var _save_preview = string(PATH_save_previews, del);
 			if (file_exists(_save_file)) {
 				file_delete(_save_file);
 				if (file_exists($"save{del}log.ini")) {
 					file_delete($"save{del}log.ini");
-				}
-				if (file_exists(_save_preview)) {
-					file_delete(_save_preview);
 				}
 				with (obj_saveload) {
 					instance_destroy();
@@ -434,7 +430,7 @@ try {
 				scr_event_log("green", string(p1) + " on " + string(p3) + " ends.");
 			}
 			obj_controller.cooldown = 10;
-			if (number != 0) {
+			if (number != 0 && instance_exists(obj_turn_end)) {
 				obj_turn_end.alarm[1] = 4;
 			}
 			instance_destroy();
@@ -472,7 +468,7 @@ try {
 
 		if (press == 2) {
 			obj_controller.cooldown = 10;
-			if (number != 0) {
+			if (number != 0 && instance_exists(obj_turn_end)) {
 				obj_turn_end.alarm[1] = 4;
 			}
 			instance_destroy();
@@ -489,7 +485,7 @@ try {
 
 		if (press > 0) {
 			var randa, randa2;
-			randa = roll_dice(1, 100, "high");
+			randa = roll_dice_chapter(1, 100, "high");
 			randa2 = roll_dice(1, 100);
 		}
 
@@ -503,9 +499,7 @@ try {
 			}
 			scr_event_log("", "Planetary Governor of " + string(new_target.name) + " " + scr_roman(planet) + " assassinated.  The next in line takes over.", new_target.name);
 			text = "The next in line for rule of " + string(new_target.name) + " " + scr_roman(planet) + " has taken over their rightful position of Planetary Governor.";
-			option1 = "";
-			option2 = "";
-			option3 = "";
+			reset_popup_options();
 			with (obj_ground_mission) {
 				instance_destroy();
 			}
@@ -513,22 +507,9 @@ try {
 			exit;
 		}
 		if (press == 2) {
-			new_target.dispo[planet] = 70 + floor(random_range(5, 15)) + 1;
-			scr_event_log("", "Planetary Governor of " + string(new_target.name) + " " + scr_roman(planet) + " assassinated.  A more suitable Governor is installed.");
-			if (randa2 <= (10 * estimate)) {
-                for (var i = 0; i < array_length(obj_controller.event); i++) {
-                    if (obj_controller.event[i] == "") {
-                        var ev = i;
-                        break;
-                    }
-                }
-				obj_controller.event[ev] = "governor_assassination_1|" + string(new_target.name) + "|" + string(planet) + "|";
-				obj_controller.event_duration[ev] = ((choose(1, 2, 3, 4, 5, 6) + choose(1, 2, 3, 4, 5, 6)) * 6) + choose(-3, -2, -1, 0, 1, 2, 3);
-			}
-			text = "Many of the successors for " + string(new_target.name) + " " + scr_roman(planet) + " are removed or otherwise made indisposed.  Your chapter ensures that the new Planetary Governor is sympathetic to your plight and more than willing to heed your advice.  A powerful new ally may be in the making.";
-			option1 = "";
-			option2 = "";
-			option3 = "";
+			text = p_data.assasinate_governor(1, estimate);
+
+			reset_popup_options();
 			with (obj_ground_mission) {
 				instance_destroy();
 			}
@@ -536,25 +517,8 @@ try {
 			exit;
 		}
 		if (press == 3) {
-			new_target.dispo[planet] = 101;
-			scr_event_log("", "Planetary Governor of " + string(new_target.name) + " " + scr_roman(planet) + " assassinated.  One of your Chapter Serfs take their position.");
-			if (randa2 <= (25 * estimate)) {
-                for (var i = 0; i < array_length(obj_controller.event); i++) {
-                    if (obj_controller.event[i] == "") {
-                        var ev = i;
-                        break;
-                    }
-                }
-				obj_controller.event[ev] = "governor_assassination_2|" + string(new_target.name) + "|" + string(planet) + "|";
-				obj_controller.event_duration[ev] = (choose(1, 2) * 6) + choose(-3, -2, -1, 0, 1, 2, 3);
-			}
-			text = $"All of the successors for {planet_numeral_name(planet, new_target)} are removed or otherwise made indisposed.  Paperwork is slightly altered.  Rather than any sort of offical one of your Chapter Serfs is installed as the Planetary Governor.  The planet is effectively under your control.";
-			if (new_target.p_first[planet] != 3) {
-				new_target.p_owner[planet] = 1;
-			}
-			option1 = "";
-			option2 = "";
-			option3 = "";
+			text = p_data.assasinate_governor(2, estimate);
+			reset_popup_options();
 			with (obj_ground_mission) {
 				instance_destroy();
 			}
@@ -562,33 +526,12 @@ try {
 			exit;
 		}
 	}
-	/*
-    var he;he=instance_create(argument0.x,argument0.y,obj_temp6);
-    var pip;pip=instance_create(0,0,obj_popup);
-    pip.title="Planetary Governor Assassinated";
-    pip.text=txt;
-    
-    pip.option1="Allow the official successor to become Planetary Governor.";
-    pip.option2="Ensure that a sympathetic successor will be the one to rule.";
-    pip.option3="Remove all successors and install a loyal Chapter Serf.";
-    
-    // Result-  this is the multiplier for the chance of discovery with the inquisition, can also be used to determine
-    // the new Governor disposition if they are the official successor
-    if (aroll<=chance){// Discovered
-        pip.estimate=2;
-    }
-    if (aroll>chance){// Success
-        pip.estimate=1;
-    }
-    */
 
 	if (image == "ruins_fort") {
 		if ((press == 1) && (obj_controller.requisition >= 1000)) {
 			obj_controller.requisition -= 1000;
 			text = "Resources have been spent on the planet to restore the fortress.  The planet's defense rating has increased to 5 (";
-			option1 = "";
-			option2 = "";
-			option3 = "";
+			reset_popup_options();
 			text += string(star_system.p_fortified[planet]) + "+";
 			text += string(5 - star_system.p_fortified[planet]) + ")";
 			star_system.p_fortified[planet] = max(star_system.p_fortified[planet], 5);
@@ -599,9 +542,7 @@ try {
 			var req = floor(random_range(200, 500)) + 1;
 			image = "";
 			text = "Much of the fortress is demolished in order to salvage adamantium and raw materials.  The opration has yielded " + string(req) + " requisition.";
-			option1 = "";
-			option2 = "";
-			option3 = "";
+			reset_popup_options();
 			obj_controller.requisition += req;
 			cooldown = 15;
 			exit;
@@ -618,109 +559,15 @@ try {
         */
 	}
 
-	if ((image == "mechanicus") && (title == "Mechanicus Mission") || (title == "Mechanicus Mission Accepted")) {
-		if ((option1 == "") && (title == "Mechanicus Mission")) {
-			option1 = "Accept";
-			option2 = "Refuse";
-		} else if ((press == 1) && (option1 != "")) {
-			if (string_count("tomb", mission) > 0) {
-				with (obj_temp5) {
-					instance_destroy();
-				}
-				with (obj_star) {
-					if (name == obj_popup.loc) {
-						instance_create(x, y, obj_temp5);
-					}
-				}
-				if (instance_exists(obj_temp5)) {
-					var tempy, eh, eh2, that, that2;
-					tempy = instance_nearest(obj_temp5.x, obj_temp5.y, obj_star);
-					eh = 0;
-					that = 0;
-					eh2 = 0;
-					that2 = 0;
-					repeat (4) {
-						eh += 1;
-						var tomb_list = search_planet_features(tempy.p_feature[eh], P_features.Necron_Tomb);
-						if ((tempy.p_owner[eh] <= 5) && (array_length(tomb_list) > 0)) {
-							for (var tomb = 0; tomb < array_length(tomb_list); tomb++) {
-								if (tempy.p_feature[eh][tomb].awake == 0) {
-									that = eh;
-								}
-								if (that != 0) {
-									break;
-								}
-							}
-						}
-					}
-
-					with (obj_temp5) {
-						instance_destroy();
-					}
-					if (eh > 0) {
-						if (find_problem_planet(that, "", tempy) > 0) {
-							add_new_problem(that, "mech_tomb1", 17, tempy);
-							text = $"The Adeptus Mechanicus await your forces at " + string(tempy.name) + " " + scr_roman(that) + $".  They are expecting at least two squads of Astartes and have placed the testing on hold until their arrival.  {global.chapter_name} have 16 months to arrive.";
-							scr_event_log("", "Mechanicus Mission Accepted: At least two squads of marines are expected at " + string(tempy.name) + " " + scr_roman(that) + " within 16 months.", tempy.name);
-							new_star_event_marker("green");
-							title = "Mechanicus Mission Accepted";
-							option1 = "";
-							option2 = "";
-							cooldown = 15;
-							exit;
-						}
-					}
-				}
-			}
-
-			if ((string_count("raider", mission) > 0) || (string_count("bionics", mission) > 0) || (string_count("mech_mars", mission) > 0)) {
-				var mission_star = star_by_name(obj_popup.loc);
-				if (instance_exists(mission_star)) {
-					var forge_planet = scr_get_planet_with_type(mission_star, "Forge");
-					if (mission_star.p_owner[eh] == 3 && forge_planet) {
-						mission_loc = planet_numeral_name(forge_planet, mission_star);
-						if (string_count("raider", mission)) {
-							add_new_problem(forge_planet, "mech_raider", 49, mission_star, {"completion": 0});
-							text = $"The Adeptus Mechanicus await your forces at {mission_loc}.  They are expecting six {obj_ini.role[100][16]}s and a Land Raider.";
-							scr_event_log("", $"Mechanicus Mission Accepted: Six of your {obj_ini.role[100][16]}s and a Land Raider are to be stationed at {mission_loc} for 24 months.", mission_star.name);
-						} else if (string_count("bionics", mission)) {
-							add_new_problem(forge_planet, "mech_bionics", 49, mission_star, {"completion": 0});
-							text = $"The Adeptus Mechanicus await your forces at {mission_loc}.  They are expecting ten Astartes with bionics.";
-							scr_event_log("", $"Mechanicus Mission Accepted: Ten Astartes with bionics are to be stationed at {mission_loc} for 24 months for testing purposes.", mission_star.name);
-						} else if (string_count("mars", mission)) {
-							add_new_problem(forge_planet, "mech_mars", 13, mission_star);
-							text = $"The Adeptus Mechanicus await your {obj_ini.role[100][16]}s at {mission_loc}.  They are willing to hold on the voyage for up to 12 months.";
-							scr_event_log("", $"Mechanicus Mission Accepted: {obj_ini.role[100][16]}s are expected at {mission_loc} within 12 months, for the voyage to Mars.", tempy.name);
-						}
-						with (mission_star) {
-							new_star_event_marker("green");
-						}
-						cooldown = 15;
-						title = "Mechanicus Mission Accepted";
-						option1 = "";
-						option2 = "";
-						option3 = "";
-						exit;
-					}
-				}
-			}
-			// Other missions here
-		} else if ((press == 2) && (option2 != "")) {
-			obj_controller.cooldown = 10;
-			if (number != 0) {
-				obj_turn_end.alarm[1] = 4;
-			}
-			instance_destroy();
-		}
+	if (image == "mechanicus" && (title == "Mechanicus Mission" || title == "Mechanicus Mission Accepted")){
+		mechanicus_mission_procedures();
 	}
 
 	if (image == "geneseed_lab") {
 		if (press == 1) {
 			image = "";
 			text = string(estimate) + " gene-seed has been added to the chapter vaults.";
-			option1 = "";
-			option2 = "";
-			option3 = "";
+			reset_popup_options();
 			obj_controller.gene_seed += estimate;
 			with (obj_ground_mission) {
 				instance_destroy();
@@ -733,9 +580,7 @@ try {
 			req = floor(random_range(200, 500)) + 1;
 			image = "";
 			text = "Technological components have been salvaged, granting " + string(req) + " requisition.";
-			option1 = "";
-			option2 = "";
-			option3 = "";
+			reset_popup_options();
 			obj_controller.requisition += req;
 			with (obj_ground_mission) {
 				instance_destroy();
@@ -772,13 +617,13 @@ try {
 
             _ruins.determine_race();
 
-            dice = roll_dice(1, 100, "high");
+            dice = roll_dice_chapter(1, 100, "high");
             ruins_battle = dice <= 50;
 
             // ruins_battle=1;
 
             if (ruins_battle == 1) {
-                dice = roll_dice(1, 100, "low");
+                dice = roll_dice_chapter(1, 100, "low");
 
                 if (dice >= 0 && dice <= 60) {
                     battle_threat = 1;
@@ -884,118 +729,23 @@ try {
         }
     }
 
-	if (image == "stc") {
-		if ((ma_co > 0) && (ma_id == 0)) {
-			if (press == 1) {
-				obj_ground_mission.alarm[5] = 1;
-				obj_controller.cooldown = 10;
-				instance_destroy();
-			}
-			if (press == 2) {
-				scr_return_ship(obj_ground_mission.loc, obj_ground_mission, obj_ground_mission.num);
-				var man_size, ship_id, comp, plan, i;
-				ship_id = 0;
-				man_size = 0;
-				comp = 0;
-				plan = 0;
-				ship_id = array_get_index(obj_ini.ship, obj_ground_mission.loc);
-				obj_controller.menu = 0;
-				obj_controller.managing = 0;
-				obj_controller.cooldown = 10;
-				with (obj_ground_mission) {
-					instance_destroy();
-				}
-				instance_destroy();
-				exit;
-			}
-			if (press == 3) {
-				exit;
-			}
-		} else if ((ma_co > 0) && (ma_id > 0)) {
-			if (press == 1) {
-				obj_ground_mission.alarm[5] = 1;
-				obj_controller.cooldown = 10;
-				instance_destroy();
-			}
-			if (press == 2) {
-				scr_return_ship(obj_ground_mission.loc, obj_ground_mission, obj_ground_mission.num);
-				var man_size, ship_id, comp, plan, i;
-				i = 0;
-				ship_id = 0;
-				man_size = 0;
-				comp = 0;
-				plan = 0;
+	if (image == "stc" && press > 0) {
+		var _option_picked = $"option{press}";
+		_option_picked = self[$ _option_picked];
 
-				ship_id = array_get_index(obj_ini.ship, obj_ground_mission.loc);
+		if (string_count("take the STC", _option_picked) || string_count("steal the STC", _option_picked)) {
+			obj_ground_mission.alarm[5] = 1;
+		} else if (string_count("Leave it", _option_picked)) {
+            scr_return_ship(0, obj_ground_mission, obj_ground_mission.num);
+			with (obj_ground_mission) {
+				instance_destroy();
+			}
+		} else if (string_count("to the Adeptus Mechanicus", _option_picked)) {
+			obj_ground_mission.alarm[6] = 1;
+		}
 
-				obj_controller.menu = 0;
-				obj_controller.managing = 0;
-				obj_controller.cooldown = 10;
-				with (obj_ground_mission) {
-					instance_destroy();
-				}
-				instance_destroy();
-				exit;
-			}
-			if (press == 3) {
-				obj_ground_mission.alarm[6] = 1;
-				obj_controller.cooldown = 10;
-				instance_destroy();
-			}
-		} else if ((ma_co == 0) && (ma_id > 0) && (target_comp != 3)) {
-			if (press == 1) {
-				scr_return_ship(obj_ground_mission.loc, obj_ground_mission, obj_ground_mission.num);
-				var man_size, ship_id, comp, plan, i;
-				i = 0;
-				ship_id = 0;
-				man_size = 0;
-				comp = 0;
-				plan = 0;
-				ship_id = array_get_index(obj_ini.ship, obj_ground_mission.loc);
-				obj_controller.menu = 0;
-				obj_controller.managing = 0;
-				obj_controller.cooldown = 10;
-				with (obj_ground_mission) {
-					instance_destroy();
-				}
-				instance_destroy();
-				exit;
-			}
-			if (press == 2) {
-				obj_ground_mission.alarm[6] = 1;
-				obj_controller.cooldown = 10;
-				instance_destroy();
-			}
-			if (press == 3) {
-				exit;
-			}
-		}
-		if ((ma_id > 0) && (target_comp == 3)) {
-			if (press == 1) {
-				scr_return_ship(obj_ground_mission.loc, obj_ground_mission, obj_ground_mission.num);
-				var man_size, ship_id, comp, plan, i;
-				i = 0;
-				ship_id = 0;
-				man_size = 0;
-				comp = 0;
-				plan = 0;
-				ship_id = array_get_index(obj_ini.ship, obj_ground_mission.loc);
-				obj_controller.menu = 0;
-				obj_controller.managing = 0;
-				obj_controller.cooldown = 10;
-				with (obj_ground_mission) {
-					instance_destroy();
-				}
-				instance_destroy();
-				exit;
-			}
-			if (press == 2) {
-				exit;
-			}
-			if (press == 3) {
-				exit;
-			}
-		}
+		instance_destroy();
+		exit;
 	}
 
 	if (type == 6) {
@@ -1098,9 +848,7 @@ try {
 			title = "Inquisition Mission Completed";
 			image = "exploding_ship";
 			text = "The Inquisitor's ship begans to bank and turn, to flee, but is immediately fired upon by your fleet.  The ship explodes, taking the Inquisitor with it.  The mission has been accomplished.";
-			option1 = "";
-			option2 = "";
-			option3 = "";
+			reset_popup_options();
 
 			scr_event_log("", "Inquisition Mission Completed: The radical Inquisitor has been purged.");
 
@@ -1206,11 +954,11 @@ try {
 					}
 
 					instance_activate_object(obj_star);
-					mission_star = star_by_name(obj_controller.temp[200]);
-
+					mission_star = star_by_name(obj_temp8.loc);
 					var ppp = 0;
-					remove_planet_problem(planet, "bomb", mission_star);
-					mission_star.p_feature[planet][search_planet_features(mission_star.p_feature[planet], P_features.Necron_Tomb)[0]].sealed = 1;
+					remove_planet_problem(planet, "necron", mission_star);
+					seal_tomb_world(mission_star.p_feature[planet]);
+					// mission_star.p_feature[planet][search_planet_features(mission_star.p_feature[planet], P_features.Necron_Tomb)[0]].sealed = 1;
 					with (obj_temp8) {
 						instance_destroy();
 					}
@@ -1267,7 +1015,7 @@ try {
 			            add_to_battle();
 			        }               
 			    }
-			    delete _roster				
+			    delete _roster;			
 
 
 				instance_activate_object(obj_star);
@@ -1323,14 +1071,16 @@ try {
 				}
 				scr_event_log("", $"Inquisition Mission Accepted: The Inquisition wish for Astartes to land on and investigate {mission_star.name} {scr_roman(planet)} within {estimate} months.", mission_star.name);
 			}
-		} else if ((mission != "") && (title == "Inquisition Mission")) {
+		}
+		
+		if ((mission != "") && (title == "Inquisition Mission")) {
 			obj_controller.temp[200] = string(loc);
 			var mission_star, onceh;
 			mission_star = 0;
 			onceh = 0;
 			var mission_star = star_by_name(obj_controller.temp[200]);
 			var mission_is_go = false;
-			if (mission_star != "none") {
+			if (mission_star != "none" && planet > 0) {
 				var _estimate = estimate;
 				var _planet = planet;
 				var _mission = mission;
@@ -1340,10 +1090,12 @@ try {
 						mission_is_go = true;
 					}
 				}
+
 				if (mission_is_go) {
 					if (demand) {
 						title = "Inquisition Mission Demand";
 					}
+
 
 					if (mission == "purge") {
 						scr_event_log("", $"Inquisition Mission Accepted: The nobles of {mission_star.name} {scr_roman(planet)} must be selectively purged within {estimate} months.", mission_star.name);
@@ -1423,8 +1175,13 @@ try {
 							title = "Inquisition Mission Demand";
 							text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  {global.chapter_name} are to capture the Tau Ethereal somewhere within the {mission_star.name} system.";
 						}
-						if (mission_star.p_problem[planet, 1] == "recon") {
+						if (has_problem_star("recon", mission_star)) {
 							scr_event_log("", $"Inquisition Mission Accepted: The Inquisition wish for {global.chapter_name} to capture the Tau Ethereal somewhere within {mission_star.name}.", mission_star.name);
+						}
+					} else if (mission == "demon_world"){
+						scr_event_log("", $"Inquisition Mission Accepted: The demon world of {mission_star.name} {scr_roman(planet)} will be purged by your hand.", mission_star.name);
+						if (demand) {
+							text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  An out of control Demon World {mission_star.name} {scr_roman(onceh)} must be cleansed within {estimate} months.";
 						}
 					}
 				}
@@ -1446,15 +1203,6 @@ try {
 						}
 						if (obj_ini.home_type == "Lava") {
 							image = "fortress_lava";
-						}
-						if (obj_ini.icon_name == "dorf1") {
-							image = "fortress_dorf";
-						}
-						if (obj_ini.icon_name == "dorf2") {
-							image = "fortress_dorf";
-						}
-						if (obj_ini.icon_name == "dorf3") {
-							image = "fortress_dorf";
 						}
 						last_artifact = scr_add_artifact("good", "inquisition", 0, obj_ini.home_name, 2);
 					} else if (obj_ini.fleet_type != ePlayerBase.home_world) {
@@ -1502,7 +1250,7 @@ try {
 				obj_ground_mission.alarm[3] = 1;
 			}
 			if ((target_comp > 2) && (target_comp != 7) && (target_comp < 9)) {
-				obj_controller.menu = 20;
+				scr_toggle_diplomacy();
 				obj_controller.cooldown = 10;
 				obj_controller.diplomacy = target_comp;
 				obj_controller.trading_artifact = 1;
@@ -1526,7 +1274,7 @@ try {
 
 		obj_controller.cooldown = 10;
 		if (obj_controller.complex_event == false) {
-			if (number != 0) {
+			if (number != 0 && instance_exists(obj_turn_end)) {
 				obj_turn_end.alarm[1] = 4;
 			}
 			instance_destroy();
@@ -1557,22 +1305,15 @@ try {
 					instance_destroy();
 				}
 			}
-			if (obj_ini.fleet_type != ePlayerBase.home_world) {
-				var last_artifact = scr_add_artifact("random", "", 4, obj_ini.ship[0], 501);
-			}
-			if (obj_ini.fleet_type == ePlayerBase.home_world) {
-				var last_artifact = scr_add_artifact("random", "", 4, obj_ini.home_name, 2);
-			}
-			option1 = "";
-			option2 = "";
-			option3 = "";
+
+			var last_artifact = scr_add_artifact("random", "", 4);
+
+			reset_popup_options();
 			title = "Inquisition Mission Completed";
 			text = "Your ship sends over a boarding party, who retrieve the offered artifact- ";
 			text += $" some form of {obj_ini.artifact[last_artifact]}.  Once it is safely stowed away your ship is then ordered to fire.  The Inquisitor's own seems to hesitate an instant before banking away, but is quickly destroyed.";
 			image = "exploding_ship";
-			option1 = "";
-			option2 = "";
-			option3 = "";
+			reset_popup_options();
 			scr_event_log("", "Artifact recovered from radical Inquisitor.");
 			scr_event_log("", "Inquisition Mission Completed: The radical Inquisitor has been purged.");
 			exit;
@@ -1580,9 +1321,7 @@ try {
 
 		if (title == "He Built It") {
 			obj_ini.god[ma_co, ma_id] += 10;
-			option1 = "";
-			option2 = "";
-			option3 = "";
+			reset_popup_options();
 		}
 
 		if (title == "Mercy Plea") {
@@ -1715,7 +1454,7 @@ try {
 		obj_controller.cooldown = 10;
 
 		if (obj_controller.complex_event == false) {
-			if (number != 0) {
+			if (number != 0 && instance_exists(obj_turn_end)) {
 				obj_turn_end.alarm[1] = 4;
 			}
 			instance_destroy();
@@ -1734,33 +1473,22 @@ try {
 					action = "";
 				}
 			}
-			if (obj_ini.fleet_type != ePlayerBase.home_world) {
-				var last_artifact = scr_add_artifact("random", "", 4, obj_ini.ship[0], 501);
-			}
-			if (obj_ini.fleet_type == ePlayerBase.home_world) {
-				var last_artifact = scr_add_artifact("random", "", 4, obj_ini.home_name, 2);
-			}
-			option1 = "";
-			option2 = "";
-			option3 = "";
+			var last_artifact = scr_add_artifact("random", "", 4);
+			
+			reset_popup_options();
 			title = "Inquisition Mission Completed";
 			text = "Your ship sends over a boarding party, who retrieve the offered artifact- ";
 			text += $" some form of {obj_ini.artifact[last_artifact]}.  As promised {global.chapter_name} allow the Inquisitor to leave, hoping for the best.  What's the worst that could happen?";
 			image = "artifact_recovered";
-			option1 = "";
-			option2 = "";
-			option3 = "";
+			reset_popup_options();
 			scr_event_log("", "Artifact Recovered from radical Inquisitor.");
 			scr_event_log("", "Inquisition Mission Completed: The radical Inquisitor has been purged.");
 
-            for (var i = 0; i < array_length(obj_controller.event); i++) {
-                if (obj_controller.event[i] == "") {
-                    var ev = i;
-                    break;
-                }
-            }
-			obj_controller.event[ev] = "inquisitor_spared1";
-			obj_controller.event_duration[ev] = floor(random_range(6, 18)) + 1;
+	        add_event({
+	        	e_id : "inquisitor_spared",
+	        	duration : irandom_range(6, 18) + 1,
+	        	variation : 1,
+	        })
 
 			exit;
 		}
@@ -1778,20 +1506,15 @@ try {
 			title = "Inquisition Mission Completed";
 			text = $"{global.chapter_name} allow the Inquisitor to leave, trusting in their words.  If they truly do have key information it is a risk {global.chapter_name} are willing to take.  What's the worst that could happen?";
 			image = "artifact_recovered";
-			option1 = "";
-			option2 = "";
-			option3 = "";
+			reset_popup_options();
 
 			scr_event_log("", "Inquisition Mission Completed?: The radical Inquisitor has been allowed to flee in order to weaken the forces of Chaos, as they promised.");
 
-            for (var i = 0; i < array_length(obj_controller.event); i++) {
-                if (obj_controller.event[i] == "") {
-                    var ev = i;
-                    break;
-                }
-            }
-			obj_controller.event[ev] = "inquisitor_spared2";
-			obj_controller.event_duration[ev] = floor(random_range(6, 18)) + 1;
+	        add_event({
+	        	e_id : "inquisitor_spared",
+	        	duration : irandom_range(6, 18) + 1,
+	        	variation : 2,
+	        })
 
 			exit;
 		} else if (image == "artifact") {
@@ -1830,7 +1553,7 @@ try {
 				// Set disposition
 				// 135
 
-				obj_controller.menu = 20;
+				scr_toggle_diplomacy();
 				obj_controller.cooldown = 10;
 				obj_controller.diplomacy = target_comp;
 				with (obj_controller) {
@@ -1870,7 +1593,7 @@ try {
 
 		obj_controller.cooldown = 10;
 		if (obj_controller.complex_event == false) {
-			if (number != 0) {
+			if (number != 0 && instance_exists(obj_turn_end)) {
 				obj_turn_end.alarm[1] = 4;
 			}
 			instance_destroy();

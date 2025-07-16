@@ -118,12 +118,8 @@ if (turn=240) and (global.chapter_name="Lamenters"){
 // ** Battlefield Loot **
 if (scr_has_adv("Tech-Scavengers")){
     var lroll1,lroll2,loot="";
-    lroll1=floor(random(100))+1;
-    lroll2=floor(random(100))+1;
-    if (scr_has_disadv("Shitty Luck")){
-        lroll1+=2;
-        lroll2+=25;
-    }
+    lroll1=roll_dice_chapter(1, 100, "low");
+    lroll2=roll_dice_chapter(1, 100, "low");
     if (lroll1<=5){
         loot=choose("Chainsword","Bolt Pistol","Combat Knife","Narthecium");
         if (lroll2<=80) then loot=choose("Power Sword","Storm Bolter");
@@ -259,7 +255,7 @@ for (var c = 0; c < 11; c++){
             penit_co[p]=c;
             penit_id[p]=e;
             penitorium+=1;
-            unit.loyalty--;
+            unit.alter_loyalty(-1);
             if (unit.corruption<90) and (unit.corruption>0){
                 var heresy_old=0,heresy_new=0;
                 heresy_old=round((unit.corruption*unit.corruption)/50)-0.5;
@@ -367,91 +363,29 @@ if (penitent==1) and (blood_debt==0){
 }
 // ** Ork WAAAAGH **
 if ((turn>=irandom(200)+100) or (obj_ini.fleet_type==eFACTION.Mechanicus)) and (faction_defeated[eFACTION.Ork]==0){
-    var waaagh=floor(random(100))+1;
-    with(obj_star){
-        if (owner==eFACTION.Ork) then instance_create(x,y,obj_temp2);
-    }
-    if ((instance_number(obj_temp2)>=5) and (waaagh<=instance_number(obj_temp2)) and (obj_controller.known[eFACTION.Ork]==0))/* or (obj_controller.is_test_map=true)*/{
-        obj_controller.known[eFACTION.Ork]=0.5;
-		//set an alarm for all ork controlled planets
-        with(obj_star){
-            if (owner==eFACTION.Ork) then alarm[4]=1;
-        }
 
-        if (!instance_exists(obj_turn_end)) then scr_popup("WAAAAGH!","The greenskins have swelled in activity, their numbers increasing seemingly without relent.  A massive Warboss has risen to take control, leading most of the sector's Orks on a massive WAAAGH!","waaagh","");
-		
-        if (instance_exists(obj_turn_end)){
-            obj_turn_end.popups+=1;
-            obj_turn_end.popup[obj_turn_end.popups]=1;
-            obj_turn_end.popup_type[obj_turn_end.popups]="WAAAAGH!";
-            obj_turn_end.popup_text[obj_turn_end.popups]="The greenskins have swelled in activity, their numbers increasing seemingly without relent.  A massive Warboss has risen to take control, leading most of the sector's Orks on a massive WAAAGH!";
-            obj_turn_end.popup_image[obj_turn_end.popups]="waaagh";
-            scr_event_log("red","Ork WAAAAGH! begins.");
-
-            with(obj_star){
-                if (owner==eFACTION.Ork){
-                    rund=floor(random(planets))+1;
-                    if (p_owner[rund]==eFACTION.Ork) and (p_pdf[rund]==0) and (p_guardsmen[rund]==0) and (p_orks[rund]>=2) then instance_create(x,y,obj_temp6);
-                }
-            }
-            if (instance_exists(obj_temp6)){
-                var you2,you;
-                rund=0;
-                you2=instance_nearest(random(room_width),random(room_height),obj_temp6);
-                you=instance_nearest(you2.x,you2.y,obj_star);
-
-                with(obj_temp2){instance_destroy();}
-                for(var i=0; i<10; i++){
-                    if (!instance_exists(obj_temp2)){
-                        rund=round(random(you.planets));
-						if (rund>0) and(rund<5){
-							if	(you.p_owner[rund]==eFACTION.Ork) and (you.p_pdf[rund]+you.p_guardsmen[rund]==0) and (you.p_orks[rund]>=2) then array_push( you.p_feature[rund], new NewPlanetFeature(P_features.OrkWarboss));
-						}
-                        if (you.p_orks[rund]<4) then you.p_orks[rund]=4;
-                        if (planet_feature_bool(you.p_feature[rund], P_features.OrkWarboss)==1) then instance_create(x,y,obj_temp2);
-                    }
-                }
-            }
-            with(obj_temp6){instance_destroy();}
-            with(obj_temp2){instance_destroy();}
-        }
-    }
-    with(obj_temp2){instance_destroy();}
 }
 
-// if (known[eFACTION.Ecclesiarchy]=1){var spikky;spikky=choose(0,0,0,1,1);if (spikky=1) then with(obj_turn_end){audiences+=1;audien[audiences]=5;audien_topic[audiences]="intro";}}
 if (known[eFACTION.Ecclesiarchy]==1){
     spikky=choose(0,1,1);
-    if (spikky==1) then with(obj_turn_end){
-        audiences+=1;
-        audien[audiences]=eFACTION.Ecclesiarchy;
-        known[eFACTION.Ecclesiarchy] = 2;
-        audien_topic[audiences]="intro";
-        if (obj_controller.faction_status[eFACTION.Ecclesiarchy]=="War") then audien_topic[audiences]="declare_war";
+    if (spikky){
+        var _topic = faction_status[eFACTION.Ecclesiarchy]=="War" ? "declare_war" : "intro";
+        scr_audience(eFACTION.Ecclesiarchy, _topic);
     }
 }
 if (known[eFACTION.Eldar]==1) and (faction_defeated[eFACTION.Eldar]==0){
     spikky=choose(0,1);
-    if (spikky==1) then with(obj_turn_end){
-        audiences+=1;
-        audien[audiences]= eFACTION.Eldar;
-        audien_topic[audiences]="intro1";
+    if (spikky==1){
+        scr_audience(eFACTION.Eldar, "intro1");
     }
 }
 if (known[eFACTION.Ork]==0.5) and (faction_defeated[eFACTION.Ork]==0){
-    spikky=floor(random(7));
-    if (spikky==1) then with(obj_turn_end){
-        audiences+=1;
-        audien[audiences]=eFACTION.Ork;
-        audien_topic[audiences]="intro";
+    if (1==irandom(7)){
+        scr_audience(eFACTION.Ork, "intro");
     }
 }
 if (known[eFACTION.Tau]==1) and (faction_defeated[eFACTION.Tau]==0){
-    with(obj_turn_end){
-        audiences+=1;
-        audien[audiences]=8;
-        audien_topic[audiences]="intro";
-    }
+    scr_audience(eFACTION.Tau, "intro");
 }
 // ** Quests here **
 // 135 ; quests
@@ -516,218 +450,12 @@ with(obj_temp6){instance_destroy();}
 for(var i=1; i<=10; i++){
     if (turns_ignored[i]==0) and (annoyed[i]>0) then annoyed[i]-=1;
 }
+
 // ** Various checks for imperium and faction relations **
-for(var i=1; i<=99; i++){
-    if (event[i]!="") and (event_duration[i]>0){
-        event_duration[i]-=1;
-        if (event_duration[i]==0){
-
-            if (event[i]=="game_over_man") then obj_controller.alarm[8]=1;
-            // Removes planetary governor installed by the chapter
-            if (string_count("remove_serf",event[i])>0){
-                explode_script(event[i],"|");
-                var ta=string(explode[0]);
-                var star_name=string(explode[1]);
-                var planet=real(explode[2]);
-                var event_star = star_by_name(star_name);
-                if (event_star!="none"){
-                    event_star.dispo[planet]=-10;// Resets
-                    var twix=$"Inquisition executes Chapter Serf in control of {star_name} {planet} and installs a new Planetary Governor.";
-                    if (event_star.p_owner[planet]=eFACTION.Player) then event_star.p_owner[planet]=event_star.p_first[planet];
-                    scr_alert("","",twix,0,0);
-                    scr_event_log("",twix, star_name);
-                }
-            }
-            // Changes relation to good
-            if (event[i]=="enemy_imperium"){
-                scr_alert("green","enemy","You have made amends with your enemy in the Imperium.",0,0);
-                disposition[eFACTION.Imperium]+=20;
-                scr_event_log("","Amends made with Imperium.");
-            }
-            if (event[i]=="enemy_mechanicus"){
-                scr_alert("green","enemy","You have made amends with your Mechanicus enemy.",0,0);
-                disposition[eFACTION.Mechanicus]+=20;
-                scr_event_log("","Amends made with Mechanicus enemy.");
-            }
-            if (event[i]=="enemy_inquisition"){
-                scr_alert("green","enemy","You have made amends with your enemy in the Inquisition.",0,0);
-                disposition[eFACTION.Inquisition]+=20;
-                scr_event_log("","Amends made with Inquisition enemy.");
-            }
-            if (event[i]=="enemy_ecclesiarchy"){
-                scr_alert("green","enemy","You have made amends with your enemy in the Ecclesiarchy.",0,0);
-                disposition[eFACTION.Ecclesiarchy]+=20;
-                scr_event_log("","Amends made with Ecclesiarchy enemy.");
-            }
-            // Sector commander losses its mind
-            if (event[i]=="imperium_daemon"){
-                var alert_string = $"Sector Commander {faction_leader[eFACTION.Imperium]} has gone insane."
-                scr_alert("red","lol",alert_string,0,0);
-                faction_defeated[eFACTION.Imperium]=1;
-                scr_event_log("red",alert_string);
-            }
-            // Starts chaos invasion
-		    if (event[i]=="chaos_invasion"){ 
-				var xx=0,yy=0,flee=0,dirr=0;
-                var star_id = scr_random_find(1,true,"","");
-				if(star_id != undefined){
-                    scr_event_log("purple","Chaos Fleets exit the warp near the "+string(star_id.name)+" system.", star_id.name);
-                    for(var j=0; j<4; j++){
-                        dirr+=irandom_range(50,100);
-                        xx=star_id.x+lengthdir_x(72,dirr);
-						yy=star_id.y+lengthdir_y(72,dirr);
-                        flee=instance_create(xx,yy,obj_en_fleet);
-						flee.owner=eFACTION.Chaos;
-                        flee.sprite_index=spr_fleet_chaos;
-						flee.image_index=4;
-                        flee.capital_number=choose(0,1);
-						flee.frigate_number=choose(2,3);
-						flee.escort_number=choose(4,5,6);
-                        flee.trade_goods="csm";
-						obj_controller.chaos_fleets+=1;
-                        flee.action_x=star_id.x;
-						flee.action_y=star_id.y;
-						flee.alarm[4]=1;
-                    }	
-				}
-            }
-            // Ships construction
-            if (string_count("new_",event[i])>0){
-                var new_ship_event=event[i];
-                var active_forges = [];
-                var chosen_star = false;
-                with(obj_star){
-                    if (owner==eFACTION.Mechanicus){
-                        for (i=1;i<=planets;i++){
-                            if (p_type[i]=="Forge") and (p_owner[i]==eFACTION.Mechanicus){
-                                array_push(active_forges,new PlanetData(i, self));
-                            }
-                        }
-                    }
-                }
-                if (array_length(active_forges)>0){
-                    var ship_spawn = active_forges[irandom(array_length(active_forges)-1)];
-                    var _new_player_fleet=instance_create(ship_spawn.system.x,ship_spawn.system.y,obj_p_fleet);
-
-                    // Creates the ship
-                    var last_ship = new_player_ship(new_ship_event, ship_spawn.system.name);
-
-                    add_ship_to_fleet(last_ship, _new_player_fleet)
-
-                    // show_message(string(obj_ini.ship_class[last_ship])+":"+string(obj_ini.ship[last_ship]));
-
-                    if (obj_ini.ship_size[last_ship]!=1) then scr_popup("Ship Constructed",$"Your new {obj_ini.ship_class[last_ship]} '{obj_ini.ship[last_ship]}' has finished being constructed.  It is orbiting {ship_spawn.system.name} and awaits its maiden voyage.","shipyard","");
-                    if (obj_ini.ship_size[last_ship]==1) then scr_popup("Ship Constructed",$"Your new {obj_ini.ship_class[last_ship]} Escort '{obj_ini.ship[last_ship]}' has finished being constructed.  It is orbiting {ship_spawn.system.name} and awaits its maiden voyage.","shipyard","");
-                    var bob=instance_create(ship_spawn.system.x+16,ship_spawn.system.y-24,obj_star_event);
-                    bob.image_alpha=1;
-                    bob.image_speed=1;
-                }
-                if (array_length(active_forges)==0){
-                    event_duration[i]=2;
-                    scr_popup("Ship Construction halted",$"A lack of suitable forge worlds in the system has halted construction of your requested ship","shipyard","");
-                }
-                event[i]="";
-                event_duration[i]-=1;
-            }
-            // Spare the inquisitor
-            if (string_count("inquisitor_spared",event[i])>0){
-                var diceh=floor(random(100))+1;
-
-                if (scr_has_disadv("Shitty Luck")) then diceh-=25;
-
-                if (diceh<=25){
-                    alarm[8]=1;
-                    scr_loyalty("Crossing the Inquisition","+");
-                }
-                if (diceh>25) and (diceh<=50){scr_loyalty("Crossing the Inquisition","+");}
-                if (diceh>50) and (diceh<=85){}
-                if (diceh>85) and (event[i]="inquisitor_spared2"){
-                    scr_popup("Anonymous Message","You recieve an anonymous letter of thanks.  It mentions that motions are underway to destroy any local forces of Chaos.","","");
-                    with(obj_star){
-                        for(var o=1; o<=planets; o++){
-                            p_heresy[o]=max(0,p_heresy[o]-10);
-                        }
-                    }
-                }
-            }
-
-            if (string_count("strange_building",event[i])>0){
-                var b_event="",marine_name="",comp=0,marine_num=0,item="",unit;
-                explode_script(event[i],"|");
-                b_event=string(explode[0]);
-                marine_name=string(explode[1]);
-                comp=real(explode[2]);
-                marine_num=real(explode[3]);
-                unit=obj_ini.TTRPG[comp][marine_num];
-                item=string(explode[4]);
-
-                var killy=0,tixt=string(obj_ini.role[100][16])+" "+string(marine_name)+" has finished his work- ";
-
-                if (item=="Icon"){
-                    tixt+="it is a "+string(global.chapter_name)+" Icon wrought in metal, finely decorated.  Pride for his chapter seems to have overtaken him.  There are no corrections to be made and the item is placed where many may view it.";
-                }
-                if (item=="Statue"){
-                    tixt+="it is a small, finely crafted statue wrought in metal.  The "+string(obj_ini.role[100][16])+" is scolded for the waste of material, but none daresay the quality of the piece.";
-                }
-                if (item=="Bike"){
-                    scr_add_item("Bike",1);
-                    tixt+="it is a finely crafted Bike, conforming mostly to STC standards.  The other "+string(obj_ini.role[100][16])+" are surprised at the rapid pace of his work.";
-                }
-                if (item=="Rhino"){
-                    scr_add_vehicle("Rhino",0,"Storm Bolter","Storm Bolter","","Artificer Hull","Dozer Blades");
-                    tixt+="it is a finely crafted Rhino, conforming to STC standards.  The other "+string(obj_ini.role[100][16])+" are surprised at the rapid pace of his work.";
-                }
-                if (item=="Artifact"){
-                    var last_artifact=0;
-                    scr_event_log("",string(obj_ini.role[100][16])+" "+string(marine_name)+" constructs an Artifact.");
-                    if (obj_ini.fleet_type==ePlayerBase.home_world){
-                        last_artifact =  scr_add_artifact("random_nodemon","",0,obj_ini.home_name,2);
-                    } else {
-                        if (obj_ini.fleet_type != ePlayerBase.home_world){
-                            last_artifact = scr_add_artifact("random_nodemon","",0,obj_ini.ship_location[0],501);
-                        }
-                    }
-
-                    tixt+=$"some form of divine inspiration has seemed to have taken hold of him.  An artifact {obj_ini.artifact[last_artifact]} has been crafted.";
-                }
-                if (item=="baby"){
-                    unit.edit_corruption(choose(8,12,16,20))
-                    tixt+="some form of horrendous statue.  A weird amalgram of limbs and tentacles, the sheer atrocity of it is made worse by the tiny, baby-like form, the once natural shape of a human child twisted nearly beyond recognition.";
-                }
-                else if (item=="robot"){
-                    unit.edit_corruption(choose(2,4,6,8,10));
-                    tixt+=$"some form of small, box-like robot.  It seems to teeter around haphazardly, nearly falling over with each step. {unit.name()} maintains that it has no AI, though the other "+string(obj_ini.role[100][16])+" express skepticism.";
-                    unit.add_trait("tech_heretic");
-                }
-                else if (item=="demon"){
-                    unit.edit_corruption(choose(8,12,16,20));
-                    tixt+="some form of horrendous statue.  What was meant to be some sort of angel, or primarch, instead has a mishappen face that is hardly human in nature.  Between the fetid, ragged feathers and empty sockets it is truly blasphemous.";
-                    unit.add_trait("tech_heretic");
-                }
-                else if (item=="fusion"){
-                    //TODO if tech heretic chosen don't kill the dude
-                    // unit.corruption+=choose(70);
-                    tixt+=$"some kind of ill-mannered ascension.  One of your battle-brothers enters the armamentarium to find {marine_name} fused to a vehicle, his flesh twisted and submerged into the frame.  Mechendrites and weapons fire upon the marine without warning, a windy scream eminating from the abomination.  It takes several battle-brothers to take out what was once a "+string(obj_ini.role[100][16])+".";
-
-                    // This is causing the problem
-
-                    scr_kill_unit(comp,marine_num)
-                    with(obj_ini){scr_company_order(0);}
-                }
-                scr_popup("He Built It",tixt,"tech_build","target_marine|"+string(marine_name)+"|"+string(comp)+"|"+string(marine_num)+"|");
-            }
-            if (event_duration[i]<=0) then event[i]="";
-        }
-    }
-}
-for(var i=1; i<=99; i++){
-    if (event[i]!="") and (event_duration[i]<=0) then event[i]="";
-    if (event[i]=="") and (event_duration[i]==0) and (event[i+1]!=""){
-        event[i]=event[i+1];
-        event_duration[i]=event_duration[i+1];
-        event[i+1]="";
-        event_duration[i+1]=0;
-    }
+try{
+    event_end_turn_action();
+} catch(_exception){
+    handle_exception(_exception);
 }
 // Right here need to sort the battles within the obj_turn_end
 with(obj_turn_end){scr_battle_sort();}
@@ -818,8 +546,9 @@ if (fest_scheduled>0) and (fest_repeats>0){
 research_end();
 merge_ork_fleets();
 location_viewer.update_mission_log();
-//complex route plotting for player fleets
+init_ork_waagh();
 return_lost_ships_chance();
+//complex route plotting for player fleets
 with (obj_p_fleet){
     if (array_length(complex_route)>0  && action == ""){
         set_new_player_fleet_course(complex_route);

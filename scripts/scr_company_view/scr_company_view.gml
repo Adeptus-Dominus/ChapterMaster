@@ -465,15 +465,14 @@ function switch_view_company(new_view){
 		}
 		if (new_view>10){
 			view_squad=false;
-			company_data={};
 			scr_special_view(new_view);
 		} else {
 			with (obj_ini){
 				scr_company_order(new_view);
 			}
 			scr_company_view(new_view);		
-			new_company_struct();
 		}
+        new_company_struct();
 	}
 }
 function company_manage_actions(){

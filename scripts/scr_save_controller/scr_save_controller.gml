@@ -11,9 +11,7 @@ function scr_save_controller(save_id){
     ini_write_string("Save","version",global.game_version);
     ini_write_real("Save","play_time",play_time);
     ini_write_real("Save","game_seed",global.game_seed);
-    ini_write_real("Save","use_custom_icon",obj_ini.use_custom_icon);
 
-   
     // obj_controller variables here
     ini_write_real("boolean", "cheat_req", global.cheat_req);
     ini_write_real("boolean", "cheat_gene", global.cheat_gene);
@@ -218,9 +216,6 @@ function scr_save_controller(save_id){
         ini_write_real("Factions","annoyed"+string(g),obj_controller.annoyed[g]);
         ini_write_real("Factions","ignore"+string(g),obj_controller.ignore[g]);
         ini_write_real("Factions","turns_ignored"+string(g),obj_controller.turns_ignored[g]);
-
-        ini_write_real("Factions","audience"+string(g),obj_controller.audien[g]);
-        ini_write_string("Factions","audience_topic"+string(g),obj_controller.audien_topic[g]);
     }
     //
     var g;g=0;
@@ -230,10 +225,6 @@ function scr_save_controller(save_id){
         ini_write_real("Ongoing","quest_end"+string(g),obj_controller.quest_end[g]);
     }
     var g;g=0;
-    repeat(99){g+=1;
-        ini_write_string("Ongoing","event"+string(g),obj_controller.event[g]);
-        ini_write_real("Ongoing","event_duration"+string(g),obj_controller.event_duration[g]);
-    }
     //
     ini_write_real("Controller","justmet",obj_controller.faction_justmet);
     ini_write_real("Controller","check_number",obj_controller.check_number);

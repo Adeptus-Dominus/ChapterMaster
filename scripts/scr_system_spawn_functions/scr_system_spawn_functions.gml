@@ -78,7 +78,7 @@ function player_home_star(home_planet){
         p_lasers[home_planet]=8;
         p_silo[home_planet]=100;
         p_defenses[home_planet]=75;
-        if (obj_ini.custom==0){
+        if (obj_ini.custom==eCHAPTER_TYPE.PREMADE){
             p_lasers[home_planet]=32;
             p_silo[home_planet]=300;
             p_defenses[home_planet]=225;

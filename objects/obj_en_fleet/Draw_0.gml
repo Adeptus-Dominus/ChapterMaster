@@ -5,7 +5,7 @@ if (owner = eFACTION.Eldar) and (instance_exists(orbiting)) and (obj_controller.
     draw_set_color(c_red);
     draw_line_width(x,y,orbiting.x,orbiting.y,1);
 }
-
+var draw_icon = false;
 if (x<0) or (x>room_width) or (y<0) or (y>room_height) then exit;
 if (image_alpha=0) then exit;
 
@@ -57,6 +57,14 @@ if (action!=""){
     if (obj_controller.zoomed=0) then draw_text_transformed(x+12,y,string_hash_to_newline("ETA "+string(action_eta)),1,1,0);
     if (obj_controller.zoomed=1) then draw_text_transformed(x+24,y,string_hash_to_newline("ETA "+string(action_eta)),2,2,0);// was 1.4
 }
+switch(owner){
+    case eFACTION.Ork:
+    var _has_warboss =false;
+          if (fleet_has_cargo("ork_warboss")){
+            draw_icon = true;
+            _has_warboss = true;
+        }
+}
 
 var fleet_descript="";
 if (within=1) or (selected>0){
@@ -92,6 +100,10 @@ if (within=1) or (selected>0){
             break; 
         case eFACTION.Ork:
             fleet_descript="Ork Fleet";
+            if (_has_warboss){
+                var _warboss = cargo_data.ork_warboss;
+                fleet_descript += $"\nWarboss {_warboss.name}"
+            }
             break; 
         case eFACTION.Tau:
             fleet_descript="Tau Fleet";
@@ -101,7 +113,7 @@ if (within=1) or (selected>0){
             break;
         case eFACTION.Chaos:
             fleet_descript="Heretic Fleet";
-            if (trade_goods="Khorne_warband" || trade_goods="Khorne_warband_landing_force"){
+            if (fleet_has_cargo("warband") || fleet_has_cargo("csm")){
                 fleet_descript=string(obj_controller.faction_leader[eFACTION.Chaos])+"'s Fleet";
                 if (string_count("s's Fleet",fleet_descript)>0) then fleet_descript=string_replace(fleet_descript,"s's Fleet","s' Fleet");                
             }
@@ -124,7 +136,7 @@ if (within=1) or (selected>0){
 }
 
 if (fleet_descript!="" && within){
-    draw_text_transformed(x+(coords[0]*scale),y+((coords[1])*scale+(12*scale)),string_hash_to_newline(fleet_descript),1*scale,1*scale,0);
+    tooltip_draw(fleet_descript);
     draw_circle(x+(coords[0]*scale),y+(coords[1])*scale,12*scale,0);
 } else {
     var faction_colour = global.star_name_colors[owner];
@@ -132,6 +144,9 @@ if (fleet_descript!="" && within){
     draw_set_alpha(0.5);
     draw_circle(x+(coords[0]*scale),y+(coords[1])*scale,12*scale,0);
     draw_set_alpha(1);
+}
+if (draw_icon){
+    draw_sprite_ext(spr_faction_icons, owner,x+(coords[0]*scale)-(32*scale),y+(coords[1]*scale)-(32*scale),1*scale,1*scale,0,c_white,1)
 }
 draw_sprite_ext(sprite_index,image_index,x+(coords[0]*scale),y+(coords[1]*scale),1*scale,1*scale,0,c_white,1);
 

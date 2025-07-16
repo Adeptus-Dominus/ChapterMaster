@@ -32,7 +32,7 @@ function create_squad(squad_type, company, squad_loadout = true, squad_index=fal
 					obj_ini.TTRPG[company][i]= new TTRPG_stats("chapter", company,i,"blank");
 				}
 				unit = fetch_unit([company, i]);
-				if ((unit.name() =="") or (unit.base_group=="none")) then continue;
+				if ((unit.name() =="" || unit.base_group=="none")) then continue;
 				if (unit.squad == "none"){
 					if (unit.role() == sgt_types[s]){
 						squad_fulfilment[$ sgt_types[s]] += 1;
@@ -444,9 +444,11 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 		}
 		members = [];
 	}
+
 	static fetch_member= function(index){
 		return fetch_unit(members[index]);
 	}
+	
 	static add_member = function(comp, unit_number){
 		array_push(members, [comp, unit_number]);
 		life_members++;
@@ -608,10 +610,9 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 				var replace_role = remove_sgt.role();
 				remove_sgt.update_role(new_sgt.role());
 				//TODO centralise loyalty changes for role changes in the update_role method
-				remove_sgt.loyalty-=10;
-				//TODO make update loyalty method to avoid manual 100 limit checks
+				remove_sgt.alter_loyalty(-10);
 				new_sgt.update_role(replace_role);
-				new_sgt.loyalty = min(100, new_sgt.loyalty+10);
+				new_sgt.alter_loyalty(10);
 			}
 		}
 	}

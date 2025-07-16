@@ -10,4 +10,7 @@ function __init_global() {
 
     global.chapter_name = "None";
     global.game_seed = 0;
+    global.ui_click_lock = false;
+    global.name_generator = new NameGenerator();
+    global.star_sprites = ds_map_create();
 }

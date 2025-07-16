@@ -1,16 +1,37 @@
 
-yam+=1;
 if (cooldown>0) and (cooldown<=5000) then cooldown-=1;
 
 var xx,yy;
 xx=__view_get( e__VW.XView, 0 )+0;
 yy=__view_get( e__VW.YView, 0 )+0;
 
-if (effect=11) and (!instance_exists(obj_saveload)){var sav,butt;
+if (effect=11) and (!instance_exists(obj_saveload)){
+    var sav,butt;
     with(obj_new_button){x-=2000;y-=2000;}
-    sav=instance_create(0,0,obj_saveload);sav.menu=1;
-    butt=instance_create(xx+707,yy+830,obj_new_button);butt.sprite_index=spr_ui_but_1;
-    butt.depth=-20010;butt.button_text="Back";butt.button_id=1;butt.scaling=1.5;butt.target=18;
+
+    // Force an autosave if none exists the first time someone clicks into the save menu
+    if(!file_exists(PATH_autosave_file)){
+        if(!instance_exists(obj_saveload)){
+            instance_create(0,0,obj_saveload);
+        }
+        obj_saveload.autosaving = true;
+        with (obj_controller){
+            scr_save(0,0,true);
+        }
+        with(obj_saveload){
+            instance_destroy();
+        }
+    }
+
+    sav=instance_create(0,0,obj_saveload);
+    sav.menu=1;
+    butt=instance_create(xx+707,yy+830,obj_new_button);
+    butt.sprite_index=spr_ui_but_1;
+    butt.depth=-20010;
+    butt.button_text="Back";
+    butt.button_id=1;
+    butt.scaling=1.5;
+    butt.target=18;
 }
 if (effect=12) and (!instance_exists(obj_saveload)){var sav,butt;
     with(obj_new_button){x-=2000;y-=2000;}
@@ -24,7 +45,10 @@ if (effect=13){var butt;
     butt.depth=-20010;butt.button_text="Back";butt.button_id=1;butt.scaling=1.5;butt.target=25;
     settings=1;cooldown=8;
 }
-if (effect=14){instance_create(0,0,obj_fade);fading=0.1;}
+if (effect=14){
+    instance_create(0,0,obj_fade);
+    fading=0.1;
+}
 if (effect=15){
     if (instance_exists(obj_controller)){obj_controller.cooldown=8000;}
     with(obj_new_button){if (target>=10) then instance_destroy();}

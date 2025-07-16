@@ -1,25 +1,3 @@
-// Chapters to choose from at creation
-if (slide==2) and (scrollbar_engaged>0){
-    var x1,x2,x3,x4,x5,x6,y1,y2,y3,y4,y5,y6,bs,see_size,total_max,current,top;
-    x1=1111;y1=245;x2=1131;y2=671;bs=245;
-    
-    total_max=77+global.custom_icons;
-    see_size=(671-245)/total_max;
-    
-    // bounds of the solid area
-    x3=1111;x4=1131;
-    current=icons_top;
-    top=current*see_size;
-    y3=top;y4=y3+(24*see_size)-see_size;
-    
-    y5=mouse_y-(scrollbar_engaged)-245;
-    y6=round(y5/see_size/6)*6;
-    
-    icons_top=y6;
-    if (icons_top<1) then icons_top=1;
-    if (icons_top>(total_max-24)) then icons_top=total_max-24;   
-}
-
 if (slide==1){
     if (keyboard_string=="137"){
         highlight=18;
@@ -28,8 +6,7 @@ if (slide==1){
         scr_chapter_new(chapter_name);
         keyboard_string="";
         if (chapter_name!="nopw_nopw"){
-            icon=25;
-            custom=0;
+            custom=eCHAPTER_TYPE.PREMADE;
             change_slide=1;
             goto_slide=2;
             chapter_string=chapter_name;
@@ -74,8 +51,6 @@ if (change_slide>=100) then change_slide=-1;
 // Sets up a new chapter with default options
 if (change_slide==35) or (change_slide==36) or (chapter_name=="Doom Benefactors") or (chapter_string=="Doom Benefactors"){
     if (goto_slide==1){
-        mouse_left=0;
-        mouse_right=0;
         highlight=0;
         highlighting=0;
         old_highlight=0;
@@ -91,10 +66,8 @@ if (change_slide==35) or (change_slide==36) or (chapter_name=="Doom Benefactors"
         
         chapter_name="Unnamed";
         chapter_string="Unnamed";
-        icon=1;
-        icon_name="da";
-        custom=0;
-        founding=1;
+        custom=eCHAPTER_TYPE.PREMADE;
+        founding=ePROGENITOR.NONE;
         points=0;
         maxpoints=100;
         fleet_type=1;
@@ -184,7 +157,7 @@ if (text_bar>60) then text_bar=1;
 
 if (cooldown>0) and (cooldown<=5000) then cooldown-=1;
 // Checks if the name already exists
-if (custom==2){
+if (custom==eCHAPTER_TYPE.CUSTOM){
     name_bad=0;
     if (chapter_name=="") then name_bad=1;
     if (chapter_name=="Dark Angels") then name_bad=1;

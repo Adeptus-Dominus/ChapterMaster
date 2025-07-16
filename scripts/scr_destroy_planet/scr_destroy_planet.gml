@@ -99,97 +99,30 @@ function scr_destroy_planet(destruction_method) {
     } else if ((you.p_owner[baid] == eFACTION.Mechanicus || you.p_first[baid] == eFACTION.Mechanicus) && obj_controller.faction_status[eFACTION.Mechanicus] != "War") {
         obj_controller.loyalty -= 50;
         obj_controller.loyalty_hidden -= 50;
-        obj_controller.disposition[eFACTION.Imperium] -= 50;
-        obj_controller.disposition[3] -= 80;
-        obj_controller.disposition[4] -= 40;
-        obj_controller.disposition[5] -= 30;
-
-        obj_controller.faction_status[eFACTION.Imperium] = "War";
-        obj_controller.faction_status[eFACTION.Mechanicus] = "War";
-        obj_controller.faction_status[eFACTION.Inquisition] = "War";
-        obj_controller.faction_status[eFACTION.Ecclesiarchy] = "War";
-
-        obj_controller.audiences += 1;
-        obj_controller.audien[obj_controller.audiences] = 3;
-        obj_controller.audien_topic[obj_controller.audiences] = "declare_war";
-        obj_controller.audiences += 1;
-        obj_controller.audien[obj_controller.audiences] = 2;
-        obj_controller.audien_topic[obj_controller.audiences] = "declare_war";
-        if (obj_controller.known[eFACTION.Inquisition] > 1) {
-            obj_controller.audiences += 1;
-            obj_controller.audien[obj_controller.audiences] = 4;
-            obj_controller.audien_topic[obj_controller.audiences] = "declare_war";
-        }
-        if (obj_controller.known[eFACTION.Ecclesiarchy] > 1) {
-            obj_controller.audiences += 1;
-            obj_controller.audien[obj_controller.audiences] = 5;
-            obj_controller.audien_topic[obj_controller.audiences] = "declare_war";
-        }
-
-        if (planet_feature_bool(you.p_feature[baid], P_features.Sororitas_Cathedral) == 1) {
-            obj_controller.disposition[5] -= 30;
-            if (obj_controller.known[eFACTION.Mechanicus] > 1) {
-                obj_controller.audiences += 1;
-                obj_controller.audien[obj_controller.audiences] = 3;
-                obj_controller.audien_topic[obj_controller.audiences] = "declare_war";
-            }
-        }
+        decare_war_on_imperium_audiences();
     } else if (enemy9 == eFACTION.Ecclesiarchy && obj_controller.faction_status[eFACTION.Ecclesiarchy] != "War") {
         obj_controller.loyalty -= 50;
         obj_controller.loyalty_hidden -= 50;
-        obj_controller.disposition[eFACTION.Imperium] -= 50;
+
         obj_controller.disposition[3] -= 80;
-        obj_controller.disposition[4] -= 40;
-        obj_controller.disposition[5] -= 30;
 
-        obj_controller.faction_status[eFACTION.Imperium] = "War";
+
+
         obj_controller.faction_status[eFACTION.Mechanicus] = "War";
-        obj_controller.faction_status[eFACTION.Inquisition] = "War";
-        obj_controller.faction_status[eFACTION.Ecclesiarchy] = "War";
 
-        obj_controller.audiences += 1;
-        obj_controller.audien[obj_controller.audiences] = 5;
-        obj_controller.audien_topic[obj_controller.audiences] = "declare_war";
+        scr_audience(eFACTION.Ecclesiarchy, "declare_war", -30, "War", 9999, 0);
+
         if (obj_controller.known[eFACTION.Inquisition] > 1) {
-            obj_controller.audiences += 1;
-            obj_controller.audien[obj_controller.audiences] = 4;
-            obj_controller.audien_topic[obj_controller.audiences] = "declare_war";
+            scr_audience(eFACTION.Inquisition, "declare_war", -40, "War", 9999, 0);
         }
-        obj_controller.audiences += 1;
-        obj_controller.audien[obj_controller.audiences] = 2;
-        obj_controller.audien_topic[obj_controller.audiences] = "declare_war";
+        scr_audience(eFACTION.Imperium, "declare_war", -50, "War", 9999, 2);
+
     } else if (obj_controller.faction_status[eFACTION.Imperium] != "War" && planet_feature_bool(you.p_feature[baid], P_features.Daemonic_Incursion) == 0 && you.p_tyranids[baid] < 5) {
         if (you.p_first[baid] == eFACTION.Imperium && you.p_type[baid] == "Hive") {
             obj_controller.loyalty -= 50;
             obj_controller.loyalty_hidden -= 50;
-            obj_controller.disposition[eFACTION.Imperium] -= 60;
-            obj_controller.disposition[eFACTION.Mechanicus] -= 30;
-            obj_controller.disposition[eFACTION.Inquisition] -= 40;
-            obj_controller.disposition[eFACTION.Ecclesiarchy] -= 40;
-
-            obj_controller.faction_status[eFACTION.Imperium] = "War";
-            obj_controller.faction_status[eFACTION.Mechanicus] = "War";
-            obj_controller.faction_status[eFACTION.Inquisition] = "War";
-            obj_controller.faction_status[eFACTION.Ecclesiarchy] = "War";
-
-            obj_controller.audiences += 1;
-            obj_controller.audien[obj_controller.audiences] = 2;
-            obj_controller.audien_topic[obj_controller.audiences] = "declare_war";
-            if (obj_controller.known[eFACTION.Inquisition] > 1) {
-                obj_controller.audiences += 1;
-                obj_controller.audien[obj_controller.audiences] = 4;
-                obj_controller.audien_topic[obj_controller.audiences] = "declare_war";
-            }
-            if (obj_controller.known[eFACTION.Ecclesiarchy] > 1) {
-                obj_controller.audiences += 1;
-                obj_controller.audien[obj_controller.audiences] = 5;
-                obj_controller.audien_topic[obj_controller.audiences] = "declare_war";
-            }
-            if (obj_controller.known[eFACTION.Mechanicus] > 1) {
-                obj_controller.audiences += 1;
-                obj_controller.audien[obj_controller.audiences] = 3;
-                obj_controller.audien_topic[obj_controller.audiences] = "declare_war";
-            }
+            
+            decare_war_on_imperium_audiences()
 
             if (planet_feature_bool(you.p_feature[baid], P_features.Sororitas_Cathedral) == 1) {
                 obj_controller.disposition[5] -= 30;

@@ -3,9 +3,6 @@
 show_debug_message("Creating obj_ini");
 
 // // normal stuff
-use_custom_icon=0;
-icon=0;icon_name="";
-
 specials=0;firsts=0;seconds=0;thirds=0;fourths=0;fifths=0;
 sixths=0;sevenths=0;eighths=0;ninths=0;tenths=0;commands=0;
 
@@ -34,21 +31,21 @@ artifact_struct = array_create(200);
 
 // Equipment- maybe the bikes should go here or something?          yes they should
 equipment = {};
-i=-1;
-repeat(200){i+=1;
-    artifact[i]="";
-    artifact_equipped[i]=false;
-    artifact_tags[i]=[];
-    artifact_identified[i]=0;
-    artifact_condition[i]=100;
-    artifact_quality[i]="artifact";
-    artifact_loc[i]="";
-    artifact_sid[i]=0;// Over 500 : ship
-    // Weapon           Unidentified
-    artifact_struct[i] =  new ArtifactStruct(i);    
+
+var _artifact_array_size = 200;
+artifact = array_create(_artifact_array_size, "");
+artifact_equipped = array_create(_artifact_array_size, false);
+artifact_tags = array_create_advanced(_artifact_array_size, []);
+artifact_identified = array_create(_artifact_array_size, 0);
+artifact_condition = array_create(_artifact_array_size, 100);
+artifact_quality = array_create(_artifact_array_size, "artifact");
+artifact_loc = array_create(_artifact_array_size, "");
+artifact_sid = array_create(_artifact_array_size, 0);
+artifact_struct = array_create(_artifact_array_size);
+for (var i = 0; i < _artifact_array_size; i++) {
+    artifact_struct[i] = new ArtifactStruct(i);
 }
 
-var i=-1;
 init_player_fleet_arrays();
 ship_id = [];
 

@@ -7,8 +7,7 @@
         "points": 150,
         "founding": 0, // The id of the founding chapter, 0 for unknown or none, 10 for random
         "splash": 1, // in \images\creation\chapters\splash folder, the img number, 1 being Dark Angels etc.
-        "icon": 1, // in \images\creation\chapters\icons folder, the icon number, 1 being Dark Angels etc.
-        "icon_name": "aa", // ? dunno what this is used for yet but the icon breaks if you dont use it 
+        "icon_name": "unknown",
         "fleet_type": 1, // 1= Homeworld, 2 = Fleet based, 3 = Penitent
         "strength": 5, // 1-10
         "purity": 5, // 1-10
@@ -78,8 +77,8 @@
         "equal_specialists": 0, // 0 if no, 1 if yes. If yes, will distribute specialist roles like Assaults and Devastators equally between companies. Otherwise all Assaults go in Company 8 and all Devastators in Company 9
         "load_to_ships": {
             "escort_load": 2, // 0 no, 2 yes, 1 doesnt do anything :)
-            "split_scouts": 0, // 0 no, 1 yes. If yes, splits scouts between companies equally. Otherwise all scouts are kept in 10th Company.
-            "split_vets": 0 // 0 no, 1 yes. If yes, all veterans are distrubuted equally between companies. Otherwise all veterans are kept in the 1st Company
+            "split_scouts": 0, // 0 no, 1 yes. If yes, splits scouts between ships equally. Otherwise all scouts are kept on the homeworld.
+            "split_vets": 0 // 0 no, 1 yes. If yes, all veterans are distrubuted equally between ships. Otherwise all veterans are kept in the flagship
         },
         "successors": 0, //total number of successor chapters
         "mutations": {
@@ -169,15 +168,20 @@
         */
         "extra_specialists": {
             "chaplains": 0,
+            "chaplains_per_company": 0,
             "techmarines": 0,
+            "techmarines_per_company": 0,
             "apothecary": 0,
+            "apothecary_per_company": 0,
             "epistolary": 0,
+            "epistolary_per_company": 0,
             "codiciery": 0,
             "lexicanum": 0,
             "terminator": 0,
             "assault": 0,
             "veteran": 0,
-            "devastator": 0
+            "devastator": 0,
+            "dreadnought": 0
         },
         /**
         * * Default Marine strength

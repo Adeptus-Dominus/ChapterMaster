@@ -46,13 +46,12 @@ function scr_load_controller(save_id){
 		// TODO make it either throw error (if version is wrong) or try to upgrade the saved game data and version
 	    global.save_version=ini_read_string("Save","version",0);
 	    global.game_seed=ini_read_real("Save","game_seed",0);
-	    obj_ini.use_custom_icon=ini_read_real("Save","use_custom_icon",0);
 
 	    obj_controller.play_time=ini_read_real("Save","play_time",0);
 
-	    obj_ini.progenitor=ini_read_real("Save","founding",0);
+	    obj_ini.progenitor=ini_read_real("Save","founding",ePROGENITOR.NONE);
 	    // global.founding_secret=ini_read_string("Save","founding_secret","Error");
-	    global.custom=ini_read_real("Save","custom",1);
+	    global.custom=ini_read_real("Save","custom", eCHAPTER_TYPE.RANDOM);
 	    stars=ini_read_real("Save","stars",0);
 	    // pfleets=ini_read_real("Save","p_fleets",0);
 	    // efleets=ini_read_real("Save","en_fleets",0);
@@ -101,7 +100,6 @@ function scr_load_controller(save_id){
 	    obj_controller.unload=ini_read_real("Controller","unload",0);
 	    obj_controller.diplomacy=0;
 	    obj_controller.trading=0;
-	    obj_controller.audience=0;
 	    obj_controller.force_goodbye=0;
 	    obj_controller.combat=0;
 	    obj_controller.new_vehicles=ini_read_real("Controller","new_vehicles",0);
@@ -325,8 +323,6 @@ function scr_load_controller(save_id){
 	        obj_controller.annoyed[g]=ini_read_real("Factions","annoyed"+string(g),0);
 	        obj_controller.ignore[g]=ini_read_real("Factions","ignore"+string(g),0);
 	        obj_controller.turns_ignored[g]=ini_read_real("Factions","turns_ignored"+string(g),0);
-	        obj_controller.audien[g]=ini_read_real("Factions","audience"+string(g),0);
-	        obj_controller.audien_topic[g]=ini_read_string("Factions","audience_topic"+string(g),"");
 	    }
 	    //
 	    var g;g=0;
@@ -334,11 +330,6 @@ function scr_load_controller(save_id){
 	        obj_controller.quest[g]=ini_read_string("Ongoing","quest"+string(g),"");
 	        obj_controller.quest_faction[g]=ini_read_real("Ongoing","quest_faction"+string(g),0);
 	        obj_controller.quest_end[g]=ini_read_real("Ongoing","quest_end"+string(g),0);
-	    }
-	    var g;g=0;
-	    repeat(99){g+=1;
-	        obj_controller.event[g]=ini_read_string("Ongoing","event"+string(g),"");
-	        obj_controller.event_duration[g]=ini_read_real("Ongoing","event_duration"+string(g),0);
 	    }
 	    //
 	    obj_controller.justmet=0;

@@ -1,21 +1,31 @@
-function scr_audience(argument0, argument1, argument2, argument3, argument4, argument5) {
+function scr_audience(faction_enum, topic, new_disposition = 0, new_status = "", turns_ignored = 0, new_known_value = 0, audience_data = {}) {
 
-	// argument0: faction
-	// argument1: topic
-	// argument2: new disposition
-	// argument3: new status
-	// argument4: turns ignored
-	// argument5: new known
+	var _audience_instance = instance_exists(obj_turn_end) ? obj_turn_end : obj_controller;
 
-	var witch;witch=obj_controller;
-	if (instance_exists(obj_turn_end)) then witch=obj_turn_end;
+	with (_audience_instance){
+		audiences+=1;
+		array_push(audience_stack,{
+			faction : faction_enum,
+			topic : topic, 
+			audience_data : audience_data
+		});
+	}
 
-	witch.audiences+=1;witch.audien[witch.audiences]=argument0;
-	witch.audien_topic[witch.audiences]=argument1;
-	if (argument2!=0) then obj_controller.disposition[argument0]+=argument2;
-	if (argument3!="") then obj_controller.faction_status[argument0]=argument3;
-	if (argument4!=0) then obj_controller.turns_ignored[argument0]+=argument4;
-	if (argument5!=0) then obj_controller.known[argument0]+=argument5;
+	obj_controller.disposition[faction_enum]+=new_disposition;
+
+	if (new_status!="") then obj_controller.faction_status[faction_enum]=new_status;
+	if (turns_ignored!=0) then obj_controller.turns_ignored[faction_enum]+=turns_ignored;
+	if (new_known_value!=0) then obj_controller.known[faction_enum]+=new_known_value;
+}
 
 
+function decare_war_on_imperium_audiences(){
+	var _topic = gene_xeno>99995 ? "gene_xeno" : "declare_war";
+	scr_audience(eFACTION.Inquisition, _topic, -50, "War", 9999, 4);
+
+	scr_audience(eFACTION.Imperium, "declare_war", -40, "War", 9999, 2);
+
+	scr_audience(eFACTION.Mechanicus, "declare_war", -30, "War", 9999, 2);
+
+	scr_audience(eFACTION.Ecclesiarchy, "declare_war", -40, "War", 9999, 2);
 }

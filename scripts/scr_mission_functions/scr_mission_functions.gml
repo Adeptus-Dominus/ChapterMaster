@@ -5,24 +5,24 @@
 function MissionHandler(planet, system) : PlanetData(planet, system) constructor{
 
 }
+
+
+function location_out_of_player_control(unit_loc){
+	static _locs = ["Terra", "Mechanicus Vessel", "Lost", "Mars"];
+	return (array_contains(_locs,unit_loc ));
+}
 function mission_name_key(mission){
 	var mission_key = {
 		"meeting_trap" : "Chaos Lord Meeting",
 		"meeting" : "Chaos Lord Meeting",
 		"succession" : "War of succession",
-		"spyrer" : "Kill Spyrer for Inquisitor",
 		"mech_raider" : "Provide Land Raider to Mechanicus",
 		"mech_bionics" : "Provide Bionic Augmented marines to study",
 		"mech_mars" : "Send Techmarines to mars",
 		"mech_tomb1": "Explore Mechanicus Tomb",
 		"fallen" : "Find Chapter Fallen",
-		"recon" : "Recon Mission for Inquisitor",
-		"cleanse" : "Cleanse Planet for Inquisitor",
-		"tyranid_org" : "Capture Tyranid for Inquisitor",
-		"bomb" : "Bombard World for inquisitor",
 		"great_crusade": "Answer Crusade Muster Call",
 		"harlequins" : "Harlequin presence Report",
-		"artifact_loan" : "Safeguard Artifact for the inquisition",
 		"fund_elder" : "provide assistance to Eldar",
 		"provide_garrison" : "Provision Garrison",
 		"hunt_beast" : "Hunt Beasts",
@@ -30,7 +30,20 @@ function mission_name_key(mission){
 		"join_communion" : "Join Planetary Religious Celebration",
 		"join_parade" : "Join Parade on Planet Surface",
 		"recover_artifacts" : "Recover Artifacts",
-		"train_forces" : "Train Planet Forces"
+		"train_forces" : "Train Planet Forces",
+		// Inquisition missions
+		"spyrer" : "Kill Spyrer for Inquisitor",
+		"inquisitor": "Radical Inquisitor Arriving",
+		"recon" : "Recon Mission for Inquisitor",
+		"cleanse" : "Cleanse Planet for Inquisitor",
+		"purge": "Purge Leadership for Inquisitor",
+		"tyranid_org" : "Capture Tyranid for Inquisitor",
+		// "bomb" : "Bombard World for Inquisitor",
+		"artifact_loan" : "Safeguard Artifact for the Inquisition",
+		"necron": "Bomb Necron Tomb for Inquisitor",
+		"ethereal": "Capture Ethereal for Inquisitor",
+		"demon_world": "Clear Demon World for Inquisitor"
+		
 	}
 	if (struct_exists(mission_key, mission)){
 		return mission_key[$ mission];
@@ -47,7 +60,7 @@ function scr_new_governor_mission(planet, problem = ""){
 			problem = choose("hunt_beast", "provide_garrison");
 			accept_time = 6+irandom(30);
 		} else if (planet_type == "Hive"){
-			problem = choose("Show_of_power", "provide_garrison", "purge_enemies", "raid_black_market");
+			problem = choose("show_of_power", "provide_garrison", "purge_enemies", "raid_black_market");
 		} else if (planet_type == "Temperate"){
 			problem = choose("provide_garrison", "train_forces", "join_parade");
 		}else if (planet_type == "Shrine"){
@@ -90,7 +103,27 @@ function scr_new_governor_mission(planet, problem = ""){
 	}
 }
 
+function init_marine_acting_strange(){
+	log_message("RE: Strange Behavior");
+    var marine_and_company = scr_random_marine("",0);
+	if(marine_and_company == "none")
+	{
+		log_error("RE: Strange Behavior, couldn't pick a space marine");
+		exit;
+	}
 
+	var unit = fetch_unit(marine_and_company);
+	var role = unit.role();
+	var text = unit.name_role();
+	var company_text = scr_convert_company_to_string(unit.company);
+	if(company_text != ""){
+		company_text = $"({company_text})";
+		text += company_text;
+	}
+	text += " is behaving strangely.";
+	scr_alert("color","lol",text,0,0);
+    scr_event_log("color",text);
+}
 
 function init_garrison_mission(planet, star, mission_slot){
 	var problems_data = star.p_problem_other_data[planet]
@@ -231,6 +264,7 @@ function complete_train_forces_mission(targ_planet, problem_index){
         var _mission_string = "";
         var _trainer = collect_role_group("all",[name,targ_planet,0], false, man_conditions);
         if (array_length(_trainer)){
+        	var _unit_report_string = "";
         	var _tester = global.character_tester;
         	var _wis_test_difficulty = -20;
         	_trainer = _trainer[0];
@@ -258,10 +292,20 @@ function complete_train_forces_mission(targ_planet, problem_index){
         		var _new_pdf = planet.recruit_pdf((_unit_pass[1]/10));//this will approximate podf improvement for the time being
         		_mission_string += $"Training of the Pdf went well and improved the quality of the pdf as well as providing sizeable big recruitment improvement for the planet {_new_pdf} new pdf were recruited";
         		if (_siege_master){
-        			_mission_string += "{_trainer.name()}s trained eye as a Siege Master also allowed him to make several improvements to the planets fortifications (fortification +1)";
-
+        			_mission_string += $"{_trainer.name()}s trained eye as a Siege Master also allowed him to make several improvements to the planets fortifications (fortification +1)";
         			planet.alter_fortification(1);
-        		}
+        } else {
+            if (roll_dice(1, 100) > 75 && _trainer.intelligence > 45){
+                _mission_string += $"{_trainer.name()} has proven themselves a great strategist when it comes to defensive structures beyond previousy known ";
+                var _start_stats = variable_clone(_trainer.get_stat_line());
+                _trainer.add_trait("siege_master");
+                var end_stat = _trainer.get_stat_line();
+                var _stat_diff = compare_stats(end_stat,_start_stats); 
+                _unit_report_string += $"{_trainer.name_role()} Has gained the trait {global.trait_list.siege_master.display_name}, {(print_stat_diffs(_stat_diff))}\n"; 
+                _mission_string += "The new insights have allowed for minor improvements to planetary fortifications (fortification +1)";
+                planet.alter_fortification(1);
+            }
+        }
         	} else {
         		disp_loss = -5;
         		_mission_string += "The orgional training mission was a failiure"
@@ -286,9 +330,10 @@ function complete_train_forces_mission(targ_planet, problem_index){
         				_mission_string += "(disposition -25)";
         			}
         		}
-        		plant.add_disposition(disp_loss);
+        		planet.add_disposition(disp_loss);
         	}
-        	scr_popup($"Training Forces on {planet_numeral_name(i)}",_mission_string,"","");
+        	_mission_string += $"\n{_unit_report_string}";
+        	scr_popup($"Training Forces on {planet.name()}",_mission_string,"","");
         	remove_planet_problem(targ_planet, "train_forces");
         	_trainer.job = "none";
         }
@@ -315,7 +360,7 @@ function complete_beast_hunt_mission(targ_planet, problem_index){
         }
         for (var i=0;i<array_length(_hunters);i++){
         	_unit = _hunters[i];
-			_unit_pass = _tester.standard_test(_unit, "weapon_skill",10, "beast");
+			_unit_pass = _tester.standard_test(_unit, "weapon_skill",10, ["beast"]);
 			if (_unit_pass[0]){
 				if (!_success) then _success=true;
 			}
@@ -573,6 +618,14 @@ function add_new_problem(planet, problem, timer,star="none", other_data={}){
 	return 	problem_added;
 }
 
+
+function increment_mission_completion(mission_data){
+	if (!struct_exists(mission_data, "completion")){
+		mission_data.completion = 0;
+	}
+	mission_data.completion++;
+	return (mission_data.completion/mission_data.required_months)*100;
+}
 //search problem data for a given and key and iff applicable value on that key
 //TODO increase filtering and search options
 function problem_has_key_and_value(planet, problem,key,value="",star="none"){

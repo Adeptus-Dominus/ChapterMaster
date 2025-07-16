@@ -1,5 +1,5 @@
 function scr_event_log(event_colour, event_text, target = "none") {
-
+	log_message($"Adding event to log: {event_text}")
 	if (instance_exists(obj_event_log)){
 	    var yf;yf="";
 	    if (obj_controller.year_fraction<10) then yf="00"+string(obj_controller.year_fraction);

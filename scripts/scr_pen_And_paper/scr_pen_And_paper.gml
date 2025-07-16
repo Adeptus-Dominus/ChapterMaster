@@ -1,9 +1,19 @@
 function PenAndPaperSim() constructor{
+
+	static test_rerollable = function(unit, stat){
+		if (stat == "charisma"){
+			if (unit.has_trait("charismatic")){
+				return true;
+			}
+		}
+		return false;
+	}
 	static oppposed_test = function(unit1, unit2, stat,unit1_mod=0,unit2_mod=0,  modifiers={}){
 		var stat1 = irandom(99)+1;
 		var unit1_val = unit1[$ stat]+unit1_mod;
 		var unit2_val = unit2[$ stat]+unit2_mod;
 		var stat2 = irandom(99)+1;
+		var _reroll = test_rerollable(unit1, stat);
 		var stat1_pass_margin, stat2_pass_margin, winner, pass_margin;
 		//unit 1 passes test 
 		if (stat1 < unit1_val){
@@ -73,12 +83,17 @@ function PenAndPaperSim() constructor{
 	static standard_test = function(unit, stat, difficulty_mod=0, tags = []){
 		var passed =false;
 		var margin=0;
+		array_push(tags,stat);
+		var _reroll = test_rerollable(unit, stat);
 		difficulty_mod+=evaluate_tags(unit, tags);
 		var random_roll = irandom_range(1,100);
-		if (random_roll<unit[$ stat]+difficulty_mod){
+		if (_reroll && random_roll >= unit[$ stat]+difficulty_mod){
+			random_roll = irandom_range(1,100);
+		}
+		if (random_roll < unit[$ stat]+difficulty_mod){
 			passed = true;
 			margin = unit[$ stat]+difficulty_mod - random_roll;
-		} else {
+		} else{ 
 			passed = false;
 			margin = unit[$ stat]+difficulty_mod - random_roll;
 		}
@@ -111,24 +126,46 @@ function print_stat_diffs(diffs){
 	return _diff_string;
 }
 
-
-/// @description Roll a custom dice, influenced by the chapter' luck, return sum of all rolls.
+/// @description repeat(x){irandom_range(1, y)} with a nice name, return sum of all rolls.
 /// @param {real} dices - how many dices to roll.
 /// @param {real} faces - how many faces each dice has.
-/// @param {real} player_benefit_at - will the player benefit from low or high rolls, for the luck logic.
 /// @returns {real}
-function roll_dice(dices = 1, faces = 6, player_benefit_at = "none") {
+function roll_dice(dices = 1, faces = 6) {
 	var _total_roll = 0;
 	var _roll = 0;
 
 	repeat (dices) {
 		_roll = irandom_range(1, faces);
 
-		if (scr_has_disadv("Shitty Luck") && player_benefit_at != "none") {
+		_total_roll += _roll;
+	}
+
+	return _total_roll;
+}
+
+/// @description Roll a custom dice, influenced by the chapter' luck, return sum of all rolls.
+/// @param {real} dices - how many dices to roll.
+/// @param {real} faces - how many faces each dice has.
+/// @param {real} player_benefit_at - will the player benefit from low or high rolls, for the luck logic.
+/// @returns {real}
+function roll_dice_chapter(dices = 1, faces = 6, player_benefit_at) {
+	var _total_roll = 0;
+	var _roll = 0;
+
+	repeat (dices) {
+		_roll = roll_dice(1, faces);
+
+		if (scr_has_disadv("Shitty Luck")) {
 			if (player_benefit_at == "high" && _roll > (faces / 2)) {
-				_roll = irandom_range(1, faces);
+				_roll = roll_dice(1, faces);
 			} else if (player_benefit_at == "low" && _roll < (faces / 2 + 1)) {
-				_roll = irandom_range(1, faces);
+				_roll = roll_dice(1, faces);
+			}
+		} else if (scr_has_adv("Great Luck")) {
+			if (player_benefit_at == "high" && _roll < (faces / 2 + 1)) {
+				_roll = roll_dice(1, faces);
+			} else if (player_benefit_at == "low" && _roll > (faces / 2)) {
+				_roll = roll_dice(1, faces);
 			}
 		}
 
@@ -144,7 +181,7 @@ function roll_dice(dices = 1, faces = 6, player_benefit_at = "none") {
 /// @param {real} player_benefit_at - will the player benefit from low or high rolls, for the luck logic.
 /// @param {struct} unit - unit struct.
 /// @returns {real}
-function roll_personal_dice(dices = 1, faces = 6, player_benefit_at = "none", unit) {
+function roll_dice_unit(dices = 1, faces = 6, player_benefit_at, unit) {
 	var _total_roll = 0;
 	var _roll = 0;
 
@@ -157,9 +194,9 @@ function roll_personal_dice(dices = 1, faces = 6, player_benefit_at = "none", un
 
 			if (luck_chance <= unit.luck) {
 				if (player_benefit_at == "high" && _roll > (faces / 2)) {
-					_roll = irandom_range(1, faces);
+					_roll = roll_dice(1, faces);
 				} else if (player_benefit_at == "low" && _roll < (faces / 2 + 1)) {
-					_roll = irandom_range(1, faces);
+					_roll = roll_dice(1, faces);
 				}
 			}
 		}

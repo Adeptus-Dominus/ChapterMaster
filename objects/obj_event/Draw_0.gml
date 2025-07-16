@@ -78,7 +78,7 @@ if (exit_fade>=0){
         if (scr_hit(__view_get( e__VW.XView, 0 )+1238,__view_get( e__VW.YView, 0 )+200,__view_get( e__VW.XView, 0 )+1271,__view_get( e__VW.YView, 0 )+233)=false) then draw_sprite(spr_help_exit,0,__view_get( e__VW.XView, 0 )+1238,__view_get( e__VW.YView, 0 )+200);
         if (scr_hit(__view_get( e__VW.XView, 0 )+1238,__view_get( e__VW.YView, 0 )+200,__view_get( e__VW.XView, 0 )+1271,__view_get( e__VW.YView, 0 )+233)=true){
             draw_sprite(spr_help_exit,1,__view_get( e__VW.XView, 0 )+1238,__view_get( e__VW.YView, 0 )+200);
-            if (obj_controller.mouse_left=1) and (closing=false){
+            if (scr_click_left()) and (closing=false){
                 closing=true;fading=-1;
             }
         }

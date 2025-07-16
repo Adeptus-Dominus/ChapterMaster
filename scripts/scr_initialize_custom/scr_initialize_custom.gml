@@ -39,6 +39,12 @@ enum ePROGENITOR {
     RANDOM,
 }
 
+enum eCHAPTER_TYPE {
+    PREMADE,
+	RANDOM,
+    CUSTOM,
+}
+
 function progenitor_map(){
     var founding_chapters = [
         "",
@@ -107,7 +113,7 @@ function select_livery_data(livery_data, specific) {
 function helmet_livery(progenitor, specific = "none") {
     var livery_data;
 
-	if ((obj_creation.custom == 0) && (global.chapter_creation_object.origin == 1)) {
+	if ((obj_creation.custom == eCHAPTER_TYPE.PREMADE) && (global.chapter_creation_object.origin == 1)) {
 		progenitor = progenitor_map();
 	}
 
@@ -720,8 +726,6 @@ function scr_initialize_custom() {
 	flagship_name = obj_creation.flagship_name;
 	obj_creation.restart_flagship_name = flagship_name;
 	sector_name = global.name_generator.generate_sector_name();
-	icon = obj_creation.icon;
-	icon_name = obj_creation.icon_name;
 	man_size = 0;
 	psy_powers = obj_creation.discipline;
 
@@ -788,7 +792,7 @@ function scr_initialize_custom() {
 	* * Fleet based and Penitent 
 	* - 4 Battle Barges, 3 Strike Cruisers, 7 Gladius, 3 Hunters
 	*/
-	if (obj_creation.custom == 0) {
+	if (obj_creation.custom == eCHAPTER_TYPE.PREMADE) {
 		flagship_name = obj_creation.flagship_name;
 		if (obj_creation.fleet_type == ePlayerBase.home_world) {
 			battle_barges = 2;
@@ -801,12 +805,6 @@ function scr_initialize_custom() {
 			gladius = 7;
 			hunters = 3;
 		}
-
-		battle_barges = battle_barges + obj_creation.extra_ships.battle_barges;
-		strike_cruisers = strike_cruisers + obj_creation.extra_ships.strike_cruisers;
-		gladius = gladius + obj_creation.extra_ships.gladius;
-		hunters = hunters + obj_creation.extra_ships.hunters;
-
 	}
 
 	if (scr_has_adv ("Kings of Space")) {battle_barges += 1;}
@@ -823,6 +821,13 @@ function scr_initialize_custom() {
 		hunters = 0;
 		}
 	}
+	if(struct_exists(obj_creation, "extra_ships")){
+		battle_barges = battle_barges + obj_creation.extra_ships.battle_barges;
+		strike_cruisers = strike_cruisers + obj_creation.extra_ships.strike_cruisers;
+		gladius = gladius + obj_creation.extra_ships.gladius;
+		hunters = hunters + obj_creation.extra_ships.hunters;
+	}
+
 	var ship_summary_str = $"Ships: bb: {battle_barges} sc: {strike_cruisers} g: {gladius} h: {hunters}"
 	// log_message(ship_summary_str);
 	// show_debug_message(ship_summary_str);
@@ -1057,6 +1062,7 @@ function scr_initialize_custom() {
 		landspeeder = 0;
 		rhino = 0;
 		whirlwind = 0;
+		dreadnought = 0;
 
 	}
 	if  scr_has_disadv("Enduring Angels") {
@@ -1094,7 +1100,7 @@ function scr_initialize_custom() {
 		tenth += 5;
 	}
 	if  scr_has_disadv ("Small Reclusiam") {
-		chaplains -= 5;
+		chaplains = max(1, chaplains - 5);
 		tenth += 5;
 	}
 	if scr_has_adv ("Reverent Guardians") {
@@ -1112,112 +1118,135 @@ function scr_initialize_custom() {
 	if(global.chapter_name == "Iron Hands"){
 		predator += 1;
 	}
-	
-	// Strength ratings are made up for founding chapters
-	if (progenitor > ePROGENITOR.NONE && progenitor < ePROGENITOR.RANDOM) {
-		if (obj_creation.strength <= 4) then ninth = 0;
-		if (obj_creation.strength <= 3) then eighth = 0;
-		if (obj_creation.strength <= 2) then seventh = 0;
-		if (obj_creation.strength <= 1) then sixth = 0;
 
-		var bonus_marines = 0;
-		if (obj_creation.strength > 5) then bonus_marines = (obj_creation.strength - 5) * 50;
-	}
+	if (obj_creation.strength <= 4) then ninth = 0;
+	if (obj_creation.strength <= 3) then eighth = 0;
+	if (obj_creation.strength <= 2) then seventh = 0;
+	if (obj_creation.strength <= 1) then sixth = 0;
 
-	if (obj_creation.custom != 0) {
-		var bonus_marines = 0;
-		if (obj_creation.strength > 5) then bonus_marines = (obj_creation.strength - 5) * 50;
-		if scr_has_disadv("Obliterated") then bonus_marines = (obj_creation.strength - 1) * 10;
-		var i = 0;
-		while (bonus_marines >= 5) {
-			switch (i % 10) {
-				case 0:
-					if (veteran > 0) {
-						bonus_marines -= 5;
-						veteran += 5;
-					}
-					break;
-				case 1:
-					if (second > 0) {
-						bonus_marines -= 5;
-						second += 5;
-					}
-					break;
-				case 2:
-					if (third > 0) {
-						bonus_marines -= 5;
-						third += 5;
-					}
-					break;
-				case 3:
-					if (fourth > 0) {
-						bonus_marines -= 5;
-						fourth += 5;
-					}
-					break;
-				case 4:
-					if (fifth > 0) {
-						bonus_marines -= 5;
-						fifth += 5;
-					}
-					break;
-				case 5:
-					if (sixth > 0) {
-						bonus_marines -= 5;
-						sixth += 5;
-					}
-					break;
-				case 6:
-					if (seventh > 0) {
-						bonus_marines -= 5;
-						seventh += 5;
-					}
-					break;
-				case 7:
-					if (eighth > 0) {
-						bonus_marines -= 5;
-						eighth += 5;
-					}
-					break;
-				case 8:
-					if (ninth > 0) {
-						bonus_marines -= 5;
-						ninth += 5;
-					}
-					break;
-				case 9:
-					if (tenth > 0) {
-						bonus_marines -= 5;
-						tenth += 5;
-					}
-					break;
-			}
-			i++;
+	var bonus_marines = 0;
+	if (obj_creation.strength > 5) then bonus_marines = (obj_creation.strength - 5) * 50;
+	if scr_has_disadv("Obliterated") then bonus_marines = (obj_creation.strength - 1) * 10;
+	var i = 0;
+	while (bonus_marines >= 5) {
+		switch (i % 10) {
+			case 0:
+				if (veteran > 0) {
+					bonus_marines -= 5;
+					veteran += 5;
+				}
+				break;
+			case 1:
+				if (second > 0) {
+					bonus_marines -= 5;
+					second += 5;
+				}
+				break;
+			case 2:
+				if (third > 0) {
+					bonus_marines -= 5;
+					third += 5;
+				}
+				break;
+			case 3:
+				if (fourth > 0) {
+					bonus_marines -= 5;
+					fourth += 5;
+				}
+				break;
+			case 4:
+				if (fifth > 0) {
+					bonus_marines -= 5;
+					fifth += 5;
+				}
+				break;
+			case 5:
+				if (sixth > 0) {
+					bonus_marines -= 5;
+					sixth += 5;
+				}
+				break;
+			case 6:
+				if (seventh > 0) {
+					bonus_marines -= 5;
+					seventh += 5;
+				}
+				break;
+			case 7:
+				if (eighth > 0) {
+					bonus_marines -= 5;
+					eighth += 5;
+				}
+				break;
+			case 8:
+				if (ninth > 0) {
+					bonus_marines -= 5;
+					ninth += 5;
+				}
+				break;
+			case 9:
+				if (tenth > 0) {
+					bonus_marines -= 5;
+					tenth += 5;
+				}
+				break;
 		}
+		i++;
 	}
 
-	if(struct_exists(obj_creation, "extra_specialists")){
+	if (struct_exists(obj_creation, "extra_specialists")) {
 		var c_specialists = obj_creation.extra_specialists;
 		var c_specialist_names = struct_get_names(c_specialists);
-		for(var s = 0; s < array_length(c_specialist_names); s++){
+		for (var s = 0; s < array_length(c_specialist_names); s++) {
 			var s_name = c_specialist_names[s];
 			var s_val = struct_get(c_specialists, s_name);
 			// show_debug_message($"updating specialist {s_name} with {s_val})");
-			switch (s_name){
-				case "chaplains": chaplains = chaplains + real(s_val); break;
-				case "chaplains_per_company": chaplains_per_company = chaplains_per_company + real(s_val); break;
-				case "techmarines": techmarines  = techmarines  + real(s_val); break;
-				case "techmarines_per_company": techmarines_per_company = techmarines_per_company + real(s_val); break;
-				case "apothecary": apothecary = apothecary  + real(s_val); break;
-				case "apothecary_per_company": apothecary_per_company = apothecary_per_company + real(s_val); break;
-				case "epistolary": epistolary = epistolary  + real(s_val); break;
-				case "epistolary_per_company": epistolary_per_company = epistolary_per_company + real(s_val); break;
-				case "codiciery": codiciery  = codiciery + real(s_val); break;
-				case "lexicanum": lexicanum  = lexicanum + real(s_val); break;
-				case "terminator": terminator  = terminator + real(s_val); break;
-				case "assault": assault = assault + real(s_val); break;
-				case "veteran": veteran = veteran + real(s_val); break;
-				case "devastator": devastator = devastator + real(s_val); break;
+			switch (s_name) {
+				case "chaplains":
+					chaplains = chaplains + real(s_val);
+					break;
+				case "chaplains_per_company":
+					chaplains_per_company = chaplains_per_company + real(s_val);
+					break;
+				case "techmarines":
+					techmarines = techmarines + real(s_val);
+					break;
+				case "techmarines_per_company":
+					techmarines_per_company = techmarines_per_company + real(s_val);
+					break;
+				case "apothecary":
+					apothecary = apothecary + real(s_val);
+					break;
+				case "apothecary_per_company":
+					apothecary_per_company = apothecary_per_company + real(s_val);
+					break;
+				case "epistolary":
+					epistolary = epistolary + real(s_val);
+					break;
+				case "epistolary_per_company":
+					epistolary_per_company = epistolary_per_company + real(s_val);
+					break;
+				case "codiciery":
+					codiciery = codiciery + real(s_val);
+					break;
+				case "lexicanum":
+					lexicanum = lexicanum + real(s_val);
+					break;
+				case "terminator":
+					terminator = terminator + real(s_val);
+					break;
+				case "assault":
+					assault = assault + real(s_val);
+					break;
+				case "veteran":
+					veteran = veteran + real(s_val);
+					break;
+				case "devastator":
+					devastator = devastator + real(s_val);
+					break;
+				case "dreadnought":
+					dreadnought = dreadnought + real(s_val);
+					break;
 			}
 		}
 	}
@@ -1247,12 +1276,12 @@ function scr_initialize_custom() {
 	if(epistolary <= 0) {epistolary_per_company = 0};
 
 
-	if (obj_creation.custom == 0) {
-		if (veteran >= 20) and(global.founding = 0) {
+	if (obj_creation.custom == eCHAPTER_TYPE.PREMADE) {
+		if (veteran >= 20) and(global.founding = ePROGENITOR.NONE) {
 			veteran -= 20;
 			terminator += 20;
 		}
-		if (veteran >= 10) and(global.founding != 0) and(global.chapter_name != "Lamenters") {
+		if (veteran >= 10) and(global.founding != ePROGENITOR.NONE) and(global.chapter_name != "Lamenters") {
 			veteran -= 10;
 			terminator += 10;
 		}
@@ -1262,8 +1291,6 @@ function scr_initialize_custom() {
 
 
 
-	icon = obj_creation.icon;
-	icon_name = obj_creation.icon_name;
 	battle_cry = obj_creation.battle_cry;
 	home_name = obj_creation.homeworld_name;
 
@@ -1346,7 +1373,6 @@ function scr_initialize_custom() {
 		name[0, i] = "";
 		role[0, i] = "";
 		wep1[0, i] = "";
-		bio[0, i] = 0;
 		spe[0, i] = "";
 		wep2[0, i] = "";
 		armour[0, i] = "";
@@ -1385,27 +1411,27 @@ function scr_initialize_custom() {
 	}
 	var _hi_qual_armour = "Artificer Armour";
 	if(scr_has_disadv("Poor Equipment")){
-		_hi_qual_armour = "Power Armour";
+		_hi_qual_armour = STR_ANY_POWER_ARMOUR;
 	}
 
 	load_default_gear(eROLE.ChapterMaster, "Chapter Master", "Power Sword", "Bolt Pistol", _hi_qual_armour, "","Iron Halo");
 	load_default_gear(eROLE.HonourGuard, "Honour Guard", "Power Sword", "Bolter", _hi_qual_armour, "", "");
-	load_default_gear(eROLE.Veteran, "Veteran", "Combiflamer", "Combat Knife","Power Armour", "", "");
+	load_default_gear(eROLE.Veteran, "Veteran", "Combiflamer", "Combat Knife",STR_ANY_POWER_ARMOUR, "", "");
 	load_default_gear(eROLE.Terminator, "Terminator", "Power Fist", "Storm Bolter", "Terminator Armour", "", "");
-	load_default_gear(eROLE.Captain, "Captain", "Power Sword", "Bolt Pistol", "Power Armour", "", "Iron Halo");
+	load_default_gear(eROLE.Captain, "Captain", "Power Sword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Iron Halo");
 	load_default_gear(eROLE.Dreadnought, "Dreadnought", "Close Combat Weapon", "Lascannon", "Dreadnought", "", "");
-	load_default_gear(eROLE.Champion, "Champion", "Power Sword", "Bolt Pistol", "Power Armour", "", "Combat Shield");
-	load_default_gear(eROLE.Tactical, "Tactical", "Bolter", "Combat Knife", "Power Armour", "", "");
-	load_default_gear(eROLE.Devastator, "Devastator", "", "Combat Knife", "Power Armour", "", "");
-	load_default_gear(eROLE.Assault, "Assault", "Chainsword", "Bolt Pistol", "Power Armour", "Jump Pack", "");
-	load_default_gear(eROLE.Ancient, "Ancient", "Company Standard", "Bolt Pistol", "Power Armour", "", "");
+	load_default_gear(eROLE.Champion, "Champion", "Power Sword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Combat Shield");
+	load_default_gear(eROLE.Tactical, "Tactical", "Bolter", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
+	load_default_gear(eROLE.Devastator, "Devastator", "", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
+	load_default_gear(eROLE.Assault, "Assault", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "Jump Pack", "");
+	load_default_gear(eROLE.Ancient, "Ancient", "Company Standard", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "");
 	load_default_gear(eROLE.Scout, "Scout", "Bolter", "Combat Knife", "Scout Armour", "", "");
-	load_default_gear(eROLE.Chaplain, "Chaplain", "Crozius Arcanum", "Bolt Pistol", "Power Armour", "", "Rosarius");
-	load_default_gear(eROLE.Apothecary, "Apothecary", "Chainsword", "Bolt Pistol", "Power Armour", "", "Narthecium");
+	load_default_gear(eROLE.Chaplain, "Chaplain", "Crozius Arcanum", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Rosarius");
+	load_default_gear(eROLE.Apothecary, "Apothecary", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Narthecium");
 	load_default_gear(eROLE.Techmarine, "Techmarine", "Power Axe", "Bolt Pistol", _hi_qual_armour, "Servo-arm", "");
-	load_default_gear(eROLE.Librarian, "Librarian", "Force Staff", "Bolt Pistol", "Power Armour", "", "Psychic Hood");
-	load_default_gear(eROLE.Sergeant, "Sergeant", "Chainsword", "Bolt Pistol", "Power Armour", "", "");
-	load_default_gear(eROLE.VeteranSergeant, "Veteran Sergeant", "Chainsword", "Plasma Pistol", "Power Armour", "", "");
+	load_default_gear(eROLE.Librarian, "Librarian", "Force Staff", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Psychic Hood");
+	load_default_gear(eROLE.Sergeant, "Sergeant", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "");
+	load_default_gear(eROLE.VeteranSergeant, "Veteran Sergeant", "Chainsword", "Plasma Pistol", STR_ANY_POWER_ARMOUR, "", "");
  	
 
 	if(struct_exists(obj_creation, "custom_roles")){
@@ -1527,7 +1553,7 @@ function scr_initialize_custom() {
 
 	*/
 	var squad_name = "Squad";
-	if(obj_creation.custom != 0){
+	if(obj_creation.custom != eCHAPTER_TYPE.PREMADE){
 		if (obj_ini.progenitor == ePROGENITOR.SPACE_WOLVES) {
 			squad_name = "Pack";
 		}
@@ -2459,7 +2485,7 @@ function scr_initialize_custom() {
 	if (scr_has_adv("Retinue of Renown")){
 		_honour_guard_count += 10;
 	} 
-	if (progenitor == ePROGENITOR.DARK_ANGELS && obj_creation.custom == 0) { 
+	if (progenitor == ePROGENITOR.DARK_ANGELS && obj_creation.custom == eCHAPTER_TYPE.PREMADE) { 
 		_honour_guard_count += 6; 
 	}
 	if (_honour_guard_count == 0) {
@@ -2479,13 +2505,13 @@ function scr_initialize_custom() {
 	var companies = {
 		first: {
 			coy: 1,
-			total: 100,
+			total: veteran + terminator,
 			veterans: veteran,
 			terminators: terminator,
 			tacticals: 0,
 			assaults: 0,
 			devastators: 0,
-			dreadnoughts: dreadnought+1,
+			dreadnoughts: dreadnought == 0 ? 0 : dreadnought+1, //handle obliterated
 			predators: predator,
 			landraiders: landraider
 		},
@@ -2574,7 +2600,7 @@ function scr_initialize_custom() {
 		}
 	}
 
-	// log_message($"Pre balancing company totals: {json_stringify(companies,true)}")
+	log_message($"Pre balancing company totals: {json_stringify(companies,true)}")
 	// Extra vehicles loaded from json files all get dumped into the 10th company for the player to sort out
 	
 	var vehicle_keys = ["rhino", "whirlwind", "predator", "land_raider", "land_speeder"];
@@ -2614,6 +2640,9 @@ function scr_initialize_custom() {
 	var _moved_scouts = 0;
 
 	var _coys = struct_get_names(companies);
+	function _is_terminator (_armour) {
+		return array_contains(["Terminator Armour", "Tartaros"], _armour);
+	};
 	for(var _c = 0, _clen =  array_length(_coys); _c < _clen; _c++ ){
 		var k = 0, v = 0;//k = marine slot, v = vehicle slot
 		
@@ -2629,7 +2658,7 @@ function scr_initialize_custom() {
 		_coy.assaults = 0;
 		_coy.devastators = 0;
 		_coy.chaplains = chaplains_per_company;
-		_coy.apothecarys = apothecary_per_company;
+		_coy.apothecaries = apothecary_per_company;
 		_coy.techmarines = techmarines_per_company;
 		_coy.librarians = epistolary_per_company;
 
@@ -2738,37 +2767,47 @@ function scr_initialize_custom() {
 			}
 		}
 
-		// log_message($"New Company Totals: eq specialists: {equal_specialists}: scout coy {scout_company_behaviour} equal_scouts: {equal_scouts}");
-		// log_message($"Company {_coy.coy}: {json_stringify(_coy,true)}");
+		log_message($"New Company Totals: eq specialists: {equal_specialists}: scout coy {scout_company_behaviour} equal_scouts: {equal_scouts}");
+		log_message($"Company {_coy.coy}: {json_stringify(_coy,true)}");
 
 
 		var attrs = struct_get_names(_coy);
 		
 		
-		var _is_terminator = function(_armour) {
-			return array_contains(["Terminator Armour", "Tartaros"], _armour);
-		};
+		
 		// log_message($"attrs {attrs}");
 
 		for(var _a = 0, _alen =  array_length(attrs); _a < _alen; _a++ ){
-			var _is_vehicle=false, _rolename, _erole, _wep1="default", _wep2="default",_gear="default",_mobi="default", _armour="default",_wep3="", _upgrade="", _accessory="";
+			var _is_vehicle=false;
+			var _rolename;
+			var _erole;
+			var _wep1="default";
+			var _wep2="default"
+			var _gear="default"
+			var _mobi="default";
+			var _armour="default";
+			var _wep3="";
+			var _upgrade="";
+			var _accessory="";
+			var _unit_type = "marine";
 			var _role = attrs[_a];
 			var _count = _coy[$_role];
+	
 			if(_role == "total" || _role == "coy") {
 				continue;
 			}
-			// check if 1st company specialists are in terminator gear, only true if there's any other normal terminators
-			if(_coy.coy == 1 && _coy.terminators > 0){
-				_armour = scr_has_adv("Crafters") ? "Tartaros" : "Terminator Armour";
-				_wep1 = wep1[defaults_slot][eROLE.Terminator];
-				_wep2 = wep2[defaults_slot][eROLE.Terminator];
-			}	
+
 			// log_message($"processing: coy {_coy.coy} role {_role} count {_count}");
-			switch(_role){
+			switch (_role) {
 				// MAINLINE
 				case "tacticals":
-					_rolename = roles.tactical;
-					_erole = eROLE.Tactical;
+					if(scr_has_adv("Elite Guard")){
+						_rolename = roles.veteran;
+						_erole = eROLE.Veteran;
+					} else {
+						_rolename = roles.tactical;
+						_erole = eROLE.Tactical;
+					}
 					break;
 				case "assaults":
 					_rolename = roles.assault;
@@ -2780,62 +2819,86 @@ function scr_initialize_custom() {
 					_erole = eROLE.Devastator;
 					if (wep1[defaults_slot, eROLE.Devastator] == "Heavy Ranged") {
 						_wep1 = choose("Multi-Melta", "Lascannon", "Missile Launcher", "Heavy Bolter");
-					} 
+					}
 					break;
-				case "scouts": 
+				case "scouts":
+                    _unit_type = "scout";                    
 					_rolename = roles.scout;
 					_erole = eROLE.Scout;
 					break;
 				case "dreadnoughts":
 					_rolename = roles.dreadnought;
-					if(scr_has_adv("Venerable Ancients")){
+					_unit_type = "dreadnought";
+					if (scr_has_adv("Venerable Ancients")) {
 						_rolename = "Venerable " + roles.dreadnought;
 					}
 					_erole = eROLE.Dreadnought;
-					if(_coy.coy == 9) {
+
+					if (_coy.coy == 9) {
 						_wep1 = "Missile Launcher"; 
 					}
-					if(_coy.coy == 1){
-						_wep2 = "Plasma Cannon"
+					if (_coy.coy == 1) {
+						_rolename = "Venerable " + roles.dreadnought;
+						_wep2 = "Plasma Cannon";
 					}
 					break;
-				
-				// VETERANS 
+			
+				// VETERANS
 				case "veterans":
 					_rolename = roles.veteran;
 					_erole = eROLE.Veteran;
-				break;
-
+					break;
+			
 				case "terminators":
 					_rolename = roles.terminator;
 					_erole = eROLE.Terminator;
-				break;
-
+					break;
 
 				// SPECIALISTS
 				case "captains":
-					switch (_coy.coy){
-						case 1: name[_coy.coy][k] = honor_captain_name != "" ? honor_captain_name : global.name_generator.generate_space_marine_name(); break;
-						case 2: name[_coy.coy][k] = watch_master_name != "" ? watch_master_name :  global.name_generator.generate_space_marine_name(); break;
-						case 3: name[_coy.coy][k] = arsenal_master_name != "" ? arsenal_master_name :  global.name_generator.generate_space_marine_name(); break;
-						case 4: name[_coy.coy][k] = lord_admiral_name != "" ? lord_admiral_name :  global.name_generator.generate_space_marine_name(); break;
-						case 5: name[_coy.coy][k] = march_master_name != "" ? march_master_name : global.name_generator.generate_space_marine_name(); break;
-						case 6: name[_coy.coy][k] = rites_master_name != "" ? rites_master_name : global.name_generator.generate_space_marine_name(); break;
-						case 7: name[_coy.coy][k] = chief_victualler_name != "" ? chief_victualler_name : global.name_generator.generate_space_marine_name(); break;
-						case 8: name[_coy.coy][k] = lord_executioner_name != ""? lord_executioner_name : global.name_generator.generate_space_marine_name(); break;
-						case 9: name[_coy.coy][k] = relic_master_name != "" ? relic_master_name : global.name_generator.generate_space_marine_name(); break;
-						case 10: name[_coy.coy][k] = recruiter_name != ""? recruiter_name : global.name_generator.generate_space_marine_name(); break;
+					switch (_coy.coy) {
+						case 1:
+							name[_coy.coy][k] = honor_captain_name != "" ? honor_captain_name : global.name_generator.generate_space_marine_name();
+							break;
+						case 2:
+							name[_coy.coy][k] = watch_master_name != "" ? watch_master_name : global.name_generator.generate_space_marine_name();
+							break;
+						case 3:
+							name[_coy.coy][k] = arsenal_master_name != "" ? arsenal_master_name : global.name_generator.generate_space_marine_name();
+							break;
+						case 4:
+							name[_coy.coy][k] = lord_admiral_name != "" ? lord_admiral_name : global.name_generator.generate_space_marine_name();
+							break;
+						case 5:
+							name[_coy.coy][k] = march_master_name != "" ? march_master_name : global.name_generator.generate_space_marine_name();
+							break;
+						case 6:
+							name[_coy.coy][k] = rites_master_name != "" ? rites_master_name : global.name_generator.generate_space_marine_name();
+							break;
+						case 7:
+							name[_coy.coy][k] = chief_victualler_name != "" ? chief_victualler_name : global.name_generator.generate_space_marine_name();
+							break;
+						case 8:
+							name[_coy.coy][k] = lord_executioner_name != "" ? lord_executioner_name : global.name_generator.generate_space_marine_name();
+							break;
+						case 9:
+							name[_coy.coy][k] = relic_master_name != "" ? relic_master_name : global.name_generator.generate_space_marine_name();
+							break;
+						case 10:
+							name[_coy.coy][k] = recruiter_name != "" ? recruiter_name : global.name_generator.generate_space_marine_name();
+							break;
 					}
 					commands++;
 					_rolename = roles.captain;
 					_erole = eROLE.Captain;
-					_wep1 = choose_weighted(weapon_weighted_lists.pistols);
-					if(equal_specialists == false && _coy.coy == 8){
-						_mobi = "Jump Pack"
+					_wep2 = choose_weighted(weapon_weighted_lists.pistols);
+					if (equal_specialists == false && _coy.coy == 8) {
+						_mobi = "Jump Pack";
 					}
-					if(_coy.coy == 1){
+					if (_coy.coy == 1 && _coy.terminators > 0) {
 						_wep1 = "Relic Blade";
 						_wep2 = choose("Storm Shield", "Storm Bolter");
+						_armour = scr_has_adv("Crafters") ? "Tartaros" : "Terminator Armour";
 					}
 					break;
 				case "chaplains":
@@ -2843,73 +2906,81 @@ function scr_initialize_custom() {
 					_rolename = roles.chaplain;
 					_erole = eROLE.Chaplain;
 					_wep2 = choose_weighted(weapon_weighted_lists.pistols);
-					if(equal_specialists == false && _coy.coy == 8){
+					if (equal_specialists == false && _coy.coy == 8) {
 						_mobi = "Jump Pack";
 					}
-					if(_coy.coy == 1){
-						_wep1 = "default";
+					if(_coy.coy == 1 && _coy.terminators > 0){
+						_armour = scr_has_adv("Crafters") ? "Tartaros" : "Terminator Armour";
+						_wep2 = wep2[defaults_slot][eROLE.Terminator];
 					}
 					break;
-				case "apothecarys":
+				case "apothecaries":
 					commands++;
 					_rolename = roles.apothecary;
 					_erole = eROLE.Apothecary;
-					if(equal_specialists == false && _coy.coy == 8){
+					if (equal_specialists == false && _coy.coy == 8) {
 						_mobi = "Jump Pack";
 					}
-					if(_coy.coy == 1){
-						_wep1 = "default";
-						_wep2 = "default";
+					if(_coy.coy == 1 && _coy.terminators > 0){
+						_armour = scr_has_adv("Crafters") ? "Tartaros" : "Terminator Armour";
+						_wep1 = wep1[defaults_slot][eROLE.Terminator];
+						_wep2 = wep2[defaults_slot][eROLE.Terminator];
 					}
 					break;
 				case "techmarines":
 					commands++;
 					_rolename = roles.techmarine;
 					_erole = eROLE.Techmarine;
-					if(_coy.coy == 1){
-						_wep1 = "default";
+					if (_coy.coy == 1) {
+						if(_coy.terminators > 0){
+							_armour = scr_has_adv("Crafters") ? "Tartaros" : "Terminator Armour";
+							_wep2 = wep2[defaults_slot][eROLE.Terminator];
+						}
 						if (!_is_terminator(_armour)) {
-							if(scr_has_disadv("Poor Equipment")){
+							if (scr_has_disadv("Poor Equipment")) {
 								_armour = "MK6 Corvus";
 							} else {
-								_armour = "Artificer Armour"
+								_armour = "Artificer Armour";
 							}
 						}
 					}
-					break; 
+					break;
 				case "librarians":
 					commands++;
 					_rolename = roles.librarian;
 					_erole = eROLE.Librarian;
-					if(equal_specialists == false && _coy.coy == 8){
+					if (equal_specialists == false && _coy.coy == 8) {
 						_mobi = "Jump Pack";
 					}
-					if(_coy.coy == 1){
-						_wep1 = "default";
+					if(_coy.coy == 1 && _coy.terminators > 0){
+						_armour = scr_has_adv("Crafters") ? "Tartaros" : "Terminator Armour";
+						_wep2 = wep2[defaults_slot][eROLE.Terminator];
 					}
 					break;
 				case "champions":
 					_rolename = roles.champion;
 					_erole = eROLE.Champion;
-					if(_coy.coy == 1){
-						if (_is_terminator(_armour)) {
+					if(_coy.coy == 1 && _coy.terminators > 0){
+						_armour = scr_has_adv("Crafters") ? "Tartaros" : "Terminator Armour";
 							_wep1 = "Thunder Hammer";
-							if (global.chapter_name == "Dark Angels"){
+						_wep2 = wep2[defaults_slot][eROLE.Terminator];
+						if (global.chapter_name == "Dark Angels") {
 								_wep1 = "Heavy Thunder Hammer";
 								_wep2 = "";
-							}
 						}
 					}
 					break;
 				case "ancients":
 					_rolename = roles.ancient;
 					_erole = eROLE.Ancient;
-					if(_coy.coy == 1){
-						_wep1 = "default";
+					if(_coy.coy == 1 && _coy.terminators > 0){
+						_armour = scr_has_adv("Crafters") ? "Tartaros" : "Terminator Armour";
+						_wep2 = wep2[defaults_slot][eROLE.Terminator];
 					}
 					break;
 
-				// VEHICLES 
+			
+				// VEHICLES
 				case "rhinos":
 					_is_vehicle = true;
 					_rolename = "Rhino";
@@ -2917,7 +2988,7 @@ function scr_initialize_custom() {
 					_wep1 = "Storm Bolter";
 					_wep2 = "HK Missile";
 					_accessory = "Dozer Blades";
-					if(_coy.coy == 1){
+					if (_coy.coy == 1) {
 						_upgrade = "Artificer Hull";
 					}
 					break;
@@ -2939,85 +3010,89 @@ function scr_initialize_custom() {
 					_rolename = "Land Raider";
 					_erole = eROLE.LandRaider;
 					_upgrade = "Heavy Armour";
-					var variant = choose(1,1,2,3);
+					var variant = choose(1, 1, 2, 3);
 					// 50%
 					if (variant == 1) {
 						_wep1 = "Twin Linked Heavy Bolter Mount";
 						_wep2 = "Twin Linked Lascannon Sponsons";
-						_wep3 =  "HK Missile";
+						_wep3 = "HK Missile";
 						_accessory = "Searchlight";
 					}
 					// 25%
 					if (variant == 2) {
 						_wep1 = "Twin Linked Assault Cannon Mount";
 						_wep2 = "Hurricane Bolter Sponsons";
-						_wep3 =  "Storm Bolter";
+						_wep3 = "Storm Bolter";
 						_accessory = "Frag Assault Launchers";
 					}
 					//25%
 					if (variant == 3) {
 						_wep1 = "Twin Linked Assault Cannon Mount";
 						_wep2 = "Flamestorm Cannon Sponsons";
-						_wep3 =  "Storm Bolter";
+						_wep3 = "Storm Bolter";
 						_accessory = "Frag Assault Launchers";
 					}
-				break;
+					break;
 				case "predators":
+					_is_vehicle = true;
+					_rolename = "Predator";
+					_erole = eROLE.Predator;
+					var variant = choose(1, 1, 2, 3);
 					// 1st company relic predators
-					if(_coy.coy == 1){
+					if (_coy.coy == 1) {
 						_upgrade = "Artificer Hull";
 						var predtype = choose(1, 2, 3, 4);
-						switch (predtype){
+						switch (predtype) {
 							case 1:
 								_wep1 = "Plasma Destroyer Turret";
 								_wep2 = "Lascannon Sponsons";
 								_wep3 = "HK Missile";
 								_accessory = "Searchlight";
-							break;
-							case 2: 
+								break;
+							case 2:
 								_wep1 = "Heavy Conversion Beamer Turret";
 								_wep2 = "Lascannon Sponsons";
 								_wep3 = "HK Missile";
 								_accessory = "Searchlight";
-							break;
-							case 3: 
+								break;
+							case 3:
 								_wep1 = "Flamestorm Cannon Turret";
 								_wep2 = "Heavy Flamer Sponsons";
 								_wep3 = "Storm Bolter";
 								_accessory = "Dozer Blades";
-							break;
+								break;
 							case 4:
 								_wep1 = "Magna-Melta Turret";
 								_wep2 = "Heavy Flamer Sponsons";
 								_wep3 = "Storm Bolter";
 								_accessory = "Dozer Blades";
-							break;
+								break;
 						}
 					} else {
 						//9th company and extras
-						var _variant = choose(1,2);
+						var _variant = choose(1, 2);
 						if (_variant == 1) {
 							_wep1 = "Twin Linked Lascannon Turret";
 							_wep2 = "Lascannon Sponsons";
 							_wep3 = "HK Missile";
 							_accessory = "Searchlight";
 						}
-						if(_variant == 2){
+						if (_variant == 2) {
 							_wep1 = "Autocannon Turret";
 							_wep2 = "Heavy Bolter Sponsons";
 							_wep3 = "Storm Bolter";
 							_accessory = "Dozer Blades";
 						}
 					}
-				break;
-			}
+					break;
+			}			
 			repeat(_count){
 				if(_is_vehicle){
 					add_veh_to_company(_rolename, _coy.coy, v, _wep1, _wep2, _wep3, _upgrade, _accessory);
 					v++;
 					man_size += 10;
 				} else {
-					add_unit_to_company("marine", _coy.coy, k, _rolename, _erole, _wep1,_wep2, _gear,_mobi,_armour);
+					add_unit_to_company(_unit_type, _coy.coy, k, _rolename, _erole, _wep1,_wep2, _gear,_mobi,_armour);
 					k++;
 					man_size++;
 					if(_is_terminator(_armour)){
@@ -3089,6 +3164,8 @@ function scr_initialize_custom() {
 		scr_add_item(wep1[defaults_slot, eROLE.Apothecary], 4);
 		scr_add_item(wep2[defaults_slot,  eROLE.Apothecary], 4);
 		scr_add_item("Psychic Hood", 4);
+		scr_add_item("Crozius Arcanum", 4);
+		scr_add_item("Servo-arm", 4);
 		scr_add_item("Force Staff", 4);
 		scr_add_item("Plasma Pistol", 4);
 		scr_add_item("Company Standard", 4);
@@ -3128,6 +3205,45 @@ function scr_initialize_custom() {
 	if (scr_has_adv("Crafters")) && (!scr_has_adv("Melee Enthusiasts")) {
         scr_add_item("MK4 Maximus", irandom_range(3, 18));
 	}
+
+	//Fixed Loot tagble 
+if(scr_has_adv("Ancient Armoury")){
+//armour
+var armm5="";
+	armm5=choose("Tartaros","Cataphractii");
+	scr_add_item("MK3 Iron Armour",irandom_range(2,5));
+	scr_add_item("MK4 Maximus",irandom_range(5,10));
+	scr_add_item("MK5 Heresy",irandom_range(5,10));
+	scr_add_item("MK6 Corvus",irandom_range(5,10));//Lowered to balance other buffs
+	scr_add_item("MK7 Aquila", -10);
+	scr_add_item("MK8 Errant", -1);
+//weapons (I'm not sure about replacing all 40k weapons with 30k)
+ var armm1="",armk1=0,armm2="",armk2=0,armm3="",armk3=0,armm4="",armk4=0;
+ 	scr_add_item("Bolter", -15);
+ 	scr_add_item("Bolt Pistol", -5);
+ 	scr_add_item("Lascannon",-5);
+ 	scr_add_item("Heavy Bolter",-5)
+ 	scr_add_item("Phobos Bolter",10);
+ 	scr_add_item("Phobos Bolt Pistol",3);
+ 	scr_add_item("Mars Heavy Bolter",5);
+	scr_add_item("Serpha Jump Pack",5);
+	scr_add_item("Jump Pack",-5);
+ 	armm1=choose("Volkite Culverin","Volkite Caliver","Mars Plasma Cannon","Ryza Lascannon","Grav-Cannon","Proteus Multi-Melta","Cthon Autocannon");
+ 	armk1=irandom_range(2,5);
+ 	armm2=choose("Primus Melta Gun","Ryza Plasma Gun","Volkite Charger","Grav-Gun");
+ 	armk2=irandom_range(2,5)
+ 	armm3=choose("Ryza Plasma Pistol","Volkite Serpenta")
+ 	armk3=irandom_range(1,3)
+ 	armk4=choose("Power Sword","Power Fist", "Lightining Claw","Power Axe","Power Scythe")
+ 	armk4=irandom_range(1,3)
+	scr_add_item(armm1,armk1);
+	scr_add_item(armm2,armk2);
+	scr_add_item(armm3,armk3);
+	scr_add_item(armm4,armk4);
+	scr_add_item(armm5,1);
+	
+	}
+
 
     gene_slaves = [];
     
@@ -3236,7 +3352,7 @@ function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1
     } else {
         spawn_unit.roll_age();
         spawn_unit.roll_experience();
-    }    
+    }   
 	if(role_id == eROLE.HonourGuard){
 		spawn_unit.add_trait(choose("guardian", "champion", "observant", "perfectionist","natural_leader"));
 	}
@@ -3247,9 +3363,9 @@ function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1
 		spawn_unit.add_trait("soft_target");
 	}
 	if(role_id == eROLE.Librarian){
-		if (scr_has_adv("Favoured By The Warp") && (roll_personal_dice(1, 6, "high", spawn_unit) >= 4)) {
+		if (scr_has_adv("Favoured By The Warp") && (roll_dice_unit(1, 6, "high", spawn_unit) >= 4)) {
 			spawn_unit.add_trait("favoured_by_the_warp");
-		} else if (roll_personal_dice(1, 10, "high", spawn_unit) == 10) {
+		} else if (roll_dice_unit(1, 10, "high", spawn_unit) == 10) {
 			spawn_unit.add_trait("favoured_by_the_warp");
 		}
 
@@ -3257,10 +3373,10 @@ function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1
 			spawn_unit.psionic = irandom_range(8, 10);
 		} else if (role_name == "Codiciery") {
 			spawn_unit.psionic = irandom_range(5, 7);
-			if (roll_personal_dice(1, 6, "high", spawn_unit) < 4) {
+			if (roll_dice_unit(1, 6, "high", spawn_unit) < 4) {
 				spawn_unit.update_gear(obj_ini.gear[obj_ini.defaults_slot][eROLE.Tactical], false, false);
 			}
-			if (roll_personal_dice(1, 6, "high", spawn_unit) < 4) {
+			if (roll_dice_unit(1, 6, "high", spawn_unit) < 4) {
 				spawn_unit.update_weapon_one(choose("Force Axe", "Force Sword"), false, false);
 			}
 		} else if (role_name == "Lexicanum") {

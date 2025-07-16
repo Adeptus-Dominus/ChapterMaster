@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_leopard_sprite",
   "bboxMode":0,
   "bbox_bottom":1045,
@@ -12,7 +12,7 @@
   "edgeFiltering":false,
   "For3D":true,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"65e7e956-93b9-47bc-8d8d-2515bf68797e","name":"65e7e956-93b9-47bc-8d8d-2515bf68797e","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"65e7e956-93b9-47bc-8d8d-2515bf68797e","name":"65e7e956-93b9-47bc-8d8d-2515bf68797e","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -45,7 +45,7 @@
   "origin":0,
   "parent":{
     "name":"textures",
-    "path":"folders/Sprites/textures.yy",
+    "path":"folders/Sprites/Marine Viewer/textures.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",
@@ -82,6 +82,8 @@
     "playbackSpeedType":0,
     "resourceType":"GMSequence",
     "resourceVersion":"2.0",
+    "seqHeight":1046.0,
+    "seqWidth":1454.0,
     "showBackdrop":true,
     "showBackdropImage":false,
     "timeUnits":1,

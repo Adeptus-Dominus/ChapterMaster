@@ -13,18 +13,18 @@ function scr_ui_advisors() {
     // This script draws all of the ADVISOR screens
 
     // ** Fleet **
-    if (menu = 16) {
+    if (menu = MENU.Fleet) {
         scr_fleet_advisor();
     }
 
 
     // ** Apothecarium **
-    if (menu = 11) {
+    else if (menu = MENU.Apothecarion) {
         scr_apothecarium();
     }
 
     // ** Reclusium **
-    if ((menu = 12) or(menu = 12.1)) {
+    if ((floor(menu) == MENU.Reclusiam)) {
         draw_sprite(spr_rock_bg, 0, xx, yy);
 
         draw_set_alpha(0.75);
@@ -54,7 +54,7 @@ function scr_ui_advisors() {
             draw_set_halign(fa_left);
             draw_set_color(c_gray);
             draw_set_font(fnt_40k_30b);
-            draw_text_transformed(xx + 336 + 16, yy + 66, string_hash_to_newline("Reclusium"), 1, 1, 0);
+            draw_text_transformed(xx + 336 + 16, yy + 66, "Reclusium", 1, 1, 0);
             draw_text_transformed(xx + 336 + 16, yy + 100, string_hash_to_newline("Master of Sanctity " + string(obj_ini.name[0, 2])), 0.6, 0.6, 0);
         }
         if (menu_adept = 1) {
@@ -63,15 +63,15 @@ function scr_ui_advisors() {
             draw_set_halign(fa_left);
             draw_set_color(c_gray);
             draw_set_font(fnt_40k_30b);
-            draw_text_transformed(xx + 336 + 16, yy + 66, string_hash_to_newline("Reclusium"), 1, 1, 0);
+            draw_text_transformed(xx + 336 + 16, yy + 66, "Reclusium", 1, 1, 0);
             draw_text_transformed(xx + 336 + 16, yy + 100, string_hash_to_newline("Adept " + string(obj_controller.adept_name)), 0.6, 0.6, 0);
         }
 
         draw_set_font(fnt_40k_14);
         draw_set_alpha(1);
         draw_set_color(c_gray);
-        if (temp[36] != "0") then blurp = "Sir!  You requested a report?  Currently, we have deployed " + string(temp[36]) + " " + string(obj_ini.role[100, 14]) + "s to watch over the health of our Battle-Brothers in the field.  We have an additional " + string(temp[37]) + " " + string(obj_ini.role[100, 14]) + "s who await only your order to carry the word to the troops.";
-        if (temp[36] = "0") then blurp = "Sir!  You requested a report?  Currently, we have " + string(temp[37]) + " " + string(obj_ini.role[100, 14]) + "s who await only your order to carry the word to the troops.";
+        if (temp[36] != "0") then blurp = $"Sir!  You requested a report?  Currently, we have deployed {temp[36]} {obj_ini.role[100, 14]}s to watch over the health of our Battle-Brothers in the field.  We have an additional " + string(temp[37]) + " " + string(obj_ini.role[100, 14]) + "s who await only your order to carry the word to the troops.";
+        if (temp[36] = "0") then blurp = "Sir!  You requested a report?  Currently, we have {temp[37]} {obj_ini.role[100, 14]}s who await only your order to carry the word to the troops.";
         // 
         if (global.chapter_name != "Space Wolves") and(global.chapter_name != "Iron Hands") {
             blurp += "##Currently, we are training additional " + string(obj_ini.role[100, 14]) + " at a ";
@@ -242,7 +242,7 @@ function scr_ui_advisors() {
             draw_set_color(c_gray);
             draw_rectangle(xx + 560, yy + 780, xx + 682, yy + 805, 0);
 
-            if (mouse_left = 1) and(cooldown <= 0) {
+            if (scr_click_left()) {
                 menu = 12.1;
                 var dro = 0;
                 dro = instance_create(xx + 1064, yy + 124, obj_dropdown_sel);
@@ -318,9 +318,8 @@ function scr_ui_advisors() {
             draw_sprite(spr_creation_check, che + 1, cx, cy);
             draw_set_alpha(1);
             // if (scr_hit(cx+31,cy,cx+260,cy+20)=true){tool1="Planet";tool2="Allows the use of vehicles, and bikes, but prevents this formation from being used during Raids.";}
-            if (scr_hit(cx, cy, cx + 32, cy + 32) = true) and(mouse_left = 1) and(cooldown <= 0) and(dropdown_open = 0) {
+            if (scr_hit(cx, cy, cx + 32, cy + 32) = true) and(scr_click_left()) and(dropdown_open = 0) {
                 var onceh = 0;
-                cooldown = 8000;
                 if (onceh = 0) and((fest_planet = 0)) {
                     onceh = 1;
                     fest_planet = 1;
@@ -348,9 +347,8 @@ function scr_ui_advisors() {
             draw_set_alpha(1);
 
             // if (scr_hit(cx+31,cy,cx+260,cy+20)=true){tool1="Planet";tool2="Allows the use of vehicles, and bikes, but prevents this formation from being used during Raids.";}
-            if (scr_hit(cx, cy, cx + 32, cy + 32) = true) and(mouse_left = 1) and(cooldown <= 0) and(dropdown_open = 0) {
+            if (scr_hit(cx, cy, cx + 32, cy + 32) = true) and(scr_click_left()) and(dropdown_open = 0) {
                 var onceh = 0;
-                cooldown = 8000;
                 if (onceh = 0) and(fest_planet = 1) and(fest_type != "Triumphal March") {
                     onceh = 1;
                     fest_planet = 0;
@@ -396,9 +394,8 @@ function scr_ui_advisors() {
             draw_sprite(spr_creation_check, che + 1, cx, cy);
             draw_set_alpha(1);
             // if (scr_hit(cx+31,cy,cx+260,cy+20)=true){tool1="Planet";tool2="Allows the use of vehicles, and bikes, but prevents this formation from being used during Raids.";}
-            if (scr_hit(cx, cy, cx + 32, cy + 32) = true) and(mouse_left = 1) and(cooldown <= 0) and(dropdown_open = 0) {
+            if (scr_hit(cx, cy, cx + 32, cy + 32) = true) and(scr_click_left()) and(dropdown_open = 0) {
                 var onceh = 0;
-                cooldown = 8000;
                 if (fest_type = "Tournament") or(fest_type = "Deathmatch") then onceh = 1;
                 if (onceh = 0) and(fest_feature1 = 0) {
                     onceh = 1;
@@ -445,9 +442,8 @@ function scr_ui_advisors() {
             draw_sprite(spr_creation_check, che + 1, cx, cy);
             draw_set_alpha(1);
             // if (scr_hit(cx+31,cy,cx+260,cy+20)=true){tool1="Planet";tool2="Allows the use of vehicles, and bikes, but prevents this formation from being used during Raids.";}
-            if (scr_hit(cx, cy, cx + 32, cy + 32) = true) and(mouse_left = 1) and(cooldown <= 0) and(dropdown_open = 0) {
+            if (scr_hit(cx, cy, cx + 32, cy + 32) = true) and(scr_click_left()) and(dropdown_open = 0) {
                 var onceh = 0;
-                cooldown = 8000;
                 if (fest_type = "Imperial Mass") and(known[5] = 0) then onceh = 1;
                 if (onceh = 0) and(fest_feature2 = 0) {
                     onceh = 1;
@@ -496,9 +492,8 @@ function scr_ui_advisors() {
             draw_sprite(spr_creation_check, che + 1, cx, cy);
             draw_set_alpha(1);
             // if (scr_hit(cx+31,cy,cx+260,cy+20)=true){tool1="Planet";tool2="Allows the use of vehicles, and bikes, but prevents this formation from being used during Raids.";}
-            if (scr_hit(cx, cy, cx + 32, cy + 32) = true) and(mouse_left = 1) and(cooldown <= 0) and(dropdown_open = 0) {
+            if (scr_hit(cx, cy, cx + 32, cy + 32) = true) and(scr_click_left()) and(dropdown_open = 0) {
                 var onceh = 0;
-                cooldown = 8000;
                 if (fest_type = "Imperial Mass") and(known[5] = 0) then onceh = 1;
                 if (onceh = 0) and(fest_feature3 = 0) {
                     onceh = 1;
@@ -554,10 +549,9 @@ function scr_ui_advisors() {
                 draw_set_alpha(0.2);
                 draw_rectangle(xx + 1302, yy + 780, xx + 1433, yy + 805, 0);
 
-                if (mouse_left = 1) and(cooldown <= 0) {
+                if (scr_click_left()) {
                     requisition -= fest_cost;
                     fest_scheduled = 1;
-                    cooldown = 6000;
                     menu = 12;
                     with(obj_dropdown_sel) {
                         instance_destroy();
@@ -582,8 +576,7 @@ function scr_ui_advisors() {
                 draw_set_color(c_white);
                 draw_set_alpha(0.2);
                 draw_rectangle(xx + 1132, yy + 780, xx + 1253, yy + 805, 0);
-                if (mouse_left = 1) and(cooldown <= 0) {
-                    cooldown = 20;
+                if (scr_click_left()) {
                     fest_type = "";
                     fest_sid = 0;
                     fest_wid = 0;
@@ -696,12 +689,12 @@ function scr_ui_advisors() {
 
     }
 
-    if (menu = 1) and(managing = 0) {
+    if (menu == MENU.Manage) and (managing == 0) {
         draw_set_alpha(1);
         draw_sprite(spr_rock_bg, 0, xx, yy);
         draw_set_font(fnt_40k_30b);
         draw_set_halign(fa_center);
         draw_set_color(c_gray);
-        draw_text(xx + 800, yy + 74, string_hash_to_newline(string(global.chapter_name) + " Chapter Organization"));
+        draw_text(xx + 800, yy + 74, $"{global.chapter_name} Chapter Organization");
     }
 }

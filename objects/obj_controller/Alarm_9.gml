@@ -66,7 +66,8 @@ with(obj_temp_inq){
     nav.capital_number=choose(1,2,3);
     nav.frigate_number=(nav.capital_number*2)+3;
     nav.escort_number=12;
-    nav.home_x=x;nav.home_y=y;
+    nav.home_x=x;
+    nav.home_y=y;
     nav.orbiting=instance_nearest(x,y,obj_star);
     nav.orbiting.present_fleet[eFACTION.Imperium] += 1;
     nav.warp_able=true;

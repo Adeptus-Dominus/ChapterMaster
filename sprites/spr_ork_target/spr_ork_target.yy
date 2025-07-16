@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_ork_target",
   "bboxMode":2,
   "bbox_bottom":31,
@@ -12,7 +12,7 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"da401b80-f220-4151-8235-7d11983b9b40","name":"da401b80-f220-4151-8235-7d11983b9b40","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"da401b80-f220-4151-8235-7d11983b9b40","name":"da401b80-f220-4151-8235-7d11983b9b40","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -26,7 +26,7 @@
   "origin":9,
   "parent":{
     "name":"New Ground",
-    "path":"folders/Sprites/New Ground.yy",
+    "path":"folders/Sprites/Unused/Groundside/New Ground.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",
@@ -63,6 +63,8 @@
     "playbackSpeedType":1,
     "resourceType":"GMSequence",
     "resourceVersion":"2.0",
+    "seqHeight":36.0,
+    "seqWidth":41.0,
     "showBackdrop":true,
     "showBackdropImage":false,
     "timeUnits":1,
@@ -84,8 +86,8 @@
   "swatchColours":null,
   "swfPrecision":2.525,
   "textureGroupId":{
-    "name":"Default",
-    "path":"texturegroups/Default",
+    "name":"Unused",
+    "path":"texturegroups/Unused",
   },
   "type":0,
   "VTile":false,

@@ -2235,7 +2235,7 @@ if (enemy = 10) and(battle_special != "ship_demon") and(battle_special != "falle
 }
 
 // ** Chaos Space Marines Forces **
-if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeting_battle", battle_special) = 0) {
+if (enemy = 11) and(battle_special != "ChaosWarband") and(string_count("cs_meeting_battle", battle_special) = 0) {
 	// Small CSM Group
 	if (threat = 1) {
 		u = instance_nearest(xxx, 240, obj_enunit);
@@ -2457,7 +2457,7 @@ if (enemy = 11) and(battle_special != "world_eaters") and(string_count("cs_meeti
 }
 
 // ** World Eaters Forces **
-if (enemy = 11) and(battle_special = "world_eaters") {
+if (enemy = 11) and(battle_special = "ChaosWarband") {
 	// Small WE Group
 	if (threat = 1) {
 		u = instance_nearest(xxx, 240, obj_enunit);

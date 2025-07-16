@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scr_move_unit_info",
   "parent":{
-    "name":"ChapterMaster",
-    "path":"ChapterMaster.yyp",
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

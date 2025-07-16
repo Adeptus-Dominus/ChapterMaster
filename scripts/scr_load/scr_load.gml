@@ -15,6 +15,7 @@ function scr_load(save_part, save_id) {
 	if(file_exists(filename)){
 		var _gamesave_buffer = buffer_load(filename);
 		var _gamesave_string = buffer_read(_gamesave_buffer, buffer_string);
+		buffer_delete(_gamesave_buffer);
 		var json_game_save = json_parse(_gamesave_string);
 	}
 
@@ -27,22 +28,10 @@ function scr_load(save_part, save_id) {
 		log_message("Loading GLOBALS");
 		// Globals
 		var globals = obj_saveload.GameSave.Save;
-		global.chapter_icon_sprite = spr_icon_chapters;
-		global.chapter_icon_frame = globals.chapter_icon_frame;
-		global.chapter_icon_path = globals.chapter_icon_path;
-		if(struct_exists(globals, "chapter_icon_filename")){
-			global.chapter_icon_filename = globals.chapter_icon_filename;
-		} else {
-			global.chapter_icon_filename = "cust";//dunno why this isn't always set
-		}
-	    global.icon_name=globals.icon_name;
+		scr_load_chapter_icon(globals.icon_name, true);
 		global.chapter_name = globals.chapter_name;
 		global.custom = globals.custom;
-		if(global.chapter_icon_path != "Error" && global.chapter_icon_path != "") {
-			global.chapter_icon_sprite = scr_image_cache(global.chapter_icon_path, global.chapter_icon_filename);
-		} else {
-			global.chapter_icon_sprite = spr_icon_chapters;
-		}
+		
 	}
 
 
@@ -74,7 +63,7 @@ function scr_load(save_part, save_id) {
 		/// the object doesnt want to work
 		with(obj_controller){
 			var exclusions = ["specialist_point_handler", "location_viewer", "id",
-			 "techs","apoths","forge_queue","point_breakdown","apothecary_points", "forge_points"]; // skip automatic setting of certain vars, handle explicitly later
+			 "techs","apoths","forge_queue","point_breakdown","apothecary_points", "forge_points", "chapter_master_data"]; // skip automatic setting of certain vars, handle explicitly later
 
 			// Automatic var setting
 			var all_names = struct_get_names(save_data);
@@ -101,6 +90,14 @@ function scr_load(save_part, save_id) {
 					variable_struct_set(specialist_point_handler, prop, variable_struct_get(save_data, prop));
 				}
 			}
+			chapter_master = new scr_chapter_master();
+			if (struct_exists(save_data, "chapter_master_data")){
+				var _data = variable_struct_get(save_data, "chapter_master_data");	
+				with (chapter_master){
+					move_data_to_current_scope(_data, true);
+				}
+			}
+	
 			specialist_point_handler.calculate_research_points();
 			location_viewer = new UnitQuickFindPanel();
 			scr_colors_initialize();

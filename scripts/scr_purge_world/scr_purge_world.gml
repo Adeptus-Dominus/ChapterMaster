@@ -89,23 +89,23 @@ function scr_purge_world(star, planet, action_type, action_score) {
 		var _displayed_killed = star.p_large[planet] == 1 ? $"{kill} billion" : scr_display_number(floor(kill));
 	    txt1 += $"##The world had {_displayed_population} Imperium subjects. {_displayed_killed} were purged over the duration of the bombardment.##Heresy has fallen down to {max(0, heres_after)}%.";
     
-	    if (pop_after=0){
+	    if (pop_after<=0){
 	        if (star.p_owner[planet]=2) and (obj_controller.faction_status[2]!="War"){
-	            if (star.p_type[planet]="Temperate") or (star.p_type[planet]="Hive") or (star.p_type[planet]="Desert"){
-	                obj_controller.audiences+=1;obj_controller.audien[obj_controller.audiences]=2;
-	                obj_controller.audien_topic[obj_controller.audiences]="bombard_angry";
+	            if (star.p_type[planet]="Temperate" || star.p_type[planet]="Hive" || star.p_type[planet]="Desert"){
+	            	var _disp_hit = -10;
+		            if (star.p_type[planet]="Temperate") then _disp_hit = -5;
+		            if (star.p_type[planet]="Desert") then _disp_hit = -3;         	
+
+	                scr_audience(eFACTION.Imperium, "bombard_angry", _disp_hit, "", 0, 0);
 	            }
-	            if (star.p_type[planet]="Temperate") then obj_controller.disposition[2]-=5;
-	            if (star.p_type[planet]="Desert") then obj_controller.disposition[2]-=3;
-	            if (star.p_type[planet]="Hive") then obj_controller.disposition[2]-=10;
 	        }
 	    }
 	    if (star.p_owner[planet]=3) and (obj_controller.faction_status[3]!="War"){
-	        obj_controller.audiences+=1;
-	        obj_controller.audien[obj_controller.audiences]=3;
-	        obj_controller.audien_topic[obj_controller.audiences]="bombard_angry";
-	        if (star.p_type[planet]="Forge") then obj_controller.disposition[3]-=15;
-	        if (star.p_type[planet]="Ice") then obj_controller.disposition[3]-=7;
+
+	    	if (star.p_type[planet]="Forge") then _disp_hit =-15;
+	        if (star.p_type[planet]="Ice") then _disp_hit =-7;
+	    	scr_audience(eFACTION.Inquisition, "bombard_angry", _disp_hit, "", 0, 0);
+
 	    }
 
     
@@ -230,31 +230,26 @@ function scr_purge_world(star, planet, action_type, action_score) {
 
 
 	if (action_type=DropType.PurgeAssassinate){
-	    var dis,chance,siz_penalty,aroll,o,yep,ambush;
-	    aroll=floor(random(100))+1;dis=0;chance=0;siz_penalty=0;o=0;yep=0;ambush=false;
+		var aroll=roll_dice_chapter(1, 100, "high");
+		var chance = 100;
+		// var siz_penalty=0;
+		var o=0;
+		var yep=0;
     
-	    // Base
-	    dis=star.dispo[planet];
-	    if (dis<=20) then chance=75;
-	    if (dis>20) and (dis<40) then chance=40;
-	    if (dis>40) and (dis<70) then chance=15;
-	    if (dis>70) then chance=0;
-    
+		// Disposition
+		aroll += floor(star.dispo[planet] / 10);
+
 	    // Advantages
-		if(scr_has_adv("Ambushers")) then ambush=true;
-		if(scr_has_adv("Lightning Warriors")) then chance+=5;
-		if(scr_has_disadv("Shitty Luck")) then chance+=20;
+		if(scr_has_adv("Ambushers")) then aroll+=10;
+		if(scr_has_adv("Lightning Warriors")) then aroll+=5;
 
-	    // Size
-	    if ((action_score > 5) && (action_score <= 10)) { siz_penalty = 5; }
-	    if ((action_score > 10) && (action_score <= 20)) { siz_penalty = 20; }
-	    if ((action_score > 20) && (action_score <= 50)) { siz_penalty = 30; }
-	    if ((action_score > 50) && (action_score <= 100)) { siz_penalty = 50; }
-	    if ((action_score > 100) && (action_score <= 200)) { siz_penalty = 75; }
-	    if (action_score > 200) { siz_penalty = 125; }
-
-	    // Ambushers go!
-	    if (ambush=true) then chance=round(chance/2);
+	    // Size - unused
+	    // if ((action_score > 5) && (action_score <= 10)) { siz_penalty = 5; }
+	    // if ((action_score > 10) && (action_score <= 20)) { siz_penalty = 20; }
+	    // if ((action_score > 20) && (action_score <= 50)) { siz_penalty = 30; }
+	    // if ((action_score > 50) && (action_score <= 100)) { siz_penalty = 50; }
+	    // if ((action_score > 100) && (action_score <= 200)) { siz_penalty = 75; }
+	    // if (action_score > 200) { siz_penalty = 125; }
     
 	    var spec1=0,spec2=0,txt=""; // TODO consider making it a battle with Planetary governor's guards
 	    txt="Your Astartes descend upon the surface of "+string(star.name)+" "+string(scr_roman(planet))+" and plot the movements and schedule of the governor.  ";    
@@ -285,9 +280,11 @@ function scr_purge_world(star, planet, action_type, action_score) {
 	    txt+="What is thy will?";
     
 	    var he;he=instance_create(star.x,star.y,obj_temp6);
-	    var pip;pip=instance_create(0,0,obj_popup);
+	    var pip=instance_create(0,0,obj_popup);
 	    pip.title="Planetary Governor Assassinated";
-	    pip.text=txt;pip.planet=planet;
+	    pip.text=txt;
+	    pip.planet=planet;
+	    pip.p_data = new PlanetData(panet,star);
     
 	    pip.option1="Allow the official successor to become Planetary Governor.";
 	    pip.option2="Ensure that a sympathetic successor will be the one to rule.";
@@ -296,10 +293,9 @@ function scr_purge_world(star, planet, action_type, action_score) {
     
 	    // Result-  this is the multiplier for the chance of discovery with the inquisition, can also be used to determine
 	    // the new Governor disposition if they are the official successor
-	    if (aroll<=chance){// Discovered
+	    if (aroll < chance){// Discovered
 	        pip.estimate=2;
-	    }
-	    if (aroll>chance){// Success
+	    } else if (aroll >= chance){// Success
 	        pip.estimate=1;
 	    }
 	    // If there are enemy non-chaos forces then they may be used as a cover
@@ -330,12 +326,12 @@ function scr_purge_world(star, planet, action_type, action_score) {
 	        pip.title="Purge Results";
 	        pip.text=txt2;
 	    }
-	    /*if (isquest=1){// DO EET
+	    if (isquest==1){// DO EET
 	        var pip;pip=instance_create(0,0,obj_popup);
 	        pip.title="Inquisition Mission Completed";
 	        pip.text=txt1;pip.image="inquisition";
-	        scr_event_log("","Inquisition Mission Completed: The unruly nobles of "+string(star.name)+" "+string(scr_roman(planet))+" have been silenced.");
-	    }*/
+	        // scr_event_log("","Inquisition Mission Completed: The unruly nobles of "+string(star.name)+" "+string(scr_roman(planet))+" have been silenced.");
+	    }
 	}
 
 

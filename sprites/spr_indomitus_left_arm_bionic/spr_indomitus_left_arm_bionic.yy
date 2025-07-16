@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_indomitus_left_arm_bionic",
   "bboxMode":0,
   "bbox_bottom":183,
@@ -12,7 +12,7 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"a3ac1d6f-e781-440e-a110-6fad27f8a376","name":"a3ac1d6f-e781-440e-a110-6fad27f8a376","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"a3ac1d6f-e781-440e-a110-6fad27f8a376","name":"a3ac1d6f-e781-440e-a110-6fad27f8a376","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -63,6 +63,8 @@
     "playbackSpeedType":0,
     "resourceType":"GMSequence",
     "resourceVersion":"2.0",
+    "seqHeight":271.0,
+    "seqWidth":181.0,
     "showBackdrop":true,
     "showBackdropImage":false,
     "timeUnits":1,
@@ -81,8 +83,8 @@
   "swatchColours":null,
   "swfPrecision":2.525,
   "textureGroupId":{
-    "name":"Default",
-    "path":"texturegroups/Default",
+    "name":"MarineViewer",
+    "path":"texturegroups/MarineViewer",
   },
   "type":0,
   "VTile":false,

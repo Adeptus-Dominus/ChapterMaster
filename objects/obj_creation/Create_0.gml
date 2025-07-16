@@ -44,37 +44,23 @@ successor_y = 250;
 custom_y = 463;
 /// y coord of Other section heading
 other_y = 593;
-marine_surface = surface_create(600, 600);
-var show_debug = false;
-if(show_debug){
-    show_debug_overlay(true);
-    dbg_view("obj_creation_dbg", true);
-    dbg_section("Icon Grid");
-    ref_to_max_cols = ref_create(self, "max_cols");
-    ref_to_icon_width = ref_create(self, "icon_width");
-    ref_to_icon_height = ref_create(self, "icon_height");
-    ref_to_icon_grid_left_edge = ref_create(self, "icon_grid_left_edge");
-    ref_to_icon_gap_y = ref_create(self, "icon_gap_y");
-    ref_to_icon_gap_x = ref_create(self, "icon_gap_x");
-    ref_to_icon_row_gap = ref_create(self, "icon_row_gap");
-    dbg_slider_int(ref_to_max_cols,1,15);
-    dbg_slider_int(ref_to_icon_width,1,100);
-    dbg_slider_int(ref_to_icon_height,1,100);
-    dbg_slider_int(ref_to_icon_grid_left_edge,1,1000);
-    dbg_slider_int(ref_to_icon_gap_y,1,300);
-    dbg_slider_int(ref_to_icon_gap_x,1,300);
-    dbg_slider_int(ref_to_icon_row_gap,1,300);
 
-    dbg_section("Heading Positions")
-    ref_to_founding_y = ref_create(self, "founding_y");
-    ref_to_successor_y = ref_create(self, "successor_y");
-    ref_to_custom_y = ref_create(self, "custom_y");
-    ref_to_other_y = ref_create(self, "other_y");
-    dbg_slider_int(ref_to_founding_y,1,1000);
-    dbg_slider_int(ref_to_successor_y,1,1000);
-    dbg_slider_int(ref_to_custom_y,1,1000);
-    dbg_slider_int(ref_to_other_y,1,1000);
-}
+var view = new DebugView("Obj Creation Grid", self);
+view.add_section("Icon Grid")
+.add_slider_int("max_cols", 1, 15)
+.add_slider_int("icon_width", 1 ,100)
+.add_slider_int("icon_height", 1, 100)
+.add_slider_int("icon_grid_left_edge", 1, 1000)
+.add_slider_int("icon_gap_y", 1 , 300)
+.add_slider_int("icon_gap_x", 1, 300)
+.add_slider_int("icon_row_gap", 1, 300)
+.add_section("Heading Positions")
+.add_slider_int("founding_y", 1, 1000)
+.add_slider_int("successor_y", 1, 1000)
+.add_slider_int("custom_y", 1, 1000)
+.add_slider_int("other_y", 1, 1000)
+.hide();
+
 #endregion
 
 window_data=string(window_get_x())+"|"+string(window_get_y())+"|"+string(window_get_width())+"|"+string(window_get_height())+"|";
@@ -87,9 +73,6 @@ restarted=0;
 custom_icon=0;
 
 /// Stores the chapter icon in one spot so we dont have to keep checking whether we're using a custom image or not every time we wanna display it somewhere
-global.chapter_icon_sprite = spr_icon_chapters;
-global.chapter_icon_frame = 0;
-global.chapter_icon_path = "";
 global.chapter_id = 0;
 
 
@@ -135,8 +118,6 @@ slate3=-2;
 slate4=0;
 slate5=0;
 slate6=0;
-mouse_left=0;
-mouse_right=0;
 change_slide=0;
 goto_slide=1;
 highlight=0;
@@ -148,8 +129,6 @@ slide_show=1;
 cooldown=0;
 name_bad=0;
 heheh=0;
-icons_top=1;
-icons_max=0;
 turn_selection_change=false;
 draw_helms = true;
 
@@ -267,7 +246,7 @@ buttons = {
             font : fnt_40k_14b
         },
         {
-            str1 : "Ganger (cthonian)",
+            str1 : "Cthonian",
             font : fnt_40k_14b
         },
         {
@@ -375,6 +354,8 @@ text_bars = {
 
 scrollbar_engaged=0;
 
+chapter_icons_container = new ScrollableContainer(700, 430);
+
 text_selected="none";
 text_bar=0;
 tooltip="";
@@ -389,12 +370,10 @@ role_names_all="";
 chapter_name="Unnamed";
 chapter_string="Unnamed";
 chapter_year=0;
-icon=1;
-icon_name="da";
 /// @instancevar {Real} custom 0 if premade, 1 if random, 2 if custom
-custom=0;
+custom=eCHAPTER_TYPE.PREMADE;
 /// @instancevar {Enum.ePROGENITOR} founding 
-founding=1;
+founding=ePROGENITOR.NONE;
 chapter_tooltip="";
 points=0;
 maxpoints=100;
@@ -530,7 +509,7 @@ enum eCHAPTER_ORIGINS {
  * @param {String} _name e.g. "Dark Angels" 
  * @param {String} _tooltip e.g. "Some extremely lore friendly backstory"
  */
-function ChapterDataLite(_id, _origin,_progenitor, _name , _tooltip) constructor {
+function ChapterDataLite(_id, _origin,_progenitor, _name , _tooltip, _icon_name = "unknown") constructor {
     id = _id;
     origin = _origin;
     name = _name;
@@ -539,35 +518,36 @@ function ChapterDataLite(_id, _origin,_progenitor, _name , _tooltip) constructor
     disabled = false;
     json = false;
     loaded = true;
-    icon = _id;
+    icon_name = _icon_name;
     splash = _id;
 }
 
 // For new additions, as long as the order in the array is the same as the enum order,
 //you will be able to index the array by using syntax like so: `var dark_angels = all_chapters[CHAPTERS.DARK_ANGELS]`
 all_chapters = [
-    new ChapterDataLite(eCHAPTERS.UNKNOWN, eCHAPTER_ORIGINS.NONE, 0, "Unknown", "Error: The tooltip is missing"),
+    new ChapterDataLite(eCHAPTERS.UNKNOWN, eCHAPTER_ORIGINS.NONE, 0, "Unknown", "Error: The tooltip is missing", "unknown"),
     new ChapterDataLite(eCHAPTERS.DARK_ANGELS, eCHAPTER_ORIGINS.FOUNDING, 0, "Dark Angels", 
-    "The Dark Angels claim complete allegiance and service to the Emperor of Mankind, though their actions and secret goals seem to run counter to this- above all other things they strive to atone for an ancient crime of betrayal."),
-    new ChapterDataLite(eCHAPTERS.WHITE_SCARS, eCHAPTER_ORIGINS.FOUNDING, 0, "White Scars", "Known and feared for their highly mobile way of war, the White Scars are the masters of lightning strikes and hit-and-run tactics.  They are particularly adept in the use of Attack Bikes and field large numbers of them."),
-    new ChapterDataLite(eCHAPTERS.SPACE_WOLVES, eCHAPTER_ORIGINS.FOUNDING, 0, "Space Wolves", "Brave sky warriors hailing from the icy deathworld of Fenris, the Space Wolves are a non-Codex compliant chapter, and deadly in close combat.  They fight on their own terms and damn any who wish otherwise." ),
-    new ChapterDataLite(eCHAPTERS.IMPERIAL_FISTS, eCHAPTER_ORIGINS.FOUNDING, 0, "Imperial Fists", "Siege-masters of utmost excellence, the Imperial Fists stoicism has lead them to great victories and horrifying defeats. To them, the idea of a tactical retreat is utterly inconsiderable. They hold ground on Inwit vigilantly, refusing to back down from any fight."),
-    new ChapterDataLite(eCHAPTERS.BLOOD_ANGELS, eCHAPTER_ORIGINS.FOUNDING, 0,"Blood Angels", "One of the most noble and renowned chapters, their combat record belies a dark flaw in their gene-seed caused by the death of their primarch. Their primarch had wings and a propensity for close combat, and this shows in their extensive use of jump packs and close quarters weapons."),
-    new ChapterDataLite(eCHAPTERS.IRON_HANDS, eCHAPTER_ORIGINS.FOUNDING, 0,"Iron Hands","The flesh is weak, and the weak shall perish. Such is the creed of these mercilessly efficient cyborg warriors. A chapter with strong ties to the Mechanicum, they crush the foes of the Emperor and Machine God alike with a plethora of exotic technology and ancient weaponry."),
-    new ChapterDataLite(eCHAPTERS.ULTRAMARINES, eCHAPTER_ORIGINS.FOUNDING, 0,"Ultramarines","An honourable and venerated chapter, the Ultramarines are considered to be amongst the best of the best. Their Primarch was the author of the great tome of the “Codex Astartes”, and they are considered exemplars of what a perfect Space Marine Chapter should be like."),
-    new ChapterDataLite(eCHAPTERS.SALAMANDERS, eCHAPTER_ORIGINS.FOUNDING, 0,"Salamanders", "Followers of the Promethean Cult, the jet-black skinned Salamanders are forgemasters of legend. They are armed with the best wargear available and prefer flame based weaponry. Their only drawback is their low numbers and slow recruiting."),
-    new ChapterDataLite(eCHAPTERS.RAVEN_GUARD, eCHAPTER_ORIGINS.FOUNDING, 0,"Raven Guard","Clinging to the shadows and riding the edge of lightning the Raven Guard strike out at the hated enemy with stealth and speed. Using lightning strikes, hit and run tactics, and guerrilla warfare, they are known for being there one second and gone the next."),
-    new ChapterDataLite(eCHAPTERS.BLACK_TEMPLARS, eCHAPTER_ORIGINS.SUCCESSOR, eCHAPTERS.IMPERIAL_FISTS, "Black Templars","Not adhering to the Codex Astartes, Black Templars are a Chapter on an Eternal Crusade with unique organization and high numbers. Masters of assault, they charge at the enemy with zeal unmatched. They hate psykers, and as such, have no Librarians."),
-    new ChapterDataLite(eCHAPTERS.MINOTAURS, eCHAPTER_ORIGINS.SUCCESSOR, eCHAPTERS.IMPERIAL_FISTS, "Minotaurs","Bronze-clad Astartes of unknown Founding, the Minotaurs prefer to channel their righteous fury in a massive storm of fire, with tanks and artillery. They could be considered the Inquisition’s attack dog, since they often attack fellow chapters suspected of heresy."),
-    new ChapterDataLite(eCHAPTERS.BLOOD_RAVENS, eCHAPTER_ORIGINS.SUCCESSOR,0, "Blood Ravens","Of unknown origins and Founding, the origins of the Blood Ravens are shrouded in mystery and are believed to be tied to a dark truth. This elusive Chapter is drawn to the pursuit of knowledge and ancient lore and produces an unusually high number of Librarians."),
-    new ChapterDataLite(eCHAPTERS.CRIMSON_FISTS, eCHAPTER_ORIGINS.SUCCESSOR, eCHAPTERS.IMPERIAL_FISTS ,"Crimson Fists","An Imperial Fists descendant, the Crimson Fists are more level-minded than their Progenitor and brother chapters.  They suffer the same lacking zygotes as their ancestors, and more resemble the Ultramarines in their balanced approach to combat. After surviving a devastating Ork WAAAGH! the chapter clings dearly to its future."),
-    new ChapterDataLite(eCHAPTERS.LAMENTERS, eCHAPTER_ORIGINS.SUCCESSOR, eCHAPTERS.BLOOD_ANGELS,"Lamenters","The Lamenter's accursed and haunted legacy seems to taint much of what they have achieved; their victories often become bitter ashes in their hands.  Nearly extinct, they fight their last days on behalf of the common folk in a crusade of endless penitence."),
-    new ChapterDataLite(eCHAPTERS.CARCHARODONS, eCHAPTER_ORIGINS.SUCCESSOR, eCHAPTERS.RAVEN_GUARD, "Carcharodons","Rumored to be Successors of the Raven Guard, these Astartes are known for their sudden attacks and shock assaults. Travelling through the Imperium via self-sufficient Nomad-Predation based fleets, no enemy is safe from the fury of these bloodthirsty Space Marines."),
-    new ChapterDataLite(eCHAPTERS.SOUL_DRINKERS, eCHAPTER_ORIGINS.SUCCESSOR,eCHAPTERS.IMPERIAL_FISTS, "Soul Drinkers","Sharing ancestry of the Black Templars or Crimson fists. As proud sons of Dorn they share the strong void combat traditions, fielding a large amount of Battle Barges. As well as being fearsome in close combat. Whispers of the Ruinous Powers are however quite enticing."),
-    new ChapterDataLite(eCHAPTERS.ANGRY_MARINES, eCHAPTER_ORIGINS.NON_CANON,0, "Angry Marines","Frothing with pathological rage since the day their Primarch emerged from his pod with naught but a dented copy of battletoads.  Every last Angry Marine is a homicidal, suicidal berserker with a voice that projects, and are always angry, all the time.  A /tg/ classic."),
-    new ChapterDataLite(eCHAPTERS.EMPERORS_NIGHTMARE, eCHAPTER_ORIGINS.NON_CANON,0, "Emperor’s Nightmare","The Emperor's Nightmare bear the curse of a bizarre mutation within their gene-seed. The Catalepsean Node is in a state of decay and thus do not sleep for months at a time until falling asleep suddenly. They prefer shock and awe tactics with stealth."),
-    new ChapterDataLite(eCHAPTERS.STAR_KRAKENS, eCHAPTER_ORIGINS.NON_CANON,0, "Star Krakens","In darkness, they dwell in The Deep. The Star Krakens stand divided in individual companies but united in the form of the Ten-Flag Council. They utilize boarding tactics and are the sole guardians of the ancient sensor array called “The Lighthouse”."),
-    new ChapterDataLite(eCHAPTERS.CONSERVATORS, eCHAPTER_ORIGINS.NON_CANON,0, "Conservators","Hailing from the Asharn Marches and having established their homeworld on the planet Dekara, these proud sons of Dorn suffer from an extreme lack of supplies, Ork raids, and more. Though under strength and lacking equipment, they managed to forge an interstellar kingdom loyal to both Emperor and Imperium."),
+    "The Dark Angels claim complete allegiance and service to the Emperor of Mankind, though their actions and secret goals seem to run counter to this- above all other things they strive to atone for an ancient crime of betrayal.", "dark_angels"),
+    new ChapterDataLite(eCHAPTERS.WHITE_SCARS, eCHAPTER_ORIGINS.FOUNDING, 0, "White Scars", "Known and feared for their highly mobile way of war, the White Scars are the masters of lightning strikes and hit-and-run tactics.  They are particularly adept in the use of Attack Bikes and field large numbers of them.", "white_scars"),
+    new ChapterDataLite(eCHAPTERS.SPACE_WOLVES, eCHAPTER_ORIGINS.FOUNDING, 0, "Space Wolves", "Brave sky warriors hailing from the icy deathworld of Fenris, the Space Wolves are a non-Codex compliant chapter, and deadly in close combat.  They fight on their own terms and damn any who wish otherwise.", "space_wolves"),
+    new ChapterDataLite(eCHAPTERS.IMPERIAL_FISTS, eCHAPTER_ORIGINS.FOUNDING, 0, "Imperial Fists", "Siege-masters of utmost excellence, the Imperial Fists stoicism has lead them to great victories and horrifying defeats. To them, the idea of a tactical retreat is utterly inconsiderable. They hold ground on Inwit vigilantly, refusing to back down from any fight.", "imperial_fists"),
+    new ChapterDataLite(eCHAPTERS.BLOOD_ANGELS, eCHAPTER_ORIGINS.FOUNDING, 0,"Blood Angels", "One of the most noble and renowned chapters, their combat record belies a dark flaw in their gene-seed caused by the death of their primarch. Their primarch had wings and a propensity for close combat, and this shows in their extensive use of jump packs and close quarters weapons.", "blood_angels"),
+    new ChapterDataLite(eCHAPTERS.IRON_HANDS, eCHAPTER_ORIGINS.FOUNDING, 0,"Iron Hands","The flesh is weak, and the weak shall perish. Such is the creed of these mercilessly efficient cyborg warriors. A chapter with strong ties to the Mechanicum, they crush the foes of the Emperor and Machine God alike with a plethora of exotic technology and ancient weaponry.", "iron_hands"),
+    new ChapterDataLite(eCHAPTERS.ULTRAMARINES, eCHAPTER_ORIGINS.FOUNDING, 0,"Ultramarines","An honourable and venerated chapter, the Ultramarines are considered to be amongst the best of the best. Their Primarch was the author of the great tome of the “Codex Astartes”, and they are considered exemplars of what a perfect Space Marine Chapter should be like.", "ultramarines"),
+    new ChapterDataLite(eCHAPTERS.SALAMANDERS, eCHAPTER_ORIGINS.FOUNDING, 0,"Salamanders", "Followers of the Promethean Cult, the jet-black skinned Salamanders are forgemasters of legend. They are armed with the best wargear available and prefer flame based weaponry. Their only drawback is their low numbers and slow recruiting.", "salamanders"),
+    new ChapterDataLite(eCHAPTERS.RAVEN_GUARD, eCHAPTER_ORIGINS.FOUNDING, 0,"Raven Guard","Clinging to the shadows and riding the edge of lightning the Raven Guard strike out at the hated enemy with stealth and speed. Using lightning strikes, hit and run tactics, and guerrilla warfare, they are known for being there one second and gone the next.", "raven_guard"),
+    new ChapterDataLite(eCHAPTERS.BLACK_TEMPLARS, eCHAPTER_ORIGINS.SUCCESSOR, eCHAPTERS.IMPERIAL_FISTS, "Black Templars","Not adhering to the Codex Astartes, Black Templars are a Chapter on an Eternal Crusade with unique organization and high numbers. Masters of assault, they charge at the enemy with zeal unmatched. They hate psykers, and as such, have no Librarians.", "black_templars"),
+    new ChapterDataLite(eCHAPTERS.MINOTAURS, eCHAPTER_ORIGINS.SUCCESSOR, eCHAPTERS.IMPERIAL_FISTS, "Minotaurs","Bronze-clad Astartes of unknown Founding, the Minotaurs prefer to channel their righteous fury in a massive storm of fire, with tanks and artillery. They could be considered the Inquisition’s attack dog, since they often attack fellow chapters suspected of heresy.", "minotaurs"),
+    new ChapterDataLite(eCHAPTERS.BLOOD_RAVENS, eCHAPTER_ORIGINS.SUCCESSOR,0, "Blood Ravens","Of unknown origins and Founding, the origins of the Blood Ravens are shrouded in mystery and are believed to be tied to a dark truth. This elusive Chapter is drawn to the pursuit of knowledge and ancient lore and produces an unusually high number of Librarians.", "blood_ravens"),
+    new ChapterDataLite(eCHAPTERS.CRIMSON_FISTS, eCHAPTER_ORIGINS.SUCCESSOR, eCHAPTERS.IMPERIAL_FISTS ,"Crimson Fists","An Imperial Fists descendant, the Crimson Fists are more level-minded than their Progenitor and brother chapters.  They suffer the same lacking zygotes as their ancestors, and more resemble the Ultramarines in their balanced approach to combat. After surviving a devastating Ork WAAAGH! the chapter clings dearly to its future.", "crimson_fists"),
+    new ChapterDataLite(eCHAPTERS.LAMENTERS, eCHAPTER_ORIGINS.SUCCESSOR, eCHAPTERS.BLOOD_ANGELS,"Lamenters","The Lamenter's accursed and haunted legacy seems to taint much of what they have achieved; their victories often become bitter ashes in their hands.  Nearly extinct, they fight their last days on behalf of the common folk in a crusade of endless penitence.", "lamenters"),
+    new ChapterDataLite(eCHAPTERS.CARCHARODONS, eCHAPTER_ORIGINS.SUCCESSOR, eCHAPTERS.RAVEN_GUARD, "Carcharodons","Rumored to be Successors of the Raven Guard, these Astartes are known for their sudden attacks and shock assaults. Travelling through the Imperium via self-sufficient Nomad-Predation based fleets, no enemy is safe from the fury of these bloodthirsty Space Marines.", "carcharodons"),
+    new ChapterDataLite(eCHAPTERS.SOUL_DRINKERS, eCHAPTER_ORIGINS.SUCCESSOR,eCHAPTERS.IMPERIAL_FISTS, "Soul Drinkers","Sharing ancestry of the Black Templars or Crimson fists. As proud sons of Dorn they share the strong void combat traditions, fielding a large amount of Battle Barges. As well as being fearsome in close combat. Whispers of the Ruinous Powers are however quite enticing.", "soul_drinkers"),
+    new ChapterDataLite(eCHAPTERS.ANGRY_MARINES, eCHAPTER_ORIGINS.NON_CANON,0, "Angry Marines","Frothing with pathological rage since the day their Primarch emerged from his pod with naught but a dented copy of battletoads.  Every last Angry Marine is a homicidal, suicidal berserker with a voice that projects, and are always angry, all the time.  A /tg/ classic.", "angry_marines"),
+    new ChapterDataLite(eCHAPTERS.EMPERORS_NIGHTMARE, eCHAPTER_ORIGINS.NON_CANON,0, "Emperor’s Nightmare","The Emperor's Nightmare bear the curse of a bizarre mutation within their gene-seed. The Catalepsean Node is in a state of decay and thus do not sleep for months at a time until falling asleep suddenly. They prefer shock and awe tactics with stealth.", "emperors_nightmare"),
+    new ChapterDataLite(eCHAPTERS.STAR_KRAKENS, eCHAPTER_ORIGINS.NON_CANON,0, "Star Krakens","In darkness, they dwell in The Deep. The Star Krakens stand divided in individual companies but united in the form of the Ten-Flag Council. They utilize boarding tactics and are the sole guardians of the ancient sensor array called “The Lighthouse”.", "star_krakens"),
+    new ChapterDataLite(eCHAPTERS.CONSERVATORS, eCHAPTER_ORIGINS.NON_CANON,0, "Conservators","Hailing from the Asharn Marches and having established their homeworld on the planet Dekara, these proud sons of Dorn suffer from an extreme lack of supplies, Ork raids, and more. Though under strength and lacking equipment, they managed to forge an interstellar kingdom loyal to both Emperor and Imperium.", "conservators"),
+
     new ChapterDataLite(eCHAPTERS.CUSTOM_1, eCHAPTER_ORIGINS.CUSTOM,0,"Custom","Your Chapter"),
     new ChapterDataLite(eCHAPTERS.CUSTOM_2, eCHAPTER_ORIGINS.CUSTOM,0,"Custom","Your Chapter"),
     new ChapterDataLite(eCHAPTERS.CUSTOM_3, eCHAPTER_ORIGINS.CUSTOM,0,"Custom","Your Chapter"),
@@ -607,7 +587,6 @@ all_chapters[eCHAPTERS.CUSTOM_10].splash = custom_splash;
 
 
 
-global.normal_icons_count = 0;
 // Load from files to overwrite hardcoded ones
 for(var c = 1; c < 40; c++){
     var use_app_data = false;
@@ -625,17 +604,10 @@ for(var c = 1; c < 40; c++){
             json_chapter.flavor,
         );
         all_chapters[c].json = true;
-        all_chapters[c].icon = json_chapter.icon;
         all_chapters[c].icon_name = json_chapter.icon_name;
         all_chapters[c].splash = json_chapter.splash;
         all_chapters[c].loaded = true;
         all_chapters[c].disabled = false;
-    }
-    
-    var icon = file_exists($"{working_directory}\\images\\creation\\chapters\\icons\\{c}.png");
-    if(icon) {
-        // show_debug_message($"icon {c}.png exists");
-        global.normal_icons_count += 1;
     }
 }
 
@@ -801,6 +773,12 @@ var all_advantages = [
             meta : ["Gear Quality"]
         },
         {
+            name : "Ancient Armoury",
+            description : "Your chapter is dedicated to preserving ancient wargear and as such have substantially higher amounts of rare Heresy-era armour and weapons than normal.",
+            value: 20,//I'm not sure, but it could be higher since now this trait will bring much more benefits.
+            meta : ["Gear Quality"]
+        },
+        {
             name : "Enemy: Eldar",
             description : "Eldar are particularly hated by your chapter.  When fighting Eldar damage is increased.",
             value : 20,
@@ -922,7 +900,13 @@ var all_advantages = [
             description: "Your chapter is an elite fighting force comprised almost exclusively of Veterans. All Tactical Marines are replaced by Veterans.",
             value: 150,
             meta: ["Specialists"]
-        }                                                                                                                                                                   
+        },
+        {
+            name : "Great Luck",
+            description: "This is actually really helpful and beneficial for your chapter. Trust me.",
+            value: 20,
+            meta: ["Luck"]
+        },                                                                                                                                                           
     ]
 
 
@@ -977,8 +961,9 @@ var all_disadvantages = [
     },
     {
         name : "Shitty Luck",
-        description: "This is actually really helpful and beneficial for your chapter.  Trust me.",
+        description: "This is actually really bad for your chapter. Trust me.",
         value: 20,
+        meta: ["Luck"]
     },
     {
         name : "Sieged",
@@ -1110,28 +1095,22 @@ function load_default_gear(_role_id, _role_name, _wep1, _wep2, _armour, _mobi, _
     race[defaults_slot, _role_id] = 1;
 }
 load_default_gear(eROLE.HonourGuard, "Honour Guard", "Power Sword", "Bolter", "Artificer Armour", "", "");
-load_default_gear(eROLE.Veteran, "Veteran", "Combiflamer", "Combat Knife", "Power Armour", "", "");
+load_default_gear(eROLE.Veteran, "Veteran", "Combiflamer", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
 load_default_gear(eROLE.Terminator, "Terminator", "Power Fist", "Storm Bolter", "Terminator Armour", "", "");
-load_default_gear(eROLE.Captain, "Captain", "Power Sword", "Bolt Pistol", "Power Armour", "", "Iron Halo");
+load_default_gear(eROLE.Captain, "Captain", "Power Sword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Iron Halo");
 load_default_gear(eROLE.Dreadnought, "Dreadnought", "Dreadnought Lightning Claw", "Lascannon", "Dreadnought", "", "");
-load_default_gear(eROLE.Champion, "Champion", "Power Sword", "Bolt Pistol", "Power Armour", "", "Combat Shield");
-load_default_gear(eROLE.Tactical, "Tactical", "Bolter", "Combat Knife", "Power Armour", "", "");
-load_default_gear(eROLE.Devastator, "Devastator", "", "Combat Knife", "Power Armour", "", "");
-load_default_gear(eROLE.Assault, "Assault", "Chainsword", "Bolt Pistol", "Power Armour", "Jump Pack", "");
-load_default_gear(eROLE.Ancient, "Ancient", "Company Standard", "Bolt Pistol", "Power Armour", "", "");
+load_default_gear(eROLE.Champion, "Champion", "Power Sword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Combat Shield");
+load_default_gear(eROLE.Tactical, "Tactical", "Bolter", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
+load_default_gear(eROLE.Devastator, "Devastator", "", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
+load_default_gear(eROLE.Assault, "Assault", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "Jump Pack", "");
+load_default_gear(eROLE.Ancient, "Ancient", "Company Standard", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "");
 load_default_gear(eROLE.Scout, "Scout", "Bolter", "Combat Knife", "Scout Armour", "", "");
-load_default_gear(eROLE.Chaplain, "Chaplain", "Crozius Arcanum", "Bolt Pistol", "Power Armour", "", "Rosarius");
-load_default_gear(eROLE.Apothecary, "Apothecary", "Chainsword", "Bolt Pistol", "Power Armour", "", "Narthecium");
+load_default_gear(eROLE.Chaplain, "Chaplain", "Crozius Arcanum", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Rosarius");
+load_default_gear(eROLE.Apothecary, "Apothecary", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Narthecium");
 load_default_gear(eROLE.Techmarine, "Techmarine", "Power Axe", "Bolt Pistol", "Artificer Armour", "Servo-arm", "");
-load_default_gear(eROLE.Librarian, "Librarian", "Force Staff", "Bolt Pistol", "Power Armour", "", "Psychic Hood");
-load_default_gear(eROLE.Sergeant, "Sergeant", "Chainsword", "Bolt Pistol", "Power Armour", "", "");
-load_default_gear(eROLE.VeteranSergeant, "Veteran Sergeant", "Chainsword", "Plasma Pistol", "Power Armour", "", "");
-
-builtin_icons = array_length(sprite_get_info(spr_icon_chapters).frames);
-normal_and_builtin = global.normal_icons_count + builtin_icons;
-total_icons = global.normal_icons_count + builtin_icons + global.custom_icons;
-
-
+load_default_gear(eROLE.Librarian, "Librarian", "Force Staff", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "Psychic Hood");
+load_default_gear(eROLE.Sergeant, "Sergeant", "Chainsword", "Bolt Pistol", STR_ANY_POWER_ARMOUR, "", "");
+load_default_gear(eROLE.VeteranSergeant, "Veteran Sergeant", "Chainsword", "Plasma Pistol", STR_ANY_POWER_ARMOUR, "", "");
 
 if (global.restart>0){
     fade_in=-1;

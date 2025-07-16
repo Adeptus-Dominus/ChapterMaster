@@ -391,9 +391,9 @@ function group_selection(group, selection_data) {
             sel_loading = -1;
             unload = 0;
             alarm[6] = 7;
-            company_data = {};
             view_squad = false;
             managing = -1;
+            new_company_struct();
             var vehicles = [];
             for (var i = 0; i < array_length(group); i++) {
                 if (!is_struct(group[i])) {

@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_creation_other",
   "bboxMode":0,
   "bbox_bottom":0,
@@ -24,7 +24,7 @@
   "origin":0,
   "parent":{
     "name":"Creation",
-    "path":"folders/Sprites/Creation.yy",
+    "path":"folders/Sprites/UI/Creation.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

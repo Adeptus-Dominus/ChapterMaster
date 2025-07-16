@@ -12,7 +12,7 @@ function find_open_artifact_slot() {
     return last_artifact;
 }
 
-function scr_add_artifact(artifact_type, artifact_tags, is_identified, artifact_location, ship_id) {
+function scr_add_artifact(artifact_type="random", artifact_tags="", is_identified=4, artifact_location = "", ship_id) {
     last_artifact = find_open_artifact_slot();
     if (last_artifact == -1) {
         exit;
@@ -80,10 +80,11 @@ function scr_add_artifact(artifact_type, artifact_tags, is_identified, artifact_
 
     if ((base_type == "Armour") && (base_type_detail == "")) {
         if (rand2 <= 70) {
-            var _power_armour = ARR_power_armour;
-            base_type_detail = _power_armour[irandom(array_length(_power_armour) - 1)];
+            var _armour_list = LIST_BASIC_POWER_ARMOUR;
+            base_type_detail = array_random_element(_armour_list);
         } else if (rand2 <= 80) {
-            base_type_detail = choose("Terminator Armour", "Tartaros");
+            var _armour_list = LIST_TERMINATOR_ARMOUR;
+            base_type_detail = _armour_list[irandom(array_length(_armour_list) - 1)];
         } else if (rand2 <= 90) {
             base_type_detail = "Dreadnought Armour";
         } else if (rand2 <= 100) {
@@ -137,11 +138,8 @@ function scr_add_artifact(artifact_type, artifact_tags, is_identified, artifact_
         }
     }
 
-    rand2 = floor(random(100)) + 1;
+    rand2 = roll_dice_chapter(1, 100, "low");
     good = 0;
-    if (scr_has_disadv("Shitty Luck")) {
-        rand2 = min(rand2 + 20, 100);
-    }
     if (rand2 <= 70) {
         t3 = "";
     } else if (rand2 <= 90 && artifact_type != "random_nodemon") {
@@ -421,7 +419,7 @@ function ArtifactStruct(Index) constructor {
         if (has_tag("daemonic")) {
 			var _ship_id = ship_id();
             if (_ship_id > 0) {
-                var demonSummonChance = roll_dice(1, 100, "high");
+                var demonSummonChance = roll_dice_chapter(1, 100, "high");
 
                 if ((demonSummonChance <= 60) && (obj_ini.ship_carrying[_ship_id] > 0)) {
                     instance_create(0, 0, obj_ncombat);

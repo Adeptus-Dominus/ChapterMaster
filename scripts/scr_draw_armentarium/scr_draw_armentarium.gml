@@ -21,6 +21,7 @@ function set_up_armentarium(){
         specialist_point_handler.calculate_research_points();
         in_forge=false
         forge_button = new ShutterButton();
+        forge_button.cover_text = "FORGE";
         stc_flashes = new GlowDot();
         /*for (var i =0;i<3;i++){
             for (var f =0;f<7;f++){
@@ -223,7 +224,7 @@ function scr_draw_armentarium(){
         yyy1 = max_techs - temp[37];
         if (yyy1 < 0) then yyy1 = yyy1 * -1;
         yyy = (yyy1 * 2);
-        if (disposition[3] mod 2 == 0) then yyy += 2;
+        if (disposition[3] % 2 == 0) then yyy += 2;
         else {
             yyy += 1;
         }

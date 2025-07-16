@@ -50,7 +50,7 @@ if (col_shift){
                         draw_set_alpha(0.2);
                         draw_rectangle(x1, y1, x2, y2, 0);
                         draw_set_alpha(1);
-                        if (obj_creation.mouse_left = 1) and(obj_creation.cooldown <= 0) {
+                        if (scr_click_left()) {
                             if (type = 1) then obj_creation.main_color = current_color;
                             if (type = 2) then obj_creation.secondary_color = current_color;
                             if (type = 3) then obj_creation.left_pauldron = current_color;
@@ -65,7 +65,6 @@ if (col_shift){
                                 shader_reset();
                             }
                             obj_creation.alarm[0] = 1;
-                            obj_creation.cooldown = 8000;
                             instance_destroy();
                         }
                     }
@@ -76,12 +75,10 @@ if (col_shift){
         
 
         if (point_and_click(draw_unit_buttons([700,550], "CANCEL",[1,1], 38144,, fnt_40k_14b, 1))){
-            obj_creation.cooldown=8000
             instance_destroy();
         }
 
-        if (!scr_hit(430,536,845,748) && mouse_check_button_pressed(mb_left) &&  obj_creation.cooldown == 0) {
-            obj_creation.cooldown = 8000;
+        if (!scr_hit(430,536,845,748) && scr_click_left()) {
             instance_destroy();
         }
         draw_set_alpha(1);
@@ -101,9 +98,8 @@ if (col_shift){
         if (scr_hit(444,550,820,550+hei)){obj_cursor.image_index=2;
             tooltip="Astartes Role Name";
             tooltip2=$"The name of this Astartes Role.  The plural form will be ''{obj_creation.role[co,ide]}s''.";
-            if (obj_creation.mouse_left=1) and (obj_creation.cooldown<=0){
+            if (scr_click_left()){
                 obj_creation.text_selected=$"unit_name{ide}";
-                obj_creation.cooldown=8000;
                 keyboard_string=obj_creation.role[co,ide];
             }
         }
@@ -141,7 +137,7 @@ if (col_shift){
                 draw_set_alpha(0.2);
                 draw_rectangle(x5, y5, x5 - string_width(string_hash_to_newline(title)), y5 + string_height(string_hash_to_newline(title)) - 2, 0);
 
-                if (obj_creation.mouse_left == 1 && obj_creation.cooldown <= 0) {                   
+                if (scr_click_left()) {                   
                     var unit_type = type - 100;
                     var is_invalid = (
                         unit_type == eROLE.Dreadnought &&
@@ -154,7 +150,6 @@ if (col_shift){
                     );
 
                     if (!is_invalid) {
-                        obj_creation.cooldown = 8000;
                         tab=1;
                         target_gear=gg;
                         item_name = [];
@@ -218,7 +213,6 @@ if (col_shift){
                 }
             }
 
-            obj_creation.cooldown = 8000;
             instance_destroy();
         }
 
@@ -274,9 +268,8 @@ if (target_gear > 0) {
             draw_text_transformed(x3, y3 - space, string_hash_to_newline(item_name[h]), scale, 1, 0);
             draw_set_alpha(1);
             
-            if (obj_creation.mouse_left && obj_creation.cooldown <= 0) {
+            if (scr_click_left()) {
                 var buh = item_name[h] == ITEM_NAME_NONE ? "" : item_name[h];
-                obj_creation.cooldown = 8000;
                 switch (target_gear) {
                     case 1: obj_creation.wep1[co, ide] = buh; break;
                     case 2: obj_creation.wep2[co, ide] = buh; break;
@@ -316,9 +309,8 @@ if (target_gear > 0) {
                 draw_text_transformed(x3, y3 - space, string_hash_to_newline(item_name[h]), scale, 1, 0);
                 draw_set_alpha(1);
 
-                if (obj_creation.mouse_left && obj_creation.cooldown <= 0) {
+                if (scr_click_left()) {
                     var buh = item_name[h] == ITEM_NAME_NONE ? "" : item_name[h];
-                    obj_creation.cooldown = 8000;
                     switch (target_gear) {
                         case 1: obj_creation.wep1[co, ide] = buh; break;
                         case 2: obj_creation.wep2[co, ide] = buh; break;
@@ -337,7 +329,6 @@ if (target_gear > 0) {
 
     if (point_and_click(draw_unit_buttons([980,716], "CANCEL",[1,1], 38144,, fnt_40k_14b, 1))){
         target_gear=0;
-        obj_creation.cooldown=8000
     }
 }
 

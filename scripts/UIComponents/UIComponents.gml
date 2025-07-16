@@ -382,7 +382,7 @@ function star_ui_name_node(){
 				.set_callback(function(context) {
 					if (owner == eFACTION.Player) {
 						context.set_sprite(obj_img.creation[1])
-						context.set_image_index(obj_ini.icon)
+						context.set_image_index(0) // I have no idea what kind of schizo code this is, so I'll just set it to 0;
 					} else {
 						context.set_sprite(obj_img.force[owner])
 					}
