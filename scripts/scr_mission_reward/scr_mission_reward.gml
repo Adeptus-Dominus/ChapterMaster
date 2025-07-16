@@ -76,27 +76,27 @@ function scr_mission_reward(mission, star, planet) {
 	    var tixt=$"The journey into the Mars Catacombs was a success.  Your {techs_alive} remaining {obj_ini.role[100][16]}s were useful to the Mechanicus force and return with a bounty.  They await retrieval at {star.name} {scr_roman(planet)}.\n";
 	    tixt+=$"\n{found_requisition} Requisition from salvage";
 	    if (found_artifact > 0){
-	    	tixt+=$"\n{string_plural("Unidentified Artifacts" found_artifact)}  recovered";
+	    	tixt+=$"\n{string_plural("Unidentified Artifacts" ,found_artifact)}  recovered";
 	    }
 	    if (found_stc > 0){
-	    	tixt+=$"\n{string_plural("STC Fragment" found_stc)}  recovered";
+	    	tixt+=$"\n{string_plural("STC Fragment" ,found_stc)}  recovered";
 	    }
 
 	    if (_tech_point_gain){
-	    	tixt+=$"\n{string_plural("Tech Point" _tech_point_gain)}  recovered";
-	    }
+	    	tixt+=$"\n{string_plural("Tech Point" ,_tech_point_gain)}  recovered";
+	    } 
 
 	    scr_popup("Mechanicus Mission Completed",tixt,"mechanicus","");
 	    tixt="Mechanicus Mission Completed: {techs_alive}/{techs_alive+techs_lost} of your {obj_ini.role[100][16]}s return with ";
 	    tixt+=string(found_requisition)+" Requisition, ";
 	    if (found_artifact > 0){
-	    	tixt+=$"\n{found_artifact} : {string_plural("Unidentified Artifacts" found_artifact)}  recovered";
+	    	tixt+=$"\n{found_artifact} : {string_plural("Unidentified Artifacts" ,found_artifact)}  recovered";
 	    }
 	    if (found_stc > 0){
-	    	tixt+=$"\n{found_stc} : {string_plural("STC Fragment" found_stc)}  recovered";
+	    	tixt+=$"\n{found_stc} : {string_plural("STC Fragment" ,found_stc)}  recovered";
 	    }
 	    if (_tech_point_gain){
-	    	tixt+=$"\n{_tech_point_gain} {string_plural("Tech Point" _tech_point_gain)}  gained";
+	    	tixt+=$"\n{_tech_point_gain} {string_plural("Tech Point" ,_tech_point_gain)}  gained";
 	    }
 	    // scr_alert("green","mission",tixt,star.x,star.y,);
 	    scr_event_log("green",tixt);
