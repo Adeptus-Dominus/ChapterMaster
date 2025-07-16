@@ -60,7 +60,7 @@ function scr_new_governor_mission(planet, problem = ""){
 			problem = choose("hunt_beast", "provide_garrison");
 			accept_time = 6+irandom(30);
 		} else if (planet_type == "Hive"){
-			problem = choose("Show_of_power", "provide_garrison", "purge_enemies", "raid_black_market");
+			problem = choose("show_of_power", "provide_garrison", "purge_enemies", "raid_black_market");
 		} else if (planet_type == "Temperate"){
 			problem = choose("provide_garrison", "train_forces", "join_parade");
 		}else if (planet_type == "Shrine"){

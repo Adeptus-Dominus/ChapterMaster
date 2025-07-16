@@ -260,7 +260,7 @@ function spawn_mechanicus_mission(chosen_mission = "random"){
 			_evented = true;
         }
         else {
-            var text=$"The local Adeptus Mechanicus are preparing to embark on a voyage to Mars, to delve into the catacombs in search of lost technology.  Due to your close relations they have made the offer to take some of your {obj_ini.role[100][16]}s with them.  Can your chapter handle this mission?";
+            var text=$"The local Adeptus Mechanicus are preparing to embark on a voyage to Mars, to delve into the catacombs in search of lost technology.  Due to your close relations they have made the offer to take some of your {obj_ini.role[100][16]}s with them for bot their unique abilities to function as both scientific helpers and as helpers (high Weapon Skill and Technology is reccomended).  Can your chapter handle this mission?";
             scr_popup("Mechanicus Mission",text,"mechanicus",mission_data);
 			_evented = true;
         }
