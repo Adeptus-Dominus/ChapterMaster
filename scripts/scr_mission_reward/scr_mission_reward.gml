@@ -31,21 +31,28 @@ function scr_mission_reward(mission, star, planet) {
 	    	var _tech_roll = global.character_tester.standard_test(_tech, "technology", -10)[1];
 	    	var _wep_test = global.character_tester.standard_test(_tech, "weapon_skill", 10);
             if (!_wep_test[0]){
-                kill_and_recover(unit.company, unit.marine_number, true, false);
+                kill_and_recover(
+                	_tech.company, 
+                	_tech.marine_number, true, false);
                 techs_lost++;
-                cleanup[i] = true;
+                cleanup[_tech.company] = true;
             }
             else {
-            	var unit = obj_ini.TTRPG[com][i];
-                star.p_player[planet]+=unit.get_unit_size();
+                star.p_player[planet]+=
+                _tech.get_unit_size();
                 obj_ini.loc[com][i]=star.name;
-                unit.planet_location=planet;
-                unit.ship_location = -1;
-                unit.job = "none";
+                
+                _tech.planet_location=planet;
+                
+                _tech.ship_location = -1;
+                
+                _tech.job = "none";
                 techs_alive+=1;
-                unit.add_experience(irandom_range(3,18));
+                
+                _tech.add_experience(irandom_range(3,18));
                 var gain = irandom(2);
-                unit.technology += gain;
+                
+                _tech.technology += gain;
                 _tech_point_gain += gain;
                 if (_tech_roll<10 && _tech_roll>0){
                 	found_requisition+=irandom_range(5,40);
@@ -197,7 +204,7 @@ function scr_mission_reward(mission, star, planet) {
                 cleanup[_unit.company]=1;
 	        }	        
 	    }
-	    var unit;
+
 	    if (result=="Bionics" || result=="Requisition"){
 	    	var _new_bionics = irandom_range(40,100);
 	    	obj_controller.disposition[3]+=1;
