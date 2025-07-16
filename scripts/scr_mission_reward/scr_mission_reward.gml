@@ -41,6 +41,7 @@ function scr_mission_reward(mission, star, planet) {
                 obj_ini.loc[com][i]=star.name;
                 unit.planet_location=planet;
                 unit.ship_location = -1;
+                unit.job = "none";
                 techs_alive+=1;
                 unit.add_experience(irandom_range(3,18));
                 var gain = irandom(2);
