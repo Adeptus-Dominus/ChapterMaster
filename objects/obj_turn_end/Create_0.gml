@@ -69,52 +69,8 @@ audience_stack = [];
 alert_alpha[1]=0.2;
 alert_char[1]=1;
 i=-1
-for (var i=0;i<array_length(obj_controller.event);i++){
-    if (obj_controller.event[i]!="") and (obj_controller.event_duration[i]=1) and (obj_controller.faction_status[eFACTION.Imperium]!="War"){
-        if (obj_controller.event[i]="governor_assassination_1"){
-            with(obj_star){
-                var o=0;
-                repeat(4){
-                    o+=1;
-                    if (dispo[o]>0) and (dispo[o]<90){
-                        dispo[o]=max(dispo[o]-2,0);
-                    }
-                }
-            }
-            obj_controller.disposition[2]-=7;
-            obj_controller.disposition[4]-=10;
-            obj_controller.disposition[5]-=4;
-            if (obj_controller.disposition[4]<=0) or (obj_controller.disposition[2]<=0){
-                obj_controller.alarm[8]=1;
-            }
-            if (obj_controller.disposition[4]>0) and (obj_controller.disposition[2]>0){
-                var top=string_replace(obj_controller.event[i],"governor_assassination_1","assassination_angryish");
-                scr_audience(4,top,0,"",0,0);
-            }
-        }
-        if (string_count("governor_assassination_2",obj_controller.event[i])>0) and (obj_controller.faction_status[eFACTION.Inquisition]!="War"){
-            with(obj_star){
-                var o=0;
-                repeat(4){
-                    o+=1;
-                    if (dispo[o]>0) and (dispo[o]<90){
-                        dispo[o]=max(dispo[o]-4,0);
-                    }
-                }
-            }
-            obj_controller.disposition[2]-=15;obj_controller.disposition[4]-=30;obj_controller.disposition[5]-=10;
-            if (obj_controller.disposition[4]<=0) or (obj_controller.disposition[2]<=0) then obj_controller.alarm[8]=1;
-            if (obj_controller.disposition[4]>0) and (obj_controller.disposition[2]>0){
-                var top=string_replace(obj_controller.event[i],"governor_assassination_2","assassination_angry");
-                scr_audience(4,top,0,"",0,0);
-            }
-        }
-    }
-}i=0;
 
-
-
-
+handle_discovered_governor_assasinations()
 
 
 if (audiences>0){// This is a one-off change all messages to declare war

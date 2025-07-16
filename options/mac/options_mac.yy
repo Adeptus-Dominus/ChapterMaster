@@ -25,7 +25,7 @@
   "option_mac_output_dir":"~/gamemakerstudio2",
   "option_mac_resize_window":true,
   "option_mac_scale":0,
-  "option_mac_signing_identity":"",
+  "option_mac_signing_identity":"DD 43 55 BA D2 D6 29 A4 A2 2E 7A 9B 34 E7 E4 02 1A 8F 19 95 5B FF 94 CC 26 E8 EB 58 FF 20 60 61",
   "option_mac_splash_png":"${options_dir}/mac/splash/splash.png",
   "option_mac_start_fullscreen":false,
   "option_mac_team_id":"",

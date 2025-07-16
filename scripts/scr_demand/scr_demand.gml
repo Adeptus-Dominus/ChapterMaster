@@ -1,3 +1,53 @@
+function threat_plausibility(){
+    var _threat = 20;
+    var _good_imperium_position = disposition[eFACTION.Imperium] > 50 ? 1 : -1;
+    var _relative_strength = floor(obj_controller/20);
+    var _nature = "";
+}
+
+function clear_inspections(){
+	with(obj_en_fleet){
+	    if (owner  = eFACTION.Inquisition) and (string_count("Inqis",trade_goods)>0){
+	        trade_goods="cancel_inspection";
+	        target=0;
+	    }
+	}
+}
+
+function inquis_use_inspection_pass(){
+   	if (inspection_passes>0){
+        inspection_passes-=1;
+        last_world_inspection=turn+25;
+        last_fleet_inspection=turn+25;
+        //obj_controller.liscensing=5;
+        clear_inspections();
+        diplo_text = "Very well i shall honour our previous agreements. (24 months leave of inspections)";
+    }
+}
+
+function inquis_demand_inspection_pass(){
+    var resistance=10;
+    var _worked = false;
+    clear_diplo_choices();
+    if (inspection_passes==0){
+        rull=floor(random(10))+1;
+        if (rull>resistance){
+            _worked=true;
+            last_world_inspection=turn+24;
+            last_fleet_inspection=turn+24;
+            //obj_controller.liscensing=5;
+            clear_inspections();
+            diplo_text = "Very well Chapter Master I Your service to the imperium is well known i have no doubt that you would not ask such of me without good reasoon. I shall forgoe my normal duties just this onece. \n do not becomne complacent Chapter Master i may not always be so generous";
+        } else {
+        	var _diff = resistance - rull;
+        	alter_disposition(eFACTION.Inquisition, -1);
+        	diplo_text = "Consider your request denied. If there is heresy or any wrong doing i shal see that is rooted out and made plain for all to see";;
+
+        }
+    }
+
+}
+
 function scr_demand(demand_type) {
 
 	// demand_type: button
@@ -74,27 +124,13 @@ function scr_demand(demand_type) {
     
 	    if (demand_type=1){// Requisition
 	        rull=floor(random(10))+1;
-	        if (rull>resistance){requisition+=300;worked=true;}
-	        if (rull<=resistance){worked=false;}
-	    }
-	    if (demand_type=2) and (inspection_passes=0){
-	        rull=floor(random(10))+1;
 	        if (rull>resistance){
-	            worked=true;
-	            last_world_inspection=turn+12;
-	            last_fleet_inspection=turn+12;
-	            obj_controller.liscensing=5;
-	            with(obj_en_fleet){if (owner  = eFACTION.Inquisition) and (string_count("Inqis",trade_goods)>0){trade_goods="cancel_inspection";target=0;}}
+	        	requisition+=300;
+	        	worked=true;
 	        }
-	        if (rull<=resistance){worked=false;}
-	    }
-	    if (demand_type=2) and (inspection_passes>0){
-	        inspection_passes-=1;
-	        worked=true;no_penalty=true;
-	        last_world_inspection=turn+12;
-	        last_fleet_inspection=turn+12;
-	        obj_controller.liscensing=5;
-	        with(obj_en_fleet){if (owner  = eFACTION.Inquisition) and (string_count("Inqis",trade_goods)>0){trade_goods="cancel_inspection";target=0;}}
+	        if (rull<=resistance){
+	        	worked=false;
+	        }
 	    }
 	}
 
@@ -162,8 +198,15 @@ function scr_demand(demand_type) {
 	    }
 	    if (demand_type=2){// Crusade
 	        rull=floor(random(10))+1;
-	        if (rull>resistance){obj_controller.liscensing=2;worked=true;if (disposition[7]>=40) then no_penalty=true;}
-	        if (rull<=resistance){worked=false;}
+	        if (rull>resistance){
+	        	obj_controller.liscensing=2;worked=true;
+	        	if (disposition[7]>=40){
+	        		no_penalty=true;
+	        	}
+	        }
+	        if (rull<=resistance){
+	        	worked=false;
+	        }
 	    }
 	}
 

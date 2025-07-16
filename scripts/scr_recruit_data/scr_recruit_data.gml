@@ -51,6 +51,8 @@ function find_recruit_success_chance(local_apothecary_points, system, planet, ui
             recruit_chance = 3000
         } else if (p_data.at_war(0, 0, 0) && p_data.player_disposition < 0) {
             recruit_chance = 2000
+        } else if (p_data.player_disposition<-1000 && p_data.current_owner == eFACTION.Player) {
+        	var recruit_chance = 1500 - _recruit_cost*100;
         } else {
             var _frictious = (p_data.at_war(0, 1, 1) && p_data.player_disposition <= 50);
             var _disp_mod = -((_frictious ? 30 : 10) * p_data.player_disposition);

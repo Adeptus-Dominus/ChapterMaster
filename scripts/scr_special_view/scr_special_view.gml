@@ -20,7 +20,6 @@ function scr_special_view(command_group) {
 	    	penit_co[i]=0;
 	    	penit_id[i]=0;
 	    }
-	    // if (i<=100){event[i]="";event_duration[i]=0;}
 	}
 	reset_manage_arrays();
 

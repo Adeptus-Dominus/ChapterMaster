@@ -3226,6 +3226,8 @@ var armm5="";
  	scr_add_item("Phobos Bolter",10);
  	scr_add_item("Phobos Bolt Pistol",3);
  	scr_add_item("Mars Heavy Bolter",5);
+	scr_add_item("Serpha Jump Pack",5);
+	scr_add_item("Jump Pack",-5);
  	armm1=choose("Volkite Culverin","Volkite Caliver","Mars Plasma Cannon","Ryza Lascannon","Grav-Cannon","Proteus Multi-Melta","Cthon Autocannon");
  	armk1=irandom_range(2,5);
  	armm2=choose("Primus Melta Gun","Ryza Plasma Gun","Volkite Charger","Grav-Gun");

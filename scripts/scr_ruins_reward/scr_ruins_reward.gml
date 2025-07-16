@@ -151,7 +151,8 @@ else if (ruins_type=5){
 	wen6=choose(0,1);
 	wep7=choose("Company Standard","Narthecium","Psychic Hood","Rosarius");
 	wen7=choose(0,1);
-	wep8=choose("Jump Pack");
+
+	wep8=choose("Serpha Jump Pack");
 	wen8=choose(1,2,3);
 }
 //Fallen Breacher Squad

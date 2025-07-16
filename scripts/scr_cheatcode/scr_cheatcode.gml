@@ -141,8 +141,13 @@ function scr_cheatcode(argument0) {
 
 				case "mechmission":
 					show_debug_message("mech_mission");
-					spawn_mechanicus_mission();
-          			break;
+
+					if (array_length(cheat_arguments)){
+						spawn_mechanicus_mission(cheat_arguments[0]);
+					} else {
+						spawn_mechanicus_mission();
+					}
+         		 break;
 
 				case "inquismission": 
 					var mission = cheat_arguments[0];
@@ -222,11 +227,31 @@ function scr_cheatcode(argument0) {
 						create_starship_event();
 					} else if (cheat_arguments[0] == "fallen"){
 						event_fallen();
-					} else {
+					}else if (cheat_arguments[0] == "surfremove"){
+						var _star_id = scr_random_find(0,true,"","");
+			            add_event({
+			                duration : 2,
+			                e_id : "governor_assassination",
+			                variant : 2,
+			                system : _star_id.name,
+			                planet : irandom_range(1, _star_id.planets),
+			            });						
+					} else if (cheat_arguments[0] == "strangebuild"){
+						show_debug_message("strange build");
+						strange_build_event();
+					}else if (cheat_arguments[0] == "factionenemy"){
+						make_faction_enemy_event();
+					}else if (cheat_arguments[0] == "stopall"){
+						obj_controller.last_event = 1000000;
+						show_debug_message($"last event : {obj_controller.last_event}")
+					}else if (cheat_arguments[0] == "startevents"){
+						obj_controller.last_event = 0;
+						show_debug_message($"last event : {obj_controller.last_event}")
+					}else {
 						with (obj_controller) {
 							scr_random_event(false);
 						}
-					}
+					} 
 					break;
 				case "infreq":
 					if (global.cheat_req == 0) {

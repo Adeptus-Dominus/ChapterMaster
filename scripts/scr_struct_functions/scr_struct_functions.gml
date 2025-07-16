@@ -20,6 +20,7 @@ function move_data_to_current_scope(struct, overide=true){
         }
     }
 }
+
 function CountingMap() constructor {
     map = {};
 

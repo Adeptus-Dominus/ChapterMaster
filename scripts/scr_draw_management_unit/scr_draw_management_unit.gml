@@ -1,6 +1,6 @@
 function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true) {
     var assignment = "none";
-    var unit;
+    var _unit;
     var string_role = "";
     var health_string = "";
     var eventing = false;
@@ -9,29 +9,33 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true) {
     var is_man = false;
     if (man[selected] == "man" && is_struct(display_unit[selected])) {
         is_man = true;
-        unit = display_unit[selected];
-        if (unit.name() == "" || unit.base_group == "none") {
+        _unit = display_unit[selected];
+        if (_unit.name() == "" || _unit.base_group == "none") {
             return "continue";
         }
-        var unit_specialist = is_specialist(unit.role());
+        var unit_specialist = is_specialist(_unit.role());
         var unit_location_string = "";
-        if (unit.in_jail()) {
+        if (_unit.in_jail()) {
             jailed = true;
             unit_location_string = "=Penitorium=";
         } else {
-            var unit_location = unit.marine_location();
-            string_role = unit.name_role();
+            var unit_location = _unit.marine_location();
+            string_role = _unit.name_role();
             unit_specialism_option = false;
             //TODO make static to handle
             unit_location_string = string(ma_loc[selected]);
-            if (unit_location[0] == location_types.planet) {
-                unit_location_string = unit_location[2];
-                //get roman numeral for system planet
-                unit_location_string += scr_roman(unit_location[1]);
-            } else if (unit_location[0] == location_types.ship) {
+            if (_unit.controllable()){
+                if (unit_location[0] == location_types.planet) {
+                    unit_location_string = unit_location[2];
+                    //get roman numeral for system planet
+                    unit_location_string += scr_roman(unit_location[1]);
+                } else if (unit_location[0] == location_types.ship) {
                 unit_location_string = obj_ini.ship_data[unit_location[1]].name;
+                }
+            } else {
+                unit_location_string = ma_loc[selected];
             }
-            assignment = unit.assignment();
+            assignment = _unit.assignment();
             if (assignment != "none") {
                 unit_location_string += $"({assignment})";
             } else if ((fest_planet == 0) && (fest_sid > -1) && (fest_repeats > 0) && (ma_lid[selected] == fest_sid)) {
@@ -43,7 +47,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true) {
             }
         }
         if (draw) {
-            health_string = $"{round((unit.hp() / unit.max_health()) * 100)}% HP";
+            health_string = $"{round((_unit.hp() / _unit.max_health()) * 100)}% HP";
 
             var exp_string = $"{round(ma_exp[selected])} EXP";
 
@@ -61,23 +65,23 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true) {
             //TODO handle recursively
 
             if (ma_armour[selected] != "") {
-                ma_ar = gear_weapon_data("armour", unit.armour(), "abbreviation");
+                ma_ar = gear_weapon_data("armour", _unit.armour(), "abbreviation");
                 ma_ar = is_string(ma_ar) ? ma_ar : "";
             }
             if (ma_gear[selected] != "") {
-                ma_ge = gear_weapon_data("gear", unit.gear(), "abbreviation");
+                ma_ge = gear_weapon_data("gear", _unit.gear(), "abbreviation");
                 ma_ge = is_string(ma_ge) ? ma_ge : "";
             }
             if (ma_mobi[selected] != "") {
-                ma_mb = gear_weapon_data("mobility", unit.mobility_item(), "abbreviation");
+                ma_mb = gear_weapon_data("mobility", _unit.mobility_item(), "abbreviation");
                 ma_mb = is_string(ma_mb) ? ma_mb : "";
             }
             if (ma_wep1[selected] != "") {
-                ma_we1 = gear_weapon_data("weapon", unit.weapon_one(), "abbreviation");
+                ma_we1 = gear_weapon_data("weapon", _unit.weapon_one(), "abbreviation");
                 ma_we1 = is_string(ma_we1) ? ma_we1 : "";
             }
             if (ma_wep2[selected] != "") {
-                ma_we2 = gear_weapon_data("weapon", unit.weapon_two(), "abbreviation");
+                ma_we2 = gear_weapon_data("weapon", _unit.weapon_two(), "abbreviation");
                 ma_we2 = is_string(ma_we1) ? ma_we2 : "";
             }
         }
@@ -152,38 +156,38 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true) {
         draw_rectangle(xx + 25, yy + 64, xx + 974, yy + 85, 1);
         if (man[selected] == "man" && is_struct(display_unit[selected])) {
             if (!unit_specialist) {
-                var unit = display_unit[selected];
-                var _role = unit.role();
-                var _experience = unit.experience;
+                var _unit = display_unit[selected];
+                var _role = _unit.role();
+                var _experience = _unit.experience;
 
                 var _data, valid = false;
                 var _circle_coords = [xx + 321, yy + 77];
                 var _circle_radius = 3;
                 for (var s = 0; s <= 3; s++) {
                     _data = obj_controller.spec_train_data[s];
-                    var valid = stat_valuator(_data.req, unit);
+                    var valid = stat_valuator(_data.req, _unit);
                     if (valid) {
                         unit_specialism_option = true;
                         var _draw_coords = [_circle_coords[0] + _data.coord_offset[0], _circle_coords[1] + _data.coord_offset[1]];
 
                         var _draw_coords_mouse = [_draw_coords[0] - _circle_radius, _draw_coords[1] - _circle_radius, _draw_coords[0] + _circle_radius, _draw_coords[1] + _circle_radius];
-                        specialistdir = unit.specialist_tooltips(_data.name, _data.min_exp);
+                        specialistdir = _unit.specialist_tooltips(_data.name, _data.min_exp);
 
                         if (scr_hit(_draw_coords_mouse)) {
                             draw_set_alpha(0.8);
                             if (scr_click_left()) {
                                 switch (_data.name) {
                                     case "Techmarine":
-                                        unit.role_tag[eROLE_TAG.Techmarine] = !unit.role_tag[eROLE_TAG.Techmarine];
+                                        _unit.role_tag[eROLE_TAG.Techmarine] = !_unit.role_tag[eROLE_TAG.Techmarine];
                                         break;
                                     case "Librarian":
-                                        unit.role_tag[eROLE_TAG.Librarian] = !unit.role_tag[eROLE_TAG.Librarian];
+                                        _unit.role_tag[eROLE_TAG.Librarian] = !_unit.role_tag[eROLE_TAG.Librarian];
                                         break;
                                     case "Chaplain":
-                                        unit.role_tag[eROLE_TAG.Chaplain] = !unit.role_tag[eROLE_TAG.Chaplain];
+                                        _unit.role_tag[eROLE_TAG.Chaplain] = !_unit.role_tag[eROLE_TAG.Chaplain];
                                         break;
                                     case "Apothecary":
-                                        unit.role_tag[eROLE_TAG.Apothecary] = !unit.role_tag[eROLE_TAG.Apothecary];
+                                        _unit.role_tag[eROLE_TAG.Apothecary] = !_unit.role_tag[eROLE_TAG.Apothecary];
                                         break;
                                 }
                             }
@@ -314,10 +318,10 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true) {
         } else {
             if (man[selected] == "man") {
                 c = managing <= 10 ? managing : 0;
-                var unit = display_unit[selected];
+                var _unit = display_unit[selected];
 
                 if ((ma_lid[selected] > -1) && (ma_wid[selected] == 0)) {
-                    draw_sprite(spr_loc_icon, unit.is_boarder ? 2 : 1, xx + 427 + 8, yy + 66);
+                    draw_sprite(spr_loc_icon, _unit.is_boarder ? 2 : 1, xx + 427 + 8, yy + 66);
                 } else if (ma_wid[selected] > 0) {
                     draw_sprite(spr_loc_icon, 0, xx + 427 + 8, yy + 66);
                 }
@@ -426,7 +430,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true) {
     }
 
     if (!wrong_location) {
-        wrong_location = ma_loc[selected] == "Terra";
+        wrong_location = !_unit.controllable();
     }
 
     var unclickable = eventing || jailed || wrong_location || impossible || instance_exists(obj_star_select);
@@ -442,10 +446,10 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true) {
             } else if (sel_all == "man" && is_man) {
                 changed = true;
             } else if (sel_all == "Command" && is_man) {
-                if (unit.IsSpecialist(SPECIALISTS_COMMAND)) {
+                if (_unit.IsSpecialist(SPECIALISTS_COMMAND)) {
                     changed = true;
-                } else if (unit.squad != "none") {
-                    if (obj_ini.squads[unit.squad].type == "command_squad") {
+                } else if (_unit.squad != "none") {
+                    if (obj_ini.squads[_unit.squad].type == "command_squad") {
                         changed = true;
                     }
                 }
@@ -498,7 +502,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true) {
                 selecting_planet = ma_wid[selected];
             }
             ma_loc[selected] = selecting_location;
-            var unit_man_size = is_man ? unit.get_unit_size() : scr_unit_size("", ma_role[selected], true);
+            var unit_man_size = is_man ? _unit.get_unit_size() : scr_unit_size("", ma_role[selected], true);
             if (man_sel[selected]) {
                 man_size += unit_man_size;
             } else {
@@ -516,12 +520,12 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true) {
     }
     if (is_man) {
         force_tool = 0;
-        if ((temp[101] == $"{unit.role()} {unit.name}") && ((temp[102] != unit.armour()) || (temp[104] != unit.gear()) || (temp[106] == unit.mobility_item()) || (temp[108] != unit.weapon_one()) || (temp[110] != unit.weapon_two()) || (temp[114] == "refresh"))) {
+        if ((temp[101] == $"{_unit.role()} {_unit.name}") && ((temp[102] != _unit.armour()) || (temp[104] != _unit.gear()) || (temp[106] == _unit.mobility_item()) || (temp[108] != _unit.weapon_one()) || (temp[110] != _unit.weapon_two()) || (temp[114] == "refresh"))) {
             force_tool = 1;
         }
 
-        if (((mouse_x >= xx + 25 && mouse_y >= yy + 64 && mouse_x < xx + 974 && mouse_y < yy + 85) || force_tool == 1) && is_struct(unit)) {
-            temp[120] = unit; // unit_struct
+        if (((mouse_x >= xx + 25 && mouse_y >= yy + 64 && mouse_x < xx + 974 && mouse_y < yy + 85) || force_tool == 1) && is_struct(_unit)) {
+            temp[120] = _unit; // unit_struct
         }
     }
     if (!ma_view[selected]) {

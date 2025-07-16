@@ -531,7 +531,6 @@ if (shop = "equipment") {
     forge_cost[i] = 200;
     item_stocked[i] = scr_item_count(item[i]);
     item_cost[i] = 10;
-
     i += 1;
     item[i] = "Missile Launcher";
     forge_cost[i] = 300;
@@ -547,6 +546,7 @@ if (shop = "equipment") {
         nobuy[i] = 1;
         item_cost[i] = 0;
     }
+	i += 1;
 	//Debug space for 30k weapons
        //Volkite Pack
         item[i] = "Volkite Serpenta";
@@ -837,12 +837,11 @@ if (research.armour[1].stealth[0] > 0 && research.armour[1].armour[0] > 1 && obj
     mk_4_tool_tip = tooltip_overide[i];
     tooltip_overide[i] += $"STC wargear component 6"; 
 }
-i += 1;
-item[i] = "Cataphractii";
-item_stocked[i] = scr_item_count("Cataphractii");
-nobuy[i] = 1;
+    i += 1;
+    item[i] = "Cataphractii";
+    item_stocked[i] = scr_item_count("Cataphractii");
+    nobuy[i] = 1;
 
-    
     i += 1;
     x_mod[i] = 9;
     item[i] = "Jump Pack";
@@ -853,6 +852,14 @@ nobuy[i] = 1;
         nobuy[i] = 1;
         item_cost[i] = 0;
     }
+
+    i += 1;
+    x_mod[i] = 9;
+    nobuy[i] = 1;
+	item[i] = "Serpha Jump Pack";
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 0;
+    forge_cost[i] = 0;
 
     i += 1;
     x_mod[i] = 9;

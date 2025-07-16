@@ -27,7 +27,7 @@ try_and_report_loop("player alarm 1",function(){
     }
 
 
-    else if (action="move") or (action="crusade1") or (action="crusade2") or (action="crusade3"){
+    else if (array_contains(FLEET_MOVE_OPTIONS, action)){
         
         var i;
         set_fleet_location("Warp");
@@ -42,8 +42,7 @@ try_and_report_loop("player alarm 1",function(){
         y=y+lengthdir_y(spid,dir);
 
         action_eta-=1;
-        just_left=false;
-        
+        just_left=false;       
         
         if (action_eta=0) and (action="crusade1"){
             var dr=point_direction(room_width/2,room_height/2,x,y);
@@ -58,7 +57,7 @@ try_and_report_loop("player alarm 1",function(){
                 var enemies = false;
                 for(var i=6;i<13;i++){
                     if (scr_orbiting_fleet(i)!="none"){
-                        enemies =true;
+                        enemies = true;
                         break;
                     }
                 }

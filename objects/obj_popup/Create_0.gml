@@ -59,7 +59,11 @@ all_good=0;
 prev_selected = 0;
 
 new_target=0;
-
+function reset_popup_option(){
+    option1 = "";
+    option2 = "";
+    option3 = "";
+}
 if (instance_exists(obj_controller)){obj_controller.cooldown=8000;}
 number=0;
 company_promote_data = [

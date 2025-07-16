@@ -499,9 +499,7 @@ try {
 			}
 			scr_event_log("", "Planetary Governor of " + string(new_target.name) + " " + scr_roman(planet) + " assassinated.  The next in line takes over.", new_target.name);
 			text = "The next in line for rule of " + string(new_target.name) + " " + scr_roman(planet) + " has taken over their rightful position of Planetary Governor.";
-			option1 = "";
-			option2 = "";
-			option3 = "";
+			reset_popup_options();
 			with (obj_ground_mission) {
 				instance_destroy();
 			}
@@ -509,22 +507,9 @@ try {
 			exit;
 		}
 		if (press == 2) {
-			new_target.dispo[planet] = 70 + floor(random_range(5, 15)) + 1;
-			scr_event_log("", "Planetary Governor of " + string(new_target.name) + " " + scr_roman(planet) + " assassinated.  A more suitable Governor is installed.");
-			if (randa2 <= (10 * estimate)) {
-                for (var i = 0; i < array_length(obj_controller.event); i++) {
-                    if (obj_controller.event[i] == "") {
-                        var ev = i;
-                        break;
-                    }
-                }
-				obj_controller.event[ev] = "governor_assassination_1|" + string(new_target.name) + "|" + string(planet) + "|";
-				obj_controller.event_duration[ev] = ((choose(1, 2, 3, 4, 5, 6) + choose(1, 2, 3, 4, 5, 6)) * 6) + choose(-3, -2, -1, 0, 1, 2, 3);
-			}
-			text = "Many of the successors for " + string(new_target.name) + " " + scr_roman(planet) + " are removed or otherwise made indisposed.  Your chapter ensures that the new Planetary Governor is sympathetic to your plight and more than willing to heed your advice.  A powerful new ally may be in the making.";
-			option1 = "";
-			option2 = "";
-			option3 = "";
+			text = p_data.assasinate_governor(1, estimate);
+
+			reset_popup_options();
 			with (obj_ground_mission) {
 				instance_destroy();
 			}
@@ -532,25 +517,8 @@ try {
 			exit;
 		}
 		if (press == 3) {
-			new_target.dispo[planet] = 101;
-			scr_event_log("", "Planetary Governor of " + string(new_target.name) + " " + scr_roman(planet) + " assassinated.  One of your Chapter Serfs take their position.");
-			if (randa2 <= (25 * estimate)) {
-                for (var i = 0; i < array_length(obj_controller.event); i++) {
-                    if (obj_controller.event[i] == "") {
-                        var ev = i;
-                        break;
-                    }
-                }
-				obj_controller.event[ev] = "governor_assassination_2|" + string(new_target.name) + "|" + string(planet) + "|";
-				obj_controller.event_duration[ev] = (choose(1, 2) * 6) + choose(-3, -2, -1, 0, 1, 2, 3);
-			}
-			text = $"All of the successors for {planet_numeral_name(planet, new_target)} are removed or otherwise made indisposed.  Paperwork is slightly altered.  Rather than any sort of offical one of your Chapter Serfs is installed as the Planetary Governor.  The planet is effectively under your control.";
-			if (new_target.p_first[planet] != 3) {
-				new_target.p_owner[planet] = 1;
-			}
-			option1 = "";
-			option2 = "";
-			option3 = "";
+			text = p_data.assasinate_governor(2, estimate);
+			reset_popup_options();
 			with (obj_ground_mission) {
 				instance_destroy();
 			}
@@ -558,33 +526,12 @@ try {
 			exit;
 		}
 	}
-	/*
-    var he;he=instance_create(argument0.x,argument0.y,obj_temp6);
-    var pip;pip=instance_create(0,0,obj_popup);
-    pip.title="Planetary Governor Assassinated";
-    pip.text=txt;
-    
-    pip.option1="Allow the official successor to become Planetary Governor.";
-    pip.option2="Ensure that a sympathetic successor will be the one to rule.";
-    pip.option3="Remove all successors and install a loyal Chapter Serf.";
-    
-    // Result-  this is the multiplier for the chance of discovery with the inquisition, can also be used to determine
-    // the new Governor disposition if they are the official successor
-    if (aroll<=chance){// Discovered
-        pip.estimate=2;
-    }
-    if (aroll>chance){// Success
-        pip.estimate=1;
-    }
-    */
 
 	if (image == "ruins_fort") {
 		if ((press == 1) && (obj_controller.requisition >= 1000)) {
 			obj_controller.requisition -= 1000;
 			text = "Resources have been spent on the planet to restore the fortress.  The planet's defense rating has increased to 5 (";
-			option1 = "";
-			option2 = "";
-			option3 = "";
+			reset_popup_options();
 			text += string(star_system.p_fortified[planet]) + "+";
 			text += string(5 - star_system.p_fortified[planet]) + ")";
 			star_system.p_fortified[planet] = max(star_system.p_fortified[planet], 5);
@@ -595,9 +542,7 @@ try {
 			var req = floor(random_range(200, 500)) + 1;
 			image = "";
 			text = "Much of the fortress is demolished in order to salvage adamantium and raw materials.  The opration has yielded " + string(req) + " requisition.";
-			option1 = "";
-			option2 = "";
-			option3 = "";
+			reset_popup_options();
 			obj_controller.requisition += req;
 			cooldown = 15;
 			exit;
@@ -622,9 +567,7 @@ try {
 		if (press == 1) {
 			image = "";
 			text = string(estimate) + " gene-seed has been added to the chapter vaults.";
-			option1 = "";
-			option2 = "";
-			option3 = "";
+			reset_popup_options();
 			obj_controller.gene_seed += estimate;
 			with (obj_ground_mission) {
 				instance_destroy();
@@ -637,9 +580,7 @@ try {
 			req = floor(random_range(200, 500)) + 1;
 			image = "";
 			text = "Technological components have been salvaged, granting " + string(req) + " requisition.";
-			option1 = "";
-			option2 = "";
-			option3 = "";
+			reset_popup_options();
 			obj_controller.requisition += req;
 			with (obj_ground_mission) {
 				instance_destroy();
@@ -908,9 +849,7 @@ try {
 			title = "Inquisition Mission Completed";
 			image = "exploding_ship";
 			text = "The Inquisitor's ship begans to bank and turn, to flee, but is immediately fired upon by your fleet.  The ship explodes, taking the Inquisitor with it.  The mission has been accomplished.";
-			option1 = "";
-			option2 = "";
-			option3 = "";
+			reset_popup_options();
 
 			scr_event_log("", "Inquisition Mission Completed: The radical Inquisitor has been purged.");
 
@@ -1367,22 +1306,15 @@ try {
 					instance_destroy();
 				}
 			}
-			if (obj_ini.fleet_type != ePlayerBase.home_world) {
-				var last_artifact = scr_add_artifact("random", "", 4, obj_ini.ship_data[0].name, 501);
-			}
-			if (obj_ini.fleet_type == ePlayerBase.home_world) {
-				var last_artifact = scr_add_artifact("random", "", 4, obj_ini.home_name, 2);
-			}
-			option1 = "";
-			option2 = "";
-			option3 = "";
+
+			var last_artifact = scr_add_artifact("random", "", 4);
+
+			reset_popup_options();
 			title = "Inquisition Mission Completed";
 			text = "Your ship sends over a boarding party, who retrieve the offered artifact- ";
 			text += $" some form of {obj_ini.artifact[last_artifact]}.  Once it is safely stowed away your ship is then ordered to fire.  The Inquisitor's own seems to hesitate an instant before banking away, but is quickly destroyed.";
 			image = "exploding_ship";
-			option1 = "";
-			option2 = "";
-			option3 = "";
+			reset_popup_options();
 			scr_event_log("", "Artifact recovered from radical Inquisitor.");
 			scr_event_log("", "Inquisition Mission Completed: The radical Inquisitor has been purged.");
 			exit;
@@ -1390,9 +1322,7 @@ try {
 
 		if (title == "He Built It") {
 			obj_ini.god[ma_co, ma_id] += 10;
-			option1 = "";
-			option2 = "";
-			option3 = "";
+			reset_popup_options();
 		}
 
 		if (title == "Mercy Plea") {
@@ -1544,33 +1474,22 @@ try {
 					action = "";
 				}
 			}
-			if (obj_ini.fleet_type != ePlayerBase.home_world) {
-				var last_artifact = scr_add_artifact("random", "", 4, obj_ini.ship_data[0].name, 501);
-			}
-			if (obj_ini.fleet_type == ePlayerBase.home_world) {
-				var last_artifact = scr_add_artifact("random", "", 4, obj_ini.home_name, 2);
-			}
-			option1 = "";
-			option2 = "";
-			option3 = "";
+			var last_artifact = scr_add_artifact("random", "", 4);
+			
+			reset_popup_options();
 			title = "Inquisition Mission Completed";
 			text = "Your ship sends over a boarding party, who retrieve the offered artifact- ";
 			text += $" some form of {obj_ini.artifact[last_artifact]}.  As promised {global.chapter_name} allow the Inquisitor to leave, hoping for the best.  What's the worst that could happen?";
 			image = "artifact_recovered";
-			option1 = "";
-			option2 = "";
-			option3 = "";
+			reset_popup_options();
 			scr_event_log("", "Artifact Recovered from radical Inquisitor.");
 			scr_event_log("", "Inquisition Mission Completed: The radical Inquisitor has been purged.");
 
-            for (var i = 0; i < array_length(obj_controller.event); i++) {
-                if (obj_controller.event[i] == "") {
-                    var ev = i;
-                    break;
-                }
-            }
-			obj_controller.event[ev] = "inquisitor_spared1";
-			obj_controller.event_duration[ev] = floor(random_range(6, 18)) + 1;
+	        add_event({
+	        	e_id : "inquisitor_spared",
+	        	duration : irandom_range(6, 18) + 1,
+	        	variation : 1,
+	        })
 
 			exit;
 		}
@@ -1588,20 +1507,15 @@ try {
 			title = "Inquisition Mission Completed";
 			text = $"{global.chapter_name} allow the Inquisitor to leave, trusting in their words.  If they truly do have key information it is a risk {global.chapter_name} are willing to take.  What's the worst that could happen?";
 			image = "artifact_recovered";
-			option1 = "";
-			option2 = "";
-			option3 = "";
+			reset_popup_options();
 
 			scr_event_log("", "Inquisition Mission Completed?: The radical Inquisitor has been allowed to flee in order to weaken the forces of Chaos, as they promised.");
 
-            for (var i = 0; i < array_length(obj_controller.event); i++) {
-                if (obj_controller.event[i] == "") {
-                    var ev = i;
-                    break;
-                }
-            }
-			obj_controller.event[ev] = "inquisitor_spared2";
-			obj_controller.event_duration[ev] = floor(random_range(6, 18)) + 1;
+	        add_event({
+	        	e_id : "inquisitor_spared",
+	        	duration : irandom_range(6, 18) + 1,
+	        	variation : 2,
+	        })
 
 			exit;
 		} else if (image == "artifact") {

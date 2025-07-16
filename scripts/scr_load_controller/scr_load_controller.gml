@@ -331,11 +331,6 @@ function scr_load_controller(save_id){
 	        obj_controller.quest_faction[g]=ini_read_real("Ongoing","quest_faction"+string(g),0);
 	        obj_controller.quest_end[g]=ini_read_real("Ongoing","quest_end"+string(g),0);
 	    }
-	    var g;g=0;
-	    repeat(99){g+=1;
-	        obj_controller.event[g]=ini_read_string("Ongoing","event"+string(g),"");
-	        obj_controller.event_duration[g]=ini_read_real("Ongoing","event_duration"+string(g),0);
-	    }
 	    //
 	    obj_controller.justmet=0;
 	    obj_controller.check_number=ini_read_real("Controller","check_number",0);

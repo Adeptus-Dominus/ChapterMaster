@@ -682,11 +682,8 @@ for(var i=0; i<501; i++){
         penit_co[i]=0;
         penit_id[i]=0;
     }
-    if (i<=100){
-        event[i]="";
-        event_duration[i]=0;
-    }
 }
+event = [];
 // ship management arrays
 // they are used to display a paginated subset of ships
 // at a particular location for the load to ship screen.
@@ -851,6 +848,8 @@ if (instance_exists(obj_ini)){
     }
 }
 if (is_test_map==true) then requisition=50000;
+
+chapter_master = new scr_chapter_master();
 
 trade_attempt = false;
 // ** Sets income **
@@ -1186,6 +1185,7 @@ serialize = function(){
         loyalty,
         spec_train_data,
         forge_queue: specialist_point_handler.forge_queue,
+        chapter_master_data : chapter_master
 
     }
     var excluded_from_save = ["temp", "serialize", "deserialize", "build_chaos_gods", "company_data","menu_buttons",

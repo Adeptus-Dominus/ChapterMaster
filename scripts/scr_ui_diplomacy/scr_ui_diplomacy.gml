@@ -1,6 +1,6 @@
 function draw_character_diplomacy_base_page(){
 	obj_controller.menu_lock = true;
-	if (!audience){
+	if (!audience && !valid_diplomacy_options()){
 		with (diplo_buttons){
 			trade.draw();
 			demand.draw();
@@ -62,6 +62,7 @@ function draw_diplomacy_diplo_text(){
 }
 function set_up_diplomacy_buttons(){
 	diplo_buttons = {};
+	audience_data = {};
 	set_up_diplomacy_persons();
 	//Trade button setup
 	diplo_buttons.trade = new UnitButtonObject({
@@ -182,6 +183,7 @@ function set_up_diplomacy_buttons(){
                 obj_turn_end.alarm[1]=1;
             }
         }
+        
         if (trading_artifact!=0){
             clear_diplo_choices();
             cooldown=8;
@@ -194,9 +196,11 @@ function set_up_diplomacy_buttons(){
                 instance_destroy();
             }
         }
+
         if (force_goodbye==5){
             clear_diplo_choices();
         }
+
         if (liscensing==2) and (repair_ships==0){
             cooldown=8;
             var cru=instance_create(mouse_x,mouse_y,obj_crusade);
@@ -206,6 +210,7 @@ function set_up_diplomacy_buttons(){
             liscensing=0;
             if (zoomed==0) then scr_zoom();
         }
+
         if (exit_all!=0){
             exit_all=0;
         }
@@ -284,22 +289,22 @@ function set_up_diplomacy_persons(){
 	}
 	diplo_persons.imperium = new ShutterButton();
 	var _imp = diplo_persons.imperium;
-	_imp.image = known[eFACTION.Imperium] ? 3 : 4;
+	_imp.image = known[eFACTION.Imperium] || global.cheat_debug? 3 : 4;
 	_imp._faction_enum = eFACTION.Imperium;
 
 	diplo_persons.mechanicus = new ShutterButton();
 	var _mechs = diplo_persons.mechanicus;
-	_mechs.image = known[eFACTION.Mechanicus] ? 5 : 6;
+	_mechs.image = known[eFACTION.Mechanicus] || global.cheat_debug? 5 : 6;
 	_mechs._faction_enum = eFACTION.Mechanicus;
 
 	diplo_persons.inquisition = new ShutterButton();
 	var _inquis = diplo_persons.inquisition;
-	_inquis.image = known[eFACTION.Inquisition] ? 7 : 8;
+	_inquis.image = known[eFACTION.Inquisition]|| global.cheat_debug ? 7 : 8;
 	_inquis._faction_enum = eFACTION.Inquisition;
 
 	diplo_persons.sisters = new ShutterButton();
 	var _sisters = diplo_persons.sisters;
-	_sisters.image = known[eFACTION.Ecclesiarchy] ? 9 : 10;
+	_sisters.image = known[eFACTION.Ecclesiarchy] || global.cheat_debug? 9 : 10;
 	_sisters._faction_enum = eFACTION.Ecclesiarchy;
 
 
@@ -307,21 +312,21 @@ function set_up_diplomacy_persons(){
 	diplo_persons.eldar = new ShutterButton();
 	var _eldar = diplo_persons.eldar;
 	if (faction_gender[eFACTION.Eldar]=1){
-		_eldar.image = known[eFACTION.Eldar] ? 9 : 10;
+		_eldar.image = known[eFACTION.Eldar] || global.cheat_debug? 9 : 10;
 	} else {
-		_eldar.image = known[eFACTION.Eldar] ? 21 : 22;
+		_eldar.image = known[eFACTION.Eldar] || global.cheat_debug? 21 : 22;
 	}
 	_eldar._faction_enum = eFACTION.Eldar;
 
 
 	diplo_persons.ork = new ShutterButton();
 	var _orks = diplo_persons.ork;
-	_orks.image = known[eFACTION.Ork] ? 13 : 14;
+	_orks.image = known[eFACTION.Ork] || global.cheat_debug? 13 : 14;
 	_orks._faction_enum = eFACTION.Ork;
 
 	diplo_persons.tau = new ShutterButton();
 	var _tau = diplo_persons.tau;
-	_tau.image = known[eFACTION.Tau] ? 15 : 16;
+	_tau.image = known[eFACTION.Tau] || global.cheat_debug? 15 : 16;
 	_tau._faction_enum = eFACTION.Tau;
 
 	diplo_persons.chaos = new ShutterButton();
@@ -387,14 +392,14 @@ function set_up_diplomacy_persons(){
 				draw_text_transformed(xx+169,yy+65,$"Disposition: {obj_controller.disposition[_faction_enum]}",0.7,0.7,0);	
 				scr_draw_rainbow(xx+250,yy+66,xx+400,yy+76,(obj_controller.disposition[_faction_enum]/200)+0.5);
 
-			    if (obj_controller.known[_faction_enum]>0.7) and (obj_controller.faction_defeated[_faction_enum]=0) {
+			    if (((obj_controller.known[_faction_enum]>0.7) and (obj_controller.faction_defeated[_faction_enum]=0) )|| global.cheat_debug) {
 			    	var _audience = management_buttons.audience;
 			    	_audience.update({
 			            x1: xx+169,
 			            y1: yy+85,			    		
 			    	});
 			    	_audience.bind_method = function(){
-			            if (obj_controller.known[_faction_enum]!=0) and (obj_controller.turns_ignored[_faction_enum]==0){
+			            if (obj_controller.known[_faction_enum]!=0 || global.cheat_debug) and (obj_controller.turns_ignored[_faction_enum]==0){
 			                obj_controller.diplomacy = _faction_enum;
 			                intro_to_diplomacy(_faction_enum);	    
 			            }
@@ -474,21 +479,21 @@ function scr_ui_diplomacy() {
     
 	    xx+=55;yy-=20;
     
-    	diplo_persons.imperium.draw_shutter(xx+31, yy+281, false, 1.5, known[eFACTION.Imperium]>0.7);
+    	diplo_persons.imperium.draw_shutter(xx+31, yy+281, false, 1.5, known[eFACTION.Imperium]>0.7 || global.cheat_debug);
 
-    	diplo_persons.mechanicus.draw_shutter(xx+31, yy+417, false, 1.5, known[eFACTION.Mechanicus]>0.7);
+    	diplo_persons.mechanicus.draw_shutter(xx+31, yy+417, false, 1.5, known[eFACTION.Mechanicus]>0.7 || global.cheat_debug);
 
-    	diplo_persons.inquisition.draw_shutter(xx+31, yy+553, false, 1.5, known[eFACTION.Inquisition]>0.7);
+    	diplo_persons.inquisition.draw_shutter(xx+31, yy+553, false, 1.5, known[eFACTION.Inquisition]>0.7 || global.cheat_debug);
 
-    	diplo_persons.sisters.draw_shutter(xx+31, yy+689, false, 1.5, known[eFACTION.Ecclesiarchy]>0.7);
+    	diplo_persons.sisters.draw_shutter(xx+31, yy+689, false, 1.5, known[eFACTION.Ecclesiarchy]>0.7 || global.cheat_debug);
 
-    	diplo_persons.eldar.draw_shutter(xx+1041, yy+281, false, 1.5, known[eFACTION.Eldar]>0.7);
+    	diplo_persons.eldar.draw_shutter(xx+1041, yy+281, false, 1.5, known[eFACTION.Eldar]>0.7 || global.cheat_debug);
 
-    	diplo_persons.ork.draw_shutter(xx+1041, yy+417, false, 1.5, known[eFACTION.Ork]>0.7);
+    	diplo_persons.ork.draw_shutter(xx+1041, yy+417, false, 1.5, known[eFACTION.Ork]>0.7 || global.cheat_debug);
 
-    	diplo_persons.tau.draw_shutter(xx+1041, yy+553, false, 1.5, known[eFACTION.Tau]>0.7);
+    	diplo_persons.tau.draw_shutter(xx+1041, yy+553, false, 1.5, known[eFACTION.Tau]>0.7 || global.cheat_debug);
 
-    	diplo_persons.chaos.draw_shutter(xx+1041, yy+689, false, 1.5, known[eFACTION.Chaos]>0.7);
+    	diplo_persons.chaos.draw_shutter(xx+1041, yy+689, false, 1.5, known[eFACTION.Chaos]>0.7 || global.cheat_debug);
 
     
 	    scr_image("symbol",0,xx+138,yy+174,217,107);

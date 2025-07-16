@@ -58,13 +58,16 @@ function PlanetData(planet, system) constructor{
         new_colony_fleet(system, planet, target, targ_planet, type);
     }
 
+    static set_new_owner = function(new_owner){
+        system.p_owner[planet] = new_owner;
+        current_owner = new_owner;
+    }
     static return_to_first_owner = function(allow_player = false){
     	if (!allow_player && origional_owner == eFACTION.Player){
-    		system.p_owner[planet]= eFACTION.Imperium;
+    		set_new_owner(eFACTION.Imperium);
     	} else {
-    		system.p_owner[planet] = origional_owner;
+    		set_new_owner(origional_owner);
     	}
-    	current_owner = origional_owner;
     }
 
     static add_disposition = function(alteration){
@@ -160,6 +163,44 @@ function PlanetData(planet, system) constructor{
 		}
 	}
 
+
+
+    static assasinate_governor = function(assaination_type, discovery_modifier){
+        var randa = roll_dice_chapter(1, 100, "high");
+        var randa2 = roll_dice(1, 100);
+
+        //type 1 is install a sympathectic else it's a straight serf installation
+        if (assaination_type == 1){
+            var _discovery_rate = 10;
+            set_player_disposition(70 + floor(random_range(5, 15)) + 1);
+            var _text = $"Many of the successors for {name()} are removed or otherwise made indisposed.  Your chapter ensures that the new Planetary Governor is sympathetic to your plight and more than willing to heed your advice.  A powerful new ally may be in the making."; 
+            scr_event_log("", $"Planetary Governor of {name()} assassinated.  A more suitable Governor is installed.");       
+        } else {
+            var _discovery_rate = 25;
+            if (origional_owner != 3) {
+                set_new_owner(eFACTION.Player);
+            }
+            set_player_disposition(101);
+            scr_event_log("", $"Planetary Governor of {name()} assassinated.  One of your Chapter Serfs take their position.");
+            var _text = $"All of the successors for {name()} are removed or otherwise made indisposed.  Paperwork is slightly altered.  Rather than any sort of offical one of your Chapter Serfs is installed as the Planetary Governor.  The planet is effectively under your control.";
+        }
+
+        if (randa2 <= (_discovery_rate * discovery_modifier)) {
+            if (assaination_type == 1){
+                var _duration = ((choose(1, 2, 3, 4, 5, 6) + choose(1, 2, 3, 4, 5, 6)) * 6) + choose(-3, -2, -1, 0, 1, 2, 3);
+            } else {
+                var _duration = (choose(1, 2) * 6) + choose(-3, -2, -1, 0, 1, 2, 3);
+            }
+            add_event({
+                duration : _duration,
+                e_id : "governor_assassination",
+                variant : assaination_type,
+                system : system.name,
+                planet : planet,
+            });
+        }
+        return _text;
+    }
     static grow_ork_forces = function(){
         var contin=0;
         var rando=roll_dice(1,100);// This part handles the spreading
@@ -762,7 +803,9 @@ function PlanetData(planet, system) constructor{
             }
 
             if (player_disposition<=-3000) then draw_text(xx+534,yy+176,"Disposition: N/A");
-        } else  if (_succession=1) then draw_text(xx+534,yy+176,"War of _Succession");
+        } else  if (_succession){
+            draw_text(xx+534,yy+176,"War of _Succession");
+        }
         draw_set_color(c_gray);
         // End draw disposition
         draw_set_color(c_gray);

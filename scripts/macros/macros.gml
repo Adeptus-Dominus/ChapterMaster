@@ -21,6 +21,8 @@
 #macro FACTION_NAMES ["","Your Chapter", "Imperium of Man","Adeptus Mechanicus","Inquisition","Ecclesiarchy","Eldar","Orks", "Tyranid Hive","Tau Empire","Chaos","Heretics","Genestealer Cults", "Necron Dynasties"]
 #macro XENOS_FACTIONS [6,7,8,9]
 
+#macro FLEET_MOVE_OPTIONS ["move", "crusade1","crusade2","crusade3", "mars_spelunk1"]
+
 #macro ALLIANCE_GRADES ["Hated", "Hostile","Suspicious","Uneasy","Neutral","Allies","Close Allies","Battle Brothers"]
 
 enum eFACTION {

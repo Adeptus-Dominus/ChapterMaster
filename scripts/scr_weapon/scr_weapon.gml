@@ -8,7 +8,7 @@ global.weapons = {
 			"master_crafted": 720,
 			"artifact": 740
 		},
-		"description": "Ancient thermal ray weapon, heaviest man portable variant of its class.",
+		"description": "The only man-portable heavy support Volkite, the Culverin has been a dreaded presence on the battlefields of the 31st millennium, where it would rend Contemptors apart and combust Marines by the dozen. Featuring the greatest range out of the family amongst the other heavier variants, its beam potency is outmatched by all heavier Volkites.",
 		"melee_hands": 1,
 		"ranged_hands": 2.2,
 		"ammo": 4,
@@ -24,7 +24,7 @@ global.weapons = {
 			"master_crafted": 570,
 			"artifact": 590
 		},
-		"description": "Ancient thermal ray weapon, an uncommon sight during ancient times, now a precious relic for every chapter that can claim one.",
+		"description": "Featuring grater range, more precise fire and more stopping fire than the Charger, this is the rifle of the Volkite family, whereas its smaller brother is the assault rifle. A weapon most prominent in Tactical squads of the Great Crusade Legions, its potency is spoken of even those many thousands of years past their height.",
 		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 6,
@@ -40,7 +40,7 @@ global.weapons = {
 			"master_crafted": 420,
 			"artifact": 440
 		},
-		"description": "Ancient thermal ray weapon, smaller, yet still deadly brother of caliver.",
+		"description": "One of the deadliest of the mainstay weapons in the Imperial arsenal during the Great Crusade. The humble Charger is a thermal ray weapon that deflagrates organic matter, combusting the target in extreme cases. Some variants even arc over multiple targets.",
 		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 10,
@@ -56,7 +56,7 @@ global.weapons = {
 			"master_crafted": 270,
 			"artifact": 290
 		},
-		"description": "Ancient one-handed thermal ray weapon, preferred by melee specialists and officers.",
+		"description": "The pistol variant of the long-lost Volkite weapon type, the Serpenta was a mainstay of Moritats and often wielded by Centurions of the Legiones Astartes. Now a symbol of status to match its fearsome potency, a sighting of this ancient weapon would send many foes running.",
 		"melee_hands": 0,
 		"ranged_hands": 1,
 		"ammo": 10,
@@ -73,7 +73,7 @@ global.weapons = {
 			"master_crafted": 43,
 			"artifact": 48
 		},
-		"description": "Once primary personal weapon of ancient astartes legions, now an uncommon sight on the battlefield. This weapon was hand-crafted by the Fabricators of Mars at the very birth of the Imperium during the Great Crusade.",
+		"description": "The shortened version of the Phobos Bolgun, this pistol like its brother features a .70 bolt and less bulk than its successors. Despite its most venerable origin it features better quality basic components than its modern counterparts but lacks anything more advanced than its simple firing mechanism and basic optics.",
 		"melee_hands": 0,
 		"ranged_hands": 1,
 		"ammo": 20,
@@ -89,7 +89,7 @@ global.weapons = {
 			"master_crafted": 80,
 			"artifact": 85
 		},
-		"description": "Ancient pattern of boltgun made during times of the Great Crusade for the Astartes Legions. It uses different ammunition, has larger magazine and is slightly bigger than its modern counterparts.",
+		"description": "Created at the conception of the Imperium, this very first bolter pattern features a .70 caliber bolt as opposed to the 41st millennium's standard .75. Its form is far less bulky than the Godwyn, most prevalent in the modern Astartes armouries. Simpler in design in theory but required higher-tech components than what is currently available, so when the Heresy ended and the weaponry was streamlined for less logistical effort, the older patterns, such as the venerable Phobos, were phased out.",
 		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 20,
@@ -105,7 +105,7 @@ global.weapons = {
 			"master_crafted": 430,
 			"artifact": 460
 		},
-		"description": "Rare variant of heavy bolter, uncommon even during times of it's production. Made in forges of Mars itself, it's more lightweight and compact in comparison to modern patterns.",
+		"description": "This is the prototype that turned into the staple of all Heavy Bolter designs. Introduced in early Great Crusade, it was one of the very first heavy support weapons churned out by the forges of Mechanicum.",
 		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 12,
@@ -121,7 +121,7 @@ global.weapons = {
 			"master_crafted": 120,
 			"artifact": 140
 		},
-		"description": "Once primary weapon of ancient terminator squads, now precious relic of any chapter that still can field it.",
+		"description": "During the Great Crusade, there came a need for a hand-held weapon of high rate of fire and respectable firepower that's easy to manufacture. Some Techpriest, or perhaps a Techmarine, put two bolters together and thus the Combi-Bolter was born. Phased out by the Storm Bolter, it is nevertheless a respectable weapon and a relic of more civilised times.",
 		"melee_hands": 1.1,
 		"ranged_hands": 1.1,
 		"ammo": 14,
@@ -138,7 +138,7 @@ global.weapons = {
 			"master_crafted": 350,
 			"artifact": 375
 		},
-		"description": "Ancient and now forgotten pattern of plasma weapon. It features improved coils, more stable hydrogen fuel, and characteristic purple glow",
+		"description": "One of many Plasma weapon patterns that came from the famed Forge World of Ryza. With its characteristic purple glow, alongside slight curvatures of the design, the mark of its forgeworld is impossible to miss. Featuring greater range and accuracy as well as pure stopping power, this is a weapon that even Terminators should fear to face.",
 		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 18,
@@ -154,7 +154,7 @@ global.weapons = {
 			"master_crafted": 160,
 			"artifact": 175
 		},
-		"description": "Ancient and now forgotten pattern of plasma pistol. Often given to veterans and officers as a sign of great honor. It features improved coils, more stable hydrogen fuel, and characteristic purple glow",
+		"description": "The smaller brother of the Ryzan Plasma Gun, it shares its characteristics as well as sleek design and purple glow. Once a regular weapon for Sergeants and some Moritats in the Legiones Astartes, with even some Consuls or Centurions favouring them over Volkites or Disintegrators, the humble Ryzan Plasma Pistol has earned its place as a vaunted relic of any armoury lucky enough to have it.",
 		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 18,
@@ -170,7 +170,7 @@ global.weapons = {
 			"master_crafted": 700,
 			"artifact": 750 //I think that usual 25% increase will be too much for that weapon so applied +150.
 		},
-		"description": "Ancient and now forgotten pattern of plasma weapon. Heaviest portable variant. It features improved coils, more stable hydrogen ammo, and characteristic purple glow",
+		"description": "An ancient Plasma Cannon variant born in the bowels of Mother Mars. Once a staple of heavy weapons squads in the time of Legiones Astartes, now a revered relic with power beyond compare with any modern weapons, even those made in the forges of Mars and Ryza in this dark age. Sharing some design and components with Ryzan patterns, it features the same purple glow that makes them so easily distinguishable.",
 		"melee_hands": 1,
 		"ranged_hands": 3,
 		"ammo": 18,
@@ -203,7 +203,7 @@ global.weapons = {
 			"master_crafted": 1100,
 			"artifact": 1200
 		},
-		"description": "This Multi-Melta design originates, like many others used by Legiones Astartes, in the Dark Age of Technology. Deadlier than the current designs fielded by the Space Marine Chapters, it is a relic of both of the zenith of mankind's science and the last moments of the Emperor's true vision",
+		"description": "This Multi-Melta design originates, like many others used by Legiones Astartes, in the Dark Age of Technology. Deadlier than the current designs fielded by the Space Marine Chapters, it is a relic of both of the zenith of mankind's science and the last moments of the Emperor's true vision.",
 		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 6,
@@ -220,7 +220,7 @@ global.weapons = {
 			"master_crafted": 585,
 			"artifact": 610
 		},
-		"description": "The Phaestos-pattern Flamer is a stark reminder of the time where Mankind's future was yet unmolested by the decaying stench of the Horus Heresy. Oddly shaped for the modern users, it is nonetheless not to be underestimated and its potent promethium-fueled flame has burned through armours of unnumbered heroes",
+		"description": "The Phaestos-pattern Flamer is a stark reminder of the time where Mankind's future was yet unmolested by the decaying stench of the Horus Heresy. Oddly shaped for the modern users, it is nonetheless not to be underestimated and its potent promethium-fueled flame has burned through armours of unnumbered heroes.",
 		"melee_hands": 1,
 		"ranged_hands": 2,
 		"ammo": 6,
@@ -229,7 +229,7 @@ global.weapons = {
 		"arp": -1,
 		"tags": ["flame"] //Shouldn't it also feature "boarding"?
 	},
-	//Melle Pack
+	//Melee Pack
 	"Power Scythe": {
 		"abbreviation": "PwrSct",
 		"attack": {
@@ -242,7 +242,7 @@ global.weapons = {
 			"master_crafted": 1.1,
 			"artifact": 1.2
 		},
-		"description": "An unpopular power weapon, once a signature of the cursed 14th Legion, now fielded by a handful of loyalist Chapters.",
+		"description": "One of many Power Weapon types made in the nascent Imperium, the Power Scythes never truly became a staple of any large force outside of specialist elements, and when even those faded into obscurity or went traitor, the production of the Power Scythes was halted. Since then few remain in Imperial use, and most can be found in hands of foul traitors.",
 		"melee_hands": 2,
 		"ranged_hands": 1,
 		"ammo": 0,
@@ -259,7 +259,7 @@ global.weapons = {
 			"master_crafted": 800,
 			"artifact": 850
 		},
-		"description": "PH",
+		"description": "The Forge World of Ryza is known not only for its mastery of Plasma weaponry, but also for its genius in Las weapon designs. This revered Ryzan Lascannon pattern can be dated to the Great Crusade, and as such it is the pinnacle of its kind as the Imperium was then. A common sight across the Legiones Astartes heavy support squads as well as Solar Auxilia, any Chapter blessed with one should count themselves lucky.",
 		"melee_hands": 1,
 		"ranged_hands": 2.25,
 		"ammo": 10,
@@ -276,7 +276,7 @@ global.weapons = {
 			"master_crafted": 520,
 			"artifact": 560
 		},
-		"description": "PH",
+		"description": "Originating from the Warmaster's homeworld [allegedly untrue] of Cthonia, this Autocannon pattern was the chosen type of this weapon for Terminator Squads throughout the Great Crusade and subsequent Horus Heresy. While later designs may have outshined it in fire rate or range, this remains the hardest hitting autocannon to date, perhaps with the Kalibrax as a strong competitor.",
 		"melee_hands": 1,
 		"ranged_hands": 2.25,
 		"ammo": 30,
@@ -2814,6 +2814,17 @@ global.gear = {
 				"standard": 25,
 				"master_crafted": 30,
 				"artifact": 35
+			},
+			"tags": ["jump"],
+		},
+		"Serpha Jump Pack": {
+			"abbreviation": "SphJmpPck",
+			"special_properties": ["Hammer of Wrath"],
+			"description": "Once the mainstay of the Legiones Astartes, now the Serpha Pattern Jump Pack is nothing but a sad reminder of these better times and of the terrible atrocities that followed. Mainly used by the Traitors in the modern Imperium, it is nonetheless seen in the Loyalist armouries in which it is prized for its superior energy cells and power cabling, but doesn't provide as reliable of a thruster as, for instance, the most common in the 41st millennium Mark VII Mars Pattern.",
+			"damage_resistance_mod": {
+				"standard": 30,
+				"master_crafted": 35,
+				"artifact": 40
 			},
 			"tags": ["jump"],
 		},

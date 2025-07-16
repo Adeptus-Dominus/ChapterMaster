@@ -12,7 +12,7 @@ function find_open_artifact_slot() {
     return last_artifact;
 }
 
-function scr_add_artifact(artifact_type, artifact_tags, is_identified, artifact_location, ship_id) {
+function scr_add_artifact(artifact_type="random", artifact_tags="", is_identified=4, artifact_location = "", ship_id) {
     last_artifact = find_open_artifact_slot();
     if (last_artifact == -1) {
         exit;

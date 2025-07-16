@@ -474,6 +474,11 @@ function scr_dialogue(diplo_keyphrase) {
 
 		};
 	}
+	if (diplo_keyphrase=="Demand Method"){
+		add_diplomacy_option({option_text:"Threaten", tooltip : "The plausibility will of your threat"});
+		add_diplomacy_option({option_text:"Bribe"});
+		add_diplomacy_option({option_text:"Plausible Excuse"});
+	}
 	// ** Chaos **
 	if (diplomacy=10){
 	    if (diplo_keyphrase=="civilwar_begin"){
@@ -742,7 +747,10 @@ function scr_dialogue(diplo_keyphrase) {
 	        }
 	        add_diplomacy_option({option_text:"Demand Requisition"});
 			add_diplomacy_option({option_text:"Demand Military Assistance"});
-			add_diplomacy_option({option_text:"Cancel"});
+			add_diplomacy_option({
+				option_text:"Cancel",
+				goto:"disagree"
+			});
 	    }
 	    if (diplo_keyphrase=="propose_alliance") and (obj_controller.faction_gender[10]==1){
 	    	var _found = false;
@@ -981,19 +989,21 @@ function scr_dialogue(diplo_keyphrase) {
 	        if (rela=="hostile") then diplo_text="Consider your next words carefully.";
 	        add_diplomacy_option({option_text:"Demand Requisition"});
 			add_diplomacy_option({option_text:"Demand Military Assistance"});
-			add_diplomacy_option({option_text:"Cancel"});
+			add_diplomacy_option({
+				option_text:"Cancel",
+				goto:"disagree"
+			});
 	    }
-	    if (string_count("assassination_angryish",diplo_keyphrase)>0){
-	        var ta="",tb="",tc="";
-	        explode_script(diplo_keyphrase,"|");
-	        ta=string(explode[0]);
-			tb=string(explode[1]);
-			tc=real(explode[2]);
-        
+	    if (diplo_keyphrase == "assassination_angryish"){
+
+    		var _event = audience_data;
 	        rando=choose(1,2,3);
-	        if (rando==1) then diplo_text="Several sources indicate that you have killed the Planetary Governor of "+string(tb)+" "+scr_roman(tc)+" and went on to meddle with the succession.  Such subterfuge will not be tolerated, Chapter Master.";
-	        if (rando==2) then diplo_text="I have received word that you have killed the Planetary Governor of "+string(tb)+" "+scr_roman(tc)+" and placed a fool in power.  Your attempts to control this sector, and seemingly emulate the Ultramarines, have not gone unnoticed.  Do not think this will go unpunished.";
-	        if (rando==3) then diplo_text="What do you think you are doing, Chapter Master?  Killing a Planetary Governor?  Replacing them with one of your tools?  Inquisitor Lord "+string(faction_leader[eFACTION.Inquisition])+" will hear of this madness.";
+	        var _assasin_place = planet_numeral_name(_event.planet, _event.system);
+	        if (rando==1) then diplo_text=$"Several sources indicate that you have killed the Planetary Governor of {_assasin_place} and went on to meddle with the succession.  Such subterfuge will not be tolerated, Chapter Master.";
+	        if (rando==2) then diplo_text=$"I have received word that you have killed the Planetary Governor of {_assasin_place} and placed a fool in power.  Your attempts to control this sector, and seemingly emulate the Ultramarines, have not gone unnoticed.  Do not think this will go unpunished.";
+	        if (rando==3) then diplo_text=$"What do you think you are doing, Chapter Master?  Killing a Planetary Governor?  Replacing them with one of your tools?  Inquisitor Lord {faction_leader[eFACTION.Inquisition]} will hear of this madness.";
+	        array_delete(obj_controller.event, _event_index, 1);
+
 	    }
 	}
 	// ** Mechanicus **
@@ -1184,7 +1194,10 @@ function scr_dialogue(diplo_keyphrase) {
 	            if (randoo!=1) then diplo_text="Certain queries may have to be answered by action.";
 	        }
 	        add_diplomacy_option({option_text:"Demand Requisition"});
-			add_diplomacy_option({option_text:"Cancel"});
+			add_diplomacy_option({
+				option_text:"Cancel",
+				goto:"disagree"
+			});
 	    }
 	}
 	// ** Inquisition **
@@ -1431,28 +1444,41 @@ function scr_dialogue(diplo_keyphrase) {
 	        if (rela=="friendly") then diplo_text="Remember whom you speak to, Chapter Master.";
 	        if (rela=="neutral") then diplo_text=$"I, Inquisitor Lord {faction_leader[eFACTION.Inquisition]}, on behalf of the Inquisition, am awaiting your words.";
 	        if (rela=="hostile") then diplo_text="Speak your next words very carefully, Astartes, for they may be your last.";
-	        add_diplomacy_option({option_text:"Demand Requisition"});
-			add_diplomacy_option({option_text:"Skip Inspection"});
-			add_diplomacy_option({option_text:"Cancel"});
+	        add_diplomacy_option({
+	        	option_text:"Demand Requisition"
+	        });
+
+
+			add_diplomacy_option({
+				option_text:"Skip Inspection",
+				method : inquis_demand_inspection_pass,
+			});
+
 	        if (inspection_passes>0){
-				add_diplomacy_option({option_text:"Skip Inspection ({inspection_passes} pass)"});
+				add_diplomacy_option({
+					option_text:"Skip Inspection (Use pass)",
+					method : inquis_use_inspection_pass
+				});
 			}
+			add_diplomacy_option({
+				option_text:"Cancel",
+				goto:"disagree"
+			});
 	    }
 	    if (diplo_keyphrase=="penitent_end"){
 	        rando=choose(1,2);
 	        if (rando==1) then diplo_text="It seems that congratulations are in order. While some might think the Inquisition blind to the possibility that it, that is to say we, could ever do wrong, it is not so. I know that we are as fallible as any man, save the Emperor, and can make mistakes when judging character. I took you for a traitor to humanity's cause. I see that I was wrong now and let it not be said I will not give credit where it is due; well done, Chapter Master. May the enemies of mankind speak your name in fear and humanity in adoration.";
 	        if (rando==2) then diplo_text="Few return from a penitent crusade, Chapter Master, and I find that those who do are invariably changed by the experience. Tell me, do you feel your vision expanded? Your faults exposed and then erased by his glorious light? I do not doubt that you do. To battle the Emperor's enemies without any thought of pause or relief is the highest form of honour, the highest form of service. You are to be congratulated on your diligence and dedication, not to mention your skill at arms.";
 	    }
-	    if (string_count("assassination_angry",diplo_keyphrase)>0){
+	    if (diplo_keyphrase == "assassination_angry"){
 	        // aa|planet_name|planet number|
-	        var ta="",tb="",tc="";
-	        explode_script(diplo_keyphrase,"|");
-	        ta=string(explode[0]);
-			tb=string(explode[1]);
-			tc=real(explode[2]);
-	        obj_controller.temp[1008]=string(tb)+"|"+string(tc)+"|";
-        
-	        diplo_text="My patience is wearing thin, Chapter Master.  I have many more problems more urgent and, yet, you continue to force me away from the work assigned to me by He on Terra.  Your serf on "+string(tb)+" "+scr_roman(tc)+" will be executed along with all the other puppets I ferret out.  You are close to treason, Chapter Master.  Choose your next words with exceptional care for they may be your last.";
+
+
+        	var _event = audience_data;
+        	var _system = _event.system;
+        	var _planet = _event.planet;
+        	var _star_name = planet_numeral_name(_planet, star_by_name(_system))
+	        diplo_text=$"My patience is wearing thin, Chapter Master.  I have many more problems more urgent and, yet, you continue to force me away from the work assigned to me by He on Terra.  Your serf on {_star_name} will be executed along with all the other puppets I ferret out.  You are close to treason, Chapter Master.  Choose your next words with exceptional care for they may be your last.";
         
 	        add_diplomacy_option({
 	        	option_text:"It will not happen again", 
@@ -1460,7 +1486,12 @@ function scr_dialogue(diplo_keyphrase) {
 	        	method : function(){
 	                scr_dialogue("you_better");
 	                force_goodbye=1;
-	                hunt_player_serfs();
+	                hunt_player_serfs(audience_data.planet, audience_data.system);
+	            	alter_dispositions([
+	            		[eFACTION.Imperium, -15],
+	            		[eFACTION.Inquisition, -30],
+	            		[eFACTION.Ecclesiarchy, -10],
+	            	]);
 	                exit;	        		
 	        	}
 	        });
@@ -1468,23 +1499,39 @@ function scr_dialogue(diplo_keyphrase) {
 	        	option_text:"Very well", 
 	        	key : "serf_removal_accept",
 	        	method : function(){
-                    clear_diplo_choices();
                     force_goodbye=1;
 
-                    hunt_player_serfs();
-                    cooldown=8;
-                    diplomacy=0;
-                    menu=0;
-                    obj_turn_end.alarm[1]=1;
-                    audience=0;
-                    force_goodbye=0;
+                    hunt_player_serfs(audience_data.planet, audience_data.system);
+
+	               	alter_dispositions([
+	            		[eFACTION.Imperium, -15],
+	            		[eFACTION.Inquisition, -30],
+	            		[eFACTION.Ecclesiarchy, -10],
+	            	]);
                     exit;	        		
 	        	}
 	        });
+
+	       	if (obj_controller.disposition[eFACTION.Inquisition] >= 70){
+	        	add_diplomacy_option({
+	        		option_text:"Perhaps We can come to an arrangement", 
+	        		tooltip : "This action will trigger a Charisma test",
+	        		method : function(){
+
+	        		}
+	        	});
+	        }
 	        add_diplomacy_option({
-	        	option_text:$"You will not.  {tb} is MINE!", 
+	        	option_text:$"You will not.  {_star_name} is MINE!", 
 	        	key : "serf_removal_defy",
 	        	force_goodbye : 1,
+	        	method : function(){
+	               	alter_dispositions([
+	            		[eFACTION.Imperium, -30],
+	            		[eFACTION.Inquisition, -60],
+	            		[eFACTION.Ecclesiarchy, -30],
+	            	]);	        		
+	        	},
 	        	goto : "die_heretic",
 	        });
 	    }
@@ -1501,9 +1548,10 @@ function scr_dialogue(diplo_keyphrase) {
 	            if (obj_ini.fleet_type != ePlayerBase.home_world) then diplo_text="I am mobilizing the Segmentum battlefleet.  You may run, heretic, but it will do you no good.";
 	        }
 	        var ev=0;
-			for(var v=1; v<=99; v++){if (ev=0) and (event[v]="") then ev=v;}
-	        event[ev]="game_over_man";
-			event_duration[ev]=1;
+	        add_event({
+	        	e_id : "game_over_man",
+	        	duration : 1,
+	        })
 	    }
 	    rando=choose(1,2,3);
 	    if (diplo_keyphrase=="chaos_audience1"){
@@ -1757,7 +1805,10 @@ function scr_dialogue(diplo_keyphrase) {
 	        if (rela=="neutral") then diplo_text="What is the meaning of this?";
 	        if (rela=="hostile") then diplo_text="“The Heretic and Blasphemer can offer no excuse for their crimes. Those who are pardoned merely live to further shroud Humanity from the Light of the Emperor with the Darkness of their souls.”";
 	        add_diplomacy_option({option_text:"Demand Requisition"});
-			add_diplomacy_option({option_text:"Cancel"});
+			add_diplomacy_option({
+				option_text:"Cancel",
+				goto:"disagree"
+			});
 	    }
 	    if (diplo_keyphrase=="penitent_end"){
 	        rando=choose(1,2);
@@ -2010,7 +2061,10 @@ function scr_dialogue(diplo_keyphrase) {
 	        }
 	        add_diplomacy_option({option_text:"Demand Requisition"});
 			add_diplomacy_option({option_text:"Demand Useful Information"});
-			add_diplomacy_option({option_text:"Cancel"});
+			add_diplomacy_option({
+				option_text:"Cancel",
+				goto:"disagree"
+			});
 	    }
 	    if (diplo_keyphrase=="mission1"){
 	        diplo_text="The good that might come from simple acts of benevolence are oft underestimated.  A token goodwill gesture can go far, ";
@@ -2493,7 +2547,10 @@ function scr_dialogue(diplo_keyphrase) {
 	        diplo_text="Yeah?  Wut?";
 	        add_diplomacy_option({option_text:"Demand Requisition"});
 			add_diplomacy_option({option_text:"Demand Military Assistance"});
-			add_diplomacy_option({option_text:"Cancel"});
+			add_diplomacy_option({
+				option_text:"Cancel",
+				goto:"disagree"
+			});
 	    }
 	}
 	// ** Tau **

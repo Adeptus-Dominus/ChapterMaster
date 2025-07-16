@@ -626,6 +626,8 @@ function scr_ui_manage() {
             }
         }
 
+        draw_set_font(fnt_40k_14);
+
         // var we;we=string_width(string(global.chapter_name)+" "+string(fx))/2;
 
         if (managing > 0) {
@@ -792,7 +794,7 @@ function scr_ui_manage() {
             man_count = 0;
 
             var _command_slots_data = get_command_slots_data();
-
+            draw_set_font(fnt_40k_14);
             if (managing > 0 && managing <= 10) {
                 for (var r = 0; r < array_length(_command_slots_data); r++) {
                     var role = _command_slots_data[r];

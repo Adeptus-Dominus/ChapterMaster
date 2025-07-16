@@ -134,7 +134,7 @@ slate_panel.inside_method = function(){
                             array_push(obj_controller.specialist_point_handler.forge_queue, new_queue_item);
                         }               
                     }
-               }else if (nobuy[i]=0) && clicked && (!obj_controller.in_forge){
+               } else if (nobuy[i]=0 && clicked && !obj_controller.in_forge){
                     cost=item_cost[i];
                     if (keyboard_check(vk_shift)) and (shop!="warships") then cost=item_cost[i]*5;
                     if (obj_controller.requisition>=cost) and (shop!="warships"){
@@ -155,18 +155,20 @@ slate_panel.inside_method = function(){
                     }
 
                     if (obj_controller.requisition>=cost) and (shop="warships"){
-                        var v=0,ev=0;
-                        repeat(99){v+=1;if (ev=0) and (obj_controller.event[v]="") then ev=v;}
-                        obj_controller.event[ev]="new_"+string(item[i]);
 
-                        if (item[i]="Battle Barge") then obj_controller.event_duration[ev]=12;
-                        if (item[i]="Strike Cruiser") then obj_controller.event_duration[ev]=4;
-                        if (item[i]="Gladius") then obj_controller.event_duration[ev]=1;
-                        if (item[i]="Hunter") then obj_controller.event_duration[ev]=1;
-                        obj_controller.event_duration[ev]+=choose(0,0,1);
-                        eta=obj_controller.event_duration[ev];
+                        var _duration = 4;
+                        if (item[i]="Battle Barge") then _duration=30;
+                        if (item[i]="Strike Cruiser") then _duration=10;
 
-                        construction_started=120;obj_controller.requisition-=cost;
+                        eta = _duration;
+
+                        construction_started=120;
+                        obj_controller.requisition-=cost;
+                        add_event({
+                            e_id : "ship_construction",
+                            ship_class : item[i],
+                            duration : _duration,
+                        })
                     }
 
                     obj_controller.cooldown=8000;
@@ -175,9 +177,9 @@ slate_panel.inside_method = function(){
             if (!obj_controller.in_forge && nobuy[i]=1) ||  (obj_controller.in_forge && forge_cost[i]=0){
                 draw_set_alpha(1);
                 draw_set_color(881503);
-                draw_text(xx+x2+x_mod[i],yy+y2,string_hash_to_newline(item[i]));// Name
+                draw_text(xx+x2+x_mod[i],yy+y2,item[i]);// Name
                 if (item_stocked[i]=0) then draw_set_alpha(0.5);
-                draw_text(xx+1300,yy+y2,string_hash_to_newline(item_stocked[i]));// Stocked
+                draw_text(xx+1300,yy+y2,item_stocked[i]);// Stocked
                 draw_set_alpha(1);
             }
             if (mouse_x>=xx+962) and (mouse_y>=yy+y2) and (mouse_x<xx+1280) and (mouse_y<yy+y2+19) and (shop!="warships"){

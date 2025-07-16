@@ -32,6 +32,7 @@ function TradeAttempt(diplomacy) constructor{
 		"Power Klaw" : 50,
 		"Ork Sniper" : 30,
 		"Flash Git" : 60,
+		"IOU" : 1,
 	}
 	demand_options = [];
 	offer_options = [];
@@ -100,6 +101,8 @@ function TradeAttempt(diplomacy) constructor{
 					quality : "standard",
 					number : _opt.number,
 				}
+			} else if (opt.trade_type == "arti"){
+				scr_add_artifact("random", "minor", true);
 			}
 		}
 		for (var i=0;i<array_length(offer_options);i++){
@@ -155,6 +158,8 @@ function TradeAttempt(diplomacy) constructor{
                 }
 			} else if(_opt.trade_type == "info"){
 				obj_controller.info_chips-=_opt.number;
+			}else if (_opt.trade_type == "favour"){
+				edit_faction_favour(diplomacy_faction,-_opt.number);
 			}
 		}
 
@@ -408,7 +413,7 @@ function TradeAttempt(diplomacy) constructor{
 			new_demand_buttons(-100, "Power Klaw", "equip",10);
 			new_demand_buttons(-100, "Ork Sniper", "merc",50);
 			new_demand_buttons(-100, "Flash Git", "merc",50);	
-			break;	
+			break;
 	}
 
 	static new_offer_option = function(trade_disp = -100, name, trade_type, max_count=1){
@@ -445,6 +450,10 @@ function TradeAttempt(diplomacy) constructor{
 	}
 	if (trade_info > 0){
 		new_offer_option(, "Info Chip","info", trade_info);
+	}
+
+	if (has_faction_favour(diplomacy_faction)){
+		new_offer_option(, "IOU","favour", trade_info);
 	}
 
 	static draw_trade_screen = function(){
