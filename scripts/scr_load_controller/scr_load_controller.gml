@@ -478,6 +478,7 @@ function scr_load_controller(save_id){
 	    obj_ini.progenitor_disposition=ini_read_real("Controller","progenitor_disposition",0);
 	    obj_ini.imperium_disposition=ini_read_real("Controller","imperium_disposition",0);
 	    obj_controller.astartes_disposition=ini_read_real("Controller","astartes_disposition",0);
+        obj_controller.enemies_cleared_count = ini_read_real("Controller", "enemies_cleared_count", 0);
 
 	    obj_controller.bat_devastator_column=ini_read_real("Controller","bat_devastator_column",1);
 	    obj_controller.bat_assault_column=ini_read_real("Controller","bat_assault_column",4);

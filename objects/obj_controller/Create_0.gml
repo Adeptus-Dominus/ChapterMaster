@@ -181,6 +181,7 @@ obj_controller.restart_strength=0;
 obj_controller.restart_cooperation=0;
 obj_controller.restart_purity=0;
 obj_controller.restart_stability=0;
+obj_controller.enemies_cleared_count = 0;
 
 // ** Sets default equipement for roles **
 // 100 is defaults, 101 is the allowable starting equipment
