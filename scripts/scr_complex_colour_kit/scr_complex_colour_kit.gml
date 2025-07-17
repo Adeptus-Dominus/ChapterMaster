@@ -458,11 +458,33 @@ function setup_complex_livery_shader(setup_role, unit = "none"){
             data_set = variable_clone(data_set);
             var _company_livery = obj_ini.company_liveries[unit.company];
             var _comp_names = struct_get_names(_company_livery);
+            // Only allow company livery on certain areas for specialists
+            var is_specialist_role = (
+                is_specialist(setup_role, SPECIALISTS_LIBRARIANS) ||
+                is_specialist(setup_role, SPECIALISTS_APOTHECARIES) ||
+                is_specialist(setup_role, SPECIALISTS_TECHS) ||
+                is_specialist(setup_role, SPECIALISTS_CHAPLAINS)
+            );
+
+            var allowed_livery_areas = [
+                "left_pauldron",
+                //"right_pauldron",
+                "left_leg_knee",
+                //"right_leg_knee",
+                //"right_trim",
+                "left_trim"
+            ];
             for (var i=0;i<array_length(_comp_names);i++){
                 var _name = _comp_names[i];
                 if (_name == "is_changed") then continue;
                 if (_company_livery[$_name] != -1){
+                    if (is_specialist_role) {
+                        if (array_contains(allowed_livery_areas, _name)) {
+                            data_set[$_name] = _company_livery[$_name];
+                        }
+                    } else {
                     data_set[$_name] = _company_livery[$_name];
+                    }
                 }
             } 
         }       
