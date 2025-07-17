@@ -428,7 +428,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true) {
         }
     }
 
-    if (!wrong_location) {
+    if (is_man && !wrong_location) {
         wrong_location = !_unit.controllable();
     }
 
