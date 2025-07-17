@@ -17,7 +17,10 @@ for (var i=0;i<array_length(unit_struct);i++){
         man_size = unit.get_unit_size();
 
         if (unit.planet_location>0) then obj_ncombat.world_size+=man_size;
-        if (unit.ship_location>-1) then obj_ini.ship_carrying[unit.ship_location]-=man_size;
+        if (unit.ship_location>-1){
+            var _ship = obj_ini.ship_data[unit.ship_location]
+            _ship.carrying-=man_size;
+        }
         //
         scr_kill_unit(unit.company,unit.marine_number);
     }
@@ -38,7 +41,11 @@ for (var i=0;i<array_length(veh_type);i++){
         if (veh_type[i]="Whirlwind") then man_size+=10;*/
 
         if (obj_ini.veh_wid[veh_co[i],veh_id[i]]>-1) then obj_ncombat.world_size+=man_size;
-        if (obj_ini.veh_lid[veh_co[i],veh_id[i]]>-1) then obj_ini.ship_carrying[obj_ini.veh_lid[veh_co[i],veh_id[i]]]-=man_size;
+        var _ship_id = obj_ini.veh_lid[veh_co[i],veh_id[i]];
+        if (_ship_id>-1){
+            var _ship = obj_ini.ship_data[_ship_id];
+            _ship.carrying-=man_size;
+        }
 
         // show_message(string(veh_type[i])+" ("+string(veh_co[i])+"."+string(veh_id[i])+") dead");
 

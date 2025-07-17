@@ -396,7 +396,8 @@ function techmarine_training(){
                     if (obj_controller.faction_status[eFACTION.Mechanicus] != "War") {
                         if (unit.ship_location>-1){
                             var man_size=unit.get_unit_size();
-                            obj_ini.ship_carrying[unit.ship_location]-=man_size;
+                            var _ship = obj_ini.ship_data[unit.ship_location];
+                            _ship.carrying-=man_size;
                         }
                         obj_ini.loc[0][open_slot]="Terra";
                         unit.planet_location=4;

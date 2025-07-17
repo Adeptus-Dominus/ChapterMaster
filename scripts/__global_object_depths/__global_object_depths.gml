@@ -8,7 +8,7 @@ function __global_object_depths() {
     // NOTE: MacroExpansion is used to insert the array initialisation at import time
 
     // insert the generated arrays here
-    global.__objectDepths[0] = -5000; // obj_fleet
+    global.__objectDepths[0] = -10000; // obj_fleet
     global.__objectDepths[1] = 0; // obj_circular
     global.__objectDepths[2] = -9999; // obj_fleet_spawner
     global.__objectDepths[3] = 8; // obj_fleet_controller

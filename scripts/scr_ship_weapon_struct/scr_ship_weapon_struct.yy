@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"scr_dead_marines",
+  "%Name":"scr_ship_weapon_struct",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_dead_marines",
+  "name":"scr_ship_weapon_struct",
   "parent":{
-    "name":"Combat",
-    "path":"folders/Scripts/Combat.yy",
+    "name":"fleet",
+    "path":"folders/Scripts/fleet.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

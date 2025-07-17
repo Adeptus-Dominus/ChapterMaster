@@ -15,10 +15,10 @@ draw_set_color(0);
 
 if (obj_controller.menu=60) then exit;
 
-var xx, yy, dist, close;
+var xx, yy, target_distance, close;
 xx=__view_get( e__VW.XView, 0 )+0;
 yy=__view_get( e__VW.YView, 0 )+0;
-dist=999;close=false;
+target_distance=999;close=false;
 
 
 

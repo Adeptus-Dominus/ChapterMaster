@@ -7,13 +7,23 @@ if (control=1) then instance_activate_object(obj_cursor);
 
 
 if (enemy=2){
-    if (en_escort>0){en_column[4]="Sword Class Frigate";en_num[4]=en_escort;en_size[4]=1;}
+    if (en_escort>0){
+        en_column[4]="Sword Class Frigate";
+        en_num[4]=en_escort;
+        en_size[4]=1;
+    }
     
-    if (en_frigate>0){en_column[3]="Avenger Class Grand Cruiser";en_num[3]=en_frigate;en_size[3]=2;}
+    if (en_frigate>0){
+        en_column[3]="Avenger Class Grand Cruiser";
+        en_num[3]=en_frigate;
+        en_size[3]=2;
+    }
         
-    var i;i=0;i=en_capital;
+    var i=0;
+    i=en_capital;
     if (i>0){
-        en_column[2]="Apocalypse Class Battleship";en_num[2]=floor(random(i))+1;
+        en_column[2]="Apocalypse Class Battleship";
+        en_num[2]=floor(random(i))+1;
         if (en_num[2]<(en_capital*0.6)) then en_num[2]=round(en_capital*0.6);
         i-=en_num[2];en_size[2]=3;
     }
@@ -97,7 +107,7 @@ if (enemy=9){
 }
 
 if (enemy=10){
-    var i;i=0;i=en_frigate;
+    var i=0;i=en_frigate;
     
     if (en_capital>0){en_column[1]="Desecrator";en_num[1]=en_capital;en_size[1]=3;}
     
@@ -107,7 +117,11 @@ if (enemy=10){
     
     if (i>0){en_column[4]="Daemon";en_num[4]=i;i-=en_num[4];en_size[4]=2;}// en_num[3]+=en_num[2]+1;
     
-    if (en_escort>0){en_column[5]="Iconoclast";en_num[5]=en_escort;en_size[5]=1;}// en_num[5]+=en_num[4]+1;
+    if (en_escort>0){
+        en_column[5]="Iconoclast";
+        en_num[5]=en_escort;
+        en_size[5]=1;
+    }// en_num[5]+=en_num[4]+1;
 }
 
 

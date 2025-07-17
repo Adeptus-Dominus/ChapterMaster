@@ -45,6 +45,7 @@ if (start=5){
                 las.direction=point_direction(las.x,las.y,player_lasers_target.x,player_lasers_target.y)+round(random_range(-4,4));
                 las.image_xscale=1.5;las.image_yscale=1.5;las.speed=30;las.dam=30;
                 las.sprite_index=spr_ground_las;las.image_index=0;las.image_speed=0;
+                las.explosion_sprite = spr_explosion;   
             }
             
         }
