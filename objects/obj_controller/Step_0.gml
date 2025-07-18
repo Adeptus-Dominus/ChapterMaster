@@ -437,12 +437,12 @@ try {
             var unit = "";
             yy += 77;
         }
-        if (is_struct(temp[120])) {
+        if (is_struct(unit_focus)) {
             var ach = 0,
                 damage_res = 1,
                 armour_value = 0;
             // Checks if the marine is not hidden
-            var unit = temp[120];
+            var unit = unit_focus;
             if (!is_array(last_unit)) {
                 last_unit = [0, 0];
             }

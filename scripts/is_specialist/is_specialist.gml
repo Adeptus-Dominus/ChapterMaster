@@ -428,6 +428,9 @@ function group_selection(group, selection_data) {
 
             if (selection_data.select_type == MissionSelectType.Squads){
             	new_company_struct();
+            	company_data.has_squads = true;
+            	company_data.squad_location = selection_data.system.name;
+            	company_data.squad_search();
             }
         }
     } catch (_exception) {

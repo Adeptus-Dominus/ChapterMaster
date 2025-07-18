@@ -197,8 +197,14 @@ function draw_line(x1, y1, y_slide, variable) {
 }
 
 
-if ((menu == 1) && (managing > 0 || managing < 0)) {
-    draw_sprite_and_unit_equip_data();
+if (menu == 1) {
+    if (managing != 0){
+        draw_sprite_and_unit_equip_data();
+    }
+    if (managing == -1){
+        scr_manage_task_selector();
+    }
+
 }
 
 

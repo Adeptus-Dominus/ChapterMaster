@@ -79,9 +79,22 @@ if (string_count("spyrer", battle_special) > 0) {
 	u.flank = 1;
 }
 
-if (battle_special == "protect_raiders") > 0) {
+if (battle_special == "protect_raiders") {
 	fortified = 0;
 	threat = 3;
+	u.dudes[1] = "Dire Avenger";
+	u.dudes_num[1] = 40;
+	u.dudes_special[1] = "shimmershield";
+	u.dudes[2] = "Dire Avenger Exarch";
+	u.dudes_num[2] = 4;
+	u.dudes_special[2] = "shimmershield";
+	u.dudes[3] = "Autarch";
+	u.dudes_num[3] = 1;
+	u.dudes[4] = "Farseer";
+	u.dudes_num[4] = 1;
+	u.dudes_special[4] = "farseer_powers";
+	u.dudes[5] = "Night Spinner";
+	u.dudes_num[5] = 1;
 }
 // * Small Fallen Group *
 if (battle_special = "fallen1") {

@@ -325,12 +325,10 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 
 	static get_squad_structs = function(){
 		var _struct_array  = [];
-		for (var i = 0; i < member_length;i++){
+		for (var i = array_length(members)-1; i >= 0;i--){
 			unit = fetch_unit(members[i]);
 			if (unit.name() == ""){
 				array_delete(members, i, 1);
-				member_length--;
-				i--;
 				continue;
 			} else {
 				array_push(_struct_array, unit);

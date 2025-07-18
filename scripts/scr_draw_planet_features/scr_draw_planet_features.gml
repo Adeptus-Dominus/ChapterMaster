@@ -265,7 +265,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 						help = "Set a squad to ambush";
 						button_text = "Send Squad";
 						button_function = function(){
-							var dudes = collect_role_group("all", obj_star_select.target);
+							var dudes = collect_role_group("all", obj_star_select.target.name);
 							group_selection(dudes,{
 								purpose:"Select Squad for Ambush",
 								purpose_code : feature.problem,

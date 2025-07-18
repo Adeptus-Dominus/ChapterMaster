@@ -1,7 +1,7 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 function scr_manage_task_selector(){
-	if (exit_button.draw_shutter(xx+400,yy+70, "Exit", 0.5, true)){
+	if (exit_button.draw_shutter(400,70, "Exit", 0.5, true)){
 		if (is_real(selection_data.system) && selection_data.system <= 10 && selection_data.system >= 0){
 	        managing = selection_data.system;
 			update_general_manage_view();
@@ -17,8 +17,8 @@ function scr_manage_task_selector(){
 	}
 	if (selection_data.purpose_code!="manage"){
 		if ((man_count==0 || man_count>selection_data.number)){
-			proceed_button.draw_shutter(xx+1110,yy+70, "Proceed", 0.5, false);
-		}  else if (proceed_button.draw_shutter(xx+1110,yy+70, "Proceed", 0.5, true)){
+			proceed_button.draw_shutter(1110,70, "Proceed", 0.5, false);
+		}  else if (proceed_button.draw_shutter(1110,70, "Proceed", 0.5, true)){
 			if (selection_data.select_type == MissionSelectType.Units){
 				task_selector_man_manage();
 			} else {
@@ -40,7 +40,7 @@ function task_selector_squad_manage(){
 		        obj_ncombat.battle_special = "protect_raiders";
 		        _roster = new Roster();
 			    with (_roster){
-			    	rester.selected_units=_squad.get_squad_structs();
+			    	selected_units=_squad.get_squad_structs();
 		            setup_battle_formations();
 		            add_to_battle();
 			    }

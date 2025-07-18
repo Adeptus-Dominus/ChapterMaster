@@ -55,6 +55,11 @@ function surface_clear_and_free(_surface) {
 function UnitImage(_unit_sprite) constructor {
     unit_sprite = _unit_sprite;
 
+    x1 = 0;
+    y1 = 0;
+    x2 = 0;
+    y2 = 0;
+
     static draw = function(xx, yy, _background = false,xscale = 1, yscale=1, rot=0, col=c_white, alpha=1) {
         if (_background) {
             draw_rectangle_color_simple(xx - 1, yy - 1, xx + 1 + 166, yy + 271 + 1, 0, c_black);
@@ -76,9 +81,19 @@ function UnitImage(_unit_sprite) constructor {
         if (sprite_exists(unit_sprite)) {
             draw_sprite_part(unit_sprite, 0, left + 200, top + 90, width, height, xx, yy);
         }
+        x1 = xx;
+        y1 = yy;
+        x2 = xx + width;
+        y2 = yy + height;       
     };
 
 
+    static hit = function(){
+        return scr_hit(x1, y1, x2, y2);
+    }
+    static box = function(){
+        return [x1, y1, x2, y2];
+    }
     static destroy_image = function() {
         if (sprite_exists(unit_sprite)) {
             sprite_delete(unit_sprite);
