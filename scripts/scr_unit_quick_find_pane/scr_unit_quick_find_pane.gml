@@ -532,7 +532,7 @@ function toggle_selection_borders(){
         	if (is_struct(display_unit[p])){
                 var _unit=display_unit[p];
                 var mar_id = _unit.marine_number;
-                if (_unit.ship_location>-1) and (obj_ini.loc[_unit.company][mar_id]!="Mechanicus Vessel"){
+                if (_unit.ship_location>-1) and (_unit.controllable()){
                 	_unit.is_boarder = !_unit.is_boarder;
                 }
             }

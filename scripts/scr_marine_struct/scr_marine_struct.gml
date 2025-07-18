@@ -450,6 +450,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     ballistic_skill = 0;
     size = 0;
     planet_location = 0;
+    location_string = "";
     if (!instance_exists(obj_controller) && class != "blank") {
         //game start unit planet location
         planet_location = obj_ini.home_planet;

@@ -66,13 +66,13 @@ function scr_battle_roster(required_location, _target_location, _is_planet, over
                 //Normal and other battle cases checks go here
                 else if (okay >= 0) {
                     if (instance_exists(obj_ground_mission)) { //Exploring ruins ambush case
-                        if (obj_ini.loc[company][v] == required_location) and(unit.planet_location == _target_location) {
+                        if (unit.string_location == required_location) and(unit.planet_location == _target_location) {
                             okay = 1;
                         } else {
                             continue;
                         }
                     } else if (!instance_exists(obj_drop_select)) { // Only when attacked, normal battle
-                        if (_is_planet) and(obj_ini.loc[company][v] == required_location) and(unit.planet_location == _target_location)  then okay = 1;
+                        if (_is_planet) and(unit.string_location == required_location) and(unit.planet_location == _target_location)  then okay = 1;
                         else if (!_is_planet) and(unit.ship_location == _target_location) then okay = 1;
 
                         if (instance_exists(obj_temp_meeting)) {
@@ -84,7 +84,7 @@ function scr_battle_roster(required_location, _target_location, _is_planet, over
                         //If not fighting (obj_drop_select pre-check), we skip the unit
 
                         if (obj_drop_select.attack == 1) {
-                            if (_is_planet) and(obj_ini.loc[company][v] == required_location) and(unit.planet_location == _target_location)   then okay = 1;
+                            if (_is_planet) and(unit.string_location == required_location) and(unit.planet_location == _target_location)   then okay = 1;
                             else if (!_is_planet) and(unit.ship_location == _target_location) then okay = 1;
                         } else if (obj_drop_select.attack != 1) {
                             //Related to defensive battles (¿?). Without the above check, it duplicates marines on offensive ones.

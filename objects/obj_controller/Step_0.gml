@@ -795,7 +795,7 @@ try {
                 }
                 unit_id = unit.marine_number;
                 company = unit.company;
-                obj_ini.loc[company][unit_id] = obj_ini.ship_location[b];
+                unit.location_string = obj_ini.ship_location[b];
                 unit.ship_location = -1;
                 unit.planet_location = unload;
                 obj_ini.uid[company][unit_id] = 0;
