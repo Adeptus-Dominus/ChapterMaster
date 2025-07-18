@@ -20,7 +20,7 @@ function scr_audience(faction_enum, topic, new_disposition = 0, new_status = "",
 
 
 function decare_war_on_imperium_audiences(){
-	var _topic = gene_xeno>99995 ? "gene_xeno" : "declare_war";
+	var _topic = obj_controller.gene_xeno>99995 ? "gene_xeno" : "declare_war";
 	scr_audience(eFACTION.Inquisition, _topic, -50, "War", 9999, 4);
 
 	scr_audience(eFACTION.Imperium, "declare_war", -40, "War", 9999, 2);
