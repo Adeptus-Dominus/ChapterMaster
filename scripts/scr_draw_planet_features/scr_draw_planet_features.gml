@@ -51,6 +51,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 	    var area_height = main_slate.height;
 	    var generic = false;
 	    var title="", body="";
+	    var _button_tooltip = "";
 	    //draw_glow_dot(xx+150, yy+150);
 	    //rack_and_pinion(xx+230, yy+170);
 	    var rectangle = [];
@@ -264,6 +265,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 						mission_description=$"The governor of {planet_name} has sent many requests to the sector commander for help with defending against xenos raids on the populace of the planet, the reports seem to suggest the xenos in question are in fact dark elder.";
 						help = "Set a squad to ambush";
 						button_text = "Send Squad";
+						_button_tooltip = "milage may vary on playability of this mission progress at your own risk";
 						button_function = function(){
 							var dudes = collect_role_group("all", obj_star_select.target.name);
 							group_selection(dudes,{
@@ -314,7 +316,11 @@ function FeatureSelected(Feature, system, planet) constructor{
 				}
 				
 				if (button_text!="none"){
-					if (point_and_click(draw_unit_buttons([xx+((area_width/2)-(string_width(button_text)/2)), yy+40+text_body_height+10], button_text))){
+					var _button = draw_unit_buttons([xx+((area_width/2)-(string_width(button_text)/2)), yy+40+text_body_height+10], button_text);
+					if (_button_tooltip != "" && scr_hit(_button)){
+						tooltip_draw(_button_tooltip);
+					}
+					if (point_and_click(_button)){
 						if (is_callable(button_function)){
 							button_function();
 							destroy=true;
