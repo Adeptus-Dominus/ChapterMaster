@@ -1353,7 +1353,6 @@ function scr_initialize_custom() {
 	// Initialize default marines for loadouts
 	for (var i = 0; i <= 100; i++) {
 		race[100, i] = 1;
-		loc[100, i] = "";
 		name[100, i] = "";
 		role[100, i] = "";
 		wep1[100, i] = "";
@@ -1369,7 +1368,6 @@ function scr_initialize_custom() {
 	// Initialize special marines
 	for (var i = 0; i <= 500; i++) {
 		race[0, i] = 1;
-		loc[0, i] = "";
 		name[0, i] = "";
 		role[0, i] = "";
 		wep1[0, i] = "";
@@ -2316,7 +2314,6 @@ function scr_initialize_custom() {
 	for (var c = 0; c <11; c++){
 		for (var i = 0; i < 501; i++) {
 			race[c, i] = 1;
-			loc[c, i] = "";
 			name[c, i] = "";
 			role[c, i] = "";
 			wep1[c, i] = "";
@@ -3301,14 +3298,15 @@ function add_veh_to_company(name, company, slot, wep1, wep2, wep3, upgrade, acce
 function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1="default", wep2="default", gear="default", mobi="default", armour="default"){
 	// log_message($"adding unit to company ttrpg_name {ttrpg_name}, company {company}, slot {slot}, role_name {role_name}, role_id {role_id}")
 	obj_ini.TTRPG[company][slot] = new TTRPG_stats("chapter", company, slot, ttrpg_name);
+    var spawn_unit = fetch_unit([company,slot]);
 	obj_ini.race[company][slot] = 1;
-	obj_ini.loc[company][slot] = obj_ini.home_name;
+	spawn_unit.location_string = obj_ini.home_name;
 	obj_ini.role[company][slot] = role_name;
 	
 	if(obj_ini.name[company][slot] == ""){
 		obj_ini.name[company][slot] = global.name_generator.generate_space_marine_name();
 	}
-	var spawn_unit = fetch_unit([company,slot]);
+
 
 	if(wep1 != ""){
 		if(wep1 == "default"){

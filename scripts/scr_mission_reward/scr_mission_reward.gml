@@ -40,7 +40,7 @@ function scr_mission_reward(mission, star, planet) {
             else {
                 star.p_player[planet]+=
                 _tech.get_unit_size();
-                obj_ini.loc[com][i]=star.name;
+                _tech.location_string=star.name;
                 
                 _tech.planet_location=planet;
                 

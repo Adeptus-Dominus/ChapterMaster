@@ -361,7 +361,7 @@ function techmarine_training(){
 	                    scr_alert("red","recruitment","Not enough equipment: "+string(warn),0,0);
 	                }
 
-                    if (obj_ini.loc[unit.company][unit.marine_number] == "Terra") {
+                    if (unit.location_string == "Terra") {
                         unit.allocate_unit_to_fresh_spawn("default");
                     }
 
@@ -398,7 +398,7 @@ function techmarine_training(){
                             var man_size=unit.get_unit_size();
                             obj_ini.ship_carrying[unit.ship_location]-=man_size;
                         }
-                        obj_ini.loc[0][open_slot]="Terra";
+                        unit.location_string="Terra";
                         unit.planet_location=4;
                         unit.ship_location=-1;
                     }

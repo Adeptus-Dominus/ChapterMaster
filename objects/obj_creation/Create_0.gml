@@ -1073,7 +1073,6 @@ dis_num = array_create(9, 0);
 for(var slot = 99; slot <= 103; slot++){
     for(var i = 0; i <= 50; i++){
         race[slot,i]=1;
-        loc[slot,i]="";
         role[slot,i]="";
         wep1[slot,i]="";
         wep2[slot,i]="";

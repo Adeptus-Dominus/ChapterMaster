@@ -1918,24 +1918,24 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             //if marine is on planet
             location_id = location_type; //planet_number marine is on
             location_type = location_types.planet; //state marine is on planet
-            if (obj_ini.loc[company][marine_number] == "home") {
-                obj_ini.loc[company][marine_number] = obj_ini.home_name;
+            if (location_string == "home") {
+                location_string = obj_ini.home_name;
             }
-            location_name = obj_ini.loc[company][marine_number]; //system marine is in
+            location_name = location_string; //system marine is in
         } else {
             location_type = location_types.ship; //marine is on ship
             location_id = ship_location > -1 ? ship_location : 0; //ship array position
             if (location_id < array_length(obj_ini.ship_location)) {
                 location_name = obj_ini.ship_location[location_id]; //location of ship
             } else {
-                location_name = location_name == obj_ini.loc[company][marine_number];
+                location_name = location_name == location_string;
             }
         }
         return [location_type, location_id, location_name];
     };
 
     static controllable = function(){
-        return !location_out_of_player_control(obj_ini.loc[company][marine_number]);
+        return !location_out_of_player_control(location_string);
     }
 
     //quick way of getting name and role combined in string
@@ -2024,7 +2024,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         }
         if (current_location[0] == location_types.ship) {
             if (current_location[2] != "Warp" && current_location[2] == system.name) {
-                obj_ini.loc[company][marine_number] = obj_ini.ship_location[current_location[1]];
+                location_string = obj_ini.ship_location[current_location[1]];
                 planet_location = planet_number;
                 ship_location = -1;
                 get_unit_size();
@@ -2033,7 +2033,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             }
         } else {
             ship_location = -1;
-            obj_ini.loc[company][marine_number] = system.name;
+            location_string = system.name;
             planet_location = planet_number;
             system.p_player[planet_number] += size;
         }
@@ -2054,7 +2054,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             for (var i = 1; i <= homestar.planets; i++) {
                 if (homestar.p_owner[i] == eFACTION.Player || (obj_controller.faction_status[eFACTION.Imperium] != "War" && array_contains(obj_controller.imperial_factions, homestar.p_owner[i]))) {
                     planet_location = i;
-                    obj_ini.loc[company][marine_number] = obj_ini.home_name;
+                    location_string = obj_ini.home_name;
                     spawn_location_chosen = true;
                 }
             }
@@ -2078,7 +2078,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     static is_at_location = function(location = "", planet = 0, ship = -1) {
         var is_at_loc = false;
         if (planet > 0) {
-            if (obj_ini.loc[company][marine_number] == location && planet_location == planet) {
+            if (location_string == location && planet_location == planet) {
                 is_at_loc = true;
             }
         } else if (ship > -1) {
@@ -2090,7 +2090,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 if (obj_ini.ship_location[ship_location] == location) {
                     is_at_loc = true;
                 }
-            } else if (obj_ini.loc[company][marine_number] == location) {
+            } else if (location_string == location) {
                 is_at_loc = true;
             }
         }

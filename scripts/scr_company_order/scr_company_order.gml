@@ -25,7 +25,6 @@ function temp_marine_variables(co, unit_num){
 			}
 		}
 		array_push(temp_race,race[co][unit_num]);
-		array_push(temp_loc,loc[co][unit_num]);
 		array_push(temp_name,name[co][unit_num]);
 		array_push(temp_role,role[co][unit_num]);
 		array_push(temp_wep1,wep1[co][unit_num]);
@@ -339,7 +338,6 @@ function scr_company_order(company) {
 	// Return here
 	for (i=0;i<array_length(temp_name);i++){
 	        race[co][i]=temp_race[i];
-	        loc[co][i]=temp_loc[i];
 	        name[co][i]=temp_name[i];
 	        role[co][i]=temp_role[i];
 	        wep1[co][i]=temp_wep1[i];

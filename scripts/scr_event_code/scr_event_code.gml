@@ -349,7 +349,7 @@ function strange_build_event(){
     
 		var marine_is_planetside = _unit.planet_location>0;
         if (marine_is_planetside && heritical_item) {
-        	var _system = star_by_name(obj_ini.loc[company][marine]);
+        	var _system = star_by_name(_unit.location_string);
         	var _planet = _unit.planet_location;
             if (_system!="none"){
             	with (_system){
