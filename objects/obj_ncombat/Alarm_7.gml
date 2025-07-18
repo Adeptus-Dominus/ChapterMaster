@@ -455,16 +455,17 @@ try {
                 
             _planet.add_disposition(15);
             var _special_reward = 0;
-            var tixt=$"The Raiding forces on {cur_star.name} {_planet_string} have been removed.  The citizens and craftsman may sleep more soundly. (planet disp +15)"
+            var tixt=$"The Raiding forces on {_planet_string} have been removed.  The citizens and craftsman may sleep more soundly. (planet disp +15)"
         
-            
+            scr_popup("Planet Protected",tixt,"protect_raiders","");
+            scr_event_log("",$"Governor Request completed: Raiding forces on {_planet_string} have been eliminated.", cur_star.name);            
             instance_deactivate_object(obj_star);    
         } else {
             _planet.add_disposition(-15);
-            var tixt=$"The Raiding forces on {cur_star.name} {_planet_string} dispatched with your forces and will continue with their bloody practices.  The citizens remain unsafe and the governor is unimpressed. (planet disp -15)";
+            var tixt=$"The Raiding forces on {_planet_string} dispatched with your forces and will continue with their bloody practices.  The citizens remain unsafe and the governor is unimpressed. (planet disp -15)";
             scr_popup("Planet Protected",tixt,"protect_raiders","");
         
-            scr_event_log("","Governor Request failed: Raiding forces on {cur_star.name} {_planet_string} continue to harrass population.", cur_star.name);
+            scr_event_log("",$"Governor Request failed: Raiding forces on {_planet_string} continue to harrass population.", cur_star.name);
         }   
     }
     
