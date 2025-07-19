@@ -458,18 +458,18 @@ try {
             var tixt=$"The Raiding forces on {_planet_string} have been removed.  The citizens and craftsman may sleep more soundly. (planet disp +15)"
         
             scr_popup("Planet Protected",tixt,"protect_raiders","");
-            scr_event_log("",$"Governor Request completed: Raiding forces on {_planet_string} have been eliminated.", cur_star.name);            
-            instance_deactivate_object(obj_star);    
+            scr_event_log("",$"Governor Request completed: Raiding forces on {_planet_string} have been eliminated.", cur_star.name);               
         } else {
             _planet.add_disposition(-15);
             var tixt=$"The Raiding forces on {_planet_string} dispatched with your forces and will continue with their bloody practices.  The citizens remain unsafe and the governor is unimpressed. (planet disp -15)";
             scr_popup("Planet Protected",tixt,"protect_raiders","");
         
             scr_event_log("",$"Governor Request failed: Raiding forces on {_planet_string} continue to harrass population.", cur_star.name);
-        }   
+        } 
+        instance_deactivate_object(obj_star);  
     }
     
-    else if ((string_count("fallen",battle_special)>0)) and (defeat=0){
+    else if ((string_count("fallen",battle_special)>0)) and (defeat==0){
         var fallen=0;
         with (obj_turn_end){
             remove_planet_problem(battle_world[current_battle], "fallen", battle_object[current_battle])

@@ -561,9 +561,12 @@ function add_bionics_selection(){
 
 function jail_selection(){
     for(var f=0; f<array_length(display_unit); f++){
-        if (man[f]=="man") and (man_sel[f]==1) and (ma_loc[f]!="Terra") and (ma_loc[f]!="Mechanicus Vessel"){
+    	if (man[f] !="man" || !man_sel[f]){
+    	 	continue;
+    	}
+    	_unit = display_unit[f];
+ 		if (_unit.is_controllable()){
             if (is_struct(display_unit[f])){
-                _unit = display_unit[f];
                 obj_ini.god[_unit.company][_unit.marine_number]+=10;
                 ma_god[f]+=10;
                 man_sel[f]=0;

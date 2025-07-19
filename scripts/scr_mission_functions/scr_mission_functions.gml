@@ -175,6 +175,64 @@ function init_beast_hunt_mission(planet, star, mission_slot){
 function role_compare(unit, role){
 	return unit.role() == obj_ini.role[100][role];
 }
+
+function init_protect_raider_mission(squad){
+	var _squad_units = squad.get_squad_structs();
+	var _squad_wisdom = stat_average(_squad_units, "wisdom");
+	var _squad_dex = stat_average(_squad_units, "dexterity");
+	var _tester = global.character_tester;
+
+	var _mod = _squad_wisdom+_squad_dex/10;
+	if (scr_has_adv("Ambushers")){
+		_mod += 10
+	}
+
+	var _leader = fetch_unit(squad.determine_leader());
+
+	var _wis_test =  tester.standard_test(_leader, "wisdom", _mod, ["ambush"]);
+
+	if (!_wis_test[0]){
+		var _mission_data = variable_clone(selection_data);
+		if (_wis_test[1] < -25){
+			scr_toggle_manage();
+		    gar_pop.title=$"Strange Disappearance";
+		    gar_pop.text=$"Your Marines make planet fall and are directed to report to the governor for the duration of the operation after a period of reconnaissance dig in for their ambush. After a two weeks have passed A message from the govonor reaches your astropaths that your marines have not been heard of for some time, The raiders also were not noted to have arrived onor left the planet";
+		    //pip.image="event_march"
+		    var _dead_marine = array_random_index(_squad_units);
+		    gar_pop.text += $"After eventual investigation it appears the eldar anticipated the would be ambushers and turned the tides. {_squad_units[_dead_marine].name_role()}s body is eventually discovered some way off from the main battle his rent armour and body showing the extent of combat that must have occured";
+
+		    gar_pop.text += "\nThe total loss of a squad in what was meant to be a routine operation is bad for moral and your chapters reputation you must now decide how to proceed";
+
+		    gar_pop.option1="Suppress the Information";
+		    gar_pop.option2="Hold a Memorial";			
+		} else {
+		    gar_pop.title=$"Ineffective Ambush";
+		    gar_pop.text=$"Your Marines Are ineffective at setting up an ambush the assailants clearly got wind of the operation or the plan was otherwise so ill thought out that by the time your forces arrived there was little that could be done to intercept them";
+		    //pip.image="event_march"
+		    var _dead_marine = array_random_index(_squad_units);
+		    gar_pop.text += $"";
+
+		    gar_pop.text += "\nThe total loss of a squad in what was meant to be a reutine operation is bad for moral and your chapters reputation you must now decide how to proceed";			
+		}
+	} else {
+
+	    instance_create(0,0,obj_ncombat);
+	    obj_ncombat.enemy=eFACTION.Eldar;
+	    obj_ncombat.battle_object = selection_data.system;
+	    obj_ncombat.battle_loc = selection_data.system.name;
+	    obj_ncombat.battle_id = selection_data.planet;
+	    obj_ncombat.battle_special = "protect_raiders";
+	    _roster = new Roster();
+	    with (_roster){
+	        selected_units=_squad_units;
+	        setup_battle_formations();
+	        add_to_battle();
+	    }
+	    exit_adhoc_manage();
+	    delete _roster;
+	}	
+}
+
 function init_train_forces_mission(planet, star, mission_slot, marine){
 	var _pdata = new PlanetData(planet, star);
 	var mission_data = _pdata.problems_data[mission_slot];
@@ -287,25 +345,36 @@ function complete_train_forces_mission(targ_planet, problem_index){
         	if (_brute){
         		_wis_test_difficulty-=10;
         	}
+
+        	var _leader = _trainer.has_trait("natural_leader");
+        	if (_leader){
+        		_wis_test_difficulty+=10;
+        	}
+
         	_unit_pass = _tester.standard_test(_trainer, "wisdom",_wis_test_difficulty);
         	if (_unit_pass[0]){
         		var _new_pdf = planet.recruit_pdf((_unit_pass[1]/10));//this will approximate podf improvement for the time being
         		_mission_string += $"Training of the Pdf went well and improved the quality of the pdf as well as providing sizeable big recruitment improvement for the planet {_new_pdf} new pdf were recruited";
+        		if (_leader){
+        			var _disp_gain = 10;
+        			planet.add_disposition(_disp_gain);
+        			_mission_string += $"\n{_trainer.name_role()}s reputation a natural and confident leader proved well earned as he also made excellent diplomatic headway with the governor and his generals (disposition +{_disp_gain})"
+        		}
         		if (_siege_master){
         			_mission_string += $"{_trainer.name()}s trained eye as a Siege Master also allowed him to make several improvements to the planets fortifications (fortification +1)";
         			planet.alter_fortification(1);
-        } else {
-            if (roll_dice(1, 100) > 75 && _trainer.intelligence > 45){
-                _mission_string += $"{_trainer.name()} has proven themselves a great strategist when it comes to defensive structures beyond previousy known ";
-                var _start_stats = variable_clone(_trainer.get_stat_line());
-                _trainer.add_trait("siege_master");
-                var end_stat = _trainer.get_stat_line();
-                var _stat_diff = compare_stats(end_stat,_start_stats); 
-                _unit_report_string += $"{_trainer.name_role()} Has gained the trait {global.trait_list.siege_master.display_name}, {(print_stat_diffs(_stat_diff))}\n"; 
-                _mission_string += "The new insights have allowed for minor improvements to planetary fortifications (fortification +1)";
-                planet.alter_fortification(1);
-            }
-        }
+        		} else {
+		            if (roll_dice(1, 100) > 75 && _trainer.intelligence > 45){
+		                _mission_string += $"{_trainer.name()} has proven themselves a great strategist when it comes to defensive structures beyond previousy known ";
+		                var _start_stats = variable_clone(_trainer.get_stat_line());
+		                _trainer.add_trait("siege_master");
+		                var end_stat = _trainer.get_stat_line();
+		                var _stat_diff = compare_stats(end_stat,_start_stats); 
+		                _unit_report_string += $"{_trainer.name_role()} Has gained the trait {global.trait_list.siege_master.display_name}, {(print_stat_diffs(_stat_diff))}\n"; 
+		                _mission_string += "The new insights have allowed for minor improvements to planetary fortifications (fortification +1)";
+		                planet.alter_fortification(1);
+		            }
+        		}
         	} else {
         		disp_loss = -5;
         		_mission_string += "The orgional training mission was a failiure"
