@@ -112,9 +112,9 @@ function mechanicus_missions_end_turn(planet){
                 }
                 if (_unit.role()=obj_ini.role[100][eROLE.Techmarine]){
                     // Case 1: on planet
-                    if (obj_ini.loc[com][ide]=name) and (_unit.planet_location=planet){
+                    if (_unit.location_string=name) and (_unit.planet_location=planet){
                         p_player[planet]-=_unit.get_unit_size();
-                        obj_ini.loc[com][ide]="Mechanicus Vessel";
+                        _unit.location_string="Mechanicus Vessel";
                         _unit.planet_location=0;
                         _unit.ship_location=-1;
                         _unit.job = {
@@ -127,7 +127,7 @@ function mechanicus_missions_end_turn(planet){
                         ship_planet=_ship.location;
                         if (ship_planet=name){
                             _ship.carrying-=_unit.get_unit_size();
-                            obj_ini.loc[com][ide]="Mechanicus Vessel";
+                            _unit.location_string="Mechanicus Vessel";
                             _unit.planet_location=0;
                             _unit.ship_location=-1;
 	                        _unit.job = {

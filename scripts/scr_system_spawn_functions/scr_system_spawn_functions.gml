@@ -94,7 +94,7 @@ function player_home_star(home_planet){
 		for (var co=0;co<=obj_ini.companies;co++){
 			for (i=0;i<array_length(obj_ini.name[co]);i++){
 				unit = fetch_unit([co,i]);
-				if (obj_ini.loc[co][i] == name){
+				if (unit.location_string == name){
 					unit.planet_location = home_planet;
 				}
 			}

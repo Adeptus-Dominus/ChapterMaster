@@ -429,7 +429,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true) {
         }
     }
 
-    if (!wrong_location) {
+    if (is_man && !wrong_location) {
         wrong_location = !_unit.controllable();
     }
 
@@ -525,7 +525,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true) {
         }
 
         if (((mouse_x >= xx + 25 && mouse_y >= yy + 64 && mouse_x < xx + 974 && mouse_y < yy + 85) || force_tool == 1) && is_struct(_unit)) {
-            temp[120] = _unit; // unit_struct
+            unit_focus = _unit; // unit_struct
         }
     }
     if (!ma_view[selected]) {

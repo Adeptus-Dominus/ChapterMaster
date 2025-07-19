@@ -662,13 +662,14 @@ function scr_ui_advisors() {
 
 
         draw_text_ext(xx + 222, yy + 216, string_hash_to_newline(string(tot_ki)), -1, 396);
-        var _unit = fetch_unit([0,1]);
-        if (_unit.ship_location == -1){
-            draw_text(xx + 222, yy + 380, string_hash_to_newline("Current Location: " + string(obj_ini.loc[0, 1]) + " " + string(_unit.planet_location) + "#Health: " + _unit.hp() + "%"));
+        var unit = fetch_unit([0,1]);
+        if (unit.ship_location == -1){
+            draw_text(xx + 222, yy + 380, string_hash_to_newline($"Current Location: {unit.location_string} {unit.planet_location}#Health: {unit.hp()}%"));
         } else if (_unit.ship_location>-1) {
             var _ship = _unit.ship();
             draw_text(xx + 222, yy + 380, string_hash_to_newline($"Current Location: Onboard {_ship.name}#Health: {_unit.hp()}%"));
         }
+        draw_text(xx + 222.5, yy + 380.5, string_hash_to_newline("Current Location:#Health:"));
 
         draw_sprite(spr_arrow, 0, xx + 217, yy + 32);
     }

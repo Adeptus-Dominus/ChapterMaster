@@ -101,20 +101,21 @@ if (target="event_loc") and (determined_planets=0){
         coo+=1;ide=0;
         
         repeat(300){ide+=1;
-            if (obj_ini.role[coo][ide]!=obj_ini.role[100][6]) and (obj_ini.role[coo][ide]!="Venerable "+string(obj_ini.role[100][6])) and (obj_ini.TTRPG[coo][ide].planet_location>0){
+            var _unit = fetch_unit([coo, ide]);
+            if (_unit.role()!=obj_ini.role[100][6]) and (_unit.role()!="Venerable "+string(obj_ini.role[100][6])) and (_unit.planet_location>0){
                 var stahp,first_open;stahp=0;q=0;first_open=0;
                 
                 repeat(100){
                     if (stahp=0){q+=1;
                         if (star[q]="") and (first_open=0) then first_open=q;
-                        if (star[q]=obj_ini.loc[coo][ide]) and (star_planet[q]=obj_ini.TTRPG[coo][ide].planet_location){
+                        if (star[q]=_unit.location_string && star_planet[q]=_unit.planet_location){
                             stahp=1;star_mahreens[q]+=1;
                         }
                     }
                 }
                 if (stahp=0){
-                    star[first_open]=obj_ini.loc[coo][ide];
-                    star_planet[first_open]=obj_ini.TTRPG[coo][ide].planet_location;
+                    star[first_open]=_unit.location_string;
+                    star_planet[first_open]=_unit.planet_location;
                     star_marheens[first_open]=1;
                 }
             }

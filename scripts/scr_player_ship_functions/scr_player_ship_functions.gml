@@ -204,7 +204,7 @@ function loose_ship_to_warp_event(){
 			if (obj_ini.name[company][marine] == "") then continue;
 			unit = fetch_unit([company, marine]);
 			if(unit.ship_location == _ship_index) {
-				obj_ini.loc[company][marine] = "Lost";
+				unit.location_string = "Lost";
 			}
 		}
 		for(var vehicle = 0; vehicle <= 100; vehicle++){

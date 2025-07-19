@@ -435,6 +435,7 @@ unit_bio=false;
 view_squad=false;
 company_report=false;
 company_data = {};
+obj_controller.unit_focus = false;
 filter_mode = false;
 pauldron_trim=0;
 last_unit=[0,0];

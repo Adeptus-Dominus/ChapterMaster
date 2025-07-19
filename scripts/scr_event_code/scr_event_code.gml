@@ -42,7 +42,7 @@ function event_end_turn_action(){
 	            obj_controller.alarm[8]=1;
 	        }
 	        // Removes planetary governor installed by the chapter
-	        if (_event.e_id == "remove_surf">0){
+	        if (_event.e_id == "remove_surf"){
 
 	            var _star_name = _event.system;
 	            var _event_star = star_by_name(_event.system);
@@ -58,28 +58,28 @@ function event_end_turn_action(){
 	            }
 	        }
 	        // Changes relation to good
-	        if (_event.e_id=="enemy_imperium"){
+	        else if (_event.e_id=="enemy_imperium"){
 	            scr_alert("green","enemy","You have made amends with your enemy in the Imperium.",0,0);
 	            disposition[eFACTION.Imperium]+=20;
 	            scr_event_log("","Amends made with Imperium.");
 	        }
-	        if (_event.e_id=="enemy_mechanicus"){
+	        else if (_event.e_id=="enemy_mechanicus"){
 	            scr_alert("green","enemy","You have made amends with your Mechanicus enemy.",0,0);
 	            disposition[eFACTION.Mechanicus]+=20;
 	            scr_event_log("","Amends made with Mechanicus enemy.");
 	        }
-	        if (_event.e_id=="enemy_inquisition"){
+	        else if (_event.e_id=="enemy_inquisition"){
 	            scr_alert("green","enemy","You have made amends with your enemy in the Inquisition.",0,0);
 	            disposition[eFACTION.Inquisition]+=20;
 	            scr_event_log("","Amends made with Inquisition enemy.");
 	        }
-	        if (_event.e_id=="enemy_ecclesiarchy"){
+	        else if (_event.e_id=="enemy_ecclesiarchy"){
 	            scr_alert("green","enemy","You have made amends with your enemy in the Ecclesiarchy.",0,0);
 	            disposition[eFACTION.Ecclesiarchy]+=20;
 	            scr_event_log("","Amends made with Ecclesiarchy enemy.");
 	        }
 	        // Sector commander losses its mind
-	        if (_event.e_id=="imperium_daemon"){
+	        else if (_event.e_id=="imperium_daemon"){
 	            var alert_string = $"Sector Commander {faction_leader[eFACTION.Imperium]} has gone insane."
 	            scr_alert("red","lol",alert_string,0,0);
 	            faction_defeated[eFACTION.Imperium]=1;
@@ -348,7 +348,7 @@ function strange_build_event(){
     
 		var marine_is_planetside = _unit.planet_location>0;
         if (marine_is_planetside && heritical_item) {
-        	var _system = star_by_name(obj_ini.loc[company][marine]);
+        	var _system = star_by_name(_unit.location_string);
         	var _planet = _unit.planet_location;
             if (_system!="none"){
             	with (_system){

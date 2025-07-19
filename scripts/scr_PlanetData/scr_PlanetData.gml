@@ -450,6 +450,9 @@ function PlanetData(planet, system) constructor{
     	has_problem_planet(planet, problem, system);
     }
 
+    static remove_problem = function(problem){
+    	remove_planet_problem(planet ,problem,system)
+    }
     static find_problem = function(problem){
     	return find_problem_planet(planet, problem, system);
     }
@@ -457,6 +460,7 @@ function PlanetData(planet, system) constructor{
     static add_problem = function(problem, timer, other_data={}){
     	return add_new_problem(planet, problem, timer,system, other_data);
     }
+
 
     static name = function(){
     	var _name="";

@@ -331,7 +331,7 @@ function scr_dialogue(diplo_keyphrase) {
 	    if (!_found){
 	    	var _master = fetch_unit([0,0]);
 	    	if (_master.planet_location > 0){
-	    		var _master_star = star_by_name(obj_ini.loc[0][0]);
+	    		var _master_star = star_by_name(_master.location_string);
 	    		if (_master_star != "none"){
 	    			_found = true;
 	    			_planet = _master.planet_location;

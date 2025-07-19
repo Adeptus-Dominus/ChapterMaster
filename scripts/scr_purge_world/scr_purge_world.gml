@@ -279,12 +279,12 @@ function scr_purge_world(star, planet, action_type, action_score) {
     
 	    txt+="What is thy will?";
     
-	    var he;he=instance_create(star.x,star.y,obj_temp6);
+	    var he=instance_create(star.x,star.y,obj_temp6);
 	    var pip=instance_create(0,0,obj_popup);
 	    pip.title="Planetary Governor Assassinated";
 	    pip.text=txt;
 	    pip.planet=planet;
-	    pip.p_data = new PlanetData(panet,star);
+	    pip.p_data = new PlanetData(planet,star);
     
 	    pip.option1="Allow the official successor to become Planetary Governor.";
 	    pip.option2="Ensure that a sympathetic successor will be the one to rule.";
