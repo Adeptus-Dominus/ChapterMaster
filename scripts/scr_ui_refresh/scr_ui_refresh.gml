@@ -17,4 +17,4 @@ function reset_manage_selections(){
     selecting_planet = 0;
     selecting_ship = -1;
     man_size = 0;
-}
+};

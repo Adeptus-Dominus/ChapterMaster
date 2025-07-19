@@ -82,6 +82,7 @@ if (string_count("spyrer", battle_special) > 0) {
 if (battle_special == "protect_raiders") {
 	fortified = 0;
 	threat = 3;
+	u = instance_create(20, 240, obj_enunit);
 	u.dudes[1] = "Dire Avenger";
 	u.dudes_num[1] = 40;
 	u.dudes_special[1] = "shimmershield";

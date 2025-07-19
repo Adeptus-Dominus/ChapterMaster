@@ -44,6 +44,7 @@ function task_selector_squad_manage(){
                     setup_battle_formations();
                     add_to_battle();
                 }
+                exit_adhoc_manage();
                 delete _roster;
                 break;
         }
