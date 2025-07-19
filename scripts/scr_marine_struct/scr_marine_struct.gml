@@ -43,6 +43,15 @@ enum location_types {
 #macro ARR_psy_levels ["Rho", "Pi", "Omicron", "Xi", "Nu", "Mu", "Lambda", "Kappa", "Iota", "Theta", "Eta", "Zeta", "Epsilon", "Delta", "Gamma", "Beta", "Alpha", "Alpha Plus", "Beta", "Gamma Plus"]
 #macro ARR_negative_psy_levels ["Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega"]
 
+enum EquipmentArea {
+    ARMOUR,
+    WEAPON_ONE,
+    WEAPON_TWO,
+    GEAR,
+    MOBILITY,
+    ALL,
+}
+
 global.base_stats = {
     //tempory stats subject to change by anyone that wishes to try their luck
     "chapter_master": {
@@ -2327,6 +2336,72 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         for (var i = 0; i < array_length(artifact_list); i++) {
             arti = obj_ini.artifact_struct[artifact_list[i]];
             arti.bearer = [end_company, end_slot];
+        }
+    };
+
+    /// @param {Enum.EquipmentArea} _slot
+    add_equipment_repairs = function(_slot = EquipmentArea.ALL) {
+        var _slots = array_create(0);
+
+        switch (_slot) {
+            case EquipmentArea.ARMOUR:
+                _slots = [EquipmentArea.ARMOUR];
+                break;
+            case EquipmentArea.WEAPON_ONE:
+                _slots = [EquipmentArea.WEAPON_ONE];
+                break;
+            case EquipmentArea.WEAPON_TWO:
+                _slots = [EquipmentArea.WEAPON_TWO];
+                break;
+            case EquipmentArea.GEAR:
+                _slots = [EquipmentArea.GEAR];
+                break;
+            case EquipmentArea.MOBILITY:
+                _slots = [EquipmentArea.MOBILITY];
+                break;
+            case EquipmentArea.ALL:
+                _slots = [EquipmentArea.ARMOUR, EquipmentArea.WEAPON_ONE, EquipmentArea.WEAPON_TWO, EquipmentArea.GEAR, EquipmentArea.MOBILITY];
+                break;
+        }
+
+        for (var i = 0; i < array_length(_slots); i++) {
+            var _cur_slot = _slots[i];
+            switch (_cur_slot) {
+                case EquipmentArea.ARMOUR:
+                    obj_controller.specialist_point_handler.add_to_armoury_repair(armour());
+                    if (instance_exists(obj_ncombat)) {
+                        obj_ncombat.slime += get_armour_data("maintenance");
+                    }
+                    break;
+
+                case EquipmentArea.WEAPON_ONE:
+                    obj_controller.specialist_point_handler.add_to_armoury_repair(weapon_one());
+                    if (instance_exists(obj_ncombat)) {
+                        obj_ncombat.slime += get_weapon_one_data("maintenance");
+                    }
+                    break;
+
+                case EquipmentArea.WEAPON_TWO:
+                    obj_controller.specialist_point_handler.add_to_armoury_repair(weapon_two());
+                    if (instance_exists(obj_ncombat)) {
+                        obj_ncombat.slime += get_weapon_two_data("maintenance");
+                    }
+                    break;
+
+                case EquipmentArea.GEAR:
+                    obj_controller.specialist_point_handler.add_to_armoury_repair(gear());
+                    if (instance_exists(obj_ncombat)) {
+                        obj_ncombat.slime += get_gear_data("maintenance");
+                    }
+                    break;
+
+                case EquipmentArea.MOBILITY:
+                    obj_controller.specialist_point_handler.add_to_armoury_repair(mobility_item());
+                    if (instance_exists(obj_ncombat)) {
+                        obj_ncombat.slime += get_mobility_data("maintenance");
+                    }
+                    break;
+            }
         }
     };
 }
