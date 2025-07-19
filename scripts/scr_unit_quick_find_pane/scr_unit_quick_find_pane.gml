@@ -28,10 +28,9 @@ function UnitQuickFindPanel() constructor{
 	    	for (var u=0;u<array_length(obj_ini.TTRPG[co]);u++){
 				/// @type {Struct.TTRPG_stats}
 	    		_unit = fetch_unit([co, u]);
-	    		if (_unit.name() == "") then continue;
+	    		if (_unit.name() == "" || !_unit.controllable()) then continue;
 	    		unit_location = _unit.marine_location();
-	    		if (unit_location[2]=="Terra") then continue;
-	    		if (unit_location[0]==location_types.planet){
+	    		if (unit_location[0]==location_types.planet && unit_location[2] != ""){
 	    			if (!struct_exists(garrison_log, unit_location[2])){
 	    				garrison_log[$ unit_location[2]] = {
 	    					units:[_unit],
