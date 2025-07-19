@@ -1,6 +1,8 @@
 function reset_popup_options(){
-	option1="";
-	option2="";
-	option3="";
-	option4="";
+	with (obj_popup){
+		option1="";
+		option2="";
+		option3="";
+		option4="";
+	}
 }
