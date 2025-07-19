@@ -302,9 +302,7 @@ try {
 					}
 					obj_controller.disposition[10] -= 10;
 					text = "The heretic is killed in a most violent fashion.  With a lack of go-between the meeting cannot proceed.";
-					option1 = "";
-					option2 = "";
-					option3 = "";
+					reset_popup_options();
 					mission = ""; // image="";
 					if (obj_controller.blood_debt == 1) {
 						obj_controller.penitent_current += 1;
@@ -320,9 +318,7 @@ try {
 					obj_controller.complex_event = true;
 					obj_controller.current_eventing = "chaos_meeting_1";
 					text = $"{global.chapter_name} signal your readiness to the heretic.  Nearly twenty minutes of following the man passes before {global.chapter_name} all enter an ordinary-looking structure.  Down, within the basement, {global.chapter_name} then pass into the entrance of a tunnel.  As the trek downward continues more and more heretics appear- cultists, renegades that appear to be from the local garrison, and occasionally even the fallen of your kind.  Overall the heretics seem well supplied and equip.  This observation is interrupted as your group enters into a larger chamber, revealing a network of tunnels and what appears to be ancient catacombs.  Bones of the ancient dead, the forgotten, litter the walls and floor.  And the chamber seems to open up wider, and wider, until {global.chapter_name} find yourself within a hall.  Within this hall, waiting for {global.chapter_name}, are several dozen Chaos Terminators, a Greater Daemon of Tzeentch and Slaanesh, and Chaos Lord " + string(obj_controller.faction_leader[eFACTION.Chaos]) + ".";
-					option1 = "";
-					option2 = "";
-					option3 = "";
+					reset_popup_options();
 					mission = "cslord1";
 					image = "";
 					img = 0;
@@ -338,9 +334,7 @@ try {
 					obj_controller.complex_event = true;
 					obj_controller.current_eventing = "chaos_trap";
 					text = $"{global.chapter_name} signal your readiness to the heretic.  Nearly twenty minutes of following the man passes before {global.chapter_name} all enter an ordinary-looking structure.  Down, within the basement, {global.chapter_name} then pass into the entrance of a tunnel.  As the trek downward continues more and more heretics appear- cultists, renegades that appear to be from the local garrison, and occasionally even the fallen of your kind.  Overall the heretics seem well supplied and equip.  This observation is interrupted as your group enters into a larger chamber, revealing a network of tunnels and what appears to be ancient catacombs.  Bones of the ancient dead, the forgotten, litter the walls and floor.  And the chamber seems to open up wider, and wider, until {global.chapter_name} find yourself within a hall.  Within this hall, waiting for {global.chapter_name}, are several dozen Chaos Terminators, a handful of Helbrute, and many more Chaos Space Marines.  The Chaos Lord is nowhere to be seen.  It is a trap.";
-					option1 = "";
-					option2 = "";
-					option3 = "";
+					reset_popup_options();
 					mission = "cslord1t";
 					image = "";
 					img = 0;
@@ -459,8 +453,7 @@ try {
 				delete_artifact(contraband[i]);
 			}
 			obj_controller.cooldown = 10;
-			option1 = "";
-			option2 = "";
+			reset_popup_options();
 			loc = "";
 			text = $"All Chaos and Daemonic Artifacts present have been handed over to the Inquisitor.  They remain seething, but your destruction has been stalled.  Or so {global.chapter_name} imagine.";
 			exit;
@@ -656,9 +649,7 @@ try {
                 obj_ground_mission.ruins_battle = ruins_battle;
                 obj_ground_mission.battle_threat = battle_threat;
 
-                option1 = "";
-                option2 = "";
-                option3 = "";
+                reset_popup_options();
                 text = "Your marines descended into the ancient ruins, mapping them out as they go.  They quickly determine the ruins were once ";
                 switch (_ruins.ruins_race) {
                 case eFACTION.Player:
@@ -942,9 +933,7 @@ try {
 					image = "";
 					title = "Inquisition Mission Completed";
 					text = "Your marines finally enter the deepest catacombs of the Necron Tomb.  There they place the Plasma Bomb and arm it.  All around are signs of increasing Necron activity.  With half an hour set, your men escape back to the surface.  There is a brief rumble as the charge goes off, your mission a success.";
-					option1 = "";
-					option2 = "";
-					option3 = "";
+					reset_popup_options();
 
 					if (obj_controller.demanding == 0) {
 						obj_controller.disposition[4] += 1;
@@ -1131,9 +1120,7 @@ try {
 						if (demand) {
 							text = $"The Inquisition demands that your Chapter demonstrate its loyalty.  {global.chapter_name} have been given a Plasma Bomb to seal the Necron Tomb on {mission_star.name} {scr_roman(onceh)}.  It is expected to be completed within {estimate} months.";
 						}
-						option1 = "";
-						option2 = "";
-						option3 = "";
+						reset_popup_options();
 						scr_add_item("Plasma Bomb", 1);
 						obj_controller.cooldown = 10;
 						if (demand) {
@@ -1151,9 +1138,7 @@ try {
 							text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  {global.chapter_name} are to capture a Gaunt organism and return it, unharmed- 4x Webbers have been provided for this purpose.";
 						}
 
-						option1 = "";
-						option2 = "";
-						option3 = "";
+						reset_popup_options();
 						scr_add_item("Webber", 4);
 						obj_controller.cooldown = 10;
 						scr_event_log("", $"Inquisition Mission Accepted: The Inquisition wishes for the capture of a particular strain Gaunt noticed on {mission_star.name} {scr_roman(planet)} is advisable.", mission_star.name);
@@ -1223,9 +1208,7 @@ try {
 					scr_event_log("", "Inquisition Mission Accepted: The Inquisition has left an Artifact in your care.");
 
 					text += $"  It is some form of {obj_ini.artifact[last_artifact]}.";
-					option1 = "";
-					option2 = "";
-					option3 = "";
+					reset_popup_options();
 					obj_controller.cooldown = 10;
 					exit;
 				}
@@ -1233,9 +1216,7 @@ try {
 
 			if (demand) {
 				demand = 0;
-				option1 = "";
-				option2 = "";
-				option3 = "";
+				reset_popup_options();
 				exit;
 			} // Remove multi-choices
 		}
@@ -1396,9 +1377,7 @@ try {
 				title = "Inquisition Mission Completed";
 				image = "exploding_ship";
 				text = $"{global.chapter_name} allow communications.  As soon as the vox turns on {global.chapter_name} hear a sickly, hateful voice.  They begin to speak of the inevitable death of your marines, the fall of all that is and ever shall be, and " + string(gender2) + " Lord of Decay.  Their ship is fired upon and destroyed without hesitation.";
-				option1 = "";
-				option2 = "";
-				option3 = "";
+				reset_popup_options();
 				scr_event_log("", "Inquisition Mission Completed: The radical Inquisitor has been purged.");
 				exit;
 			}
@@ -1702,7 +1681,7 @@ try {
 					} else if (lacks < ((array_length(techs) - 1) * 0.65)) {
 						text += "Most are unhappy with the decision but your word is final";
 					}
-					reset_options();
+					reset_popup_options();
 					press = 0;
 					pathway = "end_splash";
 					if (pick.company > 0) {
@@ -1807,7 +1786,7 @@ try {
 			} else if (press == 3) {
 				text = "The extremists and heretics that have been allowed to grow like a cancer in the Armentarium are rooted out and disposed of.";
 			}
-			reset_options();
+			reset_popup_options();
 			press = 0;
 			pathway = "end_splash";
 		}

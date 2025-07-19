@@ -361,7 +361,7 @@ try {
                         image="";
                         title="Inquisition Mission Completed";
                         text="Your marines finally enter the deepest catacombs of the Necron Tomb.  There they place the Plasma Bomb and arm it.  All around are signs of increasing Necron activity.  With half an hour set, your men escape back to the surface.  There is a brief rumble as the charge goes off, your mission a success.";
-                        option1="";option2="";option3="";
+                        reset_popup_options();
                         
                         alter_disposition(eFACTION.Inquisition, obj_controller.demanding ? choose(0,0,1) : 1);
                         
@@ -387,7 +387,7 @@ try {
 					    seal_tomb_world(star.p_feature[planet]);
 
     
-                        pip.option1="";pip.option2="";pip.option3="";
+                        reset_popup_options();
                         scr_event_log("","Inquisition Mission Completed: Your Astartes have sealed the Necron Tomb on "+string(star.name)+" "+string(scr_roman(planet))+".");
                         scr_gov_disp(star.name,planet,choose(1,2,3,4,5));
                         
