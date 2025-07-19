@@ -837,10 +837,7 @@ try {
     }
     // Resets selections
     if ((managing > 0) && (man_size == 0) && ((selecting_location != "") || (selecting_types != "") || (selecting_planet != 0) || (selecting_ship != -1))) {
-        selecting_location = "";
-        selecting_types = "";
-        selecting_planet = 0;
-        selecting_ship = -1;
+        reset_manage_selections();
     }
 
     if (menu == 0  && !instances_exist([obj_ncombat,obj_fleet_controller])){

@@ -54,7 +54,6 @@ function CompanyStruct(comp) constructor{
 			}
 		} else if (company == -1){
 			var _disp_units = obj_controller.display_unit;
-			show_debug_message($"{array_length(obj_controller.display_unit)}");
 			for (var i=0; i<array_length(_disp_units); i++){
 				var _unit = _disp_units[i];
 				if (!is_array(_unit)){
@@ -78,13 +77,11 @@ function CompanyStruct(comp) constructor{
 			for (var i=_squads_len-1;i>=0;i--){
 				var _squad = fetch_squad(company_squads[i]);
 				var _squad_loc = _squad.squad_loci();
-				show_debug_message($"{_squad_loc.system}, {squad_location}")
 				if (_squad_loc.system != squad_location){
 					array_delete(company_squads, i, 1);
 				}
 			}
 		}
-		show_debug_message($"{array_length(company_squads)}, {squad_location}");
 		has_squads = array_length(company_squads);
 		if (has_squads){
 			obj_controller.unit_focus = fetch_squad(company_squads[0]).fetch_member(0);

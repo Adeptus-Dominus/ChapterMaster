@@ -541,10 +541,7 @@ function scr_ui_manage() {
             squad_sel_action = -1;
         }
         if (man_size < 1) {
-            selecting_location = "";
-            selecting_ship = -1;
-            selecting_planet = 0;
-            man_size = 0;
+            reset_manage_selections();
         }
         var unit, x1, x2, x3, y1, y2, y3, text;
         var tooltip_text = "", bionic_tooltip = "";

@@ -358,12 +358,16 @@ enum MissionSelectType {
 	Squads
 }
 
+
 function group_selection(group, selection_data) {
     try {
         var unit, s, unit_location;
         obj_controller.selection_data = selection_data;
         set_zoom_to_default();
         with(obj_controller) {
+        	if (menu != MENU.Manage){
+        		scr_toggle_manage();
+        	}
             basic_manage_settings();
             with(obj_fleet_select) {
                 instance_destroy();
@@ -379,19 +383,7 @@ function group_selection(group, selection_data) {
             	selection_data.select_type = MissionSelectType.Units;
             }
             // Resets selections for next turn
-            man_size = 0;
-            selecting_location = "";
-            selecting_types = "";
-            selecting_ship = -1;
-            selecting_planet = 0;
-            sel_uid = 0;
-            reset_manage_arrays();
-            alll = 0;
-            cooldown = 10;
-            sel_loading = -1;
-            unload = 0;
-            alarm[6] = 7;
-            view_squad = false;
+            scr_ui_refresh();
             managing = -1;
             new_company_struct();
             var vehicles = [];
