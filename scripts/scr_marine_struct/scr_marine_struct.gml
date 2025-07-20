@@ -44,9 +44,9 @@ enum location_types {
 #macro ARR_negative_psy_levels ["Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega"]
 
 enum EquipmentSlot {
-    ARMOUR,
     WEAPON_ONE,
-    WEAPON_TWO,
+    WEAPON_TWO,    
+    ARMOUR,
     GEAR,
     MOBILITY,
     ALL,

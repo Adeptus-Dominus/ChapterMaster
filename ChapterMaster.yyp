@@ -887,6 +887,7 @@
     {"id":{"name":"scr_random_marine","path":"scripts/scr_random_marine/scr_random_marine.yy",},},
     {"id":{"name":"scr_recent","path":"scripts/scr_recent/scr_recent.yy",},},
     {"id":{"name":"scr_recruit_data","path":"scripts/scr_recruit_data/scr_recruit_data.yy",},},
+    {"id":{"name":"scr_reequip_units","path":"scripts/scr_reequip_units/scr_reequip_units.yy",},},
     {"id":{"name":"scr_restart_variables","path":"scripts/scr_restart_variables/scr_restart_variables.yy",},},
     {"id":{"name":"scr_return_ship","path":"scripts/scr_return_ship/scr_return_ship.yy",},},
     {"id":{"name":"scr_role_count","path":"scripts/scr_role_count/scr_role_count.yy",},},

@@ -188,32 +188,5 @@ function set_up_transfer_popup(){
                 }
             }
         }
-        with (pip){
-        	target_company_radio(_min_exp);
-        	cancel_button = new UnitButtonObject(
-	        	{
-	        		x1: 1061, 
-			        y1: 491, 
-			        style : "pixel",
-			        label : "Cancel"
-	        	}
-	        );
-	        transfer_button = new UnitButtonObject(
-	        	{
-	        		x1: 1450, 
-			        y1: 491,
-			        style : "pixel",
-					label : "Transfer"
-	        	}
-	        );
-	        main_slate = new DataSlate({
-	        	style : "decorated",
-	        	XX : 1006,
-	        	YY : 143,
-	        	set_width : true,
-	        	width : 571,
-	        	height : 350,
-	        });
-        }
     }
 }
