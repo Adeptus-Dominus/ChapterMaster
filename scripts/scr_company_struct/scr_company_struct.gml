@@ -249,12 +249,12 @@ function CompanyStruct(comp) constructor{
 	}
 	
 	static draw_squad_assignment_options = function(){
+		var _squad_sys = squad_loc.system;
 		if (current_squad.assignment == "none"){
 
 			draw_text_transformed(xx+bound_width[0]+5, yy+bound_height[0]+125, $"Squad has no current assignments",1,1,0);
 
 			var send_on_mission=false, mission_type;
-			var _squad_sys = squad_loc.system;
 			if (squad_loc.same_system) and (_squad_sys!="Warp" && _squad_sys!="Lost"){
 				if (garrison_button.draw()){
 					send_on_mission=true;
@@ -270,7 +270,7 @@ function CompanyStruct(comp) constructor{
 				}
 			}
 			if (send_on_mission){
-				send_squad_on_mission(mission_type,star_by_name(squad_loc.system));					
+				send_squad_on_mission(mission_type,star_by_name(_squad_sys));					
 			}
 			bound_height[0] += 180;
 		} else {
@@ -282,7 +282,7 @@ function CompanyStruct(comp) constructor{
 				if(point_and_click(cancel_but) || keyboard_check_pressed(ord("C"))){
 					var cancel_system=noone;
 					with (obj_star){
-						if (name == squad_loc.system){
+						if (name == _squad_sys){
 							cancel_system=self;
 						}
 					}
