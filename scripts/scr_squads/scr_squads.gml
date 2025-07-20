@@ -290,7 +290,7 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 	}
 
 
-	static stat_average(stat){
+	static stat_average = function(stat){
 		
 	}
 

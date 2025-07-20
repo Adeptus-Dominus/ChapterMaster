@@ -981,30 +981,7 @@ function scr_ui_manage() {
                 button.alpha = promote_possible ? 1 : 0.5;
                 if (button.draw()) {
                     if (promote_possible) {
-                        if ((sel_promoting == 1) && (instance_number(obj_popup) == 0)) {
-                            var pip = instance_create(0, 0, obj_popup);
-                            pip.type = 5;
-                            pip.company = managing;
-
-                            var god = 0, nuuum = 0;
-                            for (var f = 0; f < array_length(display_unit); f++) {
-                                if ((ma_promote[f] >= 1 || is_specialist(ma_role[f], SPECIALISTS_RANK_AND_FILE) || is_specialist(ma_role[f], SPECIALISTS_SQUAD_LEADERS)) && man_sel[f] == 1) {
-                                    nuuum += 1;
-                                    if (pip.min_exp == 0) {
-                                        pip.min_exp = ma_exp[f];
-                                    }
-                                    pip.min_exp = min(ma_exp[f], pip.min_exp);
-                                }
-                                if ((god == 0) && (ma_promote[f] >= 1) && (man_sel[f] == 1)) {
-                                    god = 1;
-                                    pip.unit_role = ma_role[f];
-                                }
-                            }
-                            if (nuuum > 1) {
-                                pip.unit_role = "Marines";
-                            }
-                            pip.units = nuuum;
-                        }
+                        setup_promotion_popup();
                     }
                 }
                 button.move("right", true);

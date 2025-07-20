@@ -1,4 +1,4 @@
-function DataSlate() constructor{
+function DataSlate(data={}) constructor{
 	static_line=1;
 	title="";
 	sub_title="";
@@ -16,6 +16,8 @@ function DataSlate() constructor{
 	tooltip_drawing = [];
 
 	blend_col = 5998382;
+
+	move_data_to_current_scope(data, true);
 
 	static entered = function(){
 		return (scr_hit(

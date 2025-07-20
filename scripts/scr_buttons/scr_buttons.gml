@@ -137,7 +137,7 @@ function UnitButtonObject(data = false) constructor{
 			var _width_scale = w/_widths[1];
 			_widths[1] *= _width_scale;
 			draw_sprite_ext(spr_pixel_button_middle, 0, x1 + _widths[0], y1, _width_scale, height_scale, 0, c_white, 1);
-			draw_sprite_ext(spr_pixel_button_right, 0, x1 + _widths[0] + _widths[1] ,y1, height_scale, height_scale, 0, c_white, 1);
+			draw_sprite_ext(spr_pixel_button_right, allow_click, x1 + _widths[0] + _widths[1] ,y1, height_scale, height_scale, 0, c_white, 1);
 			var _text_position_x = x1 + ((_widths[0] + 2) * height_scale);
 			_text_position_x += (_widths[1]) / 2;
 			draw_set_font(font);
@@ -150,11 +150,6 @@ function UnitButtonObject(data = false) constructor{
 			y2 = y1 + h;
 			var _button_click_area = [x1, y1, x2, y2];
 		}
-		draw_set_alpha(cur_alpha);
-		draw_set_font(cur_font);
-		draw_set_color(cur_color);
-		draw_set_halign(cur_halign);
-		draw_set_valign(cur_valign);	
 			
 		if (scr_hit(x1, y1, x2, y2) && tooltip!=""){
 			tooltip_draw(tooltip);
@@ -179,6 +174,11 @@ function UnitButtonObject(data = false) constructor{
 		} else {
 			return false;
 		}
+		draw_set_alpha(cur_alpha);
+		draw_set_font(cur_font);
+		draw_set_color(cur_color);
+		draw_set_halign(cur_halign);
+		draw_set_valign(cur_valign);	
 	}
 }
 
