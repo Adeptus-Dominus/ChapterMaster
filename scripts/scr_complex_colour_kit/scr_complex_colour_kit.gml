@@ -474,6 +474,9 @@ function setup_complex_livery_shader(setup_role, unit = "none"){
                 //"right_trim",
                 "left_trim"
             ];
+
+            var lock_specialist_colours = instance_exists(obj_controller) ? obj_controller.specialist_colours_locked : true;
+            
             for (var i=0;i<array_length(_comp_names);i++){
                 var _name = _comp_names[i];
                 if (_name == "is_changed") then continue;
