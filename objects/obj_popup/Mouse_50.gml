@@ -44,50 +44,6 @@ if (type>4) and (type!=9) and (cooldown<=0){
     }
 }
 
-
-
-if (type=5.1) and (cooldown<=0){
-    var xx,yy,before,before2;
-    xx=__view_get( e__VW.XView, 0 );yy=__view_get( e__VW.YView, 0 );
-    before=target_comp;
-    before2=target_role;
-
-    if (mouse_y>=yy+210) and (mouse_y<yy+230){
-        if (mouse_x>=xx+1468) and (mouse_x<=xx+1515){target_comp=0;cooldown=8000;}
-    }
-    if (mouse_y>=yy+230) and (mouse_y<yy+250){
-        if (mouse_x>=xx+1030) and (mouse_x<=xx+1120){target_comp=1;cooldown=8000;}
-        if (mouse_x>=xx+1140) and (mouse_x<=xx+1230){target_comp=2;cooldown=8000;}
-        if (mouse_x>=xx+1250) and (mouse_x<=xx+1340){target_comp=3;cooldown=8000;}
-        if (mouse_x>=xx+1360) and (mouse_x<=xx+1450){target_comp=4;cooldown=8000;}
-        if (mouse_x>=xx+1470) and (mouse_x<=xx+1560){target_comp=5;cooldown=8000;}
-    }
-    if (mouse_y>=yy+250) and (mouse_y<yy+270){
-        if (mouse_x>=xx+1030) and (mouse_x<=xx+1120){target_comp=6;cooldown=8000;}
-        if (mouse_x>=xx+1140) and (mouse_x<=xx+1230){target_comp=7;cooldown=8000;}
-        if (mouse_x>=xx+1250) and (mouse_x<=xx+1340){target_comp=8;cooldown=8000;}
-        if (mouse_x>=xx+1360) and (mouse_x<=xx+1450){target_comp=9;cooldown=8000;}
-        if (mouse_x>=xx+1470) and (mouse_x<=xx+1560){target_comp=10;cooldown=8000;}
-    }
-}
-
-if (type=5) and (cooldown<=0){
-    var xx,yy,before,before2;
-    xx=__view_get( e__VW.XView, 0 );yy=__view_get( e__VW.YView, 0 );
-    before=target_comp;
-    before2=target_role;
-
-    if (unit_role!=obj_ini.role[100,17]) or (obj_controller.command_set[1]!=0){
-        if (mouse_y>=yy+210) and (mouse_y<yy+230){
-            if (mouse_x>=xx+1468) and (mouse_x<=xx+1515) and (min_exp>=0){
-                target_comp=0;
-                get_unit_promotion_options();
-                cooldown=8000;
-            }
-        }
-    }
-}
-
 /* */
 
 var xx,yy,change_tab;

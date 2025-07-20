@@ -73,6 +73,7 @@ function UnitButtonObject(data = false) constructor{
 	static update_loc = function(){
 		if (label != ""){
 			w = string_width(label) + 10;
+			h = string_height(label) + 4;
 		};
 		x2 = x1 + w;
 		y2 = y1 + h;		

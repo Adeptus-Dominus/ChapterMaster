@@ -9,7 +9,7 @@ function set_up_equip_popup(){
 	    var allow = true;
 
 	    // Need to make sure that group selected is all the same type
-	    for(var f=0; f<array_length(display_unit); f++){
+	    for (var f=0; f<array_length(display_unit); f++){
 
 	        // Set different vih depending on _unit type
 	        if (man_sel[f]!=1) then continue;
@@ -105,6 +105,7 @@ function set_up_equip_popup(){
 	        //Forwards vih selection to the vehicle_equipment variable used in mouse_50 obj_popup and weapons_equip script
 	        pip.vehicle_equipment=vih;
 	        with (pip){
+	        	equipmet_area = -1;
 	        	cancel_button = new UnitButtonObject(
 		        	{
 		        		x1: 1061, 
@@ -148,7 +149,7 @@ function set_up_equip_popup(){
 						val : 2
 					}										
 		        ];
-		        quality_radio = new radio_set(_quality_options, "Target Company", {max_width : 500, x1:1292, y1:308});
+		        quality_radio = new radio_set(_quality_options, "", {max_width : 500, x1:1040, y1:308});
 
 		        range_melee_radio = new radio_set([
 		        	{
@@ -160,7 +161,50 @@ function set_up_equip_popup(){
 						str1 : "Melee",
 						font : fnt_40k_14b,
 						val : eENGAGEMENT.Melee
-					}], "Target Company", {max_width : 500, x1:1292, y1:328});
+					}
+				], "", {max_width : 500, x1:1040, y1:328});
+
+				weapon1_select = new UnitButtonObject(
+		        	{
+		        		x1: 1300, 
+				        y1: 215,
+						label : "",
+						font : fnt_40k_12,
+		        	}
+		        );
+				weapon2_select = new UnitButtonObject(
+		        	{
+		        		x1: 1300, 
+				        y1: 235,
+						label : "",
+						font : fnt_40k_12,
+		        	}
+		        );
+				armour_select= new UnitButtonObject(
+		        	{
+		        		x1: 1300, 
+				        y1: 255,
+						label : "",
+						font : fnt_40k_12,
+		        	}
+		        );
+				gear_select = new UnitButtonObject(
+		        	{
+		        		x1: 1300, 
+				        y1: 275,
+						label : "",
+						font : fnt_40k_12,
+		        	}
+		        );
+				mobility_select = new UnitButtonObject(
+		        	{
+		        		x1: 1300, 
+				        y1: 295,
+						label : "",
+						font : fnt_40k_12,
+		        	}
+		        );
+
 	        }
 	    }
 	}
@@ -176,10 +220,11 @@ function reload_items(){
         range_melee_radio.selection_val("val"),
         false, // include company standard
         true, // limit to available equipment
-        quality_options.selection_val("val"),
+        quality_radio.selection_val("val"),
     );	
 }
 function draw_popup_equip(){
+
 	main_slate.draw_with_dimensions();
 	draw_set_color(CM_GREEN_COLOR);
 	draw_text(1302, 145, "Change Equipment");
@@ -187,7 +232,7 @@ function draw_popup_equip(){
 	draw_set_font(fnt_40k_12);
 	var comp = "";
 	if (company <= 10 && company > 0) {
-		comp = romanNumerals[company - 1];
+		comp = int_to_roman(company);
 	} else if (company > 10) {
 		comp = "HQ";
 	}
@@ -200,10 +245,7 @@ function draw_popup_equip(){
 	}
 
 	draw_set_halign(fa_left);
-	draw_set_color(c_gray);
-
-	draw_rectangle(1010, 215, 1288, 315, 1);
-	draw_rectangle(1574, 215, 1296, 315, 1);
+	draw_set_color(CM_GREEN_COLOR);
 
 	var show_name = "";
 	// Need to not show the artifact tags here somehow
@@ -264,107 +306,76 @@ function draw_popup_equip(){
 	draw_text(1296, 195, string_hash_to_newline("After"));
 	draw_text(1296.5, 195.5, "After");
 
-	draw_set_color(c_gray);
-	if (n_good1 == 0) {
-		draw_set_color(255);
-	}
 	show_name = n_wep1;
 	if ((a_wep1 != "") && (n_wep1 == o_wep1)) {
 		show_name = a_wep1;
 	}
-	if (n_wep1 != "") {
-		draw_text(1300, 215, string_hash_to_newline(string(show_name)));
-	} else {
-		draw_text(1300, 215, string_hash_to_newline(ITEM_NAME_NONE));
-	}
 
-	draw_set_color(c_gray);
-	if (n_good2 == 0) {
-		draw_set_color(255);
-	}
+	weapon1_select.update({
+		label : show_name != "" ? show_name : ITEM_NAME_NONE,
+		color : n_good1 == 0 ? CM_RED_COLOR : CM_GREEN_COLOR,
+	})
+
+
 	show_name = n_wep2;
 	if ((a_wep2 != "") && (n_wep2 == o_wep2)) {
 		show_name = a_wep2;
 	}
-	if (n_wep2 != "") {
-		draw_text(1300, 235, string_hash_to_newline(string(show_name)));
-	} else {
-		draw_text(1300, 235, string_hash_to_newline(ITEM_NAME_NONE));
-	}
 
-	draw_set_color(c_gray);
-	if (n_good3 == 0) {
-		draw_set_color(255);
-	}
+	weapon2_select.update({
+		label : show_name != "" ? show_name : ITEM_NAME_NONE,
+		color : n_good2 == 0 ? CM_RED_COLOR : CM_GREEN_COLOR,
+	})
+
+
 	show_name = n_armour;
 	if ((a_armour != "") && (n_armour == o_armour)) {
 		show_name = a_armour;
 	}
-	if (n_armour != "") {
-		draw_text(1300, 255, string_hash_to_newline(string(show_name)));
-	} else {
-		draw_text(1300, 255, string_hash_to_newline(ITEM_NAME_NONE));
-	}
 
-	draw_set_color(c_gray);
-	if (n_good4 == 0) {
-		draw_set_color(255);
-	}
+	armour_select.update({
+		label : show_name != "" ? show_name : ITEM_NAME_NONE,
+		color : n_good3 == 0 ? CM_RED_COLOR : CM_GREEN_COLOR,
+	});
+
+
+
 	show_name = n_gear;
 	if ((a_gear != "") && (n_gear == o_gear)) {
 		show_name = a_gear;
 	}
-	if (n_gear != "") {
-		draw_text(1300, 275, string_hash_to_newline(string(show_name)));
-	} else {
-		draw_text(1300, 275, string_hash_to_newline(ITEM_NAME_NONE));
-	}
+	gear_select.update({
+		label : show_name != "" ? show_name : ITEM_NAME_NONE,
+		color : n_good4 == 0 ? CM_RED_COLOR : CM_GREEN_COLOR,
+	});
 
-	draw_set_color(c_gray);
-	if (n_good5 == 0) {
-		draw_set_color(255);
-	}
 	show_name = n_mobi;
 	if ((a_mobi != "") && (n_mobi == o_mobi)) {
 		show_name = a_mobi;
 	}
-	if (n_mobi != "") {
-		draw_text(1300, 295, string_hash_to_newline(string(show_name)));
-	} else {
-		draw_text(1300, 295, string_hash_to_newline(ITEM_NAME_NONE));
-	}
 
-	draw_set_color(c_gray);
+	mobility_select.update({
+		label : show_name != "" ? show_name : ITEM_NAME_NONE,
+		color : n_good5 == 0 ? CM_RED_COLOR : CM_GREEN_COLOR,
+	});
 
+
+	draw_set_color(CM_GREEN_COLOR);
+	var _buttons = [weapon1_select, weapon2_select,armour_select, gear_select, mobility_select];
+
+	var _area_change = false;
 	for (var i = 0; i <= 4; i++) {
+		var _button = _buttons[i];
+		if (_button.draw(equipmet_area != i)){
+			equipmet_area = i;
+			_area_change = true;
+		}
 		if (equipmet_area == i) {
-			draw_text(1292, 195 + (20 * i), "->");
+			draw_text(1292, 195 + (20 * i+1), "->");
 			break;
 		}
 	}
 
-	if ((mouse_x >= 1296) && (mouse_x < 1574)) {
-		if ((mouse_y >= 215) && (mouse_y < 235)) {
-			draw_set_alpha(0.5);
-			draw_line(1296, 230, 1574, 230);
-		}
-		if ((mouse_y >= 235) && (mouse_y < 255)) {
-			draw_set_alpha(0.5);
-			draw_line(1296, 250, 1574, 250);
-		}
-		if ((mouse_y >= 255) && (mouse_y < 275)) {
-			draw_set_alpha(0.5);
-			draw_line(1296, 270, 1574, 270);
-		}
-		if ((mouse_y >= 275) && (mouse_y < 295)) {
-			draw_set_alpha(0.5);
-			draw_line(1296, 290, 1574, 290);
-		}
-		if ((mouse_y >= 295) && (mouse_y < 315)) {
-			draw_set_alpha(0.5);
-			draw_line(1296, 310, 1574, 310);
-		}
-	}
 	draw_set_alpha(1);
 
 	if (equipmet_area != -1) {
@@ -657,9 +668,12 @@ function draw_popup_equip(){
 	if ((equipmet_area == EquipmentSlot.WEAPON_ONE) || (equipmet_area == EquipmentSlot.WEAPON_TWO)) {
 		range_melee_radio.draw();
 	}
-	quality_radio.draw();
 
-	if (quality_radio.changed || range_melee_radio.changed){
+	if (equipmet_area != -1){
+		quality_radio.draw();
+	}
+
+	if (quality_radio.changed || range_melee_radio.changed ||_area_change){
 		reload_items();
 	}
 

@@ -739,25 +739,6 @@ try {
 		exit;
 	}
 
-	if (type == 6) {
-		// Equipment
-		if (target_comp == 1) {
-			target_role = sel1;
-		}
-		if (target_comp == 2) {
-			target_role = sel2;
-		}
-		if (target_comp == 3) {
-			target_role = sel3;
-		}
-		if (target_comp == 4) {
-			target_role = sel4;
-		}
-		if (target_comp == 5) {
-			target_role = sel5;
-		}
-	}
-
 	if (image == "gene_bad") {
 		option1 = "Dispose of ";
 		if (obj_controller.gene_seed <= 30) {
