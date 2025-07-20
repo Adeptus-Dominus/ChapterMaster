@@ -444,7 +444,7 @@ function item_data_updater(data){
     	self[$_data_presets[i]] = data[$_data_presets[i]];
     }		
 }
-function radio_set(options_array, title)constructor{
+function radio_set(options_array, title, data = {})constructor{
 	toggles = [];
 	current_selection = 0;
 	self.title = title;
@@ -465,10 +465,17 @@ function radio_set(options_array, title)constructor{
 	x2 = 0;
 	y2 = 0;
 
+	move_data_to_current_scope(data, true);
 	static update = item_data_updater;
 	static draw = function(){
-		if (draw_title){
-			draw_text(x1, y1, title);
+		if (max_width > 0){
+			if (draw_title){
+				draw_text(x1+(max_width/2) - (string_length(draw_title)/2), y1, title);
+			}
+		} else {
+			if (draw_title){
+				draw_text(x1 + (string_length(draw_title)/2), y1, title);
+			}			
 		}
 
 		changed = false;
@@ -504,6 +511,10 @@ function radio_set(options_array, title)constructor{
 		if (_start_current_selection != current_selection){
 			changed = true;
 		}
+	}
+
+	static selection_val = function(value){
+		return toggles[current_selection][$value];
 	}
 }
 

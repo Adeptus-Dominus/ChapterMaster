@@ -176,9 +176,36 @@ function setup_promotion_popup(){
 	        	width : 571,
 	        	height : 350,
 	        });
+
+	        var _company_options = [{
+		            str1 : "HQ",
+		            font : fnt_40k_14b,
+		            val : 0
+		        },
+		    ];
+	        for (var i=1;i<=obj_ini.companies;i++){
+	        	var _dont_add = false;
+				if (obj_controller.command_set[2] == 1) {
+					//cecks if exp requirements are activated
+					if (min_exp < company_promote_data[i].exp) {
+						var _dont_add = true;
+					}
+				}
+				if (!_dont_add){
+					array_push(_company_options,{
+						str1 : int_to_roman(i),
+						font : fnt_40k_14b,
+						val : i
+					});
+				}
+	        }
+			companies_select = new radio_set(_company_options, "Target Company", {max_width : 500, x1:1040, y1:210});
+
+			companies_select.current_selection = 0;
 	    }
     }
 }
+
 function draw_popup_promotion(){
     manag=obj_controller.managing;
     if (manag>10) then manag=0;
@@ -201,40 +228,11 @@ function draw_popup_promotion(){
 	}
 	draw_text(1292, 175, $"{comp} Company {unit_role}");
 
-	draw_set_halign(fa_left);
-	draw_set_color(CM_GREEN_COLOR);
-	draw_text(1014, 210, "Target Company:");
-
-	var check = " ";
-	draw_set_alpha(1);
-
-	// HQ Company
-	if ((target_comp == 0) || (target_comp > 10)) {
-		check = "x";
-	}
-	draw_text(1470, 210, $"HQ [{check}]");
-	check = " ";
-	// if (obj_controller.command_set[1]!=0 && !is_specialist(unit_role, SPECIALISTS_LIBRARIANS)){
-	for (i = 1; i <= 10; i++) {
-		var comp_data = company_promote_data[i - 1];
-		if (obj_controller.command_set[2] == 1) {
-			//cecks if exp requirements are activated
-			if (min_exp < comp_data[2]) {
-				draw_set_alpha(0.6);
-			}
-		}
-		check = " ";
-		if (target_comp == i) {
-			check = "x";
-		}
-		var select_text = $"{romanNumerals[i - 1]} [{check}]";
-		draw_text(comp_data[0], comp_data[1], select_text);
-		if (point_and_click([comp_data[0], comp_data[1], comp_data[0] + 90, comp_data[1] + 20])) {
-			target_comp = i;
-			target_role = 0;
-			get_unit_promotion_options();
-			cooldown = 8000;
-		}
+	companies_select.draw();
+	if (companies_select.changed){
+		target_comp = companies_select.selection_val("val");
+		target_role = 0;
+		get_unit_promotion_options();
 	}
 	// }
 
@@ -242,6 +240,7 @@ function draw_popup_promotion(){
 	var role_x = 0;
 	role_y = 0;
 	if (target_comp != -1) {
+		
 		for (var r = 1; r <= 11; r++) {
 			if (role_name[r] != "") {
 				draw_set_alpha(1);
@@ -313,7 +312,7 @@ function draw_popup_promotion(){
 			} else {
 				draw_set_color(CM_GREEN_COLOR);
 			}
-			draw_text(1260, 390, $"{req_wep1_num} {req_wep1} (Have {have_wep1_num})");
+			draw_text(1280, 390, $"{req_wep1_num} {req_wep1} (Have {have_wep1_num})");
 		}
 		if (req_wep2 != "") {
 			gr = req_wep2_num - have_wep2_num;
@@ -323,7 +322,7 @@ function draw_popup_promotion(){
 			} else {
 				draw_set_color(CM_GREEN_COLOR);
 			}
-			draw_text(1260, 410, $"{req_wep2_num} {req_wep2} (Have {have_wep2_num})");
+			draw_text(1280, 410, $"{req_wep2_num} {req_wep2} (Have {have_wep2_num})");
 		}
 	}
 

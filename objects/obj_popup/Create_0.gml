@@ -60,17 +60,18 @@ new_target=0;
 if (instance_exists(obj_controller)){obj_controller.cooldown=8000;}
 number=0;
 company_promote_data = [
+    {exp : 0},
 //index 0 = draw x, 1 = draw y, 2 = exp requirement for company
-    [1030,230,100],//1st company
-    [1140,230,65],
-    [1250,230,65],
-    [1360,230,65],
-    [1470,230,65],
-    [1030,250,45],
-    [1140,250,45],
-    [1250,250,35],
-    [1360,250,25],
-    [1470,250,15],//10th company
+    {exp :100},//1st company
+    {exp :65},
+    {exp :65},
+    {exp :65},
+    {exp :65},
+    {exp :45},
+    {exp :45},
+    {exp :35},
+    {exp :25},
+    {exp :15},//10th company
 ]
 
 for (var i=0;i<=10;i++){i+=1;role_name[i]="";role_exp[i]=0;}
@@ -115,12 +116,12 @@ get_unit_promotion_options = function(){
             if (scr_role_count(obj_ini.role[100][11],"1")==0){ //company ancient
                 i+=1;
                 role_name[i]=obj_ini.role[100][11];
-                role_exp[i]=company_promote_data[target_comp-1][2]+10;
+                role_exp[i]=company_promote_data[target_comp].exp+10;
             }
             if (scr_role_count(obj_ini.role[100][7],"1")==0){ //company champ
                 i+=1;
                 role_name[i]=obj_ini.role[100][7];
-                role_exp[i]=company_promote_data[target_comp-1][2]+10;//may as well have this liniked to weapon skill
+                role_exp[i]=company_promote_data[target_comp].exp+10;//may as well have this liniked to weapon skill
             }
             i+=1;
             role_name[i]=obj_ini.role[100][6]; //dreadnought
@@ -131,7 +132,7 @@ get_unit_promotion_options = function(){
             if (array_contains([2, 3, 4, 5, 6, 7], target_comp)){
                 i+=1;
                 role_name[i]=obj_ini.role[100][8]; //tacts
-                role_exp[i]=company_promote_data[target_comp-1][2];
+                role_exp[i]=company_promote_data[target_comp].exp;
                 if (obj_controller.command_set[2]==0){
                     role_exp[i]=0;
                 }
@@ -140,7 +141,7 @@ get_unit_promotion_options = function(){
             if (array_contains([2, 3, 4, 5, 8], target_comp)){
                 i+=1;
                 role_name[i]=obj_ini.role[100][10]; //assualts
-                role_exp[i]=company_promote_data[target_comp-1][2];
+                role_exp[i]=company_promote_data[target_comp].exp;
                 if (obj_controller.command_set[2]==0){
                     role_exp[i]=0;
                 }
@@ -149,7 +150,7 @@ get_unit_promotion_options = function(){
             if (array_contains([2, 3, 4, 5, 9], target_comp)){
                 i+=1;
                 role_name[i]=obj_ini.role[100][9]; //devs
-                role_exp[i]=company_promote_data[target_comp-1][2];
+                role_exp[i]=company_promote_data[target_comp].exp;
                 if (obj_controller.command_set[2]==0){
                     role_exp[i]=0;
                 }
@@ -164,7 +165,7 @@ get_unit_promotion_options = function(){
             if (target_comp == 10){
                 i+=1;
                 role_name[i]=obj_ini.role[100][12]; //scouts
-                role_exp[i]=company_promote_data[target_comp-1][2];
+                role_exp[i]=company_promote_data[target_comp].exp;
                 if (obj_controller.command_set[2]==0){
                     role_exp[i]=0;
                 }
