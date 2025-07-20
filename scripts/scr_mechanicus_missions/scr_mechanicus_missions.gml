@@ -323,8 +323,7 @@ function mechanicus_mission_procedures(){
 					scr_event_log("", "Mechanicus Mission Accepted: At least two squads of marines are expected at {_name} within 16 months.", _star.name);
 					new_star_event_marker("green");
 					title = "Mechanicus Mission Accepted";
-					option1 = "";
-					option2 = "";
+					reset_popup_options();
 					cooldown = 15;
 					exit;
 
@@ -365,9 +364,7 @@ function mechanicus_mission_procedures(){
 					}
 					cooldown = 15;
 					title = "Mechanicus Mission Accepted";
-					option1 = "";
-					option2 = "";
-					option3 = "";
+					reset_popup_options();
 					exit;
 				}
 			}

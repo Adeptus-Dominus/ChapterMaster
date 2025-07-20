@@ -875,6 +875,7 @@
     {"id":{"name":"scr_player_fleet_functions","path":"scripts/scr_player_fleet_functions/scr_player_fleet_functions.yy",},},
     {"id":{"name":"scr_player_ship_functions","path":"scripts/scr_player_ship_functions/scr_player_ship_functions.yy",},},
     {"id":{"name":"scr_population_influence","path":"scripts/scr_population_influence/scr_population_influence.yy",},},
+    {"id":{"name":"scr_popup_functions","path":"scripts/scr_popup_functions/scr_popup_functions.yy",},},
     {"id":{"name":"scr_popup","path":"scripts/scr_popup/scr_popup.yy",},},
     {"id":{"name":"scr_powers","path":"scripts/scr_powers/scr_powers.yy",},},
     {"id":{"name":"scr_punit_combat_heplers","path":"scripts/scr_punit_combat_heplers/scr_punit_combat_heplers.yy",},},
