@@ -810,7 +810,7 @@ function scr_ui_manage() {
                 }
             }
 
-            var _only_display_selected = (instance_exists(obj_popup) && obj_popup.type == 5);
+            var _only_display_selected = (instance_exists(obj_popup) && (obj_popup.type == 5 || obj_popup.type == 5.1);
             for (var i = 0; i < max(0, repetitions); i++) {
                 draw_set_font(fnt_40k_14);
                 if (sel >= array_length(display_unit)) {
@@ -1056,7 +1056,7 @@ function scr_ui_manage() {
                 if (transfer_possible) {
                     button.alpha = 1;
                     if (button.draw()) {
-                        transfer_selection();
+                        set_up_transfer_popup();
                     }
                 } else {
                     button.alpha = 0.5;

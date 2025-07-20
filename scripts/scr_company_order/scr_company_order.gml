@@ -235,7 +235,7 @@ function scr_company_order(company) {
 						squad.empty_squad();
 						for (var m=0;m<array_length(_mems);m++){
 							unit = _mems[m];
-							if (unit.squad=="none" && unit.is_controllable()){
+							if (unit.squad=="none" && unit.controllable()){
 								if (!struct_exists(squadless, unit.role())){
 									squadless[$ unit.role()] = [i];
 								} else {

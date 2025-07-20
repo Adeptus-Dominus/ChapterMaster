@@ -1,3 +1,4 @@
+
 function setup_promotion_popup(){
     if ((sel_promoting == 1) && (instance_number(obj_popup) == 0)) {
         var pip = instance_create(0, 0, obj_popup);
@@ -167,7 +168,6 @@ function setup_promotion_popup(){
 			        label : "Cancel"
 	        	}
 	        );
-
 	        main_slate = new DataSlate({
 	        	style : "decorated",
 	        	XX : 1006,
@@ -176,35 +176,39 @@ function setup_promotion_popup(){
 	        	width : 571,
 	        	height : 350,
 	        });
-
-	        var _company_options = [{
-		            str1 : "HQ",
-		            font : fnt_40k_14b,
-		            val : 0
-		        },
-		    ];
-	        for (var i=1;i<=obj_ini.companies;i++){
-	        	var _dont_add = false;
-				if (obj_controller.command_set[2] == 1) {
-					//cecks if exp requirements are activated
-					if (min_exp < company_promote_data[i].exp) {
-						var _dont_add = true;
-					}
-				}
-				if (!_dont_add){
-					array_push(_company_options,{
-						str1 : int_to_roman(i),
-						font : fnt_40k_14b,
-						val : i
-					});
-				}
-	        }
-			companies_select = new radio_set(_company_options, "Target Company", {max_width : 500, x1:1040, y1:210});
-
-			companies_select.current_selection = 0;
+	        target_company_radio();
 	    }
     }
 }
+
+function target_company_radio(min_exp=0){
+    var _company_options = [{
+            str1 : "HQ",
+            font : fnt_40k_14b,
+            val : 0
+        },
+    ];
+    for (var i=1;i<=obj_ini.companies;i++){
+    	var _dont_add = false;
+		if (obj_controller.command_set[2] == 1) {
+			//cecks if exp requirements are activated
+			if (min_exp < company_promote_data[i].exp) {
+				var _dont_add = true;
+			}
+		}
+		if (!_dont_add){
+			array_push(_company_options,{
+				str1 : int_to_roman(i),
+				font : fnt_40k_14b,
+				val : i
+			});
+		}
+    }
+	companies_select = new radio_set(_company_options, "Target Company", {max_width : 500, x1:1040, y1:210});
+
+	companies_select.current_selection = 0;	
+}
+
 
 function draw_popup_promotion(){
     manag=obj_controller.managing;

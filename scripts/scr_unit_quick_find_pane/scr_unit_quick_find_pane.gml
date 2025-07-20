@@ -480,51 +480,6 @@ function update_general_manage_view(){
     }	
 }
 
-
-function transfer_selection(){
-	if (instance_number(obj_popup)==0){
-        var pip=instance_create(0,0,obj_popup);
-        pip.type=5.1;
-        pip.company=managing;
-
-        var god=0,nuuum=0,nuuum2=0,checky=0,check_number=0;
-        for(var f=1; f<array_length(display_unit); f++){
-            if (god==1) then break;
-            if (god==0) and (man_sel[f]==1) and (man[f]=="man"){
-                god=1;
-                pip.unit_role=ma_role[f];
-            }
-            if (god==0) and (man_sel[f]==1) and (man[f]=="vehicle"){
-                god=1;
-                pip.unit_role=ma_role[f];
-            }
-            if (man_sel[f]==1){
-                if (man[f]=="man"){
-                    nuuum+=1;
-                    checky=1;
-                    if (ma_role[f]==obj_ini.role[100][7]) then checky=0;
-                    if (ma_role[f]==obj_ini.role[100][14]) then checky=0;
-                    if (ma_role[f]==obj_ini.role[100][15]) then checky=0;
-                    if (ma_role[f]==obj_ini.role[100][16]) then checky=0;
-                    if (ma_role[f]==obj_ini.role[100][17]) then checky=0;
-                    if (checky==1) then check_number+=1;
-                }
-                if (man[f]=="vehicle") then nuuum2+=1;
-            }
-        }
-        if (nuuum>1) then pip.unit_role="Marines";
-        if (nuuum2>1) then pip.unit_role="Vehicles";
-        if (nuuum>0) and (nuuum2>0) then pip.unit_role="Units";
-        pip.units=nuuum+nuuum2;
-        if (nuuum>0) and (check_number>0){
-            if (command_set[1]==0){
-                cooldown=8000;
-                with(pip){instance_destroy();}
-            }
-        }
-    }
-}
-
 function toggle_selection_borders(){
     for(var p=0; p<array_length(display_unit); p++){
         if (man_sel[p]==1) and (man[p]=="man"){
@@ -565,7 +520,7 @@ function jail_selection(){
     	 	continue;
     	}
     	_unit = display_unit[f];
- 		if (_unit.is_controllable()){
+ 		if (_unit.controllable()){
             if (is_struct(display_unit[f])){
                 obj_ini.god[_unit.company][_unit.marine_number]+=10;
                 ma_god[f]+=10;

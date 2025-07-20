@@ -926,6 +926,7 @@
     {"id":{"name":"scr_trade_add","path":"scripts/scr_trade_add/scr_trade_add.yy",},},
     {"id":{"name":"scr_trade_dep","path":"scripts/scr_trade_dep/scr_trade_dep.yy",},},
     {"id":{"name":"scr_trade","path":"scripts/scr_trade/scr_trade.yy",},},
+    {"id":{"name":"scr_transfer_marines","path":"scripts/scr_transfer_marines/scr_transfer_marines.yy",},},
     {"id":{"name":"scr_turn_first","path":"scripts/scr_turn_first/scr_turn_first.yy",},},
     {"id":{"name":"scr_ui_advisors","path":"scripts/scr_ui_advisors/scr_ui_advisors.yy",},},
     {"id":{"name":"scr_ui_diplomacy","path":"scripts/scr_ui_diplomacy/scr_ui_diplomacy.yy",},},
