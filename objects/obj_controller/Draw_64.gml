@@ -84,6 +84,7 @@ if (!zoomed && !zui){
     draw_set_color(38144);
     draw_set_font(fnt_menu);
     draw_set_halign(fa_center);
+    draw_set_valign(fa_top);
     // Draws the sector name
     var _sector_string = $"Sector {obj_ini.sector_name ?? "Terra Nova"}";
     draw_text(775,17,_sector_string);
@@ -207,6 +208,8 @@ if (menu == 1) {
         scr_manage_task_selector();
     }
 
+} else if (menu == MENU.Armamentarium) {
+    scr_draw_armentarium_gui();
 }
 
 

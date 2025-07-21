@@ -119,6 +119,16 @@ function draw_text_shadow(_x, _y, _text){
     draw_text(_x, _y, _text);
 }
 
+function calc_text_scale_confines(text, width, buffer){
+    var _scale = 1;
+    var _string_width = string_width(string);
+    if (_string_width > (width - buffer)){
+        _scale = (width - buffer)/_string_width
+    }
+
+    return _scale;
+}
+
 /// @function draw_text_ext_shadow
 /// @description This function will draw text in a similar way to draw_text_ext(), only now the text will have a diagonal shadow.
 function draw_text_ext_shadow(_x, _y, _text, _sep=-1, _w=9999){

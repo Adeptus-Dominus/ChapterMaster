@@ -58,6 +58,7 @@ function UnitButtonObject(data = false) constructor{
 	h = 30;
 	h_gap= 4;
 	v_gap= 4;
+	text_scale = 1;
 	label= "";
 	alpha= 1;
 	color = #50a076;
@@ -65,6 +66,7 @@ function UnitButtonObject(data = false) constructor{
 	tooltip = "";
 	bind_method = "";
 	bind_scope = false;
+	set_width = false;
 	style = "standard";
 	font=fnt_40k_14b
 	set_height_width = false;
@@ -72,7 +74,12 @@ function UnitButtonObject(data = false) constructor{
 
 	static update_loc = function(){
 		if (label != ""){
-			w = string_width(label) + 10;
+			if (!set_width){
+				w = string_width(label) + 10;
+				h = string_height(label) + 4;
+			} else {
+				text_scale = calc_text_scale_confines(label, w, 10);
+			}
 			h = string_height(label) + 4;
 		};
 		x2 = x1 + w;
@@ -126,7 +133,7 @@ function UnitButtonObject(data = false) constructor{
 				_temp_alpha = 0.5;
 				allow_click = false;
 			}
-			var _button_click_area = draw_unit_buttons(w > 0 ? [x1, y1, x2, y2] : [x1, y1] , label, [1,1],color,,font,_temp_alpha);
+			var _button_click_area = draw_unit_buttons(w > 0 ? [x1, y1, x2, y2] : [x1, y1] , label, [text_scale,text_scale],color,,font,_temp_alpha);
 		} else if (style = "pixel"){
 
 			var _widths =  [sprite_get_width(spr_pixel_button_left), sprite_get_width(spr_pixel_button_middle), sprite_get_width(spr_pixel_button_right)]
@@ -145,7 +152,9 @@ function UnitButtonObject(data = false) constructor{
 			draw_set_halign(fa_center);
 			draw_set_valign(fa_middle);
 			draw_set_color(color);
-			draw_text_transformed(_text_position_x, y1 + ( (h * height_scale)/2),  label, 1, 1, 0);
+
+			draw_text_transformed(_text_position_x, y1 + ( (h * height_scale)/2),  label, text_scale, text_scale, 0);
+
 
 			x2 = x1 + array_sum(_widths);
 			y2 = y1 + h;

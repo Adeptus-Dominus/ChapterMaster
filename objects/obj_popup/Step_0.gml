@@ -41,12 +41,6 @@ try {
 		master_crafted = 0;
 	}
 
-	if ((type == 9.1) && (obj_controller.stc_wargear_un + obj_controller.stc_vehicles_un + obj_controller.stc_ships_un <= 0)) {
-		obj_controller.cooldown = 10;
-		instance_destroy();
-		exit;
-	}
-
 	if ((image == "fuklaw") && (save > 0)) {
 		if (press == 1) {
 			var del = obj_saveload.save[save];
@@ -1523,13 +1517,13 @@ try {
 				obj_controller.exit_all = 1;
 
 				// 135
-				/*there should be a chance for things to go terribly wrong when mission_star give a gift
+				/*there should be a chance for things to go terribly wrong when you give a gift
                 
                 Imperium: if chaos, increase the global corruption of imperial planets a bit?
                 Imperium: if daemonic, the commander goes chaos after a few turns?
                 Mechanicus: if daemonic vastly increases corruption on forge worlds?
-                Ecclesiarchy: if daemonic they get really pissed at mission_star?
-                Eldar: if daemonic they get really pissed at mission_star?
+                Ecclesiarchy: if daemonic they get really pissed at you?
+                Eldar: if daemonic they get really pissed at you?
                 Tau: if daemonic all their worlds get big corruption boosts?*/
 
 				with (obj_ground_mission) {

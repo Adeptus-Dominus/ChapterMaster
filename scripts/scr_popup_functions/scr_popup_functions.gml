@@ -1,5 +1,13 @@
 /// @function reset_popup_options()
 /// @description Resets all popup option variables to empty strings
+
+enum POPUP_TYPE {
+	PROMOTION = 5,
+	EQUIP = 6,
+	ITEM_GIFT = 9,
+	FLEET_MOVE = 99,
+}
+
 function reset_popup_options(){
 	with (obj_popup){
 		option1="";
@@ -34,7 +42,16 @@ function calculate_equipment_needs(){
         req_armour="";req_armour_num=0;req_wep1="";req_wep1_num=0;req_wep2="";req_wep2_num=0;req_mobi="";req_mobi_num=0;
     }*/
     if (rall="Codiciery"){
-        req_armour="";req_armour_num=0;req_wep1="";req_wep1_num=0;req_wep2="";req_wep2_num=0;req_mobi="";req_mobi_num=0;req_gear=obj_ini.gear[100,17];req_gear_num=units;
+        req_armour="";
+        req_armour_num=0;
+        req_wep1="";
+        req_wep1_num=0;
+        req_wep2="";
+        req_wep2_num=0;
+        req_mobi="";
+        req_mobi_num=0;
+        req_gear=obj_ini.gear[100,17];
+        req_gear_num=units;
     } else if (rall="Lexicanum"){
         req_armour="";
         req_armour_num=0;
@@ -66,8 +83,22 @@ function calculate_equipment_needs(){
         }
     }
 
-    if (rall=obj_ini.role[100][6]){req_armour="Dreadnought";req_armour_num=units;req_wep1=obj_ini.wep1[100,6];req_wep1_num=units;req_wep2=obj_ini.wep2[100,6];req_wep2_num=units;}
-    if (rall=$"Venerable {obj_ini.role[100][6]}"){req_armour="";req_armour_num=0;req_wep1="";req_wep1_num=0;req_wep2="";req_wep2_num=0;}
+    if (rall=obj_ini.role[100][6]){
+    	req_armour="Dreadnought";
+    	req_armour_num=units;
+    	req_wep1=obj_ini.wep1[100,6];
+    	req_wep1_num=units;
+    	req_wep2=obj_ini.wep2[100,6];
+    	req_wep2_num=units;
+    }
+    if (rall=$"Venerable {obj_ini.role[100][6]}"){
+    	req_armour="";
+    	req_armour_num=0;
+    	req_wep1="";
+    	req_wep1_num=0;
+    	req_wep2="";
+    	req_wep2_num=0;
+    }
 
 
     var unit_armour;

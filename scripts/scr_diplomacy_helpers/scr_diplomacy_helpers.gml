@@ -25,6 +25,19 @@ function relationship_hostility_matrix(faction){
 }
 
 function alter_disposition(faction, alter_value){
+    switch (giveto){
+        case eFACTION.Eldar:
+        case eFACTION.Tau:
+        case eFACTION.Ork:
+            if (scr_has_disadv("Tolerant")) {
+                alter_value++;
+            }
+            break;
+        case eFACTION.Ecclesiarchy:
+            if (scr_has_adv("Guardians")) {
+                alter_value+=2;
+            }
+    } 
     obj_controller.disposition[faction] = clamp(obj_controller.disposition[faction]+alter_value, -100, 100);
 }
 

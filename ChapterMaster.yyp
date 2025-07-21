@@ -820,6 +820,7 @@
     {"id":{"name":"scr_get_diag_integer","path":"scripts/scr_get_diag_integer/scr_get_diag_integer.yy",},},
     {"id":{"name":"scr_get_diag_string","path":"scripts/scr_get_diag_string/scr_get_diag_string.yy",},},
     {"id":{"name":"scr_get_item_names","path":"scripts/scr_get_item_names/scr_get_item_names.yy",},},
+    {"id":{"name":"scr_gift_items","path":"scripts/scr_gift_items/scr_gift_items.yy",},},
     {"id":{"name":"scr_gov_disp","path":"scripts/scr_gov_disp/scr_gov_disp.yy",},},
     {"id":{"name":"scr_ground_ai_helpers","path":"scripts/scr_ground_ai_helpers/scr_ground_ai_helpers.yy",},},
     {"id":{"name":"scr_has_adv","path":"scripts/scr_has_adv/scr_has_adv.yy",},},

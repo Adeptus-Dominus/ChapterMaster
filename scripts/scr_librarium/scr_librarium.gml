@@ -253,20 +253,7 @@ function scr_librarium(){
                     }
 
                     if (artifact_gift.draw_shutter(xx + 575, yy + 770, "GIFT", 0.3, true)){
-                        //show_debug_message("Clicked");
-                        var chick=false;
-                        //list of all giftable factions enum numbers
-                        var giftable_factions = [eFACTION.Imperium, eFACTION.Mechanicus,eFACTION.Inquisition,eFACTION.Ecclesiarchy,eFACTION.Eldar,eFACTION.Tau]
-                        for (var i = 0; i < array_length(giftable_factions); i++){
-                            var gift_faction = giftable_factions[i];
-                            if (known[gift_faction] && !faction_defeated[gift_faction]) then chick=true;
-                        }
-
-                        if (chick){
-                            var pop=instance_create(0,0,obj_popup);
-                            pop.type=9;
-                            cooldown=8;
-                        }                   
+                    setup_gift_artifact_popup()
                     }
                     if (artifact_destroy.draw_shutter(xx + 765, yy + 770, "DESTROY", 0.3, true)){
                         // Below here cleans up the artifacts

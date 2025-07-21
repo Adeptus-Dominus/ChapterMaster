@@ -45,6 +45,8 @@ press=0;
 reset=0;
 demand=0;
 
+subtype = 0;
+
 company=0;
 target_comp=-1;
 target_role=0;
