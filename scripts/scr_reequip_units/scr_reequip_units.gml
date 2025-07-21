@@ -227,7 +227,7 @@ function draw_popup_equip(){
 
 	main_slate.draw_with_dimensions();
 	draw_set_color(CM_GREEN_COLOR);
-	draw_text(1302, 145, "Change Equipment");
+	draw_text(1302, 150, "Change Equipment");
 
 	draw_set_font(fnt_40k_12);
 	var comp = "";
@@ -237,11 +237,13 @@ function draw_popup_equip(){
 		comp = "HQ";
 	}
 
-	if (vehicle_equipment == 0) {
-		draw_text(1292, 170, $"{comp} Company, {units} Marines");
+	if (vehicle_equipment < 6) {
+		draw_text(1292, 175, $"{comp} Company, {units} Marines");
+	}else if (vehicle_equipment == 6) {
+		draw_text(1292, 175, $"{comp} Company, {units} Dreadnoughts");
 	}
-	if (vehicle_equipment == 1) {
-		draw_text(1292, 170, $"{comp} Company, {units} Vehicles");
+	else {
+		draw_text(1292, 175, $"{comp} Company, {units} Vehicles");
 	}
 
 	draw_set_halign(fa_left);
@@ -371,8 +373,7 @@ function draw_popup_equip(){
 			_area_change = true;
 		}
 		if (equipmet_area == i) {
-			draw_text(1292, 195 + (20 * i+1), "->");
-			break;
+			draw_text(1292, 195 + (20 * (i+1)), "->");
 		}
 	}
 
@@ -683,11 +684,13 @@ function draw_popup_equip(){
 
 	cancel_button.draw();
 
-	var _valid = ((n_good1 + n_good2 + n_good3 + n_good4) == 4);
+	var _valid = ((n_good1 + n_good2 + n_good3 + n_good4 + n_good5) == 5);
 
-	if (reequip_selection){
-			equip_button.draw(_valid);
+
+	if (equip_button.draw(_valid)){
+		reequip_selection();
 	}
+
 }
 
 
