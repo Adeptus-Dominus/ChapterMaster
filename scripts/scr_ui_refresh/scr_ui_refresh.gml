@@ -1,10 +1,7 @@
 // Refreshes the UI, reinitializes variables to defaults
 function scr_ui_refresh() {
 
-    man_size = 0;
-    selecting_location = "";
-    selecting_types = "";
-    selecting_ship = -1;
+    reset_manage_selections();
     sel_uid = 0;
 
     reset_manage_arrays();
@@ -14,3 +11,10 @@ function scr_ui_refresh() {
     unload = 0;
     alarm[6] = 7;
 }
+function reset_manage_selections(){
+    selecting_location = "";
+    selecting_types = "";
+    selecting_planet = 0;
+    selecting_ship = -1;
+    man_size = 0;
+};

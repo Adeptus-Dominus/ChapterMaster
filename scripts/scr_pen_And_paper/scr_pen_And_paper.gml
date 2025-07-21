@@ -87,10 +87,10 @@ function PenAndPaperSim() constructor{
 		var _reroll = test_rerollable(unit, stat);
 		difficulty_mod+=evaluate_tags(unit, tags);
 		var random_roll = irandom_range(1,100);
-		if (_reroll && random_roll>=unit[$ stat]+difficulty_mod){
+		if (_reroll && random_roll >= unit[$ stat]+difficulty_mod){
 			random_roll = irandom_range(1,100);
 		}
-		if (random_roll<unit[$ stat]+difficulty_mod){
+		if (random_roll < unit[$ stat]+difficulty_mod){
 			passed = true;
 			margin = unit[$ stat]+difficulty_mod - random_roll;
 		} else{ 

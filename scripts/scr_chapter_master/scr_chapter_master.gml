@@ -7,6 +7,7 @@ function scr_chapter_master() constructor{
 	static get_struct = function(){
 		return fetch_unit([0,0]);
 	}
+
 }
 
 function cm_obj(){

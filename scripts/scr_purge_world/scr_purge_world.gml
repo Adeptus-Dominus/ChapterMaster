@@ -279,12 +279,12 @@ function scr_purge_world(star, planet, action_type, action_score) {
     
 	    txt+="What is thy will?";
     
-	    var he;he=instance_create(star.x,star.y,obj_temp6);
+	    var he=instance_create(star.x,star.y,obj_temp6);
 	    var pip=instance_create(0,0,obj_popup);
 	    pip.title="Planetary Governor Assassinated";
 	    pip.text=txt;
 	    pip.planet=planet;
-	    pip.p_data = new PlanetData(panet,star);
+	    pip.p_data = new PlanetData(planet,star);
     
 	    pip.option1="Allow the official successor to become Planetary Governor.";
 	    pip.option2="Ensure that a sympathetic successor will be the one to rule.";
@@ -300,7 +300,9 @@ function scr_purge_world(star, planet, action_type, action_score) {
 	    }
 	    // If there are enemy non-chaos forces then they may be used as a cover
 	    // Does not work with chaos because if the governor dies, with chaos present, the new governor would possibly be investigated
-	    if (star.p_orks[planet]>=4) or (star.p_necrons[planet]>=3) or (star.p_tyranids[planet]>=5) then pip.estimate=pip.estimate*0.5;
+	    if (star.p_orks[planet]>=4) or (star.p_necrons[planet]>=3) or (star.p_tyranids[planet]>=5){
+	    	pip.estimate=pip.estimate*0.5;
+	    }
 	}
 
 

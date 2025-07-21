@@ -170,8 +170,8 @@ function scr_perils_table(perils_strength, unit, psy_discipline, power_name, uni
 						}
 					}
 				}
-				unit.alter_equipment({wep1: "", wep2: "", armour: "", gear: "", mobi: ""}, false, false);
-				var flavour_text2 = "A massive shockwave eminates from the marine, who is knocked out cold!  All of his equipment is destroyed!";
+				unit.add_equipment_repairs(EquipmentSlot.ALL);
+				var flavour_text2 = "A massive shockwave eminates from the marine, who is knocked out cold!  All of his equipment is damaged!";
 				return flavour_text2;
 			}
 		],

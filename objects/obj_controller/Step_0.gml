@@ -437,12 +437,12 @@ try {
             var unit = "";
             yy += 77;
         }
-        if (is_struct(temp[120])) {
+        if (is_struct(unit_focus)) {
             var ach = 0,
                 damage_res = 1,
                 armour_value = 0;
             // Checks if the marine is not hidden
-            var unit = temp[120];
+            var unit = unit_focus;
             if (!is_array(last_unit)) {
                 last_unit = [0, 0];
             }
@@ -795,7 +795,7 @@ try {
                 }
                 unit_id = unit.marine_number;
                 company = unit.company;
-                obj_ini.loc[company][unit_id] = obj_ini.ship_location[b];
+                unit.location_string = obj_ini.ship_location[b];
                 unit.ship_location = -1;
                 unit.planet_location = unload;
                 obj_ini.uid[company][unit_id] = 0;
@@ -837,10 +837,7 @@ try {
     }
     // Resets selections
     if ((managing > 0) && (man_size == 0) && ((selecting_location != "") || (selecting_types != "") || (selecting_planet != 0) || (selecting_ship != -1))) {
-        selecting_location = "";
-        selecting_types = "";
-        selecting_planet = 0;
-        selecting_ship = -1;
+        reset_manage_selections();
     }
 
     if (menu == 0  && !instances_exist([obj_ncombat,obj_fleet_controller])){

@@ -304,7 +304,7 @@ if (inspection_type="inspect_world") or (inspection_type="inspect_fleet"){
             for (var ca=0;ca<11;ca++){
                 for (var ia=0;ia<500;ia++){
                     unit = fetch_unit([ca,ia]);
-                    if (obj_ini.loc[ca][ia]==that.name){
+                    if (unit.location_string==that.name){
                         if (unit.role()="Ork Sniper") and (obj_ini.race[ca,ia]!=1){hurr+=1;sniper+=1;}
                         if (unit.role()="Flash Git") and (obj_ini.race[ca,ia]!=1){hurr+=1;git+=1;}
                         if (unit.role()="Ranger") and (obj_ini.race[ca,ia]!=1){hurr+=1;finder+=1;}

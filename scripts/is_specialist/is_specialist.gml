@@ -352,12 +352,22 @@ function collect_by_religeon(religion, sub_cult="", location=""){
 /// @description Processes the selection of units based on group parameters and updates controller data
 /// @param {array} group The array of units to process for selection
 /// @param {struct} selection_data Data structure containing selection parameters and state
+
+enum MissionSelectType {
+	Units,
+	Squads
+}
+
+
 function group_selection(group, selection_data) {
     try {
         var unit, s, unit_location;
         obj_controller.selection_data = selection_data;
         set_zoom_to_default();
         with(obj_controller) {
+        	if (menu != MENU.Manage){
+        		scr_toggle_manage();
+        	}
             basic_manage_settings();
             with(obj_fleet_select) {
                 instance_destroy();
@@ -369,20 +379,11 @@ function group_selection(group, selection_data) {
             exit_button = new ShutterButton();
             proceed_button = new ShutterButton();
             selection_data.start_count = 0;
+            if (!struct_exists(selection_data, "select_type")){
+            	selection_data.select_type = MissionSelectType.Units;
+            }
             // Resets selections for next turn
-            man_size = 0;
-            selecting_location = "";
-            selecting_types = "";
-            selecting_ship = -1;
-            selecting_planet = 0;
-            sel_uid = 0;
-            reset_manage_arrays();
-            alll = 0;
-            cooldown = 10;
-            sel_loading = -1;
-            unload = 0;
-            alarm[6] = 7;
-            view_squad = false;
+            scr_ui_refresh();
             managing = -1;
             new_company_struct();
             var vehicles = [];
@@ -416,6 +417,13 @@ function group_selection(group, selection_data) {
             other_manage_data();
             man_current = 0;
             man_max = MANAGE_MAN_MAX;
+
+            if (selection_data.select_type == MissionSelectType.Squads){
+            	new_company_struct();
+            	company_data.has_squads = true;
+            	company_data.squad_location = selection_data.system.name;
+            	company_data.squad_search();
+            }
         }
     } catch (_exception) {
         //handle and send player back to map

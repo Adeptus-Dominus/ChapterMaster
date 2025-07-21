@@ -71,9 +71,9 @@ try {
                 for (var co=0;co<=10;co++){
                     for (var i=0;i<array_length(obj_ini.TTRPG[co]);i++){
                         good=0;
-                        unit = fetch_unit([co,i]);
-                        if (unit.role()=="" || obj_ini.loc[co][i]!=name) then continue;
-                        if (unit.planet_location==floor(chaos_meeting)) then good+=1;
+                        _unit = fetch_unit([co,i]);
+                        if (_unit.role()=="" || _unit.location_string!=name) then continue;
+                        if (_unit.planet_location==floor(chaos_meeting)) then good+=1;
                         if (obj_ini.role[co][i]!=obj_ini.role[100][6]) and (obj_ini.role[co][i]!="Venerable "+string(obj_ini.role[100][6])) then good+=1;
                         if (string_count("Dread",obj_ini.armour[co][i])=0) or (obj_ini.role[co][i]==obj_ini.role[100][eROLE.ChapterMaster]) then good+=1;
                         
@@ -197,8 +197,11 @@ try {
                 }
                 if (battle_special="study2b"){
                     battle_object.p_necrons[battle_id]=5;
-    				 awaken_tomb_world( battle_object.p_feature[battle_id])
-                    obj_controller.disposition[3]-=15;obj_controller.disposition[4]-=5;
+    				awaken_tomb_world( battle_object.p_feature[battle_id]);
+                    alter_dispositions([
+                        [eFACTION.Mechanicus, -15],
+                        [eFACTION.Inquisition, -5],
+                    ]);
                     scr_popup("Mechanicus Mission Failed","All of your Astartes and the Mechanicus Research party have been killed down to the last man.  The research is a bust.  To make matters worse the Necron Tomb has fully awakened- countless numbers of the souless machines are now pouring out of the tomb.  The Adeptus Mechanicus are furious with your chapter.","necron_army","");
                     scr_alert("","inqi","The Inquisition is displeased with your Chapter for tampering with and awakening a Necron Tomb",0,0);
                     scr_event_log("","The Inquisition is displeased with your Chapter for tampering with and awakening a Necron Tomb");
@@ -348,25 +351,30 @@ try {
                     image="necron_tunnels_2";
                     text="The energy readings are much stronger, now that your marines are deep inside the tunnels.  What was once cramped is now luxuriously large, the tunnel ceiling far overhead decorated by stalactites.";
                 }
-                if (obj_temp8.stage=3){
+                else if (obj_temp8.stage=3){
                     image="necron_tunnels_3";
                     text="After several hours of descent the entrance to the Necron Tomb finally looms ahead- dancing, sickly green light shining free.  Your marine confirms that the Plasma Bomb is ready.";
                 }
-                if (obj_temp8.stage=4){
+                else if (obj_temp8.stage=4){
                     if (obj_temp8.stage>=4){
                         instance_activate_object(obj_star);
                         image="";
                         title="Inquisition Mission Completed";
                         text="Your marines finally enter the deepest catacombs of the Necron Tomb.  There they place the Plasma Bomb and arm it.  All around are signs of increasing Necron activity.  With half an hour set, your men escape back to the surface.  There is a brief rumble as the charge goes off, your mission a success.";
-                        option1="";option2="";option3="";
+                        reset_popup_options();
                         
-                        if (obj_controller.demanding=0) then obj_controller.disposition[4]+=1;
-                        if (obj_controller.demanding=1) then obj_controller.disposition[4]+=choose(0,0,1);
+                        alter_disposition(eFACTION.Inquisition, obj_controller.demanding ? choose(0,0,1) : 1);
                         
                         // show_message(string(obj_temp8.loc)+"."+string(obj_temp8.wid));
                         // obj_controller.temp[200]=obj_temp8.loc;
-                        with(obj_star){if (name!=obj_temp8.loc) then instance_deactivate_object(id);}
-                        with(obj_star){if (name=obj_temp8.loc) then instance_create(x,y,obj_temp5);}
+                        with(obj_star){
+                            if (name!=obj_temp8.loc) then instance_deactivate_object(id);
+                        }
+                        with(obj_star){
+                            if (name=obj_temp8.loc){
+                                instance_create(x,y,obj_temp5);
+                            }
+                        }
                         
                         var star = star_by_name(obj_temp8.loc)
                         var planet = obj_temp8.wid
@@ -379,7 +387,7 @@ try {
 					    seal_tomb_world(star.p_feature[planet]);
 
     
-                        pip.option1="";pip.option2="";pip.option3="";
+                        reset_popup_options();
                         scr_event_log("","Inquisition Mission Completed: Your Astartes have sealed the Necron Tomb on "+string(star.name)+" "+string(scr_roman(planet))+".");
                         scr_gov_disp(star.name,planet,choose(1,2,3,4,5));
                         
@@ -418,11 +426,11 @@ try {
         // title / text / image / speshul
         var cur_star = obj_turn_end.battle_object[obj_turn_end.current_battle];
         var planet = obj_turn_end.battle_world[obj_turn_end.current_battle]
-        var planet_string = scr_roman_numerals()[planet-1];
+        var _planet_string = scr_roman_numerals()[planet-1];
             
         remove_planet_problem(planet ,"spyrer",cur_star)
         
-        var tixt=$"The Spyrer on {cur_star.name} {planet_string} has been removed.  The citizens and craftsman may sleep more soundly, the Inquisition likely pleased."
+        var tixt=$"The Spyrer on {cur_star.name} {_planet_string} has been removed.  The citizens and craftsman may sleep more soundly, the Inquisition likely pleased."
     
         scr_popup("Inquisition Mission Completed",tixt,"spyrer","");
         
@@ -433,9 +441,35 @@ try {
         scr_gov_disp(cur_star.name,planet,choose(1,2,3,4));
         
         instance_deactivate_object(obj_star);
+    } else if (battle_special == "protect_raiders"){
+        instance_activate_object(obj_star);
+        // show_message(obj_turn_end.current_battle);
+        // show_message(obj_turn_end.battle_world[obj_turn_end.current_battle]);
+        // title / text / image / speshul
+        var cur_star = battle_object;
+        var planet = battle_id;
+        var _planet = new PlanetData(planet,cur_star);
+        var _planet_string = _planet.name();
+        _planet.remove_problem("protect_raiders");
+        if (!defeat){
+                
+            _planet.add_disposition(15);
+            var _special_reward = 0;
+            var tixt=$"The Raiding forces on {_planet_string} have been removed.  The citizens and craftsman may sleep more soundly. (planet disp +15)"
+        
+            scr_popup("Planet Protected",tixt,"protect_raiders","");
+            scr_event_log("",$"Governor Request completed: Raiding forces on {_planet_string} have been eliminated.", cur_star.name);            
+            instance_deactivate_object(obj_star);    
+        } else {
+            _planet.add_disposition(-15);
+            var tixt=$"The Raiding forces on {_planet_string} dispatched with your forces and will continue with their bloody practices.  The citizens remain unsafe and the governor is unimpressed. (planet disp -15)";
+            scr_popup("Planet Protected",tixt,"protect_raiders","");
+        
+            scr_event_log("",$"Governor Request failed: Raiding forces on {_planet_string} continue to harrass population.", cur_star.name);
+        }   
     }
     
-    if ((string_count("fallen",battle_special)>0)) and (defeat=0){
+    else if ((string_count("fallen",battle_special)>0)) and (defeat=0){
         var fallen=0;
         with (obj_turn_end){
             remove_planet_problem(battle_world[current_battle], "fallen", battle_object[current_battle])
@@ -443,15 +477,17 @@ try {
             tixt+=scr_roman(battle_world[current_battle]);
             scr_event_log("",$"Mission Succesful: {tixt} have been captured or purged.");
             tixt+=$" have been captured or purged.  They shall be brought to the Chapter {obj_ini.role[100][14]}s posthaste, in order to account for their sins.  ";
-            var ran;ran=choose(1,1,2,3);
-            if (ran=1) then tixt+="Suffering is the beginning to penance.";
-            if (ran=2) then tixt+="Their screams shall be the harbringer of their contrition.";
-            if (ran=3) then tixt+="The shame they inflicted upon us shall be written in their flesh.";
+            var _tex_options = [
+                "Suffering is the beginning to penance.",
+                "Their screams shall be the harbringer of their contrition.",
+                "The shame they inflicted upon us shall be written in their flesh."
+            ]
+            tixt += _tex_options[choose(0,0,1,2)];
             scr_popup("Hunt the Fallen Completed",tixt,"fallen","");        
         }
     }
     
-    if (defeat=0) and (enemy=9) and (battle_special="tyranid_org"){
+    else if (defeat=0) and (enemy=9) and (battle_special="tyranid_org"){
         if (captured_gaunt>1){
             pop=instance_create(0,0,obj_popup);
             pop.image="inquisition";
@@ -468,7 +504,7 @@ try {
     
     
     
-    if (enemy=1) and (on_ship=true) and (defeat=0){
+    else if (enemy=1) and (on_ship=true) and (defeat=0){
         var diceh=roll_dice_chapter(1, 100, "high");
                 
         if (diceh<=15){
@@ -484,8 +520,8 @@ try {
             var pop=instance_create(0,0,obj_popup);
             pop.image="";
             pop.title="Ship Destroyed";
-            pop.text="A handful of loyalist "+string(global.chapter_name)+" make a fighting retreat to the engine of the vessel, '"+string(obj_ini.ship[battle_id])+"', and then overload the main reactor.  Your ship explodes in a brilliant cloud of fire.";
-            scr_event_log("red","A handful of loyalist "+string(global.chapter_name)+" overload the main reactor of your vessel '"+string(obj_ini.ship[battle_id])+"'.");
+            pop.text=$"A handful of loyalist {global.chapter_name} make a fighting retreat to the engine of the vessel, '"+string(obj_ini.ship[battle_id])+"', and then overload the main reactor.  Your ship explodes in a brilliant cloud of fire.";
+            scr_event_log("red",$"A handful of loyalist {global.chapter_name} overload the main reactor of your vessel '"+string(obj_ini.ship[battle_id])+"'.");
             pop.mission="loyalist_destroy_ship";
 
             scr_ini_ship_cleanup();
@@ -513,7 +549,8 @@ try {
                 obj_turn_end.combating=0;// obj_turn_end.alarm[1]=1;
             }
             var pip;pip=instance_create(0,0,obj_popup);
-            pip.title="Enemies Vanquished";pip.text="Not only have you killed the Chaos Lord, "+string(obj_controller.faction_leader[eFACTION.Chaos])+", but also all of your battle brothers that questioned your rule.  As you stand, alone, among the broken corpses of your enemies you begin to question what exactly it is that you accomplished.  No matter the results, you feel as though your actions have been noticed.";
+            pip.title="Enemies Vanquished";
+            pip.text="Not only have you killed the Chaos Lord, "+string(obj_controller.faction_leader[eFACTION.Chaos])+", but also all of your battle brothers that questioned your rule.  As you stand, alone, among the broken corpses of your enemies you begin to question what exactly it is that you accomplished.  No matter the results, you feel as though your actions have been noticed.";
         }
     }
     
@@ -522,7 +559,8 @@ try {
             obj_controller.complex_event=false;obj_controller.diplomacy=0;obj_controller.menu=0;
             obj_controller.force_goodbye=0;obj_controller.cooldown=20;
             obj_controller.current_eventing="chaos_meeting_end";
-            with(obj_temp_meeting){instance_destroy();}with(obj_popup){instance_destroy();}
+            with(obj_temp_meeting){instance_destroy();}
+            with(obj_popup){instance_destroy();}
             if (instance_exists(obj_turn_end)){
                 obj_turn_end.combating=0;// obj_turn_end.alarm[1]=1;
             }
@@ -532,11 +570,11 @@ try {
         }
     
         if ((battle_special="cs_meeting_battle5") or (battle_special="cs_meeting_battle6")) and (defeat=0){
-            var mos;mos=false;
+            var mos=false;
             
             with(obj_ground_mission){instance_destroy();}
             with(obj_pnunit){
-                var j;j=0;
+                var j=0;
                 repeat(300){j+=1;
                     if (marine_type[j]="Master of Sanctity") then instance_create(0,0,obj_ground_mission);
                 }
@@ -556,7 +594,11 @@ try {
                 obj_controller.complex_event=false;obj_controller.diplomacy=0;obj_controller.menu=0;
                 obj_controller.force_goodbye=0;obj_controller.cooldown=20;
                 obj_controller.current_eventing="chaos_meeting_end";
-                with(obj_temp_meeting){instance_destroy();}with(obj_popup){instance_destroy();}
+                with(obj_temp_meeting){
+                    instance_destroy();
+                }with(obj_popup){
+                    instance_destroy();
+                }
                 if (instance_exists(obj_turn_end)){
                     obj_turn_end.combating=0;// obj_turn_end.alarm[1]=1;
                 }
@@ -576,7 +618,7 @@ try {
                 ship[i]=obj_ini.ship[i];ship_hp[i]=obj_ini.ship_hp[i];
                 if (i=battle_id){obj_ini.ship_hp[i]=-50;scr_recent("ship_destroyed",obj_ini.ship[i],i);}
             }
-            var pop;pop=instance_create(0,0,obj_popup);
+            var pop=instance_create(0,0,obj_popup);
             pop.image="";
             pop.title="Ship Destroyed";
             pop.text="The daemon has slayed all of your marines onboard.  It works its way to the engine of the vessel, '"+string(obj_ini.ship[battle_id])+"', and then tears into the main reactor.  Your ship explodes in a brilliant cloud of fire.";
@@ -596,13 +638,13 @@ try {
         }
         
         if (hulk_treasure=1){// Requisition
-            var reqi=round(random_range(30,60)+1)*10;
-            obj_controller.requisition+=reqi;
+            var _reqi=irandom_range(30,60)*10;
+            obj_controller.requisition+=_reqi;
             
             var pop;pop=instance_create(0,0,obj_popup);
             pop.image="space_hulk_done";
             pop.title="Space Hulk: Resources";
-            pop.text="Your battle brothers have located several luxury goods and coginators within the Space Hulk.  They are salvaged and returned to the ship, granting "+string(reqi)+" Requisition.";
+            pop.text=$"Your battle brothers have located several luxury goods and coginators within the Space Hulk.  They are salvaged and returned to the ship, granting {_reqi} Requisition.";
         }else if (hulk_treasure=2){// Artifact
             //TODO this will eeroniously put artifacts in the wrong place but will resolve crashes
             var last_artifact = scr_add_artifact("random","random",4,loc,shi+500);
@@ -652,8 +694,9 @@ try {
             }
             if (!instance_exists(obj_turn_end)){
                 scr_event_log("","Enemy Leader Assassinated: Chaos Lord");
-                var pop;pop=instance_create(0,0,obj_popup);
-                pop.image="";pop.title="Black Crusade Ended";
+                var pop=instance_create(0,0,obj_popup);
+                pop.image="";
+                pop.title="Black Crusade Ended";
                 pop.text="The Chaos Lord "+string(obj_controller.faction_leader[eFACTION.Chaos])+" has been slain in combat.  Without his leadership the Black Crusade is destined to crumble apart and disintegrate from infighting.  Sector "+string(obj_ini.sector_name)+" is no longer at threat by the forces of Chaos.";
             }
         }

@@ -139,7 +139,7 @@ function is_orbiting(){
 	return false;
 }
 
-function set_fleet_movement(fastest_route = true, new_action="move"){
+function set_fleet_movement(fastest_route = true, new_action="move", minimum_eta=1, maximum_eta = 1000){
 
 	action = "";
 
@@ -184,15 +184,15 @@ function set_fleet_movement(fastest_route = true, new_action="move"){
 	        } else if (owner  = eFACTION.Inquisition) and (action_eta<2) and (string_count("_her",trade_goods)=0){
 	        	action_eta=2;
 	        }
-	        
-	        if (owner != eFACTION.Eldar && mine.storm) then action_eta+=10000;
+	        if (is_orbiting()){
+	        	if (owner != eFACTION.Eldar && mine.storm) then action_eta+=10000;
+	        }
 	        
 	        // action_x=sys.x;
 	        // action_y=sys.y;
 	        orbiting = false;
 	        action=new_action;
-	      	minimum_eta=1;
-	        if (minimum_eta>action_eta) and (minimum_eta>0) then action_eta=minimum_eta;
+	      	action_eta = clamp(action_eta, minimum_eta, maximum_eta)
 		}
 	}
 }
@@ -208,7 +208,7 @@ function load_unit_to_fleet(fleet, unit){
 		  if (obj_ini.ship_capacity[ship_ident]>obj_ini.ship_carrying[ship_ident]){
 		  	obj_ini.ship_carrying[ship_ident]+=unit.size;
 		  	unit.planet_location=0;
-		  	obj_ini.loc[unit.company][unit.marine_number]=obj_ini.ship_location[ship_ident];
+		  	unit.location_string=obj_ini.ship_location[ship_ident];
 		  	unit.ship_location=ship_ident;
 		  	loaded=true;
 		  	break
@@ -495,14 +495,14 @@ function fleet_arrival_logic(){
     
     
     if (owner == eFACTION.Mechanicus){
-        if (string_count("spelunk1",trade_goods)=1){
+        if (trade_goods == "mars_spelunk1"){
             trade_goods="mars_spelunk2";
             action_x=home_x;
             action_y=home_y;
             action_eta=52;
+            action = "move";
             exit;
-        }
-        if (string_count("spelunk2",trade_goods)=1){
+        } else  if (trade_goods == "mars_spelunk2"){
             // Unload techmarines nao plz
             scr_mission_reward("mars_spelunk",instance_nearest(home_x,home_y,obj_star),1);
             instance_destroy();

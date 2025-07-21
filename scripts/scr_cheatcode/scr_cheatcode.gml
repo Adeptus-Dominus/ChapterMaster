@@ -141,8 +141,13 @@ function scr_cheatcode(argument0) {
 
 				case "mechmission":
 					show_debug_message("mech_mission");
-					spawn_mechanicus_mission();
-          break;
+
+					if (array_length(cheat_arguments)){
+						spawn_mechanicus_mission(cheat_arguments[0]);
+					} else {
+						spawn_mechanicus_mission();
+					}
+         		 break;
 
 				case "inquismission": 
 					var mission = cheat_arguments[0];
@@ -236,6 +241,12 @@ function scr_cheatcode(argument0) {
 						strange_build_event();
 					}else if (cheat_arguments[0] == "factionenemy"){
 						make_faction_enemy_event();
+					}else if (cheat_arguments[0] == "stopall"){
+						obj_controller.last_event = 1000000;
+						show_debug_message($"last event : {obj_controller.last_event}")
+					}else if (cheat_arguments[0] == "startevents"){
+						obj_controller.last_event = 0;
+						show_debug_message($"last event : {obj_controller.last_event}")
 					}else {
 						with (obj_controller) {
 							scr_random_event(false);

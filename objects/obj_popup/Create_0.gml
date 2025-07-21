@@ -15,10 +15,7 @@ fancy_title=0;
 text_center=0;
 text="";
 text2="";
-option1="";
-option2="";
-option3="";
-option4="";
+reset_popup_options();
 pathway="";
 option1enter=false;
 option2enter=false;
@@ -59,11 +56,7 @@ all_good=0;
 prev_selected = 0;
 
 new_target=0;
-function reset_popup_option(){
-    option1 = "";
-    option2 = "";
-    option3 = "";
-}
+
 if (instance_exists(obj_controller)){obj_controller.cooldown=8000;}
 number=0;
 company_promote_data = [
@@ -82,12 +75,7 @@ company_promote_data = [
 
 for (var i=0;i<=10;i++){i+=1;role_name[i]="";role_exp[i]=0;}
 
-reset_options = function(){
-     option1="";
-    option2="";
-    option3="";
-    option4="";   
-}
+
 
 // TODO: connect this logic with the other_manage_data() to reduce verboseness;
 get_unit_promotion_options = function(){

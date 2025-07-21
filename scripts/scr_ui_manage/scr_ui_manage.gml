@@ -136,10 +136,12 @@ function alternative_manage_views(x1, y1) {
         keystroke: keyboard_check_pressed(ord("S"))
     });
 
-    if (_squad_button.draw(!text_bar)) {
-        view_squad = !view_squad;
-        if (view_squad) {
-            new_company_struct();
+    if (company_data.has_squads){
+        if (_squad_button.draw(!text_bar)) {
+            view_squad = !view_squad;
+            if (view_squad) {
+                new_company_struct();
+            }
         }
     }
 
@@ -182,8 +184,8 @@ function draw_sprite_and_unit_equip_data(){
         var yy = company_data.unit_ui_panel.YY;
         // draw_line(xx+1005,yy+519,xx+1576,yy+519);
         draw_set_font(fnt_40k_14b);
-        if (is_struct(obj_controller.temp[120])) {
-            var selected_unit = obj_controller.temp[120]; //unit struct
+        if (is_struct(obj_controller.unit_focus)) {
+            var selected_unit = obj_controller.unit_focus; //unit struct
             ///tooltip_text stacks hover over type tooltips into an array and draws them last so as not to create drawing order issues
             draw_set_color(c_red);
             var no_other_instances = !instance_exists(obj_temp3) && !instance_exists(obj_popup);
@@ -539,10 +541,7 @@ function scr_ui_manage() {
             squad_sel_action = -1;
         }
         if (man_size < 1) {
-            selecting_location = "";
-            selecting_ship = -1;
-            selecting_planet = 0;
-            man_size = 0;
+            reset_manage_selections();
         }
         var unit, x1, x2, x3, y1, y2, y3, text;
         var tooltip_text = "", bionic_tooltip = "";
@@ -593,6 +592,9 @@ function scr_ui_manage() {
             if (struct_exists(selection_data, "purpose")) {
                 draw_text(xx + 800, yy + 74, $"{selection_data.purpose}");
             }
+            if (selection_data.select_type == MissionSelectType.Squads){
+                view_squad = true;
+            }
         }
 
         if (managing <= 10 && managing > 0) {
@@ -628,13 +630,11 @@ function scr_ui_manage() {
 
         // var we;we=string_width(string(global.chapter_name)+" "+string(fx))/2;
 
-        if (managing > 0) {
+        if (managing >= 0) {
             // Draw arrows
             draw_sprite_ext(spr_arrow, 0, xx + 25, yy + 70, 2, 2, 0, c_white, 1); // Back
             draw_sprite_ext(spr_arrow, 0, xx + 429, yy + 70, 2, 2, 0, c_white, 1); // Left
             draw_sprite_ext(spr_arrow, 1, xx + 1110, yy + 70, 2, 2, 0, c_white, 1); // Right
-        } else {
-            scr_manage_task_selector();
         }
         var right_ui_block = {
             x1: xx + 1008,
@@ -934,8 +934,8 @@ function scr_ui_manage() {
 
                 button.label = "Reload";
                 //button.keystroke = (keyboard_check(vk_shift) && (keyboard_check_pressed(ord("F"))));
-                if (instance_exists(obj_controller) && is_struct(obj_controller.temp[120])) {
-                    var selected_unit = obj_controller.temp[120];
+                if (instance_exists(obj_controller) && is_struct(obj_controller.unit_focus)) {
+                    var selected_unit = obj_controller.unit_focus;
                     button.tooltip = $"{selected_unit.last_ship.name}"; //Press Shift F";
                 }
                 reload_possible = man_size > 0 && sel_loading == -1;
@@ -1215,8 +1215,8 @@ function scr_ui_manage() {
             draw_set_color(#3f7e5d);
             scr_scrollbar(974, 172, 1005, 790, 34, man_max, man_current);
         }
-        if (instance_exists(obj_controller) && is_struct(obj_controller.temp[120])) {
-            var selected_unit = obj_controller.temp[120];
+        if (instance_exists(obj_controller) && is_struct(obj_controller.unit_focus)) {
+            var selected_unit = obj_controller.unit_focus;
             if ((selected_unit.name() != "") && (selected_unit.race() != 0)) {
                 draw_set_alpha(1);
                 var xx = __view_get(e__VW.XView, 0) + 0, yy = __view_get(e__VW.YView, 0) + 0;

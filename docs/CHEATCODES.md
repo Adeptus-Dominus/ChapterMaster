@@ -47,8 +47,18 @@ Arguments with stars `(argument*)` can be omitted.
     - `surfremove` - triggers inquisition surf removal
     - `strangebuild` - triggers strange build event
     - `factionenemy` - triggers the made a faction enemy event
+    - `stopall` - stops random events
+    - `startevents` - restart random events
 - `inquisarti` - triggers the Artifact Loan quest.
-- `govmission` - spawns governor missions on all planets.
+- `govmission (mission*)` - spawns governor missions on all planets. run with a mission name to spawn a particular mission
+    - `provide_garrison`
+    - `join_communion` 
+    - `hunt_beast`
+    - `protect_raiders` 
+    - `recover_artifacts`
+    - `purge_enemies`    
+    - `raid_black_market`
+    - `show_of_power`
 - `inquismission (mission*)` - triggers an inquisition mission. You must have met the inquisition for this to work
     - `planet` - investigate planet mission
     - `purge` - purge planet mission
@@ -58,6 +68,10 @@ Arguments with stars `(argument*)` can be omitted.
     - `ethereal` - not implemented yet
     - `tyranid_organism` - capture tyranis mission
     - `demon` clear demon world mission. Requires at least one planet to have demons on it
+- `mechmission (mission*)` - triggers a mechaniicus mission, can be run as is or with an optional missiono parameter to specify a particular mission
+    - `mech_mars`
+    - `mech_raider`
+    - `mech_bionics`
 
     
 ### Disposition:

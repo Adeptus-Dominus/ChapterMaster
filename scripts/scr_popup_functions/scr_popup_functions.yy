@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"scr_battle_roster",
+  "%Name":"scr_popup_functions",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_battle_roster",
+  "name":"scr_popup_functions",
   "parent":{
-    "name":"Combat",
-    "path":"folders/Scripts/Combat.yy",
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

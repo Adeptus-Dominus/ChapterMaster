@@ -51,6 +51,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 	    var area_height = main_slate.height;
 	    var generic = false;
 	    var title="", body="";
+	    var _button_tooltip = "";
 	    //draw_glow_dot(xx+150, yy+150);
 	    //rack_and_pinion(xx+230, yy+170);
 	    var rectangle = [];
@@ -243,6 +244,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 						break;
 					case "hunt_beast":
 						mission_description=$"The governor of {planet_name} has bemoaned the raiding of huge beasts on the fringes of the planets largest city, the numbers have swelled recently and are causing huge damage to the planets small economy. You could send a force to intervene, it would provide a fine test of metal for any that partake.";
+						help = "This is a good opportunity to provide experience and training, having at least one marine with experience in such matters would be advisable";
 						button_text = "Send Hunters";
 						button_function = function(){
 							var dudes = collect_role_group("all", obj_star_select.target.name);
@@ -261,7 +263,24 @@ function FeatureSelected(Feature, system, planet) constructor{
 						break;
 					case "protect_raiders":
 						mission_description=$"The governor of {planet_name} has sent many requests to the sector commander for help with defending against xenos raids on the populace of the planet, the reports seem to suggest the xenos in question are in fact dark elder.";
-						help = "Set a squad to ambush ";
+						help = "Set a squad to ambush";
+						button_text = "Send Squad";
+						_button_tooltip = "milage may vary on playability of this mission progress at your own risk";
+						button_function = function(){
+							var dudes = collect_role_group("all", obj_star_select.target.name);
+							group_selection(dudes,{
+								purpose:"Select Squad for Ambush",
+								purpose_code : feature.problem,
+								number:1,
+								system:planet_data.system,
+								feature:obj_star_select.feature,
+								planet : planet_data.planet,
+								array_slot : feature.array_position,
+								select_type : MissionSelectType.Squads,
+								selections : []
+							});
+							destroy=true;
+						}						
 						break;
 					case "train_forces":
 						mission_description=$"The governor of {planet_name} fears the planet will not hold in the case of major incursion, it has not seen war in some time and he fears the ineptitude of the commanders available, he asks for aid in planning a thorough plan for defense and schedule of works for a period of at least 6 months.";
@@ -297,7 +316,11 @@ function FeatureSelected(Feature, system, planet) constructor{
 				}
 				
 				if (button_text!="none"){
-					if (point_and_click(draw_unit_buttons([xx+((area_width/2)-(string_width(button_text)/2)), yy+40+text_body_height+10], button_text))){
+					var _button = draw_unit_buttons([xx+((area_width/2)-(string_width(button_text)/2)), yy+40+text_body_height+10], button_text);
+					if (_button_tooltip != "" && scr_hit(_button)){
+						tooltip_draw(_button_tooltip);
+					}
+					if (point_and_click(_button)){
 						if (is_callable(button_function)){
 							button_function();
 							destroy=true;
