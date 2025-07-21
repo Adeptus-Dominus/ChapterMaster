@@ -1192,8 +1192,6 @@ try{
 catch(_exception){
     global.star_name_colors[1] = make_color_rgb(col_r[1],col_g[1],col_b[1]);
 }
-//Specialist Colour restrictions handling
-specialist_colours_locked = true;
 
 #region save/load serialization 
 
