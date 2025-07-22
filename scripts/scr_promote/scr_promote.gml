@@ -176,7 +176,7 @@ function setup_promotion_popup(){
 	        	width : 571,
 	        	height : 350,
 	        });
-	        target_company_radio();
+	        target_company_radio(min_exp);
 	    }
     }
 }

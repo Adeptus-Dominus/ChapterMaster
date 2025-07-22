@@ -546,6 +546,37 @@ function ArtifactStruct(Index) constructor {
         obj_ini.artifact_equipped[index] = false;
     };
 
+    static equip_on_unit = function(unit, slot=-1){
+        var _item  = determine_base_type();
+        if (_item == "mobility"){
+            unit.update_mobility_item(index);
+        } else if (_item == "gear"){
+            unit.update_gear(index);
+        } else if (_item == "armour"){
+            unit.update_armour(index);
+        } else if (_item == "weapon"){
+            if (slot == -1 || slot == 0){
+                unit.update_weapon_one(index);
+            } else {
+                unit.update_weapon_two(index);
+            }
+        }
+        if (arti.has_tag("daemonic") || arti.has_tag("chaos")) {
+            unit.corruption += irandom(10 + 2);
+            if (unit.role() == obj_ini.role[100][eROLE.ChapterMaster]) {
+                dwarn = true;
+            }
+        }
+        if (dwarn == true) {
+            var pip = instance_create(0, 0, obj_popup);
+            pip.title = "Daemon Artifacts";
+            pip.text = "Some artifacts, like the one you now wield, are a blasphemous union of the Materium's matter and the Immaterium's spirit, containing the essence of a bound daemon.  While they may offer great power, and enhanced perception, they are known to whisper poisonous lies to the wielder.  The path to damnation begins with good intentions, and many times artifacts such as these have been the cause.";
+            pip.image = "";
+            pip.cooldown = 8;
+            obj_controller.cooldown = 8;
+        }
+    }
+
     custom_data = {};
     name = "";
     custom_description = "";
@@ -556,16 +587,19 @@ function ArtifactStruct(Index) constructor {
 
 function corrupt_artifact_collectors(last_artifact) {
     try {
-        var arti = obj_ini.artifact_struct[last_artifact];
+        var arti = fetch_artifact(last_artifact);
         if (arti.inquisition_disprove()) {
             for (var i = 0; i < array_length(obj_controller.display_unit); i++) {
+                var _unit = obj_controller.display_unit[i];
                 if (obj_controller.man_sel[i] == 1) {
                     if (obj_controller.man[i] == "man") {
-                        if (is_struct(obj_controller.display_unit[i])) {
-                            obj_controller.display_unit[i].edit_corruption(choose(0, 2, 4, 6, 8));
+                        if (is_struct(_unit)) {
+                            _unit.edit_corruption(choose(0, 2, 4, 6, 8));
                         }
-                    } else if (obj_controller.man[i] == "vehicle" && is_array(obj_controller.display_unit[i])) {
-                        obj_ini.veh_chaos[obj_controller.display_unit[i][0]][obj_controller.display_unit[i][1]] += choose(0, 2, 4, 6, 8);
+                    } else if (obj_controller.man[i] == "vehicle" && is_array(_unit)) {
+                        var _val = get_deep_array(obj_ini.veh_chaos,_unit)
+                        _val += choose(0, 2, 4, 6, 8);
+                        alter_deep_array(obj_ini.veh_chaos,_unit, _val) 
                     }
                 }
             }
@@ -575,6 +609,9 @@ function corrupt_artifact_collectors(last_artifact) {
     }
 }
 
+function fetch_artifact(index){
+    return obj_ini.artifact_struct[index];
+}
 function delete_artifact(index) {
     if (index < array_length(obj_ini.artifact)) {
         with(obj_ini) {
@@ -588,9 +625,72 @@ function delete_artifact(index) {
             artifact_equipped[index] = false;
             artifact_struct[index] = new ArtifactStruct(index);
         }
+        /*for (var i=index;i<array_length(artifact_struct);i++){
+            var _arti = artifact_struct[i];
+            if (artifact_equipped[index]){
+
+            }
+        }*/
         obj_controller.artifacts -= 1;
         with(obj_controller) {
             set_chapter_arti_data();
         }
     }
+}
+
+
+function equip_artifact_popup_setup(){
+    instance_destroy(obj_popup);
+    var pop=instance_create(0,0,obj_popup);
+    pop.type=POPUP_TYPE.ARTIFACT_EQUIP;
+    cooldown=8; 
+    with (pop){
+        target_company_radio(10000);
+        main_slate = new DataSlate({
+            style : "decorated",
+            XX : 945,
+            YY : 66,
+            set_width : true,
+            width : 635,
+            height : 400,
+        });
+        companies_select.current_selection = -1;
+        companies_select.YY = 110;
+        cancel_button = new UnitButtonObject(
+            {
+                x1: 945, 
+                y1: main_slate.YY+main_slate.height, 
+                style : "pixel",
+                label : "Cancel"
+            }
+        );
+    } 
+}
+
+function equip_artifact_popup_draw(){
+    arti = obj_ini.artifact_struct[obj_controller.menu_artifact];
+    main_slate.draw_with_dimensions();
+    draw_set_color(CM_GREEN_COLOR);
+    draw_set_font(fnt_40k_14b);
+    draw_set_halign(fa_center);
+    draw_text(951 + 312, 48 + 26, $"Equip Artifact ({arti.name})");
+    draw_set_font(fnt_40k_12);
+    draw_set_halign(fa_left);
+    companies_select.draw();
+    if (companies_select.changed){
+        var _company_marines = collect_role_group("all", "", false, {companies:companies_select.current_selection});
+        var _selec_data = {
+            purpose_code : "artifact_equip",
+            number : 1,
+            purpose :$"Equip Artifact ({obj_ini.artifact[obj_controller.menu_artifact]})",
+            artifact : obj_controller.menu_artifact,
+        }
+        group_selection(_company_marines, _selec_data);
+        instance_destroy();
+    }
+
+    if (cancel_button.draw()){
+        instance_destroy();
+    }
+
 }

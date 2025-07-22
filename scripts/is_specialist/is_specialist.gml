@@ -359,7 +359,7 @@ enum MissionSelectType {
 }
 
 
-function group_selection(group, selection_data) {
+function group_selection(group, selection_data={}) {
     try {
         var unit, s, unit_location;
         obj_controller.selection_data = selection_data;
@@ -367,8 +367,9 @@ function group_selection(group, selection_data) {
         with(obj_controller) {
         	if (menu != MENU.Manage){
         		scr_toggle_manage();
+        	} else {
+        		basic_manage_settings();
         	}
-            basic_manage_settings();
             with(obj_fleet_select) {
                 instance_destroy();
             }
@@ -379,6 +380,7 @@ function group_selection(group, selection_data) {
             exit_button = new ShutterButton();
             proceed_button = new ShutterButton();
             selection_data.start_count = 0;
+           	instance_destroy(obj_managment_panel);
             if (!struct_exists(selection_data, "select_type")){
             	selection_data.select_type = MissionSelectType.Units;
             }

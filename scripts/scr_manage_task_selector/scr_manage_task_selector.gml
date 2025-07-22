@@ -2,6 +2,13 @@
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 function scr_manage_task_selector(){
 	if (exit_button.draw_shutter(400,70, "Exit", 0.5, true)){
+		if (selection_data.purpose_code == "artifact_equip"){
+			scr_toggle_lib();
+			obj_controller.menu_artifact = selection_data.artifact;
+			equip_artifact_popup_setup();
+			exit;
+		}
+
 		if (is_real(selection_data.system) && selection_data.system <= 10 && selection_data.system >= 0){
 	        managing = selection_data.system;
 			update_general_manage_view();
@@ -173,6 +180,12 @@ function task_selector_man_manage(){
     				obj_controller.close_popups = false;
 	                exit_adhoc_manage();
 	                exit;
+	               	break;
+	            case "artifact_equip":
+	               	scr_toggle_lib();
+	               	var _arti = fetch_artifact(selection_data.artifact);
+	               	_arti.equip_on_unit(_unit);
+	               	exit;
 	               	break;
     		}		                		
     	} else {

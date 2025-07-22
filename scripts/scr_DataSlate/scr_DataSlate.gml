@@ -60,12 +60,12 @@ function DataSlate(data={}) constructor{
 			case "decorated":
 				draw_sprite_stretched(spr_data_slate_back, 0, XX,YY, width, height);
 				draw_sprite_stretched(spr_slate_side, 0, XX,YY, width, height);
-				draw_rectangle_color_simple(xx,YY, XX+width,YY+height, 0, blend_col, 0.05);
+				draw_rectangle_color_simple(XX,YY, XX+width,YY+height, 0, blend_col, 0.05);
 				break;
 
 			case "plain":
 				draw_sprite_stretched(spr_data_slate_back, 0, XX,YY, width, height);
-				draw_rectangle_color_simple(xx,YY, XX+width,YY+height, 0, blend_col, 0.05);				
+				draw_rectangle_color_simple(XX,YY, XX+width,YY+height, 0, blend_col, 0.05);				
 				break;
 		}
 
@@ -105,6 +105,8 @@ function DataSlate(data={}) constructor{
 				break;
 
 		}
+		x2 = XX+width;
+		y2 = YY+height;
 	}
 
 	static draw_cut = function(xx,yy, scale_x=1, scale_y=1, middle_percent=percent_cut){

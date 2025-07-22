@@ -437,7 +437,7 @@ try {
 			var contraband = [];
 			for (var i = 0; i < array_length(obj_ini.artifact_struct); i++) {
 				if (obj_ini.artifact != "") {
-					arti = obj_ini.artifact_struct[i];
+					arti = fetch_artifact(i);
 					if (arti.inquisition_disaprove()) {
 						array_push(contraband, i);
 					}

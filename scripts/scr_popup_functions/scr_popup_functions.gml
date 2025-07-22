@@ -4,6 +4,7 @@
 enum POPUP_TYPE {
 	PROMOTION = 5,
 	EQUIP = 6,
+	ARTIFACT_EQUIP = 8,
 	ITEM_GIFT = 9,
 	FLEET_MOVE = 99,
 }
@@ -180,4 +181,198 @@ function calculate_equipment_needs(){
     if (req_mobi="") or (req_mobi_num<=have_mobi_num) then all_good+=0.3;
     return floor(all_good);
 
+}
+
+
+
+function defualt_popup_image_index(){
+	var _img = -1;
+	if (image == "") {
+		_img = -1;
+	}
+	else if (image == "orks") {
+		_img = 0;
+	}
+	else if (image == "tau") {
+		_img = 1;
+	}
+	else if (image == "chaos") {
+		_img = 2;
+	}
+	else if (image == "shadow") {
+		_img = 3;
+	}
+	else if (image == "distinguished") {
+		_img = 4;
+	}
+	else if (image == "tech_build") {
+		_img = 5;
+	}
+	else if (image == "sororitas") {
+		_img = 6;
+	}
+	else if (image == "angry") {
+		_img = 7;
+	}
+	else if (image == "gene_bad") {
+		_img = 8;
+	}
+	else if (image == "lost_warp") {
+		_img = 10;
+	}
+	else if (image == "Warp") {
+		_img = 11;
+	}
+	else if (image == "crusade") {
+		_img = 12;
+	}
+	else if (image == "fuklaw") {
+		_img = 13;
+	}
+	if ((image == "artifact") || (image == "artifact2")) {
+		_img = 14;
+	}
+	else if (image == "artifact_recovered") {
+		_img = 15;
+	}
+	else if (image == "artifact_given") {
+		_img = 15;
+	}
+	else if (image == "waaagh") {
+		_img = 16;
+	}
+	else if (image == "shipyard") {
+		_img = 17;
+	}
+	else if (image == "inquisition") {
+		_img = 18;
+	}
+	else if (image == "succession") {
+		_img = 19;
+	}
+	else if (image == "rogue_trader") {
+		_img = 20;
+	}
+	else if (image == "necron_tomb") {
+		_img = 21;
+	}
+	else if (image == "webber") {
+		_img = 22;
+	}
+	else if (image == "spyrer") {
+		_img = 23;
+	}
+	else if (image == "fortress") {
+		_img = 24;
+	}
+	else if (image == "fortress_hive") {
+		_img = 25;
+	}
+	else if (image == "fortress_death") {
+		_img = 26;
+	}
+	else if (image == "fortress_ice") {
+		_img = 27;
+	}
+	else if (image == "fortress_lava") {
+		_img = 28;
+	}
+	else if (image == "fortress_dorf") {
+		_img = 29;
+	}
+	else if (image == "exploding_ship") {
+		_img = 30;
+	}
+	else if (image == "necron_cave") {
+		_img = 31;
+	}
+	else if (image == "exterminatus_new") {
+		_img = 32;
+	}
+	else if (image == "necron_tunnels_1") {
+		_img = 33;
+	}
+	else if (image == "necron_tunnels_2") {
+		_img = 34;
+	}
+	else if (image == "necron_tunnels_3") {
+		_img = 35;
+	}
+	else if (image == "necron_army") {
+		_img = 36;
+	}
+	else if (image == "harlequin") {
+		_img = 37;
+	}
+	else if (image == "black_rage") {
+		_img = 39;
+	}
+	else if (image == "exterminatus") {
+		_img = 40;
+	}
+	else if (image == "stc") {
+		_img = 41;
+	}
+	else if (image == "thallax") {
+		_img = 42;
+	}
+	else if (image == "space_hulk_done") {
+		_img = 44;
+	}
+	else if (image == "ancient_ruins") {
+		_img = 45;
+	}
+	else if (image == "geneseed_lab") {
+		_img = 47;
+	}
+	else if (image == "ruins_bunker") {
+		_img = 48;
+	}
+	else if (image == "ruins_fort") {
+		_img = 49;
+	}
+	else if (image == "ruins_ship") {
+		_img = 50;
+	}
+	else if (image == "fallen") {
+		_img = 51;
+	}
+	else if (image == "debug_banshee") {
+		_img = 52;
+	}
+	else if (image == "mechanicus") {
+		_img = 53;
+	}
+	else if (image == "chaos_cultist") {
+		_img = 54;
+	}
+	else if (image == "chaos_symbol") {
+		_img = 55;
+	}
+	else if (image == "chaos_messenger") {
+		_img = 56;
+	}
+	else if (image == "event_feast") {
+		_img = 57;
+	}
+	else if (image == "event_tournament") {
+		_img = 58;
+	}
+	else if (image == "event_deathmatch") {
+		_img = 59;
+	}
+	else if (image == "event_mass") {
+		_img = 60;
+	}
+	else if (image == "event_ccult") {
+		_img = 61;
+	}
+	else if (image == "event_crelic") {
+		_img = 62;
+	}
+	else if (image == "event_march") {
+		_img = 63;
+	}
+
+	return _img;
 }

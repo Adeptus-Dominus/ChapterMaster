@@ -239,9 +239,7 @@ function scr_librarium(){
                         if (_can_equip){
                             if (artifact_equip.draw_shutter(xx + 385, yy + 770, "EQUIP", 0.3,true)){
                                 if (_can_equip && !instance_exists(obj_popup)){
-                                    var pop=instance_create(0,0,obj_popup);
-                                    pop.type=8;
-                                    cooldown=8;                            
+                                    equip_artifact_popup_setup();                           
                                 }
         
                             }

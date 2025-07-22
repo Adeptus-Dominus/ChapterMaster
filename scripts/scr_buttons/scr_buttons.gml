@@ -1,11 +1,35 @@
+
+global.draw_return_stack = [];
+function add_draw_return_values(){
+	var _vals = {
+		cur_alpha : draw_get_alpha(),
+		cur_font : draw_get_font(),
+		cur_color : draw_get_color(),
+		cur_halign : draw_get_halign(),
+		cur_valign : draw_get_valign(),	
+	}
+	array_push(global.draw_return_stack, _vals);
+}
+
+function pop_draw_return_values(){
+	var _array_length = array_length(global.draw_return_stack);
+	if (_array_length>0){
+		var _index = _array_length-1;
+		var _values = global.draw_return_stack[_index];
+		draw_set_alpha(_values.cur_alpha);
+		draw_set_font(_values.cur_font);
+		draw_set_color(_values.cur_color);
+		draw_set_halign(_values.cur_halign);
+		draw_set_valign(_values.cur_valign);
+		array_delete(global.draw_return_stack, _index, 1);
+	}	
+}
+
+
 function draw_unit_buttons(position, text, size_mod=[1.5,1.5],colour=c_gray,_halign=fa_center, font=fnt_40k_14b, alpha_mult=1, bg=false, bg_color=c_black){
 	// TODO: fix halign usage
 	// Store current state of all global vars
-	var cur_alpha = draw_get_alpha();
-	var cur_font = draw_get_font();
-	var cur_color = draw_get_color();
-	var cur_halign = draw_get_halign();
-	var cur_valign = draw_get_valign();
+	add_draw_return_values();
 
 	draw_set_font(font);
 	draw_set_halign(fa_center);
@@ -40,11 +64,7 @@ function draw_unit_buttons(position, text, size_mod=[1.5,1.5],colour=c_gray,_hal
 	}
 
 	// Reset all global vars to their previous state
-	draw_set_alpha(cur_alpha);
-	draw_set_font(cur_font);
-	draw_set_color(cur_color);
-	draw_set_halign(cur_halign);
-	draw_set_valign(cur_valign);
+	pop_draw_return_values()
 
 	return [position[0],position[1], x2,y2];
 }
@@ -122,11 +142,7 @@ function UnitButtonObject(data = false) constructor{
 	}
 	static disabled = false;
 	static draw = function(allow_click = true){
-		var cur_alpha = draw_get_alpha();
-		var cur_font = draw_get_font();
-		var cur_color = draw_get_color();
-		var cur_halign = draw_get_halign();
-		var cur_valign = draw_get_valign();
+		add_draw_return_values();
 		if (style = "standard"){
 			var _temp_alpha = alpha;
 			if (disabled){
@@ -184,17 +200,14 @@ function UnitButtonObject(data = false) constructor{
 		} else {
 			return false;
 		}
-		draw_set_alpha(cur_alpha);
-		draw_set_font(cur_font);
-		draw_set_color(cur_color);
-		draw_set_halign(cur_halign);
-		draw_set_valign(cur_valign);	
+		pop_draw_return_values();	
 	}
 }
 
 function PurchaseButton(req) : UnitButtonObject() constructor{
 	req_value = req;
 	static draw = function(allow_click=true){
+		add_draw_return_values();
 		
 		var _but = draw_unit_buttons([x1, y1, x2, y2], label, [1,1],color,,,alpha);
 		var _sh = sprite_get_height(spr_requisition);
@@ -215,7 +228,8 @@ function PurchaseButton(req) : UnitButtonObject() constructor{
 			return clicked
 		} else {
 			return false;
-		}		
+		}
+		pop_draw_return_values();		
 	}
 }
 
@@ -237,6 +251,7 @@ function slider_bar() constructor{
 	    }		
 	}
 	function draw(){
+		add_draw_return_values();
 		if (value<value_limits[0]){
 			value = value_limits[0];
 		}
@@ -267,6 +282,7 @@ function slider_bar() constructor{
 				value = value_limits[0] + (increment_count * value_increments);
 			}
 		}
+		pop_draw_return_values();
 	}
 }
 function TextBarArea(XX,YY,Max_width = 400, requires_input = false) constructor{
@@ -279,6 +295,7 @@ function TextBarArea(XX,YY,Max_width = 400, requires_input = false) constructor{
 	cooloff=0
     // Draw BG
     static draw = function(string_area){
+    	add_draw_return_values();
 		var old_font = draw_get_font();
 		var old_halign = draw_get_halign();
 
@@ -330,11 +347,13 @@ function TextBarArea(XX,YY,Max_width = 400, requires_input = false) constructor{
 		draw_set_halign(old_halign);
 
 		return string_area;
+		pop_draw_return_values();
 	}
 }
 
 
 function drop_down(selection, draw_x, draw_y, options,open_marker){
+	add_draw_return_values();
 	if (selection!=""){
 		var drop_down_area = draw_unit_buttons([draw_x, draw_y],selection,[1,1],c_green);
 		draw_set_color(c_red);
@@ -368,6 +387,7 @@ function drop_down(selection, draw_x, draw_y, options,open_marker){
 		}
 	}
     return [selection,open_marker];
+    pop_draw_return_values();
 }
 
 function multi_select(options_array, title)constructor{
@@ -391,6 +411,7 @@ function multi_select(options_array, title)constructor{
 	}
 	static update = item_data_updater
 	static draw = function(){
+		add_draw_return_values();
 		var _change_method = is_callable(on_change);
 		draw_text(x1, y1, title);
 
@@ -423,6 +444,7 @@ function multi_select(options_array, title)constructor{
 				}
 			}
 		}
+		pop_draw_return_values();
 	}
 	static set = function(set_array){
 		for (var s=0;s<array_length(set_array);s++){
@@ -478,6 +500,9 @@ function radio_set(options_array, title, data = {})constructor{
 	move_data_to_current_scope(data, true);
 	static update = item_data_updater;
 	static draw = function(){
+		add_draw_return_values();
+
+		draw_set_halign(fa_center);
 		if (max_width > 0){
 			if (draw_title){
 				draw_text(x1+(max_width/2) - (string_length(draw_title)/2), y1, title);
@@ -521,6 +546,7 @@ function radio_set(options_array, title, data = {})constructor{
 		if (_start_current_selection != current_selection){
 			changed = true;
 		}
+		pop_draw_return_values();
 	}
 
 	static selection_val = function(value){
