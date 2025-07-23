@@ -22,7 +22,7 @@ function get_none_or_any_item_names(_item_names, _with_none=false, _with_any=fal
 /// @param {array} _item_names - The list of ranged weapons to append to.
 /// @returns {void}
 function push_marine_ranged_weapons_item_names(_item_names) {
-    var item_count = 22
+    var item_count = 29;
     var initial_size = array_length(_item_names);
     array_resize(_item_names, initial_size + item_count);
 
@@ -33,6 +33,12 @@ function push_marine_ranged_weapons_item_names(_item_names) {
     _item_names[@ index++] = "Bolter";
     _item_names[@ index++] = "Stalker Pattern Bolter";
     _item_names[@ index++] = "Combiflamer";
+    _item_names[@ index++] = "Combiplasma";
+    _item_names[@ index++] = "Combimelta";
+    _item_names[@ index++] = "Combigrav";
+    _item_names[@ index++] = "Grav-Pistol";
+    _item_names[@ index++] = "Grav-Gun";
+    _item_names[@ index++] = "Grav-Cannon";
     _item_names[@ index++] = "Flamer";
     _item_names[@ index++] = "Heavy Bolter";
     _item_names[@ index++] = "Heavy Flamer";
@@ -44,18 +50,19 @@ function push_marine_ranged_weapons_item_names(_item_names) {
     _item_names[@ index++] = "Missile Launcher";
     _item_names[@ index++] = "Multi-Melta";
     _item_names[@ index++] = "Autocannon";
+    _item_names[@ index++] = "Plasma Cannon";
     _item_names[@ index++] = "Plasma Gun";
     _item_names[@ index++] = "Plasma Pistol";
     _item_names[@ index++] = "Sniper Rifle";
     _item_names[@ index++] = "Storm Bolter";
-    _item_names[@ index++] = "Webber"; // 22
+    _item_names[@ index++] = "Webber"; // 29
 }
 
 /// @description This function returns the hard-coded list of melee weapons.
 /// @param {array} _item_names - The list to append to.
 /// @returns {void}
 function push_marine_melee_weapons_item_names(_item_names) {
-    var item_count = 17;
+    var item_count = 19;
     var initial_size = array_length(_item_names);
     array_resize(_item_names, initial_size + item_count);
 
@@ -66,17 +73,19 @@ function push_marine_melee_weapons_item_names(_item_names) {
     _item_names[@ index++] = "Eviscerator";
     _item_names[@ index++] = "Power Sword";
     _item_names[@ index++] = "Power Axe";
+    _item_names[@ index++] = "Power Spear";
     _item_names[@ index++] = "Power Fist";
     _item_names[@ index++] = "Boltstorm Gauntlet";
     _item_names[@ index++] = "Chainfist";
     _item_names[@ index++] = "Lightning Claw";
     _item_names[@ index++] = "Force Staff";
     _item_names[@ index++] = "Thunder Hammer";
+    _item_names[@ index++] = "Heavy Thunder Hammer";
     _item_names[@ index++] = "Crozius Arcanum";
     _item_names[@ index++] = "Boarding Shield";
     _item_names[@ index++] = "Storm Shield";
     _item_names[@ index++] = "Bolt Pistol";
-    _item_names[@ index++] = "Bolter"; // 17
+    _item_names[@ index++] = "Bolter"; // 19
 }
 
 
