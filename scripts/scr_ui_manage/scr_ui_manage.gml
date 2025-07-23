@@ -99,7 +99,7 @@ function command_slot_prompt(search_params, role_group_params, purpose, purpose_
         purpose: purpose,
         purpose_code: purpose_code,
         number: 1,
-        system: managing,
+        target_company: managing,
         feature: "none",
         planet: 0,
         selections: []

@@ -9,9 +9,12 @@ function scr_manage_task_selector(){
 			exit;
 		}
 
-		if (is_real(selection_data.system) && selection_data.system <= 10 && selection_data.system >= 0){
-	        managing = selection_data.system;
-			update_general_manage_view();
+		if (struct_exists(selection_data, "target_company")){
+			if (is_real(selection_data.target_company) && selection_data.target_company <= 10 && selection_data.target_company >= 0){
+		        managing = selection_data.target_company;
+				update_general_manage_view();
+				exit;
+			}
 		} else {
 			exit_adhoc_manage();
 			exit;
@@ -69,14 +72,14 @@ function task_selector_man_manage(){
         			_unit.update_role(obj_ini.role[100][eROLE.Captain]);
         			_unit.squad="none";
         			var _start_company = _unit.company;
-        			var _end_company =  selection_data.system;
+        			var _end_company =  selection_data.target_company;
         			var _endslot = find_company_open_slot(end_company);
         			scr_move_unit_info(_start_company, _end_company, _unit.marine_number,_endslot);
         			with (obj_ini){
         				scr_company_order(start_company);
-        				scr_company_order(end_company);
+        				scr_company_order(_end_company);
         			}
-        			managing = end_company;
+        			managing = _end_company;
         			update_general_manage_view();
         			exit;
     				break;
@@ -88,7 +91,7 @@ function task_selector_man_manage(){
         				scr_company_order(_unit.company);
         			}
 
-        			managing = selection_data.system;
+        			managing = selection_data.target_company;
         			update_general_manage_view();
         			exit;
     				break;
@@ -101,14 +104,14 @@ function task_selector_man_manage(){
         				scr_company_order(_unit.company);
         			}
 
-        			managing = selection_data.system;
+        			managing = selection_data.target_company;
         			update_general_manage_view();
         			exit;
     				break;
 				case "chaplain_promote":
         			_unit.squad="none";
         			var start_company = _unit.company;
-        			var end_company =  selection_data.system;
+        			var end_company =  selection_data.target_company;
         			var endslot = find_company_open_slot(end_company);
         			scr_move_unit_info(start_company, end_company, _unit.marine_number,endslot);
         			with (obj_ini){
@@ -122,7 +125,7 @@ function task_selector_man_manage(){
 				case "apothecary_promote":
         			_unit.squad="none";
         			var start_company = _unit.company;
-        			var end_company =  selection_data.system;
+        			var end_company =  selection_data.target_company;
         			var endslot = find_company_open_slot(end_company);
         			scr_move_unit_info(start_company, end_company, _unit.marine_number,endslot);
         			with (obj_ini){
@@ -136,7 +139,7 @@ function task_selector_man_manage(){
 				case "tech_marine_promote":
         			_unit.squad="none";
         			var start_company = _unit.company;
-        			var end_company =  selection_data.system;
+        			var end_company =  selection_data.target_company;
         			var endslot = find_company_open_slot(end_company);
         			scr_move_unit_info(start_company, end_company, _unit.marine_number,endslot);
         			with (obj_ini){
@@ -150,7 +153,7 @@ function task_selector_man_manage(){
 				case "librarian_promote":
         			_unit.squad="none";
         			var start_company = _unit.company;
-        			var end_company =  selection_data.system;
+        			var end_company =  selection_data.target_company;
         			var endslot = find_company_open_slot(end_company);
         			scr_move_unit_info(start_company, end_company, _unit.marine_number,endslot);
         			with (obj_ini){

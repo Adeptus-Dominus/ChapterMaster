@@ -224,8 +224,9 @@ function roll_dice_unit(dices = 1, faces = 6, player_benefit_at, unit) {
 function stat_average(units, stat){
 	var _tally = 0;
 	for (var i=0;i<array_length(units);i++){
-		_tally += units[$ stat];
+		_tally += units[i][$ stat];
 	}
+
 
 	return (_tally / array_length(units));
 }

@@ -270,6 +270,13 @@ function scr_toggle_lib() {
                 artifact_destroy = new ShutterButton();
                 artifact_namer = new TextBarArea(xx + 622, yy + 460, 350);
                 set_chapter_arti_data();
+                artifact_slate = new DataSlate({
+                    set_width : true,
+                    XX : 392,
+                    YY : 500,
+                    width : 460,
+                    height : 240,
+                })
             } 
         }
     });

@@ -88,6 +88,36 @@ try {
 			instance_destroy();
 		}
 		exit;
+	} else if (pathway == "protect_raiders_disappear"){
+		if (press == 1){
+			title = "Captains Disgruntled";
+			options1 = "continue";
+			pathway = "";
+			var _caps = scr_role_count(obj_ini.roles[100][eROLE.Captain]);
+			var _worst = -1;
+			var _worst_hit  = -1;
+			for (var i=0;i<array_length(_caps);i++){
+				if (!irandom(2)){
+					var _cap = _caps[i];
+					var _loyalty_hit = irandom(6);
+					if (_loyalty_hit>_worst_hit){
+						_worst_hit = _loyalty_hit;
+						_worst = i;
+					}
+				}
+			}
+			
+			if (_worst == -1){
+				text = "You are able to convince your captains of the strategic need to cover up the incidence, various excuses are made and fake logs that cove up the disaster of the mission"
+			} else {
+				text = "Not all of your captains are convinced of the need to use deciet and a noen have breached the order but it has soured your relations with a few namelly {_caps[_worst].name_role()}"
+			}
+		} else if (press == 2){
+			reset_popup_options();
+			options1 = "continue";
+			_pdata.add_disposition(-30);
+			text = "You prepare to have a large public memorial for your fallen marines on the planet surface as a show of defiance. The chapter are pleased by such an act and the population of the planet are mesmirised by the spectacle. The governor is furious not only has his incompetance to deal with the planets xenoos issue been made public in such a way that the sector commander has now heard about it but he perceives his failures are being paraded in font of him\n nGovernor Disposition : -30";
+		}
 	}
 
 	if ((image == "debug_banshee") && (cooldown <= 0)) {

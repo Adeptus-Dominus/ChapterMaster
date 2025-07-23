@@ -425,8 +425,10 @@ function group_selection(group, selection_data={}) {
             	company_data.has_squads = true;
             	company_data.squad_location = selection_data.system.name;
             	company_data.squad_search();
+            	managing = -1;
             }
         }
+		obj_controller.menu = MENU.Manage;
     } catch (_exception) {
         //handle and send player back to map
         handle_exception(_exception);

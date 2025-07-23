@@ -214,6 +214,8 @@ if (menu == 1) {
 
 } else if (menu == MENU.Armamentarium) {
     scr_draw_armentarium_gui();
+} else if (menu == MENU.Librarium){
+    scr_librarium_gui();
 }
 
 
