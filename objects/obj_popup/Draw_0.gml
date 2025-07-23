@@ -133,7 +133,7 @@ try {
 		// if (image!="") then draw_text_ext(x1+126+150,y1+152,string(text),-1,384-150);
 		// if (text2!="") then draw_text_ext(x1+126,y1+309,string(text2),-1,384);
 		// TODO change this into an array in a function (like romanNumerals does in here)
-		var img = defualt_popup_image_index();
+		var img = default_popup_image_index();
 
 
 		if ((img != -1) && (image != "") && (image_wid > 0)) {

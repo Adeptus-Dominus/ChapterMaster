@@ -61,7 +61,7 @@ function setup_promotion_popup(){
 		                moveable=true;
 		                unit = obj_controller.display_unit[i];
 		                if (unit.squad != "none"){   // this evaluates if you are trying promote a whole squad
-		                    move_squad = unit.squad;
+		                    var move_squad = unit.squad;
 		                    squad = obj_ini.squads[move_squad];
 		                    squad.update_fulfilment();
 		                    move_members = squad.members;
@@ -193,7 +193,7 @@ function target_company_radio(min_exp=0){
 		if (obj_controller.command_set[2] == 1) {
 			//cecks if exp requirements are activated
 			if (min_exp < company_promote_data[i].exp) {
-				var _dont_add = true;
+				_dont_add = true;
 			}
 		}
 		if (!_dont_add){

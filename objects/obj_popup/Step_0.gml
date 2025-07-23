@@ -108,15 +108,15 @@ try {
 			}
 			
 			if (_worst == -1){
-				text = "You are able to convince your captains of the strategic need to cover up the incidence, various excuses are made and fake logs that cove up the disaster of the mission"
+				text = $"You are able to convince your captains of the strategic need to cover up the incidence, various excuses are made and fake logs that cove up the disaster of the mission"
 			} else {
-				text = "Not all of your captains are convinced of the need to use deciet and a noen have breached the order but it has soured your relations with a few namelly {_caps[_worst].name_role()}"
+				text = $"Not all of your captains are convinced of the need to use deceit and a none have breached the order but it has soured your relations with a few namely {_caps[_worst].name_role()}"
 			}
 		} else if (press == 2){
 			reset_popup_options();
 			options1 = "continue";
 			_pdata.add_disposition(-30);
-			text = "You prepare to have a large public memorial for your fallen marines on the planet surface as a show of defiance. The chapter are pleased by such an act and the population of the planet are mesmirised by the spectacle. The governor is furious not only has his incompetance to deal with the planets xenoos issue been made public in such a way that the sector commander has now heard about it but he perceives his failures are being paraded in font of him\n nGovernor Disposition : -30";
+			text = $"You prepare to have a large public memorial for your fallen marines on the planet surface as a show of defiance. The chapter are pleased by such an act and the population of the planet are mesmerized by the spectacle. The governor is furious not only has his incompetence to deal with the planets xenos issue been made public in such a way that the sector commander has now heard about it but he perceives his failures are being paraded in font of him\n nGovernor Disposition : -30";
 		}
 	}
 

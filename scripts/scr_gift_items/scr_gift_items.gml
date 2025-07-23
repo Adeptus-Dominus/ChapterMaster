@@ -6,7 +6,7 @@ function draw_gift_items_popup(){
 	draw_set_halign(fa_center);
 	draw_set_color(c_gray);
 
-	var ch = "", inq_hide = 0;
+	var inq_hide = 0;
 	if (subtype == 0) {
 		if (array_contains(obj_ini.artifact_tags[obj_controller.menu_artifact], "inq")) {
 			if (array_contains(obj_controller.quest, "artifact_loan")) {

@@ -27,7 +27,7 @@ function set_up_equip_popup(){
 	                else if (ma_role[f]=="Predator") {vih=52;}
 	                else if (ma_role[f]=="Land Speeder") { vih=53;}
 	                else if (ma_role[f]=="Whirlwind") {vih=54;}
-	                prev_role = ma_role[f]=="Whirlwind";
+	                prev_role = ma_role[f];
 	            }
 	        } else {
 	            if (vih==1 || vih==6){
@@ -533,7 +533,7 @@ function draw_popup_equip(){
 					if (obj_controller.man_sel[g] == 1 && is_struct(obj_controller.display_unit[g])) {
 						if (obj_controller.display_unit[g].experience < weapon_two_data.req_exp) {
 							exp_check = 1;
-							n_good1 = 0;
+							n_good2 = 0;
 							warning = $"A unit must have {weapon_two_data.req_exp}+ EXP to use a {weapon_two_data.name}.";
 							break;
 						}
@@ -589,7 +589,7 @@ function draw_popup_equip(){
 						if (obj_controller.man_sel[g] == 1 && is_struct(obj_controller.display_unit[g])) {
 							if (obj_controller.display_unit[g].experience < armour_data.req_exp) {
 								exp_check = 1;
-								n_good1 = 0;
+								n_good3 = 0;
 								warning = $"A unit must have {armour_data.req_exp}+ EXP to use a {armour_data.name}.";
 								break;
 							}

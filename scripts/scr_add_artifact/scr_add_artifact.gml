@@ -611,6 +611,9 @@ function corrupt_artifact_collectors(last_artifact) {
 }
 
 function fetch_artifact(index){
+    if (index < 0 || index >= array_length(obj_ini.artifact_struct)) {
+       return undefined;
+    }
     return obj_ini.artifact_struct[index];
 }
 function delete_artifact(index) {

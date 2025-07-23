@@ -196,6 +196,7 @@ function init_protect_raider_mission(squad){
 		var _mission_data = variable_clone(selection_data);
 		if (_wis_test[1] < -25){
 			scr_toggle_manage();
+			var gar_pop = instance_create(0, 0, obj_popup);			
 		    gar_pop.title=$"Strange Disappearance";
 		    gar_pop.pathway = "protect_raiders";
 		    gar_pop.pdata = _pdata;
@@ -220,6 +221,8 @@ function init_protect_raider_mission(squad){
 		    gar_pop.option1="Suppress the Information";
 		    gar_pop.option2="Hold a Memorial";			
 		} else {
+			scr_toggle_manage();
+			var gar_pop = instance_create(0, 0, obj_popup);		
 		    gar_pop.title=$"Ineffective Ambush";
 		    gar_pop.text=$"Your Marines Are ineffective at setting up an ambush the assailants clearly got wind of the operation or the plan was otherwise so ill thought out that by the time your forces arrived there was little that could be done to intercept them";
 		    //pip.image="event_march"

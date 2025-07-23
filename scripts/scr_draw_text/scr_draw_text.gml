@@ -121,7 +121,7 @@ function draw_text_shadow(_x, _y, _text){
 
 function calc_text_scale_confines(text, width, buffer){
     var _scale = 1;
-    var _string_width = string_width(string);
+    var _string_width = string_width(text);
     if (_string_width > (width - buffer)){
         _scale = (width - buffer)/_string_width
     }

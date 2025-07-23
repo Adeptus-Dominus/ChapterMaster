@@ -185,7 +185,7 @@ function calculate_equipment_needs(){
 
 
 
-function defualt_popup_image_index(){
+function default_popup_image_index(){
 	var _img = -1;
 	if (image == "") {
 		_img = -1;

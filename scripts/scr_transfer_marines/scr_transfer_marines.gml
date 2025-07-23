@@ -1,7 +1,7 @@
 function draw_popup_transfer(){
 	main_slate.draw_with_dimensions();
 	draw_set_color(CM_GREEN_COLOR);
-	draw_text(1292, 145, "Transfering");
+	draw_text(1292, 145, "Transferring");
 
 	draw_set_font(fnt_40k_12);
 	if (((unit_role != obj_ini.role[100, 17]) || (obj_controller.command_set[1] != 0)) && (unit_role != "Lexicanum") && (unit_role != "Codiciery")) {
@@ -26,7 +26,7 @@ function transfer_marines(){
     mahreens = find_company_open_slot(target_comp);
 
     for (w=1;w<101;w++){// Gets the number of vehicles in the target company
-		if (god2=0 and obj_ini.veh_role[target_comp,w]=""){
+		if (god2==0 and obj_ini.veh_role[target_comp,w]=""){
 			god2=1;
 			vehi=w;
 			break;
@@ -41,7 +41,7 @@ function transfer_marines(){
                 moveable=true;
                 unit = obj_controller.display_unit[w];
                 if (unit.squad != "none"){   // this evaluates if you are tryin to move a whole squad and if so moves teh squad to a new company
-                    move_squad = unit.squad;
+                    var move_squad = unit.squad;
                     squad = obj_ini.squads[move_squad];
                     move_members = squad.members;
                     for (var mem = 0;mem<array_length(move_members);mem++){//check all members have been selected and are in the same company

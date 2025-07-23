@@ -81,7 +81,6 @@ function load_marines_into_ship(system, ship, units, reload = false) {
     if (reload == false) {
         menu = 1;
     }
-    cooldown = 8;
     selecting_ship = -1;
     if (managing == -1 && obj_controller.selection_data.purpose != "Ship Management") {
         update_garrison_manage();
@@ -1118,7 +1117,6 @@ function scr_ui_manage() {
                     button.keystroke = false;
                     button.alpha = 1;
                     if (button.draw()) {
-                        cooldown = 8;
                         // scr_load_all(loading); //not sure whether loading was intentional or not
                         sel_all = "all";
                     }

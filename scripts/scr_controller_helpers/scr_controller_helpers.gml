@@ -476,7 +476,6 @@ function scr_end_turn() {
                     with(obj_star_event) {
                         instance_destroy();
                     }
-                    cooldown = 8;
                     audio_play_sound(snd_end_turn, -50, 0);
                     audio_sound_gain(snd_end_turn, master_volume * effect_volume, 0);
 

@@ -469,7 +469,7 @@ try {
         instance_deactivate_object(obj_star);  
     }
     
-    else if ((string_count("fallen",battle_special)>0)) and (defeat==0){
+    else if ((string_count("fallen",battle_special)>0) && defeat==0){
         var fallen=0;
         with (obj_turn_end){
             remove_planet_problem(battle_world[current_battle], "fallen", battle_object[current_battle])

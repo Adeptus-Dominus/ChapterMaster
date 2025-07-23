@@ -25,7 +25,7 @@ function relationship_hostility_matrix(faction){
 }
 
 function alter_disposition(faction, alter_value){
-    switch (giveto){
+    switch (faction){
         case eFACTION.Eldar:
         case eFACTION.Tau:
         case eFACTION.Ork:
