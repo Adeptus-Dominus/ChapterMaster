@@ -313,8 +313,33 @@ function scr_librarium(){
         obj_ini.artifact_struct[menu_artifact].name = artifact_namer.draw(artifact_name); 
         draw_sprite(spr_arrow, 0, xx + 403, yy + 433);
         draw_sprite(spr_arrow, 1, xx + 795, yy + 433);
+        if (instance_exists(obj_p_fleet)) {
+            with(obj_p_fleet) {
+                var _cur_arti = obj_ini.artifact_struct[obj_controller.menu_artifact];
+                var good = 0;
+                for (var i = 0; i <= max(array_length(capital_num),array_length(frigate_num),array_length(escort_num)); i++) {
+                    if (i <= 9 && i<array_length(capital_num)) {
+                        if (capital_num[i] = _cur_arti.ship_id()){
+                            good = 1;
+                        }
+                    } 
+                     if (i<array_length(frigate_num)){
+                        if (frigate_num[i] = _cur_arti.ship_id()){
+                            good = 1;
+                        }
+                    }
+                    if (i<array_length(escort_num)){
+                        if (escort_num[i] = _cur_arti.ship_id()){
+                            good = 1;
+                        }
+                    }
+                }
+                if (good = 1) and(capital_number > 0) then good = 2;
+                if (good = 2) then obj_controller.identifiable = 1;
+            }
+        }
         // Artifact description box
-    }else if (artifacts == 0){
+    } else if (artifacts == 0){
         draw_text(xx + 622, yy + 440, "[No Artifacts]")
         artifact_destroy.draw_shutter(xx + 765, yy + 740, "DESTROY", 0.3, false);
         artifact_equip.draw_shutter(xx + 385, yy + 740, "EQUIP", 0.3, false);
@@ -323,26 +348,6 @@ function scr_librarium(){
     draw_set_color(881503);
     draw_set_halign(fa_center);
 
-    if (instance_exists(obj_p_fleet)) {
-        with(obj_p_fleet) {
-            var good = 0;
-            if (obj_controller.artifacts>0){
-                for (var i = 1; i <= 20; i++) {
-                    if (i <= 9 && i<array_length(capital_num)) {
-                        if (capital_num[i] = cur_arti.ship_id()) then good = 1;
-                    }
-                    if (i<array_length(frigate_num)){
-                        if (frigate_num[i] = cur_arti.ship_id()) then good = 1;
-                    }
-                    if (i<array_length(escort_num)){
-                        if (escort_num[i] = cur_arti.ship_id()) then good = 1;
-                    }
-                }
-            }
-            if (good = 1) and(capital_number > 0) then good = 2;
-            if (good = 2) then obj_controller.identifiable = 1;
-        }
-    }
 
     
 
