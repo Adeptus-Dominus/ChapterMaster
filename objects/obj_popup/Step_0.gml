@@ -41,12 +41,6 @@ try {
 		master_crafted = 0;
 	}
 
-	if ((type == 9.1) && (obj_controller.stc_wargear_un + obj_controller.stc_vehicles_un + obj_controller.stc_ships_un <= 0)) {
-		obj_controller.cooldown = 10;
-		instance_destroy();
-		exit;
-	}
-
 	if ((image == "fuklaw") && (save > 0)) {
 		if (press == 1) {
 			var del = obj_saveload.save[save];
@@ -94,6 +88,36 @@ try {
 			instance_destroy();
 		}
 		exit;
+	} else if (pathway == "protect_raiders_disappear"){
+		if (press == 1){
+			title = "Captains Disgruntled";
+			options1 = "continue";
+			pathway = "";
+			var _caps = scr_role_count(obj_ini.roles[100][eROLE.Captain]);
+			var _worst = -1;
+			var _worst_hit  = -1;
+			for (var i=0;i<array_length(_caps);i++){
+				if (!irandom(2)){
+					var _cap = _caps[i];
+					var _loyalty_hit = irandom(6);
+					if (_loyalty_hit>_worst_hit){
+						_worst_hit = _loyalty_hit;
+						_worst = i;
+					}
+				}
+			}
+			
+			if (_worst == -1){
+				text = $"You are able to convince your captains of the strategic need to cover up the incidence, various excuses are made and fake logs that cove up the disaster of the mission"
+			} else {
+				text = $"Not all of your captains are convinced of the need to use deceit and a none have breached the order but it has soured your relations with a few namely {_caps[_worst].name_role()}"
+			}
+		} else if (press == 2){
+			reset_popup_options();
+			options1 = "continue";
+			_pdata.add_disposition(-30);
+			text = $"You prepare to have a large public memorial for your fallen marines on the planet surface as a show of defiance. The chapter are pleased by such an act and the population of the planet are mesmerized by the spectacle. The governor is furious not only has his incompetence to deal with the planets xenos issue been made public in such a way that the sector commander has now heard about it but he perceives his failures are being paraded in font of him\n nGovernor Disposition : -30";
+		}
 	}
 
 	if ((image == "debug_banshee") && (cooldown <= 0)) {
@@ -443,7 +467,7 @@ try {
 			var contraband = [];
 			for (var i = 0; i < array_length(obj_ini.artifact_struct); i++) {
 				if (obj_ini.artifact != "") {
-					arti = obj_ini.artifact_struct[i];
+					arti = fetch_artifact(i);
 					if (arti.inquisition_disaprove()) {
 						array_push(contraband, i);
 					}
@@ -737,25 +761,6 @@ try {
 
 		instance_destroy();
 		exit;
-	}
-
-	if (type == 6) {
-		// Equipment
-		if (target_comp == 1) {
-			target_role = sel1;
-		}
-		if (target_comp == 2) {
-			target_role = sel2;
-		}
-		if (target_comp == 3) {
-			target_role = sel3;
-		}
-		if (target_comp == 4) {
-			target_role = sel4;
-		}
-		if (target_comp == 5) {
-			target_role = sel5;
-		}
 	}
 
 	if (image == "gene_bad") {
@@ -1542,13 +1547,13 @@ try {
 				obj_controller.exit_all = 1;
 
 				// 135
-				/*there should be a chance for things to go terribly wrong when mission_star give a gift
+				/*there should be a chance for things to go terribly wrong when you give a gift
                 
                 Imperium: if chaos, increase the global corruption of imperial planets a bit?
                 Imperium: if daemonic, the commander goes chaos after a few turns?
                 Mechanicus: if daemonic vastly increases corruption on forge worlds?
-                Ecclesiarchy: if daemonic they get really pissed at mission_star?
-                Eldar: if daemonic they get really pissed at mission_star?
+                Ecclesiarchy: if daemonic they get really pissed at you?
+                Eldar: if daemonic they get really pissed at you?
                 Tau: if daemonic all their worlds get big corruption boosts?*/
 
 				with (obj_ground_mission) {

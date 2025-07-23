@@ -289,6 +289,11 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 		}
 	}
 
+
+	static stat_average = function(stat){
+		
+	}
+
 	static add_type_data = function(data){
 		type_data=data;
 		display_name = type_data[$"display_data"];

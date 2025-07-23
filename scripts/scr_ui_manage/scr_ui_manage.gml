@@ -81,7 +81,6 @@ function load_marines_into_ship(system, ship, units, reload = false) {
     if (reload == false) {
         menu = 1;
     }
-    cooldown = 8;
     selecting_ship = -1;
     if (managing == -1 && obj_controller.selection_data.purpose != "Ship Management") {
         update_garrison_manage();
@@ -99,7 +98,7 @@ function command_slot_prompt(search_params, role_group_params, purpose, purpose_
         purpose: purpose,
         purpose_code: purpose_code,
         number: 1,
-        system: managing,
+        target_company: managing,
         feature: "none",
         planet: 0,
         selections: []
@@ -280,7 +279,7 @@ function draw_sprite_and_unit_equip_data(){
             // Equipment
             var armour = selected_unit.armour();
             if (armour != "") {
-                text = selected_unit.equipments_qual_string("armour", true);
+                text = selected_unit.equipments_qual_string("armour", false);
                 tooltip_text = obj_controller.temp[103];
                 x1 = x_left;
                 y1 = yy + 179;
@@ -293,7 +292,7 @@ function draw_sprite_and_unit_equip_data(){
 
             var gear = selected_unit.gear();
             if (selected_unit.gear() != "") {
-                text = selected_unit.equipments_qual_string("gear", true);
+                text = selected_unit.equipments_qual_string("gear", false);
                 tooltip_text = obj_controller.temp[105];
                 x1 = x_left;
                 y1 = yy + 305;
@@ -305,7 +304,7 @@ function draw_sprite_and_unit_equip_data(){
 
             var mobi = selected_unit.mobility_item();
             if (mobi != "") {
-                text = selected_unit.equipments_qual_string("mobi", true);
+                text = selected_unit.equipments_qual_string("mobi", false);
                 tooltip_text = obj_controller.temp[107];
                 x1 = x_left;
                 y1 = yy + 326;
@@ -317,7 +316,7 @@ function draw_sprite_and_unit_equip_data(){
 
             var wep1 = selected_unit.weapon_one();
             if (wep1 != "") {
-                text = selected_unit.equipments_qual_string("wep1", true);
+                text = selected_unit.equipments_qual_string("wep1", false);
                 tooltip_text = obj_controller.temp[109];
                 x1 = x_left;
                 y1 = yy + 204;
@@ -329,7 +328,7 @@ function draw_sprite_and_unit_equip_data(){
 
             var wep2 = selected_unit.weapon_two();
             if (wep2 != "") {
-                text = selected_unit.equipments_qual_string("wep2", true);
+                text = selected_unit.equipments_qual_string("wep2", false);
                 tooltip_text = obj_controller.temp[111];
                 x1 = x_left;
                 y1 = yy + 254;
@@ -810,15 +809,17 @@ function scr_ui_manage() {
                 }
             }
 
+            var _only_display_selected = (instance_exists(obj_popup) && (obj_popup.type == 5 || obj_popup.type == 5.1 || obj_popup.type == 6));
             for (var i = 0; i < max(0, repetitions); i++) {
                 draw_set_font(fnt_40k_14);
                 if (sel >= array_length(display_unit)) {
                     break;
                 }
-                while ((man[sel] == "hide") && (sel < array_length(display_unit) - 1)) {
+
+                while ((man[sel] == "hide" || man_sel[sel] != 1 && _only_display_selected) && (sel < array_length(display_unit) - 1)) {
                     sel += 1;
                 }
-                if (scr_draw_management_unit(sel, yy, xx) == "continue") {
+                if (scr_draw_management_unit(sel, yy, xx, true, _only_display_selected) == "continue") {
                     sel++;
                     i--;
                     continue;
@@ -966,7 +967,7 @@ function scr_ui_manage() {
                 button.tooltip = "Press Shift E";
 
                 if (button.draw() && equip_possible) {
-                    equip_selection();
+                    set_up_equip_popup();
                 }
 
                 button.move("right");
@@ -981,30 +982,7 @@ function scr_ui_manage() {
                 button.alpha = promote_possible ? 1 : 0.5;
                 if (button.draw()) {
                     if (promote_possible) {
-                        if ((sel_promoting == 1) && (instance_number(obj_popup) == 0)) {
-                            var pip = instance_create(0, 0, obj_popup);
-                            pip.type = 5;
-                            pip.company = managing;
-
-                            var god = 0, nuuum = 0;
-                            for (var f = 0; f < array_length(display_unit); f++) {
-                                if ((ma_promote[f] >= 1 || is_specialist(ma_role[f], SPECIALISTS_RANK_AND_FILE) || is_specialist(ma_role[f], SPECIALISTS_SQUAD_LEADERS)) && man_sel[f] == 1) {
-                                    nuuum += 1;
-                                    if (pip.min_exp == 0) {
-                                        pip.min_exp = ma_exp[f];
-                                    }
-                                    pip.min_exp = min(ma_exp[f], pip.min_exp);
-                                }
-                                if ((god == 0) && (ma_promote[f] >= 1) && (man_sel[f] == 1)) {
-                                    god = 1;
-                                    pip.unit_role = ma_role[f];
-                                }
-                            }
-                            if (nuuum > 1) {
-                                pip.unit_role = "Marines";
-                            }
-                            pip.units = nuuum;
-                        }
+                        setup_promotion_popup();
                     }
                 }
                 button.move("right", true);
@@ -1077,7 +1055,7 @@ function scr_ui_manage() {
                 if (transfer_possible) {
                     button.alpha = 1;
                     if (button.draw()) {
-                        transfer_selection();
+                        set_up_transfer_popup();
                     }
                 } else {
                     button.alpha = 0.5;
@@ -1139,7 +1117,6 @@ function scr_ui_manage() {
                     button.keystroke = false;
                     button.alpha = 1;
                     if (button.draw()) {
-                        cooldown = 8;
                         // scr_load_all(loading); //not sure whether loading was intentional or not
                         sel_all = "all";
                     }

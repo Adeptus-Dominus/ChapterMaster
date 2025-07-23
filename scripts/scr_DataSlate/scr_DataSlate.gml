@@ -1,4 +1,4 @@
-function DataSlate() constructor{
+function DataSlate(data={}) constructor{
 	static_line=1;
 	title="";
 	sub_title="";
@@ -16,6 +16,8 @@ function DataSlate() constructor{
 	tooltip_drawing = [];
 
 	blend_col = 5998382;
+
+	move_data_to_current_scope(data, true);
 
 	static entered = function(){
 		return (scr_hit(
@@ -58,12 +60,12 @@ function DataSlate() constructor{
 			case "decorated":
 				draw_sprite_stretched(spr_data_slate_back, 0, XX,YY, width, height);
 				draw_sprite_stretched(spr_slate_side, 0, XX,YY, width, height);
-				draw_rectangle_color_simple(xx,YY, XX+width,YY+height, 0, blend_col, 0.05);
+				draw_rectangle_color_simple(XX,YY, XX+width,YY+height, 0, blend_col, 0.05);
 				break;
 
 			case "plain":
 				draw_sprite_stretched(spr_data_slate_back, 0, XX,YY, width, height);
-				draw_rectangle_color_simple(xx,YY, XX+width,YY+height, 0, blend_col, 0.05);				
+				draw_rectangle_color_simple(XX,YY, XX+width,YY+height, 0, blend_col, 0.05);				
 				break;
 		}
 
@@ -103,6 +105,8 @@ function DataSlate() constructor{
 				break;
 
 		}
+		x2 = XX+width;
+		y2 = YY+height;
 	}
 
 	static draw_cut = function(xx,yy, scale_x=1, scale_y=1, middle_percent=percent_cut){
@@ -371,6 +375,7 @@ function ShutterButton() constructor{
 	}
 
 	draw_shutter = function(xx=-1,yy=-1,text, scale=1, entered = ""){
+		add_draw_return_values();
 		if (xx != -1){
 			XX=xx;
 		}
@@ -419,6 +424,7 @@ function ShutterButton() constructor{
 		if (time_open<2){
 			draw_sprite_ext(spr_shutter_button, main_sprite, xx, yy, scale, scale, 0, c_white, 1);
 			if (cover_text != ""){
+				draw_set_valign(fa_top);
 				draw_set_font(fnt_Embossed_metal);
 				var _cover_scale = 3*scale;
 				while (string_width(cover_text) * _cover_scale > width-(5*scale)){
@@ -446,6 +452,7 @@ function ShutterButton() constructor{
 		} else {
 			return false;
 		}
+		pop_draw_return_values();
 	}
 }
 

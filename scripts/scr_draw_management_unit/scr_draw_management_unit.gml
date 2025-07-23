@@ -1,4 +1,4 @@
-function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true) {
+function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_lock=false) {
     var assignment = "none";
     var _unit;
     var string_role = "";
@@ -434,7 +434,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true) {
 
     var unclickable = eventing || jailed || wrong_location || impossible || instance_exists(obj_star_select);
 
-    if (!unclickable) {
+    if (!unclickable && !click_lock) {
         var changed = false;
 
         if (sel_all != "") {

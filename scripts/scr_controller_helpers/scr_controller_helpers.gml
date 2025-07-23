@@ -270,6 +270,13 @@ function scr_toggle_lib() {
                 artifact_destroy = new ShutterButton();
                 artifact_namer = new TextBarArea(xx + 622, yy + 460, 350);
                 set_chapter_arti_data();
+                artifact_slate = new DataSlate({
+                    set_width : true,
+                    XX : 392,
+                    YY : 500,
+                    width : 460,
+                    height : 240,
+                })
             } 
         }
     });
@@ -469,7 +476,6 @@ function scr_end_turn() {
                     with(obj_star_event) {
                         instance_destroy();
                     }
-                    cooldown = 8;
                     audio_play_sound(snd_end_turn, -50, 0);
                     audio_sound_gain(snd_end_turn, master_volume * effect_volume, 0);
 

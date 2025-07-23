@@ -215,9 +215,11 @@ function set_up_diplomacy_buttons(){
             exit_all=0;
         }
         if (diplo_last=="artifact_thanks") and (force_goodbye!=0){
-
-			scr_toggle_armamentarium();
+			scr_toggle_lib();
 			_close_diplomacy = false;
+        } else if (diplo_last=="stc_thanks"){
+        	scr_toggle_armamentarium();
+        	_close_diplomacy = false;
         }
         // Exits back to diplomacy thing
         if (audience==0){

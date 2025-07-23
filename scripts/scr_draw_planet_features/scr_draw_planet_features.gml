@@ -272,7 +272,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 								purpose:"Select Squad for Ambush",
 								purpose_code : feature.problem,
 								number:1,
-								system:planet_data.system,
+								system : planet_data.system,
 								feature:obj_star_select.feature,
 								planet : planet_data.planet,
 								array_slot : feature.array_position,
@@ -280,7 +280,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 								selections : []
 							});
 							destroy=true;
-						}						
+						}		
 						break;
 					case "train_forces":
 						mission_description=$"The governor of {planet_name} fears the planet will not hold in the case of major incursion, it has not seen war in some time and he fears the ineptitude of the commanders available, he asks for aid in planning a thorough plan for defense and schedule of works for a period of at least 6 months.";
