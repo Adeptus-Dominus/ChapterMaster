@@ -23,6 +23,7 @@ draw_set_halign(fa_left);
 var xx = 0;
 var yy = 0;
 if (menu == MENU.Diplomacy){
+    add_draw_return_values();
     if (diplomacy > 0){
         draw_diplomacy_diplo_text();
         if (trading==true){
@@ -44,25 +45,28 @@ if (menu == MENU.Diplomacy){
             draw_character_diplomacy();
         }
     }
+    pop_draw_return_values();
 }
 // Main UI
 if (!zoomed && !zui){
     draw_sprite(spr_new_ui,menu==0,0,0);
     draw_set_color(c_white);
 
-    menu_buttons.chapter_manage.draw(34,838+y_slide, "Chapter Management",1,1,145)
-    menu_buttons.chapter_settings.draw(179,838+y_slide, "Chapter Settings",1,1,145)
-    menu_buttons.apoth.draw(357,838+y_slide, "Apothecarium")
-    menu_buttons.reclu.draw(473,838+y_slide, "Reclusium")
-    menu_buttons.lib.draw(590,838+y_slide, "Librarium")
-    menu_buttons.arm.draw(706,838+y_slide, "Armamentarium")
-    menu_buttons.recruit.draw(822,838+y_slide, "Recruitment")
-    menu_buttons.fleet.draw(938,838+y_slide, "Fleet")
-    menu_buttons.diplo.draw(1130,838+y_slide, "Diplomacy",1,1,145)
-    menu_buttons.event.draw(1275,838+y_slide, "Event Log",1,1,145)
-    menu_buttons.end_turn.draw(1420,838+y_slide, "End Turn",1,1,145);
-    menu_buttons.help.draw(1374,8+y_slide, "Help");
-    menu_buttons.menu.draw(1484,8+y_slide, "Menu");
+    if (!instance_exists(obj_popup)){
+        menu_buttons.chapter_manage.draw(34,838+y_slide, "Chapter Management",1,1,145)
+        menu_buttons.chapter_settings.draw(179,838+y_slide, "Chapter Settings",1,1,145)
+        menu_buttons.apoth.draw(357,838+y_slide, "Apothecarium")
+        menu_buttons.reclu.draw(473,838+y_slide, "Reclusium")
+        menu_buttons.lib.draw(590,838+y_slide, "Librarium")
+        menu_buttons.arm.draw(706,838+y_slide, "Armamentarium")
+        menu_buttons.recruit.draw(822,838+y_slide, "Recruitment")
+        menu_buttons.fleet.draw(938,838+y_slide, "Fleet")
+        menu_buttons.diplo.draw(1130,838+y_slide, "Diplomacy",1,1,145)
+        menu_buttons.event.draw(1275,838+y_slide, "Event Log",1,1,145)
+        menu_buttons.end_turn.draw(1420,838+y_slide, "End Turn",1,1,145);
+        menu_buttons.help.draw(1374,8+y_slide, "Help");
+        menu_buttons.menu.draw(1484,8+y_slide, "Menu");
+    }
     
     
     if (y_slide>0) then draw_set_alpha((100-(y_slide*2))/100);

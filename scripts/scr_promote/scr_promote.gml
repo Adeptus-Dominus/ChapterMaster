@@ -336,5 +336,5 @@ function draw_popup_promotion(){
 	}
 
 	promote_button.draw(all_good);
-	pop_draw_return_values;
+	pop_draw_return_values();
 }

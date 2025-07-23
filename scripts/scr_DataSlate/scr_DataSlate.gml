@@ -375,6 +375,7 @@ function ShutterButton() constructor{
 	}
 
 	draw_shutter = function(xx=-1,yy=-1,text, scale=1, entered = ""){
+		add_draw_return_values();
 		if (xx != -1){
 			XX=xx;
 		}
@@ -423,6 +424,7 @@ function ShutterButton() constructor{
 		if (time_open<2){
 			draw_sprite_ext(spr_shutter_button, main_sprite, xx, yy, scale, scale, 0, c_white, 1);
 			if (cover_text != ""){
+				draw_set_valign(fa_top);
 				draw_set_font(fnt_Embossed_metal);
 				var _cover_scale = 3*scale;
 				while (string_width(cover_text) * _cover_scale > width-(5*scale)){
@@ -450,6 +452,7 @@ function ShutterButton() constructor{
 		} else {
 			return false;
 		}
+		pop_draw_return_values();
 	}
 }
 

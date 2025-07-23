@@ -30,7 +30,9 @@ if (type=98){
 
 if (option1=="") and (type<5){
     obj_controller.cooldown=10;
-    if (instance_exists(obj_turn_end)) and (obj_controller.complex_event==false){if (number!=0) then obj_turn_end.alarm[1]=4;}
+    if (instance_exists(obj_turn_end) && obj_controller.complex_event==false){
+        if (number!=0) then obj_turn_end.alarm[1]=4;
+    }
     instance_destroy();
 }
 
