@@ -211,6 +211,7 @@ function target_company_radio(min_exp=0){
 
 
 function draw_popup_promotion(){
+	add_draw_return_values();
     manag=obj_controller.managing;
     if (manag>10) then manag=0;
     var company=manag;
@@ -239,7 +240,7 @@ function draw_popup_promotion(){
 		get_unit_promotion_options();
 	}
 	// }
-
+	draw_set_halign(fa_left);
 	draw_text(1020, 290, "Target Role:"); //choose new role
 	var role_x = 0;
 	role_y = 0;
@@ -335,4 +336,5 @@ function draw_popup_promotion(){
 	}
 
 	promote_button.draw(all_good);
+	pop_draw_return_values;
 }

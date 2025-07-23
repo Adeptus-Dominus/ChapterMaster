@@ -561,13 +561,14 @@ function ArtifactStruct(Index) constructor {
                 unit.update_weapon_two(index);
             }
         }
-        if (arti.has_tag("daemonic") || arti.has_tag("chaos")) {
+        var _dwarn = false;
+        if (has_tag("daemonic") || has_tag("chaos")) {
             unit.corruption += irandom(10 + 2);
             if (unit.role() == obj_ini.role[100][eROLE.ChapterMaster]) {
-                dwarn = true;
+                _dwarn = true;
             }
         }
-        if (dwarn == true) {
+        if (_dwarn == true) {
             var pip = instance_create(0, 0, obj_popup);
             pip.title = "Daemon Artifacts";
             pip.text = "Some artifacts, like the one you now wield, are a blasphemous union of the Materium's matter and the Immaterium's spirit, containing the essence of a bound daemon.  While they may offer great power, and enhanced perception, they are known to whisper poisonous lies to the wielder.  The path to damnation begins with good intentions, and many times artifacts such as these have been the cause.";
@@ -664,6 +665,20 @@ function equip_artifact_popup_setup(){
                 label : "Cancel"
             }
         );
+        var _weapon_slot_options = [ 
+            {
+                str1 : "Weapon One",
+                font : fnt_40k_14b,
+                val : 0
+            },
+            {
+                str1 : "Weapon Two",
+                font : fnt_40k_14b,
+                val : 0
+            }
+        ]
+        weapon_slot_select = new radio_set(_weapon_slot_options, "Weapon slot", {max_width : 580, x1:1200, y1:130});
+        weapon_slot_select.current_selection = 0;
     } 
 }
 
@@ -676,6 +691,9 @@ function equip_artifact_popup_draw(){
     draw_text(951 + 312, 48 + 26, $"Equip Artifact ({arti.name})");
     draw_set_font(fnt_40k_12);
     draw_set_halign(fa_left);
+    if (arti.determine_base_type() == "weapon"){
+        weapon_slot_select.draw();
+    }
     companies_select.draw();
     if (companies_select.changed){
         var _company_marines = collect_role_group("all", "", false, {companies:companies_select.current_selection});
@@ -684,6 +702,7 @@ function equip_artifact_popup_draw(){
             number : 1,
             purpose :$"Equip Artifact ({obj_ini.artifact[obj_controller.menu_artifact]})",
             artifact : obj_controller.menu_artifact,
+            slot : weapon_slot_select.current_selection,
         }
         group_selection(_company_marines, _selec_data);
         instance_destroy();

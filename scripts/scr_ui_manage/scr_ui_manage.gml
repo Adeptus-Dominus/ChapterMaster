@@ -280,7 +280,7 @@ function draw_sprite_and_unit_equip_data(){
             // Equipment
             var armour = selected_unit.armour();
             if (armour != "") {
-                text = selected_unit.equipments_qual_string("armour", true);
+                text = selected_unit.equipments_qual_string("armour", false);
                 tooltip_text = obj_controller.temp[103];
                 x1 = x_left;
                 y1 = yy + 179;
@@ -293,7 +293,7 @@ function draw_sprite_and_unit_equip_data(){
 
             var gear = selected_unit.gear();
             if (selected_unit.gear() != "") {
-                text = selected_unit.equipments_qual_string("gear", true);
+                text = selected_unit.equipments_qual_string("gear", false);
                 tooltip_text = obj_controller.temp[105];
                 x1 = x_left;
                 y1 = yy + 305;
@@ -305,7 +305,7 @@ function draw_sprite_and_unit_equip_data(){
 
             var mobi = selected_unit.mobility_item();
             if (mobi != "") {
-                text = selected_unit.equipments_qual_string("mobi", true);
+                text = selected_unit.equipments_qual_string("mobi", false);
                 tooltip_text = obj_controller.temp[107];
                 x1 = x_left;
                 y1 = yy + 326;
@@ -317,7 +317,7 @@ function draw_sprite_and_unit_equip_data(){
 
             var wep1 = selected_unit.weapon_one();
             if (wep1 != "") {
-                text = selected_unit.equipments_qual_string("wep1", true);
+                text = selected_unit.equipments_qual_string("wep1", false);
                 tooltip_text = obj_controller.temp[109];
                 x1 = x_left;
                 y1 = yy + 204;
@@ -329,7 +329,7 @@ function draw_sprite_and_unit_equip_data(){
 
             var wep2 = selected_unit.weapon_two();
             if (wep2 != "") {
-                text = selected_unit.equipments_qual_string("wep2", true);
+                text = selected_unit.equipments_qual_string("wep2", false);
                 tooltip_text = obj_controller.temp[111];
                 x1 = x_left;
                 y1 = yy + 254;
@@ -820,7 +820,7 @@ function scr_ui_manage() {
                 while ((man[sel] == "hide" || man_sel[sel] != 1 && _only_display_selected) && (sel < array_length(display_unit) - 1)) {
                     sel += 1;
                 }
-                if (scr_draw_management_unit(sel, yy, xx) == "continue") {
+                if (scr_draw_management_unit(sel, yy, xx, true, _only_display_selected) == "continue") {
                     sel++;
                     i--;
                     continue;

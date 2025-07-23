@@ -184,7 +184,9 @@ function task_selector_man_manage(){
 	            case "artifact_equip":
 	               	scr_toggle_lib();
 	               	var _arti = fetch_artifact(selection_data.artifact);
-	               	_arti.equip_on_unit(_unit);
+	               	_arti.equip_on_unit(_unit, selection_data.slot);
+					scr_toggle_lib();
+					obj_controller.menu_artifact = selection_data.artifact;	               	
 	               	exit;
 	               	break;
     		}		                		
