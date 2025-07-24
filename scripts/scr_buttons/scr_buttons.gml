@@ -292,7 +292,9 @@ function TextBarArea(XX,YY,Max_width = 400, requires_input = false) constructor{
 	yy=YY
 	max_width = Max_width;
 	draw_col = c_gray;
-	cooloff=0;
+	cooloff=0
+	background = new DataSlate();
+	background.style = "plain";
     // Draw BG
     static draw = function(string_area){
     	add_draw_return_values();
@@ -317,7 +319,11 @@ function TextBarArea(XX,YY,Max_width = 400, requires_input = false) constructor{
 	    }
 		string_h = string_height("LOL");
 		var rect = [xx-(bar_wid/2),yy,xx+(bar_wid/2),yy-8+string_h]
-	    draw_rectangle(rect[0],rect[1],rect[2],rect[3],1);
+		background.XX = rect[0];
+		background.YY = rect[1];
+		background.width = rect[2] - rect[0];
+		background.height = rect[3] - rect[1];
+	    
 	    click_check = point_and_click(rect);
 	    obj_cursor.image_index=0;
 	    if (cooloff==0){
@@ -340,6 +346,7 @@ function TextBarArea(XX,YY,Max_width = 400, requires_input = false) constructor{
         	obj_cursor.image_index=2;
         	draw_text(xx,yy+2,$"''{string_area}|''")
         };
+		background.draw_with_dimension();
         pop_draw_return_values();
 		return string_area;
 	}

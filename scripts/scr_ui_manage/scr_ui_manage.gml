@@ -816,8 +816,11 @@ function scr_ui_manage() {
                     break;
                 }
 
-                while ((man[sel] == "hide" || man_sel[sel] != 1 && _only_display_selected) && (sel < array_length(display_unit) - 1)) {
+                while ((man[sel] == "hide" || man_sel[sel] != 1 && _only_display_selected) && (sel <= array_length(display_unit) - 1)) {
                     sel += 1;
+                }
+                if (sel >= array_length(display_unit)) {
+                    break;
                 }
                 if (scr_draw_management_unit(sel, yy, xx, true, _only_display_selected) == "continue") {
                     sel++;
