@@ -849,6 +849,7 @@
     {"id":{"name":"scr_load","path":"scripts/scr_load/scr_load.yy",},},
     {"id":{"name":"scr_log","path":"scripts/scr_log/scr_log.yy",},},
     {"id":{"name":"scr_loyalty","path":"scripts/scr_loyalty/scr_loyalty.yy",},},
+    {"id":{"name":"scr_manage_tags","path":"scripts/scr_manage_tags/scr_manage_tags.yy",},},
     {"id":{"name":"scr_manage_task_selector","path":"scripts/scr_manage_task_selector/scr_manage_task_selector.yy",},},
     {"id":{"name":"scr_management","path":"scripts/scr_management/scr_management.yy",},},
     {"id":{"name":"scr_map_and_warp_functions","path":"scripts/scr_map_and_warp_functions/scr_map_and_warp_functions.yy",},},

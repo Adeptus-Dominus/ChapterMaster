@@ -493,13 +493,13 @@ function company_manage_actions(){
         unit_profile=false;
     }
     // Previous company
-    if (point_and_click([xx+424, yy+80,xx+496,yy+128]) || keyboard_check_pressed(ord(string("N")))){
+    if (point_and_click([xx+424, yy+80,xx+496,yy+128]) || (keyboard_check_pressed(ord(string("N"))) && allow_shortcuts)){
     	var new_view = managing == 1 ? 15 : managing-1;
     	switch_view_company(new_view)
     }
 
     // Next company
-    if (point_and_click([xx+1105, yy+80,xx+1178,yy+128]) || keyboard_check_pressed(ord(string("M")))){
+    if (point_and_click([xx+1105, yy+80,xx+1178,yy+128]) || (keyboard_check_pressed(ord(string("M"))) && allow_shortcuts)){
     	var new_view = managing == 15 ? 1 : managing+1;
     	switch_view_company(new_view)
     } 	 	 

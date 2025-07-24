@@ -150,6 +150,7 @@ function basic_manage_settings() {
     popup = 0;
     selected = 0;
     diplomacy = 0;
+    allow_shortcuts = true;
     management_buttons = {
         squad_toggle: new UnitButtonObject({
             style: "pixel",
@@ -165,7 +166,8 @@ function basic_manage_settings() {
             style: "pixel",
             label: "Show Bio",
             tooltip: "Click here or press B to Toggle Unit Biography."
-        })
+        }),
+        company_namer : new TextBarArea(800, 108, 600, false),
     };
 }
 

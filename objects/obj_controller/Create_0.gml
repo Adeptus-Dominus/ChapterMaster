@@ -442,6 +442,7 @@ last_unit=[0,0];
 ui_coloring=""; 
 ui_melee_penalty=0;
 ui_ranged_penalty=0;
+management_tags = [];
 
 // ** Sets default mouse vars **
 current_target=false;

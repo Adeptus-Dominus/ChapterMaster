@@ -294,8 +294,10 @@ function TextBarArea(XX,YY,Max_width = 400, requires_input = false) constructor{
 	draw_col = c_gray;
 	cooloff=0
 	background = new DataSlate();
-	background.style = "plain";
+	background.draw_top_piece = false;
+
     // Draw BG
+    current_text  = ""
     static draw = function(string_area){
     	add_draw_return_values();
 
@@ -314,7 +316,9 @@ function TextBarArea(XX,YY,Max_width = 400, requires_input = false) constructor{
 	    	bar_wid=max(max_width,string_width(string_area));
 	    } else {
 	    	if (requires_input){
-	    		draw_set_color(c_red);
+	    		draw_set_color(CM_RED_COLOR);
+	    	} else {
+	    		draw_set_color(CM_GREEN_COLOR)
 	    	}
 	    }
 		string_h = string_height("LOL");
@@ -341,12 +345,16 @@ function TextBarArea(XX,YY,Max_width = 400, requires_input = false) constructor{
 	    draw_set_alpha(1);
 
     	draw_set_font(fnt_fancy);
-        if (!allow_input) then draw_text(xx,yy+2,string_hash_to_newline("''"+string(string_area)+"'' "));
-        if (allow_input){
-        	obj_cursor.image_index=2;
-        	draw_text(xx,yy+2,$"''{string_area}|''")
-        };
-		background.draw_with_dimension();
+    	current_text = string_area;
+    	background.inside_method = function(){
+    		draw_set_valign(fa_top);
+    		if (!allow_input) then draw_text(xx,yy+2,$"''{current_text}'' ");
+	        if (allow_input){
+	        	obj_cursor.image_index=2;
+	        	draw_text(xx,yy+2,$"''{current_text}|''")
+	        };
+    	}
+		background.draw_with_dimensions();
         pop_draw_return_values();
 		return string_area;
 	}
@@ -391,7 +399,7 @@ function drop_down(selection, draw_x, draw_y, options,open_marker){
     pop_draw_return_values();
 }
 
-function multi_select(options_array, title)constructor{
+function multi_select(options_array, title, data = {})constructor{
 	self.title = title;
 	x_gap = 10;
 	y_gap = 5;
@@ -411,7 +419,10 @@ function multi_select(options_array, title)constructor{
 		array_push(toggles, _next_tog);
 	}
 	static update = item_data_updater
-	static draw = function(){
+
+	update(data);
+
+	static draw = function(allow_changes = true){
 		add_draw_return_values();
 		var _change_method = is_callable(on_change);
 		draw_text(x1, y1, title);
