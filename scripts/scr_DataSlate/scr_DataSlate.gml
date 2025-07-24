@@ -11,6 +11,8 @@ function DataSlate(data={}) constructor{
 	percent_cut=0;
 	set_width = false;
 
+	top_anchor = [340, 14];
+
 	style = "default";
 
 	tooltip_drawing = [];
@@ -18,6 +20,11 @@ function DataSlate(data={}) constructor{
 	blend_col = 5998382;
 
 	move_data_to_current_scope(data, true);
+
+	draw_top_piece = true;
+
+	top_piece_style = "aquila";
+
 
 	static entered = function(){
 		return (scr_hit(
@@ -53,9 +60,11 @@ function DataSlate(data={}) constructor{
 			height = 850*scale_y;
 		}
 
+		decoration_scale = min(scale_x, scale_y)
+
 		switch (style){
 			case "default":
-				draw_sprite_ext(spr_data_slate,1, XX,YY, scale_x, scale_y, 0, c_white, 1);
+				draw_sprite_ext(spr_slate_featureless,1, XX,YY, scale_x, scale_y, 0, c_white, 1);
 				break;
 			case "decorated":
 				draw_sprite_stretched(spr_data_slate_back, 0, XX,YY, width, height);
@@ -102,6 +111,14 @@ function DataSlate(data={}) constructor{
 				var _slate_scalex = width/sprite_get_width(spr_slate_side);
 				var _slate_scaley = height/sprite_get_height(spr_slate_side);
 				draw_sprite(spr_data_slate_corner_decoration, 0,XX+width - (70*_slate_scalex), YY + (7*_slate_scaley));
+				break;
+			case "default":
+				if (draw_top_piece){
+					if (top_piece_style == "aquila"){
+						draw_sprite_ext(spr_slate_top,1, XX+(top_anchor[0]*scale_x),YY + (top_anchor[1] * scale_y ), decoration_scale, decoration_scale, 0, c_white, 1);
+					}
+
+				}
 				break;
 
 		}
