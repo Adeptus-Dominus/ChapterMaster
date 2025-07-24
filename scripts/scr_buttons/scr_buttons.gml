@@ -292,12 +292,10 @@ function TextBarArea(XX,YY,Max_width = 400, requires_input = false) constructor{
 	yy=YY
 	max_width = Max_width;
 	draw_col = c_gray;
-	cooloff=0
+	cooloff=0;
     // Draw BG
     static draw = function(string_area){
     	add_draw_return_values();
-		var old_font = draw_get_font();
-		var old_halign = draw_get_halign();
 
     	if (cooloff>0) then cooloff--;
     	if (allow_input){
@@ -311,7 +309,7 @@ function TextBarArea(XX,YY,Max_width = 400, requires_input = false) constructor{
 		var bar_wid=max_width,click_check, string_h;
 	    draw_set_alpha(0.25);
 	    if (string_area!=""){
-	    	bar_wid=max(max_width,string_width(string_hash_to_newline(string_area)));
+	    	bar_wid=max(max_width,string_width(string_area));
 	    } else {
 	    	if (requires_input){
 	    		draw_set_color(c_red);
@@ -342,12 +340,8 @@ function TextBarArea(XX,YY,Max_width = 400, requires_input = false) constructor{
         	obj_cursor.image_index=2;
         	draw_text(xx,yy+2,$"''{string_area}|''")
         };
-
-		draw_set_font(old_font);
-		draw_set_halign(old_halign);
-
+        pop_draw_return_values();
 		return string_area;
-		pop_draw_return_values();
 	}
 }
 
