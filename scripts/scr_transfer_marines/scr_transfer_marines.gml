@@ -205,7 +205,7 @@ function set_up_transfer_popup(){
                     width : 571,
                     height : 350,
                 });
-                target_company_radio(min_exp);
+                target_company_radio(_min_exp);
                 transfer_button = new UnitButtonObject(
                     {
                         x1: 1450, 
