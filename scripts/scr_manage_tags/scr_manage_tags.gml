@@ -260,7 +260,7 @@ function draw_tag_manager(){
 	} else if (subtype == TAGMANAGER.ADD){
 		if (add_tags.draw()){
 			var _tags = tag_selects.selections();
-			 for(i=0;i<array_length(obj_controller.display_unit);i++){
+			 for(var i=0;i<array_length(obj_controller.display_unit);i++){
 			 	if (obj_controller.man[i]!="man" || obj_controller.man_sel[i]!=1){
 			 		continue;
 			 	}
@@ -281,7 +281,7 @@ function draw_tag_manager(){
 		var _removals = tag_selects.selections();
 		if (array_length(_removals)){
 			if (remove_tags.draw){
-				for(i=0;i<array_length(obj_controller.display_unit);i++){
+				for(var i=0;i<array_length(obj_controller.display_unit);i++){
 				 	if (obj_controller.man[i]!="man" || obj_controller.man_sel[i]!=1){
 				 		continue;
 				 	}

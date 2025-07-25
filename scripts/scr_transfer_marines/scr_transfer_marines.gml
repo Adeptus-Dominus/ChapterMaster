@@ -211,7 +211,7 @@ function set_up_transfer_popup(){
                         x1: 1450, 
                         y1: 491,
                         style : "pixel",
-                        label : "Promote"
+                        label : "Transfer"
                     }
                 );               
             }

@@ -159,7 +159,7 @@ function company_specific_management(){
         }
     }
     // Draw the company followed by chapters name
-    draw_text(800, 74,  $"{_company_name}, " + string(global.chapter_name));
+    draw_text(800, 74,  $"{_company_name}, {global.chapter_name}";
     if (managing <= 10 ) {
         var _text_input = management_buttons.company_namer;
         

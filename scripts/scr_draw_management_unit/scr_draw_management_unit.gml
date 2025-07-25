@@ -418,7 +418,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
                         }
                     }
                     _tooltip += "Click to set filter to units tags";
-                    toltip_draw(_tooltip);
+                    tooltip_draw(_tooltip);
                 }
                 if (point_and_click(_tag_button)){
                     manage_tags = _unit.manage_tags;

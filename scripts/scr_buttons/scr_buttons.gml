@@ -82,7 +82,7 @@ function UnitButtonObject(data = false) constructor{
 	label= "";
 	alpha= 1;
 	color = #50a076;
-	innactive_col = c_gray;	
+	inactive_col = c_gray;	
 	keystroke = false;
 	tooltip = "";
 	bind_method = "";
@@ -410,7 +410,7 @@ function multi_select(options_array, title, data = {})constructor{
 	y2 = 0;
 	on_change = false;
 	active_col = #009500;
-	innactive_col = c_gray;	
+	inactive_col = c_gray;	
 	max_width = 0;
 	max_height = 0;
 	toggles = [];
@@ -441,7 +441,7 @@ function multi_select(options_array, title, data = {})constructor{
 					on_change();
 				}
 			}
-			_cur_opt.button_color = _cur_opt.active ? active_col: innactive_col;
+			_cur_opt.button_color = _cur_opt.active ? active_col: inactive_col;
 			_cur_opt.draw();
 			items_on_row++
 
@@ -501,7 +501,7 @@ function radio_set(options_array, title, data = {})constructor{
 	current_selection = 0;
 	self.title = title;
 	active_col = #009500;
-	innactive_col = c_gray;
+	inactive_col = c_gray;
 	allow_changes = true;
 	x_gap = 10;
 	y_gap = 5;
@@ -544,7 +544,7 @@ function radio_set(options_array, title, data = {})constructor{
 			_cur_opt.y1 = _prev_y;
 			_cur_opt.update()
 			_cur_opt.active = i==current_selection;
-			_cur_opt.button_color = _cur_opt.active ? active_col: innactive_col;
+			_cur_opt.button_color = _cur_opt.active ? active_col: inactive_col;
 			_cur_opt.draw();
 			items_on_row++
 			
