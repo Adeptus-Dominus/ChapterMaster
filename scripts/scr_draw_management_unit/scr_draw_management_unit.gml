@@ -422,6 +422,9 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
                 }
                 if (point_and_click(_tag_button)){
                     manage_tags = _unit.manage_tags;
+                    if (instance_exists(obj_popup) && obj_popup.type  == POPUP_TYPE.ADD_TAGS){
+                        obj_popup.tag_selects.set(manage_tags);
+                    }
                 }
             }
         }
