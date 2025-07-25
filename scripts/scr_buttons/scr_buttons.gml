@@ -82,6 +82,7 @@ function UnitButtonObject(data = false) constructor{
 	label= "";
 	alpha= 1;
 	color = #50a076;
+	inactive_col = c_gray;	
 	keystroke = false;
 	tooltip = "";
 	bind_method = "";
@@ -293,11 +294,13 @@ function TextBarArea(XX,YY,Max_width = 400, requires_input = false) constructor{
 	max_width = Max_width;
 	draw_col = c_gray;
 	cooloff=0
+	background = new DataSlate();
+	background.draw_top_piece = false;
+
     // Draw BG
+    current_text  = ""
     static draw = function(string_area){
     	add_draw_return_values();
-		var old_font = draw_get_font();
-		var old_halign = draw_get_halign();
 
     	if (cooloff>0) then cooloff--;
     	if (allow_input){
@@ -311,15 +314,21 @@ function TextBarArea(XX,YY,Max_width = 400, requires_input = false) constructor{
 		var bar_wid=max_width,click_check, string_h;
 	    draw_set_alpha(0.25);
 	    if (string_area!=""){
-	    	bar_wid=max(max_width,string_width(string_hash_to_newline(string_area)));
+	    	bar_wid=max(max_width,string_width(string_area));
 	    } else {
 	    	if (requires_input){
-	    		draw_set_color(c_red);
+	    		draw_set_color(CM_RED_COLOR);
+	    	} else {
+	    		draw_set_color(CM_GREEN_COLOR)
 	    	}
 	    }
 		string_h = string_height("LOL");
 		var rect = [xx-(bar_wid/2),yy,xx+(bar_wid/2),yy-8+string_h]
-	    draw_rectangle(rect[0],rect[1],rect[2],rect[3],1);
+		background.XX = rect[0];
+		background.YY = rect[1];
+		background.width = rect[2] - rect[0];
+		background.height = rect[3] - rect[1];
+	    
 	    click_check = point_and_click(rect);
 	    obj_cursor.image_index=0;
 	    if (cooloff==0){
@@ -337,17 +346,18 @@ function TextBarArea(XX,YY,Max_width = 400, requires_input = false) constructor{
 	    draw_set_alpha(1);
 
     	draw_set_font(fnt_fancy);
-        if (!allow_input) then draw_text(xx,yy+2,string_hash_to_newline("''"+string(string_area)+"'' "));
-        if (allow_input){
-        	obj_cursor.image_index=2;
-        	draw_text(xx,yy+2,$"''{string_area}|''")
-        };
-
-		draw_set_font(old_font);
-		draw_set_halign(old_halign);
-
+    	current_text = string_area;
+    	background.inside_method = function(){
+    		draw_set_valign(fa_top);
+    		if (!allow_input) then draw_text(xx,yy+2,$"''{current_text}'' ");
+	        if (allow_input){
+	        	obj_cursor.image_index=2;
+	        	draw_text(xx,yy+2,$"''{current_text}|''")
+	        };
+    	}
+		background.draw_with_dimensions();
+        pop_draw_return_values();
 		return string_area;
-		pop_draw_return_values();
 	}
 }
 
@@ -390,7 +400,7 @@ function drop_down(selection, draw_x, draw_y, options,open_marker){
     pop_draw_return_values();
 }
 
-function multi_select(options_array, title)constructor{
+function multi_select(options_array, title, data = {})constructor{
 	self.title = title;
 	x_gap = 10;
 	y_gap = 5;
@@ -400,7 +410,7 @@ function multi_select(options_array, title)constructor{
 	y2 = 0;
 	on_change = false;
 	active_col = #009500;
-	innactive_col = c_gray;	
+	inactive_col = c_gray;	
 	max_width = 0;
 	max_height = 0;
 	toggles = [];
@@ -410,7 +420,10 @@ function multi_select(options_array, title)constructor{
 		array_push(toggles, _next_tog);
 	}
 	static update = item_data_updater
-	static draw = function(){
+
+	update(data);
+
+	static draw = function(allow_changes = true){
 		add_draw_return_values();
 		var _change_method = is_callable(on_change);
 		draw_text(x1, y1, title);
@@ -423,12 +436,12 @@ function multi_select(options_array, title)constructor{
 			_cur_opt.x1 = _prev_x;
 			_cur_opt.y1 = _prev_y;
 			_cur_opt.update()
-			if (_cur_opt.clicked()){
+			if (_cur_opt.clicked() && allow_changes){
 				if (_change_method){
 					on_change();
 				}
 			}
-			_cur_opt.button_color = _cur_opt.active ? active_col: innactive_col;
+			_cur_opt.button_color = _cur_opt.active ? active_col: inactive_col;
 			_cur_opt.draw();
 			items_on_row++
 
@@ -458,6 +471,13 @@ function multi_select(options_array, title)constructor{
 			}			
 		}
 	}
+
+	static deselect_all = function(){
+		for (var i=0;i<array_length(toggles);i++){
+			var _cur_opt = toggles[i];
+			_cur_opt.active = false;
+		}		
+	}
 	static selections = function(){
 		var _selecs = [];
 		for (var i=0;i<array_length(toggles);i++){
@@ -481,7 +501,7 @@ function radio_set(options_array, title, data = {})constructor{
 	current_selection = 0;
 	self.title = title;
 	active_col = #009500;
-	innactive_col = c_gray;
+	inactive_col = c_gray;
 	allow_changes = true;
 	x_gap = 10;
 	y_gap = 5;
@@ -524,7 +544,7 @@ function radio_set(options_array, title, data = {})constructor{
 			_cur_opt.y1 = _prev_y;
 			_cur_opt.update()
 			_cur_opt.active = i==current_selection;
-			_cur_opt.button_color = _cur_opt.active ? active_col: innactive_col;
+			_cur_opt.button_color = _cur_opt.active ? active_col: inactive_col;
 			_cur_opt.draw();
 			items_on_row++
 			

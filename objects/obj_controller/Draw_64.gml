@@ -211,6 +211,9 @@ if (menu == 1) {
     if (managing == -1){
         scr_manage_task_selector();
     }
+    if (managing > 0){
+        company_specific_management();
+    }
 
 } else if (menu == MENU.Armamentarium) {
     scr_draw_armentarium_gui();

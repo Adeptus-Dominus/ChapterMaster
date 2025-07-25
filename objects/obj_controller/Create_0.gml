@@ -437,11 +437,13 @@ company_report=false;
 company_data = {};
 obj_controller.unit_focus = false;
 filter_mode = false;
+manage_tags = [];
 pauldron_trim=0;
 last_unit=[0,0];
 ui_coloring=""; 
 ui_melee_penalty=0;
 ui_ranged_penalty=0;
+management_tags = [];
 
 // ** Sets default mouse vars **
 current_target=false;

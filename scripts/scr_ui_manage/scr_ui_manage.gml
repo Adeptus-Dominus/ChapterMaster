@@ -126,13 +126,61 @@ function command_slot_draw(xx, yy, slot_text){
     }
 }
 
+
+function company_specific_management(){
+    add_draw_return_values();
+    draw_set_font(fnt_40k_30b);
+    draw_set_halign(fa_center);
+    draw_set_color(c_gray); // 38144
+    var _allow_shorts = false;
+    var _comp = "";
+    if (managing > 20) {
+        _comp = managing - 10;
+    } else if ((managing >= 1) && (managing <= 10)) {
+        _company_name = int_to_roman(managing) + " Company";
+        _comp = managing;
+    } else if (managing > 10) {
+        switch (managing) {
+            case 11:
+                _company_name = "Headquarters";
+                break;
+            case 12:
+                _company_name = "Apothecarion";
+                break;
+            case 13:
+                _company_name = "Librarium";
+                break;
+            case 14:
+                _company_name = "Reclusium";
+                break;
+            case 15:
+                _company_name = "Armamentarium";
+                break;
+        }
+    }
+    // Draw the company followed by chapters name
+    draw_text(800, 74,  $"{_company_name}, {global.chapter_name}");
+    if (managing <= 10 ) {
+        var _text_input = management_buttons.company_namer;
+        
+        obj_ini.company_title[managing] = _text_input.draw(obj_ini.company_title[managing]);
+        _allow_shorts = !_text_input.allow_input;
+    } else {
+        _allow_shorts = true;
+    }
+    if (allow_shortcuts){
+        allow_shortcuts = _allow_shorts;
+    }
+    pop_draw_return_values()
+}
+
 function alternative_manage_views(x1, y1) {
     var _squad_button = management_buttons.squad_toggle;
     _squad_button.update({
         x1: x1 + 5,
         y1: y1 + 6,
         label: !obj_controller.view_squad && !obj_controller.company_report ? "Squad View" : "Company View",
-        keystroke: keyboard_check_pressed(ord("S"))
+        keystroke: keyboard_check_pressed(ord("S")) && allow_shortcuts
     });
 
     if (company_data.has_squads){
@@ -150,7 +198,7 @@ function alternative_manage_views(x1, y1) {
             label: !unit_profile ? "Show Profile" : "Hide Profile",
             x1: _squad_button.x2,
             y1: _squad_button.y1,
-            keystroke: keyboard_check_pressed(ord("P"))
+            keystroke: keyboard_check_pressed(ord("P")) && allow_shortcuts
         });
         if (_profile_toggle.draw(!text_bar)) {
             unit_profile = !unit_profile;
@@ -162,7 +210,7 @@ function alternative_manage_views(x1, y1) {
                 label: !unit_bio ? "Show Bio" : "Hide Bio",
                 x1: _profile_toggle.x2,
                 y1: _profile_toggle.y1,
-                keystroke: keyboard_check_pressed(ord("B"))
+                keystroke: keyboard_check_pressed(ord("B")) && allow_shortcuts
             });
             if (bio_toggle.draw(!text_bar)) {
                 unit_bio = !unit_bio;
@@ -522,7 +570,7 @@ function scr_ui_manage() {
         if (managing > 0) {
             company_manage_actions();
         }
-        if (!text_bar) {
+        if (allow_shortcuts) {
             ui_manage_hotkeys();
         }
     }
@@ -557,37 +605,10 @@ function scr_ui_manage() {
         draw_set_color(c_gray); // 38144
 
         // Var declarations
-        var c = 0, fx = "", skin = obj_ini.skin_color;
+        var c = 0, _company_name = "", skin = obj_ini.skin_color;
         static stats_displayed = false;
 
-        if (managing > 0) {
-            if (managing > 20) {
-                c = managing - 10;
-            } else if ((managing >= 1) && (managing <= 10)) {
-                fx = int_to_roman(managing) + " Company";
-                c = managing;
-            } else if (managing > 10) {
-                switch (managing) {
-                    case 11:
-                        fx = "Headquarters";
-                        break;
-                    case 12:
-                        fx = "Apothecarion";
-                        break;
-                    case 13:
-                        fx = "Librarium";
-                        break;
-                    case 14:
-                        fx = "Reclusium";
-                        break;
-                    case 15:
-                        fx = "Armamentarium";
-                        break;
-                }
-            }
-            // Draw the company followed by chapters name
-            draw_text(xx + 800, yy + 74, string(fx) + ", " + string(global.chapter_name));
-        } else if (managing < 0) {
+        if (managing < 0) {
             if (struct_exists(selection_data, "purpose")) {
                 draw_text(xx + 800, yy + 74, $"{selection_data.purpose}");
             }
@@ -596,38 +617,8 @@ function scr_ui_manage() {
             }
         }
 
-        if (managing <= 10 && managing > 0) {
-            var bar_wid = 0, click_check, string_h;
-            draw_set_alpha(0.25);
-            if (obj_ini.company_title[managing] != "") {
-                bar_wid = max(400, string_width(obj_ini.company_title[managing]));
-            }
-            if (obj_ini.company_title[managing] == "") {
-                bar_wid = 400;
-            }
-            string_h = string_height("LOL");
-            draw_rectangle(xx + 800 - (bar_wid / 2), yy + 108, xx + 800 + (bar_wid / 2), yy + 100 + string_h, 1);
-            click_check = point_and_click([xx + 800 - (bar_wid / 2), yy + 108, xx + 800 + (bar_wid / 2), yy + 100 + string_h]);
-            obj_cursor.image_index = 0;
-            text_bar = false;
-            if (click_check) {
-                obj_cursor.image_index = 2;
-                text_bar = true;
-                keyboard_string = obj_ini.company_title[managing];
-            }
-            draw_set_alpha(1);
-
-            if ((obj_ini.company_title[managing] != "") || (text_bar > 0)) {
-                draw_set_font(fnt_fancy);
-                if ((text_bar == 0) || (text_bar > 31)) {
-                    draw_text(xx + 800, yy + 110, $"''{obj_ini.company_title[managing]} {(text_bar > 0 && text_bar <= 31) ? "|" : ""}'' ");
-                }
-            }
-        }
-
         draw_set_font(fnt_40k_14);
 
-        // var we;we=string_width(string(global.chapter_name)+" "+string(fx))/2;
 
         if (managing >= 0) {
             // Draw arrows
@@ -816,8 +807,11 @@ function scr_ui_manage() {
                     break;
                 }
 
-                while ((man[sel] == "hide" || man_sel[sel] != 1 && _only_display_selected) && (sel < array_length(display_unit) - 1)) {
+                while  ((sel <= array_length(display_unit) - 1) && (man[sel] == "hide" || (man_sel[sel] != 1 && _only_display_selected))) {
                     sel += 1;
+                }
+                if (sel >= array_length(display_unit)) {
+                    break;
                 }
                 if (scr_draw_management_unit(sel, yy, xx, true, _only_display_selected) == "continue") {
                     sel++;
@@ -1079,20 +1073,18 @@ function scr_ui_manage() {
 
                 button.move("right", true);
 
-                button.label = "Add Tag";
+                button.label = "Manage Tags";
                 button.keystroke = keyboard_check(vk_shift) && keyboard_check_pressed(ord("F"));
-                button.tooltip = "Coming soon"; //Press Shift F";
-                tag_possible = man_size > 0;
-                tag_possible = false;
+                button.tooltip = "Press Shift F" //Press Shift F";
                 button.alpha = 0.5;
-                if (tag_possible) {
-                    button.alpha = 1;
-                    if (button.draw()) {
-                        load_selection();
+
+                button.alpha = 1;
+                if (button.draw()) {
+                    if (!instance_exists(obj_popup)){
+                        set_up_tag_manager();
+                    } else if (obj_popup.type == POPUP_TYPE.ADD_TAGS){
+                        instance_destroy(obj_popup);
                     }
-                } else {
-                    button.alpha = 0.5;
-                    button.draw(false);
                 }
 
                 if (sel_uni[1] != "") {

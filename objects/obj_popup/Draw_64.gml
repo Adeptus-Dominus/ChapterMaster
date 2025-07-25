@@ -9,4 +9,6 @@
 		draw_gift_items_popup();
     } else if (type == POPUP_TYPE.ARTIFACT_EQUIP){
     	equip_artifact_popup_draw();
+    } else if (type == POPUP_TYPE.ADD_TAGS){
+    	draw_tag_manager();
     }

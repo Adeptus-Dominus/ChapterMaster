@@ -187,6 +187,34 @@ function set_up_transfer_popup(){
                 	instance_destroy();
                 }
             }
+        } else {
+            with (pip){
+                cancel_button = new UnitButtonObject(
+                    {
+                        x1: 1061, 
+                        y1: 491, 
+                        style : "pixel",
+                        label : "Cancel"
+                    }
+                );
+                main_slate = new DataSlate({
+                    style : "decorated",
+                    XX : 1006,
+                    YY : 143,
+                    set_width : true,
+                    width : 571,
+                    height : 350,
+                });
+                target_company_radio(_min_exp);
+                transfer_button = new UnitButtonObject(
+                    {
+                        x1: 1450, 
+                        y1: 491,
+                        style : "pixel",
+                        label : "Transfer"
+                    }
+                );               
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ enum POPUP_TYPE {
 	EQUIP = 6,
 	ARTIFACT_EQUIP = 8,
 	ITEM_GIFT = 9,
+	ADD_TAGS = 12,
 	FLEET_MOVE = 99,
 }
 
