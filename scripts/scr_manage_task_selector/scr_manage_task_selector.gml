@@ -76,7 +76,7 @@ function task_selector_man_manage(){
         			var _endslot = find_company_open_slot(_end_company);
         			scr_move_unit_info(_start_company, _end_company, _unit.marine_number,_endslot);
         			with (obj_ini){
-        				scr_company_order(start_company);
+        				scr_company_order(_start_company);
         				scr_company_order(_end_company);
         			}
         			managing = _end_company;
@@ -110,12 +110,12 @@ function task_selector_man_manage(){
     				break;
 				case "chaplain_promote":
         			_unit.squad="none";
-        			var start_company = _unit.company;
+        			var _start_company = _unit.company;
         			var _end_company =  selection_data.target_company;
         			var endslot = find_company_open_slot(_end_company);
-        			scr_move_unit_info(start_company, _end_company, _unit.marine_number,endslot);
+        			scr_move_unit_info(_start_company, _end_company, _unit.marine_number,endslot);
         			with (obj_ini){
-        				scr_company_order(start_company);
+        				scr_company_order(_start_company);
         				scr_company_order(_end_company);
         			}
         			managing = _end_company;
@@ -124,12 +124,12 @@ function task_selector_man_manage(){
     				break;
 				case "apothecary_promote":
         			_unit.squad="none";
-        			var start_company = _unit.company;
+        			var _start_company = _unit.company;
         			var _end_company =  selection_data.target_company;
         			var endslot = find_company_open_slot(_end_company);
-        			scr_move_unit_info(start_company, _end_company, _unit.marine_number,endslot);
+        			scr_move_unit_info(_start_company, _end_company, _unit.marine_number,endslot);
         			with (obj_ini){
-        				scr_company_order(start_company);
+        				scr_company_order(_start_company);
         				scr_company_order(_end_company);
         			}
         			managing = _end_company;
@@ -138,12 +138,12 @@ function task_selector_man_manage(){
     				break;
 				case "tech_marine_promote":
         			_unit.squad="none";
-        			var start_company = _unit.company;
+        			var _start_company = _unit.company;
         			var _end_company =  selection_data.target_company;
         			var endslot = find_company_open_slot(_end_company);
-        			scr_move_unit_info(start_company, _end_company, _unit.marine_number,endslot);
+        			scr_move_unit_info(_start_company, _end_company, _unit.marine_number,endslot);
         			with (obj_ini){
-        				scr_company_order(start_company);
+        				scr_company_order(_start_company);
         				scr_company_order(_end_company);
         			}
         			managing = _end_company;
@@ -152,12 +152,12 @@ function task_selector_man_manage(){
     				break;
 				case "librarian_promote":
         			_unit.squad="none";
-        			var start_company = _unit.company;
+        			var _start_company = _unit.company;
         			var _end_company =  selection_data.target_company;
         			var endslot = find_company_open_slot(_end_company);
-        			scr_move_unit_info(start_company, _end_company, _unit.marine_number,endslot);
+        			scr_move_unit_info(_start_company, _end_company, _unit.marine_number,endslot);
         			with (obj_ini){
-        				scr_company_order(start_company);
+        				scr_company_order(_start_company);
         				scr_company_order(_end_company);
         			}
         			managing = _end_company;

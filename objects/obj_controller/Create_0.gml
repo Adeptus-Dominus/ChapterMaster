@@ -437,6 +437,7 @@ company_report=false;
 company_data = {};
 obj_controller.unit_focus = false;
 filter_mode = false;
+manage_tags = [];
 pauldron_trim=0;
 last_unit=[0,0];
 ui_coloring=""; 

@@ -132,6 +132,7 @@ function company_specific_management(){
     draw_set_font(fnt_40k_30b);
     draw_set_halign(fa_center);
     draw_set_color(c_gray); // 38144
+    var _allow_shorts = false;
     var _comp = "";
     if (managing > 20) {
         _comp = managing - 10;
@@ -163,9 +164,12 @@ function company_specific_management(){
         var _text_input = management_buttons.company_namer;
         
         obj_ini.company_title[managing] = _text_input.draw(obj_ini.company_title[managing]);
-        allow_shortcuts = !_text_input.allow_input;
+        _allow_shorts = !_text_input.allow_input;
     } else {
-        allow_shortcuts = true;
+        _allow_shorts = true;
+    }
+    if (allow_shortcuts){
+        allow_shortcuts = _allow_shorts;
     }
     pop_draw_return_values()
 }
@@ -803,7 +807,7 @@ function scr_ui_manage() {
                     break;
                 }
 
-                while ((man[sel] == "hide" || man_sel[sel] != 1 && _only_display_selected) && (sel <= array_length(display_unit) - 1)) {
+                while  ((sel <= array_length(display_unit) - 1) && (man[sel] == "hide" || (man_sel[sel] != 1 && _only_display_selected))) {
                     sel += 1;
                 }
                 if (sel >= array_length(display_unit)) {
@@ -1069,19 +1073,18 @@ function scr_ui_manage() {
 
                 button.move("right", true);
 
-                button.label = "Add Tag";
+                button.label = "Manage Tags";
                 button.keystroke = keyboard_check(vk_shift) && keyboard_check_pressed(ord("F"));
-                button.tooltip = "Coming soon"; //Press Shift F";
-                tag_possible = man_size > 0;
+                button.tooltip = "Press Shift F" //Press Shift F";
                 button.alpha = 0.5;
-                if (tag_possible) {
-                    button.alpha = 1;
-                    if (button.draw()) {
+
+                button.alpha = 1;
+                if (button.draw()) {
+                    if (!instance_exists(obj_popup)){
                         set_up_tag_manager();
+                    } else if (obj_popup.type == POPUP_TYPE.ADD_TAGS){
+                        instance_destroy(obj_popup);
                     }
-                } else {
-                    button.alpha = 0.5;
-                    button.draw(false);
                 }
 
                 if (sel_uni[1] != "") {

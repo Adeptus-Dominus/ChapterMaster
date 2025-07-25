@@ -508,6 +508,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     personal_livery = {};
     personal_culture = [];
 
+    manage_tags = [];
+
     static set_exp = function(new_val) {
         experience = new_val;
         var _powers_learned = 0;

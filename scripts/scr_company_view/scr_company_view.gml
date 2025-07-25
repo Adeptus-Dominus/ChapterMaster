@@ -36,6 +36,7 @@ function reset_manage_arrays() {
         ma_view = [];
         squad = [];
     }
+    manage_tags = [];
     reset_ship_manage_arrays();
 }
 

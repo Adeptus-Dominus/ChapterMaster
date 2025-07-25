@@ -82,6 +82,7 @@ function UnitButtonObject(data = false) constructor{
 	label= "";
 	alpha= 1;
 	color = #50a076;
+	innactive_col = c_gray;	
 	keystroke = false;
 	tooltip = "";
 	bind_method = "";
@@ -435,7 +436,7 @@ function multi_select(options_array, title, data = {})constructor{
 			_cur_opt.x1 = _prev_x;
 			_cur_opt.y1 = _prev_y;
 			_cur_opt.update()
-			if (_cur_opt.clicked()){
+			if (_cur_opt.clicked() && allow_changes){
 				if (_change_method){
 					on_change();
 				}
@@ -469,6 +470,13 @@ function multi_select(options_array, title, data = {})constructor{
 				}
 			}			
 		}
+	}
+
+	static deselect_all = function(){
+		for (var i=0;i<array_length(toggles);i++){
+			var _cur_opt = toggles[i];
+			_cur_opt.active = false;
+		}		
 	}
 	static selections = function(){
 		var _selecs = [];

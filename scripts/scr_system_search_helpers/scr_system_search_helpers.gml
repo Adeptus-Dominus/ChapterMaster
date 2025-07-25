@@ -150,7 +150,7 @@ function scr_get_stars(shuffled=false, ownership=[], types = []) {
 			}
 			if (_add && _types_sort){
 				for (var i=1;i<=planets;i++){
-					array_delete_value(types, p_type[i]);
+					types = array_delete_value(types, p_type[i]);
 					if (!array_length(types)){
 						break;
 					}
