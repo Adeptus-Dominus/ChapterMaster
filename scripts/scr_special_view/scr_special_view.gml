@@ -84,8 +84,8 @@ function scr_special_view(command_group) {
 			}
 
 			unit = obj_ini.TTRPG[0][v];	 
-			yep = !(array_contains(_already_used, v));	
-			if (yep==1){
+			yep = !(unit.IsSpecialist(SPECIALISTS_TECHS)  || unit.IsSpecialist(SPECIALISTS_CHAPLAINS)  || unit.IsSpecialist(SPECIALISTS_LIBRARIANS) || unit.IsSpecialist(SPECIALISTS_APOTHECARIES) );	
+			if (yep){
 		        add_man_to_manage_arrays(unit);
 			}
 		}
