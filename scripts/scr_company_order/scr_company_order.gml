@@ -55,8 +55,46 @@ function sort_all_companies_to_map(map){
 		}
 	}
 }
+
+/*takes a template of a role, required role number and if there are enough 
+of those units not in a squad creates a new squad of a given type*/
+function create_squad_from_squadless(squadless_and_squads,build_data,company){
+	var squadless = squadless_and_squads[0];
+	var empty_squads = squadless_and_squads[1];
+	var role = build_data[1];
+	var required_unit_count = build_data[2];
+	var new_squad_type = build_data[0];
+	var new_squad_index, role_number;
+	if (struct_exists(squadless,role)){
+		role_number = array_length(squadless[$ role]);
+		while (role_number >= required_unit_count){
+			new_squad_index=false;
+			if (array_length(empty_squads)>0){
+				new_squad_index = empty_squads[0];
+				array_delete(empty_squads,0,1);
+				create_squad(new_squad_type, company, false, new_squad_index);
+			} else{
+				create_squad(new_squad_type, company, false);
+			}
+			var sorted_units = 0;
+			for (var i = 0; i < role_number; i++){
+				unit = TTRPG[company,squadless[$ role][i]];
+				if (unit.squad != "none"){
+					array_delete(squadless[$ role], i, 1);
+					sorted_units++;
+					i--;
+					role_number--;
+				}
+			}
+			//this is to catch any potential infinite loops where by squads dont get formed and the role number dosnt derease
+			if (sorted_units==0) then break;
+		}
+
+	}
+	return [squadless,empty_squads];
+}
 function scr_company_order(company) {
-	try_and_report_loop($"company order {company}", function(company){
+	try {
 
 	// company : company number
 	// This sorts and crunches the marine variables for the company
@@ -84,45 +122,6 @@ function scr_company_order(company) {
     temp_spe=[];
     temp_god=[];
 	temp_struct=[];
-
-
-	/*takes a template of a role, required role number and if there are enough 
-	of those units not in a squad creates a new squad of a given type*/
-	function create_squad_from_squadless(squadless_and_squads,build_data,company){
-		var squadless = squadless_and_squads[0];
-		var empty_squads = squadless_and_squads[1];
-		var role = build_data[1];
-		var required_unit_count = build_data[2];
-		var new_squad_type = build_data[0];
-		var new_squad_index, role_number;
-		if (struct_exists(squadless,role)){
-			role_number = array_length(squadless[$ role]);
-			while (role_number >= required_unit_count){
-				new_squad_index=false;
-				if (array_length(empty_squads)>0){
-					new_squad_index = empty_squads[0];
-					array_delete(empty_squads,0,1);
-					create_squad(new_squad_type, company, false, new_squad_index);
-				} else{
-					create_squad(new_squad_type, company, false);
-				}
-				var sorted_units = 0;
-				for (var i = 0; i < role_number; i++){
-					unit = TTRPG[company,squadless[$ role][i]];
-					if (unit.squad != "none"){
-						array_delete(squadless[$ role], i, 1);
-						sorted_units++;
-						i--;
-						role_number--;
-					}
-				}
-				//this is to catch any potential infinite loops where by squads dont get formed and the role number dosnt derease
-				if (sorted_units==0) then break;
-			}
-
-		}
-		return [squadless,empty_squads];
-	}
 
 	// the order that marines are displayed in the company view screen(this order is augmented by squads)
 	var role_orders = role_hierarchy();
@@ -370,7 +369,9 @@ function scr_company_order(company) {
 	        }
 	    }
 	}*/
-},, [company]);
+}catch(_exception){
+	handle_exception(_exception);
+}
 
 }
 
