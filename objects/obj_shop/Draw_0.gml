@@ -174,7 +174,6 @@ slate_panel.inside_method = function(){
                             ship_class : item[i],
                             duration : _duration,
                         });
-                        show_debug_message(obj_controller.event);
                     }
                 }
             }
