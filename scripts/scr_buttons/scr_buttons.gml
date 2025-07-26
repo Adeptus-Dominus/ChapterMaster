@@ -497,6 +497,7 @@ function item_data_updater(data){
     }		
 }
 function radio_set(options_array, title, data = {})constructor{
+	move_data_to_current_scope(data, true);
 	toggles = [];
 	current_selection = 0;
 	self.title = title;
@@ -516,8 +517,6 @@ function radio_set(options_array, title, data = {})constructor{
 	}
 	x2 = 0;
 	y2 = 0;
-
-	move_data_to_current_scope(data, true);
 	static update = item_data_updater;
 	static draw = function(){
 		add_draw_return_values();

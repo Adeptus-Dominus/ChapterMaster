@@ -8,15 +8,23 @@ function DeepCloneStruct(clone_struct) {
     return variable_clone(clone_struct);
 }
 
-function move_data_to_current_scope(struct, overide=true){
-    var _data_names = struct_get_names(struct);
-    for (var i=0;i<array_length(_data_names);i++){
-        if (overide){
-            self[$_data_names[i]] = struct[$ _data_names[i]];
-        } else {
-            if (!struct_exists(self, _data_names[i])){
-                self[$_data_names[i]] = struct[$ _data_names[i]];
+function move_data_to_current_scope(move_struct, overide=true){
+    if (!is_struct(move_struct)){
+        show_debug_message(move_struct);
+    } else {
+        try{
+            var _data_names = struct_get_names(move_struct);
+            for (var i=0;i<array_length(_data_names);i++){
+                if (overide){
+                    self[$_data_names[i]] = move_struct[$ _data_names[i]];
+                } else {
+                    if (!struct_exists(self, _data_names[i])){
+                        self[$_data_names[i]] = move_struct[$ _data_names[i]];
+                    }
+                }
             }
+        } catch(_exception){
+            handle_exception(_exception);
         }
     }
 }
