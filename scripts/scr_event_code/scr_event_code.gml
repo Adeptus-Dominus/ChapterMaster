@@ -2,11 +2,15 @@
 
 function add_event(event_data){
 	var _inserted = false;
+	if (!struct_exists(event_data,"duration")){
+		event_data.duration = 1;
+	}
 	for (var i=0;i<array_length(obj_controller.event);i++){
 		var _event = obj_controller.event[i];
 		if (_event.duration >= event_data.duration){
 			array_insert(obj_controller.event, i, event_data);
 			_inserted = true;
+			break;
 		}
 	}
 	if (!_inserted){
