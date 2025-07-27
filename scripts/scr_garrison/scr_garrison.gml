@@ -175,7 +175,8 @@ function GarrisonForce(planet_operatives, turn_end=false, type="garrison") const
 
 	static garrison_disposition_change = function(star, planet, up_or_down = false){
 		dispo_change = 0;
-		if (array_contains(obj_controller.imperial_factions, star.p_owner[planet])){
+		var _pdata = new PlanetData(planet, star);
+		if (array_contains(obj_controller.imperial_factions, _pdata.current_owner)){
 			planet_disposition = star.dispo[planet];
 
 			var disposition_modifier = planet_disposition<=50 ? (planet_disposition/10) :((planet_disposition-50)/10)%5;
@@ -188,8 +189,8 @@ function GarrisonForce(planet_operatives, turn_end=false, type="garrison") const
 		    }
 			var final_modifier = 5 + total_garrison/10 - disposition_modifier + time_modifier;
 			if (up_or_down){
-				dispo_change =  garrison_leader.charisma+final_modifier;
-				if (dispo_change<50 && (planet_disposition<obj_controller.disposition[star.p_owner[planet]] || garrison_leader.has_trait("honorable"))){
+				dispo_change =  garrison_leader.charisma + final_modifier;
+				if (dispo_change<50 && (planet_disposition < obj_controller.disposition[_pdata.current_owner] || garrison_leader.has_trait("honorable"))){
 					dispo_change = 50;
 				}
 			} else {
@@ -207,20 +208,15 @@ function GarrisonForce(planet_operatives, turn_end=false, type="garrison") const
                     if (_diplomatic_leader) {
                         dispo_change = "none";
                     } else {
-                        if (planet_disposition > obj_controller.disposition[star.p_owner[planet]]) {
-                            dispo_change = charisma_test[1] / 10;
-                            if (planet_disposition + dispo_change <= -100) {
-                                dispo_change = -(planet_disposition + 100);
-                            }
+                        if (planet_disposition > obj_controller.disposition[_pdata.current_owner]) {
+                            _pdata.add_disposition(dispo_change);
                         } else {
                             dispo_change = 0;
                         }
                     }
                 } else {
                     dispo_change = charisma_test[1] / 10;
-                    if (planet_disposition + dispo_change >= 100) {
-                        dispo_change = abs(planet_disposition - 100);
-                    }
+                    _pdata.add_disposition(dispo_change);
                 }
 			}
 		} else {
