@@ -54,8 +54,8 @@ if (string_count("mech",battle_special)>0){
 }
 
 if (battle_special="space_hulk"){
-    if (hulk_forces>0) then p1="Your marines maneuver through the hull of the Space Hulk, shadows dancing and twisting before their luxcasters.  The hallway integrity is nonexistant- twisted metal juts out in hazardous ways or opens into bottomless pits.  Still, there is loot and knowledge to be gained.  It is not long before your men's sensorium pick up hostile blips.  Your own forces are made up of ";
-    if (hulk_forces=0) then p1="Your marines maneuver through the hull of the Space Hulk, shadows dancing and twisting before their luxcasters.  The hallway integrity is nonexistant- twisted metal juts out in hazardous ways or opens into bottomless pits.  Your forces are made up of ";
+    if (hulk_forces>0) then p1="Your marines maneuver through the hull of the Space Hulk, shadows dancing and twisting before their luxcasters.  The hallway integrity is non-existent – twisted metal juts out in hazardous ways or opens into bottomless pits.  Still, there is loot and knowledge to be gained.  It is not long before your men's sensorium pick up hostile blips.  Your own forces are made up of ";
+    if (hulk_forces=0) then p1="Your marines maneuver through the hull of the Space Hulk, shadows dancing and twisting before their luxcasters.  The hallway integrity is non-existent – twisted metal juts out in hazardous ways or opens into bottomless pits.  Your forces are made up of ";
 }
 
 
