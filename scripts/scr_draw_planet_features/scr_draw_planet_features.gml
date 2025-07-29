@@ -151,7 +151,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 				}else if (cult_control<75){
 					control_string = "Has managed to galvanise the populace to overcome the former governor of the planet turning much of the local pdf to it's cause, it must be stopped, lest it spread.";
 				} else {
-					control_string = "The Cults rot and control of the planet is complete even if the cult can be dismantled the rot is great and the population will need significant purging and monitering to remove the taint";
+					control_string = "The Cults rot and control of the planet is complete even if the cult can be dismantled the rot is great and the population will need significant purging and monitoring to remove the taint";
 				}
 				body = $"The Cult of {feature.name} {control_string}";
 				break;				
@@ -236,7 +236,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 						if (feature.reason == "importance"){
 
 						}
-						mission_description=$"The governor of {planet_name} has requested a force of marines might stay behind following your departure.\n\n\n assign a squad to garrison to initiate mission, The garrison leeader will need to be capable of conducting himself in a diplomatic manor in order for the garrison duration to be a success";
+						mission_description=$"The governor of {planet_name} has requested a force of marines might stay behind following your departure.\n\n\n assign a squad to garrison to initiate mission, The garrison leeader will need to be capable of conducting himself in a diplomatic manner in order for the garrison duration to be a success";
 
 						break;
 					case "join_communion":
@@ -262,7 +262,7 @@ function FeatureSelected(Feature, system, planet) constructor{
 						}
 						break;
 					case "protect_raiders":
-						mission_description=$"The governor of {planet_name} has sent many requests to the sector commander for help with defending against xenos raids on the populace of the planet, the reports seem to suggest the xenos in question are in fact dark elder.";
+						mission_description=$"The governor of {planet_name} has sent many requests to the sector commander for help with defending against xenos raids on the populace of the planet, the reports seem to suggest the xenos in question are in fact dark eldar.";
 						help = "Set a squad to ambush";
 						button_text = "Send Squad";
 						_button_tooltip = "milage may vary on playability of this mission progress at your own risk";
