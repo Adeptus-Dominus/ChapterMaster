@@ -667,6 +667,7 @@ function draw_popup_equip(){
 
 	//draw_set_halign(fa_center);
 	if ((equipmet_area == EquipmentSlot.WEAPON_ONE) || (equipmet_area == EquipmentSlot.WEAPON_TWO)) {
+		range_melee_radio.update({max_width : 500, x1:1040, y1:308})
 		range_melee_radio.draw();
 	}
 
