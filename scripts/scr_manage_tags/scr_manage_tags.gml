@@ -14,7 +14,7 @@ function set_up_tag_manager(){
 				font : fnt_40k_14b,
 			});
 	    }
-		tag_selects = new multi_select(_tag_options, "Tags", {max_width : 500, x1:1040, y1:210});
+		tag_selects = new MultiSelect(_tag_options, "Tags", {max_width : 500, x1:1040, y1:210});
 
 		tag_selects.set(obj_controller.manage_tags);
 	    exit_button = new UnitButtonObject(
@@ -174,7 +174,7 @@ function draw_tag_manager(){
 			 		}
 			 	}
 			}
-		 	tag_selects = new multi_select(
+		 	tag_selects = new MultiSelect(
 		 		_selecs, 
 		 		"Tags", 
 		 		{
@@ -220,7 +220,7 @@ function draw_tag_manager(){
 			 		}
 			 	}
 			}
-		 	tag_selects = new multi_select(
+		 	tag_selects = new MultiSelect(
 		 		_selecs, 
 		 		"Tags", 
 		 		{

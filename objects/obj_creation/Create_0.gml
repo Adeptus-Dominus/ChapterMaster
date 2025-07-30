@@ -208,7 +208,7 @@ buttons = {
         },                    
     ], "Home System Planets"), 
 
-    culture_styles : new multi_select([
+    culture_styles : new MultiSelect([
         {
             str1 : "Greek",
             font : fnt_40k_14b,

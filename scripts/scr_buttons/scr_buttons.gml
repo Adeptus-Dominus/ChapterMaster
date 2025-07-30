@@ -400,7 +400,7 @@ function drop_down(selection, draw_x, draw_y, options,open_marker){
     pop_draw_return_values();
 }
 
-function multi_select(options_array, title, data = {})constructor{
+function MultiSelect(options_array, title, data = {})constructor{
 	self.title = title;
 	x_gap = 10;
 	y_gap = 5;
