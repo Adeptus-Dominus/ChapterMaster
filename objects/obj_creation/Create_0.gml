@@ -142,7 +142,7 @@ buttons = {
         tooltip : "Click for Complex Spawn System Options",
         button_color : #009500,
     }),
-    home_spawn_loc_options : new radio_set([
+    home_spawn_loc_options : new RadioSet([
         {
             str1 : "Fringe",
             font : fnt_40k_30b,
@@ -155,7 +155,7 @@ buttons = {
         },        
     ], "Home Spwan\nLocation"),
 
-    recruit_home_relationship : new radio_set([
+    recruit_home_relationship : new RadioSet([
         {
             str1 : "Share Planet",
             font : fnt_40k_14b,
@@ -172,7 +172,7 @@ buttons = {
             tooltip : "Your recruit world will be in a different system to your homeworld",
         },            
     ], "Recruit world"),
-    home_warp : new radio_set([
+    home_warp : new RadioSet([
         {
             str1 : "Secluded",
             font : fnt_40k_14b,
@@ -189,7 +189,7 @@ buttons = {
             tooltip : "Your home system is in a very stable warp area, accessible by several warp lanes",
         },            
     ], "Home warp access"),
-    home_planets : new radio_set([
+    home_planets : new RadioSet([
         {
             str1 : "one",
             font : fnt_40k_14b,
@@ -291,7 +291,7 @@ buttons = {
         label : "Company Settings",
         company_view : false,
     }),
-    company_liveries_choice : new radio_set([
+    company_liveries_choice : new RadioSet([
         {
             str1 : "HQ",
             font : fnt_40k_14b
