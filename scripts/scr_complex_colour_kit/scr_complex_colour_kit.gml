@@ -642,7 +642,7 @@ function colour_picker(xx,yy, max_width=400) constructor{
     self.max_width = max_width;
     base_colour = 0;
 
-    markings_options  = new radio_set(       
+    markings_options  = new RadioSet(       
        [ {
                    str1 : "None",
                    font : fnt_40k_14b,

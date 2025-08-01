@@ -149,9 +149,9 @@ function set_up_equip_popup(){
 						val : 2
 					}										
 		        ];
-		        quality_radio = new radio_set(_quality_options, "", {max_width : 500, x1:1040, y1:308});
+		        quality_radio = new RadioSet(_quality_options, "", {max_width : 500, x1:1040, y1:308});
 
-		        range_melee_radio = new radio_set([
+		        range_melee_radio = new RadioSet([
 		        	{
 						str1 : "Ranged",
 						font : fnt_40k_14b,
@@ -667,6 +667,7 @@ function draw_popup_equip(){
 
 	//draw_set_halign(fa_center);
 	if ((equipmet_area == EquipmentSlot.WEAPON_ONE) || (equipmet_area == EquipmentSlot.WEAPON_TWO)) {
+		range_melee_radio.update({max_width : 500, x1:1040, y1:308});
 		range_melee_radio.draw();
 	}
 
@@ -802,6 +803,7 @@ function reequip_selection(){
     }// End repeat
 
     obj_controller.cooldown=10;
-    instance_destroy();exit;	
+    instance_destroy();
+    exit;	
 }
 
