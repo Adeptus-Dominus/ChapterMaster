@@ -540,7 +540,7 @@ function jail_selection(){
 }
 
 function load_selection(){
-    if (man_size>0) and (selecting_location!="Terra") and (selecting_location!="Mechanicus Vessel") and (selecting_location!="Lost"){
+    if (man_size>0 && !location_out_of_player_control(selecting_location)){
         scr_company_load(selecting_location);
         menu=30;
         top=1;
@@ -549,8 +549,8 @@ function load_selection(){
 
 function unload_selection(){
 	//show_debug_message("{0},{1},{2}",obj_controller.selecting_ship,man_size,selecting_location);
-    if (man_size>0) and (obj_controller.selecting_ship>=0) and (!instance_exists(obj_star_select)) 
-    and (selecting_location!="Terra" && selecting_location!="Mechanicus Vessel" && selecting_location!="Warp" && selecting_location!="Lost") {
+    if (man_size>0 && obj_controller.selecting_ship>=0 && !instance_exists(obj_star_select)&& 
+    	!location_out_of_player_control(selecting_location) && selecting_location!="Warp"){
         cooldown=8000;
         var boba=0;
         var unload_star = star_by_name(selecting_location);

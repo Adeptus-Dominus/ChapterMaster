@@ -88,7 +88,7 @@ function set_up_equip_popup(){
 	    if (vih>0 && man_size>0 && allow){
 
 	        var pip=instance_create(0,0,obj_popup);
-	        pip.type=6;
+	        pip.type=POPUP_TYPE.EQUIP;
 	        pip.o_wep1=o_wep1;
 	        pip.o_wep2=o_wep2;
 	        pip.o_armour=o_armour;
@@ -109,7 +109,7 @@ function set_up_equip_popup(){
 	        	cancel_button = new UnitButtonObject(
 		        	{
 		        		x1: 1061, 
-				        y1: 491, 
+				        y1: 591, 
 				        style : "pixel",
 				        label : "Cancel"
 		        	}
@@ -117,7 +117,7 @@ function set_up_equip_popup(){
 		        equip_button = new UnitButtonObject(
 		        	{
 		        		x1: 1450, 
-				        y1: 491,
+				        y1: 591,
 				        style : "pixel",
 						label : "Equip"
 		        	}
@@ -129,7 +129,7 @@ function set_up_equip_popup(){
 		        	YY : 143,
 		        	set_width : true,
 		        	width : 571,
-		        	height : 350,
+		        	height : 450,
 		        });
 
 		        var _quality_options = [
@@ -149,7 +149,7 @@ function set_up_equip_popup(){
 						val : 2
 					}										
 		        ];
-		        quality_radio = new RadioSet(_quality_options, "", {max_width : 500, x1:1040, y1:308});
+		        quality_radio = new RadioSet(_quality_options, "", {max_width : 500, x1:1040, y1:318});
 
 		        range_melee_radio = new RadioSet([
 		        	{
@@ -162,7 +162,7 @@ function set_up_equip_popup(){
 						font : fnt_40k_14b,
 						val : eENGAGEMENT.Melee
 					}
-				], "", {max_width : 500, x1:1040, y1:328});
+				], "", {max_width : 500, x1:1040, y1:343});
 
 				weapon1_select = new UnitButtonObject(
 		        	{
@@ -395,17 +395,19 @@ function draw_popup_equip(){
 
 		for (var o = 0; o < array_length(item_name); o++) {
 			box_x = 1016 + (row * 154);
-			box_y = 355 + (column * 20);
+			box_y = 380 + (column * 20);
 			box = [box_x, box_y, box_x + 144, box_y + 20];
 			check = selected_item_name == item_name[o] ? "x" : " ";
 			item_string = $"[{check}] {item_name[o]}";
 			draw_text_transformed(box_x, box_y, item_string, mct, 1, 0);
-
-			if (point_and_click(box)) {
-				top = o;
-			}
+			if (scr_hit(box)){
+				tooltip_draw(gen_item_tooltip(item_name[o]))
+				if (scr_click_left()){
+					top = o;
+				}
+			};
 			column++;
-			if (column > 6) {
+			if (column > 7) {
 				column = 0;
 				row++;
 			}
@@ -667,7 +669,6 @@ function draw_popup_equip(){
 
 	//draw_set_halign(fa_center);
 	if ((equipmet_area == EquipmentSlot.WEAPON_ONE) || (equipmet_area == EquipmentSlot.WEAPON_TWO)) {
-		range_melee_radio.update({max_width : 500, x1:1040, y1:308});
 		range_melee_radio.draw();
 	}
 
@@ -681,9 +682,11 @@ function draw_popup_equip(){
 
 	draw_set_color(255);
 	draw_set_halign(fa_center);
-	draw_text(1292, 476, string_hash_to_newline(warning));
+	draw_text(1292, 570, string_hash_to_newline(warning));
 
-	cancel_button.draw();
+	if(cancel_button.draw()){
+		instance_destroy();
+	}
 
 	var _valid = ((n_good1 + n_good2 + n_good3 + n_good4 + n_good5) == 5);
 

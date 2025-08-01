@@ -324,7 +324,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
         draw_text_transformed(xx + 27.5 + 8, yy + 66.5, string_hash_to_newline(string(string_role)), name_xr, 1, 0);
 
         // Draw current location
-        if ((unit_location_string == "Mechanicus Vessel") || (unit_location_string == "Terra IV") || (unit_location_string == "=Penitorium=") || (assignment != "none")) {
+        if (location_out_of_player_control(unit_location_string) || (unit_location_string == "=Penitorium=") || (assignment != "none")) {
             draw_set_alpha(0.5);
         }
         var truncatedLocation = string_truncate(string(unit_location_string), 130); // Truncate the location string to 100 pixels
