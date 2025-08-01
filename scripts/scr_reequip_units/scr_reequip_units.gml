@@ -803,6 +803,7 @@ function reequip_selection(){
     }// End repeat
 
     obj_controller.cooldown=10;
-    instance_destroy();exit;	
+    instance_destroy();
+    exit;	
 }
 

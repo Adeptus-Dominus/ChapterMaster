@@ -214,7 +214,7 @@ function GarrisonForce(planet_operatives, turn_end=false, type="garrison") const
                     if (_diplomatic_leader) {
                         dispo_change = "none";
                     } else {
-                        if (planet_disposition > _main_faction_disp) {
+                        if (_planet_disposition > _main_faction_disp) {
                             _pdata.add_disposition(dispo_change);
                         } else {
                             dispo_change = 0;
