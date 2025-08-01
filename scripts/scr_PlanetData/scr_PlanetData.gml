@@ -36,6 +36,10 @@ function PlanetData(planet, system) constructor{
         system.dispo[planet] = player_disposition;
     }
 
+    static owner_faction_disposition = function(){
+        return obj_controller.disposition[current_owner];
+    }
+
     static set_population = function(new_population){
     	population = new_population;
     	system.p_population[planet] = population;

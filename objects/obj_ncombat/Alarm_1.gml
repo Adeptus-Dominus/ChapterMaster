@@ -54,8 +54,8 @@ if (string_count("mech",battle_special)>0){
 }
 
 if (battle_special="space_hulk"){
-    if (hulk_forces>0) then p1="Your marines manuever through the hull of the Space Hulk, shadows dancing and twisting before their luxcasters.  The hallway integrity is nonexistant- twisted metal juts out in hazardous ways or opens into bottomless pits.  Still, there is loot and knowledge to be gained.  It is not long before your men's sensorium pick up hostile blips.  Your own forces are made up of ";
-    if (hulk_forces=0) then p1="Your marines manuever through the hull of the Space Hulk, shadows dancing and twisting before their luxcasters.  The hallway integrity is nonexistant- twisted metal juts out in hazardous ways or opens into bottomless pits.  Your forces are made up of ";
+    if (hulk_forces>0) then p1="Your marines maneuver through the hull of the Space Hulk, shadows dancing and twisting before their luxcasters.  The hallway integrity is non-existent – twisted metal juts out in hazardous ways or opens into bottomless pits.  Still, there is loot and knowledge to be gained.  It is not long before your men's sensorium pick up hostile blips.  Your own forces are made up of ";
+    if (hulk_forces=0) then p1="Your marines maneuver through the hull of the Space Hulk, shadows dancing and twisting before their luxcasters.  The hallway integrity is non-existent – twisted metal juts out in hazardous ways or opens into bottomless pits.  Your forces are made up of ";
 }
 
 
@@ -84,7 +84,7 @@ if (string_count("spyrer",battle_special)>0){
     p1="Your marines search through the alleyways and corridors likely to contain the Spyrer.  It does not take long before the lunatic attacks, springing off from a wall to fall among your men.  Your ranks are made up of ";
 }
 if (string_count("protect_raiders",battle_special)>0){
-    p1="Following responses from scans, Your marine squad deploys and lies in wait on the planets surface. Either the elder were expecting you or the scope of the raids on the planet had been underplayed by the governor perhaps to hide his incompetance for having allowed such foul xenos actioonos to have gone on for so long without being cheacked.";
+    p1="Following responses from scans, Your marine squad deploys and lies in wait on the planets surface. Either the eldar were expecting you or the scope of the raids on the planet had been underplayed by the governor perhaps to hide his incompetence in allowing such foul xenos actions to persist unchecked for so long.";
 }
 if (string_count("fallen",battle_special)>0){
     p1="Your marines search through the alleyways and dens likely to contain the Fallen.  Several days pass before the search is succesful; the prey is located by Auspex and closed in upon.  ";

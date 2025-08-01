@@ -400,7 +400,7 @@ function drop_down(selection, draw_x, draw_y, options,open_marker){
     pop_draw_return_values();
 }
 
-function multi_select(options_array, title, data = {})constructor{
+function MultiSelect(options_array, title, data = {})constructor{
 	self.title = title;
 	x_gap = 10;
 	y_gap = 5;
@@ -496,8 +496,7 @@ function item_data_updater(data){
     	self[$_data_presets[i]] = data[$_data_presets[i]];
     }		
 }
-function radio_set(options_array, title, data = {})constructor{
-	move_data_to_current_scope(data, true);
+function RadioSet(options_array, title, data = {})constructor{
 	toggles = [];
 	current_selection = 0;
 	self.title = title;
@@ -517,6 +516,8 @@ function radio_set(options_array, title, data = {})constructor{
 	}
 	x2 = 0;
 	y2 = 0;
+	
+	move_data_to_current_scope(data, true);
 	static update = item_data_updater;
 	static draw = function(){
 		add_draw_return_values();

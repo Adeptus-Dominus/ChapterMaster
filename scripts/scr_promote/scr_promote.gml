@@ -204,7 +204,7 @@ function target_company_radio(min_exp=0){
 			});
 		}
     }
-	companies_select = new radio_set(_company_options, "Target Company", {max_width : 500, x1:1040, y1:210});
+	companies_select = new RadioSet(_company_options, "Target Company", {max_width : 500, x1:1040, y1:210});
 
 	companies_select.current_selection = 0;	
 }

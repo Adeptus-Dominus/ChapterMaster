@@ -680,7 +680,7 @@ function equip_artifact_popup_setup(){
                 val : 0
             }
         ]
-        weapon_slot_select = new radio_set(_weapon_slot_options, "Weapon slot", {max_width : 580, x1:1200, y1:130});
+        weapon_slot_select = new RadioSet(_weapon_slot_options, "Weapon slot", {max_width : 580, x1:1200, y1:130});
         weapon_slot_select.current_selection = 0;
     } 
 }
