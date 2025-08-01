@@ -189,11 +189,8 @@ slate_panel.inside_method = function(){
                 if (last_item == item[i]){
                     tooltip_show=1;
                 } else {
-                    equip_data=gear_weapon_data("any", item[i]);
                     if (!is_string(tooltip_overide[i])){
-                        if (is_struct(equip_data)){
-                            tooltip=$"{equip_data.item_tooltip_desc_gen()}";
-                        }
+                        tooltip=gen_item_tooltip(item[i])
                     } else {
                         tooltip = tooltip_overide[i];
                     }

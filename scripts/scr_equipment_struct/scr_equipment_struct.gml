@@ -394,6 +394,17 @@ function quality_string_conversion(quality_request) {
     }
 }
 
+function gen_item_tooltip(item){
+    var _tooltip = "";
+    var _equip_data=gear_weapon_data("any", item);
+
+    if (is_struct(_equip_data)){
+        _tooltip=$"{_equip_data.item_tooltip_desc_gen()}";
+    }
+
+    return _tooltip;
+}
+
 function quality_color(_item_quality) {
     switch (_item_quality) {
         case "standard":
