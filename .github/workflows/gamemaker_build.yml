@@ -24,9 +24,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           lfs: true
-          
-      - name: fetch tags
-        run: git fetch --tags origin
+
+      # Causing issues with the stable release workflow;
+      # - name: fetch tags
+      #   run: git fetch --tags origin
         
       - name: Set date-time and version info
         id: version_info
