@@ -16,7 +16,7 @@ if ((cooldown<=0)){
         exit;
     }
 
-    if (type=98){
+    if (type=POPUP_TYPE.BATTLE_OPTIONS){
         obj_controller.cooldown=10;
         if (instance_exists(obj_turn_end)){
             obj_turn_end.current_battle+=1;
