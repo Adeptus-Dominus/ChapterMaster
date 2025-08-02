@@ -10,9 +10,9 @@ function draw_player_fleet_combat_options(){
     draw_text(xxx+12,yyy+237,"Enemy Fleets:");
     draw_text(xxx+332,yyy+237,"Allied Fleets:");
     
-	draw_text(xxx+310,yyy+118,$"{strin[1]} {string_plural(Battleship,strin[1])} ({strin[4]}% HP)");
-	draw_text(xxx+310,yyy+138,$"{strin[2]} {string_plural(Frigate,strin[2])} ({strin[5]}% HP)");
-	draw_text(xxx+310,yyy+158,$"{strin[3]} {string_plural(Escort,strin[3])} ({strin[6]}% HP)");
+	draw_text(xxx+310,yyy+118,$"{strin[1]} {string_plural("Battleship",strin[1])} ({strin[4]}% HP)");
+	draw_text(xxx+310,yyy+138,$"{strin[2]} {string_plural("Frigate",strin[2])} ({strin[5]}% HP)");
+	draw_text(xxx+310,yyy+158,$"{strin[3]} {string_plural("Escort",strin[3])} ({strin[6]}% HP)");
 
     
     draw_set_halign(fa_center);

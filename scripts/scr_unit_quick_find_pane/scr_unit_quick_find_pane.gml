@@ -50,9 +50,9 @@ function UnitQuickFindPanel() constructor{
 						group.techies++;
 	    			}
 	    		} else if (unit_location[0]==location_types.ship){
-	    			if (unit.ship_location<_ship_count && unit.ship_location>-1){
-	    				var _ship = obj_ini.ship_data[unit.ship_location];
-	    				_ship.carrying+=unit.get_unit_size();
+	    			if (_unit.ship_location<_ship_count && _unit.ship_location>-1){
+	    				var _ship = obj_ini.ship_data[_unit.ship_location];
+	    				_ship.carrying+=_unit.get_unit_size();
 	    			}
 	    		}
 	    	}
