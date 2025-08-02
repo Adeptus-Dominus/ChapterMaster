@@ -19,7 +19,7 @@ if (number!=0) and (obj_controller.complex_event=false) then obj_turn_end.alarm[
 instance_destroy();
 }
 
-if (type=98){
+if (type=POPUP_TYPE.BATTLE_OPTIONS){
     obj_controller.cooldown=10;
     obj_turn_end.current_battle+=1;
     obj_turn_end.alarm[0]=1;
