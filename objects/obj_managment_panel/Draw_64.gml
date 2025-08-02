@@ -32,6 +32,7 @@ slate_panel.inside_method = function(){
     }
 
     if (header=3){
+        slate_panel.draw_top_piece = false;
         draw_sprite_stretched(spr_master_title,0,x,y-2,panel_width+2,4);
 
         sprx = x+(panel_width/2)-50;
@@ -53,6 +54,7 @@ slate_panel.inside_method = function(){
             if (line[l]!="") then draw_text(x+(panel_width/2),y+112+((l-1)*20),string_hash_to_newline(line[l]));
         }
     } else if (header=2){
+        slate_panel.draw_top_piece = false;
         draw_sprite_stretched(spr_company_title,company,x+40,y-2,panel_width-80,4);
         if (title=="ARMOURY"){
             draw_sprite_ext(spr_tech_area_pad, 0, x+(panel_width/2)-((0.3*180)/2),y-30,0.3,0.3,0,c_white,1)

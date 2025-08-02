@@ -1,4 +1,4 @@
-function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true) {
+function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_lock=false) {
     var assignment = "none";
     var _unit;
     var string_role = "";
@@ -12,6 +12,24 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true) {
         _unit = display_unit[selected];
         if (_unit.name() == "" || _unit.base_group == "none") {
             return "continue";
+        }
+        var _active_tags = array_length(manage_tags);
+        if(_active_tags){
+            var _valid_tag = false;
+            if (!array_length(_unit.manage_tags)){
+                _valid_tag = false;
+            } else {
+                for (var t = 0; t<array_length(_unit.manage_tags);t++){
+                    if (array_contains(manage_tags, _unit.manage_tags[t])){
+                        _valid_tag = true;
+                        break;
+                    }
+                }
+            }
+            if (!_valid_tag){
+                man_sel[selected] = 0;
+                return "continue";
+            }
         }
         var unit_specialist = is_specialist(_unit.role());
         var unit_location_string = "";
@@ -306,7 +324,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true) {
         draw_text_transformed(xx + 27.5 + 8, yy + 66.5, string_hash_to_newline(string(string_role)), name_xr, 1, 0);
 
         // Draw current location
-        if ((unit_location_string == "Mechanicus Vessel") || (unit_location_string == "Terra IV") || (unit_location_string == "=Penitorium=") || (assignment != "none")) {
+        if (location_out_of_player_control(unit_location_string) || (unit_location_string == "=Penitorium=") || (assignment != "none")) {
             draw_set_alpha(0.5);
         }
         var truncatedLocation = string_truncate(string(unit_location_string), 130); // Truncate the location string to 100 pixels
@@ -385,6 +403,30 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true) {
                 draw_set_color(881503);
             }
             draw_text(xx + 573 + xoffset, yy + 66, string_hash_to_newline(string(ma_we2)));
+            xoffset += 100;
+
+            if (array_length(_unit.manage_tags)){
+                var _tag_button = draw_unit_buttons([xx + 573 + xoffset,yy + 66], "T");
+                if (scr_hit(_tag_button)){
+                    var _tooltip = "";
+                    for (var t=array_length(_unit.manage_tags)-1;t>=0;t--){
+                        var _tag = _unit.manage_tags[t];
+                        if (!array_contains(obj_controller.management_tags, _tag)){
+                            array_delete(_unit.manage_tags, t, 1);
+                        } else {
+                            _tooltip += $"{_tag}\n"
+                        }
+                    }
+                    _tooltip += "Click to set filter to units tags";
+                    tooltip_draw(_tooltip);
+                }
+                if (point_and_click(_tag_button)){
+                    manage_tags = _unit.manage_tags;
+                    if (instance_exists(obj_popup) && obj_popup.type  == POPUP_TYPE.ADD_TAGS){
+                        obj_popup.tag_selects.set(manage_tags);
+                    }
+                }
+            }
         }
         var cols = [c_gray, c_gray, 881503];
         if (man[selected] != "man") {
@@ -435,7 +477,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true) {
 
     var unclickable = eventing || jailed || wrong_location || impossible || instance_exists(obj_star_select);
 
-    if (!unclickable) {
+    if (!unclickable && !click_lock) {
         var changed = false;
 
         if (sel_all != "") {

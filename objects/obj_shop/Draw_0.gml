@@ -28,10 +28,11 @@ slate_panel.inside_method = function(){
 
     if (shop="warships"){
         if (construction_started>0){
-            var apa=construction_started/30;draw_set_alpha(apa);
+            var apa=construction_started/30;
+            draw_set_alpha(apa);
             draw_set_color(c_yellow);
             draw_set_halign(fa_center);
-            draw_text_transformed(__view_get( e__VW.XView, 0 )+420,yy+370,string_hash_to_newline("CONSTRUCTION STARTED!#ETA: "+string(eta)+" months"),1.5,1.5,0);
+            draw_text_transformed(__view_get( e__VW.XView, 0 )+420,yy+370,$"CONSTRUCTION STARTED!\nETA: {eta} months",1.5,1.5,0);
             draw_set_halign(fa_left);
             draw_set_color(38144);
             draw_set_alpha(1);
@@ -154,24 +155,26 @@ slate_panel.inside_method = function(){
                         obj_controller.requisition-=cost;
                     }
 
-                    if (obj_controller.requisition>=cost) and (shop="warships"){
+                    if (obj_controller.requisition>=cost) and (shop=="warships"){
 
                         var _duration = 4;
-                        if (item[i]="Battle Barge") then _duration=30;
-                        if (item[i]="Strike Cruiser") then _duration=10;
+                        if (item[i]="Battle Barge"){
+                            _duration=30;
+                        }
+                        else if (item[i]="Strike Cruiser"){
+                            _duration=10;
+                        }
 
                         eta = _duration;
 
                         construction_started=120;
-                        obj_controller.requisition-=cost;
+                        obj_controller.requisition -= cost;
                         add_event({
                             e_id : "ship_construction",
                             ship_class : item[i],
                             duration : _duration,
-                        })
+                        });
                     }
-
-                    obj_controller.cooldown=8000;
                 }
             }
             if (!obj_controller.in_forge && nobuy[i]=1) ||  (obj_controller.in_forge && forge_cost[i]=0){
@@ -186,11 +189,8 @@ slate_panel.inside_method = function(){
                 if (last_item == item[i]){
                     tooltip_show=1;
                 } else {
-                    equip_data=gear_weapon_data("any", item[i]);
                     if (!is_string(tooltip_overide[i])){
-                        if (is_struct(equip_data)){
-                            tooltip=$"{equip_data.item_tooltip_desc_gen()}";
-                        }
+                        tooltip=gen_item_tooltip(item[i])
                     } else {
                         tooltip = tooltip_overide[i];
                     }

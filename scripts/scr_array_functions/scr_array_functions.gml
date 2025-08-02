@@ -68,6 +68,22 @@ function array_delete_value(choice_array, value){
 			array_delete(choice_array, i, 1);
 		}
 	}
+
+	return choice_array;
+}
+
+function array_delete_values(choice_array, values){
+	for (var i = array_length(choice_array) - 1; i >= 0; i--) {
+		for (var s=0;s<array_length(values);s++){
+			var _val = values[s];
+			if (choice_array[i] == _val) {
+				array_delete(choice_array, i, 1);
+				break;
+			}			
+		}
+	}
+
+	return choice_array;
 }
 
 function array_random_element(choice_array){

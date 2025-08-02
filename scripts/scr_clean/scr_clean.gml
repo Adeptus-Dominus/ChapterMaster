@@ -243,7 +243,7 @@ function damage_infantry(_damage_data, _shots, _damage) {
         // Check if marine is dead
         if (check_dead_marines(marine, marine_index)) {
             // Remove dead infantry from further hits
-            array_delete_value(valid_marines, marine_index);
+            valid_marines = array_delete_value(valid_marines, marine_index);
             _damage_data.units_lost++;
         }
     }
@@ -300,7 +300,7 @@ function damage_vehicles(_damage_data, _shots, _damage) {
             }
 
             // Remove dead vehicles from further hits
-            array_delete_value(valid_vehicles, veh_index);
+            valid_vehicles = array_delete_value(valid_vehicles, veh_index);
         }
     }
 

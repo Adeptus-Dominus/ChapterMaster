@@ -807,8 +807,6 @@ function scr_initialize_custom() {
 		}
 	}
 
-	if (scr_has_adv ("Kings of Space")) {battle_barges += 1;}
-	if (scr_has_adv("Boarders")){ strike_cruisers += 2;}
 	if (scr_has_disadv("Obliterated")){ if (obj_creation.fleet_type == ePlayerBase.home_world) {
 		battle_barges = 0;
 		strike_cruisers = 2;
@@ -821,6 +819,8 @@ function scr_initialize_custom() {
 		hunters = 0;
 		}
 	}
+	if (scr_has_adv ("Kings of Space")) {battle_barges += 1;}
+	if (scr_has_adv("Boarders")){ strike_cruisers += 2;}
 	if(struct_exists(obj_creation, "extra_ships")){
 		battle_barges = battle_barges + obj_creation.extra_ships.battle_barges;
 		strike_cruisers = strike_cruisers + obj_creation.extra_ships.strike_cruisers;

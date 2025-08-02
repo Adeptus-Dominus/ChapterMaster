@@ -300,7 +300,9 @@ function scr_purge_world(star, planet, action_type, action_score) {
 	    }
 	    // If there are enemy non-chaos forces then they may be used as a cover
 	    // Does not work with chaos because if the governor dies, with chaos present, the new governor would possibly be investigated
-	    if (star.p_orks[planet]>=4) or (star.p_necrons[planet]>=3) or (star.p_tyranids[planet]>=5) then pip.estimate=pip.estimate*0.5;
+	    if (star.p_orks[planet]>=4) or (star.p_necrons[planet]>=3) or (star.p_tyranids[planet]>=5){
+	    	pip.estimate=pip.estimate*0.5;
+	    }
 	}
 
 

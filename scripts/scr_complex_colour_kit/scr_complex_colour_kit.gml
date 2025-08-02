@@ -641,7 +641,8 @@ function colour_picker(xx,yy, max_width=400) constructor{
     markings = false;
     self.max_width = max_width;
     base_colour = 0;
-    markings_options  = new radio_set(       
+
+    markings_options  = new RadioSet(       
        [ {
                    str1 : "None",
                    font : fnt_40k_14b,
@@ -667,7 +668,7 @@ function colour_picker(xx,yy, max_width=400) constructor{
                    font : fnt_40k_14b,
                    tooltip : "If selected You will be able to pick an icon or icon set after selecting a base colour"
                }
-        ],
+        ]
     ,"Markings");
 
     static textures_surface = surface_create(1, 1);

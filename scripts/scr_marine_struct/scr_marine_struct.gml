@@ -43,6 +43,15 @@ enum location_types {
 #macro ARR_psy_levels ["Rho", "Pi", "Omicron", "Xi", "Nu", "Mu", "Lambda", "Kappa", "Iota", "Theta", "Eta", "Zeta", "Epsilon", "Delta", "Gamma", "Beta", "Alpha", "Alpha Plus", "Beta", "Gamma Plus"]
 #macro ARR_negative_psy_levels ["Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega"]
 
+enum EquipmentSlot {
+    WEAPON_ONE,
+    WEAPON_TWO,    
+    ARMOUR,
+    GEAR,
+    MOBILITY,
+    ALL,
+}
+
 global.base_stats = {
     //tempory stats subject to change by anyone that wishes to try their luck
     "chapter_master": {
@@ -503,6 +512,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
     personal_livery = {};
     personal_culture = [];
+
+    manage_tags = [];
 
     static set_exp = function(new_val) {
         experience = new_val;
@@ -2339,6 +2350,72 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         for (var i = 0; i < array_length(artifact_list); i++) {
             arti = obj_ini.artifact_struct[artifact_list[i]];
             arti.bearer = [end_company, end_slot];
+        }
+    };
+
+    /// @param {Enum.EquipmentSlot} _slot
+    add_equipment_repairs = function(_slot = EquipmentSlot.ALL) {
+        var _slots = array_create(0);
+
+        switch (_slot) {
+            case EquipmentSlot.ARMOUR:
+                _slots = [EquipmentSlot.ARMOUR];
+                break;
+            case EquipmentSlot.WEAPON_ONE:
+                _slots = [EquipmentSlot.WEAPON_ONE];
+                break;
+            case EquipmentSlot.WEAPON_TWO:
+                _slots = [EquipmentSlot.WEAPON_TWO];
+                break;
+            case EquipmentSlot.GEAR:
+                _slots = [EquipmentSlot.GEAR];
+                break;
+            case EquipmentSlot.MOBILITY:
+                _slots = [EquipmentSlot.MOBILITY];
+                break;
+            case EquipmentSlot.ALL:
+                _slots = [EquipmentSlot.ARMOUR, EquipmentSlot.WEAPON_ONE, EquipmentSlot.WEAPON_TWO, EquipmentSlot.GEAR, EquipmentSlot.MOBILITY];
+                break;
+        }
+
+        for (var i = 0; i < array_length(_slots); i++) {
+            var _cur_slot = _slots[i];
+            switch (_cur_slot) {
+                case EquipmentSlot.ARMOUR:
+                    obj_controller.specialist_point_handler.add_to_armoury_repair(armour());
+                    if (instance_exists(obj_ncombat)) {
+                        obj_ncombat.slime += get_armour_data("maintenance");
+                    }
+                    break;
+
+                case EquipmentSlot.WEAPON_ONE:
+                    obj_controller.specialist_point_handler.add_to_armoury_repair(weapon_one());
+                    if (instance_exists(obj_ncombat)) {
+                        obj_ncombat.slime += get_weapon_one_data("maintenance");
+                    }
+                    break;
+
+                case EquipmentSlot.WEAPON_TWO:
+                    obj_controller.specialist_point_handler.add_to_armoury_repair(weapon_two());
+                    if (instance_exists(obj_ncombat)) {
+                        obj_ncombat.slime += get_weapon_two_data("maintenance");
+                    }
+                    break;
+
+                case EquipmentSlot.GEAR:
+                    obj_controller.specialist_point_handler.add_to_armoury_repair(gear());
+                    if (instance_exists(obj_ncombat)) {
+                        obj_ncombat.slime += get_gear_data("maintenance");
+                    }
+                    break;
+
+                case EquipmentSlot.MOBILITY:
+                    obj_controller.specialist_point_handler.add_to_armoury_repair(mobility_item());
+                    if (instance_exists(obj_ncombat)) {
+                        obj_ncombat.slime += get_mobility_data("maintenance");
+                    }
+                    break;
+            }
         }
     };
 }

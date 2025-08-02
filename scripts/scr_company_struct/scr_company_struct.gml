@@ -143,19 +143,21 @@ function CompanyStruct(comp) constructor{
 
 	mass_equip_toggle.update();
 
-	squad_selection_mode = (obj_controller.managing<0 && obj_controller.selection_data.select_type==MissionSelectType.Squads);
-
-	if (squad_selection_mode){
-		select_squad_button = new UnitButtonObject({
-			x1 : xx+center_width[0]+5, 
-			y1 : yy+center_height[0]+150,
-			color:c_red,
-			label : "Select Squad",
-			tooltip : obj_controller.selection_data.purpose
-		});
-
-		selected_squads = [];
+	static squad_selection_mode = function(){
+		return (obj_controller.managing<0 && obj_controller.selection_data.select_type==MissionSelectType.Squads);
 	}
+
+
+	select_squad_button = new UnitButtonObject({
+		x1 : xx+center_width[0]+5, 
+		y1 : yy+center_height[0]+150,
+		color:c_red,
+		label : "Select Squad",
+		//tooltip : obj_controller.selection_data.purpose
+	});
+
+	selected_squads = [];
+
 
 
 	static send_squad_on_mission  = function(mission_type, star){
@@ -249,12 +251,12 @@ function CompanyStruct(comp) constructor{
 	}
 	
 	static draw_squad_assignment_options = function(){
+		var _squad_sys = squad_loc.system;
 		if (current_squad.assignment == "none"){
 
 			draw_text_transformed(xx+bound_width[0]+5, yy+bound_height[0]+125, $"Squad has no current assignments",1,1,0);
 
 			var send_on_mission=false, mission_type;
-			var _squad_sys = squad_loc.system;
 			if (squad_loc.same_system) and (_squad_sys!="Warp" && _squad_sys!="Lost"){
 				if (garrison_button.draw()){
 					send_on_mission=true;
@@ -270,7 +272,7 @@ function CompanyStruct(comp) constructor{
 				}
 			}
 			if (send_on_mission){
-				send_squad_on_mission(mission_type,star_by_name(squad_loc.system));					
+				send_squad_on_mission(mission_type,star_by_name(_squad_sys));					
 			}
 			bound_height[0] += 180;
 		} else {
@@ -282,7 +284,7 @@ function CompanyStruct(comp) constructor{
 				if(point_and_click(cancel_but) || keyboard_check_pressed(ord("C"))){
 					var cancel_system=noone;
 					with (obj_star){
-						if (name == squad_loc.system){
+						if (name == _squad_sys){
 							cancel_system=self;
 						}
 					}
@@ -469,7 +471,7 @@ function CompanyStruct(comp) constructor{
 			draw_text_transformed(xx+bound_width[0]+5, yy+bound_height[0]+75, $"Squad Members : {current_squad.life_members}",1,1,0);
 			draw_text_transformed(xx+bound_width[0]+5, yy+bound_height[0]+100, $"Squad Location : {squad_loc.text}",1,1,0);
 
-			if (!squad_selection_mode){
+			if (!squad_selection_mode()){
 				draw_squad_assignment_options();
 			} else {
 				var _select_action = false;
@@ -477,12 +479,17 @@ function CompanyStruct(comp) constructor{
 					select_squad_button.update({
 						color:c_red,
 						label : "De-select Squad",
+						x1 : xx+center_width[0]+5,
+						y1 : yy+center_height[0]+150, 
 					});
 				} else {
 
 					select_squad_button.update({
 						color:c_green,
 						label : "Select Squad",
+						tooltip : obj_controller.selection_data.purpose,
+						x1 : xx+center_width[0]+5,
+						y1 : yy+center_height[0]+150, 						
 					});
 					_select_action = true;
 				}

@@ -150,6 +150,7 @@ function basic_manage_settings() {
     popup = 0;
     selected = 0;
     diplomacy = 0;
+    allow_shortcuts = true;
     management_buttons = {
         squad_toggle: new UnitButtonObject({
             style: "pixel",
@@ -165,7 +166,8 @@ function basic_manage_settings() {
             style: "pixel",
             label: "Show Bio",
             tooltip: "Click here or press B to Toggle Unit Biography."
-        })
+        }),
+        company_namer : new TextBarArea(800, 108, 600, false),
     };
 }
 
@@ -270,6 +272,13 @@ function scr_toggle_lib() {
                 artifact_destroy = new ShutterButton();
                 artifact_namer = new TextBarArea(xx + 622, yy + 460, 350);
                 set_chapter_arti_data();
+                artifact_slate = new DataSlate({
+                    set_width : true,
+                    XX : 392,
+                    YY : 500,
+                    width : 460,
+                    height : 240,
+                })
             } 
         }
     });
@@ -421,7 +430,6 @@ function scr_end_turn() {
                     with(obj_star_event) {
                         instance_destroy();
                     }
-                    cooldown = 8;
                     audio_play_sound(snd_end_turn, -50, 0);
                     audio_sound_gain(snd_end_turn, master_volume * effect_volume, 0);
 

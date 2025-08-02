@@ -31,34 +31,13 @@ function scr_special_view(command_group) {
 	// mans: number of mans that a hit has gotten
 
 	b=0;
-	if (command_group==11) or (command_group==0){				//HQ units
-		for (var v = 0;v<array_length(obj_ini.TTRPG[0]);v++){
-			bad=0;
-			if (obj_ini.name[0][v]== ""){continue;}
-			if (fetch_unit([0,v]).ship_location>-1){
-			   	var ham=fetch_unit([0,v]).ship_location;
-			   	var _ship = obj_ini.ship_data[ham];
-			   	if (_ship.location=="Lost") then continue;
-			}
 
-			unit = fetch_unit([0,v]);	    	
-			var yep=0;
-			if (unit.base_group!="astartes") and (unit.base_group!="none"){
-				yep=1;
-			}
-			if ((unit.role()==obj_ini.role[100][eROLE.ChapterMaster] || unit.role()==obj_ini.role[100][eROLE.HonourGuard])){
-				yep=1;
-			}
-			if (yep==1){
-		        add_man_to_manage_arrays(unit);
-			}
-		}
-	}
-
+	var _already_used = [];
 	if (command_group==12) or (command_group==0){// Apothecarion
 		var apothecaries = collect_role_group([SPECIALISTS_APOTHECARIES,true]);
 		for (var i=0;i<array_length(apothecaries);i++){
 			unit = apothecaries[i];
+			array_push(_already_used, unit.marine_number)
 			add_man_to_manage_arrays(apothecaries[i]);
 			//if (unit.role()== obj_ini.role[0][v]=obj_ini.role[100][15]) then ma_promote[b]=1;
 		}
@@ -69,6 +48,7 @@ function scr_special_view(command_group) {
 		var libs = collect_role_group([SPECIALISTS_LIBRARIANS,true]);
 		for (var i=0;i<array_length(libs);i++){
 			unit = libs[i];
+			array_push(_already_used, unit.marine_number)
 			add_man_to_manage_arrays(libs[i]);
 		}		
 	}
@@ -78,6 +58,7 @@ function scr_special_view(command_group) {
 		var chaps = collect_role_group([SPECIALISTS_CHAPLAINS,true]);
 		for (var i=0;i<array_length(chaps);i++){
 			unit = chaps[i];
+			array_push(_already_used, unit.marine_number)
 			add_man_to_manage_arrays(chaps[i]);
 		}	
 	}
@@ -88,7 +69,26 @@ function scr_special_view(command_group) {
 		var techs = collect_role_group([SPECIALISTS_TECHS,true]);
 		for (var i=0;i<array_length(techs);i++){
 			unit = techs[i];
+			array_push(_already_used, unit.marine_number)
 			add_man_to_manage_arrays(techs[i]);
+		}
+	}
+
+	if (command_group==11) or (command_group==0){				//HQ units
+		for (var v = 0;v<array_length(obj_ini.TTRPG[0]);v++){
+			bad=0;
+			if (obj_ini.name[0][v]== ""){continue;}
+			if (obj_ini.TTRPG[0][v].ship_location>-1){
+			   	var ham=obj_ini.TTRPG[0][v].ship_location;
+			   	var _ship = obj_ini.ship_data[ham];
+			   	if (_ship.location=="Lost") then continue;
+			}
+
+			unit = obj_ini.TTRPG[0][v];	 
+			yep = !(unit.IsSpecialist(SPECIALISTS_TECHS)  || unit.IsSpecialist(SPECIALISTS_CHAPLAINS)  || unit.IsSpecialist(SPECIALISTS_LIBRARIANS) || unit.IsSpecialist(SPECIALISTS_APOTHECARIES) );	
+			if (yep){
+		        add_man_to_manage_arrays(unit);
+			}
 		}
 	}
 

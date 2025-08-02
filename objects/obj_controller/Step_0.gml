@@ -743,6 +743,7 @@ try {
     }
     // Check if fleet is minimized or not
     if (instance_exists(obj_popup)) {
+        allow_shortcuts = false;
         if (obj_popup.type == 99) {
             fleet_minimized = 1;
         }
