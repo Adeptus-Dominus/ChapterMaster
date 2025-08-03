@@ -27,6 +27,69 @@ function add_fleet_ships_to_combat(fleet, combat){
 	}
 }
 
+function add_ai_fleet_to_combat(en_fleet, fleet_battle, status = -1){
+	array_push(fleet_battle.enemy, en_fleet.owner);
+	array_push(fleet_battle.enemy_status, status);
+
+	array_push(fleet_battle.en_capital, en_fleet.capital_number);
+	array_push(fleet_battle.en_frigate, en_fleet.frigate_number);
+	array_push(fleet_battle.en_escort, en_fleet.escort_number);
+
+    if (fleet_has_cargo("warband")){
+    	fleet_battle.csm_exp+=2;
+    }
+    if (fleet_has_cargo("csm")){
+        fleet_battle.csm_exp++;
+    }
+}
+
+function setup_fleet_battle(combating, star){
+	obj_controller.combat=combating;
+	var _p_fleet = get_nearest_player_fleet(x,y,true);
+	var good = (_p_fleet!="none" and instance_exists(star));
+	if (!good){
+		obj_controller.combat = 0;
+		exit;
+	}
+    instance_create(0,0,obj_fleet);
+    for (var e=2;e<12;e++){
+        var _fleets = get_orbiting_fleets(e, target);
+        if (!array_length(_fleets)){
+            continue;
+        }
+        if (e == combating || obj_controller.faction_status[e]=="War"){
+            for (var f=0;f<array_length(_fleets);f++){
+                add_enemy_fleet_to_combat(_fleets[f], obj_fleet);
+            }
+        } else if (obj_controller.faction_status[e]!="War" && e!=combating){
+            for (var f=0;f<array_length(_fleets);f++){
+                add_enemy_fleet_to_combat(_fleets[f], obj_fleet, 1);
+            }                   
+        }
+    }
+    obj_fleet.pla_fleet=_p_fleet;
+    add_fleet_ships_to_combat(_p_fleet, obj_fleet);
+
+    for (var i=0;i<star.planets;i++){
+         if (planet_feature_bool(star.p_feature[i], P_features.Monastery) == 1){
+         	obj_fleet.player_lasers=target.p_lasers[i];
+        }
+    }
+
+    obj_fleet.ene_fleet=star;
+}
+
+function start_fleet_battle(){    
+    obj_controller.combat=1;
+    obj_fleet.player_started=1;
+    instance_deactivate_all(true);
+    instance_activate_object(obj_controller);
+    instance_activate_object(obj_ini);
+    instance_activate_object(obj_fleet);
+    instance_activate_object(obj_cursor);
+    instance_deactivate_object(obj_star);
+}
+
 function sort_ships_into_columns(combat){
 	var col = 5;
 	with (combat){

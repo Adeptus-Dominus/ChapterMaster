@@ -52,7 +52,7 @@ function draw_player_fleet_combat_options(){
     }
     var xxx=main_slate.XX;
 
-    var _retreat_button = draw_unit_buttons([xxx+195,yyy+354],"Retreat");
+    var _retreat_button = draw_unit_buttons([xxx+180,yyy+350],"Retreat");
     var _battle_sys = battle_pobject[current_battle];
     if (point_and_click(_retreat_button)){
         with(obj_fleet_select){
@@ -65,9 +65,8 @@ function draw_player_fleet_combat_options(){
         obj_controller.force_scroll=1;        	
     }
 
-    var _fight_button = draw_unit_buttons([xxx+272,yyy+354],"Fight");
+    var _fight_button = draw_unit_buttons([xxx+272,yyy+350],"Fight");
     if (point_and_click(_fight_button)){
-		obj_controller.cooldown=8000;
         instance_activate_all();
 
         // Start battle here
@@ -86,8 +85,7 @@ function draw_player_fleet_combat_options(){
         // Plug in all of the enemies first
         // And then plug in the allies after then with their status set to positive
 
-
-        var g=1;ee=1;
+        var g=1, ee=1;
         repeat(5){
             g+=1;
             if (enemy_fleet[g]!=0){ee+=1;
@@ -167,12 +165,12 @@ function draw_player_ground_combat_options(){
     
 
     var _init_battle = false;
-    if (point_and_click(draw_unit_buttons([xxx+195,yyy+362],"Offensive")){
+    if (point_and_click(draw_unit_buttons([xxx+195,yyy+362],"Offensive"))){
         _init_battle = true;
         var _battle_stance = "offensive"
     }
 
-    if (point_and_click(draw_unit_buttons([xxx+335,yyy+362],"Defensive")){
+    if (point_and_click(draw_unit_buttons([xxx+335,yyy+362],"Defensive"))){
         _init_battle = true;
         var _battle_stance = "defensive"
     }

@@ -78,27 +78,23 @@ k=-1;
 j=-1;
 
 
-repeat(6){k+=1;j=-1;
-    repeat(11){j+=1;
-        enemy[j]=0;
-        enemy_status[j]=0;
-        
-        /*en_column[j,k]="";
-        en_width[j,k]=0;en_height[j,k]=0;
-        en_num[j,k]=0;en_size[j,k]=0;*/
-        
-        en_capital[j]=0;
-        en_capital_max[j]=0;
-        en_capital_lost[j]=0;
-        en_frigate[j]=0;
-        en_frigate_max[j]=0;
-        en_frigate_lost[j]=0;
-        en_escort[j]=0;
-        en_escort_max[j]=0;
-        en_escort_lost[j]=0;
-        en_ships_max[j]=0;
-    }
-}
+enemy = [];
+enemy_status = [];
+
+/*en_column[j,k]="";
+en_width[j,k]=0;en_height[j,k]=0;
+en_num[j,k]=0;en_size[j,k]=0;*/
+
+en_capital = [];
+en_capital_max = [];
+en_capital_lost = [];
+en_frigate = [];
+en_frigate_max = [];
+en_frigate_lost = [];
+en_escort = [];
+en_escort_max = [];
+en_escort_lost = [];
+en_ships_max = [];
 // Should be 0-5 for each of the factions
 
 
