@@ -180,12 +180,10 @@ function set_up_transfer_popup(){
         if (nuuum2>1) then pip.unit_role="Vehicles";
         if (nuuum>0) and (nuuum2>0) then pip.unit_role="Units";
         pip.units=nuuum+nuuum2;
-        if (nuuum>0) and (check_number>0){
-            if (command_set[1]==0){
-                cooldown=8000;
-                with(pip){
-                	instance_destroy();
-                }
+        if (nuuum>0 && check_number>0 && !command_set[1]){
+            cooldown=8000;
+            with(pip){
+            	instance_destroy();
             }
         } else {
             with (pip){

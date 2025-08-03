@@ -23,7 +23,7 @@ if (option1="" && type<5){
     instance_destroy();
 }
 
-if (type=98){
+if (type=POPUP_TYPE.BATTLE_OPTIONS){
     obj_controller.cooldown=10;
     obj_turn_end.current_battle+=1;
     obj_turn_end.alarm[0]=1;

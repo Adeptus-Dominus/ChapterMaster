@@ -24,17 +24,18 @@ jobs:
       - uses: actions/checkout@v4
         with:
           lfs: true
-          
-      - name: fetch tags
-        run: git fetch --tags origin
-        
+          fetch-depth: 0
+          fetch-tags: true
+
+      # Causing issues with the stable release workflow;
+      # - name: fetch tags
+      #   run: git fetch --tags origin
+
       - name: Set date-time and version info
         id: version_info
         shell: pwsh
         run: |
           # Generate current date-time directly in the format you want
-          git fetch --tags
-
           Write-Output "GITHUB_EVENT_NAME is: $env:GITHUB_EVENT_NAME"
 
           if (-not "${{ inputs.build_date }}") {

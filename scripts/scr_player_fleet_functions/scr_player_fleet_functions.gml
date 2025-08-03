@@ -376,7 +376,7 @@ function player_retreat_from_fleet_combat(){
         }
     }
     
-    type=98;
+    type=POPUP_TYPE.BATTLE_OPTIONS;
     title="Fleet Retreating";
     cooldown=15;
     obj_controller.menu=0;
