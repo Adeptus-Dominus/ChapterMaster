@@ -29,7 +29,7 @@ if (!__b__){
     // Check if ship is destroyed
     if (hp<=0){
         gud=0;
-        for(var wh=1; wh<=5; wh++){
+        for (var wh=0;wh<array_length(enemy);wh++){
             if (obj_fleet.enemy[wh]==owner) then gud=wh;
         }
         

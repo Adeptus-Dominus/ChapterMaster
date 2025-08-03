@@ -69,32 +69,6 @@ if (obj_controller.cooldown<=0) and (loading==1){
 
 attack=0;bombard=0;raid=0;purge=0;
 
-if (player_fleet>0) and (imperial_fleet+mechanicus_fleet+inquisitor_fleet+eldar_fleet+ork_fleet+tau_fleet+heretic_fleet>0) and (obj_controller.cooldown<=0){
-    var i,x3,y3;i=0;
-    // x3=xx+46;y3=yy+252;
-    x3=xx+49;y3=yy+441;
-    
-    var combating=0;
-    
-    repeat(7){i+=1;
-        if (en_fleet[i]>0) and (mouse_x>=x3-24) and (mouse_y>=y3-24) and (mouse_x<x3+48) and (mouse_y<y3+48) and (obj_controller.cooldown<=0){
-            obj_controller.cooldown=8;
-            combating=en_fleet[i];
-        }
-        x3+=64;
-    }
-    
-    if (combating>0){
-        setup_fleet_battle(combating, target);
-
-        if (instance_exists(obj_fleet)){
-            start_fleet_battle();
-        }
-    }
-}
-
-
-
 /* */
 }
 }

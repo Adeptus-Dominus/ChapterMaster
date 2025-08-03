@@ -502,15 +502,26 @@ if (target!=0){
         // x3=46;y3=252;
         x3=49;y3=441;
         
-        repeat(7){i+=1;
+        var _combating = 0;
+        for (var i=0;i<array_length(en_fleet);i++){
             if (en_fleet[i]>0){
                 // draw_sprite_ext(spr_force_icon,en_fleet[i],x3,y3,0.5,0.5,0,c_white,1);
                 scr_image("ui/force",en_fleet[i],x3-16,y3-16,32,32);
                 x3+=64;
+
+                if (point_and_click([x3-24, y3-24, x3+48, y3+48])){
+                    combating=en_fleet[i];
+                }
             }
         }
         
-        
+        if (_combating>0){
+            setup_fleet_battle(combating, target);
+
+            if (instance_exists(obj_fleet)){
+                start_fleet_battle();
+            }
+        }        
     }
 }
 
@@ -544,14 +555,9 @@ if (debug){
     draw_text(38, 296, ("Necrons: " + string(target.p_necrons[current_planet])));
     draw_text(38, 316, ("Sisters: " + string(target.p_sisters[current_planet])));
 
-    draw_text(147, 176, string_hash_to_newline("[-] [+]"));
-    draw_text(147, 196, string_hash_to_newline("[-] [+]"));
-    draw_text(147, 216, string_hash_to_newline("[-] [+]"));
-    draw_text(147, 236, string_hash_to_newline("[-] [+]"));
-    draw_text(147, 256, string_hash_to_newline("[-] [+]"));
-    draw_text(147, 276, string_hash_to_newline("[-] [+]"));
-    draw_text(147, 296, string_hash_to_newline("[-] [+]"));
-    draw_text(147, 316, string_hash_to_newline("[-] [+]"));
+    for (var i=0;i<=7;i++){
+        draw_text(147, 176+(i*20), "[-] [+]");
+    }
 
     if (point_and_click([147, 176, 167, 196])) {
         target.p_orks[current_planet] = clamp(target.p_orks[current_planet] - 1, 0, 6);

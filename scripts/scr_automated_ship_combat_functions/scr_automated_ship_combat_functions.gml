@@ -437,17 +437,21 @@ function ship_combat_cleanup(){
         
         
         op=0;var ofleet;ofleet=0;
-        repeat(5) {
+        for (var op=0;op<array_length(enemy);op++){
             op+=1;
             if (enemy[op]!=0) and (enemy[op]!=4){ofleet=0;
                 obj_controller.temp[1071]=enemy[op];
                 
                 // show_message("Hiding all but the fleet owned by "+string(obj_controller.temp[1071]));
                 
-                with(obj_en_fleet){if (owner!=obj_controller.temp[1071]) or (orbiting!=obj_controller.temp[1070]){x-=10000;y-=10000;}}
+                with(obj_en_fleet){
+                    if (owner!=obj_controller.temp[1071]) or (orbiting!=obj_controller.temp[1070]){
+                        x-=10000;y-=10000;
+                    }
+                }
                 
                 ofleet=instance_nearest(room_width/2,room_height/2,obj_en_fleet);
-                // show_message("Fleet: "+string(ofleet.capital_number)+"/"+string(ofleet.frigate_number)+"/"+string(ofleet.escort_number)+", lost "+string(en_capital_lost[op])+"/"+string(en_frigate_lost[op])+"/"+string(en_escort_lost[op]));
+                // show_messsage("Fleet: "+string(ofleet.capital_number)+"/"+string(ofleet.frigate_number)+"/"+string(ofleet.escort_number)+", lost "+string(en_capital_lost[op])+"/"+string(en_frigate_lost[op])+"/"+string(en_escort_lost[op]));
                 
                 repeat(50){
                     if (!instance_exists(ofleet)){ofleet=instance_nearest(room_width/2,room_height/2,obj_en_fleet);}

@@ -6,8 +6,7 @@ function start_enemy_fleet_spawn(){
     var spawner=0;
     var t=0,y1=0,y2=0,tt=0;
 
-    repeat(6){
-        t+=1;
+    for (var t=0;t<array_length(enemy);t++){
         if (enemy[t]!=0){
             if (enemy_status[t]<0){
                 total_enemies+=1;
@@ -25,7 +24,7 @@ function start_enemy_fleet_spawn(){
     if (total_enemies>0){
         t=1;
         y2=room_height/total_enemies/2;tt=0;
-        for (var fug=1;fug<=5;fug++){
+        for (var fug=0;fug<array_length(enemy);fug++){
             if (enemy_status[fug]<0){
                 tt+=1;
                 y1=(t*y2);
@@ -45,7 +44,7 @@ function start_enemy_fleet_spawn(){
         t=1;
         y2=room_height/total_allies/2;
         tt=0;
-        for (var fug=1;fug<=5;fug++){
+        for (var fug=0;fug<array_length(enemy);fug++){
             if (enemy_status[fug]>0){
                 tt+=1;
                 y1=(t*y2);

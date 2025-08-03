@@ -27,7 +27,7 @@ if (!instance_exists(target)) then exit;
 
 if (hp<=0){
     var wh=0,gud=0;
-    repeat(5){
+    for (var wh=0;wh<array_length(enemy);wh++){
         wh+=1;
         if (obj_fleet.enemy[wh]=owner){
             gud=wh;
@@ -152,8 +152,11 @@ if (obj_fleet.start!=5) then exit;
 var ch_rang, ex, spid;spid=0;
 
 if (hp<=0){
-    var wh,gud;wh=0;gud=0;
-    repeat(5){wh+=1;if (obj_fleet.enemy[wh]=owner) then gud=wh;}
+    var wh=0,gud=0;
+    for (var wh=0;wh<array_length(enemy);wh++){
+        wh+=1;
+        if (obj_fleet.enemy[wh]=owner) then gud=wh;
+    }
 
     if (size=3) then obj_fleet.en_capital_lost[gud]+=1;
     if (size=2) then obj_fleet.en_frigate_lost[gud]+=1;

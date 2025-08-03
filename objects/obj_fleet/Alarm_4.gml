@@ -29,8 +29,8 @@ if (player_started=1){
     var taxt;taxt="";
 
     taxt=string(global.chapter_name)+" engage and destroy a";
-    if (enemy[1]=2) or (enemy[1]=4) or (enemy[1]=5) or (enemy[1]=6) then taxt+="n";
-    taxt+=" "+string(obj_controller.faction[enemy[1]]);
+    if (enemy[target_enemy]=2) or (enemy[target_enemy]=4) or (enemy[target_enemy]=5) or (enemy[target_enemy]=6) then taxt+="n";
+    taxt+=" "+string(obj_controller.faction[enemy[target_enemy]]);
     taxt+=" fleet at "+string(ene_fleet.name)+".";scr_event_log("",taxt);
     
     if (instance_exists(obj_star_select)) then with(obj_star_select){
@@ -41,8 +41,8 @@ if (player_started=1){
         pla_fleet.acted=2;
         if (capital+frigate+escort=0) then with(pla_fleet){instance_destroy();}
     }
-    if (enemy[1]!=4) and (obj_controller.faction_status[enemy[1]]!="War"){
-        scr_audience(enemy[1], "declare_war", obj_controller.disposition[enemy[1]]-20, "War", 3, 2);
+    if (enemy[target_enemy]!=4) and (obj_controller.faction_status[enemy[target_enemy]]!="War"){
+        scr_audience(enemy[target_enemy], "declare_war", obj_controller.disposition[enemy[target_enemy]]-20, "War", 3, 2);
     }
 }
 

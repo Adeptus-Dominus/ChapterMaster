@@ -169,7 +169,9 @@ if (boarding=true) and (board_cooldown>=0) and (instance_exists(target)) and (in
                         
                         with(target){
                             var wh,gud;wh=0;gud=0;
-                            repeat(5){wh+=1;if (obj_fleet.enemy[wh]=owner) then gud=wh;}
+                            for (var wh=0;wh<array_length(enemy);wh++){
+                                if (obj_fleet.enemy[wh]=owner) then gud=wh;
+                            }
                             if (size=3) then obj_fleet.en_capital_lost[gud]+=1;
                             if (size=2) then obj_fleet.en_frigate_lost[gud]+=1;
                             if (size=1) then obj_fleet.en_escort_lost[gud]+=1;

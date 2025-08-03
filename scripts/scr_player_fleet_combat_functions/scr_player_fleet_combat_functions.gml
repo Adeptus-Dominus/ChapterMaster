@@ -52,6 +52,7 @@ function setup_fleet_battle(combating, star){
 		exit;
 	}
     instance_create(0,0,obj_fleet);
+    obj_fleet.target_enemy = combating;
     for (var e=2;e<12;e++){
         var _fleets = get_orbiting_fleets(e, target);
         if (!array_length(_fleets)){
