@@ -204,21 +204,26 @@ function draw_line(x1, y1, y_slide, variable) {
 }
 
 
-if (menu == 1) {
-    if (managing != 0){
-        draw_sprite_and_unit_equip_data();
-    }
-    if (managing == -1){
-        scr_manage_task_selector();
-    }
-    if (managing > 0){
-        company_specific_management();
-    }
+try{
+    if (menu == MENU.Manage) {
+        if (managing != 0){
+            draw_sprite_and_unit_equip_data();
+        }
+        if (managing == -1){
+            scr_manage_task_selector();
+        }
+        if (managing > 0){
+            company_specific_management();
+        }
 
-} else if (menu == MENU.Armamentarium) {
-    scr_draw_armentarium_gui();
-} else if (menu == MENU.Librarium){
-    scr_librarium_gui();
+    } else if (menu == MENU.Armamentarium) {
+        scr_draw_armentarium_gui();
+    } else if (menu == MENU.Librarium){
+        scr_librarium_gui();
+    }
+} catch(_exception){
+    handle_exception(_exception);
+    menu = MENU.Default;
 }
 
 
