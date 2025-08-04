@@ -40,7 +40,9 @@ slate_panel.inside_method = function(){
         sprw = 141*0.7;
         sprh = 141*0.7;
 
-        draw_sprite_stretched(global.chapter_icon.sprite, 0, sprx, spry, sprw, sprh);
+        if (sprite_exists(global.chapter_icon.sprite)){
+            draw_sprite_stretched(global.chapter_icon.sprite, 0, sprx, spry, sprw, sprh);
+        }
         draw_set_font(fnt_cul_14);
         draw_text(x+(panel_width/2),y+89,string_hash_to_newline(title));
         if (line[1]!=""){
