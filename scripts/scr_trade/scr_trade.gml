@@ -101,7 +101,7 @@ function TradeAttempt(diplomacy) constructor{
 					quality : "standard",
 					number : _opt.number,
 				}
-			} else if (opt.trade_type == "arti"){
+			} else if (_opt.trade_type == "arti"){
 				scr_add_artifact("random", "minor", true);
 			}
 		}
@@ -133,7 +133,7 @@ function TradeAttempt(diplomacy) constructor{
 		            }					
 				}
 			} else if (_opt.trade_type == "gene"){
-				gene_seed-=_opt.number;
+				obj_controller.gene_seed-=_opt.number;
                 if (diplomacy_faction<=5) and (diplomacy_faction!=4){
                 	obj_controller.gene_sold += _opt.number;
                 }
