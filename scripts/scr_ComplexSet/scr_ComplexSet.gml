@@ -134,269 +134,279 @@ function ComplexSet(_unit) constructor {
 
 	right_arm_data = [];
 
+	static base_modulars_checks = function(mod_item){
+		_are_exceptions = false;
+		var _mod = mod_item;
+		exceptions = [];
+
+		if (array_contains(blocked, _mod.position)) {
+			return false;
+		}
+
+		if (struct_exists(_mod, "allow_either")) {
+			_are_exceptions = true;
+			exceptions = [];
+			for (var m = 0; m < array_length(_mod.allow_either); m++) {
+				array_push(exceptions, _mod.allow_either[m]);
+			}
+		}
+		if (struct_exists(_mod, "max_saturation")) {
+			var _max_sat = _mod.max_saturation;
+		}
+		if (struct_exists(_mod, "exp")) {
+			var _exp_data = _mod.exp;
+			var _min = 0;
+			if (struct_exists(_exp_data, "min")) {
+				_min = _exp_data.min;
+				if (unit.experience < _exp_data.min) {
+					if (!check_exception("min_exp")) {
+						return false;
+					}
+				}
+			}
+			if (struct_exists(_exp_data, "scale")) {
+				var _m_exp = _exp_data.exp_scale_max;
+				var _increment_count = _mod.max_saturation / 5;
+				var _increments = (_m_exp - _min) / _increment_count;
+				var _sat_roof = _mod.max_saturation;
+				var _mar_exp = unit.experience;
+
+				if (_mar_exp >= _m_exp) {
+					spawn_chance = _mod.max_saturation;
+				} else {
+					var calc_exp = _mar_exp - _min;
+					var _inc_point = floor(_mar_exp / _increments);
+					_max_sat = _inc_point * 5;
+				}
+			}
+		}
+		if (struct_exists(_mod, "max_saturation")) {
+			if (struct_exists(variation_map, _mod.position)) {
+				if (variation_map[$ _mod.position] >= _max_sat) {
+					if (!check_exception("max_saturation")) {
+						return false;
+					}
+				}
+			}
+		}
+		if (!struct_exists(_mod, "body_types")) {
+			_mod.body_types = [0, 1, 2];
+		}
+
+		if (!array_contains(_mod.body_types, armour_type)) {
+			if (!check_exception("body_types")) {
+				return false;
+			}
+		}
+
+		if (struct_exists(_mod, "role_type")) {
+			var _viable = false;
+			for (var a = 0; a < array_length(_mod.role_type); a++) {
+				var _r_t = _mod.role_type[a];
+				_viable = unit.IsSpecialist(_r_t);
+				if (_viable) {
+					break;
+				}
+			}
+			if (!_viable) {
+				if (!check_exception("chapter_adv")) {
+					return false;
+				}
+				if (!check_exception("chapter_disadv")) {
+					return false;
+				}
+			}
+		}
+		if (struct_exists(_mod, "roles")) {
+			if (!array_contains(_mod.roles, unit.role())) {
+				if (!check_exception("roles")) {
+					return false;
+				}
+			}
+		}
+		if (struct_exists(_mod, "cultures")) {
+			if (!scr_has_style(_mod.cultures)) {
+				if (!check_exception("cultures")) {
+					return false;
+				}
+			}
+		}
+		if (struct_exists(_mod, "company")) {
+			if (!array_contains(_mod.company, unit.company)) {
+				if (!check_exception("company")) {
+					return false;
+				}
+			}
+		}
+		if (struct_exists(_mod, "armours")) {
+			if (!array_contains(_mod.armours, unit_armour)) {
+				if (!check_exception("armours")) {
+					return false;
+				}
+			}
+		}
+		if (struct_exists(_mod, "armours_exclude")) {
+			if (array_contains(_mod.armours_exclude, unit_armour)) {
+				if (!check_exception("armours_exclude")) {
+					return false;
+				}
+			}
+		}
+		if (struct_exists(_mod, "chapter_adv")) {
+			var _viable = false;
+			for (var a = 0; a < array_length(_mod.chapter_adv); a++) {
+				var _adv = _mod.chapter_adv[a];
+				_viable = scr_has_adv(_adv);
+				if (_viable) {
+					break;
+				}
+			}
+			if (!_viable) {
+				if (!check_exception("chapter_adv")) {
+					return false;
+				}
+			}
+		}
+		if (struct_exists(_mod, "chapter_disadv")) {
+			var _viable = false;
+			for (var a = 0; a < array_length(_mod.chapter_disadv); a++) {
+				var _disadv = _mod.chapter_disadv[a];
+				_viable = scr_has_disadv(_disadv);
+				if (_viable) {
+					break;
+				}
+			}
+			if (!_viable) {
+				if (!check_exception("chapter_disadv")) {
+					return false;
+				}
+			}
+		}
+		if (struct_exists(_mod, "stats")) {
+			if (!stat_valuator(_mod.stats, unit)) {
+				if (!check_exception("stats")) {
+					return false;
+				}
+			}
+		}
+		if (struct_exists(_mod, "equipped")) {
+			if (!unit.has_equipped(_mod.equipped)) {
+				if (!check_exception("equipped")) {
+					return false;
+				}
+			}
+		}
+
+		if (struct_exists(_mod, "traits")) {
+			var _viable = false;
+			for (var a = 0; a < array_length(_mod.traits); a++) {
+				var _trait = _mod.traits[a];
+				_viable = unit.has_trait(_trait);
+				if (_viable) {
+					break;
+				}
+			}
+			if (!_viable) {
+				if (!check_exception("traits")) {
+					return false;
+				}
+			}
+		}
+		if (struct_exists(_mod, "chapter")) {
+			var chap_name = instance_exists(obj_creation) ? obj_creation.chapter_name : global.chapter_name;
+			if (chap_name != _mod.chapter) {
+				if (!check_exception("chapter")) {
+					return false;
+				}
+			}
+		}
+
+		_overides = "none";
+		if (struct_exists(_mod, "overides")) {
+			_overides = _mod.overides;
+		}
+
+		if (struct_exists(_mod, "subcomponents")){
+			_sub_comps = _mod.subcomponents;
+		}
+
+		if (struct_exists(_mod, "body_parts")){
+			var _viable = true;
+			var _body_areas = struct_get_names(_mod.body_parts);
+			for (var b=0;b<array_length(_body_areas);b++){
+				var _area =_body_areas[b];
+				if (!struct_exists(unit.body[$ _area],_mod.body_parts[$ _area])){
+					_viable = false;
+					break;							
+				}
+			}
+			if (!_viable){
+				if (!check_exception("body_parts")) {
+					return false;
+				}
+			}
+		}
+
+		if (struct_exists(_mod, "prevent_others")) {
+			replace_area(_mod.position, _mod.sprite, _overides,_sub_comps);
+			array_push(blocked, _mod.position);
+			if (struct_exists(_mod, "ban")) {
+				for (var b = 0; b < array_length(_mod.ban); b++) {
+					if (!array_contains(banned, _mod.ban[b])) {
+						array_push(banned, _mod.ban[b]);
+					}
+				}
+			}
+
+			return false;
+		}
+		if (struct_exists(_mod, "assign_by_rank")) {
+			var _area = _mod.position;
+			var _status_level = _mod.assign_by_rank;
+			var _roles = active_roles();
+			var tiers = [
+				["Chapter Master"],
+				["Forge Master", "Master of Sanctity", "Master of the Apothecarion", string("Chief {0}", _roles[eROLE.Librarian])],
+				[_roles[eROLE.Captain], _roles[eROLE.HonourGuard]],
+				[_roles[eROLE.Champion]],
+				[_roles[eROLE.Ancient], _roles[eROLE.VeteranSergeant]],
+				[_roles[eROLE.Terminator]],
+				[_roles[eROLE.Veteran], _roles[eROLE.Sergeant], _roles[eROLE.Chaplain], _roles[eROLE.Apothecary], _roles[eROLE.Techmarine], _roles[eROLE.Librarian]],
+				["Codiciery", "Lexicanum", _roles[eROLE.Tactical], _roles[eROLE.Assault], _roles[eROLE.Devastator]],
+				[_roles[eROLE.Scout]]
+			];
+
+			var _unit_tier = 8;
+			if (_unit_tier == 8) {
+				for (var t = 0; t < array_length(tiers); t++){
+					var tier = tiers[t];
+					if (array_contains(tier, unit.role())) {
+						_unit_tier = t;
+					}
+				}
+			}
+			if (_unit_tier >= _status_level) {
+				var variation_tier = (_unit_tier - _status_level) + 1;
+				if (variation_map[$ _area] % variation_tier != 0) {
+					return false;
+				}
+			}
+		}
+
+		return true;	
+	}
 	static assign_modulars = function(modulars = global.modular_drawing_items, position = false) {
 		var _mod = {};
-		var _sub_comps = false
 
 		try {
 			for (var i = 0; i < array_length(modulars); i++) {
-				_are_exceptions = false;
-				_mod = modulars[i];
-				exceptions = [];
 				_sub_comps = "none";
+				_mod = modulars[i];
+				var _allowed = base_modulars_checks(_mod);
 
-				if (array_contains(blocked, _mod.position)) {
+				if (!_allowed){
 					continue;
 				}
-
-				if (struct_exists(_mod, "allow_either")) {
-					_are_exceptions = true;
-					exceptions = [];
-					for (var m = 0; m < array_length(_mod.allow_either); m++) {
-						array_push(exceptions, _mod.allow_either[m]);
-					}
-				}
-				if (struct_exists(_mod, "max_saturation")) {
-					var _max_sat = _mod.max_saturation;
-				}
-				if (struct_exists(_mod, "exp")) {
-					var _exp_data = _mod.exp;
-					var _min = 0;
-					if (struct_exists(_exp_data, "min")) {
-						_min = _exp_data.min;
-						if (unit.experience < _exp_data.min) {
-							if (!check_exception("min_exp")) {
-								continue;
-							}
-						}
-					}
-					if (struct_exists(_exp_data, "scale")) {
-						var _m_exp = _exp_data.exp_scale_max;
-						var _increment_count = _mod.max_saturation / 5;
-						var _increments = (_m_exp - _min) / _increment_count;
-						var _sat_roof = _mod.max_saturation;
-						var _mar_exp = unit.experience;
-
-						if (_mar_exp >= _m_exp) {
-							spawn_chance = _mod.max_saturation;
-						} else {
-							var calc_exp = _mar_exp - _min;
-							var _inc_point = floor(_mar_exp / _increments);
-							_max_sat = _inc_point * 5;
-						}
-					}
-				}
-				if (struct_exists(_mod, "max_saturation")) {
-					if (struct_exists(variation_map, _mod.position)) {
-						if (variation_map[$ _mod.position] >= _max_sat) {
-							if (!check_exception("max_saturation")) {
-								continue;
-							}
-						}
-					}
-				}
-				if (!struct_exists(_mod, "body_types")) {
-					_mod.body_types = [0, 1, 2];
-				}
-
-				if (!array_contains(_mod.body_types, armour_type)) {
-					if (!check_exception("body_types")) {
-						continue;
-					}
-				}
-
-				if (struct_exists(_mod, "role_type")) {
-					var _viable = false;
-					for (var a = 0; a < array_length(_mod.role_type); a++) {
-						var _r_t = _mod.role_type[a];
-						_viable = unit.IsSpecialist(_r_t);
-						if (_viable) {
-							break;
-						}
-					}
-					if (!_viable) {
-						if (!check_exception("chapter_adv")) {
-							continue;
-						}
-						if (!check_exception("chapter_disadv")) {
-							continue;
-						}
-					}
-				}
-				if (struct_exists(_mod, "roles")) {
-					if (!array_contains(_mod.roles, unit.role())) {
-						if (!check_exception("roles")) {
-							continue;
-						}
-					}
-				}
-				if (struct_exists(_mod, "cultures")) {
-					if (!scr_has_style(_mod.cultures)) {
-						if (!check_exception("cultures")) {
-							continue;
-						}
-					}
-				}
-				if (struct_exists(_mod, "company")) {
-					if (!array_contains(_mod.company, unit.company)) {
-						if (!check_exception("company")) {
-							continue;
-						}
-					}
-				}
-				if (struct_exists(_mod, "armours")) {
-					if (!array_contains(_mod.armours, unit_armour)) {
-						if (!check_exception("armours")) {
-							continue;
-						}
-					}
-				}
-				if (struct_exists(_mod, "armours_exclude")) {
-					if (array_contains(_mod.armours_exclude, unit_armour)) {
-						if (!check_exception("armours_exclude")) {
-							continue;
-						}
-					}
-				}
-				if (struct_exists(_mod, "chapter_adv")) {
-					var _viable = false;
-					for (var a = 0; a < array_length(_mod.chapter_adv); a++) {
-						var _adv = _mod.chapter_adv[a];
-						_viable = scr_has_adv(_adv);
-						if (_viable) {
-							break;
-						}
-					}
-					if (!_viable) {
-						if (!check_exception("chapter_adv")) {
-							continue;
-						}
-					}
-				}
-				if (struct_exists(_mod, "chapter_disadv")) {
-					var _viable = false;
-					for (var a = 0; a < array_length(_mod.chapter_disadv); a++) {
-						var _disadv = _mod.chapter_disadv[a];
-						_viable = scr_has_disadv(_disadv);
-						if (_viable) {
-							break;
-						}
-					}
-					if (!_viable) {
-						if (!check_exception("chapter_disadv")) {
-							continue;
-						}
-					}
-				}
-				if (struct_exists(_mod, "stats")) {
-					if (!stat_valuator(_mod.stats, unit)) {
-						if (!check_exception("stats")) {
-							continue;
-						}
-					}
-				}
-				if (struct_exists(_mod, "equipped")) {
-					if (!unit.has_equipped(_mod.equipped)) {
-						if (!check_exception("equipped")) {
-							continue;
-						}
-					}
-				}
-
-				if (struct_exists(_mod, "traits")) {
-					var _viable = false;
-					for (var a = 0; a < array_length(_mod.traits); a++) {
-						var _trait = _mod.traits[a];
-						_viable = unit.has_trait(_trait);
-						if (_viable) {
-							break;
-						}
-					}
-					if (!_viable) {
-						if (!check_exception("traits")) {
-							continue;
-						}
-					}
-				}
-				if (struct_exists(_mod, "chapter")) {
-					var chap_name = instance_exists(obj_creation) ? obj_creation.chapter_name : global.chapter_name;
-					if (chap_name != _mod.chapter) {
-						if (!check_exception("chapter")) {
-							continue;
-						}
-					}
-				}
-
-				var _overides = "none";
-				if (struct_exists(_mod, "overides")) {
-					_overides = _mod.overides;
-				}
-
-				if (struct_exists(_mod, "subcomponents")){
-					_sub_comps = _mod.subcomponents;
-				}
-
-				if (struct_exists(_mod, "body_parts")){
-					var _viable = true;
-					var _body_areas = struct_get_names(_mod.body_parts);
-					for (var b=0;b<array_length(_body_areas);b++){
-						var _area =_body_areas[b];
-						if (!struct_exists(unit.body[$ _area],_mod.body_parts[$ _area])){
-							_viable = false;
-							break;							
-						}
-					}
-					if (!_viable){
-						if (!check_exception("body_parts")) {
-							continue;
-						}
-					}
-				}
-
-				if (struct_exists(_mod, "prevent_others")) {
-					replace_area(_mod.position, _mod.sprite, _overides,_sub_comps);
-					array_push(blocked, _mod.position);
-					if (struct_exists(_mod, "ban")) {
-						for (var b = 0; b < array_length(_mod.ban); b++) {
-							if (!array_contains(banned, _mod.ban[b])) {
-								array_push(banned, _mod.ban[b]);
-							}
-						}
-					}
-				}
-				if (struct_exists(_mod, "assign_by_rank")) {
-					var _area = _mod.position;
-					var _status_level = _mod.assign_by_rank;
-					var _roles = active_roles();
-					var tiers = [
-						["Chapter Master"],
-						["Forge Master", "Master of Sanctity", "Master of the Apothecarion", string("Chief {0}", _roles[eROLE.Librarian])],
-						[_roles[eROLE.Captain], _roles[eROLE.HonourGuard]],
-						[_roles[eROLE.Champion]],
-						[_roles[eROLE.Ancient], _roles[eROLE.VeteranSergeant]],
-						[_roles[eROLE.Terminator]],
-						[_roles[eROLE.Veteran], _roles[eROLE.Sergeant], _roles[eROLE.Chaplain], _roles[eROLE.Apothecary], _roles[eROLE.Techmarine], _roles[eROLE.Librarian]],
-						["Codiciery", "Lexicanum", _roles[eROLE.Tactical], _roles[eROLE.Assault], _roles[eROLE.Devastator]],
-						[_roles[eROLE.Scout]]
-					];
-
-					var _unit_tier = 8;
-					if (_unit_tier == 8) {
-						for (var t = 0; t < array_length(tiers); t++) {
-							var tier = tiers[t];
-							if (array_contains(tier, unit.role())) {
-								_unit_tier = t;
-							}
-						}
-					}
-					if (_unit_tier >= _status_level) {
-						var variation_tier = (_unit_tier - _status_level) + 1;
-						if (variation_map[$ _area] % variation_tier != 0) {
-							continue;
-						}
-					}
-				}				
-
 				if (position != false) {
 					if (position == "weapon") {
 						var _weapon_map = _mod.weapon_map;
@@ -476,6 +486,7 @@ function ComplexSet(_unit) constructor {
 		left_weapon: unit.get_body_data("weapon_variation", "left_arm"),
 		right_weapon: unit.get_body_data("weapon_variation", "right_arm"),
 		necklace : unit.get_body_data("hanging_variant", "throat"),
+		foreground_item : unit.get_body_data("variant", "throat"),
 	};
 
 	static draw_component = function(component_name, texture_draws = {}) {
@@ -575,13 +586,13 @@ function ComplexSet(_unit) constructor {
 							//show_debug_message($"subcomponents 2: {_subcomponents}");
 							var _sub_choice = 0;
 							if (_map_choice != 0){
-								_sub_choice = sqr(_map_choice + 1) - i;
+								_sub_choice = floor(sin(_map_choice) * 100);
 							}
 							var _total_options = -1;
 							for (var s=0;s<array_length(_subcomponents);s++){
 								_total_options += sprite_get_number(_subcomponents[s]);
 							}
-							//show_debug_message($"{_total_options}")
+							show_debug_message($"{_total_options}, {_sub_choice}")
 
 							if (_total_options > -1){
 								if (_total_options == 0){
@@ -591,11 +602,12 @@ function ComplexSet(_unit) constructor {
 									_sub_choice_final = _sub_choice % (_total_options+1);
 								}
 
-								//show_debug_message($"{_sub_choice_final}");
+								show_debug_message($"{_sub_choice_final}");
 								
 								_choice_count = 0;
 								for (var s=0;s<array_length(_subcomponents);s++){
 									if (_sub_choice_final >= _choice_count && _sub_choice_final < _choice_count+sprite_get_number(_subcomponents[s])){
+										show_debug_message($"{_sub_choice_final}, {_choice_count}");
 										draw_sprite(_subcomponents[s], _sub_choice_final-_choice_count ?? 0, x_surface_offset, y_surface_offset);
 										break;
 									} else {
@@ -929,7 +941,8 @@ function ComplexSet(_unit) constructor {
                 "left_pauldron_embeleshments",
                 "right_pauldron_hangings",
                 "left_pauldron_hangings",
-                "left_personal_livery"
+                "left_personal_livery",
+                "foreground_item",
             ];
 		} else {
 			_draw_order = [
@@ -964,7 +977,8 @@ function ComplexSet(_unit) constructor {
                 "tabbard",
                 "robe",
                 "belt",
-                "left_personal_livery"
+                "left_personal_livery",
+                "foreground_item",
             ];
 		}
 		for (var i = 0; i < array_length(_draw_order); i++) {
@@ -1295,7 +1309,26 @@ function ComplexSet(_unit) constructor {
 		if (!struct_exists(subcomponents, area)) {
 			subcomponents[$ area] = [];
 		}
-		array_push(subcomponents[$ area], [_overide_start, _overide_start + sprite_length, sub_components]);
+		var _accepted_subs = [];
+		for (var i=0;i<array_length(sub_components);i++){
+			var _subs = sub_components[i];
+			var _sub_items = [];
+			for (var s=0;s<array_length(_subs);s++){
+				var _subby = _subs[s];
+				if (is_struct(_subby)){
+					var _allow = base_modulars_checks(_subby);
+					if (_allow){
+						array_push(_sub_items, _subby.sprite);
+					}
+				} else {
+					array_push(_sub_items, _subby);
+				}
+			}
+			if (array_length(_sub_items)){
+				array_push(_accepted_subs, _sub_items);
+			}
+		}
+		array_push(subcomponents[$ area], [_overide_start, _overide_start + sprite_length, _accepted_subs]);
 	};
 
 	static replace_area = function(area, add_sprite, overide_data = "none", sub_components = "none") {

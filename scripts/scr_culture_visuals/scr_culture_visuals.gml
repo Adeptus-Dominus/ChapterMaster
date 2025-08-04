@@ -323,14 +323,12 @@ global.modular_drawing_items = [
         }        
     },
     {
-        cultures : ["Cthonian", "Gothic"],
         sprite : spr_chap_trim_left,
         body_types :[0],
         position : "left_trim",
         role_type : [SPECIALISTS_CHAPLAINS],
     },
     {
-        cultures : ["Cthonian", "Gothic"],
         sprite : spr_chap_trim_right,
         body_types :[0],
         position : "right_trim",
@@ -575,7 +573,10 @@ global.modular_drawing_items = [
         body_types :[0],
         position : "belt",
         role_type : [SPECIALISTS_CHAPLAINS],
-        armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"],  
+        cultures : ["Gothic"],
+        armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"],
+        allow_either : ["cultures", "role_type"],
+
     },
     {
         sprite : spr_tech_belt,
@@ -1249,7 +1250,27 @@ global.modular_drawing_items = [
             [spr_blank, spr_cata_right_trim_2],
             [spr_blank, spr_cata_right_trim_1],
         ],
-    },                                                            
+    },
+    {
+        position : "foreground_item",
+        sprite: spr_gear_combat_shield,
+        body_types: [0,1, 2],
+        offsets : {
+            "Terminator Armour" : {
+                y : -10,
+                x : -15,
+            },
+            "Tartaros" : {
+                x : -8,
+            }
+        },
+        subcomponents :[
+           [spr_blank, spr_combat_shield_bottom_part],
+        ],
+        equipped : {
+            "gear" : "Combat Shield",
+        },
+    },                                                        
 ];
 
 
