@@ -335,6 +335,7 @@ function scr_draw_unit_image(_background = false) {
                     break;
                 case "Terminator Armour":
                 case "Tartaros":
+                case "Cataphractii":
                     armour_type = ArmourType.Terminator;
                     break;
                 case "Dreadnought":
