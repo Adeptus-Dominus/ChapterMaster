@@ -40,7 +40,9 @@ slate_panel.inside_method = function(){
         sprw = 141*0.7;
         sprh = 141*0.7;
 
-        draw_sprite_stretched(global.chapter_icon.sprite, 0, sprx, spry, sprw, sprh);
+        if (sprite_exists(global.chapter_icon.sprite)){
+            draw_sprite_stretched(global.chapter_icon.sprite, 0, sprx, spry, sprw, sprh);
+        }
         draw_set_font(fnt_cul_14);
         draw_text(x+(panel_width/2),y+89,string_hash_to_newline(title));
         if (line[1]!=""){
@@ -109,13 +111,18 @@ slate_panel.inside_method = function(){
 var x_scale = (panel_width/850)
 var y_scale = (panel_height/860)
 
-slate_panel.draw(x, y, x_scale,y_scale);
-// draw_text(x+(panel_width/2),y-60,string(manage)+") "+string(line[1])+"#"+string(line[2])+"#"+string(line[3]));
+try {
+    slate_panel.draw(x, y, x_scale,y_scale);
+    // draw_text(x+(panel_width/2),y-60,string(manage)+") "+string(line[1])+"#"+string(line[2])+"#"+string(line[3]));
 
-if (point_and_click([x, y, x + panel_width, y + panel_height])) {
-    obj_controller.managing = manage;
-    var new_manage = manage;
-    with(obj_controller) {
-        switch_view_company(new_manage);
+    if (point_and_click([x, y, x + panel_width, y + panel_height])) {
+        obj_controller.managing = manage;
+        var new_manage = manage;
+        with(obj_controller) {
+            switch_view_company(new_manage);
+        }
     }
+} catch(_exception){
+    handle_exception(_exception);
+    scr_toggle_manage();
 }

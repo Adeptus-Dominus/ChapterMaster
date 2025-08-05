@@ -3,7 +3,10 @@ if ((cooldown<=0)){
     if (hide){
         exit;
     }
-    if (instances_exist([obj_controller,obj_fleet])){
+    if (instances_exist([obj_fleet])){
+        exit;
+    }
+    if (!instance_exists(obj_controller)){
         exit;
     }
     if (obj_controller.scrollbar_engaged){
