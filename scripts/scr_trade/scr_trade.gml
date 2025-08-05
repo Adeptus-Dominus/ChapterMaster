@@ -101,7 +101,7 @@ function TradeAttempt(diplomacy) constructor{
 					quality : "standard",
 					number : _opt.number,
 				}
-			} else if (opt.trade_type == "arti"){
+			} else if (_opt.trade_type == "arti"){
 				scr_add_artifact("random", "minor", true);
 			}
 		}
@@ -133,7 +133,7 @@ function TradeAttempt(diplomacy) constructor{
 		            }					
 				}
 			} else if (_opt.trade_type == "gene"){
-				gene_seed-=_opt.number;
+				obj_controller.gene_seed-=_opt.number;
                 if (diplomacy_faction<=5) and (diplomacy_faction!=4){
                 	obj_controller.gene_sold += _opt.number;
                 }
@@ -177,56 +177,54 @@ function TradeAttempt(diplomacy) constructor{
 	}
 
 	static find_trade_locations = function(){
- 		if (obj_ini.fleet_type=ePlayerBase.home_world){
- 			var _stars_with_player_control = [];
-	 		with(obj_star){
-	 			if (array_contains(p_owner, 1)){
-	 				array_push(_stars_with_player_control, id)
-	 			}
+		var _stars_with_player_control = [];
+ 		with(obj_star){
+ 			if (array_contains(p_owner, 1)){
+ 				array_push(_stars_with_player_control, id)
+ 			}
+	    }
+
+	    var player_fleet_targets = [];
+
+	    if (obj_ini.fleet_type != ePlayerBase.home_world || !array_length(_stars_with_player_control)){
+	        // with(obj_star){if (present_fleet[1]>0){x-=10000;y-=10000;}}
+	        with(obj_p_fleet){// Get the nearest star system that is viable for creating the trading fleet
+	            if ((capital_number>0 || frigate_number>0) && action=""){
+	            	array_push(player_fleet_targets, id);
+	            }
+	   
+	        }
+	    }
+
+
+	    // temp2: ideal trade target
+	    // temp3: origin
+	    // temp4: possible trade target
+
+
+	    var viable_faction_trade_stars = [];
+    	var _check_val = diplomacy_faction;
+    	 if (diplomacy_faction==4){
+    	 	_check_val = 2
+    	 }
+	    with(obj_star){// Get origin star system for enemy fleet
+	    	if (array_contains(p_owner, _check_val)){
+	    		array_push(viable_faction_trade_stars, id);
+	    	}
+		    if (_check_val=5){
+
+	        	var ahuh=0,q=0;
+	            repeat(planets){
+	            	q+=1;
+	            	if (p_owner[q]=5) then ahuh=1;
+	                if (p_owner[q]<6) and (planet_feature_bool(p_feature[q],P_features.Sororitas_Cathedral) == 1) then ahuh=1;
+	            }
+	            if (ahuh=1){
+	            	array_push(viable_faction_trade_stars, id);
+	            }
+
 		    }
-
-		    var player_fleet_targets = [];
-
-		    if (obj_ini.fleet_type != ePlayerBase.home_world || !array_length(_stars_with_player_control)){
-		        // with(obj_star){if (present_fleet[1]>0){x-=10000;y-=10000;}}
-		        with(obj_p_fleet){// Get the nearest star system that is viable for creating the trading fleet
-		            if ((capital_number>0 || frigate_number>0) && action=""){
-		            	array_push(player_fleet_targets, id);
-		            }
-		   
-		        }
-		    }
-
-
-		    // temp2: ideal trade target
-		    // temp3: origin
-		    // temp4: possible trade target
-
-
-		    var viable_faction_trade_stars = [];
-	    	var _check_val = diplomacy_faction;
-	    	 if (diplomacy_faction==4){
-	    	 	_check_val = 2
-	    	 }
-		    with(obj_star){// Get origin star system for enemy fleet
-		    	if (array_contains(p_owner, _check_val)){
-		    		array_push(viable_faction_trade_stars, id);
-		    	}
-			    if (_check_val=5){
-
-		        	var ahuh=0,q=0;
-		            repeat(planets){
-		            	q+=1;
-		            	if (p_owner[q]=5) then ahuh=1;
-		                if (p_owner[q]<6) and (planet_feature_bool(p_feature[q],P_features.Sororitas_Cathedral) == 1) then ahuh=1;
-		            }
-		            if (ahuh=1){
-		            	array_push(viable_faction_trade_stars, id);
-		            }
-
-			    }
-		    }		
-		}
+	    }		
 
 		if (!array_length(_stars_with_player_control) && !array_length(player_fleet_targets)){
 			with (obj_controller){
@@ -242,8 +240,11 @@ function TradeAttempt(diplomacy) constructor{
 			}
 			return false			
 		}
+
 		trade_from_star = array_random_element(viable_faction_trade_stars);
-		if (!array_length(_stars_with_player_control)){
+
+
+		if (!array_length(_stars_with_player_control) ||  (obj_ini.fleet_type!=ePlayerBase.home_world && array_length(player_fleet_targets))){
 			trade_to_obj = array_random_element(player_fleet_targets);
 		} else if (!array_length(player_fleet_targets)){
 			trade_to_obj = array_random_element(_stars_with_player_control);

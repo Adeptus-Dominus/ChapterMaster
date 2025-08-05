@@ -84,6 +84,7 @@ function UnitButtonObject(data = false) constructor{
 	color = #50a076;
 	inactive_col = c_gray;	
 	keystroke = false;
+	active = true;
 	tooltip = "";
 	bind_method = "";
 	bind_scope = false;
@@ -150,7 +151,7 @@ function UnitButtonObject(data = false) constructor{
 				_temp_alpha = 0.5;
 				allow_click = false;
 			}
-			var _button_click_area = draw_unit_buttons(w > 0 ? [x1, y1, x2, y2] : [x1, y1] , label, [text_scale,text_scale],color,,font,_temp_alpha);
+			var _button_click_area = draw_unit_buttons(w > 0 ? [x1, y1, x2, y2] : [x1, y1] , label, [text_scale,text_scale],active ? color : inactive_col,,font,_temp_alpha);
 		} else if (style = "pixel"){
 
 			var _widths =  [sprite_get_width(spr_pixel_button_left), sprite_get_width(spr_pixel_button_middle), sprite_get_width(spr_pixel_button_right)]
@@ -182,7 +183,7 @@ function UnitButtonObject(data = false) constructor{
 			tooltip_draw(tooltip);
 		}
 
-		if (allow_click){
+		if (allow_click && active){
 			var clicked = point_and_click(_button_click_area) || keystroke;
 			if (clicked){
 				if (is_callable(bind_method)){
