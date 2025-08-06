@@ -8,6 +8,7 @@ function set_up_equip_popup(){
 	    var prev_role;
 	    var allow = true;
 
+	    var _unchangeable_armour = false;
 	    // Need to make sure that group selected is all the same type
 	    for (var f=0; f<array_length(display_unit); f++){
 
@@ -17,6 +18,7 @@ function set_up_equip_popup(){
 	            if (man[f]=="man" && is_struct(display_unit[f])){
 	                _unit=display_unit[f];
 	                vih = _unit.is_dreadnought() ? 6 : 1;
+	                    	_unchangeable_armour = true;
 	            } else if (man[f]=="vehicle"){
 	                if (ma_role[f]=="Land Raider") { vih=50;}
 	                else if (ma_role[f]=="Rhino") { vih=51;}
@@ -185,6 +187,11 @@ function set_up_equip_popup(){
 						font : fnt_40k_12,
 		        	}
 		        );
+		        if (_unchangeable_armour){
+		        	armour_select.inactive_col = CM_RED_COLOR;
+		        	armour_select.tooltip = "One or more Marine has Dreadnought armour and cannot be changed";
+		        	armour_select.active = false;
+		        }
 				gear_select = new UnitButtonObject(
 		        	{
 		        		x1: 1300, 

@@ -903,6 +903,7 @@ function scr_ui_manage() {
                             view_squad = false;
                             unit_profile = false;
                         } else if (company_data.has_squads) {
+                            unit_profile = true;
                             company_data.draw_squad_view();
                         }
                     }
