@@ -1270,7 +1270,35 @@ global.modular_drawing_items = [
         equipped : {
             "gear" : "Combat Shield",
         },
-    },                                                        
+    },
+    {
+        position : "right_eye", 
+        sprite : spr_gear_apoth_eye,
+        role_type : [SPECIALISTS_APOTHECARIES],
+        offsets : {
+            "Terminator Armour":{
+                y :-6,
+            },
+            "Tartaros":{
+                y :-6,
+            }
+        }
+
+    },
+    {
+        position : "backpack_decoration", 
+        sprite : spr_gear_apoth,
+        role_type : [SPECIALISTS_APOTHECARIES],
+        offsets : {
+            "Terminator Armour":{
+                y :- 22,
+            },
+            "Tartaros":{
+                y :- 30,
+            }
+        }
+
+    }                                                         
 ];
 
 

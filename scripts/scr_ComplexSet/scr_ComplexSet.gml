@@ -323,7 +323,27 @@ function ComplexSet(_unit) constructor {
 
 		_overides = "none";
 		if (struct_exists(_mod, "overides")) {
-			_overides = _mod.overides;
+			_overides = {overides:_mod.overides};
+		}
+		if (struct_exists(_mod, "offsets")){
+			var _x = 0;
+			var _y = 0;
+			if (struct_exists(_mod.offsets,unit_armour)){
+				var _offset = _mod.offsets[$ unit_armour];
+				if (struct_exists(_offset,"x")){
+					_x += _offset.x;
+				}
+				if (struct_exists(_offset,"y")){
+					_x += _offset.y;
+				}			
+			}
+			if (_x != 0 || _y !=0){
+				if (_overides == "none"){
+					_overides = {offsets:[_x, _y]};
+				} else {
+					_overides.offsets = [_x, _y]
+				}
+			}
 		}
 
 		if (struct_exists(_mod, "subcomponents")){
@@ -418,10 +438,10 @@ function ComplexSet(_unit) constructor {
 						}
 					}
 				} else {
-					add_to_area(_mod.position, _mod.sprite, _overides,_sub_comps);
+					add_to_area(_mod.position, _mod.sprite, _overides, _sub_comps);
 				}
 				if (struct_exists(_mod, "prevent_others")) {
-					replace_area(_mod.position, _mod.sprite, _overides,_sub_comps);
+					replace_area(_mod.position, _mod.sprite, _overides, _sub_comps);
 					array_push(blocked, _mod.position);
 					if (struct_exists(_mod, "ban")) {
 						for (var b = 0; b < array_length(_mod.ban); b++) {
@@ -496,6 +516,10 @@ function ComplexSet(_unit) constructor {
 		if (struct_exists(self, component_name)) {
 			var _sprite = self[$ component_name];
 			if (sprite_exists(_sprite)) {
+
+				var _draw_x = x_surface_offset;
+				var _draw_y = y_surface_offset;
+
 				var choice = 0;
 				var _map_choice = 3;
 				if (struct_exists(variation_map, component_name)) {
@@ -507,9 +531,18 @@ function ComplexSet(_unit) constructor {
 					for (var i = 0; i < array_length(_overide_set); i++) {
 						var _spec_over = _overide_set[i];
 						if (_spec_over[0] <= choice && _spec_over[1] > choice) {
-							var _override_areas = struct_get_names(_spec_over[2]);
-							for (var j = 0; j < array_length(_override_areas); j++) {
-								replace_area(_override_areas[j], _spec_over[2][$ _override_areas[j]]);
+							var _override_data = _spec_over[2];
+							if (struct_exists(_override_data, "overides")){
+								_override_areas = struct_get_names(_override_data.overides);
+								var _overs = _override_data.overides;
+								for (var j = 0; j < array_length(_override_areas); j++) {
+									replace_area(_override_areas[j], _overs[$ _override_areas[j]]);
+								}
+							}
+							if (struct_exists(_override_data, "offsets")){
+								var _offsets = _override_data.offsets;
+								_draw_x += _offsets[0];
+								_draw_y += _offsets[1];
 							}
 						}
 					}
@@ -553,20 +586,20 @@ function ComplexSet(_unit) constructor {
 							// show_debug_message($"{_tex_data.areas[t]}");
 							var _replace_col = shader_get_uniform(armour_texture, "replace_colour");
 							shader_set_uniform_f_array(_replace_col, _tex_data.areas[t]);
-							draw_sprite(_sprite, choice ?? 0, x_surface_offset, y_surface_offset);
+							draw_sprite(_sprite, choice ?? 0, _draw_x, _draw_y);
 						}
 					}
 					surface_reset_target();
 					surface_set_target(_return_surface);
 					shader_set(full_livery_shader);
-					draw_sprite(_sprite, choice ?? 0, x_surface_offset, y_surface_offset);
+					draw_sprite(_sprite, choice ?? 0, _draw_x, _draw_y);
 					draw_surface(base_component_surface, 0, 0);
 					surface_reset_target();
 					surface_clear_and_free(base_component_surface);
 
 					surface_set_target(_return_surface);
 				} else {
-					draw_sprite(_sprite, choice ?? 0, x_surface_offset, y_surface_offset);
+					draw_sprite(_sprite, choice ?? 0, _draw_x, _draw_y);
 				}
 				if (struct_exists(subcomponents, component_name)) {
 					var _subcomponents_found = false;
@@ -592,7 +625,7 @@ function ComplexSet(_unit) constructor {
 							for (var s=0;s<array_length(_subcomponents);s++){
 								_total_options += sprite_get_number(_subcomponents[s]);
 							}
-							show_debug_message($"{_total_options}, {_sub_choice}")
+							//show_debug_message($"{_total_options}, {_sub_choice}")
 
 							if (_total_options > -1){
 								if (_total_options == 0){
@@ -602,13 +635,13 @@ function ComplexSet(_unit) constructor {
 									_sub_choice_final = _sub_choice % (_total_options+1);
 								}
 
-								show_debug_message($"{_sub_choice_final}");
+								//show_debug_message($"{_sub_choice_final}");
 								
 								_choice_count = 0;
 								for (var s=0;s<array_length(_subcomponents);s++){
 									if (_sub_choice_final >= _choice_count && _sub_choice_final < _choice_count+sprite_get_number(_subcomponents[s])){
-										show_debug_message($"{_sub_choice_final}, {_choice_count}");
-										draw_sprite(_subcomponents[s], _sub_choice_final-_choice_count ?? 0, x_surface_offset, y_surface_offset);
+										//show_debug_message($"{_sub_choice_final}, {_choice_count}");
+										draw_sprite(_subcomponents[s], _sub_choice_final-_choice_count ?? 0, _draw_x, _draw_y);
 										break;
 									} else {
 										_choice_count += sprite_get_number(_subcomponents[s]);
@@ -1297,6 +1330,11 @@ function ComplexSet(_unit) constructor {
 			}
 		}
 	};
+
+	offsets=[];
+	static add_offsets = function(area, _offset_start, sprite_length, overide_data){
+
+	}
 
 	static add_overide = function(area, _overide_start, sprite_length, overide_data) {
 		if (!struct_exists(overides, area)) {

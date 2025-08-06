@@ -1203,6 +1203,7 @@
     {"id":{"name":"spr_formation_splash","path":"sprites/spr_formation_splash/spr_formation_splash.yy",},},
     {"id":{"name":"spr_fur_tabbard","path":"sprites/spr_fur_tabbard/spr_fur_tabbard.yy",},},
     {"id":{"name":"spr_fur_tail_topknot","path":"sprites/spr_fur_tail_topknot/spr_fur_tail_topknot.yy",},},
+    {"id":{"name":"spr_gear_apoth_eye","path":"sprites/spr_gear_apoth_eye/spr_gear_apoth_eye.yy",},},
     {"id":{"name":"spr_gear_apoth","path":"sprites/spr_gear_apoth/spr_gear_apoth.yy",},},
     {"id":{"name":"spr_gear_chap","path":"sprites/spr_gear_chap/spr_gear_chap.yy",},},
     {"id":{"name":"spr_gear_combat_shield","path":"sprites/spr_gear_combat_shield/spr_gear_combat_shield.yy",},},

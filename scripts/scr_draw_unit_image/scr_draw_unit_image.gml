@@ -380,16 +380,6 @@ function scr_draw_unit_image(_background = false) {
 
             armour_sprite = spr_weapon_blank;
 
-
-            // Draw the lights
-            if ((unit_specialization == UnitSpecialization.Apothecary) && (unit_armour != "") && (back_equipment == BackType.None)) {
-                if (unit_armour == "Terminator Armour") {
-                    draw_sprite(spr_gear_apoth, 0, x_surface_offset, y_surface_offset - 22); // for terminators
-                } else {
-                    draw_sprite(spr_gear_apoth, 0, x_surface_offset, y_surface_offset - 6);
-                } // for normal power armour
-            }
-
             // Draw Techmarine gear
             if ((servo_arm > 0 || servo_harness > 0) && (!arm_bypass)) {
                 var arm_offset_y = 0;
@@ -460,11 +450,10 @@ function scr_draw_unit_image(_background = false) {
                         if (body.torso.robes == 0) {
                             complex_set.add_to_area("robe", spr_marine_robes);
                         } else if (body.torso.robes == 1) {
-                            if (scr_has_disadv("Warp Tainted") && !modest_livery) {
+                            if (scr_has_disadv("Warp Tainted")) {
                                 complex_set.add_to_area("robes", spr_binders_robes);
-                            } else {
-                                complex_set.add_to_area("robes", spr_marine_robes);
                             }
+                            complex_set.add_to_area("robes", spr_marine_robes);
                         } else {
                             complex_set.add_to_area("tabbard", spr_cloth_tabbard);
                         }
@@ -491,13 +480,6 @@ function scr_draw_unit_image(_background = false) {
 
                 // Apothecary Details
                 if (unit_specialization == UnitSpecialization.Apothecary) {
-                    if (unit_armour == "Tartaros") {
-                        draw_sprite(spr_gear_apoth, 1, x_surface_offset, y_surface_offset - 6); // was y_draw-4 with old tartar
-                    } else if (unit_armour == "Terminator Armour") {
-                        draw_sprite(spr_gear_apoth, 1, x_surface_offset, y_surface_offset - 6);
-                    } else {
-                        draw_sprite(spr_gear_apoth, 1, x_surface_offset, y_surface_offset);
-                    }
                     if (gear() == "Narthecium") {
                         if (armour_type == ArmourType.Normal) {
                             draw_sprite(spr_narthecium_2, 0, x_surface_offset + 66, y_surface_offset + 5);
