@@ -329,23 +329,23 @@ function scr_draw_unit_image(_background = false) {
                 halo = 1;
             }
 
-            switch (unit_armour) {
-                case "Scout Armour":
-                    armour_type = ArmourType.Scout;
-                    break;
-                case "Terminator Armour":
-                case "Tartaros":
-                    armour_type = ArmourType.Terminator;
-                    break;
-                case "Dreadnought":
-                case "Contemptor Dreadnought":
-                    armour_type = ArmourType.Dreadnought;
-                    break;
-                case ITEM_NAME_NONE:
-                case "":
-                case "None":
-                    armour_type = ArmourType.None;
-                    break;
+            if (is_dreadnought()){
+                armour_type = ArmourType.Dreadnought;
+            } else {
+                switch (unit_armour) {
+                    case "Scout Armour":
+                        armour_type = ArmourType.Scout;
+                        break;
+                    case "Terminator Armour":
+                    case "Tartaros":
+                        armour_type = ArmourType.Terminator;
+                        break;
+                    case ITEM_NAME_NONE:
+                    case "":
+                    case "None":
+                        armour_type = ArmourType.None;
+                        break;
+                }
             }
 
             draw_backpack = armour_type == ArmourType.Normal;

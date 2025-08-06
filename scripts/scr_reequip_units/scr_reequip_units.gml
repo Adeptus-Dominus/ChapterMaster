@@ -16,11 +16,7 @@ function set_up_equip_popup(){
 	        if (vih==0){
 	            if (man[f]=="man" && is_struct(display_unit[f])){
 	                _unit=display_unit[f];
-	                if (_unit.armour()!="Dreadnought"&& _unit.armour != "Contemptor Dreadnought"){
-	                    vih=1;
-	                } else {
-	                    vih=6;
-	                }
+	                vih = _unit.is_dreadnought() ? 6 : 1;
 	            } else if (man[f]=="vehicle"){
 	                if (ma_role[f]=="Land Raider") { vih=50;}
 	                else if (ma_role[f]=="Rhino") { vih=51;}
@@ -36,12 +32,13 @@ function set_up_equip_popup(){
 	                    break;
 	                } else if (man[f]=="man" && is_struct(display_unit[f])){
 	                    _unit=display_unit[f];
-	                    if (_unit.armour()!="Dreadnought"&& _unit.armour != "Contemptor Dreadnought" && vih==1){
+	                    var _is_dread = _unit.is_dreadnought();
+	                    if (_is_dread && vih==1){
+                        	allow=false;
+	                        break;	                    	
+	                    } else if (!_is_dread && vih == 6){
 	                        allow=false;
-	                        break;
-	                    } else if (_unit.armour()!="Dreadnought"&& _unit.armour != "Contemptor Dreadnought" && vih==6){
-	                        allow=false;
-	                        break;
+	                        break;	                    	
 	                    }
 	                }
 	            } else if (vih>=50){
