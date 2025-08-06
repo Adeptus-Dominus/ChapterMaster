@@ -110,7 +110,7 @@ function scr_update_unit_armour(new_armour, from_armoury = true, to_armoury = tr
 		}
 	}
 
-	if (armour() == "Dreadnought") {
+	if (armour() == "Dreadnought" ) {
 		is_boarder = false;
 		update_gear("");
 		update_mobility_item("");

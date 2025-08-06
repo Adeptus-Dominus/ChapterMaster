@@ -16,7 +16,7 @@ function set_up_equip_popup(){
 	        if (vih==0){
 	            if (man[f]=="man" && is_struct(display_unit[f])){
 	                _unit=display_unit[f];
-	                if (_unit.armour()!="Dreadnought"){
+	                if (_unit.armour()!="Dreadnought"&& _unit.armour != "Contemptor Dreadnought"){
 	                    vih=1;
 	                } else {
 	                    vih=6;
@@ -36,10 +36,10 @@ function set_up_equip_popup(){
 	                    break;
 	                } else if (man[f]=="man" && is_struct(display_unit[f])){
 	                    _unit=display_unit[f];
-	                    if (_unit.armour()=="Dreadnought" && vih==1){
+	                    if (_unit.armour()!="Dreadnought"&& _unit.armour != "Contemptor Dreadnought" && vih==1){
 	                        allow=false;
 	                        break;
-	                    } else if (_unit.armour()!="Dreadnought" && vih==6){
+	                    } else if (_unit.armour()!="Dreadnought"&& _unit.armour != "Contemptor Dreadnought" && vih==6){
 	                        allow=false;
 	                        break;
 	                    }
@@ -627,7 +627,7 @@ function draw_popup_equip(){
 				warning = "Not enough " + string(n_gear) + "; " + string(units - req_gear_num) + " more are required.";
 			}
 
-			if ((n_gear != ITEM_NAME_NONE) && (n_gear != "") && (string_count("Dreadnought", n_armour) > 0)) {
+			if ((n_gear != ITEM_NAME_NONE) && (n_gear != "") && (string_count("Dreadnought", n_armour) > 0)  && (string_count("Contemptor Dreadnought", n_armour) > 0)) {
 				n_good4 = 0;
 				warning = "Dreadnoughts may not use infantry equipment.";
 			}
@@ -660,7 +660,7 @@ function draw_popup_equip(){
 				warning = "Cannot use this gear with Terminator Armour.";
 			}
 
-			if ((n_mobi != ITEM_NAME_NONE) && (n_mobi != "") && (n_armour == "Dreadnought")) {
+			if ((n_mobi != ITEM_NAME_NONE) && (n_mobi != "") && (n_armour == "Dreadnought") && (n_armour == "Contemptor Dreadnought")) {
 				n_good5 = 0;
 				warning = string(obj_ini.role[100][6]) + "s may not use mobility gear.";
 			}

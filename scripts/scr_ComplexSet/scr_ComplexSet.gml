@@ -1194,6 +1194,13 @@ function ComplexSet(_unit) constructor {
 				});
 				armour_type = ArmourType.Dreadnought;
 				break;
+			case "Contemptor Dreadnought":
+				add_group({
+					armour: spr_contemptor_chasis_colors,
+					head: spr_contemptor_head_colors,
+				});
+				armour_type = ArmourType.Dreadnought;
+				break;
 			case "Scout Armour":
 				add_group({
 					armour: spr_scout_complex,
