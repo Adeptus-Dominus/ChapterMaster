@@ -18,7 +18,9 @@ function set_up_equip_popup(){
 	            if (man[f]=="man" && is_struct(display_unit[f])){
 	                _unit=display_unit[f];
 	                vih = _unit.is_dreadnought() ? 6 : 1;
-	                    	_unchangeable_armour = true;
+	                if (vih == 6){
+	                    _unchangeable_armour = true;
+	                }
 	            } else if (man[f]=="vehicle"){
 	                if (ma_role[f]=="Land Raider") { vih=50;}
 	                else if (ma_role[f]=="Rhino") { vih=51;}

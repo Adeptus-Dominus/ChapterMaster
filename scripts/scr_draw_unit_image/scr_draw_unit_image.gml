@@ -330,24 +330,20 @@ function scr_draw_unit_image(_background = false) {
             if (is_dreadnought()){
                 armour_type = ArmourType.Dreadnought;
             } else {
-            switch (unit_armour) {
-                case "Scout Armour":
-                    armour_type = ArmourType.Scout;
-                    break;
-                case "Terminator Armour":
-                case "Tartaros":
-                case "Cataphractii":
-                    armour_type = ArmourType.Terminator;
-                    break;
-                case "Dreadnought":
-                case "Contemptor Dreadnought":
-                    armour_type = ArmourType.Dreadnought;
-                    break;
-                case ITEM_NAME_NONE:
-                case "":
-                case "None":
-                    armour_type = ArmourType.None;
-                    break;
+                switch (unit_armour) {
+                    case "Scout Armour":
+                        armour_type = ArmourType.Scout;
+                        break;
+                    case "Terminator Armour":
+                    case "Tartaros":
+                    case "Cataphractii":
+                        armour_type = ArmourType.Terminator;
+                        break;
+                    case ITEM_NAME_NONE:
+                    case "":
+                    case "None":
+                        armour_type = ArmourType.None;
+                        break;
                 }
             }
 
@@ -494,14 +490,14 @@ function scr_draw_unit_image(_background = false) {
                 }
             }
             // if (reverent_guardians=1) then draw_sprite(spr_pack_brazier,1,x_surface_offset,y_surface_offset);
-            if (armour_type == ArmourType.Dreadnought) {
+            /*if (armour_type == ArmourType.Dreadnought) {
                 var left_arm = dreadnought_sprite_components(weapon_two());
                 var colour_scheme = specialist_colours <= 1 ? 0 : 1;
                 draw_sprite(left_arm, colour_scheme, x_surface_offset, y_surface_offset);
                 colour_scheme += 2;
                 var right_arm = dreadnought_sprite_components(weapon_one());
                 draw_sprite(right_arm, colour_scheme, x_surface_offset, y_surface_offset);
-            }
+            }*
             /*}else{
             draw_set_color(c_gray);
             draw_text(0,0,string_hash_to_newline("Color swap shader#did not compile"));

@@ -1792,6 +1792,11 @@ base: {
     },
     variants : [{
       sprite: spr_weapon_assca,
+    },
+    {
+      sprite: spr_weapon_assca,
+      body_types: [3],
+      armours : ["Dreadnought"],
     }],
     },
 "Heavy Flamer": {
@@ -1822,8 +1827,96 @@ base: {
     variants: [
         {
             sprite: spr_weapon_lasca,
+        },
+        {
+          sprite: spr_dread_plasma_cannon,
+          body_types: [3],
+          armours : ["Dreadnought"],
         }
     ],
+},
+"Close Combat Weapon" : {
+    base: {
+        body_types: [3],
+        weapon_data: {
+          display_type: "dreadnought",
+        },
+        armours : ["Dreadnought"],
+    },
+    variants: [
+        {
+            sprite: spr_dread_claw,
+        },
+        {
+            sprite: spr_contemptor_CCW,
+            armours : ["Contemptor Dreadnought"],
+        }
+    ]    
+},
+"Twin Linked Heavy Bolter" : {
+    base: {
+        body_types: [3],
+        weapon_data: {
+          display_type: "dreadnought",
+        },
+    },
+    variants: [
+        {
+            sprite: spr_dread_heavy_bolter,
+        }
+    ]    
+},
+"Dreadnought Lightning Claw": {
+    base: {
+        body_types: [3],
+        weapon_data: {
+          display_type: "dreadnought",
+        },
+    },
+    variants: [
+        {
+            sprite: spr_dread_claw,
+        }
+    ]    
+},
+"CCW Heavy Flamer": {
+    base: {
+        body_types: [3],
+        weapon_data: {
+          display_type: "dreadnought",
+        },
+    },
+    variants: [
+        {
+            sprite: spr_dread_claw,
+        }
+    ]    
+},
+"Dreadnought Power Claw": {
+    base: {
+        body_types: [3],
+        weapon_data: {
+          display_type: "dreadnought",
+        },
+    },
+    variants: [
+        {
+            sprite: spr_dread_claw,
+        }
+    ]    
+},
+"Inferno Cannon": {
+    base: {
+        body_types: [3],
+        weapon_data: {
+          display_type: "dreadnought",
+        },
+    },
+    variants: [
+        {
+            sprite: spr_dread_plasma_cannon,
+        }
+    ]    
 },
 "Multi-Melta" : {
     base: {
@@ -1835,8 +1928,52 @@ base: {
     variants: [
         {
             sprite: spr_weapon_mmelta,
-        }
+        },
+        {
+            sprite: spr_dread_plasma_cannon,
+            body_types: [3],
+            armours : ["Dreadnought"],
+        }        
     ],       
+},
+"Twin Linked Lascannon": {
+    base: {
+        body_types: [3],
+        weapon_data: {
+          display_type: "dreadnought",
+        },
+    },
+    variants: [
+        {
+            sprite: spr_dread_lascannon,
+        }
+    ]    
+},
+"Heavy Conversion Beam Projector":{
+    base: {
+        body_types: [3],
+        weapon_data: {
+          display_type: "dreadnought",
+        },
+    },
+    variants: [
+        {
+            sprite: spr_dread_plasma_cannon,
+        }
+    ]    
+},
+"Twin-linked Volkite Culverins":{
+     base: {
+        body_types: [3],
+        weapon_data: {
+          display_type: "dreadnought",
+        },
+    },
+    variants: [
+        {
+            sprite: spr_twl_Volkite_Culverins,
+        }
+    ]    
 },
 "Bolt Pistol": {
   base: {
@@ -1847,7 +1984,7 @@ base: {
   },
   variants: [{
     sprite: spr_weapon_boltpis,
-  }]
+  }],
 },
 
 "Infernus Pistol": {
@@ -2037,9 +2174,16 @@ base: {
       new_weapon_draw: true
     },
   },
-  variants: [{
-    sprite: spr_weapon_missile,
-  }]
+  variants: [
+    {
+        sprite: spr_weapon_missile,
+    },
+    {
+        sprite: spr_dread_missile,
+        body_types: [3],
+        armours : ["Dreadnought"],
+    }
+  ]
 },
 "Plasma Cannon": {
   base: {
@@ -2058,6 +2202,11 @@ base: {
       },
       sprite: spr_weapon_plasc,
       body_types: [0, 1]
+    },
+    {
+        sprite: spr_dread_plasma_cannon,
+        body_types: [3],
+        armours : ["Dreadnought"],
     }
   ]
 },
@@ -2237,6 +2386,11 @@ base: {
   variants: [
     {
       sprite: spr_weapon_autocannon2
+    },
+    {
+        sprite: spr_dread_autocannon,
+        body_types: [3],
+        armours : ["Dreadnought"],
     }
   ]
 },
