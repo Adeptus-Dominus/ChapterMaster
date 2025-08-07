@@ -17,13 +17,9 @@ function set_up_equip_popup(){
 	        if (vih==0){
 	            if (man[f]=="man" && is_struct(display_unit[f])){
 	                _unit=display_unit[f];
-	                var _arm_data = _unit.get_armour_data();
-	                vih=1;
-	                if (is_struct(_arm_data)){
-	                    if (_arm_data.has_tag("dreadnought")){
-	                    	vih=6;
-	                    	_unchangeable_armour = true;
-	                    }
+	                vih = _unit.is_dreadnought() ? 6 : 1;
+	                if (vih == 6){
+	                    _unchangeable_armour = true;
 	                }
 	            } else if (man[f]=="vehicle"){
 	                if (ma_role[f]=="Land Raider") { vih=50;}
@@ -40,12 +36,13 @@ function set_up_equip_popup(){
 	                    break;
 	                } else if (man[f]=="man" && is_struct(display_unit[f])){
 	                    _unit=display_unit[f];
-	                    if (_unit.armour()=="Dreadnought" && vih==1){
+	                    var _is_dread = _unit.is_dreadnought();
+	                    if (_is_dread && vih==1){
+                        	allow=false;
+	                        break;	                    	
+	                    } else if (!_is_dread && vih == 6){
 	                        allow=false;
-	                        break;
-	                    } else if (_unit.armour()!="Dreadnought" && vih==6){
-	                        allow=false;
-	                        break;
+	                        break;	                    	
 	                    }
 	                }
 	            } else if (vih>=50){
@@ -636,7 +633,7 @@ function draw_popup_equip(){
 				warning = "Not enough " + string(n_gear) + "; " + string(units - req_gear_num) + " more are required.";
 			}
 
-			if ((n_gear != ITEM_NAME_NONE) && (n_gear != "") && (string_count("Dreadnought", n_armour) > 0)) {
+			if ((n_gear != ITEM_NAME_NONE) && (n_gear != "") && (string_count("Dreadnought", n_armour) > 0)  && (string_count("Contemptor Dreadnought", n_armour) > 0)) {
 				n_good4 = 0;
 				warning = "Dreadnoughts may not use infantry equipment.";
 			}
@@ -669,7 +666,7 @@ function draw_popup_equip(){
 				warning = "Cannot use this gear with Terminator Armour.";
 			}
 
-			if ((n_mobi != ITEM_NAME_NONE) && (n_mobi != "") && (n_armour == "Dreadnought")) {
+			if ((n_mobi != ITEM_NAME_NONE) && (n_mobi != "") && (n_armour == "Dreadnought") && (n_armour == "Contemptor Dreadnought")) {
 				n_good5 = 0;
 				warning = string(obj_ini.role[100][6]) + "s may not use mobility gear.";
 			}

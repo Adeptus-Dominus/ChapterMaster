@@ -2341,8 +2341,18 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         }
     };
 
+    static is_dreadnought = function(){
+        _arm_data = get_armour_data();
+        if (is_struct(_arm_data)){
+            if (_arm_data.has_tag("dreadnought")){
+                return true
+            }
+        }
+        return false;
+    }
+
     /// @param {Enum.EquipmentSlot} _slot
-    add_equipment_repairs = function(_slot = EquipmentSlot.ALL) {
+    static add_equipment_repairs = function(_slot = EquipmentSlot.ALL) {
         var _slots = array_create(0);
 
         switch (_slot) {
