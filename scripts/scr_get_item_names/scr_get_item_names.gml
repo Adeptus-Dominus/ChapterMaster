@@ -150,7 +150,7 @@ function push_marine_mobility_item_names(_item_names) {
 /// @param {array} _item_names - The list to append to.
 /// @returns {void}
 function push_dreadnought_ranged_weapons_item_names(_item_names) {
-    var item_count = 11;
+    var item_count = 10;
     var initial_size = array_length(_item_names);
     array_resize(_item_names, initial_size + item_count);
 
@@ -164,8 +164,7 @@ function push_dreadnought_ranged_weapons_item_names(_item_names) {
     _item_names[@ index++] = "Twin Linked Lascannon";
     _item_names[@ index++] = "Twin Linked Assault Cannon Mount";
     _item_names[@ index++] = "Twin Linked Heavy Bolter";
-    _item_names[@ index++] = "Heavy Conversion Beam Projector";
-	_item_names[@ index++] = "Twin-linked Volkite Culverins";// 10
+    _item_names[@ index++] = "Heavy Conversion Beam Projector"; // 10
 }
 
 /// @description This function appends the list of dreadnought melee weapons to the given list.

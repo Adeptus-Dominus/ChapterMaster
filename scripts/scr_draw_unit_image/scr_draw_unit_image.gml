@@ -262,7 +262,9 @@ function scr_draw_unit_image(_background = false) {
             var servo_harness = 0;
             var halo = 0;
             var reverent_guardians = false;
+            var tech_brothers_trait = -5;
             var body_part;
+            var dev_trait = 0;
             static _body_parts = ARR_body_parts;
 
             // Chaplain
@@ -327,24 +329,24 @@ function scr_draw_unit_image(_background = false) {
                 halo = 1;
             }
 
-            if (is_dreadnought()){
-                armour_type = ArmourType.Dreadnought;
-            } else {
-                switch (unit_armour) {
-                    case "Scout Armour":
-                        armour_type = ArmourType.Scout;
-                        break;
-                    case "Terminator Armour":
-                    case "Tartaros":
-                    case "Cataphractii":
-                        armour_type = ArmourType.Terminator;
-                        break;
-                    case ITEM_NAME_NONE:
-                    case "":
-                    case "None":
-                        armour_type = ArmourType.None;
-                        break;
-                }
+            switch (unit_armour) {
+                case "Scout Armour":
+                    armour_type = ArmourType.Scout;
+                    break;
+                case "Terminator Armour":
+                case "Tartaros":
+                case "Cataphractii":
+                    armour_type = ArmourType.Terminator;
+                    break;
+                case "Dreadnought":
+                case "Contemptor Dreadnought":
+                    armour_type = ArmourType.Dreadnought;
+                    break;
+                case ITEM_NAME_NONE:
+                case "":
+                case "None":
+                    armour_type = ArmourType.None;
+                    break;
             }
 
             draw_backpack = armour_type == ArmourType.Normal;
@@ -361,6 +363,55 @@ function scr_draw_unit_image(_background = false) {
 
             pauldron_trim = _controller ? obj_controller.trim : obj_creation.trim;
             //TODO complex shader means no need for all this edge case stuff
+
+            // Dark Angels Deathwing
+            if (unit_special_colours == UnitSpecialColours.Deathwing) {
+                if (!array_contains([_role[eROLE.Chaplain], _role[eROLE.Librarian], _role[eROLE.Techmarine]], unit_role)) {
+                    shader_array_set[ShaderType.Body] = Colors.Deathwing;
+                    shader_array_set[ShaderType.Trim] = Colors.Light_Caliban_Green;
+                    if (unit_role != _role[eROLE.Apothecary]) {
+                        shader_array_set[ShaderType.Helmet] = Colors.Deathwing;
+                    }
+                }
+                if (!array_contains([_role[eROLE.Chaplain], _role[eROLE.Techmarine]], unit_role)) {
+                    shader_array_set[ShaderType.RightPauldron] = Colors.Deathwing;
+                }
+                shader_array_set[ShaderType.LeftPauldron] = Colors.Deathwing;
+                pauldron_trim = 0;
+                specialist_colours = 0;
+            }
+
+            // Dark Angels Ravenwing
+            if (unit_special_colours == UnitSpecialColours.Ravenwing) {
+                if (!array_contains([_role[eROLE.Chaplain], _role[eROLE.Librarian], _role[eROLE.Techmarine], _role[eROLE.Apothecary]], unit_role)) {
+                    shader_array_set[ShaderType.Body] = Colors.Black;
+                    shader_array_set[ShaderType.Helmet] = Colors.Black;
+                }
+                if (!array_contains([_role[eROLE.Chaplain], _role[eROLE.Techmarine]], unit_role)) {
+                    shader_array_set[ShaderType.RightPauldron] = Colors.Black;
+                }
+                shader_array_set[ShaderType.LeftPauldron] = Colors.Black;
+                pauldron_trim = 0;
+                specialist_colours = 0;
+            }
+
+            // Dark Angels Captains
+            if (unit_chapter == "Dark Angels" && unit_role == _role[eROLE.Captain] && company != 1) {
+                shader_array_set[ShaderType.RightPauldron] = Colors.Dark_Red;
+                shader_array_set[ShaderType.Helmet] = Colors.Deathwing;
+                pauldron_trim = 0;
+                specialist_colours = 0;
+            }
+
+            // Dark Angels Honour Guard
+            if (unit_chapter == "Dark Angels" && unit_role == _role[eROLE.HonourGuard]) {
+                shader_array_set[ShaderType.Body] = Colors.Deathwing;
+                shader_array_set[ShaderType.RightPauldron] = Colors.Deathwing;
+                shader_array_set[ShaderType.LeftPauldron] = Colors.Deathwing;
+                shader_array_set[ShaderType.Trim] = Colors.Copper;
+                pauldron_trim = 0;
+                specialist_colours = 0;
+            }
             //We can return to the custom shader values at any time during draw doing this
             set_shader_array(shader_array_set);
             // Marine draw sequence
@@ -377,8 +428,28 @@ function scr_draw_unit_image(_background = false) {
             //Rejoice!
             // draw_sprite(spr_marine_base,img,x_surface_offset,y_surface_offset);
 
+            if (unit_armour != "") {
+                var yep = 0;
+                if (scr_has_adv("Devastator Doctrine")) {
+                    dev_trait = 1;
+                }
+                if (unit_specialization == UnitSpecialization.Techmarine) {
+                    if (scr_has_adv("Tech-Brothers")) {
+                        tech_brothers_trait = 0;
+                    }
+                }
+            } else {
+                armour_sprite = spr_weapon_blank;
+            } // Define armour
 
-            armour_sprite = spr_weapon_blank;
+            // Draw the lights
+            if ((unit_specialization == UnitSpecialization.Apothecary) && (unit_armour != "") && (back_equipment == BackType.None)) {
+                if (unit_armour == "Terminator Armour") {
+                    draw_sprite(spr_gear_apoth, 0, x_surface_offset, y_surface_offset - 22); // for terminators
+                } else {
+                    draw_sprite(spr_gear_apoth, 0, x_surface_offset, y_surface_offset - 6);
+                } // for normal power armour
+            }
 
             // Draw Techmarine gear
             if ((servo_arm > 0 || servo_harness > 0) && (!arm_bypass)) {
@@ -450,10 +521,11 @@ function scr_draw_unit_image(_background = false) {
                         if (body.torso.robes == 0) {
                             complex_set.add_to_area("robe", spr_marine_robes);
                         } else if (body.torso.robes == 1) {
-                            if (scr_has_disadv("Warp Tainted")) {
+                            if (scr_has_disadv("Warp Tainted") && !modest_livery) {
                                 complex_set.add_to_area("robes", spr_binders_robes);
+                            } else {
+                                complex_set.add_to_area("robes", spr_marine_robes);
                             }
-                            complex_set.add_to_area("robes", spr_marine_robes);
                         } else {
                             complex_set.add_to_area("tabbard", spr_cloth_tabbard);
                         }
@@ -478,8 +550,22 @@ function scr_draw_unit_image(_background = false) {
                     draw_sprite(armour_draw[0], armour_draw[1], x_surface_offset, y_surface_offset);
                 }
 
+                // Draw decals, features and other stuff
+                if ((dev_trait >= 10) && (!modest_livery)) {
+                    draw_sprite(armour_sprite, dev_trait, x_surface_offset, y_surface_offset);
+                } // Devastator Doctrine battle damage
+                // if (tech_brothers_trait>=0) and (modest_livery=0) then draw_sprite(spr_gear_techb,tech_brothers_trait,x_surface_offset,y_surface_offset);// Tech-Brothers bling
+                //sgt helms
+
                 // Apothecary Details
                 if (unit_specialization == UnitSpecialization.Apothecary) {
+                    if (unit_armour == "Tartaros") {
+                        draw_sprite(spr_gear_apoth, 1, x_surface_offset, y_surface_offset - 6); // was y_draw-4 with old tartar
+                    } else if (unit_armour == "Terminator Armour") {
+                        draw_sprite(spr_gear_apoth, 1, x_surface_offset, y_surface_offset - 6);
+                    } else {
+                        draw_sprite(spr_gear_apoth, 1, x_surface_offset, y_surface_offset);
+                    }
                     if (gear() == "Narthecium") {
                         if (armour_type == ArmourType.Normal) {
                             draw_sprite(spr_narthecium_2, 0, x_surface_offset + 66, y_surface_offset + 5);
@@ -489,15 +575,49 @@ function scr_draw_unit_image(_background = false) {
                     }
                 }
             }
+
+            // Draw Custom Helmets
+            if (armour_type == ArmourType.Normal && !armour_bypass) {
+                if (unit_role == _role[eROLE.Champion]) {
+                    draw_sprite(spr_helm_decorations, 1, x_surface_offset, y_surface_offset);
+                }
+                if (unit_role == _role[eROLE.Sergeant] || unit_role == _role[eROLE.VeteranSergeant]) {
+                    draw_sprite(spr_helm_decorations, 1, x_surface_offset, y_surface_offset);
+                }
+            } else if (unit_armour == "Terminator Armour" && !armour_bypass) {
+                if (unit_role == _role[eROLE.Champion]) {
+                    draw_sprite(spr_helm_decorations, 0, x_surface_offset, y_surface_offset - 10);
+                }
+                if (unit_role == _role[eROLE.Sergeant] || unit_role == _role[eROLE.VeteranSergeant]) {
+                    draw_sprite(spr_helm_decorations, 0, x_surface_offset, y_surface_offset - 10);
+                }
+            }
+
+            var shield_offset_x = 0;
+            var shield_offset_y = 0;
+            if (unit_armour == "Terminator Armour") {
+                shield_offset_x = -15;
+                shield_offset_y = -10;
+            } else if (unit_armour == "Tartaros") {
+                shield_offset_x = -8;
+            }
+            if (gear() == "Combat Shield") {
+                if (unit_role == _role[eROLE.Champion]) {
+                    draw_sprite(spr_gear_combat_shield, 1, x_surface_offset + shield_offset_x, y_surface_offset + shield_offset_y);
+                } else {
+                    draw_sprite(spr_gear_combat_shield, 0, x_surface_offset + shield_offset_x, y_surface_offset + shield_offset_y);
+                }
+            }
+
             // if (reverent_guardians=1) then draw_sprite(spr_pack_brazier,1,x_surface_offset,y_surface_offset);
-            /*if (armour_type == ArmourType.Dreadnought) {
+            if (armour_type == ArmourType.Dreadnought) {
                 var left_arm = dreadnought_sprite_components(weapon_two());
                 var colour_scheme = specialist_colours <= 1 ? 0 : 1;
                 draw_sprite(left_arm, colour_scheme, x_surface_offset, y_surface_offset);
                 colour_scheme += 2;
                 var right_arm = dreadnought_sprite_components(weapon_one());
                 draw_sprite(right_arm, colour_scheme, x_surface_offset, y_surface_offset);
-            }*
+            }
             /*}else{
             draw_set_color(c_gray);
             draw_text(0,0,string_hash_to_newline("Color swap shader#did not compile"));

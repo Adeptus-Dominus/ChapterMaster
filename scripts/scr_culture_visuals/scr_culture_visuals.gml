@@ -323,12 +323,14 @@ global.modular_drawing_items = [
         }        
     },
     {
+        cultures : ["Cthonian", "Gothic"],
         sprite : spr_chap_trim_left,
         body_types :[0],
         position : "left_trim",
         role_type : [SPECIALISTS_CHAPLAINS],
     },
     {
+        cultures : ["Cthonian", "Gothic"],
         sprite : spr_chap_trim_right,
         body_types :[0],
         position : "right_trim",
@@ -573,10 +575,7 @@ global.modular_drawing_items = [
         body_types :[0],
         position : "belt",
         role_type : [SPECIALISTS_CHAPLAINS],
-        cultures : ["Gothic"],
-        armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"],
-        allow_either : ["cultures", "role_type"],
-
+        armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"],  
     },
     {
         sprite : spr_tech_belt,
@@ -1250,55 +1249,7 @@ global.modular_drawing_items = [
             [spr_blank, spr_cata_right_trim_2],
             [spr_blank, spr_cata_right_trim_1],
         ],
-    },
-    {
-        position : "foreground_item",
-        sprite: spr_gear_combat_shield,
-        body_types: [0,1, 2],
-        offsets : {
-            "Terminator Armour" : {
-                y : -10,
-                x : -15,
-            },
-            "Tartaros" : {
-                x : -8,
-            }
-        },
-        subcomponents :[
-           [spr_blank, spr_combat_shield_bottom_part],
-        ],
-        equipped : {
-            "gear" : "Combat Shield",
-        },
-    },
-    {
-        position : "right_eye", 
-        sprite : spr_gear_apoth_eye,
-        role_type : [SPECIALISTS_APOTHECARIES],
-        offsets : {
-            "Terminator Armour":{
-                y :-6,
-            },
-            "Tartaros":{
-                y :-6,
-            }
-        }
-
-    },
-    {
-        position : "backpack_decoration", 
-        sprite : spr_gear_apoth,
-        role_type : [SPECIALISTS_APOTHECARIES],
-        offsets : {
-            "Terminator Armour":{
-                y :- 22,
-            },
-            "Tartaros":{
-                y :- 30,
-            }
-        }
-
-    }                                                         
+    },                                                            
 ];
 
 
@@ -1792,11 +1743,6 @@ base: {
     },
     variants : [{
       sprite: spr_weapon_assca,
-    },
-    {
-      sprite: spr_weapon_assca,
-      body_types: [3],
-      armours : ["Dreadnought"],
     }],
     },
 "Heavy Flamer": {
@@ -1827,96 +1773,8 @@ base: {
     variants: [
         {
             sprite: spr_weapon_lasca,
-        },
-        {
-          sprite: spr_dread_plasma_cannon,
-          body_types: [3],
-          armours : ["Dreadnought"],
         }
     ],
-},
-"Close Combat Weapon" : {
-    base: {
-        body_types: [3],
-        weapon_data: {
-          display_type: "dreadnought",
-        },
-        armours : ["Dreadnought"],
-    },
-    variants: [
-        {
-            sprite: spr_dread_claw,
-        },
-        {
-            sprite: spr_contemptor_CCW,
-            armours : ["Contemptor Dreadnought"],
-        }
-    ]    
-},
-"Twin Linked Heavy Bolter" : {
-    base: {
-        body_types: [3],
-        weapon_data: {
-          display_type: "dreadnought",
-        },
-    },
-    variants: [
-        {
-            sprite: spr_dread_heavy_bolter,
-        }
-    ]    
-},
-"Dreadnought Lightning Claw": {
-    base: {
-        body_types: [3],
-        weapon_data: {
-          display_type: "dreadnought",
-        },
-    },
-    variants: [
-        {
-            sprite: spr_dread_claw,
-        }
-    ]    
-},
-"CCW Heavy Flamer": {
-    base: {
-        body_types: [3],
-        weapon_data: {
-          display_type: "dreadnought",
-        },
-    },
-    variants: [
-        {
-            sprite: spr_dread_claw,
-        }
-    ]    
-},
-"Dreadnought Power Claw": {
-    base: {
-        body_types: [3],
-        weapon_data: {
-          display_type: "dreadnought",
-        },
-    },
-    variants: [
-        {
-            sprite: spr_dread_claw,
-        }
-    ]    
-},
-"Inferno Cannon": {
-    base: {
-        body_types: [3],
-        weapon_data: {
-          display_type: "dreadnought",
-        },
-    },
-    variants: [
-        {
-            sprite: spr_dread_plasma_cannon,
-        }
-    ]    
 },
 "Multi-Melta" : {
     base: {
@@ -1928,52 +1786,8 @@ base: {
     variants: [
         {
             sprite: spr_weapon_mmelta,
-        },
-        {
-            sprite: spr_dread_plasma_cannon,
-            body_types: [3],
-            armours : ["Dreadnought"],
-        }        
+        }
     ],       
-},
-"Twin Linked Lascannon": {
-    base: {
-        body_types: [3],
-        weapon_data: {
-          display_type: "dreadnought",
-        },
-    },
-    variants: [
-        {
-            sprite: spr_dread_lascannon,
-        }
-    ]    
-},
-"Heavy Conversion Beam Projector":{
-    base: {
-        body_types: [3],
-        weapon_data: {
-          display_type: "dreadnought",
-        },
-    },
-    variants: [
-        {
-            sprite: spr_dread_plasma_cannon,
-        }
-    ]    
-},
-"Twin-linked Volkite Culverins":{
-     base: {
-        body_types: [3],
-        weapon_data: {
-          display_type: "dreadnought",
-        },
-    },
-    variants: [
-        {
-            sprite: spr_twl_Volkite_Culverins,
-        }
-    ]    
 },
 "Bolt Pistol": {
   base: {
@@ -1984,7 +1798,7 @@ base: {
   },
   variants: [{
     sprite: spr_weapon_boltpis,
-  }],
+  }]
 },
 
 "Infernus Pistol": {
@@ -2174,16 +1988,9 @@ base: {
       new_weapon_draw: true
     },
   },
-  variants: [
-    {
-        sprite: spr_weapon_missile,
-    },
-    {
-        sprite: spr_dread_missile,
-        body_types: [3],
-        armours : ["Dreadnought"],
-    }
-  ]
+  variants: [{
+    sprite: spr_weapon_missile,
+  }]
 },
 "Plasma Cannon": {
   base: {
@@ -2202,11 +2009,6 @@ base: {
       },
       sprite: spr_weapon_plasc,
       body_types: [0, 1]
-    },
-    {
-        sprite: spr_dread_plasma_cannon,
-        body_types: [3],
-        armours : ["Dreadnought"],
     }
   ]
 },
@@ -2386,11 +2188,6 @@ base: {
   variants: [
     {
       sprite: spr_weapon_autocannon2
-    },
-    {
-        sprite: spr_dread_autocannon,
-        body_types: [3],
-        armours : ["Dreadnought"],
     }
   ]
 },

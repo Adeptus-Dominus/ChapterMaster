@@ -558,8 +558,9 @@ if (shop = "equipment") {
         item_stocked[i] = scr_item_count(item[i]);
         item_cost[i] = 0;
         forge_cost[i] = 0;
-        nobuy[i] = 1;
-		i += 1;
+         nobuy[i] = 1;
+
+        i += 1;
         nobuy[i] = 1;
         item[i] = "Volkite Charger";
         item_stocked[i] = scr_item_count(item[i]);
@@ -658,26 +659,7 @@ if (shop = "equipment") {
         item_cost[i] = 0;
         forge_cost[i] = 0;
         i += 1;
-		item[i] = "Contemptor Dreadnought";
-        item_stocked[i] = scr_item_count(item[i]);
-        item_cost[i] = 0;
-        forge_cost[i] = 0;
-		nobuy[i]=1
-        i += 1;
-		nobuy[i]=1;
-		item[i] = "Twin-linked Volkite Culverins";
-        item_stocked[i] = scr_item_count(item[i]);
-        item_cost[i] = 0;
-        forge_cost[i] = 0;
-        i += 1;
-		nobuy[i]=1;
-		item[i] = "Contemptor CCW";
-        item_stocked[i] = scr_item_count(item[i]);
-        item_cost[i] = 0;
-        forge_cost[i] = 0;
-        i += 1;
-		nobuy[i]=1;
-		
+
     var mc = 0;
     repeat(i) {
         mc++;

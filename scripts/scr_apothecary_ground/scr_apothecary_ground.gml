@@ -233,7 +233,7 @@ function apothecary_simple(){
 				} else if (is_struct(_unit)){
 					_loc_forge_points -= _unit.equipment_maintenance_burden();
 					if  (_unit.hp() < _unit.max_health()){
-						if (!_unit.is_dreadnought()){
+						if (_unit.armour() != "Dreadnought"){
 							if (_unit.hp()>0){
 			        			if (_loc_heal_points >0){
 			        				if (turn_end){
