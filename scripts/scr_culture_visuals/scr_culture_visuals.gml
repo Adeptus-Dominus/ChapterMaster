@@ -471,8 +471,9 @@ global.modular_drawing_items = [
         body_types :[0],
         allow_either : ["chapter_adv", "traits","role_type"],
         role_type : [SPECIALISTS_CHAPLAINS],
-        position : "backpack",
-        assign_by_rank : 3,
+        position : "backpack_decoration",
+        assign_by_rank : 4,
+        max_saturation : 40,
     },
     {
         sprite : spr_gear_librarian,
@@ -1406,7 +1407,15 @@ function DummyMarine()constructor{
         return is_specialist(role(), search_type,include_trainee, include_heads);
     }
     static has_trait = marine_has_trait;
-
+    static is_dreadnought = function(){
+        _arm_data = gear_weapon_data("armour", last_armour);
+        if (is_struct(_arm_data)){
+            if (_arm_data.has_tag("dreadnought")){
+                return true
+            }
+        }
+        return false;
+    }
     experience = 120;
 }
 

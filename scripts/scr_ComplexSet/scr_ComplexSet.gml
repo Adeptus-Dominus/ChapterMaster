@@ -145,10 +145,7 @@ function ComplexSet(_unit) constructor {
 
 		if (struct_exists(_mod, "allow_either")) {
 			_are_exceptions = true;
-			exceptions = [];
-			for (var m = 0; m < array_length(_mod.allow_either); m++) {
-				array_push(exceptions, _mod.allow_either[m]);
-			}
+			exceptions = variable_clone(_mod.allow_either);
 		}
 		if (struct_exists(_mod, "max_saturation")) {
 			var _max_sat = _mod.max_saturation;
@@ -209,10 +206,7 @@ function ComplexSet(_unit) constructor {
 				}
 			}
 			if (!_viable) {
-				if (!check_exception("chapter_adv")) {
-					return false;
-				}
-				if (!check_exception("chapter_disadv")) {
+				if (!check_exception("role_type")) {
 					return false;
 				}
 			}
