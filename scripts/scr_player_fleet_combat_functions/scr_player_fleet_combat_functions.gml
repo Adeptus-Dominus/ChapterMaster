@@ -5,6 +5,7 @@ function add_fleet_ships_to_combat(fleet, combat){
 	var _ship_id;
 	var _ships = fleet_full_ship_array(fleet);
 	var _ship_array_length = array_length(_ships);
+	show_debug_message($"{_ships}")
 	for (var i=0;i<_ship_array_length;i++){
 		try{
 			if (i>=array_length(_ships)) then break;
@@ -44,6 +45,7 @@ function add_ai_fleet_to_combat(en_fleet, fleet_battle, status = -1){
 }
 
 function setup_fleet_battle(combating, star){
+
 	obj_controller.combat=combating;
 	var _p_fleet = get_nearest_player_fleet(x,y,true);
 	var good = (_p_fleet!="none" and instance_exists(star));
@@ -51,24 +53,27 @@ function setup_fleet_battle(combating, star){
 		obj_controller.combat = 0;
 		exit;
 	}
+	show_debug_message("create combat");
     instance_create(0,0,obj_fleet);
     obj_fleet.target_enemy = combating;
     for (var e=2;e<12;e++){
         var _fleets = get_orbiting_fleets(e, target);
+        show_debug_message(_fleets);
         if (!array_length(_fleets)){
             continue;
         }
         if (e == combating || obj_controller.faction_status[e]=="War"){
+        	show_debug_message("target combat fleet");
             for (var f=0;f<array_length(_fleets);f++){
-                add_enemy_fleet_to_combat(_fleets[f], obj_fleet);
+                add_ai_fleet_to_combat(_fleets[f], obj_fleet);
             }
-        } else if (obj_controller.faction_status[e]!="War" && e!=combating){
+        } else if (obj_controller.faction_status[e]!="War" && e != combating){
             for (var f=0;f<array_length(_fleets);f++){
-                add_enemy_fleet_to_combat(_fleets[f], obj_fleet, 1);
+                add_ai_fleet_to_combat(_fleets[f], obj_fleet, 1);
             }                   
         }
     }
-    obj_fleet.pla_fleet=_p_fleet;
+    obj_fleet.pla_fleet = _p_fleet;
     add_fleet_ships_to_combat(_p_fleet, obj_fleet);
 
     for (var i=0;i<star.planets;i++){
