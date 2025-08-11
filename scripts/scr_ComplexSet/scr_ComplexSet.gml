@@ -306,6 +306,22 @@ function ComplexSet(_unit) constructor {
 				}
 			}
 		}
+
+		if (struct_exists(_mod, "equipment_has_tag")) {
+			var _viable = false;
+			var _tag_check_areas = struct_get_names(_mod.equipment_has_tag);
+			for (var i=0; i<array_length(_tag_check_areas);i++){
+				_viable = equipment_has_tag(unit.equipment_has_tag[$_tag_check_areas[i]],_tag_check_areas[i]);
+				if (_viable) {
+					break;
+				}				
+			}
+			if (!_viable) {
+				if (!check_exception("equipment_has_tag")) {
+					return false;
+				}
+			}
+		}
 		if (struct_exists(_mod, "chapter")) {
 			var chap_name = instance_exists(obj_creation) ? obj_creation.chapter_name : global.chapter_name;
 			if (chap_name != _mod.chapter) {

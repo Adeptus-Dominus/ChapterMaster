@@ -244,6 +244,33 @@ global.modular_drawing_items = [
         prevent_others : true,    
     },
     {
+        position : "robes",
+        body_types: [0],
+        sprite:spr_binders_robe,
+        role_type: SPECIALISTS_LIBRARIANS,
+        max_saturation:10,
+    }, 
+    {
+        position : "robes",
+        body_types: [0],
+        sprite:spr_binders_robe,
+        role_type: SPECIALISTS_LIBRARIANS,
+        max_saturation:40,
+        chapter_adv : ["Favoured By The Warp","Warp Touched"],
+        chapter_disadv : ["Warp Tainted"],
+        allow_either :["chapter_adv","chapter_disadv"],
+    }, 
+    {
+        position : "belt",
+        body_types: [0],
+        sprite:spr_binders_belt,
+        role_type: SPECIALISTS_LIBRARIANS,
+        chapter_adv : ["Favoured By The Warp","Warp Touched"],
+        chapter_disadv : ["Warp Tainted"],
+        allow_either :["chapter_adv","chapter_disadv"],
+        max_saturation:50,
+    }, 
+    {
         position : "crown",
         body_types: [0],
         sprite:spr_psy_hood_complex,
@@ -499,7 +526,9 @@ global.modular_drawing_items = [
         sprite : spr_marksmans_honor,
         body_types :[0,2],
         position : "purity_seals",
-        stats : [["ballistic_skill", 50, "exmore"]]
+        stats : [
+            ["ballistic_skill", 50, "exmore"]
+        ]
     },
     {
         sprite : spr_crux_on_chain,
@@ -535,6 +564,16 @@ global.modular_drawing_items = [
         body_types :[0, 2],
         position : "belt",
         armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour", "Tartaros"],
+        exp : {
+            min : 100,
+        },        
+    },
+    {
+        sprite : spr_crux_belt_fancy,
+        body_types :[0, 2],
+        position : "belt",
+        armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour", "Tartaros"],
+        assign_by_rank : 3,
         exp : {
             min : 100,
         },        
@@ -1220,7 +1259,7 @@ global.modular_drawing_items = [
 			spr_cata_shoulder_hanging_mail_left, 
 			"tabbard": 
 			spr_cata_tabbard_mail
-    },
+        },
 	},
 	
     {
@@ -1299,7 +1338,17 @@ global.modular_drawing_items = [
             }
         }
 
-    }                                                         
+    },
+    {
+        position : "backpack_decoration", 
+        sprite : spr_angelic_Wings,
+        body_types : [0,1],
+        cultures : ["Angelic"],
+        assign_by_rank : 2,
+        equipment_has_tag : {
+            "gear" : "jump",
+        }
+    },                                                    
 ];
 
 
