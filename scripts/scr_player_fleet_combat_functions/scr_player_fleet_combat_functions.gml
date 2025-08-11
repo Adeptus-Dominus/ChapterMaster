@@ -53,11 +53,11 @@ function setup_fleet_battle(combating, star){
 		obj_controller.combat = 0;
 		exit;
 	}
-	show_debug_message("create combat");
+	show_debug_message($"create combat {combating}");
     instance_create(0,0,obj_fleet);
     obj_fleet.target_enemy = combating;
     for (var e=2;e<12;e++){
-        var _fleets = get_orbiting_fleets(e, target);
+        var _fleets = get_orbiting_fleets(e, star);
         show_debug_message(_fleets);
         if (!array_length(_fleets)){
             continue;

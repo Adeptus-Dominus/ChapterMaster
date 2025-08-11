@@ -504,13 +504,13 @@ if (target!=0){
         
         var _combating = 0;
         for (var i=0;i<array_length(en_fleet);i++){
-            if (en_fleet[i]>0){
+            if (en_fleet[i]>1){
                 // draw_sprite_ext(spr_force_icon,en_fleet[i],x3,y3,0.5,0.5,0,c_white,1);
                 scr_image("ui/force",en_fleet[i],x3-16,y3-16,32,32);
                 //draw_rectangle_array()
                 if (point_and_click([x3-24, y3-24, x3+48, y3+48])){
                     _combating=en_fleet[i];
-                    show_debug_message("batle ")
+                    show_debug_message("battle ")
                 }
                 x3+=64;
             }
@@ -518,14 +518,18 @@ if (target!=0){
         
         if (_combating>0){
             setup_fleet_battle(_combating, target);
-
-            if (instance_exists(obj_fleet)){
-                start_fleet_battle();
-            }
+            fleet_start = 0;
         }        
     }
 }
 
+
+if (instance_exists(obj_fleet)){
+    fleet_start++;
+    if (fleet_start == 500){
+        start_fleet_battle();
+    }
+}
 
 
 
