@@ -27,7 +27,7 @@ if (!instance_exists(target)) then exit;
 
 if (hp<=0){
     var wh=0,gud=0;
-    for (var wh=0;wh<array_length(enemy);wh++){
+    for (var wh=0;wh<array_length(obj_fleet.enemy);wh++){
         wh+=1;
         if (obj_fleet.enemy[wh]=owner){
             gud=wh;

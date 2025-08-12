@@ -647,7 +647,6 @@ function assign_ship_stats(){
 	    leadership=90;
 	    armour_front=7;
 	    side_armour=5;
-	    weapons=5;
 	    turrets=4;
 	    capacity=150;
 	    carrying=0;

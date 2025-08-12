@@ -118,23 +118,11 @@ function start_enemy_fleet_spawn(){
 function setup_fleet_spawn_characteristics(){
 
 	show_debug_message("enemy fleet characteristics");
-
-	if (owner=1){
-	    // create blocks of infantry
 	    
 	    
 	    var i=0,k=0,x2=224,hei=0,man=0,sizz=0;
 	    
-
-	    sort_ships_into_columns(obj_fleet);
-
-	    with (obj_fleet){
-	        player_fleet_ship_spawner();
-	    }
 	    
-	    
-	}
-
 	if (owner!=1){
 
 	    en_escort=obj_fleet.en_escort[number];

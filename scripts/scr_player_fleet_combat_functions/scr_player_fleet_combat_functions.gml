@@ -26,6 +26,11 @@ function add_fleet_ships_to_combat(fleet, combat){
         	handle_exception(_exception);
         }		
 	}
+    sort_ships_into_columns(obj_fleet);
+
+    with (obj_fleet){
+        player_fleet_ship_spawner();
+    }
 }
 
 function add_ai_fleet_to_combat(en_fleet, fleet_battle, status = -1){

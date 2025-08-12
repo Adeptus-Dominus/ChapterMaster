@@ -169,6 +169,7 @@ ship_id = [];
 
 // screwing around below here
 wait_and_execute(2, start_enemy_fleet_spawn,[] , self);
+
 // 
 // waiting at this point- show loading screen
 // in this time the obj_controller passes over which units will be fighting, similar to the below code
