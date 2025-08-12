@@ -146,7 +146,7 @@ slate_panel.inside_method = function(){
                         if (item[i]="Rhino") or (item[i]="Predator") or (item[i]="Land Raider") or (item[i]="Whirlwind") or (item[i]="Land Speeder"){
                             if (keyboard_check(vk_shift)){repeat(5){scr_add_vehicle(item[i],target_comp,"standard","standard","standard","standard","standard");}item_stocked[i]+=5;click2=1;}
                             if (!keyboard_check(vk_shift)){
-                                scr_add_vehicle(item[i],target_comp,"standard","standard","standard","standard","standard");
+                                scr_add_vehicle(item[i],target_comp);
                                 item_stocked[i]+=1;
                                 click2=1;
                             }
