@@ -373,7 +373,7 @@ function ship_combat_cleanup(){
         
         if (player_started=1){
             _player_battle_fleet=pla_fleet;
-            yeehaw2=ene_fleet;
+            yeehaw2=battle_system;
         }
         
         if (player_started=0) and (instance_exists(obj_turn_end)){
@@ -417,7 +417,7 @@ function ship_combat_cleanup(){
             }
         } else {
             with(obj_star){
-                if (id!=obj_fleet.ene_fleet){
+                if (id!=obj_fleet.battle_system){
                     x-=10000;y-=10000;
                 }
             }

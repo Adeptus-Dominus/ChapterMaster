@@ -49,7 +49,7 @@ player_lasers=0;
 player_lasers_cd=70;
 player_lasers_target=0;
 pla_fleet=0;
-ene_fleet=0;
+battle_system=0;
 victory=false;
 
 instance_deactivate_all(true);

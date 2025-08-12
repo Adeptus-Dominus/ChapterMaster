@@ -1,5 +1,6 @@
 function start_enemy_fleet_spawn(){
 
+	show_debug_message("start spawning enemy fleet");
 
     var total_enemies=0;
     var total_allies=1;
@@ -9,10 +10,10 @@ function start_enemy_fleet_spawn(){
     for (var t=0;t<array_length(enemy);t++){
         if (enemy[t]!=0){
             if (enemy_status[t]<0){
-                total_enemies+=1;
+                total_enemies++;
             }
             else if (enemy_status[t]>0){
-                total_allies+=1;
+                total_allies++;
             }
             
             // show_message("Computer "+string(t)+":"+string(enemy[t])+", status:"+string(enemy_status[t]));
@@ -116,9 +117,9 @@ function start_enemy_fleet_spawn(){
 
 function setup_fleet_spawn_characteristics(){
 
+	show_debug_message("enemy fleet characteristics");
 
-
-	if (number=1){
+	if (owner=1){
 	    // create blocks of infantry
 	    
 	    
@@ -134,7 +135,7 @@ function setup_fleet_spawn_characteristics(){
 	    
 	}
 
-	if (number>0) and (owner!=1){
+	if (owner!=1){
 
 	    en_escort=obj_fleet.en_escort[number];
 	    en_frigate=obj_fleet.en_frigate[number];
@@ -476,7 +477,7 @@ function setup_fleet_spawn_characteristics(){
 
 
 function position_ships_and_assign_stats(){
-
+	show_debug_message("assign ship stats");
 
 	if (owner = eFACTION.Imperium) or (owner = eFACTION.Eldar){// This is an orderly Imperial ship formation
 	    var xx,yy,i, temp1, x2, man;

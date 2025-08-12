@@ -31,7 +31,7 @@ if (player_started=1){
     taxt=string(global.chapter_name)+" engage and destroy a";
     if (enemy[target_enemy]=2) or (enemy[target_enemy]=4) or (enemy[target_enemy]=5) or (enemy[target_enemy]=6) then taxt+="n";
     taxt+=" "+string(obj_controller.faction[enemy[target_enemy]]);
-    taxt+=" fleet at "+string(ene_fleet.name)+".";scr_event_log("",taxt);
+    taxt+=" fleet at "+string(battle_system.name)+".";scr_event_log("",taxt);
     
     if (instance_exists(obj_star_select)) then with(obj_star_select){
         alarm[1]=1;player_fleet=0;

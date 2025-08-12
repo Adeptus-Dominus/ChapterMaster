@@ -36,10 +36,10 @@ function add_ai_fleet_to_combat(en_fleet, fleet_battle, status = -1){
 	array_push(fleet_battle.en_frigate, en_fleet.frigate_number);
 	array_push(fleet_battle.en_escort, en_fleet.escort_number);
 
-    if (fleet_has_cargo("warband")){
+    if (fleet_has_cargo("warband", en_fleet)){
     	fleet_battle.csm_exp+=2;
     }
-    if (fleet_has_cargo("csm")){
+    if (fleet_has_cargo("csm", en_fleet)){
         fleet_battle.csm_exp++;
     }
 }
@@ -56,9 +56,10 @@ function setup_fleet_battle(combating, star){
 	show_debug_message($"create combat {combating}");
     instance_create(0,0,obj_fleet);
     obj_fleet.target_enemy = combating;
+    instance_activate_object(obj_en_fleet);
     for (var e=2;e<12;e++){
         var _fleets = get_orbiting_fleets(e, star);
-        show_debug_message(_fleets);
+        show_debug_message($"fleet : {_fleets}");
         if (!array_length(_fleets)){
             continue;
         }
@@ -82,7 +83,7 @@ function setup_fleet_battle(combating, star){
         }
     }
 
-    obj_fleet.ene_fleet=star;
+    obj_fleet.battle_system=star;
 }
 
 function start_fleet_battle(){    
@@ -93,6 +94,9 @@ function start_fleet_battle(){
     instance_activate_object(obj_ini);
     instance_activate_object(obj_fleet);
     instance_activate_object(obj_cursor);
+    instance_activate_object(obj_en_ship);
+    instance_activate_object(obj_p_ship);
+    instance_activate_object(obj_al_ship);
     instance_deactivate_object(obj_star);
 }
 
