@@ -13,6 +13,10 @@ function UnitQuickFindPanel() constructor{
 	static detail_slate = new DataSlateMKTwo();
 
 	view_area = "fleets";
+
+	static has_troops = function(name){
+		return struct_exists(garrison_log, name);
+	}
 	static update_garrison_log = function(){
 		try{
 		for (var i = 0;i<array_length(obj_ini.ship_carrying); i++){

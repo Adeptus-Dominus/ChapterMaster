@@ -295,45 +295,57 @@ function calculate_action_speed(fleet = "none", selected = false) {
 
 
 function scr_efleet_arrive_at_trade_loc(){
-	var chase_fleet =false;
-	var arrive_at_player_fleet = (instance_exists(target));
-    if (arrive_at_player_fleet){
-    	arrive_at_player_fleet = target.object_index == obj_p_fleet;
-    	if (arrive_at_player_fleet){
-    		var chase_fleet = (target.action!="" || point_distance(x,y,target.x,target.y)>40) && obj_ini.fleet_type != ePlayerBase.home_world;
-    	}
-    } else {
-    	arrive_at_player_fleet=false;
-    	target=noone;
-    }
-    if (arrive_at_player_fleet && chase_fleet) {
+	var chase_fleet = false;
 
+	var _valid_fleet = false;
+	var _orbit = orbiting;
+	var _valid_planet = false;
 
-        var mah_x=instance_nearest(x,y,obj_star).x;
-        var mah_y=instance_nearest(x,y,obj_star).y;
-        
-        if  (string_count("Inqis",trade_goods)=0){
+	var _viewer = obj_controller.location_viewer;
+	if (orbiting.owner < 6 && _viewer.has_troops(orbiting.name)){
+		_valid_planet = true;
+	}
 
-            
-           
-            if (target.action!="") {
-				action_x=target.action_x;
-				action_y=target.action_y;
-			}
-			else if (target.action=="" ){
-                action_x=instance_nearest(target.x,target.y,obj_star).x;
-                action_y=instance_nearest(target.x,target.y,obj_star).y;
-            }
-            action="";
-            set_fleet_movement();
-            if (owner!=eFACTION.Eldar) then obj_controller.disposition[owner]-=1;
+	with (obj_p_fleet){
+		if (x==_orbit.x && y==_orbit.y){
+			_valid_fleet = true;
+			break;
+		}
+	}
 
-        }
-    }
+	if (!_valid_fleet && !_valid_planet){
+		var _chase_target = -1;
+		if (instance_exists(target) && target.object_index == obj_p_fleet){
+			_chase_target = target;
+		} else {
+			target = instance_nearest(obj_p_fleet);
+		}
+		var _chase_fleet = instance_exists(target) &&(target.action!="" || point_distance(x,y,target.x,target.y)>40) && obj_ini.fleet_type != ePlayerBase.home_world;
 
-  
-        
-    else if (arrive_at_player_fleet || obj_ini.fleet_type=ePlayerBase.home_world){
+		if (_chase_fleet){
+	        var mah_x=instance_nearest(x,y,obj_star).x;
+	        var mah_y=instance_nearest(x,y,obj_star).y;
+	        
+	        if  (string_count("Inqis",trade_goods)=0){
+
+	            
+	           
+	            if (target.action!="") {
+					action_x=target.action_x;
+					action_y=target.action_y;
+				}
+				else if (target.action=="" ){
+	                action_x=instance_nearest(target.x,target.y,obj_star).x;
+	                action_y=instance_nearest(target.x,target.y,obj_star).y;
+	            }
+	            action="";
+	            set_fleet_movement();
+	            if (owner!=eFACTION.Eldar) then obj_controller.disposition[owner]-=1;
+
+	        }
+		}
+	}        
+    else if (_valid_fleet|| _valid_planet){
         
         var targ;
         var cur_star=nearest_star_proper(x, y);
