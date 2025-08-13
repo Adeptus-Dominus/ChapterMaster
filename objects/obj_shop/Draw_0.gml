@@ -21,8 +21,8 @@ slate_panel.inside_method = function(){
         draw_text(xx+1280+10.5+string_width("Stocked"),yy+159.5,"MC");
         }
     }
-    draw_text(xx+1410,yy+159,("Cost");
-    draw_text(xx+1410.5,yy+159.5,("Cost");
+    draw_text(xx+1410,yy+159,("Cost"));
+    draw_text(xx+1410.5,yy+159.5,("Cost"));
     draw_set_color(c_gray);
 
 
