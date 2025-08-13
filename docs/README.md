@@ -43,3 +43,9 @@ Best bet is to ask about everything in our Discord, because things bellow are pr
 - [Contributing](https://github.com/Adeptus-Dominus/ChapterMaster/wiki/Contributing) wiki page (not filled properly)
 - [Code Style](https://github.com/Adeptus-Dominus/ChapterMaster/blob/main/docs/CODE_STYLE.md) (may be a bit dated)
 - [Code Guidance](https://github.com/Adeptus-Dominus/ChapterMaster/blob/main/docs/code_guidance.md) (probably dated as well)
+
+This project exists thanks to all the people who have contributed:
+
+<a href="https://github.com/Adeptus-Dominus/ChapterMaster/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Adeptus-Dominus/ChapterMaster" />
+</a>
