@@ -18,7 +18,7 @@ This project aims to continue development on the game, fix any bugs, expand and 
   - If you can code, draw, design, help with the GitHub stuff or just want to help in any way possible - you'll be welcomed with open arms.
   - If you just love WH40K and want to chat - you'll have a great time in the server as well.
 
-- 1d6Chan Wiki: [Chapter Master: Adeptus Dominus](https://1d6chan.miraheze.org/wiki/Category:Chapter_Master_:_Adeptus_Dominus)
+- 1d6Chan Wiki: [Chapter Master: Adeptus Dominus](https://1d6chan.miraheze.org/wiki/Chapter_Master:_Adeptus_Dominus)
   - With some helpful pages that explain some of the new systems added in the Adeptus Dominus version.
   - Help with expanding it will be welcomed.
 
