@@ -46,6 +46,4 @@ Best bet is to ask about everything in our Discord, because things bellow are pr
 
 This project exists thanks to all the people who have contributed:
 
-<a href="https://github.com/Adeptus-Dominus/ChapterMaster/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Adeptus-Dominus/ChapterMaster" />
-</a>
+[![Contributors](https://contrib.rocks/image?repo=Adeptus-Dominus/ChapterMaster)](https://github.com/Adeptus-Dominus/ChapterMaster/graphs/contributors)
