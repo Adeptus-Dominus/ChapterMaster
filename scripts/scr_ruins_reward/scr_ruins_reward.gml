@@ -31,8 +31,9 @@ function scr_ruins_reward(star_system, planet, _ruins) {
 
 	var _chosen_ship = -1;
 
-	if (instance_exists(scr_orbiting_player_fleet())){
-		var _ships = fleet_full_ship_array(flea);
+	var _fleet = scr_orbiting_player_fleet();
+	if (instance_exists(_fleet))){
+		var _ships = fleet_full_ship_array(_fleet);
 		if (array_length(_ships)){
 			_chosen_ship = _ships[0];
 		}
