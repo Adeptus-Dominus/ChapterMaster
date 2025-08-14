@@ -29,14 +29,14 @@ function scr_ruins_reward(star_system, planet, _ruins) {
 		if (ruins_type>=10) then loot="req";// 
 	}
 
-	with(obj_p_fleet){
-		if (action!="") then instance_deactivate_object(id);
-	}
-	flea=instance_nearest(star_system.x,star_system.y,obj_p_fleet);
 	var _chosen_ship = -1;
-	var _ships = fleet_full_ship_array(flea);
-	if (array_length(_ships)){
-		_chosen_ship = _ships[0];
+
+	var _fleet = scr_orbiting_player_fleet();
+	if (instance_exists(_fleet))){
+		var _ships = fleet_full_ship_array(_fleet);
+		if (array_length(_ships)){
+			_chosen_ship = _ships[0];
+		}
 	}
 	scr_event_log("",$"The Ancient Ruins on {planet_numeral_name(planet,star_system)} has been explored.", star_system.name);
 

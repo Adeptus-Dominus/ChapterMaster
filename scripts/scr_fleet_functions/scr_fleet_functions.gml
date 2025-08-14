@@ -124,19 +124,25 @@ function get_largest_player_fleet(){
 	return chosen_fleet;
 }
 
-function is_orbiting(){
-	if (action != "") then return false;
-	try {
-		var nearest = instance_nearest(x,y,obj_star);
-		if (point_distance(x,y,nearest.x, nearest.y)<10 && nearest.name != ""){
-			orbiting = nearest.id;
-			return true
+function is_orbiting(fleet = "none"){
+	if (fleet == "none"){
+		if (action != "") then return false;
+		try {
+			var nearest = instance_nearest(x,y,obj_star);
+			if (point_distance(x,y,nearest.x, nearest.y)<10 && nearest.name != ""){
+				orbiting = nearest.id;
+				return true
+			}
+			orbiting=false;
+		} catch(_exception){
+			return false;
 		}
-		orbiting=false;
-	} catch(_exception){
 		return false;
+	} else{
+		with (fleet){
+			return is_orbiting();
+		}
 	}
-	return false;
 }
 
 function set_fleet_movement(fastest_route = true, new_action="move", minimum_eta=1, maximum_eta = 1000){
@@ -400,6 +406,30 @@ function scr_orbiting_fleet(faction, system="none"){
 		}
 	}
 	return _found_fleet;	
+}
+
+function object_distance(obj_1, obj_2){
+	return (point_distance(obj_1.x, obj_1.y,obj_2.x, obj_2.y ))
+}
+
+function scr_orbiting_player_fleet(system = "none"){
+	if (object_index == obj_star){
+		var _fleet = instance_nearest(x, y, obj_p_fleet);
+		if (object_distance(self, _fleet) > 0){
+			return -1
+		} else{
+			return _fleet.id;
+		}
+	} else{
+		try{
+			with (system){
+				return scr_orbiting_player_fleet();
+			}
+		} catch(_exception){
+			handle_exception(_exception);
+		}
+	}
+
 }
 
 function get_orbiting_fleets(faction,system="none"){
