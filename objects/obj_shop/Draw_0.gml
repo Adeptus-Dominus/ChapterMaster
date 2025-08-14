@@ -59,8 +59,8 @@ slate_panel.inside_method = function(){
                 }
 
                 if (shop!="production"){
-                    if (!keyboard_check(vk_shift)) or (shop="warships") then draw_text(xx+x2+x_mod[i],yy+y2,item[i]);// Name
-                    if (keyboard_check(vk_shift)) and (shop!="warships") then draw_text(xx+x2+x_mod[i],yy+y2,string(item[i]+" x5"));// Name
+                    if (!keyboard_check(vk_shift) || shop == "warships") then draw_text(xx+x2+x_mod[i], yy+y2, item[i]); // Name
+                    if (keyboard_check(vk_shift) && shop != "warships") then draw_text(xx+x2+x_mod[i], yy+y2, string(item[i] + " x5")); // Name
                 } else {
                     draw_text(xx+x2+x_mod[i],yy+y2,string_hash_to_newline(item[i][1]));// Name
                 }
@@ -147,15 +147,14 @@ slate_panel.inside_method = function(){
                         }
                         if (item[i]="Rhino") or (item[i]="Predator") or (item[i]="Land Raider") or (item[i]="Whirlwind") or (item[i]="Land Speeder"){
 
-                            repeat(_mult_count){
-                                scr_add_vehicle(item[i],target_comp,);
+                            repeat (_mult_count) {
+                                scr_add_vehicle(item[i], target_comp, {});
                             }
-                            item_stocked[i]+=_mult_count;
-                            click2=1;
-  
-                        }
-                        with(obj_ini){
-                            scr_vehicle_order(obj_shop.target_comp);
+                            item_stocked[i] += _mult_count;
+                            click2 = 1;
+                            with (obj_ini) {
+                                scr_vehicle_order(obj_shop.target_comp);
+                            }
                         }
                         obj_controller.requisition-=cost;
                     }
