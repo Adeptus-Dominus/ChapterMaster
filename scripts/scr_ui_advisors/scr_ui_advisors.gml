@@ -89,7 +89,7 @@ function scr_ui_advisors() {
 
             draw_set_font(fnt_40k_30b);
             draw_set_halign(fa_center);
-            if (menu = 12) then draw_text_transformed(xx + 1262, yy + 70, string_hash_to_newline("Penitorium"), 0.6, 0.6, 0);
+            if (menu = MENU.Reclusiam) then draw_text_transformed(xx + 1262, yy + 70, string_hash_to_newline("Penitorium"), 0.6, 0.6, 0);
             if (menu = 12.1) then draw_text_transformed(xx + 1262, yy + 70, string_hash_to_newline("Scheduling Event"), 0.6, 0.6, 0);
 
             if (penitorium > 0) and(menu != 12.1) {

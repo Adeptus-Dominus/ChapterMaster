@@ -209,8 +209,8 @@ function scr_toggle_apothecarion() {
             if (scr_role_count("Master of the Apothecarion", "0") == 0) {
                 menu_adept = 1;
             }
-            if (menu != 11) {
-                menu = 11;
+            if (menu != MENU.Apothecarion) {
+                menu = MENU.Apothecarion;
 
                 temp[36] = scr_role_count(obj_ini.role[100][15], "");
             }
