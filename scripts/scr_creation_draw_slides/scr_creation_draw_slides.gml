@@ -6,8 +6,9 @@ enum eCREATIONSLIDES{
 	CHAPTERTRAITS=2,
 	CHAPTERHOME = 3,
 	CHAPTERLIVERY = 4,
-	CHAPTERGENE = 5,
-    CHAPTERMASTER = 6
+	CHAPTERROLES = 5,
+	CHAPTERGENE = 6,
+    CHAPTERMASTER = 7
 }
 
 /// @mixin
@@ -22,8 +23,8 @@ function draw_chapter_select(){
 
 	draw_text_transformed(440, founding_y, "Founding Chapters", 0.75, 0.75, 0);
 	draw_text_transformed(440, successor_y, "Existing Chapters", 0.75, 0.75, 0);
-	draw_text_transformed(440, custom_y, string_hash_to_newline("Custom Chapters"), 0.75, 0.75, 0);
-	draw_text_transformed(440, other_y, string_hash_to_newline("Other"), 0.75, 0.75, 0);
+	draw_text_transformed(440, custom_y, "Custom Chapters", 0.75, 0.75, 0);
+	draw_text_transformed(440, other_y, "Other", 0.75, 0.75, 0);
 
 	/// @localvar grid object to keep track of where to draw icon boxes
 	var grid = {

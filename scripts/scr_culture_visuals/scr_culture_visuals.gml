@@ -1296,7 +1296,7 @@ function DummyMarine()constructor{
     } 
     static role = function(){
         with (obj_creation){
-            if (buttons.company_options_toggle.company_view){
+            if (obj_creation.livery_selection_options.current_selection == 2){
                 return role[100][livery_picker.role_set > 0  ? livery_picker.role_set :eROLE.Tactical];
             }else {
                 return role[100][eROLE.Tactical];
@@ -1334,7 +1334,7 @@ function DummyMarine()constructor{
             } else {
                 _armour = _last_armour;
             }
-            if (buttons.company_options_toggle.company_view){
+            if (obj_creation.livery_selection_options.current_selection == 2){
                 if (!array_contains(armours, _armour)){
                    _armour =  "MK7 Aquila";
                 }
