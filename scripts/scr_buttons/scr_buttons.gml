@@ -595,10 +595,7 @@ function ToggleButton(data={}) constructor {
     button_color = c_gray;
     font = fnt_40k_12;
     style = "defualt";
-    var _data_presets = struct_get_names(data);
-    for (var i=0;i<array_length(_data_presets);i++){
-    	self[$_data_presets[i]] = data[$_data_presets[i]];
-    }
+
     update = function () {
     	if (style == "defualt"){
 	    	draw_set_font(font);
@@ -609,12 +606,16 @@ function ToggleButton(data={}) constructor {
 	            height = string_height(str1) + 4;
 	        }
 	    }else if (style == "box"){
-	    	width = max(32, string_width(str1)/2) + 4;
+	    	width = max(32, string_width(str1)/2) + 6;
 	    	height = 32;
 	    }
         x2 = x1 + width;
         y2 = y1 + height;
     };
+
+	move_data_to_current_scope(data, true);
+
+	update();
 
     hover = function() {
         return (scr_hit(x1, y1, x2, y2));

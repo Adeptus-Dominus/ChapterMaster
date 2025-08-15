@@ -26,6 +26,7 @@ function update_creation_roles_radio(){
 }
 
 function bulk_selection_buttons_setup(){
+	
 	var _button_data = [
         {
             text : $"Primary : {col[main_color]}",
@@ -154,7 +155,7 @@ function scr_creation(slide_num) {
 				    style : "box",
 				},												
 	    	], "", {x1 : 437, y1 : 500, max_width : 400});
-	    	
+
 	    	advanced_helmet_livery = new RadioSet([
 	    		{
 				    str1 : "Single Colour",

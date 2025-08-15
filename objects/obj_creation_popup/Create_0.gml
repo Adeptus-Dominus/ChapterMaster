@@ -7,6 +7,7 @@ badname=0;
 rows=0;
 
 picker = new ColourPicker(445, 550, 340);
+start_colour = -1;
 
 tooltip="";
 tooltip2="";

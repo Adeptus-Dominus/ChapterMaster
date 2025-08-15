@@ -37,14 +37,31 @@ if (col_shift){
             exit;
         } else {
             var _col = picker.chosen
-            if (type = 1) then obj_creation.main_color = _col;
-            if (type = 2) then obj_creation.secondary_color = _col;
-            if (type = 3) then obj_creation.left_pauldron = _col;
-            if (type = 4) then obj_creation.right_pauldron = _col;
-            if (type = 5) then obj_creation.main_trim = _col;
-            if (type = 6) then obj_creation.lens_color = _col;
-            if (type = 7) then obj_creation.weapon_color = _col;
-            bulk_selection_buttons_setup();
+            if (start_colour == -1){
+                if (type = 1){start_colour = obj_creation.main_color}
+                if (type = 2){start_colour = obj_creation.secondary_color}
+                if (type = 3){start_colour = obj_creation.left_pauldron}
+                if (type = 4){start_colour = obj_creation.right_pauldron}
+                if (type = 5){start_colour = obj_creation.main_trim}
+                if (type = 6){start_colour = obj_creation.lens_color}
+                if (type = 7){start_colour = obj_creation.weapon_color}
+                 if (is_string(type)){
+                    start_colour = obj_creation.complex_livery_data[$ role][$ type];
+                }                                
+            }
+            if (_col == -1){
+                _col = start_colour;
+            }
+            if (type = 1){obj_creation.main_color = _col;}
+            if (type = 2){obj_creation.secondary_color = _col;}
+            if (type = 3){obj_creation.left_pauldron = _col;}
+            if (type = 4){obj_creation.right_pauldron = _col;}
+            if (type = 5){obj_creation.main_trim = _col;}
+            if (type = 6){obj_creation.lens_color = _col;}
+            if (type = 7){obj_creation.weapon_color = _col;}
+            with (obj_creation){
+                bulk_selection_buttons_setup();
+            }
             if (is_string(type)){
                 obj_creation.complex_livery_data[$ role][$ type] = _col;
             }            
