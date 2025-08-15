@@ -86,7 +86,7 @@ function scr_livery_setup(){
         }
     }
     else if (colour_selection_options.current_selection == 1){
-        var _updater = draw_unit_buttons([preview_box.x1,preview_box.y1], "Update Sprite");
+        var _updater = draw_unit_buttons([500,preview_box.y1-10], "Update Sprite");
         if(scr_hit(_updater)){
             tooltip_draw("Click to Update Marine colour picker with Colour settings, warning this will overide Existing colour selections");
         }
@@ -114,154 +114,26 @@ function scr_livery_setup(){
                 pp.picker.title = bulk_buttons[i].label;
             }
         }
-        
+
         bulk_armour_pattern.draw();
         col_special = bulk_armour_pattern.current_selection;
 
     } else {
-        var button_data=[];
-        if (complex_selection=="Sergeant Markers"){
-            button_data = [
-                {
-                    text : $"Helm Primary : {col[complex_livery_data.sgt.helm_primary]}",
-                    tooltip:"Primary Helm Colour",
-                    tooltip2:"Primary helm colour of sgt.",
-                    cords : [620, 252],
-                    type : "helm_primary",
-                    role : "sgt",
-                },
-                {
-                    text : $"Helm Secondary: {col[complex_livery_data.sgt.helm_secondary]}",
-                    tooltip:"Secondary",
-                    tooltip2:"Secondary helm colour of sgt.",
-                    cords : [620, 287],
-                    type : "helm_secondary",
-                    role : "sgt",
-                },
-                {
-                    text : $"Helm lens: {col[complex_livery_data.sgt.helm_lens]}",
-                    tooltip:"Secondary",
-                    tooltip2:"helm lens colour of sgt.",
-                    cords : [620, 322],
-                    type : "helm_lens",
-                    role : "sgt",
-                },                
-            ];
-            if (turn_selection_change){
-                complex_depth_selection=complex_livery_data.sgt.helm_pattern;
-            } else {complex_livery_data.sgt.helm_pattern=complex_depth_selection;}
+        
+        for (var i=0;i<array_length(complex_livery_buttons);i++){
+            var _button = complex_livery_buttons[i];
 
-        } else if (complex_selection=="Veteran Sergeant Markers"){
-            button_data = [
-                {
-                    text : $"Helm Primary : {col[complex_livery_data.vet_sgt.helm_primary]}",
-                    tooltip:"Primary Helm Colour",
-                    tooltip2:"Primary helm colour of sgt.",
-                    cords : [620, 252],
-                    type : "helm_primary",
-                    role : "vet_sgt",
-                },
-                {
-                    text : $"Helm Secondary: {col[complex_livery_data.vet_sgt.helm_secondary]}",
-                    tooltip:"Secondary",
-                    tooltip2:"Secondary helm colour of sgt.",
-                    cords : [620, 287],
-                    type : "helm_secondary",
-                    role : "vet_sgt",
-                },
-                {
-                    text : $"Helm lens: {col[complex_livery_data.vet_sgt.helm_lens]}",
-                    tooltip:"Secondary",
-                    tooltip2:"helm lens colour of sgt.",
-                    cords : [620, 322],
-                    type : "helm_lens",
-                    role : "vet_sgt",
-                },                
-            ];
-            if (turn_selection_change){
-                complex_depth_selection=complex_livery_data.vet_sgt.helm_pattern;
-            } else {complex_livery_data.vet_sgt.helm_pattern=complex_depth_selection;}
-
-        }else if (complex_selection=="Captain Markers"){
-            button_data = [
-                {
-                    text : $"Helm Primary : {col[complex_livery_data.captain.helm_primary]}",
-                    tooltip:"Primary Helm Colour",
-                    tooltip2:"Primary helm colour of captain.",
-                    cords : [620, 252],
-                    type : "helm_primary",
-                    role : "captain",
-                },
-                {
-                    text : $"Helm Secondary: {col[complex_livery_data.captain.helm_secondary]}",
-                    tooltip:"Secondary",
-                    tooltip2:"Secondary helm colour of captain.",
-                    cords : [620, 287],
-                    type : "helm_secondary",
-                    role : "captain",
-                },
-                {
-                    text : $"Helm lens: {col[complex_livery_data.captain.helm_lens]}",
-                    tooltip:"lens",
-                    tooltip2:"helm lens colour of captain.",
-                    cords : [620, 322],
-                    type : "helm_lens",
-                    role : "captain",
-                },                
-            ];
-             if (turn_selection_change){
-                complex_depth_selection=complex_livery_data.captain.helm_pattern;
-            } else {complex_livery_data.captain.helm_pattern=complex_depth_selection;}
-        } else if (complex_selection=="Veteran Markers"){
-            button_data = [
-                {
-                    text : $"Helm Primary : {col[complex_livery_data.veteran.helm_primary]}",
-                    tooltip:"Primary Helm Colour",
-                    tooltip2:"Primary helm colour of Veterans.",
-                    cords : [620, 252],
-                    type : "helm_primary",
-                    role : "veteran",
-                },
-                {
-                    text : $"Helm Secondary: {col[complex_livery_data.veteran.helm_secondary]}",
-                    tooltip:"Secondary",
-                    tooltip2:"Secondary helm colour of Veterans.",
-                    cords : [620, 287],
-                    type : "helm_secondary",
-                    role : "veteran",
-                },
-                {
-                    text : $"Helm lens: {col[complex_livery_data.veteran.helm_lens]}",
-                    tooltip:"lens",
-                    tooltip2:"helm lens colour of Veterans.",
-                    cords : [620, 322],
-                    type : "helm_lens",
-                    role : "veteran",
-                },                
-            ];
-             if (turn_selection_change){
-                complex_depth_selection=complex_livery_data.veteran.helm_pattern;
-            } else {complex_livery_data.veteran.helm_pattern=complex_depth_selection;}
-        }
-        turn_selection_change = false;
-        var button_cords, cur_button;
-        for (var i=0;i<array_length(button_data);i++){
-            cur_button = button_data[i];
-            button_cords = draw_unit_buttons(cur_button.cords, cur_button.text,[0.5,0.5], 38144,, fnt_40k_30b, 1);
-            if (scr_hit(button_cords[0],button_cords[1],button_cords[2],button_cords[3])){
-                 tooltip=cur_button.tooltip;
-                 tooltip2=cur_button.tooltip2;
-            }
-            if (point_and_click(button_cords)){
-                
+            if (_button.draw()){
                 instance_destroy(obj_creation_popup);
                 var pp=instance_create(0,0,obj_creation_popup);
-                pp.type=cur_button.type;
-                pp.role = cur_button.role
+                pp.type=_button.area;
+                pp.role = _button.role_id               
             }
+
+
         }
         draw_set_color(38144);
-        advanced_helmet_livery.draw(); 
+        advanced_helmet_livery.draw();
         complex_depth_selection = advanced_helmet_livery.current_selection;                                         
     }
     draw_set_alpha(1);
@@ -280,7 +152,10 @@ function scr_livery_setup(){
     });
 
     var _prev_val = variable_clone(livery_selection_options.current_selection);
-    livery_selection_options.draw();
+
+    if (colour_selection_options.current_selection != 2){
+        livery_selection_options.draw();
+    }
 
     var _update_sprite =false;
     if (livery_selection_options.changed){
@@ -312,13 +187,9 @@ function scr_livery_setup(){
 
         }       
     } else {
-        var _complex_livery_options = ["Sergeant Markers","Veteran Sergeant Markers", "Captain Markers", "Veteran Markers"];
-        for (var i=0;i<array_length(_complex_livery_options);i++){
-            yyy+=spacing;
-            if (point_and_click(draw_unit_buttons([xxx,yyy], _complex_livery_options[i],[0.5,0.5], 38144,, fnt_40k_30b, 1))){
-                complex_selection=_complex_livery_options[i];
-                turn_selection_change=true;
-            }
+        complex_livery_radio.draw();
+        if (complex_livery_radio.changed){
+            set_complex_livery_buttons();
         }
     }
 

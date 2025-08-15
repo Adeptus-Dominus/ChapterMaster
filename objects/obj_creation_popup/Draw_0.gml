@@ -5,15 +5,7 @@ if (!col_shift){
     col_shift=type>0;
     var equip = type>20;
 }
-if (col_shift){
-    draw_set_color(0);
-    draw_rectangle(430,536,845,748,0);
-    draw_set_color(38144);
-    draw_rectangle(430,535,845,748,1);
-    draw_rectangle(430,536,845,748,1);
-    draw_rectangle(431,537,846,747,1);
-    
-    
+if (col_shift){    
     if (!equip){
         draw_set_font(fnt_40k_30b);
         var _colour_type = "";
@@ -29,7 +21,9 @@ if (col_shift){
             case "sgt_helm_secondary": _colour_type = "Sgt Helm Secondary";break;
 
         }
-        draw_text_transformed(444,550,_colour_type,0.6,0.6,0);
+
+        picker.title = _colour_type;
+        //draw_text_transformed(444,550,_colour_type,0.6,0.6,0);
 
         var _action = picker.draw();
         if (_action == "destroy"){
@@ -64,6 +58,7 @@ if (col_shift){
             }
             if (is_string(type)){
                 obj_creation.complex_livery_data[$ role][$ type] = _col;
+                set_complex_livery_buttons();
             }            
         }
     }
@@ -192,6 +187,7 @@ if (col_shift){
             }
 
             instance_destroy();
+            update_creation_roles_radio();
         }
 
         draw_set_halign(fa_left);
@@ -206,6 +202,7 @@ if (col_shift){
 
 
 if (target_gear > 0) {
+    draw_set_valign(fa_top);
     tab = 1;
     item_name = [];
     scr_get_item_names(
@@ -227,7 +224,7 @@ if (target_gear > 0) {
     
     draw_set_font(fnt_40k_30b);
     var slot_name = get_slot_name(type - 100, target_gear);
-    draw_text_transformed(862, 215, string_hash_to_newline($"Select {slot_name}"), 0.6, 0.6, 0);
+    draw_text_transformed(862, 215, $"Select {slot_name}", 0.6, 0.6, 0);
     draw_set_font(fnt_40k_14b);
     
     var x3 = 862;
@@ -236,9 +233,9 @@ if (target_gear > 0) {
     
     for (var h = 0; h < array_length(item_name); h++) {
         draw_set_color(38144);
-        var scale = string_width(string_hash_to_newline(item_name[h])) >= 140 ? 0.75 : 1;
-        draw_text_transformed(x3, y3, string_hash_to_newline(item_name[h]), scale, 1, 0);
-        y3 += space;
+        var scale = string_width(item_name[h]) >= 140 ? 0.75 : 1;
+        draw_text_transformed(x3, y3, item_name[h], scale, 1, 0);
+        y3 += space
         
         if (scr_hit(x3, y3 - space, x3 + 143, y3 + 17 - space)) {
             draw_set_color(c_white);

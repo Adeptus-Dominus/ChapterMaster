@@ -1,3 +1,6 @@
+
+add_draw_return_values();
+draw_set_valign(fa_top);
 try {
 	//read
 	// 850,860
@@ -783,3 +786,5 @@ try {
 	handle_exception(_exception);
     room_goto(Main_Menu);
 }
+
+pop_draw_return_values();

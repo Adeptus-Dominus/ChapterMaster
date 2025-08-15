@@ -8,6 +8,46 @@ enum eSTART_FACTION {
 	Reserved,
 }
 
+function set_complex_livery_buttons(){
+    var _type = complex_livery_radio.selection_val("value");
+    var _name = complex_livery_radio.selection_val("display_name");
+    complex_livery_buttons = [
+		new UnitButtonObject({
+            x1: 500, 
+            y1: 252, 
+            style : "pixel",
+            tooltip : $"Primary Helm Colour\nPrimary helm colour of {_name}",
+            label:$"Helm Primary : {col[complex_livery_data[$_type].helm_primary]}",
+            area : "helm_primary",
+            role_id : _type,
+            alpha: custom != eCHAPTER_TYPE.CUSTOM ? 0.5 : 1,
+			
+        }),
+		new UnitButtonObject({
+            x1: 500, 
+            y1: 287, 
+            style : "pixel",
+            tooltip : $"Secondary Helm Colour\Secondary helm colour of {_name}",
+            label:$"Helm Secondary : {col[complex_livery_data[$_type].helm_secondary]}",
+            area : "helm_secondary",
+            role_id : _type,
+            alpha: custom != eCHAPTER_TYPE.CUSTOM ? 0.5 : 1,
+			
+        }),
+		new UnitButtonObject({
+            x1: 500, 
+            y1: 322, 
+            style : "pixel",
+            tooltip : $"Helm lens Colour\helm lens colour of {_name}",
+            label:$"Lens : {col[complex_livery_data[$_type].helm_lens]}",
+            area : "helm_lens",
+            role_id : _type,
+            alpha: custom != eCHAPTER_TYPE.CUSTOM ? 0.5 : 1,
+			
+        }),        
+    ]
+    advanced_helmet_livery.current_selection = complex_livery_data[$_type].helm_pattern;
+}
 function update_creation_roles_radio(){
     var _role_data = [];
 
@@ -23,52 +63,53 @@ function update_creation_roles_radio(){
 
 	var _radio_data = {max_width : 50, x1:862, y1:225}
 	roles_radio = new RadioSet(_role_data, "Role Settings", _radio_data);
+	roles_radio.current_selection = -1;
 }
 
 function bulk_selection_buttons_setup(){
-	
+
 	var _button_data = [
         {
             text : $"Primary : {col[main_color]}",
             tooltip:"Primary",
             tooltip2:"The main color of your Astartes and their vehicles. And the colour of your chapters Ships",
-            cords : [625, 252],
+            cords : [500, 287],
         },
         {
             text : $"Secondary: {col[secondary_color]}",
             tooltip:"Secondary",
             tooltip2:"The secondary color of your Astartes and their vehicles.",
-            cords : [625, 287],
+            cords : [500, 322],
         },
         {
             text : $"Pauldron 1: {col[right_pauldron]}",
             tooltip:"First Pauldron",
             tooltip2:"The color of your Astartes' left Pauldron.  Normally this Pauldron displays their rank and designation.",
-            cords : [625, 322],
+            cords : [500, 357],
         },
         {
             text : $"Pauldron 2: {col[left_pauldron]}",
             tooltip:"Second Pauldron",
             tooltip2:"The color of your Astartes' right Pauldron.  Normally this Pauldron contains the Chapter Insignia.",
-            cords : [625, 357],
+            cords : [500, 392],
         },
         {
             text : $"Trim: {col[main_trim]}",
             tooltip:"Trim",
             tooltip2:"The trim color that appears on the Pauldrons, armour plating, and any decorations.",
-            cords : [625, 392],                
+            cords : [500, 427],                
         },
         {
             text : $"Lens: {col[lens_color]}",
             tooltip:"Lens",
             tooltip2:"The color of your Astartes' lenss.  Most of the time this will be the visor color.",
-            cords : [625, 427],                
+            cords : [500, 462],                
         },
         {
             text : $"Weapon: {col[weapon_color]}",
             tooltip:"Weapon",
             tooltip2:"The primary color of your Astartes' weapons.",
-            cords : [620, 462],                
+            cords : [500, 497],                
         }             
     ]
    	bulk_buttons = [
@@ -133,6 +174,33 @@ function scr_creation(slide_num) {
     	
 	    if (slide_num == eCREATIONSLIDES.CHAPTERHOME){
 	    	draw_set_font(fnt_40k_12);
+	    	complex_livery_radio = new RadioSet([
+	    		{
+				    str1 : "Sergeant Markers",
+				    font : fnt_40k_12,
+				    value : "sgt",
+				    display_name : "Sergeant"
+				},
+	    		{
+				    str1 : "Veteran Sergeant Markers",
+				    font : fnt_40k_12,
+				    value : "vet_sgt",
+				    display_name : "Veteran Sergeant"
+				},
+	    		{
+				    str1 : "Captain Markers",
+				    font : fnt_40k_12,
+				    value : "captain",
+				    display_name : "Captain"
+				},
+	    		{
+				    str1 : "Veteran Markers",
+				    font : fnt_40k_12,
+				    value : "veteran",
+				    display_name : "Veteran"
+				},												
+	    	], "", {max_width : 50, x1:862, y1:225});
+
 	    	bulk_armour_pattern = new RadioSet([
 	    		{
 				    str1 : "Single Colour",
@@ -154,7 +222,7 @@ function scr_creation(slide_num) {
 				    font : fnt_40k_12,
 				    style : "box",
 				},												
-	    	], "", {x1 : 437, y1 : 500, max_width : 400});
+	    	], "", {x1 : 477, y1 : 515, max_width : 400});
 
 	    	advanced_helmet_livery = new RadioSet([
 	    		{
@@ -178,6 +246,9 @@ function scr_creation(slide_num) {
 				    style : "box",
 				},												
 	    	], "", {x1 : 437, y1 : 500, max_width : 400});
+
+	    	set_complex_livery_buttons();
+
 	    	draw_set_font(fnt_40k_14b);
 	    	bulk_selection_buttons_setup();
 			livery_selection_options = new RadioSet([

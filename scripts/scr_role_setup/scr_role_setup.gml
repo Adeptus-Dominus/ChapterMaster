@@ -1,10 +1,16 @@
+function role_setup_objects(){
+
+}
+
 function scr_role_setup(){
 	var c=100;
-	roles_radio.draw();
-	if (roles_radio.changed && custom==eCHAPTER_TYPE.CUSTOM){
-        instance_destroy(obj_creation_popup);
-        var pp=instance_create(0,0,obj_creation_popup);
-        pp.type=roles_radio.selection_val(role_id) + 100;
+	if (!instance_exists(obj_creation_popup)){
+		roles_radio.draw();
+		if (roles_radio.changed && custom==eCHAPTER_TYPE.CUSTOM){
+	        instance_destroy(obj_creation_popup);
+	        var pp=instance_create(0,0,obj_creation_popup);
+	        pp.type=roles_radio.selection_val("role_id") + 100;
+		}
 	}
     /*for (var role_slot =1;role_slot<=13;role_slot++){
         var id_array = [
