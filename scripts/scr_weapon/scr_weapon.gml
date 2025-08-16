@@ -2315,7 +2315,7 @@ global.gear = {
 			"maintenance" : 1,
 		},
 		"Contemptor Dreadnought": { 
-			"abbreviation": "Drdnght",
+			"abbreviation": "Cntmptr",
 			"armour_value": {
 				"standard": 50,
 				"master_crafted": 55,
