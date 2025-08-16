@@ -380,7 +380,7 @@ function scr_ui_settings() {
                     draw_rectangle(x5, y5, x5 - string_width(title), y5 + string_height(title) - 2, 0);
 
                     var nep = false;
-
+                    
                     if (((obj_ini.armour[co, ide] == "Terminator Armour") || (obj_ini.armour[co, ide] == "Dreadnought")) && (gg == 4)) {
                         nep = true;
                     }

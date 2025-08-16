@@ -110,7 +110,7 @@ function scr_update_unit_armour(new_armour, from_armoury = true, to_armoury = tr
 		}
 	}
 
-	if (armour() == "Dreadnought") {
+	if (new_arm_data.has_tag("dreadnought")) {
 		is_boarder = false;
 		update_gear("");
 		update_mobility_item("");
@@ -441,6 +441,32 @@ function unit_has_equipped(check_equippment){
 		}
 	}	
 	return true;
+}
+
+function equipment_has_tag(tag, area){
+	var tags = [];
+	switch (area){
+		case "wep1":
+			tags = get_weapon_one_data("tags");
+			break;
+		case "wep2":
+			tags = get_weapon_two_data("tags");
+			break;
+		case "mobi":
+			tags = get_mobility_data("tags");
+			break;
+		case "armour":
+			tags = get_armour_data("tags");
+			break;
+		case "gear":
+			tags = get_gear_data("tags");
+		break;
+	}
+	if (tags == false || !array_length(tags)){
+		return false;
+	} else {
+		return array_contains(tags, tag);
+	}
 }
 
 
