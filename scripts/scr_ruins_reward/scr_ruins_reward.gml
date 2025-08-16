@@ -31,8 +31,8 @@ function scr_ruins_reward(star_system, planet, _ruins) {
 
 	var _chosen_ship = -1;
 
-	var _fleet = scr_orbiting_player_fleet();
-	if (instance_exists(_fleet))){
+	var _fleet = scr_orbiting_player_fleet(star_system);
+	if (instance_exists(_fleet)){
 		var _ships = fleet_full_ship_array(_fleet);
 		if (array_length(_ships)){
 			_chosen_ship = _ships[0];
@@ -42,7 +42,7 @@ function scr_ruins_reward(star_system, planet, _ruins) {
 
 	// loot="artifact";
 
-	if (loot="req"){// Requisition
+	if (loot == "req"){// Requisition
 	    var reqi=round(random_range(30,60)+1)*10;
 	    obj_controller.requisition+=reqi;
    
@@ -51,7 +51,7 @@ function scr_ruins_reward(star_system, planet, _ruins) {
 	    pop.title="Ancient Ruins: Resources";
 	    pop.text="My lord, your battle brothers have located several precious minerals and supplies within the ancient ruins.  Everything was taken and returned to the ship, granting "+string(reqi)+" Requisition.";
 	}
-	else if (loot="artifact"){
+	else if (loot == "artifact"){
 		if (_chosen_ship>-1){
 	        var last_artifact = scr_add_artifact("random", "random", 4, planet, _chosen_ship + 500);
 	    
