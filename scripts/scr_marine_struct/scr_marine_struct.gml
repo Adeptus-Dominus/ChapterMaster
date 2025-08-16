@@ -905,7 +905,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 tags = get_gear_data("tags");
             break;
         }
-        if (tags == false || !array_length(tags)){
+        if (!is_array(tags) || array_length(tags) == 0){
             return false;
         } else {
             return array_contains(tags, tag);
@@ -2366,7 +2366,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static is_dreadnought = function(){
-        _arm_data = get_armour_data();
+        var _arm_data = get_armour_data();
         if (is_struct(_arm_data)){
             if (_arm_data.has_tag("dreadnought")){
                 return true

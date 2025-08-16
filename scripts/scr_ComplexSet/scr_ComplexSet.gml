@@ -754,14 +754,11 @@ function ComplexSet(_unit) constructor {
 
 	static draw_weapon_and_hands = function() {
 		if (armour_type == ArmourType.Dreadnought){
-			show_debug_message("dread weapons");
 			if ((weapon_right.sprite != 0) && sprite_exists(weapon_right.sprite)) {
 				draw_sprite(weapon_right.sprite, 0, x_surface_offset + weapon_right.ui_xmod, y_surface_offset + weapon_right.ui_ymod);
-				show_debug_message("dread right");
 			}
 			if ((weapon_left.sprite != 0) && sprite_exists(weapon_left.sprite)) {
 				draw_sprite(weapon_left.sprite, 0, x_surface_offset + weapon_left.ui_xmod, y_surface_offset + weapon_left.ui_ymod);
-				show_debug_message("dread left");
 			}
 			exit;
 		}
