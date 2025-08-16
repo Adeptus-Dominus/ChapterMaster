@@ -324,10 +324,7 @@ function scr_efleet_arrive_at_trade_loc(){
 		}
 		var _chase_fleet = instance_exists(target) &&(target.action!="" || point_distance(x,y,target.x,target.y)>40) && obj_ini.fleet_type != ePlayerBase.home_world;
 
-		if (_chase_fleet){
-	        var mah_x=instance_nearest(x,y,obj_star).x;
-	        var mah_y=instance_nearest(x,y,obj_star).y;
-	        
+		if (_chase_fleet){	        
 	        if  (!string_count("Inqis",trade_goods)){
 
 	            
@@ -337,8 +334,9 @@ function scr_efleet_arrive_at_trade_loc(){
 					action_y=target.action_y;
 				}
 				else if (target.action=="" ){
-	                action_x=instance_nearest(target.x,target.y,obj_star).x;
-	                action_y=instance_nearest(target.x,target.y,obj_star).y;
+					var _targ_star = instance_nearest(target.x,target.y,obj_star);
+	                action_x=_targ_star.x;
+	                action_y=_targ_star.y;
 	            }
 	            action="";
 	            set_fleet_movement();

@@ -138,14 +138,20 @@ slate_panel.inside_method = function(){
                } else if (nobuy[i]=0 && clicked && !obj_controller.in_forge){
                     cost=item_cost[i];
                     var _mult_count = keyboard_check(vk_shift) ?5 : 1;
-                    if  (shop!="warships") then cost=_mult_count*5;
+                    if  (shop!="warships"){
+                        cost *= _mult_count;
+                    }
+
                     if (obj_controller.requisition>=cost) and (shop!="warships"){
-                        if (item[i]!="Rhino") and (item[i]!="Predator") and (item[i]!="Land Raider") and (item[i]!="Whirlwind") and (item[i]!="Land Speeder"){
+
+                        var _vehics = ["Rhino", "Predator", "Land Raider", "Whirlwind", "Land Speeder"];
+
+                        if (!array_contains(_vehics, item[i])){
                             scr_add_item(item[i],_mult_count);
                             item_stocked += _mult_count;
                             click2 = true;
                         }
-                        if (item[i]="Rhino") or (item[i]="Predator") or (item[i]="Land Raider") or (item[i]="Whirlwind") or (item[i]="Land Speeder"){
+                        else{
 
                             repeat (_mult_count) {
                                 scr_add_vehicle(item[i], target_comp, {});
