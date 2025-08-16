@@ -1341,7 +1341,7 @@ global.modular_drawing_items = [
     },
     {
         position : "backpack_decoration", 
-        sprite : spr_angelic_Wings,
+        sprite : spr_angelic_wings,
         body_types : [0,1],
         cultures : ["Angelic"],
         assign_by_rank : 2,

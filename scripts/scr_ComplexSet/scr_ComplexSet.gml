@@ -311,7 +311,8 @@ function ComplexSet(_unit) constructor {
 			var _viable = false;
 			var _tag_check_areas = struct_get_names(_mod.equipment_has_tag);
 			for (var i=0; i<array_length(_tag_check_areas);i++){
-				_viable = equipment_has_tag(unit.equipment_has_tag[$_tag_check_areas[i]],_tag_check_areas[i]);
+				var _area = _tag_check_areas[i];
+				_viable = unit.equipment_has_tag(_mod.equipment_has_tag[$_area],_area);
 				if (_viable) {
 					break;
 				}				
@@ -344,7 +345,7 @@ function ComplexSet(_unit) constructor {
 					_x += _offset.x;
 				}
 				if (struct_exists(_offset,"y")){
-					_x += _offset.y;
+					_y += _offset.y;
 				}			
 			}
 			if (_x != 0 || _y !=0){
