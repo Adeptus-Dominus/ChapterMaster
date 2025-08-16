@@ -13,6 +13,34 @@ function ColourItem(xx,yy) constructor{
 	self.xx=xx;
 	self.yy=yy;
     data_slate = new DataSlate();
+
+    static swap_role_set = function(type_start, type_end){
+        var _full_livs = obj_creation.full_liveries;
+        var _comp_livs = obj_creation.company_liveries;
+        switch(type_start){
+            case 1:_full_livs[role_set] = variable_clone(map_colour);break;
+            case 0:_full_livs[0] = variable_clone(map_colour);break;
+            case 2:_comp_livs[role_set] = variable_clone(map_colour);break;
+        }
+
+        switch(type_end){
+            case 1:
+                role_set = obj_creation.roles_radio.selection_val("role_id");
+                map_colour = variable_clone(_full_livs[role_set]);
+                break;
+            case 0:
+                role_set = 0
+                map_colour = variable_clone(_full_livs[0]);
+                break;
+            case 2:
+                role_set = obj_creation.buttons.company_liveries_choice.current_selection;
+                map_colour = variable_clone(_comp_livs[role_set]);
+                break;
+        }
+        shuffle_dummy();
+        reset_image(); 
+        colour_pick=false;
+    }
     static scr_unit_draw_data = function(default_val = 0){
         map_colour = {
             is_changed : false,
@@ -126,6 +154,18 @@ function ColourItem(xx,yy) constructor{
         left_backpack: "Left Backpack",
         company_marks: "Company Marks"
     }
+
+    var _radio_opts = [];
+    var _names = struct_get_names(name_maps);
+    for (var i=0;i<array_length(_names);i++){
+        array_push(_radio_opts, {
+            str1 : name_maps[$ _names[i]],
+            font : fnt_40k_14b,
+            area_id : _names[i],
+        });
+    }
+    colours_radio = new RadioSet(_radio_opts);
+
 
     static lower_left = ["left_leg_lower","left_leg_upper","left_leg_knee"];
 
@@ -256,8 +296,8 @@ function ColourItem(xx,yy) constructor{
                 }
             }
         	if (is_struct(colour_pick)){
-        		var action = colour_pick.draw();
-        		if (action == "destroy"){
+        		var _action = colour_pick.draw();
+        		if (_action == "destroy"){
         			colour_pick=false;
         		} else {
                     var _reset = false;
@@ -283,10 +323,16 @@ function ColourItem(xx,yy) constructor{
                     if (_reset){
                         map_colour[$ colour_pick.area] = colour_pick.chosen;
                         map_colour.is_changed = true;
-                        if (!obj_creation.buttons.company_options_toggle.company_view){
-                            obj_creation.full_liveries[role_set] = variable_clone(map_colour);
-                        } else {
-                            obj_creation.company_liveries[role_set] = variable_clone(map_colour);
+                        switch(obj_creation.livery_selection_options.current_selection){
+                            case 0:
+                                obj_creation.full_liveries[0] = variable_clone(map_colour);
+                                break;
+                            case 1:
+                                obj_creation.full_liveries[role_set] = variable_clone(map_colour);
+                                break;
+                            case 2:
+                                obj_creation.company_liveries[role_set] = variable_clone(map_colour);
+                                break;                                                                
                         }
                         delete dummy_image;
                         dummy_image = false;                        
@@ -370,9 +416,7 @@ function ColourItem(xx,yy) constructor{
                     hover_pos = _body_loc;
         		}
         		if (point_and_click(_rel_position)){
-        			colour_pick = new colour_picker(20, yy+350, 350);
-        			colour_pick.area = _body_loc;
-        			colour_pick.title = _body_loc;
+        			new_colour_pick(_body_loc);
         		}
         	}
             if (colour_return != false){
@@ -385,6 +429,12 @@ function ColourItem(xx,yy) constructor{
             }
         }
         data_slate.draw(0,5,0.45, 1);
+    }
+
+    static new_colour_pick = function (body_loc, x_pos=20, y_pos = yy+350, col_width=350){
+        colour_pick = new ColourPicker(x_pos, y_pos, col_width);
+        colour_pick.area = body_loc;
+        colour_pick.title = body_loc;        
     }
 }
 
@@ -419,7 +469,7 @@ function setup_complex_livery_shader(setup_role, unit = "none"){
     var _is_unit = unit != "none";
    if (_in_creation) {
         var data_set = variable_clone(obj_creation.livery_picker.map_colour);
-        if (obj_creation.buttons.company_options_toggle.company_view){
+        if (obj_creation.livery_selection_options.current_selection == 2){
             var _base = obj_creation.full_liveries[0];
             var _component_names = struct_get_names(_base);
             for (var i=0;i<array_length(_component_names);i++){
@@ -493,6 +543,7 @@ function setup_complex_livery_shader(setup_role, unit = "none"){
                     array_push(_distinct_colours, _colour);
                 }
             }
+            var _choice = 0;
             if (array_length(_distinct_colours)){
                 var _choice = cloth_variation%array_length(_distinct_colours);
             }
@@ -631,7 +682,7 @@ global.textures = {
 
 };
 
-function colour_picker(xx,yy, max_width=400) constructor{
+function ColourPicker(xx,yy, max_width=400) constructor{
 	x=xx;
 	y=yy;
 	chosen = -1;
@@ -641,6 +692,7 @@ function colour_picker(xx,yy, max_width=400) constructor{
     markings = false;
     self.max_width = max_width;
     base_colour = 0;
+    title = "";
 
     markings_options  = new RadioSet(       
        [ {

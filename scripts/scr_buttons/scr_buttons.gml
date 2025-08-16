@@ -540,7 +540,7 @@ function item_data_updater(data){
     	self[$_data_presets[i]] = data[$_data_presets[i]];
     }		
 }
-function RadioSet(options_array, title, data = {})constructor{
+function RadioSet(options_array, title="", data = {})constructor{
 	toggles = [];
 	current_selection = 0;
 	self.title = title;
@@ -552,6 +552,9 @@ function RadioSet(options_array, title, data = {})constructor{
 	x1 = 0;
 	y1 = 0;
 	draw_title = true;
+	if(title == ""){
+		draw_title = false;
+	}
 	changed = false;
 	max_width = 0;
 	max_height = 0;
@@ -634,21 +637,30 @@ function ToggleButton(data={}) constructor {
     text_color = c_gray;
     button_color = c_gray;
     font = fnt_40k_12;
-    var _data_presets = struct_get_names(data);
-    for (var i=0;i<array_length(_data_presets);i++){
-    	self[$_data_presets[i]] = data[$_data_presets[i]];
-    }
+    style = "default";
+
     update = function () {
+    	add_draw_return_values();
     	draw_set_font(font);
-        if (width == 0) {
-            width = string_width(str1) + 4;
-        }
-        if (height == 0) {
-            height = string_height(str1) + 4;
-        }
+    	if (style == "default"){
+	        if (width == 0) {
+	            width = string_width(str1) + 4;
+	        }
+	        if (height == 0) {
+	            height = string_height(str1) + 4;
+	        }
+	    }else if (style == "box"){
+	    	width = max(32, string_width(str1)/2) + 6;
+	    	height = 32;
+	    }
         x2 = x1 + width;
         y2 = y1 + height;
+        pop_draw_return_values();
     };
+
+	move_data_to_current_scope(data, true);
+
+	update();
 
     hover = function() {
         return (scr_hit(x1, y1, x2, y2));
@@ -665,6 +677,7 @@ function ToggleButton(data={}) constructor {
     };
 
     draw = function() {
+    	add_draw_return_values();
     	draw_set_font(font);
         var str1_h = string_height(str1);
         var text_padding = width * 0.03;
@@ -694,12 +707,27 @@ function ToggleButton(data={}) constructor {
         }
 
         total_alpha = state_alpha * hover_alpha;
-        draw_rectangle_color_simple(x1, y1, x1 + width, y1 + str1_h, 1, button_color, total_alpha);
-        draw_set_halign(text_halign);
-        draw_set_valign(fa_top);
-        draw_text_color_simple(text_x, text_y, str1, text_color, total_alpha);
-        draw_set_alpha(1);
-        draw_set_halign(fa_left);
+
+        if (style == "default"){
+	        draw_rectangle_color_simple(x1, y1, x1 + width, y1 + str1_h, 1, button_color, total_alpha);
+	        draw_set_halign(text_halign);
+	        draw_set_valign(fa_top);
+	        draw_text_color_simple(text_x, text_y, str1, text_color, total_alpha);
+	        draw_set_alpha(1);
+	        draw_set_halign(fa_left);
+	    } else if (style == "box"){
+            // Icon with alpha
+            draw_sprite_ext(spr_creation_check, active, x1, y1, 1, 1, 0, c_white, total_alpha);
+            // Label centred below icon
+            draw_set_alpha(total_alpha);
+            draw_set_valign(fa_top);
+            draw_set_halign(fa_center);
+            var _label_y = y1 + 32 + 4;
+            draw_text_transformed(x1 + width/2, _label_y, str1, 1, 1, 0);
+            draw_set_alpha(1);
+	    }
+
+	    pop_draw_return_values();
     };
 }
 

@@ -286,11 +286,6 @@ buttons = {
             font : fnt_40k_14b,
         },                                                                                      
     ], "Chapter Visual Styles"),
-    company_options_toggle : new UnitButtonObject({
-        tooltip : "toggle between chapter or role settings",
-        label : "Company Settings",
-        company_view : false,
-    }),
     company_liveries_choice : new RadioSet([
         {
             str1 : "HQ",
@@ -337,6 +332,12 @@ buttons = {
             font : fnt_40k_14b
         },                    
     ], "Companies"),
+    livery_switch : new UnitButtonObject({
+            x1: 570, 
+            y1: 215, 
+            label : "Simple Livery",
+        }
+    )
 }
 
 with (buttons){

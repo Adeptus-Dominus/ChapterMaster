@@ -711,13 +711,7 @@ try {
         }
         if (press == 2) {
             // Nothing
-            obj_controller.cooldown = 10;
-            obj_controller.menu = 1;
-            // obj_controller.managing=manag;
-            with (obj_controller) {
-                scr_ui_refresh()
-                update_general_manage_view();
-            }
+            scr_toggle_manage();
             with (obj_ground_mission) {
                 instance_destroy();
             }

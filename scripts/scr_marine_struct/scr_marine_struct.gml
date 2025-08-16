@@ -891,7 +891,31 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             alter_equipment(start_gear, true, true);
         }
     }
-
+    static equipment_has_tag = function(tag, area){
+        var tags = [];
+        switch (area){
+            case "wep1":
+                tags = get_weapon_one_data("tags");
+                break;
+            case "wep2":
+                tags = get_weapon_two_data("tags");
+                break;
+            case "mobi":
+                tags = get_mobility_data("tags");
+                break;
+            case "armour":
+                tags = get_armour_data("tags");
+                break;
+            case "gear":
+                tags = get_gear_data("tags");
+            break;
+        }
+        if (!is_array(tags) || array_length(tags) == 0){
+            return false;
+        } else {
+            return array_contains(tags, tag);
+        }
+    }
     static equipment_maintenance_burden = function() {
         var burden = 0.0;
         burden += get_armour_data("maintenance");
@@ -2353,8 +2377,18 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         }
     };
 
+    static is_dreadnought = function(){
+        var _arm_data = get_armour_data();
+        if (is_struct(_arm_data)){
+            if (_arm_data.has_tag("dreadnought")){
+                return true
+            }
+        }
+        return false;
+    }
+
     /// @param {Enum.EquipmentSlot} _slot
-    add_equipment_repairs = function(_slot = EquipmentSlot.ALL) {
+    static add_equipment_repairs = function(_slot = EquipmentSlot.ALL) {
         var _slots = array_create(0);
 
         switch (_slot) {

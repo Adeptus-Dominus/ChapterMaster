@@ -1245,6 +1245,7 @@ function scr_initialize_custom() {
 					devastator = devastator + real(s_val);
 					break;
 				case "dreadnought":
+				case "Contemptor Dreadnought":
 					dreadnought = dreadnought + real(s_val);
 					break;
 			}

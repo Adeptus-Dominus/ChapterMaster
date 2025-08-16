@@ -65,6 +65,22 @@ global.weapons = {
 		"arp": 0,
 		"tags": ["Volkite", "energy", "pistol"]
 	},
+	"Twin-linked Volkite Culverins":{
+		"abbreviation": "T-LVolkCulv",
+		"attack": {
+			"standard": 250,
+			"master_crafted": 270,
+			"artifact": 290
+		},
+		"description": "The pistol variant of the long-lost Volkite weapon type, the Serpenta was a mainstay of Moritats and often wielded by Centurions of the Legiones Astartes. Now a symbol of status to match its fearsome potency, a sighting of this ancient weapon would send many foes running.",
+		"melee_hands": 0,
+		"ranged_hands": 1,
+		"ammo": 10,
+		"range": 3,
+		"spli": 4,
+		"arp": 0,
+		"tags": ["Volkite", "energy", "dreadnought"]
+	},
 	//Bolt Pack
 	"Phobos Bolt Pistol": {
 		"abbreviation": "PhBltPis",
@@ -714,6 +730,28 @@ global.weapons = {
 		"arp": 1,
 		"maintenance" : 0.1,
 		"tags": ["power", "vehicle", "dual", "dreadnought", "fist"],
+	},
+	"Contemptor CCW": {
+		"abbreviation": "ConCCW",
+		"attack": {
+			"standard": 300,
+			"master_crafted": 400,
+			"artifact": 600
+		},
+		"melee_mod": {
+			"standard": 1.2,
+			"master_crafted": 1.2,
+			"artifact": 1.2
+		},
+		"description": "A specialized Lightning Claw variant designed for Dreadnoughts, these claws are capable of ripping through enemy vehicles and infantry with ease.",
+		"melee_hands": 5,
+		"ranged_hands": 0,
+		"ammo": 0,
+		"range": 1,
+		"spli": 15,
+		"arp": 1,
+		"maintenance" : 0.1,
+		"tags": ["power", "dual", "dreadnought", "fist"],
 	},
 	"Thunder Hammer": {
 		"abbreviation": "ThndHmr",
@@ -2273,6 +2311,29 @@ global.gear = {
 			"melee_hands": 8,
 			"ranged_hands": 8,
 			"description": "A massive war-machine that can be piloted by an honored Astarte, who otherwise would have fallen in combat. Some of the Astartes consider this a fate worse than death",
+			"tags": ["dreadnought"],
+			"maintenance" : 1,
+		},
+		"Contemptor Dreadnought": { 
+			"abbreviation": "Cntmptr",
+			"armour_value": {
+				"standard": 50,
+				"master_crafted": 55,
+				"artifact": 60
+			},
+			"ranged_mod": {
+				"standard": 0,
+				"master_crafted": 5, // Augmented
+				"artifact": 10 // Augmented
+			},
+			"melee_mod": {
+				"standard": 0,
+				"master_crafted": 5, // Augmented
+				"artifact": 10 // Augmented
+			},
+			"melee_hands": 8,
+			"ranged_hands": 8,
+			"description": "PLACEHOLDER",
 			"tags": ["dreadnought"],
 			"maintenance" : 1,
 		},

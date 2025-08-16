@@ -103,7 +103,16 @@ function TradeAttempt(diplomacy) constructor{
 				}
 			} else if (_opt.trade_type == "arti"){
 				scr_add_artifact("random", "minor", true);
+			}else if (_opt.trade_type == "vehic"){
+				if (!struct_exists(trading_object, "vehicles")){
+					trading_object.vehicles = {};
+				}
+				trading_object.vehicles[$ _type] = {
+					quality : "standard",
+					number : _opt.number,
+				}				
 			}
+
 		}
 		for (var i=0;i<array_length(offer_options);i++){
 			var _opt = offer_options[i];

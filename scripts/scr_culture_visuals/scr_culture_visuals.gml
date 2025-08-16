@@ -244,6 +244,33 @@ global.modular_drawing_items = [
         prevent_others : true,    
     },
     {
+        position : "robe",
+        body_types: [0],
+        sprite:spr_binders_robe,
+        role_type: [SPECIALISTS_LIBRARIANS],
+        max_saturation:10,
+    }, 
+    {
+        position : "robe",
+        body_types: [0],
+        sprite:spr_binders_robe,
+        role_type: [SPECIALISTS_LIBRARIANS],
+        max_saturation:40,
+        chapter_adv : ["Favoured By The Warp","Warp Touched"],
+        chapter_disadv : ["Warp Tainted"],
+        allow_either :["chapter_adv","chapter_disadv"],
+    }, 
+    {
+        position : "belt",
+        body_types: [0],
+        sprite:spr_binders_belt,
+        role_type: [SPECIALISTS_LIBRARIANS],
+        chapter_adv : ["Favoured By The Warp","Warp Touched"],
+        chapter_disadv : ["Warp Tainted"],
+        allow_either :["chapter_adv","chapter_disadv"],
+        max_saturation:50,
+    }, 
+    {
         position : "crown",
         body_types: [0],
         sprite:spr_psy_hood_complex,
@@ -323,14 +350,12 @@ global.modular_drawing_items = [
         }        
     },
     {
-        cultures : ["Cthonian", "Gothic"],
         sprite : spr_chap_trim_left,
         body_types :[0],
         position : "left_trim",
         role_type : [SPECIALISTS_CHAPLAINS],
     },
     {
-        cultures : ["Cthonian", "Gothic"],
         sprite : spr_chap_trim_right,
         body_types :[0],
         position : "right_trim",
@@ -473,8 +498,9 @@ global.modular_drawing_items = [
         body_types :[0],
         allow_either : ["chapter_adv", "traits","role_type"],
         role_type : [SPECIALISTS_CHAPLAINS],
-        position : "backpack",
-        assign_by_rank : 3,
+        position : "backpack_decoration",
+        assign_by_rank : 4,
+        max_saturation : 40,
     },
     {
         sprite : spr_gear_librarian,
@@ -500,7 +526,9 @@ global.modular_drawing_items = [
         sprite : spr_marksmans_honor,
         body_types :[0,2],
         position : "purity_seals",
-        stats : [["ballistic_skill", 50, "exmore"]]
+        stats : [
+            ["ballistic_skill", 50, "exmore"]
+        ]
     },
     {
         sprite : spr_crux_on_chain,
@@ -541,6 +569,16 @@ global.modular_drawing_items = [
         },        
     },
     {
+        sprite : spr_crux_belt_fancy,
+        body_types :[0, 2],
+        position : "belt",
+        armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour", "Tartaros"],
+        assign_by_rank : 3,
+        exp : {
+            min : 100,
+        },        
+    },
+    {
         cultures : ["Knightly", "Crusader"],
         sprite : spr_mk7_rope_belt,
         body_types :[0],
@@ -575,7 +613,10 @@ global.modular_drawing_items = [
         body_types :[0],
         position : "belt",
         role_type : [SPECIALISTS_CHAPLAINS],
-        armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"],  
+        cultures : ["Gothic"],
+        armours : ["MK5 Heresy", "MK6 Corvus","MK7 Aquila", "MK8 Errant", "Artificer Armour"],
+        allow_either : ["cultures", "role_type"],
+
     },
     {
         sprite : spr_tech_belt,
@@ -1218,7 +1259,7 @@ global.modular_drawing_items = [
 			spr_cata_shoulder_hanging_mail_left, 
 			"tabbard": 
 			spr_cata_tabbard_mail
-    },
+        },
 	},
 	
     {
@@ -1249,7 +1290,65 @@ global.modular_drawing_items = [
             [spr_blank, spr_cata_right_trim_2],
             [spr_blank, spr_cata_right_trim_1],
         ],
-    },                                                            
+    },
+    {
+        position : "foreground_item",
+        sprite: spr_gear_combat_shield,
+        body_types: [0,1, 2],
+        offsets : {
+            "Terminator Armour" : {
+                y : -10,
+                x : -15,
+            },
+            "Tartaros" : {
+                x : -8,
+            }
+        },
+        subcomponents :[
+           [spr_blank, spr_combat_shield_bottom_part],
+        ],
+        equipped : {
+            "gear" : "Combat Shield",
+        },
+    },
+    {
+        position : "right_eye", 
+        sprite : spr_gear_apoth_eye,
+        role_type : [SPECIALISTS_APOTHECARIES],
+        offsets : {
+            "Terminator Armour":{
+                y :-6,
+            },
+            "Tartaros":{
+                y :-6,
+            }
+        }
+
+    },
+    {
+        position : "backpack_decoration", 
+        sprite : spr_gear_apoth,
+        role_type : [SPECIALISTS_APOTHECARIES],
+        offsets : {
+            "Terminator Armour":{
+                y :- 22,
+            },
+            "Tartaros":{
+                y :- 30,
+            }
+        }
+
+    },
+    {
+        position : "backpack_decoration", 
+        sprite : spr_angelic_wings,
+        body_types : [0,1],
+        cultures : ["Angelic"],
+        assign_by_rank : 2,
+        equipment_has_tag : {
+            "gear" : "jump",
+        }
+    },                                                    
 ];
 
 
@@ -1296,7 +1395,7 @@ function DummyMarine()constructor{
     } 
     static role = function(){
         with (obj_creation){
-            if (buttons.company_options_toggle.company_view){
+            if (obj_creation.livery_selection_options.current_selection == 2){
                 return role[100][livery_picker.role_set > 0  ? livery_picker.role_set :eROLE.Tactical];
             }else {
                 return role[100][eROLE.Tactical];
@@ -1334,7 +1433,7 @@ function DummyMarine()constructor{
             } else {
                 _armour = _last_armour;
             }
-            if (buttons.company_options_toggle.company_view){
+            if (obj_creation.livery_selection_options.current_selection == 2){
                 if (!array_contains(armours, _armour)){
                    _armour =  "MK7 Aquila";
                 }
@@ -1357,7 +1456,15 @@ function DummyMarine()constructor{
         return is_specialist(role(), search_type,include_trainee, include_heads);
     }
     static has_trait = marine_has_trait;
-
+    static is_dreadnought = function(){
+        var _arm_data = gear_weapon_data("armour", last_armour);
+        if (is_struct(_arm_data)){
+            if (_arm_data.has_tag("dreadnought")){
+                return true
+            }
+        }
+        return false;
+    }
     experience = 120;
 }
 
@@ -1743,6 +1850,11 @@ base: {
     },
     variants : [{
       sprite: spr_weapon_assca,
+    },
+    {
+      sprite: spr_weapon_assca,
+      body_types: [3],
+      armours : ["Dreadnought"],
     }],
     },
 "Heavy Flamer": {
@@ -1773,8 +1885,96 @@ base: {
     variants: [
         {
             sprite: spr_weapon_lasca,
+        },
+        {
+          sprite: spr_dread_lascannon,
+          body_types: [3],
+          armours : ["Dreadnought"],
         }
     ],
+},
+"Close Combat Weapon" : {
+    base: {
+        body_types: [3],
+        weapon_data: {
+          display_type: "dreadnought",
+        },
+        armours : ["Dreadnought"],
+    },
+    variants: [
+        {
+            sprite: spr_dread_claw,
+        },
+        {
+            sprite: spr_contemptor_CCW,
+            armours : ["Contemptor Dreadnought"],
+        }
+    ]    
+},
+"Twin Linked Heavy Bolter" : {
+    base: {
+        body_types: [3],
+        weapon_data: {
+          display_type: "dreadnought",
+        },
+    },
+    variants: [
+        {
+            sprite: spr_dread_heavy_bolter,
+        }
+    ]    
+},
+"Dreadnought Lightning Claw": {
+    base: {
+        body_types: [3],
+        weapon_data: {
+          display_type: "dreadnought",
+        },
+    },
+    variants: [
+        {
+            sprite: spr_dread_claw,
+        }
+    ]    
+},
+"CCW Heavy Flamer": {
+    base: {
+        body_types: [3],
+        weapon_data: {
+          display_type: "dreadnought",
+        },
+    },
+    variants: [
+        {
+            sprite: spr_dread_claw,
+        }
+    ]    
+},
+"Dreadnought Power Claw": {
+    base: {
+        body_types: [3],
+        weapon_data: {
+          display_type: "dreadnought",
+        },
+    },
+    variants: [
+        {
+            sprite: spr_dread_claw,
+        }
+    ]    
+},
+"Inferno Cannon": {
+    base: {
+        body_types: [3],
+        weapon_data: {
+          display_type: "dreadnought",
+        },
+    },
+    variants: [
+        {
+            sprite: spr_dread_plasma_cannon,
+        }
+    ]    
 },
 "Multi-Melta" : {
     base: {
@@ -1786,8 +1986,52 @@ base: {
     variants: [
         {
             sprite: spr_weapon_mmelta,
-        }
+        },
+        {
+            sprite: spr_dread_plasma_cannon,
+            body_types: [3],
+            armours : ["Dreadnought"],
+        }        
     ],       
+},
+"Twin Linked Lascannon": {
+    base: {
+        body_types: [3],
+        weapon_data: {
+          display_type: "dreadnought",
+        },
+    },
+    variants: [
+        {
+            sprite: spr_dread_lascannon,
+        }
+    ]    
+},
+"Heavy Conversion Beam Projector":{
+    base: {
+        body_types: [3],
+        weapon_data: {
+          display_type: "dreadnought",
+        },
+    },
+    variants: [
+        {
+            sprite: spr_dread_plasma_cannon,
+        }
+    ]    
+},
+"Twin-linked Volkite Culverins":{
+     base: {
+        body_types: [3],
+        weapon_data: {
+          display_type: "dreadnought",
+        },
+    },
+    variants: [
+        {
+            sprite: spr_twl_Volkite_Culverins,
+        }
+    ]    
 },
 "Bolt Pistol": {
   base: {
@@ -1798,7 +2042,7 @@ base: {
   },
   variants: [{
     sprite: spr_weapon_boltpis,
-  }]
+  }],
 },
 
 "Infernus Pistol": {
@@ -1988,9 +2232,16 @@ base: {
       new_weapon_draw: true
     },
   },
-  variants: [{
-    sprite: spr_weapon_missile,
-  }]
+  variants: [
+    {
+        sprite: spr_weapon_missile,
+    },
+    {
+        sprite: spr_dread_missile,
+        body_types: [3],
+        armours : ["Dreadnought"],
+    }
+  ]
 },
 "Plasma Cannon": {
   base: {
@@ -2009,6 +2260,11 @@ base: {
       },
       sprite: spr_weapon_plasc,
       body_types: [0, 1]
+    },
+    {
+        sprite: spr_dread_plasma_cannon,
+        body_types: [3],
+        armours : ["Dreadnought"],
     }
   ]
 },
@@ -2188,6 +2444,11 @@ base: {
   variants: [
     {
       sprite: spr_weapon_autocannon2
+    },
+    {
+        sprite: spr_dread_autocannon,
+        body_types: [3],
+        armours : ["Dreadnought"],
     }
   ]
 },

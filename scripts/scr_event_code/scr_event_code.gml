@@ -196,7 +196,7 @@ function event_end_turn_action(){
 	                tixt+="it is a finely crafted Bike, conforming mostly to STC standards.  The other "+string(obj_ini.role[100][16])+" are surprised at the rapid pace of his work.";
 	            }
 	            if (item=="Rhino"){
-	                scr_add_vehicle("Rhino",0,"Storm Bolter","Storm Bolter","","Artificer Hull","Dozer Blades");
+	                scr_add_vehicle("Rhino",0,{},"Storm Bolter","Storm Bolter","","Artificer Hull","Dozer Blades");
 	                tixt+="it is a finely crafted Rhino, conforming to STC standards.  The other "+string(obj_ini.role[100][16])+" are surprised at the rapid pace of his work.";
 	            }
 	            if (item=="Artifact"){
