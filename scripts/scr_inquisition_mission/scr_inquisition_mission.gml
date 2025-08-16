@@ -49,7 +49,7 @@ function scr_inquisition_mission(event, forced_mission = -1){
         for(var s = 0, _len =  array_length(all_stars); s <_len; s++){
             var star = all_stars[s];
 
-            if(scr_star_has_planet_with_feature(star, P_features.Necron_Tomb) && !awake_necron_Star(star.id)){
+            if(scr_star_has_planet_with_feature(star, P_features.NecronTomb) && !awake_necron_Star(star.id)){
                 array_push(necron_tomb_worlds, star);
                 found_sleeping_necrons = true;
             }
@@ -190,7 +190,7 @@ function mission_inquisition_tyranid_organism(worlds){
 function mission_inquisition_tomb_world(tomb_worlds){
     log_message("RE: Necron Tomb Bombing");
     var star = choose_array(tomb_worlds)
-    var planet = scr_get_planet_with_feature(star, P_features.Necron_Tomb);
+    var planet = scr_get_planet_with_feature(star, P_features.NecronTomb);
     var eta = scr_mission_eta(star.x, star.y,1)
     
     var text=$"The Inquisition is trusting you with a special mission.  They have reason to suspect the Necron Tomb on planet {string(star.name)} {scr_roman(planet)}";
@@ -371,7 +371,7 @@ function mission_investigate_planet(){
 		}
 	    	
 		var star = stars[irandom(valid_stars-1)];
-		var planet = scr_get_planet_with_feature(star, P_features.Ancient_Ruins);
+		var planet = scr_get_planet_with_feature(star, P_features.AncientRuins);
 		if (planet == -1){
 			log_error("RE: Investigate Planet, couldn't pick a planet");
 			exit;

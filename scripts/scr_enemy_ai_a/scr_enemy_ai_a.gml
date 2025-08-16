@@ -56,7 +56,7 @@ function scr_enemy_ai_a() {
 		    	cur_planet+=1;
 		        if (p_first[cur_planet]=1) and (p_owner[cur_planet]=2) then p_owner[cur_planet]=1;
 		        if (p_type[cur_planet]=="Dead") and (array_length(p_upgrades[cur_planet])>0){
-		            if (planet_feature_bool(p_feature[cur_planet], [P_features.Secret_Base,P_features.Arsenal,P_features.Gene_Vault])==0) /*and (string_count(".0|",p_upgrades[cur_planet])>0)*/{
+		            if (planet_feature_bool(p_feature[cur_planet], [P_features.SecretBase,P_features.Arsenal,P_features.GeneVault])==0) /*and (string_count(".0|",p_upgrades[cur_planet])>0)*/{
 		                yep=cur_planet;
 		            }
 		        }
@@ -853,10 +853,10 @@ function scr_enemy_ai_a() {
 			}else if (p_owner[_run] = 10) {
 				who_cleansed="Chaos"
 				make_alert=true;				
-			} else if (planet_feature_bool(p_feature[_run], P_features.Gene_Stealer_Cult) && p_tyranids[_run] <= 0){
+			} else if (planet_feature_bool(p_feature[_run], P_features.GeneStealerCult) && p_tyranids[_run] <= 0){
 				who_cleansed="Gene Stealer Cult"
 				make_alert=true;
-				delete_features(p_feature[_run], P_features.Gene_Stealer_Cult);
+				delete_features(p_feature[_run], P_features.GeneStealerCult);
 				adjust_influence(eFACTION.Tyranids, -25, _run);
 			}
 			 if (make_alert){

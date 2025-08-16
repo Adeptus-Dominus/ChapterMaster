@@ -76,6 +76,7 @@ function mechanicus_missions_end_turn(planet){
                     scr_event_log("","Mechanicus Mission Completed: The Mechanicus research team on "+string(name)+" "+scr_roman(planet)+" have completed their work.");
                 }
                 else if (reward==2){
+
                 	
                 	var last_artifact = scr_add_artifact("random", "", 0);
                     text="The Mechanicus Research team on planet "+string(name)+" "+scr_roman(planet)+" have completed their work without any major setbacks.  Pleased with your astartes' work, they have granted your Chapter an artifact, to be used as you see fit.";
@@ -121,16 +122,17 @@ function mechanicus_missions_end_turn(planet){
                         }
                         techs_taken+=1;
                     }
-                    if (_unit.ship_location>-1){
-                        ship_planet=obj_ini.ship_location[_unit.ship_location];
+                    if (unit.ship_location>-1){
+                    	var _ship = obj_ini.ship_data[unit.ship_location];
+                        ship_planet=_ship.location;
                         if (ship_planet=name){
-                            obj_ini.ship_carrying[_unit.ship_location]-=_unit.get_unit_size();
+                            _ship.carrying-=_unit.get_unit_size();
                             _unit.location_string="Mechanicus Vessel";
                             _unit.planet_location=0;
                             _unit.ship_location=-1;
 	                        _unit.job = {
 	                        	type : "mechanicus mission",
-	                        }                            
+	                        }                             
                             techs_taken+=1;
                         }
                     }
@@ -212,8 +214,8 @@ function spawn_mechanicus_mission(chosen_mission = "random"){
 	
 		
 	with(obj_star){
-		if(scr_star_has_planet_with_feature(id,P_features.Necron_Tomb)) and (awake_necron_Star(id)!= 0){
-			var planet = scr_get_planet_with_feature(id, P_features.Necron_Tomb);
+		if(scr_star_has_planet_with_feature(id,P_features.NecronTomb)) and (awake_necron_Star(id)!= 0){
+			var planet = scr_get_planet_with_feature(id, P_features.NecronTomb);
 			if(scr_is_planet_owned_by_allies(self, planet)){
 				array_push(mechanicus_missions, "mech_tomb");
 				break;
@@ -272,8 +274,8 @@ function spawn_mechanicus_mission(chosen_mission = "random"){
 		stars = scr_get_stars();
 		var valid_stars = array_filter_ext(stars, 
 		function(star,index) {
-			if(scr_star_has_planet_with_feature(star,P_features.Necron_Tomb)) and (awake_necron_Star(star)!= 0){
-				var planet = scr_get_planet_with_feature(star, P_features.Necron_Tomb);
+			if(scr_star_has_planet_with_feature(star,P_features.NecronTomb)) and (awake_necron_Star(star)!= 0){
+				var planet = scr_get_planet_with_feature(star, P_features.NecronTomb);
 				if(scr_is_planet_owned_by_allies(star, planet)) {
 					return true;
 				}

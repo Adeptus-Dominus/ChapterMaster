@@ -189,7 +189,7 @@ if (navy && action=="") {
 	        var chase_fleet = get_nearest_player_fleet(x,y, false, true);
 	        if (chase_fleet!="none"){
 	            var thatp,my_dis;
-				etah=chase_fleet.eta;
+				etah=chase_fleet.action_eta;
             	
             	var intercept =  fleet_intercept_time_calculate(chase_fleet);
 	            if (intercept){
@@ -661,7 +661,7 @@ if (action=="" && _is_orbiting){
                     t+=1;
                     tem1=tem1_base;// Repeat to check each of the planets
                     if (cur_star.p_type[t]="Dead") and (array_length(cur_star.p_upgrades[t])>0){
-						var base_search = search_planet_features(cur_star.p_upgrades[t], P_features.Secret_Base); 
+						var base_search = search_planet_features(cur_star.p_upgrades[t], P_features.SecretBase); 
                         if (array_length(base_search) >0){
 							var player_base = cur_star.p_upgrades[t][base_search[0]]
                             if (player_base.vox>0) then tem1+=2;
@@ -843,98 +843,8 @@ if (action=="" && _is_orbiting){
         }*/
     }
     
-    if (owner == eFACTION.Tyranids) {// Juggle bio-resources
-        if (capital_number*2>frigate_number){
-            capital_number-=1;frigate_number+=2;
-        }
-        
-        if (capital_number*4>escort_number){
-            var rand;
-            rand=choose(1,2,3,4);
-            if (rand=4) then escort_number+=1;
-        }
-        
-        
-        
-        if (capital_number>0){
-            var capitals_engaged=0;
-            with (orbiting){
-            	for (var i=1;i<planets;i++){
-            		if (capitals_engaged=capital_number) then break;
-            		if (p_type[i]!="Dead"){
-            			p_tyranids[4]=5;
-            			capitals_engaged+=1;
-            		}
-            	}
-            }
-        }
-        
-        
-
-        var n=false;
-        with (orbiting){
-        	n = is_dead_star();
-        }
-        
-        if (n){
-            var xx,yy,good, plin, plin2;
-            xx=0;yy=0;good=0;plin=0;plin2=0;
-            
-            if (capital_number>5) then n=5;
-            
-            instance_deactivate_object(orbiting);
-            
-            repeat(100){
-                if (good!=5){
-                    xx=self.x+random_range(-300,300);
-                    yy=self.y+random_range(-300,300);
-                    if (good=0) then plin=instance_nearest(xx,yy,obj_star);
-                    if (good=1) and (n=5) then plin2=instance_nearest(xx,yy,obj_star);
-                    
-                    good = !array_contains(plin.p_type, "dead");
-
-                    if (good=1) and (n=5){
-                        if (!instance_exists(plin2)) then exit;
-                        if (!array_contains(plin.p_type, "dead")) then good++
-                        
-                        var new_fleet;
-                        new_fleet=instance_create(x,y,obj_en_fleet);
-                        new_fleet.capital_number=floor(capital_number*0.4);
-                        new_fleet.frigate_number=floor(frigate_number*0.4);
-                        new_fleet.escort_number=floor(escort_number*0.4);
-                        
-                        capital_number-=new_fleet.capital_number;
-                        frigate_number-=new_fleet.frigate_number;
-                        escort_number-=new_fleet.escort_number;
-                        
-                        new_fleet.owner=eFACTION.Tyranids;
-                        new_fleet.sprite_index=spr_fleet_tyranid;
-                        new_fleet.image_index=1;
-                        
-                        /*with(new_fleet){
-                            var ii;ii=0;ii+=capital_number;ii+=round((frigate_number/2));ii+=round((escort_number/4));
-                            if (ii<=1) then ii=1;image_index=ii;
-                        }*/
-                        
-                        new_fleet.action_x=plin2.x;
-                        new_fleet.action_y=plin2.y;
-                        with(new_fleet){
-                        	set_fleet_movement();
-                        }
-                        break;
-                    }
-                    
-                    
-                    if (good=1) and (instance_exists(plin)){
-                    	action_x=plin.x;
-                    	action_y=plin.y;
-                    	set_fleet_movement();
-                    	if (n!=5) then good=5;
-                    }
-                }
-            }
-            instance_activate_object(obj_star);
-        }
+    if (owner = eFACTION.Tyranids) {// Juggle sbio-resources
+    	tyranid_fleet_planet_action();
     }
 }
 

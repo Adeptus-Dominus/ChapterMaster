@@ -1,6 +1,9 @@
 // Draws the ships and their shields
 var __b__;
 __b__ = action_if_variable(name, "", 0);
+
+draw_ship_heathshields();
+
 if (!__b__){
     {
 
