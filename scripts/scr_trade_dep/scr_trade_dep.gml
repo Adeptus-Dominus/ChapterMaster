@@ -30,6 +30,17 @@ function scr_trade_dep() {
 		var last_artifact = scr_add_artifact("random", "minor", 0);
 	}
 
+	if (struct_exists(_goods, "vehicles")){
+		var _vehicles = struct_get_names(_goods.vehicles);
+		 for (var m=0;m<array_length(_vehicles);m++){
+		 	var _vehicles_type = _vehicles[m];
+		 	var _vehicles_data = _goods.vehicles[$ _vehicles_type];
+		 	repeat(_vehicles_data.number){
+		 		scr_add_vehicle(_vehicles_type, 10,{loc:orbiting.name,wid:irandom_range(1, orbiting.planets)});
+		 	}
+		 }
+	}
+
 	struct_remove(cargo_data, "player_goods");
 }
 

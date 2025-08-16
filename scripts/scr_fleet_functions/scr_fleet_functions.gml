@@ -301,45 +301,92 @@ function calculate_action_speed(fleet = "none", selected = false) {
 
 
 function scr_efleet_arrive_at_trade_loc(){
-	var chase_fleet =false;
-	var arrive_at_player_fleet = (instance_exists(target));
-    if (arrive_at_player_fleet){
-    	arrive_at_player_fleet = target.object_index == obj_p_fleet;
-    	if (arrive_at_player_fleet){
-    		var chase_fleet = (target.action!="" || point_distance(x,y,target.x,target.y)>40) && obj_ini.fleet_type != ePlayerBase.home_world;
-    	}
-    } else {
-    	arrive_at_player_fleet=false;
-    	target=noone;
-    }
-    if (arrive_at_player_fleet && chase_fleet) {
+	//if player fleet at star or player forces trade
+	var chase_fleet = false;
 
+	var _valid_fleet = false;
+	var _orbit = orbiting;
+	var _valid_planet = false;
 
-        var mah_x=instance_nearest(x,y,obj_star).x;
-        var mah_y=instance_nearest(x,y,obj_star).y;
-        
-        if  (string_count("Inqis",trade_goods)=0){
+	var _viewer = obj_controller.location_viewer;
+	if (orbiting.owner < 6 && _viewer.has_troops(orbiting.name)){
+		_valid_planet = true;
+	}
 
-            
-           
-            if (target.action!="") {
-				action_x=target.action_x;
-				action_y=target.action_y;
-			}
-			else if (target.action=="" ){
-                action_x=instance_nearest(target.x,target.y,obj_star).x;
-                action_y=instance_nearest(target.x,target.y,obj_star).y;
-            }
-            action="";
-            set_fleet_movement();
-            if (owner!=eFACTION.Eldar) then obj_controller.disposition[owner]-=1;
+	with (obj_p_fleet){
+		if (x==_orbit.x && y==_orbit.y){
+			_valid_fleet = true;
+			break;
+		}
+	}
 
-        }
-    }
+	//iff no forces see iffleet to chase
+	if (!_valid_fleet && !_valid_planet){
+		var _chase_target = -1;
+		if (instance_exists(target) && target.object_index == obj_p_fleet){
+			_chase_target = target;
+		} else {
+			target = instance_nearest(x, y,obj_p_fleet);
+		}
+		var _chase_fleet = instance_exists(target) &&(target.action!="" || point_distance(x,y,target.x,target.y)>40) && obj_ini.fleet_type != ePlayerBase.home_world;
 
-  
-        
-    else if (arrive_at_player_fleet || obj_ini.fleet_type=ePlayerBase.home_world){
+		if (_chase_fleet){	        
+	        if  (!string_count("Inqis",trade_goods)){
+
+	            
+	           
+	            if (target.action!="") {
+					action_x=target.action_x;
+					action_y=target.action_y;
+				}
+				else if (target.action=="" ){
+					var _targ_star = instance_nearest(target.x,target.y,obj_star);
+	                action_x=_targ_star.x;
+	                action_y=_targ_star.y;
+	            }
+	            action="";
+	            set_fleet_movement();
+	            if (owner!=eFACTION.Eldar) then obj_controller.disposition[owner]-=1;
+
+	        }
+		}      
+    
+	    //if no fleet find a valid plaanet with player forces
+	    if (action == ""){
+	    	var _player_star = nearest_star_with_ownership(1);
+	    	if (_player_star != "none"){
+	    		action_x = _player_star.x;
+	    		action_y = _player_star.y;
+	    		set_fleet_movement();
+	    	} else {
+	    		var _player_presence_stars = _viewer.player_force_stars();
+	    		if (array_length(_player_presence_stars)){
+	    			var _nearest_index = nearest_from_array(x, y,_player_presence_stars);
+	    			var _nearest = _player_presence_stars[_nearest_index];
+	    			action_x = _nearest.x;
+	    			action_y = _nearest.y;
+	    			set_fleet_movement();
+	    		}
+	    	}
+
+	    }
+
+	    //if no other viable options drop off at random imperial planet
+	    if (action==""){
+	    	var _imp = nearest_star_with_ownership(2);
+	    	if (_imp != "none"){
+	    		if (x == _imp.x && y==_imp.y){
+	    			_valid_planet = true;
+	    		} else{
+		    		action_x = _imp.x;
+		    		action_y = _imp.y;
+		    		set_fleet_movement();
+	    		}
+	    	}
+	    }
+	}
+
+    if (_valid_fleet|| _valid_planet){
         
         var targ;
         var cur_star=nearest_star_proper(x, y);
@@ -520,6 +567,7 @@ function fleet_arrival_logic(){
     x = cur_star.x;
     y = cur_star.y;
     sta=instance_nearest(action_x,action_y,obj_star);
+    is_orbiting();
     
     // cur_star.present_fleets+=1;if (owner = eFACTION.Tau) then cur_star.tau_fleets+=1;
     

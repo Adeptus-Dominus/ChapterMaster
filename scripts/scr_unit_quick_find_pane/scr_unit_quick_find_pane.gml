@@ -13,6 +13,23 @@ function UnitQuickFindPanel() constructor{
 	static detail_slate = new DataSlateMKTwo();
 
 	view_area = "fleets";
+
+	static has_troops = function(name){
+		return struct_exists(garrison_log, name);
+	}
+
+	static player_force_stars=function(){
+		var _names = struct_get_names(garrison_log);
+		var _stars = [];
+		for (var i=0;i<array_length(_names);i++){
+			var _star = star_by_name(_names[i]);
+			if (_star != "none"){
+				array_push(_stars, _star);
+			}
+		}
+
+		return _stars;
+	}
 	static update_garrison_log = function(){
 		try{
 		for (var i = 0;i<array_length(obj_ini.ship_carrying); i++){

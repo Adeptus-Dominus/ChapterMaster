@@ -1,4 +1,4 @@
-
+add_draw_return_values();
 var xx,yy,x2,y2;
 var romanNumerals=scr_roman_numerals();
 xx=__view_get( e__VW.XView, 0 )+0;
@@ -14,15 +14,15 @@ slate_panel.inside_method = function(){
     draw_text(xx+962,yy+159,"Name");
     draw_text(xx+962.5,yy+159.5,"Name");
     if (shop!="production"){
-        draw_text(xx+1280,yy+159,string_hash_to_newline("Stocked"));
-        draw_text(xx+1280.5,yy+159.5,string_hash_to_newline("Stocked"));
+        draw_text(xx+1280,yy+159,"Stocked");
+        draw_text(xx+1280.5,yy+159.5,"Stocked");
         if (shop="equipment" or shop="equipment2"){
-        draw_text(xx+1280+10+string_width("Stocked"),yy+159.5,string_hash_to_newline("MC"));
-        draw_text(xx+1280+10.5+string_width("Stocked"),yy+159.5,string_hash_to_newline("MC"));
+        draw_text(xx+1280+10+string_width("Stocked"),yy+159.5,"MC");
+        draw_text(xx+1280+10.5+string_width("Stocked"),yy+159.5,"MC");
         }
     }
-    draw_text(xx+1410,yy+159,string_hash_to_newline("Cost"));
-    draw_text(xx+1410.5,yy+159.5,string_hash_to_newline("Cost"));
+    draw_text(xx+1410,yy+159,("Cost"));
+    draw_text(xx+1410.5,yy+159.5,("Cost"));
     draw_set_color(c_gray);
 
 
@@ -51,7 +51,7 @@ slate_panel.inside_method = function(){
             final=i;
             if (!obj_controller.in_forge && nobuy[i]=0) ||  (obj_controller.in_forge && forge_cost[i]>0){
                 draw_set_color(c_gray);
-                if (point_in_rectangle(mouse_x, mouse_y, xx+962, yy+y2+2, xx+1580, yy+y2+18)){
+                if (scr_hit(xx+962, yy+y2+2, xx+1580, yy+y2+18)){
                     draw_set_color(c_gray);
                     entered = true;
                     draw_rectangle(xx+960, yy+y2+1, xx+1582, yy+y2+18, 0);
@@ -59,8 +59,8 @@ slate_panel.inside_method = function(){
                 }
 
                 if (shop!="production"){
-                    if (!keyboard_check(vk_shift)) or (shop="warships") then draw_text(xx+x2+x_mod[i],yy+y2,string_hash_to_newline(item[i]));// Name
-                    if (keyboard_check(vk_shift)) and (shop!="warships") then draw_text(xx+x2+x_mod[i],yy+y2,string_hash_to_newline(string(item[i])+" x5"));// Name
+                    if (!keyboard_check(vk_shift) || shop == "warships") then draw_text(xx+x2+x_mod[i], yy+y2, item[i]); // Name
+                    if (keyboard_check(vk_shift) && shop != "warships") then draw_text(xx+x2+x_mod[i], yy+y2, string(item[i] + " x5")); // Name
                 } else {
                     draw_text(xx+x2+x_mod[i],yy+y2,string_hash_to_newline(item[i][1]));// Name
                 }
@@ -109,8 +109,8 @@ slate_panel.inside_method = function(){
                         tooltip = $"Send items back for {_sell_mod * 100}% of the requisition cost.";
                         tooltip_show=1;
                         if (scr_click_left()) {
-                            var sell_count = keyboard_check(vk_shift) ? 5 : 1;
-                            sell_item(i, sell_count, _sell_mod)
+                            var sell_mult_count = keyboard_check(vk_shift) ? 5 : 1;
+                            sell_item(i, sell_mult_count, _sell_mod)
                         }
                     }
                 }
@@ -137,21 +137,31 @@ slate_panel.inside_method = function(){
                     }
                } else if (nobuy[i]=0 && clicked && !obj_controller.in_forge){
                     cost=item_cost[i];
-                    if (keyboard_check(vk_shift)) and (shop!="warships") then cost=item_cost[i]*5;
+                    var _mult_count = keyboard_check(vk_shift) ?5 : 1;
+                    if  (shop!="warships"){
+                        cost *= _mult_count;
+                    }
+
                     if (obj_controller.requisition>=cost) and (shop!="warships"){
-                        if (item[i]!="Rhino") and (item[i]!="Predator") and (item[i]!="Land Raider") and (item[i]!="Whirlwind") and (item[i]!="Land Speeder"){
-                            if (keyboard_check(vk_shift)){scr_add_item(item[i],5);item_stocked[i]+=5;click2=1;}
-                            if (!keyboard_check(vk_shift)){scr_add_item(item[i],1);item_stocked[i]+=1;click2=1;}
+
+                        var _vehics = ["Rhino", "Predator", "Land Raider", "Whirlwind", "Land Speeder"];
+
+                        if (!array_contains(_vehics, item[i])){
+                            scr_add_item(item[i],_mult_count);
+                            item_stocked += _mult_count;
+                            click2 = true;
                         }
-                        if (item[i]="Rhino") or (item[i]="Predator") or (item[i]="Land Raider") or (item[i]="Whirlwind") or (item[i]="Land Speeder"){
-                            if (keyboard_check(vk_shift)){repeat(5){scr_add_vehicle(item[i],target_comp,"standard","standard","standard","standard","standard");}item_stocked[i]+=5;click2=1;}
-                            if (!keyboard_check(vk_shift)){
-                                scr_add_vehicle(item[i],target_comp,"standard","standard","standard","standard","standard");
-                                item_stocked[i]+=1;
-                                click2=1;
+                        else{
+
+                            repeat (_mult_count) {
+                                scr_add_vehicle(item[i], target_comp, {});
+                            }
+                            item_stocked[i] += _mult_count;
+                            click2 = 1;
+                            with (obj_ini) {
+                                scr_vehicle_order(obj_shop.target_comp);
                             }
                         }
-                        with(obj_ini){scr_vehicle_order(obj_shop.target_comp);}
                         obj_controller.requisition-=cost;
                     }
 
@@ -185,7 +195,7 @@ slate_panel.inside_method = function(){
                 draw_text(xx+1300,yy+y2,item_stocked[i]);// Stocked
                 draw_set_alpha(1);
             }
-            if (mouse_x>=xx+962) and (mouse_y>=yy+y2) and (mouse_x<xx+1280) and (mouse_y<yy+y2+19) and (shop!="warships"){
+            if (scr_hit(xx+962 ,yy+y2,xx+1280,yy+y2+19) && shop!="warships"){
                 if (last_item == item[i]){
                     tooltip_show=1;
                 } else {
@@ -212,7 +222,9 @@ slate_panel.inside_method = function(){
     }
 }
 draw_set_color(c_white);
+add_draw_return_values();
 slate_panel.draw(xx+920, yy+95, 690/850, 0.85);
+pop_draw_return_values();
 draw_set_font(fnt_40k_14b);
 draw_set_color(c_gray);
 draw_set_halign(fa_left);
@@ -257,3 +269,4 @@ if (shop_area!=""){
     shop=shop_area
     instance_create(50,50,obj_shop);
 }
+pop_draw_return_values();
