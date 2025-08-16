@@ -227,12 +227,12 @@ scr_menu_clear_up(function(){
         yy=yy+0;
 
         if (mouse_x>=xx+22) and (mouse_y>=yy+84) and (mouse_x<xx+98) and (mouse_y<yy+126){
-            menu=1;
+            menu=MENU.Manage;
             cooldown=8000;
         }
     }
     // Selecting individual marines
-    if (menu=1) and (managing>0) || (managing<0) and (!view_squad || !company_report){
+    if (menu=MENU.Manage) and (managing>0) || (managing<0) and (!view_squad || !company_report){
         var unit;                 
         var eventing=false, bb="";
         xx=__view_get( e__VW.XView, 0 )+0;
@@ -261,7 +261,7 @@ scr_menu_clear_up(function(){
     if (menu==50) and (managing>0) and (cooldown<=0){
         if (mouse_x>=xx+217) and (mouse_y>=yy+28) and (mouse_x<xx+250) and (mouse_y<yy+59){
             cooldown=8;
-            menu=1;
+            menu=MENU.Manage;
             click=1;
         }
     }
