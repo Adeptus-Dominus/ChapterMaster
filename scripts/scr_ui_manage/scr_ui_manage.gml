@@ -980,7 +980,7 @@ function scr_ui_manage() {
         if (point_and_click([xx + 25, yy + 70, xx + 70, yy + 140])) {
             man_size = 0;
             man_current = 0;
-            menu = menu = MENU.Manage;;
+            menu = MENU.Manage;;
         }
 
         var top, temp1 = "", temp2 = "", temp3 = "", temp4 = "", temp5 = "";
