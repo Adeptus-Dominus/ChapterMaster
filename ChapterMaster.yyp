@@ -893,6 +893,7 @@
     {"id":{"name":"scr_restart_variables","path":"scripts/scr_restart_variables/scr_restart_variables.yy",},},
     {"id":{"name":"scr_return_ship","path":"scripts/scr_return_ship/scr_return_ship.yy",},},
     {"id":{"name":"scr_role_count","path":"scripts/scr_role_count/scr_role_count.yy",},},
+    {"id":{"name":"scr_role_setup","path":"scripts/scr_role_setup/scr_role_setup.yy",},},
     {"id":{"name":"scr_roman_numerals","path":"scripts/scr_roman_numerals/scr_roman_numerals.yy",},},
     {"id":{"name":"scr_roman","path":"scripts/scr_roman/scr_roman.yy",},},
     {"id":{"name":"scr_roster","path":"scripts/scr_roster/scr_roster.yy",},},

@@ -5,83 +5,62 @@ if (!col_shift){
     col_shift=type>0;
     var equip = type>20;
 }
-if (col_shift){
-    draw_set_color(0);
-    draw_rectangle(430,536,845,748,0);
-    draw_set_color(38144);
-    draw_rectangle(430,535,845,748,1);
-    draw_rectangle(430,536,845,748,1);
-    draw_rectangle(431,537,846,747,1);
-    
-    
+if (col_shift){    
     if (!equip){
         draw_set_font(fnt_40k_30b);
-        if (type=1) then draw_text_transformed(444,550,string_hash_to_newline("Primary Color"),0.6,0.6,0);
-        if (type=2) then draw_text_transformed(444,550,string_hash_to_newline("Secondary Color"),0.6,0.6,0);
-        if (type=3) then draw_text_transformed(444,550,string_hash_to_newline("Pauldron 1 Color"),0.6,0.6,0);
-        if (type=4) then draw_text_transformed(444,550,string_hash_to_newline("Pauldron 2 Color"),0.6,0.6,0);
-        if (type=5) then draw_text_transformed(444,550,string_hash_to_newline("Trim Color"),0.6,0.6,0);
-        if (type=6) then draw_text_transformed(444,550,string_hash_to_newline("Lens Color"),0.6,0.6,0);
-        if (type=7) then draw_text_transformed(444,550,string_hash_to_newline("Weapon Color"),0.6,0.6,0);
-        if (type="sgt_helm_primary") then draw_text_transformed(444,550,string_hash_to_newline("Sgt Helm"),0.6,0.6,0);
-        if (type="sgt_helm_secondary") then draw_text_transformed(444,550,string_hash_to_newline("Sgt Helm"),0.6,0.6,0);
-        rows = 4;
-        columns = 10;
-        var column;
-        var current_color = 0;
-        var row = 0;
-        repeat(rows) {
-            row += 1;
-            column = 0;
-            repeat(columns) {
-                column += 1;
-                if (current_color < global.colors_count) {
-                    draw_set_color(make_color_rgb(obj_creation.col_r[current_color], obj_creation.col_g[current_color], obj_creation.col_b[current_color]));
-                    var x1, x2, y1, y2;
-                    x1 = 396 + (column * 40);
-                    y1 = 541 + (row * 40);
-                    x2 = 436 + (column * 40);
-                    y2 = 581 + (row * 40);
-                    draw_rectangle(x1, y1, x2, y2, 0);
-                    draw_set_color(38144);
-                    draw_rectangle(x1, y1, x2, y2, 1);
-                    if (scr_hit(x1, y1, x2, y2) = true) {
-                        draw_set_color(c_white);
-                        draw_set_alpha(0.2);
-                        draw_rectangle(x1, y1, x2, y2, 0);
-                        draw_set_alpha(1);
-                        if (scr_click_left()) {
-                            if (type = 1) then obj_creation.main_color = current_color;
-                            if (type = 2) then obj_creation.secondary_color = current_color;
-                            if (type = 3) then obj_creation.left_pauldron = current_color;
-                            if (type = 4) then obj_creation.right_pauldron = current_color;
-                            if (type = 5) then obj_creation.main_trim = current_color;
-                            if (type = 6) then obj_creation.lens_color = current_color;
-                            if (type = 7) then obj_creation.weapon_color = current_color;
-                            if (is_string(type)){
-                                obj_creation.complex_livery_data[$ role][$ type] = current_color;
-                            }
-                            with(obj_creation) {
-                                shader_reset();
-                            }
-                            obj_creation.alarm[0] = 1;
-                            instance_destroy();
-                        }
-                    }
-                    current_color += 1;
-                }
+        var _colour_type = "";
+        switch(type){
+            case 1: _colour_type = "Primary Color";break;
+            case 2: _colour_type = "Secondary Color";break;
+            case 3: _colour_type = "Pauldron 1 Color";break;
+            case 4: _colour_type = "Pauldron 2 Color";break;
+            case 5: _colour_type = "Trim Color Color";break;
+            case 6: _colour_type = "Lens Color Color";break;
+            case 7: _colour_type = "Weapon Color Color";break;
+            case "sgt_helm_primary": _colour_type = "Sgt Helm Primary";break;
+            case "sgt_helm_secondary": _colour_type = "Sgt Helm Secondary";break;
+
+        }
+
+        picker.title = _colour_type;
+        //draw_text_transformed(444,550,_colour_type,0.6,0.6,0);
+
+        var _action = picker.draw();
+        if (_action == "destroy"){
+            instance_destroy();
+            exit;
+        } else {
+            var _col = picker.chosen
+            if (start_colour == -1){
+                if (type = 1){start_colour = obj_creation.main_color}
+                if (type = 2){start_colour = obj_creation.secondary_color}
+                if (type = 3){start_colour = obj_creation.left_pauldron}
+                if (type = 4){start_colour = obj_creation.right_pauldron}
+                if (type = 5){start_colour = obj_creation.main_trim}
+                if (type = 6){start_colour = obj_creation.lens_color}
+                if (type = 7){start_colour = obj_creation.weapon_color}
+                 if (is_string(type)){
+                    start_colour = obj_creation.complex_livery_data[$ role][$ type];
+                }                                
             }
+            if (_col == -1){
+                _col = start_colour;
+            }
+            if (type = 1){obj_creation.main_color = _col;}
+            if (type = 2){obj_creation.secondary_color = _col;}
+            if (type = 3){obj_creation.left_pauldron = _col;}
+            if (type = 4){obj_creation.right_pauldron = _col;}
+            if (type = 5){obj_creation.main_trim = _col;}
+            if (type = 6){obj_creation.lens_color = _col;}
+            if (type = 7){obj_creation.weapon_color = _col;}
+            with (obj_creation){
+                bulk_selection_buttons_setup();
+            }
+            if (is_string(type)){
+                obj_creation.complex_livery_data[$ role][$ type] = _col;
+                set_complex_livery_buttons();
+            }            
         }
-        
-
-        if (point_and_click(draw_unit_buttons([700,550], "CANCEL",[1,1], 38144,, fnt_40k_14b, 1))){
-            instance_destroy();
-        }
-
-        if (!scr_hit(430,536,845,748) && scr_click_left()) {
-            instance_destroy();
-        }
-        draw_set_alpha(1);
     }
     
     
@@ -114,17 +93,17 @@ if (col_shift){
         var x5 = 594;
         var y5 = 597 - spacing;
 
-        for (var gg = 1; gg <= 5; gg++) {
+        for (var gg = 0; gg <= 4; gg++) {
             y5 += spacing;
             var title = $"{get_slot_name(type - 100, gg)}: ";
             var geh;
             switch (gg) {
                 // slots
-                case 1: geh = obj_creation.wep1[co, ide]; break;
-                case 2: geh = obj_creation.wep2[co, ide]; break;
-                case 3: geh = obj_creation.armour[co, ide]; break;
-                case 4: geh = obj_creation.gear[co, ide]; break;
-                case 5: geh = obj_creation.mobi[co, ide]; break;
+                case EquipmentSlot.WEAPON_ONE: geh = obj_creation.wep1[co, ide]; break;
+                case EquipmentSlot.WEAPON_TWO: geh = obj_creation.wep2[co, ide]; break;
+                case EquipmentSlot.ARMOUR: geh = obj_creation.armour[co, ide]; break;
+                case EquipmentSlot.GEAR: geh = obj_creation.gear[co, ide]; break;
+                case EquipmentSlot.MOBILITY: geh = obj_creation.mobi[co, ide]; break;
             }
 
             draw_set_halign(fa_right);
@@ -140,13 +119,7 @@ if (col_shift){
                 if (scr_click_left()) {                   
                     var unit_type = type - 100;
                     var is_invalid = (
-                        unit_type == eROLE.Dreadnought &&
-                        (
-                            // slots
-                            gg == 3 ||
-                            gg == 4 ||
-                            gg == 5
-                        )
+                        unit_type == eROLE.Dreadnought && gg > EquipmentSlot.WEAPON_TWO
                     );
 
                     if (!is_invalid) {
@@ -214,6 +187,7 @@ if (col_shift){
             }
 
             instance_destroy();
+            update_creation_roles_radio();
         }
 
         draw_set_halign(fa_left);
@@ -228,6 +202,7 @@ if (col_shift){
 
 
 if (target_gear > 0) {
+    draw_set_valign(fa_top);
     tab = 1;
     item_name = [];
     scr_get_item_names(
@@ -249,7 +224,7 @@ if (target_gear > 0) {
     
     draw_set_font(fnt_40k_30b);
     var slot_name = get_slot_name(type - 100, target_gear);
-    draw_text_transformed(862, 215, string_hash_to_newline($"Select {slot_name}"), 0.6, 0.6, 0);
+    draw_text_transformed(862, 215, $"Select {slot_name}", 0.6, 0.6, 0);
     draw_set_font(fnt_40k_14b);
     
     var x3 = 862;
@@ -258,9 +233,9 @@ if (target_gear > 0) {
     
     for (var h = 0; h < array_length(item_name); h++) {
         draw_set_color(38144);
-        var scale = string_width(string_hash_to_newline(item_name[h])) >= 140 ? 0.75 : 1;
-        draw_text_transformed(x3, y3, string_hash_to_newline(item_name[h]), scale, 1, 0);
-        y3 += space;
+        var scale = string_width(item_name[h]) >= 140 ? 0.75 : 1;
+        draw_text_transformed(x3, y3, item_name[h], scale, 1, 0);
+        y3 += space
         
         if (scr_hit(x3, y3 - space, x3 + 143, y3 + 17 - space)) {
             draw_set_color(c_white);

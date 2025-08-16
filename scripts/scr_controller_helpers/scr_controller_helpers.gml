@@ -70,11 +70,11 @@ function scr_change_menu(wanted_menu, specific_area_function=false) {
         return false;
     }
     if (wanted_menu == obj_controller.menu){
-        main_map_defualts();
+        main_map_defaults();
         return true;
     }
     with(obj_controller) {
-        main_map_defualts();
+        main_map_defaults();
         set_zoom_to_default();
         continue_sequence = scr_menu_clear_up(function() {
             //if ((zoomed == 0) && (diplomacy == 0)) {
@@ -98,7 +98,7 @@ function scr_change_menu(wanted_menu, specific_area_function=false) {
     }
 }
 
-function main_map_defualts(){
+function main_map_defaults(){
     with (obj_controller){
         menu = 0;
         hide_banner = 0;

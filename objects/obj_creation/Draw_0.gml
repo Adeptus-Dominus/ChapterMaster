@@ -1,3 +1,6 @@
+
+add_draw_return_values();
+draw_set_valign(fa_top);
 try {
 	//read
 	// 850,860
@@ -142,6 +145,8 @@ try {
 
 	else if (slide == eCREATIONSLIDES.CHAPTERLIVERY) {
 		scr_livery_setup();
+	} else if (slide == eCREATIONSLIDES.CHAPTERROLES) {
+		scr_role_setup();
 	}
 
 	/* Gene Seed Mutations, Disposition */
@@ -675,10 +680,10 @@ try {
 
 		var q, x3, y3;
 		q = 1;
-		x3 = (room_width / 2) - 65;
+		x3 = (room_width / 2) - 77;
 		y3 = 790;
 		draw_set_color(38144);
-		repeat (6) {
+		repeat (7) {
 			draw_circle(x3, y3, 10, 1);
 			draw_circle(x3, y3, 9.5, 1);
 			draw_circle(x3, y3, 9, 1);
@@ -694,16 +699,16 @@ try {
 		}
 	}
 
-	if ((slide >= 2) || (goto_slide >= 2)) {
+	if ((slide >= eCREATIONSLIDES.CHAPTERTRAITS) || (goto_slide >= eCREATIONSLIDES.CHAPTERTRAITS)) {
 		draw_set_alpha(1);
 		draw_sprite(spr_creation_arrow, 0, 607, 761);
 		draw_sprite(spr_creation_arrow, 1, 927, 761);
-		if (slide == 1) {
+		if (slide == eCREATIONSLIDES.CHAPTERSELECT) {
 			draw_sprite(spr_creation_arrow, 2, 607, 761);
 		}
 
 		// skip to end >> button
-		if ((slide >= 2) && (slide < 6) && (custom != eCHAPTER_TYPE.CUSTOM)) {
+		if ((slide >= eCREATIONSLIDES.CHAPTERTRAITS) && (slide < eCREATIONSLIDES.CHAPTERMASTER) && (custom != eCHAPTER_TYPE.CUSTOM)) {
 			draw_set_alpha(0.8);
 			if ((popup == "") && ((change_slide >= 70) || (change_slide <= 0)) && scr_hit(927 + 64 + 12, 761 + 12, 927 + 128 - 12, 761 + 64 - 12)) {
 				draw_set_alpha(1);
@@ -715,13 +720,14 @@ try {
 				scr_creation(4);
 				scr_creation(5);
 				scr_creation(6);
+				scr_creation(7);
 			}
 		}
 		draw_set_alpha(1);
 
-		var q = 1, x3 = (room_width / 2) - 65, y3 = 790;
+		var q = 1, x3 = (room_width / 2) - 77, y3 = 790;
 		draw_set_color(38144);
-		repeat (6) {
+		repeat (7) {
 			draw_circle(x3, y3, 10, 1);
 			draw_circle(x3, y3, 9.5, 1);
 			draw_circle(x3, y3, 9, 1);
@@ -749,7 +755,7 @@ try {
 				change_slide = 1;
 				goto_slide = slide - 1;
 				popup = "";
-				if (goto_slide == 1) {
+				if (goto_slide == eCREATIONSLIDES.CHAPTERSELECT) {
 					highlight = 0;
 					highlighting = 0;
 					old_highlight = 0;
@@ -780,3 +786,5 @@ try {
 	handle_exception(_exception);
     room_goto(Main_Menu);
 }
+
+pop_draw_return_values();
