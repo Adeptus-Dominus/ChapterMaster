@@ -253,13 +253,13 @@ function scr_creation(slide_num) {
 	    	bulk_selection_buttons_setup();
 			livery_selection_options = new RadioSet([
 				{
-					str1 : "Defualt",
-					tooltip : "The defualt livery all marines will be coloured in",
+					str1 : "Default",
+					tooltip : "The default livery all marines will be coloured in",
 					font: fnt_menu
 				},
 				{
 					str1 : "Role",
-					tooltip : "Role specific livery that will overide defualt livery",
+					tooltip : "Role specific livery that will overide default livery",
 					font: fnt_menu
 				},
 				{

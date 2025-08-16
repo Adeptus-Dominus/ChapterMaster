@@ -594,11 +594,12 @@ function ToggleButton(data={}) constructor {
     text_color = c_gray;
     button_color = c_gray;
     font = fnt_40k_12;
-    style = "defualt";
+    style = "default";
 
     update = function () {
-    	if (style == "defualt"){
-	    	draw_set_font(font);
+    	add_draw_return_values();
+    	draw_set_font(font);
+    	if (style == "default"){
 	        if (width == 0) {
 	            width = string_width(str1) + 4;
 	        }
@@ -611,6 +612,7 @@ function ToggleButton(data={}) constructor {
 	    }
         x2 = x1 + width;
         y2 = y1 + height;
+        pop_draw_return_values();
     };
 
 	move_data_to_current_scope(data, true);
@@ -663,7 +665,7 @@ function ToggleButton(data={}) constructor {
 
         total_alpha = state_alpha * hover_alpha;
 
-        if (style == "defualt"){
+        if (style == "default"){
 	        draw_rectangle_color_simple(x1, y1, x1 + width, y1 + str1_h, 1, button_color, total_alpha);
 	        draw_set_halign(text_halign);
 	        draw_set_valign(fa_top);
@@ -671,10 +673,15 @@ function ToggleButton(data={}) constructor {
 	        draw_set_alpha(1);
 	        draw_set_halign(fa_left);
 	    } else if (style == "box"){
-	    	draw_sprite(spr_creation_check,active,x1,y1);
-	    	draw_set_valign(fa_top);
-	    	draw_set_halign(fa_center);
-	    	draw_text_transformed(x1+16,y1+36,str1,1,1,0);
+            // Icon with alpha
+            draw_sprite_ext(spr_creation_check, active, x1, y1, 1, 1, 0, c_white, total_alpha);
+            // Label centred below icon
+            draw_set_alpha(total_alpha);
+            draw_set_valign(fa_top);
+            draw_set_halign(fa_center);
+            var _label_y = y1 + 32 + 4;
+            draw_text_transformed(x1 + width/2, _label_y, str1, 1, 1, 0);
+            draw_set_alpha(1);
 	    }
 
 	    pop_draw_return_values();
