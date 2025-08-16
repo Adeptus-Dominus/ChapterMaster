@@ -163,7 +163,7 @@ function ComplexSet(_unit) constructor {
 			}
 			if (struct_exists(_exp_data, "scale")) {
 				var _m_exp = _exp_data.exp_scale_max;
-				var _increment_count = _mod.max_saturation / 5;
+				var _increment_count = max(1, floor(_mod.max_saturation / 5));
 				var _increments = (_m_exp - _min) / _increment_count;
 				var _sat_roof = _mod.max_saturation;
 				var _mar_exp = unit.experience;
@@ -171,9 +171,9 @@ function ComplexSet(_unit) constructor {
 				if (_mar_exp >= _m_exp) {
 					spawn_chance = _mod.max_saturation;
 				} else {
-					var calc_exp = _mar_exp - _min;
-					var _inc_point = floor(_mar_exp / _increments);
-					_max_sat = _inc_point * 5;
+                    var calc_exp = max(0, _mar_exp - _min);
+                    var _inc_point = floor(calc_exp / _increments);
+                    _max_sat = clamp(_inc_point * 5, 0, _mod.max_saturation);
 				}
 			}
 		}
@@ -397,7 +397,7 @@ function ComplexSet(_unit) constructor {
 			var _roles = active_roles();
 			var tiers = [
 				["Chapter Master"],
-				["Forge Master", "Master of Sanctity", "Master of the Apothecarion", string("Chief {0}", _roles[eROLE.Librarian])],
+				["Forge Master", "Master of Sanctity", "Master of the Apothecarion", $"Chief {_roles[eROLE.Librarian]}"],
 				[_roles[eROLE.Captain], _roles[eROLE.HonourGuard]],
 				[_roles[eROLE.Champion]],
 				[_roles[eROLE.Ancient], _roles[eROLE.VeteranSergeant]],
@@ -418,7 +418,7 @@ function ComplexSet(_unit) constructor {
 			}
 			if (_unit_tier >= _status_level) {
 				var variation_tier = (_unit_tier - _status_level) + 1;
-				if (variation_map[$ _area] % variation_tier != 0) {
+				if (!struct_exists(variation_map, _area) || variation_map[$ _area] % variation_tier != 0) {
 					return false;
 				}
 			}

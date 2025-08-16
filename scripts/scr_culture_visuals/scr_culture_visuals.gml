@@ -244,17 +244,17 @@ global.modular_drawing_items = [
         prevent_others : true,    
     },
     {
-        position : "robes",
+        position : "robe",
         body_types: [0],
         sprite:spr_binders_robe,
-        role_type: SPECIALISTS_LIBRARIANS,
+        role_type: [SPECIALISTS_LIBRARIANS],
         max_saturation:10,
     }, 
     {
-        position : "robes",
+        position : "robe",
         body_types: [0],
         sprite:spr_binders_robe,
-        role_type: SPECIALISTS_LIBRARIANS,
+        role_type: [SPECIALISTS_LIBRARIANS],
         max_saturation:40,
         chapter_adv : ["Favoured By The Warp","Warp Touched"],
         chapter_disadv : ["Warp Tainted"],
@@ -264,7 +264,7 @@ global.modular_drawing_items = [
         position : "belt",
         body_types: [0],
         sprite:spr_binders_belt,
-        role_type: SPECIALISTS_LIBRARIANS,
+        role_type: [SPECIALISTS_LIBRARIANS],
         chapter_adv : ["Favoured By The Warp","Warp Touched"],
         chapter_disadv : ["Warp Tainted"],
         allow_either :["chapter_adv","chapter_disadv"],
@@ -1457,7 +1457,7 @@ function DummyMarine()constructor{
     }
     static has_trait = marine_has_trait;
     static is_dreadnought = function(){
-        _arm_data = gear_weapon_data("armour", last_armour);
+        var _arm_data = gear_weapon_data("armour", last_armour);
         if (is_struct(_arm_data)){
             if (_arm_data.has_tag("dreadnought")){
                 return true
@@ -1887,7 +1887,7 @@ base: {
             sprite: spr_weapon_lasca,
         },
         {
-          sprite: spr_dread_plasma_cannon,
+          sprite: spr_dread_lascannon,
           body_types: [3],
           armours : ["Dreadnought"],
         }
