@@ -293,7 +293,7 @@ if (target_gear > 0) {
                     switch (target_gear) {
                         case 0: obj_creation.wep1[co, ide] = buh; break;
                         case 1: obj_creation.wep2[co, ide] = buh; break;
-                        case 2: obj_creation.armour[so, ide] = buh; break;
+                        case 2: obj_creation.armour[co, ide] = buh; break;
                         case 3: obj_creation.gear[co, ide] = buh; break;
                         case 4: obj_creation.mobi[co, ide] = buh; break;
                     }
