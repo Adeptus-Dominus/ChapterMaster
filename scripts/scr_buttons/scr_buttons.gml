@@ -527,7 +527,7 @@ function RadioSet(options_array, title="", data = {})constructor{
 		add_draw_return_values();
 
 		draw_set_halign(fa_center);
-		if (max_width > 0){
+		if (max_width > 0 && string_length(draw_title) < max_width){
 			if (draw_title){
 				draw_text(x1+(max_width/2) - (string_length(draw_title)/2), y1, title);
 			}
@@ -547,17 +547,17 @@ function RadioSet(options_array, title="", data = {})constructor{
 			_cur_opt.x1 = _prev_x;
 			_cur_opt.y1 = _prev_y;
 			_cur_opt.update()
-			_cur_opt.active = i==current_selection;
+			_cur_opt.active = i == current_selection;
 			_cur_opt.button_color = _cur_opt.active ? active_col: inactive_col;
 			_cur_opt.draw();
-			items_on_row++
+			items_on_row++;
 			
 			if (_cur_opt.clicked() && allow_changes){
 				current_selection = i;
 			}
-			_prev_x = _cur_opt.x2+x_gap;
+			_prev_x = _cur_opt.x2 + x_gap;
 
-			x2 = _prev_x>x2 ? _prev_x:x2;
+			x2 = _prev_x > x2 ? _prev_x : x2;
 			y2 = _prev_y + _cur_opt.height;
 			if (max_width>0){
 				if (_prev_x - x1 > max_width){
@@ -574,6 +574,9 @@ function RadioSet(options_array, title="", data = {})constructor{
 	}
 
 	static selection_val = function(value){
+		if (current_selection == -1){
+			return noone;
+		}
 		return toggles[current_selection][$value];
 	}
 }
@@ -596,6 +599,9 @@ function ToggleButton(data={}) constructor {
     font = fnt_40k_12;
     style = "default";
 
+    //make true to run clicked() within draw sequence
+    clicked_check_defualt = false;
+
     update = function () {
     	add_draw_return_values();
     	draw_set_font(font);
@@ -607,8 +613,8 @@ function ToggleButton(data={}) constructor {
 	            height = string_height(str1) + 4;
 	        }
 	    }else if (style == "box"){
-	    	width = max(32, string_width(str1)/2) + 6;
-	    	height = 32;
+	    	width = max(32, string_width(str1)) + 6;
+	    	height = 32 + 2 +string_height(str1);
 	    }
         x2 = x1 + width;
         y2 = y1 + height;
@@ -633,7 +639,8 @@ function ToggleButton(data={}) constructor {
         }
     };
 
-    draw = function() {
+    draw = function(is_active = active) {
+    	self.active = is_active;
     	add_draw_return_values();
     	draw_set_font(font);
         var str1_h = string_height(str1);
@@ -674,16 +681,20 @@ function ToggleButton(data={}) constructor {
 	        draw_set_halign(fa_left);
 	    } else if (style == "box"){
             // Icon with alpha
-            draw_sprite_ext(spr_creation_check, active, x1, y1, 1, 1, 0, c_white, total_alpha);
+            draw_set_halign(fa_left);
+            draw_sprite_ext(spr_creation_check, active, x1 + 2, y1, 1, 1, 0, c_white, total_alpha);
             // Label centred below icon
             draw_set_alpha(total_alpha);
             draw_set_valign(fa_top);
             draw_set_halign(fa_center);
-            var _label_y = y1 + 32 + 4;
-            draw_text_transformed(x1 + width/2, _label_y, str1, 1, 1, 0);
+            var _label_y = y1 + 32 + 2;
+            draw_text_transformed(x1+18 , _label_y, str1, 1, 1, 0);
             draw_set_alpha(1);
 	    }
 
+	    if (clicked_check_defualt){
+	    	clicked();
+	    }
 	    pop_draw_return_values();
     };
 }

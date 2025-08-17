@@ -58,7 +58,9 @@ if (col_shift){
             }
             if (is_string(type)){
                 obj_creation.complex_livery_data[$ role][$ type] = _col;
-                set_complex_livery_buttons();
+                with (obj_creation){
+                    set_complex_livery_buttons();
+                }
             }            
         }
     }
@@ -187,7 +189,9 @@ if (col_shift){
             }
 
             instance_destroy();
-            update_creation_roles_radio();
+            with (obj_creation){
+                update_creation_roles_radio();
+            }
         }
 
         draw_set_halign(fa_left);
@@ -246,18 +250,18 @@ if (target_gear > 0) {
             if (scr_click_left()) {
                 var buh = item_name[h] == ITEM_NAME_NONE ? "" : item_name[h];
                 switch (target_gear) {
-                    case 1: obj_creation.wep1[co, ide] = buh; break;
-                    case 2: obj_creation.wep2[co, ide] = buh; break;
-                    case 3: obj_creation.armour[co, ide] = buh; break;
-                    case 4: obj_creation.gear[co, ide] = buh; break;
-                    case 5: obj_creation.mobi[co, ide] = buh; break;
+                    case 0: obj_creation.wep1[co, ide] = buh; break;
+                    case 1: obj_creation.wep2[co, ide] = buh; break;
+                    case 2: obj_creation.armour[co, ide] = buh; break;
+                    case 3: obj_creation.gear[co, ide] = buh; break;
+                    case 4: obj_creation.mobi[co, ide] = buh; break;
                 }
                 target_gear = 0;
             }
         }
     }
     
-    if (target_gear == 1 || target_gear == 2) {
+    if (target_gear == 0 || target_gear == 1) {
         tab = 2;
         item_name = [];
         scr_get_item_names(
@@ -287,11 +291,11 @@ if (target_gear > 0) {
                 if (scr_click_left()) {
                     var buh = item_name[h] == ITEM_NAME_NONE ? "" : item_name[h];
                     switch (target_gear) {
-                        case 1: obj_creation.wep1[co, ide] = buh; break;
-                        case 2: obj_creation.wep2[co, ide] = buh; break;
-                        case 3: obj_creation.armour[co, ide] = buh; break;
-                        case 4: obj_creation.gear[co, ide] = buh; break;
-                        case 5: obj_creation.mobi[co, ide] = buh; break;
+                        case 0: obj_creation.wep1[co, ide] = buh; break;
+                        case 1: obj_creation.wep2[co, ide] = buh; break;
+                        case 2: obj_creation.armour[so, ide] = buh; break;
+                        case 3: obj_creation.gear[co, ide] = buh; break;
+                        case 4: obj_creation.mobi[co, ide] = buh; break;
                     }
                     target_gear = 0;
                 }
