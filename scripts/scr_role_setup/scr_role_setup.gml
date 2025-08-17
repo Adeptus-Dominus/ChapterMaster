@@ -8,7 +8,7 @@ function role_setup_objects(){
         y1 : 250,
         tooltip : $"Specialist Distribution\nCheck if you wish for your Companies to be uniform and each contain {role[100][10]}s and {role[100][9]}s.",
         active : equal_specialists,
-        clicked_check_defualt : true,
+        clicked_check_default : true,
     });
 
     load_to_ship_radio = new RadioSet([
@@ -38,9 +38,9 @@ function role_setup_objects(){
         style : "box",
         x1 :540,
         y1 : 370,
-        tooltip : $"stribute Scouts\nCheck to have your Scouts split across ships in the fleet.",
+        tooltip : $"Distribute Scouts\nCheck to have your Scouts split across ships in the fleet.",
         active : load_to_ships[1],
-        clicked_check_defualt : true,
+        clicked_check_default : true,
     });
     distribute_vets_box =  new ToggleButton({
         str1 : "Distribute Veterans",
@@ -50,7 +50,7 @@ function role_setup_objects(){
         y1 : 370,
         tooltip : $"Distribute Veterans\nCheck to have your Veterans split across the fleet.",
         active : load_to_ships[2],
-        clicked_check_defualt : true,
+        clicked_check_default : true,
     });
 }
 
@@ -80,8 +80,6 @@ function scr_role_setup(){
     
     if (custom != eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.5);
 
-
-    //at some point here swap to a radio set
     specialist_distribution_box.draw(equal_specialists);
     equal_specialists = specialist_distribution_box.active;
 

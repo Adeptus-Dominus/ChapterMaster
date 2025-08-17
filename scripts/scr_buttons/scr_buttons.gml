@@ -600,7 +600,7 @@ function ToggleButton(data={}) constructor {
     style = "default";
 
     //make true to run clicked() within draw sequence
-    clicked_check_defualt = false;
+    clicked_check_default = false;
 
     update = function () {
     	add_draw_return_values();
@@ -692,7 +692,7 @@ function ToggleButton(data={}) constructor {
             draw_set_alpha(1);
 	    }
 
-	    if (clicked_check_defualt){
+	    if (clicked_check_default){
 	    	clicked();
 	    }
 	    pop_draw_return_values();

@@ -261,7 +261,7 @@ if (target_gear > 0) {
         }
     }
     
-    if (target_gear == 0 || target_gear == 1) {
+    if (target_gear == EquipmentSlot.WEAPON_ONE || target_gear == EquipmentSlot.WEAPON_TWO) {
         tab = 2;
         item_name = [];
         scr_get_item_names(
