@@ -26,6 +26,7 @@ function ColourItem(xx,yy) constructor{
         switch(type_end){
             case 1:
                 role_set = obj_creation.roles_radio.selection_val("role_id");
+                role_set = role_set == noone ? 0: role_set;
                 map_colour = variable_clone(_full_livs[role_set]);
                 break;
             case 0:
@@ -34,6 +35,9 @@ function ColourItem(xx,yy) constructor{
                 break;
             case 2:
                 role_set = obj_creation.buttons.company_liveries_choice.current_selection;
+                if (role_set == -1){
+                    role_set = 1;
+                }
                 map_colour = variable_clone(_comp_livs[role_set]);
                 break;
         }

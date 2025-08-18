@@ -245,7 +245,7 @@ function scr_creation(slide_num) {
 				    font : fnt_40k_12,
 				    style : "box",
 				},												
-	    	], "", {x1 : 437, y1 : 500, max_width : 400});
+	    	], "", {x1 : 477, y1 : 515, max_width : 400});
 
 	    	set_complex_livery_buttons();
 
@@ -317,6 +317,7 @@ function scr_creation(slide_num) {
 	        change_slide=true;
 	        goto_slide=eCREATIONSLIDES.CHAPTERROLES;
 	        update_creation_roles_radio();
+	        role_setup_objects();
 	    }
 	}
 

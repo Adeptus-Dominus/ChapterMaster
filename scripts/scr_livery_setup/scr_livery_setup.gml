@@ -1,6 +1,7 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 function scr_livery_setup(){
+    add_draw_return_values();
    draw_set_font(fnt_40k_30b);
     draw_set_halign(fa_center);
     draw_set_alpha(1);
@@ -222,4 +223,5 @@ function scr_livery_setup(){
     }
 
     right_data_slate.draw(1210, 5,0.45, 1);
+    pop_draw_return_values();
 }

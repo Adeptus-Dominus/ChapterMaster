@@ -1,10 +1,72 @@
 function role_setup_objects(){
 
+    specialist_distribution_box =  new ToggleButton({
+        str1 : "Equal Specialist Distribution",
+        font : fnt_40k_12,
+        style : "box",
+        x1 :560,
+        y1 : 250,
+        tooltip : $"Specialist Distribution\nCheck if you wish for your Companies to be uniform and each contain {role[100][10]}s and {role[100][9]}s.",
+        active : equal_specialists,
+        clicked_check_default : true,
+    });
+
+    load_to_ship_radio = new RadioSet([
+        {
+            str1 : "On Planet",
+            font : fnt_40k_12,
+            style : "box",
+            tooltip : $"On Planet/nCheck to have your Astartes Start on your home planet.",
+        },
+        {
+            str1 : "Load to Ships",
+            font : fnt_40k_12,
+            style : "box",
+            tooltip : $"Load to Ships\nCheck to have your Astartes automatically loaded into ships when the game starts.",
+        },
+        {
+            str1 : "Load (Sans Escorts)",
+            font : fnt_40k_12,
+            style : "box",
+            tooltip : $"Load (Sans Escorts)\nCheck to have your Astartes automatically loaded into ships, except for Escorts, when the game starts.",
+        }        
+    ], "", {x1: 530, y1 : 310, x_gap:20})
+    load_to_ship_radio.current_selection = load_to_ships[0];
+    distribute_scouts_box =  new ToggleButton({
+        str1 : "Distribute Scouts",
+        font : fnt_40k_12,
+        style : "box",
+        x1 :540,
+        y1 : 370,
+        tooltip : $"Distribute Scouts\nCheck to have your Scouts split across ships in the fleet.",
+        active : load_to_ships[1],
+        clicked_check_default : true,
+    });
+    distribute_vets_box =  new ToggleButton({
+        str1 : "Distribute Veterans",
+        font : fnt_40k_12,
+        style : "box",
+        x1 :690,
+        y1 : 370,
+        tooltip : $"Distribute Veterans\nCheck to have your Veterans split across the fleet.",
+        active : load_to_ships[2],
+        clicked_check_default : true,
+    });
 }
 
 function scr_role_setup(){
+    add_draw_return_values();
+
+    draw_set_font(fnt_40k_30b);
+    draw_set_halign(fa_center);
+    draw_set_alpha(1);
+    draw_set_color(38144);
+
+
+    draw_text_color_simple(800,80,"Roles",38144);
 	var c=100;
 	if (!instance_exists(obj_creation_popup)){
+        roles_radio.update({y1:150});
 		roles_radio.draw();
 		if (roles_radio.changed && custom==eCHAPTER_TYPE.CUSTOM){
 	        instance_destroy(obj_creation_popup);
@@ -12,130 +74,30 @@ function scr_role_setup(){
 	        pp.type=roles_radio.selection_val("role_id") + 100;
 		}
 	}
-    /*for (var role_slot =1;role_slot<=13;role_slot++){
-        var id_array = [
-            0,
-            eROLE.Apothecary,
-            eROLE.Chaplain,
-            eROLE.Librarian,
-            eROLE.Techmarine,
-            eROLE.Captain,
-            eROLE.HonourGuard,
-            eROLE.Terminator,
-            eROLE.Veteran,eROLE.Dreadnought,
-            eROLE.Tactical,
-            eROLE.Devastator,
-            eROLE.Assault,
-            eROLE.Scout
-        ];
-        role_id = id_array[role_slot];
-        
-        draw_set_alpha(1);
-        if (race[c,role_id]!=0){
-            if (custom != eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.5);
-            yyy+=spacing;
-            draw_set_color(38144);
-            draw_rectangle(xxx,yyy,1150,yyy+20,1);
-            draw_set_color(38144);
-            draw_text(xxx,yyy,role[100,role_id]);
-            if (scr_hit(xxx,yyy,1150,yyy+20)) and ((!instance_exists(obj_creation_popup)) || ((instance_exists(obj_creation_popup) and obj_creation_popup.target_gear=0))) {
-
-                draw_set_alpha(custom == eCHAPTER_TYPE.CUSTOM ? 0.2 : 0.1);
-                draw_set_color(c_white);
-                draw_rectangle(xxx,yyy,1150,yyy+20,0);
-                draw_set_alpha(1);
-                tooltip=string(role[c][role_id])+" Settings";
-                tooltip2="Click to open the settings for this unit.";
-                if (scr_click_left() and custom==eCHAPTER_TYPE.CUSTOM){
-                    instance_destroy(obj_creation_popup);
-                    var pp=instance_create(0,0,obj_creation_popup);
-                    pp.type=role_id+100;
-                    if (!comp_toggle.company_view){
-                        full_liveries[livery_picker.role_set] = variable_clone(livery_picker.map_colour);
-                        livery_picker.role_set = role_id;
-                        livery_picker.map_colour = full_liveries[role_id];
-                        if (!livery_picker.map_colour.is_changed){
-                            livery_picker.map_colour = variable_clone(full_liveries[0]);
-                        }
-                        livery_picker.shuffle_dummy();
-                        livery_picker.reset_image();
-                        livery_picker.colour_pick=false;
-                    }
-                }
-            }
-        }
-    } */ 
     draw_set_color(38144);
     draw_set_alpha(1);
     draw_set_font(fnt_40k_30b);
     
     if (custom != eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.5);
-    yar=0;
-    if (equal_specialists=1) then yar=1;
-    draw_sprite(spr_creation_check,yar,860,645);yar=0;
-    if (scr_hit(860,650,1150,650+32)) and (!instance_exists(obj_creation_popup)){
-    	tooltip="Specialist Distribution";
-    	tooltip2=$"Check if you wish for your Companies to be uniform and each contain {role[100][10]}s and {role[100][9]}s.";
-    }
-    if (point_and_click([860,650,860+32,650+32]) and allow_colour_click){
-        
-        var onceh=0;
-        equal_specialists = !equal_specialists;
-    }
-    draw_text_transformed(860+30,650+4,"Equal Specialist Distribution",0.4,0.4,0);
-    draw_set_alpha(1);
-    
-    yar=0;
-    if (load_to_ships[0]=1) then yar=1;draw_sprite(spr_creation_check,yar,860,645+40);yar=0;
-    if (scr_hit(860,645+40,1005,645+32+40) and !instance_exists(obj_creation_popup)){
-    	tooltip="Load to Ships";
-    	tooltip2="Check to have your Astartes automatically loaded into ships when the game starts.";
-    }
-    if (point_and_click([860,645+40,860+32,645+32+40]) and (!instance_exists(obj_creation_popup))){
-        var onceh=0;
-        load_to_ships[0] = !load_to_ships[0];
-    }
-    draw_text_transformed(860+30,645+4+40,"Load to Ships",0.4,0.4,0);
-    
-    yar=0;
 
-    draw_sprite(spr_creation_check,load_to_ships[0]==2,1010,645+40);
-    if (scr_hit(1010,645+40,1150,645+32+40)) and (!instance_exists(obj_creation_popup)){
-    	tooltip="Load (Sans Escorts)";
-    	tooltip2="Check to have your Astartes automatically loaded into ships, except for Escorts, when the game starts.";
-    }
-    if (point_and_click([1010,645+40,1020+32,645+32+40]))  and (!instance_exists(obj_creation_popup)){
-        
-        load_to_ships[0] =  (load_to_ships[0]!=2) ? 2 : 0; 
+    specialist_distribution_box.draw(equal_specialists);
+    equal_specialists = specialist_distribution_box.active;
 
-    }
-    draw_text_transformed(1010+30,645+4+40,"Load (Sans Escorts)",0.4,0.4,0);
+
+    load_to_ship_radio.draw();
+
+    load_to_ships[0] = load_to_ship_radio.current_selection;
+
+
+
+
 	
-	yar=0;
 	if (load_to_ships[0] > 0){
-		if (load_to_ships[1] == 1){
-			yar=1;
-		}
-		draw_sprite(spr_creation_check,yar,860,645+80);yar=0;
-    	if (scr_hit(860,645+80,1005,645+32+80)) and (!instance_exists(obj_creation_popup)){tooltip="Distribute Scouts";tooltip2="Check to have your Scouts split across ships in the fleet.";}
-    	if (point_and_click([860,645+80,860+32,645+32+80])) and (!instance_exists(obj_creation_popup)){
-             load_to_ships[1] = !load_to_ships[1];  		 
-    	}
-    	draw_text_transformed(860+30,645+4+80,"Distribute Scouts",0.4,0.4,0);	
-	
-		yar=0;
-		if (load_to_ships[2] == 1){
-			yar=1;
-		}
-		draw_sprite(spr_creation_check,yar,1010,645+80);yar=0;
-    	if (scr_hit(1010,645+80,1150,645+32+80)) and (!instance_exists(obj_creation_popup)){
-            tooltip="Distribute Veterans";tooltip2="Check to have your Veterans split across the fleet.";
-        }
-    	if (point_and_click([1010,645+80,1020+32,645+32+80])) and (!instance_exists(obj_creation_popup)){
-    		var onceh=0;
-             load_to_ships[2] = !load_to_ships[2] 		 
-    	}
-    	draw_text_transformed(1010+30,645+4+80,"Distribute Veterans",0.4,0.4,0);	
+		distribute_scouts_box.draw(load_to_ships[1]);
+        load_to_ships[1] = distribute_scouts_box.active;
+
+        distribute_vets_box.draw(load_to_ships[2]);
+        load_to_ships[2] = distribute_vets_box.active;	
 	}	
     
     
@@ -145,7 +107,7 @@ function scr_role_setup(){
     draw_line(433,536,844,536);
     draw_line(433,537,844,537);
 	if (!instance_exists(obj_creation_popup)){
-    
+        draw_set_halign(fa_left);
         if (scr_hit(540,547,800,725)){
             tooltip="Advisor Names";
             tooltip2="The names of your main Advisors.  They provide useful information and reports on the divisions of your Chapter.";
@@ -301,4 +263,5 @@ function scr_role_setup(){
             }
         }  
     }
+    pop_draw_return_values();
 }
