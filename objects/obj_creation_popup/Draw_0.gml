@@ -151,7 +151,7 @@ if (col_shift){
         }
         confirm_gear_button.alpha = target_gear > -1 ? 0.5 : 1;
         confirm_gear_button.rects = draw_unit_buttons([614,716], "CONFIRM",[1,1], CM_GREEN_COLOR,, fnt_40k_14b, confirm_gear_button.alpha);
-        if (point_and_click(confirm_gear_button.rects && target_gear == -1)) {
+        if (target_gear == -1 && point_and_click(confirm_gear_button.rects)) {
             var possible_custom_roles = [
                 ["chapter_master", eROLE.ChapterMaster],
                 ["honour_guard",eROLE.HonourGuard],
@@ -292,10 +292,9 @@ if (target_gear > -1) {
                     case 3: obj_creation.gear[co, ide] = buh; break;
                     case 4: obj_creation.mobi[co, ide] = buh; break;
                 }
-                target_gear = 0;
+                target_gear = -1;
+            }
         }
-        }
-        
         tab = 1;
     }
 

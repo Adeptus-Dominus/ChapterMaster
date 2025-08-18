@@ -1,7 +1,7 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 function player_recruit_planet_selection(){
-    add_draw_return_values()
+    add_draw_return_values();
     with (obj_creation){
     draw_set_color(CM_GREEN_COLOR);
     draw_set_font(fnt_40k_30b);
@@ -71,10 +71,11 @@ function player_recruit_planet_selection(){
         }
     }
     }
+    pop_draw_return_values()
 }    
 
 function scr_creation_home_planet_create(){
-
+    add_draw_return_values();
 	var fleet_type_text = fleet_type==ePlayerBase.home_world ? "Homeworld" : "Flagship";
     draw_text_transformed(644,218,fleet_type_text,0.6,0.6,0);
 
