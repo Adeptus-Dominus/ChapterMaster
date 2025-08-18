@@ -79,6 +79,7 @@ function setup_fleet_battle(combating, star){
             }                   
         }
     }
+
     obj_fleet.pla_fleet = _p_fleet;
     add_fleet_ships_to_combat(_p_fleet, obj_fleet);
 

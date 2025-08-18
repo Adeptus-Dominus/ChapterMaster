@@ -37,7 +37,7 @@ function draw_player_fleet_combat_options(){
         	var _ali_mod = 330;
 	        if (allied_fleet[i]!=0){
 	            // draw_sprite(spr_force_icon,allied_fleet[1],xxx+374,yyy+269);
-	            scr_image("ui/force",allied_fleet[i],xxx+44+_ali_mod-32,yyy+269-32,64,64);
+	            scr_image("ui/force",allied_fleet[i],xxx + 44+ _ali_mod -32,yyy+269-32,64,64);
 	            var shw="";
 		        shw += $"{acap[i]} : {string_plural( "Battleship",acap[i])} \n";
 		        shw += $"{afri[i]} :{string_plural( "Frigate",afri[i])} \n";
@@ -66,75 +66,14 @@ function draw_player_fleet_combat_options(){
     }
 
     var _fight_button = draw_unit_buttons([xxx+272,yyy+350],"Fight");
-    if (point_and_click(_fight_button)){
+    if (point_and_click(_fight_button) && enemy_fleet[1]!=0){
         instance_activate_all();
 
+        var _star =  star_by_name(battle_location[current_battle]);
+        setup_fleet_battle(enemy_fleet[1], _star);
+
+        ready_set = 0;
         // Start battle here
-
-        combating=1;
-
-        instance_create(0,0,obj_fleet);
-        // 
-        obj_fleet.enemy[1]=enemy_fleet[1];
-        obj_fleet.enemy_status[1]=-1;
-
-        obj_fleet.en_capital[1]=ecap[1];
-        obj_fleet.en_frigate[1]=efri[1];
-        obj_fleet.en_escort[1]=eesc[1];
-
-        // Plug in all of the enemies first
-        // And then plug in the allies after then with their status set to positive
-
-        var g=1, ee=1;
-        repeat(5){
-            g+=1;
-            if (enemy_fleet[g]!=0){ee+=1;
-                obj_fleet.enemy[ee]=enemy_fleet[g];
-                obj_fleet.enemy_status[ee]=-1;
-    
-                obj_fleet.en_capital[ee]=ecap[g];
-                obj_fleet.en_frigate[ee]=efri[g];
-                obj_fleet.en_escort[ee]=eesc[g];
-            }
-        }
-        var g=0;
-        repeat(6){
-            g+=1;
-            if (allied_fleet[g]!=0){
-                ee+=1;
-                obj_fleet.enemy[ee]=allied_fleet[g];
-                obj_fleet.enemy_status[ee]=1;
-    
-                obj_fleet.en_capital[ee]=acap[g];
-                obj_fleet.en_frigate[ee]=afri[g];
-                obj_fleet.en_escort[ee]=aesc[g];
-            }
-        }
-
-        if (battle_special[current_battle]="csm"){
-        	obj_fleet.csm_exp=1;
-        }
-        if (battle_special[current_battle]="BLOOD"){
-        	obj_fleet.csm_exp=2;
-        }
-
-        instance_activate_all();
-        var stahr=instance_nearest(_battle_sys.x,_battle_sys.y,obj_star);
-        obj_fleet.star_name=stahr.name;
-
-        for (var p_num = 1; p_num<stahr.planets;p_num++){
-            //TODO fix this because this sounds rad
-            //if(planet_feature_bool(stahr.p_feature[p_num], P_features.Monastery)==1)thenobj_fleet.player_lasers=stahr.p_lasers[p_num]; 
-        }
-        var that=instance_nearest(_battle_sys.x,_battle_sys.y,obj_p_fleet);
-        add_fleet_ships_to_combat(that, obj_fleet)
-
-        instance_deactivate_all(true);
-        instance_activate_object(obj_controller);
-        instance_activate_object(obj_ini);
-        instance_activate_object(obj_fleet);
-        instance_activate_object(obj_cursor);
-        // instance_deactivate_object(battle_pobject[current_battle]);
     }
 	
 }
@@ -144,8 +83,8 @@ function draw_player_ground_combat_options(){
     var xxx=main_slate.XX;
     var yyy=main_slate.YY;
     if (battle_opponent[current_battle]<=20){
-        draw_text(xxx+310,yyy+118,string(strin[1])+" Marines");
-        draw_text(xxx+310,yyy+138,string(strin[2])+" Vehicles");
+        draw_text(xxx+310,yyy+118, $"{string(strin[1])} Marines");
+        draw_text(xxx+310,yyy+138, $"{string(strin[2])} Vehicles");
         if (strin[3]!="") then draw_text(xxx+310,yyy+158,string(strin[3])+" Fortified");// Not / Barely / Lightly / Moderately / Highly / Maximally
     }
     
@@ -160,7 +99,7 @@ function draw_player_ground_combat_options(){
     draw_set_halign(fa_center);
     // draw_sprite(spr_force_icon,battle_opponent[current_battle],xxx+44,yyy+289);
     scr_image("ui/force",battle_opponent[current_battle],xxx+44-32,yyy+289-32,64,64);
-    draw_text_transformed(xxx+44,yyy+316,string_hash_to_newline(string(strin[4])),0.75,1,0);
+    draw_text_transformed(xxx+44,yyy+316,string(strin[4]),0.75,1,0);
     draw_set_halign(fa_center);draw_set_font(fnt_40k_14b);
     
 
@@ -253,7 +192,7 @@ function draw_player_ground_combat_options(){
                 add_to_battle();
             }              
         }
-        delete _roster
+        delete _roster;
         instance_deactivate_object(battle_object[current_battle]);
     }
     
