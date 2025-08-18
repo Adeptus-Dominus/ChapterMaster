@@ -54,7 +54,7 @@ function intro_to_diplomacy(faction_enum){
 function draw_diplomacy_diplo_text(){
     draw_set_font(fnt_40k_14);
     draw_set_alpha(1);
-    draw_set_color(38144);
+    draw_set_color(CM_GREEN_COLOR);
     draw_set_halign(fa_left);
     draw_text_ext(336+16,209,string_hash_to_newline(string(diplo_txt)),-1,536);
     draw_set_halign(fa_center);
@@ -461,7 +461,7 @@ function scr_ui_diplomacy() {
 	draw_set_alpha(1);
 	if (diplomacy==0){// Main diplomacy screen
 
-	    /*draw_set_color(38144);
+	    /*draw_set_color(CM_GREEN_COLOR);
 	    draw_rectangle(xx+31,yy+281,xx+438,yy+416,0);
 	    draw_rectangle(xx+31,yy+417,xx+438,yy+552,0);
 	    draw_rectangle(xx+31,yy+553,xx+438,yy+688,0);
@@ -473,7 +473,7 @@ function scr_ui_diplomacy() {
 	    draw_rectangle(xx+451,yy+689,xx+858,yy+125+273,0);*/
     
     
-	    draw_set_color(38144);
+	    draw_set_color(CM_GREEN_COLOR);
 	    draw_set_font(fnt_40k_30b);
 	    draw_set_halign(fa_center);
 	    draw_text(xx+800,yy+74,string_hash_to_newline("Diplomacy"));
@@ -538,7 +538,7 @@ function scr_ui_diplomacy() {
 
 		//draw the meet chaos button
 	    draw_set_halign(fa_left);
-	    draw_set_color(38144);
+	    draw_set_color(CM_GREEN_COLOR);
 		draw_rectangle(xx+688,yy+240,xx+1028,yy+281,0);
 	    draw_set_color(c_black);
 		draw_text_transformed(xx+688,yy+241," Meet Chaos Emmissary",0.7,0.7,0);
@@ -610,7 +610,7 @@ function scr_ui_diplomacy() {
 	    }
     	
 	    draw_set_halign(fa_center);
-	    draw_set_color(38144);
+	    draw_set_color(CM_GREEN_COLOR);
 	    draw_set_font(fnt_40k_30b);
     
 	    var _diplomacy_faction_name="";
@@ -659,7 +659,7 @@ function scr_ui_diplomacy() {
         draw_set_halign(fa_left);
 
         draw_rectangle(mouse_x-2,mouse_y+20,mouse_x+2+string_width_ext(warn,-1,600),mouse_y+24+string_height_ext(warn,-1,600),0);
-        draw_set_color(38144);
+        draw_set_color(CM_GREEN_COLOR);
         draw_rectangle(mouse_x-2,mouse_y+20,mouse_x+2+string_width_ext(warn,-1,600),mouse_y+24+string_height_ext(warn,-1,600),1);
         draw_text_ext(mouse_x,mouse_y+22,warn,-1,600);
     }

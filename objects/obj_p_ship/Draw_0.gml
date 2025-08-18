@@ -5,7 +5,7 @@ if !__b__
 {
 
 if (selected=1){
-    draw_set_color(38144);
+    draw_set_color(CM_GREEN_COLOR);
     draw_circle(x,y,(sprite_width/2),1);
     draw_circle(x,y,(sprite_width/2)-1,1);
     draw_circle(x,y,(sprite_width/2)+1,1);
@@ -38,7 +38,7 @@ draw_self();
 
 
 shader_reset();
-draw_set_color(38144);
+draw_set_color(CM_GREEN_COLOR);
 draw_set_font(fnt_info);
 draw_set_halign(fa_center);
 
@@ -55,7 +55,7 @@ if (boarders>0){
     draw_set_color(c_white);
     draw_text(x-16,y+12,string_hash_to_newline(string(boarders)));
 }
-draw_set_color(38144);
+draw_set_color(CM_GREEN_COLOR);
 
 
 if (maxhp!=0){

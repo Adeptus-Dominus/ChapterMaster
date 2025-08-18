@@ -5,7 +5,7 @@ draw_set_color(c_black);draw_set_alpha(1);
 draw_rectangle(0,0,800,900,0);
 draw_rectangle(818,235,1578,666,0);
 
-draw_set_color(38144);
+draw_set_color(CM_GREEN_COLOR);
 
 var l;l=0;
 draw_set_alpha(1);draw_rectangle(0+l,0+l,800-l,900-l,1);l+=1;
@@ -38,7 +38,7 @@ draw_set_halign(fa_left);
 
 repeat(45){l+=1;
     // draw_text(x+6,y-10+(l*14),"."+string(lines[31-l]));
-    draw_set_color(38144);
+    draw_set_color(CM_GREEN_COLOR);
     if (lines_color[l]="red") then draw_set_color(c_red);
     if (lines_color[l]="yellow") then draw_set_color(3055825);
     if (lines_color[l]="purple") then draw_set_color(16646566);
@@ -48,7 +48,7 @@ repeat(45){l+=1;
     draw_text(x+6,y-10+(l*18),string_hash_to_newline(string(lines[l])));
 }
 
-draw_set_color(38144);
+draw_set_color(CM_GREEN_COLOR);
 if (click_stall_timer<=0){
     if (fadein<0) and (fadein>-100) and (started=0){
         draw_set_alpha((fadein*-1)/30);

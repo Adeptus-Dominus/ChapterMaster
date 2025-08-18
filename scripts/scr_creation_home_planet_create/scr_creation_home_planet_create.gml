@@ -1,9 +1,12 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 function player_recruit_planet_selection(){
+    add_draw_return_values()
     with (obj_creation){
+    draw_set_color(CM_GREEN_COLOR);
+    draw_set_font(fnt_40k_30b);
+    draw_set_halign(fa_center); 
     if (fleet_type!=1) or (custom!=eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.5);
-    yar=0;
     var _recruit_home = buttons.recruit_home_relationship;
 
     _recruit_home.x1 = 1265;
@@ -12,10 +15,7 @@ function player_recruit_planet_selection(){
         _recruit_home.allow_changes = false;
     }
     _recruit_home.draw();
-    var _recruit_world_type = _recruit_home.current_selection;
-    draw_set_color(38144);
-    draw_set_font(fnt_40k_30b);
-    draw_set_halign(fa_center);        
+    var _recruit_world_type = _recruit_home.current_selection;       
     if (_recruit_world_type==0){
         recruiting = homeworld;
     }
@@ -62,7 +62,7 @@ function player_recruit_planet_selection(){
 
         if (_recruit_world_type==2){
             var _refresh_rec_name_btn =[1503, 398, 1503+20, 398+20];
-            draw_unit_buttons(_refresh_rec_name_btn,"?", [1,1], 38144,,fnt_40k_14b);
+            draw_unit_buttons(_refresh_rec_name_btn,"?", [1,1], CM_GREEN_COLOR,,fnt_40k_14b);
             if(point_and_click(_refresh_rec_name_btn)){
                 var _new_rec_name = global.name_generator.generate_star_name();
                 //show_debug_message($"regen name of recruiting_name from {recruiting_name} to {_new_rec_name}");
@@ -110,7 +110,7 @@ function scr_creation_home_planet_create(){
             draw_rectangle(525,398,760,418,1);
             draw_set_alpha(1);
             var _refresh_hw_name_btn =[770, 398, 790, 418];
-            draw_unit_buttons(_refresh_hw_name_btn,"?", [1,1], 38144,,fnt_40k_14b);
+            draw_unit_buttons(_refresh_hw_name_btn,"?", [1,1], CM_GREEN_COLOR,,fnt_40k_14b);
             if(point_and_click(_refresh_hw_name_btn)){
                 var _new_hw_name = global.name_generator.generate_star_name();
                 //show_debug_message($"regen name of homeworld from {homeworld_name} to {_new_hw_name}");
@@ -155,7 +155,7 @@ function scr_creation_home_planet_create(){
             draw_rectangle(525,398,760,418,1);
             draw_set_alpha(1);
             var _refresh_fs_name_btn =[770, 398, 790, 418];
-            draw_unit_buttons(_refresh_fs_name_btn,"?", [1,1], 38144,,fnt_40k_14b);
+            draw_unit_buttons(_refresh_fs_name_btn,"?", [1,1], CM_GREEN_COLOR,,fnt_40k_14b);
             if(point_and_click(_refresh_fs_name_btn)){
                 var _new_fs_name = global.name_generator.generate_imperial_ship_name();
                 show_debug_message($"regen name of flagship_name from {flagship_name} to {_new_fs_name}");
@@ -251,4 +251,5 @@ function scr_creation_home_planet_create(){
         	_coords[1] += 45;
         }
     }
+    pop_draw_return_values()
 }

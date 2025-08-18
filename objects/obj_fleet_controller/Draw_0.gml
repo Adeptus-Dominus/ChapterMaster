@@ -4,7 +4,7 @@ if (obj_controller.zoomed=1) then draw_sprite(spr_space_bg,0,0,0);
 
 exit;
 
-draw_set_color(38144);
+draw_set_color(CM_GREEN_COLOR);
 draw_set_font(fnt_menu);
 
 
