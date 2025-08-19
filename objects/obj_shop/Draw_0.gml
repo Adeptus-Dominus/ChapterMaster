@@ -34,7 +34,7 @@ slate_panel.inside_method = function(){
             draw_set_halign(fa_center);
             draw_text_transformed(__view_get( e__VW.XView, 0 )+420,yy+370,$"CONSTRUCTION STARTED!\nETA: {eta} months",1.5,1.5,0);
             draw_set_halign(fa_left);
-            draw_set_color(38144);
+            draw_set_color(CM_GREEN_COLOR);
             draw_set_alpha(1);
         }
     }

@@ -9,7 +9,7 @@ if __b__
 if (obj_controller.diplomacy>0) then exit;
 
 
-draw_set_color(38144);
+draw_set_color(CM_GREEN_COLOR);
 
 draw_set_font(fnt_40k_14b);
 draw_set_halign(fa_center);

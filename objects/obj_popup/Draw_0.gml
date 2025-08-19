@@ -19,7 +19,7 @@ try {
 	if (type == POPUP_TYPE.FLEET_MOVE) {
 		draw_set_font(fnt_large);
 		draw_set_halign(fa_center);
-		draw_set_color(38144);
+		draw_set_color(CM_GREEN_COLOR);
 
 		if (!obj_controller.zoomed) {
 			draw_text_transformed(__view_get(e__VW.XView, 0) + 320, __view_get(e__VW.YView, 0) + 60, "SELECT DESTINATION", 0.5, 0.5, 0);
@@ -90,7 +90,7 @@ try {
 
 		draw_set_font(fnt_40k_14b);
 		draw_set_halign(fa_center);
-		draw_set_color(38144);
+		draw_set_color(CM_GREEN_COLOR);
 
 		if (fancy_title == 1) {
 			draw_set_font(fnt_fancy);
@@ -103,7 +103,7 @@ try {
 
 		draw_set_font(fnt_40k_14);
 		draw_set_halign(fa_left);
-		draw_set_color(38144);
+		draw_set_color(CM_GREEN_COLOR);
 
 		if (instance_exists(obj_turn_end)) {
 			if (obj_turn_end.popups > 0) {

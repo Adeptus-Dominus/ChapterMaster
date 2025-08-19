@@ -131,7 +131,7 @@ function company_specific_management(){
     add_draw_return_values();
     draw_set_font(fnt_40k_30b);
     draw_set_halign(fa_center);
-    draw_set_color(c_gray); // 38144
+    draw_set_color(c_gray); // CM_GREEN_COLOR
     var _allow_shorts = false;
     var _comp = "";
     if (managing > 20) {
@@ -600,7 +600,7 @@ function scr_ui_manage() {
         draw_sprite(spr_rock_bg, 0, xx, yy);
         draw_set_font(fnt_40k_30b);
         draw_set_halign(fa_center);
-        draw_set_color(c_gray); // 38144
+        draw_set_color(c_gray); // CM_GREEN_COLOR
 
         // Var declarations
         var c = 0, _company_name = "", skin = obj_ini.skin_color;
@@ -863,7 +863,7 @@ function scr_ui_manage() {
 
             /*
 		    draw_set_color(c_black);draw_rectangle(xx+25,yy+400,xx+600,yy+417,0);
-		    draw_set_color(38144);draw_rectangle(xx+25,yy+400,xx+600,yy+417,1);
+		    draw_set_color(CM_GREEN_COLOR);draw_rectangle(xx+25,yy+400,xx+600,yy+417,1);
 		    draw_line(xx+160,yy+400,xx+160,yy+417);
 		    draw_line(xx+304,yy+400,xx+304,yy+417);
 		    draw_line(xx+448,yy+400,xx+448,yy+417);
@@ -926,7 +926,7 @@ function scr_ui_manage() {
         draw_sprite(spr_rock_bg, 0, xx, yy);
         draw_set_font(fnt_40k_30b);
         draw_set_halign(fa_center);
-        draw_set_color(c_gray); // 38144
+        draw_set_color(c_gray); // CM_GREEN_COLOR
 
         // Draw Title
         var c = 0, fx = "";

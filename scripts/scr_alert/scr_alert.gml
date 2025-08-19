@@ -1,6 +1,6 @@
 function set_alert_draw_colour(alert_colour) {
-    static default_colour = 38144;
-    static colour_map = {"red": c_red, "yellow": 57586, "purple": c_purple, "green": 38144}; //TODO set constants for colours
+    static default_colour = CM_GREEN_COLOR;
+    static colour_map = {"red": c_red, "yellow": 57586, "purple": c_purple, "green": CM_GREEN_COLOR}; //TODO set constants for colours
     if (alert_colour != "") {
         if (struct_exists(colour_map, alert_colour)) {
             draw_set_color(colour_map[$ alert_colour]);

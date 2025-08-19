@@ -534,7 +534,7 @@ function scr_ui_popup() {
         
 	        draw_set_color(c_black);
 	        draw_rectangle(__view_get( e__VW.XView, 0 )+113,__view_get( e__VW.YView, 0 )+24,__view_get( e__VW.XView, 0 )+wi,__view_get( e__VW.YView, 0 )+30+(lines*10),0);
-	        draw_set_color(38144);
+	        draw_set_color(CM_GREEN_COLOR);
 	        draw_rectangle(__view_get( e__VW.XView, 0 )+113,__view_get( e__VW.YView, 0 )+24,__view_get( e__VW.XView, 0 )+wi,__view_get( e__VW.YView, 0 )+30+(lines*10),1);
         
 	        draw_set_font(fnt_info);

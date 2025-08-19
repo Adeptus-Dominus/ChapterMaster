@@ -501,7 +501,7 @@ function scr_draw_unit_image(_background = false) {
             draw_set_color(c_gray);
             draw_text(0,0,string_hash_to_newline("Color swap shader#did not compile"));
         }*/
-            // if (race()!="1"){draw_set_color(38144);draw_rectangle(0,x_surface_offset,y_surface_offset+166,0+231,0);}
+            // if (race()!="1"){draw_set_color(CM_GREEN_COLOR);draw_rectangle(0,x_surface_offset,y_surface_offset+166,0+231,0);}
         }
     } catch (_exception) {
         handle_exception(_exception);

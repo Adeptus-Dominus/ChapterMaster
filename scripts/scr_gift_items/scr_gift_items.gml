@@ -31,7 +31,7 @@ function draw_gift_items_popup(){
 		}
 	}
 	draw_set_alpha(1);
-	draw_set_color(38144);
+	draw_set_color(CM_GREEN_COLOR);
 	if (cancel_button.draw()) {
 		instance_destroy();
 		exit;

@@ -17,7 +17,7 @@ if (__b__) {
         draw_set_alpha(0.5);
         draw_sprite(spr_rock_bg, 0, xx, yy);
         draw_set_alpha(1);
-        draw_set_color(c_gray); // 38144
+        draw_set_color(c_gray); // CM_GREEN_COLOR
         draw_set_font(fnt_40k_30b);
         draw_set_halign(fa_center);
         draw_text(xx + 800, yy + 74, string(global.chapter_name) + " Event Log");
@@ -26,7 +26,7 @@ if (__b__) {
             p = -1,
             cur_event;
         var ent = array_length(event);
-        draw_set_color(38144);
+        draw_set_color(CM_GREEN_COLOR);
         if (ent == 0) {
             draw_text(xx + 25, yy + 120, "No entries logged.");
         } else {

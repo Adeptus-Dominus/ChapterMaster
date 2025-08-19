@@ -208,7 +208,7 @@ if (show>0) and (current_battle<=battles){
     if (battle_world[i]>0) then draw_sprite(spr_attacked,0,xxx+90,yyy+101);
     if (battle_world[i]=-50) then draw_sprite(spr_attacked,1,xxx+90,yyy+101);
     
-    draw_set_font(fnt_info);draw_set_halign(fa_left);draw_set_color(38144);
+    draw_set_font(fnt_info);draw_set_halign(fa_left);draw_set_color(CM_GREEN_COLOR);
     draw_text(xxx+103,yyy+115,string(i)+"/"+string(battles));
     
     draw_set_halign(fa_center);

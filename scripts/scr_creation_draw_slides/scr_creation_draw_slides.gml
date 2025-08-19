@@ -13,7 +13,7 @@ enum eCREATIONSLIDES{
 
 /// @mixin
 function draw_chapter_select(){
-	draw_set_color(38144);
+	draw_set_color(CM_GREEN_COLOR);
 	draw_set_font(fnt_40k_30b);
 	draw_set_halign(fa_center);
 	draw_text(800, 80, string_hash_to_newline("Select Chapter"));
@@ -353,7 +353,7 @@ function draw_chapter_select(){
 		}
 
 		draw_set_alpha(slate4 / 30);
-		draw_set_color(38144);
+		draw_set_color(CM_GREEN_COLOR);
 		draw_rectangle(0, 68, 374, 781, 1);
 	}
 	draw_set_alpha(slate4 / 30);
@@ -395,7 +395,7 @@ function draw_chapter_select(){
 
 /// @mixin
 function draw_chapter_trait_select(){
-   draw_set_color(38144);
+   draw_set_color(CM_GREEN_COLOR);
     draw_set_font(fnt_40k_30b);
     draw_set_halign(fa_center);
     
@@ -417,7 +417,7 @@ function draw_chapter_trait_select(){
         draw_set_alpha(0.75);draw_rectangle(580,80,1020,118,1);draw_set_alpha(1);
     }
     
-    draw_set_color(38144);
+    draw_set_color(CM_GREEN_COLOR);
     draw_text_transformed(800,120,string_hash_to_newline("Points: "+string(points)+"/"+string(maxpoints)),0.6,0.6,0);
     
     
@@ -436,7 +436,7 @@ function draw_chapter_trait_select(){
         draw_sprite_stretched(spr_creation_arrow,1,597,160,32,32);
     }*/
     
-    draw_set_color(38144);
+    draw_set_color(CM_GREEN_COLOR);
     draw_line(445,200,1125,200);
     draw_line(445,201,1125,201);
     draw_line(445,202,1125,202);
@@ -678,7 +678,7 @@ function draw_chapter_trait_select(){
         draw_set_color(0);
         draw_rectangle(450,206,1144,711,0);
         
-        draw_set_color(38144);
+        draw_set_color(CM_GREEN_COLOR);
         draw_line(445,727,1125,727);
         draw_line(445,728,1125,728);
         draw_line(445,729,1125,729);
@@ -696,7 +696,7 @@ function draw_chapter_trait_select(){
             draw_set_color(c_white);
             draw_set_alpha(0.25);
             draw_text_transformed(800,687,string_hash_to_newline("Cancel"),0.6,0.6,0);
-            draw_set_color(38144);
+            draw_set_color(CM_GREEN_COLOR);
             draw_set_alpha(1);
             
             if (scr_click_left()){
@@ -739,7 +739,7 @@ function draw_chapter_trait_select(){
                 draw_rectangle(x3, y3, x3 + 96, y3 + 96, false);
                 draw_set_blend_mode(bm_normal);
                 draw_set_alpha(1);
-                draw_set_color(38144);
+                draw_set_color(CM_GREEN_COLOR);
 
                 if (scr_click_left()) {
                     popup = "";
@@ -783,7 +783,7 @@ function draw_chapter_trait_select(){
                     column.x1 = 904;
                     column.x2 = column.x1 + column.w;
                 };
-                draw_set_color(38144);
+                draw_set_color(CM_GREEN_COLOR);
                 draw_set_alpha(1);
                 disable = array_contains(adv, adv_name);
                 if (!disable){
@@ -843,7 +843,7 @@ function draw_chapter_trait_select(){
                     column.x1 = 904;
                     column.x2 = column.x1 + column.w;
                 };
-                draw_set_color(38144);
+                draw_set_color(CM_GREEN_COLOR);
 
                 
 
@@ -894,7 +894,7 @@ function draw_chapter_trait_select(){
 
 function draw_chapter_homeworld_select(){
 	var yar = 0;
-    draw_set_color(38144);
+    draw_set_color(CM_GREEN_COLOR);
     draw_set_font(fnt_40k_30b);
     draw_set_halign(fa_center);
     
@@ -904,7 +904,7 @@ function draw_chapter_homeworld_select(){
     
     draw_text(800,80,chapter_name);
     
-    draw_set_color(38144);
+    draw_set_color(CM_GREEN_COLOR);
     draw_rectangle(445, 200, 1125, 202, 0);
 
     scr_creation_home_planet_create();
@@ -942,7 +942,9 @@ function draw_chapter_homeworld_select(){
             var asp_info;
             asp_info = scr_compile_trial_bonus_string(current_trial);
 
-            draw_text_ext_transformed(left_data_slate.XX+20,150,asp_info,-1,left_data_slate.width-20,0.4,0.4,0);
+            draw_set_halign(fa_center);
+
+            draw_text_ext_transformed(160,150,asp_info,-1,left_data_slate.width-20,0.4,0.4,0);
              
             if (scr_hit(50,480,950,510)){
                 tooltip="Aspirant Trial";

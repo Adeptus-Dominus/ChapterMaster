@@ -311,7 +311,7 @@ function TextBarArea(XX,YY,Max_width = 400, requires_input = false) constructor{
 	    //draw_sprite(spr_rock_bg,0,xx,yy);
 	    draw_set_font(fnt_40k_30b);
 	    draw_set_halign(fa_center);
-	    draw_set_color(draw_col);// 38144	
+	    draw_set_color(draw_col);// CM_GREEN_COLOR	
 		var bar_wid=max_width,click_check, string_h;
 	    draw_set_alpha(0.25);
 	    if (string_area!=""){
@@ -410,7 +410,7 @@ function MultiSelect(options_array, title, data = {})constructor{
 	x2 = 0;
 	y2 = 0;
 	on_change = false;
-	active_col = #009500;
+	active_col = CM_GREEN_COLOR;
 	inactive_col = c_gray;	
 	max_width = 0;
 	max_height = 0;
@@ -501,13 +501,14 @@ function RadioSet(options_array, title="", data = {})constructor{
 	toggles = [];
 	current_selection = 0;
 	self.title = title;
-	active_col = #009500;
+	active_col = CM_GREEN_COLOR;
 	inactive_col = c_gray;
 	allow_changes = true;
 	x_gap = 10;
 	y_gap = 5;
 	x1 = 0;
 	y1 = 0;
+	title_font = fnt_40k_14b;
 	draw_title = true;
 	if(title == ""){
 		draw_title = false;
@@ -527,6 +528,11 @@ function RadioSet(options_array, title="", data = {})constructor{
 		add_draw_return_values();
 
 		draw_set_halign(fa_center);
+		draw_set_valign(fa_top);
+		draw_set_color(active_col);
+		draw_set_font(title_font);
+		draw_set_alpha(1);
+		
 		if (max_width > 0 && string_length(draw_title) < max_width){
 			if (draw_title){
 				draw_text(x1+(max_width/2) - (string_length(draw_title)/2), y1, title);

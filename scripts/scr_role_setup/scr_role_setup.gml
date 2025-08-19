@@ -60,10 +60,10 @@ function scr_role_setup(){
     draw_set_font(fnt_40k_30b);
     draw_set_halign(fa_center);
     draw_set_alpha(1);
-    draw_set_color(38144);
+    draw_set_color(CM_GREEN_COLOR);
 
 
-    draw_text_color_simple(800,80,"Roles",38144);
+    draw_text_color_simple(800,80,"Roles",CM_GREEN_COLOR);
 	var c=100;
 	if (!instance_exists(obj_creation_popup)){
         roles_radio.update({y1:150});
@@ -74,7 +74,7 @@ function scr_role_setup(){
 	        pp.type=roles_radio.selection_val("role_id") + 100;
 		}
 	}
-    draw_set_color(38144);
+    draw_set_color(CM_GREEN_COLOR);
     draw_set_alpha(1);
     draw_set_font(fnt_40k_30b);
     
@@ -125,7 +125,7 @@ function scr_role_setup(){
         draw_set_halign(fa_left);
         
         if (race[100,15]!=0){
-            draw_set_color(38144);
+            draw_set_color(CM_GREEN_COLOR);
             if (hapothecary="") then draw_set_color(c_red);
             if (text_selected!="apoth") or (custom != eCHAPTER_TYPE.CUSTOM) then draw_text_ext(600,575,string_hash_to_newline(string(hapothecary)),-1,580);
             if (custom == eCHAPTER_TYPE.CUSTOM){
@@ -143,7 +143,7 @@ function scr_role_setup(){
                 draw_rectangle(600-1,575-1,785,575+hei,1);
                 
                 var _refresh_capoth_name_btn =[794, 574, 794+20, 574+20];
-                draw_unit_buttons(_refresh_capoth_name_btn,"?", [1,1], 38144,,fnt_40k_14b);
+                draw_unit_buttons(_refresh_capoth_name_btn,"?", [1,1], CM_GREEN_COLOR,,fnt_40k_14b);
                 if(point_and_click(_refresh_capoth_name_btn)){
                     var _new_capoth_name = global.name_generator.generate_space_marine_name();
                     show_debug_message($"regen name of hapothecary from {hapothecary} to {_new_capoth_name}");
@@ -153,7 +153,7 @@ function scr_role_setup(){
         }
         
         if (race[100,14]!=0){
-            draw_set_color(38144);if (hchaplain="") then draw_set_color(c_red);
+            draw_set_color(CM_GREEN_COLOR);if (hchaplain="") then draw_set_color(c_red);
             if (text_selected!="chap") or (custom != eCHAPTER_TYPE.CUSTOM) then draw_text_ext(600,597,string_hash_to_newline(string(hchaplain)),-1,580);
             if (custom == eCHAPTER_TYPE.CUSTOM){
                 if (text_selected="chap") and (text_bar>30) then draw_text_ext(600,597,string_hash_to_newline(string(hchaplain)),-1,580);
@@ -166,7 +166,7 @@ function scr_role_setup(){
                 draw_rectangle(600-1,597-1,785,597+hei,1);
 
                 var _refresh_chap_name_btn =[794, 597, 794+20, 597+20];
-                draw_unit_buttons(_refresh_chap_name_btn,"?", [1,1], 38144,,fnt_40k_14b);
+                draw_unit_buttons(_refresh_chap_name_btn,"?", [1,1], CM_GREEN_COLOR,,fnt_40k_14b);
                 if(point_and_click(_refresh_chap_name_btn)){
                     var _new_chap_name = global.name_generator.generate_space_marine_name();
                     show_debug_message($"regen name of hchaplain from {hchaplain} to {_new_chap_name}");
@@ -176,7 +176,7 @@ function scr_role_setup(){
         }
         
         if (race[100,17]!=0){
-            draw_set_color(38144);if (clibrarian="") then draw_set_color(c_red);
+            draw_set_color(CM_GREEN_COLOR);if (clibrarian="") then draw_set_color(c_red);
             if (text_selected!="libra") or (custom != eCHAPTER_TYPE.CUSTOM) then draw_text_ext(600,619,string_hash_to_newline(string(clibrarian)),-1,580);
             if (custom == eCHAPTER_TYPE.CUSTOM){
                 if (text_selected="libra") and (text_bar>30) then draw_text_ext(600,619,string_hash_to_newline(string(clibrarian)),-1,580);
@@ -189,7 +189,7 @@ function scr_role_setup(){
                 draw_rectangle(600-1,619-1,785,619+hei,1);
 
                 var _refresh_libra_name_btn =[794, 619, 794+20, 619+20];
-                draw_unit_buttons(_refresh_libra_name_btn,"?", [1,1], 38144,,fnt_40k_14b);
+                draw_unit_buttons(_refresh_libra_name_btn,"?", [1,1], CM_GREEN_COLOR,,fnt_40k_14b);
                 if(point_and_click(_refresh_libra_name_btn)){
                     var _new_libra_name = global.name_generator.generate_space_marine_name();
                     show_debug_message($"regen name of clibrarian from {clibrarian} to {_new_libra_name}");
@@ -199,7 +199,7 @@ function scr_role_setup(){
         }
         
         if (race[100,16]!=0){
-            draw_set_color(38144);if (fmaster="") then draw_set_color(c_red);
+            draw_set_color(CM_GREEN_COLOR);if (fmaster="") then draw_set_color(c_red);
             if (text_selected!="forge") or (custom != eCHAPTER_TYPE.CUSTOM) then draw_text_ext(600,641,string_hash_to_newline(string(fmaster)),-1,580);
             if (custom == eCHAPTER_TYPE.CUSTOM){
                 if (text_selected="forge") and (text_bar>30) then draw_text_ext(600,641,string_hash_to_newline(string(fmaster)),-1,580);
@@ -212,7 +212,7 @@ function scr_role_setup(){
                 draw_rectangle(600-1,641-1,785,641+hei,1);
 
                 var _refresh_forge_name_btn =[794, 641, 794+20, 641+20];
-                draw_unit_buttons(_refresh_forge_name_btn,"?", [1,1], 38144,,fnt_40k_14b);
+                draw_unit_buttons(_refresh_forge_name_btn,"?", [1,1], CM_GREEN_COLOR,,fnt_40k_14b);
                 if(point_and_click(_refresh_forge_name_btn)){
                     var _new_forge_name = global.name_generator.generate_space_marine_name();
                     show_debug_message($"regen name of fmaster from {fmaster} to {_new_forge_name}");
@@ -221,7 +221,7 @@ function scr_role_setup(){
             }
         }
         
-        draw_set_color(38144);if (recruiter="") then draw_set_color(c_red);
+        draw_set_color(CM_GREEN_COLOR);if (recruiter="") then draw_set_color(c_red);
         if (text_selected!="recr") or (custom != eCHAPTER_TYPE.CUSTOM) then draw_text_ext(600,663,string_hash_to_newline(string(recruiter)),-1,580);
         if (custom == eCHAPTER_TYPE.CUSTOM){
             if (text_selected="recr") and (text_bar>30) then draw_text_ext(600,663,string_hash_to_newline(string(recruiter)),-1,580);
@@ -234,7 +234,7 @@ function scr_role_setup(){
             draw_rectangle(600-1,663-1,785,663+hei,1);
             
             var _refresh_recr_name_btn =[794, 663, 794+20, 663+20];
-            draw_unit_buttons(_refresh_recr_name_btn,"?", [1,1], 38144,,fnt_40k_14b);
+            draw_unit_buttons(_refresh_recr_name_btn,"?", [1,1], CM_GREEN_COLOR,,fnt_40k_14b);
             if(point_and_click(_refresh_recr_name_btn)){
                 var _new_recr_name = global.name_generator.generate_space_marine_name();
                 show_debug_message($"regen name of recruiter from {recruiter} to {_new_recr_name}");
@@ -242,7 +242,7 @@ function scr_role_setup(){
             }
         }
         
-        draw_set_color(38144);if (admiral="") then draw_set_color(c_red);
+        draw_set_color(CM_GREEN_COLOR);if (admiral="") then draw_set_color(c_red);
         if (text_selected!="admi") or (custom != eCHAPTER_TYPE.CUSTOM) then draw_text_ext(600,685,string_hash_to_newline(string(admiral)),-1,580);
         if (custom == eCHAPTER_TYPE.CUSTOM){
             if (text_selected="admi") and (text_bar>30) then draw_text_ext(600,685,string_hash_to_newline(string(admiral)),-1,580);
@@ -255,7 +255,7 @@ function scr_role_setup(){
             draw_rectangle(600-1,685-1,785,685+hei,1);
 
             var _refresh_admi_name_btn =[794, 685, 794+20, 685+20];
-            draw_unit_buttons(_refresh_admi_name_btn,"?", [1,1], 38144,,fnt_40k_14b);
+            draw_unit_buttons(_refresh_admi_name_btn,"?", [1,1], CM_GREEN_COLOR,,fnt_40k_14b);
             if(point_and_click(_refresh_admi_name_btn)){
                 var _new_admi_name = global.name_generator.generate_space_marine_name();
                 show_debug_message($"regen name of admiral from {admiral} to {_new_admi_name}");

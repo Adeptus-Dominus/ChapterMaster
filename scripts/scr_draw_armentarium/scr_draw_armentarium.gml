@@ -391,7 +391,7 @@ function scr_draw_armentarium(){
             }
         }
 
-        draw_set_color(38144);           
+        draw_set_color(CM_GREEN_COLOR);           
        // draw_rectangle(xx + 711, yy + 539, xx + 728, yy + 539 + hi, 0);
         draw_set_alpha(1);
         draw_set_color(c_gray);
