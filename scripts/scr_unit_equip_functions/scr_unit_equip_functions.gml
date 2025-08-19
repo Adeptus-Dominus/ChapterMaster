@@ -443,7 +443,7 @@ function unit_has_equipped(check_equippment){
 	return true;
 }
 
-function equipment_has_tag(tag, area){
+/*function equipment_has_tag(tag, area){
 	var tags = [];
 	switch (area){
 		case "wep1":
@@ -467,7 +467,7 @@ function equipment_has_tag(tag, area){
 	} else {
 		return array_contains(tags, tag);
 	}
-}
+}*/
 
 
 
