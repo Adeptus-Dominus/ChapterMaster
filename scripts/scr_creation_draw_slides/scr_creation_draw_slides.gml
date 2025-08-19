@@ -942,7 +942,9 @@ function draw_chapter_homeworld_select(){
             var asp_info;
             asp_info = scr_compile_trial_bonus_string(current_trial);
 
-            draw_text_ext_transformed(left_data_slate.XX+20,150,asp_info,-1,left_data_slate.width-20,0.4,0.4,0);
+            draw_set_halign(fa_center);
+
+            draw_text_ext_transformed(160,150,asp_info,-1,left_data_slate.width-20,0.4,0.4,0);
              
             if (scr_hit(50,480,950,510)){
                 tooltip="Aspirant Trial";
