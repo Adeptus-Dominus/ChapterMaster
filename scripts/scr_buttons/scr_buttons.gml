@@ -25,7 +25,11 @@ function pop_draw_return_values(){
 	}	
 }
 
-
+function draw_sprite_as_button(position, choice_sprite, scale = [1,1], hover_sprite = -1){
+	var _pos = [position[0],position[1], position[0]+(sprite_get_width(choice_sprite)*scale[0]), position[1] + (sprite_get_height(choice_sprite)*scale[1])];
+	draw_sprite_ext(choice_sprite,0,position[0],position[1], scale[0], scale[1], 0, c_white, scr_hit(_pos) ? 1 : 0.9);
+	return _pos;
+}
 function draw_unit_buttons(position, text, size_mod=[1.5,1.5],colour=c_gray,_halign=fa_center, font=fnt_40k_14b, alpha_mult=1, bg=false, bg_color=c_black){
 	// TODO: fix halign usage
 	// Store current state of all global vars

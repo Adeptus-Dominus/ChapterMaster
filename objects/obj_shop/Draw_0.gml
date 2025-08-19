@@ -99,18 +99,23 @@ slate_panel.inside_method = function(){
                 draw_text(xx+1427,yy+y2,cost);// Requisition
 
                 if (!obj_controller.in_forge ){
+                    if (obj_controller.requisition< cost){
+                        draw_set_alpha(0.25);
+                    }
                     draw_sprite(spr_buy_tiny,0,xx+1530,yy+y2+2);
-                    if (obj_controller.requisition< cost) then draw_set_alpha(0.25);
-                    draw_set_alpha(1);
 
-                    draw_sprite(spr_sell_tiny,0,xx+1480,yy+y2+2);
-                    if (scr_hit(xx + 1480, yy + y2 + 2, xx + 1530, yy + y2 + 14) && shop != "warships" && shop != "vehicles") {
-                        var _sell_mod = SHOP_SELL_MOD;
-                        tooltip = $"Send items back for {_sell_mod * 100}% of the requisition cost.";
-                        tooltip_show=1;
-                        if (scr_click_left()) {
-                            var sell_mult_count = keyboard_check(vk_shift) ? 5 : 1;
-                            sell_item(i, sell_mult_count, _sell_mod)
+                    if (shop != "warships" && shop != "vehicles" && item_stocked[i] > 0){
+                        draw_set_alpha(1);
+
+                        var _button = draw_sprite_as_button([xx+1480,yy+y2+2], spr_sell_tiny);
+                        if (scr_hit(_button)) {
+                            var _sell_mod = SHOP_SELL_MOD;
+                            tooltip = $"Send items back for {_sell_mod * 100}% of the requisition cost.";
+                            tooltip_show=1;
+                            if (scr_click_left()) {
+                                var sell_mult_count = keyboard_check(vk_shift) ? 5 : 1;
+                                sell_item(i, sell_mult_count, _sell_mod)
+                            }
                         }
                     }
                 }
