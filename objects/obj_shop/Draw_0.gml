@@ -148,7 +148,7 @@ slate_panel.inside_method = function(){
 
                         if (!array_contains(_vehics, item[i])){
                             scr_add_item(item[i],_mult_count);
-                            item_stocked += _mult_count;
+                            item_stocked[i] += _mult_count;
                             click2 = true;
                         }
                         else{

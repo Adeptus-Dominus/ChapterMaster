@@ -312,7 +312,8 @@ function ComplexSet(_unit) constructor {
 			var _tag_check_areas = struct_get_names(_mod.equipment_has_tag);
 			for (var i=0; i<array_length(_tag_check_areas);i++){
 				var _area = _tag_check_areas[i];
-				_viable = unit.equipment_has_tag(_mod.equipment_has_tag[$_area],_area);
+				var _tag = _mod.equipment_has_tag[$_area];
+				_viable = unit.equipment_has_tag(_tag,_area);
 				if (_viable) {
 					break;
 				}				
