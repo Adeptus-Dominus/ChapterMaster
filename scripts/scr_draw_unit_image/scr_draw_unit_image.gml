@@ -489,7 +489,6 @@ function scr_draw_unit_image(_background = false) {
                     }
                 }
             }
-            // if (reverent_guardians=1) then draw_sprite(spr_pack_brazier,1,x_surface_offset,y_surface_offset);
             /*if (armour_type == ArmourType.Dreadnought) {
                 var left_arm = dreadnought_sprite_components(weapon_two());
                 var colour_scheme = specialist_colours <= 1 ? 0 : 1;
