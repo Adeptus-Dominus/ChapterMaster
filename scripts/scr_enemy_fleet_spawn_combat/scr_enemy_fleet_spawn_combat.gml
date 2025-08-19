@@ -653,7 +653,7 @@ function position_ships_and_assign_stats(){
 
 
 
-	if (owner = eFACTION.Ork) or (owner = eFACTION.Chaos){// This is spew out random ships without regard for formations
+	if (owner = eFACTION.Ork || owner = eFACTION.Chaos){// This is spew out random ships without regard for formations
 	    var xx = 0,yy = 0,target_distance = 0,targ = 0,numb = 0,man = 0;
 	   
 	    var i;
@@ -664,14 +664,16 @@ function position_ships_and_assign_stats(){
 	        i+=1;
 	    
 	        if (en_column[i]!="") then for(s = 0; s < en_num[i]; s += 1){
+	        	var _x = room_width-irandom_range(700, 950);
+	        	var _y = irandom_range(y,y+height)+50;
 	            if (en_size[i]>1){
-	            	man=instance_create(random_range(1200,1400),round(random_range(y,y+height)+50),obj_en_capital);
+	            	man=instance_create(_x ,_y ,obj_en_capital);
 	            }
 	            else if (en_size[i]==2){
-	            	man=instance_create(random_range(1200,1400),round(random_range(y,y+height)+50),obj_en_cruiser);
+	            	man=instance_create(_x, _y, obj_en_cruiser);
 	            }	            
 	            else if (en_size[i]=1){
-	            	man=instance_create(random_range(1200,1400),round(random_range(y,y+height)+50),obj_en_cruiser);
+	            	man=instance_create(_x ,_y ,obj_en_cruiser);
 	            }
 	            man.class=en_column[i];
 	            man.owner=owner;

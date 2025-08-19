@@ -15,14 +15,9 @@ target_distance = 9999
 // with obj_en_ship if not big then disable, check nearest, and activate once more
 
 
-if (instance_exists(obj_p_ship)) and (!instance_exists(obj_al_ship)) then target=instance_nearest(x,y,obj_p_ship);
-if (!instance_exists(obj_p_ship)) and (instance_exists(obj_al_ship)) then target=instance_nearest(x,y,obj_al_ship);
-if (instance_exists(obj_p_ship)) and (instance_exists(obj_al_ship)){
-    var tp1=instance_nearest(x,y,obj_p_ship);
-    var tp2=instance_nearest(x,y,obj_al_ship);
-    if (point_distance(x,y,tp1.x,tp1.y)<=point_distance(x,y,tp2.x,tp2.y)) then target=tp1;
-    if (point_distance(x,y,tp1.x,tp1.y)>point_distance(x,y,tp2.x,tp2.y)) then target=tp2;
-}
+find_ship_combat_target(obj_p_ship, obj_al_ship);
+
+
 if (!instance_exists(target)) then exit;
 
 if (hp<=0){
@@ -109,7 +104,9 @@ if (hp>0) and (instance_exists(obj_p_ship)){
     
     if (turrets>0) and (instance_exists(obj_p_small)) and (turret_cool=0){
         targe=instance_nearest(x,y,obj_p_small);
-        if (instance_exists(targe)) then target_distance=point_distance(x,y,targe.x,targe.y);
+        if (instance_exists(targe)){
+            target_distance=point_distance(x,y,targe.x,targe.y);
+        }
         
         if (target_distance>64) and (target_distance<300){
             bull=instance_create(x,y,obj_en_round);
@@ -170,7 +167,7 @@ if (hp<=0){
     husk.sprite_index=sprite_index;husk.direction=direction;
     husk.image_angle=image_angle;husk.depth=depth;husk.image_speed=0;
     repeat(choose(4,5,6)){
-        var explo;explo=instance_create(x,y,obj_explosion);
+        var explo=instance_create(x,y,obj_explosion);
         explo.image_xscale=0.5;explo.image_yscale=0.5;
         explo.x+=random_range(sprite_width*0.25,sprite_width*-0.25);
         explo.y+=random_range(sprite_width*0.25,sprite_width*-0.25);
@@ -186,7 +183,11 @@ if (hp>0) and (instance_exists(obj_p_ship)){
     if (class="Shadow Class"){
         closing_distance=200;
         action="swoop";spid=80;}
-    if (class="Hellebore") or (class="Aconite"){closing_distance=200;action="swoop";spid=100;}
+    if (class="Hellebore") or (class="Aconite"){
+        closing_distance=200;
+        action="swoop";
+        spid=100;
+    }
     
     target_distance=point_distance(x,y,target.x,target.y)-(max(sprite_get_width(target.sprite_index),sprite_get_height(sprite_index)));
     

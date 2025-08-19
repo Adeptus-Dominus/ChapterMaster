@@ -5,6 +5,25 @@ function point_on_circle(start_x, start_y, radius, angle){
     return [_final_x, _final_y];
 }
 
+function find_ship_combat_target(primary_target_type = obj_en_ship, secondary_target_type = -1){
+    if (instance_exists(primary_target_type) && !instance_exists(secondary_target_type)){
+        target=instance_nearest(x,y,obj_p_ship);
+    }
+    if (!instance_exists(primary_target_type) && instance_exists(secondary_target_type)){
+        target=instance_nearest(x,y,secondary_target_type);
+    }
+    if (instance_exists(primary_target_type)) and (instance_exists(secondary_target_type)){
+        var _tp1=instance_nearest(x,y,primary_target_type);
+        var _tp2=instance_nearest(x,y,secondary_target_type);
+        if (point_distance(x,y,_tp1.x,_tp1.y)<=point_distance(x,y,_tp2.x,_tp2.y)){
+            target=_tp1;
+        }
+        if (point_distance(x,y,_tp1.x,_tp1.y)>point_distance(x,y,_tp2.x,_tp2.y)){
+            target=_tp2;
+        }
+    }
+}
+
 function combat_acceleration_control(){
     var travel_distance = draw_targets == false ? target_distance : point_distance(x, y, draw_targets[0], draw_targets[1]);
     var _start_slowing = start_slowing_telemetry(travel_distance, speed_down);
@@ -199,10 +218,17 @@ function flank_behaviour(){
 }
 
 function defualt_target_movement(){
-     if (y>=target.y) then target_distance=point_distance(x,y,target.x+lengthdir_x(64,target.direction-180),target.y+lengthdir_y(128,target.direction-90))-(max(sprite_get_width(sprite_index),sprite_get_height(sprite_index)));
-    if (y<target.y) then target_distance=point_distance(x,y,target.x+lengthdir_x(64,target.direction-180),target.y+lengthdir_y(128,target.direction+90))-(max(sprite_get_width(sprite_index),sprite_get_height(sprite_index)));
-    if (y>target.y) and (target_distance>closing_distance) then direction=turn_towards_point(direction,x,y,target.x,target.y,turning_speed);
-    if (y<target.y) and (target_distance>closing_distance) then direction=turn_towards_point(direction,x,y,target.x,target.y,turning_speed);     
+     if (y>=target.y){
+        target_distance=point_distance(x,y,target.x+lengthdir_x(64,target.direction-180),target.y+lengthdir_y(128,target.direction-90))-(max(sprite_get_width(sprite_index),sprite_get_height(sprite_index)));
+    } else if (y<target.y){
+        target_distance=point_distance(x,y,target.x+lengthdir_x(64,target.direction-180),target.y+lengthdir_y(128,target.direction+90))-(max(sprite_get_width(sprite_index),sprite_get_height(sprite_index)));
+    }
+
+    if (y>target.y && target_distance>closing_distance) ){
+        direction=turn_towards_point(direction,x,y,target.x,target.y,turning_speed);
+    } else if (y<target.y && target_distance>closing_distance){
+        direction=turn_towards_point(direction,x,y,target.x,target.y,turning_speed);
+    }   
 }
 
 function start_slowing_telemetry(distance_to_target, deceleration){
@@ -215,9 +241,7 @@ function start_slowing_telemetry(distance_to_target, deceleration){
             _start_slowing = true;
         }
     }
-
     return 	_start_slowing;
-
 }
 
 
