@@ -742,15 +742,16 @@ try {
 			q += 1;
 		}
 
-		if ((popup == "") && ((change_slide >= 70) || (change_slide <= 0))) {
-			if (point_and_click([925, 756, 997, 824]) && !instance_exists(obj_creation_popup)) {
+		//TODO refactor to make arrow buttoon objects
+		if ((popup == "") && ((change_slide >= 70) || (change_slide <= 0)) && (!instance_exists(obj_creation_popup))) {
+			if (point_and_click([925, 756, 997, 824])) {
 				// Next slide
-				if (slide >= 2 && slide <= 6) {
+				if (slide >= eCREATIONSLIDES.CHAPTERTRAITS && slide <= eCREATIONSLIDES.CHAPTERMASTER) {
 					scr_creation(slide);
 				}
 			}
 
-			if (point_and_click([604, 756, 675, 824]) && (!instance_exists(obj_creation_popup))) {
+			if (point_and_click([604, 756, 675, 824])) {
 				// Previous slide
 				change_slide = 1;
 				goto_slide = slide - 1;
