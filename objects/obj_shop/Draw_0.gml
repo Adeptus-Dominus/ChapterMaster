@@ -99,9 +99,13 @@ slate_panel.inside_method = function(){
                 draw_text(xx+1427,yy+y2,cost);// Requisition
 
                 if (!obj_controller.in_forge ){
-                    if (obj_controller.requisition< cost){
-                        draw_set_alpha(0.25);
-                    }
+                    if (!obj_controller.in_forge ){
+                        if (obj_controller.requisition < cost){
+                            draw_set_alpha(0.25);
+                        }
+                        draw_sprite(spr_buy_tiny, 0, xx+1530, yy+y2+2);
+                        // Restore for subsequent UI regardless of whether sell is drawn
+                        draw_set_alpha(1);
                     draw_sprite(spr_buy_tiny,0,xx+1530,yy+y2+2);
 
                     if (shop != "warships" && shop != "vehicles" && item_stocked[i] > 0){
