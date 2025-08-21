@@ -235,7 +235,7 @@ function reset_manage_unit_constants(unit){
             _res_tool += $"{name}: {dr}%\n";
         }
     }
-    _res_tool += string("CON: {0}%\nEXP: {1}%", round(unit.constitution / 2), round(unit.experience / 10));
+    _res_tool += $"CON: {unit.constitution / 2}%\nEXP: {unit.experience / 10}%",
 
     unit_manage_constants.damage_res = new LabeledIcon(spr_icon_iron_halo, $"{_damage_res}%",0,0,{
         icon_width : 24,
@@ -341,7 +341,7 @@ function reset_manage_unit_constants(unit){
     unit_manage_constants.exp = new LabeledIcon(spr_icon_veteran, string(floor(unit.experience)), 0, 0, {
         icon_width : 24,
         icon_height : 24,
-        tooltip: $"==Experience==\nA measureme of how battle-hardened the unit is. Provides a lot of various bonuses across the board. At every 15 exp points a new stat is assigined hover over the units stats in the marine profile to see how the marines stats will grow over time",
+        tooltip: $"==Experience==\nA measurement of how battle-hardened the unit is. Provides various bonuses across the board. Every 15 EXP, a new stat is assigned. Hover over the unit’s stats in the marine profile to see projected growth over time.",
     });
 
     // Melee Attack
@@ -742,11 +742,6 @@ function draw_sprite_and_unit_equip_data(){
                 draw_text_outline(x1, y1, text);
                 array_push(_unit_tooltips, [tooltip_text, [x3, y1, x2, y2], "Psychic Stats"]);
             }
-            unit_manage_constants.melee_attack.update({
-                x1 : x_left-6, 
-                y1: yy+111,
-            });
-
             unit_manage_constants.melee_attack.update({
                 x1 : x_left-6, 
                 y1: yy+111,
