@@ -24,6 +24,68 @@ function pop_draw_return_values(){
 		array_delete(global.draw_return_stack, _index, 1);
 	}	
 }
+//position, icon, text, text_max_width, tooltip, text_position, font = fnt_40k_14, colour = CM_GREEN_COLOR
+function LabeledIcon(icon, text,x1=0,y1=0,data = false) constructor{
+
+	self.x1 = x1;
+	self.y1 = y1;
+	x2 = 0;
+	y2 = 0;
+
+	self.text = text;
+	text_max_width = -1;
+	font = fnt_40k_14;
+	colour = CM_GREEN_COLOR;
+	text_position = "right";
+	tooltip = "";
+    self.icon   = sprite_exists(icon) ? icon : spr_none;
+    icon_width  = sprite_get_width(self.icon);
+    icon_height = sprite_get_height(self.icon);
+	w = icon_width;
+	h = icon_height;
+
+	move_data_to_current_scope(data);
+
+	static update = function(data = {}){
+		move_data_to_current_scope(data);
+		add_draw_return_values();
+		draw_set_font(font);
+		if (text_position == "right"){
+			w = x1 + icon_width + 2 + string_width(text);;
+			x2 = w;
+			h = icon_height;
+			y2 = y1 + icon_height;
+		}
+		pop_draw_return_values();
+	}
+
+	update();
+
+	static hit = function(){
+		return scr_hit(x1,y1,x2,y2);
+	}
+
+
+	static draw = function(){
+		add_draw_return_values();
+		draw_set_font(font);
+		draw_set_halign(fa_left);
+		draw_set_valign(fa_top);
+		draw_set_color(colour);
+		draw_sprite_stretched(icon, 0, x1,y1, icon_width, icon_height);
+		if (text_position == "right"){
+            var _string_x = x1 + icon_width + 2;
+            draw_text_outline(_string_x, y1 + 4, text);
+            if (tooltip!=""){
+				if (hit()){
+					tooltip_draw(tooltip);
+				}
+			}
+		};
+		pop_draw_return_values()
+	};
+	
+}
 
 function draw_sprite_as_button(position, choice_sprite, scale = [1,1], hover_sprite = -1){
 	var _pos = [position[0],position[1], position[0]+(sprite_get_width(choice_sprite)*scale[0]), position[1] + (sprite_get_height(choice_sprite)*scale[1])];
