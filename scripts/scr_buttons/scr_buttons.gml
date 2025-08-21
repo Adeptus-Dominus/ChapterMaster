@@ -38,9 +38,9 @@ function LabeledIcon(icon, text,x1=0,y1=0,data = false) constructor{
 	colour = CM_GREEN_COLOR;
 	text_position = "right";
 	tooltip = "";
-	self.icon = sprite_exists(icon) ? icon : spr_none;
-	icon_width = sprite_get_width(icon);
-	icon_height = sprite_get_height(icon);
+    self.icon   = sprite_exists(icon) ? icon : spr_none;
+    icon_width  = sprite_get_width(self.icon);
+    icon_height = sprite_get_height(self.icon);
 	w = icon_width;
 	h = icon_height;
 
@@ -74,9 +74,9 @@ function LabeledIcon(icon, text,x1=0,y1=0,data = false) constructor{
 		draw_set_color(colour);
 		draw_sprite_stretched(icon, 0, x1,y1, icon_width, icon_height);
 		if (text_position == "right"){
-			var _string_x = x1 + icon_width + 2;
-			draw_text_outline(x1 + icon_width + 2, y1+ 4, text);
-			if (tooltip!=""){
+            var _string_x = x1 + icon_width + 2;
+            draw_text_outline(_string_x, y1 + 4, text);
+            if (tooltip!=""){
 				if (hit()){
 					tooltip_draw(tooltip);
 				}
