@@ -103,22 +103,23 @@ slate_panel.inside_method = function(){
                         if (obj_controller.requisition < cost){
                             draw_set_alpha(0.25);
                         }
+                        draw_set_alpha(obj_controller.requisition < cost  ? 0.25 : 1);
                         draw_sprite(spr_buy_tiny, 0, xx+1530, yy+y2+2);
                         // Restore for subsequent UI regardless of whether sell is drawn
                         draw_set_alpha(1);
-                    draw_sprite(spr_buy_tiny,0,xx+1530,yy+y2+2);
 
-                    if (shop != "warships" && shop != "vehicles" && item_stocked[i] > 0){
-                        draw_set_alpha(1);
+                        if (shop != "warships" && shop != "vehicles" && item_stocked[i] > 0){
+                            draw_set_alpha(1);
 
-                        var _button = draw_sprite_as_button([xx+1480,yy+y2+2], spr_sell_tiny);
-                        if (scr_hit(_button)) {
-                            var _sell_mod = SHOP_SELL_MOD;
-                            tooltip = $"Send items back for {_sell_mod * 100}% of the requisition cost.";
-                            tooltip_show=1;
-                            if (scr_click_left()) {
-                                var sell_mult_count = keyboard_check(vk_shift) ? 5 : 1;
-                                sell_item(i, sell_mult_count, _sell_mod)
+                            var _button = draw_sprite_as_button([xx+1480,yy+y2+2], spr_sell_tiny);
+                            if (scr_hit(_button)) {
+                                var _sell_mod = SHOP_SELL_MOD;
+                                tooltip = $"Send items back for {_sell_mod * 100}% of the requisition cost.";
+                                tooltip_show=1;
+                                if (scr_click_left()) {
+                                    var sell_mult_count = keyboard_check(vk_shift) ? 5 : 1;
+                                    sell_item(i, sell_mult_count, _sell_mod)
+                                }
                             }
                         }
                     }
