@@ -264,9 +264,9 @@ try {
 
         refresh = false;
 
-        if (tab > 0) {
+        if (tab > -1) {
             item_name = [];
-            var is_hand_slot = tab == 1 || tab == 2;
+            var is_hand_slot = tab == 0 || tab == 1;
             scr_get_item_names(
                 item_name,
                 obj_controller.settings, // eROLE

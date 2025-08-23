@@ -1901,6 +1901,7 @@ base: {
       sprite: spr_weapon_assca,
       body_types: [3],
       armours : ["Dreadnought"],
+      new_weapon_draw: true
     }],
     },
 "Heavy Flamer": {
@@ -1936,6 +1937,7 @@ base: {
           sprite: spr_dread_lascannon,
           body_types: [3],
           armours : ["Dreadnought"],
+          new_weapon_draw: true
         }
     ],
 },
@@ -1946,6 +1948,7 @@ base: {
           display_type: "dreadnought",
         },
         armours : ["Dreadnought"],
+        new_weapon_draw: true
     },
     variants: [
         {
@@ -2037,6 +2040,7 @@ base: {
             sprite: spr_dread_plasma_cannon,
             body_types: [3],
             armours : ["Dreadnought"],
+            new_weapon_draw: true
         }        
     ],       
 },
@@ -2286,6 +2290,7 @@ base: {
         sprite: spr_dread_missile,
         body_types: [3],
         armours : ["Dreadnought"],
+        new_weapon_draw: true
     }
   ]
 },
@@ -2311,6 +2316,7 @@ base: {
         sprite: spr_dread_plasma_cannon,
         body_types: [3],
         armours : ["Dreadnought"],
+        new_weapon_draw: true
     }
   ]
 },
@@ -2495,6 +2501,7 @@ base: {
         sprite: spr_dread_autocannon,
         body_types: [3],
         armours : ["Dreadnought"],
+        new_weapon_draw: true
     }
   ]
 },
