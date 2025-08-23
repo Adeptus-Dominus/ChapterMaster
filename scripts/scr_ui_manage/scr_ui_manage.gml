@@ -174,7 +174,7 @@ function reset_manage_unit_constants(unit){
     unit_manage_constants.mobi_string = new ReactiveString(unit.equipments_qual_string("mobi", true), 0,0,_data);
 
     var _data = {
-        tooltip : $"==First Weapon==\n{is_struct(equip_data.gear_data) ? equip_data.gear_data.item_tooltip_desc_gen() : ""}",
+        tooltip : $"==First Weapon==\n{is_struct(equip_data.weapon_one_data) ? equip_data.weapon_one_data.item_tooltip_desc_gen() : ""}",
         colour : quality_color(unit.weapon_one_quality),
         max_width : 187,
     }
@@ -183,7 +183,7 @@ function reset_manage_unit_constants(unit){
 
     //mobility
     var _data = {
-        tooltip : $"==Second Weapon==\n{is_struct(equip_data.mobility_data) ? equip_data.mobility_data.item_tooltip_desc_gen() : ""}",
+        tooltip : $"==Second Weapon==\n{is_struct(equip_data.weapon_two_data) ? equip_data.weapon_two_data.item_tooltip_desc_gen() : ""}",
         colour : quality_color(unit.weapon_two_quality),
         max_width : 187,
     }

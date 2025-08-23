@@ -75,7 +75,7 @@ function ReactiveString(text,x1=0,y1=0,data = false) constructor{
 		draw_set_color(colour);
 
 		if (max_width>-1){
-			draw_text_ext_outline(x1, y1, text, -1, 187, 0, c_black, colour);
+			draw_text_ext_outline(x1, y1, text, -1, max_width, 0, c_black, colour);
 		} else {
 			draw_text_outline(x1, y1, text, c_black, colour);
 		}
@@ -114,7 +114,7 @@ function LabeledIcon(icon, text,x1=0,y1=0,data = false) constructor{
 		add_draw_return_values();
 		draw_set_font(font);
 		if (text_position == "right"){
-			w = x1 + icon_width + 2 + string_width(text);;
+			w = icon_width + 2 + string_width(text);;
 			x2 = x1 + w;
 			h = icon_height;
 			y2 = y1 + icon_height;
