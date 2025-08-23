@@ -419,7 +419,7 @@ if (did){
         } 
     }
 
-
+    instance_activate_object(obj_ini);
     if (field=="both"){
         if (obj_ini.fleet_type==ePlayerBase.penitent) then orkz+=3;
         orkz+=3;

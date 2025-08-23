@@ -127,79 +127,90 @@ function command_slot_draw(xx, yy, slot_text){
 }
 
 function reset_manage_unit_constants(unit){
+    try{
+    delete unit_manage_constants;
     tooltips = {};
     unit_manage_constants = {};
     last_unit = [unit.company, unit.marine_number];
     marine_armour[0] = unit.armour();
     fix_right = 0;
     equip_data = unit.unit_equipment_data();
-    temp[100] = "1";
+    unit_manage_constants.faction_owner = "1";
     if (unit.race() != 1) {
-        temp[100] = unit.race();
+        unit_manage_constants.owner = unit.race();
     }
+
+    unit_manage_constants.current_data = last_unit;
 
     var _damage_res = unit.damage_resistance();
 
-    tooltips.armour = is_struct(equip_data.armour_data) ? equip_data.armour_data.item_tooltip_desc_gen() : "";
+    //armour
+    var _data = {
+        tooltip :$"==Armour==\n {is_struct(equip_data.armour_data) ? equip_data.armour_data.item_tooltip_desc_gen() : ""}",
+        colour : quality_color(unit.armour_quality),
+        max_width : 187,
+    }
 
+    unit_manage_constants.armour_string = new ReactiveString(unit.equipments_qual_string("armour", true), 0,0,_data);
     // Sets up the description for the equipement of current marine
-    //temp[103]="";
+
     // Gear
-    unit_manage_constants.gear = unit.gear();
 
-    tooltips.gear = is_struct(equip_data.gear_data) ? equip_data.gear_data.item_tooltip_desc_gen() : "";
-    //if (string_count("&",unit_manage_constants.gear)>0) then unit_manage_constants.gear=clean_tags(unit_manage_constants.gear);
-    // Mobility Item
-    unit_manage_constants.mobility = unit.mobility_item();
+    var _data = {
+        tooltip : $"==Gear==\n{is_struct(equip_data.gear_data) ? equip_data.gear_data.item_tooltip_desc_gen() : ""}",
+        colour : quality_color(unit.gear_quality),
+        max_width : 187,
+    }
 
-    tooltips.mobility = is_struct(equip_data.mobility_data) ? equip_data.mobility_data.item_tooltip_desc_gen() : "";
+    unit_manage_constants.gear_string = new ReactiveString(unit.equipments_qual_string("gear", true), 0,0,_data);
 
-    tooltips.weapon_one = is_struct(equip_data.weapon_one_data) ? equip_data.weapon_one_data.item_tooltip_desc_gen() : "";
+    //mobility
+    var _data = {
+        tooltip : $"==Back/Mobilitiy==\n{is_struct(equip_data.mobility_data) ? equip_data.mobility_data.item_tooltip_desc_gen() : ""}",
+        colour : quality_color(unit.mobility_item_quality),
+        max_width : 187,
+    }
 
-    tooltips.weapon_two = is_struct(equip_data.weapon_two_data) ? equip_data.weapon_two_data.item_tooltip_desc_gen() : "";
-    //if (string_count("&",unit_manage_constants.mobility)>0) then unit_manage_constants.mobility=clean_tags(unit_manage_constants.mobility);
+    unit_manage_constants.mobi_string = new ReactiveString(unit.equipments_qual_string("mobi", true), 0,0,_data);
+
+    var _data = {
+        tooltip : $"==First Weapon==\n{is_struct(equip_data.gear_data) ? equip_data.gear_data.item_tooltip_desc_gen() : ""}",
+        colour : quality_color(unit.weapon_one_quality),
+        max_width : 187,
+    }
+
+    unit_manage_constants.wep1_string = new ReactiveString(unit.equipments_qual_string("wep1", true), 0,0,_data);
+
+    //mobility
+    var _data = {
+        tooltip : $"==Second Weapon==\n{is_struct(equip_data.mobility_data) ? equip_data.mobility_data.item_tooltip_desc_gen() : ""}",
+        colour : quality_color(unit.weapon_two_quality),
+        max_width : 187,
+    }
+
+    unit_manage_constants.wep2_string = new ReactiveString(unit.equipments_qual_string("wep2", true), 0,0,_data);
+
+
     // Psyker things
-    unit_manage_constants.psionic = "";
-    tooltips.psy = "";
+    var _psionic = "";
     var _psy_powers_known = unit.powers_known;
     var _psy_powers_count = array_length(_psy_powers_known);
+    var _tooltip = "";
     if (_psy_powers_count > 0) {
-        var _psy_discipline = unit.psy_discipline();
-        var _psy_discipline_name = get_discipline_data(_psy_discipline, "name");
-        unit_manage_constants.psionic = $"{unit.psionic}/{_psy_powers_count}";
-
-        var _tooltip = "";
-        _tooltip += $"Psychic Rating: {unit.psionic}";
-
-        var _equipment_psychic_amplification = unit.gear_special_value("psychic_amplification");
-        var _character_psychic_amplification = unit.psychic_amplification() * 100;
-        var _equipment_psychic_focus = unit.gear_special_value("psychic_focus");
-        var _character_psychic_focus = unit.psychic_focus();
-        var _perils_chance = unit.perils_threshold() / 10;
-        _tooltip += $"\nAmplification from Equipment: {_equipment_psychic_amplification}%";
-        _tooltip += $"\nAmplification from Attributes (Psy Rating and EXP): {_character_psychic_amplification}%";
-
-        _tooltip += $"\n\nFocus Success Chance: {100 - unit.psychic_focus_difficulty()}%";
-        _tooltip += $"\nFocus from Equipment: {_equipment_psychic_focus}%";
-        _tooltip += $"\nFocus from Attributes (WIS and EXP): {_character_psychic_focus}%";
-
-        _tooltip += $"\n\nPerils of the Warp Chance: {_perils_chance}%";
-
-        _tooltip += $"\n\nMain Discipline: {_psy_discipline_name}";
-        _tooltip += $"\nKnown Powers: ";
-        for (var i = 0; i < _psy_powers_count; i++) {
-            _tooltip += get_power_data(_psy_powers_known[i], "name");
-            _tooltip += smart_delimeter_sign(_psy_powers_count, i, false);
-        }
-        tooltips.psy = _tooltip;
+        _psionic = $"{unit.psionic}/{_psy_powers_count}";
+        _tooltip = generate_marine_powers_description_string(unit);
     }
+
     // Corruption
-    if ((obj_controller.chaos_rating > 0) && (unit_manage_constants.psionic != "")) {
-        unit_manage_constants.psionic += "#" + string(max(0, unit.corruption())) + "% Corruption.";
+    if ((obj_controller.chaos_rating > 0) && (_psionic != "")) {
+        _psionic = $"{_psionic}\n{max(0, unit.corruption())}% Corruption.";
     }
-    if ((obj_controller.chaos_rating > 0) && (unit_manage_constants.psionic == "")) {
-        unit_manage_constants.psionic = string(max(0, unit.corruption())) + "% Corruption.";
-    }
+
+    unit_manage_constants.psy = new LabeledIcon(spr_icon_psyker, _psionic, 0, 0, {
+        icon_width : 24,
+        icon_height : 24,
+        tooltip: $"==Psychic Stats==\n{_tooltip}",
+    });
     // Damage Resistance
 
     var _res_tool = "Health damage taken by the marine is reduced by this percentage. This happens after the flat reduction from armor.\n\nContributing factors:\n";
@@ -243,11 +254,11 @@ function reset_manage_unit_constants(unit){
         tooltip: _res_tool,
     })
 
-    if (is_struct(temp[121])) {
+    if (is_struct(unit_manage_image)) {
         try {
-            temp[121].destroy_image();
+            unit_manage_image.destroy_image();
         }
-        delete temp[121];
+        delete unit_manage_image;
     }
     var _hp_val = $"{round(unit.hp())}/{round(unit.max_health())}";
     var _hp_tool = "A measure of how much punishment the creature can take. Marines can go into the negatives and still survive, but they'll require a bionic to become fighting fit once more.\n\nContributing factors:\n";
@@ -428,12 +439,16 @@ function reset_manage_unit_constants(unit){
         icon_height : 24,
         tooltip: _bionic_tool,
     });
-    temp[121] = unit.draw_unit_image();
+
+    unit_manage_image = unit.draw_unit_image();
 
     temp[122] = unit.handle_stat_growth();
     /*if (man[sel]="vehicle"){
     // TODO
 }*/
+    } catch(_exception){
+        //not sure handling with normal method exception could just be a pain here
+    }
 }
 function company_specific_management(){
     add_draw_return_values();
@@ -541,6 +556,9 @@ function draw_sprite_and_unit_equip_data(){
         draw_set_font(fnt_40k_14b);
         if (is_struct(obj_controller.unit_focus)) {
             var selected_unit = obj_controller.unit_focus; //unit struct
+            if (!array_equals([selected_unit.company, selected_unit.marine_number], unit_manage_constants.current_data)){
+                reset_manage_unit_constants(selected_unit);
+            }
             ///tooltip_text stacks hover over type tooltips into an array and draws them last so as not to create drawing order issues
             draw_set_color(c_red);
             var no_other_instances = !instance_exists(obj_temp3) && !instance_exists(obj_popup);
@@ -578,8 +596,8 @@ function draw_sprite_and_unit_equip_data(){
 
             // Draw unit image
             draw_set_color(c_white);
-            if (is_struct(obj_controller.temp[121])) {
-                obj_controller.temp[121].draw(xx + 320, yy + 109);
+            if (is_struct(obj_controller.unit_manage_image)) {
+                obj_controller.unit_manage_image.draw(xx + 320, yy + 109);
             }
 
             //TODO implement tooltip explaining potential loyalty hit of demoting a sgt
@@ -626,6 +644,7 @@ function draw_sprite_and_unit_equip_data(){
             draw_set_font(fnt_40k_30b);
             draw_text_transformed_outline(_name_box.x1, _name_box.y3, _name_box.text3, 0.7, 0.7, 0);
 
+
             // Draw unit info
             draw_set_font(fnt_40k_14);
             // Left side of the screen
@@ -633,66 +652,38 @@ function draw_sprite_and_unit_equip_data(){
             var x_left = xx + 22;
 
             // Equipment
-            var armour = selected_unit.armour();
-            if (armour != "") {
-                text = selected_unit.equipments_qual_string("armour", false);
-                tooltip_text = tooltips.armour;
-                x1 = x_left;
-                y1 = yy + 179;
-                x2 = x1 + string_width_ext(text, -1, 187);
-                y2 = y1 + string_height_ext(text, -1, 187);
-                draw_set_alpha(1);
-                draw_text_ext_outline(x1, y1, text, -1, 187, 0, quality_color(selected_unit.armour_quality));
-                array_push(_unit_tooltips, [tooltip_text, [x1, y1, x2, y2], "Armour"]);
-            }
+            var _armour = unit_manage_constants.armour_string;
 
-            var gear = selected_unit.gear();
-            if (selected_unit.gear() != "") {
-                text = selected_unit.equipments_qual_string("gear", false);
-                tooltip_text = tooltips.gear;
-                x1 = x_left;
-                y1 = yy + 305;
-                x2 = x1 + string_width_ext(text, -1, 187);
-                y2 = y1 + string_height_ext(text, -1, 187);
-                draw_text_ext_outline(x1, y1, text, -1, 187, 0, quality_color(selected_unit.gear_quality));
-                array_push(_unit_tooltips, [tooltip_text, [x1, y1, x2, y2], "Gear"]);
-            }
+            _armour.update({x1:x_left, y1 :yy + 179});
 
-            var mobi = selected_unit.mobility_item();
-            if (mobi != "") {
-                text = selected_unit.equipments_qual_string("mobi", false);
-                tooltip_text = tooltips.mobility;
-                x1 = x_left;
-                y1 = yy + 326;
-                x2 = x1 + string_width_ext(text, -1, 187);
-                y2 = y1 + string_height_ext(text, -1, 187);
-                draw_text_ext_outline(x1, y1, text, -1, 187, 0, quality_color(selected_unit.mobility_item_quality));
-                array_push(_unit_tooltips, [tooltip_text, [x1, y1, x2, y2], "Back/Mobilitiy"]);
-            }
+            _armour.draw();
 
-            var wep1 = selected_unit.weapon_one();
-            if (wep1 != "") {
-                text = selected_unit.equipments_qual_string("wep1", false);
-                tooltip_text = tooltips.weapon_one;
-                x1 = x_left;
-                y1 = yy + 204;
-                x2 = x1 + string_width_ext(text, -1, 187);
-                y2 = y1 + string_height_ext(text, -1, 187);
-                draw_text_ext_outline(x1, y1, text, -1, 187, 0, quality_color(selected_unit.weapon_one_quality));
-                array_push(_unit_tooltips, [tooltip_text, [x1, y1, x2, y2], "First Weapon"]);
-            }
+            var _gear = unit_manage_constants.gear_string;
 
-            var wep2 = selected_unit.weapon_two();
-            if (wep2 != "") {
-                text = selected_unit.equipments_qual_string("wep2", false);
-                tooltip_text = tooltips.weapon_two;
-                x1 = x_left;
-                y1 = yy + 254;
-                x2 = x1 + string_width_ext(text, -1, 187);
-                y2 = y1 + string_height_ext(text, -1, 187);
-                draw_text_ext_outline(x1, y1, text, -1, 187, 0, quality_color(selected_unit.weapon_two_quality));
-                array_push(_unit_tooltips, [tooltip_text, [x1, y1, x2, y2], "Second Weapon"]);
-            }
+            _gear.update({x1:x_left, y1 :yy + 305});
+
+            _gear.draw();
+
+
+            var _mobi = unit_manage_constants.mobi_string;
+
+            _mobi.update({x1:x_left, y1 :yy + 326});
+
+            _mobi.draw();
+
+
+            var _wep1 = unit_manage_constants.wep1_string;
+
+            _wep1.update({x1:x_left, y1 :yy + 204});
+
+            _wep1.draw();
+
+
+            var _wep2 = unit_manage_constants.wep2_string;
+
+            _wep2.update({x1:x_left, y1 :yy + 254});
+
+            _wep2.draw(); 
 
             // Stats
             // Bionics trackers
@@ -728,20 +719,17 @@ function draw_sprite_and_unit_equip_data(){
 
             unit_manage_constants.damage_res.draw();
 
-            // Psyker things
-            if (obj_controller.unit_manage_constants.psionic != "") {
-                text = obj_controller.unit_manage_constants.psionic;
-                tooltip_text = obj_controller.tooltips.psy;
-                x1 = x_left + 110;
-                y1 = yy + 43;
-                x2 = x1 + string_width(text);
-                y2 = y1 + string_height(text);
-                x3 = x1 - 26;
-                y3 = y1 - 4;
-                draw_sprite_stretched(spr_icon_psyker, 0, x3, y3, 24, 24);
-                draw_text_outline(x1, y1, text);
-                array_push(_unit_tooltips, [tooltip_text, [x3, y1, x2, y2], "Psychic Stats"]);
+             // Psyker things
+
+            if (array_length(selected_unit.powers_known)){
+                unit_manage_constants.psy.update({
+                    x1 : x_left+84, 
+                    y1: yy+39,
+                });
+
+                unit_manage_constants.psy.draw();
             }
+
             unit_manage_constants.melee_attack.update({
                 x1 : x_left-6, 
                 y1: yy+111,

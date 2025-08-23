@@ -97,6 +97,8 @@ chapter_made = 0;
 // obj_cuicons.alarm[1]=1; // Clean up custom icons
 map_scale = 1;
 scale_mod = 1;
+unit_manage_constants = {};
+unit_manage_constants.current_data = [-1,-1];
 
 
 diplomacy_pathway = "";
@@ -435,14 +437,14 @@ unit_bio=false;
 view_squad=false;
 company_report=false;
 company_data = {};
-obj_controller.unit_focus = false;
+unit_focus = false;
 filter_mode = false;
 manage_tags = [];
-pauldron_trim=0;
-last_unit=[0,0];
+pauldron_trim = 0;
+last_unit = [0,0];
 ui_coloring=""; 
-ui_melee_penalty=0;
-ui_ranged_penalty=0;
+ui_melee_penalty = 0;
+ui_ranged_penalty = 0;
 management_tags = [];
 
 // ** Sets default mouse vars **
@@ -711,6 +713,7 @@ sel_system_x=0;
 sel_system_y=0;
 popup_master_crafted=0;
 close_popups = true;
+unit_manage_image = false;
 // ** Sets starting turn **
 turn=1;
 // turn=40;
@@ -1220,7 +1223,7 @@ serialize = function(){
 
     }
     var excluded_from_save = ["temp", "serialize", "deserialize", "build_chaos_gods", "company_data","menu_buttons",
-            "location_viewer", "production_research_pathways", "specialist_point_handler", "spec_train_data", "tooltips", "last_unit", "unit_manage_constants"],
+            "location_viewer", "production_research_pathways", "specialist_point_handler", "spec_train_data", "tooltips", "last_unit", "unit_manage_constants", "unit_manage_image"],
     var excluded_from_save_start = ["restart_"];
 
     copy_serializable_fields(object_controller, save_data, excluded_from_save, excluded_from_save_start);
@@ -1230,7 +1233,6 @@ serialize = function(){
 
 // Deserialization is done within scr_load
 #endregion
-
 
 // ** Loads the game **
 if (global.load>=0){

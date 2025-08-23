@@ -760,7 +760,7 @@ function ComplexSet(_unit) constructor {
 				draw_sprite(weapon_right.sprite, 0, x_surface_offset + weapon_right.ui_xmod, y_surface_offset + weapon_right.ui_ymod);
 			}
 			if ((weapon_left.sprite != 0) && sprite_exists(weapon_left.sprite)) {
-				draw_sprite(weapon_left.sprite, 0, x_surface_offset + weapon_left.ui_xmod, y_surface_offset + weapon_left.ui_ymod);
+				draw_sprite(weapon_left.sprite, 1, x_surface_offset + weapon_left.ui_xmod, y_surface_offset + weapon_left.ui_ymod);
 			}
 			exit;
 		}
