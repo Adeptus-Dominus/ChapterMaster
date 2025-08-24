@@ -48,10 +48,10 @@ function set_complex_livery_buttons(){
     ]
     advanced_helmet_livery.current_selection = complex_livery_data[$_type].helm_pattern;
 }
-function update_creation_roles_radio(){
+function update_creation_roles_radio(start_role = 1){
     var _role_data = [];
 
-	for (var i=1;i<=15;i++){
+	for (var i=start_role;i<=19;i++){
 		if (race[100,i]!=0 && role[100][i] != ""){
 			array_push(_role_data, {
 			    str1 : role[100][i],
@@ -61,7 +61,7 @@ function update_creation_roles_radio(){
 		}
 	};
 
-	var _radio_data = {max_width : 50, x1:862, y1:225}
+	var _radio_data = {max_width : 50, x1:862, y1:220, y_gap:1}
 	roles_radio = new RadioSet(_role_data, "Role Settings", _radio_data);
 	roles_radio.current_selection = -1;
 }
@@ -316,7 +316,7 @@ function scr_creation(slide_num) {
 	    if (custom == eCHAPTER_TYPE.PREMADE || (hapothecary!="" && hchaplain!="" && clibrarian!="" && fmaster!="" && recruiter!="" && admiral!="" && battle_cry!="")){
 	        change_slide=true;
 	        goto_slide=eCREATIONSLIDES.CHAPTERROLES;
-	        update_creation_roles_radio();
+	        update_creation_roles_radio(2);
 	        role_setup_objects();
 	    }
 	}

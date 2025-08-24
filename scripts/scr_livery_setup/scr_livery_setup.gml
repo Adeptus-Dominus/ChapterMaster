@@ -5,14 +5,14 @@ function scr_livery_setup(){
    draw_set_font(fnt_40k_30b);
     draw_set_halign(fa_center);
     draw_set_alpha(1);
-    draw_set_color(38144);
+    draw_set_color(CM_GREEN_COLOR);
 
     
     tooltip="";
     tooltip2="";
     obj_cursor.image_index=0;
 
-    draw_text_color_simple(800,80,chapter_name,38144);
+    draw_text_color_simple(800,80,chapter_name,CM_GREEN_COLOR);
     
     var preview_box = {
         x1: 444,
@@ -41,12 +41,12 @@ function scr_livery_setup(){
     draw_set_font(fnt_40k_30b);
     draw_set_halign(fa_center);
     draw_set_alpha(1);
-    draw_set_color(38144);
+    draw_set_color(CM_GREEN_COLOR);
     var company_radio = buttons.company_liveries_choice;
     company_radio.draw_title = false;
     var comp_change = false;
 
-    draw_set_color(38144);
+    draw_set_color(CM_GREEN_COLOR);
     draw_set_halign(fa_left);
     draw_text_transformed(580,118,"Battle Cry:",0.6,0.6,0);
     draw_set_font(fnt_40k_14b);
@@ -133,7 +133,7 @@ function scr_livery_setup(){
 
 
         }
-        draw_set_color(38144);
+        draw_set_color(CM_GREEN_COLOR);
         advanced_helmet_livery.draw();
         complex_depth_selection = advanced_helmet_livery.current_selection;                                         
     }
@@ -197,7 +197,7 @@ function scr_livery_setup(){
     draw_set_font(fnt_40k_30b);
     draw_set_halign(fa_center);
     draw_set_alpha(1);
-    draw_set_color(38144);
+    draw_set_color(CM_GREEN_COLOR);
     if (_livery_type != 2){
         var liv_string = $"Full Livery \n{livery_picker.role_set == 0? "default" :role[100][livery_picker.role_set]}";
         draw_text(160, 100, liv_string);  
@@ -208,7 +208,7 @@ function scr_livery_setup(){
     draw_set_font(fnt_40k_14b);
     draw_set_halign(fa_left);
     draw_set_alpha(1);
-    draw_set_color(38144);
+    draw_set_color(CM_GREEN_COLOR);
     right_data_slate.inside_method = function() {
         var _cultures = buttons.culture_styles;
         _cultures.x1 = right_data_slate.XX+30;

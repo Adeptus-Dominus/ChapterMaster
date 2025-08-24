@@ -415,6 +415,7 @@ if (did){
 
 
     //seeds genestealer cults
+    instance_activate_object(obj_ini);
     if (field=="both"){
         if (obj_ini.fleet_type==ePlayerBase.penitent){
         	orkz+=3;

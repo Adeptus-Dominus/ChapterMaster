@@ -140,7 +140,7 @@ buttons = {
         active : false,
         str1 : "Spawn System Options",
         tooltip : "Click for Complex Spawn System Options",
-        button_color : #009500,
+        button_color : CM_GREEN_COLOR,
     }),
     home_spawn_loc_options : new RadioSet([
         {
@@ -1094,6 +1094,8 @@ function load_default_gear(_role_id, _role_name, _wep1, _wep2, _armour, _mobi, _
     gear[defaults_slot, _role_id] = _gear;
     race[defaults_slot, _role_id] = 1;
 }
+
+load_default_gear(eROLE.ChapterMaster, "Chapter Master", "Power Sword", "Bolter", "Artificer Armour", "", "");
 load_default_gear(eROLE.HonourGuard, "Honour Guard", "Power Sword", "Bolter", "Artificer Armour", "", "");
 load_default_gear(eROLE.Veteran, "Veteran", "Combiflamer", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
 load_default_gear(eROLE.Terminator, "Terminator", "Power Fist", "Storm Bolter", "Terminator Armour", "", "");

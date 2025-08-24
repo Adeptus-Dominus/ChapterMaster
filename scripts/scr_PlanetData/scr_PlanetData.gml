@@ -1096,7 +1096,7 @@ function PlanetData(planet, system) constructor{
                         hei=string_height_ext(tex,-1,200)+4;wid=string_width_ext(tex,-1,200)+4;
                         draw_set_color(c_black);
                         draw_rectangle(xx+363,yy+210,xx+363+wid,yy+210+hei,0);
-                        draw_set_color(38144);
+                        draw_set_color(CM_GREEN_COLOR);
                         draw_rectangle(xx+363,yy+210,xx+363+wid,yy+210+hei,1);
                         draw_text_ext(xx+365,yy+212,tex,-1,200);
                     }

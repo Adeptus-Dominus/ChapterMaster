@@ -25,7 +25,136 @@ function pop_draw_return_values(){
 	}	
 }
 
+function ReactiveString(text,x1=0,y1=0,data = false) constructor{
+	self.x1 = x1;
+	self.y1 = y1;
+	x2 = 0;
+	y2 = 0;
+	halign = fa_left;
+	valign = fa_top;
 
+	self.text = text;
+	text_max_width = -1;
+	font = fnt_40k_14;
+	colour = CM_GREEN_COLOR;
+	tooltip = "";
+	max_width = -1;
+	h = 0;
+	w = 0;
+
+	move_data_to_current_scope(data);
+
+	static update = function(data = {}){
+		move_data_to_current_scope(data);
+		add_draw_return_values();
+		draw_set_font(font);
+		draw_set_halign(halign);
+		draw_set_valign(valign);
+
+		if (max_width>-1){
+			w = string_width_ext(text, -1, max_width);
+            h = string_height_ext(text, -1, max_width);
+			x2 = x1 + w;
+			y2 = y1 + h;            
+		}
+
+		pop_draw_return_values();
+	}
+
+	update();
+
+	static hit = function(){
+		return scr_hit(x1,y1,x2,y2);
+	}
+
+	static draw = function(){
+		add_draw_return_values();
+		draw_set_font(font);
+		draw_set_halign(halign);
+		draw_set_valign(valign);
+		draw_set_color(colour);
+
+		if (max_width>-1){
+			draw_text_ext_outline(x1, y1, text, -1, max_width, 0, c_black, colour);
+		} else {
+			draw_text_outline(x1, y1, text, c_black, colour);
+		}
+		if (hit()){
+			tooltip_draw(tooltip);
+		}
+		pop_draw_return_values();
+	}
+}
+
+
+//position, icon, text, text_max_width, tooltip, text_position, font = fnt_40k_14, colour = CM_GREEN_COLOR
+function LabeledIcon(icon, text,x1=0,y1=0,data = false) constructor{
+
+	self.x1 = x1;
+	self.y1 = y1;
+	x2 = 0;
+	y2 = 0;
+
+	self.text = text;
+	text_max_width = -1;
+	font = fnt_40k_14;
+	colour = CM_GREEN_COLOR;
+	text_position = "right";
+	tooltip = "";
+    self.icon   = sprite_exists(icon) ? icon : spr_none;
+    icon_width  = sprite_get_width(self.icon);
+    icon_height = sprite_get_height(self.icon);
+	w = icon_width;
+	h = icon_height;
+
+	move_data_to_current_scope(data);
+
+	static update = function(data = {}){
+		move_data_to_current_scope(data);
+		add_draw_return_values();
+		draw_set_font(font);
+		if (text_position == "right"){
+			w = icon_width + 2 + string_width(text);;
+			x2 = x1 + w;
+			h = icon_height;
+			y2 = y1 + icon_height;
+		}
+		pop_draw_return_values();
+	}
+
+	update();
+
+	static hit = function(){
+		return scr_hit(x1,y1,x2,y2);
+	}
+
+
+	static draw = function(){
+		add_draw_return_values();
+		draw_set_font(font);
+		draw_set_halign(fa_left);
+		draw_set_valign(fa_top);
+		draw_set_color(colour);
+		draw_sprite_stretched(icon, 0, x1,y1, icon_width, icon_height);
+		if (text_position == "right"){
+            var _string_x = x1 + icon_width + 2;
+            draw_text_outline(_string_x, y1 + 4, text);
+            if (tooltip!=""){
+				if (hit()){
+					tooltip_draw(tooltip);
+				}
+			}
+		};
+		pop_draw_return_values()
+	};
+	
+}
+
+function draw_sprite_as_button(position, choice_sprite, scale = [1,1], hover_sprite = -1){
+	var _pos = [position[0],position[1], position[0]+(sprite_get_width(choice_sprite)*scale[0]), position[1] + (sprite_get_height(choice_sprite)*scale[1])];
+	draw_sprite_ext(choice_sprite,0,position[0],position[1], scale[0], scale[1], 0, c_white, scr_hit(_pos) ? 1 : 0.9);
+	return _pos;
+}
 function draw_unit_buttons(position, text, size_mod=[1.5,1.5],colour=c_gray,_halign=fa_center, font=fnt_40k_14b, alpha_mult=1, bg=false, bg_color=c_black){
 	// TODO: fix halign usage
 	// Store current state of all global vars
@@ -354,7 +483,7 @@ function TextBarArea(XX,YY,Max_width = 400, requires_input = false) constructor{
 	    //draw_sprite(spr_rock_bg,0,xx,yy);
 	    draw_set_font(fnt_40k_30b);
 	    draw_set_halign(fa_center);
-	    draw_set_color(draw_col);// 38144	
+	    draw_set_color(draw_col);// CM_GREEN_COLOR	
 		var bar_wid=max_width,click_check, string_h;
 	    draw_set_alpha(0.25);
 	    if (string_area!=""){
@@ -453,7 +582,7 @@ function MultiSelect(options_array, title, data = {})constructor{
 	x2 = 0;
 	y2 = 0;
 	on_change = false;
-	active_col = #009500;
+	active_col = CM_GREEN_COLOR;
 	inactive_col = c_gray;	
 	max_width = 0;
 	max_height = 0;
@@ -544,13 +673,14 @@ function RadioSet(options_array, title="", data = {})constructor{
 	toggles = [];
 	current_selection = 0;
 	self.title = title;
-	active_col = #009500;
+	active_col = CM_GREEN_COLOR;
 	inactive_col = c_gray;
 	allow_changes = true;
 	x_gap = 10;
 	y_gap = 5;
 	x1 = 0;
 	y1 = 0;
+	title_font = fnt_40k_14b;
 	draw_title = true;
 	if(title == ""){
 		draw_title = false;
@@ -570,6 +700,11 @@ function RadioSet(options_array, title="", data = {})constructor{
 		add_draw_return_values();
 
 		draw_set_halign(fa_center);
+		draw_set_valign(fa_top);
+		draw_set_color(active_col);
+		draw_set_font(title_font);
+		draw_set_alpha(1);
+		
 		if (max_width > 0 && string_length(draw_title) < max_width){
 			if (draw_title){
 				draw_text(x1+(max_width/2) - (string_length(draw_title)/2), y1, title);

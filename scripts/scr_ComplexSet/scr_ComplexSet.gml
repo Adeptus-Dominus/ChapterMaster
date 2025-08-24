@@ -312,7 +312,8 @@ function ComplexSet(_unit) constructor {
 			var _tag_check_areas = struct_get_names(_mod.equipment_has_tag);
 			for (var i=0; i<array_length(_tag_check_areas);i++){
 				var _area = _tag_check_areas[i];
-				_viable = unit.equipment_has_tag(_mod.equipment_has_tag[$_area],_area);
+				var _tag = _mod.equipment_has_tag[$_area];
+				_viable = unit.equipment_has_tag(_tag,_area);
 				if (_viable) {
 					break;
 				}				
@@ -759,7 +760,7 @@ function ComplexSet(_unit) constructor {
 				draw_sprite(weapon_right.sprite, 0, x_surface_offset + weapon_right.ui_xmod, y_surface_offset + weapon_right.ui_ymod);
 			}
 			if ((weapon_left.sprite != 0) && sprite_exists(weapon_left.sprite)) {
-				draw_sprite(weapon_left.sprite, 0, x_surface_offset + weapon_left.ui_xmod, y_surface_offset + weapon_left.ui_ymod);
+				draw_sprite(weapon_left.sprite, 1, x_surface_offset + weapon_left.ui_xmod, y_surface_offset + weapon_left.ui_ymod);
 			}
 			exit;
 		}

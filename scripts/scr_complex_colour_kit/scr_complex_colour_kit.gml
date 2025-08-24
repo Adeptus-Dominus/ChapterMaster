@@ -48,6 +48,7 @@ function ColourItem(xx,yy) constructor{
     static scr_unit_draw_data = function(default_val = 0){
         map_colour = {
             is_changed : false,
+            block_company_colours : false,
             left_leg_lower : default_val,
             left_leg_upper : default_val,
             left_leg_knee : default_val,
@@ -206,25 +207,32 @@ function ColourItem(xx,yy) constructor{
         map_colour.weapon_primary = struct_cols.weapon_color;
         map_colour.weapon_secondary = struct_cols.weapon_color;
         set_pattern(struct_cols.main_trim, trim_all);
+        switch (armour_style) {
+            case 0: // Full body
+                set_pattern(struct_cols.main_color, full_body);
+                break;
 
-        if (armour_style==0){
-            set_pattern(struct_cols.main_color,full_body);
-        } else if (armour_style==1){//Breastplate
-            set_pattern(struct_cols.secondary_color, chest);
-            set_pattern(struct_cols.main_color, head_set);
-            set_pattern(struct_cols.main_color, legs);
-        }else if (armour_style==2){//Vertical
-            set_pattern(struct_cols.secondary_color, upper_left);
-            set_pattern(struct_cols.main_color, lower_right);
-            set_pattern(struct_cols.main_color, upper_right);
-            set_pattern(struct_cols.secondary_color, lower_left);
-            set_pattern(struct_cols.main_color, head_set);
-        }else if (armour_style==3){//Quadrant
-            set_pattern(struct_cols.secondary_color, upper_left);
-            set_pattern(struct_cols.secondary_color, lower_right);
-            set_pattern(struct_cols.main_color, upper_right);
-            set_pattern(struct_cols.main_color, lower_left);
-            set_pattern(struct_cols.main_color, head_set);
+            case 1: // Breastplate
+                set_pattern(struct_cols.secondary_color, chest);
+                set_pattern(struct_cols.main_color, head_set);
+                set_pattern(struct_cols.main_color, legs);
+                break;
+
+            case 2: // Vertical
+                set_pattern(struct_cols.secondary_color, upper_left);
+                set_pattern(struct_cols.main_color, lower_right);
+                set_pattern(struct_cols.main_color, upper_right);
+                set_pattern(struct_cols.secondary_color, lower_left);
+                set_pattern(struct_cols.main_color, head_set);
+                break;
+
+            case 3: // Quadrant
+                set_pattern(struct_cols.secondary_color, upper_left);
+                set_pattern(struct_cols.secondary_color, lower_right);
+                set_pattern(struct_cols.main_color, upper_right);
+                set_pattern(struct_cols.main_color, lower_left);
+                set_pattern(struct_cols.main_color, head_set);
+                break;
         }
         reset_image();
         return variable_clone(map_colour);
@@ -812,7 +820,7 @@ function ColourPicker(xx,yy, max_width=400) constructor{
                     draw_set_color(make_color_rgb(obj_creation.col_r[i], obj_creation.col_g[i], obj_creation.col_b[i]));
                     box_coords = [box_x+(box_size*column), box_y+(box_size*row), box_x+(box_size*column)+box_size, box_y+(box_size*row)+box_size];
                     draw_rectangle_array(box_coords, 0);
-                    draw_set_color(38144);
+                    draw_set_color(CM_GREEN_COLOR);
                     draw_rectangle_array(box_coords, 1);
                     if (scr_hit(box_coords)) {
                         draw_set_color(c_white);

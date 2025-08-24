@@ -627,7 +627,7 @@ function scr_ui_advisors() {
         draw_rectangle(xx + 213, yy + 25, xx + 622, yy + 78, 0);
 
         draw_set_halign(fa_center);
-        draw_set_color(38144);
+        draw_set_color(CM_GREEN_COLOR);
         draw_line(xx + 213, yy, xx + 213, yy + 640);
         draw_rectangle(xx + 213, yy + 25, xx + 622, yy + 78, 1);
 
@@ -636,7 +636,7 @@ function scr_ui_advisors() {
         draw_rectangle(xx + 217, yy + 199, xx + 617, yy + 367, 0);
         draw_rectangle(xx + 217, yy + 380, xx + 617, yy + 411, 0);
 
-        draw_set_color(38144);
+        draw_set_color(CM_GREEN_COLOR);
         draw_rectangle(xx + 217, yy + 82, xx + 617, yy + 188, 1);
         draw_rectangle(xx + 217, yy + 199, xx + 617, yy + 367, 1);
         draw_rectangle(xx + 217, yy + 380, xx + 617, yy + 411, 1);

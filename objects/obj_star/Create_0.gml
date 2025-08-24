@@ -91,14 +91,14 @@ global.star_name_colors = [
 	c_white, //player
 	c_gray, //imperium
 	c_red, // toaster fuckers
-	38144, //nothing for inquisition
+	CM_GREEN_COLOR, //nothing for inquisition
 	c_white, //ecclesiarchy
 	#FF8000, //Hi, I'm Elfo
 	#009500, // waagh
 	#FECB01, // the greater good
 	#AD5272,// bug boys
 	c_dkgray, // chaos
-	38144, //nothing for heretics either
+	CM_GREEN_COLOR, //nothing for heretics either
 	#AD5272, //why 12 is skipped in general, we will never know
 	#80FF00 // Sleepy robots
 ]

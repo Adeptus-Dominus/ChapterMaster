@@ -4,7 +4,7 @@ if !__b__
 {
 {
 if (selected=1 || point_distance(x, y, mouse_x, mouse_y) < 50){
-    draw_set_color(38144);
+    draw_set_color(CM_GREEN_COLOR);
     draw_circle(x,y,(sprite_width/2),1);
     draw_circle(x,y,(sprite_width/2)-1,1);
     draw_circle(x,y,(sprite_width/2)+1,1);
@@ -45,7 +45,7 @@ draw_self();
 
 
 shader_reset();
-draw_set_color(38144);
+draw_set_color(CM_GREEN_COLOR);
 draw_set_font(fnt_info);
 draw_set_halign(fa_center);
 
@@ -63,7 +63,6 @@ if (boarders>0){
     draw_text(x-16,y+12,string(boarders));
 }
 draw_set_color(38144);
-draw_ship_heathshields()
 
 if (master_present!=0) then draw_sprite_ext(spr_popup_select,0,x,y,2,2,0,c_white,1);
 

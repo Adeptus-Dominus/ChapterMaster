@@ -60,7 +60,7 @@ if (total_role_number>0){
 
 
 
-if (total_role_number > 0 && tab > 0) {
+if (total_role_number > 0 && tab > -1) {
     item_name = [];
     var infanty_roles = [
         eROLE.ChapterMaster,
@@ -83,12 +83,12 @@ if (total_role_number > 0 && tab > 0) {
         eROLE.Dreadnought,
     ];
     // hand slots
-    if ((tab == 1 || tab ==2) && array_get_index(infanty_roles, obj_controller.settings) >= 0) {
+    if ((tab == 0 || tab ==1) && array_get_index(infanty_roles, obj_controller.settings) >= 0) {
         // Get all available hand weapons
         scr_get_item_names(
             item_name,
             obj_controller.settings, // eROLE
-            1, // slot
+            0, // slot
             eENGAGEMENT.Any,
             true,  // include the company standard
             false,  // do not limit to available items
@@ -96,7 +96,7 @@ if (total_role_number > 0 && tab > 0) {
         scr_get_item_names(
             item_name,
             obj_controller.settings, // eROLE
-            2, // slot
+            1, // slot
             eENGAGEMENT.Any, 
             false,  // include the company standard
             false,  // do not limit to available items
@@ -160,19 +160,19 @@ if (total_role_number > 0 && tab > 0) {
 
                 switch (tab) {
                     // slots
-                    case 1: obj_ini.wep1[100, role] = buh; break;
-                    case 2: obj_ini.wep2[100, role] = buh; break;
-                    case 3:
+                    case 0: obj_ini.wep1[100, role] = buh; break;
+                    case 1: obj_ini.wep2[100, role] = buh; break;
+                    case 2:
                         obj_ini.armour[100, role] = buh;
                         // No bikes or jump packs for Terminators
                         if (array_contains(LIST_TERMINATOR_ARMOUR, buh) || buh == STR_ANY_TERMINATOR_ARMOUR) {
                             obj_ini.mobi[100, role] = "";
                         }
                         break;
-                    case 4: obj_ini.gear[100, role] = buh; break;
-                    case 5: obj_ini.mobi[100, role] = buh; break;
+                    case 3: obj_ini.gear[100, role] = buh; break;
+                    case 4: obj_ini.mobi[100, role] = buh; break;
                 }
-                tab = 0;
+                tab = -1;
                 refresh = true;
             }
         }
@@ -191,7 +191,7 @@ if (total_role_number > 0 && tab > 0) {
         draw_rectangle(xx + 1347 - (string_width(string_hash_to_newline("CANCEL")) / 2), yy + 720, xx + 1347 + (string_width(string_hash_to_newline("CANCEL")) / 2), yy + 741, 0);
         draw_set_alpha(1);
         if (scr_click_left()) {
-            tab = 0;
+            tab = -1;
         }
     }
     draw_set_alpha(1);

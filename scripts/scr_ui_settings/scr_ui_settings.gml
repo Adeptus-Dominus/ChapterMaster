@@ -345,25 +345,25 @@ function scr_ui_settings() {
             x5 = xx + 830;
             y5 = yy + 207 - spacing;
 
-            for (var gg = 1; gg <= 5; gg++) {
+            for (var gg = 0; gg <= 4; gg++) {
                 y5 += spacing;
-                if (gg == 1) {
+                if (gg == 0) {
                     title = "Main Weapon: ";
                     geh = obj_ini.wep1[co, ide];
                 }
-                if (gg == 2) {
+                if (gg == 1) {
                     title = "Secondary Weapon: ";
                     geh = obj_ini.wep2[co, ide];
                 }
-                if (gg == 3) {
+                if (gg == 2) {
                     title = "Armour: ";
                     geh = obj_ini.armour[co, ide];
                 }
-                if (gg == 4) {
+                if (gg == 3) {
                     title = "Special Item: ";
                     geh = obj_ini.gear[co, ide];
                 }
-                if (gg == 5) {
+                if (gg == 4) {
                     title = "Mobility Item: ";
                     geh = obj_ini.mobi[co, ide];
                 }
@@ -381,25 +381,25 @@ function scr_ui_settings() {
 
                     var nep = false;
                     
-                    if (((obj_ini.armour[co, ide] == "Terminator Armour") || (obj_ini.armour[co, ide] == "Dreadnought")) && (gg == 4)) {
+                    if (((obj_ini.armour[co, ide] == "Terminator Armour") || (obj_ini.armour[co, ide] == "Dreadnought")) && (gg == 3)) {
                         nep = true;
                     }
-                    if ((ide == 6) && ((gg == 3) || (gg == 5))) {
+                    if ((ide == 6) && ((gg == 2) || (gg == 4))) {
                         nep = true;
                     }
 
                     if (scr_click_left() && !nep) {
-                        if (obj_mass_equip.tab != 0) {
+                        if (obj_mass_equip.tab != -1) {
                             obj_mass_equip.refresh = true;
-                        } else if (obj_mass_equip.tab == 0) {
+                        } else if (obj_mass_equip.tab == -1) {
                             obj_mass_equip.tab = gg;
                             obj_mass_equip.item_name = [];
-                            var is_hand_slot = gg == 1 || gg == 2;
+                            var is_hand_slot = gg == 0 || gg == 1;
                             scr_get_item_names(
                                 obj_mass_equip.item_name,
                                 obj_controller.settings, // eROLE
                                 gg, // slot
-                                is_hand_slot ? (obj_mass_equip.tab == 1 ? eENGAGEMENT.Ranged : eENGAGEMENT.Melee) : eENGAGEMENT.None,
+                                is_hand_slot ? (obj_mass_equip.tab == 0 ? eENGAGEMENT.Ranged : eENGAGEMENT.Melee) : eENGAGEMENT.None,
                                 true, // include company standard
                                 false, // show all regardless of inventory
 

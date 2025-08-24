@@ -1466,6 +1466,52 @@ function DummyMarine()constructor{
         return false;
     }
     experience = 120;
+    //get equipment data methods by deafult they garb all equipment data and return an equipment struct e.g new EquipmentStruct(item_data, core_type,quality="none")
+    static get_armour_data = function(type = "all") {
+        return gear_weapon_data("armour", armour(), type, false);
+    };
+
+    static get_gear_data = function(type = "all") {
+        return gear_weapon_data("gear", gear(), type, false);
+    };
+
+    static get_mobility_data = function(type = "all") {
+        return gear_weapon_data("mobility", mobility_item(), type, false);
+    };
+
+    static get_weapon_one_data = function(type = "all") {
+        return gear_weapon_data("weapon", weapon_one(), type, false);
+    };
+
+    static get_weapon_two_data = function(type = "all") {
+        return gear_weapon_data("weapon", weapon_two(), type, false);
+    };
+
+    static equipment_has_tag = function(tag, area){
+        var tags = [];
+        switch (area){
+            case "wep1":
+                tags = get_weapon_one_data("tags");
+                break;
+            case "wep2":
+                tags = get_weapon_two_data("tags");
+                break;
+            case "mobi":
+                tags = get_mobility_data("tags");
+                break;
+            case "armour":
+                tags = get_armour_data("tags");
+                break;
+            case "gear":
+                tags = get_gear_data("tags");
+            break;
+        }
+        if (!is_array(tags) || array_length(tags) == 0){
+            return false;
+        } else {
+            return array_contains(tags, tag);
+        }
+    }
 }
 
 function scr_get_body_data (body_item_key,body_slot="none"){
@@ -1855,6 +1901,7 @@ base: {
       sprite: spr_weapon_assca,
       body_types: [3],
       armours : ["Dreadnought"],
+      new_weapon_draw: true
     }],
     },
 "Heavy Flamer": {
@@ -1890,6 +1937,7 @@ base: {
           sprite: spr_dread_lascannon,
           body_types: [3],
           armours : ["Dreadnought"],
+          new_weapon_draw: true
         }
     ],
 },
@@ -1900,6 +1948,7 @@ base: {
           display_type: "dreadnought",
         },
         armours : ["Dreadnought"],
+        new_weapon_draw: true
     },
     variants: [
         {
@@ -1991,6 +2040,7 @@ base: {
             sprite: spr_dread_plasma_cannon,
             body_types: [3],
             armours : ["Dreadnought"],
+            new_weapon_draw: true
         }        
     ],       
 },
@@ -2240,6 +2290,7 @@ base: {
         sprite: spr_dread_missile,
         body_types: [3],
         armours : ["Dreadnought"],
+        new_weapon_draw: true
     }
   ]
 },
@@ -2265,6 +2316,7 @@ base: {
         sprite: spr_dread_plasma_cannon,
         body_types: [3],
         armours : ["Dreadnought"],
+        new_weapon_draw: true
     }
   ]
 },
@@ -2449,6 +2501,7 @@ base: {
         sprite: spr_dread_autocannon,
         body_types: [3],
         armours : ["Dreadnought"],
+        new_weapon_draw: true
     }
   ]
 },

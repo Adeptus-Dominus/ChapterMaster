@@ -892,28 +892,28 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         }
     }
     static equipment_has_tag = function(tag, area){
-        var tags = [];
+        var _tags = [];
         switch (area){
             case "wep1":
-                tags = get_weapon_one_data("tags");
+                _tags = get_weapon_one_data("tags");
                 break;
             case "wep2":
-                tags = get_weapon_two_data("tags");
+                _tags = get_weapon_two_data("tags");
                 break;
             case "mobi":
-                tags = get_mobility_data("tags");
+                _tags = get_mobility_data("tags");
                 break;
             case "armour":
-                tags = get_armour_data("tags");
+                _tags = get_armour_data("tags");
                 break;
             case "gear":
-                tags = get_gear_data("tags");
+                _tags = get_gear_data("tags");
             break;
         }
-        if (!is_array(tags) || array_length(tags) == 0){
+        if (!is_array(_tags) || array_length(_tags) == 0){
             return false;
         } else {
-            return array_contains(tags, tag);
+            return array_contains(_tags, tag);
         }
     }
     static equipment_maintenance_burden = function() {

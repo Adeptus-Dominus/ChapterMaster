@@ -1,6 +1,6 @@
 
 type=0;
-target_gear=0;
+target_gear=-1;
 tab=1;
 badname=0;
 

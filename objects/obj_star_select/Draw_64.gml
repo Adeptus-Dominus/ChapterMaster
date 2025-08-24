@@ -148,7 +148,7 @@ if (obj_controller.menu == 0) {
 
 if (loading!=0){
     draw_set_font(fnt_40k_14);
-    draw_set_color(38144);
+    draw_set_color(CM_GREEN_COLOR);
     draw_text(184,202,
     string_hash_to_newline("Select Destination"));
 }
@@ -484,7 +484,7 @@ if (target!=0){
         draw_rectangle(37,413,270,452,0);
         draw_set_alpha(1);
         
-        /*draw_set_color(38144);draw_rectangle(40,247,253,273,1);*/
+        /*draw_set_color(CM_GREEN_COLOR);draw_rectangle(40,247,253,273,1);*/
         
         
         draw_set_halign(fa_left);
@@ -494,7 +494,7 @@ if (target!=0){
         draw_set_font(fnt_40k_14b);
         draw_text(37,413,"Select Fleet Combat");
         
-        draw_set_color(38144);
+        draw_set_color(CM_GREEN_COLOR);
         draw_set_font(fnt_40k_14b);
         draw_text(37.5,413.5,"Select Fleet Combat");
         

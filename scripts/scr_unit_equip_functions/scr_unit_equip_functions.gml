@@ -108,12 +108,12 @@ function scr_update_unit_armour(new_armour, from_armoury = true, to_armoury = tr
 		if (new_arm_data.has_tag("terminator")) {
 			update_mobility_item("");
 		}
-	}
-
-	if (new_arm_data.has_tag("dreadnought")) {
-		is_boarder = false;
-		update_gear("");
-		update_mobility_item("");
+		
+		if (new_arm_data.has_tag("dreadnought")) {
+			is_boarder = false;
+			update_gear("");
+			update_mobility_item("");
+		}
 	}
 
 	update_health(portion * max_health());
@@ -443,7 +443,7 @@ function unit_has_equipped(check_equippment){
 	return true;
 }
 
-function equipment_has_tag(tag, area){
+/*function equipment_has_tag(tag, area){
 	var tags = [];
 	switch (area){
 		case "wep1":
@@ -467,7 +467,7 @@ function equipment_has_tag(tag, area){
 	} else {
 		return array_contains(tags, tag);
 	}
-}
+}*/
 
 
 
