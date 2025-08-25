@@ -261,7 +261,7 @@ function nearest_star_with_ownership(xx,yy, ownership, start_star="none", ignore
 		i++;
 		var cur_star =  instance_nearest(xx,yy, obj_star);
 		if (start_star!="none"){
-			if (start_star.id == cur_star.id ||( is_dead_star(cur_star) && ignore_dead)){
+			if (start_star.id == cur_star.id || ( is_dead_star(cur_star) && ignore_dead)){
 				instance_deactivate_object(cur_star.id);
 				continue;
 			}

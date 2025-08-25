@@ -353,7 +353,7 @@ function scr_efleet_arrive_at_trade_loc(){
     
 	    //if no fleet find a valid plaanet with player forces
 	    if (action == ""){
-	    	var _player_star = nearest_star_with_ownership(1);
+	    	var _player_star = nearest_star_with_ownership(x, y, 1);
 	    	if (_player_star != "none"){
 	    		action_x = _player_star.x;
 	    		action_y = _player_star.y;
@@ -373,7 +373,7 @@ function scr_efleet_arrive_at_trade_loc(){
 
 	    //if no other viable options drop off at random imperial planet
 	    if (action==""){
-	    	var _imp = nearest_star_with_ownership(2);
+	    	var _imp = nearest_star_with_ownership(x, y 2);
 	    	if (_imp != "none"){
 	    		if (x == _imp.x && y==_imp.y){
 	    			_valid_planet = true;
