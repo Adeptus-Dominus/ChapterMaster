@@ -373,7 +373,7 @@ function scr_efleet_arrive_at_trade_loc(){
 
 	    //if no other viable options drop off at random imperial planet
 	    if (action==""){
-	    	var _imp = nearest_star_with_ownership(x, y 2);
+	    	var _imp = nearest_star_with_ownership(x, y, 2);
 	    	if (_imp != "none"){
 	    		if (x == _imp.x && y==_imp.y){
 	    			_valid_planet = true;
