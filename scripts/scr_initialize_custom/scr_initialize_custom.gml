@@ -2274,12 +2274,22 @@ function scr_initialize_custom() {
 	
 
 	for (var st_iter = 0; st_iter < array_length(squad_names); st_iter++) {
-		var s_group = st[$squad_names[st_iter]];
-		squad_types[$squad_names[st_iter]] = {};
-		for (var iter_2 = 0; iter_2 < array_length(s_group); iter_2++) {
-			squad_types[$squad_names[st_iter]][$s_group[iter_2][0]] = s_group[iter_2][1];
+        var _squad_name = squad_names[st_iter];
+        if (_squad_name == ""){
+            continue;
+        }
+		var _squad_data = st[$ _squad_name];
+		squad_types[$ _squad_name] = {};
+        var _new_squad_data = squad_types[$ _squad_name];
+		for (var iter_2 = 0; iter_2 < array_length(_squad_data); iter_2++) {
+            var _data_name = _squad_data[iter_2][0];
+            if (_data_name == ""){
+                continue;
+            }
+			_new_squad_data[$_data_name] = _squad_data[iter_2][1];
 		}
 	}
+
 	if(scr_has_adv("Ambushers")){
 		var _class_data = squad_types.tactical_squad.type_data.class;
 		array_push(_class_data, "scout")
