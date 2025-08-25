@@ -2268,12 +2268,13 @@ function scr_initialize_custom() {
 	}
 
 
-	var squad_names = struct_get_names(st);
+	var _squad_names = struct_get_names(st);
 	// show_debug_message($" {squad_names}");
 	// show_debug_message($"^^^ Squad names");
 	
 
-	for (var st_iter = 0; st_iter < array_length(squad_names); st_iter++) {
+	for (var st_iter = 0; st_iter < array_length(_squad_names); st_iter++) {
+        var _squad_name = _squad_names[st_iter];
         var _squad_data = st[$ _squad_name];
         squad_types[$ _squad_name] = {};
         var _new_squad_data = squad_types[$ _squad_name];
