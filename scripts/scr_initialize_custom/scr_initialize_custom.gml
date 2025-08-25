@@ -2274,20 +2274,25 @@ function scr_initialize_custom() {
 	
 
 	for (var st_iter = 0; st_iter < array_length(squad_names); st_iter++) {
-        var _squad_name = squad_names[st_iter];
-        if (_squad_name == ""){
+        var _squad_data = st[$ _squad_name];
+        squad_types[$ _squad_name] = {};
+        var _new_squad_data = squad_types[$ _squad_name];
+        // Guard: ensure array and entries are well-formed before indexing
+        if (!is_array(_squad_data)) {
             continue;
         }
-		var _squad_data = st[$ _squad_name];
-		squad_types[$ _squad_name] = {};
-        var _new_squad_data = squad_types[$ _squad_name];
-		for (var iter_2 = 0; iter_2 < array_length(_squad_data); iter_2++) {
-            var _data_name = _squad_data[iter_2][0];
-            if (_data_name == ""){
+        var _len = array_length(_squad_data);
+        for (var iter_2 = 0; iter_2 < _len; iter_2++) {
+            var _entry = _squad_data[iter_2];
+            if (!is_array(_entry) || array_length(_entry) < 2) {
                 continue;
             }
-			_new_squad_data[$_data_name] = _squad_data[iter_2][1];
-		}
+            var _data_name = _entry[0];
+            if (!is_string(_data_name) || _data_name == "") {
+                continue;
+            }
+            _new_squad_data[$ _data_name] = _entry[1];
+        }
 	}
 
 	if(scr_has_adv("Ambushers")){
