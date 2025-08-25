@@ -54,7 +54,9 @@ function valid_diplomacy_options(){
     var valid = false;
     if (array_length(obj_controller.diplo_option)){
         for (var i=array_length(obj_controller.diplo_option)-1;i>=0;i--){
-            if (obj_controller.diplo_option[i] != ""){
+            var _opt = obj_controller.diplo_option;
+            if (struct_exists(_opt, "option_text") && _opt.option_text != ""){
+                if (goto)
                 valid = true;
             } else {
                 array_delete(obj_controller.diplo_option, i, 1);

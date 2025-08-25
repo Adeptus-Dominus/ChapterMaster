@@ -1782,8 +1782,13 @@ function scr_dialogue(diplo_keyphrase) {
 	    }
 	    if (diplo_keyphrase=="open_trade") then diplo_text="Make me an offer, Space Marine, and I will pray for the guidance to respond.";
 	    if (diplo_keyphrase=="artifact"){
-	        add_diplomacy_option({option_text:"Propose a trade for the Artifact."});
-			add_diplomacy_option({option_text:"Leave it be; Exit."});
+	        add_diplomacy_option({
+	        	option_text:"Propose a trade for the Artifact."
+	        });
+			add_diplomacy_option({
+				option_text:"Leave it be; Exit."
+			});
+
 	        diplo_text="You have done a service to us by making us aware of this artifact. It is a little amusing that is was under our noses this whole time, though now I am sure it can be retrieved.";
 	    }
 	    if (diplo_keyphrase=="artifact_thanks"){
@@ -1808,7 +1813,9 @@ function scr_dialogue(diplo_keyphrase) {
 	        if (rela=="friendly") then diplo_text=string(obj_ini.master_name)+"?";
 	        if (rela=="neutral") then diplo_text="What is the meaning of this?";
 	        if (rela=="hostile") then diplo_text="“The Heretic and Blasphemer can offer no excuse for their crimes. Those who are pardoned merely live to further shroud Humanity from the Light of the Emperor with the Darkness of their souls.”";
-	        add_diplomacy_option({option_text:"Demand Requisition"});
+	        add_diplomacy_option({
+	        	option_text:"Demand Requisition"
+	        });
 			add_diplomacy_option({
 				option_text:"Cancel",
 				goto:"disagree"
