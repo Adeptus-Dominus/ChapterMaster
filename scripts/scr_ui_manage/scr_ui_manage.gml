@@ -128,9 +128,10 @@ function command_slot_draw(xx, yy, slot_text){
 
 function reset_manage_unit_constants(unit){
     try{
-        
-    gc_struct(unit_manage_constants);
-    delete unit_manage_constants;
+    if (is_struct(unit_manage_constants)) {
+        gc_struct(unit_manage_constants);
+        delete unit_manage_constants;
+    }
 
     unit_manage_constants = {};
     last_unit = [unit.company, unit.marine_number];

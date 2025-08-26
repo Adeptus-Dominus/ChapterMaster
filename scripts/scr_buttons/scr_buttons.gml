@@ -11,23 +11,6 @@ function add_draw_return_values(){
 	array_push(global.draw_return_stack, _vals);
 }
 
-function gc_struct(vari){
-	var _keys = struct_get_names(vari);
-	var _key_length = array_length(_keys);
-	for (var i = 0;i<_key_length;i++){
-		var _key = _keys[i]
-		var _data = vari[$_key];
-		if (is_struct(_data)){
-			gc_struct(_data);
-		}
-		delete(_data);
-		delete(vari[$_key]);
-		struct_remove(vari, _key);
-	}
-
-	delete vari;
-}
-
 function pop_draw_return_values(){
 	var _array_length = array_length(global.draw_return_stack);
 	if (_array_length>0){
@@ -41,6 +24,7 @@ function pop_draw_return_values(){
 		array_delete(global.draw_return_stack, _index, 1);
 	}	
 }
+
 
 function ReactiveString(text,x1=0,y1=0,data = false) constructor{
 	self.x1 = x1;
