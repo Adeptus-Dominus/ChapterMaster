@@ -30,10 +30,11 @@ function UnitQuickFindPanel() constructor{
 
 		return _stars;
 	}
+
 	static update_garrison_log = function(){
 		try{
 		for (var i = 0;i<array_length(obj_ini.ship_carrying); i++){
-			obj_ini.ship_carrying[i]=0
+			obj_ini.ship_carrying[i]=0;
 		};
 		var _unit, unit_location, group;
 		delete garrison_log;

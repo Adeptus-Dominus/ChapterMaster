@@ -65,7 +65,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
             }
         }
         if (draw) {
-            health_string = $"{round((_unit.hp() / _unit.max_health()) * 100)}% HP";
+            health_string = ma_health_string[selected];
 
             var exp_string = $"{round(ma_exp[selected])} EXP";
 

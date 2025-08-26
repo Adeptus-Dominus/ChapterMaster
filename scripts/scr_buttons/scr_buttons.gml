@@ -25,6 +25,7 @@ function pop_draw_return_values(){
 	}	
 }
 
+
 function ReactiveString(text,x1=0,y1=0,data = false) constructor{
 	self.x1 = x1;
 	self.y1 = y1;
