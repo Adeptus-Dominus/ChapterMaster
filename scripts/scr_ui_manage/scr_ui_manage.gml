@@ -128,8 +128,10 @@ function command_slot_draw(xx, yy, slot_text){
 
 function reset_manage_unit_constants(unit){
     try{
+        
+    gc_struct(unit_manage_constants);
     delete unit_manage_constants;
-    tooltips = {};
+
     unit_manage_constants = {};
     last_unit = [unit.company, unit.marine_number];
     marine_armour[0] = unit.armour();
@@ -253,13 +255,6 @@ function reset_manage_unit_constants(unit){
         icon_height : 24,
         tooltip: _res_tool,
     })
-
-    if (is_struct(unit_manage_image)) {
-        try {
-            unit_manage_image.destroy_image();
-        }
-        delete unit_manage_image;
-    }
     var _hp_val = $"{round(unit.hp())}/{round(unit.max_health())}";
     var _hp_tool = "A measure of how much punishment the creature can take. Marines can go into the negatives and still survive, but they'll require a bionic to become fighting fit once more.\n\nContributing factors:\n";
     _hp_tool += $"CON: {round(100 * (1 + ((unit.constitution - 40) * 0.025)))}\n";
@@ -439,6 +434,13 @@ function reset_manage_unit_constants(unit){
         icon_height : 24,
         tooltip: _bionic_tool,
     });
+
+    if (is_struct(unit_manage_image)) {
+        try {
+            unit_manage_image.destroy_image();
+        }
+        delete unit_manage_image;
+    }
 
     unit_manage_image = unit.draw_unit_image();
 

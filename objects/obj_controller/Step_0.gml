@@ -434,18 +434,17 @@ try {
                 force_tool = 0;
             top = man_current;
             sel = top;
-            var unit = "";
             yy += 77;
         }
         if (is_struct(unit_focus)) {
 
             // Checks if the marine is not hidden
-            var unit = unit_focus;
+            var _unit = unit_focus;
             if (!is_array(last_unit)) {
-                last_unit = [0, 0];
+                last_unit = [-1, -1];
             }
-            if ((unit.base_group != "none") && (last_unit[1] != unit.marine_number || last_unit[0] != unit.company)) {
-                reset_manage_unit_constants(unit);
+            if ((_unit.base_group != "none") && (last_unit[1] != _unit.marine_number || last_unit[0] != _unit.company)) {
+                reset_manage_unit_constants(_unit);
             }
         }
     }
