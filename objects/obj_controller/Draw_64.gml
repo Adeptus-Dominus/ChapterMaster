@@ -17,7 +17,7 @@ if (is_test_map==true){
     draw_set_alpha(1);
 }
 // if (instance_exists(obj_turn_end)) then exit;
-
+draw_set_alpha(1);
 draw_set_valign(fa_top);
 draw_set_halign(fa_left);
 var xx = 0;
