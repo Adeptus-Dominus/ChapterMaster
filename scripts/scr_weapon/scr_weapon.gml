@@ -2887,7 +2887,7 @@ global.gear = {
 				"master_crafted": 35,
 				"artifact": 40
 			},
-			"tags": ["jump"],
+			"tags": ["jump", "ancient"],
 		},
 		"Heavy Weapons Pack": {
 			"abbreviation": "HvyWpPck",
