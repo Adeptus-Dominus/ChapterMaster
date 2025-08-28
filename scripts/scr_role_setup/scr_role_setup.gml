@@ -30,7 +30,7 @@ function role_setup_objects(){
             style : "box",
             tooltip : $"Load (Sans Escorts)\nCheck to have your Astartes automatically loaded into ships, except for Escorts, when the game starts.",
         }        
-    ], "", {x1: 530, y1 : 310, x_gap:20})
+    ], "", {x1: 445, y1 : 310, x_gap:20, center : true, max_width:400})
     load_to_ship_radio.current_selection = load_to_ships[0];
     distribute_scouts_box =  new ToggleButton({
         str1 : "Distribute Scouts",

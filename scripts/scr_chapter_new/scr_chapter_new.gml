@@ -189,13 +189,12 @@ function ChapterData() constructor {
 /// @mixin obj_creation
 /// @description called when a chapter's icon is clicked on the first page after the main menu.
 /// used to set up initialise the data that is later fed into `scr_initialize_custom` when the game starts
-function scr_chapter_new(argument0) {
+function scr_chapter_new(chapter_identifier) {
 
 	full_liveries = ""; // until chapter objects are in full use kicks off livery propogation
 
 	company_liveries = "";
 
-	// argument0 = chapter
 	obj_creation.use_chapter_object = false; // for the new json testing
 	var chapter_id = eCHAPTERS.UNKNOWN;
 
@@ -216,7 +215,8 @@ function scr_chapter_new(argument0) {
 	world_feature = array_create(20, "");
 	
 
-	points=100;maxpoints=100;
+	points=100;
+	maxpoints=100;
 	
 	function load_default_gear(_role_id, _role_name, _wep1, _wep2, _armour, _mobi, _gear){
 		for(var i = 100; i <=102; i++){
@@ -249,7 +249,7 @@ function scr_chapter_new(argument0) {
 
 
 	for(var c = 0; c < array_length(obj_creation.all_chapters); c++){
-		if(argument0 == obj_creation.all_chapters[c].name && obj_creation.all_chapters[c].json == true){
+		if(chapter_identifier == obj_creation.all_chapters[c].name && obj_creation.all_chapters[c].json == true){
 			obj_creation.use_chapter_object = true;
 			chapter_id = obj_creation.all_chapters[c].id;
 		}
@@ -260,30 +260,32 @@ function scr_chapter_new(argument0) {
 		var chapter_obj = new ChapterData();
 		var successfully_loaded = chapter_obj.load_from_json(chapter_id);
 		if(!successfully_loaded){
-			var issue = $"No json file exists for chapter id {chapter_id} and name {argument0}";
+			var issue = $"No json file exists for chapter id {chapter_id} and name {chapter_identifier}";
 			// log_error(issue);
 			scr_popup("Error Loading Chapter", issue, "debug");
 			return false;
 		}
 
 		global.chapter_creation_object = chapter_obj;
+		maxpoints=150;
 
 
 	}
 
 	#region Custom Chapter
 	//generates custom chapter if it exists
-	if (is_real(argument0) && argument0 >= eCHAPTERS.CUSTOM_1 && argument0 <= eCHAPTERS.CUSTOM_10){
+	if (is_real(chapter_identifier) && chapter_identifier >= eCHAPTERS.CUSTOM_1 && chapter_identifier <= eCHAPTERS.CUSTOM_10){
 		obj_creation.use_chapter_object = true;
 		var chapter_obj = new ChapterData();
-		var successfully_loaded = chapter_obj.load_from_json(argument0, true);
+		var successfully_loaded = chapter_obj.load_from_json(chapter_identifier, true);
 		if(!successfully_loaded){
-			var issue = $"No json file exists for chapter id {argument0} and name {argument0}";
+			var issue = $"No json file exists for chapter id {chapter_identifier} and name {chapter_identifier}";
 			log_error(issue);
 			scr_popup("Error Loading Chapter", issue, "debug");
 			return false;
 		}
 		global.chapter_creation_object = chapter_obj;
+		maxpoints=100;
 	}
 	#endregion
 
@@ -301,10 +303,6 @@ function scr_chapter_new(argument0) {
 
 		global.chapter_icon.name = chapter_object.icon_name;
 		obj_creation.fleet_type = chapter_object.fleet_type;
-		obj_creation.strength = chapter_object.strength;
-		obj_creation.purity = chapter_object.purity;
-		obj_creation.stability = chapter_object.stability;
-		obj_creation.cooperation = chapter_object.cooperation;
 		
 		obj_creation.homeworld_exists = chapter_object.homeworld_exists;
 		obj_creation.homeworld = chapter_object.homeworld;
@@ -321,8 +319,6 @@ function scr_chapter_new(argument0) {
 		obj_creation.buttons.home_planets.current_selection =   chapter_object.home_planets ??1;
 
 		obj_creation.aspirant_trial = trial_map(chapter_object.aspirant_trial);
-		obj_creation.adv = chapter_object.advantages;
-		obj_creation.dis = chapter_object.disadvantages;
 
 		obj_creation.buttons.culture_styles.set(chapter_object.culture_styles);
 		obj_creation.full_liveries = chapter_object.full_liveries;
@@ -498,37 +494,41 @@ function scr_chapter_new(argument0) {
 		if(struct_exists(chapter_object, "custom_advisors")){
 			obj_creation.custom_advisors = chapter_object.custom_advisors;
 		}
-		
-		
 
+		obj_creation.strength = chapter_object.strength;
+		obj_creation.purity = chapter_object.purity;
+		obj_creation.stability = chapter_object.stability;
+		obj_creation.cooperation = chapter_object.cooperation;
 
-		points = chapter_object.points;
-		maxpoints=chapter_object.points;	
+		points = 0;
+
+		points += (obj_creation.strength-5)*10;
+		points += (obj_creation.purity-5)*10;
+		points += (obj_creation.stability-50);
+		points += (obj_creation.cooperation-5)*10;
+
+		var _open_adv = 0;
+		for (var i=0;i<array_length(obj_creation.all_advantages);i++){
+			var _adv = obj_creation.all_advantages[i];
+			if (array_contains(chapter_object.advantages, _adv.name)){
+				_adv.add(_open_adv);
+				_open_adv++;
+			}
+		}
+
+		var _open_disadv = 1;
+		for (var i=0;i<array_length(obj_creation.all_disadvantages);i++){
+			var _disadv = obj_creation.all_disadvantages[i];
+			if (array_contains(chapter_object.disadvantages, _disadv.name)){
+				_disadv.add(_open_disadv);
+				_open_disadv++;
+			}
+		}
 
 	}
 
 
-
-
-
-
-	
-	for(var a = 0; a < array_length(adv); a++){
-	    for(var k = 0; k < array_length(obj_creation.all_advantages); k++){
-			if(adv[a]!="" && obj_creation.all_advantages[k].name=adv[a]){
-				adv_num[a] = k;
-			}
-		}
-		for(var j = 0; j < array_length(obj_creation.all_disadvantages); j++){
-			if (dis[a]!="" && obj_creation.all_disadvantages[j].name=dis[a]){
-				dis_num[a]=j;
-			}
-		}
-	}
-
-
-
-	maxpoints=points;
+	setup_chapter_trait_select();
 	return true;
 }
 

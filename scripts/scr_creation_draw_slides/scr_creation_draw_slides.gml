@@ -108,6 +108,7 @@ function draw_chapter_select(){
 						change_slide = 1;
 						goto_slide = 2;
 						chapter_string = chapter_name;
+						setup_chapter_trait_select();
 					} else {
 						// Chapter is borked
 					}
@@ -393,6 +394,26 @@ function draw_chapter_select(){
 	}
 }
 
+function setup_chapter_trait_select(){
+	chapter_type_radio = new RadioSet([
+		{
+		    str1 : "Homeworld",
+		    font : fnt_40k_14b,
+		    tooltip : "Homeworld\nYour chapter has a homeworld that they base on.  Contained upon it is a massive Fortress Monastery, which provides high levels of defense and automated weapons.",
+		},
+		{
+		    str1 :"Fleet Based",
+		    font : fnt_40k_14b,
+		    tooltip : "Fleet Based\Rather than a homeworld your chapter begins near their recruiting world.  The fleet includes a Battle Barge, which serves as a mobile base, and powerful ship.",
+		},
+		{
+		    str1 : "Penitent",
+		    font : fnt_40k_14b,
+		    tooltip : "Penitent\As with Fleet Based, but you must crusade and fight until your penitence meter runs out.  Note that recruiting is disabled until then.",
+		},
+	], "Chapter Type" ,{ x1: 445, y1 : 211 , max_width : 1125-445, center : true});
+	chapter_type_radio.current_selection = fleet_type-1;
+}
 /// @mixin
 function draw_chapter_trait_select(){
    draw_set_color(CM_GREEN_COLOR);
@@ -443,52 +464,8 @@ function draw_chapter_trait_select(){
     
     if (popup=""){
         if (custom!=eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.5);
-        draw_text_transformed(800,211,string_hash_to_newline("Chapter Type"),0.6,0.6,0);
-        draw_set_halign(fa_left);
-        
-        if (scr_hit(516,242,674,266)){
-        	tooltip="Homeworld";
-        	tooltip2="Your chapter has a homeworld that they base on.  Contained upon it is a massive Fortress Monastery, which provides high levels of defense and automated weapons.";
-        }
-        if (scr_hit(768,242,866,266)){
-        	tooltip="Fleet Based";
-        	tooltip2="Rather than a homeworld your chapter begins near their recruiting world.  The fleet includes a Battle Barge, which serves as a mobile base, and powerful ship.";
-        }
-        if (scr_hit(952,242,1084,266)){
-        	tooltip="Penitent";
-        	tooltip2="As with Fleet Based, but you must crusade and fight until your penitence meter runs out.  Note that recruiting is disabled until then.";
-        }// Avoiding fights will result in excomunicatus traitorus.
-        
-        if (custom!=eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.5);
-        yar=0;
-        if (fleet_type=1) then yar=1;
-        draw_sprite(spr_creation_check,yar,519,239);yar=0;
-        if (custom==eCHAPTER_TYPE.CUSTOM && point_and_click([519,239,519+32,239+32])){
-            if (points+20<=maxpoints) and (fleet_type=3){points+=20;fleet_type=1;}
-            if (fleet_type=2){fleet_type=1;}
-        }
-        draw_text_transformed(551,239,"Homeworld",0.6,0.6,0);
-        
-        yar=0;
-        if (fleet_type=2) then yar=1;
-        draw_sprite(spr_creation_check,yar,771,239);yar=0;
-        if (custom==eCHAPTER_TYPE.CUSTOM && point_and_click([771,239,771+32,239+32])) {
-            if (points+20<=maxpoints) and (fleet_type=3){points+=20;fleet_type=2;}
-            if (fleet_type=1){fleet_type=2;}
-        }
-        draw_text_transformed(804,239,"Fleet Based",0.6,0.6,0);
-        
-        yar=0;
-        if (fleet_type=3) then yar=1;
-        draw_sprite(spr_creation_check,yar,958,239);yar=0;
-        if (custom==eCHAPTER_TYPE.CUSTOM && point_and_click([958,239,958+32,239+32])){
-            if (fleet_type!=3) {
-                points-=20;
-            }
-            fleet_type=3;
-        }
-        draw_text_transformed(990,239,"Penitent",0.6,0.6,0);
-        draw_set_alpha(1);
+        chapter_type_radio.draw();
+        fleet_type = chapter_type_radio.current_selection+1;
         
         draw_line(445,289,1125,289);
         draw_line(445,290,1125,290);
