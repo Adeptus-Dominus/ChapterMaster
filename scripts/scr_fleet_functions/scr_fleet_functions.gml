@@ -515,7 +515,7 @@ function object_distance(obj_1, obj_2){
 function scr_orbiting_player_fleet(system = "none"){
 	if (system == "none" && !(is_struct(self)) && object_index == obj_star){
 		var _fleet = instance_nearest(x, y, obj_p_fleet);
-		if (object_distance(self, _fleet) > 0){s
+		if (object_distance(self, _fleet) > 0){
 			return -1
 		} else{
 			return _fleet.id;
