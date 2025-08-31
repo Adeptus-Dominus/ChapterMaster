@@ -207,10 +207,11 @@ function set_up_transfer_popup(){
                     width : 571,
                     height : 350,
                 });
+                // Inside with(pip), 'min_exp' refers to pip.min_exp
                 if (unit_role == "Vehicles"){
-                    _min_exp = 10000;
+                    min_exp = -1; // sentinel to bypass gating only for vehicles
                 }
-                target_company_radio(-1);
+                target_company_radio(min_exp);
                 transfer_button = new UnitButtonObject(
                     {
                         x1: 1450, 
