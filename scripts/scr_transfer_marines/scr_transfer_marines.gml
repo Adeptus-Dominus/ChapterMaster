@@ -147,40 +147,44 @@ function set_up_transfer_popup(){
         pip.type=5.1;
         pip.company=managing;
 
-        var god=0,nuuum=0,nuuum2=0,checky=0,check_number=0;
+        var god=0,_marine_count=0,_vehicle_count=0,checky=0,check_number=0;
         var _min_exp = 0;
         for (var f=0; f<array_length(display_unit); f++){
+
+            if (! (man_sel[f]==1)){
+                continue;
+            }
             if (god==1) then break;
-            if (god==0) and (man_sel[f]==1) and (man[f]=="man"){
+            if (god==0) and (man[f]=="man"){
                 god=1;
                 pip.unit_role=ma_role[f];
-                if (ma_exp[f] < _min_exp ||  _min_exp == 0){
-                	_min_exp = ma_exp[f];
-                }
+                _min_exp = min(_min_exp, ma_exp[f]);
             }
-            if (god==0) and (man_sel[f]==1) and (man[f]=="vehicle"){
+            if (god==0) and (man[f]=="vehicle"){
                 god=1;
-                pip.unit_role=ma_role[f];
+                pip.unit_role = ma_role[f];
             }
-            if (man_sel[f]==1){
-                if (man[f]=="man"){
-                    nuuum+=1;
-                    checky=1;
-                    if (ma_role[f]==obj_ini.role[100][7]) then checky=0;
-                    if (ma_role[f]==obj_ini.role[100][14]) then checky=0;
-                    if (ma_role[f]==obj_ini.role[100][15]) then checky=0;
-                    if (ma_role[f]==obj_ini.role[100][16]) then checky=0;
-                    if (ma_role[f]==obj_ini.role[100][17]) then checky=0;
-                    if (checky==1) then check_number+=1;
-                }
-                if (man[f]=="vehicle") then nuuum2+=1;
+
+            if (man[f] == "man"){
+                _marine_count+=1;
+                checky=1;
+                if (ma_role[f]==obj_ini.role[100][7]) then checky=0;
+                if (ma_role[f]==obj_ini.role[100][14]) then checky=0;
+                if (ma_role[f]==obj_ini.role[100][15]) then checky=0;
+                if (ma_role[f]==obj_ini.role[100][16]) then checky=0;
+                if (ma_role[f]==obj_ini.role[100][17]) then checky=0;
+                if (checky==1) then check_number+=1;
             }
+            else if (man[f] == "vehicle"){
+                _vehicle_count+=1;
+            }
+
         }
-        if (nuuum>1) then pip.unit_role="Marines";
-        if (nuuum2>1) then pip.unit_role="Vehicles";
-        if (nuuum>0) and (nuuum2>0) then pip.unit_role="Units";
-        pip.units=nuuum+nuuum2;
-        if (nuuum>0 && check_number>0 && !command_set[1]){
+        if (_vehicle_count>1) then pip.unit_role="Vehicles";        
+        if (_marine_count>1) then pip.unit_role="Marines";
+        if (_marine_count>0) and (_vehicle_count>0) then pip.unit_role="Units";
+        pip.units=_marine_count+_vehicle_count;
+        if (_marine_count>0 && check_number>0 && !command_set[1]){
             cooldown=8000;
             with(pip){
             	instance_destroy();
@@ -203,7 +207,10 @@ function set_up_transfer_popup(){
                     width : 571,
                     height : 350,
                 });
-                target_company_radio(_min_exp);
+                if (unit_role == "Vehicles"){
+                    _min_exp = 10000;
+                }
+                target_company_radio(-1);
                 transfer_button = new UnitButtonObject(
                     {
                         x1: 1450, 
