@@ -4,7 +4,7 @@ if (gc_timer > 0) {
 } else {
     gc_timer = 50;
     switch (os_type){
-        case os_macosx: gc_timer = 1000; break;
+        case os_macosx: gc_timer = 10000; break;
     }
     gc_collect();
 
