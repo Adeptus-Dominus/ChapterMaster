@@ -21,7 +21,7 @@ All variable names, function names, etc., should use `snake_case` unless stated 
 - Recommended to have a `_` prefix.
   - Ease readability.
   - Prevent namespace clashes with instance variables and scripts.
-  - Not required for loop indices.
+  - Not required for loop indices (e.g., `for (var i = 0; i < count; i++) { ... }`).
 - Example: `var _player_health`.
 
 **Instance Variables**:
