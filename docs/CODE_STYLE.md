@@ -21,7 +21,8 @@ All variable names, function names, etc., should use `snake_case` unless stated 
 - Recommended to have a `_` prefix.
   - Ease readability.
   - Prevent namespace clashes with instance variables and scripts.
-- Example: `var _example_e1`.
+  - Not required for loop indices.
+- Example: `var _player_health`.
 
 **Instance Variables**:
 - No special rules, aside from `snake_case`. For now.
@@ -45,18 +46,15 @@ All variable names, function names, etc., should use `snake_case` unless stated 
 ### Constants
 
 **Macros**:
-**Macros**:
-
 - Written in all caps `SNAKE_CASE`.
 - Try to denote their group using a short prefix (e.g., `PREFIX_`).
 - Example: `#macro COL_DARK_RED`.
 
 **Enums**:
- **Enums**:
-
- - Enum names should start with an `e` prefix and be in all caps `SNAKE_CASE`.
+ - Enum names should start with an `e` prefix.
+ - Written in all caps `SNAKE_CASE`.
  - Enum entries should use `PascalCase`.
-- Example: `enum eCOLORS` with entries `DarkRed`, `Blue`, etc.
+ - Example: `enum eCOLORS` with entries `DarkRed`, `Blue`, etc.
 
 ### General Styling
 
@@ -76,21 +74,6 @@ All variable names, function names, etc., should use `snake_case` unless stated 
 
 ### Formatters
 
-> [!WARNING]
-> Gobo formatter turns structs into single line abominations.\
-> Format with a JS formatter afterwards.
-
-> [!WARNING]
-> JavaScript formatters break `$"something {variable}"` syntax by adding a space after `$`.\
-> Manually correct this as needed, but keep in mind, that if using regex, it can match struct assessors and replace them.
-
-A solid GameMaker-specific formatter, that formats most of the elements that can get untidy, is [Gobo](https://github.com/Pizzaandy/Gobo/).
-- Disable tab indent and set it to 4 spaces.
-- Set max line width to something like 9999, to prevent condition checks from breaking into unreadable multiple lines.
-- The above step will format structs into a single line, so you'll have to use a JS formatter afterwards to fix this.
-
-You can use [this](https://beautifier.io/) JavaScript formatter to fix broken structs.
-- Indent with 4 spaces.
-- Allow unlimited newlines between tokens.
-- Don't wrap lines.
-- Spaces before conditional.
+A solid GameMaker-specific formatter, that formats most of the elements that can get untidy, is [Gobo (EttyKitty fork)](https://ettykitty.github.io/Gobo/).
+- This is a fork made by EttyKitty. Default settings comply with what is expected in this project, with the addition of some nice new ones.
+- Vertical arrays is an optional toggle, enable/disable it as you see fit. This formats array literals with each element on a new line for improved readability.
