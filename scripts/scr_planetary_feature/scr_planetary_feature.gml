@@ -50,8 +50,8 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 			player_hidden = 0;
 		}
 	}
-	switechies(f_type){
-		case P_features.Gene_Stealer_Cult:
+	switch(f_type){
+	case P_features.Gene_Stealer_Cult:
 		PDF_control = 0;
 		sealed = 0;
 		player_hidden = 1;
@@ -165,7 +165,7 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 		break;
 	case P_features.ChaosWarband:
 		if !(struct_exists(data, "patron")){
-			patron = choose("slaanesh", "tzeentechies", "khorne", "nurgle", "undivided");
+			patron = choose("slaanesh", "tzeentch", "khorne", "nurgle", "undivided");
 		} else {
 			self.patron = data.patron;
 		}
@@ -291,7 +291,7 @@ function awake_tomb_world(planet){
 }
 
 
-//selas a tomb world and switechiese off awake so will no longer spawn necrons or necron fleets
+//selas a tomb world and switche off awake so will no longer spawn necrons or necron fleets
 function seal_tomb_world(planet){
 	var awake_tomb = 0;
 	 var tombs = search_planet_features(planet, P_features.Necron_Tomb);
@@ -334,7 +334,7 @@ function scr_planetary_feature(planet_num) {
 		if (feat.player_hidden ==1){
 			feat.player_hidden =0;
 			var numeral_n = planet_numeral_name(planet_num);
-			switechies (feat.f_type){
+			switch (feat.f_type){
 				case P_features.Sororitas_Cathedral:
 					if (obj_controller.known[eFACTION.Ecclesiarchy]=0) then obj_controller.known[eFACTION.Ecclesiarchy]=1;
 				    var lop=$"Sororitas Cathedral discovered on {numeral_n}.";

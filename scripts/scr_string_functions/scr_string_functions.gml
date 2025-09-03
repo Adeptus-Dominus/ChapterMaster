@@ -324,3 +324,16 @@ function string_starts_with_any(_str, _prefixes) {
     }
     return false;
 }
+
+
+
+function string_interpolate_from_struct(interpolate_string,data){
+    var _names=struct_get_names(data);
+    var _name_length = array_length(_names);
+    for (var i=0;i<array_length(_name_length);i++){
+        var _name=_names[i];
+        interpolate_string = string_replace_all(interpolate_string,"{" + $"{_name}" + "}",data[$_name]);
+    }
+
+    return interpolate_string;
+}
