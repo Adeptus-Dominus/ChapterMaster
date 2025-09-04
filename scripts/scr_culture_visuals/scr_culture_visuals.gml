@@ -222,8 +222,9 @@ function set_up_visual_overides(){
         }
         if (struct_exists(_item,"cultures")){
             var _cultures = _item.cultures;
-            for (var i=0;i<array_length(_cultures);i++){
-                var _culture = _cultures[i];
+            show_debug_message($"{array_length(_cultures)}");
+            for (var s=0;s<array_length(_cultures);s++){
+                var _culture = _cultures[s];
                 if (!array_contains(global.culture_styles,_culture)){
                     array_push(global.culture_styles,_culture);
                 }
