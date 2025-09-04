@@ -64,7 +64,7 @@ function create_dialogue_string(dialogue_set, key, data){
 
 
 // Handles all dialog for all factions and special events. Handles diplomatic changes and diplomacy as well
-function scr_dialogue(diplo_keyphrase, data) {
+function scr_dialogue(diplo_keyphrase, data = {}) {
 	// diplo_last="";
 
 	with (obj_controller){
@@ -1212,8 +1212,8 @@ function scr_dialogue(diplo_keyphrase, data) {
 	            	option_text:"Propose a trade for the Artifact."
 	            });
 				add_diplomacy_option({
-					option_text:"Leave it be; Exit."
-					treat_as_exit : true,
+					option_text:"Leave it be; Exit.",
+					is_exit : true,
 				});
 	            diplo_text="The Adeptus Mechanicus is aware of the Artifact.  Do not concern yourself with that which is rightly within our territory.";
 	        }
@@ -1703,7 +1703,7 @@ function scr_dialogue(diplo_keyphrase, data) {
 		var _diag_set = global.dialogue.sisters;
 		diplo_text = create_dialogue_string(global.dialogue.sisters, diplo_keyphrase,_diag_data);
 
-		if(struct_exists(data,"prepend"){
+		if(struct_exists(data,"prepend")){
 			diplo_text=$"{data.prepend} {diplo_text}"
 		}
 
@@ -1752,10 +1752,10 @@ function scr_dialogue(diplo_keyphrase, data) {
 
 	    if (diplo_keyphrase=="artifact"){
 	        add_diplomacy_option({
-	        	option_text:create_dialogue_string(_diag_set, "propose_arti_trade",_diag_data);
+	        	option_text:create_dialogue_string(_diag_set, "propose_arti_trade",_diag_data),
 	        });
 			add_diplomacy_option({
-				option_text:create_dialogue_string(_diag_set, "leave_it",_diag_data);
+				option_text:create_dialogue_string(_diag_set, "leave_it",_diag_data),
 			});
 
 	    }

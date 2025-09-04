@@ -34,7 +34,7 @@ function alter_disposition(faction, alter_value){
             }
             break;
         case eFACTION.Ecclesiarchy:
-            if (scr_has_adv("Guardians")) {
+            if (scr_has_adv("Reverent Guardians")) {
                 alter_value+=2;
             }
     } 
@@ -238,6 +238,10 @@ function evaluate_chosen_diplomacy_option(diplo_pressed){
     }
     if (_opt.goto != ""){
         scr_dialogue(_opt.goto);
+    }
+
+    if ((struct_exists(_opt,"is_exit") && _opt.is_exit)){
+        exit_diplomacy_dialogue();
     }
 }
 
