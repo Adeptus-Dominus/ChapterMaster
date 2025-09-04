@@ -495,11 +495,11 @@ function scr_chapter_new(chapter_identifier) {
 			obj_creation.custom_advisors = chapter_object.custom_advisors;
 		}
 
-		obj_creation.strength = chapter_object.strength;
-		obj_creation.purity = chapter_object.purity;
-		obj_creation.stability = chapter_object.stability;
-		obj_creation.cooperation = chapter_object.cooperation;
-
+	// Validate and clamp trait values to sane ranges (defaulting if missing/invalid)
+	obj_creation.strength    = clamp(is_real(chapter_object.strength)    ? chapter_object.strength    : 5,  0,  10);
+	obj_creation.purity      = clamp(is_real(chapter_object.purity)      ? chapter_object.purity      : 5,  0,  10);
+	obj_creation.stability   = clamp(is_real(chapter_object.stability)   ? chapter_object.stability   : 50, 0, 100);
+	obj_creation.cooperation = clamp(is_real(chapter_object.cooperation) ? chapter_object.cooperation : 5,  0,  10);
 		points = 0;
 
 		points += (obj_creation.strength-5)*10;
