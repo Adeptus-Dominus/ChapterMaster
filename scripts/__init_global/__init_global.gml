@@ -8,6 +8,28 @@ function __init_global() {
 
     initialize_marine_traits();
 
+    global.culture_styles = [
+        "Greek",
+        "Roman",
+        "Knightly",
+        "Gladiator",
+        "Mongol",
+        "Feral",
+        "Flame Cult",
+        "Mechanical Cult",
+        "Prussian",
+        "Cthonian",
+        "Alpha",
+        "Ultra",
+        "Renaissance",
+        "Blood",
+        "Angelic",
+        "Crusader",
+        "Gothic",
+        "Wolf Cult",
+        "Runic"
+    ];    
+
     global.chapter_name = "None";
     global.game_seed = 0;
     global.ui_click_lock = false;
