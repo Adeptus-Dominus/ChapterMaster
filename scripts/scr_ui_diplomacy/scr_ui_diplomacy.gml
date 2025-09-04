@@ -1,4 +1,5 @@
 function draw_character_diplomacy_base_page(){
+	add_draw_return_values();
 	obj_controller.menu_lock = true;
 	if (!audience && !valid_diplomacy_options()){
 		with (diplo_buttons){
@@ -19,6 +20,7 @@ function draw_character_diplomacy_base_page(){
 	if (!valid_diplomacy_options() || force_goodbye){
 		diplo_buttons.exit_button.draw();
 	}
+	pop_draw_return_values();
 }
 
 function intro_to_diplomacy(faction_enum){

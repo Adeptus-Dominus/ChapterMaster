@@ -24,7 +24,7 @@ function scr_ui_popup() {
 			draw_text_transformed(xx + 312, yy + 10, string_hash_to_newline(title), 0.7, 0.7, 0);
 		
 			draw_set_font(fnt_40k_14b);
-			draw_text(xx + 312, yy + 45, string_hash_to_newline("Select a Secret Lair style."));
+			draw_text(xx + 312, yy + 45, "Select a Secret Lair style.");
 			draw_set_halign(fa_left);
 		
 			var styles = [

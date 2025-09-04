@@ -29,6 +29,31 @@ function move_data_to_current_scope(move_struct, overide=true){
     }
 }
 
+function gc_struct(vari){
+    var _keys = struct_get_names(vari);
+    var _key_length = array_length(_keys);
+    for (var i = 0;i<_key_length;i++){
+        var _key = _keys[i]
+        var _data = vari[$_key];
+        if (is_struct(_data)){
+            gc_struct(_data);
+        } else if (is_array(_data)) {
+            // Traverse arrays for embedded structs
+            for (var j = 0; j < array_length(_data); j++){
+                var _e = _data[j];
+                if (is_struct(_e)){
+                    gc_struct(_e);
+                }
+            }
+       }
+        delete _data;
+        delete vari[$_key];
+        struct_remove(vari, _key);
+    }
+
+    delete vari;
+}
+
 function CountingMap() constructor {
     map = {};
 

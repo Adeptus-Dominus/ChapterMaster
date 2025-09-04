@@ -29,6 +29,7 @@ function reset_manage_arrays() {
         ma_wep2=[];
         ma_armour=[];
         ma_health=[];
+        ma_health_string=[];
         ma_chaos=[];
         ma_exp=[];
         ma_promote=[];
@@ -67,7 +68,10 @@ function add_man_to_manage_arrays(unit){
         array_push(ma_wep2,unit.weapon_two());
         array_push(ma_armour,unit.armour());
         array_push(ma_gear,unit.gear());
+
         array_push(ma_health,unit.hp());
+        array_push(ma_health_string,$"{round((unit.hp() / unit.max_health()) * 100)}% HP");
+
         array_push(ma_mobi,unit.mobility_item());
         array_push(ma_chaos,unit.corruption);
         array_push(ma_exp,unit.experience);
@@ -116,6 +120,9 @@ function add_vehicle_to_manage_arrays(unit){
 		array_push(ma_armour,obj_ini.veh_wep3[unit[0]][unit[1]]);
 		array_push(ma_gear,obj_ini.veh_upgrade[unit[0]][unit[1]]);
 		array_push(ma_health,obj_ini.veh_hp[unit[0]][unit[1]]);
+		var _percent = round((obj_ini.veh_hp[unit[0]][unit[1]] / 100) * 100);
+        array_push(ma_health_string, $"{_percent}% HP");
+
 		array_push(ma_mobi,obj_ini.veh_acc[unit[0]][unit[1]]);
 		array_push(ma_chaos,0);
 		array_push(ma_exp,0);

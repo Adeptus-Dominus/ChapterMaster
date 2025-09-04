@@ -352,7 +352,7 @@ function scr_efleet_arrive_at_trade_loc(){
     
 	    //if no fleet find a valid plaanet with player forces
 	    if (action == ""){
-	    	var _player_star = nearest_star_with_ownership(1);
+	    	var _player_star = nearest_star_with_ownership(x, y, 1);
 	    	if (_player_star != "none"){
 	    		action_x = _player_star.x;
 	    		action_y = _player_star.y;
@@ -372,7 +372,7 @@ function scr_efleet_arrive_at_trade_loc(){
 
 	    //if no other viable options drop off at random imperial planet
 	    if (action==""){
-	    	var _imp = nearest_star_with_ownership(2);
+	    	var _imp = nearest_star_with_ownership(x, y, 2);
 	    	if (_imp != "none"){
 	    		if (x == _imp.x && y==_imp.y){
 	    			_valid_planet = true;
@@ -430,6 +430,28 @@ function scr_efleet_arrive_at_trade_loc(){
 }
 
 
+/// @function scr_orbiting_fleet(faction, system)
+/// @description Returns the ID of a fleet orbiting the given system/star that matches the specified faction.
+/// @param {any|array} faction 
+/// The faction identifier to check against. Can be a single faction ID or an array of multiple factions.
+/// @param {any} [system="none"] 
+/// The system instance or star to check. If `"none"`, the function uses the calling instance's position.
+/// @returns {real|string} The ID of the matching fleet instance, or `"none"` if no valid fleet is found.
+///
+/// @example
+/// ```gml
+/// // Find a fleet orbiting this star that belongs to faction 3
+/// var fleet_id = scr_orbiting_fleet(3);
+/// if (fleet_id != "none") {
+///     show_debug_message("Faction fleet found: " + string(fleet_id));
+/// }
+///
+/// // Find fleets from multiple factions
+/// var factions = [1, 2, 5];
+/// var fleet_id = scr_orbiting_fleet(factions, some_system);
+/// ```
+///
+
 function scr_orbiting_fleet(faction, system="none"){
 	var _found_fleet = "none";
 	var _faction_list = is_array(faction);
@@ -454,19 +476,50 @@ function scr_orbiting_fleet(faction, system="none"){
 	return _found_fleet;	
 }
 
+
+/// @function object_distance(obj_1, obj_2)
+/// @description Returns the distance in pixels between two instances or objects based on their `x` and `y` coordinates.
+/// @param {instance} obj_1 The first object or instance.
+/// @param {instance} obj_2 The second object or instance.
+/// @returns {real} The distance in pixels between `obj_1` and `obj_2`.
+///
+/// @example
+/// ```gml
+/// var dist = object_distance(player, enemy);
+/// if (dist < 100) {
+///     show_debug_message("Enemy is within range!");
+/// }
+/// ```
+///
+
 function object_distance(obj_1, obj_2){
 	return (point_distance(obj_1.x, obj_1.y,obj_2.x, obj_2.y ))
 }
 
+
+/// @function scr_orbiting_player_fleet(system)
+/// @description Returns the ID of the nearest player fleet orbiting the given system or star.
+/// @param {any} [system="none"] 
+/// The system instance or identifier to check. If `"none"`, the function checks the calling star instance.
+/// @returns {real} The instance ID of the orbiting player fleet, or -1 if none is found.
+///
+/// @example
+/// ```gml
+/// var fleet_id = scr_orbiting_player_fleet();
+/// if (fleet_id != -1) {
+///     show_debug_message("Fleet orbiting star: " + string(fleet_id));
+/// }
+/// ```
+///
 function scr_orbiting_player_fleet(system = "none"){
-	if (object_index == obj_star){
+	if (system == "none" && !(is_struct(self)) && object_index == obj_star){
 		var _fleet = instance_nearest(x, y, obj_p_fleet);
 		if (object_distance(self, _fleet) > 0){
 			return -1
 		} else{
 			return _fleet.id;
 		}
-	} else{
+	} else if system != "none"{
 		try{
 			with (system){
 				return scr_orbiting_player_fleet();
@@ -475,6 +528,8 @@ function scr_orbiting_player_fleet(system = "none"){
 			handle_exception(_exception);
 		}
 	}
+
+	return -1;
 
 }
 
