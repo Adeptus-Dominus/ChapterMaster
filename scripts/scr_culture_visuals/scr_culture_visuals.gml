@@ -113,6 +113,27 @@ global.company_markings = {
     }
 }
 
+global.culture_styles = [
+    "Greek",
+    "Roman",
+    "Knightly",
+    "Gladiator",
+    "Mongol",
+    "Feral",
+    "Flame Cult",
+    "Mechanical Cult",
+    "Prussian",
+    "Cthonian",
+    "Alpha",
+    "Ultra",
+    "Renaissance",
+    "Blood",
+    "Angelic",
+    "Crusader",
+    "Gothic",
+    "Wolf Cult",
+    "Runic"
+];
 function load_vis_set_to_global(directory, data){
     for (var i=0;i<array_length(data); i++){
         var _sprite_item = data[i];
@@ -217,6 +238,14 @@ function set_up_visual_overides(){
                     if (!_found_sprite){
                         array_delete(_item.subcomponents[s], g, 1);
                     }
+                }
+            }
+        }
+        if (struct_exists(_item,"cultures")){
+            for (var i=0;i<array_length(_item.cultures);i++){
+                var _culture = _item.cultures[i];
+                if (!array_contains(global.culture_styles,_culture)){
+                    array_push(global.culture_styles,_culture);
                 }
             }
         }

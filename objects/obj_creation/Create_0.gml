@@ -131,7 +131,18 @@ name_bad=0;
 heheh=0;
 turn_selection_change=false;
 draw_helms = true;
+fnt_40k_14b
+var culture_styles_array = [];
 
+for (var i=0;i<array_length(global.culture_styles);i++){
+    array_push(culture_styles_array,
+        {
+            str1 : global.culture_styles[i],
+            font : fnt_40k_14b
+        }
+    )
+}
+        
 buttons = {
     home_world_recruit_share : new ToggleButton(),
     complex_homeworld : new ToggleButton({
@@ -208,84 +219,7 @@ buttons = {
         },                    
     ], "Home System Planets"), 
 
-    culture_styles : new MultiSelect([
-        {
-            str1 : "Greek",
-            font : fnt_40k_14b,
-        },
-        {
-            str1 : "Roman",
-            font : fnt_40k_14b
-        },
-        {
-            str1 : "Knightly",
-            font : fnt_40k_14b
-        },
-        {
-            str1 : "Gladiator",
-            font : fnt_40k_14b
-        },         
-        {
-            str1 : "Mongol",
-            font : fnt_40k_14b
-        },
-        {
-            str1 : "Feral",
-            font : fnt_40k_14b
-        },
-        {
-            str1 : "Flame Cult",
-            font : fnt_40k_14b
-        },
-        {
-            str1 : "Mechanical Cult",
-            font : fnt_40k_14b
-        },
-        {
-            str1 : "Prussian",
-            font : fnt_40k_14b
-        },
-        {
-            str1 : "Cthonian",
-            font : fnt_40k_14b
-        },
-        {
-            str1 : "Alpha",
-            font : fnt_40k_14b
-        },
-        {
-            str1 : "Ultra",
-            font : fnt_40k_14b
-        },
-        {   
-            str1 : "Renaissance",
-            font : fnt_40k_14b,
-        },
-        {   
-            str1 : "Blood",
-            font : fnt_40k_14b,
-        },
-        {   
-            str1 : "Angelic",
-            font : fnt_40k_14b,
-        },
-        {   
-            str1 : "Crusader",
-            font : fnt_40k_14b,
-        },
-        {   
-            str1 : "Gothic",
-            font : fnt_40k_14b,
-        },
-        {   
-            str1 : "Wolf Cult",
-            font : fnt_40k_14b,
-        },
-        {   
-            str1 : "Runic",
-            font : fnt_40k_14b,
-        },                                                                                      
-    ], "Chapter Visual Styles"),
+    culture_styles : new MultiSelect(culture_styles_array, "Chapter Visual Styles"),
     company_liveries_choice : new RadioSet([
         {
             str1 : "HQ",
