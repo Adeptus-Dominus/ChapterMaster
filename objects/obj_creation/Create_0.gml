@@ -131,11 +131,11 @@ name_bad=0;
 heheh=0;
 turn_selection_change=false;
 draw_helms = true;
-fnt_40k_14b
-var culture_styles_array = [];
+
+var _culture_styles_array = [];
 
 for (var i=0;i<array_length(global.culture_styles);i++){
-    array_push(culture_styles_array,
+    array_push(_culture_styles_array,
         {
             str1 : global.culture_styles[i],
             font : fnt_40k_14b
@@ -219,7 +219,8 @@ buttons = {
         },                    
     ], "Home System Planets"), 
 
-    culture_styles : new MultiSelect(culture_styles_array, "Chapter Visual Styles"),
+    culture_styles : new MultiSelect(_culture_styles_array, "Chapter Visual Styles"),
+
     company_liveries_choice : new RadioSet([
         {
             str1 : "HQ",
