@@ -138,6 +138,9 @@ function scr_creation(slide_num) {
 	// 4 = Livery, Roles
 	// 5 = Gene Seed Mutations, Disposition
 	// 6 = Chapter Master
+	if (slide_num == eCREATIONSLIDES.CHAPTERSELECT){
+		setup_chapter_trait_select();
+	}
 	
 	show_debug_message($"calling scr_creation with input {slide_num}");
 	if (slide_num == eCREATIONSLIDES.CHAPTERTRAITS && custom!=eCHAPTER_TYPE.PREMADE){
