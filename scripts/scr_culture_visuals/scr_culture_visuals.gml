@@ -254,6 +254,21 @@ global.modular_drawing_items = [
         prevent_others : true,    
     },
     {
+        position : "crest",
+        body_types: [2],
+        sprite:spr_indomitus_complex_psy_hood,
+        equipped : {
+            "gear" : "Psychic Hood",
+        },
+        prevent_others : true,
+        subcomponents : [
+            [spr_indomitus_complex_psy_hood_cables]
+        ],
+        overides : {
+            "crown" : spr_indomitus_complex_psy_hood_crown,
+        },
+    }, 
+    {
         position : "robe",
         body_types: [0],
         sprite:spr_binders_robe,
@@ -288,6 +303,9 @@ global.modular_drawing_items = [
             "gear" : "Psychic Hood",
         },
         prevent_others : true,
+        subcomponents : [
+            [spr_blank, spr_psy_hood_components]
+        ]
     },  
     {
         sprite : spr_da_mk5_helm_crests,
