@@ -85,6 +85,30 @@ tab_buttons = {
 var require_tool_tip = "requires: #"
 if (shop = "equipment") {
     i = 0;
+	// Tribal shop weapons
+    i += 1;
+    item[i] = "Wooden Club";
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 1;
+    forge_cost[i] = 10;
+    i += 1;
+    item[i] = "Wooden Spear";
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 1;
+    forge_cost[i] = 10;
+    i += 1;
+    item[i] = "Ritual Stone Knife";
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 5;
+    if (research.rune_analysis{0>1){
+    forge_cost[i] = 100;
+    }
+    i += 1;
+    item[i] = "Stone Hammer";
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 1;
+    forge_cost[i] = 10;
+	// Weapons of 40k
     i += 1;
     item[i] = "Combat Knife";
     item_stocked[i] = scr_item_count(item[i]);
@@ -324,6 +348,18 @@ if (shop = "equipment") {
     }
 
 
+	// Tribal ranged weapons
+    i += 1;
+    item[i] = "Bow";
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 1;
+    forge_cost[i] = 10;
+    i += 1;
+    item[i] = "Sling";
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 1;
+    forge_cost[i] = 10;
+	// Weapons of 40k
     i += 1;
     item[i] = "Bolt Pistol";
     item_stocked[i] = scr_item_count(item[i]);
@@ -797,6 +833,13 @@ if (shop = "equipment2") {
             }
         }
     }    
+	// Tribal armour
+    i += 1;
+    item[i] = "Tribalwear";
+    item_stocked[i] = scr_item_count(item[i]);
+    forge_cost[i] = 50;
+    item_cost[i] = 2;
+	// 40k armour
     i += 1;
     item[i] = "Scout Armour";
     item_stocked[i] = scr_item_count(item[i]);
@@ -918,6 +961,14 @@ if (research.armour[1].stealth[0] > 0 && research.armour[1].armour[0] > 1 && obj
         item_cost[i] = 0;
     }
 
+// Tribal tools
+    i += 1;
+    x_mod[i] = 9;
+    item[i] = "Primitive Tools";
+    item_stocked[i] = scr_item_count(item[i]);
+    forge_cost[i] = 50;
+    item_cost[i] = 3;
+// 40k items
     i += 1;
     x_mod[i] = 9;
     item[i] = "Servo-arm";
@@ -930,6 +981,14 @@ if (research.armour[1].stealth[0] > 0 && research.armour[1].armour[0] > 1 && obj
         item_cost[i] = 0;
     }
 
+// Tribal Medicine
+    i += 1;
+    x_mod[i] = 9;
+    item[i] = "Medical Herb Pack";
+    forge_cost[i] = 25; // It in theory should be easier to instruct a marine/serf/other subject to gather them than purchase with requisition
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 5;
+// 40k Medical
     i += 1;
     x_mod[i] = 9;
     item[i] = "Bionics";
@@ -946,6 +1005,16 @@ if (research.armour[1].stealth[0] > 0 && research.armour[1].armour[0] > 1 && obj
         nobuy[i] = 1;
         item_cost[i] = 0;
     }
+// Tribal psychic accessories
+    i += 1;
+    x_mod[i] = 9;
+    item[i] = "Psychic Accessories";
+    if (research.rune_analysis{0>1){
+    forge_cost[i] = 100;
+    }
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 10;
+// 40k accessories
     i += 1;
     x_mod[i] = 9;
     item[i] = "Psychic Hood";
@@ -956,6 +1025,14 @@ if (research.armour[1].stealth[0] > 0 && research.armour[1].armour[0] > 1 && obj
         nobuy[i] = 1;
         item_cost[i] = 0;
     }
+// Tribal shield
+    i += 1;
+    x_mod[i] = 9;
+    item[i] = "Wooden Shield";
+    forge_cost[i] = 15;
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 2;
+// 40k tools
     i += 1;
     x_mod[i] = 9;
     item[i] = "Combat Shield";
