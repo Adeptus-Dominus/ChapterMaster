@@ -153,6 +153,7 @@ function draw_chapter_select(){
 						change_slide = 1;
 						goto_slide = 2;
 						chapter_string = chapter_name;
+						setup_chapter_trait_select();
 					} else {
 						// borked
 					}
@@ -205,12 +206,14 @@ function draw_chapter_select(){
 					change_slide = 1;
 					goto_slide = 2;
 					custom = eCHAPTER_TYPE.CUSTOM;
+					setup_chapter_trait_select();
 					scr_chapter_new(chap.id);
 				} else {
 					global.chapter_id = chap.id;
 					change_slide = 1;
 					goto_slide = 2;
 					custom = eCHAPTER_TYPE.CUSTOM;
+					setup_chapter_trait_select();
 					scr_chapter_random(0);
 				}
 			}
@@ -257,6 +260,7 @@ function draw_chapter_select(){
 						change_slide = 1;
 						goto_slide = 2;
 						chapter_string = chapter_name;
+						setup_chapter_trait_select();
 					} else {
 						// borked
 					}
@@ -295,6 +299,7 @@ function draw_chapter_select(){
             goto_slide = 2;
             custom = eCHAPTER_TYPE.CUSTOM;
             scr_chapter_random(0);
+            setup_chapter_trait_select();
         }
     }
 
@@ -323,6 +328,7 @@ function draw_chapter_select(){
             goto_slide = 2;
             custom = eCHAPTER_TYPE.RANDOM;
             scr_chapter_random(1);
+            setup_chapter_trait_select();
         }
     }
 
@@ -463,7 +469,9 @@ function draw_chapter_trait_select(){
     draw_line(445,202,1125,202);
     
     if (popup=""){
-        if (custom!=eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.5);
+        if (custom!=eCHAPTER_TYPE.CUSTOM){
+        	draw_set_alpha(0.5);
+        }
         chapter_type_radio.draw();
         fleet_type = chapter_type_radio.current_selection+1;
         
