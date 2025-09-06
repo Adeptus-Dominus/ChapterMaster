@@ -1688,6 +1688,9 @@ function format_weapon_visuals(weapon_name){
                 }
             }
             new_obj.weapon_data.sprite = _variant.sprite;
+            if (struct_exists(_variant, "subcomponents")){
+                new_obj.weapon_data.subcomponents = _variant.subcomponents;
+            }
         }
         array_push(return_options, new_obj);
     }
@@ -2653,7 +2656,11 @@ base: {
   },
   variants: [
     {
-      sprite: spr_weapon_powswo
+      sprite: spr_weapon_powswo,
+        subcomponents : [
+            [spr_blank, spr_pow_sword_cross_guard],
+            [spr_blank, spr_pow_sword_blade_additions]
+        ],
     },
     {
       cultures: ["Mongol"],

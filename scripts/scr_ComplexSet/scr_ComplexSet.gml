@@ -521,7 +521,7 @@ function ComplexSet(_unit) constructor {
 		foreground_item : unit.get_body_data("variant", "throat"),
 	};
 
-	static draw_component = function(component_name, texture_draws = {}) {
+	static draw_component = function(component_name, texture_draws = {}, choice_lock = -1) {
 		if (array_contains(banned, component_name)) {
 			return "banned component";
 		}
@@ -532,17 +532,20 @@ function ComplexSet(_unit) constructor {
 				var _draw_x = x_surface_offset;
 				var _draw_y = y_surface_offset;
 
-				var choice = 0;
+				var _choice = 0;
 				var _map_choice = 3;
-				if (struct_exists(variation_map, component_name)) {
+				if (struct_exists(variation_map, component_name) && choice_lock == -1) {
 					_map_choice = variation_map[$ component_name];
-					var choice = _map_choice % sprite_get_number(_sprite);
+					var _choice = _map_choice % sprite_get_number(_sprite);
+				}
+				else if (choice_lock > -1){
+					_choice = choice_lock
 				}
 				if (struct_exists(overides, component_name)) {
 					var _overide_set = overides[$ component_name];
 					for (var i = 0; i < array_length(_overide_set); i++) {
 						var _spec_over = _overide_set[i];
-						if (_spec_over[0] <= choice && _spec_over[1] > choice) {
+						if (_spec_over[0] <= _choice && _spec_over[1] > _choice) {
 							var _override_data = _spec_over[2];
 							if (struct_exists(_override_data, "overides")){
 								_override_areas = struct_get_names(_override_data.overides);
@@ -577,7 +580,7 @@ function ComplexSet(_unit) constructor {
 							tex_frame = 1;
 						}
 
-						var mask_transform_data = sprite_get_uvs_transformed(_sprite, choice, _tex_data.texture, tex_frame);
+						var mask_transform_data = sprite_get_uvs_transformed(_sprite, _choice, _tex_data.texture, tex_frame);
 
 						var mask_transform = shader_get_uniform(armour_texture, "mask_transform");
 						shader_set_uniform_f_array(mask_transform, mask_transform_data);
@@ -598,27 +601,27 @@ function ComplexSet(_unit) constructor {
 							// show_debug_message($"{_tex_data.areas[t]}");
 							var _replace_col = shader_get_uniform(armour_texture, "replace_colour");
 							shader_set_uniform_f_array(_replace_col, _tex_data.areas[t]);
-							draw_sprite(_sprite, choice ?? 0, _draw_x, _draw_y);
+							draw_sprite(_sprite, _choice ?? 0, _draw_x, _draw_y);
 						}
 					}
 					surface_reset_target();
 					surface_set_target(_return_surface);
 					shader_set(full_livery_shader);
-					draw_sprite(_sprite, choice ?? 0, _draw_x, _draw_y);
+					draw_sprite(_sprite, _choice ?? 0, _draw_x, _draw_y);
 					draw_surface(base_component_surface, 0, 0);
 					surface_reset_target();
 					surface_clear_and_free(base_component_surface);
 
 					surface_set_target(_return_surface);
 				} else {
-					draw_sprite(_sprite, choice ?? 0, _draw_x, _draw_y);
+					draw_sprite(_sprite, _choice ?? 0, _draw_x, _draw_y);
 				}
 				if (struct_exists(subcomponents, component_name)) {
 					var _subcomponents_found = false;
 					var _component_bulk_set = subcomponents[$ component_name];
 					for (var i = 0; i < array_length(_component_bulk_set); i++) {
 						var _spec_over = _component_bulk_set[i];
-						if (_spec_over[0] <= choice && _spec_over[1] > choice) {
+						if (_spec_over[0] <= _choice && _spec_over[1] > _choice) {
 							_subcomponents_found = true;
 							var _component_set = _spec_over[2];
 						}
@@ -778,33 +781,25 @@ function ComplexSet(_unit) constructor {
 
 		if (!weapon_right.new_weapon_draw) {
 			if ((weapon_right.sprite != 0) && sprite_exists(weapon_right.sprite)) {
-				if (weapon_right.ui_twoh == false && weapon_left.ui_twoh == false) {
-					draw_sprite(weapon_right.sprite, 0, x_surface_offset + weapon_right.ui_xmod, y_surface_offset + weapon_right.ui_ymod);
-				}
-				if (weapon_right.ui_twoh == true) {
-					draw_sprite(weapon_right.sprite, 0, x_surface_offset + weapon_right.ui_xmod, y_surface_offset + weapon_right.ui_ymod);
-					/*if (ui_force_both == true) {
-					    draw_sprite(weapon_right.sprite, 0, x_surface_offset + weapon_right.ui_xmod, y_surface_offset + weapon_right.ui_ymod);
-					}*/
+				if ((weapon_right.ui_twoh == false && weapon_left.ui_twoh == false) || weapon_right.ui_twoh == true) {
+					draw_weapon(weapon_right,"right_weapon", 0);
 				}
 			}
 		} else {
 			if ((weapon_right.sprite != 0) && sprite_exists(weapon_right.sprite)) {
-				draw_sprite(weapon_right.sprite, 0, x_surface_offset + weapon_right.ui_xmod, y_surface_offset + weapon_right.ui_ymod);
+				draw_weapon(weapon_right,"right_weapon");
 			}
 		}
 
 		if (!weapon_left.new_weapon_draw) {
 			if ((weapon_left.sprite != 0) && sprite_exists(weapon_left.sprite) && (weapon_right.ui_twoh == false)) {
-				if (weapon_left.ui_spec == false) {
-					draw_sprite(weapon_left.sprite, 1, x_surface_offset + weapon_left.ui_xmod, y_surface_offset + weapon_left.ui_ymod);
-				} else if (weapon_left.ui_spec == true) {
-					draw_sprite(weapon_left.sprite, 1, x_surface_offset + weapon_left.ui_xmod, y_surface_offset + weapon_left.ui_ymod);
-				}
+				draw_weapon(weapon_left,"left_weapon", 1);
 			}
 		} else {
 			if ((weapon_left.sprite != 0) && sprite_exists(weapon_left.sprite) && (weapon_right.ui_twoh == false)) {
-				draw_sprite_flipped(weapon_left.sprite, 0, x_surface_offset + weapon_left.ui_xmod, y_surface_offset + weapon_left.ui_ymod);
+				weapon_left.sprite = return_sprite_mirrored(weapon_left.sprite);
+				draw_weapon(weapon_left, "left_weapon")
+
 			}
 		}
 		if (!weapon_right.ui_twoh && !weapon_left.ui_twoh) {
@@ -817,7 +812,31 @@ function ComplexSet(_unit) constructor {
 		}
 
 		// Draw hands above the weapon sprite;
+		if ((weapon_right.sprite != 0) && sprite_exists(weapon_right.sprite)) {
+
+			sprite_delete(weapon_right.sprite)
+		}
+		if ((weapon_left.sprite != 0) && sprite_exists(weapon_left.sprite)) {
+			sprite_delete(weapon_left.sprite);
+			
+		}
 	};
+
+	static draw_weapon = function(weapon, position, choice_lock=-1){
+
+		x_surface_offset += weapon.ui_xmod;
+		y_surface_offset += weapon.ui_ymod;
+
+		var _subs = struct_exists(weapon, "subcomponents") ? weapon.subcomponents : "none";
+
+		add_to_area(position, weapon.sprite, "none", _subs);
+
+		draw_component(position, {}, choice_lock);
+
+		x_surface_offset -= weapon.ui_xmod;
+		y_surface_offset -= weapon.ui_ymod;
+	}
+
 
 	static weapon_preset_data = {
 		"shield": {
@@ -862,11 +881,13 @@ function ComplexSet(_unit) constructor {
 
 		if (array_length(left_arm_data)) {
 			weapon_left = variable_clone(left_arm_data[variation_map.left_weapon % array_length(left_arm_data)]);
+			weapon_left.sprite = sprite_duplicate(weapon_left.sprite)
 		} else {
 			weapon_left = {};
 		}
 		if (array_length(right_arm_data)) {
 			weapon_right = variable_clone(right_arm_data[variation_map.right_weapon % array_length(right_arm_data)]);
+			weapon_right.sprite = sprite_duplicate(weapon_right.sprite)
 		} else {
 			weapon_right = {};
 		}
