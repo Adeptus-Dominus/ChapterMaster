@@ -1292,6 +1292,7 @@
     {"id":{"name":"spr_indomitus_left_eye_bionic","path":"sprites/spr_indomitus_left_eye_bionic/spr_indomitus_left_eye_bionic.yy",},},
     {"id":{"name":"spr_indomitus_left_knee_crux","path":"sprites/spr_indomitus_left_knee_crux/spr_indomitus_left_knee_crux.yy",},},
     {"id":{"name":"spr_indomitus_left_leg_bionic","path":"sprites/spr_indomitus_left_leg_bionic/spr_indomitus_left_leg_bionic.yy",},},
+    {"id":{"name":"spr_indomitus_left_shin_shadow","path":"sprites/spr_indomitus_left_shin_shadow/spr_indomitus_left_shin_shadow.yy",},},
     {"id":{"name":"spr_indomitus_left_shin","path":"sprites/spr_indomitus_left_shin/spr_indomitus_left_shin.yy",},},
     {"id":{"name":"spr_indomitus_leg_variants","path":"sprites/spr_indomitus_leg_variants/spr_indomitus_leg_variants.yy",},},
     {"id":{"name":"spr_indomitus_right_arm_bionic","path":"sprites/spr_indomitus_right_arm_bionic/spr_indomitus_right_arm_bionic.yy",},},

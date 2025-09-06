@@ -33,6 +33,10 @@ uniform vec3 weapon_secondary;
 varying vec2 v_vTexcoord;
 varying vec4 v_vColour;
 
+// === SHADOW AUGMENT: new uniforms ===
+uniform sampler2D shadow_texture;
+uniform int use_shadow;
+varying vec2 v_vShadowCoord;
 
 vec3 light_or_dark(vec3 m_colour, float shade) {
     return vec3((clamp(m_colour.r * shade,0.001,0.999)) , (m_colour.g * shade), m_colour.b * shade);
@@ -47,11 +51,9 @@ void main() {
     const float _84COL = 84.0 / 255.0;
     const float _104COL = 104.0 / 255.0;
     const float _112COL = 112.0 / 255.0;
-    // Attempt to workaround Intel sampling bug
     const float _127_25COL = 127.25 / 255.0;
     const float _128COL = 128.0 / 255.0;
     const float _128_75COL = 128.75 / 255.0;
-    //
     const float _130COL = 130.0 / 255.0;
     const float _135COL = 135.0 / 255.0;
     const float _138COL = 138.0 / 255.0;
@@ -76,93 +78,48 @@ void main() {
         discard;
     }
 
-    // Intel
-    if (col_orig.r >= _127_25COL && col_orig.r <= _128_75COL) {
-        col_orig.r = _128COL;
-    }
-    if (col_orig.g >= _127_25COL && col_orig.g <= _128_75COL) {
-        col_orig.g = _128COL;
-    }
-    if (col_orig.b >= _127_25COL && col_orig.b <= _128_75COL) {
-        col_orig.b = _128COL;
-    }
-    if (col_orig.a >= _127_25COL && col_orig.a <= _128_75COL) {
-        col_orig.a = _128COL;
-    }
-    //
+    // Intel fix
+    if (col_orig.r >= _127_25COL && col_orig.r <= _128_75COL) { col_orig.r = _128COL; }
+    if (col_orig.g >= _127_25COL && col_orig.g <= _128_75COL) { col_orig.g = _128COL; }
+    if (col_orig.b >= _127_25COL && col_orig.b <= _128_75COL) { col_orig.b = _128COL; }
+    if (col_orig.a >= _127_25COL && col_orig.a <= _128_75COL) { col_orig.a = _128COL; }
+
     vec4 col = col_orig;
 
-
-    if (col.rgb == vec3(0.0, 0.0, _128COL).rgb) {
-        col.rgb = left_head.rgb;
-    } else if (col.rgb == vec3(_181COL, 0.0, 1.0).rgb) {
-        col.rgb = right_backpack.rgb;
-    } else if (col.rgb == vec3(_104COL, 0.0, _168COL).rgb) {
-        col.rgb = left_backpack.rgb;
-    } else if (col.rgb == vec3(0.0, 0.0, 1.0).rgb){
-        col.rgb = right_head.rgb;
-    } else if (col.rgb == vec3(_128COL, _64COL, 1.0).rgb) {
-        col.rgb = left_muzzle.rgb;
-    } else if (col.rgb == vec3(_64COL, _128COL, 1.0).rgb) {
-        col.rgb = right_muzzle.rgb;
-    } else if (col.rgb == vec3(0.0, 1.0, 0.0).rgb) {
-        col.rgb = eye_lense.rgb;
-    } else if (col.rgb == vec3(1.0, _20COL, _147COL).rgb) {
-        col.rgb = right_chest.rgb;
-    } else if (col.rgb == vec3(_128COL, 0.0, _128COL).rgb) {
-        col.rgb = left_chest.rgb;
-    } else if (col.rgb == vec3(0.0, _128COL, _128COL).rgb) {
-        col.rgb = right_trim.rgb;
-    } else if (col.rgb == vec3(1.0, _128COL, 0.0).rgb) {
-        col.rgb = left_trim.rgb;
-    } else if (col.rgb == vec3(_135COL, _130COL, _188COL).rgb) {
-        col.rgb = metallic_trim.rgb;
-    } else if (col.rgb == vec3(1.0, 1.0, 1.0).rgb) {
-        col.rgb = right_pauldron.rgb;
-    } else if (col.rgb == vec3(1.0, 1.0, 0.0).rgb) {
-        col.rgb = left_pauldron.rgb;
-    } else if (col.rgb == vec3(0.0, _128COL, 0.0).rgb) {
-        col.rgb = right_leg_upper.rgb;
-    } else if (col.rgb == vec3(1.0, _112COL, _170COL).rgb) {
-        col.rgb = left_leg_upper.rgb;
-    } else if (col.rgb == vec3(1.0, 0.0, 0.0).rgb) {
-        col.rgb = left_leg_knee.rgb;
-    } else if (col.rgb == vec3(_128COL, 0.0, 0.0).rgb) {
-        col.rgb = left_leg_lower.rgb;
-    } else if (col.rgb == vec3(_214COL, _194COL, 1.0).rgb) {
-        col.rgb = right_leg_knee.rgb;
-    } else if (col.rgb == vec3(_165COL, _84COL, _24COL).rgb) {
-        col.rgb = right_leg_lower.rgb;
-    } else if (col.rgb == vec3(_138COL, _218COL, _140COL).rgb) {
-        col.rgb = right_arm.rgb;
-    } else if (col.rgb == vec3(_46COL, _169COL, _151COL).rgb) {
-        col.rgb = right_hand.rgb;
-    } else if (col.rgb == vec3(1.0, _230COL, _140COL).rgb) {
-        col.rgb = left_arm.rgb;
-    } else if (col.rgb == vec3(1.0, _160COL, _112COL).rgb) {
-        col.rgb = left_hand.rgb;
-    } else if (col.rgb == vec3(_128COL, _128COL, 0.0)) {
-        col.rgb = company_marks.rgb;
-    } else if (col.rgb == vec3(0.0, 1.0, 1.0)) {
-        col.rgb = weapon_primary.rgb;
-    } else if (col.rgb == vec3(1.0, 0.0, 1.0)) {
-        col.rgb = weapon_secondary.rgb;
-    }
+    // === Existing replacement logic ===
+    if (col.rgb == vec3(0.0, 0.0, _128COL).rgb) { col.rgb = left_head.rgb; }
+    else if (col.rgb == vec3(_181COL, 0.0, 1.0).rgb) { col.rgb = right_backpack.rgb; }
+    else if (col.rgb == vec3(_104COL, 0.0, _168COL).rgb) { col.rgb = left_backpack.rgb; }
+    else if (col.rgb == vec3(0.0, 0.0, 1.0).rgb){ col.rgb = right_head.rgb; }
+    else if (col.rgb == vec3(_128COL, _64COL, 1.0).rgb) { col.rgb = left_muzzle.rgb; }
+    else if (col.rgb == vec3(_64COL, _128COL, 1.0).rgb) { col.rgb = right_muzzle.rgb; }
+    else if (col.rgb == vec3(0.0, 1.0, 0.0).rgb) { col.rgb = eye_lense.rgb; }
+    else if (col.rgb == vec3(1.0, _20COL, _147COL).rgb) { col.rgb = right_chest.rgb; }
+    else if (col.rgb == vec3(_128COL, 0.0, _128COL).rgb) { col.rgb = left_chest.rgb; }
+    else if (col.rgb == vec3(0.0, _128COL, _128COL).rgb) { col.rgb = right_trim.rgb; }
+    else if (col.rgb == vec3(1.0, _128COL, 0.0).rgb) { col.rgb = left_trim.rgb; }
+    else if (col.rgb == vec3(_135COL, _130COL, _188COL).rgb) { col.rgb = metallic_trim.rgb; }
+    else if (col.rgb == vec3(1.0, 1.0, 1.0).rgb) { col.rgb = right_pauldron.rgb; }
+    else if (col.rgb == vec3(1.0, 1.0, 0.0).rgb) { col.rgb = left_pauldron.rgb; }
+    else if (col.rgb == vec3(0.0, _128COL, 0.0).rgb) { col.rgb = right_leg_upper.rgb; }
+    else if (col.rgb == vec3(1.0, _112COL, _170COL).rgb) { col.rgb = left_leg_upper.rgb; }
+    else if (col.rgb == vec3(1.0, 0.0, 0.0).rgb) { col.rgb = left_leg_knee.rgb; }
+    else if (col.rgb == vec3(_128COL, 0.0, 0.0).rgb) { col.rgb = left_leg_lower.rgb; }
+    else if (col.rgb == vec3(_214COL, _194COL, 1.0).rgb) { col.rgb = right_leg_knee.rgb; }
+    else if (col.rgb == vec3(_165COL, _84COL, _24COL).rgb) { col.rgb = right_leg_lower.rgb; }
+    else if (col.rgb == vec3(_138COL, _218COL, _140COL).rgb) { col.rgb = right_arm.rgb; }
+    else if (col.rgb == vec3(_46COL, _169COL, _151COL).rgb) { col.rgb = right_hand.rgb; }
+    else if (col.rgb == vec3(1.0, _230COL, _140COL).rgb) { col.rgb = left_arm.rgb; }
+    else if (col.rgb == vec3(1.0, _160COL, _112COL).rgb) { col.rgb = left_hand.rgb; }
+    else if (col.rgb == vec3(_128COL, _128COL, 0.0)) { col.rgb = company_marks.rgb; }
+    else if (col.rgb == vec3(0.0, 1.0, 1.0)) { col.rgb = weapon_primary.rgb; }
+    else if (col.rgb == vec3(1.0, 0.0, 1.0)) { col.rgb = weapon_secondary.rgb; }
 
     if (col_orig.rgb != col.rgb) {
-        if (col_orig.a == _128COL){
-            col.rgb = light_or_dark(col.rgb, 1.2);
-            col.a = 1.0;
-        } else if (col_orig.a == _60COL) {
-            col.rgb = light_or_dark(col.rgb, 1.4);
-            col.a = 1.0;
-        } else if (col_orig.a == _215COL) {
-            col.rgb = light_or_dark(col.rgb,0.6);
-            col.a = 1.0;
-        } else if (col_orig.a == _160COL) {
-            col.rgb = light_or_dark(col.rgb, 0.8);
-            col.a = 1.0;
-        }
+        if (col_orig.a == _128COL){ col.rgb = light_or_dark(col.rgb, 1.2); col.a = 1.0; }
+        else if (col_orig.a == _60COL) { col.rgb = light_or_dark(col.rgb, 1.4); col.a = 1.0; }
+        else if (col_orig.a == _215COL) { col.rgb = light_or_dark(col.rgb,0.6); col.a = 1.0; }
+        else if (col_orig.a == _160COL) { col.rgb = light_or_dark(col.rgb, 0.8); col.a = 1.0; }
     }
 
     const vec3 robes_colour_base = vec3(201.0 / 255.0, 178.0 / 255.0, 147.0 / 255.0);
@@ -175,12 +132,25 @@ void main() {
         col.rgb = light_or_dark(robes_colour_replace , 1.0).rgb;
     } else if (col.rgb == robes_highlight.rgb || col.rgb == robes_highlight_2.rgb) {
         col.rgb = light_or_dark(robes_colour_replace , 1.25).rgb;
-    //col.rgb = mix(robes_highlight.rgb, robes_colour_replace.rgb, 0.25);
     } else if (col.rgb == robes_darkness.rgb || col.rgb == robes_darkness_2.rgb) {
-    //col.rgb = vec3(col.r*0.8, col.g*0.8, col.b*0.8).rgb;
-    //col.rgb = robes_colour_replace.rgb;
-    //col.rgb = mix(robes_darkness.rbg, robes_colour_replace.rgb, 0.25);
         col.rgb = light_or_dark(robes_colour_replace , 0.75).rgb;
+    }
+
+    // === SHADOW AUGMENT: apply shadow map ===
+    if (use_shadow == 1) {
+        vec4 shadow_col = texture2D(shadow_texture, v_vShadowCoord);
+        float intensity = shadow_col.r; // grayscale (R=G=B)
+
+        // Remap: 0 = shadow, 0.5 = neutral, 1 = highlight
+        float shadow_factor = (intensity - 0.5) * 2.0;
+
+        if (shadow_factor < 0.0) {
+            // Darken: interpolate towards 30% brightness
+            col.rgb = mix(col.rgb * 0.3, col.rgb, 1.0 + shadow_factor);
+        } else {
+            // Brighten: interpolate towards white
+            col.rgb = mix(col.rgb, vec3(1.0), shadow_factor);
+        }
     }
 
     gl_FragColor = v_vColour * col;

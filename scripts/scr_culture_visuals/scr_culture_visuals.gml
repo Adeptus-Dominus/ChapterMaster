@@ -1042,12 +1042,14 @@ global.modular_drawing_items = [
         body_types: [ 2],
         sprite: spr_indomitus_left_shin,
         armours : ["Terminator Armour"],
+        shadows : spr_indomitus_left_shin_shadow
     }, 
     {
         position: "right_shin",
         body_types: [2],
         sprite: spr_indomitus_right_shin,
         armours : ["Terminator Armour"],
+        shadows : spr_indomitus_left_shin_shadow
     }, 
     {
         cultures : ["Cthonian"],
