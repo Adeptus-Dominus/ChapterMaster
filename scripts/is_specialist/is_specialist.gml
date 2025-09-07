@@ -370,12 +370,6 @@ function group_selection(group, selection_data={}) {
         	} else {
         		basic_manage_settings();
         	}
-            with(obj_fleet_select) {
-                instance_destroy();
-            }
-            with(obj_star_select) {
-                instance_destroy();
-            }
 
             exit_button = new ShutterButton();
             proceed_button = new ShutterButton();
@@ -428,7 +422,7 @@ function group_selection(group, selection_data={}) {
             	managing = -1;
             }
         }
-		obj_controller.menu = MENU.Manage;
+        show_debug_message($"manage_success {obj_controller.menu}");
     } catch (_exception) {
         //handle and send player back to map
         handle_exception(_exception);

@@ -126,8 +126,9 @@ if (global.cheat_debug && obj_controller.selecting_planet && !loading)
         }
     }
 
-if (obj_controller.menu == 0) {
-    if (has_player_forces && point_and_click(draw_unit_buttons([125, 200], "Manage Units",[1,1],c_blue))) {
+
+if (obj_controller.menu == 0){
+    if (manage_units_button.draw(has_player_forces)){
         var _viewer = obj_controller.location_viewer
         _viewer.update_garrison_log();
         var _unit_dispersement = _viewer.garrison_log;
@@ -142,9 +143,12 @@ if (obj_controller.menu == 0) {
                 planet : 0,
                 selections : []
             });
+            instance_destroy();
+            exit;
         }
     }
 }
+
 
 if (loading!=0){
     draw_set_font(fnt_40k_14);
