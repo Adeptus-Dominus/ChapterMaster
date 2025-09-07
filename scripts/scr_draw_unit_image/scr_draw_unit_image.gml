@@ -550,6 +550,8 @@ function scr_draw_unit_image(_background = false) {
         }
     }
 
+    struct_remove(complex_set, "unit");
+    gc_struct(complex_set);
     delete complex_set;
 
     if (!surface_exists(unit_surface)) {

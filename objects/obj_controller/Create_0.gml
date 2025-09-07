@@ -121,69 +121,6 @@ function build_chaos_gods(){
 }
 build_chaos_gods()
 
-// ** Resets global vars **
-obj_controller.restart_name="";
-obj_controller.restart_founding="";
-obj_controller.restart_secret="";
-for(var i=0; i<=11; i++){obj_controller.restart_title[i]="";}
-obj_controller.restart_icon=0;
-obj_controller.restart_powers="";
-for(var ad=0; ad<5; ad ++){
-    obj_controller.restart_adv[ad]="";
-    obj_controller.restart_dis[ad]="";
-}
-obj_controller.restart_recruiting_type="";
-obj_controller.restart_trial="";
-obj_controller.restart_recruiting_name="";
-obj_controller.restart_home_type="";
-obj_controller.restart_home_name="";
-obj_controller.restart_fleet_type=0;
-obj_controller.restart_recruiting_exists=0;
-obj_controller.restart_homeworld_exists=0;
-obj_controller.restart_homeworld_rule=0;
-obj_controller.restart_battle_cry="";
-obj_controller.restart_main_color="";
-obj_controller.restart_secondary_color="";
-obj_controller.restart_trim_color="";
-obj_controller.restart_pauldron2_color="";
-obj_controller.restart_pauldron_color="";
-obj_controller.restart_lens_color="";
-obj_controller.restart_weapon_color="";
-obj_controller.restart_col_special=0;
-obj_controller.restart_trim=0;
-obj_controller.restart_skin_color=0;
-obj_controller.restart_hapothecary="";
-obj_controller.restart_hchaplain="";
-obj_controller.restart_clibrarian="";
-obj_controller.restart_fmaster="";
-obj_controller.restart_recruiter="";
-obj_controller.restart_admiral="";
-obj_controller.restart_equal_specialists=0;
-obj_controller.restart_load_to_ships=[0,0,0];
-obj_controller.restart_successors=0;
-obj_controller.restart_mutations=0;
-obj_controller.restart_preomnor=0;
-obj_controller.restart_voice=0;
-obj_controller.restart_doomed=0;
-obj_controller.restart_lyman=0;
-obj_controller.restart_omophagea=0;
-obj_controller.restart_ossmodula=0;
-obj_controller.restart_membrane=0;
-obj_controller.restart_zygote=0;
-obj_controller.restart_betchers=0;
-obj_controller.restart_catalepsean=0;
-obj_controller.restart_secretions=0;
-obj_controller.restart_occulobe=0;
-obj_controller.restart_mucranoid=0;
-obj_controller.restart_master_name="";
-obj_controller.restart_master_melee=0;
-obj_controller.restart_master_ranged=0;
-obj_controller.restart_master_specialty=0;
-obj_controller.restart_strength=0;
-obj_controller.restart_cooperation=0;
-obj_controller.restart_purity=0;
-obj_controller.restart_stability=0;
-
 // ** Sets default equipement for roles **
 // 100 is defaults, 101 is the allowable starting equipment
 for(var i=100; i<103; i++){

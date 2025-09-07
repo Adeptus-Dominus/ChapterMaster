@@ -10,6 +10,33 @@ function __init_global() {
 
     initialize_dialogue();
 
+    global.culture_styles = [
+        "Greek",
+        "Roman",
+        "Knightly",
+        "Gladiator",
+        "Mongol",
+        "Feral",
+        "Flame Cult",
+        "Mechanical Cult",
+        "Prussian",
+        "Cthonian",
+        "Alpha",
+        "Ultra",
+        "Renaissance",
+        "Blood",
+        "Angelic",
+        "Crusader",
+        "Gothic",
+        "Wolf Cult",
+        "Runic"
+    ];    
+    
+    try{
+        load_visual_sets();
+    } catch(_exception){
+        handle_exception(_exception);
+    }
     global.chapter_name = "None";
     global.game_seed = 0;
     global.ui_click_lock = false;

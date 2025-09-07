@@ -220,6 +220,16 @@ function set_up_visual_overides(){
                 }
             }
         }
+        if (struct_exists(_item,"cultures")){
+            var _cultures = _item.cultures;
+            show_debug_message($"{array_length(_cultures)}");
+            for (var s=0;s<array_length(_cultures);s++){
+                var _culture = _cultures[s];
+                if (!array_contains(global.culture_styles,_culture)){
+                    array_push(global.culture_styles,_culture);
+                }
+            }
+        }
     }
 }
 global.modular_drawing_items = [
@@ -1633,16 +1643,16 @@ function add_purity_seal_markers (){
 
 function format_weapon_visuals(weapon_name){
     if (struct_exists(global.weapon_visual_data, weapon_name)){
-        weapon_visual_data = global.weapon_visual_data[$ weapon_name];
+        var _weapon_visual_data = global.weapon_visual_data[$ weapon_name];
     } else {
         return [];
     }
-    var base_data = variable_clone(weapon_visual_data.base);
+    var base_data = variable_clone(_weapon_visual_data.base);
     base_data.weapon_map = weapon_name;
     base_data.position = "weapon";
     var return_options = [];
-    for (var i=0;i<array_length(weapon_visual_data.variants);i++){
-        var _variant = weapon_visual_data.variants[i];
+    for (var i=0;i<array_length(_weapon_visual_data.variants);i++){
+        var _variant = _weapon_visual_data.variants[i];
         var new_obj = variable_clone(base_data);
         var variant_keys = struct_get_names(_variant);
         var sprite = _variant.sprite
