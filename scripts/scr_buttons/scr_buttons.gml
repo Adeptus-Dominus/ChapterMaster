@@ -757,6 +757,9 @@ function RadioSet(options_array, title="", data = {})constructor{
 	title_font = fnt_40k_14b;
 	draw_title = true;
 	space_evenly = false;
+	changed = false;
+
+	
 	if(title == ""){
 		draw_title = false;
 	}
