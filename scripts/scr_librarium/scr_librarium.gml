@@ -82,7 +82,7 @@ function scr_librarium_gui(){
             }
 
             if (artifact_gift.draw_shutter(575, 770, "GIFT", 0.3, true)){
-            setup_gift_artifact_popup()
+                setup_gift_artifact_popup()
             }
             if (artifact_destroy.draw_shutter(765, 770, "DESTROY", 0.3, true)){
                 // Below here cleans up the artifacts

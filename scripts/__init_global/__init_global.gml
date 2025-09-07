@@ -8,6 +8,8 @@ function __init_global() {
 
     initialize_marine_traits();
 
+    initialize_dialogue();
+
     global.culture_styles = [
         "Greek",
         "Roman",

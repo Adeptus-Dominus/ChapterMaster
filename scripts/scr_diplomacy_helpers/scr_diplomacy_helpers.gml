@@ -34,7 +34,7 @@ function alter_disposition(faction, alter_value){
             }
             break;
         case eFACTION.Ecclesiarchy:
-            if (scr_has_adv("Guardians")) {
+            if (scr_has_adv("Reverent Guardians")) {
                 alter_value+=2;
             }
     } 
@@ -54,7 +54,9 @@ function valid_diplomacy_options(){
     var valid = false;
     if (array_length(obj_controller.diplo_option)){
         for (var i=array_length(obj_controller.diplo_option)-1;i>=0;i--){
-            if (obj_controller.diplo_option[i] != ""){
+            var _opt = obj_controller.diplo_option;
+            if (struct_exists(_opt, "option_text") && _opt.option_text != ""){
+                if (goto)
                 valid = true;
             } else {
                 array_delete(obj_controller.diplo_option, i, 1);
@@ -236,6 +238,10 @@ function evaluate_chosen_diplomacy_option(diplo_pressed){
     }
     if (_opt.goto != ""){
         scr_dialogue(_opt.goto);
+    }
+
+    if ((struct_exists(_opt,"is_exit") && _opt.is_exit)){
+        exit_diplomacy_dialogue();
     }
 }
 

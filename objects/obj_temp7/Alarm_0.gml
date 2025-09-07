@@ -19,4 +19,3 @@ if (num>0){// Hmmmmmmm
         remove_planet_problem(num, "recon", stah);
     }
 }
-
