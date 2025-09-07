@@ -43,8 +43,7 @@ if (__b__) {
                         if (point_and_click(draw_unit_buttons([xx + 1400, yy + 120 + (p * 26)], "View", [1, 1], c_green, , fnt_40k_14b, 1,true))) {
                             var view_star = star_by_name(cur_event.event_target);
                             if (view_star != "none") {
-                                obj_controller.menu = 0;
-                                obj_controller.hide_banner = 0;
+                                main_map_defaults();
                                 obj_controller.x = view_star.x;
                                 obj_controller.y = view_star.y;
                             }
@@ -86,7 +85,7 @@ if (__b__) {
         draw_sprite(spr_help_exit, 1, xx + 1104, yy + 72);
         if (scr_click_left()) {
             with(obj_controller) {
-                menu = 0;
+                main_map_defaults();
                 onceh = 1;
                 click = 1;
                 hide_banner = 0;
