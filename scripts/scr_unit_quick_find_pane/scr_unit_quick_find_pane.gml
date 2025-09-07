@@ -30,10 +30,11 @@ function UnitQuickFindPanel() constructor{
 
 		return _stars;
 	}
+
 	static update_garrison_log = function(){
 		try{
 		for (var i = 0;i<array_length(obj_ini.ship_carrying); i++){
-			obj_ini.ship_carrying[i]=0
+			obj_ini.ship_carrying[i]=0;
 		};
 		var _unit, unit_location, group;
 		delete garrison_log;
@@ -729,39 +730,35 @@ function planet_selection_action(){
 					        
 					        // Recon Stuff
 					        var recon=0;
-					        if (has_problem_planet(sel_plan, "recon",target)){
-					        	recon=1;
-					        }
+					        if (has_problem_planet(sel_plan, "recon",target)) then recon=1;
 
 					        if (recon==1){
-						        var pop=instance_create(0,0,obj_popup);
-						        pop.image="inquisition";
-						        pop.title="Investigation Completed";
-						        pop.text="Your marines have scouted out "+string(target.name)+" "+string(scr_roman(sel_plan))+" and satisfied the mission requirements.";
-						        
-						        pop.option1="Reload Marines";
-								pop.option2="Do Nothing";
-						        
-						        scr_event_log("","Inquisition Mission Completed: Your Astartes have succesfully scouted "+string(stah.name)+" "+scr_roman(num)+".");
-						        
-						        remove_planet_problem(sel_plan, "recon", target);
+					            var arti=instance_create(target.x,target.y,obj_temp7);// Unloading / artifact crap
+					            arti.num=sel_plan;
+					            arti.alarm[0]=1;
+					            arti.loc=obj_controller.selecting_location;
+					            arti.managing=obj_controller.managing;
+					            arti.type="recon";
 
+					            with (arti){
+					                setup_planet_mission_group()
+					            }
 					        }else if (planet_feature_bool(target.p_feature[sel_plan], P_features.Artifact) == 1) and (recon=0){
 						
 					            var artifact=instance_create(target.x,target.y,obj_ground_mission);// Unloading / artifact crap
+					            artifact.num=sel_plan;
+					            artifact.alarm[0]=1;
+					            artifact.loc=obj_controller.selecting_location;
+					            artifact.managing=obj_controller.managing;
 
 					            with (artifact){
-					            	num=sel_plan;
-					            	loc=obj_controller.selecting_location;
-					            	managing=obj_controller.managing;					            	
 					                setup_planet_mission_group();
-					                discover_artifact_popup();
 					            }
 					        }
 					        
 					        // STC Grab
 					        if (planet_feature_bool(target.p_feature[sel_plan], P_features.STC_Fragment) == 1) and (recon=0){
-					            var frag=0,tch=0,mch=0;
+					            var tch,mch;frag=0;tch=0;mch=0;
 					            for (var frag=0;frag<array_length(obj_controller.display_unit);frag++){
 					                if (obj_controller.man[frag]!="") and (obj_controller.man_sel[frag]==1){
 					                    if (obj_controller.ma_role[frag]=obj_ini.role[100][16]) or ((obj_controller.ma_role[frag]="Forge Master")){
@@ -773,16 +770,16 @@ function planet_selection_action(){
 					                }
 					            }
 								var arti=instance_create(target.x,target.y,obj_ground_mission);// Unloading / artifact crap
+								arti.num=sel_plan;
+								arti.alarm[0]=1;
+								arti.loc=obj_controller.selecting_location;
+								arti.managing=obj_controller.managing;
+								arti.tch=tch;
+								arti.mch=mch;
 								// Right here should pass the man_sel variables
 								// var frag;frag=-1;repeat(150){frag+=1;arti.man_sel[frag]=obj_controller.man_sel[frag];}
 								with (arti){
-									num=sel_plan;
-									loc=obj_controller.selecting_location;
-									managing=obj_controller.managing;
-									techies=tch;
-									mechanicus_reps=mch;									
 									setup_planet_mission_group();
-									discover_stc_fragment_popup();
 								}
 					        }
 					        

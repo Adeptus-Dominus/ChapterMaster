@@ -392,11 +392,10 @@ function create_starship_event(){
 
 
 function discover_stc_fragment_popup(){
-	var pop, own;
-    own = stah.p_owner[num];
-    stah = instance_nearest(x, y, obj_star);
+    var stah = instance_nearest(x, y, obj_star);
+    var own = stah.p_owner[num];
     obj_controller.menu = MENU.Default;
-    pop = instance_create(0, 0, obj_popup);
+    var pop = instance_create(0, 0, obj_popup);
     pop.image = "stc";
     pop.title = "STC Fragment Located";
 
@@ -436,8 +435,8 @@ function discover_stc_fragment_popup(){
 }
 
 function discover_artifact_popup(){
-	var own = stah.p_owner[num];
-    stah = instance_nearest(x, y, obj_star);
+    var stah = instance_nearest(x, y, obj_star);
+    var own = stah.p_owner[num];
     obj_controller.menu = MENU.Default;
     if ((stah.p_type[num] == "Dead") || (own == eFACTION.Player)) {
         alarm[4] = 1;
