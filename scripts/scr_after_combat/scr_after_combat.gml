@@ -445,6 +445,16 @@ function after_battle_part1() {
                 // Apothecaries for saving marines;
                 if (unit.IsSpecialist(SPECIALISTS_APOTHECARIES, true)) {
                     skill_level = unit.intelligence * 0.0125;
+                    if (marine_gear[i]=="Medical Herb Pack"){
+                        skill_level*=1.1;
+                        obj_ncombat.apothecaries_alive++;
+                    } 
+	/* to replace sororitas medkit, and provide an in-between medical tool option
+                    if (marine_gear[i]=="Imperial Medkit"){
+                        skill_level*=1.5;
+                        obj_ncombat.apothecaries_alive++;
+                    } 
+	*/
                     if (marine_gear[i]=="Narthecium"){
                         skill_level*=2;
                         obj_ncombat.apothecaries_alive++;
@@ -456,6 +466,12 @@ function after_battle_part1() {
                 // Techmarines for saving vehicles;
                 if (unit.IsSpecialist(SPECIALISTS_TECHS, true)) {
                     skill_level = unit.technology / 10;
+                    if (marine_mobi[i]=="Primitive Tools") {
+                        skill_level *= 1.1; 
+	/* to add an item between tribal and Servo-arm stuff
+                    if (marine_mobi[i]=="Combi-Tool") {
+                        skill_level *= 1.3; 
+	*/
                     if (marine_mobi[i]=="Servo-arm") {
                         skill_level *= 1.5; 
                     } else if (marine_mobi[i]=="Servo-harness") {
