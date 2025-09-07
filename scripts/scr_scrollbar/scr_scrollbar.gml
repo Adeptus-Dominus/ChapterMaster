@@ -22,7 +22,7 @@ function scr_scrollbar(argument0, argument1, argument2, argument3, argument4, ar
 
 	var xx,yy,x1,x2,y1,y2;
 	var siz1, siz2, siz3;
-	// draw_set_color(38144);
+	// draw_set_color(CM_GREEN_COLOR);
 	xx=0;yy=0;x1=0;x2=0;y1=0;y2=0;temp1=0;temp2=0;
 	siz1=0;siz2=0;siz3=0;
 
@@ -99,7 +99,7 @@ function scr_scrollbar(argument0, argument1, argument2, argument3, argument4, ar
 	            ratio=(center-argument1)/(argument3-argument1);
             
 	            // draw_set_font(fnt_large);draw_set_color(c_red);draw_text(view_xview[0]+320,view_yview[0]+240,ratio);
-	            // draw_set_color(38144);
+	            // draw_set_color(CM_GREEN_COLOR);
             
 	            if (checka=1){
 	                obj_controller.man_current=floor((obj_controller.man_max)*ratio);

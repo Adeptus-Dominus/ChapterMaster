@@ -3,11 +3,6 @@
  * It contains data and logic for setting up custom chapters as well as populating the new game menu with data for pre-existing chapters.
  */
 keyboard_string="";
-try{
-    load_visual_sets();
-} catch(_exception){
-    handle_exception(_exception);
-}
 
 #region Global Settings: volume, fullscreen etc
 ini_open("saves.ini");
@@ -132,6 +127,17 @@ heheh=0;
 turn_selection_change=false;
 draw_helms = true;
 
+var _culture_styles_array = [];
+
+for (var i=0;i<array_length(global.culture_styles);i++){
+    array_push(_culture_styles_array,
+        {
+            str1 : global.culture_styles[i],
+            font : fnt_40k_14b
+        }
+    )
+}
+        
 buttons = {
     home_world_recruit_share : new ToggleButton(),
     complex_homeworld : new ToggleButton({
@@ -140,7 +146,7 @@ buttons = {
         active : false,
         str1 : "Spawn System Options",
         tooltip : "Click for Complex Spawn System Options",
-        button_color : #009500,
+        button_color : CM_GREEN_COLOR,
     }),
     home_spawn_loc_options : new RadioSet([
         {
@@ -208,89 +214,8 @@ buttons = {
         },                    
     ], "Home System Planets"), 
 
-    culture_styles : new MultiSelect([
-        {
-            str1 : "Greek",
-            font : fnt_40k_14b,
-        },
-        {
-            str1 : "Roman",
-            font : fnt_40k_14b
-        },
-        {
-            str1 : "Knightly",
-            font : fnt_40k_14b
-        },
-        {
-            str1 : "Gladiator",
-            font : fnt_40k_14b
-        },         
-        {
-            str1 : "Mongol",
-            font : fnt_40k_14b
-        },
-        {
-            str1 : "Feral",
-            font : fnt_40k_14b
-        },
-        {
-            str1 : "Flame Cult",
-            font : fnt_40k_14b
-        },
-        {
-            str1 : "Mechanical Cult",
-            font : fnt_40k_14b
-        },
-        {
-            str1 : "Prussian",
-            font : fnt_40k_14b
-        },
-        {
-            str1 : "Cthonian",
-            font : fnt_40k_14b
-        },
-        {
-            str1 : "Alpha",
-            font : fnt_40k_14b
-        },
-        {
-            str1 : "Ultra",
-            font : fnt_40k_14b
-        },
-        {   
-            str1 : "Renaissance",
-            font : fnt_40k_14b,
-        },
-        {   
-            str1 : "Blood",
-            font : fnt_40k_14b,
-        },
-        {   
-            str1 : "Angelic",
-            font : fnt_40k_14b,
-        },
-        {   
-            str1 : "Crusader",
-            font : fnt_40k_14b,
-        },
-        {   
-            str1 : "Gothic",
-            font : fnt_40k_14b,
-        },
-        {   
-            str1 : "Wolf Cult",
-            font : fnt_40k_14b,
-        },
-        {   
-            str1 : "Runic",
-            font : fnt_40k_14b,
-        },                                                                                      
-    ], "Chapter Visual Styles"),
-    company_options_toggle : new UnitButtonObject({
-        tooltip : "toggle between chapter or role settings",
-        label : "Company Settings",
-        company_view : false,
-    }),
+    culture_styles : new MultiSelect(_culture_styles_array, "Chapter Visual Styles"),
+
     company_liveries_choice : new RadioSet([
         {
             str1 : "HQ",
@@ -337,6 +262,12 @@ buttons = {
             font : fnt_40k_14b
         },                    
     ], "Companies"),
+    livery_switch : new UnitButtonObject({
+            x1: 570, 
+            y1: 215, 
+            label : "Simple Livery",
+        }
+    )
 }
 
 with (buttons){
@@ -1093,6 +1024,8 @@ function load_default_gear(_role_id, _role_name, _wep1, _wep2, _armour, _mobi, _
     gear[defaults_slot, _role_id] = _gear;
     race[defaults_slot, _role_id] = 1;
 }
+
+load_default_gear(eROLE.ChapterMaster, "Chapter Master", "Power Sword", "Bolter", "Artificer Armour", "", "");
 load_default_gear(eROLE.HonourGuard, "Honour Guard", "Power Sword", "Bolter", "Artificer Armour", "", "");
 load_default_gear(eROLE.Veteran, "Veteran", "Combiflamer", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
 load_default_gear(eROLE.Terminator, "Terminator", "Power Fist", "Storm Bolter", "Terminator Armour", "", "");

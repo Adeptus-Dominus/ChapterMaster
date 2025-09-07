@@ -1,4 +1,5 @@
 function draw_character_diplomacy_base_page(){
+	add_draw_return_values();
 	obj_controller.menu_lock = true;
 	if (!audience && !valid_diplomacy_options()){
 		with (diplo_buttons){
@@ -19,6 +20,7 @@ function draw_character_diplomacy_base_page(){
 	if (!valid_diplomacy_options() || force_goodbye){
 		diplo_buttons.exit_button.draw();
 	}
+	pop_draw_return_values();
 }
 
 function intro_to_diplomacy(faction_enum){
@@ -51,10 +53,85 @@ function intro_to_diplomacy(faction_enum){
 	}
 }
 
+
+function exit_diplomacy_dialogue(){
+	obj_controller.menu_lock = false;
+	if (audio_is_playing(snd_blood)==true) then scr_music("royal",2000);
+
+	var _close_diplomacy = true;
+    if (complex_event==true) and (instance_exists(obj_temp_meeting)){
+        complex_event=false;
+        with(obj_temp_meeting){
+        	instance_destroy();
+        }
+        if (instance_exists(obj_turn_end)){
+            obj_turn_end.alarm[1]=1;
+        }
+    }
+    
+    if (trading_artifact!=0){
+        clear_diplo_choices();
+        cooldown=8;
+        if (trading_artifact==2) and (instance_exists(obj_ground_mission)){
+            obj_ground_mission.alarm[2]=1;
+        }// 135 this might not be needed
+        trading_artifact=0;
+        with(obj_popup){
+            obj_ground_mission.alarm[1]=1;
+            instance_destroy();
+        }
+    }
+
+    if (force_goodbye==5){
+        clear_diplo_choices();
+    }
+
+    if (liscensing==2) and (repair_ships==0){
+        cooldown=8;
+        var cru=instance_create(mouse_x,mouse_y,obj_crusade);
+        cru.owner=diplomacy;
+        cru.placing=true;
+        exit_all=0;
+        liscensing=0;
+        if (zoomed==0) then scr_zoom();
+    }
+
+    if (exit_all!=0){
+        exit_all=0;
+    }
+    if (diplo_last=="artifact_thanks") and (force_goodbye!=0){
+		scr_toggle_lib();
+		_close_diplomacy = false;
+    } else if (diplo_last=="stc_thanks"){
+    	scr_toggle_armamentarium();
+    	_close_diplomacy = false;
+    }
+    // Exits back to diplomacy thing
+    if (audience==0){
+        cooldown=8;
+        diplomacy=0;
+        force_goodbye=0;
+        _close_diplomacy = false;
+    }
+    // No need to check for next audience
+    if (audience>0) and (instance_exists(obj_turn_end)){
+        if (complex_event==false){
+
+            obj_turn_end.alarm[1]=1;
+            show_debug_message("next_audience");
+        }
+        if (complex_event=true){
+            // TODO
+        }
+    }
+    if (_close_diplomacy){
+    	scr_toggle_diplomacy();
+    }
+}
 function draw_diplomacy_diplo_text(){
     draw_set_font(fnt_40k_14);
     draw_set_alpha(1);
-    draw_set_color(38144);
+    draw_set_color(CM_GREEN_COLOR);
     draw_set_halign(fa_left);
     draw_text_ext(336+16,209,string_hash_to_newline(string(diplo_txt)),-1,536);
     draw_set_halign(fa_center);
@@ -169,80 +246,7 @@ function set_up_diplomacy_buttons(){
 		color : CM_RED_COLOR,
 	});
 
-	diplo_buttons.exit_button.bind_method = function(){
-		obj_controller.menu_lock = false;
-		if (audio_is_playing(snd_blood)==true) then scr_music("royal",2000);
-
-		var _close_diplomacy = true;
-        if (complex_event==true) and (instance_exists(obj_temp_meeting)){
-            complex_event=false;
-            with(obj_temp_meeting){
-            	instance_destroy();
-            }
-            if (instance_exists(obj_turn_end)){
-                obj_turn_end.alarm[1]=1;
-            }
-        }
-        
-        if (trading_artifact!=0){
-            clear_diplo_choices();
-            cooldown=8;
-            if (trading_artifact==2) and (instance_exists(obj_ground_mission)){
-                obj_ground_mission.alarm[2]=1;
-            }// 135 this might not be needed
-            trading_artifact=0;
-            with(obj_popup){
-                obj_ground_mission.alarm[1]=1;
-                instance_destroy();
-            }
-        }
-
-        if (force_goodbye==5){
-            clear_diplo_choices();
-        }
-
-        if (liscensing==2) and (repair_ships==0){
-            cooldown=8;
-            var cru=instance_create(mouse_x,mouse_y,obj_crusade);
-            cru.owner=diplomacy;
-            cru.placing=true;
-            exit_all=0;
-            liscensing=0;
-            if (zoomed==0) then scr_zoom();
-        }
-
-        if (exit_all!=0){
-            exit_all=0;
-        }
-        if (diplo_last=="artifact_thanks") and (force_goodbye!=0){
-			scr_toggle_lib();
-			_close_diplomacy = false;
-        } else if (diplo_last=="stc_thanks"){
-        	scr_toggle_armamentarium();
-        	_close_diplomacy = false;
-        }
-        // Exits back to diplomacy thing
-        if (audience==0){
-            cooldown=8;
-            diplomacy=0;
-            force_goodbye=0;
-            _close_diplomacy = false;
-        }
-        // No need to check for next audience
-        if (audience>0) and (instance_exists(obj_turn_end)){
-            if (complex_event==false){
-
-                obj_turn_end.alarm[1]=1;
-                show_debug_message("next_audience");
-            }
-            if (complex_event=true){
-                // TODO
-            }
-        }
-        if (_close_diplomacy){
-        	scr_toggle_diplomacy();
-        }
-	}
+	diplo_buttons.exit_button.bind_method = exit_diplomacy_dialogue;
 
 
 	diplo_buttons.declare_war = new ShutterButton();
@@ -461,7 +465,7 @@ function scr_ui_diplomacy() {
 	draw_set_alpha(1);
 	if (diplomacy==0){// Main diplomacy screen
 
-	    /*draw_set_color(38144);
+	    /*draw_set_color(CM_GREEN_COLOR);
 	    draw_rectangle(xx+31,yy+281,xx+438,yy+416,0);
 	    draw_rectangle(xx+31,yy+417,xx+438,yy+552,0);
 	    draw_rectangle(xx+31,yy+553,xx+438,yy+688,0);
@@ -473,7 +477,7 @@ function scr_ui_diplomacy() {
 	    draw_rectangle(xx+451,yy+689,xx+858,yy+125+273,0);*/
     
     
-	    draw_set_color(38144);
+	    draw_set_color(CM_GREEN_COLOR);
 	    draw_set_font(fnt_40k_30b);
 	    draw_set_halign(fa_center);
 	    draw_text(xx+800,yy+74,string_hash_to_newline("Diplomacy"));
@@ -538,7 +542,7 @@ function scr_ui_diplomacy() {
 
 		//draw the meet chaos button
 	    draw_set_halign(fa_left);
-	    draw_set_color(38144);
+	    draw_set_color(CM_GREEN_COLOR);
 		draw_rectangle(xx+688,yy+240,xx+1028,yy+281,0);
 	    draw_set_color(c_black);
 		draw_text_transformed(xx+688,yy+241," Meet Chaos Emmissary",0.7,0.7,0);
@@ -610,7 +614,7 @@ function scr_ui_diplomacy() {
 	    }
     	
 	    draw_set_halign(fa_center);
-	    draw_set_color(38144);
+	    draw_set_color(CM_GREEN_COLOR);
 	    draw_set_font(fnt_40k_30b);
     
 	    var _diplomacy_faction_name="";
@@ -659,7 +663,7 @@ function scr_ui_diplomacy() {
         draw_set_halign(fa_left);
 
         draw_rectangle(mouse_x-2,mouse_y+20,mouse_x+2+string_width_ext(warn,-1,600),mouse_y+24+string_height_ext(warn,-1,600),0);
-        draw_set_color(38144);
+        draw_set_color(CM_GREEN_COLOR);
         draw_rectangle(mouse_x-2,mouse_y+20,mouse_x+2+string_width_ext(warn,-1,600),mouse_y+24+string_height_ext(warn,-1,600),1);
         draw_text_ext(mouse_x,mouse_y+22,warn,-1,600);
     }

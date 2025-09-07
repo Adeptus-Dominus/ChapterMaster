@@ -3,7 +3,7 @@ __b__ = action_if_variable(help, 0, 0);
 if (__b__) {
     var bad = 1;
     if (instance_exists(obj_controller)) {
-        if (obj_controller.menu = 17) {
+        if (obj_controller.menu == MENU.EventLog) {
             bad = 0;
         }
     }
@@ -17,7 +17,7 @@ if (__b__) {
         draw_set_alpha(0.5);
         draw_sprite(spr_rock_bg, 0, xx, yy);
         draw_set_alpha(1);
-        draw_set_color(c_gray); // 38144
+        draw_set_color(c_gray); // CM_GREEN_COLOR
         draw_set_font(fnt_40k_30b);
         draw_set_halign(fa_center);
         draw_text(xx + 800, yy + 74, string(global.chapter_name) + " Event Log");
@@ -26,7 +26,7 @@ if (__b__) {
             p = -1,
             cur_event;
         var ent = array_length(event);
-        draw_set_color(38144);
+        draw_set_color(CM_GREEN_COLOR);
         if (ent == 0) {
             draw_text(xx + 25, yy + 120, "No entries logged.");
         } else {
@@ -43,8 +43,7 @@ if (__b__) {
                         if (point_and_click(draw_unit_buttons([xx + 1400, yy + 120 + (p * 26)], "View", [1, 1], c_green, , fnt_40k_14b, 1,true))) {
                             var view_star = star_by_name(cur_event.event_target);
                             if (view_star != "none") {
-                                obj_controller.menu = 0;
-                                obj_controller.hide_banner = 0;
+                                main_map_defaults();
                                 obj_controller.x = view_star.x;
                                 obj_controller.y = view_star.y;
                             }
@@ -86,7 +85,7 @@ if (__b__) {
         draw_sprite(spr_help_exit, 1, xx + 1104, yy + 72);
         if (scr_click_left()) {
             with(obj_controller) {
-                menu = 0;
+                main_map_defaults();
                 onceh = 1;
                 click = 1;
                 hide_banner = 0;

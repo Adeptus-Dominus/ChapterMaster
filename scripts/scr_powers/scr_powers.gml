@@ -17,6 +17,38 @@
 global.disciplines_data = json_to_gamemaker(working_directory + "\\data\\psychic_disciplines.json", json_parse);
 global.powers_data = json_to_gamemaker(working_directory + "\\data\\psychic_powers.json", json_parse);
 
+function generate_marine_powers_description_string(unit){
+    var _psy_powers_known = unit.powers_known;
+    var _psy_powers_count = array_length(_psy_powers_known);
+    var _psy_discipline = unit.psy_discipline();
+    var _psy_discipline_name = get_discipline_data(_psy_discipline, "name");
+
+    var _tooltip = "";
+    _tooltip += $"Psychic Rating: {unit.psionic}";
+
+    var _equipment_psychic_amplification = unit.gear_special_value("psychic_amplification");
+    var _character_psychic_amplification = unit.psychic_amplification() * 100;
+    var _equipment_psychic_focus = unit.gear_special_value("psychic_focus");
+    var _character_psychic_focus = unit.psychic_focus();
+    var _perils_chance = unit.perils_threshold() / 10;
+    _tooltip += $"\nAmplification from Equipment: {_equipment_psychic_amplification}%";
+    _tooltip += $"\nAmplification from Attributes (Psy Rating and EXP): {_character_psychic_amplification}%";
+
+    _tooltip += $"\n\nFocus Success Chance: {100 - unit.psychic_focus_difficulty()}%";
+    _tooltip += $"\nFocus from Equipment: {_equipment_psychic_focus}%";
+    _tooltip += $"\nFocus from Attributes (WIS and EXP): {_character_psychic_focus}%";
+
+    _tooltip += $"\n\nPerils of the Warp Chance: {_perils_chance}%";
+
+    _tooltip += $"\n\nMain Discipline: {_psy_discipline_name}";
+    _tooltip += $"\nKnown Powers: ";
+    for (var i = 0; i < _psy_powers_count; i++) {
+        _tooltip += get_power_data(_psy_powers_known[i], "name");
+        _tooltip += smart_delimeter_sign(_psy_powers_count, i, false);
+    }
+    return  _tooltip;
+}
+
 /// @desc Psychic powers execution mess. Called in the scope of obj_pnunit.
 /// @param {real} caster_id - ID of the caster in the player column from obj_pnunit.
 /// @mixin

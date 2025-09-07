@@ -16,7 +16,7 @@ function scr_check_equip(search_item, system, planet_or_ship_id, remove_item) {
     		if (obj_ini.name[c][i]=="") then continue;
     		marine_present=false;
 	    	if (!instance_exists(obj_ncombat)){ 
-				unit = obj_ini.TTRPG[c][i];
+				unit = fetch_unit([c,i]);
 		        if (system!="") and (planet_or_ship_id>0){
 		            if (unit.is_at_location(system,planet_or_ship_id,-1)){
 		            	marine_present=true;

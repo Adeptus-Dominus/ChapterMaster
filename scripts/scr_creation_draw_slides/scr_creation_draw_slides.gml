@@ -6,13 +6,14 @@ enum eCREATIONSLIDES{
 	CHAPTERTRAITS=2,
 	CHAPTERHOME = 3,
 	CHAPTERLIVERY = 4,
-	CHAPTERGENE = 5,
-    CHAPTERMASTER = 6
+	CHAPTERROLES = 5,
+	CHAPTERGENE = 6,
+    CHAPTERMASTER = 7
 }
 
 /// @mixin
 function draw_chapter_select(){
-	draw_set_color(38144);
+	draw_set_color(CM_GREEN_COLOR);
 	draw_set_font(fnt_40k_30b);
 	draw_set_halign(fa_center);
 	draw_text(800, 80, string_hash_to_newline("Select Chapter"));
@@ -22,8 +23,8 @@ function draw_chapter_select(){
 
 	draw_text_transformed(440, founding_y, "Founding Chapters", 0.75, 0.75, 0);
 	draw_text_transformed(440, successor_y, "Existing Chapters", 0.75, 0.75, 0);
-	draw_text_transformed(440, custom_y, string_hash_to_newline("Custom Chapters"), 0.75, 0.75, 0);
-	draw_text_transformed(440, other_y, string_hash_to_newline("Other"), 0.75, 0.75, 0);
+	draw_text_transformed(440, custom_y, "Custom Chapters", 0.75, 0.75, 0);
+	draw_text_transformed(440, other_y, "Other", 0.75, 0.75, 0);
 
 	/// @localvar grid object to keep track of where to draw icon boxes
 	var grid = {
@@ -107,6 +108,7 @@ function draw_chapter_select(){
 						change_slide = 1;
 						goto_slide = 2;
 						chapter_string = chapter_name;
+						setup_chapter_trait_select();
 					} else {
 						// Chapter is borked
 					}
@@ -151,6 +153,7 @@ function draw_chapter_select(){
 						change_slide = 1;
 						goto_slide = 2;
 						chapter_string = chapter_name;
+						setup_chapter_trait_select();
 					} else {
 						// borked
 					}
@@ -203,12 +206,14 @@ function draw_chapter_select(){
 					change_slide = 1;
 					goto_slide = 2;
 					custom = eCHAPTER_TYPE.CUSTOM;
+					setup_chapter_trait_select();
 					scr_chapter_new(chap.id);
 				} else {
 					global.chapter_id = chap.id;
 					change_slide = 1;
 					goto_slide = 2;
 					custom = eCHAPTER_TYPE.CUSTOM;
+					setup_chapter_trait_select();
 					scr_chapter_random(0);
 				}
 			}
@@ -255,6 +260,7 @@ function draw_chapter_select(){
 						change_slide = 1;
 						goto_slide = 2;
 						chapter_string = chapter_name;
+						setup_chapter_trait_select();
 					} else {
 						// borked
 					}
@@ -293,6 +299,7 @@ function draw_chapter_select(){
             goto_slide = 2;
             custom = eCHAPTER_TYPE.CUSTOM;
             scr_chapter_random(0);
+            setup_chapter_trait_select();
         }
     }
 
@@ -321,6 +328,7 @@ function draw_chapter_select(){
             goto_slide = 2;
             custom = eCHAPTER_TYPE.RANDOM;
             scr_chapter_random(1);
+            setup_chapter_trait_select();
         }
     }
 
@@ -352,7 +360,7 @@ function draw_chapter_select(){
 		}
 
 		draw_set_alpha(slate4 / 30);
-		draw_set_color(38144);
+		draw_set_color(CM_GREEN_COLOR);
 		draw_rectangle(0, 68, 374, 781, 1);
 	}
 	draw_set_alpha(slate4 / 30);
@@ -392,9 +400,29 @@ function draw_chapter_select(){
 	}
 }
 
+function setup_chapter_trait_select(){
+	chapter_type_radio = new RadioSet([
+		{
+		    str1 : "Homeworld",
+		    font : fnt_40k_14b,
+		    tooltip : "Homeworld\nYour chapter has a homeworld that they base on.  Contained upon it is a massive Fortress Monastery, which provides high levels of defense and automated weapons.",
+		},
+		{
+		    str1 :"Fleet Based",
+		    font : fnt_40k_14b,
+		    tooltip : "Fleet Based\Rather than a homeworld your chapter begins near their recruiting world.  The fleet includes a Battle Barge, which serves as a mobile base, and powerful ship.",
+		},
+		{
+		    str1 : "Penitent",
+		    font : fnt_40k_14b,
+		    tooltip : "Penitent\As with Fleet Based, but you must crusade and fight until your penitence meter runs out.  Note that recruiting is disabled until then.",
+		},
+	], "Chapter Type" ,{ x1: 445, y1 : 211 , max_width : 1125-445, center : true});
+	chapter_type_radio.current_selection = fleet_type-1;
+}
 /// @mixin
 function draw_chapter_trait_select(){
-   draw_set_color(38144);
+   draw_set_color(CM_GREEN_COLOR);
     draw_set_font(fnt_40k_30b);
     draw_set_halign(fa_center);
     
@@ -416,7 +444,7 @@ function draw_chapter_trait_select(){
         draw_set_alpha(0.75);draw_rectangle(580,80,1020,118,1);draw_set_alpha(1);
     }
     
-    draw_set_color(38144);
+    draw_set_color(CM_GREEN_COLOR);
     draw_text_transformed(800,120,string_hash_to_newline("Points: "+string(points)+"/"+string(maxpoints)),0.6,0.6,0);
     
     
@@ -435,59 +463,17 @@ function draw_chapter_trait_select(){
         draw_sprite_stretched(spr_creation_arrow,1,597,160,32,32);
     }*/
     
-    draw_set_color(38144);
+    draw_set_color(CM_GREEN_COLOR);
     draw_line(445,200,1125,200);
     draw_line(445,201,1125,201);
     draw_line(445,202,1125,202);
     
     if (popup=""){
-        if (custom!=eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.5);
-        draw_text_transformed(800,211,string_hash_to_newline("Chapter Type"),0.6,0.6,0);
-        draw_set_halign(fa_left);
-        
-        if (scr_hit(516,242,674,266)){
-        	tooltip="Homeworld";
-        	tooltip2="Your chapter has a homeworld that they base on.  Contained upon it is a massive Fortress Monastery, which provides high levels of defense and automated weapons.";
+        if (custom!=eCHAPTER_TYPE.CUSTOM){
+        	draw_set_alpha(0.5);
         }
-        if (scr_hit(768,242,866,266)){
-        	tooltip="Fleet Based";
-        	tooltip2="Rather than a homeworld your chapter begins near their recruiting world.  The fleet includes a Battle Barge, which serves as a mobile base, and powerful ship.";
-        }
-        if (scr_hit(952,242,1084,266)){
-        	tooltip="Penitent";
-        	tooltip2="As with Fleet Based, but you must crusade and fight until your penitence meter runs out.  Note that recruiting is disabled until then.";
-        }// Avoiding fights will result in excomunicatus traitorus.
-        
-        if (custom!=eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.5);
-        yar=0;
-        if (fleet_type=1) then yar=1;
-        draw_sprite(spr_creation_check,yar,519,239);yar=0;
-        if (custom==eCHAPTER_TYPE.CUSTOM && point_and_click([519,239,519+32,239+32])){
-            if (points+20<=maxpoints) and (fleet_type=3){points+=20;fleet_type=1;}
-            if (fleet_type=2){fleet_type=1;}
-        }
-        draw_text_transformed(551,239,"Homeworld",0.6,0.6,0);
-        
-        yar=0;
-        if (fleet_type=2) then yar=1;
-        draw_sprite(spr_creation_check,yar,771,239);yar=0;
-        if (custom==eCHAPTER_TYPE.CUSTOM && point_and_click([771,239,771+32,239+32])) {
-            if (points+20<=maxpoints) and (fleet_type=3){points+=20;fleet_type=2;}
-            if (fleet_type=1){fleet_type=2;}
-        }
-        draw_text_transformed(804,239,"Fleet Based",0.6,0.6,0);
-        
-        yar=0;
-        if (fleet_type=3) then yar=1;
-        draw_sprite(spr_creation_check,yar,958,239);yar=0;
-        if (custom==eCHAPTER_TYPE.CUSTOM && point_and_click([958,239,958+32,239+32])){
-            if (fleet_type!=3) {
-                points-=20;
-            }
-            fleet_type=3;
-        }
-        draw_text_transformed(990,239,"Penitent",0.6,0.6,0);
-        draw_set_alpha(1);
+        chapter_type_radio.draw();
+        fleet_type = chapter_type_radio.current_selection+1;
         
         draw_line(445,289,1125,289);
         draw_line(445,290,1125,290);
@@ -677,7 +663,7 @@ function draw_chapter_trait_select(){
         draw_set_color(0);
         draw_rectangle(450,206,1144,711,0);
         
-        draw_set_color(38144);
+        draw_set_color(CM_GREEN_COLOR);
         draw_line(445,727,1125,727);
         draw_line(445,728,1125,728);
         draw_line(445,729,1125,729);
@@ -695,7 +681,7 @@ function draw_chapter_trait_select(){
             draw_set_color(c_white);
             draw_set_alpha(0.25);
             draw_text_transformed(800,687,string_hash_to_newline("Cancel"),0.6,0.6,0);
-            draw_set_color(38144);
+            draw_set_color(CM_GREEN_COLOR);
             draw_set_alpha(1);
             
             if (scr_click_left()){
@@ -738,7 +724,7 @@ function draw_chapter_trait_select(){
                 draw_rectangle(x3, y3, x3 + 96, y3 + 96, false);
                 draw_set_blend_mode(bm_normal);
                 draw_set_alpha(1);
-                draw_set_color(38144);
+                draw_set_color(CM_GREEN_COLOR);
 
                 if (scr_click_left()) {
                     popup = "";
@@ -782,7 +768,7 @@ function draw_chapter_trait_select(){
                     column.x1 = 904;
                     column.x2 = column.x1 + column.w;
                 };
-                draw_set_color(38144);
+                draw_set_color(CM_GREEN_COLOR);
                 draw_set_alpha(1);
                 disable = array_contains(adv, adv_name);
                 if (!disable){
@@ -842,7 +828,7 @@ function draw_chapter_trait_select(){
                     column.x1 = 904;
                     column.x2 = column.x1 + column.w;
                 };
-                draw_set_color(38144);
+                draw_set_color(CM_GREEN_COLOR);
 
                 
 
@@ -893,7 +879,7 @@ function draw_chapter_trait_select(){
 
 function draw_chapter_homeworld_select(){
 	var yar = 0;
-    draw_set_color(38144);
+    draw_set_color(CM_GREEN_COLOR);
     draw_set_font(fnt_40k_30b);
     draw_set_halign(fa_center);
     
@@ -903,7 +889,7 @@ function draw_chapter_homeworld_select(){
     
     draw_text(800,80,chapter_name);
     
-    draw_set_color(38144);
+    draw_set_color(CM_GREEN_COLOR);
     draw_rectangle(445, 200, 1125, 202, 0);
 
     scr_creation_home_planet_create();
@@ -941,7 +927,9 @@ function draw_chapter_homeworld_select(){
             var asp_info;
             asp_info = scr_compile_trial_bonus_string(current_trial);
 
-            draw_text_ext_transformed(left_data_slate.XX+20,150,asp_info,-1,left_data_slate.width-20,0.4,0.4,0);
+            draw_set_halign(fa_center);
+
+            draw_text_ext_transformed(160,150,asp_info,-1,left_data_slate.width-20,0.4,0.4,0);
              
             if (scr_hit(50,480,950,510)){
                 tooltip="Aspirant Trial";

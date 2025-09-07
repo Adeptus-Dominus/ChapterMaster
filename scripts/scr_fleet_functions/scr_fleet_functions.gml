@@ -124,19 +124,25 @@ function get_largest_player_fleet(){
 	return chosen_fleet;
 }
 
-function is_orbiting(){
-	if (action != "") then return false;
-	try {
-		var nearest = instance_nearest(x,y,obj_star);
-		if (point_distance(x,y,nearest.x, nearest.y)<10 && nearest.name != ""){
-			orbiting = nearest.id;
-			return true
+function is_orbiting(fleet = "none"){
+	if (fleet == "none"){
+		if (action != "") then return false;
+		try {
+			var nearest = instance_nearest(x,y,obj_star);
+			if (point_distance(x,y,nearest.x, nearest.y)<10 && nearest.name != ""){
+				orbiting = nearest.id;
+				return true
+			}
+			orbiting=false;
+		} catch(_exception){
+			return false;
 		}
-		orbiting=false;
-	} catch(_exception){
 		return false;
+	} else{
+		with (fleet){
+			return is_orbiting();
+		}
 	}
-	return false;
 }
 
 function set_fleet_movement(fastest_route = true, new_action="move", minimum_eta=1, maximum_eta = 1000){
@@ -295,45 +301,92 @@ function calculate_action_speed(fleet = "none", selected = false) {
 
 
 function scr_efleet_arrive_at_trade_loc(){
-	var chase_fleet =false;
-	var arrive_at_player_fleet = (instance_exists(target));
-    if (arrive_at_player_fleet){
-    	arrive_at_player_fleet = target.object_index == obj_p_fleet;
-    	if (arrive_at_player_fleet){
-    		var chase_fleet = (target.action!="" || point_distance(x,y,target.x,target.y)>40) && obj_ini.fleet_type != ePlayerBase.home_world;
-    	}
-    } else {
-    	arrive_at_player_fleet=false;
-    	target=noone;
-    }
-    if (arrive_at_player_fleet && chase_fleet) {
+	//if player fleet at star or player forces trade
+	var chase_fleet = false;
 
+	var _valid_fleet = false;
+	var _orbit = orbiting;
+	var _valid_planet = false;
 
-        var mah_x=instance_nearest(x,y,obj_star).x;
-        var mah_y=instance_nearest(x,y,obj_star).y;
-        
-        if  (string_count("Inqis",trade_goods)=0){
+	var _viewer = obj_controller.location_viewer;
+	if (orbiting.owner < 6 && _viewer.has_troops(orbiting.name)){
+		_valid_planet = true;
+	}
 
-            
-           
-            if (target.action!="") {
-				action_x=target.action_x;
-				action_y=target.action_y;
-			}
-			else if (target.action=="" ){
-                action_x=instance_nearest(target.x,target.y,obj_star).x;
-                action_y=instance_nearest(target.x,target.y,obj_star).y;
-            }
-            action="";
-            set_fleet_movement();
-            if (owner!=eFACTION.Eldar) then obj_controller.disposition[owner]-=1;
+	with (obj_p_fleet){
+		if (x==_orbit.x && y==_orbit.y){
+			_valid_fleet = true;
+			break;
+		}
+	}
 
-        }
-    }
+	//iff no forces see iffleet to chase
+	if (!_valid_fleet && !_valid_planet){
+		var _chase_target = -1;
+		if (instance_exists(target) && target.object_index == obj_p_fleet){
+			_chase_target = target;
+		} else {
+			target = instance_nearest(x, y,obj_p_fleet);
+		}
+		var _chase_fleet = instance_exists(target) &&(target.action!="" || point_distance(x,y,target.x,target.y)>40) && obj_ini.fleet_type != ePlayerBase.home_world;
 
-  
-        
-    else if (arrive_at_player_fleet || obj_ini.fleet_type=ePlayerBase.home_world){
+		if (_chase_fleet){	        
+	        if  (!string_count("Inqis",trade_goods)){
+
+	            
+	           
+	            if (target.action!="") {
+					action_x=target.action_x;
+					action_y=target.action_y;
+				}
+				else if (target.action=="" ){
+					var _targ_star = instance_nearest(target.x,target.y,obj_star);
+	                action_x=_targ_star.x;
+	                action_y=_targ_star.y;
+	            }
+	            action="";
+	            set_fleet_movement();
+	            if (owner!=eFACTION.Eldar) then obj_controller.disposition[owner]-=1;
+
+	        }
+		}      
+    
+	    //if no fleet find a valid plaanet with player forces
+	    if (action == ""){
+	    	var _player_star = nearest_star_with_ownership(x, y, 1);
+	    	if (_player_star != "none"){
+	    		action_x = _player_star.x;
+	    		action_y = _player_star.y;
+	    		set_fleet_movement();
+	    	} else {
+	    		var _player_presence_stars = _viewer.player_force_stars();
+	    		if (array_length(_player_presence_stars)){
+	    			var _nearest_index = nearest_from_array(x, y,_player_presence_stars);
+	    			var _nearest = _player_presence_stars[_nearest_index];
+	    			action_x = _nearest.x;
+	    			action_y = _nearest.y;
+	    			set_fleet_movement();
+	    		}
+	    	}
+
+	    }
+
+	    //if no other viable options drop off at random imperial planet
+	    if (action==""){
+	    	var _imp = nearest_star_with_ownership(x, y, 2);
+	    	if (_imp != "none"){
+	    		if (x == _imp.x && y==_imp.y){
+	    			_valid_planet = true;
+	    		} else{
+		    		action_x = _imp.x;
+		    		action_y = _imp.y;
+		    		set_fleet_movement();
+	    		}
+	    	}
+	    }
+	}
+
+    if (_valid_fleet|| _valid_planet){
         
         var targ;
         var cur_star=nearest_star_proper(x, y);
@@ -378,6 +431,28 @@ function scr_efleet_arrive_at_trade_loc(){
 }
 
 
+/// @function scr_orbiting_fleet(faction, system)
+/// @description Returns the ID of a fleet orbiting the given system/star that matches the specified faction.
+/// @param {any|array} faction 
+/// The faction identifier to check against. Can be a single faction ID or an array of multiple factions.
+/// @param {any} [system="none"] 
+/// The system instance or star to check. If `"none"`, the function uses the calling instance's position.
+/// @returns {real|string} The ID of the matching fleet instance, or `"none"` if no valid fleet is found.
+///
+/// @example
+/// ```gml
+/// // Find a fleet orbiting this star that belongs to faction 3
+/// var fleet_id = scr_orbiting_fleet(3);
+/// if (fleet_id != "none") {
+///     show_debug_message("Faction fleet found: " + string(fleet_id));
+/// }
+///
+/// // Find fleets from multiple factions
+/// var factions = [1, 2, 5];
+/// var fleet_id = scr_orbiting_fleet(factions, some_system);
+/// ```
+///
+
 function scr_orbiting_fleet(faction, system="none"){
 	var _found_fleet = "none";
 	var _faction_list = is_array(faction);
@@ -400,6 +475,63 @@ function scr_orbiting_fleet(faction, system="none"){
 		}
 	}
 	return _found_fleet;	
+}
+
+
+/// @function object_distance(obj_1, obj_2)
+/// @description Returns the distance in pixels between two instances or objects based on their `x` and `y` coordinates.
+/// @param {instance} obj_1 The first object or instance.
+/// @param {instance} obj_2 The second object or instance.
+/// @returns {real} The distance in pixels between `obj_1` and `obj_2`.
+///
+/// @example
+/// ```gml
+/// var dist = object_distance(player, enemy);
+/// if (dist < 100) {
+///     show_debug_message("Enemy is within range!");
+/// }
+/// ```
+///
+
+function object_distance(obj_1, obj_2){
+	return (point_distance(obj_1.x, obj_1.y,obj_2.x, obj_2.y ))
+}
+
+
+/// @function scr_orbiting_player_fleet(system)
+/// @description Returns the ID of the nearest player fleet orbiting the given system or star.
+/// @param {any} [system="none"] 
+/// The system instance or identifier to check. If `"none"`, the function checks the calling star instance.
+/// @returns {real} The instance ID of the orbiting player fleet, or -1 if none is found.
+///
+/// @example
+/// ```gml
+/// var fleet_id = scr_orbiting_player_fleet();
+/// if (fleet_id != -1) {
+///     show_debug_message("Fleet orbiting star: " + string(fleet_id));
+/// }
+/// ```
+///
+function scr_orbiting_player_fleet(system = "none"){
+	if (system == "none" && !(is_struct(self)) && object_index == obj_star){
+		var _fleet = instance_nearest(x, y, obj_p_fleet);
+		if (object_distance(self, _fleet) > 0){
+			return -1
+		} else{
+			return _fleet.id;
+		}
+	} else if system != "none"{
+		try{
+			with (system){
+				return scr_orbiting_player_fleet();
+			}
+		} catch(_exception){
+			handle_exception(_exception);
+		}
+	}
+
+	return -1;
+
 }
 
 function get_orbiting_fleets(faction,system="none"){
@@ -490,6 +622,7 @@ function fleet_arrival_logic(){
     x = cur_star.x;
     y = cur_star.y;
     sta=instance_nearest(action_x,action_y,obj_star);
+    is_orbiting();
     
     // cur_star.present_fleets+=1;if (owner = eFACTION.Tau) then cur_star.tau_fleets+=1;
     

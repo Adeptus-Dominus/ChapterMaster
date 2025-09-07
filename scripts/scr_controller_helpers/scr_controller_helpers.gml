@@ -22,9 +22,6 @@ function scr_menu_clear_up(specific_area_function) {
                     }
                 }
             }
-            if (instance_exists(obj_star_select)) {
-                exit;
-            }
             if (instance_exists(obj_bomb_select)) {
                 exit;
             }
@@ -70,11 +67,11 @@ function scr_change_menu(wanted_menu, specific_area_function=false) {
         return false;
     }
     if (wanted_menu == obj_controller.menu){
-        main_map_defualts();
+        main_map_defaults();
         return true;
     }
     with(obj_controller) {
-        main_map_defualts();
+        main_map_defaults();
         set_zoom_to_default();
         continue_sequence = scr_menu_clear_up(function() {
             //if ((zoomed == 0) && (diplomacy == 0)) {
@@ -98,9 +95,9 @@ function scr_change_menu(wanted_menu, specific_area_function=false) {
     }
 }
 
-function main_map_defualts(){
+function main_map_defaults(){
     with (obj_controller){
-        menu = 0;
+        menu = MENU.Default;
         hide_banner = 0;
         location_viewer.update_garrison_log();
         managing = 0; 
@@ -146,11 +143,18 @@ function scr_in_game_menu() {
 }
 
 function basic_manage_settings() {
-    menu = MENU.Manage;
-    popup = 0;
-    selected = 0;
-    diplomacy = 0;
-    allow_shortcuts = true;
+    with (obj_controller){
+        menu = MENU.Manage;
+        popup = 0;
+        selected = 0;
+        diplomacy = 0;
+        allow_shortcuts = true;
+
+        init_manage_buttons();
+    }
+}
+
+function init_manage_buttons(){
     management_buttons = {
         squad_toggle: new UnitButtonObject({
             style: "pixel",
@@ -209,8 +213,8 @@ function scr_toggle_apothecarion() {
             if (scr_role_count("Master of the Apothecarion", "0") == 0) {
                 menu_adept = 1;
             }
-            if (menu != 11) {
-                menu = 11;
+            if (menu != MENU.Apothecarion) {
+                menu = MENU.Apothecarion;
 
                 temp[36] = scr_role_count(obj_ini.role[100][15], "");
             }

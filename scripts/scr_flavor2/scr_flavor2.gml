@@ -260,13 +260,13 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
 		flavor = true;
 		if (_hostile_shots == 1) {
 			if (lost_units_count == 0) {
-				m1 += $"{_hostile_weapon} strikes at {target_type}, but fails to inflict any damage.";
+				m1 += $"{_hostile_weapon} strikes at {target_type}, no casualties.";
 			} else {
 				m1 += $"{_hostile_weapon} strikes at {target_type}. ";
 			}
 		} else {
 			if (lost_units_count == 0) {
-				m1 += $"{_hostile_shots} {_hostile_weapon}s strike at {target_type}, but fail to inflict any damage.";
+				m1 += $"{_hostile_shots} {_hostile_weapon}s strike at {target_type}, no casualties.";
 			} else {
 				m1 += $"{_hostile_shots} {_hostile_weapon}s strike at {target_type}. ";
 			}

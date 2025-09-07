@@ -13,10 +13,28 @@ function UnitQuickFindPanel() constructor{
 	static detail_slate = new DataSlateMKTwo();
 
 	view_area = "fleets";
+
+	static has_troops = function(name){
+		return struct_exists(garrison_log, name);
+	}
+
+	static player_force_stars=function(){
+		var _names = struct_get_names(garrison_log);
+		var _stars = [];
+		for (var i=0;i<array_length(_names);i++){
+			var _star = star_by_name(_names[i]);
+			if (_star != "none"){
+				array_push(_stars, _star);
+			}
+		}
+
+		return _stars;
+	}
+
 	static update_garrison_log = function(){
 		try{
 		for (var i = 0;i<array_length(obj_ini.ship_carrying); i++){
-			obj_ini.ship_carrying[i]=0
+			obj_ini.ship_carrying[i]=0;
 		};
 		var _unit, unit_location, group;
 		delete garrison_log;
@@ -453,7 +471,6 @@ function exit_adhoc_manage(){
 	if (struct_exists(location_viewer.garrison_log, selection_data.system.name)){
 		var sys_name = selection_data.system.name;
 		group_selection(location_viewer.garrison_log[$sys_name].units,selection_data);
-		new_company_struct();
 	} else {
 		exit_adhoc_manage();		
 	} 	
@@ -540,7 +557,7 @@ function jail_selection(){
 }
 
 function load_selection(){
-    if (man_size>0) and (selecting_location!="Terra") and (selecting_location!="Mechanicus Vessel") and (selecting_location!="Lost"){
+    if (man_size>0 && !location_out_of_player_control(selecting_location)){
         scr_company_load(selecting_location);
         menu=30;
         top=1;
@@ -549,8 +566,8 @@ function load_selection(){
 
 function unload_selection(){
 	//show_debug_message("{0},{1},{2}",obj_controller.selecting_ship,man_size,selecting_location);
-    if (man_size>0) and (obj_controller.selecting_ship>=0) and (!instance_exists(obj_star_select)) 
-    and (selecting_location!="Terra" && selecting_location!="Mechanicus Vessel" && selecting_location!="Warp" && selecting_location!="Lost") {
+    if (man_size>0 && obj_controller.selecting_ship>=0 && !instance_exists(obj_star_select)&& 
+    	!location_out_of_player_control(selecting_location) && selecting_location!="Warp"){
         cooldown=8000;
         var boba=0;
         var unload_star = star_by_name(selecting_location);

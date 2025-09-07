@@ -126,8 +126,9 @@ if (global.cheat_debug && obj_controller.selecting_planet && !loading)
         }
     }
 
-if (obj_controller.menu == 0) {
-    if (has_player_forces && point_and_click(draw_unit_buttons([125, 200], "Manage Units",[1,1],c_blue))) {
+
+if (obj_controller.menu == 0){
+    if (manage_units_button.draw(has_player_forces)){
         var _viewer = obj_controller.location_viewer
         _viewer.update_garrison_log();
         var _unit_dispersement = _viewer.garrison_log;
@@ -142,13 +143,16 @@ if (obj_controller.menu == 0) {
                 planet : 0,
                 selections : []
             });
+            instance_destroy();
+            exit;
         }
     }
 }
 
+
 if (loading!=0){
     draw_set_font(fnt_40k_14);
-    draw_set_color(38144);
+    draw_set_color(CM_GREEN_COLOR);
     draw_text(184,202,
     string_hash_to_newline("Select Destination"));
 }
@@ -479,7 +483,7 @@ if (target!=0){
         draw_rectangle(37,413,270,452,0);
         draw_set_alpha(1);
         
-        /*draw_set_color(38144);draw_rectangle(40,247,253,273,1);*/
+        /*draw_set_color(CM_GREEN_COLOR);draw_rectangle(40,247,253,273,1);*/
         
         
         draw_set_halign(fa_left);
@@ -489,7 +493,7 @@ if (target!=0){
         draw_set_font(fnt_40k_14b);
         draw_text(37,413,"Select Fleet Combat");
         
-        draw_set_color(38144);
+        draw_set_color(CM_GREEN_COLOR);
         draw_set_font(fnt_40k_14b);
         draw_text(37.5,413.5,"Select Fleet Combat");
         

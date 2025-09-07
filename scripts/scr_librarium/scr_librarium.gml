@@ -17,8 +17,14 @@ function set_chapter_arti_data(){
 }
 
 function scr_librarium_gui(){
+    add_draw_return_values();
     if (artifacts == 0){
-        return;
+        draw_text(622,440, "[No Artifacts]")
+        artifact_destroy.draw_shutter(765, 740, "DESTROY", 0.3, false);
+        artifact_equip.draw_shutter(385, 740, "EQUIP", 0.3, false);
+        artifact_gift.draw_shutter(575, 740, "GIFT", 0.3, false);  
+        pop_draw_return_values();
+        exit;
     }
     var cur_arti = obj_ini.artifact_struct[menu_artifact];
     identifiable = cur_arti.is_identifiable();
@@ -76,7 +82,7 @@ function scr_librarium_gui(){
             }
 
             if (artifact_gift.draw_shutter(575, 770, "GIFT", 0.3, true)){
-            setup_gift_artifact_popup()
+                setup_gift_artifact_popup()
             }
             if (artifact_destroy.draw_shutter(765, 770, "DESTROY", 0.3, true)){
                 // Below here cleans up the artifacts
@@ -103,29 +109,32 @@ function scr_librarium_gui(){
                 set_chapter_arti_data();
             }
             var base_type = cur_arti.determine_base_type();
+            var _tip2 = "";
             if (base_type!="device" && is_struct(arti_data)){
                 if (arti_data.armour_value != 0) {
-                    tip2 += $"{arti_data.armour_value} Armour#";
+                    _tip2 += $"{arti_data.armour_value} Armour#";
                 }
                 if (arti_data.attack != 0) {
-                    tip2 = $"{arti_data.attack} Damage#";
+                    _tip2 = $"{arti_data.attack} Damage#";
                 }
                 if (arti_data.hp_mod != 0) {
-                    tip2 += $"{arti_data.hp_mod}% Health Bonus#";
+                    _tip2 += $"{arti_data.hp_mod}% Health Bonus#";
                 }
                 if (arti_data.melee_mod != 0) {
-                    tip2 += $"{arti_data.melee_mod}% Melee Bonus#";
+                    _tip2 += $"{arti_data.melee_mod}% Melee Bonus#";
                 }
                 if (arti_data.ranged_mod != 0) {
-                    tip2 += $"{arti_data.ranged_mod}% Ranged Bonus#";
+                    _tip2 += $"{arti_data.ranged_mod}% Ranged Bonus#";
                 }
                 if (arti_data.damage_resistance_mod != 0) {
-                    tip2 += $"{arti_data.damage_resistance_mod}% Resistance Bonus#";
+                    _tip2 += $"{arti_data.damage_resistance_mod}% Resistance Bonus#";
                 }
                 if (base_type=="gear") { // Gear
-                    tip2 = tooltip_other;
+                    _tip2 = tooltip_other;
                 }
             }
+
+            artif_descr += $"\n {_tip2}";
 
             artifact_slate.body_text = artif_descr;
 
@@ -139,9 +148,11 @@ function scr_librarium_gui(){
 
         // identifiable=0;
     }
+    pop_draw_return_values();
 }
 
 function scr_librarium(){
+    add_draw_return_values();
 	var blurp="";
     var xx = __view_get(e__VW.XView, 0) + 0;
 	var yy = __view_get(e__VW.YView, 0) + 0;	
@@ -187,8 +198,6 @@ function scr_librarium(){
         draw_text_transformed(xx + 336 + 16, yy + 100, string_hash_to_newline("Adept " + string(obj_controller.adept_name)), 0.6, 0.6, 0);
         draw_set_font(fnt_40k_14);
     }
-
-    var tip2 = "";
 
     // Set pace of recruitment based on training psyker value
     if (training_psyker >= 0 && training_psyker <= 6){
@@ -339,16 +348,8 @@ function scr_librarium(){
             }
         }
         // Artifact description box
-    } else if (artifacts == 0){
-        draw_text(xx + 622, yy + 440, "[No Artifacts]")
-        artifact_destroy.draw_shutter(xx + 765, yy + 740, "DESTROY", 0.3, false);
-        artifact_equip.draw_shutter(xx + 385, yy + 740, "EQUIP", 0.3, false);
-        artifact_gift.draw_shutter(xx + 575, yy + 740, "GIFT", 0.3, false);           
-    }
+    } 
     draw_set_color(881503);
     draw_set_halign(fa_center);
-
-
-    
-
+    pop_draw_return_values();
 }

@@ -8,6 +8,7 @@ function set_up_equip_popup(){
 	    var prev_role;
 	    var allow = true;
 
+	    var _unchangeable_armour = false;
 	    // Need to make sure that group selected is all the same type
 	    for (var f=0; f<array_length(display_unit); f++){
 
@@ -16,10 +17,9 @@ function set_up_equip_popup(){
 	        if (vih==0){
 	            if (man[f]=="man" && is_struct(display_unit[f])){
 	                _unit=display_unit[f];
-	                if (_unit.armour()!="Dreadnought"){
-	                    vih=1;
-	                } else {
-	                    vih=6;
+	                vih = _unit.is_dreadnought() ? 6 : 1;
+	                if (vih == 6){
+	                    _unchangeable_armour = true;
 	                }
 	            } else if (man[f]=="vehicle"){
 	                if (ma_role[f]=="Land Raider") { vih=50;}
@@ -36,12 +36,13 @@ function set_up_equip_popup(){
 	                    break;
 	                } else if (man[f]=="man" && is_struct(display_unit[f])){
 	                    _unit=display_unit[f];
-	                    if (_unit.armour()=="Dreadnought" && vih==1){
+	                    var _is_dread = _unit.is_dreadnought();
+	                    if (_is_dread && vih==1){
+                        	allow=false;
+	                        break;	                    	
+	                    } else if (!_is_dread && vih == 6){
 	                        allow=false;
-	                        break;
-	                    } else if (_unit.armour()!="Dreadnought" && vih==6){
-	                        allow=false;
-	                        break;
+	                        break;	                    	
 	                    }
 	                }
 	            } else if (vih>=50){
@@ -88,7 +89,7 @@ function set_up_equip_popup(){
 	    if (vih>0 && man_size>0 && allow){
 
 	        var pip=instance_create(0,0,obj_popup);
-	        pip.type=6;
+	        pip.type=POPUP_TYPE.EQUIP;
 	        pip.o_wep1=o_wep1;
 	        pip.o_wep2=o_wep2;
 	        pip.o_armour=o_armour;
@@ -109,7 +110,7 @@ function set_up_equip_popup(){
 	        	cancel_button = new UnitButtonObject(
 		        	{
 		        		x1: 1061, 
-				        y1: 491, 
+				        y1: 591, 
 				        style : "pixel",
 				        label : "Cancel"
 		        	}
@@ -117,7 +118,7 @@ function set_up_equip_popup(){
 		        equip_button = new UnitButtonObject(
 		        	{
 		        		x1: 1450, 
-				        y1: 491,
+				        y1: 591,
 				        style : "pixel",
 						label : "Equip"
 		        	}
@@ -129,7 +130,7 @@ function set_up_equip_popup(){
 		        	YY : 143,
 		        	set_width : true,
 		        	width : 571,
-		        	height : 350,
+		        	height : 450,
 		        });
 
 		        var _quality_options = [
@@ -149,7 +150,7 @@ function set_up_equip_popup(){
 						val : 2
 					}										
 		        ];
-		        quality_radio = new RadioSet(_quality_options, "", {max_width : 500, x1:1040, y1:308});
+		        quality_radio = new RadioSet(_quality_options, "", {max_width : 500, x1:1040, y1:318});
 
 		        range_melee_radio = new RadioSet([
 		        	{
@@ -162,7 +163,7 @@ function set_up_equip_popup(){
 						font : fnt_40k_14b,
 						val : eENGAGEMENT.Melee
 					}
-				], "", {max_width : 500, x1:1040, y1:328});
+				], "", {max_width : 500, x1:1040, y1:343});
 
 				weapon1_select = new UnitButtonObject(
 		        	{
@@ -188,6 +189,11 @@ function set_up_equip_popup(){
 						font : fnt_40k_12,
 		        	}
 		        );
+		        if (_unchangeable_armour){
+		        	armour_select.inactive_col = CM_RED_COLOR;
+		        	armour_select.tooltip = "One or more Marine has Dreadnought armour and cannot be changed";
+		        	armour_select.active = false;
+		        }
 				gear_select = new UnitButtonObject(
 		        	{
 		        		x1: 1300, 
@@ -395,17 +401,19 @@ function draw_popup_equip(){
 
 		for (var o = 0; o < array_length(item_name); o++) {
 			box_x = 1016 + (row * 154);
-			box_y = 355 + (column * 20);
+			box_y = 380 + (column * 20);
 			box = [box_x, box_y, box_x + 144, box_y + 20];
 			check = selected_item_name == item_name[o] ? "x" : " ";
 			item_string = $"[{check}] {item_name[o]}";
 			draw_text_transformed(box_x, box_y, item_string, mct, 1, 0);
-
-			if (point_and_click(box)) {
-				top = o;
-			}
+			if (scr_hit(box)){
+				tooltip_draw(gen_item_tooltip(item_name[o]))
+				if (scr_click_left()){
+					top = o;
+				}
+			};
 			column++;
-			if (column > 6) {
+			if (column > 7) {
 				column = 0;
 				row++;
 			}
@@ -625,7 +633,7 @@ function draw_popup_equip(){
 				warning = "Not enough " + string(n_gear) + "; " + string(units - req_gear_num) + " more are required.";
 			}
 
-			if ((n_gear != ITEM_NAME_NONE) && (n_gear != "") && (string_count("Dreadnought", n_armour) > 0)) {
+			if ((n_gear != ITEM_NAME_NONE) && (n_gear != "") && (string_count("Dreadnought", n_armour) > 0)  && (string_count("Contemptor Dreadnought", n_armour) > 0)) {
 				n_good4 = 0;
 				warning = "Dreadnoughts may not use infantry equipment.";
 			}
@@ -658,7 +666,7 @@ function draw_popup_equip(){
 				warning = "Cannot use this gear with Terminator Armour.";
 			}
 
-			if ((n_mobi != ITEM_NAME_NONE) && (n_mobi != "") && (n_armour == "Dreadnought")) {
+			if ((n_mobi != ITEM_NAME_NONE) && (n_mobi != "") && (n_armour == "Dreadnought") && (n_armour == "Contemptor Dreadnought")) {
 				n_good5 = 0;
 				warning = string(obj_ini.role[100][6]) + "s may not use mobility gear.";
 			}
@@ -667,7 +675,6 @@ function draw_popup_equip(){
 
 	//draw_set_halign(fa_center);
 	if ((equipmet_area == EquipmentSlot.WEAPON_ONE) || (equipmet_area == EquipmentSlot.WEAPON_TWO)) {
-		range_melee_radio.update({max_width : 500, x1:1040, y1:308});
 		range_melee_radio.draw();
 	}
 
@@ -681,9 +688,11 @@ function draw_popup_equip(){
 
 	draw_set_color(255);
 	draw_set_halign(fa_center);
-	draw_text(1292, 476, string_hash_to_newline(warning));
+	draw_text(1292, 570, string_hash_to_newline(warning));
 
-	cancel_button.draw();
+	if(cancel_button.draw()){
+		instance_destroy();
+	}
 
 	var _valid = ((n_good1 + n_good2 + n_good3 + n_good4 + n_good5) == 5);
 

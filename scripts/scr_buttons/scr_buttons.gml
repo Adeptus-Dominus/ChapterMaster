@@ -1,4 +1,12 @@
+// --------------------
+// 🟦 DRAW STATE HELPERS
+// --------------------
 
+
+/// @function add_draw_return_values()
+/// @description Saves the current draw state (alpha, font, color, halign, valign) to a global stack.
+/// @returns {undefined}
+/// @category Draw Helpers
 global.draw_return_stack = [];
 function add_draw_return_values(){
 	var _vals = {
@@ -11,6 +19,11 @@ function add_draw_return_values(){
 	array_push(global.draw_return_stack, _vals);
 }
 
+
+/// @function pop_draw_return_values()
+/// @description Restores the most recent draw state from the global stack and removes it.
+/// @returns {undefined}
+/// @category Draw Helpers
 function pop_draw_return_values(){
 	var _array_length = array_length(global.draw_return_stack);
 	if (_array_length>0){
@@ -26,6 +39,183 @@ function pop_draw_return_values(){
 }
 
 
+// --------------------
+// 🟩 UI ELEMENTS
+// --------------------
+
+
+/// @function ReactiveString(text, x1, y1, data)
+/// @constructor
+/// @category UI
+/// @description Represents a reactive text element that can update, draw itself, and respond to hits.
+/// @param {string} text The text to display.
+/// @param {real} [x1=0] The X position.
+/// @param {real} [y1=0] The Y position.
+/// @param {struct|bool} [data=false] Optional struct of properties to apply.
+/// @returns {ReactiveString}
+///
+/// @example
+/// var rs = new ReactiveString("Hello", 100, 200);
+/// rs.draw();
+function ReactiveString(text,x1=0,y1=0,data = false) constructor{
+	self.x1 = x1;
+	self.y1 = y1;
+	x2 = 0;
+	y2 = 0;
+	halign = fa_left;
+	valign = fa_top;
+
+	self.text = text;
+	text_max_width = -1;
+	font = fnt_40k_14;
+	colour = CM_GREEN_COLOR;
+	tooltip = "";
+	max_width = -1;
+	h = 0;
+	w = 0;
+
+	move_data_to_current_scope(data);
+
+	static update = function(data = {}){
+		move_data_to_current_scope(data);
+		add_draw_return_values();
+		draw_set_font(font);
+		draw_set_halign(halign);
+		draw_set_valign(valign);
+
+		if (max_width>-1){
+			w = string_width_ext(text, -1, max_width);
+            h = string_height_ext(text, -1, max_width);
+			x2 = x1 + w;
+			y2 = y1 + h;            
+		}
+
+		pop_draw_return_values();
+	}
+
+	update();
+
+	static hit = function(){
+		return scr_hit(x1,y1,x2,y2);
+	}
+
+	static draw = function(){
+		add_draw_return_values();
+		draw_set_font(font);
+		draw_set_halign(halign);
+		draw_set_valign(valign);
+		draw_set_color(colour);
+
+		if (max_width>-1){
+			draw_text_ext_outline(x1, y1, text, -1, max_width, 0, c_black, colour);
+		} else {
+			draw_text_outline(x1, y1, text, c_black, colour);
+		}
+		if (hit()){
+			tooltip_draw(tooltip);
+		}
+		pop_draw_return_values();
+	}
+}
+
+/// @function LabeledIcon(icon, text, x1, y1, data)
+/// @constructor
+/// @category UI
+/// @description UI element combining a sprite and text with optional tooltip.
+/// @param {sprite} icon The sprite asset.
+/// @param {string} text The text label.
+/// @param {real} [x1=0] X position.
+/// @param {real} [y1=0] Y position.
+/// @param {struct|bool} [data=false] Optional struct of properties to apply.
+/// @returns {LabeledIcon}
+function LabeledIcon(icon, text,x1=0,y1=0,data = false) constructor{
+
+	self.x1 = x1;
+	self.y1 = y1;
+	x2 = 0;
+	y2 = 0;
+
+	self.text = text;
+	text_max_width = -1;
+	font = fnt_40k_14;
+	colour = CM_GREEN_COLOR;
+	text_position = "right";
+	tooltip = "";
+    self.icon   = sprite_exists(icon) ? icon : spr_none;
+    icon_width  = sprite_get_width(self.icon);
+    icon_height = sprite_get_height(self.icon);
+	w = icon_width;
+	h = icon_height;
+
+	move_data_to_current_scope(data);
+
+	static update = function(data = {}){
+		move_data_to_current_scope(data);
+		add_draw_return_values();
+		draw_set_font(font);
+		if (text_position == "right"){
+			w = icon_width + 2 + string_width(text);;
+			x2 = x1 + w;
+			h = icon_height;
+			y2 = y1 + icon_height;
+		}
+		pop_draw_return_values();
+	}
+
+	update();
+
+	static hit = function(){
+		return scr_hit(x1,y1,x2,y2);
+	}
+
+
+	static draw = function(){
+		add_draw_return_values();
+		draw_set_font(font);
+		draw_set_halign(fa_left);
+		draw_set_valign(fa_top);
+		draw_set_color(colour);
+		draw_sprite_stretched(icon, 0, x1,y1, icon_width, icon_height);
+		if (text_position == "right"){
+            var _string_x = x1 + icon_width + 2;
+            draw_text_outline(_string_x, y1 + 4, text);
+            if (tooltip!=""){
+				if (hit()){
+					tooltip_draw(tooltip);
+				}
+			}
+		};
+		pop_draw_return_values()
+	};
+	
+}
+
+
+/// @function draw_sprite_as_button(position, choice_sprite, scale, hover_sprite)
+/// @description Draws a sprite as a clickable button, returning its bounding box.
+/// @param {array} position [x, y] top-left corner.
+/// @param {sprite} choice_sprite Sprite to draw.
+/// @param {array} [scale=[1,1]] Scale factors [x,y].
+/// @param {sprite} [hover_sprite=-1] Optional hover sprite.
+/// @returns {array} [x1, y1, x2, y2] bounding box.
+function draw_sprite_as_button(position, choice_sprite, scale = [1,1], hover_sprite = -1){
+	var _pos = [position[0],position[1], position[0]+(sprite_get_width(choice_sprite)*scale[0]), position[1] + (sprite_get_height(choice_sprite)*scale[1])];
+	draw_sprite_ext(choice_sprite,0,position[0],position[1], scale[0], scale[1], 0, c_white, scr_hit(_pos) ? 1 : 0.9);
+	return _pos;
+}
+
+/// @function draw_unit_buttons(position, text, size_mod, colour, halign, font, alpha_mult, bg, bg_color)
+/// @description Draws a styled button with text, optional background and hover effects.
+/// @param {array} position Either [x, y] or [x1, y1, x2, y2].
+/// @param {string} text Text to display.
+/// @param {array} [size_mod=[1.5,1.5]] Text scaling.
+/// @param {color} [colour=c_gray] Text color.
+/// @param {real} [_halign=fa_center] Text horizontal alignment.
+/// @param {font} [font=fnt_40k_14b] Font resource.
+/// @param {real} [alpha_mult=1] Alpha multiplier.
+/// @param {bool} [bg=false] Draw background rectangle.
+/// @param {color} [bg_color=c_black] Background color.
+/// @returns {array} [x1, y1, x2, y2] bounding box.
 function draw_unit_buttons(position, text, size_mod=[1.5,1.5],colour=c_gray,_halign=fa_center, font=fnt_40k_14b, alpha_mult=1, bg=false, bg_color=c_black){
 	// TODO: fix halign usage
 	// Store current state of all global vars
@@ -70,7 +260,12 @@ function draw_unit_buttons(position, text, size_mod=[1.5,1.5],colour=c_gray,_hal
 }
 
 
-//object containing draw_unit_buttons
+/// @function UnitButtonObject(data)
+/// @constructor
+/// @category UI
+/// @description Represents an interactive UI button with styles, tooltips, and binding support.
+/// @param {struct|bool} [data=false] Initial property overrides.
+/// @returns {UnitButtonObject}
 function UnitButtonObject(data = false) constructor{
 	x1 = 0;
 	y1 = 0;
@@ -84,6 +279,7 @@ function UnitButtonObject(data = false) constructor{
 	color = #50a076;
 	inactive_col = c_gray;	
 	keystroke = false;
+	active = true;
 	tooltip = "";
 	bind_method = "";
 	bind_scope = false;
@@ -150,7 +346,7 @@ function UnitButtonObject(data = false) constructor{
 				_temp_alpha = 0.5;
 				allow_click = false;
 			}
-			var _button_click_area = draw_unit_buttons(w > 0 ? [x1, y1, x2, y2] : [x1, y1] , label, [text_scale,text_scale],color,,font,_temp_alpha);
+			var _button_click_area = draw_unit_buttons(w > 0 ? [x1, y1, x2, y2] : [x1, y1] , label, [text_scale,text_scale],active ? color : inactive_col,,font,_temp_alpha);
 		} else if (style = "pixel"){
 
 			var _widths =  [sprite_get_width(spr_pixel_button_left), sprite_get_width(spr_pixel_button_middle), sprite_get_width(spr_pixel_button_right)]
@@ -182,7 +378,7 @@ function UnitButtonObject(data = false) constructor{
 			tooltip_draw(tooltip);
 		}
 
-		if (allow_click){
+		if (allow_click && active){
 			var clicked = point_and_click(_button_click_area) || keystroke;
 			if (clicked){
 				if (is_callable(bind_method)){
@@ -205,6 +401,13 @@ function UnitButtonObject(data = false) constructor{
 	}
 }
 
+
+/// @function PurchaseButton(req)
+/// @constructor
+/// @category UI
+/// @description Specialized UnitButtonObject requiring requisition points to click.
+/// @param {real} req Required requisition cost.
+/// @returns {PurchaseButton}
 function PurchaseButton(req) : UnitButtonObject() constructor{
 	req_value = req;
 	static draw = function(allow_click=true){
@@ -286,6 +489,17 @@ function slider_bar() constructor{
 		pop_draw_return_values();
 	}
 }
+
+
+/// @function TextBarArea(XX, YY, Max_width, requires_input)
+/// @constructor
+/// @category UI
+/// @description Input text area with background and cursor handling.
+/// @param {real} XX X position.
+/// @param {real} YY Y position.
+/// @param {real} [Max_width=400] Max width of text bar.
+/// @param {bool} [requires_input=false] If true, input is required.
+/// @returns {TextBarArea}
 function TextBarArea(XX,YY,Max_width = 400, requires_input = false) constructor{
 	allow_input=false;
 	self.requires_input = requires_input;
@@ -310,7 +524,7 @@ function TextBarArea(XX,YY,Max_width = 400, requires_input = false) constructor{
 	    //draw_sprite(spr_rock_bg,0,xx,yy);
 	    draw_set_font(fnt_40k_30b);
 	    draw_set_halign(fa_center);
-	    draw_set_color(draw_col);// 38144	
+	    draw_set_color(draw_col);// CM_GREEN_COLOR	
 		var bar_wid=max_width,click_check, string_h;
 	    draw_set_alpha(0.25);
 	    if (string_area!=""){
@@ -362,6 +576,15 @@ function TextBarArea(XX,YY,Max_width = 400, requires_input = false) constructor{
 }
 
 
+
+/// @function drop_down(selection, draw_x, draw_y, options, open_marker)
+/// @description Renders a drop-down selection list and updates choice.
+/// @param {string} selection Current selected option.
+/// @param {real} draw_x X position.
+/// @param {real} draw_y Y position.
+/// @param {array} options List of string options.
+/// @param {bool} open_marker Whether dropdown is currently open.
+/// @returns {array} [new_selection, open_marker]
 function drop_down(selection, draw_x, draw_y, options,open_marker){
 	add_draw_return_values();
 	if (selection!=""){
@@ -400,6 +623,15 @@ function drop_down(selection, draw_x, draw_y, options,open_marker){
     pop_draw_return_values();
 }
 
+
+/// @function MultiSelect(options_array, title, data)
+/// @constructor
+/// @category UI
+/// @description Multi-option toggle group allowing multiple selections.
+/// @param {array} options_array Array of option labels.
+/// @param {string} title Title string.
+/// @param {struct} [data={}] Optional overrides.
+/// @returns {MultiSelect}
 function MultiSelect(options_array, title, data = {})constructor{
 	self.title = title;
 	x_gap = 10;
@@ -409,7 +641,7 @@ function MultiSelect(options_array, title, data = {})constructor{
 	x2 = 0;
 	y2 = 0;
 	on_change = false;
-	active_col = #009500;
+	active_col = CM_GREEN_COLOR;
 	inactive_col = c_gray;	
 	max_width = 0;
 	max_height = 0;
@@ -490,27 +722,51 @@ function MultiSelect(options_array, title, data = {})constructor{
 	}	
 }
 
+
+/// @function item_data_updater(data)
+/// @description Utility to copy struct data into `self`.
+/// @param {struct} data Data to apply.
+/// @returns {undefined}
 function item_data_updater(data){
     var _data_presets = struct_get_names(data);
     for (var i=0;i<array_length(_data_presets);i++){
     	self[$_data_presets[i]] = data[$_data_presets[i]];
     }		
 }
-function RadioSet(options_array, title, data = {})constructor{
+
+
+/// @function RadioSet(options_array, title, data)
+/// @constructor
+/// @category UI
+/// @description Radio button group allowing only one active selection.
+/// @param {array} options_array List of option labels.
+/// @param {string} [title=""] Title string.
+/// @param {struct} [data={}] Optional overrides.
+/// @returns {RadioSet}
+function RadioSet(options_array, title="", data = {})constructor{
 	toggles = [];
 	current_selection = 0;
 	self.title = title;
-	active_col = #009500;
+	active_col = CM_GREEN_COLOR;
 	inactive_col = c_gray;
 	allow_changes = true;
 	x_gap = 10;
 	y_gap = 5;
 	x1 = 0;
 	y1 = 0;
+	title_font = fnt_40k_14b;
 	draw_title = true;
+	space_evenly = false;
 	changed = false;
-	max_width = 0;
-	max_height = 0;
+
+	
+	if(title == ""){
+		draw_title = false;
+	}
+    max_width = 0;     // container width; if 0, use row's natural width
+    max_height = 0;
+    center = false;    // when true, center each row horizontally in container
+
 	for (var i=0;i<array_length(options_array);i++){
 		array_push(toggles, new ToggleButton(options_array[i]));
 	}
@@ -519,61 +775,113 @@ function RadioSet(options_array, title, data = {})constructor{
 	
 	move_data_to_current_scope(data, true);
 	static update = item_data_updater;
-	static draw = function(){
-		add_draw_return_values();
 
-		draw_set_halign(fa_center);
-		if (max_width > 0){
-			if (draw_title){
-				draw_text(x1+(max_width/2) - (string_length(draw_title)/2), y1, title);
-			}
-		} else {
-			if (draw_title){
-				draw_text(x1 + (string_length(draw_title)/2), y1, title);
-			}			
-		}
+    static draw_option = function (_x, _y, index) {
+        var _cur_opt = toggles[index];
+        _cur_opt.x1 = _x;
+        _cur_opt.y1 = _y;
+        _cur_opt.update();
+        _cur_opt.active = (index == current_selection);
+        _cur_opt.button_color = _cur_opt.active ? active_col : inactive_col;
+        return _cur_opt;
+    };
 
-		changed = false;
-		var _start_current_selection = current_selection;
-		var _prev_x = x1;
-		var _prev_y = y1+string_height(title)+10;
-		var items_on_row = 0;
-		for (var i=0;i<array_length(toggles);i++){
-			var _cur_opt = toggles[i];
-			_cur_opt.x1 = _prev_x;
-			_cur_opt.y1 = _prev_y;
-			_cur_opt.update()
-			_cur_opt.active = i==current_selection;
-			_cur_opt.button_color = _cur_opt.active ? active_col: inactive_col;
-			_cur_opt.draw();
-			items_on_row++
-			
-			if (_cur_opt.clicked() && allow_changes){
-				current_selection = i;
-			}
-			_prev_x = _cur_opt.x2+x_gap;
+	static draw = function () {
+        add_draw_return_values();
 
-			x2 = _prev_x>x2 ? _prev_x:x2;
-			y2 = _prev_y + _cur_opt.height;
-			if (max_width>0){
-				if (_prev_x - x1 > max_width){
-					_prev_x = x1;
-					_prev_y += _cur_opt.height+y_gap;
-					items_on_row = 0;
-				}
-			}
-		}
-		if (_start_current_selection != current_selection){
-			changed = true;
-		}
-		pop_draw_return_values();
-	}
+        draw_set_valign(fa_top);
+        draw_set_color(active_col);
+        draw_set_font(title_font);
+        draw_set_alpha(1);
 
-	static selection_val = function(value){
-		return toggles[current_selection][$value];
-	}
+        var title_h = 0;
+        if (draw_title) {
+            if (max_width > 0) {
+                draw_set_halign(fa_center);
+                draw_text(x1 + max_width * 0.5, y1, title);
+            } else {
+                draw_set_halign(fa_left);
+                draw_text(x1, y1, title);
+            }
+            title_h = string_height(title) + 10;
+        }
+
+        changed = false;
+        var _start_current_selection = current_selection;
+
+        var _prev_x = x1;
+        var _prev_y = y1 + title_h;
+
+        var row_items = [];   // holds structs: { btn: <ToggleButton>, idx: <int> }
+        var row_width = 0;
+        var row_height = 0;
+
+        for (var i = 0; i < array_length(toggles); i++) {
+            var _cur_opt = draw_option(_prev_x, _prev_y, i);
+
+            _prev_x = _cur_opt.x2 + x_gap;
+            row_width = _prev_x - x1;
+            row_height = max(row_height, _cur_opt.height);
+
+            var row_full  = (max_width > 0) && (row_width > max_width);
+            var last_item = (i == array_length(toggles) - 1);
+
+            array_push(row_items, { btn: _cur_opt, idx: i });
+
+            if (row_full || last_item) {
+                // Calculate final row width and optional centering offset
+                var _first_btn = row_items[0].btn;
+                var _last_btn  = row_items[array_length(row_items) - 1].btn;
+
+                var _total_row_width = _last_btn.x2 - _first_btn.x1;
+                var _container_width = (max_width > 0) ? max_width : _total_row_width;
+                var _offset_x        = center ? (_container_width - _total_row_width) * 0.5 : 0;
+
+                // Draw row items at their final positions
+                for (var j = 0; j < array_length(row_items); j++) {
+                    var btn = row_items[j].btn;
+                    var idx = row_items[j].idx;
+                    btn.x1 += _offset_x;   // shift to center
+                    btn.update();
+                    btn.draw();
+                    if (btn.clicked() && allow_changes) {
+                        current_selection = idx; // <-- no array_index_of needed
+                    }
+                }
+
+                // Advance to next row
+                var row_right_edge = x1 + max(_container_width, _total_row_width);
+                x2 = max(x2, row_right_edge);
+                _prev_x = x1;
+                _prev_y += row_height + y_gap;
+                y2 = _prev_y;
+
+                // Reset accumulators
+                row_items  = [];
+                row_width  = 0;
+                row_height = 0;
+            }
+        }
+
+        if (_start_current_selection != current_selection) {
+            changed = true;
+        }
+        pop_draw_return_values();
+    };
+
+    static selection_val = function (value) {
+        if (current_selection == -1) return noone;
+        return toggles[current_selection][$value];
+    };
 }
 
+
+/// @function ToggleButton(data)
+/// @constructor
+/// @category UI
+/// @description A toggleable button element with hover and active states.
+/// @param {struct} [data={}] Initial properties.
+/// @returns {ToggleButton}
 function ToggleButton(data={}) constructor {
     x1 = 0;
     y1 = 0;
@@ -590,21 +898,33 @@ function ToggleButton(data={}) constructor {
     text_color = c_gray;
     button_color = c_gray;
     font = fnt_40k_12;
-    var _data_presets = struct_get_names(data);
-    for (var i=0;i<array_length(_data_presets);i++){
-    	self[$_data_presets[i]] = data[$_data_presets[i]];
-    }
+    style = "default";
+
+    //make true to run clicked() within draw sequence
+    clicked_check_default = false;
+
     update = function () {
+    	add_draw_return_values();
     	draw_set_font(font);
-        if (width == 0) {
-            width = string_width(str1) + 4;
-        }
-        if (height == 0) {
-            height = string_height(str1) + 4;
-        }
+    	if (style == "default"){
+	        if (width == 0) {
+	            width = string_width(str1) + 4;
+	        }
+	        if (height == 0) {
+	            height = string_height(str1) + 4;
+	        }
+	    }else if (style == "box"){
+	    	width = max(32, string_width(str1)) + 6;
+	    	height = 32 + 2 +string_height(str1);
+	    }
         x2 = x1 + width;
         y2 = y1 + height;
+        pop_draw_return_values();
     };
+
+	move_data_to_current_scope(data, true);
+
+	update();
 
     hover = function() {
         return (scr_hit(x1, y1, x2, y2));
@@ -620,7 +940,9 @@ function ToggleButton(data={}) constructor {
         }
     };
 
-    draw = function() {
+    draw = function(is_active = active) {
+    	self.active = is_active;
+    	add_draw_return_values();
     	draw_set_font(font);
         var str1_h = string_height(str1);
         var text_padding = width * 0.03;
@@ -650,15 +972,42 @@ function ToggleButton(data={}) constructor {
         }
 
         total_alpha = state_alpha * hover_alpha;
-        draw_rectangle_color_simple(x1, y1, x1 + width, y1 + str1_h, 1, button_color, total_alpha);
-        draw_set_halign(text_halign);
-        draw_set_valign(fa_top);
-        draw_text_color_simple(text_x, text_y, str1, text_color, total_alpha);
-        draw_set_alpha(1);
-        draw_set_halign(fa_left);
+
+        if (style == "default"){
+	        draw_rectangle_color_simple(x1, y1, x1 + width, y1 + str1_h, 1, button_color, total_alpha);
+	        draw_set_halign(text_halign);
+	        draw_set_valign(fa_top);
+	        draw_text_color_simple(text_x, text_y, str1, text_color, total_alpha);
+	        draw_set_alpha(1);
+	        draw_set_halign(fa_left);
+	    } else if (style == "box"){
+            // Icon with alpha
+            draw_set_halign(fa_left);
+            draw_sprite_ext(spr_creation_check, active, x1 + 2, y1, 1, 1, 0, c_white, total_alpha);
+            // Label centred below icon
+            draw_set_alpha(total_alpha);
+            draw_set_valign(fa_top);
+            draw_set_halign(fa_center);
+            var _label_y = y1 + 32 + 2;
+            draw_text_transformed(x1+18 , _label_y, str1, 1, 1, 0);
+            draw_set_alpha(1);
+	    }
+
+	    if (clicked_check_default){
+	    	clicked();
+	    }
+	    pop_draw_return_values();
     };
 }
 
+
+
+/// @function InteractiveButton(data)
+/// @constructor
+/// @category UI
+/// @description A button with separate active/inactive tooltips and click sounds.
+/// @param {struct} [data={}] Initial properties.
+/// @returns {InteractiveButton}
 function InteractiveButton(data={}) constructor {
     x1 = 0;
     y1 = 0;
@@ -746,6 +1095,14 @@ function InteractiveButton(data={}) constructor {
     };
 }
 
+
+/// @function list_traveler(list, cur_val, move_up_coords, move_down_coords)
+/// @description Cycles through values in a list by clicking move-up/down regions.
+/// @param {array} list Array of values.
+/// @param {any} cur_val Current value.
+/// @param {array} move_up_coords Bounding box for up button.
+/// @param {array} move_down_coords Bounding box for down button.
+/// @returns {any} New value from list.
 function list_traveler(list, cur_val, move_up_coords, move_down_coords){
 	var _new_val = cur_val;
     var _found = false;

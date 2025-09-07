@@ -17,7 +17,7 @@ if (is_test_map==true){
     draw_set_alpha(1);
 }
 // if (instance_exists(obj_turn_end)) then exit;
-
+draw_set_alpha(1);
 draw_set_valign(fa_top);
 draw_set_halign(fa_left);
 var xx = 0;
@@ -85,7 +85,7 @@ if (!zoomed && !zui){
     }
        
     
-    draw_set_color(38144);
+    draw_set_color(CM_GREEN_COLOR);
     draw_set_font(fnt_menu);
     draw_set_halign(fa_center);
     draw_set_valign(fa_top);
@@ -107,7 +107,7 @@ if (!zoomed && !zui){
             draw_set_color(c_red);
             draw_text(998,17,string_hash_to_newline(string(min(100,floor((penitent_current/penitent_max)*100)))+"% Penitent"));
             draw_text(998,17.5,string_hash_to_newline(string(min(100,floor((penitent_current/penitent_max)*100)))+"% Penitent"));
-            draw_set_color(38144);
+            draw_set_color(CM_GREEN_COLOR);
             // TODO Need a tooltip for here to display the actual amounts
         }
     }
@@ -116,7 +116,7 @@ if (!zoomed && !zui){
         draw_set_color(255);
         draw_text(998,17,string_hash_to_newline("Renegade"));
         draw_text(998,17.5,string_hash_to_newline("Renegade"));
-        draw_set_color(38144);
+        draw_set_color(CM_GREEN_COLOR);
     }
     if (menu==0){
         if (obj_controller.imp_ships == 0 && obj_controller.turn<2){
@@ -204,21 +204,26 @@ function draw_line(x1, y1, y_slide, variable) {
 }
 
 
-if (menu == 1) {
-    if (managing != 0){
-        draw_sprite_and_unit_equip_data();
-    }
-    if (managing == -1){
-        scr_manage_task_selector();
-    }
-    if (managing > 0){
-        company_specific_management();
-    }
+try{
+    if (menu == MENU.Manage) {
+        if (managing != 0){
+            draw_sprite_and_unit_equip_data();
+        }
+        if (managing == -1){
+            scr_manage_task_selector();
+        }
+        if (managing > 0){
+            company_specific_management();
+        }
 
-} else if (menu == MENU.Armamentarium) {
-    scr_draw_armentarium_gui();
-} else if (menu == MENU.Librarium){
-    scr_librarium_gui();
+    } else if (menu == MENU.Armamentarium) {
+        scr_draw_armentarium_gui();
+    } else if (menu == MENU.Librarium){
+        scr_librarium_gui();
+    }
+} catch(_exception){
+    handle_exception(_exception);
+    menu = MENU.Default;
 }
 
 

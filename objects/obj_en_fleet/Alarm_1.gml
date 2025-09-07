@@ -15,7 +15,7 @@ if (orbiting != 0 && action=="" && owner!=noone){
             orbiting.present_fleet[owner]+=1;
         }
     } 
-    if (!orbiting_found) {
+    else if (!orbiting_found) {
         orbiting = instance_nearest(x,y,obj_star);
         orbiting.present_fleet[owner]++;
     }

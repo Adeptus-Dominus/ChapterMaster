@@ -1,15 +1,15 @@
-function scr_add_vehicle(vehicle_type, target_company, weapon1, weapon2, weapon3, upgrade, accessory) {
+function scr_add_vehicle(vehicle_type, target_company,otherdata={} ,weapon1 = "standard", weapon2 = "standard", weapon3 = "standard", upgrade = "standard", accessory = "standard") {
 	try {
 		// That should be sufficient to add stuff in a highly modifiable fashion
 
 		var i = 0;
-		e = 0;
-		good = 0;
-		wep1 = "";
-		wep2 = "";
-		gear = "";
-		arm = "";
-		missing = 0;
+		var e = 0;
+		var good = 0;
+		var wep1 = "";
+		var wep2 = "";
+		var gear = "";
+		var arm = "";
+		var missing = 0;
 
 		for (var i = 1; i < array_length(obj_ini.veh_role[target_company]); i++) {
 			if (good == 0) {
@@ -23,39 +23,49 @@ function scr_add_vehicle(vehicle_type, target_company, weapon1, weapon2, weapon3
 		if (good != 0) {
 			obj_ini.veh_race[target_company][good] = 1;
 
-			if (obj_ini.fleet_type == ePlayerBase.home_world) {
-				obj_ini.veh_loc[target_company][good] = obj_ini.home_name;
-				obj_ini.veh_wid[target_company][good] = 2;
-				obj_ini.veh_lid[target_company][good] = -1;
-			}
-
-			if (obj_ini.fleet_type != ePlayerBase.home_world) {
-				// Need a more elaborate ship_carrying += here for the different types of units
-				var first = 0, backup = 0, i = 0;
-				for (var i = 0; i < array_length(obj_ini.ship_class); i++) {
-					if ((obj_ini.ship_class[i] == "Battle Barge") && (first == 0) && (obj_ini.ship_capacity[i] > obj_ini.ship_carrying[i])) {
-						first = i;
-					}
-					if ((obj_ini.ship_class[i] == "Strike Cruiser") && (backup == 0) && (obj_ini.ship_capacity[i] > obj_ini.ship_carrying[i])) {
-						backup = i;
-					}
-				}
-				if (first != 0) {
-					obj_ini.veh_lid[target_company][good] = first;
-					obj_ini.veh_loc[target_company][good] = obj_ini.ship_location[first];
-					obj_ini.veh_wid[target_company][good] = 0;
-					obj_ini.ship_carrying[first] += 1;
-				} else if ((first == 0) && (backup != 0)) {
-					obj_ini.veh_lid[target_company][good] = backup;
-					obj_ini.veh_loc[target_company][good] = obj_ini.ship_location[backup];
-					obj_ini.veh_wid[target_company][good] = 0;
-					obj_ini.ship_carrying[backup] += 1;
-				} else if ((first == 0) && (backup == 0)) {
+			if (!struct_exists(otherdata,"loc")){
+				if (obj_ini.fleet_type == ePlayerBase.home_world) {
+					obj_ini.veh_loc[target_company][good] = obj_ini.home_name;
+					obj_ini.veh_wid[target_company][good] = obj_ini.home_planet;
 					obj_ini.veh_lid[target_company][good] = -1;
-					obj_ini.veh_loc[target_company][good] = "";
-					obj_ini.veh_wid[target_company][good] = 0;
-					exit;
 				}
+
+				if (obj_ini.fleet_type != ePlayerBase.home_world) {
+					// Need a more elaborate ship_carrying += here for the different types of units
+					 var first = -1, backup = -1, i = 0;
+					for (var i = 0; i < array_length(obj_ini.ship_class); i++) {
+						if ((obj_ini.ship_class[i] == "Battle Barge") && (first == -1) && (obj_ini.ship_capacity[i] > obj_ini.ship_carrying[i])) {
+							first = i;
+						}
+						if ((obj_ini.ship_class[i] == "Strike Cruiser") && (backup == -1) && (obj_ini.ship_capacity[i] > obj_ini.ship_carrying[i])) {
+							backup = i;
+						}
+					}
+					if (first != -1) {
+						obj_ini.veh_lid[target_company][good] = first;
+						obj_ini.veh_loc[target_company][good] = obj_ini.ship_location[first];
+						obj_ini.veh_wid[target_company][good] = 0;
+						obj_ini.ship_carrying[first] += 1;
+					} else if ((first == -1) && (backup != -1)) {
+						obj_ini.veh_lid[target_company][good] = backup;
+						obj_ini.veh_loc[target_company][good] = obj_ini.ship_location[backup];
+						obj_ini.veh_wid[target_company][good] = 0;
+						obj_ini.ship_carrying[backup] += 1;
+					} else if ((first == -1) && (backup == -1)) {
+						obj_ini.veh_lid[target_company][good] = -1;
+						obj_ini.veh_loc[target_company][good] = "";
+						obj_ini.veh_wid[target_company][good] = 0;
+						exit;
+					}
+				}
+			} else {
+				obj_ini.veh_loc[target_company][good] = otherdata.loc;
+				if (struct_exists(otherdata,"wid")){
+					obj_ini.veh_wid[target_company][good] = otherdata.wid;
+				}
+				if (struct_exists(otherdata,"lid")){
+					obj_ini.veh_lid[target_company][good] = otherdata.lid;
+				}				
 			}
 
 			obj_ini.veh_role[target_company][good] = vehicle_type;

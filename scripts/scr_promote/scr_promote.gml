@@ -196,7 +196,7 @@ function target_company_radio(min_exp=0){
 				_dont_add = true;
 			}
 		}
-		if (!_dont_add){
+		if (!_dont_add || min_exp = -1){
 			array_push(_company_options,{
 				str1 : int_to_roman(i),
 				font : fnt_40k_14b,
