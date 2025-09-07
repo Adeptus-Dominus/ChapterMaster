@@ -100,7 +100,7 @@ if (shop = "equipment") {
     item[i] = "Ritual Stone Knife";
     item_stocked[i] = scr_item_count(item[i]);
     item_cost[i] = 5;
-    if (research.rune_analysis{0>1){
+    if (research.psi[0]>0){
     forge_cost[i] = 100;
     }
     i += 1;
@@ -1009,7 +1009,7 @@ if (research.armour[1].stealth[0] > 0 && research.armour[1].armour[0] > 1 && obj
     i += 1;
     x_mod[i] = 9;
     item[i] = "Psychic Accessories";
-    if (research.rune_analysis{0>1){
+    if (research.psi[0]>0){
     forge_cost[i] = 100;
     }
     item_stocked[i] = scr_item_count(item[i]);
@@ -1019,7 +1019,9 @@ if (research.armour[1].stealth[0] > 0 && research.armour[1].armour[0] > 1 && obj
     x_mod[i] = 9;
     item[i] = "Psychic Hood";
     item_stocked[i] = scr_item_count(item[i]);
+    if (research.psi[0]>1){ // Rune analysis, or even higher? Though, I think Hood should require some metalworking too.
     forge_cost[i] = 1000;
+    }
     item_cost[i] = 100;
     if (rene = 1) {
         nobuy[i] = 1;
@@ -1696,6 +1698,15 @@ if (shop = "vehicles") {
 if (shop == "production"){
     i = 0;
     var research_item;
+    // Tribal research
+    if (research.psi[0] < 1){
+        i++;
+        item[i] = ["research", "Rune Analysis", ["psi"]];
+        item_stocked[i] = 0;
+        forge_cost[i] = 1000;
+        tooltip_overide[i] = "Even though our ancestors, or even we, claimed that 'there are no gods in the ground and in the sky. This is the Imperial Truth' long ago, there is no use denying that psionics exist. To make use of it, or guard against, we need to study how can we interact with it in the material world. Preliminary research suggests that certain signs - 'marks' - may hold clues to it. \nRequired for: Ritual Stone Knife, Psychic Accessories.";
+    }
+    //Research of 40k
     if (research.flame[0] == 0){
         i++;
         item[i] = ["research", research_pathways.flame[0][research.flame[0]], ["flame"]];
@@ -1704,7 +1715,7 @@ if (shop == "production"){
         tooltip_overide[i] = "This research grants the ability to fabricate and harness Promethium Tanks, allowing for the construction of flame-based weaponry. This technology taps into the potent destructive potential of Promethium, turning it into a terrifying tool of war, capable of reducing enemies to ash.\nUnlocks: Flamers, Heavy Flamers, Incinerator.\nRequired for: Heavy Flamer Sponsons, Flamestorm Cannon Sponsons, Inferno Cannon, Servo-harness, Combi-flamer.";
 
     }
-    if (research.psi[0] == 0){
+    if (research.psi[0] == 1){
         i++;
         item[i] = ["research", research_pathways.psi[0][research.psi[0]], ["psi"]];
         item_stocked[i] = 0;
