@@ -476,7 +476,6 @@ function exit_adhoc_manage(){
 	if (struct_exists(location_viewer.garrison_log, selection_data.system.name)){
 		var sys_name = selection_data.system.name;
 		group_selection(location_viewer.garrison_log[$sys_name].units,selection_data);
-		new_company_struct();
 	} else {
 		exit_adhoc_manage();		
 	} 	

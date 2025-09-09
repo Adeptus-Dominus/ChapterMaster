@@ -926,6 +926,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         if (has_trait("tinkerer")) {
             burden *= 0.33;
         }
+        burden /= 1 / (technology/35);
         return burden;
     };
 

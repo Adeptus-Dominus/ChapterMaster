@@ -22,9 +22,6 @@ function scr_menu_clear_up(specific_area_function) {
                     }
                 }
             }
-            if (instance_exists(obj_star_select)) {
-                exit;
-            }
             if (instance_exists(obj_bomb_select)) {
                 exit;
             }
@@ -100,7 +97,7 @@ function scr_change_menu(wanted_menu, specific_area_function=false) {
 
 function main_map_defaults(){
     with (obj_controller){
-        menu = 0;
+        menu = MENU.Default;
         hide_banner = 0;
         location_viewer.update_garrison_log();
         managing = 0; 
@@ -146,11 +143,18 @@ function scr_in_game_menu() {
 }
 
 function basic_manage_settings() {
-    menu = MENU.Manage;
-    popup = 0;
-    selected = 0;
-    diplomacy = 0;
-    allow_shortcuts = true;
+    with (obj_controller){
+        menu = MENU.Manage;
+        popup = 0;
+        selected = 0;
+        diplomacy = 0;
+        allow_shortcuts = true;
+
+        init_manage_buttons();
+    }
+}
+
+function init_manage_buttons(){
     management_buttons = {
         squad_toggle: new UnitButtonObject({
             style: "pixel",

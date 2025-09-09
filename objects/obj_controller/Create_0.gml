@@ -99,6 +99,7 @@ map_scale = 1;
 scale_mod = 1;
 unit_manage_constants = {};
 unit_manage_constants.current_data = [-1,-1];
+management_buttons = false;
 
 
 diplomacy_pathway = "";

@@ -271,7 +271,7 @@ function TradeAttempt(diplomacy) constructor{
 			show_debug_message("trade_success");
 			if (_success){
 				successful_trade_attempt();
-				scr_dialogue("agree");
+				scr_dialogue("agree",{prepend:"[[Trade Accepted.  Shipment initialized.]]"});
 				//force_goodbye=1;
 				obj_controller.trading=0;
 				 if (diplomacy_faction=6) or (diplomacy_faction=7) or (diplomacy_faction=8){
@@ -289,7 +289,8 @@ function TradeAttempt(diplomacy) constructor{
 				} else {
 					diplo_text="";
 				}
-		        annoyed[_dip] += 1;
+		        annoyed[_dip] += 1;				
+				scr_dialogue("disagree",{prepend:"[[Trade Refused]]"});
 		        rando=choose(1,2,3);
 		        if (_rela=="hostile"){
 					force_goodbye=1;

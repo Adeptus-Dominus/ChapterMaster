@@ -117,6 +117,7 @@
   ],
   "ForcedPrefabProjectReferences":[],
   "IncludedFiles":[
+    {"$GMIncludedFile":"","%Name":"sisters.json","CopyToMask":-1,"filePath":"datafiles/data/dialogue","name":"sisters.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"psychic_disciplines.json","CopyToMask":-1,"filePath":"datafiles/data","name":"psychic_disciplines.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"psychic_powers.json","CopyToMask":-1,"filePath":"datafiles/data","name":"psychic_powers.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"traits.json","CopyToMask":-1,"filePath":"datafiles/data","name":"traits.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},

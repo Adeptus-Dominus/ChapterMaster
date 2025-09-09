@@ -503,6 +503,10 @@ function company_specific_management(){
 }
 
 function alternative_manage_views(x1, y1) {
+    //for some reason management_buttons keeps dying so hopefully this will solve the issue until something better can be found
+    if (!is_struct(management_buttons)){
+        init_manage_buttons();
+    }
     var _squad_button = management_buttons.squad_toggle;
     _squad_button.update({
         x1: x1 + 5,
