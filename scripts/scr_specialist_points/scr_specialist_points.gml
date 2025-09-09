@@ -50,7 +50,11 @@ function unit_forge_point_generation(turn_end=false){
     reasons.maintenance = $"-{maintenance}";
     if (has_trait("tinkerer")){
         reasons.maintenance += "\n    X0.5";
-    }    
+    } 
+    if (!is_dreadnought()){
+        var _tech_score_mod = 1/(technology/30);
+        reasons.maintenance += $"\n    tech modifier : X{_tech_score_mod} (lower is better)";
+    }
     return [points,reasons];
 }
 
