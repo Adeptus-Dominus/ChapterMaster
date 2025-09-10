@@ -53,6 +53,81 @@ function intro_to_diplomacy(faction_enum){
 	}
 }
 
+
+function exit_diplomacy_dialogue(){
+	obj_controller.menu_lock = false;
+	if (audio_is_playing(snd_blood)==true) then scr_music("royal",2000);
+
+	var _close_diplomacy = true;
+    if (complex_event==true) and (instance_exists(obj_temp_meeting)){
+        complex_event=false;
+        with(obj_temp_meeting){
+        	instance_destroy();
+        }
+        if (instance_exists(obj_turn_end)){
+            obj_turn_end.alarm[1]=1;
+        }
+    }
+    
+    if (trading_artifact!=0){
+        clear_diplo_choices();
+        cooldown=8;
+        if (trading_artifact==2) and (instance_exists(obj_ground_mission)){
+            obj_ground_mission.alarm[2]=1;
+        }// 135 this might not be needed
+        trading_artifact=0;
+        with(obj_popup){
+            obj_ground_mission.alarm[1]=1;
+            instance_destroy();
+        }
+    }
+
+    if (force_goodbye==5){
+        clear_diplo_choices();
+    }
+
+    if (liscensing==2) and (repair_ships==0){
+        cooldown=8;
+        var cru=instance_create(mouse_x,mouse_y,obj_crusade);
+        cru.owner=diplomacy;
+        cru.placing=true;
+        exit_all=0;
+        liscensing=0;
+        if (zoomed==0) then scr_zoom();
+    }
+
+    if (exit_all!=0){
+        exit_all=0;
+    }
+    if (diplo_last=="artifact_thanks") and (force_goodbye!=0){
+		scr_toggle_lib();
+		_close_diplomacy = false;
+    } else if (diplo_last=="stc_thanks"){
+    	scr_toggle_armamentarium();
+    	_close_diplomacy = false;
+    }
+    // Exits back to diplomacy thing
+    if (audience==0){
+        cooldown=8;
+        diplomacy=0;
+        force_goodbye=0;
+        _close_diplomacy = false;
+    }
+    // No need to check for next audience
+    if (audience>0) and (instance_exists(obj_turn_end)){
+        if (complex_event==false){
+
+            obj_turn_end.alarm[1]=1;
+            show_debug_message("next_audience");
+        }
+        if (complex_event=true){
+            // TODO
+        }
+    }
+    if (_close_diplomacy){
+    	scr_toggle_diplomacy();
+    }
+}
 function draw_diplomacy_diplo_text(){
     draw_set_font(fnt_40k_14);
     draw_set_alpha(1);
@@ -171,80 +246,7 @@ function set_up_diplomacy_buttons(){
 		color : CM_RED_COLOR,
 	});
 
-	diplo_buttons.exit_button.bind_method = function(){
-		obj_controller.menu_lock = false;
-		if (audio_is_playing(snd_blood)==true) then scr_music("royal",2000);
-
-		var _close_diplomacy = true;
-        if (complex_event==true) and (instance_exists(obj_temp_meeting)){
-            complex_event=false;
-            with(obj_temp_meeting){
-            	instance_destroy();
-            }
-            if (instance_exists(obj_turn_end)){
-                obj_turn_end.alarm[1]=1;
-            }
-        }
-        
-        if (trading_artifact!=0){
-            clear_diplo_choices();
-            cooldown=8;
-            if (trading_artifact==2) and (instance_exists(obj_ground_mission)){
-                obj_ground_mission.alarm[2]=1;
-            }// 135 this might not be needed
-            trading_artifact=0;
-            with(obj_popup){
-                obj_ground_mission.alarm[1]=1;
-                instance_destroy();
-            }
-        }
-
-        if (force_goodbye==5){
-            clear_diplo_choices();
-        }
-
-        if (liscensing==2) and (repair_ships==0){
-            cooldown=8;
-            var cru=instance_create(mouse_x,mouse_y,obj_crusade);
-            cru.owner=diplomacy;
-            cru.placing=true;
-            exit_all=0;
-            liscensing=0;
-            if (zoomed==0) then scr_zoom();
-        }
-
-        if (exit_all!=0){
-            exit_all=0;
-        }
-        if (diplo_last=="artifact_thanks") and (force_goodbye!=0){
-			scr_toggle_lib();
-			_close_diplomacy = false;
-        } else if (diplo_last=="stc_thanks"){
-        	scr_toggle_armamentarium();
-        	_close_diplomacy = false;
-        }
-        // Exits back to diplomacy thing
-        if (audience==0){
-            cooldown=8;
-            diplomacy=0;
-            force_goodbye=0;
-            _close_diplomacy = false;
-        }
-        // No need to check for next audience
-        if (audience>0) and (instance_exists(obj_turn_end)){
-            if (complex_event==false){
-
-                obj_turn_end.alarm[1]=1;
-                show_debug_message("next_audience");
-            }
-            if (complex_event=true){
-                // TODO
-            }
-        }
-        if (_close_diplomacy){
-        	scr_toggle_diplomacy();
-        }
-	}
+	diplo_buttons.exit_button.bind_method = exit_diplomacy_dialogue;
 
 
 	diplo_buttons.declare_war = new ShutterButton();

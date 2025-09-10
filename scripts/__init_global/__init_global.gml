@@ -8,6 +8,8 @@ function __init_global() {
 
     initialize_marine_traits();
 
+    initialize_dialogue();
+
     global.culture_styles = [
         "Greek",
         "Roman",
@@ -29,7 +31,12 @@ function __init_global() {
         "Wolf Cult",
         "Runic"
     ];    
-
+    
+    try{
+        load_visual_sets();
+    } catch(_exception){
+        handle_exception(_exception);
+    }
     global.chapter_name = "None";
     global.game_seed = 0;
     global.ui_click_lock = false;
