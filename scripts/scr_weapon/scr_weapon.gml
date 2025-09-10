@@ -1032,8 +1032,8 @@ global.weapons = {
 			"artifact": 60
 		},
 		"description": "A standard Bolter, a two-handed firearm that launches rocket propelled projectiles that detonate after penetrating the target. It is a versatile and iconic weapon of Adeptus Astartes, their resounding detonations carry the Emperor's Wrath.",
-		"melee_hands": 1,
-		"ranged_hands": 2,
+		"melee_hands": 0.6,
+		"ranged_hands": 1.6,
 		"ammo": 16,
 		"range": 12,
 		"spli": 3,
