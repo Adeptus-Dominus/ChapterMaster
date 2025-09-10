@@ -576,7 +576,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.1400.0.815",
+    "IDEVersion":"2024.1400.0.884",
   },
   "name":"ChapterMaster",
   "resources":[
@@ -761,6 +761,7 @@
     {"id":{"name":"scr_chapter_master","path":"scripts/scr_chapter_master/scr_chapter_master.yy",},},
     {"id":{"name":"scr_chapter_new","path":"scripts/scr_chapter_new/scr_chapter_new.yy",},},
     {"id":{"name":"scr_chapter_random","path":"scripts/scr_chapter_random/scr_chapter_random.yy",},},
+    {"id":{"name":"scr_ChapterTraits","path":"scripts/scr_ChapterTraits/scr_ChapterTraits.yy",},},
     {"id":{"name":"scr_cheatcode","path":"scripts/scr_cheatcode/scr_cheatcode.yy",},},
     {"id":{"name":"scr_check_equip","path":"scripts/scr_check_equip/scr_check_equip.yy",},},
     {"id":{"name":"scr_choose_weighted","path":"scripts/scr_choose_weighted/scr_choose_weighted.yy",},},
@@ -1421,6 +1422,7 @@
     {"id":{"name":"spr_mk7_complex_left_pauldron_shadow","path":"sprites/spr_mk7_complex_left_pauldron_shadow/spr_mk7_complex_left_pauldron_shadow.yy",},},
     {"id":{"name":"spr_mk7_complex_left_pauldron","path":"sprites/spr_mk7_complex_left_pauldron/spr_mk7_complex_left_pauldron.yy",},},
     {"id":{"name":"spr_mk7_complex_right_knee","path":"sprites/spr_mk7_complex_right_knee/spr_mk7_complex_right_knee.yy",},},
+    {"id":{"name":"spr_mk7_complex_right_pauldron_shadow","path":"sprites/spr_mk7_complex_right_pauldron_shadow/spr_mk7_complex_right_pauldron_shadow.yy",},},
     {"id":{"name":"spr_mk7_complex_right_pauldron","path":"sprites/spr_mk7_complex_right_pauldron/spr_mk7_complex_right_pauldron.yy",},},
     {"id":{"name":"spr_mk7_complex","path":"sprites/spr_mk7_complex/spr_mk7_complex.yy",},},
     {"id":{"name":"spr_mk7_full_colour","path":"sprites/spr_mk7_full_colour/spr_mk7_full_colour.yy",},},

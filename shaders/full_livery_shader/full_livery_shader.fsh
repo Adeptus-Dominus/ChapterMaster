@@ -200,11 +200,13 @@ void main() {
     else if (col.rgb == vec3(0.0, 1.0, 1.0)) { col.rgb = weapon_primary.rgb; }
     else if (col.rgb == vec3(1.0, 0.0, 1.0)) { col.rgb = weapon_secondary.rgb; }
 
-    if (col_orig.rgb != col.rgb) {
-        if (col_orig.a == _128COL){ col.rgb = light_or_dark(col.rgb, 1.2, 85.0); col.a = 1.0; }
-        else if (col_orig.a == _60COL) { col.rgb = light_or_dark(col.rgb, 1.4, 85.0); col.a = 1.0; }
-        else if (col_orig.a == _215COL) { col.rgb = light_or_dark(col.rgb,0.6, 85.0); col.a = 1.0; }
-        else if (col_orig.a == _160COL) { col.rgb = light_or_dark(col.rgb, 0.8, 85.0); col.a = 1.0; }
+    if (use_shadow != 1){
+        if (col_orig.rgb != col.rgb) {
+            if (col_orig.a == _128COL){ col.rgb = light_or_dark(col.rgb, 1.2, 85.0); col.a = 1.0; }
+            else if (col_orig.a == _60COL) { col.rgb = light_or_dark(col.rgb, 1.4, 85.0); col.a = 1.0; }
+            else if (col_orig.a == _215COL) { col.rgb = light_or_dark(col.rgb,0.6, 85.0); col.a = 1.0; }
+            else if (col_orig.a == _160COL) { col.rgb = light_or_dark(col.rgb, 0.8, 85.0); col.a = 1.0; }
+        }
     }
 
     const vec3 robes_colour_base = vec3(201.0 / 255.0, 178.0 / 255.0, 147.0 / 255.0);

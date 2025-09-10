@@ -830,11 +830,13 @@ global.modular_drawing_items = [
         sprite : spr_mk7_complex_left_pauldron,
         body_types :[0],
         position : "left_pauldron_base",
+        shadows : spr_mk7_complex_left_pauldron_shadow,
     } ,
     {
         sprite : spr_mk7_complex_right_pauldron,
         body_types :[0],
         position : "right_pauldron_base",
+        shadows : spr_mk7_complex_right_pauldron_shadow,
     },
     {
         cultures : ["Cthonian"],
@@ -1699,6 +1701,9 @@ function format_weapon_visuals(weapon_name){
             new_obj.weapon_data.sprite = _variant.sprite;
             if (struct_exists(_variant, "subcomponents")){
                 new_obj.weapon_data.subcomponents = _variant.subcomponents;
+            }
+            if (struct_exists(_variant, "shadows")){
+                new_obj.weapon_data.shadows = _variant.shadows;
             }
         }
         array_push(return_options, new_obj);

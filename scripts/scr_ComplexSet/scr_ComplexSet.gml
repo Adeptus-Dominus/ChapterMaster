@@ -863,6 +863,8 @@ function ComplexSet(_unit) constructor {
 
 		var _shadows = struct_exists(weapon, "shadows") ? weapon.shadows : "none";
 
+		//show_debug_message($" shadows {_shadows}");
+
 		add_to_area(position, weapon.sprite, "none", _subs, _shadows);
 
 		draw_component(position, {}, choice_lock);
