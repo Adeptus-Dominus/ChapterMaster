@@ -1038,18 +1038,25 @@ global.modular_drawing_items = [
         sprite: spr_bare_eyes,
     } ,
     {
+        position: "gorget",
+        sprite: spr_mk8_gorget,
+        armours : ["MK8 Errant"],
+        body_types: [0],
+        shadows : spr_mk8_gorgot_shadows
+    },
+    {
         position: "left_shin",
         body_types: [ 2],
         sprite: spr_indomitus_left_shin,
         armours : ["Terminator Armour"],
-        shadows : spr_indomitus_left_shin_shadow
+        //shadows : spr_indomitus_left_shin_shadow
     }, 
     {
         position: "right_shin",
         body_types: [2],
         sprite: spr_indomitus_right_shin,
         armours : ["Terminator Armour"],
-        shadows : spr_indomitus_left_shin_shadow
+       // shadows : spr_indomitus_left_shin_shadow
     }, 
     {
         cultures : ["Cthonian"],
@@ -1770,6 +1777,20 @@ global.weapon_visual_data = {
     sprite: spr_weapon_phobos_bolter,
   }]
 },
+
+"Webber": {
+ base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_webber,
+    shadows : spr_weapon_webber_shadow,
+  }]
+},
+
 "Phobos Bolt Pistol": {
  base: {
     weapon_data: {
@@ -2857,6 +2878,7 @@ base: {
     }
   ]
 },
+
 
 "Relic Blade": {
   base: {

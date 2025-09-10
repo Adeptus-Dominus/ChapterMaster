@@ -581,7 +581,7 @@ function ComplexSet(_unit) constructor {
 			            var _final_shadow_index = _choice - _spec_shadow[0];
 
 	                    // Compute UV transform for this shadow texture
-	                    var shadow_transform_data = sprite_get_uvs_transformed(_sprite, _choice, _shadow_item, _final_shadow_index);
+	                    var shadow_transform_data = sprite_get_uvs_transformed(_sprite, _choice , _shadow_item, _final_shadow_index);
 
 	                    var shadow_transform = shader_get_uniform(full_livery_shader, "shadow_transform");
 	                    shader_set_uniform_f_array(shadow_transform, shadow_transform_data);
@@ -861,7 +861,9 @@ function ComplexSet(_unit) constructor {
 
 		var _subs = struct_exists(weapon, "subcomponents") ? weapon.subcomponents : "none";
 
-		add_to_area(position, weapon.sprite, "none", _subs);
+		var _shadows = struct_exists(weapon, "shadows") ? weapon.shadows : "none";
+
+		add_to_area(position, weapon.sprite, "none", _subs, _shadows);
 
 		draw_component(position, {}, choice_lock);
 
@@ -1269,7 +1271,6 @@ function ComplexSet(_unit) constructor {
 				break;
 			case "MK8 Errant":
 				add_group(mk7_bits);
-				add_to_area("gorget", spr_mk8_gorget);
 				armour_type = ArmourType.Normal;
 				break;
 			case "Terminator Armour":
@@ -1409,8 +1410,8 @@ function ComplexSet(_unit) constructor {
 			if (sub_components != "none") {
 				add_sub_components(area, _overide_start, _add_sprite_length, sub_components);
 			}
-			if (shadow != "none") {
-				add_shadow_set(area, _overide_start, _add_sprite_length, sub_components);
+			if (shadow != "none" && sprite_exists(shadow)) {
+				add_shadow_set(area, _overide_start, _add_sprite_length, shadow);
 			}
 		}
 	};
