@@ -406,6 +406,7 @@ global.modular_drawing_items = [
         cultures : ["Mechanical Cult"],
         assign_by_rank : 2,
         sprite : spr_metal_tabbard,
+        shadows : spr_metal_tabbard_shadow,
         role_type : [SPECIALISTS_TECHS],
         body_types :[0],
         position : "tabbard",
@@ -914,6 +915,11 @@ global.modular_drawing_items = [
         prevent_others : true,
         ban : ["mouth_variants"],
         role_type : [SPECIALISTS_CHAPLAINS],
+        offsets : {
+            "Tartaros" : {
+                y : -5
+            }
+        }
     },
     {   
         sprite : spr_chaplain_term_helm,
@@ -922,6 +928,11 @@ global.modular_drawing_items = [
         prevent_others : true,
         ban : ["mouth_variants"],
         role_type : [SPECIALISTS_CHAPLAINS],
+        offsets : {
+            "Tartaros" : {
+                y : -5
+            }
+        }
     },
     {
         sprite : spr_chaplain_helm,
@@ -1387,6 +1398,21 @@ global.modular_drawing_items = [
         equipment_has_tag : {
             "gear" : "jump",
         }
+    }, 
+    {
+        position : "leg_variants", 
+        sprite : spr_mk7_leg_variants,
+        body_types : [0],
+        shadows : spr_mk7_leg_variants_shadows,
+        armours : ["MK7 Aquila", "Artificer Armour","MK8 Errant"],
+        max_saturation : 30,
+    },
+    {
+        position : "backpack", 
+        sprite : spr_mk7_complex_backpack,
+        body_types : [0],
+        shadows : spr_mk7_complex_backpack_shadow,
+        armours : ["MK7 Aquila", "Artificer Armour","MK8 Errant"],
     },                                                    
 ];
 
@@ -1400,6 +1426,9 @@ function fetch_marine_components_to_memory(){
                 for (var i = 0;i<array_length(_override_areas);i++){
                     sprite_prefetch(_element.overides[$_override_areas[i]]);
                 }
+            }
+            if (struct_exists(_element, "shadows")){
+                sprite_prefetch(_element.shadows);
             }
         }
     });

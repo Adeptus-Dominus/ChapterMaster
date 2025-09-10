@@ -96,7 +96,6 @@ function ComplexSet(_unit) constructor {
 	//draw_helms = false;
 	static mk7_bits = {
 		armour: spr_mk7_complex,
-		backpack: spr_mk7_complex_backpack,
 		left_arm: spr_mk7_left_arm,
 		right_arm: spr_mk7_right_arm,
 		left_trim: spr_mk7_left_trim,
@@ -579,6 +578,7 @@ function ComplexSet(_unit) constructor {
 			        if (_spec_shadow[0] <= _choice && _spec_shadow[1] > _choice) {
 			            var _shadow_item = _spec_shadow[2];
 			            var _final_shadow_index = _choice - _spec_shadow[0];
+			            show_debug_message($"final_index {_final_shadow_index}, {_spec_shadow[0]}, {_spec_shadow[1]}, {_choice},{_shadow_item}");
 
 	                    // Compute UV transform for this shadow texture
 	                    var shadow_transform_data = sprite_get_uvs_transformed(_sprite, _choice , _shadow_item, _final_shadow_index);

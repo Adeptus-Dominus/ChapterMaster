@@ -224,7 +224,7 @@ void main() {
     }
 
     // === SHADOW AUGMENT: artist-friendly highlight/shadow grading ===
-    if (use_shadow == 1) {
+    if (use_shadow == 1 && col_orig.rgb != col.rgb) {
         vec4 shadow_col = texture2D(shadow_texture, v_vShadowCoord);
         float intensity = shadow_col.r;
 
