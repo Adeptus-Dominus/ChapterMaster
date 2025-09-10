@@ -1,10 +1,10 @@
 {
   "$GMSprite":"v2",
-  "%Name":"spr_techmarine_left_leg",
+  "%Name":"spr_techmarine_right_leg_shadow",
   "bboxMode":0,
   "bbox_bottom":220,
-  "bbox_left":100,
-  "bbox_right":151,
+  "bbox_left":11,
+  "bbox_right":62,
   "bbox_top":132,
   "collisionKind":1,
   "collisionTolerance":0,
@@ -21,7 +21,7 @@
   "layers":[
     {"$GMImageLayer":"","%Name":"dbe27ba7-9000-4566-81f3-7688029dd83a","blendMode":0,"displayName":"default","isLocked":false,"name":"dbe27ba7-9000-4566-81f3-7688029dd83a","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
-  "name":"spr_techmarine_left_leg",
+  "name":"spr_techmarine_right_leg_shadow",
   "nineSlice":null,
   "origin":0,
   "parent":{
@@ -33,7 +33,7 @@
   "resourceVersion":"2.0",
   "sequence":{
     "$GMSequence":"v1",
-    "%Name":"spr_techmarine_left_leg",
+    "%Name":"spr_techmarine_right_leg_shadow",
     "autoRecord":true,
     "backdropHeight":768,
     "backdropImageOpacity":0.5,
@@ -57,7 +57,7 @@
       "resourceType":"KeyframeStore<MomentsEventKeyframe>",
       "resourceVersion":"2.0",
     },
-    "name":"spr_techmarine_left_leg",
+    "name":"spr_techmarine_right_leg_shadow",
     "playback":1,
     "playbackSpeed":30.0,
     "playbackSpeedType":0,
@@ -71,8 +71,8 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"22c1fc63-eee0-48f2-842f-3bb5727ed6bc","path":"sprites/spr_techmarine_left_leg/spr_techmarine_left_leg.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"e1a391d8-2716-4aea-9397-eb2bc0265424","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"22c1fc63-eee0-48f2-842f-3bb5727ed6bc","path":"sprites/spr_techmarine_right_leg_shadow/spr_techmarine_right_leg_shadow.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"0fa489e4-21d5-4860-b8a0-45f9bc4cfbe3","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

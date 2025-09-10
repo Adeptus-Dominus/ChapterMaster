@@ -1413,7 +1413,30 @@ global.modular_drawing_items = [
         body_types : [0],
         shadows : spr_mk7_complex_backpack_shadow,
         armours : ["MK7 Aquila", "Artificer Armour","MK8 Errant"],
-    },                                                    
+    },
+    {
+        position : "right_leg",
+        sprite : spr_techmarine_right_leg, 
+        body_types : [0], 
+        armours : ["MK5 Heresy", "MK6 Corvus", "MK7 Aquila", "MK8 Errant", "Artificer Armour"],
+        traits : "tinkerer",
+        role_type : [SPECIALISTS_TECHS],
+        shadows : spr_techmarine_right_leg_shadow,
+        allow_either : ["traits", "role_type"],
+        max_saturation : 50,
+    }, 
+    {
+        position : "left_leg",
+        sprite : spr_techmarine_left_leg, 
+        body_types : [0], 
+        armours : ["MK5 Heresy", "MK6 Corvus", "MK7 Aquila", "MK8 Errant", "Artificer Armour"],
+        traits : "tinkerer",
+        role_type : [SPECIALISTS_TECHS],
+        shadows : spr_techmarine_left_leg_shadow,
+        allow_either : ["traits", "role_type"],
+        max_saturation : 50,
+    }   
+
 ];
 
 

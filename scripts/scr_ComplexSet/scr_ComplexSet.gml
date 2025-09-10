@@ -1370,8 +1370,6 @@ function ComplexSet(_unit) constructor {
 					"armour": spr_techmarine_complex,
 					"right_trim": spr_techmarine_right_trim,
 					"left_trim": spr_techmarine_left_trim,
-					"leg_variants": spr_techmarine_left_leg,
-					"leg_variants": spr_techmarine_right_leg,
 					"head": spr_techmarine_head,
 					"chest_variants": spr_techmarine_chest,
 					"mouth_variants": spr_tech_face_plate
