@@ -524,92 +524,181 @@ function ComplexSet(_unit) constructor {
 		foreground_item : unit.get_body_data("variant", "throat"),
 	};
 
+
+
+
+	static check_component_overides = function(component_name, choice){
+		if (struct_exists(overides, component_name)) {
+			var _overide_set = overides[$ component_name];
+			for (var i = 0; i < array_length(_overide_set); i++) {
+				var _spec_over = _overide_set[i];
+				if (_spec_over[0] <= choice && _spec_over[1] > choice) {
+					var _override_data = _spec_over[2];
+					if (struct_exists(_override_data, "overides")){
+						_override_areas = struct_get_names(_override_data.overides);
+						var _overs = _override_data.overides;
+						for (var j = 0; j < array_length(_override_areas); j++) {
+							replace_area(_override_areas[j], _overs[$ _override_areas[j]]);
+						}
+					}
+					if (struct_exists(_override_data, "offsets")){
+						var _offsets = _override_data.offsets;
+						component_final_draw_x += _offsets[0];
+						component_final_draw_y += _offsets[1];
+					}
+					break;
+				}
+			}
+		}
+	}
+
+	static set_component_shadow_packs = function(component_name, choice){
+		if (struct_exists(shadow_set, component_name)) {
+		    var _shadow_set = shadow_set[$ component_name];
+		    for (var i = 0; i < array_length(_shadow_set); i++) {
+		        var _spec_shadow = _shadow_set[i];
+		        if (_spec_shadow[0] <= choice && _spec_shadow[1] > choice) {
+		            var _shadow_item = _spec_shadow[2];
+		            var _final_shadow_index = choice - _spec_shadow[0];
+		            //show_debug_message($"final_index {_final_shadow_index}, {_spec_shadow[0]}, {_spec_shadow[1]}, {choice},{_shadow_item}");
+
+		            var _sprite = self[$ component_name];
+	                // Compute UV transform for this shadow texture
+	                var shadow_transform_data = sprite_get_uvs_transformed(_sprite, choice , _shadow_item, _final_shadow_index);
+
+	                shader_set_uniform_f_array(shadow_transform_uniform, shadow_transform_data);
+
+	                shader_set_uniform_f_array(texture_shadow_transform_uniform, shadow_transform_data);
+
+
+	                // Bind shadow texture
+	                var _shadow_tex = sprite_get_texture(_shadow_item, _final_shadow_index);
+	                texture_set_stage(shadow_sampler, _shadow_tex);
+	                texture_set_stage(armour_shadow_sampler, _shadow_tex);
+
+	                // Trigger the draw to apply shadow (shader mixes it)
+	                //draw_sprite(_sprite, _choice ?? 0, component_final_draw_x, component_final_draw_y);
+
+	                shadow_enabled = 1;
+	                break;
+		        }
+		    }
+		}
+	}
+
+	static handle_component_subcomponents = function(component_name, choice){
+		if (struct_exists(subcomponents, component_name)) {
+			var _subcomponents_found = false;
+			var _component_bulk_set = subcomponents[$ component_name];
+			for (var i = 0; i < array_length(_component_bulk_set); i++) {
+				var _spec_over = _component_bulk_set[i];
+				if (_spec_over[0] <= choice && _spec_over[1] > choice) {
+					_subcomponents_found = true;
+					var _component_set = _spec_over[2];
+				}
+			}
+
+			if (_subcomponents_found){
+				for (var i = 0; i < array_length(_component_set); i++) {
+					var _subcomponents = _component_set[i];
+					var _sub_choice = (component_map_choice * 1315423911) & $7FFFFFFF;
+
+					var _total_options = 0;
+					for (var s=0;s<array_length(_subcomponents);s++){
+						_total_options += sprite_get_number(_subcomponents[s]);
+					}
+
+					if (_total_options > 0){
+						_sub_choice_final = _total_options == 1 ? 0 : _sub_choice % (_total_options+1);
+						
+						_choice_count = 0;
+						for (var s=0;s<array_length(_subcomponents);s++){
+							if (_sub_choice_final >= _choice_count && _sub_choice_final < _choice_count+sprite_get_number(_subcomponents[s])){
+								draw_sprite(_subcomponents[s], _sub_choice_final-_choice_count ?? 0, component_final_draw_x, component_final_draw_y);
+								break;
+							} else {
+								_choice_count += sprite_get_number(_subcomponents[s]);
+							}
+						}
+					}
+				}
+			}
+			//sprite_delete(_sprite);
+		}
+	}
+
+	component_final_draw_x = 0;
+	component_final_draw_y = 0
+	shadow_enabled = false;
+	component_map_choice = 0;
+
+
+	static use_shadow_uniform = shader_get_uniform(full_livery_shader, "use_shadow");
+	static shadow_transform_uniform = shader_get_uniform(full_livery_shader, "shadow_transform");
+
+	static shadow_sampler = shader_get_sampler_index(full_livery_shader, "shadow_texture");
+	static armour_shadow_sampler = shader_get_sampler_index(armour_texture, "shadow_texture");
+	static armour_texture_sampler = shader_get_sampler_index(armour_texture, "armour_texture");
+
+	static texture_blend_uniform = shader_get_uniform(armour_texture, "blend");
+	static texture_blend_colour_uniform = shader_get_uniform(armour_texture, "blend_colour");
+	static texture_replace_col_uniform = shader_get_uniform(armour_texture, "replace_colour");
+
+	static texture_use_shadow_uniform = shader_get_uniform(armour_texture, "use_shadow");
+	static texture_shadow_transform_uniform = shader_get_uniform(armour_texture, "shadow_transform");
+	static texture_mask_transform = shader_get_uniform(armour_texture, "mask_transform");
+
+    if (!surface_exists(global.base_component_surface)) {
+	    global.base_component_surface = surface_create(600,600);
+	}
+
 	static draw_component = function(component_name, texture_draws = {}, choice_lock = -1) {
 		if (array_contains(banned, component_name)) {
 			return "banned component";
 		}
 		if (struct_exists(self, component_name)) {
+			shadow_enabled = false;
 			var _sprite = self[$ component_name];
 			if (!sprite_exists(_sprite)) {
 				return "error failed no sprite found"
 			}
 
-			var _draw_x = x_surface_offset;
-			var _draw_y = y_surface_offset;
+			component_final_draw_x = x_surface_offset;
+			component_final_draw_y = y_surface_offset;
 
 			var _choice = 0;
-			var _map_choice = 3;
+			var component_map_choice = 3;
 			if (struct_exists(variation_map, component_name) && choice_lock == -1) {
-				_map_choice = variation_map[$ component_name];
-				var _choice = _map_choice % sprite_get_number(_sprite);
+				component_map_choice = variation_map[$ component_name];
+				var _choice = component_map_choice % sprite_get_number(_sprite);
 			}
 			else if (choice_lock > -1){
 				_choice = choice_lock
 			}
-			if (struct_exists(overides, component_name)) {
-				var _overide_set = overides[$ component_name];
-				for (var i = 0; i < array_length(_overide_set); i++) {
-					var _spec_over = _overide_set[i];
-					if (_spec_over[0] <= _choice && _spec_over[1] > _choice) {
-						var _override_data = _spec_over[2];
-						if (struct_exists(_override_data, "overides")){
-							_override_areas = struct_get_names(_override_data.overides);
-							var _overs = _override_data.overides;
-							for (var j = 0; j < array_length(_override_areas); j++) {
-								replace_area(_override_areas[j], _overs[$ _override_areas[j]]);
-							}
-						}
-						if (struct_exists(_override_data, "offsets")){
-							var _offsets = _override_data.offsets;
-							_draw_x += _offsets[0];
-							_draw_y += _offsets[1];
-						}
-					}
-				}
-			}
+
+			check_component_overides(component_name, _choice);
+			// Handle Shadow Packages 
+			set_component_shadow_packs(component_name, _choice);
 
 			// Handle Shadow Packages 
-			var shadow_enabled = 0;
-			if (struct_exists(shadow_set, component_name)) {
-			    var _shadow_set = shadow_set[$ component_name];
-			    for (var i = 0; i < array_length(_shadow_set); i++) {
-			        var _spec_shadow = _shadow_set[i];
-			        if (_spec_shadow[0] <= _choice && _spec_shadow[1] > _choice) {
-			            var _shadow_item = _spec_shadow[2];
-			            var _final_shadow_index = _choice - _spec_shadow[0];
-			            //show_debug_message($"final_index {_final_shadow_index}, {_spec_shadow[0]}, {_spec_shadow[1]}, {_choice},{_shadow_item}");
 
-	                    // Compute UV transform for this shadow texture
-	                    var shadow_transform_data = sprite_get_uvs_transformed(_sprite, _choice , _shadow_item, _final_shadow_index);
-
-	                    var shadow_transform = shader_get_uniform(full_livery_shader, "shadow_transform");
-	                    shader_set_uniform_f_array(shadow_transform, shadow_transform_data);
-
-
-	                    // Bind shadow texture
-	                    var shadow_sampler = shader_get_sampler_index(full_livery_shader, "shadow_texture");
-	                    texture_set_stage(shadow_sampler, sprite_get_texture(_shadow_item, _final_shadow_index));
-
-	                    // Trigger the draw to apply shadow (shader mixes it)
-	                    //draw_sprite(_sprite, _choice ?? 0, _draw_x, _draw_y);
-
-	                    shadow_enabled = 1;
-			        }
-			    }
-			}
-			shader_set_uniform_i(shader_get_uniform(full_livery_shader, "use_shadow"), shadow_enabled);
+			shader_set_uniform_i(use_shadow_uniform, shadow_enabled);
 
 
 			var _tex_names = struct_get_names(texture_draws);
-			if (array_length(_tex_names)) {
+			var _tex_len = array_length(_tex_names);
+			if (_tex_len) {
 				var _return_surface = surface_get_target();
 				surface_reset_target();
-				shader_reset();
+				//shader_reset();
 
-				var base_component_surface = surface_create(600, 600);
-				surface_set_target(base_component_surface);
+				surface_set_target(global.base_component_surface);
+				draw_clear_alpha(c_white, 0);
+				
 				shader_set(armour_texture);
-				for (var i = 0; i < array_length(_tex_names); i++) {
+				shader_set_uniform_i(texture_use_shadow_uniform, shadow_enabled);
+				
+				for (var i = 0; i < _tex_len; i++) {
 					var _tex_data = texture_draws[$ _tex_names[i]];
 
 					tex_frame = 0;
@@ -619,86 +708,37 @@ function ComplexSet(_unit) constructor {
 
 					var mask_transform_data = sprite_get_uvs_transformed(_sprite, _choice, _tex_data.texture, tex_frame);
 
-					var mask_transform = shader_get_uniform(armour_texture, "mask_transform");
-					shader_set_uniform_f_array(mask_transform, mask_transform_data);
+					shader_set_uniform_f_array(texture_mask_transform, mask_transform_data);
 
 					var tex_texture = sprite_get_texture(_tex_data.texture, tex_frame);
+					var _blend = 0;
 					if (struct_exists(_tex_data, "blend")) {
-						var _blend = 1;
-					} else {
-						_blend = 0;
+						_blend = 1;
 					}
-					shader_set_uniform_i(shader_get_uniform(armour_texture, "blend"), _blend);
+
+					shader_set_uniform_i(texture_blend_uniform, _blend);
+
 					if (_blend) {
-						shader_set_uniform_f_array(shader_get_uniform(armour_texture, "blend_colour"), _tex_data.blend);
+						shader_set_uniform_f_array(texture_blend_colour_uniform, _tex_data.blend);
 					}
 					for (var t = 0; t < array_length(_tex_data.areas); t++) {
-						var armour_sampler = shader_get_sampler_index(armour_texture, "armour_texture");
-						texture_set_stage(armour_sampler, tex_texture);
-						var _replace_col = shader_get_uniform(armour_texture, "replace_colour");
-						shader_set_uniform_f_array(_replace_col, _tex_data.areas[t]);
-						draw_sprite(_sprite, _choice ?? 0, _draw_x, _draw_y);
+						texture_set_stage(armour_texture_sampler, tex_texture);
+
+						shader_set_uniform_f_array(texture_replace_col_uniform, _tex_data.areas[t]);
+
+						draw_sprite(_sprite, _choice ?? 0, component_final_draw_x, component_final_draw_y);
 					}
 				}
 				surface_reset_target();
 				surface_set_target(_return_surface);
 				shader_set(full_livery_shader);
-				draw_sprite(_sprite, _choice ?? 0, _draw_x, _draw_y);
-				draw_surface(base_component_surface, 0, 0);
-				surface_reset_target();
-				surface_clear_and_free(base_component_surface);
-
-				surface_set_target(_return_surface);
+				//draw_sprite(_sprite, _choice ?? 0, component_final_draw_x, component_final_draw_y);
+				draw_surface(global.base_component_surface, 0, 0);
 			} else {
-				draw_sprite(_sprite, _choice ?? 0, _draw_x, _draw_y);
+				draw_sprite(_sprite, _choice ?? 0, component_final_draw_x, component_final_draw_y);
 			}
 
-
-			if (struct_exists(subcomponents, component_name)) {
-				var _subcomponents_found = false;
-				var _component_bulk_set = subcomponents[$ component_name];
-				for (var i = 0; i < array_length(_component_bulk_set); i++) {
-					var _spec_over = _component_bulk_set[i];
-					if (_spec_over[0] <= _choice && _spec_over[1] > _choice) {
-						_subcomponents_found = true;
-						var _component_set = _spec_over[2];
-					}
-				}
-
-				if (_subcomponents_found){
-					for (var i = 0; i < array_length(_component_set); i++) {
-						var _subcomponents = _component_set[i];
-						var _sub_choice = 0;
-						if (_map_choice != 0){
-							_sub_choice = floor(sin(_map_choice) * 100);
-						}
-						var _total_options = -1;
-						for (var s=0;s<array_length(_subcomponents);s++){
-							_total_options += sprite_get_number(_subcomponents[s]);
-						}
-
-						if (_total_options > -1){
-							if (_total_options == 0){
-								_sub_choice_final = 0;
-							}else {
-								_sub_choice_final = _sub_choice % (_total_options+1);
-							}
-
-							
-							_choice_count = 0;
-							for (var s=0;s<array_length(_subcomponents);s++){
-								if (_sub_choice_final >= _choice_count && _sub_choice_final < _choice_count+sprite_get_number(_subcomponents[s])){
-									draw_sprite(_subcomponents[s], _sub_choice_final-_choice_count ?? 0, _draw_x, _draw_y);
-									break;
-								} else {
-									_choice_count += sprite_get_number(_subcomponents[s]);
-								}
-							}
-						}
-					}
-				}
-				//sprite_delete(_sprite);
-			}
+			handle_component_subcomponents(component_name, _choice)
 		}
 	};
 
@@ -910,7 +950,7 @@ function ComplexSet(_unit) constructor {
 		var prep_surface = surface_create(600, 600);
 		surface_set_target(prep_surface);
 
-		var texture_draws = setup_complex_livery_shader(unit.role(), unit);
+		var _texture_draws = setup_complex_livery_shader(unit.role(), unit);
 		draw_cloaks();
 		//draw_unit_arms(x_surface_offset, y_surface_offset, armour_type, specialist_colours, hide_bionics, complex_set);
 
@@ -1093,15 +1133,13 @@ function ComplexSet(_unit) constructor {
 		}
 		for (var i = 0; i < array_length(_draw_order); i++) {
 			if (_draw_order[i] == "head") {
-				draw_head(texture_draws);
+				draw_head(_texture_draws);
 			} else {
-				draw_component(_draw_order[i], texture_draws);
+				draw_component(_draw_order[i], _texture_draws);
 			}
 		}
 		purity_seals_and_hangings();
 		draw_weapon_and_hands();
-
-		delete texture_draws;
 
 		shader_reset();
 		surface_reset_target();
@@ -1501,26 +1539,35 @@ function ComplexSet(_unit) constructor {
 		coal: [34.0 / 255.0, 34.0 / 255.0, 34.0 / 255.0]
 	};
 
+	static head_draw_order = [
+	    "crest",
+	    "head",
+	    "forehead",
+	    "mouth_variants",
+	    "left_eye",
+	    "right_eye",
+	    "crown"
+	];
+
 	static draw_head = function(texture_draws = {}) {
-		if (draw_helms) {
-			if (struct_exists(self, "head")) {
-				draw_component("crest", texture_draws);
-				draw_component("head", texture_draws);
-				draw_component("forehead", texture_draws);
-				draw_component("mouth_variants", texture_draws);
-				draw_component("left_eye", texture_draws);
-				draw_component("right_eye", texture_draws);
-				draw_component("crown", texture_draws);
-			}
-		} else {
-			shader_set(skin_tone_shader);
-			var _skin_colour = skin_tones.standard[variation_map.bare_head % array_length(skin_tones.standard)];
-			shader_set_uniform_f_array(shader_get_uniform(skin_tone_shader, "skin"), _skin_colour);
-			draw_component("bare_neck", texture_draws);
-			draw_component("bare_head", texture_draws);
-			draw_component("bare_eyes", texture_draws);
-			shader_set(full_livery_shader);
-		}
+	    if (draw_helms) {
+	        if (struct_exists(self, "head")) {
+	            for (var i = 0; i < array_length(head_draw_order); i++) {
+	                draw_component(head_draw_order[i], texture_draws);
+	            }
+	        }
+	    } else {
+	        shader_set(skin_tone_shader);
+
+	        var _skin_colour = skin_tones.standard[variation_map.bare_head % array_length(skin_tones.standard)];
+	        shader_set_uniform_f_array(shader_get_uniform(skin_tone_shader, "skin"), _skin_colour);
+
+	        draw_component("bare_neck", texture_draws);
+	        draw_component("bare_head", texture_draws);
+	        draw_component("bare_eyes", texture_draws);
+
+	        shader_set(full_livery_shader);
+	    }
 	};
 
 	static complex_helms = function(data) {

@@ -549,6 +549,8 @@ function scr_draw_unit_image(_background = false) {
             }
         }
     }
+    surface_clear_and_free(global.base_component_surface);
+    global.base_component_surface = -1;
 
     struct_remove(complex_set, "unit");
     gc_struct(complex_set);
