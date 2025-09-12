@@ -1648,6 +1648,7 @@
     {"id":{"name":"spr_tartaros2_colors","path":"sprites/spr_tartaros2_colors/spr_tartaros2_colors.yy",},},
     {"id":{"name":"spr_tech_area_pad","path":"sprites/spr_tech_area_pad/spr_tech_area_pad.yy",},},
     {"id":{"name":"spr_tech_belt","path":"sprites/spr_tech_belt/spr_tech_belt.yy",},},
+    {"id":{"name":"spr_tech_face_plate_shadow","path":"sprites/spr_tech_face_plate_shadow/spr_tech_face_plate_shadow.yy",},},
     {"id":{"name":"spr_tech_face_plate","path":"sprites/spr_tech_face_plate/spr_tech_face_plate.yy",},},
     {"id":{"name":"spr_techmarine_chest","path":"sprites/spr_techmarine_chest/spr_techmarine_chest.yy",},},
     {"id":{"name":"spr_techmarine_complex","path":"sprites/spr_techmarine_complex/spr_techmarine_complex.yy",},},

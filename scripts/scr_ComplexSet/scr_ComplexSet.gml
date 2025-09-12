@@ -103,7 +103,6 @@ function ComplexSet(_unit) constructor {
 		mouth_variants: spr_mk7_mouth_variants,
 		thorax_variants: spr_mk7_thorax_variants,
 		chest_variants: spr_mk7_chest_variants,
-		leg_variants: spr_mk7_leg_variants,
 		head: spr_mk7_head_variants,
 		right_knee: spr_mk7_complex_knees
 	};
@@ -578,7 +577,7 @@ function ComplexSet(_unit) constructor {
 			        if (_spec_shadow[0] <= _choice && _spec_shadow[1] > _choice) {
 			            var _shadow_item = _spec_shadow[2];
 			            var _final_shadow_index = _choice - _spec_shadow[0];
-			            show_debug_message($"final_index {_final_shadow_index}, {_spec_shadow[0]}, {_spec_shadow[1]}, {_choice},{_shadow_item}");
+			            //show_debug_message($"final_index {_final_shadow_index}, {_spec_shadow[0]}, {_spec_shadow[1]}, {_choice},{_shadow_item}");
 
 	                    // Compute UV transform for this shadow texture
 	                    var shadow_transform_data = sprite_get_uvs_transformed(_sprite, _choice , _shadow_item, _final_shadow_index);
@@ -1370,9 +1369,6 @@ function ComplexSet(_unit) constructor {
 					"armour": spr_techmarine_complex,
 					"right_trim": spr_techmarine_right_trim,
 					"left_trim": spr_techmarine_left_trim,
-					"head": spr_techmarine_head,
-					"chest_variants": spr_techmarine_chest,
-					"mouth_variants": spr_tech_face_plate
 				});
 			}
 		}
