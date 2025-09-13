@@ -527,6 +527,31 @@ function ComplexSet(_unit) constructor {
 
 
 
+	component_final_draw_x = 0;
+	component_final_draw_y = 0
+	shadow_enabled = false;
+	component_map_choice = 0;
+
+
+	use_shadow_uniform = shader_get_uniform(full_livery_shader, "use_shadow");
+	shadow_transform_uniform = shader_get_uniform(full_livery_shader, "shadow_transform");
+
+	shadow_sampler = shader_get_sampler_index(full_livery_shader, "shadow_texture");
+	armour_shadow_sampler = shader_get_sampler_index(armour_texture, "shadow_texture");
+	armour_texture_sampler = shader_get_sampler_index(armour_texture, "armour_texture");
+
+	texture_blend_uniform = shader_get_uniform(armour_texture, "blend");
+	texture_blend_colour_uniform = shader_get_uniform(armour_texture, "blend_colour");
+	static texture_replace_col_uniform = shader_get_uniform(armour_texture, "replace_colour");
+
+	texture_use_shadow_uniform = shader_get_uniform(armour_texture, "use_shadow");
+	texture_shadow_transform_uniform = shader_get_uniform(armour_texture, "shadow_transform");
+	texture_mask_transform = shader_get_uniform(armour_texture, "mask_transform");
+
+    if (!surface_exists(global.base_component_surface)) {
+	    global.base_component_surface = surface_create(600,600);
+	}
+
 	static check_component_overides = function(component_name, choice){
 		if (struct_exists(overides, component_name)) {
 			var _overide_set = overides[$ component_name];
@@ -612,7 +637,7 @@ function ComplexSet(_unit) constructor {
 						_sub_choice_final = _total_options == 1 ? 0 : _sub_choice % (_total_options+1);
 						
 						_choice_count = 0;
-						for (var s=0;s<array_length(_subcomponents);s++){
+						for (var s=0; s<array_length(_subcomponents); s++){
 							if (_sub_choice_final >= _choice_count && _sub_choice_final < _choice_count+sprite_get_number(_subcomponents[s])){
 								draw_sprite(_subcomponents[s], _sub_choice_final-_choice_count ?? 0, component_final_draw_x, component_final_draw_y);
 								break;
@@ -627,31 +652,60 @@ function ComplexSet(_unit) constructor {
 		}
 	}
 
-	component_final_draw_x = 0;
-	component_final_draw_y = 0
-	shadow_enabled = false;
-	component_map_choice = 0;
+	static draw_component_with_textures = function(_sprite, _choice, _tex_names, texture_draws, component_name) {
+		var _return_surface = surface_get_target();
+		surface_reset_target();
+		shader_reset();
+
+		surface_set_target(global.base_component_surface);
+		draw_clear_alpha(c_white, 0);
+		
+		shader_set(armour_texture);
+		shader_set_uniform_i(texture_use_shadow_uniform, shadow_enabled);
+
+		for (var i = 0; i < array_length(_tex_names); i++) {
+			var _tex_data = texture_draws[$ _tex_names[i]];
+
+			var tex_frame = 0;
+			if (component_name == "left_pauldron_base") {
+				tex_frame = 1;
+			}
+
+			var _mask_transform_data = sprite_get_uvs_transformed(_sprite, _choice, _tex_data.texture, tex_frame);
+			shader_set_uniform_f_array(texture_mask_transform, _mask_transform_data);
+
+			var tex_texture = sprite_get_texture(_tex_data.texture, tex_frame);
+
+			var _blend = 0;
+			if (struct_exists(_tex_data, "blend")) {
+				_blend = 1;
+			}
+
+			shader_set_uniform_i(texture_blend_uniform, _blend);
+
+			if (_blend) {
+				shader_set_uniform_f_array(texture_blend_colour_uniform, _tex_data.blend);
+			}
+
+			for (var t = 0; t < array_length(_tex_data.areas); t++) {
+				texture_set_stage(armour_texture_sampler, tex_texture);
+				shader_set_uniform_f_array(texture_replace_col_uniform, _tex_data.areas[t]);
+
+				draw_sprite(_sprite, _choice ?? 0, component_final_draw_x, component_final_draw_y);
+			}
+		}
+
+		surface_reset_target();
+		surface_set_target(_return_surface);
+		shader_reset();
+		shader_set(full_livery_shader);
+
+		draw_sprite(_sprite, _choice ?? 0, component_final_draw_x, component_final_draw_y);
+		draw_surface(global.base_component_surface, 0, 0);
+	};
 
 
-	static use_shadow_uniform = shader_get_uniform(full_livery_shader, "use_shadow");
-	static shadow_transform_uniform = shader_get_uniform(full_livery_shader, "shadow_transform");
-
-	static shadow_sampler = shader_get_sampler_index(full_livery_shader, "shadow_texture");
-	static armour_shadow_sampler = shader_get_sampler_index(armour_texture, "shadow_texture");
-	static armour_texture_sampler = shader_get_sampler_index(armour_texture, "armour_texture");
-
-	static texture_blend_uniform = shader_get_uniform(armour_texture, "blend");
-	static texture_blend_colour_uniform = shader_get_uniform(armour_texture, "blend_colour");
-	static texture_replace_col_uniform = shader_get_uniform(armour_texture, "replace_colour");
-
-	static texture_use_shadow_uniform = shader_get_uniform(armour_texture, "use_shadow");
-	static texture_shadow_transform_uniform = shader_get_uniform(armour_texture, "shadow_transform");
-	static texture_mask_transform = shader_get_uniform(armour_texture, "mask_transform");
-
-    if (!surface_exists(global.base_component_surface)) {
-	    global.base_component_surface = surface_create(600,600);
-	}
-
+	// Main function
 	static draw_component = function(component_name, texture_draws = {}, choice_lock = -1) {
 		if (array_contains(banned, component_name)) {
 			return "banned component";
@@ -670,77 +724,28 @@ function ComplexSet(_unit) constructor {
 			var component_map_choice = 3;
 			if (struct_exists(variation_map, component_name) && choice_lock == -1) {
 				component_map_choice = variation_map[$ component_name];
-				var _choice = component_map_choice % sprite_get_number(_sprite);
+				_choice = component_map_choice % sprite_get_number(_sprite);
 			}
 			else if (choice_lock > -1){
 				_choice = choice_lock
 			}
 
 			check_component_overides(component_name, _choice);
-			// Handle Shadow Packages 
 			set_component_shadow_packs(component_name, _choice);
-
-			// Handle Shadow Packages 
 
 			shader_set_uniform_i(use_shadow_uniform, shadow_enabled);
 
-
 			var _tex_names = struct_get_names(texture_draws);
-			var _tex_len = array_length(_tex_names);
-			if (_tex_len) {
-				var _return_surface = surface_get_target();
-				surface_reset_target();
-				//shader_reset();
-
-				surface_set_target(global.base_component_surface);
-				draw_clear_alpha(c_white, 0);
-				
-				shader_set(armour_texture);
-				shader_set_uniform_i(texture_use_shadow_uniform, shadow_enabled);
-				
-				for (var i = 0; i < _tex_len; i++) {
-					var _tex_data = texture_draws[$ _tex_names[i]];
-
-					tex_frame = 0;
-					if (component_name == "left_pauldron_base") {
-						tex_frame = 1;
-					}
-
-					var mask_transform_data = sprite_get_uvs_transformed(_sprite, _choice, _tex_data.texture, tex_frame);
-
-					shader_set_uniform_f_array(texture_mask_transform, mask_transform_data);
-
-					var tex_texture = sprite_get_texture(_tex_data.texture, tex_frame);
-					var _blend = 0;
-					if (struct_exists(_tex_data, "blend")) {
-						_blend = 1;
-					}
-
-					shader_set_uniform_i(texture_blend_uniform, _blend);
-
-					if (_blend) {
-						shader_set_uniform_f_array(texture_blend_colour_uniform, _tex_data.blend);
-					}
-					for (var t = 0; t < array_length(_tex_data.areas); t++) {
-						texture_set_stage(armour_texture_sampler, tex_texture);
-
-						shader_set_uniform_f_array(texture_replace_col_uniform, _tex_data.areas[t]);
-
-						draw_sprite(_sprite, _choice ?? 0, component_final_draw_x, component_final_draw_y);
-					}
-				}
-				surface_reset_target();
-				surface_set_target(_return_surface);
-				shader_set(full_livery_shader);
-				//draw_sprite(_sprite, _choice ?? 0, component_final_draw_x, component_final_draw_y);
-				draw_surface(global.base_component_surface, 0, 0);
+			if (array_length(_tex_names) > 0) {
+				draw_component_with_textures(_sprite, _choice, _tex_names, texture_draws, component_name);
 			} else {
 				draw_sprite(_sprite, _choice ?? 0, component_final_draw_x, component_final_draw_y);
 			}
 
-			handle_component_subcomponents(component_name, _choice)
+			handle_component_subcomponents(component_name, _choice);
 		}
 	};
+
 
 	static draw_unit_arms = function() {
 		var _bionic_options = [];
@@ -951,6 +956,8 @@ function ComplexSet(_unit) constructor {
 		surface_set_target(prep_surface);
 
 		var _texture_draws = setup_complex_livery_shader(unit.role(), unit);
+
+		show_debug_message(_texture_draws);
 		draw_cloaks();
 		//draw_unit_arms(x_surface_offset, y_surface_offset, armour_type, specialist_colours, hide_bionics, complex_set);
 

@@ -469,7 +469,7 @@ function get_marine_icon_set(key){
     }else if (key==eMarineIcons.Company){
         sprite_set = global.company_markings;
     }
-    return sprite_set;
+    return variable_clone(sprite_set);
 }
 
 function setup_complex_livery_shader(setup_role, unit = "none"){
@@ -603,32 +603,40 @@ function setup_complex_livery_shader(setup_role, unit = "none"){
     };       
 
     var colours_instance = instance_exists(obj_creation) ? obj_creation : obj_controller;
-    for (var i=0;i<array_length(spot_names);i++){
-        var colour = data_set[$ spot_names[i]];
+    var _position_count = array_length(spot_names);
+    for (var i=0;i<_position_count;i++){
+
+        var _colour_position = spot_names[i];
+
+        var _colour = variable_clone(data_set[$ _colour_position]);
+
         
-        if (!is_array(colour)){
-            set_complex_shader_area(spot_names[i], colour);
+        if (!is_array(_colour)){
+            set_complex_shader_area(_colour_position, _colour);
         } else {
-            if (colour[0] == "texture"){
-                if (struct_exists(global.textures, colour[1])){
-                    var name = colour[1];
-                    if (!struct_exists(_textures, name)){
-                        _textures[$name] = {
-                            texture : global.textures[$ colour[1]],
-                            areas : [complex_colour_swaps[$ spot_names[i]]],
+            if (_colour[0] == "texture"){
+                if (struct_exists(global.textures, _colour[1])){
+                    var _name = _colour[1];
+                    show_debug_message(_name);
+                    if (!struct_exists(_textures, _name)){
+                        _textures[$ _name] = {
+                            texture : global.textures[$ _colour[1]],
+                            areas : [complex_colour_swaps[$ _colour_position]],
                         }
                     } else {
-                        array_push(_textures[$name].areas, complex_colour_swaps[$ spot_names[i]]);
+                        var _tex_data = _textures[$_name]
+                        array_push(_tex_data.areas, complex_colour_swaps[$ _colour_position]);
                     }                    
                 }
-            } else if (colour[0] == "icon"){
-                var _data = colour[1]
+            } else if (_colour[0] == "icon"){
+                var _data = _colour[1];
+                show_debug_message($"data : {_data}");
                 var sub_key = "";
                 var main_key = "";
                 var _tex_set = false;
-                if (array_contains(["right_pauldron", "left_pauldron"], spot_names[i])){
+                if (array_contains(["right_pauldron", "left_pauldron"], _colour_position)){
                     sub_key = "pauldron";
-                }  else if (array_contains(["right_leg_knee", "left_leg_knee"], spot_names[i])){ 
+                }  else if (array_contains(["right_leg_knee", "left_leg_knee"], _colour_position)){ 
                     sub_key = "knees";
                 }
 
@@ -636,20 +644,23 @@ function setup_complex_livery_shader(setup_role, unit = "none"){
                 if (sub_key != "" && is_struct(main_key)){
                     var _tex_set = main_key[$ sub_key];
                 }
+                show_debug_message($"{_tex_set}");
                 if (is_struct(_tex_set)){
                     if (struct_exists(_tex_set, _data.icon)){
-                        var name = colour[1];
-                        if (!struct_exists(_textures, name)){
-                            _textures[$name] = {
+                        var _name = _data.icon;
+                        show_debug_message(_name);
+                        if (!struct_exists(_textures, _name)){
+                            _textures[$ _name] = {
                                 texture : _tex_set[$ _data.icon],
-                                areas : [complex_colour_swaps[$ spot_names[i]]],
+                                areas : [complex_colour_swaps[$ _colour_position]],
                             }
                         } else {
-                            array_push(_textures[$name].areas, complex_colour_swaps[$ spot_names[i]]);
+                            var _tex_data = _textures[$_name]
+                            array_push(_tex_data.areas, complex_colour_swaps[$ _colour_position]);
                         }                    
                     }
                 }
-                set_complex_shader_area(spot_names[i],_data.colour);               
+                set_complex_shader_area(_colour_position,_data.colour);               
             }
         }
     } 
