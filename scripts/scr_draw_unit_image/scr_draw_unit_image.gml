@@ -539,6 +539,7 @@ function scr_draw_unit_image(_background = false) {
     }
     surface_reset_target();
     shader_reset();
+    //show_debug_message($"1{get_marine_icon_set(2)}");
     var _complex_sprite_names = struct_get_names(complex_set);
     for (var i = 0; i < array_length(_complex_sprite_names); i++) {
         var _area = _complex_sprite_names[i];
@@ -549,10 +550,17 @@ function scr_draw_unit_image(_background = false) {
             }
         }
     }
+    
     surface_clear_and_free(global.base_component_surface);
     global.base_component_surface = -1;
+    var _keep_alive = ["unit", "_texture_draws", "texture_draws"]
 
-    struct_remove(complex_set, "unit");
+    for (var i=0;i<array_length(_keep_alive);i++){
+        var _live = _keep_alive[i];
+        if (struct_exists(complex_set, _live)){
+            struct_remove(complex_set, _live);
+        }
+    }
     gc_struct(complex_set);
     delete complex_set;
 
@@ -565,3 +573,5 @@ function scr_draw_unit_image(_background = false) {
 
     return new UnitImage(_complete_sprite);
 }
+
+

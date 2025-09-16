@@ -662,6 +662,7 @@ function ComplexSet(_unit) constructor {
 		
 		shader_set(armour_texture);
 		shader_set_uniform_i(texture_use_shadow_uniform, shadow_enabled);
+		set_component_shadow_packs(component_name, _choice);
 
 		for (var i = 0; i < array_length(_tex_names); i++) {
 			var _tex_data = texture_draws[$ _tex_names[i]];
@@ -676,16 +677,19 @@ function ComplexSet(_unit) constructor {
 
 			var tex_texture = sprite_get_texture(_tex_data.texture, tex_frame);
 
-			var _blend = 0;
+			//TODO fix texture colour blending
+			/*var _blend = 0;
 			if (struct_exists(_tex_data, "blend")) {
 				_blend = 1;
 			}
+
 
 			shader_set_uniform_i(texture_blend_uniform, _blend);
 
 			if (_blend) {
 				shader_set_uniform_f_array(texture_blend_colour_uniform, _tex_data.blend);
 			}
+			*/
 
 			for (var t = 0; t < array_length(_tex_data.areas); t++) {
 				texture_set_stage(armour_texture_sampler, tex_texture);
@@ -698,7 +702,9 @@ function ComplexSet(_unit) constructor {
 		surface_reset_target();
 		surface_set_target(_return_surface);
 		shader_reset();
+
 		shader_set(full_livery_shader);
+		set_component_shadow_packs(component_name, _choice);
 
 		draw_sprite(_sprite, _choice ?? 0, component_final_draw_x, component_final_draw_y);
 		draw_surface(global.base_component_surface, 0, 0);
@@ -711,7 +717,7 @@ function ComplexSet(_unit) constructor {
 			return "banned component";
 		}
 		if (struct_exists(self, component_name)) {
-			shadow_enabled = false;
+			shadow_enabled = 0;
 			var _sprite = self[$ component_name];
 			if (!sprite_exists(_sprite)) {
 				return "error failed no sprite found"
@@ -736,6 +742,7 @@ function ComplexSet(_unit) constructor {
 			shader_set_uniform_i(use_shadow_uniform, shadow_enabled);
 
 			var _tex_names = struct_get_names(texture_draws);
+
 			if (array_length(_tex_names) > 0) {
 				draw_component_with_textures(_sprite, _choice, _tex_names, texture_draws, component_name);
 			} else {

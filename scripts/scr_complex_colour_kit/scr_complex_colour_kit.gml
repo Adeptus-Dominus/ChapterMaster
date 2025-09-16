@@ -459,7 +459,7 @@ enum eMarineIcons {
 }
 
 function get_marine_icon_set(key){
-    sprite_set = false;
+    var sprite_set = false;
     if (key==eMarineIcons.Chapter){
         sprite_set = global.chapter_symbols;
     } else if (key==eMarineIcons.Role){
@@ -639,10 +639,10 @@ function setup_complex_livery_shader(setup_role, unit = "none"){
                 }  else if (array_contains(["right_leg_knee", "left_leg_knee"], _colour_position)){ 
                     sub_key = "knees";
                 }
-
                 main_key = get_marine_icon_set(_data.type);
+                show_debug_message($"{sub_key}, {main_key}");
                 if (sub_key != "" && is_struct(main_key)){
-                    var _tex_set = main_key[$ sub_key];
+                    var _tex_set = variable_clone(main_key[$ sub_key]);
                 }
                 show_debug_message($"{_tex_set}");
                 if (is_struct(_tex_set)){
@@ -651,7 +651,7 @@ function setup_complex_livery_shader(setup_role, unit = "none"){
                         show_debug_message(_name);
                         if (!struct_exists(_textures, _name)){
                             _textures[$ _name] = {
-                                texture : _tex_set[$ _data.icon],
+                                texture : _tex_set[$ _name],
                                 areas : [complex_colour_swaps[$ _colour_position]],
                             }
                         } else {

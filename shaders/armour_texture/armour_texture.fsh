@@ -139,14 +139,14 @@ void main() {
     vec4 tex_col = texture2D(armour_texture, v_vMaskCoord);
 
     if (col.rgb != replace_colour.rgb || tex_col.a == 0.0) {
-        col.a = 0.0;
+        discard;
     } else {
         vec4 col_orig = col;
         col = tex_col;
         
-        if (blend == 1) {
+        /*if (blend == 1) {
             col.rgb = col.rgb * blend_colour.rgb;
-        }
+        }*/
         if (use_shadow != 1){
 
             if (col_orig.a == _128COL){ col.rgb = light_or_dark(col.rgb, 1.2, 85.0); col.a = 1.0; }

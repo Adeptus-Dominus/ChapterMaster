@@ -167,7 +167,7 @@ function scr_livery_setup(){
 
     var _livery_type = livery_selection_options.current_selection;
 
-    if (colour_selection_options.current_selection != 2){
+    if (colour_selection_options.current_selection != 2 && !_update_sprite){
         if (_livery_type == 1){
             roles_radio.update({x1:882, y1 :livery_selection_options.y2+20} );
             roles_radio.draw();

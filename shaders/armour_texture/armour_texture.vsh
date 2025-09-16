@@ -23,6 +23,7 @@ void main()
     
     v_vColour = in_Colour;
     v_vTexcoord = in_TextureCoord;
-    v_vMaskCoord = v_vTexcoord * mask_transform.zw + mask_transform.xy;
-    v_vShadowCoord = v_vTexcoord * shadow_transform.zw + shadow_transform.xy;
+    
+    v_vMaskCoord = in_TextureCoord * mask_transform.zw + mask_transform.xy;
+    v_vShadowCoord = in_TextureCoord * shadow_transform.zw + shadow_transform.xy;
 }
