@@ -6,6 +6,10 @@ attribute vec3 in_Position;                  // (x,y,z)
 attribute vec4 in_Colour;                    // (r,g,b,a)
 attribute vec2 in_TextureCoord;              // (u,v)
 
+uniform vec4 shadow_transform;
+varying vec2 v_vShadowCoord;
+
+
 varying vec2 v_vTexcoord;
 varying vec4 v_vColour;
 
@@ -16,4 +20,5 @@ void main()
     
     v_vColour = in_Colour;
     v_vTexcoord = in_TextureCoord;
+    v_vShadowCoord = v_vTexcoord * shadow_transform.zw + shadow_transform.xy;
 }
