@@ -86,7 +86,7 @@ vec3 light_or_dark(vec3 m_colour, float shade, float maxHueShift) {
 
         if (near_black) {
             // Near-black highlight: push toward green-blue (~180°), clamped
-            hue = hueMixClamp(hue, 180.0, shade - 1.0, 180);
+            hue = hueMixClamp(hue, 180.0, shade - 1.0, 180.0);
             hsv.z = clamp(hsv.z * shade, 0.0, 1.0);
             hsv.y = clamp(hsv.y * (2.0 - shade), 0.0, 1.0);
             hsv.x = hue / 360.0;
