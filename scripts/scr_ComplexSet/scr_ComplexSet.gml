@@ -31,6 +31,10 @@ function scr_has_style(style) {
 	// return false;
 }
 
+function valid_sprite_transform_data(data){
+	return (is_array(data) && array_length(data) == 4)
+}
+
 ///@func sprite_get_uvs_transformed(sprite1, subimg1, sprite2, subimg2)
 ///@desc Returns a transform array that can be used in a shader to align the UVs of sprite2 with sprite1 (takes cropping into account)
 ///@param spr1 {Sprite} The sprite align the UVs to
@@ -589,12 +593,16 @@ function ComplexSet(_unit) constructor {
 
 		            var _sprite = self[$ component_name];
 	                // Compute UV transform for this shadow texture
-	                var shadow_transform_data = sprite_get_uvs_transformed(_sprite, choice , _shadow_item, _final_shadow_index);
+	                if (!sprite_exists(_sprite) || !sprite_exists(_shadow_item)){
+	                	exit;
+	                }
+	                var _shadow_transform_data = sprite_get_uvs_transformed(_sprite, choice , _shadow_item, _final_shadow_index);
 
-	                shader_set_uniform_f_array(shadow_transform_uniform, shadow_transform_data);
+	                if (valid_sprite_transform_data(_shadow_transform_data)){
+		                shader_set_uniform_f_array(shadow_transform_uniform, _shadow_transform_data);
 
-	                shader_set_uniform_f_array(texture_shadow_transform_uniform, shadow_transform_data);
-
+		                shader_set_uniform_f_array(texture_shadow_transform_uniform, _shadow_transform_data);
+	                }
 
 	                // Bind shadow texture
 	                var _shadow_tex = sprite_get_texture(_shadow_item, _final_shadow_index);
@@ -672,9 +680,6 @@ function ComplexSet(_unit) constructor {
 				tex_frame = 1;
 			}
 
-			var _mask_transform_data = sprite_get_uvs_transformed(_sprite, _choice, _tex_data.texture, tex_frame);
-			shader_set_uniform_f_array(texture_mask_transform, _mask_transform_data);
-
 			var tex_texture = sprite_get_texture(_tex_data.texture, tex_frame);
 
 			//TODO fix texture colour blending
@@ -692,6 +697,11 @@ function ComplexSet(_unit) constructor {
 			*/
 
 			for (var t = 0; t < array_length(_tex_data.areas); t++) {
+				var _mask_transform_data = sprite_get_uvs_transformed(_sprite, _choice, _tex_data.texture, tex_frame);
+				if (!valid_sprite_transform_data(_mask_transform_data)){
+					continue;
+				}
+				shader_set_uniform_f_array(texture_mask_transform, _mask_transform_data);
 				texture_set_stage(armour_texture_sampler, tex_texture);
 				shader_set_uniform_f_array(texture_replace_col_uniform, _tex_data.areas[t]);
 

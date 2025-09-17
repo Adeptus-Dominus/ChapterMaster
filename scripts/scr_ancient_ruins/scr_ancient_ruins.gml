@@ -214,28 +214,27 @@ function scr_explore_ruins() {
 	}
 }
 
-function scr_check_for_ruins_exploration(select_planet, star){
-	var _planet_features = star.p_feature[select_planet]
-	var _ruins_list =  search_planet_features( _planet_features, P_features.Ancient_Ruins)
+
+/// @mixin PlanetData
+function scr_check_for_ruins_exploration(){
+	var _ruins_list =  get_features(P_features.Ancient_Ruins);
 	var _explore_ruins=0;
     if (array_length(_ruins_list) > 0){
 		for (var _ruin = 0; _ruin < array_length(_ruins_list); _ruin++){
-			var _specific_ruins = _ruins_list[_ruin];
-			var _cur_ruins = _planet_features[_specific_ruins];
+			var _cur_ruins = _ruins_list[_ruin];
 			if ( _cur_ruins.exploration_complete == false){
-				 _explore_ruins = _planet_features[_specific_ruins];
+				 _explore_ruins = _cur_ruins;
 				break;
 			}else{
 				_explore_ruins=0;
 			}
 		}
 		if (_explore_ruins!=0){
-			_explore_ruins.star = star;
-			_explore_ruins.planet = select_planet;									
+			_explore_ruins.star = system;
+			_explore_ruins.planet = planet;									
 			_explore_ruins.explore();
 		}
     }
-
 }
 
 

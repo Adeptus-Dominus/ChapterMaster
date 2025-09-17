@@ -401,3 +401,57 @@ function scr_cheatcode(argument0) {
 		show_debug_message(_exception.longMessage);
 	}
 }
+
+
+function draw_planet_debug_options(){
+	if (debug) {
+	    add_draw_return_values() 
+	    var current_planet = obj_controller.selecting_planet;
+
+	    // Close window if clicked outside
+	    if (!scr_hit([36,174,337,455]) && scr_click_left()) {
+	        debug = 0;
+	        exit;
+	    }
+
+	    // Setup draw area
+	    draw_set_color(c_black);
+	    draw_rectangle(36, 174, 337, 455, 0);
+	    draw_set_font(fnt_40k_14b);
+	    draw_set_color(c_gray);
+	    draw_set_halign(fa_left);
+
+	    // Define factions and their struct keys
+	    var faction_names = [
+	        "Orks", "Tau", "Tyranids", "Traitors",
+	        "CSM", "Daemons", "Necrons", "Sisters"
+	    ];
+	    var faction_keys = [
+	        "p_orks", "p_tau", "p_tyranids", "p_traitors",
+	        "p_chaos", "p_demons", "p_necrons", "p_sisters"
+	    ];
+
+	    // Loop through each faction row
+	    var base_y = 176;
+	    for (var i = 0; i < array_length(faction_names); i++) {
+	        var _y = base_y + i * 20;
+	        var key = faction_keys[i];
+
+	        // Draw faction name and value
+	        draw_text(38, _y, faction_names[i] + ": " + stsring(target[$ key][current_planet]));
+
+	        // Draw [-] [+] controls
+	        draw_text(147, _y, "[-] [+]");
+
+	        // Handle minus click
+	        if (point_and_click([147, _y, 167, _y + 20])) {
+	            target[$ key][current_planet] = clamp(target[$ key][current_planet] - 1, 0, 6);
+	        }
+	        // Handle plus click
+	        else if (point_and_click([177, _y, 197, _y + 20])) {
+	            target[$ key][current_planet] = clamp(target[$ key][current_planet] + 1, 0, 6);
+	        }
+	    }
+	    pop_draw_return_values();
+	}
+}

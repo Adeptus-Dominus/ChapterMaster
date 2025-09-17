@@ -220,6 +220,7 @@ function return_planet_features(planet, search_feature){
 	return feature_positions;	
 }
 
+
 // returns 1 if dearch feature is on at least one planet in system returns 0 is search feature is not found in system
 function system_feature_bool(system, search_feature){
 	var sys_bool = 0;
@@ -391,54 +392,12 @@ function create_starship_event(){
 }
 
 
-function discover_stc_fragment_popup(){
-    var stah = instance_nearest(x, y, obj_star);
-    var own = stah.p_owner[num];
-    obj_controller.menu = MENU.Default;
-    var pop = instance_create(0, 0, obj_popup);
-    pop.image = "stc";
-    pop.title = "STC Fragment Located";
 
-    if (own == eFACTION.Mechanicus) {
-        if (mechanicus_reps > 0) {
-            pop.text = $"An STC Fragment upon {stah.name} {num} appears to be located deep within a Mechanicus Vault. The present Tech Priests stress they will not condone a mission to steal the STC Fragment.";
-            pop.option1 = "Leave it.";
-        } else if (techies > 0) {
-            pop.text = $"An STC Fragment upon {stah.name} {num} appears to be located deep within a Mechanicus Vault. Taking it may be seen as an act of war. What is thy will?";
-            // pop.option1 = "Attempt to steal the STC Fragment."; // TODO: Fix this option, as it crashes the game when the battle starts;
-            pop.option1 = "Leave it.";
-        } else {
-            pop.text = $"An STC Fragment upon {stah.name} {num} appears to be located deep within a Mechanicus Vault. Taking it may be seen as an act of war. The ground team has no Techmarines, so you have no choice but to leave it be.";
-            pop.option1 = "Leave it.";
-        }
-    } else {
-        if ((techies > 0) && (mechanicus_reps == 0)) {
-            pop.text = $"An STC Fragment has been located upon {stah.name} {num}; what it might contain is unknown. Your {obj_ini.role[100][16]}s wish to reclaim, identify, and put it to use immediately. What is thy will?";
-            pop.option1 = "Swiftly take the STC Fragment.";
-            pop.option2 = "Leave it.";
-            pop.option3 = "Send it to the Adeptus Mechanicus.";
-        } else if (techies > 0 && mechanicus_reps > 0) {
-            pop.text = $"An STC Fragment has been located upon {stah.name} {num}. Your {obj_ini.role[100][16]}s wish to reclaim, identify, and put it to use immediately, and the Tech Priests wish to send it to the closest forge world. What is thy will?";
-            pop.option1 = "Swiftly take the STC Fragment.";
-            pop.option2 = "Leave it.";
-            pop.option3 = "Send it to the Adeptus Mechanicus.";
-        } else if (techies == 0 && mechanicus_reps > 0) {
-            pop.text = $"An STC Fragment has been located upon {stah.name} {num}; what it might contain is unknown. The present Tech Priests wish to send it to Mars, and refuse to take the device off-world otherwise.";
-            pop.option1 = "Leave it.";
-            pop.option2 = "Send it to the Adeptus Mechanicus.";
-        } else {
-            pop.text = $"An STC Fragment has been located upon {stah.name} {num}; what it might contain is unknown. The ground team has no {obj_ini.role[100][16]}s or Tech Priests, so you have no choice but to leave it be or notify the Mechanicus about its location.";
-            pop.option1 = "Leave it.";
-            pop.option2 = "Send it to the Adeptus Mechanicus.";
-        }
-    }	
-}
 
-function discover_artifact_popup(){
-    var stah = instance_nearest(x, y, obj_star);
-    var own = stah.p_owner[num];
+/// @mixin PlanetData
+function discover_artifact_popup(feature){
     obj_controller.menu = MENU.Default;
-    if ((stah.p_type[num] == "Dead") || (own == eFACTION.Player)) {
+    if ((planet_type == "Dead" || current_owner == eFACTION.Player)) {
         alarm[4] = 1;
         exit;
     }
@@ -446,12 +405,12 @@ function discover_artifact_popup(){
     var pop = instance_create(0, 0, obj_popup);
     pop.image = "artifact";
     pop.title = "Artifact Located";
-    pop.text = $"The Artifact has been located upon {stah.name} {num}; its condition and class are unlikely to be determined until returned to the ship. What is thy will?";
-    pop.target_comp = stah.p_owner[num];
+    pop.text = $"The Artifact has been located upon {name()}; its condition and class are unlikely to be determined until returned to the ship. What is thy will?";
+    pop.target_comp = current_owner;
 
-    if ((stah.p_first[num] == 3) && (stah.p_owner[num] > 5)) {
-        if (stah.p_pdf[num] > 0) {
-            own = eFACTION.Mechanicus;
+    if ((origional_owner == 3) && (current_owner > 5)) {
+        if (pdf > 0) {
+            current_owner = eFACTION.Mechanicus;
         }
     }
 
@@ -484,7 +443,7 @@ function discover_artifact_popup(){
             break;
     }
 
-    if ((own >= eFACTION.Tyranids) || ((own == eFACTION.Ork) && (stah.p_pdf[num] <= 0))) {
+    if ((current_owner >= eFACTION.Tyranids) || ((current_owner == eFACTION.Ork) && (pdf <= 0))) {
         pop.option1 = "Swiftly take the Artifact.";
         pop.option2 = "Let it be.";
         pop.option3 = "";
@@ -494,3 +453,134 @@ function discover_artifact_popup(){
     }	
 }
 
+/// @mixin obj_star_select
+function planet_selection_action(){
+	var xx=__view_get( e__VW.XView, 0 )+0;
+	var yy=__view_get( e__VW.YView, 0 )+0;
+	if (instance_exists(target)){
+		if (loading){
+			obj_controller.selecting_planet = 0;
+		}
+	    for (var i = 0;i<target.planets;i++){
+	    	var planet_draw = c_white;
+	        if (mouse_distance_less(159+(i*41),287, 22)){
+	            obj_controller.selecting_planet=i+1;
+			    if (p_data.planet != obj_controller.selecting_planet){
+			        delete p_data;
+			        p_data = new PlanetData(obj_controller.selecting_planet, target);
+			        buttons_selected = false;
+			    }
+
+			    p_data.planet_selection_logic(); 
+	            
+	        } 
+	        xxx=159+(i*41);
+	        if (target.craftworld=0) and (target.space_hulk=0){
+	        	var sel_plan = i+1;
+	        	var planet_frame=0;
+	            with (target){
+	            	planet_frame = scr_planet_image_numbers(p_type[sel_plan]);
+	            }
+	            draw_sprite_ext(spr_planets,planet_frame,xxx, 287, 1, 1, 0, planet_draw, 0.9)
+	            
+	            draw_set_color(global.star_name_colors[target.p_owner[sel_plan]]);
+
+	            draw_text(xxx,255,scr_roman(sel_plan));
+	            
+	        }	                   
+	    }
+	    if (target.craftworld || target.space_hulk) then obj_controller.selecting_planet=1;
+	    x=target.x;
+	    y=target.y;	    
+	}	
+}
+
+/// @mixin PlanetData
+function check_for_stc_grab_mission(){
+    // STC Grab
+    if (has_feature(P_features.STC_Fragment) && recon=0){
+        var _techs=0,_mech_techs;frag=0;_mech_techs=0;
+        for (var frag=0; frag < array_length(obj_controller.display_unit); frag++){
+            if (obj_controller.man[frag]=="man" && obj_controller.man_sel[frag]==1){
+            	var _unit = display_unit[frag];
+                if (_unit.IsSpecialist(SPECIALISTS_TECHMARINES)){
+                    _techs+=1;
+                }
+                if (obj_controller.ma_role[frag]="Techpriest"){
+                    _mech_techs+=1;
+                }
+            }
+        }
+		var arti=instance_create(target.x,target.y,obj_ground_mission);// Unloading / artifact crap
+		arti.num = sel_plan;
+		arti.loc = obj_controller.selecting_location;
+		arti.managing = obj_controller.managing;
+		arti.techs = _techs;
+		arti.mech_techs = _mech_techs;
+		discover_stc_fragment_popup(get_features(P_features.STC_Fragment)[0]);
+		with (arti){
+			setup_planet_mission_group();
+		}
+    }
+}
+
+/// @mixin PlanetData
+function discover_stc_fragment_popup(){
+    var _owner = star.p_owner[num];
+    obj_controller.menu = MENU.Default;
+    var pop = instance_create(0, 0, obj_popup);
+    pop.image = "stc";
+    pop.title = "STC Fragment Located";
+
+    if (_owner == eFACTION.Mechanicus) {
+    	var _text = " An STC Fragment upon {name()} appears to be located deep within a Mechanicus Vault"
+        if (mechanicus_reps > 0) {
+            pop.text = $"{_text}. The present Tech Priests stress they will not condone a mission to steal the STC Fragment.";
+            pop.option1 = "Leave it.";
+        } else if (techies > 0) {
+            pop.text = $"{_text}. An STC Fragment upon {star.name} {num} appears to be located deep within a Mechanicus Vault}. Taking it may be seen as an act of war. What is thy will?";
+            // pop.option1 = "Attempt to steal the STC Fragment."; // TODO: Fix this option, as it crashes the game when the battle starts;
+            pop.option1 = "Leave it.";
+        } else {
+            pop.text = $"{_text}. An STC Fragment upon {star.name} {num} appears to be located deep within a Mechanicus Vault}. Taking it may be seen as an act of war. The ground team has no Techmarines, so you have no choice but to leave it be.";
+            pop.option1 = "Leave it.";
+        }
+    } else {
+    	var _text = "An STC Fragment has been located upon {name()};"
+        if ((techies > 0) && (mechanicus_reps == 0)) {
+            pop.text = $"{_text}; what it might contain is unknown. Your {obj_ini.role[100][16]}s wish to reclaim, identify, and put it to use immediately. What is thy will?";
+            pop.option1 = "Swiftly take the STC Fragment.";
+            pop.option2 = "Leave it.";
+            pop.option3 = "Send it to the Adeptus Mechanicus.";
+        } else if (techies > 0 && mechanicus_reps > 0) {
+            pop.text = $"{_text}. Your {obj_ini.role[100][16]}s wish to reclaim, identify, and put it to use immediately, and the Tech Priests wish to send it to the closest forge world. What is thy will?";
+            pop.option1 = "Swiftly take the STC Fragment.";
+            pop.option2 = "Leave it.";
+            pop.option3 = "Send it to the Adeptus Mechanicus.";
+        } else if (techies == 0 && mechanicus_reps > 0) {
+            pop.text = $"{_text}; what it might contain is unknown. The present Tech Priests wish to send it to Mars, and refuse to take the device off-world otherwise.";
+            pop.option1 = "Leave it.";
+            pop.option2 = "Send it to the Adeptus Mechanicus.";
+        } else {
+            pop.text = $"{_text}; what it might contain is unknown. The ground team has no {obj_ini.role[100][16]}s or Tech Priests, so you have no choice but to leave it be or notify the Mechanicus about its location.";
+            pop.option1 = "Leave it.";
+            pop.option2 = "Send it to the Adeptus Mechanicus.";
+        }
+    }	
+}
+
+/// @mixin PlanetData
+function check_for_artifact_grab_mission(){
+
+    if (has_feature(P_features.Artifact)){
+
+        var artifact=instance_create(system.x,system.y,obj_ground_mission);// Unloading / artifact crap
+        artifact.num=planet;
+        artifact.loc=obj_controller.selecting_location;
+        artifact.managing=obj_controller.managing;
+        with (artifact){
+            setup_planet_mission_group();
+        }
+        discover_artifact_popup(get_features(P_features.Artifact)[0]);
+    }
+}
