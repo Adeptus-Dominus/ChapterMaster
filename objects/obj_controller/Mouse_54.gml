@@ -7,9 +7,6 @@ if (global.cheat_debug == true && instance_number(obj_turn_end) == 0 && instance
         pop.title = "DEBUG"
         pop.planet = 1
         pop.text = "What would you like to do?"
-        pop.option1 = "Enemy invasion"
-        pop.option2 = "Spawn Fleet"
-        pop.option3 = "Delete Fleet"
-        pop.option4 = "Cancel"
+        pop.add_option(["Enemy invasion","Spawn Fleet","Delete Fleet", "Cancel"]);
     }
 }

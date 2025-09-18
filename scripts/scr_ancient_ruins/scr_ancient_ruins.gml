@@ -205,9 +205,9 @@ function scr_explore_ruins() {
 			pip.text += ". What is thy will?";
 		}
 
-		pip.option1 = "Explore the ruins.";
-		pip.option2 = "Do nothing.";
-		pip.option3 = "Return your marines to the ship.";
+		pip.add_option("Explore the ruins.");
+		pip.add_option("Do nothing.");
+		pip.add_option("Return your marines to the ship.");
 		pip.image = "ancient_ruins";
 	} catch (_exception) {
 		handle_exception(_exception);

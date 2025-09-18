@@ -414,42 +414,86 @@ function discover_artifact_popup(feature){
         }
     }
 
-    pop.option1 = "Request audience with the ";
-    switch (own) {
-        case eFACTION.Player:
-        case eFACTION.Imperium:
-            pop.option1 += "Planetary Governor";
-            pop.option3 = "Gift the Artifact to the Sector Commander.";
-            break;
-        case eFACTION.Mechanicus:
-            pop.option1 += "Mechanicus";
-            pop.option3 = "Let it be.  The Mechanicus' wrath is not lightly provoked.";
-            break;
-        case eFACTION.Inquisition:
-            pop.option1 += "Inquisition";
-            pop.option3 = "Let it be.  The Inquisition's wrath is not lightly provoked.";
-            break;
-        case eFACTION.Ecclesiarchy:
-            pop.option1 += "Ecclesiarchy";
-            pop.option3 = "Gift the Artifact to the Ecclesiarchy.";
-            break;
-        case eFACTION.Eldar:
-            pop.option1 += "Eldar";
-            pop.option3 = "Gift the Artifact to the Eldar.";
-            break;
-        case eFACTION.Tau:
-            pop.option1 += "Tau";
-            pop.option3 = "Gift the Artifact to the Tau Empire.";
-            break;
+    var _take_arti = {
+    	str1 : "Swiftly take the Artifact",
+    	method : ground_forces_collect_artifact
     }
-
+    var _leave_it_function =  function(){
+		// Not worth it, mang
+		obj_controller.menu = 0;
+		obj_controller.managing = 0;
+		obj_controller.cooldown = 10;
+		with (obj_ground_mission) {
+			instance_destroy();
+		}
+		instance_destroy();      	
+    }
     if ((current_owner >= eFACTION.Tyranids) || ((current_owner == eFACTION.Ork) && (pdf <= 0))) {
-        pop.option1 = "Swiftly take the Artifact.";
-        pop.option2 = "Let it be.";
-        pop.option3 = "";
+    	pop.add_option([{
+    		str1 :  "Let it be",
+    		method : _leave_it_function,
+    	}, _take_arti]);
     } else {
-        pop.option1 += " regarding the Artifact.";
-        pop.option2 = "Swiftly take the Artifact.";
+	    var _opt1 = "Request audience with the ";
+	    switch (current_owner) {
+	        case eFACTION.Player:
+	        case eFACTION.Imperium:
+	            _opt1 += "Planetary Governor";
+	            pop.add_option({
+	            	str1: "Gift the Artifact to the Sector Commander.",
+	            	method : function(){
+	            		gift_artifact(eFACTION.Imperium, false);
+	            		instance_destroy();
+	            	},
+	            });
+	            break;
+	        case eFACTION.Mechanicus:
+	            _opt1 += "Mechanicus";
+	            pop.add_option({str1 : "Let it be.  The Mechanicus' wrath is not lightly provoked.", method : _leave_it_function,});
+	            break;
+	        case eFACTION.Inquisition:
+	            _opt1 += "Inquisition";
+	            pop.add_option({method : _leave_it_function, str1 : "Let it be.  The Inquisition's wrath is not lightly provoked."});
+	            break;
+	        case eFACTION.Ecclesiarchy:
+	            _opt1 += "Ecclesiarchy";
+	            pop.add_option({
+	            	str1 : "Gift the Artifact to the Ecclesiarchy.",
+	            	method : function(){
+	            		gift_artifact(eFACTION.Ecclesiarchy, false);
+	            		instance_destroy();
+	            	},
+				});
+	            break;
+	        case eFACTION.Eldar:
+	            _opt1 += "Eldar";
+	           	pop.add_option({
+	            	str1 : "Gift the Artifact to the Eldar.",
+	            	method : function(){
+	            		gift_artifact(eFACTION.Eldar, false);
+	            		instance_destroy();
+	            	},
+				});
+	            break;
+	        case eFACTION.Tau:
+	            _opt1 += "Tau";
+	           	pop.add_option({
+	            	str1 : "Gift the Artifact to the Tau Empire.",
+	            	method : function(){
+	            		gift_artifact(eFACTION.Tau, false);
+	            		instance_destroy();
+	            	},
+				});
+	            break;
+	    }
+        _opt1 += " regarding the Artifact.";
+        pop.add_option([
+	        {
+	        	str1 : _opt1, 
+	        	method : governor_negotiate_artifact
+	        },
+        	_take_arti
+        ]);
     }	
 }
 
@@ -471,7 +515,12 @@ function planet_selection_action(){
 			        buttons_selected = false;
 			    }
 
-			    p_data.planet_selection_logic(); 
+			    try{
+			    	p_data.planet_selection_logic();
+			    } catch(_exception){
+					handle_exception(_exception);
+			    	instance_destroy();
+			    }
 	            
 	        } 
 	        xxx=159+(i*41);
@@ -498,11 +547,12 @@ function planet_selection_action(){
 /// @mixin PlanetData
 function check_for_stc_grab_mission(){
     // STC Grab
-    if (has_feature(P_features.STC_Fragment) && recon=0){
-        var _techs=0,_mech_techs;frag=0;_mech_techs=0;
-        for (var frag=0; frag < array_length(obj_controller.display_unit); frag++){
+    if (has_feature(P_features.STC_Fragment)){
+        var _techs=0,_mech_techs = 0;
+        var _units = obj_controller.display_unit;
+        for (var frag=0; frag < array_length(_units); frag++){
             if (obj_controller.man[frag]=="man" && obj_controller.man_sel[frag]==1){
-            	var _unit = display_unit[frag];
+            	var _unit = _units[frag];
                 if (_unit.IsSpecialist(SPECIALISTS_TECHMARINES)){
                     _techs+=1;
                 }
@@ -511,13 +561,14 @@ function check_for_stc_grab_mission(){
                 }
             }
         }
-		var arti=instance_create(target.x,target.y,obj_ground_mission);// Unloading / artifact crap
-		arti.num = sel_plan;
-		arti.loc = obj_controller.selecting_location;
+		var arti=instance_create(system.x,system.y,obj_ground_mission);// Unloading / artifact crap
+		arti.num = planet;
+		arti.loc = system.name;
+		arti.pdata = self;
 		arti.managing = obj_controller.managing;
 		arti.techs = _techs;
 		arti.mech_techs = _mech_techs;
-		discover_stc_fragment_popup(get_features(P_features.STC_Fragment)[0]);
+		discover_stc_fragment_popup(_techs, _mech_techs);
 		with (arti){
 			setup_planet_mission_group();
 		}
@@ -525,48 +576,45 @@ function check_for_stc_grab_mission(){
 }
 
 /// @mixin PlanetData
-function discover_stc_fragment_popup(){
-    var _owner = star.p_owner[num];
+function discover_stc_fragment_popup(techies, mechanicus_reps){
+    var _owner = current_owner;
     obj_controller.menu = MENU.Default;
     var pop = instance_create(0, 0, obj_popup);
     pop.image = "stc";
     pop.title = "STC Fragment Located";
 
+    var options = [];
+
     if (_owner == eFACTION.Mechanicus) {
     	var _text = " An STC Fragment upon {name()} appears to be located deep within a Mechanicus Vault"
         if (mechanicus_reps > 0) {
             pop.text = $"{_text}. The present Tech Priests stress they will not condone a mission to steal the STC Fragment.";
-            pop.option1 = "Leave it.";
         } else if (techies > 0) {
-            pop.text = $"{_text}. An STC Fragment upon {star.name} {num} appears to be located deep within a Mechanicus Vault}. Taking it may be seen as an act of war. What is thy will?";
-            // pop.option1 = "Attempt to steal the STC Fragment."; // TODO: Fix this option, as it crashes the game when the battle starts;
-            pop.option1 = "Leave it.";
+            pop.text = $"{_text}. Taking it may be seen as an act of war. What is thy will?";
+            // pop.add_option("Attempt to steal the STC Fragment."; // TODO: Fix this option, as it crashes the game when the battle starts);
         } else {
-            pop.text = $"{_text}. An STC Fragment upon {star.name} {num} appears to be located deep within a Mechanicus Vault}. Taking it may be seen as an act of war. The ground team has no Techmarines, so you have no choice but to leave it be.";
-            pop.option1 = "Leave it.";
+            pop.text = $"{_text}. Taking it may be seen as an act of war. The ground team has no Techmarines, so you have no choice but to leave it be.";
         }
     } else {
-    	var _text = "An STC Fragment has been located upon {name()};"
-        if ((techies > 0) && (mechanicus_reps == 0)) {
-            pop.text = $"{_text}; what it might contain is unknown. Your {obj_ini.role[100][16]}s wish to reclaim, identify, and put it to use immediately. What is thy will?";
-            pop.option1 = "Swiftly take the STC Fragment.";
-            pop.option2 = "Leave it.";
-            pop.option3 = "Send it to the Adeptus Mechanicus.";
-        } else if (techies > 0 && mechanicus_reps > 0) {
-            pop.text = $"{_text}. Your {obj_ini.role[100][16]}s wish to reclaim, identify, and put it to use immediately, and the Tech Priests wish to send it to the closest forge world. What is thy will?";
-            pop.option1 = "Swiftly take the STC Fragment.";
-            pop.option2 = "Leave it.";
-            pop.option3 = "Send it to the Adeptus Mechanicus.";
-        } else if (techies == 0 && mechanicus_reps > 0) {
-            pop.text = $"{_text}; what it might contain is unknown. The present Tech Priests wish to send it to Mars, and refuse to take the device off-world otherwise.";
-            pop.option1 = "Leave it.";
-            pop.option2 = "Send it to the Adeptus Mechanicus.";
-        } else {
-            pop.text = $"{_text}; what it might contain is unknown. The ground team has no {obj_ini.role[100][16]}s or Tech Priests, so you have no choice but to leave it be or notify the Mechanicus about its location.";
-            pop.option1 = "Leave it.";
-            pop.option2 = "Send it to the Adeptus Mechanicus.";
+
+        if (techies > 0){
+          array_push(options, "Swiftly take the STC Fragment.");
+          if (mechanicus_reps == 0){
+          	pop.text = $"{_text}; what it might contain is unknown. Your {obj_ini.role[100][16]}s wish to reclaim, identify, and put it to use immediately. What is thy will?";
+          } else {
+          	pop.text = $"{_text}. Your {obj_ini.role[100][16]}s wish to reclaim, identify, and put it to use immediately, and the Tech Priests wish to send it to the closest forge world. What is thy will?";
+          }
+        } else if (mechanicus_reps > 0){
+        	pop.text = $"{_text}; what it might contain is unknown. The present Tech Priests wish to send it to Mars, and refuse to take the device off-world otherwise.";
+        } else{
+			pop.text = $"{_text}; what it might contain is unknown. The ground team has no {obj_ini.role[100][16]}s or Tech Priests, so you have no choice but to leave it be or notify the Mechanicus about its location.";
         }
-    }	
+
+        array_push(options, "Send it to the Adeptus Mechanicus.");
+    }
+    array_push(options, "Leave it.");
+
+    pop.add_option(options);
 }
 
 /// @mixin PlanetData
@@ -578,9 +626,182 @@ function check_for_artifact_grab_mission(){
         artifact.num=planet;
         artifact.loc=obj_controller.selecting_location;
         artifact.managing=obj_controller.managing;
+        artifact.pdata = self;
         with (artifact){
             setup_planet_mission_group();
         }
         discover_artifact_popup(get_features(P_features.Artifact)[0]);
     }
+}
+
+
+
+
+/// @mixin obj_ground_mission
+function ground_forces_collect_artifact(){
+	with (obj_ground_mission){
+	scr_return_ship(loc,self,num);
+
+	var man_size,ship_id,comp,i;
+	i=0;ship_id=0;man_size=0;comp=0;
+	ship_id = get_valid_player_ship("", loc);
+
+	var last_artifact = scr_add_artifact("random","random",4,loc,ship_id+500);
+
+	var i=0;
+
+
+	var mission="bad";
+	var mission_roll=floor(random(100))+1;
+	if (scr_has_adv("Ambushers")) then mission_roll-=15;
+	if (mission_roll<=60) then mission="good";// 135
+	if (pdata.planet_type="Dead") then mission="good";
+	// mission="bad";
+
+	var pop;
+	pop=instance_create(0,0,obj_popup);
+	pop.image="artifact_recovered";
+	pop.title="Artifact Recovered!";
+
+	if (mission="good"){
+	    pop.text="Your marines quickly converge upon the Artifact and remove it, before local forces have any idea of what is happening.##";
+	    pop.text+="It has been stowed away upon "+string(loc)+".  It appears to be a "+string(obj_ini.artifact[last_artifact])+" but should be brought home and identified posthaste.";
+	    scr_event_log("","Artifact has been forcibly recovered.");
+	    
+	    if (pdata.planet_type!="Dead"){
+	        if (pdata.current_owner=2) then obj_controller.disposition[2]-=1;
+	        if (pdata.current_owner=3) then obj_controller.disposition[3]-=10;// max(obj_controller.disposition/4,10)
+	        if (pdata.current_owner=4) then obj_controller.disposition[4]-=max(obj_controller.disposition[4]/4,10);
+	        if (pdata.current_owner=5) then obj_controller.disposition[5]-=3;
+	        if (pdata.current_owner=8) then obj_controller.disposition[8]-=3;
+	    }
+	}
+	if (mission="bad"){
+	    pop.text="Your marines converge upon the Artifact; resistance is light and easily dealt with.  After a brief firefight the Artifact is retrieved.##";
+	    pop.text+=$"It has been stowed away upon {loc}.  It appears to be a "+string(obj_ini.artifact[last_artifact])+" but should be brought home and identified posthaste.";
+	    scr_event_log("red","Artifact forcibly recovered.  Collateral damage is caused.");
+	    
+	    if (pdata.current_owner=2) then obj_controller.disposition[2]-=2;
+	    if (pdata.current_owner=3) then obj_controller.disposition[3]-=max(obj_controller.disposition[3]/3,20);
+	    if (pdata.current_owner=4) then obj_controller.disposition[4]-=max(obj_controller.disposition[4]/3,20);
+	    if (pdata.current_owner=5) then obj_controller.disposition[5]-=max(obj_controller.disposition[3]/4,15);
+	    if (pdata.current_owner=6) then obj_controller.disposition[6]-=15;
+	    if (pdata.current_owner=8) then obj_controller.disposition[8]-=8;
+	    
+	    if (pdata.current_owner>=3) and (pdata.current_owner<=6){
+	        scr_audience(pdata.current_owner, "artifact_angry",);
+	    }
+	}
+
+
+	if (scr_has_adv("Tech-Scavengers")){
+	    var ex1,ex1_num,ex2,ex2_num,ex3,ex3_num;
+	    ex1="";ex1_num=0;ex2="";ex2_num=0;ex3="";ex3_num=0;
+	    
+	    var stah=instance_nearest(x,y,obj_star);
+
+	    if (pdata.origional_owner[num]=2){
+	        ex1="Meltagun";ex1_num=choose(2,3,4);
+	        ex2="Flamer";
+	        ex2_num=choose(2,3,4);
+	        ex3=choose("Power Fist","Chainsword","Bolt Pistol");
+	        ex3_num=choose(2,3,4,5);
+	    }
+	    if (pdata.origional_owner[num]=3){
+	        ex1="Plasma Pistol";
+	        ex1_num=choose(1,2);
+	        ex2="Power Armour";
+	        ex2_num=choose(2,3,4);
+	        ex3=choose("Servo-arm","Bionics");
+	        ex3_num=choose(2,3,4);
+	    }
+	    if (pdata.origional_owner[num]=5){
+	        ex1="Flamer";
+	        ex1_num=choose(3,4,5,6);
+	        ex2="Heavy Flamer";
+	        ex2_num=choose(1,2,3);
+	        ex3=choose("Chainsword","Bolt Pistol");
+	        ex3_num=choose(2,3,4,5);
+	    }
+	    
+	    if (ex1!=""){
+	        pop.text+="##While they're at it your Battle Brothers also find ";
+	        if (ex1_num>0){
+	        	pop.text+=string(ex1_num)+" "+string(ex1);
+	        }
+	        if (ex2_num>0){
+	        	pop.text+=", "+string(ex2_num)+" "+string(ex2);
+	        }
+	        if (ex3_num>0){
+	        	pop.text+=", and "+string(ex3_num)+" "+string(ex3);
+	        }
+	        pop.text+=".";
+	        scr_add_item(ex1,ex1_num);
+	        scr_add_item(ex2,ex2_num);
+	        scr_add_item(ex3,ex3_num);
+	    }
+	}
+
+
+	with(obj_star_select){instance_destroy();}
+	with(obj_fleet_select){instance_destroy();}
+	delete_features(planet.p_feature[num], P_features.Artifact);
+
+
+	corrupt_artifact_collectors(last_artifact);
+
+	obj_controller.trading_artifact=0;
+	clear_diplo_choices();
+	obj_controller.menu=0;
+	instance_destroy();
+	}
+}
+
+function governor_negotiate_artifact(){
+	with (obj_ground_mission){
+	if (pdata.current_owner == 2){
+		scr_return_ship(loc,self,num);
+
+		var man_size,ship_id,comp,plan,i;
+		i=0;
+		ship_id=0;
+		man_size=0;
+		comp=0;
+		plan=0;
+
+		ship_id = get_valid_player_ship("", loc);
+
+		i=0;
+		plan=instance_nearest(x,y,obj_star);
+		last_artifact = scr_add_artifact("random","random",4,loc,ship_id+500);
+
+
+		var pop;
+		pop=instance_create(0,0,obj_popup);
+		pop.image="artifact_recovered";
+		pop.title="Artifact Recovered!";
+		pop.text="The Planetary Governor hands over the Artifact without asking for compensation.##It has been safely stowed away upon "+string(loc)+".  It appears to be a "+string(obj_ini.artifact[last_artifact])+" but should be brought home and identified posthaste.";
+		with(obj_star_select){instance_destroy();}
+		with(obj_fleet_select){instance_destroy();}
+		delete_features(plan.p_feature[num], P_features.Artifact);
+		scr_event_log("","Planetary Governor hands over Artifact.");
+
+		corrupt_artifact_collectors(last_artifact);
+
+		obj_controller.trading_artifact=0;
+		var h=0;
+		clear_diplo_choices();
+		instance_destroy();
+	} else {
+		scr_toggle_diplomacy();
+		obj_controller.cooldown = 10;
+		obj_controller.diplomacy = target_comp;
+		obj_controller.trading_artifact = 1;
+		with (obj_controller) {
+			scr_dialogue("artifact");
+		}
+		instance_destroy();
+	}
+	}
+
 }

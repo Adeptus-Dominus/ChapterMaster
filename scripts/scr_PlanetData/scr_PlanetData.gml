@@ -1250,7 +1250,7 @@ function PlanetData(planet, system) constructor{
                 if (!instance_exists(obj_ground_mission)){               
                     scr_check_for_ruins_exploration(); 
                 }
-                instance_destroy();
+                instance_destroy(obj_star_select);
                 exit;
             }                       
             

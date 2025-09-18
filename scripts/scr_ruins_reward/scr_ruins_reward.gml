@@ -197,9 +197,12 @@ wep1=choose("MK3 Iron Armour","MK4 Maximus","MK5 Heresy");
 	    pop.image="geneseed_lab";
 	    pop.title="Ancient Ruins: Gene-seed";
 	    pop.text="My lord, your battle brothers have located a hidden, fortified laboratory within the ruins.  Contained are a number of bio-vaults with astartes gene-seed; "+string(gene)+" in number.  Your marines are not able to determine the integrity or origin.";
-	    pop.option1="Add the gene-seed to chapter vaults.";
-	    pop.option2="Salvage the laboratory for requisition.";
-	    pop.option3="Leave the laboratory as is.";
+	    var options = [
+		    "Add the gene-seed to chapter vaults.", 
+		    "Salvage the laboratory for requisition.",
+		    "Leave the laboratory as is.",
+	    ]
+	    pop.add_option(options);
 	    pop.estimate=gene;
 	}
 	else if (loot="bunker"){// Bunker
@@ -221,8 +224,11 @@ wep1=choose("MK3 Iron Armour","MK4 Maximus","MK5 Heresy");
 	    pop.feature = _ruins;
 	    pop.star_system = star_system;
 	    pop.text="Praise the Emperor! We have found a massive, ancient fortress in needs of repairs. The gun batteries are rusted, and the walls are covered in moss with huge hole in it. Such a pity that such a majestic building is now a pale shadow of its former glory.  It is possible to repair the structure.  What is thy will?";
-	    pop.option1="Repair the fortress to boost defenses.  (1000 Req)";
-	    pop.option2="Salvage raw materials from the fortress.";
+	    var options = [
+		    "Repair the fortress to boost defenses.  (1000 Req)", 
+		    "Salvage raw materials from the fortress."
+	    ]
+	    pop.add_option(options);
 	}
 	else if (loot="starship"){// Starship
 	    var pop=instance_create(0,0,obj_popup);

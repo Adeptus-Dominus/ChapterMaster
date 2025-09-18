@@ -139,7 +139,7 @@ function init_garrison_mission(planet, star, mission_slot){
 	    gar_pop.title=$"Requested Garrison Provided to {numeral_name}";
 	    gar_pop.text=$"The governor of {numeral_name} Thanks you for considering his request for a garrison, you agree that the garrison will remain for at least {garrison_length} months.";
 	    //pip.image="event_march"
-	    gar_pop.option1="Commence Garrison";
+	    gar_pop.add_option("Commence Garrison");
         gar_pop.image="";
         gar_pop.cooldown=8;
         obj_controller.cooldown=8;	    
@@ -164,7 +164,7 @@ function init_beast_hunt_mission(planet, star, mission_slot){
 	    gar_pop.title=$"Marines assigned to hunt beasts around {numeral_name}";
 	    gar_pop.text=$"The govornor of {numeral_name} Thanks you for the participation of your elite warriors in your execution of such a menial task.";
 	    //pip.image="event_march"
-	    gar_pop.option1="Happy Hunting";
+	    gar_pop.add_option("Happy Hunting");
         gar_pop.image="";
         gar_pop.cooldown=8;
         obj_controller.cooldown=20;	    
@@ -218,7 +218,7 @@ function init_protect_raider_mission(squad){
 
 		    gar_pop.text += "\nThe total loss of a squad in what was meant to be a routine operation is bad for moral and your chapters reputation you must now decide how to proceed";
 
-		    gar_pop.option1="Suppress the Information";
+		    gar_pop.add_option("Suppress the Information");
 		    gar_pop.option2="Hold a Memorial";			
 		} else {
 			scr_toggle_manage();
@@ -233,7 +233,7 @@ function init_protect_raider_mission(squad){
 		    _pdata.add_disposition(-10);
 		    gar_pop.text += "\nThe governor is unhappy and it has done little to improve your reputation with the planets populace but otherwise very little harm has been done. It is likely the raiders will choose better targets without the possible threat of space marine presence for the foreseeable future\nGovernor Disposition : -10";
 
-		    gar_pop.option1="continue";		
+		    gar_pop.add_option("continue");		
 		}
 	} else {
 
@@ -275,7 +275,7 @@ function init_train_forces_mission(planet, star, mission_slot, marine){
 	    }
 
 	    //pip.image="event_march"
-	    gar_pop.option1=$"Good luck {marine.name()}";
+	    gar_pop.add_option($"Good luck {marine.name()}");
         gar_pop.image="";
         gar_pop.cooldown=500;
         obj_controller.cooldown=500;	    

@@ -13,7 +13,7 @@ if (battle_special>0){
     cooldown=10;exit;
 }
 
-if (option1="" && type<5){
+if (array_length(options == 0) && type<5){
     obj_controller.cooldown=10;
     if (number!=0) and (obj_controller.complex_event=false){
         if (instance_exists(obj_turn_end)){
