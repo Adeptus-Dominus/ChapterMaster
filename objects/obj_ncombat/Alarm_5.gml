@@ -603,8 +603,8 @@ if (defeat=0) and (reduce_power=true){
         pip.cooldown=15;
         cooldown=15;
 
-        pip.option1="Advance!";
-        pip.option2="Cancel the attack";*/
+        pip.add_option="Advance!";
+        pip.add_option="Cancel the attack";*/
 
 
 

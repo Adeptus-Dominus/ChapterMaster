@@ -298,13 +298,12 @@ function spawn_mechanicus_mission(chosen_mission = "random"){
 }
 
 function mechanicus_mission_procedures(){
-	if ((option1 == "") && (title == "Mechanicus Mission")) {
-		option1 = "Accept";
-		option2 = "Refuse";
+	if ((array_length(options) == 0) && (title == "Mechanicus Mission")) {
+		add_option(["Accept", "Refuse"])
 	}
 	var mission = pop_data.pathway_id;
 	var _star = pop_data.star
-	if ((press == 1) && (option1 != "")) {
+	if ((press > -1) && option[press] == "Accept") {
 		if (mission=="mech_tomb") {
 			if (_star != "none") {
 				var _planet = false;

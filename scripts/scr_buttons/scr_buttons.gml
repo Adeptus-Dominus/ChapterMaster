@@ -1135,3 +1135,79 @@ function list_traveler(list, cur_val, move_up_coords, move_down_coords) {
     }
     return _new_val;
 }
+
+
+function MainMenuButton(sprite=spr_ui_but_1, sprite_hover=spr_ui_hov_1, xx=0, yy=0, Hot_key=-1, Click_function=false) constructor{
+    mouse_enter=0;
+    base_sprite = sprite;
+    hover_sprite = sprite_hover;
+    ossilate = 24;
+    ossilate_down = true;
+    hover_alpha=0;
+    XX=xx;
+    YY=yy;
+    hot_key = Hot_key;
+    clicked=false;
+    click_function = Click_function;
+    static draw = function(xx=XX,yy=YY,text="", x_scale=1, y_scale=1, width=108, height=42){
+        draw_set_valign(fa_top);
+        draw_set_halign(fa_left);
+        add_draw_return_values();
+        clicked=false;
+        height *=y_scale
+        width *=x_scale;
+        if (scr_hit(xx, yy, xx+width, yy+height)){
+            if (ossilate>0){
+                ossilate-=1;
+            }
+            if (ossilate<0){
+                ossilate=0;
+            }
+            if (hover_alpha<1){
+                hover_alpha+=0.42
+            }
+            draw_set_blend_mode(bm_add);
+            draw_set_alpha(hover_alpha);
+            draw_sprite(hover_sprite,0,xx,yy);
+            draw_set_blend_mode(bm_normal);
+            ossilate_down = true;
+            clicked = device_mouse_check_button_pressed(0,mb_left);
+        } else {
+            if (ossilate_down){
+                if (ossilate<24)then ossilate+=0.2;
+                if (ossilate==24) then ossilate_down=false;
+            } else {
+                if (ossilate>8){
+                    ossilate-=0.2;
+                }
+                if (ossilate==8){
+                    ossilate_down=true;
+                }
+            }
+            if (hover_alpha>0){
+                hover_alpha-=0.04
+                draw_set_blend_mode(bm_add);
+                draw_set_alpha(hover_alpha);
+                draw_sprite(hover_sprite,0,xx,yy);
+                draw_set_blend_mode(bm_normal);
+            }
+        }
+        if (hot_key!=-1 && !clicked){
+            clicked = press_with_held(hot_key,vk_alt);
+            //show_debug_message($"{clicked}");
+        }
+        draw_set_alpha(1);
+        draw_sprite(base_sprite,floor(ossilate),xx,yy);
+        draw_set_color(c_white);
+        draw_set_halign(fa_center);
+        draw_set_font(fnt_cul_14);
+        draw_text_ext(xx+(width/2),yy+4, text, 18*y_scale, width-(15*x_scale));
+        if (clicked){
+            if (click_function){
+                click_function();
+            }
+        }
+        pop_draw_return_values();
+        return clicked;
+    }
+}
