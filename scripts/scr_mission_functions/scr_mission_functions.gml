@@ -219,7 +219,7 @@ function init_protect_raider_mission(squad){
 		    gar_pop.text += "\nThe total loss of a squad in what was meant to be a routine operation is bad for moral and your chapters reputation you must now decide how to proceed";
 
 		    gar_pop.add_option("Suppress the Information");
-		    gar_pop.option2="Hold a Memorial";			
+		    gar_pop.add_option("Hold a Memorial");			
 		} else {
 			scr_toggle_manage();
 			var gar_pop = instance_create(0, 0, obj_popup);		

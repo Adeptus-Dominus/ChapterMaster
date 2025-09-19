@@ -298,7 +298,7 @@ function scr_purge_world(star, planet, action_type, action_score) {
 		    	method : install_chapter_surf,
 		    },
 	    ]
-	    pop.add_option(options);    
+	    pip.add_option(options);    
 	    pip.cooldown=20;
     
 	    // Result-  this is the multiplier for the chance of discovery with the inquisition, can also be used to determine

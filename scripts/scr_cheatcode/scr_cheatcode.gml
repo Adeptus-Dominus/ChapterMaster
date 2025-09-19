@@ -445,11 +445,11 @@ function draw_planet_debug_options(){
 
 	        // Handle minus click
 	        if (point_and_click([147, _y, 167, _y + 20])) {
-	            target[$ key][current_planet] = clamp(target[$ key][current_planet] - 1, 0, 6);
+	            target[$ key][current_planet] = clamp(target[$key][current_planet] - 1, 0, 6);
 	        }
 	        // Handle plus click
 	        else if (point_and_click([177, _y, 197, _y + 20])) {
-	            target[$ key][current_planet] = clamp(target[$ key][current_planet] + 1, 0, 6);
+	            target[$ key][current_planet] = clamp(target[$key][current_planet] + 1, 0, 6);
 	        }
 	    }
 	    pop_draw_return_values();

@@ -10,7 +10,8 @@ function instance_create(_x, _y, _obj) {
 }
 
 /// @function instances_exist_any
-/// @param {real} _x The x position the object will be created at.
+/// @description Checks if any of the provided instances exist
+/// @param {array} instance_set Array of instances to check for existence
 /// @returns {bool}
 function instances_exist_any(instance_set = []){
 	var _exists = false;

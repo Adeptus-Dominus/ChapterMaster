@@ -33,8 +33,8 @@ if (loading=1){
 
     if (instance_exists(target)){
         if (target.space_hulk==1){
+            pop_draw_return_values();
             exit;
-            pop_draw_return_values();;
         }
     }
 }

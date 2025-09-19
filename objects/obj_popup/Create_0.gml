@@ -125,7 +125,7 @@ get_unit_promotion_options = function(){
         role_exp[1]=125;
         spec=1;
         role_name[2]="Codiciery";role_exp[2]=80;
-    } else if (unit_role=="Codiciery") and (target_comp=0){
+    } else if (unit_role == "Codiciery" && target_comp == 0){
         role_name[1]=obj_ini.role[100,17];
         role_exp[1]=125;
         spec=1;

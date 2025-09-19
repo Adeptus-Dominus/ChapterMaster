@@ -13,15 +13,12 @@ try{
     } else if (type == POPUP_TYPE.ADD_TAGS){
     	draw_tag_manager();
     } else {
-	//TODO refactor this entire turd of a construct
 		if (hide == true) {
 			exit;
 		}
 		if (image == "debug") {
 			size = 3;
 		}
-
-		var romanNumerals = scr_roman_numerals();
 
 		if (instance_exists(obj_fleet)) {
 			exit;

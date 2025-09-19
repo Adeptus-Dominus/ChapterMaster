@@ -1378,9 +1378,9 @@ try {
 				}
 			}
 			pathway = "selection_options";
-			add_option(["Popular Pick","Popular Pick" ,"Talent Pick"], true);
+			add_option(["Popular Pick","Experience Pick" ,"Talent Pick"], true);
 		} else if (pathway == "selection_options") {
-			if (press > 0) {
+			if (press > -1) {
 				var cur_tech;
 				var skill_lack = 0;
 				var exp_lack = 0;
@@ -1388,7 +1388,7 @@ try {
 				var popularity_lack = 0;
 				var pick = "none";
 				var charisma_test = 0;
-				if (press > 0 && press < 4) {
+				if (press > -1 && press < 4) {
 					if (press == 0) {
 						pick = techs[charisma_pick];
 					} else if (press == 1) {
@@ -1480,7 +1480,7 @@ try {
 			pathway = "heretic_choice";
 			add_option([ "Do Nothing","Support the heretics","Support the Cult mechanicus faithfuls"],true);
 		} else if (pathway == "heretic_choice") {
-			if (press > 0) {
+			if (press > -1) {
 				pathway = "tech_aftermath";
 			}
 		}

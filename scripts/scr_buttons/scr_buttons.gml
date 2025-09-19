@@ -1157,9 +1157,15 @@ function MainMenuButton(sprite=spr_ui_but_1, sprite_hover=spr_ui_hov_1, xx=0, yy
         height *=y_scale
         width *=x_scale;
         if (scr_hit(xx, yy, xx+width, yy+height)){
-            if (ossilate>0) then ossilate-=1;
-            if (ossilate<0) then ossilate=0;
-            if (hover_alpha<1) then hover_alpha+=0.42
+            if (ossilate>0){
+                ossilate-=1;
+            }
+            if (ossilate<0){
+                ossilate=0;
+            }
+            if (hover_alpha<1){
+                hover_alpha+=0.42
+            }
             draw_set_blend_mode(bm_add);
             draw_set_alpha(hover_alpha);
             draw_sprite(hover_sprite,0,xx,yy);

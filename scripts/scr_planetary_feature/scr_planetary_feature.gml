@@ -524,7 +524,7 @@ function planet_selection_action(){
 	            
 	        } 
 	        xxx=159+(i*41);
-	        if (target.craftworld=0) and (target.space_hulk=0){
+	        if (target.craftworld=0 && target.space_hulk=0){
 	        	var sel_plan = i+1;
 	        	var planet_frame=0;
 	            with (target){
@@ -673,7 +673,7 @@ function ground_forces_collect_artifact(){
 	    
 	    if (pdata.planet_type!="Dead"){
 	        if (pdata.current_owner=2) then obj_controller.disposition[2]-=1;
-	        if (pdata.current_owner=3) then obj_controller.disposition[3]-=10;// max(obj_controller.disposition/4,10)
+	        if (pdata.current_owner=eFACTION.Mechanicus) then obj_controller.disposition[3]-=10;// max(obj_controller.disposition/4,10)
 	        if (pdata.current_owner=4) then obj_controller.disposition[4]-=max(obj_controller.disposition[4]/4,10);
 	        if (pdata.current_owner=5) then obj_controller.disposition[5]-=3;
 	        if (pdata.current_owner=8) then obj_controller.disposition[8]-=3;
@@ -685,13 +685,13 @@ function ground_forces_collect_artifact(){
 	    scr_event_log("red","Artifact forcibly recovered.  Collateral damage is caused.");
 	    
 	    if (pdata.current_owner=2) then obj_controller.disposition[2]-=2;
-	    if (pdata.current_owner=3) then obj_controller.disposition[3]-=max(obj_controller.disposition[3]/3,20);
+	    if (pdata.current_owner=eFACTION.Mechanicus) then obj_controller.disposition[3]-=max(obj_controller.disposition[3]/3,20);
 	    if (pdata.current_owner=4) then obj_controller.disposition[4]-=max(obj_controller.disposition[4]/3,20);
 	    if (pdata.current_owner=5) then obj_controller.disposition[5]-=max(obj_controller.disposition[3]/4,15);
 	    if (pdata.current_owner=6) then obj_controller.disposition[6]-=15;
 	    if (pdata.current_owner=8) then obj_controller.disposition[8]-=8;
 	    
-	    if (pdata.current_owner>=3) and (pdata.current_owner<=6){
+	    if (pdata.current_owner>=3 && pdata.current_owner<=6){
 	        scr_audience(pdata.current_owner, "artifact_angry",);
 	    }
 	}
@@ -822,7 +822,7 @@ function remove_stc_from_planet(){
 
 
 	if (scr_has_adv("Ambushers")) then mission_roll-=15;
-	if (pdata.current_owner=3) then mission_roll+=20;
+	if (pdata.current_owner=eFACTION.Mechanicus) then mission_roll+=20;
 	if (mission_roll<=60) then mission="good";// 135
 	if (pdata.planet_type="Dead"){
 		mission="good";
@@ -842,20 +842,20 @@ function remove_stc_from_planet(){
 
 
 
-	if (mission="good") and (pdata.origional_owner=3) and (pdata.planet_type="Forge"){
+	if (mission == "good" && pdata.origional_owner == 3 && pdata.planet_type == "Forge"){
 	    pop.text="Your forces descend into the vaults of the Mechanicus Forge, bypassing sentries, automated defenses, and blast doors on the way.##";
 	    pop.text+="The STC Fragment has been safely recovered and stowed away.  It is ready to be decrypted or gifted at your convenience.";
 	    
 	    /*if (pdata.planet_type!="Dead"){
 	        if (pdata.current_owner=2) then obj_controller.disposition[2]-=1;
-	        if (pdata.current_owner=3) then obj_controller.disposition[3]-=10;// max(obj_controller.disposition/4,10)
+	        if (pdata.current_owner=eFACTION.Mechanicus) then obj_controller.disposition[3]-=10;// max(obj_controller.disposition/4,10)
 	        if (pdata.current_owner=4) then obj_controller.disposition[4]-=max(obj_controller.disposition[4]/4,10);
 	        if (pdata.current_owner=5) then obj_controller.disposition[5]-=3;
 	        if (pdata.current_owner=8) then obj_controller.disposition[8]-=3;
 	    }*/
 	    scr_return_ship(pdata.system.name,self,pdata.planet);
 	}
-	if (mission="bad") and (pdata.origional_owner=3) and (pdata.planet_type="Forge"){
+	if (mission="bad" && pdata.origional_owner=eFACTION.Mechanicus && pdata.planet_type="Forge"){
 	    /*pop.text="Your marines converge upon the STC Fragment; resistance is light and easily dealt with.  After a brief firefight it is retrieved.##";
 	    pop.text+="The fragment been safely stowed away, and is ready to be decrypted or gifted at your convenience.";
 
@@ -866,16 +866,16 @@ function remove_stc_from_planet(){
 	    pop.text+="Half-way through the mission a small army of Praetorian Servitors and Skitarii bear down upon your men.  The Mechanicus guards seem to be upset.";
 	    
 	    /*if (pdata.current_owner=2) then obj_controller.disposition[2]-=2;*/
-	    if (pdata.current_owner=3){obj_controller.disposition[3]-=40;}
+	    if (pdata.current_owner=eFACTION.Mechanicus){obj_controller.disposition[3]-=40;}
 	    /*if (pdata.current_owner=4) then obj_controller.disposition[4]-=max(obj_controller.disposition[4]/3,20);
 	    if (pdata.current_owner=5) then obj_controller.disposition[5]-=max(obj_controller.disposition[3]/4,15);
 	    if (pdata.current_owner=6) then obj_controller.disposition[6]-=15;
 	    if (pdata.current_owner=8) then obj_controller.disposition[8]-=8;*/
 	    
-	    if (pdata.current_owner>3) and (pdata.current_owner<=6){
+	    if (pdata.current_owner>3 && pdata.current_owner<=6){
 	        scr_audience(pdata.current_owner, "artifact_angry",);
 	    }
-	    if (pdata.current_owner=3) and (obj_controller.faction_status[eFACTION.Mechanicus]!="War"){
+	    if (pdata.current_owner=eFACTION.Mechanicus && obj_controller.faction_status[eFACTION.Mechanicus]!="War"){
 	        scr_audience(pdata.current_owner, "declare_war", -20);
 	    }
 	    
@@ -899,16 +899,26 @@ function remove_stc_from_planet(){
 	    var stah;stah=instance_nearest(x,y,obj_star);
 
 	    if (pdata.origional_owner=2){
-	        ex1="Meltagun";ex1_num=choose(2,3,4);ex2="Flamer";ex2_num=choose(2,3,4);
-	        ex3=choose("Power Fist","Chainsword","Bolt Pistol");ex3_num=choose(2,3,4,5);
+	        ex1="Meltagun";
+	        ex1_num=choose(2,3,4);
+	        ex2="Flamer";
+	        ex2_num=choose(2,3,4);
+	        ex3=choose("Power Fist","Chainsword","Bolt Pistol");
+	        ex3_num=choose(2,3,4,5);
 	    }
-	    if (pdata.origional_owner=3){
-	        ex1="Plasma Pistol";ex1_num=choose(1,2);ex2="Power Armour";ex2_num=choose(2,3,4);
-	        ex3=choose("Servo-arm","Bionics");ex3_num=choose(2,3,4);
+	    if (pdata.origional_owner=eFACTION.Mechanicus){
+	        ex1="Plasma Pistol";
+	        ex1_num=choose(1,2);
+	        ex2="Power Armour";
+	        ex2_num=choose(2,3,4);
+	        ex3=choose("Servo-arm","Bionics");
+	        ex3_num=choose(2,3,4);
 	    }
 	    if (pdata.origional_owner=5){
-	        ex1="Flamer";ex1_num=choose(3,4,5,6);ex2="Heavy Flamer";ex2_num=choose(1,2,3);
-	        ex3=choose("Chainsword","Bolt Pistol");ex3_num=choose(2,3,4,5);
+	        ex1="Flamer";ex1_num=choose(3,4,5,6);
+	        ex2="Heavy Flamer";ex2_num=choose(1,2,3);
+	        ex3=choose("Chainsword","Bolt Pistol");
+	        ex3_num=choose(2,3,4,5);
 	    }
 	    
 	    if (ex1!=""){
