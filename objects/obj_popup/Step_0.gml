@@ -30,7 +30,7 @@ try {
 	}
 
 	if ((image == "fuklaw") && (save > 0)) {
-		if (press == 1) {
+		if (press == 0) {
 			var del = obj_saveload.save[save];
 			var _save_file = string(PATH_save_files, del);
 			if (file_exists(_save_file)) {
@@ -49,27 +49,27 @@ try {
 				instance_destroy();
 			}
 		}
-		if (press == 2) {
+		if (press == 1) {
 			instance_destroy();
 		}
 		exit;
 	}
 
 	if ((room_get_name(room) == "Main_Menu") && (title == "Tutorial")) {
-		if (press == 2) {
+		if (press == 1) {
 			// 1: yes, 2: no (without disabling)
 			obj_main_menu_buttons.fading = 1;
 			obj_main_menu_buttons.crap = 3;
 			obj_main_menu_buttons.cooldown = 9999;
 			instance_destroy();
 		}
-		if (press == 3) {
+		if (press == 2) {
 			ini_open("saves.ini");
 			ini_write_real("Data", "tutorial", 1);
 			ini_close();
 		}
 
-		if (press >= 2) {
+		if (press >= 1) {
 			obj_main_menu_buttons.fading = 1;
 			obj_main_menu_buttons.crap = self.press;
 			obj_main_menu_buttons.cooldown = 9999;
@@ -77,7 +77,7 @@ try {
 		}
 		exit;
 	} else if (pathway == "protect_raiders_disappear"){
-		if (press == 1){
+		if (press == 0){
 			title = "Captains Disgruntled";
 			options1 = "continue";
 			pathway = "";
@@ -100,7 +100,7 @@ try {
 			} else {
 				text = $"Not all of your captains are convinced of the need to use deceit and a none have breached the order but it has soured your relations with a few namely {_caps[_worst].name_role()}"
 			}
-		} else if (press == 2){
+		} else if (press == 1){
 			reset_popup_options();
 			options1 = "continue";
 			_pdata.add_disposition(-30);
@@ -110,11 +110,11 @@ try {
 
 	if ((image == "debug_banshee") && (cooldown <= 0)) {
 		if (planet == 2) {
-			if ((press == 1) || (press == 3)) {
-				if (press == 1) {
+			if ((press == 0) || (press == 2)) {
+				if (press == 0) {
 					amount = 7;
 				}
-				if (press == 3) {
+				if (press == 2) {
 					amount = 9;
 				}
 				with (obj_star) {
@@ -143,7 +143,7 @@ try {
 				}
 				instance_destroy();
 			}
-			if (press == 2) {
+			if (press == 1) {
 				with (obj_star) {
 					if ((choose(0, 1, 1) == 1) && (owner != eFACTION.Eldar) && (owner != 1)) {
 						var h;
@@ -161,7 +161,7 @@ try {
 			}
 		}
 		if (planet == 5) {
-			if (press == 1) {
+			if (press == 0) {
 				var fleet, tar;
 				tar = instance_nearest(x, y, obj_star);
 				fleet = instance_create(tar.x, tar.y, obj_en_fleet);
@@ -174,7 +174,7 @@ try {
 				fleet.orbiting = id;
 				instance_destroy();
 			}
-			if (press == 2) {
+			if (press == 1) {
 				var fleet, tar;
 				tar = instance_nearest(x, y, obj_star);
 				fleet = instance_create(tar.x, tar.y, obj_en_fleet);
@@ -187,12 +187,12 @@ try {
 				fleet.orbiting = id;
 				instance_destroy();
 			}
-			if (press == 3) {
+			if (press == 2) {
 				instance_destroy();
 			}
 		}
 		if (planet == 3) {
-			if (press == 1) {
+			if (press == 0) {
 				var fleet, tar;
 				tar = instance_nearest(x, y, obj_star);
 				fleet = instance_create(tar.x, tar.y, obj_en_fleet);
@@ -205,7 +205,7 @@ try {
 				fleet.orbiting = id;
 				instance_destroy();
 			}
-			if (press == 2) {
+			if (press == 1) {
 				var fleet, tar;
 				tar = instance_nearest(x, y, obj_star);
 				fleet = instance_create(tar.x, tar.y, obj_en_fleet);
@@ -218,7 +218,7 @@ try {
 				fleet.orbiting = id;
 				instance_destroy();
 			}
-			if (press == 3) {
+			if (press == 2) {
 				planet = 5;
 				cooldown = 30;
 				add_option(["Ork",  "Tau", "Cancel"]);
@@ -228,7 +228,7 @@ try {
 			}
 		}
 		if (planet == 1) {
-			if (press == 1) {
+			if (press == 0) {
 				planet = 2;
 				cooldown = 30;
 				text = "Select a faction";
@@ -236,7 +236,7 @@ try {
 				press = 0;
 				exit;
 			}
-			if (press == 2) {
+			if (press == 1) {
 				planet = 3;
 				cooldown = 30;
 				add_option(["Imperium",  "Heretic", "Xeno"]);
@@ -244,7 +244,7 @@ try {
 				press = 0;
 				exit;
 			}
-			if (press == 3) {
+			if (press == 2) {
 				var flit1, flit2, onceh;
 				onceh = 0;
 				flit1 = instance_nearest(x, y, obj_p_fleet);
@@ -300,7 +300,7 @@ try {
 				exit;
 			}
 			if (array_length(options)) {
-				if (press == 1) {
+				if (press == 0) {
 					with (obj_star) {
 						var i = 0;
 						repeat (planets) {
@@ -322,7 +322,7 @@ try {
 					}
 					cooldown = 20;
 					exit;
-				} else if ((press == 2) && (mission == "meeting_1")) {
+				} else if ((press == 1) && (mission == "meeting_1")) {
 					obj_controller.complex_event = true;
 					obj_controller.current_eventing = "chaos_meeting_1";
 					text = $"{global.chapter_name} signal your readiness to the heretic.  Nearly twenty minutes of following the man passes before {global.chapter_name} all enter an ordinary-looking structure.  Down, within the basement, {global.chapter_name} then pass into the entrance of a tunnel.  As the trek downward continues more and more heretics appear- cultists, renegades that appear to be from the local garrison, and occasionally even the fallen of your kind.  Overall the heretics seem well supplied and equip.  This observation is interrupted as your group enters into a larger chamber, revealing a network of tunnels and what appears to be ancient catacombs.  Bones of the ancient dead, the forgotten, litter the walls and floor.  And the chamber seems to open up wider, and wider, until {global.chapter_name} find yourself within a hall.  Within this hall, waiting for {global.chapter_name}, are several dozen Chaos Terminators, a Greater Daemon of Tzeentch and Slaanesh, and Chaos Lord " + string(obj_controller.faction_leader[eFACTION.Chaos]) + ".";
@@ -334,7 +334,7 @@ try {
 					size = 3;
 					cooldown = 20;
 					exit;
-				} else if ((press == 2) && (mission == "meeting_1t")) {
+				} else if ((press == 1) && (mission == "meeting_1t")) {
 					with (obj_star) {
 						remove_star_problem("meeting");
 						remove_star_problem("meeting_trap");
@@ -351,7 +351,7 @@ try {
 					cooldown = 20;
 					exit;
 				}
-				if ((press == 3) && instance_exists(obj_turn_end)) {
+				if ((press == 2) && instance_exists(obj_turn_end)) {
 					if (number != 0) {
 						obj_turn_end.alarm[1] = 4;
 					}
@@ -370,7 +370,7 @@ try {
 			exit;
 		}
 
-		if ((press == 1) && (!instance_exists(obj_event))) {
+		if ((press == 0) && (!instance_exists(obj_event))) {
 			instance_create(0, 0, obj_event);
 			if (obj_controller.fest_planet == 0) {
 				obj_controller.fest_attend = scr_event_dudes(1, 0, "", obj_controller.fest_sid);
@@ -383,7 +383,7 @@ try {
 			title = "Scheduled Event:2";
 			exit;
 		}
-		if (press == 2) {
+		if (press == 1) {
 			obj_controller.fest_repeats -= 1;
 			if (obj_controller.fest_repeats <= 0) {
 				obj_controller.fest_scheduled = 0;
@@ -445,7 +445,7 @@ try {
 		demand = 0;
 		add_option(["Hand over all Chaos and Daemonic Artifacts",  "Over your dead body"], true);
 		var arti;
-		if (press == 1) {
+		if (press == 0) {
 			var contraband = [];
 			for (var i = 0; i < array_length(obj_ini.artifact_struct); i++) {
 				if (obj_ini.artifact != "") {
@@ -465,7 +465,7 @@ try {
 			exit;
 		}
 
-		if (press == 2) {
+		if (press == 1) {
 			obj_controller.cooldown = 10;
 			if (number != 0 && instance_exists(obj_turn_end)) {
 				obj_turn_end.alarm[1] = 4;
@@ -475,7 +475,7 @@ try {
 	}
 
 	if (image == "ruins_fort") {
-		if ((press == 1) && (obj_controller.requisition >= 1000)) {
+		if ((press == 0) && (obj_controller.requisition >= 1000)) {
 			obj_controller.requisition -= 1000;
 			text = "Resources have been spent on the planet to restore the fortress.  The planet's defense rating has increased to 5 (";
 			reset_popup_options();
@@ -485,7 +485,7 @@ try {
 			cooldown = 15;
 			exit;
 		}
-		if (press == 2) {
+		if (press == 1) {
 			var req = floor(random_range(200, 500)) + 1;
 			image = "";
 			text = $"Much of the fortress is demolished in order to salvage adamantium and raw materials.  The opration has yielded {req} requisition.";
@@ -511,7 +511,7 @@ try {
 	}
 
 	if (image == "geneseed_lab") {
-		if (press == 1) {
+		if (press == 0) {
 			image = "";
 			text = "{estimate} gene-seed has been added to the chapter vaults.";
 			reset_popup_options();
@@ -522,7 +522,7 @@ try {
 			cooldown = 15;
 			exit;
 		}
-		if (press == 2) {
+		if (press == 1) {
 			var req;
 			req = floor(random_range(200, 500)) + 1;
 			image = "";
@@ -535,7 +535,7 @@ try {
 			cooldown = 15;
 			exit;
 		}
-		if (press == 3) {
+		if (press == 2) {
 			with (obj_ground_mission) {
 				instance_destroy();
 			}
@@ -557,7 +557,7 @@ try {
         instance_destroy();
         exit;
     } else if (image == "ancient_ruins" && array_length(options) && instance_exists(obj_ground_mission)) {
-        if (press == 1) {
+        if (press == 0) {
             // Begin
             var _ruins = obj_ground_mission.explore_feature;
             var ruins_battle = 0, ruins_fact = 0, ruins_disp = 0, ruins_reward = 0, dice, battle_threat = 0;
@@ -639,7 +639,7 @@ try {
                 exit;
             }
         }
-        if (press == 2) {
+        if (press == 1) {
             // Nothing
             scr_toggle_manage();
             with (obj_ground_mission) {
@@ -648,7 +648,7 @@ try {
             instance_destroy();
             exit;
         }
-        if (press == 3) {
+        if (press == 2) {
             // Return to ship, exit
             scr_return_ship(obj_ini.ship[obj_ground_mission.ship_id], obj_ground_mission, obj_ground_mission.num);
             var man_size, ship_id, comp, plan, i;
@@ -668,25 +668,6 @@ try {
         }
     }
 
-	if (image == "stc" && press > 0) {
-		var _option_picked = $"option{press}";
-		_option_picked = self[$ _option_picked];
-
-		if (string_count("take the STC", _option_picked) || string_count("steal the STC", _option_picked)) {
-			obj_ground_mission.alarm[5] = 1;
-		} else if (string_count("Leave it", _option_picked)) {
-            scr_return_ship(0, obj_ground_mission, obj_ground_mission.num);
-			with (obj_ground_mission) {
-				instance_destroy();
-			}
-		} else if (string_count("to the Adeptus Mechanicus", _option_picked)) {
-			obj_ground_mission.alarm[6] = 1;
-		}
-
-		instance_destroy();
-		exit;
-	}
-
 	else if (image == "gene_bad") {
 		var _opt = "Dispose of ";
 		if (obj_controller.gene_seed <= 30) {
@@ -698,8 +679,8 @@ try {
 		if (obj_controller.gene_seed >= 60) {
 			_opt += "33% of all gene-seed.";
 		}
-		add_option([_opt, option2], true)
 		option2 = "Tell the apothecaries to let it be.";
+		add_option([_opt, option2], true);
 	}
 
 	else if (((title == "Inquisition Mission") || (title == "Inquisition Recon")) && (array_length(options) == 0)) {
@@ -725,7 +706,7 @@ try {
 		add_option(["Execute the heretic",  "Move him to the Penitorium", "I see no problem"]);
 	}
 
-	if ((press == 1) && (array_length(options)) || ((demand == 1) && (mission != "") && (string_count("Inquisition", title) > 0)) || ((demand == 1) && (title == "Inquisition Recon"))) {
+	if ((press == 0) && (array_length(options)) || ((demand == 1) && (mission != "") && (string_count("Inquisition", title) > 0)) || ((demand == 1) && (title == "Inquisition Recon"))) {
 		if (image == "gene_bad") {
 			var onceh;
 			onceh = 0;
@@ -739,6 +720,7 @@ try {
 				obj_controller.gene_seed = round(obj_controller.gene_seed * 0.66);
 			}
 		}
+
 		if ((title == "Inquisitor Located") || (title == "Artifact Offered") || (title == "Mercy Plea")) {
 			with (obj_en_fleet) {
 				if ((trade_goods == "male_her") || (trade_goods == "female_her")) {
@@ -1161,7 +1143,7 @@ try {
 		}
 	}
 
-	if ((press == 2) && (option2 != "")) {
+	if ((press == 1) && (option2 != "")) {
 		if (image == "gene_bad") {
 			scr_loyalty("Mutant Gene-Seed", "+");
 		}
@@ -1311,7 +1293,7 @@ try {
 		}
 	}
 
-	if ((press == 3) && (option3 != "")) {
+	if ((press == 2) && (option3 != "")) {
 		if (title == "Artifact Offered") {
 			with (obj_en_fleet) {
 				if ((trade_goods == "male_her") || (trade_goods == "female_her")) {
@@ -1407,11 +1389,11 @@ try {
 				var pick = "none";
 				var charisma_test = 0;
 				if (press > 0 && press < 4) {
-					if (press == 1) {
+					if (press == 0) {
 						pick = techs[charisma_pick];
-					} else if (press == 2) {
+					} else if (press == 1) {
 						pick = techs[talent_pick];
-					} else if (press == 3) {
+					} else if (press == 2) {
 						pick = techs[experience_pick];
 					}
 					for (i = 0; i < array_length(techs); i++) {
@@ -1536,7 +1518,7 @@ try {
 				}
 				if (array_length(location_heretics) > 0 && array_length(location_techs) > 0) {
 					var purge_target = "none";
-					if (press == 1) {
+					if (press == 0) {
 						var tal;
 						var heretic_tally = 0;
 						var loyal_tally = 0;
@@ -1555,9 +1537,9 @@ try {
 						if (purge_target == "none") {
 							purge_target = choose(location_heretics, location_techs);
 						}
-					} else if (press == 2) {
+					} else if (press == 1) {
 						purge_target = location_techs;
-					} else if (press == 3) {
+					} else if (press == 2) {
 						purge_target = location_heretics;
 					}
 					if (purge_target != "none") {
@@ -1573,12 +1555,12 @@ try {
 					}
 				}
 			}
-			if (press == 1) {
+			if (press == 0) {
 				text = "With neither faction receiving your favor it is not long until the BloodLetting begins. Within a month a brutal civil war engulfs the Tech ranks with losses suffered on both sides";
-			} else if (press == 2) {
+			} else if (press == 1) {
 				text = "With your full support the so called 'heretics' who have seen through the lies of the bureaucracy of Mars eliminate those who will not be swayed to see the truth.";
 				obj_controller.tech_status = "heretics";
-			} else if (press == 3) {
+			} else if (press == 2) {
 				text = "The extremists and heretics that have been allowed to grow like a cancer in the Armentarium are rooted out and disposed of.";
 			}
 			reset_popup_options();

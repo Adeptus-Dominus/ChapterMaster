@@ -80,7 +80,7 @@ function role_groups(group, include_trainee = false, include_heads = true) {
 			break;
 		case SPECIALISTS_TECHMARINES:
 			_role_list = [
-				eROLE.Techmarine
+				_roles[eROLE.Techmarine],
 			]
 			if (include_trainee) {
 				array_push(_role_list, $"{_roles[eROLE.Techmarine]} Aspirant");

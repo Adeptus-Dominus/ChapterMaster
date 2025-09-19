@@ -60,7 +60,7 @@ function gift_artifact(give_to, known = true){
 	// obj_controller.artifacts-=1; // this is done by delete_artifact() that is run later;
 
 	obj_controller.cooldown = 10;
-	if (obj_controller.menu_artifact > obj_csntroller.artifacts) {
+	if (obj_controller.menu_artifact > obj_controller.artifacts) {
 		obj_controller.menu_artifact = obj_controller.artifacts;
 	}
 

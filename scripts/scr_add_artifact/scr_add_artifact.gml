@@ -316,7 +316,7 @@ function ArtifactStruct(Index) constructor {
         if (_index >= array_length(obj_ini.ship_location)){
             obj_ini.artifact_sid[index] = 500 + array_length(obj_ini.ship_location) -1;
         }
-        return obj_ini.artifact_sid[index];
+        return obj_ini.artifact_sid[index] - 500;
     };
 
     static set_ship_id = function(ship_id) {

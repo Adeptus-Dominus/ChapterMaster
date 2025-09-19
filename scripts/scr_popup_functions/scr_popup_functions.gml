@@ -85,12 +85,15 @@ function draw_popup_options(){
 				_opt_string = _opt.str1;
 			}
 
-			var _opt_string = string_hash_to_newline($"{i+1}. {_opt_string}");
-			draw_text_ext(x1 + 25.5, y1 + 20 + sz, _opt_string, -1, width);
-			var _string_height = string_height_ext(_opt_string, -1, width) + 5;
-			var _string_width = string_width_ext(_opt_string, -1, width),
+			var _opt_string = $"{i+1}. {_opt_string}";
+			var _string_x = x1 + 25.5;
+			var _string_y = y1 + 20 + sz;
 
-			if (scr_hit(x1 + 25.5, y1 + 21  + sz, x1 + 30 + _string_width, y1 +  sz + _string_height + 21)){
+			draw_text_ext(_string_x, _string_y, _opt_string, -1, width);
+			var _string_height = string_height_ext(_opt_string, -1, width) + 5;
+			var _string_width = string_width_ext(_opt_string, -1, width);
+
+			if (scr_hit(_string_x, _string_y, _string_x + _string_width + 5, _string_y + _string_height)){
 				draw_sprite(spr_popup_select, 0, x1 + 8.5, y1 + 21 + sz);
 				entered_option = i;
 				if (scr_click_left()) {
