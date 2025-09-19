@@ -822,7 +822,7 @@ function remove_stc_from_planet(){
 
 
 	if (scr_has_adv("Ambushers")) then mission_roll-=15;
-	if (pdata.owner=3) then mission_roll+=20;
+	if (pdata.current_owner=3) then mission_roll+=20;
 	if (mission_roll<=60) then mission="good";// 135
 	if (pdata.planet_type="Dead"){
 		mission="good";
@@ -847,11 +847,11 @@ function remove_stc_from_planet(){
 	    pop.text+="The STC Fragment has been safely recovered and stowed away.  It is ready to be decrypted or gifted at your convenience.";
 	    
 	    /*if (pdata.planet_type!="Dead"){
-	        if (pdata.owner=2) then obj_controller.disposition[2]-=1;
-	        if (pdata.owner=3) then obj_controller.disposition[3]-=10;// max(obj_controller.disposition/4,10)
-	        if (pdata.owner=4) then obj_controller.disposition[4]-=max(obj_controller.disposition[4]/4,10);
-	        if (pdata.owner=5) then obj_controller.disposition[5]-=3;
-	        if (pdata.owner=8) then obj_controller.disposition[8]-=3;
+	        if (pdata.current_owner=2) then obj_controller.disposition[2]-=1;
+	        if (pdata.current_owner=3) then obj_controller.disposition[3]-=10;// max(obj_controller.disposition/4,10)
+	        if (pdata.current_owner=4) then obj_controller.disposition[4]-=max(obj_controller.disposition[4]/4,10);
+	        if (pdata.current_owner=5) then obj_controller.disposition[5]-=3;
+	        if (pdata.current_owner=8) then obj_controller.disposition[8]-=3;
 	    }*/
 	    scr_return_ship(pdata.system.name,self,pdata.planet);
 	}
@@ -865,18 +865,18 @@ function remove_stc_from_planet(){
 	    pop.text="Your forces descend into the vaults of the Mechanicus Forge.  Sentries, automated defenses, and blast doors stand in their way.##";
 	    pop.text+="Half-way through the mission a small army of Praetorian Servitors and Skitarii bear down upon your men.  The Mechanicus guards seem to be upset.";
 	    
-	    /*if (pdata.owner=2) then obj_controller.disposition[2]-=2;*/
-	    if (pdata.owner=3){obj_controller.disposition[3]-=40;}
-	    /*if (pdata.owner=4) then obj_controller.disposition[4]-=max(obj_controller.disposition[4]/3,20);
-	    if (pdata.owner=5) then obj_controller.disposition[5]-=max(obj_controller.disposition[3]/4,15);
-	    if (pdata.owner=6) then obj_controller.disposition[6]-=15;
-	    if (pdata.owner=8) then obj_controller.disposition[8]-=8;*/
+	    /*if (pdata.current_owner=2) then obj_controller.disposition[2]-=2;*/
+	    if (pdata.current_owner=3){obj_controller.disposition[3]-=40;}
+	    /*if (pdata.current_owner=4) then obj_controller.disposition[4]-=max(obj_controller.disposition[4]/3,20);
+	    if (pdata.current_owner=5) then obj_controller.disposition[5]-=max(obj_controller.disposition[3]/4,15);
+	    if (pdata.current_owner=6) then obj_controller.disposition[6]-=15;
+	    if (pdata.current_owner=8) then obj_controller.disposition[8]-=8;*/
 	    
-	    if (pdata.owner>3) and (pdata.owner<=6){
-	        scr_audience(pdata.owner, "artifact_angry",);
+	    if (pdata.current_owner>3) and (pdata.current_owner<=6){
+	        scr_audience(pdata.current_owner, "artifact_angry",);
 	    }
-	    if (pdata.owner=3) and (obj_controller.faction_status[eFACTION.Mechanicus]!="War"){
-	        scr_audience(pdata.owner, "declare_war", -20);
+	    if (pdata.current_owner=3) and (obj_controller.faction_status[eFACTION.Mechanicus]!="War"){
+	        scr_audience(pdata.current_owner, "declare_war", -20);
 	    }
 	    
 	    // Start battle
@@ -938,6 +938,7 @@ function remove_stc_from_planet(){
 	/* */
 	/*  */
 	}
+	instance_destroy();
 }
 
 function recieve_artifact_in_discussion(){

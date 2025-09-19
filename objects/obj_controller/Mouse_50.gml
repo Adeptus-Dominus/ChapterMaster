@@ -186,7 +186,7 @@ if (menu==MENU.Diplomacy) and (diplomacy>0) or ((diplomacy<-5) and (diplomacy>-6
                     obj_ground_mission.alarm[1]=1;
                 }
                 if (trading_artifact == 2 && instance_exists(obj_ground_mission)){
-                    with (obj_ground_mission)
+                    with (obj_ground_mission){
                         recieve_artifact_in_discussion();
                     }
                 }
