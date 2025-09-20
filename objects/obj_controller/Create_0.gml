@@ -1319,7 +1319,7 @@ squads = false;
 system_fleet_strength = 0;
 // **sets up starting forge_points
 specialist_point_handler = new SpecialistPointHandler();
-specialist_point_handler.calculate_research_points();
+specialist_point_handler.calculate_research_points(true);
 
 
 //** sets up marine_by_location views

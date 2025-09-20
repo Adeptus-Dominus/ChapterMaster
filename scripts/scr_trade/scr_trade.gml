@@ -325,7 +325,7 @@ function TradeAttempt(diplomacy) constructor{
 	});
 	offer_button.bind_method = function(){
 		if (obj_controller.diplo_last !=" offer"){
-			attempt_trade(true);
+			attempt_trade();
 		}		
 	}
 	offer_button.bind_scope = self;

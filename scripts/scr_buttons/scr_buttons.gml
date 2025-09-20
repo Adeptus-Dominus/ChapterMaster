@@ -336,13 +336,14 @@ function UnitButtonObject(data = false) constructor {
 
     static draw = function(allow_click = true) {
         add_draw_return_values();
+		var _button_click_area;
         if (style == "standard") {
             var _temp_alpha = alpha;
             if (disabled) {
                 _temp_alpha = 0.5;
                 allow_click = false;
             }
-            var _button_click_area = draw_unit_buttons(w > 0 ? [x1, y1, x2, y2] : [x1, y1], label, [text_scale, text_scale], active ? color : inactive_col,, font, _temp_alpha);
+            _button_click_area = draw_unit_buttons(w > 0 ? [x1, y1, x2, y2] : [x1, y1], label, [text_scale, text_scale], active ? color : inactive_col,, font, _temp_alpha);
         } else if (style == "pixel") {
             var _widths = [sprite_get_width(spr_pixel_button_left), sprite_get_width(spr_pixel_button_middle), sprite_get_width(spr_pixel_button_right)];
 
@@ -365,7 +366,7 @@ function UnitButtonObject(data = false) constructor {
 
             x2 = x1 + array_sum(_widths);
             y2 = y1 + h;
-            var _button_click_area = [x1, y1, x2, y2];
+            _button_click_area = [x1, y1, x2, y2];
         }
 
         if (scr_hit(x1, y1, x2, y2) && tooltip != "") {
