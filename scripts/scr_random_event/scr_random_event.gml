@@ -696,7 +696,7 @@ function scr_random_event(execute_now) {
 					exit;
 			}
 			scr_alert("red","enemy", $"{text} forces suddenly appear at {star_id.name} {planet}!",star_id.x,star_id.y);
-            scr_event_log("red",$"{text} forces suddenly appear at {star_id.name} {planet}!",star_id.x,star_id.y);
+            scr_event_log("red",$"{text} forces suddenly appear at {star_id.name} {planet}!");
 			_evented = true;
 		}
 	}
