@@ -617,7 +617,7 @@ function scr_random_event(execute_now) {
 			_evented = true;
 			var _col = own == 1 ? "red" : "green";
 			scr_alert(_col, "Warp", $"Warp Storms rage across the {star_id.name} system.", star_id.x, star_id.y);
-			scr_event_log(_col, $"Warp Storms rage across the {star_id.name} system.", star_id.x, star_id.y);
+			scr_event_log(_col, $"Warp Storms rage across the {star_id.name} system.");
 		}
 	}
     
