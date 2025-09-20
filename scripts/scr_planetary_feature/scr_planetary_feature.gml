@@ -164,10 +164,10 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
         recruit_cost = 0;
 		break;
 	case P_features.ChaosWarband:
-		if !(struct_exists(data, "patron")){
+		if !(struct_exists(other_data, "patron")){
 			patron = choose("slaanesh", "tzeentch", "khorne", "nurgle", "undivided");
 		} else {
-			self.patron = data.patron;
+			self.patron = other_data.patron;
 		}
 	default:
 		player_hidden = 1;
