@@ -27,12 +27,7 @@ function DataSlate(data={}) constructor{
 
 
 	static entered = function(){
-		return (scr_hit(
-                    XX-4,
-                    YY,
-                    XX + width,
-                    YY + height,
-                ));
+		return (scr_hit(XX-4,YY,XX + width,YY + height));
 	}
 
 	static draw_with_dimensions = function(xx = -1,yy = -1, Width=-1 , Height=-1){

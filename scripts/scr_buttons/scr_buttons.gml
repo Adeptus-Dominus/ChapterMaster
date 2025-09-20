@@ -104,7 +104,7 @@ function ReactiveString(text, x1 = 0, y1 = 0, data = false) constructor {
         draw_set_color(colour);
 
         if (max_width > -1) {
-            draw_text_ext_outline(x1, y1, text, -1, max_width, 0, c_black, colour);
+            draw_text_ext_outline(x1, y1, text, -1, max_width, c_black, colour);
         } else {
             draw_text_outline(x1, y1, text, c_black, colour);
         }
@@ -601,7 +601,7 @@ function drop_down(selection, draw_x, draw_y, options, open_marker) {
                     }
                     roll_down_offset += string_height(options[col]) + 4;
                 }
-                if (!scr_hit(draw_x, draw_y, draw_x + 5 + string_width(selection), draw_y + roll_down_offset,)) {
+                if (!scr_hit(draw_x, draw_y, draw_x + 5 + string_width(selection), draw_y + roll_down_offset)) {
                     open_marker = false;
                     if (current_target) {
                         current_target = false;
