@@ -367,7 +367,7 @@ function TradeAttempt(diplomacy) constructor{
 				if (max_take == 1){
 					 variable_struct_set(self, "number", 1);	
 				} else {
-					get_diag_integer($"{label} wanted?", max_take, self);
+					get_diag_integer($"{label} wanted?", max_take, self, diplomacy_faction);
 				}
 			}
 		}
@@ -441,7 +441,7 @@ function TradeAttempt(diplomacy) constructor{
 				if (max_number == 1){
 					number = 1;
 				} else {				
-					get_diag_integer($"{label} offered?",max_number, self);
+					get_diag_integer($"{label} offered?",max_number, self, diplomacy_faction);
 				}			
 			}
 		}
