@@ -624,13 +624,14 @@ function ComplexSet(_unit) constructor {
 
 	static handle_component_subcomponents = function(component_name, choice){
 		if (struct_exists(subcomponents, component_name)) {
+			var _component_set
 			var _subcomponents_found = false;
 			var _component_bulk_set = subcomponents[$ component_name];
 			for (var i = 0; i < array_length(_component_bulk_set); i++) {
 				var _spec_over = _component_bulk_set[i];
 				if (_spec_over[0] <= choice && _spec_over[1] > choice) {
 					_subcomponents_found = true;
-					var _component_set = _spec_over[2];
+					_component_set = _spec_over[2];
 				}
 			}
 
