@@ -601,7 +601,10 @@ function ComplexSet(_unit) constructor {
 	                if (valid_sprite_transform_data(_shadow_transform_data)){
 		                shader_set_uniform_f_array(shadow_transform_uniform, _shadow_transform_data);
 
-		                shader_set_uniform_f_array(texture_shadow_transform_uniform, _shadow_transform_data);
+						// Commented code, was causing a crash.
+						// TODO find why upon chapter creation.
+						// somewhere here an array goes out of bounds. Occurs upon creation and keeps happening in game, see bugs. To check on future
+		                // shader_set_uniform_f_array(texture_shadow_transform_uniform, _shadow_transform_data);
 	                }
 
 	                // Bind shadow texture
