@@ -113,51 +113,83 @@ global.company_markings = {
     }
 }
 
-function load_vis_set_to_global(directory, data){
-    for (var i=0;i<array_length(data); i++){
+function load_vis_set_to_global(directory, data) {
+    for (var i = 0; i < array_length(data); i++) {
         var _sprite_item = data[i];
         show_debug_message(_sprite_item);
-        if (directory_exists(directory + $"\\{_sprite_item.name}")){
+
+        if (directory_exists(directory + $"\\{_sprite_item.name}")) {
             var _sprite_direct = directory + $"\\{_sprite_item.name}";
-            if (file_exists($"{_sprite_direct}\\1.png")){
-                var _new_sprite = sprite_add(_sprite_direct + "\\1.png",1,0,0,0,0);
+
+            // --- MAIN SPRITE LOADING ---
+            if (file_exists($"{_sprite_direct}\\1.png")) {
+                var _new_sprite = sprite_add(_sprite_direct + "\\1.png", 1, 0, 0, 0, 0);
                 var s = 2;
-                _exit = false;
-                while (file_exists(_sprite_direct + $"\\{s}.png")){
-                    var _merge_sprite = sprite_add(_sprite_direct + $"\\{s}.png",1,0,0,0,0);
+                while (file_exists(_sprite_direct + $"\\{s}.png")) {
+                    var _merge_sprite = sprite_add(_sprite_direct + $"\\{s}.png", 1, 0, 0, 0, 0);
                     if (_merge_sprite == -1) {
                         sprite_delete(_new_sprite);
                         continue;
-                    }                    
+                    }
                     s++;
                     sprite_merge(_new_sprite, _merge_sprite);
                     sprite_delete(_merge_sprite);
                 }
-                var _s_data = _sprite_item.data;
-                if (struct_exists(_s_data, "offset")){
-                    sprite_set_offset(_new_sprite, _s_data.offset.x, _s_data.offset.y);
-                }
-                _s_data.name = _sprite_item.name;
-                _s_data.sprite = _new_sprite;
-                if (_s_data.position == "weapon"){
-                    var _weapon_vis = global.weapon_visual_data;
-                    struct_remove(_s_data, "position");
-                    if (struct_exists(_weapon_vis,_s_data.base_weapon)){
-                        array_push(_weapon_vis[$_s_data.base_weapon].variants, _s_data);
-                    } else {
-                        _weapon_vis[$ _s_data.base_weapon] = {
-                            base : _s_data,
-                            variants : [{sprite : _s_data.sprite}],
-                        };
-                        struct_remove(_weapon_vis[$ _s_data.base_weapon].base, "base_weapon");
+            }
+
+            // --- SHADOW SPRITE LOADING ---
+            var _new_shadow = -1;
+            if (file_exists($"{_sprite_direct}\\shadow1.png")) {
+                _new_shadow = sprite_add(_sprite_direct + "\\shadow1.png", 1, 0, 0, 0, 0);
+                var sh = 2;
+                while (file_exists(_sprite_direct + $"\\shadow{sh}.png")) {
+                    var _merge_shadow = sprite_add(_sprite_direct + $"\\shadow{sh}.png", 1, 0, 0, 0, 0);
+                    if (_merge_shadow == -1) {
+                        sprite_delete(_new_shadow);
+                        continue;
                     }
-                } else {
-                    array_push(global.modular_drawing_items, _s_data);
+                    sh++;
+                    sprite_merge(_new_shadow, _merge_shadow);
+                    sprite_delete(_merge_shadow);
                 }
+            }
+
+            // --- APPLY TO DATA ---
+            var _s_data = _sprite_item.data;
+            if (struct_exists(_s_data, "offset")) {
+                sprite_set_offset(_new_sprite, _s_data.offset.x, _s_data.offset.y);
+                if (_new_shadow != -1) {
+                    sprite_set_offset(_new_shadow, _s_data.offset.x, _s_data.offset.y);
+                }
+            }
+
+            _s_data.name = _sprite_item.name;
+            _s_data.sprite = _new_sprite;
+            if (_new_shadow != -1) {
+                _s_data.shadows = _new_shadow;
+            }
+
+            // --- ORGANIZE INTO GLOBALS ---
+            if (_s_data.position == "weapon") {
+                var _weapon_vis = global.weapon_visual_data;
+                struct_remove(_s_data, "position");
+
+                if (struct_exists(_weapon_vis, _s_data.base_weapon)) {
+                    array_push(_weapon_vis[$_s_data.base_weapon].variants, _s_data);
+                } else {
+                    _weapon_vis[$_s_data.base_weapon] = {
+                        base: _s_data,
+                        variants: [{ sprite: _s_data.sprite, shadow: _s_data.shadow }]
+                    };
+                    struct_remove(_weapon_vis[$_s_data.base_weapon].base, "base_weapon");
+                }
+            } else {
+                array_push(global.modular_drawing_items, _s_data);
             }
         }
     }
 }
+
 
 function set_up_visual_overides(){
     var _mods = global.modular_drawing_items;
@@ -254,6 +286,21 @@ global.modular_drawing_items = [
         prevent_others : true,    
     },
     {
+        position : "crest",
+        body_types: [2],
+        sprite:spr_indomitus_complex_psy_hood,
+        equipped : {
+            "gear" : "Psychic Hood",
+        },
+        prevent_others : true,
+        subcomponents : [
+            [spr_indomitus_complex_psy_hood_cables]
+        ],
+        overides : {
+            "crown" : spr_indomitus_complex_psy_hood_crown,
+        },
+    }, 
+    {
         position : "robe",
         body_types: [0],
         sprite:spr_binders_robe,
@@ -288,6 +335,9 @@ global.modular_drawing_items = [
             "gear" : "Psychic Hood",
         },
         prevent_others : true,
+        subcomponents : [
+            [spr_blank, spr_psy_hood_components]
+        ]
     },  
     {
         sprite : spr_da_mk5_helm_crests,
@@ -388,6 +438,7 @@ global.modular_drawing_items = [
         cultures : ["Mechanical Cult"],
         assign_by_rank : 2,
         sprite : spr_metal_tabbard,
+        shadows : spr_metal_tabbard_shadow,
         role_type : [SPECIALISTS_TECHS],
         body_types :[0],
         position : "tabbard",
@@ -812,11 +863,13 @@ global.modular_drawing_items = [
         sprite : spr_mk7_complex_left_pauldron,
         body_types :[0],
         position : "left_pauldron_base",
+        shadows : spr_mk7_complex_left_pauldron_shadow,
     } ,
     {
         sprite : spr_mk7_complex_right_pauldron,
         body_types :[0],
         position : "right_pauldron_base",
+        shadows : spr_mk7_complex_right_pauldron_shadow,
     },
     {
         cultures : ["Cthonian"],
@@ -894,6 +947,11 @@ global.modular_drawing_items = [
         prevent_others : true,
         ban : ["mouth_variants"],
         role_type : [SPECIALISTS_CHAPLAINS],
+        offsets : {
+            "Tartaros" : {
+                y : -5
+            }
+        }
     },
     {   
         sprite : spr_chaplain_term_helm,
@@ -902,6 +960,11 @@ global.modular_drawing_items = [
         prevent_others : true,
         ban : ["mouth_variants"],
         role_type : [SPECIALISTS_CHAPLAINS],
+        offsets : {
+            "Tartaros" : {
+                y : -5
+            }
+        }
     },
     {
         sprite : spr_chaplain_helm,
@@ -1020,16 +1083,25 @@ global.modular_drawing_items = [
         sprite: spr_bare_eyes,
     } ,
     {
+        position: "gorget",
+        sprite: spr_mk8_gorget,
+        armours : ["MK8 Errant"],
+        body_types: [0],
+        shadows : spr_mk8_gorgot_shadows
+    },
+    {
         position: "left_shin",
         body_types: [ 2],
         sprite: spr_indomitus_left_shin,
         armours : ["Terminator Armour"],
+        //shadows : spr_indomitus_left_shin_shadow
     }, 
     {
         position: "right_shin",
         body_types: [2],
         sprite: spr_indomitus_right_shin,
         armours : ["Terminator Armour"],
+       // shadows : spr_indomitus_left_shin_shadow
     }, 
     {
         cultures : ["Cthonian"],
@@ -1358,7 +1430,54 @@ global.modular_drawing_items = [
         equipment_has_tag : {
             "gear" : "jump",
         }
-    },                                                    
+    }, 
+    {
+        position : "leg_variants", 
+        sprite : spr_mk7_leg_variants,
+        body_types : [0],
+        shadows : spr_mk7_leg_variants_shadows,
+        armours : ["MK7 Aquila", "Artificer Armour","MK8 Errant"],
+        max_saturation : 30,
+    },
+    {
+        position : "backpack", 
+        sprite : spr_mk7_complex_backpack,
+        body_types : [0],
+        shadows : spr_mk7_complex_backpack_shadow,
+        armours : ["MK7 Aquila", "Artificer Armour","MK8 Errant"],
+    },
+    {
+        position : "right_leg",
+        sprite : spr_techmarine_right_leg, 
+        body_types : [0], 
+        armours : ["MK5 Heresy", "MK6 Corvus", "MK7 Aquila", "MK8 Errant", "Artificer Armour"],
+        traits : ["tinkerer", "flesh_is_weak"],
+        role_type : [SPECIALISTS_TECHS],
+        shadows : spr_techmarine_right_leg_shadow,
+        allow_either : ["traits", "role_type"],
+        max_saturation : 50,
+    }, 
+    {
+        position : "left_leg",
+        sprite : spr_techmarine_left_leg, 
+        body_types : [0], 
+        armours : ["MK5 Heresy", "MK6 Corvus", "MK7 Aquila", "MK8 Errant", "Artificer Armour"],
+        traits : ["tinkerer", "flesh_is_weak"],
+        role_type : [SPECIALISTS_TECHS],
+        shadows : spr_techmarine_left_leg_shadow,
+        allow_either : ["traits", "role_type"],
+        max_saturation : 50,
+    } ,
+    {
+        position : "chest_variants",
+        body_types : [0], 
+        sprite :spr_techmarine_chest,
+        max_saturation : 50,
+        traits : ["tinkerer", "flesh_is_weak"],
+        role_type : [SPECIALISTS_TECHS], 
+        allow_either : ["traits", "role_type"],        
+    },
+//                  "head": spr_techmarine_head,
 ];
 
 
@@ -1371,6 +1490,9 @@ function fetch_marine_components_to_memory(){
                 for (var i = 0;i<array_length(_override_areas);i++){
                     sprite_prefetch(_element.overides[$_override_areas[i]]);
                 }
+            }
+            if (struct_exists(_element, "shadows")){
+                sprite_prefetch(_element.shadows);
             }
         }
     });
@@ -1670,6 +1792,12 @@ function format_weapon_visuals(weapon_name){
                 }
             }
             new_obj.weapon_data.sprite = _variant.sprite;
+            if (struct_exists(_variant, "subcomponents")){
+                new_obj.weapon_data.subcomponents = _variant.subcomponents;
+            }
+            if (struct_exists(_variant, "shadows")){
+                new_obj.weapon_data.shadows = _variant.shadows;
+            }
         }
         array_push(return_options, new_obj);
     }
@@ -1747,6 +1875,20 @@ global.weapon_visual_data = {
     sprite: spr_weapon_phobos_bolter,
   }]
 },
+
+"Webber": {
+ base: {
+    weapon_data: {
+      display_type: "normal_ranged",
+      new_weapon_draw: true
+    },
+  },
+  variants: [{
+    sprite: spr_weapon_webber,
+    shadows : spr_weapon_webber_shadow,
+  }]
+},
+
 "Phobos Bolt Pistol": {
  base: {
     weapon_data: {
@@ -2635,7 +2777,11 @@ base: {
   },
   variants: [
     {
-      sprite: spr_weapon_powswo
+      sprite: spr_weapon_powswo,
+        subcomponents : [
+            [spr_blank, spr_pow_sword_cross_guard],
+            [spr_blank, spr_pow_sword_blade_additions]
+        ],
     },
     {
       cultures: ["Mongol"],
@@ -2830,6 +2976,7 @@ base: {
     }
   ]
 },
+
 
 "Relic Blade": {
   base: {

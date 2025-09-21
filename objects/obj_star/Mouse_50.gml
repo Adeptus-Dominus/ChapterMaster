@@ -2,7 +2,7 @@
 if (obj_controller.menu != MENU.Default){
     exit;
 }
-if (instances_exist([obj_drop_select,obj_saveload,obj_bomb_select])){
+if (instances_exist_any([obj_drop_select,obj_saveload,obj_bomb_select])){
     exit;
 }
 if (!global.ui_click_lock) {

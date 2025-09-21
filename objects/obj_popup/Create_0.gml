@@ -41,9 +41,27 @@ battle_special=0;
 owner=0;
 tab=1;
 woopwoopwoop=0;
-press=0;
+press=-1;
 reset=0;
 demand=0;
+
+options = [];
+add_option = function(option, if_empty = false){
+    if (if_empty){
+        if (array_length(options)){
+            return;
+        }
+    }
+    if (is_array(option)){
+        for (var i=0;i<array_length(option);i++){
+            add_option(option[i])
+        }
+    }
+    else if (array_length(options)<10){
+        array_push(options, option);
+    }
+}
+entered_option = -1;
 
 subtype = 0;
 
@@ -103,10 +121,14 @@ get_unit_promotion_options = function(){
         role_exp[1]=5;
         spec=1;
     } else  if (unit_role="Lexicanum"){
-        role_name[1]=obj_ini.role[100,17];role_exp[1]=125;spec=1;
+        role_name[1]=obj_ini.role[100,17];
+        role_exp[1]=125;
+        spec=1;
         role_name[2]="Codiciery";role_exp[2]=80;
-    } else if (unit_role=="Codiciery") and (target_comp=0){
-        role_name[1]=obj_ini.role[100,17];role_exp[1]=125;spec=1;
+    } else if (unit_role == "Codiciery" && target_comp == 0){
+        role_name[1]=obj_ini.role[100,17];
+        role_exp[1]=125;
+        spec=1;
     } 
     if (target_comp>0 && target_comp<=10 && spec==0){
         if (units=1){

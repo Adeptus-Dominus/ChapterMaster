@@ -38,13 +38,20 @@ function draw_gift_items_popup(){
 	}
 	if (giveto > 0) {
 		if (subtype == 0){
-			gift_artifact();
+			gift_artifact(giveto, true);
 		} else if (subtype == 1){
 			gift_stc_fragment();
 		}
 	}
 }
-function gift_artifact(){
+
+function gift_artifact(give_to, known = true){
+	if (known){
+		var arti_index = obj_controller.menu_artifact;
+	} else {
+		obj_controller.menu_artifact = scr_add_artifact();
+	}
+
 	var arti_index = obj_controller.menu_artifact;
 
 	var artifact_struct = obj_ini.artifact_struct[arti_index];
@@ -58,15 +65,26 @@ function gift_artifact(){
 	}
 
 	scr_toggle_diplomacy();
-	obj_controller.diplomacy = giveto;
+	obj_controller.diplomacy = give_to;
 	obj_controller.force_goodbye = -1;
 	var the = "";
 
-	if ((giveto != 7) && (giveto != 10)) {
+	if ((give_to != 7) && (give_to != 10)) {
 		the = "the ";
 	}
 
-	scr_event_log("", $"Artifact gifted to {the} {obj_controller.faction[giveto]}.");
+	var inq_hide = 0;
+
+	if (array_contains(obj_ini.artifact_tags[obj_controller.menu_artifact], "inq")) {
+		if (array_contains(obj_controller.quest, "artifact_loan")) {
+			inq_hide = 1;
+		}
+		if (array_contains(obj_controller.quest, "artifact_return")) {
+			inq_hide = 2;
+		}
+	}
+
+	scr_event_log("", $"Artifact gifted to {the} {obj_controller.faction[give_to]}.");
 	var is_daemon = artifact_struct.has_tag("daemonic");
 	var is_chaos = artifact_struct.has_tag("chaos");
 	if (inq_hide != 2) {
@@ -86,7 +104,7 @@ function gift_artifact(){
 	}
 
     if (artifact_struct.has_tag("MINOR")) {
-        obj_controller.disposition[giveto] = clamp(obj_controller.disposition[giveto] + 1, -100, 100);
+        obj_controller.disposition[give_to] = clamp(obj_controller.disposition[give_to] + 1, -100, 100);
     } else {
         var daemon_arts = function(faction, is_chaos, is_daemon) {
             switch (faction) {
@@ -130,7 +148,7 @@ function gift_artifact(){
         }
 
         var specialmod = 0
-        switch (giveto) {
+        switch (give_to) {
             case eFACTION.Imperium:
                 break;
             case eFACTION.Mechanicus:
@@ -159,10 +177,10 @@ function gift_artifact(){
                 break;
         }
 
-        daemon_arts(giveto, is_chaos, is_daemon)
-        var tagmod = artifact_struct.artifact_faction_value(giveto);
+        daemon_arts(give_to, is_chaos, is_daemon)
+        var tagmod = artifact_struct.artifact_faction_value(give_to);
 
-        alter_disposition(giveto, 2 + specialmod + tagmod)
+        alter_disposition(give_to, 2 + specialmod + tagmod)
     }
 
     // Need to modify ^^^^ based on if it is chaos or daemonic

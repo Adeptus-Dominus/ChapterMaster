@@ -1,20 +1,18 @@
-var __b__;
-__b__ = action_if_number(obj_bomb_select, 0, 0);
-if __b__
-{
-__b__ = action_if_number(obj_drop_select, 0, 0);
-if __b__
-{
-__b__ = action_if_number(obj_popup, 0, 0);
-if __b__
-{
+
+
+
+if (instances_exist_any([obj_bomb_select, obj_drop_select, obj_popup])){
+    exit;
+}
 
 if (obj_controller.zoomed=1) then exit;
 if (!instance_exists(target)) then exit;
 if (obj_controller.menu=60) then exit;
 
+add_draw_return_values();
 draw_set_font(fnt_40k_14b);
 draw_set_halign(fa_center);
+draw_set_valign(fa_top);
 draw_set_color(0);
 
 var temp1=0;
@@ -34,7 +32,10 @@ if (loading=1){
     button4="";
 
     if (instance_exists(target)){
-        if (target.space_hulk=1) then exit;
+        if (target.space_hulk==1){
+            pop_draw_return_values();
+            exit;
+        }
     }
 }
 if (obj_controller.selecting_planet>target.planets){
@@ -74,7 +75,7 @@ if (click_accepted) {
             var shutters = [shutter_1, shutter_2, shutter_3, shutter_4];
             for (var i=0; i<4;i++){
                 shutter_button = shutters[i];
-                if (scr_hit(shutter_button.XX,shutter_button.YY,shutter_button.XX+shutter_button.width,shutter_button.YY+shutter_button.height)){
+                if (shutter_button.hit()){
                     closes=false;
                     break;
                 }
@@ -534,82 +535,13 @@ if (instance_exists(obj_fleet)){
         start_fleet_battle();
     }
 }
+draw_planet_debug_options();
 
 
 
-
-
-if (debug){
-    var current_planet;
-    
-    if (!scr_hit([36,174,337,455]) && scr_click_left()) {
-        debug=0;
-        exit;
-    }
-
-    current_planet = obj_controller.selecting_planet;
-
-    draw_set_color(c_black);
-    draw_rectangle(36, 174, 337, 455, 0);
-    draw_set_font(fnt_40k_14b);
-    draw_set_color(c_gray);
-    draw_set_halign(fa_left);
-
-    draw_text(38, 176, ("Orks: " + string(target.p_orks[current_planet])));
-    draw_text(38, 196, ("Tau: " + string(target.p_tau[current_planet])));
-    draw_text(38, 216, ("Tyranids: " + string(target.p_tyranids[current_planet])));
-    draw_text(38, 236, ("Traitors: " + string(target.p_traitors[current_planet])));
-    draw_text(38, 256, ("CSM: " + string(target.p_chaos[current_planet])));
-    draw_text(38, 276, ("Daemons: " + string(target.p_demons[current_planet])));
-    draw_text(38, 296, ("Necrons: " + string(target.p_necrons[current_planet])));
-    draw_text(38, 316, ("Sisters: " + string(target.p_sisters[current_planet])));
-
-    for (var i=0;i<=7;i++){
-        draw_text(147, 176+(i*20), "[-] [+]");
-    }
-
-    if (point_and_click([147, 176, 167, 196])) {
-        target.p_orks[current_planet] = clamp(target.p_orks[current_planet] - 1, 0, 6);
-    } else if (point_and_click([147, 196, 167, 216])) {
-        target.p_tau[current_planet] = clamp(target.p_tau[current_planet] - 1, 0, 6);
-    } else if (point_and_click([147, 216, 167, 236])) {
-        target.p_tyranids[current_planet] = clamp(target.p_tyranids[current_planet] - 1, 0, 6);
-    } else if (point_and_click([147, 236, 167, 256])) {
-        target.p_traitors[current_planet] = clamp(target.p_traitors[current_planet] - 1, 0, 6);
-    } else if (point_and_click([147, 256, 167, 276])) {
-        target.p_chaos[current_planet] = clamp(target.p_chaos[current_planet] - 1, 0, 6);
-    } else if (point_and_click([147, 276, 167, 296])) {
-        target.p_demons[current_planet] = clamp(target.p_demons[current_planet] - 1, 0, 6);
-    } else if (point_and_click([147, 296, 167, 316])) {
-        target.p_necrons[current_planet] = clamp(target.p_necrons[current_planet] - 1, 0, 6);
-    } else if (point_and_click([147, 316, 167, 336])) {
-        target.p_sisters[current_planet] = clamp(target.p_sisters[current_planet] - 1, 0, 6);
-    }
-    
-    else if (point_and_click([177, 176, 197, 196])) {
-        target.p_orks[current_planet] = clamp(target.p_orks[current_planet] + 1, 0, 6);
-    } else if (point_and_click([177, 196, 197, 216])) {
-        target.p_tau[current_planet] = clamp(target.p_tau[current_planet] + 1, 0, 6);
-    } else if (point_and_click([177, 216, 197, 236])) {
-        target.p_tyranids[current_planet] = clamp(target.p_tyranids[current_planet] + 1, 0, 6);
-    } else if (point_and_click([177, 236, 197, 256])) {
-        target.p_traitors[current_planet] = clamp(target.p_traitors[current_planet] + 1, 0, 6);
-    } else if (point_and_click([177, 256, 197, 276])) {
-        target.p_chaos[current_planet] = clamp(target.p_chaos[current_planet] + 1, 0, 6);
-    } else if (point_and_click([177, 276, 197, 296])) {
-        target.p_demons[current_planet] = clamp(target.p_demons[current_planet] + 1, 0, 6);
-    } else if (point_and_click([177, 296, 197, 316])) {
-        target.p_necrons[current_planet] = clamp(target.p_necrons[current_planet] + 1, 0, 6);
-    } else if (point_and_click([177, 316, 197, 336])) {
-        target.p_sisters[current_planet] = clamp(target.p_sisters[current_planet] + 1, 0, 6);
-    }
-
-}
+pop_draw_return_values();
 
 /* */
-}
-}
-}
 
 
 /*  */

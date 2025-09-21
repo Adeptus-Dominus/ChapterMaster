@@ -1,7 +1,7 @@
 try {
     // Handles most logic for main menus, audio and checks if cheats are enabled
     // TODO refactor will wait untill squads PR (#76) is merged
-    if (menu == 0 && zoomed == 0 && !instances_exist([obj_ingame_menu,obj_ncombat])){
+    if (menu == 0 && zoomed == 0 && !instances_exist_any([obj_ingame_menu,obj_ncombat])){
         scr_zoom_keys();
     }
     if (double_click >= 0) {
@@ -593,7 +593,7 @@ try {
         reset_manage_selections();
     }
 
-    if (menu == 0  && !instances_exist([obj_ncombat,obj_fleet_controller])){
+    if (menu == 0  && !instances_exist_any([obj_ncombat,obj_fleet_controller])){
         if (!array_contains(obj_ini.role[0],obj_ini.role[100][eROLE.ChapterMaster])  && (alarm[7] == -1)){
             alarm[7] = 15;
         }
