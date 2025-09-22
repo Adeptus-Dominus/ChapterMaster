@@ -85,7 +85,7 @@ function player_home_star(home_planet){
         }
         
         var _planet_types = ARR_planet_types;
-        if (p_type[home_planet]=="random") then p_type[home_planet]=array_random_item(_planet_types);
+        if (p_type[home_planet]=="random") then p_type[home_planet]=array_random_index(_planet_types);
         if (global.chapter_name!="Lamenters") then obj_controller.recruiting_worlds+=string(name)+" I|";
         
         p_player[home_planet]=obj_ini.man_size;
