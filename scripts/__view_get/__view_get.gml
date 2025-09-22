@@ -1,7 +1,7 @@
 function __view_get(argument0, argument1) {
 	var __prop = argument0;
 	var __index = argument1;
-	var __cam = view_get_camera(__index)
+	var __cam = view_get_camera(__index);
 
 	var __res = -1;
 
