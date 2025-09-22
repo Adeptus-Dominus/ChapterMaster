@@ -16,5 +16,7 @@ jobs:
         with:
           webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
           username: "GitHub Releases"
-          content: "<@&1318332223232938014>n/-# These builds are auto-generated. They may be **heavily unstable**, in which case try using an older build (10 exist at the same time), or divert to <#1283955919566143561>."/
+          content: |-
+            <@&1318332223232938014>
+            These builds are auto-generated. They may be **heavily unstable**, in which case try using an older build (10 exist at the same time), or divert to <#1283955919566143561>.
           reduce_headings: true
