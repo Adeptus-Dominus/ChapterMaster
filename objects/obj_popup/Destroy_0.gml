@@ -86,7 +86,7 @@ if (instance_exists(obj_controller)){
         repeat(obj_temp_meeting.dudes){v+=1;
             if (obj_temp_meeting.present[v]=1){
                 var _unit_array = [obj_temp_meeting.co[v],obj_temp_meeting.ide[v]];
-                add_unit_to_battle(_unit_array)
+                add_unit_to_battle(_unit_array, meeting_star, true)
 
             }
         }

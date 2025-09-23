@@ -483,7 +483,7 @@ function complete_beast_hunt_mission(targ_planet, problem_index){
         if (_success){
         	_mission_string = $"The mission was a success and a great number of beasts rounded up and slain, your marines were able to gain great skills and the prestige of your chapter has increased greatly across the planets populace."
         	if (_deaths){
-        		$"Unfortunatly {_deaths} of your marines died."
+        		_mission_string += $"Unfortunatly {_deaths} of your marines died."
         	}
         	_mission_string += $"\n{_unit_report_string}";
         } else {

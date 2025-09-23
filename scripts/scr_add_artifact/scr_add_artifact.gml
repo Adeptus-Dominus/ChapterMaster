@@ -23,8 +23,8 @@ function scr_add_artifact(artifact_type="random", artifact_tags="", is_identifie
     var rand1 = floor(random(100)) + 1;
     var rand2 = floor(random(100)) + 1;
 
-    var base_type = "",
-        base_type_detail = "",
+    var base_type = "";
+	var base_type_detail = "",
         t3 = "",
         t4 = "",
         t5 = "";

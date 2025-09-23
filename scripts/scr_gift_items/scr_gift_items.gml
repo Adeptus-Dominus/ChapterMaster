@@ -49,7 +49,7 @@ function gift_artifact(give_to, known = true){
 	if (known){
 		var arti_index = obj_controller.menu_artifact;
 	} else {
-		obj_controller.menu_artifact = scr_add_artifact();
+		obj_controller.menu_artifact = scr_add_artifact("random", "minor");
 	}
 
 	var arti_index = obj_controller.menu_artifact;

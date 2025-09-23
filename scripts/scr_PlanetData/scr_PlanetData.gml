@@ -275,7 +275,7 @@ function PlanetData(planet, system) constructor{
 	    }
 
         if (_has_warboss && !_has_stronghold){
-            rando=roll_dice(1,100, "low");
+            rando=roll_dice_chapter(1,100, "low");
             if (rando<30){
                 add_feature(P_features.OrkStronghold);
             }
@@ -292,7 +292,7 @@ function PlanetData(planet, system) constructor{
         }
 
         if (!enemies_present){
-            rando=roll_dice(1,150, "low");
+            rando=roll_dice_chapter(1,150, "low");
             if (_has_warboss){
                 rando -= 20;
             }

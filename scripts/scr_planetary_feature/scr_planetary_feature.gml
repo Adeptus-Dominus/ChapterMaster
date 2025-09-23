@@ -30,7 +30,7 @@ enum P_features {
 
 	};
 	
-enum base_type{
+enum base_types{
 	Lair,
 }
 
@@ -68,7 +68,7 @@ function NewPlanetFeature(feature_type, other_data={}) constructor{
 		break;
 
 	case P_features.Secret_Base:
-		base_type = 0;
+		base_type = base_types.Lair;
 		inquis_hidden =1;
 		planet_display = "Hidden Secret Base";
 		player_hidden = 0;
