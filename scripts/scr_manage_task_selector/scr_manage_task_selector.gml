@@ -82,7 +82,7 @@ function task_selector_man_manage(){
         			}
         			managing = _end_company;
         			update_general_manage_view();
-    				break;
+    				exit;
 				case "champion_promote":
         			_unit.update_role(obj_ini.role[100][eROLE.Champion]);
         			_unit.squad="none";
@@ -93,7 +93,7 @@ function task_selector_man_manage(){
 
         			managing = selection_data.target_company;
         			update_general_manage_view();
-    				break;
+    				exit;
 				case "ancient_promote":
         			_unit.update_role(obj_ini.role[100][eROLE.Ancient]);
         			_unit.squad="none";
@@ -103,7 +103,7 @@ function task_selector_man_manage(){
         			}
         			managing = selection_data.target_company;
         			update_general_manage_view();
-    				break;
+    				exit;
 				case "chaplain_promote":
         			_unit.squad="none";
         			_start_company = _unit.company;
@@ -116,7 +116,7 @@ function task_selector_man_manage(){
         			}
         			managing = _end_company;
         			update_general_manage_view();
-    				break;
+    				exit;
 				case "apothecary_promote":
         			_unit.squad="none";
         			_start_company = _unit.company;
@@ -129,7 +129,7 @@ function task_selector_man_manage(){
         			}
         			managing = _end_company;
         			update_general_manage_view();
-    				break;
+    				exit;
 				case "tech_marine_promote":
         			_unit.squad="none";
         			_start_company = _unit.company;
@@ -142,7 +142,7 @@ function task_selector_man_manage(){
         			}
         			managing = _end_company;
         			update_general_manage_view();
-    				break;
+    				exit;
 				case "librarian_promote":
         			_unit.squad="none";
         			_start_company = _unit.company;
@@ -155,7 +155,7 @@ function task_selector_man_manage(){
         			}
         			managing = _end_company;
         			update_general_manage_view();
-    				break;
+    				exit;
     			case "hunt_beast":
     				_unit.job = {
     					type:selection_data.purpose_code, 
@@ -174,7 +174,7 @@ function task_selector_man_manage(){
     				init_train_forces_mission(selection_data.planet, selection_data.system,selection_data.array_slot, _unit); 
     				obj_controller.close_popups = false;
 	                exit_adhoc_manage();
-	               	break;
+	               	exit;
 	            case "artifact_equip":
 	               	scr_toggle_lib();
 	               	var _arti = fetch_artifact(selection_data.artifact);
