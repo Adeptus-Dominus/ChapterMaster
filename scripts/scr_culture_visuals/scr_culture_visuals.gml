@@ -318,7 +318,7 @@ function set_up_visual_overides(){
             if (struct_exists(_flip_mod, "overides")) {
                var _overides_name = struct_get_names(_flip_mod.overides);
                for (var o=0;o<array_length(_overides_name);o++){
-                    if (struct_exists(flip_components, _overides_name[o]){
+                    if (struct_exists(flip_components, _overides_name[o])){
                         var _flip = flip_components[$ _overides_name[o]];
                         _flip_mod.overides[$ _flip] = variable_clone(_flip_mod.overides[$ _overides_name[o]])
 
