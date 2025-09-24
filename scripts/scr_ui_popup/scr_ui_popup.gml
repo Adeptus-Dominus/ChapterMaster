@@ -518,32 +518,5 @@ function scr_ui_popup() {
 		    }
 		}
 	}
-exit;
-// TODO: This code is to be deleted as has not been in use for a while.
-//	if (mouse_x>=__view_get( e__VW.XView, 0 )+113) and (mouse_y>=__view_get( e__VW.YView, 0 )+4) and (mouse_x<__view_get( e__VW.XView, 0 )+185) and (mouse_y<__view_get( e__VW.YView, 0 )+19) and (zoomed=0){
-//	    var blurp,blurp2,lines,i;blurp="";blurp2="";lines=0;i=0;draw_set_halign(fa_left);
-    
-//	    repeat(20){
-//	        i++;if (loyal_num[i]>1){
-//	            blurp+=string(loyal[i])+": -"+string(loyal_num[i])+"#";
-//	            blurp2+=string(loyal[i])+": #";
-//	            lines++;
-//	        }
-//	    }
-    
-//	    if (lines>0){
-//	        var wi=183+93;
-//	        if (string_count("Irreverance",blurp)>0) then wi+=51;
-        
-//	        draw_set_color(c_black);
-//	        draw_rectangle(__view_get( e__VW.XView, 0 )+113,__view_get( e__VW.YView, 0 )+24,__view_get( e__VW.XView, 0 )+wi,__view_get( e__VW.YView, 0 )+30+(lines*10),0);
-//	        draw_set_color(CM_GREEN_COLOR);
-//	        draw_rectangle(__view_get( e__VW.XView, 0 )+113,__view_get( e__VW.YView, 0 )+24,__view_get( e__VW.XView, 0 )+wi,__view_get( e__VW.YView, 0 )+30+(lines*10),1);
-        
-//	        draw_set_font(fnt_info);
-//	        draw_text_transformed(__view_get( e__VW.XView, 0 )+24+93,__view_get( e__VW.YView, 0 )+26,string_hash_to_newline(string(blurp)),0.7,0.7,0);
-//	        draw_text_transformed(__view_get( e__VW.XView, 0 )+24.5+93,__view_get( e__VW.YView, 0 )+26,string_hash_to_newline(string(blurp2)),0.7,0.7,0);
-//	    }
-//	}
-// END OF CODE TO DELETE
+	exit;
 }
