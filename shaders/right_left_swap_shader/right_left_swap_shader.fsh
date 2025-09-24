@@ -1,39 +1,41 @@
-//
 // Simple passthrough fragment shader
 //
 varying vec2 v_vTexcoord;
 varying vec4 v_vColour;
 
+// === Constants ===
+// put them in global scope so both main() and remapRightToLeft() can see them
+const float _20COL = 20.0 / 255.0;
+const float _24COL = 24.0 / 255.0;
+const float _46COL = 46.0 / 255.0;
+const float _60COL = 60.0 / 255.0;
+const float _64COL = 64.0 / 255.0;
+const float _84COL = 84.0 / 255.0;
+const float _104COL = 104.0 / 255.0;
+const float _112COL = 112.0 / 255.0;
+const float _127_25COL = 127.25 / 255.0;
+const float _128COL = 128.0 / 255.0;
+const float _128_75COL = 128.75 / 255.0;
+const float _130COL = 130.0 / 255.0;
+const float _135COL = 135.0 / 255.0;
+const float _138COL = 138.0 / 255.0;
+const float _140COL = 140.0 / 255.0;
+const float _147COL = 147.0 / 255.0;
+const float _151COL = 151.0 / 255.0;
+const float _160COL = 160.0 / 255.0;
+const float _165COL = 165.0 / 255.0;
+const float _168COL = 168.0 / 255.0;
+const float _169COL = 169.0 / 255.0;
+const float _170COL = 170.0 / 255.0;
+const float _181COL = 181.0 / 255.0;
+const float _188COL = 188.0 / 255.0;
+const float _194COL = 194.0 / 255.0;
+const float _214COL = 214.0 / 255.0;
+const float _215COL = 215.0 / 255.0;
+const float _218COL = 218.0 / 255.0;
+const float _230COL = 230.0 / 255.0;
+
 vec3 remapRightToLeft(vec3 col) {
-    const float _20COL = 20.0 / 255.0;
-    const float _24COL = 24.0 / 255.0;
-    const float _46COL = 46.0 / 255.0;
-    const float _60COL = 60.0 / 255.0;
-    const float _64COL = 64.0 / 255.0;
-    const float _84COL = 84.0 / 255.0;
-    const float _104COL = 104.0 / 255.0;
-    const float _112COL = 112.0 / 255.0;
-    const float _127_25COL = 127.25 / 255.0;
-    const float _128COL = 128.0 / 255.0;
-    const float _128_75COL = 128.75 / 255.0;
-    const float _130COL = 130.0 / 255.0;
-    const float _135COL = 135.0 / 255.0;
-    const float _138COL = 138.0 / 255.0;
-    const float _140COL = 140.0 / 255.0;
-    const float _147COL = 147.0 / 255.0;
-    const float _151COL = 151.0 / 255.0;
-    const float _160COL = 160.0 / 255.0;
-    const float _165COL = 165.0 / 255.0;
-    const float _168COL = 168.0 / 255.0;
-    const float _169COL = 169.0 / 255.0;
-    const float _170COL = 170.0 / 255.0;
-    const float _181COL = 181.0 / 255.0;
-    const float _188COL = 188.0 / 255.0;
-    const float _194COL = 194.0 / 255.0;
-    const float _214COL = 214.0 / 255.0;
-    const float _215COL = 215.0 / 255.0;
-    const float _218COL = 218.0 / 255.0;
-    const float _230COL = 230.0 / 255.0;
     // === Right → Left body mapping ===
     if (col == vec3(0.0, 0.0, 1.0)) {            // right_head
         return vec3(0.0, 0.0, _128COL);          // left_head
@@ -76,12 +78,11 @@ vec3 remapRightToLeft(vec3 col) {
 void main() {
     vec4 col_orig = texture2D(gm_BaseTexture, v_vTexcoord);
 
-    vec4 col_orig = texture2D(gm_BaseTexture, v_vTexcoord);
     if (col_orig.rgba == vec4(0.0, 0.0, 0.0, 0.0)) {
         discard;
     }
 
-    // Intel fix
+    // Intel fix — snap near-128 values to exact 128
     if (col_orig.r >= _127_25COL && col_orig.r <= _128_75COL) { col_orig.r = _128COL; }
     if (col_orig.g >= _127_25COL && col_orig.g <= _128_75COL) { col_orig.g = _128COL; }
     if (col_orig.b >= _127_25COL && col_orig.b <= _128_75COL) { col_orig.b = _128COL; }
