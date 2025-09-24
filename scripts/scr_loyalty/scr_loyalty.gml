@@ -25,7 +25,7 @@ function scr_loyalty(argument0, argument1) {
 						break;
 					case "Xeno Trade": amount=0.05; break;
 					case "Irreverance for His Servants": amount=0.005; break;
-					case "Heretic Contact": amount=0.099; // amount=0.01;
+					case "Heretic Contact": amount=0.099; break; // amount=0.01;
 					case "Non-Codex Size": 
 		                if (obj_controller.loyal_num[i]=0) then amount=0.06;
 		                if (obj_controller.loyal_num[i]!=0) then amount=0;

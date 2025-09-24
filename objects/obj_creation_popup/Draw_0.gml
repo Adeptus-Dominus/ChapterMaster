@@ -104,14 +104,14 @@ if (col_shift){
         for (var slot_count = 0; slot_count <= 4; slot_count++) {
             y5 += spacing;
             var title = $"{get_slot_name(type - 100, slot_count)}: ";
-            var equipement_slot;
+            var equipment_slot;
             switch (slot_count) {
                 // slots
-                case EquipmentSlot.WEAPON_ONE: equipement_slot = obj_creation.wep1[co, ide]; break;
-                case EquipmentSlot.WEAPON_TWO: equipement_slot = obj_creation.wep2[co, ide]; break;
-                case EquipmentSlot.ARMOUR: equipement_slot = obj_creation.armour[co, ide]; break;
-                case EquipmentSlot.GEAR: equipement_slot = obj_creation.gear[co, ide]; break;
-                case EquipmentSlot.MOBILITY: equipement_slot = obj_creation.mobi[co, ide]; break;
+                case EquipmentSlot.WEAPON_ONE: equipment_slot = obj_creation.wep1[co, ide]; break;
+                case EquipmentSlot.WEAPON_TWO: equipment_slot = obj_creation.wep2[co, ide]; break;
+                case EquipmentSlot.ARMOUR: equipment_slot = obj_creation.armour[co, ide]; break;
+                case EquipmentSlot.GEAR: equipment_slot = obj_creation.gear[co, ide]; break;
+                case EquipmentSlot.MOBILITY: equipment_slot = obj_creation.mobi[co, ide]; break;
             }
 
             draw_set_halign(fa_right);
@@ -148,7 +148,7 @@ if (col_shift){
             draw_set_alpha(1);
             draw_set_color(CM_GREEN_COLOR);
             draw_set_halign(fa_left);
-            draw_text(600, y5, string_hash_to_newline(string(equipement_slot)));
+            draw_text(600, y5, string_hash_to_newline(string(equipment_slot)));
         }
 
         var confirm_gear_button = {
