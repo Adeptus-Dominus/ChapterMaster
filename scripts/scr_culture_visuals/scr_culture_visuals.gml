@@ -303,10 +303,8 @@ function set_up_visual_overides(){
     for (var i=0;i<array_length(_mods);i++){
         var _mod = _mods[i];
         if (struct_exists(_mod, "flip") && struct_exists(flip_components, _mod.position)){
-            show_debug_message(_mod);
             var _flip_mod = variable_clone(_mod);
             _flip_mod.position = flip_components[$ _flip_mod.position];
-            show_debug_message("prevent_others");
             if (struct_exists(_flip_mod, "prevent_others")) {
                 if (struct_exists(_flip_mod, "ban")) {
                     for (var b = 0; b < array_length(_flip_mod.ban); b++) {
@@ -317,11 +315,10 @@ function set_up_visual_overides(){
                     }
                 }               
             }
-            show_debug_message("overides");
             if (struct_exists(_flip_mod, "overides")) {
                var _overides_name = struct_get_names(_flip_mod.overides);
                for (var o=0;o<array_length(_overides_name);o++){
-                    struct_exists(flip_components, _overides_name[o]){
+                    if (struct_exists(flip_components, _overides_name[o]){
                         var _flip = flip_components[$ _overides_name[o]];
                         _flip_mod.overides[$ _flip] = variable_clone(_flip_mod.overides[$ _overides_name[o]])
 
@@ -329,12 +326,10 @@ function set_up_visual_overides(){
                     }
                }
             }
-            show_debug_message("right_left_swap_shader");
             shader_set(right_left_swap_shader);
 
             _flip_mod.sprite = return_sprite_mirrored(_flip_mod.sprite, false);
 
-            show_debug_message("subcomponents");
 
              if (struct_exists(_flip_mod, "subcomponents")){
                 var _subs = _flip_mod.subcomponents;
@@ -346,7 +341,6 @@ function set_up_visual_overides(){
                     }
                 }           
              }
-             show_debug_message("shadows");
             if (struct_exists(_flip_mod, "shadows")){
                 _flip_mod.shadows = return_sprite_mirrored(_flip_mod.shadows, false);
             }
