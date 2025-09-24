@@ -427,19 +427,14 @@ function quality_color(_item_quality) {
     switch (_item_quality) {
         case "standard":
             return draw_get_color();
-            break;
         case "master_crafted":
             return #bf9340;
-            break;
         case "artificer":
             return #bf4040;
-            break;
         case "artifact":
             return #40bfbf;
-            break;
         case "exemplary":
             return #80bf40;
-            break;
     }
 }
 
