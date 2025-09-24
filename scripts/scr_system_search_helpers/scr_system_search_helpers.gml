@@ -54,7 +54,6 @@ function scr_planet_owned_by_group(planet_id, group, star = "none"){
 		}
 		return is_in_group;
 	}
-	return false;
 }
 
 function scr_is_planet_owned_by_allies(star, planet_id) {
@@ -235,10 +234,8 @@ function distance_removed_star(origional_x,origional_y, star_offset = choose(2,3
 
 
 function nearest_star_proper(xx,yy) {
-	var i=0;
 	var cur_star;
-	while(i<100){
-		i++;
+	for(var i=0; i<100; i++){
 		cur_star = instance_nearest(xx,yy, obj_star);
 		if (!cur_star.craftworld && !cur_star.space_hulk){
 			instance_activate_object(obj_star);
@@ -278,7 +275,7 @@ function nearest_star_with_ownership(xx,yy, ownership, start_star="none", ignore
 			instance_deactivate_object(cur_star.id);
 		}
 	}
-    for (var i=0;i<array_length(_deactivated);i++){
+    for (i=0;i<array_length(_deactivated);i++){
     	instance_activate_object(_deactivated[i]);
     }
 	return nearest;
