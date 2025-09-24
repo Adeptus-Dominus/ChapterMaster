@@ -1280,8 +1280,6 @@ function ComplexSet(_unit) constructor {
 				add_group({
 					armour: spr_mk6_complex,
 					backpack: spr_mk6_complex_backpack,
-					left_arm: spr_mk6_left_arm,
-					right_arm: spr_mk6_right_arm,
 					left_trim: spr_mk7_left_trim,
 					right_trim: spr_mk7_right_trim,
 					mouth_variants: spr_mk6_mouth_variants,
@@ -1293,8 +1291,6 @@ function ComplexSet(_unit) constructor {
 				add_group({
 					armour: spr_mk5_complex,
 					backpack: spr_mk5_complex_backpack,
-					left_arm: spr_mk5_left_arm,
-					right_arm: spr_mk5_right_arm,
 					left_trim: spr_mk7_left_trim,
 					right_trim: spr_mk7_right_trim,
 					head: spr_mk5_head_variants,
@@ -1311,9 +1307,7 @@ function ComplexSet(_unit) constructor {
 					chest_variants: spr_mk4_chest_variants,
 					armour: spr_mk4_complex,
 					backpack: spr_mk4_complex_backpack,
-					left_arm: spr_mk4_left_arm,
 					leg_variants: spr_mk4_leg_variants,
-					right_arm: spr_mk4_right_arm,
 					left_trim: spr_mk4_left_trim,
 					right_trim: spr_mk4_right_trim,
 					mouth_variants: spr_mk4_mouth_variants,
@@ -1325,8 +1319,6 @@ function ComplexSet(_unit) constructor {
 				add_group({
 					armour: spr_mk3_complex,
 					backpack: spr_mk3_complex_backpack,
-					left_arm: spr_mk3_left_arm,
-					right_arm: spr_mk3_right_arm,
 					head: spr_mk3_head_variants,
 					left_knee: spr_mk3_left_knee,
 					right_knee: spr_mk3_right_knee,

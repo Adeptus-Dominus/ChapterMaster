@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"right_left_swap_shader",
+  "name":"right_left_swap_shader",
+  "parent":{
+    "name":"Shaders",
+    "path":"folders/Shaders.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}
