@@ -8,7 +8,7 @@ function scr_ancient_ruins_setup(){
 	recoverables=[];
 	failed_exploration = 0;
 	unrecovered_items = false;
-	f_type =  P_features.Ancient_Ruins;
+	f_type =  P_features.AncientRuins;
 	exploration_complete= false;
 	planet_display = $"{ruins_size} Unexplored Ancient Ruins";
 	completion_level = 0;

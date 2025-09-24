@@ -12,7 +12,7 @@ function unit_apothecary_points_gen(turn_end=false){
     return [points,reasons];
 }
 
-function unit_forge_point_generation(turn_end=false){
+function unit_forge_point_generation(turn_end=false, base=false){
     var _trained_person = IsSpecialist(SPECIALISTS_TECHS);
     var crafter = has_trait("crafter");
     var reasons = {};
@@ -20,8 +20,11 @@ function unit_forge_point_generation(turn_end=false){
     if (_trained_person){
         var points = technology / 5;
         reasons.trained = points;
+    } else if (technology >= 40){
+        var points = (technology-40) / 5;
+        reasons.talented = points;
     }
-    if (job!="none"){
+    if (job!="none" && !base){
         if (job.type == "forge"){
             
             if (crafter){
@@ -45,6 +48,7 @@ function unit_forge_point_generation(turn_end=false){
         points+=10;
         reasons.master = 10;
     }
+    if (!base){
     var maintenance = equipment_maintenance_burden();
     points -= maintenance;
     reasons.maintenance = $"-{maintenance}";
@@ -55,6 +59,7 @@ function unit_forge_point_generation(turn_end=false){
         var _tech_score_mod = 1/(technology/30);
         reasons.maintenance += $"\n    tech modifier : X{_tech_score_mod} (lower is better)";
     }
+    }   
     return [points,reasons];
 }
 

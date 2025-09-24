@@ -1,42 +1,42 @@
 function scr_turn_first() {
     try {
-        // I believe this is ran at the start of the end of the turn.  That would make sense, right?
+            // I believe this is ran at the start of the end of the turn.  That would make sense, right?
+    	var identifiable=0;
+    	var unload=0;
+    	var cur_arti;
+    	for (var i=0;i<array_length(obj_ini.artifact);i++){
+    		identifiable=0;
+    		unload=i;
+    		if (obj_ini.artifact[unload]=="") then continue;
+    		cur_arti = obj_ini.artifact_struct[unload];
+    		if (cur_arti.loc()==""){
+    			var valid_ship = get_valid_player_ship();
+    			if (valid_ship >-1){
+    				var _ship = fetch_ship(valid_ship);
+    				obj_ini.artifact_loc[unload] = _ship.name;
+    				obj_ini.artifact_sid[unload] = 500+valid_ship;
+    			}
+    		}
+    	    if (cur_arti.identified()>0){
+    	    	var _identifiable = cur_arti.is_identifiable()
+            
+    	        if (instance_exists(obj_p_fleet)) and (!_identifiable){
+    	        	var _arti_fleet = find_ships_fleet(cur_arti.ship_id());
+    	        	if (_arti_fleet!="none"){
+    	        		if (array_length(_arti_fleet.capital_num)){
+    	        			_identifiable = true;
+    	        			cur_arti.set_ship_id(_arti_fleet.capital_num[0]);
+    	        		}
+    	        	}
+    	        }
+            
+                if (_identifiable) then obj_ini.artifact_identified[unload]-=1;
+                if (obj_ini.artifact_identified[unload]=0) then scr_alert("green","artifact","Artifact ("+string(obj_ini.artifact[unload])+") has been identified.",0,0);
+    	    }
+    	    _identifiable=false;
+    	}
+    	unload=0;
 
-        var _unload_i = 0;
-        for (var i = 0, l = array_length(obj_ini.artifact); i < l; i++) {
-            _unload_i = i;
-            if (obj_ini.artifact[_unload_i] == "") {
-                continue;
-            }
-            var _cur_arti = obj_ini.artifact_struct[_unload_i];
-            if (_cur_arti.loc() == "") {
-                var _valid_ship_i = get_valid_player_ship();
-                if (_valid_ship_i > -1) {
-                    obj_ini.artifact_loc[_unload_i] = obj_ini.ship[_valid_ship_i];
-                    obj_ini.artifact_sid[_unload_i] = 500 + _valid_ship_i;
-                }
-            }
-            if (_cur_arti.identified() > 0) {
-                var _identifiable = _cur_arti.is_identifiable();
-
-                if (instance_exists(obj_p_fleet) && (!_identifiable)) {
-                    var _arti_fleet = find_ships_fleet(_cur_arti.ship_id());
-                    if (_arti_fleet != "none") {
-                        if (array_length(_arti_fleet.capital_num)) {
-                            _identifiable = true;
-                            _cur_arti.set_ship_id(_arti_fleet.capital_num[0]);
-                        }
-                    }
-                }
-
-                if (_identifiable) {
-                    obj_ini.artifact_identified[_unload_i] -= 1;
-                }
-                if (obj_ini.artifact_identified[_unload_i] == 0) {
-                    scr_alert("green", "artifact", "Artifact (" + string(obj_ini.artifact[_unload_i]) + ") has been identified.", 0, 0);
-                }
-            }
-        }
 
         var _peace_check = obj_controller.turn > 100;
         // peace_check=1;// Testing

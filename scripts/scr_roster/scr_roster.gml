@@ -300,10 +300,11 @@ function Roster() constructor{
             	 	 }
             	 }
 				if (obj_ini.veh_lid[co][i]>-1){
-        	 	 	if (obj_ini.veh_lid[co][i]>= array_length(obj_ini.ship_location)){
+        	 	 	if (obj_ini.veh_lid[co][i]>= array_length(obj_ini.ship_data)){
         	 	 		obj_ini.veh_lid[co][i] = -1;
         	 	 	}
-        	 	 	if (obj_ini.ship_location[obj_ini.veh_lid[co][i]] == roster_location){
+                    var _ship = obj_ini.ship_data[obj_ini.veh_lid[co][i]];
+        	 	 	if (_ship.location == roster_location){
         	 	 		_allow=true;
         	 	 	}
         	 	}
@@ -342,8 +343,9 @@ function Roster() constructor{
         var _ship_index;
         for (var s=0;s<array_length(_ships);s++){
             _ship_index = _ships[s];
-            if (obj_ini.ship_carrying[_ship_index]>0){
-                new_ship_button(obj_ini.ship[_ship_index],_ship_index);
+            var _ship = obj_ini.ship_data[_ship_index];
+            if (_ship.carrying>0){
+                new_ship_button(_ship.name,_ship_index);
             }
         }
     }
@@ -409,14 +411,7 @@ function Roster() constructor{
         for (var i=0;i<array_length(ships);i++){
             if (ships[i].active){
                 var _id = ships[i].ship_id;
-                var _class = player_ships_class(ship_id);
-                if (obj_ini.ship_class[_id] == "Gloriana"){
-                    _purge_score += 4;
-                } else if (_class=="capital"){
-                    _purge_score += 3;
-                } else if( _class=="frigate"){
-                    _purge_score += 1;
-                }                      
+                _purge_score += ship_bombard_score(_id);                 
             }
         }  
         return _purge_score;       
