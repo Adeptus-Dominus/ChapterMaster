@@ -68,7 +68,7 @@ jobs:
           echo "New commits found in range '$RANGE'. Checking their messages."
 
           # collect all commit messages in range
-          ALL_MSGS=$(git log $RANGE --pretty=%B)
+          ALL_MSGS=$(git log $RANGE --pretty=%s)
           echo "Messages in range:"
           # Use sed to indent messages for clarity in logs
           echo "$ALL_MSGS" | sed 's/^/  /'

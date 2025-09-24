@@ -9,7 +9,7 @@ attribute vec2 in_TextureCoord;              // (u,v)
 varying vec2 v_vMaskCoord;
 uniform vec4 mask_transform;
 
-uniform vec4 shadow_transform;
+uniform vec4 In_Shadow_Transform;
 varying vec2 v_vShadowCoord;
 
 
@@ -25,5 +25,5 @@ void main()
     v_vTexcoord = in_TextureCoord;
     
     v_vMaskCoord = in_TextureCoord * mask_transform.zw + mask_transform.xy;
-    v_vShadowCoord = in_TextureCoord * shadow_transform.zw + shadow_transform.xy;
+    v_vShadowCoord = in_TextureCoord * In_Shadow_Transform.zw + In_Shadow_Transform.xy;
 }

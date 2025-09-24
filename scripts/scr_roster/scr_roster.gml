@@ -376,7 +376,7 @@ function Roster() constructor{
                     }
                 }
                 if (_add){
-                    add_unit_to_battle(_unit, meeting);
+                    add_unit_to_battle(_unit, meeting, true);
                 }
             } else {
                 var _vehic = selected_units[i];

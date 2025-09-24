@@ -546,17 +546,16 @@ function scr_enemy_ai_a() {
 	                if (_active_garrison){
 	                	var tixt = $"Chapter Forces led by {garrison.garrison_leader.name_role()} on {name} {scr_roman_numerals()[_run-1]} were unable to secure PDF victory chapter support requested";
 	                	if (garrison.garrison_sustain_damages("loose")>0){
-	                		tixt += $". {garrison.garrison_sustain_damages()} Marines Lost";
+	                		tixt += $". {garrison.garrison_sustain_damages("loose")} Marines Lost";
 	                	}
 	                	scr_alert("red","owner",tixt,x,y);
 	                	//garrison.determine_battle(false,rand2-rand1, eFACTION.Ork);
 	                }
 	            } else {
 	            	if (_active_garrison){
-	            		garrison.garrison_sustain_damages();
 	            		var tixt = $"Chapter Forces led by {garrison.garrison_leader.name_role()} on {name} {scr_roman_numerals()[_run-1]} secure PDF victory";
 	                	if (garrison.garrison_sustain_damages("win")>0){
-	                		tixt += $". {garrison.garrison_sustain_damages()} Marines Lost";
+	                		tixt += $". {garrison.garrison_sustain_damages("win")} Marines Lost";
 	                	}	            		
 	            		scr_alert("green","owner",tixt,x,y);
 	            	}

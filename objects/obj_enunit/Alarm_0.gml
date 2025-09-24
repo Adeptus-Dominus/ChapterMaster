@@ -259,7 +259,7 @@ else if ((engaged || enemy.engaged) and target_block_is_valid( enemy,obj_pnunit)
                 if (!good) then _armour_piercing=0;// Fuck it, shoot at infantry
             }
             
-            if (!_armour_piercing) and (target_block_is_valid(enemy)){// Check for men
+            if (!_armour_piercing) and (target_block_is_valid(enemy,obj_pnunit)){// Check for men
                 // show_message(string(wep[i]));
                 var enemy2,g=0,good=0;
                 if ((enemy.men)){

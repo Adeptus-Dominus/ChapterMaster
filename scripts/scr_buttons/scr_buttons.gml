@@ -104,7 +104,7 @@ function ReactiveString(text, x1 = 0, y1 = 0, data = false) constructor {
         draw_set_color(colour);
 
         if (max_width > -1) {
-            draw_text_ext_outline(x1, y1, text, -1, max_width, 0, c_black, colour);
+            draw_text_ext_outline(x1, y1, text, -1, max_width, c_black, colour);
         } else {
             draw_text_outline(x1, y1, text, c_black, colour);
         }
@@ -336,13 +336,14 @@ function UnitButtonObject(data = false) constructor {
 
     static draw = function(allow_click = true) {
         add_draw_return_values();
+		var _button_click_area;
         if (style == "standard") {
             var _temp_alpha = alpha;
             if (disabled) {
                 _temp_alpha = 0.5;
                 allow_click = false;
             }
-            var _button_click_area = draw_unit_buttons(w > 0 ? [x1, y1, x2, y2] : [x1, y1], label, [text_scale, text_scale], active ? color : inactive_col,, font, _temp_alpha);
+            _button_click_area = draw_unit_buttons(w > 0 ? [x1, y1, x2, y2] : [x1, y1], label, [text_scale, text_scale], active ? color : inactive_col,, font, _temp_alpha);
         } else if (style == "pixel") {
             var _widths = [sprite_get_width(spr_pixel_button_left), sprite_get_width(spr_pixel_button_middle), sprite_get_width(spr_pixel_button_right)];
 
@@ -365,7 +366,7 @@ function UnitButtonObject(data = false) constructor {
 
             x2 = x1 + array_sum(_widths);
             y2 = y1 + h;
-            var _button_click_area = [x1, y1, x2, y2];
+            _button_click_area = [x1, y1, x2, y2];
         }
 
         if (scr_hit(x1, y1, x2, y2) && tooltip != "") {
@@ -645,7 +646,7 @@ function drop_down(selection, draw_x, draw_y, options, open_marker) {
                     }
                     roll_down_offset += string_height(options[col]) + 4;
                 }
-                if (!scr_hit(draw_x, draw_y, draw_x + 5 + string_width(selection), draw_y + roll_down_offset,)) {
+                if (!scr_hit(draw_x, draw_y, draw_x + 5 + string_width(selection), draw_y + roll_down_offset)) {
                     open_marker = false;
                     if (current_target) {
                         current_target = false;

@@ -211,7 +211,7 @@ if (max_ships>0)and (instance_exists(obj_star_select)){
     if (point_and_click(bombard_button)){
         if (ships_selected>0) {      
             bomb_score = 0;
-            for(var i=0; i<array_length(ship_ide) i++){
+            for(var i=0; i<array_length(ship_ide); i++){
                 if (ship_all[i]==1){
                     bomb_score += ship_bombard_score(ship_ide);
                 }

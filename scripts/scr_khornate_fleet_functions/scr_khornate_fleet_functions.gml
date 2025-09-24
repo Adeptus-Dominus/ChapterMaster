@@ -167,13 +167,13 @@ function khorne_fleet_cargo(){
                         	if (chase_fleet.action!=""){
                         		if (intercept_time<=chase_fleet._eta){
                         			target = chase_fleet;
-                        			chase_fleet_target_set();
+                        			chase_fleet_target_set(target);
                         			target_chosen=true;
                         		}
                         	} else {
                         		if (intercept_time<12){
                         			target = chase_fleet;
-                        			chase_fleet_target_set();
+                        			chase_fleet_target_set(target);
                         			target_chosen=true;
                         		}
                         	}
@@ -198,7 +198,7 @@ function khorne_fleet_cargo(){
                             	} else {
                             		if (fleet_intercept_time_calculate(chase_fleet)<(floor(point_distance(x,y,nearest_star.x,nearest_star.y)/action_spd)+1)){
                             			target=chase_fleet;
-                            			chase_fleet_target_set()
+                            			chase_fleet_target_set(target)
                             			target_chosen=true;
                             		} else {
 	                            		action_x = nearest_star.x;

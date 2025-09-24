@@ -30,7 +30,7 @@ enum P_features {
 	        ShipDock
 };
 	
-enum base_type{
+enum base_types{
 	Lair,
 }
 
@@ -71,8 +71,8 @@ function PlanetFeature(feature_type, other_data={}) constructor{
 		planet_display = "Dormant Necron Tomb";
 		break;
 
-	case P_features.SecretBase:
-		base_type = 0;
+	case P_features.Secret_Base:
+		base_type = base_types.Lair;
 		inquis_hidden =1;
 		planet_display = "Hidden Secret Base";
 		player_hidden = 0;

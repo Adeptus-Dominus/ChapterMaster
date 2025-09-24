@@ -352,8 +352,10 @@ function scr_enemy_ai_d() {
             var onceh=0;
             var random_chance=floor(random(100))+1;
             var doner_index = 0;
+			// TODO check possible fixes for this logic
+			// currently this only calculates for priority requests for pops
             for(var i=1;i<array_length(pop_doner_options); i++){
-                if (star_distace_calc(pop_doner_options[i]) < star_distace_calc(pop_doner_options[doner_index])){
+                if (star_distace_calc(pop_doner_options[i], priority_requests[i]) < star_distace_calc(pop_doner_options[doner_index],priority_requests[doner_index])){
                     doner_index = i;
                 }
             }

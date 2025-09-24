@@ -65,7 +65,7 @@ function inquisition_fleet_inspection_chase(){
             instance_activate_object(obj_star);
             var goal_x,goal_y,target_meet=0;
         
-            chase_fleet_target_set();
+            chase_fleet_target_set(target);
             target_meet=instance_nearest(action_x,action_y,obj_star);
             if (string_count("!",trade_goods)=4) and (instance_exists(obj_turn_end)){
         
@@ -160,7 +160,7 @@ function new_inquisitor_inspection(){
         with (new_inquis_fleet) {
             base_inquis_fleet();
             target = target_player_fleet;
-            chase_fleet_target_set();
+            chase_fleet_target_set(target);
             obj = instance_nearest(action_x, action_y, obj_star);
             trade_goods += "_fleet";
         }
