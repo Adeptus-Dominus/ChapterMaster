@@ -100,8 +100,6 @@ function ComplexSet(_unit) constructor {
 	//draw_helms = false;
 	static mk7_bits = {
 		armour: spr_mk7_complex,
-		left_arm: spr_mk7_left_arm,
-		right_arm: spr_mk7_right_arm,
 		left_trim: spr_mk7_left_trim,
 		right_trim: spr_mk7_right_trim,
 		mouth_variants: spr_mk7_mouth_variants,

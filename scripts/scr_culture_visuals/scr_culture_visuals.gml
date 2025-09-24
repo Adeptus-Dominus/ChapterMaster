@@ -320,7 +320,7 @@ function set_up_visual_overides(){
                for (var o=0;o<array_length(_overides_name);o++){
                     if (struct_exists(flip_components, _overides_name[o])){
                         var _flip = flip_components[$ _overides_name[o]];
-                        _flip_mod.overides[$ _flip] = variable_clone(_flip_mod.overides[$ _overides_name[o]])
+                        _flip_mod.overides[$ _flip] = variable_clone(_mod.overides[$ _overides_name[o]])
 
                         struct_remove(_flip_mod.overides, _overides_name[o]);
                     }
@@ -328,23 +328,23 @@ function set_up_visual_overides(){
             }
             shader_set(right_left_swap_shader);
 
-            _flip_mod.sprite = return_sprite_mirrored(_flip_mod.sprite, false);
+            _flip_mod.sprite = return_sprite_mirrored(_mod.sprite, false);
 
 
              if (struct_exists(_flip_mod, "subcomponents")){
-                var _subs = _flip_mod.subcomponents;
+                var _subs = _mod.subcomponents;
                 for (var s = 0;s<array_length(_subs);s++){
                     for (var ss=0;ss<array_length(_subs[s]);ss++){
                         if (sprite_exists(_subs[s][ss])){
-                            _subs[s][ss] = return_sprite_mirrored(_subs[s][ss], false);
+                            _flip_mod.subcomponents[s][ss] = return_sprite_mirrored(_subs[s][ss], false);
                         }
                     }
                 }           
              }
+             shader_reset();
             if (struct_exists(_flip_mod, "shadows")){
-                _flip_mod.shadows = return_sprite_mirrored(_flip_mod.shadows, false);
+                _flip_mod.shadows = return_sprite_mirrored(_mod.shadows, false);
             }
-            shader_reset();
             array_push(_new_mods, _flip_mod);
         }
     }
@@ -1422,7 +1422,7 @@ global.modular_drawing_items = [
     },
     {
         position : "right_arm",
-        armours : ["MK7 Aquila","Artificer Armour","MK6 Corvus"],
+        armours : ["MK7 Aquila","Artificer Armour","MK6 Corvus", "MK8 Errant"],
         sprite : spr_mk7_right_arm,
         shadows : spr_mk7_right_arm_shadow,
         body_types : [0], 
