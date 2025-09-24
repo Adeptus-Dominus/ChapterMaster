@@ -538,7 +538,7 @@ function ComplexSet(_unit) constructor {
 
 
 	use_shadow_uniform = shader_get_uniform(full_livery_shader, "use_shadow");
-	shadow_transform_uniform = shader_get_uniform(full_livery_shader, "shadow_transform");
+	shadow_transform_uniform = shader_get_uniform(full_livery_shader, "In_Shadow_Transform");
 
 	shadow_sampler = shader_get_sampler_index(full_livery_shader, "shadow_texture");
 	armour_shadow_sampler = shader_get_sampler_index(armour_texture, "shadow_texture");
@@ -549,7 +549,7 @@ function ComplexSet(_unit) constructor {
 	static texture_replace_col_uniform = shader_get_uniform(armour_texture, "replace_colour");
 
 	texture_use_shadow_uniform = shader_get_uniform(armour_texture, "use_shadow");
-	texture_shadow_transform_uniform = shader_get_uniform(armour_texture, "shadow_transform");
+	texture_shadow_transform_uniform = shader_get_uniform(armour_texture, "In_Shadow_Transform");
 	texture_mask_transform = shader_get_uniform(armour_texture, "mask_transform");
 
     if (!surface_exists(global.base_component_surface)) {
