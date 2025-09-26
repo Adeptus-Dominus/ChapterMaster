@@ -510,7 +510,6 @@ function planet_selection_action(){
 	        if (mouse_distance_less(159+(i*41),287, 22)){
 	            obj_controller.selecting_planet=i+1;
 			    if (p_data.planet != obj_controller.selecting_planet){
-			    	p_data.mission = mission;
 			        delete p_data;
 			        p_data = new PlanetData(obj_controller.selecting_planet, target);
 			        buttons_selected = false;
