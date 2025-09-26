@@ -8,8 +8,6 @@ function scr_hit(x1=0, y1=0, x2=0, y2=0) {
 	} else {
 		return point_in_rectangle(mouse_consts[0],mouse_consts[1],x1, y1, x2, y2);
 	}
-	return false;
-
 }
 
 function scr_hit_relative(x1, relative = [0,0]){
@@ -185,9 +183,11 @@ function mouse_button_held(_button = mb_left) {
 }
 
 function return_mouse_consts(){
+	var mouse_const_x;
+	var mouse_const_y;
 	if (event_number==ev_gui){
-		var mouse_const_x = device_mouse_x_to_gui(0);
-		var mouse_const_y = device_mouse_y_to_gui(0);
+		mouse_const_x = device_mouse_x_to_gui(0);
+		mouse_const_y = device_mouse_y_to_gui(0);
 	} else {
 		mouse_const_x = mouse_x;
 		mouse_const_y = mouse_y;

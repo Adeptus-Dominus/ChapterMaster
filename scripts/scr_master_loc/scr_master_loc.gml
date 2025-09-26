@@ -1,13 +1,15 @@
 function scr_master_loc() {
 
-	var lick,good;lick="";good=true;
+	var lick="";
+	var good=true;
+	var co=0;
+	var v=0;
+	var unit;
 
-	var co, v, unit;
-	co=0;v=0;
-
-	repeat(3600){
+	for(var i=0; i<3600; i++){
 	    if (good=true){
-	        if (co<11){v+=1;
+	        if (co<11){
+				v+=1;
 	            if (v>300){co+=1;v=1;/*show_message("mahreens at the start of company "+string(co)+" is equal to "+string(info_mahreens));*/}
 	            if (co>10) then good=false;
 	            if (good=true){
@@ -27,9 +29,4 @@ function scr_master_loc() {
 	        }
 	    }
 	}
-
-
-
-
-
 }
