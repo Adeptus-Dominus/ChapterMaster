@@ -193,6 +193,41 @@ function load_vis_set_to_global(directory, data) {
 
 function set_up_visual_overides(){
     var _mods = global.modular_drawing_items;
+    static flip_components = {
+        "right_leg" : "left_leg",
+        "left_leg"  : "right_leg",
+
+        "right_shin" : "left_shin",
+        "left_shin"  : "right_shin",
+
+        "right_knee" : "left_knee",
+        "left_knee"  : "right_knee",
+
+        "right_trim" : "left_trim",
+        "left_trim"  : "right_trim",
+
+        "right_arm" : "left_arm",
+        "left_arm"  : "right_arm",
+
+        "right_pauldron_icons" : "left_pauldron_icons",
+        "left_pauldron_icons"  : "right_pauldron_icons",
+
+        "right_pauldron_base" : "left_pauldron_base",
+        "left_pauldron_base"  : "right_pauldron_base",
+
+        "right_pauldron_embeleshments" : "left_pauldron_embeleshments",
+        "left_pauldron_embeleshments"  : "right_pauldron_embeleshments",
+
+        "right_pauldron_hangings" : "left_pauldron_hangings",
+        "left_pauldron_hangings"  : "right_pauldron_hangings",
+
+        "right_eye" : "left_eye",
+        "left_eye"  : "right_eye",
+
+        "right_weapon" : "left_weapon",
+        "left_weapon"  : "right_weapon",
+    };
+
     for (var i=0;i<array_length(_mods);i++){
         var _item = _mods[i];
         if (struct_exists(_item, "overides")){
@@ -263,7 +298,62 @@ function set_up_visual_overides(){
             }
         }
     }
+
+    var _new_mods = [];
+    for (var i=0;i<array_length(_mods);i++){
+        var _mod = _mods[i];
+        if (struct_exists(_mod, "flip") && struct_exists(flip_components, _mod.position)){
+            var _flip_mod = variable_clone(_mod);
+            _flip_mod.position = flip_components[$ _flip_mod.position];
+            if (struct_exists(_flip_mod, "prevent_others")) {
+                if (struct_exists(_flip_mod, "ban")) {
+                    for (var b = 0; b < array_length(_flip_mod.ban); b++) {
+                        var _ban_pos = _flip_mod.ban[b];
+                        if (struct_exists(flip_components,_ban_pos)){
+                            _flip_mod.ban[b] = flip_components[$ _ban_pos];
+                        }
+                    }
+                }               
+            }
+            if (struct_exists(_flip_mod, "overides")) {
+               var _overides_name = struct_get_names(_flip_mod.overides);
+               for (var o=0;o<array_length(_overides_name);o++){
+                    if (struct_exists(flip_components, _overides_name[o])){
+                        var _flip = flip_components[$ _overides_name[o]];
+                        _flip_mod.overides[$ _flip] = variable_clone(_mod.overides[$ _overides_name[o]])
+
+                        struct_remove(_flip_mod.overides, _overides_name[o]);
+                    }
+               }
+            }
+            shader_set(right_left_swap_shader);
+
+            _flip_mod.sprite = return_sprite_mirrored(_mod.sprite, false);
+
+
+             if (struct_exists(_flip_mod, "subcomponents")){
+                var _subs = _mod.subcomponents;
+                for (var s = 0;s<array_length(_subs);s++){
+                    for (var ss=0;ss<array_length(_subs[s]);ss++){
+                        if (sprite_exists(_subs[s][ss])){
+                            _flip_mod.subcomponents[s][ss] = return_sprite_mirrored(_subs[s][ss], false);
+                        }
+                    }
+                }           
+             }
+             shader_reset();
+            if (struct_exists(_flip_mod, "shadows")){
+                _flip_mod.shadows = return_sprite_mirrored(_mod.shadows, false);
+            }
+            array_push(_new_mods, _flip_mod);
+        }
+    }
+
+    for (var i=0;i<array_length(_new_mods);i++){
+        array_push(_mods, _new_mods[i]);
+    }
 }
+
 global.modular_drawing_items = [
     {
         sprite : spr_purity_seal,
@@ -386,18 +476,6 @@ global.modular_drawing_items = [
         body_types :[0],
         position : "crest",
     },
-
-    {
-        cultures : ["Cthonian", "Gothic"],
-        sprite : spr_chap_trim_left,
-        body_types :[0],
-        position : "left_trim",
-        max_saturation : 80,
-        exp : {
-            scale : true,
-            exp_scale_max : 300,
-        }
-    },
     {
         cultures : ["Cthonian", "Gothic"],
         sprite : spr_chap_trim_right,
@@ -407,19 +485,15 @@ global.modular_drawing_items = [
         exp : {
             scale : true,
             exp_scale_max : 300,
-        }        
-    },
-    {
-        sprite : spr_chap_trim_left,
-        body_types :[0],
-        position : "left_trim",
-        role_type : [SPECIALISTS_CHAPLAINS],
+        },
+        flip : true,        
     },
     {
         sprite : spr_chap_trim_right,
         body_types :[0],
         position : "right_trim",
         role_type : [SPECIALISTS_CHAPLAINS],
+        flip : true,        
     },
 
     {
@@ -860,65 +934,34 @@ global.modular_drawing_items = [
         armours : ["MK4 Maximus"]
     }, 
     {
-        sprite : spr_mk7_complex_left_pauldron,
-        body_types :[0],
-        position : "left_pauldron_base",
-        shadows : spr_mk7_complex_left_pauldron_shadow,
-    } ,
-    {
         sprite : spr_mk7_complex_right_pauldron,
         body_types :[0],
         position : "right_pauldron_base",
         shadows : spr_mk7_complex_right_pauldron_shadow,
+        flip : true,
     },
-    {
-        cultures : ["Cthonian"],
-        max_saturation : 30,
-        sprite : spr_left_pauldron_chainmail,
-        body_types :[0],
-        position : "left_pauldron_base",
-    } ,
     {
         cultures : ["Cthonian"],
         max_saturation : 30,
         sprite : spr_right_pauldron_chainmail,
         body_types :[0],
         position : "right_pauldron_base",
-    },
-    {
-        sprite : spr_bonding_studs_left,
-        body_types :[0],
-        position : "left_pauldron_embeleshments",
-        max_saturation : 15,
-        armours_exclude : ["MK5 Heresy", "MK6 Corvus"]
+        flip : true,        
     },
     {
         sprite : spr_bonding_studs_right,
         body_types :[0],
         position : "right_pauldron_embeleshments",
         max_saturation : 15,
-        armours_exclude : ["MK5 Heresy", "MK6 Corvus"]
-    },
-    {
-        sprite : spr_bonding_studs_left,
-        body_types :[0],
-        position : "left_pauldron_embeleshments",
-        armours : ["MK5 Heresy", "MK6 Corvus"]
+        armours_exclude : ["MK5 Heresy", "MK6 Corvus"],
+        flip : true,        
     },
     {
         sprite : spr_bonding_studs_right,
         body_types :[0],
         position : "right_pauldron_embeleshments",
-        armours : ["MK5 Heresy", "MK6 Corvus"]
-    },
-    {
-        cultures : ["Cthonian"],
-        sprite : spr_pauldron_spikes_left,
-        body_types :[0],
-        position : "left_pauldron_embeleshments",
-        max_saturation : 30,
-        traits : ["blunt", "cunning", "brute"],
-        allow_either : ["cultures", "traits"],
+        armours : ["MK5 Heresy", "MK6 Corvus"],
+        flip : true,        
     },
     {
         cultures : ["Cthonian"],
@@ -928,7 +971,7 @@ global.modular_drawing_items = [
         max_saturation : 30,
         traits : ["blunt", "cunning", "brute"],
         allow_either : ["cultures", "traits"],
-
+        flip : true,        
     },
     {
         cultures : ["Wolf Cult"],
@@ -986,27 +1029,15 @@ global.modular_drawing_items = [
         body_types :[0],
         position : "right_pauldron_hangings",
         max_saturation : 20,
+        flip : true,        
     },
-    {
-        cultures : ["Feral", "Wolf Cult"],
-        sprite : spr_left_pauldron_fur_hanging,
-        body_types :[0],
-        position : "left_pauldron_hangings",
-        max_saturation : 20,
-    }, 
     {
         cultures : ["Feral", "Wolf Cult"],
         sprite : spr_term_right_fur_hanging,
         body_types :[2],
         position : "right_pauldron_hangings",
         max_saturation : 20,
-    },
-    {
-        cultures : ["Feral", "Wolf Cult"],
-        sprite : spr_term_left_fur_hanging,
-        body_types :[2],
-        position : "left_pauldron_hangings",
-        max_saturation : 20,
+        flip : true,        
     },
     {
         cultures : ["Wolf Cult"],
@@ -1090,31 +1121,12 @@ global.modular_drawing_items = [
         shadows : spr_mk8_gorgot_shadows
     },
     {
-        position: "left_shin",
-        body_types: [ 2],
-        sprite: spr_indomitus_left_shin,
-        armours : ["Terminator Armour"],
-        //shadows : spr_indomitus_left_shin_shadow
-    }, 
-    {
         position: "right_shin",
         body_types: [2],
         sprite: spr_indomitus_right_shin,
         armours : ["Terminator Armour"],
        // shadows : spr_indomitus_left_shin_shadow
-    }, 
-    {
-        cultures : ["Cthonian"],
-        traits : ["blunt", "cunning", "brute"],
-        allow_either : ["cultures", "traits"],
-        position: "left_shin",
-        body_types: [0],
-        sprite: spr_left_shin_spikes,
-        max_saturation : 80,
-        exp : {
-            scale : true,
-            exp_scale_max : 300,
-        }
+       flip : true,        
     }, 
     {
         position: "right_shin",
@@ -1127,15 +1139,9 @@ global.modular_drawing_items = [
         exp : {
             scale : true,
             exp_scale_max : 300,
-        }
+        },
+        flip : true,        
 
-    }, 
-    {
-        position: "left_knee",
-        body_types: [ 2],
-        sprite: spr_indomitus_left_knee_crux,
-        max_saturation : 30,
-        armours : ["Terminator Armour"],
     }, 
     {
         position: "right_knee",
@@ -1143,6 +1149,7 @@ global.modular_drawing_items = [
         sprite: spr_indomitus_right_knee_crux,
         armours : ["Terminator Armour"],
         max_saturation : 30,
+        flip : true,        
     },
     {
         position : "right_eye",
@@ -1150,26 +1157,9 @@ global.modular_drawing_items = [
         body_types: [ 2],
         body_parts :{
             "right_eye" : "bionic",
-        }
-    },
-    {
-        position : "left_eye",
-        sprite: spr_indomitus_left_eye_bionic,
-        body_types: [ 2],
-        body_parts :{
-            "left_eye" : "bionic",
-        }
-    },
-    {
-        position : "left_leg",
-        sprite: spr_indomitus_left_leg_bionic,
-        body_types: [ 2],
-        body_parts :{
-            "left_leg" : "bionic",
         },
-        prevent_others : true,
-        ban : ["left_knee","knees"],
-    }, 
+        flip : true,        
+    },
     {
         position : "right_leg",
         sprite: spr_indomitus_right_leg_bionic,
@@ -1179,17 +1169,8 @@ global.modular_drawing_items = [
         },
         prevent_others : true,
         ban : ["right_knee","knees"],
+        flip : true,        
     },
-    {
-        position : "left_leg",
-        sprite: spr_bionic_leg_left,
-        body_types: [ 0],
-        body_parts :{
-            "left_leg" : "bionic",
-        },
-        prevent_others : true,
-        ban : ["left_knee","knees"],
-    }, 
     {
         position : "right_leg",
         sprite: spr_bionic_leg_right,
@@ -1199,6 +1180,7 @@ global.modular_drawing_items = [
         },
         prevent_others : true,
         ban : ["right_knee","knees"],
+        flip : true,        
     }, 
     {
         position : "right_eye",
@@ -1206,16 +1188,9 @@ global.modular_drawing_items = [
         body_types: [0],
         body_parts :{
             "right_eye" : "bionic",
-        }
+        },
+        flip : true,        
     },
-    {
-        position : "left_eye",
-        sprite: spr_bionic_left_eyes,
-        body_types: [0],
-        body_parts :{
-            "left_eye" : "bionic",
-        }
-    }, 
     {
         position : "forehead",
         sprite: spr_helm_decorations,
@@ -1229,22 +1204,14 @@ global.modular_drawing_items = [
         }
     },
     {
-        position : "left_arm",
-        sprite : spr_cata_left_arm,
-        body_types:[2],
-        armours : ["Cataphractii"],
-        subcomponents : [
-            [spr_blank,spr_cata_left_armtrim]
-        ]
-    },
-    {
         position : "right_arm",
         sprite : spr_cata_right_arm,
         body_types:[2],
         armours : ["Cataphractii"],
         subcomponents : [
             [spr_blank,spr_cata_right_armtrim]
-        ]
+        ],
+        flip : true,        
     }, 
     {
         position : "armour",
@@ -1277,14 +1244,8 @@ global.modular_drawing_items = [
         body_types:[2],
         armours : ["Cataphractii"],
         max_saturation : 50,
+        flip : true
     }, 
-    {
-        position : "left_knee",
-        sprite : spr_cata_left_knee,
-        body_types:[2],
-        armours : ["Cataphractii"],
-        max_saturation : 50,
-    },
     {
         position : "right_leg",
         sprite : spr_cata_right_leg,
@@ -1292,17 +1253,9 @@ global.modular_drawing_items = [
         armours : ["Cataphractii"],
         subcomponents : [
             [spr_blank,spr_cata_heavy_toe_right],
-        ]
-    }, 
-    {
-        position : "left_leg",
-        sprite : spr_cata_left_leg,
-        body_types:[2],
-        armours : ["Cataphractii"],
-        subcomponents : [
-            [spr_blank,spr_cata_heavy_toe_left],
         ],
-    },
+        flip : true
+    }, 
     {
         position : "right_pauldron_embeleshments",
         sprite : spr_cata_shoulder_hanging_leather_right,
@@ -1320,15 +1273,7 @@ global.modular_drawing_items = [
         subcomponents : [
             [spr_blank, spr_cata_shoulder_hanging_leather_right_tips],
         ],
-    },
-    {
-        position : "left_pauldron_embeleshments",
-        sprite : spr_cata_shoulder_hanging_leather_left,
-        body_types:[2],
-        armours : ["Cataphractii"],
-        subcomponents : [
-            [spr_blank, spr_cata_shoulder_hanging_leather_left_tips],
-        ],
+        flip : true
     },
     {
 		
@@ -1342,26 +1287,8 @@ global.modular_drawing_items = [
 			"tabbard": 
 			spr_cata_tabbard_mail
         },
+        flip : true
 	},
-	
-    {
-		
-        position : "left_pauldron_embeleshments",
-        sprite : spr_cata_shoulder_hanging_mail_left,
-        body_types:[2],
-        armours : ["Cataphractii"],
-    },
-    {
-        sprite : spr_blank,
-        body_types :[2],
-        position : "left_trim",
-        armours : ["Cataphractii"],
-        subcomponents : [
-            [spr_blank, spr_cata_left_trim],
-            [spr_blank, spr_cata_left_trim_2],
-            [spr_blank, spr_cata_left_trim_1],
-        ],
-    }, 
     {
         sprite : spr_blank,
         body_types :[2],
@@ -1372,6 +1299,7 @@ global.modular_drawing_items = [
             [spr_blank, spr_cata_right_trim_2],
             [spr_blank, spr_cata_right_trim_1],
         ],
+        flip : true
     },
     {
         position : "foreground_item",
@@ -1456,18 +1384,8 @@ global.modular_drawing_items = [
         shadows : spr_techmarine_right_leg_shadow,
         allow_either : ["traits", "role_type"],
         max_saturation : 50,
+        flip : true
     }, 
-    {
-        position : "left_leg",
-        sprite : spr_techmarine_left_leg, 
-        body_types : [0], 
-        armours : ["MK5 Heresy", "MK6 Corvus", "MK7 Aquila", "MK8 Errant", "Artificer Armour"],
-        traits : ["tinkerer", "flesh_is_weak"],
-        role_type : [SPECIALISTS_TECHS],
-        shadows : spr_techmarine_left_leg_shadow,
-        allow_either : ["traits", "role_type"],
-        max_saturation : 50,
-    } ,
     {
         position : "chest_variants",
         body_types : [0], 
@@ -1478,6 +1396,39 @@ global.modular_drawing_items = [
         allow_either : ["traits", "role_type"],        
     },
 //                  "head": spr_techmarine_head,
+    {
+        position : "right_arm",
+        armours : ["MK3 Iron Armour","Artificer Armour","MK5 Heresy"],
+        sprite : spr_mk3_right_arm,
+        body_types : [0], 
+        flip : true,
+        shadows : spr_mk3_right_arm_shadow
+    },
+    {
+        position : "right_arm",
+        armours : ["MK5 Heresy","Artificer Armour"],
+        sprite : spr_mk5_right_arm,
+        body_types : [0], 
+        flip : true,
+        shadows : spr_mk5_right_arm_shadow
+    },
+    {
+        position : "right_arm",
+        armours : ["MK4 Maximus","Artificer Armour"],
+        sprite : spr_mk4_right_arm,
+        shadows : spr_mk4_right_arm_shadow,
+        body_types : [0], 
+        flip : true,
+    },
+    {
+        position : "right_arm",
+        armours : ["MK7 Aquila","Artificer Armour","MK6 Corvus", "MK8 Errant"],
+        sprite : spr_mk7_right_arm,
+        shadows : spr_mk7_right_arm_shadow,
+        body_types : [0], 
+        flip : true,
+    }
+
 ];
 
 
