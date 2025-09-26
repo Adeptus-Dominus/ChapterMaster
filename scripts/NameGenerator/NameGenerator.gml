@@ -28,10 +28,14 @@ function NameGenerator() constructor {
 		var result = {};
 
 		for (var i = 0; i < array_length(json_names_property_names); i++) {
-			if (load_result.is_success) {
-				result[$ json_names_property_names[i]] = load_result.values[$ json_names_property_names[i]];
+			var _property_name = json_names_property_names[i];
+			if (!is_string(_property_name)){
+				continue;
+			}
+			if (load_result.is_success && struct_exists(load_result.values, _property_name)) {
+				result[$ _property_name] = load_result.values[$ _property_name];
 			} else {
-				result[$ json_names_property_names[i]] = array_create(1, $"{json_names_property_names[i]} 1");
+				result[$ _property_name] = array_create(1, $"{_property_name} 1");
 			}
 		}
 
