@@ -1171,7 +1171,7 @@ function PlanetData(planet, system) constructor{
         var company_data = obj_controller.company_data;
         var squad_index = company_data.company_squads[company_data.cur_squad];
         var current_squad=obj_ini.squads[squad_index];
-        current_squad.set_location(loading_name,0,planet);
+        current_squad.set_location(system.name,0,planet);
         current_squad.assignment={
             type:mission,
             location:system.name,
