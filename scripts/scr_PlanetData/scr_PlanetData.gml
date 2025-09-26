@@ -1171,16 +1171,17 @@ function PlanetData(planet, system) constructor{
         var company_data = obj_controller.company_data;
         var squad_index = company_data.company_squads[company_data.cur_squad];
         var current_squad=obj_ini.squads[squad_index];
-        current_squad.set_location(loading_name,0,planet);
+        current_squad.set_location(system.name,0,planet);
+        var _mission = obj_star_select.mission;
         current_squad.assignment={
-            type:mission,
+            type:_mission,
             location:system.name,
             ident:planet,
         };
         var operation_data = {
             type:"squad", 
             reference:squad_index,
-            job:mission,
+            job:_mission,
             task_time : 0
         };
         add_operatives(operation_data)
@@ -1197,17 +1198,18 @@ function PlanetData(planet, system) constructor{
 
     static planet_selection_logic = function(){
         var planet_is_allies = scr_is_planet_owned_by_allies(system, planet);
-        var garrison_issue = (!planet_is_allies || system.p_pdf[planet]<1);
+        var garrison_issue = (!planet_is_allies || pdf<=0);
+        var _mission = obj_star_select.mission;
 
         var _loading =  obj_star_select.loading;
         var garrison_assignment = obj_controller.view_squad && _loading;
-        if (garrison_assignment && (garrison_issue && mission=="garrison")){
+        if (garrison_assignment && (garrison_issue && _mission=="garrison")){
             planet_draw = c_red;
             tooltip_draw("Can't garrison on non-friendly planet or planet with no friendly PDF", 150);                  
         }
         if (mouse_check_button_pressed(mb_left)){
             if (garrison_assignment){
-                if (!(garrison_issue && mission=="garrison")){
+                if (!(garrison_issue && _mission=="garrison")){
                     create_planet_garrison();
                     exit;
                 }
