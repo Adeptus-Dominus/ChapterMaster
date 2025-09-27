@@ -1199,7 +1199,7 @@ function PlanetData(planet, system) constructor{
     static planet_selection_logic = function(){
         var planet_is_allies = scr_is_planet_owned_by_allies(system, planet);
         var garrison_issue = (!planet_is_allies || pdf<=0);
-        var _mission = obj_star_select.mission;
+        var _mission = struct_exists(obj_star_select,"mission") ? obj_star_select.mission : "";
 
         var _loading =  obj_star_select.loading;
         var garrison_assignment = obj_controller.view_squad && _loading;
