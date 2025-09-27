@@ -388,7 +388,7 @@ try {
 
     
                         reset_popup_options();
-                        scr_event_log("","Inquisition Mission Completed: Your Astartes have sealed the Necron Tomb on "+string(star.name)+" "+string(scr_roman(planet))+".");
+                        scr_event_log("",$"Inquisition Mission Completed: Your Astartes have sealed the Necron Tomb on {star} {scr_roman(planet)}.");
                         scr_gov_disp(star.name,planet,choose(1,2,3,4,5));
                         
                         if (!instance_exists(obj_temp8)){

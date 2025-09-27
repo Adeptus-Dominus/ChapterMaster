@@ -517,16 +517,7 @@ function scr_enemy_ai_e() {
             }
         }
         if (p_player[run] > 0 && has_problem_planet(run,"necron")) {
-            log_message($"player on planet with necron mission {name} planet: {run}")
-            var have_bomb;
-            have_bomb = scr_check_equip("Plasma Bomb", name, run, 0);
-            log_message($"have bomb? {have_bomb} ")
-            if (have_bomb > 0) {
-                var tixt;
-                tixt = "Your marines on " + planet_numeral_name(run);
-                tixt += " are prepared and ready to enter the Necron Tombs.  A Plasma Bomb is in tow.";
-                scr_popup("Necron Tomb Excursion", tixt, "necron_cave", "blarg|" + string(name) + "|" + string(run) + "|999|");
-            }
+            setup_necron_tomb_raid();
         }
         if (p_player[run] > 0) and(force_count > 0) {
             for (force = 2; force < 14; force++) {
