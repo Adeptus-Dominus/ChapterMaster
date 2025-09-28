@@ -119,8 +119,10 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 			spli = 0;
 			amm = 6;
 			break;
+		default:
+	        show_debug_message("Incorrect name: " + string(name) + " line 123 script scr_en_weapon.gml");
+	        break;
 	}
-	
 	switch(obj_ncombat.enemy){
 		case 3:
 			switch(name){
@@ -142,6 +144,9 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 					rang = 1;
 					spli = 3;
 					break;
+				default:
+			        show_debug_message("Incorrect name: " + string(name) + " line 149 script scr_en_weapon.gml");
+			        break;
 			}
 			break;
 		case 6:
@@ -244,7 +249,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 					rang = 1;
 					spli = 3;
 					break;
-				case "Scorpian's Claw":
+				case "Scorpian's Claw": case "Scorpion's Claw":
 					atta = 150;
 					arp = 1;
 					rang = 1;
@@ -363,6 +368,9 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 					rang = 20;
 					spli = 3;
 					break;
+				default:
+			        show_debug_message("Incorrect name: " + string(name) + " line 372 script scr_en_weapon.gml");
+			        break;
 			}
 			break;
 		case 7:
@@ -464,6 +472,9 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 					rang = 15;
 					spli = 3;
 					break;
+				default:
+			        show_debug_message("Incorrect name: " + string(name) + " line 476 script scr_en_weapon.gml");
+			        break;
 			}
 			break;
 		case 8:
@@ -533,6 +544,9 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 					arp = 1;
 					rang = 20;
 					break;
+				default:
+			        show_debug_message("Incorrect name: " + string(name) + " line 548 script scr_en_weapon.gml");
+			        break;
 			}
 			break;
 		case 9:
@@ -632,6 +646,9 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 					rang = 2;
 					amm = 1;
 					break;
+				default:
+			        show_debug_message("Incorrect name: " + string(name) + " line 650 script scr_en_weapon.gml");
+			        break;
 			}
 			break;
 		case 10: case 2: case 5: case 1:
@@ -908,6 +925,9 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 					rang = round(random_range(1, 6));
 					spli = choose(0, 1);
 					break;
+				default:
+			        show_debug_message("Incorrect name: " + string(name) + " line 929 script scr_en_weapon.gml");
+			        break;
 			}
 			break;
 		case 13: // Some of these, like the Gauss Particle Cannon and Particle Whip, used to be more than twice as strong.
@@ -994,7 +1014,10 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 					arp = 1;
 					rang = 6.1;
 					spli = 3;
-					break;
+					break
+				default:
+			        show_debug_message("Incorrect name: " + string(name) + " line 1019 script scr_en_weapon.gml");
+			        break;
 			}
 			break;
 	}
@@ -1013,8 +1036,8 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 
 	if (obj_ncombat.enemy = 1) {
 		// more attack crap here
-		if (rang <= 1) or(floor(rang) != rang) { atta = round(atta * dudes_attack[group]); }
-		if (rang > 1) and(floor(rang) == rang) { atta = round(atta * dudes_ranged[group]); }
+		if (rang <= 1) || (floor(rang) != rang) { atta = round(atta * dudes_attack[group]); }
+		if (rang > 1) && (floor(rang) == rang) { atta = round(atta * dudes_ranged[group]); }
 	}
 
 	if (!is_man) { amm = -1; }
