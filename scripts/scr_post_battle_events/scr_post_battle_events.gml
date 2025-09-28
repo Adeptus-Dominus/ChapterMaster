@@ -110,7 +110,7 @@ function hunt_fallen_battle_aftermath(){
 
 
 
-function spacce_hulk_explore_battle_aftermath(){
+function space_hulk_explore_battle_aftermath(){
 	if (defeat=0 hulk_treasure>0){
 	    var shi=0,loc="";
 
