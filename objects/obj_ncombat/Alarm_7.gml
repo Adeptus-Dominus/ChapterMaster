@@ -174,8 +174,8 @@ try {
             if (!instance_exists(obj_turn_end)){
                 scr_event_log("","Enemy Leader Assassinated: Chaos Lord");
                 var _pop = instance_create(0,0,obj_popup);
-                _pop.image = study2a"";
-                _pop.title = study2a"Chaos Lord Killed";
+                _pop.image = "";
+                _pop.title = "Chaos Lord Killed";
                 _pop.text = "Chaos Lord "+string(obj_controller.faction_leader[eFACTION.Chaos])+" has been slain in combat.  Without his leadership the various forces of Chaos in the sector will crumble apart and disintegrate from infighting.  Sector "+string(obj_ini.sector_name)+" is no longer as threatened by the forces of Chaos.";
             }
             
@@ -336,14 +336,14 @@ try {
     else if (defeat=0) and (enemy=9) and (battle_special="tyranid_org"){
         if (captured_gaunt>1){
             _pop = instance_create(0,0,obj_popup);
-            _pop.image = study2a"inquisition";
-            _pop.title = study2a"Inquisition Mission Completed";
+            _pop.image = "inquisition";
+            _pop.title = "Inquisition Mission Completed";
             _pop.text = "You have captured several Gaunt organisms.  The Inquisitor is pleased with your work, though she notes that only one is needed- the rest are to be purged.  It will be stored until it may be retrieved.  The mission is a success.";
         }
         if (captured_gaunt=1){
             _pop = instance_create(0,0,obj_popup);
-            _pop.image = study2a"inquisition";
-            _pop.title = study2a"Inquisition Mission Completed";
+            _pop.image = "inquisition";
+            _pop.title = "Inquisition Mission Completed";
             _pop.text = "You have captured a Gaunt organism- the Inquisitor is pleased with your work.  The Tyranid will be stored until it may be retrieved.  The mission is a success.";
         }
     }
@@ -364,8 +364,8 @@ try {
                 }
             }
             var _pop = instance_create(0,0,obj_popup);
-            _pop.image = study2a"";
-            _pop.title = study2a"Ship Destroyed";
+            _pop.image = "";
+            _pop.title = "Ship Destroyed";
             _pop.text=$"A handful of loyalist {global.chapter_name} make a fighting retreat to the engine of the vessel, '"+string(obj_ini.ship[battle_id])+"', and then overload the main reactor.  Your ship explodes in a brilliant cloud of fire.";
             scr_event_log("red",$"A handful of loyalist {global.chapter_name} overload the main reactor of your vessel '"+string(obj_ini.ship[battle_id])+"'.");
             _pop.mission="loyalist_destroy_ship";
@@ -395,7 +395,7 @@ try {
                 obj_turn_end.combating=0;// obj_turn_end.alarm[1]=1;
             }
             var pip;pip = instance_create(0,0,obj_popup);
-            pip.title = study2a"Enemies Vanquished";
+            pip.title = "Enemies Vanquished";
             pip.text = "Not only have you killed the Chaos Lord, "+string(obj_controller.faction_leader[eFACTION.Chaos])+", but also all of your battle brothers that questioned your rule.  As you stand, alone, among the broken corpses of your enemies you begin to question what exactly it is that you accomplished.  No matter the results, you feel as though your actions have been noticed.";
         }
     }
@@ -411,7 +411,7 @@ try {
                 obj_turn_end.combating=0;// obj_turn_end.alarm[1]=1;
             }
             var pip = instance_create(0,0,obj_popup);
-            pip.title = study2a"Survived";
+            pip.title = "Survived";
             pip.text = "You and the rest of your battle brothers fight your way out of the catacombs, back through the tunnel where you first entered.  By the time you manage it your forces are battered and bloodied and in desperate need of pickup.  The whole meeting was a bust- Chaos Lord "+string(obj_controller.faction_leader[eFACTION.Chaos])+" clearly intended to kill you and simply be done with it.";
         }
     
@@ -449,7 +449,7 @@ try {
                     obj_turn_end.combating=0;// obj_turn_end.alarm[1]=1;
                 }
                 var pip;pip = instance_create(0,0,obj_popup);
-                pip.title = study2a"Chaos Lord Killed";pip.text = "(Not completed yet- variable reward based on what chosen)";
+                pip.title = "Chaos Lord Killed";pip.text = "(Not completed yet- variable reward based on what chosen)";
             }
             with(obj_ground_mission){instance_destroy();}
         }
@@ -465,8 +465,8 @@ try {
                 if (i=battle_id){obj_ini.ship_hp[i]=-50;scr_recent("ship_destroyed",obj_ini.ship[i],i);}
             }
             var _pop = instance_create(0,0,obj_popup);
-            _pop.image = study2a"";
-            _pop.title = study2a"Ship Destroyed";
+            _pop.image = "";
+            _pop.title = "Ship Destroyed";
             _pop.text = "The daemon has slayed all of your marines onboard.  It works its way to the engine of the vessel, '"+string(obj_ini.ship[battle_id])+"', and then tears into the main reactor.  Your ship explodes in a brilliant cloud of fire.";
             scr_event_log("red","A daemon unbound from an Artifact wreaks havoc upon and destroys your vessel '"+string(obj_ini.ship[battle_id])+"'.");
             
@@ -501,8 +501,8 @@ try {
             if (!instance_exists(obj_turn_end)){
                 scr_event_log("","Enemy Leader Assassinated: Chaos Lord");
                 var _pop = instance_create(0,0,obj_popup);
-                _pop.image = study2a"";
-                _pop.title = study2a"Black Crusade Ended";
+                _pop.image = "";
+                _pop.title = "Black Crusade Ended";
                 _pop.text=$"The Chaos Lord {obj_controller.faction_leader[eFACTION.Chaos]} has been slain in combat.  Without his leadership the Black Crusade is destined to crumble apart and disintegrate from infighting.  Sector "+string(obj_ini.sector_name)+" is no longer at threat by the forces of Chaos.";
             }
         }

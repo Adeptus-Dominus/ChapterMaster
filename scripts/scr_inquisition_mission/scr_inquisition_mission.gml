@@ -31,10 +31,10 @@ function scr_inquisition_mission(event, forced_mission = -1){
     
 		var inquisition_missions =
 		[
-		INQUISITION_MISSION.purge,
-		INQUISITION_MISSION.inquisitor,
-		INQUISITION_MISSION.spyrer,
-		INQUISITION_MISSION.artifact
+    		INQUISITION_MISSION.purge,
+    		INQUISITION_MISSION.inquisitor,
+    		INQUISITION_MISSION.spyrer,
+    		INQUISITION_MISSION.artifact
 		];
 		
 		var found_sleeping_necrons = false;

@@ -111,7 +111,7 @@ function hunt_fallen_battle_aftermath(){
 
 
 function space_hulk_explore_battle_aftermath(){
-	if (defeat=0 hulk_treasure>0){
+	if (!defeat && hulk_treasure>0){
 	    var shi=0,loc="";
 
 	    var shiyp=instance_nearest(battle_object.x,battle_object.y,obj_p_fleet);

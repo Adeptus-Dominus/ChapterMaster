@@ -784,7 +784,7 @@ function necron_tomb_mission_start(){
 
 
 	title = $"Necron Tunnels : {pop_data.mission_stage}";
-	replace_options({
+	replace_options(
 		[ 
 			{
 				str1 : "Continue",
@@ -796,7 +796,7 @@ function necron_tomb_mission_start(){
 				method : instance_destroy,
 			}
 		]
-	})
+	)
 	image = "necron_tunnels_1";
 	text = "Your marines enter the massive tunnel complex, following the energy readings.  At first the walls are cramped and tiny, closing about them, but the tunnels widen at a rapid pace.";
 }

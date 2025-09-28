@@ -183,6 +183,7 @@ function scr_cheatcode(argument0) {
 							scr_inquisition_mission(EVENT.inquisition_mission);
 						break;
 					}
+					show_debug_message("inquisitor mission initiated");
 					break;
 				case "artifactpopulate":
 					with (obj_star) {
