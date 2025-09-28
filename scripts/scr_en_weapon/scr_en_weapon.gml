@@ -1036,8 +1036,8 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 
 	if (obj_ncombat.enemy = 1) {
 		// more attack crap here
-		if (rang <= 1) || (floor(rang) != rang) { atta = round(atta * dudes_attack[group]); }
-		if (rang > 1) && (floor(rang) == rang) { atta = round(atta * dudes_ranged[group]); }
+		if ((rang <= 1) || (floor(rang) != rang)) { atta = round(atta * dudes_attack[group]); }
+		if ((rang > 1) && (floor(rang) == rang)) { atta = round(atta * dudes_ranged[group]); }
 	}
 
 	if (!is_man) { amm = -1; }
@@ -1045,7 +1045,7 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 	var goody = 0;
 	var first = -1;
 	for(var b = 0; b < 30; b++) {
-		if (wep[b] == name) && (goody == 0) {
+		if ((wep[b] == name) && (goody == 0)) {
 			att[b] += atta * man_number;
 			apa[b] += arp * man_number;
 			range[b] = rang;
@@ -1053,10 +1053,10 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 			if (obj_ncombat.started == 0) { ammo[b] = amm; }
 			goody = 1;
 
-			if (wep_owner[b] != "") || (man_number > 1) { wep_owner[b] = "assorted"; }
-			if (wep_owner[b] == "") && (man_number == 1) { wep_owner[b] = man_type; }
+			if ((wep_owner[b] != "") || (man_number > 1)) { wep_owner[b] = "assorted"; }
+			if ((wep_owner[b] == "") && (man_number == 1)) { wep_owner[b] = man_type; }
 		}
-		if (wep[b] == "") && (first == -1) { first = b; }
+		if ((wep[b] == "") && (first == -1)) { first = b; }
 	}
 	if (goody == 0) {
 		wep[first] = name;
