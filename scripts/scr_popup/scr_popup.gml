@@ -20,8 +20,10 @@ function scr_popup(type, text, image, popup_special="") {
 
 	    pip.image=image;	
 	    if (is_struct(popup_special)){
-	    	show_debug_message(popup_special);
 	    	pip.pop_data = popup_special;
+            if (struct_exists(pip.pop_data , "options")){
+                pip.add_options(pip.pop_data.options);
+            }
 	    } else if(popup_special != ""){// this is only relevant for forcing missions through cheatcodes
 			      explode_script(popup_special,"|");
             pip.mission=string(explode[0]);

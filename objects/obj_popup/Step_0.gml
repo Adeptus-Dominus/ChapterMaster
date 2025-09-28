@@ -689,18 +689,6 @@ try {
 	else if (title == "Inquisitor Located") {
 		add_option(["Destroy their vessel",  "Hear them out"]);
 	}
-	else if (title == "Necron Tomb Excursion") {
-		add_option(["Begin the Mission",  "Not Yet"]);
-	}
-	else if (title == "Necron Tunnels : 1") {
-		add_option(["Continue",  "Return to the surface"]);
-	}
-	else if (title == "Necron Tunnels : 2") {
-		add_option(["Continue",  "Return to the surface"]);
-	}
-	else if (title == "Necron Tunnels : 3") {
-		add_option(["Continue",  "Return to the surface"]);
-	}
 
 	if ((title == "He Built It") && (array_length(options) == 0) && (string_count("submerged", text) == 0)) {
 		add_option(["Execute the heretic",  "Move him to the Penitorium", "I see no problem"]);

@@ -714,7 +714,7 @@ function increment_mission_completion(mission_data){
 		mission_data.completion = 0;
 	}
 	mission_data.completion++;
-	return (mission_data.completion/mission_data.required_months)*100;
+	return (mission_data.completion/mission_data.required_months) * 100;
 }
 //search problem data for a given and key and iff applicable value on that key
 //TODO increase filtering and search options
@@ -724,7 +724,7 @@ function problem_has_key_and_value(planet, problem,key,value="",star="none"){
 		var problem_data = p_problem_other_data[planet][problem];
 		if (struct_exists(problem_data, key)){
 			if (value==""){
-				has_data=true
+				has_data=true;
 			} else if( problem_data[$ key] == value){
 				has_data=true;
 			}
@@ -747,11 +747,14 @@ function setup_necron_tomb_raid(planet){
         var tixt;
         tixt = "Your marines on " + planet_numeral_name(run);
         tixt += " are prepared and ready to enter the Necron Tombs.  A Plasma Bomb is in tow.";
+        var _number = instance_exists(obj_turn_end) ? obj_turn_end.current_popup : 0;
         var _pop_data = {
             mission : "blarg",
             loc : name,
             planet : planet, 
             estimate : 999,
+            number : _number,
+            mission_stage :1,
             options : [
                 {
                     str1 : "Begin the Mission",
@@ -771,18 +774,16 @@ function necron_tomb_mission_start(){
 	instance_activate_all();
 	var player_forces, penalty, roll;
 	mission_star = star_by_name(pop_data.loc);
-	planet = popdata.planet;
+	planet = pop_data.planet;
 	player_forces = 0;
 	penalty = 0;
 	roll = floor(random(100)) + 1;
-	mission_stage = 1;
-
 
 	player_forces = mission_star.p_player[planet];
 	cooldown = 30;
 
 
-	title = $"Necron Tunnels : {mission_stage}";
+	title = $"Necron Tunnels : {pop_data.mission_stage}";
 	replace_options({
 		[ 
 			{
@@ -807,8 +808,6 @@ function necron_tomb_mission_sequence(){
 	battle = 0;
 	instance_activate_all();
 
-	obj_temp8.popup = obj_turn_end.current_popup;
-
 	// SMALL TEAM OF MARINES
 	if (player_forces > 6) {
 		penalty = 10;
@@ -831,16 +830,16 @@ function necron_tomb_mission_sequence(){
 
 	// Result
 	if (roll <= 60) {
-		mission_stage += 1;
-		title = $"Necron Tunnels : {obj_temp8.stage}";
+		pop_data.mission_stage += 1;
+		title = $"Necron Tunnels : {pop_data.mission_stage}";
 
-		if (mission_stage == 2) {
+		if (pop_data.mission_stage == 2) {
 			image = "necron_tunnels_2";
 			text = "The energy readings are much stronger, now that your marines are deep inside the tunnels.  What was once cramped is now luxuriously large, the tunnel ceiling far overhead decorated by stalactites.";
-		} else if (mission_stage == 3) {
+		} else if (pop_data.mission_stage == 3) {
 			image = "necron_tunnels_3";
 			text = "After several hours of descent the entrance to the Necron Tomb finally looms ahead- dancing, sickly green light shining free.  Your marine confirms that the Plasma Bomb is ready.";
-		} else if (mission_stage >= 4) {
+		} else if (pop_data.mission_stage >= 4) {
 			image = "";
 			title = "Inquisition Mission Completed";
 			text = "Your marines finally enter the deepest catacombs of the Necron Tomb.  There they place the Plasma Bomb and arm it.  All around are signs of increasing Necron activity.  With half an hour set, your men escape back to the surface.  There is a brief rumble as the charge goes off, your mission a success.";
@@ -931,7 +930,8 @@ function necron_tomb_mission_sequence(){
 		obj_ncombat.enemy = 13;
 		obj_ncombat.threat = 1;
 		obj_ncombat.formation_set = 1;
-
+		obj_ncombat.battle_mission = "necron_tomb_excursion";
+		obj_ncombat.battle_data = pop_data;
 		if (battle == 1) {
 			obj_ncombat.battle_special = "wraith_attack";
 		} else if (battle == 2) {
@@ -953,6 +953,60 @@ function necron_tomb_mission_sequence(){
 }
 
 
-function mission_rewards(){
+/// @mixin obj_ncombat
+function necron_tomb_raid_post_battle_sequence(){
+	if (!string_count("wake",battle_special)){
+		if (defeat=1) {
+		    obj_controller.combat=0;
+		    obj_controller.cooldown=10;
+		    obj_turn_end.alarm[1]=4;
+		}
 
+		else if (defeat=0){
+		    battle_data.mission_stage+=1;
+		    obj_controller.combat=0;
+		    var pip=instance_create(0,0,obj_popup);
+		    pip.pop_data = battle_data;
+
+		    with (pip){
+		    	necron_tomb_mission_start();
+		    	necron_tomb_mission_sequence();
+		    	number = pop_data.number;
+		    }
+		}
+	} else {
+        var pip=instance_create(0,0,obj_popup);
+        with(pip){
+            title="Necron Tomb Awakens";
+            image="necron_army";
+            if (obj_ncombat.defeat==0){
+            	text="Your marines make a tactical retreat back to the surface, hounded by Necrons all the way.  The Inquisition mission is a failure- you were to blow up the Necron Tomb World stealthily, not wake it up.  The Inquisition is not pleased with your conduct.";
+            } else {
+            	text="Your marines are killed down to the last man.  The Inquisition mission is a failure- you were to blow up the Necron Tomb World stealthily, not wake it up.  The Inquisition is not pleased with your conduct.";
+            }
+        }
+        
+        instance_activate_object(obj_star);
+        var _star_obj = star_by_name(battle_loc);
+        if (star_by_name(_star_obj) != "none"){
+	        with(_star_obj){
+	            var planet = obj_ncombat.battle_id;
+	            if (remove_planet_problem(planet,"necron")){
+	                p_necrons[planet]=4;
+	            }
+	            if (awake_tomb_world(p_feature[planet])==0){
+	            	awaken_tomb_world(p_feature[planet]);
+	            }
+	        }        	
+        }
+
+        pip.pop_data = battle_data;
+
+        alter_disposition(eFACTION.Inquisition, -5);
+        obj_controller.combat=0;
+
+        with (pip){
+        	number = pop_data.number;
+        }
+	}
 }
