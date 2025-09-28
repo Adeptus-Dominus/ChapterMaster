@@ -155,7 +155,7 @@ try {
             with(obj_temp8){instance_destroy();}
         }
         
-        if (defeat=1) and (battle_special="WL10_reveal"){
+        if (defeat == 1) and (battle_special="WL10_reveal"){
             obj_controller.audience=10;
             scr_toggle_diplomacy();
             obj_controller.diplomacy=10;
@@ -186,7 +186,7 @@ try {
     
     
     if (battle_special="study2a") or (battle_special="study2b"){
-        if (defeat=1){
+        if (defeat == 1){
             var ii=0,good=0;
     
             if (remove_planet_problem(battle_id, "mech_tomb", battle_object)){
@@ -256,7 +256,7 @@ try {
     
     
     
-        if (defeat=1) and (final_marine_deaths+final_command_deaths>=10) then scr_recent("battle_defeat", $"{enemy}, {final_marine_deaths+final_command_deaths}");
+        if (defeat == 1) and (final_marine_deaths+final_command_deaths>=10) then scr_recent("battle_defeat", $"{enemy}, {final_marine_deaths+final_command_deaths}");
     } else {
         scr_recent("battle_defeat",$"{enemy}, {final_marine_deaths+final_command_deaths}");
     }
@@ -280,7 +280,7 @@ try {
                 
                 _battle_object.p_player[_planet]-=world_size;
 
-                if (defeat=1){
+                if (defeat == 1){
                     _battle_object.p_player[_planet]=0;
                 };
             }
@@ -448,8 +448,9 @@ try {
                 if (instance_exists(obj_turn_end)){
                     obj_turn_end.combating=0;// obj_turn_end.alarm[1]=1;
                 }
-                var pip;pip = instance_create(0,0,obj_popup);
-                pip.title = "Chaos Lord Killed";pip.text = "(Not completed yet- variable reward based on what chosen)";
+                var pip = instance_create(0,0,obj_popup);
+                pip.title = "Chaos Lord Killed";
+                pip.text = "(Not completed yet- variable reward based on what chosen)";
             }
             with(obj_ground_mission){instance_destroy();}
         }
@@ -458,7 +459,7 @@ try {
     
     
     if (battle_special="ship_demon"){
-        if (defeat=1){
+        if (defeat == 1){
             var ship,ship_hp,i;i=-1;
             repeat(51){i+=1;
                 ship[i]=obj_ini.ship[i];ship_hp[i]=obj_ini.ship_hp[i];

@@ -714,6 +714,10 @@ function increment_mission_completion(mission_data){
 		mission_data.completion = 0;
 	}
 	mission_data.completion++;
+    if (!struct_exists(mission_data, "required_months") || mission_data.required_months <= 0) {
+        log_error("Invalid required_months in mission_data");
+        return 0;
+    }
 	return (mission_data.completion/mission_data.required_months) * 100;
 }
 //search problem data for a given and key and iff applicable value on that key
@@ -749,7 +753,7 @@ function setup_necron_tomb_raid(planet){
         tixt += " are prepared and ready to enter the Necron Tombs.  A Plasma Bomb is in tow.";
         var _number = instance_exists(obj_turn_end) ? obj_turn_end.current_popup : 0;
         var _pop_data = {
-            mission : "blarg",
+            mission : "necron_tomb_excursion",
             loc : name,
             planet : planet, 
             estimate : 999,
@@ -777,7 +781,7 @@ function necron_tomb_mission_start(){
 	planet = pop_data.planet;
 	player_forces = 0;
 	penalty = 0;
-	roll = floor(random(100)) + 1;
+	roll =  roll_dice_chapter(1, 100, "low");
 
 	player_forces = mission_star.p_player[planet];
 	cooldown = 30;

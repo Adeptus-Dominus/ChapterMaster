@@ -2,13 +2,13 @@
 /// @mixin obj_ncombat
 function necron_tomb_raid_post_battle_sequence(){
 	if (!string_count("wake",battle_special)){
-		if (defeat=1) {
+		if (defeat == 1) {
 		    obj_controller.combat=0;
 		    obj_controller.cooldown=10;
 		    obj_turn_end.alarm[1]=4;
 		}
 
-		else if (defeat=0){
+		else if (defeat == 0){
 		    battle_data.mission_stage+=1;
 		    obj_controller.combat=0;
 		    var pip=instance_create(0,0,obj_popup);
@@ -32,9 +32,8 @@ function necron_tomb_raid_post_battle_sequence(){
             }
         }
         
-        instance_activate_object(obj_star);
         var _star_obj = star_by_name(battle_loc);
-        if (star_by_name(_star_obj) != "none"){
+        if (_star_obj != "none"){
 	        with(_star_obj){
 	            var planet = obj_ncombat.battle_id;
 	            if (remove_planet_problem(planet,"necron")){
@@ -71,7 +70,6 @@ function protect_raiders_battle_aftermath(){
     if (!defeat){
             
         _planet.add_disposition(15);
-        var _special_reward = 0;
         var tixt=$"The Raiding forces on {_planet_string} have been removed.  The citizens and craftsman may sleep more soundly. (planet disp +15)"
     
         scr_popup("Planet Protected",tixt,"protect_raiders","");
@@ -90,7 +88,6 @@ function protect_raiders_battle_aftermath(){
 /// @mixin obj_ncombat
 function hunt_fallen_battle_aftermath(){
 	if (!defeat){
-	    var fallen=0;
 	    with (obj_turn_end){
 	        remove_planet_problem(battle_world[current_battle], "fallen", battle_object[current_battle])
 	        var tixt="The Fallen on "+ battle_object[current_battle].name;
@@ -120,7 +117,7 @@ function space_hulk_explore_battle_aftermath(){
 	        loc = obj_ini.ship[shi];
 	    }
 	    
-	    if (hulk_treasure=1){// Requisition
+	    if (hulk_treasure == 1){// Requisition
 	        var _reqi=irandom_range(30,60)*10;
 	        obj_controller.requisition+=_reqi;
 	        
@@ -128,7 +125,7 @@ function space_hulk_explore_battle_aftermath(){
 	        pop.image="space_hulk_done";
 	        pop.title="Space Hulk: Resources";
 	        pop.text=$"Your battle brothers have located several luxury goods and coginators within the Space Hulk.  They are salvaged and returned to the ship, granting {_reqi} Requisition.";
-	    }else if (hulk_treasure=2){// Artifact
+	    }else if (hulk_treasure == 2){// Artifact
 	        //TODO this will eeroniously put artifacts in the wrong place but will resolve crashes
 	        var last_artifact = scr_add_artifact("random","random",4,loc,shi+500);
 	        var i=0;
@@ -138,14 +135,14 @@ function space_hulk_explore_battle_aftermath(){
 	        pop.title="Space Hulk: Artifact";
 	        pop.text=$"An Artifact has been retrieved from the Space Hulk and stowed upon {loc}.  It appears to be a {obj_ini.artifact[last_artifact]} but should be brought home and identified posthaste.";
 	        scr_event_log("","Artifact recovered from the Space Hulk.");
-	    }else if (hulk_treasure=3){// STC
+	    }else if (hulk_treasure == 3){// STC
 	        scr_add_stc_fragment();// STC here
 	        var pop;pop=instance_create(0,0,obj_popup);
 	        pop.image="space_hulk_done";
 	        pop.title="Space Hulk: STC Fragment";
 	        pop.text="An STC Fragment has been retrieved from the Space Hulk and safely stowed away.  It is ready to be decrypted or gifted at your convenience.";
 	        scr_event_log("","STC Fragment recovered from the Space Hulk.");
-	    }else if (hulk_treasure=4){// Termie Armour
+	    }else if (hulk_treasure == 4){// Termie Armour
 	        var termi=choose(2,2,2,3);
 	        scr_add_item("Terminator Armour",termi);
 	        var pop;pop=instance_create(0,0,obj_popup);
