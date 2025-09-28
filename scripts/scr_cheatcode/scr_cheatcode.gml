@@ -151,6 +151,7 @@ function scr_cheatcode(argument0) {
 
 				case "inquismission": 
 					var mission = cheat_arguments[0];
+					show_debug_message($"{mission},");
 					switch (mission){
 						case "1": //default 
 							scr_inquisition_mission(EVENT.inquisition_mission);
@@ -184,6 +185,7 @@ function scr_cheatcode(argument0) {
 						break;
 					}
 					show_debug_message("inquisitor mission initiated");
+					obj_controller.location_viewer.update_mission_log();
 					break;
 				case "artifactpopulate":
 					with (obj_star) {

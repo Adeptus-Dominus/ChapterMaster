@@ -745,7 +745,7 @@ function setup_necron_tomb_raid(planet){
     log_message($"have bomb? {have_bomb} ")
     if (have_bomb > 0) {
         var tixt;
-        tixt = "Your marines on " + planet_numeral_name(run);
+        tixt = "Your marines on " + planet_numeral_name(planet);
         tixt += " are prepared and ready to enter the Necron Tombs.  A Plasma Bomb is in tow.";
         var _number = instance_exists(obj_turn_end) ? obj_turn_end.current_popup : 0;
         var _pop_data = {
@@ -845,12 +845,7 @@ function necron_tomb_mission_sequence(){
 			text = "Your marines finally enter the deepest catacombs of the Necron Tomb.  There they place the Plasma Bomb and arm it.  All around are signs of increasing Necron activity.  With half an hour set, your men escape back to the surface.  There is a brief rumble as the charge goes off, your mission a success.";
 			reset_popup_options();
 
-			if (obj_controller.demanding == 0) {
-				obj_controller.disposition[4] += 1;
-			}
-			if (obj_controller.demanding == 1) {
-				obj_controller.disposition[4] += choose(0, 0, 1);
-			}
+			add_disposition(eFACTION.Inquisition, obj_controller.demanding ? choose(0, 0, 1) : 1);
 
 			mission_star = star_by_name(pop_data.loc);
 			remove_planet_problem(planet, "necron", mission_star);

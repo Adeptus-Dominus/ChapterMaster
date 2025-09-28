@@ -516,7 +516,7 @@ function scr_enemy_ai_e() {
                 }
             }
         }
-        if (p_player[run] > 0 && has_problem_planet(run,"necron")) {
+        if (p_player[run] > 0 && has_problem_planet(run,"necron")){
             setup_necron_tomb_raid(run);
         }
         if (p_player[run] > 0) and(force_count > 0) {

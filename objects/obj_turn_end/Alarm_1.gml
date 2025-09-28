@@ -71,7 +71,7 @@ if (!_is_audience){
         if (is_struct(popup_special[current_popup])){
             pip.pop_data = popup_special[current_popup];
             if (struct_exists(pip.pop_data , "options")){
-                pip.add_options(pip.pop_data.options);
+                pip.add_option(pip.pop_data.options);
             }
         } else {
             if (popup_special[current_popup]!="") and ((pip.image="inquisition")) and (popup_special[current_popup]!="1") and (popup_special[current_popup]!="2") and (pip.image!="tech_build") and (popup_special[current_popup]!="contraband") and (string_count("mech_",popup_special[current_popup])=0) and (string_count("meeting",popup_special[current_popup])=0){
