@@ -684,14 +684,14 @@ try {
 	}
 
 	else if (((title == "Inquisition Mission") || (title == "Inquisition Recon")) && (array_length(options) == 0)) {
-		add_option(["Accept",  "Refuse"]);
+		add_option(["Accept",  "Refuse"], true);
 	}
 	else if (title == "Inquisitor Located") {
-		add_option(["Destroy their vessel",  "Hear them out"]);
+		add_option(["Destroy their vessel",  "Hear them out"], true);
 	}
 
 	if ((title == "He Built It") && (array_length(options) == 0) && (string_count("submerged", text) == 0)) {
-		add_option(["Execute the heretic",  "Move him to the Penitorium", "I see no problem"]);
+		add_option(["Execute the heretic",  "Move him to the Penitorium", "I see no problem"], true);
 	}
 
 	if ((press == 0) && (array_length(options)) || ((demand == 1) && (mission != "") && (string_count("Inquisition", title) > 0)) || ((demand == 1) && (title == "Inquisition Recon"))) {

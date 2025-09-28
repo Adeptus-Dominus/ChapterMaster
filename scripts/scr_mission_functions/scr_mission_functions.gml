@@ -758,7 +758,7 @@ function setup_necron_tomb_raid(planet){
             options : [
                 {
                     str1 : "Begin the Mission",
-                    method : necron_tomb_mission_start
+                    method : necron_tomb_mission_start,
                 },
                 {
                     str1 : "Not Yet",
@@ -950,63 +950,4 @@ function necron_tomb_mission_sequence(){
 	}
 
 	exit;	
-}
-
-
-/// @mixin obj_ncombat
-function necron_tomb_raid_post_battle_sequence(){
-	if (!string_count("wake",battle_special)){
-		if (defeat=1) {
-		    obj_controller.combat=0;
-		    obj_controller.cooldown=10;
-		    obj_turn_end.alarm[1]=4;
-		}
-
-		else if (defeat=0){
-		    battle_data.mission_stage+=1;
-		    obj_controller.combat=0;
-		    var pip=instance_create(0,0,obj_popup);
-		    pip.pop_data = battle_data;
-
-		    with (pip){
-		    	necron_tomb_mission_start();
-		    	necron_tomb_mission_sequence();
-		    	number = pop_data.number;
-		    }
-		}
-	} else {
-        var pip=instance_create(0,0,obj_popup);
-        with(pip){
-            title="Necron Tomb Awakens";
-            image="necron_army";
-            if (obj_ncombat.defeat==0){
-            	text="Your marines make a tactical retreat back to the surface, hounded by Necrons all the way.  The Inquisition mission is a failure- you were to blow up the Necron Tomb World stealthily, not wake it up.  The Inquisition is not pleased with your conduct.";
-            } else {
-            	text="Your marines are killed down to the last man.  The Inquisition mission is a failure- you were to blow up the Necron Tomb World stealthily, not wake it up.  The Inquisition is not pleased with your conduct.";
-            }
-        }
-        
-        instance_activate_object(obj_star);
-        var _star_obj = star_by_name(battle_loc);
-        if (star_by_name(_star_obj) != "none"){
-	        with(_star_obj){
-	            var planet = obj_ncombat.battle_id;
-	            if (remove_planet_problem(planet,"necron")){
-	                p_necrons[planet]=4;
-	            }
-	            if (awake_tomb_world(p_feature[planet])==0){
-	            	awaken_tomb_world(p_feature[planet]);
-	            }
-	        }        	
-        }
-
-        pip.pop_data = battle_data;
-
-        alter_disposition(eFACTION.Inquisition, -5);
-        obj_controller.combat=0;
-
-        with (pip){
-        	number = pop_data.number;
-        }
-	}
 }
