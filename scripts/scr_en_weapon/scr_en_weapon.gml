@@ -32,345 +32,348 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
 	}
 
 	//if (obj_ncombat.enemy=5) then faith_bonus=faith[man_type];
-
-	if (name = "Venom Claws") {
-		atta = 200;
-		arp = 0;
-		rang = 1;
-		spli = 0;
-		if (obj_ini.preomnor = 1) {
-			atta = 240;
-		}
-	}
-	if (name = "Web Spinner") {
-		atta = 40;
-		arp = 0;
-		rang = 2.1;
-		spli = 3;
-		amm = 1;
-	}
-	if (name = "Warpsword") {
-		atta = 300;
-		arp = 1;
-		rang = 1;
-		spli = 3;
-	}
-	if (name = "Iron Claw") {
-		atta = 400;
-		arp = 1;
-		rang = 1;
-		spli = 0;
-	}
-	if (name = "Maulerfiend Claws") {
-		atta = 300;
-		arp = 300;
-		rang = 1;
-		spli = 3;
-	}
-
-	if (name = "Eldritch Fire") {
-		atta = 80;
-		arp = 1;
-		rang = 5.1;
-	}
-	if (name = "Bloodletter Melee") {
-		atta = 70;
-		arp = 0;
-		rang = 1;
-		spli = 3;
-	}
-	if (name = "Daemonette Melee") {
-		atta = 65;
-		arp = 0;
-		rang = 1;
-		spli = 3;
-	}
-	if (name = "Plaguebearer Melee") {
-		atta = 60;
-		arp = 0;
-		rang = 1;
-		spli = 3;
-		if (obj_ini.preomnor = 1) {
-			atta = 70;
-		}
-	}
-	if (name = "Khorne Demon Melee") {
-		atta = 350;
-		arp = 1;
-		rang = 1;
-		spli = 3;
-	}
-	if (name = "Demon Melee") {
-		atta = 250;
-		arp = 1;
-		rang = 1;
-		spli = 3;
-	}
-	if (name = "Lash Whip") {
-		atta = 80;
-		arp = 0;
-		rang = 2;
-	}
-	if (name = "Nurgle Vomit") {
-		atta = 100;
-		arp = 0;
-		rang = 2;
-		spli = 3;
-		if (obj_ini.preomnor = 1) {
-			atta = 260;
-		}
-	}
-	if (name = "Multi-Melta") {
-		atta = 200;
-		arp = 1;
-		rang = 4.1;
-		spli = 0;
-		amm = 6;
-	}
-
-	if (obj_ncombat.enemy = 3) {
-		if (name = "Phased Plasma-fusil") {
-			atta = 100;
-			arp = 1;
-			rang = 7.1;
-			spli = 3;
-		}
-		if (name = "Lightning Gun") {
-			atta = choose(80, 80, 80, 150);
+	switch(name){
+		case "Venom Claws":
+			atta = 200;
 			arp = 0;
-			rang = 5;
+			rang = 1;
 			spli = 0;
-		}
-		if (name = "Thallax Melee") {
-			atta = 80;
+			if (obj_ini.preomnor = 1) {
+				atta = 240;
+			}
+			break;
+		case "Web Spinner":
+			atta = 40;
 			arp = 0;
-			rang = 1;
+			rang = 2.1;
 			spli = 3;
-		}
-	}
-
-	if (obj_ncombat.enemy = 6) {
-
-		if (argument0 = "Fusion Gun") or(argument0 = "Firepike") {
-			atta = 200;
-			arp = 1;
-			rang = 2;
-			amm = 4;
-		}
-		if (argument0 = "Singing Spear") {
-			atta = 120;
-			arp = 0;
-			rang = 1;
-			spli = 3;
-		}
-		if (argument0 = "Singing Spear Throw") {
-			atta = 120;
-			arp = 1;
-			rang = 2;
-			spli = 3;
-		}
-		if (argument0 = "Witchblade") {
-			atta = 100;
-			arp = 1;
-			rang = 1;
-		}
-		if (argument0 = "Psyshock") {
-			atta = 50;
-			arp = 0;
-			rang = 2;
-		}
-		if (argument0 = "Wailing Doom") {
-			atta = 200;
-			arp = 1;
-			rang = 1;
-			spli = 3;
-		}
-		if (argument0 = "Avatar Smite") {
+			amm = 1;
+			break;
+		case "Warpsword":
 			atta = 300;
 			arp = 1;
-			rang = 2;
-			amm = 2;
-		}
-		if (argument0 = "Ranger Long Rifle") {
-			atta = 60;
-			arp = 0;
-			rang = 25;
-		}
-		if (argument0 = "Pathfinder Long Rifle") {
-			atta = 70;
-			arp = 0;
-			rang = 25;
-		}
-		if (argument0 = "Shuriken Catapult") {
-			atta = 35;
-			arp = 0;
-			rang = 2;
-		}
-		if (argument0 = "Twin Linked Shuriken Catapult") {
-			atta = 50;
-			arp = 0;
-			rang = 2;
-		}
-		if (argument0 = "Avenger Shuriken Catapult") {
-			atta = 40;
-			arp = 0;
-			rang = 3;
-		}
-		if (argument0 = "Power Weapon") or(argument0 = "Power Blades") {
-			atta = 80;
-			arp = 0;
 			rang = 1;
 			spli = 3;
-		}
-		if (argument0 = "Shuriken Pistol") {
-			atta = 25;
-			arp = 0;
-			rang = 2.1;
-		}
-		if (argument0 = "Executioner") {
-			atta = 200;
+			break;
+		case"Iron Claw":
+			atta = 400;
 			arp = 1;
 			rang = 1;
-		}
-		if (argument0 = "Scorpion Chainsword") {
-			atta = 40;
-			arp = 0;
+			spli = 0;
+			break;
+		case "Maulerfiend Claws":
+			atta = 300;
+			arp = 300;
 			rang = 1;
 			spli = 3;
-		}
-		if (argument0 = "Mandiblaster") {
-			atta = 20;
-			arp = 0;
-			rang = 1;
-		}
-		if (argument0 = "Biting Blade") {
+			break;
+		case "Eldritch Fire":
+			atta = 80;
+			arp = 1;
+			rang = 5.1;
+			break;
+		case "Bloodletter Melee":
 			atta = 70;
 			arp = 0;
 			rang = 1;
 			spli = 3;
-		}
-		if (argument0 = "Scorpian's Claw") {
-			atta = 150;
-			arp = 1;
-			rang = 1;
-			spli = 3;
-		}
-		if (argument0 = "Meltabomb") {
-			atta = 0;
-			arp = 200;
-			rang = 1;
-			amm = 1;
-		}
-		if (argument0 = "Deathspinner") {
-			atta = 50;
-			arp = 0;
-			rang = 2;
-		}
-		if (argument0 = "Dual Deathspinner") {
-			atta = 80;
-			arp = 0;
-			rang = 2;
-		}
-		if (argument0 = "Reaper Launcher") {
-			atta = 150;
-			arp = 80;
-			rang = 20;
-			amm = 8;
-			spli = 3;
-		}
-		if (argument0 = "Eldar Missile Launcher") {
-			atta = 200;
-			arp = 1;
-			rang = 20;
-			amm = 4;
-			spli = 3;
-		}
-		if (argument0 = "Laser Lance") {
-			atta = 80;
-			arp = 0;
-			rang = 2;
-			spli = 3;
-		}
-		if (argument0 = "Fusion Pistol") {
-			atta = 100;
-			arp = 1;
-			rang = 1.1;
-			amm = 4;
-		}
-		if (argument0 = "Plasma Pistol") {
-			atta = 60;
-			arp = 1;
-			rang = 3.1;
-		}
-		if (argument0 = "Harlequin's Kiss") {
-			atta = 350;
-			arp = 0;
-			rang = 1;
-			amm = 1;
-		}
-		if (argument0 = "Wraithcannon") {
-			atta = 80;
-			arp = 1;
-			rang = 2.1;
-		}
-		if (argument0 = "Pulse Laser") {
-			atta = 80;
-			arp = 1;
-			rang = 15;
-		}
-		if (argument0 = "Bright Lance") {
-			atta = 100;
-			arp = 1;
-			rang = 8;
-		}
-		if (argument0 = "Shuriken Cannon") {
+			break;
+		case "Daemonette Melee":
 			atta = 65;
 			arp = 0;
-			rang = 3;
-		}
-		if (argument0 = "Prism Cannon") {
-			atta = 250;
-			arp = 1;
-			rang = 20;
-		}
-		if (argument0 = "Twin Linked Doomweaver") {
-			atta = 100;
-			arp = 0;
-			rang = 2;
-		} // Also create difficult terrain?
-		if (argument0 = "Starcannon") {
-			atta = 140;
-			arp = 1;
-			rang = 3;
+			rang = 1;
 			spli = 3;
-		}
-		if (argument0 = "Two Power Fists") {
-			atta = 300;
+			break;
+		case "Plaguebearer Melee":
+			atta = 60;
+			arp = 0;
+			rang = 1;
+			spli = 3;
+			if (obj_ini.preomnor = 1) {
+				atta = 70;
+			}
+			break;
+		case "Khorne Demon Melee":
+			atta = 350;
 			arp = 1;
 			rang = 1;
-		}
-		if (argument0 = "Flamer") {
+			spli = 3;
+			break;
+		case "Demon Melee":
+			atta = 250;
+			arp = 1;
+			rang = 1;
+			spli = 3;
+			break;
+		case "Lash Whip":
+			atta = 80;
+			arp = 0;
+			rang = 2;
+			break;
+		case "Nurgle Vomit":
 			atta = 100;
 			arp = 0;
 			rang = 2;
-			amm = 4;
 			spli = 3;
-		}
-		if (argument0 = "Titan Starcannon") {
-			atta = 220;
+			if (obj_ini.preomnor = 1) {
+				atta = 260;
+			}
+			break;
+		case "Multi-Melta":
+			atta = 200;
 			arp = 1;
-			rang = 4;
-			spli = 3;
-		}
-		if (argument0 = "Phantom Pulsar") {
-			atta = 500;
-			arp = 1;
-			rang = 20;
-			spli = 3;
+			rang = 4.1;
+			spli = 0;
+			amm = 6;
+			break;
+	}
+
+	if (obj_ncombat.enemy == 3) {
+		switch(name){
+			case "Phased Plasma-fusil":
+				atta = 100;
+				arp = 1;
+				rang = 7.1;
+				spli = 3;
+				break;
+			case "Lightning Gun":
+				atta = choose(80, 80, 80, 150);
+				arp = 0;
+				rang = 5;
+				spli = 0;
+				break;
+			case "Thallax Melee":
+				atta = 80;
+				arp = 0;
+				rang = 1;
+				spli = 3;
+				break;
 		}
 	}
 
-	if (obj_ncombat.enemy = 7) {
+	if (obj_ncombat.enemy == 6) {
+		switch(argument0){
+			case "Fusion Gun": case "Firepike":
+				atta = 200;
+				arp = 1;
+				rang = 2;
+				amm = 4;
+				break;
+			case"Singing Spear":
+				atta = 120;
+				arp = 0;
+				rang = 1;
+				spli = 3;
+				break;
+			case "Singing Spear Throw":
+				atta = 120;
+				arp = 1;
+				rang = 2;
+				spli = 3;
+				break;
+			case "Witchblade":
+				atta = 100;
+				arp = 1;
+				rang = 1;
+				break;
+			case "Psyshock":
+				atta = 50;
+				arp = 0;
+				rang = 2;
+				break;
+			case "Wailing Doom":
+				atta = 200;
+				arp = 1;
+				rang = 1;
+				spli = 3;
+				break;
+			case "Avatar Smite":
+				atta = 300;
+				arp = 1;
+				rang = 2;
+				amm = 2;
+				break;
+			case "Ranger Long Rifle":
+				atta = 60;
+				arp = 0;
+				rang = 25;
+				break;
+			case "Pathfinder Long Rifle":
+				atta = 70;
+				arp = 0;
+				rang = 25;
+				break;
+			case "Shuriken Catapult":
+				atta = 35;
+				arp = 0;
+				rang = 2;
+				break;
+			case "Twin Linked Shuriken Catapult":
+				atta = 50;
+				arp = 0;
+				rang = 2;
+				break;
+			case "Avenger Shuriken Catapult":
+				atta = 40;
+				arp = 0;
+				rang = 3;
+				break;
+			case "Power Weapon": case "Power Blades":
+				atta = 80;
+				arp = 0;
+				rang = 1;
+				spli = 3;
+				break;
+			case "Shuriken Pistol":
+				atta = 25;
+				arp = 0;
+				rang = 2.1;
+				break;
+			case "Executioner":
+				atta = 200;
+				arp = 1;
+				rang = 1;
+				break;
+			case "Scorpion Chainsword":
+				atta = 40;
+				arp = 0;
+				rang = 1;
+				spli = 3;
+				break;
+			case "Mandiblaster":
+				atta = 20;
+				arp = 0;
+				rang = 1;
+				break;
+			case "Biting Blade":
+				atta = 70;
+				arp = 0;
+				rang = 1;
+				spli = 3;
+				break;
+			case "Scorpian's Claw":
+				atta = 150;
+				arp = 1;
+				rang = 1;
+				spli = 3;
+				break;
+			case "Meltabomb":
+				atta = 0;
+				arp = 200;
+				rang = 1;
+				amm = 1;
+				break;
+			case "Deathspinner":
+				atta = 50;
+				arp = 0;
+				rang = 2;
+				break;
+			case "Dual Deathspinner":
+				atta = 80;
+				arp = 0;
+				rang = 2;
+				break;
+			case "Reaper Launcher":
+				atta = 150;
+				arp = 80;
+				rang = 20;
+				amm = 8;
+				spli = 3;
+				break;
+			case "Eldar Missile Launcher":
+				atta = 200;
+				arp = 1;
+				rang = 20;
+				amm = 4;
+				spli = 3;
+				break;
+			case "Laser Lance":
+				atta = 80;
+				arp = 0;
+				rang = 2;
+				spli = 3;
+				break;
+			case "Fusion Pistol":
+				atta = 100;
+				arp = 1;
+				rang = 1.1;
+				amm = 4;
+				break;
+			case "Plasma Pistol":
+				atta = 60;
+				arp = 1;
+				rang = 3.1;
+				break;
+			case "Harlequin's Kiss":
+				atta = 350;
+				arp = 0;
+				rang = 1;
+				amm = 1;
+				break;
+			case "Wraithcannon":
+				atta = 80;
+				arp = 1;
+				rang = 2.1;
+				break;
+			case "Pulse Laser":
+				atta = 80;
+				arp = 1;
+				rang = 15;
+				break;
+			case "Bright Lance":
+				atta = 100;
+				arp = 1;
+				rang = 8;
+				break;
+			case "Shuriken Cannon":
+				atta = 65;
+				arp = 0;
+				rang = 3;
+				break;
+			case "Prism Cannon":
+				atta = 250;
+				arp = 1;
+				rang = 20;
+				break;
+			case "Twin Linked Doomweaver":
+				atta = 100;
+				arp = 0;
+				rang = 2;
+				break; // Also create difficult terrain?
+			case "Starcannon":
+				atta = 140;
+				arp = 1;
+				rang = 3;
+				spli = 3;
+				break;
+			case "Two Power Fists":
+				atta = 300;
+				arp = 1;
+				rang = 1;
+				break;
+			case "Flamer":
+				atta = 100;
+				arp = 0;
+				rang = 2;
+				amm = 4;
+				spli = 3;
+				break;
+			case "Titan Starcannon":
+				atta = 220;
+				arp = 1;
+				rang = 4;
+				spli = 3;
+				break;
+			case "Phantom Pulsar":
+				atta = 500;
+				arp = 1;
+				rang = 20;
+				spli = 3;
+				break;
+		}
+	}
+
+	if (obj_ncombat.enemy == 7) {
 
 		if (argument0 = "Choppa") {
 			atta = 28;
