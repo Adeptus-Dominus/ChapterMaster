@@ -264,7 +264,7 @@ function delete_features(planet, del_feature){
 
 
 // returns 1 if an awake necron tomb iin system
-function awake_necron_Star(star){
+function awake_necron_star(star){
 		for(var i = 1; i <= star.planets; i++){
 		if(awake_tomb_world(star.p_feature[i]) == 1)
 			{

@@ -212,7 +212,7 @@ function spawn_mechanicus_mission(chosen_mission = "random"){
 	
 		
 	with(obj_star){
-		if(scr_star_has_planet_with_feature(id,P_features.Necron_Tomb)) and (awake_necron_Star(id)!= 0){
+		if(scr_star_has_planet_with_feature(id,P_features.Necron_Tomb)) and (awake_necron_star(id)!= 0){
 			var planet = scr_get_planet_with_feature(id, P_features.Necron_Tomb);
 			if(scr_is_planet_owned_by_allies(self, planet)){
 				array_push(mechanicus_missions, "mech_tomb");
@@ -272,7 +272,7 @@ function spawn_mechanicus_mission(chosen_mission = "random"){
 		stars = scr_get_stars();
 		var valid_stars = array_filter_ext(stars, 
 		function(star,index) {
-			if(scr_star_has_planet_with_feature(star,P_features.Necron_Tomb)) and (awake_necron_Star(star)!= 0){
+			if(scr_star_has_planet_with_feature(star,P_features.Necron_Tomb)) and (awake_necron_star(star)!= 0){
 				var planet = scr_get_planet_with_feature(star, P_features.Necron_Tomb);
 				if(scr_is_planet_owned_by_allies(star, planet)) {
 					return true;

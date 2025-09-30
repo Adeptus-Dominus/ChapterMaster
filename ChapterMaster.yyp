@@ -881,6 +881,7 @@
     {"id":{"name":"scr_population_influence","path":"scripts/scr_population_influence/scr_population_influence.yy",},},
     {"id":{"name":"scr_popup_functions","path":"scripts/scr_popup_functions/scr_popup_functions.yy",},},
     {"id":{"name":"scr_popup","path":"scripts/scr_popup/scr_popup.yy",},},
+    {"id":{"name":"scr_post_battle_events","path":"scripts/scr_post_battle_events/scr_post_battle_events.yy",},},
     {"id":{"name":"scr_powers","path":"scripts/scr_powers/scr_powers.yy",},},
     {"id":{"name":"scr_promote","path":"scripts/scr_promote/scr_promote.yy",},},
     {"id":{"name":"scr_punit_combat_heplers","path":"scripts/scr_punit_combat_heplers/scr_punit_combat_heplers.yy",},},

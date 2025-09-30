@@ -61,6 +61,13 @@ add_option = function(option, if_empty = false){
         array_push(options, option);
     }
 }
+
+replace_options = function(option){
+    options = [];
+    add_option(option);
+
+}
+
 entered_option = -1;
 
 subtype = 0;
