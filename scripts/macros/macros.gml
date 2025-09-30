@@ -48,7 +48,7 @@ enum GENDER {
 }
 
 function set_gender(){
-    choose(GENDER.Female,GENDER.Male);
+    return choose(GENDER.Female, GENDER.Male);
 }
 
 enum MENU {
