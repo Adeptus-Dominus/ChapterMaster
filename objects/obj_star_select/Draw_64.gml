@@ -42,7 +42,7 @@ if (obj_controller.selecting_planet>target.planets){
     obj_controller.selecting_planet = 0;
 }
 var click_accepted = (!obj_controller.menu) and (!obj_controller.zoomed) and (!instance_exists(obj_bomb_select)) and (!instance_exists(obj_drop_select));
-if (click_accepted) {
+if (click_accepted && !(debug && mouse_x<400)) {
     if (scr_click_left(0)) {
         var closes=0,sta1=0,sta2=0;
         var mouse_consts = return_mouse_consts();
@@ -112,23 +112,29 @@ if (target.craftworld=0) and (target.space_hulk=0){
 
 if (global.cheat_debug && obj_controller.selecting_planet && !loading)
     {
-        draw_set_color(c_gray);
-        var rect = [(( 184) - 123), ( 200), (( 184) + 123), ( 226)];
-        draw_rectangle(rect[0],rect[1],rect[2],rect[3], false);
-        draw_set_color(c_black);
-        draw_text(( 184), ( 204), "Debug");
-        draw_set_color(c_white);
-        draw_set_alpha(0.2);
-        if (point_and_click(rect)){
-            debug = true;
-        }
-        if (scr_hit(rect)){
-            draw_rectangle((( 184) - 123), ( 200), (( 184) + 123), ( 226), false);
+        if (debug_button.draw()){
+            debug = !debug;
+            debug_options = new RadioSet([
+               {
+                   str1 : "Edit Forces",
+     
+               },
+               {
+                   str1 : "Add Problem",
+     
+               },
+               {
+                   str1 : "Add Feature",
+     
+               },                     
+            ],"Debug options",{x1 : 36, y1 : 125, max_width : 300});
+
+            //scroll_problems = new ScrollableContainer()
         }
     }
 
 
-if (obj_controller.menu == 0){
+if (obj_controller.menu == 0 && !debug){
     if (manage_units_button.draw(has_player_forces)){
         var _viewer = obj_controller.location_viewer
         _viewer.update_garrison_log();
@@ -145,6 +151,7 @@ if (obj_controller.menu == 0){
                 selections : []
             });
             instance_destroy();
+            pop_draw_return_values();
             exit;
         }
     }
@@ -160,7 +167,9 @@ if (loading!=0){
 
 
 //the draw and click on planets logic
-planet_selection_action();
+if (!debug){
+    planet_selection_action();
+}
 
 draw_set_font(fnt_40k_14b);
 
@@ -260,6 +269,7 @@ if (obj_controller.selecting_planet!=0){
             }else if (feature.destroy){
                 feature = "";
                 instance_destroy();
+                pop_draw_return_values();
                 exit;
             }
         }

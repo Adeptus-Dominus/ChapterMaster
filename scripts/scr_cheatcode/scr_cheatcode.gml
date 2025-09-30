@@ -408,53 +408,94 @@ function scr_cheatcode(argument0) {
 
 function draw_planet_debug_options(){
 	if (debug) {
-	    add_draw_return_values();
-	    var current_planet = obj_controller.selecting_planet;
-
-	    // Close window if clicked outside
-	    if (!scr_hit([36,174,337,455]) && scr_click_left()) {
-	        debug = 0;
-	        exit;
+		debug_options.draw()
+	    if (debug_options.current_selection == 0){
+	    	draw_planet_debug_forces()
+	    } else if (debug_options.current_selection == 1){
+	    	draw_planet_debug_problems()
 	    }
-
-	    // Setup draw area
-	    draw_set_color(c_black);
-	    draw_rectangle(36, 174, 337, 455, 0);
-	    draw_set_font(fnt_40k_14b);
-	    draw_set_color(c_gray);
-	    draw_set_halign(fa_left);
-
-	    // Define factions and their struct keys
-	    var faction_names = [
-	        "Orks", "Tau", "Tyranids", "Traitors",
-	        "CSM", "Daemons", "Necrons", "Sisters"
-	    ];
-	    var faction_keys = [
-	        "p_orks", "p_tau", "p_tyranids", "p_traitors",
-	        "p_chaos", "p_demons", "p_necrons", "p_sisters"
-	    ];
-
-	    // Loop through each faction row
-	    var base_y = 176;
-	    for (var i = 0; i < array_length(faction_names); i++) {
-	        var _y = base_y + i * 20;
-	        var key = faction_keys[i];
-
-	        // Draw faction name and value
-	        draw_text(38, _y, faction_names[i] + ": " + string(target[$ key][current_planet]));
-
-	        // Draw [-] [+] controls
-	        draw_text(147, _y, "[-] [+]");
-
-	        // Handle minus click
-	        if (point_and_click([147, _y, 167, _y + 20])) {
-	            target[$ key][current_planet] = clamp(target[$key][current_planet] - 1, 0, 6);
-	        }
-	        // Handle plus click
-	        else if (point_and_click([177, _y, 197, _y + 20])) {
-	            target[$ key][current_planet] = clamp(target[$key][current_planet] + 1, 0, 6);
-	        }
-	    }
-	    pop_draw_return_values();
 	}
+}
+
+function draw_planet_debug_problems(){
+	var base_y = 194;
+    // Setup draw area
+    draw_set_color(c_black);
+    draw_rectangle(36, base_y, 337, base_y+281, 0);
+    draw_set_font(fnt_40k_14b);
+    draw_set_color(c_gray);
+    draw_set_halign(fa_left);
+	var _keys = planet_problem_keys;
+	base_y += 2;
+	for (var i=0;i<array_length(_keys);i++){
+		var _y = base_y + i * 20;
+		draw_text(38, _y, _keys[i]);
+		if (scr_hit(38, _y, 337,_y+20)){
+			tooltip_draw(mission_name_key(_keys[i]));
+			if (scr_click_left()){
+				switch(_keys[i]){
+					case "inquisitor":
+						mission_inquistion_hunt_inquisitor(target.id);
+						break;
+					case "necron":
+						mission_inquisition_tomb_world(target.id);
+						break;
+					default:
+						scr_popup("error","no specific debug action created please consider helping to make one");
+						break;
+				}
+			}
+		}
+	}
+}
+
+function draw_planet_debug_forces(){
+	add_draw_return_values();
+    var current_planet = obj_controller.selecting_planet;
+    var base_y = 194;
+    // Close window if clicked outside
+    if (!scr_hit([36,base_y,337,base_y+281]) && scr_click_left()) {
+        debug = 0;
+        exit;
+    }
+
+    // Setup draw area
+    draw_set_color(c_black);
+    draw_rectangle(36, base_y, 337, base_y+281, 0);
+    draw_set_font(fnt_40k_14b);
+    draw_set_color(c_gray);
+    draw_set_halign(fa_left);
+
+    // Define factions and their struct keys
+    var faction_names = [
+        "Orks", "Tau", "Tyranids", "Traitors",
+        "CSM", "Daemons", "Necrons", "Sisters"
+    ];
+    var faction_keys = [
+        "p_orks", "p_tau", "p_tyranids", "p_traitors",
+        "p_chaos", "p_demons", "p_necrons", "p_sisters"
+    ];
+
+    // Loop through each faction row
+    base_y += 2;
+    for (var i = 0; i < array_length(faction_names); i++) {
+        var _y = base_y + i * 20;
+        var key = faction_keys[i];
+
+        // Draw faction name and value
+        draw_text(38, _y, faction_names[i] + ": " + string(target[$ key][current_planet]));
+
+        // Draw [-] [+] controls
+        draw_text(147, _y, "[-] [+]");
+
+        // Handle minus click
+        if (point_and_click([147, _y, 167, _y + 20])) {
+            target[$ key][current_planet] = clamp(target[$key][current_planet] - 1, 0, 6);
+        }
+        // Handle plus click
+        else if (point_and_click([177, _y, 197, _y + 20])) {
+            target[$ key][current_planet] = clamp(target[$key][current_planet] + 1, 0, 6);
+        }
+    }
+    pop_draw_return_values();
 }

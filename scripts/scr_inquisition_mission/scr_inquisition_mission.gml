@@ -192,8 +192,19 @@ function mission_inquisition_tyranid_organism(worlds){
 
 function mission_inquisition_tomb_world(tomb_worlds){
     log_message("RE: Necron Tomb Bombing");
-    var _star = choose_array(tomb_worlds)
-    var planet = scr_get_planet_with_feature(_star, P_features.Necron_Tomb);
+    if (is_array(tomb_worlds)){
+        var _star = array_random_element(tomb_worlds);
+    } else {
+        _star = tomb_worlds;
+    }
+
+    var planet = scr_get_planet_with_feature(_star);
+
+    if (planet == -1){
+        planet = irandom_range(1,_star.planets);
+        array_push(_star.p_feature[planet],new NewPlanetFeature(P_features.Necron_Tomb).Necron_Tomb )
+    }
+    
     var eta = scr_mission_eta(_star.x, _star.y,1)
     if (global.cheat_debug){
         show_debug_message("mission popup");
@@ -258,7 +269,7 @@ function mission_inquisition_artifact(){
     scr_popup("Inquisition Mission",text,"inquisition",$"artifact|bop|0|{string(irandom_range(6,26))}|");
 }
 
-function mission_inquistion_hunt_inquisitor(){
+function mission_inquistion_hunt_inquisitor(star_id = -1){
     log_message("RE: Inquisitor Hunt");
 
     var stars = scr_get_stars();
@@ -275,14 +286,18 @@ function mission_inquistion_hunt_inquisitor(){
     });*/
 
 
-    var _valid_stars = stars;
-    
-    if(_valid_stars == 0) {
-        log_error("RE: Inquisitor Hunt,couldn't find a _star");
-        exit;
-    }
+    if (star_id == -1){
+        var _valid_stars = stars;
         
-    var _star = array_random_element(_valid_stars);
+        if(_valid_stars == 0) {
+            log_error("RE: Inquisitor Hunt,couldn't find a _star");
+            exit;
+        }
+            
+        var _star = array_random_element(_valid_stars);
+    } else {
+        _star = star_id;
+    }
     
     var _gender = set_gender();
     var _name = global.name_generator.generate_imperial_name(_gender);
@@ -331,28 +346,30 @@ function add_new_inquis_mission(){
 }
 
 function init_mission_hunt_inquisitor(){
-    mission_star = star_by_name(_pop_data.system);
+    mission_star = star_by_name(pop_data.system);
     if (mission_star == "none"){
         popup_defualt_close();
         exit;
     }
-    scr_event_log("", $"Inquisition Mission Accepted: The radical Inquisitor {pop_data.mission_data.name} enroute to {mission_star.name} must be removed.  Estimated arrival in {estimate} months.", mission_star.name);
-    var _mission_data = _pop_data.mission_data,
+    scr_event_log("", $"Inquisition Mission Accepted: The radical Inquisitor {pop_data.mission_data.inquisitor_name} enroute to {mission_star.name} must be removed.  Estimated arrival in {estimate} months.", mission_star.name);
+    var _mission_data = pop_data.mission_data,
 
-    var _radical_inquisitor_fleet = base_inquis_fleet();
+    var _radical_inquisitor_fleet = instance_create(mission_star.x-irandom_range(-400,400),mission_star.y-irandom_range(-400,400),obj_en_fleet);
+    with (_radical_inquisitor_fleet){
+        base_inquis_fleet();
+    }
 
     fleet_add_cargo("radical_inquisitor", pop_data.mission_data, true, _radical_inquisitor_fleet);
 
     _radical_inquisitor_fleet.action_x=mission_star.x;
     _radical_inquisitor_fleet.action_y=mission_star.y;
 
-    var _est = _pop_data.estimate;
+    var _est = pop_data.estimate;
     with (_radical_inquisitor_fleet){
         set_fleet_movement(false,"move",_est,_est);
     }
 
-
-    if (add_new_problem(pop_data.planet, pop_data.mission, pop_data.estimate,pop_data.mission_data)) {
+    if (add_new_problem(pop_data.planet, pop_data.mission, pop_data.estimate, mission_star,pop_data.mission_data)) {
         new_star_event_marker("green");
         mission_is_go = true;
     }
@@ -491,16 +508,14 @@ function mission_hunt_inquisitor_show_mercy(){
 }
 
 function mission_hunt_inquisitor_destroy_inquisitor_ship(){
-    with (pop_data.inquisitor_ship) {
-        instance_destroy();
-    }
 
+    show_debug_message("mission_hunt_inquisitor_destroy_inquisitor_ship");
     var _final_disp_mod = 0;
 
     if (obj_controller.demanding == 0) {
         _final_disp_mod += 1;
     }
-    if (obj_controller.demanding == 1) {
+    else if (obj_controller.demanding == 1) {
         _final_disp_mod += choose(0, 0, 1);
     }
 
@@ -516,7 +531,9 @@ function mission_hunt_inquisitor_destroy_inquisitor_ship(){
     reset_popup_options();
 
     scr_event_log("", "Inquisition Mission Completed: The radical Inquisitor has been purged.");
-
+    with (pop_data.inquisitor_ship) {
+        instance_destroy();
+    }
     exit;  
 }
 

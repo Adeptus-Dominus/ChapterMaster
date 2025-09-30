@@ -871,25 +871,25 @@ function PlanetData(planet, system) constructor{
         
         var pop_string = $"Population: {display_population()}";
 
-        if (instance_exists(obj_star_select)){
-            var _button_manager = obj_star_select.button_manager;
-            _button_manager.update({
-                label:pop_string,
-                tooltip : "population data toggle with 'P'",
-                keystroke : press_exclusive(ord("P")),
-                x1 : xx+480,
-                y1 : yy+217,
-                w : 200,
-                h : 22
-            });
-            _button_manager.update_loc();
-            if (_button_manager.draw()){
-                obj_star_select.population = !obj_star_select.population;
-                if (obj_star_select.population){
-                    obj_star_select.potential_doners = find_population_doners(system.id);
-                }
+
+        var _button_manager = obj_star_select.button_manager;
+        _button_manager.update({
+            label:pop_string,
+            tooltip : "population data toggle with 'P'",
+            keystroke : press_exclusive(ord("P")),
+            x1 : xx+480,
+            y1 : yy+217,
+            w : 200,
+            h : 22
+        });
+        _button_manager.update_loc();
+        if (_button_manager.draw()){
+            obj_star_select.population = !obj_star_select.population;
+            if (obj_star_select.population){
+                obj_star_select.potential_doners = find_population_doners(system.id);
             }
         }
+
         
         if (is_craftworld=0) and (is_hulk=0){
             var y7=240,temp3=string(scr_display_number(guardsmen));

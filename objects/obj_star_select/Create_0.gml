@@ -16,6 +16,7 @@ p_data = new PlanetData(0, target);
 has_player_forces = array_sum(target.p_player);
 
 manage_units_button = new UnitButtonObject({x1 :115, y1:200, style : "pixel", label:"Manage Units"});
+debug_button = new UnitButtonObject({x1 :36, y1:170, style : "pixel", label:"Debug"});
 
 torpedo = scr_item_count("Cyclonic Torpedo");
 

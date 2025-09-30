@@ -54,14 +54,15 @@ function radical_inquisitor_mission_ship_arrival(){
         _radical_inquisitor.options = [
             {
                 str1 : "Destroy their vessel",
+                method: mission_hunt_inquisitor_destroy_inquisitor_ship,
             },
             {
                 str1 : "Hear them out",
                 method: mission_hunt_inquisitor_hear_out_radical_inquisitor,
             }
-        ]
+        ];
         _radical_inquisitor.inquisitor_ship = self.id;
-        scr_popup("Inquisitor Located",tixt,"inquisition",_radical_inquisitor);
+        scr_popup("Inquisitor Located",_tixt,"inquisition",_radical_inquisitor);
     }
     //instance_destroy();
     exit;
