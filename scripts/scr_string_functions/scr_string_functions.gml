@@ -23,14 +23,14 @@ function string_gender_third_person(gender){
     var _string = "they";
     switch(gender){
         case GENDER.Female:
-            _string ="she"
+            _string = "she";
             break;
         case GENDER.Male:
-            _string ="He"
+            _string = "he";
             break;
     }
 
-    return _string
+    return _string;
 }
 
 
