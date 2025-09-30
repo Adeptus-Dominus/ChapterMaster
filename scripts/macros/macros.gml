@@ -41,6 +41,16 @@ enum eFACTION {
     Necrons = 13
 }
 
+enum GENDER {
+    Female,
+    Male,
+    Neutral
+}
+
+function set_gender(){
+    choose(GENDER.Female,GENDER.Male);
+}
+
 enum MENU {
     Default = 0,
     Manage = 1,

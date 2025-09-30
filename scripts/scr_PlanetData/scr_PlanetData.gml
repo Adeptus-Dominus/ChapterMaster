@@ -813,7 +813,9 @@ function PlanetData(planet, system) constructor{
 
 
         if (!_succession){
-            if (player_disposition>=0) and (origional_owner<=5) and (current_owner<=5) and (population>0) then draw_text(xx+534,yy+176,"Disposition: "+string(min(100,player_disposition))+"/100");
+            if (player_disposition>=0) and (origional_owner<=5) and (current_owner<=5) and (population>0){
+                draw_text(xx+534,yy+176,"Disposition: "+string(min(100,player_disposition))+"/100");
+            }
             if (player_disposition>-30) and (player_disposition<0) and (current_owner<=5) and (population>0){
                 draw_text(xx+534,yy+176,"Disposition: ???/100");
             }

@@ -60,6 +60,17 @@ function popup_defualt_click_action(){
     }
 }
 
+function popup_defualt_close(){
+    obj_controller.cooldown=10;
+    if (instance_exists(obj_turn_end) && obj_controller.complex_event==false){
+        if (number!=0){
+            obj_turn_end.alarm[1]=4;
+        }
+    }
+    instance_destroy();
+    exit;
+}
+
 function popup_window_draw(){
 	if ((size == 0) || (size == 2)) {
 		sprite_index = spr_popup_medium;

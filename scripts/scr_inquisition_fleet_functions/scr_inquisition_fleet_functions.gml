@@ -1,4 +1,4 @@
-function base_inquis_fleet (){
+function base_inquis_fleet(){
 	owner=eFACTION.Inquisition;
     frigate_number=1;
     sprite_index=spr_fleet_inquisition;
@@ -23,6 +23,49 @@ function hunt_player_serfs(planet, system){
     });
 }
 
+
+function radical_inquisitor_mission_ship_arrival(){
+
+    //TODO make a centralised player_fleet present method
+    var _p_fleet = instance_nearest(x,y, obj_p_fleet);
+    var _intercept_fleet = -1;
+    if (point_distance(x,y,_p_fleet.x, _p_fleet.y)<10 && is_orbiting(obj_p_fleet)){
+        _intercept_fleet = _p_fleet;
+    }
+
+
+    var _radical_inquisitor = cargo_data.radical_inquisitor;
+    if (!instance_exists(_intercept_fleet)){
+        action_x=choose(room_width*-1,room_width*2);
+        action_y=choose(room_height*-1,room_height*2);
+        action_spd=256;
+        action="";            
+        set_fleet_movement();
+        instance_destroy();
+        alter_disposition(eFACTION.Inquisition,-15);
+        scr_popup("Inquisitor Mission Failed","The radical Inquisitor has departed from the planned intercept coordinates.  They will now be nearly impossible to track- the mission is a failure.","inquisition","");
+        scr_event_log("red","Inquisition Mission Failed: The radical Inquisitor has departed from the planned intercept coordinates.");
+    }
+    else {
+        action="";
+        var _gender = string_gender_third_person(_radical_inquisitor.inquisitor_gender);
+
+        var _tixt=$"You have located the radical Inquisitor.  As you prepare to destroy their ship, and complete the mission, you recieve a hail- it appears as though {_gender} wishes to speak.";
+        _radical_inquisitor.options = [
+            {
+                str1 : "Destroy their vessel",
+            },
+            {
+                str1 : "Hear them out",
+                method: mission_hunt_inquisitor_hear_out_radical_inquisitor,
+            }
+        ]
+        _radical_inquisitor.inquisitor_ship = self.id;
+        scr_popup("Inquisitor Located",tixt,"inquisition",_radical_inquisitor);
+    }
+    //instance_destroy();
+    exit;
+}
 function inquisition_fleet_inspection_chase(){
 	var good=0,acty="";
 	var reset = !instance_exists(target);
@@ -81,12 +124,15 @@ function inquisition_fleet_inspection_chase(){
             
                 massa+=string(obj_controller.inquisitor[iq]);
             
-                if (target.action="") then massa+=$" DEMANDS that you keep your fleet at {target_meet.name} until ";
-                if (target.action!="") then massa+=$" DEMANDS that you station your fleet at {target_meet.name} until ";
+                if (target.action=""){
+                    massa+=$" DEMANDS that you keep your fleet at {target_meet.name} until ";
+                }else if (target.action!=""){
+                    massa+=$" DEMANDS that you station your fleet at {target_meet.name} until ";
+                }
         
                 scr_event_log("red",string(massa)+" they may inspect it.");
-                var gender = obj_controller.inquisitor_gender[iq]==1?"he":"she"
-                if (obj_controller.inquisitor_gender[iq]=1) then massa+=$"{gender} is able to complete the inspection.  Further avoidance will be met with harsh action.";
+                var _gender = obj_controller.inquisitor_gender[iq]==1?"he":"she"
+                if (obj_controller.inquisitor_gender[iq]=1) then massa+=$"{_gender} is able to complete the inspection.  Further avoidance will be met with harsh action.";
 
                 scr_popup("Fleet Inspection",massa,"inquisition","");
         

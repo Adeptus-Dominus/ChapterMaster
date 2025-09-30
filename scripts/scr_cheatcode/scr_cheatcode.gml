@@ -408,7 +408,7 @@ function scr_cheatcode(argument0) {
 
 function draw_planet_debug_options(){
 	if (debug) {
-	    add_draw_return_values() 
+	    add_draw_return_values();
 	    var current_planet = obj_controller.selecting_planet;
 
 	    // Close window if clicked outside
@@ -441,7 +441,7 @@ function draw_planet_debug_options(){
 	        var key = faction_keys[i];
 
 	        // Draw faction name and value
-	        draw_text(38, _y, faction_names[i] + ": " + stsring(target[$ key][current_planet]));
+	        draw_text(38, _y, faction_names[i] + ": " + string(target[$ key][current_planet]));
 
 	        // Draw [-] [+] controls
 	        draw_text(147, _y, "[-] [+]");
