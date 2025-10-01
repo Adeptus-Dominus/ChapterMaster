@@ -30,7 +30,7 @@ function scr_inquisition_mission(event, forced_mission = -1){
     }
     if (event == EVENT.inquisition_planet){
         mission_investigate_planet();
-    } else if(event == EVENT.inquisition_mission){
+    } else if (event == EVENT.inquisition_mission){
     
 		var inquisition_missions =
 		[
@@ -52,35 +52,35 @@ function scr_inquisition_mission(event, forced_mission = -1){
         for(var s = 0, _len =  array_length(all_stars); s <_len; s++){
             var _star = all_stars[s];
 
-            if(scr_star_has_planet_with_feature(_star, P_features.Necron_Tomb) && !awake_necron_star(_star.id)){
+            if (scr_star_has_planet_with_feature(_star, P_features.Necron_Tomb) && !awake_necron_star(_star.id)){
                 array_push(necron_tomb_worlds, _star);
                 found_sleeping_necrons = true;
             }
 
-            if(star_has_planet_with_forces(_star, "Demons", 1)){
+            if (star_has_planet_with_forces(_star, "Demons", 1)){
                 // array_push(demon_worlds, _star); // turning this off til i have a way to finish the mission
                 found_demon_world = true;
             }
 
-            if(star_has_planet_with_forces(_star, eFACTION.Tyranids, 4)){
+            if (star_has_planet_with_forces(_star, eFACTION.Tyranids, 4)){
                 array_push(tyranid_org_worlds, _star)
                 found_tyranid_org = true;
             }
         }
 
-        if(found_sleeping_necrons){
+        if (found_sleeping_necrons){
             array_push(inquisition_missions, INQUISITION_MISSION.tomb_world);
             log_message($"Was able to find a _star with dormant necron tomb for inquisition mission");
         } else {
             log_message($"Couldn't find any planets with a dormant necron tomb for inquisition mission")
         }
-        if(found_tyranid_org){
+        if (found_tyranid_org){
             log_message($"Was able to find a _star with lvl 4 tyranids for inquisition mission");
             array_push(inquisition_missions, INQUISITION_MISSION.tyranid_organism);
         } else {
             log_message($"Couldn't find any planets with lvl 4 tyranids for inquisition mission")
         }
-        if(found_demon_world){
+        if (found_demon_world){
             array_push(inquisition_missions, INQUISITION_MISSION.demon_world);
             log_message($"Was able to find a _star with demons on it for inquisition mission");
         } else {
@@ -90,7 +90,7 @@ function scr_inquisition_mission(event, forced_mission = -1){
 		//if (string_count("Tau",obj_controller.useful_info)=0){
 		//	var found_tau = false;
 		//	with(obj_star){
-		//		if(found_tau){
+		//		if (found_tau){
 		//			break;
 		//		}
 		//		for(var i = 1; i <= planets; i++)
@@ -105,7 +105,7 @@ function scr_inquisition_mission(event, forced_mission = -1){
 		//}
 		
 		var chosen_mission = choose_array(inquisition_missions);
-        if(forced_mission != -1){
+        if (forced_mission != -1){
             chosen_mission = forced_mission;
         }
         switch (chosen_mission){
@@ -128,7 +128,7 @@ function mission_inquisition_demon_world(demon_worlds){
     var _star = choose_array(demon_worlds);
     var planet = -1;
     for(var i = 1; i <= _star.planets; i++){
-        if(_star.p_demons[i] > 1){
+        if (_star.p_demons[i] > 1){
             planet = i;
             break;
         }
@@ -144,20 +144,20 @@ function mission_inquisition_ethereal(){
     var stars = scr_get_stars();
     var _valid_stars = array_filter_ext(stars, function(_star, index) {
         for(var i = 1; i <= _star.planets; i++){
-            if(_star.p_owner[i]==eFACTION.Tau && _star.p_tau[i] >= 4) {
+            if (_star.p_owner[i]==eFACTION.Tau && _star.p_tau[i] >= 4) {
                 return true;
             }
         }
         return false;
     });
-    if(_valid_stars == 0){
+    if (array_length(_valid_stars) == 0){
         exit;
     }
     var _star = array_random_element(_valid_stars);
     
     var planet = -1;
     for(var i = 1; i <= _star.planets; i++){
-        if(_star.p_owner[i]==eFACTION.Tau && _star.p_tau[i] >= 4){
+        if (_star.p_owner[i]==eFACTION.Tau && _star.p_tau[i] >= 4){
             planet = i;
             break;
         }
@@ -175,7 +175,7 @@ function mission_inquisition_tyranid_organism(worlds){
     var _star = choose_array(worlds);
     var planet = -1;
     for(var i = 1; i <= _star.planets; i++){
-        if(_star.p_tyranids[i] > 4){
+        if (_star.p_tyranids[i] > 4){
             planet = i;
             break;
         }
@@ -188,7 +188,7 @@ function mission_inquisition_tyranid_organism(worlds){
     text+=" is ripe with Tyranid organisms.  They require that you capture one of the Gaunt species for research purposes.  Can your chapter handle this mission?";
     scr_popup("Inquisition Mission",text,"inquisition",$"tyranid_org|{string(_star.name)}|{string(planet)}|{string(eta+1)}|");
 
-}
+}\
 
 function mission_inquisition_tomb_world(tomb_worlds){
     log_message("RE: Necron Tomb Bombing");
@@ -202,7 +202,7 @@ function mission_inquisition_tomb_world(tomb_worlds){
 
     if (planet == -1){
         planet = irandom_range(1,_star.planets);
-        array_push(_star.p_feature[planet],new NewPlanetFeature(P_features.Necron_Tomb).Necron_Tomb )
+        array_push(_star.p_feature[planet],new NewPlanetFeature(P_features.Necron_Tomb));
     }
     
     var eta = scr_mission_eta(_star.x, _star.y,1)
@@ -241,7 +241,7 @@ function init_mission_inquisition_tomb_world(){
         popup_defualt_close();
         exit;
     }
-    scr_event_log("", $"Inquisition Mission Accepted: {global.chapter_name} have been given a Bomb to seal the Necron Tomb on {mission_star.name} {scr_roman(planet)}.", mission_star.name);
+    scr_event_log("", $"Inquisition Mission Accepted: {global.chapter_name} have been given a Bomb to seal the Necron Tomb on {mission_star.name} {scr_roman(pop_data.planet)}.", mission_star.name);
 
     image = "necron_cave";
     title = "New Equipment";
@@ -250,7 +250,7 @@ function init_mission_inquisition_tomb_world(){
     text = $"{global.chapter_name} have been provided with 1x Plasma Bomb in order to complete the mission.";
 
     if (demand) {
-        text = $"The Inquisition demands that your Chapter demonstrate its loyalty.  {global.chapter_name} have been given a Plasma Bomb to seal the Necron Tomb on {mission_star.name} {scr_roman(onceh)}.  It is expected to be completed within {estimate} months.";
+        text = $"The Inquisition demands that your Chapter demonstrate its loyalty.  {global.chapter_name} have been given a Plasma Bomb to seal the Necron Tomb on {mission_star.name} {scr_roman(pop_data.planet)}.  It is expected to be completed within {estimate} months.";
     }
     reset_popup_options();
     scr_add_item("Plasma Bomb", 1);
@@ -276,7 +276,7 @@ function mission_inquistion_hunt_inquisitor(star_id = -1){
     /*var _valid_stars = array_filter_ext(stars,
     function(_star,index){
         var _p_fleet = instance_nearest(_star.x,_star.y,obj_p_fleet);
-        if(instance_exists(_p_fleet)){
+        if (instance_exists(_p_fleet)){
             var _distance = point_distance(_star.x,_star.y,_p_fleet.x,_p_fleet.y);
             if (100 <= _distance & _distance <= 300){
                 return true;
@@ -289,7 +289,7 @@ function mission_inquistion_hunt_inquisitor(star_id = -1){
     if (star_id == -1){
         var _valid_stars = stars;
         
-        if(_valid_stars == 0) {
+        if (array_length(_valid_stars) == 0) {
             log_error("RE: Inquisitor Hunt,couldn't find a _star");
             exit;
         }
@@ -307,7 +307,7 @@ function mission_inquistion_hunt_inquisitor(star_id = -1){
     eta=max(eta, 8);
     var text=$"The Inquisition is trusting you with a special mission.  A radical inquisitor named {_name} will be visiting the {string(_star.name)} system in {string(eta)} month's time.  They are highly suspect of heresy, and as such, are to be put down.  Can your chapter handle this mission?";
     if (obj_controller.demanding) {
-        text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  A radical inquisitor is enroute to {mission_star.name}, expected within {estimate} months.  They are to be silenced and removed.";
+        text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  A radical inquisitor is enroute to {_star.name}, expected within {estimate} months.  They are to be silenced and removed.";
     }
     var _options = [
         {
@@ -351,7 +351,7 @@ function init_mission_hunt_inquisitor(){
         popup_defualt_close();
         exit;
     }
-    scr_event_log("", $"Inquisition Mission Accepted: The radical Inquisitor {pop_data.mission_data.inquisitor_name} enroute to {mission_star.name} must be removed.  Estimated arrival in {estimate} months.", mission_star.name);
+    scr_event_log("", $"Inquisition Mission Accepted: The radical Inquisitor {pop_data.mission_data.inquisitor_name} enroute to {mission_star.name} must be removed.  Estimated arrival in {pop_data.estimate} months.", mission_star.name);
     var _mission_data = pop_data.mission_data,
 
     var _radical_inquisitor_fleet = instance_create(mission_star.x-irandom_range(-400,400),mission_star.y-irandom_range(-400,400),obj_en_fleet);
@@ -537,7 +537,7 @@ function mission_hunt_inquisitor_destroy_inquisitor_ship(){
     exit;  
 }
 
-function hunt_inquisition_spared_inquisitor_consequence(){
+function hunt_inquisition_spared_inquisitor_consequence(event){
     var _diceh=roll_dice_chapter(1, 100, "high");
 
     if (_diceh<=25){
@@ -552,7 +552,7 @@ function hunt_inquisition_spared_inquisitor_consequence(){
     if (_diceh>50) and (_diceh<=85){
         //nothing happens for the minute
     }
-    if (_diceh>85) and (_event.variation==2){
+    if (_diceh>85) and (event.variation==2){
         scr_popup("Anonymous Message","You recieve an anonymous letter of thanks.  It mentions that motions are underway to destroy any local forces of Chaos.","","");
         with(obj_star){
             for(var o=1; o<=planets; o++){
@@ -571,7 +571,7 @@ function mission_inquistion_spyrer(){
             return scr_star_has_planet_with_type(_star,"Hive");
     });
     
-    if(_valid_stars == 0){
+    if (array_length(_valid_stars) == 0){
         log_error("RE: Spyrer, couldn't find _star");
         exit;
     }
@@ -595,7 +595,7 @@ function mission_inquistion_purge(){
     var stars = scr_get_stars();
     var _valid_stars = 0;
     
-    if(mission_flavour == 3) {
+    if (mission_flavour == 3) {
         _valid_stars = array_filter_ext(stars, function(_star,index){
             var hive_idx = scr_get_planet_with_type(_star,"Hive")
             return scr_is_planet_owned_by_allies(_star, hive_idx);
@@ -614,7 +614,7 @@ function mission_inquistion_purge(){
         });
     }
 
-    if(_valid_stars == 0){
+    if (array_length(_valid_stars) == 0){
         log_error("RE: Purge, couldn't find _star");
         exit;
     }
@@ -622,22 +622,22 @@ function mission_inquistion_purge(){
     var _star = stars[irandom(_valid_stars - 1)];
     
     var planet = -1;
-    if(mission_flavour == 3) {
+    if (mission_flavour == 3) {
         planet = scr_get_planet_with_type(_star, "Hive");
     } else {
         var hive_planet = scr_get_planet_with_type(_star,"Hive");
         var desert_planet = scr_get_planet_with_type(_star,"Desert");
         var temperate_planet = scr_get_planet_with_type(_star,"Temperate");
-        if(scr_is_planet_owned_by_allies(_star, hive_planet)) {
+        if (scr_is_planet_owned_by_allies(_star, hive_planet)) {
             planet = hive_planet;
-        } else if(scr_is_planet_owned_by_allies(_star, temperate_planet)) {
+        } else if (scr_is_planet_owned_by_allies(_star, temperate_planet)) {
             planet = temperate_planet;
-        } else if(scr_is_planet_owned_by_allies(_star, desert_planet)) {
+        } else if (scr_is_planet_owned_by_allies(_star, desert_planet)) {
             planet = desert_planet;
         }
     }
     
-    if(planet == -1){
+    if (planet == -1){
         log_error("RE: Purge, couldn't find planet");
         exit;
     }
@@ -678,9 +678,9 @@ function mission_investigate_planet(){
 		var stars = scr_get_stars();
 		var _valid_stars = array_filter_ext(stars,
 		function(_star,index){			
-			if(scr_star_has_planet_with_feature(_star, "????")){
+			if (scr_star_has_planet_with_feature(_star, "????")){
 				var fleet = instance_nearest(_star.x,_star.y,obj_p_fleet);
-				if(fleet == undefined || point_distance(_star.x,_star.y,fleet.x,fleet.y)>=160){
+				if (fleet == undefined || point_distance(_star.x,_star.y,fleet.x,fleet.y)>=160){
 					return true;
 				}
 				return false;
@@ -688,7 +688,7 @@ function mission_investigate_planet(){
 			return false;
 		});
 		
-		if (_valid_stars == 0){
+		if (array_length(_valid_stars) == 0){
 			log_error("RE: Investigate Planet, couldn't find a _star");
 			exit;
 		}
@@ -834,7 +834,7 @@ function necron_tomb_mission_sequence(){
 
             scr_event_log("", $"Inquisition Mission Completed: Your Astartes have sealed the Necron Tomb on {mission_star.name} {scr_roman(planet)}.", mission_star.name);
             scr_gov_disp(mission_star.name, planet, irandom_range(3, 7));
-            var have_bomb = scr_check_equip("Plasma Bomb", loc, planet, 1);
+            var have_bomb = scr_check_equip("Plasma Bomb", pop_data.loc, pop_data.planet, 1);
             exit;
         }
     }
@@ -864,7 +864,6 @@ function necron_tomb_mission_sequence(){
     }
 
     if (battle > 0) {
-        var that_one;
         instance_deactivate_all(true);
         instance_activate_object(obj_controller);
         instance_activate_object(obj_ini);
@@ -886,20 +885,12 @@ function necron_tomb_mission_sequence(){
         delete _roster;         
 
 
-        instance_activate_object(obj_star);
-        with (obj_star) {
-            if (name != obj_temp8.loc) {
-                instance_deactivate_object(id);
-            }
-        }
+        mission_star = star_by_name(pop_data.loc);
 
-        that_one = instance_nearest(0, 0, obj_star);
-        instance_activate_object(obj_star);
-
-        obj_ncombat.battle_object = that_one;
+        obj_ncombat.battle_object = mission_star;
         instance_deactivate_object(obj_star);
-        obj_ncombat.battle_loc = loc;
-        obj_ncombat.battle_id = planet;
+        obj_ncombat.battle_loc = pop_data.loc;
+        obj_ncombat.battle_id = pop_data.planet;
         obj_ncombat.dropping = 0;
         obj_ncombat.attacking = 0;
         obj_ncombat.enemy = 13;

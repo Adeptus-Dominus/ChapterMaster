@@ -154,7 +154,7 @@ function event_end_turn_action(){
 	        }
 	        // Spare the inquisitor
 	        if (_event.e_id == "inquisitor_spared"){
-	        	hunt_inquisition_spared_inquisitor_consequence();
+	        	hunt_inquisition_spared_inquisitor_consequence(_event);
 	        }
 
 	        if (_event.e_id == "strange_building"){

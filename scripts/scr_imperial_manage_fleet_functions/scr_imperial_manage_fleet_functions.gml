@@ -99,7 +99,9 @@ function deploy_colonisers(star){
         scr_alert("green","duhuhuhu",alert_string,star.x,star.y);
     } else {
         for (var r=1;r<=star.planets;r++){
-            if (data.mission == "new_colony") && (star.p_population[r]<=0) then continue;
+            if (data.mission == "new_colony" && star.p_population[r]<=0){
+                continue;
+            }
             //TODO sort out some of the issues of this regarding difference with large and small planet populations
             if (star.p_type[r]!="") and (star.p_type[r]!="Dead") {
                 if (lag=1){
@@ -117,7 +119,6 @@ function deploy_colonisers(star){
                 
                 star.dispo[r]=min(obj_ini.imperium_disposition,obj_controller.disposition[2])+irandom_range(-4,4);
                 if (star.name=obj_ini.home_name) and (star.p_type[r]=obj_ini.home_type) and (obj_controller.homeworld_rule!=1) then star.dispo[r]=-5000;
-
             }
         }  
     }

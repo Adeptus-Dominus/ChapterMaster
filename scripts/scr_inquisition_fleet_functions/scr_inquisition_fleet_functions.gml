@@ -117,23 +117,24 @@ function inquisition_fleet_inspection_chase(){
         
                 scr_alert("blank","blank","blank",target_meet.x,target_meet.y);
             
-                var massa,iq;iq=0;
-                massa="Inquisitor ";
+                var iq=0;
+                var massa="Inquisitor ";
                 if (inquisitor>0){
                     iq=inquisitor
                 }
             
                 massa+=string(obj_controller.inquisitor[iq]);
             
-                if (target.action=""){
+                if (target.action == ""){
                     massa+=$" DEMANDS that you keep your fleet at {target_meet.name} until ";
                 }else if (target.action!=""){
                     massa+=$" DEMANDS that you station your fleet at {target_meet.name} until ";
                 }
         
-                scr_event_log("red",string(massa)+" they may inspect it.");
-                var _gender = obj_controller.inquisitor_gender[iq]==1?"he":"she"
-                if (obj_controller.inquisitor_gender[iq]=1) then massa+=$"{_gender} is able to complete the inspection.  Further avoidance will be met with harsh action.";
+                scr_event_log("red","{massa} they may inspect it.");
+                var _gender = string_gender_third_person(obj_controller.inquisitor_gender[iq]);l
+
+                massa+=$"{_gender} is able to complete the inspection.  Further avoidance will be met with harsh action.";
 
                 scr_popup("Fleet Inspection",massa,"inquisition","");
         
