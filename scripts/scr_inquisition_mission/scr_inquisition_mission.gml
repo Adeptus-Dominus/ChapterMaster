@@ -821,7 +821,7 @@ function necron_tomb_mission_sequence(){
             text = "Your marines finally enter the deepest catacombs of the Necron Tomb.  There they place the Plasma Bomb and arm it.  All around are signs of increasing Necron activity.  With half an hour set, your men escape back to the surface.  There is a brief rumble as the charge goes off, your mission a success.";
             reset_popup_options();
 
-            add_disposition(eFACTION.Inquisition, obj_controller.demanding ? choose(0, 0, 1) : 1);
+            alter_disposition(eFACTION.Inquisition, obj_controller.demanding ? choose(0, 0, 1) : 1);
 
             mission_star = star_by_name(pop_data.loc);
             remove_planet_problem(planet, "necron", mission_star);
