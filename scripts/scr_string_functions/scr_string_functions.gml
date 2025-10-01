@@ -45,7 +45,7 @@ function string_gender_pronouns(gender){
             break;
     }
 
-    return _string   
+    return _string;
 }
 
 
