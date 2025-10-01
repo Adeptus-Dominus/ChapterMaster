@@ -198,7 +198,7 @@ function mission_inquisition_tomb_world(tomb_worlds){
         _star = tomb_worlds;
     }
 
-    var planet = scr_get_planet_with_feature(_star);
+    var planet = scr_get_planet_with_feature(_star, P_features.Necron_Tomb);
 
     if (planet == -1){
         planet = irandom_range(1,_star.planets);
@@ -216,7 +216,7 @@ function mission_inquisition_tomb_world(tomb_worlds){
         },
         {
             str1 :"Refuse",
-            method: popup_defualt_close,
+            method: popup_default_close,
         }
     ]
     var _pop_data = {
@@ -238,7 +238,7 @@ function init_mission_inquisition_tomb_world(){
 
     mission_star = star_by_name(pop_data.system);
     if (mission_star == "none"){
-        popup_defualt_close();
+        popup_default_close();
         exit;
     }
     scr_event_log("", $"Inquisition Mission Accepted: {global.chapter_name} have been given a Bomb to seal the Necron Tomb on {mission_star.name} {scr_roman(pop_data.planet)}.", mission_star.name);
@@ -250,7 +250,7 @@ function init_mission_inquisition_tomb_world(){
     text = $"{global.chapter_name} have been provided with 1x Plasma Bomb in order to complete the mission.";
 
     if (demand) {
-        text = $"The Inquisition demands that your Chapter demonstrate its loyalty.  {global.chapter_name} have been given a Plasma Bomb to seal the Necron Tomb on {mission_star.name} {scr_roman(pop_data.planet)}.  It is expected to be completed within {estimate} months.";
+        text = $"The Inquisition demands that your Chapter demonstrate its loyalty.  {global.chapter_name} have been given a Plasma Bomb to seal the Necron Tomb on {mission_star.name} {scr_roman(pop_data.planet)}.  It is expected to be completed within {pop_data.estimate} months.";
     }
     reset_popup_options();
     scr_add_item("Plasma Bomb", 1);
@@ -316,7 +316,7 @@ function mission_inquistion_hunt_inquisitor(star_id = -1){
         },
         {
             str1 :"Refuse",
-            method: popup_defualt_close,
+            method: popup_default_close,
         }
     ];
 
@@ -348,7 +348,7 @@ function add_new_inquis_mission(){
 function init_mission_hunt_inquisitor(){
     mission_star = star_by_name(pop_data.system);
     if (mission_star == "none"){
-        popup_defualt_close();
+        popup_default_close();
         exit;
     }
     scr_event_log("", $"Inquisition Mission Accepted: The radical Inquisitor {pop_data.mission_data.inquisitor_name} enroute to {mission_star.name} must be removed.  Estimated arrival in {pop_data.estimate} months.", mission_star.name);
@@ -593,7 +593,7 @@ function mission_inquistion_purge(){
     var mission_flavour = choose(1,1,1,2,2,3);
     
     var stars = scr_get_stars();
-    var _valid_stars = 0;
+    var _valid_stars = [];
     
     if (mission_flavour == 3) {
         _valid_stars = array_filter_ext(stars, function(_star,index){
@@ -619,7 +619,7 @@ function mission_inquistion_purge(){
         exit;
     }
     
-    var _star = stars[irandom(_valid_stars - 1)];
+    var _star = array_random_element(_valid_stars);
     
     var planet = -1;
     if (mission_flavour == 3) {
@@ -678,7 +678,7 @@ function mission_investigate_planet(){
 		var stars = scr_get_stars();
 		var _valid_stars = array_filter_ext(stars,
 		function(_star,index){			
-			if (scr_star_has_planet_with_feature(_star, "????")){
+			if (scr_star_has_planet_with_feature(_star, P_features.Ancient_Ruins)){
 				var fleet = instance_nearest(_star.x,_star.y,obj_p_fleet);
 				if (fleet == undefined || point_distance(_star.x,_star.y,fleet.x,fleet.y)>=160){
 					return true;
@@ -726,7 +726,7 @@ function setup_necron_tomb_raid(planet){
     log_message($"have bomb? {have_bomb} ")
     if (have_bomb > 0) {
         var tixt;
-        tixt = "Your marines on {planet_numeral_name(planet)}";
+        tixt = $"Your marines on {planet_numeral_name(planet)}";
         tixt += " are prepared and ready to enter the Necron Tombs.  A Plasma Bomb is in tow.";
         var _number = instance_exists(obj_turn_end) ? obj_turn_end.current_popup : 0;
         var _pop_data = {

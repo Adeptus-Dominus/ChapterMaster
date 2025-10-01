@@ -49,11 +49,11 @@ function popup_defualt_click_action(){
     }
 
     if (!array_length(options) && type<5){
-        popup_defualt_close();
+        popup_default_close();
     }
 }
 
-function popup_defualt_close(){
+function popup_default_close(){
     obj_controller.cooldown=10;
     if (instance_exists(obj_turn_end) && obj_controller.complex_event==false){
         if (number!=0){

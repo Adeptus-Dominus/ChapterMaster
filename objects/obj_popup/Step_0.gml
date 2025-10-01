@@ -1171,7 +1171,7 @@ try {
 			add_option(["Continue"]);
 		}
 		if (press == 0) {
-			popup_defualt_close();
+			popup_default_close();
 		}
 	}
 } catch (_exception) {

@@ -43,6 +43,9 @@ function string_gender_pronouns(gender){
         case GENDER.Male:
             _string ="his"
             break;
+        case GENDER.Neutral:
+            _string = "their";
+            break;
     }
 
     return _string;

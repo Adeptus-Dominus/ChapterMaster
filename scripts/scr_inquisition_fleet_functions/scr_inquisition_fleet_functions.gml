@@ -131,7 +131,7 @@ function inquisition_fleet_inspection_chase(){
                     massa+=$" DEMANDS that you station your fleet at {target_meet.name} until ";
                 }
         
-                scr_event_log("red","{massa} they may inspect it.");
+                scr_event_log("red",$"{massa} they may inspect it.");
                 var _gender = string_gender_third_person(obj_controller.inquisitor_gender[iq]);
 
                 massa+=$"{_gender} is able to complete the inspection.  Further avoidance will be met with harsh action.";
