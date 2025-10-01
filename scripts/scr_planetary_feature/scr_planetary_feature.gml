@@ -762,49 +762,49 @@ function ground_forces_collect_artifact(){
 
 function governor_negotiate_artifact(){
 	with (obj_ground_mission){
-	if (pdata.current_owner == 2){
-		scr_return_ship(pdata.system.name,self,pdata.planet);
+		if (pdata.current_owner == 2){
+			scr_return_ship(pdata.system.name,self,pdata.planet);
 
-		var man_size,ship_id,comp,plan,i;
-		i=0;
-		ship_id=0;
-		man_size=0;
-		comp=0;
-		plan=0;
+			var man_size,ship_id,comp,plan,i;
+			i=0;
+			ship_id=0;
+			man_size=0;
+			comp=0;
+			plan=0;
 
-		ship_id = get_valid_player_ship("", loc);
+			ship_id = get_valid_player_ship("", loc);
 
-		i=0;
-		plan=instance_nearest(x,y,obj_star);
-		last_artifact = scr_add_artifact("random","random",4,pdata.system.name,ship_id+500);
+			i=0;
+			plan=instance_nearest(x,y,obj_star);
+			last_artifact = scr_add_artifact("random","random",4,pdata.system.name,ship_id+500);
 
+			obj_popup.image="artifact_recovered";
+			obj_popup.title="Artifact Recovered!";
+			obj_popup.text=$"The Planetary Governor hands over the Artifact without asking for compensation.##It has been safely stowed away upon {loc}.  It appears to be a {obj_ini.artifact[last_artifact]} but should be brought home and identified posthaste.";
+			with(obj_star_select){instance_destroy();}
+			with(obj_fleet_select){instance_destroy();}
+			pdata.delete_feature(P_features.Artifact);
+			with(obj_popup){
+				reset_popup_options()
+			}
+			scr_event_log("","Planetary Governor hands over Artifact.");
 
-		var pop;
-		pop=instance_create(0,0,obj_popup);
-		pop.image="artifact_recovered";
-		pop.title="Artifact Recovered!";
-		pop.text="The Planetary Governor hands over the Artifact without asking for compensation.##It has been safely stowed away upon "+string(loc)+".  It appears to be a "+string(obj_ini.artifact[last_artifact])+" but should be brought home and identified posthaste.";
-		with(obj_star_select){instance_destroy();}
-		with(obj_fleet_select){instance_destroy();}
-		pdata.delete_feature(P_features.Artifact)
-		scr_event_log("","Planetary Governor hands over Artifact.");
+			corrupt_artifact_collectors(last_artifact);
 
-		corrupt_artifact_collectors(last_artifact);
-
-		obj_controller.trading_artifact=0;
-		var h=0;
-		clear_diplo_choices();
-		instance_destroy();
-	} else {
-		scr_toggle_diplomacy();
-		obj_controller.cooldown = 10;
-		obj_controller.diplomacy = target_comp;
-		obj_controller.trading_artifact = 1;
-		with (obj_controller) {
-			scr_dialogue("artifact");
+			obj_controller.trading_artifact=0;
+			var h=0;
+			instance_destroy();
+		} else {
+			scr_toggle_diplomacy();
+			obj_controller.cooldown = 10;
+			obj_controller.diplomacy = pdata.current_owner;
+			obj_controller.trading_artifact = 1;
+			with (obj_controller) {
+				scr_dialogue("artifact");
+			}
+			instance_destroy();
+			instance_destroy(obj_popup);
 		}
-		instance_destroy();
-	}
 	}
 
 }
