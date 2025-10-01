@@ -406,25 +406,32 @@ function scr_cheatcode(argument0) {
 }
 
 
+/// @mixin obj_Star_Select
 function draw_planet_debug_options(){
+	add_draw_return_values();
+	draw_set_halign(fa_left);
+	draw_set_color(c_white);
+	draw_set_alpha(1);
 	if (debug) {
-		debug_options.draw()
-	    if (debug_options.current_selection == 0){
-	    	draw_planet_debug_forces()
-	    } else if (debug_options.current_selection == 1){
-	    	draw_planet_debug_problems()
-	    }
+		debug_slate.inside_method = function(){
+			debug_options.draw()
+		    if (debug_options.current_selection == 0){
+		    	draw_planet_debug_forces()
+		    } else if (debug_options.current_selection == 1){
+		    	draw_planet_debug_problems()
+		    }
+		}
+		debug_slate.draw()
 	}
+    if (debug_button.draw()){
+        debug = !debug;
+        //scroll_problems = new ScrollableContainer()
+    }
+    pop_draw_return_values();
 }
 
 function draw_planet_debug_problems(){
-	var base_y = 194;
-    // Setup draw area
-    draw_set_color(c_black);
-    draw_rectangle(36, base_y, 337, base_y+281, 0);
-    draw_set_font(fnt_40k_14b);
-    draw_set_color(c_gray);
-    draw_set_halign(fa_left);
+	var base_y = 220;
 	var _keys = planet_problem_keys;
 	base_y += 2;
 	for (var i=0;i<array_length(_keys);i++){
@@ -452,19 +459,12 @@ function draw_planet_debug_problems(){
 function draw_planet_debug_forces(){
 	add_draw_return_values();
     var current_planet = obj_controller.selecting_planet;
-    var base_y = 194;
+    var base_y = 220;
     // Close window if clicked outside
     if (!scr_hit([36,base_y,337,base_y+281]) && scr_click_left()) {
         debug = 0;
         exit;
     }
-
-    // Setup draw area
-    draw_set_color(c_black);
-    draw_rectangle(36, base_y, 337, base_y+281, 0);
-    draw_set_font(fnt_40k_14b);
-    draw_set_color(c_gray);
-    draw_set_halign(fa_left);
 
     // Define factions and their struct keys
     var faction_names = [

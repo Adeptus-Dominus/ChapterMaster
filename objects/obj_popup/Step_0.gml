@@ -2,10 +2,6 @@ try {
 	if (hide == true) {
 		exit;
 	}
-
-	if ((cooldown >= 0) && (cooldown <= 40)) {
-		cooldown -= 1;
-	}
 	if (instance_exists(obj_controller)) {
 		if (obj_controller.zoomed == 1) {
 			with (obj_controller) {
@@ -17,11 +13,6 @@ try {
 	for (var i=0;i<array_length(options);i++){
 		if (keyboard_check_pressed(ord(string(i+1))) && (cooldown <= 0)){
 			press = i;
-		}
-	}
-	if (press > -1){
-		if (options[press] == ""){
-			press = -1;
 		}
 	}
 
@@ -1180,14 +1171,7 @@ try {
 			add_option(["Continue"]);
 		}
 		if (press == 0) {
-			obj_controller.complex_event = false;
-			if (instance_exists(obj_turn_end)) {
-				if (number != 0) {
-					obj_turn_end.alarm[1] = 4;
-				}
-				instance_destroy();
-			}
-			instance_destroy();
+			popup_defualt_close();
 		}
 	}
 } catch (_exception) {

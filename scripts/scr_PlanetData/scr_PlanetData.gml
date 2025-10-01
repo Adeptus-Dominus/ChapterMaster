@@ -781,6 +781,9 @@ function PlanetData(planet, system) constructor{
 
 
 	static planet_info_screen = function(){
+        if (!instance_exists(obj_star_select)){
+            exit;
+        }
 		var improve=0
         var xx=15;
         var yy=25;

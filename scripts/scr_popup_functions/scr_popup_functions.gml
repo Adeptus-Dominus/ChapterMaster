@@ -101,6 +101,7 @@ function popup_window_draw(){
 }
 
 function draw_popup_options(){
+	press = -1;
 	if (array_length(options)){
 
 
@@ -150,6 +151,7 @@ function draw_popup_options(){
 			            if (is_callable(_opt.method)){
 			            	show_debug_message(_opt);
 			            	script_execute(_opt.method);
+			            	press = -1;
 			            }
 					}
 				}
@@ -187,6 +189,11 @@ function draw_popup_options(){
 	} else {
 		if (scr_click_left()){
 			popup_defualt_click_action();
+		}
+	}
+	if (press > -1 && press < array_length(options)){
+		if (!is_struct(options[press]) && options[press] == ""){
+			press = -1;
 		}
 	}
 }

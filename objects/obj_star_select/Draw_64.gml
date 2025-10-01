@@ -42,7 +42,7 @@ if (obj_controller.selecting_planet>target.planets){
     obj_controller.selecting_planet = 0;
 }
 var click_accepted = (!obj_controller.menu) and (!obj_controller.zoomed) and (!instance_exists(obj_bomb_select)) and (!instance_exists(obj_drop_select));
-if (click_accepted && !(debug && mouse_x<400)) {
+if (click_accepted && (!debug || !debug_slate.entered())) {
     if (scr_click_left(0)) {
         var closes=0,sta1=0,sta2=0;
         var mouse_consts = return_mouse_consts();
@@ -110,28 +110,9 @@ if (target.craftworld=0) and (target.space_hulk=0){
 }
 
 
-if (global.cheat_debug && obj_controller.selecting_planet && !loading)
-    {
-        if (debug_button.draw()){
-            debug = !debug;
-            debug_options = new RadioSet([
-               {
-                   str1 : "Edit Forces",
-     
-               },
-               {
-                   str1 : "Add Problem",
-     
-               },
-               {
-                   str1 : "Add Feature",
-     
-               },                     
-            ],"Debug options",{x1 : 36, y1 : 125, max_width : 300});
-
-            //scroll_problems = new ScrollableContainer()
-        }
-    }
+if (global.cheat_debug && obj_controller.selecting_planet && !loading){
+    draw_planet_debug_options();
+}
 
 
 if (obj_controller.menu == 0 && !debug){
@@ -382,10 +363,12 @@ if (obj_controller.selecting_planet!=0){
     var current_button="";
     var shutter_x = main_data_slate.XX-165;
     var shutter_y = 296+165;
-    if (shutter_1.draw_shutter(shutter_x, shutter_y, button1, 0.5, true)) then current_button=button1;
-    if (shutter_2.draw_shutter(shutter_x, shutter_y+47, button2,0.5, true))then current_button=button2;
-    if (shutter_3.draw_shutter(shutter_x, shutter_y+(47*2), button3,0.5, true))then current_button=button3;
-    if (shutter_4.draw_shutter(shutter_x, shutter_y+(47*3), button4,0.5, true))then current_button=button4;
+    if (!debug){
+        if (shutter_1.draw_shutter(shutter_x, shutter_y, button1, 0.5, true)) then current_button=button1;
+        if (shutter_2.draw_shutter(shutter_x, shutter_y+47, button2,0.5, true))then current_button=button2;
+        if (shutter_3.draw_shutter(shutter_x, shutter_y+(47*2), button3,0.5, true))then current_button=button3;
+        if (shutter_4.draw_shutter(shutter_x, shutter_y+(47*3), button4,0.5, true))then current_button=button4;
+    }
     if (current_button!=""){
         if (array_contains(["Build","Base","Arsenal","Gene-Vault"],current_button)){
             var building=instance_create(x,y,obj_temp_build);
@@ -523,11 +506,6 @@ if (target!=0){
         
     }
 }
-
-
-draw_planet_debug_options();
-
-
 
 pop_draw_return_values();
 

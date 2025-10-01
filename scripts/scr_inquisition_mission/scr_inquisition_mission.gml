@@ -188,7 +188,7 @@ function mission_inquisition_tyranid_organism(worlds){
     text+=" is ripe with Tyranid organisms.  They require that you capture one of the Gaunt species for research purposes.  Can your chapter handle this mission?";
     scr_popup("Inquisition Mission",text,"inquisition",$"tyranid_org|{string(_star.name)}|{string(planet)}|{string(eta+1)}|");
 
-}\
+}
 
 function mission_inquisition_tomb_world(tomb_worlds){
     log_message("RE: Necron Tomb Bombing");
@@ -718,6 +718,7 @@ function mission_investigate_planet(){
 }
 
 
+/// @mixin obj_star
 function setup_necron_tomb_raid(planet){
     log_message($"player on planet with necron mission {name} planet: {planet}")
     var have_bomb;
@@ -725,7 +726,7 @@ function setup_necron_tomb_raid(planet){
     log_message($"have bomb? {have_bomb} ")
     if (have_bomb > 0) {
         var tixt;
-        tixt = "Your marines on " + planet_numeral_name(planet);
+        tixt = "Your marines on {planet_numeral_name(planet)}";
         tixt += " are prepared and ready to enter the Necron Tombs.  A Plasma Bomb is in tow.";
         var _number = instance_exists(obj_turn_end) ? obj_turn_end.current_popup : 0;
         var _pop_data = {
@@ -750,18 +751,11 @@ function setup_necron_tomb_raid(planet){
     }   
 }
 
+
+/// @mixin obj_popup
 function necron_tomb_mission_start(){
-    instance_activate_all();
-    var player_forces, penalty, roll;
     mission_star = star_by_name(pop_data.loc);
     planet = pop_data.planet;
-    player_forces = 0;
-    penalty = 0;
-    roll =  roll_dice_chapter(1, 100, "low");
-
-    player_forces = mission_star.p_player[planet];
-    cooldown = 30;
-
 
     title = $"Necron Tunnels : {pop_data.mission_stage}";
     replace_options(
@@ -782,11 +776,13 @@ function necron_tomb_mission_start(){
 }
 
 function necron_tomb_mission_sequence(){
-    var penalty, roll, battle;
-    penalty = 0;
-    roll = floor(random(100)) + 1;
+    var battle;
+    var player_forces = 0;
+    var penalty = 0;
+    var roll =  roll_dice_chapter(1, 100, "low");
     battle = 0;
     instance_activate_all();
+    player_forces = mission_star.p_player[planet];
 
     // SMALL TEAM OF MARINES
     if (player_forces > 6) {
@@ -867,13 +863,13 @@ function necron_tomb_mission_sequence(){
         instance_deactivate_all(true);
         instance_activate_object(obj_controller);
         instance_activate_object(obj_ini);
-        instance_activate_object(obj_temp8);
 
         instance_create(0, 0, obj_ncombat);
         _roster = new Roster();
+        var _pop_data = pop_data;
         with (_roster){
-            roster_location = obj_temp8.loc;
-            roster_planet = obj_temp8.wid;
+            roster_location = _pop_data.loc;
+            roster_planet = _pop_data.planet;
             determine_full_roster();
             only_locals();
             update_roster();
