@@ -162,7 +162,7 @@ try {
             obj_controller.known[eFACTION.Chaos]=2;
             with(obj_controller){scr_dialogue("intro2");}
         }
-        if (defeat=0){
+        if (defeat == 0){
             obj_controller.known[eFACTION.Chaos]=2;
             obj_controller.faction_defeated[10]=1;
             
@@ -252,7 +252,7 @@ try {
     
     
     if (turn_count < 20){
-        if (defeat=0) and (threat>=4) then scr_recent("battle_victory", $"{battle_loc} {scr_roman(battle_id)}",enemy);
+        if (defeat == 0) and (threat>=4) then scr_recent("battle_victory", $"{battle_loc} {scr_roman(battle_id)}",enemy);
     
     
     
@@ -333,7 +333,7 @@ try {
         hunt_fallen_battle_aftermath();
     }
     
-    else if (defeat=0) and (enemy=9) and (battle_special="tyranid_org"){
+    else if (defeat == 0) and (enemy=9) and (battle_special="tyranid_org"){
         if (captured_gaunt>1){
             _pop = instance_create(0,0,obj_popup);
             _pop.image = "inquisition";

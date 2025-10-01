@@ -2,10 +2,6 @@ try {
 	if (hide == true) {
 		exit;
 	}
-
-	if ((cooldown >= 0) && (cooldown <= 40)) {
-		cooldown -= 1;
-	}
 	if (instance_exists(obj_controller)) {
 		if (obj_controller.zoomed == 1) {
 			with (obj_controller) {
@@ -17,11 +13,6 @@ try {
 	for (var i=0;i<array_length(options);i++){
 		if (keyboard_check_pressed(ord(string(i+1))) && (cooldown <= 0)){
 			press = i;
-		}
-	}
-	if (press > -1){
-		if (options[press] == ""){
-			press = -1;
 		}
 	}
 
@@ -686,9 +677,6 @@ try {
 	else if (((title == "Inquisition Mission") || (title == "Inquisition Recon")) && (array_length(options) == 0)) {
 		add_option(["Accept",  "Refuse"], true);
 	}
-	else if (title == "Inquisitor Located") {
-		add_option(["Destroy their vessel",  "Hear them out"], true);
-	}
 
 	if ((title == "He Built It") && (array_length(options) == 0) && (string_count("submerged", text) == 0)) {
 		add_option(["Execute the heretic",  "Move him to the Penitorium", "I see no problem"], true);
@@ -707,34 +695,6 @@ try {
 			if ((obj_controller.gene_seed >= 60) && (onceh == 0)) {
 				obj_controller.gene_seed = round(obj_controller.gene_seed * 0.66);
 			}
-		}
-
-		if ((title == "Inquisitor Located") || (title == "Artifact Offered") || (title == "Mercy Plea")) {
-			with (obj_en_fleet) {
-				if ((trade_goods == "male_her") || (trade_goods == "female_her")) {
-					instance_destroy();
-				}
-			}
-
-			if (obj_controller.demanding == 0) {
-				obj_controller.disposition[4] += 1;
-			}
-			if (obj_controller.demanding == 1) {
-				obj_controller.disposition[4] += choose(0, 0, 1);
-			}
-
-			if ((title == "Artifact Offered") || (title == "Mercy Plea")) {
-				obj_controller.disposition[4] -= choose(0, 1);
-			}
-
-			title = "Inquisition Mission Completed";
-			image = "exploding_ship";
-			text = "The Inquisitor's ship begans to bank and turn, to flee, but is immediately fired upon by your fleet.  The ship explodes, taking the Inquisitor with it.  The mission has been accomplished.";
-			reset_popup_options();
-
-			scr_event_log("", "Inquisition Mission Completed: The radical Inquisitor has been purged.");
-
-			exit;
 		}
 		if (title == "He Built It") {
 			scr_kill_unit(ma_co, ma_id);
@@ -793,38 +753,13 @@ try {
 						if (demand) {
 							text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  {global.chapter_name} are to cleanse by fire the mutants in Hive {planet_numeral_name(planet, mission_star)} within {estimate} months.";
 						}
-					} else if (mission == "inquisitor") {
-						scr_event_log("", $"Inquisition Mission Accepted: A radical Inquisitor enroute to {mission_star.name} must be removed.  Estimated arrival in {estimate} months.", mission_star.name);
-						if (demand) {
-							text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  A radical inquisitor is enroute to {mission_star.name}, expected within {estimate} months.  They are to be silenced and removed.";
-						}
 					}
-
 					if (mission == "spyrer") {
 						scr_event_log("", $"Inquisition Mission Accepted: The Spyrer on {mission_star.name} {scr_roman(planet)} must be killed within {estimate} months.", mission_star.name);
 						if (demand) {
 							text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  An out of control Spyrer on Hive {mission_star.name} {scr_roman(onceh)} must be removed within {estimate} months.";
 						}
-					} else if (mission == "necron") {
-						scr_event_log("", $"Inquisition Mission Accepted: {global.chapter_name} have been given a Bomb to seal the Necron Tomb on {mission_star.name} {scr_roman(planet)}.", mission_star.name);
-
-						image = "necron_cave";
-						title = "New Equipment";
-						fancy_title = 0;
-						text_center = 0;
-						text = $"{global.chapter_name} have been provided with 1x Plasma Bomb in order to complete the mission.";
-
-						if (demand) {
-							text = $"The Inquisition demands that your Chapter demonstrate its loyalty.  {global.chapter_name} have been given a Plasma Bomb to seal the Necron Tomb on {mission_star.name} {scr_roman(onceh)}.  It is expected to be completed within {estimate} months.";
-						}
-						reset_popup_options();
-						scr_add_item("Plasma Bomb", 1);
-						obj_controller.cooldown = 10;
-						if (demand) {
-							demand = 0;
-						}
-						exit;
-					} else if (mission == "tyranid_org") {
+					}  else if (mission == "tyranid_org") {
 						image = "webber";
 						title = "New Equipment";
 						fancy_title = 0;
@@ -994,71 +929,6 @@ try {
 			exit;
 		}
 
-		if (title == "Inquisitor Located") {
-			var offer, gender, gender2;
-			offer = choose(1, 1, 2, 2, 3);
-			if (planet == 1) {
-				gender = "he";
-			}
-			if (planet == 2) {
-				gender = "she";
-			}
-			if (planet == 1) {
-				gender2 = "his";
-			}
-			if (planet == 2) {
-				gender2 = "her";
-			}
-
-			if (offer == 1) {
-				title = "Artifact Offered";
-				text = "The Inquisitor claims that this is a massive misunderstanding, and " + string(gender) + " wishes to prove " + string(gender2) + $" innocence.  If {global.chapter_name} allow their ship to leave " + string(gender) + $" will give {global.chapter_name} an artifact.";
-				add_option("Destroy their vessel");
-				add_option("Take the artifact and then destroy them");
-				add_option("Take the artifact and spare them");
-				exit;
-			}
-
-			if (offer == 2) {
-				title = "Mercy Plea";
-				text = "The Inquisitor claims that " + string(gender) + $" has key knowledge that would grant the Imperium vital power over the forces of Chaos.  If {global.chapter_name} allow " + string(gender2) + " ship to leave the forces of Chaos within this sector will be weakened.";
-				add_option("Destroy their vessel");
-				add_option("Search their ship");
-				add_option("Spare them");
-				exit;
-			}
-
-			if (offer == 3) {
-				var gender2;
-				if (planet == 1) {
-					gender2 = "his";
-				}
-				if (planet == 2) {
-					gender2 = "her";
-				}
-				with (obj_en_fleet) {
-					if ((trade_goods == "male_her") || (trade_goods == "female_her")) {
-						with (obj_p_fleet) {
-							if (action != "") {
-								instance_deactivate_object(id);
-							}
-						}
-						with (instance_nearest(x, y, obj_p_fleet)) {
-							scr_add_corruption(true, "1d3");
-						}
-						instance_activate_object(obj_p_fleet);
-						instance_destroy();
-					}
-				}
-				title = "Inquisition Mission Completed";
-				image = "exploding_ship";
-				text = $"{global.chapter_name} allow communications.  As soon as the vox turns on {global.chapter_name} hear a sickly, hateful voice.  They begin to speak of the inevitable death of your marines, the fall of all that is and ever shall be, and " + string(gender2) + " Lord of Decay.  Their ship is fired upon and destroyed without hesitation.";
-				reset_popup_options();
-				scr_event_log("", "Inquisition Mission Completed: The radical Inquisitor has been purged.");
-				exit;
-			}
-			exit;
-		}
 		if (image == "artifact2") {
 			scr_return_ship(obj_ground_mission.loc, obj_ground_mission, obj_ground_mission.num);
 			var man_size, ship_id, comp, plan, i;
@@ -1080,73 +950,6 @@ try {
 
 		obj_controller.cooldown = 10;
 
-		if (obj_controller.complex_event == false) {
-			if (number != 0 && instance_exists(obj_turn_end)) {
-				obj_turn_end.alarm[1] = 4;
-			}
-			instance_destroy();
-		}
-	}
-
-	if ((press == 2) && (option3 != "")) {
-		if (title == "Artifact Offered") {
-			with (obj_en_fleet) {
-				if ((trade_goods == "male_her") || (trade_goods == "female_her")) {
-					action_x = choose(room_width * -1, room_width * 2);
-					action_y = choose(room_height * -1, room_height * 2);
-					alarm[4] = 1;
-					trade_goods = "|DELETE|";
-					action_spd = 256;
-					action = "";
-				}
-			}
-			var last_artifact = scr_add_artifact("random", "", 4);
-			
-			reset_popup_options();
-			title = "Inquisition Mission Completed";
-			text = "Your ship sends over a boarding party, who retrieve the offered artifact- ";
-			text += $" some form of {obj_ini.artifact[last_artifact]}.  As promised {global.chapter_name} allow the Inquisitor to leave, hoping for the best.  What's the worst that could happen?";
-			image = "artifact_recovered";
-			reset_popup_options();
-			scr_event_log("", "Artifact Recovered from radical Inquisitor.");
-			scr_event_log("", "Inquisition Mission Completed: The radical Inquisitor has been purged.");
-
-	        add_event({
-	        	e_id : "inquisitor_spared",
-	        	duration : irandom_range(6, 18) + 1,
-	        	variation : 1,
-	        })
-
-			exit;
-		}
-		if (title == "Mercy Plea") {
-			with (obj_en_fleet) {
-				if ((trade_goods == "male_her") || (trade_goods == "female_her")) {
-					action_x = choose(room_width * -1, room_width * 2);
-					action_y = choose(room_height * -1, room_height * 2);
-					trade_goods = "|DELETE|";
-					alarm[4] = 1;
-					action_spd = 256;
-					action = "";
-				}
-			}
-			title = "Inquisition Mission Completed";
-			text = $"{global.chapter_name} allow the Inquisitor to leave, trusting in their words.  If they truly do have key information it is a risk {global.chapter_name} are willing to take.  What's the worst that could happen?";
-			image = "artifact_recovered";
-			reset_popup_options();
-
-			scr_event_log("", "Inquisition Mission Completed?: The radical Inquisitor has been allowed to flee in order to weaken the forces of Chaos, as they promised.");
-
-	        add_event({
-	        	e_id : "inquisitor_spared",
-	        	duration : irandom_range(6, 18) + 1,
-	        	variation : 2,
-	        })
-
-			exit;
-		}
-
-		obj_controller.cooldown = 10;
 		if (obj_controller.complex_event == false) {
 			if (number != 0 && instance_exists(obj_turn_end)) {
 				obj_turn_end.alarm[1] = 4;
@@ -1368,14 +1171,7 @@ try {
 			add_option(["Continue"]);
 		}
 		if (press == 0) {
-			obj_controller.complex_event = false;
-			if (instance_exists(obj_turn_end)) {
-				if (number != 0) {
-					obj_turn_end.alarm[1] = 4;
-				}
-				instance_destroy();
-			}
-			instance_destroy();
+			popup_default_close();
 		}
 	}
 } catch (_exception) {
