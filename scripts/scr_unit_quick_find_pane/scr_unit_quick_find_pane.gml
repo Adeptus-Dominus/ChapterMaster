@@ -462,7 +462,7 @@ function HoverBox() constructor{
 
 function exit_adhoc_manage(){
 	scr_toggle_manage();
-    if (instance_exists(selection_data.system)){
+    if (struct_exists(selection_data, "system") && instance_exists(selection_data.system)){
    		selection_data.system.alarm[3]=2;
     }		
 };
