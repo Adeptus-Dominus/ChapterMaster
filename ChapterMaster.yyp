@@ -576,7 +576,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.1400.0.892",
+    "IDEVersion":"2024.1400.0.901",
   },
   "name":"ChapterMaster",
   "resources":[
@@ -1648,6 +1648,7 @@
     {"id":{"name":"spr_tartaros_right_arm","path":"sprites/spr_tartaros_right_arm/spr_tartaros_right_arm.yy",},},
     {"id":{"name":"spr_tartaros_right_leg","path":"sprites/spr_tartaros_right_leg/spr_tartaros_right_leg.yy",},},
     {"id":{"name":"spr_tartaros_right_trim","path":"sprites/spr_tartaros_right_trim/spr_tartaros_right_trim.yy",},},
+    {"id":{"name":"spr_tartaros_shadows","path":"sprites/spr_tartaros_shadows/spr_tartaros_shadows.yy",},},
     {"id":{"name":"spr_tartaros_wep_fix","path":"sprites/spr_tartaros_wep_fix/spr_tartaros_wep_fix.yy",},},
     {"id":{"name":"spr_tartaros2_colors","path":"sprites/spr_tartaros2_colors/spr_tartaros2_colors.yy",},},
     {"id":{"name":"spr_tech_area_pad","path":"sprites/spr_tech_area_pad/spr_tech_area_pad.yy",},},

@@ -1427,6 +1427,13 @@ global.modular_drawing_items = [
         shadows : spr_mk7_right_arm_shadow,
         body_types : [0], 
         flip : true,
+    },
+    {
+        position : "armour",
+        armours : ["Tartaros"],
+        sprite : spr_tartaros_complex,
+        shadows : spr_tartaros_shadows,
+        body_types : [2], 
     }
 
 ];
