@@ -329,6 +329,7 @@ function set_up_visual_overides(){
             shader_set(right_left_swap_shader);
 
             _flip_mod.sprite = return_sprite_mirrored(_mod.sprite, false);
+            //sprite_set_offset(_flip_mod.sprite,sprite_get_xoffset(_mod.sprite),sprite_get_yoffset(_mod.sprite));
 
 
              if (struct_exists(_flip_mod, "subcomponents")){
@@ -1434,7 +1435,47 @@ global.modular_drawing_items = [
         sprite : spr_tartaros_complex,
         shadows : spr_tartaros_shadows,
         body_types : [2], 
-    }
+    },
+    {
+        position : "right_arm",
+        armours : ["Tartaros"],
+        sprite : spr_tartaros_right_arm,
+        shadows : spr_tartaros_right_arm_shadows,
+        body_types : [2], 
+        flip : true,
+    },
+    {
+        position : "gorget",
+        armours : ["Tartaros"],
+        sprite : spr_tartaros_gorget,
+        shadows : spr_tartaros_gorget_shadows,
+        body_types : [2], 
+    },
+    {
+        position : "head",
+        armours : ["Tartaros"],
+        sprite : spr_tartaros_head_variants,
+        shadows : spr_tartaros_head_shadows,
+        body_types : [2], 
+    },
+    {
+        position : "forhead",
+        armours : ["Tartaros"],
+        sprite : spr_tartaros_forehead_variants,
+        shadows : spr_tartaros_forehead_shadows,
+        body_types : [2], 
+    },
+    {
+        position : "right_leg",
+        armours : ["Tartaros"],
+        sprite : spr_tartaros_right_leg,
+        shadows : spr_tartaros_right_leg_shadows,
+        body_types : [2], 
+        flip : true,
+        subcomponents : [
+            [spr_blank, spr_blank,spr_blank,spr_tartaros_leg_rivets],
+        ],
+    },
 
 ];
 
