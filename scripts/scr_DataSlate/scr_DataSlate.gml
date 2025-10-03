@@ -1,4 +1,4 @@
-function DataSlate() constructor{
+function DataSlate(data={}) constructor{
 	static_line=1;
 	title="";
 	sub_title="";
@@ -11,19 +11,23 @@ function DataSlate() constructor{
 	percent_cut=0;
 	set_width = false;
 
+	top_anchor = [340, 14];
+
 	style = "default";
 
 	tooltip_drawing = [];
 
 	blend_col = 5998382;
 
+	move_data_to_current_scope(data, true);
+
+	draw_top_piece = true;
+
+	top_piece_style = "aquila";
+
+
 	static entered = function(){
-		return (scr_hit(
-                    XX-4,
-                    YY,
-                    XX + width,
-                    YY + height,
-                ));
+		return (scr_hit(XX-4,YY,XX + width,YY + height));
 	}
 
 	static draw_with_dimensions = function(xx = -1,yy = -1, Width=-1 , Height=-1){
@@ -51,19 +55,21 @@ function DataSlate() constructor{
 			height = 850*scale_y;
 		}
 
+		decoration_scale = min(scale_x, scale_y)
+
 		switch (style){
 			case "default":
-				draw_sprite_ext(spr_data_slate,1, XX,YY, scale_x, scale_y, 0, c_white, 1);
+				draw_sprite_ext(spr_slate_featureless,1, XX,YY, scale_x, scale_y, 0, c_white, 1);
 				break;
 			case "decorated":
 				draw_sprite_stretched(spr_data_slate_back, 0, XX,YY, width, height);
 				draw_sprite_stretched(spr_slate_side, 0, XX,YY, width, height);
-				draw_rectangle_color_simple(xx,YY, XX+width,YY+height, 0, blend_col, 0.05);
+				draw_rectangle_color_simple(XX,YY, XX+width,YY+height, 0, blend_col, 0.05);
 				break;
 
 			case "plain":
 				draw_sprite_stretched(spr_data_slate_back, 0, XX,YY, width, height);
-				draw_rectangle_color_simple(xx,YY, XX+width,YY+height, 0, blend_col, 0.05);				
+				draw_rectangle_color_simple(XX,YY, XX+width,YY+height, 0, blend_col, 0.05);				
 				break;
 		}
 
@@ -101,8 +107,18 @@ function DataSlate() constructor{
 				var _slate_scaley = height/sprite_get_height(spr_slate_side);
 				draw_sprite(spr_data_slate_corner_decoration, 0,XX+width - (70*_slate_scalex), YY + (7*_slate_scaley));
 				break;
+			case "default":
+				if (draw_top_piece){
+					if (top_piece_style == "aquila"){
+						draw_sprite_ext(spr_slate_top,1, XX+(top_anchor[0]*scale_x),YY + (top_anchor[1] * scale_y ), decoration_scale, decoration_scale, 0, c_white, 1);
+					}
+
+				}
+				break;
 
 		}
+		x2 = XX+width;
+		y2 = YY+height;
 	}
 
 	static draw_cut = function(xx,yy, scale_x=1, scale_y=1, middle_percent=percent_cut){
@@ -328,11 +344,15 @@ function ShutterButton() constructor{
 	right_rack = new RackAndPinion();
 	left_rack = new RackAndPinion("backward");
 	background = new DataSlate();
+
+	static hit = function(){
+		return scr_hit(XX, YY, XX+width, YY+height);
+	}
 	background.inside_method = function(){
 		var yy = YY;
 		var xx = XX;
 		var text_draw = xx+(width/2)-(string_width(text)*(3*scale)/2);
-		if (scr_hit(xx, yy, xx+width, yy+height)){
+		if (hit()){
 			draw_rectangle_color_simple(xx, yy, xx+width, yy+height, false, CM_GREEN_COLOR, 0.35)
 		}
 		draw_set_halign(fa_left);
@@ -371,6 +391,7 @@ function ShutterButton() constructor{
 	}
 
 	draw_shutter = function(xx=-1,yy=-1,text, scale=1, entered = ""){
+		add_draw_return_values();
 		if (xx != -1){
 			XX=xx;
 		}
@@ -419,6 +440,7 @@ function ShutterButton() constructor{
 		if (time_open<2){
 			draw_sprite_ext(spr_shutter_button, main_sprite, xx, yy, scale, scale, 0, c_white, 1);
 			if (cover_text != ""){
+				draw_set_valign(fa_top);
 				draw_set_font(fnt_Embossed_metal);
 				var _cover_scale = 3*scale;
 				while (string_width(cover_text) * _cover_scale > width-(5*scale)){
@@ -446,6 +468,7 @@ function ShutterButton() constructor{
 		} else {
 			return false;
 		}
+		pop_draw_return_values();
 	}
 }
 

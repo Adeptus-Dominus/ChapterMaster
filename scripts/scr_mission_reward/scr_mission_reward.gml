@@ -14,42 +14,63 @@ function scr_mission_reward(mission, star, planet) {
 
 
 	if (mission="mars_spelunk"){
-	    var roll1,roll2,techs_lost,techs_alive,found_stc,found_artifact,found_requisition;
-	    var com,i,onceh;onceh=0;com=-1;i=0;
-	    roll1=floor(random(100))+1;// For the first STC
-	    found_stc=0;found_artifact=0;found_requisition=0;techs_lost=0;techs_alive=0;
 
-	    repeat(11){com+=1;i=0;
-	        repeat(300){i+=1;
-	            if (obj_ini.role[com][i]=obj_ini.role[100][16]) and (obj_ini.loc[com][i]="Mechanicus Vessel"){
-	                roll2=roll_dice_chapter(1, 100, "high");
 
-	                if (roll2<=50){obj_controller.command-=1;techs_lost+=1;
-	                    kill_and_recover(com, i, true, false);
-	                    cleanup[com]=1;
-	                }
-	                if (roll2>50){
-	                	var unit = obj_ini.TTRPG[com][i];
-	                    star.p_player[planet]+=unit.get_unit_size();
-	                    obj_ini.loc[com][i]=star.name;
-	                    unit.planet_location=planet;
-	                    techs_alive+=1;
-	                    unit.add_experience(irandom_range(3,18));
-	                    if (roll2<80) then found_requisition+=floor(random_range(5,40))+1;
-	                }
-	                if (roll2>=80) and (roll2<88) then found_requisition+=100;
-	                if (roll2>=88) and (roll2<96){
-	                    if (obj_ini.fleet_type=ePlayerBase.home_world) then scr_add_artifact("random","",4,obj_ini.home_name,2);
-	                    if (obj_ini.fleet_type != ePlayerBase.home_world) then scr_add_artifact("random","",4,obj_ini.ship[0],501);
-	                    found_artifact+=1;
-	                }
-	                if (roll2>=96){
-	                    scr_add_stc_fragment();// STC here
-	                    found_stc+=1;
-	                }
-	            }
-	        }
+	    var roll1=roll_dice_chapter(1, 100, "high");;// For the first STC
+	    var found_stc=0,found_artifact=0,found_requisition=0;
+	    var techs_lost=0, techs_alive=0;
+
+	    var _conditions = {job : "mecanicus mission"}
+	    var _techs = collect_role_group(SPECIALISTS_TECHS, star.name, false, _conditions);
+
+	    var _tech_point_gain = 0;
+
+
+	    for (var i=0;i<array_length(_techs);i++){
+	    	var _tech = _techs[i];
+	    	var _tech_roll = global.character_tester.standard_test(_tech, "technology", -10)[1];
+	    	var _wep_test = global.character_tester.standard_test(_tech, "weapon_skill", 10);
+            if (!_wep_test[0]){
+                kill_and_recover(
+                	_tech.company, 
+                	_tech.marine_number, true, false);
+                techs_lost++;
+                cleanup[_tech.company] = true;
+            }
+            else {
+                star.p_player[planet]+=
+                _tech.get_unit_size();
+                _tech.location_string=star.name;
+                
+                _tech.planet_location=planet;
+                
+                _tech.ship_location = -1;
+                
+                _tech.job = "none";
+                techs_alive+=1;
+                
+                _tech.add_experience(irandom_range(3,18));
+                var gain = irandom(2);
+                
+                _tech.technology += gain;
+                _tech_point_gain += gain;
+                if (_tech_roll<10 && _tech_roll>0){
+                	found_requisition+=irandom_range(5,40);
+                }
+            }
+            if (_tech_roll>=10) and (_tech_roll<15){
+            	found_requisition+=100;
+            }
+            if (_tech_roll>=15) and (_tech_roll<25){
+            	var last_artifact = scr_add_artifact("random", "", 4);
+                found_artifact+=1;
+            }
+            if (_tech_roll>=25){
+                scr_add_stc_fragment();// STC here
+                found_stc+=1;
+            }	    	
 	    }
+
 
 	    obj_controller.requisition+=found_requisition;
 	    if (techs_alive+techs_lost>=2) and (techs_alive>0){
@@ -59,21 +80,31 @@ function scr_mission_reward(mission, star, planet) {
 	        }
 	    }
 
-	    var tixt;tixt="The journey into the Mars Catacombs was a success.  Your "+string(techs_alive)+" remaining "+string(obj_ini.role[100][16])+"s were useful to the Mechanicus force and return with a bounty.  They await retrieval at "+string(star.name)+" "+scr_roman(planet)+".#";
-	    tixt+="#"+string(found_requisition)+" Requisition from salvage";
-	    if (found_artifact!=1) then tixt+="#"+string(found_artifact)+" Unidentified Artifacts recovered";
-	    if (found_artifact=1) then tixt+="#"+string(found_artifact)+" Unidentified Artifact recovered";
-	    if (found_stc!=1) then tixt+="#"+string(found_stc)+" STC Fragments recovered";
-	    if (found_stc=1) then tixt+="#"+string(found_stc)+" STC Fragment recovered";
+	    var tixt=$"The journey into the Mars Catacombs was a success.  Your {techs_alive} remaining {obj_ini.role[100][16]}s were useful to the Mechanicus force and return with a bounty.  They await retrieval at {star.name} {scr_roman(planet)}.\n";
+	    tixt+=$"\n{found_requisition} Requisition from salvage";
+	    if (found_artifact > 0){
+	    	tixt+=$"\n{string_plural("Unidentified Artifacts" ,found_artifact)}  recovered";
+	    }
+	    if (found_stc > 0){
+	    	tixt+=$"\n{string_plural("STC Fragment" ,found_stc)}  recovered";
+	    }
+
+	    if (_tech_point_gain){
+	    	tixt+=$"\n{string_plural("Tech Point" ,_tech_point_gain)}  recovered";
+	    } 
 
 	    scr_popup("Mechanicus Mission Completed",tixt,"mechanicus","");
-	    tixt="Mechanicus Mission Completed: "+string(techs_alive)+"/"+string(techs_alive+techs_lost)+" of your "+string(obj_ini.role[100][16])+"s return with ";
+	    tixt="Mechanicus Mission Completed: {techs_alive}/{techs_alive+techs_lost} of your {obj_ini.role[100][16]}s return with ";
 	    tixt+=string(found_requisition)+" Requisition, ";
-	    if (found_artifact!=1) then tixt+=string(found_artifact)+" Unidentified Artifacts, ";
-	    if (found_artifact=1) then tixt+=string(found_artifact)+" Unidentified Artifact, ";
-	    if (found_stc!=1) then tixt+=" and "+string(found_stc)+" STC Fragments.";
-	    if (found_stc=1) then tixt+=" and "+string(found_stc)+" STC Fragment.";
-
+	    if (found_artifact > 0){
+	    	tixt+=$"\n{found_artifact} : {string_plural("Unidentified Artifacts" ,found_artifact)}  recovered";
+	    }
+	    if (found_stc > 0){
+	    	tixt+=$"\n{found_stc} : {string_plural("STC Fragment" ,found_stc)}  recovered";
+	    }
+	    if (_tech_point_gain){
+	    	tixt+=$"\n{_tech_point_gain} {string_plural("Tech Point" ,_tech_point_gain)}  gained";
+	    }
 	    // scr_alert("green","mission",tixt,star.x,star.y,);
 	    scr_event_log("green",tixt);
 
@@ -81,8 +112,7 @@ function scr_mission_reward(mission, star, planet) {
 	    if (found_artifact>1) then scr_event_log("",string(found_artifact)+" Artifacts recovered from Mars Catacombs.");
 	    if (found_stc=1) then scr_event_log("","STC Fragment recovered from Mars Catacombs.");
 	    if (found_stc>1) then scr_event_log("",string(found_artifact)+" STC Fragments recovered from Mars Catacombs.");*/
-
-	    i=-1;repeat(11){i+=1;if (cleanup[i]=1){obj_controller.temp[3000]=real(i);with(obj_ini){scr_vehicle_order(obj_controller.temp[3000]);}}}
+		sort_all_companies_to_map(cleanup);
 	}
 
 
@@ -99,7 +129,7 @@ function scr_mission_reward(mission, star, planet) {
 	    if (roll1>66) then result="Requisition";
 
 	    if (result="New"){
-	        scr_popup("Mechanicus Mission Completed","Your "+string(obj_ini.role[100][16])+" have worked with the Adeptus Mechanicus in a satisfactory manor.  The testing and training went well, but your Land Raider was ultimately lost.  300 Requisition has been given to your Chapter and relations are better than before.","mechanicus","");
+	        scr_popup("Mechanicus Mission Completed",$"Your {obj_ini.role[100][16]} have worked with the Adeptus Mechanicus in a satisfactory manor.  The testing and training went well, but your Land Raider was ultimately lost.  300 Requisition has been given to your Chapter and relations are better than before.","mechanicus","");
 	        obj_controller.requisition+=300;obj_controller.disposition[3]+=2;
 	        var com,i,onceh;onceh=0;com=-1;i=0;
 	        repeat(11){
@@ -108,7 +138,8 @@ function scr_mission_reward(mission, star, planet) {
 	                    if (obj_ini.veh_role[com][i]="Land Raider") and (obj_ini.veh_loc[com][i]=star.name) and (obj_ini.veh_wid[com][i]=planet){
 	                        onceh=1;
 	                        obj_ini.veh_race[com][i]=0;
-	                        obj_ini.veh_loc[com][i]="";obj_ini.veh_name[com][i]="";obj_ini.veh_role[com][i]="";
+	                        obj_ini.veh_loc[com][i]="";obj_ini.veh_name[com][i]="";
+	                        obj_ini.veh_role[com][i]="";
 	                        obj_ini.veh_lid[com][i]=-1;
 	                        obj_ini.veh_wid[com][i]=0;
 	                        obj_ini.veh_wep1[com][i]="";
@@ -173,7 +204,7 @@ function scr_mission_reward(mission, star, planet) {
                 cleanup[_unit.company]=1;
 	        }	        
 	    }
-	    var unit;
+
 	    if (result=="Bionics" || result=="Requisition"){
 	    	var _new_bionics = irandom_range(40,100);
 	    	obj_controller.disposition[3]+=1;

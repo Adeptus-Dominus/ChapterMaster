@@ -3,11 +3,10 @@
 
 function scr_get_planet_with_feature(star, feature){
 	for(var i = 1; i <= star.planets; i++){
-		if(planet_feature_bool(star.p_feature[i], feature) == 1)
-			{
-				return i;
-			}
+		if (planet_feature_bool(star.p_feature[i], feature)){
+			return i;
 		}
+	}
 	return -1;
 }
 
@@ -54,14 +53,18 @@ function scr_planet_owned_by_group(planet_id, group, star = "none"){
 		}
 		return is_in_group;
 	}
-	return false;
 }
 
 function scr_is_planet_owned_by_allies(star, planet_id) {
 	if( planet_id < 1 ){//1 because weird indexing starting at 1 in this game
 		return false;
 	}
-	return array_contains(global.SystemHelps.default_allies, star.p_owner[planet_id]);
+	if (array_contains(global.SystemHelps.default_allies, star.p_owner[planet_id])){
+		return true;
+	}else if(star.dispo[planet_id] < -4000) {
+		return true;
+	}
+	return false;
 }
 
 function scr_is_star_owned_by_allies(star) {
@@ -145,7 +148,7 @@ function scr_get_stars(shuffled=false, ownership=[], types = []) {
 			}
 			if (_add && _types_sort){
 				for (var i=1;i<=planets;i++){
-					array_delete_value(types, p_type[i]);
+					types = array_delete_value(types, p_type[i]);
 					if (!array_length(types)){
 						break;
 					}
@@ -230,10 +233,8 @@ function distance_removed_star(origional_x,origional_y, star_offset = choose(2,3
 
 
 function nearest_star_proper(xx,yy) {
-	var i=0;
 	var cur_star;
-	while(i<100){
-		i++;
+	for(var i=0; i<100; i++){
 		cur_star = instance_nearest(xx,yy, obj_star);
 		if (!cur_star.craftworld && !cur_star.space_hulk){
 			instance_activate_object(obj_star);
@@ -247,6 +248,7 @@ function nearest_star_proper(xx,yy) {
 
 function nearest_star_with_ownership(xx,yy, ownership, start_star="none", ignore_dead = true){
 	var nearest = "none"
+	var _deactivated = [];
 	var total_stars =  instance_number(obj_star);
 	var i=0;
 	if (!is_array(ownership)){
@@ -255,8 +257,12 @@ function nearest_star_with_ownership(xx,yy, ownership, start_star="none", ignore
 	while (nearest=="none" && i<total_stars){
 		i++;
 		var cur_star =  instance_nearest(xx,yy, obj_star);
+		if (!instance_exists(cur_star)){
+			break;
+		}
 		if (start_star!="none"){
-			if (start_star.id == cur_star.id ||( is_dead_star(cur_star) && ignore_dead)){
+			if (start_star.id == cur_star.id || (ignore_dead && is_dead_star(cur_star))){
+				array_push(_deactivated, cur_star.id);
 				instance_deactivate_object(cur_star.id);
 				continue;
 			}
@@ -264,10 +270,13 @@ function nearest_star_with_ownership(xx,yy, ownership, start_star="none", ignore
 		if (array_contains(ownership, cur_star.owner)){
 			nearest=cur_star.id;
 		} else {
+			array_push(_deactivated, cur_star.id);
 			instance_deactivate_object(cur_star.id);
 		}
 	}
-	instance_activate_object(obj_star);
+    for (i=0;i<array_length(_deactivated);i++){
+    	instance_activate_object(_deactivated[i]);
+    }
 	return nearest;
 }
 

@@ -289,6 +289,11 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 		}
 	}
 
+
+	static stat_average = function(stat){
+		
+	}
+
 	static add_type_data = function(data){
 		type_data=data;
 		display_name = type_data[$"display_data"];
@@ -321,6 +326,20 @@ function UnitSquad(squad_type = undefined, company = undefined) constructor{
 			squad_fulfilment[$ _wanted_unit_role] =0;	//create a fulfilment structure to log members of squad
 		}
 		return squad_unit_types;
+	}
+
+	static get_squad_structs = function(){
+		var _struct_array  = [];
+		for (var i = array_length(members)-1; i >= 0;i--){
+			unit = fetch_unit(members[i]);
+			if (unit.name() == ""){
+				array_delete(members, i, 1);
+				continue;
+			} else {
+				array_push(_struct_array, unit);
+			}
+		}
+		return _struct_array;
 	}
 	// for creating a new sergeant from existing squad members
 	static new_sergeant = function(veteran=false){

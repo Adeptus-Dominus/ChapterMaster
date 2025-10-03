@@ -24,6 +24,28 @@ function relationship_hostility_matrix(faction){
     return _rela;
 }
 
+function alter_disposition(faction, alter_value){
+    switch (faction){
+        case eFACTION.Eldar:
+        case eFACTION.Tau:
+        case eFACTION.Ork:
+            if (scr_has_disadv("Tolerant")) {
+                alter_value++;
+            }
+            break;
+        case eFACTION.Ecclesiarchy:
+            if (scr_has_adv("Reverent Guardians")) {
+                alter_value+=2;
+            }
+    } 
+    obj_controller.disposition[faction] = clamp(obj_controller.disposition[faction]+alter_value, -100, 100);
+}
+
+function alter_dispositions(alterations){
+    for (var i=0;i<array_length(alterations);i++){
+        alter_disposition(alterations[i][0],alterations[i][1]);
+    }
+}
 function clear_diplo_choices(){
     obj_controller.diplo_option = [];
 }
@@ -32,7 +54,9 @@ function valid_diplomacy_options(){
     var valid = false;
     if (array_length(obj_controller.diplo_option)){
         for (var i=array_length(obj_controller.diplo_option)-1;i>=0;i--){
-            if (obj_controller.diplo_option[i] != ""){
+            var _opt = obj_controller.diplo_option;
+            if (struct_exists(_opt, "option_text") && _opt.option_text != ""){
+                if (goto)
                 valid = true;
             } else {
                 array_delete(obj_controller.diplo_option, i, 1);
@@ -51,7 +75,10 @@ function add_diplomacy_option(option={}){
     if (!struct_exists(option, "key")){
         option.key = option.option_text;
     }
-    array_push(obj_controller.diplo_option, option);
+    var _button = new UnitButtonObject(option);
+    _button.style = "pixel";
+    _button.label = option.option_text;
+    array_push(obj_controller.diplo_option, _button);
 }
 
 function basic_diplomacy_screen(){
@@ -61,7 +88,6 @@ function basic_diplomacy_screen(){
         if (!force_goodbye){
             draw_set_halign(fa_center);
         
-            var opts=0,slot=0,dp=0,opt_cord=0;
             var opts = array_length(diplo_option);
             if (opts==4) then yy-=30;
             if (opts==2) then yy+=30;
@@ -73,37 +99,17 @@ function basic_diplomacy_screen(){
             for (var slot=0; slot<opts; slot++){
 
                 var _opt = diplo_option[slot];
-				left = xx+354;
-				top = yy+694;
-				right = xx+887;
-				base = yy+717;
-                draw_set_color(38144);
-                draw_rectangle(left,top,right,base,0);
-                draw_set_color(0);
-            
-                var sw=1;
-                for (var i=1;i<5;i++){
-                	if (string_width(string_hash_to_newline(_opt))*sw>530) then sw-=0.05;
-                }
-                if (string_width(string_hash_to_newline(_opt))*sw<=530) and (sw=1){
-                    draw_text_transformed(xx+620,yy+696,string_hash_to_newline(_opt),sw,sw,0);
-					draw_text_transformed(xx+620,yy+696+2,string_hash_to_newline(_opt),sw,sw,0);
-                }
 
-                if (string_width(string_hash_to_newline(_opt))*sw>530){
-                    draw_text_ext_transformed(xx+620,yy+696-4,string_hash_to_newline(_opt),16,530/sw,sw,sw,0);
-                }
-				if scr_hit(left,top,right,base){
-                    draw_set_alpha(0.2);
-                    draw_rectangle(left,top,right,base,0);
-                    draw_set_alpha(1);
-                }
-				opt = [left,top,right,base];
-				array_push(option_selections,opt);
-                if (point_and_click(opt)){
+                _opt.update({
+                    x1 : xx+354,
+                    y1 : yy+694,
+                })
+            
+
+				if (_opt.draw()){
                     diplo_pressed = slot;
                 }
-				opt_cord+=1;
+
                 yy+=30;                    
 
             }
@@ -115,30 +121,127 @@ function basic_diplomacy_screen(){
 		if (menu==MENU.Diplomacy) and (diplomacy==10.1){
 			scr_emmisary_diplomacy_routes();
 		}
-        if (force_goodbye=1){
+        /*if (force_goodbye=1){
             draw_rectangle(xx+818,yy+796,xx+897,yy+815,0);
             draw_set_color(0);
             draw_text(xx+857.5,yy+797,"Exit");
             draw_set_alpha(0.2);
             if (mouse_x>=xx+818) and (mouse_y>=yy+796) and (mouse_x<=xx+897) and (mouse_y<=yy+815) then draw_rectangle(xx+818,yy+796,xx+897,yy+815,0);
             draw_set_alpha(1);
-        }
+        }*/
     
     }
 }
 
-function evaluate_chosen_diplomacy_option(){
-    var _opt = diplo_option[diplo_pressed];
-    if (_opt.goto != ""){
-        scr_dialogue(_opt.goto);
-        exit;
+function draw_character_diplomacy(){
+    var _diplo_unit = character_diplomacy;
+    if (_diplo_unit.allegiance == global.chapter_name){
+
+
+        /*if (advi="flee") {
+            _diplomacy_faction_name="Master of the Fleet "+string(obj_ini.lord_admiral_name);
+        }*/
+        var _splash = "";
+        var _specific_splash = 0;
+        _diplomacy_faction_name = _diplo_unit.name_role();
+        _diplo_unit.IsSpecialist(SPECIALISTS_HEADS){
+
+            var _customs = obj_ini.custom_advisors;
+            if (_diplo_unit.IsSpecialist(SPECIALISTS_APOTHECARIES)) {
+                _specific_splash = struct_exists(_customs,"apothecary") ? _customs.apothecary : 2;
+            }
+            else if (_diplo_unit.IsSpecialist(SPECIALISTS_CHAPLAINS)) {
+                _specific_splash = struct_exists(_customs,"chaplain") ? _customs.chaplain : 3;
+            }
+            else if (_diplo_unit.IsSpecialist(SPECIALISTS_LIBRARIANS)) {
+                _specific_splash = struct_exists(_customs,"librarian") ? _customs.librarian : 4;
+            }
+            else if (_diplo_unit.IsSpecialist(SPECIALISTS_TECHS)) {
+                _specific_splash = struct_exists(_customs,"forge_master") ? _customs.forge : 5;
+            }
+            scr_image("advisor/splash", _specific_splash, 16, 43, 310, 828);
+        }
+       /* else if (advi="") {
+            _diplomacy_faction_name="First Sergeant "+string(recruiter_name); 
+        }*/
+
     }
+
+    var _main_slate = diplo_buttons.main_slate; 
+    var _meet = diplo_buttons.meet_slate;
+    var _cm_slate = diplo_buttons.cm_slate;
+    with (_meet){
+        XX = 0;
+        YY = 520;
+        width = 520;
+    }
+
+    _meet.inside_method = function(){
+        var _diplo_unit = obj_controller.character_diplomacy;
+        if (!struct_exists(obj_controller, "diplo_image")){
+            obj_controller.diplo_image = _diplo_unit.draw_unit_image();
+        }
+        obj_controller.diplo_image.draw(210, 520-271,true, 1,1,0,CM_GREEN_COLOR, 1);
+        _diplo_unit.stat_display(false,{
+            x1: 10,
+            y1: 520,
+            w: 569,
+            h: 303,
+        }, true);  
+        draw_sprite(spr_holo_pad, 0, 210, 520);      
+    }
+
+    _meet.draw_with_dimensions();
+
+    _main_slate.XX = _meet.XX+_meet.width;
+    _main_slate.YY = 175;
+    _main_slate.draw_with_dimensions();
+    draw_diplomacy_diplo_text();
+    draw_set_halign(fa_center);
+    draw_text_transformed(622,104,$"{_diplo_unit.name_role()}",0.6,0.6,0);
+    draw_set_halign(fa_left);
+
+    with (_cm_slate){
+        XX = _main_slate.XX+_main_slate.width;
+        YY = 520;
+    }
+    _cm_slate.inside_method = function(){
+        var _master = fetch_unit([0,0]);
+
+        if (!struct_exists(obj_controller, "master_image")){
+            obj_controller.master_image = _master.draw_unit_image();
+        }
+        obj_controller.master_image.draw(1108+200, 520-271,true, 1,1,0,CM_GREEN_COLOR, 1);
+        _master.stat_display(false,{
+            x1: 1108,
+            y1: 520,
+            w: 569,
+            h: 303,
+        } , true);
+        draw_sprite(spr_holo_pad, 0, 1108+200, 520);
+    }
+    _cm_slate.draw_with_dimensions();
+
+
+
+    basic_diplomacy_screen();
+}
+
+function evaluate_chosen_diplomacy_option(diplo_pressed){
+    var _opt = diplo_option[diplo_pressed];
 
     var _pressed_option = _opt.key;
     if (struct_exists(_opt, "method")){
         if (is_callable(_opt.method)){
             script_execute(_opt.method);
         }
+    }
+    if (_opt.goto != ""){
+        scr_dialogue(_opt.goto);
+    }
+
+    if ((struct_exists(_opt,"is_exit") && _opt.is_exit)){
+        exit_diplomacy_dialogue();
     }
 }
 

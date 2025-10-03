@@ -22,7 +22,7 @@ function scr_scrollbar(argument0, argument1, argument2, argument3, argument4, ar
 
 	var xx,yy,x1,x2,y1,y2;
 	var siz1, siz2, siz3;
-	// draw_set_color(38144);
+	// draw_set_color(CM_GREEN_COLOR);
 	xx=0;yy=0;x1=0;x2=0;y1=0;y2=0;temp1=0;temp2=0;
 	siz1=0;siz2=0;siz3=0;
 
@@ -99,7 +99,7 @@ function scr_scrollbar(argument0, argument1, argument2, argument3, argument4, ar
 	            ratio=(center-argument1)/(argument3-argument1);
             
 	            // draw_set_font(fnt_large);draw_set_color(c_red);draw_text(view_xview[0]+320,view_yview[0]+240,ratio);
-	            // draw_set_color(38144);
+	            // draw_set_color(CM_GREEN_COLOR);
             
 	            if (checka=1){
 	                obj_controller.man_current=floor((obj_controller.man_max)*ratio);
@@ -155,6 +155,16 @@ function ScrollableContainer(_width, _height) constructor {
 		surface_set_target(surface);
         draw_clear_alpha(c_white, 0);
     };
+
+    mouse_binds = [];
+    static add_scroll_mousse_binds = function(pre_offset_coords, bind_method){
+    	array_push(mouse_binds, pre_offset_coords);
+    }
+
+    children = [];
+    static add_children = function(pre_offset_coords, object, method, arguments){
+    	array_push(children, {object, pre_offset_coords, method, arguments});
+    }
 
 	static stop_draw_to_surface = function() {
         surface_reset_target();
@@ -229,7 +239,13 @@ function ScrollableContainer(_width, _height) constructor {
         
         // Draw content
         draw_surface_part(surface, 0, scroll_offset, width - scrollbar_width, height, pos_x, pos_y);
-        
+        for (var i=0;i<array_length(mouse_binds);i++){
+        	
+        }
+
+        for (var i=0;i<array_length(children);i++){
+        	
+        }        
         // Draw scrollbar background
         draw_set_color(c_black);
         draw_rectangle(pos_x + width - scrollbar_width, pos_y, pos_x + width, pos_y + height, false);
@@ -239,6 +255,7 @@ function ScrollableContainer(_width, _height) constructor {
         draw_rectangle(pos_x + width - scrollbar_width, pos_y + grip_y, pos_x + width, pos_y + grip_y + grip_height, false);
         
         draw_set_color(c_white); // Reset color after
+
     };
     
     static get_scroll_offset = function() {

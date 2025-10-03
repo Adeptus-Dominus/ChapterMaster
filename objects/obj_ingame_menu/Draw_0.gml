@@ -33,7 +33,7 @@ if (settings=1){
     draw_rectangle(xx+710,yy+338,xx+974,yy+368,0);
     
     var bar,change_volume;bar=0;change_volume=0;
-    draw_set_color(38144);
+    draw_set_color(CM_GREEN_COLOR);
     if (master_volume>0) then bar=(master_volume/1.3)*264;if (master_volume>0) then draw_rectangle(xx+710,yy+224,xx+710+bar,yy+254,0);
     if (effect_volume>0) then bar=(effect_volume/1.3)*264;if (effect_volume>0) then draw_rectangle(xx+710,yy+282,xx+710+bar,yy+312,0);
     if (music_volume>0) then bar=(music_volume/1.3)*264;if (music_volume>0) then draw_rectangle(xx+710,yy+338,xx+710+bar,yy+368,0);

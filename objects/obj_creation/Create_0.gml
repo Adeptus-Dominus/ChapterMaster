@@ -3,11 +3,6 @@
  * It contains data and logic for setting up custom chapters as well as populating the new game menu with data for pre-existing chapters.
  */
 keyboard_string="";
-try{
-    load_visual_sets();
-} catch(_exception){
-    handle_exception(_exception);
-}
 
 #region Global Settings: volume, fullscreen etc
 ini_open("saves.ini");
@@ -132,6 +127,17 @@ heheh=0;
 turn_selection_change=false;
 draw_helms = true;
 
+var _culture_styles_array = [];
+
+for (var i=0;i<array_length(global.culture_styles);i++){
+    array_push(_culture_styles_array,
+        {
+            str1 : global.culture_styles[i],
+            font : fnt_40k_14b
+        }
+    )
+}
+        
 buttons = {
     home_world_recruit_share : new ToggleButton(),
     complex_homeworld : new ToggleButton({
@@ -140,9 +146,9 @@ buttons = {
         active : false,
         str1 : "Spawn System Options",
         tooltip : "Click for Complex Spawn System Options",
-        button_color : #009500,
+        button_color : CM_GREEN_COLOR,
     }),
-    home_spawn_loc_options : new radio_set([
+    home_spawn_loc_options : new RadioSet([
         {
             str1 : "Fringe",
             font : fnt_40k_30b,
@@ -155,7 +161,7 @@ buttons = {
         },        
     ], "Home Spwan\nLocation"),
 
-    recruit_home_relationship : new radio_set([
+    recruit_home_relationship : new RadioSet([
         {
             str1 : "Share Planet",
             font : fnt_40k_14b,
@@ -172,7 +178,7 @@ buttons = {
             tooltip : "Your recruit world will be in a different system to your homeworld",
         },            
     ], "Recruit world"),
-    home_warp : new radio_set([
+    home_warp : new RadioSet([
         {
             str1 : "Secluded",
             font : fnt_40k_14b,
@@ -189,7 +195,7 @@ buttons = {
             tooltip : "Your home system is in a very stable warp area, accessible by several warp lanes",
         },            
     ], "Home warp access"),
-    home_planets : new radio_set([
+    home_planets : new RadioSet([
         {
             str1 : "one",
             font : fnt_40k_14b,
@@ -208,90 +214,9 @@ buttons = {
         },                    
     ], "Home System Planets"), 
 
-    culture_styles : new multi_select([
-        {
-            str1 : "Greek",
-            font : fnt_40k_14b,
-        },
-        {
-            str1 : "Roman",
-            font : fnt_40k_14b
-        },
-        {
-            str1 : "Knightly",
-            font : fnt_40k_14b
-        },
-        {
-            str1 : "Gladiator",
-            font : fnt_40k_14b
-        },         
-        {
-            str1 : "Mongol",
-            font : fnt_40k_14b
-        },
-        {
-            str1 : "Feral",
-            font : fnt_40k_14b
-        },
-        {
-            str1 : "Flame Cult",
-            font : fnt_40k_14b
-        },
-        {
-            str1 : "Mechanical Cult",
-            font : fnt_40k_14b
-        },
-        {
-            str1 : "Prussian",
-            font : fnt_40k_14b
-        },
-        {
-            str1 : "Cthonian",
-            font : fnt_40k_14b
-        },
-        {
-            str1 : "Alpha",
-            font : fnt_40k_14b
-        },
-        {
-            str1 : "Ultra",
-            font : fnt_40k_14b
-        },
-        {   
-            str1 : "Renaissance",
-            font : fnt_40k_14b,
-        },
-        {   
-            str1 : "Blood",
-            font : fnt_40k_14b,
-        },
-        {   
-            str1 : "Angelic",
-            font : fnt_40k_14b,
-        },
-        {   
-            str1 : "Crusader",
-            font : fnt_40k_14b,
-        },
-        {   
-            str1 : "Gothic",
-            font : fnt_40k_14b,
-        },
-        {   
-            str1 : "Wolf Cult",
-            font : fnt_40k_14b,
-        },
-        {   
-            str1 : "Runic",
-            font : fnt_40k_14b,
-        },                                                                                      
-    ], "Chapter Visual Styles"),
-    company_options_toggle : new UnitButtonObject({
-        tooltip : "toggle between chapter or role settings",
-        label : "Company Settings",
-        company_view : false,
-    }),
-    company_liveries_choice : new radio_set([
+    culture_styles : new MultiSelect(_culture_styles_array, "Chapter Visual Styles"),
+
+    company_liveries_choice : new RadioSet([
         {
             str1 : "HQ",
             font : fnt_40k_14b
@@ -337,6 +262,12 @@ buttons = {
             font : fnt_40k_14b
         },                    
     ], "Companies"),
+    livery_switch : new UnitButtonObject({
+            x1: 570, 
+            y1: 215, 
+            label : "Simple Livery",
+        }
+    )
 }
 
 with (buttons){
@@ -636,105 +567,6 @@ other_chapters = array_filter(all_chapters, function(item){ return item.origin =
 // meta provides a universal way to control not having contradictory advatages and disadvantages
 // the player can not have any two advantages or disadvatages taht have the same piece of meta thus removing clunky checks in the draw sequence
 chapter_trait_meta = [];
-function ChapterTrait(_id, _name, _description, _points_cost, _meta = []) constructor{
-
-    id = _id;
-    name = _name;
-    description = _description;
-    points = _points_cost;
-    disabled = false;
-    meta = _meta;
-
-    static add_meta = function(){
-        for (var i=0;i<array_length(meta);i++){
-            array_push(obj_creation.chapter_trait_meta, meta[i]);
-        }
-        show_debug_message($"Meta updated, added: {meta}, all meta: {obj_creation.chapter_trait_meta}");
-
-    }
-    static remove_meta = function(){
-        for (var i=0;i<array_length(meta);i++){
-            var len = array_length(obj_creation.chapter_trait_meta);
-            for (var s=0;s<len;s++){
-                if (obj_creation.chapter_trait_meta[s]==meta[i]){
-                    array_delete(obj_creation.chapter_trait_meta, s, 1);
-                    s--;
-                    len--;
-                }
-            }
-        }
-        show_debug_message($"Meta updated, removed: {meta}, all meta: {obj_creation.chapter_trait_meta}");
-    }
-
-    static print_meta = function(){
-        if(array_length(meta) ==0){
-            return "None";
-        } else {
-            return string_join_ext(", ", meta);
-        }
-    }
-
-}
-
-function Advantage(_id, _name, _description, _points_cost) : ChapterTrait(_id, _name, _description, _points_cost) constructor {
-
-    static add = function(slot){
-        show_debug_message($"Adding adv {name} to slot {slot} for points {points}");
-        obj_creation.adv[slot] = name;
-        obj_creation.adv_num[slot] = id;
-        obj_creation.points+=points;
-        add_meta();
-    }
-    static remove = function(slot){
-        show_debug_message($"removing adv {name} from slot {slot} for points {points}");
-        obj_creation.adv[slot] = "";
-        obj_creation.points-=points;
-        obj_creation.adv_num[slot]=0;
-        remove_meta();
-    }
-
-    static disable = function(){
-        var is_disabled= false;
-        for (var i=0;i<array_length(meta);i++){
-            if (array_contains(obj_creation.chapter_trait_meta, meta[i])){
-                is_disabled = true;
-            }
-        }
-        if(obj_creation.points + points > obj_creation.maxpoints){
-            is_disabled = true;
-        }
-        return is_disabled;
-    }
-
-}
-function Disadvantage(_id, _name, _description, _points_cost) : ChapterTrait(_id, _name, _description, _points_cost) constructor {
-
-    static add = function(slot){
-        show_debug_message($"Adding disadv {name} to slot {slot} for points {points}");
-        obj_creation.dis[slot] = name;
-        obj_creation.dis_num[slot] = id;
-        obj_creation.points-=points;
-        add_meta();
-    }
-
-    static remove = function(slot){
-        show_debug_message($"Removing disadv {name} from slot {slot} for points {points}");
-        obj_creation.dis[slot] = "";
-        obj_creation.points+=points;
-        obj_creation.dis_num[slot]=0;
-        remove_meta();
-    }
-
-    static disable = function(){
-        var is_disabled= false;
-        for (var i=0;i<array_length(meta);i++){
-            if (array_contains(obj_creation.chapter_trait_meta, meta[i])){
-                is_disabled = true;
-            }
-        }
-        return is_disabled;
-    }
-}
 
 //later we can use json maybe
 /// @type {Array<Struct.Advantage>}
@@ -1073,7 +905,6 @@ dis_num = array_create(9, 0);
 for(var slot = 99; slot <= 103; slot++){
     for(var i = 0; i <= 50; i++){
         race[slot,i]=1;
-        loc[slot,i]="";
         role[slot,i]="";
         wep1[slot,i]="";
         wep2[slot,i]="";
@@ -1094,6 +925,8 @@ function load_default_gear(_role_id, _role_name, _wep1, _wep2, _armour, _mobi, _
     gear[defaults_slot, _role_id] = _gear;
     race[defaults_slot, _role_id] = 1;
 }
+
+load_default_gear(eROLE.ChapterMaster, "Chapter Master", "Power Sword", "Bolter", "Artificer Armour", "", "");
 load_default_gear(eROLE.HonourGuard, "Honour Guard", "Power Sword", "Bolter", "Artificer Armour", "", "");
 load_default_gear(eROLE.Veteran, "Veteran", "Combiflamer", "Combat Knife", STR_ANY_POWER_ARMOUR, "", "");
 load_default_gear(eROLE.Terminator, "Terminator", "Power Fist", "Storm Bolter", "Terminator Armour", "", "");

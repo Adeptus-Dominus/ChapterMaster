@@ -5,6 +5,15 @@
 function MissionHandler(planet, system) : PlanetData(planet, system) constructor{
 
 }
+
+
+function location_out_of_player_control(unit_loc){
+	static _locs = ["Terra", "Mechanicus Vessel", "Lost", "Mars"];
+	return (array_contains(_locs,unit_loc ));
+}
+
+#macro planet_problem_keys ["meeting_trap","meeting","succession","mech_raider","mech_bionics","mech_mars","mech_tomb1","fallen","great_crusade","harlequins","fund_elder","provide_garrison","hunt_beast","protect_raiders","join_communion","join_parade","recover_artifacts","train_forces","spyrer","inquisitor","recon","cleanse","purge","tyranid_org","artifact_loan","necron","ethereal","demon_world"]
+
 function mission_name_key(mission){
 	var mission_key = {
 		"meeting_trap" : "Chaos Lord Meeting",
@@ -54,7 +63,7 @@ function scr_new_governor_mission(planet, problem = ""){
 			problem = choose("hunt_beast", "provide_garrison");
 			accept_time = 6+irandom(30);
 		} else if (planet_type == "Hive"){
-			problem = choose("Show_of_power", "provide_garrison", "purge_enemies", "raid_black_market");
+			problem = choose("show_of_power", "provide_garrison", "purge_enemies", "raid_black_market");
 		} else if (planet_type == "Temperate"){
 			problem = choose("provide_garrison", "train_forces", "join_parade");
 		}else if (planet_type == "Shrine"){
@@ -107,11 +116,11 @@ function init_marine_acting_strange(){
 	}
 
 	var unit = fetch_unit(marine_and_company);
-	var role=unit.role();
+	var role = unit.role();
 	var text = unit.name_role();
 	var company_text = scr_convert_company_to_string(unit.company);
 	if(company_text != ""){
-		company_text = "("+company_text+")";
+		company_text = $"({company_text})";
 		text += company_text;
 	}
 	text += " is behaving strangely.";
@@ -133,7 +142,7 @@ function init_garrison_mission(planet, star, mission_slot){
 	    gar_pop.title=$"Requested Garrison Provided to {numeral_name}";
 	    gar_pop.text=$"The governor of {numeral_name} Thanks you for considering his request for a garrison, you agree that the garrison will remain for at least {garrison_length} months.";
 	    //pip.image="event_march"
-	    gar_pop.option1="Commence Garrison";
+	    gar_pop.add_option("Commence Garrison");
         gar_pop.image="";
         gar_pop.cooldown=8;
         obj_controller.cooldown=8;	    
@@ -158,7 +167,7 @@ function init_beast_hunt_mission(planet, star, mission_slot){
 	    gar_pop.title=$"Marines assigned to hunt beasts around {numeral_name}";
 	    gar_pop.text=$"The govornor of {numeral_name} Thanks you for the participation of your elite warriors in your execution of such a menial task.";
 	    //pip.image="event_march"
-	    gar_pop.option1="Happy Hunting";
+	    gar_pop.add_option("Happy Hunting");
         gar_pop.image="";
         gar_pop.cooldown=8;
         obj_controller.cooldown=20;	    
@@ -169,6 +178,85 @@ function init_beast_hunt_mission(planet, star, mission_slot){
 function role_compare(unit, role){
 	return unit.role() == obj_ini.role[100][role];
 }
+
+function init_protect_raider_mission(squad){
+	var _squad_units = squad.get_squad_structs();
+	var _squad_wisdom = stat_average(_squad_units, "wisdom");
+	var _squad_dex = stat_average(_squad_units, "dexterity");
+	var _tester = global.character_tester;
+
+	var _pdata = new PlanetData(selection_data.planet, selection_data.system);
+	var _mod = _squad_wisdom+_squad_dex/10;
+	if (scr_has_adv("Ambushers")){
+		_mod += 10
+	}
+
+	var _leader = fetch_unit(squad.determine_leader());
+
+	var _wis_test =  _tester.standard_test(_leader, "wisdom", _mod, ["ambush"]);
+
+	if (!_wis_test[0]){
+		var _mission_data = variable_clone(selection_data);
+		if (_wis_test[1] < -25){
+			scr_toggle_manage();
+			var gar_pop = instance_create(0, 0, obj_popup);			
+		    gar_pop.title=$"Strange Disappearance";
+		    gar_pop.pathway = "protect_raiders";
+		    gar_pop.pdata = _pdata;
+		    gar_pop.text=$"Your Marines make planet fall and are directed to report to the governor for the duration of the operation after a period of reconnaissance dig in for their ambush. After a two weeks have passed A message from the governor reaches your astropaths that your marines have not been heard of for some time, The raiders also were not noted to have arrived onor left the planet";
+		    //pip.image="event_march"
+		    var _dead_marine = array_random_index(_squad_units);
+		    for (var i = 0;i<array_length(_dead_marine);i++){
+		    	if ( i == _dead_marine){
+		    		continue;
+		    	}
+
+				var _marine = _dead_marine[i];
+
+				_marine.location_string = "Lost";
+				_marine.ship_location = -1;
+				_marine.planet_location = 0;
+		    }
+		    gar_pop.text += $"After eventual investigation it appears the eldar anticipated the would be ambushers and turned the tides. {_squad_units[_dead_marine].name_role()}s body is eventually discovered some way off from the main battle his rent armour and body showing the extent of combat that must have occured";
+
+		    gar_pop.text += "\nThe total loss of a squad in what was meant to be a routine operation is bad for moral and your chapters reputation you must now decide how to proceed";
+
+		    gar_pop.add_option("Suppress the Information");
+		    gar_pop.add_option("Hold a Memorial");			
+		} else {
+			scr_toggle_manage();
+			var gar_pop = instance_create(0, 0, obj_popup);		
+		    gar_pop.title=$"Ineffective Ambush";
+		    gar_pop.text=$"Your Marines Are ineffective at setting up an ambush the assailants clearly got wind of the operation or the plan was otherwise so ill thought out that by the time your forces arrived there was little that could be done to intercept them";
+		    //pip.image="event_march"
+		    //var _dead_marine = array_random_index(_squad_units);
+		    gar_pop.text += $"";
+		    gar_pop.pathway = "protect_raiders_ineffective";
+		    gar_pop.pdata = _pdata;
+		    _pdata.add_disposition(-10);
+		    gar_pop.text += "\nThe governor is unhappy and it has done little to improve your reputation with the planets populace but otherwise very little harm has been done. It is likely the raiders will choose better targets without the possible threat of space marine presence for the foreseeable future\nGovernor Disposition : -10";
+
+		    gar_pop.add_option("continue");		
+		}
+	} else {
+
+	    instance_create(0,0,obj_ncombat);
+	    obj_ncombat.enemy=eFACTION.Eldar;
+	    obj_ncombat.battle_object = selection_data.system;
+	    obj_ncombat.battle_loc = selection_data.system.name;
+	    obj_ncombat.battle_id = selection_data.planet;
+	    obj_ncombat.battle_special = "protect_raiders";
+	    _roster = new Roster();
+	    with (_roster){
+	        selected_units=_squad_units;
+	        setup_battle_formations();
+	        add_to_battle();
+	    }
+	    exit_adhoc_manage();
+	    delete _roster;
+	}	
+}
+
 function init_train_forces_mission(planet, star, mission_slot, marine){
 	var _pdata = new PlanetData(planet, star);
 	var mission_data = _pdata.problems_data[mission_slot];
@@ -190,7 +278,7 @@ function init_train_forces_mission(planet, star, mission_slot, marine){
 	    }
 
 	    //pip.image="event_march"
-	    gar_pop.option1=$"Good luck {marine.name()}";
+	    gar_pop.add_option($"Good luck {marine.name()}");
         gar_pop.image="";
         gar_pop.cooldown=500;
         obj_controller.cooldown=500;	    
@@ -281,25 +369,36 @@ function complete_train_forces_mission(targ_planet, problem_index){
         	if (_brute){
         		_wis_test_difficulty-=10;
         	}
+
+        	var _leader = _trainer.has_trait("natural_leader");
+        	if (_leader){
+        		_wis_test_difficulty+=10;
+        	}
+
         	_unit_pass = _tester.standard_test(_trainer, "wisdom",_wis_test_difficulty);
         	if (_unit_pass[0]){
         		var _new_pdf = planet.recruit_pdf((_unit_pass[1]/10));//this will approximate podf improvement for the time being
         		_mission_string += $"Training of the Pdf went well and improved the quality of the pdf as well as providing sizeable big recruitment improvement for the planet {_new_pdf} new pdf were recruited";
+        		if (_leader){
+        			var _disp_gain = 10;
+        			planet.add_disposition(_disp_gain);
+        			_mission_string += $"\n{_trainer.name_role()}s reputation a natural and confident leader proved well earned as he also made excellent diplomatic headway with the governor and his generals (disposition +{_disp_gain})"
+        		}
         		if (_siege_master){
         			_mission_string += $"{_trainer.name()}s trained eye as a Siege Master also allowed him to make several improvements to the planets fortifications (fortification +1)";
         			planet.alter_fortification(1);
-        } else {
-            if (roll_dice(1, 100) > 75 && _trainer.intelligence > 45){
-                _mission_string += $"{_trainer.name()} has proven themselves a great strategist when it comes to defensive structures beyond previousy known ";
-                var _start_stats = variable_clone(_trainer.get_stat_line());
-                _trainer.add_trait("siege_master");
-                var end_stat = _trainer.get_stat_line();
-                var _stat_diff = compare_stats(end_stat,_start_stats); 
-                _unit_report_string += $"{_trainer.name_role()} Has gained the trait {global.trait_list.siege_master.display_name}, {(print_stat_diffs(_stat_diff))}\n"; 
-                _mission_string += "The new insights have allowed for minor improvements to planetary fortifications (fortification +1)";
-                planet.alter_fortification(1);
-            }
-        }
+        		} else {
+		            if (roll_dice(1, 100) > 75 && _trainer.intelligence > 45){
+		                _mission_string += $"{_trainer.name()} has proven themselves a great strategist when it comes to defensive structures beyond previousy known ";
+		                var _start_stats = variable_clone(_trainer.get_stat_line());
+		                _trainer.add_trait("siege_master");
+		                var end_stat = _trainer.get_stat_line();
+		                var _stat_diff = compare_stats(end_stat,_start_stats); 
+		                _unit_report_string += $"{_trainer.name_role()} Has gained the trait {global.trait_list.siege_master.display_name}, {(print_stat_diffs(_stat_diff))}\n"; 
+		                _mission_string += "The new insights have allowed for minor improvements to planetary fortifications (fortification +1)";
+		                planet.alter_fortification(1);
+		            }
+        		}
         	} else {
         		disp_loss = -5;
         		_mission_string += "The orgional training mission was a failiure"
@@ -387,7 +486,7 @@ function complete_beast_hunt_mission(targ_planet, problem_index){
         if (_success){
         	_mission_string = $"The mission was a success and a great number of beasts rounded up and slain, your marines were able to gain great skills and the prestige of your chapter has increased greatly across the planets populace."
         	if (_deaths){
-        		$"Unfortunatly {_deaths} of your marines died."
+        		_mission_string += $"Unfortunatly {_deaths} of your marines died."
         	}
         	_mission_string += $"\n{_unit_report_string}";
         } else {
@@ -618,7 +717,11 @@ function increment_mission_completion(mission_data){
 		mission_data.completion = 0;
 	}
 	mission_data.completion++;
-	return (mission_data.completion/mission_data.required_months)*100;
+    if (!struct_exists(mission_data, "required_months") || mission_data.required_months <= 0) {
+        log_error("Invalid required_months in mission_data");
+        return 0;
+    }
+	return (mission_data.completion/mission_data.required_months) * 100;
 }
 //search problem data for a given and key and iff applicable value on that key
 //TODO increase filtering and search options
@@ -628,7 +731,7 @@ function problem_has_key_and_value(planet, problem,key,value="",star="none"){
 		var problem_data = p_problem_other_data[planet][problem];
 		if (struct_exists(problem_data, key)){
 			if (value==""){
-				has_data=true
+				has_data=true;
 			} else if( problem_data[$ key] == value){
 				has_data=true;
 			}
@@ -639,9 +742,4 @@ function problem_has_key_and_value(planet, problem,key,value="",star="none"){
 		}
 	}
 	return 	has_data;
-}
-
-
-function mission_rewards(){
-
 }

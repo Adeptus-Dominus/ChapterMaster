@@ -32,6 +32,7 @@ function TradeAttempt(diplomacy) constructor{
 		"Power Klaw" : 50,
 		"Ork Sniper" : 30,
 		"Flash Git" : 60,
+		"IOU" : 1,
 	}
 	demand_options = [];
 	offer_options = [];
@@ -100,7 +101,18 @@ function TradeAttempt(diplomacy) constructor{
 					quality : "standard",
 					number : _opt.number,
 				}
+			} else if (_opt.trade_type == "arti"){
+				scr_add_artifact("random", "minor", true);
+			}else if (_opt.trade_type == "vehic"){
+				if (!struct_exists(trading_object, "vehicles")){
+					trading_object.vehicles = {};
+				}
+				trading_object.vehicles[$ _type] = {
+					quality : "standard",
+					number : _opt.number,
+				}				
 			}
+
 		}
 		for (var i=0;i<array_length(offer_options);i++){
 			var _opt = offer_options[i];
@@ -130,9 +142,13 @@ function TradeAttempt(diplomacy) constructor{
 		            }					
 				}
 			} else if (_opt.trade_type == "gene"){
-				gene_seed-=_opt.number;
-                if (diplomacy_faction<=5) and (diplomacy_faction!=4) then obj_conotroller.gene_sold+=_opt.number;
-                if (diplomacy_faction>=6) then obj_controller.gene_xeno+=_opt.number;				
+				obj_controller.gene_seed-=_opt.number;
+                if (diplomacy_faction<=5) and (diplomacy_faction!=4){
+                	obj_controller.gene_sold += _opt.number;
+                }
+                if (diplomacy_faction>=6){
+                	obj_controller.gene_xeno += _opt.number;	
+                }			
 			} else if(_opt.trade_type == "stc"){
                 for (var j = 0; j < 100; j += 1) {
                     var p = choose(1, 2, 3);
@@ -151,6 +167,8 @@ function TradeAttempt(diplomacy) constructor{
                 }
 			} else if(_opt.trade_type == "info"){
 				obj_controller.info_chips-=_opt.number;
+			}else if (_opt.trade_type == "favour"){
+				edit_faction_favour(diplomacy_faction,-_opt.number);
 			}
 		}
 
@@ -168,56 +186,54 @@ function TradeAttempt(diplomacy) constructor{
 	}
 
 	static find_trade_locations = function(){
- 		if (obj_ini.fleet_type=ePlayerBase.home_world){
- 			var _stars_with_player_control = [];
-	 		with(obj_star){
-	 			if (array_contains(p_owner, 1)){
-	 				array_push(_stars_with_player_control, id)
-	 			}
+		var _stars_with_player_control = [];
+ 		with(obj_star){
+ 			if (array_contains(p_owner, 1)){
+ 				array_push(_stars_with_player_control, id)
+ 			}
+	    }
+
+	    var player_fleet_targets = [];
+
+	    if (obj_ini.fleet_type != ePlayerBase.home_world || !array_length(_stars_with_player_control)){
+	        // with(obj_star){if (present_fleet[1]>0){x-=10000;y-=10000;}}
+	        with(obj_p_fleet){// Get the nearest star system that is viable for creating the trading fleet
+	            if ((capital_number>0 || frigate_number>0) && action=""){
+	            	array_push(player_fleet_targets, id);
+	            }
+	   
+	        }
+	    }
+
+
+	    // temp2: ideal trade target
+	    // temp3: origin
+	    // temp4: possible trade target
+
+
+	    var viable_faction_trade_stars = [];
+    	var _check_val = diplomacy_faction;
+    	 if (diplomacy_faction==4){
+    	 	_check_val = 2
+    	 }
+	    with(obj_star){// Get origin star system for enemy fleet
+	    	if (array_contains(p_owner, _check_val)){
+	    		array_push(viable_faction_trade_stars, id);
+	    	}
+		    if (_check_val=5){
+
+	        	var ahuh=0,q=0;
+	            repeat(planets){
+	            	q+=1;
+	            	if (p_owner[q]=5) then ahuh=1;
+	                if (p_owner[q]<6) and (planet_feature_bool(p_feature[q],P_features.Sororitas_Cathedral) == 1) then ahuh=1;
+	            }
+	            if (ahuh=1){
+	            	array_push(viable_faction_trade_stars, id);
+	            }
+
 		    }
-
-		    var player_fleet_targets = [];
-
-		    if (obj_ini.fleet_type != ePlayerBase.home_world || !array_length(_stars_with_player_control)){
-		        // with(obj_star){if (present_fleet[1]>0){x-=10000;y-=10000;}}
-		        with(obj_p_fleet){// Get the nearest star system that is viable for creating the trading fleet
-		            if ((capital_number>0 || frigate_number>0) && action=""){
-		            	array_push(player_fleet_targets, id);
-		            }
-		   
-		        }
-		    }
-
-
-		    // temp2: ideal trade target
-		    // temp3: origin
-		    // temp4: possible trade target
-
-
-		    var viable_faction_trade_stars = [];
-	    	var _check_val = diplomacy_faction;
-	    	 if (diplomacy_faction==4){
-	    	 	_check_val = 2
-	    	 }
-		    with(obj_star){// Get origin star system for enemy fleet
-		    	if (array_contains(p_owner, _check_val)){
-		    		array_push(viable_faction_trade_stars, id);
-		    	}
-			    if (_check_val=5){
-
-		        	var ahuh=0,q=0;
-		            repeat(planets){
-		            	q+=1;
-		            	if (p_owner[q]=5) then ahuh=1;
-		                if (p_owner[q]<6) and (planet_feature_bool(p_feature[q],P_features.Sororitas_Cathedral) == 1) then ahuh=1;
-		            }
-		            if (ahuh=1){
-		            	array_push(viable_faction_trade_stars, id);
-		            }
-
-			    }
-		    }		
-		}
+	    }		
 
 		if (!array_length(_stars_with_player_control) && !array_length(player_fleet_targets)){
 			with (obj_controller){
@@ -233,8 +249,11 @@ function TradeAttempt(diplomacy) constructor{
 			}
 			return false			
 		}
+
 		trade_from_star = array_random_element(viable_faction_trade_stars);
-		if (!array_length(_stars_with_player_control)){
+
+
+		if (!array_length(_stars_with_player_control) ||  (obj_ini.fleet_type!=ePlayerBase.home_world && array_length(player_fleet_targets))){
 			trade_to_obj = array_random_element(player_fleet_targets);
 		} else if (!array_length(player_fleet_targets)){
 			trade_to_obj = array_random_element(_stars_with_player_control);
@@ -252,7 +271,7 @@ function TradeAttempt(diplomacy) constructor{
 			show_debug_message("trade_success");
 			if (_success){
 				successful_trade_attempt();
-				scr_dialogue("agree");
+				scr_dialogue("agree",{prepend:"[[Trade Accepted.  Shipment initialized.]]"});
 				//force_goodbye=1;
 				obj_controller.trading=0;
 				 if (diplomacy_faction=6) or (diplomacy_faction=7) or (diplomacy_faction=8){
@@ -270,7 +289,8 @@ function TradeAttempt(diplomacy) constructor{
 				} else {
 					diplo_text="";
 				}
-		        annoyed[_dip] += 1;
+		        annoyed[_dip] += 1;				
+				scr_dialogue("disagree",{prepend:"[[Trade Refused]]"});
 		        rando=choose(1,2,3);
 		        if (_rela=="hostile"){
 					force_goodbye=1;
@@ -305,7 +325,7 @@ function TradeAttempt(diplomacy) constructor{
 	});
 	offer_button.bind_method = function(){
 		if (obj_controller.diplo_last !=" offer"){
-			attempt_trade(true);
+			attempt_trade();
 		}		
 	}
 	offer_button.bind_scope = self;
@@ -347,7 +367,7 @@ function TradeAttempt(diplomacy) constructor{
 				if (max_take == 1){
 					 variable_struct_set(self, "number", 1);	
 				} else {
-					get_diag_integer($"{label} wanted?", max_take, self);
+					get_diag_integer($"{label} wanted?", max_take, self, diplomacy_faction);
 				}
 			}
 		}
@@ -404,7 +424,7 @@ function TradeAttempt(diplomacy) constructor{
 			new_demand_buttons(-100, "Power Klaw", "equip",10);
 			new_demand_buttons(-100, "Ork Sniper", "merc",50);
 			new_demand_buttons(-100, "Flash Git", "merc",50);	
-			break;	
+			break;
 	}
 
 	static new_offer_option = function(trade_disp = -100, name, trade_type, max_count=1){
@@ -421,7 +441,7 @@ function TradeAttempt(diplomacy) constructor{
 				if (max_number == 1){
 					number = 1;
 				} else {				
-					get_diag_integer($"{label} offered?",max_number, self);
+					get_diag_integer($"{label} offered?",max_number, self, diplomacy_faction);
 				}			
 			}
 		}
@@ -443,9 +463,13 @@ function TradeAttempt(diplomacy) constructor{
 		new_offer_option(, "Info Chip","info", trade_info);
 	}
 
+	if (has_faction_favour(diplomacy_faction)){
+		new_offer_option(, "IOU","favour", trade_info);
+	}
+
 	static draw_trade_screen = function(){
 		recalc_values =  false;
-        draw_set_color(38144);
+        draw_set_color(CM_GREEN_COLOR);
         draw_rectangle(342,326,486,673,1);
         draw_rectangle(343,327,485,672,1);// Left Main Panel
         draw_rectangle(504,371,741,641,1);
@@ -469,7 +493,7 @@ function TradeAttempt(diplomacy) constructor{
     
         draw_set_halign(fa_left);
         draw_set_font(fnt_40k_14);
-        draw_set_color(38144);
+        draw_set_color(CM_GREEN_COLOR);
         var _requested_count = 0;
         //if (obj_controller.trading_artifact = 0){
 	        for (var i=0;i<array_length(demand_options);i++){
@@ -543,7 +567,7 @@ function TradeAttempt(diplomacy) constructor{
 
 	static calculate_trader_trade_value = function(){
 		
-		their_worth = 0;
+		their_worth = 100;
 		
 		for (var i=0;i<array_length(demand_options);i++){
 			var _opt = demand_options[i]
@@ -610,7 +634,9 @@ function TradeAttempt(diplomacy) constructor{
 	        
 		        if (diplomacy_faction=6) then my_worth+=_opt.number*500;
 		        if (diplomacy_faction=7) then my_worth+=_opt.number*500;
-		        if (diplomacy_faction=8) then my_worth+=_opt.number*1000;
+		        if (diplomacy_faction=8){
+		        	my_worth+=_opt.number*1000;
+		        }
 		    }
 		}
 	}
@@ -647,12 +673,11 @@ function TradeAttempt(diplomacy) constructor{
 			penalty=0;
 		}else if (diplomacy_faction=10){
 			dif_penalty=1;
-			penalty=0;}
+			penalty=0;
+		}
 
-		deal_chance=(100-penalty)-(((their_worth-(my_worth*dif_penalty))/10));
-
-		show_debug_message($"{their_worth},{my_worth},{deal_chance}");
-
+		deal_chance=(100-penalty)-(((their_worth-(my_worth*dif_penalty))));
+		//show_debug_message($"{their_worth},{my_worth},{deal_chance}");
 		var _chance = clamp(floor((deal_chance/20)), 0, 6);
 
 		trade_likely = chance_chart[_chance];

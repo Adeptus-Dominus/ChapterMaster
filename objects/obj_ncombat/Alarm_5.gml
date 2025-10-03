@@ -338,7 +338,7 @@ if (fortified>0) and (!instance_exists(obj_nfort)) and (reduce_fortification=tru
 
 
 
-if (defeat=0) and (battle_special="space_hulk"){
+if (defeat == 0) and (battle_special="space_hulk"){
     var enemy_power=0,
     loot=0,
     dicey=roll_dice_chapter(1, 100, "low"),
@@ -379,8 +379,8 @@ if (defeat=0) and (battle_special="space_hulk"){
 
 
 if (string_count("ruins",battle_special)>0){
-    if (defeat=0) then newline="Ancient Ruins cleared.";
-    if (defeat=1) then newline="Failed to clear Ancient Ruins.";
+    if (defeat == 0) then newline="Ancient Ruins cleared.";
+    if (defeat == 1) then newline="Failed to clear Ancient Ruins.";
     newline_color="yellow";
     scr_newtext();
 }
@@ -395,7 +395,7 @@ if (battle_special="fallen1") then reduce_power=false;
 if (battle_special="fallen2") then reduce_power=false;
 if (battle_special="study2a") then reduce_power=false;
 if (battle_special="study2b") then reduce_power=false;
-if (defeat=0) and (reduce_power=true){
+if (defeat == 0) and (reduce_power=true){
     var enemy_power,new_power, power_reduction, final_pow, requisition_reward;
     enemy_power=0;new_power=0; power_reduction=0; requisition_reward=0;
 
@@ -609,8 +609,8 @@ if (defeat=0) and (reduce_power=true){
         pip.cooldown=15;
         cooldown=15;
 
-        pip.option1="Advance!";
-        pip.option2="Cancel the attack";*/
+        pip.add_option="Advance!";
+        pip.add_option="Cancel the attack";*/
 
 
 
@@ -631,7 +631,7 @@ if (defeat=0) and (reduce_power=true){
     }*/
 }
 
-if (defeat=0) and (enemy=9) and (battle_special="tyranid_org"){
+if (defeat == 0) and (enemy=9) and (battle_special="tyranid_org"){
     // show_message(string(captured_gaunt));
     if (captured_gaunt=1) then newline=captured_gaunt+" Gaunt organism have been captured.";
     if (captured_gaunt>1) or (captured_gaunt=0) then newline=captured_gaunt+" Gaunt organisms have been captured.";
@@ -910,7 +910,7 @@ if (endline=0){
 }
 
 
-if (defeat=1){
+if (defeat == 1){
 	player_forces=0;
 	if (ground_mission){
 		obj_ground_mission.recoverable_gene_seed = seed_lost;

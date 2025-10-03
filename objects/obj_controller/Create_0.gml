@@ -97,6 +97,9 @@ chapter_made = 0;
 // obj_cuicons.alarm[1]=1; // Clean up custom icons
 map_scale = 1;
 scale_mod = 1;
+unit_manage_constants = {};
+unit_manage_constants.current_data = [-1,-1];
+management_buttons = false;
 
 
 diplomacy_pathway = "";
@@ -118,69 +121,6 @@ function build_chaos_gods(){
 	
 }
 build_chaos_gods()
-
-// ** Resets global vars **
-obj_controller.restart_name="";
-obj_controller.restart_founding="";
-obj_controller.restart_secret="";
-for(var i=0; i<=11; i++){obj_controller.restart_title[i]="";}
-obj_controller.restart_icon=0;
-obj_controller.restart_powers="";
-for(var ad=0; ad<5; ad ++){
-    obj_controller.restart_adv[ad]="";
-    obj_controller.restart_dis[ad]="";
-}
-obj_controller.restart_recruiting_type="";
-obj_controller.restart_trial="";
-obj_controller.restart_recruiting_name="";
-obj_controller.restart_home_type="";
-obj_controller.restart_home_name="";
-obj_controller.restart_fleet_type=0;
-obj_controller.restart_recruiting_exists=0;
-obj_controller.restart_homeworld_exists=0;
-obj_controller.restart_homeworld_rule=0;
-obj_controller.restart_battle_cry="";
-obj_controller.restart_main_color="";
-obj_controller.restart_secondary_color="";
-obj_controller.restart_trim_color="";
-obj_controller.restart_pauldron2_color="";
-obj_controller.restart_pauldron_color="";
-obj_controller.restart_lens_color="";
-obj_controller.restart_weapon_color="";
-obj_controller.restart_col_special=0;
-obj_controller.restart_trim=0;
-obj_controller.restart_skin_color=0;
-obj_controller.restart_hapothecary="";
-obj_controller.restart_hchaplain="";
-obj_controller.restart_clibrarian="";
-obj_controller.restart_fmaster="";
-obj_controller.restart_recruiter="";
-obj_controller.restart_admiral="";
-obj_controller.restart_equal_specialists=0;
-obj_controller.restart_load_to_ships=[0,0,0];
-obj_controller.restart_successors=0;
-obj_controller.restart_mutations=0;
-obj_controller.restart_preomnor=0;
-obj_controller.restart_voice=0;
-obj_controller.restart_doomed=0;
-obj_controller.restart_lyman=0;
-obj_controller.restart_omophagea=0;
-obj_controller.restart_ossmodula=0;
-obj_controller.restart_membrane=0;
-obj_controller.restart_zygote=0;
-obj_controller.restart_betchers=0;
-obj_controller.restart_catalepsean=0;
-obj_controller.restart_secretions=0;
-obj_controller.restart_occulobe=0;
-obj_controller.restart_mucranoid=0;
-obj_controller.restart_master_name="";
-obj_controller.restart_master_melee=0;
-obj_controller.restart_master_ranged=0;
-obj_controller.restart_master_specialty=0;
-obj_controller.restart_strength=0;
-obj_controller.restart_cooperation=0;
-obj_controller.restart_purity=0;
-obj_controller.restart_stability=0;
 
 // ** Sets default equipement for roles **
 // 100 is defaults, 101 is the allowable starting equipment
@@ -435,12 +375,15 @@ unit_bio=false;
 view_squad=false;
 company_report=false;
 company_data = {};
+unit_focus = false;
 filter_mode = false;
-pauldron_trim=0;
-last_unit=[0,0];
+manage_tags = [];
+pauldron_trim = 0;
+last_unit = [0,0];
 ui_coloring=""; 
-ui_melee_penalty=0;
-ui_ranged_penalty=0;
+ui_melee_penalty = 0;
+ui_ranged_penalty = 0;
+management_tags = [];
 
 // ** Sets default mouse vars **
 current_target=false;
@@ -566,7 +509,7 @@ identifiable=0;
 repair_ships=0;
 forge_points = 0;
 master_craft_chance = 0;
-tech_status = "Cult Mechanicus";
+tech_status = "cult_mechanicus";
 forge_string="";
 player_forge_data = {
     player_forges : 0,
@@ -685,11 +628,8 @@ for(var i=0; i<501; i++){
         penit_co[i]=0;
         penit_id[i]=0;
     }
-    if (i<=100){
-        event[i]="";
-        event_duration[i]=0;
-    }
 }
+event = [];
 // ship management arrays
 // they are used to display a paginated subset of ships
 // at a particular location for the load to ship screen.
@@ -711,6 +651,7 @@ sel_system_x=0;
 sel_system_y=0;
 popup_master_crafted=0;
 close_popups = true;
+unit_manage_image = false;
 // ** Sets starting turn **
 turn=1;
 // turn=40;
@@ -854,6 +795,8 @@ if (instance_exists(obj_ini)){
     }
 }
 if (is_test_map==true) then requisition=50000;
+
+chapter_master = new scr_chapter_master();
 
 trade_attempt = false;
 // ** Sets income **
@@ -1214,10 +1157,11 @@ serialize = function(){
         loyalty,
         spec_train_data,
         forge_queue: specialist_point_handler.forge_queue,
+        chapter_master_data : chapter_master
 
     }
     var excluded_from_save = ["temp", "serialize", "deserialize", "build_chaos_gods", "company_data","menu_buttons",
-            "location_viewer", "production_research_pathways", "specialist_point_handler", "spec_train_data"]
+            "location_viewer", "production_research_pathways", "specialist_point_handler", "spec_train_data", "tooltips", "last_unit", "unit_manage_constants", "unit_manage_image"];
     var excluded_from_save_start = ["restart_"];
 
     copy_serializable_fields(object_controller, save_data, excluded_from_save, excluded_from_save_start);
@@ -1227,7 +1171,6 @@ serialize = function(){
 
 // Deserialization is done within scr_load
 #endregion
-
 
 // ** Loads the game **
 if (global.load>=0){
@@ -1376,7 +1319,7 @@ squads = false;
 system_fleet_strength = 0;
 // **sets up starting forge_points
 specialist_point_handler = new SpecialistPointHandler();
-specialist_point_handler.calculate_research_points();
+specialist_point_handler.calculate_research_points(true);
 
 
 //** sets up marine_by_location views

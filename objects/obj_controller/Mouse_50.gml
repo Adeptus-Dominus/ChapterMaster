@@ -182,8 +182,14 @@ if (menu==MENU.Diplomacy) and (diplomacy>0) or ((diplomacy<-5) and (diplomacy>-6
                 menu=0;
                 force_goodbye=0;
                 with(obj_popup){instance_destroy();}
-                if (trading_artifact!=2) then obj_ground_mission.alarm[1]=1;
-                if (trading_artifact==2) then obj_ground_mission.alarm[2]=1;
+                if (trading_artifact!=2){
+                    obj_ground_mission.alarm[1]=1;
+                }
+                if (trading_artifact == 2 && instance_exists(obj_ground_mission)){
+                    with (obj_ground_mission){
+                        recieve_artifact_in_discussion();
+                    }
+                }
                 exit;
             }
         }
@@ -227,12 +233,12 @@ scr_menu_clear_up(function(){
         yy=yy+0;
 
         if (mouse_x>=xx+22) and (mouse_y>=yy+84) and (mouse_x<xx+98) and (mouse_y<yy+126){
-            menu=1;
+            menu=MENU.Manage;
             cooldown=8000;
         }
     }
     // Selecting individual marines
-    if (menu=1) and (managing>0) || (managing<0) and (!view_squad || !company_report){
+    if (menu=MENU.Manage) and (managing>0) || (managing<0) and (!view_squad || !company_report){
         var unit;                 
         var eventing=false, bb="";
         xx=__view_get( e__VW.XView, 0 )+0;
@@ -261,7 +267,7 @@ scr_menu_clear_up(function(){
     if (menu==50) and (managing>0) and (cooldown<=0){
         if (mouse_x>=xx+217) and (mouse_y>=yy+28) and (mouse_x<xx+250) and (mouse_y<yy+59){
             cooldown=8;
-            menu=1;
+            menu=MENU.Manage;
             click=1;
         }
     }

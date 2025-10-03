@@ -6,17 +6,16 @@ function scr_count_forces(_unit_location, _target_location, _is_planet, instance
 		//For each of the companies (HQ + 10)
 		for(var company=0;company<11;company++)
 		{
-			//For now, obj_ini arrays start at array[1].
-			var i = 1;
-			
+			var i = 0;
+			var _unit = fetch_unit([company, i]);
 			//For each unit in that company, while unit exists
 			//Marines and vehicles get checked AT THE SAME TIME
 			//This is possible since array for saving vehicles and marines are separated
-			while ((obj_ini.name[company][i]!="" || i<array_length(obj_ini.veh_race[company])) && i<500)
+			while ((_unit.name()!="" || i<array_length(obj_ini.veh_race[company])) && i<500)
 			{
-				if (obj_ini.race[company][i]==1)					&& 
-				   (obj_ini.loc[company][i]==_unit_location)		&& 
-				   (obj_ini.TTRPG[company][i].planet_location==_target_location)
+				if (_unit.race()==1)					&& 
+				   (_unit.location_string==_unit_location)		&& 
+				   (_unit.planet_location==_target_location)
 				{
 
 					info_mahreens++;

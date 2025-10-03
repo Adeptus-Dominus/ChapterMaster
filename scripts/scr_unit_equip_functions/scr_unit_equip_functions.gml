@@ -108,12 +108,14 @@ function scr_update_unit_armour(new_armour, from_armoury = true, to_armoury = tr
 		if (new_arm_data.has_tag("terminator")) {
 			update_mobility_item("");
 		}
-	}
-
-	if (armour() == "Dreadnought") {
-		is_boarder = false;
-		update_gear("");
-		update_mobility_item("");
+		
+		if (new_arm_data.has_tag("dreadnought")) {
+			is_boarder = false;
+			remove_from_squad();
+			update_role(obj_ini.role[100][eROLE.Dreadnought]);
+			update_gear("");
+			update_mobility_item("");
+		}
 	}
 
 	update_health(portion * max_health());
@@ -177,7 +179,7 @@ function scr_update_unit_weapon_one(new_weapon, from_armoury = true, to_armoury 
 			if (!is_string(weapon_one(true))) {
 				obj_ini.artifact_equipped[weapon_one(true)] = false;
 			} else {
-				scr_add_item(change_wep, 1, weapon_one_quality, true);
+				scr_add_item(change_wep, 1, weapon_one_quality);
 			}
 		} else if (!is_string(weapon_one(true))) {
 			delete_artifact(weapon_one(true));
@@ -230,7 +232,7 @@ function scr_update_unit_weapon_two(new_weapon, from_armoury = true, to_armoury 
 			if (!is_string(weapon_two(true))) {
 				obj_ini.artifact_equipped[weapon_two(true)] = false;
 			} else {
-				scr_add_item(change_wep, 1, weapon_two_quality, true);
+				scr_add_item(change_wep, 1, weapon_two_quality);
 			}
 		} else if (!is_string(weapon_two(true))) {
 			delete_artifact(weapon_two(true));
@@ -291,7 +293,7 @@ function scr_update_unit_gear(new_gear, from_armoury = true, to_armoury = true, 
 			if (!is_string(gear(true))) {
 				obj_ini.artifact_equipped[gear(true)] = false;
 			} else {
-				scr_add_item(change_gear, 1, gear_quality, true);
+				scr_add_item(change_gear, 1, gear_quality);
 			}
 		} else if (!is_string(gear(true))) {
 			delete_artifact(gear(true));
@@ -366,7 +368,7 @@ function scr_update_unit_mobility_item(new_mobility_item, from_armoury = true, t
 			if (!is_string(mobility_item(true))) {
 				obj_ini.artifact_equipped[mobility_item(true)] = false;
 			} else {
-				scr_add_item(_old_mobility_item, 1, mobility_item_quality, true);
+				scr_add_item(_old_mobility_item, 1, mobility_item_quality);
 			}
 		} else if (!is_string(mobility_item(true))) {
 			delete_artifact(mobility_item(true));
@@ -442,6 +444,32 @@ function unit_has_equipped(check_equippment){
 	}	
 	return true;
 }
+
+/*function equipment_has_tag(tag, area){
+	var tags = [];
+	switch (area){
+		case "wep1":
+			tags = get_weapon_one_data("tags");
+			break;
+		case "wep2":
+			tags = get_weapon_two_data("tags");
+			break;
+		case "mobi":
+			tags = get_mobility_data("tags");
+			break;
+		case "armour":
+			tags = get_armour_data("tags");
+			break;
+		case "gear":
+			tags = get_gear_data("tags");
+		break;
+	}
+	if (tags == false || !array_length(tags)){
+		return false;
+	} else {
+		return array_contains(tags, tag);
+	}
+}*/
 
 
 

@@ -1,4 +1,4 @@
-function base_inquis_fleet (){
+function base_inquis_fleet(){
 	owner=eFACTION.Inquisition;
     frigate_number=1;
     sprite_index=spr_fleet_inquisition;
@@ -13,18 +13,60 @@ function base_inquis_fleet (){
     }
 }
 
-function hunt_player_serfs(){
-    explode_script(obj_controller.temp[1008],"|");
-    var tb=string(explode[0]);
-    var tc=real(explode[1]);
-    var ev=0;
-    for(var v=1; v<=99; v++){
-        if (ev==0) and (event[v]=="") then ev=v;
-    }
-    event[ev]="remove_serf|"+string(tb)+"|"+string(tc)+"|";
-    event_duration[ev]=choose(1,2);   
+
+function hunt_player_serfs(planet, system){
+    add_event({
+        planet : planet,
+        system : system,
+        e_id : "remove_surf",
+        duration : irandom_range(1,4),
+    });
 }
 
+
+function radical_inquisitor_mission_ship_arrival(){
+
+    //TODO make a centralised player_fleet present method
+    var _p_fleet = instance_nearest(x,y, obj_p_fleet);
+    var _intercept_fleet = -1;
+    if (point_distance(x,y,_p_fleet.x, _p_fleet.y)<10 && is_orbiting(obj_p_fleet)){
+        _intercept_fleet = _p_fleet;
+    }
+
+
+    var _radical_inquisitor = cargo_data.radical_inquisitor;
+    if (!instance_exists(_intercept_fleet)){
+        action_x=choose(room_width*-1,room_width*2);
+        action_y=choose(room_height*-1,room_height*2);
+        action_spd=256;
+        action="";            
+        set_fleet_movement();
+        instance_destroy();
+        alter_disposition(eFACTION.Inquisition,-15);
+        scr_popup("Inquisitor Mission Failed","The radical Inquisitor has departed from the planned intercept coordinates.  They will now be nearly impossible to track- the mission is a failure.","inquisition","");
+        scr_event_log("red","Inquisition Mission Failed: The radical Inquisitor has departed from the planned intercept coordinates.");
+    }
+    else {
+        action="";
+        var _gender = string_gender_third_person(_radical_inquisitor.inquisitor_gender);
+
+        var _tixt=$"You have located the radical Inquisitor.  As you prepare to destroy their ship, and complete the mission, you recieve a hail- it appears as though {_gender} wishes to speak.";
+        _radical_inquisitor.options = [
+            {
+                str1 : "Destroy their vessel",
+                method: mission_hunt_inquisitor_destroy_inquisitor_ship,
+            },
+            {
+                str1 : "Hear them out",
+                method: mission_hunt_inquisitor_hear_out_radical_inquisitor,
+            }
+        ];
+        _radical_inquisitor.inquisitor_ship = self.id;
+        scr_popup("Inquisitor Located",_tixt,"inquisition",_radical_inquisitor);
+    }
+    //instance_destroy();
+    exit;
+}
 function inquisition_fleet_inspection_chase(){
 	var good=0,acty="";
 	var reset = !instance_exists(target);
@@ -67,7 +109,7 @@ function inquisition_fleet_inspection_chase(){
             instance_activate_object(obj_star);
             var goal_x,goal_y,target_meet=0;
         
-            chase_fleet_target_set();
+            chase_fleet_target_set(target);
             target_meet=instance_nearest(action_x,action_y,obj_star);
             if (string_count("!",trade_goods)=4) and (instance_exists(obj_turn_end)){
         
@@ -75,20 +117,24 @@ function inquisition_fleet_inspection_chase(){
         
                 scr_alert("blank","blank","blank",target_meet.x,target_meet.y);
             
-                var massa,iq;iq=0;
-                massa="Inquisitor ";
+                var iq=0;
+                
                 if (inquisitor>0){
                     iq=inquisitor
                 }
+
+                var massa=$"Inquisitor {obj_controller.inquisitor[iq]}";
             
-                massa+=string(obj_controller.inquisitor[iq]);
-            
-                if (target.action="") then massa+=$" DEMANDS that you keep your fleet at {target_meet.name} until ";
-                if (target.action!="") then massa+=$" DEMANDS that you station your fleet at {target_meet.name} until ";
+                if (target.action == ""){
+                    massa+=$" DEMANDS that you keep your fleet at {target_meet.name} until ";
+                }else if (target.action!=""){
+                    massa+=$" DEMANDS that you station your fleet at {target_meet.name} until ";
+                }
         
-                scr_event_log("red",string(massa)+" they may inspect it.");
-                var gender = obj_controller.inquisitor_gender[iq]==1?"he":"she"
-                if (obj_controller.inquisitor_gender[iq]=1) then massa+=$"{gender} is able to complete the inspection.  Further avoidance will be met with harsh action.";
+                scr_event_log("red",$"{massa} they may inspect it.");
+                var _gender = string_gender_third_person(obj_controller.inquisitor_gender[iq]);
+
+                massa+=$"{_gender} is able to complete the inspection.  Further avoidance will be met with harsh action.";
 
                 scr_popup("Fleet Inspection",massa,"inquisition","");
         
@@ -162,7 +208,7 @@ function new_inquisitor_inspection(){
         with (new_inquis_fleet) {
             base_inquis_fleet();
             target = target_player_fleet;
-            chase_fleet_target_set();
+            chase_fleet_target_set(target);
             obj = instance_nearest(action_x, action_y, obj_star);
             trade_goods += "_fleet";
         }
@@ -306,7 +352,7 @@ if (inspection_type="inspect_world") or (inspection_type="inspect_fleet"){
             for (var ca=0;ca<11;ca++){
                 for (var ia=0;ia<500;ia++){
                     unit = fetch_unit([ca,ia]);
-                    if (obj_ini.loc[ca][ia]==that.name){
+                    if (unit.location_string==that.name){
                         if (unit.role()="Ork Sniper") and (obj_ini.race[ca,ia]!=1){hurr+=1;sniper+=1;}
                         if (unit.role()="Flash Git") and (obj_ini.race[ca,ia]!=1){hurr+=1;git+=1;}
                         if (unit.role()="Ranger") and (obj_ini.race[ca,ia]!=1){hurr+=1;finder+=1;}
@@ -409,8 +455,12 @@ if (inspection_type="inspect_world") or (inspection_type="inspect_fleet"){
                         if (obj_controller.disposition[4]<=10) and (one=0){obj_controller.disposition[4]=0;one=3;}
                     
                         if ((obj_controller.loyalty-80)<=0) and (one<3) then one=3;
-                        if (one=1) then with(obj_controller){scr_audience(4,"chaos_audience1",0,"",0,0);}
-                        if (one=2) then with(obj_controller){scr_audience(4,"chaos_audience2",0,"",0,0);}
+                        if (one=1) then with(obj_controller){
+                            scr_audience(4,"chaos_audience1",0,"",0,0);
+                        }
+                        if (one=2) then with(obj_controller){
+                            scr_audience(4,"chaos_audience2",0,"",0,0);
+                        }
                         if (one=3) then obj_controller.alarm[8]=1;
                     }
                     if (obj_controller.loyal[i]="Heretical Homeworld"){obj_controller.loyal_num[i]=20;obj_controller.loyal_time[i]=3;}

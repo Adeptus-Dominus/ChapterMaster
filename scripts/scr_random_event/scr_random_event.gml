@@ -1,6 +1,6 @@
 function scr_random_event(execute_now) {
 
-	var evented = false;
+	var _evented = false;
 	/*This is some eldar mission, it should be fixed
 		var rando4=floor(random(200))+1;
 	if (obj_controller.turns_ignored[6]<=0) and (obj_controller.faction_gender[6]=2) then rando4-=2;
@@ -217,7 +217,7 @@ function scr_random_event(execute_now) {
 	if (chosen_event == EVENT.strange_behavior){
 		//TODO this event currenlty dose'nt do anything but now we have marine structs there is lots of potential here
 		init_marine_acting_strange()
-		evented=true;
+		_evented=true;
 	}
 	
 	else if (chosen_event == EVENT.space_hulk){
@@ -266,7 +266,7 @@ function scr_random_event(execute_now) {
 				scr_alert(own?"red":"green","space_hulk",$"The Space Hulk {spaceHulk.name} appears near the {star_id.name} system.",spaceHulkX,spaceHulkY);
 
 				scr_event_log("",$"The Space Hulk {spaceHulk.name} appears near the {star_id.name} system.",star_id.name);
-		        evented = true;
+		        _evented = true;
 			}
 			catch(_exception){
 				handle_exception(_exception);
@@ -284,9 +284,9 @@ function scr_random_event(execute_now) {
 		}
 		var marine=marine_and_company[1];
 		var company=marine_and_company[0];
-		var unit = obj_ini.TTRPG[company][marine];
-		var role=unit.role();
-		var text = unit.name_role();
+		var _unit = obj_ini.TTRPG[company][marine];
+		var role=_unit.role();
+		var text = _unit.name_role();
 		var company_text = scr_convert_company_to_string(company);
 		//var company_text = scr_company_string(company);
 		if(company_text != ""){
@@ -296,99 +296,19 @@ function scr_random_event(execute_now) {
 		text += " has distinguished himself.##He åis up for review to be promoted.";
 		
 		if (company != 10){
-			unit.add_exp(10);
+			_unit.add_exp(10);
 		}
 		else {
-			unit.add_exp(max(20, unit.experience));
+			_unit.add_exp(max(20, _unit.experience));
 		}
 		
 		scr_popup("Promotions!",text,"distinguished","");
         scr_event_log("green",text);
-		evented = true;
+		_evented = true;
 	}
     
 	else if (chosen_event == EVENT.strange_building){
-		log_message("RE: Fey Mood");
-		var marine_and_company = scr_random_marine(obj_ini.role[100][16],0);
-		if(marine_and_company == "none"){
-			exit;
-		}
-		var marine = marine_and_company[1];
-		var company = marine_and_company[0];
-		var text="";
-		var unit = obj_ini.TTRPG[company][marine];
-		var role= unit.role();
-	    text = unit.name_role();
-	    text+=" is taken by a strange mood and starts building!";  
-
-        
-	    var crafted_object;
-	    var craft_roll=roll_dice_chapter(1, 100, "low");
-		var heritical_item = false;
-        
-		//this bit should be improved, idk what duke was checking for here
-		//TODO make craft chance reflective of crafters skill, rewards players for having skilled tech area
-        if (scr_has_disadv("Tech-Heresy")) {
-			craft_roll+=20;
-		}
-		if (scr_has_adv("Crafter")) {
-            if (craft_roll>80) {
-				craft_roll-=10;
-			}
-			if (craft_roll<60) {
-				craft_roll+=10;
-			}
-        }
-        
-	    if (craft_roll<=50){
-			crafted_object=choose("Icon","Icon","Statue");
-			unit.add_exp(choose(5,10));
-		}
-	    else if ((craft_roll>50) && (craft_roll<=60)) {
-			crafted_object=choose("Bike","Rhino");
-		}
-	    else if ((craft_roll>60) && (craft_roll<=80)) {
-			crafted_object="Artifact";
-		}
-		else {
-			crafted_object=choose("baby","robot","demon","fusion");
-			heritical_item=1;
-		}
-        
-			var event_index = -1;
-			for(var i = 0; i < array_length(event); i++){
-				if(event[i] == "" || event[i] == undefined){
-					event_index = i;
-					break;
-				}
-			}
-			if(event_index == -1){
-				//
-				exit;
-			}
-			
-			scr_popup("Can He Build marine?!?",text,"tech_build","");
-			evented = true;
-	        event[event_index]="strange_building|"+unit.name()+"|"+string(company)+"|"+string(marine)+"|"+string(crafted_object)+"|";
-	        event_duration[event_index]=1;
-        
-			var marine_is_planetside = unit.planet_location>0;
-	        if (marine_is_planetside && heritical_item) {
-	        	var _system = star_by_name(obj_ini.loc[company][marine]);
-	        	var _planet = unit.planet_location;
-	            if (_system!="none"){
-	            	with (_system){
-	            		p_hurssy[_planet]+=6;
-						p_hurssy_time[_planet]=2;
-	            	}	               
-	            }
-	        }
-	        else if (!marine_is_planetside and heritical_item){
-	            var _fleet = find_ships_fleet(unit.ship_location);
-	            if (_fleet!="none"){
-	            	//the intended code for here was to add some sort of chaos event on the ship stashed up ready to fire in a few turns
-	            }
-	        }
+		_evented = strange_build_event();
 	}
     
 	else if (chosen_event == EVENT.sororitas){
@@ -420,7 +340,7 @@ function scr_random_event(execute_now) {
 			
 			var planet = eligible_planets[irandom(array_length(eligible_planets)-1)];
 			++(star_id.p_sisters[planet]);
-			evented = true;
+			_evented = true;
 			
 			if ((own!=1) && (star_id.p_player[planet]<=0) && (star_id.present_fleet[1]==0)){
 				scr_alert("green","sororitas","Sororitas place a company of sisters on "+string(star_id.name)+" "+string(planet)+".",star_id.x,star_id.y);
@@ -434,13 +354,13 @@ function scr_random_event(execute_now) {
 		}
     
 	} else if (chosen_event == EVENT.mechanicus_mission) {
-		spawn_mechanicus_mission()
+		evented = spawn_mechanicus_mission();
 
 	}
     
 	else if (chosen_event == EVENT.inquisition_planet || chosen_event == EVENT.inquisition_mission) {
 		scr_inquisition_mission(chosen_event);
-	    evented = true;
+	    _evented = true;
 	}
 
 	else if (chosen_event == EVENT.rogue_trader){
@@ -491,7 +411,7 @@ function scr_random_event(execute_now) {
 		star_alert = instance_create(star.x+16,star.y-24,obj_star_event);
 		star_alert.image_alpha = 1;
 		star_alert.image_speed = 1;
-        evented = true;
+        _evented = true;
 	}
 
 	else if (chosen_event == EVENT.fleet_delay){
@@ -529,7 +449,7 @@ function scr_random_event(execute_now) {
 						text = "Eldar pirates have attacked your fleet. Damage was minimal but the voyage has been delayed by " + string(delay)+ " months.";
 					}
 	                scr_popup("Fleet Attacked",text,"","");
-					evented = true;
+					_evented = true;
 	                var star_alert =instance_create(fleet.x+16,fleet.y-24,obj_star_event);
 					star_alert.image_alpha=1;
 					star_alert.image_speed=1;
@@ -600,7 +520,7 @@ function scr_random_event(execute_now) {
 		star_alert.image_speed=1;
 		star_alert.col="red";
 		scr_event_log("red","War of Succession on "+string(text));       
-		evented = true;
+		_evented = true;
 	}
     
 	// Flavor text/events
@@ -662,7 +582,7 @@ function scr_random_event(execute_now) {
 		}
 		scr_alert("color","lol",text,0,0);
         scr_event_log("red",text); 
-		evented = true;
+		_evented = true;
 	}
 
 	else if (chosen_event == EVENT.warp_storms){
@@ -694,10 +614,10 @@ function scr_random_event(execute_now) {
 		}
 		else{
 			star_id.storm += time;
-			evented = true;
+			_evented = true;
 			var _col = own == 1 ? "red" : "green";
 			scr_alert(_col, "Warp", $"Warp Storms rage across the {star_id.name} system.", star_id.x, star_id.y);
-			scr_event_log(_col, $"Warp Storms rage across the {star_id.name} system.", star_id.x, star_id.y);
+			scr_event_log(_col, $"Warp Storms rage across the {star_id.name} system.");
 		}
 	}
     
@@ -776,83 +696,18 @@ function scr_random_event(execute_now) {
 					exit;
 			}
 			scr_alert("red","enemy", $"{text} forces suddenly appear at {star_id.name} {planet}!",star_id.x,star_id.y);
-            scr_event_log("red",$"{text} forces suddenly appear at {star_id.name} {planet}!",star_id.x,star_id.y);
-			evented = true;
+            scr_event_log("red",$"{text} forces suddenly appear at {star_id.name} {planet}!");
+			_evented = true;
 		}
 	}
 
 	else if ((chosen_event == EVENT.crusade)){
 		//i think all events should be hanlded like this then we have far more options on when to call them and how they work
-		evented = launch_crusade();
+		_evented = launch_crusade();
 	}
     
 	else if (chosen_event == EVENT.enemy) {
-		log_message("RE: Enemy");
-		
-		var factions = [];
-		if(known[eFACTION.Imperium] == 1){
-			array_push(factions,2);
-		}
-		if(known[eFACTION.Mechanicus] == 1){
-			array_push(factions,3);
-		}
-		if(known[eFACTION.Inquisition] == 1){
-			array_push(factions,4);
-		}
-		if(known[eFACTION.Ecclesiarchy] == 1){
-			array_push(factions,5);		
-		}
-		
-		if(array_length(factions) == 0){
-			log_error("RE: Enemy, no faction could be chosen");
-			exit;
-		}
-		var chosen_faction = factions[irandom(array_length(factions)-1)];
-		var event_index = -1;
-		for(var i=1;i < 99; i++){
-			if(event[i] == ""){
-				event_index = i;
-				break;
-			}
-		}
-		if(event_index == -1){
-			log_error("RE: Enemy, couldn't find an event_index");
-			exit;
-		}
-		
-		var text = "You have made an enemy within the ";
-		var log = "An enemy has been made within the ";
-		switch(chosen_faction) {
-			case 2:
-				event[event_index]="enemy_imperium";
-				text += "Imperium";
-				log += "Imperium";
-				break;
-			case 3:
-				event[event_index]="enemy_mechanicus";
-				text += "Mechanicus";
-				log += "Mechanicus";
-				break;
-			case 4:
-				event[event_index]="enemy_inquisition";
-				text += "Inquisition";
-				log += "Inquisition";
-				break;
-			case 5:
-				event[event_index]="enemy_ecclesiarchy";
-				text += "Ecclesiarchy";
-				log += "Ecclesiarchy";
-				break;
-			default:
-				log_error("RE: Enemy, no faction could be chosen");
-				exit;
-		}
-	    event_duration[event_index]=irandom_range(12,96);
-		disposition[chosen_faction]-=20;
-	    text +="; relations with them will be soured for the forseable future.";
-	    scr_popup("Diplomatic Incident",text,"angry","");
-		evented = true;
-	    scr_event_log("red",string(log));
+		_evented = make_faction_enemy_event();
 	}
     
 	else if ((chosen_event == EVENT.mutation)) {
@@ -860,7 +715,7 @@ function scr_random_event(execute_now) {
 		log_message("RE: Gene-Seed Mutation");
 	    var text = "The Chapter's gene-seed has mutated!  Apothecaries are scrambling to control the damage and prevent further contamination.  What is thy will?";
 	    scr_popup("Gene-Seed Mutated!",text,"gene_bad","");
-		evented = true;
+		_evented = true;
 	    scr_event_log("red","The Chapter Gene-Seed has mutated.");
 	}
 
@@ -871,24 +726,10 @@ function scr_random_event(execute_now) {
 	else if (chosen_event == EVENT.chaos_invasion){
 	    log_message("RE: Chaos Invasion");
     
-		var event_index = -1;
-		for(var i = 1; i < 100; i++) {
-			if(event[i] == ""){
-				chosen_event = i;
-				break;
-			}
-		}
-		if(chosen_event == -1){
-			log_error("RE: Chaos Invasion, couldn't find a id for the event");
-			exit;
-		}
-		
-	    event[chosen_event] = "chaos_invasion";
-		event_duration[chosen_event] = 1;
-		evented = true;
-		
-		
-		
+		add_event({
+			e_id : "chaos_invasion",
+			duration : 1
+		})
 		
 		var psyker_intolerant = scr_has_disadv("Psyker Intolerant");
 	    var has_chief_psyker = scr_role_count("Chief "+string(obj_ini.role[100,17]),"") >= 1;
@@ -910,15 +751,15 @@ function scr_random_event(execute_now) {
 	}
     
 	else if (chosen_event == EVENT.necron_awaken){
-		evented = awaken_tomb_event();
+		_evented = awaken_tomb_event();
 	}
 	
 	else if(chosen_event == EVENT.fallen){
 		event_fallen();
-		evented = true;
+		_evented = true;
 	}
 
-	if(evented) {
+	if(_evented) {
 		if(force_inquisition_mission && chosen_event == EVENT.inquisition_mission) {
 			last_mission=turn;
 		}

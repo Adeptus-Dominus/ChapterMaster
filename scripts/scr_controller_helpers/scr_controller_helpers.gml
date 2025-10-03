@@ -22,9 +22,6 @@ function scr_menu_clear_up(specific_area_function) {
                     }
                 }
             }
-            if (instance_exists(obj_star_select)) {
-                exit;
-            }
             if (instance_exists(obj_bomb_select)) {
                 exit;
             }
@@ -70,11 +67,11 @@ function scr_change_menu(wanted_menu, specific_area_function=false) {
         return false;
     }
     if (wanted_menu == obj_controller.menu){
-        main_map_defualts();
+        main_map_defaults();
         return true;
     }
     with(obj_controller) {
-        main_map_defualts();
+        main_map_defaults();
         set_zoom_to_default();
         continue_sequence = scr_menu_clear_up(function() {
             //if ((zoomed == 0) && (diplomacy == 0)) {
@@ -98,9 +95,9 @@ function scr_change_menu(wanted_menu, specific_area_function=false) {
     }
 }
 
-function main_map_defualts(){
+function main_map_defaults(){
     with (obj_controller){
-        menu = 0;
+        menu = MENU.Default;
         hide_banner = 0;
         location_viewer.update_garrison_log();
         managing = 0; 
@@ -146,10 +143,18 @@ function scr_in_game_menu() {
 }
 
 function basic_manage_settings() {
-    menu = MENU.Manage;
-    popup = 0;
-    selected = 0;
-    diplomacy = 0;
+    with (obj_controller){
+        menu = MENU.Manage;
+        popup = 0;
+        selected = 0;
+        diplomacy = 0;
+        allow_shortcuts = true;
+
+        init_manage_buttons();
+    }
+}
+
+function init_manage_buttons(){
     management_buttons = {
         squad_toggle: new UnitButtonObject({
             style: "pixel",
@@ -165,7 +170,14 @@ function basic_manage_settings() {
             style: "pixel",
             label: "Show Bio",
             tooltip: "Click here or press B to Toggle Unit Biography."
-        })
+        }),
+        capture_image: new UnitButtonObject({
+            style: "pixel",
+            label: "Capture Image",
+            tooltip: "Click to create a local png of the given marine in the game folder."
+        }),
+
+        company_namer : new TextBarArea(800, 108, 600, false),
     };
 }
 
@@ -173,6 +185,7 @@ function scr_toggle_manage() {
     scr_change_menu(MENU.Manage,function() {
         with(obj_controller) {
             if (menu != MENU.Manage) {
+                hide_banner = 1;
                 basic_manage_settings();
                 scr_management(1);
             }
@@ -206,8 +219,8 @@ function scr_toggle_apothecarion() {
             if (scr_role_count("Master of the Apothecarion", "0") == 0) {
                 menu_adept = 1;
             }
-            if (menu != 11) {
-                menu = 11;
+            if (menu != MENU.Apothecarion) {
+                menu = MENU.Apothecarion;
 
                 temp[36] = scr_role_count(obj_ini.role[100][15], "");
             }
@@ -269,6 +282,13 @@ function scr_toggle_lib() {
                 artifact_destroy = new ShutterButton();
                 artifact_namer = new TextBarArea(xx + 622, yy + 460, 350);
                 set_chapter_arti_data();
+                artifact_slate = new DataSlate({
+                    set_width : true,
+                    XX : 392,
+                    YY : 500,
+                    width : 460,
+                    height : 240,
+                })
             } 
         }
     });
@@ -400,6 +420,7 @@ function scr_toggle_diplomacy() {
                 audience = 0;
                 diplomacy = 0;
                 hide_banner = 1;
+                character_diplomacy = false;
                 show_debug_message("set_diplo")
             }
         }
@@ -467,7 +488,6 @@ function scr_end_turn() {
                     with(obj_star_event) {
                         instance_destroy();
                     }
-                    cooldown = 8;
                     audio_play_sound(snd_end_turn, -50, 0);
                     audio_sound_gain(snd_end_turn, master_volume * effect_volume, 0);
 

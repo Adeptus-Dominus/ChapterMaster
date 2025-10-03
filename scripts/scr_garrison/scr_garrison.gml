@@ -1,7 +1,9 @@
 function disposition_description_chart(dispo) {
     if (global.cheat_debug) {
         return $"{dispo}"
-    } else if (dispo < -100) {
+    } else if (dispo < -4000) {
+    	return "Ruled";
+    }else if (dispo < -100) {
         return "DEBUG: Numbers lower than -100 detected, this shouldn't happen!";
     } else if (dispo <= 0) {
         return "Extremely Hostile";
@@ -154,11 +156,15 @@ function GarrisonForce(planet_operatives, turn_end=false, type="garrison") const
 		} else {report_string+="The garrison is comprised of a single _squad,"}
 
 		report_string+= $" with a total man count of {total_garrison}.#"
-        if (system.p_owner[planet] != eFACTION.Player) {
+        if (system.p_owner[planet] != eFACTION.Player && system.dispo[planet] >=-100) {
             var disposition = disposition_description_chart(system.dispo[planet]);
             report_string += $"Our Relationship with the Rulers of the planet is {disposition}#";
-        } else if (system.dispo[planet] < -1000 && system.p_owner[planet] == eFACTION.Player) {
-            report_string += $"Rule of the planet is going well";
+        } else if (system.dispo[planet] < -1000) {
+        	if (system.p_owner[planet] == eFACTION.Player){
+            	report_string += $"Rule of the planet is going well";
+        	} else {
+        		report_string += $"Your rule of the the planet is being undermined by hostile forces";
+        	}
         } else {
             report_string += $"DEBUG: planet owner check failed";
             //report_string+=$"There is no clear chain of command on the planet we suspect the existence of Xenos or Heretic Forces"; // TODO LOW GARRISON_XENO // Readd when this actually gets implented
@@ -169,52 +175,54 @@ function GarrisonForce(planet_operatives, turn_end=false, type="garrison") const
 
 	static garrison_disposition_change = function(star, planet, up_or_down = false){
 		dispo_change = 0;
-		if (array_contains(obj_controller.imperial_factions, star.p_owner[planet])){
-			planet_disposition = star.dispo[planet];
+		var _pdata = new PlanetData(planet, star);
+		if (array_contains(obj_controller.imperial_factions, _pdata.current_owner)){
+			var _planet_disposition = _pdata.player_disposition;
 
-			var disposition_modifier = planet_disposition<=50 ? (planet_disposition/10) :((planet_disposition-50)/10)%5;
+			var _main_faction_disp = _pdata.owner_faction_disposition();
 
-			disposition_modifier = planet_disposition/10
-			time_modifier = time_on_planet/2.5;
-			if (time_modifier>10) then time_modifier = 10;
+			//basivally it is easier to increase dispositioon the nearer you are to 50 but becomminig greatly hated or greaty liked is much harder
+			var _disposition_modifier = _planet_disposition<=50 ? (_planet_disposition/10) :((_planet_disposition-50)/10)%5;
+
+			_disposition_modifier /= 10;
+
+			var _time_modifier = max(time_on_planet/2.5, 10);
+
 			if (!garrison_leader){
 		    	find_leader();
 		    }
-			var final_modifier = 5 + total_garrison/10 - disposition_modifier + time_modifier;
+		    var _diplomatic_leader = false;
+            if (is_struct(garrison_leader)) {
+                _diplomatic_leader = garrison_leader.has_trait("honorable");
+            } else {
+                scr_alert("yellow", "DEBUG", $"DEBUG: Garrison _Leader on {star.name} {planet} couldn't be found!", 0, 0);
+                scr_event_log("yellow", $"DEBUG: Garrison _Leader on {star.name} {planet} couldn't be found!");
+                log_error($"DEBUG: Garrison _Leader on {star.name} {planet} couldn't be found!");
+            }
+            var _garrison_size_mod = total_garrison/10;
+
+			var final_modifier = 5 + _garrison_size_mod - _disposition_modifier + _time_modifier;
+
 			if (up_or_down){
-				dispo_change =  garrison_leader.charisma+final_modifier;
-				if (dispo_change<50 && (planet_disposition<obj_controller.disposition[star.p_owner[planet]] || garrison_leader.has_trait("honorable"))){
+				dispo_change =  garrison_leader.charisma + final_modifier;
+				if (dispo_change<50 && ((_planet_disposition < _main_faction_disp) || _diplomatic_leader)){
 					dispo_change = 50;
 				}
 			} else {
 				var charisma_test = global.character_tester.standard_test(garrison_leader, "charisma", final_modifier);
                 if (!charisma_test[0]) {
-                    var _diplomatic_leader = false;
-                    if (is_struct(garrison_leader)) {
-                        _diplomatic_leader = garrison_leader.has_trait("honorable");
-                    } else {
-                        scr_alert("yellow", "DEBUG", $"DEBUG: Garrison _Leader on {star.name} {planet} couldn't be found!", 0, 0);
-                        scr_event_log("yellow", $"DEBUG: Garrison _Leader on {star.name} {planet} couldn't be found!");
-                        log_error($"DEBUG: Garrison _Leader on {star.name} {planet} couldn't be found!");
-                    }
-
                     if (_diplomatic_leader) {
                         dispo_change = "none";
                     } else {
-                        if (planet_disposition > obj_controller.disposition[star.p_owner[planet]]) {
-                            dispo_change = charisma_test[1] / 10;
-                            if (planet_disposition + dispo_change <= -100) {
-                                dispo_change = -(planet_disposition + 100);
-                            }
+                        if (_planet_disposition > _main_faction_disp) {
+                            _pdata.add_disposition(dispo_change);
                         } else {
                             dispo_change = 0;
                         }
                     }
                 } else {
                     dispo_change = charisma_test[1] / 10;
-                    if (planet_disposition + dispo_change >= 100) {
-                        dispo_change = abs(planet_disposition - 100);
-                    }
+                    _pdata.add_disposition(dispo_change);
                 }
 			}
 		} else {

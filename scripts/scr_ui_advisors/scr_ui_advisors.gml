@@ -89,8 +89,10 @@ function scr_ui_advisors() {
 
             draw_set_font(fnt_40k_30b);
             draw_set_halign(fa_center);
-            if (menu = 12) then draw_text_transformed(xx + 1262, yy + 70, string_hash_to_newline("Penitorium"), 0.6, 0.6, 0);
-            if (menu = 12.1) then draw_text_transformed(xx + 1262, yy + 70, string_hash_to_newline("Scheduling Event"), 0.6, 0.6, 0);
+            if (menu == MENU.Reclusiam){
+                draw_text_transformed(xx + 1262, yy + 70, "Penitorium", 0.6, 0.6, 0);
+            }
+            if (menu = 12.1) then draw_text_transformed(xx + 1262, yy + 70, "Scheduling Event", 0.6, 0.6, 0);
 
             if (penitorium > 0) and(menu != 12.1) {
                 draw_set_font(fnt_40k_14);
@@ -625,7 +627,7 @@ function scr_ui_advisors() {
         draw_rectangle(xx + 213, yy + 25, xx + 622, yy + 78, 0);
 
         draw_set_halign(fa_center);
-        draw_set_color(38144);
+        draw_set_color(CM_GREEN_COLOR);
         draw_line(xx + 213, yy, xx + 213, yy + 640);
         draw_rectangle(xx + 213, yy + 25, xx + 622, yy + 78, 1);
 
@@ -634,7 +636,7 @@ function scr_ui_advisors() {
         draw_rectangle(xx + 217, yy + 199, xx + 617, yy + 367, 0);
         draw_rectangle(xx + 217, yy + 380, xx + 617, yy + 411, 0);
 
-        draw_set_color(38144);
+        draw_set_color(CM_GREEN_COLOR);
         draw_rectangle(xx + 217, yy + 82, xx + 617, yy + 188, 1);
         draw_rectangle(xx + 217, yy + 199, xx + 617, yy + 367, 1);
         draw_rectangle(xx + 217, yy + 380, xx + 617, yy + 411, 1);
@@ -663,7 +665,7 @@ function scr_ui_advisors() {
 
         draw_text_ext(xx + 222, yy + 216, string_hash_to_newline(string(tot_ki)), -1, 396);
         var unit = fetch_unit([0,1]);
-        if (unit.ship_location == -1) then draw_text(xx + 222, yy + 380, string_hash_to_newline("Current Location: " + string(obj_ini.loc[0, 1]) + " " + string(unit.planet_location) + "#Health: " + unit.hp() + "%"));
+        if (unit.ship_location == -1) then draw_text(xx + 222, yy + 380, string_hash_to_newline($"Current Location: {unit.location_string} {unit.planet_location}#Health: " + unit.hp() + "%"));
         if (unit.ship_location>-1) then draw_text(xx + 222, yy + 380, string_hash_to_newline($"Current Location: Onboard {obj_ini.ship[unit.ship_location]}#Health: {unit.hp()}%"));
         draw_text(xx + 222.5, yy + 380.5, string_hash_to_newline("Current Location:#Health:"));
 

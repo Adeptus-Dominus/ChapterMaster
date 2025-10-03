@@ -399,7 +399,7 @@ function player_retreat_from_fleet_combat(){
         }
     }
     
-    type=98;
+    type=POPUP_TYPE.BATTLE_OPTIONS;
     title="Fleet Retreating";
     cooldown=15;
     obj_controller.menu=0;
@@ -502,7 +502,7 @@ function set_fleet_location(location){
 		for (i=0;i<array_length(obj_ini.name[co]);i++){
 			unit = fetch_unit([co,i]);
 			if (array_contains(fleet_ships, unit.ship_location)){
-				obj_ini.loc[co][i]=location;
+				unit.location_string=location;
 			}
 		}
 	}

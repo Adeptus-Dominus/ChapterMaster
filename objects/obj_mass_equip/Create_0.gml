@@ -1,5 +1,5 @@
 
-tab=0;
+tab=-1;
 role=obj_controller.settings;
 refresh=true;
 engage=false;

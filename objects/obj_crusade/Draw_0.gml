@@ -1,6 +1,6 @@
 
 if (show=true){
-    draw_set_color(38144);
+    draw_set_color(CM_GREEN_COLOR);
     draw_set_alpha(0.5);
     draw_circle(x,y,radius,0);
     draw_set_alpha(0.5);
@@ -8,7 +8,7 @@ if (show=true){
     draw_circle(x,y,350,1);
     draw_circle(x,y,350.5,1);
     draw_set_alpha(1);
-    draw_set_color(38144);
+    draw_set_color(CM_GREEN_COLOR);
     
     
     if (obj_controller.zoomed=1){

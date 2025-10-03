@@ -9,7 +9,13 @@ function scr_star_ownership(argument0) {
 
 	repeat(planets){
 		run+=1;
-    	if (p_owner[run]=eFACTION.Player){
+		p_chaos[run] = clamp(p_chaos[run], 0, 6);
+		p_tau[run] = clamp(p_tau[run], 0, 6);
+		p_orks[run] = clamp(p_orks[run], 0, 6);
+		p_traitors[run] = clamp(p_traitors[run], 0, 6);
+		p_tyranids[run] = clamp(p_tyranids[run], 0, 6);
+
+    	if (p_owner[run] = eFACTION.Player){
     		if (dispo[run]<95 && !planet_feature_bool(p_feature[run], P_features.Monastery)){
     			p_owner[run]=eFACTION.Imperium;
     		}
@@ -36,8 +42,13 @@ function scr_star_ownership(argument0) {
 	    if (p_owner[run]=10) and (p_chaos[run]=0) and (p_traitors[run]=0) and (p_population[run]<=0){
 	    	p_owner[run]=p_first[run];
 	    	p_heresy[run]=0;
-	    	if (p_owner[run]=10) then p_owner[run]=2;}
-	    if (p_type[run]="Daemon") then p_owner[run]=10;
+	    	if (p_owner[run]=10){
+	    		p_owner[run]=2;
+	    	}
+	    }
+	    if (p_type[run]="Daemon"){
+	    	p_owner[run]=10;
+	    }
 
 	    var _nid_chosen = false;
     	if (planet_feature_bool(p_feature[run], P_features.Gene_Stealer_Cult)){
@@ -51,6 +62,8 @@ function scr_star_ownership(argument0) {
 	    	tyranids_owner+=1;
 	    	_nid_chosen = true;
 	    }
+
+
 	    if (p_type[run]!="Dead" && !_nid_chosen){
 		    if (p_owner[run]=eFACTION.Player) then player_owner+=1;
 		    if (p_owner[run]=eFACTION.Imperium)  then imperium_owner+=1;

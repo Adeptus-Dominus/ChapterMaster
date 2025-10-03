@@ -43,6 +43,15 @@ enum location_types {
 #macro ARR_psy_levels ["Rho", "Pi", "Omicron", "Xi", "Nu", "Mu", "Lambda", "Kappa", "Iota", "Theta", "Eta", "Zeta", "Epsilon", "Delta", "Gamma", "Beta", "Alpha", "Alpha Plus", "Beta", "Gamma Plus"]
 #macro ARR_negative_psy_levels ["Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega"]
 
+enum EquipmentSlot {
+    WEAPON_ONE,
+    WEAPON_TWO,    
+    ARMOUR,
+    GEAR,
+    MOBILITY,
+    ALL,
+}
+
 global.base_stats = {
     //tempory stats subject to change by anyone that wishes to try their luck
     "chapter_master": {
@@ -450,6 +459,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     ballistic_skill = 0;
     size = 0;
     planet_location = 0;
+    location_string = "";
     if (!instance_exists(obj_controller) && class != "blank") {
         //game start unit planet location
         planet_location = obj_ini.home_planet;
@@ -497,6 +507,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
     personal_livery = {};
     personal_culture = [];
+
+    manage_tags = [];
 
     static set_exp = function(new_val) {
         experience = new_val;
@@ -874,7 +886,31 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             alter_equipment(start_gear, true, true);
         }
     }
-
+    static equipment_has_tag = function(tag, area){
+        var _tags = [];
+        switch (area){
+            case "wep1":
+                _tags = get_weapon_one_data("tags");
+                break;
+            case "wep2":
+                _tags = get_weapon_two_data("tags");
+                break;
+            case "mobi":
+                _tags = get_mobility_data("tags");
+                break;
+            case "armour":
+                _tags = get_armour_data("tags");
+                break;
+            case "gear":
+                _tags = get_gear_data("tags");
+            break;
+        }
+        if (!is_array(_tags) || array_length(_tags) == 0){
+            return false;
+        } else {
+            return array_contains(_tags, tag);
+        }
+    }
     static equipment_maintenance_burden = function() {
         var burden = 0.0;
         burden += get_armour_data("maintenance");
@@ -885,6 +921,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         if (has_trait("tinkerer")) {
             burden *= 0.33;
         }
+        burden /= 1 / (technology/35);
         return burden;
     };
 
@@ -1917,21 +1954,25 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             //if marine is on planet
             location_id = location_type; //planet_number marine is on
             location_type = location_types.planet; //state marine is on planet
-            if (obj_ini.loc[company][marine_number] == "home") {
-                obj_ini.loc[company][marine_number] = obj_ini.home_name;
+            if (location_string == "home") {
+                location_string = obj_ini.home_name;
             }
-            location_name = obj_ini.loc[company][marine_number]; //system marine is in
+            location_name = location_string; //system marine is in
         } else {
             location_type = location_types.ship; //marine is on ship
             location_id = ship_location > -1 ? ship_location : 0; //ship array position
             if (location_id < array_length(obj_ini.ship_location)) {
                 location_name = obj_ini.ship_location[location_id]; //location of ship
             } else {
-                location_name = location_name == obj_ini.loc[company][marine_number];
+                location_name = location_string;
             }
         }
         return [location_type, location_id, location_name];
     };
+
+    static controllable = function(){
+        return !location_out_of_player_control(location_string);
+    }
 
     //quick way of getting name and role combined in string
     static name_role = function() {
@@ -2014,9 +2055,12 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     static unload = function(planet_number, system) {
         var current_location = marine_location();
         set_last_ship();
+        if (!controllable()){
+            return;
+        }
         if (current_location[0] == location_types.ship) {
-            if (!array_contains(["Warp", "Terra", "Mechanicus Vessel", "Lost"], current_location[2]) && current_location[2] == system.name) {
-                obj_ini.loc[company][marine_number] = obj_ini.ship_location[current_location[1]];
+            if (current_location[2] != "Warp" && current_location[2] == system.name) {
+                location_string = obj_ini.ship_location[current_location[1]];
                 planet_location = planet_number;
                 ship_location = -1;
                 get_unit_size();
@@ -2025,7 +2069,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             }
         } else {
             ship_location = -1;
-            obj_ini.loc[company][marine_number] = system.name;
+            location_string = system.name;
             planet_location = planet_number;
             system.p_player[planet_number] += size;
         }
@@ -2046,7 +2090,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             for (var i = 1; i <= homestar.planets; i++) {
                 if (homestar.p_owner[i] == eFACTION.Player || (obj_controller.faction_status[eFACTION.Imperium] != "War" && array_contains(obj_controller.imperial_factions, homestar.p_owner[i]))) {
                     planet_location = i;
-                    obj_ini.loc[company][marine_number] = obj_ini.home_name;
+                    location_string = obj_ini.home_name;
                     spawn_location_chosen = true;
                 }
             }
@@ -2070,7 +2114,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     static is_at_location = function(location = "", planet = 0, ship = -1) {
         var is_at_loc = false;
         if (planet > 0) {
-            if (obj_ini.loc[company][marine_number] == location && planet_location == planet) {
+            if (location_string == location && planet_location == planet) {
                 is_at_loc = true;
             }
         } else if (ship > -1) {
@@ -2082,7 +2126,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 if (obj_ini.ship_location[ship_location] == location) {
                     is_at_loc = true;
                 }
-            } else if (obj_ini.loc[company][marine_number] == location) {
+            } else if (location_string == location) {
                 is_at_loc = true;
             }
         }
@@ -2319,6 +2363,82 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         for (var i = 0; i < array_length(artifact_list); i++) {
             arti = obj_ini.artifact_struct[artifact_list[i]];
             arti.bearer = [end_company, end_slot];
+        }
+    };
+
+    static is_dreadnought = function(){
+        var _arm_data = get_armour_data();
+        if (is_struct(_arm_data)){
+            if (_arm_data.has_tag("dreadnought")){
+                return true
+            }
+        }
+        return false;
+    }
+
+    /// @param {Enum.EquipmentSlot} _slot
+    static add_equipment_repairs = function(_slot = EquipmentSlot.ALL) {
+        var _slots = array_create(0);
+
+        switch (_slot) {
+            case EquipmentSlot.ARMOUR:
+                _slots = [EquipmentSlot.ARMOUR];
+                break;
+            case EquipmentSlot.WEAPON_ONE:
+                _slots = [EquipmentSlot.WEAPON_ONE];
+                break;
+            case EquipmentSlot.WEAPON_TWO:
+                _slots = [EquipmentSlot.WEAPON_TWO];
+                break;
+            case EquipmentSlot.GEAR:
+                _slots = [EquipmentSlot.GEAR];
+                break;
+            case EquipmentSlot.MOBILITY:
+                _slots = [EquipmentSlot.MOBILITY];
+                break;
+            case EquipmentSlot.ALL:
+                _slots = [EquipmentSlot.ARMOUR, EquipmentSlot.WEAPON_ONE, EquipmentSlot.WEAPON_TWO, EquipmentSlot.GEAR, EquipmentSlot.MOBILITY];
+                break;
+        }
+
+        for (var i = 0; i < array_length(_slots); i++) {
+            var _cur_slot = _slots[i];
+            switch (_cur_slot) {
+                case EquipmentSlot.ARMOUR:
+                    obj_controller.specialist_point_handler.add_to_armoury_repair(armour());
+                    if (instance_exists(obj_ncombat)) {
+                        obj_ncombat.slime += get_armour_data("maintenance");
+                    }
+                    break;
+
+                case EquipmentSlot.WEAPON_ONE:
+                    obj_controller.specialist_point_handler.add_to_armoury_repair(weapon_one());
+                    if (instance_exists(obj_ncombat)) {
+                        obj_ncombat.slime += get_weapon_one_data("maintenance");
+                    }
+                    break;
+
+                case EquipmentSlot.WEAPON_TWO:
+                    obj_controller.specialist_point_handler.add_to_armoury_repair(weapon_two());
+                    if (instance_exists(obj_ncombat)) {
+                        obj_ncombat.slime += get_weapon_two_data("maintenance");
+                    }
+                    break;
+
+                case EquipmentSlot.GEAR:
+                    obj_controller.specialist_point_handler.add_to_armoury_repair(gear());
+                    if (instance_exists(obj_ncombat)) {
+                        obj_ncombat.slime += get_gear_data("maintenance");
+                    }
+                    break;
+
+                case EquipmentSlot.MOBILITY:
+                    obj_controller.specialist_point_handler.add_to_armoury_repair(mobility_item());
+                    if (instance_exists(obj_ncombat)) {
+                        obj_ncombat.slime += get_mobility_data("maintenance");
+                    }
+                    break;
+            }
         }
     };
 }

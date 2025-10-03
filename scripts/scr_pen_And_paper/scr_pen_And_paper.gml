@@ -75,6 +75,19 @@ function PenAndPaperSim() constructor{
                 if (unit.has_trait("harsh_born")){
                 	total_mod+=3;
                 }                			
+			} else if (tag=="ambush"){
+				if (scr_has_adv("Ambushers")){
+					total_mod+=10;
+				}
+                if (unit.has_trait("harsh_born")){
+                	total_mod+=3;
+                }
+                if (unit.has_trait("cunning")){
+                	total_mod+=6;
+                }
+                if (unit.has_trait("brute")){
+                	total_mod-=6;
+                }  
 			}
 		}
 		return total_mod;
@@ -87,10 +100,10 @@ function PenAndPaperSim() constructor{
 		var _reroll = test_rerollable(unit, stat);
 		difficulty_mod+=evaluate_tags(unit, tags);
 		var random_roll = irandom_range(1,100);
-		if (_reroll && random_roll>=unit[$ stat]+difficulty_mod){
+		if (_reroll && random_roll >= unit[$ stat]+difficulty_mod){
 			random_roll = irandom_range(1,100);
 		}
-		if (random_roll<unit[$ stat]+difficulty_mod){
+		if (random_roll < unit[$ stat]+difficulty_mod){
 			passed = true;
 			margin = unit[$ stat]+difficulty_mod - random_roll;
 		} else{ 
@@ -205,5 +218,16 @@ function roll_dice_unit(dices = 1, faces = 6, player_benefit_at, unit) {
 	}
 
 	return _total_roll;
+}
+
+
+function stat_average(units, stat){
+	var _tally = 0;
+	for (var i=0;i<array_length(units);i++){
+		_tally += units[i][$ stat];
+	}
+
+
+	return (_tally / array_length(units));
 }
 

@@ -278,12 +278,9 @@ function Roster() constructor{
                          }
                     } else {
                         if (!array_contains(_squads, "dreadnought")){
-                            var _armour_data = _unit.get_armour_data();
-                            if (is_struct(_armour_data)){
-                                if (_armour_data.has_tag("dreadnought")){
-                                    array_push(_squads, "dreadnought");
-                                    new_squad_button("Dreadnought", "dreadnought");
-                                }
+                            if (_unit.is_dreadnought()){
+                                array_push(_squads, "dreadnought");
+                                new_squad_button("Dreadnought", "dreadnought");
                             }
                         }                      
                     }
@@ -377,7 +374,7 @@ function Roster() constructor{
                     }
                 }
                 if (_add){
-                    add_unit_to_battle(_unit, meeting);
+                    add_unit_to_battle(_unit, meeting, true);
                 }
             } else {
                 var _vehic = selected_units[i];

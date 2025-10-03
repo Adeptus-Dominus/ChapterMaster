@@ -1,4 +1,4 @@
-var _ui_green = #009500;
+var _ui_green = CM_GREEN_COLOR
 var _text_color = #080000;
 var _surface_w = surface_get_width(application_surface);
 var _surface_h = surface_get_height(application_surface);
