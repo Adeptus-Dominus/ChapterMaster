@@ -675,6 +675,18 @@ if (shop = "equipment") {
         item_stocked[i] = scr_item_count(item[i]);
         item_cost[i] = 0;
         forge_cost[i] = 0;
+		  i += 1;
+		item[i] = "Heavy Conversion Beamer";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+		  i += 1;
+		item[i] = "Kheres Assault Cannon";
+        item_stocked[i] = scr_item_count(item[i]);
+        item_cost[i] = 0;
+        forge_cost[i] = 0;
+		  i += 1;
+		
 		
     var mc = 0;
     repeat(i) {
