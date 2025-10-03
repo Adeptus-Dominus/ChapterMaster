@@ -1459,7 +1459,7 @@ global.modular_drawing_items = [
         body_types : [2], 
     },
     {
-        position : "forhead",
+        position : "forehead",
         armours : ["Tartaros"],
         sprite : spr_tartaros_forehead_variants,
         shadows : spr_tartaros_forehead_shadows,
