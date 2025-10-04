@@ -37,6 +37,7 @@ function scr_manage_task_selector(){
 		}
 	}
 }
+
 function task_selector_squad_manage(){
     for (var i=0; i<array_length(company_data.selected_squads);i++){
         var _squad = obj_ini.squads[company_data.selected_squads[i]];
@@ -81,8 +82,7 @@ function task_selector_man_manage(){
         			}
         			managing = _end_company;
         			update_general_manage_view();
-        			exit;
-    				break;
+    				exit;
 				case "champion_promote":
         			_unit.update_role(obj_ini.role[100][eROLE.Champion]);
         			_unit.squad="none";
@@ -93,25 +93,21 @@ function task_selector_man_manage(){
 
         			managing = selection_data.target_company;
         			update_general_manage_view();
-        			exit;
-    				break;
+    				exit;
 				case "ancient_promote":
         			_unit.update_role(obj_ini.role[100][eROLE.Ancient]);
         			_unit.squad="none";
 
-
 					with (obj_ini){
         				scr_company_order(_unit.company);
         			}
-
         			managing = selection_data.target_company;
         			update_general_manage_view();
-        			exit;
-    				break;
+    				exit;
 				case "chaplain_promote":
         			_unit.squad="none";
-        			var _start_company = _unit.company;
-        			var _end_company =  selection_data.target_company;
+        			_start_company = _unit.company;
+        			_end_company =  selection_data.target_company;
         			var endslot = find_company_open_slot(_end_company);
         			scr_move_unit_info(_start_company, _end_company, _unit.marine_number,endslot);
         			with (obj_ini){
@@ -120,13 +116,12 @@ function task_selector_man_manage(){
         			}
         			managing = _end_company;
         			update_general_manage_view();
-        			exit;
-    				break;
+    				exit;
 				case "apothecary_promote":
         			_unit.squad="none";
-        			var _start_company = _unit.company;
-        			var _end_company =  selection_data.target_company;
-        			var endslot = find_company_open_slot(_end_company);
+        			_start_company = _unit.company;
+        			_end_company =  selection_data.target_company;
+        			endslot = find_company_open_slot(_end_company);
         			scr_move_unit_info(_start_company, _end_company, _unit.marine_number,endslot);
         			with (obj_ini){
         				scr_company_order(_start_company);
@@ -134,13 +129,12 @@ function task_selector_man_manage(){
         			}
         			managing = _end_company;
         			update_general_manage_view();
-        			exit;
-    				break;
+    				exit;
 				case "tech_marine_promote":
         			_unit.squad="none";
-        			var _start_company = _unit.company;
-        			var _end_company =  selection_data.target_company;
-        			var endslot = find_company_open_slot(_end_company);
+        			_start_company = _unit.company;
+        			_end_company =  selection_data.target_company;
+        			endslot = find_company_open_slot(_end_company);
         			scr_move_unit_info(_start_company, _end_company, _unit.marine_number,endslot);
         			with (obj_ini){
         				scr_company_order(_start_company);
@@ -148,13 +142,12 @@ function task_selector_man_manage(){
         			}
         			managing = _end_company;
         			update_general_manage_view();
-        			exit;
-    				break;
+    				exit;
 				case "librarian_promote":
         			_unit.squad="none";
-        			var _start_company = _unit.company;
-        			var _end_company =  selection_data.target_company;
-        			var endslot = find_company_open_slot(_end_company);
+        			_start_company = _unit.company;
+        			_end_company =  selection_data.target_company;
+        			endslot = find_company_open_slot(_end_company);
         			scr_move_unit_info(_start_company, _end_company, _unit.marine_number,endslot);
         			with (obj_ini){
         				scr_company_order(_start_company);
@@ -162,8 +155,7 @@ function task_selector_man_manage(){
         			}
         			managing = _end_company;
         			update_general_manage_view();
-        			exit;
-    				break;
+    				exit;
     			case "hunt_beast":
     				_unit.job = {
     					type:selection_data.purpose_code, 
@@ -182,17 +174,15 @@ function task_selector_man_manage(){
     				init_train_forces_mission(selection_data.planet, selection_data.system,selection_data.array_slot, _unit); 
     				obj_controller.close_popups = false;
 	                exit_adhoc_manage();
-	                exit;
-	               	break;
+	               	exit;
 	            case "artifact_equip":
 	               	scr_toggle_lib();
 	               	var _arti = fetch_artifact(selection_data.artifact);
 	               	_arti.equip_on_unit(_unit, selection_data.slot);
 					scr_toggle_lib();
-					obj_controller.menu_artifact = selection_data.artifact;	               	
-	               	exit;
+					obj_controller.menu_artifact = selection_data.artifact;
 	               	break;
-    		}		                		
+    		}
     	} else {
     		switch(selection_data.purpose_code){
     			case "forge_assignment":

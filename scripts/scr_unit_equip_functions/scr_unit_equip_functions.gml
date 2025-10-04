@@ -179,7 +179,7 @@ function scr_update_unit_weapon_one(new_weapon, from_armoury = true, to_armoury 
 			if (!is_string(weapon_one(true))) {
 				obj_ini.artifact_equipped[weapon_one(true)] = false;
 			} else {
-				scr_add_item(change_wep, 1, weapon_one_quality, true);
+				scr_add_item(change_wep, 1, weapon_one_quality);
 			}
 		} else if (!is_string(weapon_one(true))) {
 			delete_artifact(weapon_one(true));
@@ -232,7 +232,7 @@ function scr_update_unit_weapon_two(new_weapon, from_armoury = true, to_armoury 
 			if (!is_string(weapon_two(true))) {
 				obj_ini.artifact_equipped[weapon_two(true)] = false;
 			} else {
-				scr_add_item(change_wep, 1, weapon_two_quality, true);
+				scr_add_item(change_wep, 1, weapon_two_quality);
 			}
 		} else if (!is_string(weapon_two(true))) {
 			delete_artifact(weapon_two(true));
@@ -293,7 +293,7 @@ function scr_update_unit_gear(new_gear, from_armoury = true, to_armoury = true, 
 			if (!is_string(gear(true))) {
 				obj_ini.artifact_equipped[gear(true)] = false;
 			} else {
-				scr_add_item(change_gear, 1, gear_quality, true);
+				scr_add_item(change_gear, 1, gear_quality);
 			}
 		} else if (!is_string(gear(true))) {
 			delete_artifact(gear(true));
@@ -368,7 +368,7 @@ function scr_update_unit_mobility_item(new_mobility_item, from_armoury = true, t
 			if (!is_string(mobility_item(true))) {
 				obj_ini.artifact_equipped[mobility_item(true)] = false;
 			} else {
-				scr_add_item(_old_mobility_item, 1, mobility_item_quality, true);
+				scr_add_item(_old_mobility_item, 1, mobility_item_quality);
 			}
 		} else if (!is_string(mobility_item(true))) {
 			delete_artifact(mobility_item(true));

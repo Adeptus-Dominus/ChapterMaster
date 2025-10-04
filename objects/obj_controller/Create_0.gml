@@ -1161,7 +1161,7 @@ serialize = function(){
 
     }
     var excluded_from_save = ["temp", "serialize", "deserialize", "build_chaos_gods", "company_data","menu_buttons",
-            "location_viewer", "production_research_pathways", "specialist_point_handler", "spec_train_data", "tooltips", "last_unit", "unit_manage_constants", "unit_manage_image"],
+            "location_viewer", "production_research_pathways", "specialist_point_handler", "spec_train_data", "tooltips", "last_unit", "unit_manage_constants", "unit_manage_image"];
     var excluded_from_save_start = ["restart_"];
 
     copy_serializable_fields(object_controller, save_data, excluded_from_save, excluded_from_save_start);
@@ -1319,7 +1319,7 @@ squads = false;
 system_fleet_strength = 0;
 // **sets up starting forge_points
 specialist_point_handler = new SpecialistPointHandler();
-specialist_point_handler.calculate_research_points();
+specialist_point_handler.calculate_research_points(true);
 
 
 //** sets up marine_by_location views

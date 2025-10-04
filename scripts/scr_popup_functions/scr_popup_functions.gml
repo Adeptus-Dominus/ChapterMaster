@@ -13,10 +13,188 @@ enum POPUP_TYPE {
 
 function reset_popup_options(){
 	with (obj_popup){
-		option1="";
-		option2="";
-		option3="";
-		option4="";
+		options = [];
+	}
+}
+
+function popup_defualt_click_action(){
+    if (hide){
+        exit;
+    }
+    if (instances_exist_any([obj_fleet])){
+        exit;
+    }
+    if (!instance_exists(obj_controller)){
+        exit;
+    }
+    if (obj_controller.scrollbar_engaged){
+        exit;
+    }
+
+    if (battle_special>0){
+        alarm[0]=1;
+        cooldown=10;
+        exit;
+    }
+
+    if (type=POPUP_TYPE.BATTLE_OPTIONS){
+        obj_controller.cooldown=10;
+        if (instance_exists(obj_turn_end)){
+            obj_turn_end.current_battle+=1;
+            obj_turn_end.alarm[0]=1;
+        }
+        obj_controller.force_scroll=0;
+        instance_destroy();
+        exit;
+    }
+
+    if (!array_length(options) && type<5){
+        popup_default_close();
+    }
+}
+
+function popup_default_close(){
+    obj_controller.cooldown=10;
+    if (instance_exists(obj_turn_end) && obj_controller.complex_event==false){
+        if (number!=0){
+            obj_turn_end.alarm[1]=4;
+        }
+    }
+    instance_destroy();
+    exit;
+}
+
+function popup_window_draw(){
+	if ((size == 0) || (size == 2)) {
+		sprite_index = spr_popup_medium;
+		image_alpha = 0;
+		width = sprite_width - 50;
+		draw_sprite_ext(spr_popup_medium, type, ((1600 - sprite_width) / 2), ((900 - sprite_height) / 2), 1, y_scale, 0, c_white, 1);
+		if (image != "") {
+			image_wid = 100;
+			image_hei = 100;
+		}
+	} else if (size == 1) {
+		sprite_index = spr_popup_small;
+		image_alpha = 0;
+		width = sprite_width - 10;
+		draw_sprite_ext(spr_popup_small, type, ((1600 - sprite_width) / 2), ((900 - sprite_height) / 2), 1, y_scale, 0, c_white, 1);
+		if (image != "") {
+			image_wid = 150;
+			image_hei = 150;
+		}
+	} else if (size == 3) {
+		var draw_y_scale = y_scale;
+		sprite_index = spr_popup_large;
+		image_alpha = 0;
+		width = sprite_width - 50;
+		if (image == "debug") {
+			y_scale_mod = 1.5;
+			draw_y_scale = y_scale * y_scale_mod;
+		}
+		draw_sprite_ext(spr_popup_large, type, ((1600 - sprite_width) / 2), ((900 - sprite_height * y_scale_mod) / 2), 1, draw_y_scale, 0, c_white, 1);
+		if (image != "") {
+			image_wid = 200;
+			image_hei = 200;
+		}
+	}
+}
+
+function draw_popup_options(){
+	press = -1;
+	if (array_length(options)){
+
+
+		var top = y1 + 0.5 + (sprite_height * 0.6);
+		if (str_h != 0) {
+			top = y1 + str_h + 20;
+		}
+		if (image != "") {
+			top = max(top, y1 + image_bot);
+		}
+
+		draw_text_ext(x1 + 25.5, top, "  Choices:", -1, width);
+		draw_text_ext(x1 + 25, top + 0.5, "  Choices:", -1, width);
+
+		var sz = 0, sz2 = 0, oy = y1, t8 = 0;
+		if (str_h != 0) {
+			y1 += str_h + 20;
+			y1 -= sprite_height * 0.6;
+		}
+
+		y1 = top;
+		entered_option = -1;
+		for (var i=0;i<array_length(options);i++){
+			var _opt = options[i];
+			var _opt_string = "";
+			if (!is_struct(_opt)){
+				_opt_string = _opt;
+			} else{
+				_opt_string = _opt.str1;
+			}
+
+			var _opt_string = $"{i+1}. {_opt_string}";
+			var _string_x = x1 + 25.5;
+			var _string_y = y1 + 20 + sz;
+
+			draw_text_ext(_string_x, _string_y, _opt_string, -1, width);
+			var _string_height = string_height_ext(_opt_string, -1, width) + 5;
+			var _string_width = string_width_ext(_opt_string, -1, width);
+
+			if (scr_hit(_string_x, _string_y, _string_x + _string_width + 5, _string_y + _string_height)){
+				draw_sprite(spr_popup_select, 0, x1 + 8.5, y1 + 21 + sz);
+				entered_option = i;
+				if (scr_click_left()) {
+					press = i;
+					show_debug_message(_opt);
+					if (is_struct(_opt) && struct_exists(_opt, "method")){
+			            if (is_callable(_opt.method)){
+			            	show_debug_message(_opt);
+			            	script_execute(_opt.method);
+			            	press = -1;
+			            }
+					}
+				}
+			}
+
+			sz += _string_height;
+		}
+
+		t8 = (y1 + 20 + sz) + 5;
+
+		if (image == "new_forge_master") {
+			var new_master_image = false;
+			if (pathway == "selection_options") {
+				if (entered_option == 0) {
+					new_master_image = techs[charisma_pick].draw_unit_image();
+					techs[charisma_pick].stat_display();
+				} else if (entered_option == 1) {
+					new_master_image = techs[talent_pick].draw_unit_image();
+					techs[talent_pick].stat_display();
+				} else if (entered_option == 2) {
+					new_master_image = techs[experience_pick].draw_unit_image();
+					techs[experience_pick].stat_display();
+				}
+				if (is_struct(new_master_image)) {
+					new_master_image.draw( 1208, 210, true);
+				}
+			}
+		}
+		if (t8 < (oy + sprite_height)) {
+			y_scale = t8 / (oy + sprite_height);
+		}
+		if (t8 > (oy + sprite_height)) {
+			y_scale = t8 / (oy + sprite_height);
+		}
+	} else {
+		if (scr_click_left()){
+			popup_defualt_click_action();
+		}
+	}
+	if (press > -1 && press < array_length(options)){
+		if (!is_struct(options[press]) && options[press] == ""){
+			press = -1;
+		}
 	}
 }
 
@@ -378,3 +556,52 @@ function default_popup_image_index(){
 
 	return _img;
 }
+
+
+function allow_governor_successor(){
+	var randa = roll_dice_chapter(1, 100, "high");
+	var randa2 = roll_dice(1, 100);
+	p_data.set_player_disposition(obj_controller.disposition[2] +  choose(-1, -2, -3, -4, 0, 1, 2, 3, 4));
+
+	var _text_last = "";
+	if (randa <= 3) {
+		var _newdisp = min(p_data.player_disposition, choose(1, 2, 3, 4, 5, 6) * 3);
+		p_data.set_player_disposition(_newdisp);
+		_text_last = "Regrettably he has a dim view of your chapter";
+	}
+	if (randa >= 95) {
+		_newdisp = max(p_data.player_disposition, 60 + choose(1, 2, 3, 4, 5, 6) * 3);
+		p_data.set_player_disposition(_newdisp);
+		_text_last = "Fortunately you already have good relations with the new governor"; 
+	}
+
+	scr_event_log("", "Planetary Governor of {p_data.name()} assassinated.  The next in line takes over.", new_target.name);
+	text = $"The next in line for rule of {p_data.name()} has taken over their rightful position of Planetary Governor. {_text_last}";
+	reset_popup_options();
+	with (obj_ground_mission) {
+		instance_destroy();
+	}
+	exit;
+}
+
+
+function install_sympathetic_successor(){
+	text = p_data.assasinate_governor(1, estimate);
+
+	reset_popup_options();
+	with (obj_ground_mission) {
+		instance_destroy();
+	}
+	exit;
+}
+
+function install_chapter_surf(){
+	text = p_data.assasinate_governor(2, estimate);
+	reset_popup_options();
+	with (obj_ground_mission) {
+		instance_destroy();
+	}
+	exit;
+}
+
+

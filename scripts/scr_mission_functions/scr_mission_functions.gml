@@ -11,6 +11,9 @@ function location_out_of_player_control(unit_loc){
 	static _locs = ["Terra", "Mechanicus Vessel", "Lost", "Mars"];
 	return (array_contains(_locs,unit_loc ));
 }
+
+#macro planet_problem_keys ["meeting_trap","meeting","succession","mech_raider","mech_bionics","mech_mars","mech_tomb1","fallen","great_crusade","harlequins","fund_elder","provide_garrison","hunt_beast","protect_raiders","join_communion","join_parade","recover_artifacts","train_forces","spyrer","inquisitor","recon","cleanse","purge","tyranid_org","artifact_loan","necron","ethereal","demon_world"]
+
 function mission_name_key(mission){
 	var mission_key = {
 		"meeting_trap" : "Chaos Lord Meeting",
@@ -139,7 +142,7 @@ function init_garrison_mission(planet, star, mission_slot){
 	    gar_pop.title=$"Requested Garrison Provided to {numeral_name}";
 	    gar_pop.text=$"The governor of {numeral_name} Thanks you for considering his request for a garrison, you agree that the garrison will remain for at least {garrison_length} months.";
 	    //pip.image="event_march"
-	    gar_pop.option1="Commence Garrison";
+	    gar_pop.add_option("Commence Garrison");
         gar_pop.image="";
         gar_pop.cooldown=8;
         obj_controller.cooldown=8;	    
@@ -164,7 +167,7 @@ function init_beast_hunt_mission(planet, star, mission_slot){
 	    gar_pop.title=$"Marines assigned to hunt beasts around {numeral_name}";
 	    gar_pop.text=$"The govornor of {numeral_name} Thanks you for the participation of your elite warriors in your execution of such a menial task.";
 	    //pip.image="event_march"
-	    gar_pop.option1="Happy Hunting";
+	    gar_pop.add_option("Happy Hunting");
         gar_pop.image="";
         gar_pop.cooldown=8;
         obj_controller.cooldown=20;	    
@@ -218,8 +221,8 @@ function init_protect_raider_mission(squad){
 
 		    gar_pop.text += "\nThe total loss of a squad in what was meant to be a routine operation is bad for moral and your chapters reputation you must now decide how to proceed";
 
-		    gar_pop.option1="Suppress the Information";
-		    gar_pop.option2="Hold a Memorial";			
+		    gar_pop.add_option("Suppress the Information");
+		    gar_pop.add_option("Hold a Memorial");			
 		} else {
 			scr_toggle_manage();
 			var gar_pop = instance_create(0, 0, obj_popup);		
@@ -233,7 +236,7 @@ function init_protect_raider_mission(squad){
 		    _pdata.add_disposition(-10);
 		    gar_pop.text += "\nThe governor is unhappy and it has done little to improve your reputation with the planets populace but otherwise very little harm has been done. It is likely the raiders will choose better targets without the possible threat of space marine presence for the foreseeable future\nGovernor Disposition : -10";
 
-		    gar_pop.option1="continue";		
+		    gar_pop.add_option("continue");		
 		}
 	} else {
 
@@ -275,7 +278,7 @@ function init_train_forces_mission(planet, star, mission_slot, marine){
 	    }
 
 	    //pip.image="event_march"
-	    gar_pop.option1=$"Good luck {marine.name()}";
+	    gar_pop.add_option($"Good luck {marine.name()}");
         gar_pop.image="";
         gar_pop.cooldown=500;
         obj_controller.cooldown=500;	    
@@ -483,7 +486,7 @@ function complete_beast_hunt_mission(targ_planet, problem_index){
         if (_success){
         	_mission_string = $"The mission was a success and a great number of beasts rounded up and slain, your marines were able to gain great skills and the prestige of your chapter has increased greatly across the planets populace."
         	if (_deaths){
-        		$"Unfortunatly {_deaths} of your marines died."
+        		_mission_string += $"Unfortunatly {_deaths} of your marines died."
         	}
         	_mission_string += $"\n{_unit_report_string}";
         } else {
@@ -714,7 +717,11 @@ function increment_mission_completion(mission_data){
 		mission_data.completion = 0;
 	}
 	mission_data.completion++;
-	return (mission_data.completion/mission_data.required_months)*100;
+    if (!struct_exists(mission_data, "required_months") || mission_data.required_months <= 0) {
+        log_error("Invalid required_months in mission_data");
+        return 0;
+    }
+	return (mission_data.completion/mission_data.required_months) * 100;
 }
 //search problem data for a given and key and iff applicable value on that key
 //TODO increase filtering and search options
@@ -724,7 +731,7 @@ function problem_has_key_and_value(planet, problem,key,value="",star="none"){
 		var problem_data = p_problem_other_data[planet][problem];
 		if (struct_exists(problem_data, key)){
 			if (value==""){
-				has_data=true
+				has_data=true;
 			} else if( problem_data[$ key] == value){
 				has_data=true;
 			}
@@ -735,9 +742,4 @@ function problem_has_key_and_value(planet, problem,key,value="",star="none"){
 		}
 	}
 	return 	has_data;
-}
-
-
-function mission_rewards(){
-
 }

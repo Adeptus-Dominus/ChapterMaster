@@ -104,7 +104,7 @@ function ReactiveString(text, x1 = 0, y1 = 0, data = false) constructor {
         draw_set_color(colour);
 
         if (max_width > -1) {
-            draw_text_ext_outline(x1, y1, text, -1, max_width, 0, c_black, colour);
+            draw_text_ext_outline(x1, y1, text, -1, max_width, c_black, colour);
         } else {
             draw_text_outline(x1, y1, text, c_black, colour);
         }
@@ -336,13 +336,14 @@ function UnitButtonObject(data = false) constructor {
 
     static draw = function(allow_click = true) {
         add_draw_return_values();
+		var _button_click_area;
         if (style == "standard") {
             var _temp_alpha = alpha;
             if (disabled) {
                 _temp_alpha = 0.5;
                 allow_click = false;
             }
-            var _button_click_area = draw_unit_buttons(w > 0 ? [x1, y1, x2, y2] : [x1, y1], label, [text_scale, text_scale], active ? color : inactive_col,, font, _temp_alpha);
+            _button_click_area = draw_unit_buttons(w > 0 ? [x1, y1, x2, y2] : [x1, y1], label, [text_scale, text_scale], active ? color : inactive_col,, font, _temp_alpha);
         } else if (style == "pixel") {
             var _widths = [sprite_get_width(spr_pixel_button_left), sprite_get_width(spr_pixel_button_middle), sprite_get_width(spr_pixel_button_right)];
 
@@ -365,7 +366,7 @@ function UnitButtonObject(data = false) constructor {
 
             x2 = x1 + array_sum(_widths);
             y2 = y1 + h;
-            var _button_click_area = [x1, y1, x2, y2];
+            _button_click_area = [x1, y1, x2, y2];
         }
 
         if (scr_hit(x1, y1, x2, y2) && tooltip != "") {
@@ -601,7 +602,7 @@ function drop_down(selection, draw_x, draw_y, options, open_marker) {
                     }
                     roll_down_offset += string_height(options[col]) + 4;
                 }
-                if (!scr_hit(draw_x, draw_y, draw_x + 5 + string_width(selection), draw_y + roll_down_offset,)) {
+                if (!scr_hit(draw_x, draw_y, draw_x + 5 + string_width(selection), draw_y + roll_down_offset)) {
                     open_marker = false;
                     if (current_target) {
                         current_target = false;
@@ -1134,4 +1135,80 @@ function list_traveler(list, cur_val, move_up_coords, move_down_coords) {
         _new_val = list[0];
     }
     return _new_val;
+}
+
+
+function MainMenuButton(sprite=spr_ui_but_1, sprite_hover=spr_ui_hov_1, xx=0, yy=0, Hot_key=-1, Click_function=false) constructor{
+    mouse_enter=0;
+    base_sprite = sprite;
+    hover_sprite = sprite_hover;
+    ossilate = 24;
+    ossilate_down = true;
+    hover_alpha=0;
+    XX=xx;
+    YY=yy;
+    hot_key = Hot_key;
+    clicked=false;
+    click_function = Click_function;
+    static draw = function(xx=XX,yy=YY,text="", x_scale=1, y_scale=1, width=108, height=42){
+        draw_set_valign(fa_top);
+        draw_set_halign(fa_left);
+        add_draw_return_values();
+        clicked=false;
+        height *=y_scale
+        width *=x_scale;
+        if (scr_hit(xx, yy, xx+width, yy+height)){
+            if (ossilate>0){
+                ossilate-=1;
+            }
+            if (ossilate<0){
+                ossilate=0;
+            }
+            if (hover_alpha<1){
+                hover_alpha+=0.42
+            }
+            draw_set_blend_mode(bm_add);
+            draw_set_alpha(hover_alpha);
+            draw_sprite(hover_sprite,0,xx,yy);
+            draw_set_blend_mode(bm_normal);
+            ossilate_down = true;
+            clicked = device_mouse_check_button_pressed(0,mb_left);
+        } else {
+            if (ossilate_down){
+                if (ossilate<24)then ossilate+=0.2;
+                if (ossilate==24) then ossilate_down=false;
+            } else {
+                if (ossilate>8){
+                    ossilate-=0.2;
+                }
+                if (ossilate==8){
+                    ossilate_down=true;
+                }
+            }
+            if (hover_alpha>0){
+                hover_alpha-=0.04
+                draw_set_blend_mode(bm_add);
+                draw_set_alpha(hover_alpha);
+                draw_sprite(hover_sprite,0,xx,yy);
+                draw_set_blend_mode(bm_normal);
+            }
+        }
+        if (hot_key!=-1 && !clicked){
+            clicked = press_with_held(hot_key,vk_alt);
+            //show_debug_message($"{clicked}");
+        }
+        draw_set_alpha(1);
+        draw_sprite(base_sprite,floor(ossilate),xx,yy);
+        draw_set_color(c_white);
+        draw_set_halign(fa_center);
+        draw_set_font(fnt_cul_14);
+        draw_text_ext(xx+(width/2),yy+4, text, 18*y_scale, width-(15*x_scale));
+        if (clicked){
+            if (click_function){
+                click_function();
+            }
+        }
+        pop_draw_return_values();
+        return clicked;
+    }
 }
