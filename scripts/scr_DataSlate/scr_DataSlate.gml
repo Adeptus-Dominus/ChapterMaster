@@ -27,12 +27,7 @@ function DataSlate(data={}) constructor{
 
 
 	static entered = function(){
-		return (scr_hit(
-                    XX-4,
-                    YY,
-                    XX + width,
-                    YY + height,
-                ));
+		return (scr_hit(XX-4,YY,XX + width,YY + height));
 	}
 
 	static draw_with_dimensions = function(xx = -1,yy = -1, Width=-1 , Height=-1){
@@ -349,11 +344,15 @@ function ShutterButton() constructor{
 	right_rack = new RackAndPinion();
 	left_rack = new RackAndPinion("backward");
 	background = new DataSlate();
+
+	static hit = function(){
+		return scr_hit(XX, YY, XX+width, YY+height);
+	}
 	background.inside_method = function(){
 		var yy = YY;
 		var xx = XX;
 		var text_draw = xx+(width/2)-(string_width(text)*(3*scale)/2);
-		if (scr_hit(xx, yy, xx+width, yy+height)){
+		if (hit()){
 			draw_rectangle_color_simple(xx, yy, xx+width, yy+height, false, CM_GREEN_COLOR, 0.35)
 		}
 		draw_set_halign(fa_left);

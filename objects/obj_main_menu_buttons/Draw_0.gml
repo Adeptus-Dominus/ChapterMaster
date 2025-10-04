@@ -101,8 +101,8 @@ if (instance_exists(obj_main_menu)) and (!instance_exists(obj_saveload)) and (!i
                         //     pop=instance_create(0,0,obj_popup);
                         //     pop.size=1;pop.title="Tutorial";
                         //     pop.text="Would you like to play the tutorial?  It is strongly advisable for those new to Chapter Master.";
-                        //     pop.option1="Play the tutorial.";
-                        //     pop.option2="Skip the tutorial.";pop.option3="Skip and never ask again.";
+                        //     pop.add_option="Play the tutorial.";
+                        //     pop.add_option="Skip the tutorial.";pop.option3="Skip and never ask again.";
                         // }                    
                         break;
                     case 1:

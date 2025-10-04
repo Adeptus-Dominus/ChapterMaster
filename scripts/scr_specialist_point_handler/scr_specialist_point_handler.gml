@@ -395,7 +395,7 @@ function SpecialistPointHandler() constructor{
                     obj_controller.gene_seed+=_cur_slave.num;
                     // color / type / text /x/y
                     scr_alert("green","test-slaves",$"Test-Slave Incubators Batch {i} harvested for {_cur_slave.num} Gene-Seed.",0,0);
-                    scr_event_log("green",$"Test-Slave Incubators Batch {i} harvested for {_cur_slave.num} Gene-Seed.",0,0);
+                    scr_event_log("green",$"Test-Slave Incubators Batch {i} harvested for {_cur_slave.num} Gene-Seed.");
                 } else if (_cur_slave.num==0){
                     array_push(_stack_lost_incubators, i);
                 }
@@ -409,11 +409,11 @@ function SpecialistPointHandler() constructor{
 
             }
             scr_alert("","test-slaves",_lost_inc_string ,0,0);
-            scr_event_log("","test-slaves",_lost_inc_string ,0,0);
+            scr_event_log("","test-slaves",_lost_inc_string );
         }
         if(_lost_gene_slaves>0){
             scr_alert("","test-slaves",$"{_lost_gene_slaves} gene slaves lost due to geneseed instability their incubators have been returned to the armoury",0,0);
-            scr_event_log("",$"{_lost_gene_slaves} gene slaves lost due to geneseed instability their incubators have been returned to the armoury",0,0);
+            scr_event_log("",$"{_lost_gene_slaves} gene slaves lost due to geneseed instability their incubators have been returned to the armoury");
         }
     }    
     static scr_forge_item = function(item){

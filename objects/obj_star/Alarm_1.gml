@@ -179,13 +179,13 @@ if (owner == eFACTION.Ork){
     if (p_population[4]>0) then p_orks[4]=1;
     
     if (p_orks[1]>0){p_orks[1]=choose(1,2,3,3,4,5);
-    if (p_type[1]="Forge") or (p_type[1]="Hive") then p_orks[1]=choose(5);}
+    if (p_type[1]="Forge") or (p_type[1]="Hive") then p_orks[1]=choose(4,5);}
     if (p_orks[2]>0){p_orks[2]=choose(1,2,3,3,4,5);
-    if (p_type[2]="Forge") or (p_type[2]="Hive") then p_orks[2]=choose(5);}
+    if (p_type[2]="Forge") or (p_type[2]="Hive") then p_orks[2]=choose(4,5);}
     if (p_orks[3]>0){p_orks[3]=choose(1,2,3,3,4,5);
-    if (p_type[3]="Forge") or (p_type[3]="Hive") then p_orks[3]=choose(5);}
+    if (p_type[3]="Forge") or (p_type[3]="Hive") then p_orks[3]=choose(4,5);}
     if (p_orks[4]>0){p_orks[4]=choose(1,2,3,3,4,5);
-    if (p_type[4]="Forge") or (p_type[4]="Hive") then p_orks[4]=choose(5);}
+    if (p_type[4]="Forge") or (p_type[4]="Hive") then p_orks[4]=choose(4,5);}
 }
 
 system_fleet=1;

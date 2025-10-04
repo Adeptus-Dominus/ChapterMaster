@@ -1,20 +1,18 @@
-var __b__;
-__b__ = action_if_number(obj_bomb_select, 0, 0);
-if __b__
-{
-__b__ = action_if_number(obj_drop_select, 0, 0);
-if __b__
-{
-__b__ = action_if_number(obj_popup, 0, 0);
-if __b__
-{
+
+
+
+if (instances_exist_any([obj_bomb_select, obj_drop_select, obj_popup])){
+    exit;
+}
 
 if (obj_controller.zoomed=1) then exit;
 if (!instance_exists(target)) then exit;
 if (obj_controller.menu=60) then exit;
 
+add_draw_return_values();
 draw_set_font(fnt_40k_14b);
 draw_set_halign(fa_center);
+draw_set_valign(fa_top);
 draw_set_color(0);
 
 var temp1=0;
@@ -34,14 +32,17 @@ if (loading=1){
     button4="";
 
     if (instance_exists(target)){
-        if (target.space_hulk=1) then exit;
+        if (target.space_hulk==1){
+            pop_draw_return_values();
+            exit;
+        }
     }
 }
 if (obj_controller.selecting_planet>target.planets){
     obj_controller.selecting_planet = 0;
 }
 var click_accepted = (!obj_controller.menu) and (!obj_controller.zoomed) and (!instance_exists(obj_bomb_select)) and (!instance_exists(obj_drop_select));
-if (click_accepted) {
+if (click_accepted && (!debug || !debug_slate.entered())) {
     if (scr_click_left(0)) {
         var closes=0,sta1=0,sta2=0;
         var mouse_consts = return_mouse_consts();
@@ -74,7 +75,7 @@ if (click_accepted) {
             var shutters = [shutter_1, shutter_2, shutter_3, shutter_4];
             for (var i=0; i<4;i++){
                 shutter_button = shutters[i];
-                if (scr_hit(shutter_button.XX,shutter_button.YY,shutter_button.XX+shutter_button.width,shutter_button.YY+shutter_button.height)){
+                if (shutter_button.hit()){
                     closes=false;
                     break;
                 }
@@ -109,25 +110,12 @@ if (target.craftworld=0) and (target.space_hulk=0){
 }
 
 
-if (global.cheat_debug && obj_controller.selecting_planet && !loading)
-    {
-        draw_set_color(c_gray);
-        var rect = [(( 184) - 123), ( 200), (( 184) + 123), ( 226)];
-        draw_rectangle(rect[0],rect[1],rect[2],rect[3], false);
-        draw_set_color(c_black);
-        draw_text(( 184), ( 204), "Debug");
-        draw_set_color(c_white);
-        draw_set_alpha(0.2);
-        if (point_and_click(rect)){
-            debug = true;
-        }
-        if (scr_hit(rect)){
-            draw_rectangle((( 184) - 123), ( 200), (( 184) + 123), ( 226), false);
-        }
-    }
+if (global.cheat_debug && obj_controller.selecting_planet && !loading){
+    draw_planet_debug_options();
+}
 
 
-if (obj_controller.menu == 0){
+if (obj_controller.menu == 0 && !debug){
     if (manage_units_button.draw(has_player_forces)){
         var _viewer = obj_controller.location_viewer
         _viewer.update_garrison_log();
@@ -144,6 +132,7 @@ if (obj_controller.menu == 0){
                 selections : []
             });
             instance_destroy();
+            pop_draw_return_values();
             exit;
         }
     }
@@ -159,7 +148,9 @@ if (loading!=0){
 
 
 //the draw and click on planets logic
-planet_selection_action();
+if (!debug){
+    planet_selection_action();
+}
 
 draw_set_font(fnt_40k_14b);
 
@@ -259,6 +250,7 @@ if (obj_controller.selecting_planet!=0){
             }else if (feature.destroy){
                 feature = "";
                 instance_destroy();
+                pop_draw_return_values();
                 exit;
             }
         }
@@ -371,10 +363,12 @@ if (obj_controller.selecting_planet!=0){
     var current_button="";
     var shutter_x = main_data_slate.XX-165;
     var shutter_y = 296+165;
-    if (shutter_1.draw_shutter(shutter_x, shutter_y, button1, 0.5, true)) then current_button=button1;
-    if (shutter_2.draw_shutter(shutter_x, shutter_y+47, button2,0.5, true))then current_button=button2;
-    if (shutter_3.draw_shutter(shutter_x, shutter_y+(47*2), button3,0.5, true))then current_button=button3;
-    if (shutter_4.draw_shutter(shutter_x, shutter_y+(47*3), button4,0.5, true))then current_button=button4;
+    if (!debug){
+        if (shutter_1.draw_shutter(shutter_x, shutter_y, button1, 0.5, true)) then current_button=button1;
+        if (shutter_2.draw_shutter(shutter_x, shutter_y+47, button2,0.5, true))then current_button=button2;
+        if (shutter_3.draw_shutter(shutter_x, shutter_y+(47*2), button3,0.5, true))then current_button=button3;
+        if (shutter_4.draw_shutter(shutter_x, shutter_y+(47*3), button4,0.5, true))then current_button=button4;
+    }
     if (current_button!=""){
         if (array_contains(["Build","Base","Arsenal","Gene-Vault"],current_button)){
             var building=instance_create(x,y,obj_temp_build);
@@ -513,87 +507,9 @@ if (target!=0){
     }
 }
 
-
-
-
-
-
-if (debug){
-    var current_planet;
-    
-    if (!scr_hit([36,174,337,455]) && scr_click_left()) {
-        debug=0;
-        exit;
-    }
-
-    current_planet = obj_controller.selecting_planet;
-
-    draw_set_color(c_black);
-    draw_rectangle(36, 174, 337, 455, 0);
-    draw_set_font(fnt_40k_14b);
-    draw_set_color(c_gray);
-    draw_set_halign(fa_left);
-
-    draw_text(38, 176, ("Orks: " + string(target.p_orks[current_planet])));
-    draw_text(38, 196, ("Tau: " + string(target.p_tau[current_planet])));
-    draw_text(38, 216, ("Tyranids: " + string(target.p_tyranids[current_planet])));
-    draw_text(38, 236, ("Traitors: " + string(target.p_traitors[current_planet])));
-    draw_text(38, 256, ("CSM: " + string(target.p_chaos[current_planet])));
-    draw_text(38, 276, ("Daemons: " + string(target.p_demons[current_planet])));
-    draw_text(38, 296, ("Necrons: " + string(target.p_necrons[current_planet])));
-    draw_text(38, 316, ("Sisters: " + string(target.p_sisters[current_planet])));
-
-    draw_text(147, 176, string_hash_to_newline("[-] [+]"));
-    draw_text(147, 196, string_hash_to_newline("[-] [+]"));
-    draw_text(147, 216, string_hash_to_newline("[-] [+]"));
-    draw_text(147, 236, string_hash_to_newline("[-] [+]"));
-    draw_text(147, 256, string_hash_to_newline("[-] [+]"));
-    draw_text(147, 276, string_hash_to_newline("[-] [+]"));
-    draw_text(147, 296, string_hash_to_newline("[-] [+]"));
-    draw_text(147, 316, string_hash_to_newline("[-] [+]"));
-
-    if (point_and_click([147, 176, 167, 196])) {
-        target.p_orks[current_planet] = clamp(target.p_orks[current_planet] - 1, 0, 6);
-    } else if (point_and_click([147, 196, 167, 216])) {
-        target.p_tau[current_planet] = clamp(target.p_tau[current_planet] - 1, 0, 6);
-    } else if (point_and_click([147, 216, 167, 236])) {
-        target.p_tyranids[current_planet] = clamp(target.p_tyranids[current_planet] - 1, 0, 6);
-    } else if (point_and_click([147, 236, 167, 256])) {
-        target.p_traitors[current_planet] = clamp(target.p_traitors[current_planet] - 1, 0, 6);
-    } else if (point_and_click([147, 256, 167, 276])) {
-        target.p_chaos[current_planet] = clamp(target.p_chaos[current_planet] - 1, 0, 6);
-    } else if (point_and_click([147, 276, 167, 296])) {
-        target.p_demons[current_planet] = clamp(target.p_demons[current_planet] - 1, 0, 6);
-    } else if (point_and_click([147, 296, 167, 316])) {
-        target.p_necrons[current_planet] = clamp(target.p_necrons[current_planet] - 1, 0, 6);
-    } else if (point_and_click([147, 316, 167, 336])) {
-        target.p_sisters[current_planet] = clamp(target.p_sisters[current_planet] - 1, 0, 6);
-    }
-    
-    else if (point_and_click([177, 176, 197, 196])) {
-        target.p_orks[current_planet] = clamp(target.p_orks[current_planet] + 1, 0, 6);
-    } else if (point_and_click([177, 196, 197, 216])) {
-        target.p_tau[current_planet] = clamp(target.p_tau[current_planet] + 1, 0, 6);
-    } else if (point_and_click([177, 216, 197, 236])) {
-        target.p_tyranids[current_planet] = clamp(target.p_tyranids[current_planet] + 1, 0, 6);
-    } else if (point_and_click([177, 236, 197, 256])) {
-        target.p_traitors[current_planet] = clamp(target.p_traitors[current_planet] + 1, 0, 6);
-    } else if (point_and_click([177, 256, 197, 276])) {
-        target.p_chaos[current_planet] = clamp(target.p_chaos[current_planet] + 1, 0, 6);
-    } else if (point_and_click([177, 276, 197, 296])) {
-        target.p_demons[current_planet] = clamp(target.p_demons[current_planet] + 1, 0, 6);
-    } else if (point_and_click([177, 296, 197, 316])) {
-        target.p_necrons[current_planet] = clamp(target.p_necrons[current_planet] + 1, 0, 6);
-    } else if (point_and_click([177, 316, 197, 336])) {
-        target.p_sisters[current_planet] = clamp(target.p_sisters[current_planet] + 1, 0, 6);
-    }
-
-}
+pop_draw_return_values();
 
 /* */
-}
-}
-}
 
 
 /*  */

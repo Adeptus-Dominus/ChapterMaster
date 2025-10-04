@@ -23,8 +23,8 @@ function scr_add_artifact(artifact_type="random", artifact_tags="", is_identifie
     var rand1 = floor(random(100)) + 1;
     var rand2 = floor(random(100)) + 1;
 
-    var base_type = "",
-        base_type_detail = "",
+    var base_type = "";
+	var base_type_detail = "",
         t3 = "",
         t4 = "",
         t5 = "";
@@ -316,7 +316,7 @@ function ArtifactStruct(Index) constructor {
         if (_index >= array_length(obj_ini.ship_location)){
             obj_ini.artifact_sid[index] = 500 + array_length(obj_ini.ship_location) -1;
         }
-        return obj_ini.artifact_sid[index];
+        return obj_ini.artifact_sid[index] - 500;
     };
 
     static set_ship_id = function(ship_id) {
