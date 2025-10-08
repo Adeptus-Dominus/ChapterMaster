@@ -21,7 +21,7 @@ function main_map_move_keys(){
     var y_limits = 0;
 	if ((menu==0) and (formating==0)) or (instance_exists(obj_fleet)){
 	    var spd=12*obj_controller.scale_mod,keyb=""; // player move speed on campaign map
-	    if (!instances_exist([obj_ingame_menu,obj_ncombat]) || instance_exists(obj_fleet)){
+	    if (!instances_exist_any([obj_ingame_menu,obj_ncombat]) || instance_exists(obj_fleet)){
 	        if keyboard_check(vk_shift){spd*=3;} // shift down, increase speed
 	        var view_x = __view_get( e__VW.XView, 0 )+2;
 	        var view_y = __view_get( e__VW.YView, 0 )+2;

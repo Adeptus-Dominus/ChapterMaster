@@ -196,7 +196,7 @@ if (navy && action=="") {
 
 	                if (intercept<=etah) {
 	                	target = chase_fleet.id;
-						chase_fleet_target_set();
+						chase_fleet_target_set(target);
 	                    trade_goods="player_hold";
 	                    exit;
 	                }

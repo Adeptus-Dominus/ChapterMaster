@@ -72,9 +72,11 @@ function exit_diplomacy_dialogue(){
     if (trading_artifact!=0){
         clear_diplo_choices();
         cooldown=8;
-        if (trading_artifact==2) and (instance_exists(obj_ground_mission)){
-            obj_ground_mission.alarm[2]=1;
-        }// 135 this might not be needed
+        if (trading_artifact == 2 && instance_exists(obj_ground_mission)){
+            with (obj_ground_mission){
+                recieve_artifact_in_discussion();
+            }
+        }
         trading_artifact=0;
         with(obj_popup){
             obj_ground_mission.alarm[1]=1;

@@ -1136,7 +1136,7 @@ if (enemy = 6) {
 		u.dudes_num[1] = 2;
 		enemies[1] = u.dudes[1];
 		u.dudes[2] = "Warlock";
-		u.dudes_num[2] = 2;
+		u.dudes_num[2] = 1;
 		enemies[2] = u.dudes[2];
 		u.dudes[3] = "Trouper";
 		u.dudes_num[3] = 2;
@@ -1186,9 +1186,9 @@ if (enemy = 6) {
 		u.dudes[6] = "Howling Banshee Exarch";
 		u.dudes_num[6] = 1;
 		u.dudes_special[6] = "banshee_mask";
-		u.dudes[7] = "Striking Scorpion";
+		u.dudes[7] = "Striking Scorpian";
 		u.dudes_num[7] = 4;
-		u.dudes[8] = "Striking Scorpion Exarch";
+		u.dudes[8] = "Striking Scorpian Exarch";
 		u.dudes_num[8] = 1;
 
 		instance_deactivate_object(u);
@@ -1659,7 +1659,6 @@ if (enemy = 6) {
 if (enemy = 7) {
 	// u=instance_create(-10,240,obj_enunit);
 	// u.dudes[1]="Stormboy";u.dudes_num[1]=2500;u.flank=1;// enemies[1]=u.dudes[1];
-
 	// Ork Platoon
 	if (threat = 1) {
 		u = instance_nearest(xxx + 20, 240, obj_enunit);
@@ -3393,7 +3392,7 @@ if (enemy = 10) and(battle_special != "ship_demon") and(battle_special != "falle
 		u = instance_nearest(xxx + 20, 240, obj_enunit);
 		enemy_dudes = "200";
 
-		u.dudes[1] = "Arch Heretic";
+		u.dudes[1] = "Chaos Lord";
 		u.dudes_num[1] = 1;
 		u.dudes[2] = "Cultist Elite";
 		u.dudes_num[2] = 9;

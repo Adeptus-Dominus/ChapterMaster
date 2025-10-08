@@ -2,6 +2,7 @@
 #macro SPECIALISTS_CHAPLAINS "chaplains"
 #macro SPECIALISTS_LIBRARIANS "librarians"
 #macro SPECIALISTS_TECHS "techs"
+#macro SPECIALISTS_TECHMARINES "techmarines"
 #macro SPECIALISTS_STANDARD "standard"
 #macro SPECIALISTS_VETERANS "veterans"
 #macro SPECIALISTS_RANK_AND_FILE "rank_and_file"
@@ -70,6 +71,17 @@ function role_groups(group, include_trainee = false, include_heads = true) {
 				_roles[eROLE.Techmarine],
 				"Techpriest"
 			];
+			if (include_trainee) {
+				array_push(_role_list, $"{_roles[eROLE.Techmarine]} Aspirant");
+			}
+			if (include_heads) {
+				array_push(_role_list, "Forge Master");
+			}
+			break;
+		case SPECIALISTS_TECHMARINES:
+			_role_list = [
+				_roles[eROLE.Techmarine],
+			]
 			if (include_trainee) {
 				array_push(_role_list, $"{_roles[eROLE.Techmarine]} Aspirant");
 			}

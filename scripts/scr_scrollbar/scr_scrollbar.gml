@@ -156,6 +156,16 @@ function ScrollableContainer(_width, _height) constructor {
         draw_clear_alpha(c_white, 0);
     };
 
+    mouse_binds = [];
+    static add_scroll_mousse_binds = function(pre_offset_coords, bind_method){
+    	array_push(mouse_binds, pre_offset_coords);
+    }
+
+    children = [];
+    static add_children = function(pre_offset_coords, object, method, arguments){
+    	array_push(children, {object, pre_offset_coords, method, arguments});
+    }
+
 	static stop_draw_to_surface = function() {
         surface_reset_target();
     };
@@ -229,7 +239,13 @@ function ScrollableContainer(_width, _height) constructor {
         
         // Draw content
         draw_surface_part(surface, 0, scroll_offset, width - scrollbar_width, height, pos_x, pos_y);
-        
+        for (var i=0;i<array_length(mouse_binds);i++){
+        	
+        }
+
+        for (var i=0;i<array_length(children);i++){
+        	
+        }        
         // Draw scrollbar background
         draw_set_color(c_black);
         draw_rectangle(pos_x + width - scrollbar_width, pos_y, pos_x + width, pos_y + height, false);
@@ -239,6 +255,7 @@ function ScrollableContainer(_width, _height) constructor {
         draw_rectangle(pos_x + width - scrollbar_width, pos_y + grip_y, pos_x + width, pos_y + grip_y + grip_height, false);
         
         draw_set_color(c_white); // Reset color after
+
     };
     
     static get_scroll_offset = function() {
