@@ -976,7 +976,7 @@ function PlanetData(planet, system) constructor{
         var presence_text = "";
         var faction_names = ["Adeptas", "Orks", "Tau", "Tyranids", "Chaos", "Traitors", "Daemons", "Necrons"];
         var faction_ids = ["p_sisters", "p_orks", "p_tau", "p_tyranids", "p_traitors", "p_chaos", "p_demons", "p_necrons"];
-        var blurbs = ["Marine", "Squad", "Demi-Company", "Company", "Company+", "Companies++"];
+        var blurbs = ["Squad+", "Squads++", "Demi-Company", "Company", "Company+", "Companies++", "Chapter/2", "Chapter"];
         
         for (var t = 0; t < array_length(faction_names); t++) {
             var faction = faction_names[t];
