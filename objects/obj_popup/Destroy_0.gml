@@ -1,5 +1,4 @@
 
-if (image="debug_banshee") then obj_controller.cooldown=8;
 if (image="chaos_symbol") and (title="Concealed Heresy") and (instance_exists(obj_drop_select)){
     with (obj_drop_select){
         obj_controller.cooldown=30;

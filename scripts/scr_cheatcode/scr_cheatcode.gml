@@ -499,3 +499,311 @@ function draw_planet_debug_forces(){
     }
     pop_draw_return_values();
 }
+
+
+function system_debug_options(){
+
+	if (planet == 3) {
+		if (press == 0) {
+			var fleet, tar;
+			tar = instance_nearest(x, y, obj_star);
+			fleet = instance_create(tar.x, tar.y, obj_en_fleet);
+			fleet.owner = eFACTION.Imperium;
+			fleet.sprite_index = spr_fleet_imperial;
+			fleet.capital_number = 2;
+			fleet.frigate_number = 5;
+			tar.present_fleet[2] += 1;
+			fleet.image_index = 4;
+			fleet.orbiting = id;
+			instance_destroy();
+		}
+		if (press == 1) {
+			var fleet, tar;
+			tar = instance_nearest(x, y, obj_star);
+			fleet = instance_create(tar.x, tar.y, obj_en_fleet);
+			fleet.owner = eFACTION.Chaos;
+			fleet.sprite_index = spr_fleet_chaos;
+			fleet.capital_number = 2;
+			fleet.frigate_number = 5;
+			tar.present_fleet[10] += 1;
+			fleet.image_index = 4;
+			fleet.orbiting = id;
+			instance_destroy();
+		}
+		if (press == 2) {
+			planet = 5;
+			cooldown = 30;
+			add_option(["Ork",  "Tau", "Cancel"]);
+			text = "Ork, Tau, Cancel?";
+			press = 0;
+			exit;
+		}
+	}
+	if (planet == 1) {
+		if (press == 0) {
+			planet = 2;
+			cooldown = 30;
+			text = "Select a faction";
+			add_option(["Orks",  "Chaos", "Tyranids"]);
+			press = 0;
+			exit;
+		}
+		if (press == 1) {
+			planet = 3;
+			cooldown = 30;
+			add_option(["Imperium",  "Heretic", "Xeno"]);
+			text = "Imperium, Heretic, or Xeno?";
+			press = 0;
+			exit;
+		}
+		if (press == 2) {
+			
+		}
+	}
+	exit;
+}
+
+function new_system_debug_popup(){
+    var pop = instance_create(mouse_x, mouse_y, obj_popup)
+    pop.image = "debug_banshee"
+    pop.title = "DEBUG"
+    pop.planet = 1
+    pop.text = "What would you like to do?"
+    pop.add_option(
+    	[
+    		{
+    			str1 : "Enemy invasion"
+    			method : system_debug_enemy_invasion,
+    		},
+    		{
+    			str1 : "Spawn Fleet",
+    			method : system_debug_spawn_fleet,
+    		},
+    		{
+    			str1 : "Delete Fleet",
+    			method :system_debug_remove_fleet
+    		}, 
+    		{
+    			str1 : "Cancel"
+    		}
+    	]
+    );
+    pop.type = POPUP_TYPE.SYSTEM_DEBUG;
+}
+
+function system_debug_enemy_invasion(){
+	text = "Select a faction";
+	replace_options([
+		{
+			str1: "Orks",
+			method : function(){
+				invasion_faction = eFACTION.Ork;
+				system_debug_enemy_invasion_spawn();
+			}
+		},
+		{
+			str1: "Chaos",
+			method : function(){
+				invasion_faction = 9;
+				system_debug_enemy_invasion_spawn();
+			}
+		},
+		{
+			str1: "Tyranids",
+			method : function(){
+				invasion_faction = eFACTION.Tyranids;
+				system_debug_enemy_invasion_spawn();
+			}
+		},
+	]);
+}
+
+
+//TODO refactor and allow for greater range of factions
+function system_debug_enemy_invasion_spawn(){
+	if (invasion_faction != 9) {
+		if (invasion_faction == 0) {
+			amount = 7;
+		}
+		invasion_faction == 
+		if (invasion_faction == 2) {
+			amount = 9;
+		}
+		with (obj_star) {
+			if ((choose(0, 1, 1) == 1) && (owner != eFACTION.Eldar) && (owner != 1)) {
+				var fleet;
+				fleet = instance_create(x, y, obj_en_fleet);
+				fleet.owner = obj_popup.invasion_faction;
+				if (obj_popup.invasion_faction == 7) {
+					fleet.sprite_index = spr_fleet_ork;
+					fleet.capital_number = 3;
+					present_fleet[7] += 1;
+				}
+				if (obj_popup.invasion_faction == 9) {
+					if (present_fleet[1] == 0) {
+						vision = 0;
+					}
+					fleet.sprite_index = spr_fleet_tyranid;
+					fleet.capital_number = 3;
+					fleet.frigate_number = 6;
+					fleet.escort_number = 16;
+					present_fleet[9] += 1;
+				}
+				fleet.image_index = 4;
+				fleet.orbiting = id;
+			}
+		}
+		instance_destroy();
+	}
+	if (invasion_faction == 9) {
+		with (obj_star) {
+			if ((choose(0, 1, 1) == 1) && (owner != eFACTION.Eldar) && (owner != 1)) {
+				var h;
+				h = 0;
+				repeat (4) {
+					h += 1;
+					if ((p_type[h] != "Dead") && (p_type[h] != "")) {
+						p_traitors[h] = 5;
+						p_chaos[h] = 4;
+					}
+				}
+			}
+		}
+		instance_destroy();
+	}
+}
+
+
+
+function system_debug_spawn_fleet() {
+	text = "Imperium, Heretic, or Xeno?";
+	replace_options([
+		{
+			str1: "Imperium",
+			method: debug_spawn_imperium_fleet,
+		},
+		{
+			str1: "Heretic",
+			method: debug_spawn_heretic_fleet,
+		},
+		{
+			str1: "Xeno",
+			method: debug_add_xenos_fleet_options,
+		},
+	]);
+}
+
+function debug_spawn_imperium_fleet() {
+	var fleet, tar;
+	tar = instance_nearest(x, y, obj_star);
+	fleet = instance_create(tar.x, tar.y, obj_en_fleet);
+	fleet.owner = eFACTION.Imperium;
+	fleet.sprite_index = spr_fleet_imperial;
+	fleet.capital_number = 2;
+	fleet.frigate_number = 5;
+	tar.present_fleet[2] += 1;
+	fleet.image_index = 4;
+	fleet.orbiting = id;
+	instance_destroy();
+}
+
+function debug_spawn_heretic_fleet() {
+	var fleet, tar;
+	tar = instance_nearest(x, y, obj_star);
+	fleet = instance_create(tar.x, tar.y, obj_en_fleet);
+	fleet.owner = eFACTION.Chaos;
+	fleet.sprite_index = spr_fleet_chaos;
+	fleet.capital_number = 2;
+	fleet.frigate_number = 5;
+	tar.present_fleet[10] += 1;
+	fleet.image_index = 4;
+	fleet.orbiting = id;
+	instance_destroy();
+}
+
+
+function debug_add_xenos_fleet_options() {
+	text = "Select Xeno faction to spawn:";
+	replace_options([
+		{
+			str1: "Ork",
+			method: debug_spawn_ork_fleet,
+		},
+		{
+			str1: "Tau",
+			method: debug_spawn_tau_fleet,
+		},
+		{
+			str1: "Cancel",
+			method: popup_default_close,
+		},
+	]);
+}
+function debug_spawn_ork_fleet() {
+	var fleet, tar;
+	tar = instance_nearest(x, y, obj_star);
+	fleet = instance_create(tar.x, tar.y, obj_en_fleet);
+	fleet.owner = eFACTION.Ork;
+	fleet.sprite_index = spr_fleet_ork;
+	fleet.capital_number = 2;
+	fleet.frigate_number = 5;
+	tar.present_fleet[7] += 1;
+	fleet.image_index = 4;
+	fleet.orbiting = id;
+	instance_destroy();
+}
+
+function debug_spawn_tau_fleet() {
+	var fleet, tar;
+	tar = instance_nearest(x, y, obj_star);
+	fleet = instance_create(tar.x, tar.y, obj_en_fleet);
+	fleet.owner = eFACTION.Tau;
+	fleet.sprite_index = spr_fleet_tau;
+	fleet.capital_number = 2;
+	fleet.frigate_number = 5;
+	tar.present_fleet[8] += 1;
+	fleet.image_index = 4;
+	fleet.orbiting = id;
+	instance_destroy();
+}
+
+function system_debug_remove_fleet(){
+	var onceh = 0;
+	var flit1 = instance_nearest(x, y, obj_p_fleet);
+	var flit2 = instance_nearest(x, y, obj_en_fleet);
+
+	if (instance_exists(flit1) && instance_exists(flit2)) {
+		if (point_distance(x, y, flit1.x, flit1.y) > point_distance(x, y, flit2.x, flit2.y)) {
+			with (flit2) {
+				instance_destroy();
+			}
+		} else {
+			with (flit1) {
+				instance_destroy();
+			}
+		}
+		onceh = 1;
+	}
+	if ((onceh == 0) && (!instance_exists(flit1)) && instance_exists(flit2)) {
+		if (point_distance(x, y, flit2.x, flit2.y) <= 40) {
+			with (flit2) {
+				instance_destroy();
+			}
+		}
+		onceh = 1;
+	}
+	if ((onceh == 0) && instance_exists(flit1) && (!instance_exists(flit2))) {
+		if (point_distance(x, y, flit1.x, flit1.y) <= 40) {
+			with (flit1) {
+				instance_destroy();
+			}
+		}
+		onceh = 1;
+	}
+
+	instance_destroy();
+}
+
+
+
+

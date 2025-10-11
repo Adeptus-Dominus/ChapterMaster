@@ -714,6 +714,41 @@ function scr_random_event(execute_now) {
 		//TODO make reprocussions to ignoring this
 		log_message("RE: Gene-Seed Mutation");
 	    var text = "The Chapter's gene-seed has mutated!  Apothecaries are scrambling to control the damage and prevent further contamination.  What is thy will?";
+		var _opt1 = "Dispose of ";
+		var _percent_remove = 0;
+		if (obj_controller.gene_seed <= 30) {
+			_opt1 += "100% of the gene-seed.";
+			_percent_remove = 100;
+		}
+		if ((obj_controller.gene_seed > 30) && (obj_controller.gene_seed < 60)) {
+			_opt1 += "50% of all gene-seed.";
+			_percent_remove = 50;
+		}
+		if (obj_controller.gene_seed >= 60) {
+			_opt1 += "33% of all gene-seed.";
+			_percent_remove = 33;
+		}
+
+		var _opt2 = "Tell the apothecaries to let it be.";
+
+
+	    var _pop_data = {
+	    	percent_remove = _percent_remove
+	    	options : [
+	    		{
+	    			str1:_opt1
+	    			method : event_dispose_of_mutated_gene
+	    		},
+	    		{
+	    			str1:_opt2
+	    			method : function(){
+	    				scr_loyalty("Mutant Gene-Seed", "+");
+	    				popup_default_close();
+	    			}
+	    		},	    		
+	    	]
+	    }
+
 	    scr_popup("Gene-Seed Mutated!",text,"gene_bad","");
 		_evented = true;
 	    scr_event_log("red","The Chapter Gene-Seed has mutated.");

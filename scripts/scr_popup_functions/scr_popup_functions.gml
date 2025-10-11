@@ -1,3 +1,4 @@
+
 /// @function reset_popup_options()
 /// @description Resets all popup option variables to empty strings
 
@@ -7,6 +8,7 @@ enum POPUP_TYPE {
 	ARTIFACT_EQUIP = 8,
 	ITEM_GIFT = 9,
 	ADD_TAGS = 12,
+	SYSTEM_DEBUG = 13,
 	BATTLE_OPTIONS = 98,
 	FLEET_MOVE = 99,
 }
@@ -99,6 +101,26 @@ function popup_window_draw(){
 		}
 	}
 }
+
+
+function evaluate_popup_option(opt){
+	var _allow = true;
+	if (struct_exists(opt,"requires")){
+		var _requirements = opt.requires
+	}
+	else{
+		return true
+	}
+
+	if (struct_exists(_requirements,"req")){
+		if (obj_controller.requisition < _requirements.req){
+			_allow = false;
+		}
+	}
+
+	return _allow;
+}
+
 
 function draw_popup_options(){
 	press = -1;
