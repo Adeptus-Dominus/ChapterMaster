@@ -253,75 +253,7 @@ try {
 	if (title == "Scheduled Event:2") {
 		exit;
 	}
-
-	if ((image == "inquisition") && (loc == "contraband")) {
-		demand = 0;
-		add_option(["Hand over all Chaos and Daemonic Artifacts",  "Over your dead body"], true);
-		var arti;
-		if (press == 0) {
-			var contraband = [];
-			for (var i = 0; i < array_length(obj_ini.artifact_struct); i++) {
-				if (obj_ini.artifact != "") {
-					arti = fetch_artifact(i);
-					if (arti.inquisition_disaprove()) {
-						array_push(contraband, i);
-					}
-				}
-			}
-			for (i = 0; i < array_length(contraband); i++) {
-				delete_artifact(contraband[i]);
-			}
-			obj_controller.cooldown = 10;
-			reset_popup_options();
-			loc = "";
-			text = $"All Chaos and Daemonic Artifacts present have been handed over to the Inquisitor.  They remain seething, but your destruction has been stalled.  Or so {global.chapter_name} imagine.";
-			exit;
-		}
-
-		if (press == 1) {
-			obj_controller.cooldown = 10;
-			if (number != 0 && instance_exists(obj_turn_end)) {
-				obj_turn_end.alarm[1] = 4;
-			}
-			instance_destroy();
-		}
-	}
-	if (image == "geneseed_lab") {
-		if (press == 0) {
-			image = "";
-			text = "{estimate} gene-seed has been added to the chapter vaults.";
-			reset_popup_options();
-			obj_controller.gene_seed += estimate;
-			with (obj_ground_mission) {
-				instance_destroy();
-			}
-			cooldown = 15;
-			exit;
-		}
-		if (press == 1) {
-			var req;
-			req = floor(random_range(200, 500)) + 1;
-			image = "";
-			text = "Technological components have been salvaged, granting " + string(req) + " requisition.";
-			reset_popup_options();
-			obj_controller.requisition += req;
-			with (obj_ground_mission) {
-				instance_destroy();
-			}
-			cooldown = 15;
-			exit;
-		}
-		if (press == 2) {
-			with (obj_ground_mission) {
-				instance_destroy();
-			}
-			obj_controller.cooldown = 15;
-			cooldown = 15;
-			instance_destroy();
-			exit;
-		}
-	}
-
+	
     if (image == "ancient_ruins" && woopwoopwoop && move_to_next_stage()) {
         instance_deactivate_all(true);
         instance_activate_object(obj_ground_mission);
@@ -448,9 +380,6 @@ try {
 		add_option(["Accept",  "Refuse"], true);
 	}
 
-	if ((title == "He Built It") && (array_length(options) == 0) && (string_count("submerged", text) == 0)) {
-		add_option(["Execute the heretic",  "Move him to the Penitorium", "I see no problem"], true);
-	}
 
 	if ((press == 0) && (array_length(options)) || ((demand == 1) && (mission != "") && (string_count("Inquisition", title) > 0)) || ((demand == 1) && (title == "Inquisition Recon"))) {
 
@@ -636,31 +565,6 @@ try {
 				instance_destroy();
 			}
 			instance_destroy();
-		}
-
-		if (title == "Artifact Offered") {
-			with (obj_en_fleet) {
-				if ((trade_goods == "male_her") || (trade_goods == "female_her")) {
-					instance_destroy();
-				}
-			}
-
-			var last_artifact = scr_add_artifact("random", "", 4);
-
-			reset_popup_options();
-			title = "Inquisition Mission Completed";
-			text = "Your ship sends over a boarding party, who retrieve the offered artifact- ";
-			text += $" some form of {obj_ini.artifact[last_artifact]}.  Once it is safely stowed away your ship is then ordered to fire.  The Inquisitor's own seems to hesitate an instant before banking away, but is quickly destroyed.";
-			image = "exploding_ship";
-			reset_popup_options();
-			scr_event_log("", "Artifact recovered from radical Inquisitor.");
-			scr_event_log("", "Inquisition Mission Completed: The radical Inquisitor has been purged.");
-			exit;
-		}
-
-		if (title == "He Built It") {
-			obj_ini.god[ma_co, ma_id] += 10;
-			reset_popup_options();
 		}
 
 		if (title == "Mercy Plea") {

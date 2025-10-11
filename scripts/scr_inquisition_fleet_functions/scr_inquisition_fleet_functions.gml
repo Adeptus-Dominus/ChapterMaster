@@ -497,5 +497,195 @@ if (inspection_type="inspect_world") or (inspection_type="inspect_fleet"){
     }    
 }
 
+function inquisitor_contraband_take_popup(cur_star, planet) {
+    var tem1 = tem1_base;
+    var popup = 0;
+    var cha = 0;
+    var dem = 0;
 
+    // Only check Dead planets with upgrades
+    if (cur_star.p_type[planet] == "Dead" && array_length(cur_star.p_upgrades[planet]) > 0) {
 
+        // Secret Base check
+        var base_search = search_planet_features(cur_star.p_upgrades[planet], P_features.Secret_Base);
+        if (array_length(base_search) > 0) {
+            var player_base = cur_star.p_upgrades[planet][base_search[0]];
+
+            if (player_base.vox > 0) { tem1 += 2; }
+            if (player_base.torture > 0) { tem1 += 1; }
+            if (player_base.narcotics > 0) { tem1 += 3; }
+
+            alter_disposition([
+                [eFACTION.Imperium, -tem1 * 2],
+                [eFACTION.Inquisition, -tem1 * 3],
+                [eFACTION.Ecclesiarchy, -tem1 * 3]
+            ]);
+
+            popup = 1;
+
+            if (tem1 >= 3) {
+                popup = 2;
+                obj_controller.inqis_flag_lair += 1;
+                obj_controller.loyalty -= 10;
+                obj_controller.loyalty_hidden -= 10;
+
+                if ((obj_controller.inqis_flag_lair == 2 || obj_controller.disposition[eFACTION.Inquisition] < 0 || obj_controller.loyalty <= 0)
+                    && obj_controller.faction_status[eFACTION.Inquisition] != "War") {
+                    popup = 0.3;
+                    obj_controller.alarm[8] = 1;
+                }
+            }
+
+            if (player_base.inquis_hidden == 1) {
+                player_base.inquis_hidden = 0;
+            }
+        }
+
+        // Arsenal check
+        var arsenal_search = search_planet_features(cur_star.p_upgrades[planet], P_features.Arsenal);
+        if (array_length(arsenal_search) > 0) {
+            var arsenal = cur_star.p_upgrades[planet][arsenal_search[0]];
+            arsenal.inquis_hidden = 0;
+
+            for (var e = 0; e < array_length(obj_ini.artifact_tags); e++) {
+                if (obj_ini.artifact[e] != "" && obj_ini.artifact_loc[e] == cur_star.name && obj_controller.und_armouries <= 1) {
+                    if (array_contains(obj_ini.artifact_tags[e], "chaos")) { cha += 1; }
+                    if (array_contains(obj_ini.artifact_tags[e], "chaos_gift")) { cha += 1; }
+                    if (array_contains(obj_ini.artifact_tags[e], "daemonic")) { dem += 1; }
+                }
+            }
+
+            var perc = ((dem * 10) + (cha * 3)) / 100;
+            alter_disposition([
+                [eFACTION.Imperium, -max(round(obj_controller.disposition[eFACTION.Imperium] / 6 * perc), round(8 * perc))],
+                [eFACTION.Inquisition, -max(round(obj_controller.disposition[eFACTION.Inquisition] / 4 * perc), round(10 * perc))],
+                [eFACTION.Ecclesiarchy, -max(round(obj_controller.disposition[eFACTION.Ecclesiarchy] / 4 * perc), round(10 * perc))]
+            ]);
+
+            popup = 3;
+            if ((dem * 10) + (cha * 3) >= 10) { popup = 4; }
+
+            var start_inquisition_war = ((obj_controller.disposition[eFACTION.Inquisition] < 0 || obj_controller.loyalty <= 0) && obj_controller.faction_status[eFACTION.Inquisition] != "War");
+
+            if (start_inquisition_war) {
+                if (popup == 3) {
+                    popup = 0.3;
+                    var moo = false;
+                    if (!moo) {
+                        if (obj_controller.penitent == 1) { obj_controller.alarm[8] = 1; moo = true; }
+                        else if (obj_controller.penitent == 0) { scr_audience(4, "loyalty_zero", 0, "", 0, 0); }
+                    }
+                }
+                else if (popup == 4) {
+                    popup = 0.4;
+                    var moo = false;
+                    if (obj_controller.penitent == 1 && !moo) { obj_controller.alarm[8] = 1; moo = true; }
+                    if (obj_controller.penitent == 0 && !moo) { scr_audience(4, "loyalty_zero", 0, "", 0, 0); }
+                }
+            }
+        }
+
+        // Gene Vault check
+        var vault_search = search_planet_features(cur_star.p_upgrades[planet], P_features.Arsenal);
+        if (array_length(vault_search) > 0) {
+            var gene_vault = cur_star.p_upgrades[planet][vault_search[0]];
+            gene_vault.inquis_hidden = 0;
+            obj_controller.inqis_flag_gene += 1;
+            obj_controller.loyalty -= 10;
+            obj_controller.loyalty_hidden -= 10;
+            alter_disposition([[eFACTION.Inquisition, -tem1 * 3]]);
+
+            if (obj_controller.inqis_flag_gene == 1) { popup = 5; }
+            if (obj_controller.inqis_flag_gene == 2) { popup = 6; }
+            if ((obj_controller.inqis_flag_gene >= 3 || obj_controller.loyalty <= 0 || obj_controller.disposition[eFACTION.Inquisition] < 0)
+                && obj_controller.faction_status[eFACTION.Inquisition] != "War") {
+                popup = 0.6;
+                obj_controller.alarm[8] = 1;
+            }
+        }
+
+        // Logging
+        var star_planet = cur_star.name + scr_roman(planet);
+
+        if (popup == 1) { scr_event_log("", $"{inquis_string} discovers your Secret Lair on {star_planet}."); }
+        else if (popup == 2 || popup == 0.2) { scr_event_log("red", $"{inquis_string} discovers your Secret Lair on {star_planet}.", cur_star); }
+        else if (popup == 3 || popup == 0.3) { scr_event_log("", $"{inquis_string} discovers your Secret Arsenal on {star_planet}.", cur_star); }
+        else if (popup == 4 || popup == 0.4) { scr_event_log("red", $"{inquis_string} discovers your Secret Arsenal on {star_planet}.", cur_star); }
+        else if (popup >= 5 || popup == 0.6) { scr_event_log("", $"{inquis_string} discovers your Secret Gene-Vault on {star_planet}.", cur_star); }
+
+        // Popup messages
+        var pop_tit = "";
+        var pop_txt = "";
+        var pop_spe = "";
+
+        if (popup == 1) {
+            pop_tit = "Inquisition Discovers Lair";
+            pop_txt = $"{inquis_string} has discovered your Secret Lair on {star_planet}.  A quick inspection revealed that there was no contraband or heresy, though the Inquisition does not appreciate your secrecy at all.";
+        }
+        else if (popup == 2) {
+            pop_tit = "Inquisition Discovers Lair";
+            pop_txt = $"{inquis_string} has discovered your Secret Lair on {star_planet}.  A quick inspection turned up heresy, most foul, and it has all been reported to the Inquisition.  They are seething, and relations are damaged.";
+        }
+        else if (popup == 3) {
+            pop_tit = "Inquisition Discovers Arsenal";
+            pop_txt = $"{inquis_string} has discovered your Secret Arsenal on {star_planet}.  A quick inspection revealed that there was no contraband or heresy, though the Inquisition does not appreciate your secrecy at all.";
+        }
+        else if (popup == 4) {
+            pop_tit = "Inquisition Discovers Arsenal";
+            pop_txt = $"{inquis_string} has discovered your Secret Arsenal on {star_planet}.  A quick inspection turned up heresy, most foul, and it has all been reported to the Inquisition.  Relations have been heavily damaged.";
+        }
+        else if (popup == 5) {
+            pop_tit = "Inquisition Discovers Gene-Vault";
+            pop_txt = $"{inquis_string} has discovered your Secret Gene-Vault on {star_planet} and reported it.  The Inquisition does NOT appreciate your secrecy, nor the mass production of Gene-Seed. Relations are damaged.";
+        }
+        else if (popup == 6) {
+            pop_tit = "Inquisition Discovers Gene-Vault";
+            pop_txt = $"{inquis_string} has discovered your Secret Gene-Vault on {star_planet} and reported it.  You were warned once already to not sneak about with Gene-Seed stores and Test-Slave incubators. Do not let it happen again or your Chapter will be branded heretics.";
+        }
+
+        // Contraband demand
+        if ((dem * 10) + (cha * 3) >= 10) {
+            pop_txt += " The Inquisitor responsible for the inspection also demands that you hand over all heretical materials and Artifacts.";
+            pop_spe = "contraband";
+            instance_create(x, y, obj_temp_arti);
+        }
+
+        // Define popup options
+        var _pop_data = {
+            options: [
+                {
+                    str1: "Hand over all Chaos and Daemonic Artifacts",
+                    method: function() {
+                        var contraband = [];
+                        for (var i = 0; i < array_length(obj_ini.artifact_struct); i++) {
+                            if (obj_ini.artifact[i] != "") {
+                                var arti = fetch_artifact(i);
+                                if (arti.inquisition_disaprove()) { array_push(contraband, i); }
+                            }
+                        }
+                        for (var i = 0; i < array_length(contraband); i++) { delete_artifact(contraband[i]); }
+                        obj_controller.cooldown = 10;
+                        with (obj_ground_mission) { instance_destroy(); }
+                        reset_popup_options();
+                        text = $"{array_length(contraband)} Chaos and Daemonic Artifacts have been handed over to the Inquisitor.";
+                        image = "";
+                        exit;
+                    }
+                },
+                {
+                    str1: "Over your dead body",
+                    method: function() {
+                        obj_controller.cooldown = 10;
+                        if (number != 0 && instance_exists(obj_turn_end)) { obj_turn_end.alarm[1] = 4; }
+                        instance_destroy();
+                        exit;
+                    }
+                }
+            ]
+        };
+
+        if (popup >= 1) {
+            scr_popup(pop_tit, pop_txt, "inquisition", pop_spe, _pop_data);
+        }
+    }
+}

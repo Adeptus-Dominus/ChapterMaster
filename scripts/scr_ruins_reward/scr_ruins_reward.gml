@@ -190,18 +190,7 @@ wep1=choose("MK3 Iron Armour","MK4 Maximus","MK5 Heresy");
 	    pop.text="My lord, your brothers have found sealed chamber in these ruins. It bears symbols of one of the ancient legions. After your tech-marines managed to open this chamber, they've found a number of relics that can be brought back to service. They've found:  "+string(wen1)+"x "+string(wep1)+", "+string(wen2)+"x "+string(wep2)+","+string(wen3)+"x "+string(wep3)+","+string(wen4)+"x "+string(wep4)+","+string(wen5)+"x "+string(wep5)+","+string(wen6)+"x "+string(wep6)+","+string(wen7)+"x "+string(wep7)+", and "+string(wen8)+"x "+string(wep8)+" have been added to the Armamentarium.";
 	}
 	else if (loot="gene_seed"){// Requisition
-	    var gene,pop;gene=floor(random_range(20,40))+1;
-	    pop=instance_create(0,0,obj_popup);
-	    pop.image="geneseed_lab";
-	    pop.title="Ancient Ruins: Gene-seed";
-	    pop.text="My lord, your battle brothers have located a hidden, fortified laboratory within the ruins.  Contained are a number of bio-vaults with astartes gene-seed; "+string(gene)+" in number.  Your marines are not able to determine the integrity or origin.";
-	    var options = [
-		    "Add the gene-seed to chapter vaults.", 
-		    "Salvage the laboratory for requisition.",
-		    "Leave the laboratory as is.",
-	    ]
-	    pop.add_option(options);
-	    pop.estimate=gene;
+		ancient_gene_lab_ruins_loot();
 	}
 	else if (loot="bunker"){// Bunker
 	    pop.image="ruins_bunker";
@@ -231,7 +220,68 @@ wep1=choose("MK3 Iron Armour","MK4 Maximus","MK5 Heresy");
 	}
 }
 
+function ancient_gene_lab_ruins_loot(){
 
+    pop.image="geneseed_lab";
+    var _text = $"My lord, your battle brothers have located a hidden, fortified laboratory within the ruins.  Contained are a number of bio-vaults with astartes gene-seed; {gene} in number.  Your marines are not able to determine the integrity or origin.";
+    var options = [
+	    "Add the gene-seed to chapter vaults.", 
+	    "Salvage the laboratory for requisition.",
+	    "Leave the laboratory as is.",
+    ]
+    pop.add_option(options);
+
+    var _pop_data = {
+    	gene_found : gene
+    	options : [
+		{
+			str1: "Add the gene-seed to chapter vaults.",
+			method: function() {
+				image = "";
+				text = string(estimate) + " gene-seed has been added to the chapter vaults.";
+				reset_popup_options();
+				obj_controller.gene_seed += estimate;
+				//scr_play_sound(snd_success);
+				with (obj_ground_mission) {
+					instance_destroy();
+				}
+			},
+		},
+		{
+			str1: "Salvage the laboratory for requisition.",
+			method: function() {
+				var req;
+				req = floor(random_range(200, 500)) + 1;
+				image = "";
+				text = "Technological components have been salvaged, granting " + string(req) + " requisition.";
+				reset_popup_options();
+				obj_controller.requisition += req;
+				//scr_play_sound(snd_salvage);
+				with (obj_ground_mission) {
+					instance_destroy();
+				}
+			},
+		},
+		{
+			str1: "Leave the laboratory as is.",
+			method: function() {
+				with (obj_ground_mission) {
+					instance_destroy();
+				}
+				//scr_play_sound(snd_cancel);
+				popup_default_close();
+			},
+		},
+	],
+    }
+    scr_popup(
+    	"Ancient Ruins: Gene-seed",
+    	_text,
+    	"geneseed_lab",
+    	_pop_data,
+    );
+
+}
 
 function ancient_fortress_ruins_loot(star_system, planet, _ruins){
 	var _pop_data = {};
