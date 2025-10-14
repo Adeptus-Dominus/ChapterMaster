@@ -304,43 +304,53 @@ function accept_mechanicus_tomb_mission(){
 /// @mixin obj_popup
 function accept_mechanicus_land_raider_mission(){
 	var _star = pop_data.star
-	var _mission_loc = _planet.name();
 	var _forge_planet = scr_get_planet_with_type(_star, "Forge");
-	var _planet = new PlanetData(_forge_planet, _star);
-	var _nearest_fleet = instance_nearest(_star.x, _star.y, obj_p_fleet);
-	var _mission_time = get_viable_travel_time(5, _nearest_fleet.x, _nearest_fleet.y, _star.x, _star.y, _nearest_fleet, false);
+	if (_forge_planet>0){
+		var _planet = new PlanetData(_forge_planet, _star);
 
-	_planet.add_problem("mech_raider", _mission_time, {
-		completion: 0, 
-		required_months :24
-	});
-	text = $"The Adeptus Mechanicus await your forces at {_mission_loc}.  They are expecting six {obj_ini.role[100][16]}s and a Land Raider.";
-	scr_event_log("", $"Mechanicus Mission Accepted: Six of your {obj_ini.role[100][16]}s and a Land Raider are to be stationed at {_mission_loc} for {_mission_time} months.", _star.name);
-	with (_star) {
-		new_star_event_marker("green");
+		var _mission_loc = _planet.name();
+		var _nearest_fleet = instance_nearest(_star.x, _star.y, obj_p_fleet);
+		var _mission_time = get_viable_travel_time(5, _nearest_fleet.x, _nearest_fleet.y, _star.x, _star.y, _nearest_fleet, false);
+
+		_planet.add_problem("mech_raider", _mission_time, {
+			completion: 0, 
+			required_months :24
+		});
+		text = $"The Adeptus Mechanicus await your forces at {_mission_loc}.  They are expecting six {obj_ini.role[100][16]}s and a Land Raider.";
+		scr_event_log("", $"Mechanicus Mission Accepted: Six of your {obj_ini.role[100][16]}s and a Land Raider are to be stationed at {_mission_loc} for {_mission_time} months.", _star.name);
+		with (_star) {
+			new_star_event_marker("green");
+		}
+		title = "Mechanicus Mission Accepted";
+	} else {
+		text = $"Error valid forge planet not found please open a bug report if seen";
 	}
-	title = "Mechanicus Mission Accepted";
 	reset_popup_options();
 }
 /// @mixin obj_popup
 function accept_mechanicus_bionics_mission(){
 	var _star = pop_data.star
-	var _mission_loc = _planet.name();
 	var _forge_planet = scr_get_planet_with_type(_star, "Forge");
-	var _planet = new PlanetData(_forge_planet, _star);
-	var _nearest_fleet = instance_nearest(_star.x, _star.y, obj_p_fleet);
-	var _mission_time = get_viable_travel_time(5, _nearest_fleet.x, _nearest_fleet.y, _star.x, _star.y, _nearest_fleet, false);
-	
-	_planet.add_problem("mech_bionics", _mission_time, {
-		completion: 0, 
-		required_months :24
-	})
-	text = $"The Adeptus Mechanicus await your forces at {_mission_loc}.  They are expecting ten Astartes with bionics. (Beneficial traits: Weakness of Flesh )";
-	scr_event_log("", $"Mechanicus Mission Accepted: Ten Astartes with bionics are to be stationed at {_mission_loc} for 24 months for testing purposes.", _star.name);
-	with (_star) {
-		new_star_event_marker("green");
+	if (_forge_planet>0){
+		var _planet = new PlanetData(_forge_planet, _star);
+
+		var _mission_loc = _planet.name();
+		var _nearest_fleet = instance_nearest(_star.x, _star.y, obj_p_fleet);
+		var _mission_time = get_viable_travel_time(5, _nearest_fleet.x, _nearest_fleet.y, _star.x, _star.y, _nearest_fleet, false);
+		
+		_planet.add_problem("mech_bionics", _mission_time, {
+			completion: 0, 
+			required_months :24
+		})
+		text = $"The Adeptus Mechanicus await your forces at {_mission_loc}.  They are expecting ten Astartes with bionics. (Beneficial traits: Weakness of Flesh )";
+		scr_event_log("", $"Mechanicus Mission Accepted: Ten Astartes with bionics are to be stationed at {_mission_loc} for 24 months for testing purposes.", _star.name);
+		with (_star) {
+			new_star_event_marker("green");
+		}
+		title = "Mechanicus Mission Accepted";
+	} else {
+		text = $"Error valid forge planet not found please open a bug report if seen";
 	}
-	title = "Mechanicus Mission Accepted";
 	reset_popup_options();
 
 }
@@ -348,24 +358,30 @@ function accept_mechanicus_bionics_mission(){
 /// @mixin obj_popup
 function accept_mechanicus_mars_mission(){
 	var _star = pop_data.star
-	var _mission_loc = _planet.name();
 	var _forge_planet = scr_get_planet_with_type(_star, "Forge");
-	var _planet = new PlanetData(_forge_planet, _star);
-	var _nearest_fleet = instance_nearest(_star.x, _star.y, obj_p_fleet);
-	var _mission_time = get_viable_travel_time(5, _nearest_fleet.x, _nearest_fleet.y, _star.x, _star.y, _nearest_fleet, false);
-	
-	_planet.add_problem("mech_bionics", _mission_time, {
-		completion: 0, 
-		required_months :24
-	})
-	_planet.add_problem("mech_mars", _mission_time )
-	text = $"The Adeptus Mechanicus await your {obj_ini.role[100][16]}s at {_mission_loc}.  They are willing to hold on the voyage for up to {_mission_time} months.";
-	scr_event_log("", $"Mechanicus Mission Accepted: {obj_ini.role[100][16]}s are expected at {_mission_loc} within 30 months, for the voyage to Mars.", _star.name);
-	with (_star) {
-		new_star_event_marker("green");
+	if (_forge_planet>0){
+		var _planet = new PlanetData(_forge_planet, _star);
+
+		var _mission_loc = _planet.name();
+		var _nearest_fleet = instance_nearest(_star.x, _star.y, obj_p_fleet);
+		var _mission_time = get_viable_travel_time(5, _nearest_fleet.x, _nearest_fleet.y, _star.x, _star.y, _nearest_fleet, false);
+		
+		_planet.add_problem("mech_bionics", _mission_time, {
+			completion: 0, 
+			required_months :24
+		})
+		_planet.add_problem("mech_mars", _mission_time )
+		text = $"The Adeptus Mechanicus await your {obj_ini.role[100][16]}s at {_mission_loc}.  They are willing to hold on the voyage for up to {_mission_time} months.";
+		scr_event_log("", $"Mechanicus Mission Accepted: {obj_ini.role[100][16]}s are expected at {_mission_loc} within 30 months, for the voyage to Mars.", _star.name);
+		with (_star) {
+			new_star_event_marker("green");
+		}
+		title = "Mechanicus Mission Accepted";
+		reset_popup_options();
+	} else {
+		text = $"Error valid forge planet not found please open a bug report if seen";
 	}
-	title = "Mechanicus Mission Accepted";
-	reset_popup_options();
+	reset_popup_options();		
 }
 
 
