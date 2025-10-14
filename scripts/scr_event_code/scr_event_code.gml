@@ -212,9 +212,9 @@ function event_end_turn_action(){
 	                with(obj_ini){scr_company_order(0);}
 	            }
 	            if (item != "fusion"){
-	            	var options = {
+	            	var options = [
 	            	{
-		    			str1:"Execute the heretic"
+		    			str1:"Execute the heretic",
 		    			method : function(){
 							scr_kill_unit(pop_data.company, pop_data.marine_number);
 							var company_to_order = pop_data.company;
@@ -225,7 +225,7 @@ function event_end_turn_action(){
 		    			}
 		    		},
 		    		{
-		    			str1:"Move him to the Penitorium"
+		    			str1:"Move him to the Penitorium",
 		    			method : function(){
 		    				popup_default_close();	    	
 		    			}
@@ -234,8 +234,9 @@ function event_end_turn_action(){
 		    			str1 : "I see no problem",
 		    			method : popup_default_close(),    	
 		    		}
+				]
 		            var _pop_data = {
-			            options:options
+			            options:options,
 		            	marine_number : marine_num,
 		            	company :comp,
 		            	marine_name : marine_name,

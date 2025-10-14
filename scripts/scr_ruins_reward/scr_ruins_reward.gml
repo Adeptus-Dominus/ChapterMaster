@@ -232,7 +232,7 @@ function ancient_gene_lab_ruins_loot(){
     pop.add_option(options);
 
     var _pop_data = {
-    	gene_found : gene
+    	gene_found : gene,
     	options : [
 		{
 			str1: "Add the gene-seed to chapter vaults.",
@@ -306,7 +306,7 @@ function ancient_fortress_ruins_loot(star_system, planet, _ruins){
 	    	requires : {
 	    		req : 1000,
 	    	}
-	    }
+	    },
 	    {
 	    	str1 : "Salvage raw materials from the fortress.",
 	    	method : function(){

@@ -447,6 +447,16 @@ function draw_planet_debug_problems(){
 					case "necron":
 						mission_inquisition_tomb_world(target.id);
 						break;
+					case "mech_raider":
+						spawn_mechanicus_mission("mech_raider");
+						break;
+					case "mech_mars":
+						spawn_mechanicus_mission("mech_mars");
+						break;
+					case "mech_bionics":
+						spawn_mechanicus_mission("mech_bionics");
+						break;
+																		
 					default:
 						scr_popup("error","no specific debug action created please consider helping to make one");
 						break;
@@ -572,7 +582,7 @@ function new_system_debug_popup(){
     pop.add_option(
     	[
     		{
-    			str1 : "Enemy invasion"
+    			str1 : "Enemy invasion",
     			method : system_debug_enemy_invasion,
     		},
     		{
@@ -584,7 +594,8 @@ function new_system_debug_popup(){
     			method :system_debug_remove_fleet
     		}, 
     		{
-    			str1 : "Cancel"
+    			str1 : "Cancel",
+				method : popup_default_close,
     		}
     	]
     );
@@ -625,7 +636,6 @@ function system_debug_enemy_invasion_spawn(){
 		if (invasion_faction == 0) {
 			amount = 7;
 		}
-		invasion_faction == 
 		if (invasion_faction == 2) {
 			amount = 9;
 		}

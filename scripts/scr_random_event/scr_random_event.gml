@@ -733,14 +733,14 @@ function scr_random_event(execute_now) {
 
 
 	    var _pop_data = {
-	    	percent_remove = _percent_remove
+	    	percent_remove : _percent_remove,
 	    	options : [
 	    		{
-	    			str1:_opt1
-	    			method : event_dispose_of_mutated_gene
+	    			str1:_opt1,
+	    			method : event_dispose_of_mutated_gene,
 	    		},
 	    		{
-	    			str1:_opt2
+	    			str1:_opt2,
 	    			method : function(){
 	    				scr_loyalty("Mutant Gene-Seed", "+");
 	    				popup_default_close();

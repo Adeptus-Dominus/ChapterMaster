@@ -217,11 +217,11 @@ function spawn_mechanicus_mission(chosen_mission = "random"){
             mission_data.options =[
 				{
 					str1:"Accept",
-					method :
+					method : accept_mechanicus_mars_mission
 				},
 				{
 					str1:"Refuse",
-					method :popup_default_close,
+					method : popup_default_close,
 				},
 			]
 			_evented = true;

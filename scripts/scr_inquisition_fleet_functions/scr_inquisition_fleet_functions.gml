@@ -321,121 +321,193 @@ function inquisitor_ship_approaches(){
     }
 }
 
-function inquisition_inspection_loyalty(inspection_type){
-if (inspection_type="inspect_world") or (inspection_type="inspect_fleet"){
-        var i,diceh,ca,ia,that,wid,hurr;
-        i=0;diceh=0;ca=0;ia=0;that=0;wid=0;hurr=0;
-    
-        var sniper,finder,git,demonic;
-        sniper=0;finder=0;git=0;demonic=0;
-    
-    
-        if (inspection_type="inspect_world"){
+function inquisitor_inspection_struture() constructor{
 
-            that=instance_nearest(x,y,obj_star);
-            // show_message(that);
-            instance_activate_object(obj_en_fleet);
-            
-            for (var i =1;i<=that.planets;i++){
-                if (that.p_hurssy[i]>0) then hurr+=that.p_hurssy[i];
-            }
-            var unit;
-             for (var g=1;g<array_length(obj_ini.artifact);g++){
-                if (obj_ini.artifact[g]!="" && obj_ini.artifact_loc[i]=that.name){
-                    if (obj_ini.artifact_struct[g].inquisition_disprove() && !obj_controller.und_armouries){
-                        hurr+=8;
-                        demonic+=1;
-                    }
-                }
-            }
+    finds = {
+        heresy : 0,
+        daemonic : 0,
+    };
 
-            for (var ca=0;ca<11;ca++){
-                for (var ia=0;ia<500;ia++){
-                    unit = fetch_unit([ca,ia]);
-                    if (unit.location_string==that.name){
-                        if (unit.role()="Ork Sniper") and (obj_ini.race[ca,ia]!=1){hurr+=1;sniper+=1;}
-                        if (unit.role()="Flash Git") and (obj_ini.race[ca,ia]!=1){hurr+=1;git+=1;}
-                        if (unit.role()="Ranger") and (obj_ini.race[ca,ia]!=1){hurr+=1;finder+=1;}
-                        var artis = unit.equipped_artifacts();
-                        for (var art=0;art<array_length(artis);art++){
-                            var artifact = obj_ini.artifact_struct[artis[art]];
-                            if (artifact.inquisition_disprove()){
-                                hurr+=8;
-                                demonic+=1;
-                            }
-                        }
-                    }
+    ships = -1;
+    planets = 0;
+    location = "";
+
+    star = -1;
+
+    units = [];
+
+    static collect_inspection_units = function(){
+        units = collect_role_group("all",[location,planets,ships]);
+    }
+
+    static planet_heresys = function(){
+        if (instance_exists(star)){
+            if (!is_array(planets)){
+                finds.heresy += star.p_hurssy[planets];
+            } else {
+                for (var i=0 ;i <=array_length(planets); i++){
+                    finds.heresy += star.p_hurssy[planets[i]];
                 }
             }
         }
+    }
+
+    static inquisitor_inspect_units = function(){
+        for (var i=0;i<array_length(units);i++){
+            if (unit.name()==""){
+                continue;
+            }
+            if (unit.base_group=="ork"){
+                add_xenos_mercs(unit.role(), _inquisitor_finds);
+            }else if (unit.role()="Ranger" && obj_ini.race[ca,ia]!=1){
+                add_xenos_mercs(unit.role(), _inquisitor_finds);
+            }
+
+            var artis = unit.equipped_artifacts();
+            for (var art=0;art<array_length(artis);art++){
+                var artifact = obj_ini.artifact_struct[artis[art]];
+                if (artifact.inquisition_disprove()){
+                    finds.heresy+=8;
+                    finds.daemonic++;
+                }
+            }        
+        }
+    }
+
+    static inquisitor_inspect_artifacts = function(){
+        for (var g=1;g<array_length(obj_ini.artifact);g++){
+            var _arti = obj_ini.artifact_struct[g];
+
+            if (_arti.type()==""){
+                continue;
+            }
+            if (_arti.ship_id() > -1){
+                if (is_array(ships)){
+                    if (!array_contains(ships, _arti.ship_id())){
+                        continue;
+                    }
+                } else {
+                    if (_arti.ship_id() != ships){
+						continue;
+					}
+                }
+            }
+
+            if (_arti.inquisition_disprove() && !obj_controller.und_armouries){
+                finds.heresy+=8;
+                finds.daemonic+=1;
+            } 
+        }
+    }
+
+    static add_xenos_mercs = function(role,finds){
+        if (!struct_exists(xenos_mercs, finds)){
+            finds.xenos_mercs = {};
+        }
+        if (!struct_exists(finds.xenos_mercs, role)){
+            finds.xenos_mercs[$ role] = 1;
+        } else {
+            finds.xenos_mercs[$ role]++;
+        }
+        finds.heresy++;
+    }
+
+    static inspection_report = function(){
+        if (finds.heresy>0){
+            var _heretic_role = floor(random(12))+1;
+
+            if (_heretic_role <= finds.heresy){
+                obj_controller.alarm[8]=1;
+                if (finds.daemonic > 0){
+                    scr_alert("red","inspect","Inquisitor discovers Daemonic item(s) in your posession.",0,0);
+                }
+                if (struct_exists(finds, "xenos_mercs")) {
+                    var _merc_types = variable_struct_get_names(finds.xenos_mercs);
+                    if (array_length(_merc_types) > 0) {
+                        var _msg = "Inquisitor discovers Xenos mercenaries serving within your ranks:";
+                        for (var i = 0; i < array_length(_merc_types); i++) {
+                            var _role = _merc_types[i];
+                            var _count = finds.xenos_mercs[$ _role];
+                            var _role_string = string_plural_count(_role, _count, true); 
+                            _msg += $"\n- {_role_string}";
+                        }
+                        scr_alert("red", "inspect", _msg, 0, 0);
+                    }
+                }
+                if (finds.daemonic=0 && !_struct_exists(finds,"xenos_mercs")){
+                    scr_alert("red","inspect","Inquisitor discovers heretical material in your posession.",0,0);
+                }
+            }
+        }
+    }
+}
+
+
+function inquisition_inspection_loyalty(inspection_type){
+    if (inspection_type="inspect_world") or (inspection_type="inspect_fleet"){
     
-        if (inspection_type="inspect_fleet"){
+        var _inspect_results = new inquisitor_inspection_struture();
+
+        that=instance_nearest(x,y,obj_star);
+
+        if (inspection_type="inspect_world"){
+            var _monestary_planet = scr_get_planet_with_feature(that, P_features.Monastery);
+            if (_monestary_planet!= -1){
+                _inspect_results.planets  = _monestary_planet;
+            } else {
+                var _plans = [];
+                for (var i=1;i<=that.planets;i++){
+                    array_push(_plans,i);
+                }
+                _inspect_results.planets = _plans;
+            }
+
+            _inspect_results.star = that;
+
+            _inspect_results.planet_heresys();
+            
+            _inspect_results.collect_inspection_units();
+        
+            _inspect_results.inquisitor_inspect_artifacts();
+
+            _inspect_results.inquisitor_inspect_units();
+            
+        }
+    
+        else if (inspection_type="inspect_fleet"){
             with(obj_en_fleet){
                 if (string_count("Inqis",trade_goods)=0) or (owner  != eFACTION.Inquisition) then instance_deactivate_object(id);
             }
+
             if (instance_exists(obj_en_fleet)) and (instance_exists(obj_p_fleet)){
                 var player_inspection_fleet=instance_nearest(obj_en_fleet.x,obj_en_fleet.y,obj_p_fleet);
+
+                _inspect_results.ships = fleet_full_ship_array(player_inspection_fleet);
+
+                _inspect_results.collect_inspection_units();
             
-                var valid,g,t;i=-1;t=0;valid[0]=0;g=0;
-                player_ships = fleet_full_ship_array(player_inspection_fleet);
-                repeat(50){i+=1;valid[i]=0;}i=0;
-            
-                for (var g=1;g<array_length(obj_ini.artifact);g++){
-                   good=0;
-                   geh=0;
-                    i=0;
-                    if (obj_ini.artifact[g]!="" && array_contains(player_ships, obj_ini.artifact_sid[g]-500)){
-                        if (obj_ini.artifact_struct[g].inquisition_disprove() && !obj_controller.und_armouries){
-                            hurr+=8;
-                            demonic+=1;
-                        }
-                    }
+                _inspect_results.inquisitor_inspect_artifacts();
+
+                _inspect_results.inquisitor_inspect_units();
+
+                if (player_inspection_fleet.hurssy>0){
+                    _inspect_results.finds.heresy+=player_inspection_fleet.hurssy;
                 }
+
+
                 i=0;geh=0;good=0;
                 var unit;
                 if (player_inspection_fleet.hurssy>0) then hurr+=player_inspection_fleet.hurssy;
                 var ca, ia;
-                for (ca=0;ca<11;ca++){
-                    for (ia=0;ia<array_length(obj_ini.role[ca]);ia++){
+                
+                var _search_units = collect_role_group("all",["",0,player_ships]);
 
-                        unit = fetch_unit([ca,ia]);
-                        if (unit.name()=="") then continue;
-                        array_contains(player_ships,unit.ship_location)
-                        if (geh=1){
-                            unit = fetch_unit([ca,ia]);
-                            if (unit.name()=="") then continue;
-                            if (unit.base_group=="ork"){
-                                hurr+=1
-                                if (unit.role()="Ork Sniper") then sniper++;
-                                if (unit.role()="Flash Git")then gitt++
-                            }else if (unit.role()="Ranger") and (obj_ini.race[ca,ia]!=1){hurr+=1;finder+=1;}
-                            var artis = unit.equipped_artifacts();
-                            for (var art=0;art<array_length(artis);art++){
-                                var artifact = obj_ini.artifact_struct[artis[art]];
-                                if (artifact.inquisition_disprove()){
-                                    hurr+=8;
-                                    demonic+=1;
-                                }
-                            }
-                        }
-                    }
-                }
+                _inspect_results.inquisitor_inspect_units(_search_units);
             }
             instance_activate_object(obj_en_fleet);
         }
     
-        if (hurr>0){
-            var hurrr=floor(random(12))+1;
-            if (hurrr<=hurr){
-                obj_controller.alarm[8]=1;
-                if (demonic>0) then scr_alert("red","inspect","Inquisitor discovers Daemonic item(s) in your posession.",0,0);
-                if (sniper>0) then scr_alert("red","inspect","Inquisitor discovers Ork Sniper(s) hired by your chapter.",0,0);
-                if (git>0) then scr_alert("red","inspect","Inquisitor discovers Flash Git(z) hired by your chapter.",0,0);
-                if (finder>0) then scr_alert("red","inspect","Inquisitor discovers Eldar Ranger(s) hired by your chapter.",0,0);
-                if (demonic+sniper+git+finder=0) then scr_alert("red","inspect","Inquisitor discovers heretical material in your posession.",0,0);
-            }
-        }
-        i=0;
+        _inspect_results.inspection_report()
     
         repeat(22){
             i+=1;diceh=0;

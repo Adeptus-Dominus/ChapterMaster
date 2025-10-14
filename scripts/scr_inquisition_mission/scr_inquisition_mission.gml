@@ -482,7 +482,7 @@ function mission_hunt_inquisitor_take_artifact_bribe(){
 
 function mission_hunt_inquisitor_take_artifact_double_cross(){
     with (pop_data.inquisitor_ship) {
-       instance_destroy;
+       instance_destroy();
     }
     var last_artifact = scr_add_artifact("random", "", 4);
     
