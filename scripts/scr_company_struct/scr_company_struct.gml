@@ -533,7 +533,7 @@ function CompanyStruct(comp) constructor{
 								xx+bound_width[0]+5+string_width(deploy_text),
 								yy+bound_height[0],
 								xx+bound_width[0]+13+ string_width(deploy_text) +string_width(current_squad.formation_place),
-								yy+bound_height[0]+roll_down_offset,
+								yy+bound_height[0]+roll_down_offset
 							)
 						){
 							drop_down_open = false;

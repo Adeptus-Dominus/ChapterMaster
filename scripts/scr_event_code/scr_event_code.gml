@@ -154,26 +154,7 @@ function event_end_turn_action(){
 	        }
 	        // Spare the inquisitor
 	        if (_event.e_id == "inquisitor_spared"){
-	            var diceh=roll_dice_chapter(1, 100, "high");
-
-	            if (diceh<=25){
-	                alarm[8]=1;
-	                scr_loyalty("Crossing the Inquisition","+");
-	            }
-	            if (diceh>25) and (diceh<=50){
-	                scr_loyalty("Crossing the Inquisition","+");
-	            }
-	            if (diceh>50) and (diceh<=85){
-
-	            }
-	            if (diceh>85) and (_event.variation==2){
-	                scr_popup("Anonymous Message","You recieve an anonymous letter of thanks.  It mentions that motions are underway to destroy any local forces of Chaos.","","");
-	                with(obj_star){
-	                    for(var o=1; o<=planets; o++){
-	                        p_heresy[o]=max(0,p_heresy[o]-10);
-	                    }
-	                }
-	            }
+	        	hunt_inquisition_spared_inquisitor_consequence(_event);
 	        }
 
 	        if (_event.e_id == "strange_building"){

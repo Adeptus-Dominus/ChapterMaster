@@ -59,23 +59,19 @@ hi=0;
 
 exit; // ???
 
+//if (fade<=20){
 
-
-
-
-if (fade<=20){
-
-    if (mouse_x>=369) and (mouse_x<619){
-        if (mouse_y>=183) and (mouse_y<200) then hi=1;
-        if (mouse_y>=213) and (mouse_y<230) then hi=2;
-        if (mouse_y>=243) and (mouse_y<260) then hi=3;
-    }
+//    if (mouse_x>=369) and (mouse_x<619){
+//        if (mouse_y>=183) and (mouse_y<200) then hi=1;
+//        if (mouse_y>=213) and (mouse_y<230) then hi=2;
+//        if (mouse_y>=243) and (mouse_y<260) then hi=3;
+//    }
     
-    if (mouse_x>=414) and (mouse_y>=273) and (mouse_x<578) and (mouse_y<290) then hi=4;
+//    if (mouse_x>=414) and (mouse_y>=273) and (mouse_x<578) and (mouse_y<290) then hi=4;
     
-    if (instance_exists(obj_saveload)){
-        // if (scr_hit(sdfgsdgsdg)=true) then hi=6;
-    }
-}
+//    if (instance_exists(obj_saveload)){
+//        // if (scr_hit(sdfgsdgsdg)=true) then hi=6;
+//    }
+//}
 
-if (mouse_x<552) or (mouse_y<441) or (mouse_x>608) or (mouse_y>457) and (browser=1) then browser=0;
+//if (mouse_x<552) or (mouse_y<441) or (mouse_x>608) or (mouse_y>457) and (browser=1) then browser=0;

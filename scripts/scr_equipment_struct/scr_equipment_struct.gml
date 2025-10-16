@@ -1,3 +1,18 @@
+global.tag_maintenance_values = {
+    "heavy_ranged" : 0.5,
+    "power" : 0.5,
+    "ancient" : 1.0,
+    "plasma" : 0.8,
+    "melta" : 0.8,
+    "las" : 0.1,
+    "bolt" : 0.01,
+    "chain" : 0.01,
+    "flame" : 0.02,
+    "xenos" : 1,
+    "dreadnought" : 0.6,
+    "vehicle" : 0.4,
+}
+
 function EquipmentStruct(item_data, core_type, quality_request = "none") constructor {
     type = core_type;
 
@@ -45,8 +60,11 @@ function EquipmentStruct(item_data, core_type, quality_request = "none") constru
 
     // Placeholder maintenance values;
     if (maintenance == 0) {
-        if (has_tags(["heavy_ranged", "power", "plasma", "melta"])) {
-            maintenance = 0.05;
+        var _maintenance_names = struct_get_names(global.tag_maintenance_values);
+        for (var i=0;i<array_length(_maintenance_names);i++){
+            if (has_tag(_maintenance_names[i])){
+                maintenance += global.tag_maintenance_values[$_maintenance_names[i]];
+            }
         }
     }
 
@@ -409,19 +427,14 @@ function quality_color(_item_quality) {
     switch (_item_quality) {
         case "standard":
             return draw_get_color();
-            break;
         case "master_crafted":
             return #bf9340;
-            break;
         case "artificer":
             return #bf4040;
-            break;
         case "artifact":
             return #40bfbf;
-            break;
         case "exemplary":
             return #80bf40;
-            break;
     }
 }
 

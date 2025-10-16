@@ -151,6 +151,7 @@ function scr_cheatcode(argument0) {
 
 				case "inquismission": 
 					var mission = cheat_arguments[0];
+					show_debug_message($"{mission},");
 					switch (mission){
 						case "1": //default 
 							scr_inquisition_mission(EVENT.inquisition_mission);
@@ -183,6 +184,8 @@ function scr_cheatcode(argument0) {
 							scr_inquisition_mission(EVENT.inquisition_mission);
 						break;
 					}
+					show_debug_message("inquisitor mission initiated");
+					obj_controller.location_viewer.update_mission_log();
 					break;
 				case "artifactpopulate":
 					with (obj_star) {
@@ -400,4 +403,99 @@ function scr_cheatcode(argument0) {
 	} catch(_exception) {
 		show_debug_message(_exception.longMessage);
 	}
+}
+
+
+/// @mixin obj_Star_Select
+function draw_planet_debug_options(){
+	add_draw_return_values();
+	draw_set_halign(fa_left);
+	draw_set_color(c_white);
+	draw_set_alpha(1);
+	if (debug) {
+		debug_slate.inside_method = function(){
+			debug_options.draw()
+		    if (debug_options.current_selection == 0){
+		    	draw_planet_debug_forces()
+		    } else if (debug_options.current_selection == 1){
+		    	draw_planet_debug_problems()
+		    }
+		}
+		debug_slate.draw()
+	}
+    if (debug_button.draw()){
+        debug = !debug;
+        //scroll_problems = new ScrollableContainer()
+    }
+    pop_draw_return_values();
+}
+
+function draw_planet_debug_problems(){
+	var base_y = 220;
+	var _keys = planet_problem_keys;
+	base_y += 2;
+	for (var i=0;i<array_length(_keys);i++){
+		var _y = base_y + i * 20;
+		draw_text(38, _y, _keys[i]);
+		if (scr_hit(38, _y, 337,_y+20)){
+			tooltip_draw(mission_name_key(_keys[i]));
+			if (scr_click_left()){
+				switch(_keys[i]){
+					case "inquisitor":
+						mission_inquistion_hunt_inquisitor(target.id);
+						break;
+					case "necron":
+						mission_inquisition_tomb_world(target.id);
+						break;
+					default:
+						scr_popup("error","no specific debug action created please consider helping to make one");
+						break;
+				}
+			}
+		}
+	}
+}
+
+function draw_planet_debug_forces(){
+	add_draw_return_values();
+    var current_planet = obj_controller.selecting_planet;
+    var base_y = 220;
+    // Close window if clicked outside
+    if (!scr_hit([36,base_y,337,base_y+281]) && scr_click_left()) {
+        debug = 0;
+        exit;
+    }
+
+    // Define factions and their struct keys
+    var faction_names = [
+        "Orks", "Tau", "Tyranids", "Traitors",
+        "CSM", "Daemons", "Necrons", "Sisters"
+    ];
+    var faction_keys = [
+        "p_orks", "p_tau", "p_tyranids", "p_traitors",
+        "p_chaos", "p_demons", "p_necrons", "p_sisters"
+    ];
+
+    // Loop through each faction row
+    base_y += 2;
+    for (var i = 0; i < array_length(faction_names); i++) {
+        var _y = base_y + i * 20;
+        var key = faction_keys[i];
+
+        // Draw faction name and value
+        draw_text(38, _y, faction_names[i] + ": " + string(target[$ key][current_planet]));
+
+        // Draw [-] [+] controls
+        draw_text(147, _y, "[-] [+]");
+
+        // Handle minus click
+        if (point_and_click([147, _y, 167, _y + 20])) {
+            target[$ key][current_planet] = clamp(target[$key][current_planet] - 1, 0, 6);
+        }
+        // Handle plus click
+        else if (point_and_click([177, _y, 197, _y + 20])) {
+            target[$ key][current_planet] = clamp(target[$key][current_planet] + 1, 0, 6);
+        }
+    }
+    pop_draw_return_values();
 }

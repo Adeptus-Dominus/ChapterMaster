@@ -132,8 +132,7 @@ if (menu=1) or (menu=2){// This is the other one
                     com.image = "fuklaw";
                     com.title = "Delete Save Game?";
                     com.text = "Are you sure you wish to delete Save " + string(save[o]) + "- " + string(save_chapter[save[o]]) + "?";
-                    com.option1 = "Yes";
-                    com.option2 = "No";
+                    com.add_option(["Yes",  "No"]);
                     com.save = o;
                     com.woopwoopwoop = menu;
                     com.owner = top;

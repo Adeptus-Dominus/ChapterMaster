@@ -94,14 +94,14 @@ if (ruins_type<=2) or (ruins_type>=10){
 	wen4=choose(0,1);
 	wep5=choose("Company Standard","Narthecium","Psychic Hood","Rosarius");
 	wen5=choose(0,1);
-	wep6=choose("Storm Shield");
+	wep6="Storm Shield";
 	wen6=choose(1,2,3);
 }
 //Fallen Tactical Squad
 else if (ruins_type=3){
 	wep1=choose("MK3 Iron Armour","MK4 Maximus","MK5 Heresy");
 	wen1=choose(3,4,5,6);
-	wep2=choose("Phobos Bolter");
+	wep2="Phobos Bolter";
 	wen2=choose(2,3);
 	wep3=choose("Ryza Plasma Gun","Volkite Charger","Volkite Caliver");
 	wen3=choose(1,2);
@@ -113,14 +113,14 @@ else if (ruins_type=3){
 	wen6=choose(0,1);
 	wep7=choose("Company Standard","Narthecium","Psychic Hood","Rosarius");
 	wen7=choose(0,1);
-	wep8=choose("Bionics");
+	wep8="Bionics";
 	wen8=choose(1,2,3);
 }
 //Fallen Devastator Squad
 else if (ruins_type=4){
 	wep1=choose("MK3 Iron","MK4 Maximus","MK6 Corvus");
 	wen1=choose(3,4,5);
-	wep2=choose("Mars Heavy Bolter");
+	wep2="Mars Heavy Bolter";
 	wen2=choose(2,3);
 	wep3=choose("Mars Plasma Cannon","Volkite Culverin",);
 	wen3=choose(1,2);
@@ -132,7 +132,7 @@ else if (ruins_type=4){
 	wen6=choose(0,1);
 	wep7=choose("Company Standard","Narthecium","Psychic Hood","Rosarius");
 	wen7=choose(0,1);
-	wep8=choose("Heavy Weapons Pack");
+	wep8="Heavy Weapons Pack";
 	wen8=choose(1,2,3);
 }
 //Fallen Assault Squad
@@ -151,15 +151,14 @@ else if (ruins_type=5){
 	wen6=choose(0,1);
 	wep7=choose("Company Standard","Narthecium","Psychic Hood","Rosarius");
 	wen7=choose(0,1);
-
-	wep8=choose("Serpha Jump Pack");
+	wep8="Serpha Jump Pack";
 	wen8=choose(1,2,3);
 }
 //Fallen Breacher Squad
 else if (ruins_type=6){
 wep1=choose("MK3 Iron Armour","MK4 Maximus","MK5 Heresy");
 	wen1=choose(3,4,5,6);
-	wep2=choose("Primus Melta Gun");
+	wep2="Primus Melta Gun";
 	wen2=choose(2,3);
 	wep3=choose("Ryza Plasma Gun","Volkite Charger","Volkite Caliver");
 	wen3=choose(1,2);
@@ -171,11 +170,10 @@ wep1=choose("MK3 Iron Armour","MK4 Maximus","MK5 Heresy");
 	wen6=choose(0,1);
 	wep7=choose("Company Standard","Narthecium","Psychic Hood","Rosarius");
 	wen7=choose(0,1);
-	wep8=choose("Boarding Shield");
+	wep8="Boarding Shield";
 	wen8=choose(1,2,3);
 }
-		
-    
+
 	    scr_add_item(wep1,wen1);
 	    scr_add_item(wep2,wen2);
 	    scr_add_item(wep3,wen3);
@@ -197,9 +195,12 @@ wep1=choose("MK3 Iron Armour","MK4 Maximus","MK5 Heresy");
 	    pop.image="geneseed_lab";
 	    pop.title="Ancient Ruins: Gene-seed";
 	    pop.text="My lord, your battle brothers have located a hidden, fortified laboratory within the ruins.  Contained are a number of bio-vaults with astartes gene-seed; "+string(gene)+" in number.  Your marines are not able to determine the integrity or origin.";
-	    pop.option1="Add the gene-seed to chapter vaults.";
-	    pop.option2="Salvage the laboratory for requisition.";
-	    pop.option3="Leave the laboratory as is.";
+	    var options = [
+		    "Add the gene-seed to chapter vaults.", 
+		    "Salvage the laboratory for requisition.",
+		    "Leave the laboratory as is.",
+	    ]
+	    pop.add_option(options);
 	    pop.estimate=gene;
 	}
 	else if (loot="bunker"){// Bunker
@@ -221,8 +222,11 @@ wep1=choose("MK3 Iron Armour","MK4 Maximus","MK5 Heresy");
 	    pop.feature = _ruins;
 	    pop.star_system = star_system;
 	    pop.text="Praise the Emperor! We have found a massive, ancient fortress in needs of repairs. The gun batteries are rusted, and the walls are covered in moss with huge hole in it. Such a pity that such a majestic building is now a pale shadow of its former glory.  It is possible to repair the structure.  What is thy will?";
-	    pop.option1="Repair the fortress to boost defenses.  (1000 Req)";
-	    pop.option2="Salvage raw materials from the fortress.";
+	    var options = [
+		    "Repair the fortress to boost defenses.  (1000 Req)", 
+		    "Salvage raw materials from the fortress."
+	    ]
+	    pop.add_option(options);
 	}
 	else if (loot="starship"){// Starship
 	    var pop=instance_create(0,0,obj_popup);

@@ -220,7 +220,7 @@ global.weapons = {
 		},
 		"description": "This is the prototype that turned into the staple of all Heavy Bolter designs. Introduced in early Great Crusade, it was one of the very first heavy support weapons churned out by the forges of Mechanicum.",
 		"melee_hands": 1,
-		"ranged_hands": 2,
+		"ranged_hands": 2.2,
 		"ammo": 12,
 		"range": 17,
 		"spli": 9,
@@ -362,7 +362,7 @@ global.weapons = {
 		"range": 1.5,
 		"spli": 6,
 		"arp": 1,
-		"tags": ["power"]
+		"tags": ["power",]
 	},
 	//Laser Pack
 	"Ryza Lascannon": {
@@ -1480,7 +1480,7 @@ global.weapons = {
 		},
 		"description": "The Heavy Bolter is a heavy weapon that fires larger and more powerful bolt shells compared to the standard Bolter.",
 		"melee_hands": 1,
-		"ranged_hands": 2,
+		"ranged_hands": 2.2,
 		"ammo": 10,
 		"range": 16,
 		"spli": 6,
@@ -1496,7 +1496,7 @@ global.weapons = {
 		},
 		"description": "The Deathwatch mag-clamp rare suspensor discs onto their infernus heavy bolters that reduce the weapon’s effective weight considerably. Such weapons are further bolstered by underslung heavy flamers that can incinerate those enemies that make it through the hail of explosive bolts.",
 		"melee_hands": 1,
-		"ranged_hands": 2,
+		"ranged_hands": 2.2,
 		"ammo": 10,
 		"range": 16,
 		"spli": 6,
@@ -1963,7 +1963,7 @@ global.weapons = {
 		"range": 2.1,
 		"spli": 3,
 		"arp": -1,
-		"tags": ["flame"]
+		"tags": ["flame", "force"],
 	},
 	"Force Staff": {
 		"attack": {
@@ -2386,7 +2386,7 @@ global.gear = {
 			"description": "Terminator Armour is the strongest and most powerful armour designed by humanity, available only to the veterans of the Adeptus Astartes. The Indomitus Pattern is the most widespread and versatile pattern as of M41.",
 			"tags": ["terminator"],
 			"req_exp": 100,
-			"maintenance" : 0.3,
+			"maintenance" : 1,
 		},
 		"Dreadnought": {
 			"abbreviation": "Drdnght",
@@ -2409,7 +2409,6 @@ global.gear = {
 			"ranged_hands": 8,
 			"description": "A massive war-machine that can be piloted by an honored Astarte, who otherwise would have fallen in combat. Some of the Astartes consider this a fate worse than death",
 			"tags": ["dreadnought"],
-			"maintenance" : 1,
 		},
 		"Contemptor Dreadnought": { 
 			"abbreviation": "Cntmptr",
@@ -2431,8 +2430,7 @@ global.gear = {
 			"melee_hands": 8,
 			"ranged_hands": 8,
 			"description": "PLACEHOLDER",
-			"tags": ["dreadnought"],
-			"maintenance" : 1,
+			"tags": ["dreadnought", "ancient"],
 		},
 		"Tartaros": {
 			"abbreviation": "Tartrs",
@@ -2456,7 +2454,7 @@ global.gear = {
 			"description": "This pattern is possibly considered the most advanced form of Terminator Armour, providing greater mobility for the wearer compared to the Indomitus with no loss in durability. In the M41 considered to be incredibly rare with wars being fought to secure more suits.",
 			"tags": ["terminator"],
 			"req_exp": 100,
-			"maintenance" : 0.5,
+			"maintenance" : 3,
 		},
 		"Cataphractii": {
 			"abbreviation": "Catphr",
@@ -2480,7 +2478,7 @@ global.gear = {
 			"description": "Among the first issued to the Space Marine Legions. Having additional plating and shield generators installed within the shoulder pads resulted in severe straining of the suit's exoskeleton and reduced the wearer's maneuverability, leading to its decline among some legions.",
 			"tags": ["terminator"],
 			"req_exp": 100,
-			"maintenance" : 0.75,
+			"maintenance" : 2.5,
 		},
 	// Tribal wear
 		"Tribalwear": {
@@ -2532,7 +2530,7 @@ global.gear = {
 			},
 			"description": "An ancient set of Power Armor dating back to the early Great Crusade. The Mark III has heavier armor plating but is far heavier then its contemporaries.",
 			"tags": ["power_armour"],
-			"maintenance" : 0.1,
+			"maintenance" : 0.3,
 		},
 		"MK4 Maximus": {
 			"abbreviation": "MK4",
@@ -2553,7 +2551,7 @@ global.gear = {
 			},
 			"description": "Power Armor dating back to the end of the Great Crusade. It is considered the pinnacle of Power Armor by some Astartes. However, the components are no longer reproducible, the knowledge having been lost to time.",
 			"tags": ["power_armour"],
-			"maintenance" : 0.2,
+			"maintenance" : 0.4,
 		},
 		"MK5 Heresy": {
 			"abbreviation": "MK5",
