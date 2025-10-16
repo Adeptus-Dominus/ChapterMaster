@@ -749,7 +749,7 @@ function scr_random_event(execute_now) {
 	    	]
 	    }
 
-	    scr_popup("Gene-Seed Mutated!",text,"gene_bad","");
+	    scr_popup("Gene-Seed Mutated!",text,"gene_bad","",_pop_data);
 		_evented = true;
 	    scr_event_log("red","The Chapter Gene-Seed has mutated.");
 	}

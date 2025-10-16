@@ -232,7 +232,7 @@ function event_end_turn_action(){
 		    		},
 		    		{
 		    			str1 : "I see no problem",
-		    			method : popup_default_close(),    	
+		    			method : popup_default_close,    	
 		    		}
 				]
 		            var _pop_data = {
@@ -242,7 +242,7 @@ function event_end_turn_action(){
 		            	marine_name : marine_name,
 		            }		    		
 	            } else {
-	            	pop_data = "";
+	            	_pop_data = "";
 	            }
 
 	            scr_popup("He Built It",tixt,"tech_build",_pop_data);

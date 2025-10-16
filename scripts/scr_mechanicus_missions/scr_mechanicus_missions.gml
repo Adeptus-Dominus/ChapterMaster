@@ -286,7 +286,6 @@ function accept_mechanicus_tomb_mission(){
 	if (_planet > 0) {
 		_planet = new PlanetData(_planet, _star);
 		_planet.add_problem("mech_tomb1", 17)
-		add_new_problem(_planet, "mech_tomb1", 17);
 		var _name = _planet.name();
 		text = $"The Adeptus Mechanicus await your forces at {_name}.  They are expecting at least two squads of Astartes and have placed the testing on hold until their arrival.  {global.chapter_name} have 16 months to arrive.";
 		scr_event_log("", "Mechanicus Mission Accepted: At least two squads of marines are expected at {_name} within 16 months.", _star.name);

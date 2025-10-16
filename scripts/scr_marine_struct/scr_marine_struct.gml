@@ -2117,7 +2117,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         var _multi_planet = is_array(planet);
         if (planet > 0 || _multi_planet && location_string == location) {
             if (_multi_planet){
-                if (array_contains(_multi_planet, planet_location)){
+                if (array_contains(planet, planet_location)){
                     is_at_loc = true;
                 }
             }
@@ -2126,7 +2126,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             }
         } else if (_multi_ship || ship > -1) {
             if (_multi_ship){
-                if (array_contains(_multi_ship, ship_location)){
+                if (array_contains(ship, ship_location)){
                     is_at_loc = true;
                 }
             }

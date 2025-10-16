@@ -221,15 +221,7 @@ wep1=choose("MK3 Iron Armour","MK4 Maximus","MK5 Heresy");
 }
 
 function ancient_gene_lab_ruins_loot(){
-
-    pop.image="geneseed_lab";
     var _text = $"My lord, your battle brothers have located a hidden, fortified laboratory within the ruins.  Contained are a number of bio-vaults with astartes gene-seed; {gene} in number.  Your marines are not able to determine the integrity or origin.";
-    var options = [
-	    "Add the gene-seed to chapter vaults.", 
-	    "Salvage the laboratory for requisition.",
-	    "Leave the laboratory as is.",
-    ]
-    pop.add_option(options);
 
     var _pop_data = {
     	gene_found : gene,
@@ -238,9 +230,10 @@ function ancient_gene_lab_ruins_loot(){
 			str1: "Add the gene-seed to chapter vaults.",
 			method: function() {
 				image = "";
-				text = string(estimate) + " gene-seed has been added to the chapter vaults.";
+				var _estimate = irandom_range(3,15)
+				text = string(_estimate) + " gene-seed has been added to the chapter vaults.";
 				reset_popup_options();
-				obj_controller.gene_seed += estimate;
+				obj_controller.gene_seed += _estimate;
 				//scr_play_sound(snd_success);
 				with (obj_ground_mission) {
 					instance_destroy();
@@ -250,12 +243,11 @@ function ancient_gene_lab_ruins_loot(){
 		{
 			str1: "Salvage the laboratory for requisition.",
 			method: function() {
-				var req;
-				req = floor(random_range(200, 500)) + 1;
+				var _req = floor(random_range(200, 500)) + 1;
 				image = "";
-				text = "Technological components have been salvaged, granting " + string(req) + " requisition.";
+				text = "Technological components have been salvaged, granting " + string(_req) + " requisition.";
 				reset_popup_options();
-				obj_controller.requisition += req;
+				obj_controller.requisition += _req;
 				//scr_play_sound(snd_salvage);
 				with (obj_ground_mission) {
 					instance_destroy();
