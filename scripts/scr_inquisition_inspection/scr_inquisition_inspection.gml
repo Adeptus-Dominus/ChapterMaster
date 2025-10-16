@@ -2,7 +2,8 @@ function inquisitor_inspection_structure() constructor {
     // ----- Instance data -----
     finds = {
         heresy: 0,
-        daemonic: 0
+        daemonic: 0,
+        poor_practices : 0,
     };
 
     ships = -1;
@@ -144,22 +145,22 @@ function inquisitor_inspection_structure() constructor {
             if (array_length(base_search) > 0) {
                 any_found = true;
                 var player_base = star.p_upgrades[pidx][base_search[0]];
-                var tem1_local = tem1_base;
+                var _poor_base_practice = finds.poor_practices;
 
-                if (player_base.vox > 0) { tem1_local += 2; }
-                if (player_base.torture > 0) { tem1_local += 1; }
-                if (player_base.narcotics > 0) { tem1_local += 3; }
+                if (player_base.vox > 0) { _poor_base_practice += 2; }
+                if (player_base.torture > 0) { _poor_base_practice += 1; }
+                if (player_base.narcotics > 0) { _poor_base_practice += 3; }
 
                 alter_disposition([
-                    [eFACTION.Imperium, -tem1_local * 2],
-                    [eFACTION.Inquisition, -tem1_local * 3],
-                    [eFACTION.Ecclesiarchy, -tem1_local * 3]
+                    [eFACTION.Imperium, -_poor_base_practice * 2],
+                    [eFACTION.Inquisition, -_poor_base_practice * 3],
+                    [eFACTION.Ecclesiarchy, -_poor_base_practice * 3]
                 ]);
 
-                finds.heresy += tem1_local;
+                finds.heresy += _poor_base_practice;
                 finds.secret_lair_flag = true;
 
-                if (tem1_local >= 3) {
+                if (_poor_base_practice >= 3) {
                     obj_controller.inqis_flag_lair += 1;
                     obj_controller.loyalty -= 10;
                     obj_controller.loyalty_hidden -= 10;
