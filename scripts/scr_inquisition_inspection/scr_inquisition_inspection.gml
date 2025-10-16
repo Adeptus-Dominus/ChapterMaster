@@ -408,7 +408,7 @@ function inquisitor_inspection_structure() constructor {
             }
         } else {
         	var _inspection_passed_string = "The inquisitor Has chosen to turnj a blind eye to some of your more heretical dealings on this occaision. However, it would perhaps be wise to be more careful in furture ";
-        	scr_popup("Inquisitor Finish Inspection", _inspection_passed_string,inquisition)
+        	scr_popup("Inquisitor Finish Inspection", _inspection_passed_string,"inquisition")
         }
     };
 }
