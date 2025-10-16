@@ -112,7 +112,7 @@ function mechanicus_missions_end_turn(planet){
     
     var mars_mech_mission = has_problem_planet_and_time(planet,"mech_mars", 0);
     if (mars_mech_mission>-1){
-    	mechanicus_mars_mission_target_time_elapsed();         	
+    	mechanicus_mars_mission_target_time_elapsed(planet);         	
     }
 
     if (has_problem_planet_and_time(planet,"mech_raider", 0)>-1){
@@ -180,13 +180,13 @@ function spawn_mechanicus_mission(chosen_mission = "random"){
 
 		var star = array_random_element(_forge_stars);
 
-		var mission_data = {
+		var _mission_data = {
 			star : star.id,
 		}
 		var _name = star.name;
         if (chosen_mission == "mech_raider"){
             var text=$"The Adeptus Mechanicus are trusting you with a special mission.  They wish for you to bring a Land Raider and six {obj_ini.role[100][16]} to a Forge World in {_name} for testing and training, for a duration of 24 months. You have four years to complete this.  Can your chapter handle this mission?";
-            mission_data.options =[
+            _mission_data.options =[
 				{
 					str1:"Accept",
 					method : accept_mechanicus_land_raider_mission,
@@ -200,7 +200,7 @@ function spawn_mechanicus_mission(chosen_mission = "random"){
         }
         else if (chosen_mission == "mech_bionics") {
             var text=$"The Adeptus Mechanicus are trusting you with a special mission.  They desire a squad of Astartes with bionics to stay upon a Forge World in {_name} for testing, for a duration of 24 months.  You have four years to complete this.  Can your chapter handle this mission?";
-            mission_data.options =[
+            _mission_data.options =[
 				{
 					str1:"Accept",
 					method :accept_mechanicus_bionics_mission,
@@ -214,7 +214,7 @@ function spawn_mechanicus_mission(chosen_mission = "random"){
         }
         else {
             var text=$"The local Adeptus Mechanicus are preparing to embark on a voyage to Mars, to delve into the catacombs in search of lost technology.  Due to your close relations they have made the offer to take some of your {obj_ini.role[100][16]}s with them for both their unique abilities to function as both scientific helpers and as helpers (high Weapon Skill and Technology is reccomended).  Can your chapter handle this mission?";
-            mission_data.options =[
+            _mission_data.options =[
 				{
 					str1:"Accept",
 					method : accept_mechanicus_mars_mission
@@ -227,9 +227,9 @@ function spawn_mechanicus_mission(chosen_mission = "random"){
 			_evented = true;
         }
         if (_evented){
-        	scr_popup("Mechanicus Mission",text,"mechanicus",mission_data);
+        	scr_popup("Mechanicus Mission",text,"mechanicus",_mission_data);
         }
-        //show_debug_message(mission_data);
+        //show_debug_message(_mission_data);
     }
 
     else if (chosen_mission=="mech_tomb") {
@@ -255,7 +255,7 @@ function spawn_mechanicus_mission(chosen_mission = "random"){
 			star : star.id,
 			pathway_id : chosen_mission,
 		}
-        mission_data.options =[
+        _mission_data.options =[
 			{
 				str1:"Accept",
 				method : accept_mechanicus_tomb_mission,
@@ -386,7 +386,7 @@ function accept_mechanicus_mars_mission(){
 
 
 /// @mixin obj_star
-function mechanicus_mars_mission_target_time_elapsed(){
+function mechanicus_mars_mission_target_time_elapsed(planet){
  	var techs_taken,com,ide,ship_planet, _unit;
     techs_taken=0;com=-1;ide=0;ship_planet="";        	
     for (com =0; com<=10;com++){
@@ -395,9 +395,9 @@ function mechanicus_mars_mission_target_time_elapsed(){
             if (_unit.name() == ""){
             	continue;
             }
-            if (_unit.role()=obj_ini.role[100][eROLE.Techmarine]){
+            if (_unit.role() == obj_ini.role[100][eROLE.Techmarine]){
                 // Case 1: on planet
-                if (_unit.location_string=name) and (_unit.planet_location=planet){
+                if (_unit.location_string == name) and (_unit.planet_location == planet){
                     p_player[planet]-=_unit.get_unit_size();
                     _unit.location_string="Mechanicus Vessel";
                     _unit.planet_location=0;

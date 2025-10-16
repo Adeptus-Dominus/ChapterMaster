@@ -76,7 +76,7 @@ function inquisitor_inspection_structure() constructor {
                 if (artifact_index < 0 || artifact_index >= array_length(obj_ini.artifact_struct)) { continue; }
                 var artifact = obj_ini.artifact_struct[artifact_index];
                 if (artifact != undefined) {
-                    if (artifact.inquisition_disprove()) {
+                    if (artifact.inquisition_disaprove()) {
                         finds.heresy += 8;
                         finds.daemonic += 1;
                     }
@@ -107,24 +107,24 @@ function inquisitor_inspection_structure() constructor {
                 continue;
             }
 
-            if (_arti.inquisition_disprove() && !obj_controller.und_armouries) {
+            if (_arti.inquisition_disaprove() && !obj_controller.und_armouries) {
                 finds.heresy += 8;
                 finds.daemonic += 1;
             }
         }
     };
 
-    static add_xenos_mercs = function(role, _finds_ref) {
+    static add_xenos_mercs = function(role) {
         // ensure struct exists on finds
-        if (!struct_exists(_finds_ref, "xenos_mercs")) {
-            _finds_ref.xenos_mercs = {};
+        if (!struct_exists(finds, "xenos_mercs")) {
+            finds.xenos_mercs = {};
         }
-        if (!struct_exists(_finds_ref.xenos_mercs, role)) {
-            _finds_ref.xenos_mercs[$ role] = 1;
+        if (!struct_exists(finds.xenos_mercs, role)) {
+            finds.xenos_mercs[$ role] = 1;
         } else {
-            _finds_ref.xenos_mercs[$ role] += 1;
+            finds.xenos_mercs[$ role] += 1;
         }
-        _finds_ref.heresy += 1;
+        finds.heresy += 1;
     };
 
     // ----- Inspection modules that use internal star & planets -----
