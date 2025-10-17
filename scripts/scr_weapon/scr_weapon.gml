@@ -96,6 +96,55 @@ global.weapons = {
 		"spli": 2, // Should be affected by agility, I guess? How quickly can a person pick a pebble up, install in the sling, aim, apply force and release.
 		"arp": 0, // Also Strength, if we want to go into depth with this?
 	},
+	// Early Conventional Weapons
+	"Crossbow": {
+		"abbreviation": "Crsbow",
+		"attack": {
+			"standard": 15,
+			"master_crafted": 18,
+			"artifact": 20
+		},
+		"description": "A simple ranged weapon, typically made from wood.",
+		"melee_hands": 1,
+		"ranged_hands": 1.25, 
+		"ammo": 10,
+		"range": 5, // Should probably also be affected by strength stat of the user
+		"spli": 2, // Should be affected by agility, I guess? How quickly can a person pull an arrow out of a quiver, install in the bow, aim, apply force and release.
+		"arp": 0, // Also Strength, if we want to go into depth with this?
+	},
+	"Early Metal Sword": {
+		"abbreviation": "MtlSrd",
+		"attack": {
+			"standard": 15,
+			"master_crafted": 18,
+			"artifact": 20
+		},
+		"description": "A sword made out of simple to forge metals, such as bronze or iron.",
+		"melee_hands": 1,
+		"ranged_hands": 0.5,
+		"ammo": 0,
+		"range": 1,
+		"spli": 2,
+		"arp": 0,
+		"tags": ["martial", "primitive"],
+	},
+	// Late Conventional Weapons
+	"Steel Sword": {
+		"abbreviation": "StlSrd",
+		"attack": {
+			"standard": 20,
+			"master_crafted": 25,
+			"artifact": 30
+		},
+		"description": "A sword made out of steel. Would be a decent weapon, if it had a power field.",
+		"melee_hands": 1,
+		"ranged_hands": 0.5,
+		"ammo": 0,
+		"range": 1,
+		"spli": 2,
+		"arp": 0,
+		"tags": ["martial", "primitive"],
+	},
 	//30k Weapons
 	//Volkite Pack
 	"Volkite Culverin": {
@@ -2491,6 +2540,38 @@ global.gear = {
 			"description": "Garmets made from animal hides and plant material. Usually seen used by primitives and ferals.",
 			"tags": ["primitive"],
 		},
+	// Early Conventional Armours
+		"Chainmail": {
+			"abbreviation": "Chnml",
+			"armour_value": {
+				"standard": 4,
+				"master_crafted": 5,
+				"artifact": 6
+			},
+			"description": "An armour made out of small metal rings, forming a mesh. Effectiveness is limited considering the foes we are supposed to face.",
+			"tags": ["primitive"],
+		},
+	// Late Conventional Armour
+		"Plate Armour": {
+			"abbreviation": "PltArm",
+			"armour_value": {
+				"standard": 6,
+				"master_crafted": 8,
+				"artifact": 10
+			},
+			"description": "An armour made out of steel. Effectiveness is limited considering the foes we are supposed to face.",
+			// "tags": ["primitive"],
+		},
+		"Flak Armour": {
+			"abbreviation": "FlkArm",
+			"armour_value": {
+				"standard": 7,
+				"master_crafted": 8,
+				"artifact": 10
+			},
+			"description": "The armour used by the standard imperial forces, adjusted to be useable by space marines.",
+			// "tags": ["primitive"],
+		},
 	// 40k armours
 		"Scout Armour": {
 			"abbreviation": "SctArm",
@@ -2841,6 +2922,7 @@ global.gear = {
 		"Sororitas Medkit": {
 			"abbreviation": "SorMed",
 			"description": "A multi-purpose medkit designed to deal with basic battlefield ailments until further medical assistance can be sought.",
+		// Add encumbrance values perhaps?
 		},
 		"Bionics": {
 			"abbreviation": "Bncs",
@@ -3091,6 +3173,20 @@ global.gear = {
 			},
 			"melee_hands": -0.9,
 			"ranged_hands": -0.9,
+		},
+	// Conventional repair item
+		"Combi-Tool": {
+			"abbreviation": "CmbTl",
+			"special_properties": ["Repairs Vehicles"],
+			// "second_profiles": ["Stone Hammer"],
+			"description": "The standard utility and maintenance tool in the imperium.",
+			"damage_resistance_mod": {
+				"standard": 0, // Adjusted
+				"master_crafted": 2, // Adjusted
+				"artifact": 4 // Adjusted
+			},
+			"melee_hands": -0.45,
+			"ranged_hands": -0.45,
 		},
 	// 40k items
 		"Servo-arm": {
