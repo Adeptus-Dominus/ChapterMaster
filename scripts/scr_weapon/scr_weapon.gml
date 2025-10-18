@@ -57,8 +57,8 @@ global.weapons = {
 			"standard": 15,
 			"master_crafted": 17,
 			"artifact": 20
-		}
-		"description": "A flattened rock attacked to a piece of wood. With a few other tools, it could be a caveman's way of repairing things..."
+		},
+		"description": "A flattened rock attacked to a piece of wood. With a few other tools, it could be a caveman's way of repairing things...",
 		"melee_hands": 0.6,
 		"ranged_hands": 0.6,
 		"ammo": 0,
@@ -2916,7 +2916,7 @@ global.gear = {
 			"description": "A collection of various ingredients - from plant, mushroom and animal-based - that have a medical use. Primitive, so usefulness is limited.",
 			"melee_hands": -0.9,
 			"ranged_hands": -0.9,
-			"tags" ["primitive"],
+			"tags": ["primitive"],
 		},
 	//Gear of 40k
 		"Sororitas Medkit": {
