@@ -165,7 +165,7 @@ function event_end_turn_action(){
 	            var _unit=fetch_unit([marine_num,comp]);
 	            var item=_event.crafted;
 
-	            var killy=0,tixt=string(obj_ini.role[100][16])+" "+string(marine_name)+" has finished his work- ";
+	            var killy=0,tixt=$"{obj_ini.role[100][16]} {marine_name} has finished his work- ";
 
 	            if (item=="Icon"){
 	                tixt+=$"it is a {global.chapter_name} Icon wrought in metal, finely decorated.  Pride for his chapter seems to have overtaken him.  There are no corrections to be made and the item is placed where many may view it.";
@@ -211,14 +211,47 @@ function event_end_turn_action(){
 	                scr_kill_unit(comp,marine_num)
 	                with(obj_ini){scr_company_order(0);}
 	            }
-	            scr_popup("He Built It",tixt,"tech_build","target_marine|"+string(marine_name)+"|"+string(comp)+"|"+string(marine_num)+"|");
+	            if (item != "fusion"){
+	            	var options = [
+	            	{
+		    			str1:"Execute the heretic",
+		    			method : function(){
+							scr_kill_unit(pop_data.company, pop_data.marine_number);
+							var company_to_order = pop_data.company;
+							with (obj_ini) {
+								scr_company_order(company_to_order);
+							}	
+							popup_default_close();    				
+		    			}
+		    		},
+		    		{
+		    			str1:"Move him to the Penitorium",
+		    			method : function(){
+		    				popup_default_close();	    	
+		    			}
+		    		},
+		    		{
+		    			str1 : "I see no problem",
+		    			method : popup_default_close,    	
+		    		}
+				]
+		            var _pop_data = {
+			            options:options,
+		            	marine_number : marine_num,
+		            	company :comp,
+		            	marine_name : marine_name,
+		            }		    		
+	            } else {
+	            	_pop_data = "";
+	            }
+
+	            scr_popup("He Built It",tixt,"tech_build",_pop_data);
 	        }
 	        if (_event.duration<=0){
 	            array_delete(event, i ,1);
 	            continue;
 	        }
 	    }
-
 	}	
 }
 
@@ -416,4 +449,12 @@ function make_faction_enemy_event(){
 	    return true;
 	}
 	return false;
+}
+
+
+function event_dispose_of_mutated_gene(){
+	if (pop_data.percent_remove > 0){
+		obj_controller.gene_seed -= (obj_controller.gene_seed * (pop_data.percent_remove/100))
+	}
+	popup_default_close();
 }
