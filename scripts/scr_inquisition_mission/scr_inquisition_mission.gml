@@ -393,7 +393,7 @@ function mission_hunt_inquisitor_hear_out_radical_inquisitor(){
                 },
                 {
                     str1 : "Take the artifact and then destroy them",
-                    method : instance_destroy,
+                    method : mission_hunt_inquisitor_take_artifact_double_cross,
                 },
                 {
                     str1 : "Take the artifact and spare them",
@@ -478,8 +478,26 @@ function mission_hunt_inquisitor_take_artifact_bribe(){
         duration : irandom_range(6, 18) + 1,
         variation : 1,
     });
- 
 }
+
+function mission_hunt_inquisitor_take_artifact_double_cross(){
+    with (pop_data.inquisitor_ship) {
+       instance_destroy();
+    }
+    var last_artifact = scr_add_artifact("random", "", 4);
+    
+    reset_popup_options();
+
+    title = "Inquisition Mission Completed";
+    text = "Your ship sends over a boarding party, who retrieve the offered artifact- ";
+    text += $" some form of {obj_ini.artifact[last_artifact]}.  Once it is safely stowed away your ship is then ordered to fire.  The Inquisitor's own seems to hesitate an instant before banking away, but is quickly destroyed.";
+    image = "exploding_ship";
+    scr_event_log("", "Artifact recovered from radical Inquisitor.");
+    scr_event_log("", "Inquisition Mission Completed: The radical Inquisitor has been purged.");
+
+}
+
+
 
 function mission_hunt_inquisitor_show_mercy(){
 
