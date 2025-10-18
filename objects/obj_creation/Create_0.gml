@@ -879,6 +879,24 @@ var all_disadvantages = [
         value : 20,
         meta : ["Psyker Views","Librarians"],
     },
+    {
+        name : "Tech Regression: Late Conventional",
+        description : "Whether due to brief period of isolation or simple negligence, your forge lacks some facilities. You'll need to spend some techmarine resources to rebuild them.",
+        value : 20,
+        meta : ["Forge"],
+    },
+    {
+        name : "Tech Regression: Medieval",
+        description : "Whether due to period of isolation or serious negligence, your forge lacks numerous facilities. You'll need to spend significant tehcmarine resources to rebuild them.",
+        value : 40,
+        meta : ["Forge"],
+    },
+    {
+        name : "Tech Regression: Stone Age",
+        description : "Your forge has been reduced to literal stone age. You'll need a lengthy rebuild program to be able to forge anything worthwhile.",
+        value : 60,
+        meta : ["Forge"],
+    },
 ]
 
 obj_creation.all_disadvantages = []

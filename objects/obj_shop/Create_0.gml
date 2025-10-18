@@ -976,6 +976,16 @@ if (research.armour[1].stealth[0] > 0 && research.armour[1].armour[0] > 1 && obj
     item_stocked[i] = scr_item_count("Cataphractii");
     nobuy[i] = 1;
 
+	i += 1;
+    item[i] = "Animal Mount";
+    item_stocked[i] = scr_item_count(item[i]);
+	if (research.animal[0] > 0){
+		forge_cost[i] = 100;
+	} else {
+		tooltip_overide[i] = $"{require_tool_tip} {research_pathways.animal[0][0]}"
+    }
+    item_cost[i] = 5;
+
     i += 1;
     x_mod[i] = 9;
     item[i] = "Jump Pack";
@@ -1817,21 +1827,21 @@ if (shop == "production"){
         item[i] = ["research", research_pathways.metallurgy[0][research.metallurgy[0]], ["metallurgy"]];
         item_stocked[i] = 0;
         forge_cost[i] = 500;
-		tooltip_overide[i] = "Our options to forge weaponry are going to be very limited with access to just carpentry and stoneworking. Building basic metalworking tools and facilities will expand these options. \nRequired for: Early Metal Sword, Chainmail Armour, Iron Armour, Combi-Tool and numerous other items.";
+		tooltip_overide[i] = "Our options to forge weaponry are going to be very limited with access to just carpentry and stoneworking. Building basic metalworking tools and facilities will expand these options. \nRequired for: Early Metal Sword, Chainmail Armour, Combi-Tool."; // Iron Armour and numerous other items
 	}
 	if (research.mechanisms[0] == 0){
         i++;
         item[i] = ["research", research_pathways.mechanisms[0][research.mechanisms[0]], ["mechanisms"]];
         item_stocked[i] = 0;
         forge_cost[i] = 500;
-		tooltip_overide[i] = "Constructing devices which can make use of potential and kinetic energies more efficiently requires some precision tools and facilities. \nRequired for: Crossbow and numerous other items.";
+		tooltip_overide[i] = "Constructing devices which can make use of potential and kinetic energies more efficiently requires some precision tools and facilities. \nRequired for: Crossbow."; // Balista, Catapult and numerous other items
 	}
 	if (research.chemistry[0] == 0){
         i++;
         item[i] = ["research", research_pathways.chemistry[0][research.chemistry[0]], ["chemistry"]];
         item_stocked[i] = 0;
         forge_cost[i] = 500;
-		tooltip_overide[i] = "We need facilities to convert certain liquids and gases into resources that can be used in forging. \nRequired for: Sororitas Medkit and numerous other items.";
+		tooltip_overide[i] = "We need facilities to convert certain liquids and gases into resources that can be used in forging. \nRequired for: Sororitas Medkit."; // and numerous other items
 	}
 	// Late Conventional Tech
 	if (research.metallurgy[0] == 1){
@@ -1839,21 +1849,27 @@ if (shop == "production"){
         item[i] = ["research", research_pathways.metallurgy[0][research.metallurgy[0]], ["metallurgy"]];
         item_stocked[i] = 0;
         forge_cost[i] = 1000;
-		tooltip_overide[i] = "While our current metalworking facilities are enough for simple things, we need to expand them to be able to make more complex materials, such as steel. \nRequired for: Steel Sword, Plate Armour, Steel Armour and numerous other items.";
+		tooltip_overide[i] = "While our current metalworking facilities are enough for simple things, we need to expand them to be able to make more complex materials, such as steel. \nRequired for: Steel Sword, Plate Armour."; // Steel Armour and numerous other items
 	}
 	if (research.combustion[0] == 0){
         i++;
         item[i] = ["research", research_pathways.combustion[0][research.combustion[0]], ["combustion"]];
         item_stocked[i] = 0;
+		if (research.metallurgy[0] > 0 && research.mechanisms[0] > 0 && research.chemistry[0] > 0){
         forge_cost[i] = 1000;
-		tooltip_overide[i] = "If we want capability to build our own vehicles, we need ways to make them mobile. Combustion engines are the old, but reliable method of giving them locomotion. \nRequired for: Bike and other vehicles.";
+		} else { forge_cost[i] = 0; 
+		}
+		tooltip_overide[i] = "If we want capability to build our own vehicles, we need ways to make them mobile. Combustion engines are the old, but reliable method of giving them locomotion. \nRequired for: Bike."; // and other vehicles
 	}
 	if (research.plastics[0] == 0){
         i++;
         item[i] = ["research", research_pathways.plastics[0][research.plastics[0]], ["plastics"]];
         item_stocked[i] = 0;
+		if (research.combustion[0] > 0){
         forge_cost[i] = 1000;
-		tooltip_overide[i] = "We can expand our chemical facilities to accomodate plastic making. \nRequired for: Hellguns, Composite Armour, Flak Armour and other items.";
+		} else { forge_cost[i] = 0;
+		}
+		tooltip_overide[i] = "We can expand our chemical facilities to accomodate plastic making. \nRequired for: Hellguns, Flak Armour."; // Lasgun and its variants, Composite armour and other items
 	}
 	if (research.mechnchem[0] == 0){
         i++;

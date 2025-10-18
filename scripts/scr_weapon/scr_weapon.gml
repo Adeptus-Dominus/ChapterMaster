@@ -3104,13 +3104,12 @@ global.gear = {
 	},
 	"mobility": {
 	// Tribal tier mobility item idea
-		/*
 		"Animal Mount": {
 			"abbreviation": "AnmlMnt",
 			"description": "An animal that is harnessed to serve as a source for locomotion of a vehicle, or a mount for a marine.",
+			// "second_profiles": ["Animal Claws"], - other potential options are Horns, Kicks and Bites.
 			"damage_resistance_mod": 5,
 		},
-		*/
 	// Mobility items of 40k
 		"Bike": {
 			"abbreviation": "Bike",
