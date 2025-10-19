@@ -86,12 +86,12 @@ var require_tool_tip = "requires: #"
 if (shop = "equipment") {
     i = 0;
 	// Tribal shop weapons
-    i += 10;
+    i += 1;
     item[i] = "Wooden Club";
     item_stocked[i] = scr_item_count(item[i]);
     item_cost[i] = 1;
     forge_cost[i] = 10;
-    i += 10;
+    i += 1;
     item[i] = "Wooden Spear";
     item_stocked[i] = scr_item_count(item[i]);
     item_cost[i] = 1;
@@ -103,13 +103,13 @@ if (shop = "equipment") {
     if (research.psi[0]>0){
     forge_cost[i] = 100;
     }
-    i += 10;
+    i += 1;
     item[i] = "Stone Hammer";
     item_stocked[i] = scr_item_count(item[i]);
     item_cost[i] = 1;
     forge_cost[i] = 10;
 	// Early Conventional Weapons
-	i += 5;
+	i += 1;
     item[i] = "Early Metal Sword";
     item_stocked[i] = scr_item_count(item[i]);
     item_cost[i] = 1;
@@ -119,7 +119,7 @@ if (shop = "equipment") {
 		tooltip_overide[i] = $"{require_tool_tip} {research_pathways.metallurgy[0][0]}"
 	}
 	// Late Conventional Melee Weapons
-	i += 2;
+	i += 1;
     item[i] = "Steel Sword";
     item_stocked[i] = scr_item_count(item[i]);
     item_cost[i] = 1;
@@ -369,18 +369,18 @@ if (shop = "equipment") {
 
 
 	// Tribal ranged weapons
-    i += 8;
+    i += 1;
     item[i] = "Bow";
     item_stocked[i] = scr_item_count(item[i]);
     item_cost[i] = 1;
     forge_cost[i] = 10;
-    i += 8;
+    i += 1;
     item[i] = "Sling";
     item_stocked[i] = scr_item_count(item[i]);
     item_cost[i] = 1;
     forge_cost[i] = 10;
 	// Early Conventional Ranged Weapons
-	i += 4;
+	i += 1;
     item[i] = "Crossbow";
     item_stocked[i] = scr_item_count(item[i]);
     item_cost[i] = 1;
@@ -390,7 +390,7 @@ if (shop = "equipment") {
 		tooltip_overide[i] = $"{require_tool_tip} {research_pathways.mechanisms[0][0]}"
 	}
 	// Late Conventional Ranged Weapons
-	i += 2;
+	i += 1;
     item[i] = "Hellgun";
     item_stocked[i] = scr_item_count(item[i]);
     item_cost[i] = 1;
