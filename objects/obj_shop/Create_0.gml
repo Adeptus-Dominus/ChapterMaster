@@ -1387,8 +1387,12 @@ if (shop = "vehicles") {
     item[i] = "Bike";
     item_stocked[i] = scr_item_count(item[i]);
     item_cost[i] = 35;
-	// To add combustion dependency
-	forge_cost[i] = 150*player_hanger;
+    if (research.combustion[0] > 0) {
+        forge_cost[i] = 150 * player_hanger;
+    } else {
+        forge_cost[i] = 0;
+        tooltip_overide[i] = $"{require_tool_tip} {research_pathways.combustion[0][0]}";
+    }
     i += 1;
     item[i] = "Dreadnought";
     item_stocked[i] = scr_item_count(item[i]);
