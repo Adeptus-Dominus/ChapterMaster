@@ -88,7 +88,7 @@ global.weapons = {
 			"master_crafted": 12,
 			"artifact": 13
 		},
-		"description": "A primitive ranged weapon, allows to throw pebbles and simmilar 'ammunition' further.",
+		"description": "A primitive ranged weapon, allows throwing pebbles and similar 'ammunition' further.",
 		"melee_hands": 1,
 		"ranged_hands": 1.25, // 1 hand is used to hold the bow itself, while the arrow can be pulled by just 2 fingers.
 		"ammo": 10,
