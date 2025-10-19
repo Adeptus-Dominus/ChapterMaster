@@ -887,7 +887,7 @@ var all_disadvantages = [
     },
     {
         name : "Tech Regression: Medieval",
-        description : "Whether due to period of isolation or serious negligence, your forge lacks numerous facilities. You'll need to spend significant tehcmarine resources to rebuild them.",
+        description : "Whether due to a period of isolation or serious negligence, your forge lacks numerous facilities. You'll need to spend significant techmarine resources to rebuild them.",
         value : 40,
         meta : ["Forge"],
     },
