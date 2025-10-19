@@ -547,34 +547,34 @@ production_research = {
     ],
 }
 		if (scr_has_disadv("Tech Regression: Late Conventional")) {
-			production_research = {
-			plastics:[0,{}],
-			mechnchem:[0,{}],
-			bolt : [0,{}],
-			power_fields:[0,{}],
+			with(production_research) {
+			plastics = [0,{}];
+			mechnchem = [0,{}];
+			bolt = [0,{}];
+			power_fields = [0,{}];
 			}
 		}
 		if (scr_has_disadv("Tech Regression: Medieval")) {
-			production_research = {
-			metallurgy:[1,{}],
-			combustion:[0,{}],
-			plastics:[0,{}],
-			mechnchem:[0,{}],
-			bolt : [0,{}],
-			power_fields:[0,{}],
+			with(production_research) {
+			metallurgy = [1,{}];
+			combustion = [0,{}];
+			plastics = [0,{}];
+			mechnchem = [0,{}];
+			bolt = [0,{}];
+			power_fields = [0,{}];
 			}
 		}
 		if (scr_has_disadv("Tech Regression: Stone Age")) {
-			production_research = {
-			metallurgy:[0,{}],
-			mechanisms:[0,{}],
-			chemistry:[0,{}],
-			combustion:[0,{}],
-			plastics:[0,{}],
-			mechnchem:[0,{}],
-			bolt : [0,{}],
-			psi : [0,{}],
-			power_fields:[0,{}],
+			with(production_research) {
+			metallurgy = [0,{}];
+			mechanisms = [0,{}];
+			chemistry = [0,{}];
+			combustion = [0,{}];
+			plastics = [0,{}];
+			mechnchem = [0,{}];
+			bolt = [0,{}];
+			psi = [0,{}];
+			power_fields = [0,{}];
 			}
 		}
 

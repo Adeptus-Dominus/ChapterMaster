@@ -1809,7 +1809,7 @@ if (shop == "production"){
     // Tribal research
     if (research.psi[0] == 0){
         i++;
-        item[i] = ["research", "Rune Analysis", ["psi"]];
+        item[i] = ["research", research_pathways.psi[0][research.psi[0]], ["psi"]];
         item_stocked[i] = 0;
         forge_cost[i] = 1000;
         tooltip_overide[i] = "Even though our ancestors, or even we, claimed that 'there are no gods in the ground and in the sky. This is the Imperial Truth' long ago, there is no use denying that psionics exist. To make use of, or guard against, we need to study how can we interact with it in the material world. Preliminary research suggests that certain signs - 'marks' - may hold clues to it. \nRequired for: Ritual Stone Knife, Psychic Accessories.";
