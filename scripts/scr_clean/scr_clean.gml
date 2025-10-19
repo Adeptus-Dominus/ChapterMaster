@@ -175,17 +175,20 @@ function damage_infantry(_damage_data, _shots, _damage, _weapon_index) {
     var _armour_pierce = apa[_weapon_index];
     var _armour_mod = 0;
     switch (_armour_pierce) {
-    case 3:
-        _armour_mod = 2;
-            break;
-    case 2:
-        _armour_mod = 4;
-            break;
-    case 1:
-        _armour_mod = 6;
-            break;
-    default:
-        _armour_mod = 0;
+        case 4:
+            _armour_mod = 0;
+        break;
+        case 3:
+            _armour_mod = 1.5;
+        break;
+        case 2:
+            _armour_mod = 2;
+        break;
+        case 1:
+            _armour_mod = 3;
+        break;
+        default:
+            _armour_mod = 3;
         break;
     }
 
@@ -275,18 +278,21 @@ function damage_vehicles(_damage_data, _shots, _damage, _weapon_index) {
     var _armour_pierce = apa[_weapon_index];
     var _armour_mod = 0;
     switch (_armour_pierce) {
+        case 4:
+            _armour_mod = 0;
+        break;
         case 3:
             _armour_mod = 2;
-            break;
+        break;
         case 2:
             _armour_mod = 4;
-            break;
+        break;
         case 1:
             _armour_mod = 6;
-            break;
+        break;
         default:
-            _armour_mod = 0;
-            break;
+            _armour_mod = 6;
+        break;
     }
 
     var veh_index = -1;
