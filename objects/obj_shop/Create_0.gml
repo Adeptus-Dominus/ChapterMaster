@@ -1064,15 +1064,18 @@ if (research.armour[1].stealth[0] > 0 && research.armour[1].armour[0] > 1 && obj
     x_mod[i] = 9;
     item[i] = "Servo-arm";
     item_stocked[i] = scr_item_count(item[i]);
-    forge_cost[i] = 750;
+    // Requires mechnchem progression
+    if (research.mechnchem[0] > 0) {
+        forge_cost[i] = 750;
+    } else {
+        forge_cost[i] = 0;
+        tooltip_overide[i] = $"{require_tool_tip} {research_pathways.mechnchem[0][0]}";
+    }
     item_cost[i] = 30;
-	// To add mechnchem dependency
-	forge_cost[i] = 150;
     if (rene = 1) {
         nobuy[i] = 1;
         item_cost[i] = 0;
     }
-
 // Tribal Medicine
     i += 1;
     x_mod[i] = 9;
