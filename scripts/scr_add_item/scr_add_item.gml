@@ -104,12 +104,43 @@ function scr_add_item(_item_name, _quantity = 1, _quality = "any") {
 
 
 function EquipmentTracker() constructor {
-	static add_item = function(item,quality){
-		array_push(items,{item,quality});
+	static add_item = function(item, quality = "standard", owner = -1){
+		array_push(items,{item,quality,owner});
+		if (!struct_exists(item_types, item)){
+			item_types[$ item] = 0;
+		}
+
+		item_types[$ item]++;
+	}
+
+	static collate_types = function(){
+		item_types = {};
+		for (var i=0;i<array_length(items);i++){
+			var _item = items[i].item;
+			if (!struct_exists(item_types, _item)){
+				item_types[$ _item] = 0;
+			}
+
+			item_types[$ _item]++;			
+		}
 	}
 
 	static item_count = function(){
 		return array_length(items)
 	}
+
+	static item_description_string = function(){
+		var _item_names = struct_get_names(item_types);
+		var _string = ""
+		for (var i=0;i<array_length(_item_names);i++){
+			_string += string_plural(_item_names[i], item_types[$_item_names[i]])", ";
+		}
+	}
+
+	static has_item = function(item){
+		return struct_exists(items, item) ? items[$item] : 0;
+	}
+
 	items = [];
+	item_types = {};
 }

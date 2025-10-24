@@ -94,32 +94,38 @@ function scr_ruins_player_forces_defeated(){
 
 //revcover equipment of fallen marines from ruins
 function scr_ruins_recover_from_dead(){
-	var pop=instance_create(0,0,obj_popup);var route = random(5);
+	var pop=instance_create(0,0,obj_popup);
+	var route = random(5);
 	pop.image="ancient_ruins";
 	pop.title="Ancient Ruins: Recovery";
 	if (route < 4){
-		var weapon_text = ""
-	
-		//calculate equipment degredation
-		var equipment_deg = floor((obj_controller.turn - failiure_turn)/7)
+		var _weapon_text = ""
+		
 		var some_recoverable = false;
-		if (array_length(recoverables)>0){
-				for (var item =0;item<array_length(recoverables);item++){
-					var i_set = recoverables[item]
-					i_set[1] -= equipment_deg;
-					if (i_set[1]> 0){
-						some_recoverable = true;
-						scr_add_item(i_set[0],i_set[1])
-						weapon_text += $", {i_set[0]} x {i_set[1]}"
-					}
-				}
-			if (some_recoverable == true){
-				pop.text=$"Your strike team locates the site where the previous expedition made their last stand. They airlift whatever equipment and vehicles remain, disposing of anything beyond saving;.{ weapon_text}is repaired and restored to the armamentarium";
-			}else{
-				pop.text=$"our strike team locates the site where the previous expedition made their last stand. They cannot find any intact equipment, and are forced to burn the derelicts to prevent capture; no equipment is added to the armamentarium"
+		//calculate equipment degredation
+		var equipment_deg = (obj_controller.turn - failiure_turn)/ 120;
+		if (equipment_deg < 1 && array_length(recoverables)){
+			var _recovered = new EquipmentTracker();
+			var _recover_picks = ceil((1 - equipment_deg) * array_length(recoverables));
+			recoverables = array_shuffle(recoverables);
+			if (_recover_picks < array_length(recoverables) ){
+				array_delete(recoverables, _recover_picks, array_length(recoverables) - _recover_picks)
 			}
+			_recovered.items = recoverables;
+			_recovered.collate_types();
+			_weapon_text = _recovered.item_description_string();
+		} else {
+			some_recoverable = false;
+
 		}
-	
+		
+
+		if (some_recoverable == true){
+			pop.text=$"Your strike team locates the site where the previous expedition made their last stand. They airlift whatever equipment and vehicles remain, disposing of anything beyond saving;. {_weapon_text} is repaired and restored to the armamentarium";
+		}else{
+			pop.text=$"our strike team locates the site where the previous expedition made their last stand. They cannot find any intact equipment, and are forced to burn the derelicts to prevent capture; no equipment is added to the armamentarium"
+		}
+
 		//calculate geneseed degredation
 		if (obj_controller.turn - failiure_turn > 2){
 			recoverable_gene_seed -= obj_controller.turn - failiure_turn
@@ -338,25 +344,20 @@ function scr_ruins_combat_end() {
             pop.text+="Now that they have been discovered, the Eldar seem to have vanished without a trace.  Scans reveal nothing.";
         }
         forces_defeated();
-        var equip_lost = obj_ground_mission.post_equipment_lost;
-        var equip_count_lost = obj_ground_mission.post_equipments_lost;
-        if (equip_lost[1]!=""){
-            for (var i = 0; i < array_length(equip_lost); i++) { // glorified repeat loop, fix later
-                if (equip_lost[i]!="") and (equip_count_lost[i]>0) {
-                    var _new_equip = floor(equip_count_lost[i]/2);
-                    if (_new_equip == 0) {
-                        _new_equip++;
-                    }
-                    array_push(recoverables, [equip_lost[i],_new_equip])
-                }
-            }
-            recoverable_gene_seed = obj_ground_mission.recoverable_gene_seed;
-            if (recoverable_gene_seed > 1) {
-                recoverable_gene_seed = floor(recoverable_gene_seed/2);
-            }
-            if (array_length(recoverables) > 0) {
-                unrecovered_items=true;
-            }
+        var _equip_lost = obj_ground_mission.post_equipment_lost;
+
+        recoverable_gene_seed = obj_ground_mission.recoverable_gene_seed;
+
+        if (array_length(_equip_lost.items)){
+        	var _half_destroy = floor(array_length(_equip_lost.items)/2);
+        	for (var i=0;i<array_length(_half_destroy);i++){
+        		_equip_lost.items = delete_random_index(_equip_lost.items);
+        	}
+        }
+
+        if (array_length(_equip_lost.items) > 0) {
+        	recoverables = _equip_lost.items;
+            unrecovered_items=true;
         }
     }
 }

@@ -246,7 +246,7 @@ if (_total_damaged_count > 0) {
 if (post_equipment_lost.item_count()){
     part6="Equipment Lost: ";
     
-    part7 += arrays_to_string_with_counts(post_equipment_lost, post_equipments_lost, true, false);
+    part7 += post_equipment_lost.item_description_string();
 	if (ground_mission){
         part7 += " Some may be recoverable.";
     }
@@ -285,8 +285,7 @@ if (total_battle_exp_gain>0){
 }
 
 if (ground_mission){
-	obj_ground_mission.post_equipment_lost = post_equipment_lost
-	obj_ground_mission.post_equipments_lost = post_equipments_lost
+	obj_ground_mission.post_equipment_lost = post_equipment_lost;
 }
 
 if (slime>0){
@@ -315,13 +314,10 @@ if (battle_special="study2a") then reduce_fortification=false;
 if (battle_special="study2b") then reduce_fortification=false;
 
 if (fortified>0) and (!instance_exists(obj_nfort)) and (reduce_fortification=true){
-    part9="Fortification level of "+string(battle_loc);
-    if (battle_id=1) then part9+=" I";
-    if (battle_id=2) then part9+=" II";
-    if (battle_id=3) then part9+=" III";
-    if (battle_id=4) then part9+=" IV";
-    if (battle_id=5) then part9+=" V";
+    part9=$"Fortification level of {planet_numeral_name(battle_id, battle_object)}";
+
     part9+=$" has decreased to {fortified-1} ({fortified}-1)";
+
     newline=part9;
     scr_newtext();
     battle_object.p_fortified[battle_id]-=1;

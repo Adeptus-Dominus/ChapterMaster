@@ -98,9 +98,9 @@ try {
     
     
     
-    that = array_get_index(post_equipment_lost,"Company Standard");
-    if (that!=-1){
-        repeat(post_equipments_lost[that]){
+    var _lost_banner = post_equipment_lost.has_item("Company Standard");
+    if (_lost_banner!=-1){
+        repeat(_lost_banner){
             scr_loyalty("Lost Standard","+");
         }
     }

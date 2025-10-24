@@ -1421,23 +1421,23 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
     //get equipment data methods by deafult they garb all equipment data and return an equipment struct e.g new EquipmentStruct(item_data, core_type,quality="none")
     static get_armour_data = function(type = "all") {
-        return gear_weapon_data("armour", armour(), type, false, armour_quality);
+        return gear_weapon_data("armour", armour(), type, false, armour_quality, armour(true));
     };
 
     static get_gear_data = function(type = "all") {
-        return gear_weapon_data("gear", gear(), type, false, gear_quality);
+        return gear_weapon_data("gear", gear(), type, false, gear_quality, gear(true));
     };
 
     static get_mobility_data = function(type = "all") {
-        return gear_weapon_data("mobility", mobility_item(), type, false, mobility_item_quality);
+        return gear_weapon_data("mobility", mobility_item(), type, false, mobility_item_quality, mobility_item(true));
     };
 
     static get_weapon_one_data = function(type = "all") {
-        return gear_weapon_data("weapon", weapon_one(), type, false, weapon_one_quality);
+        return gear_weapon_data("weapon", weapon_one(), type, false, weapon_one_quality, weapon_one(true));
     };
 
     static get_weapon_two_data = function(type = "all") {
-        return gear_weapon_data("weapon", weapon_two(), type, false, weapon_two_quality);
+        return gear_weapon_data("weapon", weapon_two(), type, false, weapon_two_quality, weapon_two(true));
     };
 
     static damage_resistance = function() {
